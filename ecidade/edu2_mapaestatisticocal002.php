@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,12 +25,12 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("libs/db_stdlibwebseller.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_libdocumento.php"));
-require_once(modification("libs/db_libparagrafo.php"));
-require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification('fpdf151/FpdfMultiCellBorder.php'));
+require_once modification("libs/db_stdlibwebseller.php");
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_libdocumento.php");
+require_once modification("libs/db_libparagrafo.php");
+require_once modification("dbforms/db_funcoes.php");
+require_once modification('fpdf151/FpdfMultiCellBorder.php');
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -79,9 +79,11 @@ try {
     $aEscolasQuartoQuadro = unserialize(serialize($aEscolasPrimeiroQuadro));
 
 
-    /** ***********************************************************************************************************
+    /**
+ * ***********************************************************************************************************
      ******************************* inicio da busca dos dados do PRIMEIRO QUADRO *********************************
-     *********************************************************************************************************** **/
+     ***********************************************************************************************************
+**/
     /**
      * Busca os ensinos do tipo ENSINO REGULAR e EDUCAÇÃO DE JOVENS E ADULTOS
      */
@@ -154,9 +156,11 @@ try {
     }
 
 
-    /** ************************************************************************************************************
+    /**
+ * ************************************************************************************************************
      ********************************* inicio da busca dos dados do SEGUNDO QUADRO *********************************
-     ************************************************************************************************************ **/
+     ************************************************************************************************************
+**/
 
     /**
      * Busca ensinos que possuam turmas de correção de fluxo
@@ -271,9 +275,11 @@ try {
     }
 
 
-    /** ************************************************************************************************************
+    /**
+ * ************************************************************************************************************
      ******************************* inicio da busca dos dados do TERCEIRO QUADRO **********************************
-     ************************************************************************************************************ **/
+     ************************************************************************************************************
+**/
     $oStdSexo = new stdClass();
     $oStdSexo->iTotalMasculino = 0;
     $oStdSexo->iTotalFeminino = 0;
@@ -295,26 +301,26 @@ try {
         foreach ($aAlunoMatriculadosSexo as $oAlunosSexoTurno) {
 
             switch ($oAlunosSexoTurno->sexo) {
-                case 'M':
+            case 'M':
 
-                    $oEscola->aTurnos[$oAlunosSexoTurno->turnoreferente]->iTotalMasculino += $oAlunosSexoTurno->qtd_alunos;
-                    break;
-                case 'F':
+                $oEscola->aTurnos[$oAlunosSexoTurno->turnoreferente]->iTotalMasculino += $oAlunosSexoTurno->qtd_alunos;
+                break;
+            case 'F':
 
-                    $oEscola->aTurnos[$oAlunosSexoTurno->turnoreferente]->iTotalFeminino += $oAlunosSexoTurno->qtd_alunos;
-                    break;
+                $oEscola->aTurnos[$oAlunosSexoTurno->turnoreferente]->iTotalFeminino += $oAlunosSexoTurno->qtd_alunos;
+                break;
             }
             $oEscola->aTurnos[$oAlunosSexoTurno->turnoreferente]->iTotal += $oAlunosSexoTurno->qtd_alunos;
             $oEscola->iTotalTurnoSexo += $oAlunosSexoTurno->qtd_alunos;
         }
 
 
-        $oEscola->iTotalTransfFora = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, "= 'TRANSFERIDO FORA'",$oNomeCal);
-        $oEscola->iTotalTransfRede = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, "= 'TRANSFERIDO REDE'",$oNomeCal);
-        $oEscola->iTotalEvadido = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, "='EVADIDO'",$oNomeCal);
+        $oEscola->iTotalTransfFora = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, "= 'TRANSFERIDO FORA'", $oNomeCal);
+        $oEscola->iTotalTransfRede = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, "= 'TRANSFERIDO REDE'", $oNomeCal);
+        $oEscola->iTotalEvadido = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, "IN ('EVADIDO', 'ABANDONO ESCOLAR')", $oNomeCal);
 
-        $sSituacao = " not in ('TRANSFERIDO FORA', 'TRANSFERIDO REDE', 'EVADIDO', 'MATRICULADO') ";
-        $oEscola->iTotalOutrasSituacoes = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, $sSituacao,$oNomeCal);
+        $sSituacao = " not in ('TRANSFERIDO FORA', 'TRANSFERIDO REDE', 'EVADIDO', 'ABANDONO ESCOLAR', 'MATRICULADO') ";
+        $oEscola->iTotalOutrasSituacoes = quantificarAlunosPorSituacao($oEscola->codigo, $oDtInicio, $oDtFim, $sSituacao, $oNomeCal);
 
         $oEscola->iTotalSituacoes += $oEscola->iTotalTransfFora;
         $oEscola->iTotalSituacoes += $oEscola->iTotalTransfRede;
@@ -352,83 +358,83 @@ try {
         $oEscola->iMaisEducacaoIntegral = 0;
         $oEscola->iMaisEducacaoTotal = 0;
 
-        $aTurmas = quantificarTurmasTurno($oEscola->codigo, $oDtInicio, $oDtFim,$oNomeCal);
+        $aTurmas = quantificarTurmasTurno($oEscola->codigo, $oDtInicio, $oDtFim, $oNomeCal);
 
         foreach ($aTurmas as $oDadosTurma) {
 
             if ($oDadosTurma->mais_educacao == 't') {
 
                 switch ($oDadosTurma->turnoreferente) {
-                    case 1:
-                        $oEscola->iMaisEducacaoManha += $oDadosTurma->turmas;
-                        break;
-                    case 2:
-                        $oEscola->iMaisEducacaoTarde += $oDadosTurma->turmas;
-                        break;
-                    case 3:
-                        $oEscola->iMaisEducacaoNoite += $oDadosTurma->turmas;
-                        break;
-                    case 4:
-                        $oEscola->iMaisEducacaoIntegral += $oDadosTurma->turmas;
-                        break;
+                case 1:
+                    $oEscola->iMaisEducacaoManha += $oDadosTurma->turmas;
+                    break;
+                case 2:
+                    $oEscola->iMaisEducacaoTarde += $oDadosTurma->turmas;
+                    break;
+                case 3:
+                    $oEscola->iMaisEducacaoNoite += $oDadosTurma->turmas;
+                    break;
+                case 4:
+                    $oEscola->iMaisEducacaoIntegral += $oDadosTurma->turmas;
+                    break;
                 }
                 $oEscola->iMaisEducacaoTotal += $oDadosTurma->turmas;
             }
             switch ($oDadosTurma->tipo) {
-                case 'regular':
+            case 'regular':
 
-                    switch ($oDadosTurma->turnoreferente) {
-                        case 1:
-                            $oEscola->iRegularManha += $oDadosTurma->turmas;
-                            break;
-                        case 2:
-                            $oEscola->iRegularTarde += $oDadosTurma->turmas;
-                            break;
-                        case 3:
-                            $oEscola->iRegularNoite += $oDadosTurma->turmas;
-                            break;
-                        case 4:
-                            $oEscola->iRegularIntegral += $oDadosTurma->turmas;
-                            break;
-                    }
-                    $oEscola->iRegularTotal += $oDadosTurma->turmas;
+                switch ($oDadosTurma->turnoreferente) {
+                case 1:
+                    $oEscola->iRegularManha += $oDadosTurma->turmas;
                     break;
-                case 'complementar':
+                case 2:
+                    $oEscola->iRegularTarde += $oDadosTurma->turmas;
+                    break;
+                case 3:
+                    $oEscola->iRegularNoite += $oDadosTurma->turmas;
+                    break;
+                case 4:
+                    $oEscola->iRegularIntegral += $oDadosTurma->turmas;
+                    break;
+                }
+                $oEscola->iRegularTotal += $oDadosTurma->turmas;
+                break;
+            case 'complementar':
 
-                    switch ($oDadosTurma->turnoreferente) {
-                        case 1:
-                            $oEscola->iComplementarManha += $oDadosTurma->turmas;
-                            break;
-                        case 2:
-                            $oEscola->iComplementarTarde += $oDadosTurma->turmas;
-                            break;
-                        case 3:
-                            $oEscola->iComplementarNoite += $oDadosTurma->turmas;
-                            break;
-                        case 4:
-                            $oEscola->iComplementarIntegral += $oDadosTurma->turmas;
-                            break;
-                    }
-                    $oEscola->iComplementarTotal += $oDadosTurma->turmas;
+                switch ($oDadosTurma->turnoreferente) {
+                case 1:
+                    $oEscola->iComplementarManha += $oDadosTurma->turmas;
                     break;
-                case 'aee':
+                case 2:
+                    $oEscola->iComplementarTarde += $oDadosTurma->turmas;
+                    break;
+                case 3:
+                    $oEscola->iComplementarNoite += $oDadosTurma->turmas;
+                    break;
+                case 4:
+                    $oEscola->iComplementarIntegral += $oDadosTurma->turmas;
+                    break;
+                }
+                $oEscola->iComplementarTotal += $oDadosTurma->turmas;
+                break;
+            case 'aee':
 
-                    switch ($oDadosTurma->turnoreferente) {
-                        case 1:
-                            $oEscola->iAeeManha += $oDadosTurma->turmas;
-                            break;
-                        case 2:
-                            $oEscola->iAeeTarde += $oDadosTurma->turmas;
-                            break;
-                        case 3:
-                            $oEscola->iAeeNoite += $oDadosTurma->turmas;
-                            break;
-                        case 4:
-                            $oEscola->iAeeIntegral += $oDadosTurma->turmas;
-                            break;
-                    }
-                    $oEscola->iAeeTotal += $oDadosTurma->turmas;
+                switch ($oDadosTurma->turnoreferente) {
+                case 1:
+                    $oEscola->iAeeManha += $oDadosTurma->turmas;
                     break;
+                case 2:
+                    $oEscola->iAeeTarde += $oDadosTurma->turmas;
+                    break;
+                case 3:
+                    $oEscola->iAeeNoite += $oDadosTurma->turmas;
+                    break;
+                case 4:
+                    $oEscola->iAeeIntegral += $oDadosTurma->turmas;
+                    break;
+                }
+                $oEscola->iAeeTotal += $oDadosTurma->turmas;
+                break;
             }
         }
 
@@ -441,6 +447,7 @@ try {
 
 /**
  * Configuração do relatório
+ *
  * @var stdClass
  */
 $oConfig = new stdClass();
@@ -490,9 +497,11 @@ $oPdf->SetFillColor(223);
 $oPdf->SetAutoPageBreak(false, 10);
 
 
-/** *******************************************************************************************************************
+/**
+ * *******************************************************************************************************************
  *  ************************************* INICIO IMPRESSAO PRIMEIRO QUADRO ********************************************
- *  ***************************************************************************************************************** */
+ *  *****************************************************************************************************************
+*/
 
 /**
  * Imprime os Alunos matriculados dos Níveis de ensino de todas as escolas
@@ -513,7 +522,7 @@ if (count($aEtapasErEp) > 0) {
             imprimePrimeiroCabecalho($oPdf, $oConfig, $aEtapasErEp);
         }
         $oPdf->SetX($oConfig->iMargem);
-        $oPdf->Cell($oConfig->iXNumero, 5, $oEscola->escola_referencia, 1, 0,"C");
+        $oPdf->Cell($oConfig->iXNumero, 5, $oEscola->escola_referencia, 1, 0, "C");
         $sNomeEscola = cortaString($oPdf, $oEscola->escola, $oEscola->escola_abrev, ($oConfig->iXEscola));
         $oPdf->Cell($oConfig->iXEscola, 5, "{$sNomeEscola}", 1, 0);
         if (isset($oEscola->aAlunosEtapa)) {
@@ -555,9 +564,11 @@ if (count($aEtapasErEp) > 0) {
 }
 
 
-/** *******************************************************************************************************************
+/**
+ * *******************************************************************************************************************
  *  ************************************* INICIO IMPRESSAO SEGUNDO QUADRO *********************************************
- *  ***************************************************************************************************************** */
+ *  *****************************************************************************************************************
+*/
 
 /**
  * Imprime os Alunos matriculados dos Níveis de ensino de todas as escolas
@@ -582,7 +593,7 @@ foreach ($aEscolasSegundoQuadro as $oEscola) {
     }
 
     $oPdf->SetX($oConfig->iMargem);
-    $oPdf->Cell($oConfig->iXNumero, 5, $oEscola->escola_referencia, 1, 0,"C");
+    $oPdf->Cell($oConfig->iXNumero, 5, $oEscola->escola_referencia, 1, 0, "C");
     $sNomeEscola = cortaString($oPdf, $oEscola->escola, $oEscola->escola_abrev, $oConfig->iXEscola);
     $oPdf->Cell($oConfig->iXEscola, 5, "{$sNomeEscola}", 1, 0);
     if (isset($oEscola->aAlunosEtapa)) {
@@ -659,14 +670,18 @@ $oPdf->Line($oPdf->lMargin, $oPdf->GetY(), $oConfig->iXMaxima, $oPdf->GetY());
 $oPdf->Cell($oConfig->iXMaxima, 5, "* Coluna Mais Educação não contabiliza no totalizador.", 0, 0, 'L', 0);
 
 
-/** *******************************************************************************************************************
+/**
+ * *******************************************************************************************************************
  *  ************************************* FIM TOTALIZADOR SEGUNDO QUADRO **********************************************
- *  ***************************************************************************************************************** */
+ *  *****************************************************************************************************************
+*/
 
 
-/** *******************************************************************************************************************
+/**
+ * *******************************************************************************************************************
  *  *********************************** TOTALIZADOR MOVIMENTACAO DOS ALUNO ********************************************
- *  ***************************************************************************************************************** */
+ *  *****************************************************************************************************************
+*/
 
 AddPage($oPdf, $oConfig);
 $oPdf->SetX($oConfig->iMargem);
@@ -704,14 +719,18 @@ $oPdf->SetX($oConfig->iMargem);
 $oPdf->Cell(200, 5, "MAIS EDUCAÇÃO", 1, 0, 'L');
 $oPdf->Cell(85, 5, $iTotalGeralMaisEducacao, 1, 1, 'R');
 
-/** *******************************************************************************************************************
+/**
+ * *******************************************************************************************************************
  *  ********************************* FIM TOTALIZADOR MOVIMENTACAO DOS ALUNO ******************************************
- *  ***************************************************************************************************************** */
+ *  *****************************************************************************************************************
+*/
 
 
-/** *******************************************************************************************************************
+/**
+ * *******************************************************************************************************************
  *  ************************************* INICIO IMPRESSAO TERCEIRO QUADRO ********************************************
- *  ***************************************************************************************************************** */
+ *  *****************************************************************************************************************
+*/
 
 imprimeTerceiroCabecalho($oPdf, $oConfig);
 $iLinhasImpressas = 0;
@@ -744,7 +763,7 @@ foreach ($aEscolasTerceiroQuadro as $oDadosEscola) {
 
     $oPdf->SetFont('arial', '', 7);
     $oPdf->SetX($oConfig->iMargem);
-    $oPdf->Cell($oConfig->iXNumero, 5, $oDadosEscola->escola_referencia, 1, 0,"C");
+    $oPdf->Cell($oConfig->iXNumero, 5, $oDadosEscola->escola_referencia, 1, 0, "C");
     $sNomeEscola = cortaString($oPdf, $oDadosEscola->escola, $oDadosEscola->escola_abrev, $oConfig->iXEscola);
     $oPdf->Cell($oConfig->iXEscola, 5, "{$sNomeEscola}", 1, 0);
 
@@ -784,7 +803,7 @@ if ($oConfig->iLinhasPorPagina == $iLinhasImpressas) {
 
 $oPdf->SetX($oConfig->iMargem);
 $oPdf->SetFont('arial', 'B', 7);
-$oPdf->Cell($oConfig->iXEscola + $oConfig->iXNumero, 5, "Total", 1, 0, 'L',1);
+$oPdf->Cell($oConfig->iXEscola + $oConfig->iXNumero, 5, "Total", 1, 0, 'L', 1);
 foreach ($aTotaisTurnos as $oTotalTurno) {
 
     $oPdf->Cell(10, 5, (int)$oTotalTurno->iTotalMasculino, 1, 0, 'C', 1);
@@ -799,9 +818,11 @@ $oPdf->Cell(20, 5, (int)$iTotalOutrasSituacoes, 1, 0, 'C', 1);
 $oPdf->Cell(21, 5, (int)$iTotalSituacoes, 1, 1, 'C', 1);
 
 
-/** *******************************************************************************************************************
+/**
+ * *******************************************************************************************************************
  *  ************************************* INICIO IMPRESSAO QUARTO QUADRO **********************************************
- *  ***************************************************************************************************************** */
+ *  *****************************************************************************************************************
+*/
 imprimeQuartoCabecalho($oPdf, $oConfig);
 $iLinhasImpressas = 0;
 $iXDobroColuna = 20;
@@ -840,7 +861,7 @@ foreach ($aEscolasQuartoQuadro as $oDadosEscola) {
     }
     $oPdf->SetFont('arial', '', 7);
     $oPdf->SetX($oConfig->iMargem);
-    $oPdf->Cell($oConfig->iXNumero, 5, $oDadosEscola->escola_referencia, 1, 0,"C");
+    $oPdf->Cell($oConfig->iXNumero, 5, $oDadosEscola->escola_referencia, 1, 0, "C");
     $sNomeEscola = cortaString($oPdf, $oDadosEscola->escola, $oDadosEscola->escola_abrev, $oConfig->iXEscola);
     $oPdf->Cell($oConfig->iXEscola, 5, "{$sNomeEscola}", 1, 0);
 
@@ -902,7 +923,7 @@ if ($oConfig->iLinhasPorPagina == $iLinhasImpressas) {
 }
 $oPdf->SetX($oConfig->iMargem);
 $oPdf->SetFont('arial', 'B', 7);
-$oPdf->Cell($oConfig->iXEscola + $oConfig->iXNumero, 5, "Total", 1, 0, 'L',1);
+$oPdf->Cell($oConfig->iXEscola + $oConfig->iXNumero, 5, "Total", 1, 0, 'L', 1);
 $oPdf->Cell($iXColunaPadrao, 5, (int)$iTotalizadorAeeManha, 1, 0, 'C', 1);
 $oPdf->Cell($iXColunaPadrao, 5, (int)$iTotalizadorAeeTarde, 1, 0, 'C', 1);
 $oPdf->Cell($iXColunaPadrao, 5, (int)$iTotaliAeeNoite, 1, 0, 'C', 1);
@@ -930,8 +951,9 @@ $oPdf->Output();
 
 /**
  * Adiciona uma nova paginal
- * @param FpdfMultiCellBorder $oPdf Instancia de FPDF
- * @param StdClass $oConfig Configuração do relatorio
+ *
+ * @param FpdfMultiCellBorder $oPdf    Instancia de FPDF
+ * @param StdClass            $oConfig Configuração do relatorio
  */
 function addPage(FpdfMultiCellBorder $oPdf, $oConfig, $lImprimeLinhaMovimentacao = true)
 {
@@ -948,9 +970,12 @@ function addPage(FpdfMultiCellBorder $oPdf, $oConfig, $lImprimeLinhaMovimentacao
 
 /**
  * Imprime o primeiro cabeçalho
- * @param  FpdfMultiCellBorder $oPdf Instancia de FPDF
- * @param  StdClass $oConfig Configuração do relatorio
- * /* @param  array $aEtapasErEp Array com os ensinos e as etapas
+ *
+ * @param  FpdfMultiCellBorder $oPdf    Instancia de FPDF
+ * @param  StdClass            $oConfig Configuração do relatorio
+ *                                      /* @param  array
+ *                                      $aEtapasErEp Array com os
+ *                                      ensinos e as etapas
  * @return void
  */
 function imprimePrimeiroCabecalho(FpdfMultiCellBorder $oPdf, $oConfig, $aEtapasErEp)
@@ -1006,12 +1031,12 @@ function imprimePrimeiroCabecalho(FpdfMultiCellBorder $oPdf, $oConfig, $aEtapasE
 
 /**
 
- * @param integer $iEscola Código da escola
- * @param integer $iEtapa Código da etapa
- * @param DBDate $oDtInicio
- * @param DBDate $oDtInicio Período de matricula
- * @param DBDate $oDtFim Período de matricula
- * @param boolean $lCorrecaoFluxo
+ * @param  integer $iEscola        Código da escola
+ * @param  integer $iEtapa         Código da etapa
+ * @param  DBDate  $oDtInicio
+ * @param  DBDate  $oDtInicio      Período de matricula
+ * @param  DBDate  $oDtFim         Período de matricula
+ * @param  boolean $lCorrecaoFluxo
  * @return int
  * @throws Exception
  */
@@ -1053,12 +1078,13 @@ function buscaAlunosDataCorte($iEscola, $iEtapa, DBDate $oDtInicio, DBDate $oDtF
 
 /**
  * Busca os alunos matriculados para a escola um período e etapa
- * @param integer $iEscola Código da escola
- * @param integer $iEtapa Código da etapa
- * @param DBDate $oDtInicio
- * @param DBDate $oDtInicio Período de matricula
- * @param DBDate $oDtFim Período de matricula
- * @param boolean $lCorrecaoFluxo
+ *
+ * @param  integer $iEscola        Código da escola
+ * @param  integer $iEtapa         Código da etapa
+ * @param  DBDate  $oDtInicio
+ * @param  DBDate  $oDtInicio      Período de matricula
+ * @param  DBDate  $oDtFim         Período de matricula
+ * @param  boolean $lCorrecaoFluxo
  * @return int
  * @throws Exception
  */
@@ -1103,10 +1129,10 @@ function buscaAlunosMatriculados($iEscola, $iEtapa, DBDate $oDtInicio, DBDate $o
  * Se não couber e haver um nome abreviado, retorna abreviatura
  * Se não couber e não tem um nome abreviado, corta a string
  *
- * @param  FpdfMultiCellBorder $oPdf instancia de FPDF
- * @param  string $sNome
- * @param  string $sNomeAbreviado [description]
- * @param  integer $iTamanhoCampo Tamanho do campo (w)
+ * @param  FpdfMultiCellBorder $oPdf           instancia de FPDF
+ * @param  string              $sNome
+ * @param  string              $sNomeAbreviado [description]
+ * @param  integer             $iTamanhoCampo  Tamanho do campo (w)
  * @return string                              String compativel com o campo
  */
 function cortaString(FpdfMultiCellBorder $oPdf, $sNome, $sNomeAbreviado, $iTamanhoCampo)
@@ -1118,7 +1144,7 @@ function cortaString(FpdfMultiCellBorder $oPdf, $sNome, $sNomeAbreviado, $iTaman
     if ($oPdf->NbLines($iTamanhoCampo, $sNome) == 1) {
         return $sNome;
     }
-    
+
     return substr($sNome, 0, 30) . "...";
 }
 
@@ -1210,9 +1236,10 @@ function calculaAlunosMatriculadosEscola($aEscolas, $aEnsinos, $oDtInicio, $oDtF
 
 /**
  * Imprime o segundo cabeçalho
- * @param  FpdfMultiCellBorder $oPdf Instancia de FPDF
- * @param  StdClass $oConfig Configuração do relatorio
- * @param  array $aEtapasSegundoQuadro Array com os ensinos e as etapas
+ *
+ * @param  FpdfMultiCellBorder $oPdf                 Instancia de FPDF
+ * @param  StdClass            $oConfig              Configuração do relatorio
+ * @param  array               $aEtapasSegundoQuadro Array com os ensinos e as etapas
  * @return void
  */
 function imprimeSegundoCabecalho($oPdf, $oConfig, $aEtapasSegundoQuadro)
@@ -1293,9 +1320,10 @@ function imprimeSegundoCabecalho($oPdf, $oConfig, $aEtapasSegundoQuadro)
 
 /**
  * Busca todos alunos matriculados na escola em turmas de AEE
- * @param  integer $iEscola código da escola
- * @param  DBDate $oDtInicio período da matricula
- * @param  DBDate $oDtFim período da matricula
+ *
+ * @param  integer $iEscola   código da escola
+ * @param  DBDate  $oDtInicio período da matricula
+ * @param  DBDate  $oDtFim    período da matricula
  * @return integer            Número de alunos matriculados
  */
 function buscaAlunosMatriculadosAEE($iEscola, $oDtInicio, $oDtFim, $oNomeCal)
@@ -1313,10 +1341,10 @@ function buscaAlunosMatriculadosAEE($iEscola, $oDtInicio, $oDtFim, $oNomeCal)
 }
 
 /**
- * @param integer $iEscola código da escola
- * @param integer $sTipoEnsino Tipo de ensino
- * @param DBDate $oDtInicio período da matricula
- * @param DBDate $oDtFim período da matricula
+ * @param  integer $iEscola     código da escola
+ * @param  integer $sTipoEnsino Tipo de ensino
+ * @param  DBDate  $oDtInicio   período da matricula
+ * @param  DBDate  $oDtFim      período da matricula
  * @return int
  * @throws Exception
  */
@@ -1359,10 +1387,11 @@ function buscaAlunosTipoEnsinoDataCorte($iEscola, $sTipoEnsino, $oDtInicio, $oDt
 
 /**
  * Busca os alunos matriculados na escola pelo tipo de ensino
- * @param integer $iEscola código da escola
- * @param integer $sTipoEnsino Tipo de ensino
- * @param DBDate $oDtInicio período da matricula
- * @param DBDate $oDtFim período da matricula
+ *
+ * @param  integer $iEscola     código da escola
+ * @param  integer $sTipoEnsino Tipo de ensino
+ * @param  DBDate  $oDtInicio   período da matricula
+ * @param  DBDate  $oDtFim      período da matricula
  * @return int
  * @throws Exception
  */
@@ -1406,9 +1435,10 @@ function buscaAlunosMatriculadosTipoEnsino($iEscola, $sTipoEnsino, $oDtInicio, $
 
 /**
  * Busca todos alunos matriculados na escola em turmas de Atividades Complementares
- * @param  integer $iEscola código da escola
- * @param  DBDate $oDtInicio período da matricula
- * @param  DBDate $oDtFim período da matricula
+ *
+ * @param  integer $iEscola   código da escola
+ * @param  DBDate  $oDtInicio período da matricula
+ * @param  DBDate  $oDtFim    período da matricula
  * @return integer            Número de alunos matriculados
  */
 function buscaAlunosMatriculadosAtivComplementar($iEscola, $oDtInicio, $oDtFim, $oNomeCal)
@@ -1426,9 +1456,9 @@ function buscaAlunosMatriculadosAtivComplementar($iEscola, $oDtInicio, $oDtFim, 
 }
 
 /**
- * @param  integer $iEscola código da escola
- * @param  DBDate $oDtInicio período da matricula
- * @param  DBDate $oDtFim período da matricula
+ * @param  integer $iEscola   código da escola
+ * @param  DBDate  $oDtInicio período da matricula
+ * @param  DBDate  $oDtFim    período da matricula
  * @return integer            Número de alunos matriculados
  */
 function buscaAlunosDataCorteMaisEducacao($iEscola, $oDtInicio, $oDtFim, $oNomeCal)
@@ -1529,6 +1559,7 @@ function buscaAlunosMatriculadosMaisEducacao($iEscola, $oDtInicio, $oDtFim, $oNo
 
 /**
  * Busca todas escolas da rede que tiveram alunos matriculados no período informado
+ *
  * @return array
  * @throws Exception
  */
@@ -1561,9 +1592,9 @@ function buscaEscolas()
 }
 
 /**
- * @param  integer $iEscola código da escola
- * @param  DBDate $oDtInicio período da matricula
- * @param  DBDate $oDtFim período da matricula
+ * @param  integer $iEscola   código da escola
+ * @param  DBDate  $oDtInicio período da matricula
+ * @param  DBDate  $oDtFim    período da matricula
  * @return integer            Número de alunos matriculados
  */
 function quantificarAlunosDataCortePorSexo($iEscola, $oDtInicio, $oDtFim, $oNomeCal)
@@ -1635,10 +1666,11 @@ function quantificarAlunosMatriculadoPorSexo($iEscola, $oDtInicio, $oDtFim, $oNo
 
 /**
  * Quantifica quantos aluno estão na situação solicitada por parâmetro
- * @param  integer $iEscola codigo da escola
- * @param  DBDate $oDtInicio
- * @param  DBDate $oDtFim
- * @param  string $sSituacao situacao que deve ser buscado o aluno
+ *
+ * @param  integer $iEscola   codigo da escola
+ * @param  DBDate  $oDtInicio
+ * @param  DBDate  $oDtFim
+ * @param  string  $sSituacao situacao que deve ser buscado o aluno
  * @return integer            numero de alunos que se encaixam na recebida por parâmetro situação
  */
 function quantificarAlunosPorSituacao($iEscola, $oDtInicio, $oDtFim, $sSituacao,$oNomeCal)
@@ -1726,12 +1758,12 @@ function quantificarTurmasTurno($iEscola, $oDtInicio, $oDtFim,$oNomeCal)
 
 /**
  * Imprime cabeçalho do terceiro quadro
- * @param  FpdfMultiCellBorder $oPdf Instancia de FPDF
- * @param  StdClass $oConfig Configuração do relatorio
+ *
+ * @param FpdfMultiCellBorder $oPdf    Instancia de FPDF
+ * @param StdClass            $oConfig Configuração do relatorio
  */
 function imprimeTerceiroCabecalho($oPdf, $oConfig)
 {
-
     addPage($oPdf, $oConfig, false);
     $iAlturaLinha = 5;
     $iXmargim = 3 + $oConfig->iXEscola + $oConfig->iXNumero;
@@ -1802,7 +1834,7 @@ function imprimeTerceiroCabecalho($oPdf, $oConfig)
     $oPdf->SetX($iXAuxiliar);
     $oPdf->vCell($iXDobroColuna, $iAlturaColunaTotal, "TRANSFERIDO\n FORA", 1, 0, 'C', 0);
     $oPdf->vCell($iXDobroColuna, $iAlturaColunaTotal, "TRANSFERIDO\n REDE", 1, 0, 'C', 0);
-    $oPdf->vCell($iXDobroColuna, $iAlturaColunaTotal, "EVADIDO", 1, 0, 'C', 0);
+    $oPdf->vCell($iXDobroColuna, $iAlturaColunaTotal, "EVADIDO /\n ABANDONO\n ESCOLAR", 1, 0, 'C', 0);
     $oPdf->vCell($iXDobroColuna, $iAlturaColunaTotal, "OUTROS", 1, 0, 'C', 0);
 
     $oPdf->SetY($iYInicial + $oConfig->iAlturaCabecalho);

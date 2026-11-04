@@ -73,19 +73,19 @@ $oData = new DBDate($oStdAnulacao->pc67_data);
       <table>
         <tr>
           <td class="bold" style="width: 10%">Usuário:</td>
-          <td class="valores" style="90%">
+          <td class="valores" style="width:90%">
             <?php echo $oUsuario->getCodigo()." - ".$oUsuario->getNome(); ?>
           </td>
         </tr>
         <tr>
           <td nowrap class="bold" style="width: 10%">Data / Hora:</td>
-          <td class="valores" style="90%">
+          <td class="valores" style="width:90%">
             <?php echo $oData->getDate(DBDate::DATA_PTBR) ." - ".$oStdAnulacao->pc67_hora; ?>
           </td>
         </tr>
         <tr>
           <td nowrap class="bold" style="width: 10%">Processo Admnistrativo:</td>
-          <td class="valores" style="90%">
+          <td class="valores" style="width:90%">
             <?php echo $oStdAnulacao->pc67_processoadministrativo; ?>
           </td>
         </tr>

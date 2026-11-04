@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_pcorcamsol {
                  pc27_solic = int4 = numero da solicitacao 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamsol() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamsol"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_pcorcamsol {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc27_codorc = ($this->pc27_codorc == ""?@$GLOBALS["HTTP_POST_VARS"]["pc27_codorc"]:$this->pc27_codorc);
        $this->pc27_solic = ($this->pc27_solic == ""?@$GLOBALS["HTTP_POST_VARS"]["pc27_solic"]:$this->pc27_solic);
@@ -75,7 +75,7 @@ class cl_pcorcamsol {
      }
    }
    // funcao para inclusao
-   function incluir ($pc27_codorc,$pc27_solic){ 
+   public function incluir ($pc27_codorc,$pc27_solic){ 
       $this->atualizacampos();
        $this->pc27_codorc = $pc27_codorc; 
        $this->pc27_solic = $pc27_solic; 
@@ -140,7 +140,7 @@ class cl_pcorcamsol {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($pc27_codorc=null,$pc27_solic=null) { 
+   public function alterar ($pc27_codorc=null,$pc27_solic=null) { 
       $this->atualizacampos();
      $sql = " update pcorcamsol set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_pcorcamsol {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($pc27_codorc=null,$pc27_solic=null,$dbwhere=null) { 
+   public function excluir ($pc27_codorc=null,$pc27_solic=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc27_codorc,$pc27_solic));
      }else{ 
@@ -293,7 +293,7 @@ class cl_pcorcamsol {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

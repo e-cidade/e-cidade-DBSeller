@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhfuncao_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($_SERVER['QUERY_STRING'], $query);
 
 $clrhfuncao = new cl_rhfuncao();
 $clrhfuncao->rotulo->label("rh37_funcao"); 
@@ -108,7 +108,7 @@ $chave_rh37_descr = isset($chave_rh37_descr) ? stripslashes($chave_rh37_descr) :
                 <b>Opções:</b>
               </td>
               <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                 $aOpcao = array("at"=>"Ativos","ds"=>"Desativados" ,"am"=>"Ambos");
                 db_select('sOpcao',$aOpcao,true,4,"");
               ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@ if(isset($desconto)){
      $clarrecad = new cl_arrecad;
      $record = debitos_numpre($k00_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"));
      if(pg_numrows($record) != 0){
-	     db_fieldsmemory();      
+	     db_fieldsmemory($record,0);      
      }
   }  
 }
@@ -122,7 +122,7 @@ function js_calmulta(){
 <form name="form1" action="" method="post" onSubmit="return js_verifica()">
 <center>
     <table width="686" height="27" border="0" cellpadding="0" cellspacing="0">
-      <?
+      <?php
   if(!isset($k00_numpre)){
     db_redireciona('db_erros.php?db_erro=Acesso não Permitido.');
     exit; 
@@ -195,14 +195,14 @@ function js_calmulta(){
       <tr> 
         <td width="110">Nome</td>
         <td width="214"> 
-          <?
+          <?php
     $clrotulo->label("z01_nome");
 	db_input('z01_nome',40,$Iz01_nome,true,'text',3)
 	?>
         </td>
         <td width="104">Valor:</td>
         <td width="258"> 
-          <?
+          <?php
     $clrotulo->label("k00_valor");
 	db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrcor')
 	?>
@@ -211,14 +211,14 @@ function js_calmulta(){
       <tr> 
         <td>TipoD&eacute;bito:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_descr");
 	db_input('k00_descr',40,$Ik00_descr,true,'text',3)
 	?>
         </td>
         <td>Juros:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_valor");
 	db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrjuros')
 	?>
@@ -227,14 +227,14 @@ function js_calmulta(){
       <tr> 
         <td>C&oacute;digo:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_numpre");
 	db_input('k00_numpre',8,$Ik00_numpre,true,'text',3)
 	?>
         </td>
         <td>Multa:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_valor");
 	db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrmulta')
 	?>
@@ -243,7 +243,7 @@ function js_calmulta(){
       <tr> 
         <td>Parcela:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_numpar");
 	$k00_numpar = $numpar;
 	db_select('k00_numpar',$matpar,true,2," onchange='document.form1.submit();' ");
@@ -251,7 +251,7 @@ function js_calmulta(){
         </td>
         <td>Desconto:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_valor");
 	db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrdesconto')
 	?>
@@ -260,7 +260,7 @@ function js_calmulta(){
       <tr> 
         <td>Receita:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_receit");
     $k00_receit = $receit;
 	db_select('k00_receit',$matrec,true,2," onchange='document.form1.submit();' ")
@@ -268,7 +268,7 @@ function js_calmulta(){
         </td>
         <td>Total:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_valor");
 	db_input('k00_valor',15,$Ik00_valor,true,'text',3,'ttotal')
 	?>
@@ -284,7 +284,7 @@ function js_calmulta(){
         <td> <div align="right"></div></td>
         <td>Total LIberado Para desconto:</td>
         <td> 
-          <?
+          <?php
     $clrotulo->label("k00_valor");
 	db_input('k00_valor',15,$Ik00_valor,true,'text',3,'')
 	?>
@@ -295,7 +295,7 @@ function js_calmulta(){
         <td>&nbsp;</td>
         <td>Percentual: </td>
         <td> 
-          <?
+          <?php
         $clrotulo->label("DBtxt8");
      	db_input('DBtxt8',15,$IDBtxt8,true,'text',2," onchange='js_calcula()'")
     	?>
@@ -306,7 +306,7 @@ function js_calmulta(){
         <td>&nbsp;</td>
         <td>Valor: </td>
         <td> 
-          <?
+          <?php
         $clrotulo->label("DBtxt9");
      	db_input('DBtxt9',15,$IDBtxt9,true,'text',2," onchange='js_calculavalor()'")
 	    ?>
@@ -321,7 +321,7 @@ function js_calmulta(){
       </tr>
       <tr align="center"> 
         <td colspan="4"></td> </td> </tr>
-      <?
+      <?php
   }
   ?>
     </table>

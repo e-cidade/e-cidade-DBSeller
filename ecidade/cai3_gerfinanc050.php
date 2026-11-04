@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,10 +27,21 @@
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
 use ECidade\Tributario\Arrecadacao\CGF\Repository\Certidao as RepositoryCertidao;
+use ECidade\Tributario\Arrecadacao\Enums\TipoCampoOrdenacaoCgfEnum;
+use ECidade\Tributario\Arrecadacao\Enums\TipoOrdenacaoCgfEnum;
+use ECidade\Tributario\Arrecadacao\Service\MontaOrdenacaoCgf;
 
 require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
+require_once(modification("classes/db_arretipo_classe.php"));
+if(isset($y50_codauto) && $y50_codauto != ''){
+  $GLOBAL['y50_codauto'] = $y50_codauto;
+}
+if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+  $GLOBAL['nl01_codlanc'] = $nl01_codlanc;
+}
+
 if (!empty($Parcelamento)) {
   $sSqlNumpreParcelamento = "select v07_numpre as numpre from termo where v07_parcel = {$Parcelamento}";
   $rsNumpreParcelamento   = db_query($sSqlNumpreParcelamento);
@@ -87,16 +98,38 @@ $clrotulo->label("v52_descr");
 
 if (isset($matric)) {
   $tabela="  inner join arrematric on arrematric.k00_numpre = arrecad.k00_numpre ";
+  if(isset($y50_codauto) && $y50_codauto != ''){
+    $tabela.=" inner join arreauto on arrematric.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto = $y50_codauto ";
+  }
+  if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+    $tabela.=" inner join arrelanc on arrematric.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc = $nl01_codlanc ";
+  }
   $campo='k00_matric';
   $valor=$matric;
   $sVariavel = "matric";
 } else if (isset($inscr)) {
   $tabela="inner join arreinscr   on arreinscr.k00_numpre = arrecad.k00_numpre ";
+  if(isset($y50_codauto) && $y50_codauto != ''){
+    $tabela.=" inner join arreauto on arreinscr.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto = $y50_codauto ";
+  }
+  
+  if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+    $tabela.=" inner join arrelanc on arreinscr.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc = $nl01_codlanc ";
+  }
+
   $campo='k00_inscr';
   $valor=$inscr;
   $sVariavel = "inscr";
 } else if (isset($numcgm)) {
   $tabela = "  inner join arrenumcgm   on arrenumcgm.k00_numpre = arrecad.k00_numpre ";
+  if(isset($y50_codauto) && $y50_codauto != ''){
+    $tabela.=" inner join arreauto on arrenumcgm.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto = $y50_codauto ";
+  }
+
+  if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+    $tabela.=" inner join arrelanc on arrenumcgm.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc = $nl01_codlanc ";
+  }
+
   $campo='arrenumcgm.k00_numcgm';
   $valor=$numcgm;
   $sVariavel = "numcgm";
@@ -151,6 +184,26 @@ function adicionarCorpoTabelaDebitos($mostraDadosCda = false, $tabela, $campo, $
 {
     global $Tv50_inicial, $Tv70_codforo, $Tv50_advog, $Tnome, $Tv54_descr, $Tv52_descr, $Tv53_descr, $Tv50_codmov, $numrows;
     $sLinhaRegistros = "";
+
+    
+    $clarretipo   = new cl_arretipo;
+    $result     = $clarretipo->sql_record($clarretipo->sql_query($tipo,'arretipo.k03_tipo'));
+    $k03_tipo = pg_fetch_result($result, 0);
+
+    $ordenacaoCgf = new MontaOrdenacaoCgf();
+    $ordenacaoCgf->setGrupoDebito($k03_tipo);
+    $ordenacaoCgf->addCampo("v50_data", TipoOrdenacaoCgfEnum::DATA_INICIAL, TipoCampoOrdenacaoCgfEnum::DATA);
+    $ordenacaoCgf->addCampo("v50_inicial", TipoOrdenacaoCgfEnum::INICIAL, TipoCampoOrdenacaoCgfEnum::NUMERO);
+    $ordenacaoCgf->addCampo("v70_codforo", TipoOrdenacaoCgfEnum::PROCESSO_FORO, TipoCampoOrdenacaoCgfEnum::NUMERO);
+
+    $ordenacaoDebito = $ordenacaoCgf->montaSqlOrderBy();
+
+    if(!empty($ordenacaoDebito)){
+      $totalizaordem = $ordenacaoDebito;
+    }else{
+      $totalizaordem = ' 1 ';
+    }
+    
     $oInicial = new \cl_inicial();
     $instituicao = \db_getsession('DB_instit');
 
@@ -187,7 +240,7 @@ function adicionarCorpoTabelaDebitos($mostraDadosCda = false, $tabela, $campo, $
                            left  join vara                on vara.v53_codvara                = processoforo.v70_vara
                      where $campo = $valor
                        and arretipo.k00_tipo = $tipo
-                       and v50_situacao = 1 order by 1 asc";
+                       and v50_situacao = 1 order by $totalizaordem asc";
 
     $rsArrecad = db_query($sqlArrecad);
 
@@ -321,6 +374,17 @@ function adicionarCorpoTabelaDebitos($mostraDadosCda = false, $tabela, $campo, $
 
     return $sLinhaRegistros;
 }
+
+if(isset($y50_codauto)){
+  $getAuto = '&y50_codauto=$y50_codauto';
+}else{
+  $getAuto = '';
+}
+if(isset($nl01_codlanc)){
+  $getAuto = "&nl01_codlanc=".$nl01_codlanc;
+}
+
+
 ?>
 <html>
 <head>
@@ -383,6 +447,8 @@ try{
       db_msgbox($erro->getMessage());
   }
 
+  echo "</table>";
+  echo "<form name=\"form1\" id=\"form1\" method=\"post\" target=\"reciboweb2\">\n";
 
 if (isset($matric)) {
     echo "<input type=\"hidden\" name=\"ver_matric\" value=\"".$matric."\">\n";
@@ -491,8 +557,8 @@ function js_marca() {
   var permissao_suspender    = <?=db_permissaomenu(db_getsession("DB_anousu"),81,7653)?>;
 
   if(!ID) {
-        return false;
-    }
+		return false;
+	}
   var F = document.form1;
   if(ID.innerHTML == 'M') {
     var dis = true;
@@ -564,12 +630,11 @@ function js_vermarcados(){
       if(F.elements[i].checked == true){
 
         parent.document.js_parc = js_a;
-                //parent.document.getElementById('btparc').onclick = js_a();
+				//parent.document.getElementById('btparc').onclick = js_a();
 
         if (parent.document.getElementById('btparc').disabled == true && permissao_parcelamento == true) {
           parent.document.getElementById("btparc").disabled = false; // botao parcelamento
         }
-
         if (parent.document.getElementById('btcancela').disabled == true && permissao_cancelar == true) {
           parent.document.getElementById("btcancela").disabled = false; // botao cancelamento
         }

@@ -1,32 +1,32 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 if (!isset($arqinclude)){
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -40,22 +40,22 @@ if (!isset($arqinclude)){
   include_once(modification("classes/db_conrelvalor_classe.php"));
   include_once(modification("classes/db_orcparamrelopcre_classe.php"));
   include_once(modification("classes/db_orcparamelemento_classe.php"));
-  
+
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
   $clconrelinfo      = new cl_conrelinfo;
   $clconrelvalor     = new cl_conrelvalor;
   $oOrcParamRelopcre = new cl_orcparamrelopcre;
   $clorcparamelemento = new cl_orcparamelemento();
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
-  
+
 }
 
 include_once(modification("libs/db_utils.php"));
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,munic,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -91,18 +91,18 @@ $descr_periodo = '';
 if ($periodo=="1Q"){
   $period = "JANEIRO A ABRIL DE {$anousu}";
   $descr_periodo = "Quadrimestre";
-}elseif($periodo=="2Q"){  
+}elseif($periodo=="2Q"){
   $period = "JANEIRO A AGOSTO DE {$anousu}";
-  $descr_periodo = "Quadrimestre";  
-}elseif($periodo=="3Q"){  
+  $descr_periodo = "Quadrimestre";
+}elseif($periodo=="3Q"){
   $period = "JANEIRO A DEZEMBRO DE {$anousu}";
-  $descr_periodo = "Quadrimestre";  
+  $descr_periodo = "Quadrimestre";
 }elseif($periodo=="1S"){
   $period = "JANEIRO A JUNHO DE {$anousu}";
-  $descr_periodo = "Semestre";  
+  $descr_periodo = "Semestre";
 }elseif($periodo=="2S"){
   $period = "JANEIRO A DEZEMBRO DE {$anousu}";
-  $descr_periodo = "Semestre";    
+  $descr_periodo = "Semestre";
 }
 $head6 = "$period";
 
@@ -117,16 +117,16 @@ $dt               = data_periodo($anousu,$periodo); // no dbforms/db_funcoes.php
 $dt_ini_plano     = $dt[0];  // data inicial do periodo
 $dt_ini           = "{$anousu}-01-01";  // data inicial do periodo
 $dt_fim           = $dt[1];  // data final do período
-$dt = split('-',$dt_fim);  // mktime -- (mes,caddia,ano)
+$dt =explode('-',$dt_fim);  // mktime -- (mes,caddia,ano)
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]+1,"01",$anousu_ant));
 $dt_fim_ant = $anousu_ant.'-12-31';
 $iCodigoRelatorio = 63;
 /**
- * Parametros 
+ * Parametros
  */
 
 for ($i = 1; $i <=16;$i++) {
-  
+
   $aParametros[$i]["params"]  = $orcparamrel->sql_parametro($iCodigoRelatorio, $i, "f", $instituicao, db_getsession("DB_anousu"));
   $aParametros[$i]["nobim"]   = 0;
   $aParametros[$i]["atebim"]  = 0;
@@ -135,55 +135,55 @@ for ($i = 1; $i <=16;$i++) {
     $aParametros[$i]["itens"] = Array();
 
     for ($j = 0; $j < count($aParametros[$i]["params"]); $j++) {
-      
+
       $sSqlConplano  = "select c60_estrut, c60_descr from conplano where c60_anousu = ".db_getsession("DB_anousu");
       $sSqlConplano .= "   and c60_estrut = {$aParametros[$i]["params"][$j]}";
       $rsConplano    = db_query($sSqlConplano);
       $oConplano     = db_utils::fieldsMemory($rsConplano,0);
-      $aItem["descricao"] =  $oConplano->c60_descr;  
+      $aItem["descricao"] =  $oConplano->c60_descr;
       $aItem["nobim"]     = 0;
       $aItem["atebim"]    = 0;
       $aParametros[$i]["itens"][$oConplano->c60_estrut] = $aItem;
-      
+
     }
   }
-  
+
 }
-$where            = "  c61_instit in (".str_replace('-',', ',$db_selinstit).")   "; 
+$where            = "  c61_instit in (".str_replace('-',', ',$db_selinstit).")   ";
 $rsDadosRelatorio = db_planocontassaldo_matriz($anousu,$dt_ini_plano,$dt_fim,false,$where);
 @db_query("drop table work_pl");
 $iNumRows = pg_num_rows($rsDadosRelatorio);
 for ($iParam = 1; $iParam <= 16; $iParam++) {
-  
+
   if ($iParam == 10) {
-    
+
     for ($i = 0; $i < $iNumRows; $i++) {
-  
+
       $oLinhaRelatorio = db_utils::fieldsMemory($rsDadosRelatorio, $i);
-      if (count($aParametros[$iParam]["params"]) > 0 && 
+      if (count($aParametros[$iParam]["params"]) > 0 &&
           in_array($oLinhaRelatorio->estrutural, $aParametros[$iParam]['params'])) {
-        $aParametros[$iParam]["itens"][$oLinhaRelatorio->estrutural]["nobim"] = ($oLinhaRelatorio->saldo_final - 
+        $aParametros[$iParam]["itens"][$oLinhaRelatorio->estrutural]["nobim"] = ($oLinhaRelatorio->saldo_final -
                                                                                 $oLinhaRelatorio->saldo_anterior);
         if ($periodo == "1Q") {
-          $aParametros[$iParam]["itens"][$oLinhaRelatorio->estrutural]["nobim"] = $oLinhaRelatorio->saldo_final;                                                                                          
+          $aParametros[$iParam]["itens"][$oLinhaRelatorio->estrutural]["nobim"] = $oLinhaRelatorio->saldo_final;
         }
-        $aParametros[$iParam]["itens"][$oLinhaRelatorio->estrutural]["atebim"] = $oLinhaRelatorio->saldo_final;                                                                                    
+        $aParametros[$iParam]["itens"][$oLinhaRelatorio->estrutural]["atebim"] = $oLinhaRelatorio->saldo_final;
       }
     }
-    
+
   } else {
-  
+
     for ($i = 0; $i < $iNumRows; $i++) {
-  
+
       $oLinhaRelatorio = db_utils::fieldsMemory($rsDadosRelatorio, $i);
-      if (count($aParametros[$iParam]["params"]) > 0 && 
+      if (count($aParametros[$iParam]["params"]) > 0 &&
           in_array($oLinhaRelatorio->estrutural, $aParametros[$iParam]['params'])) {
-        
-        
+
+
         if ($periodo == "1Q") {
           $aParametros[$iParam]["nobim"] += $oLinhaRelatorio->saldo_final;
         } else {
-          $aParametros[$iParam]["nobim"]  += ($oLinhaRelatorio->saldo_final - $oLinhaRelatorio->saldo_anterior);        	
+          $aParametros[$iParam]["nobim"]  += ($oLinhaRelatorio->saldo_final - $oLinhaRelatorio->saldo_anterior);
         }
         $aParametros[$iParam]["atebim"] += $oLinhaRelatorio->saldo_final;
       }
@@ -194,48 +194,48 @@ for ($iParam = 1; $iParam <= 16; $iParam++) {
  * Linhas do relatorio
  */
 $aLinhasRelatorio              = array();
-$aLinhasRelatorio[0]["label"]  = "SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (I)";    
-$aLinhasRelatorio[1]["label"]  = "    Mobiliária";    
-$aLinhasRelatorio[2]["label"]  = "       Interna";    
-$aLinhasRelatorio[3]["label"]  = "       Externa";    
-$aLinhasRelatorio[4]["label"]  = "    Contratual";    
-$aLinhasRelatorio[5]["label"]  = "        Interna";    
-$aLinhasRelatorio[6]["label"]  = "            Abertura de Crédito";    
-$aLinhasRelatorio[7]["label"]  = "            Aquisição Financiada de Bens e Arrendamento Mercantil Financeiro";    
-$aLinhasRelatorio[8]["label"]  = "                Derivadas de PPP";    
-$aLinhasRelatorio[9]["label"]  = "                Demais Aquisições Financiadas";    
-$aLinhasRelatorio[10]["label"] = "            Antecipação de Receita";    
-$aLinhasRelatorio[11]["label"] = "                Pela Venda a Termo de Bens e Serviços";      
-$aLinhasRelatorio[12]["label"] = "                Demais Antecipações de Receita";      
-$aLinhasRelatorio[13]["label"] = "            Assunção, Reconhecimento e Confissão de Dívidas (LRF, art. 29, § 1º)";      
-$aLinhasRelatorio[14]["label"] = "            Outras Operações de Crédito";      
-$aLinhasRelatorio[15]["label"] = "        Externa";      
-$aLinhasRelatorio[15]["itens"] = array();      
-$aLinhasRelatorio[16]["label"] = "NÃO SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (II)";      
-$aLinhasRelatorio[17]["label"] = "    Parcelamentos de Dívidas";      
-$aLinhasRelatorio[18]["label"] = "        De Tributos";      
-$aLinhasRelatorio[19]["label"] = "        De Contribuições Sociais";      
-$aLinhasRelatorio[20]["label"] = "            Previdenciárias";      
-$aLinhasRelatorio[21]["label"] = "            Demais Contribuições Sociais";      
-$aLinhasRelatorio[22]["label"] = "        Do FGTS";      
-$aLinhasRelatorio[23]["label"] = "    Melhoria da Administração de Receitas e da Gestão Fiscal, Financeira e Patrimonial ";      
-$aLinhasRelatorio[24]["label"] = "    Programa de Iluminação Pública - RELUZ ";      
-$aLinhasRelatorio[25]["label"] = "RECEITA CORRENTE LÍQUIDA - RCL ";      
-$aLinhasRelatorio[26]["label"] = "TOTAL CONSIDERADO PARA FINS DA APURAÇÃO DO CUMPRIMENTO DO LIMITE = (Ia)";   
-$aLinhasRelatorio[27]["label"] = "LIMITE GERAL DEFINIDO POR RESOLUÇÃO DO SENADO FED. PARA AS OPERAÇÕES DE CRÉDITO ";   
-$aLinhasRelatorio[27]["label"].= "INTERNAS E EXTERNAS";   
-$aLinhasRelatorio[28]["label"] = "OPERAÇÕES DE CRÉDITO POR ANTECIPAÇÃO DA RECEITA ORÇAMENTÁRIA";   
-$aLinhasRelatorio[29]["label"] = "LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FED. PARA AS OP. DE CRED POR ";   
-$aLinhasRelatorio[29]["label"].= "ANTECIPAÇÃO DA REC. ORÇAMENTÁRIA";   
-$aLinhasRelatorio[30]["label"] = "TOTAL CONSIDERADO PARA CONTRATAÇÃO DE NOVAS OPERAÇÕES DE CRÉDITO (III) = (Ia + IIa)";   
+$aLinhasRelatorio[0]["label"]  = "SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (I)";
+$aLinhasRelatorio[1]["label"]  = "    Mobiliária";
+$aLinhasRelatorio[2]["label"]  = "       Interna";
+$aLinhasRelatorio[3]["label"]  = "       Externa";
+$aLinhasRelatorio[4]["label"]  = "    Contratual";
+$aLinhasRelatorio[5]["label"]  = "        Interna";
+$aLinhasRelatorio[6]["label"]  = "            Abertura de Crédito";
+$aLinhasRelatorio[7]["label"]  = "            Aquisição Financiada de Bens e Arrendamento Mercantil Financeiro";
+$aLinhasRelatorio[8]["label"]  = "                Derivadas de PPP";
+$aLinhasRelatorio[9]["label"]  = "                Demais Aquisições Financiadas";
+$aLinhasRelatorio[10]["label"] = "            Antecipação de Receita";
+$aLinhasRelatorio[11]["label"] = "                Pela Venda a Termo de Bens e Serviços";
+$aLinhasRelatorio[12]["label"] = "                Demais Antecipações de Receita";
+$aLinhasRelatorio[13]["label"] = "            Assunção, Reconhecimento e Confissão de Dívidas (LRF, art. 29, § 1º)";
+$aLinhasRelatorio[14]["label"] = "            Outras Operações de Crédito";
+$aLinhasRelatorio[15]["label"] = "        Externa";
+$aLinhasRelatorio[15]["itens"] = array();
+$aLinhasRelatorio[16]["label"] = "NÃO SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (II)";
+$aLinhasRelatorio[17]["label"] = "    Parcelamentos de Dívidas";
+$aLinhasRelatorio[18]["label"] = "        De Tributos";
+$aLinhasRelatorio[19]["label"] = "        De Contribuições Sociais";
+$aLinhasRelatorio[20]["label"] = "            Previdenciárias";
+$aLinhasRelatorio[21]["label"] = "            Demais Contribuições Sociais";
+$aLinhasRelatorio[22]["label"] = "        Do FGTS";
+$aLinhasRelatorio[23]["label"] = "    Melhoria da Administração de Receitas e da Gestão Fiscal, Financeira e Patrimonial ";
+$aLinhasRelatorio[24]["label"] = "    Programa de Iluminação Pública - RELUZ ";
+$aLinhasRelatorio[25]["label"] = "RECEITA CORRENTE LÍQUIDA - RCL ";
+$aLinhasRelatorio[26]["label"] = "TOTAL CONSIDERADO PARA FINS DA APURAÇÃO DO CUMPRIMENTO DO LIMITE = (Ia)";
+$aLinhasRelatorio[27]["label"] = "LIMITE GERAL DEFINIDO POR RESOLUÇÃO DO SENADO FED. PARA AS OPERAÇÕES DE CRÉDITO ";
+$aLinhasRelatorio[27]["label"].= "INTERNAS E EXTERNAS";
+$aLinhasRelatorio[28]["label"] = "OPERAÇÕES DE CRÉDITO POR ANTECIPAÇÃO DA RECEITA ORÇAMENTÁRIA";
+$aLinhasRelatorio[29]["label"] = "LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FED. PARA AS OP. DE CRED POR ";
+$aLinhasRelatorio[29]["label"].= "ANTECIPAÇÃO DA REC. ORÇAMENTÁRIA";
+$aLinhasRelatorio[30]["label"] = "TOTAL CONSIDERADO PARA CONTRATAÇÃO DE NOVAS OPERAÇÕES DE CRÉDITO (III) = (Ia + IIa)";
 for ($i = 0; $i < count($aLinhasRelatorio); $i++) {
-  
+
   $aLinhasRelatorio[$i]["atebim"] = 0;
   $aLinhasRelatorio[$i]["nobim"]  = 0;
-  
+
 }
 /**
- * calculamos os totais, e vinculamos o valores encontrado nos parametros e 
+ * calculamos os totais, e vinculamos o valores encontrado nos parametros e
  * vinculamos as linhas do relatorio
  */
 
@@ -249,7 +249,7 @@ $aLinhasRelatorio[3]["atebim"] = $aParametros[2]["atebim"];
 $aLinhasRelatorio[1]["nobim"]  = $aLinhasRelatorio[3]["nobim"]+$aLinhasRelatorio[2]["nobim"];
 $aLinhasRelatorio[1]["atebim"] = $aLinhasRelatorio[3]["atebim"]+$aLinhasRelatorio[2]["atebim"];
 /*
- * Grupo Contratual 
+ * Grupo Contratual
  */
 $aLinhasRelatorio[6]["nobim"]   = $aParametros[3]["nobim"];
 $aLinhasRelatorio[6]["atebim"]  = $aParametros[3]["atebim"];
@@ -276,22 +276,22 @@ $aLinhasRelatorio[5]["nobim"]   = $aLinhasRelatorio[6]["nobim"]+$aLinhasRelatori
                                   +$aLinhasRelatorio[10]["nobim"];
 $aLinhasRelatorio[5]["atebim"]  = $aLinhasRelatorio[6]["atebim"]+$aLinhasRelatorio[7]["atebim"]+
                                   $aLinhasRelatorio[13]["atebim"]+$aLinhasRelatorio[14]["atebim"]
-                                  +$aLinhasRelatorio[10]["atebim"];                                  
+                                  +$aLinhasRelatorio[10]["atebim"];
 
-                                  
+
 /*
  * Calculamos o total da linha 16, onde é a soma de todos os estruturais cadastrados para ela.
  */
-$aLinhasRelatorio[15]["itens"] = $aParametros[10]["itens"];                                  
+$aLinhasRelatorio[15]["itens"] = $aParametros[10]["itens"];
 foreach ($aParametros[10]["itens"] as $aParametroItem) {
-  
+
   $aLinhasRelatorio[15]["nobim"]  += $aParametroItem["nobim"];
   $aLinhasRelatorio[15]["atebim"] += $aParametroItem["atebim"];
-  
+
 }
-$aLinhasRelatorio[4]["nobim"]  = $aLinhasRelatorio[5]["nobim"]+ $aLinhasRelatorio[15]["nobim"]; 
-$aLinhasRelatorio[4]["atebim"] = $aLinhasRelatorio[5]["atebim"]+ $aLinhasRelatorio[15]["atebim"]; 
-$aLinhasRelatorio[0]["nobim"]  = $aLinhasRelatorio[4]["nobim"]+ $aLinhasRelatorio[1]["nobim"]; 
+$aLinhasRelatorio[4]["nobim"]  = $aLinhasRelatorio[5]["nobim"]+ $aLinhasRelatorio[15]["nobim"];
+$aLinhasRelatorio[4]["atebim"] = $aLinhasRelatorio[5]["atebim"]+ $aLinhasRelatorio[15]["atebim"];
+$aLinhasRelatorio[0]["nobim"]  = $aLinhasRelatorio[4]["nobim"]+ $aLinhasRelatorio[1]["nobim"];
 $aLinhasRelatorio[0]["atebim"] = $aLinhasRelatorio[4]["atebim"]+ $aLinhasRelatorio[1]["atebim"];
 /*
  * Grupo nao sujeitas
@@ -317,7 +317,7 @@ $aLinhasRelatorio[17]["atebim"] = $aLinhasRelatorio[18]["atebim"]+$aLinhasRelato
 $aLinhasRelatorio[16]["nobim"]  = $aLinhasRelatorio[17]["nobim"] + $aLinhasRelatorio[23]["nobim"]+
                                   $aLinhasRelatorio[24]["nobim"];
 $aLinhasRelatorio[16]["atebim"] = $aLinhasRelatorio[17]["atebim"]+$aLinhasRelatorio[23]["atebim"]+
-                                  $aLinhasRelatorio[24]["atebim"];                                  
+                                  $aLinhasRelatorio[24]["atebim"];
 $nTotalOperacoesCredito  = 0;
 $nTotalInternas          = 0;
 $nTotalExternas          = 0;
@@ -338,7 +338,7 @@ for ($xinstit=0; $xinstit < pg_num_rows($rsInstit); $xinstit++) {
 }
 $iExercAnt  = (db_getsession('DB_anousu')-1);
 $sCodParRel = "59";
-  
+
   // Exclui elementos referente ao exercício anterior;
 $clorcparamelemento->o44_anousu    = $iExercAnt;
 $clorcparamelemento->o44_codparrel = $sCodParRel;
@@ -377,15 +377,15 @@ if ($nValorInternoExterno == 0){
 if ($nValorAntecipacao == 0){
    $nValorAntecipacao = '< % >';
 }else{
-  $nPercValorAntecipacao  = db_formatar(($nTotalRcl*$nValorAntecipacao)/100,"f"); 
-  $nValorAntecipacao     .= '%'; 
+  $nPercValorAntecipacao  = db_formatar(($nTotalRcl*$nValorAntecipacao)/100,"f");
+  $nValorAntecipacao     .= '%';
 }
 //linhas do relatório;
 if (!isset($arqinclude)){
-  
-  $pdf = new PDF("P", "mm", "A4"); 
-  $pdf->Open(); 
-  $pdf->AliasNbPages(); 
+
+  $pdf = new PDF("P", "mm", "A4");
+  $pdf->Open();
+  $pdf->AliasNbPages();
   $pdf->setfillcolor(235);
   $pdf->setfont('arial','b',7);
   $alt            = 4;
@@ -402,24 +402,24 @@ if (!isset($arqinclude)){
   $pdf->cell(100,$alt,"",'RB',0,"C",0);
   $pdf->cell(45,$alt,"de Referência",'LB',0,"C",0);
   $pdf->cell(45,$alt,"de Referência (a)",'LB',1,"C",0);
-  
+
   /*
    * Inicio do Corpo do relatorio
    */
   $pdf->setfont('arial','',7);
   for ($i = 0; $i < 25; $i++) {
-    
+
     $pdf->cell(100,$alt,$aLinhasRelatorio[$i]["label"],"R",0,"L");
     $pdf->cell(45,$alt,db_formatar($aLinhasRelatorio[$i]["nobim"],"f"),"R",0,"R");
     $pdf->cell(45,$alt,db_formatar($aLinhasRelatorio[$i]["atebim"],"f"),"L",1,"R");
     if ($i == 15) {
       foreach ($aLinhasRelatorio[15]["itens"] as $item) {
 
-        
+
         $pdf->cell(100,$alt,"            ".ucfirst(strtolower($item["descricao"])),"R",0,"L");
         $pdf->cell(45,$alt,db_formatar($item["nobim"],"f"),"R",0,"R");
         $pdf->cell(45,$alt,db_formatar($item["atebim"],"f"),"L",1,"R");
-           
+
       }
     }
   }
@@ -428,9 +428,9 @@ if (!isset($arqinclude)){
   $pdf->cell(130,$alt,"APURAÇÃO DO CUMPRIMENTO DOS LIMITES","TBR",0,"C");
   $pdf->cell(30,$alt,"VALOR","TBL",0,"C");
   $pdf->cell(30,$alt,"% SOBRE RCL","TBL",1,"C");
-  
+
   for ($i = 25; $i < 30; $i++) {
-    
+
     $pdf->setfont('arial','',6);
     $pdf->cell(130,$alt,$aLinhasRelatorio[$i]["label"],"TBR",0,"L");
     $pdf->setfont('arial','',7);
@@ -440,7 +440,7 @@ if (!isset($arqinclude)){
     } else {
       $pdf->cell(30,$alt, db_formatar($aLinhasRelatorio[$i]["atebim"],'f'),"TBL",1,"R");
     }
-    
+
   }
   $pdf->cell(190,$alt,"","TB",1,"L");
   $pdf->setfont('arial','',6);
@@ -448,19 +448,19 @@ if (!isset($arqinclude)){
   $pdf->setfont('arial','',7);
   $pdf->cell(30,$alt, db_formatar($aLinhasRelatorio[30]["nobim"],"f"),"TBR",0,"R");
   $pdf->cell(30,$alt, db_formatar($aLinhasRelatorio[30]["atebim"],"f"),"TBL",1,"R");
-  
+
   $pdf->ln();
   // ----------------------------------------------------------------
-  notasExplicativas(&$pdf, 63, $periodo,190); 
-  
+  notasExplicativas($pdf, 63, $periodo,190);
+
   $pdf->Ln(5);
-  
+
   // assinaturas
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
-  
-  assinaturas(&$pdf,&$classinatura,'GF');
-  
+
+  assinaturas($pdf,$classinatura,'GF');
+
   $pdf->Output();
 }
 
@@ -490,11 +490,11 @@ if ($clconrelinfo->numrows > 0){
     db_fieldsmemory($res_variaveis,$i);
 
     if ($c83_codigo == 364){
-      $valor_int_ext = $c83_informacao;  
+      $valor_int_ext = $c83_informacao;
     }
 
     if ($c83_codigo == 365){
-      $valor_antecipacao = $c83_informacao;  
+      $valor_antecipacao = $c83_informacao;
     }
   }
 }

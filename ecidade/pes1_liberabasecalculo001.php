@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -252,7 +252,7 @@ if ( isset($btnProcessaBase) ) {
           <b>IP do Servidor:</b>
         </td>
         <td>
-          <?
+          <?php
             db_input('iIp', 25, 3, true, 'text', 1, "onChange='js_buscaBases(false);'");
           ?>
         </td>
@@ -270,7 +270,7 @@ if ( isset($btnProcessaBase) ) {
           <b>Competência:</b>
         </td>
         <td>
-          <?
+          <?php
             db_input('iAno', 3, true, 3, 'text', 1);
             echo " / ";
             db_input('iMes', 1, true, 3, 'text', 1);
@@ -282,7 +282,7 @@ if ( isset($btnProcessaBase) ) {
   <p><input type="submit" name="btnProcessaBase" value="Processar"></p>
   </form>
 </center>
-<?
+<?php
 $conn = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA");
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
@@ -381,7 +381,7 @@ function js_retornoBuscaBases(oAjax) {
 js_buscaBases(true);
 </script>
 
-<?
+<?php
 /**
  * A conexão deve ser fechada aqui para não dar conflito 
  * com as Permissões de Menu

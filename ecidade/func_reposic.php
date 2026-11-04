@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clreposic->rotulo->label("r64_regist");
               <?=$Lr64_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r64_mesusu",2,$Ir64_mesusu,true,"text",4,"","chave_r64_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clreposic->rotulo->label("r64_regist");
               <?=$Lr64_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r64_regist",6,$Ir64_regist,true,"text",4,"","chave_r64_regist");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clreposic->rotulo->label("r64_regist");
               <?=$Lr64_subpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r64_subpes",7,$Ir64_subpes,true,"text",4,"","chave_r64_subpes");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clreposic->rotulo->label("r64_regist");
               <?=$Lr64_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r64_regist",6,$Ir64_regist,true,"text",4,"","chave_r64_regist");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $clreposic->rotulo->label("r64_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_reposic.php")==true){
@@ -141,12 +141,12 @@ $clreposic->rotulo->label("r64_regist");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

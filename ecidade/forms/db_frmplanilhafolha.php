@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,12 +56,12 @@ $clrotulo->label("z01_nome");
 			      <b>Ano / Mês :</b>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			        $anofolha = db_anofolha();
 			        db_input('anofolha',4,$IDBtxt23,true,'text',2,"onChange='js_validaTipoPonto();'");
 			      ?>
 			      &nbsp;/&nbsp;
-			      <?
+			      <?php
 			        $mesfolha = db_mesfolha();
 			        db_input('mesfolha',2,$IDBtxt25,true,'text',2,"onChange='js_validaTipoPonto();'");
 			      ?>
@@ -72,7 +72,7 @@ $clrotulo->label("z01_nome");
 			      <b>Ponto:</b>
 			    </td>
 			    <td>
-			     <?
+			     <?php
 			     
 			       $aSigla = array( "r14"=>"Salário",
 					                    "r48"=>"Complementar",
@@ -98,12 +98,12 @@ $clrotulo->label("z01_nome");
         </tr>
         <tr>
           <td nowrap title="<?=@$Tz01_numcgm?>">
-            <?
+            <?php
             db_ancora("<b>Credor:</b>","js_pesquisaz01_numcgm(true);",1);
             ?>        
           </td>
           <td  colspan='3'> 
-            <?
+            <?php
              db_input('z01_numcgm',12,$Iz01_numcgm,true,'text',1," onchange='js_pesquisaz01_numcgm(false);' onkeyup='js_ValidaCampos(this,1,\"Credor\",\"\",\"\",event);'");
              db_input('z01_nome',30,$Iz01_nome,true,'text',3,'');
             ?>

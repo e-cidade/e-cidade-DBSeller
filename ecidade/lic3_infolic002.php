@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -39,12 +39,12 @@ $clrotulo->label("nome");
 $clrotulo->label("l03_descr");
 
 $result=$clliclicita->sql_record($clliclicita->sql_query($l20_codigo));
-if ($clliclicita->numrows==0){	
+if ($clliclicita->numrows==0){
 	db_redireciona('db_erros.php?fechar=true&db_erro=Este registro não possui licitação.');
 	exit;
 }else{
 	db_fieldsmemory($result,0);
-}    
+}
 ?>
 <html>
 <head>
@@ -83,8 +83,8 @@ if ($clliclicita->numrows==0){
           <td nowrap align="right" title="<?=@$Tl20_codigo?>">
             <?=@$Ll20_codigo?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
               db_input('l20_codigo',10,$Il20_codigo,true,'text',3)
             ?>
           </td>
@@ -92,30 +92,30 @@ if ($clliclicita->numrows==0){
             <?=$Ll20_edital?>
           </td>
           <td>
-            <?
+            <?php
               db_input("l20_edital",10,$Il20_numero,true,"text",3);
             ?>
             <?=$Ll20_anousu?>
-            <?
+            <?php
               db_input("l20_anousu",10,$Il20_anousu,true,"text",3);
             ?>
           </td>
-        </tr>            
+        </tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tl20_codtipocom?>">
             <b>Modalidade:</b>
-          </td>            
-          <td> 
-            <?
+          </td>
+          <td>
+            <?php
               db_input('l20_codtipocom',6,$Il20_codtipocom,true,'text',3);
               db_input('l03_descr',35,$Il03_descr,true,'text',3);
             ?>
-          </td>   
+          </td>
           <td nowrap align="right" title="<?=$Tl20_numero?>">
             <?=$Ll20_numero?>
           </td>
           <td>
-            <?
+            <?php
               db_input("l20_numero",10,$Il20_numero,true,"text",3);
             ?>
           </td>
@@ -124,8 +124,8 @@ if ($clliclicita->numrows==0){
           <td nowrap align="right" title="<?=@$Tl20_datacria?>">
             <b><?=@$Ll20_datacria?></b>
           </td>
-	        <td> 
-			      <?		
+	        <td>
+			      <?php
 		          $ano=substr(@$l20_datacria,0,4);
 		  	      $mes=substr(@$l20_datacria,5,2);
 			        $dia=substr(@$l20_datacria,8,2);
@@ -135,18 +135,18 @@ if ($clliclicita->numrows==0){
 	        <td nowrap align="right" title="<?=@$Tl20_horacria?>">
 	          <b><?=@$Ll20_horacria?></b>
 	        </td>
-	        <td> 
-		        <?		
-	            db_input('l20_horacria',5,$Il20_horacria,true,'text',3);	     
+	        <td>
+		        <?php
+	            db_input('l20_horacria',5,$Il20_horacria,true,'text',3);
 		        ?>
-	        </td>      
+	        </td>
 	      </tr>
 	      <tr>
 	       <td nowrap align="right" title="<?=@$Tl20_dataaber?>">
 	         <b><?=@$Ll20_dataaber?></b>
 	       </td>
-	        <td> 
-				    <?		
+	        <td>
+				    <?php
 			         $ano1=substr(@$l20_dataaber,0,4);
 					     $mes1=substr(@$l20_dataaber,5,2);
 					     $dia1=substr(@$l20_dataaber,8,2);
@@ -156,18 +156,18 @@ if ($clliclicita->numrows==0){
 	        <td nowrap align="right" title="<?=@$Tl20_horaaber?>">
 	          <b><?=@$Ll20_horaaber?></b>
 	        </td>
-	        <td> 
-	    	    <?		
-	            db_input('l20_horaaber',5,$Il20_horaaber,true,'text',3);	     
+	        <td>
+	    	    <?php
+	            db_input('l20_horaaber',5,$Il20_horaaber,true,'text',3);
 		        ?>
-	        </td>      
-	      </tr>    
+	        </td>
+	      </tr>
 	      <tr>
 	        <td nowrap align="right" title="<?=@$Tl20_dtpublic?>">
 	          <b><?=@$Ll20_dtpublic?></b>
 	        </td>
-	        <td> 
-				    <?
+	        <td>
+				    <?php
 			         $ano2=substr($l20_dtpublic,0,4);
 					     $mes2=substr($l20_dtpublic,5,2);
 					     $dia2=substr($l20_dtpublic,8,2);
@@ -176,9 +176,9 @@ if ($clliclicita->numrows==0){
 	        </td>
 	        <td nowrap align="right" title="<?=@$Tl20_id_usucria?>">
 	          <?=@$Ll20_id_usucria?>
-	        </td>          
-	        <td> 
-	          <?
+	        </td>
+	        <td>
+	          <?php
 	            db_input('l20_id_usucria',6,$Il20_id_usucria,true,'text',3);
 	            db_input('nome',45,$Inome,true,'text',3);
 	          ?>
@@ -189,57 +189,57 @@ if ($clliclicita->numrows==0){
 					  <b>Situação:</b>
 					</td>
 					<td>
-		       <?		
-	           db_input('l08_descr',15,'',true,'text',3);	     
+		       <?php
+	           db_input('l08_descr',15,'',true,'text',3);
 		       ?>
 		       </td>
 		       <td>
 		          <b>Data Situação:</b>
 		       </td>
 		       <td>
-		       <?
-		       $l11_data = ""; 
-		       
+		       <?php
+		       $l11_data = "";
+
 		       	$oDaoLicLicitacaoSituacao = db_utils::getDao("liclicitasituacao");
-		       	
+
 		       	$sWhere  = " l11_liclicita       = ".$l20_codigo;
 		       	$sWhere .= " and l11_licsituacao = ".$l08_sequencial;
-		       	
+
 		       	$sOrder  = " l11_sequencial desc limit 1 ";
-		       	
+
 		       	$sCampos = " l11_data ";
 
 		       	$sSql  = $oDaoLicLicitacaoSituacao->sql_query(null,$sCampos,$sOrder,$sWhere);
 		       	$rsSql = $oDaoLicLicitacaoSituacao->sql_record($sSql);
 		       	if ($oDaoLicLicitacaoSituacao->numrows > 0) {
 		       		$l11_data = db_formatar(db_utils::fieldsMemory($rsSql,0)->l11_data,'d');
-		       		 
+
 		          db_input('l11_data',10,'',true,'text',3);
 		       	}
-		       
+
 		       ?>
 					</td>
 				</tr>
-	      <tr> 
+	      <tr>
 	      	<td align='right' title="<?=@$Tl20_local?>">
 	      	  <b><?=@$Ll20_local?></b>
 		      </td>
 	        <td colspan='3' align='left'>
-					  <? 
+					  <?php
 				   	  db_textarea("l20_local","","85",$Il20_local,true,'text',3);
 					  ?>
 		      </td>
 	      </tr>
-		    <tr> 
+		    <tr>
 		      <td align='right' title="<?=@$Tl20_objeto?>">
 		        <b><?=@$Ll20_objeto?></b>
 		      </td>
 	        <td colspan='3' align='left'>
-					  <? 
+					  <?php
 					    db_textarea("l20_objeto","","85",$Il20_objeto,true,'text',3);
 					  ?>
-		      </td>        
-		    </tr>  
+		      </td>
+		    </tr>
 	      <tr>
 	        <td colspan='4' align='center'>
 		        <input name="voltar" type="button" value="Voltar" onclick="parent.db_iframe_infolic.hide();" >
@@ -250,16 +250,16 @@ if ($clliclicita->numrows==0){
   </tr>
   <tr>
     <td align='center' valign='top' colspan='1' align='center'>
-      <? if ( isset($l20_codigo) ) { ?>  
+      <?php if ( isset($l20_codigo) ) { ?>
       <table>
         <tr>
           <td>
-            <iframe name="itens" id="itens" src="forms/db_frminfolic.php?l20_codigo=<?=$l20_codigo?>" 
+            <iframe name="itens" id="itens" src="forms/db_frminfolic.php?l20_codigo=<?=$l20_codigo?>"
                     width="900" height="150" marginwidth="0" marginheight="0" frameborder="0"></iframe>
           </td>
-        </tr>     
+        </tr>
       </table>
-      <?}?>  
+      <?php }?>
     </td>
   </tr>
   <tr>
@@ -280,21 +280,21 @@ if ($clliclicita->numrows==0){
 <script>
 function js_mostra(tipo){
   if ( tipo == 'mn' ) {
-  
+
     var sUrl = 'lic3_infolicminuta002.php?l20_codigo='+document.form1.l20_codigo.value;
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mostra',sUrl,'Consulta Minutas da Licitação',true);
   } else if ( tipo == 'a' ) {
-  
+
     var sUrl = 'lic3_infolicata002.php?l20_codigo='+document.form1.l20_codigo.value;
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mostra',sUrl,'Consulta Atas da Licitação',true);
   } else if ( tipo == 'e' ) {
-  
+
     var sUrl = 'lic3_infolicanexo002.php?l20_codigo='+document.form1.l20_codigo.value;
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mostra',sUrl,'Consulta Editais da Licitação',true);    
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mostra',sUrl,'Consulta Editais da Licitação',true);
   } else {
-  
+
     var sUrl = 'lic3_infolic003.php?l20_codigo='+document.form1.l20_codigo.value+'&tipo='+tipo;
-		js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mostra',sUrl,'Consulta Licitação',true);	
+		js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mostra',sUrl,'Consulta Licitação',true);
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -94,7 +94,7 @@ class cl_iframe_seleciona
          $arquivo.=".php";
          umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php    '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -304,7 +304,7 @@ class cl_iframe_alterar_excluir_html_novo
         $arquivo.=".php";
         umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php    '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -523,7 +523,7 @@ class cl_iframe_alterar_excluir_html
         $arquivo.=".php";
         umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php    '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -707,7 +707,7 @@ class cl_iframe_alterar_excluir_html
 //|15|//[variavel] = new cl_criaabas;
 class cl_criaabas {
    var $identifica    = null;
-   var $abas_top      = "46";
+   var $abas_top      = "44";
    var $abas_left     = "0";
    var $src           = null;
    var $title         = null;
@@ -752,14 +752,14 @@ class cl_criaabas {
                 for(y=0; y < document.forms['formaba'].length; y++){
                   tab[x].style.border = '1px outset #cccccc';
                   tab[x].style.borderBottomColor = '#000000';
- <?
+ <?php
     reset($this->identifica);
  for($w=0; $w<sizeof($this->identifica); $w++){
        $chave=key($this->identifica);
  ?>
-              document.formaba.<?=$chave?>.style.color ='<?=(isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:"black")?>';
-              document.formaba.<?=$chave?>.style.fontWeight = 'normal';
-<?
+              document.formaba.<?php echo $chave?>.style.color ='<?php echo (isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:"black")?>';
+              document.formaba.<?php echo $chave?>.style.fontWeight = 'normal';
+<?php
      next($this->identifica);
    }
 ?>
@@ -795,7 +795,12 @@ class cl_criaabas {
              color: black;
              font-weight: bold;
           }
+          .input-abas::-moz-focus-inner {
+            border: 0;
+          }
           .input-abas {
+             outline : none;
+
              border:none;
              text-align: center;
              font-size: 11px;
@@ -831,7 +836,7 @@ class cl_criaabas {
         <td align="left" valign="top">
         <table border="0" cellpadding="0" cellspacing="0" marginwidth="0">
         <tr>
- <?
+ <?php
     reset($this->identifica);
     for($w=0; $w<sizeof($this->identifica); $w++){
        $chave     = key($this->identifica);
@@ -841,17 +846,19 @@ class cl_criaabas {
        $funcao_js = (isset($this->funcao_js[$chave])&&$this->funcao_js[$chave]!=""?$this->funcao_js[$chave]:'');
 
        $sizecampo = (isset($this->sizecampo[$chave])&&$this->sizecampo[$chave]!=""?$this->sizecampo[$chave]:'10');
-       $disabled  = (isset($this->disabled[$chave])&&$this->disabled[$chave]=="true"?'disabled':''); ?>
+       $disabled  = (isset($this->disabled[$chave])&&$this->disabled[$chave]=="true"?'disabled':'');
+       $title = isset($this->title[$chave]) ? $this->title[$chave] : '';
+?>
        <td>
-         <table class="bordas" id="<?=$chave?>" border="0" style="border: 3px outset #666666; border-bottom-width: 0px; border-right-width: 1px ;border-right-color: #000000; border-top-color: #3c3c3c; border-right-style: inset; " cellpadding="3" cellspacing="0" >
+         <table class="bordas" id="<?php echo $chave?>" border="0" style="border: 3px outset #666666; border-bottom-width: 0px; border-right-width: 1px ;border-right-color: #000000; border-top-color: #3c3c3c; border-right-style: inset; " cellpadding="3" cellspacing="0" >
            <tr>
              <td nowrap>
-               <input readonly <?=$disabled?> framename="iframe_<?=$chave?>" name="<?=$chave?>" class="input-abas"  style="font-weight:bold; color:<?=$cortexto?>; background-color:<?=$corfundo?>;" type="text"  value="<?=$this->identifica[$chave]?>" title="<?=$this->title[$chave]?>" size="<?=$sizecampo?>"  onClick="<?=$funcao_js?> mo_camada('<?=$chave?>'); ">
+               <input readonly <?php echo $disabled?> framename="iframe_<?php echo $chave?>" name="<?php echo $chave?>" class="input-abas"  style="font-weight:bold; color:<?php echo $cortexto?>; background-color:<?php echo $corfundo?>;" type="button"  value="<?php echo $this->identifica[$chave]?>" title="<?php echo $title?>" size="<?php echo $sizecampo?>"  onClick="<?php echo $funcao_js?> mo_camada('<?php echo $chave?>'); ">
              </td>
            </tr>
          </table>
        </td>
-<?     next($this->identifica);
+<?php next($this->identifica);
     } ?>
 
       </tr>
@@ -862,7 +869,7 @@ class cl_criaabas {
       <form name="form_iframes" method="post" id="form_iframes" >
       <tr>
         <td height="340" align="center">
- <?
+ <?php
     reset($this->identifica);
     for($w=0; $w<sizeof($this->identifica); $w++){
        $chave=key($this->identifica);
@@ -870,11 +877,11 @@ class cl_criaabas {
        if($src==""){
          /*echo "<script> document.formaba.$chave.disabled=true; </script>";*/
        } ?>
-       <div class="tabela" id="div_<?=$chave?>" style="position:absolute; left:<?=$this->abas_left?>px; top:<?=$this->abas_top?>px;  visibility: visible;">
-          <iframe  id='<?=$chave?>' name="iframe_<?=$chave?>" class="bordasi" <?=$src?> frameborder="0" marginwidth="0" leftmargin="0" topmargin="0"   height="<?=$this->iframe_height?>" scrolling="<?=$this->scrolling?>"  width="<?=$this->iframe_width?>" >
+       <div class="tabela" id="div_<?php echo $chave?>" style="position:absolute; left:<?php echo $this->abas_left?>px; top:<?php echo $this->abas_top?>px;  visibility: visible;">
+          <iframe  id='<?php echo $chave?>' name="iframe_<?php echo $chave?>" class="bordasi" <?php echo $src?> frameborder="0" marginwidth="0" leftmargin="0" topmargin="0"   height="<?php echo $this->iframe_height?>" scrolling="<?php echo $this->scrolling?>"  width="<?php echo $this->iframe_width?>" >
           </iframe>
        </div>
- <?    echo " <script>  mo_camada('$chave'); </script> ";
+ <?php echo " <script>  mo_camada('$chave'); </script> ";
        next($this->identifica);
     } ?>
     </div>
@@ -882,7 +889,7 @@ class cl_criaabas {
       </tr>
       </form>
       </table>
- <?
+ <?php
   reset($this->identifica);
   $chave=key($this->identifica);
   echo " <script> mo_camada('$chave'); </script> ";
@@ -959,11 +966,11 @@ class cl_iframe_alterar_excluir {
      $quais_chaves = "";
      reset($this->chavepri);
      $cerca = "";
-     $arquivo = tempnam ("tmp", "iframe");
+     $arquivo = tempnam ("/tmp", "iframe");
      $arquivo.=".php";
      umask(74);
      $fd = fopen($arquivo,"w") or die('Erro ao abrir!');
-     fputs($fd,' <?php  '."\n");
+     fputs($fd,' <?php    '."\n");
      fputs($fd,' $textocabec="'.$this->textocabec.'";'."\n");
      fputs($fd,' $textocorpo="'.$this->textocorpo.'";'."\n");
      fputs($fd,' $strFormatar="'.$this->strFormatar.'";'."\n");
@@ -1030,6 +1037,8 @@ class cl_iframe_alterar_excluir {
      }
 
 }
+
+
 
 
 class cl_arquivo_auxiliar {
@@ -1360,7 +1369,7 @@ class cl_db_estrut{
 
     $codigo = str_replace(".","",$codigo);
     $tamanho02   = strlen(str_replace(".","",$mascara));
-    $arr_mascara = split("\.",$mascara);
+    $arr_mascara = explode(".",$mascara);
     $tamanho =  count($arr_mascara);
 
     //rotina que salva em array onde inicia e qual o tamanho de cada nivel
@@ -1412,7 +1421,7 @@ class cl_db_estrut{
 
   function db_monta($codigo,$mascara,$nivel){
     $codigo = str_replace(".","",$codigo);
-    $arr_mascara = split("\.",$mascara);
+    $arr_mascara = explode(".",$mascara);
     $tamanho =  count($arr_mascara);
     $tamanho02   = strlen(str_replace(".","",$mascara));
 
@@ -1447,7 +1456,7 @@ class cl_db_estrut{
 
   function db_estrutformata($codigo,$mascara){
     $codigo = str_replace(".","",$codigo);
-    $arr_mascara = split("\.",$mascara);
+    $arr_mascara = explode(".",$mascara);
     $tamanho =  count($arr_mascara);
     $tamanho02   = strlen(str_replace(".","",$mascara));
 
@@ -1586,7 +1595,7 @@ class cl_db_estrut{
     $nome = $this->nome;
     $x = "L".$nome;
     $y = "T".$nome;
-    global $mascara,$db77_descr,$$nome,$$x,$$y;
+    global $mascara,$db77_descr,${$nome},${$x},${$y};
     $clrotulocampo = new rotulocampo;
     $clrotulocampo->label($nome);
     $result  = db_query("select db77_descr, db77_estrut as mascara from db_estrutura where db77_codestrut=$id");
@@ -1612,45 +1621,45 @@ class cl_db_estrut{
     if($this->mascara==true){
 ?>
   <tr>
-    <td nowrap title="Máscara do campo <?=@$db77_descr?>">
+    <td nowrap title="Máscara do campo <?php echo @$db77_descr?>">
       <b>Máscara:</b>
     </td>
     <td>
 
-     <input name="mascara" style="background-color:#DEB887" readonly size='<?=$this->size?>' type="text"  value="<?=$mascara?>"    >
+     <input name="mascara" style="background-color:#DEB887" readonly size='<?php echo $this->size?>' type="text"  value="<?php echo $mascara?>"    >
     </td>
   </tr>
-<?
+<?php
    }
    if($this->input==false){
 ?>
    <tr>
-    <td nowrap title="<?=$$y?>">
-      <b> <?=@$$x?></b>
+    <td nowrap title="<?php echo $$y?>">
+      <b> <?php echo @$$x?></b>
     </td>
-    <td title="<?=$this->nome?>">
-<?
+    <td title="<?php echo $this->nome?>">
+<?php
 
    }
 ?>
-      <input title="<?=@$$title?>" name="<?=$this->nome?>" value="<?=@$$nome?>" maxlength='<?=$tamanho?>' size='<?=$this->size?>' type="text"   onKeyPress="return js_mascara01_<?=$nome?>(event,this.value);"  <?=$funcao?> <?=($this->db_opcao==22||$this->db_opcao==33||$this->db_opcao==3?"readonly style=\"background-color:#DEB887\" ":"")?> >
-<?
+      <input title="<?php echo @$$title?>" name="<?php echo $this->nome?>" value="<?php echo @$$nome?>" maxlength='<?php echo $tamanho?>' size='<?php echo $this->size?>' type="text"   onKeyPress="return js_mascara01_<?php echo $nome?>(event,this.value);"  <?php echo $funcao?> <?php echo ($this->db_opcao==22||$this->db_opcao==33||$this->db_opcao==3?"readonly style=\"background-color:#DEB887\" ":"")?> >
+<?php
    if($this->input==false){
 ?>
     </td>
    </tr>
-<?
+<?php
     }
 ?>
     <script>
-    function js_mascara01_<?=$nome?>(evt,obj){
+    function js_mascara01_<?php echo $nome?>(evt,obj){
       var evt = (evt) ? evt : (window.event) ? window.event : "";
       if(evt.charCode >47 && evt.charCode <58 ){//8:backspace|46:delete|190:.
-  str='<?=$mascara?>';
+  str='<?php echo $mascara?>';
   tam=obj.length;
   dig=str.substr(tam,1);
   if(dig=="."){
-      document.<?=$this->nomeform?>.<?=$this->nome?>.
+      document.<?php echo $this->nomeform?>.<?php echo $this->nome?>.
       value = obj + '.';
   }
   return true;
@@ -1660,24 +1669,24 @@ class cl_db_estrut{
   return false;
       }
     }
-    function js_mascara02_<?=$nome?>(obj){
-        obj = document.<?=$this->nomeform?>.<?=$this->nome?>.
+    function js_mascara02_<?php echo $nome?>(obj){
+        obj = document.<?php echo $this->nomeform?>.<?php echo $this->nome?>.
         value;
        while(obj.search(/\./)!='-1'){
    obj=obj.replace(/\./,'');
        }
-<?
+<?php
    if($this->autocompletar==true){
 ?>
-     tam=<?=strlen(str_replace(".", "", $mascara))?>;
+     tam=<?php echo strlen(str_replace(".", "", $mascara))?>;
      for(i=obj.length; i<tam; i++){
        obj=obj+"0";
      }
-<?
+<?php
    }
 ?>
       //analise da estrutura passada
-       str='<?=$mascara?>';
+       str='<?php echo $mascara?>';
        nada='';
        matriz=str.split(nada);
        tam=matriz.length;
@@ -1699,39 +1708,39 @@ class cl_db_estrut{
      obj=ini+"."+fim;
    }
        }
-        document.<?=$this->nomeform?>.<?=$this->nome?>.
+        document.<?php echo $this->nomeform?>.<?php echo $this->nome?>.
         value = obj;
-<?
+<?php
     if($this->reload==true){
 ?>
       obj=document.createElement('input');
       obj.setAttribute('name','db_atualizar');
       obj.setAttribute('type','hidden');
       obj.setAttribute('value',"atualizar");
-      document.<?=$this->nomeform?>.appendChild(obj);
-      document.<?=$this->nomeform?>.submit();
-<?
+      document.<?php echo $this->nomeform?>.appendChild(obj);
+      document.<?php echo $this->nomeform?>.submit();
+<?php
     }
 ?>
     }
-    function js_mascara03_<?=$nome?>(obj){
-        obj = document.<?=$this->nomeform?>.<?=$this->nome?>.
+    function js_mascara03_<?php echo $nome?>(obj){
+        obj = document.<?php echo $this->nomeform?>.<?php echo $this->nome?>.
         value;
        while(obj.search(/\./)!='-1'){
    obj=obj.replace(/\./,'');
        }
-<?
+<?php
    if($this->autocompletar==true){
 ?>
-     tam=<?=strlen(str_replace(".", "", $mascara))?>;
+     tam=<?php echo strlen(str_replace(".", "", $mascara))?>;
      for(i=obj.length; i<tam; i++){
        obj=obj+"0";
      }
-<?
+<?php
    }
 ?>
       //analise da estrutura passada
-       str='<?=$mascara?>';
+       str='<?php echo $mascara?>';
        nada='';
        matriz=str.split(nada);
        tam=matriz.length;
@@ -1753,12 +1762,12 @@ class cl_db_estrut{
      obj=ini+"."+fim;
    }
        }
-        document.<?=$this->nomeform?>.<?=$this->nome?>.
+        document.<?php echo $this->nomeform?>.<?php echo $this->nome?>.
         value = obj;
     }
     </script>
 
-<?
+<?php
   }
 }
 
@@ -2052,58 +2061,52 @@ class cl_formulario_rel_pes {
   }
 
   function limpa_camp_selecionad($tabela){
-//    $campo = '$this->campo_auxilio_'.$tabela;
-//     if(isset($GLOBALS[eval($campo)])){
-//       $valor_variavel = eval($campo);
-//       global $$valor_variavel;
-//       $$valor_variavel = "";
-//    }
     if($tabela != "regi"){
       if(isset($GLOBALS[$this->campo_auxilio_regi])){
         $valor_variavel = $this->campo_auxilio_regi;
-        global $$valor_variavel;
+        global ${$valor_variavel};
         $$valor_variavel = "";
       }
     }
     if($tabela != "recu"){
       if(isset($GLOBALS[$this->campo_auxilio_recu])){
         $valor_variavel = $this->campo_auxilio_recu;
-        global $$valor_variavel;
+        global ${$valor_variavel};
         $$valor_variavel = "";
       }
     }
     if($tabela != "orga"){
       if(isset($GLOBALS[$this->campo_auxilio_orga])){
         $valor_variavel = $this->campo_auxilio_orga;
-        global $$valor_variavel;
+        global ${$valor_variavel};
         $$valor_variavel = "";
       }
     }
     if($tabela != "lota"){
       if(isset($GLOBALS[$this->campo_auxilio_lota])){
         $valor_variavel = $this->campo_auxilio_lota;
-        global $$valor_variavel;
+        global ${$valor_variavel};
         $$valor_variavel = "";
       }
     }
     if($tabela != "rubr"){
       if(isset($GLOBALS[$this->campo_auxilio_rubr])){
         $valor_variavel = $this->campo_auxilio_rubr;
-        global $$valor_variavel;
+        global ${$valor_variavel};
         $$valor_variavel = "";
       }
     }
     if($tabela != "loca"){
       if(isset($GLOBALS[$this->campo_auxilio_loca])){
         $valor_variavel = $this->campo_auxilio_loca;
-        global $$valor_variavel;
+        global ${$valor_variavel};
         $$valor_variavel = "";
       }
     }
     if($tabela != "carg"){
       if(isset($GLOBALS[$this->campo_auxilio_carg])){
         $valor_variavel = $this->campo_auxilio_carg;
-        global $$valor_variavel;
+        global ${$valor_variavel};
         $$valor_variavel = "";
       }
     }
@@ -2116,7 +2119,7 @@ class cl_formulario_rel_pes {
     $Incampo = "I".$ncampo;
     $Lncampo = "L".$ncampo;
     $Idcampo = "I".$dcampo;
-    global $$Tncampo, $$Incampo, $$Lncampo, $$Idcampo;
+    global ${$Tncampo}, ${$Incampo}, ${$Lncampo}, ${$Idcampo};
     echo "
           <tr>
             <td align='left' nowrap title='".$$Tncampo."' >
@@ -2139,7 +2142,7 @@ class cl_formulario_rel_pes {
     $Tncampo = "T".$ncampo;
     $Incampo = "I".$ncampo;
     $Lncampo = "L".$ncampo;
-    global $$Tncampo, $$Incampo, $$Lncampo;
+    global ${$Tncampo}, ${$Incampo}, ${$Lncampo};
     echo "
           <tr>
             <td align='left' nowrap title='".$campo4."' ><b>
@@ -2169,7 +2172,7 @@ class cl_formulario_rel_pes {
     $variavelfiltro = $this->tfinome;
     $$variavelresumo = isset($GLOBALS[$this->trenome])?$GLOBALS[$this->trenome]:$this->resumopadrao;
     $$variavelfiltro = isset($GLOBALS[$this->tfinome])?$GLOBALS[$this->tfinome]:$this->filtropadrao;
-    global $$variavelresumo, $$variavelfiltro;
+    global ${$variavelresumo}, ${$variavelfiltro};
     if(count($arraydados) >= 1){
       echo "
             <tr>
@@ -2325,7 +2328,7 @@ class cl_formulario_rel_pes {
         eval('global $S'.$campoano.',$S'.$campomes.';');
         eval('$S'.$campoano.' = "Ano";');
         eval('$S'.$campomes.' = "Mês";');
-        global $$campoano, $$campomes ;
+        global ${$campoano}, ${$campomes} ;
 
         $$campoano = $ano;
         $$campomes = $mes;
@@ -2530,7 +2533,7 @@ class cl_formulario_rel_pes {
         $this->monta_select_tdrtable($this->arr_tipores,$this->trenome,$this->tipresumo.":",$this->tipresumo,$this->onchres);
         $this->arr_tipofil = Array("0"=>"----------","i"=>"Intervalo","s"=>"Selecionados");
         $valortipres = $this->trenome;
-        global $$valortipres;
+        global ${$valortipres};
         if(trim($this->strngtipores) != "" && $$valortipres != "g"){
           if((isset($GLOBALS[$this->trenome]) && $GLOBALS[$this->trenome] != $this->valortipores) || trim($this->resumopadrao) != "g"){
             $this->monta_select_tdrtable($this->arr_tipofil,$this->tfinome,"Tipo de Filtro:","Tipo de Filtro",$this->onchres);

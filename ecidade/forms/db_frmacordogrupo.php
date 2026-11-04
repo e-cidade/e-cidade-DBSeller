@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,25 +48,25 @@ if($db_opcao==1){
        <b>Código do Acordo:</b>
     </td>
     <td colspan="3"> 
-			<?
+			<?php
 			  db_input('ac02_sequencial',15,$Iac02_sequencial,true,'text',3,"")
 			?>
     </td>
   </tr>
   <tr>
     <td title="<?=@$Tac02_acordonatureza?>">
-       <?
+       <?php
          db_ancora(@$Lac02_acordonatureza,"js_pesquisaac02_acordonatureza(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('ac02_acordonatureza',15,$Iac02_acordonatureza,true,'text',$db_opcao,
 			           " onchange='js_pesquisaac02_acordonatureza(false);'");
       ?>
     </td>
     <td colspan="2">
-      <?
+      <?php
         db_input('ac01_descricao',40,$Iac01_descricao,true,'text',3,"");
       ?>
     </td>
@@ -76,7 +76,7 @@ if($db_opcao==1){
        <?=@$Lac02_acordotipo;?>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
         $sSqlAcordoTipo  = $clacordotipo->sql_query(null,"*","ac04_sequencial","");
         $rsSqlAcordoTipo = $clacordotipo->sql_record($sSqlAcordoTipo);
         
@@ -97,7 +97,7 @@ if($db_opcao==1){
        <?=@$Lac02_descricao?>
     </td>
     <td colspan="3"> 
-			<?
+			<?php
 			  db_input('ac02_descricao',54,$Iac02_descricao,true,'text',$db_opcao);
 			?>
     </td>
@@ -107,7 +107,7 @@ if($db_opcao==1){
       <?=@$Lac02_datainicial?>
     </td>
     <td align="left">
-      <?
+      <?php
         db_inputdata('ac02_datainicial',@$ac02_datainicial_dia,@$ac02_datainicial_mes,@$ac02_datainicial_ano,true,
                      'text',$db_opcao,"");
       ?>
@@ -116,7 +116,7 @@ if($db_opcao==1){
       <?=@$Lac02_datafinal?>
     </td>
     <td align="right">
-      <?
+      <?php
         db_inputdata('ac02_datafinal',@$ac02_datafinal_dia,@$ac02_datafinal_mes,@$ac02_datafinal_ano,true,
                      'text',$db_opcao,"")
       ?>
@@ -129,7 +129,7 @@ if($db_opcao==1){
 	      <table>
 	        <tr>
 	          <td>
-				      <?
+				      <?php
 				        db_textarea('ac02_obs',10,70,$Iac02_obs,true,'text',$db_opcao,"")
 				      ?>
 	          </td>
@@ -263,7 +263,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_acordogrupo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

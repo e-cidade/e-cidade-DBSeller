@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_sysarquivo->rotulo->label("nomearq");
               <?=$Lcodarq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codarq",5,$Icodarq,true,"text",4,"","chave_codarq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_sysarquivo->rotulo->label("nomearq");
               <?=$Lnomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("nomearq",40,$Inomearq,true,"text",4,"","chave_nomearq");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_sysarquivo->rotulo->label("nomearq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "db_sysarquivo.*";
@@ -114,14 +114,14 @@ $cldb_sysarquivo->rotulo->label("nomearq");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_codarq.focus();
 document.form2.chave_codarq.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

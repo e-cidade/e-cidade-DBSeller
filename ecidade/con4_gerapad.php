@@ -63,7 +63,11 @@ if (isset($oGet->tipo) && $oGet->tipo == "mgs") {
    }
  }
  function js_seleciona(){
+
    doc = document.form1;
+   //iframe_processapad.mensagem.innerHTML = "Processando Arquivo(s)....";
+   //doc.processar.disabled = "disabled";
+   js_divCarregando('Aguarde, Gerando Arquivo(s)...', 'msgbox');
    var lista ='';
    for(x=0; x < doc.length; x++){
      if (doc[x].type =='checkbox'){
@@ -125,6 +129,8 @@ if (isset($oGet->tipo) && $oGet->tipo == "mgs") {
    }
    var tipoRaterio = document.getElementById('rateio_complemento').value;
    iframe_processapad.location.href='con4_processapad.php?processar=true&data_pro='+data_pro+'&data_ini='+data_ini+'&data_fim='+data_fim+'&lista='+lista+'&tipo_rateio='+tipoRaterio;
+
+
 
  }
 </script>

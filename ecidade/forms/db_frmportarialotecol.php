@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,7 +50,7 @@ $clrotulo->label("rh136_nome");
                         <b>Tipo de Portaria</b>
                     </td>
                     <td>
-                        <?
+                        <?php
                         $aTipoPortaria = array("l" => "Lote", "c" => "Coletiva");
                         db_select("selTipoPortaria", $aTipoPortaria, true, 1, "");
                         db_input('h31_sequencial', 10, $Ih31_sequencial, true, 'hidden', 3);
@@ -63,12 +63,12 @@ $clrotulo->label("rh136_nome");
                 </tr>
                 <tr>
                     <td nowrap title="<?= @$Th31_portariatipo ?>"><b>
-                            <?
+                            <?php
                             db_ancora("Tipo de Assentamento", "js_pesquisa_h31_portariatipo(true)", $db_opcao);
                             ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('h31_portariatipo', 10, $Ih31_portariatipo, true, 'text', $db_opcao,
                             "onchange='js_pesquisa_h31_portariatipo(false)';");
                         db_input("h12_descr", 40, @$Ih12_descr, true, "text", 3);
@@ -76,7 +76,7 @@ $clrotulo->label("rh136_nome");
                     </td>
                 </tr>
 
-                <?
+                <?php
                 if (!isset($h31_usuario) && trim(@$h31_usuario) == "") {
                     $h31_usuario = db_getsession('DB_id_usuario');
                 }
@@ -87,7 +87,7 @@ $clrotulo->label("rh136_nome");
                         <?= @$Lh31_numero ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('h31_numero', 10, $Ih31_numero, true, 'text', $db_opcao_numero, "")
                         ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -95,7 +95,7 @@ $clrotulo->label("rh136_nome");
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <?= @$Lh31_anousu ?>
 
-                        <?
+                        <?php
 
                         if (!isset($h31_anousu) && trim(@$h31_anousu) == "") {
                             $h31_anousu = db_getsession('DB_anousu');
@@ -111,14 +111,14 @@ $clrotulo->label("rh136_nome");
                         <?= @$Lh31_dtportaria ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_inputdata('h31_dtportaria', @$h31_dtportaria_dia, @$h31_dtportaria_mes, @$h31_dtportaria_ano,
                             true, 'text', $db_opcao, "");
                         ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <?= @$Lh31_dtinicio ?>
 
-                        <?
+                        <?php
                         db_inputdata('h31_dtinicio', @$h31_dtinicio_dia, @$h31_dtinicio_mes, @$h31_dtinicio_ano, true,
                             'text', $db_opcao, "");
                         ?>
@@ -132,7 +132,7 @@ $clrotulo->label("rh136_nome");
                         <?= @$Lh31_amparolegal ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_textarea('h31_amparolegal', 5, 51, $Ih31_amparolegal, true, 'text', $db_opcao, "")
                         ?>
                     </td>
@@ -170,7 +170,7 @@ $clrotulo->label("rh136_nome");
                 <b>Dados de Assentamento</b>
             </Legend>
             <table border="0">
-                <?
+                <?php
 
                 db_input('h16_assent', 6, $Ih16_assent, true, 'hidden', 3, "");
 
@@ -180,14 +180,14 @@ $clrotulo->label("rh136_nome");
                         <?= @$Lh16_dtconc ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_inputdata('h16_dtconc', @$h16_dtconc_dia, @$h16_dtconc_mes, @$h16_dtconc_ano, true, 'text',
                             $db_opcao, "onchange='js_somar_dias(document.form1.h16_quant.value, 0)'", "", "",
                             "parent.js_somar_dias(parent.document.form1.h16_quant.value, 0)")
                         ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b>Quantidade:</b>
-                        <?
+                        <?php
                         db_input('h16_quant', 10, $Ih16_quant, true, 'text', $db_opcao,
                             "onchange='js_somar_dias(this.value, 1);'", "quantidade")
                         ?>
@@ -198,7 +198,7 @@ $clrotulo->label("rh136_nome");
                         <?= @$Lh16_dtterm ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_inputdata('h16_dtterm', @$h16_dtterm_dia, @$h16_dtterm_mes, @$h16_dtterm_ano, true, 'text',
                             $db_opcao, "onchange='js_somar_dias(0, 3)'", "", "", "parent.js_somar_dias(0, 3)")
                         ?>
@@ -209,14 +209,14 @@ $clrotulo->label("rh136_nome");
                         <?= @$Lh16_quant ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('h16_quant', 10, $Ih16_quant, true, 'text', $db_opcao, "")
                         ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <?= @$Lh16_atofic ?>
-                        <?
+                        <?php
                         db_input('h16_atofic', 15, $Ih16_atofic, true, 'text', $db_opcao, "")
                         ?>
                     </td>
@@ -226,7 +226,7 @@ $clrotulo->label("rh136_nome");
                         <?= @$Lh16_histor ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_textarea('h16_histor', 5, 47, $Ih16_histor, true, 'text', $db_opcao, "");
                         db_input('listaFuncionarios', 40, "", true, 'hidden', 3, "");
                         ?>
@@ -357,7 +357,7 @@ $clrotulo->label("rh136_nome");
     function js_preenchepesquisa(chave) {
 
         db_iframe_portaria.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($_SERVER["REQUEST_URI"]) . "?chavepesquisa='+chave";
         }

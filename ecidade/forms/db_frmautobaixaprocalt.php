@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: issqn
@@ -40,18 +40,18 @@ $clrotulo->label("p58_requer");
 <center>
 <table border="0">
   <tr>
-    <td align="center"> 
+    <td align="center">
 <fieldset>
 <legend><b>Baixa de Auto Infração</b></legend>
 <table border="0">
-  <tr>   
+  <tr>
     <td title="<?=$Ty50_codauto?>" >
-    <?
+    <?php
      db_ancora($Ly50_codauto,' js_inscr(true); ',1);
     ?>
-    </td>    
+    </td>
     <td title="<?=$Ty50_codauto?>" colspan="4">
-    <?
+    <?php
      db_input('y50_codauto',5,$Iy50_codauto,true,'text',1,"onchange='js_inscr(false)'");
      db_input('z01_nome',50,0,true,'text',3);
 
@@ -68,20 +68,20 @@ $clrotulo->label("p58_requer");
       <td nowrap title="<?=@$Ty114_processo?>">
 	 <?=@$Ly114_processo?>
       </td>
-      <td colspan=3> 
-  <?
+      <td colspan=3>
+  <?php
   db_input('y114_processo',10,$Iy114_processo,true,'text',3," onchange='js_pesquisay114_processo(false);'")
   ?>
-  <?db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
-  
+  <?php db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
+
   ?>
       <td>
     </tr>
     <td nowrap title="<?=@$Tq07_databx?>" align='left'colspan=3 ><?=@$Lq07_databx?>
-    
-<?
+
+<?php
 if (isset($y87_dtbaixa)&&$y87_dtbaixa!=""){
-    $data=split('-',$y87_dtbaixa);
+    $data= explode('-',$y87_dtbaixa);
     $q07_databx_ano=$data[0];
     $q07_databx_mes=$data[1];
     $q07_databx_dia=$data[2];
@@ -91,23 +91,23 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
 ?>
     </td>
   </tr>
-    <?
+    <?php
      if (isset($y50_codauto)&&$y50_codauto!="" ){
        ?>
   <tr>
     <td colspan="3" align="center">
-       <input name="cancelabaixa" type="submit" onclick="js_gera_chaves();" id="db_opcao" value="Cancelar Baixa" 
+       <input name="cancelabaixa" type="submit" onclick="js_gera_chaves();" id="db_opcao" value="Cancelar Baixa"
               <?=($db_botao==false?"disabled":"")?> >
-    </td> 
+    </td>
   </tr>
 </table>
 </td>
 </tr>
 <tr>
-<td>  
-  <tr>   
-    <td align="center" colspan="2"> 
-    <?
+<td>
+  <tr>
+    <td align="center" colspan="2">
+    <?php
 	  $cliframe_seleciona->campos  = "y59_codigo,y59_codtipo,y29_descr,y29_descr_obs";
 	  $cliframe_seleciona->legenda="PROCEDÊNCIAS";
 	  $cliframe_seleciona->sql=$clautotipo->sql_query_baixa(null,"*",null,"y59_codauto=$y50_codauto and y87_dtbaixa is not null");
@@ -126,11 +126,11 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
   <tr>
     <td colspan="3" align="center">
        <input name="cancelabaixa" type="submit" id="db_opcao" value="Cancelar Baixa" disabled <?=($db_botao==false?"disabled":"")?> >
-    </td> 
+    </td>
   </tr>
 </table>
-<?}?>
-</fieldset>						      
+<?php }?>
+</fieldset>
     </td>
   </tr>
   </table>
@@ -145,7 +145,7 @@ function js_inscr(mostra){
       js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_inscr','func_autoalt.php?pesquisa_chave='+inscr+'&funcao_js=parent.js_mostrainscr1','Pesquisa',false);
     }else{
       document.form1.z01_nome.value="";
-      document.form1.submit();  
+      document.form1.submit();
     }
   }
 }
@@ -153,13 +153,13 @@ function js_mostrainscr(chave1,chave2){
   document.form1.y50_codauto.value = chave1;
   document.form1.z01_nome.value = chave2;
   db_iframe_inscr.hide();
-  document.form1.submit(); 
+  document.form1.submit();
 }
 function js_mostrainscr1(chave,erro){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.y50_codauto.focus(); 
-    document.form1.y50_codauto.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.y50_codauto.focus();
+    document.form1.y50_codauto.value = '';
   }else{
     document.form1.submit();
   }
@@ -168,18 +168,18 @@ function js_pesquisay114_processo(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_processo','func_protprocesso.php?funcao_js=parent.js_mostraprocesso1|p58_codproc|p58_requer','Pesquisa',true);
   }else{
-     if(document.form1.y114_processo.value != ''){ 
+     if(document.form1.y114_processo.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_processo','func_protprocesso.php?pesquisa_chave='+document.form1.y114_processo.value+'&funcao_js=parent.js_mostraprocesso','Pesquisa',false);
      }else{
-       document.form1.y114_processo.value = ''; 
+       document.form1.y114_processo.value = '';
      }
   }
 }
 function js_mostraprocesso(chave,chave1,erro){
-  document.form1.p58_requer.value = chave1; 
-  if(erro==true){ 
-    document.form1.y114_processo.focus(); 
-    document.form1.y114_processo.value = ''; 
+  document.form1.p58_requer.value = chave1;
+  if(erro==true){
+    document.form1.y114_processo.focus();
+    document.form1.y114_processo.value = '';
   }
 }
 function js_mostraprocesso1(chave1,chave2){

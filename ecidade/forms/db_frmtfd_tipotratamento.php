@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltfd_tipotratamento->rotulo->label();
       <?=@$Ltf04_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf04_i_codigo',10,$Itf04_i_codigo,true,'text',3,"")
       ?>
     </td>
@@ -46,7 +46,7 @@ $cltfd_tipotratamento->rotulo->label();
       <?=@$Ltf04_c_descr?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf04_c_descr',50,$Itf04_c_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -56,7 +56,7 @@ $cltfd_tipotratamento->rotulo->label();
       <?=@$Ltf04_c_abreviatura?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf04_c_abreviatura',3,$Itf04_c_abreviatura,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_tipotratamento.hide();
-  <?
+  <?php
   if($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

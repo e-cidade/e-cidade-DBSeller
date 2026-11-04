@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clorcparametro->rotulo->label();
           <tr>
             <td nowrap title="<?=@$To50_anousu?>"> <?=@$Lo50_anousu?> </td>
             <td>
-              <? 
+              <?php 
                  $o50_anousu = db_getsession('DB_anousu'); 
                  db_input('o50_anousu',6,$Io50_anousu,true,'text',$db_opcao,"") ;
                ?>
@@ -48,12 +48,12 @@ $clorcparametro->rotulo->label();
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_coddot?>"> <?=@$Lo50_coddot?> </td>
-            <td><? db_input('o50_coddot',6,$Io50_coddot,true,'text',$db_opcao,"") ?> </td>
+            <td><?php db_input('o50_coddot',6,$Io50_coddot,true,'text',$db_opcao,"") ?> </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_subelem?>"><?=@$Lo50_subelem?> </td>
             <td>
-             <?
+             <?php
                $x = array("f"=>"NAO","t"=>"SIM"); 
                db_select('o50_subelem',$x,true,$db_opcao,"style='width:65px'"); 
              ?>
@@ -61,25 +61,25 @@ $clorcparametro->rotulo->label();
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_programa?>"><?=@$Lo50_programa?></td>
-            <td><? db_input('o50_programa',6,$Io50_programa,true,'text',$db_opcao,"") ?></td>
+            <td><?php db_input('o50_programa',6,$Io50_programa,true,'text',$db_opcao,"") ?></td>
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_estrutdespesa?>"><?=@$Lo50_estrutdespesa?></td>
-            <td><? db_input('o50_estrutdespesa',50,$Io50_estrutdespesa,true,'text',$db_opcao,"") ?></td>
+            <td><?php db_input('o50_estrutdespesa',50,$Io50_estrutdespesa,true,'text',$db_opcao,"") ?></td>
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_estrutreceita?>"><?=@$Lo50_estrutreceita?></td>
-            <td><? db_input('o50_estrutreceita',50,$Io50_estrutreceita,true,'text',$db_opcao,"") ?></td>
+            <td><?php db_input('o50_estrutreceita',50,$Io50_estrutreceita,true,'text',$db_opcao,"") ?></td>
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_estrutelemento?>"><?=@$Lo50_estrutelemento?></td>
-            <td><? db_input('o50_estrutelemento',50,$Io50_estrutelemento,true,'text',$db_opcao,"") ?></td>
+            <td><?php db_input('o50_estrutelemento',50,$Io50_estrutelemento,true,'text',$db_opcao,"") ?></td>
           </tr>
         
           <tr>
             <td nowrap title="<?=@$To50_tipoproj?>"><?=@$Lo50_tipoproj?> </td>
             <td>
-              <? 
+              <?php 
                 $x = array("1"=>"1-Com Timbre","2"=>"2-Dotação Sintética","3"=>"3-Com Dot","4"=>"4-Sem Timbre"); 
                 db_select('o50_tipoproj',$x,true,$db_opcao,"style='width:200px'"); 
               ?>
@@ -87,13 +87,13 @@ $clorcparametro->rotulo->label();
           </tr>
          <tr>
             <td nowrap title="<?=@$To50_utilizapacto?>"><?=@$Lo50_utilizapacto?> </td>
-            <td><? $x = array("t"=>"Sim","f"=>"Não");
+            <td><?php $x = array("t"=>"Sim","f"=>"Não");
              db_select('o50_utilizapacto',$x,true,$db_opcao,"style='width:200px'"); ?></td>
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_liberadecimalppa?>">
               <?=@$Lo50_liberadecimalppa?> </td>
-            <td><? $x = array("t"=>"Sim","f"=>"Não");
+            <td><?php $x = array("t"=>"Sim","f"=>"Não");
              db_select('o50_liberadecimalppa',$x,true,$db_opcao,"style='width:200px'"); ?></td>
           </tr>
         </table>
@@ -106,10 +106,10 @@ $clorcparametro->rotulo->label();
     <table width="100%">
       <tr>
         <td title="<?=$To50_estruturacp;?>" width="120px">
-          <b><? db_ancora("Código Estrutura:", 'js_pesquisaEstruturaCP(true)', $db_opcao); ?></b>
+          <b><?php db_ancora("Código Estrutura:", 'js_pesquisaEstruturaCP(true)', $db_opcao); ?></b>
         </td>
         <td>
-          <?
+          <?php
             db_input("o50_estruturacp", 10, $Io50_estruturacp, true, "text", $db_opcao, "onchange='js_pesquisaEstruturaCP(false);'");
             db_input("db77_descr_1", 40, "", true, "text", 3);
           ?>
@@ -123,10 +123,10 @@ $clorcparametro->rotulo->label();
     <table width="100%">
       <tr>
         <td title="<?=$To50_estruturarecurso;?>" width="120px">
-          <b><? db_ancora("Código Estrutura:", 'js_pesquisaEstruturaRecurso(true)', $db_opcao); ?></b>
+          <b><?php db_ancora("Código Estrutura:", 'js_pesquisaEstruturaRecurso(true)', $db_opcao); ?></b>
         </td>
         <td>
-          <?
+          <?php
             db_input("o50_estruturarecurso", 10, $Io50_estruturarecurso, true, "text", $db_opcao, "onchange='js_pesquisaEstruturaRecurso(false);'");
             db_input("db77_descr_2", 40, "", true, "text", 3);
           ?>
@@ -244,7 +244,7 @@ $clorcparametro->rotulo->label();
   }
   function js_preenchepesquisa(chave){
     db_iframe_orcparametro.hide();
-    <?
+    <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_projetoscadgrupos->rotulo->label("at62_descr");
               <?=$Lat62_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at62_codigo",10,$Iat62_codigo,true,"text",4,"","chave_at62_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_projetoscadgrupos->rotulo->label("at62_descr");
               <?=$Lat62_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("chave_at62_descr",40,"",true,"text",4);
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_projetoscadgrupos->rotulo->label("at62_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_projetoscadgrupos.php")==true){
@@ -118,12 +118,12 @@ $cldb_projetoscadgrupos->rotulo->label("at62_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

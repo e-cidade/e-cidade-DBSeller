@@ -11,6 +11,9 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+/**
+ * @todo renomear o nome do canal para algo melhor
+ */
+Broadcast::channel('App.Domain.Configuracao.Usuario.Models.Usuario.{id}', function ($user, $id) {
+    return (int) $user->id_usuario === (int) $id;
 });

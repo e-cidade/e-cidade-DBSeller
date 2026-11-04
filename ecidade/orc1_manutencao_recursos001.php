@@ -34,6 +34,8 @@ require_once modification("dbforms/db_funcoes.php");
     <b>DB:FINANCEIRO > Orçamento > Cadastros > Tipos de Recursos > De Para Recursos 2021 - 2022</b><br>
     - A manutenção dos recursos nessa rotina, altera os dados do recurso <b>apenas para o exercício atual</b>. Portanto,
     certifique-se de estar no exercício correto.<br>
+    - O código do <b>Recurso</b> é o recurso Gestão, aquele utilizado para a Execução orçamentária de 2023 em diante.<br>
+    - O código do <b>Subrecurso</b> é o recurso antigo, aquele utilizado na execução Orçamentária de 2022 para trás.<br>
     - Para atualizar a descrição do recurso conforme o SICONFI clique em <kdb><i class="fas fa-sync "></i></kdb>.<br>
     - <b>Não é permitido alterar o complemento de uma fonte de recurso já existente, para complementos novos,
         deve-se criar um recurso novo.</b>
@@ -45,7 +47,7 @@ require_once modification("dbforms/db_funcoes.php");
             <table class="form-container">
                 <tr>
                     <td class="field-size3"><label for="codificacao">Codificação:</label></td>
-                    <td>
+                    <td colspan="3">
                         <select name="codificacao" id="codificacao">
                             <option value="1">1 - Recursos do Exercício Corrente</option>
                             <option value="2">2 - Recursos de Exercícios Anteriores</option>
@@ -55,7 +57,7 @@ require_once modification("dbforms/db_funcoes.php");
                 </tr>
                 <tr>
                     <td class="field-size3"><label for="classificacao">Classificação:</label></td>
-                    <td>
+                    <td colspan="3">
                         <select name="classificacao" id="classificacao">
                             <option value="">Selecione a classificação</option>
                         </select>
@@ -63,7 +65,7 @@ require_once modification("dbforms/db_funcoes.php");
                 </tr>
                 <tr>
                     <td><label for="recursoSiconfi">Recursos Siconfi:</label></td>
-                    <td>
+                    <td colspan="3">
                         <select name="recursoSiconfi" id="recursoSiconfi">
                             <option value="">Selecione o Recurso Siconfi</option>
                         </select>
@@ -74,10 +76,16 @@ require_once modification("dbforms/db_funcoes.php");
                     <td>
                         <input type="text" id="recursoGestao" name="recursoGestao" maxlength="5" class="field-size2">
                     </td>
+                    <td>
+                        <label for="subRecurso">Subrecurso:</label>
+                    </td>
+                    <td>
+                        <input type="text" id="subRecurso" name="subRecurso" maxlength="5" class="field-size2">
+                    </td>
                 </tr>
                 <tr>
                     <td><label for="descricao">Descrição:</label></td>
-                    <td>
+                    <td colspan="3">
                         <input name="descricao" id="descricao" >
                         <span id="atualizarNome">
                             <i class="fas fa-sync "></i>
@@ -86,7 +94,7 @@ require_once modification("dbforms/db_funcoes.php");
                 </tr>
                 <tr>
                     <td><label for="complemento">Complemento:</label></td>
-                    <td>
+                    <td colspan="3">
                         <select name="complemento" id="complemento">
                             <option value="">Selecione o complemento</option>
                         </select>
@@ -94,11 +102,11 @@ require_once modification("dbforms/db_funcoes.php");
                 </tr>
                 <tr>
                     <td><label for="tipoDetalhamento">Tipo de Detalhamento:</label></td>
-                    <td><select id="tipoDetalhamento"> </select></td>
+                    <td colspan="3"><select id="tipoDetalhamento"> </select></td>
                 </tr>
                 <tr>
                     <td><label for="tipoRecurso">Tipo do Recurso:</label></td>
-                    <td>
+                    <td colspan="3">
                         <select name="tipoRecurso" id="tipoRecurso">
                             <option value="1">Recurso Livre</option>
                             <option value="2" selected>Recurso Vinculado</option>
@@ -106,7 +114,7 @@ require_once modification("dbforms/db_funcoes.php");
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="4">
                         <fieldset class="separator">
                             <legend><label for="finalidade">Finalidade</label></legend>
                             <textarea rows="3" cols="50" id="finalidade" name="finalidade"></textarea>
@@ -142,6 +150,7 @@ require_once modification("dbforms/db_funcoes.php");
     const cboClassificacao = document.getElementById('classificacao');
     const cboRecurso = document.getElementById('recursoSiconfi');
     const recursoGestao = document.getElementById('recursoGestao');
+    const subRecurso = document.getElementById('subRecurso');
     const cboComplemento = document.getElementById('complemento');
     const cboTipoDetalhamento = document.getElementById('tipoDetalhamento');
     const descricao = document.getElementById('descricao');
@@ -338,6 +347,7 @@ require_once modification("dbforms/db_funcoes.php");
             cboTipoDetalhamento.value = recurso.fonte_recurso.tipo_detalhamento;
             finalidade.value = recurso.o15_finali;
             codigo.value = recurso.o15_codigo;
+            subRecurso.value = recurso.o15_recurso;
         });
     }
 

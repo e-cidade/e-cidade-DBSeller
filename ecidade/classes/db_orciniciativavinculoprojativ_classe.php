@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE orciniciativavinculoprojativ
-class cl_orciniciativavinculoprojativ { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o149_sequencial = 0; 
-   var $o149_iniciativa = 0; 
-   var $o149_projativ = 0; 
-   var $o149_anousu = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_orciniciativavinculoprojativ {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o149_sequencial = 0;
+   var $o149_iniciativa = 0;
+   var $o149_projativ = 0;
+   var $o149_anousu = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o149_sequencial = int4 = Sequencial 
-                 o149_iniciativa = int4 = Sequencial da Iniciativa 
-                 o149_projativ = int4 = Projeto Atividade 
-                 o149_anousu = int4 = Ano do Projeto/Atividade 
+                 o149_sequencial = int4 = Sequencial
+                 o149_iniciativa = int4 = Sequencial da Iniciativa
+                 o149_projativ = int4 = Projeto Atividade
+                 o149_anousu = int4 = Ano do Projeto/Atividade
                  ";
-   //funcao construtor da classe 
-   function cl_orciniciativavinculoprojativ() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("orciniciativavinculoprojativ"); 
+     $this->rotulo = new rotulo("orciniciativavinculoprojativ");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_orciniciativavinculoprojativ {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o149_sequencial = ($this->o149_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o149_sequencial"]:$this->o149_sequencial);
        $this->o149_iniciativa = ($this->o149_iniciativa == ""?@$GLOBALS["HTTP_POST_VARS"]["o149_iniciativa"]:$this->o149_iniciativa);
@@ -80,9 +80,9 @@ class cl_orciniciativavinculoprojativ {
      }
    }
    // funcao para inclusao
-   function incluir ($o149_sequencial){ 
+   public function incluir ($o149_sequencial){
       $this->atualizacampos();
-     if($this->o149_iniciativa == null ){ 
+     if($this->o149_iniciativa == null ){
        $this->erro_sql = " Campo Sequencial da Iniciativa nao Informado.";
        $this->erro_campo = "o149_iniciativa";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_orciniciativavinculoprojativ {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o149_projativ == null ){ 
+     if($this->o149_projativ == null ){
        $this->erro_sql = " Campo Projeto Atividade nao Informado.";
        $this->erro_campo = "o149_projativ";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_orciniciativavinculoprojativ {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o149_anousu == null ){ 
+     if($this->o149_anousu == null ){
        $this->erro_sql = " Campo Ano do Projeto/Atividade nao Informado.";
        $this->erro_campo = "o149_anousu";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_orciniciativavinculoprojativ {
        return false;
      }
      if($o149_sequencial == "" || $o149_sequencial == null ){
-       $result = db_query("select nextval('orciniciativavinculoprojativ_o149_sequencial_seq')"); 
+       $result = db_query("select nextval('orciniciativavinculoprojativ_o149_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: orciniciativavinculoprojativ_o149_sequencial_seq do campo: o149_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: orciniciativavinculoprojativ_o149_sequencial_seq do campo: o149_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o149_sequencial = pg_result($result,0,0); 
+       $this->o149_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from orciniciativavinculoprojativ_o149_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $o149_sequencial)){
@@ -130,10 +130,10 @@ class cl_orciniciativavinculoprojativ {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o149_sequencial = $o149_sequencial; 
+         $this->o149_sequencial = $o149_sequencial;
        }
      }
-     if(($this->o149_sequencial == null) || ($this->o149_sequencial == "") ){ 
+     if(($this->o149_sequencial == null) || ($this->o149_sequencial == "") ){
        $this->erro_sql = " Campo o149_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_orciniciativavinculoprojativ {
        return false;
      }
      $sql = "insert into orciniciativavinculoprojativ(
-                                       o149_sequencial 
-                                      ,o149_iniciativa 
-                                      ,o149_projativ 
-                                      ,o149_anousu 
+                                       o149_sequencial
+                                      ,o149_iniciativa
+                                      ,o149_projativ
+                                      ,o149_anousu
                        )
                 values (
-                                $this->o149_sequencial 
-                               ,$this->o149_iniciativa 
-                               ,$this->o149_projativ 
-                               ,$this->o149_anousu 
+                                $this->o149_sequencial
+                               ,$this->o149_iniciativa
+                               ,$this->o149_projativ
+                               ,$this->o149_anousu
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "orciniciativavinculoprojativ ($this->o149_sequencial) nao Incluído. Inclusao Abortada.";
@@ -194,16 +194,16 @@ class cl_orciniciativavinculoprojativ {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o149_sequencial=null) { 
+   public function alterar ($o149_sequencial=null) {
       $this->atualizacampos();
      $sql = " update orciniciativavinculoprojativ set ";
      $virgula = "";
-     if(trim($this->o149_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_sequencial"])){ 
+     if(trim($this->o149_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_sequencial"])){
        $sql  .= $virgula." o149_sequencial = $this->o149_sequencial ";
        $virgula = ",";
-       if(trim($this->o149_sequencial) == null ){ 
+       if(trim($this->o149_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o149_sequencial";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_orciniciativavinculoprojativ {
          return false;
        }
      }
-     if(trim($this->o149_iniciativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_iniciativa"])){ 
+     if(trim($this->o149_iniciativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_iniciativa"])){
        $sql  .= $virgula." o149_iniciativa = $this->o149_iniciativa ";
        $virgula = ",";
-       if(trim($this->o149_iniciativa) == null ){ 
+       if(trim($this->o149_iniciativa) == null ){
          $this->erro_sql = " Campo Sequencial da Iniciativa nao Informado.";
          $this->erro_campo = "o149_iniciativa";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_orciniciativavinculoprojativ {
          return false;
        }
      }
-     if(trim($this->o149_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_projativ"])){ 
+     if(trim($this->o149_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_projativ"])){
        $sql  .= $virgula." o149_projativ = $this->o149_projativ ";
        $virgula = ",";
-       if(trim($this->o149_projativ) == null ){ 
+       if(trim($this->o149_projativ) == null ){
          $this->erro_sql = " Campo Projeto Atividade nao Informado.";
          $this->erro_campo = "o149_projativ";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_orciniciativavinculoprojativ {
          return false;
        }
      }
-     if(trim($this->o149_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_anousu"])){ 
+     if(trim($this->o149_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_anousu"])){
        $sql  .= $virgula." o149_anousu = $this->o149_anousu ";
        $virgula = ",";
-       if(trim($this->o149_anousu) == null ){ 
+       if(trim($this->o149_anousu) == null ){
          $this->erro_sql = " Campo Ano do Projeto/Atividade nao Informado.";
          $this->erro_campo = "o149_anousu";
          $this->erro_banco = "";
@@ -280,7 +280,7 @@ class cl_orciniciativavinculoprojativ {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "orciniciativavinculoprojativ nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o149_sequencial;
@@ -308,11 +308,11 @@ class cl_orciniciativavinculoprojativ {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o149_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o149_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (isset($lSessaoDesativarAccount) && $lSessaoDesativarAccount === false) {
@@ -320,7 +320,7 @@ class cl_orciniciativavinculoprojativ {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($o149_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -352,7 +352,7 @@ class cl_orciniciativavinculoprojativ {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "orciniciativavinculoprojativ nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o149_sequencial;
@@ -380,11 +380,11 @@ class cl_orciniciativavinculoprojativ {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -406,11 +406,11 @@ class cl_orciniciativavinculoprojativ {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $o149_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $o149_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,15 +428,15 @@ class cl_orciniciativavinculoprojativ {
      $sql2 = "";
      if($dbwhere==""){
        if($o149_sequencial!=null ){
-         $sql2 .= " where orciniciativavinculoprojativ.o149_sequencial = $o149_sequencial "; 
-       } 
+         $sql2 .= " where orciniciativavinculoprojativ.o149_sequencial = $o149_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,11 +445,11 @@ class cl_orciniciativavinculoprojativ {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $o149_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $o149_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,15 +462,15 @@ class cl_orciniciativavinculoprojativ {
      $sql2 = "";
      if($dbwhere==""){
        if($o149_sequencial!=null ){
-         $sql2 .= " where orciniciativavinculoprojativ.o149_sequencial = $o149_sequencial "; 
-       } 
+         $sql2 .= " where orciniciativavinculoprojativ.o149_sequencial = $o149_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

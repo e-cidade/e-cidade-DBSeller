@@ -62,11 +62,13 @@ class VisualizadorDocumentosService
                     $imagens[] = (object)[
                         "id" => $fileId,
                         "download" => $path,
-                        "original" => $image,
-                        "thumbnail" => $image,
+                        "original" => $image['path'],
+                        "thumbnail" => $image['path'],
                         "descricao" => utf8_decode($description),
+                        "key" => $image['pageNumber']
                     ];
                 }
+
                 continue;
             }
 

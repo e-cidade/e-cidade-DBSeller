@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ if(isset($db_opcaoal)){
        <?=@$Ltr08_id?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_id',5,$Itr08_id,true,'text',3,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ db_input('tr08_id',5,$Itr08_id,true,'text',3,"")
        <?=@$Ltr08_idacidente?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_idacidente',5,$Itr08_idacidente,true,'text',3,"")
 ?>
     </td>
@@ -78,30 +78,30 @@ db_input('tr08_idacidente',5,$Itr08_idacidente,true,'text',3,"")
   
   <tr>
     <td nowrap title="<?=@$Ttr08_idveiculo?>">
-       <?
+       <?php
        db_ancora(@$Ltr08_idveiculo,"js_pesquisatr08_idveiculo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_idveiculo',5,$Itr08_idveiculo,true,'text',$db_opcao," onchange='js_pesquisatr08_idveiculo(false);'")
 ?>
-       <?
+       <?php
 db_input('tr05_descr',35,$Itr05_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttr08_municipio?>">
-       <?
+       <?php
        db_ancora(@$Ltr08_municipio,"js_pesquisatr08_municipio(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_municipio',5,$Itr08_municipio,true,'text',$db_opcao," onchange='js_pesquisatr08_municipio(false);'")
 ?>
-       <?
+       <?php
 db_input('db10_munic',60,$Idb10_munic,true,'text',3,'')
        ?>
     </td>
@@ -111,7 +111,7 @@ db_input('db10_munic',60,$Idb10_munic,true,'text',3,'')
        <?=@$Ltr08_placa?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_placa',7,$Itr08_placa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -121,7 +121,7 @@ db_input('tr08_placa',7,$Itr08_placa,true,'text',$db_opcao,"")
        <?=@$Ltr08_condnome?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_condnome',50,$Itr08_condnome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -131,22 +131,22 @@ db_input('tr08_condnome',50,$Itr08_condnome,true,'text',$db_opcao,"")
        <?=@$Ltr08_idade?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_idade',0,$Itr08_idade,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttr08_idhabilitacao?>">
-       <?
+       <?php
        db_ancora(@$Ltr08_idhabilitacao,"js_pesquisatr08_idhabilitacao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('tr08_idhabilitacao',5,$Itr08_idhabilitacao,true,'text',$db_opcao," onchange='js_pesquisatr08_idhabilitacao(false);'")
 ?>
-       <?
+       <?php
 db_input('tr09_tipo',3,$Itr09_tipo,true,'text',3,'')
        ?>
     </td>
@@ -156,7 +156,7 @@ db_input('tr09_tipo',3,$Itr09_tipo,true,'text',3,'')
        <?=@$Ltr08_sexo?>
     </td>
     <td>
-<?
+<?php
 $x = array('Feminino'=>'Feminino','Masculino'=>'Masculino','NI'=>'NI');
 db_select('tr08_sexo',$x,true,$db_opcao,"");
 ?>
@@ -172,7 +172,7 @@ db_select('tr08_sexo',$x,true,$db_opcao,"");
   <table>
   <tr>
     <td valign="top"  align="center">
-       <? 
+       <?php 
          $chavepri= array("tr08_id"=>@$tr08_id);
          $cliframe_alterar_excluir->chavepri=$chavepri;
          $cliframe_alterar_excluir->sql     = $clveiculos_env->sql_query(null,"*","tr08_id","tr08_idacidente = $tr08_idacidente");
@@ -281,7 +281,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veiculos_env.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

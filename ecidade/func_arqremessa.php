@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -72,8 +72,8 @@ $oPost = db_utils::postMemory($_POST);
   db_app::load("estilos.css");
   db_app::load("classes/dbViewAvaliacoes.classe.js");
   db_app::load("widgets/windowAux.widget.js");
-  db_app::load("widgets/dbmessageBoard.widget.js");  
-  db_app::load("dbcomboBox.widget.js"); 
+  db_app::load("widgets/dbmessageBoard.widget.js");
+  db_app::load("dbcomboBox.widget.js");
 ?>
 
 <html>
@@ -88,8 +88,8 @@ $oPost = db_utils::postMemory($_POST);
 
   .link_botao {
     cursor: pointer;
-  }  
-    
+  }
+
 </style>
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" onload="js_gridNaoProcessados();"  >
 
@@ -104,7 +104,7 @@ $oPost = db_utils::postMemory($_POST);
             <b>Sequencial</b>
           </td>
           <td align="left">
-            <?
+            <?php
               db_input("v83_sequencial",  4, $Iv83_sequencial, true, "text", 1, "");
             ?>
           </td>
@@ -115,7 +115,7 @@ $oPost = db_utils::postMemory($_POST);
             <b>Nome do Arquivo</b>
           </td>
           <td align="left">
-            <?
+            <?php
               db_input("v83_nomearq",  47, $Iv83_nomearq, true, "text", 1, "");
             ?>
           </td>
@@ -123,10 +123,10 @@ $oPost = db_utils::postMemory($_POST);
 
         <tr>
           <td align="right" nowrap title="<?=@$Tk60_codigo?>" >
-            <b><?db_ancora("Lista", "js_pesquisalista(true);", 4);?></b>
+            <b><?php db_ancora("Lista", "js_pesquisalista(true);", 4);?></b>
           </td>
           <td align="left">
-            <?
+            <?php
               db_input("k60_codigo",  4, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisalista(false);'");
               db_input("k60_descr",  40, $Ik60_descr,  true, "text", 3, "");
             ?>
@@ -138,22 +138,22 @@ $oPost = db_utils::postMemory($_POST);
             <input type="button" id="limpar"     value="Limpar"    onclick="js_limpar();" >
             <input type="button" id="fechar"     value="Fechar"    onclick="js_fechar();" >
           </td>
-        </tr>  
+        </tr>
       </table>
       <div id='ctnGridNaoProcessados'>
 
-      </div>      
-      
-    </fieldset> 
+      </div>
+
+    </fieldset>
   </form>
 </center>
-<? 
+<?php
 //db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 
-<script><!--
+<script>
 var sUrlRPC = "jur4_certidarqremessa.RPC.php";
 
 
@@ -164,7 +164,7 @@ function preencheNaoProcessados(iSequencial, sNome, dDataArquivo){
   parent.$('v83_nomearq').value   = sNome;
   parent.$('v83_nomearq').value   = sNome;
   parent.$('v84_dtarquivo').value = dDataArquivo;
-  
+
   (window.CurrentWindow || parent.CurrentWindow).corpo.db_iframe_arqremessa.hide();
 }
 
@@ -191,7 +191,7 @@ function js_gridNaoProcessados() {
   oGridNaoProcessados.setHeight(300);
   oGridNaoProcessados.show($('ctnGridNaoProcessados'));
   oGridNaoProcessados.clearAll(true);
-  
+
 }
 
 
@@ -200,49 +200,49 @@ function js_pesquisanaoprocessado() {
   var iSequencial          = $F('v83_sequencial');
   var sNomeAqruivo         = $F('v83_nomearq');
   var iLista               = $F('k60_codigo');
-  
+
   var oParametros          = new Object();
   var msgDiv               = _M('tributario.juridico.func_arqremessa.pesquisando_registros');
-  oParametros.exec         = 'naoprocessados'; 
-   
-  oParametros.iCodLista    = iLista;     
+  oParametros.exec         = 'naoprocessados';
+
+  oParametros.iCodLista    = iLista;
   oParametros.iSequencial  = iSequencial;
   oParametros.sNomeAqruivo = sNomeAqruivo;
-  
+
   js_divCarregando(msgDiv,'msgBox');
-   
+
    var oAjaxLista  = new Ajax.Request(sUrlRPC,
                                              {method: "post",
                                               parameters:'json='+Object.toJSON(oParametros),
                                               onComplete: js_retornoNaoProcessados
-                                             });   
-  
+                                             });
+
 }
 
 function js_retornoNaoProcessados(oAjax){
     js_removeObj('msgBox');
     var oRetorno = JSON.parse(oAjax.responseText);
-    
+
       if ( oRetorno.dados.length == 0 ) {
-      
+
         alert(_M('tributario.juridico.func_arqremessa.nenhum_arquivo_encontrado'));
         oGridNaoProcessados.clearAll(true);
         return false;
-      } 
-      oGridNaoProcessados.clearAll(true); 
-      oRetorno.dados.each( 
-                    function (oDado, iInd) {       
+      }
+      oGridNaoProcessados.clearAll(true);
+      oRetorno.dados.each(
+                    function (oDado, iInd) {
 
-                        var aRow    = new Array();  
+                        var aRow    = new Array();
                             aRow[0] = oDado.v83_sequencial;
                         var sNome   = oDado.v83_nomearq.urlDecode();
-                            aRow[1] = "<span class='link_botao' onclick='preencheNaoProcessados("+aRow[0]+",\" "+sNome+" \", \" "+oDado.v83_dtgeracao+" \");' >"+oDado.v83_nomearq.urlDecode()+"</span>";                             
+                            aRow[1] = "<span class='link_botao' onclick='preencheNaoProcessados("+aRow[0]+",\" "+sNome+" \", \" "+oDado.v83_dtgeracao+" \");' >"+oDado.v83_nomearq.urlDecode()+"</span>";
                             aRow[2] = oDado.v83_dtgeracao;
                             oGridNaoProcessados.addRow(aRow);
                        });
-      oGridNaoProcessados.renderRows(); 
-          
-}    
+      oGridNaoProcessados.renderRows();
+
+}
 
 
 
@@ -288,7 +288,7 @@ function js_fechar() {
 
 }
 
---></script>
+</script>
 <script>
 
 $("v83_sequencial").addClassName("field-size2");

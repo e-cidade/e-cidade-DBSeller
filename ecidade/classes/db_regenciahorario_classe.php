@@ -71,7 +71,6 @@ class cl_regenciahorario
             $this->ed58_i_diasemana = ($this->ed58_i_diasemana == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed58_i_diasemana"] : $this->ed58_i_diasemana);
             $this->ed58_i_periodo = ($this->ed58_i_periodo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed58_i_periodo"] : $this->ed58_i_periodo);
             $this->ed58_i_rechumano = ($this->ed58_i_rechumano == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed58_i_rechumano"] : $this->ed58_i_rechumano);
-            $this->ed58_ativo = ($this->ed58_ativo == "f" ? @$GLOBALS["HTTP_POST_VARS"]["ed58_ativo"] : $this->ed58_ativo);
             $this->ed58_tipovinculo = ($this->ed58_tipovinculo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed58_tipovinculo"] : $this->ed58_tipovinculo);
             if ($this->ed58_datainicio == "") {
                 $this->ed58_datainicio_dia = ($this->ed58_datainicio_dia == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed58_datainicio_dia"] : $this->ed58_datainicio_dia);
@@ -328,7 +327,9 @@ class cl_regenciahorario
                 return false;
             }
         }
+
         if (trim($this->ed58_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed58_ativo"])) {
+
             $sql .= $virgula . " ed58_ativo = '$this->ed58_ativo' ";
             $virgula = ",";
             if (trim($this->ed58_ativo) == null) {
@@ -341,6 +342,7 @@ class cl_regenciahorario
                 return false;
             }
         }
+
         if (trim($this->ed58_tipovinculo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed58_tipovinculo"])) {
             $sql .= $virgula . " ed58_tipovinculo = $this->ed58_tipovinculo ";
             $virgula = ",";
@@ -547,6 +549,27 @@ class cl_regenciahorario
         return $result;
     }
 
+    public function sql_query_grade_horario_professor($campos = "*", $dbwhere = "", $ordem = null)
+    {
+        $sql = "SELECT {$campos}";
+        $sql .= " FROM regenciahorario ";
+        $sql .= " INNER JOIN regencia ON regencia.ed59_i_codigo = regenciahorario.ed58_i_regencia";
+        $sql .= " INNER JOIN disciplina ON disciplina.ed12_i_codigo = regencia.ed59_i_disciplina";
+        $sql .= " INNER JOIN caddisciplina ON caddisciplina.ed232_i_codigo = disciplina.ed12_i_caddisciplina";
+        $sql .= " INNER JOIN turma ON turma.ed57_i_codigo = regencia.ed59_i_turma";
+        $sql .= " INNER JOIN escola ON escola.ed18_i_codigo = turma.ed57_i_escola";
+        $sql .= " INNER JOIN calendario ON calendario.ed52_i_codigo = turma.ed57_i_calendario";
+        $sql .= " INNER JOIN diasemana ON diasemana.ed32_i_codigo = regenciahorario.ed58_i_diasemana";
+        $sql .= " INNER JOIN dialetivo ON dialetivo.ed04_i_diasemana = diasemana.ed32_i_codigo AND ed04_i_escola = ed57_i_escola";
+        $sql .= " INNER JOIN periodoescola ON periodoescola.ed17_i_codigo = regenciahorario.ed58_i_periodo";
+        $sql .= " INNER JOIN periodoaula ON periodoaula.ed08_i_codigo = periodoescola.ed17_i_periodoaula";
+        $sql .= " INNER JOIN turno ON turno.ed15_i_codigo = periodoescola.ed17_i_turno";
+        $sql .= " WHERE {$dbwhere}";
+        $sql .= " ORDER BY {$ordem}";
+
+        return $sql;
+    }
+
     public function sql_query($ed58_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
@@ -570,6 +593,7 @@ class cl_regenciahorario
         $sql .= "      left join cgm as cgmrh on  cgmrh.z01_numcgm = rhpessoal.rh01_numcgm";
         $sql .= "      left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo";
         $sql .= "      left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm";
+        $sql .= "      left join cgmfisico on cgmfisico.z04_numcgm = rhpessoal.rh01_numcgm";
         $sql2 = "";
         if (empty($dbwhere)) {
             if (!empty($ed58_i_codigo)) {
@@ -1430,6 +1454,7 @@ class cl_regenciahorario
         $sql .= "       ) as regenciasemaula                                                                        ";
         $sql .= " inner join regencia      on regencia.ed59_i_codigo          = regenciasemaula.regencia            ";
         $sql .= " inner join turma         on turma.ed57_i_codigo             = regencia.ed59_i_turma ";
+        $sql .= " INNER JOIN calendario ON turma.ed57_i_calendario = calendario.ed52_i_codigo ";
         $sql .= " inner join disciplina    on disciplina.ed12_i_codigo        = regencia.ed59_i_disciplina          ";
         $sql .= " inner join caddisciplina on caddisciplina.ed232_i_codigo    = disciplina.ed12_i_caddisciplina     ";
 
@@ -1945,5 +1970,32 @@ class cl_regenciahorario
         }
 
         return $sql3 .= $sqlUnion3;
+    }
+
+    public function sql_query_regenciahorario_periodo_aula($pk = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "
+            SELECT
+                {$campos}
+            FROM
+                regenciahorario
+            INNER JOIN periodoescola ON periodoescola.ed17_i_codigo = regenciahorario.ed58_i_periodo
+            INNER JOIN periodoaula ON periodoaula.ed08_i_codigo = periodoescola.ed17_i_periodoaula
+        ";
+
+        if (empty($dbwhere)) {
+            if (!is_null($pk)) {
+                $pk = is_array($pk) ? implode(',', $pk) : $pk;
+                $sql .= " where ed58_i_codigo in($pk)";
+            }
+        } else {
+            $sql .= " where {$dbwhere}";
+        }
+
+        if (!is_null($ordem)) {
+            $sql .= " order by {$ordem}";
+        }
+
+        return $sql;
     }
 }

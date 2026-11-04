@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Merenda
@@ -38,42 +38,42 @@ $clrotulo->label("me21_i_codigo");
     <td nowrap title="<?=@$Tme38_i_codigo?>">
        <?=@$Lme38_i_codigo?>
     </td>
-    <td> 
-     <?db_input('me38_i_codigo',10,$Ime38_i_codigo,true,'text',3,"")?>
+    <td>
+     <?php db_input('me38_i_codigo',10,$Ime38_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme38_i_cardapioescola?>">
-     <?db_ancora(@$Lme38_i_cardapioescola,"js_pesquisame38_i_cardapioescola(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme38_i_cardapioescola,"js_pesquisame38_i_cardapioescola(true);",$db_opcao);?>
     </td>
-    <td> 
-     <?db_input('me38_i_cardapioescola',10,$Ime38_i_cardapioescola,true,'text',$db_opcao,
+    <td>
+     <?php db_input('me38_i_cardapioescola',10,$Ime38_i_cardapioescola,true,'text',$db_opcao,
                 " onchange='js_pesquisame38_i_cardapioescola(false);'"
                )
      ?>
-     <?db_input('me32_i_codigo',10,$Ime32_i_codigo,true,'text',3,'')?>
+     <?php db_input('me32_i_codigo',10,$Ime32_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme38_i_cardapiotipo?>">
-       <?
+       <?php
        db_ancora(@$Lme38_i_cardapiotipo,"js_pesquisame38_i_cardapiotipo(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-     <?db_input('me38_i_cardapiotipo',10,$Ime38_i_cardapiotipo,true,'text',$db_opcao,
+    <td>
+     <?php db_input('me38_i_cardapiotipo',10,$Ime38_i_cardapiotipo,true,'text',$db_opcao,
                 " onchange='js_pesquisame38_i_cardapiotipo(false);'"
                )
      ?>
-     <?db_input('me21_i_codigo',4,$Ime21_i_codigo,true,'text',3,'')?>
+     <?php db_input('me21_i_codigo',4,$Ime21_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme38_i_ordem?>">
        <?=@$Lme38_i_ordem?>
     </td>
-    <td> 
-     <?db_input('me38_i_ordem',10,$Ime38_i_ordem,true,'text',$db_opcao,"")?>
+    <td>
+     <?php db_input('me38_i_ordem',10,$Ime38_i_ordem,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -96,7 +96,7 @@ function js_pesquisame38_i_cardapioescola(mostra) {
 
   } else {
 
-     if (document.form1.me38_i_cardapioescola.value != '') { 
+     if (document.form1.me38_i_cardapioescola.value != '') {
 
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mer_cardapioescola',
                              'func_mer_cardapioescola.php?pesquisa_chave='+document.form1.me38_i_cardapioescola.value+
@@ -104,18 +104,18 @@ function js_pesquisame38_i_cardapioescola(mostra) {
                              'Pesquisa',false
                            )
      } else {
-       document.form1.me32_i_codigo.value = ''; 
+       document.form1.me32_i_codigo.value = '';
      }
   }
 }
 
 function js_mostramer_cardapioescola(chave,erro) {
 
-  document.form1.me32_i_codigo.value = chave; 
-  if (erro == true) { 
+  document.form1.me32_i_codigo.value = chave;
+  if (erro == true) {
 
-    document.form1.me38_i_cardapioescola.focus(); 
-    document.form1.me38_i_cardapioescola.value = ''; 
+    document.form1.me38_i_cardapioescola.focus();
+    document.form1.me38_i_cardapioescola.value = '';
 
   }
 
@@ -140,7 +140,7 @@ function js_pesquisame38_i_cardapiotipo(mostra) {
 
   } else {
 
-     if (document.form1.me38_i_cardapiotipo.value != '') { 
+     if (document.form1.me38_i_cardapiotipo.value != '') {
 
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_mer_cardapiotipo',
                              'func_mer_cardapiotipo.php?pesquisa_chave='+document.form1.me38_i_cardapiotipo.value+
@@ -148,18 +148,18 @@ function js_pesquisame38_i_cardapiotipo(mostra) {
                              'Pesquisa',false
                            )
      } else {
-       document.form1.me21_i_codigo.value = ''; 
+       document.form1.me21_i_codigo.value = '';
      }
   }
 }
 
 function js_mostramer_cardapiotipo(chave,erro) {
 
-  document.form1.me21_i_codigo.value = chave; 
-  if (erro == true) { 
+  document.form1.me21_i_codigo.value = chave;
+  if (erro == true) {
 
-    document.form1.me38_i_cardapiotipo.focus(); 
-    document.form1.me38_i_cardapiotipo.value = ''; 
+    document.form1.me38_i_cardapiotipo.focus();
+    document.form1.me38_i_cardapiotipo.value = '';
 
   }
 
@@ -183,7 +183,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_mer_consumoescola.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";

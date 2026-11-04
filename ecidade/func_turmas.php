@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clturmas->rotulo->label("ed05_c_nome");
               <?=$Led05_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed05_i_codigo",5,$Ied05_i_codigo,true,"text",4,"","chave_ed05_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $clturmas->rotulo->label("ed05_c_nome");
               <?=$Led05_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed05_c_nome",40,$Ied05_c_nome,true,"text",4,"","chave_ed05_c_nome");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $clturmas->rotulo->label("ed05_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_turmas.php")==true){
@@ -120,12 +120,12 @@ $clturmas->rotulo->label("ed05_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

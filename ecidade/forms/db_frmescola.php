@@ -30,6 +30,11 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("descrdepto");
 $clrotulo->label("j14_nome");
 $clrotulo->label("j13_descr");
+
+$visibilidadeCamposTransescolar = "display: none";
+if ($habilitarCamposTransescolar == 'S') {
+    $visibilidadeCamposTransescolar = "display: inline";
+}
 ?>
 <div class="container">
   <form name="form1" method="post" action="" enctype="multipart/form-data">
@@ -45,32 +50,40 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                    
-
                     $x = array( '1' => 'Unidade escolar', '2' => 'Interno' );
-                    db_select( 'ed18_i_tipoescola', $x, true, @$db_opcao_tipoescola );
-                  ?>
+                    db_select('ed18_i_tipoescola', $x, true, @$db_opcao_tipoescola);
+                    ?>
+                  <div id="container_campos_transescolar" style="<?=$visibilidadeCamposTransescolar?>">
+                    <label class="bold" for="ed18_v_codigo_energia">ID Energia Elétrica:</label>
+                    <?php
+                      db_input('ed18_v_codigo_energia', 20, $Ied18_v_codigo_energia, true, 'text', $db_opcao);
+                    ?>
+                    <label class="bold" for="ed18_v_sigla_concessionaria">Sigla Concessionária:</label>
+                    <?php
+                      db_input('ed18_v_sigla_concessionaria', 10, $Ied18_v_sigla_concessionaria, true, 'text', $db_opcao);
+                    ?>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted18_i_codigo?>">
                   <?php
-                  db_ancora( @$Led18_i_codigo, "js_pesquisaed18_i_codigo(true);", 3 );
-                  ?>
+                    db_ancora(@$Led18_i_codigo, "js_pesquisaed18_i_codigo(true);", 3);
+                    ?>
                 </td>
                 <td>
                   <?php
-                  db_input( 'ed18_i_codigo', 10, $Ied18_i_codigo, true, 'text', 3 );
-                  ?>
+                    db_input('ed18_i_codigo', 10, $Ied18_i_codigo, true, 'text', 3);
+                    ?>
                   <label class="bold">Código Referência:</label>
                   <?php
-                  db_input( 'ed18_codigoreferencia', 10, $Ied18_codigoreferencia, true, 'text', 2 );
+                    db_input('ed18_codigoreferencia', 10, $Ied18_codigoreferencia, true, 'text', 2);
 
-                  echo @$Led18_i_funcionamento;
+                    echo @$Led18_i_funcionamento;
 
-                  $x = array( '1' => 'EM ATIVIDADE', '2' => 'PARALISADA', '3' => 'EXTINTA' );
-                  db_select( 'ed18_i_funcionamento', $x, true, @$db_opcao1 );
-                  ?>
+                    $x = array( '1' => 'EM ATIVIDADE', '2' => 'PARALISADA', '3' => 'EXTINTA' );
+                    db_select('ed18_i_funcionamento', $x, true, @$db_opcao1);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -79,9 +92,9 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  $sScript = " onKeyUp=\"js_ValidaCamposEdu(this,2,'$GLOBALS[Sed18_c_nome]','f','t',event);\"";
-                  db_input( 'ed18_c_nome', 70, $Ied18_c_nome, true, 'text', $db_opcao, $sScript );
-                  ?>
+                    $sScript = " onKeyUp=\"js_ValidaCamposEdu(this,2,'$GLOBALS[Sed18_c_nome]','f','t',event);\"";
+                    db_input('ed18_c_nome', 70, $Ied18_c_nome, true, 'text', $db_opcao, $sScript);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -90,10 +103,10 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  db_input( 'ed18_c_abrev', 45, $Ied18_c_abrev, true, 'text', $db_opcao );
-                  echo @$Led18_c_codigoinep;
-                  db_input( 'ed18_c_codigoinep', 8, $Ied18_c_codigoinep, true, 'text', $db_opcao );
-                  ?>
+                    db_input('ed18_c_abrev', 45, $Ied18_c_abrev, true, 'text', $db_opcao);
+                    echo @$Led18_c_codigoinep;
+                    db_input('ed18_c_codigoinep', 8, $Ied18_c_codigoinep, true, 'text', $db_opcao);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -102,13 +115,13 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  db_input( 'ed18_i_anoinicio', 4, $Ied18_i_anoinicio, true, 'text', $db_opcao );
-                  echo @$Led18_i_cnpj;
-                  db_input( 'ed18_i_cnpj', 15, $Ied18_i_cnpj, true, 'text', $db_opcao );
-                  echo @$Led18_i_credenciamento;
-                  $x = array( '' => '', '0' => 'NÃO CREDENCIADA', '1' => 'CREDENCIADA', '2' => 'EM TRAMITAÇÃO' );
-                  db_select( 'ed18_i_credenciamento', $x, true, $db_opcao, "onchange=\"js_esferaadministrativa();\"");
-                  ?>
+                    db_input('ed18_i_anoinicio', 4, $Ied18_i_anoinicio, true, 'text', $db_opcao);
+                    echo @$Led18_i_cnpj;
+                    db_input('ed18_i_cnpj', 15, $Ied18_i_cnpj, true, 'text', $db_opcao);
+                    echo @$Led18_i_credenciamento;
+                    $x = array( '' => '', '0' => 'NÃO CREDENCIADA', '1' => 'CREDENCIADA', '2' => 'EM TRAMITAÇÃO' );
+                    db_select('ed18_i_credenciamento', $x, true, $db_opcao, "onchange=\"js_esferaadministrativa();\"");
+                    ?>
                 </td>
               </tr>
               <tr id="esferaadministrativa" <?php echo $ed18_i_credenciamento != 1 && $ed18_i_credenciamento != 2 ? 'style="display:none;"' : ''?> >
@@ -117,9 +130,9 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  $x = array( '' => '', '1' => 'FEDERAL', '2' => 'ESTADUAL', '3' => 'MUNICIPAL');
-                  db_select( 'ed18_i_esferaadministrativa', $x, true, $db_opcao);
-                  ?>
+                    $x = array( '' => '', '1' => 'FEDERAL', '2' => 'ESTADUAL', '3' => 'MUNICIPAL');
+                    db_select('ed18_i_esferaadministrativa', $x, true, $db_opcao);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -128,10 +141,10 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  $sSqlCensoUf = $clcensouf->sql_query_file( "", "ed260_i_codigo, ed260_c_nome", "ed260_c_nome" );
-                  $result_uf   = $clcensouf->sql_record( $sSqlCensoUf );
-                  db_selectrecord( "ed18_i_censouf", $result_uf, "", "", "", "", "", "  ", "iframe_uf.location.href='edu1_escola004.php?censouf='+this.value", 1 );
-                  ?>
+                    $sSqlCensoUf = $clcensouf->sql_query_file("", "ed260_i_codigo, ed260_c_nome", "ed260_c_nome");
+                    $result_uf   = $clcensouf->sql_record($sSqlCensoUf);
+                    db_selectrecord("ed18_i_censouf", $result_uf, "", "", "", "", "", "  ", "iframe_uf.location.href='edu1_escola004.php?censouf='+this.value", 1);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -140,49 +153,46 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  if( isset( $ed18_i_censouf ) && $ed18_i_censouf != "" ) {
+                    if (isset($ed18_i_censouf) && $ed18_i_censouf != "") {
+                        $sCamposCensoMunic = "ed261_i_codigo, ed261_c_nome";
+                        $sWhereCensoMunic  = "ed261_i_censouf = {$ed18_i_censouf}";
+                        $sSqlCensoMunic    = $clcensomunic->sql_query_file("", $sCamposCensoMunic, "ed261_c_nome", $sWhereCensoMunic);
+                        $result_munic      = $clcensomunic->sql_record($sSqlCensoMunic);
 
-                    $sCamposCensoMunic = "ed261_i_codigo, ed261_c_nome";
-                    $sWhereCensoMunic  = "ed261_i_censouf = {$ed18_i_censouf}";
-                    $sSqlCensoMunic    = $clcensomunic->sql_query_file( "", $sCamposCensoMunic, "ed261_c_nome", $sWhereCensoMunic );
-                    $result_munic      = $clcensomunic->sql_record( $sSqlCensoMunic );
-
-                    if( $clcensomunic->numrows == 0 ) {
-
-                      $x = array( '' => 'Selecione o Estado' );
-                      db_select(
-                                 'ed18_i_censomunic',
-                                 $x,
-                                 true,
-                                 @$db_opcao1,
-                                 "onchange=\"iframe_uf.location.href='edu1_escola004.php?censomunic='+this.value\""
-                               );
+                        if ($clcensomunic->numrows == 0) {
+                            $x = array( '' => 'Selecione o Estado' );
+                            db_select(
+                                'ed18_i_censomunic',
+                                $x,
+                                true,
+                                @$db_opcao1,
+                                "onchange=\"iframe_uf.location.href='edu1_escola004.php?censomunic='+this.value\""
+                            );
+                        } else {
+                            db_selectrecord(
+                                "ed18_i_censomunic",
+                                $result_munic,
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "  ",
+                                "iframe_uf.location.href='edu1_escola004.php?censomunic='+this.value",
+                                1
+                            );
+                        }
                     } else {
-                      db_selectrecord(
-                                       "ed18_i_censomunic",
-                                       $result_munic,
-                                       "",
-                                       "",
-                                       "",
-                                       "",
-                                       "",
-                                       "  ",
-                                       "iframe_uf.location.href='edu1_escola004.php?censomunic='+this.value",
-                                       1
-                                     );
+                        $x = array( '' => 'Selecione o Estado' );
+                        db_select(
+                            'ed18_i_censomunic',
+                            $x,
+                            true,
+                            @$db_opcao1,
+                            "onchange=\"iframe_uf.location.href='edu1_escola004.php?censomunic='+this.value\""
+                        );
                     }
-                  } else {
-
-                    $x = array( '' => 'Selecione o Estado' );
-                    db_select(
-                               'ed18_i_censomunic',
-                               $x,
-                               true,
-                               @$db_opcao1,
-                               "onchange=\"iframe_uf.location.href='edu1_escola004.php?censomunic='+this.value\""
-                             );
-                  }
-                  ?>
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -191,26 +201,23 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  if( isset( $ed18_i_censomunic ) && $ed18_i_censomunic != "" ) {
+                    if (isset($ed18_i_censomunic) && $ed18_i_censomunic != "") {
+                        $sCamposCensoDistrito = "ed262_i_codigo, ed262_c_nome";
+                        $sWhereCensoDistrito  = "ed262_i_censomunic = {$ed18_i_censomunic} AND ed261_i_censouf = {$ed18_i_censouf}";
+                        $sSqlCensoDistrito    = $clcensodistrito->sql_query("", $sCamposCensoDistrito, "ed262_c_nome", $sWhereCensoDistrito);
+                        $result_distrito      = $clcensodistrito->sql_record($sSqlCensoDistrito);
 
-                    $sCamposCensoDistrito = "ed262_i_codigo, ed262_c_nome";
-                    $sWhereCensoDistrito  = "ed262_i_censomunic = {$ed18_i_censomunic} AND ed261_i_censouf = {$ed18_i_censouf}";
-                    $sSqlCensoDistrito    = $clcensodistrito->sql_query( "", $sCamposCensoDistrito, "ed262_c_nome", $sWhereCensoDistrito );
-                    $result_distrito      = $clcensodistrito->sql_record( $sSqlCensoDistrito );
-
-                    if( $clcensodistrito->numrows == 0 ) {
-
-                      $x = array( '' => 'Selecione a Cidade' );
-                      db_select( 'ed18_i_censodistrito', $x, true, @$db_opcao1 );
+                        if ($clcensodistrito->numrows == 0) {
+                            $x = array( '' => 'Selecione a Cidade' );
+                            db_select('ed18_i_censodistrito', $x, true, @$db_opcao1);
+                        } else {
+                            db_selectrecord("ed18_i_censodistrito", $result_distrito, "", "", "", "", "", "  ", "", 1);
+                        }
                     } else {
-                      db_selectrecord( "ed18_i_censodistrito", $result_distrito, "", "", "", "", "", "  ", "", 1 );
+                        $x = array( '' => 'Selecione a Cidade' );
+                        db_select('ed18_i_censodistrito', $x, true, @$db_opcao1);
                     }
-                  } else {
-
-                    $x = array( '' => 'Selecione a Cidade' );
-                    db_select( 'ed18_i_censodistrito', $x, true, @$db_opcao1 );
-                  }
-                  ?>
+                    ?>
                   <iframe name="iframe_uf"
                           src=""
                           framedorder="0"
@@ -223,30 +230,30 @@ $clrotulo->label("j13_descr");
               <tr>
                 <td nowrap title="<?=@$Ted18_i_bairro?>">
                   <?php
-                  db_ancora( @$Led18_i_bairro, "js_pesquisaed18_i_bairro(true);", $db_opcao );
-                  ?>
+                    db_ancora(@$Led18_i_bairro, "js_pesquisaed18_i_bairro(true);", $db_opcao);
+                    ?>
                 </td>
                 <td>
                   <?php
-                  $sScript = "onchange='js_pesquisaed18_i_bairro(false);'";
-                  db_input( 'ed18_i_bairro',10, $Ied18_i_bairro,true, 'text', $db_opcao, $sScript );
-                  db_input( 'j13_descr',    40, $Ij13_descr,    true, 'text', 3 );
-                  ?>
+                    $sScript = "onchange='js_pesquisaed18_i_bairro(false);'";
+                    db_input('ed18_i_bairro', 10, $Ied18_i_bairro, true, 'text', $db_opcao, $sScript);
+                    db_input('j13_descr', 40, $Ij13_descr, true, 'text', 3);
+                    ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted18_i_rua?>">
                   <?php
-                  db_ancora( @$Led18_i_rua, "js_pesquisaed18_i_rua(true);", $db_opcao );
-                  ?>
+                    db_ancora(@$Led18_i_rua, "js_pesquisaed18_i_rua(true);", $db_opcao);
+                    ?>
                 </td>
                 <td>
                   <?php
-                  db_input( 'ed18_i_rua', 10, $Ied18_i_rua, true, 'text', $db_opcao, "onchange='js_pesquisaed18_i_rua(false);'" );
-                  db_input( 'j14_nome',   40, $Ij14_nome,   true, 'text',         3 );
-                  echo @$Led18_c_cep;
-                  db_input( 'ed18_c_cep', 8, @$ed18_c_cep, true, 'text', $db_opcao );
-                  ?>
+                    db_input('ed18_i_rua', 10, $Ied18_i_rua, true, 'text', $db_opcao, "onchange='js_pesquisaed18_i_rua(false);'");
+                    db_input('j14_nome', 40, $Ij14_nome, true, 'text', 3);
+                    echo @$Led18_c_cep;
+                    db_input('ed18_c_cep', 8, @$ed18_c_cep, true, 'text', $db_opcao);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -255,10 +262,10 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  db_input( 'ed18_latitude', 10, $Ied18_latitude, true, 'text', $db_opcao );
-                  echo @$Led18_longitude;
-                  db_input( 'ed18_longitude', 10, $Ied18_longitude, true, 'text', $db_opcao );
-                  ?>
+                    db_input('ed18_latitude', 10, $Ied18_latitude, true, 'text', $db_opcao);
+                    echo @$Led18_longitude;
+                    db_input('ed18_longitude', 10, $Ied18_longitude, true, 'text', $db_opcao);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -267,16 +274,16 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td nowrap title="<?=@$Ted18_i_numero?>">
                   <?php
-                  db_input( 'ed18_i_numero', 10, $Ied18_i_numero, true, 'text', $db_opcao );
-                  echo @$Led18_c_compl;
+                    db_input('ed18_i_numero', 10, $Ied18_i_numero, true, 'text', $db_opcao);
+                    echo @$Led18_c_compl;
 
-                  $sScript = " onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed18_c_compl]','t','t',event);\"";
-                  db_input( 'ed18_c_compl', 20, $Ied18_c_compl, true, 'text', $db_opcao, $sScript );
+                    $sScript = " onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed18_c_compl]','t','t',event);\"";
+                    db_input('ed18_c_compl', 20, $Ied18_c_compl, true, 'text', $db_opcao, $sScript);
 
-                  echo @$Led18_c_local;
-                  $x = array( '1' => 'URBANA', '2' => 'RURAL' );
-                  db_select( 'ed18_c_local', $x, true, @$db_opcao1 );
-                  ?>
+                    echo @$Led18_c_local;
+                    $x = array( '1' => 'URBANA', '2' => 'RURAL' );
+                    db_select('ed18_c_local', $x, true, @$db_opcao1);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -285,26 +292,23 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  if( isset( $ed18_i_censouf ) && $ed18_i_censouf != "" ) {
+                    if (isset($ed18_i_censouf) && $ed18_i_censouf != "") {
+                        $sCamposCensoOrgReg = "ed263_i_codigo, ed263_c_nome";
+                        $sWhereCensoOrgReg  = "ed263_i_censouf = {$ed18_i_censouf}";
+                        $sSqlCensoOrgReg    = $clcensoorgreg->sql_query_file("", $sCamposCensoOrgReg, "ed263_c_nome", $sWhereCensoOrgReg);
+                        $result_orgreg      = $clcensoorgreg->sql_record($sSqlCensoOrgReg);
 
-                    $sCamposCensoOrgReg = "ed263_i_codigo, ed263_c_nome";
-                    $sWhereCensoOrgReg  = "ed263_i_censouf = {$ed18_i_censouf}";
-                    $sSqlCensoOrgReg    = $clcensoorgreg->sql_query_file( "", $sCamposCensoOrgReg, "ed263_c_nome", $sWhereCensoOrgReg );
-                    $result_orgreg      = $clcensoorgreg->sql_record( $sSqlCensoOrgReg );
-
-                    if( $clcensoorgreg->numrows == 0 ) {
-
-                      $x = array( '' => 'Nenhum registro neste estado' );
-                      db_select( 'ed18_i_censoorgreg', $x, true, @$db_opcao1 );
+                        if ($clcensoorgreg->numrows == 0) {
+                            $x = array( '' => 'Nenhum registro neste estado' );
+                            db_select('ed18_i_censoorgreg', $x, true, @$db_opcao1);
+                        } else {
+                            db_selectrecord("ed18_i_censoorgreg", $result_orgreg, "", "", "", "", "", "  ", "", 1);
+                        }
                     } else {
-                      db_selectrecord( "ed18_i_censoorgreg", $result_orgreg, "", "", "", "", "", "  ", "", 1 );
+                        $x = array( '' => 'Selecione o Estado' );
+                        db_select('ed18_i_censoorgreg', $x, true, @$db_opcao1);
                     }
-                  } else {
-
-                    $x = array( '' => 'Selecione o Estado' );
-                    db_select( 'ed18_i_censoorgreg', $x, true, @$db_opcao1 );
-                  }
-                  ?>
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -315,12 +319,12 @@ $clrotulo->label("j13_descr");
                         <?=@$Led18_c_mantenedora?>
                         <?php
                         $x = array( '' => '', '1' => 'FEDERAL', '2' => 'ESTADUAL', '3' => 'MUNICIPAL', '4' => 'PRIVADA' );
-                        db_select( 'ed18_c_mantenedora', $x, true, $db_opcao, " onchange='js_mantenedora(this.value)'" );
+                        db_select('ed18_c_mantenedora', $x, true, $db_opcao, " onchange='js_mantenedora(this.value)'");
 
-                        if( isset( $ed18_c_mantenedora ) && $ed18_c_mantenedora == 4 ) {
-                          $visible3 = "visible";
+                        if (isset($ed18_c_mantenedora) && $ed18_c_mantenedora == 4) {
+                            $visible3 = "visible";
                         } else {
-                          $visible3 = "hidden";
+                            $visible3 = "hidden";
                         }
                         ?>
                       </td>
@@ -353,8 +357,8 @@ $clrotulo->label("j13_descr");
                                        onclick='js_categoria(this.value);'
                                        <?=@$ed18_i_categprivada == "4" ? "checked" : ""?>> Filantrópica<br />
                                 <?php
-                                if( !isset( $ed18_c_mantprivada ) ) {
-                                  $ed18_c_mantprivada = "0000";
+                                if (!isset($ed18_c_mantprivada)) {
+                                    $ed18_c_mantprivada = "0000";
                                 }
                                 ?>
                               </fieldset>
@@ -362,27 +366,27 @@ $clrotulo->label("j13_descr");
                             <td nowrap valign="top">
                               <fieldset style="height: 122px;">
                                 <legend><?=@$Led18_c_mantprivada?></legend>
-                                <input <?=substr( @$ed18_c_mantprivada, 0, 1 ) == "1" ? "checked" : ""?>
+                                <input <?=substr(@$ed18_c_mantprivada, 0, 1) == "1" ? "checked" : ""?>
                                        id="ed18_c_mantprivada"
                                        name="ed18_c_mantprivada[]"
                                        type="checkbox"
                                        value="1"> Empresas / Grupos Empresariais ou Pessoa Física<br>
-                                <input <?=substr( @$ed18_c_mantprivada, 1, 1 ) == "1" ? "checked" : ""?>
+                                <input <?=substr(@$ed18_c_mantprivada, 1, 1) == "1" ? "checked" : ""?>
                                        id="ed18_c_mantprivada"
                                        name="ed18_c_mantprivada[]"
                                        type="checkbox"
                                        value="2"> Sindicatos / Associações / Cooperativas<br>
-                                <input <?=substr( @$ed18_c_mantprivada, 2, 1 ) == "1" ? "checked" : ""?>
+                                <input <?=substr(@$ed18_c_mantprivada, 2, 1) == "1" ? "checked" : ""?>
                                        id="ed18_c_mantprivada"
                                        name="ed18_c_mantprivada[]"
                                        type="checkbox"
                                        value="3"> ONG - Internacional ou Nacional<br>
-                                <input <?=substr( @$ed18_c_mantprivada, 3, 1 ) == "1" ? "checked" : ""?>
+                                <input <?=substr(@$ed18_c_mantprivada, 3, 1) == "1" ? "checked" : ""?>
                                        id="ed18_c_mantprivada"
                                        name="ed18_c_mantprivada[]"
                                        type="checkbox"
                                        value="4"> Instituições sem fins lucrativos<br>
-                                <input <?=substr( @$ed18_c_mantprivada, 4, 1 ) == "1" ? "checked" : ""?>
+                                <input <?=substr(@$ed18_c_mantprivada, 4, 1) == "1" ? "checked" : ""?>
                                        id="ed18_c_mantprivada"
                                        name="ed18_c_mantprivada[]"
                                        type="checkbox"
@@ -413,9 +417,9 @@ $clrotulo->label("j13_descr");
                                     </td>
                                     <td nowrap>
                                       <?php
-                                      $sScript = "onClick='js_cnascebas(1,this);'";
-                                      db_input( 'ed18_i_cnas', 15, @$Ied18_i_cnas, true, 'text', $db_opcao, $sScript );
-                                      ?>
+                                        $sScript = "onClick='js_cnascebas(1,this);'";
+                                        db_input('ed18_i_cnas', 15, @$Ied18_i_cnas, true, 'text', $db_opcao, $sScript);
+                                        ?>
                                     </td>
                                   </tr>
                                   <tr>
@@ -424,9 +428,9 @@ $clrotulo->label("j13_descr");
                                     </td>
                                     <td nowrap>
                                       <?php
-                                      $sScript = "onClick='js_cnascebas(2,this);'";
-                                      db_input( 'ed18_i_cebas', 15, @$Ied18_i_cebas, true, 'text', $db_opcao, $sScript );
-                                      ?>
+                                        $sScript = "onClick='js_cnascebas(2,this);'";
+                                        db_input('ed18_i_cebas', 15, @$Ied18_i_cebas, true, 'text', $db_opcao, $sScript);
+                                        ?>
                                     </td>
                                   </tr>
                                   <tr>
@@ -435,8 +439,8 @@ $clrotulo->label("j13_descr");
                                     </td>
                                     <td nowrap>
                                       <?php
-                                      db_input( 'ed18_i_cnpjmantprivada', 15, @$Ied18_i_cnpjmantprivada, true, 'text', $db_opcao );
-                                      ?>
+                                        db_input('ed18_i_cnpjmantprivada', 15, @$Ied18_i_cnpjmantprivada, true, 'text', $db_opcao);
+                                        ?>
                                     </td>
                                   </tr>
                                   <tr>
@@ -445,8 +449,8 @@ $clrotulo->label("j13_descr");
                                     </td>
                                     <td nowrap>
                                       <?php
-                                      db_input( 'ed18_i_cnpjprivada', 15, @$Ied18_i_cebas, true, 'text', $db_opcao );
-                                      ?>
+                                        db_input('ed18_i_cnpjprivada', 15, @$Ied18_i_cebas, true, 'text', $db_opcao);
+                                        ?>
                                     </td>
                                   </tr>
                                 </table>
@@ -478,7 +482,11 @@ $clrotulo->label("j13_descr");
                     <input type="radio"
                            name="ed18_i_locdiferenciada"
                            value="3"
-                           <?=(@$ed18_i_locdiferenciada == "3" ? "checked" : "" )?>>Área remanescente de quilombos<br/>
+                           <?=(@$ed18_i_locdiferenciada == "3" ? "checked" : "" )?>>Comunidade quilombola<br/>
+                    <input type="radio"
+                             name="ed18_i_locdiferenciada"
+                             value="8"ed18_i_locdiferenciada
+                          <?=(@$ed18_i_locdiferenciada == "8" ? "checked" : "" )?>>Área onde se localiza povos e comunidades tradicionais<br/>
                     <input type="radio"
                            name="ed18_i_locdiferenciada"
                            value="7"
@@ -489,16 +497,16 @@ $clrotulo->label("j13_descr");
                   <fieldset style="width:130px;height:152px">
                     <legend>Logotipo</legend>
                     <?php
-                    if( @$ed18_c_logo != "" ) {
-                      echo "<img src='imagens/".$ed18_c_logo."' width='130' height='110'>";
+                    if (@$ed18_c_logo != "") {
+                        echo "<img src='imagens/".$ed18_c_logo."' width='130' height='110'>";
                     }
                     ?>
                   </fieldset>
                   <?php
-                  if( @$ed18_c_logo != "" ) {
-                    echo "<a href='?excluirfoto&codigoescola=$ed18_i_codigo&logo=$ed18_c_logo'>Excluir Imagem</a>";
-                  }
-                  ?>
+                    if (@$ed18_c_logo != "") {
+                        echo "<a href='?excluirfoto&codigoescola=$ed18_i_codigo&logo=$ed18_c_logo'>Excluir Imagem</a>";
+                    }
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -516,10 +524,10 @@ $clrotulo->label("j13_descr");
                            <?=(@$ed18_i_educindigena == "0" ? "checked" : "" )?>
                            onclick="js_educingidena(this.value);"> NÃO
                     <?php
-                    if( isset( $ed18_i_educindigena ) && $ed18_i_educindigena == 1 ) {
-                      $visibility1 = "visible";
+                    if (isset($ed18_i_educindigena) && $ed18_i_educindigena == 1) {
+                        $visibility1 = "visible";
                     } else {
-                      $visibility1 = "hidden";
+                        $visibility1 = "hidden";
                     }
                     ?>
                     <fieldset id="linguaministrada" style="visibility:<?=$visibility1?>">
@@ -535,44 +543,44 @@ $clrotulo->label("j13_descr");
                              <?=(@$ed18_i_tipolinguain == 1 ? "checked" : "" )?>
                              onclick="js_tipolinguain();"> <?=@$Led18_i_tipolinguain?><br>
                       <?php
-                      if( isset( $ed18_i_tipolinguain ) && $ed18_i_tipolinguain == 1 ) {
-                        $visibility2 = "visible";
-                      } else {
-                        $visibility2 = "hidden";
-                      }
+                        if (isset($ed18_i_tipolinguain) && $ed18_i_tipolinguain == 1) {
+                            $visibility2 = "visible";
+                        } else {
+                            $visibility2 = "hidden";
+                        }
 
-                        db_input( 'ed144_i_codigo', 10, @$Ied144_i_codigo, true, 'hidden', 3 );
-                      ?>
+                        db_input('ed144_i_codigo', 10, @$Ied144_i_codigo, true, 'hidden', 3);
+                        ?>
                       <span id="codigolingua" style="visibility:<?=$visibility2?>">
                         <?php
-                        db_ancora( @$Led18_i_linguaindigena, "js_pesquisaed18_i_linguaindigena(true);", $db_opcao );
+                        db_ancora(@$Led18_i_linguaindigena, "js_pesquisaed18_i_linguaindigena(true);", $db_opcao);
                         ?>
                         <br>
                         <?php
-                        db_input( 'ed144_i_linguaindigena1', 10, @$Ied18_i_linguaindigena, true, 'text', 3 );
-                        db_input( 'ed264_c_nome1',          35, @$Ied264_c_nome,          true, 'text', 3 );
+                        db_input('ed144_i_linguaindigena1', 10, @$Ied18_i_linguaindigena, true, 'text', 3);
+                        db_input('ed264_c_nome1', 35, @$Ied264_c_nome, true, 'text', 3);
                         ?>
                       </span>
                       <br/>
                       <span id="codigolingua2" style="visibility:<?=$visibility2?>">
                         <?php
-                        db_ancora( @$Led18_i_linguaindigena, "js_pesquisaed144_i_linguaindigena2(true);", $db_opcao );
+                        db_ancora(@$Led18_i_linguaindigena, "js_pesquisaed144_i_linguaindigena2(true);", $db_opcao);
                         ?>
                         <br>
                         <?php
-                        db_input( 'ed144_i_linguaindigena2', 10, @$Ied18_i_linguaindigena, true, 'text', 3 );
-                        db_input( 'ed264_c_nome2',          35, @$Ied264_c_nome,          true, 'text', 3 );
+                        db_input('ed144_i_linguaindigena2', 10, @$Ied18_i_linguaindigena, true, 'text', 3);
+                        db_input('ed264_c_nome2', 35, @$Ied264_c_nome, true, 'text', 3);
                         ?>
                       </span>
                       <br/>
                       <span id="codigolingua3" style="visibility:<?=$visibility2?>">
                         <?php
-                        db_ancora( @$Led18_i_linguaindigena, "js_pesquisaed144_i_linguaindigena3(true);", $db_opcao );
+                        db_ancora(@$Led18_i_linguaindigena, "js_pesquisaed144_i_linguaindigena3(true);", $db_opcao);
                         ?>
                         <br>
                         <?php
-                        db_input( 'ed144_i_linguaindigena3', 10, @$Ied18_i_linguaindigena, true, 'text', 3 );
-                        db_input( 'ed264_c_nome3',          35, @$Ied264_c_nome,          true, 'text', 3 );
+                        db_input('ed144_i_linguaindigena3', 10, @$Ied18_i_linguaindigena, true, 'text', 3);
+                        db_input('ed264_c_nome3', 35, @$Ied264_c_nome, true, 'text', 3);
                         ?>
                       </span>
 
@@ -588,7 +596,7 @@ $clrotulo->label("j13_descr");
             <br><br><br><br><br><br><br><br><br><br><br><br>
             <label class="bold">Logotipo:</label>
             <?php
-            db_input( 'ed18_c_logo', 50, $Ied18_c_logo, true, 'file', $db_opcao );
+            db_input('ed18_c_logo', 50, $Ied18_c_logo, true, 'file', $db_opcao);
             ?>
           </td>
         </tr>
@@ -603,7 +611,6 @@ $clrotulo->label("j13_descr");
   </form>
 </div>
 <script>
-
 
 function js_pesquisaed18_i_rua( mostra ) {
 
@@ -883,6 +890,14 @@ function js_valida() {
     return false;
   }
 
+  if( document.form1.ed18_i_censodistrito.value.trim() == "" ) {
+
+    alert("Informe o campo Distrito!");
+    document.form1.ed18_i_censodistrito.style.backgroundColor = '#99A9AE';
+    document.form1.ed18_i_censodistrito.focus();
+    return false;
+  }
+
   if( document.form1.ed18_latitude.value != '' ) {
 
     if( !isNumeric( document.form1.ed18_latitude.value, false ) ) {
@@ -1040,5 +1055,4 @@ $('ed18_c_local').className          = 'field-size3';
 $('ed18_i_censoorgreg').className    = 'field-size-max';
 $('ed18_c_mantenedora').className    = 'field-size3';
 $('ed18_i_esferaadministrativa').className    = 'field-size-max';
-
 </script>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -99,9 +99,10 @@ db_postmemory($_POST);
         <legend>Formulário de Cadastro para o eSocial</legend>
         <div id="questionario"></div>
     </fieldset>
-    <input type="button" id="novo" name="novo" value="Novo" class="controle" disabled/>
+    <input type="button" id="novo" name="novo" value="Novo" class="controle" onclick="js_editapreenchimento()"/>
     <input type="button" id="salvar" name="salvar" value="Salvar" class="controle" disabled/>
     <input type="button" id="pesquisar" name="pesquisar" value="Pesquisar" />
+    <input type="hidden" id="servidorSemRegistro" name="servidorSemRegistro" value="false" />
 </form>
 <script type="text/javascript">
 
@@ -160,6 +161,7 @@ db_postmemory($_POST);
       'exec': 'buscarAvaliacao',
       'iCGM': $F('cgm'),
       'matricula': $('matricula').value,
+      'servidorSemRegistro': $('servidorSemRegistro').value,
     };
 
     const buscarAvaliacaoRequest = AjaxRequest.create(sRpc, oDados, montarAvaliacao).setMessage('Buscando dados...');
@@ -248,18 +250,25 @@ db_postmemory($_POST);
   }
 
   function novoFormulario() {
-    if ($F('cgm') != '') {
+    if ($F('cgm') != '' && $('matricula').value) {
       if (confirm(
               'Se você criar um Processo Administrativo/Judicial novo, os dados que não foram salvos serão perdidos.\nTem certeza que deseja continuar?')) {
-        $('preenchimento').value = '';
-        $('matricula').value = '';
         buscarAvaliacao();
 
       } else {
         return false;
       }
+    } else {
+      buscarAvaliacao();
     }
   }
+
+  function js_editapreenchimento() {
+    if (!$('matricula').value) {
+      $('servidorSemRegistro').value = true;
+    }
+  }
+
 </script>
 
 <script>

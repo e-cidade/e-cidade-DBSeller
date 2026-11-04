@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -45,7 +45,7 @@ $clrotulo->label("receita");
 					<?=@$Lv03_codigo?>
 				</td>
 				<td>
-					<?
+					<?php
 						db_input('v03_codigo',6,$Iv03_codigo,true,'text',3,"")
 					?>
 				</td>
@@ -55,7 +55,7 @@ $clrotulo->label("receita");
 					<?=@$Lv03_descr?>
 				</td>
 				<td>
-					<?
+					<?php
 						db_input('v03_descr',40,$Iv03_descr,true,'text',$db_opcao,"")
 					?>
 				</td>
@@ -65,19 +65,19 @@ $clrotulo->label("receita");
 					<?=@$Lv03_dcomp?>
 				</td>
 				<td>
-					<?
+					<?php
 						db_input('v03_dcomp',40,$Iv03_dcomp,true,'text',$db_opcao,"")
 					?>
 				</td>
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tv03_receit?>">
-					<?
+					<?php
 						db_ancora(@$Lv03_receit,"js_pesquisav03_receit(true);",$db_opcao);
 					?>
 				</td>
 				<td>
-					<?
+					<?php
 						db_input('v03_receit',6,$Iv03_receit,true,'text',$db_opcao," onchange='js_pesquisav03_receit(false);'");
 						db_input('k02_descr',30,$Ik02_descr,true,'text',3,'');
 					?>
@@ -85,12 +85,12 @@ $clrotulo->label("receita");
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tk00_hist?>">
-					<?
+					<?php
 						db_ancora(@$Lk00_hist,"js_pesquisak00_hist(true);",$db_opcao);
 					?>
 				</td>
 				<td>
-					<?
+					<?php
 						db_input('k00_hist',6,$Ik00_hist,true,'text',$db_opcao," onchange='js_pesquisak00_hist(false);'");
 						db_input('k01_descr',30,$Ik01_descr,true,'text',3,'');
 					?>
@@ -101,7 +101,7 @@ $clrotulo->label("receita");
 					<?=@$Lv03_tributaria?>
 				</td>
 				<td>
-					<?
+					<?php
             $rs = $cltipoproced->sql_record($cltipoproced->sql_query(null,"*","v07_sequencial",null));
             db_selectrecord('v03_tributaria',$rs,true,$db_opcao,"","","","0-Nenhum","",2);
 					?>
@@ -114,15 +114,15 @@ $clrotulo->label("receita");
 
       <tr>
         <td nowrap title="<?=@$Tar36_receita?>"><b>
-           <?
+           <?php
            db_ancora("Grupo de Procedência","js_pesquisaprocedtipo(true);",$db_opcao);
            ?></b>
         </td>
         <td>
-    				<?
+    				<?php
     				  db_input('v03_procedtipo',8,"",true,'text',$db_opcao," onchange='js_pesquisaprocedtipo(false);'")
     				?>
-           <?
+           <?php
               db_input('v28_descricao',30,"",true,'text',3,'')
            ?>
         </td>
@@ -135,15 +135,15 @@ $clrotulo->label("receita");
 
 			<tr>
 				<td nowrap title="<?=@$Treceita?>">
-					<?
+					<?php
 						db_ancora(@$Lreceita,"js_pesquisareceita(true);",$db_opcao);
 					?>
 				</td>
 				<td>
-					<?
+					<?php
 						db_input('receita',6,$Ireceita,true,'text',$db_opcao," onchange='js_pesquisareceita(false);'")
 					?>
-					<?
+					<?php
 						db_input('descr_2',30,"",true,'text',3,'');
 					?>
 				</td>
@@ -153,7 +153,7 @@ $clrotulo->label("receita");
 					<b>Tipo de Débito Padrão:</b>
 				</td>
 				<td>
-					<?
+					<?php
 						$rsArretipo = $clarretipo->sql_record($clarretipo->sql_query_file(null,"k00_tipo, k00_descr","k00_descr","k03_tipo = 5")) ;
 						db_selectrecord('v06_arretipo',$rsArretipo,true,$db_opcao,"","","","0-Nenhum","");
 					?>
@@ -161,15 +161,15 @@ $clrotulo->label("receita");
 			</tr>
 		  <tr>
         <td nowrap title="<?=@$Tv24_procedagrupa?>">
-          <?
+          <?php
             db_ancora(@$Lv24_procedagrupa,"js_pesquisav24_procedagrupa(true);",$db_opcaoagrupa);
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('v24_procedagrupa',6,$Ireceita,true,'text', $db_opcaoagrupa," onchange='js_pesquisav24_procedagrupa(false);'")
           ?>
-          <?
+          <?php
             db_input('v24_procedagrupadescr',30,"",true,'text',3,'');
           ?>
         </td>
@@ -189,15 +189,15 @@ $clrotulo->label("receita");
 			<!--
 			<tr>
 				<td nowrap title="<?=@$Treceita?>">
-					<?
+					<?php
 						db_ancora("<b>Receita procdiver</b>","js_pesquisareceitad(true);",$db_opcao);
 					?>
 				</td>
 				<td>
-					<?
+					<?php
 						db_input('receitad',10,$Ireceita,true,'text',$db_opcao," onchange='js_pesquisareceitad(false);'")
 					?>
-					<?
+					<?php
 						db_input('k02_descrd',15,$Ik02_descr,true,'text',3,'')
 					?>
 				</td>
@@ -417,7 +417,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_proced.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

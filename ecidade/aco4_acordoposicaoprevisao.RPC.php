@@ -68,7 +68,7 @@ switch ($oParam->exec) {
       try {
 
         $oItem->validarQuantidadePeriodo($oParam->iPeriodo, $oParam->nQuantidade);
-        foreach ($aPeriodos as &$oPeriodo) {
+        foreach ($aPeriodos as $oPeriodo) {
 
           if ($oPeriodo->codigo == $oParam->iPeriodo) {
 
@@ -122,7 +122,7 @@ switch ($oParam->exec) {
       }
       $oRetorno->status = 2;
 
-      $oDaoEmpEmpenho   = db_utils::getDao("empempenho");
+      $oDaoEmpEmpenho   = new cl_empempenho;
       $sSqlDadosEmpenho = $oDaoEmpEmpenho->sql_query_file(null, '*', null, $sWhere);
       $rsDadosEmpenho   = $oDaoEmpEmpenho->sql_record($sSqlDadosEmpenho);
 
@@ -240,7 +240,7 @@ switch ($oParam->exec) {
     /**
      * Buscamos a previsão selecionada pelo usuário e suas informações relevantes
      */
-    $oDaoAcordoItemPrevisao = db_utils::getDao('acordoitemprevisao');
+    $oDaoAcordoItemPrevisao = new cl_acordoitemprevisao;
     $sCamposBuscaPrevisao   = " pc01_descrmater, ac37_datainicial, ac37_datafinal, ac36_descricao ";
     $sWhereBuscaPrevisao    = " ac37_acordoperiodo = {$oParam->iCodigoPeriodo} ";
     $sWhereBuscaPrevisao   .= " and ac20_sequencial = {$oParam->iCodigoItem} ";

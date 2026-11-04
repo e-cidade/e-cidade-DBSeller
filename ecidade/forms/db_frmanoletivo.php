@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ed02_i_codigo");
        <?=@$Led28_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed28_i_codigo',1,$Ied28_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted28_i_escola?>">
-       <?
+       <?php
        db_ancora(@$Led28_i_escola,"js_pesquisaed28_i_escola(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed28_i_escola',5,$Ied28_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed28_i_escola(false);'")
 ?>
-       <?
+       <?php
 db_input('ed02_i_codigo',10,$Ied02_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ed02_i_codigo',10,$Ied02_i_codigo,true,'text',3,'')
        <?=@$Led28_i_ano?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed28_i_ano',4,$Ied28_i_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('ed28_i_ano',4,$Ied28_i_ano,true,'text',$db_opcao,"")
        <?=@$Led28_d_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed28_d_inicio',@$ed28_d_inicio_dia,@$ed28_d_inicio_mes,@$ed28_d_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('ed28_d_inicio',@$ed28_d_inicio_dia,@$ed28_d_inicio_mes,@$ed28_d_in
        <?=@$Led28_d_fim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed28_d_fim',@$ed28_d_fim_dia,@$ed28_d_fim_mes,@$ed28_d_fim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('ed28_d_fim',@$ed28_d_fim_dia,@$ed28_d_fim_mes,@$ed28_d_fim_ano,tru
        <?=@$Led28_l_encerrado?>
     </td>
     <td> 
-<?
+<?php
 $x = array('f'=>'Não','t'=>'Sim');
 db_select('ed28_l_encerrado',$x,true,$db_opcao,"");
 ?>
@@ -133,7 +133,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_anoletivo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

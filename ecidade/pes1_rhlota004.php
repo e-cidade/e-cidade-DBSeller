@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -244,7 +244,7 @@ $erro_msg="CNPJ Inválido";
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmrhlota.php"));
 	?>
     </center>
@@ -253,7 +253,7 @@ $erro_msg="CNPJ Inválido";
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($importar) || isset($sem_parametro_configurado)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

@@ -58,15 +58,16 @@ if ( (!isset($ed52_c_descr) || !isset($ed57_c_descr)) && isset($ed60_i_turma) ) 
 
 function montaStringTurnoMatriculado ($sTurnoReferente) {
 
-  $aTurnos      = array(1 => "Manhã", 2 => "Tarde", 3 => "Noite");
-  $aCodigoTurno = explode(",", $sTurnoReferente);
-  $aStringTurno = array();
 
-  foreach ($aCodigoTurno as $iCodigoTurnoReferente) {
+    $aTurnos      = array(1 => "Manhã", 2 => "Tarde", 3 => "Noite");
+    $aCodigoTurno = explode(",", $sTurnoReferente);
+    $aCodigoTurno = array_unique($aCodigoTurno);
+    $aStringTurno = array();
+    foreach ($aCodigoTurno as $iCodigoTurnoReferente) {
     $aStringTurno[] = $aTurnos[$iCodigoTurnoReferente];
-  }
+    }
 
-  return implode(" / ", $aStringTurno);
+    return implode(" / ", $aStringTurno);
 }
 ?>
 <html>
@@ -142,6 +143,7 @@ if (isset($trocaTurma) && $trocaTurma == 1) {
 }
 
 $sSql   = $clmatricula->sql_query_aluno_transferido("",$sCampos,"matricula.ed60_i_numaluno, to_ascii(ed47_v_nome)"," ed60_i_turma = $ed60_i_turma {$sWhereTrocaTurma} ");
+//die ($sSql);
 $result = $clmatricula->sql_record($sSql);
 
 if (isset($classificar)) {
@@ -183,7 +185,7 @@ if (isset($classificar)) {
    </tr>
    <tr>
     <td align="center" valign="top">
-     <table border='1px' width="100%" style="" cellspacing="0px">
+     <table border='1px' width="100%" cellspacing="0px">
       <tr class='cabec'>
        <td align='center'><strong>Código</strong></td>
        <td><strong>Nome</strong></td>
@@ -284,12 +286,12 @@ if (isset($classificar)) {
            <td class='aluno' align='center'><?=$sTurnosMatriculados?></td>
            <td class='aluno' align='center'><?=$ed11_c_descr?></td>
           </tr>
-         <?
+         <?php
         }
       } else {
 
         ?>
-        <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+        <table border='1px' width="100%" bgcolor="#cccccc" cellspacing="0px">
          <tr bgcolor="#EAEAEA">
           <td class='aluno'>NENHUM ALUNO MATRICULADO.</td>
          </tr>
@@ -323,6 +325,10 @@ function js_observacoes(iCodigoMatricula, nome, iNumeroMatricula) {
                      "&iNumeroMatricula="+iNumeroMatricula,
 		              'Observações da Matrícula N° '+iNumeroMatricula+' - '+nome,true
 		             );
+    document.querySelector('#CFdb_iframe_observacoes').style = "background-color: rgb(50, 96, 148)";
+    document.querySelector('#fechardb_iframe_observacoes').addEventListener('click', evt => {
+        document.querySelector('#Jandb_iframe_observacoes').remove();
+    })
 }
 $('trocaTurma').observe("change", function() {
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrhempenhofolharubrica->rotulo->label("rh73_rubric");
               <?=$Lrh73_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh73_sequencial",10,$Irh73_sequencial,true,"text",4,"","chave_rh73_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhempenhofolharubrica->rotulo->label("rh73_rubric");
               <?=$Lrh73_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh73_rubric",4,$Irh73_rubric,true,"text",4,"","chave_rh73_rubric");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhempenhofolharubrica->rotulo->label("rh73_rubric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhempenhofolharubrica.php")==true){
@@ -122,12 +122,12 @@ $clrhempenhofolharubrica->rotulo->label("rh73_rubric");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

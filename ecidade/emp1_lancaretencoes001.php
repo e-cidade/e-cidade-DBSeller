@@ -67,11 +67,11 @@ if($conparametro->c90_confirmadata == 't'){
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
-    <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/datagrid.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
@@ -146,15 +146,13 @@ if($conparametro->c90_confirmadata == 't'){
                     </td>
                 </tr>
                 <tr>
-                    <td title="<?= @$To15_codigo ?>">
-                        <a id="ancoraFonteRecurso" href="#">Fonte de Recursos:</a>
-                    </td>
+                    <td><a id="ancoraFonteRecurso" href="#">Fonte de Recursos:</a></td>
                     <td colspan=3>
-                        <?php
-                        db_input('o15_codigo', 10, $Io15_codigo, true, 'hidden', $db_opcao);
-                        db_input('o15_recurso', 10, $Io15_recurso, true, 'text', $db_opcao, " onchange='js_pesquisac62_codrec(false);'");
-                        db_input('o15_descr', 40, $Io15_descr, true, 'text', 3, '');
-                        ?>
+                        <input type="hidden" id="o15_codigo" name="o15_codigo" readonly class="readonly">
+                        <input type="text" style="width: 60px;" id="gestao" readonly class="readonly">
+                        <input type="text" style="width: 60px;" id="o15_recurso" name="o15_recurso" readonly class="readonly">
+                        <input type="text" style="width: 360px;" id="descricaoRecurso" lang="descricao" readonly
+                               class="readonly">
                     </td>
                 </tr>
             </table>
@@ -266,11 +264,26 @@ db_menu();
         func_nome.hide();
     }
 
-    const lookUpAluno = new DBLookUp($('ancoraFonteRecurso'), $('o15_recurso'), $('o15_descr'), {
-        'sArquivo': 'func_fonterecurso.php',
+    const lookUpRecurso = new DBLookUp($('ancoraFonteRecurso'), $('gestao'), $('descricaoRecurso'), {
+        'sArquivo': 'func_novosRecursos.php',
         'sLabel': 'Pesquisar Fonte de Recurso',
-        'sObjetoLookUp': "db_iframe_orctiporec"
+        'sObjetoLookUp': "db_iframe_orctiporec",
+        'aCamposAdicionais': ['o15_codigo', 'o15_recurso']
     });
+
+    $('gestao').classList.remove('field-size2');
+    $('descricaoRecurso').classList.remove('field-size8');
+    lookUpRecurso.setCallBack('onClick', (retorno) => {
+        console.log(retorno)
+        preencheForm(retorno[0], retorno[1], retorno[2], retorno[3]);
+    });
+
+    const preencheForm = (recurso, descricao, id, subrecurso) => {
+        $('o15_codigo').value = id;
+        $('gestao').value = recurso;
+        $('descricaoRecurso').value = descricao;
+        $('o15_recurso').value = subrecurso;
+    };
 
     function js_pesquisarOrdens() {
 
@@ -286,6 +299,7 @@ db_menu();
         oParam.dtDataFim = $F('dataordemfinal');
         oParam.iCodEmp = $F('e60_codemp');
         oParam.iNumCgm = $F('z01_numcgm');
+        oParam.fonteGestao = $F('gestao');
         oParam.fonteRecurso = $F('o15_recurso');
         oParam.sDtAut = '';
         oParam.iOPauxiliar = '';
@@ -347,7 +361,7 @@ db_menu();
                     var aLinha = new Array();
                     aLinha[0] = "<a onclick='js_JanelaAutomatica(\"empempenho\"," + e60_numemp + ");return false;' href='#'>";
                     aLinha[0] += e60_codemp + "/" + e60_anousu + "</a>";
-                    aLinha[1] = o15_codigo;
+                    aLinha[1] = recurso;
                     aLinha[2] = e50_codord;
                     aLinha[3] = z01_nome.urlDecode().substring(0, 20);
                     aLinha[4] = js_formatar((e53_valor - e53_vlranu), "f");
@@ -440,7 +454,7 @@ db_menu();
 
         gridNotas = new DBGrid("gridNotas");
         gridNotas.nameInstance = "gridNotas";
-        gridNotas.setCellWidth(new Array("10%", "5%", "10%", "35%", "10%", "10%", "10%", "10%", "10%"));
+        gridNotas.setCellWidth(new Array("10%", "10%", "10%", "20%", "10%", "10%", "10%", "10%", "10%"));
         gridNotas.setCellAlign(new Array("center", "center", "center", "left", "right", "right", "right", "right", "right"));
         gridNotas.setHeader(new Array("Empenho",
             "Recurso",

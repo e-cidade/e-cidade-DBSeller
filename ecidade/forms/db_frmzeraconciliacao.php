@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("db89_codagencia");
 	      <?=db_ancora(@$Ldb83_sequencial,"js_pesquisa();",$db_opcao);?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('db83_sequencial',10,$Idb83_sequencial,true,'text',3,"");
 				  db_input('db83_descricao',50,$Idb83_descricao,true,'text',3,"");
 				?>
@@ -53,7 +53,7 @@ $clrotulo->label("db89_codagencia");
 	      <b>Data de processamento : </b>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_inputdata('data',null,null,null,true,'text',1);
 	      ?>
 	    </td>
@@ -108,7 +108,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_contabancaria.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

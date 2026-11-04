@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("nomeinst");
                  <?=@$Lo138_sequencial?>
               </td>
               <td> 
-                <?
+                <?php
                 db_input('o138_sequencial',10,$Io138_sequencial,true,'text', 3,"");
                 ?>
               </td>
@@ -55,7 +55,7 @@ $clrotulo->label("nomeinst");
                  <?=@$Lo138_numerolei?>
               </td>
               <td> 
-              <?
+              <?php
               db_input('o138_numerolei',25,$Io138_numerolei,true,'text',$db_opcao,"")
               ?>
               </td>
@@ -65,7 +65,7 @@ $clrotulo->label("nomeinst");
                  <?=@$Lo138_data?>
               </td>
               <td> 
-              <?
+              <?php
               db_inputdata('o138_data',@$o138_data_dia,@$o138_data_mes,@$o138_data_ano,true,'text',$db_opcao,"")
               ?>
               </td>
@@ -76,7 +76,7 @@ $clrotulo->label("nomeinst");
                  <legend>
                  <?=@$Lo138_textolei?>
                  </legend>
-                 <?  
+                 <?php  
                  db_textarea('o138_textolei',6,0,$Io138_textolei,true,'text',$db_opcao," style='width:100%'");
                  ?>
               </fieldset>
@@ -120,7 +120,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcprojetolei.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

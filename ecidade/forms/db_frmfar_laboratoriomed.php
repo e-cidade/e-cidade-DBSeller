@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("fa24_i_codigo");
        <?=@$Lfa32_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa32_i_codigo',10,$Ifa32_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa32_i_medanvisa?>">
-       <?
+       <?php
        db_ancora(@$Lfa32_i_medanvisa,"js_pesquisafa32_i_medanvisa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa32_i_medanvisa',10,$Ifa32_i_medanvisa,true,'text',$db_opcao," onchange='js_pesquisafa32_i_medanvisa(false);'")
 ?>
-       <?
+       <?php
 db_input('fa14_c_medanvisa',40,@$Ifa14_c_medanvisa,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa32_i_laboratorio?>">
-       <?
+       <?php
        db_ancora(@$Lfa32_i_laboratorio,"js_pesquisafa32_i_laboratorio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa32_i_laboratorio',10,$Ifa32_i_laboratorio,true,'text',$db_opcao," onchange='js_pesquisafa32_i_laboratorio(false);'")
 ?>
-       <?
+       <?php
 db_input('fa24_c_laboratorio',40,@$Ifa24_c_laboratorio,true,'text',3,'')
        ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_laboratoriomed.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

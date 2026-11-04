@@ -1,97 +1,97 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: agua
 //CLASSE DA ENTIDADE aguabase
-class cl_aguabase { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x01_matric = 0; 
-   var $x01_codrua = 0; 
-   var $x01_codbairro = 0; 
-   var $x01_numcgm = 0; 
-   var $x01_promit = 0; 
-   var $x01_distrito = 0; 
-   var $x01_zona = 0; 
-   var $x01_quadra = 0; 
-   var $x01_numero = 0; 
-   var $x01_orientacao = null; 
-   var $x01_rota = 0; 
-   var $x01_dtcadastro_dia = null; 
-   var $x01_dtcadastro_mes = null; 
-   var $x01_dtcadastro_ano = null; 
-   var $x01_dtcadastro = null; 
-   var $x01_qtdponto = 0; 
-   var $x01_obs = null; 
-   var $x01_multiplicador = 'f'; 
-   var $x01_qtdeconomia = 0; 
-   var $x01_entrega = 0; 
-   var $x01_letra = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_aguabase {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x01_matric = 0;
+   var $x01_codrua = 0;
+   var $x01_codbairro = 0;
+   var $x01_numcgm = 0;
+   var $x01_promit = 0;
+   var $x01_distrito = 0;
+   var $x01_zona = 0;
+   var $x01_quadra = 0;
+   var $x01_numero = 0;
+   var $x01_orientacao = null;
+   var $x01_rota = 0;
+   var $x01_dtcadastro_dia = null;
+   var $x01_dtcadastro_mes = null;
+   var $x01_dtcadastro_ano = null;
+   var $x01_dtcadastro = null;
+   var $x01_qtdponto = 0;
+   var $x01_obs = null;
+   var $x01_multiplicador = 'f';
+   var $x01_qtdeconomia = 0;
+   var $x01_entrega = 0;
+   var $x01_letra = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x01_matric = int4 = Matrícula 
-                 x01_codrua = int4 = Logradouro 
-                 x01_codbairro = int4 = Bairro 
-                 x01_numcgm = int4 = Proprietário 
-                 x01_promit = int4 = Promitente 
-                 x01_distrito = int4 = Distrito 
-                 x01_zona = int4 = Zona Fiscal 
-                 x01_quadra = int4 = Quadra 
-                 x01_numero = int4 = Número 
-                 x01_orientacao = varchar(10) = orientação 
-                 x01_rota = int4 = Rota 
-                 x01_dtcadastro = date = Cadastro 
-                 x01_qtdponto = int4 = Pontos 
-                 x01_obs = text = Observações 
-                 x01_multiplicador = bool = Multiplica Economias 
-                 x01_qtdeconomia = int4 = Economias 
-                 x01_entrega = int4 = Zona Entrega 
-                 x01_letra = char(1) = Letra 
+                 x01_matric = int4 = Matrícula
+                 x01_codrua = int4 = Logradouro
+                 x01_codbairro = int4 = Bairro
+                 x01_numcgm = int4 = Proprietário
+                 x01_promit = int4 = Promitente
+                 x01_distrito = int4 = Distrito
+                 x01_zona = int4 = Zona Fiscal
+                 x01_quadra = int4 = Quadra
+                 x01_numero = int4 = Número
+                 x01_orientacao = varchar(10) = orientação
+                 x01_rota = int4 = Rota
+                 x01_dtcadastro = date = Cadastro
+                 x01_qtdponto = int4 = Pontos
+                 x01_obs = text = Observações
+                 x01_multiplicador = bool = Multiplica Economias
+                 x01_qtdeconomia = int4 = Economias
+                 x01_entrega = int4 = Zona Entrega
+                 x01_letra = char(1) = Letra
                  ";
-   //funcao construtor da classe 
-   function cl_aguabase() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguabase"); 
+     $this->rotulo = new rotulo("aguabase");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -100,7 +100,7 @@ class cl_aguabase {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x01_matric = ($this->x01_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["x01_matric"]:$this->x01_matric);
        $this->x01_codrua = ($this->x01_codrua == ""?@$GLOBALS["HTTP_POST_VARS"]["x01_codrua"]:$this->x01_codrua);
@@ -132,9 +132,9 @@ class cl_aguabase {
      }
    }
    // funcao para inclusao
-   function incluir ($x01_matric){ 
+   public function incluir ($x01_matric){
       $this->atualizacampos();
-     if($this->x01_codrua == null ){ 
+     if($this->x01_codrua == null ){
        $this->erro_sql = " Campo Logradouro nao Informado.";
        $this->erro_campo = "x01_codrua";
        $this->erro_banco = "";
@@ -143,7 +143,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_codbairro == null ){ 
+     if($this->x01_codbairro == null ){
        $this->erro_sql = " Campo Bairro nao Informado.";
        $this->erro_campo = "x01_codbairro";
        $this->erro_banco = "";
@@ -152,7 +152,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_numcgm == null ){ 
+     if($this->x01_numcgm == null ){
        $this->erro_sql = " Campo Proprietário nao Informado.";
        $this->erro_campo = "x01_numcgm";
        $this->erro_banco = "";
@@ -161,10 +161,10 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_promit == null ){ 
+     if($this->x01_promit == null ){
        $this->x01_promit = "0";
      }
-     if($this->x01_distrito == null ){ 
+     if($this->x01_distrito == null ){
        $this->erro_sql = " Campo Distrito nao Informado.";
        $this->erro_campo = "x01_distrito";
        $this->erro_banco = "";
@@ -173,7 +173,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_zona == null ){ 
+     if($this->x01_zona == null ){
        $this->erro_sql = " Campo Zona Fiscal nao Informado.";
        $this->erro_campo = "x01_zona";
        $this->erro_banco = "";
@@ -182,7 +182,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_quadra == null ){ 
+     if($this->x01_quadra == null ){
        $this->erro_sql = " Campo Quadra nao Informado.";
        $this->erro_campo = "x01_quadra";
        $this->erro_banco = "";
@@ -191,7 +191,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_numero == null ){ 
+     if($this->x01_numero == null ){
        $this->erro_sql = " Campo Número nao Informado.";
        $this->erro_campo = "x01_numero";
        $this->erro_banco = "";
@@ -200,7 +200,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_rota == null ){ 
+     if($this->x01_rota == null ){
        $this->erro_sql = " Campo Rota nao Informado.";
        $this->erro_campo = "x01_rota";
        $this->erro_banco = "";
@@ -209,7 +209,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_dtcadastro == null ){ 
+     if($this->x01_dtcadastro == null ){
        $this->erro_sql = " Campo Cadastro nao Informado.";
        $this->erro_campo = "x01_dtcadastro_dia";
        $this->erro_banco = "";
@@ -218,7 +218,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_qtdponto == null ){ 
+     if($this->x01_qtdponto == null ){
        $this->erro_sql = " Campo Pontos nao Informado.";
        $this->erro_campo = "x01_qtdponto";
        $this->erro_banco = "";
@@ -227,7 +227,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_multiplicador == null ){ 
+     if($this->x01_multiplicador == null ){
        $this->erro_sql = " Campo Multiplica Economias nao Informado.";
        $this->erro_campo = "x01_multiplicador";
        $this->erro_banco = "";
@@ -236,7 +236,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_qtdeconomia == null ){ 
+     if($this->x01_qtdeconomia == null ){
        $this->erro_sql = " Campo Economias nao Informado.";
        $this->erro_campo = "x01_qtdeconomia";
        $this->erro_banco = "";
@@ -245,7 +245,7 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x01_entrega == null ){ 
+     if($this->x01_entrega == null ){
        $this->erro_sql = " Campo Zona Entrega nao Informado.";
        $this->erro_campo = "x01_entrega";
        $this->erro_banco = "";
@@ -254,8 +254,8 @@ class cl_aguabase {
        $this->erro_status = "0";
        return false;
      }
-       $this->x01_matric = $x01_matric; 
-     if(($this->x01_matric == null) || ($this->x01_matric == "") ){ 
+       $this->x01_matric = $x01_matric;
+     if(($this->x01_matric == null) || ($this->x01_matric == "") ){
        $this->erro_sql = " Campo x01_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -264,47 +264,47 @@ class cl_aguabase {
        return false;
      }
      $sql = "insert into aguabase(
-                                       x01_matric 
-                                      ,x01_codrua 
-                                      ,x01_codbairro 
-                                      ,x01_numcgm 
-                                      ,x01_promit 
-                                      ,x01_distrito 
-                                      ,x01_zona 
-                                      ,x01_quadra 
-                                      ,x01_numero 
-                                      ,x01_orientacao 
-                                      ,x01_rota 
-                                      ,x01_dtcadastro 
-                                      ,x01_qtdponto 
-                                      ,x01_obs 
-                                      ,x01_multiplicador 
-                                      ,x01_qtdeconomia 
-                                      ,x01_entrega 
-                                      ,x01_letra 
+                                       x01_matric
+                                      ,x01_codrua
+                                      ,x01_codbairro
+                                      ,x01_numcgm
+                                      ,x01_promit
+                                      ,x01_distrito
+                                      ,x01_zona
+                                      ,x01_quadra
+                                      ,x01_numero
+                                      ,x01_orientacao
+                                      ,x01_rota
+                                      ,x01_dtcadastro
+                                      ,x01_qtdponto
+                                      ,x01_obs
+                                      ,x01_multiplicador
+                                      ,x01_qtdeconomia
+                                      ,x01_entrega
+                                      ,x01_letra
                        )
                 values (
-                                $this->x01_matric 
-                               ,$this->x01_codrua 
-                               ,$this->x01_codbairro 
-                               ,$this->x01_numcgm 
-                               ,$this->x01_promit 
-                               ,$this->x01_distrito 
-                               ,$this->x01_zona 
-                               ,$this->x01_quadra 
-                               ,$this->x01_numero 
-                               ,'$this->x01_orientacao' 
-                               ,$this->x01_rota 
-                               ,".($this->x01_dtcadastro == "null" || $this->x01_dtcadastro == ""?"null":"'".$this->x01_dtcadastro."'")." 
-                               ,$this->x01_qtdponto 
-                               ,'$this->x01_obs' 
-                               ,'$this->x01_multiplicador' 
-                               ,$this->x01_qtdeconomia 
-                               ,$this->x01_entrega 
-                               ,'$this->x01_letra' 
+                                $this->x01_matric
+                               ,$this->x01_codrua
+                               ,$this->x01_codbairro
+                               ,$this->x01_numcgm
+                               ,$this->x01_promit
+                               ,$this->x01_distrito
+                               ,$this->x01_zona
+                               ,$this->x01_quadra
+                               ,$this->x01_numero
+                               ,'$this->x01_orientacao'
+                               ,$this->x01_rota
+                               ,".($this->x01_dtcadastro == "null" || $this->x01_dtcadastro == ""?"null":"'".$this->x01_dtcadastro."'")."
+                               ,$this->x01_qtdponto
+                               ,'$this->x01_obs'
+                               ,'$this->x01_multiplicador'
+                               ,$this->x01_qtdeconomia
+                               ,$this->x01_entrega
+                               ,'$this->x01_letra'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "aguabase ($this->x01_matric) nao Incluído. Inclusao Abortada.";
@@ -353,16 +353,16 @@ class cl_aguabase {
        $resac = db_query("insert into db_acount values($acount,1426,8709,'','".AddSlashes(pg_result($resaco,0,'x01_letra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x01_matric=null) { 
+   public function alterar ($x01_matric=null) {
       $this->atualizacampos();
      $sql = " update aguabase set ";
      $virgula = "";
-     if(trim($this->x01_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_matric"])){ 
+     if(trim($this->x01_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_matric"])){
        $sql  .= $virgula." x01_matric = $this->x01_matric ";
        $virgula = ",";
-       if(trim($this->x01_matric) == null ){ 
+       if(trim($this->x01_matric) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "x01_matric";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_codrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_codrua"])){ 
+     if(trim($this->x01_codrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_codrua"])){
        $sql  .= $virgula." x01_codrua = $this->x01_codrua ";
        $virgula = ",";
-       if(trim($this->x01_codrua) == null ){ 
+       if(trim($this->x01_codrua) == null ){
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "x01_codrua";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_codbairro"])){ 
+     if(trim($this->x01_codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_codbairro"])){
        $sql  .= $virgula." x01_codbairro = $this->x01_codbairro ";
        $virgula = ",";
-       if(trim($this->x01_codbairro) == null ){ 
+       if(trim($this->x01_codbairro) == null ){
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "x01_codbairro";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_numcgm"])){ 
+     if(trim($this->x01_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_numcgm"])){
        $sql  .= $virgula." x01_numcgm = $this->x01_numcgm ";
        $virgula = ",";
-       if(trim($this->x01_numcgm) == null ){ 
+       if(trim($this->x01_numcgm) == null ){
          $this->erro_sql = " Campo Proprietário nao Informado.";
          $this->erro_campo = "x01_numcgm";
          $this->erro_banco = "";
@@ -411,17 +411,17 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_promit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_promit"])){ 
-        if(trim($this->x01_promit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x01_promit"])){ 
-           $this->x01_promit = "0" ; 
-        } 
+     if(trim($this->x01_promit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_promit"])){
+        if(trim($this->x01_promit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x01_promit"])){
+           $this->x01_promit = "0" ;
+        }
        $sql  .= $virgula." x01_promit = $this->x01_promit ";
        $virgula = ",";
      }
-     if(trim($this->x01_distrito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_distrito"])){ 
+     if(trim($this->x01_distrito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_distrito"])){
        $sql  .= $virgula." x01_distrito = $this->x01_distrito ";
        $virgula = ",";
-       if(trim($this->x01_distrito) == null ){ 
+       if(trim($this->x01_distrito) == null ){
          $this->erro_sql = " Campo Distrito nao Informado.";
          $this->erro_campo = "x01_distrito";
          $this->erro_banco = "";
@@ -431,10 +431,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_zona"])){ 
+     if(trim($this->x01_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_zona"])){
        $sql  .= $virgula." x01_zona = $this->x01_zona ";
        $virgula = ",";
-       if(trim($this->x01_zona) == null ){ 
+       if(trim($this->x01_zona) == null ){
          $this->erro_sql = " Campo Zona Fiscal nao Informado.";
          $this->erro_campo = "x01_zona";
          $this->erro_banco = "";
@@ -444,10 +444,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_quadra"])){ 
+     if(trim($this->x01_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_quadra"])){
        $sql  .= $virgula." x01_quadra = $this->x01_quadra ";
        $virgula = ",";
-       if(trim($this->x01_quadra) == null ){ 
+       if(trim($this->x01_quadra) == null ){
          $this->erro_sql = " Campo Quadra nao Informado.";
          $this->erro_campo = "x01_quadra";
          $this->erro_banco = "";
@@ -457,10 +457,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_numero"])){ 
+     if(trim($this->x01_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_numero"])){
        $sql  .= $virgula." x01_numero = $this->x01_numero ";
        $virgula = ",";
-       if(trim($this->x01_numero) == null ){ 
+       if(trim($this->x01_numero) == null ){
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "x01_numero";
          $this->erro_banco = "";
@@ -470,14 +470,14 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_orientacao"])){ 
+     if(trim($this->x01_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_orientacao"])){
        $sql  .= $virgula." x01_orientacao = '$this->x01_orientacao' ";
        $virgula = ",";
      }
-     if(trim($this->x01_rota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_rota"])){ 
+     if(trim($this->x01_rota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_rota"])){
        $sql  .= $virgula." x01_rota = $this->x01_rota ";
        $virgula = ",";
-       if(trim($this->x01_rota) == null ){ 
+       if(trim($this->x01_rota) == null ){
          $this->erro_sql = " Campo Rota nao Informado.";
          $this->erro_campo = "x01_rota";
          $this->erro_banco = "";
@@ -487,10 +487,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_dtcadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_dtcadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x01_dtcadastro_dia"] !="") ){ 
+     if(trim($this->x01_dtcadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_dtcadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x01_dtcadastro_dia"] !="") ){
        $sql  .= $virgula." x01_dtcadastro = '$this->x01_dtcadastro' ";
        $virgula = ",";
-       if(trim($this->x01_dtcadastro) == null ){ 
+       if(trim($this->x01_dtcadastro) == null ){
          $this->erro_sql = " Campo Cadastro nao Informado.";
          $this->erro_campo = "x01_dtcadastro_dia";
          $this->erro_banco = "";
@@ -499,11 +499,11 @@ class cl_aguabase {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["x01_dtcadastro_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["x01_dtcadastro_dia"])){
          $sql  .= $virgula." x01_dtcadastro = null ";
          $virgula = ",";
-         if(trim($this->x01_dtcadastro) == null ){ 
+         if(trim($this->x01_dtcadastro) == null ){
            $this->erro_sql = " Campo Cadastro nao Informado.";
            $this->erro_campo = "x01_dtcadastro_dia";
            $this->erro_banco = "";
@@ -514,10 +514,10 @@ class cl_aguabase {
          }
        }
      }
-     if(trim($this->x01_qtdponto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_qtdponto"])){ 
+     if(trim($this->x01_qtdponto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_qtdponto"])){
        $sql  .= $virgula." x01_qtdponto = $this->x01_qtdponto ";
        $virgula = ",";
-       if(trim($this->x01_qtdponto) == null ){ 
+       if(trim($this->x01_qtdponto) == null ){
          $this->erro_sql = " Campo Pontos nao Informado.";
          $this->erro_campo = "x01_qtdponto";
          $this->erro_banco = "";
@@ -527,14 +527,14 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_obs"])){ 
+     if(trim($this->x01_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_obs"])){
        $sql  .= $virgula." x01_obs = '$this->x01_obs' ";
        $virgula = ",";
      }
-     if(trim($this->x01_multiplicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_multiplicador"])){ 
+     if(trim($this->x01_multiplicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_multiplicador"])){
        $sql  .= $virgula." x01_multiplicador = '$this->x01_multiplicador' ";
        $virgula = ",";
-       if(trim($this->x01_multiplicador) == null ){ 
+       if(trim($this->x01_multiplicador) == null ){
          $this->erro_sql = " Campo Multiplica Economias nao Informado.";
          $this->erro_campo = "x01_multiplicador";
          $this->erro_banco = "";
@@ -544,10 +544,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_qtdeconomia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_qtdeconomia"])){ 
+     if(trim($this->x01_qtdeconomia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_qtdeconomia"])){
        $sql  .= $virgula." x01_qtdeconomia = $this->x01_qtdeconomia ";
        $virgula = ",";
-       if(trim($this->x01_qtdeconomia) == null ){ 
+       if(trim($this->x01_qtdeconomia) == null ){
          $this->erro_sql = " Campo Economias nao Informado.";
          $this->erro_campo = "x01_qtdeconomia";
          $this->erro_banco = "";
@@ -557,10 +557,10 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_entrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_entrega"])){ 
+     if(trim($this->x01_entrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_entrega"])){
        $sql  .= $virgula." x01_entrega = $this->x01_entrega ";
        $virgula = ",";
-       if(trim($this->x01_entrega) == null ){ 
+       if(trim($this->x01_entrega) == null ){
          $this->erro_sql = " Campo Zona Entrega nao Informado.";
          $this->erro_campo = "x01_entrega";
          $this->erro_banco = "";
@@ -570,7 +570,7 @@ class cl_aguabase {
          return false;
        }
      }
-     if(trim($this->x01_letra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_letra"])){ 
+     if(trim($this->x01_letra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x01_letra"])){
        $sql  .= $virgula." x01_letra = '$this->x01_letra' ";
        $virgula = ",";
      }
@@ -624,7 +624,7 @@ class cl_aguabase {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguabase nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x01_matric;
@@ -652,14 +652,14 @@ class cl_aguabase {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x01_matric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x01_matric=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x01_matric));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -702,7 +702,7 @@ class cl_aguabase {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguabase nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$x01_matric;
@@ -730,11 +730,11 @@ class cl_aguabase {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -756,10 +756,10 @@ class cl_aguabase {
       }
      return $result;
    }
-   function sql_query ( $x01_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $x01_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -777,15 +777,15 @@ class cl_aguabase {
      $sql2 = "";
      if($dbwhere==""){
        if($x01_matric!=null ){
-         $sql2 .= " where aguabase.x01_matric = $x01_matric "; 
-       } 
+         $sql2 .= " where aguabase.x01_matric = $x01_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -826,10 +826,10 @@ class cl_aguabase {
     return $sSql;
   }
 
-   function sql_query_aguahidromatric ( $x01_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_aguahidromatric ( $x01_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -847,15 +847,15 @@ class cl_aguabase {
      $sql2 = "";
      if($dbwhere==""){
        if($x01_matric!=null ){
-         $sql2 .= " where aguabase.x01_matric = $x01_matric "; 
-       } 
+         $sql2 .= " where aguabase.x01_matric = $x01_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -864,10 +864,10 @@ class cl_aguabase {
      }
      return $sql;
   }
-   function sql_query_aguahidromatricpropri ( $x01_matric=null, $campos="*", $ordem=null, $dbwhere="" ){ 
+   public function sql_query_aguahidromatricpropri ( $x01_matric=null, $campos="*", $ordem=null, $dbwhere="" ){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -888,15 +888,15 @@ class cl_aguabase {
      $sql2 = "";
      if($dbwhere==""){
        if($x01_matric!=null ){
-         $sql2 .= " where aguabase.x01_matric = $x01_matric "; 
-       } 
+         $sql2 .= " where aguabase.x01_matric = $x01_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -905,10 +905,10 @@ class cl_aguabase {
      }
      return $sql;
   }
-   function sql_query_file ( $x01_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $x01_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -921,15 +921,15 @@ class cl_aguabase {
      $sql2 = "";
      if($dbwhere==""){
        if($x01_matric!=null ){
-         $sql2 .= " where aguabase.x01_matric = $x01_matric "; 
-       } 
+         $sql2 .= " where aguabase.x01_matric = $x01_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

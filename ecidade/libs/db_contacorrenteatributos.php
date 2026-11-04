@@ -105,8 +105,12 @@ class DBContaCorrenteAtributos
         $hash = Processamento::montarHashesDolancamento($lancamento);
         $chave = key($hash);
         $arrayProcessado = array();
-        Processamento::calcularValorMovimentacaoDoHash($hash[$chave], $lancamento->getValor(),
-            $lancamento->getNatureza(), $arrayProcessado, $lancamento->getSistema());
+        Processamento::calcularValorMovimentacaoDoHash(
+            $hash[$chave],
+            $lancamento->getValor(),
+            $lancamento->getNatureza(),
+            $arrayProcessado, $lancamento->getSistema()
+        );
         $repository = LancamentoRepository::getInstance();
         Processamento::salvarLancamentos(array($lancamento), $repository);
         $chave = key($arrayProcessado);
@@ -214,12 +218,12 @@ SQL_BUSCA_LANCAMENTO;
             if (empty($registros[$stdLinha->c124_natureza])) {
 
                 $stdRegistro = (object)array(
-                    'sinal'          => $stdLinha->c124_natureza,
+                    'sinal' => $stdLinha->c124_natureza,
                     'conta_contabil' => (object)array(
-                        'codigo'     => $stdLinha->c60_codcon,
-                        'reduzido'   => $stdLinha->c123_reduzido,
+                        'codigo' => $stdLinha->c60_codcon,
+                        'reduzido' => $stdLinha->c123_reduzido,
                         'estrutural' => $stdLinha->c60_estrut,
-                        'descricao'  => $stdLinha->c60_descr
+                        'descricao' => $stdLinha->c60_descr
                     ),
                     'conta_corrente' => []
                 );
@@ -230,17 +234,17 @@ SQL_BUSCA_LANCAMENTO;
             if (empty($linha->conta_corrente[$stdLinha->c123_conplanosistema])) {
 
                 $linha->conta_corrente[$stdLinha->c123_conplanosistema] = (object)array(
-                    'codigo'    => $stdLinha->c123_conplanosistema,
+                    'codigo' => $stdLinha->c123_conplanosistema,
                     'descricao' => $stdLinha->c122_descricao,
                     'atributos' => []
                 );
             }
 
             $valorAtributo = (object)array(
-                "codigo"    => $stdLinha->c121_sequencial,
+                "codigo" => $stdLinha->c121_sequencial,
                 "descricao" => $stdLinha->c121_descricao,
-                "sigla"     => $stdLinha->c121_sigla,
-                "valor"     => $stdLinha->c123_valor
+                "sigla" => $stdLinha->c121_sigla,
+                "valor" => $stdLinha->c123_valor
             );
             $linha->conta_corrente[$stdLinha->c123_conplanosistema]->atributos[] = $valorAtributo;
         }

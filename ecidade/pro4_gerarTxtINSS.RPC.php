@@ -242,7 +242,12 @@ try {
           if ($value->destinacao == 'CONJUNTO_HABITACIONAL_POPULAR') {
             $oRegistroAreaPrincipal->setQtdTotalUnidadesBloco($qtdTotalUnidadesBloco->ob07_unidades);
           }
-          $oRegistroAreaPrincipal->setArea($value->areaobra);
+
+          if ($value->tipohabitese == "P") {
+            $oRegistroAreaPrincipal->setArea($value->areaobrahabite);
+          } else {
+            $oRegistroAreaPrincipal->setArea($value->areaobra);
+          }
 
           $oRegistroAreaComplementar = new RegistroAreaComplementar();
 
@@ -1177,12 +1182,12 @@ function validaCPF($cpf) {
     for ($t = 9; $t < 11; $t++) {
 
       for ($d = 0, $c = 0; $c < $t; $c++) {
-        $d += $cpf{$c} * (($t + 1) - $c);
+        $d += $cpf[$c] * (($t + 1) - $c);
       }
 
       $d = ((10 * $d) % 11) % 10;
 
-      if ($cpf{$c} != $d) {
+      if ($cpf[$c] != $d) {
         return false;
       }
     }

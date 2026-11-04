@@ -56,7 +56,6 @@ if (isset($incluir)) {
     $clveicmanut->ve62_anousu  = db_getsession("DB_anousu");
 
     if (!empty($ve65_veicretirada)) {
-
       $clveicmanut->ve62_veicmotoristas = null;
       $ve62_veicmotoristas              = null;
     }
@@ -78,6 +77,12 @@ if (isset($incluir)) {
         $lFksValidas = false;
       }
     }
+
+    if (empty($ve62_veiccadtiposervico)) {
+        $erro_msg = "O tipo de serviço deve ser informado.";
+        $lFksValidas = false;
+    }
+
     if (!empty($ve62_veiccadtiposervico)) {
 
       $sSqlFk = "select ve28_codigo from veiccadtiposervico where ve28_codigo = {$ve62_veiccadtiposervico} ";

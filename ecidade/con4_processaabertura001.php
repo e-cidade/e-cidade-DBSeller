@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -51,7 +51,7 @@ $erro = false;
 // inclusão do conplanoconta
 if (isset($Processa_bancos) && ($Processa_bancos == 'Processar')) {
     // obtem uma matriz de chaves
-    $chaves = split('#', $chaves);
+    $chaves =explode('#', $chaves);
     if (count($chaves) > 0) {
         for ($i = 0; $i < count($chaves); $i ++) {
             db_inicio_transacao();
@@ -84,7 +84,7 @@ if (isset($Processa_bancos) && ($Processa_bancos == 'Processar')) {
 // processa contas sintéticas
 if (isset($Processa_sintetica) && ($Processa_sintetica == 'Processar')) {
     // obtem uma matriz de chaves
-    $chaves = split('#', $chaves);
+    $chaves =explode('#', $chaves);
     if (count($chaves) > 0) {
 
         for ($i = 0; $i < count($chaves); $i ++) {
@@ -158,7 +158,7 @@ if (isset($Processa_sintetica) && ($Processa_sintetica == 'Processar')) {
 // processa contas analiticas
 if (isset($Processa_analitica) && ($Processa_analitica == 'Processar')) {
     // obtem uma matriz de chaves
-    $chaves = split('#', $chaves);
+    $chaves =explode('#', $chaves);
     if (count($chaves) > 0) {
         for ($i = 0; $i < count($chaves); $i ++) {
             db_inicio_transacao();
@@ -210,7 +210,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
     $dtini = $ano.'-01-01';
     $dtfim = $ano.'-12-31';
 
-    $chaves = split('#', $chaves);
+    $chaves =explode('#', $chaves);
     if (count($chaves) > 0) {
 
         for ($i = 0; $i < count($chaves); $i ++) {
@@ -327,11 +327,11 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
         </tr>
     </table>
 
-    <?
+    <?php
     if (isset ($processa_sintetica) && $processa_sintetica == "Selecionar") {
     $sql = "select c60_codcon, c60_estrut, trim(c60_descr) as c60_descr
                       from conplano
-                      where c60_anousu=".(db_getsession("DB_anousu")-1)."                       
+                      where c60_anousu=".(db_getsession("DB_anousu")-1)."
                       EXCEPT
                       select c60_codcon, c60_estrut,  trim(c60_descr) as c60_descr
                       from conplano
@@ -352,7 +352,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
     ?> <table border=0 width=100%>
         <tr><td width="100%" align="center" ><input type="button"  name="Processa_sintetica"   value="Processar" onClick="js_sintetica();"> </td></tr>
         <table>
-            <?
+            <?php
             }
             if (isset ($processa_plano) && $processa_plano == "Selecionar") {
 
@@ -367,7 +367,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
                         inner join conplano on c61_anousu=c60_anousu and c61_codcon=c60_codcon
                   where c60_anousu=".db_getsession("DB_anousu")." and
                              c61_instit = ".db_getsession("DB_instit")."
-           
+
                   order by c60_estrut
                    ";
             //	die($sql);
@@ -385,19 +385,19 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
             <table border=0 width=100%>
                 <tr><td width="100%" align="center" ><input type="button"  name="Processa_analitica"   value="Processar" onClick="js_enviar();"> </td></tr>
                 <table>
-                    <?
+                    <?php
 
 
                     }
 
                     //---
                     if (isset ($processa_bancos) && $processa_bancos == "Selecionar") {
-                    $sql = "select x.* 
-		                 from  (select conplanoconta.*	
-						 from conplanoconta 
+                    $sql = "select x.*
+		                 from  (select conplanoconta.*
+						 from conplanoconta
 							 inner join conplano on c60_codcon=c63_codcon and c60_anousu=c63_anousu
-						 where	c63_anousu = ". (db_getsession("DB_anousu") - 1)."				
-		                 ) as x  				
+						 where	c63_anousu = ". (db_getsession("DB_anousu") - 1)."
+		                 ) as x
 		                     left join conplanoconta cta on  cta.c63_codcon=x.c63_codcon and cta.c63_anousu=".db_getsession("DB_anousu")."
 		                 where
 		    				 cta.c63_codcon is null
@@ -416,7 +416,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
                     <table border=0 width=100%>
                         <tr><td width="100%" align="center" ><input type="button"  name="processa_bancos"   value="Processar" onClick="js_conplanoconta();"> </td></tr>
                         <table>
-                            <?
+                            <?php
 
 
                             }
@@ -431,16 +431,16 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
 							    c60_estrut,
 							    c60_anousu,
 							    c61_reduz,
-		                        exe.c62_anousu,    
+		                        exe.c62_anousu,
 							    exe.c62_vlrdeb,
 							    exe.c62_vlrcre,
                                 round(substr(fc_planosaldonovo,45,14)::float8,2)::float8 as c68_saldo
 				 from (
 						select c60_estrut,
                                    c60_anousu,
-                                   c61_reduz,						    
+                                   c61_reduz,
                                    fc_planosaldonovo(c60_anousu,c61_reduz ,'$dtini','$dtfim',true)
-						from conplanoexe                            
+						from conplanoexe
 						    inner join conplanoreduz on c61_reduz=c62_reduz and c61_anousu=c62_anousu
 						    inner join conplano on c60_codcon=c61_codcon and c60_anousu=c61_anousu
 						where c61_anousu=". (db_getsession("DB_anousu") - 1)." and c61_instit=".db_getsession("DB_instit")." and substr(c60_estrut,1,1) in ('1','2','5','6','7','8')
@@ -464,7 +464,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
                             <table border=0 width=100%>
                                 <tr><td width="100%" align="center" ><input type="button"  name="processa_saldos"   value="Processar" onClick="js_saldos();"> </td></tr>
                                 <table>
-                                    <?
+                                    <?php
 
 
                                     }
@@ -477,7 +477,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
 
 
 
-<?
+<?php
 
 
 

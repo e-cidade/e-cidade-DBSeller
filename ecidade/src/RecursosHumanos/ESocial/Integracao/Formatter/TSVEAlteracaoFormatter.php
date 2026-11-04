@@ -19,6 +19,11 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 class TSVEAlteracaoFormatter extends Formatter
 {
     /**
+     * @var
+     */
+    public $servidorAtual;
+
+    /**
      * Realiza a formatação dos dados para envio da API
      *
      * @param array $dados
@@ -108,9 +113,13 @@ class TSVEAlteracaoFormatter extends Formatter
     private function atualizarGrupoTrabalhador(&$dadoServidor, Servidor $servidorEntity)
     {
         //Dados - Informações pessoais do trabalhador.
+        $dadoServidor->ideTrabSemVinculo = [];
         $dadoServidor->ideTrabSemVinculo['cpfTrab'] = $servidorEntity->getDadosTrabalhador()['cpfTrab'];
         if ($this->validaEnvioMatricula($this->servidorAtual->getMatricula(), $this->getEmpregador())) {
             $dadoServidor->ideTrabSemVinculo['matricula'] = $servidorEntity->getVinculoTrabalho()['matricula'];
+        }
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $dadoServidor->ideTrabSemVinculo['matricula'] = $this->servidorAtual->getMatriculaAnterior();
         }
         $dadoServidor->ideTrabSemVinculo['codCateg'] = $servidorEntity->getContratoTrabalho()['codCateg'];
         if (isset($dadoServidor->trabalhador)) {
@@ -121,7 +130,7 @@ class TSVEAlteracaoFormatter extends Formatter
         }
 
         //Regras -  Informações pessoais do trabalhador.
-         $this->regraPessoalTrabalhador($dadoServidor);
+        $this->regraPessoalTrabalhador($dadoServidor);
     }
 
     /**
@@ -231,6 +240,13 @@ class TSVEAlteracaoFormatter extends Formatter
         }
         //Regra - Informações relativas ao estagiário ou ao beneficiário
         $this->regraEstagiario($dadoServidor);
+
+        $dadosLocalTrabalho = $servidorEntity->getLocalTrabalhoContrato();
+        $dadoServidor->infoTSVAlteracao['infoComplementares']['localTrabGeral'] = [];
+        if (sizeof($dadosLocalTrabalho) > 0) {
+            $dado = $dadosLocalTrabalho['localTrabGeral'];
+            $dadoServidor->infoTSVAlteracao['infoComplementares']['localTrabGeral'] = $dado;
+        }
 
         //Instituição de ensino ou entidade de formação/qualificação.
         $dadoServidor->infoTSVAlteracao['infoComplementares']['infoEstagiario']['instEnsino']['cnpjInstEnsino'] = [];
@@ -358,11 +374,13 @@ class TSVEAlteracaoFormatter extends Formatter
     */
     private function regraCedencia(&$dadoServidor)
     {
-        if (!empty($dadoServidor->infoTSVAlteracao['infoComplementares']['infoTrabCedido']['tpRegPrev'])) {
-            unset($dadoServidor->infoTSVAlteracao['infoComplementares']['infoTrabCedido']);
-        }
-        if ($this->servidorAtual->getVinculo()->getCodigoCategoria() != '410') {
-            unset($dadoServidor->infoTSVAlteracao['infoComplementares']['infoTrabCedido']);
+        if (isset($dadoServidor->infoTSVAlteracao['infoComplementares']['infoTrabCedido'])) {
+            if (empty($dadoServidor->infoTSVAlteracao['infoComplementares']['infoTrabCedido']['tpRegPrev'])) {
+                unset($dadoServidor->infoTSVAlteracao['infoComplementares']['infoTrabCedido']);
+            }
+            if ($this->servidorAtual->getVinculo()->getCodigoCategoria() != '410') {
+                unset($dadoServidor->infoTSVAlteracao['infoComplementares']['infoTrabCedido']);
+            }
         }
     }
 

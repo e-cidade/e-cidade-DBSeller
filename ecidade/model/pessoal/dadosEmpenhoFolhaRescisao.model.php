@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Financeiro\Tesouraria\Helpers\SaltesHelper;
 use ECidade\Financeiro\Orcamento\Repository\RecursoRepository as RecursoRepository;
 
 /*
@@ -30,37 +31,35 @@ use ECidade\Financeiro\Orcamento\Repository\RecursoRepository as RecursoReposito
 
 
 /**
- * Gera os dados necess?rios para a cria??o dos empenhos da folha
+ * Gera os dados necessários para a criação dos empenhos da folha
  */
 class dadosEmpenhoFolhaRescisao
 {
 
     function __construct()
     {
-
     }
 
     /**
-     * Gera os dados para empenho apartir da rubricas < R950 ( Sal?rio )
+     * Gera os dados para empenho apartir da rubricas < R950 ( Salário )
      *
-     * @param string $sSigla Tipo de Folha ( Ex: Sal?rio, F?rias, Complementar, etc. )
-     * @param integer $iAnoUsu Exerc?cio da folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit institui??o
+     * @param string $sSigla Tipo de Folha ( Ex: Salário, Férias, Complementar, etc. )
+     * @param integer $iAnoUsu Exercício da folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function geraDadosEmpenhosFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
-
-        $sMsgErro = 'Gera??o de empenhos abortada';
+        $sMsgErro = 'Gerção de empenhos abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new ParameterException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         require_once(modification("libs/db_sql.php"));
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -75,11 +74,13 @@ class dadosEmpenhoFolhaRescisao
 
 
         try {
-            $lLiberada = $this->isLiberada($sSigla,
+            $lLiberada = $this->isLiberada(
+                $sSigla,
                 1,
                 $iAnoUsu,
                 $iMesUsu,
-                $aListaRescisoes);
+                $aListaRescisoes
+            );
         } catch (DBException $eException) {
             throw new DBException("{$sMsgErro}\n{$eException->getMessage()}");
         } catch (BusinessException $eException) {
@@ -96,9 +97,9 @@ class dadosEmpenhoFolhaRescisao
             throw new BusinessException("{$sMsgErro}\nempenho liberado!");
         }
 
-        $oDaorhEmpenhoFolha = db_utils::getDao('rhempenhofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhEmpenhoFolhaRhEmpRubrica = db_utils::getDao('rhempenhofolharhemprubrica');
+        $oDaorhEmpenhoFolha = new cl_rhempenhofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhEmpenhoFolhaRhEmpRubrica = new cl_rhempenhofolharhemprubrica;
         $clgeradorsql = new cl_gera_sql_folha;
 
 
@@ -112,7 +113,7 @@ class dadosEmpenhoFolhaRescisao
 
 
         /**
-         *  Consulta todos registros inferiores a R950 apartir dos par?metros informados
+         *  Consulta todos registros inferiores a R950 apartir dos parâmetros informados
          */
         $sCampos = " distinct rh02_regist as regist,";
         $sCampos .= "          rh30_vinculo       as vinculo, ";
@@ -127,7 +128,8 @@ class dadosEmpenhoFolhaRescisao
         $sWhereGerador .= " and rh02_seqpes in ({$sListaRescisoes}) ";
 
 
-        $sSqlGerador = $clgeradorsql->gerador_sql($sSigla,
+        $sSqlGerador = $clgeradorsql->gerador_sql(
+            $sSigla,
             $iAnoUsu,
             $iMesUsu,
             "",
@@ -135,24 +137,21 @@ class dadosEmpenhoFolhaRescisao
             $sCampos,
             "rh02_lota,rh23_codele",
             $sWhereGerador,
-            $iInstit);
+            $iInstit
+        );
 
 
         $rsGerador = db_query($sSqlGerador);
 
         if ($rsGerador) {
-
             $iLinhasGerador = pg_num_rows($rsGerador);
 
             if ($iLinhasGerador > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasGerador; $iInd++) {
-
                     $oGerador = db_utils::fieldsMemory($rsGerador, $iInd);
                     $iCaract = $oGerador->caract;
 
                     try {
-
                         $oEstrututal = $this->getEstrututal(db_getsession('DB_anousu'), $oGerador->lotacao, $oGerador->vinculo, $oGerador->elemento);
 
                         $iOrgao = $oEstrututal->iOrgao;
@@ -164,7 +163,6 @@ class dadosEmpenhoFolhaRescisao
                         $iRecurso = $oEstrututal->iRecurso;
                         $iElemento = $oEstrututal->iElemento;
                         $iDotacao = $oEstrututal->iDotacao;
-
                     } catch (DBException $eException) {
                         throw new DBException("{$sMsgErro}\n{$eException->getMessage()}");
                     } catch (BusinessException $eException) {
@@ -179,7 +177,7 @@ class dadosEmpenhoFolhaRescisao
 
 
                     /**
-                     *  Verifica se j? existe registros cadastrados na rhempenhofolha
+                     *  Verifica se já existe registros cadastrados na rhempenhofolha
                      */
                     $sWhereEmpenhoFolha = "     rh72_codele         = {$iElemento} ";
                     $sWhereEmpenhoFolha .= " and rh72_unidade        = {$iUnidade}  ";
@@ -216,15 +214,14 @@ class dadosEmpenhoFolhaRescisao
                     if ($oDaorhEmpenhoFolha->numrows > 0) {
 
                         /**
-                         *  Caso exista ent?o utiliza o sequencial para a inclus?o dos registros filhos
+                         *  Caso exista então utiliza o sequencial para a inclusão dos registros filhos
                          */
                         $oRhEmpenhoFolha = db_utils::fieldsMemory($rsEmpenhoFolha, 0);
                         $iCodEmpenhoFolha = $oRhEmpenhoFolha->rh72_sequencial;
-
                     } else {
 
                         /**
-                         *  Caso n?o exista ent?o ? inserido um registro novo
+                         *  Caso não exista então é inserido um registro novo
                          */
                         $oDaorhEmpenhoFolha->rh72_coddot = $iDotacao;
                         $oDaorhEmpenhoFolha->rh72_codele = $iElemento;
@@ -248,16 +245,15 @@ class dadosEmpenhoFolhaRescisao
                         }
 
                         $iCodEmpenhoFolha = $oDaorhEmpenhoFolha->rh72_sequencial;
-
                     }
 
                     $iCodEmpenhoFolhaGeral = $iCodEmpenhoFolha;
 
 
                     /**
-                     *  Consulta todas rubr?cas inferiores a R950 apartir dos par?metros informados
-                     *  Obs: Esse SQL foi d?vidido em duas partes para o melhor desempenho na consulta pois inicialmente
-                     *  ? feita uma s?rie de vali??es para achar o estrutural que s?o em comum entre todas rubricas
+                     * Consulta todas rubrícas inferiores a R950 apartir dos parâmetros informados
+                     * Obs: Esse SQL foi dividido em duas partes para o melhor desempenho na consulta pois inicialmente
+                     * É feita uma série de validações para achar o estrutural que são em comum entre todas rubricas
                      */
                     $sCamposRubricas = "{$sSigla}_rubric as rubric,      ";
                     $sCamposRubricas .= "{$sSigla}_regist as regist,      ";
@@ -276,7 +272,8 @@ class dadosEmpenhoFolhaRescisao
                     $sWhereGeradorRubricas .= " and {$sSigla}_pd != 3                    ";
                     $sWhereGeradorRubricas .= " and r70_concarpeculiar = '{$oGerador->caract}' ";
                     $sWhereGeradorRubricas .= " and r20_regist = {$oGerador->regist} ";
-                    $sSqlGeradorRubricas = $clgeradorsql->gerador_sql($sSigla,
+                    $sSqlGeradorRubricas = $clgeradorsql->gerador_sql(
+                        $sSigla,
                         $iAnoUsu,
                         $iMesUsu,
                         "",
@@ -284,18 +281,16 @@ class dadosEmpenhoFolhaRescisao
                         $sCamposRubricas,
                         "{$sSigla}_regist",
                         $sWhereGeradorRubricas,
-                        $iInstit);
+                        $iInstit
+                    );
 
                     $rsGeradorRubricas = db_query($sSqlGeradorRubricas);
 
                     if ($rsGeradorRubricas) {
-
                         $iLinhasGeradorRubricas = pg_num_rows($rsGeradorRubricas);
 
                         if ($iLinhasGeradorRubricas > 0) {
-
                             for ($iIndRubrica = 0; $iIndRubrica < $iLinhasGeradorRubricas; $iIndRubrica++) {
-
                                 $oRubrica = db_utils::fieldsMemory($rsGeradorRubricas, $iIndRubrica);
                                 $iCaract = $oRubrica->caract;
                                 $aExcecoes = array();
@@ -318,7 +313,7 @@ class dadosEmpenhoFolhaRescisao
                                 if (!empty($aExcecoes)) {
 
                                     /**
-                                     * Caso exista exce??o ent?o ser? consultado se j? existe algum registro cadastrado
+                                     * Caso exista exceção então será consultado se já existe algum registro cadastrado
                                      * na tabela rhempenhofolha para esse novo estrutural
                                      */
                                     if (!empty($aExcecoes[0]->rh74_orgao)) {
@@ -385,15 +380,14 @@ class dadosEmpenhoFolhaRescisao
                                     if ($oDaorhEmpenhoFolha->numrows > 0) {
 
                                         /**
-                                         *  Caso exista ent?o utiliza o sequencial para a inclus?o do registro filho
+                                         *  Caso exista então utiliza o sequencial para a inclusão do registro filho
                                          */
                                         $oRhEmpenhoFolha = db_utils::fieldsMemory($rsEmpenhoFolha, 0);
                                         $iCodEmpenhoFolha = $oRhEmpenhoFolha->rh72_sequencial;
-
                                     } else {
 
                                         /**
-                                         *  Caso n?o exista ent?o ? inserido um registro novo na rhempenhofolha
+                                         *  Caso não exista então é inserido um registro novo na rhempenhofolha
                                          */
                                         $oDaorhEmpenhoFolha->rh72_coddot = $iDotacao;
                                         $oDaorhEmpenhoFolha->rh72_codele = $iElemento;
@@ -419,7 +413,6 @@ class dadosEmpenhoFolhaRescisao
                                         }
 
                                         $iCodEmpenhoFolha = $oDaorhEmpenhoFolha->rh72_sequencial;
-
                                     }
                                 }
 
@@ -440,7 +433,7 @@ class dadosEmpenhoFolhaRescisao
                                 }
 
                                 /**
-                                 *  Insere registro na tabela de liga??o entre rhempenhofolha e rhempenhofolharubrica
+                                 *  Insere registro na tabela de ligação entre rhempenhofolha e rhempenhofolharubrica
                                  */
                                 $oDaorhEmpenhoFolhaRhEmpRubrica->rh81_rhempenhofolharubrica = $oDaorhEmpenhoFolhaRubrica->rh73_sequencial;
                                 $oDaorhEmpenhoFolhaRhEmpRubrica->rh81_rhempenhofolha = $iCodEmpenhoFolha;
@@ -449,9 +442,7 @@ class dadosEmpenhoFolhaRescisao
                                 if ($oDaorhEmpenhoFolhaRhEmpRubrica->erro_status == '0') {
                                     throw new DBException($oDaorhEmpenhoFolhaRhEmpRubrica->erro_msg);
                                 }
-
                             }
-
                         } else {
                             throw new DBException("{$sMsgErro}\nnenhum registro encontrado para {$iAnoUsu} / {$iMesUsu}");
                         }
@@ -467,8 +458,8 @@ class dadosEmpenhoFolhaRescisao
         }
 
         /*
-		 * Gera pagamentos extra
-		 */
+         * Gera pagamentos extra
+         */
         try {
             $this->geraPagamentoExtra($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes);
         } catch (DBException $eException) {
@@ -484,7 +475,7 @@ class dadosEmpenhoFolhaRescisao
         }
 
         /**
-         * Gera reten??es
+         * Gera retenções
          */
         try {
             $this->geraRetencoesEmpenhosFolha($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes);
@@ -501,7 +492,7 @@ class dadosEmpenhoFolhaRescisao
         }
 
         /**
-         * Gera devolu??o de empenho
+         * Gera devolução de empenho
          */
         try {
             $this->geraDevolucoesEmpenhosFolha($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes);
@@ -516,23 +507,22 @@ class dadosEmpenhoFolhaRescisao
         } catch (Exception $eException) {
             throw new Exception("{$sMsgErro}\n{$eException->getMessage()}");
         }
-
     }
 
 
     /**
-     * Verifica se exitem excess?es cadastradas para a rubrica
+     * Verifica se exitem excessões cadastradas para a rubrica
      *
      * @param string $sRubric Rubrica
-     * @param integer $iAnoUsu Exerc?cio
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício
+     * @param integer $iInstit instituição
      * @return array
      */
     public function getExcessoesEmpenhoFolha($sRubric = '', $iAnoUsu = '', $iInstit = '')
     {
 
         if (trim($sRubric) == '') {
-            throw new ParameterException('Rubrica n?o informada!');
+            throw new ParameterException('Rubrica não informada!');
         }
 
         if (trim($iAnoUsu) == '') {
@@ -544,7 +534,7 @@ class dadosEmpenhoFolhaRescisao
         }
 
 
-        $oDaorhEmpenhoFolhaExcecaoRubrica = db_utils::getDao('rhempenhofolhaexcecaorubrica');
+        $oDaorhEmpenhoFolhaExcecaoRubrica = new cl_rhempenhofolhaexcecaorubrica;
 
         $sWhereExcecao = "     rh74_rubric    = '{$sRubric}'";
         $sWhereExcecao .= " and rh74_anousu    = {$iAnoUsu}  ";
@@ -562,7 +552,6 @@ class dadosEmpenhoFolhaRescisao
         }
 
         return $aExcecoes;
-
     }
 
 
@@ -570,9 +559,9 @@ class dadosEmpenhoFolhaRescisao
      * Retorna os registros referente ao dados para empenhos da folha ( rubrica < R950 )
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      * @return array
      */
     public function getDadosEmpenhosFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
@@ -581,7 +570,7 @@ class dadosEmpenhoFolhaRescisao
         $sMsgErro = 'Consulta de empenhos da folha abortada';
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -592,7 +581,7 @@ class dadosEmpenhoFolhaRescisao
         if (trim($iInstit) == '') {
             $iInstit = db_getsession('DB_instit');
         }
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
         $sListaRescisoes = implode(",", $aListaRescisoes);
         $sWhereEmpenhosFolha = "     rh72_siglaarq = '{$sSigla}'    ";
         $sWhereEmpenhosFolha .= " and rh72_anousu   = {$iAnoUsu}     ";
@@ -601,10 +590,12 @@ class dadosEmpenhoFolhaRescisao
         $sWhereEmpenhosFolha .= " and rh72_tipoempenho = 1           ";
         $sWhereEmpenhosFolha .= " and rh73_seqpes in  ({$sListaRescisoes})";
 
-        $sSqlEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(null,
+        $sSqlEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(
+            null,
             "distinct rhempenhofolha.*",
             null,
-            $sWhereEmpenhosFolha);
+            $sWhereEmpenhosFolha
+        );
         $rsEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_record($sSqlEmpenhosFolha);
 
         if ($oDaorhEmpenhoFolhaRubrica->numrows > 0) {
@@ -614,7 +605,6 @@ class dadosEmpenhoFolhaRescisao
         }
 
         return $aEmpenhosFolha;
-
     }
 
 
@@ -622,9 +612,9 @@ class dadosEmpenhoFolhaRescisao
      * Retorna as rubricas referente ao dados para empenhos da folha ( rubrica < R950 )
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      * @return array
      */
     public function getRubricasEmpenhosFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes)
@@ -633,7 +623,7 @@ class dadosEmpenhoFolhaRescisao
         $sMsgErro = 'Consulta de empenhos da folha abortada';
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -645,7 +635,7 @@ class dadosEmpenhoFolhaRescisao
             $iInstit = db_getsession('DB_instit');
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
 
         $sWhereEmpenhosFolhaRubrica = "     rh72_siglaarq    = '{$sSigla}' ";
         $sWhereEmpenhosFolhaRubrica .= " and rh72_anousu      = {$iAnoUsu}  ";
@@ -658,10 +648,12 @@ class dadosEmpenhoFolhaRescisao
         $sCamposRubricas = "rhempenhofolharubrica.*,";
         $sCamposRubricas .= "rhempenhofolhaempenho.* ";
 
-        $sSqlEmpenhosFolhaRubrica = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(null,
+        $sSqlEmpenhosFolhaRubrica = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(
+            null,
             $sCamposRubricas,
             null,
-            $sWhereEmpenhosFolhaRubrica);
+            $sWhereEmpenhosFolhaRubrica
+        );
 
         $rsEmpenhosFolhaRubrica = $oDaorhEmpenhoFolhaRubrica->sql_record($sSqlEmpenhosFolhaRubrica);
 
@@ -672,7 +664,6 @@ class dadosEmpenhoFolhaRescisao
         }
 
         return $aEmpenhosFolhaRubrica;
-
     }
 
 
@@ -680,9 +671,9 @@ class dadosEmpenhoFolhaRescisao
      * Retorna as rubricas de slip referente ao dados para empenhos da folha
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      * @return array
      */
     public function getRubricasSlipFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
@@ -691,7 +682,7 @@ class dadosEmpenhoFolhaRescisao
         $sMsgErro = 'Consulta de slips da folha abortada';
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -703,17 +694,19 @@ class dadosEmpenhoFolhaRescisao
             $iInstit = db_getsession('DB_instit');
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
 
         $sWhereEmpenhosFolhaRubrica = "     rh79_siglaarq    = '{$sSigla}' ";
         $sWhereEmpenhosFolhaRubrica .= " and rh79_anousu      = {$iAnoUsu}  ";
         $sWhereEmpenhosFolhaRubrica .= " and rh79_mesusu      = {$iMesUsu}  ";
         $sWhereEmpenhosFolhaRubrica .= " and rh73_instit      = {$iInstit}  ";
         $sWhereEmpenhosFolhaRubrica .= " and rh73_seqpes in ({$sListaRescisoes}) ";
-        $sSqlEmpenhosFolhaRubrica = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(null,
+        $sSqlEmpenhosFolhaRubrica = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(
+            null,
             "*",
             null,
-            $sWhereEmpenhosFolhaRubrica);
+            $sWhereEmpenhosFolhaRubrica
+        );
 
         $rsEmpenhosFolhaRubrica = $oDaorhEmpenhoFolhaRubrica->sql_record($sSqlEmpenhosFolhaRubrica);
 
@@ -724,29 +717,34 @@ class dadosEmpenhoFolhaRescisao
         }
 
         return $aEmpenhosFolhaRubrica;
-
     }
 
 
     /**
-     * Retorna as rubricas de devolu??o referente ao dados para empenhos da folha
+     * Retorna as rubricas de devolução referente ao dados para empenhos da folha
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      * @param integer $iTipoRubrica Tipo de Rubrica
-     * @param boolean $lRetornaSql Par?metro que define se o retorno ser? o SQL ou o recordset
+     * @param boolean $lRetornaSql parâmetro que define se o retorno será o SQL ou o recordset
      * @return string/array
      */
-    public function getRubricasDevolucaoFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null,
-                                              $iTipoRubrica = "", $lRetornaSql = false)
-    {
+    public function getRubricasDevolucaoFolha(
+        $sSigla = '',
+        $iAnoUsu = '',
+        $iMesUsu = '',
+        $iInstit = '',
+        $aListaRescisoes = null,
+        $iTipoRubrica = "",
+        $lRetornaSql = false
+    ) {
 
-        $sMsgErro = 'Consulta das rubricas de devolu??o abortada';
+        $sMsgErro = 'Consulta das rubricas de devolução abortada';
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -758,7 +756,7 @@ class dadosEmpenhoFolhaRescisao
             $iInstit = db_getsession('DB_instit');
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
-        $oDaorhDevolucaoFolha = db_utils::getDao('rhdevolucaofolha');
+        $oDaorhDevolucaoFolha = new cl_rhdevolucaofolha;
 
         $sWhereDevolucaoFolha = "     rh69_siglaarq = '{$sSigla}' ";
         $sWhereDevolucaoFolha .= " and rh69_anousu   = {$iAnoUsu}  ";
@@ -766,10 +764,12 @@ class dadosEmpenhoFolhaRescisao
         $sWhereDevolucaoFolha .= " and rh73_instit   = {$iInstit}  ";
         $sWhereDevolucaoFolha .= " and rh73_seqpes   in({$sListaRescisoes}) ";
 
-        $sSqlDevolucaoFolha = $oDaorhDevolucaoFolha->sql_query_rubricas(null,
+        $sSqlDevolucaoFolha = $oDaorhDevolucaoFolha->sql_query_rubricas(
+            null,
             "*",
             null,
-            $sWhereDevolucaoFolha);
+            $sWhereDevolucaoFolha
+        );
 
         $rsDevolucaoFolha = $oDaorhDevolucaoFolha->sql_record($sSqlDevolucaoFolha);
 
@@ -784,30 +784,29 @@ class dadosEmpenhoFolhaRescisao
         } else {
             return $aDevolucaoFolha;
         }
-
     }
 
 
     /**
-     * Exclui os dados para empenhos da folha juntamente com os de slip e devolu??o
+     * Exclui os dados para empenhos da folha juntamente com os de slip e devolução
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      *
      */
     public function excluiDadosFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
-        $sMsgErro = 'Exclus?o dados da folha abortada';
+        $sMsgErro = 'Exclusão dados da folha abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new ParameterException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -821,7 +820,6 @@ class dadosEmpenhoFolhaRescisao
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
         try {
-
             $this->excluiDadosDevolucaoFolha($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes);
             $this->excluiDadosSlipFolha($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes);
             $this->excluiDadosPlanilhaFolha($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes);
@@ -837,7 +835,6 @@ class dadosEmpenhoFolhaRescisao
         } catch (Exception $eException) {
             throw new Exception("{$sMsgErro}\n{$eException->getMessage()}");
         }
-
     }
 
 
@@ -845,21 +842,21 @@ class dadosEmpenhoFolhaRescisao
      * Exclui os dados para empenhos da folha
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function excluiDadosEmpenhosFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
-        $sMsgErro = 'Exclus?o de empenhos da folha abortada';
+        $sMsgErro = 'Exclusão de empenhos da folha abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new ParameterException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -872,10 +869,10 @@ class dadosEmpenhoFolhaRescisao
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
-        $oDaorhEmpenhoFolha = db_utils::getDao('rhempenhofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhEmpenhoFolhaRhEmpRubrica = db_utils::getDao('rhempenhofolharhemprubrica');
-        $oDaorhEmpenhoFolhaRubricaRetencao = db_utils::getDao('rhempenhofolharubricaretencao');
+        $oDaorhEmpenhoFolha = new cl_rhempenhofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhEmpenhoFolhaRhEmpRubrica = new cl_rhempenhofolharhemprubrica;
+        $oDaorhEmpenhoFolhaRubricaRetencao = new cl_rhempenhofolharubricaretencao;
 
         /**
          *  Cria um array contendo os registros da rhempenhofolha
@@ -912,7 +909,6 @@ class dadosEmpenhoFolhaRescisao
         }
 
         if (count($aListaEmpenhos) > 0) {
-
             $aListaCodEmpenho = array();
 
             foreach ($aListaEmpenhos as $iInd => $oEmpenhoFolha) {
@@ -923,7 +919,7 @@ class dadosEmpenhoFolhaRescisao
             $sListaEmpenhos = implode(',', $aListaCodEmpenho);
 
             /**
-             *  Exclui inicialmente os registros de reten??o
+             *  Exclui inicialmente os registros de Retenção
              */
             $sSqlExcluiRetencoes = " delete from rhempenhofolharubricaretencao                                                ";
             $sSqlExcluiRetencoes .= "  where rh78_rhempenhofolharubrica in ( select rh81_rhempenhofolharubrica                 ";
@@ -936,7 +932,7 @@ class dadosEmpenhoFolhaRescisao
             }
 
             /**
-             *  Exclui os registros da tabela de liga??o entre rhempenhofolha e rhempenhofolharubrica
+             *  Exclui os registros da tabela de ligação entre rhempenhofolha e rhempenhofolharubrica
              */
             $sSqlExcluiEmpenhosRub = " delete from rhempenhofolharhemprubrica            ";
             $sSqlExcluiEmpenhosRub .= "  where rh81_rhempenhofolha in ({$sListaEmpenhos}) ";
@@ -951,9 +947,8 @@ class dadosEmpenhoFolhaRescisao
              */
             if (count($aListaRubricas) > 0) {
                 foreach ($aListaRubricas as $iIndRubrica => $oEmpenhoRubrica) {
-
                     if (trim($oEmpenhoRubrica->rh76_sequencial) != '') {
-                        throw new BusinessException("3. {$sMsgErro}\n\nRegistros j? empenhados!");
+                        throw new BusinessException("3. {$sMsgErro}\n\nRegistros já empenhados!");
                     }
 
                     $oDaorhEmpenhoFolhaRubrica->excluir($oEmpenhoRubrica->rh73_sequencial);
@@ -976,25 +971,22 @@ class dadosEmpenhoFolhaRescisao
 
 
             /**
-             *  Caso exista ent?o s?o deletados os registros
+             *  Caso exista então são deletados os registros
              */
             if ($iLinhasEmpenhos > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasEmpenhos; $iInd++) {
-
                     $oEmpenhoFolha = db_utils::fieldsMemory($rsEmpenhosFolha, $iInd);
 
                     /**
                      * Excluimos a reserva de saldo, caso Exista
                      */
-                    $oDaoReserva = db_utils::getDao("orcreserva");
-                    $oDaoReservaSaldoEmpenho = db_utils::getDao("orcreservarhempenhofolha");
+                    $oDaoReserva = new cl_orcreserva;
+                    $oDaoReservaSaldoEmpenho = new cl_orcreservarhempenhofolha;
                     $sWhere = "o120_rhempenhofolha = {$oEmpenhoFolha->rh72_sequencial}";
                     $sSqlDadosReserva = $oDaoReservaSaldoEmpenho->sql_query_file(null, "o120_orcreserva", null, $sWhere);
                     $rsDadosEmpenho = $oDaoReservaSaldoEmpenho->sql_record($sSqlDadosReserva);
 
                     if ($oDaoReservaSaldoEmpenho->numrows > 0) {
-
                         $oReserva = db_utils::fieldsMemory($rsDadosEmpenho, 0);
                         $oDaoReservaSaldoEmpenho->excluir(null, "o120_orcreserva = {$oReserva->o120_orcreserva}");
                         if ($oDaoReservaSaldoEmpenho->erro_status == 0) {
@@ -1021,21 +1013,21 @@ class dadosEmpenhoFolhaRescisao
      * Exclui os slips referentes aos dados para empenhos da folha
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function excluiDadosSlipFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
-        $sMsgErro = 'Exclus?o de slips da folha abortada';
+        $sMsgErro = 'Exclusão de slips da folha abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new ParameterException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -1048,12 +1040,12 @@ class dadosEmpenhoFolhaRescisao
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
-        $oDaorhSlipFolha = db_utils::getDao('rhslipfolha');
-        $oDaorhSlipFolhaSlip = db_utils::getDao('rhslipfolhaslip');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhSlipFolhaRhEmpRubrica = db_utils::getDao('rhslipfolharhemprubrica');
-        $oDaorhEmpenhoFolhaRubricaPlanilha = db_utils::getDao('rhempenhofolharubricaplanilha');
-        $oDaorhEmpenhoFolhaRubricaRetencao = db_utils::getDao('rhempenhofolharubricaretencao');
+        $oDaorhSlipFolha = new cl_rhslipfolha;
+        $oDaorhSlipFolhaSlip = new cl_rhslipfolhaslip;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhSlipFolhaRhEmpRubrica = new cl_rhslipfolharhemprubrica;
+        $oDaorhEmpenhoFolhaRubricaPlanilha = new cl_rhempenhofolharubricaplanilha;
+        $oDaorhEmpenhoFolhaRubricaRetencao = new cl_rhempenhofolharubricaretencao;
 
 
         /**
@@ -1074,7 +1066,6 @@ class dadosEmpenhoFolhaRescisao
         }
 
         if (count($aDadosRubricas) > 0) {
-
             $aListaSlip = array();
 
             foreach ($aDadosRubricas as $iInd => $oSlipFolha) {
@@ -1086,7 +1077,7 @@ class dadosEmpenhoFolhaRescisao
 
 
             /**
-             *  Exclui inicialmente as rubricas de reten??o
+             *  Exclui inicialmente as rubricas de Retenção
              */
             $sWhere = " rh78_rhempenhofolharubrica in (select rh80_rhempenhofolharubrica          ";
             $sWhere .= "                                 from rhslipfolharhemprubrica             ";
@@ -1097,7 +1088,7 @@ class dadosEmpenhoFolhaRescisao
             }
 
             /**
-             *  Exclui os registros da tabela de liga??o entre  rhslipfolha e rhempenhofolharubrica
+             *  Exclui os registros da tabela de ligação entre  rhslipfolha e rhempenhofolharubrica
              */
             $oDaorhSlipFolhaRhEmpRubrica->excluir(null, "rh80_rhslipfolha in ({$sListaSlip})");
             if ($oDaorhSlipFolhaRhEmpRubrica->erro_status == "0") {
@@ -1108,7 +1099,6 @@ class dadosEmpenhoFolhaRescisao
        *  Exclui as rubricas ( rhempenhofolharubrica )
        */
             foreach ($aDadosRubricas as $iInd => $oSlipFolha) {
-
                 //excluimos da rhempenhofolharubricaplanilha
                 $oDaorhEmpenhoFolhaRubricaPlanilha->excluir(null, "rh111_rhempenhofolharubrica = {$oSlipFolha->rh73_sequencial}");
                 if ($oDaorhEmpenhoFolhaRubricaPlanilha->erro_status == "0") {
@@ -1139,12 +1129,10 @@ class dadosEmpenhoFolhaRescisao
             $iLinhasSlip = $oDaorhSlipFolha->numrows;
 
             /**
-             * Caso exista ent?o s?o deletados os registros
+             * Caso exista então são deletados os registros
              */
             if ($iLinhasSlip > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasSlip; $iInd++) {
-
                     $oRHSlipFolha = db_utils::fieldsMemory($rsSlipFolha, $iInd);
                     $oDaorhSlipFolha->excluir($oRHSlipFolha->rh79_sequencial);
 
@@ -1159,14 +1147,14 @@ class dadosEmpenhoFolhaRescisao
     public function excluiDadosPlanilhaFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
-        $sMsgErro = 'Exclus?o de planilha da folha abortada';
+        $sMsgErro = 'Exclusão de planilha da folha abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new ParameterException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -1178,13 +1166,13 @@ class dadosEmpenhoFolhaRescisao
             $iInstit = db_getsession('DB_instit');
         }
 
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhEmpenhoFolhaRhEmpRubrica = db_utils::getDao('rhempenhofolharhemprubrica');
-        $oDaorhEmpenhoFolhaRubricaRetencao = db_utils::getDao('rhempenhofolharubricaretencao');
-        $oDaorhEmpenhoFolhaRubricaPlanilha = db_utils::getDao('rhempenhofolharubricaplanilha');
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhEmpenhoFolhaRhEmpRubrica = new cl_rhempenhofolharhemprubrica;
+        $oDaorhEmpenhoFolhaRubricaRetencao = new cl_rhempenhofolharubricaretencao;
+        $oDaorhEmpenhoFolhaRubricaPlanilha = new cl_rhempenhofolharubricaplanilha;
 
 
-        $oDaoRhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaoRhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
         $sListaRescisoes = implode(",", $aListaRescisoes);
         $sWhereRubricas = " rh73_tiporubrica = 2 ";
         $sWhereRubricas .= " and ( rh72_siglaarq = '{$sSigla}' or rh79_siglaarq = '{$sSigla}' ) ";
@@ -1197,9 +1185,7 @@ class dadosEmpenhoFolhaRescisao
         $rsEmpenhos = $oDaoRhEmpenhoFolhaRubrica->sql_record($sSqlEmpenhos);
         $iLinhasPlanilha = $oDaoRhEmpenhoFolhaRubrica->numrows;
         if ($iLinhasPlanilha > 0) {
-
             for ($iInd = 0; $iInd < $oDaoRhEmpenhoFolhaRubrica->numrows; $iInd++) {
-
                 $oDadosPlanilha = db_utils::fieldsMemory($rsEmpenhos, $iInd);
                 $oDaorhEmpenhoFolhaRubricaRetencao->excluir($oDadosPlanilha->rh78_sequencial);
                 if ($oDaorhEmpenhoFolhaRubricaRetencao->erro_status == "0") {
@@ -1227,24 +1213,24 @@ class dadosEmpenhoFolhaRescisao
     }
 
     /**
-     * Exclui as devolu??es referentes aos dados para empenhos da folha
+     * Exclui as devoluções referentes aos dados para empenhos da folha
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function excluiDadosDevolucaoFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
-        $sMsgErro = 'Exclus?o de devolu??es da folha abortada';
+        $sMsgErro = 'Exclusão de devoluções da folha abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new ParameterException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -1257,13 +1243,13 @@ class dadosEmpenhoFolhaRescisao
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
-        $oDaorhDevolucaoFolha = db_utils::getDao('rhdevolucaofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhDevolucaoFolhaRhEmpRubrica = db_utils::getDao('rhdevolucaofolharhemprubrica');
-        $oDaorhEmpenhoFolhaRubricaRetencao = db_utils::getDao('rhempenhofolharubricaretencao');
+        $oDaorhDevolucaoFolha = new cl_rhdevolucaofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhDevolucaoFolhaRhEmpRubrica = new cl_rhdevolucaofolharhemprubrica;
+        $oDaorhEmpenhoFolhaRubricaRetencao = new cl_rhempenhofolharubricaretencao;
 
         /**
-         *  Cria um array contendo as rubricas de devolu??o
+         *  Cria um array contendo as rubricas de devolução
          */
         try {
             $aDadosRubricas = $this->getRubricasDevolucaoFolha($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes);
@@ -1280,7 +1266,6 @@ class dadosEmpenhoFolhaRescisao
         }
 
         if (count($aDadosRubricas) > 0) {
-
             $aListaDevolucao = array();
 
             foreach ($aDadosRubricas as $iInd => $oDevolucaoFolha) {
@@ -1291,7 +1276,7 @@ class dadosEmpenhoFolhaRescisao
             $sListaDevolucao = implode(',', $aListaDevolucao);
 
             /**
-             *  Exclui as rubricas de reten??o
+             *  Exclui as rubricas de Retenção
              */
             $sSqlExcluiRetencoes = " delete from rhempenhofolharubricaretencao                                                 ";
             $sSqlExcluiRetencoes .= "  where rh78_rhempenhofolharubrica in ( select rh87_rhempenhofolharubrica                  ";
@@ -1304,7 +1289,7 @@ class dadosEmpenhoFolhaRescisao
             }
 
             /**
-             *  Exclui os registros da tabela de liga??o entre rhdevolucaofolha e rhempenhofolharubrica
+             *  Exclui os registros da tabela de ligação entre rhdevolucaofolha e rhempenhofolharubrica
              */
             $oDaorhDevolucaoFolhaRhEmpRubrica->excluir(null, "rh87_devolucaofolha in ({$sListaDevolucao})");
 
@@ -1334,12 +1319,10 @@ class dadosEmpenhoFolhaRescisao
             $iLinhasDevolucao = $oDaorhDevolucaoFolha->numrows;
 
             /**
-             *  Caso exista ent?o s?o deletados os registros
+             *  Caso exista então são deletados os registros
              */
             if ($iLinhasDevolucao > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasDevolucao; $iInd++) {
-
                     $oRHDevolucaoFolha = db_utils::fieldsMemory($rsDevolucaoFolha, $iInd);
 
                     $oDaorhDevolucaoFolha->excluir($oRHDevolucaoFolha->rh69_sequencial);
@@ -1354,20 +1337,20 @@ class dadosEmpenhoFolhaRescisao
 
 
     /**
-     * Gera os dados de reten??es para os empenhos da folha
+     * Gera os dados de retenções para os empenhos da folha
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function geraRetencoesEmpenhosFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
-        $sMsgErro = 'Gera??o de reten??es abortada';
+        $sMsgErro = 'Gerção de retenções abortada';
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -1379,30 +1362,28 @@ class dadosEmpenhoFolhaRescisao
             $iInstit = db_getsession('DB_instit');
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
-        $oDaoCfPess = db_utils::getDao('cfpess');
-        $oDaoPensaoRetencao = db_utils::getDao('pensaoretencao');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhEmpenhoFolhaRubricaRetencao = db_utils::getDao('rhempenhofolharubricaretencao');
-        $oDaorhEmpenhoFolhaRhEmpRubrica = db_utils::getDao('rhempenhofolharhemprubrica');
-        $oDaorhSlipFolhaRhEmpRubrica = db_utils::getDao('rhslipfolharhemprubrica');
+        $oDaoCfPess = new cl_cfpess;
+        $oDaoPensaoRetencao = new cl_pensaoretencao;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhEmpenhoFolhaRubricaRetencao = new cl_rhempenhofolharubricaretencao;
+        $oDaorhEmpenhoFolhaRhEmpRubrica = new cl_rhempenhofolharhemprubrica;
+        $oDaorhSlipFolhaRhEmpRubrica = new cl_rhslipfolharhemprubrica;
 
         /**
-         *  Consulta a rubrica de pens?o alimenticia
+         *  Consulta a rubrica de Pensão alimenticia
          */
         $rsRubricPensao = $oDaoCfPess->sql_record($oDaoCfPess->sql_query_file($iAnoUsu, $iMesUsu, $iInstit, "r11_palime"));
 
         if ($oDaoCfPess->numrows > 0) {
-
             $oRubricPensao = db_utils::fieldsMemory($rsRubricPensao, 0);
 
-            $sRubricPensao = $oRubricPensao->r11_palime; // Pens?o Aliment?cia
-            $sRubricPensaoFerias = $sRubricPensao + 2000;      // Pens?o F?rias
-            $sRubricPensao13 = $sRubricPensao + 4000;      // Pens?o 13?
-
+            $sRubricPensao = $oRubricPensao->r11_palime;  // Pensão Alimentícia
+            $sRubricPensaoFerias = $sRubricPensao + 2000; // Pensão Férias
+            $sRubricPensao13 = $sRubricPensao + 4000;     // Pensão 13
         }
 
         /**
-         *  Consulta os dados j? gerados para empenhos
+         *  Consulta os dados já gerados para empenhos
          */
         $sSqlDadosEmp = " select distinct rh73_seqpes     as seqpes,                                         ";
         $sSqlDadosEmp .= "                 rh72_sequencial as rhempenho,                                      ";
@@ -1425,13 +1406,10 @@ class dadosEmpenhoFolhaRescisao
         $rsDadosEmp = db_query($sSqlDadosEmp);
 
         if ($rsDadosEmp) {
-
             $iLinhasDadosEmp = pg_num_rows($rsDadosEmp);
 
             if ($iLinhasDadosEmp > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasDadosEmp; $iInd++) {
-
                     $oDadosEmp = db_utils::fieldsMemory($rsDadosEmp, $iInd);
 
                     /**
@@ -1442,13 +1420,12 @@ class dadosEmpenhoFolhaRescisao
                     } else {
                         $aDadosEmp[$oDadosEmp->seqpes]['total'] = $oDadosEmp->valor;
                     }
-
                 }
             }
         }
 
         /**
-         *  Consulta os regitros j? gerados de slip
+         *  Consulta os regitros já gerados de slip
          */
         $sSqlDadosSlip = " select distinct rh73_seqpes     as seqpes,                                                          ";
         $sSqlDadosSlip .= "                 rh79_sequencial as rhslip,                                                          ";
@@ -1470,13 +1447,10 @@ class dadosEmpenhoFolhaRescisao
         $rsDadosSlip = db_query($sSqlDadosSlip);
 
         if ($rsDadosSlip) {
-
             $iLinhasDadosSlip = pg_num_rows($rsDadosSlip);
 
             if ($iLinhasDadosSlip > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasDadosSlip; $iInd++) {
-
                     $oDadosSlip = db_utils::fieldsMemory($rsDadosSlip, $iInd);
                     /**
                      * Calcula total gerado por servidor
@@ -1486,31 +1460,26 @@ class dadosEmpenhoFolhaRescisao
                     } else {
                         $aDadosEmp[$oDadosSlip->seqpes]['total'] = $oDadosSlip->valor;
                     }
-
                 }
             }
         }
 
         for ($iInd = 0; $iInd < $iLinhasDadosEmp; $iInd++) {
-
             $oDadosEmp = db_utils::fieldsMemory($rsDadosEmp, $iInd);
             $aDadosEmp[$oDadosEmp->seqpes]['rhempenho'][$oDadosEmp->rhempenho]['valor'] = $oDadosEmp->valor;
             /**
              * Calcula o percentual do valor do empenho sobre o total
              */
             $aDadosEmp[$oDadosEmp->seqpes]['rhempenho'][$oDadosEmp->rhempenho]['perc'] = ($oDadosEmp->valor * 100) / $aDadosEmp[$oDadosEmp->seqpes]['total'];
-
         }
 
         for ($iInd = 0; $iInd < $iLinhasDadosSlip; $iInd++) {
-
             $oDadosSlip = db_utils::fieldsMemory($rsDadosSlip, $iInd);
             $aDadosEmp[$oDadosSlip->seqpes]['rhslip'][$oDadosSlip->rhslip]['valor'] = $oDadosSlip->valor;
             /**
              * Calcula o percentual do valor do slip sobre o total
              */
             $aDadosEmp[$oDadosSlip->seqpes]['rhslip'][$oDadosSlip->rhslip]['perc'] = ($oDadosSlip->valor * 100) / $aDadosEmp[$oDadosSlip->seqpes]['total'];
-
         }
 
         switch ($sSigla) {
@@ -1537,7 +1506,7 @@ class dadosEmpenhoFolhaRescisao
         }
 
         /**
-         * Cosulta os registros de reten??o
+         * Cosulta os registros de Retenção
          */
         $sSqlDadosRetencao = " select distinct rh02_seqpes          as seqpes,                             ";
         $sSqlDadosRetencao .= "                 rh02_regist          as regist,                             ";
@@ -1559,17 +1528,13 @@ class dadosEmpenhoFolhaRescisao
         $rsDadosRetencao = db_query($sSqlDadosRetencao);
 
         if ($rsDadosRetencao) {
-
             $iLinhasDadosRetencao = pg_num_rows($rsDadosRetencao);
 
             if ($iLinhasDadosRetencao > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasDadosRetencao; $iInd++) {
-
                     $oDadosRetencao = db_utils::fieldsMemory($rsDadosRetencao, $iInd);
 
                     if (isset($aDadosEmp[$oDadosRetencao->seqpes])) {
-
                         $nValorTotal = 0;
                         $nValor = $oDadosRetencao->valor;
 
@@ -1581,26 +1546,24 @@ class dadosEmpenhoFolhaRescisao
 
 
                         /**
-                         *  Define as reten??es sobre as rubricas de empenhos
+                         *  Define as retenções sobre as rubricas de empenhos
                          */
                         if (isset($aDadosEmp[$oDadosRetencao->seqpes]['rhempenho'])) {
-
                             $chave = array_keys($aDadosEmp[$oDadosRetencao->seqpes]['rhempenho']);
                             $iUltimoReg = end($chave);
 
                             foreach ($aDadosEmp[$oDadosRetencao->seqpes]['rhempenho'] as $iCodrhEmpenho => $aRhEmpenho) {
-
                                 $nPerc = $aRhEmpenho['perc'];
 
                                 /**
-                                 * Verifica se a rubrica ? pens?o
+                                 * Verifica se a rubrica é Pensão
                                  */
                                 if ($oDadosRetencao->rubric == $sRubricPensao ||
                                     $oDadosRetencao->rubric == $sRubricPensaoFerias ||
                                     $oDadosRetencao->rubric == $sRubricPensao13) {
 
                                     /**
-                                     * Verifica se existe pens?o cadastrado para o servidor
+                                     * Verifica se existe Pensão cadastrado para o servidor
                                      */
                                     $sWherePensaoRetencao = "     r52_anousu = {$iAnoUsu}                ";
                                     $sWherePensaoRetencao .= " and r52_mesusu = {$iMesUsu}                ";
@@ -1612,37 +1575,35 @@ class dadosEmpenhoFolhaRescisao
                                     $iLinhasPensaoRetencao = $oDaoPensaoRetencao->numrows;
 
                                     if ($iLinhasPensaoRetencao > 0) {
-
                                         for ($iIndX = 0; $iIndX < $iLinhasPensaoRetencao; $iIndX++) {
-
                                             $oPensaoRetencao = db_utils::fieldsMemory($rsPensaoRetencao, $iIndX);
 
                                             /**
-                                             *  Define o valor da pens?o apartir do tipo de pens?o ( Aliment?cia, F?rias ou 13? )
+                                             *  Define o valor da Pensão apartir do tipo de Pensão ( Alimentícia, Férias ou 13)
                                              */
                                             if ($oDadosRetencao->rubric == $sRubricPensao) {
                                                 $nValorPensao = $oPensaoRetencao->$sCampoPensao;
-                                            } else if ($oDadosRetencao->rubric == $sRubricPensaoFerias) {
+                                            } elseif ($oDadosRetencao->rubric == $sRubricPensaoFerias) {
                                                 $nValorPensao = $oPensaoRetencao->r52_valfer;
-                                            } else if ($oDadosRetencao->rubric == $sRubricPensao13) {
+                                            } elseif ($oDadosRetencao->rubric == $sRubricPensao13) {
                                                 $nValorPensao = $oPensaoRetencao->r52_val13;
                                             }
 
                                             /**
-                                             *  Calcula o valor da reten??o sobre o percentual achado ateriormente
+                                             *  Calcula o valor da Retenção sobre o percentual achado ateriormente
                                              */
                                             $nValorRetencao = db_formatar($nValorPensao * ($nPerc / 100), 'p');
                                             $nValorTotal += $nValorRetencao;
 
                                             /**
-                                             *  Caso seja o ?ltimo registro ent?o o valor da reten?ao fica como o restante
+                                             *  Caso seja o último registro então o valor da retenção fica como o restante
                                              */
                                             if ($iUltimoReg == $iCodrhEmpenho && $iIndX == ($iLinhasPensaoRetencao - 1) && !$lSlip) {
                                                 $nValorRetencao = $nValor - ($nValorTotal - $nValorRetencao);
                                             }
 
                                             /**
-                                             *  Inclui a rubrica de reten??o
+                                             *  Inclui a rubrica de Retenção
                                              */
                                             $oDaorhEmpenhoFolhaRubrica->rh73_rubric = $oDadosRetencao->rubric;
                                             $oDaorhEmpenhoFolhaRubrica->rh73_seqpes = $oDadosRetencao->seqpes;
@@ -1673,24 +1634,23 @@ class dadosEmpenhoFolhaRescisao
                                             }
                                         }
                                     }
-
                                 } else {
 
                                     /**
-                                     *  Calcula o valor da reten??o apartir do percentual achado anteriormente
+                                     *  Calcula o valor da Retenção apartir do percentual achado anteriormente
                                      */
                                     $nValorRetencao = db_formatar($oDadosRetencao->valor * ($nPerc / 100), 'p');
                                     $nValorTotal += $nValorRetencao;
 
                                     /**
-                                     *  Caso seja o ?ltimo registro ent?o o valor da reten?ao fica como o restante
+                                     *  Caso seja o último registro então o valor da retenção fica como o restante
                                      */
                                     if ($iUltimoReg == $iCodrhEmpenho && !$lSlip) {
                                         $nValorRetencao = $nValor - ($nValorTotal - $nValorRetencao);
                                     }
 
                                     /**
-                                     *  Inclui a rubrica de reten??o
+                                     *  Inclui a rubrica de Retenção
                                      */
                                     $oDaorhEmpenhoFolhaRubrica->rh73_rubric = $oDadosRetencao->rubric;
                                     $oDaorhEmpenhoFolhaRubrica->rh73_seqpes = $oDadosRetencao->seqpes;
@@ -1725,23 +1685,20 @@ class dadosEmpenhoFolhaRescisao
                         }
 
                         /**
-                         *  Define a reten??o sobre as rubricas de slip
+                         *  Define a Retenção sobre as rubricas de slip
                          */
                         if (isset($aDadosEmp[$oDadosRetencao->seqpes]['rhslip'])) {
-
                             $iUltimoReg = end(array_keys($aDadosEmp[$oDadosRetencao->seqpes]['rhslip']));
 
                             foreach ($aDadosEmp[$oDadosRetencao->seqpes]['rhslip'] as $iCodrhSlip => $aRHSlip) {
-
                                 $nPerc = $aRHSlip['perc'];
 
                                 /**
-                                 * Verifica se a rubrica ? pens?o
+                                 * Verifica se a rubrica é Pensão
                                  */
                                 if ($oDadosRetencao->rubric == $sRubricPensao ||
                                     $oDadosRetencao->rubric == $sRubricPensaoFerias ||
                                     $oDadosRetencao->rubric == $sRubricPensao13) {
-
                                     $sWherePensaoRetencao = "     r52_anousu = {$iAnoUsu}                ";
                                     $sWherePensaoRetencao .= " and r52_mesusu = {$iMesUsu}                ";
                                     $sWherePensaoRetencao .= " and r52_regist = {$oDadosRetencao->regist} ";
@@ -1752,37 +1709,35 @@ class dadosEmpenhoFolhaRescisao
                                     $iLinhasPensaoRetencao = $oDaoPensaoRetencao->numrows;
 
                                     if ($iLinhasPensaoRetencao > 0) {
-
                                         for ($iIndX = 0; $iIndX < $iLinhasPensaoRetencao; $iIndX++) {
-
                                             $oPensaoRetencao = db_utils::fieldsMemory($rsPensaoRetencao, $iIndX);
 
                                             /**
-                                             * Verifica se existe pens?o cadastrado para o servidor
+                                             * Verifica se existe Pensão cadastrado para o servidor
                                              */
                                             if ($oDadosRetencao->rubric == $sRubricPensao) {
                                                 $nValorPensao = $oPensaoRetencao->$sCampoPensao;
-                                            } else if ($oDadosRetencao->rubric == $sRubricPensaoFerias) {
+                                            } elseif ($oDadosRetencao->rubric == $sRubricPensaoFerias) {
                                                 $nValorPensao = $oPensaoRetencao->r52_valfer;
-                                            } else if ($oDadosRetencao->rubric == $sRubricPensao13) {
+                                            } elseif ($oDadosRetencao->rubric == $sRubricPensao13) {
                                                 $nValorPensao = $oPensaoRetencao->r52_val13;
                                             }
 
                                             /**
-                                             *  Calcula o valor da reten??o sobre o percentual achado ateriormente
+                                             *  Calcula o valor da Retenção sobre o percentual achado ateriormente
                                              */
                                             $nValorRetencao = db_formatar($nValorPensao * ($nPerc / 100), 'p');
                                             $nValorTotal += $nValorRetencao;
 
                                             /**
-                                             *  Caso seja o ?ltimo registro ent?o o valor da reten?ao fica como o restante
+                                             *  Caso seja o último registro então o valor da retenção fica como o restante
                                              */
                                             if ($iUltimoReg == $iCodrhSlip && $iIndX == ($iLinhasPensaoRetencao - 1)) {
                                                 $nValorRetencao = $nValor - ($nValorTotal - $nValorRetencao);
                                             }
 
                                             /**
-                                             *  Inclui a rubrica de reten??o
+                                             *  Inclui a rubrica de Retenção
                                              */
                                             $oDaorhEmpenhoFolhaRubrica->rh73_rubric = $oDadosRetencao->rubric;
                                             $oDaorhEmpenhoFolhaRubrica->rh73_seqpes = $oDadosRetencao->seqpes;
@@ -1813,24 +1768,23 @@ class dadosEmpenhoFolhaRescisao
                                             }
                                         }
                                     }
-
                                 } else {
 
                                     /**
-                                     *  Calcula o valor da reten??o apartir do percentual achado anteriormente
+                                     *  Calcula o valor da Retenção apartir do percentual achado anteriormente
                                      */
                                     $nValorRetencao = db_formatar($oDadosRetencao->valor * ($nPerc / 100), 'p');
                                     $nValorTotal += $nValorRetencao;
 
                                     /**
-                                     *  Caso seja o ?ltimo registro ent?o o valor da reten?ao fica como o restante
+                                     *  Caso seja o último registro então o valor da retenção fica como o restante
                                      */
                                     if ($iUltimoReg == $iCodrhSlip) {
                                         $nValorRetencao = $nValor - ($nValorTotal - $nValorRetencao);
                                     }
 
                                     /**
-                                     *  Inclui a rubrica de reten??o
+                                     *  Inclui a rubrica de Retenção
                                      */
                                     $oDaorhEmpenhoFolhaRubrica->rh73_rubric = $oDadosRetencao->rubric;
                                     $oDaorhEmpenhoFolhaRubrica->rh73_seqpes = $oDadosRetencao->seqpes;
@@ -1860,7 +1814,6 @@ class dadosEmpenhoFolhaRescisao
                                     if ($oDaorhEmpenhoFolhaRubricaRetencao->erro_status == '0') {
                                         throw new DBException($oDaorhEmpenhoFolhaRubricaRetencao->erro_msg);
                                     }
-
                                 }
                             }
                         }
@@ -1875,18 +1828,18 @@ class dadosEmpenhoFolhaRescisao
      * Gera dados de pagamento extra
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function geraPagamentoExtra($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
 
-        $sMsgErro = 'Gera??o de pagamento extra abortada';
+        $sMsgErro = 'Gerção de pagamento extra abortada';
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -1898,11 +1851,11 @@ class dadosEmpenhoFolhaRescisao
             $iInstit = db_getsession('DB_instit');
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
-        $oDaorhLotaVinc = db_utils::getDao('rhlotavinc');
-        $oDaorhSlipFolha = db_utils::getDao('rhslipfolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhSlipFolhaRhEmpRubrica = db_utils::getDao('rhslipfolharhemprubrica');
-        $oDaorhEmpenhoFolhaRubricaRetencao = db_utils::getDao('rhempenhofolharubricaretencao');
+        $oDaorhLotaVinc = new cl_rhlotavinc;
+        $oDaorhSlipFolha = new cl_rhslipfolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhSlipFolhaRhEmpRubrica = new cl_rhslipfolharhemprubrica;
+        $oDaorhEmpenhoFolhaRubricaRetencao = new cl_rhempenhofolharubricaretencao;
 
         switch ($sSigla) {
             case "r48":
@@ -1951,18 +1904,15 @@ class dadosEmpenhoFolhaRescisao
         $rsPagExtra = db_query($sSqlPagExtra);
 
         if ($rsPagExtra) {
-
             $iLinhasPagExtra = pg_num_rows($rsPagExtra);
 
             if ($iLinhasPagExtra > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasPagExtra; $iInd++) {
-
                     $oPagExtra = db_utils::fieldsMemory($rsPagExtra, $iInd);
                     $iCaract = $oPagExtra->caract;
 
                     /**
-                     * Consulta recurso apartir da lota??o e v?nculo achado no consulta anterior
+                     * Consulta recurso apartir da lotação e vínculo achado no consulta anterior
                      */
                     $sCamposrhLotaVinc = " rh25_recurso as recurso   ";
 
@@ -1975,14 +1925,14 @@ class dadosEmpenhoFolhaRescisao
 
 
                     if ($oDaorhLotaVinc->numrows == 0) {
-                        throw new BusinessException("Verifique recurso e projeto atividade da lota??o {$oPagExtra->lotacao}");
+                        throw new BusinessException("Verifique recurso e projeto atividade da lotação {$oPagExtra->lotacao}");
                     } else {
                         $oProjAtivRec = db_utils::fieldsMemory($rsProjAtivRec, 0);
                         $iRecurso = $oProjAtivRec->recurso;
                     }
 
                     /**
-                     *  Verifica se j? existe  registros na rhslipfolha apartir dos dados encontrados
+                     *  Verifica se já existe  registros na rhslipfolha apartir dos dados encontrados
                      */
                     $sWhereSlipFolha = "     rh79_recurso        = {$iRecurso}    ";
                     $sWhereSlipFolha .= " and rh79_anousu         = {$iAnoUsu}     ";
@@ -1997,16 +1947,13 @@ class dadosEmpenhoFolhaRescisao
                     $rsSlipFolha = $oDaorhSlipFolha->sql_record($sSqlSlipFolha);
 
                     /**
-                     *  Caso exista ent?o ? utilizado o mesmo sequencial para inclus?o das rubricas,
-                     *  caso contr?io ? inserido un registro novo
+                     *  Caso exista então é utilizado o mesmo sequencial para inclusão das rubricas,
+                     *  caso contráio é inserido un registro novo
                      */
                     if ($oDaorhSlipFolha->numrows > 0) {
-
                         $oRhSlipFolha = db_utils::fieldsMemory($rsSlipFolha, 0);
                         $iCodSlipFolha = $oRhSlipFolha->rh79_sequencial;
-
                     } else {
-
                         $oDaorhSlipFolha->rh79_recurso = $iRecurso;
                         $oDaorhSlipFolha->rh79_anousu = $iAnoUsu;
                         $oDaorhSlipFolha->rh79_mesusu = $iMesUsu;
@@ -2023,11 +1970,10 @@ class dadosEmpenhoFolhaRescisao
                         }
 
                         $iCodSlipFolha = $oDaorhSlipFolha->rh79_sequencial;
-
                     }
 
                     /**
-                     *  Inclus?o das rubricas
+                     *  Inclusão das rubricas
                      */
                     $oDaorhEmpenhoFolhaRubrica->rh73_rubric = $oPagExtra->rubric;
                     $oDaorhEmpenhoFolhaRubrica->rh73_seqpes = $oPagExtra->pessoalmov;
@@ -2059,31 +2005,29 @@ class dadosEmpenhoFolhaRescisao
                     }
                 }
             }
-
         }
-
     }
 
 
     /**
-     * Gera dados referentes a devolu??es de empenhos da folha
+     * Gera dados referentes a devoluções de empenhos da folha
      *
      * @param string $sSigla Tipo de Folha
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function geraDevolucoesEmpenhosFolha($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
 
-        $sMsgErro = 'Gera??o de devolu??es da folha';
+        $sMsgErro = 'Gerção de devoluções da folha';
 
         if (!db_utils::inTransaction()) {
-            throw new ParameterException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sSigla) == '') {
-            throw new DBException("{$sMsgErro}\nsigla n?o informada!");
+            throw new DBException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -2096,11 +2040,11 @@ class dadosEmpenhoFolhaRescisao
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
-        $oDaorhLotaVinc = db_utils::getDao('rhlotavinc');
-        $oDaorhDevolucaoFolha = db_utils::getDao('rhdevolucaofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhDevolucaoFolhaRhEmpRubrica = db_utils::getDao('rhdevolucaofolharhemprubrica');
-        $oDaorhEmpenhoFolhaRubricaRetencao = db_utils::getDao('rhempenhofolharubricaretencao');
+        $oDaorhLotaVinc = new cl_rhlotavinc;
+        $oDaorhDevolucaoFolha = new cl_rhdevolucaofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhDevolucaoFolhaRhEmpRubrica = new cl_rhdevolucaofolharhemprubrica;
+        $oDaorhEmpenhoFolhaRubricaRetencao = new cl_rhempenhofolharubricaretencao;
 
         switch ($sSigla) {
             case "r48":
@@ -2121,7 +2065,7 @@ class dadosEmpenhoFolhaRescisao
         }
 
         /**
-         *  Consulta todas rubricas de devolu??o
+         *  Consulta todas rubricas de devolução
          */
         $sSqlDevolucao = " select {$sSigla}_rubric     as rubric,                                                                   ";
         $sSqlDevolucao .= "        rh02_seqpes          as pessoalmov,                                                               ";
@@ -2150,18 +2094,15 @@ class dadosEmpenhoFolhaRescisao
         $rsDevolucao = db_query($sSqlDevolucao);
 
         if ($rsDevolucao) {
-
             $iLinhasDevolucao = pg_num_rows($rsDevolucao);
 
             if ($iLinhasDevolucao > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasDevolucao; $iInd++) {
-
                     $oDevolucao = db_utils::fieldsMemory($rsDevolucao, $iInd);
                     $iCaract = $oDevolucao->caract;
 
                     /**
-                     * Consulta recurso apartir da lota??o e v?nculo achado no consulta anterior
+                     * Consulta recurso apartir da lotação e vínculo achado no consulta anterior
                      */
                     $sCamposrhLotaVinc = " rh25_recurso as recurso   ";
 
@@ -2173,14 +2114,14 @@ class dadosEmpenhoFolhaRescisao
                     $rsProjAtivRec = $oDaorhLotaVinc->sql_record($sSqlrhLotaVinc);
 
                     if ($oDaorhLotaVinc->numrows == 0) {
-                        throw new BusinessException("Verifique recurso e projeto atividade da lota??o {$oDevolucao->lotacao}");
+                        throw new BusinessException("Verifique recurso e projeto atividade da lotação {$oDevolucao->lotacao}");
                     } else {
                         $oProjAtivRec = db_utils::fieldsMemory($rsProjAtivRec, 0);
                         $iRecurso = $oProjAtivRec->recurso;
                     }
 
                     /**
-                     *  Verifica se j? existe registro na rhdevolucaofolha apartir dos dados encontrado
+                     *  Verifica se já existe registro na rhdevolucaofolha apartir dos dados encontrado
                      */
                     $sWhereDevolucaoFolha = "     rh69_recurso        = {$iRecurso}    ";
                     $sWhereDevolucaoFolha .= " and rh69_anousu         = {$iAnoUsu}     ";
@@ -2195,16 +2136,13 @@ class dadosEmpenhoFolhaRescisao
                     $rsDevolucaoFolha = $oDaorhDevolucaoFolha->sql_record($sSqlDevolucaoFolha);
 
                     /**
-                     *  Caso exista ent?o ? utilizado o mesmo sequencial para inclus?o das rubricas,
-                     *  caso contr?io ? inserido un registro novo
+                     *  Caso exista então é utilizado o mesmo sequencial para inclusão das rubricas,
+                     *  caso contráio é inserido un registro novo
                      */
                     if ($oDaorhDevolucaoFolha->numrows > 0) {
-
                         $oRhDevolucaoFolha = db_utils::fieldsMemory($rsDevolucaoFolha, 0);
                         $iCodDevolucaoFolha = $oRhDevolucaoFolha->rh69_sequencial;
-
                     } else {
-
                         $oDaorhDevolucaoFolha->rh69_recurso = $iRecurso;
                         $oDaorhDevolucaoFolha->rh69_anousu = $iAnoUsu;
                         $oDaorhDevolucaoFolha->rh69_mesusu = $iMesUsu;
@@ -2221,11 +2159,10 @@ class dadosEmpenhoFolhaRescisao
                         }
 
                         $iCodDevolucaoFolha = $oDaorhDevolucaoFolha->rh69_sequencial;
-
                     }
 
                     /**
-                     * Incluis?o das rubricas
+                     * Incluisão das rubricas
                      */
                     $oDaorhEmpenhoFolhaRubrica->rh73_rubric = $oDevolucao->rubric;
                     $oDaorhEmpenhoFolhaRubrica->rh73_seqpes = $oDevolucao->pessoalmov;
@@ -2262,7 +2199,7 @@ class dadosEmpenhoFolhaRescisao
 
 
     /**
-     * Consulta o estrutural apartir da lota??o
+     * Consulta o estrutural apartir da lotação
      *
      * @param integer $iAnoUsu
      * @param integer $iLotacao
@@ -2274,26 +2211,26 @@ class dadosEmpenhoFolhaRescisao
     {
 
         if (trim($iAnoUsu) == '') {
-            throw new ParameterException('Exerc?cio n?o informado!');
+            throw new ParameterException('Exercício não informado!');
         }
         if (trim($iLotacao) == '') {
-            throw new ParameterException('Lota??o n?o informada!');
+            throw new ParameterException('lotação não informada!');
         }
         if (trim($sVinculo) == '') {
-            throw new ParameterException('Vinculo n?o informado!');
+            throw new ParameterException('Vinculo não informado!');
         }
         if (trim($iElemento) == '') {
-            throw new ParameterException('Elemento n?o informado!');
+            throw new ParameterException('Elemento não informado!');
         }
 
-        $oDaoOrcParametro = db_utils::getDao('orcparametro');
-        $oDaoOrcElemento = db_utils::getDao('orcelemento');
+        $oDaoOrcParametro = new cl_orcparametro;
+        $oDaoOrcElemento = new cl_orcelemento;
         $oDaoOrcDotacao = new cl_orcdotacao;
-        $oDaorhLotaExe = db_utils::getDao('rhlotaexe');
-        $oDaorhLotaVinc = db_utils::getDao('rhlotavinc');
-        $oDaorhLotaVincEle = db_utils::getDao('rhlotavincele');
-        $oDaorhLotaVincRec = db_utils::getDao('rhlotavincrec');
-        $oDaorhLotaVincAtiv = db_utils::getDao('rhlotavincativ');
+        $oDaorhLotaExe = new cl_rhlotaexe;
+        $oDaorhLotaVinc = new cl_rhlotavinc;
+        $oDaorhLotaVincEle = new cl_rhlotavincele;
+        $oDaorhLotaVincRec = new cl_rhlotavincrec;
+        $oDaorhLotaVincAtiv = new cl_rhlotavincativ;
 
         $sSqlParametro = $oDaoOrcParametro->sql_query_file($iAnoUsu, 'o50_subelem');
         $rsParametro = $oDaoOrcParametro->sql_record($sSqlParametro);
@@ -2301,11 +2238,11 @@ class dadosEmpenhoFolhaRescisao
         if ($oDaoOrcParametro->numrows > 0) {
             $oParametro = db_utils::fieldsMemory($rsParametro, 0);
         } else {
-            throw new BusinessException("Configure os par?metros do or?amento para o ano {$iAnoUsu}!");
+            throw new BusinessException("Configure os parâmetros do orçamento para o ano {$iAnoUsu}!");
         }
 
         /**
-         *  Consulta Org?o e Unidade
+         *  Consulta Orgão e Unidade
          */
         $sCamposrhLotaExe = " rh26_orgao   as orgao, ";
         $sCamposrhLotaExe .= " rh26_unidade as unidade";
@@ -2339,7 +2276,7 @@ class dadosEmpenhoFolhaRescisao
         $rsProjAtivRec = $oDaorhLotaVinc->sql_record($sSqlrhLotaVinc);
 
         if ($oDaorhLotaVinc->numrows == 0) {
-            throw new BusinessException("Verifique recurso e projeto atividade da lota??o {$iLotacao}");
+            throw new BusinessException("Verifique recurso e projeto atividade da lotação {$iLotacao}");
         } else {
             $oProjAtivRec = db_utils::fieldsMemory($rsProjAtivRec, 0);
         }
@@ -2349,23 +2286,23 @@ class dadosEmpenhoFolhaRescisao
          *    rh28_codlotavinc = $oGerador->lotavinc e rh28_codele = $oGerador->elemento
          *     - Se forem diferentes:
          *        O elemento a ser gravado na tabela rhempenhofolha sera o $oGerador->elemento
-         *        O projeto atividade a ser gravado na tabela rhempenhofolha ser? o $oProjAtivRec->projativ
+         *        O projeto atividade a ser gravado na tabela rhempenhofolha será o $oProjAtivRec->projativ
          *     - Se forem iguais:
-         *        O elemento a ser gravado na tabela rhempenhofolhafolha ser? o $oDadosNovos->elementonovo
+         *        O elemento a ser gravado na tabela rhempenhofolhafolha será o $oDadosNovos->elementonovo
          *
          *   Caso exista algum registro na tabela rhlotavincativ em que o
          *     rh28_codlotavinc = $oProjAtivRec->lotavinc e rh28_codelenov = $oDadosNovos->elementonovo
          *     - Se tiver algum registro, o projeto atividade a ser gravado na tabela rhempenhofolha
-         *        ser? $oNovoProjAtiv->projativnovo
+         *        será $oNovoProjAtiv->projativnovo
          *     - Caso contrario, o projeto atividade a ser gravado na tabela rhempenhofolha
-         *        ser? $oProjAtivRec->projativ
+         *        será $oProjAtivRec->projativ
          *
          *   Caso exista algum registro na tabela rhlotavincrec em que o
          *     rh43_codlotavinc = $oProjAtivRec->lotavinc e rh43_codelenov = $oDadosNovos->elementonovo
          *     - Se tiver algum registro, o recurso a ser gravado na tabela rhempenhofolha
-         *        ser? $oNovoRecurso->recursonovo
-         *     - Caso contr?rio, o recurso a ser gravado na tabela rhempenhofolha
-         *        ser? $oProjAtivRec->recurso
+         *        será $oNovoRecurso->recursonovo
+         *     - Caso contrário, o recurso a ser gravado na tabela rhempenhofolha
+         *        será $oProjAtivRec->recurso
          */
 
         $sCamposrhLotaVincEle = "rh28_codelenov as elementonovo";
@@ -2379,7 +2316,6 @@ class dadosEmpenhoFolhaRescisao
         $iRecurso = $oProjAtivRec->recurso;
 
         if ($oDaorhLotaVincEle->numrows > 0) {
-
             $oDadosNovos = db_utils::fieldsMemory($rsTestaNovos, 0);
             $iElemento = $oDadosNovos->elementonovo;
 
@@ -2413,12 +2349,10 @@ class dadosEmpenhoFolhaRescisao
                 $oNovoRecurso = db_utils::fieldsMemory($rsNovoRecurso, 0);
                 $iRecurso = $oNovoRecurso->recursonovo;
             }
-
         }
 
 
         if ($oParametro->o50_subelem == "f") {
-
             $sCamposElemento = "substr(o56_elemento,1,7)||'000000' as elemento";
             $sWhereElemento = "     o56_codele = {$iElemento} ";
             $sWhereElemento .= " and o56_anousu = {$iAnoUsu}   ";
@@ -2432,7 +2366,6 @@ class dadosEmpenhoFolhaRescisao
                 $oElemento = db_utils::fieldsMemory($rsElemento, 0);
                 $sWhereParam = " and o56_elemento='{$oElemento->elemento}' ";
             }
-
         } else {
             $sWhereParam = " and o58_codele = {$iElemento}";
         }
@@ -2491,32 +2424,30 @@ class dadosEmpenhoFolhaRescisao
         $oEstrutural->iDotacao = $iDotacao;
 
         return $oEstrutural;
-
-
     }
 
 
     /**
      * Gera dados para empenhos da folha referente a FGTS ( rubricas = R991 )
      *
-     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13? )
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13 )
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function geraDadosEmpenhosFGTS($sTipo = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '')
     {
 
-        $sMsgErro = 'Gera??o de empenhos FGTS abortada';
+        $sMsgErro = 'Gerção de empenhos FGTS abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new DBException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new DBException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         require_once(modification("libs/db_sql.php"));
 
         if (trim($sTipo) == '') {
-            throw new ParameterException("{$sMsgErro}\ntipo de folha n?o informado!");
+            throw new ParameterException("{$sMsgErro}\ntipo de folha não informado!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -2529,17 +2460,17 @@ class dadosEmpenhoFolhaRescisao
         }
 
 
-        $oDaoOrcParametro = db_utils::getDao('orcparametro');
-        $oDaoOrcElemento = db_utils::getDao('orcelemento');
-        $oDaoOrcDotacao = db_utils::getDao('orcdotacao');
-        $oDaorhLotaExe = db_utils::getDao('rhlotaexe');
-        $oDaorhLotaVinc = db_utils::getDao('rhlotavinc');
-        $oDaorhLotaVincEle = db_utils::getDao('rhlotavincele');
-        $oDaorhLotaVincRec = db_utils::getDao('rhlotavincrec');
-        $oDaorhLotaVincAtiv = db_utils::getDao('rhlotavincativ');
-        $oDaorhEmpenhoFolha = db_utils::getDao('rhempenhofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhEmpenhoFolhaRhEmpRubrica = db_utils::getDao('rhempenhofolharhemprubrica');
+        $oDaoOrcParametro = new cl_orcparametro;
+        $oDaoOrcElemento = new cl_orcelemento;
+        $oDaoOrcDotacao = new cl_orcdotacao;
+        $oDaorhLotaExe = new cl_rhlotaexe;
+        $oDaorhLotaVinc = new cl_rhlotavinc;
+        $oDaorhLotaVincEle = new cl_rhlotavincele;
+        $oDaorhLotaVincRec = new cl_rhlotavincrec;
+        $oDaorhLotaVincAtiv = new cl_rhlotavincativ;
+        $oDaorhEmpenhoFolha = new cl_rhempenhofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhEmpenhoFolhaRhEmpRubrica = new cl_rhempenhofolharhemprubrica;
         $clgeradorsql = new cl_gera_sql_folha;
 
         $clgeradorsql->inicio_rh = false;
@@ -2556,7 +2487,7 @@ class dadosEmpenhoFolhaRescisao
         if ($oDaoOrcParametro->numrows > 0) {
             $oParametro = db_utils::fieldsMemory($rsParametro, 0);
         } else {
-            throw new BusinessException("{$sMsgErro}\nconfigure os par?metros do or?amento para o ano {$iAnoUsu}!");
+            throw new BusinessException("{$sMsgErro}\nconfigure os parâmetros do orçamento para o ano {$iAnoUsu}!");
         }
 
         /**
@@ -2581,12 +2512,13 @@ class dadosEmpenhoFolhaRescisao
 
 
         foreach ($aSiglas as $iInd => $sSigla) {
-
             try {
-                $lLiberada = $this->isLiberada($sSigla,
+                $lLiberada = $this->isLiberada(
+                    $sSigla,
                     3,
                     $iAnoUsu,
-                    $iMesUsu);
+                    $iMesUsu
+                );
             } catch (DBException $eException) {
                 throw new DBException("{$sMsgErro}\n{$eException->getMessage()}");
             } catch (BusinessException $eException) {
@@ -2626,7 +2558,8 @@ class dadosEmpenhoFolhaRescisao
                 $sSqlGerador .= ' union all ';
             }
 
-            $sSqlGerador .= $clgeradorsql->gerador_sql($sSigla,
+            $sSqlGerador .= $clgeradorsql->gerador_sql(
+                $sSigla,
                 $iAnoUsu,
                 $iMesUsu,
                 "",
@@ -2634,24 +2567,21 @@ class dadosEmpenhoFolhaRescisao
                 $sCampos,
                 "",
                 $sWhereGerador,
-                $iInstit);
+                $iInstit
+            );
         }
 
         $rsGerador = db_query($sSqlGerador);
 
         if ($rsGerador) {
-
             $iLinhasGerador = pg_num_rows($rsGerador);
 
             if ($iLinhasGerador > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasGerador; $iInd++) {
-
                     $oGerador = db_utils::fieldsMemory($rsGerador, $iInd);
                     $iCaract = $oGerador->caract;
 
                     try {
-
                         $oEstrututal = $this->getEstrututal(db_getsession('DB_anousu'), $oGerador->lotacao, $oGerador->vinculo, $oGerador->elemento);
 
                         $iOrgao = $oEstrututal->iOrgao;
@@ -2663,7 +2593,6 @@ class dadosEmpenhoFolhaRescisao
                         $iRecurso = $oEstrututal->iRecurso;
                         $iElemento = $oEstrututal->iElemento;
                         $iDotacao = $oEstrututal->iDotacao;
-
                     } catch (DBException $eException) {
                         throw new DBException("{$sMsgErro}\n{$eException->getMessage()}");
                     } catch (BusinessException $eException) {
@@ -2708,12 +2637,9 @@ class dadosEmpenhoFolhaRescisao
                     $rsEmpenhoFolha = $oDaorhEmpenhoFolha->sql_record($sSqlEmpenhoFolha);
 
                     if ($oDaorhEmpenhoFolha->numrows > 0) {
-
                         $oRhEmpenhoFolha = db_utils::fieldsMemory($rsEmpenhoFolha, 0);
                         $iCodEmpenhoFolha = $oRhEmpenhoFolha->rh72_sequencial;
-
                     } else {
-
                         $oDaorhEmpenhoFolha->rh72_coddot = $iDotacao;
                         $oDaorhEmpenhoFolha->rh72_codele = $iElemento;
                         $oDaorhEmpenhoFolha->rh72_unidade = $iUnidade;
@@ -2738,7 +2664,6 @@ class dadosEmpenhoFolhaRescisao
                         }
 
                         $iCodEmpenhoFolha = $oDaorhEmpenhoFolha->rh72_sequencial;
-
                     }
 
                     try {
@@ -2758,7 +2683,7 @@ class dadosEmpenhoFolhaRescisao
                     if (!empty($aExcecoes)) {
 
                         /**
-                         * Caso exista exce??o ent?o ser? consultado se j? existe algum registro cadastrado
+                         * Caso exista exceção então será consultado se já existe algum registro cadastrado
                          * na tabela rhempenhofolha para esse novo estrutural
                          */
                         if (!empty($aExcecoes[0]->rh74_orgao)) {
@@ -2823,12 +2748,9 @@ class dadosEmpenhoFolhaRescisao
                         $rsEmpenhoFolha = $oDaorhEmpenhoFolha->sql_record($sSqlEmpenhoFolha);
 
                         if ($oDaorhEmpenhoFolha->numrows > 0) {
-
                             $oRhEmpenhoFolha = db_utils::fieldsMemory($rsEmpenhoFolha, 0);
                             $iCodEmpenhoFolha = $oRhEmpenhoFolha->rh72_sequencial;
-
                         } else {
-
                             $oDaorhEmpenhoFolha->rh72_coddot = $iDotacao;
                             $oDaorhEmpenhoFolha->rh72_codele = $iElemento;
                             $oDaorhEmpenhoFolha->rh72_unidade = $iUnidade;
@@ -2875,26 +2797,23 @@ class dadosEmpenhoFolhaRescisao
                     if ($oDaorhEmpenhoFolhaRhEmpRubrica->erro_status == '0') {
                         throw new DBException($oDaorhEmpenhoFolhaRhEmpRubrica->erro_msg);
                     }
-
                 }
-
             } else {
                 throw new DBException("{$sMsgErro}\nnenhum registro encontrado para {$iAnoUsu} / {$iMesUsu}");
             }
         } else {
             throw new DBException("{$sMsgErro}\nErro na consulta!");
         }
-
     }
 
 
     /**
      * Retorna os dados para empenhos da folha referente a FGTS ( rubricas = R991 )
      *
-     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13? )
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13)
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      * @return array
      */
     public function getRubricasEmpenhosFGTS($sTipo = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '')
@@ -2903,7 +2822,7 @@ class dadosEmpenhoFolhaRescisao
         $sMsgErro = 'Consulta de empenhos FGTS abortada';
 
         if (trim($sTipo) == '') {
-            throw new ParameterException("{$sMsgErro}\nTipo de folha n?o informado!");
+            throw new ParameterException("{$sMsgErro}\nTipo de folha não informado!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -2929,7 +2848,7 @@ class dadosEmpenhoFolhaRescisao
             throw new Exception("{$sMsgErro}\n{$eException->getMessage()}");
         }
 
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
 
         $sWhereEmpenhosFolha = "     rh73_rubric      = 'R991'     ";
         $sWhereEmpenhosFolha .= " and rh72_anousu      = {$iAnoUsu} ";
@@ -2939,10 +2858,12 @@ class dadosEmpenhoFolhaRescisao
         $sWhereEmpenhosFolha .= " and rh72_tabprev     = 0          ";
         $sWhereEmpenhosFolha .= " and rh72_siglaarq in ('" . implode("','", $aSiglas) . "')";
 
-        $sSqlEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(null,
+        $sSqlEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(
+            null,
             "*",
             null,
-            $sWhereEmpenhosFolha);
+            $sWhereEmpenhosFolha
+        );
 
         $rsEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_record($sSqlEmpenhosFolha);
 
@@ -2953,29 +2874,28 @@ class dadosEmpenhoFolhaRescisao
         }
 
         return $aEmpenhosFolha;
-
     }
 
 
     /**
      * Exclui os dados para empenhos da folha referente a FGTS ( rubricas = R991 )
      *
-     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13? )
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit Institui??o
+     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13 )
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
      */
     public function excluiDadosEmpenhosFGTS($sTipo = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '')
     {
 
-        $sMsgErro = 'Exclus?o de empenhos FGTS abortada';
+        $sMsgErro = 'Exclusão de empenhos FGTS abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new DBException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new DBException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sTipo) == '') {
-            throw new ParameterException("{$sMsgErro}\ntipo de folha n?o informado!");
+            throw new ParameterException("{$sMsgErro}\ntipo de folha não informado!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -2987,8 +2907,8 @@ class dadosEmpenhoFolhaRescisao
             $iInstit = db_getsession('DB_instit');
         }
 
-        $oDaorhEmpenhoFolha = db_utils::getDao('rhempenhofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaorhEmpenhoFolha = new cl_rhempenhofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
 
         try {
             $aDadosEmpenhos = $this->getRubricasEmpenhosFGTS($sTipo, $iAnoUsu, $iMesUsu, $iInstit);
@@ -3006,13 +2926,12 @@ class dadosEmpenhoFolhaRescisao
 
 
         if (count($aDadosEmpenhos) > 0) {
-
             $aListaEmpenhos = array();
 
             foreach ($aDadosEmpenhos as $iInd => $oEmpenhoFolha) {
                 $aListaEmpenhos[] = $oEmpenhoFolha->rh72_sequencial;
                 if (trim($oEmpenhoFolha->rh76_sequencial) != '') {
-                    throw new BusinessException("{$sMsgErro}\n\nRegistros j? empenhados!");
+                    throw new BusinessException("{$sMsgErro}\n\nRegistros já empenhados!");
                 }
             }
 
@@ -3053,67 +2972,65 @@ class dadosEmpenhoFolhaRescisao
                 }
             }
         }
-
     }
 
 
     /**
      * Retorna um array contendo as siglas referente ao tipo de folha dependendo do tipo
-     * passado por par?metro
+     * passado por parâmetro
      *
-     * @param string $sTipo Tipo ( m = Mensal ou d = 13? )
+     * @param string $sTipo Tipo ( m = Mensal ou d = 13)
      * @return array
      */
     public function getSiglasFGTS($sTipo = '')
     {
 
         if (trim($sTipo) == '') {
-            throw new ParameterException("Tipo de folha n?o informado!");
+            throw new ParameterException("Tipo de folha não informado!");
         }
 
         if ($sTipo == 'm') {
             $aSiglas = array('r14',
                 'r48',
                 'r20');
-        } else if ($sTipo == 'd') {
+        } elseif ($sTipo == 'd') {
             $aSiglas = array('r35');
         } else {
-            throw new BusinessException("Tipo de folha difere de mensal e 13?!");
+            throw new BusinessException("Tipo de folha difere de mensal e 13!");
         }
 
         return $aSiglas;
-
     }
 
 
     /**
-     * Gera dados para empenhos da folha referente a Previd?ncia ( rubricas = R992 )
+     * Gera dados para empenhos da folha referente a previdência ( rubricas = R992 )
      *
-     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13? )
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param string $sListaPrev Lista de Previd?ncias
-     * @param integer $iInstit Institui??o
+     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13 )
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param string $sListaPrev Lista de previdências
+     * @param integer $iInstit instituição
      */
     public function geraDadosEmpenhosPrev($sTipo = '', $iAnoUsu = '', $iMesUsu = '', $sListaPrev = '', $iInstit = '')
     {
 
-        $sMsgErro = 'Gera??o de empenhos da previd?ncia abortada';
+        $sMsgErro = 'Gerção de empenhos da previdência abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new DBException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new DBException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         require_once(modification("libs/db_sql.php"));
 
         if (trim($sTipo) == '') {
-            throw new ParameterException("{$sMsgErro}\ntipo de folha n?o informado!");
+            throw new ParameterException("{$sMsgErro}\ntipo de folha não informado!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
         }
         if (trim($sListaPrev) == '') {
-            throw new ParameterException("{$sMsgErro}\nprevid?ncia n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nprevidência não informada!");
         }
         if (trim($iMesUsu) == '') {
             $iAnoUsu = db_mesfolha();
@@ -3123,17 +3040,17 @@ class dadosEmpenhoFolhaRescisao
         }
 
 
-        $oDaoOrcParametro = db_utils::getDao('orcparametro');
-        $oDaoOrcElemento = db_utils::getDao('orcelemento');
-        $oDaoOrcDotacao = db_utils::getDao('orcdotacao');
-        $oDaorhLotaExe = db_utils::getDao('rhlotaexe');
-        $oDaorhLotaVinc = db_utils::getDao('rhlotavinc');
-        $oDaorhLotaVincEle = db_utils::getDao('rhlotavincele');
-        $oDaorhLotaVincRec = db_utils::getDao('rhlotavincrec');
-        $oDaorhLotaVincAtiv = db_utils::getDao('rhlotavincativ');
-        $oDaorhEmpenhoFolha = db_utils::getDao('rhempenhofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaorhEmpenhoFolhaRhEmpRubrica = db_utils::getDao('rhempenhofolharhemprubrica');
+        $oDaoOrcParametro = new cl_orcparametro;
+        $oDaoOrcElemento = new cl_orcelemento;
+        $oDaoOrcDotacao = new cl_orcdotacao;
+        $oDaorhLotaExe = new cl_rhlotaexe;
+        $oDaorhLotaVinc = new cl_rhlotavinc;
+        $oDaorhLotaVincEle = new cl_rhlotavincele;
+        $oDaorhLotaVincRec = new cl_rhlotavincrec;
+        $oDaorhLotaVincAtiv = new cl_rhlotavincativ;
+        $oDaorhEmpenhoFolha = new cl_rhempenhofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaorhEmpenhoFolhaRhEmpRubrica = new cl_rhempenhofolharhemprubrica;
         $clgeradorsql = new cl_gera_sql_folha;
 
         $clgeradorsql->inicio_rh = false;
@@ -3151,7 +3068,7 @@ class dadosEmpenhoFolhaRescisao
         if ($oDaoOrcParametro->numrows > 0) {
             $oParametro = db_utils::fieldsMemory($rsParametro, 0);
         } else {
-            throw new BusinessException("{$sMsgErro}\nconfigure os par?metros do or?amento para o ano {$iAnoUsu}!");
+            throw new BusinessException("{$sMsgErro}\nconfigure os parâmetros do orçamento para o ano {$iAnoUsu}!");
         }
 
         try {
@@ -3172,14 +3089,15 @@ class dadosEmpenhoFolhaRescisao
         $sSqlGerador = '';
 
         foreach ($aSiglas as $iInd => $sSigla) {
-
             try {
-                $lLiberada = $this->isLiberada($sSigla,
+                $lLiberada = $this->isLiberada(
+                    $sSigla,
                     2,
                     $iAnoUsu,
                     $iMesUsu,
                     null,
-                    $sListaPrev);
+                    $sListaPrev
+                );
             } catch (DBException $eException) {
                 throw new DBException("{$sMsgErro}\n{$eException->getMessage()}");
             } catch (BusinessException $eException) {
@@ -3237,7 +3155,8 @@ class dadosEmpenhoFolhaRescisao
                 $sSqlGerador .= ' union all ';
             }
 
-            $sSqlGerador .= $clgeradorsql->gerador_sql($sSigla,
+            $sSqlGerador .= $clgeradorsql->gerador_sql(
+                $sSigla,
                 $iAnoUsu,
                 $iMesUsu,
                 "",
@@ -3245,25 +3164,22 @@ class dadosEmpenhoFolhaRescisao
                 $sCampos,
                 "",
                 $sWhereGerador,
-                $iInstit);
+                $iInstit
+            );
         }
 
 
         $rsGerador = db_query($sSqlGerador);
 
         if ($rsGerador) {
-
             $iLinhasGerador = pg_num_rows($rsGerador);
 
             if ($iLinhasGerador > 0) {
-
                 for ($iInd = 0; $iInd < $iLinhasGerador; $iInd++) {
-
                     $oGerador = db_utils::fieldsMemory($rsGerador, $iInd);
                     $iCaract = $oGerador->caract;
 
                     try {
-
                         $oEstrututal = $this->getEstrututal(db_getsession('DB_anousu'), $oGerador->lotacao, $oGerador->vinculo, $oGerador->elemento);
 
                         $iOrgao = $oEstrututal->iOrgao;
@@ -3275,7 +3191,6 @@ class dadosEmpenhoFolhaRescisao
                         $iRecurso = $oEstrututal->iRecurso;
                         $iElemento = $oEstrututal->iElemento;
                         $iDotacao = $oEstrututal->iDotacao;
-
                     } catch (DBException $eException) {
                         throw new DBException("{$sMsgErro}\n{$eException->getMessage()}");
                     } catch (BusinessException $eException) {
@@ -3320,12 +3235,9 @@ class dadosEmpenhoFolhaRescisao
                     $rsEmpenhoFolha = $oDaorhEmpenhoFolha->sql_record($sSqlEmpenhoFolha);
 
                     if ($oDaorhEmpenhoFolha->numrows > 0) {
-
                         $oRhEmpenhoFolha = db_utils::fieldsMemory($rsEmpenhoFolha, 0);
                         $iCodEmpenhoFolha = $oRhEmpenhoFolha->rh72_sequencial;
-
                     } else {
-
                         $oDaorhEmpenhoFolha->rh72_coddot = $iDotacao;
                         $oDaorhEmpenhoFolha->rh72_codele = $iElemento;
                         $oDaorhEmpenhoFolha->rh72_unidade = $iUnidade;
@@ -3350,7 +3262,6 @@ class dadosEmpenhoFolhaRescisao
                         }
 
                         $iCodEmpenhoFolha = $oDaorhEmpenhoFolha->rh72_sequencial;
-
                     }
 
                     try {
@@ -3370,7 +3281,7 @@ class dadosEmpenhoFolhaRescisao
                     if (!empty($aExcecoes)) {
 
                         /**
-                         * Caso exista exce??o ent?o ser? consultado se j? existe algum registro cadastrado
+                         * Caso exista exceção então será consultado se já existe algum registro cadastrado
                          * na tabela rhempenhofolha para esse novo estrutural
                          */
                         if (!empty($aExcecoes[0]->rh74_orgao)) {
@@ -3435,12 +3346,9 @@ class dadosEmpenhoFolhaRescisao
                         $rsEmpenhoFolha = $oDaorhEmpenhoFolha->sql_record($sSqlEmpenhoFolha);
 
                         if ($oDaorhEmpenhoFolha->numrows > 0) {
-
                             $oRhEmpenhoFolha = db_utils::fieldsMemory($rsEmpenhoFolha, 0);
                             $iCodEmpenhoFolha = $oRhEmpenhoFolha->rh72_sequencial;
-
                         } else {
-
                             $oDaorhEmpenhoFolha->rh72_coddot = $iDotacao;
                             $oDaorhEmpenhoFolha->rh72_codele = $iElemento;
                             $oDaorhEmpenhoFolha->rh72_unidade = $iUnidade;
@@ -3497,36 +3405,33 @@ class dadosEmpenhoFolhaRescisao
                     if ($oDaorhEmpenhoFolhaRhEmpRubrica->erro_status == '0') {
                         throw new DBException($oDaorhEmpenhoFolhaRhEmpRubrica->erro_msg);
                     }
-
                 }
-
             } else {
                 throw new DBException("{$sMsgErro}\nnenhum registro encontrado para {$iAnoUsu} / {$iMesUsu}");
             }
         } else {
             throw new DBException("{$sMsgErro}\nErro na consulta!");
         }
-
     }
 
 
     /**
-     * Retorna os dados para empenhos da folha referente a Previ?ncia ( rubricas = R992 )
+     * Retorna os dados para empenhos da folha referente a Previdência ( rubricas = R992 )
      *
-     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13? )
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param string $sListaPrev Lista de Previ?ncia
-     * @param integer $iInstit Institui??o
+     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13 )
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param string $sListaPrev Lista de Previdência
+     * @param integer $iInstit instituição
      * @return array
      */
     public function getRubricasEmpenhosPrev($sTipo = '', $iAnoUsu = '', $iMesUsu = '', $sListaPrev = '', $iInstit = '')
     {
 
-        $sMsgErro = 'Consulta de empenhos da previd?ncia abortada';
+        $sMsgErro = 'Consulta de empenhos da previdência abortada';
 
         if (trim($sTipo) == '') {
-            throw new ParameterException("{$sMsgErro}\nTipo de folha n?o informado!");
+            throw new ParameterException("{$sMsgErro}\nTipo de folha não informado!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -3535,7 +3440,7 @@ class dadosEmpenhoFolhaRescisao
             $iAnoUsu = db_mesfolha();
         }
         if (trim($sListaPrev) == '') {
-            throw new ParameterException("{$sMsgErro}\nprevid?ncia n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nprevidência não informada!");
         }
         if (trim($iInstit) == '') {
             $iInstit = db_getsession('DB_instit');
@@ -3555,7 +3460,7 @@ class dadosEmpenhoFolhaRescisao
             throw new Exception("{$sMsgErro}\n{$eException->getMessage()}");
         }
 
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
 
         $sWhereEmpenhosFolha = "     rh73_rubric      = 'R992'       ";
         $sWhereEmpenhosFolha .= " and rh72_anousu      = {$iAnoUsu}   ";
@@ -3565,10 +3470,12 @@ class dadosEmpenhoFolhaRescisao
         $sWhereEmpenhosFolha .= " and rh72_tabprev in ({$sListaPrev}) ";
         $sWhereEmpenhosFolha .= " and rh72_siglaarq in ('" . implode("','", $aSiglas) . "')";
 
-        $sSqlEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(null,
+        $sSqlEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_query_dados(
+            null,
             "*",
             null,
-            $sWhereEmpenhosFolha);
+            $sWhereEmpenhosFolha
+        );
 
         $rsEmpenhosFolha = $oDaorhEmpenhoFolhaRubrica->sql_record($sSqlEmpenhosFolha);
 
@@ -3579,31 +3486,30 @@ class dadosEmpenhoFolhaRescisao
         }
 
         return $aEmpenhosFolha;
-
     }
 
 
     /**
-     * Exclui os dados para empenhos da folha referente a Previ?ncia ( rubricas = R992 )
+     * Exclui os dados para empenhos da folha referente a Previdência ( rubricas = R992 )
      *
-     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13? )
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param string $sListaPrev Lista de Previ?ncia
-     * @param integer $iInstit Institui??o
+     * @param string $sTipo Tipo de Folha ( m = Mensal ou d = 13 )
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
+     * @param string $sListaPrev Lista de Previdência
+     * @param integer $iInstit instituição
      * @return array
      */
     public function excluiDadosEmpenhosPrev($sTipo = '', $iAnoUsu = '', $iMesUsu = '', $sListaPrev = '', $iInstit = '')
     {
 
-        $sMsgErro = 'Exclus?o de empenhos da previd?ncia abortada';
+        $sMsgErro = 'Exclusão de empenhos da previdência abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new DBException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new DBException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($sTipo) == '') {
-            throw new ParameterException("{$sMsgErro}\ntipo de folha n?o informado!");
+            throw new ParameterException("{$sMsgErro}\ntipo de folha não informado!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -3612,14 +3518,14 @@ class dadosEmpenhoFolhaRescisao
             $iAnoUsu = db_mesfolha();
         }
         if (trim($sListaPrev) == '') {
-            throw new ParameterException("{$sMsgErro}\nprevid?ncia n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nprevidência não informada!");
         }
         if (trim($iInstit) == '') {
             $iInstit = db_getsession('DB_instit');
         }
 
-        $oDaorhEmpenhoFolha = db_utils::getDao('rhempenhofolha');
-        $oDaorhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
+        $oDaorhEmpenhoFolha = new cl_rhempenhofolha;
+        $oDaorhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
 
         try {
             $aDadosEmpenhos = $this->getRubricasEmpenhosPrev($sTipo, $iAnoUsu, $iMesUsu, $sListaPrev, $iInstit);
@@ -3636,13 +3542,12 @@ class dadosEmpenhoFolhaRescisao
         }
 
         if (count($aDadosEmpenhos) > 0) {
-
             $aListaEmpenhos = array();
 
             foreach ($aDadosEmpenhos as $iInd => $oEmpenhoFolha) {
                 $aListaEmpenhos[] = $oEmpenhoFolha->rh72_sequencial;
                 if (trim($oEmpenhoFolha->rh76_sequencial) != '') {
-                    throw new BusinessException("{$sMsgErro}\n\nRegistros j? empenhados!");
+                    throw new BusinessException("{$sMsgErro}\n\nRegistros já empenhados!");
                 }
             }
 
@@ -3683,29 +3588,28 @@ class dadosEmpenhoFolhaRescisao
                 }
             }
         }
-
     }
 
 
     /**
-     * Verifica se os dados gerados j? est?o liberados
+     * Verifica se os dados gerados já estão liberados
      *
      * @param string $sSigla Tipo de Folha
-     * @param string $sTipoEmp Tipo de Empenho ( Sal?rio, Previd?ncia ou FGTS )
-     * @param integer $iAnoUsu Exerc?cio da Folha
-     * @param integer $iMesUsu M?s da Folha
+     * @param string $sTipoEmp Tipo de Empenho (Salário, previdência ou FGTS )
+     * @param integer $iAnoUsu Exercício da Folha
+     * @param integer $iMesUsu Mês da Folha
      * @return boolean
      */
     public function isLiberada($sSigla = '', $sTipoEmp = '', $iAnoUsu = '', $iMesUsu = '', $aListaRescisoes = null, $sListaTabPrev = "")
     {
 
-        $sMsgErro = " Consulta de libera??o abortada";
+        $sMsgErro = " Consulta de liberação abortada";
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
         if (trim($sTipoEmp) == '') {
-            throw new ParameterException("{$sMsgErro}\ntipo n?o informado!");
+            throw new ParameterException("{$sMsgErro}\ntipo não informado!");
         }
         if (trim($iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
@@ -3716,9 +3620,9 @@ class dadosEmpenhoFolhaRescisao
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
         /*
-     * Caso exista resgistros na tabela rhempenhofolhaconfirma ent?o est? liberado
+     * Caso exista resgistros na tabela rhempenhofolhaconfirma então está liberado
      */
-        $oDaorhEmpenhoFolhaConfirma = db_utils::getDao('rhempenhofolhaconfirma');
+        $oDaorhEmpenhoFolhaConfirma = new cl_rhempenhofolhaconfirma;
 
         $sWhereLiberacao = "     rh83_anousu       = {$iAnoUsu}   ";
         $sWhereLiberacao .= " and rh83_mesusu       = {$iMesUsu}   ";
@@ -3740,38 +3644,35 @@ class dadosEmpenhoFolhaRescisao
         } else {
             return false;
         }
-
-
     }
 
 
     /**
-     * Consulta a dota??o apartir do estrutural passado por par?metro
+     * Consulta a dotação apartir do estrutural passado por parâmetro
      *
-     * @param integer $iOrgao Org?o
+     * @param integer $iOrgao Orgão
      * @param integer $iUnidade Unidade
      * @param integer $iProjAtiv Projeto Atividade
      * @param integer $iRecurso Recurso
      * @param integer $iElemento Elemento
-     * @param integer $iAnoUsu Exerc?cio
-     * @return integer C?digo da Dota??o
+     * @param integer $iAnoUsu Exercício
+     * @return integer Código da dotação
      */
     function getDotacaoByFiltro($iOrgao, $iUnidade, $iProjAtiv, $iRecurso, $iElemento, $iAnoUsu, $iFuncao = null, $iSubFuncao = null, $iPrograma = null)
     {
 
 
-        $oDaoOrcParametro = db_utils::getDao('orcparametro');
-        $oDaoOrcElemento = db_utils::getDao('orcelemento');
+        $oDaoOrcParametro = new cl_orcparametro;
+        $oDaoOrcElemento = new cl_orcelemento;
         $sSqlParametro = $oDaoOrcParametro->sql_query_file($iAnoUsu, 'o50_subelem');
         $rsParametro = $oDaoOrcParametro->sql_record($sSqlParametro);
 
         if ($oDaoOrcParametro->numrows > 0) {
             $oParametro = db_utils::fieldsMemory($rsParametro, 0);
         } else {
-            throw new ParameterException("Configure os par?metros do or?amento para o ano {$iAnoUsu}!");
+            throw new ParameterException("Configure os parâmetros do orçamento para o ano {$iAnoUsu}!");
         }
         if ($oParametro->o50_subelem == "f") {
-
             $sCamposElemento = "substr(o56_elemento,1,7)||'000000' as elemento";
             $sWhereElemento = "     o56_codele = {$iElemento} ";
             $sWhereElemento .= " and o56_anousu = {$iAnoUsu}   ";
@@ -3780,12 +3681,9 @@ class dadosEmpenhoFolhaRescisao
             $rsElemento = $oDaoOrcElemento->sql_record($sSqlElemento);
 
             if ($oDaoOrcElemento->numrows > 0) {
-
                 $oElemento = db_utils::fieldsMemory($rsElemento, 0);
                 $sWhereParam = " and o56_elemento='{$oElemento->elemento}'";
-
             }
-
         } else {
             $sWhereParam = " and o58_codele = {$iElemento}";
         }
@@ -3823,20 +3721,21 @@ class dadosEmpenhoFolhaRescisao
 
     /**
      * Gera planilha apartir dos dados para empenho
-     * @param string $sSigla Tipo de Folha ( Ex: Sal?rio, F?rias, Complementar, etc. )
-     * @param integer $iAnoUsu Exerc?cio da folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit institui??o
+     * @param string $sSigla Tipo de Folha ( Ex: Salário, Férias, Complementar, etc. )
+     * @param string $iAnoUsu Exercício da folha
+     * @param string $iMesUsu Mês da Folha
+     * @param string $iInstit instituição
+     * @param string $iCgm
+     * @param null $aListaRescisoes
      * @return array Lista de Planilhas Geradas
+     * @throws Exception
      */
     public function geraPlanilhaGeral($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $iCgm = '', $aListaRescisoes = null)
     {
-
         /**
          * Valida Credor
          */
         if (isset($iCgm) && $iCgm != "") {
-
             require_once(modification("classes/db_cgm_classe.php"));
             $cldb_cgm = new cl_cgm;
             $rsCredor = $cldb_cgm->sql_record($cldb_cgm->sql_query_file($iCgm, '*', null, ""));
@@ -3846,22 +3745,23 @@ class dadosEmpenhoFolhaRescisao
             }
         }
 
-        $sMsgErro = 'Gera??o da planilha dos empenhos abortada';
+        $sMsgErro = 'Geração da planilha dos empenhos abortada';
 
         if (!db_utils::inTransaction()) {
-            throw new DBException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new DBException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         require_once(modification("libs/db_sql.php"));
 
         if (trim($sSigla) == '') {
-            throw new ParameterException("{$sMsgErro}\nsigla n?o informada!");
+            throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
+
         if (trim($iAnoUsu) == '') {
-            $iAnoUsu = db_anofolha();
+            $iAnoUsu = DBPessoal::getAnoFolha();
         }
         if (trim($iMesUsu) == '') {
-            $iAnoUsu = db_mesfolha();
+            $iAnoUsu = DBPessoal::getMesFolha();
         }
         if (trim($iInstit) == '') {
             $iInstit = db_getsession('DB_instit');
@@ -3871,18 +3771,17 @@ class dadosEmpenhoFolhaRescisao
         $aPlanilha = array();
 
         /**
-         * Verificamos se o parâmetro r11_geraretencaoempenho ? true ou false
-         * true  : ser? gerada planilha por SLIP
-         * false : ser? gerada planilha para todos os registros de retenções dos empenhos da folha
+         * Verificamos se o parâmetro r11_geraretencaoempenho true ou false
+         * true  : será gerada planilha por SLIP
+         * false : será gerada planilha para todos os registros de retenções dos empenhos da folha
          */
-        $oDaoCfpess = db_utils::getDao("cfpess");
+        $oDaoCfpess = new cl_cfpess;
         $sSqlParam = $oDaoCfpess->sql_query_file($iAnoUsu, $iMesUsu, db_getsession("DB_instit"), "r11_geraretencaoempenho");
         $rsParam = $oDaoCfpess->sql_record($sSqlParam);
         $lGeraRetencao = db_utils::fieldsMemory($rsParam, 0)->r11_geraretencaoempenho;
 
-        //ser? gerada planilha por SLIP
+        //será gerada planilha por SLIP
         if ($lGeraRetencao == 't') {
-
             require_once(modification("classes/db_rhslipfolha_classe.php"));
             $clrhSlipFolha = new cl_rhslipfolha();
 
@@ -3897,11 +3796,11 @@ class dadosEmpenhoFolhaRescisao
             $sWhereSlip .= " and rh73_seqpes      in ({$sListaRescisoes})   ";
             $sWhereSlip .= " and rh82_sequencial is not null                ";
 
-            $rsSlips = $clrhSlipFolha->sql_record($clrhSlipFolha->sql_query_slip(null, "k17_codigo", null, $sWhereSlip));
+            $sql = $clrhSlipFolha->sql_query_slip(null, "k17_codigo", null, $sWhereSlip);
+            $rsSlips = $clrhSlipFolha->sql_record($sql);
             $aObjListaSlips = db_utils::getCollectionByRecord($rsSlips);
 
             if ($clrhSlipFolha->numrows > 0) {
-
                 foreach ($aObjListaSlips as $oSlip) {
                     $aListaSlip[] = $oSlip->k17_codigo;
                 }
@@ -3971,9 +3870,9 @@ class dadosEmpenhoFolhaRescisao
      * Gera planilha de devolução a partir dos dados para empenho
      * @param string $sSigla Tipo de Folha
      * @param integer $iAnoUsu Exercício da folha
-     * @param integer $iMesUsu M?s da Folha
-     * @param integer $iInstit institui??o
-     * @return integer C?digo da Planilhas Geradas
+     * @param integer $iMesUsu Mês da Folha
+     * @param integer $iInstit instituição
+     * @return integer Código da Planilhas Geradas
      */
     public function geraPlanilhaDevolucao($sSigla = '', $iAnoUsu = '', $iMesUsu = '', $iInstit = '', $aListaRescisoes = null)
     {
@@ -3999,8 +3898,8 @@ class dadosEmpenhoFolhaRescisao
         }
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
-        $oDaoPlaCaixa = db_utils::getDao('placaixa');
-        $oDaoPlaCaixaRec = db_utils::getDao('placaixarec');
+        $oDaoPlaCaixa = new cl_placaixa;
+        $oDaoPlaCaixaRec = new cl_placaixarec;
 
         try {
             $sSqlRubricasDevolucao = $this->getRubricasDevolucaoFolha($sSigla, $iAnoUsu, $iMesUsu, $iInstit, $aListaRescisoes, null, true);
@@ -4042,7 +3941,6 @@ class dadosEmpenhoFolhaRescisao
         $iLinhasDevolucao = pg_num_rows($rsDevolucao);
 
         if ($iLinhasDevolucao > 0) {
-
             $oDaoPlaCaixa->k80_data = date('Y-m-d', db_getsession("DB_datausu"));
             $oDaoPlaCaixa->k80_instit = $iInstit;
             $oDaoPlaCaixa->incluir(null);
@@ -4053,27 +3951,12 @@ class dadosEmpenhoFolhaRescisao
 
             $iCodPlanilha = $oDaoPlaCaixa->k80_codpla;
 
-
             for ($iInd = 0; $iInd < $iLinhasDevolucao; $iInd++) {
-
                 $oDevolucao = db_utils::fieldsMemory($rsDevolucao, $iInd);
-
-                /**
-                 * Buscamos se a conta credito possui uma conta extra-or?amentaria vinculada
-                 * caso possua, devemos usar essa conta como conta pagadora
-                 */
-                $oDaoSaltesExtra = db_utils::getDao("saltesextra");
-                $sSqlContaextra = $oDaoSaltesExtra->sql_query_extra(null,
-                    "k109_contaextra",
-                    null,
-                    "k109_saltes = {$oDevolucao->contacredito}");
-
-                $rsContaExtra = $oDaoSaltesExtra->sql_record($sSqlContaextra);
-
-                if ($oDaoSaltesExtra->numrows > 0) {
-                    $oDevolucao->contacredito = db_utils::fieldsmemory($rsContaExtra, 0)->k109_contaextra;
-                }
-
+                $oDevolucao->contacredito = SaltesHelper::getContaPlanilhaSlipFolha(
+                    $oDevolucao->contacredito,
+                    db_getsession("DB_instit")
+                );
                 $oDaoPlaCaixaRec->k81_codpla = $iCodPlanilha;
                 $oDaoPlaCaixaRec->k81_conta = $oDevolucao->contacredito;
                 $oDaoPlaCaixaRec->k81_receita = $oDevolucao->receita;
@@ -4100,17 +3983,15 @@ class dadosEmpenhoFolhaRescisao
         }
 
         return $iCodPlanilha;
-
     }
 
     public function geraPlanilhaEmpenhoFolha($sSigla, $iAnoUsu, $iMesUsu, $aListaRescisoes, $iInstit, $iCgm = '')
     {
-
-        $sMsgErro = 'Gera??o das Planilhas para as reten??es de Empenho abortada';
+        $sMsgErro = 'Geração das Planilhas para as retenções de Empenho abortada';
         $sCodPlanilha = '';
 
         if (!db_utils::inTransaction()) {
-            throw new DBException("{$sMsgErro}\nnenhuma transa??o encontrada!");
+            throw new DBException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
         if (trim($iInstit) == '') {
@@ -4119,10 +4000,10 @@ class dadosEmpenhoFolhaRescisao
 
         $sListaRescisoes = implode(",", $aListaRescisoes);
 
-        $oDaoRhEmpenhoFolhaRubricaPlanilha = db_utils::getDao('rhempenhofolharubricaplanilha');
-        $oDaoRhEmpenhoFolhaRubrica = db_utils::getDao('rhempenhofolharubrica');
-        $oDaoPlaCaixa = db_utils::getDao('placaixa');
-        $oDaoPlaCaixaRec = db_utils::getDao('placaixarec');
+        $oDaoRhEmpenhoFolhaRubricaPlanilha = new cl_rhempenhofolharubricaplanilha;
+        $oDaoRhEmpenhoFolhaRubrica = new cl_rhempenhofolharubrica;
+        $oDaoPlaCaixa = new cl_placaixa;
+        $oDaoPlaCaixaRec = new cl_placaixarec;
 
         $sCampoRubricas = " distinct on (rubric,recurso,sequencial)           ";
         $sCampoRubricas .= "          rh73_sequencial      as sequencial,      ";
@@ -4156,7 +4037,6 @@ class dadosEmpenhoFolhaRescisao
 
         $sSqlSubRubricas = $oDaoRhEmpenhoFolhaRubrica->sql_query_rhempenhofolharubricas(null, $sCampoRubricas, null, $sWhereRubricas);
 
-
         $sSqlRubricas = " select rubric,                                                               ";
         $sSqlRubricas .= "        recurso,                                                              ";
         $sSqlRubricas .= "        retencao,                                                             ";
@@ -4187,7 +4067,6 @@ class dadosEmpenhoFolhaRescisao
         $iNroRubricas = $oDaoRhEmpenhoFolhaRubrica->numrows;
 
         if ($iNroRubricas > 0) {
-
             $oDaoPlaCaixa->k80_data = date('Y-m-d', db_getsession("DB_datausu"));
             $oDaoPlaCaixa->k80_instit = $iInstit;
             $oDaoPlaCaixa->incluir(null);
@@ -4197,31 +4076,15 @@ class dadosEmpenhoFolhaRescisao
             }
 
             $sCodPlanilha = $oDaoPlaCaixa->k80_codpla;
-            $oDaoTabRec = db_utils::getDao("tabplan");
+            $oDaoTabRec = new cl_tabplan;
             for ($iInd = 0; $iInd < $iNroRubricas; $iInd++) {
-
                 $oDadosRubricas = db_utils::fieldsMemory($rsRubricas, $iInd);
 
-                /**
-                 * Buscamos se a conta credito possui uma conta extra-or?amentaria vinculada
-                 * caso possua, devemos usar essa conta como conta pagadora apenas se a receita for extra-or?amentaria
-                 */
-                $sSqlExtra = $oDaoTabRec->sql_query($oDadosRubricas->receita);
-                $rsReceitaExtra = $oDaoTabRec->sql_record($sSqlExtra);
-                if ($oDaoTabRec->numrows > 0) {
+                $oDadosRubricas->contacredito = SaltesHelper::getContaPlanilhaSlipFolha(
+                    $oDadosRubricas->contacredito,
+                    db_getsession("DB_instit")
+                );
 
-                    $oDaoSaltesExtra = db_utils::getDao("saltesextra");
-                    $sSqlContaextra = $oDaoSaltesExtra->sql_query_extra(null,
-                        "k109_contaextra",
-                        null,
-                        "k109_saltes = {$oDadosRubricas->contacredito}");
-
-                    $rsContaExtra = $oDaoSaltesExtra->sql_record($sSqlContaextra);
-                    if ($oDaoSaltesExtra->numrows > 0) {
-                        $oDadosRubricas->contacredito = db_utils::fieldsmemory($rsContaExtra, 0)->k109_contaextra;
-
-                    }
-                }
                 $oDaoPlaCaixaRec->k81_codpla = $sCodPlanilha;
                 $oDaoPlaCaixaRec->k81_conta = $oDadosRubricas->contacredito;
                 $oDaoPlaCaixaRec->k81_receita = $oDadosRubricas->receita;
@@ -4251,20 +4114,16 @@ class dadosEmpenhoFolhaRescisao
 
                 $aRhEmpenhoFolhaRubrica = explode(",", $oDadosRubricas->rhempenhofolharubrica);
                 for ($iEmpenhoFolhaRubrica = 0; $iEmpenhoFolhaRubrica < count($aRhEmpenhoFolhaRubrica); $iEmpenhoFolhaRubrica++) {
-
                     $oDaoRhEmpenhoFolhaRubricaPlanilha->rh111_rhempenhofolharubrica = $aRhEmpenhoFolhaRubrica[$iEmpenhoFolhaRubrica];
                     $oDaoRhEmpenhoFolhaRubricaPlanilha->rh111_placaixarec = $oDaoPlaCaixaRec->k81_seqpla;
                     $oDaoRhEmpenhoFolhaRubricaPlanilha->incluir(null);
                     if ($oDaoRhEmpenhoFolhaRubricaPlanilha->erro_status == "0") {
                         throw new DBException($sMsgErro . "\n3. " . $oDaoRhEmpenhoFolhaRubricaPlanilha->erro_msg);
                     }
-
                 }
-
             }
-
         } else {
-            throw new BusinessException("N?o foram encontrados dados para gerar a planilha\nEmpenhos n?o processados ou j? possui Planilha gerada!");
+            throw new BusinessException("não foram encontrados dados para gerar a planilha\nEmpenhos não processados ou já possui Planilha gerada!");
         }
         return $sCodPlanilha;
     }
@@ -4371,7 +4230,7 @@ class dadosEmpenhoFolhaRescisao
         return $aRescisoes;
     }
 
-    /* Retorna as rescisoes que possuem slips a serem gerados no m?s
+    /* Retorna as rescisoes que possuem slips a serem gerados no Mês
   *
   * @param unknown_type $iMesUsu
   * @param unknown_type $iAnoUsu
@@ -4406,7 +4265,7 @@ class dadosEmpenhoFolhaRescisao
         return $aRescisoes;
     }
 
-    /* Retorna as rescisoes que possuem slips a serem gerados no m?s
+    /* Retorna as rescisoes que possuem slips a serem gerados no Mês
   *
   * @param unknown_type $iMesUsu
   * @param unknown_type $iAnoUsu
@@ -4416,11 +4275,11 @@ class dadosEmpenhoFolhaRescisao
     {
 
         /**
-         * Verificamos se o par?metro rh11_geraretencaoempenho ? true ou false
-         * true  : ser? gerada planilha por SLIP
-         * false : ser? gerada planilha para todos os registros de reten??es dos empenhos da folha
+         * Verificamos se o parâmetro rh11_geraretencaoempenho true ou false
+         * true  : será gerada planilha por SLIP
+         * false : será gerada planilha para todos os registros de retenções dos empenhos da folha
          */
-        $oDaoCfpess = db_utils::getDao("cfpess");
+        $oDaoCfpess = new cl_cfpess;
         $sSqlParam = $oDaoCfpess->sql_query_file($iAnoUsu, $iMesUsu, db_getsession("DB_instit"), "r11_geraretencaoempenho");
         $rsParam = $oDaoCfpess->sql_record($sSqlParam);
         $lGeraRetencao = db_utils::fieldsMemory($rsParam, 0)->r11_geraretencaoempenho;
@@ -4436,10 +4295,9 @@ class dadosEmpenhoFolhaRescisao
         $sSqlrescisoes .= "       inner join rhempenhofolharubrica   on rh73_seqpes                = rh02_seqpes      ";
 
         /**
-         * Ser? gerada planilha por SLIP
+         * será gerada planilha por SLIP
          */
         if ($lGeraRetencao == 't') {
-
             $sSqlrescisoes .= " inner join rhslipfolharhemprubrica on rh80_rhempenhofolharubrica = rh73_sequencial  ";
             $sSqlrescisoes .= " inner join rhslipfolha             on rh79_sequencial            = rh80_rhslipfolha ";
             $sSqlrescisoes .= "                                   and rh79_mesusu                = {$iMesUsu}       ";
@@ -4451,9 +4309,7 @@ class dadosEmpenhoFolhaRescisao
              * Pagamento-extra
              */
             $sSqlrescisoes .= " and rh73_tiporubrica = 3 ";
-
         } else {
-
             $sSqlrescisoes .= " inner join rhempenhofolharhemprubrica on rh81_rhempenhofolharubrica  = rh73_sequencial     ";
             $sSqlrescisoes .= " inner join rhempenhofolha             on rh72_sequencial             = rh81_rhempenhofolha ";
             $sSqlrescisoes .= "                                      and rh72_anousu                 = {$iAnoUsu}          ";
@@ -4461,7 +4317,7 @@ class dadosEmpenhoFolhaRescisao
             $sSqlrescisoes .= "                                      and rh72_siglaarq               = 'r20'               ";
 
             /**
-             * Reten??o e pagamento-extra
+             * Retenção e pagamento-extra
              */
             $sSqlrescisoes .= " and rh73_tiporubrica in (2,3) ";
         }
@@ -4475,5 +4331,4 @@ class dadosEmpenhoFolhaRescisao
 
         return $aRescisoes;
     }
-
 }

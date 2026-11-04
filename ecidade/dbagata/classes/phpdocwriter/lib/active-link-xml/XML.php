@@ -50,7 +50,7 @@ class XML extends Tree {
 	  *	@param		optional string argument
 	  *	@returns	none
 	  */
-	function XML($argument = "") {
+	public function XML($argument = "") {
 		$success = false;
 		$this->Tree();
 		$this->pathSeparator = "/";
@@ -133,7 +133,7 @@ class XML extends Tree {
 	  *	@param		optional string attrValue
 	  *	@returns	array of references to XMLBranch objects that meet specified criteria, or false if none found
 	  */
-	function getBranches($tagPath = "", $tagName = "", $attrName = "", $attrValue = "") {
+	public function getBranches($tagPath = "", $tagName = "", $attrName = "", $attrValue = "") {
 		$branchArray = array();
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
@@ -170,7 +170,7 @@ class XML extends Tree {
 		return $branchArray;
 	}
 	
-	function getLastBranch($tagPath = "", $tagName = "", $attrName = "", $attrValue = "") {
+	public function getLastBranch($tagPath = "", $tagName = "", $attrName = "", $attrValue = "") {
 		$branchArray = array();
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
@@ -219,7 +219,7 @@ class XML extends Tree {
 	  *	@param		optional string tagPath
 	  *	@returns	array of references to XMLLeaf objects in specified tag path, false if none found
 	  */
-	function getLeafs($tagPath = "") {
+	public function getLeafs($tagPath = "") {
 		$leafArray = array();
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
@@ -259,7 +259,7 @@ class XML extends Tree {
 	  *	@param		optional string tagPath
 	  *	@returns	attribute of the specified tag if successful, false otherwise
 	  */
-	function getTagAttribute($attributeName, $tagPath = "") {
+	public function getTagAttribute($attributeName, $tagPath = "") {
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
 		$tags = explode($this->pathSeparator, $tagPath);
@@ -288,7 +288,7 @@ class XML extends Tree {
 	  *	@param		optional string tagPath
 	  *	@returns	content of the tag from the specified path if successful, false otherwise
 	  */
-	function getTagContent($tagPath = "") {
+	public function getTagContent($tagPath = "") {
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
 		$tags = explode($this->pathSeparator, $tagPath);
@@ -314,7 +314,7 @@ class XML extends Tree {
 	  *	@method		getTagName
 	  *	@returns	tag name
 	  */
-	function getTagName() {
+	public function getTagName() {
 		return($this->tag->getTagName());
 	}
 
@@ -323,7 +323,7 @@ class XML extends Tree {
 	  *	@method		getXMLContent
 	  *	@returns	contents of the current XML tag
 	  */
-	function getXMLContent() {
+	public function getXMLContent() {
 		$xmlContent = "";
 		foreach($this->nodes as $node) {
 			if(gettype($node) == "object") {
@@ -342,7 +342,7 @@ class XML extends Tree {
 	  *	@param		optional mixed indent
 	  *	@returns	complete XML string of current object
 	  */
-	function getXMLString($indent = false) {
+	public function getXMLString($indent = false) {
 		$xmlString = "";
 		$containsBranches = false;
 		$containsLeafs = false;
@@ -377,7 +377,7 @@ class XML extends Tree {
 	  *	@method		hasBranch
 	  *	@returns	true if branches exist, false otherwise
 	  */
-	function hasBranch() {
+	public function hasBranch() {
 		$hasBranch = false;
 		foreach($this->nodes as $node) {
 			if(get_class($node) == "xmlbranch") {
@@ -393,7 +393,7 @@ class XML extends Tree {
 	  *	@method		hasLeaf
 	  *	@returns	true if leaf(s) exist, false otherwise
 	  */
-	function hasLeaf() {
+	public function hasLeaf() {
 		$hasLeaf = false;
 		foreach($this->nodes as $node) {
 			if(get_class($node) == "xmlleaf") {
@@ -410,7 +410,7 @@ class XML extends Tree {
 	  *	@param		string parseString
 	  *	@returns	none
 	  */
-	function parseFromString($parseString) {
+	public function parseFromString($parseString) {
 		$tagResult = $this->tag->setTagFromString($parseString);
 		if($tagResult !== false) {
 			$this->parseNodesFromTag();
@@ -423,7 +423,7 @@ class XML extends Tree {
 	  *	@method		parseNodesFromTag
 	  *	@returns	none
 	  */
-	function parseNodesFromTag() {
+	public function parseNodesFromTag() {
 		$tempTag = new Tag();
 		$parseString = $this->tag->getTagContent();
 		while($tagParsed = $tempTag->setTagFromString($parseString)) {
@@ -444,7 +444,7 @@ class XML extends Tree {
 	  *	Removes all Branches from current object
 	  *	@method		removeAllBranches
 	  */
-	function removeAllBranches() {
+	public function removeAllBranches() {
 		foreach($this->nodes as $key => $value) {
 			if(get_class($value) == "xmlbranch")
 				unset($this->nodes[$key]);
@@ -455,7 +455,7 @@ class XML extends Tree {
 	  *	Removes all Leaf(s) from current object
 	  *	@method		removeAllLeafs
 	  */
-	function removeAllLeafs() {
+	public function removeAllLeafs() {
 		foreach($this->nodes as $key => $value) {
 			if(get_class($value) == "xmlleaf")
 				unset($this->nodes[$key]);
@@ -471,7 +471,7 @@ class XML extends Tree {
 	  *	@param		optional string attrValue
 	  *	@returns	number of branches deleted
 	  */
-	function removeBranches($tagPath = "", $tagName = "", $attrName = "", $attrValue = "") {
+	public function removeBranches($tagPath = "", $tagName = "", $attrName = "", $attrValue = "") {
 		$branchesDeleted = 0;
 		$referencedBranches = array();
 		$tags = explode($this->pathSeparator, $tagPath);
@@ -506,7 +506,7 @@ class XML extends Tree {
 	  *	@param		object tag
 	  *	@returns	true on success, false otherwise
 	  */
-	function setBranchTag($branchId, $tag) {
+	public function setBranchTag($branchId, $tag) {
 		$success = true;
 		if(get_class($this->nodes[$branchId]) == "xmlbranch" && get_class($tag) == "tag")
 			$this->nodes[$branchId]->setTag($tag);
@@ -521,7 +521,7 @@ class XML extends Tree {
 	  *	@param		object tag
 	  *	@returns	true if successful, false otherwise
 	  */
-	function setTag($tag) {
+	public function setTag($tag) {
 		$success = true;
 		if(get_class($tag) == "tag")
 			$this->tag = $tag;
@@ -538,7 +538,7 @@ class XML extends Tree {
 	  *	@param		optional string tagPath
 	  *	@returns	true if successful, false otherwise
 	  */
-	function setTagAttribute($attributeName, $attributeValue = "", $tagPath = "") {
+	public function setTagAttribute($attributeName, $attributeValue = "", $tagPath = "") {
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
 		$success = true;
@@ -575,7 +575,7 @@ class XML extends Tree {
 	  *	@param		optional string tagPath
 	  *	@returns	true if successful, false otherwise
 	  */
-	function setTagContent($content, $tagPath = "") {
+	public function setTagContent($content, $tagPath = "") {
 // 		$content = strtoupper($content);
 // 				$content = str_replace("<","&lt;", str_replace(">","&gt;", $content));
 		if($tagPath == "")

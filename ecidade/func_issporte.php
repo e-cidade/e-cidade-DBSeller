@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clissporte->rotulo->label("q40_codporte");
               <?=$Lq40_codporte?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q40_codporte",10,$Iq40_codporte,true,"text",4,"","chave_q40_codporte");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clissporte->rotulo->label("q40_codporte");
               <?=$Lq40_codporte?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q40_codporte",10,$Iq40_codporte,true,"text",4,"","chave_q40_codporte");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clissporte->rotulo->label("q40_codporte");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (isset($pessoa)) {
 	if ($pessoa=='j'){
 	  $where = "q40_fisica='f'";
@@ -126,12 +126,12 @@ $clissporte->rotulo->label("q40_codporte");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

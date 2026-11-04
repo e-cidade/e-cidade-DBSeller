@@ -64,12 +64,12 @@ $oRotulo->label("ed34_i_qtdperiodo");
         <tr>
           <td>
             <label for="codigoAreaConhecimento">
-              <a id="ancoraAreaConhecimento" href="#">Área de Conhecimento:</a>
+                Área de Conhecimento:
             </label>
           </td>
           <td colspan="3">
-            <input type="text" value="" id="codigoAreaConhecimento" name="codigoAreaConhecimento" lang="ed293_sequencial" class="field-size2" />
-            <input type="text" id="descricaoAreaConhecimento" name="descricaoAreaConhecimento" lang="ed293_descr" class="readonly field-size8" />
+            <input type="text" value="" id="codigoAreaConhecimento" name="codigoAreaConhecimento" lang="ed293_sequencial" class="readonly field-size2" disabled/>
+            <input type="text" id="descricaoAreaConhecimento" name="descricaoAreaConhecimento" lang="ed293_descr" class="readonly field-size8" disabled/>
           </td>
         </tr>
 
@@ -172,8 +172,8 @@ $oRotulo->label("ed34_i_qtdperiodo");
   </fieldset>
 </div>
 <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
-<script rel="script" type="text/javascript" src="scripts/session.js"></script>
 <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script rel="script" type="text/javascript" src="scripts/session.js"></script>
 <script type="text/javascript">
   window.addEventListener('load', async () => {
     await PHPSession.loadData();
@@ -190,13 +190,6 @@ $oRotulo->label("ed34_i_qtdperiodo");
   const ancoraAreaConhecimento = document.getElementById('ancoraAreaConhecimento');
   const codigoAreaConhecimento = document.getElementById('codigoAreaConhecimento');
   const descricaoAreaConhecimento = document.getElementById('descricaoAreaConhecimento');
-  const lookUpFase = new DBLookUp(ancoraAreaConhecimento, codigoAreaConhecimento, descricaoAreaConhecimento, {
-    'sArquivo': 'func_areaconhecimento.php',
-    'sLabel': 'Pesquisar Fase',
-    'sObjetoLookUp': "db_iframe_areaconhecimento"
-  });
-
-
 
   /**
    * Array com os dados das disciplinas da etapa selencionada
@@ -425,7 +418,6 @@ $oRotulo->label("ed34_i_qtdperiodo");
         oBtnAlterar.setAttribute('onclick', 'js_alterarDisciplina(' + oDisciplina.iCodigo + ')');
 
         var sTipoBase = oDisciplina.iTipoBase.ed182_descricao.urlDecode();
-
         var sTipoMatricula = oDisciplina.lObrigatoria ? 'Obrigatória' : 'Opcional';
         var sCaracterReprobatorio = oDisciplina.lCaracterReprobatorio ? 'Possui' : 'Não Possui';
         var sDocumentacao = oDisciplina.lLancarDocumentacao ? 'Lançar' : 'Não Lançar';

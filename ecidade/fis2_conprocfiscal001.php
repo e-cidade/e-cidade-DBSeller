@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,15 +78,15 @@ $db_botao = true;
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td width="160" nowrap title="<?=@$Ty100_sequencial?>">
-       <?
+       <?php
        db_ancora(@$Ly100_sequencial,"js_pesquisay108_procfiscal(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('y100_sequencial',10,$Iy100_sequencial,true,'text',$db_opcao," onchange='js_pesquisay108_procfiscal(false);'")
 			?>
-			<?
+			<?php
 			db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
@@ -94,12 +94,12 @@ $db_botao = true;
 
    <tr>
     <td nowrap title="<?=@$Ty95_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lz01_numcgm,"js_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_numcgm(false);'")
 			?>
 			
@@ -107,24 +107,24 @@ $db_botao = true;
   </tr> 
 <tr> 
     <td nowrap> 
-		<?
+		<?php
 		 db_ancora($Lj01_matric,'js_mostramatriculas(true);',$db_opcao); 
 		?>
 		</td>
     <td> 
-    <?
+    <?php
  			db_input('j01_matric',10,$Ij01_matric,true,'text',$db_opcao,'onchange="js_mostramatriculas(false);"');  // 4,'onchange="js_mostramatriculas(false);"');
 		?>
     </td>
     </tr>
 	<tr> 
      <td nowrap> 
-		    <?
+		    <?php
  			  db_ancora($Lq02_inscr,'js_mostrainscricao(true)',$db_opcao);//4);
 			  ?>
      </td>
      <td> 
-       <?
+       <?php
  			  db_input('q02_inscr',10,$Iq02_inscr,true,'text',$db_opcao,'onchange="js_mostrainscricao(false);"');   // 4,'onchange="js_mostrainscricao(false);"');
 			 ?>
      </td>
@@ -132,12 +132,12 @@ $db_botao = true;
 	 
   <tr> 
     <td nowrap> 
-		  <?
+		  <?php
  			db_ancora($Lp58_codproc,' js_mostracodproc(true); ',4);
 			 ?>
 		   </td>
        <td> 
-        <?
+        <?php
  			  db_input('p58_codproc',10,$Ip58_codproc,true,'text',4,'onchange="js_mostracodproc(false);"');
 				?>
 			 </td>
@@ -145,13 +145,13 @@ $db_botao = true;
        <tr>
          <td> <b>Data inicial:</b></td>
 			   <td>
-			   	 <?
+			   	 <?php
              db_inputdata('dataini',@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',$db_opcao,"")
            ?>
            
 				 <b>à</b>
 			   
-			   	 <?
+			   	 <?php
              db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',$db_opcao,"")
            ?>
 				 </td>
@@ -166,7 +166,7 @@ $db_botao = true;
 </p>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

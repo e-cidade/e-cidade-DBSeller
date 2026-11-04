@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed43_i_codigo");
        <?=@$Led68_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed68_i_codigo',10,$Ied68_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted68_i_procresultado?>">
-       <?
+       <?php
        db_ancora(@$Led68_i_procresultado,"js_pesquisaed68_i_procresultado(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed68_i_procresultado',10,$Ied68_i_procresultado,true,'text',$db_opcao," onchange='js_pesquisaed68_i_procresultado(false);'")
 ?>
-       <?
+       <?php
 db_input('ed43_i_codigo',10,$Ied43_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted68_i_procresultcomp?>">
-       <?
+       <?php
        db_ancora(@$Led68_i_procresultcomp,"js_pesquisaed68_i_procresultcomp(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed68_i_procresultcomp',10,$Ied68_i_procresultcomp,true,'text',$db_opcao," onchange='js_pesquisaed68_i_procresultcomp(false);'")
 ?>
-       <?
+       <?php
 db_input('ed43_i_codigo',10,$Ied43_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed43_i_codigo',10,$Ied43_i_codigo,true,'text',3,'')
        <?=@$Led68_i_peso?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed68_i_peso',10,$Ied68_i_peso,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('ed68_i_peso',10,$Ied68_i_peso,true,'text',$db_opcao,"")
        <?=@$Led68_c_minimoaprov?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed68_c_minimoaprov',10,$Ied68_c_minimoaprov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rescompoeres.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

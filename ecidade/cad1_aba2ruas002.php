@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -52,10 +52,10 @@ $clrotulo->label("cp06_logradouro");
 
 $db_botao = true;
 $db_opcao = 1;
-  
+
 if(isset($incluir)){
   if (isset($logs)&&$logs!=""){
-    $logs_split = split(',',$logs);
+    $logs_split =explode(',',$logs);
     $res = $cllogradcep->sql_record($cllogradcep->sql_query_file($j14_codigo));
     if ($cllogradcep->numrows > 0){
       $cllogradcep->excluir("","","j65_lograd=$j14_codigo");
@@ -64,7 +64,7 @@ if(isset($incluir)){
     	$cllogradcep->j65_ceplog = $logs_split[$i];
     	$cllogradcep->j65_lograd = $j14_codigo;
 	    // $cllogradcep->incluir($j14_codigo,$logs_split[$i]);
-	    $cllogradcep->incluir(); 
+	    $cllogradcep->incluir();
     }
   }
 }
@@ -74,7 +74,7 @@ if (isset($chavepesquisa)){
    if ($clruas->numrows > 0){
      db_fieldsmemory($res,0);
     }
-} 
+}
 ?>
 <html>
 <head>
@@ -86,7 +86,7 @@ if (isset($chavepesquisa)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#cccccc">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -94,25 +94,25 @@ if (isset($chavepesquisa)){
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
 	<form name="form1" method="post" action="">
 	<center>
 	<table border="0">
 	  <tr>
-	     <td  align="left" nowrap title="<?=$Tj14_codigo?>"><?db_ancora("<b>Logradouro do Municipio: ","js_pesquisa_ruas(true);",3);?>
+	     <td  align="left" nowrap title="<?=$Tj14_codigo?>"><?php db_ancora("<b>Logradouro do Municipio: ","js_pesquisa_ruas(true);",3);?>
 	     <td align="left" nowrap>
-	        <?
+	        <?php
 		  db_input("j14_codigo",6,$Ij14_codigo,true,"text",3,"onchange='js_pesquisa_ruas(false);'");
 	          db_input("j14_nome",40,$Ij14_nome,true,"text",3);
 		?>
 	     </td>
           </tr>
-	  
+
           <tr>
              <td nowrap>
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Ruas Correios</strong>";
                  $aux->codigo = "cp06_codlogradouro"; //chave de retorno da func
@@ -131,7 +131,7 @@ if (isset($chavepesquisa)){
                  $aux->linhas = 10;
                  $aux->vwhidth = 400;
                  $aux->funcao_gera_formulario();
-               ?>    
+               ?>
              </td>
           </tr>
 	  <tr>
@@ -141,16 +141,16 @@ if (isset($chavepesquisa)){
 	  </tr>
 	</table>
 	</center>
-	<?
+	<?php
 	   db_input("logs",50,"",true,"hidden",3);
 	?>
 	</form>
-    
+
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 if (isset($j14_codigo)&&$j14_codigo!=""){
   $res = $cllogradcep->sql_record($cllogradcep->sql_query_info($j14_codigo));
   if ($cllogradcep->numrows > 0){
@@ -177,7 +177,7 @@ function js_pesquisa_ruas(mostra){
     }else{
       document.form1.j14_codigo.value = '';
       }
-   }  
+   }
 }
 function js_preencheruas(chave,chave1){
   document.form1.j14_codigo.value = chave;
@@ -202,7 +202,7 @@ function js_pesquisa_log(mostra){
     }else{
       document.form1.cp06_codlogradouro.value = '';
       }
-   }  
+   }
 }
 function js_preenchelog(chave,chave1){
   document.form1.cp06_codlogradouro.value = chave;
@@ -225,7 +225,7 @@ function js_busca_dados(){
   lista+=vir+document.form1.logradouro.options[x].value;
   vir=",";
  }
- document.form1.logs.value = lista; 
+ document.form1.logs.value = lista;
  return true;
 }
 </script>

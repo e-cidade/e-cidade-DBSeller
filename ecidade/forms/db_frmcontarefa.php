@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: atendimento
@@ -81,18 +81,18 @@ else {
  	   $db_action="ate1_tarefa008.php";
       }else if($db_opcao==3||$db_opcao==33){
  	   $db_action="ate1_tarefa009.php";
-      }  
+      }
 ?>
 <form name="form1" method="post" action="<?=$db_action?>">
 <center>
-<?
+<?php
 	$result = $cltarefasolic->sql_record("select at20_usuario, at10_nome, max(tipo) as tipo from (" . $cltarefasolic->sql_query_file($db_opcao,$where) . ") as x group by at20_usuario, at10_nome");
 
 	if($cltarefasolic->numrows > 0) {
 ?>
 	<table border="0">
 		<tr><td colspan="3" height="20"><b>Solicitante(s):</b></td></tr>
-<?
+<?php
 		$NumFields = pg_numfields($result);
 		for($i = 0; $i < $cltarefasolic->numrows; $i++) {
 			db_fieldsmemory($result,$i);
@@ -102,17 +102,17 @@ else {
 					break;
 				}
 			}
-?>	
+?>
 			<tr>
 				<td width="80" align="right"><?=$at10_usuario?> - </td>
 				<td width="250"><?=$at10_nome?></td>
-				<td><? if($tipo == "S") { echo "Solicitante"; } else { echo "Envolvido"; } ?></td>
+				<td><?php if($tipo == "S") { echo "Solicitante"; } else { echo "Envolvido"; } ?></td>
 			</tr>
-<?
+<?php
 		}
-?>	
+?>
 	</table>
-<?
+<?php
 	}
 ?>
 <table border="0">
@@ -120,22 +120,22 @@ else {
   	<td nowrap colspan="2" align="right">
 		<input name="bt_voltar" type="button" value="Voltar" title="Voltar" onClick="js_pesquisa_tarefa();">
   	</td>
-  </tr>	
+  </tr>
   <tr>
     <td nowrap title="<?=@$Tat40_sequencial?>">
        <?=@$Lat40_sequencial?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('at40_sequencial',10,$Iat40_sequencial,true,'text',3,"");
 
 if(isset($at40_sequencial)){
-  global $db30_codversao,$db30_codrelease; 
+  global $db30_codversao,$db30_codrelease;
   $result_versao = $cldb_versaotarefa->sql_record($cldb_versaotarefa->sql_query(null,"db30_codversao,db30_codrelease",null," db29_tarefa = $at40_sequencial "));
   if($cldb_versaotarefa->numrows>0){
     db_fieldsmemory($result_versao, 0);
     echo "<font color='red'>Versão: 2.$db30_codversao.$db30_codrelease</font>";
-  }         
+  }
 }
 
 db_input('at05_seq',10,$Iat05_seq,true,'hidden',3,"");
@@ -147,8 +147,8 @@ db_input('opcoes',10,@$opcoes,true,'hidden',3,"");
     <td nowrap title="<?=@$Tat40_responsavel?>">
        <?=@$Lat40_responsavel?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 if(isset($at40_responsavel)&&$at40_responsavel!="") {
 	$at40_usuant = $at40_responsavel;
 	db_input('at40_usuant',10,"",true,'hidden',3,"");
@@ -159,17 +159,17 @@ db_selectrecord('at40_responsavel',($cldb_usuarios->sql_record($cldb_usuarios->s
   </tr>
   <tr>
     <td nowrap title="Motivo"><b>Motivo:</b></td>
-    <td> 
-<?
+    <td>
+<?php
 db_selectrecord('at54_sequencial',($cl_tarefacadmotivo->sql_record($cl_tarefacadmotivo->sql_query(($db_opcao==2?null:@$at54_sequencial),"at54_sequencial,at54_descr","at54_sequencial",null))),true,$db_opcao,"");
 ?>
     </td>
   </tr>
   <tr>
     <td ><b>Modulo</b></td>
-    <td> 
-  				<?
-  				
+    <td>
+  				<?php
+
   				//echo "modulo49 = ".@$at49_modulo." -- modulo22 = ".@$at22_modulo ;
 				$sqlmod = "select codmod,nomemod from db_sysmodulo where ativo = 't' order by nomemod";
 				//$sqlmod = "select id_item, nome_modulo from db_modulos order by nome_modulo";
@@ -183,37 +183,37 @@ db_selectrecord('at54_sequencial',($cl_tarefacadmotivo->sql_record($cl_tarefacad
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat41_proced?>"><b>Procedimento:</b></td>
-    <td> 
-<?
+    <td>
+<?php
 
 if (@$codmod != 0) {
 
 	if (@$at40_sequencial != ""){
 		$sqlproced = "select * from tarefasyscadproced where at37_tarefa = $at40_sequencial";
-		
+
 		$resultproced = db_query($sqlproced);
 		$linhasproced= pg_num_rows($resultproced);
 		if ($linhasproced>0){
 			db_fieldsmemory($resultproced, 0);
 			$codproced = $at37_syscadproced;
-		}	
+		}
 	}
 	$sqlprocedmod="
 		select codproced,descrproced , nomemod
-		from db_syscadproced 
-		inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod 
+		from db_syscadproced
+		inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod
 		where db_sysmodulo.codmod=$codmod
 		order by descrproced";
 	//$result_syscadproced = $cl_db_syscadproced->sql_record($cl_db_syscadproced -> sql_query ( null,"codproced,descrproced || ' - ' || nome_modulo","descrproced","codmod=$codmod"));
 	$result_syscadproced = $cl_db_syscadproced->sql_record($sqlprocedmod);
-	
+
 } else {
 		$sqlproced="
 		select codproced,descrproced , nomemod
-		from db_syscadproced 
-		inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod 
+		from db_syscadproced
+		inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod
 		order by descrproced";
-		
+
 	//$result_syscadproced = $cl_db_syscadproced->sql_record($cl_db_syscadproced -> sql_query ( null,"codproced,descrproced || ' - ' || nome_modulo","descrproced",""));
 $result_syscadproced = $cl_db_syscadproced->sql_record($sqlproced);
 }
@@ -222,21 +222,21 @@ db_selectrecord('codproced',$result_syscadproced,true,$db_opcao,"","","","0-Nenh
 ?>
     </td>
   </tr>
-  
-  
-  
+
+
+
   <tr>
     <td nowrap title="<?=@$Tat41_proced?>"><b>Tipo:</b></td>
-    <td> 
-<?
+    <td>
+<?php
 db_selectrecord('at41_proced',($cldb_proced->sql_record($cldb_proced->sql_query(($db_opcao==2?null:@$at41_proced),"at30_codigo,at30_descr","at30_codigo",null))),true,$db_opcao,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat47_situacao?>"><b>Situação:</b></td>
-    <td> 
-<?
+    <td>
+<?php
 db_selectrecord('at47_situacao',($cltarefacadsituacao->sql_record($cltarefacadsituacao->sql_query(($db_opcao==2?null:@$at47_situacao),"*","at46_codigo",null))),true,$db_opcao,"");
 ?>
     </td>
@@ -246,8 +246,8 @@ db_selectrecord('at47_situacao',($cltarefacadsituacao->sql_record($cltarefacadsi
     <td nowrap title="Atividade do Projeto que esta integrado a tarefa">
        <strong>Atividade/Projeto:</strong>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_selectrecord('at64_sequencial',$cldb_projetosativcli->sql_record($cldb_projetosativcli->sql_query(null,"at64_sequencial,trim(nomemod)||'-'||substr(at64_descricao,1,40) as at64_descricao","at64_sequencial",null)),true,$db_opcao,"","","","0");
 ?>
     </td>
@@ -257,14 +257,14 @@ db_selectrecord('at64_sequencial',$cldb_projetosativcli->sql_record($cldb_projet
     <td nowrap title="<?=@$Tat40_descr?>">
        <?=@$Lat40_descr?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_textarea('at40_descr',5,50,$Iat40_descr,true,'text',$db_opcao,"");
 ?>
     </td>
   </tr>
 
-<?
+<?php
 
 if ($db_opcao == 2) {
   $db_opcao = 3;
@@ -272,13 +272,13 @@ if ($db_opcao == 2) {
 
 if (1 == 1) {
 ?>
-  
+
   <tr>
     <td nowrap title="<?=@$Tat40_diaini?>">
        <?=@$Lat40_diaini?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 if($db_opcao==1||$db_opcao==11) {
 	$at40_diaini_dia = date("d", db_getsession("DB_datausu"));
 	$at40_diaini_mes = date("m", db_getsession("DB_datausu"));
@@ -290,8 +290,8 @@ db_inputdata('at40_diaini',@$at40_diaini_dia,@$at40_diaini_mes,@$at40_diaini_ano
     <td nowrap title="<?=@$Tat40_diafim?>">
        <?=@$Lat40_diafim?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_inputdata('at40_diafim',@$at40_diafim_dia,@$at40_diafim_mes,@$at40_diafim_ano,true,'text',3,"")
 ?>
     </td>
@@ -300,8 +300,8 @@ db_inputdata('at40_diafim',@$at40_diafim_dia,@$at40_diafim_mes,@$at40_diafim_ano
     <td nowrap title="<?=@$Tat40_previsao?>">
        <?=@$Lat40_previsao?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 //db_input('at40_previsao',10,$Iat40_previsao,true,'text',$db_opcao,"");
 db_input('at40_previsao',10,"",true,'text',$db_opcao,"");
 ?>
@@ -312,12 +312,12 @@ db_input('at40_previsao',10,"",true,'text',$db_opcao,"");
     <td nowrap title="<?=@$Tat40_tipoprevisao?>">
        <?=@$Lat40_tipoprevisao?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 //db_input('at40_tipoprevisao',1,$Iat40_tipoprevisao,true,'text',$db_opcao,"")
-  $matriz = array("h"=>"horas","d"=>"dias");             
-  //$matriz = array("h"=>"horas");             
-  db_select("at40_tipoprevisao", $matriz,true,$db_opcao,""); 
+  $matriz = array("h"=>"horas","d"=>"dias");
+  //$matriz = array("h"=>"horas");
+  db_select("at40_tipoprevisao", $matriz,true,$db_opcao,"");
 ?>
     </td>
   </tr>
@@ -325,8 +325,8 @@ db_input('at40_previsao',10,"",true,'text',$db_opcao,"");
     <td nowrap title="<?=@$Tat40_horainidia?>">
        <?=@$Lat40_horainidia?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 if($db_opcao==1||$db_opcao==11) {
 	$at40_horainidia = db_hora();
 }
@@ -337,8 +337,8 @@ db_input('at40_horainidia',5,"",true,'text',$db_opcao,"onchange='js_verifica_hor
     <td nowrap title="<?=@$Tat40_horafim?>">
        <?=@$Lat40_horafim?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 //db_input('at40_horafim',5,$Iat40_horafim,true,'text',3,"")
 db_input('at40_horafim',5,"",true,'text',3,"");
 }
@@ -349,21 +349,21 @@ db_input('at40_horafim',5,"",true,'text',3,"");
     <td nowrap title="<?=@$Tat40_progresso?>">
        <?=@$Lat40_progresso?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 //db_input('at40_progresso',10,$Iat40_progresso,true,'text',$db_opcao,"")
   $matriz = array("0"=>"0%",
-                  "10"=>"10%", 
+                  "10"=>"10%",
                   "20"=>"20%",
                   "30"=>"30%",
                   "40"=>"40%",
-                  "50"=>"50%", 
+                  "50"=>"50%",
                   "60"=>"60%",
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");             
-  db_select("at40_progresso", $matriz,true,$db_opcao); 
+                  "100"=>"100%");
+  db_select("at40_progresso", $matriz,true,$db_opcao);
 ?>
     </td>
   </tr>
@@ -371,13 +371,13 @@ db_input('at40_horafim',5,"",true,'text',3,"");
     <td nowrap title="<?=@$Tat40_prioridade?>">
        <?=@$Lat40_prioridade?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
   $x = array("1"=>"Baixa",
-             "2"=>"Média", 
+             "2"=>"Média",
              "3"=>"Alta",
-	   );             
-  db_select("at40_prioridade", $x,true,$db_opcao); 
+	   );
+  db_select("at40_prioridade", $x,true,$db_opcao);
 ?>
     </td>
 
@@ -386,8 +386,8 @@ db_input('at40_horafim',5,"",true,'text',3,"");
     </td>
 
 		<td>
-		
-		<?
+
+		<?php
 			db_input('at40_autorizada',10,"",true,'text',3,"");
 	  ?>
 
@@ -400,8 +400,8 @@ db_input('at40_horafim',5,"",true,'text',3,"");
     <td nowrap title="<?=@$Tat36_usuario?>">
        <?=@$Lat36_usuario?>
     </td>
-    <td> 
-		<?
+    <td>
+		<?php
 			db_input('at36_usuario',10,"",true,'text',3,"");
 			echo " - " . @$criador . "<br>";
 	  ?>
@@ -410,13 +410,13 @@ db_input('at40_horafim',5,"",true,'text',3,"");
     <td nowrap title="<?=@$Tat36_data?>">
        <?=@$Lat36_data?>
     </td>
-    <td> 
-		<?
+    <td>
+		<?php
 			db_input('at36_data',10,"",true,'text',3,"");
 	  ?>
     </td>
 
-		
+
   </tr>
 
 
@@ -424,8 +424,8 @@ db_input('at40_horafim',5,"",true,'text',3,"");
     <td nowrap title="<?=@$Tat36_hora?>">
        <?=@$Lat36_hora?>
     </td>
-    <td> 
-		<?
+    <td>
+		<?php
 			db_input('at36_hora',10,"",true,'text',3,"");
 	  ?>
     </td>
@@ -433,13 +433,13 @@ db_input('at40_horafim',5,"",true,'text',3,"");
     <td nowrap title="<?=@$Tat36_ip?>">
        <?=@$Lat36_ip?>
     </td>
-    <td> 
-		<?
+    <td>
+		<?php
 			db_input('at36_ip',10,"",true,'text',3,"");
 	  ?>
     </td>
 
-		
+
   </tr>
 
 
@@ -447,56 +447,56 @@ db_input('at40_horafim',5,"",true,'text',3,"");
 
   <tr>
     <td colspan="2" align="center">
-<?
+<?php
 if ($db_opcao != 3) {
 if(isset($menu)){
 	?>
     <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" disabled type="button" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar"  disabled onclick="js_pesquisa();" >
-<?
+<?php
 }else{
 	?>
     <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-	<?
+	<?php
 }
 	if($db_opcao==1||$db_opcao==11||$db_opcao==2||$db_opcao==22) {
 ?>
 <input name="agendar"   type="button" id="agendar"   value="Agenda"    onclick="js_agenda();" >
-<?
+<?php
 	}
 	}
 ?>
 	</td>
-  </tr>	
+  </tr>
   </table>
-<?
+<?php
 	if(isset($erro_horario)&&$erro_horario==true) {
 		if($db_opcao==1||$db_opcao==11) {
 			db_msgbox("Usuário com tarefa nesse horario");
 		}
 		if(!isset($at40_diaini)) {
-			$at40_diaini = $at40_diaini_ano . "-" . $at40_diaini_mes . "-" . $at40_diaini_dia; 
+			$at40_diaini = $at40_diaini_ano . "-" . $at40_diaini_mes . "-" . $at40_diaini_dia;
 		}
 		if(!isset($at40_diafim)) {
-			$at40_diafim = $at40_diafim_ano . "-" . $at40_diafim_mes . "-" . $at40_diafim_dia; 
+			$at40_diafim = $at40_diafim_ano . "-" . $at40_diafim_mes . "-" . $at40_diafim_dia;
 		}
 		db_grid($cltarefa->sql_query_envol(null,"at40_sequencial,at40_diaini,at40_diafim,at40_horainidia,at40_horafim,at40_progresso","at40_sequencial,at45_usuario,at40_horainidia,at40_horafim",
-                                           "at40_progresso < 100 and at40_sequencial<>$at40_sequencial and 
-		                                    at45_usuario=$at40_responsavel and 
-		                                    at40_diaini <= '$at40_diafim' and at40_diafim >= '$at40_diaini' and 
-		                                    at40_horainidia <= '$at40_horafim' and at40_horafim >= '$at40_horainidia'")); 
+                                           "at40_progresso < 100 and at40_sequencial<>$at40_sequencial and
+		                                    at45_usuario=$at40_responsavel and
+		                                    at40_diaini <= '$at40_diafim' and at40_diafim >= '$at40_diaini' and
+		                                    at40_horainidia <= '$at40_horafim' and at40_horafim >= '$at40_horainidia'"));
 	}
 
 function db_grid($sql) {
 	$result    = @db_query($sql);
 	$NumRows   = @pg_numrows($result);
 	$NumFields = @pg_numfields($result);
-	
+
 //	echo $sql;
 
 	echo "<br><br><table id=\"TabDbLov\" border=\"1\" cellspacing=\"1\" cellpadding=\"0\">\n";
-	
+
 	if($NumRows == 0 or 1==1) {
 		echo "<tr>\n";
 		echo "<td>\n";
@@ -508,24 +508,24 @@ function db_grid($sql) {
 		for($i = 0; $i < $NumFields; $i++) {
 			$clrotulocab->label(pg_fieldname($result, $i));
 			echo "<td nowrap bgcolor=\"#6e77e8\" title=\"".$clrotulocab->title."\" align=\"center\">".ucfirst($clrotulocab->titulo)."</td>\n";
-		}		
+		}
 		echo "	<td nowrap><input type=\"button\" value=\"Postegar Tarefas\" onClick=\"js_postegar();\"></td>\n";
 		echo "</tr>\n";
-		
+
 		for($i = 0; $i < $NumRows; $i++) {
 			echo "<tr bgcolor=\"#FFFFFF\">\n";
 			for($j = 0; $j < $NumFields; $j++) {
 			  	$executar = "js_retorna(".pg_result($result, $i, 0).")";
 				if(pg_fieldtype($result, $j) == "date") {
 					if(pg_result($result, $i, $j) != "") {
-						$matriz_data = split("-", pg_result($result, $i, $j));
+						$matriz_data =explode("-", pg_result($result, $i, $j));
 						$var_data = $matriz_data[2]."/".$matriz_data[1]."/".$matriz_data[0];
 					} else {
 						$var_data = "//";
 					}
 					echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
 				}
-				else { 
+				else {
 					if(pg_fieldtype($result, $j) == "float8") {
 				        $var_data = db_formatar(pg_result($result, $i, $j), 'f', ' ');
 						echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
@@ -546,7 +546,7 @@ function db_grid($sql) {
 										$var_data .= substr(pg_result($result, $i, $j),$start,40) . "<br>";
 										if($k == 0) {
 											$start++;
-										} 
+										}
 										$start += 40;
 									}
 									$var_data = substr($var_data,0,strlen($var_data)-4);
@@ -559,7 +559,7 @@ function db_grid($sql) {
 							else {
 					   			$var_data = pg_result($result, $i, $j);
 								echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
-							}				        	
+							}
 				        }
 					}
 				}
@@ -580,11 +580,11 @@ function js_verifica_hora(valor,campo){
   erro= 0;
   ms  = "";
   hs  = "";
-  
+
   tam = "";
   pos = "";
   tam = valor.length;
-  pos = valor.indexOf(":");  
+  pos = valor.indexOf(":");
   if(pos!=-1){
     if(pos==0 || pos>2){
       erro++;
@@ -627,20 +627,20 @@ function js_verifica_hora(valor,campo){
       }
       hora = hs;
       minu = ms;
-    }    
+    }
   }
 
   if(erro>0){
     alert("Informe uma hora válida.");
   }
-  if(valor!=""){    
+  if(valor!=""){
     eval("document.form2."+campo+".focus();");
     eval("document.form2."+campo+".value='"+hora+":"+minu+"';");
   }
 }
 function js_agenda(){
-  var data_ini = document.form1.at40_diaini_ano.value + "-" + 
-                 document.form1.at40_diaini_mes.value + "-" + 
+  var data_ini = document.form1.at40_diaini_ano.value + "-" +
+                 document.form1.at40_diaini_mes.value + "-" +
                  document.form1.at40_diaini_dia.value;
 
   js_OpenJanelaIframe('CurrentWindow.corpo.iframe_tarefa','db_iframe_agenda','func_agendamentotarefas.php?at40_responsavel='+document.form1.at40_responsavel.value+'&data_ini='+data_ini,'Agenda de Tarefas',true,'0');
@@ -652,15 +652,15 @@ function js_pesquisaat41_proced(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_tarefa','db_iframe_db_proced','func_db_proced.php?funcao_js=parent.js_mostradb_proced1|at30_codigo','Pesquisa',true,'0');
   }else{
-     if(document.form1.at41_proced.value != ''){ 
+     if(document.form1.at41_proced.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo.iframe_tarefa','db_iframe_db_proced','func_db_proced.php?pesquisa_chave='+document.form1.at41_proced.value+'&funcao_js=parent.js_mostradb_proced','Pesquisa',false,'0');
      }
   }
 }
 function js_mostradb_proced(chave,erro){
-  if(erro==true){ 
-    document.form1.at41_proced.focus(); 
-    document.form1.at41_proced.value = ''; 
+  if(erro==true){
+    document.form1.at41_proced.focus();
+    document.form1.at41_proced.value = '';
   }
 }
 function js_mostradb_proced1(chave1){
@@ -672,7 +672,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tarefa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -686,7 +686,7 @@ function js_mostratarefas(chave,chave2){
   db_iframe_tarefa.hide();
   document.form1.at40_sequencial.value = chave;
 	document.form1.opcoes.value = chave2;
-  document.form1.submit();	
+  document.form1.submit();
 }
 function js_calcula_prev(){
 	var index            = document.form1.at40_tipoprevisao.selectedIndex;
@@ -694,11 +694,11 @@ function js_calcula_prev(){
     var previsao         = parseInt(document.form1.at40_previsao.value, 10);
     var hora             = document.form1.at40_horainidia.value;
 
-	var hora_trabalhadas = <? echo '"' . $at53_horasdia . '"';      ?>;
-	var horaini_manha    = <? echo '"' . $at53_horaini_manha . '"'; ?>;
-	var horafim_manha    = <? echo '"' . $at53_horafim_manha . '"'; ?>;
-	var horaini_tarde    = <? echo '"' . $at53_horaini_tarde . '"'; ?>;
-	var horafim_tarde    = <? echo '"' . $at53_horafim_tarde . '"'; ?>;
+	var hora_trabalhadas = <?php echo '"' . $at53_horasdia . '"';      ?>;
+	var horaini_manha    = <?php echo '"' . $at53_horaini_manha . '"'; ?>;
+	var horafim_manha    = <?php echo '"' . $at53_horafim_manha . '"'; ?>;
+	var horaini_tarde    = <?php echo '"' . $at53_horaini_tarde . '"'; ?>;
+	var horafim_tarde    = <?php echo '"' . $at53_horafim_tarde . '"'; ?>;
 
 	var diaini_dia       = parseInt(document.form1.at40_diaini_dia.value);
 	var diaini_mes       = parseInt(document.form1.at40_diaini_mes.value);
@@ -708,7 +708,7 @@ function js_calcula_prev(){
 	var vet_min          = hora.split(":");
     var hora_min         = "";
 	var testa_hora       = "";
-	var resto            = 0; 
+	var resto            = 0;
 	var hora_final       = 0;
 	var diafim_dia       = diaini_dia;
 	var qtd_dias         = parseInt(previsao/hora_trabalhadas);
@@ -748,18 +748,18 @@ function js_calcula_prev(){
 
 				if(resto > 0) {
 					diafim_dia = diaini_dia;
-			
+
 					if(resto >= 1) {
 						diaini_mes++;
-			
+
 						diafim_dia = resto;
 					}
-			
+
 					if(diaini_mes == 12) {
 						diaini_ano++;
 					}
 				}
-			} 
+			}
 			else {
 				hora_final = hora_int;
 			}
@@ -810,13 +810,13 @@ function js_calcula_prev(){
 
 					if(resto > 0) {
 						diafim_dia = diaini_dia;
-				
+
 						if(resto >= 1) {
 							diaini_mes++;
-				
+
 							diafim_dia = resto;
 						}
-			
+
 						if(diaini_mes == 12) {
 							diaini_ano++;
 						}
@@ -834,7 +834,7 @@ function js_calcula_prev(){
 			}
 			else {
 				hora_final = hora_int;
-			} 
+			}
 		}
 
 		document.form1.at40_diafim_dia.value = diafim_dia;
@@ -852,7 +852,7 @@ function js_calcula_prev(){
 
 		document.form1.at40_horafim.value = hora_final + ":" + hora_min;
     }
-	
+
 	if(tipo_previsao == "d") {
 		diafim_dia += previsao;
 
@@ -862,14 +862,14 @@ function js_calcula_prev(){
 
 		if(resto > 0) {
 			diafim_dia = diaini_dia;
-			
+
 			if(resto > 1) {
 				diaini_mes++;
-				
+
 //				diafim_dia = parseInt(resto/2);
 				diafim_dia = resto;
 			}
-			
+
 			if(diaini_mes == 12) {
 				diaini_ano++;
 			}
@@ -884,7 +884,7 @@ function js_calcula_prev(){
 
 // Tarde
 		if(hora_int > parseInt(horafim_manha, 10)) {
-			hora_final = parseInt(horafim_tarde, 10); 
+			hora_final = parseInt(horafim_tarde, 10);
 		}
 // Manha
 		else {
@@ -895,25 +895,25 @@ function js_calcula_prev(){
 			}
 			else {
 			    hora_final = parseInt(horafim_manha, 10);
-			} 
+			}
 		}
 
 		testa_hora = hora_final + ":" + hora_min;
 		if(testa_hora > horafim_tarde) {
-			hora_final = parseInt(horafim_tarde, 10); 
+			hora_final = parseInt(horafim_tarde, 10);
 			hora_min   = "00";
 		}
 
 		document.form1.at40_horafim.value = hora_final + ":" + hora_min;
-	} 
+	}
 }
 function retorna_dia(diaini_mes,diaini_ano) {
 	switch (diaini_mes) {
 		case  1 : diaini_dia = 31;
 				  break;
 		case  2 : if((diaini_ano%4)==0) {
-					  diaini_dia = 29; 	
-				  }	
+					  diaini_dia = 29;
+				  }
 				  else {
 					  diaini_dia = 28;
 				  }
@@ -940,12 +940,12 @@ function retorna_dia(diaini_mes,diaini_ano) {
 				  break;
 	}
 
-	return(diaini_dia);	
+	return(diaini_dia);
 }
 function js_verifica(){
 alert("aki");
-	
+
 	document.form1.submit();
-	
+
 }
 </script>

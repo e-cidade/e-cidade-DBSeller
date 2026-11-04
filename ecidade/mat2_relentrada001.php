@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -46,7 +46,7 @@ $rotulo->label("m81_codtipo");
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-	<?
+	<?php
 	  db_app::load("scripts.js, prototype.js, strings.js");
 	  db_app::load("estilos.css");
 	?>
@@ -75,12 +75,12 @@ $rotulo->label("m81_codtipo");
 			  <table align="center" border="0">
 			    <tr>
 			      <td align="right" title="<?=@$Tm60_codmater?>">
-			        <?
+			        <?php
 			          db_ancora(@$Lm60_codmater,"js_pesquisam60_codmater(true);",1);
 			        ?>
 			      </td>
 			      <td align="left">
-			        <?
+			        <?php
 			          db_input('m60_codmater',10,$Im60_codmater,true,'text',1," onchange='js_pesquisam60_codmater(false);'");
 			          db_input('m60_descr',40,$Im60_descr,true,'text',3,'');
 			        ?>
@@ -91,7 +91,7 @@ $rotulo->label("m81_codtipo");
 			        <strong>Opções:</strong>
 			      </td>
 			      <td align="left">
-			        <?
+			        <?php
 			          $aOpcao = array("com"=>"Com os Fornecedores selecionados",
 			                          "sem"=>"Sem os Fornecedores selecionados");
 			          db_select("vertipo",$aOpcao,true,1);
@@ -103,7 +103,7 @@ $rotulo->label("m81_codtipo");
               <strong>Agrupar por:</strong>
             </td>
             <td align="left">
-              <?
+              <?php
                 $aAgruparPor = array("agrpn"=>"Por Nota",
                                      "agrpoc"=>"Por Ordem de Compra");
                 db_select("agrupar",$aAgruparPor,true,1);
@@ -115,7 +115,7 @@ $rotulo->label("m81_codtipo");
               <strong>Ordenar:</strong>
             </td>
             <td align="left">
-              <?
+              <?php
                 $aOrdenar = array("ordfrn"=>"Fornecedor",
                                   "ordoc"=>"Ordem de compra",
                                   "ordnt"=>"Nota",
@@ -152,7 +152,7 @@ $rotulo->label("m81_codtipo");
 			        <b>Período:</b>
 			      </td>
 			      <td align="left">
-              <?
+              <?php
                 db_inputdata('dtInicial',null,null,null,true,'text',1,"");
                  echo "<b> a </b> ";
                 db_inputdata('dtFinal',null,null,null,true,'text',1,"");
@@ -171,7 +171,7 @@ $rotulo->label("m81_codtipo");
   </table>
 </form>
 </body>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>
@@ -206,7 +206,7 @@ function js_mandadados(){
 
  	jan = window.open('mat2_relentrada002.php?'+sUrl,'',
  	                  'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-  jan.moveTo(0,0);
+    jan.moveTo(0,0);
 }
 
 function js_pesquisam60_codmater(mostra){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("nome");
        <?=@$Lp88_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('p88_codigo',10,$Ip88_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('p88_codigo',10,$Ip88_codigo,true,'text',$db_opcao,"")
        <?=@$Lp88_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('p88_data',@$p88_data_dia,@$p88_data_mes,@$p88_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -58,22 +58,22 @@ db_inputdata('p88_data',@$p88_data_dia,@$p88_data_mes,@$p88_data_ano,true,'text'
        <?=@$Lp88_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('p88_hora',5,$Ip88_hora,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp88_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lp88_usuario,"js_pesquisap88_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p88_usuario',10,$Ip88_usuario,true,'text',$db_opcao," onchange='js_pesquisap88_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -83,7 +83,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lp88_despacho?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('p88_despacho',0,0,$Ip88_despacho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_proctranferint.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

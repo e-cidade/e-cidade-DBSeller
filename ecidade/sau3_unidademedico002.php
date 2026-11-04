@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@ $cl_unidademedicos = new cl_unidademedicos;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 if(isset($Processar)){
 
  $sql = "select * from unidademedicos
@@ -58,7 +58,7 @@ if(isset($Processar)){
   <td><b>Código</b></td>
   <td><b>Nome</b></td>
  </tr>
- <?
+ <?php
  //for
  for($i=0;$i<$cl_unidademedicos->numrows;$i++){
  db_fieldsmemory($result,$i);
@@ -66,7 +66,7 @@ if(isset($Processar)){
  <tr>
   <td><?=$sd04_i_medico?></td><td><?=$z01_nome?></td>
  </tr>
- <?
+ <?php
  }
  }else{
   echo "<center><br><br><font color='red'>Nenhum registro encontrado!</font></center>";

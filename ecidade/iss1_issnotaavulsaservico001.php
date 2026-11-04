@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -293,13 +293,13 @@ if (isset($post->notaavulsa)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmissnotaavulsaservico.php"));
 	?>
     </center>
   </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     if ($erro_msg != ''){
        db_msgbox($erro_msg);
@@ -317,7 +317,7 @@ function js_emiteNota(num){
    window.open(url,'','location=0');
 
 }
-<?
+<?php
 
 if (isset($post->recibo)){
 

@@ -124,7 +124,7 @@ for ($mater = 0; $mater < $clmatmater->numrows; $mater++) {
             } else if ($m90_tipocontrol == 'G') {
                 $result_almox = $cldb_almoxdepto->sql_record($cldb_almoxdepto->sql_query_file(null, $depto_atual));
                 if ($cldb_almox->numrows > 0) {
-                    db_fieldsmemory($result_almox);
+                    db_fieldsmemory($result_almox,0);
                     $db_where = "m91_codigo = $m91_codigo";
                     $db_inner = "      inner join db_almoxdepto on m92_depto = db_depart.coddepto ";
                     $db_inner .= "      inner join db_almox on m91_codigo = m92_codalmox";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_layoutcampos->rotulo->label("db52_descr");
               <?=$Ldb52_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db52_codigo",6,$Idb52_codigo,true,"text",4,"","chave_db52_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_layoutcampos->rotulo->label("db52_descr");
               <?=$Ldb52_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db52_descr",40,$Idb52_descr,true,"text",4,"","chave_db52_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_layoutcampos->rotulo->label("db52_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_layoutcampos.php")==true){
@@ -122,12 +122,12 @@ $cldb_layoutcampos->rotulo->label("db52_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

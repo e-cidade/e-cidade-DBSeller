@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,23 +48,23 @@ if(isset($receita)){
 <table border="0" valign="center">
   <tr>
     <td nowrap title="<?=@$To34_codrec?>" align="right">
-      <?
+      <?php
       db_ancora(@$Lo34_codrec,"js_pesquisao34_codrec(true);",$opcaoreceita);
       ?>
     </td>
     <td nowrap title="<?=@$To34_codrec?>" align="left">
-      <?
+      <?php
       db_input('o34_codrec',6,$Io34_codrec,true,'text',$opcaoreceita,'onChange="js_pesquisao34_codrec(false);"','receita');
       db_input('o57_descr',50,$Io57_descr,true,'text',3);
       ?>
     </td>
     <td nowrap title="Selecione o bimestre" align="right">
-      <?
+      <?php
       db_ancora("<b>Bimestre:</b>","",3);
       ?>
     </td>
     <td nowrap title="Selecione o bimestre" align="left">
-      <?
+      <?php
       $arr_bimestres = Array("1"=>"1º - Primeiro","2"=>"2º - Segundo","3"=>"3º - Terceiro","4"=>"4º - Quarto","5"=>"5º - Quinto","6"=>"6º - Sexto");
       db_select("bimestre", $arr_bimestres, true, $opcaoreceita);
       ?>
@@ -156,7 +156,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_orcprevrec.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ if($gerf == "fs"){
   <tr>
     <td colspan="2" align="center">
       <strong>
-      <?
+      <?php
       echo $dfolha;
       ?>
       </strong>
@@ -66,11 +66,11 @@ if($gerf == "fs"){
       <strong>Ano / Mês :&nbsp;&nbsp;</strong> 
     </td>
     <td>
-      <?
+      <?php
       db_input('DBtxt23', 4, $IDBtxt23, true, 'text', $db_opcao == 1 ? 1 : 3, "onchange='document.form1.submit();'", 'r14_anousu');
       ?>
       &nbsp;/&nbsp;
-      <?
+     <?php
       db_input('DBtxt25', 2, $IDBtxt25, true, 'text', $db_opcao == 1 ? 1 : 3, "onchange='document.form1.submit();'", 'r14_mesusu');
       db_input('gerf', 15, 0, true, 'hidden', 3, "");
       db_input('data_de_admissao', 15, 0, true, 'hidden', 3, "");
@@ -80,30 +80,30 @@ if($gerf == "fs"){
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tr14_regist?>">
-      <?
+     <?php
       db_ancora(@ $Lr14_regist, "js_pesquisar14_regist(true);", $db_opcao);
       ?>
     </td>
     <td> 
-      <?
+     <?php
       db_input('r14_regist', 8, $Ir14_regist, true, 'text', $db_opcao, " onchange='js_pesquisar14_regist(false);'")
       ?>
-      <?
+     <?php
       db_input('z01_nome', 60, $Iz01_nome, true, 'text', 3, '');
       ?>
     </td>
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tr14_lotac?>">
-      <?
+     <?php
       db_ancora(@ $Lr14_lotac, "js_pesquisar14_lotac(true);", 3);
       ?>
     </td>
     <td> 
-      <?
+     <?php
       db_input('r14_lotac', 8, $Ir14_lotac, true, 'text', 3, " onchange='js_pesquisar14_lotac(false);'")
       ?>
-      <?
+     <?php
       db_input('r70_descr', 60, $Ir70_descr, true, 'text', 3, '');
       ?>
     </td>
@@ -114,11 +114,11 @@ if($gerf == "fs"){
       <table border="0">
         <tr>
           <td align="left" nowrap title="<?=@$Tr14_rubric?>">
-            <?
+           <?php
             db_ancora(@ $Lr14_rubric, "js_pesquisar14_rubric(true);", (($db_opcao==1)?"1":"3"));
             ?>
           </td>
-            <?
+           <?php
             //Se for folha de rescisão, colocará o LABEL da TPP
             if($gerf == "fr"){
               echo "<td align='left' nowrap title='$Tr20_tpp'>
@@ -139,14 +139,14 @@ if($gerf == "fs"){
         </tr>
         <tr>
           <td> 
-            <?
+            <?php
             db_input('r14_rubric', 8, $Ir14_rubric, true, 'text', (($db_opcao==1)?"1":"3"), " onchange='js_pesquisar14_rubric(false);'")
             ?>
-            <?
+            <?php
             db_input('rh27_descr', 30, $Irh27_descr, true, 'text', 3, '');
             ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </td>
-            <?
+            <?php
             // Se for folha de rescisão, colocará o CAMPO da TPP
             if($gerf == "fr"){
               echo "<td>";
@@ -166,7 +166,7 @@ if($gerf == "fs"){
             ?>
           </td>
           <td>
-            <?
+            <?php
             if(!isset($r14_quant) || (isset($r14_quant) && trim($r14_quant)=="")){
               $r14_quant = '0';
             }
@@ -174,7 +174,7 @@ if($gerf == "fs"){
             ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </td>
           <td>
-            <?
+            <?php
             if(!isset($r14_valor) || (isset($r14_valor) && trim($r14_valor)=="")){
               $r14_valor = '0';
             }
@@ -182,10 +182,23 @@ if($gerf == "fs"){
             ?>
           </td>
         </tr>
+        <tr>
+          <td colspan="4">
+            <div class="container">
+              <fieldset>
+                <legend>Histórico:</legend>
+                <?php
+                  db_textarea('observacao', 3, 90, "", true, 'text', $db_opcao);
+                ?>
+            </fieldset>
+            </div>
+          </td>
+        </tr>
       </table>
       </fieldset>
     </td>
-  </tr>   
+  </tr>
+          
   <tr>
     <td colspan="2" align="center" height="5%">
       <br>
@@ -196,7 +209,7 @@ if($gerf == "fs"){
   </tr>
   <tr>
     <td colspan="2" width="100%" height="60%" valign="top"  align="center">  
-      <?
+      <?php
       // $sigla - É a sigla a ser utilizada no select.
       // $campoextra - É para quando as tabelas tiverem campos TPP
       // $mostracamp - É para quando o TPP for apresentado no Select ser mostrado no IFRAME_SELECIONA
@@ -318,7 +331,7 @@ if($gerf == "fs"){
 </form>
 <script>
 function js_campos(opcao){
-  <?
+ <?php
   if(!isset($opcao) && !isset($r14_regist)){
     echo "js_tabulacaoforms('form1','r14_regist',true,1,'r14_regist',true);";
   }else if(isset($opcao) && $opcao == "alterar"){
@@ -332,7 +345,7 @@ function js_campos(opcao){
 }
 function js_vercampos(){
   // Verificar se algum campo ficou em branco
-  <?
+ <?php
   if($db_opcao != 3 && $db_opcao != 33){
     echo '
           erro = 0;

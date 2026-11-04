@@ -89,7 +89,7 @@ $rsMovAlvara    = $clMovAlvara->sql_record($sSqlMovAlvara);
 </head>
 <body bgcolor=#CCCCCC>
 
-<?
+<?php
 /**
  * Se retornou algum registro imprime a grid
  */

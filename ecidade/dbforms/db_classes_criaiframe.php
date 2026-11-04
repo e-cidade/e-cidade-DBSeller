@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -32,7 +32,7 @@ parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
 $sql=base64_decode($sql);
 $campos=base64_decode($campos);
 $msg_vazio=base64_decode($msg_vazio);
-$quais_chaves = split("#",$quais_chaves);
+$quais_chaves = explode("#",$quais_chaves);
 ?>
 <html>
 <head>
@@ -40,7 +40,7 @@ $quais_chaves = split("#",$quais_chaves);
 a:hover {
           color:blue;
         }
-a:visited {text-decoration:;
+a:visited {text-decoration:none;
            color: black;
            font-weight: bold; 
           }
@@ -65,7 +65,7 @@ a:active {
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
-function js_retorna(qtipo,<? $virgula = "";
+function js_retorna(qtipo,<?php $virgula = "";
   reset($quais_chaves);
   for($ww=0;$ww<sizeof($quais_chaves);$ww++){
     echo $virgula."par_$ww";
@@ -79,7 +79,7 @@ function js_retorna(qtipo,<? $virgula = "";
   opcao.setAttribute("value",qtipo);
   parent.document.form1.appendChild(opcao);
  
-  <?
+  <?php
   reset($quais_chaves);
   for($ww=0;$ww<sizeof($quais_chaves);$ww++){
     ?>
@@ -88,7 +88,7 @@ function js_retorna(qtipo,<? $virgula = "";
     chavepri.setAttribute("name","<?=$quais_chaves[$ww]?>");
     chavepri.setAttribute("value",par_<?=$ww?>);
     parent.document.form1.appendChild(chavepri);
-    <?
+    <?php
     next($quais_chaves);
   }
   ?>	
@@ -102,7 +102,7 @@ function js_retorna(qtipo,<? $virgula = "";
   <tr>
     <td align="center" valign="top">
       <table border='1' width="100%" bgcolor="#cccccc">
-<?
+<?php
        $result=db_query($sql);
         $numrows=pg_numrows($result);
        $numcols=pg_numfields($result);
@@ -114,7 +114,7 @@ function js_retorna(qtipo,<? $virgula = "";
           $db_opcao=3;
        }
        if((($db_opcao==33  || $db_opcao==1) && $numrows>0) || (($db_opcao==33 || $db_opcao==3 || $db_opcao==2) && $numrows>1)){ 
-	  $matriz_campos=split(",",$campos); 
+	  $matriz_campos=explode(",",$campos); 
           $numcolunas=sizeof($matriz_campos);
           echo "   <tr class='cabec'>";
 	  for($w=0; $w<$numcolunas; $w++){
@@ -163,14 +163,14 @@ function js_retorna(qtipo,<? $virgula = "";
        	         $coluna.= "<a title='ALTERAR CONTEÚDO DA LINHA' href='#' onclick='js_retorna(\"alterar\"";
 	         $virgula = ",";
 	         for($ww=0;$ww<sizeof($quais_chaves);$ww++){
-	           $coluna .= $virgula."\"".$$quais_chaves[$ww]."\"";
+	           $coluna .= $virgula."\"".${$quais_chaves[$ww]}."\"";
                  }
 	         $coluna.= ");return false;'>&nbsp;A&nbsp;</a>\n";
 	         $coluna.="&nbsp;&nbsp;&nbsp;"; 
      	         $coluna.="<a title='EXCLUIR CONTEÚDO DA LINHA' href='#' onclick='js_retorna(\"excluir\"";
 	         $virgula = ",";
 	         for($ww=0;$ww<sizeof($quais_chaves);$ww++){
-	           $coluna .= $virgula."\"".$$quais_chaves[$ww]."\"";
+	           $coluna .= $virgula."\"".${$quais_chaves[$ww]}."\"";
 	         }
 	         $coluna .= ");return false;'>&nbsp;E&nbsp;</a>";
 	         echo $coluna."\n";

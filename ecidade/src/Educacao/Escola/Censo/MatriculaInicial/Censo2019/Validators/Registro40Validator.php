@@ -76,7 +76,6 @@ class Registro40Validator
     private function log($dado)
     {
         $dado = "{$this->registro30->getNome()}: $dado";
-
         $log = LogCensoRegistry::get(LogCensoRegistry::MATRICULA_INICIAL);
         $log->add(LogMatriculaInicial::REGISTRO40, $dado);
     }

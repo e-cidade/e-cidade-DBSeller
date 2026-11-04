@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -108,7 +108,7 @@ if(isset($ed40_c_descr)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Escolas vinculadas ao Procedimento de Avaliação <?=$sDescricao;?></b></legend>
-    <?include(modification("forms/db_frmprocescola.php"));?>
+    <?php include(modification("forms/db_frmprocescola.php"));?>
    </fieldset>
    </center>
   </td>
@@ -116,7 +116,7 @@ if(isset($ed40_c_descr)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
  if($clprocescola->erro_status=="0"){
   $clprocescola->erro(true,false);
@@ -152,7 +152,7 @@ if(isset($excluir)){
   <script>
    parent.location.href='edu1_procedimentoabas002.php';
   </script>
-  <?
+  <?php
  }
 }
 if(isset($cancelar)){

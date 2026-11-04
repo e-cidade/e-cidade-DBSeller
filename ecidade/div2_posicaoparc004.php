@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@ $aux = new cl_arquivo_auxiliar;
       </tr>
       <tr>
         <td>
-          <?
+          <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux->cabecalho = "Regras de Parcelamento";
             $aux->codigo = "k40_codigo"; //chave de retorno da func

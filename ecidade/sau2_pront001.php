@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ $db_botao = true;
       <b>Numero de Atendimento</b>
     </td>
     <td>
-<?
+<?php
 db_input('sd24_c_atendimento',10,$Isd24_c_atendimento,true,'text',$db_opcao," onchange='js_pesquisasd24_c_atendimento(false);'")
 ?>
     </td>
@@ -95,7 +95,7 @@ db_input('sd24_c_atendimento',10,$Isd24_c_atendimento,true,'text',$db_opcao," on
 	</td>
   </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

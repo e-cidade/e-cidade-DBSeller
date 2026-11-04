@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cldivimporta->rotulo->label();
        <?=@$Lv02_divimporta?>
     </td>
     <td> 
-<?
+<?php
 db_input('v02_divimporta',10,$Iv02_divimporta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('v02_divimporta',10,$Iv02_divimporta,true,'text',$db_opcao,"")
        <?=@$Lv02_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('v02_usuario',10,$Iv02_usuario,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('v02_usuario',10,$Iv02_usuario,true,'text',$db_opcao,"")
        <?=@$Lv02_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('v02_data',@$v02_data_dia,@$v02_data_mes,@$v02_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_inputdata('v02_data',@$v02_data_dia,@$v02_data_mes,@$v02_data_ano,true,'text'
        <?=@$Lv02_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('v02_hora',10,$Iv02_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_divimporta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

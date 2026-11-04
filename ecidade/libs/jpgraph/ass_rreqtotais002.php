@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/fc_sessoes.php"));
 require(modification("libs/classes.class"));
 require(modification("libs/funcoes.php"));

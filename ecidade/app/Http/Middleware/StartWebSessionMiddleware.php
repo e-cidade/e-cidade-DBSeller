@@ -26,6 +26,7 @@ class StartWebSessionMiddleware
     {
         session_start();
         $this->logAcesso(substr($request->getPathInfo(), 1));
+        session($_SESSION);
 
         return $next($request);
     }
@@ -73,7 +74,7 @@ class StartWebSessionMiddleware
     private function insertLog($item, $pathMenu)
     {
         $codsequen = DB::select("SELECT nextval('db_logsacessa_codsequen_seq')")[0]->nextval;
-        
+
         $_SESSION['DB_itemmenu_acessado'] = $item;
         $_SESSION['DB_acessado'] = $codsequen;
 

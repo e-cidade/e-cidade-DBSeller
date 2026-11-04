@@ -29,39 +29,39 @@
 //CLASSE DA ENTIDADE arrecad
 class cl_arrecad {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status= null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status= null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $k00_numpre = 0;
-  var $k00_numpar = 0;
-  var $k00_numcgm = 0;
-  var $k00_dtoper_dia = null;
-  var $k00_dtoper_mes = null;
-  var $k00_dtoper_ano = null;
-  var $k00_dtoper = null;
-  var $k00_receit = 0;
-  var $k00_hist = 0;
-  var $k00_valor = 0;
-  var $k00_dtvenc_dia = null;
-  var $k00_dtvenc_mes = null;
-  var $k00_dtvenc_ano = null;
-  var $k00_dtvenc = null;
-  var $k00_numtot = 0;
-  var $k00_numdig = 0;
-  var $k00_tipo = 0;
-  var $k00_tipojm = 0;
+  public $k00_numpre = 0;
+  public $k00_numpar = 0;
+  public $k00_numcgm = 0;
+  public $k00_dtoper_dia = null;
+  public $k00_dtoper_mes = null;
+  public $k00_dtoper_ano = null;
+  public $k00_dtoper = null;
+  public $k00_receit = 0;
+  public $k00_hist = 0;
+  public $k00_valor = 0;
+  public $k00_dtvenc_dia = null;
+  public $k00_dtvenc_mes = null;
+  public $k00_dtvenc_ano = null;
+  public $k00_dtvenc = null;
+  public $k00_numtot = 0;
+  public $k00_numdig = 0;
+  public $k00_tipo = 0;
+  public $k00_tipojm = 0;
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  k00_numpre = int4 = Numpre
                  k00_numpar = int4 = Parcela
                  k00_numcgm = int4 = cgm
@@ -76,13 +76,13 @@ class cl_arrecad {
                  k00_tipojm = int4 = tipo de juro e multa
                  ";
   //funcao construtor da classe
-  function cl_arrecad() {
+  public function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("arrecad");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra,$retorna) {
+  public function erro($mostra,$retorna) {
     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
       echo "<script>alert(\"".$this->erro_msg."\");</script>";
       if($retorna==true){
@@ -91,7 +91,7 @@ class cl_arrecad {
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao=false) {
+  public function atualizacampos($exclusao=false) {
     if($exclusao==false){
       $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
       $this->k00_numpar = ($this->k00_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpar"]:$this->k00_numpar);
@@ -123,7 +123,7 @@ class cl_arrecad {
     }
   }
   // funcao para inclusao
-  function incluir (){
+  public function incluir (){
     $this->atualizacampos();
     if($this->k00_numpre == null ){
       $this->erro_sql = " Campo Numpre nao Informado.";
@@ -287,7 +287,7 @@ class cl_arrecad {
     return true;
   }
   // funcao para alteracao
-  function alterar ( $oid=null,$where="" ) {
+  public function alterar ( $oid=null,$where="" ) {
     $this->atualizacampos();
     $sql = " update arrecad set ";
     $virgula = "";
@@ -510,7 +510,7 @@ class cl_arrecad {
     }
   }
   // funcao para exclusao
-  function excluir ( $oid=null ,$dbwhere=null) {
+  public function excluir ( $oid=null ,$dbwhere=null) {
     $sql = " delete from arrecad
                     where ";
     $sql2 = "";
@@ -549,7 +549,7 @@ class cl_arrecad {
     }
   }
   // funcao do recordset
-  function sql_record($sql) {
+  public function sql_record($sql) {
     $result = db_query($sql);
     if($result==false){
       $this->numrows    = 0;
@@ -571,7 +571,7 @@ class cl_arrecad {
     }
     return $result;
   }
-  function alterar_arrecad ( $dbwhere="" ) {
+  public function alterar_arrecad ( $dbwhere="" ) {
     $this->atualizacampos();
     $sql = " update arrecad set ";
     $virgula = "";
@@ -791,7 +791,7 @@ class cl_arrecad {
       }
     }
   }
-  function excluir_arrecad($numpre,$numpar=0, $excluir_arrecad=true,$receit=null){
+  public function excluir_arrecad($numpre,$numpar=0, $excluir_arrecad=true,$receit=null){
     $sql = "select *
             from arrecad
             where k00_numpre=$numpre";
@@ -874,10 +874,10 @@ class cl_arrecad {
       }
     }
   }
-  function sql_query ( $oid = null,$campos="arrecad.oid,*",$ordem=null,$dbwhere=""){
+  public function sql_query ( $oid = null,$campos="arrecad.oid,*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -905,7 +905,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -914,10 +914,10 @@ class cl_arrecad {
     }
     return $sql;
   }
-  function sql_query_div ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_div ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -939,7 +939,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -948,7 +948,7 @@ class cl_arrecad {
     }
     return $sql;
   }
-  function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -970,7 +970,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -979,10 +979,10 @@ class cl_arrecad {
     }
     return $sql;
   }
-  function sql_query_file_instit ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file_instit ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1001,7 +1001,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1010,10 +1010,10 @@ class cl_arrecad {
     }
     return $sql;
   }
-  function sql_query_info ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_info ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1037,7 +1037,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1047,10 +1047,10 @@ class cl_arrecad {
     return $sql;
   }
 
-  function sql_query_arrecad ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_arrecad ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1071,7 +1071,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1081,10 +1081,10 @@ class cl_arrecad {
     return $sql;
   }
 
-  function sql_query_instit ( $oid = null,$campos="arrecad.oid,*",$ordem=null,$dbwhere=""){
+  public function sql_query_instit ( $oid = null,$campos="arrecad.oid,*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1112,7 +1112,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1122,7 +1122,7 @@ class cl_arrecad {
     return $sql;
   }
 
-  function excluir_arrecad_inc_arrecant($numpre,$numpar=0, $excluir_arrecad=true){
+  public function excluir_arrecad_inc_arrecant($numpre,$numpar=0, $excluir_arrecad=true){
     $sql = "select *
 	            from arrecad
 	            where k00_numpre=$numpre";
@@ -1207,7 +1207,7 @@ class cl_arrecad {
    * @return string
    */
 
-  function sql_query_buscaDesconto($k00_numpre) {
+  public function sql_query_buscaDesconto($k00_numpre) {
 
     if ($k00_numpre != "" || $k00_numpre != null || isset($k00_numpre)){
 
@@ -1258,7 +1258,42 @@ class cl_arrecad {
    * @param boolean $cadtipo
    * @return string
    */
-  function sql_query_getReceitasTipo($codigoTipo, $cadtipo = true){
+  public function sql_query_getReceitasTipoVinculo($codigoTipo, $cadtipo = true){
+
+    $sSql = null;
+
+    if (!empty($codigoTipo)){
+
+      $tabela = $cadtipo ? "cadtipo.k03_tipo" : "arrecad.k00_tipo";
+
+      $sSql  = "select distinct                                                 \n";
+      $sSql .= "       k02_descr,                                               \n";
+      $sSql .= "       k00_receit,                                              \n";
+      $sSql .= "       dv09_proced                                              \n";
+      $sSql .= "  from arrecad                                                  \n";
+      $sSql .= "       inner   join diversos  on dv05_numpre = k00_numpre       \n";
+      $sSql .= "       inner   join procdiver on dv05_procdiver = dv09_procdiver\n";
+      $sSql .= " inner join proced on proced.v03_codigo = procdiver.dv09_proced \n";
+      $sSql .= "       inner   join tabrec    on k02_codigo = k00_receit        \n";
+      $sSql .= "       natural join arretipo                                    \n";
+      $sSql .= "       natural join cadtipo                                     \n";
+      $sSql .= "       natural join arreinstit                                  \n";
+      $sSql .= " where {$tabela} in ({$codigoTipo})                             \n";
+      $sSql .= "   and arreinstit.k00_instit = ".db_getsession("DB_instit");
+
+      if ($cadtipo) {
+
+        $sSql .= "   and not exists (select 1 from arrepaga where k00_numpre = arrecad.k00_numpre and k00_receit = arrecad.k00_receit) \n";
+        $sSql .= "   and not exists (select 1 from arrecant where k00_numpre = arrecad.k00_numpre and k00_receit = arrecad.k00_receit) \n";
+        $sSql .= "   and not exists (select 1 from arreold  where k00_numpre = arrecad.k00_numpre and k00_receit = arrecad.k00_receit) \n";
+        $sSql .= "   and not exists (select 1 from arresusp where k00_numpre = arrecad.k00_numpre and k00_receit = arrecad.k00_receit) \n";
+      }
+    }
+
+    return $sSql;
+  }
+
+  public function sql_query_getReceitasTipo($codigoTipo, $cadtipo = true){
 
     $sSql = null;
 
@@ -1295,6 +1330,8 @@ class cl_arrecad {
    *                             1 - CGM
    *                             2 - Matrícula
    *                             3 - Inscrição Municipal
+   *                             4 - Código do Auto de Infração
+   *                             5 - Notificação de Lançamento
    */
 
   /**
@@ -1305,6 +1342,9 @@ class cl_arrecad {
    *                                 1 - CGM
    *                                 2 - Matrícula
    *                                 3 - Inscrição Municipal
+   *                                 4 - Código do Auto de Infração
+   *                                 5 - Notificação de Lançamento
+   *
    * @param array $aOrdenacao
    * @return string
    */
@@ -1316,7 +1356,7 @@ class cl_arrecad {
     $aOrdenacao = array()
   ) {
 
-    if(!in_array($iTipoContribuinte, array(1, 2, 3))) {
+    if(!in_array($iTipoContribuinte, array(1, 2, 3, 4, 5))) {
       return null;
     }
 
@@ -1361,6 +1401,24 @@ class cl_arrecad {
 
       $sInnerContribuinte = " inner join arreinscr on arreinscr.k00_numpre = arrecad.k00_numpre ";
       $aWhere[] = " arreinscr.k00_inscr = {$iCodigo} ";
+    }
+
+    /**
+     * CONDIÇÕES QUANDO TRATA-SE DE UM CÓDIGO DO AUTO DE INFRAÇÃO
+     */
+    if($iTipoContribuinte == 4) {
+
+      $sInnerContribuinte = " inner join arreauto on arreauto.k00_numpre = arrecad.k00_numpre ";
+      $aWhere[] = " arreauto.k00_auto = {$iCodigo} ";
+    }
+
+    /**
+     * CONDIÇÕES QUANDO TRATA-SE DE UMA NOTIFICAÇÃO DE LANÇAMENTO
+     */
+    if($iTipoContribuinte == 5) {
+
+      $sInnerContribuinte = " inner join arrelanc on arrelanc.k00_numpre = arrecad.k00_numpre ";
+      $aWhere[] = " arrelanc.k00_codlanc = {$iCodigo} ";
     }
 
     $sCampos = count($aCampos) > 0 ? implode(", ", $aCampos) : "*";
@@ -1408,7 +1466,7 @@ class cl_arrecad {
     return $sSql;
   }
 
-  function alterar_tipo ( $tipo, $where ) {
+  public function alterar_tipo ( $tipo, $where ) {
     $sql  = " update arrecad set k00_tipo = $tipo ";
     $sql .= " where $where ";
 
@@ -1441,4 +1499,97 @@ class cl_arrecad {
       }
     }
   }
+
+     /**
+     * Busca de custas do termo lancadas no arrecad
+     * @param integer $iNumpre
+     * @param boolean $lAgrupaPorParcela
+     * @return string
+     */
+    public function sql_busca_custas($iNumpre, $lAgrupaPorParcela = false)
+    {
+      $sql1 = "select
+          k00_numpar as parcela,
+          sum(k00_valor) as valor
+      from
+          arrecad
+          inner join taxa on k00_receit = ar36_receita
+      where
+          k00_numpre = $iNumpre
+          and k00_hist in (11303, 11304)
+      group by
+          k00_numpar
+      union
+      all
+      select
+          k00_numpar as parcela,
+          sum(k00_valor) as valor
+      from
+          arrecant
+          inner join taxa on k00_receit = ar36_receita
+      where
+          k00_numpre = $iNumpre
+          and k00_hist in (11303, 11304)
+      group by
+          k00_numpar
+      union
+      all
+      select
+          k00_numpar as parcela,
+          sum(k00_valor) as valor
+      from
+          arreold
+          inner join taxa on k00_receit = ar36_receita
+      where
+          k00_numpre = $iNumpre
+          and k00_hist in (11303, 11304)
+      group by
+          k00_numpar";
+
+      $sql2 = "select
+           ar36_sequencial as custa_honorario,
+           ar36_descricao as descricao,
+           sum(k00_valor) as valor
+       from
+           arrecad
+           inner join taxa on k00_receit = ar36_receita
+       where
+           k00_numpre = $iNumpre
+           and k00_hist in (11303, 11304)
+       group by
+           ar36_sequencial,
+           ar36_descricao
+       union
+       all
+       select
+           ar36_sequencial as custa_honorario,
+           ar36_descricao as descricao,
+           sum(k00_valor) as valor
+       from
+           arrecant
+           inner join taxa on k00_receit = ar36_receita
+       where
+           k00_numpre = $iNumpre
+           and k00_hist in (11303, 11304)
+       group by
+           ar36_sequencial,
+           ar36_descricao
+       union
+       all
+       select
+           ar36_sequencial as custa_honorario,
+           ar36_descricao as descricao,
+           sum(k00_valor) as valor
+       from
+           arreold
+           inner join taxa on k00_receit = ar36_receita
+       where
+           k00_numpre = $iNumpre
+           and k00_hist in (11303, 11304)
+       group by
+           ar36_sequencial,
+           ar36_descricao";
+
+        return $lAgrupaPorParcela ? $sql1 : $sql2;
+    }
 }

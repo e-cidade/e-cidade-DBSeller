@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,7 +46,7 @@ $clrotulo->label("nome");
        <?=@$Ldb46_idacesso?>
     </td>
     <td>
-<?
+<?php
 db_input('db46_idacesso',6,$Idb46_idacesso,true,'text',3,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('db46_idacesso',6,$Idb46_idacesso,true,'text',3,"")
        <?=@$Ldb46_dtinicio?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('db46_dtinicio',@$db46_dtinicio_dia,@$db46_dtinicio_mes,@$db46_dtinicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_inputdata('db46_dtinicio',@$db46_dtinicio_dia,@$db46_dtinicio_mes,@$db46_dtin
        <?=@$Ldb46_horaini?>
     </td>
     <td>
-<?
+<?php
 db_input('db46_horaini',5,$Idb46_horaini,true,'text',$db_opcao," onchange='js_verifica_hora_local(this.value,this.name)'")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('db46_horaini',5,$Idb46_horaini,true,'text',$db_opcao," onchange='js_ve
        <?=@$Ldb46_datafinal?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('db46_datafinal',@$db46_datafinal_dia,@$db46_datafinal_mes,@$db46_datafinal_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,23 +86,23 @@ db_inputdata('db46_datafinal',@$db46_datafinal_dia,@$db46_datafinal_mes,@$db46_d
        <?=@$Ldb46_horafinal?>
     </td>
     <td>
-<?
+<?php
 db_input('db46_horafinal',5,$Idb46_horafinal,true,'text',$db_opcao," onchange='js_verifica_hora_local(this.value,this.name)'")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb46_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Ldb46_id_usuario,"js_pesquisadb46_id_usuario(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 $db46_id_usuario = db_getsession('DB_id_usuario');
 db_input('db46_id_usuario',10,$Idb46_id_usuario,true,'text',3," onchange='js_pesquisadb46_id_usuario(false);'")
 ?>
-       <?
+       <?php
        global $nome;
 $nome = db_getsession('DB_login');
 db_input('nome',40,$Inome,true,'text',3,'')
@@ -114,7 +114,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Ldb46_datacadastd?>
     </td>
     <td>
-<?
+<?php
 $db46_datacadastd_dia = date('d',db_getsession('DB_datausu'));
 $db46_datacadastd_mes = date('m',db_getsession('DB_datausu'));
 $db46_datacadastd_ano = date('Y',db_getsession('DB_datausu'));
@@ -127,7 +127,7 @@ db_inputdata('db46_datacadastd',@$db46_datacadastd_dia,@$db46_datacadastd_mes,@$
        <?=@$Ldb46_observ?>
     </td>
     <td>
-<?
+<?php
 db_textarea('db46_observ',5,90,$Idb46_observ,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -169,7 +169,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_sysregrasacesso.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = 'con1_db_sysregrasacesso005.php?chavepesquisa='+chave";
   }

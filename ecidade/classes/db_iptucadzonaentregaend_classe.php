@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_iptucadzonaentregaend {
                  j87_compl = varchar(20) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadzonaentregaend() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadzonaentregaend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_iptucadzonaentregaend {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j87_sequencial = ($this->j87_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j87_sequencial"]:$this->j87_sequencial);
        $this->j87_iptucadzonaentrega = ($this->j87_iptucadzonaentrega == ""?@$GLOBALS["HTTP_POST_VARS"]["j87_iptucadzonaentrega"]:$this->j87_iptucadzonaentrega);
@@ -83,7 +83,7 @@ class cl_iptucadzonaentregaend {
      }
    }
    // funcao para inclusao
-   function incluir ($j87_sequencial){ 
+   public function incluir ($j87_sequencial){ 
       $this->atualizacampos();
      if($this->j87_iptucadzonaentrega == null ){ 
        $this->erro_sql = " Campo Codigo da zona de entrega nao Informado.";
@@ -206,7 +206,7 @@ class cl_iptucadzonaentregaend {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j87_sequencial=null) { 
+   public function alterar ($j87_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update iptucadzonaentregaend set ";
      $virgula = "";
@@ -331,7 +331,7 @@ class cl_iptucadzonaentregaend {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j87_sequencial=null,$dbwhere=null) { 
+   public function excluir ($j87_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j87_sequencial));
      }else{ 
@@ -396,7 +396,7 @@ class cl_iptucadzonaentregaend {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

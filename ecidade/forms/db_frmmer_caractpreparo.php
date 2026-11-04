@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: merenda
@@ -38,16 +38,16 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_i_codigo?>
   </td>
   <td>
-   <?db_input('me06_i_codigo',10,$Ime06_i_codigo,true,'text',3,"")?>
+   <?php db_input('me06_i_codigo',10,$Ime06_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme06_i_cardapio?>">
-   <?db_ancora(@$Lme06_i_cardapio,"",3);?>
+   <?php db_ancora(@$Lme06_i_cardapio,"",3);?>
   </td>
   <td>
-   <?db_input('me06_i_cardapio',10,$Ime06_i_cardapio,true,'text',3,"")?>
-   <?db_input('me01_c_nome',30,@$Ime01_c_nome,true,'text',3,'')?>
+   <?php db_input('me06_i_cardapio',10,$Ime06_i_cardapio,true,'text',3,"")?>
+   <?php db_input('me01_c_nome',30,@$Ime01_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -55,7 +55,7 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_c_graudificuldade?>
   </td>
   <td>
-   <?
+   <?php
    $x = array("1"=>"BAIXO","2"=>"MEDIO","3"=>"ALTO");
    db_select('me06_c_graudificuldade',$x,true,$db_opcao,"");
    ?>
@@ -66,7 +66,7 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_c_tempopreparo?>
   </td>
   <td>
-   <?db_input('me06_c_tempopreparo',10,$Ime06_c_tempopreparo,true,'text',$db_opcao,"")?>
+   <?php db_input('me06_c_tempopreparo',10,$Ime06_c_tempopreparo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -74,13 +74,13 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_c_descr?>
   </td>
   <td>
-   <?db_input('me06_c_descr',42,$Ime06_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('me06_c_descr',42,$Ime06_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
-<input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
-       type="submit" id="db_opcao" 
-       value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
+<input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
+       type="submit" id="db_opcao"
+       value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
        <?=($db_botao==false?"disabled":"")?> >
 </table>
 </center>

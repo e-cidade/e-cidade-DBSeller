@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE turmaachorario
-class cl_turmaachorario { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed270_i_codigo = 0; 
-   var $ed270_i_rechumano = 0; 
-   var $ed270_i_diasemana = 0; 
-   var $ed270_i_periodo = 0; 
-   var $ed270_i_turmaac = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_turmaachorario {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed270_i_codigo = 0;
+   var $ed270_i_rechumano = 0;
+   var $ed270_i_diasemana = 0;
+   var $ed270_i_periodo = 0;
+   var $ed270_i_turmaac = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed270_i_codigo = int8 = Código 
-                 ed270_i_rechumano = int8 = Regente 
-                 ed270_i_diasemana = int8 = Dia Semana 
-                 ed270_i_periodo = int8 = Período 
-                 ed270_i_turmaac = int4 = Turmaac 
+                 ed270_i_codigo = int8 = Código
+                 ed270_i_rechumano = int8 = Regente
+                 ed270_i_diasemana = int8 = Dia Semana
+                 ed270_i_periodo = int8 = Período
+                 ed270_i_turmaac = int4 = Turmaac
                  ";
-   //funcao construtor da classe 
-   function cl_turmaachorario() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("turmaachorario"); 
+     $this->rotulo = new rotulo("turmaachorario");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_turmaachorario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed270_i_codigo = ($this->ed270_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed270_i_codigo"]:$this->ed270_i_codigo);
        $this->ed270_i_rechumano = ($this->ed270_i_rechumano == ""?@$GLOBALS["HTTP_POST_VARS"]["ed270_i_rechumano"]:$this->ed270_i_rechumano);
@@ -83,9 +83,9 @@ class cl_turmaachorario {
      }
    }
    // funcao para inclusao
-   function incluir ($ed270_i_codigo){ 
+   public function incluir ($ed270_i_codigo){
       $this->atualizacampos();
-     if($this->ed270_i_rechumano == null ){ 
+     if($this->ed270_i_rechumano == null ){
        $this->erro_sql = " Campo Regente nao Informado.";
        $this->erro_campo = "ed270_i_rechumano";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_turmaachorario {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed270_i_diasemana == null ){ 
+     if($this->ed270_i_diasemana == null ){
        $this->erro_sql = " Campo Dia Semana nao Informado.";
        $this->erro_campo = "ed270_i_diasemana";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_turmaachorario {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed270_i_periodo == null ){ 
+     if($this->ed270_i_periodo == null ){
        $this->erro_sql = " Campo Período nao Informado.";
        $this->erro_campo = "ed270_i_periodo";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_turmaachorario {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed270_i_turmaac == null ){ 
+     if($this->ed270_i_turmaac == null ){
        $this->erro_sql = " Campo Turmaac nao Informado.";
        $this->erro_campo = "ed270_i_turmaac";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_turmaachorario {
        return false;
      }
      if($ed270_i_codigo == "" || $ed270_i_codigo == null ){
-       $result = db_query("select nextval('turmaachorario_ed270_i_codigo_seq')"); 
+       $result = db_query("select nextval('turmaachorario_ed270_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: turmaachorario_ed270_i_codigo_seq do campo: ed270_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: turmaachorario_ed270_i_codigo_seq do campo: ed270_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed270_i_codigo = pg_result($result,0,0); 
+       $this->ed270_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from turmaachorario_ed270_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed270_i_codigo)){
@@ -142,10 +142,10 @@ class cl_turmaachorario {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed270_i_codigo = $ed270_i_codigo; 
+         $this->ed270_i_codigo = $ed270_i_codigo;
        }
      }
-     if(($this->ed270_i_codigo == null) || ($this->ed270_i_codigo == "") ){ 
+     if(($this->ed270_i_codigo == null) || ($this->ed270_i_codigo == "") ){
        $this->erro_sql = " Campo ed270_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_turmaachorario {
        return false;
      }
      $sql = "insert into turmaachorario(
-                                       ed270_i_codigo 
-                                      ,ed270_i_rechumano 
-                                      ,ed270_i_diasemana 
-                                      ,ed270_i_periodo 
-                                      ,ed270_i_turmaac 
+                                       ed270_i_codigo
+                                      ,ed270_i_rechumano
+                                      ,ed270_i_diasemana
+                                      ,ed270_i_periodo
+                                      ,ed270_i_turmaac
                        )
                 values (
-                                $this->ed270_i_codigo 
-                               ,$this->ed270_i_rechumano 
-                               ,$this->ed270_i_diasemana 
-                               ,$this->ed270_i_periodo 
-                               ,$this->ed270_i_turmaac 
-                      )";                                
-     $result = db_query($sql); 
-     if($result==false){ 
+                                $this->ed270_i_codigo
+                               ,$this->ed270_i_rechumano
+                               ,$this->ed270_i_diasemana
+                               ,$this->ed270_i_periodo
+                               ,$this->ed270_i_turmaac
+                      )";
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Horarios de Turma com Ativ. Comp. ($this->ed270_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_turmaachorario {
        $resac = db_query("insert into db_acount values($acount,2418,15443,'','".AddSlashes(pg_result($resaco,0,'ed270_i_turmaac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed270_i_codigo=null) { 
+   public function alterar ($ed270_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update turmaachorario set ";
      $virgula = "";
-     if(trim($this->ed270_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_codigo"])){ 
+     if(trim($this->ed270_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_codigo"])){
        $sql  .= $virgula." ed270_i_codigo = $this->ed270_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed270_i_codigo) == null ){ 
+       if(trim($this->ed270_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed270_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_turmaachorario {
          return false;
        }
      }
-     if(trim($this->ed270_i_rechumano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_rechumano"])){ 
+     if(trim($this->ed270_i_rechumano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_rechumano"])){
        $sql  .= $virgula." ed270_i_rechumano = $this->ed270_i_rechumano ";
        $virgula = ",";
-       if(trim($this->ed270_i_rechumano) == null ){ 
+       if(trim($this->ed270_i_rechumano) == null ){
          $this->erro_sql = " Campo Regente nao Informado.";
          $this->erro_campo = "ed270_i_rechumano";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_turmaachorario {
          return false;
        }
      }
-     if(trim($this->ed270_i_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_diasemana"])){ 
+     if(trim($this->ed270_i_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_diasemana"])){
        $sql  .= $virgula." ed270_i_diasemana = $this->ed270_i_diasemana ";
        $virgula = ",";
-       if(trim($this->ed270_i_diasemana) == null ){ 
+       if(trim($this->ed270_i_diasemana) == null ){
          $this->erro_sql = " Campo Dia Semana nao Informado.";
          $this->erro_campo = "ed270_i_diasemana";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_turmaachorario {
          return false;
        }
      }
-     if(trim($this->ed270_i_periodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_periodo"])){ 
+     if(trim($this->ed270_i_periodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_periodo"])){
        $sql  .= $virgula." ed270_i_periodo = $this->ed270_i_periodo ";
        $virgula = ",";
-       if(trim($this->ed270_i_periodo) == null ){ 
+       if(trim($this->ed270_i_periodo) == null ){
          $this->erro_sql = " Campo Período nao Informado.";
          $this->erro_campo = "ed270_i_periodo";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_turmaachorario {
          return false;
        }
      }
-     if(trim($this->ed270_i_turmaac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_turmaac"])){ 
+     if(trim($this->ed270_i_turmaac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed270_i_turmaac"])){
        $sql  .= $virgula." ed270_i_turmaac = $this->ed270_i_turmaac ";
        $virgula = ",";
-       if(trim($this->ed270_i_turmaac) == null ){ 
+       if(trim($this->ed270_i_turmaac) == null ){
          $this->erro_sql = " Campo Turmaac nao Informado.";
          $this->erro_campo = "ed270_i_turmaac";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_turmaachorario {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Horarios de Turma com Ativ. Comp. nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed270_i_codigo;
@@ -327,14 +327,14 @@ class cl_turmaachorario {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed270_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed270_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed270_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_turmaachorario {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Horarios de Turma com Ativ. Comp. nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed270_i_codigo;
@@ -392,11 +392,11 @@ class cl_turmaachorario {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,11 +418,11 @@ class cl_turmaachorario {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed270_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed270_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,15 +454,15 @@ class cl_turmaachorario {
      $sql2 = "";
      if($dbwhere==""){
        if($ed270_i_codigo!=null ){
-         $sql2 .= " where turmaachorario.ed270_i_codigo = $ed270_i_codigo "; 
-       } 
+         $sql2 .= " where turmaachorario.ed270_i_codigo = $ed270_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,11 +471,11 @@ class cl_turmaachorario {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed270_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed270_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,15 +488,15 @@ class cl_turmaachorario {
      $sql2 = "";
      if($dbwhere==""){
        if($ed270_i_codigo!=null ){
-         $sql2 .= " where turmaachorario.ed270_i_codigo = $ed270_i_codigo "; 
-       } 
+         $sql2 .= " where turmaachorario.ed270_i_codigo = $ed270_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,12 +506,12 @@ class cl_turmaachorario {
      return $sql;
   }
 
-  function sql_query_rechumano($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') { 
+  function sql_query_rechumano($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -563,7 +563,7 @@ class cl_turmaachorario {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -578,11 +578,11 @@ class cl_turmaachorario {
 
   }
 
-  function sql_query_horario ($ed270_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
-     
+  public function sql_query_horario ($ed270_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -600,15 +600,15 @@ class cl_turmaachorario {
      $sql2 = "";
      if($dbwhere==""){
        if($ed270_i_codigo!=null ){
-         $sql2 .= " where turmaachorario.ed270_i_codigo = $ed270_i_codigo "; 
-       } 
+         $sql2 .= " where turmaachorario.ed270_i_codigo = $ed270_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,6 +616,6 @@ class cl_turmaachorario {
        }
      }
      return $sql;
-  } 
+  }
 }
 ?>

@@ -283,6 +283,7 @@ class CreditoCompensacao extends Credito {
     if ($this->getRegraCompensacao() == self::REGRA_COMPENSACAO_PROPORCIONAL) {
 
       $oRecibo = new recibo(Recibo::TIPOEMISSAO_RECIBO_CGF, $this->getCgm());
+      $oRecibo->setGeracaoTaxaExpediente(false);
       foreach ($this->getDebitos() as $oDebito) {
         $oRecibo->addNumpre($oDebito->numpre, $oDebito->numpar);
       }
@@ -312,25 +313,35 @@ class CreditoCompensacao extends Credito {
         }
 
         $iCodigoCreditoUtilizacao = $oDaoCreditoUtilizacao->k157_sequencial;
+        $debitosApagados = [];
+
+        function buscaDebitoApagado($arrayDebitosApagados, $numpre, $numpar){
+          if(count($arrayDebitosApagados) === 0){
+            return false;
+          }
+
+          foreach($arrayDebitosApagados as $debitoApagado){
+            if($debitoApagado['numpre'] == $numpre && $debitoApagado['numpar'] == $numpar){
+              return true;
+            }
+          }
+
+          return false;
+        }
 
         foreach ($this->getDebitos() as $oDebito) {
+          $debitoJaApagado = buscaDebitoApagado($debitosApagados,$oDebito->numpre, $oDebito->numpar);
+
+          if($debitoJaApagado){
+            continue;
+          }
 
           $aDebitosReceita = $this->getDebitoReceitas($oDebito->numpre, $oDebito->numpar);
 
           foreach ($aDebitosReceita as $oDebitoReceita) {
 
             $this->incluirArrecant($oDebitoReceita);
-            $oDebitoCorrigido = $this->getDebitoCorrigido(
-              $oDebitoReceita->k00_numpre,
-              $oDebitoReceita->k00_numpar,
-              $oDebitoReceita->k00_receit
-            );
 
-            $this->incluirCreditoUtilizacaoDestino(
-              $iCodigoCreditoUtilizacao,
-              $oDebitoReceita,
-              $oDebitoCorrigido->valor_total
-            );
           }
 
           $oDaoReciboPaga = new cl_recibopaga();
@@ -348,6 +359,19 @@ class CreditoCompensacao extends Credito {
 
           foreach ($aReciboRecita as $oReciboReceita) {
             $this->incluirArrepaga($oReciboReceita);
+
+            $auxTipo = $this->getTipoDebito(
+              $oReciboReceita->k00_numpre,
+              $oReciboReceita->k00_numpar
+            );
+
+            $oReciboReceita->k00_tipo = $auxTipo->k00_tipo;
+
+            $this->incluirCreditoUtilizacaoDestino(
+               $iCodigoCreditoUtilizacao,
+               $oReciboReceita,
+               $oReciboReceita->k00_valor
+            );
           }
 
           $oDaoArrehist                 = new cl_arrehist;
@@ -370,6 +394,8 @@ class CreditoCompensacao extends Credito {
 
           $oDaoArrecad = new cl_arrecad;
           $oDaoArrecad->excluir(null, $sWhereDeleteArrecad);
+
+          $debitosApagados[] = ['numpre' => $oDebito->numpre, 'numpar' => $oDebito->numpar];
         }
 
         $nValorDisponivel = $this->getValorDisponivelCorrigido() - $nTotalReciboPaga;
@@ -650,11 +676,6 @@ class CreditoCompensacao extends Credito {
               $oDebitoReceita->k00_receit
             );
 
-            $this->incluirCreditoUtilizacaoDestino(
-              $iCodigoCreditoUtilizacao,
-              $oDebitoReceita,
-              $oDebitoCorrigido->valor_total
-            );
           }
 
           $oDaoReciboPaga = new cl_recibopaga();
@@ -673,7 +694,20 @@ class CreditoCompensacao extends Credito {
           $aReciboRecita = db_utils::getCollectionByRecord($rsReciboPaga);
 
           foreach ($aReciboRecita as $oReciboReceita) {
-            $this->incluirArrepaga($oReciboReceita);
+              $this->incluirArrepaga($oReciboReceita);
+
+              $auxTipo = $this->getTipoDebito(
+                  $oReciboReceita->k00_numpre,
+                  $oReciboReceita->k00_numpar
+              );
+
+              $oReciboReceita->k00_tipo = $auxTipo->k00_tipo;
+
+              $this->incluirCreditoUtilizacaoDestino(
+                  $iCodigoCreditoUtilizacao,
+                  $oReciboReceita,
+                  $oReciboReceita->k00_valor
+              );
           }
 
           $oDaoArrehist                 = new cl_arrehist;
@@ -1363,6 +1397,34 @@ class CreditoCompensacao extends Credito {
     return db_utils::fieldsMemory($rsArrecadDestino, 0);
   }
 
+    /**
+     * @param integer $iNumpre
+     * @param integer $iNumpar
+     * @return stdClass[]
+     * @throws DBException
+     */
+    private function getTipoDebito($iNumpre, $iNumpar) {
+
+        $oDaoArrecad   = new cl_arrecad;
+        $sWhereArrecad = '     k00_numpre = ' . $iNumpre;
+        $sWhereArrecad .= ' and k00_numpar = ' . $iNumpar;
+
+        $sSql = "
+      select *
+      from
+          arrecad
+      where
+        {$sWhereArrecad}
+     ";
+        $rsArrecadDestino = $oDaoArrecad->sql_record($sSql);
+
+        if (!$rsArrecadDestino || $oDaoArrecad->numrows == 0) {
+            throw new DBException("Não foi possível encontrar as informações do débito.");
+        }
+
+        return db_utils::fieldsMemory($rsArrecadDestino, 0);
+    }
+
   /**
    * @param $iNumpre
    * @param $iNumpar
@@ -1431,7 +1493,6 @@ class CreditoCompensacao extends Credito {
    * @throws DBException
    */
   private function incluirArrecant($oDebitoReceita) {
-
     $oDaoArrecant             = new cl_arrecant;
     $oDaoArrecant->k00_numpre = $oDebitoReceita->k00_numpre;
     $oDaoArrecant->k00_numpar = $oDebitoReceita->k00_numpar;
@@ -1443,10 +1504,12 @@ class CreditoCompensacao extends Credito {
     $oDaoArrecant->k00_dtvenc = $oDebitoReceita->k00_dtvenc;
     $oDaoArrecant->k00_numtot = $oDebitoReceita->k00_numtot;
     $oDaoArrecant->k00_numdig = $oDebitoReceita->k00_numdig;
+    if($oDaoArrecant->k00_numdig == null){
+        $oDaoArrecant->k00_numdig = "0";
+    }
     $oDaoArrecant->k00_tipo   = $oDebitoReceita->k00_tipo;
     $oDaoArrecant->k00_tipojm = $oDebitoReceita->k00_tipojm;
     $oDaoArrecant->incluir();
-
     if ($oDaoArrecant->erro_status == '0') {
       throw new DBException("Não foi possível salvar as informações do Pagamento do Débito.");
     }
@@ -1496,6 +1559,9 @@ class CreditoCompensacao extends Credito {
     $oDaoArrepaga->k00_numpar = $oReciboReceita->k00_numpar;
     $oDaoArrepaga->k00_numtot = $oReciboReceita->k00_numtot;
     $oDaoArrepaga->k00_numdig = $oReciboReceita->k00_numdig;
+    if($oDaoArrepaga->k00_numdig == null){
+        $oDaoArrepaga->k00_numdig = "0";
+    }
     $oDaoArrepaga->k00_conta  = "0";
     $oDaoArrepaga->k00_dtpaga = $oReciboReceita->k00_dtpaga;
     $oDaoArrepaga->incluir();

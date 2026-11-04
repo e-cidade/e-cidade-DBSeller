@@ -3,6 +3,8 @@
 
 namespace ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Servicies;
 
+use ECidade\File\Csv\Dumper\Dumper;
+
 /**
  * Class GerarPADService
  * @package ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Servicies
@@ -12,6 +14,8 @@ class GerarArquivoService
     private $filePath;
     private $header;
     private $handle;
+
+    private $linhasCsv = [];
 
     public function __construct($fileName, $header)
     {
@@ -33,7 +37,6 @@ class GerarArquivoService
     }
 
 
-
     /**
      * @param $registros
      * @return string
@@ -49,11 +52,22 @@ class GerarArquivoService
             $dadoLayout = [$dadoLayout];
         }
 
+        if ($_SESSION['DB_login'] === 'dbseller' && !strpos($this->filePath, 'TCE_4111')) {
+            ini_set('memory_limit', '5G');
+            $this->linhasCsv[] = $dadoLayout;
+        }
+
         fwrite($this->handle, implode('', $dadoLayout) . "\n");
     }
 
     public function __destruct()
     {
+        if ($_SESSION['DB_login'] === 'dbseller') {
+            $dump = new Dumper();
+            $dump->dumpToFile($this->linhasCsv, str_replace('.TXT', '.csv', $this->filePath));
+            $this->linhasCsv = [];
+        }
+
         fclose($this->handle);
     }
 }

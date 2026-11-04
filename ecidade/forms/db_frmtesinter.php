@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("j34_setor");
        <?=@$Lj39_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_sequencial',10,$Ij39_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj39_idbql?>">
-       <?
+       <?php
        db_ancora(@$Lj39_idbql,"js_pesquisaj39_idbql(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_idbql',4,$Ij39_idbql,true,'text',$db_opcao," onchange='js_pesquisaj39_idbql(false);'")
 ?>
-       <?
+       <?php
 db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        <?=@$Lj39_orientacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_orientacao',10,$Ij39_orientacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('j39_orientacao',10,$Ij39_orientacao,true,'text',$db_opcao,"")
        <?=@$Lj39_testad?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_testad',15,$Ij39_testad,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('j39_testad',15,$Ij39_testad,true,'text',$db_opcao,"")
        <?=@$Lj39_testle?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_testle',15,$Ij39_testle,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tesinter.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,31 +1,31 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-//MODULO: educação
+//MODULO: educaï¿½ï¿½o
 $claluno->rotulo->label();
 $clrotulo = new rotulocampo;
 $escola = db_getsession("DB_coddepto");
@@ -40,28 +40,28 @@ if($ed47_i_nacion==3){
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
  <tr valign="top">
   <td align="center">
-   <?db_ancora(@$Led47_i_codigo,"",3);?>
-   <?db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3,"")?>
-   <?db_input('ed47_v_nome',40,$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_ancora(@$Led47_i_codigo,"",3);?>
+   <?php db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed47_v_nome',40,$Ied47_v_nome,true,'text',3,'')?>
    <?=@$Led47_c_codigoinep?>
-   <?db_input('ed47_c_codigoinep',12,$Ied47_c_codigoinep,true,'text',3,'')?>
+   <?php db_input('ed47_c_codigoinep',12,$Ied47_c_codigoinep,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td>
-   <fieldset><legend><b>Certidão</b></legend>
+   <fieldset><legend><b>Certidï¿½o</b></legend>
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
      <tr>
       <td width="15%">
        <?=@$Led47_c_certidaotipo?>
       </td>
       <td>
-       <?
+       <?php
        $x = array(''=>'','N'=>'NASCIMENTO','C'=>'CASAMENTO');
        db_select('ed47_c_certidaotipo',$x,true,$db_opcao,"");
        ?>
        <?=@$Led47_c_certidaonum?>
-       <?db_input('ed47_c_certidaonum',8,$Ied47_c_certidaonum,true,'text',$db_opcao,"")?>
+       <?php db_input('ed47_c_certidaonum',8,$Ied47_c_certidaonum,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -69,9 +69,9 @@ if($ed47_i_nacion==3){
        <?=@$Led47_c_certidaofolha?>
       </td>
       <td>
-       <?db_input('ed47_c_certidaofolha',4,$Ied47_c_certidaofolha,true,'text',$db_opcao,"")?>
+       <?php db_input('ed47_c_certidaofolha',4,$Ied47_c_certidaofolha,true,'text',$db_opcao,"")?>
        <?=@$Led47_c_certidaolivro?>
-       <?db_input('ed47_c_certidaolivro',8,$Ied47_c_certidaolivro,true,'text',$db_opcao,"")?>
+       <?php db_input('ed47_c_certidaolivro',8,$Ied47_c_certidaolivro,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -79,9 +79,9 @@ if($ed47_i_nacion==3){
        <?=@$Led47_c_certidaocart?>
       </td>
       <td>
-       <?db_input('ed47_c_certidaocart',30,$Ied47_c_certidaocart,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,2,'$GLOBALS[Sed47_c_certidaocart]','t','t',event);\"")?>
+       <?php db_input('ed47_c_certidaocart',30,$Ied47_c_certidaocart,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,2,'$GLOBALS[Sed47_c_certidaocart]','t','t',event);\"")?>
        <?=@$Led47_c_certidaodata?>
-       <?db_inputdata('ed47_c_certidaodata',@$ed47_c_certidaodata_dia,@$ed47_c_certidaodata_mes,@$ed47_c_certidaodata_ano,true,'text',$db_opcao,"")?>
+       <?php db_inputdata('ed47_c_certidaodata',@$ed47_c_certidaodata_dia,@$ed47_c_certidaodata_mes,@$ed47_c_certidaodata_ano,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -89,12 +89,12 @@ if($ed47_i_nacion==3){
        <?=@$Led47_i_censoufcert?>
       </td>
       <td>
-       <?
+       <?php
        $result_uf = $clcensouf->sql_record($clcensouf->sql_query_file("","ed260_i_codigo,ed260_c_nome","ed260_c_nome"));
        db_selectrecord("ed47_i_censoufcert",$result_uf,"",$db_opcao,"","","","  ","iframe_uf.location.href='edu1_aluno004.php?campo=cert&censouf='+this.value",1);
        ?>
        <?=@$Led47_i_censomuniccert?>
-       <?
+       <?php
        if(isset($ed47_i_censoufcert) && $ed47_i_censoufcert!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufcert"));
         if($clcensomunic->numrows==0){
@@ -124,11 +124,11 @@ if($ed47_i_nacion==3){
        <?=@$Led47_v_ident?>
       </td>
       <td>
-       <?db_input('ed47_v_ident',15,$Ied47_v_ident,true,'text',$db_opcao1);?>
+       <?php db_input('ed47_v_ident',15,$Ied47_v_ident,true,'text',$db_opcao1);?>
        <?=@$Led47_v_identcompl?>
-       <?db_input('ed47_v_identcompl',4,@$Ied47_v_identcompl,true,'text',$db_opcao1);?>
+       <?php db_input('ed47_v_identcompl',4,@$Ied47_v_identcompl,true,'text',$db_opcao1);?>
        <?=@$Led47_i_censoufident?>
-       <?
+       <?php
        $result_uf = $clcensouf->sql_record($clcensouf->sql_query_file("","ed260_i_codigo,ed260_c_nome","ed260_c_nome"));
        db_selectrecord("ed47_i_censoufident",$result_uf,"",$db_opcao1,"","","","  ","",1);
        ?>
@@ -139,12 +139,12 @@ if($ed47_i_nacion==3){
        <?=@$Led47_i_censoorgemissrg?>
       </td>
       <td>
-       <?
+       <?php
        $result_org = $clcensoorgemissrg->sql_record($clcensoorgemissrg->sql_query_file("","ed132_i_codigo,ed132_c_descr","ed132_c_descr"));
        db_selectrecord("ed47_i_censoorgemissrg",$result_org,"",$db_opcao1,"","","","  ","",1);
        ?>
        <?=@$Led47_d_identdtexp?>
-       <?db_inputdata('ed47_d_identdtexp',@$ed47_d_identdtexp_dia,@$ed47_d_identdtexp_mes,@$ed47_d_identdtexp_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_identdtexp',@$ed47_d_identdtexp_dia,@$ed47_d_identdtexp_mes,@$ed47_d_identdtexp_ano,true,'text',$db_opcao1);?>
       </td>
      </tr>
     </table>
@@ -160,14 +160,14 @@ if($ed47_i_nacion==3){
        <?=@$Led47_v_cnh?>
       </td>
       <td>
-       <?db_input('ed47_v_cnh',15,$Ied47_v_cnh,true,'text',$db_opcao1,"");?>
+       <?php db_input('ed47_v_cnh',15,$Ied47_v_cnh,true,'text',$db_opcao1,"");?>
        <?=@$Led47_v_categoria?>
-       <?
+       <?php
        $y = array(""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E");
        db_select('ed47_v_categoria',$y,true,$db_opcao1);
        ?>
        <?=@$Led47_d_dtemissao?>
-       <?db_inputdata('ed47_d_dtemissao',@$ed47_d_dtemissao_dia,@$ed47_d_dtemissao_mes,@$ed47_d_dtemissao_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_dtemissao',@$ed47_d_dtemissao_dia,@$ed47_d_dtemissao_mes,@$ed47_d_dtemissao_ano,true,'text',$db_opcao1);?>
       </td>
      </tr>
      <tr>
@@ -175,9 +175,9 @@ if($ed47_i_nacion==3){
        <?=@$Led47_d_dthabilitacao?>
       </td>
       <td>
-       <?db_inputdata('ed47_d_dthabilitacao',@$ed47_d_dthabilitacao_dia,@$ed47_d_dthabilitacao_mes,@$ed47_d_dthabilitacao_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_dthabilitacao',@$ed47_d_dthabilitacao_dia,@$ed47_d_dthabilitacao_mes,@$ed47_d_dthabilitacao_ano,true,'text',$db_opcao1);?>
        <?=@$Led47_d_dtvencimento?>
-       <?db_inputdata('ed47_d_dtvencimento',@$ed47_d_dtvencimento_dia,@$ed47_d_dtvencimento_mes,@$ed47_d_dtvencimento_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_dtvencimento',@$ed47_d_dtvencimento_dia,@$ed47_d_dtvencimento_mes,@$ed47_d_dtvencimento_ano,true,'text',$db_opcao1);?>
       </td>
      </tr>
     </table>
@@ -193,10 +193,10 @@ if($ed47_i_nacion==3){
        <?=@$Led47_v_cpf?>
       </td>
       <td>
-       <?db_input('ed47_v_cpf',11,@$Ied47_v_cpf,true,'text',$db_opcao1,"onChange='js_verificacpf(this);'");?>
-       <?$desabpassaporte = $ed47_i_nacion!=3?"readOnly style='background:#DEB887'":""?>
+       <?php db_input('ed47_v_cpf',11,@$Ied47_v_cpf,true,'text',$db_opcao1,"onChange='js_verificacpf(this);'");?>
+       <?php $desabpassaporte = $ed47_i_nacion!=3?"readOnly style='background:#DEB887'":""?>
        <?=@$Led47_c_passaporte?>
-       <?db_input('ed47_c_passaporte',20,$Ied47_c_passaporte,true,'text',$db_opcao," $desabpassaporte ")?>
+       <?php db_input('ed47_c_passaporte',20,$Ied47_c_passaporte,true,'text',$db_opcao," $desabpassaporte ")?>
       </td>
       </td>
      </tr>
@@ -210,12 +210,12 @@ if($ed47_i_nacion==3){
     <tr>
      <td nowrap title="<?=@$Ted47_t_obs?>">
       <?=@$Led47_t_obs?><br>
-      <?db_textarea('ed47_t_obs',4,60,$Ied47_t_obs,true,'text',$db_opcao,"")?>
+      <?php db_textarea('ed47_t_obs',4,60,$Ied47_t_obs,true,'text',$db_opcao,"")?>
      </td>
      <td width="10%"></td>
      <td>
       <?=@$Led47_v_contato?><br>
-      <?db_textarea('ed47_v_contato',4,60,$Ied47_v_contato,true,'text',$db_opcao,"")?>
+      <?php db_textarea('ed47_v_contato',4,60,$Ied47_v_contato,true,'text',$db_opcao,"")?>
      </td>
     </tr>
    </table>
@@ -237,27 +237,27 @@ function js_valida(){
   identuf = document.form1.ed47_i_censoufident.value;
   identdata = document.form1.ed47_d_identdtexp.value;
   if(nacion==3 && (identnum!="" || identcomp!="" || identorg!=" " || identuf!=" " || identdata!="")){
-   alert("Aluno com nacionalidade Estrangeira (Aba Dados Pessoais).\nCampos referente a Identidade NÃO devem ser informados!");
+   alert("Aluno com nacionalidade Estrangeira (Aba Dados Pessoais).\nCampos referente a Identidade Nï¿½O devem ser informados!");
    return false;
   }
   if(identnum=="" && (identcomp!="" || identorg!=" " || identuf!=" " || identdata!="") ){
-   alert("Campo N° Identidade deve ser informado quando\num dos campos abaixo estiverem informados:\n\nComplemento\nUF Identidade\nÓrgao Emissor\nData Expedição Identidade");
+   alert("Campo Nï¿½ Identidade deve ser informado quando\num dos campos abaixo estiverem informados:\n\nComplemento\nUF Identidade\nï¿½rgao Emissor\nData Expediï¿½ï¿½o Identidade");
    return false;
   }
   if(identorg==" " && (identnum!="" || identuf!=" ") ){
-   alert("Campo Órgão Emissor deve ser informado quando\num dos campos abaixo estiverem informados:\n\nN° Identidade\nUF Identidade");
+   alert("Campo ï¿½rgï¿½o Emissor deve ser informado quando\num dos campos abaixo estiverem informados:\n\nNï¿½ Identidade\nUF Identidade");
    return false;
   }
   if(identuf==" " && (identnum!="" || identorg!=" ") ){
-   alert("Campo UF Identidade deve ser informado quando\num dos campos abaixo estiverem informados:\n\nN° Identidade\nÓrgão Emissor");
+   alert("Campo UF Identidade deve ser informado quando\num dos campos abaixo estiverem informados:\n\nNï¿½ Identidade\nï¿½rgï¿½o Emissor");
    return false;
   }
   if(identcomp!="" && identnum=="" && identorg==" " && identuf==" "){
-   alert("Campo Complemento só pode ser informado quando\num dos campos abaixo estiverem informados:\n\nN° Identidade\nÓrgão Emissor\nUF Identidade");
+   alert("Campo Complemento sï¿½ pode ser informado quando\num dos campos abaixo estiverem informados:\n\nNï¿½ Identidade\nï¿½rgï¿½o Emissor\nUF Identidade");
    return false;
   }
   if(identdata!="" && identnum=="" && identorg==" " && identuf==" "){
-   alert("Campo Data Expedição Identidade só pode ser informado quando\num dos campos abaixo estiverem informados:\n\nN° Identidade\nÓrgão Emissor\nUF Identidade");
+   alert("Campo Data Expediï¿½ï¿½o Identidade sï¿½ pode ser informado quando\num dos campos abaixo estiverem informados:\n\nNï¿½ Identidade\nï¿½rgï¿½o Emissor\nUF Identidade");
    return false;
   }
   if(identdata!=""){
@@ -269,17 +269,17 @@ function js_valida(){
    anonasc = datanasc.substr(0,4);
    data_hj = <?=date("Y").date("m").date("d")?>;
    if(anoident<1900){
-    alert("Ano da Data de Expedição deve ser maior que 1899!");
+    alert("Ano da Data de Expediï¿½ï¿½o deve ser maior que 1899!");
     return false;
    }
    data_ident = anoident+""+mesident+""+diaident;
    data_nasc = anonasc+""+mesnasc+""+dianasc;
    if(parseInt(data_ident)>=parseInt(data_hj)){
-    alert("Campo Data de Expedição deve ser menor que a data corrente!");
+    alert("Campo Data de Expediï¿½ï¿½o deve ser menor que a data corrente!");
     return false;
    }
    if(parseInt(data_ident)<=parseInt(data_nasc)){
-    alert("Campo Data de Expedição deve ser maior que a data de nascimento do aluno ("+dianasc+"/"+mesnasc+"/"+anonasc+")!");
+    alert("Campo Data de Expediï¿½ï¿½o deve ser maior que a data de nascimento do aluno ("+dianasc+"/"+mesnasc+"/"+anonasc+")!");
     return false;
    }
   }
@@ -292,39 +292,39 @@ function js_valida(){
   certuf = document.form1.ed47_i_censoufcert.value;
   certmun = document.form1.ed47_i_censomuniccert.value;
   if(nacion==3 && (certtip!="" || certnum!="" || certfol!="" || certliv!="" || certcar!="" || certdat!="" || certuf!=" " || certmun!=" ")){
-   alert("Aluno com nacionalidade Estrangeira (Aba Dados Pessoais).\nCampos referente a Certidão NÃO devem ser informados!");
+   alert("Aluno com nacionalidade Estrangeira (Aba Dados Pessoais).\nCampos referente a Certidï¿½o Nï¿½O devem ser informados!");
    return false;
   }
   if(certtip=="" && (certnum!="" || certfol!="" || certliv!="" || certdat!="" || certuf!=" " || certcar!="" || certmun!=" " ) ){
-   alert("Campo Tipo de Certidão deve ser informado quando\num dos campos abaixo estiverem informados:\n\nNúmero do Termo\nFolha\nLivro\nData da Emissão\nUF Cartório\nCartório\nMunicípio");
+   alert("Campo Tipo de Certidï¿½o deve ser informado quando\num dos campos abaixo estiverem informados:\n\nNï¿½mero do Termo\nFolha\nLivro\nData da Emissï¿½o\nUF Cartï¿½rio\nCartï¿½rio\nMunicï¿½pio");
    return false;
   }
   if(certnum=="" && (certtip!="" || certuf!=" " || certcar!="" || certmun!=" " ) ){
-   alert("Campo Número do Termo deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidão\nUF Cartório\nCartório\nMunicípio");
+   alert("Campo Nï¿½mero do Termo deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidï¿½o\nUF Cartï¿½rio\nCartï¿½rio\nMunicï¿½pio");
    return false;
   }
   if(certcar=="" && (certtip!="" || certuf!=" " || certnum!="" || certmun!=" " ) ){
-   alert("Campo Cartório deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidão\nUF Cartório\nNúmero do Termo\nMunicípio");
+   alert("Campo Cartï¿½rio deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidï¿½o\nUF Cartï¿½rio\nNï¿½mero do Termo\nMunicï¿½pio");
    return false;
   }
   if(certuf==" " && (certtip!="" || certcar!="" || certnum!="" || certmun!=" " ) ){
-   alert("Campo UF Cartório deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidão\nCartório\nNúmero do Termo\nMunicípio");
+   alert("Campo UF Cartï¿½rio deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidï¿½o\nCartï¿½rio\nNï¿½mero do Termo\nMunicï¿½pio");
    return false;
   }
   if(certmun==" " && (certtip!="" || certcar!="" || certnum!="" || certuf!=" " ) ){
-   alert("Campo Município deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidão\nCartório\nNúmero do Termo\nUF cartório");
+   alert("Campo Municï¿½pio deve ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidï¿½o\nCartï¿½rio\nNï¿½mero do Termo\nUF cartï¿½rio");
    return false;
   }
   if(certfol!="" && certtip=="" && certnum=="" && certuf==" " && certcar==""){
-   alert("Campo Folha só pode ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidão\nNúmero do Termo\nUF Cartório\nCartório");
+   alert("Campo Folha sï¿½ pode ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidï¿½o\nNï¿½mero do Termo\nUF Cartï¿½rio\nCartï¿½rio");
    return false;
   }
   if(certliv!="" && certtip=="" && certnum=="" && certuf==" " && certcar==""){
-   alert("Campo Livro só pode ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidão\nNúmero do Termo\nUF Cartório\nCartório");
+   alert("Campo Livro sï¿½ pode ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidï¿½o\nNï¿½mero do Termo\nUF Cartï¿½rio\nCartï¿½rio");
    return false;
   }
   if(certdat!="" && certtip=="" && certnum=="" && certuf==" " && certcar==""){
-   alert("Campo Data de Emissão só pode ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidão\nNúmero do Termo\nUF Cartório\nCartório");
+   alert("Campo Data de Emissï¿½o sï¿½ pode ser informado quando\num dos campos abaixo estiverem informados:\n\nTipo de Certidï¿½o\nNï¿½mero do Termo\nUF Cartï¿½rio\nCartï¿½rio");
    return false;
   }
   if(certdat!=""){
@@ -338,24 +338,24 @@ function js_valida(){
    data_cert = anocert+""+mescert+""+diacert;
    data_nasc = anonasc+""+mesnasc+""+dianasc;
    if(parseInt(data_cert)>=parseInt(data_hj)){
-    alert("Campo Data de Emissão deve ser menor que a data corrente!");
+    alert("Campo Data de Emissï¿½o deve ser menor que a data corrente!");
     return false;
    }
    if(certtip=="N"){
     if(parseInt(data_cert)<parseInt(data_nasc)){
-     alert("Campo Data de Emissão deve ser maior ou igual a data de nascimento do aluno ("+dianasc+"/"+mesnasc+"/"+anonasc+")!");
+     alert("Campo Data de Emissï¿½o deve ser maior ou igual a data de nascimento do aluno ("+dianasc+"/"+mesnasc+"/"+anonasc+")!");
      return false;
     }
    }else if(certtip=="C"){
     if(parseInt(data_cert)<=parseInt(data_nasc)){
-     alert("Campo Data de Emissão deve ser maior que a data de nascimento do aluno ("+dianasc+"/"+mesnasc+"/"+anonasc+")!");
+     alert("Campo Data de Emissï¿½o deve ser maior que a data de nascimento do aluno ("+dianasc+"/"+mesnasc+"/"+anonasc+")!");
      return false;
     }
    }
   }
  }
  if(nacion!=3 && document.form1.ed47_c_passaporte.value!=""){
-  alert("Campo N° Passaporte só pode ser informado quando nacionalidade do aluno for Estrangeira (Aba Dados Pessoais).");
+  alert("Campo Nï¿½ Passaporte sï¿½ pode ser informado quando nacionalidade do aluno for Estrangeira (Aba Dados Pessoais).");
   return false;
  }
  return true;
@@ -364,14 +364,14 @@ function js_TestaNi(cNI){
  var NI;
  NI = js_LimpaCampo(cNI.value,10);
  if (NI.length != 11){
-  alert('O número do CPF informado está incorreto');
+  alert('O nï¿½mero do CPF informado estï¿½ incorreto');
   cNI.value = "";
   cNI.select();
   cNI.focus();
   return(false);
  }
  if (NI.substr(9,2) != js_CalculaDV(NI.substr(0,9), 11)){
-  alert('O número do CPF informado está incorreto');
+  alert('O nï¿½mero do CPF informado estï¿½ incorreto');
   cNI.value = "";
   cNI.select();
   cNI.focus();
@@ -381,7 +381,7 @@ function js_TestaNi(cNI){
 }
 function js_verificacpf(obcgc){
  if(obcgc.value==00000000000 || obcgc.value==00000000191){
-  alert('Valor Informado não é Válido para CPF.');
+  alert('Valor Informado nï¿½o ï¿½ Vï¿½lido para CPF.');
   obcgc.value = "";
   obcgc.select();
   obcgc.focus();
@@ -390,7 +390,7 @@ function js_verificacpf(obcgc){
   return js_TestaNi(obcgc);
  }
  if(obcgc.value!=""){
-  alert('Valor Informado não é Válido para CPF.');
+  alert('Valor Informado nï¿½o ï¿½ Vï¿½lido para CPF.');
   obcgc.value = "";
   obcgc.select();
   obcgc.focus();

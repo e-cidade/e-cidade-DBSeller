@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -118,7 +118,7 @@ function js_padrao(val){
        <td class=tit align='left'>Usuário  </td>
        <td class=tit align='left'>Valor  </td>
      </tr>    
-     <?
+     <?php
       // exibir todas as solicitações da minha instituição que não estao liberadas
       $result =  $clcaitransfseq->sql_record(
                  $clcaitransfseq->sql_query_efetuadas(
@@ -144,7 +144,7 @@ function js_padrao(val){
        <td class=centro align='left'><small > <?=$nome ?></small></td>
        <td class=centro align='right'><small > <?=$k94_valor ?></small></td>
       </tr>
-      <?  } ?>  
+      <?php  } ?>  
    </table>
 
    

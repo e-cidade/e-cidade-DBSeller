@@ -108,6 +108,9 @@ class Alteracao extends BaseAbstract
         $nPcAcrescimo = null;
         $nPcReducao = null;
 
+        $nValorRenovacao = null;
+
+
         if (empty($oPosicaoAnterior)) {
             return $oValores;
         }
@@ -140,20 +143,36 @@ class Alteracao extends BaseAbstract
 
         $lSemAcrescimoValor = $oPosicaoAtual->valores->valor_total == $oPosicaoAnterior->valores->valor_total;
 
+//        if ($oPosicaoAtual->codigo_evento == 2816) {
+//            dd($oPosicaoAtual);
+//        }
+
         if (in_array($sTipoOperacao, $aAditamentosAcrescimo)) {
-            $nValorAcrescimo = $oPosicaoAtual->valores->valor_total - $oPosicaoAnterior->valores->valor_total;
+            // $nValorAcrescimo = $oPosicaoAtual->valores->valor_total - $oPosicaoAnterior->valores->valor_total;
+            $nValorAcrescimo = $oPosicaoAtual->valores->valor_total;
+            $nValorAcrescimo < 0 ? $nValorAcrescimo *= -1 : $nValorAcrescimo = 0;
 
             if ($sTipoOperacao === self::TIPO_OPERACAO_RENOVACAO) {
                 /**
                  * No caso de renovação devemos mandar o valor original mais a diferença.
                  */
-                $subtracaoValorTotal = $oPosicaoAtual->valores->valor_total - $oPosicaoAnterior->valores->valor_total;
+                // $oPosicaoAtual->valores->valor_total *= -1;
+                $nValorRenovacao = $oPosicaoAtual->valores->valor_total * -1;
+
+                $subtracaoValorTotal = $nValorRenovacao - $oPosicaoAnterior->valores->valor_total;
                 $nValorAcrescimo = $oPosicaoAnterior->valores->valor_total + ($subtracaoValorTotal);
             }
 
             if (in_array($sTipoOperacao, $aAditamentosPc)) {
-                $multiplicaAtual = ($oPosicaoAtual->valores->valor_total * 100);
-                $nPorcentual = ($multiplicaAtual / $oPosicaoAnterior->valores->valor_total) - 100;
+//                $multiplicaAtual = ($oPosicaoAtual->valores->valor_total * 100);
+//                $nPorcentual = ($multiplicaAtual / $oPosicaoAnterior->valores->valor_total) - 100;
+//
+//                $nPcAcrescimo = round($nPorcentual, 5);
+                $nPorcentual = (($nValorAcrescimo * 100) / $oPosicaoAnterior->valores->valor_atual);
+
+                if ($sTipoOperacao === self::TIPO_OPERACAO_RENOVACAO) {
+                    $nPorcentual = (($nValorAcrescimo * 100) / $oPosicaoAnterior->valores->valor_atual) - 100;
+                }
 
                 $nPcAcrescimo = round($nPorcentual, 5);
             }
@@ -163,14 +182,17 @@ class Alteracao extends BaseAbstract
          * Descobre a diferença e o percentual de redução
          */
         if (in_array($sTipoOperacao, $aAditamentosReducao)) {
-            $nValorReducao = ($oPosicaoAnterior->valores->valor_total - $oPosicaoAtual->valores->valor_total);
+            // $nValorReducao = ($oPosicaoAnterior->valores->valor_total - $oPosicaoAtual->valores->valor_total);
+            $nValorReducao = $oPosicaoAtual->valores->valor_total;
+
+            if ($sTipoOperacao === self::TIPO_OPERACAO_RENOVACAO) {
+                $nValorReducao = ($oPosicaoAnterior->valores->valor_atual - $nValorRenovacao);
+            }
 
             if (in_array($sTipoOperacao, $aAditamentosPc)) {
-                $nPorcentual = (($nValorReducao * 100) / $oPosicaoAnterior->valores->valor_total);
+                $nPorcentual = (($nValorReducao * 100) / $oPosicaoAnterior->valores->valor_atual);
 
-                if ($sTipoOperacao == self::TIPO_OPERACAO_RENOVACAO) {
-                    $nPcReducao = round($nPorcentual, 5);
-                }
+                $nPcReducao = round($nPorcentual, 5);
             }
         }
 
@@ -185,6 +207,11 @@ class Alteracao extends BaseAbstract
          * Para Renovação o percentual é opcional, porém o valor NÃO deve ser informado.
          */
         if ($sTipoOperacao == self::TIPO_OPERACAO_RENOVACAO) {
+            if ($nValorRenovacao > $oPosicaoAnterior->valores->valor_atual) {
+                $nPcReducao = null;
+            } else {
+                $nPcAcrescimo = null;
+            }
             $nValorReducao = null;
         }
 
@@ -294,34 +321,95 @@ class Alteracao extends BaseAbstract
     {
         $oDaoAcordoitem = new \cl_acordoitem();
 
+        $oValores = new \stdClass();
+        $oValores->valor_atual = $oAcordoPosicao->getValorAcordo();
+        $oValores->valor_total = 0;
+        $oValores->quantidade = 0;
+        $valor_total = 0;
+
         $iNumeroAditamento = $oAcordoPosicao->getNumero();
 
-        $sCampos = "max(ac26_numero) as numero_aditamento";
-        $sWhere = "ac16_sequencial = {$oAcordoPosicao->getAcordo()} and ac26_numero <= {$iNumeroAditamento}";
-        $sWhere .= " and ac26_acordoposicaotipo in (
-            " . \AcordoPosicao::TIPO_INCLUSAO . ", " . \AcordoPosicao::TIPO_RENOVACAO . ")";
+        $sCampos = "ac26_sequencial, ac20_ordem, ac26_acordoposicaotipo, ac26_tipooperacao,";
+        $sCampos .= " ac20_quantidade, ac20_valorunitario, ac20_valortotal";
+        $sWhere = "ac16_sequencial = {$oAcordoPosicao->getAcordo()} and acordoitem.ac20_valortotal <> 0";
+        $sWhere .= " and ac26_sequencial = {$oAcordoPosicao->getCodigo()}";
         $sSqlItens = $oDaoAcordoitem->sql_query_transparencia($sCampos, null, $sWhere);
         $rsItem = $oDaoAcordoitem->sql_record($sSqlItens);
 
         if ($oDaoAcordoitem->numrows > 0) {
-            $iNumeroAditamento = \db_utils::fieldsMemory($rsItem, 0)->numero_aditamento;
+            for ($i = 0; $i < $oDaoAcordoitem->numrows; $i++) {
+                $oPos = \db_utils::fieldsMemory($rsItem, $i);
+                $aPosicoes[] = $oPos;
+            }
         }
 
-        $sCampos = "coalesce(sum(case when ac26_acordoposicaotipo <> " . \AcordoPosicao::TIPO_REEQUILIBRIO . "
-            then ac20_quantidade else 0 end ), 0) as quantidade,";
-        $sCampos .= "coalesce(sum(ac20_valortotal),0) as valor_total";
-        $sWhere = "     ac16_sequencial  = {$oAcordoPosicao->getAcordo()} ";
-        $sWhere .= " and ac26_sequencial <= {$oAcordoPosicao->getCodigo()} ";
-        $sWhere .= " and ac26_numero >= {$iNumeroAditamento} ";
+        $tiposOperacao = array(
+            \AcordoPosicao::OPERACAO_ACRESCIMO_VALOR_AUMENTO_QUANTITATIVO,
+            \AcordoPosicao::OPERACAO_ACRESCIMO_VALOR_INCLUSAO_ITENS
+        );
 
-        $sSqlItens = $oDaoAcordoitem->sql_query_transparencia("distinct " . $sCampos, null, $sWhere);
-        $rsItem = db_query($sSqlItens);
+        $tiposPosicao = array(
+            \AcordoPosicao::TIPO_RENOVACAO,
+            \AcordoPosicao::TIPO_ALTERACAO_DOTACAO,
+            \AcordoPosicao::TIPO_SUPRESSAO
+        );
 
-        if (!$rsItem) {
-            throw new \BusinessException("Ocorreu um erro ao buscar os dados da posição.");
+        foreach ($aPosicoes as $posicaoItem) {
+            if ($posicaoItem->ac26_acordoposicaotipo == \AcordoPosicao::TIPO_INCLUSAO) {
+                $oValores->valor_total += $posicaoItem->ac20_valortotal;
+                $oValores->quantidade += $posicaoItem->ac20_quantidade;
+            } elseif (in_array($posicaoItem->ac26_acordoposicaotipo, $tiposPosicao)) {
+                $valor_total += $posicaoItem->ac20_valortotal;
+                $oValores->quantidade += $posicaoItem->ac20_quantidade;
+            } elseif (in_array($posicaoItem->ac26_tipooperacao, $tiposOperacao)) {
+                $valor_total += $posicaoItem->ac20_valortotal;
+                $oValores->quantidade += $posicaoItem->ac20_quantidade;
+            } else {
+                $sCampos = "sum(case when ac26_acordoposicaotipo <> " . \AcordoPosicao::TIPO_REEQUILIBRIO . "
+            then ac20_quantidade else 0 end) as quantidade,";
+                $sCampos .= "sum(case when ac26_sequencial <> {$posicaoItem->ac26_sequencial}
+                and ac20_ordem = {$posicaoItem->ac20_ordem}
+                then (ac20_valorunitario - {$posicaoItem->ac20_valorunitario}) * {$posicaoItem->ac20_quantidade}
+                else ac20_valorunitario end) as valor_total ";
+                $sWhere = "     ac16_sequencial  = {$oAcordoPosicao->getAcordo()} ";
+                $sWhere .= " and ac26_sequencial < {$posicaoItem->ac26_sequencial}";
+                $sWhere .= " and ac20_ordem = {$posicaoItem->ac20_ordem} and ac20_valorunitario <> 0 ";
+                $sGroup = "group by ac26_sequencial";
+
+                $sSqlItens = $oDaoAcordoitem->sql_query_transparencia(
+                    $sCampos,
+                    "ac26_sequencial desc limit 1",
+                    $sWhere . $sGroup
+                );
+                $rsItem = $oDaoAcordoitem->sql_record($sSqlItens);
+
+//                if (!$rsItem) {
+//                    throw new \BusinessException("Ocorreu um erro ao buscar os dados da posição.");
+//                }
+
+                for ($iItem = 0; $iItem < $oDaoAcordoitem->numrows; $iItem++) {
+                    $oDadosItem = \db_utils::fieldsMemory($rsItem, $iItem);
+                    $oValores->valor_total += $oDadosItem->valor_total;
+                    $oValores->quantidade += $oDadosItem->quantidade;
+                }
+            }
         }
 
-        return \db_utils::fieldsMemory($rsItem, 0);
+        if ($valor_total != 0) {
+            $oValores->valor_total = $valor_total;
+            $oValores->valor_total *= -1;
+        }
+
+        return $oValores;
+
+//        $sSqlItens = $oDaoAcordoitem->sql_query_transparencia("distinct " . $sCampos, null, $sWhere);
+//        $rsItem = db_query($sSqlItens);
+//
+//        if (!$rsItem) {
+//            throw new \BusinessException("Ocorreu um erro ao buscar os dados da posição.");
+//        }
+
+//        return \db_utils::fieldsMemory($rsItem, 0);
     }
 
     /**

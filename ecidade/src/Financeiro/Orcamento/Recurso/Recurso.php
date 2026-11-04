@@ -28,6 +28,7 @@
 
 namespace ECidade\Financeiro\Orcamento\Recurso;
 
+use App\Domain\Financeiro\Orcamento\Models\FonteRecurso;
 use cl_orctiporec;
 use db_utils;
 use DBDate;
@@ -134,6 +135,8 @@ class Recurso
      */
     private $recurso;
 
+    public $sEstrutural;
+
     /**
      * Recurso constructor.
      *
@@ -177,7 +180,7 @@ class Recurso
         }
     }
 
-     /**
+    /**
      * Retorna fonte de recurso
      *
      * @param int $iRecurso
@@ -301,7 +304,7 @@ class Recurso
     public static function getCodigoByEstrutura($iCodigoEstrutura)
     {
         $iCodigoRecurso = null;
-        $oDaoOrcTipoRec = db_utils::getDao("orctiporec");
+        $oDaoOrcTipoRec = new cl_orctiporec;
         $sSqlOrcTipoRec = $oDaoOrcTipoRec->sql_query_file(
             null,
             'o15_codigo',
@@ -381,7 +384,7 @@ class Recurso
             throw new Exception("Código do recurso não informado!\\nExclusão não efetuada.");
         }
 
-        $oDaoOrcTipoRec = db_utils::getDao("orctiporec");
+        $oDaoOrcTipoRec = new cl_orctiporec;
         $sWhereOrcTipoRec = "orctiporec.o15_codigo = {$iCodigoRecurso}";
         $oDaoOrcTipoRec->excluir(null, $sWhereOrcTipoRec);
         if ($oDaoOrcTipoRec->numrows_excluir == 0) {
@@ -511,7 +514,7 @@ class Recurso
     }
 
     /**
-     * Retorna a fonte de recurso formatada ou não
+     * Retorna a subfonte de recurso (o15_recurso) formatada ou não
      *
      * @param bool $formatado
      *
@@ -608,10 +611,22 @@ class Recurso
     }
 
     /**
+     * Retorna a subfonte de recurso (o15_recurso)
      * @return string
      */
     public function getRecurso()
     {
         return $this->recurso;
+    }
+
+    /**
+     * @param $exerecicio
+     * @return FonteRecurso
+     */
+    public function getFonteRecurso($exerecicio)
+    {
+        return FonteRecurso::where('orctiporec_id', $this->getCodigo())
+            ->where('exercicio', $exerecicio)
+            ->first();
     }
 }

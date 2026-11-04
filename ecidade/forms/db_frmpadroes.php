@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
@@ -56,8 +56,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
           <td nowrap align="right" title="<?=@$Tr02_regime?>">
             <?=@$Lr02_regime?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
             $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null,"*"));
             db_selectrecord("r02_regime",$result_regime,true,($db_opcao == 1?1:3) );
             db_input('r02_anousu',4,$Ir02_anousu,true,'hidden',3,"");
@@ -69,8 +69,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
           <td nowrap align="right" title="<?=@$Tr02_codigo?>">
             <?=@$Lr02_codigo?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
             db_input('r02_codigo',10,$Ir02_codigo,true,'text',($db_opcao == 1?1:3),"")
             ?>
           </td>
@@ -79,8 +79,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
           <td nowrap align="right" title="<?=@$Tr02_descr?>">
             <?=@$Lr02_descr?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
             db_input('r02_descr',30,$Ir02_descr,true,'text',$db_opcao,"", "", "", "", 25)
             ?>
           </td>
@@ -89,8 +89,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
           <td nowrap align="right" title="<?=@$Tr02_nivel?>">
             <?=@$Lr02_nivel?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
             db_input('r02_nivel',30,$Ir02_nivel,true,'text',$db_opcao,"", "", "", "", 25)
             ?>
           </td>
@@ -99,8 +99,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
           <td nowrap align="right" title="<?=@$Tr02_classe?>">
             <?=@$Lr02_classe?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
             db_input('r02_classe',30,$Ir02_classe,true,'text',$db_opcao,"", "", "", "", 25)
             ?>
           </td>
@@ -116,8 +116,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <td nowrap align="right" title="<?=@$Tr02_tipo?>">
               <?=@$Lr02_tipo?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
 	      if(!isset($r02_tipo)){
 		          $r02_tipo = "M";
               }
@@ -128,16 +128,16 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <td nowrap align="right" title="<?=@$Tr02_hrssem?>">
               &nbsp;&nbsp;&nbsp;<?=@$Lr02_hrssem?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input('r02_hrssem',4,$Ir02_hrssem,true,'text',$db_opcao,"")
               ?>
             </td>
             <td nowrap align="right" title="<?=@$Tr02_hrsmen?>">
               &nbsp;&nbsp;&nbsp;<?=@$Lr02_hrsmen?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input('r02_hrsmen',4,$Ir02_hrsmen,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -154,8 +154,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <td nowrap align="right" title="<?=@$Tr02_form?>">
               <?=@$Lr02_form?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input('r02_form',47,$Ir02_form,true,'text',$db_opcao,"onclick='js_calculavalorform(false);'");
               db_input('r02_form',47,$Ir02_form,true,'hidden',3,"","formulaanterior");
               ?>
@@ -165,8 +165,8 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <td nowrap align="right" title="<?=@$Tr02_valor?>">
               <?=@$Lr02_valor?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               @$r02_valor = str_replace(',','.',str_replace('.','',trim(db_formatar(@$r02_valor,'f'))));
               db_input('r02_valor',15,$Ir02_valor,true,'text',$db_opcao,"")
               ?>
@@ -174,10 +174,10 @@ $Ir02_descr_padraopai = $Ir02_descr;
           </tr>
           <tr>
             <td nowrap align="right" title="<?=@$Tr02_minimo?>">
-              <?db_ancora($Lr02_minimo,"js_pesquisar02_minimo(true)",$db_opcao);?>
+              <?php db_ancora($Lr02_minimo,"js_pesquisar02_minimo(true)",$db_opcao);?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
                 db_input('r02_minimo', 4, $Ir02_minimo, true, 'text', $db_opcao, "onchange='js_pesquisar02_minimo(false);'");
                 db_input('r07_descr', 40, $Ir07_descr, true, 'text', 3, "  data=r07_descr");
               ?>
@@ -185,10 +185,10 @@ $Ir02_descr_padraopai = $Ir02_descr;
           </tr>
           <tr>
             <td nowrap align="right" title="<?=@$Tr02_padraopai_codigo?>">
-              <a href="#" id="lbl_r02_padraopai_codigo"><? echo $Lr02_padraopai_codigo; ?></a>
+              <a href="#" id="lbl_r02_padraopai_codigo"><?php echo $Lr02_padraopai_codigo; ?></a>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input('r02_padraopai_codigo',4,$Ir02_padraopai_codigo,true,'text',$db_opcao,"onchange='js_pesquisar02_padraopai_codigo(false);' data=r02_codigo");
               db_input('r02_descr_padraopai',40,$Ir02_descr_padraopai,true,'text',3,"data=r02_descr");
               ?>
@@ -212,9 +212,9 @@ $Ir02_descr_padraopai = $Ir02_descr;
 </center>
 </form>
 </div>
-<script>  
+<script>
 function js_trancaform(valor,change){
-  <?if($db_opcao == 1 || $db_opcao == 2){?>
+  <?php if($db_opcao == 1 || $db_opcao == 2){?>
   if(valor == "H"){
     document.form1.formulaanterior.value          = document.form1.r02_form.value;
     document.form1.r02_form.value                 = "";
@@ -227,11 +227,11 @@ function js_trancaform(valor,change){
     document.form1.r02_form.style.backgroundColor = "";
   }
   js_tabulacaoforms("form1","r02_regime",false,1,"r02_regime",false);
-  <?}?>
+  <?php }?>
 }
 function js_calculavalorform(submita){
-  <?
-  echo "opcao = ".$db_opcao.";\n"; 
+  <?php
+  echo "opcao = ".$db_opcao.";\n";
   ?>
   if(document.form1.r02_form.value != "" && opcao != 3){
     document.getElementById("db_opcao").disabled = true;
@@ -244,7 +244,7 @@ function js_calculavalorform(submita){
 //    if(!document.form1.r02_form.value.match(expr)){
 //      erro ++;
 //      mensagem = "Expressão informada não válida, verifique.";
-//    }else 
+//    }else
     if(arr_div.length > 1){
       for(var i=1; i<arr_div.length; i++){
         diverso = "D"+arr_div[i].substr(0,3);
@@ -286,18 +286,18 @@ function js_pesquisar02_minimo(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pesdiver','func_pesdiver.php?funcao_js=parent.js_mostraminimo1|r07_codigo|r07_descr&instit=<?=(db_getsession("DB_instit"))?>&chave_r07_mesusu=<?=$r02_anousu?>&chave_r07_anousu=<?=$r02_mesusu?>','Pesquisa',true);
   }else{
-     if(document.form1.r02_minimo.value != ''){ 
+     if(document.form1.r02_minimo.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pesdiver','func_pesdiver.php?pesquisa_chave='+document.form1.r02_minimo.value+'&funcao_js=parent.js_mostraminimo&instit=<?=(db_getsession("DB_instit"))?>&chave_r07_mesusu=<?=$r02_anousu?>&chave_r07_anousu=<?=$r02_mesusu?>','Pesquisa',false);
      }else{
-       document.form1.r07_descr.value = ''; 
+       document.form1.r07_descr.value = '';
      }
   }
 }
 function js_mostraminimo(chave,erro){
-  document.form1.r07_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.r02_minimo.focus(); 
-    document.form1.r02_minimo.value = ''; 
+  document.form1.r07_descr.value = chave;
+  if(erro==true){
+    document.form1.r02_minimo.focus();
+    document.form1.r02_minimo.value = '';
   }
 }
 function js_mostraminimo1(chave1,chave2){
@@ -307,7 +307,7 @@ function js_mostraminimo1(chave1,chave2){
 }
 function js_preenchepesquisa(chave,chave1,chave2,chave3){
   db_iframe_padroes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3";
   }
@@ -316,19 +316,19 @@ function js_preenchepesquisa(chave,chave1,chave2,chave3){
 
 /**
  * Válida o formulário antes de submeter
- * 
+ *
  * @returns {Boolean}
  */
 function js_validarFormulario() {
-  
+
   var sValorPadrao = document.getElementById("r02_valor").value;
   var fValorPadrao = parseFloat(sValorPadrao);
   if (fValorPadrao < 0) {
-    
+
     alert("O valor do padrão é negativo.");
     return false;
   }
-  
+
   return true;
 }
 
@@ -362,11 +362,11 @@ var oLookupPadraoPai = new DBLookUp (document.getElementById('lbl_r02_padraopai_
 
     oLookupPadraoPai.setCallBack('onChange', function(lErro, parametros) {
 
-      var descricaoValor = parametros[0];      
+      var descricaoValor = parametros[0];
       var descricao      = descricaoValor.replace(/^(.+?)-([^-]*?)$/, "$1").trim();
 
       $('r02_descr_padraopai').value = descricao;
-      
+
       if(!validarPadraoPai(this.value)) {
         $('#r02_padraopai_codigo').value = '';
         $('#r02_descr_padraopai').value  = '';

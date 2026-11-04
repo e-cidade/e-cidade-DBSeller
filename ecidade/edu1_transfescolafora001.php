@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -35,6 +35,37 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("libs/db_utils.php");
 
 db_postmemory($_POST);
+
+$ed104_i_codigo = $_POST['ed104_i_codigo'];
+$ed104_i_aluno = $_POST['ed104_i_aluno'];
+$ed47_v_nome = $_POST['ed47_v_nome'];
+$matricula = $_POST['matricula'];
+$turma = $_POST['turma'];
+$base = $_POST['base'];
+$calendario = $_POST['calendario'];
+$concluida = $_POST['concluida'];
+$situacao = $_POST['situacao'];
+$datamatricula = $_POST['datamatricula'];
+$datamodif = $_POST['datamodif'];
+$caldescr = $_POST['caldescr'];
+$ed52_d_inicio = $_POST['ed52_inicio'];
+$ed52_d_fim = $_POST['ed52_fim'];
+$ed104_i_escolaorigem = $_POST['ed104_i_escolaorigem'];
+$ed18_c_nome = $_POST['ed18_c_nome'];
+$ed104_i_escoladestino = $_POST['ed104_i_escoladestino'];
+$ed82_c_nome = $_POST['ed82_c_nome'];
+$ed104_t_obs = $_POST['ed104_t_obs'];
+$ed104_d_data = $_POST['ed104_d_data'];
+$ed104_d_data_dia = $_POST['ed104_d_data_dia'];
+$ed104_d_data_mes = $_POST['ed104_d_data_mes'];
+$ed104_d_data_ano = $_POST['ed104_d_data_ano'];
+$diretor = $_POST['diretor'];
+$ed283_c_bolsafamilia = $_POST['ed283_c_bolsafamilia'];
+$modelo = $_POST['modelo'];
+$formato = $_POST['formato'];
+$obs = $_POST['obs'];
+$incluir = $_POST['incluir'];
+
 
 $ed104_d_data_dia     = date("d", db_getsession("DB_datausu"));
 $ed104_d_data_mes     = date("m", db_getsession("DB_datausu"));

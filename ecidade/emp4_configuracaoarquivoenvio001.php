@@ -31,11 +31,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-
-
 require_once(modification("libs/db_sql.php"));
-require_once(modification("classes/db_termo_classe.php"));
-require_once(modification("classes/db_cgm_classe.php"));
 require_once(modification("libs/db_app.utils.php"));
 
 
@@ -156,7 +152,7 @@ $clrotulo->label("k17_slip");
                 <tr>
                     <td nowrap title="<?=@$Te82_codord?>">
                         <label for="e82_codord">
-                            <?db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",1);  ?>
+                            <?php db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",1);  ?>
                         </label>
                     </td>
                     <td nowrap>
@@ -224,19 +220,23 @@ $clrotulo->label("k17_slip");
                         ?>
                     </td>
                 </tr>
+
                 <tr nowrap>
-                    <td nowrap title="<?=@$To15_recurso?>">
-                        <label for="o15_recurso">
-                            <?php db_ancora("Fonte de Recurso","js_pesquisac62_codrec(true);",1); ?>
-                        </label>
-                    </td>
-                    <td colspan=3 nowrap>
+                    <td>
                         <?php
-                        db_input('o15_recurso',10,$Io15_recurso,true,'text',1," onchange='js_pesquisac62_codrec(false);'");
-                        db_input('o15_descr',40,$Io15_descr,true,'text',3,'');
+                        db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", 1);
+                        ?>
+                    </td>
+                    <td colspan="3">
+                        <?php
+                        db_input("o15_codigo", 8, null, false, "hidden", 3);
+                        db_input("gestao", 10, null, true, "text", 1, "onchange='js_pesquisaRecurso(false);'");
+                        db_input("o15_recurso", 8, null, true, "text", 3);
+                        db_input("descricao", 40, null, true, "text", 3);
                         ?>
                     </td>
                 </tr>
+
             </table>
         </fieldset>
 
@@ -269,7 +269,7 @@ $clrotulo->label("k17_slip");
     </fieldset>
 </div>
 <?php
-db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
+db_menu();
 ?>
 </body>
 </html>
@@ -482,6 +482,8 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
                 var sExec        = 'getMovimentosSlip';
                 oParam.iOrdemIni     = iSlipInicial;
                 oParam.iOrdemFim     = iSlipFinal;
+                oParam.fonteRecurso = '';
+                oParam.iRecurso = $F('o15_codigo');
                 break;
         }
 
@@ -525,15 +527,16 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
                         /* [Fim plugin GeracaoArquivoOBN  - Geracao arquivo OBN - parte0] */
                         aRow[0] = oDado.e81_codmov; // movimento
                         aRow[1] = oDado.e60_codemp + "/" + oDado.e60_anousu; // empenho
-                        aRow[2] = oDado.recurso ; // recurso
+                        aRow[2] = oDado.gestao ; // recurso
+                        aRow[3] = oDado.subrecurso ; // recurso
 
                         aValoresMovimentos[oDado.e81_codmov] = oDado.e81_valor;
 
-                        aRow[3] = oDado.conta_pagadora.codigo + " - " + oDado.conta_pagadora.descricao ; // conta pagadora
-                        aRow[4] = oDado.z01_numcgm  + " - " + oDado.z01_nome.urlDecode(); // credor
-                        aRow[5] = js_formatar(oDado.e81_valor, "f"); // valor
+                        aRow[4] = oDado.conta_pagadora.codigo + " - " + oDado.conta_pagadora.descricao ; // conta pagadora
+                        aRow[5] = oDado.z01_numcgm  + " - " + oDado.z01_nome.urlDecode(); // credor
+                        aRow[6] = js_formatar(oDado.e81_valor, "f"); // valor
                         /* [Inicio plugin GeracaoArquivoOBN  - Geracao arquivo OBN - parte1] */
-                        aRow[6] = "<input type='button' value='Editar' onclick='js_criaJanelaDetalhes("+oDado.e81_codmov+", "+oDado.o15_codigo+");'  ";
+                        aRow[7] = "<input type='button' value='Editar' onclick='js_criaJanelaDetalhes("+oDado.e81_codmov+", "+oDado.o15_codigo+");'  ";
                         /* [Fim plugin GeracaoArquivoOBN  - Geracao arquivo OBN - parte1] */
                         oGridConfiguracao.addRow(aRow);
                         if (oDado.e25_empagetipotransmissao == PAGAMENTO_OBN) {
@@ -558,17 +561,18 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 
                         aRow[0] = oDado.e81_codmov;
                         aRow[1] = oDado.k17_codigo ;
-                        aRow[2] = oDado.recurso ;
-                        aRow[3] = oDado.k17_credito + " - " + oDado.e83_descr.urlDecode() ;
+                        aRow[2] = oDado.gestao ;
+                        aRow[3] = oDado.recurso ;
+                        aRow[4] = oDado.k17_credito + " - " + oDado.e83_descr.urlDecode() ;
 
                         aValoresMovimentos[oDado.e81_codmov] = oDado.k17_valor;
 
-                        aRow[4] = oDado.z01_numcgm  + " - " + oDado.z01_nome.urlDecode();
+                        aRow[5] = oDado.z01_numcgm  + " - " + oDado.z01_nome.urlDecode();
 
 
-                        aRow[5] = js_formatar(oDado.k17_valor, "f");
+                        aRow[6] = js_formatar(oDado.k17_valor, "f");
                         /* [Inicio plugin GeracaoArquivoOBN  - Geracao arquivo OBN - parte2] */
-                        aRow[6] = "<input type='button' value='Editar' onclick='js_criaJanelaDetalhes("+oDado.e81_codmov+", "+oDado.c61_codigo+");'  ";
+                        aRow[7] = "<input type='button' value='Editar' onclick='js_criaJanelaDetalhes("+oDado.e81_codmov+", "+oDado.c61_codigo+");'  ";
                         /* [Fim plugin GeracaoArquivoOBN  - Geracao arquivo OBN - parte2] */
                         oGridConfiguracao.addRow(aRow);
                         if (oDado.e25_empagetipotransmissao == PAGAMENTO_OBN) {
@@ -688,7 +692,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
             oDetalhes.codigoFinalidade = oRow.aCells[10].getValue();
             oParametros.aDetalhes.push(oDetalhes);
             nTotalLancamentos += ( Number(js_strToFloat(oRow.aCells[2].getValue())) + Number(js_strToFloat(oRow.aCells[3].getValue())) +
-                                   Number(js_strToFloat(oRow.aCells[4].getValue())) - Number(js_strToFloat(oRow.aCells[5].getValue())) - 
+                                   Number(js_strToFloat(oRow.aCells[4].getValue())) - Number(js_strToFloat(oRow.aCells[5].getValue())) -
                                    Number(js_strToFloat(oRow.aCells[6].getValue())));
         });
 
@@ -900,14 +904,16 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         oGridConfiguracao.setCellWidth(['100px' ,
             '100px',
             '100px',
+            '100px',
             '200px',
             '200px',
             '100px',
             '80px'
         ]);
         oGridConfiguracao.setCellAlign([ 'left'  ,
-            'left'  ,
-            'left',
+            'left' ,
+            'center',
+            'center',
             'left',
             'left',
             'right',
@@ -916,6 +922,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         oGridConfiguracao.setHeader(['Cód.Mov',
             'Emp. / Slip',
             'Recurso',
+            'Subrecurso',
             'Cta. Pagadora',
             'Nome',
             'Valor',
@@ -1300,42 +1307,6 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         db_iframe_empempenho.hide();
     }
 
-    //===================  PESQUISA DE RECURSOS ============================
-
-    function js_pesquisac62_codrec(mostra){
-        if(mostra==true){
-            js_OpenJanelaIframe('CurrentWindow.corpo',
-                'db_iframe_orctiporec',
-                'func_fonterecurso.php?funcao_js=parent.js_mostraorctiporec1|o15_recurso|o15_descr',
-                'Pesquisar Recursos',
-                true
-            );
-        } else if(document.form1.o15_recurso.value != '') {
-            js_OpenJanelaIframe('CurrentWindow.corpo',
-                'db_iframe_orctiporec',
-                'func_fonterecurso.php?pesquisa_chave='+document.form1.o15_recurso.value+
-                '&funcao_js=parent.js_mostraorctiporec',
-                'Pesquisar Recursos',
-                false
-            );
-        } else {
-            document.form1.o15_descr.value = '';
-        }
-    }
-    function js_mostraorctiporec(chave,erro){
-        document.form1.o15_descr.value = chave;
-        if(erro==true){
-            document.form1.o15_recurso.focus();
-            document.form1.o15_codigo.value = '';
-        }
-    }
-
-    function js_mostraorctiporec1(chave1,chave2){
-        document.form1.o15_recurso.value = chave1;
-        document.form1.o15_descr.value = chave2;
-        db_iframe_orctiporec.hide();
-    }
-
     //=============  PESQUISA DE CGM ============================================
 
     function js_pesquisaz01_numcgm(mostra){
@@ -1492,6 +1463,35 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
             js_formaConsulta();
             js_pesquisar();
         }
+    }
+
+    $('descricao').classList.add('field-size6')
+    function js_pesquisaRecurso(lMostraWindow) {
+        if (!lMostraWindow && $('gestao').value == '') {
+            $("o15_codigo").value = '';
+            $("o15_recurso").value = '';
+            $('descricao').value = '';
+            return
+        }
+
+        let param = 'gestao='+ $('gestao').value;
+        pesquisaRecurso(param);
+    }
+
+    const pesquisaRecurso = (parametroAdicional) => {
+        let sUrl = 'func_fontesubrecurso.php?funcao_js=parent.js_preencheRecurso|gestao|o15_recurso|descricao|db_ids_recursos';
+        if (parametroAdicional) {
+            sUrl += `&${parametroAdicional}`;
+        }
+        js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+    };
+
+    function js_preencheRecurso(gestao, recurso, descricao, db_ids_recursos) {
+        $('gestao').value = gestao;
+        $('o15_recurso').value = recurso;
+        $('descricao').value = descricao;
+        $('o15_codigo').value = db_ids_recursos;
+        db_iframe_recurso.hide();
     }
     start();
 </script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cltipoarq->rotulo->label("p66_descr");
               <?=$Lp66_codarq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p66_codarq",8,$Ip66_codarq,true,"text",4,"","chave_p66_codarq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipoarq->rotulo->label("p66_descr");
               <?=$Lp66_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p66_descr",50,$Ip66_descr,true,"text",4,"","chave_p66_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipoarq->rotulo->label("p66_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "tipoarq.*";
@@ -114,14 +114,14 @@ $cltipoarq->rotulo->label("p66_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p66_codarq.focus();
 document.form2.chave_p66_codarq.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

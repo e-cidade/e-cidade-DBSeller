@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("rh59_descr");
        <?=@$Lrh58_seq?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh58_seq',6,$Irh58_seq,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh58_tipoocor?>">
-       <?
+       <?php
        db_ancora(@$Lrh58_tipoocor,"js_pesquisarh58_tipoocor(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh58_tipoocor',6,$Irh58_tipoocor,true,'text',$db_opcao," onchange='js_pesquisarh58_tipoocor(false);'")
 ?>
-       <?
+       <?php
 db_input('rh59_descr',40,$Irh59_descr,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('rh59_descr',40,$Irh59_descr,true,'text',3,'')
        <?=@$Lrh58_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh58_valor',15,$Irh58_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('rh58_valor',15,$Irh58_valor,true,'text',$db_opcao,"")
        <?=@$Lrh58_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('rh58_obs',0,0,$Irh58_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_textarea('rh58_obs',0,0,$Irh58_obs,true,'text',$db_opcao,"")
        <?=@$Lrh58_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('rh58_data',@$rh58_data_dia,@$rh58_data_mes,@$rh58_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpagocor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

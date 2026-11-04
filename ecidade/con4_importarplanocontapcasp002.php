@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,7 +72,7 @@ if (pg_num_rows($rsConplano) > 0) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
      db_app::load("scripts.js, prototype.js");
      db_app::load("estilos.css");
     ?>
@@ -86,7 +86,7 @@ if (pg_num_rows($rsConplano) > 0) {
     </script>
   </head>
   <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-  <?
+  <?php
    
     db_criatermometro("ano"," da importação concluída");
     db_criatermometro("plano"," da importação concluída");

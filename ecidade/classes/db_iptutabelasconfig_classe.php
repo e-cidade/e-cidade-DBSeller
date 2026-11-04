@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_iptutabelasconfig {
                  j122_iptutabelas = int4 = Código da Tabela 
                  ";
    //funcao construtor da classe 
-   function cl_iptutabelasconfig() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutabelasconfig"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_iptutabelasconfig {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j122_sequencial = ($this->j122_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j122_sequencial"]:$this->j122_sequencial);
        $this->j122_iptutabelas = ($this->j122_iptutabelas == ""?@$GLOBALS["HTTP_POST_VARS"]["j122_iptutabelas"]:$this->j122_iptutabelas);
@@ -74,7 +74,7 @@ class cl_iptutabelasconfig {
      }
    }
    // funcao para inclusao
-   function incluir ($j122_sequencial){ 
+   public function incluir ($j122_sequencial){ 
       $this->atualizacampos();
      if($this->j122_iptutabelas == null ){ 
        $this->erro_sql = " Campo Código da Tabela nao Informado.";
@@ -161,7 +161,7 @@ class cl_iptutabelasconfig {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j122_sequencial=null) { 
+   public function alterar ($j122_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update iptutabelasconfig set ";
      $virgula = "";
@@ -241,7 +241,7 @@ class cl_iptutabelasconfig {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j122_sequencial=null,$dbwhere=null) { 
+   public function excluir ($j122_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j122_sequencial));
      }else{ 
@@ -303,7 +303,7 @@ class cl_iptutabelasconfig {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -326,7 +326,7 @@ class cl_iptutabelasconfig {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $j122_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j122_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -362,7 +362,7 @@ class cl_iptutabelasconfig {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $j122_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j122_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

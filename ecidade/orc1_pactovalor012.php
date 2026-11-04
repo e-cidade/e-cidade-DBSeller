@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -74,7 +74,7 @@ if(isset($alterar)){
   <tr> 
     <td> 
     <center>
-			<?
+			<?php
 			  include(modification("forms/db_frmpactovalor.php"));
 			?>
     </center>
@@ -83,7 +83,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clpactovalor->erro_status=="0"){
     $clpactovalor->erro(true,false);

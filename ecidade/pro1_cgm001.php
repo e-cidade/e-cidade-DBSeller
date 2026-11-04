@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 	db_query("COMMIT");	
   //Inicio alterar registro
   } else if(isset($HTTP_POST_VARS["alterar"])) {
-    postmemory($HTTP_POST_VARS);
+    db_postmemory($HTTP_POST_VARS);
     $result = db_query("select numcgm from tb_cgm where numcgm = $numcgm");
 	if(pg_numrows($result) == 0) {
 	  echo "<script>alert('Codigo $numcgm não encontrado')</script>\n";
@@ -145,7 +145,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 	}
   //Inicio incluir registro
   } else if(isset($HTTP_POST_VARS["salvar"])) {
-    postmemory($HTTP_POST_VARS);
+    db_postmemory($HTTP_POST_VARS);
     $result = db_query("select max(numcgm) from tb_cgm");
 	$numcgm = pg_result($result,0,0) == ""?1:((integer)pg_result($result,0,0) + 1);
 	db_query("BEGIN");
@@ -257,13 +257,13 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
     include(modification("forms/db_frmcgm.php")); 
     ?>
 	</td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>

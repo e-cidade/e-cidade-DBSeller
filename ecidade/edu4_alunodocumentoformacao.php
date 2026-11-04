@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,13 +48,13 @@ require_once(modification("dbforms/db_funcoes.php"));
   if(isset($GLOBALS["_FILES"]["oid_arquivoFormacao"])) {
 
     db_postmemory($GLOBALS["_FILES"]["oid_arquivoFormacao"]);
-    
+
     if ( $error == 0 ) {
 
       $aTipos = array('image/jpeg', 'image/pjpeg', 'image/png');
       if (!in_array($type, $aTipos)) {
 
-        db_msgbox("Imagem no  um formato vlido!\\n\\nUtilize somente imagens no formato JPG!");
+        db_msgbox("Imagem em um formato inválido!\\n\\nUtilize somente imagens no formato JPG!");
         ?><script>parent.frame_formacao.document.formFormacao.oid_arquivoFormacao.value = "";</script><?php
       } elseif ($size > 1048576) {
 
@@ -109,7 +109,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         ?>
         <img style="width:100%; height:100%;" src="<?php echo $imagem_gerada?>">
         <?php
-        
+
         if( empty( $scale ) ){
 
           echo "<p>Visualizao no disponvel";

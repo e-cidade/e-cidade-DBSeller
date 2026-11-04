@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ $clrotulo->label("nome");
 					      <b> Período:</b>
 					    </td>  
 					    <td>
-					     <?
+					     <?php
 					       db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");                 
 					       echo " a ";
 					       db_inputdata('dtfim',@$dia,@$mes,@$ano,true,'text',1,"");
@@ -68,12 +68,12 @@ $clrotulo->label("nome");
 			      </tr>
 					  <tr>
 					    <td nowrap title="<?=@$Tid_usuario?>" align="right">
-					       <?
+					       <?php
 					       db_ancora("<b>Usuário:</b>","js_pesquisaUsuario(true);",1);
 					       ?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 								db_input('id_usuario',7,$Iid_usuario,true,'text',1," onchange='js_pesquisaUsuario(false);'");
 								db_input('nome',40,$Inome,true,'text',3,'');
 								?>
@@ -82,7 +82,7 @@ $clrotulo->label("nome");
 					  <tr>
 					    <td nowrap title="Situacão" align="right"><b>Situação:</b></td>
 					    <td> 
-					      <?
+					      <?php
 					        $situacao = 0;
 					        $aSituacao = array("0"=>"Todos","1"=>"Processado","2"=>"Cancelado");
 					        db_select('situacao',$aSituacao,true,1,"");
@@ -100,7 +100,7 @@ $clrotulo->label("nome");
     </tr>
   </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

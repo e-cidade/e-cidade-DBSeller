@@ -54,13 +54,13 @@ class cl_conplanoconplanoorcamento {
                  c72_anousu = int4 = Anousu
                  ";
    //funcao construtor da classe
-   function cl_conplanoconplanoorcamento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoconplanoorcamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_conplanoconplanoorcamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c72_sequencial = ($this->c72_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c72_sequencial"]:$this->c72_sequencial);
        $this->c72_conplano = ($this->c72_conplano == ""?@$GLOBALS["HTTP_POST_VARS"]["c72_conplano"]:$this->c72_conplano);
@@ -80,7 +80,7 @@ class cl_conplanoconplanoorcamento {
      }
    }
    // funcao para inclusao
-   function incluir ($c72_sequencial){
+   public function incluir ($c72_sequencial){
       $this->atualizacampos();
      if($this->c72_conplano == null ){
        $this->erro_sql = " Campo Código da conplano nao Informado.";
@@ -181,7 +181,7 @@ class cl_conplanoconplanoorcamento {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c72_sequencial=null) {
+   public function alterar ($c72_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conplanoconplanoorcamento set ";
      $virgula = "";
@@ -275,7 +275,7 @@ class cl_conplanoconplanoorcamento {
      }
    }
    // funcao para exclusao
-   function excluir ($c72_sequencial=null,$dbwhere=null) {
+   public function excluir ($c72_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c72_sequencial));
      }else{
@@ -327,7 +327,7 @@ class cl_conplanoconplanoorcamento {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -350,7 +350,7 @@ class cl_conplanoconplanoorcamento {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $c72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -392,7 +392,7 @@ class cl_conplanoconplanoorcamento {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $c72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -425,7 +425,7 @@ class cl_conplanoconplanoorcamento {
      }
      return $sql;
   }
- function sql_query_pcasp_analitica ( $c72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+ public function sql_query_pcasp_analitica ( $c72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

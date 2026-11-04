@@ -20,6 +20,7 @@
  *   Cópia da licença no diretório licenca/licenca_en.txt
  *                                 licenca/licenca_pt.txt.
  */
+
 require_once modification('dbforms/db_funcoes.php');
 require_once modification('libs/JSON.php');
 require_once modification('libs/db_stdlib.php');
@@ -338,10 +339,5 @@ function excluirRelatorio($codigoRelatorio)
     $rsDelete = db_query($sqlDelete);
     if (!$rsDelete) {
         throw new Exception('Erro ao excluir dados do relatório na tabela orcparamseq');
-    }
-    $sqlDelete = " delete from orcparamrel where o42_codparrel= {$codigoRelatorio} ";
-    $rsDelete = db_query($sqlDelete);
-    if (!$rsDelete) {
-        throw new Exception('Erro ao excluir dados do relatório na tabela orcparamrel '.pg_last_error());
     }
 }

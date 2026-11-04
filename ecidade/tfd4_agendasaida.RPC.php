@@ -76,6 +76,12 @@ try {
       $sCamposPedido .= ", tf18_i_veiculo, ve01_placa, tf18_i_motorista, cgm_motorista.z01_nome as nome_motorista";
       $sCamposPedido .= ", tf10_i_centralagend, tf17_i_codigo, ve01_quantcapacidad, tf19_i_fica, tf16_i_codigo";
       $sCamposPedido .= ", tf17_tiposaida, tf10_i_prestadora, tf37_valor";
+      $sCamposPedido .= ", CASE
+                            WHEN exists
+                                    (select 1
+                                    from cancelamentoviagem where cancelamentoviagem.tf41_veiculodestino = tfd_veiculodestino.tf18_i_codigo) THEN 'true'
+                            ELSE 'false'
+                        END as cancelado";
 
       $sWhere = " tf01_i_codigo = {$oParam->iPedido} ";
       if ( !empty($oParam->iCgs) ) {
@@ -94,7 +100,8 @@ try {
         throw new DBException( _M( MENSAGEM_AGENDASAIDA . "nenhum_pedido_encontrado") );
       }
 
-      $oDadosPedido      = db_utils::fieldsMemory( $rsPedido, 0);
+      $oDadosPedido      = db_utils::getCollectionByRecord($rsPedido);
+      $oDadosPedido = $oDadosPedido[0];
 
       $oPedido                      = new stdClass();
       $oPedido->iCgs                = $oDadosPedido->tf01_i_cgsund;
@@ -139,10 +146,17 @@ try {
       $oPedido->sHoraRetorno     = $oDadosPedido->tf18_c_horaretorno;
       $oPedido->iVeiculo         = $oDadosPedido->tf18_i_veiculo;
       $oPedido->iLotacaoVeiculo  = $oDadosPedido->ve01_quantcapacidad;
+
+      if ($oDadosPedido->cancelado === 'true') {
+          $oPedido->iVeiculo         = '';
+          $oPedido->iLotacaoVeiculo  = '';
+          $oPedido->sHoraSaida       = '';
+      }
       $oPedido->sPlaca           = urlencode($oDadosPedido->ve01_placa);
       $oPedido->iMotorista       = $oDadosPedido->tf18_i_motorista;
       $oPedido->sMotorista       = urlencode($oDadosPedido->nome_motorista);
       $oPedido->iFica            = $oDadosPedido->tf19_i_fica;
+      $oPedido->cancelado        = $oDadosPedido->cancelado;
 
       // PK da tabela tfd_agendamentoprestadora
       $oPedido->iCodigoAgendamentoPrestadora = $oDadosPedido->tf16_i_codigo;
@@ -318,6 +332,7 @@ try {
       if( isset( $oParam->horaRetorno ) && !empty( $oParam->horaRetorno ) ) {
         $aWhere[] = " tf18_c_horaretorno = '{$oParam->horaRetorno}' ";
       }
+      $aWhere[] = " not exists (select 1 from cancelamentoviagem where tf41_veiculodestino = tf18_i_codigo) ";
 
       $sWhere   = implode(" and ", $aWhere);
       $sCampos  = " max(tf18_i_codigo) as veiculo_destino, tf19_i_cgsund, tf19_i_pedidotfd, tf19_i_tipopassageiro, tf19_i_fica";
@@ -580,6 +595,7 @@ function removePassageirosVeiculo($iPedido, $aPassageiros = array()) {
     $sSqlTemPassageiro = $oDaoPassageiroVeiculo->sql_query_file(null, "1", null, $sWhereValida);
     $rsTemPassageiro   = db_query($sSqlTemPassageiro);
     if ($rsTemPassageiro && pg_num_rows($rsTemPassageiro) == 0) {
+      removePassageirosRetorno($iVeiculoDestino);
       removeAgendaVeiculo( $iVeiculoDestino );
     }
   }
@@ -808,6 +824,15 @@ function salvarPassagens( $oDadosParametro ) {
       throw new DBException( _M( MENSAGEM_AGENDASAIDA . "erro_incluir_passageiro_destino", $oErro ) );
     }
   }
+}
+
+function removePassageirosRetorno($veiculoDestino) {
+    $dao = new cl_tfd_passageiroretorno();
+    $dao->excluir(null,"tf31_i_veiculodestino = {$veiculoDestino}");
+
+    if($dao->erro_status == 0) {
+      throw new Exception("Erro ao remover passageiros que iriam retornar no veículo. \n{$dao->erro_msg};");
+    }
 }
 
 echo $oJson->encode($oRetorno);

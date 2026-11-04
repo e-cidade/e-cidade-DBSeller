@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clconarquivospad->rotulo->label();
        <?=@$Lc54_codarq?>
     </td>
     <td> 
-<?
+<?php
 db_input('c54_codarq',10,$Ic54_codarq,true,'text',3,"")
 ?>
     </td>
@@ -47,7 +47,7 @@ db_input('c54_codarq',10,$Ic54_codarq,true,'text',3,"")
        <?=@$Lc54_nomearq?>
     </td>
     <td> 
-<?
+<?php
 db_input('c54_nomearq',20,$Ic54_nomearq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('c54_nomearq',20,$Ic54_nomearq,true,'text',$db_opcao,"")
        <?=@$Lc54_arquivo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('c54_arquivo',15,100,$Ic54_arquivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_textarea('c54_arquivo',15,100,$Ic54_arquivo,true,'text',$db_opcao,"")
        <?=@$Lc54_codtrib?>
     </td>
     <td> 
-<?
+<?php
 if (!isset($c54_codtrib) || $c54_codtrib==""){
 	$c54_codtrib = db_getsession("DB_instit");	
 }
@@ -83,7 +83,7 @@ db_input('c54_codtrib',4,$Ic54_codtrib,true,'text',$db_opcao,"")
        <?=@$Lc54_anousu?>
     </td>
     <td> 
-<?
+<?php
 $c54_anousu = (db_getsession('DB_anousu')-1);
 db_input('c54_anousu',4,$Ic54_anousu,true,'text',3,"")
 ?>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conarquivospad.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_regenteconselho {
                  ed235_i_rechumano = int8 = Regente 
                  ";
    //funcao construtor da classe 
-   function cl_regenteconselho() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regenteconselho"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]."?ed235_i_turma=".@$GLOBALS["HTTP_POST_VARS"]["ed235_i_turma"]."&ed18_c_nome=".@$GLOBALS["HTTP_POST_VARS"]["ed18_c_nome"]."&ed235_i_rechumano=".@$GLOBALS["HTTP_POST_VARS"]["ed235_i_rechumano"]."&ed29_c_descr=".@$GLOBALS["HTTP_POST_VARS"]["ed29_c_descr"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_regenteconselho {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed235_i_codigo = ($this->ed235_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed235_i_codigo"]:$this->ed235_i_codigo);
        $this->ed235_i_turma = ($this->ed235_i_turma == ""?@$GLOBALS["HTTP_POST_VARS"]["ed235_i_turma"]:$this->ed235_i_turma);
@@ -77,7 +77,7 @@ class cl_regenteconselho {
      }
    }
    // funcao para inclusao
-   function incluir ($ed235_i_codigo){ 
+   public function incluir ($ed235_i_codigo){ 
       $this->atualizacampos();
      if($this->ed235_i_turma == null ){ 
        $this->erro_sql = " Campo Turma nao Informado.";
@@ -176,7 +176,7 @@ class cl_regenteconselho {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($ed235_i_codigo=null) { 
+   public function alterar ($ed235_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update regenteconselho set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_regenteconselho {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($ed235_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($ed235_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed235_i_codigo));
      }else{ 
@@ -334,7 +334,7 @@ class cl_regenteconselho {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,7 +356,7 @@ class cl_regenteconselho {
       }
      return $result;
    }
-   function sql_query ( $ed235_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed235_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -396,7 +396,7 @@ class cl_regenteconselho {
      }
      return $sql;
   }
-   function sql_query_file ( $ed235_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed235_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptunaogeracarnesetqua
-class cl_iptunaogeracarnesetqua { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j67_sequencial = 0; 
-   var $j67_naogeracarne = 0; 
-   var $j67_setor = null; 
-   var $j67_quadra = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_iptunaogeracarnesetqua {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j67_sequencial = 0;
+   var $j67_naogeracarne = 0;
+   var $j67_setor = null;
+   var $j67_quadra = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j67_sequencial = int4 = Sequencial 
-                 j67_naogeracarne = int4 = Sequencial 
-                 j67_setor = char(4) = Cód. Setor 
-                 j67_quadra = char(4) = Quadra 
+                 j67_sequencial = int4 = Sequencial
+                 j67_naogeracarne = int4 = Sequencial
+                 j67_setor = char(4) = Cód. Setor
+                 j67_quadra = char(4) = Quadra
                  ";
-   //funcao construtor da classe 
-   function cl_iptunaogeracarnesetqua() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("iptunaogeracarnesetqua"); 
+     $this->rotulo = new rotulo("iptunaogeracarnesetqua");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_iptunaogeracarnesetqua {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j67_sequencial = ($this->j67_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j67_sequencial"]:$this->j67_sequencial);
        $this->j67_naogeracarne = ($this->j67_naogeracarne == ""?@$GLOBALS["HTTP_POST_VARS"]["j67_naogeracarne"]:$this->j67_naogeracarne);
@@ -80,9 +80,9 @@ class cl_iptunaogeracarnesetqua {
      }
    }
    // funcao para inclusao
-   function incluir ($j67_sequencial){ 
+   public function incluir ($j67_sequencial){
       $this->atualizacampos();
-     if($this->j67_naogeracarne == null ){ 
+     if($this->j67_naogeracarne == null ){
        $this->erro_sql = " Campo Sequencial nao Informado.";
        $this->erro_campo = "j67_naogeracarne";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_iptunaogeracarnesetqua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j67_setor == null ){ 
+     if($this->j67_setor == null ){
        $this->erro_sql = " Campo Cód. Setor nao Informado.";
        $this->erro_campo = "j67_setor";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_iptunaogeracarnesetqua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j67_quadra == null ){ 
+     if($this->j67_quadra == null ){
        $this->erro_sql = " Campo Quadra nao Informado.";
        $this->erro_campo = "j67_quadra";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_iptunaogeracarnesetqua {
        return false;
      }
      if($j67_sequencial == "" || $j67_sequencial == null ){
-       $result = db_query("select nextval('iptunaogeracarnesetqua_j67_sequencial_seq')"); 
+       $result = db_query("select nextval('iptunaogeracarnesetqua_j67_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: iptunaogeracarnesetqua_j67_sequencial_seq do campo: j67_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: iptunaogeracarnesetqua_j67_sequencial_seq do campo: j67_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j67_sequencial = pg_result($result,0,0); 
+       $this->j67_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from iptunaogeracarnesetqua_j67_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $j67_sequencial)){
@@ -130,10 +130,10 @@ class cl_iptunaogeracarnesetqua {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j67_sequencial = $j67_sequencial; 
+         $this->j67_sequencial = $j67_sequencial;
        }
      }
-     if(($this->j67_sequencial == null) || ($this->j67_sequencial == "") ){ 
+     if(($this->j67_sequencial == null) || ($this->j67_sequencial == "") ){
        $this->erro_sql = " Campo j67_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_iptunaogeracarnesetqua {
        return false;
      }
      $sql = "insert into iptunaogeracarnesetqua(
-                                       j67_sequencial 
-                                      ,j67_naogeracarne 
-                                      ,j67_setor 
-                                      ,j67_quadra 
+                                       j67_sequencial
+                                      ,j67_naogeracarne
+                                      ,j67_setor
+                                      ,j67_quadra
                        )
                 values (
-                                $this->j67_sequencial 
-                               ,$this->j67_naogeracarne 
-                               ,'$this->j67_setor' 
-                               ,'$this->j67_quadra' 
+                                $this->j67_sequencial
+                               ,$this->j67_naogeracarne
+                               ,'$this->j67_setor'
+                               ,'$this->j67_quadra'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Setor/Quadra que nao gera carne ($this->j67_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_iptunaogeracarnesetqua {
        $resac = db_query("insert into db_acount values($acount,1385,8223,'','".AddSlashes(pg_result($resaco,0,'j67_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j67_sequencial=null) { 
+   public function alterar ($j67_sequencial=null) {
       $this->atualizacampos();
      $sql = " update iptunaogeracarnesetqua set ";
      $virgula = "";
-     if(trim($this->j67_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_sequencial"])){ 
+     if(trim($this->j67_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_sequencial"])){
        $sql  .= $virgula." j67_sequencial = $this->j67_sequencial ";
        $virgula = ",";
-       if(trim($this->j67_sequencial) == null ){ 
+       if(trim($this->j67_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j67_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_iptunaogeracarnesetqua {
          return false;
        }
      }
-     if(trim($this->j67_naogeracarne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_naogeracarne"])){ 
+     if(trim($this->j67_naogeracarne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_naogeracarne"])){
        $sql  .= $virgula." j67_naogeracarne = $this->j67_naogeracarne ";
        $virgula = ",";
-       if(trim($this->j67_naogeracarne) == null ){ 
+       if(trim($this->j67_naogeracarne) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j67_naogeracarne";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_iptunaogeracarnesetqua {
          return false;
        }
      }
-     if(trim($this->j67_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_setor"])){ 
+     if(trim($this->j67_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_setor"])){
        $sql  .= $virgula." j67_setor = '$this->j67_setor' ";
        $virgula = ",";
-       if(trim($this->j67_setor) == null ){ 
+       if(trim($this->j67_setor) == null ){
          $this->erro_sql = " Campo Cód. Setor nao Informado.";
          $this->erro_campo = "j67_setor";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_iptunaogeracarnesetqua {
          return false;
        }
      }
-     if(trim($this->j67_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_quadra"])){ 
+     if(trim($this->j67_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j67_quadra"])){
        $sql  .= $virgula." j67_quadra = '$this->j67_quadra' ";
        $virgula = ",";
-       if(trim($this->j67_quadra) == null ){ 
+       if(trim($this->j67_quadra) == null ){
          $this->erro_sql = " Campo Quadra nao Informado.";
          $this->erro_campo = "j67_quadra";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_iptunaogeracarnesetqua {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Setor/Quadra que nao gera carne nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j67_sequencial;
@@ -297,14 +297,14 @@ class cl_iptunaogeracarnesetqua {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j67_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j67_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j67_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_iptunaogeracarnesetqua {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Setor/Quadra que nao gera carne nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j67_sequencial;
@@ -361,11 +361,11 @@ class cl_iptunaogeracarnesetqua {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,10 +387,10 @@ class cl_iptunaogeracarnesetqua {
       }
      return $result;
    }
-   function sql_query ( $j67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_iptunaogeracarnesetqua {
      $sql2 = "";
      if($dbwhere==""){
        if($j67_sequencial!=null ){
-         $sql2 .= " where iptunaogeracarnesetqua.j67_sequencial = $j67_sequencial "; 
-       } 
+         $sql2 .= " where iptunaogeracarnesetqua.j67_sequencial = $j67_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,10 +422,10 @@ class cl_iptunaogeracarnesetqua {
      }
      return $sql;
   }
-   function sql_query_file ( $j67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,15 +438,15 @@ class cl_iptunaogeracarnesetqua {
      $sql2 = "";
      if($dbwhere==""){
        if($j67_sequencial!=null ){
-         $sql2 .= " where iptunaogeracarnesetqua.j67_sequencial = $j67_sequencial "; 
-       } 
+         $sql2 .= " where iptunaogeracarnesetqua.j67_sequencial = $j67_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

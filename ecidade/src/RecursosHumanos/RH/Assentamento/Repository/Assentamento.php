@@ -141,35 +141,77 @@ class Assentamento extends \BaseClassRepository
      */
     public function possuiProtocoloByAfastamento($codigoAssentamento)
     {
-        $assentamento = new \stdClass();
-        $assentamento->idReferencia = $codigoAssentamento;
-        $assentamento->idEvento = "S-2230";
+        $where = array(
+            "r70_ativo IS TRUE",
+            "r70_instit = " . db_getsession("DB_instit")
+        );
 
-        $serviceApi = $this->getServiceApiEsocialByRecurso(Recurso::CONSULTA_RECIBO);
-        $serviceApi->setDados($assentamento);
+        $campos = array(
+            "z01_numcgm AS cgm",
+            "z01_cgccpf AS cnpj",
+            "z01_nome AS nome",
+        );
 
-        $response = $serviceApi->request('GET');
-        // Caso nao tenha retorno, repetimos a consulta com o evento S-2220
-        if (empty($response)) {
-            $assentamento->idEvento = "S-2220";
-            $serviceApi->setDados($assentamento);
-            $response = $serviceApi->request('GET');
-            if (empty($response)) {
-                return false;
-            }
+        $dao = new \cl_rhlota();
+        $sql = $dao->sql_query_lota_cgm(
+            null,
+            'DISTINCT ' . implode(', ', $campos),
+            'z01_numcgm',
+            implode(' AND ', $where)
+        );
+        $rs = db_query($sql);
+
+        if (!$rs) {
+            throw new \DBException("Não foi possível buscar os empregadores da instituição.\nContate o suporte.");
         }
+
+        if (pg_num_rows($rs) === 0) {
+            throw new Exception("Não há empregadores registrados.");
+        }
+
+        $empregadores = pg_fetch_all($rs);
+        $encontrouApi = false;
         $temRecibo = true;
-        foreach ($response as $evento) {
-            if (empty($evento->recibo)) {
-                $temRecibo = false;
+        foreach ($empregadores as $empregador) {
+            $assentamento = new \stdClass();
+            $assentamento->idReferencia = $codigoAssentamento;
+            $assentamento->idEvento = "S-2230";
+    
+            $serviceApi = $this->getServiceApiEsocialByRecurso(Recurso::CONSULTA_RECIBO);
+            $serviceApi->setDados($assentamento);
+
+            if ($encontrouApi == true) {
+                continue;
+            }
+            $assentamento->inscricaoEmpregador = $empregador['cnpj'];
+            $response = $serviceApi->request('GET');
+            
+            // Caso nao tenha retorno, repetimos a consulta com o evento S-2220
+            if (empty($response)) {
+                $assentamento->idEvento = "S-2220";
+                $serviceApi->setDados($assentamento);
+                $response = $serviceApi->request('GET');
             } else {
-                foreach ($evento->recibo as $recibo) {
-                    if ($recibo->ultimoRecibo == true && $recibo->excluido == true) {
+                $encontrouApi = true;
+            }
+            if (!empty($response)) {
+                foreach ($response as $evento) {
+                    if (empty($evento->recibo)) {
                         $temRecibo = false;
+                    } else {
+                        foreach ($evento->recibo as $recibo) {
+                            if ($recibo->ultimoRecibo == true && $recibo->excluido == true) {
+                                $temRecibo = false;
+                            }
+                        }
                     }
                 }
             }
         }
+        if ($encontrouApi == false) {
+            $temRecibo = false;
+        }
+
         return $temRecibo;
         return !empty($response);
     }
@@ -305,6 +347,10 @@ class Assentamento extends \BaseClassRepository
                         assentamentofuncional
                         {$whereTmp}
                  )";
+        } else {
+            if (!empty($codigoAssentamento)) {
+                $where .= " AND h16_codigo != {$codigoAssentamento} ";
+            }
         }
 
         $dao = new \cl_assenta();
@@ -550,5 +596,30 @@ class Assentamento extends \BaseClassRepository
             throw new \BusinessException('Servidor já possui assentamento de reajuste salarial.');
         }
         return true;
+    }
+
+    public static function buscaAssentamentosPeriodo(
+        $matricula,
+        $codigoTipoAssentamento,
+        $data
+    ) {
+        $dao = new \cl_assenta();
+
+        $where = [];
+        $where[] = "h16_regist = {$matricula}";
+        $where[] = "h16_assent = {$codigoTipoAssentamento}";
+        $where[] = "( ('$data' >= h16_dtconc)
+                      and (case when h16_dtterm is not null then '$data' <= h16_dtterm else true end)) ";
+        $rsAssentamentos = $dao->sql_record($dao->sql_query(
+            null,
+            "h16_codigo,h16_dtconc, h16_dtterm",
+            null,
+            implode(' and ', $where)
+        ));
+        if ($dao->numrows > 0) {
+            return \db_utils::getCollectionByRecord($rsAssentamentos, true);
+        }
+
+        return [];
     }
 }

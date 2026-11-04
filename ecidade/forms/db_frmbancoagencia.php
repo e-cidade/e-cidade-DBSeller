@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,19 +45,19 @@
 	       <?=@$Ldb89_sequencial?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('db89_sequencial',10,$Idb89_sequencial,true,'text',3,"");
 		  ?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tdb89_db_bancos?>">
-	      <?
+	      <?php
 	        db_ancora(@$Ldb89_db_bancos,"js_pesquisadb89_db_bancos(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('db89_db_bancos',10,$Idb89_db_bancos,true,'text',$db_opcao," onchange='js_pesquisadb89_db_bancos(false);'");
 			db_input('db90_descr',40,$Idb90_descr,true,'text',3,'');
 	      ?>
@@ -68,7 +68,7 @@
 	      <?=@$Ldb89_codagencia?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_input('db89_codagencia',5,$Idb89_codagencia,true,'text',$db_opcao,"");
 			db_input('db89_digito',1,$Idb89_digito,true,'text',$db_opcao,"");
 		  ?>
@@ -79,7 +79,7 @@
         <b>Endereço:</b>
       </td>
       <td colspan="3">
-        <?
+        <?php
         db_input ('db92_endereco', 10, '', true, 'hidden', $db_opcao );
         db_input ('endereco_agencia', 54, '', true, 'text', 3 );
         ?>
@@ -124,7 +124,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bancoagencia.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

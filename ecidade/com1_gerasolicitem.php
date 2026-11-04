@@ -252,7 +252,7 @@ function js_marcar(){
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php
     if($clsolicitem->numrows == 0){
 
       echo "<strong>Não existem itens para esta solicitação.</strong>\n";
@@ -436,12 +436,11 @@ x.pc11_codigo,
 		}
 	}
 	//--------------------------------------------------------------------------------------------------------------------------------------
-
         echo "<tr class='trconteudotabela'>\n";
-	      echo "  <td nowrap class='checkbox tdconteudotabela'><input type='checkbox' $readonly  name='item_".$pc11_numero."_".$pc11_codigo."' onclick='js_retornocampo(this);'></td>\n";
+        echo "  <td nowrap class='checkbox tdconteudotabela'><input type='checkbox' $readonly  name='item_".$pc11_numero."_".$pc11_codigo."' onclick='js_retornocampo(this);'></td>\n";
         echo "  <td nowrap class='tdconteudotabela' align='center'>$pc11_seq</td>\n";
       	echo "  <td class='tdconteudotabela' align='left'>  ".ucfirst(mb_strtolower($pc01_descrmater))."</td>\n";
-      	echo "  <td nowrap class='tdconteudotabela' align='center'>" . (empty($m61_descr) ? "&nbsp;" : $m61_descr) . "</td>\n";
+      	echo "  <td nowrap class='tdconteudotabela' align='center'>" . (empty($m61_descr) ? "SERVIÇO" : $m61_descr) . "</td>\n";
       	echo "  <td nowrap class='tdconteudotabela' align='center'>$pc11_quant</td>\n";
       	echo "  <td nowrap class='tdconteudotabela' align='right'>R$ ".db_formatar($pc11_vlrun, "f")."</td>\n";
       	echo "  <td nowrap class='tdconteudotabela' align='right'>R$ ".db_formatar(($pc11_vlrun*$pc11_quant),"f")."</td>\n";

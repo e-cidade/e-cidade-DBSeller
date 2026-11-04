@@ -138,7 +138,7 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
             animation: pulse 2s infinite;
         }
 
-        .sem-mensagem{
+        .sem-mensagem {
             padding: 10px;
             background: #dc9e5fc7;
             text-align: center;
@@ -171,7 +171,8 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
 <body style="background: white!important" onLoad="a=1">
 <h1>
     <button onclick="getMensagens()" class="botao-refresh"><i class="fas fa-sync-alt"></i></button>
-    <button onclick="novaMensagem(<?=$processo?>)" title="Nova Mensagem" class="botao-novaMensagem"><i class="fa fa-plus"></i></button>
+    <button onclick="novaMensagem(<?= $processo ?>)" title="Nova Mensagem" class="botao-novaMensagem"><i
+            class="fa fa-plus"></i></button>
 </h1>
 <div class="container-mensagens" id="container"></div>
 <script src="scripts/session.js"></script>
@@ -265,7 +266,8 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
                 `${session.requestApi}/patrimonial/ouvidoria/atendimento/processo-eletronico/mensagens/${numero_processo}`,
                 session.getConfigRequest()
             );
-            const data = await response.json();
+            const responseData = await response.json();
+            const data = responseData.data;
             html = ``;
             data.forEach((mensagem, key) => {
                 const classMensagem = checkMensagemUsuario(mensagem.tipo_despacho) ? 'mensagem-cidadao' : 'mensagem-prefeitura';
@@ -330,7 +332,7 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
                     </div>
                 `;
             });
-            if(data.length < 1){
+            if (data.length < 1) {
                 this.html = `<div class="sem-mensagem"><h1 >Não possui mensagens!</h1></div>`;
             }
             containerHTML.innerHTML = html;

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -45,7 +45,7 @@ $dt_fin= $dt[1]; // data final do período
 
 $orcparamrel = new cl_orcparamrel;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -64,7 +64,7 @@ $head6 = "INSTITUIÇÕES : ".$descr_inst;
 
 
 
-//-- pega total da receita corrente liquida -- estruturais selecionados 
+//-- pega total da receita corrente liquida -- estruturais selecionados
 // gera matris com todos os estruturais selecionados nas configurações do relatorio
 $m_todos = $orcparamrel->sql_parametro('5');
 $virgula='';
@@ -72,9 +72,9 @@ $lista = '(';
 $tt = sizeof($m_todos);
 for ($x=0; $x <sizeof($m_todos);$x++){
   $lista .= $virgula."'".$m_todos[$x]."'";
-  if ($x == $tt-1)  	
+  if ($x == $tt-1)
   $virgula ='';
-  else $virgula =',';   	  
+  else $virgula =',';
 }
 $lista = $lista.')';
 
@@ -91,7 +91,7 @@ db_fieldsmemory($clreceita_saldo_mes->result,0);
 
 // gera o balancete de verificação com as contas 3 e 4 incluidas
 
-// $where = " c61_instit in (".str_replace('-',', ',$db_selinstit).") "; 
+// $where = " c61_instit in (".str_replace('-',', ',$db_selinstit).") ";
 // $result = db_planocontassaldo_completo($anousu,$dt_ini,$dt_fin,false,$where);
 
 $sele_work = 'o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
@@ -124,17 +124,17 @@ $m_repasses = $orcparamrel->sql_parametro('20','7');
 //--------- // ------------- // ------------- // ---------------
 for($i=0;$i< pg_numrows($result);$i++) {
    db_fieldsmemory($result,$i);
-   //$valor_desp = ($saldo_final - $saldo_anterior);        
+   //$valor_desp = ($saldo_final - $saldo_anterior);
     $o58_elemento = $o58_elemento."00";
-    $estrutural= substr($o58_elemento,0,15);       
+    $estrutural= substr($o58_elemento,0,15);
     $valor_desp = $liquidado;
-   
+
    if (in_array($estrutural,$m_ativo)){
-   	  $soma_ativo += $valor_desp;   	  
-   } 
+   	  $soma_ativo += $valor_desp;
+   }
    if (in_array($estrutural,$m_inativo)){
    	  $soma_inativo += $valor_desp;
-   } 
+   }
    if (in_array($estrutural,$m_indenizacoes)){
    	  $soma_indenizacoes += $valor_desp;
    }
@@ -157,11 +157,11 @@ for($i=0;$i< pg_numrows($result);$i++) {
 }
 for($i=0;$i< pg_numrows($result_plano);$i++) {
     db_fieldsmemory($result_plano,$i);
-          
+
     $valor_desp = $saldo_anterior_debito - $saldo_anterior_credito;
     if (in_array($estrutural,$m_repasses)){
    	   $soma_repasses += $valor_desp;
-   } 
+   }
 }
 //  include(modification("dados_2004.php"));
 
@@ -175,15 +175,15 @@ $soma_grupo01 = ($soma_ativo +$soma_inativo) - $deducoes;
 
 $total_despesa_pessoal = $soma_grupo01+ $soma_pessoal +$soma_repasses;
 
-// dados da receita corrente liquida 
+// dados da receita corrente liquida
 
-// $rcl = ($total_rcl + $soma_rec_2004); 
+// $rcl = ($total_rcl + $soma_rec_2004);
 
 $rcl = $total_rcl;
 @$tdp = (($total_despesa_pessoal *100)/ $rcl ); // percentagem da despesa com pessoal
 
 // limite maximo 60% da receita corrente liquida
-$instit = str_replace('-',', ',$db_selinstit); 
+$instit = str_replace('-',', ',$db_selinstit);
 // $instit = db_getsession("DB_instit");
 if ($instit==1){ // prefeitura
   $limite_maximo= 54;
@@ -191,27 +191,27 @@ if ($instit==1){ // prefeitura
   $limite_prudencial= 51.3;
   $val_prudencial = ($rcl * $limite_prudencial)/100 ;
   $limite_alerta= 48.6;
-  $val_alerta = ($rcl * $limite_alerta)/100 ; 	
+  $val_alerta = ($rcl * $limite_alerta)/100 ;
 } else if ($instit==2){ // camara
   $limite_maximo= 6;
   $val_maximo = ($rcl * $limite_maximo)/100 ;
   $limite_prudencial= 5.7;
   $val_prudencial = ($rcl * $limite_prudencial)/100 ;
   $limite_alerta= 5.4;
-  $val_alerta = ($rcl * $limite_alerta)/100 ;	
+  $val_alerta = ($rcl * $limite_alerta)/100 ;
 } else { // ra
   $limite_maximo= 0;
   $val_maximo = 0 ;//($rcl * $limite_maximo)/100 ;
   $limite_prudencial= 0 ; //51.3;
   $val_prudencial = 0; //($rcl * $limite_prudencial)/100 ;
   $limite_alerta= 0;// 48.6;
-  $val_alerta = 0; //($rcl * $limite_alerta)/100 ;	
-}	
-	
+  $val_alerta = 0; //($rcl * $limite_alerta)/100 ;
+}
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
 $alt            = 4;
@@ -236,26 +236,26 @@ $pdf->cell(25,$alt,db_formatar($soma_desp_2004,'f'),0,1,"R",0);
 $pdf->Ln();
 $pdf->setfont('arial','',9);
 $pdf->cell(160,$alt,"Pessoal Ativo",0,0,"L",0);
-$pdf->cell(25,$alt,db_formatar($soma_ativo,'f'),0,1,"R",0);  
-   
+$pdf->cell(25,$alt,db_formatar($soma_ativo,'f'),0,1,"R",0);
+
 $pdf->cell(160,$alt,"Pessoal Inativo e Pensionistas",0,0,"L",0);
 $pdf->cell(25,$alt,db_formatar($soma_inativo,'f'),0,1,"R",0);
-     
+
 $pdf->cell(160,$alt,"(-) Despesas não computadas(art.19 da LRF)",0,0,"L",0);
-$pdf->cell(25,$alt,db_formatar($deducoes,'f'),0,1,"R",0);     
+$pdf->cell(25,$alt,db_formatar($deducoes,'f'),0,1,"R",0);
 
 $pdf->setfont('arial','',8);
 $pdf->setX(30); $pdf->cell(140,$alt,"Indenizações por Demissão e PDV",0,0,"L",0);
-                $pdf->cell(25,$alt,db_formatar($soma_indenizacoes,'f'),0,1,"R",0);     
+                $pdf->cell(25,$alt,db_formatar($soma_indenizacoes,'f'),0,1,"R",0);
 
 $pdf->setX(30); $pdf->cell(140,$alt,"Decorrentes de Decisão Judicial",0,0,"L",0);
-                $pdf->cell(25,$alt,db_formatar($soma_judicial,'f'),0,1,"R",0);     
+                $pdf->cell(25,$alt,db_formatar($soma_judicial,'f'),0,1,"R",0);
 
 $pdf->setX(30); $pdf->cell(140,$alt,"Despesas de Exercícios Anteriores",0,0,"L",0);
-                $pdf->cell(25,$alt,db_formatar($soma_desp_anteriores,'f'),0,1,"R",0);     
+                $pdf->cell(25,$alt,db_formatar($soma_desp_anteriores,'f'),0,1,"R",0);
 
 $pdf->setX(30); $pdf->cell(140,$alt,"Inativos e Pensionistas com Recursos Vinculados",0,0,"L",0);
-                $pdf->cell(25,$alt,db_formatar($soma_pensionistas,'f'),0,1,"R",0);     
+                $pdf->cell(25,$alt,db_formatar($soma_pensionistas,'f'),0,1,"R",0);
 
 //-- /--
 $pdf->Ln();
@@ -267,7 +267,7 @@ $pdf->cell(160,$alt,"Repasses Previdenciários ao Regime Próprio de Previdência S
 $pdf->cell(25,$alt,db_formatar($soma_repasses,'f'),0,1,"R",0);
 $pdf->setfont('arial','',8);
 $pdf->setX(30); $pdf->cell(140,$alt,"Contribuições Patronais",0,0,"L",0);
-                $pdf->cell(25,$alt,db_formatar($soma_repasses,'f'),0,1,"R",0);     
+                $pdf->cell(25,$alt,db_formatar($soma_repasses,'f'),0,1,"R",0);
 
 $pdf->cell(185,$alt,"",'B',1,"R",0);
 $pdf->setfont('arial','',9);
@@ -330,5 +330,5 @@ $pdf->multicell($largura,2,$ass_cont,0,"C",0,0);
 
 
 $pdf->Output();
-   
+
 ?>

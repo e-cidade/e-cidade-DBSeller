@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $db_botao = true;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmempempitem.php"));
 	?>
     </center>
@@ -60,7 +60,7 @@ $db_botao = true;
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)||isset($alterar) || isset($excluir)){
   if($sqlerro==true){
     db_msgbox($clempautitem->erro_msg);

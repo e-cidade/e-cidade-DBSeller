@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -70,18 +70,18 @@ $clclientes = new cl_clientes;
 if( isset($cliente) ){
 
   if( $tipo_relatorio == "1" || $cliente == "" ){
-  
+
     $filtra_cliente = "";
-    
+
   }else{
 
     $filtra_cliente = " at01_ativo is true and at01_codcli in ( $cliente ) ";
 
-    
-  }  
-  
+
+  }
+
   $result = $clclientes->sql_record($clclientes->sql_query(null," at01_codcli "," at01_nomecli ",$filtra_cliente));
-    
+
   $separadorc = "";
   $filtra_cliente = " at01_ativo is true and at01_codcli in ( ";
   for($c=0;$c<$clclientes->numrows;$c++){
@@ -103,7 +103,7 @@ if( isset($cliente) ){
   $tipo_relatorio = "2";
 
   $dirpadrao = "tmp";
-  
+
 }
 
 
@@ -114,7 +114,7 @@ $arquivo_gerado = "";
 for($c=0;$c<$clclientes->numrows;$c++){
 
   db_fieldsmemory($result,$c);
-  
+
   $filtra_cliente = " and ( db27_codcli is null or db27_codcli = $at01_codcli ) ";
   if($tipo_relatorio == "1"){
     $filtra_cliente = "";
@@ -130,24 +130,24 @@ $pdf->SetFont('Arial','B',11);
 
 
 
-$sql_modulo = "select distinct modulo,nome_modulo 
-          from db_versaousu 
-               inner join db_menu on db32_id_item = db_menu.id_item 
+$sql_modulo = "select distinct modulo,nome_modulo
+          from db_versaousu
+               inner join db_menu on db32_id_item = db_menu.id_item
                inner join db_modulos on modulo = db_modulos.id_item
                left join db_versaousucliente on db32_codusu = db27_codusu
-          where db32_codver >= $versao_inicial 
-              $filtra_cliente         
-          union 
-          select distinct modulo,nome_modulo 
-          from db_versaousu 
-               inner join db_menu on db32_id_item = id_item_filho 
+          where db32_codver >= $versao_inicial
+              $filtra_cliente
+          union
+          select distinct modulo,nome_modulo
+          from db_versaousu
+               inner join db_menu on db32_id_item = id_item_filho
                inner join db_modulos on modulo = db_modulos.id_item
                left join db_versaousucliente on db32_codusu = db27_codusu
-          where db32_codver >=  $versao_inicial 
-              $filtra_cliente         
+          where db32_codver >=  $versao_inicial
+              $filtra_cliente
           order by modulo
           ";
- 
+
 
 $sql = "select * from ($sql_modulo) as x ";
 
@@ -163,7 +163,7 @@ $numrows = pg_numrows($res);
 
 
 for($i=0;$i<$numrows;$i++){
-    
+
   db_fieldsmemory($res,$i);
 
   $espacos = $modulo;
@@ -176,11 +176,11 @@ for($i=0;$i<$numrows;$i++){
   if( $cldb_versao->numrows > 0 ) {
 
     $pdf->addpage();
-    
+
     $pdf->SetFont('Arial','B',7);
     $pdf->Cell(15,4,"Módulo: $nome_modulo",0,1,"L");
     $pdf->SetFont('Arial','',7);
- 
+
     for($ii=0;$ii<pg_numrows($resultx);$ii++){
       $x = pg_result($resultx,$ii,2);
       $lista[$x]= $x;
@@ -189,14 +189,14 @@ for($i=0;$i<$numrows;$i++){
     $matriz_item_seleciona = array();
 
     monta_menu($modulo,$modulo,$espacos,$lista);
-    
+
     $itens_listados = array();//("$id_item"=>"$id_item");
 
     for($x=0;$x<count($matriz_item_seleciona);$x++){
-      $impmat = split("-",$matriz_item_seleciona[$x]);
+      $impmat =explode("-",$matriz_item_seleciona[$x]);
       for($imp=0;$imp<count($impmat);$imp++){
         if( ! isset($itens_listados[$impmat[$imp]])){
-          
+
           $sql = "select distinct db30_codversao,db30_codrelease,db32_obs
                   from db_versaousu
                        inner join db_versao on db32_codver = db30_codver
@@ -209,7 +209,7 @@ for($i=0;$i<$numrows;$i++){
 
 
             $itens_listados[$impmat[$imp]] = $impmat[$imp] ;
-            $sql = "select descricao 
+            $sql = "select descricao
                   from db_itensmenu
                   where id_item = ".$impmat[$imp];
             $resi = db_query($sql);
@@ -217,7 +217,7 @@ for($i=0;$i<$numrows;$i++){
 
             //$pdf->Cell($imp*5,4,$matriz_item_seleciona[$x],0,0,"L");
             $pdf->Cell($imp*5,4,'',0,0,"L");
-          
+
             $pdf->SetFont('Arial','',7);
             $pdf->Cell(60,4,$descr,0,1,"L");
           }
@@ -226,13 +226,13 @@ for($i=0;$i<$numrows;$i++){
     }
 
     $pdf->Cell(60,4,'',0,1,"L");
-  
+
     // lista as descricoes
 
     $itens_listados = array();
     for($x=0;$x<count($matriz_item_seleciona);$x++){
       $contador = 0;
-      $impmat = split("-",$matriz_item_seleciona[$x]);
+      $impmat =explode("-",$matriz_item_seleciona[$x]);
       for($imp=0;$imp<count($impmat);$imp++){
         $contador += 1;
         if( ! isset($itens_listados[$impmat[$imp]])){
@@ -246,9 +246,9 @@ for($i=0;$i<$numrows;$i++){
                     and db32_id_item = ".$impmat[$imp];
           $resid = db_query($sql);
           if( pg_numrows($resid) > 0 ){
-          
+
             $itens_listados[$impmat[$imp]] = $impmat[$imp] ;
-            $sql = "select descricao 
+            $sql = "select descricao
                   from db_itensmenu
                   where id_item = ".$impmat[$imp];
             $resi = db_query($sql);
@@ -256,16 +256,16 @@ for($i=0;$i<$numrows;$i++){
 
             //$pdf->Cell($imp*5,4,$matriz_item_seleciona[$x],0,0,"L");
             $pdf->Cell($contador*5,4,'',0,0,"L");
-          
+
             $pdf->SetFont('Arial','B',7);
             //$pdf->Cell(60,4,$impmat[$imp]."-".$descr,0,1,"L");
             $pdf->Cell(60,4,$descr,0,1,"L");
             $pdf->SetFont('Arial','',7);
 
             for($o=0;$o<pg_numrows($resid);$o++){
-            
+
               db_fieldsmemory($resid,$o);
-          
+
               $pdf->SetFont('Arial','I',7);
               $pdf->Cell(($contador+1)*5,4,"2.".$db30_codversao.".".$db30_codrelease,0,0,"R");
 
@@ -287,8 +287,8 @@ for($i=0;$i<$numrows;$i++){
                   $inusu .= $separador.$db32_codusu;
                   $separador = ",";
                 }
-                  
-                $separador = "";  
+
+                $separador = "";
                 $restaf = $cldb_versaousutarefa->sql_record($cldb_versaousutarefa->sql_query(null,'distinct db28_tarefa',''," db28_codusu in ($inusu) "));
                 if( $cldb_versaousutarefa->numrows > 0 ){
                   for($xx=0;$xx<$cldb_versaousutarefa->numrows;$xx++){
@@ -300,7 +300,7 @@ for($i=0;$i<$numrows;$i++){
                 $pdf->Cell(160,4,"$tarefas",0,1,"L");
                 $pdf->Cell(($contador+1)*5,4,"",0,0,"R");
               }
-              
+
               $pdf->SetFont('Arial','',7);
               $pdf->multicell(160,4,$db32_obs);
 
@@ -322,27 +322,27 @@ for($i=0;$i<$numrows;$i++){
 
     if($tipo_relatorio == "1"){
 
-      system("mv ".$pdf->arquivo_retorno." ".$dirpadrao."/geral_".$versao.".pdf");    
+      system("mv ".$pdf->arquivo_retorno." ".$dirpadrao."/geral_".$versao.".pdf");
       $arquivo_gerado = $dirpadrao."/geral_".$versao.".pdf#Arquivo Gerado em: ".$dirpadrao."/geral_".$versao.".pdf";
       break;
-    
+
     }else{
-    
-      $nomearq = split(" ",$at01_nomecli);
+
+      $nomearq =explode(" ",$at01_nomecli);
       $nomearq = strtolower($nomearq[0])."_".$versao.".pdf";
-    
-      system("mv ".$pdf->arquivo_retorno." ".$dirpadrao."/$nomearq");    
+
+      system("mv ".$pdf->arquivo_retorno." ".$dirpadrao."/$nomearq");
       $arquivo_gerado .= $separador_download."$dirpadrao/".$nomearq."#Arquivo Gerado em: $dirpadrao/".$nomearq;
 
-    
+
       $separador_download = "|";
     }
   }else{
     $pdf->Output();
     break;
   }
-  
-  
+
+
 }
 if( isset($cliente) ){
   echo "<script>";

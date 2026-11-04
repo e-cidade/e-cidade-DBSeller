@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -120,7 +120,7 @@
             <fieldset style="margin-top: 50px;">
               <legend><b>Cadastro Hidrometros - Exclusão</b></legend>
               <center>
-                <?
+                <?php
 	            include(modification("forms/db_frmaguahidromatric.php"));
                 ?>
               </center>
@@ -129,7 +129,7 @@
         </tr>
       </table>
     </center>    
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),
@@ -143,7 +143,7 @@
   js_tabulacaoforms("form1", "excluir", true, 1, "excluir", true);
 </script>
 
-<?
+<?php
   if (isset($excluir)) {
     
     db_msgbox($erro_msg);

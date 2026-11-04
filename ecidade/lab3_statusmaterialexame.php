@@ -47,7 +47,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
   <style>
     .gridExames {
-      width: 750px;
+      width: 1300px;
       margin: auto;
     }
   </style>
@@ -124,7 +124,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   gridExames.configure({order: false, height: 200});
   gridExames.addColumn('descricao', {label: 'Exame', width: '40%'});
   gridExames.addColumn('situacao', {label: 'Situação', width: '20%'});
-  gridExames.addColumn('motivo', {label: 'Motivo Nova Coleta', width: '40%'});
+  gridExames.addColumn('motivo', {label: 'Motivo', width: '40%'});
   gridExames.show($('gridExames'));
 
   const buscaMateriais = (codigoMaterial = null) => {
@@ -163,8 +163,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 
     for (var i = 0; i < listaExames.length; i++) {
       var motivo = '';
-      if(listaExames[i].la21_motivonovacoleta > 30){
-        motivo = listaExames[i].la21_motivonovacoleta.substr(0, 30);
+      if(listaExames[i].la21_motivonovacoleta.length > 75){
+        motivo = listaExames[i].la21_motivonovacoleta.substr(0, 75);
         motivo += '...'
       }else if(listaExames[i].la21_motivonovacoleta != ''){
         motivo = listaExames[i].la21_motivonovacoleta;
@@ -196,12 +196,16 @@ require_once(modification("dbforms/db_funcoes.php"));
     for(var i = 0; i < trs.length; i++){
       if(trs[i].children[1].childNodes[0].data == '90 - Nova Coleta' || trs[i].children[1].childNodes[0].data == '40 - Nova Coleta'){
         //vermelho
-        trs[i].setAttribute('style', 'background-color: #FB9C9C');
+        trs[i].setAttribute('style', 'background-color: gold');
       } else if (trs[i].children[1].childNodes[0].data == '70 - Entregue' || trs[i].children[1].childNodes[0].data == '60 - Conferido'){
         //verde
         trs[i].setAttribute('style', 'background-color: #80b554');
+      } else if(trs[i].children[1].childNodes[0].data == '45 - Em processamento'){
+        trs[i].setAttribute('style', 'background-color: lightblue');
+      } else if(trs[i].children[1].childNodes[0].data == '80 - Amostra Rejeitada - Nova Coleta'){
+        trs[i].setAttribute('style', 'background-color: lightcoral');
       }
-
+      
       if(trs[i].children[2].childNodes[0].data != ""){
         trs[i].children[2].setAttribute('title', listaExames[i].la21_motivonovacoleta);
       };

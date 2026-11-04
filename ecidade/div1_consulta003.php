@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@
   <tr>
     <td align="center" valign="middle">
 <table width="95%" border="1" cellspacing="0" class='tab_cinza'>
-      <?
+      <?php
 	if (isset($codDiv)){
 		$sql    = $cldivida->sql_query($codDiv,"*, v93_termo",null," v01_coddiv = $codDiv and v01_instit = ".db_getsession('DB_instit'));
 		$result = $cldivida->sql_record($sql);
@@ -122,13 +122,13 @@
       <td align="left" width="15%"nowrap>&nbsp;	  </td>
       <td align="left" width="35%" nowrap>&nbsp;	  </td>
     </tr>
-<?
+<?php
 		}else{
 ?>
     <tr>
       <th align="center">&nbsp;Dívida não localizada </th>
     </tr>
-<?
+<?php
 		}
 	}else if (isset($codCert)){
 		$sql = $clcertid->sql_query($codCert);
@@ -159,7 +159,7 @@
 	  </td>
       <td align="left" width="15%" nowrap>&nbsp;<input type="button" value="Texto" name="texto" id="texto" onclick="parent.js_abreJanelaTextoCertidao(<?=$v13_certid?>)">
 	  </td>
-<?
+<?php
 		$sql = $clcertdiv->sql_query($v13_certid);
 		$result = $clcertdiv->sql_record($sql);
 			if(pg_numrows($result)!=0){
@@ -172,7 +172,7 @@
 	  <iframe name="iframe_lov" width="100%" height="100%" align="center" marginwidth="0" marginheight="0" frameborder="0" src="div1_consulta002.php?certidNorm=<?=$v13_certid?>&funcao_js=parent.CurrentWindow.corpo.js_abreJanelaDadosDivida|0"></iframe>
 	  </td>
     </tr>
-<?
+<?php
 			}else{
 ?>
       <td align="left" width="35%" nowrap>&nbsp;Certidão de parcelamento&nbsp;
@@ -183,7 +183,7 @@
 	  <iframe name="iframe_lov" width="100%" height="100%" align="center" marginwidth="0" marginheight="0" frameborder="0" src="div1_consulta002.php?certidParc=<?=$v13_certid?>&funcao_js=parent.CurrentWindow.corpo.js_abreJanelaDadosTermo|0"></iframe>
 	  </td>
     </tr>
-<?
+<?php
 			}
 		}else{
 ?>
@@ -191,7 +191,7 @@
       <td align="center">&nbsp;Certidão não localizada&nbsp;
 	  </td>
     </tr>
-<?
+<?php
 		}
 	}else if(isset($codTerm)){
 		$sql = $cltermo->sql_query($codTerm);
@@ -261,7 +261,7 @@
 	  </td>
       <td align="left" width="15%" nowrap>&nbsp;<input type="button" value="Texto" name="texto" id="texto" onclick="parent.js_abreJanelaTextoTermo(<?=$v07_parcel?>)">
 	  </td>
-<?
+<?php
 		$sql = $cltermodiv->sql_query($v07_parcel);
 		$result = $cltermodiv->sql_record($sql);
 			if(pg_numrows($result)!=0){
@@ -274,7 +274,7 @@
 	  <iframe name="iframe_lov" width="100%" height="100%" align="center" marginwidth="0" marginheight="0" frameborder="0" src="div1_consulta002.php?termoNorm=<?=$v07_parcel?>&funcao_js=parent.CurrentWindow.corpo.js_abreJanelaDadosDivida|0"></iframe>
 	  </td>
     </tr>
-<?
+<?php
 			}else{
 ?>
       <td align="left" width="35%" nowrap>&nbsp;Parcelamento de divida inicial&nbsp;
@@ -285,7 +285,7 @@
 	  <iframe name="iframe_lov" width="100%" height="100%" align="center" marginwidth="0" marginheight="0" frameborder="0" src="div1_consulta002.php?termoInicial=<?=$v07_parcel?>&funcao_js=parent.CurrentWindow.corpo.js_abreJanelaDadosInicial|0"></iframe>
 	  </td>
     </tr>
-<?
+<?php
 			}
 		}else{
 ?>
@@ -293,11 +293,11 @@
       <td align="center">&nbsp;Termo não localizado&nbsp;
 	  </td>
     </tr>
-<?
+<?php
 		}
 ?>
 
-<?
+<?php
 	}else if(isset($codInicial)){
 		$sql = $clinicial->sql_query($codInicial);
 		$result = $clinicial->sql_record($sql);
@@ -334,14 +334,14 @@
 	  <iframe name="iframe_lov" width="100%" height="100%" align="center" marginwidth="0" marginheight="0" frameborder="0" src="div1_consulta002.php?iniCert=<?=$inicial?>&funcao_js=parent.CurrentWindow.corpo.js_abreJanelaDadosTermo|0"></iframe>
 	  </td>
     </tr>
-<?
+<?php
 		}else{
 ?>
     <tr>
       <td align="center">&nbsp;Parcela Inicial não existente
 	  </td>
     </tr>
-<?
+<?php
 	}
 	}else{
 ?>
@@ -349,7 +349,7 @@
       <td align="center">&nbsp;Página solicitada incorretamente
 	  </td>
     </tr>
-<?
+<?php
 	}
 ?>
 </table>

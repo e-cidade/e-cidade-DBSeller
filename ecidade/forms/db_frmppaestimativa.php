@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("o01_descricao");
        <?=@$Lo05_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o05_sequencial',10,$Io05_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To05_ppalei?>">
-       <?
+       <?php
        db_ancora(@$Lo05_ppalei,"js_pesquisao05_ppalei(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o05_ppalei',10,$Io05_ppalei,true,'text',$db_opcao," onchange='js_pesquisao05_ppalei(false);'")
 ?>
-       <?
+       <?php
 db_input('o01_descricao',100,$Io01_descricao,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('o01_descricao',100,$Io01_descricao,true,'text',3,'')
        <?=@$Lo05_anoreferencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('o05_anoreferencia',4,$Io05_anoreferencia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('o05_anoreferencia',4,$Io05_anoreferencia,true,'text',$db_opcao,"")
        <?=@$Lo05_base?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('o05_base',$x,true,$db_opcao,"");
 ?>
@@ -84,7 +84,7 @@ db_select('o05_base',$x,true,$db_opcao,"");
        <?=@$Lo05_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o05_valor',10,$Io05_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ppaestimativa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

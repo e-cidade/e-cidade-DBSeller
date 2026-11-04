@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -664,7 +664,7 @@ if(isset($reenviar)){
   <tr align="center" >
     <center>
   <br><br><br>
-        <?
+        <?php
 	if(isset($gerar) or isset($reenviar) or isset($verificar)){
           if ($primeiro == true and $processados > 0) {
 	    $conteudo = implode('', file($arqgerado));
@@ -688,13 +688,13 @@ if(isset($reenviar)){
 
   <tr align="center" height="60">
     <td colspan="2">
-      <?
+      <?php
         $resobrasenvio = $clobrasenvio->sql_record($clobrasenvio->sql_query("","*","",""));
 	$arr = array();
 	if ($clobrasenvio->numrows > 0) {
           ?>
           <b>ARQUIVOS JÁ GERADOS E ENVIADOS:</b>
-          <?
+          <?php
 	  for($i=0; $i<$clobrasenvio->numrows; $i++){
 	    db_fieldsmemory($resobrasenvio,$i);
 	    $arr[$ob16_codobrasenvio] = db_formatar($ob16_data,'d') . " - $ob16_hora - período: " . db_formatar($ob16_dtini,'d') . " a " . db_formatar($ob16_dtfim,'d') . " - $login";
@@ -704,7 +704,7 @@ if(isset($reenviar)){
 	    <td align='center' colspan='2'>
 	      <input name="reenviar" type="submit" value="Reenviar" >
 	    </td>
-	  <?
+	  <?php
 	}
       ?>
     </td>
@@ -726,11 +726,11 @@ if(isset($reenviar)){
     <td valign='center' nowrap align="center" >
       <strong>Período das Obras:</strong>
        
-<?
+<?php
 db_inputdata('dtini',@$dtini_dia,@$dtini_mes,@$dtini_ano,true,'text',1,"")
 ?>
 <strong>&nbsp;À&nbsp;</strong>
-<?
+<?php
 db_inputdata('dtfim',@$dtfim_dia,@$dtfim_mes,@$dtfim_ano,true,'text',1,"")
 ?>
     </td>
@@ -751,7 +751,7 @@ db_inputdata('dtfim',@$dtfim_dia,@$dtfim_mes,@$dtfim_ano,true,'text',1,"")
   </center>
 </table>  
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

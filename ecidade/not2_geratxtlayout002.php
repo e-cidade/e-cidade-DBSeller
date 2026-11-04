@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -88,7 +88,7 @@ $oLayoutTXT = new db_layouttxt(82, $sNomeArquivo);
 </body>
 </html>
 
-<?
+<?php
 
 $sSqlDadosCarne = "select ( select riNumcgm from fc_busca_envolvidos(true,regra,tipo_origem,origem) limit 1) as codigo_cgm,";
 $sSqlDadosCarne .= "       ( select rvNome   from fc_busca_envolvidos(true,regra,tipo_origem,origem) limit 1) as nome_contribuinte,";

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,16 +53,16 @@ if(isset($incluir)){
 </head>
 <body class="body-default">
   <div class="container">
-  	<?
+  	<?php
   	 include(modification("forms/db_frmfunerarias.php"));
   	?>
   </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clfunerarias->erro_status=="0"){
     $clfunerarias->erro(true,false);

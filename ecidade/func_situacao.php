@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clsituacao->rotulo->label("v52_descr");
               <?=$Lv52_codsit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v52_codsit",6,$Iv52_codsit,true,"text",4,"","chave_v52_codsit");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsituacao->rotulo->label("v52_descr");
               <?=$Lv52_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v52_descr",40,$Iv52_descr,true,"text",4,"","chave_v52_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsituacao->rotulo->label("v52_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_situacao.php")==true){
@@ -122,12 +122,12 @@ $clsituacao->rotulo->label("v52_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

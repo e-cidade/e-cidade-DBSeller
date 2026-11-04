@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,22 +63,22 @@ if(isset($db_opcaoal)){
        <?=@$Ldb42_sysfuncoesparam?>
     </td>
     <td> 
-<?
+<?php
 db_input('db42_sysfuncoesparam',10,$Idb42_sysfuncoesparam,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb42_funcao?>">
-       <?
+       <?php
        db_ancora(@$Ldb42_funcao,"js_pesquisadb42_funcao(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db42_funcao',5,$Idb42_funcao,true,'text',3," onchange='js_pesquisadb42_funcao(false);'")
 ?>
-       <?
+       <?php
 db_input('nomefuncao',50,$Inomefuncao,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('nomefuncao',50,$Inomefuncao,true,'text',3,'')
        <?=@$Ldb42_ordem?>
     </td>
     <td> 
-<?
+<?php
 db_input('db42_ordem',5,$Idb42_ordem,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,12 +98,12 @@ db_input('db42_ordem',5,$Idb42_ordem,true,'text',$db_opcao,"")
        <?=@$Ldb42_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('db42_nome',20,$Idb42_nome,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
-<?
+<?php
 
  $sql = " select pg_type.typname,
                  case
@@ -132,7 +132,7 @@ db_input('db42_nome',20,$Idb42_nome,true,'text',$db_opcao,"")
        <?=@$Ldb42_tipo?>
     </td>
     <td> 
-<?
+<?php
 //db_input('db42_tipo',20,$Idb42_tipo,true,'text',$db_opcao,"")
 db_select('db42_tipo',$elementos,'',$db_opcao,"","","");
 ?>
@@ -143,7 +143,7 @@ db_select('db42_tipo',$elementos,'',$db_opcao,"","","");
        <?=@$Ldb42_tamanho?>
     </td>
     <td> 
-<?
+<?php
 db_input('db42_tamanho',10,$Idb42_tamanho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_input('db42_tamanho',10,$Idb42_tamanho,true,'text',$db_opcao,"")
        <?=@$Ldb42_precisao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db42_precisao',10,$Idb42_precisao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('db42_precisao',10,$Idb42_precisao,true,'text',$db_opcao,"")
        <?=@$Ldb42_valor_default?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db42_valor_default',1,50,$Idb42_valor_default,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ db_textarea('db42_valor_default',1,50,$Idb42_valor_default,true,'text',$db_opcao
        <?=@$Ldb42_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db42_descricao',5,50,$Idb42_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -188,7 +188,7 @@ db_textarea('db42_descricao',5,50,$Idb42_descricao,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("db42_sysfuncoesparam"=>@$db42_sysfuncoesparam);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //   echo $cldb_sysfuncoesparam->sql_query_file(null,"*",null," db42_funcao = $db42_funcao " );

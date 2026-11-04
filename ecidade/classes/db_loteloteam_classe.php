@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE loteloteam
-class cl_loteloteam { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j34_idbql = 0; 
-   var $j34_loteam = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_loteloteam {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j34_idbql = 0;
+   var $j34_loteam = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j34_idbql = int4 = Cód. Lote 
-                 j34_loteam = int4 = Cód. Loteamento 
+                 j34_idbql = int4 = Cód. Lote
+                 j34_loteam = int4 = Cód. Loteamento
                  ";
-   //funcao construtor da classe 
-   function cl_loteloteam() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("loteloteam"); 
+     $this->rotulo = new rotulo("loteloteam");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_loteloteam {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j34_idbql = ($this->j34_idbql == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_idbql"]:$this->j34_idbql);
        $this->j34_loteam = ($this->j34_loteam == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_loteam"]:$this->j34_loteam);
@@ -75,11 +75,11 @@ class cl_loteloteam {
      }
    }
    // funcao para inclusao
-   function incluir ($j34_idbql,$j34_loteam){ 
+   public function incluir ($j34_idbql,$j34_loteam){
       $this->atualizacampos();
-       $this->j34_idbql = $j34_idbql; 
-       $this->j34_loteam = $j34_loteam; 
-     if(($this->j34_idbql == null) || ($this->j34_idbql == "") ){ 
+       $this->j34_idbql = $j34_idbql;
+       $this->j34_loteam = $j34_loteam;
+     if(($this->j34_idbql == null) || ($this->j34_idbql == "") ){
        $this->erro_sql = " Campo j34_idbql nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -87,7 +87,7 @@ class cl_loteloteam {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->j34_loteam == null) || ($this->j34_loteam == "") ){ 
+     if(($this->j34_loteam == null) || ($this->j34_loteam == "") ){
        $this->erro_sql = " Campo j34_loteam nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -96,15 +96,15 @@ class cl_loteloteam {
        return false;
      }
      $sql = "insert into loteloteam(
-                                       j34_idbql 
-                                      ,j34_loteam 
+                                       j34_idbql
+                                      ,j34_loteam
                        )
                 values (
-                                $this->j34_idbql 
-                               ,$this->j34_loteam 
+                                $this->j34_idbql
+                               ,$this->j34_loteam
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->j34_idbql."-".$this->j34_loteam) nao Incluído. Inclusao Abortada.";
@@ -138,16 +138,16 @@ class cl_loteloteam {
        $resac = db_query("insert into db_acount values($acount,21,86,'','".AddSlashes(pg_result($resaco,0,'j34_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j34_idbql=null,$j34_loteam=null) { 
+   public function alterar ($j34_idbql=null,$j34_loteam=null) {
       $this->atualizacampos();
      $sql = " update loteloteam set ";
      $virgula = "";
-     if(trim($this->j34_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_idbql"])){ 
+     if(trim($this->j34_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_idbql"])){
        $sql  .= $virgula." j34_idbql = $this->j34_idbql ";
        $virgula = ",";
-       if(trim($this->j34_idbql) == null ){ 
+       if(trim($this->j34_idbql) == null ){
          $this->erro_sql = " Campo Cód. Lote nao Informado.";
          $this->erro_campo = "j34_idbql";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_loteloteam {
          return false;
        }
      }
-     if(trim($this->j34_loteam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){ 
-        if(trim($this->j34_loteam)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){ 
-           $this->j34_loteam = "0" ; 
-        } 
+     if(trim($this->j34_loteam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){
+        if(trim($this->j34_loteam)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){
+           $this->j34_loteam = "0" ;
+        }
        $sql  .= $virgula." j34_loteam = $this->j34_loteam ";
        $virgula = ",";
      }
@@ -186,7 +186,7 @@ class cl_loteloteam {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j34_idbql."-".$this->j34_loteam;
@@ -214,14 +214,14 @@ class cl_loteloteam {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j34_idbql=null,$j34_loteam=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j34_idbql=null,$j34_loteam=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j34_idbql,$j34_loteam));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -255,7 +255,7 @@ class cl_loteloteam {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j34_idbql."-".$j34_loteam;
@@ -283,11 +283,11 @@ class cl_loteloteam {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -309,10 +309,10 @@ class cl_loteloteam {
       }
      return $result;
    }
-   function sql_query ( $j34_idbql=null,$j34_loteam=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j34_idbql=null,$j34_loteam=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -329,23 +329,23 @@ class cl_loteloteam {
      $sql2 = "";
      if($dbwhere==""){
        if($j34_idbql!=null ){
-         $sql2 .= " where loteloteam.j34_idbql = $j34_idbql "; 
-       } 
+         $sql2 .= " where loteloteam.j34_idbql = $j34_idbql ";
+       }
        if($j34_loteam!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " loteloteam.j34_loteam = $j34_loteam "; 
-       } 
+         }
+         $sql2 .= " loteloteam.j34_loteam = $j34_loteam ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -354,10 +354,10 @@ class cl_loteloteam {
      }
      return $sql;
   }
-   function sql_query_file ( $j34_idbql=null,$j34_loteam=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j34_idbql=null,$j34_loteam=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -370,23 +370,23 @@ class cl_loteloteam {
      $sql2 = "";
      if($dbwhere==""){
        if($j34_idbql!=null ){
-         $sql2 .= " where loteloteam.j34_idbql = $j34_idbql "; 
-       } 
+         $sql2 .= " where loteloteam.j34_idbql = $j34_idbql ";
+       }
        if($j34_loteam!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " loteloteam.j34_loteam = $j34_loteam "; 
-       } 
+         }
+         $sql2 .= " loteloteam.j34_loteam = $j34_loteam ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

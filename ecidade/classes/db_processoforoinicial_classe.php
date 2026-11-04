@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE processoforoinicial
 class cl_processoforoinicial { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v71_sequencial = 0; 
-   var $v71_id_usuario = 0; 
-   var $v71_inicial = 0; 
-   var $v71_processoforo = 0; 
-   var $v71_data_dia = null; 
-   var $v71_data_mes = null; 
-   var $v71_data_ano = null; 
-   var $v71_data = null; 
-   var $v71_anulado = 'f'; 
+   public $v71_sequencial = 0; 
+   public $v71_id_usuario = 0; 
+   public $v71_inicial = 0; 
+   public $v71_processoforo = 0; 
+   public $v71_data_dia = null; 
+   public $v71_data_mes = null; 
+   public $v71_data_ano = null; 
+   public $v71_data = null; 
+   public $v71_anulado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v71_sequencial = int4 = Código Sequencial 
                  v71_id_usuario = int4 = Id usuário 
                  v71_inicial = int4 = Inicial 
@@ -61,13 +61,13 @@ class cl_processoforoinicial {
                  v71_anulado = bool = Anulado 
                  ";
    //funcao construtor da classe 
-   function cl_processoforoinicial() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforoinicial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_processoforoinicial {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v71_sequencial = ($this->v71_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v71_sequencial"]:$this->v71_sequencial);
        $this->v71_id_usuario = ($this->v71_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["v71_id_usuario"]:$this->v71_id_usuario);
@@ -96,7 +96,7 @@ class cl_processoforoinicial {
      }
    }
    // funcao para inclusao
-   function incluir ($v71_sequencial){ 
+   public function incluir ($v71_sequencial){ 
       $this->atualizacampos();
      if($this->v71_id_usuario == null ){ 
        $this->erro_sql = " Campo Id usuário nao Informado.";
@@ -231,7 +231,7 @@ class cl_processoforoinicial {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($v71_sequencial=null) { 
+   public function alterar ($v71_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update processoforoinicial set ";
      $virgula = "";
@@ -385,7 +385,7 @@ class cl_processoforoinicial {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($v71_sequencial=null,$dbwhere=null) { 
+   public function excluir ($v71_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v71_sequencial));
      }else{ 
@@ -451,7 +451,7 @@ class cl_processoforoinicial {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -474,7 +474,7 @@ class cl_processoforoinicial {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $v71_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $v71_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -518,7 +518,7 @@ class cl_processoforoinicial {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $v71_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $v71_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -550,6 +550,21 @@ class cl_processoforoinicial {
        }
      }
      return $sql;
+  }
+
+  /**
+   * @param $sequencialTermo
+   */
+  public function sql_buscaProcessosForo($sequencialTermo)
+  {
+    $sql = "select
+              processoforoinicial.v71_processoforo
+            from termo
+              inner join termoini ON termoini.parcel = termo.v07_parcel
+              inner join juridico.inicial ON inicial.v50_inicial = termoini.inicial
+              inner join juridico.processoforoinicial ON processoforoinicial.v71_inicial = inicial.v50_inicial
+            where v07_parcel = $sequencialTermo";
+    return $sql;
   }
 }
 ?>

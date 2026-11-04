@@ -183,7 +183,7 @@ $oRotulo->label("z01_v_nome");
     </fieldset>
     <input name='start' type='button' value='Gerar' onclick="js_mandaDados()">
     </form>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),
             db_getsession("DB_modulo"),
             db_getsession("DB_anousu"),

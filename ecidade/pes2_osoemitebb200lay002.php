@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,14 +63,14 @@ try {
   $oDadosArquivoBancario = db_utils::fieldsMemory($rsArquivoBancario,0);
 
   if(isset($oGet->datageracao) && $oGet->datageracao!=""){
-    $datag = split('-',$oGet->datageracao);
+    $datag =explode('-',$oGet->datageracao);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($oGet->datadeposito) && $oGet->datadeposito!=""){
-    $datad = split('-',$oGet->datadeposito);
+    $datad =explode('-',$oGet->datadeposito);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];

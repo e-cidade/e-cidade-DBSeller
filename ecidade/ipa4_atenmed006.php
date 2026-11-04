@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ function js_fechar() {
 </head>
 
 <body bgcolor=#CCCCCC onLoad="js_iniciar()">
-<textarea name="texto" cols="70" rows="25" id="texto" <? echo $readonly=="0"?"readonly":"" ?>></textarea>
+<textarea name="texto" cols="70" rows="25" id="texto" <?php echo $readonly=="0"?"readonly":"" ?>></textarea>
 <br>
 <input name="fechar" type="button" onClick="js_fechar()" id="fechar" value="Fechar">
 </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
   db_app::load('strings.js');
   db_app::load('scripts.js');
   db_app::load('datagrid.widget.js');
@@ -78,7 +78,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 		              <b>Número:</b>
 			          </td>
 			          <td colspan="3">
-			            <?
+			            <?php
 			              db_input('ov01_sequencial',10,'',true,'hidden',3,'');
 	                  db_input('ov01_numero'    ,10,'',true,'text',3,'');
 			            ?>
@@ -89,7 +89,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
                   <b>Usuário:</b>
                 </td>
                 <td colspan="3">
-                  <?
+                  <?php
                     db_input('ov01_usuario'  ,10,'',true,'text',3,'');
                     db_input('nome',50,'',true,'text',3,'');
                   ?>
@@ -100,7 +100,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
                   <b>Departamento:</b>
                 </td>
                 <td colspan="3">
-                  <?
+                  <?php
                     db_input('ov01_depart'  ,10,'',true,'text',3,'');
                     db_input('descrdepto',50,'',true,'text',3,'');
                   ?>
@@ -111,7 +111,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 	                <b>Data da Criação:</b>
 	              </td>
 	              <td>
-	                <?
+	                <?php
 	                  
 	                  if ( trim($ov01_dataatend) != '' ) {
 		                  $aDataAtend= explode('-',$ov01_dataatend);
@@ -127,7 +127,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 	                <b>Hora Inclusão:</b>
 	              </td>
 	              <td align="right">
-	                <?
+	                <?php
 	                  db_input('ov01_horaatend',10,'',true,'text',3,'');
 	                ?>
 	              </td>             
@@ -137,7 +137,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 	                <b>Requerente:</b>
 	              </td>
 	              <td colspan="3">
-	                <?
+	                <?php
 	                  db_input('ov01_requerente',63,'',true,'text',3,'');
 	                ?>
 	              </td>
@@ -147,7 +147,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 	                <b>Solicitação:</b>
 	              </td>
 	              <td colspan="3">
-	                <?
+	                <?php
 	                  db_textarea('ov01_solicitacao',5,61,'',true,'text',3);
 	                ?>
 	              </td>
@@ -168,7 +168,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
                   <table>
                     <tr>
                       <td>
-			                   <?
+			                   <?php
 			                     db_textarea('ov20_informa',5,35,'',true,'text',1);
 			                   ?>
                       </td>
@@ -184,7 +184,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
                   <table>
                     <tr>
                       <td>
-                         <?
+                         <?php
                            db_textarea('ov20_resposta',5,35,'',true,'text',1);
                          ?>
                       </td>
@@ -204,7 +204,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 			          <b>Tipo de Retorno:</b>
 			        </td>
 			        <td>
-			          <?
+			          <?php
 			            $sWhereTipoRetorno = " ov17_ouvidoriaatendimento = {$oGet->iCodAtendimento} ";
 			            $sSqlTipoRetorno   = $clOuvidoriaAtendimentoTipoRetorno->sql_query(null,"ov17_tiporetorno,ov22_descricao",null,$sWhereTipoRetorno);
 			            $rsTipoRetorno     = $clOuvidoriaAtendimentoTipoRetorno->sql_record($sSqlTipoRetorno);
@@ -241,13 +241,13 @@ require_once(modification("dbforms/verticalTab.widget.php"));
               <tr>
                 <td>
                   <b>
-                  <?
+                  <?php
                     db_ancora('Departamento:','js_mostraDepartamento(true);',1,'');
                   ?>
                   </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('ordem'        ,10,'',true,'hidden',1,"");
                     db_input('deptorec'     ,10,'',true,'text',1,"onChange='js_mostraDepartamento(false);'");
                     db_input('descrdeptorec',50,'',true,'text',3,'');
@@ -274,7 +274,7 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 					  <legend>
 					    <b>Detalhamento Retorno</b>
 					  </legend>
-						<?
+						<?php
 							$oTabDetalhes = new verticalTab("detalhesretorno",200);
 							$oTabDetalhes->add("1","Pessoalmente"       ,"ouv1_detalhesretornoender001.php?iCodAtendimento={$ov01_sequencial}");
 							$oTabDetalhes->add("3","Email"              ,"ouv1_detalhesretornoemail001.php?iCodAtendimento={$ov01_sequencial}");

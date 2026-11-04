@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,8 +41,9 @@ require_once(modification("classes/db_inflan_classe.php"));
 
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
+
 $cldiversos = new cl_diversos;
 $clinflan = new cl_inflan;
 $clprocdiver = new cl_procdiver;
@@ -95,8 +96,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   $sqlerro=false;
 
   if($dv05_numtot=="1"){
-    $HTTP_POST_VARS["dv05_diaprox"]=$dv05_privenc_dia;
-    $HTTP_POST_VARS["dv05_provenc"]=$dv05_privenc_ano.$dv05_privenc_mes.$dv05_privenc_dia;
+    $_POST["dv05_diaprox"]=$dv05_privenc_dia;
+    $_POST["dv05_provenc"]=$dv05_privenc_ano.$dv05_privenc_mes.$dv05_privenc_dia;
     $cldiversos->dv05_provenc=$dv05_privenc_ano.$dv05_privenc_mes.$dv05_privenc_dia;
     $cldiversos->dv05_provenc_dia=$dv05_privenc_dia;
     $cldiversos->dv05_provenc_mes=$dv05_privenc_mes;
@@ -300,17 +301,17 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </head>
 <body bgcolor=#CCCCCC>
 
-	<?
+	<?php
 	include(modification("forms/db_frmdiversosalt.php"));
 	?>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
-if((isset($HTTP_POST_VARS["db_opcao"]))){
+<?php
+if((isset($_POST["db_opcao"]))){
 if($cldiversos->erro_status=="0"){
   $cldiversos->erro(true,false);
   $db_botao=true;

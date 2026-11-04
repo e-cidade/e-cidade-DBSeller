@@ -275,12 +275,12 @@ where socio+sind > 0
         <strong>Ano / Ms :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $ano = db_anofolha();
            db_input('ano',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes = db_mesfolha();
            db_input('mes',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -289,7 +289,7 @@ where socio+sind > 0
       <tr>
         <td align="right"><b>Tipo de Arquivo :&nbsp;&nbsp;<b></td>
 	<td align="left">
-	<?
+	<?php
 	  $arr = array('D'=>'Desconto','S'=>'Socios','F'=>'Funcionrios');
 	  db_select("func",$arr,true,1);
 	?>

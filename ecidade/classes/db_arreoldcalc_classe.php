@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,13 +69,13 @@ class cl_arreoldcalc {
                  k00_vlrdes = float8 = Valor do desconto 
                  ";
    //funcao construtor da classe 
-   function cl_arreoldcalc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arreoldcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_arreoldcalc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_arreoldcalc = ($this->k00_arreoldcalc == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_arreoldcalc"]:$this->k00_arreoldcalc);
        $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
@@ -108,7 +108,7 @@ class cl_arreoldcalc {
      }
    }
    // funcao para inclusao
-   function incluir ($k00_arreoldcalc){ 
+   public function incluir ($k00_arreoldcalc){ 
       $this->atualizacampos();
      if($this->k00_numpre == null ){ 
        $this->erro_sql = " Campo Numpre nao Informado.";
@@ -291,7 +291,7 @@ class cl_arreoldcalc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k00_arreoldcalc=null) { 
+   public function alterar ($k00_arreoldcalc=null) { 
       $this->atualizacampos();
      $sql = " update arreoldcalc set ";
      $virgula = "";
@@ -505,7 +505,7 @@ class cl_arreoldcalc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k00_arreoldcalc=null,$dbwhere=null) { 
+   public function excluir ($k00_arreoldcalc=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k00_arreoldcalc));
      }else{ 
@@ -575,7 +575,7 @@ class cl_arreoldcalc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

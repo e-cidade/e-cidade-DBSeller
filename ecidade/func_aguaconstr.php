@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $claguaconstr->rotulo->label("x11_matric");
               <?=$Lx11_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x11_seq",6,$Ix11_seq,true,"text",4,"","chave_x11_seq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claguaconstr->rotulo->label("x11_matric");
               <?=$Lx11_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x11_matric",10,$Ix11_matric,true,"text",4,"","chave_x11_matric");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claguaconstr->rotulo->label("x11_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguaconstr.php")==true){
@@ -118,12 +118,12 @@ $claguaconstr->rotulo->label("x11_matric");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

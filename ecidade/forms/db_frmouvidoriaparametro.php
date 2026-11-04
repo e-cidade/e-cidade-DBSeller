@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ $rsDocumentoTemplate   = $oDaoDocumentoTemplate->sql_record($sSqlDocumentoTempla
 		       <?=@$Lov06_tiponumprocesso?>
 		    </td>
 		    <td> 
-				<?
+				<?php
 				$x = array('1'=>'Sequencial infinito','2'=>'Sequencial reiniciado a cada virada de ano');
 				db_select('ov06_tiponumprocesso',$x,true,$db_opcao,"");
 				?>
@@ -78,7 +78,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_ouvidoriaparametro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

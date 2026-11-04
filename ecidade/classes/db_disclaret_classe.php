@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_disclaret {
                  codret = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_disclaret() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disclaret"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_disclaret {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codcla = ($this->codcla == ""?@$GLOBALS["HTTP_POST_VARS"]["codcla"]:$this->codcla);
        $this->codret = ($this->codret == ""?@$GLOBALS["HTTP_POST_VARS"]["codret"]:$this->codret);
@@ -75,7 +75,7 @@ class cl_disclaret {
      }
    }
    // funcao para inclusao
-   function incluir ($codcla,$codret){ 
+   public function incluir ($codcla,$codret){ 
       $this->atualizacampos();
        $this->codcla = $codcla; 
        $this->codret = $codret; 
@@ -140,7 +140,7 @@ class cl_disclaret {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($codcla=null,$codret=null) { 
+   public function alterar ($codcla=null,$codret=null) { 
       $this->atualizacampos();
      $sql = " update disclaret set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_disclaret {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($codcla=null,$codret=null,$dbwhere=null) { 
+   public function excluir ($codcla=null,$codret=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codcla,$codret));
      }else{ 
@@ -293,7 +293,7 @@ class cl_disclaret {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

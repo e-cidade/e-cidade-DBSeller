@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,7 +83,7 @@ $clrotulo->label("");
 <td  align="center" valign="top" > 
 <form name='form1'>
 <table border='0'>  
-<?
+<?php
 if (isset($veiculo)&&$veiculo!="") {
   $result=$clveiculos->sql_record($clveiculos->sql_query($veiculo));
   db_fieldsmemory($result,0);

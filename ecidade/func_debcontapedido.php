@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -61,7 +61,7 @@ $oGet             = db_utils::postMemory($HTTP_GET_VARS);
               <?=$Ld63_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("d63_codigo",10,$Id63_codigo,true,"text",4,"","chave_d63_codigo");
 		       ?>
             </td>
@@ -71,7 +71,7 @@ $oGet             = db_utils::postMemory($HTTP_GET_VARS);
               <?=$Ld63_idempresa?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
            db_input('d63_idempresa',25,$Id63_idempresa,true,"text",4,"","chave_d63_idempresa")
 		       ?>
             </td>
@@ -90,7 +90,7 @@ $oGet             = db_utils::postMemory($HTTP_GET_VARS);
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $sWhere = " d63_instit = ".db_getsession("DB_instit");
       $sAnd   = " and ";
       if(!isset($pesquisa_chave)){

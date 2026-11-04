@@ -54,13 +54,13 @@ class cl_abatimentorecibo {
                  k127_numpreoriginal = int4 = Numpre Original
                  ";
    //funcao construtor da classe
-   function cl_abatimentorecibo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentorecibo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_abatimentorecibo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k127_sequencial = ($this->k127_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k127_sequencial"]:$this->k127_sequencial);
        $this->k127_abatimento = ($this->k127_abatimento == ""?@$GLOBALS["HTTP_POST_VARS"]["k127_abatimento"]:$this->k127_abatimento);
@@ -80,7 +80,7 @@ class cl_abatimentorecibo {
      }
    }
    // funcao para Inclusão
-   function incluir ($k127_sequencial){
+   public function incluir ($k127_sequencial){
       $this->atualizacampos();
      if($this->k127_abatimento == null ){
        $this->erro_sql = " Campo Abatimento não informado.";
@@ -426,7 +426,7 @@ class cl_abatimentorecibo {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_abatimentorecibo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -466,7 +466,7 @@ class cl_abatimentorecibo {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_abatimentorecibo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

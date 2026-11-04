@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,14 +59,14 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <b>Ano / Mês:</b>
     </td>
     <td colspan="3" nowrap>
-      <?
+      <?php
       if(!isset($r45_anousu)){
         $r45_anousu = db_anofolha();
       }
       db_input('r45_anousu',4,$Ir45_anousu,true,'text',3,"");
       ?>
       <b>/</b>
-      <?
+      <?php
       if(!isset($r45_mesusu)){
         $r45_mesusu = db_mesfolha();
       }
@@ -77,12 +77,12 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr45_regist?>">
-      <?
+      <?php
       db_ancora($Lr45_regist,"js_pesquisar45_regist(true);",($db_opcao==1?1:3));
       ?>
     </td>
     <td colspan="3" nowrap>
-      <?
+      <?php
       db_input('r45_regist',6,$Ir45_regist,true,'text',($db_opcao==1?1:3),"onChange='js_pesquisar45_regist(false);'");
       db_input('z01_nome',48,$Ir45_regist,true,'text',3,"");
       ?>
@@ -93,7 +93,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <?=@$Lr45_situac?>
     </td>
     <td colspan="3" nowrap>
-      <?
+      <?php
       $dao = new cl_situacaoafastamento();
       $repository = new AfastamentoSituacaoRepository($dao);
       $situacoes = array();
@@ -110,7 +110,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <?=@$Lr45_codafa?>
     </td>
     <td colspan="3" nowrap>
-      <?
+      <?php
       $result_codfa = $clcodmovsefip->sql_record($clcodmovsefip->sql_query_file(null,null,null,"r66_codigo,r66_descr","r66_descr","r66_anousu = ".db_anofolha()." and r66_mesusu = ".db_mesfolha()." and r66_tipo = 'A'"));
       if(!isset($r45_codafa) || (isset($r45_codafa) && trim($r45_codafa) == "")){
       	db_fieldsmemory($result_codfa, 0);
@@ -125,7 +125,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <?=@$Lr45_codret?>
     </td>
     <td colspan="3" nowrap>
-      <?
+      <?php
       $arr_codre = Array();
       $result_codre = $clmovcasadassefip->sql_record($clmovcasadassefip->sql_query(db_anofolha(),db_mesfolha(),$r45_codafa,null,"r67_reto"));
       if($clmovcasadassefip->numrows == 0){
@@ -144,7 +144,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <?=@$Lr45_dtafas?>
     </td>
     <td nowrap width="40%"> 
-      <?
+      <?php
       if(!isset($r45_dtafas_dia) || (isset($r45_dtafas_dia) && trim($r45_dtafas_dia) == "")){
         $r45_dtafas_dia = date("d",db_getsession("DB_datausu"));
       }
@@ -161,7 +161,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <b>Dias:</b>
     </td>
     <td nowrap>
-      <?
+      <?php
         if($db_opcao != 1 && isset($r45_codigo)) {
           
           $oAfastamento = AfastamentoRepository::getInstanciaPorCodigo($r45_codigo);
@@ -177,7 +177,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <?=@$Lr45_dtreto?>
     </td>
     <td colspan="3" nowrap>
-      <?
+      <?php
       db_inputdata('r45_dtreto',@$r45_dtreto_dia,@$r45_dtreto_mes,@$r45_dtreto_ano,true,'text',$db_opcao,"onchange='js_somardias(2);'","","","parent.js_somardias(2);")
       ?>
     </td>
@@ -186,7 +186,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
         <?=@$Lr45_obs?>
      </td>
      <td colspan="3"> 
-      <?
+      <?php
         db_textarea('r45_obs',10,50,$Ir45_obs,true,'text',$db_opcao,"");
       ?>
      </td>    
@@ -283,7 +283,7 @@ function js_listarretorno(str_retorno){
 function js_testacampos(){
 
   mensagem = false;
-  <?
+  <?php
   if($db_opcao == 1){
     echo "mensagem = true;";
   }
@@ -452,7 +452,7 @@ function js_compara_datas(data){
 }
 function js_pesquisa(){
   qry = "";
-  <?
+  <?php
   if($db_opcao == 2 || $db_opcao == 22){
   	echo "qry = 'retorno=true&';";
   }
@@ -461,7 +461,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_afasta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

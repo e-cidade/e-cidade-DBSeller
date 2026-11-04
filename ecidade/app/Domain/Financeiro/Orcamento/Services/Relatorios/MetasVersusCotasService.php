@@ -262,7 +262,7 @@ class MetasVersusCotasService extends BaseCronograma
             }
 
             $descricao = "{$metaReceita->fonte_recurso} - {$metaReceita->descricao_recurso}";
-            if ($propriedade === 'fonte_recurso') {
+            if ($propriedade === 'codigo_recurso') {
                 $descricao .= " | $metaReceita->complemento - {$metaReceita->descricao_complemento}";
             }
 

@@ -83,7 +83,7 @@ if (isset($alterar)) {
 <script>
 js_tabulacaoforms("form1","sd02_v_cnes",true,1,"sd02_v_cnes",true);
 </script>
-<?
+<?php
 
 if (isset($alterar)) {
 

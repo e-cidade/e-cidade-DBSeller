@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: caixa
 //CLASSE DA ENTIDADE arretipo
 class cl_arretipo
@@ -60,6 +60,7 @@ class cl_arretipo
     var $k00_horainicial = null;
     var $k00_horafinal = null;
     var $k00_bloqnutil = 'f';
+    var $k00_taxaadm = 'f';
     var $k00_taxaespecifica = 0;
     var $k00_liberacarnesis = 't';
     var $k00_liberacarnepref = 't';
@@ -116,7 +117,7 @@ class cl_arretipo
                  ";
     //funcao construtor da classe
     //funcao construtor da classe
-    function cl_arretipo()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("arretipo");
@@ -124,7 +125,7 @@ class cl_arretipo
     }
     //funcao erro
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -135,7 +136,7 @@ class cl_arretipo
     }
     // funcao para atualizar campos
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->k00_codbco = ($this->k00_codbco == "" ? @$GLOBALS["HTTP_POST_VARS"]["k00_codbco"] : $this->k00_codbco);
@@ -183,6 +184,7 @@ class cl_arretipo
             $this->k00_bloqnutil = (($this->k00_bloqnutil == "" OR !empty($GLOBALS["HTTP_POST_VARS"]["k00_bloqnutil"])) ? @$GLOBALS["HTTP_POST_VARS"]["k00_bloqnutil"] : $this->k00_bloqnutil);
             $this->k00_bloqnutil = (($this->k00_bloqnutil == "" OR !empty($GLOBALS["HTTP_POST_VARS"]["k00_bloqnutil"])) ? @$GLOBALS["HTTP_POST_VARS"]["k00_bloqnutil"] : $this->k00_bloqnutil);
             $this->k00_taxaespecifica = (empty($this->k00_taxaespecifica) ? @$GLOBALS["HTTP_POST_VARS"]["k00_taxaespecifica"] : $this->k00_taxaespecifica);
+            $this->k00_taxaadm = (!empty(@$GLOBALS["HTTP_POST_VARS"]["k00_taxaadm"]) ? @$GLOBALS["HTTP_POST_VARS"]["k00_taxaadm"] : $this->k00_taxaadm);
             $this->k00_liberacarnesis = (($this->k00_liberacarnesis == "" OR !empty($GLOBALS["HTTP_POST_VARS"]["k00_liberacarnesis"])) ?@$GLOBALS["HTTP_POST_VARS"]["k00_liberacarnesis"]:$this->k00_liberacarnesis);
             $this->k00_liberacarnepref = (($this->k00_liberacarnepref == "" OR !empty($GLOBALS["HTTP_POST_VARS"]["k00_liberacarnepref"])) ?@$GLOBALS["HTTP_POST_VARS"]["k00_liberacarnepref"]:$this->k00_liberacarnepref);
 
@@ -192,7 +194,7 @@ class cl_arretipo
     }
     // funcao para Inclusão
     // funcao para Inclusão
-    function incluir($k00_tipo)
+    public function incluir($k00_tipo)
     {
         $this->atualizacampos();
         if ($this->k00_codbco == null) {
@@ -476,6 +478,17 @@ class cl_arretipo
 
             return false;
         }
+        if ($this->k00_taxaadm == null) {
+            $this->erro_sql = " Campo Bloqueia dia não util não informado.";
+            $this->erro_campo = "k00_taxaadm";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace('"', "",
+              str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_status = "0";
+
+            return false;
+        }
         $sql = "insert into arretipo(
                                        k00_codbco 
                                       ,k00_codage 
@@ -520,6 +533,7 @@ class cl_arretipo
                                       ,k00_horainicial
                                       ,k00_horafinal 
                                       ,k00_bloqnutil
+                                      ,k00_taxaadm
                                       ,k00_taxaespecifica
                                       ,k00_liberacarnesis
                                       ,k00_liberacarnepref
@@ -569,6 +583,7 @@ class cl_arretipo
                                ,'$this->k00_horainicial'
                                ,'$this->k00_horafinal'
                                ,'$this->k00_bloqnutil'
+                               ,'$this->k00_taxaadm'
                                ,$this->k00_taxaespecifica
                                ,'$this->k00_liberacarnesis'
                                ,'$this->k00_liberacarnepref'
@@ -970,6 +985,21 @@ class cl_arretipo
             if (trim($this->k00_bloqnutil) == null) {
                 $this->erro_sql = " Campo Bloqueia dia não útil não informado.";
                 $this->erro_campo = "k00_bloqnutil";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace('"', "",
+                  str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_status = "0";
+
+                return false;
+            }
+        }
+        if (trim($this->k00_taxaadm) != "" || isset($GLOBALS["HTTP_POST_VARS"]["k00_taxaadm"])) {
+            $sql .= $virgula . " k00_taxaadm = '$this->k00_taxaadm' ";
+            $virgula = ",";
+            if (trim($this->k00_taxaadm) == null) {
+                $this->erro_sql = " Campo Bloqueia dia não útil não informado.";
+                $this->erro_campo = "k00_taxaadm";
                 $this->erro_banco = "";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "",
@@ -1768,7 +1798,7 @@ class cl_arretipo
         return $sql;
     }
 
-    function sql_query_numpre($numpre, $campos = "*")
+    public function sql_query_numpre($numpre, $campos = "*")
     {
         $sql = "select  $campos 
                  from arretipo

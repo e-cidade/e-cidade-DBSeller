@@ -140,7 +140,6 @@ DBViewFormularioEducacao.ListaCalendario.prototype.getCalendarios = function () 
 DBViewFormularioEducacao.ListaCalendario.prototype.preencherCalendarios = function (oResponse) {
 
     var oSelf = this;
-    js_removeObj('msgBoxCalendario');
     var oRetorno = JSON.parse(oResponse.responseText);
     oSelf.aCalendarios = new Array();
 
@@ -159,6 +158,7 @@ DBViewFormularioEducacao.ListaCalendario.prototype.preencherCalendarios = functi
         oSelf.preencherCalendario();
     }
 
+    js_removeObj('msgBoxCalendario');
     oSelf.fCallBackAfterLoad(oSelf);
 };
 

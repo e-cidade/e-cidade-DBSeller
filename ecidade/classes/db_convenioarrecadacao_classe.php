@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE convenioarrecadacao
-class cl_convenioarrecadacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ar14_sequencial = 0; 
-   var $ar14_bancoagencia = 0; 
-   var $ar14_cadarrecadacao = 0; 
-   var $ar14_cadconvenio = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_convenioarrecadacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ar14_sequencial = 0;
+   var $ar14_bancoagencia = 0;
+   var $ar14_cadarrecadacao = 0;
+   var $ar14_cadconvenio = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ar14_sequencial = int4 = Sequêncial 
-                 ar14_bancoagencia = int4 = Banco da agência 
-                 ar14_cadarrecadacao = int4 = Arrecadação 
-                 ar14_cadconvenio = int4 = Convênio 
+                 ar14_sequencial = int4 = Sequêncial
+                 ar14_bancoagencia = int4 = Banco da agência
+                 ar14_cadarrecadacao = int4 = Arrecadação
+                 ar14_cadconvenio = int4 = Convênio
                  ";
-   //funcao construtor da classe 
-   function cl_convenioarrecadacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("convenioarrecadacao"); 
+     $this->rotulo = new rotulo("convenioarrecadacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_convenioarrecadacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ar14_sequencial = ($this->ar14_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar14_sequencial"]:$this->ar14_sequencial);
        $this->ar14_bancoagencia = ($this->ar14_bancoagencia == ""?@$GLOBALS["HTTP_POST_VARS"]["ar14_bancoagencia"]:$this->ar14_bancoagencia);
@@ -80,9 +80,9 @@ class cl_convenioarrecadacao {
      }
    }
    // funcao para inclusao
-   function incluir ($ar14_sequencial){ 
+   public function incluir ($ar14_sequencial){
       $this->atualizacampos();
-     if($this->ar14_bancoagencia == null ){ 
+     if($this->ar14_bancoagencia == null ){
        $this->erro_sql = " Campo Banco da agência nao Informado.";
        $this->erro_campo = "ar14_bancoagencia";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_convenioarrecadacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar14_cadarrecadacao == null ){ 
+     if($this->ar14_cadarrecadacao == null ){
        $this->erro_sql = " Campo Arrecadação nao Informado.";
        $this->erro_campo = "ar14_cadarrecadacao";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_convenioarrecadacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar14_cadconvenio == null ){ 
+     if($this->ar14_cadconvenio == null ){
        $this->erro_sql = " Campo Convênio nao Informado.";
        $this->erro_campo = "ar14_cadconvenio";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_convenioarrecadacao {
        return false;
      }
      if($ar14_sequencial == "" || $ar14_sequencial == null ){
-       $result = db_query("select nextval('convenioarrecadacao_ar14_sequencial_seq')"); 
+       $result = db_query("select nextval('convenioarrecadacao_ar14_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: convenioarrecadacao_ar14_sequencial_seq do campo: ar14_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: convenioarrecadacao_ar14_sequencial_seq do campo: ar14_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ar14_sequencial = pg_result($result,0,0); 
+       $this->ar14_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from convenioarrecadacao_ar14_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ar14_sequencial)){
@@ -130,10 +130,10 @@ class cl_convenioarrecadacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ar14_sequencial = $ar14_sequencial; 
+         $this->ar14_sequencial = $ar14_sequencial;
        }
      }
-     if(($this->ar14_sequencial == null) || ($this->ar14_sequencial == "") ){ 
+     if(($this->ar14_sequencial == null) || ($this->ar14_sequencial == "") ){
        $this->erro_sql = " Campo ar14_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_convenioarrecadacao {
        return false;
      }
      $sql = "insert into convenioarrecadacao(
-                                       ar14_sequencial 
-                                      ,ar14_bancoagencia 
-                                      ,ar14_cadarrecadacao 
-                                      ,ar14_cadconvenio 
+                                       ar14_sequencial
+                                      ,ar14_bancoagencia
+                                      ,ar14_cadarrecadacao
+                                      ,ar14_cadconvenio
                        )
                 values (
-                                $this->ar14_sequencial 
-                               ,$this->ar14_bancoagencia 
-                               ,$this->ar14_cadarrecadacao 
-                               ,$this->ar14_cadconvenio 
+                                $this->ar14_sequencial
+                               ,$this->ar14_bancoagencia
+                               ,$this->ar14_cadarrecadacao
+                               ,$this->ar14_cadconvenio
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Arrecadação do convênio ($this->ar14_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_convenioarrecadacao {
        $resac = db_query("insert into db_acount values($acount,2189,12541,'','".AddSlashes(pg_result($resaco,0,'ar14_cadconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ar14_sequencial=null) { 
+   public function alterar ($ar14_sequencial=null) {
       $this->atualizacampos();
      $sql = " update convenioarrecadacao set ";
      $virgula = "";
-     if(trim($this->ar14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_sequencial"])){ 
+     if(trim($this->ar14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_sequencial"])){
        $sql  .= $virgula." ar14_sequencial = $this->ar14_sequencial ";
        $virgula = ",";
-       if(trim($this->ar14_sequencial) == null ){ 
+       if(trim($this->ar14_sequencial) == null ){
          $this->erro_sql = " Campo Sequêncial nao Informado.";
          $this->erro_campo = "ar14_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_convenioarrecadacao {
          return false;
        }
      }
-     if(trim($this->ar14_bancoagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_bancoagencia"])){ 
+     if(trim($this->ar14_bancoagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_bancoagencia"])){
        $sql  .= $virgula." ar14_bancoagencia = $this->ar14_bancoagencia ";
        $virgula = ",";
-       if(trim($this->ar14_bancoagencia) == null ){ 
+       if(trim($this->ar14_bancoagencia) == null ){
          $this->erro_sql = " Campo Banco da agência nao Informado.";
          $this->erro_campo = "ar14_bancoagencia";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_convenioarrecadacao {
          return false;
        }
      }
-     if(trim($this->ar14_cadarrecadacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_cadarrecadacao"])){ 
+     if(trim($this->ar14_cadarrecadacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_cadarrecadacao"])){
        $sql  .= $virgula." ar14_cadarrecadacao = $this->ar14_cadarrecadacao ";
        $virgula = ",";
-       if(trim($this->ar14_cadarrecadacao) == null ){ 
+       if(trim($this->ar14_cadarrecadacao) == null ){
          $this->erro_sql = " Campo Arrecadação nao Informado.";
          $this->erro_campo = "ar14_cadarrecadacao";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_convenioarrecadacao {
          return false;
        }
      }
-     if(trim($this->ar14_cadconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_cadconvenio"])){ 
+     if(trim($this->ar14_cadconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar14_cadconvenio"])){
        $sql  .= $virgula." ar14_cadconvenio = $this->ar14_cadconvenio ";
        $virgula = ",";
-       if(trim($this->ar14_cadconvenio) == null ){ 
+       if(trim($this->ar14_cadconvenio) == null ){
          $this->erro_sql = " Campo Convênio nao Informado.";
          $this->erro_campo = "ar14_cadconvenio";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_convenioarrecadacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arrecadação do convênio nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ar14_sequencial;
@@ -297,14 +297,14 @@ class cl_convenioarrecadacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ar14_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ar14_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ar14_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_convenioarrecadacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arrecadação do convênio nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ar14_sequencial;
@@ -361,11 +361,11 @@ class cl_convenioarrecadacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,11 +387,11 @@ class cl_convenioarrecadacao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ar14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ar14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,15 +411,15 @@ class cl_convenioarrecadacao {
      $sql2 = "";
      if($dbwhere==""){
        if($ar14_sequencial!=null ){
-         $sql2 .= " where convenioarrecadacao.ar14_sequencial = $ar14_sequencial "; 
-       } 
+         $sql2 .= " where convenioarrecadacao.ar14_sequencial = $ar14_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,11 +428,11 @@ class cl_convenioarrecadacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ar14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ar14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,15 +445,15 @@ class cl_convenioarrecadacao {
      $sql2 = "";
      if($dbwhere==""){
        if($ar14_sequencial!=null ){
-         $sql2 .= " where convenioarrecadacao.ar14_sequencial = $ar14_sequencial "; 
-       } 
+         $sql2 .= " where convenioarrecadacao.ar14_sequencial = $ar14_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $oRotuloLabel->label("pc10_data");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0"> 
-    <?
+    <?php
       db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
       db_app::load("widgets/dbmessageBoard.widget.js, widgets/windowAux.widget.js, datagrid.widget.js");
       db_app::load("classes/DBViewSolicitacaoDotacao.classe.js");
@@ -59,34 +59,34 @@ $oRotuloLabel->label("pc10_data");
             <table>
               <tr>
                 <td>
-                  <?
+                  <?php
                    db_ancora("<b>Licitação:</b>", "js_pesquisaLicitacao(true)", 1);  
                   ?>
                 </td>
                 <td colspan="4">
-                   <?
+                   <?php
                     db_input("l20_codigo", 10, $Il20_codigo, true, 'text', 3);
                    ?>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <?
+                  <?php
                     db_ancora("<b>Solicitação:</b>", "js_pesquisaSolicitacao(true, 'inicio')", 1);
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input("pc10_numeroInicial", 10, $Ipc10_numero, true, 'text', 1);
                    ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_ancora("<b>até:</b>", "js_pesquisaSolicitacao(true, 'fim')", 1);
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input("pc10_numeroFinal", 10, $Ipc10_numero, true, 'text', 1);
                    ?>
                 </td>
@@ -96,7 +96,7 @@ $oRotuloLabel->label("pc10_data");
                   <b>Data da Solicitação:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_inputdata('pc10_datainicial', @$pc10_datainicial_dia, @$pc10_datainicial_mes, @$pc10_datainicial_ano,
                                  true, 'text', 1);
                   ?>
@@ -105,7 +105,7 @@ $oRotuloLabel->label("pc10_data");
                   <b>até</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_inputdata('pc10_datafinal', @$pc10_datafinal_dia, @$pc10_datafinal_mes, @$pc10_datafinal_ano, true,
                                  'text', 1);
                   ?>
@@ -118,7 +118,7 @@ $oRotuloLabel->label("pc10_data");
     </center>
   </body>
 </html>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ $db_botao = true;
   <form name="form1" method="post">
   <tr>
     <td colspan="2">
-    <?
+    <?php
       $arr_pontosgerfs_inicial = Array(
                                    "00" =>"Salário",
                                    "01" =>"Adiantamento",
@@ -81,12 +81,12 @@ $db_botao = true;
   <tr><td colspan="2">&nbsp;</td></tr>
   <tr>
     <td align="right" width="30%" nowrap title="<?=@$Trh45_codigo?>">
-		<?
+		<?php
 		db_ancora(@$Lrh45_codigo,"js_pesquisarh45_codigo(true);",$db_opcao);
 		?>
     </td>
     <td align="left"> 
-		<?
+		<?php
 		db_input('rh45_codigo',8,$Irh45_codigo,true,'text',$db_opcao,"onchange='js_pesquisarh45_codigo(false);'");
 		db_input('rh45_descr',40,$Irh45_descr,true,'text',3,"");
 		?>
@@ -96,7 +96,7 @@ $db_botao = true;
   <tr>
     <td colspan="2" align="center">
       <table width="100%">
-		<?
+		<?php
 		include(modification("dbforms/db_classesgenericas.php"));
 		$geraform = new cl_formulario_rel_pes;
 
@@ -142,7 +142,7 @@ $db_botao = true;
   </form>
 </table>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

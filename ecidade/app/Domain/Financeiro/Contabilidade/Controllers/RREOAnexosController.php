@@ -4,14 +4,16 @@
 namespace App\Domain\Financeiro\Contabilidade\Controllers;
 
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
+use App\Domain\Financeiro\Contabilidade\Factories\AnexoOitoFactory;
+use App\Domain\Financeiro\Contabilidade\Factories\AnexoDozeFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoQuatroFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoSeisFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoTresFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoUmFactory;
 use App\Domain\Financeiro\Contabilidade\Requests\LRF\RREO\AnexosRREORequest;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoOitoService;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresInRsService;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class RREOAnexosController extends Controller
 {
@@ -52,10 +54,22 @@ class RREOAnexosController extends Controller
 
     public function anexoOito(AnexosRREORequest $request)
     {
-        $service = new AnexoOitoService($request->all());
+        $service = AnexoOitoFactory::getService($request->get('DB_anousu'), $request->all());
         $files = $service->emitir();
 
         $msg = 'Anexo VIII - Demonstrativo das Receitas e Despesas com Manutenção e Desenvolvimento do Ensino - MDE';
         return new DBJsonResponse($files, $msg);
+    }
+
+    /**
+     * @param AnexosRREORequest $request
+     * @return DBJsonResponse
+     * @throws Exception
+     */
+    public function anexoDoze(AnexosRREORequest $request)
+    {
+        $relatorio = AnexoDozeFactory::getService($request->get('DB_anousu'), $request->all());
+        $files = $relatorio->emitir();
+        return new DBJsonResponse($files, 'Anexo XII - Despesas com saúde');
     }
 }

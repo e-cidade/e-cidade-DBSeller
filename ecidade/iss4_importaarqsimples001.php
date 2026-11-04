@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,7 +73,7 @@ $dVlrTotal                    = 0;
               <strong>Arquivo de Retorno:</strong>
            </td>
            <td>
-             <?
+             <?php
                db_input('arquivo',30,'',true,'file',$db_opcao,"onChange=\"if (this.value != ''){\$('db_opcao').disabled=false};\"",'','','');
              ?>
            </td>
@@ -179,7 +179,24 @@ if (isset($objPost->importar)) {
               $clissarqsimplesreg->q23_seqreg        = substr($linhaArq[$j] ,1  ,8);
               $clissarqsimplesreg->q23_dtarrec       = substr($linhaArq[$j] ,9  ,8);
               $clissarqsimplesreg->q23_dtvenc        = substr($linhaArq[$j] ,9  ,8);
-              $clissarqsimplesreg->q23_cnpj          = substr($linhaArq[$j] ,74 ,14);
+
+              /**
+               * Verifica se o primeiro CNPJ
+               * e valido se nao verifica da segunda posicao
+               */
+              $cnpj = substr($linhaArq[$j], 74, 14);
+              $cnpjEmOutraPos = substr($linhaArq[$j], 54, 14);
+              $clissarqsimplesreg->q23_cnpj = (\DBString::isCNPJ($cnpj))
+                ? $cnpj
+                : (\DBString::isCNPJ($cnpjEmOutraPos) ? $cnpjEmOutraPos : '');
+
+              if (empty($clissarqsimplesreg->q23_cnpj)) {
+                $linha = $j + 1;
+                $sErroMsg = "registros: linha {$linha} - CNPJ inválido ({$cnpj}, {$cnpjEmOutraPos})";
+                $sSqlErro = true;
+                break;
+              }
+
               $clissarqsimplesreg->q23_tiporec       = substr($linhaArq[$j] ,99 ,1);
               $clissarqsimplesreg->q23_anousu        = substr($linhaArq[$j] ,100,4);
               $clissarqsimplesreg->q23_mesusu        = substr($linhaArq[$j] ,104,2);
@@ -213,7 +230,7 @@ if (isset($objPost->importar)) {
                * se existir somente um registro em ambos select, inserimos o registro na issarqsimplesregissbase
                */
               $iIssArqSimplesReg     = $clissarqsimplesreg->q23_sequencial;
-              $sIssArqSimplesRegCnpj = substr($linhaArq[$j] ,74 ,14);
+              $sIssArqSimplesRegCnpj = $clissarqsimplesreg->q23_cnpj;
               $sSqlCgm               = $oDaoCgm->sql_query(null,
                                                            "z01_numcgm",
                                                            null,

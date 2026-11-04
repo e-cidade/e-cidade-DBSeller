@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -50,7 +50,7 @@ if(isset($emite)){
   db_fim_transacao($sqlerro);
 }else if(isset($rh34_codarq)){
   $result = $clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
-  if($clrharqbanco->numrows > 0){ 
+  if($clrharqbanco->numrows > 0){
     db_fieldsmemory($result,0);
     if($rh34_sequencial > 1){
       $rh34_sequencial += 1;
@@ -93,84 +93,84 @@ if (isset($emite) || isset($emite)){
 
   $sql =
   "
-  select 
+  select
     z01_nome       as nome
   , z01_cgccpf     as cpf
-  , rh44_agencia   as agencia 
-  , rh44_conta     as contacorrente 
-  , r70_estrut     as lotacao 
-  , rh37_descr     as funcao 
+  , rh44_agencia   as agencia
+  , rh44_conta     as contacorrente
+  , r70_estrut     as lotacao
+  , rh37_descr     as funcao
 
-  ,".$folha."_regist as registro  
-  ,".$folha."_rubric as rubrica  
-  ,rh27_descr        as descricao  
-  ,".$folha."_quant  as quantidade  
-  ,".$folha."_pd     as pd  
-  ,".$folha."_valor  as valor 
+  ,".$folha."_regist as registro
+  ,".$folha."_rubric as rubrica
+  ,rh27_descr        as descricao
+  ,".$folha."_quant  as quantidade
+  ,".$folha."_pd     as pd
+  ,".$folha."_valor  as valor
 
   , (select count( ".$folha."_rubric ) from ".$arquivo."
      where ".$folha."_anousu = ".$ano."
        and ".$folha."_mesusu = ".$mes."
-       and ".$folha."_regist = rh01_regist 
+       and ".$folha."_regist = rh01_regist
        and ".$folha."_pd != 3  )  as linhas
 
   , (select coalesce(sum( ".$folha."_valor ),0) from ".$arquivo."
      where ".$folha."_anousu = ".$ano."
        and ".$folha."_mesusu = ".$mes."
-       and ".$folha."_regist = rh01_regist 
+       and ".$folha."_regist = rh01_regist
        and ".$folha."_rubric in ( 'R981','R982','R983') )  as IR
 
   , (select coalesce( ".$folha."_valor,0)  from ".$arquivo."
      where ".$folha."_anousu = ".$ano."
        and ".$folha."_mesusu = ".$mes."
-       and ".$folha."_regist = rh01_regist 
+       and ".$folha."_regist = rh01_regist
        and ".$folha."_rubric in ( 'R992' ) )  as PREVIDENCIA
 
   , (select coalesce( ".$folha."_valor,0)  from ".$arquivo."
      where ".$folha."_anousu = ".$ano."
        and ".$folha."_mesusu = ".$mes."
-       and ".$folha."_regist = rh01_regist 
+       and ".$folha."_regist = rh01_regist
        and ".$folha."_rubric in ( 'R991' ) )  as FGTS
 
    from ".$arquivo."
 
-   left outer join rhrubricas 
-     on rh27_rubric = ".$folha."_rubric  
+   left outer join rhrubricas
+     on rh27_rubric = ".$folha."_rubric
     and rh27_instit = ".db_getsession('DB_instit')."
 
   inner join rhpessoal
      on rh01_regist = ".$folha."_regist
 
-   left outer join rhpessoalmov 
+   left outer join rhpessoalmov
      on rh02_anousu = ".$ano."
     and rh02_mesusu = ".$mes."
-    and rh02_regist = ".$folha."_regist  
+    and rh02_regist = ".$folha."_regist
     and rh02_instit = ".db_getsession('DB_instit')."
-  
+
   inner join rhlota
      on rh02_lota  = r70_codigo
-    and r70_instit = rh02_instit 
+    and r70_instit = rh02_instit
 
 
    left join rhpesbanco
      on rh02_seqpes = rh44_seqpes
-   left outer join rhfuncao 
-     on rh37_funcao = rh01_funcao  
+   left outer join rhfuncao
+     on rh37_funcao = rh01_funcao
     and rh37_instit = rh02_instit
 
-   left outer join cgm 
-     on rh01_numcgm = z01_numcgm 
+   left outer join cgm
+     on rh01_numcgm = z01_numcgm
 
    where ".$folha."_anousu = ".$ano."
      and ".$folha."_mesusu = ".$mes."
-     and ".$folha."_pd != 3 
+     and ".$folha."_pd != 3
      and rh44_codban = '001'
    order by ".$folha."_regist , ".$folha."_rubric ";
 
 
   $arq = "/tmp/contracheque".$xarquivo.$ano.$mes.".txt";
-  
-  $arquivo = fopen($arq,'w');  
+
+  $arquivo = fopen($arq,'w');
   $result = db_query($sql);
 
   $imp = '';
@@ -182,11 +182,11 @@ if (isset($emite) || isset($emite)){
   $imp .= db_formatar($rh34_conta,'s','0',11,'e',0)        ; // 1.05 - n/11 - conta c.prefeitura sem dv
   $imp .= 'EDO001'                                         ; // 1.06 - a/6  - fixo edo001
   $imp .= db_formatar($rh34_convenio,'s','0',12,'e',0)     ; // 1.07 - n/12 - nr. do contrato
-  $imp .= db_formatar($rh34_sequencial,'s','0',6,'e',0)    ; // 1.08 - n/6 - nr.sequencial da remessa 
+  $imp .= db_formatar($rh34_sequencial,'s','0',6,'e',0)    ; // 1.08 - n/6 - nr.sequencial da remessa
   $imp .= '00315'                                          ; // 1.09 - n/5 - codigo do produto
   $imp .= '00001'                                          ; // 1.10 - n/5 - codigo da modalidade
   $imp .= db_formatar($ano,'s','0',4,'e',0 )               ; // 1.11 - n/4 - ano de referencia
-  $imp .= db_formatar($mes,'s','0',2,'e',0 )               ; // 1.12 - n/2 - mes de referncia 
+  $imp .= db_formatar($mes,'s','0',2,'e',0 )               ; // 1.12 - n/2 - mes de referncia
   $imp .= db_formatar($remessa_extra,'s','0',2,0,"0" )     ; // 1.13 - n/2 - nr sequencial de extraordinariedade
   $imp .= str_replace('/','',$datadeposit)                 ; // 1.14 - n/8 - data do credito
   $imp .= str_repeat(" ", 12)                              ; // 1.15 - a/12  - brancos
@@ -255,11 +255,11 @@ if (isset($emite) || isset($emite)){
 
       fputs($arquivo,$imp."\r\n");
       //
-      $cnpj_inst = db_formatar($cgc,'cnpj'); 
+      $cnpj_inst = db_formatar($cgc,'cnpj');
       $texto = db_formatar( '           CNPJ '.$cnpj_inst,'s',' ',48,'d',0);
       //1234 1234567890123456789012 999.99 999999.99  p '
 
-      $sequencia++;     
+      $sequencia++;
       $imp  = db_formatar( $registro,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
       $imp .= db_formatar($sequencia,'s','0',2,'e',0)    ;       // 3.02 n/2  - sequencial da linha de texto
       $imp .= '2'                                        ;      // 3.03 n/1  - preenche com 2
@@ -272,7 +272,7 @@ if (isset($emite) || isset($emite)){
       //
       $texto = db_formatar( 'Servidor:'.$nome,'s',' ',48,'d',0);
       //1234 1234567890123456789012 999.99 999999.99  p '
-      $sequencia++;     
+      $sequencia++;
       $imp  = db_formatar( $registro,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
       $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
       $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
@@ -282,18 +282,18 @@ if (isset($emite) || isset($emite)){
 
       fputs($arquivo,$imp."\r\n");
       //
-      
+
       $texto = db_formatar( 'Matric:'.db_formatar($registro,'s',' ',6,'e',0).' Funcao:'.$funcao,'s',' ',48,'d',0);
       //1234 1234567890123456789012 999.99 999999.99  p '
 
-      $sequencia++;     
+      $sequencia++;
       $imp  = db_formatar( $registro,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
       $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
       $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
       $imp .= $texto                     ;       // 3.04 a/48 - texto do documento
       $imp .= '1'                        ;      // 3.05 a/1  - 1 para saltar linha -  0 para linhas corridas
       $imp .= str_repeat(' ',28)          ;      // 3.06 a/28 brancos
- 
+
       fputs($arquivo,$imp."\r\n");
 /////ate aqui novo
 
@@ -301,28 +301,28 @@ if (isset($emite) || isset($emite)){
       $texto = db_formatar( 'Folha de '.strtoupper($xarquivo).str_repeat(' ',4).'Periodo:'.db_formatar($mes,'s','0',2,'e',0).'/'.$ano,'s',' ',48,'d',0);
       //1234 1234567890123456789012 999.99 999999.99  p '
 
-      $sequencia++;     
+      $sequencia++;
       $imp  = db_formatar( $registro,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
       $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
       $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
       $imp .= $texto                     ;       // 3.04 a/48 - texto do documento
       $imp .= '1'                        ;      // 3.05 a/1  - 1 para saltar linha -  0 para linhas corridas
       $imp .= str_repeat(' ',28)          ;      // 3.06 a/28 brancos
-     
+
       fputs($arquivo,$imp."\r\n");
 
       //
       $texto = 'Rubrica                      Quant     Valor P/D';
       //1234 1234567890123456789012 999.99 999999.99  p '
 
-      $sequencia++;     
+      $sequencia++;
       $imp  = db_formatar( $registro,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
       $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
       $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
       $imp .= $texto                     ;       // 3.04 a/48 - texto do documento
       $imp .= '0'                        ;      // 3.05 a/1  - 1 para saltar linha -  0 para linhas corridas
       $imp .= str_repeat(' ',28)          ;      // 3.06 a/28 brancos
-      
+
       fputs($arquivo,$imp."\r\n");
   }
 
@@ -337,7 +337,7 @@ if (isset($emite) || isset($emite)){
      $texto .= '  D ';
   }
 
-  $sequencia++;     
+  $sequencia++;
   $imp  = db_formatar( $registro,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
   $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
   $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
@@ -346,7 +346,7 @@ if (isset($emite) || isset($emite)){
   $imp .= str_repeat(' ',28)          ;      // 3.06 a/28 brancos
 
   fputs($arquivo,$imp."\r\n");
-  // guarda a informa√ßao das bases , que aparecem em todas as linhas para 
+  // guarda a informa√ßao das bases , que aparecem em todas as linhas para
   // este servidor, para poder imprimir o rodape.
   $prev = $previdencia;
   $fgts = $fgts;
@@ -357,15 +357,15 @@ if (isset($emite) || isset($emite)){
   echo "<br> registroaux --> $registroaux    pg_result --> ".pg_result($result,$x+1,'registro');
   if ($registroaux != pg_result($result,$x+1,'registro')){
 
-     // imprime total de proventos 
+     // imprime total de proventos
      //1234 1234567890123456789012 999.99 999999.99  p '
 
      //texto = space(48)+'Totais '+str(prov,12,2)+'  '+str(desc,12,2)
      $texto = str_repeat(' ',5).'Total Proventos               '.db_formatar(trim(str_replace('.','',db_formatar($prov,'f'))),'s',' ',9,'e',0).str_repeat(' ',4);
      $total_descontos += $desc;
      $total_proventos += $prov;
-   
-     $sequencia++;     
+
+     $sequencia++;
      $imp  = db_formatar( $registroaux,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
      $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
      $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
@@ -383,7 +383,7 @@ if (isset($emite) || isset($emite)){
      $texto = str_repeat(' ',5).'Total Descontos               '.db_formatar(trim(str_replace('.','',db_formatar($desc,'f'))),'s',' ',9,'e',0).str_repeat(' ',4);
      $total_descontos += $desc;
 
-     $sequencia++;     
+     $sequencia++;
      $imp  = db_formatar( $registroaux,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
      $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
      $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
@@ -399,7 +399,7 @@ if (isset($emite) || isset($emite)){
      $texto = str_repeat(' ',5).'LÌquido                       '.db_formatar(trim(str_replace('.','',db_formatar($liquido,'f'))),'s',' ',9,'e',0).str_repeat(' ',4);
      $total_descontos += $desc;
 
-     $sequencia++;     
+     $sequencia++;
      $imp  = db_formatar( $registroaux,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
      $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
      $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
@@ -409,12 +409,12 @@ if (isset($emite) || isset($emite)){
 
      fputs($arquivo,$imp."\r\n");
 
-     // imprime bases 
+     // imprime bases
      $texto = 'Prev.:'.db_formatar(trim(str_replace('.','',db_formatar($prev,'f'))),'s',' ',9,'e',0).
               '  Fgts:'.db_formatar(trim(str_replace('.','',db_formatar($fgts,'f'))),'s',' ',9,'e',0).
               '  IRRF:'.db_formatar(trim(str_replace('.','',db_formatar($ir,'f'))),'s',' ',9,'e',0).' ';
 
-     $sequencia++;     
+     $sequencia++;
      $imp  = db_formatar( $registroaux,'s','0',20,'e',0)   ;// 3.01 n/20 - codigo funcional do destinatario
      $imp .= db_formatar($sequencia,'s','0',2,'e',0)   ;       // 3.02 n/2  - sequencial da linha de texto
      $imp .= '2'                        ;      // 3.03 n/1  - preenche com 2
@@ -474,7 +474,7 @@ function js_emite(){
                                                  '&mes='+document.form1.DBtxt25.value+qry,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -498,12 +498,12 @@ function js_emite(){
         <strong>Ano / MÍs :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -512,7 +512,7 @@ function js_emite(){
   <tr>
     <td><b>Data do DepÛsito:</b></td>
     <td>
-      <?
+      <?php
       if((!isset($datadeposit_dia) || (isset($datadeposit_dia) && trim($datadeposit_dia) == "")) && (!isset($datadeposit_mes) || (isset($datadeposit_mes) && trim($datadeposit_mes) == "")) && (!isset($datadeposit_ano) || (isset($datadeposit_ano) && trim($datadeposit_ano) == ""))){
         $datadeposit_dia = "";
         $datadeposit_mes = "";
@@ -522,27 +522,27 @@ function js_emite(){
       ?>
     </td>
   </tr>
-  <tr> 
+  <tr>
     <td align="left" nowrap title="<?=@$Trh34_codarq?>">
-      <?db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
+      <?php db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
     </td>
     <td align="left" nowrap colspan="3">
-      <?db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
-      <?db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
-      <?db_input("rodape",40,0,true,"hidden",3);?>
+      <?php db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
+      <?php db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
+      <?php db_input("rodape",40,0,true,"hidden",3);?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_codban?>">
-      <?
+      <?php
       db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",1);
       ?>
     </td>
-    <td colspan="3"> 
-      <?
+    <td colspan="3">
+      <?php
       db_input('rh34_codban',6,$Irh34_codban,true,'text',1," onchange='js_pesquisarh34_codban(false);'")
       ?>
-      <?
+      <?php
       db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
       ?>
     </td>
@@ -551,16 +551,16 @@ function js_emite(){
     <td nowrap title="<?=@$Trh34_agencia?>">
       <?=@$Lrh34_agencia?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_agencia',5,$Irh34_agencia,true,'text',1,"")
       ?>
     </td>
     <td nowrap title="<?=@$Trh34_dvagencia?>" align="right">
       <?=@$Lrh34_dvagencia?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_dvagencia',2,$Irh34_dvagencia,true,'text',1,"")
       ?>
     </td>
@@ -569,16 +569,16 @@ function js_emite(){
     <td nowrap title="<?=@$Trh34_conta?>">
       <?=@$Lrh34_conta?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_conta',15,$Irh34_conta,true,'text',1,"")
       ?>
     </td>
     <td nowrap title="<?=@$Trh34_dvconta?>" align="right">
       <?=@$Lrh34_dvconta?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_dvconta',2,$Irh34_dvconta,true,'text',1,"")
       ?>
     </td>
@@ -587,8 +587,8 @@ function js_emite(){
     <td nowrap title="<?=@$Trh34_convenio?>">
       <?=@$Lrh34_convenio?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_convenio',15,$Irh34_convenio,true,'text',1,"")
       ?>
     </td>
@@ -597,8 +597,8 @@ function js_emite(){
     <td nowrap title="<?=@$Trh34_sequencial?>">
       <?=@$Lrh34_sequencial?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',1,"")
       ?>
     </td>
@@ -606,13 +606,13 @@ function js_emite(){
   <tr>
     <td><b>Arquivo:</b</td>
     <td>
-     <?
+     <?php
        $x = array("r14"=>"Sal·rio","r48"=>"Complementar","r35"=>"13o. Sal·rio","r22"=>"Adiantamento");
        db_select('arquivo',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>
      </tr>
-     <?
+     <?php
      if(isset($arquivo) && $arquivo == "r48"){
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($DBtxt23,$DBtxt25,null,null,"distinct r48_semest as rh40_sequencia"));
        if($clgerfcom->numrows > 0){
@@ -643,20 +643,20 @@ function js_emite(){
      }
      ?>
       <tr>
-        <td colspan="2" align = "center"> 
+        <td colspan="2" align = "center">
           <input  name="emite" id="emite" type="submit" value="Processar"  >
         </td>
       </tr>
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-  <?
+  <?php
   if(isset($emite)){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }
@@ -713,7 +713,7 @@ function js_mostradb_bancos1(chave1,chave2){
   db_iframe_db_bancos.hide();
 }
 </script>
-<?
+<?php
 if(isset($emite2)){
   if($clrharqbanco->erro_status=="0"){
     $clrharqbanco->erro(true,false);

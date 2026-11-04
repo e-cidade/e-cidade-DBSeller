@@ -83,7 +83,7 @@ db_postmemory($HTTP_POST_VARS);
  ?>
 </center>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

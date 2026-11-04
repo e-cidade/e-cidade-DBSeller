@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -87,9 +87,9 @@ function formata_data($dData, $iTipo = 1) {
     $dData = explode('/',$dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
-  
+
   }
- 
+
  $dData = explode('-',$dData);
  $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
  return $dData;
@@ -122,17 +122,17 @@ if(!empty($materiais)) {
 switch($situacao) { // switch para definicao do where_situacao
 
   case 2:
-   
+
     $sWhere_situacao .= "m77_dtvalidade < '$data_atual' and "; // Vencidos
     break;
 
   case 3:
-   
+
     $sWhere_situacao .= "(m77_dtvalidade - '$data_atual') <= $m90_prazovenc and (m77_dtvalidade - '$data_atual') > -1 and "; // A vencer
     break;
 
   case 4:
-   
+
     $sWhere_situacao .= "(m77_dtvalidade - '$data_atual') > $m90_prazovenc and "; // No prazo
     break;
 
@@ -143,14 +143,14 @@ switch($situacao) { // switch para definicao do where_situacao
 
 switch($ordenacao) { // switch para a definicao do order by
 
-  case 2:   
-    
+  case 2:
+
     $sOrder_by .= 'm60_descr asc'; // ordena pela descricao dos itens
     $sOrdem = 'Alfabetica';
     break;
 
   default: // case 1
-   
+
     $sOrder_by .= 'm60_codmater asc'; // ordena pelo codigo dos itens
     $sOrdem = 'Codigo';
     break;
@@ -202,7 +202,7 @@ if($iLinhas == 0)
       </td>
     </tr>
   </table>
-<?
+<?php
   exit;
 }
 ?>
@@ -219,26 +219,26 @@ if($iLinhas == 0)
     </tr>
     <tr>
       <td nowrap width='12%'>
-        <?db_input('m60_codmater',10,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
+        <?php db_input('m60_codmater',10,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
       </td>
       <td align='left' nowrap>
-        <?db_input('m60_descr',75,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
+        <?php db_input('m60_descr',75,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
         <script>
-          document.getElementById('m60_descr').value = "<? echo $nome_departamento?>";
-          document.getElementById('m60_codmater').value = "<? echo $departamento?>";
+          document.getElementById('m60_descr').value = "<?php echo $nome_departamento?>";
+          document.getElementById('m60_codmater').value = "<?php echo $departamento?>";
         </script>
       </td>
     </tr>
   </table>
   <table width='730' cellspacing='0' border='0'>
-   
-<?
+
+<?php
 $iMaterial = '';
 
 for($iCount_linhas = 0; $iCount_linhas < $iLinhas; $iCount_linhas++) {
 
   db_fieldsmemory($rs,$iCount_linhas);
-  
+
   if($iMaterial != $m60_codmater) {
 
     $iMaterial = $m60_codmater;
@@ -251,6 +251,6 @@ for($iCount_linhas = 0; $iCount_linhas < $iLinhas; $iCount_linhas++) {
              empty($m77_dtvalidade) ? '&nbsp;' : formata_data($m77_dtvalidade,2),
              empty($situacao) ? '&nbsp;' : $situacao,
              empty($dias) ? '&nbsp;' : $dias);
-  
+
 }
 ?>

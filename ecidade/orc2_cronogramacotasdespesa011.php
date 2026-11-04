@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,16 +69,16 @@ $db_opcao = 1;
 						<table>
 	            <tr>
               <td nowrap title="<?=@$To05_ppalei?>">
-                <?
+                <?php
                 db_ancora("<b>Perspectiva</b>","js_pesquisao125_cronogramaperspectiva(true);",$db_opcao);
                 ?>
               </td>
               <td nowrap> 
-                <?
+                <?php
                 db_input('o124_sequencial',10,$Io124_sequencial,true,'text',$db_opcao,
                          " onchange='js_pesquisao125_cronogramaperspectiva(false);'")
                 ?>
-                <?
+                <?php
                 db_input('o124_descricao',40,$Io124_descricao,true,'text',3,'');
                 db_input('codrel',40,'',true,'hidden',3,'');
                 ?>
@@ -89,7 +89,7 @@ $db_opcao = 1;
                 <b>Nível:</b>
               </td> 
               <td>
-                <?
+                <?php
                  $aNiveis = array(
                                   1 => "Orgão",
                                   2 => "Unidade",
@@ -112,7 +112,7 @@ $db_opcao = 1;
                 		<tr>
                 			<td><b>Periodicidade:</b></td>
                 			<td>
-                			<? 
+                			<?php 
                 				$x = array('1'=>'Mensal','2'=>'Bimestral');
                 				db_select('iPeriodoImpr',$x,1,1);
                 			?>
@@ -120,7 +120,7 @@ $db_opcao = 1;
                 		</tr>
                 		<tr>
                 			<td>&nbsp;</td>
-                			<td><? 
+                			<td><?php 
                 			     db_selinstit('',300,100);
                 			     db_input('filtra_despesa', 10,'',true, 'hidden', 3);
                 			    ?></td>

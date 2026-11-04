@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,22 +33,25 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_promitente_classe.php"));
 require_once(modification("classes/db_iptubase_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $db_botao  = 1;
 $db_opcao  = 1;
 $numrows00 = 0;
 
-$cliptubase   = new cl_iptubase;
-$clpromitente = new cl_promitente;
-$clrotulo     = new rotulocampo;
-$rotulocampo  = new rotulocampo;
+$cliptubase         = new cl_iptubase;
+$clpropri           = new cl_propri;
+$clpromitente       = new cl_promitente;
+$cltipopromitente   = new cl_tipopromitente;
+$cltipoproprietario = new cl_tipoproprietario;
+$clrotulo           = new rotulocampo;
+$rotulocampo        = new rotulocampo;
 
 $cliptubase->rotulo->label();
 $clpromitente->rotulo->label();
-$clpromitente->rotulo->tlabel();
-$rotulocampo->label("z01_nome");  
+$cltipopromitente->rotulo->tlabel();
+$rotulocampo->label("z01_nome");
 $clrotulo->label("j01_numcgm");
 
 $db_op        = $db_opcao;
@@ -63,31 +66,37 @@ if(isset($incluir)){
 
    db_inicio_transacao();
 
-   $verifica=false;
-   $result = $clpromitente->sql_record($clpromitente->sql_query_file($j41_matric,"","j41_tipopro as tipopro#j41_numcgm as numcgm","",""));
-   $numrows = $clpromitente->numrows;
-   for($i=0;$i<$numrows;$i++){
+   $resultPrincipal = $clpromitente->sql_record($clpromitente->sql_query_file($j41_matric, "", "*", "", "j41_matric = {$j41_matric}"));
+        if ((pg_num_rows($resultPrincipal) == 0) && $j41_tipopro == 'f') {
+            $j41_tipopro = 't';
+        }
+        //Verifica se possui o mesmo cgm como proprietario pra mesma matricula.
+        $result = $cliptubase->sql_record($cliptubase->sql_query_file($j41_matric, "*", "", "j01_matric = {$j41_matric} AND j01_numcgm = {$j41_numcgm}"));
+        //Verifica se possui o mesmo cgm como proprietario pra mesma matricula.
+        $result = $clpropri->sql_record($clpropri->sql_query_file($j41_matric, $j41_numcgm));
+        //Verifica se a Matricula possui responsável principal
+        $result = $clpromitente->sql_record($clpromitente->sql_query_file($j41_matric, "", "*", "", "j41_matric = {$j41_matric} AND j41_tipopro = 't' AND j41_numcgm <> {$j41_numcgm}"));
+        $hasPromitentePrincipalCadastrado = $clpromitente->numrows > 0;
 
-     db_fieldsmemory($result,$i);
-
-     if($j41_numcgm!=$numcgm){
-
-       $clpromitente->j41_tipopro=($j41_tipopro=='t'?'false':$tipopro);
-       $clpromitente->j41_promitipo=$j41_promitipo;  
-       $clpromitente->j41_numcgm=$numcgm;  
-       $clpromitente->alterar($j41_matric,$numcgm);
-     }
-   }
-
-   
-   $clpromitente->j41_numcgm=$j41_numcgm;
-   $clpromitente->j41_tipopro=$j41_tipopro;
-   $clpromitente->j41_promitipo=$j41_promitipo;  
-   $clpromitente->incluir($j41_matric,$j41_numcgm);
-
-   if($clpromitente->erro_status=="0"){
-     $outros=true;
-   }
+        if ($cliptubase->numrows > 0) {
+            db_msgbox("O cgm não pode ser o mesmo cadastrado como proprietário principal nesta matricula.");
+        } else if ($clpropri->numrows > 0) {
+            db_msgbox("O cgm não pode ser o mesmo cadastrado como proprietário secundário nesta matricula.");
+        } else if (($hasPromitentePrincipalCadastrado) && ($j41_tipopro == 't')) {
+            db_msgbox("Deve haver apenas um promitente principal.");
+        }else {
+            $getPromitipo = db_query('select j164_promitipo from tipopromitente where j164_tipopromitente = ' . $j164_tipopromitente);
+            db_fieldsmemory($getPromitipo, 0);
+            $clpromitente->j41_numcgm = $j41_numcgm;
+            $clpromitente->j41_tipopro = $j41_tipopro;
+            $clpromitente->j41_promitipo = $j164_promitipo;
+            $clpromitente->j41_tipopromitente = $j164_tipopromitente;
+            $clpromitente->incluir($j41_matric, $j41_numcgm);
+        }
+        if ($clpromitente->erro_status == "0") {
+            db_msgbox($clpromitente->erro_msg);
+            $outros = true;
+        }
 
    db_fim_transacao();
 
@@ -95,29 +104,48 @@ if(isset($incluir)){
 
    db_inicio_transacao();
 
-   $result = $clpromitente->sql_record($clpromitente->sql_query_file($j41_matric,"","j41_tipopro as tipopro#j41_numcgm as numcgm","",""));
-   $numrows = $clpromitente->numrows;
-   for($i=0;$i<$numrows;$i++){
+   if ($anoMatricula == $anoRetroativoMatricula) {
+            db_query("select fc_putsession('DB_anoretroativo', '{$anoRetroativoMatricula}')");
+        }
 
-     db_fieldsmemory($result,$i);
+        if ($liberaCalculoRetroativo AND $replicaDadosAnos == 1) {
+            $calculoRetroativoIptuRepository->setAnoRetroativoMatricula($anoMatricula);
+            $calculoRetroativoIptuRepository->getAlteraSearchPath();
+        }
 
-     if($j41_numcgm!=$numcgm){
+        db_inicio_transacao();
+        //Verifica se possui o mesmo cgm como proprietario pra mesma matricula.
+        $result = $cliptubase->sql_record($cliptubase->sql_query_file($j41_matric, "*", "", "j01_matric = {$j41_matric} AND j01_numcgm = {$j41_numcgm}"));
+        //Verifica se possui o mesmo cgm como proprietario pra mesma matricula.
+        $result = $clpropri->sql_record($clpropri->sql_query_file($j41_matric, $j41_numcgm));
+        //Verifica se a Matricula possui responsável principal
+        $result = $clpromitente->sql_record($clpromitente->sql_query_file($j41_matric, "", "*", "", "j41_matric = {$j41_matric} AND j41_tipopro = 't' AND j41_numcgm <> {$j41_numcgm}"));
+        $hasPromitentePrincipalCadastrado = $clpromitente->numrows > 0;
 
-       $clpromitente->j41_tipopro=($j41_tipopro=='t'?'false':$tipopro);
-       $clpromitente->j41_promitipo=$j41_promitipo;  
-       $clpromitente->j41_numcgm=$numcgm;  
-       $clpromitente->alterar($j41_matric,$numcgm);
-     }
-   }
+        if ($cliptubase->numrows > 0) {
+            db_msgbox("O cgm não pode ser o mesmo cadastrado como proprietário principal nesta matricula.");
+        } else if ($clpropri->numrows > 0) {
+            db_msgbox("O cgm não pode ser o mesmo cadastrado como proprietário secundário nesta matricula.");
+        } else if (($hasPromitentePrincipalCadastrado) && ($j41_tipopro == 't')) {
+            db_msgbox("Deve haver apenas um promitente principal.");
+        } else {
+            $getPromitipo = db_query('select j164_promitipo from tipopromitente where j164_tipopromitente = ' . $j164_tipopromitente);
+            db_fieldsmemory($getPromitipo, 0);
+            $clpromitente->j41_numcgm = $j41_numcgm;
+            $clpromitente->j41_tipopro = $j41_tipopro;
+            $clpromitente->j41_promitipo = $j164_promitipo;
+            $clpromitente->j41_tipopromitente = $j164_tipopromitente;
+            $clpromitente->alterar($j41_matric, $j41_numcgm);
+        }
 
-   $clpromitente->j41_numcgm=$j41_numcgm;
-   $clpromitente->j41_tipopro=$j41_tipopro;
-   $clpromitente->j41_promitipo=$j41_promitipo;  
-   $clpromitente->alterar($j41_matric,$j41_numcgm);
+        if ($clpromitente->erro_status == "0") {
+            db_msgbox($clpromitente->erro_msg);
+            $outros = true;
+        }
    db_fim_transacao();
    
 }else if(isset($excluir)){
-     $clpromitente->excluir($j41_matric,$j41_numcgm);
+    $clpromitente->excluir($j41_matric,$cgmexclusao);
 }else if(isset($j41_matric) && isset($j41_numcgm)){  
 
    $result = $clpromitente->sql_record($clpromitente->sql_query($j41_matric,"","promitente.*#cgm.z01_nome#a.z01_nome as z01_nomematri","","j41_numcgm=$j41_numcgm and j41_matric = $j41_matric "));
@@ -162,34 +190,18 @@ if(isset($incluir)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-<!--
-td {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-}
-input {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  height: 17px;
-  border: 1px solid #999999;
-}
-#j41_promitipo, #j41_tipopro {
-  width:120px;
-}
--->
-</style>
+
   </head>
   <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_trocacordeselect()">
 
   <br /><br />
 
   <table height="430" align="center" width="790" border="0" cellspacing="0" cellpadding="0">
-  <form name="form1" method="post" onSubmit="return js_verifica_campos_digitados();" action="">
+  <form id='form1' name="form1" method="post" onSubmit="return js_verifica_campos_digitados();" action="">
     <tr>
       <td align="left" valign="top" bgcolor="#CCCCCC">
        <center> 
-       <?
+       <?php
          include(modification("forms/db_frmpromitentealt.php"));
        ?> 
       </center>
@@ -199,8 +211,8 @@ input {
 </table>
 </body>
 </html>
-<?
-if(isset($incluir) || isset($alterar) ||isset($excluir)){
+<?php
+if(isset($incluir) || isset($alterar)){
   if($clpromitente->erro_status=="0"){
     $clpromitente->erro(true,false);
     if($clpromitente->erro_campo!=""){

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,6 +25,10 @@
  *                                licenca/licenca_pt.txt
  */
 //MODULO: material
+
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
+use ECidade\Saude\Farmacia\Repositories\TipoMovimentacaoBnafarRepository;
+
 require_once(modification("classes/db_matmater_classe.php"));
 require_once(modification("classes/db_matmaterunisai_classe.php"));
 require_once(modification("classes/db_matestoqueitemnotafiscalmanual_classe.php"));
@@ -88,7 +92,7 @@ if (isset($m60_codmater) && trim($m60_codmater) != "" && ( USE_PCASP && db_getse
   $m66_codcon = db_utils::fieldsMemory($rsValidaContaContabil, 0)->m66_codcon;
 }
 
-if (isset($coddepto) || $coddepto != "") {
+if (isset($coddepto) && $coddepto != "") {
     $daoDeposito = new cl_db_almox();
     $sqlDeposito = $daoDeposito->sql_query_file(null, 'm91_codigo', null, " m91_depto = {$coddepto}");
     $rsDeposito = db_query($sqlDeposito);
@@ -138,7 +142,59 @@ if (isset($entrada) && $entrada == 'true') {
           ?>
         </td>
       </tr>
+    <?php if (FarmaciaHelper::utilizaIntegracaoBnafar()): ?>
+      <tr>
+            <td nowrap title="Tipo de Entrada"><b>Tipo:</b></td>
+            <td>
+
+              <?php
+                $tipoMovimentacaoRepository = new TipoMovimentacaoBnafarRepository();
+                $tipos = $tipoMovimentacaoRepository->scopeEntrada()->get();
+                $oTipo = [];
+                $oTipo[''] = 'Selecione...';
+                foreach ($tipos as $tipo) {
+                    $oTipo[$tipo->getCodigo()] = $tipo->getDescricao();
+                }
+                db_select("cod_tipo",$oTipo,true,$db_opcao,"onchange='js_verificatipo(this);'");
+              ?>
+            </td>
+          </tr>
+        </table>
+        <fieldset id="fieldset-fornecedor"style="display: none;">
+          <legend>Fornecedor/Distribuidor</legend>
+          <table>
+              <tr id="unidadedoador" style="display:none;">
+                  <td nowrap title="Unidade Origem">
+                      <?php
+                      db_ancora("<b>Unidade Origem:</b>","js_pesquisaunidadedoador(true)",$db_opcao);
+                      ?>
+                  </td>
+                  <td colspan="3">
+                      <?php
+                      db_input('unidade',10,null,true,'text',$db_opcao,"onchange='js_pesquisaunidadedoador(false);'");
+                      db_input('unidadedescr',40, null ,true,'text',3,'');
+                      ?>
+                  </td>
+              </tr>
+              <tr id="cgmdoador" style="display:none;">
+                  <td nowrap title="CGM Origem">
+                      <?php
+                      db_ancora("<b>CGM Origem:</b>","js_pesquisacgmdoador(true)",$db_opcao);
+                      ?>
+                  </td>
+                  <td colspan="3">
+                      <?php
+                      db_input('cgm',10,null,true,'text',$db_opcao,"onchange='js_pesquisacgmdoador(false);'");
+                      db_input('descr',40, null ,true,'text',3,'');
+                      ?>
+                  </td>
+              </tr>
+          </table>
+        </fieldset>
+        <table>
         <?php
+          endif;
+
           if (isset($m60_codmater) && trim($m60_codmater) != "" && $db_opcao != 3 && $db_opcao != 33) {
             $result = $clmatmater->sql_record($clmatmater->sql_query($m60_codmater,"m61_descr,m60_controlavalidade"));
             if ($clmatmater->numrows>0){
@@ -543,7 +599,6 @@ if(isset($m80_codigo) && trim($m80_codigo)!="" && $db_opcao==2){
 
   ?>
   function js_controlavalidadade() {
-
     if ($F("m80_obs") == "") {
 
       alert("Necessário preenchimento da observação");
@@ -587,3 +642,123 @@ function js_mostramatfabricante1(chave1,chave2){
   db_iframe_matfabricante.hide();
 }
   </script>
+<?php if (FarmaciaHelper::utilizaIntegracaoBnafar()): ?>
+<script type="text/javascript">
+  js_verificatipo(document.form1.cod_tipo);
+  function js_verificatipo( obj ){
+    const tipoMovimentacao = obj.options[obj.selectedIndex].value;
+
+    document.getElementById("fieldset-fornecedor").style.display = "none";
+    document.getElementById("unidadedoador").style.display = "none";
+    document.getElementById("cgmdoador").style.display = "none";
+
+    if (tipoMovimentacao === '3') {
+        document.getElementById("unidade").value = "<?php echo db_getsession("DB_coddepto") ?>";
+        document.getElementById("cgm").value = "";
+        document.getElementById("descr").value = "";
+        return;
+    }
+
+    const deParaUnidade = ['4', '6', '7', '8'];
+    const deParaCgm = ['1', '4', '5', '6'];
+    if (deParaUnidade.includes(tipoMovimentacao)) {
+        document.getElementById("fieldset-fornecedor").style.display = "";
+        document.getElementById("unidadedoador").style.display = "";
+        document.getElementById("cgm").value = "";
+        document.getElementById("descr").value = "";
+    }
+    if (deParaCgm.includes(tipoMovimentacao)) {
+        document.getElementById("fieldset-fornecedor").style.display = "";
+        document.getElementById("cgmdoador").style.display = ""
+        document.getElementById("unidade").value = "";
+        document.getElementById("unidadedescr").value = "";
+    }
+
+    // Limpa os campos de quem não está sendo exibido
+    if (document.getElementById("unidadedoador").style.display == 'none' || document.getElementById("unidadedescr").value == "") {
+        document.getElementById("unidade").value = "";
+        document.getElementById("unidadedescr").value = "";
+    }
+    if (document.getElementById("cgmdoador").style.display == 'none') {
+        document.getElementById("cgm").value = "";
+        document.getElementById("descr").value = "";
+    }
+
+    js_ValidaBloqueioCampo(document.form1.cgm, document.form1.unidade.value != "");
+    js_ValidaBloqueioCampo(document.form1.unidade, document.form1.cgm.value != "");
+  }
+
+  function js_pesquisacgmdoador(mostra){
+    if (document.form1.unidade.value.trim() != "") {
+      return false;
+    }
+    if(mostra==true){
+      js_OpenJanelaIframe('top.corpo','db_iframe_cgm','func_cgm.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
+    }else{
+        if(document.form1.cgm.value != ''){
+          js_OpenJanelaIframe('top.corpo','db_iframe_cgm','func_cgm.php?pesquisa_chave='+document.form1.cgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
+        }else{
+          document.form1.descr.value = '';
+          js_ValidaBloqueioCampo(document.form1.unidade, false);
+        }
+    }
+  }
+  function js_mostracgm(erro,chave){
+    document.form1.descr.value = chave;
+    if(erro==true){
+      document.form1.cgm.focus();
+      document.form1.cgm.value = '';
+      js_ValidaBloqueioCampo(document.form1.unidade, false);
+    } else {
+      js_ValidaBloqueioCampo(document.form1.unidade, true);
+    }
+  }
+  function js_mostracgm1(chave1,chave2){
+    js_ValidaBloqueioCampo(document.form1.unidade, true);
+    document.form1.cgm.value = chave1;
+    document.form1.descr.value     = chave2;
+    db_iframe_cgm.hide();
+  }
+
+  function js_pesquisaunidadedoador(mostra){
+    if (document.form1.cgm.value.trim() != "") {
+      return false;
+    }
+    if(mostra==true){
+      js_OpenJanelaIframe('top.corpo','db_iframe_unidade','func_unidades.php?funcao_js=parent.js_mostraunidade1|sd02_i_codigo|descrdepto','Pesquisa',true);
+    }else{
+        if(document.form1.unidade.value != ''){
+          js_OpenJanelaIframe('top.corpo','db_iframe_unidade','func_unidades.php?pesquisa_chave='+document.form1.unidade.value+'&funcao_js=parent.js_mostraunidade','Pesquisa',false);
+        }else{
+          js_ValidaBloqueioCampo(document.form1.cgm, false);
+          document.form1.unidadedescr.value = '';
+        }
+    }
+  }
+  function js_mostraunidade(chave, erro){
+    document.form1.unidadedescr.value = chave;
+    if(erro==true){
+      document.form1.unidade.focus();
+      document.form1.unidade.value = '';
+      js_ValidaBloqueioCampo(document.form1.cgm, false);
+    } else {
+      js_ValidaBloqueioCampo(document.form1.cgm, true);
+    }
+  }
+  function js_mostraunidade1(chave1,chave2){
+    js_ValidaBloqueioCampo(document.form1.cgm, true);
+    document.form1.unidade.value = chave1;
+    document.form1.unidadedescr.value = chave2;
+    db_iframe_unidade.hide();
+  }
+  function js_ValidaBloqueioCampo (oCampo, lBloqueio) {
+      if (lBloqueio) {
+          oCampo.readOnly = true;
+          oCampo.style.background = '#DEB887';
+      } else {
+          oCampo.readOnly = false;
+          oCampo.style.background = '#FFFFFF';
+      }
+  }
+</script>
+<?php endif; ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_tabelavalores
 class cl_db_tabelavalores { 
@@ -26,13 +26,13 @@ class cl_db_tabelavalores {
                  db149_db_tabelavalorestipo = int4 = Identificador do TIpo 
                  ";
    //funcao construtor da classe 
-   function cl_db_tabelavalores() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_tabelavalores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_db_tabelavalores {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db149_sequencial = ($this->db149_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db149_sequencial"]:$this->db149_sequencial);
        $this->db149_descricao = ($this->db149_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["db149_descricao"]:$this->db149_descricao);
@@ -51,7 +51,7 @@ class cl_db_tabelavalores {
      }
    }
    // funcao para Inclusão
-   function incluir ($db149_sequencial){ 
+   public function incluir ($db149_sequencial){ 
       $this->atualizacampos();
      if($this->db149_descricao == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

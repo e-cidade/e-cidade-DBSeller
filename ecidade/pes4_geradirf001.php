@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -117,7 +117,7 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Ano Base:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $sqlanomes = "select max(r11_anousu||lpad(r11_mesusu,2,0)) from cfpess";
           $resultanomes = db_query($sqlanomes);
           db_fieldsmemory($resultanomes,0);
@@ -131,7 +131,7 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Código Retencao:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             $codret = '0561';
             db_input('codret',4,'',true,'text',2,'')
 	  ?>
@@ -142,13 +142,13 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Código Retencao:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $xy = array("O"=>"Original","R"=>"Retificadora");
            db_select('oriret',$xy,true,4,"");
 	        ?>
         </td>
       </tr>
-      <?
+      <?php
       if ($d08_carnes == "bage"){
       ?>                             
       <tr>
@@ -156,13 +156,13 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Tirar por:&nbsp;&nbsp;</strong>
 	</td>  
         <td align="left">
-          <?
+          <?php
           $arr_ = array('p'=>'Pref','f'=>'Funpas','t'=>'Todos');
           db_select("pref_fun", $arr_, true, 1);
           ?>                             
         </td>                            
       </tr>                              
-      <?
+      <?php
          }
       ?>                             
     <tr>                                 
@@ -175,7 +175,7 @@ function js_detectaarquivo(arquivo,pdf){
          <strong>Nome:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('nomeresp',40,'',true,'text',2,'')
 	  ?>
         </td>
@@ -183,7 +183,7 @@ function js_detectaarquivo(arquivo,pdf){
          <strong>DDD:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('dddresp',4,'',true,'text',2,'')
 	  ?>
         </td>
@@ -191,7 +191,7 @@ function js_detectaarquivo(arquivo,pdf){
          <strong>Fone:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('foneresp',12,'',true,'text',2,'')
 	  ?>
         </td>
@@ -199,7 +199,7 @@ function js_detectaarquivo(arquivo,pdf){
         <strong>CPF:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('cpfresp',14,'',true,'text',2,"  onBlur='js_verificaCGCCPF(this)' onKeyDown='return js_controla_tecla_enter(this,event);' onKeyUp='js_limpa(this)' ")
 	  ?>
         </td>
@@ -219,7 +219,7 @@ function js_detectaarquivo(arquivo,pdf){
               <b>CNPJ:</b>
             </td>
             <td>
-              <?
+              <?php
 $instit=db_getsession("DB_instit");
 $sql = "select distinct z01_numcgm,z01_cgccpf||'-'||z01_nome as z01_nome from rhlota inner join cgm on rhlota.r70_numcgm=cgm.z01_numcgm  where r70_instit=$instit;";
 $result= db_query($sql);
@@ -239,7 +239,7 @@ db_selectrecord("r70_numcgm", $result, true     , @$db_opcao, "",           "", 
       </tr>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

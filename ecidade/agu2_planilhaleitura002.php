@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -196,7 +196,7 @@ if($objGet->tipodoc == 1) { // 1 = PDF 2 = CSV
   	<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   </head>
   <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="document.form1.x01_matric.focus();" >
-	<?	
+	<?php 
 }
 		
 $total = 0;

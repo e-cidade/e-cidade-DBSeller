@@ -7,6 +7,7 @@ use App\Domain\Financeiro\Orcamento\Models\Recurso;
 use App\Domain\Financeiro\Tesouraria\Models\Saltes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -23,6 +24,7 @@ use Exception;
  *
  * @method ConplanoReduzido reduzidoPossuiLancamento(integer $codigo, integer $exercicio)
  * @method ConplanoReduzido possuiSaldoInicial(integer $codigo, integer $exercicio)
+ * @method ConplanoReduzido balanceteVerificacao(string $dataInicial, string $dataFinal, boolean $encerramento)
  */
 class ConplanoReduzido extends Model
 {
@@ -95,6 +97,22 @@ class ConplanoReduzido extends Model
             ->join('concilia', 'k68_contabancaria', '=', 'db83_sequencial')
             ->where('c61_anousu', '>=', $exercicio)
             ->where('c61_reduz', $codigo);
+    }
+
+    /**
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeBalanceteVerificacao(Builder $query, $dataInicial, $dataFinal, $encerramento)
+    {
+        $pl = sprintf(
+            "fc_planosaldonovo_record(c61_anousu, c61_reduz, '%s'::date, '%s'::date, %s) AS saldos",
+            $dataInicial,
+            $dataFinal,
+            $encerramento ? 'true' : 'false'
+        );
+
+        return $query->join(DB::raw($pl), 'saldos.reduzido', 'c61_reduz');
     }
 
     public function reduzidoEstaEmUso()

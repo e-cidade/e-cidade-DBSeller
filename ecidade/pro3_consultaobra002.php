@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -176,7 +176,7 @@ if($oObras->ob01_regular == 't') {
 								<table id="elemento_principal">
 									<tr> 
 										<td><strong>Código da Obra</strong></td>
-                    <td nowrap bgcolor="#FFFFFF"><? echo $iCodigoObra?></td>
+                    <td nowrap bgcolor="#FFFFFF"><?php echo $iCodigoObra?></td>
 							    </tr>
                   <tr> 
 										<td nowrap><strong>Nome da Obra: </strong></td>
@@ -241,14 +241,14 @@ if($oObras->ob01_regular == 't') {
 						  </fieldset>  
 						</td>
 				  </tr>
-				  <? 
+				  <?php 
 					  if ((isset($iCodigoObra)) && (trim($iCodigoObra)!= "" )) {
 				  ?>
 				  <tr>
 					  <td colspan="4" align="left">
               <fieldset>
                 <legend><b>Detalhamento:</b></legend>
-                <?
+                <?php
                 $oTabDetalhes = new verticalTab("detalhes", 300);
 
                 /**
@@ -291,7 +291,7 @@ if($oObras->ob01_regular == 't') {
               </center>
             </td>
 				  </tr>
-			    <?
+			    <?php
 			      }
 			    ?>
 			  </table>
@@ -302,7 +302,7 @@ if($oObras->ob01_regular == 't') {
 </body>
 <script>
 function js_pesquisa(){
-<?
+<?php
 if(!isset($iCodigoObra) || trim($iCodigoObra)==""){
 echo "
   js_OpenJanelaIframe('','db_iframe_obras','func_obras.php?funcao_js=parent.js_preenchepesquisa|ob01_codobra','Pesquisa',true);

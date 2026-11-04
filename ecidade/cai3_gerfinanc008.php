@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -59,50 +59,58 @@ if(isset($Parcelamento) && $Parcelamento != ""){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <script language="JavaScript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?php 
+<?php
   db_app::load("scripts.js, strings.js, numbers.js, prototype.js, AjaxRequest.js, datagrid.widget.js");
   db_app::load("widgets/Collection.widget.js, widgets/DatagridCollection.widget.js, widgets/DBDownload.widget.js");
 ?>
 </head>
 <script>
    function js_imprime() {
-      jandb = window.open('cai3_gerfinanc014.php?<?
-        if(isset($matric)){
-           echo "matric=$matric";
-        }else if(isset($inscr)){
-           echo "inscr=$inscr";
-        }else if(isset($numcgm)){
-           echo "numcgm=$numcgm";
-        }else {
-           echo "numpre=$numpre";
-        }
-        if (isset($y50_codauto) && $y50_codauto != '') {                     
-            echo "&y50_codauto=$y50_codauto";                                  
-        } 
 
-        if(!empty($HTTP_POST_VARS["datainicial_dia"])) {
-           echo "&datainicial=".$datainicial = $HTTP_POST_VARS['datainicial_ano']."-".$HTTP_POST_VARS['datainicial_mes']."-".$HTTP_POST_VARS['datainicial_dia'];
-           echo "&datafinal=".$datafinal = $HTTP_POST_VARS['datafinal_ano']."-".$HTTP_POST_VARS['datafinal_mes']."-".$HTTP_POST_VARS['datafinal_dia'];
-        }
-        if(!empty($HTTP_POST_VARS['k02_codigo'])) {
-            echo "&k02_codigo=".$HTTP_POST_VARS['k02_codigo'];
-        }
-        if(!empty($HTTP_POST_VARS['conta'])) {
-           echo "&conta=".$HTTP_POST_VARS['conta'];
-        }
+let queryString =  '<?php
+  if(isset($matric)){
+     echo "matric=$matric";
+  }else if(isset($inscr)){
+     echo "inscr=$inscr";
+  }else if(isset($numcgm)){
+     echo "numcgm=$numcgm";
+  }else {
+     echo "numpre=$numpre";
+  }
+  if (isset($y50_codauto) && $y50_codauto != '') {
+      echo "&y50_codauto=$y50_codauto";
+  }
+  if (isset($nl01_codlanc) && $nl01_codlanc != '') {
+      echo "&nl01_codlanc=$nl01_codlanc";
+  }
 
-        if(!empty($HTTP_POST_VARS['v70_sequencial'])) {
-           echo "&v70_sequencial=".$HTTP_POST_VARS['v70_sequencial'];
-        }
-      ?>','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-      jandb.moveTo(0,0);
-   }
+  if(!empty($HTTP_POST_VARS["datainicial_dia"])) {
+     echo "&datainicial=".$datainicial = $HTTP_POST_VARS['datainicial_ano']."-".$HTTP_POST_VARS['datainicial_mes']."-".$HTTP_POST_VARS['datainicial_dia'];
+     echo "&datafinal=".$datafinal = $HTTP_POST_VARS['datafinal_ano']."-".$HTTP_POST_VARS['datafinal_mes']."-".$HTTP_POST_VARS['datafinal_dia'];
+  }
+  if(!empty($HTTP_POST_VARS['k02_codigo'])) {
+      echo "&k02_codigo=".$HTTP_POST_VARS['k02_codigo'];
+  }
+  if(!empty($HTTP_POST_VARS['conta'])) {
+     echo "&conta=".$HTTP_POST_VARS['conta'];
+  }
+
+  if(!empty($HTTP_POST_VARS['v70_sequencial'])) {
+     echo "&v70_sequencial=".$HTTP_POST_VARS['v70_sequencial'];
+  }
+?>';
+
+let jandb = window.open('cai3_gerfinanc014.php?' + queryString, '', 'width=' + (screen.availWidth - 5) +
+                ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0 ');
+
+jandb.moveTo(0,0);
+}
 </script>
 
 
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?
+<?php
 if(isset($tipo_cert) && !isset($HTTP_POST_VARS["procurar"])) {
 ?>
 <br><br>
@@ -111,21 +119,21 @@ if(isset($tipo_cert) && !isset($HTTP_POST_VARS["procurar"])) {
     <tr>
      <td width="20%" class="tabs" nowrap><strong>Data Inicial:</strong></td>
      <td width="80%" class="tabs">
-      <? db_inputdata("datainicial",'','','',true,'text',2); ?>
+      <?php db_inputdata("datainicial",'','','',true,'text',2); ?>
      </td>
     </tr>
     <tr>
       <td class="tabs" nowrap><strong>Data Final:</strong></td>
       <td class="tabs">
-       <? db_inputdata("datafinal",date('d',db_getsession("DB_datausu")),date('m',db_getsession("DB_datausu")),date('Y',db_getsession("DB_datausu")),true,'text',2); ?>
+       <?php db_inputdata("datafinal",date('d',db_getsession("DB_datausu")),date('m',db_getsession("DB_datausu")),date('Y',db_getsession("DB_datausu")),true,'text',2); ?>
       </td>
     </tr>
     <tr>
       <td class="tabs">
-        <? db_ancora("<font color=blue><b>Receita:</b></font>", "js_pesquisareceita(true);", 1); ?>
+        <?php db_ancora("<font color=blue><b>Receita:</b></font>", "js_pesquisareceita(true);", 1); ?>
       </td>
       <td class="tabs" colspan=2>
-        <? db_input('k02_codigo', 10, $Ik02_codigo, true, 'text', 1); ?>
+        <?php db_input('k02_codigo', 10, $Ik02_codigo, true, 'text', 1); ?>
       </td>
     </tr>
     <tr>
@@ -134,10 +142,10 @@ if(isset($tipo_cert) && !isset($HTTP_POST_VARS["procurar"])) {
     </tr>
     <tr>
       <td align="left" nowrap title="<?=@$Tv70_codforo?>" >
-        <?db_ancora(@$Lv70_codforo, "js_pesquisaprocessoforo(true);", 4);?>
+        <?php db_ancora(@$Lv70_codforo, "js_pesquisaprocessoforo(true);", 4); ?>
       </td>
       <td align="left">
-        <?
+        <?php
           db_input("v70_sequencial",  10, $Iv70_sequencial, true, "text", 4, "onchange='js_pesquisaprocessoforo(false);'");
           db_input("v70_codforo",    25, $Iv70_codforo,  true, "text", 3, "");
         ?>
@@ -167,7 +175,7 @@ function js_validar() {
 }
 
 </script>
-<?
+<?php
 } else {
 
   $aWherePagamento    = array();
@@ -178,30 +186,51 @@ function js_validar() {
   if (isset($numcgm)) {
 
     $sInnerPagamento   = " inner join arrenumcgm on arrenumcgm.k00_numpre = arrepaga.k00_numpre";
+    $sInnerPagamento2  = " inner join arrenumcgm on arrenumcgm.k00_numpre = arrepaga.k00_numpre";
     if(isset($y50_codauto) && $y50_codauto != ''){
       $sInnerPagamento .= " inner join arreauto on arrenumcgm.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+      $sInnerPagamento2 .= " inner join arreauto on arreauto.k00_numpre = arreckey.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+    }
+    if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+      $sInnerPagamento .= " inner join arrelanc on arrenumcgm.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+      $sInnerPagamento2 .= "";
     }
     $aWherePagamento[] = " arrenumcgm.k00_numcgm = ".$numcgm;
 
   } else if(isset($matric)) {
 
     $sInnerPagamento   = " inner join arrematric on arrematric.k00_numpre = arrepaga.k00_numpre";
+    $sInnerPagamento2  = " inner join arrematric on arrematric.k00_numpre = arrepaga.k00_numpre";
     if(isset($y50_codauto) && $y50_codauto != ''){
       $sInnerPagamento .= " inner join arreauto on arrematric.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+      $sInnerPagamento2 .= " inner join arreauto on arreauto.k00_numpre = arreckey.k00_numpre and arreauto.k00_auto =".$y50_codauto;
     }
+    if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+      $sInnerPagamento .= " inner join arrelanc on arrematric.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+      $sInnerPagamento2 .= "";
+    }
+
     $aWherePagamento[] = " arrematric.k00_matric = ".$matric;
 
   } else if(isset($inscr)) {
 
     $sInnerPagamento   = " inner join arreinscr on arreinscr.k00_numpre   = arrepaga.k00_numpre";
+    $sInnerPagamento2  = " inner join arreinscr on arreinscr.k00_numpre   = arrepaga.k00_numpre";
     if(isset($y50_codauto) && $y50_codauto != ''){
       $sInnerPagamento .= " inner join arreauto on arreinscr.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+      $sInnerPagamento2 .= " inner join arreauto on arreauto.k00_numpre = arreckey.k00_numpre and arreauto.k00_auto =".$y50_codauto;
     }
+    if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+      $sInnerPagamento .= " inner join arrelanc on arreinscr.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+      $sInnerPagamento2 .= "";
+    }
+
     $aWherePagamento[] = " arreinscr.k00_inscr   = ".$inscr;
 
   } else if (isset($numpre)) {
 
     $sInnerPagamento    = "";
+    $sInnerPagamento2   = "";
     $sWhereNumpreNormal = " and arrepaga.k00_numpre   = ".$numpre;
 
     $sWhereNumprePgto   = " and (  arrepaga.k00_numpre = {$numpre} ";
@@ -238,18 +267,17 @@ function js_validar() {
 
   if (!empty($HTTP_POST_VARS["v70_sequencial"])) {
 
-    $sInnerPagamento .= " inner join ( select distinct";
-    $sInnerPagamento .= "                     case ";
-    $sInnerPagamento .= "                       when termo.v07_numpre is null ";
-    $sInnerPagamento .= "                         then inicialnumpre.v59_numpre";
-    $sInnerPagamento .= "                       else termo.v07_numpre";
-    $sInnerPagamento .= "                     end as numpre ";
-    $sInnerPagamento .= "                from processoforoinicial ";
-    $sInnerPagamento .= "                left join termoini      on inicial          = v71_inicial ";
-    $sInnerPagamento .= "                left join termo         on termo.v07_parcel = termoini.parcel ";
-    $sInnerPagamento .= "                                       and termo.v07_situacao = 1 ";
-    $sInnerPagamento .= "                left join inicialnumpre on inicialnumpre.v59_inicial = v71_inicial ";
-    $sInnerPagamento .= "               where processoforoinicial.v71_processoforo = {$HTTP_POST_VARS["v70_sequencial"]}
+    $sInnerProcesso  = " inner join ( select termo.v07_numpre  as numpre";
+    $sInnerProcesso .= "                from processoforoinicial ";
+    $sInnerProcesso .= "                left join termoini      on inicial          = v71_inicial ";
+    $sInnerProcesso .= "                left join termo         on termo.v07_parcel = termoini.parcel ";
+    $sInnerProcesso .= "                                       and termo.v07_situacao IN (1,2) ";
+    $sInnerProcesso .= "               where processoforoinicial.v71_processoforo = {$HTTP_POST_VARS["v70_sequencial"]}
+                                        union all
+                                        select inicialnumpre.v59_numpre as numpre
+                                        from processoforoinicial
+                                          join inicialnumpre on inicialnumpre.v59_inicial = v71_inicial
+                                        where processoforoinicial.v71_processoforo = {$HTTP_POST_VARS["v70_sequencial"]}
                                           UNION ALL
                                         SELECT DISTINCT
                                                 abatimentorecibo.k127_numprerecibo as numpre
@@ -259,8 +287,34 @@ function js_validar() {
                                                 INNER JOIN abatimentoarreckey ON abatimentoarreckey.k128_arreckey = arreckey.k00_sequencial
                                                 INNER JOIN abatimentorecibo ON abatimentorecibo.k127_abatimento = abatimentoarreckey.k128_abatimento
                                         WHERE processoforoinicial.v71_processoforo = {$HTTP_POST_VARS["v70_sequencial"]}
-    ";
-    $sInnerPagamento .= "            ) as processoforo on processoforo.numpre = arrepaga.k00_numpre ";
+                                        union all
+                                        select
+                                            k127_numprerecibo as numpre
+                                        from
+                                            processoforoinicial
+                                            left join termoini on inicial = v71_inicial
+                                            left join termo on termo.v07_parcel = termoini.parcel
+                                            and termo.v07_situacao in (1, 2)
+                                            inner join arreckey on termo.v07_numpre = arreckey.k00_numpre
+                                            inner join abatimentoarreckey on abatimentoarreckey.k128_arreckey = arreckey.k00_sequencial
+                                            inner join abatimentorecibo on abatimentorecibo.k127_abatimento = abatimentoarreckey.k128_abatimento
+                                        where
+                                        processoforoinicial.v71_processoforo = {$v70_sequencial}
+                                        union all
+                                        select
+                                            v77_numnov as numpre
+                                        from
+                                            processoforopartilha
+                                            inner join processoforopartilhacusta on v77_processoforopartilha = v76_sequencial
+                                        where
+                                            v76_dtpagamento is not null
+                                            and v77_numnov != 0
+                                            and v76_processoforo = {$v70_sequencial}
+      ";
+    $sInnerProcesso .= "            ) as processoforo on processoforo.numpre = arrepaga.k00_numpre ";
+
+    $sInnerPagamento2 .=   $sInnerProcesso;
+    $sInnerPagamento .=   $sInnerProcesso;
 
     //$aWherePagamento[] = " processoforoinicial.v71_processoforo = ".$HTTP_POST_VARS["v70_sequencial"];
   }
@@ -272,7 +326,6 @@ function js_validar() {
   }
 
   $sSqlPagamentos  = " select distinct
-                              arrepaga.oid,
                               arrepaga.k00_numpre,
                               arrepaga.k00_numpar,
                               arrepaga.k00_numtot,
@@ -290,16 +343,16 @@ function js_validar() {
                               'NORMAL'                             as tipopagamento,
                               0                                    as abatimento,
                               0                                    as numpreabatimento,
-                              case 
+                              case
                                 arrepaga.k00_hist when 505 then 0
-                                else coalesce(disbanco.idret, 
-                                              (select 1 
+                                else coalesce(disbanco.idret,
+                                              (select 1
                                                  from cornump
                                                 where cornump.k12_numpre = arrepaga.k00_numpre
                                                   and cornump.k12_numpar = arrepaga.k00_numpar
                                                   and cornump.k12_receit = arrepaga.k00_receit
-                                                LIMIT 1), 
-                                              0) 
+                                                LIMIT 1),
+                                              0)
                               end as boleto
                          from arrepaga
                               {$sInnerPagamento}
@@ -347,7 +400,7 @@ function js_validar() {
                                 )
                               {$sWhereNumpreNormal}
                               {$sWherePagamento}
-                     group by arrepaga.oid,
+                     group by
                               arrepaga.k00_numpre,
                               arrepaga.k00_numpar,
                               arrepaga.k00_numtot,
@@ -370,7 +423,6 @@ function js_validar() {
                      union all
 
                        select distinct
-                              arreckey.oid,
                               arreckey.k00_numpre,
                               arreckey.k00_numpar,
                               case
@@ -421,14 +473,16 @@ function js_validar() {
                               left  join arrecad            on arrecad.k00_numpre                 = arreckey.k00_numpre
                                                            and arrecad.k00_numpar                 = arreckey.k00_numpar
                                                            and arrecad.k00_receit                 = arreckey.k00_receit
-                              {$sInnerPagamento}
+                              {$sInnerPagamento2}
                         where abatimento.k125_tipoabatimento in (1, 4)
                               {$sWhereNumprePgto}
                               {$sWherePagamento}
                      order by efetpagto,
                               k00_numpre,
                               k00_numpar    ";
-//    echo $sSqlPagamentos; exit;
+//   echo $sSqlPagamentos; exit;
+// die ($sSqlPagamentos);
+
   $rsPagamentos    = db_query($sSqlPagamentos);
   $iRowsPagamentos = pg_num_rows($rsPagamentos);
 
@@ -461,7 +515,7 @@ function js_validar() {
         <th width="7%"  nowrap>Dtpagto</th>
         <th width="7%"  nowrap>Efetpagto</th>
       </tr>
-    <?
+    <?php
       $totalpago = 0;
 
       for ($iInd=0; $iInd < $iRowsPagamentos; $iInd++) {
@@ -579,7 +633,7 @@ function js_validar() {
         <td align="center" nowrap ><?=db_formatar($oPagamento->k00_dtpaga,"d")?>    </td>
         <td align="center" nowrap ><?=db_formatar($oPagamento->efetpagto,'d')?>     </td>
       </tr>
-      <?
+      <?php
 
         $totalpago += $oPagamento->k00_valor;
       }
@@ -604,7 +658,7 @@ function js_validar() {
       <input name="voltar" type="button" id="voltar" value="Voltar" onclick="reciboPagoCodigoArrecadacaoVoltar();"/>
     </div>
   </div>
- <?
+ <?php
   } else {
     $DB_ERRO = "Não existe pagamentos efetuados para este numpre.";
   }
@@ -613,7 +667,7 @@ function js_validar() {
 </center>
 </body>
 </html>
-<?
+<?php
 
 if(isset($DB_ERRO)) {
   ?>
@@ -626,14 +680,14 @@ if(isset($DB_ERRO)) {
 
 //-->
 </script>
-  <?
+  <?php
 }
 ?>
   <script>
       function js_pesquisareceita(lMostra){
 
         var sQuery = '?funcao_js=parent.debitos.js_mostrareceitas|k02_codigo';
-<?
+<?php
           if(isset($matric)){
              echo "sQuery += '&matric={$matric}';";
           }else if(isset($inscr)){
@@ -668,7 +722,7 @@ if(isset($DB_ERRO)) {
     function js_pesquisaprocessoforo(mostra) {
 
       var sQuery = "";
-      <?
+      <?php
          if (isset($matric)) {
            echo "sQuery += '&matric={$matric}';";
          }else if(isset($inscr)){
@@ -765,7 +819,7 @@ function consultaBoleto(iNumpre, iNumpar, iReceit) {
         oLinha.datapagamento  = js_formatar(oLinha.datapagamento, 'd');
         oLinha.dataefetivacao = js_formatar(oLinha.dataefetivacao, 'd');
         oLinha.valor = js_formatar(oLinha.valor, 'f');
-        
+
         oLinha.id = iLinha;
 
         oCollection.add(oLinha);

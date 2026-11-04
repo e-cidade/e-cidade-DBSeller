@@ -40,6 +40,8 @@ require_once(modification("classes/db_conparametro_classe.php"));
 $iOpcao = 1;
 $oGet   = db_utils::postMemory($_GET);
 
+$planoConta = new ContaPlanoPCASP($oGet->iCodigoConta, db_getsession("DB_anousu"), null, db_getsession("DB_instit"));
+$iTipoConta = $planoConta->getTipoConta();
 ?>
 <html>
 <head>
@@ -47,7 +49,7 @@ $oGet   = db_utils::postMemory($_GET);
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
 
-    <?
+    <?php
     db_app::load("scripts.js");
     db_app::load("prototype.js");
     db_app::load("strings.js");
@@ -65,15 +67,16 @@ $oGet   = db_utils::postMemory($_GET);
     $iCodigoRecurso = "0";
     $sDescricaoRecurso = "NÃO INFORMADO";
     ?>
+    <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="margin-top:25px;" onload="$('iCodigoInstituicao').focus()">
+<body style="margin-top:25px;" onload="$('iCodigoInstituicao').focus()">
 
 <form>
-    <center>
+    <div class="container">
         <fieldset style="width: 600px">
             <legend><b>Reduzidos</b></legend>
-            <table width="100%">
+            <table class="form-container">
                 <tr>
                     <td><b>Código Conta:</b></td>
                     <td>
@@ -92,22 +95,21 @@ $oGet   = db_utils::postMemory($_GET);
                 </tr>
                 <tr>
                     <td>
-                        <?php
-                        db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", 1);
-                        ?>
+                        <a id="ancoraFonteRecurso" href="#">Fonte de Recursos:</a>
                     </td>
                     <td>
-                        <?php
-                        db_input("iCodigoRecurso", 10, null, false, "hidden", 3);
-                        db_input("o15_recurso", 10, null, false, "text", 3, "onchange='js_pesquisaRecurso(false);'");
-                        db_input("sDescricaoRecurso", 50, null, true, "text", 3);
-                        ?>
+                        <input type="hidden" id="iCodigoRecurso" readonly class="readonly">
+                        <input type="text" style="width: 60px;" id="gestao" readonly class="readonly">
+                        <input type="text" style="width: 60px;" id="o15_recurso" readonly class="readonly">
+                        <input type="text" style="width: 360px;" id="descricaoRecurso" lang="descricao" readonly
+                               class="readonly">
                     </td>
                 </tr>
                 <tr>
                     <td><label for="complementoRecurso" class="bold">Complemento:</label></td>
                     <td>
-                        <input type="text" name="complementoRecurso" id="complementoRecurso" readonly class="readonly field-size-max">
+                        <input type="text" style="width: 122px;" id="o15_complemento" readonly class="readonly">
+                        <input type="text" style="width: 360px;" id="o200_descricao" readonly class="readonly">
                     </td>
                 </tr>
                 <tr>
@@ -133,22 +135,21 @@ $oGet   = db_utils::postMemory($_GET);
                     <td>
                         <?php
                         db_input("iContaBancaria", 5, false, 3, "text", 3);
-                        db_input("sDescricaoContaBancaria", 35, false, 3, "text", 3, "", "","", "width:81%;");
+                        db_input("sDescricaoContaBancaria", 35, false, 3, "text", 3, "", "", "", "width:81%;");
                         ?>
                     </td>
                 </tr>
-
             </table>
         </fieldset>
         <p><input type="button" name="btnIncluirReduzido" id="btnIncluirReduzido" value="Incluir"></p>
-        <fieldset>
-            <legend><b>Reduzidos Cadastrados</b></legend>
-            <div id="divGridReduzidos">
-
-            </div>
-        </fieldset>
-    </center>
+    </div>
 </form>
+<fieldset>
+    <legend><b>Reduzidos Cadastrados</b></legend>
+    <div id="divGridReduzidos">
+
+    </div>
+</fieldset>
 </body>
 </html>
 
@@ -161,7 +162,7 @@ $oGet   = db_utils::postMemory($_GET);
     oGridReduzido.sName        = 'oGridReduzido';
     oGridReduzido.setCellAlign(["center","center", "left", "left", "left", "center", 'center']);
     aHeaders                   = ["Código Conta", "Reduzido", "Instituição", "Recurso", 'Conta Bancária', "Ação", "Instit", "Recurso", 'ContaBancaria'];
-    oGridReduzido.aWidths      = ["10%", "10%", " 25%", "25%", "20%", "10%"];
+    oGridReduzido.aWidths      = ["15%", "15%", " 25%", "20%", "20%", "5%"];
     oGridReduzido.setHeader(aHeaders);
     oGridReduzido.aHeaders[6].lDisplayed = false;
     oGridReduzido.aHeaders[7].lDisplayed = false;
@@ -174,7 +175,7 @@ $oGet   = db_utils::postMemory($_GET);
 
         var oParam          = new Object();
         oParam.exec         = "getReduzidos";
-        oParam.iCodigoConta = <?=@$oGet->iCodigoConta;?>;
+        oParam.iCodigoConta = <?php echo @$oGet->iCodigoConta;?>;
 
         var oAjax = new Ajax.Request("con4_conplanoPCASP.RPC.php",
             {method:'post',
@@ -205,7 +206,7 @@ $oGet   = db_utils::postMemory($_GET);
                 aLinha[1]  = oReduz.c61_reduz;
                 aLinha[2]  = oReduz.codigo +" - "+ oReduz.nomeinst.urlDecode();
                 //aLinha[3]  = oReduz.o15_codigo +" - "+ oReduz.o15_descr.urlDecode();
-                aLinha[3]  = oReduz.o15_recurso +" - "+ oReduz.o15_descr.urlDecode() + ' - ' + oReduz.o200_descricao.urlDecode();
+                aLinha[3]  = oReduz.gestao +" - "+ oReduz.descricao.urlDecode() + ' - ' + oReduz.o200_descricao.urlDecode();
                 aLinha[4]  = descricaoConta;
                 aLinha[5]  = '<input type="button" id="btnReduzAlt_'+iLinha+'"';
                 aLinha[5] += '       value="A" title="Alterar Registro" onclick="js_alterarReduzido('+iLinha+');">&nbsp;';
@@ -264,8 +265,8 @@ $oGet   = db_utils::postMemory($_GET);
     function js_verificaConciliacaoAbertaPorReduzido(iReduzido)
     {
         let oParametros           = new Object();
-	        oParametros.exec      = "verificaConciliacaoAbertaPorReduzido";
-	        oParametros.iReduzido = iReduzido;
+            oParametros.exec      = "verificaConciliacaoAbertaPorReduzido";
+            oParametros.iReduzido = iReduzido;
             oParametros.iCodCon   = $F("iCodigoConta");
             oParametros.iInstit   = $F("iCodigoInstituicao");
 
@@ -275,13 +276,13 @@ $oGet   = db_utils::postMemory($_GET);
     function js_retornoVerificaConciliacaoAbertaPorReduzido(oRetorno)
     {
         // se possui conciliacao bloqueamos o campo para nao alterar a conta
-	    if (oRetorno.lPossuiConciliacaoVinculada) {
+        if (oRetorno.lPossuiConciliacaoVinculada) {
 
             $("iAncoraConta").setAttribute("onclick", "alert('Conta com Conciliacao Bancária nao pode ser alterada.')");
             $("iAncoraConta").setAttribute("class", "");
             $("iAncoraConta").setAttribute("style", "");
 
-	    } else {  // senao volta o campo ao estado normal
+        } else {  // senao volta o campo ao estado normal
 
             $("iAncoraConta").setAttribute("class", "DBAncora");
             $("iAncoraConta").setAttribute("onclick", "js_abreContaBancaria(true)");
@@ -306,7 +307,7 @@ $oGet   = db_utils::postMemory($_GET);
         oParam.exec               = "excluirReduzido";
         oParam.iCodigoReduzido    = iReduzido;
         oParam.iCodigoInstituicao = iCodigoInstituicao;
-        oParam.iCodigoPlanoConta  = <?=$oGet->iCodigoConta;?>;
+        oParam.iCodigoPlanoConta  = <?php echo $oGet->iCodigoConta;?>;
 
         var oAjax = new Ajax.Request("con4_conplanoPCASP.RPC.php",
             {method:'post',
@@ -329,7 +330,7 @@ $oGet   = db_utils::postMemory($_GET);
 
     $("btnIncluirReduzido").observe("click", function() {
 
-        var iCodigoPlanoConta  = <?=$oGet->iCodigoConta;?>;
+        var iCodigoPlanoConta  = <?php echo $oGet->iCodigoConta;?>;
         var iCodigoInstituicao = $("iCodigoInstituicao").value;
         var iCodigoRecurso     = $("iCodigoRecurso").value;
         if (iCodigoInstituicao == "") {
@@ -390,9 +391,11 @@ $oGet   = db_utils::postMemory($_GET);
         $('iCodigoInstituicao').value    = '';
         $('sDescricaoInstituicao').value = '';
         $('iCodigoRecurso').value = '';
-        $('sDescricaoRecurso').value = '';
+        $('descricaoRecurso').value = '';
+        $('gestao').value = '';
         $('o15_recurso').value = '';
-        $('complementoRecurso').value = '';
+        $('o15_complemento').value = '';
+        $('o200_descricao').value = '';
 
         $('iContaBancaria').value = '';
         $('sDescricaoContaBancaria').value = '';
@@ -439,41 +442,48 @@ $oGet   = db_utils::postMemory($_GET);
     }
 
     const buscaRecursoPorId = (codigo) => {
-        let param = 'codigo='+ codigo;
-        pesquisaRecurso(param);
+        let sUrl = `func_novosRecursos.php?funcao_js=parent.pesquisaRecurso&pesquisa_chave=${codigo}`;
+        js_OpenJanelaIframe('', 'db_iframe_orctiporec', sUrl, 'Pesquisa Fonte de Recurso', false);
     };
 
-    function js_pesquisaRecurso(lMostraWindow) {
+    const lookUpRecurso = new DBLookUp($('ancoraFonteRecurso'), $('gestao'), $('descricaoRecurso'), {
+        'sArquivo': 'func_novosRecursos.php',
+        'sLabel': 'Pesquisar Fonte de Recurso',
+        'sObjetoLookUp': "db_iframe_orctiporec",
+        'aCamposAdicionais': ['o15_codigo', 'o15_complemento', 'o200_descricao', 'o15_recurso']
+    });
 
-        if (!lMostraWindow && $('o15_recurso').value == '') {
-            $("sDescricaoRecurso").value = '';
-            $('complementoRecurso').value = '';
-            return
-        }
+    $('gestao').classList.remove('field-size2');
+    $('descricaoRecurso').classList.remove('field-size8');
+    lookUpRecurso.setCallBack('onClick', (retorno) => {
+        preencheForm(retorno[0], retorno[1], retorno[2], retorno[3], retorno[4], retorno[5]);
+    });
 
-        let param = 'fonteRecurso='+ $('o15_recurso').value;
-        pesquisaRecurso(param);
-    }
-
-    const pesquisaRecurso = (parametroAdicional) => {
-        var sUrl = 'func_fonterecursocomplemento.php?funcao_js=parent.js_preencheRecurso|db_codigo|o15_recurso|o15_descr|o200_descricao';
-        if (parametroAdicional) {
-            sUrl += `&${parametroAdicional}`;
-        }
-        js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+    const preencheForm = (recurso, descricao, id, codComplemento, descrComplemento, subrecurso) => {
+        $('iCodigoRecurso').value = id;
+        $('gestao').value = recurso;
+        $('descricaoRecurso').value = descricao;
+        $('o15_recurso').value = subrecurso;
+        $('o15_complemento').value = codComplemento;
+        $('o200_descricao').value = descrComplemento;
     };
 
-    function js_preencheRecurso(id, recurso, descricao, complemento) {
-
-        $('iCodigoRecurso').value    = id;
-        $('o15_recurso').value    = recurso;
-        $('sDescricaoRecurso').value = descricao;
-        $('complementoRecurso').value = complemento;
-        db_iframe_recurso.hide();
+    function pesquisaRecurso(erro, recurso, descricao, id, codComplemento, descrComplemento, subrecurso) {
+        db_iframe_orctiporec.hide();
+        if (erro) {
+            $('iCodigoRecurso').value = '';
+            $('gestao').value = '';
+            $('descricaoRecurso').value = descricao;
+            $('o15_recurso').value = '';
+            $('o15_complemento').value = '';
+            $('o200_descricao').value = '';
+            return;
+        }
+        preencheForm(recurso, descricao, id, codComplemento, descrComplemento, subrecurso);
     }
 
     js_carregaReduzidos();
-    $("iCodigoConta").value = <?=@$oGet->iCodigoConta;?>;
+    $("iCodigoConta").value = <?php echo @$oGet->iCodigoConta;?>;
 
 
     /**
@@ -502,6 +512,8 @@ $oGet   = db_utils::postMemory($_GET);
         );
         oContaBancaria       = new DBViewContaBancaria($F('iContaBancaria'), 'oContaBancaria',false);
         oContaBancaria.setContaPlano(true);
+        // filtra o tipo de conta 1 conta corrente contabancaria.db83_tipoconta
+        oContaBancaria.filtraTipoConta = '<?php echo $iTipoConta ?>';
         oContaBancaria.show($('divContaBancaria'));
         if ($F('iContaBancaria') != "") {
 

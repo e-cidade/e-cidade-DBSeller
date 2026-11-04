@@ -74,12 +74,18 @@ class FormaObtencaoMediaPonderada extends FormaObtencao implements IFormaObtenca
 
       if ($nAproveitamentoPeriodo !== "") {
 
+        if (gettype($mAproveitamento) == 'string' && $mAproveitamento == '') {
+          $mAproveitamento = 0;
+        }
         $mAproveitamento += $oNotaDoAproveitamento->getValorAproveitamento()->getAproveitamento() * $oElemento->getPeso();
         $iTotalPeriodos  += $oElemento->getPeso();
       }
     }
 
     if ($iTotalPeriodos > 0) {
+      if (gettype($mAproveitamento) == 'string' && $mAproveitamento == '') {
+        $mAproveitamento = 0;
+      }
       $mAproveitamento = ArredondamentoNota::arredondar( $mAproveitamento / $iTotalPeriodos, $iAno );
     }
 

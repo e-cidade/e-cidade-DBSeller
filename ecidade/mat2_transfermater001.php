@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -179,9 +179,9 @@ $aux = new cl_arquivo_auxiliar;
      <strong>Transferências de  </strong>
   </td>
   <td colspan="3">
-     <? db_input('m80_codigo',8,$Im80_codigo,true,'text',$db_opcao,"onchange='js_copiacampo();'","m80_codigo_ini")  ?>
+     <?php db_input('m80_codigo',8,$Im80_codigo,true,'text',$db_opcao,"onchange='js_copiacampo();'","m80_codigo_ini")  ?>
     &nbsp;<strong> à </strong>&nbsp;
-     <? db_input('m80_codigo',8,$Im80_codigo,true,'text',$db_opcao,"","m80_codigo_fim")  ?>
+     <?php db_input('m80_codigo',8,$Im80_codigo,true,'text',$db_opcao,"","m80_codigo_fim")  ?>
   </td>
       </tr>
 
@@ -190,7 +190,7 @@ $aux = new cl_arquivo_auxiliar;
           <b>Tipos de Periodo:</b>
         </td>
         <td colspan=3>
-          <?
+          <?php
             $aAtendimento = array ( "1" => "Data da Transferência",
                                     "2" => "Data do Recebimento" );
             db_select("tipo_periodo",$aAtendimento,true,1,"style='width:273px;'  ");
@@ -203,9 +203,9 @@ $aux = new cl_arquivo_auxiliar;
      <strong>Período:  </strong>
   </td>
   <td colspan=3>
-     <? db_inputdata('perini','','','',true,'text',1,"");  ?>
+     <?php db_inputdata('perini','','','',true,'text',1,"");  ?>
       &nbsp;<strong> à </strong>&nbsp;
-     <? db_inputdata('perfim','','','',true,'text',1,"");  ?>
+     <?php db_inputdata('perfim','','','',true,'text',1,"");  ?>
   </td>
       </tr>
 
@@ -214,7 +214,7 @@ $aux = new cl_arquivo_auxiliar;
     <td colspan=4 align=center>
       <table>
         <tr><td>
-         <?
+         <?php
           $aux->cabecalho = "<strong>Almoxarifados</strong>";
           $aux->codigo = "m91_codigo"; //chave de retorno da func
           $aux->descr  = "descrdepto";   //chave de retorno
@@ -254,7 +254,7 @@ $aux = new cl_arquivo_auxiliar;
   </td>
  </tr>
 </table>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

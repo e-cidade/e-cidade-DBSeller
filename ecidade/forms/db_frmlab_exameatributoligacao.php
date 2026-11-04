@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("la25_i_codigo");
        <?=@$Lla26_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la26_i_codigo',10,$Ila26_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla26_i_exameatributofilho?>">
-       <?
+       <?php
        db_ancora(@$Lla26_i_exameatributofilho,"js_pesquisala26_i_exameatributofilho(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la26_i_exameatributofilho',10,$Ila26_i_exameatributofilho,true,'text',$db_opcao," onchange='js_pesquisala26_i_exameatributofilho(false);'")
 ?>
-       <?
+       <?php
 db_input('la25_i_codigo',10,$Ila25_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla26_i_exameatributopai?>">
-       <?
+       <?php
        db_ancora(@$Lla26_i_exameatributopai,"js_pesquisala26_i_exameatributopai(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la26_i_exameatributopai',10,$Ila26_i_exameatributopai,true,'text',$db_opcao," onchange='js_pesquisala26_i_exameatributopai(false);'")
 ?>
-       <?
+       <?php
 db_input('la25_i_codigo',10,$Ila25_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_exameatributoligacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

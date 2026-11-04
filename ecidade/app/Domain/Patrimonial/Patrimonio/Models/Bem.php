@@ -32,8 +32,8 @@ class Bem extends Model
     protected $primaryKey = 't52_bem';
     public $timestamps = false;
     public $casts = [
-        't52_dtaqu'  => 'DateTime',
-        't52_dtinlcusao' => 'DateTime'
+        't52_dtaqu'  => 'datetime',
+        't52_dtinlcusao' => 'datetime'
     ];
 
     public function divisao()

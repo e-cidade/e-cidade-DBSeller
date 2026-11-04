@@ -1,4 +1,5 @@
 <?php
+
 /**
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -28,10 +29,15 @@
 /**
  * Class Check
  */
-class Check {
+class Check
+{
 
-  private function __construct() {}
-  private function __clone() {}
+  private function __construct()
+  {
+  }
+  private function __clone()
+  {
+  }
 
   /**
    * Verfica se o valor está entre o valor mínimo e máximo
@@ -40,7 +46,8 @@ class Check {
    * @param $iValorMaximo
    * @return bool
    */
-  public static function between($iValorProcurado, $iValorMinimo, $iValorMaximo) {
+  public static function between($iValorProcurado, $iValorMinimo, $iValorMaximo)
+  {
     return ($iValorProcurado >= $iValorMinimo && $iValorProcurado <= $iValorMaximo);
   }
 
@@ -50,7 +57,8 @@ class Check {
    *
    * @return bool
    */
-  public static function isInt($iValor) {
+  public static function isInt($iValor)
+  {
     return filter_var($iValor, FILTER_VALIDATE_INT, array('flags' => FILTER_NULL_ON_FAILURE)) !== null;
   }
 
@@ -60,7 +68,8 @@ class Check {
    *
    * @return bool
    */
-  public static function isFloat($nValor) {
+  public static function isFloat($nValor)
+  {
     return filter_var($nValor, FILTER_VALIDATE_FLOAT, array('flags' => FILTER_NULL_ON_FAILURE)) !== null;
   }
 
@@ -70,11 +79,72 @@ class Check {
    *
    * @return bool
    */
-  public static function isBoolean($nValor) {
+  public static function isBoolean($nValor)
+  {
 
     if (is_bool($nValor)) {
       return true;
     }
     return filter_var($nValor, FILTER_VALIDATE_BOOLEAN, array('flags' => FILTER_NULL_ON_FAILURE)) !== null;
+  }
+
+  /*Verifica se é numeric e  tamanho
+   *Exemplo:
+   *[
+   *  [entrada,numeric/null,tamanho/null],
+   *  [entrada],numeric/null,tamanho/null,[caracteres nao permitidos na string]/null]
+   *  [[entrada,entrada],numeric/null,tamanho/null]
+   * ]
+   * retorna false se passou no teste ou mensagem com o erro.
+   */
+  public static function VaidacaoDados($dados)
+  {
+    $msg = false;
+    foreach ($dados as $key => $array) {
+      if (is_array($array[0])) {
+        foreach ($array[0] as $key => $value) {
+          if ($array[1] == 'numeric' && !is_numeric($value)) {
+            $msg = $value . ' Não numérico';
+          }
+          if (isset($array[2]) && strlen($array[0]) > $value) {
+            $msg = $value . ' Maior que ' . $array[2];
+          }
+          if (isset($array[3])) {
+            if (is_array($array[3])) {
+              foreach ($array[3] as $key => $caract) {
+                if (db_indexOf($value, $caract)) {
+                  $msg = 'Não permitido o caracter ' . $caract;
+                }
+              }
+            } else {
+              if (db_indexOf($value, $array[3])) {
+                $msg = 'Não permitido o caracter ' . $array[3];
+              }
+            }
+          }
+        }
+      } else {
+        if ($array[1] == 'numeric' && !is_numeric($array[0])) {
+          $msg = $array[0] . ' Não numérico';
+        }
+        if (isset($array[2]) && strlen($array[0]) > $array[2]) {
+          $msg =  $array[0] . ' Maior que ' . $array[2];
+        }
+        if (isset($array[3])) {
+          if (is_array($array[3])) {
+            foreach ($array[3] as $key => $caract) {
+              if (db_indexOf($array[0], $caract)) {
+                $msg = 'Não permitido o caracter ' . $caract;
+              }
+            }
+          } else {
+            if (db_indexOf($array[0], $array[3])) {
+              $msg = 'Não permitido o caracter ' . $array[3];
+            }
+          }
+        }
+      }
+    }
+    return $msg;
   }
 }

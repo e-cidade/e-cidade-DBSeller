@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -227,7 +227,7 @@ if ($_GET['iFiltro'] == "M" || $_GET['iFiltro'] == "I" ) {
             </tr>
             <tr>
               <td align="center" >
-    	          <?
+    	          <?php
     	            $oBairro->funcao_gera_formulario();
                 ?>
               </td>
@@ -249,7 +249,7 @@ if ($_GET['iFiltro'] == "M" || $_GET['iFiltro'] == "I" ) {
             </tr>
             <tr>
               <td align="center" >
-                <?
+                <?php
                   $oLogradouro->funcao_gera_formulario();
                 ?>
               </td>
@@ -271,7 +271,7 @@ if ($_GET['iFiltro'] == "M" || $_GET['iFiltro'] == "I" ) {
             </tr>
             <tr>
               <td align="center" >
-                <?
+                <?php
                   $oZona->funcao_gera_formulario();
                 ?>
               </td>

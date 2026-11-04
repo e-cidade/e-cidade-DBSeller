@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -130,21 +130,21 @@ if (isset($incluir)   &&  ($incluir== 'Incluir')){
 <td>
   <table border=0 align="center">
    <tr> 
-       <td><? db_ancora($Lo70_codrec,'js_receitas(true)','1'); ?></td>
-	   <td><? db_input('o70_codrec',10,$Io70_codrec,true,'text',1,"onchange='js_receitas(false)'"); ?></td> 	
-	   <td><? db_input('o57_descr',55,$Io57_descr,true,'text',3,""); ?></td>
+       <td><?php db_ancora($Lo70_codrec,'js_receitas(true)','1'); ?></td>
+	   <td><?php db_input('o70_codrec',10,$Io70_codrec,true,'text',1,"onchange='js_receitas(false)'"); ?></td> 	
+	   <td><?php db_input('o57_descr',55,$Io57_descr,true,'text',3,""); ?></td>
 	</tr>       
 	<tr> 
-       <td><? db_ancora($Lo71_anousu,'','3'); ?></td>
-	   <td><? db_input('o71_anousu',10,$Io71_anousu,true,'text',1,""); ?></td>	
+       <td><?php db_ancora($Lo71_anousu,'','3'); ?></td>
+	   <td><?php db_input('o71_anousu',10,$Io71_anousu,true,'text',1,""); ?></td>	
 	</tr>
 	<tr> 
-       <td><? db_ancora($Lo71_mes,'','3'); ?></td>
-	   <td><? db_input('o71_mes',10,$Io71_mes,true,'text',1,""); ?></td>
+       <td><?php db_ancora($Lo71_mes,'','3'); ?></td>
+	   <td><?php db_input('o71_mes',10,$Io71_mes,true,'text',1,""); ?></td>
 	</tr>
 	<tr> 
-       <td><? db_ancora($Lo71_valor,'','3'); ?></td>
-	   <td><? db_input('o71_valor',15,$Io71_valor,true,'text',1,""); ?></td>	
+       <td><?php db_ancora($Lo71_valor,'','3'); ?></td>
+	   <td><?php db_input('o71_valor',15,$Io71_valor,true,'text',1,""); ?></td>	
 	  
 	</tr>
 	<tr>
@@ -160,7 +160,7 @@ if (isset($incluir)   &&  ($incluir== 'Incluir')){
  </table>   
  </form>
      
-<?
+<?php
 
 
 $db_opcao = 1;
@@ -176,7 +176,7 @@ $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
      
 
   
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
@@ -192,13 +192,13 @@ function js_receitas(mostra){
 }
 function js_mostraReceita(chave1){
 	 db_iframe_orcreceita.hide();
-     <?
+     <?php
 	 echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave1;";
      ?> 
 }
 function js_mostraReceita1(chave1,erro){      
      rec = document.form2.o70_codrec.value;
-	 <?
+	 <?php
 	 echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+rec;";
      ?> 
 }

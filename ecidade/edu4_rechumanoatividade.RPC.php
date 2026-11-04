@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -202,15 +202,18 @@ try {
                             $iTimeHoraFimSalvar = strtotime("{$sData} {$oDadosSalvar->sHoraFim}");
                             $iTimeHoraInicioAgenda = strtotime("{$sData} {$oTodasAgendas->hora_inicio}");
                             $iTimeHoraFimAgenda = strtotime("{$sData} {$oTodasAgendas->hora_fim}");
-
                             if ($iTimeHoraInicioSalvar < $iTimeHoraFimAgenda &&
                                 $iTimeHoraFimSalvar > $iTimeHoraInicioAgenda) {
-                                $aConflitos[] = mensagemConflito($oTodasAgendas, $oDadosSalvar);
+                                if ($dataInicio != $dataFimAgenda) {
+                                    if ($dataFim != $dataInicioAgenda) {
+                                        $aConflitos[] = mensagemConflito($oTodasAgendas, $oDadosSalvar);
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            } // Valida conflito entre de agenda OUTRAS ESCOLAS
+            } //Valida conflito entre de agenda OUTRAS ESCOLAS
 
             /**
              * Monta a mensagens de conflito em outra escola.

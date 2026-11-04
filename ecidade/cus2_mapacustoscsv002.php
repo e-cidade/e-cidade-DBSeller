@@ -143,7 +143,7 @@ function addValorContaPai($oConta, $iNivel, $nValor) {
 </head>
 <body background="#cccccc">
 <center>
-<?
+<?php
 db_criatermometro("custos");
 $sLinhaHeader  = "Conta;";
 $sLinhaHeader .= "Descricao;";

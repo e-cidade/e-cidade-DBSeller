@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 if (! isset($arqinclude)) { // se este arquivo não esta incluido por outro
@@ -37,18 +37,18 @@ if (! isset($arqinclude)) { // se este arquivo não esta incluido por outro
   include(modification("classes/db_conrelinfo_classe.php"));
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_empresto_classe.php"));
-  
+
   parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
   db_postmemory($_GET);
-  
+
   $classinatura  = new cl_assinatura();
   $orcparamrel   = new cl_orcparamrel();
   $clconrelinfo  = new cl_conrelinfo();
   $clempresto    = new cl_empresto();
-  
+
   $anousu = db_getsession("DB_anousu");
   $dt     = data_periodo($anousu, $periodo); // no dbforms/db_funcoes.php
-  
+
 
   $dt_ini = $dt [0]; // data inicial do período
   $dt_fin = $dt [1]; // data final do período
@@ -58,7 +58,7 @@ if (! isset($arqinclude)) { // se este arquivo não esta incluido por outro
 $lGeraColunaRps = false;
 
 if ($periodo == '2S') {
-  $lGeraColunaRps = true;  
+  $lGeraColunaRps = true;
 }
 
 //  tela do relatorio
@@ -291,13 +291,13 @@ $cancelado = 0;
 $saldo = 0;
 for($i = 0; $i < pg_numrows($result_restos_mde1); $i ++) {
   db_fieldsmemory($result_restos_mde1, $i);
-  
+
   $saldo += (($e91_vlremp - $e91_vlranu - $vlranu) - ($e91_vlrpag + $vlrpag));
 }
 
 $db_filtro = " in (" . str_replace("-", ", ", $db_selinstit) . ")";
-$result_restos_mde2 = db_rpsaldo($anousu, $db_filtro, $dt_ini2, $dt_fin, " o58_codigo     in (" . $v_codigo . ")  and 
-                                   o58_funcao    in (" . $v_funcao . ")  and 
+$result_restos_mde2 = db_rpsaldo($anousu, $db_filtro, $dt_ini2, $dt_fin, " o58_codigo     in (" . $v_codigo . ")  and
+                                   o58_funcao    in (" . $v_funcao . ")  and
                                    o58_subfuncao in (" . $v_subfunc . ") ", " and c53_coddoc = 32 ");
 
 //db_criatabela($result_restos_mde2);
@@ -306,7 +306,7 @@ for($i = 0; $i < pg_numrows($result_restos_mde2); $i ++) {
   $cancelado += $vlranu;
 }
 
-// DESPESAS POR SUBFUNCAO 
+// DESPESAS POR SUBFUNCAO
 $m_desp_subfunc[1]['estrut']  = $orcparamrel->sql_parametro('24', '25');
 $m_desp_subfunc[1]['nivel']   = $orcparamrel->sql_nivel('24', '25');
 $m_desp_subfunc[1]['funcao']  = $orcparamrel->sql_funcao('24', '25');
@@ -441,32 +441,32 @@ for($x = 1; $x <= 6; $x ++) {
 ///db_criatabela($result_despesa);exit;
 for($i = 0; $i < pg_numrows($result_despesa); $i ++) {
   db_fieldsmemory($result_despesa, $i);
-  
+
   for($linha = 1; $linha <= 6; $linha ++) {
     $nivel = $desp [$linha] ['nivel'];
     $estrutural = $o58_elemento . '00';
     $estrutural = substr($estrutural, 0, $nivel);
     $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);
-    
+
     $v_funcao = $o58_funcao;
     $v_subfuncao = $o58_subfuncao;
     $v_recurso = $o58_codigo;
-    
+
     if (in_array($v_estrutural, $desp [$linha] ['estrut'])) {
       if (count($desp [$linha] ['funcao']) == 0 || in_array($v_funcao, $desp [$linha] ['funcao'])) {
         if (count($desp [$linha] ['subfunc']) == 0 || in_array($v_subfuncao, $desp [$linha] ['subfunc'])) {
           if (count($desp [$linha] ['recurso']) == 0 || in_array($v_recurso, $desp [$linha] ['recurso'])) {
-            
+
             $desp[$linha]['previni']         += $dot_ini;
             $desp[$linha]['prevatu']         += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
             $desp[$linha]['rpNaoProcessado'] += abs(round($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado,2));
             $desp[$linha]['bimestre']        += $liquidado_acumulado;
-          
-          } 
+
+          }
         }
-      } 
-    } 
-  } 
+      }
+    }
+  }
 }
 /*
 echo "<pre>";
@@ -479,34 +479,34 @@ exit;
 //db_criatabela($result_despesa);exit;
 for($i = 0; $i < pg_numrows($result_despesa); $i ++) {
   db_fieldsmemory($result_despesa, $i);
-  
+
   for($linha = 1; $linha <= 4; $linha ++) {
 
     $nivel        = $desp_p [$linha] ['nivel'];
     $estrutural   = $o58_elemento . '00';
     $estrutural   = substr($estrutural, 0, $nivel);
     $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);
-    
+
     $v_funcao     = $o58_funcao;
     $v_subfuncao  = $o58_subfuncao;
     $v_recurso    = $o58_codigo;
-    
+
     if (in_array($v_estrutural, $desp_p [$linha] ['estrut'])) {
       if (count($desp_p [$linha] ['funcao']) == 0 || in_array($v_funcao, $desp_p [$linha] ['funcao'])) {
         if (count($desp_p [$linha] ['subfunc']) == 0 || in_array($v_subfuncao, $desp_p [$linha] ['subfunc'])) {
           if (count($desp_p [$linha] ['recurso']) == 0 || in_array($v_recurso, $desp_p [$linha] ['recurso'])) {
-            
+
             $desp_p [$linha]['previni']         += $dot_ini;
             $desp_p [$linha]['prevatu']         += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
             $desp_p [$linha]['rpNaoProcessado'] += abs( round( $empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado,2) );
             $desp_p [$linha]['bimestre']        += $liquidado_acumulado;
-          
+
           }
-        } 
-      } 
-    } 
-  } 
-} 
+        }
+      }
+    }
+  }
+}
 
 //echo "N: $nivel <br>";
 //echo "E:$estrutural <br>";
@@ -557,29 +557,29 @@ $subout_atebim = 0;
 
 for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
   db_fieldsmemory($result_subfuncao, $i);
-  
+
   $nivel        = $m_desp_subfunc [1] ['nivel'];
   $estrutural   = $o58_elemento . '00';
   $estrutural   = substr($estrutural, 0, $nivel);
   $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);
-  
+
   $v_funcao    = $o58_funcao;
   $v_subfuncao = $o58_subfuncao;
   $v_recurso   = $o58_codigo;
-  
+
   if (! in_array($v_estrutural, $m_desp_subfunc [1] ['estrut'])) {
     continue;
   }
-  
+
   if (count($m_desp_subfunc [1] ['funcao']) == 0 || in_array($v_funcao, $m_desp_subfunc [1] ['funcao'])) {
     if (count($m_desp_subfunc [1] ['subfunc']) == 0 || in_array($v_subfuncao, $m_desp_subfunc [1] ['subfunc'])) {
       if (count($m_desp_subfunc [1] ['recurso']) == 0 || in_array($v_recurso, $m_desp_subfunc [1] ['recurso'])) {
-        
+
         $total_acum += $liquidado_acumulado;
         $total_ini  += $dot_ini;
-        $total_atu  += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);          
+        $total_atu  += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
         $total_rp   += abs( round($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado,2) );
-          
+
         if ($o58_subfuncao == 301) {
           $sub301_dotini += $dot_ini;
           $sub301_atuali += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
@@ -588,7 +588,7 @@ for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
           continue;
 
         }
-        
+
         if ($o58_subfuncao == 302) {
           $sub302_dotini += $dot_ini;
           $sub302_atuali += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
@@ -597,7 +597,7 @@ for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
           continue;
 
         }
-        
+
         if ($o58_subfuncao == 303) {
           $sub303_dotini += $dot_ini;
           $sub303_atuali += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
@@ -605,7 +605,7 @@ for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
           $sub303_rp     += abs( round($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado,2) );
           continue;
         }
-        
+
         if ($o58_subfuncao == 304) {
           $sub304_dotini += $dot_ini;
           $sub304_atuali += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
@@ -613,7 +613,7 @@ for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
           $sub304_rp     += abs( round($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado,2) );
           continue;
         }
-        
+
         if ($o58_subfuncao == 305) {
           $sub305_dotini += $dot_ini;
           $sub305_atuali += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
@@ -621,7 +621,7 @@ for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
           $sub305_rp     += abs( round($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado,2) );
           continue;
         }
-        
+
         if ($o58_subfuncao == 306) {
           $sub306_dotini += $dot_ini;
           $sub306_atuali += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
@@ -629,12 +629,12 @@ for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
           $sub306_rp     += abs( round($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado,2) );
           continue;
         }
-        
+
         $subout_dotini += $dot_ini;
         $subout_atuali += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
         $subout_atebim += $liquidado_acumulado;
         $subout_rp     += abs( $empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado );
-        
+
       }
     }
   }
@@ -647,13 +647,13 @@ $n2 = 10;
 
 // end se incluido em outro arquivo
 
-$xinstit = split("-", $db_selinstit);
+$xinstit =explode("-", $db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (" . str_replace('-', ', ', $db_selinstit) . ") ");
 $descr_inst = '';
 db_fieldsmemory($resultinst, 0);
 $descr_inst = $munic;
 
-$vdt_fin = split("-", $dt_fin);
+$vdt_fin =explode("-", $dt_fin);
 
 $head1 = "MUNICÍPIO DE " . strtoupper($descr_inst);
 $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
@@ -675,7 +675,7 @@ if ($lGeraColunaRps) {
   $iTamanhoFonte = 5;
 } else {
   $iLarguraColunaValor = 20;
-  $iNumcols = 2;  
+  $iNumcols = 2;
   $iTamanhoFonte = 6;
 }
 
@@ -948,7 +948,7 @@ if ($lGeraColunaRps) {
 }else{
   @$nPercInatPen = ( ( $desp_p[1]['bimestre'] * 100 ) / $total_IV_atu );
 }
-  
+
 $pdf->cell($iLarguraColunaValor, $alt, db_formatar($nPercInatPen, 'f'), 'L', 1, "R", 0);
 
 // caso a linha abaixo seja zerada,  o manual diz que os valores devem ser pegos do quadro da receita
@@ -1216,13 +1216,13 @@ $pdf->cell($iLarguraColunaValor, $alt, db_formatar($total_acum, 'f'), "TB", 0, "
 //------------------------------------------------
 
 if (! isset($arqinclude)) {
-  notasExplicativas(&$pdf, 24, "{$periodo}", 190);
-  
+  notasExplicativas($pdf, 24, "{$periodo}", 190);
+
   //assinaturas
   $pdf->Ln(15);
-  
-  assinaturas(&$pdf, &$classinatura, 'LRF');
-  
+
+  assinaturas($pdf, $classinatura, 'LRF');
+
   $pdf->Output();
 }
 
@@ -1252,7 +1252,7 @@ function cabecalhoDespesa($pdf,$aDescricao,$iLarguraColunaDescr,$iLarguraColunaV
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["D3"],"L",0,"C",0); // D3
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["E3"],"L",0,"C",0); // E3
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["F3"],"L",1,"C",0); // F3
-    
+
     $pdf->cell($iLarguraColunaDescr,$alt,$aDescricao["A4"],"", 0,"C",0); // A4
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["B4"],"L",0,"C",0); // B4
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["C4"],"L",0,"C",0); // C4
@@ -1261,7 +1261,7 @@ function cabecalhoDespesa($pdf,$aDescricao,$iLarguraColunaDescr,$iLarguraColunaV
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["F4"],"L",1,"C",0); // F4
 
   }
-  
+
   $pdf->cell($iLarguraTotal,0,"","T","1","C",0);
 
 }

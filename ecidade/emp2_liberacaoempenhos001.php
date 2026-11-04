@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $dbopcao  = 1;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css");
 ?>
@@ -70,7 +70,7 @@ $dbopcao  = 1;
 					      <tr>
 					        <td align="left"><b>Empenhos: </b></td>
 					        <td align="left">
-					          <?
+					          <?php
 					          $aArray = array("t"=>"Todos","l"=>"Liberados" ,"n"=>"Não Liberados");
 					          db_select('emempenho',$aArray,true,4,"");
 					          ?>
@@ -79,7 +79,7 @@ $dbopcao  = 1;
                 <tr>
                     <td nowrap align="left"><b>Data de Liberação: </b></td>
                     <td  align="left" nowrap>
-                     <?      
+                     <?php      
                        db_inputdata('dtliberacaoini',@$dia,@$mes,@$ano,true,'text',$dbopcao,"");
                        echo " <b>até:</b> ";
                        db_inputdata('dtliberacaofim',@$dia2,@$mes2,@$ano2,true,'text',$dbopcao,"");
@@ -102,7 +102,7 @@ $dbopcao  = 1;
     <td>&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

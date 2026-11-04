@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,13 +41,13 @@ db_fieldsmemory($resultnoti,0);
     <tr> 
       <td nowrap title="<?=@$Tk50_notifica?>"><?=$Lk50_notifica?></td>
          <td >
-	 <?
+	 <?php
 	  db_input('k50_notifica',6,$Ik50_notifica,true,'text',2,'')
 	 ?>
          </td>
       <td nowrap title="<?=@$Tk50_dtemite?>"><?=$Lk50_dtemite?></td>
          <td>
-        <?
+        <?php
 	  db_inputdata("k50_dtemite",$k50_dtemite_dia,$k50_dtemite_mes,$k50_dtemite_ano,true,5,3);
 	?>
       </td>
@@ -55,7 +55,7 @@ db_fieldsmemory($resultnoti,0);
     <tr> 
       <td nowrap title="<?=@$Tk54_data?>"><?=$Lk54_data?></td>
          <td>
-        <?
+        <?php
 	 if ($k54_data == ''){
 	     $k54_data_dia = date('d');
 	     $k54_data_mes = date('m');
@@ -66,7 +66,7 @@ db_fieldsmemory($resultnoti,0);
       </td>
       <td nowrap title="<?=@$Tk54_hora?>"><?=$Lk54_hora?></td>
          <td>
-	 <?
+	 <?php
           if ($k54_hora == ''){
 	     $k54_hora = date('H:i');
           }
@@ -77,7 +77,7 @@ db_fieldsmemory($resultnoti,0);
     <tr>
       <td nowrap title="<?=@$Tk54_assinante?>"><?=$Lk54_assinante?></td>
          <td colspan="3">
-	 <?
+	 <?php
 	 db_input('k54_assinante',40,$Ik54_assinante,true,'text',2,'')
 	 ?>
          </td>
@@ -85,7 +85,7 @@ db_fieldsmemory($resultnoti,0);
     <tr>
       <td nowrap title="<?=@$Tk54_obs?>"><?=$Lk54_obs?></td>
          <td colspan="3">
-	 <?
+	 <?php
 	 db_textarea('k54_obs',5,40,$Ik54_obs,true,'text',4);
 	 ?>
          </td>
@@ -93,7 +93,7 @@ db_fieldsmemory($resultnoti,0);
     <tr>
        <td height="25" nowrap title="<?=$Tk54_codigo?>"><?=$Lk54_codigo?></td>
        <td colspan="3" height="25" nowrap>&nbsp; &nbsp;
-       <?
+       <?php
          $clnotisitu = new cl_notisitu;
          $result = $clnotisitu->sql_record($clnotisitu->sql_query("","k59_codigo#k59_descr","k59_descr"));
          db_selectrecord("k54_codigo",$result,true,2);

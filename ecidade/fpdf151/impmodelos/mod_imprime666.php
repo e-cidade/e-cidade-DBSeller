@@ -1,4 +1,4 @@
-<?
+<?php
 //  F I C H A   D E   C O M P E N S A Ç Ã O
 
 /**
@@ -85,8 +85,8 @@ $this->objpdf->Text($x + 3, $y + 11, "Local de Pagamento");
 $this->objpdf->Text($x + 138, $y + 11, "Parcela");
 $this->objpdf->Text($x + 158, $y + 11, "Vencimento");
 
-$this->objpdf->Text($x + 3, $y + 19, "Cedente");
-$this->objpdf->Text($x + 138, $y + 19, "Agência/Código Cedente");
+$this->objpdf->Text($x + 3, $y + 19, "Beneficiário");
+$this->objpdf->Text($x + 138, $y + 19, "Agência/Código Beneficiário");
 
 $this->objpdf->Text($x + 3, $y + 26, "Data do Documento");
 $this->objpdf->Text($x + 29, $y + 26, "Número do Documento");
@@ -114,8 +114,8 @@ $this->objpdf->Text($x + 138, $y + 47, "( - ) Outras Deduções");
 $this->objpdf->Text($x + 138, $y + 54, "( + ) Mora / Multa");
 $this->objpdf->Text($x + 138, $y + 61, "( + ) Outros Acréscimos");
 $this->objpdf->Text($x + 138, $y + 68, "( = ) Valor Cobrado");
-$this->objpdf->Text($x + 3, $y + 75, "Sacado");
-$this->objpdf->Text($x + 3, $y + 85, "Sacador/Avalista");
+$this->objpdf->Text($x + 3, $y + 75, "Pagador");
+$this->objpdf->Text($x + 3, $y + 85, "Pagador/Avalista");
 
 $this->objpdf->SetFont('Arial', 'b', 6);
 $this->objpdf->Text($x + 120, $y + 90, "AUTENTICAÇÃO MECÂNICA / FICHA DE COMPENSAÇÃO");
@@ -132,7 +132,7 @@ $this->objpdf->Text($x + 158, $y + 15, $this->dtparapag);                       
 if (isset($this->sCedenteBoleto) && trim($this->sCedenteBoleto) != '') {
     $this->objpdf->Text($x + 3, $y + 23, $this->sCedenteBoleto);            // cedente
 } else {
-    $this->objpdf->Text($x + 3, $y + 23, $this->prefeitura);                // cedente
+    $this->objpdf->Text($x + 3, $y + 23, $this->prefeitura." ".db_formatar($this->cgcpref, 'cnpj')); // cedente
 }
 
 $this->objpdf->SetFont('Arial', 'b', 10);

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,29 +40,29 @@ $oClRotulo->label("nome");
         <?=@$Led103_i_codigo?>
       </td>
       <td>
-        <? db_input('ed103_i_codigo', 15, $Ied103_i_codigo, true, 'text', 3, "") ?>
+        <?php db_input('ed103_i_codigo', 15, $Ied103_i_codigo, true, 'text', 3, "") ?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Ted103_i_escolaorigem?>">
-        <? db_ancora(@$Led103_i_escolaorigem, "", 3); ?>
+        <?php db_ancora(@$Led103_i_escolaorigem, "", 3); ?>
       </td>
       <td>
-        <? db_input('ed103_i_escolaorigem', 15, $Ied103_i_escolaorigem, true, 'text', 3, "") ?>
-        <? db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '') ?>
+        <?php db_input('ed103_i_escolaorigem', 15, $Ied103_i_escolaorigem, true, 'text', 3, "") ?>
+        <?php db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '') ?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Ted103_i_atestvaga?>">
-        <? db_ancora(@$Led103_i_atestvaga, "js_pesquisaed103_i_atestvaga(true);", $db_opcao); ?>
+        <?php db_ancora(@$Led103_i_atestvaga, "js_pesquisaed103_i_atestvaga(true);", $db_opcao); ?>
       </td>
       <td>
-        <? db_input('ed103_i_atestvaga', 15, $Ied103_i_atestvaga, true, 'text', $db_opcao,
+        <?php db_input('ed103_i_atestvaga', 15, $Ied103_i_atestvaga, true, 'text', $db_opcao,
                     " onchange='js_pesquisaed103_i_atestvaga();'"
                    )
         ?>
-        <? db_input('ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3, '') ?>
-        <? db_input('ed47_i_codigo', 15, @$Ied47_i_codigo, true, 'hidden', 3, '') ?>
+        <?php db_input('ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3, '') ?>
+        <?php db_input('ed47_i_codigo', 15, @$Ied47_i_codigo, true, 'hidden', 3, '') ?>
       </td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ $oClRotulo->label("nome");
                 <b>Matrícula Atual:</b>
               </td>
               <td>
-                <? db_input('matricula', 40, @$matricula, true, 'text', 3, '') ?>
+                <?php db_input('matricula', 40, @$matricula, true, 'text', 3, '') ?>
               </td>
             </tr>
             <tr>
@@ -82,10 +82,10 @@ $oClRotulo->label("nome");
                 <b>Etapa / Turma Atual:</b>
               </td>
               <td>
-                <? db_input('turma', 40, @$turma, true, 'text', 3, '') ?>
-                <? db_input('base', 40, @$base, true, 'hidden', 3, '') ?>
-                <? db_input('calendario', 40, @$calendario, true, 'hidden', 3, '') ?>
-                <? db_input('concluida', 40, @$concluida, true, 'hidden', 3, '') ?>
+                <?php db_input('turma', 40, @$turma, true, 'text', 3, '') ?>
+                <?php db_input('base', 40, @$base, true, 'hidden', 3, '') ?>
+                <?php db_input('calendario', 40, @$calendario, true, 'hidden', 3, '') ?>
+                <?php db_input('concluida', 40, @$concluida, true, 'hidden', 3, '') ?>
               </td>
             </tr>
             <tr>
@@ -93,10 +93,10 @@ $oClRotulo->label("nome");
                 <b>Situação Atual:</b>
               </td>
               <td>
-                <? db_input('situacao', 20, @$situacao, true, 'text', 3, '') ?>
+                <?php db_input('situacao', 20, @$situacao, true, 'text', 3, '') ?>
                 <b>Data Matrícula:</b>
-                <? db_input('datamatricula', 10, @$datamatricula, true, 'text', 3, '') ?>
-                <? db_input('datamodif', 10, @$datamodif, true, 'hidden', 3, '') ?>
+                <?php db_input('datamatricula', 10, @$datamatricula, true, 'text', 3, '') ?>
+                <?php db_input('datamodif', 10, @$datamodif, true, 'hidden', 3, '') ?>
               </td>
             </tr>
             <tr>
@@ -104,11 +104,11 @@ $oClRotulo->label("nome");
                 <b>Calendário Atual:</b>
               </td>
               <td>
-                <? db_input('caldescr', 20, @$situacao, true, 'text', 3, '') ?>
+                <?php db_input('caldescr', 20, @$situacao, true, 'text', 3, '') ?>
                 <b>Início:</b>
-                <? db_input('ed52_d_inicio', 10, @$ed52_d_inicio, true, 'text', 3, '') ?>
+                <?php db_input('ed52_d_inicio', 10, @$ed52_d_inicio, true, 'text', 3, '') ?>
                 <b>Final:</b>
-                <? db_input('ed52_d_fim', 10, @$ed52_d_fim, true, 'text', 3, '') ?>
+                <?php db_input('ed52_d_fim', 10, @$ed52_d_fim, true, 'text', 3, '') ?>
               </td>
             </tr>
             <tr>
@@ -121,8 +121,8 @@ $oClRotulo->label("nome");
                 <b>Escola Destino:</b>
               </td>
               <td>
-                <? db_input('codigoescola', 15, @$codigoescola, true, 'text', 3, '') ?>
-                <? db_input('nomeescola', 40, @$nomeescola, true, 'text', 3, '') ?>
+                <?php db_input('codigoescola', 15, @$codigoescola, true, 'text', 3, '') ?>
+                <?php db_input('nomeescola', 40, @$nomeescola, true, 'text', 3, '') ?>
               </td>
             </tr>
             <tr>
@@ -130,8 +130,8 @@ $oClRotulo->label("nome");
                 <b>Etapa Destino:</b>
               </td>
               <td>
-                <? db_input('codigoserie', 15, @$codigoserie, true, 'text', 3, '') ?>
-                <? db_input('nomeserie', 40, @$nomeserie, true, 'text', 3, '') ?>
+                <?php db_input('codigoserie', 15, @$codigoserie, true, 'text', 3, '') ?>
+                <?php db_input('nomeserie', 40, @$nomeserie, true, 'text', 3, '') ?>
               </td>
             </tr>
             <tr>
@@ -139,10 +139,10 @@ $oClRotulo->label("nome");
                 <b>Turno Destino:</b>
               </td>
               <td>
-                <? db_input('codigoturno', 15, @$codigoturno, true, 'text', 3, '') ?>
-                <? db_input('nometurno', 40, @$nometurno, true, 'text', 3, '') ?>
-                <? db_input('codigobase', 40, @$codigobase, true, 'hidden', 3, '') ?>
-                <? db_input('codigocalendario', 40, @$codigocalendario, true, 'hidden', 3, '') ?>
+                <?php db_input('codigoturno', 15, @$codigoturno, true, 'text', 3, '') ?>
+                <?php db_input('nometurno', 40, @$nometurno, true, 'text', 3, '') ?>
+                <?php db_input('codigobase', 40, @$codigobase, true, 'hidden', 3, '') ?>
+                <?php db_input('codigocalendario', 40, @$codigocalendario, true, 'hidden', 3, '') ?>
               </td>
             </tr>
             <tr>
@@ -150,7 +150,7 @@ $oClRotulo->label("nome");
                 <b>Data Atestado:</b>
               </td>
               <td>
-                <? db_input('dataatestado', 10, @$dataatestado, true, 'text', 3, '') ?>
+                <?php db_input('dataatestado', 10, @$dataatestado, true, 'text', 3, '') ?>
               </td>
             </tr>
           </table>
@@ -162,7 +162,7 @@ $oClRotulo->label("nome");
       <?=@$Led103_d_data?>
     </td>
     <td>
-      <? db_inputdata('ed103_d_data', @$ed103_d_data_dia, @$ed103_d_data_mes, @$ed103_d_data_ano,
+      <?php db_inputdata('ed103_d_data', @$ed103_d_data_dia, @$ed103_d_data_mes, @$ed103_d_data_ano,
                       true,'text', $db_opcao, ""
                      )
       ?>
@@ -173,7 +173,7 @@ $oClRotulo->label("nome");
       <?=@$Led103_t_obs?>
     </td>
     <td>
-      <? db_textarea('ed103_t_obs', 4, 63, $Ied103_t_obs, true, 'text', $db_opcao, "") ?>
+      <?php db_textarea('ed103_t_obs', 4, 63, $Ied103_t_obs, true, 'text', $db_opcao, "") ?>
     </td>
   </tr>
   <tr>
@@ -199,7 +199,7 @@ $oClRotulo->label("nome");
       }
     ?>
     <td colspan="3">
-      <b>Auxílio Brasil:</b>
+      <b>Bolsa Família:</b>
     <?php
       $x = array("1" => "NÃO", "2" => "SIM");
       db_select('ed283_c_bolsafamilia', $x, true, @$db_opcao, "");
@@ -455,7 +455,7 @@ function js_pesquisaed103_i_atestvaga(mostra){
 
 }
 
-<?
+<?php
   if ($db_opcao != 1) {
 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";

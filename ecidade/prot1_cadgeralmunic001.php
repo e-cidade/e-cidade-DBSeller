@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -75,7 +75,7 @@ $db_opcao   = 1;
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
-<? if ($lMenu) {?>
+<?php if ($lMenu) {?>
 <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr>
     <td width="360">&nbsp;</td>
@@ -84,11 +84,11 @@ $db_opcao   = 1;
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<? } ?>
+<?php } ?>
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?
+     <?php
 	     $clcriaabas->identifica = array( "cgm"        => "Dados CGM",
 	                                       "documentos" => "Documentos",
                                          "fotos"      => "Fotos"
@@ -103,7 +103,7 @@ $db_opcao   = 1;
 </table>
 <form name="form1">
 </form>
-<?
+<?php
   if ($lMenu) {
 
 	 db_menu(db_getsession("DB_id_usuario"),

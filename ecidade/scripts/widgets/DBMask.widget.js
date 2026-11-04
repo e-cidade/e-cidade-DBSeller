@@ -36,11 +36,15 @@ DBMask.prototype.__init = function() {
 
   var zIndex = _this.settings.zIndex || ( 10000 + (_this.settings.context.document.getElementsByClassName('db-mask').length * 2) );
 
+  const path = 'imagens/ecidade/db-mask-bg.png';
+  const isV3 = typeof CurrentWindow !== 'undefined' && typeof CurrentWindow.resolveUrl === 'function';
+  const url = isV3 ? CurrentWindow.resolveUrl(path) : path;
+
   oMask.setAttribute('class', 'db-mask');
   oMask.style.width           = '100%';
   oMask.style.height          = '100%';
   oMask.style.position        = 'fixed';
-  oMask.style.background      = 'url("imagens/ecidade/db-mask-bg.png")';
+  oMask.style.background      = `url("${url}")`;
   oMask.style.left            = '0';
   oMask.style.top             = '0';
   oMask.style.zIndex          = zIndex;

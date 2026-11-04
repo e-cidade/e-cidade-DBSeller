@@ -47,6 +47,7 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
     <link rel="stylesheet" href="estilos.css"/>
     <link rel="stylesheet" href="estilos/grid.style.css"/>
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link href="skins/default/estilos/widgets/DBModal.css" rel="stylesheet" type="text/css">
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
@@ -55,10 +56,15 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DatagridCollection.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBModal.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/classes/patrimonio/AndamentoProcesso.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/classes/tributario/issqn/redesim/ExecutarAcaoRedesim.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/classes/tributario/issqn/redesim/EnviaRespostaRedesim.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/classes/tributario/issqn/redesim/VisualizarDadosRedesim.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/Input/DBInput.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/Input/DBInputDate.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBToogle.widget.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/session.js"></script>
     <script type="text/javascript" src="scripts/socket.io.js"></script>
 
     <style>
@@ -131,7 +137,12 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
         }
     </style>
 </head>
-<body bgcolor="#cccccc" style='margin-top: 30px;'>
+<body bgcolor="#cccccc" style='margin: 30px 0 0 0'>
+<div class="alert alert-primary text-left" role="alert">
+    Por padrão serão carregados
+    os processos conforme o exercício configurado, caso deseje buscar processos
+    de exercício anteriores, utilize o filtro ano.
+</div>
 <div class="container">
     <fieldset>
         <legend><strong>Órgão: <?php echo $orgao ?></strong></legend>
@@ -150,8 +161,15 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
                                 <input type="text" name="" class="filtro" id="descricao">
                                 <label style="padding-left: 5px" for="">Data:</label>
                                 <input type="text" name="dataInicio" class="filtro" id="dataInicio" value="">
+                                <label style="padding-left: 5px" for="">Ano:</label>
+                                <input style="width: 55px" type="text" name="anoProcesso" class="filtro" id="anoProcesso" maxlength="4"
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                <button class="button--light filtro" id="atualizarAno" title="Recarregar" style="border-radius: 2px;">
+                                    <i class="fas fa-redo"></i>
+                                </button>
                             </td>
                         </tr>
+                            </td>
                     </table>
                 </fieldset>
             </form>
@@ -287,48 +305,79 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
 <?php db_menu(); ?>
 </body>
 <script>
-    var visualizarEmOutraJanela = <?=$visualizarEmOutraJanela?>;
+    var visualizarEmOutraJanela = Boolean(<?php echo $visualizarEmOutraJanela == 'true' ? 'true' : 'false' ?>);
+    const date = new Date();
     new DBInputDate(document.getElementById('dataInicio'));
+    document.getElementById('anoProcesso').value = <?= db_getsession('DB_anousu') ?>;
+    setTimeout(() => {
+        (function () {
 
-    (function() {
+            var data = new FormData();
+            data.append('acao', 'info');
+            HttpClient.post('con4_ecidadeinfo.RPC.php', {body: data}).then(function (response) {
+                if (response.erro) {
+                    alert(response.mensagem);
+                    return;
+                }
+                localStorage.setItem("idUsuario", response.usuario.sequencial);
+                const andamentoProcesso = new AndamentoProcesso();
+                andamentoProcesso.setApiUrl(response.url + 'v4/api/');
+                andamentoProcesso.setVisualizarEmOutraJanela(visualizarEmOutraJanela);
+                andamentoProcesso.setCodigoInstituicao(response.instituicao.sequencial);
+                andamentoProcesso.setCodigoDepartamento(response.departamento.sequencial);
+                andamentoProcesso.setWindowAux(new windowAux('windowAux', 'Andamento do processo', 1150, 700));
+                andamentoProcesso.setWindowTransferencia(
+                    new windowAux('windowTransferencia', 'Transfêrencia', 500, 250)
+                );
+                andamentoProcesso.setBotaoAtualizar(document.getElementById('atualizar'));
+                andamentoProcesso.setBotaoAtualizarAno(document.getElementById('atualizarAno'));
+                andamentoProcesso.adicionarAcaoAtualizar();
+                andamentoProcesso.exibeGridProcessos(document.getElementById('gridProcessos'));
+                andamentoProcesso.buscaOuvidoria(null);
+                andamentoProcesso.buscaProcessos(true);
+                andamentoProcesso
+                    .setFiltroData(document.getElementById('dataInicio'))
+                    .setDataAno(document.getElementById('anoProcesso'))
+                    .setFiltroDescricao(document.getElementById('descricao'))
+                    .setFiltroRequerente(document.getElementById('requerente'))
+                    .setFiltroProcesso(document.getElementById('processo'))
+                    .setFiltroMensagem(document.getElementById('mensagemCheck'))
+                    .addFiltroStatus(document.getElementById('receber'))
+                    .addFiltroStatus(document.getElementById('recebido'))
+                    .addFiltroStatus(document.getElementById('despachado'))
+                    .addFiltroStatus(document.getElementById('externo'))
+                    .addFiltroTipoProcesso(document.getElementById('eletronico'))
+                    .addFiltroTipoProcesso(document.getElementById('manual'))
+                    .addFiltroResponsavel(document.getElementById("usuario"))
+                    .addFiltroResponsavel(document.getElementById("departamento"))
+                    .addFiltroResponsavel(document.getElementById("outros"));
+                andamentoProcesso.filtrar();
+            });
+        })();
+    }, 500);
 
-        var data = new FormData();
-        data.append('acao', 'info');
-        HttpClient.post('con4_ecidadeinfo.RPC.php', { body: data }).then(function (response) {
-            if (response.erro) {
-                alert(response.mensagem);
-                return;
-            }
-
-            const andamentoProcesso = new AndamentoProcesso();
-            andamentoProcesso.setApiUrl(response.url + 'v4/api/');
-            andamentoProcesso.setVisualizarEmOutraJanela(visualizarEmOutraJanela);
-            andamentoProcesso.setCodigoInstituicao(response.instituicao.sequencial);
-            andamentoProcesso.setCodigoDepartamento(response.departamento.sequencial);
-            andamentoProcesso.setWindowAux(new windowAux('windowAux', 'Andamento do processo', 1150, 700));
-            andamentoProcesso.setWindowTransferencia(new windowAux('windowTransferencia', 'Transfêrencia', 500,250));
-            andamentoProcesso.setBotaoAtualizar(document.getElementById('atualizar'));
-            andamentoProcesso.adicionarAcaoAtualizar();
-            andamentoProcesso.exibeGridProcessos(document.getElementById('gridProcessos'));
-            andamentoProcesso.buscaOuvidoria(null);
-            andamentoProcesso.buscaProcessos(true);
-            andamentoProcesso
-                .setFiltroData(document.getElementById('dataInicio'))
-                .setFiltroDescricao(document.getElementById('descricao'))
-                .setFiltroRequerente(document.getElementById('requerente'))
-                .setFiltroProcesso(document.getElementById('processo'))
-                .setFiltroMensagem(document.getElementById('mensagemCheck'))
-                .addFiltroStatus(document.getElementById('receber'))
-                .addFiltroStatus(document.getElementById('recebido'))
-                .addFiltroStatus(document.getElementById('despachado'))
-                .addFiltroStatus(document.getElementById('externo'))
-                .addFiltroTipoProcesso(document.getElementById('eletronico'))
-                .addFiltroTipoProcesso(document.getElementById('manual'))
-                .addFiltroResponsavel(document.getElementById("usuario"))
-                .addFiltroResponsavel(document.getElementById("departamento"))
-                .addFiltroResponsavel(document.getElementById("outros"));
-            andamentoProcesso.filtrar();
-        });
-    })();
+    window.addEventListener('load', async () => {
+        await PHPSession.loadData();
+    });
 
 </script>
+<style>
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.5);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .pulsacao {
+        animation-name: pulse;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }
+</style>

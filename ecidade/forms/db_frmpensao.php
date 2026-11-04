@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidadedbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidadedbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
@@ -60,7 +60,7 @@ $clrotulo->label("e21_descricao");
               ?>
             </td>
           </tr>
-          <tr>  
+          <tr>
             <td title="<?=$Tr52_dtincl?>">
               <?=$Lr52_dtincl?>
             </td>
@@ -68,12 +68,12 @@ $clrotulo->label("e21_descricao");
               <?php
               if(isset($r52_dtincl)){
                 if((strpos(strtoupper("#".$r52_dtincl),'-')+0) > 0 ){
-                  $arr_dtincl = split("-",$r52_dtincl);
+                  $arr_dtincl =explode("-",$r52_dtincl);
       	          $r52_dtincl_dia = $arr_dtincl[2];
       	          $r52_dtincl_mes = $arr_dtincl[1];
       	          $r52_dtincl_ano = $arr_dtincl[0];
                 }else{
-              		$arr_dtincl = split("/",$r52_dtincl);
+              		$arr_dtincl =explode("/",$r52_dtincl);
       	          $r52_dtincl_dia = $arr_dtincl[0];
       	          $r52_dtincl_mes = $arr_dtincl[1];
       	          $r52_dtincl_ano = $arr_dtincl[2];
@@ -117,11 +117,27 @@ $clrotulo->label("e21_descricao");
               ?>
             </td>
           </tr>
+            <tr>
+                <td title="<?=$Tr52_cgmalimentado?>">
+                    <?php
+                    db_ancora($Lr52_cgmalimentado,"js_pesquisar52_cgmalimentado(true);",$db_opcao);
+                    ?>
+                </td>
+                <td colspan="3">
+                    <?php
+                    db_input('r52_cgmalimentado',10,$Ir52_cgmalimentado,true,'text',$db_opcao,"onchange='js_pesquisar52_cgmalimentado(false);' tabIndex='2' ");
+                    db_input('r52_cgmalimentadoantigo',10,$Ir52_cgmalimentado,true,'hidden');
+                    ?>
+                    <?php
+                    db_input('z01_nome',60,$Iz01_nome,true,'text',3,'','z01_nome03')
+                    ?>
+                </td>
+            </tr>
           <tr>
             <td title="<?=$Tr52_formul?>">
               <?=$Lr52_formul?>
             </td>
-            <td colspan="4"> 
+            <td colspan="4">
               <?php
               db_textarea('r52_formul',3,69,$Ir52_formul,true,'text',$db_opcao,"onchange='js_desabilita(this.value);' tabIndex='3' onFocus='js_mostrar_dados_formula(true);' onBlur='js_mostrar_dados_formula(false);'");
               ?>
@@ -137,7 +153,7 @@ $clrotulo->label("e21_descricao");
               ?>
             </td>
           </tr>
-          <tr>  
+          <tr>
             <td title="<?=$Tr52_vlrpen?>">
               <?=$Lr52_vlrpen?>
             </td>
@@ -153,7 +169,7 @@ $clrotulo->label("e21_descricao");
                 db_ancora($Lrh77_retencaotiporec,"js_pesquisarh77_retencaotiporec(true);",$db_opcao);
               ?>
             </td>
-            <td colspan="5"> 
+            <td colspan="5">
               <?php
                 db_input('rh77_retencaotiporec',10,$Irh77_retencaotiporec,true,'text',$db_opcao," onchange='js_pesquisarh77_retencaotiporec(false);'");
                 db_input('e21_descricao',60,'',true,'text',3,'');
@@ -177,11 +193,11 @@ $clrotulo->label("e21_descricao");
               ?>
 	        </td>
 	       </tr>
-	       <tr> 
+	       <tr>
             <td>
               Data Limite:
             </td>
-            <td>   
+            <td>
               <?php
               if (!isset($r52_limite_dia)) {
                   $r52_limite_dia = null;
@@ -199,17 +215,17 @@ $clrotulo->label("e21_descricao");
                 <div align="center">
                  <?php
                    db_textarea("r52_observacao",3,80,$Ir52_observacao,true,"text",$db_opcao);
-                 ?>  
-                 </div>          
+                 ?>
+                 </div>
               </fieldset>
-            </td>   
+            </td>
           </tr>
-        </table>      
-      
-      
+        </table>
+
+
       <input type="hidden" id="rh139_contabancaria" name="rh139_contabancaria" value="<?= (isset($rh139_contabancaria)) ? $rh139_contabancaria : null ?>" />
       <div id="ctnContaBancariaServidor"></div>
-       
+
       <fieldset>
         <legend>DESCONTAR</legend>
         <table>
@@ -242,7 +258,7 @@ $clrotulo->label("e21_descricao");
               ?>
             </td>
             <?php if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) { ?>
-            
+
               <td title="<?=$Tr52_pagasuplementar?>">
                 <?=$Lr52_pagasuplementar?>
               </td>
@@ -281,24 +297,24 @@ $clrotulo->label("e21_descricao");
               ?>
             </td>
           </tr>
-        </table>      
+        </table>
       </fieldset>
-   </fieldset>      
-   
-      <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
-             type="submit" id="db_opcao" 
-             value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
+   </fieldset>
+
+      <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
+             type="submit" id="db_opcao"
+             value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
              <?=($db_botao==false?"disabled":"")?> onclick="return js_enviar();" tabIndex="14">
-      <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisar_pensao();" 
+      <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisar_pensao();"
              tabIndex="15" onblur="<?=($db_opcao==1?'document.form1.r52_regist.select();':'document.form1.novo.select();')?>">
 <?php
 if($db_opcao != 1 && (!isset($db_opcaoal) || (isset($db_opcaoal) && $db_opcaoal != 33))){
-  echo '<input name="novo" 
-               type="button" 
-               id="novo" 
-               value="Novo" 
-               onclick="location.href=\'pes1_pensao001.php?clicar=clicar&db_opcaoal='.$db_opcaoal.'&r52_regist='.$r52_regist.'\'"  
-               tabIndex="16" 
+  echo '<input name="novo"
+               type="button"
+               id="novo"
+               value="Novo"
+               onclick="location.href=\'pes1_pensao001.php?clicar=clicar&db_opcaoal='.$db_opcaoal.'&r52_regist='.$r52_regist.'\'"
+               tabIndex="16"
                onblur="document.form1.r52_formul.select();">';
 }
 
@@ -316,8 +332,8 @@ if(isset($db_opcaoal) && $db_opcaoal == 33){
 }
 
 $dbwhere = " r52_anousu=".$r52_anousu." and r52_mesusu=".$r52_mesusu." and r52_regist =".$r52_regist;
-if(isset($r52_numcgm) && trim($r52_numcgm)!="" && !isset($incluir)){
-  $dbwhere .= " and r52_numcgm <> ".$r52_numcgm;
+if(isset($r52_cgmalimentado) && trim($r52_cgmalimentado)!="" && !isset($incluir)){
+  $dbwhere .= " and r52_cgmalimentado <> ".$r52_cgmalimentado;
 }
 
 $sCampos  = "z01_numcgm, z01_nome, r52_vlrpen, r52_perc, r52_formul, r52_pag13, r52_pagfer, r52_pagres, ";
@@ -338,6 +354,7 @@ $sql = $clpensao->sql_query_dados(
                                    r52_mesusu,
                                    r52_regist,
                                    r52_numcgm,
+                                   r52_cgmalimentado,
                                    cgm.z01_numcgm,
                                    cgm.z01_nome,
                                    r52_vlrpen,
@@ -357,8 +374,8 @@ $sql = $clpensao->sql_query_dados(
                                   ",
                                   $dbwhere
                                  );
- 
-$chavepri= array("r52_anousu"=>$r52_anousu,"r52_mesusu"=>$r52_mesusu,"r52_regist"=>$r52_regist,"r52_numcgm"=>$r52_numcgm);
+
+$chavepri= array("r52_anousu"=>$r52_anousu,"r52_mesusu"=>$r52_mesusu,"r52_regist"=>$r52_regist,"r52_numcgm"=>$r52_numcgm,"r52_cgmalimentado" => $r52_cgmalimentado);
 $cliframe_alterar_excluir->chavepri = $chavepri;
 $cliframe_alterar_excluir->sql      = $sql;
 $cliframe_alterar_excluir->campos   = $sCampos;
@@ -380,7 +397,7 @@ db_input('r52_val13',15,$Ir52_val13,true,'hidden',$db_opcao,"");
 ?>
 </form>
 
-<?php 
+<?php
 
  $lExcluir = 'false';
 
@@ -402,28 +419,28 @@ $("r52_observacao").style="width:100%;min-height:10px;";
 
 var oContaBancariaServidor = new DBViewContaBancariaServidor($F('rh139_contabancaria'), 'oContaBancariaServidor', <?=$lExcluir?>);
     oContaBancariaServidor.show('ctnContaBancariaServidor');
-  
+
     if (<?=$lAlterar?> || <?=$lExcluir?>) {
-      oContaBancariaServidor.getDados($F('rh139_contabancaria')); 
+      oContaBancariaServidor.getDados($F('rh139_contabancaria'));
     }
 
 function js_pesquisarh77_retencaotiporec(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_retencaotiporec','func_retencaotiporec.php?tipo=2&funcao_js=parent.js_mostraretencaotiporec1|e21_sequencial|e21_descricao','Pesquisa',true);
   }else{
-     if(document.form1.rh77_retencaotiporec.value != ''){ 
+     if(document.form1.rh77_retencaotiporec.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_retencaotiporec','func_retencaotiporec.php?tipo=2&pesquisa_chave='+document.form1.rh77_retencaotiporec.value+'&funcao_js=parent.js_mostraretencaotiporec','Pesquisa',false,'0');
      }else{
-       document.form1.e21_descricao.value = ''; 
+       document.form1.e21_descricao.value = '';
      }
   }
 }
-          
+
 function js_mostraretencaotiporec(chave,erro){
   document.form1.e21_descricao.value = chave;
-  if(erro==true){ 
-    document.form1.rh77_retencaotiporec.focus(); 
-    document.form1.rh77_retencaotiporec.value = ''; 
+  if(erro==true){
+    document.form1.rh77_retencaotiporec.focus();
+    document.form1.rh77_retencaotiporec.value = '';
   }
 }
 function js_mostraretencaotiporec1(chave1,chave2){
@@ -483,17 +500,17 @@ function js_enviar(){
   	}
   	?>
   }
-  
+
   if (document.form1.r52_adiantamento13.value == 't') {
-  
+
 	  if (document.form1.r52_percadiantamento13.value <= 0) {
-	  
+
 	    alert("Informe um valor maior que zero para o percentual do adiantamento 13º!");
 	    document.form1.r52_percadiantamento13.focus();
 	    return false;
 	  }
   }
-  
+
   return true;
 }
 function js_desabilita() {
@@ -512,19 +529,19 @@ function js_desabilita() {
     document.form1.r52_vlrpen.readOnly=true;
     document.form1.r52_vlrpen.style.backgroundColor="#DEB887";
   }
-  
+
   if (document.form1.r52_pag13.value == 't') {
     document.form1.r52_adiantamento13.disabled = false;
   } else {
-  
+
     document.form1.r52_adiantamento13.disabled = true;
     document.form1.r52_adiantamento13.value    = 'f';
   }
-  
+
   if (document.form1.r52_adiantamento13.value == 't') {
     document.form1.r52_percadiantamento13.disabled = false;
   } else {
-  
+
     document.form1.r52_percadiantamento13.value    = '0';
     document.form1.r52_percadiantamento13.disabled = true;
   }
@@ -533,7 +550,7 @@ function js_pesquisar52_numcgm(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?testanome=true&funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.r52_numcgm.value != ''){ 
+     if(document.form1.r52_numcgm.value != ''){
        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?testanome=true&pesquisa_chave='+document.form1.r52_numcgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false,'0');
      }else{
        document.form1.z01_nome02.value = '';
@@ -541,10 +558,10 @@ function js_pesquisar52_numcgm(mostra){
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome02.value = chave; 
-  if(erro==true){ 
-    document.form1.r52_numcgm.focus(); 
-    document.form1.r52_numcgm.value = ''; 
+  document.form1.z01_nome02.value = chave;
+  if(erro==true){
+    document.form1.r52_numcgm.focus();
+    document.form1.r52_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2){
@@ -552,11 +569,38 @@ function js_mostracgm1(chave1,chave2){
   document.form1.z01_nome02.value = chave2;
   db_iframe_cgm.hide();
 }
+
+function js_pesquisar52_cgmalimentado(mostra){
+    if(mostra==true){
+        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?testanome=true&funcao_js=parent.js_mostracgmalimentado1|z01_numcgm|z01_nome','Pesquisa',true);
+    }else{
+        if(document.form1.r52_numcgm.value != ''){
+            js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?testanome=true&pesquisa_chave='+document.form1.r52_cgmalimentado.value+'&funcao_js=parent.js_mostracgmalimentado','Pesquisa',false,'0');
+        }else{
+            document.form1.z01_nome03.value = '';
+        }
+    }
+}
+
+function js_mostracgmalimentado(erro,chave){
+    document.form1.z01_nome03.value = chave;
+    if(erro==true){
+        document.form1.r52_cgmalimentado.focus();
+        document.form1.r52_cgmalimentado.value = '';
+    }
+}
+
+function js_mostracgmalimentado1(chave1,chave2){
+    document.form1.r52_cgmalimentado.value = chave1;
+    document.form1.z01_nome03.value = chave2;
+    db_iframe_cgm.hide();
+}
+
 function js_pesquisar52_regist(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhpessoal','func_rhpessoal.php?testarescisao=ra&funcao_js=parent.js_mostrapessoal1|rh01_regist|z01_nome&instit=<?=(db_getsession("DB_instit"))?>','Pesquisa',true);
   }else{
-     if(document.form1.r52_regist.value != ''){ 
+     if(document.form1.r52_regist.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhpessoal','func_rhpessoal.php?testarescisao=ra&pesquisa_chave='+document.form1.r52_regist.value+'&funcao_js=parent.js_mostrapessoal&instit=<?=(db_getsession("DB_instit"))?>','Pesquisa',false);
      }else{
        document.form1.z01_nome.value = '';
@@ -565,10 +609,10 @@ function js_pesquisar52_regist(mostra){
   }
 }
 function js_mostrapessoal(chave,erro){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.r52_regist.focus(); 
-    document.form1.r52_regist.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.r52_regist.focus();
+    document.form1.r52_regist.value = '';
   }else{
     location.href = "pes1_pensao001.php?db_opcaoal=<?=($db_opcaoal)?>&r52_regist="+document.form1.r52_regist.value;
   }
@@ -583,18 +627,18 @@ function js_pesquisar52_codbco(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_db_bancos','func_db_bancos.php?funcao_js=parent.js_mostrabancos1|db90_codban|db90_descr','Pesquisa',true);
   }else{
-     if(document.form1.r52_codbco.value != ''){ 
+     if(document.form1.r52_codbco.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_db_bancos','func_db_bancos.php?pesquisa_chave='+document.form1.r52_codbco.value+'&funcao_js=parent.js_mostrabancos','Pesquisa',false,0);
      }else{
-       document.form1.db90_descr.value = ''; 
+       document.form1.db90_descr.value = '';
      }
   }
 }
 function js_mostrabancos(chave,erro){
-  document.form1.db90_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.r52_codbco.focus(); 
-    document.form1.r52_codbco.value = ''; 
+  document.form1.db90_descr.value = chave;
+  if(erro==true){
+    document.form1.r52_codbco.focus();
+    document.form1.r52_codbco.value = '';
   }
 }
 function js_mostrabancos1(chave1,chave2){

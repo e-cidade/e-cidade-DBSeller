@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ if(isset($excluir)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmprontanulado.php"));
 	?>
     </center>
@@ -72,7 +72,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clprontanulado->erro_status=="0"){
     $clprontanulado->erro(true,false);
@@ -83,7 +83,7 @@ if(isset($excluir)){
 	    parent.document.form1.anular.value = "Anular FAA";    
     	parent.db_iframe_prontanulado.hide();
     </script>
-    <?
+    <?php
   }
 }
 if($db_opcao==33){

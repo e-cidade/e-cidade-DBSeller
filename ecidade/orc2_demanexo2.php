@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -37,7 +37,7 @@ $anousu = db_getsession("DB_anousu");
 //parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 db_postmemory($HTTP_POST_VARS);
 
-$xinstit = split("-", $db_selinstit);
+$xinstit =explode("-", $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -55,8 +55,8 @@ for ($x = $anousu -3; $x < $anousu; $x ++) {
 /*
  *  o select abaixo traz a execução dos exercicios anteriores,
  *  e para o exercicio atual traz a previsao inicial da despesa
- *  
- * 
+ *
+ *
  */
 
 $sql = "
@@ -82,9 +82,9 @@ $sql = "
                     order by o70_codrec,o70_anousu
                   ) as x
                       inner join orcfontes fonte  on fonte.o57_fonte   = fonte||'00000000' and o57_anousu = o70_anousu
-                 group by o70_anousu, fonte.o57_codfon, fonte.o57_fonte,fonte.o57_descr             
-              ) 
-             union         
+                 group by o70_anousu, fonte.o57_codfon, fonte.o57_fonte,fonte.o57_descr
+              )
+             union
             ( select
                  o70_anousu,
                  fonte.o57_codfon,
@@ -99,16 +99,16 @@ $sql = "
                              orc.o57_descr,
                              sum(coalesce(o70_valor,0)) as o71_valor
                    from orcreceita
-                           inner join orcfontes orc on orc.o57_codfon=o70_codfon  and o57_anousu = o70_anousu                    
-                    WHERE O70_ANOUSU  = $anousu 
+                           inner join orcfontes orc on orc.o57_codfon=o70_codfon  and o57_anousu = o70_anousu
+                    WHERE O70_ANOUSU  = $anousu
                     group by o70_anousu,o70_codrec,o57_fonte,o57_descr
                     order by o70_codrec,o70_anousu
                   ) as x
                       inner join orcfontes fonte  on fonte.o57_fonte   = fonte||'00000000' and o57_anousu = o70_anousu
-                 group by o70_anousu, fonte.o57_codfon, fonte.o57_fonte,fonte.o57_descr             
+                 group by o70_anousu, fonte.o57_codfon, fonte.o57_fonte,fonte.o57_descr
               )
-             order by o57_codfon              
-            ";               
+             order by o57_codfon
+            ";
 $result = db_query($sql);
  // db_criatabela($result);
  // exit;
@@ -142,22 +142,22 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 		$pagina = 0;
 		$pdf->addpage();
 		$pdf->setfont('arial', 'b', 7);
-      
+
 		$pdf->cell(100, $alt, "FONTE", 0, 0, "L", 0);
 		$pdf->cell(20, $alt,"Executada ".($anousu-3), 0, 0, "R", 0);
 		$pdf->cell(20, $alt,"Executada ".($anousu-2), 0, 0, "R", 0);
-		$pdf->cell(20, $alt,"Executada ".($anousu-1), 0, 0, "R", 0);      
+		$pdf->cell(20, $alt,"Executada ".($anousu-1), 0, 0, "R", 0);
         $pdf->cell(20, $alt,"Projeção ".$anousu, 1, 0, "R", 0);
         $pdf->Ln();
-	    		
+
 	}
     if ($codigo != $o57_codfon){
           $codigo = $o57_codfon;
           $pdf->Ln();
-          $pdf->cell(100, $alt,"$o57_descr", 0, 0, "L", 0);    
+          $pdf->cell(100, $alt,"$o57_descr", 0, 0, "L", 0);
     }
     $pdf->cell(20, $alt,db_formatar($o71_valor,'f'), 0, 0, "R", 0);
-	
+
 	if ($o70_anousu == $anousu)
        $total_exercicio += $o71_valor;
     else if ($o70_anousu == ($anousu -1))
@@ -166,7 +166,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
        $total_ant_2 += $o71_valor;
      else if ($o70_anousu == ($anousu -3))
        $total_ant_3 += $o71_valor;
-            
+
 }
 // imprime totais
 $pdf->Ln();

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbenshistoricocalculobem->rotulo->label("t58_bens");
               <?=$Lt58_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t58_sequencial",1,$It58_sequencial,true,"text",4,"","chave_t58_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbenshistoricocalculobem->rotulo->label("t58_bens");
               <?=$Lt58_bens?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t58_bens",10,$It58_bens,true,"text",4,"","chave_t58_bens");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbenshistoricocalculobem->rotulo->label("t58_bens");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benshistoricocalculobem.php")==true){
@@ -122,12 +122,12 @@ $clbenshistoricocalculobem->rotulo->label("t58_bens");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -16,7 +16,6 @@ require_once(modification("libs/db_conecta.php"));
 
 class Window extends Controller
 {
-
     public function index()
     {
 
@@ -184,7 +183,7 @@ class Window extends Controller
 
 
             $visulizarEmOutraJanela = $post->get('visulizarEmOutraJanela') == "on" ? "true" : "false";
-            if ($visulizarEmOutraJanela != $oPreferenciaUsuario->isVisulizarEmOutraJanela()) {
+            if ($visulizarEmOutraJanela !== $oPreferenciaUsuario->isVisulizarEmOutraJanela()) {
                 $oPreferenciaUsuario->setVisulizarEmOutraJanela($visulizarEmOutraJanela);
                 $oPreferenciaUsuario->salvar();
             }
@@ -247,28 +246,6 @@ class Window extends Controller
         $this->render();
     }
 
-    public function unblock()
-    {
-
-        if (!$this->request->session()->has('DB_login')) {
-            return false;
-        }
-
-        require_once(modification(ECIDADE_PATH . 'libs/db_stdlib.php'));
-        require_once(modification(ECIDADE_PATH . 'libs/db_conecta.php'));
-
-        $oUsuarioSistema = new \UsuarioSistema($this->request->session()->get('DB_id_usuario'));
-
-        $lConfere = \Encriptacao::hash($this->request->post()->get('senha')) === $oUsuarioSistema->getSenha();
-
-        if (!$lConfere) {
-            throw new ResponseException("Senha inválida.");
-        }
-
-        $this->request->session()->set('blocked', false);
-        return $lConfere;
-    }
-
     public function ping()
     {
 
@@ -283,14 +260,5 @@ class Window extends Controller
         }
 
         return $result;
-    }
-
-    public function logout()
-    {
-
-        $this->request->session()->destroy();
-        Session::destroyAll();
-
-        return array('session' => 'dead');
     }
 }

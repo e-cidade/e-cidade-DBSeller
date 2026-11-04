@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,12 +38,12 @@ $oRotulo->label('descrdepto');
   <table border="0">
     <tr>
       <td nowrap title="<?=@$Ts157_i_unidade?>">
-        <?
+        <?php
         db_ancora(@$Ls157_i_unidade, 'js_pesquisas157_i_unidade(true);', $db_opcao);
         ?>
       </td>
       <td nowrap> 
-        <?
+        <?php
         db_input('s157_i_unidade', 10, $Is157_i_unidade, true, 'text', $db_opcao, 
                  'onchange="js_pesquisas157_i_unidade(false);"'
                 );
@@ -53,12 +53,12 @@ $oRotulo->label('descrdepto');
     </tr>
     <tr>
       <td nowrap title="<?=@$Ts157_i_procedimento?>">
-        <?
+        <?php
         db_ancora(@$Ls157_i_procedimento, 'js_pesquisas157_i_procedimento(true);', $db_opcao);
         ?>
       </td>
       <td nowrap> 
-        <?
+        <?php
         db_input('sd63_c_procedimento', 10, $Isd63_c_procedimento, true, 'text', $db_opcao,
                  ' onchange="js_pesquisas157_i_procedimento(false);"'
                 );

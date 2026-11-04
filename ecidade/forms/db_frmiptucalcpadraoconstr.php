@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,19 +67,19 @@ if(isset($db_opcaoal)){
         <strong>Matrícula:</strong>
     </td>
     <td>
-      <?
+      <?php
       db_input('j11_matric',10,$Ij11_matric,true,'text',3)
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj11_idcons?>">
-       <?
+       <?php
        db_ancora(@$Lj11_idcons,"js_pesquisaj11_idcons(true);",$db_opcao);
        ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('j11_idcons',10,$Ij11_idcons,true,'text',$db_opcao," onchange='js_pesquisaj11_idcons(false);'")
       ?>
     </td>
@@ -89,7 +89,7 @@ if(isset($db_opcaoal)){
        <?=@$Lj11_vlrcons?>
     </td>
     <td>
-      <?
+      <?php
       db_input('j11_vlrcons',10,$Ij11_vlrcons,true,'text',$db_opcao,"")
       ?>
     </td>

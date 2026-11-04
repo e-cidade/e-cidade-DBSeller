@@ -98,11 +98,12 @@ $oClrotulo->label("s110_i_codigo");
           db_ancora( @$Ls142_i_prontuario, "js_pesquisas142_i_prontuario(true);", $db_opcao, '', 'ancora_prontuario' );
           ?>
         </td>
-        <td>
+        <td style="display: flex">
           <?php
           $sChange = " onchange='js_pesquisas142_i_prontuario(false); js_verificaFaaVazio();;'";
           db_input( 's142_i_prontuario', 5, $Is142_i_prontuario, true, 'text', $db_opcao, $sChange );
           ?>
+          <div style="padding-left: 120px; display: flex; align-items: center; height: 18px;" id="linhaDaIdadeCompleta"></div>
         </td>
         <td title="<?php echo $Ts142_d_validade; ?>">
           <?php echo $Ls142_d_validade; ?>
@@ -131,7 +132,7 @@ $oClrotulo->label("s110_i_codigo");
           <?php
           $sChange = " onchange='js_pesquisas142_i_cgsund(false);'";
           db_input( 's142_i_cgsund',  5, $Is142_i_cgsund, true, 'text', $db_opcao, $sChange );
-          db_input( 'z01_i_cgsund',  40, $Iz01_i_cgsund,  true, 'text', 3 );
+          db_input( 'z01_i_cgsund',  40, $Iz01_i_cgsund,  true, 'text', 3);
           ?>
         </td>
         <td title="<?php echo $Ts142_d_retorno; ?>">
@@ -824,6 +825,7 @@ function js_pesquisas142_i_cgsund( mostra ) {
   } else {
 
      if ( document.form1.s142_i_cgsund.value != '' ) {
+      pesquisaIdadeCompletaDoPaciente(document.form1.s142_i_cgsund.value,'linhaDaIdadeCompleta');
         js_OpenJanelaIframe('',
                             'db_iframe_cgs_und',
                             'func_cgs_und.php?pesquisa_chave=' + $F('s142_i_cgsund') + '&funcao_js=parent.js_mostracgs_und' + chave_espec,
@@ -1290,4 +1292,7 @@ $('rh70_estrutural').addClassName('field-size2');
 $('rh70_descr').addClassName('field-size7');
 $('sd63_c_procedimento').addClassName('field-size2');
 $('sd63_c_nome').addClassName('field-size7');
+
+
+
 </script>

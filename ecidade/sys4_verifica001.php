@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ function js_marca(obj){
   </tr>
   <tr>
   <td colspan=2>
- <? 
+ <?php 
    $rsmod = db_query("select m.codmod,m.nomemod 
      	                from   db_sysmodulo m
 	               	       inner join db_sysarqmod s on s.codmod = m.codmod
@@ -149,7 +149,7 @@ function js_marca(obj){
       }
  ?>
   </select></td></tr>
- <?
+ <?php
    // cria as layers com o conteúdo das tabelas
    $j = 0;
    $modulo = "";
@@ -204,7 +204,7 @@ echo "</table>";
   
 </td>
 <td>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
   </form> 

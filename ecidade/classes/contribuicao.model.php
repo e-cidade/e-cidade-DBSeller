@@ -44,7 +44,7 @@ class contribuicaoModel {
   var $aServicos          = array();
   var $nTotalTestada      = 0;  
   
-  function contribuicaoModel($iContribuicao) {
+  public function __construct($iContribuicao) {
     
     $this->iContribuicao = $iContribuicao;
 
@@ -53,15 +53,15 @@ class contribuicaoModel {
     
   }
   
-  function getiContribuicao() {
+  public function getiContribuicao() {
     return $this->iContribuicao;
   }
   
-  function setiContribuicao( $iContribuicao ) {
+  public function setiContribuicao( $iContribuicao ) {
     $this->iContribuicao = $iContribuicao;
   }
   
-  function getDadosEdital() {
+  public function getDadosEdital() {
       
     $this->sErroMsg = "";
     $this->lSqlErro = false;
@@ -86,7 +86,7 @@ class contribuicaoModel {
     
   }
   
-  function getMatriculasContrib() {
+  public function getMatriculasContrib() {
 
     $sCampos  = " distinct j01_matric, j40_refant, z01_nome, lote.j34_idbql, lote.j34_area, d40_trecho, ";
     $sCampos .= " j34_setor, j34_quadra, j34_lote, j34_zona,( d41_testada + d41_eixo) as d05_testad ";
@@ -128,7 +128,7 @@ class contribuicaoModel {
     
   }
 
-  function getTotalTestada() {
+  public function getTotalTestada() {
 
     $this->sErroMsg = "";
     $this->lSqlErro = false;
@@ -159,7 +159,7 @@ class contribuicaoModel {
 
   }
 
-  function getServicos() {
+  public function getServicos() {
       
     $this->sErroMsg    = "";
     $this->lSqlErro    = false;    
@@ -189,7 +189,7 @@ class contribuicaoModel {
     
   }
   
-  function getEnderecoMatricula($iMatricula) {
+  public function getEnderecoMatricula($iMatricula) {
 
     $sCampos  = " substr(endereco,001,40) as endereco, ";
     $sCampos .= " substr(endereco,042,10) as numero, ";
@@ -221,7 +221,7 @@ class contribuicaoModel {
     
   }
 
-  function calculaContribuicaoPorMatricula($iTipo=null, $aParametros=null) {
+  public function calculaContribuicaoPorMatricula($iTipo=null, $aParametros=null) {
 
     $this->sErroMsg = "";
     $this->lSqlErro = false;
@@ -255,7 +255,7 @@ class contribuicaoModel {
     
   }
 
-  function calculoPorTestadaProporcional($aParametros) {
+  public function calculoPorTestadaProporcional($aParametros) {
 
     $this->sErroMsg = "";
     $this->lSqlErro = false;
@@ -334,14 +334,14 @@ class contribuicaoModel {
 
   }
   
-  function calculoPorValor($aParametros) {
+  public function calculoPorValor($aParametros) {
 
     $valorizacaoval  = $valorizacao;
     $custoindividual = round(($valmetro - ($valmetro * $d01_perc / 100)) * $m2,2);
     
   }
   
-  function calculoPorValorValorizacao($aParametros) {
+  public function calculoPorValorValorizacao($aParametros) {
 
     $valmetroval     = ($valmetroval - ($valmetroval * $d01_perc / 100));
     $valorizacaoval  = round(($valmetroval * $m2) + $d07_venal,2);

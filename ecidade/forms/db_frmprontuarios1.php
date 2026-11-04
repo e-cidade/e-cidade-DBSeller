@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,22 +42,22 @@ $clrotulo->label("sd23_i_cgm");
        <?=@$Lsd24_i_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd24_i_id',10,$Isd24_i_id,true,'text',3,"")
 ?>
     </td>
   </tr>
    <tr>
     <td nowrap title="<?=@$Tsd24_i_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lsd24_i_unidade,"js_pesquisasd24_i_unidade(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd24_i_unidade',10,$Isd24_i_unidade,true,'text',$db_opcao," onchange='js_pesquisasd24_i_unidade(false);' onKeyPress='tab(event, 3)'")
 ?>
-       <?
+       <?php
 db_input('sd02_c_nome',50,$Isd02_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -67,51 +67,51 @@ db_input('sd02_c_nome',50,$Isd02_c_nome,true,'text',3,'')
      <strong>Ano/Mes</Strong>
     </td>
     <td>
-     <input type="text" name="ano" value="<?=substr($sd24_c_atendimento,0,4)?>" size="4" maxlength="4" onKeyPress='tab(event, 4)' <?if($db_opcao == 2){ echo "disabled";}?> >
-     <input type="text" name="mes" value="<?=substr($sd24_c_atendimento,4,2)?>" size="2" maxlength="2" onKeyPress='tab(event, 5)' <?if($db_opcao == 2){ echo "disabled";}?> >
+     <input type="text" name="ano" value="<?=substr($sd24_c_atendimento,0,4)?>" size="4" maxlength="4" onKeyPress='tab(event, 4)' <?php if($db_opcao == 2){ echo "disabled";}?> >
+     <input type="text" name="mes" value="<?=substr($sd24_c_atendimento,4,2)?>" size="2" maxlength="2" onKeyPress='tab(event, 5)' <?php if($db_opcao == 2){ echo "disabled";}?> >
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd24_i_cgm?>">
-       <?
+       <?php
        db_ancora(@$Lsd24_i_cgm,"js_pesquisasd24_i_cgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd24_i_cgm',11,$Isd24_i_cgm,true,'text',$db_opcao,"onchange='js_pesquisasd24_i_cgm(false);' onKeyPress='tab(event,7)'")
 ?>
-<?
+<?php
 db_input('z01_nome',50,@$Iz01_nome,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd24_i_grupoatend?>">
-       <?
+       <?php
        db_ancora(@$Lsd24_i_grupoatend,"js_pesquisasd24_i_grupoatend(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd24_i_grupoatend',11,$Isd24_i_grupoatend,true,'text',$db_opcao," onchange='js_pesquisasd24_i_grupoatend(false);' onKeyPress='tab(event, 9)'")
 ?>
-       <?
+       <?php
 db_input('sd15_c_descr',50,$Isd15_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd24_c_cid?>">
-       <?
+       <?php
        db_ancora(@$Lsd24_c_cid,"js_pesquisasd24_c_cid(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd24_c_cid',11,$Isd24_c_cid,true,'text',$db_opcao," onchange='js_pesquisasd24_c_cid(false);' onKeyPress='tab(event, 11)'")
 ?>
-       <?
+       <?php
 db_input('sd22_c_descr',50,$Isd22_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ db_input('sd22_c_descr',50,$Isd22_c_descr,true,'text',3,'')
        <?=@$Lsd24_c_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd24_c_motivo',67,$Isd24_c_motivo,true,'text',$db_opcao,"onKeyPress='tab(event, 12)'")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_input('sd24_c_motivo',67,$Isd24_c_motivo,true,'text',$db_opcao,"onKeyPress='t
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 <script>
-<?
+<?php
  if($tp != 3){
   echo "document.form1.sd24_c_atendimento.focus();";
  }else{
@@ -305,7 +305,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_prontuarios.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

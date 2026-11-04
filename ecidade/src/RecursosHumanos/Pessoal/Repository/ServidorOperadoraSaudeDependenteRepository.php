@@ -31,6 +31,7 @@ use cl_servidoroperadorasaudedependente;
 use Dependente;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorOperadoraSaude;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorOperadoraSaudeDependente;
+use Rubrica;
 use Exception;
 
 /**
@@ -70,13 +71,16 @@ class ServidorOperadoraSaudeDependenteRepository
      */
     public function delete(ServidorOperadoraSaudeDependente $servidorOperadoraSaudeDependente = null)
     {
-        $id = $servidorOperadoraSaudeDependente instanceof ServidorOperadoraSaudeDependente ? $servidorOperadoraSaudeDependente->getSequencial() : null;
+        $id = $servidorOperadoraSaudeDependente instanceof ServidorOperadoraSaudeDependente ?
+            $servidorOperadoraSaudeDependente->getSequencial() : null;
 
         $dao = new cl_servidoroperadorasaudedependente();
         $dao->excluir($id, implode(' AND ', $this->scopes));
 
         if ($dao->erro_status === '0') {
-            throw new Exception("Não foi possível excluir o dependente do servidor {$servidorOperadoraSaudeDependente->getServidorOperadoraSaude()->getServidor()->getCgm()->getNome()}.\nContate o suporte.");
+            throw new Exception("Não foi possível excluir o dependente do servidor " .
+            "{$servidorOperadoraSaudeDependente->getServidorOperadoraSaude()->getServidor()->getCgm()->getNome()}.\n" .
+            "Contate o suporte.");
         }
     }
 
@@ -123,7 +127,8 @@ class ServidorOperadoraSaudeDependenteRepository
         }
 
         while ($servidorOperadoraSaudeDependente = pg_fetch_array($rs)) {
-            $servidorOperadorasSaudeDependente[] = ServidorOperadoraSaudeDependente::fromState($servidorOperadoraSaudeDependente);
+            $servidorOperadorasSaudeDependente[] =
+                ServidorOperadoraSaudeDependente::fromState($servidorOperadoraSaudeDependente);
         }
 
         return $servidorOperadorasSaudeDependente;
@@ -150,7 +155,8 @@ class ServidorOperadoraSaudeDependenteRepository
         }
 
         while ($servidorOperadoraSaudeDependente = pg_fetch_array($rs)) {
-            $servidorOperadorasSaudeDependente[] = ServidorOperadoraSaudeDependente::fromState($servidorOperadoraSaudeDependente);
+            $servidorOperadorasSaudeDependente[] =
+                ServidorOperadoraSaudeDependente::fromState($servidorOperadoraSaudeDependente);
         }
 
         return $servidorOperadorasSaudeDependente;
@@ -167,15 +173,16 @@ class ServidorOperadoraSaudeDependenteRepository
         $dao->rh223_sequencial = $servidorOperadoraSaudeDependente->getSequencial();
         $dao->rh223_tipo = $servidorOperadoraSaudeDependente->getTipo();
         $dao->rh223_valor = $servidorOperadoraSaudeDependente->getValor();
-        $dao->rh223_servidoroperadorasaude = $servidorOperadoraSaudeDependente->getServidorOperadoraSaude()->getSequencial();
+        $dao->rh223_servidoroperadorasaude =
+        $servidorOperadoraSaudeDependente->getServidorOperadoraSaude()->getSequencial();
         $dao->rh223_dependente = $servidorOperadoraSaudeDependente->getDependente()->getCodigo();
+        $dao->rh223_rubrica = $servidorOperadoraSaudeDependente->getRubrica()->getCodigo();
 
         if (empty($dao->rh223_sequencial)) {
             $dao->incluir(null);
         } else {
             $dao->alterar($dao->rh223_sequencial);
         }
-
         if ($dao->erro_status === '0') {
             throw new Exception("Não foi possível salvar as informações.\nContate o suporte.");
         }
@@ -262,6 +269,18 @@ class ServidorOperadoraSaudeDependenteRepository
     public function resetScopes()
     {
         $this->scopes = array();
+        return $this;
+    }
+
+    /**
+     * @param Rubrica $rubrica
+     * @param string $operator
+     * @return $this
+     */
+    public function scopeRubrica(Rubrica $rubrica, $operator = 'ILIKE')
+    {
+
+        $this->scopes['rubrica'] = "rh223_rubrica {$operator} '%{$rubrica->getCodigo()}%'";
         return $this;
     }
 }

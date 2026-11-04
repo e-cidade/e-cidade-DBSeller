@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clrotulo->label("k15_codage");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
    db_app::load("scripts.js");
    db_app::load("prototype.js");
    db_app::load("strings.js");
@@ -75,11 +75,11 @@ $clrotulo->label("k15_codage");
           <tr>
            <td nowrap title="<?=@$Tq17_sequencial?>">
              <strong>
-              <? db_ancora("Código", "js_pesquisaq17_sequencial(true);", 1); ?>
+              <?php db_ancora("Código", "js_pesquisaq17_sequencial(true);", 1); ?>
              </strong>
            </td>
            <td> 
-             <?
+             <?php
                 db_input('q17_sequencial', 10, $Iq17_sequencial, true, 'text', 3);
                 db_input('q17_nomearq', 60, $Iq17_nomearq, true, 'text', 3, '');
              ?>
@@ -87,10 +87,10 @@ $clrotulo->label("k15_codage");
           </tr>
           <tr>
             <td nowrap title="<?=@$Tk15_codbco?>">
-              <? db_ancora("$Lk15_codbco","js_pesquisacadban(true);",1); ?>
+              <?php db_ancora("$Lk15_codbco","js_pesquisacadban(true);",1); ?>
             </td>
             <td> 
-             <?
+             <?php
                 db_input('k15_codbco', 10, $Ik15_codbco, true, 'text', 3);
                 db_input('nomebanco', 60, '', true, 'text', 3, '');
              ?>
@@ -100,7 +100,7 @@ $clrotulo->label("k15_codage");
             <td>
               <?=$Lk15_codage;?><b> / Conta</b></td>
             <td>
-              <?
+              <?php
                 db_input('k15_codage', 10, $Ik15_codage, true, 'text', 3, '');
                 db_input('k15_conta', 20, '', true, 'text', 3, '');
               ?>
@@ -118,7 +118,7 @@ $clrotulo->label("k15_codage");
 
  </center>
  
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

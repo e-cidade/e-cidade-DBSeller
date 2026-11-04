@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ if (isset($alterar)) {
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_foraaluno002.php?chavepesquisa=<?=$ed47_i_codigo?>';
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='edu1_alunofora001.php?ed216_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?=$ed47_v_nome?>';
   </script>
- <?
+ <?php
 
 }
 
@@ -142,7 +142,7 @@ if (isset($alterar)) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <center>
             <fieldset style="width:95%"><legend><b>Alteração de Aluno</b></legend>
-              <?
+              <?php
                 include(modification("forms/db_frmalunodadosfora.php"));
               ?>
             </fieldset>
@@ -153,7 +153,7 @@ if (isset($alterar)) {
   </body>
 </html>
 
-<?
+<?php
 if (isset($alterar)) {
     
   if ($oDaoAluno->erro_status == "0") {

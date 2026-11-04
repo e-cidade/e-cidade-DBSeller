@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ db_postmemory($HTTP_POST_VARS);
     <tr>
       <td colspan"2" align="right" nowrap title="<?=@$Tc70_data?>">
 	 <?=@$Lc70_data?>
-      <?
+      <?php
 
 
 if (!isset ($c70_data_dia)) {
@@ -53,7 +53,7 @@ db_inputdata('c70_data', @ $c70_data_dia, @ $c70_data_mes, @ $c70_data_ano, true
 	<input name="pesquisa" value="Pesquisa" type="submit">
       </td>
     </tr>
-  <? 
+  <?php 
  if (isset ($pesquisa)) {
 
 	$data = $c70_data_ano."-".$c70_data_mes."-".$c70_data_dia;
@@ -140,7 +140,7 @@ db_inputdata('c70_data', @ $c70_data_dia, @ $c70_data_mes, @ $c70_data_ano, true
 	 <input name="processar" value="Estornar Boletim" type="submit" >
       </td>
       </tr>
-    <?
+    <?php
 
 
 }

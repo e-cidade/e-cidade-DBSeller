@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *  Copyright (C) 2014  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -35,12 +35,12 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_libpessoal.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("pes4_gerafolha003.php"));
-require_once(modification("pes4_gerafolha004.php"));
 require_once(modification("libs/db_app.utils.php"));
-
-
-
-
+if (file_exists(ECIDADE_PATH . 'pes4_gerafolha004_modificado.php')) {
+    require_once ECIDADE_PATH . 'pes4_gerafolha004_modificado.php';
+} else {
+    require_once(modification("pes4_gerafolha004.php"));
+}
 $_GET = $_POST = $_REQUEST;
 
 $oPost= db_utils::postMemory($_REQUEST);
@@ -228,6 +228,7 @@ $db21_codcli = $db_config[0]["db21_codcli"];
 
 $db_erro = false;
 
+$data_inicio_calculo = date("H:i:s");
 
 global $ajusta;
 global $carregarubricas_geral,$carregarubricas;
@@ -246,7 +247,7 @@ for( $Idiversos = 0; $Idiversos < count($diversos); $Idiversos++ ) {
   $codigo          = $diversos[$Idiversos]["r07_codigo"];
   $quais_diversos .= $separa.'$'.$codigo;
   $separa          = ",";
-  global $$codigo;
+  global ${$codigo};
   eval('$$codigo = '.$diversos[$Idiversos]["r07_valor"].";");
 }
 
@@ -382,10 +383,13 @@ try {
     CalculoPensao::$oFolhaAtual = $oFolhaAtual;
     CalculoFolha::$oFolhaAtual  = $oFolhaAtual;
 
+    if (file_exists(ECIDADE_PATH . 'inicio_calculo.php')) {
+      include_once(modification('inicio_calculo.php'));
+    }
+
     $lCalculou                  = pes4_geracalculo003();
 
     include_once(modification('fim_calculo.php'));
-
 
     CalculoFolha::posCalcular($oFolhaAtual, $pessoal, $oDadosFolha);
 
@@ -397,6 +401,10 @@ try {
 
   } else {
 
+    if (file_exists(ECIDADE_PATH . 'inicio_calculo.php')) {
+      include_once(modification('inicio_calculo.php'));
+    }
+
     $lCalculou = pes4_geracalculo003();
     include_once(modification('fim_calculo.php'));
   }
@@ -404,7 +412,7 @@ try {
   /**
    * Deleta as rubricas que possuem valores zerados nas tabelas de cálculo.
    */
-  $sWhereCondicaoAuxiliar = " and {$siglag}valor = 0";
+  $sWhereCondicaoAuxiliar = " and {$siglag}valor = 0 and {$siglag}rubric != 'R803' ";
   db_delete( $chamada_geral_arquivo, bb_condicaosubpes( $siglag ).$sWhereCondicaoAuxiliar );
 
   /**
@@ -421,6 +429,14 @@ try {
   }
 
   AjusteAdiantamentoPensao::retornarValor();
+
+    if ($mesusu < '12' && $opcao_geral == PONTO_13_SALARIO && $cfpess[0]["r11_rubagrupaadiantamento"] != '') {
+      CalculoFolha::calcularRubricasAgrupadas($anousu, $mesusu, $cfpess, $DB_instit, $where_regist_fim);
+    }
+
+    if ($mesusu < '12' && $opcao_geral == PONTO_13_SALARIO) {
+      CalculoFolha::atualizarRubricasAdiantamento($anousu, $mesusu, $DB_instit, $where_regist_fim);
+    }
 
 } catch ( Exception $eErro) {
   if ( isset($processamento_background) ) {
@@ -454,7 +470,6 @@ file_put_contents("tmp/LogCalculoFinanceiro.txt", LogCalculoFolha::getLog(LogCal
   exit;
 }
 
-
 flush();
 db_fim_transacao();
 flush();
@@ -464,7 +479,13 @@ $sTempoCalculo .= "\nFinal do cálculo : " . date('Y-m-d H:i:s');
 file_put_contents("tmp/TempoCalculo.txt", $sTempoCalculo);
 LogCalculoFolha::write("Final do cálculo: " . date('Y-m-d H:i:s'));
 file_put_contents("tmp/LogCalculoFinanceiro_{$opcao_geral}_{$opcao_gml}.txt", LogCalculoFolha::getLog(LogCalculoFolha::STR) );
-db_msgbox("Cálculo concluído com sucesso.");
+
+$mensagem_final  = "Iniciado   as: $data_inicio_calculo \n";
+$mensagem_final .= "Finalizado as: ". date("H:i:s")." \n";
+
+$mensagem_final .= ("Processo concluído com sucesso.");
+
+db_msgbox($mensagem_final);
 
 if ( isset($_GET["sCallBack"]) ) {
   echo "<script>parent.$sCallBack;</script>";

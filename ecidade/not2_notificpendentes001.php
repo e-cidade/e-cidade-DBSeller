@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,12 +58,12 @@ $db_opcao = 1;
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tk60_codigo?>" >
-          <?
+          <?php
            db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",4)
           ?>
         </td>
         <td>
-          <?
+          <?php
           db_input('k60_codigo',4,$Ik60_codigo,true,'text',4,"onchange='js_pesquisalista(false);'");
           db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
           ?>
@@ -74,7 +74,7 @@ $db_opcao = 1;
          Situação:
         </td>
         <td>
-          <?
+          <?php
             $result = $clnotisitu->sql_record($clnotisitu->sql_query(""));
             db_selectrecord("situ",$result,true,$db_opcao);
           ?>
@@ -85,7 +85,7 @@ $db_opcao = 1;
   <input name="executar" type="button" id="executar" value="Gerar Relatorio" onClick="js_executar();">
 </form>
  
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

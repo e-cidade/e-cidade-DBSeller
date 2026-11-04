@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -77,7 +77,15 @@ class cl_parissqn {
    public $q60_parcelasissqn = null;
    public $q60_templatebicveiculo = null;
    public $q60_formaaliquotarbt = null;
-   public $q60_portepadraomei = 0; 
+   public $q60_portepadraomei = 0;
+   public $q60_calcbaixorisco = 'f'; 
+   public $q60_diasemanalatualizacaosimplesnacional = null;
+   public $q60_horaatualizacaosimplesnacional = null;
+   public $q60_diamensalatualizacaosimplesnacional = null;
+   public $q60_frequenciaatualizacaosimplesnacional = null;
+   public $q60_unificataxa = 'f';
+   public $q60_integracaoexterna = 'f'; 
+   public $q60_riscoautomatico = 'f';
    // cria propriedade com as variaveis do arquivo
    public $campos = "
                  q60_receit = int4 = Receita
@@ -112,7 +120,15 @@ class cl_parissqn {
                  q60_parcelasissqn = int4 = Limite Parcelas ISSQN Fixo:
                  q60_templatebicveiculo = int4 = Template BIC Veículos
                  q60_formaaliquotarbt = int4 = Forma Alíquota RBT12
-                 q60_portepadraomei = int8 = Porte Padrão MEI 
+                 q60_portepadraomei = int8 = Porte Padrão MEI
+                 q60_calcbaixorisco = bool = Cálculo alvará e vistoria baixo risco 
+                 q60_diasemanalatualizacaosimplesnacional = int = Dia da semana                 
+                 q60_horaatualizacaosimplesnacional = time = Horário do dia                 
+                 q60_diamensalatualizacaosimplesnacional = int = Dia do mês                 
+                 q60_frequenciaatualizacaosimplesnacional = int = Frequência de atualização do cadastro issbase
+                 q60_unificataxa = bool = Unifica Taxa
+                 q60_integracaoexterna = bool = Integração Externa 
+                 q60_riscoautomatico = bool = Risco Automa?tico
                  ";
    //funcao construtor da classe
    public function cl_parissqn() 
@@ -175,6 +191,14 @@ class cl_parissqn {
        $this->q60_templatebicveiculo = ($this->q60_templatebicveiculo == ""?@$GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"]:$this->q60_templatebicveiculo);
        $this->q60_formaaliquotarbt = ($this->q60_formaaliquotarbt == null?@$GLOBALS["HTTP_POST_VARS"]["q60_formaaliquotarbt"]:$this->q60_formaaliquotarbt);
        $this->q60_portepadraomei = ($this->q60_portepadraomei == ""?@$GLOBALS["HTTP_POST_VARS"]["q60_portepadraomei"]:$this->q60_portepadraomei);
+       $this->q60_calcbaixorisco = ($this->q60_calcbaixorisco == "f"?@$GLOBALS["HTTP_POST_VARS"]["q60_calcbaixorisco"]:$this->q60_calcbaixorisco);
+       $this->q60_diasemanalatualizacaosimplesnacional = ($this->q60_diasemanalatualizacaosimplesnacional == null?@$GLOBALS["HTTP_POST_VARS"]["q60_diasemanalatualizacaosimplesnacional"]:$this->q60_diasemanalatualizacaosimplesnacional);
+       $this->q60_horaatualizacaosimplesnacional = ($this->q60_horaatualizacaosimplesnacional == ""?@$GLOBALS["HTTP_POST_VARS"]["q60_horaatualizacaosimplesnacional"]:$this->q60_horaatualizacaosimplesnacional);
+       $this->q60_diamensalatualizacaosimplesnacional = ($this->q60_diamensalatualizacaosimplesnacional == null?@$GLOBALS["HTTP_POST_VARS"]["q60_diamensalatualizacaosimplesnacional"]:$this->q60_diamensalatualizacaosimplesnacional);       
+       $this->q60_frequenciaatualizacaosimplesnacional = ($this->q60_frequenciaatualizacaosimplesnacional == null?@$GLOBALS["HTTP_POST_VARS"]["q60_frequenciaatualizacaosimplesnacional"]:$this->q60_frequenciaatualizacaosimplesnacional);       
+       $this->q60_unificataxa = ($this->q60_unificataxa == "f"?@$GLOBALS["HTTP_POST_VARS"]["q60_unificataxa"]:$this->q60_unificataxa);
+       $this->q60_integracaoexterna = ($this->q60_integracaoexterna == "f"?@$GLOBALS["HTTP_POST_VARS"]["q60_integracaoexterna"]:$this->q60_integracaoexterna);
+       $this->q60_riscoautomatico = ($this->q60_riscoautomatico == "f"?@$GLOBALS["HTTP_POST_VARS"]["q60_riscoautomatico"]:$this->q60_riscoautomatico);
      }else{
      }
    }
@@ -420,75 +444,136 @@ class cl_parissqn {
        $this->erro_status = "0";
        return false;
      }
+     if($this->q60_calcbaixorisco == null ){ 
+      $this->erro_sql = " Campo Cálculo alvará e vistoria baixo risco não informado.";
+      $this->erro_campo = "q60_calcbaixorisco";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+      $this->erro_status = "0";
+      return false;
+     }
+     if($this->q60_diasemanalatualizacaosimplesnacional == null ){ 
+       $this->q60_diasemanalatualizacaosimplesnacional = "0";
+     }
+     if($this->q60_horaatualizacaosimplesnacional == null ){ 
+       $this->erro_sql = " Campo Hora não informado.";
+       $this->erro_campo = "q60_horaatualizacaosimplesnacional";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->q60_diamensalatualizacaosimplesnacional == null ){ 
+       $this->q60_diamensalatualizacaosimplesnacional = "0";
+     }
+     if($this->q60_frequenciaatualizacaosimplesnacional == null ){ 
+       $this->q60_frequenciaatualizacaosimplesnacional = "0";
+     }
+     if($this->q60_unificataxa == null ){ 
+      $this->erro_sql = " Campo Unifica Taxa risco não informado.";
+      $this->erro_campo = "q60_unificataxa";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+      $this->erro_status = "0";
+      return false;
+     }
+     if($this->q60_integracaoexterna == null ){ 
+       $this->erro_sql = " Campo Integração Externa não informado.";
+       $this->erro_campo = "q60_integracaoexterna";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
      $sql = "insert into parissqn(
-                                       q60_receit
-                                      ,q60_tipo
-                                      ,q60_aliq
-                                      ,q60_codvencvar
-                                      ,q60_histsemmov
-                                      ,q60_impcodativ
-                                      ,q60_impobsativ
-                                      ,q60_impdatas
-                                      ,q60_impobsissqn
-                                      ,q60_modalvara
-                                      ,q60_integrasani
-                                      ,q60_campoutilcalc
-                                      ,q60_alvbaixadiv
-                                      ,q60_notaavulsapesjur
-                                      ,q60_notaavulsavias
-                                      ,q60_notaavulsavlrmin
-                                      ,q60_notaavulsamax
-                                      ,q60_notaavulsaultimanota
-                                      ,q60_notaavulsadiasprazo
-                                      ,q60_tipopermalvara
-                                      ,q60_tiponumcertbaixa
-                                      ,q60_templatealvara
-                                      ,q60_dataimpmei
-                                      ,q60_bloqemiscertbaixa
-                                      ,q60_isstipoalvaraper
-                                      ,q60_isstipoalvaraprov
-                                      ,q60_parcelasalvara
-                                      ,q60_templatebaixaalvaranormal
-                                      ,q60_templatebaixaalvaraoficial
-                                      ,q60_parcelasissqn
-                                      ,q60_templatebicveiculo
-                                      ,q60_formaaliquotarbt
+                                       q60_receit 
+                                      ,q60_tipo 
+                                      ,q60_aliq 
+                                      ,q60_codvencvar 
+                                      ,q60_histsemmov 
+                                      ,q60_impcodativ 
+                                      ,q60_impobsativ 
+                                      ,q60_impdatas 
+                                      ,q60_impobsissqn 
+                                      ,q60_modalvara 
+                                      ,q60_integrasani 
+                                      ,q60_campoutilcalc 
+                                      ,q60_alvbaixadiv 
+                                      ,q60_notaavulsapesjur 
+                                      ,q60_notaavulsavias 
+                                      ,q60_notaavulsavlrmin 
+                                      ,q60_notaavulsamax 
+                                      ,q60_notaavulsaultimanota 
+                                      ,q60_notaavulsadiasprazo 
+                                      ,q60_tipopermalvara 
+                                      ,q60_tiponumcertbaixa 
+                                      ,q60_templatealvara 
+                                      ,q60_dataimpmei 
+                                      ,q60_bloqemiscertbaixa 
+                                      ,q60_isstipoalvaraper 
+                                      ,q60_isstipoalvaraprov 
+                                      ,q60_parcelasalvara 
+                                      ,q60_templatebaixaalvaranormal 
+                                      ,q60_templatebaixaalvaraoficial 
+                                      ,q60_parcelasissqn 
+                                      ,q60_templatebicveiculo 
+                                      ,q60_formaaliquotarbt 
                                       ,q60_portepadraomei 
+                                      ,q60_calcbaixorisco 
+                                      ,q60_diasemanalatualizacaosimplesnacional 
+                                      ,q60_horaatualizacaosimplesnacional 
+                                      ,q60_diamensalatualizacaosimplesnacional 
+                                      ,q60_frequenciaatualizacaosimplesnacional 
+                                      ,q60_unificataxa 
+                                      ,q60_integracaoexterna 
+                                      ,q60_riscoautomatico
                        )
                 values (
-                                $this->q60_receit
-                               ,$this->q60_tipo
-                               ,$this->q60_aliq
-                               ,$this->q60_codvencvar
-                               ,$this->q60_histsemmov
-                               ,'$this->q60_impcodativ'
-                               ,'$this->q60_impobsativ'
-                               ,'$this->q60_impdatas'
-                               ,'$this->q60_impobsissqn'
-                               ,$this->q60_modalvara
-                               ,$this->q60_integrasani
-                               ,$this->q60_campoutilcalc
-                               ,$this->q60_alvbaixadiv
-                               ,'$this->q60_notaavulsapesjur'
-                               ,$this->q60_notaavulsavias
-                               ,$this->q60_notaavulsavlrmin
-                               ,$this->q60_notaavulsamax
-                               ,$this->q60_notaavulsaultimanota
-                               ,$this->q60_notaavulsadiasprazo
-                               ,$this->q60_tipopermalvara
-                               ,$this->q60_tiponumcertbaixa
-                               ,$this->q60_templatealvara
-                               ,".($this->q60_dataimpmei == "null" || $this->q60_dataimpmei == ""?"null":"'".$this->q60_dataimpmei."'")."
-                               ,$this->q60_bloqemiscertbaixa
-                               ,$this->q60_isstipoalvaraper
-                               ,$this->q60_isstipoalvaraprov
-                               ,'$this->q60_parcelasalvara'
-                               ,$this->q60_templatebaixaalvaranormal
-                               ,$this->q60_templatebaixaalvaraoficial
-                               ,".($this->q60_parcelasissqn === null || $this->q60_parcelasissqn === '' ? 'NULL' : $this->q60_parcelasissqn) . "
-                               ,$this->q60_templatebicveiculo
-                               ,$this->q60_formaaliquotarbt
+                                $this->q60_receit 
+                               ,$this->q60_tipo 
+                               ,$this->q60_aliq 
+                               ,$this->q60_codvencvar 
+                               ,$this->q60_histsemmov 
+                               ,'$this->q60_impcodativ' 
+                               ,'$this->q60_impobsativ' 
+                               ,'$this->q60_impdatas' 
+                               ,'$this->q60_impobsissqn' 
+                               ,$this->q60_modalvara 
+                               ,$this->q60_integrasani 
+                               ,$this->q60_campoutilcalc 
+                               ,$this->q60_alvbaixadiv 
+                               ,'$this->q60_notaavulsapesjur' 
+                               ,$this->q60_notaavulsavias 
+                               ,$this->q60_notaavulsavlrmin 
+                               ,$this->q60_notaavulsamax 
+                               ,$this->q60_notaavulsaultimanota 
+                               ,$this->q60_notaavulsadiasprazo 
+                               ,$this->q60_tipopermalvara 
+                               ,$this->q60_tiponumcertbaixa 
+                               ,$this->q60_templatealvara 
+                               ,".($this->q60_dataimpmei == "null" || $this->q60_dataimpmei == ""?"null":"'".$this->q60_dataimpmei."'")." 
+                               ,$this->q60_bloqemiscertbaixa 
+                               ,$this->q60_isstipoalvaraper 
+                               ,$this->q60_isstipoalvaraprov 
+                               ,'$this->q60_parcelasalvara' 
+                               ,$this->q60_templatebaixaalvaranormal 
+                               ,$this->q60_templatebaixaalvaraoficial 
+                               ,".($this->q60_parcelasissqn === null || $this->q60_parcelasissqn === '' ? 'NULL' : $this->q60_parcelasissqn) . " 
+                               ,$this->q60_templatebicveiculo 
+                               ,$this->q60_formaaliquotarbt 
                                ,$this->q60_portepadraomei 
+                               ,'$this->q60_calcbaixorisco' 
+                               ,$this->q60_diasemanalatualizacaosimplesnacional 
+                               ,'$this->q60_horaatualizacaosimplesnacional' 
+                               ,$this->q60_diamensalatualizacaosimplesnacional 
+                               ,$this->q60_frequenciaatualizacaosimplesnacional 
+                               ,'$this->q60_unificataxa' 
+                               ,'$this->q60_integracaoexterna'
+                               ,'$this->q60_riscoautomatico' 
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -871,6 +956,76 @@ class cl_parissqn {
          return false;
        }
      }
+     if(trim($this->q60_calcbaixorisco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_calcbaixorisco"])){ 
+       $sql  .= $virgula." q60_calcbaixorisco = '$this->q60_calcbaixorisco' ";
+       $virgula = ",";
+       if(trim($this->q60_calcbaixorisco) == null ){ 
+         $this->erro_sql = " Campo Cálculo alvará e vistoria baixo risco não informado.";
+         $this->erro_campo = "q60_calcbaixorisco";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+
+     if(trim($this->q60_unificataxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_unificataxa"])){ 
+      $sql  .= $virgula." q60_unificataxa = '$this->q60_unificataxa' ";
+      $virgula = ",";
+      if(trim($this->q60_unificataxa) == null ){ 
+        $this->erro_sql = " Campo Unifica Taxa não informado.";
+        $this->erro_campo = "q60_unificataxa";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+     if(trim($this->q60_frequenciaatualizacaosimplesnacional)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q60_frequenciaatualizacaosimplesnacional"])){ 
+      $sql  .= $virgula." q60_frequenciaatualizacaosimplesnacional = $this->q60_frequenciaatualizacaosimplesnacional ";
+      $virgula = ",";
+    }
+    if(trim($this->q60_diasemanalatualizacaosimplesnacional)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q60_diasemanalatualizacaosimplesnacional"])){ 
+      $sql  .= $virgula." q60_diasemanalatualizacaosimplesnacional = $this->q60_diasemanalatualizacaosimplesnacional ";
+      $virgula = ",";
+    }
+    if(trim($this->q60_diamensalatualizacaosimplesnacional)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q60_diamensalatualizacaosimplesnacional"])){ 
+      $sql  .= $virgula." q60_diamensalatualizacaosimplesnacional = $this->q60_diamensalatualizacaosimplesnacional ";
+      $virgula = ",";
+    }
+    if(trim($this->q60_horaatualizacaosimplesnacional)!='' || isset($GLOBALS["HTTP_POST_VARS"]["q60_horaatualizacaosimplesnacional"])){ 
+      $sql  .= $virgula." q60_horaatualizacaosimplesnacional = '$this->q60_horaatualizacaosimplesnacional' ";
+      $virgula = ",";
+    }
+     if(trim($this->q60_integracaoexterna)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_integracaoexterna"])){ 
+       $sql  .= $virgula." q60_integracaoexterna = '$this->q60_integracaoexterna' ";
+       $virgula = ",";
+       if(trim($this->q60_integracaoexterna) == null ){ 
+         $this->erro_sql = " Campo Integração Externa não informado.";
+         $this->erro_campo = "q60_integracaoexterna";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+
+     if(trim($this->q60_riscoautomatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_riscoautomatico"])){ 
+      $sql  .= $virgula." q60_riscoautomatico = '$this->q60_riscoautomatico' ";
+      $virgula = ",";
+      if(trim($this->q60_riscoautomatico) == null ){ 
+        $this->erro_sql = " Campo Risco Automático não informado.";
+        $this->erro_campo = "q60_riscoautomatico";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
      $sql .= " where ";
      $sql .= "oid = '$oid'";
 
@@ -972,7 +1127,7 @@ class cl_parissqn {
    public function sql_query ( $oid = null,$campos="parissqn.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1007,7 +1162,7 @@ class cl_parissqn {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1020,7 +1175,7 @@ class cl_parissqn {
   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1038,7 +1193,7 @@ class cl_parissqn {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1047,8 +1202,7 @@ class cl_parissqn {
      }
      return $sql;
   }
-
-   function alterarParametro() {
+   public function alterarParametro() {
 
      $this->atualizacampos();
      $sql = " update parissqn set ";
@@ -1407,6 +1561,78 @@ class cl_parissqn {
       $sql  .= $virgula . " q60_portepadraomei = $this->q60_portepadraomei ";
       $virgula = ",";
     }
+    if(trim($this->q60_frequenciaatualizacaosimplesnacional)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q60_frequenciaatualizacaosimplesnacional"])){
+      $sql  .= $virgula." q60_frequenciaatualizacaosimplesnacional = $this->q60_frequenciaatualizacaosimplesnacional ";
+      $virgula = ",";
+    }
+    if(trim($this->q60_diasemanalatualizacaosimplesnacional)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q60_diasemanalatualizacaosimplesnacional"])){
+      $sql  .= $virgula." q60_diasemanalatualizacaosimplesnacional = $this->q60_diasemanalatualizacaosimplesnacional ";
+      $virgula = ",";
+    }
+    if(trim($this->q60_diamensalatualizacaosimplesnacional)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q60_diamensalatualizacaosimplesnacional"])){
+      $sql  .= $virgula." q60_diamensalatualizacaosimplesnacional = $this->q60_diamensalatualizacaosimplesnacional ";
+      $virgula = ",";
+    }
+    if(trim($this->q60_horaatualizacaosimplesnacional)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q60_horaatualizacaosimplesnacional"])){
+      $sql  .= $virgula." q60_horaatualizacaosimplesnacional = '$this->q60_horaatualizacaosimplesnacional' ";
+      $virgula = ",";
+    }
+
+    if(trim($this->q60_calcbaixorisco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_calcbaixorisco"])){ 
+      $sql  .= $virgula." q60_calcbaixorisco = '$this->q60_calcbaixorisco' ";
+      $virgula = ",";
+      if(trim($this->q60_calcbaixorisco) == null ){ 
+        $this->erro_sql = " Campo Cálculo alvará e vistoria baixo risco não informado.";
+        $this->erro_campo = "q60_calcbaixorisco";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+
+    if(trim($this->q60_unificataxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_unificataxa"])){ 
+      $sql  .= $virgula." q60_unificataxa = '$this->q60_unificataxa' ";
+      $virgula = ",";
+      if(trim($this->q60_unificataxa) == null ){ 
+        $this->erro_sql = " Campo Cálculo alvará e vistoria baixo risco não informado.";
+        $this->erro_campo = "q60_unificataxa";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+
+    if(trim($this->q60_integracaoexterna)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_integracaoexterna"])){ 
+      $sql  .= $virgula." q60_integracaoexterna = '$this->q60_integracaoexterna' ";
+      $virgula = ",";
+      if(trim($this->q60_integracaoexterna) == null ){ 
+        $this->erro_sql = " Campo Integração Externa não informado.";
+        $this->erro_campo = "q60_integracaoexterna";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+
+    if(trim($this->q60_riscoautomatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_riscoautomatico"])){ 
+      $sql  .= $virgula." q60_riscoautomatico = '$this->q60_riscoautomatico' ";
+      $virgula = ",";
+      if(trim($this->q60_riscoautomatico) == null ){ 
+        $this->erro_sql = " Campo Risco Automático não informado.";
+        $this->erro_campo = "q60_riscoautomatico";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
 
      $result = db_query($sql);
      if($result==false){
@@ -1441,7 +1667,7 @@ class cl_parissqn {
    * Retorna objeto com as configurções do módulo issqn
    * @return mixed boolean|object
    */
-   function getParametrosIssqn(){
+   public function getParametrosIssqn(){
 
     $sSql  = $this->sql_query_file();
     $rsSql = db_query($sSql);

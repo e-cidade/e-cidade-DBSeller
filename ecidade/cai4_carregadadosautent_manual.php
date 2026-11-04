@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -385,7 +385,7 @@ $sqlAutentica .= " where not exists (select 1
 
                                          )  ";
 $sqlAutentica .= "  group by caixa, autent, arquivo, data, cheque, credor, classe, itemconciliacao, erro, justificativa ";
-$sqlAutentica .= "  order by data, autent";
+$sqlAutentica .= "  order by data, autent ";
 
 //echo "<br><br>$sqlAutentica <br>"; die();
 
@@ -398,6 +398,9 @@ if ($intNumrows > 0){
   for($i = 0; $i < $intNumrows; $i++ ) {
 
    $varp =  db_utils::fieldsMemory($rsAutentica,$i);
+
+   // adicionado replace pois tem resumo de empenho com |||  tipo balblabl V||| em vz de VIII
+   $varp->detalhe = str_replace(["|||"], ["III"], $varp->detalhe);
 
    $ctPagadora = "-";
    $detalhes = explode("#",  $varp->detalhe);
@@ -420,10 +423,11 @@ if ($intNumrows > 0){
 
        $rsConta = db_query($sql);
 
-       if (pg_numrows($rsConta) > 0) {
+       if (pg_num_rows($rsConta) > 0) {
          $ctPagadora = db_utils::fieldsMemory($rsConta, 0)->e83_conta;
        }
    }
+
 
    $arrayObj[] = new Autenticacoes($i,
                                    'Concolidado',
@@ -443,6 +447,7 @@ if ($intNumrows > 0){
                                   );
 	}
 
+    //dd($arrayObj);
 	// Vai mostrar o codigo em JSON
   $retornoJSON = $objJSON->encode($arrayObj);
 	echo '1|||'.$objJSON->encode($arrayObj);//$retornoJSON;
@@ -469,8 +474,8 @@ class Autenticacoes {
   var $justificativa    = '';
   var $ctPagadora       = '';
 
-  // Construtor
-  function Autenticacoes ($pid=null,$pstatus=null,$pnumeroCheque=null,$pdetalhe=null,$pcaixa=null,$pautent=null,$parquivo=null,$pdata=null,$pvalorDebito=null,$pvalorCredito=null,$pcredor=null,$pclasse='normal',$pitemconciliacao=null, $sJustificativa = '', $ctPagadora = null){
+  // Construtor   
+  public function Autenticacoes ($pid=null,$pstatus=null,$pnumeroCheque=null,$pdetalhe=null,$pcaixa=null,$pautent=null,$parquivo=null,$pdata=null,$pvalorDebito=null,$pvalorCredito=null,$pcredor=null,$pclasse='normal',$pitemconciliacao=null, $sJustificativa = '', $ctPagadora = null){
 
   	$this->id               = $pid;
     $this->status           = $pstatus;

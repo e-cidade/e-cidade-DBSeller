@@ -61,36 +61,30 @@ db_app::import("contabilidade.planoconta.*");
 db_app::import("financeiro.*");
 db_app::import("contabilidade.contacorrente.*");
 db_app::import("exceptions.*");
+ 
+$oJson              = new services_json();
+$oParam             = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 
-$oJson = new services_json();
-$oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
-
-$oRetorno = new stdClass();
-$oRetorno->dados = array();
-$oRetorno->status = 1;
+$oRetorno           = new stdClass();
+$oRetorno->dados    = array();
+$oRetorno->status   = 1;
 
 $oDataAtual = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
 
 switch ($oParam->exec) {
-
-    case "excluirPlanilha" :
-
-
-        $iPlanilha = $oParam->iPlanilha;
+    case "excluirPlanilha":
+        $iPlanilha       = $oParam->iPlanilha;
 
         db_inicio_transacao();
 
         try {
-
             $oPlanilha = new PlanilhaArrecadacao($iPlanilha);
             $oPlanilha->excluir();
             db_fim_transacao(false);
             $oRetorno->message = urlencode("Planilha ({$iPlanilha}) excluída com sucesso");
-
         } catch (Exception $oExceptionErro) {
-
             db_fim_transacao(true);
-            $oRetorno->status = 2;
+            $oRetorno->status  = 2;
             $oRetorno->message = str_replace("\n", "\\n", urlencode($oExceptionErro->getMessage()));
         }
 
@@ -98,10 +92,8 @@ switch ($oParam->exec) {
         break;
 
     case 'salvarPlanilha':
-
         db_inicio_transacao();
         try {
-
             $oPlanilhaArrecadacao = new PlanilhaArrecadacao();
             $dtArrecadacao = date('Y-m-d', db_getsession('DB_datausu'));
             $oPlanilhaArrecadacao->setDataCriacao($dtArrecadacao);
@@ -110,21 +102,29 @@ switch ($oParam->exec) {
 
             foreach ($oParam->aReceitas as $oReceitas) {
                 $recurso = new Recurso($oReceitas->iRecurso);
+                $fonte = $recurso->getFonteRecurso(db_getsession('DB_anousu'));
                 $complemento = empty($oReceitas->complemento) ? '0' : $oReceitas->complemento;
                 if ($recurso->getComplemento() != $oReceitas->complemento) {
                     $recurso = RecursoRepository::getRecursoPorCodigoRecursoAndComplemento(
+                        $fonte->gestao,
                         $recurso->getRecurso(),
-                        $complemento
+                        $complemento,
+                        $fonte->exercicio
                     );
                 }
                 $iNumeroCgm = buscaCgmOrigem($oReceitas);
                 $iInscricao = empty($oReceitas->iInscricao) ? '' : $oReceitas->iInscricao;
                 $iMatricula = empty($oReceitas->iMatricula) ? '' : $oReceitas->iMatricula;
 
+                $contaTesouraria = new contaTesouraria($oReceitas->iContaTesouraria);
+                if ($contaTesouraria->getDataLimite() != null) {
+                  throw new Exception("Conta da tesouraria ({$oReceitas->iContaTesouraria}) não pode ter data de vencimento.");
+                }
+                
                 $oReceitaPlanilha = new ReceitaPlanilha();
                 $oReceitaPlanilha->setCaracteristicaPeculiar(new CaracteristicaPeculiar($oReceitas->iCaracteriscaPeculiar));
                 $oReceitaPlanilha->setCGM(CgmFactory::getInstanceByCgm($iNumeroCgm));
-                $oReceitaPlanilha->setContaTesouraria(new contaTesouraria($oReceitas->iContaTesouraria));
+                $oReceitaPlanilha->setContaTesouraria($contaTesouraria);
                 $oReceitaPlanilha->setDataRecebimento(new DBDate($oReceitas->dtRecebimento));
                 $oReceitaPlanilha->setInscricao($iInscricao);
                 $oReceitaPlanilha->setMatricula($iMatricula);
@@ -141,22 +141,18 @@ switch ($oParam->exec) {
             $oPlanilhaArrecadacao->salvar();
             db_fim_transacao(false);
 
-            $sMensagemRetorno = "Planilha {$oPlanilhaArrecadacao->getCodigo()} inclusa com sucesso.\n\n";
+            $sMensagemRetorno  = "Planilha {$oPlanilhaArrecadacao->getCodigo()} inclusa com sucesso.\n\n";
             $sMensagemRetorno .= "Deseja imprimir o documento gerado?";
-            $oRetorno->message = urlencode($sMensagemRetorno);
+            $oRetorno->message         = urlencode($sMensagemRetorno);
             $oRetorno->iCodigoPlanilha = $oPlanilhaArrecadacao->getCodigo();
-
-
         } catch (Exception $oExceptionErro) {
-
             db_fim_transacao(true);
-            $oRetorno->status = 2;
+            $oRetorno->status  = 2;
             $oRetorno->message = str_replace("\n", "\\n", urlencode($oExceptionErro->getMessage()));
         }
         break;
 
     case "verificaSlipsAutomaticos":
-
         $oPlanilhaArrecadacao = new PlanilhaArrecadacao($oParam->iPlanilha);
         $oRetorno->sSlipAutomatico = implode(", ", $oPlanilhaArrecadacao->getSlipsAutomaticosDasExtras(2));
         unset($oPlanilhaArrecadacao);
@@ -164,13 +160,11 @@ switch ($oParam->exec) {
 
 
 
-    case 'estornarPlanilha':
 
+    case 'estornarPlanilha':
         db_inicio_transacao();
         try {
-
             $oPlanilhaArrecadacao = new PlanilhaArrecadacao($oParam->iPlanilha);
-
             $oDataAutenticacao = $oPlanilhaArrecadacao->getDataAutenticacao();
             if (empty($oDataAutenticacao)) {
                 throw new Exception("A planilha [{$oParam->iPlanilha}] não encontra-se autenticada.");
@@ -181,14 +175,11 @@ switch ($oParam->exec) {
             }
 
             $oPlanilhaArrecadacao->estornar();
-
             db_fim_transacao(false);
             $oRetorno->message = urlencode("Planilha {$oPlanilhaArrecadacao->getCodigo()} estornada com sucesso.");
-
         } catch (Exception $oExceptionErro) {
-
             db_fim_transacao(true);
-            $oRetorno->status = 2;
+            $oRetorno->status  = 2;
             $oRetorno->message = urlencode($oExceptionErro->getMessage());
         }
 
@@ -196,77 +187,86 @@ switch ($oParam->exec) {
 
     case 'importarPlanilha':
     case 'getDadosPlanilhaArrecadacao':
+        try {
+            $oPlanilhaArrecadacao = new PlanilhaArrecadacao($oParam->iPlanilha);
+            $receitasInativas = $oPlanilhaArrecadacao->validaReceitasInativas();
 
-        $oPlanilhaArrecadacao = new PlanilhaArrecadacao($oParam->iPlanilha);
-        $aReceitasPlanilha = $oPlanilhaArrecadacao->getReceitasPlanilha();
-
-        $oPlanilha = new stdClass();
-        $oPlanilha->aReceitas = array();
-        $oPlanilha->iPlanilha = $oPlanilhaArrecadacao->getCodigo();
-        $oData = $oPlanilhaArrecadacao->getDataCriacao();
-        $oPlanilha->dtDataCriacao = $oData->getDate(DBDate::DATA_PTBR);
-        $oPlanilha->k144_numeroprocesso = $oPlanilhaArrecadacao->getProcessoAdministrativo();
-
-        if (count($aReceitasPlanilha) > 0) {
-
-            foreach ($aReceitasPlanilha as $oReceitaPlanilha) {
-
-                $oReceita = new stdClass();
-                $oReceita->iCodigo = $oReceitaPlanilha->getCodigo();
-                $oReceita->iReceita = $oReceitaPlanilha->getTipoReceita();
-                $oReceita->sDescricaoReceita = urlencode($oReceitaPlanilha->getDescricaoReceita());
-
-                $oReceita->iOrigem = $oReceitaPlanilha->getOrigem();
-                $oReceita->iCgm = $oReceitaPlanilha->getCGM()->getCodigo();
-                $oReceita->iInscricao = $oReceitaPlanilha->getInscricao();
-                $oReceita->iMatricula = $oReceitaPlanilha->getMatricula();
-                $oReceita->iCaracteriscaPeculiar = $oReceitaPlanilha->getCaracteristicaPeculiar()->getSequencial();
-
-                $oContaTesouraria = $oReceitaPlanilha->getContaTesouraria();
-                $oReceita->iContaTesouraria = $oContaTesouraria->getCodigoConta();
-                $oReceita->sDescricaoConta = urlencode($oContaTesouraria->getDescricao());
-
-                $oReceita->dtRecebimento = $oReceitaPlanilha->getDataRecebimento()->convertTo(DBDate::DATA_PTBR);
-                $oReceita->sObservacao = urlencode($oReceitaPlanilha->getObservacao());
-                $oReceita->sOperacaoBancaria = $oReceitaPlanilha->getOperacaoBancaria();
-                $oReceita->iRecurso = $oReceitaPlanilha->getRecurso()->getCodigoRecurso();
-                $oReceita->nValor = $oReceitaPlanilha->getValor();
-                $oReceita->complemento = $oReceitaPlanilha->getComplementoRecurso();
-
-                $oPlanilha->aReceitas[] = $oReceita;
-                unset($oReceita);
+            if (!empty($receitasInativas)) {
+                throw new Exception(sprintf(
+                    'Essa planilha contém receitas inativas. Lista das receitas: %s',
+                    implode(', ', $receitasInativas)
+                ));
             }
+
+            $aReceitasPlanilha = $oPlanilhaArrecadacao->getReceitasPlanilha();
+            $oPlanilha = new stdClass();
+            $oPlanilha->aReceitas = array();
+            $oPlanilha->iPlanilha = $oPlanilhaArrecadacao->getCodigo();
+            $oData = $oPlanilhaArrecadacao->getDataCriacao();
+            $oPlanilha->dtDataCriacao = $oData->getDate(DBDate::DATA_PTBR);
+            $oPlanilha->k144_numeroprocesso = $oPlanilhaArrecadacao->getProcessoAdministrativo();
+
+            if (count($aReceitasPlanilha) > 0) {
+                foreach ($aReceitasPlanilha as $oReceitaPlanilha) {
+                    $oReceita = new stdClass();
+                    $oReceita->iCodigo = $oReceitaPlanilha->getCodigo();
+                    $oReceita->iReceita = $oReceitaPlanilha->getTipoReceita();
+                    $oReceita->sDescricaoReceita = urlencode($oReceitaPlanilha->getDescricaoReceita());
+
+                    $oReceita->iOrigem = $oReceitaPlanilha->getOrigem();
+                    $oReceita->iCgm = $oReceitaPlanilha->getCGM()->getCodigo();
+                    $oReceita->iInscricao = $oReceitaPlanilha->getInscricao();
+                    $oReceita->iMatricula = $oReceitaPlanilha->getMatricula();
+                    $oReceita->iCaracteriscaPeculiar = $oReceitaPlanilha->getCaracteristicaPeculiar()->getSequencial();
+
+                    $oContaTesouraria = $oReceitaPlanilha->getContaTesouraria();
+                    $oReceita->iContaTesouraria = $oContaTesouraria->getCodigoConta();
+                    $oReceita->sDescricaoConta = urlencode($oContaTesouraria->getDescricao());
+
+                    $oReceita->dtRecebimento = $oReceitaPlanilha->getDataRecebimento()->convertTo(DBDate::DATA_PTBR);
+                    $oReceita->sObservacao = urlencode($oReceitaPlanilha->getObservacao());
+                    $oReceita->sOperacaoBancaria = $oReceitaPlanilha->getOperacaoBancaria();
+                    $oReceita->iRecurso = $oReceitaPlanilha->getRecurso()->getCodigo();
+                    $oReceita->nValor = $oReceitaPlanilha->getValor();
+                    $oReceita->complemento = $oReceitaPlanilha->getComplementoRecurso();
+
+                    $oPlanilha->aReceitas[] = $oReceita;
+                    unset($oReceita);
+                }
+            }
+
+            $oRetorno->oPlanilha = $oPlanilha;
+        } catch (Exception $e) {
+            db_fim_transacao(true);
+            $oRetorno->status = 2;
+            $oRetorno->message = urlencode($e->getMessage());
         }
 
-        $oRetorno->oPlanilha = $oPlanilha;
         break;
 
     case 'autenticarPlanilha':
-
         db_inicio_transacao();
         try {
-
             $oPlanilhaArrecadacao = new PlanilhaArrecadacao($oParam->iPlanilha);
             if ($oDataAtual->getTimeStamp() < $oPlanilhaArrecadacao->getDataCriacao()->getTimeStamp()) {
                 throw new Exception("Não é possível autenticar uma planilha com data anterior a sua criação.");
             }
 
             $oPlanilhaArrecadacao->getReceitasPlanilha();
+            $oPlanilhaArrecadacao->validaContasExtas();
             $oPlanilhaArrecadacao->autenticar();
 
-            $sNumeroProcesso = addslashes(db_stdClass::normalizeStringJson($oParam->k144_numeroprocesso));
+            $sNumeroProcesso = addslashes(db_stdClass::normalizeStringJsonEscapeString($oParam->k144_numeroprocesso));
             if (!empty($sNumeroProcesso)) {
-
                 $oDaoPlacaixaProcesso = new cl_placaixaprocesso();
 
-                $oDaoPlacaixaProcesso->k144_placaixa = $oParam->iPlanilha;
+                $oDaoPlacaixaProcesso->k144_placaixa       = $oParam->iPlanilha;
                 $oDaoPlacaixaProcesso->k144_numeroprocesso = $sNumeroProcesso;
 
-                $sSqlProcesso = $oDaoPlacaixaProcesso->sql_query_file(null, "*", null,
-                    "k144_placaixa = {$oParam->iPlanilha}");
-                $rsProcesso = $oDaoPlacaixaProcesso->sql_record($sSqlProcesso);
+                $where = "k144_placaixa = {$oParam->iPlanilha}";
+                $sSqlProcesso = $oDaoPlacaixaProcesso->sql_query_file(null, "*", null, $where);
+                $rsProcesso           = $oDaoPlacaixaProcesso->sql_record($sSqlProcesso);
                 if ($oDaoPlacaixaProcesso->numrows > 0) {
-
                     $oDadosProcesso = db_utils::fieldsMemory($rsProcesso, 0);
                     $oDaoPlacaixaProcesso->k144_sequencial = $oDadosProcesso->k144_sequencial;
                     $oDaoPlacaixaProcesso->alterar($oDaoPlacaixaProcesso->k144_sequencial);
@@ -277,45 +277,43 @@ switch ($oParam->exec) {
                 if ($oDaoPlacaixaProcesso->erro_status == 0) {
                     throw new Exception($oDaoPlacaixaProcesso->erro_msg);
                 }
-
             }
 
             $oRetorno->sSlipAutomatico = implode(", ", $oPlanilhaArrecadacao->getSlipsAutomaticosDasExtras(1));
             db_fim_transacao(false);
 
-            $sMensagemRetorno = "Planilha {$oPlanilhaArrecadacao->getCodigo()} autenticada com sucesso.\n\n";
-            $sMensagemRetorno .= "Deseja imprimir o documento gerado?";
-            $oRetorno->message = urlencode($sMensagemRetorno);
+            $sMensagemRetorno    = "Planilha {$oPlanilhaArrecadacao->getCodigo()} autenticada com sucesso.\n\n";
+            $sMensagemRetorno   .= "Deseja imprimir o documento gerado?";
+            $oRetorno->message   = urlencode($sMensagemRetorno);
             $oRetorno->iPlanilha = $oPlanilhaArrecadacao->getCodigo();
-
         } catch (Exception $oExceptionErro) {
-
             db_fim_transacao(true);
-            $oRetorno->status = 2;
+            $oRetorno->status  = 2;
             $oRetorno->message = str_replace("\n", "\\n", urlencode($oExceptionErro->getMessage()));
         }
         break;
 
     case 'alterarPlanilha':
-
         db_inicio_transacao();
         try {
-
             $oPlanilhaArrecadacao = new PlanilhaArrecadacao($oParam->iCodigoPlanilha);
             $oPlanilhaArrecadacao->excluirReceitas();
 
             $oPlanilhaArrecadacao->setProcessoAdministrativo(db_stdClass::normalizeStringJsonEscapeString($oParam->k144_numeroprocesso));
 
             foreach ($oParam->aReceitas as $oReceitas) {
-
-                $iNumeroCgm = buscaCgmOrigem($oReceitas);
-                $iInscricao = empty($oReceitas->iInscricao) ? '' : $oReceitas->iInscricao;
-                $iMatricula = empty($oReceitas->iMatricula) ? '' : $oReceitas->iMatricula;
+                $iNumeroCgm       = buscaCgmOrigem($oReceitas);
+                $iInscricao       = empty($oReceitas->iInscricao) ? '' : $oReceitas->iInscricao;
+                $iMatricula       = empty($oReceitas->iMatricula) ? '' : $oReceitas->iMatricula;
 
                 $oReceitaPlanilha = new ReceitaPlanilha(null);
+                $contaTesouraria = new contaTesouraria($oReceitas->iContaTesouraria);
+                if ($contaTesouraria->getDataLimite() != null) {
+                  throw new Exception("Conta da tesouraria ({$oReceitas->iContaTesouraria}) não pode ter data de vencimento.");
+                }
                 $oReceitaPlanilha->setCaracteristicaPeculiar(new CaracteristicaPeculiar($oReceitas->iCaracteriscaPeculiar));
                 $oReceitaPlanilha->setCGM(CgmFactory::getInstanceByCgm($iNumeroCgm));
-                $oReceitaPlanilha->setContaTesouraria(new contaTesouraria($oReceitas->iContaTesouraria));
+                $oReceitaPlanilha->setContaTesouraria($contaTesouraria);
                 $oReceitaPlanilha->setDataRecebimento(new DBDate($oReceitas->dtRecebimento));
                 $oReceitaPlanilha->setInscricao($iInscricao);
                 $oReceitaPlanilha->setMatricula($iMatricula);
@@ -333,15 +331,13 @@ switch ($oParam->exec) {
 
             db_fim_transacao(false);
 
-            $sMensagemRetorno = "Planilha {$oPlanilhaArrecadacao->getCodigo()} salva com sucesso.\n\n";
-            $sMensagemRetorno .= "Deseja imprimir o documento gerado?";
-            $oRetorno->message = urlencode($sMensagemRetorno);
+            $sMensagemRetorno          = "Planilha {$oPlanilhaArrecadacao->getCodigo()} salva com sucesso.\n\n";
+            $sMensagemRetorno         .= "Deseja imprimir o documento gerado?";
+            $oRetorno->message         = urlencode($sMensagemRetorno);
             $oRetorno->iCodigoPlanilha = $oPlanilhaArrecadacao->getCodigo();
-
         } catch (Exception $oExceptionErro) {
-
             db_fim_transacao(true);
-            $oRetorno->status = 2;
+            $oRetorno->status  = 2;
             $oRetorno->message = str_replace("\n", "\\n", urlencode($oExceptionErro->getMessage()));
         }
         break;
@@ -360,19 +356,15 @@ function buscaCgmOrigem($oParam)
 
     $iNumeroCmg = "";
     switch ($oParam->iOrigem) {
-
         case 1:
-
             $iNumeroCmg = $oParam->iCgm;
             break;
 
         case 2:
-
             $iNumeroCmg = buscaCgmInscricao($oParam->iInscricao);
             break;
 
         case 3:
-
             $iNumeroCmg = buscaCgmMatricula($oParam->iMatricula);
             break;
         default:
@@ -393,26 +385,23 @@ function buscaCgmInscricao($iInscricao)
 {
 
     if (empty($iInscricao)) {
-
         $sMsgErro = "Número da inscricao vazio ou não informado.";
         throw new BusinessException($sMsgErro);
     }
 
     $oDaoIssBase = new cl_issbase;
     $sSqlInscricao = $oDaoIssBase->sql_query_file($iInscricao);
-    $rsInscricao = $oDaoIssBase->sql_record($sSqlInscricao);
+    $rsInscricao   = $oDaoIssBase->sql_record($sSqlInscricao);
 
     if ($rsInscricao && $oDaoIssBase->numrows == 1) {
-
         return db_utils::fieldsMemory($rsInscricao, 0)->q02_numcgm;
     }
 
-    $sMsgErro = "Erro ao buscar cgm da inscricao.\n";
+    $sMsgErro  = "Erro ao buscar cgm da inscricao.\n";
     $sMsgErro .= "Inscrição: {$iInscricao}";
     $sMsgErro .= $oDaoIssBase->erro_msg;
 
     throw new BusinessException($sMsgErro);
-
 }
 
 /**
@@ -426,26 +415,23 @@ function buscaCgmMatricula($iMatricula)
 {
 
     if (empty($iMatricula)) {
-
         $sMsgErro = "Número da matricula vazio ou não informado.";
         throw new BusinessException($sMsgErro);
     }
 
     $oDaoIptuBase = new cl_iptubase;
-    $sSqlMatricula = $oDaoIptuBase->sql_query_file($iMatricula);
-    $rsMatricula = $oDaoIptuBase->sql_record($sSqlMatricula);
+    $sSqlMatricula  = $oDaoIptuBase->sql_query_file($iMatricula);
+    $rsMatricula    = $oDaoIptuBase->sql_record($sSqlMatricula);
 
     if ($rsMatricula && $oDaoIptuBase->numrows == 1) {
-
         return db_utils::fieldsMemory($rsMatricula, 0)->j01_numcgm;
     }
 
-    $sMsgErro = "Erro ao buscar cgm da matricula.\n";
+    $sMsgErro  = "Erro ao buscar cgm da matricula.\n";
     $sMsgErro .= "Matricula: {$iMatricula}.\n";
     $sMsgErro .= $oDaoIptuBase->erro_msg;
 
     throw new BusinessException($sMsgErro);
-
 }
 
 echo $oJson->encode($oRetorno);

@@ -42,3 +42,4 @@ define("IMPORTAR_SERVIDORES", $aConfiguracoes['IMPORTAR']['FOLHA']);
 define("IMPORTAR_RECEITAS",   $aConfiguracoes['IMPORTAR']['RECEITA']);
 define("IMPORTAR_DOTACAO",    $aConfiguracoes['IMPORTAR']['DOTACAO']);
 define("IMPORTAR_PATRIMONIO_VEICULOS", $aConfiguracoes['IMPORTAR']['PATRIMONIO_VEICULO']);
+define("IMPORTAR_MEDICAMENTOS",    $aConfiguracoes['IMPORTAR']['MEDICAMENTOS']);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
               <?=$Lve08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve08_sequencial",10,$Ive08_sequencial,true,"text",4,"","chave_ve08_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
               <?=$Lve08_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve08_descr",40,$Ive08_descr,true,"text",4,"","chave_ve08_descr");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccaditensobrig.php")==true){
@@ -124,12 +124,12 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

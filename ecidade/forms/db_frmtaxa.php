@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -41,7 +41,9 @@ $clrotulo->label("ar36_valor");
 $clrotulo->label("ar36_perc");
 $clrotulo->label("ar36_valormin");
 $clrotulo->label("ar36_valormax");
-
+$clrotulo->label("ar36_permiteparcelamento");
+$clrotulo->label("ar36_honorario");
+$clrotulo->label("ar36_aplicajurosmulta");
 
 ?>
 <br>
@@ -54,7 +56,7 @@ $clrotulo->label("ar36_valormax");
          <?=$Lar36_sequencial?>
        </td>
        <td>
-         <?
+         <?php
          db_input('ar36_sequencial',10,$Iar36_sequencial,true,'text',3,"")
          ?>
        </td>
@@ -65,7 +67,9 @@ $clrotulo->label("ar36_valormax");
           <?=$Lar36_descricao?>
         </td>
         <td>
-         <? db_input('ar36_descricao',70,$Iar36_descricao,true,'text',$db_opcao,"") ?>
+         <?php
+          db_input('ar36_descricao',70,$Iar36_descricao,true,'text',$db_opcao,"");
+         ?>
         </td>
       </tr>
 
@@ -108,7 +112,9 @@ $clrotulo->label("ar36_valormax");
         </td>
       </tr>
       <tr>
-        <td>Aplica Juros e Multa:</td>
+        <td title="<?=$Tar36_aplicajurosmulta?>">
+          <?=$Lar36_aplicajurosmulta?>
+        </td>
         <td>
           <?php
             $a = array('f'=>'Não', 't'=>'Sim');
@@ -117,11 +123,24 @@ $clrotulo->label("ar36_valormax");
         </td>
       </tr>
       <tr>
-        <td>Honorário:</td>
+        <td title="<?=$Tar36_honorario?>">
+          <?=$Lar36_honorario?>
+        </td>
         <td>
           <?php
             $a = array('f'=>'Não', 't'=>'Sim');
             db_select('ar36_honorario', $a, true, $db_opcao);
+          ?>
+        </td>
+      </tr>
+      <tr>
+        <td title="<?=$Tar36_permiteparcelamento?>">
+          <?=$Lar36_permiteparcelamento?>
+        </td>
+        <td>
+          <?php
+            $a = array('f'=>'Não', 't'=>'Sim');
+            db_select('ar36_permiteparcelamento', $a, true, $db_opcao);
           ?>
         </td>
       </tr>
@@ -134,7 +153,6 @@ $clrotulo->label("ar36_valormax");
            <?=$Lar36_valor?>
          </td>
          <td>
-           <?php // db_input('ar36_valor', 10, $Iar36_valor, true, 'text',$db_opcao,"") ?>
            <?php db_input('ar36_valor', 10, '', false, 'text',$db_opcao,"") ?>
          </td>
         </tr>
@@ -191,7 +209,7 @@ $clrotulo->label("ar36_valormax");
         </table>
       </fieldset>
   </fieldset>
-</center>
+
 <div style="margin-top: 10px;">
   <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit"
         id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
@@ -220,7 +238,6 @@ const MSG_FRMTAXA = 'tributario.arrecadacao.db_frmtaxa.';
       comProcesso.value = 'f';
     }
   });
-  console.log(comProcesso.value);
   semProcesso.observe('click', function() {
 
     if(semProcesso.getAttribute('checked') == null){
@@ -374,9 +391,9 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_taxa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

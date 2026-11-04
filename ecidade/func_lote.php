@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrotulo->label("j06_lote");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<? 
+<?php 
 	db_app::load('scripts.js, prototype.js, strings.js, dbcomboBox.widget.js, estilos.css');
 ?>
 </head>
@@ -70,7 +70,7 @@ $clrotulo->label("j06_lote");
               <?=$Lj34_idbql?>
             </td>
             <td width="50%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j34_idbql",6,$Ij34_idbql,true,"text",4,"","chave_j34_idbql");
 		       ?>
             </td>
@@ -80,15 +80,15 @@ $clrotulo->label("j06_lote");
               <?=$Lj34_setor?> / <?=$Lj34_quadra?> / <?=$Lj34_lote?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 			       db_input("j34_setor",4,$Ij34_setor,true,"text",4,"","chave_j34_setor");
 			       ?>
 			       /
-			       <?
+			       <?php
 			       db_input("j34_quadra",4,$Ij34_quadra,true,"text",4,"","chave_j34_quadra");
 			       ?>
 			       /
-			       <?
+			       <?php
 			       db_input("j34_lote",4,$Ij34_lote,true,"text",4,"","chave_j34_lote");
 			       ?>
             </td>
@@ -97,7 +97,7 @@ $clrotulo->label("j06_lote");
           <tr>
           	<td width="34%" align="right" nowrap title="<?=$Tj06_setorloc?>"><?=$Lj06_setorloc?></td>
           	<td>
-          	<?
+          	<?php
            		db_selectrecord('j05_codigoproprio', $rsSetorLoc, true, 4, '', 'j05_codigoproprio', '', 'todos', 'js_carregaQuadra(this.value)');
           	?>
           	</td>
@@ -130,7 +130,7 @@ $clrotulo->label("j06_lote");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $wsetor="";
       $wquadra="";  
       $wlote="";              
@@ -308,14 +308,14 @@ js_carregaQuadra($F('j05_codigoproprio'));
 </script>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j34_idbql.focus();
 document.form2.chave_j34_idbql.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

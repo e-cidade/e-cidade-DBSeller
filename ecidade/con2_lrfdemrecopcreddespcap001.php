@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,7 +47,7 @@ $iCodigoRelatorio = $oRelatorio::CODIGO_RELATORIO;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body class="body-default abas">
-    <?
+    <?php
 	    $clcriaabas->identifica = array("relatorio" => "Relatório",
 	                                    "notas"     => "Fonte/Notas Explicativas",
 	                                    "parametro" => "Parâmetros");
@@ -66,7 +66,7 @@ $iCodigoRelatorio = $oRelatorio::CODIGO_RELATORIO;
 	                                    "parametro" => "25");
 	    $clcriaabas->cria_abas();
     ?>
-<?
+<?php
   db_menu();
 ?>
 </body>

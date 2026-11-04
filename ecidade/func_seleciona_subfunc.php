@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ function js_voltar()
   document.location.href="con2_conrelparametros.php?c83_codrel=<?=$o69_codparamrel?>";
 }
 </script>
-<?
+<?php
 
 if (isset($processar) && $processar=='processar') {
   db_inicio_transacao();
@@ -134,7 +134,7 @@ parent.js_refresh();
 <table border=1 align=center>
  <tr>
    <td colspan=1>
-     <? $s = "select o69_descr,o69_verificaano 
+     <?php $s = "select o69_descr,o69_verificaano 
               from orcparamseq 
 	      where o69_codparamrel = $o69_codparamrel
 	             and o69_codseq = $o69_codseq 
@@ -156,7 +156,7 @@ parent.js_refresh();
  </tr>
 </table>
 
-<? 
+<?php 
    $sWhereAno    = '';
    if ($o69_verificaano == 't') {
      $sWhereAno  = " and o58_anousu =".db_getsession("DB_anousu");

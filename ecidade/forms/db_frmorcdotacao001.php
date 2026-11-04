@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,6 +50,8 @@ $clrotulo->label("o200_descricao");
 $clestrutura = new cl_estrutura;
 $display = FONTE_RECURSO_UNIAO ? '' : "display: none";
 
+$anoSessao = db_getsession("DB_anousu");
+
 if (isset($atualizar)) {
     $o58_orgao = '';
     $o58_unidade = '';
@@ -73,14 +75,23 @@ if (isset($atualizar)) {
     if ($o50_estrutdespesa == "") {
         $tot = '0';
     } else {
-        $matriz = split('\.', $o50_estrutdespesa);
+
+        // adicionei um replace pois teve impacto colocando o explode \.
+        $o50_estrutdespesa = str_replace("\.", ".",$o50_estrutdespesa);
+        $matriz = explode('.', $o50_estrutdespesa);
         $tot = count($matriz);
     }
 
     for ($i = 0; $i < $tot; $i++) {
         switch ($i) {
             case 0://orgao
-                $result = $clorcorgao->sql_record($clorcorgao->sql_query_file(db_getsession("DB_anousu"), $matriz[$i], 'o40_descr,o40_orgao as o58_orgao'));
+                $result = $clorcorgao->sql_record(
+                    $clorcorgao->sql_query_file(
+                        $anoSessao,
+                        $matriz[$i],
+                        'o40_descr,o40_orgao as o58_orgao'
+                    )
+                );
                 if ($clorcorgao->numrows > 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -90,12 +101,19 @@ if (isset($atualizar)) {
                 break;
             case 1://unidade
                 if ($o58_orgao != '') {
-                    $result = $clorcunidade->sql_record($clorcunidade->sql_query_file(db_getsession("DB_anousu"), $o58_orgao, $matriz[$i], 'o41_descr, o41_unidade as o58_unidade, o41_instit'));
+                    $result = $clorcunidade->sql_record(
+                        $clorcunidade->sql_query_file(
+                            $anoSessao,
+                            $o58_orgao,
+                            $matriz[$i],
+                            'o41_descr, o41_unidade as o58_unidade, o41_instit'
+                        )
+                    );
                     if ($clorcunidade->numrows > 0) {
                         db_fieldsmemory($result, 0);
                         $o58_instit  = $o41_instit;
                         $sql         = "select nomeinst from db_config where codigo = $o41_instit";
-                        $nomeinst    = @pg_result(pg_query($sql), 0, "nomeinst");
+                        $nomeinst    = pg_fetch_result(db_query($sql), 0, "nomeinst");
                     } else {
                         $o58_unidade = '';
                         $o41_descr = 'Chave (' . $matriz[$i] . ') não encontrado';
@@ -106,7 +124,12 @@ if (isset($atualizar)) {
                 }
                 break;
             case 2://funcao
-                $result = $clorcfuncao->sql_record($clorcfuncao->sql_query_file($matriz[$i], 'o52_descr, o52_funcao as o58_funcao'));
+                $result = $clorcfuncao->sql_record(
+                    $clorcfuncao->sql_query_file(
+                        $matriz[$i],
+                        'o52_descr, o52_funcao as o58_funcao'
+                    )
+                );
                 if ($clorcfuncao->numrows > 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -115,7 +138,12 @@ if (isset($atualizar)) {
                 }
                 break;
             case 3://subfuncao
-                $result = $clorcsubfuncao->sql_record($clorcsubfuncao->sql_query_file($matriz[$i], 'o53_descr, o53_subfuncao as o58_subfuncao'));
+                $result = $clorcsubfuncao->sql_record(
+                    $clorcsubfuncao->sql_query_file(
+                        $matriz[$i],
+                        'o53_descr, o53_subfuncao as o58_subfuncao'
+                    )
+                );
                 if ($clorcsubfuncao->numrows > 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -124,7 +152,13 @@ if (isset($atualizar)) {
                 }
                 break;
             case 4://programa
-                $result = $clorcprograma->sql_record($clorcprograma->sql_query_file(db_getsession("DB_anousu"), $matriz[$i], 'o54_descr, o54_programa as o58_programa'));
+                $result = $clorcprograma->sql_record(
+                    $clorcprograma->sql_query_file(
+                        $anoSessao,
+                        $matriz[$i],
+                        'o54_descr, o54_programa as o58_programa'
+                    )
+                );
                 if ($clorcprograma->numrows > 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -133,7 +167,13 @@ if (isset($atualizar)) {
                 }
                 break;
             case 5://projativ
-                $result = $clorcprojativ->sql_record($clorcprojativ->sql_query_file(db_getsession("DB_anousu"), $matriz[$i], 'o55_descr, o55_projativ as o58_projativ'));
+                $result = $clorcprojativ->sql_record(
+                    $clorcprojativ->sql_query_file(
+                        $anoSessao,
+                        $matriz[$i],
+                        'o55_descr, o55_projativ as o58_projativ'
+                    )
+                );
                 if ($clorcprojativ->numrows > 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -142,7 +182,15 @@ if (isset($atualizar)) {
                 }
                 break;
             case 6://elemento de despesa
-                $result = $clorcelemento->sql_record($clorcelemento->sql_query(null, null, "o56_descr, o56_elemento ", "", "o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento like '" . substr($matriz[$i], 0, 12) . "%' "));
+                $result = $clorcelemento->sql_record(
+                    $clorcelemento->sql_query(
+                        null,
+                        null,
+                        "o56_descr, o56_elemento ",
+                        "",
+                        "o56_anousu = " . $anoSessao . " and o56_elemento like '" . substr($matriz[$i], 0, 12) . "%' "
+                    )
+                );
                 if ($clorcelemento->numrows > 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -164,7 +212,12 @@ if (isset($atualizar)) {
                 }
                 break;
             case 8://contra recurso
-                $result = $clorctiporec->sql_record($clorctiporec->sql_query_file($matriz[$i], "o15_descr as o15_contra_recurso, o15_codigo as o61_codigo"));
+                $result = $clorctiporec->sql_record(
+                    $clorctiporec->sql_query_file(
+                        $matriz[$i],
+                        "o15_descr as o15_contra_recurso, o15_codigo as o61_codigo"
+                    )
+                );
                 if ($clorctiporec->numrows != 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -173,7 +226,7 @@ if (isset($atualizar)) {
                 }
                 break;
             case 9://localiador gastos
-                $oDaoLocalizador = db_utils::getDao("ppasubtitulolocalizadorgasto");
+                $oDaoLocalizador = new cl_ppasubtitulolocalizadorgasto();
                 $sSqlSubtitulo = $oDaoLocalizador->sql_query_file($matriz[$i]);
                 $rsLocalizador = $oDaoLocalizador->sql_record($rsLocalizador);
                 if ($oDaoLocalizador->numrows != 0) {
@@ -186,28 +239,19 @@ if (isset($atualizar)) {
     }
 }
 
-//if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
-//    $o58_coddot = "";
-//    $o58_valor = "";
-//    $o56_elemento = "";
-//    $o56_descr = "";
-//}
 ?>
 <form name="form1" method="post" action="">
-    <table border="0">
+    <table>
         <tr>
             <td>
-                <fieldset><legend><b>Dotação</b></legend>
+                <fieldset>
+                    <legend><b>Dotação</b></legend>
                     <table>
                         <tr>
                             <td nowrap title="<?=@$To58_anousu?>">
                                 <?php echo $Lo58_anousu;?>
                             </td>
                             <td>
-                                <?
-                                //$o58_instit = db_getsession('DB_instit');
-                                //db_input('o58_instit',4,$Io58_instit,true,'hidden',3,"")
-                                ?>
                                 <?php
                                 $o58_anousu = db_getsession('DB_anousu');
                                 db_input('o58_anousu', 4, $Io58_anousu, true, 'text', 3, "");
@@ -233,10 +277,6 @@ if (isset($atualizar)) {
                             </td>
                             <td>
                                 <?php
-                                //  if (!isset($o58_intit)){
-                                //      $nomeinst   = pg_result(pg_query("select nomeinst from db_config where codigo = ".db_getsession("DB_instit")),0,0);
-                                //      $o58_instit = db_getsession("DB_instit");
-                                //  }
                                 db_input('o58_instit', 11, $Io58_instit, true, 'text', 3, '');
                                 db_input('nomeinst', 55, $Io58_instit, true, 'text', 3, "");
                                 ?>
@@ -248,7 +288,15 @@ if (isset($atualizar)) {
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_orgao', 11, $Io58_orgao, true, 'text', $db_opcao, " onchange='js_pesquisao58_orgao(false);'");
+                                db_input(
+                                    'o58_orgao',
+                                    11,
+                                    $Io58_orgao,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    " onchange='js_pesquisao58_orgao(false);'"
+                                );
                                 db_input('o40_descr', 55, $Io40_descr, true, 'text', 3, '');
                                 ?>
                             </td>
@@ -266,7 +314,15 @@ if (isset($atualizar)) {
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_unidade', 11, $Io58_unidade, true, 'text', $mostraUni, " onchange='js_pesquisao58_unidade(false);'");
+                                db_input(
+                                    'o58_unidade',
+                                    11,
+                                    $Io58_unidade,
+                                    true,
+                                    'text',
+                                    $mostraUni,
+                                    " onchange='js_pesquisao58_unidade(false);'"
+                                );
                                 db_input('o41_descr', 55, $Io41_descr, true, 'text', 3, '');
                                 ?>
                             </td>
@@ -277,18 +333,34 @@ if (isset($atualizar)) {
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_funcao', 11, $Io58_funcao, true, 'text', $db_opcao, " onchange='js_pesquisao58_funcao(false);'");
+                                db_input(
+                                    'o58_funcao',
+                                    11,
+                                    $Io58_funcao,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    " onchange='js_pesquisao58_funcao(false);'"
+                                );
                                 db_input('o52_descr', 55, $Io52_descr, true, 'text', 3, '');
                                 ?>
                             </td>
                         </tr>
                         <tr>
                             <td nowrap title="<?=@$To58_subfuncao?>">
-                                <?php db_ancora(@$Lo58_subfuncao,"js_pesquisao58_subfuncao(true);",$db_opcao);?>
+                                <?php db_ancora(@$Lo58_subfuncao, "js_pesquisao58_subfuncao(true);", $db_opcao);?>
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_subfuncao', 11, $Io58_subfuncao, true, 'text', $db_opcao, " onchange='js_pesquisao58_subfuncao(false);'");
+                                db_input(
+                                    'o58_subfuncao',
+                                    11,
+                                    $Io58_subfuncao,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    " onchange='js_pesquisao58_subfuncao(false);'"
+                                );
                                 db_input('o53_descr', 55, $Io53_descr, true, 'text', 3, '');
                                 ?>
                             </td>
@@ -299,7 +371,15 @@ if (isset($atualizar)) {
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_programa', 11, $Io58_programa, true, 'text', $db_opcao, " onchange='js_pesquisao58_programa(false);'");
+                                db_input(
+                                    'o58_programa',
+                                    11,
+                                    $Io58_programa,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    " onchange='js_pesquisao58_programa(false);'"
+                                );
                                 db_input('o54_descr', 55, $Io54_anousu, true, 'text', 3, '');
                                 ?>
                             </td>
@@ -310,7 +390,15 @@ if (isset($atualizar)) {
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_projativ', 11, $Io58_projativ, true, 'text', $db_opcao, " onchange='js_pesquisao58_projativ(false);'");
+                                db_input(
+                                    'o58_projativ',
+                                    11,
+                                    $Io58_projativ,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    " onchange='js_pesquisao58_projativ(false);'"
+                                );
                                 db_input('o55_descr', 55, $Io55_descr, true, 'text', 3, '');
                                 ?>
                             </td>
@@ -321,7 +409,15 @@ if (isset($atualizar)) {
                             </td>
                             <td>
                                 <?php
-                                db_input('o56_elemento', 11, $Io56_elemento, true, 'text', $db_opcao, " onchange='js_pesquisao58_codele(false);'");
+                                db_input(
+                                    'o56_elemento',
+                                    11,
+                                    $Io56_elemento,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    " onchange='js_pesquisao58_codele(false);'"
+                                );
                                 db_input('o56_descr', 55, $Io56_descr, true, 'text', 3, '');
                                 ?>
                             </td>
@@ -334,8 +430,9 @@ if (isset($atualizar)) {
                             <td colspan=3>
                                 <?php
                                 db_input('o58_codigo', 10, $Io58_codigo, true, 'hidden', $db_opcao);
-                                db_input('o15_recurso', 11, $Io15_recurso, true, 'text', $db_opcao);
-                                db_input('o15_descr', 55, $Io15_descr, true, 'text', 3, '');
+                                db_input('gestao', 5, $Io15_recurso, true, 'text', 3);
+                                db_input('o15_recurso', 5, $Io15_recurso, true, 'text', 3);
+                                db_input('descricao', 51, $Io15_descr, true, 'text', 3, '');
                                 ?>
                             </td>
                         </tr>
@@ -343,47 +440,74 @@ if (isset($atualizar)) {
                             <td class="bold">Complemento:</td>
                             <td>
                                 <?php
-                                db_input('o200_descricao', 70, $Io15_descr, true, 'text', 3);
+                                db_input('o15_complemento', 11, $Io15_descr, true, 'text', 3);
+                                db_input('o200_descricao', 55, $Io15_descr, true, 'text', 3);
                                 ?>
                             </td>
                         </tr>
 
                         <tr>
                             <td nowrap title="<?=@$To58_localizadorgastos?>">
-                                <?php db_ancora(@$Lo58_localizadorgastos, "js_pesquisao58_localizadorgastos(true);", $db_opcao, "", "o58_gastosancora");?>
+                                <?php
+                                db_ancora(
+                                    @$Lo58_localizadorgastos,
+                                    "js_pesquisao58_localizadorgastos(true);",
+                                    $db_opcao,
+                                    "",
+                                    "o58_gastosancora"
+                                );
+                                ?>
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_localizadorgastos', 11, $Io58_localizadorgastos, true, 'text', $db_opcao, "onchange='js_pesquisao58_localizadorgastos(false);'");
+                                db_input(
+                                    'o58_localizadorgastos',
+                                    11,
+                                    $Io58_localizadorgastos,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    "onchange='js_pesquisao58_localizadorgastos(false);'"
+                                );
                                 db_input('o11_descricao', 55, $Io11_descricao, true, 'text', 3, '');
                                 ?>
                             </td>
                         </tr>
                         <tr>
                             <td nowrap title="<?=@$To58_concarpeculiar?>">
-                                <?php db_ancora(@$Lo58_concarpeculiar, "js_pesquisao58_concarpeculiar(true);", $db_opcao, "", "o58_concarpeculiarancora");?>
+                                <?php
+                                db_ancora(
+                                    @$Lo58_concarpeculiar,
+                                    "js_pesquisao58_concarpeculiar(true);",
+                                    $db_opcao,
+                                    "",
+                                    "o58_concarpeculiarancora"
+                                );
+                                ?>
                             </td>
                             <td>
                                 <?php
-                                db_input('o58_concarpeculiar', 11, $Io58_concarpeculiar, true, 'text', $db_opcao, "onchange='js_pesquisao58_concarpeculiar(false);'");
+                                db_input(
+                                    'o58_concarpeculiar',
+                                    11,
+                                    $Io58_concarpeculiar,
+                                    true,
+                                    'text',
+                                    $db_opcao,
+                                    "onchange='js_pesquisao58_concarpeculiar(false);'"
+                                );
                                 db_input('c58_descr', 55, $Ic58_descr, true, 'text', 3, '');
                                 ?>
                             </td>
                         </tr>
                         <tr style="<?=$display?>">
-                            <td class="bold"><label for="esferaOrcamentaria">Esfera Orçamentária:</label></td>
+                            <td><label for="o58_esferaorcamentaria"><b>Esfera Orçamentária:</b></label></td>
                             <td>
                                 <?php
-                                if (empty($o58_esferaorcamentaria)) {
-                                    $o58_esferaorcamentaria = '';
-                                }
+                                $dadosEsfera = ECidade\Financeiro\Orcamento\EsferaOrcamentaria::getAll();
+                                $dadosEsfera[0] = "Selecione";
+                                db_select("o58_esferaorcamentaria", $dadosEsfera, true, $db_opcao);
                                 ?>
-                                <select name="esferaOrcamentaria" id="esferaOrcamentaria" class="field-size10">
-                                    <option selected value="">Selecionar</option>
-                                    <option <?php echo $o58_esferaorcamentaria  == '10' || $esferaOrcamentaria == "10" ? 'selected' : '' ?> value="10">10 - F - Orçamento Fiscal</option>
-                                    <option <?php echo $o58_esferaorcamentaria  == '20' || $esferaOrcamentaria == "20" ? 'selected' : '' ?> value="20">20 - S - Orçamento da Seguridade Social</option>
-                                    <option <?php echo $o58_esferaorcamentaria  == '30' || $esferaOrcamentaria == "30" ? 'selected' : '' ?> value="30">30 - I - Orçamento de Investimento</option>
-                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -399,47 +523,54 @@ if (isset($atualizar)) {
             </td>
         </tr>
     </table>
-    <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
+    <input name="db_opcao"
+           type="submit"
+           id="db_opcao"
+           value="<?=$labelBotao?>"
+           <?=($db_botao==false?"disabled":"")?> >
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 <script>
-
-    const lookUpRecurso = new DBLookUp($('ancoraFonteRecurso'), $('o15_recurso'), $('o15_descr'), {
-        'sArquivo': 'func_fonterecursocomplemento.php',
+    const lookUpRecurso = new DBLookUp($('ancoraFonteRecurso'), $('gestao'), $('descricao'), {
+        'sArquivo': 'func_novosRecursos.php',
         'sLabel': 'Pesquisar Fonte de Recurso',
         'sObjetoLookUp': "db_iframe_orctiporec",
-        'aCamposAdicionais': ['db_codigo', 'o200_descricao']
+        'aCamposAdicionais': ['o15_codigo', 'o15_complemento', 'o200_descricao', 'o15_recurso']
     });
 
-    $('o15_recurso').classList.remove('field-size2');
-    $('o15_descr').classList.remove('field-size8');
+    if (<?=$db_opcao?> == 3) {
+        lookUpRecurso.desabilitar();
+    }
 
+    $('gestao').classList.remove('field-size2');
+    $('descricao').classList.remove('field-size8');
     lookUpRecurso.setCallBack('onClick', (retorno) => {
-        preencheForm(retorno[0], retorno[1], retorno[2], retorno[3]);
+        preencheForm(retorno[0], retorno[1], retorno[2], retorno[3], retorno[4], retorno[5]);
     });
 
-    lookUpRecurso.setCallBack('onChange', (erro, retorno) => {
-        if (erro) {
-            preencheForm('', retorno[0], '', '');
-            return;
-        }
-
-        preencheForm(retorno[3], retorno[0], retorno[2], retorno[4]);
-    });
-
-    const preencheForm = (recurso, descricao, id, complemento) => {
+    const preencheForm = (recurso, descricao, id, codComplemento, descrComplemento, subrecurso) => {
         $('o58_codigo').value = id;
-        $('o15_recurso').value = recurso;
-        $('o15_descr').value = descricao;
-        $('o200_descricao').value = complemento;
+        $('gestao').value = recurso;
+        $('descricao').value = descricao;
+        $('o15_recurso').value = subrecurso;
+        $('o15_complemento').value = codComplemento;
+        $('o200_descricao').value = descrComplemento;
     };
 
     function js_pesquisao58_orgao(mostra)
     {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcorgao', 'func_orcorgao.php?funcao_js=parent.js_mostraorcorgao1|o40_orgao|o40_descr', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcorgao',
+                                'func_orcorgao.php?funcao_js=parent.js_mostraorcorgao1|o40_orgao|o40_descr',
+                                'Pesquisa',
+                                true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcorgao', 'func_orcorgao.php?pesquisa_chave=' + document.form1.o58_orgao.value+'&funcao_js=parent.js_mostraorcorgao', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcorgao',
+                                'func_orcorgao.php?pesquisa_chave='+ document.form1.o58_orgao.value
+                                +'&funcao_js=parent.js_mostraorcorgao',
+                                'Pesquisa', false);
         }
     }
 
@@ -470,9 +601,19 @@ if (isset($atualizar)) {
     function js_pesquisao58_unidade(mostra)
     {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcunidade', 'func_orcunidade.php?<?=@$filtrar;?>funcao_js=parent.js_mostraorcunidade1|o41_unidade|o41_descr|nomeinst|o41_instit', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcunidade',
+                                'func_orcunidade.php?<?=@$filtrar;?>'
+                                + 'funcao_js=parent.js_mostraorcunidade1|o41_unidade|o41_descr|nomeinst|o41_instit',
+                                'Pesquisa',
+                                true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcunidade', 'func_orcunidade.php?<?=@$filtrar;?>pesquisa_chave=' + document.form1.o58_unidade.value + '&funcao_js=parent.js_mostraorcunidade', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcunidade',
+                                'func_orcunidade.php?<?=@$filtrar;?>pesquisa_chave=' + document.form1.o58_unidade.value
+                                + '&funcao_js=parent.js_mostraorcunidade',
+                                'Pesquisa',
+                                false);
         }
     }
 
@@ -501,9 +642,18 @@ if (isset($atualizar)) {
     function js_pesquisao58_funcao(mostra)
     {
         if(mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcfuncao', 'func_orcfuncao.php?funcao_js=parent.js_mostraorcfuncao1|o52_funcao|o52_descr', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcfuncao',
+                                'func_orcfuncao.php?funcao_js=parent.js_mostraorcfuncao1|o52_funcao|o52_descr',
+                                'Pesquisa',
+                                true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcfuncao', 'func_orcfuncao.php?pesquisa_chave=' + document.form1.o58_funcao.value + '&funcao_js=parent.js_mostraorcfuncao', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcfuncao',
+                                'func_orcfuncao.php?pesquisa_chave=' + document.form1.o58_funcao.value
+                                + '&funcao_js=parent.js_mostraorcfuncao',
+                                'Pesquisa',
+                                false);
         }
     }
 
@@ -526,9 +676,18 @@ if (isset($atualizar)) {
     function js_pesquisao58_subfuncao(mostra)
     {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcsubfuncao', 'func_orcsubfuncao.php?funcao_js=parent.js_mostraorcsubfuncao1|o53_subfuncao|o53_descr', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcsubfuncao',
+                                'func_orcsubfuncao.php?funcao_js=parent.js_mostraorcsubfuncao1|o53_subfuncao|o53_descr',
+                                'Pesquisa',
+                                true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcsubfuncao', 'func_orcsubfuncao.php?pesquisa_chave=' + document.form1.o58_subfuncao.value + '&funcao_js=parent.js_mostraorcsubfuncao', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcsubfuncao',
+                                'func_orcsubfuncao.php?pesquisa_chave=' + document.form1.o58_subfuncao.value
+                                + '&funcao_js=parent.js_mostraorcsubfuncao',
+                                'Pesquisa',
+                                false);
         }
     }
 
@@ -551,9 +710,18 @@ if (isset($atualizar)) {
     function js_pesquisao58_programa(mostra)
     {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcprograma', 'func_orcprograma.php?funcao_js=parent.js_mostraorcprograma1|o54_programa|o54_descr', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcprograma',
+                                'func_orcprograma.php?funcao_js=parent.js_mostraorcprograma1|o54_programa|o54_descr',
+                                'Pesquisa',
+                                true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcprograma', 'func_orcprograma.php?pesquisa_chave=' + document.form1.o58_programa.value + '&funcao_js=parent.js_mostraorcprograma', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcprograma',
+                                'func_orcprograma.php?pesquisa_chave=' + document.form1.o58_programa.value
+                                + '&funcao_js=parent.js_mostraorcprograma',
+                                'Pesquisa',
+                                false);
         }
     }
 
@@ -563,6 +731,7 @@ if (isset($atualizar)) {
         if (erro == true) {
             document.form1.o58_programa.focus();
             document.form1.o54_descr.value = '';
+            document.form1.o58_programa.value = '';
         }
     }
 
@@ -576,9 +745,18 @@ if (isset($atualizar)) {
     function js_pesquisao58_projativ(mostra)
     {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcprojativ', 'func_orcprojativ.php?insti=1&funcao_js=parent.js_mostraorcprojativ1|o55_projativ|o55_descr', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+            'db_iframe_orcprojativ',
+            'func_orcprojativ.php?insti=1&funcao_js=parent.js_mostraorcprojativ1|o55_projativ|o55_descr',
+            'Pesquisa',
+            true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcprojativ', 'func_orcprojativ.php?insti=1&pesquisa_chave=' + document.form1.o58_projativ.value + '&funcao_js=parent.js_mostraorcprojativ', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcprojativ',
+                                'func_orcprojativ.php?insti=1&pesquisa_chave=' + document.form1.o58_projativ.value
+                                + '&funcao_js=parent.js_mostraorcprojativ',
+                                'Pesquisa',
+                                false);
         }
     }
 
@@ -617,9 +795,18 @@ if (isset($atualizar)) {
     function js_pesquisao58_codele(mostra)
     {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcelemento', 'func_orcelemento.php?funcao_js=parent.js_mostraorcelemento1|o56_elemento|o56_descr&analitica=1', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcelemento',
+                                'func_orcelemento.php?funcao_js=parent.js_mostraorcelemento1|o56_elemento|o56_descr&analitica=1',
+                                'Pesquisa',
+                                true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcelemento', 'func_orcelemento.php?pesquisa_chave=' + document.form1.o56_elemento.value + '&funcao_js=parent.js_mostraorcelemento&tipo_pesquisa=1&analitica=1', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orcelemento',
+                                'func_orcelemento.php?pesquisa_chave=' + document.form1.o56_elemento.value
+                                + '&funcao_js=parent.js_mostraorcelemento&tipo_pesquisa=1&analitica=1',
+                                'Pesquisa',
+                                false);
         }
     }
 
@@ -642,9 +829,18 @@ if (isset($atualizar)) {
     function js_pesquisao61_codigo(mostra)
     {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orctiporec', 'func_orctiporec.php?funcao_js=parent.js_mostraorctiporec2|o15_codigo|o15_descr', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orctiporec',
+                                'func_orctiporec.php?funcao_js=parent.js_mostraorctiporec2|o15_codigo|o15_descr',
+                                'Pesquisa',
+                                true);
         } else {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orctiporec', 'func_orctiporec.php?pesquisa_chave=' + document.form1.o61_codigo.value + '&funcao_js=parent.js_mostraorctiporec3', 'Pesquisa', false);
+            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                'db_iframe_orctiporec',
+                                'func_orctiporec.php?pesquisa_chave=' + document.form1.o61_codigo.value
+                                + '&funcao_js=parent.js_mostraorctiporec3',
+                                'Pesquisa',
+                                false);
         }
     }
 
@@ -674,7 +870,13 @@ if (isset($atualizar)) {
                 true);
         } else {
             if (document.form1.o58_localizadorgastos.value != '') {
-                js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_ppasubtitulolocalizadorgasto', 'func_ppasubtitulolocalizadorgasto.php?pesquisa_chave=' + document.form1.o58_localizadorgastos.value + '&funcao_js=parent.js_mostrappasubtitulolocalizadorgasto', 'Pesquisa', false);
+                js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                    'db_iframe_ppasubtitulolocalizadorgasto',
+                                    'func_ppasubtitulolocalizadorgasto.php?pesquisa_chave='
+                                    + document.form1.o58_localizadorgastos.value
+                                    + '&funcao_js=parent.js_mostrappasubtitulolocalizadorgasto',
+                                    'Pesquisa',
+                                    false);
             } else {
                 document.form1.o11_descricao.value = '';
             }
@@ -691,7 +893,13 @@ if (isset($atualizar)) {
                 true);
         } else {
             if (document.form1.o58_concarpeculiar.value != '') {
-                js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_ppasubtitulolocalizadorgasto', 'func_concarpeculiar.php?pesquisa_chave=' + document.form1.o58_concarpeculiar.value.trim() + '&funcao_js=parent.js_mostraconcarpeculiar', 'Pesquisa', false);
+                js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                                    'db_iframe_ppasubtitulolocalizadorgasto',
+                                    'func_concarpeculiar.php?pesquisa_chave='
+                                    + document.form1.o58_concarpeculiar.value.trim()
+                                    + '&funcao_js=parent.js_mostraconcarpeculiar',
+                                    'Pesquisa',
+                                    false);
             } else {
                 document.form1.c58_descr.value = '';
             }
@@ -732,7 +940,11 @@ if (isset($atualizar)) {
 
     function js_pesquisa()
     {
-        js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao', 'db_iframe_orcdotacao', 'func_orcdotacao.php?funcao_js=parent.js_preenchepesquisa|o58_coddot', 'Pesquisa', true);
+        js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcdotacao',
+                            'db_iframe_orcdotacao',
+                            'func_orcdotacao.php?funcao_js=parent.js_preenchepesquisa|o58_coddot',
+                            'Pesquisa',
+                            true);
     }
 
     function js_preenchepesquisa(chave1)
@@ -754,7 +966,7 @@ if (isset($atualizar)) {
 
 </script>
 <?php
-if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     ?>
     <script type="text/javascript">
         window.onload = function() {

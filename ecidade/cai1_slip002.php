@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -237,7 +237,7 @@ if (isset($confirma) && !empty($confirma)) {
 
 	  if($sqlerro == false){
 	  	// pega a variavel chaves e desmebra-a em pares chave=>valor
-	  	$ch = split('#',$chaves);
+	  	$ch =explode('#',$chaves);
 
 	        foreach ($ch as $key => $value) {
 	                // echo "Chave: $key; Valor: $value<br />\n";
@@ -323,7 +323,7 @@ if (isset($confirma) && !empty($confirma)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
  db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, estilos.css, grid.style.css");
 ?>
 <script>
@@ -385,11 +385,11 @@ td {
     <td>&nbsp;</td>
   </tr>
 </table>
-    <?
+    <?php
   	  include(modification("forms/db_frmslip.php"));
     ?>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -401,14 +401,14 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_slip.hide();
-  <?
+  <?php
     echo "window.document.location.href='".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     //echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 
 </script>
-<?
+<?php
 
 if ($db_opcao==22){
    echo "

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("descrdepto");
        <?=@$Lm70_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('m70_codigo',10,$Im70_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm70_codmatmater?>">
-       <?
+       <?php
        db_ancora(@$Lm70_codmatmater,"js_pesquisam70_codmatmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m70_codmatmater',10,$Im70_codmatmater,true,'text',$db_opcao," onchange='js_pesquisam70_codmatmater(false);'")
 ?>
-       <?
+       <?php
 db_input('m60_descr',40,$Im60_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm70_coddepto?>">
-       <?
+       <?php
        db_ancora(@$Lm70_coddepto,"js_pesquisam70_coddepto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m70_coddepto',5,$Im70_coddepto,true,'text',$db_opcao," onchange='js_pesquisam70_coddepto(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        <?=@$Lm70_quant?>
     </td>
     <td> 
-<?
+<?php
 db_input('m70_quant',15,$Im70_quant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('m70_quant',15,$Im70_quant,true,'text',$db_opcao,"")
        <?=@$Lm70_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('m70_valor',15,$Im70_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matestoque.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

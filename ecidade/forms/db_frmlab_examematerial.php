@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Laboratório
@@ -75,7 +75,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
             <?=@$Lla19_i_codigo?>
          </td>
          <td>
-          <?          
+          <?php
           db_input('la19_i_codigo',10,$Ila19_i_codigo,true,'text',3,"");
           ?>
          </td>
@@ -88,7 +88,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                       <tr>
                         <td nowrap align="right" title="<?=@$Tla19_d_inicio?>">
                            <?=@$Lla19_d_inicio?>
-                         <?
+                         <?php
                           if (! isset ( $la19_d_inicio )) {
                            $vet = explode ( "-", @$la19_d_inicio );
                            @$la19_d_inicio = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
@@ -97,13 +97,13 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                            @$la19_d_inicio_ano = $vet [0];
                          }
                            db_inputdata ( 'la19_d_inicio', @$la19_d_inicio_dia, @$la19_d_inicio_mes, @$la19_d_inicio_ano, true, 'text', $db_opcao, "")
-                           ?>                           
+                           ?>
                         </td>
                       </tr>
                       <tr>
                       <td nowrap align="right" title="<?=@$Tla19_d_fim?>">
                        <?=@$Lla19_d_fim?>
-                       <?
+                       <?php
                         if (! isset ( $la19_d_fim )) {
                          $vet = explode ( "-", @$la19_d_fim );
                          @$la19_d_fim = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
@@ -112,9 +112,9 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                          @$la19_d_fim_ano = $vet [0];
                         }
                         db_inputdata ( 'la19_d_fim', @$la19_d_fim_dia, @$la19_d_fim_mes, @$la19_d_fim_ano, true, 'text', $db_opcao, "onchange=\"js_validaData();\"","","","parent.js_validaData();");
-                        ?>                       
+                        ?>
                         </td>
-                      </tr>                     
+                      </tr>
                       </table>
                       </fieldset>
                     </td>
@@ -124,37 +124,37 @@ if (isset ( $opcao ) && $opcao == "alterar") {
        </tr>
         <tr>
     <td nowrap title="<?=@$Tla19_i_exame?>">
-       <?db_ancora ( @$Lla19_i_exame, "js_pesquisala19_i_exame(true);", 3 );?>
+       <?php db_ancora ( @$Lla19_i_exame, "js_pesquisala19_i_exame(true);", 3 );?>
     </td>
     <td>
-     <?db_input ( 'la19_i_exame', 10, $Ila19_i_exame, true, 'text', 3, "" )?>
-     <?db_input ( 'la08_c_descr', 50, @$Ila08_c_descr, true, 'text', 3, '' )?>
+     <?php db_input ( 'la19_i_exame', 10, $Ila19_i_exame, true, 'text', 3, "" )?>
+     <?php db_input ( 'la08_c_descr', 50, @$Ila08_c_descr, true, 'text', 3, '' )?>
     </td>
   </tr>
      <tr>
        <td nowrap title="<?=@$Tla19_i_materialcoleta?>">
-       <?db_ancora ( @$Lla19_i_materialcoleta, "js_pesquisala19_i_materialcoleta(true);", $db_opcao );?>
+       <?php db_ancora ( @$Lla19_i_materialcoleta, "js_pesquisala19_i_materialcoleta(true);", $db_opcao );?>
     </td>
     <td>
-      <?db_input ( 'la19_i_materialcoleta', 10, $Ila19_i_materialcoleta, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_materialcoleta(false);'" )?>
-      <?db_input ( 'la15_c_descr', 50, @$Ila15_c_descr, true, 'text', 3, '' )?>
+      <?php db_input ( 'la19_i_materialcoleta', 10, $Ila19_i_materialcoleta, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_materialcoleta(false);'" )?>
+      <?php db_input ( 'la15_c_descr', 50, @$Ila15_c_descr, true, 'text', 3, '' )?>
     </td>
   </tr>
        <tr>
     <td nowrap title="<?=@$Tla19_i_metodo?>">
-       <?db_ancora ( @$Lla19_i_metodo, "js_pesquisala19_i_metodo(true);", $db_opcao );?>
+       <?php db_ancora ( @$Lla19_i_metodo, "js_pesquisala19_i_metodo(true);", $db_opcao );?>
     </td>
     <td>
-      <?db_input ( 'la19_i_metodo', 10, $Ila19_i_metodo, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_metodo(false);'"  )?>
-       <?db_input ( 'la11_c_descr', 50, @$Ila11_c_descr, true, 'text', 3, '' )?>
+      <?php db_input ( 'la19_i_metodo', 10, $Ila19_i_metodo, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_metodo(false);'"  )?>
+       <?php db_input ( 'la11_c_descr', 50, @$Ila11_c_descr, true, 'text', 3, '' )?>
     </td>
   </tr>
 <tr>
     <td nowrap title="<?=@$Tla19_c_amb?>">
        <?=@$Lla19_c_amb?>
     </td>
-    <td> 
-       <?db_input ( 'la19_c_amb', 20, $Ila19_c_amb, true, 'text', $db_opcao, "" )?>
+    <td>
+       <?php db_input ( 'la19_c_amb', 20, $Ila19_c_amb, true, 'text', $db_opcao, "" )?>
     </td>
   </tr>
 </table>
@@ -170,10 +170,10 @@ if (isset ( $opcao ) && $opcao == "alterar") {
 <table width="100%">
 	<tr>
 		<td valign="top"><br>
-  <?
+  <?php
 		$chavepri = array ("la19_i_codigo" => @$la19_i_codigo, "la19_i_materialcoleta" => @$la19_i_materialcoleta, "la19_i_metodo" => @$la19_i_metodo, "la15_c_descr" => @$la15_c_descr, "la11_c_descr" => @$la11_c_descr, "la19_i_exame" => @$la19_i_exame, "la08_c_descr" => @$la08_c_descr, "la19_c_amb" => @$la19_c_amb, "la19_d_inicio" => @$la19_d_inicio, "la19_d_fim" => @$la19_d_fim );
 		$cliframe_alterar_excluir->chavepri = $chavepri;
-		@$cliframe_alterar_excluir->sql = $cllab_examematerial->sql_query ("", "*", "la08_c_descr","la19_i_exame= $la19_i_exame" );		
+		@$cliframe_alterar_excluir->sql = $cllab_examematerial->sql_query ("", "*", "la08_c_descr","la19_i_exame= $la19_i_exame" );
 		$cliframe_alterar_excluir->campos = "la19_i_codigo,la19_i_materialcoleta,la15_c_descr,la19_i_metodo,la11_c_descr,la19_c_amb,la19_d_inicio,la19_d_fim";
 		$cliframe_alterar_excluir->legenda = "Registros";
 		$cliframe_alterar_excluir->msg_vazio = "Não foi encontrado nenhum registro.";
@@ -201,7 +201,7 @@ document.onkeydown = function(evt) {
 	if (evt.keyCode == 13 ) {
 			eval(" document.getElementById('"+nextfield+"').focus()" );
 			return false;
-		
+
 	}else if( evt.keyCode == 39 && valor_types ){
 		eval(" document.getElementById('"+nextfield+"').focus()" );
 	}
@@ -210,18 +210,18 @@ function js_pesquisala19_i_materialcoleta(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_lab_materialcoleta','func_lab_materialcoleta.php?funcao_js=parent.js_mostralab_materialcoleta1|la15_i_codigo|la15_c_descr','Pesquisa',true);
   }else{
-     if(document.form1.la19_i_materialcoleta.value != ''){ 
+     if(document.form1.la19_i_materialcoleta.value != ''){
         js_OpenJanelaIframe('','db_iframe_lab_materialcoleta','func_lab_materialcoleta.php?pesquisa_chave='+document.form1.la19_i_materialcoleta.value+'&funcao_js=parent.js_mostralab_materialcoleta','Pesquisa',false);
      }else{
-       document.form1.la15_c_descr.value = ''; 
+       document.form1.la15_c_descr.value = '';
      }
   }
 }
 function js_mostralab_materialcoleta(chave,erro){
-  document.form1.la15_c_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.la19_i_materialcoleta.focus(); 
-    document.form1.la19_i_materialcoleta.value = ''; 
+  document.form1.la15_c_descr.value = chave;
+  if(erro==true){
+    document.form1.la19_i_materialcoleta.focus();
+    document.form1.la19_i_materialcoleta.value = '';
   }
 }
 function js_mostralab_materialcoleta1(chave1,chave2){
@@ -233,18 +233,18 @@ function js_pesquisala19_i_metodo(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_lab_metodo','func_lab_metodo.php?funcao_js=parent.js_mostralab_metodo1|la11_i_codigo|la11_c_descr','Pesquisa',true);
   }else{
-     if(document.form1.la19_i_metodo.value != ''){ 
+     if(document.form1.la19_i_metodo.value != ''){
         js_OpenJanelaIframe('','db_iframe_lab_metodo','func_lab_metodo.php?pesquisa_chave='+document.form1.la19_i_metodo.value+'&funcao_js=parent.js_mostralab_metodo','Pesquisa',false);
      }else{
-       document.form1.la11_c_descr.value = ''; 
+       document.form1.la11_c_descr.value = '';
      }
   }
 }
 function js_mostralab_metodo(chave,erro){
-  document.form1.la11_c_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.la19_i_metodo.focus(); 
-    document.form1.la19_i_metodo.value = ''; 
+  document.form1.la11_c_descr.value = chave;
+  if(erro==true){
+    document.form1.la19_i_metodo.focus();
+    document.form1.la19_i_metodo.value = '';
   }
 }
 function js_mostralab_metodo1(chave1,chave2){
@@ -257,18 +257,18 @@ function js_pesquisala19_i_exame(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_lab_exame','func_lab_exame.php?funcao_js=parent.js_mostralab_exame1|la08_i_codigo|la08_c_descr','Pesquisa',true);
   }else{
-     if(document.form1.la19_i_exame.value != ''){ 
+     if(document.form1.la19_i_exame.value != ''){
         js_OpenJanelaIframe('','db_iframe_lab_exame','func_lab_exame.php?pesquisa_chave='+document.form1.la19_i_exame.value+'&funcao_js=parent.js_mostralab_exame','Pesquisa',false);
      }else{
-       document.form1.la08_c_descr.value = ''; 
+       document.form1.la08_c_descr.value = '';
      }
   }
 }
 function js_mostralab_exame(chave,erro){
-  document.form1.la08_c_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.la19_i_exame.focus(); 
-    document.form1.la19_i_exame.value = ''; 
+  document.form1.la08_c_descr.value = chave;
+  if(erro==true){
+    document.form1.la19_i_exame.focus();
+    document.form1.la19_i_exame.value = '';
   }
 }
 function js_mostralab_exame1(chave1,chave2){
@@ -281,7 +281,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_examematerial.hide();
-  <?
+  <?php
 		if ($db_opcao != 1) {
 			echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
 		}
@@ -298,8 +298,8 @@ function js_validaData() {
    				    document.form1.la19_d_fim_mes.value = "";
    		        	document.form1.la19_d_fim_ano.value = "";
    		    		data=false;
-   				}	
-   				
+   				}
+
    		  }
    		  return data;
    		}

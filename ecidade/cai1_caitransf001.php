@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php
      $clcriaabas->identifica = array("transf"=>"Transferência");
      $clcriaabas->title      = array("transf"=>"Transferência");
      $clcriaabas->src        = array("transf"=>"cai1_caitransf004.php");
@@ -65,7 +65,7 @@ $db_opcao   = 1;
   </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

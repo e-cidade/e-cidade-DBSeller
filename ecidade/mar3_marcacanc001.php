@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ include(modification("classes/db_cancmarca_classe.php"));
      <td nowrap align="center">
       <strong>&nbsp;&nbsp;&nbsp;
       Escolha a opção:
-	  <?
+	  <?php
        $tipo_ordem = array(""=>"-- Selecione --","todas"=>"Todas","prop"=>"Por Proprietário");
        db_select("escolha",$tipo_ordem,true,2,"onchange=\"js_opcao(this.value)\"");
 	  ?><br>
       <span name="proprietario" id="proprietario" style="visibility:hidden">
       &nbsp;&nbsp;&nbsp;
-      <?
+      <?php
       db_ancora("Cgm do Proprietário","js_pesquisama01_i_cgm(true);",1);
       db_input('z01_numcgm',10,'',true,'text',1," onchange='js_pesquisama01_i_cgm(false);'");
       db_input('z01_nome',40,'',true,'text',3,'');
@@ -138,7 +138,7 @@ function js_mostracgm1(chave1,chave2){
  framemarca.location.href="mar3_marcacanc002.php";
 }
 </script>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

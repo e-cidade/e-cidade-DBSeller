@@ -67,7 +67,7 @@ $oRotuloCampos->label("as02_nis");
         <tr>
           <td nowrap="nowrap" style="font-weight: bold;">
           
-            <? db_ancora("Código da Familia : ","js_pesquisaCidadaoFamilia(true, false);",1);?>
+            <?php db_ancora("Código da Familia : ","js_pesquisaCidadaoFamilia(true, false);",1);?>
           <td nowrap="nowrap">
             <?php
               db_input("iFamilia", 10, '', true, "hidden", 1);
@@ -94,7 +94,7 @@ $oRotuloCampos->label("as02_nis");
             <b>Documento Template:</b>
           </td>
           <td nowrap="nowrap">
-            <?
+            <?php
              db_selectrecord('documentotemplate', $rsDocumentoTemplate, true, 1, '');
             ?>
           </td>

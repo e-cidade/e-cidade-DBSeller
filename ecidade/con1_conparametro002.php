@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,7 +42,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
    if($result==false || $clconparametro->numrows==0){
      $clconparametro->incluir();
    }else{
-     $clconparametro->alterar($oid);
+     $clconparametro->alterar();
    }
    \ECidade\Configuracao\Opcao\Opcao::salvar(
        'modelo_rreo_anexo3',
@@ -84,7 +84,7 @@ $db_botao = true;
 ?>
 </body>
 </html>
-<?
+<?php
 
 	if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
 	  if($clconparametro->erro_status=="0"){

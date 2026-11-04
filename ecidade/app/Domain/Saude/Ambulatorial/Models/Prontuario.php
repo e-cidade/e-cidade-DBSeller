@@ -39,6 +39,9 @@ use App\Domain\Saude\ESF\Models\ProntuarioEsf;
  * @property ProntuarioEsf $prontuarioEsf
  * @property \Illuminate\Database\Eloquent\Collection $prontuarioProblemas
  * @property \Illuminate\Database\Eloquent\Collection $procedimentos
+ * @property MotivoAtendimento $motivoAtendimento
+ * @property prontuarioClassificacaoRisco $prontuarioClassificacaoRisco
+ * @property MovimentacaoProntuario[] $movimentacoes
  */
 class Prontuario extends Model
 {
@@ -47,8 +50,8 @@ class Prontuario extends Model
     public $timestamps = false;
 
     public $casts = [
-        'sd24_d_cadastro' => 'DateTime',
-        'sd24_dum' => 'DateTime'
+        'sd24_d_cadastro' => 'datetime',
+        'sd24_dum' => 'datetime'
     ];
 
     public function paciente()
@@ -84,5 +87,20 @@ class Prontuario extends Model
     public function procedimentos()
     {
         return $this->hasMany(ProcedimentoProntuario::class, 'sd29_i_prontuario', 'sd24_i_codigo');
+    }
+
+    public function movimentacoes()
+    {
+        return $this->hasMany(MovimentacaoProntuario::class, 'sd102_prontuarios', 'sd24_i_codigo');
+    }
+
+    public function prontuarioClassificacaoRisco()
+    {
+        return $this->hasOne(ProntuarioClassificacaoRisco::class, 'sd101_prontuarios', 'sd24_i_codigo');
+    }
+
+    public function motivoAtendimento()
+    {
+        return $this->belongsTo(MotivoAtendimento::class, 'sd24_i_motivo', 's144_i_codigo');
     }
 }

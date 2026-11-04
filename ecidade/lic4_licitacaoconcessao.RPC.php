@@ -152,7 +152,7 @@ try {
       $iSequencia  = 1;
       $aItensNovos = array();
       foreach ($oParam->aItens as $oDadosItem) {
-
+        $valorUnitario = str_replace(',', '.', $oDadosItem->nValorUnitario);
         $oItem = new \itemSolicitacao($oDadosItem->iItemSolicitacao);
         $oItem->setQuantidade($oDadosItem->iQuantidade);
         $oItem->setResumo($oDadosItem->sResumo);
@@ -160,7 +160,7 @@ try {
         $oItem->setOrdem($iSequencia);
         $oItem->setUnidade($oDadosItem->iUnidade);
         $oItem->setQuantidadeUnidade($oDadosItem->iQtdUnidade);
-        $oItem->setValorUnitario($oDadosItem->nValorUnitario);
+        $oItem->setValorUnitario($valorUnitario);
         $oItem->save($oSolicitacao->getCodigo());
         $oDadosItem->iItemSolicitacao = $oItem->getCodigoItemSolicitacao();
 

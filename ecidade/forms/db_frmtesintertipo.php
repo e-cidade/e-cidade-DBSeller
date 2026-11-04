@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $cltesintertipo->rotulo->label();
            <?=@$Lj92_sequencial?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('j92_sequencial',10,$Ij92_sequencial,true,'text',3,"")
           ?>
         </td>
@@ -48,7 +48,7 @@ $cltesintertipo->rotulo->label();
            <?=@$Lj92_descr?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('j92_descr',40,$Ij92_descr,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -65,7 +65,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tesintertipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

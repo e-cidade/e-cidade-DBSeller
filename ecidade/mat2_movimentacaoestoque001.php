@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -137,7 +137,7 @@ $oRotuloTipoGrupo->label();
                 </td>
 
             <tr class="conta">
-                <td nowrap="nowrap"><? db_ancora('<b>Conta:</b>', 'js_pesquisaContaPCASP(true);', 1) ?></td>
+                <td nowrap="nowrap"><?php db_ancora('<b>Conta:</b>', 'js_pesquisaContaPCASP(true);', 1) ?></td>
                 <td nowrap="nowrap">
                     <?php
                     db_input('c61_reduz', 17, @$Ic72_conplano, true, 'text', 1, " onchange='js_pesquisaContaPCASP(false);' ");

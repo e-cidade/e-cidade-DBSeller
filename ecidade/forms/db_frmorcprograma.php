@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -64,7 +64,7 @@ if ($db_opcao == 1 && empty($o54_programa) || (isset($o50_programa)) && $o50_pro
 				       <?=@$Lo54_anousu ?>
 				    </td>
 				    <td>
-					   <?
+					   <?php
 $o54_anousu = db_getsession('DB_anousu');
 db_input('o54_anousu', 10, $Io54_anousu, true, 'text', 3);
              ?>
@@ -75,7 +75,7 @@ db_input('o54_anousu', 10, $Io54_anousu, true, 'text', 3);
 				       <?=@$Lo54_codtri ?>
 				    </td>
 				    <td>
-					   <?
+					   <?php
 db_input('o54_codtri', 10, $Io54_codtri, true, 'text', $db_opcao, "")
              ?>
 				    </td>
@@ -85,7 +85,7 @@ db_input('o54_codtri', 10, $Io54_codtri, true, 'text', $db_opcao, "")
 				      <b>Código:</b>
 				    </td>
 				    <td>
-					  <?
+					  <?php
 if ($db_opcao == 1) {
   $db_opcao02 = 1;
 } else {
@@ -102,7 +102,7 @@ db_input('o54_programa', 10, $Io54_programa, true, 'text', $db_opcao02);
 				       <b>Denominação:</b>
 				    </td>
 				    <td>
-					   <?
+					   <?php
 db_input('o54_descr', 65, $Io54_descr, true, 'text', $db_opcao, "")
              ?>
 				    </td>
@@ -133,7 +133,7 @@ db_select("o54_tipoprograma", $aTipoPrograma, true, $db_opcao);
 				       <?=$Lo17_dataini ?>
 				    </td>
 				    <td>
-					   <?
+					   <?php
 db_inputdata("o17_dataini", @$o17_dataini_dia, @$o17_dataini_mes, @$o17_dataini_ano, true, 'text', $db_opcao);
              ?>
 				    </td>
@@ -143,7 +143,7 @@ db_inputdata("o17_dataini", @$o17_dataini_dia, @$o17_dataini_mes, @$o17_dataini_
 				       <?=$Lo17_datafin ?>
 				    </td>
 				    <td>
-					   <?
+					   <?php
 db_inputdata("o17_datafin", @$o17_datafin_dia, @$o17_datafin_mes, @$o17_datafin_ano, true, 'text', $db_opcao);
              ?>
 				    </td>
@@ -153,7 +153,7 @@ db_inputdata("o17_datafin", @$o17_datafin_dia, @$o17_datafin_mes, @$o17_datafin_
 				       <?=$Lo17_valor ?>
 				    </td>
 				    <td>
-					   <?
+					   <?php
 db_input('o17_sequencial', 10, "", true, 'hidden', $db_opcao, "");
 db_input('o17_valor', 10, $Io17_valor, true, 'text', $db_opcao, "");
              ?>
@@ -172,7 +172,7 @@ db_input('o17_valor', 10, $Io17_valor, true, 'text', $db_opcao, "");
 		    <table>
 		      <tr>
 		    	<td>
-			   	  <?
+			   	  <?php
 db_textarea('o54_problema', 0, 75, $Io54_problema, true, 'text', $db_opcao, "")
              ?>
 		        </td>
@@ -186,7 +186,7 @@ db_textarea('o54_problema', 0, 75, $Io54_problema, true, 'text', $db_opcao, "")
 		    <table>
 			  <tr>
 		    	<td>
-				   <?
+				   <?php
 db_textarea('o54_finali', 0, 75, $Io54_finali, true, 'text', $db_opcao, "")
            ?>
 			    </td>
@@ -200,7 +200,7 @@ db_textarea('o54_finali', 0, 75, $Io54_finali, true, 'text', $db_opcao, "")
 		    <table>
 			  <tr>
 			    <td>
-				   <?
+				   <?php
 db_textarea('o54_publicoalvo', 0, 75, $Io54_publicoalvo, true, 'text', $db_opcao, "")
            ?>
 			    </td>
@@ -214,7 +214,7 @@ db_textarea('o54_publicoalvo', 0, 75, $Io54_publicoalvo, true, 'text', $db_opcao
 		    <table>
 			  <tr>
 			    <td>
-				   <?
+				   <?php
 db_textarea('o54_justificativa', 0, 75, $Io54_justificativa, true, 'text', $db_opcao, "")
            ?>
 			    </td>
@@ -228,7 +228,7 @@ db_textarea('o54_justificativa', 0, 75, $Io54_justificativa, true, 'text', $db_o
 		    <table>
 			  <tr>
 			    <td>
-				   <?
+				   <?php
 db_textarea('o54_objsetorassociado', 0, 75, $Io54_objsetorassociado, true, 'text', $db_opcao, "")
            ?>
 			    </td>
@@ -242,7 +242,7 @@ db_textarea('o54_objsetorassociado', 0, 75, $Io54_objsetorassociado, true, 'text
 		    <table>
 			  <tr>
 			    <td>
-				   <?
+				   <?php
 db_textarea('o54_estrategiaimp', 0, 75, $Io54_estrategiaimp, true, 'text', $db_opcao, "")
            ?>
 			    </td>
@@ -254,7 +254,7 @@ db_textarea('o54_estrategiaimp', 0, 75, $Io54_estrategiaimp, true, 'text', $db_o
 <input name=<?=($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?> type="submit"  id="db_opcao" value="<?=($db_opcao
     == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>" <?=($db_botao == false ? "disabled"
     : "") ?> >
-<?if (empty($novo)) { ?>
+<?php if (empty($novo)) { ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <?} else { ?>
   <input name="Fechar" type="button"  id="fechar" value="Fechar" onClick="parent.db_iframe_orcprograma.hide();">
@@ -283,7 +283,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_orcprograma.hide();
-  <?
+  <?php
 if ($db_opcao != 1) {
   echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
       . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1;";

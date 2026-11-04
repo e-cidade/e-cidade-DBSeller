@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,7 +24,6 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
 require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("fpdf151/impcarne.php"));
 require_once(modification("libs/db_sql.php"));
@@ -36,18 +35,18 @@ require_once(modification("model/recibo.model.php"));
 
 db_app::import("exceptions.*");
 
-use \App\Domain\Tributario\Arrecadacao\Services\ArrecadacaoPixService;
-use \ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
-use \ECidade\Tributario\Arrecadacao\Custas\Service\Recibo as ReciboCustasService;
-use \ECidade\Tributario\Arrecadacao\Custas\Enum\TipoModelo as TipoModeloCustas;
+use App\Domain\Tributario\Arrecadacao\Repositories\NumprefRepository;
+use App\Domain\Tributario\Arrecadacao\Services\ArrecadacaoPixService;
+use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
+use ECidade\Tributario\Arrecadacao\Custas\Enum\TipoModelo as TipoModeloCustas;
+use ECidade\Tributario\Arrecadacao\Custas\Service\Recibo as ReciboCustasService;
 use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
-use \ECidade\Tributario\Arrecadacao\Proprietario;
+use ECidade\Tributario\Arrecadacao\ModeloImpressao\Repository\CobrancaRegistrada as ModeloImpressaoCobrancaRegistrada;
 use ECidade\Tributario\Caixa\Repository\RecibopagaRepository;
 use ECidade\Tributario\Library\DataBase;
 use ECidade\V3\Extension\Registry;
-use \DBDate;
 
-$custasHonorarios = (boolean) Registry::get('app.config')->get('custas_honorarios');
+$custasHonorarios = (boolean) (new NumprefRepository())->buscaParametroCustasHonorarios();
 
 if (isset($_GET['sessao'])) {
     $aDados = $_SESSION[$_GET['sessao']];
@@ -55,7 +54,14 @@ if (isset($_GET['sessao'])) {
     require_once(modification("ext/php/adodb-time.inc.php"));
 
     if (isset($_SESSION["DB_datausu"])) {
-        $DB_DATACALC = adodb_mktime(0,0,0,date("m",db_getsession("DB_datausu")),date("d",db_getsession("DB_datausu")),date("Y",db_getsession("DB_datausu")));
+        $DB_DATACALC = adodb_mktime(
+            0,
+            0,
+            0,
+            date("m", db_getsession("DB_datausu")),
+            date("d", db_getsession("DB_datausu")),
+            date("Y", db_getsession("DB_datausu"))
+        );
     }
 } else {
     $aDados = $_POST;
@@ -65,8 +71,7 @@ $oPost = db_utils::postMemory($aDados);
 
 db_postmemory($aDados);
 db_postmemory($_GET);
-
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING']);
 $vlrjuros = 0;
 $vlrmulta = 0;
 $nDesconto = 0;
@@ -79,6 +84,7 @@ $qinfla = 0;
 
 $sMatriculaEndereco = "";
 $sMatriculaBairro = "";
+$taxaExpediente = 0;
 
 $cldb_config = new cl_db_config;
 $clmodcarne = new cl_modcarne;
@@ -89,7 +95,8 @@ if (isset($oPost->H_DATAUSU)) {
 }
 
 $histinf = "";
-$result = db_query("select codmodelo, k03_tipo, to_char(k00_txban,'99.99') as tx_banc from arretipo where k00_tipo = $tipo_debito and k00_instit = " . db_getsession("DB_instit"));
+$result = db_query("select codmodelo, k03_tipo, to_char(k00_txban,'99.99') as tx_banc
+                    from arretipo where k00_tipo = $tipo_debito and k00_instit = " . db_getsession("DB_instit"));
 db_fieldsmemory($result, 0);
 pg_free_result($result);
 $aParcelasSemInflatores = array();
@@ -99,7 +106,7 @@ $whereDatasUnicas       = "";
 
 if ($txtNumpreUnicaSelecionados != "") {
     $datasUnicas = "'" . implode("','", explode(',', $txtNumpreUnicaSelecionados)) . "'";
-}else{
+} else {
     $datasUnicas = "";
 }
 
@@ -129,7 +136,7 @@ $resul = $cldb_config->sql_record($sqlpref);
 
 if ($cldb_config->numrows > 0) {
     db_fieldsmemory($resul, 0); // pega o dados da prefa
-}else{
+} else {
     db_redireciona('db_erros.php?fechar=true&db_erro=Contate Suporte. A configuração do sistema não esta completa.');
     exit;
 }
@@ -168,15 +175,14 @@ try {
 
     $iParcelaInicial = 1;
     $iParcelaFinal = 1;
-    $oRegraEmissao   = new regraEmissao($tipo_debito,$iTipoMod,db_getsession('DB_instit'),date("Y-m-d", db_getsession("DB_datausu")),db_getsession('DB_ip'),true,false,$iParcelaIni,$iParcelaIni);
-
+    $oRegraEmissao   = new regraEmissao($tipo_debito, $iTipoMod, db_getsession('DB_instit'), date("Y-m-d", db_getsession("DB_datausu")), db_getsession('DB_ip'), true, false, $iParcelaIni, $iParcelaIni);
 } catch (Exception $eExeption) {
     db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
     exit;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-////////  C O M E Ç O   D A  G E R A Ç Ã O  D O S   C A R N E S   //////////////
+////////  C O M E C O   D A  G E R A C A O  D O S   C A R N E S   //////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 /********************* R O T I N A   P A R A   B U S C A R   O   M O D E L O   D E   C A R N E *****************************************************/
@@ -188,7 +194,7 @@ db_fieldsmemory($result, 0);
 
 /***************************************************************************************************************************************************/
 
-// FUNCAO Q RETORNA O PDF ESTANCIADO JA COM O MODELO CERTO TESTANDO AS RESTRIÇÕES
+// FUNCAO Q RETORNA O PDF ESTANCIADO JA COM O MODELO CERTO TESTANDO AS RESTRICOES
 $pdf1 = $oRegraEmissao->getObj();
 $pdf1->sMensagemCaixa = '';
 $pdf1->sMensagemContribuinte = '';
@@ -221,10 +227,9 @@ $sqlparag .= "   and db03_instit = " . db_getsession("DB_instit") . " ";
 $sqlparag .= " order by db04_ordem ";
 $resparag = db_query($sqlparag);
 
-if (pg_numrows($resparag) == 0) {
+if (pg_num_rows($resparag) == 0) {
     $pdf1->secretaria = 'SECRETARIA DE FINANÇAS';
 } else {
-
     db_fieldsmemory($resparag, 0);
     $pdf1->secretaria = $db02_texto;
 }
@@ -234,9 +239,12 @@ $pdf1->tipodebito = $k00_descr;
 $pdf1->pretipodebito = $k00_descr;
 $pdf1->logo = $logo;
 
+$pdf1->nTaxaBancaria    = $taxabancaria;
+
 db_query("BEGIN");
 
 db_postmemory($aDados);
+
 
 $nun = -1;
 $vt = $aDados;
@@ -255,7 +263,7 @@ for ($i = 0; $i < $tam; $i++) {
             $registro = explode("R", $registros[$reg]);
             if (gettype(strpos($numpres, "N" . $registro[0])) == "boolean") {
                 $nun++;
-                $numpres .= "N" . $registro[0] . "T" . $aDados[numpres_emissao][$nun][2];
+                $numpres .= "N" . $registro[0] . "T" . $aDados["numpres_emissao"][$nun][2];
                 $aVarNumpre = explode("P", $registro[0]);
                 $aTodosNumpres[$aVarNumpre[0]][] = "P" . $aVarNumpre[1];
             }
@@ -303,25 +311,21 @@ if (isset($oPost->marcarvencidas) && isset($oPost->marcartodas)) {
                     $numpres .= 'N' . $iNumpre . "P" . $iNumpar;
                 }
             }
-
         }
     }
-
 }
 $sounica = $numpres;
+
 $numpres = explode("N", $numpres);
-
 $unica = 2;
-
 if (sizeof($numpres) < 2) {
     $numpres[0] = 0;
     foreach ($aNumpresUnicas as $iInd => $sNumpresUnica) {
         $numpres[] = $sNumpresUnica . 'P000';
     }
     $unica = 1;
-
 } else {
-    if (isset ($aDados["numpre_unica"])) {
+    if (isset($aDados["numpre_unica"])) {
         if ($numpre_unica != '') {
             $numpres = array();
             $numpres[0] = "";
@@ -331,9 +335,12 @@ if (sizeof($numpres) < 2) {
                 if (in_array($sNumpre, $aTodasUnicas)) {
                     $numpres[] = $sNumpre . "P000";
                 }
-
                 foreach ($aParc as $iInd => $sParc) {
-                    $numpres[] = $sNumpre . $sParc;
+                    foreach ($aDados["numpres_emissao"] as $NumpresVerificar) {
+                        if ($sNumpre == $NumpresVerificar[0] && $sParc == "P{$NumpresVerificar[1]}" && isset($NumpresVerificar[2])) {
+                            $numpres[] = $sNumpre . $sParc. "T".$NumpresVerificar[2];
+                        }
+                    }
                 }
             }
 
@@ -346,10 +353,10 @@ if (sizeof($numpres) < 2) {
         }
     }
 }
+
 $listaDeNumpres = array_keys($aTodosNumpres);
 
 if (!empty($listaDeNumpres)) {
-
     $sSqlIniciaisParcelamento = "select termoini.inicial as inicial,
                                         processoforo.v70_sequencial,
                                         processoforo.v70_codforo,
@@ -381,12 +388,10 @@ if (!empty($listaDeNumpres)) {
     $pdf1->msgcontribuintecodforo = '';
 
     $sHistoricoIniciaisParcelamento = "";
-    if (pg_numrows($rsIniciaisParcelamento) > 0) {
-
+    if (pg_num_rows($rsIniciaisParcelamento) > 0) {
         $aCodProcessoForo = array();
 
         for ($xy=0; $xy < pg_num_rows($rsIniciaisParcelamento); $xy++) {
-
             $oDadosInicial = db_utils::fieldsmemory($rsIniciaisParcelamento, $xy);
 
             if (!empty($oDadosInicial->v70_sequencial)) {
@@ -413,11 +418,9 @@ if (!empty($listaDeNumpres)) {
             $textoParcelamento .= "Exercício(s): ".str_replace("{", "", str_replace("}", "", $oDadosInicial->exerc))."\n";
             $historicosPorNumpre[$oDadosInicial->v07_numpre] .= $textoParcelamento;
             $sHistoricoIniciaisParcelamento .= $textoParcelamento;
-
         }
 
         if (!empty($aCodProcessoForo)) {
-
             $aCodProcessoForoAux = $aCodProcessoForo;
 
             $aCodProcessoForo = array();
@@ -426,20 +429,19 @@ if (!empty($listaDeNumpres)) {
                 $aCodProcessoForo[$iIndex] = implode(", ", $aCodProcessoForoAux[$iIndex]);
             }
         }
-
     }
 
     $pdf1->sHistoricoIniciaisParcelamento = $sHistoricoIniciaisParcelamento;
 }
 
-if (isset ($geracarne) && $geracarne == 'banco') {
+if (isset($geracarne) && $geracarne == 'banco') {
     $pagabanco = 't';
 } else {
     $pagabanco = 't';
 }
 /******************************************************   F O R   Q   M O N T A   O S   C A R N E S  ******************************************************/
-$aParcelasSemInflatores = array();
 
+$aParcelasSemInflatores = array();
 if ($unica != "1") {
     for ($volta = 0; $volta < sizeof($numpres); $volta++) {
         if ($numpres[$volta] == "" || $numpres[$volta] == "0") {
@@ -449,13 +451,13 @@ if ($unica != "1") {
         $aNumpre = explode('P', $numpres[$volta]);
 
         $k00_numpre = $aNumpre[0];
-        $k00_numpar = substr($aNumpre[1], 0, 1);
+        $k00_numpar =  explode('T', $aNumpre[1])[0];
+        //$k00_numpar = substr($aNumpre[1], 0, 1);
         $k03_numpre = substr($aNumpre[1], strpos($aNumpre[1], "T")+1);
 
         $sDataUsuCarnes = $H_DATAUSU;
         if (isset($k00_formemissao)) {
             if ($k00_formemissao == 1) {
-
                 $sSqlArrecad = " select k00_dtvenc                   ";
                 $sSqlArrecad .= "   from arrecad                      ";
                 $sSqlArrecad .= "  where k00_numpre   = {$k00_numpre} ";
@@ -470,7 +472,6 @@ if ($unica != "1") {
         }
 
         if (!$oRegraEmissao->isCobranca()) {
-
             $rsDadosPagamento = debitos_numpre_carne($k00_numpre, $k00_numpar, $sDataUsuCarnes, $H_ANOUSU, db_getsession('DB_instit'), $DB_DATACALC, $forcarvencimento);
             db_fieldsmemory($rsDadosPagamento, 0);
             if (isset($total) && $total < 0) {
@@ -481,9 +482,8 @@ if ($unica != "1") {
 }
 
 if (count($aParcelasSemInflatores) > 0) {
-
     $sS = (count($aParcelasSemInflatores) > 1 ? 's' : '');
-    db_redireciona("db_erros.php?fechar=true&db_erro=Valor negativo na{$sS} parcela{$sS} " . implode(",",$aParcelasSemInflatores) . " verifique.");
+    db_redireciona("db_erros.php?fechar=true&db_erro=Valor negativo na{$sS} parcela{$sS} " . implode(",", $aParcelasSemInflatores) . " verifique.");
     exit;
 }
 
@@ -497,18 +497,15 @@ $aEmitirPor = array();
  *  ver_numcgm - cgm (matric e inscr sao nulos ou 0)
  */
 if (!empty($aDados)) {
-
     $pdf1->sReciboSacadoContribuinteTitulo = 'Contribuinte';
     $pdf1->iReciboSacadoContribuinteCodigo = $aDados['ver_numcgm'];
 
     if (!empty($aDados['ver_matric'])) {
-
         $aEmitirPor['matricula'] = $aDados["ver_matric"];
 
         $pdf1->sReciboSacadoContribuinteTitulo = 'Matrícula';
         $pdf1->iReciboSacadoContribuinteCodigo = $aDados['ver_matric'];
     } elseif (!empty($aDados['ver_inscr'])) {
-
         $aEmitirPor['inscricao'] = $aDados["ver_inscr"];
 
         $pdf1->sReciboSacadoContribuinteTitulo = 'Inscrição';
@@ -521,7 +518,6 @@ if (!empty($aDados)) {
 $pdf1tipodebito = $pdf1->tipodebito;
 
 for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
-
     if ($numpres[$volta] == "") {
         continue;
     }
@@ -541,15 +537,15 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     $resultDescTaxa = db_query($sqlDescTaxa);
 
-    if (pg_numrows($resultDescTaxa) > 0) {
-       db_fieldsmemory($resultDescTaxa, 0);
+    if (pg_num_rows($resultDescTaxa) > 0) {
+        db_fieldsmemory($resultDescTaxa, 0);
 
-       if (!empty($j07_descr)) {
-           $pdf1->tipodebito = $j07_descr;
-       }
+        if (!empty($j07_descr)) {
+            $pdf1->tipodebito = $j07_descr;
+        }
     }
 
-    $resulttipo = db_query("select k00_descr, k00_codbco, k00_codage, k00_txban, k00_rectx,
+    $resulttipo = db_query("select k00_descr, k00_taxaadm,k00_codbco, k00_codage, k00_txban, k00_rectx,
                                  k00_hist1, k00_hist2,  k00_hist3,  k00_hist4, k00_hist5,
                                  k00_hist6, k00_hist7,  k00_hist8
                             from arretipo
@@ -560,7 +556,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $pdf1->parcel = "";
 
     if ($k03_tipo == 16) {
-
         $sql28 = " select b.*                                                               ";
         $sql28 .= "   from diversos a                                                        ";
         $sql28 .= "        left join  termodiver       on  dv10_parcel    = dv05_coddiver    ";
@@ -568,8 +563,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $sql28 .= " where dv05_numpre = $k00_numpre limit 1                                  ";
 
         $result28 = db_query($sql28);
-        if (pg_numrows($result28) > 0) {
-
+        if (pg_num_rows($result28) > 0) {
             db_fieldsmemory($result28, 0);
             $pdf1->tipodebito = 'PARCELAMENTO DE ' . $dv09_descr;
             $pdf1->pretipodebito = "PARCELAMENTO DE  $dv09_descr  N- $v10_parcel";
@@ -579,10 +573,8 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     //////////////  DIVERSO /////////////////////
     if (($tipo_debito == 28) || ($tipo_debito == 25)) {
-
         ///////// PARCELAMENTO///////////////
         if ($tipo_debito == 28) {
-
             $sql25 = " select *                                                        ";
             $sql25 .= "   from termo                                                    ";
             $sql25 .= "        inner join termodiver on v07_parcel     = dv10_parcel    ";
@@ -592,7 +584,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
             ///////////// DIVERSO ///////////////
         } else {
-
             $sql25 = "  select *                                                                ";
             $sql25 .= "    from diversos a                                                       ";
             $sql25 .= "         left outer join procdiver b on a.dv05_procdiver=b.dv09_procdiver ";
@@ -602,8 +593,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
         $result25 = db_query($sql25) or die($sql25);
 
-        if (pg_numrows($result25) > 0) {
-
+        if (pg_num_rows($result25) > 0) {
             db_fieldsmemory($result25, 0);
             $obs = substr($obs, 0, 20);
             $pdf1->tipodebito = $dv09_descr;
@@ -613,11 +603,9 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $pdf1->parcel = $v07_parcel;
             }
         } else {
-
             $obs = "";
             $rstermo = db_query(" select v07_parcel from termo where v07_numpre = $k00_numpre ");
-            if (pg_numrows($rstermo) > 0) {
-
+            if (pg_num_rows($rstermo) > 0) {
                 db_fieldsmemory($rstermo, 0);
                 $codparcel = " N- $v07_parcel ";
                 $pdf1->parcel = $v07_parcel;
@@ -633,12 +621,10 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         }
 
         if ($dv05_procdiver == 1284) {
-
             $pdf1->secretaria = 'FUNDO MUNICIPAL DE HABITAÇÃO';
-            $k00_hist1 = 'Convênio SEHAB nº 72/99 - Programa Especial do Funco de Desenvolvimento Social. Aprovação do Conselho Estadual de Habitação em 08/09/1999';
+            $k00_hist1 = 'Convênio SEHAB n? 72/99 - Programa Especial do Funco de Desenvolvimento Social. Aprovação do Conselho Estadual de Habitação em 08/09/1999';
         } else {
             if ($dv05_procdiver == 221) {
-
                 $pdf1->secretaria = 'FUNDO MUNICIPAL DE HABITAÇÃO';
                 $k00_hist1 = 'Lei Municipal nº 3049/2002, de 04/12/2002. Aprovação do Conselho Estadual de Habitação em dez/2002';
             }
@@ -650,8 +636,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $xbairro = '';
 
     $rstermo = db_query(" select v07_parcel from termo where v07_numpre = $k00_numpre ");
-    if (pg_numrows($rstermo) > 0) {
-
+    if (pg_num_rows($rstermo) > 0) {
         db_fieldsmemory($rstermo, 0);
         $codparcel = " N- $v07_parcel ";
         $pdf1->pretipodebito = $k00_descr . $codparcel;
@@ -687,21 +672,20 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $sqlorigem .= " where arrecad.k00_numpre = $k00_numpre limit 1";
     $rsOrigem = db_query($sqlorigem) or die($sqlorigem);
 
-    if (pg_numrows($rsOrigem) > 0) {
+    if (pg_num_rows($rsOrigem) > 0) {
         db_fieldsmemory($rsOrigem, 0);
     } else {
         db_msgbox("Nao encontrou registros do numpre: $k00_numpre!");
     }
 
-    if (!empty ($descr) && $descr == 'Matrícula') {
-
+    if (!empty($descr) && $descr == 'Matrícula') {
         $sSqlIdentificacao = "select *                    ";
         $sSqlIdentificacao .= "  from proprietario         ";
         $sSqlIdentificacao .= " where j01_matric = $origem ";
         $sSqlIdentificacao .= " limit 1                    ";
         $Identificacao = db_query($sSqlIdentificacao);
 
-        if (pg_numrows($Identificacao) == 0) {
+        if (pg_num_rows($Identificacao) == 0) {
             db_redireciona('db_erros.php?fechar=true&db_erro=Problemas no Cadastro da Matricula ' . $origem);
         }
         db_fieldsmemory($Identificacao, 0);
@@ -709,10 +693,10 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         //Somente quando for promitente
         $db21_regracgmiptu != 1 ? $proprietario = $z01_nome : $proprietario = $proprietario;
 
-        $pdf1->bairropri = $j13_descr;
+        $pdf1->bairropri    = $j13_descr;
         $pdf1->prebairropri = $z01_bairro;
-        $pdf1->nomepriimo = $nomepri;
-
+        $pdf1->nomepriimo   = $nomepri;
+        $pdf1->endereco     = "{$tipopri} {$nomepri}, $j39_numero".(!empty($j39_compl)?" / ".$j39_compl:"");
         $pdf1->pqllocal = "PQL: {$pql_localizacao}";
 
         $sql = "select sum(j22_valor) as vlredi, sum(j22_areaed) as areaedi
@@ -724,7 +708,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
              where j20_numpre = $k00_numpre
                and j22_matric = $j01_matric";
         $sqlres = db_query($sql);
-        if (pg_numrows($sqlres) > 0) {
+        if (pg_num_rows($sqlres) > 0) {
             db_fieldsmemory($sqlres, 0);
         } else {
             $vlredi = 0;
@@ -741,12 +725,10 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                and j23_matric = $j01_matric";
         $sqlres = db_query($sql);
 
-        if (pg_numrows($sqlres) > 0) {
-
+        if (pg_num_rows($sqlres) > 0) {
             db_fieldsmemory($sqlres, 0);
             $pdf1->iptj23_aliq = $j23_aliq;
         } else {
-
             $j23_vlrter = 0;
             $j23_aliq = 0;
             $j23_arealo = 0;
@@ -772,31 +754,36 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $pdf1->pql_localizacao = $pql_localizacao;
         $bql = '  SQL:' . $j34_setor . '-' . $j34_quadra . '-' . $j34_lote . " " . ($pql_localizacao != "" ? "PQL: $pql_localizacao" : "");
 
-        if (isset ($impmodelo) && $impmodelo == 30) {
-
+        if (isset($impmodelo) && $impmodelo == 30) {
             $iNumeroOrigem = $j01_matric;
-
         } else {
-
             $iNumeroOrigem = $j01_matric . '  SQL:' . $j34_setor . '-' . $j34_quadra . '-' . $j34_lote;
         }
     } else {
-        if (!empty ($descr) && $descr == 'Inscrição') {
-            $Identificacao = db_query("select * from empresa where q02_inscr = $origem");
+        if (!empty($descr) && $descr == 'Inscrição') {
+            $Identificacao = db_query("select *,
+                                              j14_tipo   as tipopri,
+                                              z01_ender  as nomepri,
+                                              z01_compl  as j39_compl,
+                                              z01_numero as j39_numero,
+                                              z01_bairro as j14_descr,
+                                              z01_bairro as j13_descr
+                                         from empresa where q02_inscr = $origem");
 
-            if (pg_numrows($Identificacao) == 0) {
+            if (pg_num_rows($Identificacao) == 0) {
                 db_redireciona('db_erros.php?fechar=true&db_erro=Problemas no Cadastro da Inscrição ' . $origem);
             }
 
             db_fieldsmemory($Identificacao, 0);
+
+            $pdf1->endereco = "{$j14_tipo} {$z01_ender}, {$z01_numero}".(!empty($z01_compl)?" / {$z01_compl}":"");
             $iNumeroOrigem = $q02_inscr;
         } else {
-
-            $Identificacao = db_query("select cgm.*, ''::bpchar as nomepri, ''::bpchar as j39_co
+            $Identificacao = db_query("select cgm.*, ''::bpchar as nomepri, ''::bpchar as j39_compl
                                  from cgm
                                 where z01_numcgm = $origem");
 
-            if (pg_numrows($Identificacao) == 0) {
+            if (pg_num_rows($Identificacao) == 0) {
                 db_redireciona('db_erros.php?fechar=true&db_erro=Problemas no Cadastro do CGM ' . $origem);
             }
 
@@ -809,7 +796,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     $exercicio = '';
     if (($k03_tipo == 6) || ($k03_tipo == 17) || ($k03_tipo == 16) || ($k03_tipo == 13)) {
-
         $sqltipodeb = "select termo.*,
                           z01_nome,
                           z01_ender,
@@ -856,12 +842,10 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                       inner join cgm on z.z01_numcgm = cgm.z01_numcgm ";
 
         $resulttipodeb = db_query($sqltipodeb);
-        if (pg_numrows($resulttipodeb) == 0) {
-
+        if (pg_num_rows($resulttipodeb) == 0) {
             db_redireciona('db_erros.php?fechar=true&db_erro=Parcelamento sem termo cadastrado.');
             exit;
         } else {
-
             db_fieldsmemory($resulttipodeb, 0);
             $pdf1->parcel = $v07_parcel;
         }
@@ -869,7 +853,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     //  PARCELAMENTO DE DIVIDA ATIVA
     if ($k03_tipo == 6) {
-
         $sqldivida = "select distinct v01_exerc
                     from termodiv
                          inner join divida on v01_coddiv = coddiv
@@ -877,9 +860,8 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $resultdivida = db_query($sqldivida);
         $traco = '';
         $exercicio = ' - Exerc : ';
-        for ($k = 0; $k < pg_numrows($resultdivida); $k++) {
-
-            $exercicio .= $traco . substr(pg_result($resultdivida, $k, "v01_exerc"), 0, 4);
+        for ($k = 0; $k < pg_num_rows($resultdivida); $k++) {
+            $exercicio .= $traco . substr(pg_fetch_result($resultdivida, $k, "v01_exerc"), 0, 4);
             $traco = ', ';
         }
     }
@@ -898,16 +880,12 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     /*************************************************** U N I C A ******************************************************/
     if ($unica == 1 && $datasUnicas != "") {
-
         if ($datasUnicas != "") {
-
             $sSqlWhereData = " where ";
             $sOperador = "";
 
             foreach ($aDadosUnicas as $sUnicaNumpre => $aUnicaVenc) {
-
                 if ($sUnicaNumpre == $k00_numpre) {
-
                     $sVencimentosUnica = implode("','", $aUnicaVenc);
                     $sSqlWhereData .= "  {$sOperador} ( r.k00_numpre = {$k00_numpre}   ";
                     $sSqlWhereData .= "  and r.k00_dtvenc in ('{$sVencimentosUnica}')) ";
@@ -943,9 +921,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
         $resultfin = db_query($sql) or die($sql);
         if ($resultfin != false) {
-
-            for ($unicont = 0; $unicont < pg_numrows($resultfin); $unicont++) {
-
+            for ($unicont = 0; $unicont < pg_num_rows($resultfin); $unicont++) {
                 $oMensagem = DBTributario::getMensagensParcela($k00_numpre, null, null);
                 $pdf1->sMensagemContribuinte = $oMensagem->sMensagemContribuinte;
                 $pdf1->sMensagemCaixa = $oMensagem->sMensagemCaixa;
@@ -957,17 +933,68 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $pdf1->arrayvalreceitas = array();
                 $pdf1->arraycodtipo = array();
                 $pdf1->descr12_1 = "";
-		$pdf1->tipo_exerc = "";
-		$pdf1->exerc_debito = "";
+                $pdf1->tipo_exerc = "";
+                $pdf1->exerc_debito = "";
 
                 db_fieldsmemory($resultfin, $unicont);
 
-                $pdf1->valororigem = db_formatar($uvlrhis,"f");
-                $pdf1->valtotal = db_formatar($uvlrcor,"f");
+                // Emissao da recibopaga
+
+                    try {
+                        db_inicio_transacao();
+                        $oRecibo = new recibo(2, null, 1);
+                        $oRecibo->setNumBco($oRegraEmissao->getCodConvenioCobranca());
+                        $dataSelecionada = new DBDate($_GET['dataPagamentoSelecionada']);
+                        $dataSelecionada = $dataSelecionada->convertTo(DBDate::DATA_EN);
+                        $dtvencunic = $dtvencunic > $dataSelecionada ? $dtvencunic : $dataSelecionada;
+
+                        $oRecibo->setDataVencimentoRecibo(
+                            $dtvencunic
+                        );
+
+                        $oRecibo->addNumpre($k00_numpre, 0);
+
+                        /**
+                         * Alteração para retirar a logica da regra de desconto pos-pagamento para
+                         * parcelamento
+                         */
+                        $oRecibo->setDescontoReciboWeb(
+                            $k00_numpre,
+                            $k00_numpar,
+                            retornaRegraDescontoParcelamento($k00_numpre)
+                        );
+
+                        $oRecibo->emiteRecibo();
+
+                        $iCodigoUnicaRecibo      = $oRecibo->getNumpreRecibo();
+                        $lConvenioCobrancaValido = CobrancaRegistrada::validaConvenioCobranca($oRegraEmissao->getConvenio());
+
+                        if ($lConvenioCobrancaValido && !CobrancaRegistrada::utilizaIntegracaoWebService($oRegraEmissao->getConvenio())) {
+                            CobrancaRegistrada::adicionarRecibo($oRecibo, $oRegraEmissao->getConvenio());
+                        }
+
+                        $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
+                        $reciboPaga = $repository->findAll("k00_numnov = {$oRecibo->getNumpreRecibo()} AND k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO)
+                          ->get(0);
+
+                        $taxaExpediente = !empty($reciboPaga->getValor()) ? $reciboPaga->getValor() : 0;
+
+                        db_fim_transacao(false);
+                    } catch (Exception $eException) {
+                        db_fim_transacao(true);
+                        db_redireciona("db_erros.php?fechar=true&db_erro=[2] - {$eException->getMessage()}");
+                        exit;
+                    }
+
+                // Emissao da recibopaga end
+
+                $pdf1->valororigem = db_formatar($uvlrhis, "f");
+                $pdf1->valtotal = db_formatar($uvlrcor, "f");
+                $pdf1->valor_corrigido = db_formatar($uvlrcor, 'f');
 
                 $vlrhis = db_formatar($uvlrhis, 'f');
                 $vlrdesconto = db_formatar($uvlrdesconto, 'f');
-                $utotal += $taxabancaria;
+                $utotal += $taxabancaria + $taxaExpediente;
                 $vlrtotal = db_formatar($utotal, 'f');
 
                 /* PLUGIN NIT -> APLICA DESCONTO NA ÚNICA */
@@ -977,97 +1004,44 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $sqlvalor = "select k00_impval, k00_tercdigcarneunica from arretipo where k00_tipo = $tipo_debito";
                 db_fieldsmemory(db_query($sqlvalor), 0);
 
-                if (!isset ($k00_tercdigcarneunica) || $k00_tercdigcarneunica == "") {
-                    db_redireciona('db_erros.php?fechar=true&db_erro=Configure o terceiro digito do codigo de barras no cadastro do tipo de debito para este tipo de debito.');
+                if (!isset($k00_tercdigcarneunica) || $k00_tercdigcarneunica == "") {
+                    db_redireciona('db_erros.php?fechar=true&db_erro=Configure o terceiro digito do código de barras no cadastro do tipo de débito para este tipo de débito.');
                 }
 
                 $iTercDig = $k00_tercdigcarneunica;
 
                 if ($k00_impval == 't') {
-
                     $k00_valor = $utotal;
                     $vlrbar    = db_formatar(str_replace('.', '', str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
                     $ninfla = '';
 
                     if ($utotal == 0) {
-
                         $iTercDig = 7;
                         $vlrbar = "00000000000";
                     }
-
                 } else {
-
                     $k00_valor = $qinfla;
                     $iTercDig = 7;
                     $vlrbar = "00000000000";
                 }
 
-                if (isset ($emiscarneiframe) && $emiscarneiframe == 'n') {
-
+                if (isset($emiscarneiframe) && $emiscarneiframe == 'n') {
                     if (substr($dtvencunic, 0, 4) > db_getsession('DB_anousu')) {
                         continue;
                     }
                 }
 
-                try {
-
-                    db_inicio_transacao();
-                    $oRecibo = new recibo(2, null, 1);
-                    $oRecibo->setNumBco($oRegraEmissao->getCodConvenioCobranca());
-                    $dataSelecionada = new DBDate($_GET['dataPagamentoSelecionada']);
-                    $dataSelecionada = $dataSelecionada->convertTo(DBDate::DATA_EN);
-                    $dtvencunic = $dtvencunic > $dataSelecionada ? $dtvencunic : $dataSelecionada;
-
-                    $oRecibo->setDataVencimentoRecibo(
-                        $dtvencunic
-                    );
-
-                    $oRecibo->addNumpre($k00_numpre, 0);
-
-                    /**
-                     * Alteração para retirar a logica da regra de desconto pos-pagamento para
-                     * parcelamento
-                     */
-                    $oRecibo->setDescontoReciboWeb($k00_numpre, $k00_numpar,
-                        retornaRegraDescontoParcelamento($k00_numpre));
-
-                    $oRecibo->emiteRecibo();
-                    $iCodigoUnicaRecibo = $oRecibo->getNumpreRecibo();
-                    $lConvenioCobrancaValido = CobrancaRegistrada::validaConvenioCobranca($oRegraEmissao->getConvenio());
-
-                    if ($lConvenioCobrancaValido && !CobrancaRegistrada::utilizaIntegracaoWebService($oRegraEmissao->getConvenio())) {
-                        CobrancaRegistrada::adicionarRecibo($oRecibo, $oRegraEmissao->getConvenio());
-                    }
-
-                    $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
-                    $reciboPaga = $repository->findAll("k00_numnov = {$oRecibo->getNumpreRecibo()} AND k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO)
-                      ->get(0);
-
-                    $taxaExpediente = !empty($reciboPaga->getValor()) ? $reciboPaga->getValor() : 0;
-
-                    db_fim_transacao(false);
-
-                } catch (Exception $eException) {
-                    db_fim_transacao(true);
-                    db_redireciona("db_erros.php?fechar=true&db_erro=[2] - {$eException->getMessage()}");
-                    exit;
-                }
-
                 if ($oRegraEmissao->isCobranca()) {
-
                     if (substr($dtvencunic, 0, 4) > db_getsession('DB_anousu') && $k00_valor > 0 && ( $ninfla_ant != "" && $ninfla_ant != "REAL")) {
-
                         $k00_valor = 0;
                         $especie = $ninfla;
                         $histinf = "\n Atenção : entre em contato com o municipio para saber o valor da $ninfla.";
                     } else {
-
                         $especie = 'R$';
                         $histinf = "";
                     }
 
                     if ($dtvencunic < date('Ymd', db_getsession('DB_datausu')) && $k00_valor > 0) {
-
                         $msgvencida = "\n Parcela vencida, valor calculado com juros e multa até a data atual. Vencimento original " . $dtvencunic;
                         $k00_dtvenc = date('d/m/Y', $H_DATAUSU);
                     } else {
@@ -1076,17 +1050,26 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 }
 
                 /**
-                 *Convênio sendo instanciado na Unica
+                 * Convênio sendo instanciado na Unica
                  */
                 try {
-                    $oConvenio = new convenio($oRegraEmissao->getConvenio(),$iCodigoUnicaRecibo,0,$k00_valor,$vlrbar,$dtvencunic,$iTercDig);
+                    $oConvenio = new convenio(
+                        $oRegraEmissao->getConvenio(),
+                        $iCodigoUnicaRecibo,
+                        0,
+                        $k00_valor,
+                        $vlrbar,
+                        $dtvencunic,
+                        $iTercDig
+                    );
                 } catch (Exception $eExeption) {
-
                     db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
                     exit;
                 }
 
-                if (ArrecadacaoPixService::validaEmissaoPix($tipo_debito, $oRegraEmissao, $iCodigoUnicaRecibo)) {
+                // Emissao do QRcode do Pix
+                $bEmissaoPix = ArrecadacaoPixService::validaEmissaoPix($tipo_debito, $oRegraEmissao, $iCodigoUnicaRecibo);
+                if ($bEmissaoPix) {
                     try {
                         $emissaoPix = new ArrecadacaoPixService();
                         $emissaoPix->setTipoDebito($tipo_debito);
@@ -1099,21 +1082,23 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                             $k00_valor
                         );
                     } catch (Exception $th) {
-//                         dd($th->getMessage());
                     }
                 }
 
+                // Emissao do QRcode do Pix END
+
                 /**
-                 * Faz comunicacão com webservice para validação dos dados do recibo
+                 * Faz comunicac?o com webservice para valida??o dos dados do recibo
                  */
                 try {
+                    $validaPix = pg_num_rows(db_query("select * from arretipopix where (modsistema or moddbpref) = true and k00_tipo = {$tipo};"));
+                    if($validaPix > 0){
+                        $emitePix = true;
+                    }
                     if ($lConvenioCobrancaValido && CobrancaRegistrada::utilizaIntegracaoWebService($oRegraEmissao->getConvenio())) {
-
-                        if(db_getsession('DB_DEBUG', false) && db_getsession('DB_DEBUG') == true) {
-
-                            if(!Registry::get('app.container')->has('app.webservice_caixa.debug')) {
-
-                                Registry::get('app.container')->register('app.webservice_caixa.debug', function() {
+                        if (db_getsession('DB_DEBUG', false) && db_getsession('DB_DEBUG') == true) {
+                            if (!Registry::get('app.container')->has('app.webservice_caixa.debug')) {
+                                Registry::get('app.container')->register('app.webservice_caixa.debug', function () {
 
                                     $idUsuario      = db_getsession('DB_id_usuario');
                                     $usuarioSistema = UsuarioSistemaRepository::getPorCodigo($idUsuario);
@@ -1123,7 +1108,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                         'debug'  => false,
                                         'origem' => 'Carne'
                                     );
-                                    if(strpos($nomeUsuario, 'dbseller') !== false) {
+                                    if (strpos($nomeUsuario, 'dbseller') !== false) {
                                         $debugWebservice->debug = true;
                                     }
 
@@ -1132,7 +1117,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                             }
                         }
 
-                        CobrancaRegistrada::registrarReciboWebservice($iCodigoUnicaRecibo, $oRegraEmissao->getConvenio(), $k00_valor, false , $aEmitirPor);
+                        CobrancaRegistrada::registrarReciboWebservice($iCodigoUnicaRecibo, $oRegraEmissao->getConvenio(), $k00_valor, false, $aEmitirPor, $emitePix);
                     }
                 } catch (Exception $oErro) {
                     db_redireciona("db_erros.php?fechar=true&db_erro={$oErro->getMessage()}");
@@ -1143,9 +1128,8 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $linha_digitavel = $oConvenio->getLinhaDigitavel();
 
                 if ($oRegraEmissao->isCobranca()) {
-
                     $pdf1->agencia_cedente = $oConvenio->getAgenciaCedente();
-                    $pdf1->carteira = $oConvenio->getCarteira();
+                    $pdf1->carteira = $oConvenio->getCodigoCarteira();
                     $pdf1->nosso_numero = $oConvenio->getNossoNumero();
                 }
 
@@ -1159,17 +1143,15 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
                 $pdf1->titulo1 = $descr;
                 $pdf1->descr1 = $iNumeroOrigem;
-                $pdf1->descr2 = db_numpre($iCodigoUnicaRecibo, 0) . '000'; //.db_formatar($k00_numpar,'s',"0",3,"e");
+                $pdf1->descr2 = db_numpre($iCodigoUnicaRecibo, 0) . '000';
 
-                if (isset ($obs)) {
-
+                if (isset($obs)) {
                     $pdf1->titulo13 = 'Observação';
                     $pdf1->descr13 = $obs;
                 }
 
                 /////////////// ISSQN FIXO //////////////////////////////
                 if ($k03_tipo == 2) {
-
                     $pdf1->titulo4 = 'Atividade';
                     $pdf1->descr4_1 = '- ' . $q07_ativ . '-' . $q03_descr;
                     $pdf1->titulo13 = 'Atividade';
@@ -1178,7 +1160,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                     ////////////// PARCELAMANTO DE DIVIDA E DE INICIAL ////////////
                 } else {
                     if (($k03_tipo == 6) || ($k03_tipo == 13)) {
-
                         $pdf1->titulo4 = 'Parcelamento';
                         $pdf1->descr4_1 = '- ' . $v07_parcel . $exercicio;
                         $pdf1->titulo13 = 'Parcelamento';
@@ -1199,10 +1180,10 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $pdf1->predescr9 = db_numpre($iCodigoUnicaRecibo, 0) . '000';
                 $pdf1->descr10     = 'ÚNICA';
 
-		$pdf1->tipo_exerc = "$k00_tipo / " . substr($dtvencunic, 0, 4);
+                $pdf1->tipo_exerc = "$k00_tipo / " . substr($dtvencunic, 0, 4);
 
 
-                if (!empty ($aDados["ver_matric"])) {
+                if (!empty($aDados["ver_matric"])) {
                     //Regra para parcela unica
                     $sqlEnder = "SELECT
                                     proprietario.z01_nome as nome_proprietario,
@@ -1242,19 +1223,19 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                 where j01_matric = $j01_matric limit 1";
 
                     $rsresultender = db_query($sqlEnder);
-                    $intNumrowsEnder = pg_numrows($rsresultender);
+                    $intNumrowsEnder = pg_num_rows($rsresultender);
                     if ($intNumrowsEnder > 0) {
                         db_fieldsmemory($rsresultender, 0);
                     }
 
                     /*
-                     * if é igual a Se regra da configuração de dados da instituição for somente propritário então true ou não tiver promitente cadastrado true
+                     * if ? igual a Se regra da configuração de dados da instituição for somente proprit?rio então true ou não tiver promitente cadastrado true
                      * Promitente e Proprietario = 0
                      * Somente Proprietario = 1
                      * Somente Promitente = 2
                      */
 
-                    if($db21_regracgmiptu == 1 || $num_cgm_promitente == ""){
+                    if ($db21_regracgmiptu == 1 || $num_cgm_promitente == "") {
                         $pdf1->descr3_1      = $num_cgm_proprietario . " - " . $nome_proprietario;
                         $pdf1->descr11_1     = $num_cgm_proprietario . " - " . $nome_proprietario;
                         $pdf1->munic         = $municipio_proprietario;
@@ -1305,7 +1286,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                     $pdf1->precomplpri = empty($j43_compl) ? '' : $j43_compl;
                     $pdf1->precgccpf = $z01_cgccpf;
                     $pdf1->cgccpf = $z01_cgccpf;
-
                 } else {
                     $pdf1->pretipocompl = 'Número:';
                     $pdf1->tipocompl    = 'Número:';
@@ -1347,7 +1327,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                     $pdf1->precomplpri = $z01_compl;
                     $pdf1->precgccpf = $z01_cgccpf;
                     $pdf1->cgccpf = $z01_cgccpf;
-
                 }
                 /************  PEGA AS RECEITAS COM OS VALORES *****************/
 
@@ -1393,7 +1372,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $vlrmulta = 0;
                 $nDesconto = 0;
                 for ($x = 0; $x < $intnumrows; $x++) {
-
                     db_fieldsmemory($rsReceitas, $x);
 
                     $pdf1->arraycodreceitas[$x] = $codreceita;
@@ -1409,7 +1387,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 }
 
                 if (isset($vlrjuros) && $vlrjuros != "" && $vlrjuros != 0) {
-
                     $pdf1->arraycodhist[] = "";
                     $pdf1->arraycodtipo[] = "t";
                     $pdf1->arraycodreceitas[] = "";
@@ -1419,7 +1396,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 }
 
                 if (isset($vlrmulta) && $vlrmulta != "" && $vlrmulta != 0) {
-
                     $pdf1->arraycodhist[] = "";
                     $pdf1->arraycodtipo[] = "t";
                     $pdf1->arraycodreceitas[] = "";
@@ -1429,7 +1405,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 }
 
                 if (isset($nDesconto) && $nDesconto != "" && $nDesconto != 0) {
-
                     $pdf1->arraycodhist[] = 918;
                     $pdf1->arraycodtipo[] = "t";
                     $pdf1->arraycodreceitas[] = "";
@@ -1442,45 +1417,41 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
                 /***********************************************************************************************/
                 if ($oRegraEmissao->isCobranca()) {
-
                     $pdf1->descr1 .= " \n " . $tipopri.'. ' . $nomepri. ' '.$j39_numero.' '.$j39_compl.' '.$j13_descr;
                     $pdf1->descr12_1 .= $pdf1->tipodebito . "\n" .
                         $pdf1->titulo1 . " - " . $pdf1->descr1 . " / " .
-                        $pdf1->titulo4 . " " . $pdf1->descr4_1 . " Parcela Única \n";
+                        $pdf1->titulo4 . " " . $pdf1->descr4_1 . " Parcela ?nica \n";
                     (isset($bql) && $bql != "" ? " - " . $bql . "\n" : "\n") .
                     (isset($obsdiver) && $obsdiver != "" ? $obsdiver : "") . "\n";
                     (isset($pdf1->predescr12_1) ? $pdf1->predescr12_1 .= $pdf1->pretipodebito . "\n" : "") .
                     $pdf1->titulo1 . " - " . $pdf1->descr1 . " / " .
-                    $pdf1->titulo4 . " " . $pdf1->descr4_1 . " Parcela Única \n";
+                    $pdf1->titulo4 . " " . $pdf1->descr4_1 . " Parcela ?nica \n";
                     (isset($bql) && $bql != "" ? " - " . $bql . "\n" : "\n") .
                     (isset($obsdiver) && $obsdiver != "" ? $obsdiver : "") . "\n";
-
                 }
 
-                //BUSCA A MSG DE PAGAMENTO E AS INSTRUÇÕES DA TABELA NUMPREF
+                //BUSCA A MSG DE PAGAMENTO E AS INSTRU??ES DA TABELA NUMPREF
                 $rsmsgcarne = db_query("select k03_msgcarne, k03_msgbanco from numpref where k03_anousu = " . db_getsession("DB_anousu"));
-                if (pg_numrows($rsmsgcarne) > 0) {
+                if (pg_num_rows($rsmsgcarne) > 0) {
                     db_fieldsmemory($rsmsgcarne, 0);
                 }
 
                 $sqlMsgCarne = " select k00_msguni2 from arretipo where k00_tipo = $k00_tipo ";
                 $rsMsgCarneUnica = db_query($sqlMsgCarne);
-                $intNumrowsMsgCarne = pg_numrows($rsMsgCarneUnica);
+                $intNumrowsMsgCarne = pg_num_rows($rsMsgCarneUnica);
 
                 if ($intNumrowsMsgCarne > 0) {
                     db_fieldsmemory($rsMsgCarneUnica, 0);
                 }
-                if (isset ($k00_msguni2) && $k00_msguni2 != "") {
+                if (isset($k00_msguni2) && $k00_msguni2 != "") {
                     $pdf1->predescr12_1 = $k00_msguni2; //msg unica, via contribuinte
                 }
                 $pdf1->descr14 = db_formatar($dtvencunic, 'd');
                 $pdf1->dtparapag = db_formatar($dtvencunic, 'd');
 
                 if ($iTercDig == '7') {
-
                     //////////////////// ISSQN VARIAVEL /////////////////////
                     if ($k03_tipo == 3) {
-
                         $sqlaliq = "select q05_aliq,                ";
                         $sqlaliq .= "       q05_ano                  ";
                         $sqlaliq .= "  from issvar                   ";
@@ -1488,10 +1459,9 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                         $sqlaliq .= "   and q05_numpar = $k00_numpar ";
 
                         $rsIssvarano = db_query($sqlaliq);
-                        $intNumrows = pg_numrows($rsIssvarano);
+                        $intNumrows = pg_num_rows($rsIssvarano);
 
                         if ($intNumrows == 0) {
-
                             db_redireciona('db_erros.php?fechar=true&db_erro=Ano não encontrado na tabela issvar. Contate o suporte');
                             exit;
                         }
@@ -1507,9 +1477,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                     $pdf1->descr15 = db_formatar($k00_valor, 'f');
                     $pdf1->valtotal = db_formatar($k00_valor, 'f');
                     $pdf1->predescr7 = db_formatar($k00_valor, 'f');
-
                 } else {
-
                     $pdf1->descr15 = db_formatar($k00_valor, 'f');
                     $pdf1->valtotal = db_formatar($k00_valor, 'f');
                     $pdf1->descr7 = db_formatar($k00_valor, 'f');
@@ -1540,7 +1508,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 }
 
                 if ($texto2 != '') {
-
                     $pdf1->descr16_1 = substr($texto2, 0, 55);
                     $pdf1->descr16_2 = substr($texto2, 55, 55);
                     $pdf1->descr16_3 = substr($texto2, 110, 55);
@@ -1558,7 +1525,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 // ###################### BUSCA OS DADOS PARA IMPRIMIR O LOGO DO BANCO #########################
                 //verifica se é ficha e busca o codigo do banco
                 if ($oRegraEmissao->isCobranca()) {
-
                     $rsConsultaBanco = $cldb_bancos->sql_record($cldb_bancos->sql_query_file($oConvenio->getCodBanco()));
                     $oBanco = db_utils::fieldsMemory($rsConsultaBanco, 0);
                     $pdf1->numbanco = $oBanco->db90_codban . "-" . $oBanco->db90_digban;
@@ -1570,10 +1536,10 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                         db_redireciona("db_erros.php?fechar=true&db_erro=" . $eExeption->getMessage());
                     }
                 }
-                if ( in_array($k03_tipo, array(18, 12, 13)) ) {
 
+                if (in_array($k03_tipo, array(18, 12, 13))) {
                     $oDaoParJuridico = db_utils::getDao("parjuridico");
-                    $rsValidaUtilizacaoPartilha = $oDaoParJuridico->sql_record($oDaoParJuridico->sql_query_file(db_getsession("DB_anousu"),db_getsession("DB_instit"), "v19_partilha"));
+                    $rsValidaUtilizacaoPartilha = $oDaoParJuridico->sql_record($oDaoParJuridico->sql_query_file(db_getsession("DB_anousu"), db_getsession("DB_instit"), "v19_partilha"));
                     $lUtilizaPartilha = db_utils::fieldsMemory($rsValidaUtilizacaoPartilha, 0)->v19_partilha;
 
                     $aProcessoForo                  = array_unique($aProcessoForo);
@@ -1612,8 +1578,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                            ar36_descricao,
                                            v76_tipolancamento ";
                         $rsDadosPartilhaReciboPaga = db_query($sSqlPartilhaReciboPaga);
-                        if ( pg_num_rows($rsDadosPartilhaReciboPaga) > 0 ) {
-
+                        if (pg_num_rows($rsDadosPartilhaReciboPaga) > 0) {
                             for ($iInd=0; $iInd < pg_num_rows($rsDadosPartilhaReciboPaga); $iInd++) {
                                 $aDadosPartilha = db_utils::fieldsMemory($rsDadosPartilhaReciboPaga, $iInd);
 
@@ -1621,7 +1586,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                 $aTaxas[$iInd]["descricao"]  = $aDadosPartilha->ar36_descricao;
                                 $aTaxas[$iInd]["valor"]      = $aDadosPartilha->v77_valor;
                                 $nTotalTaxas += $aDadosPartilha->v77_valor;
-
                             }
 
                             /*
@@ -1631,12 +1595,11 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                              * do código de barras e da linha digtável com o valor total a ser pago
                              */
                             try {
-                                $nValor    = number_format(round($total_recibo+$nTotalTaxas,2), 2, '', '');
-                                $db_vlrbar = str_pad($nValor, 10, 0,STR_PAD_LEFT);
+                                $nValor    = number_format(round($total_recibo+$nTotalTaxas, 2), 2, '', '');
+                                $db_vlrbar = str_pad($nValor, 10, 0, STR_PAD_LEFT);
                                 unset($oConvenio);
-                                $oConvenio = new convenio($oRegraEmissao->getConvenio(),$k03_numpre,0,$total_recibo+$nTotalTaxas,$db_vlrbar,$_GET['dataPagamentoSelecionada'],$k00_tercdigrecnormal);
-
-                            } catch (Exception $eExeption){
+                                $oConvenio = new convenio($oRegraEmissao->getConvenio(), $k03_numpre, 0, $total_recibo+$nTotalTaxas, $db_vlrbar, $_GET['dataPagamentoSelecionada'], $k00_tercdigrecnormal);
+                            } catch (Exception $eExeption) {
                                 db_redireciona("db_erros.php?fechar=true&db_erro=[16] - {$eExeption->getMessage()}");
                                 exit;
                             }
@@ -1648,7 +1611,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                             $pdf1->partilhaTipoLancamento = "";
                             $pdf1->partilhaDtPaga         = "";
                             $pdf1->partilhaObs            = "";
-
                         } else {
                             $pdf1->partilhaTipoLancamento = "";
                             $pdf1->partilhaDtPaga = "";
@@ -1662,8 +1624,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                              *
                              */
 
-                            if ( count($aProcessoForo) > 0 and !empty($aProcessoForo)) {
-
+                            if (count($aProcessoForo) > 0 and !empty($aProcessoForo)) {
                                 $sSqlPartilha = "select ar37_descricao,
                                   ar36_sequencial,
                                   ar36_descricao,
@@ -1676,7 +1637,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                   inner join processoforo         on processoforo.v70_sequencial         = processoforopartilha.v76_processoforo
                                   inner join taxa                 on taxa.ar36_sequencial                = processoforopartilhacusta.v77_taxa
                                   inner join grupotaxa            on grupotaxa.ar37_sequencial           = taxa.ar36_grupotaxa
-                            where processoforopartilha.v76_processoforo in (".implode(",",$aProcessoForo).")
+                            where processoforopartilha.v76_processoforo in (".implode(",", $aProcessoForo).")
                               and ( processoforopartilha.v76_tipolancamento <> 1 or processoforopartilha.v76_dtpagamento is not null)
                             group by ar37_descricao,
                                      ar36_sequencial,
@@ -1688,7 +1649,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                 $rsDadosPartilha = db_query($sSqlPartilha);
 
                                 if ($rsDadosPartilha) {
-
                                     $iLinhasPartilha = pg_num_rows($rsDadosPartilha);
                                     for ($iInd=0; $iInd < $iLinhasPartilha; $iInd++) {
                                         $aDadosPartilha = db_utils::fieldsMemory($rsDadosPartilha, $iInd);
@@ -1700,31 +1660,29 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                     }
 
                                     /*
-                                     * Situação das Custas de Acordo com o tipo de lançamento
+                                     * Situa??o das Custas de Acordo com o tipo de lançamento
                                      *
-                                     * Caso o tipo de lancamento seja 1 (Automático) e a data de pagamento não seja nula significa que as custas foram pagas
-                                     * Caso o tipo de lancamento seja 2 (Manual) significa que as custas foram pagas no Foro e lançadas manualmente com a data de pagamento
-                                     * Caso o tipo de lancamento seja 3 (Isento) significa que o processo é isento de Custas
+                                     * Caso o tipo de lancamento seja 1 (Autom?tico) e a data de pagamento não seja nula significa que as custas foram pagas
+                                     * Caso o tipo de lancamento seja 2 (Manual) significa que as custas foram pagas no Foro e lan?adas manualmente com a data de pagamento
+                                     * Caso o tipo de lancamento seja 3 (Isento) significa que o processo ? isento de Custas
                                      *
                                      */
                                     if ($iLinhasPartilha > 0) {
-
                                         $sTipoLancamento = '';
-                                        if ( ($aDadosPartilha->v76_tipolancamento == 1 && !empty($aDadosPartilha->v76_dtpagamento)) || $aDadosPartilha->v76_tipolancamento == 2) {
+                                        if (($aDadosPartilha->v76_tipolancamento == 1 && !empty($aDadosPartilha->v76_dtpagamento)) || $aDadosPartilha->v76_tipolancamento == 2) {
                                             $sTipoLancamento = "Custas Pagas";
-                                        } else if ( $aDadosPartilha->v76_tipolancamento == 3) {
+                                        } elseif ($aDadosPartilha->v76_tipolancamento == 3) {
                                             $sTipoLancamento = "Isento de Custas";
                                         }
 
                                         $pdf1->partilhaTipoLancamento = $sTipoLancamento;
-                                        $pdf1->partilhaDtPaga         = db_formatar($aDadosPartilha->v76_dtpagamento,"d");
+                                        $pdf1->partilhaDtPaga         = db_formatar($aDadosPartilha->v76_dtpagamento, "d");
                                         $pdf1->partilhaObs            = $aDadosPartilha->v76_obs;
                                     }
                                 }
                             }
                         }
                     } else {
-
                         $pdf1->partilhaTipoLancamento = "";
                         $pdf1->partilhaDtPaga         = "";
                         $pdf1->partilhaObs            = "";
@@ -1744,7 +1702,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                from arretipo
                               where k00_tipo = {$tipo_debito}";
                     $rsMsgContribuinte    = db_query($sSqlMsgContribuinte);
-                    $oDadosMsg = db_utils::fieldsMemory($rsMsgContribuinte,0);
+                    $oDadosMsg = db_utils::fieldsMemory($rsMsgContribuinte, 0);
 
                     $pdf1->msgcontribuinte = $oDadosMsg->k00_msgparc;
                     $pdf1->msgbanco        = $oDadosMsg->k00_msgparc2;
@@ -1806,23 +1764,34 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
                 $sDetalhesDebito = "";
 
-                foreach($pdf1->arraydescrreceitas as $iIndice => $sReceita){
+                if (isset($matric) && !empty($matric)) {
+                    $oDaoPropri = new cl_propri();
+                    $rsOutrosProprietarios = db_query($oDaoPropri->sql_outrosProprietarios($matric));
 
-                    switch( substr($sReceita,0, 4)  ) {
+                    $existeOutroProprietario    = pg_num_rows($rsOutrosProprietarios) == 1;
+                    $existemOutrosProprietarios = pg_num_rows($rsOutrosProprietarios) > 1;
+                    $sulfixoOutroProprietario   = $existeOutroProprietario ? ' E OUTRO' : ($existemOutrosProprietarios ? ' E OUTROS' : '');
 
-                      case "IPTU":
+                    $pdf1->descr3_1        = $pdf1->descr3_1 . $sulfixoOutroProprietario;
+                    $pdf1->descr11_1       = $pdf1->descr11_1 . $sulfixoOutroProprietario;
+                    $pdf1->nome            = $pdf1->nome . $sulfixoOutroProprietario;
+                    $pdf1->iptz01_nome     = $pdf1->iptz01_nome . $sulfixoOutroProprietario;
+                    $pdf1->iptproprietario = $pdf1->iptproprietario . $sulfixoOutroProprietario;
+                    $pdf1->predescr3_1     = $pdf1->predescr3_1 . $sulfixoOutroProprietario;
+                };
 
-                        $nValor = $pdf1->arrayvalreceitas[$iIndice];
-                        $sDetalhesDebito .= "Valor Débito: " . trim(db_formatar($nValor, "f"));
-                      break;
+                foreach ($pdf1->arraydescrreceitas as $iIndice => $sReceita) {
+                    switch (substr($sReceita, 0, 4)) {
+                        case "IPTU":
+                            $nValor = $pdf1->arrayvalreceitas[$iIndice];
+                            $sDetalhesDebito .= "Valor Débito: " . trim(db_formatar($nValor, "f"));
+                            break;
 
 
-                      case "Desc" :
-
-                        $nValor = $pdf1->arrayvalreceitas[$iIndice];
-                        $sDetalhesDebito .= "  Valor Desconto: " . trim(db_formatar($nValor, "f"));
-                      break;
-
+                        case "Desc":
+                            $nValor = $pdf1->arrayvalreceitas[$iIndice];
+                            $sDetalhesDebito .= "  Valor Desconto: " . trim(db_formatar($nValor, "f"));
+                            break;
                     }
                 }
 
@@ -1850,7 +1819,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     if ($sounica == '') {
-
         $pdf1->objpdf->Output();
         exit;
     }
@@ -1860,6 +1828,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $valores    = explode("P", $numpres[$volta]);
     $k00_numpre = $valores[0];
     $parcela    = explode("T", $valores[1]);
+
     $k00_numpar = $parcela[0];
     $k03_anousu = $H_ANOUSU;
 
@@ -1867,9 +1836,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $k03_numpre     = $parcela[1];
     $sDataUsuCarnes = $H_DATAUSU;
     if (isset($k00_formemissao)) {
-
         if ($k00_formemissao == 1) {
-
             $sSqlArrecad = " select k00_dtvenc                   ";
             $sSqlArrecad .= "   from arrecad                      ";
             $sSqlArrecad .= "  where k00_numpre   = {$k00_numpre} ";
@@ -1878,7 +1845,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $iNumRows = pg_num_rows($rsSqlArrecad);
 
             if ($iNumRows == 0) {
-
                 $oArrecad = db_utils::fieldsMemory($rsSqlArrecad, 0);
                 $sDataUsuCarnes = $oArrecad->k00_dtvenc;
             }
@@ -1886,7 +1852,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     try {
-
         db_inicio_transacao();
 
         $sSqlArrecadVencimento = " select k00_dtvenc                   ";
@@ -1926,8 +1891,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         /**
          * Quando o convenio for um convenio de cobrança registrada válido, adiciona o recibo gerado na fila para geração do arquivo de cobrança registrada
          */
-        if ($lConvenioCobrancaValido) {
-
+        if ($lConvenioCobrancaValido || $k00_taxaadm == 't') {
             $exerciciosCarne = (!empty($k00_exercicioscarne) ? $k00_exercicioscarne : 0);
 
             if (date('Y', strtotime($sVencimento)) > (db_getsession('DB_anousu') + $exerciciosCarne)) {
@@ -1961,7 +1925,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $oRecibo->setDescontoReciboWeb($k00_numpre, $k00_numpar, retornaRegraDescontoParcelamento($k00_numpre));
             $lConvenioCobrancaValidoSMTP = $lConvenioCobrancaValido;
 
-            if ($oDataVencimentoOriginal->getTimeStamp() > $oDataAtual->getTimeStamp() ) {
+            if ($oDataVencimentoOriginal->getTimeStamp() > $oDataAtual->getTimeStamp()) {
                 $lConvenioCobrancaValidoSMTP = false;
             }
 
@@ -1970,7 +1934,11 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $reciboCustasService->setRecibo($oRecibo);
             $reciboCustasService->setRegraEmissao($oRegraEmissao);
 
-            $processamentoCustas = $reciboCustasService->processar();
+            if (isset($semCalculoTaxas) && $semCalculoTaxas == true && db_utils::ativaParcelamentoCustas()) {
+                $processamentoCustas = $reciboCustasService->processar(false);
+            } else {
+                $processamentoCustas = $reciboCustasService->processar();
+            }
 
             if ($processamentoCustas) {
                 $oRecibo = $reciboCustasService->getRecibo();
@@ -1979,8 +1947,12 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $iCodigoRecibo = $oRecibo->getNumpreRecibo();
 
             $oDaoReciboPaga = new cl_recibopaga();
-            $sSqlReciboPaga = $oDaoReciboPaga->sql_query_file(null, " sum(k00_valor) as total ", null,
-                " k00_numnov = {$iCodigoRecibo} ");
+            $sSqlReciboPaga = $oDaoReciboPaga->sql_query_file(
+                null,
+                " sum(k00_valor) as total ",
+                null,
+                " k00_numnov = {$iCodigoRecibo} "
+            );
             $rsReciboPaga = db_query($sSqlReciboPaga);
 
             if (!$rsReciboPaga || pg_num_rows($rsReciboPaga) == 0) {
@@ -2000,27 +1972,35 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 CobrancaRegistrada::adicionarRecibo($oRecibo, $oRegraEmissao->getConvenio());
             }
             $sDataUsuCarnes = strtotime($sVencimento);
+        } else {
+            $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
+            $reciboPaga = $repository->findAll("k00_numnov = {$k03_numpre} AND k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO)
+              ->get(0);
+
+            $taxaExpediente = !empty($reciboPaga->getValor()) ? $reciboPaga->getValor() : 0;
         }
 
         db_fim_transacao(false);
-
     } catch (Exception $eException) {
         db_fim_transacao(true);
         db_redireciona("db_erros.php?fechar=true&db_erro=[2] - {$eException->getMessage()}");
         exit;
     }
 
-    if (!$oRegraEmissao->isCobranca()) {
-
+    if (!$oRegraEmissao->isCobranca() && $k00_taxaadm == 'f') {
         $DadosPagamento = debitos_numpre_carne($k00_numpre, $k00_numpar, $sDataUsuCarnes, $H_ANOUSU, db_getsession('DB_instit'), $DB_DATACALC, $forcarvencimento);
         db_fieldsmemory($DadosPagamento, 0);
     }
 
     if ($total < 0) {
-        db_redireciona("db_erros.php?fechar=true&db_erro=Valor negativo na{$sS} parcela{$sS} ".implode(",",$aParcelasSemInflatores)." verifique.");
+        db_redireciona("db_erros.php?fechar=true&db_erro=Valor negativo na{$sS} parcela{$sS} ".implode(",", $aParcelasSemInflatores)." verifique.");
     }
 
     /* PLUGIN NIT -> DEDUZIDO VALOR TOTAL COM O DESCONTO */
+
+    if (isset($taxaExpediente)) {
+        $total += $taxaExpediente;
+    }
 
     $nValorTot = $total;
     $total += $taxabancaria;
@@ -2034,7 +2014,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     if ($recibopaga == false) {
-
         $sql1 = "select k00_dtvenc as datavencimento,
                     k00_dtvenc,
                     k00_numtot,
@@ -2044,7 +2023,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 and k00_numpar = $k00_numpar
               limit 1";
     } else {
-
         $sql1 = "select recibopaga.k00_dtvenc as datavencimento,
                     case when recibopaga.k00_dtvenc > k00_dtpaga
                          then recibopaga.k00_dtvenc
@@ -2073,8 +2051,8 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     db_fieldsmemory(db_query($sqlvalor), 0);
 
-    if (!isset ($k00_tercdigcarnenormal) || $k00_tercdigcarnenormal == "") {
-        db_redireciona('db_erros.php?fechar=true&db_erro=Configure o terceiro digito do codigo de barras no cadastro do tipo de debito para este tipo de debito.');
+    if (!isset($k00_tercdigcarnenormal) || $k00_tercdigcarnenormal == "") {
+        db_redireciona('db_erros.php?fechar=true&db_erro=Configure o terceiro digito do código de barras no cadastro do tipo de débito para este tipo de débito.');
     }
 
     $iTercDig = $k00_tercdigcarnenormal;
@@ -2086,13 +2064,15 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $aCustas = $service->getCustas($k03_numpre);
 
         $pdf1->descrCustas = '';
-        if (count($aCustas) > 0 ) {
+        if (count($aCustas) > 0) {
             foreach ($aCustas as $custa) {
                 if ($custa->dispensalancamentorecibo == 'f') {
-                   $pdf1->valorTotalCustas += abs($custa->valor);
-                   $pdf1->descrCustas = $custa->descricao;
+                    $pdf1->valorTotalCustas += abs($custa->valor);
+                    $pdf1->descrCustas .= ", $custa->descricao";
                 }
             }
+
+            $pdf1->descrCustas = trim($pdf1->descrCustas, ", ");
             /**
              *  M17764 Abatimento de custas devido a lançamento direto no arrecad. Pois honorários estava sendo cobrado 2 vezes.
              *         Quando for localizado no arrecad valor de honorários, o mesmo será reduzido do valor final para evitar a
@@ -2107,48 +2087,43 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $sSqlAbatimentoCustas .= "   and a.k00_receit = {$custa->receita}                             ";
 
             $rsAbatimentoCustas = db_query($sSqlAbatimentoCustas);
-            db_fieldsmemory($rsAbatimentoCustas, 0);
-            if ( $pdf1->valorTotalCustas <> $vlr_honorarios && $vlr_honorarios > 0 ){
-                $pdf1->valorTotalCustas = $vlr_honorarios;
+
+            if (pg_num_rows($rsAbatimentoCustas) > 0) {
+                db_fieldsmemory($rsAbatimentoCustas, 0);
+                if ($pdf1->valorTotalCustas <> $vlr_honorarios && $vlr_honorarios > 0) {
+                    $pdf1->valorTotalCustas = $vlr_honorarios;
+                }
+                $total -= $vlr_honorarios;
+                $nValorTot -= $vlr_honorarios;
             }
-            $total -= $vlr_honorarios;
-            $nValorTot -= $vlr_honorarios;
         }
     }
 
     $ss = $ninfla;
 
     if ($k00_impval == 't') {
-
         if ($k03_tipo == 3) {
-
             $rsAnoissvar = db_query("select q05_ano from issvar where q05_numpre = $k00_numpre");
-            $intAnoissvar = pg_numrows($rsAnoissvar);
+            $intAnoissvar = pg_num_rows($rsAnoissvar);
             db_fieldsmemory($rsAnoissvar, 0);
 
             if ($intAnoissvar > 0 && $q05_ano <= date("Y", $H_DATAUSU)) {
-
                 $k00_valor = ($total + $pdf1->valorTotalCustas);
                 $vlrbar    = db_formatar(str_replace('.', '', str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
                 $ninfla = '';
-
             }
 
             if ($total == 0) {
                 $iTercDig = 7;
             }
-
         } else {
-
             $ninfla_ant = $ninfla;
 
             if ($total > 0) {
-
                 $k00_valor = ($total + $pdf1->valorTotalCustas);
                 $vlrbar    = db_formatar(str_replace('.', '', str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
                 $ninfla = '';
             } else {
-
                 $vlrbar    = db_formatar(str_replace('.', '', str_pad(number_format(0, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
                 $k00_valor = $qinfla;
             }
@@ -2165,26 +2140,20 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             }
 
             if (($total == 0) || (substr($k00_dtvenc, 6, 4) > date("Y", $H_DATAUSU) + $iExerciciosCarne)) {
-
                 if ($ninfla_ant == "REAL") {
-
                     $iTercDig = 6;
                     $vlrbar   = db_formatar(str_replace('.', '', str_pad(number_format(($k00_valor + $pdf1->valorTotalCustas), 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
                 } else {
-
                     $iTercDig = 7;
                     $vlrbar   = "00000000000";
                     if ($total != 0) {
-
                         $k00_valor = $qinfla;
                         $ninfla    = $ss;
                     }
                 }
             }
         } // Else do Issqn
-
     } else {
-
         $k00_valor = $qinfla;
         $iTercDig  = 7;
         $vlrbar    = "00000000000";
@@ -2204,8 +2173,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     $db_dtvenc = str_replace("-", "", $datavencimento);
 
-    if (isset ($emiscarneiframe) && $emiscarneiframe == 'n') {
-
+    if (isset($emiscarneiframe) && $emiscarneiframe == 'n') {
         if (substr($db_dtvenc, 0, 4) > db_getsession('DB_anousu')) {
             continue;
         }
@@ -2214,20 +2182,16 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $ninfla_ant = $ninfla;
 
     if ($oRegraEmissao->isCobranca()) {
-
         if (substr($db_dtvenc, 0, 4) > db_getsession('DB_anousu') && $k00_valor > 0 && ( $ninfla_ant != "" && $ninfla_ant != "REAL")) {
-
             $k00_valor = 0;
             $especie   = $ninfla;
             $histinf   = "\n Atenção : entre em contato com o municipio para saber o valor da $ninfla.";
         } else {
-
             $especie   = 'R$';
             $histinf   = "";
         }
 
         if ($dtvenc < date('Ymd', db_getsession('DB_datausu')) && $k00_valor > 0) {
-
             $msgvencida = "\n Parcela vencida, valor calculado com juros e multa até a data atual. Vencimento original " . $k00_dtvenc;
             $k00_dtvenc = date('d/m/Y', $H_DATAUSU);
         } else {
@@ -2240,19 +2204,16 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     if ($recibopaga == false) {
-
         $iNumpre = $iCodigoRecibo;
         $iNumpar = 0;
 
         if (empty($iCodigoRecibo)) {
-
             $iNumpre = $k00_numpre;
             $iNumpar = $k00_numpar;
         }
     } else {
-
         $iNumpre = $k03_numpre;
-        $iNumpar = $k00_numpar;;
+        $iNumpar = $k00_numpar;
     }
 
     if ($tipo_debito == 3 && $nValorTot == 0) {
@@ -2264,7 +2225,12 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $dataVencimento = date('d/m/Y', strtotime($sVencimento));
     $dataSelecionada = $_GET['dataPagamentoSelecionada'];
     try {
-        $oConvenio = new convenio($oRegraEmissao->getConvenio(), $iNumpre, $iNumpar, ($nValorTot+$pdf1->valorTotalCustas), $vlrbar, $dataSelecionada, $iTercDig, $dataVencimento);
+        if ($oRegraEmissao->isCobranca()) {
+            $oConvenio = new convenio($oRegraEmissao->getConvenio(), $iNumpre, 0, ($nValorTot+$pdf1->valorTotalCustas), $vlrbar, $dataSelecionada, $iTercDig, $dataVencimento);
+        } else {
+            $oConvenio = new convenio($oRegraEmissao->getConvenio(), $iNumpre, $iNumpar, ($nValorTot+$pdf1->valorTotalCustas), $vlrbar, $dataSelecionada, $iTercDig, $dataVencimento);
+        }
+
     } catch (Exception $eExeption) {
         db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
         exit;
@@ -2275,13 +2241,16 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
      *
      */
     try {
+        $validaPix = pg_num_rows(db_query("select * from arretipopix where (modsistema or moddbpref) = true and k00_tipo = {$tipo};"));
+        if($validaPix > 0){
+            $emitePix = true;
+        }
+        $getNumparPix = db_query("select k00_numpar from recibopaga where k00_numnov = $k03_numpre limit 1");
+         
         if ($lConvenioCobrancaValido && CobrancaRegistrada::utilizaIntegracaoWebService($oRegraEmissao->getConvenio())) {
-
-            if(db_getsession('DB_DEBUG', false) && db_getsession('DB_DEBUG') == true) {
-
-                if(!Registry::get('app.container')->has('app.webservice_caixa.debug')) {
-
-                    Registry::get('app.container')->register('app.webservice_caixa.debug', function() {
+            if (db_getsession('DB_DEBUG', false) && db_getsession('DB_DEBUG') == true) {
+                if (!Registry::get('app.container')->has('app.webservice_caixa.debug')) {
+                    Registry::get('app.container')->register('app.webservice_caixa.debug', function () {
 
                         $idUsuario      = db_getsession('DB_id_usuario');
                         $usuarioSistema = UsuarioSistemaRepository::getPorCodigo($idUsuario);
@@ -2291,7 +2260,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                             'debug'  => false,
                             'origem' => 'Carne'
                         );
-                        if(strpos($nomeUsuario, 'dbseller') !== false) {
+                        if (strpos($nomeUsuario, 'dbseller') !== false) {
                             $debugWebservice->debug = true;
                         }
 
@@ -2300,7 +2269,15 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 }
             }
 
-            CobrancaRegistrada::registrarReciboWebservice($iNumpre, $oRegraEmissao->getConvenio(), $nValorTot, false, $aEmitirPor);
+            CobrancaRegistrada::registrarReciboWebservice(
+                $iNumpre, 
+                $oRegraEmissao->getConvenio(), 
+                $nValorTot, 
+                false, 
+                $aEmitirPor, 
+                $emitePix,
+                pg_fetch_result($getNumparPix, 0, 'k00_numpar')
+            );
         }
     } catch (Exception $oErro) {
         db_redireciona("db_erros.php?fechar=true&db_erro={$oErro->getMessage()}");
@@ -2308,17 +2285,49 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     if ($oRegraEmissao->getCadTipoConvenio() == 7) {
-
-          // Geração do Convenio de Cobrança
+        // Geração do Convenio de Cobrança
         db_app::import('convenio');
         $nValorRecibo = $oRecibo->getTotalRecibo();
         $sValorCodigoBarras = str_pad(number_format($nValorRecibo, 2, "", ""), 11, "0", STR_PAD_LEFT);
 
         $dataVencimento = date('Y-m-d', strtotime($sVencimento));
         $dataPagamento = $_GET['dataPagamentoSelecionada'];
-        $dataPagamento = $dataVencimento >= $dataPagamento ? $dataVencimento : $dataPagamento;
-        $oConvenio = new convenio($oRegraEmissao->getConvenio(), $oRecibo->getNumpreRecibo(), 0, $nValorRecibo,
-        $sValorCodigoBarras, $_GET['dataPagamentoSelecionada'], $iTercDig);
+       	$dataPagamentoYMD = substr($dataPagamento,6,4).substr($dataPagamento,3,2).substr($dataPagamento,0,2);
+      	$dataVencimentoYMD = str_replace('-','',$dataVencimento) ;
+      	$dataAtualYMD = str_replace('-','',$oDataAtual->getDate());
+      	$dataPagamento = $dataVencimentoYMD > $dataPagamentoYMD ? $dataVencimento : $dataPagamento;
+
+        $sSqlProximoDiaUtil = "select fc_proximo_dia_util('{$dataPagamento}'::date ) as proximo_dia_util;";
+        $rsProximoDiaUtil = db_query($sSqlProximoDiaUtil);
+
+        if (!$rsProximoDiaUtil) {
+           throw new DBException("Erro ao tentar buscar o próximo dia útil do vencimento.");
+        }
+
+	      $dataPagamento = db_utils::fieldsMemory($rsProximoDiaUtil, 0)->proximo_dia_util;
+
+        if(str_replace('-','',$dataPagamento) == $dataAtualYMD) {
+           $sSqlProximoDiaUtil = "select fc_proximo_dia_util('{$dataPagamento}'::date +1) as proximo_dia_util;";
+           $rsProximoDiaUtil = db_query($sSqlProximoDiaUtil);
+
+           if (!$rsProximoDiaUtil) {
+              throw new DBException("Erro ao tentar buscar o próximo dia útil do vencimento.");
+           }
+
+           $dataPagamento = db_utils::fieldsMemory($rsProximoDiaUtil, 0)->proximo_dia_util;
+
+	    }
+        if (!$oConvenio instanceof convenio) {
+            $oConvenio = new convenio(
+                $oRegraEmissao->getConvenio(),
+                $oRecibo->getNumpreRecibo(),
+                0,
+                $nValorRecibo,
+                $sValorCodigoBarras,
+                $dataPagamento,
+                $iTercDig
+            );
+        }
     }
 
     $codigo_barras = $oConvenio->getCodigoBarra();
@@ -2337,18 +2346,17 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $nValorTot+$pdf1->valorTotalCustas
             );
         } catch (Exception $th) {
-//             dd($th->getMessage());
         }
     }
 
     $pdf1->agencia_cedente = $oConvenio->getAgenciaCedente();
-    $pdf1->carteira        = $oConvenio->getCarteira();
+    $pdf1->carteira        = $oConvenio->getCodigoCarteira();
 
     if ($oRegraEmissao->isCobranca()) {
         $pdf1->nosso_numero = $oConvenio->getNossoNumero();
     }
 
-    if ($recibopaga == false) {
+    if (!$recibopaga) {
         $numpre = db_sqlformatar($k00_numpre, 8, '0') . '000999';
         $numpre = $numpre . db_CalculaDV($numpre, 11);
     } else {
@@ -2369,7 +2377,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $sNumparzinho  = str_pad($k00_numpar, 3, '0', STR_PAD_LEFT);
     }
 
-    if ($recibopaga == false) {
+    if (!$recibopaga) {
         $pdf1->descr2 = db_numpre($iCodigoRecibo, 0) . $sNumparzinho;
     } else {
         $pdf1->descr2 = db_numpre($k03_numpre, 0) . db_formatar(0, 's', "0", 3, "e");
@@ -2378,9 +2386,8 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $pdf1->tipo_exerc = "$k00_tipo / " . $exerc_debito;
     $pdf1->exerc_debito = $exerc_debito;
     /************  BUSCA RECEITAS COM OS VALORES *****************/
-    //$recibopaga = false;
 
-    if ($recibopaga == false) {
+    if (!$recibopaga) {
         $sqlReceitas  = " select substr(fc_calcula,15,13)::float8 as valor_corrigido,           ";
         $sqlReceitas .= "        rec_juros,                                                     ";
         $sqlReceitas .= "        substr(fc_calcula,28,13)::float8 as valor_juros,               ";
@@ -2414,12 +2421,16 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $sqlReceitas .= "        fc_calcula(a.k00_numpre,                                       ";
         $sqlReceitas .= "                   a.k00_numpar,                                       ";
         $sqlReceitas .= "                   a.k00_receit,                                       ";
-        $sqlReceitas .= "                   ( case when k00_dtvenc < '" . date("Y-m-d",
-                db_getsession("DB_datausu")) . "'";
+        $sqlReceitas .= "                   ( case when k00_dtvenc < '" . date(
+            "Y-m-d",
+            db_getsession("DB_datausu")
+        ) . "'";
         $sqlReceitas .= "                          then '" . date('Y-m-d', $H_DATAUSU) . "'          ";
         $sqlReceitas .= "                          else k00_dtvenc end ),                       ";
-        $sqlReceitas .= "                   ( case when k00_dtvenc < '" . date("Y-m-d",
-                db_getsession("DB_datausu")) . "'";
+        $sqlReceitas .= "                   ( case when k00_dtvenc < '" . date(
+            "Y-m-d",
+            db_getsession("DB_datausu")
+        ) . "'";
         $sqlReceitas .= "                          then '" . date('Y-m-d', $H_DATAUSU) . "'          ";
         $sqlReceitas .= "                          else k00_dtvenc end ),                       ";
         $sqlReceitas .= $H_ANOUSU . ")                                        ";
@@ -2436,7 +2447,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     } else {
         $sqlReceitas = " select k00_tipo as codtipo from arrecad where k00_numpre = $k00_numpre ";
         $rsReceitas = db_query($sqlReceitas);
-        if (pg_numrows($rsReceitas) == 0) {
+        if (pg_num_rows($rsReceitas) == 0) {
             db_msgbox("Não encontrado arrecad ($k00_numpre).");
             exit;
         }
@@ -2468,7 +2479,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
           *           com isso estavam sendo somados no valor da parcela e cobrados novamente
           *           na busca das custas
           */
-        if ( isset($vlr_honorarios) &&  $vlr_honorarios > 0 ){
+        if (isset($vlr_honorarios) &&  $vlr_honorarios > 0) {
             $sqlReceitas .= "   and a.k00_receit <> {$custa->receita}                             ";
         }
         $sqlReceitas .= "                INNER JOIN tabrec ON tabrec.k02_codigo = a.k00_receit ";
@@ -2515,7 +2526,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $sqlReceitas .= "                         codreceita, historico, descrreceita, reduzreceita, codtipo ";
         $sqlReceitas .= "                  from valores_arrecad ";
         $sqlReceitas .= "                 ) as x ";
-
     }
 
     $rsReceitas = db_query($sqlReceitas);
@@ -2565,10 +2575,9 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $nDesconto += $valor_desconto;
     }
 
-    $pdf1->valororigem = db_formatar($vlrhistorico,"f");
+    $pdf1->valororigem = db_formatar($vlrhistorico, "f");
 
-    if(isset($vlrjuros) && $vlrjuros != "" && $vlrjuros != 0){
-
+    if (isset($vlrjuros) && $vlrjuros != "" && $vlrjuros != 0) {
         $pdf1->arraycodhist[]       = "";
         $pdf1->arraycodtipo[]       = "t";
         $pdf1->arraycodreceitas[]   = "";
@@ -2577,7 +2586,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $pdf1->arrayvalreceitas[]   = $vlrjuros;
     }
     if (isset($vlrmulta) && $vlrmulta != "" && $vlrmulta != 0) {
-
         $pdf1->arraycodhist[]       = "";
         $pdf1->arraycodtipo[]       = "t";
         $pdf1->arraycodreceitas[]   = "";
@@ -2594,8 +2602,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $pdf1->arrayvalreceitas[]   = $nDesconto;
     }
     /***********************************************************************************************/
-    if (!empty ($aDados["ver_matric"])) {
-
+    if (!empty($aDados["ver_matric"])) {
         //Regra para parcela
 
         $numero = $aDados["ver_matric"];
@@ -2640,7 +2647,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             where j01_matric = $numero limit 1";
 
         $rsresultender   = db_query($sqlEnder);
-        $intNumrowsEnder = pg_numrows($rsresultender);
+        $intNumrowsEnder = pg_num_rows($rsresultender);
 
         if ($intNumrowsEnder > 0) {
             db_fieldsmemory($rsresultender, 0);
@@ -2658,12 +2665,12 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $pdf1->refant        = $j40_refant;
 
         /*
-         * Se regra da configuração de dados da instituição for somente propritário então true ou não tiver promitente cadastrado true
+         * Se regra da configuração de dados da instituição for somente proprietário então true ou não tiver promitente cadastrado true
          * Promitente e Proprietario = 0
          * Somente Proprietario = 1
          * Somente Promitente = 2
          */
-        if($db21_regracgmiptu == 1 || $num_cgm_promitente == ""){
+        if ($db21_regracgmiptu == 1 || $num_cgm_promitente == "") {
             $pdf1->descr3_1      = $num_cgm_proprietario . " - " . $nome_proprietario;
             $pdf1->descr11_1     = $num_cgm_proprietario . " - " . $nome_proprietario;
             $pdf1->munic         = $municipio_proprietario;
@@ -2761,7 +2768,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $pdf1->precep = $z01_cep;
             $pdf1->nomepriimo = $nomepri;
             $pdf1->nomepri = $nomepri;
-            $pdf1->prenomepri = $nomepri;;
+            $pdf1->prenomepri = $nomepri;
             $pdf1->nrpri = $j39_numero;
             $pdf1->prenrpri = $j39_numero;
             $pdf1->complpri = $j39_compl;
@@ -2795,7 +2802,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $pdf1->tipocompl = 'Número:';
                 $pdf1->tipobairro = 'Bairro:';
                 $pdf1->bairropri = $z01_bairro;
-                $pdf1->refant    = $j40_refant;
+                $pdf1->refant    = '';
                 $pdf1->descr17   = $bql;
                 $pdf1->descr11_1 = $z01_numcgm . " - " . $z01_nome;
                 $pdf1->descr11_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
@@ -2805,7 +2812,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $pdf1->premunic = $z01_munic;
                 $pdf1->uf = $z01_uf;
                 $pdf1->ufcgm = $z01_uf;
-                $pdf1->descr3_1 = $z01_numcgm . " - " . $proprietario;
+                $pdf1->descr3_1 = $z01_numcgm . " - " . $z01_nome;
                 $pdf1->descr3_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
                 $pdf1->predescr3_1 = $z01_numcgm . " - " . $z01_nome;
                 $pdf1->predescr3_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
@@ -2854,13 +2861,11 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     if ($k00_hist1 == '' || $k00_hist2 == '') {
-
         $pdf1->descr4_1            = $k00_numpar.'a PARCELA';
         $pdf1->historicoparcela    = $k00_numpar.'a PARCELA';
         $pdf1->prehistoricoparcela = $k00_numpar.'a PARCELA';
 
         if ($k03_tipo == 16) {
-
             $sqldiversos = "select distinct dv05_obs
                         from termo
                              inner join termodiver on dv10_parcel   = v07_parcel
@@ -2868,8 +2873,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                        where v07_numpre = $k00_numpre";
             $resultdiversos = db_query($sqldiversos);
 
-            if (pg_numrows($resultdiversos) > 0) {
-
+            if (pg_num_rows($resultdiversos) > 0) {
                 db_fieldsmemory($resultdiversos, 0, true);
                 $pdf1->descr4_2    = substr($dv05_obs, 0, 100);
                 $pdf1->predescr4_2 = substr($dv05_obs, 0, 100);
@@ -2880,7 +2884,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                 $sqldiversos = "select distinct dv05_obs from diversos where dv05_numpre = $k00_numpre";
                 $resultdiversos = db_query($sqldiversos);
 
-                if (pg_numrows($resultdiversos) > 0) {
+                if (pg_num_rows($resultdiversos) > 0) {
                     db_fieldsmemory($resultdiversos, 0, true);
                     $pdf1->descr4_2 = substr($dv05_obs, 0, 100);
                     $pdf1->predescr4_2 = substr($dv05_obs, 0, 100);
@@ -2889,11 +2893,11 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             }
         }
     } else {
-        if (isset ($k00_hist1) && $k00_hist1 != "" && $k00_hist1 != ".") {
+        if (isset($k00_hist1) && $k00_hist1 != "" && $k00_hist1 != ".") {
             $pdf1->descr4_1 = $k00_hist1;
         }
 
-        if (isset ($k00_hist2) && $k00_hist2 != "" && $k00_hist2 != ".") {
+        if (isset($k00_hist2) && $k00_hist2 != "" && $k00_hist2 != ".") {
             $pdf1->descr4_2 = $k00_hist2;
             $pdf1->predescr4_2 = $k00_hist2;
         }
@@ -2908,15 +2912,13 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $rsvistorias = db_query($sqlvistorias);
     /***********************************************************************************/
 
-    if (pg_numrows($rsvistorias) > 0) {
-
+    if (pg_num_rows($rsvistorias) > 0) {
         db_fieldsmemory($rsvistorias, 0);
         $pdf1->tipodebito = $y77_descricao . " - $ano_vistoria";
         $pdf1->pretipodebito = $y77_descricao . " - $ano_vistoria";
     }
 
-    if (isset ($obs)) {
-
+    if (isset($obs)) {
         $pdf1->titulo13 = 'Observação';
         $pdf1->descr13  = $obs;
     }
@@ -2945,8 +2947,8 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $tmpdtvenc    = $tmpdta[2] . "-" . $tmpdta[1] . "-" . $tmpdta[0];
     if ($db_datausu > $tmpdtvenc && $k00_valor > 0) {
         $pdf1->dtparapag    = $_GET['dataPagamentoSelecionada'];
-        $pdf1->datacalc     = db_formatar($db_datausu,'d');
-        $pdf1->predatacalc  = db_formatar($db_datausu,'d');
+        $pdf1->datacalc     = db_formatar($db_datausu, 'd');
+        $pdf1->predatacalc  = db_formatar($db_datausu, 'd');
         $pdf1->confirmdtpag = 't';
     } else {
         $dataVencimento     = new DBDate($k00_dtvenc);
@@ -2965,7 +2967,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $pdf1->descr8     = $iNumeroOrigem;
     $pdf1->predescr8  = $iNumeroOrigem;
 
-    if ($recibopaga == false) {
+    if (!$recibopaga) {
         $pdf1->descr9 = db_numpre($iCodigoRecibo, 0) . str_pad($sNumparzinho, 3, '0', STR_PAD_LEFT);
         $pdf1->predescr9 = db_numpre($iCodigoRecibo, 0) . str_pad($sNumparzinho, 3, '0', STR_PAD_LEFT);
     } else {
@@ -2978,14 +2980,12 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $pdf1->descr14 = $k00_dtvenc;
 
     if ($total == 0) {
-
         //////////// ISSQN VARIAVEL ///////////
         if ($k03_tipo == 3) {
             $sqlaliq = "select q05_aliq, q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
             $rsIssvarano = db_query($sqlaliq);
-            $intNumrows  = pg_numrows($rsIssvarano);
+            $intNumrows  = pg_num_rows($rsIssvarano);
             if ($intNumrows == 0) {
-
                 db_redireciona('db_erros.php?fechar=true&db_erro=Ano não encontrado na tabela issvar. Contate o suporte');
                 exit;
             }
@@ -3001,19 +3001,16 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $pdf1->valtotal   = '';
         $pdf1->descr7     = '';
         $pdf1->predescr7  = '';
-
     } else {
         $pdf1->mora_multa = db_formatar($vlrmulta + $vlrjuros, "f");
         $pdf1->descr15 = ($ninfla == '' ? 'R$  ' . db_formatar(($k00_valor+$pdf1->valorTotalCustas), 'f') : $ninfla . '  ' . $k00_valor);
-        //$pdf1->valtotal = db_formatar($k00_valor, 'f'); //$k00_valor;
         $pdf1->valtotal = db_formatar($total, 'f');
+        $pdf1->valor_corrigido = db_formatar($nTotalDebito, 'f');
         $pdf1->descr7 = ($ninfla == '' ? 'R$  ' . db_formatar(($k00_valor+$pdf1->valorTotalCustas), 'f') : $ninfla . '  ' . $k00_valor);
         $pdf1->predescr7 = ($ninfla == '' ? 'R$  ' . db_formatar($k00_valor, 'f') : $ninfla . '  ' . $k00_valor);
     }
 
     if ($oRegraEmissao->isCobranca()) {
-
-
         $pdf1->descr1 .= ' - ' . $tipopri.'. ' . $nomepri. ' '.$j39_numero.' '.$j39_compl.' '.$j13_descr."\n";
 
         $pdf1->descr12_1 .= $pdf1->tipodebito . "\n" .
@@ -3040,36 +3037,30 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     $rsmsgcarne = db_query($sSqlCarne);
 
-    if (pg_numrows($rsmsgcarne) > 0) {
+    if (pg_num_rows($rsmsgcarne) > 0) {
         db_fieldsmemory($rsmsgcarne, 0);
     }
 
     if ($pagabanco == 't') {
-
-        if (isset ($datavencimento) && (str_replace('-', '', $datavencimento) < $dDataOperacao)) {
-
-            if (isset ($k00_msgparcvenc2) && $k00_msgparcvenc2 != "") {
-
+        if (isset($datavencimento) && (str_replace('-', '', $datavencimento) < $dDataOperacao)) {
+            if (isset($k00_msgparcvenc2) && $k00_msgparcvenc2 != "") {
                 $pdf1->descr12_1    .= $k00_msgparcvenc." " . $histinf . " " . $msgvencida;
                 $pdf1->predescr12_1 .= $k00_msgparcvenc." ".$histinf;
             }
         } else {
-
-            if (isset ($k00_msgparc) && $k00_msgparc != "") {
+            if (isset($k00_msgparc) && $k00_msgparc != "") {
                 $pdf1->descr12_1 .= $k00_msgparc . " " . $histinf;
-            } elseif (isset ($k03_msgbanco) && $k03_msgbanco != "") {
-
+            } elseif (isset($k03_msgbanco) && $k03_msgbanco != "") {
                 $pdf1->descr12_1    .= $k03_msgbanco." Não aceitar após vencimento.";
                 $pdf1->predescr12_1 .= $k03_msgbanco." Não aceitar após vencimento.";
             }
         }
     } else {
-
-        if (isset ($datavencimento) && (str_replace('-', '', $datavencimento) < $dDataOperacao)) {
+        if (isset($datavencimento) && (str_replace('-', '', $datavencimento) < $dDataOperacao)) {
             $pdf1->descr12_1 .= $k00_msgparcvenc2 . " " . $histinf;
-        } elseif (isset ($k00_msgparc2) && $k00_msgparc2 != "") {
+        } elseif (isset($k00_msgparc2) && $k00_msgparc2 != "") {
             $pdf1->descr12_1 .= $k00_msgparc2 . " " . $histinf;
-        } elseif (isset ($k03_msgbanco) && $k03_msgbanco != "") {
+        } elseif (isset($k03_msgbanco) && $k03_msgbanco != "") {
             $pdf1->descr12_1 .= $k03_msgbanco . " Após o vencimento cobrar juros de 1%a.m e multa de 2% ";
         } else {
             $pdf1->descr12_1 .= '- O PAGAMENTO DEVERÁ SER EFETUADO SOMENTE NA PREFEITURA.' . " " . $histinf . " " . $msgvencida;
@@ -3086,14 +3077,12 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     $resparag = db_query($sqlparag);
 
-    if (isset ($datavencimento) && (str_replace('-', '', $datavencimento) < $dDataOperacao) && $k00_valor > 0) {
-
+    if (isset($datavencimento) && (str_replace('-', '', $datavencimento) < $dDataOperacao) && $k00_valor > 0) {
         $part1 = '';
         $part2 = '';
         $part3 = '';
 
-        if (isset ($k00_msgparcvenc) && $k00_msgparcvenc != "") {
-
+        if (isset($k00_msgparcvenc) && $k00_msgparcvenc != "") {
             if (strlen($k00_msgparcvenc) > 50) {
                 $part1 = substr(substr($k00_msgparcvenc, 0, 50), 0, strrpos(substr($k00_msgparcvenc, 0, 50), ' '));
             } else {
@@ -3117,8 +3106,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $pdf1->predescr16_2 = $part2;
             $pdf1->predescr16_3 = $part3;
         }
-    } elseif (isset ($k00_msgparc) && $k00_msgparc != "") {
-
+    } elseif (isset($k00_msgparc) && $k00_msgparc != "") {
         $pdf1->descr16_1    = substr($k00_msgparc, 0, 50);
         $pdf1->descr16_2    = substr($k00_msgparc, 50, 50);
         $pdf1->descr16_3    = substr($k00_msgparc, 100, 50);
@@ -3126,9 +3114,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $pdf1->predescr16_2 = substr($k00_msgparc, 50, 50);
         $pdf1->predescr16_3 = substr($k00_msgparc, 100, 50);
     } else {
-
-        if (isset ($k03_msgcarne) && $k03_msgcarne != "") {
-
+        if (isset($k03_msgcarne) && $k03_msgcarne != "") {
             $pdf1->descr16_1    = substr($k03_msgcarne, 0, 50);
             $pdf1->descr16_2    = substr($k03_msgcarne, 50, 50);
             $pdf1->descr16_3    = substr($k03_msgcarne, 100, 50);
@@ -3136,8 +3122,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $pdf1->predescr16_2 = substr($k03_msgcarne, 50, 50);
             $pdf1->predescr16_3 = substr($k03_msgcarne, 100, 50);
         } else {
-
-            if (pg_numrows($resparag) == 0) {
+            if (pg_num_rows($resparag) == 0) {
                 $db02_texto = "";
             } else {
                 db_fieldsmemory($resparag, 0);
@@ -3157,7 +3142,9 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
     $pdf1->historico = $pdf1->pretipodebito . $k03_msgcarne;
 
-    $pdf1->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
+    $sql = 'select nome from db_usuarios where login = \''.db_getsession('DB_login').'\'';
+    $rSql = db_query($sql);
+    $pdf1->texto =  substr(pg_fetch_all($rSql)[0]['nome'], 0, 30) . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
     $imprimircodbar = true;
 
     $sqltermo       = "select k40_forma
@@ -3166,15 +3153,14 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                       where v07_numpre = $k00_numpre";
     $resulttermo = db_query($sqltermo) or die($sqltermo);
 
-    if (pg_numrows($resulttermo) > 0) {
-
+    if (pg_num_rows($resulttermo) > 0) {
         db_fieldsmemory($resulttermo, 0);
         if ($k40_forma == 2 and $k00_numpar == $k00_numtot) {
             $imprimircodbar = false;
         }
     }
 
-    if ($imprimircodbar == true) {
+    if ($imprimircodbar) {
         // adicionado padrão das variáveis do mod_imprime92
         $pdf1->linha_digitavel = $linha_digitavel;
         $pdf1->linhadigitavel = $linha_digitavel;
@@ -3211,11 +3197,10 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $resultVerParcel = db_query($sqlVerParcel);
     $linhasVerParcel = pg_num_rows($resultVerParcel);
 
-    $pdf1->descr4_2 = "";
+    $pdf1->descr4_2 = preg_replace("/\n\r|\n|\r/", '', $pdf1->descr4_2);
 
-    if($linhasVerParcel>0 ) {
-
-        db_fieldsmemory($resultVerParcel,0);
+    if ($linhasVerParcel>0) {
+        db_fieldsmemory($resultVerParcel, 0);
 
         //Calcula o desconto.
         $datahoje = date("Y-m-d", $DB_DATACALC);
@@ -3229,32 +3214,36 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             }
 
             $k00_dtvenc = db_utils::fieldsMemory($rsVencimento, 0)->vencimento;
-
         } catch (Exception $eExeption) {
             db_redireciona("db_erros.php?fechar=true&db_erro=" . $eExeption->getMessage());
         }
+
         if (db_strtotime($k00_dtvenc) >= db_strtotime($db_datausu)) {
-            $sqlDesconto = "select fc_recibodesconto($k00_numpre,$k00_numpar,$v07_totpar,$k00_receit,$k00_tipo,'$k00_dtvenc','$k00_dtvenc') as percento";
+            $sqlDesconto = "select npercretprinc, npercdesccorre, npercdescjuros, npercdescmulta, iretcodregra, sretdescrregra ";
+            $sqlDesconto .= "from fc_recibodesconto($k00_numpre,$k00_numpar,$v07_totpar,$k00_receit,$k00_tipo,'$k00_dtvenc','$k00_dtvenc')";
             $resultDesconto = db_query($sqlDesconto);
             $linhasDesconto = pg_num_rows($resultDesconto);
 
-            $pdf1->descr4_2  = "Valor da parcela                        R$" . db_formatar($nTotalDebito, "f") . "\n";
-
-            if ($vlrjuros > 0){
+            $pdf1->descr4_2 = str_pad("Valor da parcela", 51, ' ', STR_PAD_RIGHT)." R$" . db_formatar($nTotalDebito, "f") . "\n";
+            if ($vlrjuros > 0) {
                 $pdf1->descr4_2 .= "Juro (mora + fincanciamento) R$" . db_formatar($vlrjuros, "f") . "\n";
             }
 
             if ($linhasDesconto > 0) {
                 db_fieldsmemory($resultDesconto, 0);
-                if ($percento != 0) {
-                    $desc = 100 - $percento;
-                    $valorDesconto = round(($nTotalDebito - ($nTotalDebito * ($desc / 100))), 2);
-                    $pdf1->descr4_2 .= "Desconto até o vencimento     R$" . db_formatar($valorDesconto, "f");
-                    $pdf1->descontototal = $valorDesconto;
+                if (($npercdesccorre+$npercdescjuros+$npercdescmulta) == 0) {
+                    if ($npercretprinc != 0) {
+                        $desc = 100 - $npercretprinc;
+                        $valorDesconto = round(($nTotalDebito - ($nTotalDebito * ($desc / 100))), 2);
+                        $pdf1->descr4_2 .= "Desconto até o vencimento     R$" . db_formatar($valorDesconto, "f");
+                        $pdf1->descontototal = $valorDesconto;
+                    }
+                } else {
+                    $pdf1->descr4_2 .= "DESCONTO REGRA {$iretcodregra}-{$sretdescrregra}  JÁ APLICADO.";
                 }
             }
         } else {
-            $pdf1->descr4_2      = "Valor da parcela                                    R$" . db_formatar($nTotalDebito, "f") . "\n";
+            $pdf1->descr4_2      = str_pad("Valor da parcela", 51, ' ', STR_PAD_RIGHT)." R$" . db_formatar($nTotalDebito, "f") . "\n";
             if ($lReceitasIguais) {
                 /**
                  *  M17764 - Casos que receita de juros e receita multa são iguais o valor está somando juros+multa na vlrjuros
@@ -3312,7 +3301,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     /**
-     * Variável $sEnderecoMatricula criada na linha 39
+     * Vari?vel $sEnderecoMatricula criada na linha 39
      * Se for uma busca por matricula ela tera o valor de  $j43_ender .  $j39_numero
      */
     if (!empty($sEnderecoMatricula)) {
@@ -3338,7 +3327,6 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $pdf1->iptproprietario    = $pdf1->descr11_1;
 
     if ($k03_tipo == 13) {
-
         $pdf1->msgcontribuinte = "";
 
         if (!empty($aProcessoForo) && !empty($aCodProcessoForo[$k00_numpre])) {
@@ -3349,14 +3337,41 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
     $reciboPaga = $repository->findAll("k00_numnov = {$k03_numpre} AND k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO)
       ->get(0);
-
+      $pdf1->taxaExpediente = '';
     if (!empty($reciboPaga->getValor())) {
         $pdf1->taxaExpediente = TaxaEspecificaModel::DESCRICAO_TAXA_EXPEDIENTE . " = " . trim(db_formatar($reciboPaga->getValor(), 'f'));
+
+        $sqlArretipo = "select k00_taxaadm from arretipo where k00_tipo = $k00_tipo";
+        $rArretipo = db_query($sqlArretipo);
+
+        if(pg_fetch_result($rArretipo,0) == 't'){
+            $sqlTabrec = "select k02_drecei from tabrec where  k02_codigo = ".$reciboPaga->getReceit();
+            $rTabrec = db_query($sqlTabrec);
+            if(pg_num_rows($rTabrec) > 0){
+                $pdf1->taxaExpediente = pg_fetch_result($rTabrec,0) . " = " . trim(db_formatar($reciboPaga->getValor(), 'f'));
+            }
+        }
     }
 
+    if (isset($matric) && !empty($matric)) {
+        $oDaoPropri = new cl_propri();
+        $rsOutrosProprietarios = db_query($oDaoPropri->sql_outrosProprietarios($matric));
+
+        $existeOutroProprietario    = pg_num_rows($rsOutrosProprietarios) == 1;
+        $existemOutrosProprietarios = pg_num_rows($rsOutrosProprietarios) > 1;
+        $sulfixoOutroProprietario   = $existeOutroProprietario ? ' E OUTRO' : ($existemOutrosProprietarios ? ' E OUTROS' : '');
+
+        $pdf1->descr3_1        = $pdf1->descr3_1 . $sulfixoOutroProprietario;
+        $pdf1->descr11_1       = $pdf1->descr11_1 . $sulfixoOutroProprietario;
+        $pdf1->nome            = $pdf1->nome . $sulfixoOutroProprietario;
+        $pdf1->iptz01_nome     = $pdf1->iptz01_nome . $sulfixoOutroProprietario;
+        $pdf1->iptproprietario = $pdf1->iptproprietario . $sulfixoOutroProprietario;
+        $pdf1->predescr3_1     = $pdf1->predescr3_1 . $sulfixoOutroProprietario;
+    };
+
     $pdf1->imprime();
-    $pdf1->descr12_1          = '';
-    $pdf1->predescr12_1       = '';
+    $pdf1->descr12_1    = '';
+    $pdf1->predescr12_1 = '';
 }
 db_query("COMMIT");
 $pdf1->objpdf->Output();

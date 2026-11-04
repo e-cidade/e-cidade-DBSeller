@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -112,7 +112,7 @@ function js_emite(opcao,origem){
       </tr>
       <tr>
          <td align="center" colspan="3">
-         <?
+         <?php
            db_selinstit('',300,100);
          ?>
          </td>
@@ -127,12 +127,12 @@ function js_emite(opcao,origem){
         
         </td>
       </tr>
-      <?
+      <?php
       db_selorcbalanco(true,false); 
       ?>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -148,14 +148,9 @@ if (isset($opcao) && $opcao == "excluir") {
       }
     }
 
-    function js_mostratipoproc(chave, erro) {
-      document.form1.p51_descr.value = chave;
-      if(erro == true) {
-        document.form1.p57_codigo.focus();
-        document.form1.p57_codigo.value = '';
-      } else {
-        location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?p57_codigo=" + document.form1.p57_codigo.value + "&p51_descr=" + chave + "&grupo=" + document.form1.grupo.value;
-      }
+    function js_mostratipoproc(chave, chave2) {
+      document.form1.p51_descr.value = chave2;
+      location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?p57_codigo=" + document.form1.p57_codigo.value + "&p51_descr=" + chave2 + "&grupo=" + document.form1.grupo.value;
     }
 
     function js_mostratipoproc1(chave1, chave2) {
@@ -176,8 +171,8 @@ if (isset($opcao) && $opcao == "excluir") {
       }
     }
 
-    function js_mostraprocdoc(chave, erro) {
-      document.form1.p56_descr.value = chave;
+    function js_mostraprocdoc(chave, erro, chave2) {
+      document.form1.p56_descr.value = chave2;
       if(erro == true) {
         document.form1.p57_coddoc.focus();
         document.form1.p57_coddoc.value = '';

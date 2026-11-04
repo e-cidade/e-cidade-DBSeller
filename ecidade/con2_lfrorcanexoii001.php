@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ function js_abre(opcao){
     return false;
  }
 
-<?
+<?php
   if ($anousu <= 2007) {
 ?>
  if (document.form1.vernivel.value != '' && document.form1.vernivel.value != document.form1.nivel.value){
@@ -97,19 +97,19 @@ function js_abre(opcao){
  }else{
    js_OpenJanelaIframe('','db_iframe_orgao','func_selorcdotacao.php?&nivel='+document.form1.nivel.value+'&db_selinstit='+document.form1.db_selinstit.value,'pesquisa',true);
  }
-<?
+<?php
   } else {
 ?>
   document.form1.vernivel.value = "1A";
   document.form1.nivel.value    = "1A";
-<?
+<?php
   }
 ?>
 }
 
 variavel = 1;
 function js_emite(opcao,origem){
-<?
+<?php
   if ($anousu <= 2007){
 ?>
   if (opcao == 3){
@@ -147,7 +147,7 @@ function js_emite(opcao,origem){
      perini = <?=$anousu?>+'-01-01';
      perfin = <?=$anousu?>+'-01-01';
   }
-<?
+<?php
   }
 	
   if ($anousu <= 2007){
@@ -169,7 +169,7 @@ function js_emite(opcao,origem){
     setTimeout("document.form1.submit()",1000);
     return true;
  }
-<?
+<?php
   } else {
 ?>
     jan = window.open('','safo' + variavel,'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
@@ -179,12 +179,12 @@ function js_emite(opcao,origem){
     document.form1.action = sNomeArquivoEdicao+'?bimestre='+$F('bimestre')+'&mes='+$F('mes')+'&opcao='+opcao+'&periodo='+$F('periodo')+'&origem='+origem;
     setTimeout("document.form1.submit()",1000);
     return true;
-<?
+<?php
   }
 ?>
 }
 function js_limpa(){
-<?
+<?php
    if ($anousu <= 2007){
 ?>
   if(document.form1.orgaos.value != ''){
@@ -193,7 +193,7 @@ function js_limpa(){
     document.form1.orgaos.value = '';
     document.form1.seleciona.click();
   }
-<?
+<?php
    }
 ?>
 }
@@ -219,12 +219,12 @@ function js_limpa(){
        <table border="0" cellpadding="0" cellspacing="0" width="300">
         <tr>
          <td align="center" colspan="3">
-          <?
+          <?php
            db_selinstit('parent.js_limpa',400,100);
           ?>
          </td>
         </tr>
-         <?
+         <?php
           if ($anousu <= 2007) {
          ?>
        <tr>
@@ -233,7 +233,7 @@ function js_limpa(){
        <tr>
         <td align="right" ><strong>Filtro :</strong></td>
         <td align="left">
-         <?
+         <?php
           //$xy = array('1A'=>'Órgão','2A'=>'Unidade','3A'=>'Função','4A'=>'Subfunção','5A'=>'Programa','6A'=>'Proj/Ativ','7A'=>'Elemento','8A'=>'Recurso');
           $xy = array('1A'=>'Órgão');
           db_select('nivel',$xy,true,2,"");
@@ -245,7 +245,7 @@ function js_limpa(){
 		   <tr>
 		    <td align="right" ><strong>Agrupar Por :</strong></td>
 		    <td align="left">
-         <?
+         <?php
           $z = array("1"=>"Geral","2"=>"Órgão","3"=>"Unidade");
           db_select('tipo_agrupa',$z,true,2,"");
          ?>
@@ -258,10 +258,10 @@ function js_limpa(){
        <td colspan="2" >&nbsp;</td>
        <td >&nbsp;</td>
       </tr>
-       <?
+       <?php
         db_selorcbalanco(true,false);
        ?>
-<?
+<?php
   } else {
 ?>
       <tr>
@@ -310,7 +310,7 @@ function js_limpa(){
         </td>
         
         <td>
-        <?
+        <?php
           if ($anousu < 2010) {
             $x = array("1B"=>"Primeiro","2B"=>"Segundo","3B"=>"Terceiro",
                        "4B"=>"Quarto"  ,"5B"=>"Quinto" ,"6B"=>"Sexto");
@@ -328,23 +328,23 @@ function js_limpa(){
         ?>
        </td>
       </tr>
-<?
+<?php
   }
 
   if ($anousu <= 2007) {  
 ?>
        <input  name="orgaos" id="orgaos" type="hidden" value="" >
-<?
+<?php
   } else {
 ?>
        <input  name="nivel" id="nivel" type="hidden" value="" >
-<?
+<?php
   }
 ?>
        <input  name="vernivel" id="vernivel" type="hidden" value="" >    
        </table>
       </fieldset>
-      <?
+      <?php
        if ($anousu > 2007) {
       ?>
      <table align="center">
@@ -357,7 +357,7 @@ function js_limpa(){
        </td>
       </tr>     
      </table>
-     <?
+     <?php
        }
      ?>
     </td>

@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contrib
 //CLASSE DA ENTIDADE projmelhoriasresp
-class cl_projmelhoriasresp { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $d42_codigo = 0; 
-   var $d42_numcgm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_projmelhoriasresp {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $d42_codigo = 0;
+   var $d42_numcgm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 d42_codigo = int4 = Código da lista de projeto 
-                 d42_numcgm = int4 = Responsável 
+                 d42_codigo = int4 = Código da lista de projeto
+                 d42_numcgm = int4 = Responsável
                  ";
-   //funcao construtor da classe 
-   function cl_projmelhoriasresp() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("projmelhoriasresp"); 
+     $this->rotulo = new rotulo("projmelhoriasresp");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_projmelhoriasresp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d42_codigo = ($this->d42_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["d42_codigo"]:$this->d42_codigo);
        $this->d42_numcgm = ($this->d42_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["d42_numcgm"]:$this->d42_numcgm);
@@ -74,9 +74,9 @@ class cl_projmelhoriasresp {
      }
    }
    // funcao para inclusao
-   function incluir ($d42_codigo){ 
+   public function incluir ($d42_codigo){
       $this->atualizacampos();
-     if($this->d42_numcgm == null ){ 
+     if($this->d42_numcgm == null ){
        $this->erro_sql = " Campo Responsável nao Informado.";
        $this->erro_campo = "d42_numcgm";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_projmelhoriasresp {
        $this->erro_status = "0";
        return false;
      }
-       $this->d42_codigo = $d42_codigo; 
-     if(($this->d42_codigo == null) || ($this->d42_codigo == "") ){ 
+       $this->d42_codigo = $d42_codigo;
+     if(($this->d42_codigo == null) || ($this->d42_codigo == "") ){
        $this->erro_sql = " Campo d42_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_projmelhoriasresp {
        return false;
      }
      $sql = "insert into projmelhoriasresp(
-                                       d42_codigo 
-                                      ,d42_numcgm 
+                                       d42_codigo
+                                      ,d42_numcgm
                        )
                 values (
-                                $this->d42_codigo 
-                               ,$this->d42_numcgm 
+                                $this->d42_codigo
+                               ,$this->d42_numcgm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Responsável pela lista de projetos ($this->d42_codigo) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_projmelhoriasresp {
        $resac = db_query("insert into db_acount values($acount,515,3584,'','".AddSlashes(pg_result($resaco,0,'d42_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($d42_codigo=null) { 
+   public function alterar ($d42_codigo=null) {
       $this->atualizacampos();
      $sql = " update projmelhoriasresp set ";
      $virgula = "";
-     if(trim($this->d42_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d42_codigo"])){ 
+     if(trim($this->d42_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d42_codigo"])){
        $sql  .= $virgula." d42_codigo = $this->d42_codigo ";
        $virgula = ",";
-       if(trim($this->d42_codigo) == null ){ 
+       if(trim($this->d42_codigo) == null ){
          $this->erro_sql = " Campo Código da lista de projeto nao Informado.";
          $this->erro_campo = "d42_codigo";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_projmelhoriasresp {
          return false;
        }
      }
-     if(trim($this->d42_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d42_numcgm"])){ 
+     if(trim($this->d42_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d42_numcgm"])){
        $sql  .= $virgula." d42_numcgm = $this->d42_numcgm ";
        $virgula = ",";
-       if(trim($this->d42_numcgm) == null ){ 
+       if(trim($this->d42_numcgm) == null ){
          $this->erro_sql = " Campo Responsável nao Informado.";
          $this->erro_campo = "d42_numcgm";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_projmelhoriasresp {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Responsável pela lista de projetos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->d42_codigo;
@@ -214,14 +214,14 @@ class cl_projmelhoriasresp {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($d42_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($d42_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d42_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_projmelhoriasresp {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Responsável pela lista de projetos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$d42_codigo;
@@ -276,11 +276,11 @@ class cl_projmelhoriasresp {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_projmelhoriasresp {
       }
      return $result;
    }
-   function sql_query ( $d42_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $d42_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -322,15 +322,15 @@ class cl_projmelhoriasresp {
      $sql2 = "";
      if($dbwhere==""){
        if($d42_codigo!=null ){
-         $sql2 .= " where projmelhoriasresp.d42_codigo = $d42_codigo "; 
-       } 
+         $sql2 .= " where projmelhoriasresp.d42_codigo = $d42_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -339,10 +339,10 @@ class cl_projmelhoriasresp {
      }
      return $sql;
   }
-   function sql_query_file ( $d42_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $d42_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -355,15 +355,15 @@ class cl_projmelhoriasresp {
      $sql2 = "";
      if($dbwhere==""){
        if($d42_codigo!=null ){
-         $sql2 .= " where projmelhoriasresp.d42_codigo = $d42_codigo "; 
-       } 
+         $sql2 .= " where projmelhoriasresp.d42_codigo = $d42_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

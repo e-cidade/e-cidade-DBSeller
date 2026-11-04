@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -68,13 +68,13 @@ class cl_docenteausencia {
                  ed321_escola = int4 = Escola
                  ";
    //funcao construtor da classe
-   function cl_docenteausencia() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("docenteausencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_docenteausencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed321_sequencial = ($this->ed321_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed321_sequencial"]:$this->ed321_sequencial);
        $this->ed321_rechumano = ($this->ed321_rechumano == ""?@$GLOBALS["HTTP_POST_VARS"]["ed321_rechumano"]:$this->ed321_rechumano);
@@ -112,7 +112,7 @@ class cl_docenteausencia {
      }
    }
    // funcao para inclusao
-   function incluir ($ed321_sequencial){
+   public function incluir ($ed321_sequencial){
       $this->atualizacampos();
      if($this->ed321_rechumano == null ){
        $this->erro_sql = " Campo Regente nao Informado.";
@@ -256,7 +256,7 @@ class cl_docenteausencia {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed321_sequencial=null) {
+   public function alterar ($ed321_sequencial=null) {
       $this->atualizacampos();
      $sql = " update docenteausencia set ";
      $virgula = "";
@@ -427,7 +427,7 @@ class cl_docenteausencia {
      }
    }
    // funcao para exclusao
-   function excluir ($ed321_sequencial=null,$dbwhere=null) {
+   public function excluir ($ed321_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed321_sequencial));
      }else{
@@ -495,7 +495,7 @@ class cl_docenteausencia {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -518,10 +518,10 @@ class cl_docenteausencia {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed321_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed321_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_docenteausencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,10 +571,10 @@ class cl_docenteausencia {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed321_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed321_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -595,7 +595,7 @@ class cl_docenteausencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -604,12 +604,12 @@ class cl_docenteausencia {
      }
      return $sql;
   }
-   function sql_query_docente_cgm ($ed321_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query_docente_cgm ($ed321_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
   	$sql = "select ";
   	if($campos != "*" ) {
 
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = explode("#",$campos);
   		$virgula = "";
   		for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -646,7 +646,7 @@ class cl_docenteausencia {
   	if($ordem != null ) {
 
   		$sql .= " order by ";
-  		$campos_sql = split("#",$ordem);
+  		$campos_sql = explode("#",$ordem);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++) {
 
@@ -658,10 +658,10 @@ class cl_docenteausencia {
   }
 
    // funcao do sql
-   function sql_query_tipoausencia ( $ed321_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_tipoausencia ( $ed321_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -683,7 +683,7 @@ class cl_docenteausencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

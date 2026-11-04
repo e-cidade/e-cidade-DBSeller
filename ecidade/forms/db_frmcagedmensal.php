@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
@@ -42,7 +42,7 @@ $clrotulo->label("z01_nome");
               <b>Ano / Mês:</b>
             </td>
             <td nowrap>
-              <?
+              <?php
               if(!isset($mesusu)){
                 $mesusu = DBPessoal::getMesFolha();
               }
@@ -53,7 +53,7 @@ $clrotulo->label("z01_nome");
               db_input('anousu',4,1,true,'text',1);
               ?>
               <b>/</b>
-              <?
+              <?php
               db_input('mesusu',2,1,true,'text',1);
               ?>
             </td>
@@ -62,8 +62,8 @@ $clrotulo->label("z01_nome");
             <td nowrap align="right" title="Número da autorização e dígito verificador">
               <b>Autorização:</b>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               $autorizacao = 0;
               db_input('autorizacao',6,1,true,'text',1);
               db_input('digautoriza',1,1,true,'text',1);
@@ -74,8 +74,8 @@ $clrotulo->label("z01_nome");
             <td nowrap align="right" title="Efetuar ou não alguma alteração de cadastro">
               <b>Alteração:</b>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               $alteracao = 1;
               $arr_alteracao= array("1"=>"Nada a alterar","2"=>"Alterar dados cadastrais","3"=>"Encerramento de atividades");
               db_select('alteracao',$arr_alteracao,true,1,"");
@@ -86,8 +86,8 @@ $clrotulo->label("z01_nome");
             <td nowrap align="right" title="Primeira declaração">
               <b>Primeira declaração:</b>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               $primeiradeclaracao = 2;
               $arr_primeiradeclaracao= array("1"=>"Primeira declaração","2"=>"Já informou");
               db_select('primeiradeclaracao',$arr_primeiradeclaracao,true,1,"");
@@ -107,8 +107,8 @@ $clrotulo->label("z01_nome");
             <td nowrap align="right" title="DDD, número do telefone do contato">
               <b>DDD / Telefone:</b>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
 	            echo "<b></b>";
               db_input('ddd',4,1,true,'text',1);
               db_input('codarea',4,1,true,'text',1);
@@ -121,8 +121,8 @@ $clrotulo->label("z01_nome");
             <td nowrap align="right" title="Número do ramal do contato ">
               <b>Ramal:</b>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input('ramal',4,1,true,'text',1);
               ?>
             </td>
@@ -164,7 +164,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

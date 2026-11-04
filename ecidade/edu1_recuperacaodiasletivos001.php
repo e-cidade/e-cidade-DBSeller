@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -163,19 +163,19 @@ require_once(modification("libs/db_usuariosonline.php"));
             let periodosAula = valor.split(',').join(', ');
             return `<p class="elipse" title="${periodosAula}">${periodosAula}</p>`;
         });
-        
+
         gridPeriodosLancados.addColumn('data', {label: 'Data', align: 'center', width: '15%' }).transform('date');
         gridPeriodosLancados.addColumn('disciplina', {label: 'Disciplina', align: 'center', width: '25%' });
         gridPeriodosLancados.addColumn('regente', {label: 'Regente', align: 'center', width: '25%' }).transform((valor, linha) => {
             return `<p class="elipse" title="${valor}">${valor}</p>`;
         });
-        
-        gridPeriodosLancados.addColumn('descricaoTurno', {label: 'Turno', align: 'center', width: '10%' });                                
+
+        gridPeriodosLancados.addColumn('descricaoTurno', {label: 'Turno', align: 'center', width: '10%' });
 
         gridPeriodosLancados.getGrid().setCheckbox(0);
         gridPeriodosLancados.show($('gridPeriodosLancados'));
 
-        
+
 
         var regente = {
             codigo: document.getElementById('codigoRegente'),
@@ -225,7 +225,7 @@ require_once(modification("libs/db_usuariosonline.php"));
                 buscarPeriodosLancados(turmaSelecionada, etapa);
             }
         }
-        
+
         function callBackCalendario() {
             limparTodos();
             carregarDatas();
@@ -234,7 +234,6 @@ require_once(modification("libs/db_usuariosonline.php"));
 
         function carregarDatas() {
             var data = document.getElementById('data');
-
             data.options.length = 0;
             data.add(new Option('Selecione uma Data', ''));
 
@@ -251,7 +250,7 @@ require_once(modification("libs/db_usuariosonline.php"));
             }
         }
 
-        
+
         function buscarDatas() {
             new AjaxRequest(RPC, {executa: 'buscarDataFeriadoLetivoPorCalendario', calendario: componenteCalendario.getSelecionados().iCalendario}, function (retorno) {
                 calendarioDatas[componenteCalendario.getSelecionados().iCalendario] = retorno.datas;
@@ -261,7 +260,7 @@ require_once(modification("libs/db_usuariosonline.php"));
         }
 
         function carregarDisciplinas(codigoTurma, codigoEtapa) {
-            limparComponeneteDisciplina();
+            limparComponenteDisciplina();
 
             var disciplinas = document.getElementById('disciplina');
             buscarRegencias(codigoTurma, codigoEtapa)
@@ -275,7 +274,7 @@ require_once(modification("libs/db_usuariosonline.php"));
                 });
         }
 
-        function limparComponeneteDisciplina() {
+        function limparComponenteDisciplina() {
             var disciplinas = document.getElementById('disciplina');
 
             disciplinas.options.length = 0;
@@ -295,7 +294,7 @@ require_once(modification("libs/db_usuariosonline.php"));
         function limparTodos() {
             gridPeriodos.clear();
             gridPeriodosLancados.clear();
-            limparComponeneteDisciplina();
+            limparComponenteDisciplina();
             limparComponenteTurno();
             limparComponenteRegente();
         }
@@ -327,7 +326,7 @@ require_once(modification("libs/db_usuariosonline.php"));
             );
 
         }
-        
+
         function carregarRegente(codigoRegente, descricaoRegente) {
             db_iframe_recursos_humano.hide();
 
@@ -340,7 +339,7 @@ require_once(modification("libs/db_usuariosonline.php"));
             regente.codigo.value = codigoRegente;
             regente.descricao.value = descricaoRegente;
         }
-        
+
         function lancar() {
             var lancamentoDiaLetivo = {
                 data: $F('data'),
@@ -433,7 +432,7 @@ require_once(modification("libs/db_usuariosonline.php"));
             } else {
                 document.getElementById('excluirPeriodosLancados').style.display = 'none';
             }
-            
+
             gridPeriodosLancados.reload();
         }
 
@@ -509,7 +508,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 
                     var parametros = {exec: 'getRegencias', iTurma: codigoTurma, iEtapa: codigoEtapa, somenteDisciplinasControlaFrequencia:true};
                     new AjaxRequest('edu4_turmas.RPC.php', parametros, function (retorno) {
-                        var regencias = new Array();
+                    var regencias = new Array();
                         for (var regencia of retorno.aRegencias) {
                             regencias.push({codigoRegencia: regencia.iRegencia, codigoDisciplina: regencia.iDisciplina, disciplina: regencia.sDisciplina.urlDecode()});
                         }
@@ -519,6 +518,7 @@ require_once(modification("libs/db_usuariosonline.php"));
                     }).execute();
                 }
             });
+            js_removeObj('msgBox');
         }
 
         function validarPeriodosLancadosData(diaLetivo) {

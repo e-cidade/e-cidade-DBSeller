@@ -40,7 +40,7 @@ require(modification("libs/db_stdlibwebseller.php"));
 	<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta http-equiv="Expires" CONTENT="0">
-	<?
+	<?php
 	  db_app::load("scripts.js");
 	  db_app::load("prototype.js");
     db_app::load("arrays.js");
@@ -72,7 +72,7 @@ require(modification("libs/db_stdlibwebseller.php"));
   </div>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),

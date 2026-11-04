@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use PhpParser\Node\Stmt\Break_;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -50,171 +52,182 @@ $clempprestaitemdiaria    = new \cl_empprestaitemdiaria;
 $db_opcao = 22;
 $db_botao = false;
 
-if(isset($alterar) || isset($incluir)){
-  $sqlerro = false;
+if (isset($alterar) || isset($incluir)) {
+    $sqlerro = false;
 
-  if (validaObrigatoriedadeCampos($e46_numemp, $erro_msg)) {
-    if (empty($e46_nome) && empty($erro_msg)) {
-      $erro_msg = "Nome não informado.";
+    if (validaObrigatoriedadeCampos($e46_numemp, $erro_msg)) {
+        if (empty($e46_nome) && empty($erro_msg)) {
+            $erro_msg = "Nome não informado.";
+        }
+
+        if (empty($e46_nota) && empty($erro_msg)) {
+            $erro_msg = "Nota fiscal não informada.";
+        }
+
+        if (empty($e46_descr) && empty($erro_msg)) {
+            $erro_msg = "Descrição não informada.";
+        }
+
+        $sqlerro = !empty($erro_msg);
     }
-
-    if (empty($e46_nota) && empty($erro_msg)) {
-      $erro_msg = "Nota fiscal não informada.";
-    }
-
-    if (empty($e46_descr) && empty($erro_msg)) {
-      $erro_msg = "Descrição não informada.";
-    }
-
-    $sqlerro = !empty($erro_msg);
-  }
 }
 
 if (isset($excluir)) {
-  $sqlerro = false;
+    $sqlerro = false;
 }
 
 if (isset($incluir)) {
+    if (empty($e45_codmov) && $sqlerro == false) {
+        $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.movimento_nao_selecionado");
+    } elseif ($sqlerro == false) {
+        $sSqlVerificaTotalItem = $clempprestaitem->sql_query_file(null, "coalesce(sum(e46_valor), 0) as valor ", null, "e46_numemp = {$e46_numemp}");
 
-  if (empty($e45_codmov) && $sqlerro == false) {
+        $rsTotalItens        = $clempprestaitem->sql_record($sSqlVerificaTotalItem);
+        $nValorTotalItens    = db_utils::fieldsMemory($rsTotalItens, 0)->valor;
+        $oEmpenhooFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($e46_numemp);
+        if (($nValorTotalItens + $e46_valor) > $oEmpenhooFinanceiro->getValorEmpenho()) {
+            $oDados                 = new stdClass();
+            $oDados->nItensLancados = ($nValorTotalItens + $e46_valor);
+            $oDados->nValorEmpenho  = $oEmpenhooFinanceiro->getValorEmpenho();
 
-    $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.movimento_nao_selecionado");
-  } else if ($sqlerro == false) {
-
-
-    $sSqlVerificaTotalItem = $clempprestaitem->sql_query_file( null, "coalesce(sum(e46_valor), 0) as valor ", null, "e46_numemp = {$e46_numemp}" );
-
-    $rsTotalItens        = $clempprestaitem->sql_record($sSqlVerificaTotalItem);
-    $nValorTotalItens    = db_utils::fieldsMemory($rsTotalItens, 0)->valor;
-    $oEmpenhooFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($e46_numemp);
-    if (($nValorTotalItens + $e46_valor) > $oEmpenhooFinanceiro->getValorEmpenho()) {
-
-      $oDados                 = new stdClass();
-      $oDados->nItensLancados = ($nValorTotalItens + $e46_valor);
-      $oDados->nValorEmpenho  = $oEmpenhooFinanceiro->getValorEmpenho();
-
-      $sqlerro  = true;
-      $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.valor_prestacao_maior_empenho", $oDados);
-    }
-    if (!$sqlerro) {
-      db_inicio_transacao();
-
-      $clempprestaitem->e46_id_usuario = db_getsession("DB_id_usuario");
-      $clempprestaitem->e46_emppresta  = $oGet->e45_sequencial;
-      $clempprestaitem->incluir(null);
-
-      $erro_msg = $clempprestaitem->erro_msg;
-      if (isset($e446_regist) && !empty($clempprestaitem->e46_codigo) && ($clempprestaitem->erro_status != 0)) {
-        $clempprestaitemdiaria->e446_empprestaitem = $clempprestaitem->e46_codigo;
-        $clempprestaitemdiaria->e446_datainicio = $e446_datainicio;
-        $clempprestaitemdiaria->e446_datafim = $e446_datafim;
-        $clempprestaitemdiaria->e446_motivo = $e446_motivo;
-        $clempprestaitemdiaria->e446_quantidade = 1;
-        $clempprestaitemdiaria->e446_destino = $e446_destino;
-        $clempprestaitemdiaria->e446_movimento = $e45_codmov;
-        $clempprestaitemdiaria->e446_regist = $e446_regist;
-        $clempprestaitemdiaria->e446_tipodiaria = $e446_tipodiaria;
-        $clempprestaitemdiaria->incluir(null);
-        $e446_sequencial = null;
-        if ($clempprestaitemdiaria->erro_status == 0) {
-          $sqlerro = true;
-          $erro_msg = $clempprestaitemdiaria->erro_msg;
+            $sqlerro  = true;
+            $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.valor_prestacao_maior_empenho", $oDados);
         }
-      }
-      if ($clempprestaitem->erro_status == 0) {
-        $sqlerro = true;
-      }
-      db_fim_transacao($sqlerro);
+        if (!$sqlerro) {
+            db_inicio_transacao();
+
+            $clempprestaitem->e46_id_usuario = db_getsession("DB_id_usuario");
+            $clempprestaitem->e46_emppresta  = $oGet->e45_sequencial;
+            $clempprestaitem->incluir(null);
+
+            $erro_msg = $clempprestaitem->erro_msg;
+            if (isset($e446_regist) && !empty($clempprestaitem->e46_codigo) && ($clempprestaitem->erro_status != 0)) {
+                switch ($e446_tipodiaria) {
+                    case "dentroestado":
+                    case "foraestado":
+                        $tipodiaria = 1;
+                        break;
+
+                    case "forapais":
+                        $tipodiaria = 0;
+                        break;
+                }
+
+
+                $clempprestaitemdiaria->e446_empprestaitem = $clempprestaitem->e46_codigo;
+                $clempprestaitemdiaria->e446_datainicio = $e446_datainicio;
+                $clempprestaitemdiaria->e446_datafim = $e446_datafim;
+                $clempprestaitemdiaria->e446_motivo = $e446_motivo;
+                $clempprestaitemdiaria->e446_quantidade = 1;
+                $clempprestaitemdiaria->e446_destino = $e446_destino;
+                $clempprestaitemdiaria->e446_movimento = $e45_codmov;
+                $clempprestaitemdiaria->e446_regist = $e446_regist;
+                $clempprestaitemdiaria->e446_tipodiaria = $tipodiaria;
+                $clempprestaitemdiaria->incluir(null);
+                $e446_sequencial = null;
+                if ($clempprestaitemdiaria->erro_status == 0) {
+                    $sqlerro = true;
+                    $erro_msg = $clempprestaitemdiaria->erro_msg;
+                }
+            }
+            if ($clempprestaitem->erro_status == 0) {
+                $sqlerro = true;
+            }
+            db_fim_transacao($sqlerro);
+        }
     }
+} elseif (isset($alterar) && $sqlerro == false) {
+    if (empty($e45_codmov)) {
+        $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.movimento_nao_selecionado");
+    } elseif ($sqlerro == false) {
+        $sSqlVerificaTotalItem = $clempprestaitem->sql_query_file(
+            null,
+            "coalesce(sum(e46_valor), 0) as valor ",
+            null,
+            "e46_numemp = {$e46_numemp} and e46_codigo <> {$e46_codigo}"
+        );
 
-  }
-} else if(isset($alterar) && $sqlerro == false) {
+        $rsTotalItens        = $clempprestaitem->sql_record($sSqlVerificaTotalItem);
+        $nValorTotalItens    = db_utils::fieldsMemory($rsTotalItens, 0)->valor;
+        $oEmpenhooFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($e46_numemp);
+        if (($nValorTotalItens + $e46_valor) > $oEmpenhooFinanceiro->getValorEmpenho()) {
+            $sqlerro  = true;
+            $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.valor_prestacao_maior_empenho");
+        }
+        if (!$sqlerro) {
+            db_inicio_transacao();
+            $clempprestaitem->e46_emppresta = $oGet->e45_sequencial;
+            $clempprestaitem->alterar($e46_codigo);
+            $erro_msg = $clempprestaitem->erro_msg;
 
+            if ($clempprestaitem->erro_status == 0) {
+                $sqlerro = true;
+            }
 
-  if (empty($e45_codmov)) {
-    $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.movimento_nao_selecionado");
-  } else if ($sqlerro == false) {
+            if (isset($e446_regist) && !empty($e446_regist) && !empty($clempprestaitem->e46_codigo) && ($clempprestaitem->erro_status != 0)) {
+                switch ($e446_tipodiaria) {
+                    case "dentroestado":
+                    case "foraestado":
+                        $tipodiaria = 1;
+                        break;
 
-    $sSqlVerificaTotalItem = $clempprestaitem->sql_query_file( null,
-                                                               "coalesce(sum(e46_valor), 0) as valor ",
-                                                               null,
-                                                               "e46_numemp = {$e46_numemp} and e46_codigo <> {$e46_codigo}" );
+                    case "forapais":
+                        $tipodiaria = 0;
+                        break;
+                }
 
-    $rsTotalItens        = $clempprestaitem->sql_record($sSqlVerificaTotalItem);
-    $nValorTotalItens    = db_utils::fieldsMemory($rsTotalItens, 0)->valor;
-    $oEmpenhooFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($e46_numemp);
-    if (($nValorTotalItens + $e46_valor) > $oEmpenhooFinanceiro->getValorEmpenho()) {
+                $clempprestaitemdiaria->e446_empprestaitem = $clempprestaitem->e46_codigo;
+                $clempprestaitemdiaria->e446_datainicio = $e446_datainicio;
+                $clempprestaitemdiaria->e446_datafim = $e446_datafim;
+                $clempprestaitemdiaria->e446_motivo = $e446_motivo;
+                $clempprestaitemdiaria->e446_quantidade = 1;
+                $clempprestaitemdiaria->e446_destino = $e446_destino;
+                $clempprestaitemdiaria->e446_movimento = $e45_codmov;
+                $clempprestaitemdiaria->e446_tipodiaria = $tipodiaria;
+                $clempprestaitemdiaria->e446_regist = $e446_regist;
+                if (isset($e446_sequencial) && !empty($e446_sequencial)) {
+                    $clempprestaitemdiaria->e446_sequencial = $e446_sequencial;
+                    $clempprestaitemdiaria->alterar($e446_sequencial);
+                    $e446_sequencial = null;
+                } else {
+                    $clempprestaitemdiaria->incluir(null);
+                }
 
-      $sqlerro  = true;
-      $erro_msg = _M("financeiro.empenho.emp1_empprestaitem001.valor_prestacao_maior_empenho");
+                if ($clempprestaitemdiaria->erro_status == 0) {
+                    $sqlerro = true;
+                    $erro_msg = $clempprestaitemdiaria->erro_msg;
+                }
+            }
+
+            db_fim_transacao($sqlerro);
+        }
     }
-    if (!$sqlerro) {
+} elseif (isset($excluir)) {
+    if ($sqlerro == false) {
+        db_inicio_transacao();
 
-      db_inicio_transacao();
-      $clempprestaitem->e46_emppresta = $oGet->e45_sequencial;
-      $clempprestaitem->alterar($e46_codigo);
-      $erro_msg = $clempprestaitem->erro_msg;
-
-      if ($clempprestaitem->erro_status == 0) {
-        $sqlerro = true;
-      }
-
-      if (isset($e446_regist) && !empty($e446_regist) && !empty($clempprestaitem->e46_codigo) && ($clempprestaitem->erro_status != 0)) {
-        $clempprestaitemdiaria->e446_empprestaitem = $clempprestaitem->e46_codigo;
-        $clempprestaitemdiaria->e446_datainicio = $e446_datainicio;
-        $clempprestaitemdiaria->e446_datafim = $e446_datafim;
-        $clempprestaitemdiaria->e446_motivo = $e446_motivo;
-        $clempprestaitemdiaria->e446_quantidade = 1;
-        $clempprestaitemdiaria->e446_destino = $e446_destino;
-        $clempprestaitemdiaria->e446_movimento = $e45_codmov;
-        $clempprestaitemdiaria->e446_tipodiaria = $e446_tipodiaria;
-        $clempprestaitemdiaria->e446_regist = $e446_regist;
         if (isset($e446_sequencial) && !empty($e446_sequencial)) {
-          $clempprestaitemdiaria->e446_sequencial = $e446_sequencial;
-          $clempprestaitemdiaria->alterar($e446_sequencial);
-          $e446_sequencial = null;
-        } else {
-          $clempprestaitemdiaria->incluir(null);
+            $sql = "delete from empprestaitemdiaria where e446_sequencial = {$e446_sequencial}";
+            $rs = db_query($sql);
+            if (!$rs) {
+                throw new DBException("Erro ao excluir dados de diárias.");
+            }
         }
 
-        if ($clempprestaitemdiaria->erro_status == 0) {
-          $sqlerro = true;
-          $erro_msg = $clempprestaitemdiaria->erro_msg;
+        $clempprestaitem->excluir($e46_codigo);
+        $erro_msg = $clempprestaitem->erro_msg;
+
+        if ($clempprestaitem->erro_status == 0) {
+            $sqlerro=true;
         }
-      }
 
-      db_fim_transacao($sqlerro);
+        db_fim_transacao($sqlerro);
     }
-  }
-} else if (isset($excluir)) {
-
-  if ($sqlerro == false) {
-
-    db_inicio_transacao();
-
-    if (isset($e446_sequencial) && !empty($e446_sequencial)) {
-      $sql = "delete from empprestaitemdiaria where e446_sequencial = {$e446_sequencial}";
-      $rs = db_query($sql);
-      if (!$rs) {
-        throw new DBException("Erro ao excluir dados de diárias.");
-
-      }
+} elseif (isset($opcao)) {
+    $result = $clempprestaitem->sql_record($clempprestaitem->sql_query_emp($e46_numemp, $e46_codigo));
+    if ($result!=false && $clempprestaitem->numrows>0) {
+        db_fieldsmemory($result, 0);
     }
-
-    $clempprestaitem->excluir($e46_codigo);
-    $erro_msg = $clempprestaitem->erro_msg;
-
-    if ( $clempprestaitem->erro_status == 0) {
-      $sqlerro=true;
-    }
-
-    db_fim_transacao($sqlerro);
-  }
-}else if(isset($opcao)){
-   $result = $clempprestaitem->sql_record($clempprestaitem->sql_query_emp($e46_numemp,$e46_codigo));
-   if($result!=false && $clempprestaitem->numrows>0){
-     db_fieldsmemory($result,0);
-   }
 }
 
 /**
@@ -226,21 +239,20 @@ if (isset($incluir)) {
  */
 function validaObrigatoriedadeCampos($e46_numemp, &$erro_msg)
 {
-  $obrigarCampos = true;
-  if (!empty($e46_numemp)) {
+    $obrigarCampos = true;
+    if (!empty($e46_numemp)) {
+        $empenho = new cl_emppresta();
+        $where = "e45_numemp = {$e46_numemp}";
+        $sql = $empenho->sql_query_emp(null, 'e44_obriga', null, $where);
+        $rs = db_query($sql);
 
-    $empenho = new cl_emppresta();
-    $where = "e45_numemp = {$e46_numemp}";
-    $sql = $empenho->sql_query_emp(null, 'e44_obriga', null, $where);
-    $rs = db_query($sql);
-
-    if (!$rs || pg_num_rows($rs) == 0) {
-      $erro_msg = "Erro ao buscar obrigatoriedade do tipo de evento.";
+        if (!$rs || pg_num_rows($rs) == 0) {
+            $erro_msg = "Erro ao buscar obrigatoriedade do tipo de evento.";
+        }
+        $obrigarCampos = db_utils::fieldsMemory($rs, 0)->e44_obriga != 2;
     }
-    $obrigarCampos = db_utils::fieldsMemory($rs, 0)->e44_obriga != 2;
-  }
 
-  return $obrigarCampos;
+    return $obrigarCampos;
 }
 
 ?>
@@ -254,13 +266,13 @@ function validaObrigatoriedadeCampos($e46_numemp, &$erro_msg)
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" style="margin-top: 30px;" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
-	<?
-	include(modification("forms/db_frmempprestaitem.php"));
-	?>
+    <?php
+    include(modification("forms/db_frmempprestaitem.php"));
+    ?>
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar) || isset($excluir) || isset($incluir)) {
     db_msgbox($erro_msg);
 

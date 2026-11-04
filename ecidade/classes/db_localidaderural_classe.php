@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE localidaderural
-class cl_localidaderural { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j137_sequencial = 0; 
-   var $j137_descricao = null; 
-   var $j137_valorminimo = 0; 
-   var $j137_valormaximo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_localidaderural {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j137_sequencial = 0;
+   var $j137_descricao = null;
+   var $j137_valorminimo = 0;
+   var $j137_valormaximo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j137_sequencial = int4 = Codigo sequencial 
-                 j137_descricao = varchar(100) = Localidade 
-                 j137_valorminimo = float8 = Valor Mínimo 
-                 j137_valormaximo = float8 = Valor Máximo 
+                 j137_sequencial = int4 = Codigo sequencial
+                 j137_descricao = varchar(100) = Localidade
+                 j137_valorminimo = float8 = Valor Mínimo
+                 j137_valormaximo = float8 = Valor Máximo
                  ";
-   //funcao construtor da classe 
-   function cl_localidaderural() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("localidaderural"); 
+     $this->rotulo = new rotulo("localidaderural");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_localidaderural {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j137_sequencial = ($this->j137_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j137_sequencial"]:$this->j137_sequencial);
        $this->j137_descricao = ($this->j137_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["j137_descricao"]:$this->j137_descricao);
@@ -80,9 +80,9 @@ class cl_localidaderural {
      }
    }
    // funcao para inclusao
-   function incluir ($j137_sequencial){ 
+   public function incluir ($j137_sequencial){
       $this->atualizacampos();
-     if($this->j137_descricao == null ){ 
+     if($this->j137_descricao == null ){
        $this->erro_sql = " Campo Localidade não informado.";
        $this->erro_campo = "j137_descricao";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_localidaderural {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j137_valorminimo == null ){ 
+     if($this->j137_valorminimo == null ){
        $this->erro_sql = " Campo Valor Mínimo não informado.";
        $this->erro_campo = "j137_valorminimo";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_localidaderural {
      	$this->erro_status = "0";
      	return false;
      }
-     if($this->j137_valormaximo == null ){ 
+     if($this->j137_valormaximo == null ){
        $this->erro_sql = " Campo Valor Máximo não informado.";
        $this->erro_campo = "j137_valormaximo";
        $this->erro_banco = "";
@@ -128,16 +128,16 @@ class cl_localidaderural {
      	return false;
      }
      if($j137_sequencial == "" || $j137_sequencial == null ){
-       $result = db_query("select nextval('localidaderural_j137_sequencial_seq')"); 
+       $result = db_query("select nextval('localidaderural_j137_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: localidaderural_j137_sequencial_seq do campo: j137_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: localidaderural_j137_sequencial_seq do campo: j137_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j137_sequencial = pg_result($result,0,0); 
+       $this->j137_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from localidaderural_j137_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $j137_sequencial)){
@@ -148,10 +148,10 @@ class cl_localidaderural {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j137_sequencial = $j137_sequencial; 
+         $this->j137_sequencial = $j137_sequencial;
        }
      }
-     if(($this->j137_sequencial == null) || ($this->j137_sequencial == "") ){ 
+     if(($this->j137_sequencial == null) || ($this->j137_sequencial == "") ){
        $this->erro_sql = " Campo j137_sequencial não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -160,19 +160,19 @@ class cl_localidaderural {
        return false;
      }
      $sql = "insert into localidaderural(
-                                       j137_sequencial 
-                                      ,j137_descricao 
-                                      ,j137_valorminimo 
-                                      ,j137_valormaximo 
+                                       j137_sequencial
+                                      ,j137_descricao
+                                      ,j137_valorminimo
+                                      ,j137_valormaximo
                        )
                 values (
-                                $this->j137_sequencial 
-                               ,'$this->j137_descricao' 
-                               ,$this->j137_valorminimo 
-                               ,$this->j137_valormaximo 
+                                $this->j137_sequencial
+                               ,'$this->j137_descricao'
+                               ,$this->j137_valorminimo
+                               ,$this->j137_valormaximo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de localidade rural ($this->j137_sequencial) não Incluído. Inclusão Abortada.";
@@ -213,16 +213,16 @@ class cl_localidaderural {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j137_sequencial=null) { 
+   public function alterar ($j137_sequencial=null) {
       $this->atualizacampos();
      $sql = " update localidaderural set ";
      $virgula = "";
-     if(trim($this->j137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_sequencial"])){ 
+     if(trim($this->j137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_sequencial"])){
        $sql  .= $virgula." j137_sequencial = $this->j137_sequencial ";
        $virgula = ",";
-       if(trim($this->j137_sequencial) == null ){ 
+       if(trim($this->j137_sequencial) == null ){
          $this->erro_sql = " Campo Codigo sequencial não informado.";
          $this->erro_campo = "j137_sequencial";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_localidaderural {
          return false;
        }
      }
-     if(trim($this->j137_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_descricao"])){ 
+     if(trim($this->j137_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_descricao"])){
        $sql  .= $virgula." j137_descricao = '$this->j137_descricao' ";
        $virgula = ",";
-       if(trim($this->j137_descricao) == null ){ 
+       if(trim($this->j137_descricao) == null ){
          $this->erro_sql = " Campo Localidade não informado.";
          $this->erro_campo = "j137_descricao";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_localidaderural {
          return false;
        }
      }
-     if(trim($this->j137_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valorminimo"])){ 
+     if(trim($this->j137_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valorminimo"])){
        $sql  .= $virgula." j137_valorminimo = $this->j137_valorminimo ";
        $virgula = ",";
-       if(trim($this->j137_valorminimo) == null ){ 
+       if(trim($this->j137_valorminimo) == null ){
          $this->erro_sql = " Campo Valor Mínimo não informado.";
          $this->erro_campo = "j137_valorminimo";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_localidaderural {
        	return false;
        }
      }
-     if(trim($this->j137_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valormaximo"])){ 
+     if(trim($this->j137_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valormaximo"])){
        $sql    .= $virgula." j137_valormaximo = $this->j137_valormaximo ";
        $virgula = ",";
-       if(trim($this->j137_valormaximo) == null ){ 
+       if(trim($this->j137_valormaximo) == null ){
          $this->erro_sql    = " Campo Valor Máximo não informado.";
          $this->erro_campo  = "j137_valormaximo";
          $this->erro_banco  = "";
@@ -318,7 +318,7 @@ class cl_localidaderural {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco      = str_replace("\n","",@pg_last_error());
        $this->erro_sql        = "Cadastro de localidade rural não Alterado. Alteração Abortada.\\n";
        $this->erro_sql       .= "Valores : ".$this->j137_sequencial;
@@ -346,11 +346,11 @@ class cl_localidaderural {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j137_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j137_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -359,7 +359,7 @@ class cl_localidaderural {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($j137_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -391,7 +391,7 @@ class cl_localidaderural {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de localidade rural não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j137_sequencial;
@@ -419,11 +419,11 @@ class cl_localidaderural {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -445,11 +445,11 @@ class cl_localidaderural {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $j137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $j137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,15 +462,15 @@ class cl_localidaderural {
      $sql2 = "";
      if($dbwhere==""){
        if($j137_sequencial!=null ){
-         $sql2 .= " where localidaderural.j137_sequencial = $j137_sequencial "; 
-       } 
+         $sql2 .= " where localidaderural.j137_sequencial = $j137_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,11 +479,11 @@ class cl_localidaderural {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $j137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $j137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,15 +496,15 @@ class cl_localidaderural {
      $sql2 = "";
      if($dbwhere==""){
        if($j137_sequencial!=null ){
-         $sql2 .= " where localidaderural.j137_sequencial = $j137_sequencial "; 
-       } 
+         $sql2 .= " where localidaderural.j137_sequencial = $j137_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

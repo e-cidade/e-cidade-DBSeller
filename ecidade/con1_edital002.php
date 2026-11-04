@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -52,7 +52,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   if($cledital->erro_status=='0'){
      $sqlerro=true;
   }
-  
+
   $codedi=$d01_codedi;
   $cleditalproj->d10_codedi=$codedi;
   $cleditalproj->excluir($codedi);
@@ -60,7 +60,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
      $sqlerro=true;
   }
   if(!$sqlerro){
-    $dados=split("XX",$codigo);
+    $dados= explode("XX",$codigo);
     for($r=0; $r<sizeof($dados); $r++){
        if($dados[$r]!=""){
         $cleditalproj->d10_codedi=$codedi;
@@ -70,46 +70,46 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
           $sqlerro=true;
           break;
         }
-      }   
+      }
     }
   }
-  
+
   if($sqlerro==false){
-  	
+
     $cleditaldoc->excluir(null," d13_edital = $d01_codedi ");
     if ( $cleditaldoc->erro_status == '0' ) {
       $sqlerro = true;
-      break;
+      return false;
     }
-    
-    if( isset( $d13_db_documento ) && $d13_db_documento != "" ) {    
+
+    if( isset( $d13_db_documento ) && $d13_db_documento != "" ) {
       $cleditaldoc->d13_db_documento = $d13_db_documento;
       $cleditaldoc->d13_edital       = $cledital->d01_codedi;
       $cleditaldoc->incluir(null);
       if ( $cleditaldoc->erro_status == '0' ) {
         $sqlerro = true;
-        break;
+        return false;
       }
-      
+
     }
-    
+
   }
-  
-   
+
+
   if($sqlerro==true){
     $db_opcao=22;
      $db_botao = true;
   }
   db_fim_transacao($sqlerro);
 }else if(isset($chavepesquisa)){
-   $rsEditalDoc = $cleditaldoc->sql_record($cleditaldoc->sql_query(null,"*",null," d13_edital = {$chavepesquisa} ")); 
+   $rsEditalDoc = $cleditaldoc->sql_record($cleditaldoc->sql_query(null,"*",null," d13_edital = {$chavepesquisa} "));
    if ($cleditaldoc->numrows > 0) {
-   	db_fieldsmemory($rsEditalDoc,0); 
+   	db_fieldsmemory($rsEditalDoc,0);
    }
-  
-   $result = $cledital->sql_record($cledital->sql_query($chavepesquisa)); 
+
+   $result = $cledital->sql_record($cledital->sql_query($chavepesquisa));
    db_fieldsmemory($result,0);
-   $result05 = $cleditalrua->sql_record($cleditalrua->sql_query("","d02_contri,j14_nome as xj14_nome","","d02_codedi=$chavepesquisa")); 
+   $result05 = $cleditalrua->sql_record($cleditalrua->sql_query("","d02_contri,j14_nome as xj14_nome","","d02_codedi=$chavepesquisa"));
    $numrows05=$cleditalrua->numrows;
    if($numrows05>0){
      $db_opcao = 22;
@@ -137,7 +137,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -145,22 +145,22 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmeditalalt.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($cledital->erro_status=="0"){
   $cledital->erro(true,false);
   $db_botao=true;
@@ -177,6 +177,6 @@ if(isset($contris) && $contris!=""){
     db_msgbox("Edital está sendo utilizado nas contribuições $contris");
   }else{
     db_msgbox("Edital está sendo utilizado na contribuição $contris");
-  }   
-}  
+  }
+}
 ?>

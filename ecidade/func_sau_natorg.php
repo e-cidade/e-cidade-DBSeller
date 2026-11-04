@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clsau_natorg->rotulo->label("sd40_v_descricao");
               <?=$Lsd40_i_cod_natorg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("sd40_i_cod_natorg",2,$Isd40_i_cod_natorg,true,"text",4,"","chave_sd40_i_cod_natorg");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_natorg->rotulo->label("sd40_v_descricao");
               <?=$Lsd40_v_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("sd40_v_descricao",60,$Isd40_v_descricao,true,"text",4,"","chave_sd40_v_descricao");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_natorg->rotulo->label("sd40_v_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_natorg.php")==true){
@@ -122,12 +122,12 @@ $clsau_natorg->rotulo->label("sd40_v_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

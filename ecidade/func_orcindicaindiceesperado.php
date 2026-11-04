@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clorcindicaindiceesperado->rotulo->label("o25_orcindica");
               <?=$Lo25_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o25_sequencial",10,$Io25_sequencial,true,"text",4,"","chave_o25_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcindicaindiceesperado->rotulo->label("o25_orcindica");
               <?=$Lo25_orcindica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o25_orcindica",10,$Io25_orcindica,true,"text",4,"","chave_o25_orcindica");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcindicaindiceesperado->rotulo->label("o25_orcindica");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcindicaindiceesperado.php")==true){
@@ -122,12 +122,12 @@ $clorcindicaindiceesperado->rotulo->label("o25_orcindica");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

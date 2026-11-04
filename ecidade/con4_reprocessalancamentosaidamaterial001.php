@@ -76,11 +76,11 @@ $oRotuloConLancam->label('c70_codlan');
 	  <tr>
 	    <td nowrap title="Documento a ser reprocessado">
 	      <strong>
-	        <? db_ancora("Documento:","js_pesquisaDocumento(true);", 1); ?>
+	        <?php db_ancora("Documento:","js_pesquisaDocumento(true);", 1); ?>
 	      </strong>
 	    </td>
 	    <td nowrap>
-	      <?
+	      <?php
 	      //js_ValidaCampos(this,1,'Reduzido','t','f',event);
 	        db_input('iDocumento',10,"",true,'text',1,"onchange='js_pesquisaDocumento(false);'onkeyup='js_ValidaCampos(this,1,\"\",\"\",\"\",event);' ");
 	        db_input('sDescricao',40,"",true,'text',3,'');
@@ -131,7 +131,7 @@ $oRotuloConLancam->label('c70_codlan');
 </center>
 
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

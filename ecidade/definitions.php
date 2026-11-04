@@ -27,6 +27,7 @@ if (!defined('DS')) {
 // caminho absoluto do ecidade (ex.: /var/www/e-cidade/ )
 define('ECIDADE_PATH', __DIR__ . DS);
 define('ECIDADE_PATH_TABELA_ESOCIAL', __DIR__ . DS . 'arquivos' . DS . 'esocial' . DS . 'tabelas' . DS);
+define('ECIDADE_TEMP_MPDF_PATH', __DIR__ . DS . 'tmp'. DS . 'mpdf');
 
 $host = null;
 if (isset($_SERVER['HTTP_HOST'])) {
@@ -85,16 +86,9 @@ function modification($file)
             throw new Exception('Arquivo não existe: ' . $file);
         }
 
-        $user = null;
-        $request = Registry::get('app.request');
-
-        if ($request && $request->session()->has('DB_login')) {
-            $user = $request->session()->get('DB_login');
-        }
-
         // mantem arquivo de cache atualizado
         // caso nao exista cache ou ocorrer erro retorna false
-        $fileData = FileSync::update($file, $user);
+        $fileData = FileSync::update($file);
 
         if ($fileData) {
             return $fileData->getPath();

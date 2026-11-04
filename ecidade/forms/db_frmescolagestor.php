@@ -90,7 +90,7 @@ $oRotulo->label("z01_nome");
                     </td>
                     <td>
                         <?php
-                        db_input('ed325_email', 50, $Ied325_email, true, 'text', $db_opcao, "");
+                        db_input('ed325_email', 100, $Ied325_email, true, 'text', $db_opcao, "");
                         ?>
                     </td>
                 </tr>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -92,15 +92,15 @@ if (isset($valor)) {
           <b>Consulta de Empréstimos por Acervo <?=$titulo?></b>
         </td>
         <td colspan="4" align="right">
-          <?
+          <?php
             if ($todos == "false" && $linhas != 0) {
           ?>
               <input type="checkbox" name="todos" value="true" onclick="js_vertodos()">Ver todos empréstimos
-          <?
+          <?php
             } else if ($todos == "true" && $linhas != 0) {
           ?>
               <input type="checkbox" name="todos" value="false" onclick="js_vertodos()">Ocultar empréstimos
-          <?}?>
+          <?php } ?>
         </td>
       </tr>
       <tr bgcolor="#999999">
@@ -113,7 +113,7 @@ if (isset($valor)) {
         <td align="center" width="15%"><b>Tipo</b></td>
         <td align="center" width="10%"><b>Empréstimos</b></td>
       </tr>
-      <?
+      <?php
       $cor1 = "#ababab";
       $cor2 = "#f3f3f3";
       $cor  = $cor1;
@@ -173,7 +173,7 @@ if (isset($valor)) {
                     <td align="center"><b>Devolvido em:</b></td>
                   </tr>
                   <tr><td colspan="5" height="1" bgcolor="#CCCCCC"></td></tr>
-                  <?
+                  <?php
                   $cor3  = "#DEB887";
                   $cor4  = "#FFE0C1";
                   $cor_e = $cor3;
@@ -194,32 +194,32 @@ if (isset($valor)) {
                       <td align="center"><?=db_formatar($bi18_devolucao,'d')?></td>
                       <td align="center">
                         <b>
-                        <?if ($bi21_entrega == "") {?>
+                        <?php if ($bi21_entrega == "") {?>
                             <a title="Devolver Empréstimo"
                                href="javascript:parent.location.href='bib1_devolucao001.php?bi18_leitor=<?=$bi16_codigo?>&ov02_nome=<?=$ov02_nome?>'">
                                <font color='red'>Não devolvido</font>
                             </a>
-                        <?} else {?>
+                        <?php } else {?>
                             <font color='green'><?=db_formatar($bi21_entrega,'d')?></font>
-                        <?}?>
+                        <?php } ?>
                         </b>
                       </td>
                    </tr>
-                  <?}?>
+                  <?php } ?>
                 </table>
               </td>
             </tr>
-        <?}?>
+        <?php } ?>
 
-    <?}?>
+    <?php } ?>
     <table>
     </form>
-  <?} else {?>
+  <?php } else {?>
      <tr>
        <td colspan="6" align="center">Nenhum empréstimo para este acervo.</td>
      </tr>
   </table>
-  <?}
+  <?php }
 } else {
   echo "<div align='center'><br>Escolha o acervo e clique em pesquisar</div>";
 }
@@ -227,7 +227,7 @@ if (isset($valor)) {
 <br><br>
 <script>
 function js_vertodos(){
- <?$pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor;?>
+ <?php $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor;?>
  location.href = "<?=$pagina?>&data_ini=<?=$data_ini?>&data_fim=<?=$data_fim?>&todos="+document.form2.todos.value;
 }
 </script>

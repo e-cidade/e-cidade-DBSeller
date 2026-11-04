@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,7 +53,7 @@ $rows = pg_num_rows($res);
       <th width=25px> Qtd        </th>
       <th colspan=2> Departamento </th>
     </tr>
-  <?
+  <?php
   for($x=0;$x <$rows;$x++){
     db_fieldsmemory($res,$x);
     ?>
@@ -68,7 +68,7 @@ $rows = pg_num_rows($res);
        <td align=right><?=$m70_coddepto?></td>
        <td><?=$descrdepto?></td>
     </tr>
-    <?
+    <?php
   }
   ?>
   </table>

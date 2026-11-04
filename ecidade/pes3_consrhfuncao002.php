@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -103,7 +103,7 @@ a.links2:hover {
 	text-decoration: underline;
 }
 .nome {
-  color:black;  
+  color:black;
 }
 a.nome:hover {
   color:blue;
@@ -132,11 +132,11 @@ function js_relatorio(){
     var sFormatoEmissao = document.form1.tipoimpressao.value;
 
     if (sFormatoEmissao == "pdf"){
-      
-      <?php 
-      
+
+      <?php
+
         if(!empty($funcao)) {
-          
+
           $jan  = "jan = window.open(sFonte2+";
           $jan .= "'?funcao='+document.form1.rh37_funcao.value+";
           $jan .= "'&ano=$ano&mes=$mes&colunas1=".@$colunas1."'+";
@@ -144,34 +144,34 @@ function js_relatorio(){
           $jan .= "'&selecao=$selecao_cargo'+";
           $jan .= "'&formato_emissao='+sFormatoEmissao,";
           $jan .= "'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40));";
-        
+
           echo $jan;
 
         } else {
-        
+
           $jan  = "jan = window.open(sFonte1+";
           $jan .= "'?ano=$ano&mes=$mes&colunas1=".@$colunas1."'+";
           $jan .= "'&lotacao=$lotacao_cargo'+";
           $jan .= "'&selecao=$selecao_cargo'+";
           $jan .= "'&formato_emissao='+sFormatoEmissao,";
           $jan .= "'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40));";
-          
+
           echo $jan;
         }
-        
+
         ?>
-       
+
 
     }
     else{
 
         var sAjaxUrl = "";
-        var sNomeArquivo = '<?php echo "consrhfuncao".date("YmdHis").db_getsession("DB_id_usuario").".csv" ?>'; 
+        var sNomeArquivo = '<?php echo "consrhfuncao".date("YmdHis").db_getsession("DB_id_usuario").".csv" ?>';
         var lFuncao = '<?php echo !empty($funcao) ? "true" : "false"; ?>';
-  
+
         sAjaxUrl     = sFonte1;
         sAjaxUrl    += '?formato_emissao='+sFormatoEmissao;
-  
+
         if (lFuncao == 'true'){
             sAjaxUrl     = sFonte2;
             sAjaxUrl    += '?formato_emissao='+sFormatoEmissao;
@@ -183,19 +183,19 @@ function js_relatorio(){
         sAjaxUrl    += '&ano='+'<?php echo @$ano?>';
         sAjaxUrl    += '&mes='+'<?php echo @$mes?>';
         sAjaxUrl    += '&colunas1='+'<?php echo @$colunas1?>';
-        
+
         js_divCarregando('Aguarde... Carregando Documento CSV','msgbox');
         var oAjax        = new Ajax.Request(
                           sAjaxUrl,
-                          { 
+                          {
                             parameters:{
                               'sNomeArquivo':sNomeArquivo
                             },
                             method: 'get',
                             asynchronous:false,
                             onComplete : mostraArquivoCsv
-                          }); 
-        
+                          });
+
     }
 }
 
@@ -206,7 +206,7 @@ function mostraArquivoCsv(oAjax){
     if (oAjax.status == 200) {
         sNomeArquivo = oAjax.request.parameters.sNomeArquivo;
         sCaminhoArquivo = "tmp/"+sNomeArquivo;
-        var oDownload = new DBDownload(); 
+        var oDownload = new DBDownload();
         oDownload.addFile(sCaminhoArquivo, sNomeArquivo);
         oDownload.show();
 
@@ -230,7 +230,7 @@ function mostraArquivoCsv(oAjax){
 </Table>
 </div>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -239,7 +239,7 @@ function mostraArquivoCsv(oAjax){
 </table>
 
     <center>
-    <?php      	
+    <?php
 	  if(isset($funcao) && trim($funcao)!=""){
 
       $where = " ";
@@ -250,14 +250,14 @@ function mostraArquivoCsv(oAjax){
        if (isset($lotacao) && !empty($lotacao)){
         $where .= " and rhlota.r70_codigo = $lotacao ";
        }
-      
+
       //verificamos se foi informada selecao, buscamos a condicao e aplicamos na consulta
       if(isset($selecao) && !empty($selecao)) {
-          
-        $oSelecao = new Selecao($selecao);  
-        $where .= " and rhpessoalmov.rh02_regist in (select rhpessoalmov.rh02_regist 
-                                          from rhpessoal 
-                                               inner join rhpessoalmov   on rhpessoal.rh01_regist     = rhpessoalmov.rh02_regist 
+
+        $oSelecao = new Selecao($selecao);
+        $where .= " and rhpessoalmov.rh02_regist in (select rhpessoalmov.rh02_regist
+                                          from rhpessoal
+                                               inner join rhpessoalmov   on rhpessoal.rh01_regist     = rhpessoalmov.rh02_regist
                                                                         and rhpessoalmov.rh02_anousu  = " . $ano. "
                                                                         and rhpessoalmov.rh02_mesusu  = " . $mes . "
                                                                         and rhpessoalmov.rh02_instit  = " . db_getsession("DB_instit") . "
@@ -265,47 +265,47 @@ function mostraArquivoCsv(oAjax){
                                                                         and rhlota.r70_instit         = rhpessoalmov.rh02_instit
                                                left join  rhregime       on rhregime.rh30_codreg      = rhpessoalmov.rh02_codreg
                                                left join  rhpescargo     on rhpescargo.rh20_seqpes    = rhpessoalmov.rh02_seqpes
-                                               left join  rhpespadrao    on rhpespadrao.rh03_seqpes   = rhpessoalmov.rh02_seqpes             
-                                                                        and rhpespadrao.rh03_anousu   = rhpessoalmov.rh02_anousu             
+                                               left join  rhpespadrao    on rhpespadrao.rh03_seqpes   = rhpessoalmov.rh02_seqpes
+                                                                        and rhpespadrao.rh03_anousu   = rhpessoalmov.rh02_anousu
                                                                         and rhpespadrao.rh03_mesusu   = rhpessoalmov.rh02_mesusu
                                                left join  rhpesrescisao  on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes
                                         where " . $oSelecao->getWhere() . ")";
-        
+
       }
 
 
-			
+
 	  	$porfuncao = true;
 
         $sql1 = "
-				select 
+				select
            rh37_funcao,
            rh37_descr,
            rh37_vagas,
            count(rh01_regist) as ocupados,
            rh30_vinculo as r01_tpvinc
-     from rhfuncao 
+     from rhfuncao
           inner join rhpessoalmov  on rhpessoalmov.rh02_funcao  = rhfuncao.rh37_funcao
 		                              and rhpessoalmov.rh02_anousu  = $ano
 		                              and rhpessoalmov.rh02_mesusu  = $mes
 		                              and rhpessoalmov.rh02_instit  = ".db_getsession("DB_instit")."
-		      inner join rhpessoal     on rhpessoal.rh01_regist     = rhpessoalmov.rh02_regist 
-          left  join rhpesrescisao on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes 
+		      inner join rhpessoal     on rhpessoal.rh01_regist     = rhpessoalmov.rh02_regist
+          left  join rhpesrescisao on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes
           inner join rhregime  on rhregime.rh30_codreg  = rhpessoalmov.rh02_codreg
-		                          and rhregime.rh30_instit  = rhpessoalmov.rh02_instit 
-          inner join cgm       on cgm.z01_numcgm        = rhpessoal.rh01_numcgm 
+		                          and rhregime.rh30_instit  = rhpessoalmov.rh02_instit
+          inner join cgm       on cgm.z01_numcgm        = rhpessoal.rh01_numcgm
           inner join rhlota    on rhlota.r70_codigo     = rhpessoalmov.rh02_lota
-		                          and rhlota.r70_instit     = rhpessoalmov.rh02_instit 
+		                          and rhlota.r70_instit     = rhpessoalmov.rh02_instit
           where rh37_funcao = $funcao
 			      and rh37_instit = ".db_getsession("DB_instit")."
            and rh05_seqpes is null
 					 $where
-           group by 
+           group by
                rh37_funcao,
                rh37_descr,
                rh30_vinculo,
                rh37_vagas
-		";	
+		";
 		 $result_funcao = db_query($sql1);
         if(pg_numrows($result_funcao) == 0){
       	  db_msgbox("Cargo não encontrado");
@@ -333,13 +333,13 @@ function mostraArquivoCsv(oAjax){
         echo "<script>location.href = 'pes3_consrhfuncao001.php'</script>";
       }
 	  }
-   
+
    $result_regime = null;
    if (!empty($colunas1)){
     $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_vinculo","", " rh30_instit = ".db_getsession('DB_instit')." and rh30_codreg in (".$colunas1.")"));
    }
 
-   $colunas = "";    
+   $colunas = "";
    $virgula = "";
    for($x = 0; $x < $clrhregime->numrows; $x ++) {
      db_fieldsmemory($result_regime, $x);
@@ -349,10 +349,10 @@ function mostraArquivoCsv(oAjax){
 	?>
 	    <form name='form1'>
         <table width="100%" height="90%" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td colspan="2"> 
+          <tr>
+            <td colspan="2">
 	          <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
+                <tr>
                    <?php
                    if($porfuncao == true){
                    ?>
@@ -363,7 +363,7 @@ function mostraArquivoCsv(oAjax){
                          ?>
                        </strong>
                      </td>
-                     <td class="tabcols" nowrap width="30%"> 
+                     <td class="tabcols" nowrap width="30%">
                        <?php
                        db_input('rh37_funcao', 8, $Irh37_funcao, true, 'text', 3);
                        ?>
@@ -371,7 +371,7 @@ function mostraArquivoCsv(oAjax){
                        db_input('rh37_descr', 30, $Irh37_descr, true, 'text', 3);
                        ?>
                      </td>
-                     <td width="60%">                     
+                     <td width="60%">
                        <table border="0" cellspacing="0" cellpadding="0">
                          <tr>
                            <td colspan="2"></td>
@@ -440,10 +440,10 @@ function mostraArquivoCsv(oAjax){
               </table>
             </td>
           </tr>
-          <tr> 
-            <td colspan="2" align="center"  height="90%"  valign="middle"> 
+          <tr>
+            <td colspan="2" align="center"  height="90%"  valign="middle">
 	          <table width="100%" height="90%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
+                <tr>
                   <td align="center">
                     <?php
                     $qry = "";
@@ -464,20 +464,20 @@ function mostraArquivoCsv(oAjax){
                       $qry .= $rog."colunas1=$colunas1";
                       $rog = "&";
                     }
-          
+
                     if(isset($lotacao) && !empty($lotacao)){
                       $qry .= $rog."lotacao=$lotacao";
                       $rog = "&";
                     }
-        
+
                     if(isset($selecao) && !empty($selecao)){
                       $qry .= $rog."selecao=$selecao";
                       $rog = "&";
                     }
-        
-                    ?> 
+
+                    ?>
                     <iframe id="registros" height="95%" width="95%" name="registros" src="pes3_consrhfuncao021.php<?php echo $qry?>"></iframe>
-                    <?php 
+                    <?php
                     if(isset($funcao) && trim($funcao)!=""){
                     ?>
                     <input type="hidden" name="funcao"  value="<?php echo $funcao?>">
@@ -489,20 +489,20 @@ function mostraArquivoCsv(oAjax){
               </table>
             </td>
           </tr>
-          <tr> 
-            <td colspan="2" align="center"> 
-              <input name="retornar" type="button" id="retornar" value="Nova Pesquisa" title="Inicio da Consulta" onclick="location.href='pes3_consrhfuncao001.php'"> 
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+          <tr>
+            <td colspan="2" align="center">
+              <input name="retornar" type="button" id="retornar" value="Nova Pesquisa" title="Inicio da Consulta" onclick="location.href='pes3_consrhfuncao001.php'">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <input name="pesquisar" type="submit" id="pesquisar"  title="Atualiza a Consulta" value="Atualizar">
               &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
               <label><b>Tipo da geração</b></label>
-              <?php 
+              <?php
               $aOpcoesFiltro = array(
                 'pdf' => 'PDF',
                 'csv' => 'CSV',
-              );              
+              );
               ?>
-              <?php db_select("tipoimpressao", $aOpcoesFiltro, true, 1); ?> 
+              <?php db_select("tipoimpressao", $aOpcoesFiltro, true, 1); ?>
 	            &nbsp;&nbsp;
               <input name="imprimir" type="button" id="imprimir" value="Gerar" title="Imprimir" onclick="js_relatorio();">
               <strong>
@@ -518,12 +518,12 @@ function mostraArquivoCsv(oAjax){
     	      db_input("mes",2,'',true,'text',4);
     	      db_input("colunas1",2,'',true,'hidden',3);
 	          ?>
-            </td>   
+            </td>
            </tr>
         </table>
       </form>
   </center>
-<?php 
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

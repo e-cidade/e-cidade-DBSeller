@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ if ($clouvidor->numrows > 0) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load ( 'strings.js,scripts.js,datagrid.widget.js,prototype.js' );
 db_app::load ( 'estilos.css,grid.style.css' );
 ?>
@@ -348,7 +348,7 @@ function js_ImprimeProcesso(){
 					<tr>
 						<td align="left"><b>Tipo:</b></td>
 						<td align="left">
-						<?
+						<?php
 						$x = array ('0' => 'Todos', '1' => 'Em Andamento', '2' => 'Em Atraso' );
 						db_select ( 'tipo', $x, true, 1 );
 						?>
@@ -357,7 +357,7 @@ function js_ImprimeProcesso(){
 					<tr>
 						<td align="left"><b>Data de Criação:</b></td>
 						<td align="left">
-						<?
+						<?php
 						db_inputdata ( 'dt_inicio', '', '', '', true, 'text', 1 );
 						echo "&nbsp;à&nbsp;";
 						db_inputdata ( 'dt_fim', '', '', '', true, 'text', 1 );
@@ -366,12 +366,12 @@ function js_ImprimeProcesso(){
 					</tr>
 					<tr>
 						<td>
-		      	  <?
+		      	  <?php
 											db_ancora ( '<b>Tipo de Processo:</b>', "js_pesquisap58_codigo(true);", "" );
 											?>
 		    		</td>
 						<td> 
-						  <?
+						  <?php
 								$p58_codigo = null;
 								$p51_descr = '';
 								db_input ( 'p58_codigo', 5, 1, true, 'text', 1, " onchange='js_pesquisap58_codigo(false);'" );
@@ -381,12 +381,12 @@ function js_ImprimeProcesso(){
 					</tr>
 					<tr>
 						<td>
-					    <?
+					    <?php
 									db_ancora ( '<b>Sequencial do Atendimento:</b>', "js_pesquisaov01_numero(true);", "" );
 									?>
 					  </td>
 						<td>
-					    <?
+					    <?php
 									db_input ( 'ov01_numero', 5, 1, true, 'text', 1, " onchange='js_pesquisaov01_numero(false);'" );
 									db_input ( 'ov01_solicitacao', 50, 0, true, 'text', 3, '' );
 									?>
@@ -395,35 +395,35 @@ function js_ImprimeProcesso(){
 
 					<tr>
 					  <td>
-					    <?
+					    <?php
 					      db_ancora('<b>Número do Processo:</b>', 'js_pesquisaov09_protprocesso(true);','')
 					    ?>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 							  db_input('ov09_protprocesso', 5, 1, true, 'text', 1, " onchange='js_pesquisaov09_protprocesso(false);'");
 							  db_input('ov09_ouvidoriaatendimento', 50, 0, true, 'text', 3, '');
 							?>
 					  </td>
 					</tr>
 
-					<?
+					<?php
 					if ($lUsuarioOuvidor) {
 						?>
 							<tr>
 						<td align="left"><b>Departamento:</b></td>
 						<td align="left">
-									<?
+									<?php
 						db_selectrecord ( 'coddepto', $rsDepartamentos, true, 1, '', '', '', "0" );
 						?>
 								</td>
 					</tr>
-						  <?
+						  <?php
 					} else {
 						?>
 					<input type="hidden" value="<?=$iCodDeptoUsuario?>" name="coddepto"
 						id="coddepto">
-					<?
+					<?php
 					}
 					?>
 				</table>
@@ -450,7 +450,7 @@ function js_ImprimeProcesso(){
 		</td>
 	</tr>
 </table>
-<?
+<?php
 db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 ?>
 </body>

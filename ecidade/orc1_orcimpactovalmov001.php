@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -478,7 +478,7 @@ if( (isset($opcao) && $opcao=="alterar") || isset($tavaincluindo) ){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorcimpactovalmov.php"));
 	?>
     </center>
@@ -487,7 +487,7 @@ if( (isset($opcao) && $opcao=="alterar") || isset($tavaincluindo) ){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     if($clpagordemrec->erro_campo!=""){
         echo "<script> document.form1.".$clorcimpactovalmov->erro_campo.".style.backgroundColor='#99A9AE';</script>";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -27,7 +27,7 @@
 
 class estagioAvaliacao {
   
-  function estagioAvaliacao($iCodAvaliacao,$setSession=true){
+  public function __construct($iCodAvaliacao,$setSession=true){
 
      if (!class_exists("rhestagioagendadata")){
          require_once modification("classes/db_rhestagioagendadata_classe.php");
@@ -48,11 +48,11 @@ class estagioAvaliacao {
 
   }
 
-  function setCodigoAvaliacao($iCodAvaliacao){
+  public function setCodigoAvaliacao($iCodAvaliacao){
      $this->iCodAvaliacao = $iCodAvaliacao;
   }
 
-  function getQuesitos($iCodQuesito=null,$limit=null){
+  public function getQuesitos($iCodQuesito=null,$limit=null){
 
      if (!class_exists("rhestagioquesito")){
         
@@ -74,15 +74,15 @@ class estagioAvaliacao {
      return $this->rQuesitos;
   }
 
-  function setCodEstagio($iEstagio){
+  public function setCodEstagio($iEstagio){
      $this->codEstagio = $iEstagio;
   }
 
-  function getCodEstagio(){
+  public function getCodEstagio(){
      return $this->codEstagio;
   }
 
-  function getQuestoesQuesito($iCodQuesito){
+  public function getQuestoesQuesito($iCodQuesito){
 
      if (!class_exists("rhestagioquesitopergunta")){
         require_once modification("classes/db_rhestagioquesitopergunta_classe.php");
@@ -94,7 +94,7 @@ class estagioAvaliacao {
      return $this->rEstagioQuestao;
   }
   
-  function getQuestaoRespostas($iCodQuestao){
+  public function getQuestaoRespostas($iCodQuestao){
 
      if (!class_exists("rhestagioquesitoresposta")){
 
@@ -109,7 +109,7 @@ class estagioAvaliacao {
      return $this->rEstagioResposta;
   }
 
-  function getDadosExame($iCodQuesito = null){
+  public function getDadosExame($iCodQuesito = null){
       
       if (!class_exists("services_json")){
          require_once modification("libs/JSON.php");
@@ -191,7 +191,7 @@ class estagioAvaliacao {
       return $objJson->encode($strJson);
    }
 
-   function getQuesitosExame(){
+   public function getQuesitosExame(){
 
       $this->getQuesitos();
       if ($this->rQuesitos){
@@ -252,11 +252,11 @@ class estagioAvaliacao {
          }
       }
    }
-   function cancelarExame(){
+   public function cancelarExame(){
       unset($_SESSION["avaliacao"]);
    }
 
-   function gravarSessao(){
+   public function gravarSessao(){
 
      unset($_SESSION["avaliacao"]) ;
      $_SESSION["avaliacao"]["questoes"] = array();
@@ -321,7 +321,7 @@ class estagioAvaliacao {
    ** salva os dados o exame no banco de dados
    ** @params array $aPars array com parametros para inclusao.
   */ 
-   function salvarExame($aPars){
+   public function salvarExame($aPars){
 
      if (!class_exists("rhestagioavaliacao")){
         require_once(modification("classes/db_rhestagioavaliacao_classe.php"));
@@ -451,7 +451,7 @@ class estagioAvaliacao {
    ** Função para converter um array numa string json.
    ** @param $array array para ser convertida
   */ 
-   function array2json($array){
+   public function array2json($array){
 
       if (!class_exists("services_json")){
          require_once modification("libs/JSON.php");
@@ -464,7 +464,7 @@ class estagioAvaliacao {
    **
    */
 
-   function excluirAvaliacao(){
+   public function excluirAvaliacao(){
     
      $this->lSqlErro     = false;
      $SQLAvaliacao  = "select h56_sequencial";
@@ -523,27 +523,27 @@ class estagioAvaliacao {
      }
    }
 
-   function getRespostaQuestao($iCodQuestao){
+   public function getRespostaQuestao($iCodQuestao){
 
      if (isset($_SESSION["avaliacao"]["questoes"][$iCodQuestao])){
          return $_SESSION["avaliacao"]["questoes"][$iCodQuestao];
      }
    }
 
-   function getObsQuestao($iCodQuestao, $sTipo ){
+   public function getObsQuestao($iCodQuestao, $sTipo ){
 
      if (isset($_SESSION["avaliacao"]["obsquestoes"][$iCodQuestao][$sTipo])){
          return $_SESSION["avaliacao"]["obsquestoes"][$iCodQuestao][$sTipo];
      }
    }
 
-   function getObsQuesito($iCodQuesito, $sTipo ){
+   public function getObsQuesito($iCodQuesito, $sTipo ){
 
      if (isset($_SESSION["avaliacao"]["obs"][$iCodQuesito][$sTipo])){
          return $_SESSION["avaliacao"]["obs"][$iCodQuesito][$sTipo];
      }
    }
-   function getPresidenteComissao(){
+   public function getPresidenteComissao(){
      
      if (!class_exists("rhestagioavaliacao")){
          require_once modification("classes/db_rhestagioavaliacao_classe.php");

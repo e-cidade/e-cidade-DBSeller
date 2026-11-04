@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -207,14 +207,14 @@ if(isset($gerar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmcanimportarelogio.php"));
         ?>
     </center>
         </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -222,7 +222,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 js_tabulacaoforms("form1","anousu",true,1,"anousu",true);
 </script>
 </html>
-<?
+<?php
 if(isset($gerar) || isset($confirma)){
   if($erro == 1){
     db_msgbox($erro_msg);

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -58,13 +58,13 @@ $rotulo->label("z01_nome");
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <script>
-function js_mostra_andam(processo){ 
+function js_mostra_andam(processo){
    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe','pro3_mosprocandam.php?codproc='+processo,'Pesquisa',true);
 }
 </script>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#cccccc">
-  <tr> 
+  <tr>
     <td width="360" height="40">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -72,40 +72,40 @@ function js_mostra_andam(processo){
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <table cellspacing = 0>
       <form method="post" action="" name="form1">
   <tr>
     <td nowrap title="<?=@$Tp58_codproc?>">
-       <?
+       <?php
        db_ancora(@$Lp58_codproc,"js_pesquisap58_codproc(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',$db_opcao," onchange='js_pesquisap58_codproc(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
        ?>
     </td>
   </tr>
       <tr>
          <td title="<?=$Tp58_numcgm;?>">
-       <?db_ancora(@$Lp58_numcgm,"js_pesquisap58_numcgm(true);",1);?>
-          
+       <?php db_ancora(@$Lp58_numcgm,"js_pesquisap58_numcgm(true);",1);?>
+
          </td>
          <td>
-           <?
+           <?php
             db_input("p58_numcgm",10,"",true,"text","");
            ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
-         </td>      
-      </tr>  
+         </td>
+      </tr>
          <td colspan=2 style="text-align:center">
            <input type="submit" name="db_opcao" value="Consultar">
            <input type="reset" value="Limpar">
@@ -117,7 +117,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -131,10 +131,10 @@ function js_pesquisap58_codproc(mostra){
   }
 }
 function js_mostraprotprocesso(chave,chave1,erro){
-  document.form1.p58_requer.value = chave1; 
-  if(erro==true){ 
-    document.form1.p58_codproc.focus(); 
-    document.form1.p58_codproc.value = ''; 
+  document.form1.p58_requer.value = chave1;
+  if(erro==true){
+    document.form1.p58_codproc.focus();
+    document.form1.p58_codproc.value = '';
   }
 }
 function js_mostraprotprocesso1(chave1,chave2){
@@ -160,10 +160,10 @@ function js_pesquisap58_numcgm(mostra){
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.p58_numcgm.focus(); 
-    document.form1.p58_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.p58_numcgm.focus();
+    document.form1.p58_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2){
@@ -174,20 +174,20 @@ function js_mostracgm1(chave1,chave2){
 onLoad=document.form1.p58_codproc.select();
 onLoad=document.form1.p58_codproc.focus();
 </script>
-<?
+<?php
 if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consultar"){
- $sql = "select p58_codproc, 
+ $sql = "select p58_codproc,
                 z01_nome,
                 p51_descr,
-                p58_obs 
+                p58_obs
          from   protprocesso inner join cgm on p58_numcgm = z01_numcgm
                 inner join tipoproc on p58_codigo = p51_codigo
         ";
  $where = "";
  if (@$p58_codproc != ""){
-    $where .= " p58_codproc = ".@ $p58_codproc ;     
- }                
- 
+    $where .= " p58_codproc = ".@ $p58_codproc ;
+ }
+
 
  if (@$p58_requer != ""){
     if ($where != ""){
@@ -195,7 +195,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consul
     }
     $where .= " p58_requer = '".@ $p58_requer."'";
  }
- 
+
  if (@$p58_numcgm != ""){
     if ($where != ""){
       $where .=" and ";
@@ -217,7 +217,7 @@ if(pg_numrows($res) > 0){
     function js_mostraproc(chave){
     js_mostra_andam(chave);
     db_iframe_cgm.hide();
-      
+
     }
     </script>";
   }else{
@@ -228,9 +228,9 @@ if(pg_numrows($res) > 0){
   }
 }else{
   echo "<script>
-                
+
 		alert('Processo não cadastrado!!!');
-                location.href = 'pro3_processo001.php'; 
+                location.href = 'pro3_processo001.php';
 		</script>";
 }
 }

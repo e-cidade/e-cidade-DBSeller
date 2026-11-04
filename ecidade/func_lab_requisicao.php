@@ -186,6 +186,11 @@ $clrotulo->label("z01_i_cgsund");
                       $sWhereAutorizados = " and la21_c_situacao = '" . RequisicaoExame::NAO_DIGITADO . "' ";
                   }
 
+                  $sWhereColetados = "";
+                  if (isset($lSomenteColetados)) {
+                      $sWhereColetados = " and la21_c_situacao = '" . RequisicaoExame::COLETADO . "' ";
+                  }
+
                   $sWhereLaboratorioLogado = "";
                   if(isset($permissaoPorResponsavelLab)){
                     $sWhereLaboratorioLogado = " and la24_i_laboratorio = {$iLaboratorioLogado}";
@@ -196,7 +201,7 @@ $clrotulo->label("z01_i_cgsund");
                   $where .= "                inner join lab_setorexame on lab_setorexame.la09_i_codigo = lab_requiitem.la21_i_setorexame";
                   $where .= "                inner join lab_labsetor   on lab_labsetor.la24_i_codigo   = lab_setorexame.la09_i_labsetor";
                   $where .= "          where lab_requiitem.la21_i_requisicao = lab_requisicao.la22_i_codigo";
-                  $where .= "           {$sWhereLaboratorioLogado} {$sWhereRequiItem} {$sWhereAutorizados} ) ";
+                  $where .= "           {$sWhereLaboratorioLogado} {$sWhereRequiItem} {$sWhereAutorizados} {$sWhereColetados} ) ";
 
                   $aWhere[] = $where;
               }
@@ -254,7 +259,7 @@ $clrotulo->label("z01_i_cgsund");
                       $repassa = array(
                         "la22_i_codigo" => $la22_i_codigo,
                         "chave_z01_v_nome" => $chave_z01_v_nome,
-                        "la22_i_departamento" => $la22_i_departamento,
+                        "la22_i_departamento" => (!empty($la22_i_departamento) ? $la22_i_departamento : null),
                         "la22_d_data_ini" => $la22_d_data_ini,
                         "la22_d_data_fim" => $la22_d_data_fim,
                         "la22_d_data_ini_dia" => $la22_d_data_ini_dia,
@@ -265,10 +270,8 @@ $clrotulo->label("z01_i_cgsund");
                         "la22_d_data_fim_ano" => $la22_d_data_fim_ano,
                         "chave_z01_i_cgsund" => $chave_z01_i_cgsund
                       );
-                  }
-
-                      db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);
-
+                  }                    
+                  db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);
               }
           } else {
               if ($pesquisa_chave != null && $pesquisa_chave != "") {
@@ -289,6 +292,11 @@ $clrotulo->label("z01_i_cgsund");
                           $sWhereAutorizados = " and la21_c_situacao = '" . RequisicaoExame::NAO_DIGITADO . "' ";
                       }
 
+                      $sWhereColetados = "";
+                      if (isset($lSomenteColetados)) {
+                          $sWhereColetados = " and la21_c_situacao = '" . RequisicaoExame::COLETADO . "' ";
+                      }
+
                       $sWhereLaboratorioLogado = "";
                       if(!isset($permissaoPorResponsavelLab)){
                         $sWhereLaboratorioLogado = " and la24_i_laboratorio = {$iLaboratorioLogado}";
@@ -299,7 +307,7 @@ $clrotulo->label("z01_i_cgsund");
                       $sWhere .= "                    inner join lab_setorexame on lab_setorexame.la09_i_codigo = lab_requiitem.la21_i_setorexame";
                       $sWhere .= "                    inner join lab_labsetor   on lab_labsetor.la24_i_codigo   = lab_setorexame.la09_i_labsetor";
                       $sWhere .= "              where lab_requiitem.la21_i_requisicao = lab_requisicao.la22_i_codigo";
-                      $sWhere .= "               {$sWhereLaboratorioLogado} {$sWhereRequiItem} {$sWhereAutorizados} ) ";
+                      $sWhere .= "               {$sWhereLaboratorioLogado} {$sWhereRequiItem} {$sWhereAutorizados} {$sWhereColetados} ) ";
                   }
 
                   $sCampos = "z01_v_nome, z01_i_cgsund, la22_i_departamento";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_matriculaserie {
                  ed221_c_origem = char(1) = Etapa de Origem 
                  ";
    //funcao construtor da classe 
-   function cl_matriculaserie() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matriculaserie"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_matriculaserie {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed221_i_codigo = ($this->ed221_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed221_i_codigo"]:$this->ed221_i_codigo);
        $this->ed221_i_matricula = ($this->ed221_i_matricula == ""?@$GLOBALS["HTTP_POST_VARS"]["ed221_i_matricula"]:$this->ed221_i_matricula);
@@ -80,7 +80,7 @@ class cl_matriculaserie {
      }
    }
    // funcao para inclusao
-   function incluir ($ed221_i_codigo){ 
+   public function incluir ($ed221_i_codigo){ 
       $this->atualizacampos();
      if($this->ed221_i_matricula == null ){ 
        $this->erro_sql = " Campo Matrícula nao Informado.";
@@ -191,7 +191,7 @@ class cl_matriculaserie {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($ed221_i_codigo=null) { 
+   public function alterar ($ed221_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update matriculaserie set ";
      $virgula = "";
@@ -301,7 +301,7 @@ class cl_matriculaserie {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($ed221_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($ed221_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed221_i_codigo));
      }else{ 
@@ -365,7 +365,7 @@ class cl_matriculaserie {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -388,7 +388,7 @@ class cl_matriculaserie {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $ed221_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ed221_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -427,7 +427,7 @@ class cl_matriculaserie {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $ed221_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ed221_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

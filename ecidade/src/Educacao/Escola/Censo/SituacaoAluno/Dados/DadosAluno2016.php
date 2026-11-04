@@ -7,6 +7,7 @@ use stdClass;
 
 /**
  * Class DadosAluno2016
+ *
  * @package ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados
  */
 class DadosAluno2016
@@ -14,36 +15,42 @@ class DadosAluno2016
 
     /**
      * Código INEP da Escola
+     *
      * @var integer
      */
     protected $iEscolaInep;
 
     /**
      * Código do vínculo da Turma com a Escola
+     *
      * @var integer
      */
     protected $iTurmaEscola;
 
     /**
      * Código INEP da Turma
+     *
      * @var integer
      */
     protected $iTurmaInep;
 
     /**
      * Código INEP do Aluno
+     *
      * @var integer
      */
     protected $iAlunoInep;
 
     /**
      * Código do vínculo do Aluno com a Escola
+     *
      * @var integer
      */
     protected $iAlunoEscola;
 
     /**
      * Código INEP da Matrícula
+     *
      * @var integer
      */
     protected $iMatriculaInep;
@@ -64,18 +71,21 @@ class DadosAluno2016
 
     /**
      * Matrícula do aluno
+     *
      * @var Matricula
      */
     protected $oMatricula;
 
     /**
      * Informações do aluno adicionadas as mensagens de erro.
+     *
      * @var string
      */
     protected $sInformacaoAluno;
 
     /**
      * De/Para das situações existentes no e-cidade com as do CENSO
+     *
      * @var array
      */
     protected $aSituacoesMatricula = array(
@@ -83,8 +93,10 @@ class DadosAluno2016
         'TRANSFERIDO FORA' => 1,
         'TROCA DE MODALIDADE' => 1,
         'EVADIDO' => 2,
+        'ABANDONO ESCOLAR' => 2,
         'MATRICULA TRANCADA' => 2,
         'CANCELADO' => 2,
+        'DESISTENTE' => 2,
         'FALECIDO' => 3,
         'REPROVADO' => 4,
         'APROVADO' => 5,
@@ -98,12 +110,14 @@ class DadosAluno2016
 
     /**
      * Erros ocorrido durante a execução
+     *
      * @var array
      */
     protected $aErros = array();
 
     /**
      * Seta os atributos da classe de acordo com os dados recebidos.
+     *
      * @param stdClass $oDados
      */
     public function popular(stdClass $oDados)
@@ -142,6 +156,7 @@ class DadosAluno2016
 
     /**
      * Realiza as validações do campo Código da escola -INEP
+     *
      * @param integer $iCodigoEscolaINEP código inep do registro 89 para comparação
      */
     protected function validarINEPEscola($iCodigoEscolaINEP)
@@ -259,6 +274,7 @@ class DadosAluno2016
 
     /**
      * Retorna os erros
+     *
      * @return array
      */
     public function getErros()
@@ -268,6 +284,7 @@ class DadosAluno2016
 
     /**
      * Adiciona os erros/inconsistências encontradas no array de erros
+     *
      * @param string $sMsgErro
      */
     protected function addErro($sMsgErro)

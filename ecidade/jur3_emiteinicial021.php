@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -78,13 +78,13 @@ if(isset($pesquisar)){
   $advog="";
   $codlocal="";
   $chave="";
-  $xx="#"; 
- 
+  $xx="#";
+
   if(isset($v50_inicial) && $v50_inicial!="" && isset($auto)){
     $sql=$clinicial->sql_query_sit($v50_inicial,"v50_inicial,v52_descr,v54_descr,cgm.z01_nome","v50_inicial"," v50_situacao = $selTipo and v50_inicial = $v50_inicial and v50_instit = ".db_getsession('DB_instit') );
-    $clinicial->sql_record($sql); 
+    $clinicial->sql_record($sql);
     $chave = $Lv50_inicial.$v50_inicial.$xx;
-  }else{ 
+  }else{
 
  if(isset($v50_inicial) && $v50_inicial!=""){
     $codini =" and v50_inicial = $v50_inicial ";
@@ -94,10 +94,10 @@ if(isset($pesquisar)){
  }
  if($dataini_dia!="" && $dataini_mes!="" && $dataini_ano!=""){
    $dataini=$dataini_ano."-".$dataini_mes."-".$dataini_dia;
- }  
+ }
  if($datafim_dia!="" && $datafim_mes!="" && $datafim_ano!=""){
    $datafim=$datafim_ano."-".$datafim_mes."-".$datafim_dia;
- }  
+ }
  if(isset($dataini) && trim($dataini) != "" && trim($datafim) != "" && isset($datafim)  ){
     $data =" and v56_data between '$dataini' and '$datafim' ";
  }
@@ -109,14 +109,14 @@ if(isset($pesquisar)){
  }
  if(isset($v50_advog) && $v50_advog!=""){
     $advog =" and v50_advog = '$v50_advog' ";
- }   
+ }
  if(isset($v54_codlocal) && $v54_codlocal!=""){
     $codlocal=" and v50_codlocal = '$v54_codlocal' ";
- }   
+ }
   $sql=$clinicial->sql_query_sit("","v50_inicial,v52_descr,v54_descr,cgm.z01_nome","v50_inicial"," 1=1 and v50_situacao = $selTipo and v50_instit = ".db_getsession('DB_instit')." ".$codsit.$data.$advog.$codlocal.$codini);
-	$clinicial->sql_record($sql); 
+	$clinicial->sql_record($sql);
   if($clinicial->numrows==0){
-    db_redireciona("jur3_emiteinicial002.php?invalido=true");  
+    db_redireciona("jur3_emiteinicial002.php?invalido=true");
   }
  if(isset($v50_inicial) && $v50_inicial!=""){
     $chave .= $Lv50_inicial.$v50_inicial.$xx ;
@@ -141,7 +141,7 @@ if(isset($pesquisar)){
  }
 
 }
-}  
+}
 ?>
 
 <html>
@@ -167,13 +167,13 @@ input {
 </style>
 <script>
 function js_volta(){
-  location.href="jur3_emiteinicial002.php";  
+  location.href="jur3_emiteinicial002.php";
 }
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -182,50 +182,50 @@ function js_volta(){
 </table>
 <center>
 <table height="" width="" border="0" valign="top" cellspacing="0" cellpadding="0" bgcolor="#cccccc">
-  <tr> 
+  <tr>
     <td>&nbsp;</td>
-  </tr>   
-  <tr>   
+  </tr>
+  <tr>
     <td>
 			<fieldset>
 				<legend align="center">
 					<b>&nbsp; Critérios da Pesquisa &nbsp;</b>
 				</legend>
 				<table border="0" cellspacing="0" cellpadding="0">
-					<tr>  
+					<tr>
 					  <td>&nbsp;</td>
             <td valign="top"  align="left">
-              <? 
-                $matriz=split("#",@$chave);
+              <?php
+                $matriz= explode("#",@$chave);
                	for($y=0;$y<sizeof($matriz);$y++){
                	  if($matriz[$y]!=""){
            	        echo "<label>";
 									  echo $matriz[$y];
 									  echo "</label>";
 									  echo "<br>";
-									} 
-								}  
+									}
+								}
               ?>
             </td>
           </tr>
-				  <tr> 
+				  <tr>
 						<td valign="top" align="center" colspan="2" >
-							<? 
+							<?php
 								db_lovrot($sql,15,"()","","js_inicialmovcert|0");
 							?>
 						</td>
-					</tr>  
+					</tr>
 				</table>
 			</fieldset>
 				<table align="center">
-					<tr>  
+					<tr>
 						<td>
 							<input name="voltar" type="button" value="Nova Pesquisa" onclick="js_volta()">
-						</td>  
+						</td>
 					</tr>
 				</table>
 			</center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -241,7 +241,7 @@ function js_oculta(){
   db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -253,5 +253,5 @@ $func_iframe->mostrar();
 
   if(isset($v50_inicial) && $v50_inicial!="" && isset($auto)){
      echo"<script>js_inicialmovcert($v50_inicial);</script>";
-  }   
+  }
 ?>

@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -41,14 +41,14 @@ $oRotuloCampos->label("z01_numcgm");
 $oGet = db_utils::postMemory($_GET);
 
 unset($_SESSION["oCandidatoHabitacao"]);
- 
+
 ?>
 <html>
   <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,
                    datagrid.widget.js");
@@ -65,15 +65,15 @@ unset($_SESSION["oCandidatoHabitacao"]);
                <table>
                  <tr>
                    <td>
-                     <?db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
+                     <?php db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
                    </td>
                    <td>
-                     <?
+                     <?php
                       db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, "onchange='js_pesquisacgm(false);situacaoCpf();'");
                       db_input("z01_nome", 40, $Iz01_nome, true, "text", 3);
                      ?>
-                     <input type='button' value='Novo' onclick="js_novoCgm()"> 
-                     <input type='button' value='alterar' onclick="js_alterarCgm($F('z01_numcgm'))"> 
+                     <input type='button' value='Novo' onclick="js_novoCgm()">
+                     <input type='button' value='alterar' onclick="js_alterarCgm($F('z01_numcgm'))">
                    </td>
                  </tr>
                  <tr>
@@ -81,17 +81,17 @@ unset($_SESSION["oCandidatoHabitacao"]);
                      <b>Situação CPF :</b>
                    </td>
                    <td>
-                     <?
-                     
+                     <?php
+
                        $aSituacaoCPF = array('0'=>'Selecione ...',
                                              '1'=>'Regular',
                                              '2'=>'Irregular',
                                              '3'=>'Suspenso');
-                       
+
                        db_select('situacaocpf',$aSituacaoCPF,true,1);
                      ?>
                    </td>
-                 </tr>                 
+                 </tr>
                </table>
              </fieldset>
             </td>
@@ -105,24 +105,24 @@ unset($_SESSION["oCandidatoHabitacao"]);
                 <table>
                   <tr>
                     <td>
-                     <?
-                     
+                     <?php
+
                        $oDaoHabitacaoGrupo = new cl_habitgrupoprograma;
-                       
+
                        $sSqlGrupos = $oDaoHabitacaoGrupo->sql_query_file(null,"*","ht03_descricao");
                        $rsGrupos   = $oDaoHabitacaoGrupo->sql_record($sSqlGrupos);
-                     
+
                        $aGrupos = db_utils::getCollectionByRecord($rsGrupos);
                        foreach ($aGrupos as $oGrupo) {
 
-                         $sHtml  = " <input type='checkbox'                        "; 
-                         $sHtml .= "       value='{$oGrupo->ht03_sequencial}'      "; 
+                         $sHtml  = " <input type='checkbox'                        ";
+                         $sHtml .= "       value='{$oGrupo->ht03_sequencial}'      ";
                          $sHtml .= "        name='grupohabitacao'                  ";
                          $sHtml .= "          id='grupo{$oGrupo->ht03_sequencial}' ";
                          $sHtml .= "     onclick='js_getProgramasGrupo({$oGrupo->ht03_sequencial})'/>";
                          $sHtml .= " <label for='grupo{$oGrupo->ht03_sequencial}'>{$oGrupo->ht03_descricao}</label>";
                          $sHtml .= " <br>";
-                         
+
                          echo $sHtml;
                        }
                      ?>
@@ -144,18 +144,18 @@ unset($_SESSION["oCandidatoHabitacao"]);
                     </td>
                   </tr>
                 </table>
-              </fieldset>    
+              </fieldset>
             </td>
           </tr>
           <tr>
             <td colspan="2" style="text-align: center">
-              <? 
+              <?php
                 if (isset($oGet->alteracao)) {
                   echo "<input type='button' value='Pesquisar Cadastro' onclick='js_pesquisarCandidatos()'>";
                 }
               ?>
             </td>
-          </tr>  
+          </tr>
         </table>
       </form>
     </center>
@@ -166,36 +166,36 @@ unset($_SESSION["oCandidatoHabitacao"]);
 var sUrlRPC = 'hab4_inscricaocanditado.RPC.php';
 
 function js_getProgramasGrupo() {
-   
+
    var aGruposDisponiveis    = $$('input[name=grupohabitacao]');
    var aProgramasDisponiveis = $$('input[name=programahabitacao]');
-   
+
    var aGruposSelecionados    = new Array();
    var aProgramasSelecionados = new Array();
-   
+
    aGruposDisponiveis.each(function (oCheckbox) {
      if (oCheckbox.checked) {
        aGruposSelecionados.push(oCheckbox.value);
      }
    });
-   
+
    aProgramasDisponiveis.each(function (oCheckbox) {
      if (oCheckbox.checked) {
        aProgramasSelecionados.push(oCheckbox.value);
      }
-   });   
-   
+   });
+
    parent.document.formaba.cadsocioeconomico.disabled  = false;
    parent.document.formaba.composicaofamiliar.disabled = false;
-   
+
    var oParam                    = new Object();
    oParam.exec                   = 'getHabitacaoProgramasGrupo';
    oParam.sGruposSelecionados    = aGruposSelecionados.join(',');
    oParam.sProgramasSelecionados = aProgramasSelecionados.join(',');
-   
+
    js_divCarregando("Aguarde, pesquisando programas dos grupos selecionados", "msgBox");
-   
-   var oAjar    = new Ajax.Request(sUrlRPC, 
+
+   var oAjar    = new Ajax.Request(sUrlRPC,
                                   {
                                    method:'post',
                                    parameters:'json='+Object.toJSON(oParam),
@@ -204,35 +204,35 @@ function js_getProgramasGrupo() {
 }
 
 function js_retornoGetPrograma(oAjax) {
-  
+
   js_removeObj("msgBox");
-  
+
   var oRetorno = JSON.parse(oAjax.responseText);
-  
+
   $('programasgrupos').innerHTML = '';
-  
+
   if (oRetorno.iStatus == 1) {
-    
+
     var sHtml = '';
-    
+
     oRetorno.aProgramas.each(function (oLinha, id) {
-  
-      sHtml += "<input type='checkbox'                          "; 
-      sHtml += "      value='"+oLinha.ht01_sequencial+"'        "; 
-      sHtml += "       name='programahabitacao'                 "; 
+
+      sHtml += "<input type='checkbox'                          ";
+      sHtml += "      value='"+oLinha.ht01_sequencial+"'        ";
+      sHtml += "       name='programahabitacao'                 ";
       sHtml += "         id='programa"+oLinha.ht01_sequencial+"'";
-      
+
       if (oLinha.lChecked) {
         sHtml += " checked ";
       }
-      
+
       sHtml += "/>";
       sHtml += "<label for='programa"+oLinha.ht01_sequencial+"' >"+oLinha.ht01_descricao.urlDecode()+"</label>";
       sHtml += "<br>";
-    }); 
-      
-    $('programasgrupos').innerHTML = sHtml;      
-    
+    });
+
+    $('programasgrupos').innerHTML = sHtml;
+
   } else {
     alert(oRetorno.sMsg.urlDecode());
   }
@@ -241,8 +241,8 @@ function js_retornoGetPrograma(oAjax) {
 
 function js_pesquisarCandidatos() {
 
-   js_OpenJanelaIframe('', 
-                       'db_iframe_candidato', 
+   js_OpenJanelaIframe('',
+                       'db_iframe_candidato',
                        'func_habitcandidato.php?funcao_js=parent.js_carregaCandidato|ht10_numcgm',
                        'Pesquisar Candidatos',
                        true,
@@ -251,15 +251,15 @@ function js_pesquisarCandidatos() {
 }
 
 function js_carregaCandidato(iCgm) {
-  
+
   db_iframe_candidato.hide();
-  
+
   js_divCarregando('Aguarde, carregando dados do Candidato', 'msgBox');
-  
+
   var oParam   = new Object();
   oParam.exec  = 'getDadosCandidato';
   oParam.iCgm  = iCgm;
-  var oAjax    = new Ajax.Request(sUrlRPC, 
+  var oAjax    = new Ajax.Request(sUrlRPC,
                                  {
                                    method:'post',
                                    parameters:'json='+Object.toJSON(oParam),
@@ -268,54 +268,54 @@ function js_carregaCandidato(iCgm) {
 }
 
 function js_retornoGetCandidato(oAjax) {
-  
+
   js_removeObj('msgBox');
-  
+
   var oRetorno = JSON.parse(oAjax.responseText);
-  
+
   if (oRetorno.iStatus == 1 ) {
-  
+
     var aGrupos = $$('input[name=grupohabitacao]');
-    
+
     aGrupos.each(function (oCheckbox) {
-     
-      oCheckbox.checked = false; 
+
+      oCheckbox.checked = false;
       if (js_search_in_array(oRetorno.candidato.aInteresseGrupo, oCheckbox.value)) {
         oCheckbox.checked = true;
       }
     });
-    
+
     $('z01_numcgm').value = oRetorno.candidato.iNumCgm;
     $('z01_nome').value   = oRetorno.candidato.sNome.urlDecode();
-    
+
     if (oRetorno.candidato.iSituacaoCpf == null){
       $('situacaocpf').value = 0;
     } else {
       $('situacaocpf').value = oRetorno.candidato.iSituacaoCpf;
     }
-    
+
     parent.document.formaba.cadsocioeconomico.disabled=false
     parent.iframe_cadsocioeconomico.setDados(oRetorno.candidato.iAvaliacao);
-    parent.iframe_composicaofamiliar.setDados(oRetorno.candidato.aFamiliares);  
-  
+    parent.iframe_composicaofamiliar.setDados(oRetorno.candidato.aFamiliares);
+
     js_getProgramasGrupo();
-  
+
   } else {
     alert(oRetorno.sMsg.urlDecode());
   }
-  
+
 }
 
 function js_pesquisacgm(mostra){
 
   if (mostra) {
-     js_OpenJanelaIframe('', 
-                         'db_iframe_cgm', 
+     js_OpenJanelaIframe('',
+                         'db_iframe_cgm',
                          'func_nome.php?funcao_js=parent.js_mostracgm1|z01_nome|z01_numcgm&filtro=1',
                          'Pesquisar CGM',
                          true,'0');
   } else {
-    if(document.form1.z01_numcgm.value != ''){ 
+    if(document.form1.z01_numcgm.value != ''){
        js_OpenJanelaIframe('',
                            'db_iframe_acordogrupo',
                            'func_nome.php?pesquisa_chave='+$F('z01_numcgm')+
@@ -324,16 +324,16 @@ function js_pesquisacgm(mostra){
                            false,
                            '0');
     } else {
-      document.form1.z01_numcgm.value = ''; 
+      document.form1.z01_numcgm.value = '';
     }
   }
 }
 
 function js_mostracgm(erro, chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro == true) { 
-    document.form1.z01_numcgm.focus(); 
-    document.form1.z01_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro == true) {
+    document.form1.z01_numcgm.focus();
+    document.form1.z01_numcgm.value = '';
   } else {
     parent.iframe_composicaofamiliar.adicionaPrincipal($F('z01_numcgm'), chave);
   }
@@ -349,8 +349,8 @@ function js_mostracgm1(chave1, chave2) {
 
 
 function js_novoCgm() {
-  js_OpenJanelaIframe('', 
-                      'db_iframe_novocgm', 
+  js_OpenJanelaIframe('',
+                      'db_iframe_novocgm',
                       'prot1_cadgeralmunic001.php?lMenu=false&lFisico=true&funcaoRetorno=parent.CurrentWindow.corpo.iframe_grupoprograma.retornoCgm',
                       'Novo CGM',
                       true,
@@ -360,8 +360,8 @@ function js_novoCgm() {
 function js_alterarCgm(iCgm) {
 
   if (iCgm != "") {
-    js_OpenJanelaIframe('', 
-                        'db_iframe_novocgm', 
+    js_OpenJanelaIframe('',
+                        'db_iframe_novocgm',
                         'prot1_cadgeralmunic002.php?chavepesquisa='+iCgm+
                         '&lMenu=false&lCpf=true&funcaoRetorno=parent.CurrentWindow.corpo.iframe_grupoprograma.retornoCgm',
                         'Novo CGM',
@@ -372,35 +372,35 @@ function js_alterarCgm(iCgm) {
 
 
 function retornoCgm(iCgm) {
-  
+
   db_iframe_novocgm.hide();
   $('z01_numcgm').value = iCgm;
-  js_pesquisacgm(false); 
+  js_pesquisacgm(false);
 }
 /*
  * funcao para retornar a situação do CPF
  *
- */ 
+ */
 function situacaoCpf() {
 
 
    var iCgm         = $F('z01_numcgm');
 
    var oParametros  = new Object();
-   
+
    oParametros.exec = 'getSituacaoCpf';
    oParametros.iCgm = iCgm;
-    
-  
+
+
    var oAjaxLista  = new Ajax.Request(sUrlRPC,
                                              {method: "post",
                                               parameters:'json='+Object.toJSON(oParametros),
                                               onComplete: js_retornoSituacaoCpf
                                              });
-                                            
+
 }
 function js_retornoSituacaoCpf(oAjax) {
-    
+
     var oRetorno = JSON.parse(oAjax.responseText);
     if (oRetorno.iStatus == 1) {
       if ( oRetorno.sResult == "1" || oRetorno.sResult == 1 ) {
@@ -411,14 +411,14 @@ function js_retornoSituacaoCpf(oAjax) {
 		      $("situacaocpf").options[3] = new Option("Suspenso", "3");
 		      //alert(oRetorno.sSituacao);
 		  } else {
-		  
+
           $("situacaocpf").options.length = 0;
           $("situacaocpf").options[0] = new Option('Selecione...', '');
           $("situacaocpf").options[1] = new Option('Regular',"1");
           $("situacaocpf").options[2] = new Option('Irregular', "2");
-          $("situacaocpf").options[3] = new Option("Suspenso", "3");		  
-		  }   
-    } 
+          $("situacaocpf").options[3] = new Option("Suspenso", "3");
+		  }
+    }
 }
 
 </script>

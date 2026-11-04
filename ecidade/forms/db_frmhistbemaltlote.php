@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: patrim
@@ -42,8 +42,8 @@ $clrotulo->label("t70_descr");
         <td nowrap title="<?=@$Tt42_codigo?>">
           <?=@$Lt42_codigo?>
         </td>
-        <td> 
-          <?
+        <td>
+          <?php
             db_input('t42_codigo',8,$It42_codigo,true,'text',3,"")
           ?>
         </td>
@@ -52,8 +52,8 @@ $clrotulo->label("t70_descr");
         <td nowrap title="<?=@$Tt42_descr?>">
           <?=@$Lt42_descr?>
         </td>
-        <td> 
-          <?
+        <td>
+          <?php
             db_input('t42_descr',51,$It42_descr,true,'text',3,"")
           ?>
         </td>
@@ -62,60 +62,60 @@ $clrotulo->label("t70_descr");
         <td nowrap title="<?=@$Tt56_data?>">
           <?=@$Lt56_data?>
         </td>
-        <td> 
-          <?
+        <td>
+          <?php
             $t56_data_dia = date('d',db_getsession("DB_datausu"));
             $t56_data_mes= date('m',db_getsession("DB_datausu"));
             $t56_data_ano= date('Y',db_getsession("DB_datausu"));
-            
+
             db_inputdata('t56_data',@$t56_data_dia,@$t56_data_mes,@$t56_data_ano,true,'text',3,"");
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt56_depart?>">
-          <?
+          <?php
             db_ancora(@$Lt56_depart,"js_pesquisat56_depart(true);",3);
           ?>
         </td>
-        <td> 
-          <?
+        <td>
+          <?php
             db_input('t56_depart',8,$It56_depart,true,'text',3," onchange='js_pesquisat56_depart(false);'")
           ?>
-          <?
+          <?php
             db_input('descrdepto',60,$Idescrdepto,true,'text',3,'')
           ?>
         </td>
       </tr>
-      <?if (isset($t52_depart)&&$t52_depart!=""){?>
+      <?php if (isset($t52_depart)&&$t52_depart!=""){?>
       <tr>
         <td nowrap title="Divisão do Depart.">
-          Divisão:   
+          Divisão:
         </td>
-        <td>    
+        <td>
           <select name='t33_divisao'>
     	      <option value=''>Nenhuma</option>
-          	<?
+          	<?php
           	$result=$cldepartdiv->sql_record($cldepartdiv->sql_query_file(null,"t30_codigo,t30_descr",null,"t30_depto=$t52_depart"));
           	for($y=0;$y<$cldepartdiv->numrows;$y++){
            	  db_fieldsmemory($result,$y);
      	      ?>
     	      <option value=<?=@$t30_codigo?> <?=(isset($t33_divisao)&&$t33_divisao==$t30_codigo?"selected":"")?> > <?=@$t30_descr?></option>
-       	    <?}?>
-          </select> 
+       	    <?php }?>
+          </select>
         </td>
-      <?}?>
+      <?php }?>
       <tr>
         <td nowrap title="<?=@$Tt56_situac?>">
-          <?
+          <?php
             db_ancora(@$Lt56_situac,"js_pesquisat56_situac(true);",$db_opcao);
           ?>
         </td>
-        <td> 
-          <?
+        <td>
+          <?php
             db_input('t56_situac',8,$It56_situac,true,'text',$db_opcao," onchange='js_pesquisat56_situac(false);'")
           ?>
-          <?
+          <?php
             db_input('t70_descr',60,$It70_descr,true,'text',3,'')
           ?>
         </td>
@@ -124,7 +124,7 @@ $clrotulo->label("t70_descr");
         <td nowrap title="<?=@$Tt56_histor?>" colspan="2">
           <fieldset class="separator">
             <legend>Justificativa:</legend>
-            <?
+            <?php
               db_textarea('t56_histor',0,50,$It56_histor,true,'text',$db_opcao,"")
             ?>
           </fieldset>
@@ -149,18 +149,18 @@ function js_pesquisat56_codbem(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_bens','func_bens.php?funcao_js=parent.js_mostrabens1|t52_bem|t52_descr','Pesquisa',true);
   }else{
-     if(document.form1.t56_codbem.value != ''){ 
+     if(document.form1.t56_codbem.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_bens','func_bens.php?pesquisa_chave='+document.form1.t56_codbem.value+'&funcao_js=parent.js_mostrabens','Pesquisa',false);
      }else{
-       document.form1.t52_descr.value = ''; 
+       document.form1.t52_descr.value = '';
      }
   }
 }
 function js_mostrabens(chave,erro){
-  document.form1.t52_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.t56_codbem.focus(); 
-    document.form1.t56_codbem.value = ''; 
+  document.form1.t52_descr.value = chave;
+  if(erro==true){
+    document.form1.t56_codbem.focus();
+    document.form1.t56_codbem.value = '';
   }
 }
 function js_mostrabens1(chave1,chave2){
@@ -172,18 +172,18 @@ function js_pesquisat56_depart(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_db_depart','func_db_depart.php?funcao_js=parent.js_mostradb_depart1|coddepto|descrdepto','Pesquisa',true);
   }else{
-     if(document.form1.t56_depart.value != ''){ 
+     if(document.form1.t56_depart.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_db_depart','func_db_depart.php?pesquisa_chave='+document.form1.t56_depart.value+'&funcao_js=parent.js_mostradb_depart','Pesquisa',false);
      }else{
-       document.form1.descrdepto.value = ''; 
+       document.form1.descrdepto.value = '';
      }
   }
 }
 function js_mostradb_depart(chave,erro){
-  document.form1.descrdepto.value = chave; 
-  if(erro==true){ 
-    document.form1.t56_depart.focus(); 
-    document.form1.t56_depart.value = ''; 
+  document.form1.descrdepto.value = chave;
+  if(erro==true){
+    document.form1.t56_depart.focus();
+    document.form1.t56_depart.value = '';
   }
 }
 function js_mostradb_depart1(chave1,chave2){
@@ -195,18 +195,18 @@ function js_pesquisat56_situac(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_situabens','func_situabens.php?funcao_js=parent.js_mostrasituabens1|t70_situac|t70_descr','Pesquisa',true);
   }else{
-     if(document.form1.t56_situac.value != ''){ 
+     if(document.form1.t56_situac.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_situabens','func_situabens.php?pesquisa_chave='+document.form1.t56_situac.value+'&funcao_js=parent.js_mostrasituabens','Pesquisa',false);
      }else{
-       document.form1.t70_descr.value = ''; 
+       document.form1.t70_descr.value = '';
      }
   }
 }
 function js_mostrasituabens(chave,erro){
-  document.form1.t70_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.t56_situac.focus(); 
-    document.form1.t56_situac.value = ''; 
+  document.form1.t70_descr.value = chave;
+  if(erro==true){
+    document.form1.t56_situac.focus();
+    document.form1.t56_situac.value = '';
   }
 }
 function js_mostrasituabens1(chave1,chave2){
@@ -220,7 +220,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bens.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -232,7 +232,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benslote.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

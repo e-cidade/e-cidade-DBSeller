@@ -38,10 +38,14 @@
   var taskbarHeight = $$('.taskbar-container')[0].getHeight();
   var windowIndex = 0;
 
-  Desktop.Window.create = function(title, data) {
-
+  Desktop.Window.create = function(title, data, funcaoAoFechar = null) {
     var url = 'extension/desktop/window/index/?' + $.param(data);
-    var win = Desktop.Window.createDefaultWindow(url, title);
+
+    if (funcaoAoFechar !== null){
+        var win = Desktop.Window.createDefaultWindow(url, title, null, funcaoAoFechar);
+    } else {
+        var win = Desktop.Window.createDefaultWindow(url, title, null);
+    }
 
     var buttonList = [
       {
@@ -61,12 +65,6 @@
         'title': 'Notas da Versão',
         'alt': 'Notas da Versão',
         'text': 'Notas da Versão',
-      },
-      {
-        'class': 'tutoriais',
-        'title': 'Tutoriais',
-        'alt': 'Tutoriais guiados do sistema',
-        'text': 'Tutoriais'
       }
     ];
 
@@ -79,18 +77,6 @@
 
     settingButton.on('click', function() {
       Desktop.Window.createSettingModal(win);
-    });
-
-    var signerButton = win.addButton({
-      "icon": 'fas fa-key',
-      "class": "window_button button_signer",
-      "alt": 'Documentos para assinar',
-      "title": 'Assinatura Digital'
-    });
-
-    signerButton.on('click', function() {
-      win.corpo.require_once('scripts/classes/configuracao/DBViewAssinaturaDigital.js')
-      win.corpo.DBViewAssinaturaDigital.build();
     });
 
     var dropdown = win.addButtonList(buttonList);
@@ -124,20 +110,12 @@
       win.corpo.DBViewReleaseNote.build();
     });
 
-    // Cria botao do tutoriais
-    var tutoriaisButton = dropdown.dropdownMenu.find('.tutoriais');
-
-    tutoriaisButton.on('click', function() {
-      win.corpo.TutorialRepository.build();
-    });
-
     $(window).trigger('app:window:create', [win]);
 
     return win;
   }
 
-  Desktop.Window.createDefaultWindow = function(uri, title, options) {
-
+  Desktop.Window.createDefaultWindow = function(uri, title, options, funcaoAoFechar = null) {
     options = jQuery.extend({
       id: 'w'+ (++windowIndex),
       maximized: true,
@@ -175,11 +153,14 @@
       },
 
       onDestroy : function() {
-
         if (this.taskbarButton) {
 
           this.taskbarButton.remove()
           Desktop.Taskbar.Windows.Menu.update();
+        }
+
+        if (funcaoAoFechar !== null) {
+            funcaoAoFechar();
         }
 
         $(window).trigger('app:window:destroy', [this]);

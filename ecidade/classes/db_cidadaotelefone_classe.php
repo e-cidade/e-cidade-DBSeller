@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: ouvidoria
 //CLASSE DA ENTIDADE cidadaotelefone
-class cl_cidadaotelefone { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ov07_sequencial = 0; 
-   var $ov07_seq = 0; 
-   var $ov07_cidadao = 0; 
-   var $ov07_numero = null; 
-   var $ov07_tipotelefone = 0; 
-   var $ov07_ddd = null; 
-   var $ov07_ramal = null; 
-   var $ov07_obs = null; 
-   var $ov07_principal = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cidadaotelefone {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ov07_sequencial = 0;
+   var $ov07_seq = 0;
+   var $ov07_cidadao = 0;
+   var $ov07_numero = null;
+   var $ov07_tipotelefone = 0;
+   var $ov07_ddd = null;
+   var $ov07_ramal = null;
+   var $ov07_obs = null;
+   var $ov07_principal = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ov07_sequencial = int4 = Sequencial 
-                 ov07_seq = int4 = Sequencial 
-                 ov07_cidadao = int4 = Cidadão 
-                 ov07_numero = varchar(10) = Número 
-                 ov07_tipotelefone = int4 = Tipo Telefone 
-                 ov07_ddd = varchar(5) = DDD 
-                 ov07_ramal = varchar(10) = Ramal 
-                 ov07_obs = text = Observação 
-                 ov07_principal = bool = Principal 
+                 ov07_sequencial = int4 = Sequencial
+                 ov07_seq = int4 = Sequencial
+                 ov07_cidadao = int4 = Cidadão
+                 ov07_numero = varchar(10) = Número
+                 ov07_tipotelefone = int4 = Tipo Telefone
+                 ov07_ddd = varchar(5) = DDD
+                 ov07_ramal = varchar(10) = Ramal
+                 ov07_obs = text = Observação
+                 ov07_principal = bool = Principal
                  ";
-   //funcao construtor da classe 
-   function cl_cidadaotelefone() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cidadaotelefone"); 
+     $this->rotulo = new rotulo("cidadaotelefone");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_cidadaotelefone {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ov07_sequencial = ($this->ov07_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ov07_sequencial"]:$this->ov07_sequencial);
        $this->ov07_seq = ($this->ov07_seq == ""?@$GLOBALS["HTTP_POST_VARS"]["ov07_seq"]:$this->ov07_seq);
@@ -96,9 +96,9 @@ class cl_cidadaotelefone {
      }
    }
    // funcao para inclusao
-   function incluir ($ov07_sequencial){ 
+   public function incluir ($ov07_sequencial){
       $this->atualizacampos();
-     if($this->ov07_cidadao == null ){ 
+     if($this->ov07_cidadao == null ){
        $this->erro_sql = " Campo Cidadão nao Informado.";
        $this->erro_campo = "ov07_cidadao";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_cidadaotelefone {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ov07_numero == null ){ 
+     if($this->ov07_numero == null ){
        $this->erro_sql = " Campo Número nao Informado.";
        $this->erro_campo = "ov07_numero";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_cidadaotelefone {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ov07_tipotelefone == null ){ 
+     if($this->ov07_tipotelefone == null ){
        $this->erro_sql = " Campo Tipo Telefone nao Informado.";
        $this->erro_campo = "ov07_tipotelefone";
        $this->erro_banco = "";
@@ -125,13 +125,13 @@ class cl_cidadaotelefone {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ov07_ddd == null ){ 
+     if($this->ov07_ddd == null ){
        $this->ov07_ddd = "0";
      }
-     if($this->ov07_ramal == null ){ 
+     if($this->ov07_ramal == null ){
        $this->ov07_ramal = "0";
      }
-     if($this->ov07_principal == null ){ 
+     if($this->ov07_principal == null ){
        $this->erro_sql = " Campo Principal nao Informado.";
        $this->erro_campo = "ov07_principal";
        $this->erro_banco = "";
@@ -141,16 +141,16 @@ class cl_cidadaotelefone {
        return false;
      }
      if($ov07_sequencial == "" || $ov07_sequencial == null ){
-       $result = db_query("select nextval('cidadaotelefone_ov07_sequencial_seq')"); 
+       $result = db_query("select nextval('cidadaotelefone_ov07_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cidadaotelefone_ov07_sequencial_seq do campo: ov07_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cidadaotelefone_ov07_sequencial_seq do campo: ov07_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ov07_sequencial = pg_result($result,0,0); 
+       $this->ov07_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cidadaotelefone_ov07_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ov07_sequencial)){
@@ -161,10 +161,10 @@ class cl_cidadaotelefone {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ov07_sequencial = $ov07_sequencial; 
+         $this->ov07_sequencial = $ov07_sequencial;
        }
      }
-     if(($this->ov07_sequencial == null) || ($this->ov07_sequencial == "") ){ 
+     if(($this->ov07_sequencial == null) || ($this->ov07_sequencial == "") ){
        $this->erro_sql = " Campo ov07_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -173,29 +173,29 @@ class cl_cidadaotelefone {
        return false;
      }
      $sql = "insert into cidadaotelefone(
-                                       ov07_sequencial 
-                                      ,ov07_seq 
-                                      ,ov07_cidadao 
-                                      ,ov07_numero 
-                                      ,ov07_tipotelefone 
-                                      ,ov07_ddd 
-                                      ,ov07_ramal 
-                                      ,ov07_obs 
-                                      ,ov07_principal 
+                                       ov07_sequencial
+                                      ,ov07_seq
+                                      ,ov07_cidadao
+                                      ,ov07_numero
+                                      ,ov07_tipotelefone
+                                      ,ov07_ddd
+                                      ,ov07_ramal
+                                      ,ov07_obs
+                                      ,ov07_principal
                        )
                 values (
-                                $this->ov07_sequencial 
-                               ,$this->ov07_seq 
-                               ,$this->ov07_cidadao 
-                               ,'$this->ov07_numero' 
-                               ,$this->ov07_tipotelefone 
-                               ,'$this->ov07_ddd' 
-                               ,'$this->ov07_ramal' 
-                               ,'$this->ov07_obs' 
-                               ,'$this->ov07_principal' 
+                                $this->ov07_sequencial
+                               ,$this->ov07_seq
+                               ,$this->ov07_cidadao
+                               ,'$this->ov07_numero'
+                               ,$this->ov07_tipotelefone
+                               ,'$this->ov07_ddd'
+                               ,'$this->ov07_ramal'
+                               ,'$this->ov07_obs'
+                               ,'$this->ov07_principal'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de telefones do cidadao ($this->ov07_sequencial) nao Incluído. Inclusao Abortada.";
@@ -219,7 +219,7 @@ class cl_cidadaotelefone {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
      if (!isset($_SESSION["DB_usaAccount"])) {
-       
+
        $resaco = $this->sql_record($this->sql_query_file($this->ov07_sequencial));
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
@@ -238,16 +238,16 @@ class cl_cidadaotelefone {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ov07_sequencial=null) { 
+   public function alterar ($ov07_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cidadaotelefone set ";
      $virgula = "";
-     if(trim($this->ov07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_sequencial"])){ 
+     if(trim($this->ov07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_sequencial"])){
        $sql  .= $virgula." ov07_sequencial = $this->ov07_sequencial ";
        $virgula = ",";
-       if(trim($this->ov07_sequencial) == null ){ 
+       if(trim($this->ov07_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov07_sequencial";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_seq"])){ 
+     if(trim($this->ov07_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_seq"])){
        $sql  .= $virgula." ov07_seq = $this->ov07_seq ";
        $virgula = ",";
-       if(trim($this->ov07_seq) == null ){ 
+       if(trim($this->ov07_seq) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov07_seq";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_cidadao"])){ 
+     if(trim($this->ov07_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_cidadao"])){
        $sql  .= $virgula." ov07_cidadao = $this->ov07_cidadao ";
        $virgula = ",";
-       if(trim($this->ov07_cidadao) == null ){ 
+       if(trim($this->ov07_cidadao) == null ){
          $this->erro_sql = " Campo Cidadão nao Informado.";
          $this->erro_campo = "ov07_cidadao";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_numero"])){ 
+     if(trim($this->ov07_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_numero"])){
        $sql  .= $virgula." ov07_numero = '$this->ov07_numero' ";
        $virgula = ",";
-       if(trim($this->ov07_numero) == null ){ 
+       if(trim($this->ov07_numero) == null ){
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "ov07_numero";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_tipotelefone"])){ 
+     if(trim($this->ov07_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_tipotelefone"])){
        $sql  .= $virgula." ov07_tipotelefone = $this->ov07_tipotelefone ";
        $virgula = ",";
-       if(trim($this->ov07_tipotelefone) == null ){ 
+       if(trim($this->ov07_tipotelefone) == null ){
          $this->erro_sql = " Campo Tipo Telefone nao Informado.";
          $this->erro_campo = "ov07_tipotelefone";
          $this->erro_banco = "";
@@ -309,22 +309,22 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_ddd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ddd"])){ 
+     if(trim($this->ov07_ddd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ddd"])){
        $sql  .= $virgula." ov07_ddd = '$this->ov07_ddd' ";
        $virgula = ",";
      }
-     if(trim($this->ov07_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ramal"])){ 
+     if(trim($this->ov07_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ramal"])){
        $sql  .= $virgula." ov07_ramal = '$this->ov07_ramal' ";
        $virgula = ",";
      }
-     if(trim($this->ov07_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_obs"])){ 
+     if(trim($this->ov07_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_obs"])){
        $sql  .= $virgula." ov07_obs = '$this->ov07_obs' ";
        $virgula = ",";
      }
-     if(trim($this->ov07_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_principal"])){ 
+     if(trim($this->ov07_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_principal"])){
        $sql  .= $virgula." ov07_principal = '$this->ov07_principal' ";
        $virgula = ",";
-       if(trim($this->ov07_principal) == null ){ 
+       if(trim($this->ov07_principal) == null ){
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "ov07_principal";
          $this->erro_banco = "";
@@ -338,9 +338,9 @@ class cl_cidadaotelefone {
      if($ov07_sequencial!=null){
        $sql .= " ov07_sequencial = $this->ov07_sequencial";
      }
-     
+
      if (!isset($_SESSION["DB_usaAccount"])) {
-       
+
        $resaco = $this->sql_record($this->sql_query_file($this->ov07_sequencial));
        if($this->numrows>0){
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
@@ -370,7 +370,7 @@ class cl_cidadaotelefone {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de telefones do cidadao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ov07_sequencial;
@@ -398,17 +398,17 @@ class cl_cidadaotelefone {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ov07_sequencial=null,$dbwhere=null) { 
-     
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ov07_sequencial=null,$dbwhere=null) {
+
      if (!isset($_SESSION["DB_usaAccount"])) {
-       
+
        if($dbwhere==null || $dbwhere==""){
          $resaco = $this->sql_record($this->sql_query_file($ov07_sequencial));
-       }else{ 
+       }else{
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if(($resaco!=false)||($this->numrows!=0)){
@@ -443,7 +443,7 @@ class cl_cidadaotelefone {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de telefones do cidadao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ov07_sequencial;
@@ -471,11 +471,11 @@ class cl_cidadaotelefone {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -497,11 +497,11 @@ class cl_cidadaotelefone {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,22 +511,22 @@ class cl_cidadaotelefone {
        $sql .= $campos;
      }
      $sql .= " from cidadaotelefone ";
-     $sql .= "      inner join cidadao          on cidadao.ov02_sequencial         = cidadaotelefone.ov07_cidadao 
+     $sql .= "      inner join cidadao          on cidadao.ov02_sequencial         = cidadaotelefone.ov07_cidadao
                                                and cidadao.ov02_seq                = cidadaotelefone.ov07_seq";
      $sql .= "      inner join telefonetipo     on telefonetipo.ov23_sequencial    = cidadaotelefone.ov07_tipotelefone";
      $sql .= "      inner join situacaocidadao  on situacaocidadao.ov16_sequencial = cidadao.ov02_situacaocidadao";
      $sql2 = "";
      if($dbwhere==""){
        if($ov07_sequencial!=null ){
-         $sql2 .= " where cidadaotelefone.ov07_sequencial = $ov07_sequencial "; 
-       } 
+         $sql2 .= " where cidadaotelefone.ov07_sequencial = $ov07_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,11 +535,11 @@ class cl_cidadaotelefone {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -552,15 +552,15 @@ class cl_cidadaotelefone {
      $sql2 = "";
      if($dbwhere==""){
        if($ov07_sequencial!=null ){
-         $sql2 .= " where cidadaotelefone.ov07_sequencial = $ov07_sequencial "; 
-       } 
+         $sql2 .= " where cidadaotelefone.ov07_sequencial = $ov07_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,10 +569,10 @@ class cl_cidadaotelefone {
      }
      return $sql;
   }
-   function sql_query_telefonetipo ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_telefonetipo ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,15 +586,15 @@ class cl_cidadaotelefone {
      $sql2 = "";
      if($dbwhere==""){
        if($ov07_sequencial!=null ){
-         $sql2 .= " where cidadaotelefone.ov07_sequencial = $ov07_sequencial "; 
-       } 
+         $sql2 .= " where cidadaotelefone.ov07_sequencial = $ov07_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

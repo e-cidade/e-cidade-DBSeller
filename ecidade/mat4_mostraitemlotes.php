@@ -301,7 +301,7 @@ function js_saidaSave(oAjax) {
 
       nQtdeTotal += new Number(aItens[i].value);
     }
-    <? if (isset($oGet->updateField) && $oGet->updateField != '') {
+    <?php if (isset($oGet->updateField) && $oGet->updateField != '') {
         echo "parent.$('{$oGet->updateField}').value = nQtdeTotal;\n";
         echo "parent.db_iframe_lotes.hide();\n";
        }
@@ -359,7 +359,7 @@ function js_verificaQuantidade(nValor, nMaximo,sMsg) {
   return true;
 }
 
-<?
+<?php
 echo "js_consultaItens({$oGet->iCodMater},{$oGet->iCodDepto},{$oGet->nValor});\n";
 ?>
 </script>

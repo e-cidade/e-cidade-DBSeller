@@ -408,6 +408,18 @@ class Cedencia
         return $sequenciais;
     }
 
+    public function getRegimeOrigem($matricula)
+    {
+        $sql  = "select rh261_tiporegimeorigem from pessoal.rhcedencia
+                where rh261_regist = '{$matricula}'";
+        
+        $result = db_query($sql);
+        
+        if (pg_num_rows($result) > 0) {
+           return db_utils::fieldsMemory($result, 0)->rh261_tiporegimeorigem;
+        }
+    }
+
     /**
      * @return Boolean
      * 

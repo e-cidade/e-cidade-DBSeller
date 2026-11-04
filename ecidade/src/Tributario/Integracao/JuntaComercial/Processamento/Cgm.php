@@ -26,8 +26,11 @@
  */
 
 namespace ECidade\Tributario\Integracao\JuntaComercial\Processamento;
+
+use DBString;
 use ECidade\Tributario\Integracao\JuntaComercial\Dicionario;
 use ECidade\Tributario\Integracao\JuntaComercial\Repository;
+
 /**
  * Classe que processa as informações de CGM da Junta Comercial
  * @package ECidade\Tributario\Integracao\JuntaComercial\Processamento
@@ -38,95 +41,93 @@ class Cgm extends Base
   /**
    * @var string $sGrupoPrincipal
   */
-  public $sGrupoPrincipal = "";
+    public $sGrupoPrincipal = "";
 
   /**
    * @var array $aIdentificadores
   */
-  private $aIdentificadores = array();
+    private $aIdentificadores = array();
 
-  private $tipoEmpresa;
+    private $tipoEmpresa;
 
   /**
    * ProcessaCgm constructor.
    * @param Dicionario $dicionario  objeto que contém os dados do arquivo xml
    */
-  public function __construct(Dicionario $dicionario)
-  {
-    parent::__construct($dicionario);
-    $this->tipoEmpresa = null;
-  }
+    public function __construct(Dicionario $dicionario)
+    {
+        parent::__construct($dicionario);
+        $this->tipoEmpresa = null;
+    }
 
   /**
    * Buscamos os cgms processados
    * @return array
    */
-  public function getCgm()
-  {
-    $retorno = array();
-    foreach ($this->registro as $dadosCgm){
-      $municipio = null;
+    public function getCgm()
+    {
+        $retorno = array();
+        foreach ($this->registro as $dadosCgm) {
+            $municipio = null;
 
-      if ( !is_null($dadosCgm->codigo_municipio) ) {
+            if (!is_null($dadosCgm->codigo_municipio)) {
+                $repository = new Repository();
+                $municipio = $repository->getMunicipio($dadosCgm->codigo_municipio);
+            }
 
-        $repository = new Repository();
-        $municipio = $repository->getMunicipio($dadosCgm->codigo_municipio);
-      }
+            $cgm = \CgmFactory::getInstanceByCnpjCpf(trim($dadosCgm->cpfcnpj));
 
-      $cgm = \CgmFactory::getInstanceByCnpjCpf(trim($dadosCgm->cpfcnpj));
+            if ($cgm == false) {
+                $cgm = \CgmFactory::getInstanceByType($dadosCgm->tipo_pessoa);
+            }
 
-      if ( $cgm == false ) {
-        $cgm = \CgmFactory::getInstanceByType($dadosCgm->tipo_pessoa);
-      }
+            if ($cgm instanceof \CgmJuridico) {
+                $cgm->setCnpj(trim($dadosCgm->cpfcnpj));
+                $cgm->setNire($dadosCgm->nire);
+                $cgm->setNomeFantasia($dadosCgm->nome_fantasia);
+            }
 
-      if ( $cgm instanceof \CgmJuridico) {
+            if ($cgm instanceof \CgmFisico) {
+                $cgm->setCpf(trim($dadosCgm->cpfcnpj));
+            }
 
-        $cgm->setCnpj(trim($dadosCgm->cpfcnpj));
-        $cgm->setNire($dadosCgm->nire);
-        $cgm->setNomeFantasia($dadosCgm->nome_fantasia);
-      }
+            $cgm->setInscricaoEstadual($dadosCgm->inscricao_estadual);
+            $cgm->setTipoEmpresa($dadosCgm->tipo_empresa);
+            $cgm->setNome(substr($dadosCgm->razao_social, 0, 40));
+            $cgm->setNomeCompleto($dadosCgm->razao_social);
 
-      if ($cgm instanceof \CgmFisico) {
-        $cgm->setCpf(trim($dadosCgm->cpfcnpj));
-      }
+            $cgm->setEmail($dadosCgm->email);
+            $cgm->setTelefone($dadosCgm->fone1);
 
-      $cgm->setInscricaoEstadual($dadosCgm->inscricao_estadual);
-      $cgm->setTipoEmpresa($dadosCgm->tipo_empresa);
-      $cgm->setNome(substr($dadosCgm->razao_social, 0, 40));
-      $cgm->setNomeCompleto($dadosCgm->razao_social);
+            $dataCadastroAtual = $cgm->getCadastro();
 
-      $cgm->setEmail($dadosCgm->email);
-      $cgm->setTelefone($dadosCgm->fone1);
+            if (empty($dataCadastroAtual)) {
+                $dataCadastro = new \DateTime($dadosCgm->data_cadastro);
+                $cgm->setCadastro($dataCadastro->format("Y-m-d"));
+            }
 
-      $dataCadastroAtual = $cgm->getCadastro();
+            $cgm->setLogradouro($dadosCgm->logradouro);
+            $cgm->setNumero(is_numeric($dadosCgm->numero) ? $dadosCgm->numero : 0);
+            $cgm->setComplemento($dadosCgm->complemento);
+            $cgm->setBairro($dadosCgm->bairro);
+            $cgm->setUf($dadosCgm->uf);
+            $cgm->setCep($dadosCgm->cep);
+            $cgm->setMunicipio($municipio);
 
-      if (empty($dataCadastroAtual)) {
-        $dataCadastro = new \DateTime($dadosCgm->data_cadastro);
-        $cgm->setCadastro($dataCadastro->format("Y-m-d"));
-      }
-
-      $cgm->setLogradouro($dadosCgm->logradouro);
-      $cgm->setNumero(is_numeric($dadosCgm->numero) ? $dadosCgm->numero : 0);
-      $cgm->setComplemento($dadosCgm->complemento);
-      $cgm->setBairro($dadosCgm->bairro);
-      $cgm->setUf($dadosCgm->uf);
-      $cgm->setCep($dadosCgm->cep);
-      $cgm->setMunicipio($municipio);
-
-      $retorno[trim($dadosCgm->cpfcnpj)] = $cgm;
+            $retorno[trim($dadosCgm->cpfcnpj)] = $cgm;
+        }
+        return $retorno;
     }
-    return $retorno;
-  }
 
   /**
    * Alteramos o tipo de empresa que será usado cadastro do cgm.
    * Essa informação não será o que vem informado no arquivo XML
    * @param $tipoEmpresa
    */
-  public function setTipoEmpresa($tipoEmpresa)
-  {
-    $this->tipoEmpresa = $tipoEmpresa;
-  }
+    public function setTipoEmpresa($tipoEmpresa)
+    {
+        $this->tipoEmpresa = $tipoEmpresa;
+    }
 
     /**
      * @return string
@@ -164,65 +165,75 @@ class Cgm extends Base
   /**
    * Processamos as informações de cgm de acordo com os grupos informados
    */
-  public function processar()
-  {
-    foreach ($this->grupo as $grupo) {
+    public function processar()
+    {
+        foreach ($this->grupo as $grupo) {
+            $this->dicionario->selecionarGrupo($grupo);
 
-      $this->dicionario->selecionarGrupo($grupo);
+            while ($this->dicionario->next()) {
+                $indice = $this->dicionario->key();
 
-      while ($this->dicionario->next()){
-        $indice = $this->dicionario->key();
+                if (!is_null($this->dicionario->getCampo("identificador"))) {
+                    $indice = trim($this->dicionario->getCampo("identificador"));
+                }
 
-        if ( !is_null($this->dicionario->getCampo("identificador")) ) {
-          $indice = trim($this->dicionario->getCampo("identificador"));
-        }
+                if ($grupo == $this->getGrupoPrincipal()) {
+                    $this->aIdentificadores[] = $indice;
+                } else {
+                    if (!in_array($indice, $this->getIdentificadores())) {
+                        continue;
+                    }
+                }
 
-        if ($grupo == $this->getGrupoPrincipal()) {
-            $this->aIdentificadores[] = $indice;
-        } else {
-            if (!in_array($indice, $this->getIdentificadores())) {
-                continue;
+                if (!isset($this->registro[$indice])) {
+                    $this->registro[$indice] = new \stdClass();
+                }
+
+                $this->registro[$indice]->cpfcnpj = $this->getValor($indice, "cpfcnpj");
+                $this->registro[$indice]->tipo_empresa = $this->tipoEmpresa;
+
+                $iTipoPessoa = $this->getValor($indice, "tipo_pessoa");
+
+                if ($this->tipoEmpresa == null) {
+                    switch ($iTipoPessoa) {
+                        case "1":
+                                $this->registro[$indice]->tipo_empresa = "31";
+                            break;
+                        case "2":
+                              $this->registro[$indice]->tipo_empresa = "36";
+                            break;
+                    }
+                }
+
+                $this->registro[$indice]->tipo_pessoa = $iTipoPessoa;
+                $this->registro[$indice]->inscricao_estadual = $this->getValor($indice, "inscricao_estadual");
+                $this->registro[$indice]->data_cadastro = $this->getValor($indice, "data_cadastro");
+                $this->registro[$indice]->razao_social = DBString::utf8_decode_all(
+                    $this->getValor($indice, "razao_social")
+                );
+                $this->registro[$indice]->nire = $this->getValor($indice, "nire");
+                $this->registro[$indice]->logradouro = $this->getValor($indice, "logradouro");
+                $this->registro[$indice]->numero = $this->getValor($indice, "numero");
+                $this->registro[$indice]->complemento = $this->getValor($indice, "complemento");
+                $this->registro[$indice]->bairro = $this->getValor($indice, "bairro");
+                $this->registro[$indice]->uf = $this->getValor($indice, "uf");
+                $this->registro[$indice]->cep = $this->getValor($indice, "cep");
+                
+                $codigoMunicipio = $this->getValor($indice, "codigo_municipio");
+
+                if (strlen($codigoMunicipio) > 4) {
+                    $codigoMunicipio = substr($codigoMunicipio, 0, 4);
+                }
+
+                $this->registro[$indice]->codigo_municipio = $codigoMunicipio;
+
+                $this->registro[$indice]->nome_fantasia = DBString::utf8_decode_all(
+                    $this->getValor($indice, "nome_fantasia")
+                );
+
+                $this->registro[$indice]->fone1 = $this->getValor($indice, "fone1");
+                $this->registro[$indice]->email = strtolower($this->getValor($indice, "email"));
             }
         }
-
-        if (!isset($this->registro[$indice])) {
-          $this->registro[$indice] = new \stdClass();
-        }
-
-        $this->registro[$indice]->cpfcnpj = $this->getValor($indice, "cpfcnpj");
-        $this->registro[$indice]->tipo_empresa = $this->tipoEmpresa;
-
-        $iTipoPessoa = $this->getValor($indice, "tipo_pessoa");
-
-        if ($this->tipoEmpresa == null) {
-
-          switch ($iTipoPessoa) {
-            case "1":
-              $this->registro[$indice]->tipo_empresa = "31";
-              break;
-            case "2":
-              $this->registro[$indice]->tipo_empresa = "36";
-              break;
-          }
-        }
-
-        $this->registro[$indice]->tipo_pessoa = $iTipoPessoa;
-        $this->registro[$indice]->inscricao_estadual = $this->getValor($indice, "inscricao_estadual");
-        $this->registro[$indice]->data_cadastro = $this->getValor($indice, "data_cadastro");
-        $this->registro[$indice]->razao_social = $this->getValor($indice, "razao_social");
-        $this->registro[$indice]->nire = $this->getValor($indice, "nire");
-        $this->registro[$indice]->logradouro = $this->getValor($indice, "logradouro");
-        $this->registro[$indice]->numero = $this->getValor($indice, "numero");
-        $this->registro[$indice]->complemento = $this->getValor($indice, "complemento");
-        $this->registro[$indice]->bairro = $this->getValor($indice, "bairro");
-        $this->registro[$indice]->uf = $this->getValor($indice, "uf");
-        $this->registro[$indice]->cep = $this->getValor($indice, "cep");
-        $this->registro[$indice]->codigo_municipio = $this->getValor($indice, "codigo_municipio");
-        $this->registro[$indice]->nome_fantasia = $this->getValor($indice, "nome_fantasia");
-
-        $this->registro[$indice]->fone1 = $this->getValor($indice, "fone1");
-        $this->registro[$indice]->email = strtolower($this->getValor($indice, "email"));
-      }
     }
-  }
 }

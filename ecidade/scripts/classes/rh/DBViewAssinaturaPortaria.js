@@ -1,5 +1,4 @@
 var DBViewAssinaturaPortaria = {
-
     requestRPC: 'rh_processaassinaturadigital.RPC.php',
     oCollectionPortarias: null,
     oGridPortarias: null,
@@ -15,60 +14,10 @@ var DBViewAssinaturaPortaria = {
     init: function () {
         SignerSDK = window['SignerSDK'] || {};
 
-        // if (!window.hasOwnProperty('SignerSDK')) {
-        //     document.getElementById("btnProcessarAssinatura").disabled = true;
-        // }
-
-        // SignerSDK.getVersion()
-        //     .then(function (version) {
-        //         console.info('version', version);
-        //         DBViewAssinaturaPortaria.status_extension = true;
-        //     })
-        //     .catch(function(err) {
-        //         console.log('signer error on init', err);
-        //         DBViewAssinaturaPortaria.status_extension = false;
-        //         return Promise.reject(err);
-        //     });
-
         DBViewAssinaturaPortaria.makeGrid();
         DBViewAssinaturaPortaria.addEvents();
 
         window.DBViewAssinaturaPortaria = DBViewAssinaturaPortaria;
-    },
-    addEvents: function () {
-        // document.getElementById("btnProcessarAssinatura")
-        //         .addEventListener("click", () => {
-        //             const portariasSelecionadas = DBViewAssinaturaPortaria
-        //                 .oGridPortarias
-        //                 .getGrid()
-        //                 .getSelection()
-        //                 .map(item => item[1])
-        //             ;
-
-        //             if (portariasSelecionadas.length == 0) {
-        //                 return alert("Selecione ao menos uma portaria para assinar.");
-        //             }
-
-        //             const portarias = DBViewAssinaturaPortaria.oCollectionPortarias.get();
-        //             const arquivos = portarias
-        //                 .filter(portaria => {
-        //                     if (portariasSelecionadas.indexOf(portaria.ID) >= 0) {
-        //                         return true;
-        //                     }
-
-        //                     return false;
-        //                 })
-        //                 .map(portaria => portaria.iIdestorage);
-
-        //             const closeAction = () => {
-        //                 DBViewAssinaturaPortaria.refreshSignatureStatusFiles()
-        //                     .then(() => DBViewAssinaturaPortaria.getPortarias())
-        //             };
-
-        //             require_once('scripts/classes/configuracao/DBViewAssinaturaDigital.js');
-        //             const signerComponent = window.DBViewAssinaturaDigital.build(arquivos);
-        //             signerComponent.fCallBack.close = closeAction
-        //         });
     },
     makeGrid: function () {
 
@@ -79,45 +28,45 @@ var DBViewAssinaturaPortaria = {
 
         var idColumn = null;
         var columns  = {
-            "sId":                          { label: "Id",             
-                                              align: "center",    
-                                              width: "1%"  
+            "sId":                          { label: "Id",
+                                              align: "center",
+                                              width: "1%"
                                             },
-            "sAno":                         { label: "sAno",           
-                                              align: "center",    
-                                              width: "1%"  
+            "sAno":                         { label: "sAno",
+                                              align: "center",
+                                              width: "1%"
                                             },
-            "sPortaria":                    { label: "Portaria",       
-                                              align: "center",    
-                                              width: "7%"  
+            "sPortaria":                    { label: "Portaria",
+                                              align: "center",
+                                              width: "7%"
                                             },
-            "sMatricula":                   { label: "Matrícula",      
-                                              align: "center",    
-                                              width: "5%"  
+            "sMatricula":                   { label: "Matrícula",
+                                              align: "center",
+                                              width: "5%"
                                             },
-            "sNome":                        { label: "Nome",           
-                                              align: "left",      
-                                              width: "25%" 
+            "sNome":                        { label: "Nome",
+                                              align: "left",
+                                              width: "25%"
                                             },
-            "sCargo":                       { label: "Cargo",          
-                                              align: "left",      
-                                              width: "10%" 
+            "sCargo":                       { label: "Cargo",
+                                              align: "left",
+                                              width: "10%"
                                             },
-            "sTipo":                        { label: "Tipo Portaria",  
-                                              align: "left",      
-                                              width: "15%" 
+            "sTipo":                        { label: "Tipo Portaria",
+                                              align: "left",
+                                              width: "15%"
                                             },
-            "sInformacoes":                 { label: "Informações",    
-                                              align: "left",      
-                                              width: "10%" 
+            "sInformacoes":                 { label: "Informações",
+                                              align: "left",
+                                              width: "10%"
                                             },
-            "sData":                        { label: "Data",           
-                                              align: "center",    
-                                              width: "7%"  
+            "sData":                        { label: "Data",
+                                              align: "center",
+                                              width: "7%"
                                             },
-            "sSituacaoPortariaCompleto":    { label: "Situação",       
-                                              align: "center",    
-                                              width: "7%"  
+            "sSituacaoPortariaCompleto":    { label: "Situação",
+                                              align: "center",
+                                              width: "7%"
                                             },
         }
 
@@ -151,11 +100,11 @@ var DBViewAssinaturaPortaria = {
 
             var itensSelecionados = DBViewAssinaturaPortaria.oGridPortarias.grid.getSelection('object')
             document.querySelectorAll('.collection_button').forEach(node => node.removeAttribute('disabled'));
-            
+
             if(itensSelecionados.length > 0) {
-            
+
                 document.querySelectorAll('.collection_button').forEach(node => node.setAttribute('disabled', true));
-            
+
                 itensSelecionados.forEach(item => {
 
                     document.querySelector('#action_v_' + item.itemCollection.sId).removeAttribute('disabled')
@@ -198,28 +147,21 @@ var DBViewAssinaturaPortaria = {
             if (response.erro) {
                 return alert(response.mensagem);
             }
-            
-            // var btnAssinatura  = document.querySelector('#btnProcessarAssinatura');
+
             var selectSituacao = document.querySelector('#situacaoPortarias');
             var situacao       = JSON.parse(parametros.get('filter'));
-
-            // if(situacao.cSituacao == 'A') {
-            //     btnAssinatura.removeAttribute('disabled');
-            // } else {
-            //     btnAssinatura.setAttribute('disabled', true);
-            // }
 
             DBViewAssinaturaPortaria.buildGridToResponse(response);
 
         }).catch(function (erro) {
-            
+
             js_removeObj('loading_message');
             console.error(erro);
         });
     },
     buildGridToResponse: function (response) {
 
-        var  limiteTamanhoInformacoes = 10 
+        var  limiteTamanhoInformacoes = 10
             ,limiteTamanhoTipo        = 18
             ,limiteTamanhoCargo       = 14
             ,limiteTamanhoNome        = 35
@@ -258,7 +200,7 @@ var DBViewAssinaturaPortaria = {
             if((portaria.sSituacaoPortariaCompleto.length > limiteTamanhoSituacao)) {
                 portaria.sSituacaoPortariaCompleto = portaria.sSituacaoPortariaCompleto.substr(0, limiteTamanhoSituacao) + '...';
             }
-            
+
             if((portaria.sInformacoesCompleto.length > limiteTamanhoInformacoes)) {
                 portaria.sInformacoes = portaria.sInformacoesCompleto.substr(0, limiteTamanhoInformacoes) + '...';
                 portaria.sInformacoes = portaria.sInformacoes.replace(/\n/g, "<br/>");
@@ -289,7 +231,7 @@ var DBViewAssinaturaPortaria = {
 
         DBViewAssinaturaPortaria.oGridPortarias.reload();
         DBViewAssinaturaPortaria.oGridPortarias.collection.get().forEach(function (item, i) {
-            
+
             if((item.sSituacaoPortariaCompleto.length > limiteTamanhoSituacao)) {
                 DBViewAssinaturaPortaria.oGridPortarias.grid.setHint(i, 10,  retornarLabelSitucao(item.sSituacaoPortaria));
             }
@@ -297,15 +239,15 @@ var DBViewAssinaturaPortaria = {
             if((item.sInformacoesCompleto.length > limiteTamanhoInformacoes)) {
                 DBViewAssinaturaPortaria.oGridPortarias.grid.setHint(i, 8,  item.sInformacoesCompleto);
             }
-            
+
             if((item.sTipoCompleto.length > limiteTamanhoTipo)) {
                 DBViewAssinaturaPortaria.oGridPortarias.grid.setHint(i, 7,  item.sTipoCompleto);
             }
-            
+
             if((item.sCargoCompleto.length > limiteTamanhoCargo)) {
                 DBViewAssinaturaPortaria.oGridPortarias.grid.setHint(i, 6,  item.sCargoCompleto);
             }
-            
+
             if((item.sNomeCompleto.length > limiteTamanhoNome)) {
                 DBViewAssinaturaPortaria.oGridPortarias.grid.setHint(i, 5,  item.sNomeCompleto);
             }
@@ -325,7 +267,7 @@ var DBViewAssinaturaPortaria = {
         const parametros = new FormData();
                 parametros.append('exec',       'getArquivoEstorage');
                 parametros.append('idestorage', idestorage);
-        
+
         return fetch('rh_processaassinaturadigital.RPC.php', {
 
             method     : 'POST',
@@ -421,78 +363,13 @@ var DBViewAssinaturaPortaria = {
             }
 
             var usuario = response.usuario;
-
-            // this.getPin()
-            //     .then(function(pin) {
-            //         return SignerSDK.getCertificates(pin).catch(err => { throw err });
-            //     })
-            //     .then(function (certificates) {
-
-            //         if (certificates.length == 0) {
-            //             throw 'Nenhum certificado digital encontrado.';
-            //         }
-
-            //         return certificates.pop();
-            //     })
-            //     .then(function(certificate) {
-
-            //         var cpfCertificado = certificate.subject.replace(/^.*?:(.*)$/g, "$1");
-
-            //         if (cpfCertificado != usuario.cpf) {
-            //             throw "CPF do assinante difere do usuário";
-            //         }
-                    
-            //         return certificate;
-            //     })
-            //     .then(function(certificate) {
-
-            //         js_removeObj('loading_message');
-            //         js_divCarregando('Assinando documentos', 'loading_message');
-
-            //         let arquivosAssinar = [];
-
-            //         this.dataitens.forEach(function(item, index) {
-            //             arquivosAssinar.push(this.signFile(certificate, item));
-            //         }.bind(this));
-
-            //         Promise.allSettled(arquivosAssinar)
-            //         .then(responses => {
-
-            //             responses.forEach(response => {
-                                                        
-            //                 if (response.status == 'fulfilled') {
-            //                     this.dataitensSigned.set(response.value.portaria, response.value.message);
-            //                 } else {
-            //                     this.dataitensErrorOnSign.set(response.reason.portaria, response.reason.error);
-            //                 }
-            //             })
-
-            //             js_removeObj('loading_message');
-            //             responseSignFiles.call(DBViewAssinaturaPortaria, responses.length);
-            //         })
-            //         .catch(error => {
-            //             js_removeObj('loading_message');
-            //             console.error(error)
-            //         });
-
-            //     }.bind(this))
-            //     .catch(function(err) {
-                    
-            //         js_removeObj('loading_message');
-            //         console.error('metodo sign()', err);
-
-            //         if (err !== false) {
-            //             alert(err);
-            //         }
-            //     });
-
         }.bind(this))
         .catch(function(err) {
             js_removeObj('loading_message');
             console.log('metodo sign() - fetch dados usuario', parametrosConsultaUsuario);
             console.error(err);
             alert(err);
-        });    
+        });
     },
     signFile: async function(certificate, oPortaria) {
 
@@ -500,7 +377,7 @@ var DBViewAssinaturaPortaria = {
 
         pathFile = await getFilePathToSign(oPortaria)
                             .then(path => pathFile = path)
-                            .catch(err => { 
+                            .catch(err => {
                                 erroPathFile  = "Nao foi possível obter o arquivo do e-Storage para assinatura.\n";
                                 erroPathFile += err +"\n";
                             });
@@ -536,9 +413,6 @@ var DBViewAssinaturaPortaria = {
                            .catch(error => rej({portaria: oPortaria.sPortaria, error: error}));
             }
 
-            // var signature             = new SignerSDK.Signature();
-            //     signature.certificate = certificate;
-
             var signature = null;
 
             if(oPortaria.lStatusAssinatura && oPortaria.aAssinaturas.length == 1) {
@@ -546,76 +420,6 @@ var DBViewAssinaturaPortaria = {
             }
 
             var documento = null;
-
-            // var documento            = new SignerSDK.Document();
-            //     documento.path       = pathFile;
-            //     documento.signatures = [signature];
-            //     documento.content    = fetch(pathFile, config).then((res) => res.blob());
-
-                // signer.sign(this.pin)
-                //       .then(function(response) {
-                //             if (response[0].status.error) {
-                //                 console.error('Erro ao assinar', response);
-                //                 throw response[0].status.error;
-                //             }
-
-                //             return new Promise(function(resolve, reject) {
-
-                //                 var doc = response[0].document;
-                //                     doc.content.then(function(blob) {
-
-                //                         var reader = new FileReader();
-                //                             reader.readAsDataURL(blob);
-                                        
-                //                         var on_load = function() {
-                //                             resolve({
-                //                                 filename: pathFile,
-                //                                 content : reader.result.split(',').pop(),
-                //                             });
-                //                         }
-                //                         reader.addEventListener('loadend', on_load);
-                //                         reader.addEventListener('error', reject);
-
-                //                     })
-                //                     .catch(function(err) {
-                //                         reject(err);
-                //                     });
-                //             });
-                //         })
-                //         .then(function(file) {
-                //             const param = {
-                //                 assinante : certificate.subject,
-                //                 portaria  : {
-                //                     sPortaria : oPortaria.sPortaria,
-                //                     sAno      : oPortaria.sAno,
-                //                     sId       : oPortaria.sId,
-                //                 },
-                //                 files     : [file]
-                //             };
-
-                //             const parametros = new FormData();
-                //                   parametros.append('exec', 'salvarDocumentoAssinado');
-                //                   parametros.append('json', JSON.stringify(param));
-
-                //             fetch(DBViewAssinaturaPortaria.requestRPC, {
-                //                 method: 'POST',
-                //                 body: parametros,
-                //                 credentials: 'include',
-                //             }).then(function (resp) {
-                //                 return resp.json();
-                //             }).then(function (resp) {
-
-                //                 if (resp.erro) {
-                //                     rej({portaria: oPortaria.sPortaria, error: resp.mensagem});
-                //                 } else {
-                //                     res({portaria: oPortaria.sPortaria, message: resp.mensagem});
-                //                 }
-
-                //             })
-                //         }.bind(this))
-                //         .catch(function(err) {
-                //             rej({portaria: oPortaria.sPortaria, error: err});
-                //         });
         })
     },
     fechar: function() {
@@ -693,7 +497,7 @@ callbackBotaoVisualizar = function(target, portaria) {
 
         idestorage = portaria.iIdestorage;
         url        = portaria.sUrl;
-        
+
         DBViewAssinaturaPortaria.getFilePortaria(url, idestorage)
 
     } else {
@@ -714,7 +518,7 @@ callbackBotaoVisualizar = function(target, portaria) {
 
 callbackBotaoAlterarSituacao = function (target, portaria) {
 
-    var 
+    var
          proximaSituacao  = null
         ,situacaoAnterior = null
     ;
@@ -755,7 +559,7 @@ callbackBotaoAlterarSituacao = function (target, portaria) {
 
     this.windowAlterarSituacaoPortaria.show(null, null, true);
     this.windowAlterarSituacaoPortaria.getContentContainer().load('rh_processaassinaturadigitalalterasituacao.php', function () {
-        
+
         var btnProximaSituacao    = document.querySelector('#proximaSituacaoIr');
         var btnSituacaoAnterior   = document.querySelector('#situacaoAnteriorIr');
         var inputNumeroPortaria   = document.querySelector('#numeroPortaria');
@@ -774,19 +578,19 @@ callbackBotaoAlterarSituacao = function (target, portaria) {
             btnProximaSituacao.addEventListener('click', function (event) {
 
                 js_divCarregando('Alterando situação da portaria', 'loading_message');
-                
+
                 DBViewAssinaturaPortaria.alterarSituacao(proximaSituacao, portaria)
                 .then(response => callbackAlteracaoSituacao(proximaSituacao, portaria, response));
             });
         }
-        
+
         if(situacaoAnterior === null) {
             btnSituacaoAnterior.setAttribute('disabled', true);
         } else {
             btnSituacaoAnterior.addEventListener('click', function (event) {
-                
+
                 js_divCarregando('Alterando situação da portaria', 'loading_message');
-                
+
                 DBViewAssinaturaPortaria.alterarSituacao(situacaoAnterior, portaria)
                 .then(response => callbackAlteracaoSituacao(situacaoAnterior, portaria, response));
             });
@@ -797,7 +601,7 @@ callbackBotaoAlterarSituacao = function (target, portaria) {
 callbackAlteracaoSituacao = function (situacao, portaria, response) {
 
     DBViewAssinaturaPortaria.fechar();
-    
+
     if(response.mensagem) {
         alert(response.mensagem);
     }
@@ -857,7 +661,7 @@ responseSignFiles = function (totalItens) {
     }
 
     if(errorsOnSignItens > 0) {
-        
+
         var msgErro = "Ocorreram erros ao assinar as portarias:\n\n";
 
         if (errorsOnSignItens > 20) {
@@ -870,7 +674,7 @@ responseSignFiles = function (totalItens) {
             });
 
             errosOcorridos.forEach((v, e) => erros.push(e));
-            
+
             msgErro += portariasComErro.join(', ');
             msgErro += "\n\n";
             msgErro += erros.join("\n");
@@ -879,7 +683,7 @@ responseSignFiles = function (totalItens) {
             this.dataitensErrorOnSign.forEach((value, index) => msgErro += imprimirMensagemRetorno(index, value));
         }
 
-        
+
         alert(msgErro);
     }
 
@@ -896,7 +700,7 @@ responseSignFiles = function (totalItens) {
         } else {
             this.dataitensSigned.forEach((value, index) => msgSucesso += imprimirMensagemRetorno(index, value));
         }
-        
+
         alert(msgSucesso);
     }
 
@@ -905,10 +709,10 @@ responseSignFiles = function (totalItens) {
 
 imprimirMensagemRetorno = function (index, value) {
     return "\n* "+ index +' - '+ value;
-} 
+}
 
 gerarNovoDocumento = async function(item) {
-    
+
     var pathFile;
     var param = [
         {sNome: "$portaria", sValor: item.sPortaria},
@@ -932,7 +736,7 @@ gerarNovoDocumento = async function(item) {
             return response.json();
         })
         .then(function (response) {
-            
+
             if(response.erro) {
                 return reject(response.mensagem.urlDecode());
             }
@@ -983,7 +787,7 @@ gerarNovoDocumento = async function(item) {
 getFilePathToSign = async function(item) {
 
     var pathFile;
-        
+
     if(item.iIdestorage == null || item.iIdestorage == 'null') {
         await gerarNovoDocumento(item).then(path => pathFile = path);
         return pathFile;

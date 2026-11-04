@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,22 +62,22 @@
           <?=@$Led280_i_codigo?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ed280_i_codigo',10,$Ied280_i_codigo,true,'text',3,"")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted280_i_aluno?>">
-          <?
+          <?php
             db_ancora(@$Led280_i_aluno,"",3);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ed280_i_aluno',10,$Ied280_i_aluno,true,'text',3," ")
           ?>
-          <?
+          <?php
             db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')
           ?>
         </td>
@@ -87,7 +87,7 @@
           <b>Código INEP do Aluno:</b>    
         </td>
         <td> 
-          <?
+          <?php
             db_input('ed47_c_codigoinep',15,@$Ied47_c_codigoinep,true,'text',3,"")
           ?>
         </td>
@@ -97,7 +97,7 @@
           <?=@$Led280_i_turmacenso?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ed280_i_turmacenso',10,$Ied280_i_turmacenso,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -107,7 +107,7 @@
           <?=@$Led280_i_matcenso?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ed280_i_matcenso',12,$Ied280_i_matcenso,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -117,7 +117,7 @@
           <?=@$Led280_i_ano?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ed280_i_ano',4,$Ied280_i_ano,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -131,7 +131,7 @@
     <table style="width: 100%;">
       <tr>
         <td valign="top"><br>
-          <?
+          <?php
             $chavepri= array("ed280_i_codigo"=>@$ed280_i_codigo, "ed280_i_aluno"=>@$ed280_i_aluno, "ed47_v_nome"=>@$ed47_v_nome, "ed280_i_matcenso"=>@$ed280_i_matcenso, "ed280_i_turmacenso"=>@$ed280_i_turmacenso, "ed280_i_ano"=>@$ed280_i_ano);
             $cliframe_alterar_excluir->chavepri      = $chavepri;
             @$cliframe_alterar_excluir->sql          = $clalunomatcenso->sql_query("","*","","ed280_i_aluno = $ed280_i_aluno");

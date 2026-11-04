@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clrotulo->label("x44_total");
 <table border="0">
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 
 	if(@$tipo=="Analitico" || !isset($tipo)) { 
 	  	$tipo = "Sintetico";
@@ -98,7 +98,7 @@ $clrotulo->label("x44_total");
 <table border="1">
   <tr></tr><tr></tr>
   <tr>
-    <?
+    <?php
 
 	$sql2 = "
 			select 

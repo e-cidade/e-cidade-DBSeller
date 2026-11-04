@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("nomeinst");
        <?=@$Lrh13_sequencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh13_sequencia',6,$Irh13_sequencia,true,'hidden',3,"")
 ?>
     </td>
   </tr>	
   <tr>
     <td nowrap title="<?=@$Trh13_instit?>">
-       <?
+       <?php
        db_ancora(@$Lrh13_instit,"js_pesquisarh13_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh13_instit',2,$Irh13_instit,true,'text',$db_opcao," onchange='js_pesquisarh13_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        <?=@$Lrh13_matricula?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh13_matricula',6,$Irh13_matricula,true,'text',$db_opcao,"");
 db_input('rh13_sequencia',6,$Irh13_sequencia,true,'hidden',3,"");
 ?>
@@ -76,7 +76,7 @@ db_input('rh13_sequencia',6,$Irh13_sequencia,true,'hidden',3,"");
        <?=@$Lrh13_unificada?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('rh13_unificada',$x,true,$db_opcao,"");
 ?>
@@ -116,7 +116,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhcfpessmatr.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

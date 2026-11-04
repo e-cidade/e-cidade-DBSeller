@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cllaboratorios->rotulo->label();
        <?=@$Led16_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed16_i_codigo',10,$Ied16_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('ed16_i_codigo',10,$Ied16_i_codigo,true,'text',3,"")
        <?=@$Led16_c_computador?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed16_c_computador',10,$Ied16_c_computador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('ed16_c_computador',10,$Ied16_c_computador,true,'text',$db_opcao,"")
        <?=@$Led16_c_ativo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'S','N'=>'N');
 db_select('ed16_c_ativo',$x,true,$db_opcao,"");
 ?>
@@ -67,7 +67,7 @@ db_select('ed16_c_ativo',$x,true,$db_opcao,"");
        <?=@$Led16_t_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed16_t_descr',3,40,$Ied16_t_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_laboratorios.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

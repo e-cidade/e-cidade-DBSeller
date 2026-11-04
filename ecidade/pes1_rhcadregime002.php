@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -127,7 +127,7 @@ db_menu();
 ?>
 </body>
 </html>
-<?
+<?php
 if($db_opcao==22){
   echo "<script>document.form1.pesquisar.click();</script>";
 }

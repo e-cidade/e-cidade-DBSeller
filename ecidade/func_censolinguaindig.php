@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcensolinguaindig->rotulo->label("ed264_c_nome");
               <?=$Led264_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed264_i_codigo",10,$Ied264_i_codigo,true,"text",4,"","chave_ed264_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcensolinguaindig->rotulo->label("ed264_c_nome");
               <?=$Led264_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed264_c_nome",40,$Ied264_c_nome,true,"text",4,"","chave_ed264_c_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcensolinguaindig->rotulo->label("ed264_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_censolinguaindig.php")==true){
@@ -122,12 +122,12 @@ $clcensolinguaindig->rotulo->label("ed264_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

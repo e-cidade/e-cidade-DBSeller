@@ -139,7 +139,7 @@ function xx($fd, $parq) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<?
+<?php
 parse_str($HTTP_SERVER_VARS ["QUERY_STRING"]);
 $root = substr($HTTP_SERVER_VARS ['SCRIPT_FILENAME'], 0, strrpos($HTTP_SERVER_VARS ['SCRIPT_FILENAME'], "/"));
 
@@ -201,7 +201,7 @@ if (! is_writable($root . "/classes")) {
 </table>
 </body>
 </html>
-<?
+<?php
   exit();
 }
 
@@ -216,7 +216,7 @@ if (file_exists($arquivo) && ! is_writable($arquivo)) {
 </table>
 </body>
 </html>
-<?
+<?php
   exit();
 }
 

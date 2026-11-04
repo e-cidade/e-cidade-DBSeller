@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -28,10 +28,10 @@
 $campos = "clabens.t64_codcla,
            clabens.t64_class,
            clabens.t64_descr,
-           clabensconplano.t86_conplano,
            clabens.t64_obs,
+           clabens.t64_analitica,
+           clabens.t64_bemtipos,
            clabens.t64_benstipodepreciacao,
-           benstipodepreciacao.t46_descricao,
            clabens.t64_vidautil,
+           clabens.t64_instit,
            clabens.t64_valorresidual";
-?>

@@ -25,56 +25,56 @@
  *                                licenca/licenca_pt.txt 
  */
 
-//MODULO: pessoal
-//CLASSE DA ENTIDADE rescisao
-class cl_rescisao { 
+class cl_rescisao
+{
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r59_instit = 0; 
-   var $r59_anousu = 0; 
-   var $r59_mesusu = 0; 
-   var $r59_regime = 0; 
-   var $r59_causa = 0; 
-   var $r59_descr = null; 
-   var $r59_caub = null; 
-   var $r59_descr1 = null; 
-   var $r59_menos1 = null; 
-   var $r59_aviso = 'f'; 
-   var $r59_13sal = 'f'; 
-   var $r59_fvenc = 'f'; 
-   var $r59_fprop = 'f'; 
-   var $r59_tercof = 0; 
-   var $r59_codsaq = null; 
-   var $r59_mfgts = 0; 
-   var $r59_479clt = 'f'; 
-   var $r59_grfp = 'f'; 
-   var $r59_finss = 'f'; 
-   var $r59_ffgts = 'f'; 
-   var $r59_firrf = 'f'; 
-   var $r59_13inss = 'f'; 
-   var $r59_13fgts = 'f'; 
-   var $r59_13irrf = 'f'; 
-   var $r59_rinss = 'f'; 
-   var $r59_rfgts = 'f'; 
-   var $r59_rirrf = 'f'; 
-   var $r59_movsef = null; 
-   var $r59_causaafastamento = 0; 
-   var $r59_motivoesocial = 0; 
-   var $r59_cessacaobeneficios = 0;
+    public $rotulo = null; 
+    public $query_sql = null; 
+    public $numrows = 0; 
+    public $numrows_incluir = 0; 
+    public $numrows_alterar = 0; 
+    public $numrows_excluir = 0; 
+    public $erro_status = null; 
+    public $erro_sql = null; 
+    public $erro_banco = null;  
+    public $erro_msg = null;  
+    public $erro_campo = null;  
+    public $pagina_retorno = null; 
+    /* Variáveis do Arquivo */
+    public $r59_instit = 0; 
+    public $r59_anousu = 0; 
+    public $r59_mesusu = 0; 
+    public $r59_regime = 0; 
+    public $r59_causa = 0; 
+    public $r59_descr = null; 
+    public $r59_caub = null; 
+    public $r59_descr1 = null; 
+    public $r59_menos1 = null; 
+    public $r59_aviso = 'f'; 
+    public $r59_13sal = 'f'; 
+    public $r59_fvenc = 'f'; 
+    public $r59_fprop = 'f'; 
+    public $r59_tercof = 0; 
+    public $r59_codsaq = null; 
+    public $r59_mfgts = 0; 
+    public $r59_479clt = 'f'; 
+    public $r59_grfp = 'f'; 
+    public $r59_finss = 'f'; 
+    public $r59_ffgts = 'f'; 
+    public $r59_firrf = 'f'; 
+    public $r59_13inss = 'f'; 
+    public $r59_13fgts = 'f'; 
+    public $r59_13irrf = 'f'; 
+    public $r59_rinss = 'f'; 
+    public $r59_rfgts = 'f'; 
+    public $r59_rirrf = 'f'; 
+    public $r59_movsef = null; 
+    public $r59_causaafastamento = 0; 
+    public $r59_motivoesocial = 0; 
+    public $r59_cessacaobeneficios = 0; 
+    public $r59_demissaovoluntaria = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+    public $campos = "
                  r59_instit = int4 = Cod. Instituição 
                  r59_anousu = int4 = Ano do Exercicio 
                  r59_mesusu = int4 = Mes do Exercicio 
@@ -105,7 +105,8 @@ class cl_rescisao {
                  r59_movsef = varchar(2) = Código de Movimentação da SEFIP 
                  r59_causaafastamento = int4 = Causas de afastamento 
                  r59_motivoesocial = int4 = Motivo para o e-Ssocial 
-                 r59_cessacaobeneficios = int4 = Cessação de Benefícios Motivo para o e-Social
+                 r59_cessacaobeneficios = int4 = Cessação de Benefícios Motivo para o e-Social 
+                 r59_demissaovoluntaria = bool = Programa de Demissão Voluntária 
                  ";
 
     /**
@@ -113,12 +114,12 @@ class cl_rescisao {
      */
     public function __construct()
     {
-        $this->rotulo = new rotulo("rescisao");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->rotulo = new rotulo("rescisao"); 
+        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+    public function erro($mostra, $retorna)
+    {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -126,8 +127,9 @@ class cl_rescisao {
         }
      }
    }
-   // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+
+    public function atualizacampos($exclusao = false)
+    {
      if($exclusao==false){
        $this->r59_instit = ($this->r59_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_instit"]:$this->r59_instit);
        $this->r59_anousu = ($this->r59_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_anousu"]:$this->r59_anousu);
@@ -160,6 +162,7 @@ class cl_rescisao {
        $this->r59_causaafastamento = ($this->r59_causaafastamento == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_causaafastamento"]:$this->r59_causaafastamento);
        $this->r59_motivoesocial = ($this->r59_motivoesocial == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_motivoesocial"]:$this->r59_motivoesocial);
        $this->r59_cessacaobeneficios = ($this->r59_cessacaobeneficios == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_cessacaobeneficios"]:$this->r59_cessacaobeneficios);
+       $this->r59_demissaovoluntaria = ($this->r59_demissaovoluntaria == "f"?@$GLOBALS["HTTP_POST_VARS"]["r59_demissaovoluntaria"]:$this->r59_demissaovoluntaria);
      }else{
        $this->r59_instit = ($this->r59_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_instit"]:$this->r59_instit);
        $this->r59_anousu = ($this->r59_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_anousu"]:$this->r59_anousu);
@@ -170,8 +173,9 @@ class cl_rescisao {
        $this->r59_menos1 = ($this->r59_menos1 == ""?@$GLOBALS["HTTP_POST_VARS"]["r59_menos1"]:$this->r59_menos1);
      }
    }
-   // funcao para Inclusão
-   function incluir ($r59_anousu,$r59_mesusu,$r59_regime,$r59_causa,$r59_caub,$r59_menos1,$r59_instit){ 
+
+    public function incluir($r59_anousu,$r59_mesusu,$r59_regime,$r59_causa,$r59_caub,$r59_menos1,$r59_instit)
+    {
       $this->atualizacampos();
      if($this->r59_descr == null ){ 
        $this->erro_sql = " Campo Descricao da causa rescisao não informado.";
@@ -353,6 +357,9 @@ class cl_rescisao {
        $this->erro_status = "0";
        return false;
      }
+     if($this->r59_demissaovoluntaria == null ){ 
+       $this->r59_demissaovoluntaria = 'f';
+     }
        $this->r59_anousu = $r59_anousu; 
        $this->r59_mesusu = $r59_mesusu; 
        $this->r59_regime = $r59_regime; 
@@ -447,7 +454,8 @@ class cl_rescisao {
                                       ,r59_movsef 
                                       ,r59_causaafastamento 
                                       ,r59_motivoesocial 
-                                      ,r59_cessacaobeneficios
+                                      ,r59_cessacaobeneficios 
+                                      ,r59_demissaovoluntaria 
                        )
                 values (
                                 $this->r59_instit 
@@ -480,7 +488,8 @@ class cl_rescisao {
                                ,'$this->r59_movsef' 
                                ,$this->r59_causaafastamento 
                                ,$this->r59_motivoesocial 
-                               ,$this->r59_cessacaobeneficios
+                               ,$this->r59_cessacaobeneficios 
+                               ,'$this->r59_demissaovoluntaria' 
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -554,12 +563,14 @@ class cl_rescisao {
          $resac = db_query("insert into db_acount values($acount,589,19580,'','".AddSlashes(pg_result($resaco,0,'r59_causaafastamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,589,1009921,'','".AddSlashes(pg_result($resaco,0,'r59_motivoesocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,589,1014354,'','".AddSlashes(pg_result($resaco,0,'r59_cessacaobeneficios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,589,1015588,'','".AddSlashes(pg_result($resaco,0,'r59_demissaovoluntaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
    } 
-   // funcao para alteracao
-   function alterar ($r59_anousu=null,$r59_mesusu=null,$r59_regime=null,$r59_causa=null,$r59_caub=null,$r59_menos1=null,$r59_instit=null) { 
+
+    public function alterar($r59_anousu=null,$r59_mesusu=null,$r59_regime=null,$r59_causa=null,$r59_caub=null,$r59_menos1=null,$r59_instit=null)
+    {
       $this->atualizacampos();
      $sql = " update rescisao set ";
      $virgula = "";
@@ -921,12 +932,19 @@ class cl_rescisao {
        $virgula = ",";
      }
      if(trim($this->r59_cessacaobeneficios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r59_cessacaobeneficios"])){ 
-      if(trim($this->r59_cessacaobeneficios)=="" && isset($GLOBALS["HTTP_POST_VARS"]["r59_cessacaobeneficios"])){ 
-         $this->r59_cessacaobeneficios = "0" ; 
-      } 
-     $sql  .= $virgula." r59_cessacaobeneficios = $this->r59_cessacaobeneficios ";
-     $virgula = ",";
-   }
+        if(trim($this->r59_cessacaobeneficios)=="" && isset($GLOBALS["HTTP_POST_VARS"]["r59_cessacaobeneficios"])){ 
+           $this->r59_cessacaobeneficios = "0" ; 
+        } 
+       $sql  .= $virgula." r59_cessacaobeneficios = $this->r59_cessacaobeneficios ";
+       $virgula = ",";
+     }
+     if(trim($this->r59_demissaovoluntaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r59_demissaovoluntaria"])){ 
+       $sql  .= $virgula." r59_demissaovoluntaria = '$this->r59_demissaovoluntaria' ";
+       $virgula = ",";
+       if(trim($this->r59_demissaovoluntaria) == null ){ 
+         $this->r59_demissaovoluntaria = 'f';
+       }
+     }
      $sql .= " where ";
      if($r59_anousu!=null){
        $sql .= " r59_anousu = $this->r59_anousu";
@@ -942,6 +960,8 @@ class cl_rescisao {
      }
      if($r59_caub!=null){
        $sql .= " and  r59_caub = '$this->r59_caub'";
+     } else {
+      $sql .= " and  r59_caub = ''";
      }
      if($r59_menos1!=null){
        $sql .= " and  r59_menos1 = '$this->r59_menos1'";
@@ -1028,8 +1048,10 @@ class cl_rescisao {
              $resac = db_query("insert into db_acount values($acount,589,19580,'".AddSlashes(pg_result($resaco,$conresaco,'r59_causaafastamento'))."','$this->r59_causaafastamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["r59_motivoesocial"]) || $this->r59_motivoesocial != "")
              $resac = db_query("insert into db_acount values($acount,589,1009921,'".AddSlashes(pg_result($resaco,$conresaco,'r59_motivoesocial'))."','$this->r59_motivoesocial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-             if (isset($GLOBALS["HTTP_POST_VARS"]["r59_cessacaobeneficios"]) || $this->r59_cessacaobeneficios != "")
-             $resac = db_query("insert into db_acount values($acount,589,1014354,'".AddSlashes(pg_result($resaco,$conresaco,'r59_cessacaobeneficios'))."','$this->r59_cessacaobeneficios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");  
+           if (isset($GLOBALS["HTTP_POST_VARS"]["r59_cessacaobeneficios"]) || $this->r59_cessacaobeneficios != "")
+             $resac = db_query("insert into db_acount values($acount,589,1014354,'".AddSlashes(pg_result($resaco,$conresaco,'r59_cessacaobeneficios'))."','$this->r59_cessacaobeneficios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["r59_demissaovoluntaria"]) || $this->r59_demissaovoluntaria != "")
+             $resac = db_query("insert into db_acount values($acount,589,1015588,'".AddSlashes(pg_result($resaco,$conresaco,'r59_demissaovoluntaria'))."','$this->r59_demissaovoluntaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1065,9 +1087,9 @@ class cl_rescisao {
        } 
      } 
    } 
-   // funcao para exclusao 
-   public function excluir ($r59_anousu=null,$r59_mesusu=null,$r59_regime=null,$r59_causa=null,$r59_caub=null,$r59_menos1=null,$r59_instit=null,$dbwhere=null) { 
 
+    public function excluir($r59_anousu=null,$r59_mesusu=null,$r59_regime=null,$r59_causa=null,$r59_caub=null,$r59_menos1=null,$r59_instit=null, $dbwhere = null)
+    {
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
        && ($lSessaoDesativarAccount === false))) {
@@ -1123,6 +1145,7 @@ class cl_rescisao {
            $resac  = db_query("insert into db_acount values($acount,589,19580,'','".AddSlashes(pg_result($resaco,$iresaco,'r59_causaafastamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,589,1009921,'','".AddSlashes(pg_result($resaco,$iresaco,'r59_motivoesocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,589,1014354,'','".AddSlashes(pg_result($resaco,$iresaco,'r59_cessacaobeneficios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,589,1015588,'','".AddSlashes(pg_result($resaco,$iresaco,'r59_demissaovoluntaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1207,8 +1230,9 @@ class cl_rescisao {
        } 
      } 
    } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+
+    public function sql_record($sql)
+    {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -1230,8 +1254,9 @@ class cl_rescisao {
       }
      return $result;
    }
+
    // funcao do sql 
-   public function sql_query ($r59_anousu = null,$r59_mesusu = null,$r59_regime = null,$r59_causa = null,$r59_caub = null,$r59_menos1 = null,$r59_instit = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+    public function sql_query($r59_anousu = null,$r59_mesusu = null,$r59_regime = null,$r59_causa = null,$r59_caub = null,$r59_menos1 = null,$r59_instit = null,$campos = "*", $ordem = null, $dbwhere = "") { 
 
      $sql  = "select {$campos}";
      $sql .= "  from rescisao ";
@@ -1301,8 +1326,9 @@ class cl_rescisao {
      }
      return $sql;
   }
+
    // funcao do sql 
-   public function sql_query_file ($r59_anousu = null,$r59_mesusu = null,$r59_regime = null,$r59_causa = null,$r59_caub = null,$r59_menos1 = null,$r59_instit = null, $campos = "*", $ordem = null, $dbwhere = "") {
+    public function sql_query_file($r59_anousu = null,$r59_mesusu = null,$r59_regime = null,$r59_causa = null,$r59_caub = null,$r59_menos1 = null,$r59_instit = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
      $sql .= "  from rescisao ";
@@ -1395,8 +1421,7 @@ class cl_rescisao {
     $sSql .= "         AND rh05_seqpes IS NOT NULL;                                                   "; 
                                            
     return $sSql;
-    
-   }
+  }
 
    function atualiza_incluir (){
   	 $this->incluir($this->r59_anousu,$this->r59_mesusu,$this->r59_regime,$this->r59_causa,$this->r59_caub,$this->r59_menos1,$this->r59_instit);
@@ -1501,4 +1526,3 @@ class cl_rescisao {
     return $sSql;
   }
 }
-

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -199,7 +199,7 @@ db_app::load("webseller.js");
 </table>
 <br><br>
 <center>
-<?if ($oDaoVacSala->numrows == 0) {
+<?php if ($oDaoVacSala->numrows == 0) {
     
     echo"<br><br><center><strong><b> Departamento não tem sala de vacinação cadastradas! </b></strong></center></center></center>";
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
@@ -222,7 +222,7 @@ db_app::load("webseller.js");
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -230,7 +230,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1", "vc01_i_unidade", true, 1, "vc01_i_unidade", true);
 </script>
-<?
+<?php
 if (isset($confirma)) {
   if ($oDaoVacDevolucao->erro_status == "0") {
     $oDaoVacDevolucao->erro(true,false);

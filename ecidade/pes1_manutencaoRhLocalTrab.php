@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -108,13 +108,13 @@ if (!isset($db_opcao)) {
               <?=@$Lrh55_codigo?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('rh55_codigo',10,$Irh55_codigo,true,'text',3,"")
               ?>
             </td>
           </tr>
           <tr>
-            <?
+            <?php
             $retorno_cfpess = db_sel_cfpess(db_anofolha(),db_mesfolha(),"r11_localtrab");
             if (isset($r11_localtrab) && trim($r11_localtrab) != "") {
               $cldb_estrut->autocompletar = true;
@@ -135,7 +135,7 @@ if (!isset($db_opcao)) {
               <?=@$Lrh55_inep?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('rh55_inep', 10, $Irh55_inep, true, 'text', $db_opcao, "")
               ?>
             </td>
@@ -145,19 +145,19 @@ if (!isset($db_opcao)) {
               <?=@$Lrh55_descr?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('rh55_descr',44,$Irh55_descr,true,'text',$db_opcao,"")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="Criterio Rateio">
-               <?
+               <?php
                db_ancora("Criterio Rateio","adicionaCentroCusto('');",$db_opcao); 
                ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('rh86_criteriorateio',10,$Irh86_criteriorateio,true,'text',$db_opcao," onchange='adicionaCentroCusto(this.value);'");
               db_input('cc08_descricao',30,$Icc08_descricao,true,'text',3,'')
                ?>
@@ -165,12 +165,12 @@ if (!isset($db_opcao)) {
           </tr>
           <tr>
             <td nowrap title="Lotação Tributária">
-               <?
+               <?php
                db_ancora("Lotação Tributária","pesquisaLotacaoTributaria(true);",$db_opcao); 
                ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('rh55_lotacaotributaria',10,$Irh55_lotacaotributaria,true,'text',3,"");
                ?>
             </td>
@@ -313,6 +313,14 @@ if (!isset($db_opcao)) {
                             <td>
                               <?php
                                 db_input("rh256_tecnicamedicao",40,$Irh256_tecnicamedicao,true,'text',$db_opcao);
+                              ?>
+                            </td>                    
+                          </tr>
+                          <tr>                     
+                            <td>Em caso de agente nocivo incluído por determinação administrativa ou judicial, preencher com o número do processo:</td>
+                            <td>
+                              <?php
+                                db_input("rh256_processo",21,$Irh256_processo,true,'text',$db_opcao);
                               ?>
                             </td>                    
                           </tr>
@@ -858,12 +866,14 @@ function inicializaGridAgentesNocivos() {
                 '120',
                 '200',
                 '250',
+                '150',
                 '100'
             ]
     );
     
 	oGridAgentesNocivos.setCellAlign(
     	    [
+               'left',
                'left',
                'left',
                'left',
@@ -886,6 +896,7 @@ function inicializaGridAgentesNocivos() {
                'Unidade de medida',
                'Descrição Unidade de medida',
                'Técnica Utilizada',
+               'Número do Processo',
                'Ação'
             ]
     );
@@ -922,10 +933,11 @@ function carregaRegistrosLancadosGridAgentesNocivos() {
     aCelulas[5]  = "<span title='"+oDadosAgenteNocivo.rh256_medida+"'>"+oDadosAgenteNocivo.rh256_medida+"</span>";
     aCelulas[6]  = "<span title='"+oDadosAgenteNocivo.rh256_medida_descricao+"'>"+oDadosAgenteNocivo.rh256_medida_descricao+"</span>";
     aCelulas[7]  = "<span title='"+oDadosAgenteNocivo.rh256_tecnicamedicao+"'>"+oDadosAgenteNocivo.rh256_tecnicamedicao+"</span>";
+    aCelulas[8]  = "<span title='"+oDadosAgenteNocivo.rh256_processo+"'>"+oDadosAgenteNocivo.rh256_processo+"</span>";
     
     sConteudoAcao  = "<input type='button' value='Alterar' onclick='alterarRegistroAgenteNocivo("+oDadosAgenteNocivo.id+")'>&nbsp;";
     sConteudoAcao += "<input type='button' value='Excluir' onclick='removerRegistroAgenteNocivo("+oDadosAgenteNocivo.id+")'>";
-    aCelulas[8] = sConteudoAcao;    
+    aCelulas[9] = sConteudoAcao;
     
     oGridAgentesNocivos.addRow( aCelulas );
     
@@ -1014,6 +1026,7 @@ function incluirRegistroAgenteNocivo () {
         oNovoAgenteNocivo.rh256_medida                    = $F("rh256_medida");
         oNovoAgenteNocivo.rh256_medida_descricao          = $F("rh256_medida_descricao");
         oNovoAgenteNocivo.rh256_tecnicamedicao            = $F("rh256_tecnicamedicao");
+        oNovoAgenteNocivo.rh256_processo = $F("rh256_processo");
 
     var oDadosEquipamentosProtecao = new Object();
         oDadosEquipamentosProtecao.agentenocivo_id          = oNovoAgenteNocivo.id;
@@ -1103,7 +1116,8 @@ function carregaFormularioRegistroAgenteNocivo(oAgenteNocivo) {
     $("rh256_tolerancialimite").value        = oAgenteNocivo.rh256_tolerancialimite;             
     $("rh256_medida").value                  = oAgenteNocivo.rh256_medida;        
     $("rh256_medida_descricao").value        = oAgenteNocivo.rh256_medida_descricao;
-	  $("rh256_tecnicamedicao").value          = oAgenteNocivo.rh256_tecnicamedicao;
+	$("rh256_tecnicamedicao").value          = oAgenteNocivo.rh256_tecnicamedicao;
+	$("rh256_processo").value = oAgenteNocivo.rh256_processo;
 
 	$("rh257_utilizaepc").value         = oAgenteNocivo.oDadosEquipamentosProtecao.rh257_utilizaepc;       
 	$("rh257_eficaciaepc").value        = oAgenteNocivo.oDadosEquipamentosProtecao.rh257_eficaciaepc;      
@@ -1151,6 +1165,7 @@ function limparFormularioAgenteNocivo() {
     $("rh256_medida").value                  = "";     
     $("rh256_medida_descricao").value        = "";
     $("rh256_tecnicamedicao").value          = "";
+    $("rh256_processo").value = "";
 
     $("rh257_utilizaepc").value         = ""; 
     $("rh257_eficaciaepc").value        = "";

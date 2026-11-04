@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -251,7 +251,7 @@ foreach ( $aListaAnosAnt as $iIndAno => $iAno) {
 	  
 	  $oDespesa = db_utils::fieldsMemory($rsDespesa,$iInd);
 	  
-	  if ( $oDespesa->o58_elemento{0} == 3 ) {
+	  if ( $oDespesa->o58_elemento[0] == 3 ) {
 	    $oDespesaTotal->aValores[$iAno]->nCorrente += $oDespesa->empenhado_acumulado - $oDespesa->anulado_acumulado;
 	  } 
 	    
@@ -318,7 +318,7 @@ foreach ($aListaAnosPPA as $iIndAno => $iAno ) {
   // Calcula Despesa Corrente de todos os anos posteriores ao de referência
 	foreach ( $aEstimativaDespesa as $iInd => $oDespesa ) {
 	  
-	  if ( $oDespesa->iElemento{0} == 3 ) {
+	  if ( $oDespesa->iElemento[0] == 3 ) {
       $oDespesaTotal->aValores[$iAno]->nCorrente += $oDespesa->aEstimativas[$iAno];
 	  } 
 	  

@@ -1,4 +1,4 @@
-<?
+<?php
 $IP = "192.168.0.201";
 $PORTA = 5001;
 
@@ -284,7 +284,7 @@ if(isset($_POST["renicializar"])) {
     </tr>
   </table>
 </form>
-  <?
+  <?php
   if(isset($erro)) {
     switch($erro) {
 //      case SEM_CABO:

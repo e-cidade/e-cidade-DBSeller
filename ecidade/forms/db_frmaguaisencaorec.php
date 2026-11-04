@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,37 +59,37 @@ if(isset($db_opcaoal)){
        <?=@$Lx26_codisencaorec?>
     </td>
     <td> 
-<?
+<?php
 db_input('x26_codisencaorec',5,$Ix26_codisencaorec,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx26_codisencao?>">
-       <?
+       <?php
        db_ancora(@$Lx26_codisencao,"js_pesquisax26_codisencao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x26_codisencao',5,$Ix26_codisencao,true,'text',3," onchange='js_pesquisax26_codisencao(false);'")
 ?>
-       <?
+       <?php
 //db_input('x10_matric',10,$Ix10_matric,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx26_codconsumotipo?>">
-       <?
+       <?php
        db_ancora(@$Lx26_codconsumotipo,"js_pesquisax26_codconsumotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x26_codconsumotipo',5,$Ix26_codconsumotipo,true,'text',$db_opcao," onchange='js_pesquisax26_codconsumotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('x25_descr',40,$Ix25_descr,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('x25_descr',40,$Ix25_descr,true,'text',3,'')
        <?=@$Lx26_percentual?>
     </td>
     <td> 
-<?
+<?php
 db_input('x26_percentual',6,$Ix26_percentual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('x26_percentual',6,$Ix26_percentual,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("x26_codisencaorec"=>@$x26_codisencaorec);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 //$cliframe_alterar_excluir->sql     = $claguaisencaorec->sql_query_file($x26_codisencaorec);

@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "retencaoreceitasadicionais.e19_sequencial,retencaoreceitasadicionais.e19_retencaoreceitas,retencaoreceitasadicionais.e19_tiposerviconotafiscal,retencaoreceitasadicionais.e19_valornaoretidoprincipal,retencaoreceitasadicionais.e19_valorservico15,retencaoreceitasadicionais.e19_valorservico20,retencaoreceitasadicionais.e19_valorservico25,retencaoreceitasadicionais.e19_valoradicional,retencaoreceitasadicionais.e19_valornaoretidoadicional";
 ?>

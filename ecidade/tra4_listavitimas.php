@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ function envia(id){
 <body>
 <center>
 <form method="post" name="form1">
-<?
+<?php
   $sql = "select tr06_descr,
                  tr10_id,
                  tr10_situacao,
@@ -71,7 +71,7 @@ function envia(id){
            <td style="text-align:center"><b>Idade</b></td>
            <td style="text-align:center" colspan="2"><b>X</b></td>
         </tr>
-  <?
+  <?php
   while ($ln = pg_fetch_array($rs)){
        echo "<tr>";
        echo $ln["tr06_descr"]!= ""?"<td>".$ln["tr06_descr"]."</td>\n":"<td>&nbsp;</td>\n";

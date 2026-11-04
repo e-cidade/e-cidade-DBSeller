@@ -46,7 +46,8 @@ final class PCE implements DeparaInterface
     public function __construct()
     {
         $this->aFundamentacoes = array(
-            'A28INLL'
+            'A28INLL',
+            '13303A63III'
         );
     }
 

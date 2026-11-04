@@ -55,7 +55,7 @@ if (!isset($oGet->pc10_numero) || trim($oGet->pc10_numero) == "") {
  * uma página de erro informando que a solicitação informada não existe
  */
 $oDaoSolicita          = new cl_solicita();
-$sCamposBuscaSolicita  = "pc10_numero, pc10_depto, descrdepto, pc10_login, nome, pc10_correto, pc10_data, pc10_instit, ";
+$sCamposBuscaSolicita  = "distinct on (pc10_numero,pc11_codigo) pc10_numero, pc10_depto, descrdepto, pc10_login, nome, pc10_correto, pc10_data, pc10_instit, ";
 $sCamposBuscaSolicita .= "nomeinst, (pc11_quant * pc11_vlrun ) as valortotal, pc10_solicitacaotipo, pc52_descricao, pc10_resumo, ";
 $sCamposBuscaSolicita .= "pc50_descr, ";
 $sCamposBuscaSolicita .= "case when  ";
@@ -124,10 +124,23 @@ if ($oSolicita->pc10_solicitacaotipo == 5) {
       "pc53_solicitafilho = {$oSolicita->pc10_numero}"
   );
   $rsDadosRegistroPreco = $oDaoSolicitaVinculo->sql_record($sSqlDadoRegistroPreco);
+  $preencherRegistroPreco = false;
   if ($oDaoSolicitaVinculo->numrows > 0) {
-
     $oDadosSolicitaRegistroPreco = db_utils::fieldsMemory($rsDadosRegistroPreco, 0);
-    $sTipoSolicitacao .= " - Nº {$oDadosSolicitaRegistroPreco->pc53_solicitapai} ";
+    $preencherRegistroPreco = true;
+    $sTipoSolicitacao .= " - Nº";
+
+
+
+    $sWhere = "pc10_numero in (select pc53_solicitapai ";
+    $sWhere .= "                         from solicitavinculo ";
+    $sWhere .= "                              inner join solicita on pc10_numero = pc53_solicitafilho ";
+    $sWhere .= "                        where pc53_solicitafilho = {$oDadosSolicitaRegistroPreco->pc53_solicitapai}";
+    $sWhere .= "                          and pc10_solicitacaotipo = 6)";
+
+    $oDaoSolicitaRegistroPreco = new cl_solicitaregistropreco();
+    $rsSolicitaRegistroPreco = $oDaoSolicitaRegistroPreco->sql_record($oDaoSolicitaRegistroPreco->sql_query(null, 'pc10_numero', null, $sWhere));
+    $solicitaRegistroPreco = db_utils::fieldsMemory($rsSolicitaRegistroPreco,0)->pc10_numero;
   }
 }
 
@@ -136,7 +149,7 @@ $fornecedorSugerido = '';
 
 $sSql = "
 	SELECT
-		z01_nome
+		z01_nome,z01_numcgm
 	FROM
 		pcsugforn
 	INNER JOIN cgm
@@ -149,6 +162,7 @@ $oPostgresResource = db_query($sSql);
 if (pg_num_rows($oPostgresResource) > 0) {
 	$rs = pg_fetch_assoc($oPostgresResource, 0);
 	$fornecedorSugerido = $rs['z01_nome'];
+    $cgmFornecedor = $rs['z01_numcgm'];
 }
 
 ?>
@@ -222,6 +236,11 @@ if (pg_num_rows($oPostgresResource) > 0) {
 				</td>
 				<td class="valores" align="left">
 					<?php echo $sTipoSolicitacao; ?>
+                    <?php if ($preencherRegistroPreco) { ?>
+                            <a href="#" class="DBAncora" onClick="js_consultaRegistroPreco(<?php echo $solicitaRegistroPreco?>)">
+                                <?php echo $oDadosSolicitaRegistroPreco->pc53_solicitapai ?>
+                            </a>
+                    <?php } ?>
 				</td>
 			</tr>
 
@@ -241,8 +260,10 @@ if (pg_num_rows($oPostgresResource) > 0) {
             <?php endif ?>
             <?php if (!empty($fornecedorSugerido)) { ?>
             <tr>
-                <td><b>Fornecedor Sugerido: </b></td>
-                <td class="valores" colspan="7"><?php echo $fornecedorSugerido;?></td>
+                <td><a href="#" class="DBAncora" onclick="js_consultaCgm(<?php echo $cgmFornecedor ?>)">Fornecedor Sugerido: </a></td>
+                    <td class="valores" colspan="7">
+                            <?php echo $fornecedorSugerido;?>
+                    </td>
             </tr>
             <?php } ?>
             <tr>
@@ -282,7 +303,7 @@ if (pg_num_rows($oPostgresResource) > 0) {
 	                     "com3_consultaitens001.php?solicitacao=4{$sGetUrl}");
 
 	  $oVerticalTab->add('dadosLicitacao', 'Licitação',
-	                     "com3_consultaitens001.php?solicitacao=7{$sGetUrl}");
+	                     "com3_consultalicitacoes001.php?pc10_numero={$oGet->pc10_numero}");
 
 	  $oVerticalTab->add('dadosAutorizacoesEmpenho', 'Autorizações de Empenho',
 	                     "com3_consultaitens001.php?solicitacao=5{$sGetUrl}");
@@ -356,4 +377,20 @@ function js_exibePendenciaIndividualmente(oAjax) {
 
   $('ctnrTextArea').value = oRetorno.aDados[0].pc91_pendencia;
 }
+
+function js_consultaRegistroPreco(registroPreco) {
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_consulta',
+        'com4_consabertregistro003.php?pc10_numero='+ registroPreco,
+        'Pesquisa',true);
+}
+
+
+function js_consultaCgm(cgm){
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_consultacgm',
+        'prot3_consultacgmnovo002.php?numcgm='+cgm,
+        'Pesquisa',true);
+}
+
+
+
 </script>

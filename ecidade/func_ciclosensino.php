@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clciclosensino->rotulo->label("mo14_ciclo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lmo14_sequencial?></label></td>
-          <td><? db_input("mo14_sequencial",10,$Imo14_sequencial,true,"text",4,"","chave_mo14_sequencial"); ?></td>
+          <td><?php db_input("mo14_sequencial",10,$Imo14_sequencial,true,"text",4,"","chave_mo14_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lmo14_ciclo?></label></td>
-          <td><? db_input("mo14_ciclo",10,$Imo14_ciclo,true,"text",4,"","chave_mo14_ciclo");?></td>
+          <td><?php db_input("mo14_ciclo",10,$Imo14_ciclo,true,"text",4,"","chave_mo14_ciclo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clciclosensino->rotulo->label("mo14_ciclo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_ciclosensino.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ciclosensino.php")==true){
@@ -78,12 +78,12 @@ $clciclosensino->rotulo->label("mo14_ciclo");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

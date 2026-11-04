@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrotulo->label("ed06_i_codigo");
 <table border="0" align="left">
  <tr>
   <td valign="top">
-   <?
+   <?php
    $sql = "SELECT ed95_i_codigo,ed47_v_nome
            FROM diario
             inner join aluno on ed47_i_codigo = ed95_i_aluno
@@ -50,7 +50,7 @@ $clrotulo->label("ed06_i_codigo");
    ?>
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" style="font-size:9px;width:330px;height:200px" multiple>
-    <?
+    <?php
     for($i=0;$i<$linhas;$i++) {
      db_fieldsmemory($result,$i);
      echo "<option value='$ed95_i_codigo'>$ed95_i_codigo - $ed47_v_nome</option>\n";

@@ -25,6 +25,9 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Tributario\ISSQN\Enums\Integracao\Infisc\IntegracaoInfiscStatusProcessamento;
+use App\Domain\Tributario\ISSQN\Enums\Integracao\Infisc\IntegracaoInfiscTipoDebito;
+
 class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
 {
 
@@ -197,7 +200,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
 
         $subsql = "select ";
 
-        $campos_sql = split("#", $campos);
+        $campos_sql = explode("#", $campos);
         $virgula = "";
 
         for($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -305,13 +308,20 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
                 $oDaoDiversos->dv05_obs = "Este débito refere-se às parcelas " . implode(", ", $parcelas) . ". ";
             }
 
-            $oDaoDiversos->dv05_obs .= pg_escape_string($this->sObservacoes);
+            $sObservacaoDebito = isset($stdDebitoOrigem->obs) ? $stdDebitoOrigem->obs : "";
+            $sObservacaoGeral = isset($this->sObservacoes) ? $this->sObservacoes : "";
+            $sDivisoria = $sObservacaoDebito != "" && $sObservacaoGeral != "" ? "-" : "";
+            $sObservacao = trim("{$sObservacaoDebito} {$sDivisoria} {$sObservacaoGeral}");
+
+            $oDaoDiversos->dv05_obs .= pg_escape_string($sObservacao);
             $oDaoDiversos->dv05_instit = db_getsession('DB_instit');
             $oDaoDiversos->incluir(null);
 
             if ($oDaoDiversos->erro_status == '0') {
                 throw new DBException($oDaoDiversos->erro_msg);
             }
+
+            $this->salvarIntegracaoInfiscSeNecessario($oDaoDiversos->dv05_coddiver, $stdDebitoOrigem->k00_tipo);
 
             $oDaoDiverImportaReg = new cl_diverimportareg();
             $oDaoDiverImportaReg->dv12_diversos = $oDaoDiversos->dv05_coddiver;
@@ -500,15 +510,15 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
     {
         $exercicio = substr($datasOperacao[0], 0, 4);
 
-        $sSqlTipo = "select arrecad.k00_tipo, 
-                            arretipo.k03_tipo 
+        $sSqlTipo = "select arrecad.k00_tipo,
+                            arretipo.k03_tipo
                        from arrecad inner join arretipo on arrecad.k00_tipo = arretipo.k00_tipo
                       where arrecad.k00_numpre = {$numpre} limit 1";
 
-        $rsTipo = db_query($sSqlTipo);              
+        $rsTipo = db_query($sSqlTipo);
         $oTipo = db_utils::fieldsMemory($rsTipo, 0);
         $iArretipo = $oTipo->k00_tipo;
-        $iCadtipo =  $oTipo->k03_tipo;                    
+        $iCadtipo =  $oTipo->k03_tipo;
 
         $daoIssvar = new cl_issvar();
         $sqlIss = $daoIssvar->sql_query(null, "min(q05_ano) as exercicio", null, "q05_numpre = $numpre");
@@ -544,23 +554,23 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
 
         if ($iCadtipo == 2 && $iArretipo != 13) {
             $daoIsscalc = new cl_isscalc();
-            $sqlIsscalc = $daoIsscalc->sql_query_file(null, 
-                                                      null, 
-                                                      null, 
-                                                      null, 
-                                                      null, 
-                                                      "min(q01_anousu) as exercicio", 
-                                                      null, 
+            $sqlIsscalc = $daoIsscalc->sql_query_file(null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      "min(q01_anousu) as exercicio",
+                                                      null,
                                                       "q01_numpre = $numpre");
             $rsIsscalc = db_query($sqlIsscalc);
-    
+
             if (empty($rsIsscalc)) {
                 throw new DBException("Erro ao buscar ano da competência do Cálculo do ISS");
             }
-    
+
             if (pg_num_rows($rsIsscalc) != 0) {
                 $diversosCalc = db_utils::fieldsMemory($rsIsscalc, 0);
-    
+
                 if (!empty($diversosCalc->exercicio)){
                     $exercicio = $diversosCalc->exercicio;
                 }
@@ -574,8 +584,8 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
                 $exercicio = $oIptu->exercicio;
             }
 
-            $sSqlIptu = "select j20_anousu as exercicio 
-                           from iptunump 
+            $sSqlIptu = "select j20_anousu as exercicio
+                           from iptunump
                           where j20_numpre = {$numpre} limit 1";
 
             $rsIptu = db_query($sSqlIptu);
@@ -586,7 +596,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
 
             $sSqlIptuTaxa = "select j08_anousu as exercicio
                                from iptutaxanump inner join iptucadtaxaexe
-                                 on iptutaxanump.j151_iptucadtaxaexe = iptucadtaxaexe.j08_iptucadtaxaexe 
+                                 on iptutaxanump.j151_iptucadtaxaexe = iptucadtaxaexe.j08_iptucadtaxaexe
                               where iptutaxanump.j151_numpre = {$numpre} limit 1;";
 
             $rsIptuTaxa = db_query($sSqlIptuTaxa);
@@ -608,9 +618,9 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
 
         } elseif ($iCadtipo == 19 && $iArretipo != 13) {
             $sSqlVistoria = "select distinct extract(year from vistorias.y70_data) as exercicio
-                               from arrecad inner join arretipo 
-                                 on arrecad.k00_tipo = arretipo.k00_tipo inner join vistorianumpre 
-                                 on arrecad.k00_numpre = vistorianumpre.y69_numpre inner join vistorias 
+                               from arrecad inner join arretipo
+                                 on arrecad.k00_tipo = arretipo.k00_tipo inner join vistorianumpre
+                                 on arrecad.k00_numpre = vistorianumpre.y69_numpre inner join vistorias
                                  on vistorianumpre.y69_codvist = vistorias.y70_codvist
                               where vistorianumpre.y69_numpre = {$numpre} limit 1;";
 
@@ -622,5 +632,25 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
         }
 
         return $exercicio;
+    }
+
+    /**
+     * @throws DBException
+     * @throws ReflectionException
+     */
+    private function salvarIntegracaoInfiscSeNecessario($codigoDiversos, $tipoDebito)
+    {
+        if (!IntegracaoInfiscTipoDebito::deveIntegrar(intval($tipoDebito))) {
+            return;
+        }
+
+        $dao_inscricao_debito_infisc_integra_debitos_mov = new cl_inscricao_debito_infisc_integra_debitos_mov();
+        $dao_inscricao_debito_infisc_integra_debitos_mov->q197_diversos = $codigoDiversos;
+        $dao_inscricao_debito_infisc_integra_debitos_mov->q197_status = IntegracaoInfiscStatusProcessamento::PENDENTE;
+        $dao_inscricao_debito_infisc_integra_debitos_mov->incluir();
+
+        if ($dao_inscricao_debito_infisc_integra_debitos_mov->erro_status === '0') {
+            throw new DBException("Não foi possível incluir o diversos para integração com a INFISC.");
+        }
     }
 }

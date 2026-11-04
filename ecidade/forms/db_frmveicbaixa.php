@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,22 +47,22 @@ if (!isset($ve04_hora)||@$ve04_hora==""){
        <?//=@$Lve04_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve04_codigo',10,$Ive04_codigo,true,'hidden',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve04_veiculo?>">
-       <?
+       <?php
        db_ancora(@$Lve04_veiculo,"js_pesquisave04_veiculo(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve04_veiculo',10,$Ive04_veiculo,true,'text',3," onchange='js_pesquisave04_veiculo(false);'")
 ?>
-       <?
+       <?php
 db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        ?>
     </td>
@@ -72,7 +72,7 @@ db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        <?=@$Lve04_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve04_data',@$ve04_data_dia,@$ve04_data_mes,@$ve04_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,22 +82,22 @@ db_inputdata('ve04_data',@$ve04_data_dia,@$ve04_data_mes,@$ve04_data_ano,true,'t
        <?=@$Lve04_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve04_hora',5,$Ive04_hora,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve04_veiccadtipobaixa?>">
-       <?
+       <?php
        db_ancora(@$Lve04_veiccadtipobaixa,"js_pesquisave04_veiccadtipobaixa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve04_veiccadtipobaixa',10,$Ive04_veiccadtipobaixa,true,'text',$db_opcao," onchange='js_pesquisave04_veiccadtipobaixa(false);'")
 ?>
-       <?
+       <?php
 db_input('ve12_descr',40,0,true,'text',3,'')
        ?>
     </td>
@@ -107,7 +107,7 @@ db_input('ve12_descr',40,0,true,'text',3,'')
        <?=@$Lve04_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ve04_motivo',0,50,$Ive04_motivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -188,22 +188,22 @@ function js_mostraveiculos1(chave1,chave2){
   db_iframe_veiculos.hide();
 }
 function js_pesquisa(){
-<?
+<?php
   if($db_opcao==22||$db_opcao==2){
 ?>
 	baixa="1";
-<?
+<?php
   }else{
 ?>
 	baixa="0";
-<?
+<?php
   }
 ?>
   js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_veiculos','func_veiculosalt.php?&baixa='+baixa+'&funcao_js=parent.js_preenchepesquisa|ve01_codigo','Pesquisa',true);
 }
 function js_preenchepesquisa(chave){
   db_iframe_veiculos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

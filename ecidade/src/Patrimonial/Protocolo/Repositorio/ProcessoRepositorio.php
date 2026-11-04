@@ -2,10 +2,6 @@
 
 namespace ECidade\Patrimonial\Protocolo\Repositorio;
 
-require_once(modification('dbforms/db_funcoes.php'));
-require_once(modification('libs/db_stdlib.php'));
-
-
 use db_utils;
 use DBException;
 use ECidade\Patrimonial\Protocolo\Modelo\Processo;
@@ -244,7 +240,8 @@ class ProcessoRepositorio
             return null;
         }
 
-        $sQuery = "SELECT * FROM  andpadrao WHERE  p53_codigo = {$iTipoCodigo}  AND  p53_coddepto = {$iDepartamento} order by p53_ordem asc";
+        $sQuery = "SELECT * FROM  andpadrao WHERE  p53_codigo = {$iTipoCodigo}  AND  ";
+        $sQuery .= "p53_coddepto = {$iDepartamento} order by p53_ordem asc";
 
         $rsAndamentoPadrao = db_query($sQuery);
 
@@ -347,7 +344,8 @@ class ProcessoRepositorio
         ");
 
         if (!$resBuscaUsuarios) {
-            throw new \DBException("Não foi possível consultar os usuarios com permissão de acesso ao menu e departamento.");
+            $sMsg = "Não foi possível consultar os usuarios com permissão de acesso ao menu e departamento.";
+            throw new \DBException($sMsg);
         }
         return \db_utils::getCollectionByRecord($resBuscaUsuarios);
     }

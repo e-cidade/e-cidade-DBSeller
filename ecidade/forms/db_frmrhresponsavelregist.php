@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,30 +69,30 @@ if (isset($db_opcaoal)) {
 	      <?=@$Lrh107_sequencial?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	        db_input('rh108_sequencial', 10, $Irh108_sequencial, true, 'hidden', 3);
 	        db_input('rh108_rhresponsavel', 10, $Irh108_rhresponsavel, true, 'text', 3);
 	      ?>
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3);
 	      ?> 
 	    </td>
 	  </tr>
     <tr>
 	    <td title="<?=@$Trh108_regist?>">
-	      <?
+	      <?php
 	        db_ancora('<b>Servidor:</b>', "js_pesquisarh108_regist(true);", $db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	        db_input('rh108_regist', 10, $Irh108_regist, true, 'text', $db_opcao, "onchange='js_pesquisarh108_regist(false);'");
 	      ?>
 	    </td>
 	    <td colspan="2">
-	      <?
+	      <?php
 	        db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, null, "z01_nome_servidor");
 	      ?>
 	    </td>
@@ -102,7 +102,7 @@ if (isset($db_opcaoal)) {
 	      <?=@$Lrh108_status?>
 	    </td>
 	    <td colspan="2"> 
-	      <?
+	      <?php
 	        $aStatus = array("s" => "Selecione",
 	                         "t" => "Ativo", 
 	                         "f" => "Inativo");             
@@ -135,7 +135,7 @@ if (isset($db_opcaoal)) {
 <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
       $sCamposRhresponsavelRegist  = "rh108_sequencial,rh108_regist,cgm.z01_nome,rh108_status"; 
       $sWhereRhresponsavelRegist   = "rh108_rhresponsavel = {$oGet->rh107_sequencial}";
       $sOrderByRhresponsavelRegist = "rh108_sequencial";

@@ -18,4 +18,12 @@ class ConplanoExercicio extends Model
     protected $table = 'contabilidade.conplanoexe';
     protected $primaryKey = 'c62_reduz';
     public $timestamps = false;
+
+    protected $fillable = [
+        "c62_anousu",
+        "c62_reduz",
+        "c62_codrec",
+        "c62_vlrcre",
+        "c62_vlrdeb"
+    ];
 }

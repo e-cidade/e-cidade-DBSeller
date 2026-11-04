@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,74 +25,32 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_cgs_und_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 
-$clcgs_und = new cl_cgs_und ( );
-$clrotulo = new rotulocampo ( );
-$clcgs_und->rotulo->label ();
+$clcgs_und = new cl_cgs_und();
+$clcgs_und->rotulo->label();
 
-db_postmemory ( $HTTP_POST_VARS );
 ?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript"
-	src="scripts/scripts.js"></script>
-<script>
-// action = "pro2_duploscgs_und002.php"
-function js_gerar(){
-  ok = 0;
-  for(i=0;i<document.form1.length;i++){
-    if(document.form1.elements[i].type == "checkbox"){
-      if(document.form1.elements[i].checked == true){
-	ok ++;
-      }
-    }
-  }
-  if(ok==0){
-    alert("ERRO: Uma das opções de filtro deve ser selecionada.");
-    return false;
-  }
-  jan = window.open('','rel','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
-  jan.moveTo(0,0);
-  document.form1.action="sau2_cgsduplos002.php?zerados="+document.form1.zerados.value;
-  document.form1.submit();
-}
-function js_changenome(x){
-  if(x==true || (document.form1.Cz01_v_nome.checked==false && x==false)){
-    document.form1.z01_v_nome.disabled=true;
-    document.form1.z01_v_nome.style.backgroundColor='#DEB887';
-  }else if(x==false){
-    if(document.form1.Cz01_v_nome.checked==true){
-      document.form1.z01_v_nome.value="";
-      document.form1.z01_v_nome.disabled=false;
-      document.form1.z01_v_nome.style.backgroundColor='';
-    }
-  }
-}
-</script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
+<?php
+db_app::load("scripts.js, strings.js, datagrid.widget.js, windowAux.widget.js,dbautocomplete.widget.js");
+db_app::load("dbmessageBoard.widget.js, prototype.js, dbtextField.widget.js, dbcomboBox.widget.js");
+db_app::load("estilos.css, grid.style.css");
+?>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0"
-	marginheight="0" bgcolor="#cccccc" onload="js_changenome(true);">
-<table width="790" border="0" cellpadding="0" cellspacing="0"
-	bgcolor="#5786B2">
-	<tr>
-		<td width="360" height="18">&nbsp;</td>
-		<td width="263">&nbsp;</td>
-		<td width="25">&nbsp;</td>
-		<td width="140">&nbsp;</td>
-	</tr>
-</table>
+	marginheight="0" bgcolor="#cccccc">
 <center>
-<form name="form1" method="post" target="rel">
+<form name="form1" method="post">
 
 <table border='0'>
 	<tr height="20px">
@@ -101,117 +59,82 @@ function js_changenome(x){
 	</tr>
 	<tr>
 		<td>
-		<fieldset><Legend><strong>FILTRAR DUPLOS POR:</strong></legend>
+		<fieldset><Legend><strong>CGSs Múltiplos</strong></legend>
 		<table>
 			<tr>
-				<td align="left" nowrap title="Filtrar por nomes "><input
-					type="checkbox" name="Cz01_v_nome" value="z01_v_nome"
-					onclick="js_changenome(false)"></td>
 				<td>
-				<table>
-					<tr>
-						<td align="left" nowrap title="<?=$Tz01_v_nome?>"><?
-						db_ancora ( @$Lz01_v_nome, "", 3 );
-						?></td>
-					</tr>
-					<tr>
-						<td>
-	  <?
-			db_input ( 'z01_v_nome', 40, $Iz01_v_nome, true, 'text', 1, "" )?>
-	</td>
-				
-				</table>
+					<label><b>Nome:</b></label>
 				</td>
-			</tr>
+				<td>
+	               <?php
+			            db_input ( 'z01_v_nome', 40, $Iz01_v_nome, true, 'text', 1	, "","","")
+				   ?>
+	            </td>	
+			</tr>	
+			
 			<tr>
-				<td align="left" nowrap title="Filtrar por endereços "><input
-					type="checkbox" name="z01_v_ender" value="z01_v_ender"></td>
-				<td align="left" nowrap title="<?=$Tz01_v_ender?>"><?
-				db_ancora ( @$Lz01_v_ender, "", 3 );
-				?></td>
-			</tr>
-			<tr>
-				<td align="left" nowrap title="Filtrar por números "><input
-					type="checkbox" name="z01_i_numero" value="z01_i_numero"></td>
-				<td align="left" nowrap title="<?=$Tz01_i_numero?>"><?
-				db_ancora ( @$Lz01_i_numero, "", 3 );
-				?></td>
-			</tr>
-			<tr>
-				<td align="left" nowrap title="Filtrar por complementos "><input
-					type="checkbox" name="z01_v_compl" value="z01_v_compl"></td>
-				<td align="left" nowrap title="<?=$Tz01_v_compl?>"><?
-				db_ancora ( @$Lz01_v_compl, "", 3 );
-				?></td>
-			</tr>
-			<tr>
-				<td align="left" nowrap title="Filtrar por bairros "><input
-					type="checkbox" name="z01_v_bairro" value="z01_v_bairro"></td>
-				<td nowrap title="<?=@$Tz01_v_bairro?>"><?
-				db_ancora ( @$Lz01_v_bairro, "", 3 );
-				?>
-    </td>
-			</tr>
-			<tr>
-				<td align="left" nowrap title="Filtrar por municípios "><input
-					type="checkbox" name="z01_v_munic" value="z01_v_munic"></td>
-				<td nowrap title="<?=@$Tz01_v_munic?>"><?
-				db_ancora ( @$Lz01_v_munic, "", 3 );
-				?>
-    </td>
-			</tr>
-			<tr>
-				<td align="left" nowrap title="Filtrar por CPF/CNPJ "><input
-					type="checkbox" name="z01_v_cgccpf" value="z01_v_cgccpf"></td>
-				<td nowrap title="<?=@$Tz01_v_cgccpf?>"><?
-				db_ancora ( @$Lz01_v_cgccpf, "", 3 );
-				?>
-    </td>
-			</tr>
-			<tr>
-			</tr>
+				<td>
+					<label><b>Nome da mãe:</b></label>
+				</td>
+				<td>
+	               <?php
+			            db_input ( 'z01_v_mae', 40, $Iz01_v_mae, true, 'text', 1, "" )
+					?>
+	            </td>	
+			</tr>	
 
-
-
-
+			<tr>
+				<td>
+					<label><b>Data de nascimento:</b></label>
+				</td>
+				<td>
+	                <?php
+				        db_inputdata('z01_d_nasc', '' , '', '', true, 'text', 1);
+				    ?>			            
+	            </td>	
+			</tr>	
+			
+			<tr height="40px">
+		        <td></td>
+		        <td></td>
+	        </tr>
 			<table>
 				<tr>
-					<td align="left" nowrap title="Sim/Não"><strong>Considerar
-					preenchidos totalmente com zero ou em branco:&nbsp;&nbsp;</strong>
-					</td>
 					<td>
-	  <?
-			$tipo_zerados = array ("n" => "Não", "s" => "Sim", "m" => "Somente os zerados/branco" );
-			db_select ( "zerados", $tipo_zerados, true, 2 );
-			?>
-        </td>
-				</tr>
-				<tr>
-					<td>* a regra acima é validada somente nos casos em que o campo
-					CNPJ/CPF estiver marcado;&nbsp;</td>
-					<td>&nbsp;</td>
+						<b>Para visualizar todos os CGSs múltiplos existentes no e-cidade apenas clique em "Imprimir"</b>
+					</td>					
 				</tr>
 			</table>
-
-
 
 		</table>
 		</fieldset>
 		</td>
 	</tr>
-	<tr height="20px">
-		<td></td>
-		<td></td>
-	</tr>
+	<br>
 	<tr>
-		<td colspan="2" align="center"><input name="relatorio" type="submit"
-			value="Gerar relatório" onclick="return js_gerar();"></td>
+		<td colspan="2" align="center">
+			<input name="relatorio" type="button"
+			   value="Imprimir" onclick="imprimir();">
+		</td>
 	</tr>
 </table>
 </form>
 </center>
-<?
-db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
+
+<script language="JavaScript" type="text/javascript">
+
+function imprimir(){
+  let url = "sau2_cgsduplos002.php?nome="+document.form1.z01_v_nome.value;
+  url += "&nome_mae="+document.form1.z01_v_mae.value;
+  url += "&nascimento="+document.form1.z01_d_nasc.value;
+
+  jan = window.open(url, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0');
+  jan.moveTo(0,0);
+}
+</script>
+
+<?php
+   db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 ?>
 </body>
 </html>

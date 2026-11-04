@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -30,7 +30,7 @@
 <table border="0">
   <tr>
     <td nowrap>
-      <?
+      <?php
       $result_ususel  = $clatendusucliitemid->sql_record($clatendusucliitemid->sql_query_innerusu(null,"id_usuario, nome","nome","at83_usucliitem = ".$at83_usucliitem." and usuarioativo = '1'"));
       $result_usunsel = $clatendusucliitemid->sql_record($clatendusucliitemid->sql_query_leftusu (null,"id_usuario, nome","nome","at83_usucliitem is null and usuext = 0 and usuarioativo = '1'"));
       db_multiploselect("id_usuario","nome", "usunsel", "ususel", $result_usunsel, $result_ususel, 15, 250, "Usuários não envolvidos", "Usuários envolvidos");

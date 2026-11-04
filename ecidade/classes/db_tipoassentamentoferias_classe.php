@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE tipoassentamentoferias
 class cl_tipoassentamentoferias { 
@@ -26,13 +26,13 @@ class cl_tipoassentamentoferias {
                  rh168_tipoassentamentoabono = int4 = Assentamento para Abono 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassentamentoferias() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassentamentoferias"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_tipoassentamentoferias {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh168_sequencial = ($this->rh168_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh168_sequencial"]:$this->rh168_sequencial);
        $this->rh168_tipoassentamentoferias = ($this->rh168_tipoassentamentoferias == ""?@$GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoferias"]:$this->rh168_tipoassentamentoferias);
@@ -51,7 +51,7 @@ class cl_tipoassentamentoferias {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh168_sequencial){ 
+   public function incluir ($rh168_sequencial){ 
       $this->atualizacampos();
      if($this->rh168_tipoassentamentoferias == null ){ 
        $this->rh168_tipoassentamentoferias = "0";

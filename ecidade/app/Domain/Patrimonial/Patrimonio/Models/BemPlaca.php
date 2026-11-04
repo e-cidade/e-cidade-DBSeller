@@ -20,5 +20,5 @@ class BemPlaca extends Model
     protected $primaryKey = 't41_codigo';
     public $timestamps = false;
 
-    public $casts = ['t41_data' => 'DateTime'];
+    public $casts = ['t41_data' => 'datetime'];
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -65,13 +65,13 @@ class cl_suspensao {
                  ar18_situacao = int4 = Situação
                  ";
    //funcao construtor da classe
-   function cl_suspensao() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("suspensao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_suspensao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ar18_sequencial = ($this->ar18_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar18_sequencial"]:$this->ar18_sequencial);
        $this->ar18_procjur = ($this->ar18_procjur == ""?@$GLOBALS["HTTP_POST_VARS"]["ar18_procjur"]:$this->ar18_procjur);
@@ -102,7 +102,7 @@ class cl_suspensao {
      }
    }
    // funcao para inclusao
-   function incluir ($ar18_sequencial){
+   public function incluir ($ar18_sequencial){
       $this->atualizacampos();
      if($this->ar18_procjur == null ){
        $this->erro_sql = " Campo Processo Jurídico nao Informado.";
@@ -261,7 +261,7 @@ class cl_suspensao {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ar18_sequencial=null) {
+   public function alterar ($ar18_sequencial=null) {
       $this->atualizacampos();
      $sql = " update suspensao set ";
      $virgula = "";
@@ -445,7 +445,7 @@ class cl_suspensao {
      }
    }
    // funcao para exclusao
-   function excluir ($ar18_sequencial=null,$dbwhere=null) {
+   public function excluir ($ar18_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ar18_sequencial));
      }else{
@@ -513,7 +513,7 @@ class cl_suspensao {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -536,10 +536,10 @@ class cl_suspensao {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_suspensao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,10 +574,10 @@ class cl_suspensao {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -598,7 +598,7 @@ class cl_suspensao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -608,10 +608,10 @@ class cl_suspensao {
      return $sql;
   }
 
-  function sql_query_deb ( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_deb ( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -634,7 +634,7 @@ class cl_suspensao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -644,10 +644,10 @@ class cl_suspensao {
      return $sql;
   }
 
-  function sql_query_proc( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_proc( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -675,7 +675,7 @@ class cl_suspensao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -685,10 +685,10 @@ class cl_suspensao {
      return $sql;
   }
 
-  function sql_query_susp( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_susp( $ar18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -713,7 +713,7 @@ class cl_suspensao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: tfd
@@ -75,13 +75,13 @@ class cl_tfd_fechamento {
                  tf32_i_financiamento = int4 = Financiamento
                  ";
    //funcao construtor da classe
-   function cl_tfd_fechamento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_fechamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -90,7 +90,7 @@ class cl_tfd_fechamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tf32_i_codigo = ($this->tf32_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["tf32_i_codigo"]:$this->tf32_i_codigo);
        $this->tf32_i_login = ($this->tf32_i_login == ""?@$GLOBALS["HTTP_POST_VARS"]["tf32_i_login"]:$this->tf32_i_login);
@@ -128,7 +128,7 @@ class cl_tfd_fechamento {
      }
    }
    // funcao para inclusao
-   function incluir ($tf32_i_codigo){
+   public function incluir ($tf32_i_codigo){
       $this->atualizacampos();
      if($this->tf32_i_login == null ){
        $this->erro_sql = " Campo Login nao Informado.";
@@ -311,7 +311,7 @@ class cl_tfd_fechamento {
      return true;
    }
    // funcao para alteracao
-   function alterar ($tf32_i_codigo=null) {
+   public function alterar ($tf32_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update tfd_fechamento set ";
      $virgula = "";
@@ -553,7 +553,7 @@ class cl_tfd_fechamento {
      }
    }
    // funcao para exclusao
-   function excluir ($tf32_i_codigo=null,$dbwhere=null) {
+   public function excluir ($tf32_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($tf32_i_codigo));
      }else{
@@ -623,7 +623,7 @@ class cl_tfd_fechamento {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -646,10 +646,10 @@ class cl_tfd_fechamento {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $tf32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $tf32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -672,7 +672,7 @@ class cl_tfd_fechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -682,10 +682,10 @@ class cl_tfd_fechamento {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $tf32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $tf32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -706,7 +706,7 @@ class cl_tfd_fechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -721,8 +721,8 @@ class cl_tfd_fechamento {
    * @param string $sWhere
    * @return string
    */
-  function sql_query_programas ($sWhere = null) {
-  
+  public function sql_query_programas ($sWhere = null) {
+
     $sSql  = " select ";
     $sSql .= "        distinct                                                                                         ";
     /* dados do medico */
@@ -738,7 +738,7 @@ class cl_tfd_fechamento {
     $sSql .= "          else cgmdoc.z02_i_cns                                                                          ";
     $sSql .= "        end                                   as cnsmedico,                                              ";
     $sSql .= "        rhcbo.rh70_estrutural                 as cbo,                                                    ";
-  
+
     /* dados atendimento */
     $sSql .= "        unidades.sd02_i_codigo                as unidade,                                                ";
     $sSql .= "        unidades.sd02_v_cnes                  as cnes_unidade,                                           ";
@@ -749,14 +749,14 @@ class cl_tfd_fechamento {
     $sSql .= "        ''                                    as faa,                                                    ";
     $sSql .= "        '01'::varchar                         as char_atendimento,                                       ";
     $sSql .= "        floor(tf03_f_distancia / tf24_i_percurso) as quantidade,                                         ";
-  
-  
+
+
     $sSql .= "        ( select array_to_string(array_accum( sau_registro.sd84_c_registro), ',')                        ";
     $sSql .= "            from sau_procregistro                                                                        ";
     $sSql .= "           inner join sau_registro  on sau_registro.sd84_i_codigo = sau_procregistro.sd85_i_registro     ";
     $sSql .= "           where sau_procregistro.sd85_i_procedimento = sau_procedimento.sd63_i_codigo) as tipo_registro,";
     /* dados do paciente */
-  
+
     $sSql .= "        cgs_und.z01_i_cgsund                  as codigo_paciente,           ";
     $sSql .= "        cgs_und.z01_v_nome                    as nome_paciente,             ";
     $sSql .= "        (select s115_c_cartaosus                                            ";
@@ -804,11 +804,11 @@ class cl_tfd_fechamento {
     $sSql .= "        inner join tfd_destino                on tf25_i_destino                       = tfd_destino.tf03_i_codigo                 ";
     $sSql .= "        inner join tfd_tipodistancia          on tfd_tipodistancia.tf24_i_codigo      = tfd_destino.tf03_i_tipodistancia          ";
     $sSql .= "  where tf01_i_situacao = 2                                                                                                       ";
-  
+
     if (!empty($sWhere)) {
       $sSql .= " and {$sWhere} " ;
     }
-  
+
     $sSql .= "  order by cnsmedico, cbo, procedimento, codigo_procedimento, idade_atendimento";
 
     return $sSql;

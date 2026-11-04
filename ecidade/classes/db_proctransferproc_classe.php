@@ -27,6 +27,9 @@
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE proctransferproc
+use App\Domain\Configuracao\Configuracao\Repositories\MenuPermissionRepository;
+use App\Domain\Configuracao\Usuario\Repository\UsuarioRepository;
+
 class cl_proctransferproc {
    // cria variaveis de erro
    var $rotulo     = null;
@@ -567,6 +570,24 @@ class cl_proctransferproc {
 
     public function sql_query_processos_por_transferencia($codigoTransferencia, $campos = '*')
     {
+
+        $idUser = db_getsession('DB_id_usuario');
+        $codDept = db_getsession('DB_coddepto');
+
+        $departamento = \DBDepartamentoRepository::getPorCodigo(db_getsession('DB_coddepto'));
+        $whereUsuario = " AND ( p62_id_usorec = {$idUser} OR p62_id_usorec = 0 )";
+
+        if ($departamento->getCodigoResponsavel() == $idUser
+            or
+            UsuarioRepository::hasPermission(
+                $idUser,
+                MenuPermissionRepository::PERMISSION_RECEBER_PROCESSOS_TERCEIROS
+            )
+        ) {
+            $whereUsuario = "";
+        }
+
+
         $sql = "select {$campos}
                     from proctransferproc
         inner join proctransfer on p63_codtran = p62_codtran
@@ -575,9 +596,8 @@ class cl_proctransferproc {
                  where p63_codtran = {$codigoTransferencia}
                      and p64_codtran is null
                      and p68_codproc is null
-                     and p62_coddeptorec   = " . db_getsession("DB_coddepto") . "
-                     and ( p62_id_usorec   = " . db_getsession("DB_id_usuario") . "
-                      or   p62_id_usorec   = 0 )";
+                     and p62_coddeptorec   = {$codDept}
+                     {$whereUsuario}";
         return $sql;
     }
 }

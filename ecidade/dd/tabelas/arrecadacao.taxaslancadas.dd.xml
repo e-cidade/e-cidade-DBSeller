@@ -231,6 +231,25 @@
            hassequence="f" > 
             
     </field> 
+        <field codigo="1015369" 
+           campo_api='' 
+           name="ar44_permitesubtaxas" 
+           conteudo="char(1)" 
+           description="Permite Subtaxas." 
+           inivalue="" 
+           label="Permite Subtaxas" 
+           size="1" 
+           null="f" 
+           uppercase="t" 
+           autocompl="f" 
+           aceitatipo="0" 
+           tipoobj="text" 
+           labelrel="Permite Subtaxas" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
     <field codigo="1011187" 
            campo_api='' 
            name="ar44_emissaoweb" 

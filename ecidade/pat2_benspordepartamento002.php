@@ -46,13 +46,13 @@ $oDaoDepartOrg = new cl_db_departorg();
 $iAnoUsoSessao = db_getsession("DB_anousu");
 $iInstituicaoSessao = db_getsession("DB_instit");
 $oGet = db_utils::postMemory($_GET);
+$oInstituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'));
 
 
 ini_set("memory_limit", "-1");
-
 $sWhereValor = '';
-
-//
+$rWhereValorDataAquisicao = '';
+$sWhereValorDataAquisicao = '';
 
 $sDataInicial = $oGet->dtInicial ? implode("-", array_reverse(explode("/", $oGet->dtInicial))) : '';
 $sDataFinal = $oGet->dtFinal ? implode("-", array_reverse(explode("/", $oGet->dtFinal))) : '';
@@ -75,7 +75,15 @@ if ($sDataInicial && $sDataFinal) {
     }
 }
 
-function getValores($sIdsBem, $sWhere, $sDataFinal)
+if ($oGet->lImprimeValorAtualAquisicao == 't') {
+    $rWhereValorDataAquisicao = "and bhc.t57_datacalculo <= '{$sDataFinal}'";
+    $sWhereValorDataAquisicao = "and bhcb2.t57_datacalculo <= '{$sDataFinal}'";
+} else {
+    $rWhereValorDataAquisicao = "";
+    $sWhereValorDataAquisicao = "";
+}
+
+function getValores($sIdsBem, $sWhere,$rWhereValorDataAquisicao, $sWhereValorDataAquisicao)
 {
     $date = new DateTime();
     $date->setTimestamp(db_getsession('DB_datausu'));
@@ -85,49 +93,53 @@ function getValores($sIdsBem, $sWhere, $sDataFinal)
     $sSqlValor = "
         SELECT
             t52_bem,
-            Round(sum(round(t52_valaqu, 2)), 2) as valor,
-            Round(Sum(
-            CASE WHEN
-                historicocalculobem.t58_bens IS NULL
-                THEN
-                    t52_valaqu
-                ELSE
-                    historicocalculobem.t58_valoratual
-            END
+            round(sum(round(t52_valaqu, 2)), 2) as valor,
+            round(sum(
+                CASE WHEN
+                    bhcb.t58_bens IS NULL THEN t52_valaqu
+                    ELSE bhcb.t58_valoratual
+                END
             ), 2) AS valor_atual
         FROM
             bens
         LEFT JOIN (
             SELECT
-                t58_sequencial,
-                t58_bens,
-                t58_valoratual
+                bhcb.t58_sequencial,
+                bhcb.t58_bens,
+                bhcb.t58_valoratual
             FROM
                 benshistoricocalculobem bhcb
-            INNER JOIN benshistoricocalculo bhc
-                ON bhcb.t58_benshistoricocalculo = bhc.t57_sequencial
-                    AND bhc.t57_datacalculo <= '{$sDataFinal}'
+            INNER JOIN benshistoricocalculo bhc ON bhcb.t58_benshistoricocalculo = bhc.t57_sequencial
+                    {$rWhereValorDataAquisicao}
                     AND bhc.t57_processado is true
                     AND bhc.t57_ativo is true
-            ) historicocalculobem ON historicocalculobem.t58_bens = t52_bem
-                AND t58_sequencial in (
+            ) bhcb ON bhcb.t58_bens = t52_bem
+                AND t58_sequencial = (
                     SELECT
-                        t58_sequencial seq_bhc
+                        max(bhcb1.t58_sequencial)
                     FROM
                         benshistoricocalculobem bhcb1
-                    INNER JOIN benshistoricocalculo bhcb2
-                        ON bhcb1.t58_benshistoricocalculo = bhcb2.t57_sequencial
+                    INNER JOIN benshistoricocalculo bhcb2 ON bhcb1.t58_benshistoricocalculo = bhcb2.t57_sequencial
                     WHERE
-                        bhcb1.t58_bens = historicocalculobem.t58_bens
-                        AND historicocalculobem.t58_bens IN ({$sIdsBem})
+                        bhcb1.t58_bens = bhcb.t58_bens
+                        AND bhcb.t58_bens IN ({$sIdsBem})
                         AND bhcb2.t57_processado is true
                         AND bhcb2.t57_ativo is true
-                        AND bhcb2.t57_datacalculo <= '{$sDataFinal}'
-                    ORDER BY
-                        bhcb2.t57_datacalculo desc limit 1
+                        {$sWhereValorDataAquisicao}
+                        AND bhcb2.t57_ano = (
+                            select
+                                max(bhc_inner.t57_ano)
+                            from
+                                benshistoricocalculo bhc_inner
+                            inner join benshistoricocalculobem bhcb_inner on
+                                bhc_inner.t57_sequencial = bhcb_inner.t58_benshistoricocalculo
+                            where
+                                bhcb_inner.t58_bens = bhcb1.t58_bens
+                                and bhc_inner.t57_processado is true
+                                and bhc_inner.t57_ativo is true
+                        )
                 )
-            LEFT JOIN bensbaix
-                ON t55_codbem = t52_bem
+            LEFT JOIN bensbaix ON t55_codbem = t52_bem
         WHERE
             t52_instit = " . db_getsession("DB_instit") . "
             AND {$sWhereValor}
@@ -141,7 +153,6 @@ function getValores($sIdsBem, $sWhere, $sDataFinal)
         yield $row;
     }
 }
-
 
 /**
  * Variavel que armazena todos os filtros utilizados pelo usuário
@@ -169,13 +180,13 @@ if ($oGet->lImprimeValorAquisicao == "t" && $oGet->filtroColunas == "1") {
 if (trim($oGet->sDepartamentos) != "") {
     $sWhereDivisao .= "and db_depart.instit = {$iInstituicaoSessao}";
 
-   // $aWhereParametros[] = "t30_depto in({$oGet->sDepartamentos})";
-
     if (trim($oGet->sDivisoes) != "") {
-        $aWhereParametros[] = "t33_divisao in ({$oGet->sDivisoes})";
-
         if ($oGet->lUsarDivisao) {
+            $aWhereParametros[] = "t33_divisao in ({$oGet->sDivisoes})";
             $sWhereDivisao .= " and t30_codigo in ({$oGet->sDivisoes})";
+        } else {
+            $aWhereParametros[] = "(t33_divisao not in ({$oGet->sDivisoes}) or t33_divisao is null)";
+            $sWhereDivisao .= " and t30_codigo not in ({$oGet->sDivisoes})";
         }
     }
     $sWhereDepartamentos = "coddepto in ({$oGet->sDepartamentos}) $sWhereDivisao";
@@ -336,6 +347,14 @@ switch ($oGet->iConvenio) {
     case "3":
         $aWhereParametros[] = "t04_sequencial is null";
         break;
+}
+
+/**
+ * Configura Substuição de aquisição
+ */
+$substituirAquisicao = "";
+if (!empty($oGet->substituirAquisicao)) {
+    $substituirAquisicao = $oGet->substituirAquisicao;
 }
 
 /**
@@ -522,6 +541,7 @@ if ($lTodosDepartamentos) {
 /**
  * Executa a query que busca os bens que serão impressos no relatório
  */
+// die($sSqlBens);
 $rsBuscaBens = db_query($sSqlBens);
 $iLinhasBuscaBens = pg_num_rows($rsBuscaBens);
 if ($iLinhasBuscaBens == 0) {
@@ -537,7 +557,7 @@ while ($row = pg_fetch_assoc($rsBuscaBens)) {
 }
 
 $arrayValores = array();
-foreach (getValores($sIdsBem, $sWhereValor, $sDataFinal) as $bem) {
+foreach (getValores($sIdsBem, $sWhereValor, $rWhereValorDataAquisicao, $sWhereValorDataAquisicao) as $bem) {
     $arrayValores[$bem['t52_bem']]['valor'] = $bem['valor'];
     $arrayValores[$bem['t52_bem']]['valor_atual'] = $bem['valor_atual'];
 }
@@ -564,8 +584,10 @@ $aDepartamentos = array();
  */
 for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
     $oBem = db_utils::fieldsMemory($rsBuscaBens, $iRow);
-    $bemModel = new Bem($oBem->t52_bem);
 
+    $bemModel = new Bem($oBem->t52_bem);
+    $cgm = new CgmFisico($oBem->t30_numcgm);
+    $responsavelDivisao = $cgm->getNome();
     $valorAtual = $arrayValores[$oBem->t52_bem]['valor_atual'];
 
     /**
@@ -605,6 +627,10 @@ for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
     $sClassificacao = $oBem->t64_class;
     $sClassificacaoDescricao = $oBem->t64_descr;
 
+    $iEstrutural = $oBem->c60_codcon;
+    $sEstrutural = $oBem->c60_estrut;
+    $sEstruturalDescricao = $oBem->c60_descr;
+
     $before = memory_get_usage();
     $oStdBem = new stdClass();
     $oStdBem->t52_depart = $oBem->t52_depart;
@@ -628,7 +654,12 @@ for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
     $oStdBem->t52_ident = $oBem->t52_ident;
     $oStdBem->t44_benstipodepreciacao = $oBem->t44_benstipodepreciacao;
 
-    $oStdBem->valorDepreciavel = $valorUltimaAvaliacao - $bemModel->getValorResidual();
+    // VALOR DEPRECIÁVEL
+    if ($valorUltimaAvaliacao == 0) {
+        $oStdBem->valorDepreciavel = $valorUltimaAvaliacao;
+    } else {
+        $oStdBem->valorDepreciavel = $valorUltimaAvaliacao - $bemModel->getValorResidual();
+    }
 
     $oStdBem->valor_ultimaavaliacao = $valorUltimaAvaliacao;
 
@@ -653,14 +684,20 @@ for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
         $oDepartamento->aDivisao = array();
         $oDepartamento->aDivisao[$iCodigoDivisao] = new stdClass();
         $oDepartamento->aDivisao[$iCodigoDivisao]->iCodigoDivisao = $iCodigoDivisao;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->responsavelDivisao = $responsavelDivisao;
         $oDepartamento->aDivisao[$iCodigoDivisao]->sDescricaoDivisao = $sDescricaoDivisao;
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao = array();
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao] = new stdClass();
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens = array();
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural = array();
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural] = new stdClass();
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->iCodigoEstrutural = $iEstrutural;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->sEstrutural = $sEstrutural;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->sDescricaoEstrutural = $sEstruturalDescricao;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao = array();
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao] = new stdClass();
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->aBens = array();
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
 
         /*
          * Adicionamos o objeto dentro do array de departamentos.
@@ -676,25 +713,34 @@ for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
              */
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao] = new stdClass();
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->iCodigoDivisao = $iCodigoDivisao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->responsavelDivisao = $responsavelDivisao;
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->sDescricaoDivisao = $sDescricaoDivisao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao = array();
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao] = new stdClass();
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens = array();
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural = array();
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural] = new stdClass();
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->iCodigoEstrutural = $iEstrutural;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->sEstrutural = $sEstrutural;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->sDescricaoEstrutural = $sEstruturalDescricao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao = array();
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao] = new stdClass();
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->aBens = array();
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
         } else {
-            if (!isset($aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao])) {
-                $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao] = new stdClass();
+            if (!isset($aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao])) {
+                $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao] = new stdClass();
             }
             /*
              * Caso a divisão já exista, apenas adicionamos uma nova posição no array aClassificacao com o bem em questão
              */
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->iCodigoEstrutural = $iEstrutural;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->sEstrutural = $sEstrutural;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->sDescricaoEstrutural = $sEstruturalDescricao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aEstrutural[$iEstrutural]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
         }
     }
 }
@@ -760,6 +806,7 @@ $oTotal->nValorAtual = 0;
 $oTotal->nValorDepreciavel = 0;
 $oTotal->nValorReavaliado = 0;
 $oTotal->nSaldoDepreciavel = 0;
+$itotalRegistros = 0;
 
 foreach ($aDepartamentos as $iIndiceDepartamento => $oDepartamento) {
     /**
@@ -776,7 +823,8 @@ foreach ($aDepartamentos as $iIndiceDepartamento => $oDepartamento) {
           $oGet->lCaracteristicaAdicional,
           $oDepartamento->iCodigoDepartamento,
           $aOrgaosUnidade,
-          $flagColunasVisiveis
+          $flagColunasVisiveis,
+          $substituirAquisicao
         );
         $lPrimeiroLaco = false;
     }
@@ -794,150 +842,245 @@ foreach ($aDepartamentos as $iIndiceDepartamento => $oDepartamento) {
         $oTotalDivisao->nSaldoDepreciavel = 0;
 
         $oPdf->SetFont("arial", "b", 8);
-        $oPdf->Cell($iTamanhoWidth, $iHeigth, "Divisão: {$oDivisao->iCodigoDivisao} - {$oDivisao->sDescricaoDivisao}",
+        $oPdf->Cell($iTamanhoWidth, $iHeigth, "Divisão: {$oDivisao->iCodigoDivisao} - {$oDivisao->sDescricaoDivisao} (Responsável: {$oDivisao->responsavelDivisao})",
           "T", 1);
         $iTotalBemNaClassificacao = 0;
-        foreach ($oDivisao->aClassificacao as $iIndiceClassificacao => $oClassificacao) {
-            $iTotaBemPorClassificacao = 0;
-            $oPdf->SetFont("arial", "b", 6);
+        foreach ($oDivisao->aEstrutural as $iIndiceEstrutural => $oEstrutural) {
+            $oPdf->SetFont("arial", "b", 7);
             $oPdf->Cell($iTamanhoWidth, 4,
-              "Classificação: {$oClassificacao->sClassificacao} - {$oClassificacao->sDescricaoClassificacao}", "T", 1);
+                "Estrutural: {$oEstrutural->sEstrutural} - {$oEstrutural->sDescricaoEstrutural}", "T", 1);
 
-            /**
-             * Imprimimos os bens da classificação
-             */
-            foreach ($oClassificacao->aBens as $iIndiceBem => $oBem) {
-                $valorAtual = $arrayValores[$oBem->t52_bem]['valor_atual'];
-
-                /**
-                 * Configuramos variáveis
-                 */
-                $dtAquisicaoBem = implode("/", array_reverse(explode("-", $oBem->t52_dtaqu)));
-                $dtInclusaoBem = implode('/', array_reverse(explode("-", $oBem->t52_dtinclusao)));
-
-                $sPlacaConfigurada = str_pad($oBem->t52_ident, 7, "0", STR_PAD_LEFT);
-
-                $oPdf->SetFont("arial", "", 6);
-                $oPdf->cell($iWCodigoSemValor, $iHeigth, $oBem->t52_bem, 0, 0, "C");
-                $oPdf->cell($iWPlacaSemValor, $iHeigth, $sPlacaConfigurada, 0, 0, "C");
-                $oPdf->cell($iWDescricaoSemValor, $iHeigth, $oBem->t52_descr, 0, 0, "L");
-                if($tipoData == "1"){
-                    $oPdf->cell($iWAquisicaoSemValor, $iHeigth, $dtAquisicaoBem, 0, 0, "C");
-                } else {
-                    $oPdf->cell($iWAquisicaoSemValor, $iHeigth, $dtInclusaoBem, 0, 0, "C");
-                }
+            foreach ($oEstrutural->aClassificacao as $iIndiceClassificacao => $oClassificacao) {
+                $iTotaBemPorClassificacao = 0;
+                $oPdf->SetFont("arial", "b", 6);
+                $oPdf->Cell($iTamanhoWidth, 4,
+                    "Classificação: {$oClassificacao->sClassificacao} - {$oClassificacao->sDescricaoClassificacao}", "T", 1);
 
                 /**
-                 * Caso o usuário tenha solicitado a impressão dos valores, os mesmos serão
-                 * impressos neste bloco
+                 * Imprimimos os bens da classificação
                  */
-                if ($oGet->lImprimeValorAquisicao) {
-                    $oDaoBensHistoricoCalculoBem = new cl_benshistoricocalculobem();
-                    $sSqlBuscaHistoricoCalculoBem = $oDaoBensHistoricoCalculoBem->sql_query_calculo(null,
-                      "t58_valoranterior",
-                      "t58_sequencial asc limit 1",
-                      "    t58_bens = {$oBem->t52_bem}
+                foreach ($oClassificacao->aBens as $iIndiceBem => $oBem) {
+                    $valorAtual = $arrayValores[$oBem->t52_bem]['valor_atual'];
+
+                    /**
+                     * Configuramos variáveis
+                     */
+                    $dtAquisicaoBem = implode("/", array_reverse(explode("-", $oBem->t52_dtaqu)));
+                    $dtInclusaoBem = implode('/', array_reverse(explode("-", $oBem->t52_dtinclusao)));
+
+                    $sPlacaConfigurada = str_pad($oBem->t52_ident, 7, "0", STR_PAD_LEFT);
+
+                    $oPdf->SetFont("arial", "", 6);
+                    $oPdf->cell($iWCodigoSemValor, $iHeigth, $oBem->t52_bem, 0, 0, "C");
+                    $oPdf->cell($iWPlacaSemValor, $iHeigth, $sPlacaConfigurada, 0, 0, "C");
+                    $oPdf->cell($iWDescricaoSemValor, $iHeigth, $oBem->t52_descr, 0, 0, "L");
+                    if ($tipoData == "1") {
+                        $oPdf->cell($iWAquisicaoSemValor, $iHeigth, $dtAquisicaoBem, 0, 0, "C");
+                    } else {
+                        $oPdf->cell($iWAquisicaoSemValor, $iHeigth, $dtInclusaoBem, 0, 0, "C");
+                    }
+
+                    /**
+                     * Caso o usuário tenha solicitado a impressão dos valores, os mesmos serão
+                     * impressos neste bloco
+                     */
+                    if ($oGet->lImprimeValorAquisicao) {
+                        $oDaoBensHistoricoCalculoBem = new cl_benshistoricocalculobem();
+                        $sSqlBuscaHistoricoCalculoBem = $oDaoBensHistoricoCalculoBem->sql_query_calculo(null,
+                            "t58_valoranterior",
+                            "t58_sequencial asc limit 1",
+                            "    t58_bens = {$oBem->t52_bem}
                                                                                            and t58_benstipodepreciacao <> 6");
-                    $rsValorAnterior = db_query($sSqlBuscaHistoricoCalculoBem);
-                    $nValorAnterior = $oBem->t52_valaqu;
+                        $rsValorAnterior = db_query($sSqlBuscaHistoricoCalculoBem);
+                        $nValorAnterior = $oBem->t52_valaqu;
 
-                    if ($nValorAnterior == 0) {
-                        $nValorAnterior = $valorAtual;
-                    }
+                        if ($nValorAnterior == 0) {
+                            $nValorAnterior = $valorAtual;
+                        }
 
-                    if (pg_num_rows($rsValorAnterior) == 1) {
-                        $nValorAnterior = db_utils::fieldsMemory($rsValorAnterior, 0)->t58_valoranterior;
-                    }
+                        if (pg_num_rows($rsValorAnterior) == 1) {
+                            $nValorAnterior = db_utils::fieldsMemory($rsValorAnterior, 0)->t58_valoranterior;
+                        }
 
-                    $nValorDepreciado = $nValorAnterior - $valorAtual;
-                    if ($oBem->t44_benstipodepreciacao == 4 || pg_num_rows($rsValorAnterior) == 0) {
-                        $nValorDepreciado = 0;
-                    }
+                        $nValorDepreciado = $nValorAnterior - $valorAtual;
+                        if ($oBem->t44_benstipodepreciacao == 4 || pg_num_rows($rsValorAnterior) == 0) {
+                            $nValorDepreciado = 0;
+                        }
 
-                    $valorReavaliado = 0;
-                    $valorDepreciado = $oBem->t52_valaqu - $valorAtual;
-                    $valorAtual = $valorAtual;
-                    $valorAux = $oBem->t52_valaqu;
+                        $valorReavaliado = 0;
+                        $ultimaAvaliacao = 0;
 
-                    if ($valorAtual == ($oBem->t52_valaqu + $oBem->t44_valorresidual) && $valorDepreciado < 0) {
-                        $valorDepreciado = 0;
-                    }
+                        $valorDepreciado = $oBem->t52_valaqu - $valorAtual;
 
-                    if (isset($bensReavaliados[$oBem->t52_bem])) {
-                        $valorReavaliado = $oBem->valor_ultimaavaliacao;
-                        $valorDepreciado = $valorReavaliado - $oBem->valoratual;
+                        if (
+                            $oInstituicao->getMunicipio() === "CAPIVARI DO SUL" &&
+                            $oInstituicao->getDescricao() === 'CAMARA MUNICIPAL DE VEREADORES'
+                        ) {
+                            if ($valorDepreciado <= 0) {
+                                $valorDepreciado = 0;
+                            }
+                        }
 
-                        if ($valorDepreciado == $oBem->t44_valorresidual) {
+                        $valorAtual = $valorAtual;
+                        $valorAux = $oBem->t52_valaqu;
+
+                        if ($valorAtual == ($oBem->t52_valaqu + $oBem->t44_valorresidual) && $valorDepreciado < 0) {
                             $valorDepreciado = 0;
                         }
 
-                        $valorAux = $valorReavaliado > $oBem->t52_valaqu ? $valorReavaliado : $oBem->t52_valaqu;
+                        if (isset($bensReavaliados[$oBem->t52_bem])) {
+
+                            $sSql ="select
+                                        sum(t58_valorcalculado) as soma
+                                    from
+                                        benshistoricocalculobem
+                                    inner join benshistoricocalculo on
+                                        benshistoricocalculo.t57_sequencial = benshistoricocalculobem.t58_benshistoricocalculo
+                                    inner join bensdepreciacao on
+                                        bensdepreciacao.t44_bens = benshistoricocalculobem.t58_bens
+                                    where
+                                        t58_bens = {$oBem->t52_bem}
+                                        and benshistoricocalculo.t57_datacalculo >= (
+                                        select
+                                            max(benshistoricocalculo.t57_datacalculo)
+                                        from
+                                            benshistoricocalculobem
+                                        join benshistoricocalculo on
+                                            benshistoricocalculo.t57_sequencial = benshistoricocalculobem.t58_benshistoricocalculo
+                                        where
+                                            t58_bens = {$oBem->t52_bem}
+                                            and benshistoricocalculobem.t58_benstipodepreciacao = 6)
+                                        and t58_bens = {$oBem->t52_bem}
+                                        and t57_processado is true;
+                                    ";
+                            $rsSoma = db_query($sSql);
+                            $sSoma = db_utils::fieldsMemory($rsSoma, 0)->soma;
+                            if ($sSoma < 0) {
+                            $valorDepreciado = 0;
+                            } else{
+                                $valorDepreciado = $sSoma;
+                            }
+                            $valorReavaliado = $oBem->valor_ultimaavaliacao;
+                            if ($valorDepreciado == $oBem->t44_valorresidual) {
+                                $valorDepreciado = 0;
+                            }
+
+                            $valorAux = $valorReavaliado > $oBem->t52_valaqu ? $valorReavaliado : $oBem->t52_valaqu;
+                        }
+
+                        /*
+                        * Necessário buscar direto, pois o calculo de Capivari antes de migrarem é diferente da DBseller, até 31/12/2024.
+                        */
+                        if (isCapivari() && $iInstituicaoSessao == 2) {
+                            $sSql = "select
+                                        t58_valoratual
+                                    from
+                                        benshistoricocalculobem
+                                        inner join benshistoricocalculo on t57_sequencial = t58_benshistoricocalculo
+                                    where
+                                    t58_bens = {$oBem->t52_bem}
+                                    and t57_ativo is true
+                                    and t57_processado is true
+                                    order by
+                                        t57_ano desc,
+                                        t57_mes desc
+                                    limit 1";
+
+                            $rsAux = db_query($sSql);
+                            if ($rsAux && pg_num_rows($rsAux) > 0) {
+                                $valorAux = db_utils::fieldsMemory($rsAux, 0);
+
+                                // Porém, a partir de 2024, o calculo de Capivari será igual o da Dbseller.
+                                if ($valorAux->t57_ano <= 2023) {
+                                    $valorAtual = $valorAux->t58_valoratual;
+                                }
+                            }
+
+                        } elseif ($valorAtual > $valorAux){
+                            /*
+                            * Necessário por causa de um bug ao desprocessar um bem reavalido
+                            */
+                            $valorAtual = $valorAux;
+                        }
+
+                        $saldoDepreciavel = $valorAtual - $oBem->t44_valorresidual;
+
+                        if ($oGet->substituirAquisicao === '2') {
+                            $ultimaAvaliacao = $valorReavaliado;
+
+                            if ($valorReavaliado == 0) {
+                                $ultimaAvaliacao = $oBem->t52_valaqu;
+                            }
+                                $oPdf->cell(17, $iHeigth, db_formatar($ultimaAvaliacao, "f"), 0, 0, "R");
+                        } else {
+                            $oPdf->cell(17, $iHeigth, db_formatar($oBem->t52_valaqu, "f"), 0, 0, "R");
+                        }
+
+                        $oPdf->cell(24, $iHeigth, db_formatar($valorReavaliado, "f"), 0, 0, "C");
+                        $oPdf->cell(22, $iHeigth, db_formatar($oBem->t44_valorresidual, "f"), 0, 0, "C");
+                        $oPdf->cell(24, $iHeigth, db_formatar($valorDepreciado, "f"), 0, 0, "C");
+                        $oPdf->cell(20, $iHeigth, db_formatar($valorAtual, "f"), 0, 0, "C");
+                        $oPdf->cell(24, $iHeigth, db_formatar($oBem->valorDepreciavel, "f"), 0, 0, "C");
+                        $oPdf->cell(24, $iHeigth, db_formatar($saldoDepreciavel, "f"), 0, $lineBreak, "C");
+
+                        if ($oGet->substituirAquisicao === '2') {
+                            $oTotal->nValorAquisicao += $ultimaAvaliacao;
+                        } else {
+                            $oTotal->nValorAquisicao += $oBem->t52_valaqu;
+                        }
+                        $oTotal->nValorReavaliado += $valorReavaliado;
+                        $oTotal->nValorResidual += $oBem->t44_valorresidual;
+                        $oTotal->nValorDepreciado += $valorDepreciado;
+                        $oTotal->nValorAtual += $valorAtual;
+                        $oTotal->nValorDepreciavel += $oBem->valorDepreciavel;
+                        $oTotal->nSaldoDepreciavel += $saldoDepreciavel;
+
+                        if ($oGet->substituirAquisicao === '2') {
+                            $oTotalDivisao->nValorAquisicao += $ultimaAvaliacao;
+                        } else {
+                            $oTotalDivisao->nValorAquisicao += $oBem->t52_valaqu;
+                        }
+                        $oTotalDivisao->nValorReavaliado += $valorReavaliado;
+                        $oTotalDivisao->nValorResidual += $oBem->t44_valorresidual;
+                        $oTotalDivisao->nValorDepreciado += $valorDepreciado;
+                        $oTotalDivisao->nValorAtual += $valorAtual;
+                        $oTotalDivisao->nValorDepreciavel += $oBem->valorDepreciavel;
+                        $oTotalDivisao->nSaldoDepreciavel += $saldoDepreciavel;
                     }
 
-                    /*
-                     * Necessário por causa de um bug ao desprocessar um bem reavalido
+                    if ($flagColunasVisiveis) {
+                        $oPdf->cell($iWEstadoSemValor, $iHeigth, $oBem->estadobem, 0, 0, "C");
+                        $oPdf->cell($iWEstadoSemValor, $iHeigth, $oBem->situacaobem, 0, 1, "C");
+                    }
+
+                    if ($oGet->lCaracteristicaAdicional) {
+                        $oPdf->MultiCell($iTamanhoWidth, $iHeigth, $oBem->t52_obs, 1, "L", true);
+                    }
+
+                    /**
+                     * Verifica se precisa adicionar uma nova página para imprimir os bens
                      */
-                    if ($valorAtual > $valorAux) {
-                        $valorAtual = $valorAux;
+                    if ($oPdf->gety() > $oPdf->h - 30) {
+                        setHeader(
+                            $oPdf,
+                            $iHeigth,
+                            $oGet->lImprimeValorAquisicao,
+                            $oGet->lCaracteristicaAdicional,
+                            $oBem->t52_depart,
+                            $aOrgaosUnidade,
+                            $flagColunasVisiveis,
+                            $substituirAquisicao
+                        );
                     }
 
-                    $saldoDepreciavel = $valorAtual - $oBem->t44_valorresidual;
-
-                    $oPdf->cell(17, $iHeigth, db_formatar($oBem->t52_valaqu, "f"), 0, 0, "R");
-                    $oPdf->cell(24, $iHeigth, db_formatar($valorReavaliado, "f"), 0, 0, "C");
-                    $oPdf->cell(22, $iHeigth, db_formatar($oBem->t44_valorresidual, "f"), 0, 0, "C");
-                    $oPdf->cell(24, $iHeigth, db_formatar($valorDepreciado, "f"), 0, 0, "C");
-                    $oPdf->cell(20, $iHeigth, db_formatar($valorAtual, "f"), 0, 0, "C");
-                    $oPdf->cell(24, $iHeigth, db_formatar($oBem->valorDepreciavel, "f"), 0, 0, "C");
-                    $oPdf->cell(24, $iHeigth, db_formatar($saldoDepreciavel, "f"), 0, $lineBreak, "C");
-
-                    $oTotal->nValorAquisicao += $oBem->t52_valaqu;
-                    $oTotal->nValorReavaliado += $valorReavaliado;
-                    $oTotal->nValorResidual += $oBem->t44_valorresidual;
-                    $oTotal->nValorDepreciado += $valorDepreciado;
-                    $oTotal->nValorAtual += $arrayValores[$oBem->t52_bem]['valor_atual'];
-                    $oTotal->nValorDepreciavel += $oBem->valorDepreciavel;
-                    $oTotal->nSaldoDepreciavel += $saldoDepreciavel;
-
-                    $oTotalDivisao->nValorAquisicao += $oBem->t52_valaqu;
-                    $oTotalDivisao->nValorReavaliado += $valorReavaliado;
-                    $oTotalDivisao->nValorResidual += $oBem->t44_valorresidual;
-                    $oTotalDivisao->nValorDepreciado += $valorDepreciado;
-                    $oTotalDivisao->nValorAtual += $arrayValores[$oBem->t52_bem]['valor_atual'];
-                    $oTotalDivisao->nValorDepreciavel += $oBem->valorDepreciavel;
-                    $oTotalDivisao->nSaldoDepreciavel += $saldoDepreciavel;
+                    $iTotalBemNaClassificacao++;
+                    $iTotaBemPorClassificacao++;
+                    $iTotaBemPorDivisao++;
+                    $itotalRegistros++;
                 }
-
-                if ($flagColunasVisiveis) {
-                    $oPdf->cell($iWEstadoSemValor, $iHeigth, $oBem->estadobem, 0, 0, "C");
-                    $oPdf->cell($iWEstadoSemValor, $iHeigth, $oBem->situacaobem, 0, 1, "C");
-                }
-
-                if ($oGet->lCaracteristicaAdicional) {
-                    $oPdf->cell($iTamanhoWidth, $iHeigth, $oBem->t52_obs, 1, 1, "L", 1);
-                }
-
-                /**
-                 * Verifica se precisa adicionar uma nova página para imprimir os bens
-                 */
-                if ($oPdf->gety() > $oPdf->h - 30) {
-                    setHeader(
-                      $oPdf,
-                      $iHeigth,
-                      $oGet->lImprimeValorAquisicao,
-                      $oGet->lCaracteristicaAdicional,
-                      $oBem->t52_depart,
-                      $aOrgaosUnidade,
-                      $flagColunasVisiveis
-                    );
-                }
-
-                $iTotalBemNaClassificacao++;
-                $iTotaBemPorClassificacao++;
-                $iTotaBemPorDivisao++;
+                $oPdf->SetFont("arial", "b", 6);
+                $oPdf->Cell($iTamanhoWidth, 4, "Total da Classificação: {$iTotaBemPorClassificacao}", "T", 1);
             }
-            $oPdf->SetFont("arial", "b", 6);
-            $oPdf->Cell($iTamanhoWidth, 4, "Total da Classificação: {$iTotaBemPorClassificacao}", "T", 1);
         }
         $oPdf->Cell($iTamanhoWidth, 4, "Total da Divisão: {$iTotaBemPorDivisao}", "T", 1);
 
@@ -960,7 +1103,8 @@ foreach ($aDepartamentos as $iIndiceDepartamento => $oDepartamento) {
 $oPdf->SetFont("arial", "b", 7);
 if ($oGet->lImprimeValorAquisicao) {
     $oPdf->SetFont("arial", "b", 8);
-    $oPdf->cell(90, $iHeigth, "Total:", 0, 0, "R", 1);
+    $oPdf->cell(32, $iHeigth, "Total de Registros: {$itotalRegistros}", 0, 0, "R", 1);
+    $oPdf->cell(60, $iHeigth, "Total:", 0, 0, "R", 1);
     $oPdf->cell(22, $iHeigth, db_formatar($oTotal->nValorAquisicao, "f"), 0, 0, "R", 1);
     $oPdf->cell(22, $iHeigth, db_formatar($oTotal->nValorReavaliado, "f"), 0, 0, "R", 1);
     $oPdf->cell(22, $iHeigth, db_formatar($oTotal->nValorResidual, "f"), 0, 0, "R", 1);
@@ -970,6 +1114,8 @@ if ($oGet->lImprimeValorAquisicao) {
     $oPdf->cell(24, $iHeigth, db_formatar($oTotal->nSaldoDepreciavel, "f"), 0, 0, "C", 1);
     $oPdf->cell(55, $iHeigth, "", 0, 1, "C", 1);
     $oPdf->SetFont("arial", "", 6);
+} else {
+    $oPdf->Cell($iTamanhoWidth, 4, "Total de Registros: {$itotalRegistros}", "T", 1);
 }
 $oPdf->SetFont("arial", "", 6);
 
@@ -990,7 +1136,8 @@ function setHeader(
   $lImprimeCaracteristicaAdicional,
   $iCodigoDepartamento,
   $aOrgaosUnidade,
-  $flagColunasVisiveis
+  $flagColunasVisiveis,
+  $substituirAquisicao
 ) {
     global $head3, $head4, $head5, $head6, $tipoData, $sDataInicial, $sDataFinal;
     $nomeData = $tipoData == "1" ? "Aquisição" : "Inclusão";
@@ -1030,7 +1177,11 @@ function setHeader(
     $oPdf->cell(15, $iHeigth, $nomeData, 1, 0, "C", 1);
     // 24 Vlr. Reavaliado
     if ($lImprimeValores) {
-        $oPdf->cell(22, $iHeigth, "Vlr. Aquisição", 1, 0, "C", 1);
+        if ($substituirAquisicao === '2') {
+            $oPdf->cell(24, $iHeigth, "Última avaliação", 1, 0, "C", 1);
+        } else {
+            $oPdf->cell(22, $iHeigth, "Vlr. Aquisição", 1, 0, "C", 1);
+        }
         $oPdf->cell(22, $iHeigth, "Vlr. Reavaliado", 1, 0, "C", 1);
         $oPdf->cell(22, $iHeigth, "Vlr. Residual", 1, 0, "C", 1);
         $oPdf->cell(22, $iHeigth, "Vlr. Depreciado", 1, 0, "C", 1);

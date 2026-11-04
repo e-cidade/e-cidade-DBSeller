@@ -3,6 +3,7 @@
 
 namespace App\Domain\Financeiro\Contabilidade\Services;
 
+use App\Domain\Financeiro\Contabilidade\Relatorios\ConferenciaPorRecursosCSV;
 use App\Domain\Financeiro\Contabilidade\Relatorios\ConferenciaPorRecursosPDF;
 use App\Domain\Financeiro\Contabilidade\Relatorios\DisponibilidadeRecursosPDF;
 use cl_conlancam;
@@ -19,12 +20,10 @@ class DisponibilidadeRecursoService
 {
     public function relatorioSaldoDisponibilidadeRecurso($filtros)
     {
-
         $aDadosRelatorio = array();
         $oDao = new cl_conplanoreduz;
 
         $sql = $oDao->sql_query_saldo_disponibilidade_recurso($filtros);
-
         $rs = $oDao->sql_record($sql);
 
         $totalSaldoAnterior = 0;
@@ -47,14 +46,14 @@ class DisponibilidadeRecursoService
             }
         }
 
-         $oTotais = new stdClass();
-         $oTotais->total_saldo_atual = db_formatar($totalSalsoAtual, "f");
-         $oTotais->diferenca_saldo_atual = db_formatar($totalSalsoAtual +
-                                                       db_utils::fieldsMemory($rs, 5)->saldo_atual, "f");
+        $oTotais = new stdClass();
+        $oTotais->total_saldo_atual = db_formatar($totalSalsoAtual, "f");
+        $oTotais->diferenca_saldo_atual = db_formatar($totalSalsoAtual +
+            db_utils::fieldsMemory($rs, 5)->saldo_atual, "f");
 
-         $oTotais->total_saldo_anterior = db_formatar($totalSaldoAnterior, "f");
-         $oTotais->diferenca_saldo_anterior = db_formatar($totalSaldoAnterior +
-                                                            db_utils::fieldsMemory($rs, 5)->saldo_anterior, "f");
+        $oTotais->total_saldo_anterior = db_formatar($totalSaldoAnterior, "f");
+        $oTotais->diferenca_saldo_anterior = db_formatar($totalSaldoAnterior +
+            db_utils::fieldsMemory($rs, 5)->saldo_anterior, "f");
 
         $aDadosRelatorio[] = $oTotais;
 
@@ -89,11 +88,15 @@ class DisponibilidadeRecursoService
             $oDadosConsulta = db_utils::fieldsMemory($rs, $i);
 
             $oDados = new stdClass();
-            $oDados->recurso = $oDadosConsulta->recurso;
-            $oDados->o15_descr = $oDadosConsulta->o15_descr;
+            $oDados->o15_codigo = $oDadosConsulta->o15_codigo;
+            $oDados->gestao = $oDadosConsulta->gestao;
+            $oDados->siconfi = $oDadosConsulta->codigo_siconfi;
+            $oDados->subrecurso = $oDadosConsulta->subrecurso;
+            $oDados->complemento = $oDadosConsulta->o15_complemento;
+            $oDados->descricao = $oDadosConsulta->descricao;
 
-            $valorExtra = array_filter($valoresExtraOrcamentario, function ($valorExtra) use ($oDados) {
-                return $oDados->recurso == $valorExtra->recurso;
+            $valorExtra = array_filter($valoresExtraOrcamentario, function ($valorExtra) use ($oDadosConsulta) {
+                return $oDadosConsulta->o15_codigo == $valorExtra->o15_codigo;
             });
 
             $saldo_extra_orcamentario = 0;
@@ -101,17 +104,17 @@ class DisponibilidadeRecursoService
                 $saldo_extra_orcamentario = array_shift($valorExtra)->valor;
             }
 
-            $oDados->saldo_ativo_at_f = db_formatar($oDadosConsulta->saldo_ativo_at_f, "f");
-            $oDados->saldo_extra_orcamentario = db_formatar($saldo_extra_orcamentario, 'f');
-            $oDados->valor_a_liquidar = db_formatar($oDadosConsulta->valor_a_liquidar, "f");
-            $oDados->valor_a_pagar = db_formatar($oDadosConsulta->valor_a_pagar, "f");
-            $oDados->valor_a_liquidar_rp = db_formatar($oDadosConsulta->valor_a_liquidar_rp, "f");
-            $oDados->valor_a_pagar_rp = db_formatar($oDadosConsulta->valor_a_pagar_rp, "f");
+            $oDados->saldo_ativo_at_f = $oDadosConsulta->saldo_ativo_at_f;
+            $oDados->saldo_extra_orcamentario = $saldo_extra_orcamentario;
+            $oDados->valor_a_liquidar = $oDadosConsulta->valor_a_liquidar;
+            $oDados->valor_a_pagar = $oDadosConsulta->valor_a_pagar;
+            $oDados->valor_a_liquidar_rp = $oDadosConsulta->valor_a_liquidar_rp;
+            $oDados->valor_a_pagar_rp = $oDadosConsulta->valor_a_pagar_rp;
             $total = $oDadosConsulta->total - $saldo_extra_orcamentario;
-            $oDados->total = db_formatar($total, "f");
-            $oDados->valor_disponibilidade = db_formatar($oDadosConsulta->valor_disponibilidade, "f");
-            $diferenca = $total - $oDadosConsulta->valor_disponibilidade;
-            $oDados->diferenca = db_formatar($diferenca, "f");
+            $diferenca = round(($total - $oDadosConsulta->valor_disponibilidade), 2);
+            $oDados->total = $total;
+            $oDados->valor_disponibilidade = $oDadosConsulta->valor_disponibilidade;
+            $oDados->diferenca = $diferenca;
 
             // totais
             $total_saldo_ativo_at_f += $oDadosConsulta->saldo_ativo_at_f;
@@ -127,16 +130,57 @@ class DisponibilidadeRecursoService
             $aDadosRelatorio[] = $oDados;
         }
 
+        if ($filtros->modeloEmissao != 1) {
+            $agruparSiconfi = [];
+            foreach ($aDadosRelatorio as $dado) {
+                if (empty($dado->siconfi)) {
+                    continue;
+                }
+                $hash = $this->montaHash($filtros, $dado);
+                if (!array_key_exists($hash, $agruparSiconfi)) {
+                    $agruparSiconfi[$hash] = (object) [
+                        "siconfi" => $dado->siconfi,
+                        "saldo_ativo_at_f" => 0,
+                        "saldo_extra_orcamentario" => 0,
+                        "valor_a_liquidar" => 0,
+                        "valor_a_pagar" => 0,
+                        "valor_a_liquidar_rp" => 0,
+                        "valor_a_pagar_rp" => 0,
+                        "total" => 0,
+                        "valor_disponibilidade" => 0,
+                        "diferenca" => 0
+                    ];
+
+                    if ($filtros->modeloEmissao == 3) {
+                        $agruparSiconfi[$hash]->complemento = $dado->complemento;
+                    }
+                }
+                $agruparSiconfi[$hash]->saldo_ativo_at_f += $dado->saldo_ativo_at_f;
+                $agruparSiconfi[$hash]->saldo_extra_orcamentario += $dado->saldo_extra_orcamentario;
+                $agruparSiconfi[$hash]->valor_a_liquidar += $dado->valor_a_liquidar;
+                $agruparSiconfi[$hash]->valor_a_pagar += $dado->valor_a_pagar;
+                $agruparSiconfi[$hash]->valor_a_liquidar_rp += $dado->valor_a_liquidar_rp;
+                $agruparSiconfi[$hash]->valor_a_pagar_rp += $dado->valor_a_pagar_rp;
+                $agruparSiconfi[$hash]->total += $dado->total;
+                $agruparSiconfi[$hash]->valor_disponibilidade += $dado->valor_disponibilidade;
+                $agruparSiconfi[$hash]->diferenca += $dado->diferenca;
+            }
+
+            sort($agruparSiconfi);
+            $aDadosRelatorio = $agruparSiconfi;
+        }
+
+
         $oTotais = new stdClass();
-        $oTotais->saldo_ativo_at_f = db_formatar($total_saldo_ativo_at_f, "f");
-        $oTotais->saldo_extra_orcamentario = db_formatar($total_saldo_extra_orcamentario, 'f');
-        $oTotais->valor_a_liquidar = db_formatar($total_valor_a_liquidar, "f");
-        $oTotais->valor_a_pagar = db_formatar($total_valor_a_pagar, "f");
-        $oTotais->valor_a_liquidar_rp = db_formatar($total_valor_a_liquidar_rp, "f");
-        $oTotais->valor_a_pagar_rp = db_formatar($total_valor_a_pagar_rp, "f");
-        $oTotais->total = db_formatar($total_total, "f");
-        $oTotais->valor_disponibilidade = db_formatar($total_valor_disponibilidade, "f");
-        $oTotais->diferenca =  db_formatar($total_diferenca, "f");
+        $oTotais->saldo_ativo_at_f = $total_saldo_ativo_at_f;
+        $oTotais->saldo_extra_orcamentario = $total_saldo_extra_orcamentario;
+        $oTotais->valor_a_liquidar = $total_valor_a_liquidar;
+        $oTotais->valor_a_pagar = $total_valor_a_pagar;
+        $oTotais->valor_a_liquidar_rp = $total_valor_a_liquidar_rp;
+        $oTotais->valor_a_pagar_rp = $total_valor_a_pagar_rp;
+        $oTotais->total = $total_total;
+        $oTotais->valor_disponibilidade = $total_valor_disponibilidade;
+        $oTotais->diferenca = $total_diferenca;
 
         $aDados['registros'] = $aDadosRelatorio;
         $aDados['totais'] = $oTotais;
@@ -144,51 +188,82 @@ class DisponibilidadeRecursoService
         return $aDados;
     }
 
+    /**
+     * Filtra apenas os recursos que possuem diferença
+     * @param $filtros
+     * @return mixed
+     */
+    public function apenasDadosComDiferenca($filtros)
+    {
+        $dados = $this->obterDadosConferenciaPorRecurso($filtros);
+        $registros = $dados['registros'];
+
+        return array_filter($registros, function ($dado) {
+            return $dado->diferenca != 0;
+        });
+    }
+
     public function relatorioConferenciaPorRecurso($filtros)
     {
         $info = $this->obterDadosConferenciaPorRecurso($filtros);
-
         $pdf = new ConferenciaPorRecursosPDF($filtros);
-        return $pdf->emitir($info);
+        $csv = new ConferenciaPorRecursosCSV($filtros);
+        $csv->setDados($info["registros"]);
+        $path= ['pdf' => $pdf->emitir($info),
+            'csv' => $csv->emitir()];
+
+        return $path;
     }
 
     private function valoresSaldoExtraOrcamentario($filtros)
     {
         return DB::select("
         with saldos as (
-            SELECT o15_recurso as recurso,
-                  fc_planosaldonovo_array({$filtros->ano},
-                    c61_reduz,
-                    '{$filtros->dataInicial}',
-                    '{$filtros->dataFinal}', FALSE),
-                  p.c60_identificadorfinanceiro,
-                  c60_consistemaconta
+            SELECT
+                   orctiporec.o15_codigo,
+                   fc_planosaldonovo_array({$filtros->ano},
+                     c61_reduz,
+                     '{$filtros->dataInicial}',
+                     '{$filtros->dataFinal}', FALSE),
+                   p.c60_identificadorfinanceiro,
+                   c60_consistemaconta
            FROM conplanoexe e
            INNER JOIN conplanoreduz r ON r.c61_anousu = c62_anousu
            AND r.c61_reduz = c62_reduz
            INNER JOIN conplano p ON r.c61_codcon = c60_codcon
            AND r.c61_anousu = c60_anousu
            join orctiporec on orctiporec.o15_codigo = r.c61_codigo
+           join fonterecurso on orctiporec_id = orctiporec.o15_codigo and exercicio = c60_anousu
            LEFT OUTER JOIN consistema ON c60_codsis = c52_codsis
            WHERE c62_anousu = {$filtros->ano}
              AND c61_instit IN ($filtros->instituicoes)
              AND c60_identificadorfinanceiro = 'F'
-             AND (p.c60_estrut LIKE '2188%')
+             AND (p.c60_estrut LIKE '2188%' or p.c60_estrut LIKE '2189%')
         ), saldos_por_recurso as (
-          select recurso,
+          select o15_codigo,
                  case when sinal_final = 'D' then saldo_final *-1 else saldo_final end as saldo_final,
                  sinal_final
             from (
-            select recurso,
+            select o15_codigo,
                     round(fc_planosaldonovo_array[4]::float8, 2)::float8 as saldo_final,
                     fc_planosaldonovo_array[6]::varchar(1) AS sinal_final
                from saldos
            ) as x
         ), agrupa_por_recurso as (
-          select recurso, sum(saldo_final) as valor
+          select o15_codigo,
+                 sum(saldo_final) as valor
             from saldos_por_recurso
-          group by recurso
+          group by o15_codigo
         ) select * from agrupa_por_recurso
         ");
+    }
+
+    private function montaHash($filtros, $dado)
+    {
+        if ($filtros->modeloEmissao == 2) {
+            return $dado->siconfi;
+        }
+
+        return "{$dado->siconfi}#{$dado->complemento}";
     }
 }

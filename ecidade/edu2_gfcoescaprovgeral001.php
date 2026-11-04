@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -61,20 +61,20 @@ $clcalendario = new cl_calendario;
     <tr>
      <td>
       <b>Selecione o Ano</b>:<br>
-      <?
+      <?php
       $result = $clcalendario->sql_record($clcalendario->sql_query(""," distinct ed52_i_ano,ed52_i_ano","ed52_i_ano DESC",""));
       if($clcalendario->numrows==0){
        $x = array(' '=>'NENHUM REGISTRO');
        db_select('ano',$x,true,1," style='font-size:9px;width:200px;height:18px;'");
       }else{
-       ?><select name="ano" onchange="js_ano(this.value)" style="font-size:9px;width:200px;height:18px;"><?
+       ?><select name="ano" onchange="js_ano(this.value)" style="font-size:9px;width:200px;height:18px;"><?php
        echo "<option value=''></option>";
        for($x=0;$x<$clcalendario->numrows;$x++){
         db_fieldsmemory($result,$x);
         $selected = $ano==$ed52_i_ano?"selected":"";
         echo "<option value='$ed52_i_ano' $selected>$ed52_i_ano</option>";
        }
-       ?></select><?
+       ?></select><?php
       }
       ?>
      </td>
@@ -82,7 +82,7 @@ $clcalendario = new cl_calendario;
     <tr>
      <td>
       <b>Ensino</b>:<br>
-      <?
+      <?php
       $sql = "SELECT distinct ed10_i_codigo,ed10_c_descr,ed10_c_abrev
               FROM ensino
                inner join cursoedu on ed29_i_ensino = ed10_i_codigo
@@ -98,23 +98,23 @@ $clcalendario = new cl_calendario;
        $x = array(' '=>'NENHUM REGISTRO');
        db_select('ano',$x,true,1,"style='font-size:9px;width:200px;height:18px;'");
       }else{
-       ?><select name="ensino" onchange='js_ensino(this.value)' style="font-size:9px;width:200px;height:18px;"><?
+       ?><select name="ensino" onchange='js_ensino(this.value)' style="font-size:9px;width:200px;height:18px;"><?php
        echo "<option value=''></option>";
        for($x=0;$x<$linhas;$x++){
         db_fieldsmemory($result,$x);
         $selected = $ensino==$ed10_i_codigo?"selected":"";
         echo "<option value='$ed10_i_codigo' $selected>$ed10_c_descr</option>";
        }
-       ?></select><?
+       ?></select><?php
       }
       ?>
      </td>
     </tr>
-    <?if(isset($ensino)){?>
+    <?php if(isset($ensino)){?>
     <tr>
      <td>
       <b>Etapa</b>:<br>
-      <?
+      <?php
       $sql = "SELECT distinct ed11_i_codigo,ed11_c_descr,ed11_i_sequencia
               FROM serie
                inner join matriculaserie on ed221_i_serie = ed11_i_codigo
@@ -130,24 +130,24 @@ $clcalendario = new cl_calendario;
        $x = array(' '=>'NENHUM REGISTRO');
        db_select('serie',$x,true,1,"style='font-size:9px;width:200px;height:18px;'");
       }else{
-       ?><select name="serie" onchange='js_serie(this.value);' style="font-size:9px;width:200px;height:18px;"><?
+       ?><select name="serie" onchange='js_serie(this.value);' style="font-size:9px;width:200px;height:18px;"><?php
        echo "<option value=''></option>";
        for($x=0;$x<$linhas;$x++){
         db_fieldsmemory($result,$x);
         $selected = @$serie==$ed11_i_codigo?"selected":"";
         echo "<option value='$ed11_i_codigo' $selected>$ed11_c_descr</option>";
        }
-       ?></select><?
+       ?></select><?php
       }
       ?>
      </td>
     </tr>
-    <?}?>
+    <?php }?>
    </table>
   </td>
   <td>
     <b>Selecione as escolas</b>:<br>
-    <?
+    <?php
     if (!isset($serie)) {
 
      $serie = 0;
@@ -173,11 +173,11 @@ $clcalendario = new cl_calendario;
     $sql .= "             AND ed37_c_tipo     = 'NOTA'                                          ";
     $sql .= "             AND ed221_c_origem  = 'S'                                             ";
     $sql .= "        ORDER BY ed18_c_nome                                                       ";
-    
+
     $result= db_query($sql);
     $linhas = pg_num_rows($result);?>
     <select name="escola" style="font-size:9px;width:350px;height:100px;" multiple>
-     <?
+     <?php
      for ($x = 0; $x < $linhas; $x++) {
 
       db_fieldsmemory($result,$x);
@@ -193,7 +193,7 @@ $clcalendario = new cl_calendario;
 <iframe name="iframe_grafico" id="iframe_grafico" src="" width="97%" height="470" frameborder="0"></iframe>
 </center>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -204,12 +204,12 @@ function js_ensino(ensino){
   if(ensino!=""){
    location.href = "edu2_gfcoescaprovgeral001.php?serie=0&ensino="+ensino+"&ano="+document.form1.ano.value;
   }else{
-   <?if(isset($ensino)){?>
+   <?php if(isset($ensino)){?>
     qtd = document.form1.serie.length;
     for (i = 0; i < qtd; i++) {
      document.form1.serie.options[0] = null;
     }
-   <?}?>
+   <?php }?>
    qtd = document.form1.escola.length;
    for (i = 0; i < qtd; i++) {
     document.form1.escola.options[0] = null;
@@ -218,15 +218,15 @@ function js_ensino(ensino){
  }
 }
 function js_ano(ano){
- <?
+ <?php
  if(isset($ensino)){
   if(isset($serie) && !empty($serie)){?>
    serie = document.form1.serie.value;
   <?}else{?>
    serie = "0";
-  <?}?>
+  <?php }?>
   location.href = "edu2_gfcoescaprovgeral001.php?serie="+serie+"&ensino="+document.form1.ensino.value+"&ano="+ano;
- <?}?>
+ <?php }?>
 }
 
 function js_serie(serie){
@@ -235,45 +235,45 @@ function js_serie(serie){
  }
 }
 function js_processar(){
-	
+
  F          = document.form1;
  contescola = 0;
- 
+
  for (i = 0; i < F.escola.length; i++) {
-	 
+
   if (F.escola.options[i].selected == true) {
    contescola++;
   }
  }
- 
+
  if (F.ano.value == "" || F.ensino.value == "" || F.serie.value == ""){
-	 
+
   alert("Preencha todas informações(Ano, Ensino e Etapa)!");
-  
+
  } else if (contescola < 2) {
   alert("Escolha no mínimo 2 escolas para realizar comparações!");
  } else if (contescola > 5) {
   alert("Escolha no máximo 5 escolas para realizar comparações!");
  } else {
-	 
+
   escola = "";
   sep    = "";
-  
+
   for (i = 0; i < F.escola.length; i++) {
-	  
+
    if (F.escola.options[i].selected == true) {
-	   
+
     escola += sep + F.escola.options[i].value;
     sep     = ",";
    }
-   
+
   }
-  var sQueryString  = "?ano="         + F.ano.value ; 
+  var sQueryString  = "?ano="         + F.ano.value ;
       sQueryString += "&ensino="      + F.ensino.value;
       sQueryString += "&serie="       + F.serie.value ;
-      sQueryString += "&escola="      + escola; 
+      sQueryString += "&escola="      + escola;
       sQueryString += "&larg_pagina=" + (screen.availWidth-60);
-  
+
   iframe_grafico.location.href = "edu2_gfcoescaprovgeral002.php" + sQueryString;
  }
 }

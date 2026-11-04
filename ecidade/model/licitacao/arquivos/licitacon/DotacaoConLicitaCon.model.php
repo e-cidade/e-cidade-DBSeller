@@ -25,103 +25,135 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Patrimonial\Contratos\Services\AcordoLicitacaoCompartilhadaService;
 use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\DotacaoCon as Regra;
 
-class DotacaoConLicitaCon extends ArquivoLicitaCon {
+class DotacaoConLicitaCon extends ArquivoLicitaCon
+{
 
-  const NOME_ARQUIVO = "DOTACAO_CON";
+    const NOME_ARQUIVO = "DOTACAO_CON";
 
-  public function __construct(CabecalhoLicitaCon $oCabecalho) {
+    public function __construct(CabecalhoLicitaCon $oCabecalho)
+    {
 
-    parent::__construct($oCabecalho, new Regra($oCabecalho->getDataGeracao()));
-    $this->sNomeArquivo  = self::NOME_ARQUIVO;
-    $this->iCodigoLayout = $this->oRegra->getCodigoLayout();
-  }
+        parent::__construct($oCabecalho, new Regra($oCabecalho->getDataGeracao()));
+        $this->sNomeArquivo  = self::NOME_ARQUIVO;
+        $this->iCodigoLayout = $this->oRegra->getCodigoLayout();
+    }
 
   /**
    * @return array
    */
-  public function getDados() {
+    public function getDados()
+    {
 
-    $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
+        $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 
-    $aDados = array();
+        $aDados = array();
 
-    $sCampos = implode(', ', array(
-      'ac16_sequencial            as sequencial',
-      'ac16_numero                as nr_contrato',
-      'ac16_anousu                as ano_contrato',
-      'ac16_tipoinstrumento       as tp_instrumento',
-      'ac16_origem                as origem',
-      '(case when empdot.o58_projativ is not null then empdot.o58_projativ else acodot.o58_projativ end)               as cd_projeto_atividade',
-      '(case when empdot.o58_codigo   is not null then empdot.o58_codigo   else acodot.o58_codigo end)                 as cd_recurso_orcamentario',
-      'substr((case when empele.o56_elemento is not null then empele.o56_elemento else acoele.o56_elemento end), 2, 6) as cd_natureza_despesa',
-    ));
+        $sCampos = implode(', ', array(
+        'ac16_sequencial            as sequencial',
+        'ac16_numero                as nr_contrato',
+        'ac16_anousu                as ano_contrato',
+        'ac16_tipoinstrumento       as tp_instrumento',
+        'ac16_origem                as origem',
+        '(case when empdot.o58_projativ is not null then empdot.o58_projativ else acodot.o58_projativ end) as cd_projeto_atividade',
 
-    $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate();
+        '
+      (CASE
+         WHEN empdot.o58_codigo IS NOT NULL
+           THEN (
+                  select o15_recurso
+                    from orctiporec
+                    join fonterecurso on o15_codigo = orctiporec_id
+                      and exercicio = empdot.o58_anousu
+                    where o15_codigo = empdot.o58_codigo
+                )
+         ELSE (
+                select o15_recurso
+                  from orctiporec
+                  join fonterecurso on o15_codigo = orctiporec_id
+                                   and exercicio = acodot.o58_anousu
+                  where o15_codigo = acodot.o58_codigo)
+       END) AS cd_recurso_orcamentario ',
 
-    $sWhere = implode(' and ', array(
-      "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
-      "(ac58_sequencial is null or ac58_data >= '{$sDataAtual}')",
-      "(empdot.o58_projativ is not null or acodot.o58_projativ is not null)",
-      "acordoitem.ac20_sequencial is not null"
-    ));
+        'substr((case when empele.o56_elemento is not null then empele.o56_elemento else acoele.o56_elemento end), 2, 6) as cd_natureza_despesa',
+        ));
 
-    $sSql = implode(" \n", array(
-      "select distinct {$sCampos} from acordo",
-      'inner join acordoposicao on ac26_acordo = ac16_sequencial',
-      'left join acordoencerramentolicitacon on ac16_sequencial = ac58_acordo',
+        $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate();
 
-      // Busca dotações pela estrutura do acordo
-      'inner join acordoitem         on ac20_acordoposicao         = ac26_sequencial',
-      'left join acordoitemdotacao  on ac22_acordoitem            = ac20_sequencial',
-      'left join orcdotacao acodot  on (ac22_anousu, ac22_coddot) = (acodot.o58_anousu, acodot.o58_coddot)',
-      'left join orcelemento acoele on (acodot.o58_codele, acodot.o58_anousu) = (acoele.o56_codele, acoele.o56_anousu)',
+        $sWhere = implode(' and ', array(
+        "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
+        "(ac58_sequencial is null or ac58_data >= '{$sDataAtual}')",
+        "(empdot.o58_projativ is not null or acodot.o58_projativ is not null)",
+        "acordoitem.ac20_sequencial is not null"
+        ));
 
-      // Busca dotações pelos empenhos vinculados
-      'left join acordoempempenho   on ac54_acordo              = ac16_sequencial',
-      'left join empempenho         on ac54_empempenho          = e60_numemp',
-      'left join orcdotacao empdot  on (e60_anousu, e60_coddot) = (empdot.o58_anousu, empdot.o58_coddot)',
-      'left join orcelemento empele on (empdot.o58_codele, empdot.o58_anousu) = (empele.o56_codele, empele.o56_anousu)',
+        $sSql = implode(" \n", array(
+        "select distinct {$sCampos} from acordo",
+        'inner join acordoposicao on ac26_acordo = ac16_sequencial',
+        'left join acordoencerramentolicitacon on ac16_sequencial = ac58_acordo',
 
-      "where {$sWhere}",
+        // Busca dotações pela estrutura do acordo
+        'inner join acordoitem         on ac20_acordoposicao         = ac26_sequencial',
+        'left join acordoitemdotacao  on ac22_acordoitem            = ac20_sequencial',
+        'left join orcdotacao acodot  on (ac22_anousu, ac22_coddot) = (acodot.o58_anousu, acodot.o58_coddot)',
+        'left join orcelemento acoele on (acodot.o58_codele, acodot.o58_anousu) = (acoele.o56_codele, acoele.o56_anousu)',
 
-      'order by ac16_sequencial',
-    ));
+        // Busca dotações pelos empenhos vinculados
+        'left join acordoempempenho   on ac54_acordo              = ac16_sequencial',
+        'left join empempenho         on ac54_empempenho          = e60_numemp',
+        'left join orcdotacao empdot  on (e60_anousu, e60_coddot) = (empdot.o58_anousu, empdot.o58_coddot)',
+        'left join orcelemento empele on (empdot.o58_codele, empdot.o58_anousu) = (empele.o56_codele, empele.o56_anousu)',
 
-    $rsContratos = db_query($sSql);
-    if (!$rsContratos) {
+        "where {$sWhere}
 
-      $sMensagem = "Não foi possível buscar os contratos para geração do arquivo {$this->sNomeArquivo}.";
-      throw new DBException($sMensagem);
+
+      ",
+
+        'order by ac16_sequencial',
+        ));
+
+
+      //echo $sSql; die();
+        $rsContratos = db_query($sSql);
+        if (!$rsContratos) {
+            $sMensagem = "Não foi possível buscar os contratos para geração do arquivo {$this->sNomeArquivo}.";
+            throw new DBException($sMensagem);
+        }
+
+        $iQuantidadeContratos = pg_num_rows($rsContratos);
+        for ($iContrato = 0; $iContrato < $iQuantidadeContratos; $iContrato++) {
+            $oStdContrato = db_utils::fieldsMemory($rsContratos, $iContrato);
+            $oStdLicitacao = $this->oRegra->getDadosDaLicitacao(
+                $oStdContrato->sequencial,
+                $this->oCabecalho->getDataGeracao()
+            );
+
+            $service = new AcordoLicitacaoCompartilhadaService();
+            $dados = $service->buscarDados($oStdContrato->sequencial);
+
+            if (!$this->oRegra->enviar($oStdLicitacao->codigo)) {
+                continue;
+            }
+
+            $modalidade = $service->getModalidade($dados->ac63_modalidade)->getSiglaTipoCompraTribunal();
+            $oStdLinha = new stdClass;
+            $oStdLinha->NR_LICITACAO = $dados->ac63_sequencial == "" ? $oStdLicitacao->numero : $dados->ac63_numero;
+            $oStdLinha->ANO_LICITACAO =  $dados->ac63_sequencial == "" ? $oStdLicitacao->ano: $dados->ac63_ano;
+            $oStdLinha->CD_TIPO_MODALIDADE = $dados->ac63_sequencial == "" ? $oStdLicitacao->tipo : $modalidade;
+
+            $oStdLinha->NR_CONTRATO = $oStdContrato->nr_contrato;
+            $oStdLinha->ANO_CONTRATO = $oStdContrato->ano_contrato;
+            $oStdLinha->TP_INSTRUMENTO = $aTiposInstrumento[$oStdContrato->tp_instrumento];
+
+            $oStdLinha->CD_PROJETO_ATIVIDADE = $oStdContrato->cd_projeto_atividade;
+            $oStdLinha->CD_RECURSO_ORCAMENTARIO = $oStdContrato->cd_recurso_orcamentario;
+            $oStdLinha->CD_NATUREZA_DESPESA = $oStdContrato->cd_natureza_despesa;
+
+            $aDados[] = $oStdLinha;
+        }
+
+        return $aDados;
     }
-
-    $iQuantidadeContratos = pg_num_rows($rsContratos);
-    for ($iContrato = 0; $iContrato < $iQuantidadeContratos; $iContrato++) {
-
-      $oStdContrato  = db_utils::fieldsMemory($rsContratos, $iContrato);
-			$oStdLicitacao = $this->oRegra->getDadosDaLicitacao($oStdContrato->sequencial, $this->oCabecalho->getDataGeracao());
-
-			if (!$this->oRegra->enviar($oStdLicitacao->codigo)) {
-				continue;
-			}
-
-      $oStdLinha = new stdClass;
-      $oStdLinha->NR_LICITACAO       = $oStdLicitacao->numero;
-      $oStdLinha->ANO_LICITACAO      = $oStdLicitacao->ano;
-      $oStdLinha->CD_TIPO_MODALIDADE = $oStdLicitacao->tipo;
-
-      $oStdLinha->NR_CONTRATO    = $oStdContrato->nr_contrato;
-      $oStdLinha->ANO_CONTRATO   = $oStdContrato->ano_contrato;
-      $oStdLinha->TP_INSTRUMENTO = $aTiposInstrumento[$oStdContrato->tp_instrumento];
-
-      $oStdLinha->CD_PROJETO_ATIVIDADE    = $oStdContrato->cd_projeto_atividade;
-      $oStdLinha->CD_RECURSO_ORCAMENTARIO = $oStdContrato->cd_recurso_orcamentario;
-      $oStdLinha->CD_NATUREZA_DESPESA     = $oStdContrato->cd_natureza_despesa;
-
-      $aDados[] = $oStdLinha;
-    }
-
-    return $aDados;
-  }
 }

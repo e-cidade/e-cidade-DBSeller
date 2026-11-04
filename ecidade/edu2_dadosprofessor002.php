@@ -81,6 +81,13 @@ try {
 
 $head1 = "RELATÓRIO DOS HORÁRIOS DO PROFESSOR";
 $head3 = !empty($oCgm) ? "Professor: {$oCgm->getNome()} " : "Professor: ";
+if(!empty($oCgm->getNomeSocial())){
+  $head4 = !empty($oCgm) ? "Nome Social: {$oCgm->getNomeSocial()}" : "Professor: ";
+}
+
+if(!empty($oCgm->getNomeSocial())) {
+$head4 = !empty($oCgm) ? "Nome Social: {$oCgm->getNomeSocial()} " : "Nome Social: ";
+}
 
 $oPdf = new PDF();
 $oPdf->Open();
@@ -803,6 +810,9 @@ function imprimeDadosPessoais( FPDF $oPdf, $oConfig, CgmFisico $oCgm ) {
   $oPdf->setfont( 'arial', '', 7 );
   $oPdf->Cell( $iTamanhoCampoColuna1, $oConfig->iAlturaLinha, "CGM:",            0, 2, "L" );
   $oPdf->Cell( $iTamanhoCampoColuna1, $oConfig->iAlturaLinha, "Nome:",           0, 2, "L" );
+if (!empty($oCgm->getNomeSocial())) {
+  $oPdf->Cell( $iTamanhoCampoColuna1, $oConfig->iAlturaLinha, "Nome Social:",    0, 2, "L" );
+}
   $oPdf->Cell( $iTamanhoCampoColuna1, $oConfig->iAlturaLinha, "Endereço:",       0, 2, "L" );
   $oPdf->Cell( $iTamanhoCampoColuna1, $oConfig->iAlturaLinha, "Bairro:",         0, 2, "L" );
   $oPdf->Cell( $iTamanhoCampoColuna1, $oConfig->iAlturaLinha, "Município / UF:", 0, 2, "L" );
@@ -812,14 +822,17 @@ function imprimeDadosPessoais( FPDF $oPdf, $oConfig, CgmFisico $oCgm ) {
   $oPdf->setfont( 'arial', 'b', 7 );
   $oPdf->SetXY( $iTamanhoCampoColuna1 + 5, $iPosicaoY );
   $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, $oCgm->getCodigo(),        0, 2, "L" );
-  $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, $oCgm->getNomeCompleto(),  0, 2, "L" );
+  $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, mb_strimwidth($oCgm->getNomeCompleto(), 0, 56),  0, 2, "L" );
+  if(!empty($oCgm->getNomeSocial())){
+  $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, mb_strimwidth($oCgm->getNomeSocial(), 0, 56),    0, 2, "L" );
+  }
   $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, $sEnderecoCompleto,        0, 2, "L" );
   $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, $oCgm->getBairro(),        0, 2, "L" );
   $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, $sMunicipioUf,             0, 2, "L" );
   $oPdf->Cell( $iTamanhoDescricaoColuna1, $oConfig->iAlturaLinha, $oCgm->getCep(),           0, 2, "L" );
   $oPdf->Cell( 167,                       $oConfig->iAlturaLinha, $oCgm->getEmail(),       "R", 2, "L" );
 
-  $oPdf->SetXY( $iTamanhoCampoColuna1 + $iTamanhoDescricaoColuna1, $iPosicaoY );
+  $oPdf->SetXY( $iTamanhoCampoColuna1 + $iTamanhoDescricaoColuna1 + 16, $iPosicaoY );
 
   $oPdf->setfont('arial','',7);
   $oPdf->cell( $iTamanhoCampoColuna2, $oConfig->iAlturaLinha, "Nascimento:",       0, 2, "L" );
@@ -830,7 +843,7 @@ function imprimeDadosPessoais( FPDF $oPdf, $oConfig, CgmFisico $oCgm ) {
   $oPdf->cell( $iTamanhoCampoColuna2, $oConfig->iAlturaLinha, "Telefone Celular:", 0, 2, "L" );
 
   $oPdf->setfont( 'arial', 'b', 7 );
-  $oPdf->SetXY( $iTamanhoCampoColuna1 + $iTamanhoDescricaoColuna1 + $iTamanhoCampoColuna2 + 2, $iPosicaoY );
+  $oPdf->SetXY( $iTamanhoCampoColuna1 + $iTamanhoDescricaoColuna1 + $iTamanhoCampoColuna2 + 10, $iPosicaoY );
   $oPdf->cell( $iTamanhoDescricaoColuna2, $oConfig->iAlturaLinha, $sDataNascimento,                       'R', 2, "L" );
   $oPdf->cell( $iTamanhoDescricaoColuna2, $oConfig->iAlturaLinha, $oCgm->getNaturalidade(),               'R', 2, "L" );
   $oPdf->cell( $iTamanhoDescricaoColuna2, $oConfig->iAlturaLinha, $sSexo,                                 'R', 2, "L" );

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cllevinscr->rotulo->label("y62_inscr");
               <?=$Ly62_codlev?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y62_codlev",10,$Iy62_codlev,true,"text",4,"","chave_y62_codlev");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cllevinscr->rotulo->label("y62_inscr");
               <?=$Ly62_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y62_inscr",6,$Iy62_inscr,true,"text",4,"","chave_y62_inscr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cllevinscr->rotulo->label("y62_inscr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_levinscr.php")==true){
@@ -118,12 +118,12 @@ $cllevinscr->rotulo->label("y62_inscr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

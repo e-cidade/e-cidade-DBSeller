@@ -73,19 +73,19 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmtesinteroutros.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu();
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($cltesinteroutros->erro_status=="0"){
     $cltesinteroutros->erro(true,false);

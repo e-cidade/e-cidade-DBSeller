@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,37 +57,37 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lsd19_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd19_i_codigo',10,$Isd19_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd19_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd19_i_procedimento,"js_pesquisasd19_i_procedimento(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd19_i_procedimento',10,$Isd19_i_procedimento,true,'text',3," onchange='js_pesquisasd19_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd09_c_descr',100,$Isd09_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd19_i_servico?>">
-       <?
+       <?php
        db_ancora(@$Lsd19_i_servico,"js_pesquisasd19_i_servico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd19_i_servico',10,$Isd19_i_servico,true,'text',$db_opcao," onchange='js_pesquisasd19_i_servico(false);'")
 ?>
-       <?
+       <?php
 db_input('sd12_c_descr',40,$Isd12_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('sd12_c_descr',40,$Isd12_c_descr,true,'text',3,'')
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("sd19_i_codigo"=>@$sd19_i_codigo,"sd19_i_procedimento"=>@$sd19_i_procedimento,"sd19_i_servico"=>@$sd19_i_servico,"sd12_c_descr"=>@$sd12_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clprocservicos->sql_query($sd19_i_codigo,"sd19_i_codigo,sd12_i_codigo,sd19_i_procedimento,sd12_c_descr,sd19_i_servico","sd12_i_codigo","sd19_i_procedimento = $sd19_i_procedimento");
@@ -172,7 +172,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procservicos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

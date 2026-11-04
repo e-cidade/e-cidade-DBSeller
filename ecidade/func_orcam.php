@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcam->rotulo->label("o02_descr");
               <?=$Lo02_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o02_anousu",0,$Io02_anousu,true,"text",4,"","chave_o02_anousu");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcam->rotulo->label("o02_descr");
               <?=$Lo02_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o02_codigo",12,$Io02_codigo,true,"text",4,"","chave_o02_codigo");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clorcam->rotulo->label("o02_descr");
               <?=$Lo02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o02_descr",40,$Io02_descr,true,"text",4,"","chave_o02_descr");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clorcam->rotulo->label("o02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "orcam.*";
@@ -121,14 +121,14 @@ $clorcam->rotulo->label("o02_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_o02_anousu.focus();
 document.form2.chave_o02_anousu.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -86,18 +86,18 @@ if ( isset($db_opcaoal) ) {
 
 <table border="0">
  
-	<?
+	<?php
 	db_input('db45_sequencial', 10, $Idb45_sequencial, true, 'hidden', 3, "")
 	?>
   
   <tr>
     <td nowrap title="<?=@$Tdb45_caddocumento?>">
-       <?
+       <?php
        db_ancora(@$Ldb45_caddocumento, "js_pesquisadb45_caddocumento(true);", 3);
        ?>
     </td>
     <td colspan='3'> 
-		<?
+		<?php
 		db_input('db45_caddocumento', 10, $db45_caddocumento, true, 'text', 3, "")
 		?>
     </td>
@@ -108,7 +108,7 @@ if ( isset($db_opcaoal) ) {
        <?=@$Ldb45_descricao?>
     </td>
     <td colspan='3'> 
-			<?
+			<?php
 			 db_input('db45_descricao', 54, $Idb45_descricao, true, 'text', $db_opcao, "")
 			?>
     </td>
@@ -118,7 +118,7 @@ if ( isset($db_opcaoal) ) {
        <?=@$Ldb45_tipo?>
     </td>
     <td> 
-			<?
+			<?php
 			$aTipo = array('1' => 'Varchar',
 			               '2' => 'Integer',
 			               '3' => 'Date',
@@ -131,7 +131,7 @@ if ( isset($db_opcaoal) ) {
       <?=$Ldb45_tamanho;?>
     </td>
     <td>
-      <?
+      <?php
         db_input('db45_tamanho', 10, $Idb45_tamanho, true, 'text', $db_opcao);
       ?>
     </td>
@@ -142,7 +142,7 @@ if ( isset($db_opcaoal) ) {
        <?=@$Ldb45_valordefault?>
     </td>
     <td colspan='3'> 
-			<?
+			<?php
 			db_input('db45_valordefault', 26, $Idb45_valordefault, true, 'text', $db_opcao, "")
 			?>
     </td>
@@ -150,15 +150,15 @@ if ( isset($db_opcaoal) ) {
   
   <tr>
     <td nowrap title="<?=@$Tdb45_codcam?>">
-       <?
+       <?php
        db_ancora(@$Ldb45_codcam, "js_pesquisadb45_codcam(true);", $db_opcao);
        ?>
     </td>
     <td colspan='3'> 
-				<?
+				<?php
 				db_input('db45_codcam', 10, $Idb45_codcam, true, 'text', $db_opcao, " onchange='js_pesquisadb45_codcam(false);'")
 				?>
-       <?
+       <?php
         db_input('nomecam', 40, $Inomecam, true, 'text', 3, '')
        ?></fieldset>
     </td>
@@ -185,7 +185,7 @@ if ( isset($db_opcaoal) ) {
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
     
    $sCampos  = " db45_sequencial, ";  
    $sCampos .= " db45_descricao, ";  

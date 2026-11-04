@@ -75,7 +75,7 @@ class SigfisVinculoDespesa {
    * @param integer $iCodigoDespesa codigo da Despesa do e-cidade (orcelemento.o56_codele)
    * @return retorna objeto do vinculo , ou false em caso de nao existir o vinculo.
    */
-  public function getVinculoDespesa($iCodigoDespesa) {
+  public static function getVinculoDespesa($iCodigoDespesa) {
    
     $aDespesas  = self::getInstance()->aListaDespesa;
     $mRetorno   = false;

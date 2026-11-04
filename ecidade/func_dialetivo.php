@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cldialetivo->rotulo->label("ed04_i_codigo");
               <?=$Led04_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed04_i_codigo",10,$Ied04_i_codigo,true,"text",4,"","chave_ed04_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $cldialetivo->rotulo->label("ed04_i_codigo");
               <?=$Led04_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed04_i_codigo",10,$Ied04_i_codigo,true,"text",4,"","chave_ed04_i_codigo");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $cldialetivo->rotulo->label("ed04_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_dialetivo.php")==true){
@@ -124,12 +124,12 @@ $cldialetivo->rotulo->label("ed04_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

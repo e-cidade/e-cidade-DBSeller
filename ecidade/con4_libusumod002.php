@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ input {
     <table border="1" width='100%' cellspacing="0" cellpadding="5">
           <tr> 
             <td> 
-              <?
+              <?php
 			$sql = "select (u.id_instit || '_' || u.id_usuario || '_' || u.id_modulo) as db_codigo,us.login,c.nomeinst as Instituição,m.nome_modulo as Módulo
 			        from db_usermod u
 					inner join db_usuarios us

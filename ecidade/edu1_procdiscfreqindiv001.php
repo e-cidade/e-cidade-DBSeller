@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,7 +77,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed45_i_disciplina",true,1,"ed45_i_disciplina",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  if($clprocdiscfreqindiv->erro_status=="0"){
   $clprocdiscfreqindiv->erro(true,false);

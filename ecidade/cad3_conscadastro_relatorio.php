@@ -32,7 +32,7 @@ require_once(modification("fpdf151/pdf.php"));
 $head5 = "Relatório de Imóveis";
 if(isset($par)){
 
-  $parametro = split("_",$par);
+  $parametro =explode("_",$par);
   $tipo = 2;
   $geracalculo = true;
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,28 +29,29 @@
 //CLASSE DA ENTIDADE isscalc
 class cl_isscalc {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q01_anousu = 0;
-   var $q01_inscr = 0;
-   var $q01_cadcal = 0;
-   var $q01_recei = 0;
-   var $q01_numpre = 0;
-   var $q01_valor = 0;
-   var $q01_manual = null;
+   public $q01_anousu = 0;
+   public $q01_inscr = 0;
+   public $q01_cadcal = 0;
+   public $q01_recei = 0;
+   public $q01_numpre = 0;
+   public $q01_valor = 0;
+   public $q01_manual = null;
+   public $q01_valorisencao = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q01_anousu = int4 = ano
                  q01_inscr = int4 = inscricao
                  q01_cadcal = int4 = codigo do calculo
@@ -58,15 +59,16 @@ class cl_isscalc {
                  q01_numpre = int4 = numpre
                  q01_valor = float8 = valor
                  q01_manual = text = Log do calculo
+                 q01_valorisencao = float4 = Valor da isenção
                  ";
    //funcao construtor da classe
-   function cl_isscalc() {
+   public function cl_isscalc() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isscalc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +77,7 @@ class cl_isscalc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q01_anousu = ($this->q01_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_anousu"]:$this->q01_anousu);
        $this->q01_inscr = ($this->q01_inscr == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_inscr"]:$this->q01_inscr);
@@ -83,6 +85,7 @@ class cl_isscalc {
        $this->q01_recei = ($this->q01_recei == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_recei"]:$this->q01_recei);
        $this->q01_numpre = ($this->q01_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_numpre"]:$this->q01_numpre);
        $this->q01_valor = ($this->q01_valor == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_valor"]:$this->q01_valor);
+       $this->q01_valorisencao = ($this->q01_valorisencao == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_valorisencao"]:$this->q01_valorisencao);
        $this->q01_manual = ($this->q01_manual == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_manual"]:$this->q01_manual);
      }else{
        $this->q01_anousu = ($this->q01_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["q01_anousu"]:$this->q01_anousu);
@@ -93,7 +96,7 @@ class cl_isscalc {
      }
    }
    // funcao para inclusao
-   function incluir ($q01_anousu,$q01_inscr,$q01_cadcal,$q01_recei,$q01_numpre){
+   public function incluir ($q01_anousu,$q01_inscr,$q01_cadcal,$q01_recei,$q01_numpre){
       $this->atualizacampos();
      if($this->q01_valor == null ){
        $this->erro_sql = " Campo valor nao Informado.";
@@ -104,6 +107,15 @@ class cl_isscalc {
        $this->erro_status = "0";
        return false;
      }
+     if($this->q01_valorisencao == null ){
+      $this->erro_sql = " Campo valor da isenção nao Informado.";
+      $this->erro_campo = "q01_valorisencao";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
      if($this->q01_manual == null ){
        $this->erro_sql = " Campo Log do calculo nao Informado.";
        $this->erro_campo = "q01_manual";
@@ -166,6 +178,7 @@ class cl_isscalc {
                                       ,q01_numpre
                                       ,q01_valor
                                       ,q01_manual
+                                      ,q01_valorisencao
                        )
                 values (
                                 $this->q01_anousu
@@ -175,6 +188,7 @@ class cl_isscalc {
                                ,$this->q01_numpre
                                ,$this->q01_valor
                                ,'$this->q01_manual'
+                               ,$this->q01_valorisencao
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -217,11 +231,12 @@ class cl_isscalc {
        $resac = db_query("insert into db_acount values($acount,61,314,'','".AddSlashes(pg_result($resaco,0,'q01_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,61,315,'','".AddSlashes(pg_result($resaco,0,'q01_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,61,6455,'','".AddSlashes(pg_result($resaco,0,'q01_manual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,61,1015332,'','".AddSlashes(pg_result($resaco,0,'q01_valorisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
    // funcao para alteracao
-   function alterar ($q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null) {
+   public function alterar ($q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null) {
       $this->atualizacampos();
      $sql = " update isscalc set ";
      $virgula = "";
@@ -303,6 +318,19 @@ class cl_isscalc {
          return false;
        }
      }
+     if(trim($this->q01_valorisencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q01_valorisencao"])){
+      $sql  .= $virgula." q01_valorisencao = $this->q01_valorisencao ";
+      $virgula = ",";
+      if(trim($this->q01_valorisencao) == null ){
+        $this->erro_sql = " Campo valor da isenção nao Informado.";
+        $this->erro_campo = "q01_valorisencao";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
      if(trim($this->q01_manual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q01_manual"])){
        $sql  .= $virgula." q01_manual = '$this->q01_manual' ";
        $virgula = ",";
@@ -357,6 +385,8 @@ class cl_isscalc {
            $resac = db_query("insert into db_acount values($acount,61,315,'".AddSlashes(pg_result($resaco,$conresaco,'q01_valor'))."','$this->q01_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q01_manual"]))
            $resac = db_query("insert into db_acount values($acount,61,6455,'".AddSlashes(pg_result($resaco,$conresaco,'q01_manual'))."','$this->q01_manual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["q01_valorisencao"]))
+           $resac = db_query("insert into db_acount values($acount,61,1015332,'".AddSlashes(pg_result($resaco,$conresaco,'q01_valorisencao'))."','$this->q01_valorisencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -392,7 +422,7 @@ class cl_isscalc {
      }
    }
    // funcao para exclusao
-   function excluir ($q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$dbwhere=null) {
+   public function excluir ($q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q01_anousu,$q01_inscr,$q01_cadcal,$q01_recei,$q01_numpre));
      }else{
@@ -415,6 +445,7 @@ class cl_isscalc {
          $resac = db_query("insert into db_acount values($acount,61,314,'','".AddSlashes(pg_result($resaco,$iresaco,'q01_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,61,315,'','".AddSlashes(pg_result($resaco,$iresaco,'q01_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,61,6455,'','".AddSlashes(pg_result($resaco,$iresaco,'q01_manual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,61,1015332,'','".AddSlashes(pg_result($resaco,$iresaco,'q01_valorisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from isscalc
@@ -487,7 +518,7 @@ class cl_isscalc {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -509,10 +540,10 @@ class cl_isscalc {
       }
      return $result;
    }
-   function sql_query ( $q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,7 +603,7 @@ class cl_isscalc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -581,10 +612,10 @@ class cl_isscalc {
      }
      return $sql;
   }
-   function sql_query_arrecad ( $q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_arrecad ( $q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -638,7 +669,7 @@ class cl_isscalc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,10 +678,10 @@ class cl_isscalc {
      }
      return $sql;
   }
-   function sql_query_file ( $q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $q01_anousu=null,$q01_inscr=null,$q01_cadcal=null,$q01_recei=null,$q01_numpre=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -703,7 +734,7 @@ class cl_isscalc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -713,7 +744,7 @@ class cl_isscalc {
      return $sql;
   }
 
-  function sql_queryIssqnVistorias($iAnoCalculo) {
+  public function sql_queryIssqnVistorias($iAnoCalculo) {
 
     $sSql  = "select codigo_tipodebito,                                                                                                                  ";
     $sSql .= "       tipodebito,                                                                                                                         ";

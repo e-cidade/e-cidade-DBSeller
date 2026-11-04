@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -111,13 +111,13 @@ switch ($iOpcao) {
     <tr> 
       <td  align = "left" nowrap title = "<?=$Tl20_codigo?>" width="95">
         <b>
-          <?
+          <?php
           $iOpcaoAncora   = 1;
           db_ancora('Licitação:', "js_pequisaLicitacao({$iOpcao});", $iOpcaoAncora);?>
         </b> 
       </td>
       <td align = "left" nowrap>
-        <? 
+        <?php 
           db_input("l20_codigo", 6, $Il20_codigo, true, "text", 3);
         ?>
       </td>
@@ -129,7 +129,7 @@ switch ($iOpcao) {
         <b>Edital:</b>
       </td>
       <td align = "left" nowrap>
-        <? 
+        <?php 
           db_input("l20_edital", 6, $Il20_edital, true, "text", 3);
         ?>
       </td>
@@ -140,7 +140,7 @@ switch ($iOpcao) {
       <td colspan="2">
         <fieldset>
           <legend><b>Motivo</legend>
-            <?
+            <?php
               db_textarea("l11_obs", 10, 60, "", true, "text", $iOpcao);
             ?>
           </fieldset>
@@ -161,7 +161,7 @@ switch ($iOpcao) {
 </form>
 </center>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

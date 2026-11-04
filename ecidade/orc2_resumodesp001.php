@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -216,7 +216,7 @@ function js_selecionar(){
       </tr>
       <tr>
          <td align="center" colspan="2">
-         <?
+         <?php
            db_selinstit('parent.js_limpa',300,100);
          ?>
          </td>
@@ -228,7 +228,7 @@ function js_selecionar(){
       <tr>
         <td align='right' > <strong>Filtrar por:</strong></td>
         <td align='left'>
-	  <?
+	  <?php
 	  
 	   $xy = array('1A'=>'Órgão','2A'=>'Unidade');
 	     db_select('nivel',$xy,true,2,"");
@@ -240,7 +240,7 @@ function js_selecionar(){
       <tr>
          <td align='right' ><strong>Agrupar:</strong></td>
          <td align='left'>
-	 <?
+	 <?php
          $xy = array('1'=>'Sim','2'=>'Não');
  	 db_select('tipoagrupar',$xy,true,2);
          ?>
@@ -255,7 +255,7 @@ function js_selecionar(){
         <td align="right" ><strong>Totalizar:</strong></td>
         <td>
         
-	  <?
+	  <?php
 	  
 	   $xy = array('0'=>'Geral','3B'=>'Função','4B'=>'Sub-Função','5B'=>'Programa','6B'=>'Proj/Ativ','7B'=>'Elemento');
 	     db_select('nivelele',$xy,true,2," onchange=\"js_selecionar()\" ");
@@ -269,7 +269,7 @@ function js_selecionar(){
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-      <?
+      <?php
       db_selorcbalanco(true,false,true);
       ?>
       <tr>
@@ -289,7 +289,7 @@ function js_selecionar(){
   </form>
     </table>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

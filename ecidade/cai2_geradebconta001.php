@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -79,7 +79,7 @@ function js_geraarquivo() {
           <tr>
             <td nowrap title="<?=@$Td72_data?>">Data para débito em Conta Corrente:</td>	
             <td>	
-              <?
+              <?php
                 if(empty($liberar) && empty($deslibera) && empty($d72_data_dia) ){
 	                $d72_data_dia = date("d", db_getsession("DB_datausu") );
 	                $d72_data_mes = date("m", db_getsession("DB_datausu") );
@@ -93,7 +93,7 @@ function js_geraarquivo() {
           <tr> 
 	          <td height="25">Tipo de débito:</td>
             <td height="25">
-              <?
+              <?php
                 $resulttipodebito = db_query("
                   select distinct 
                          d66_arretipo, 
@@ -106,16 +106,16 @@ function js_geraarquivo() {
                 if (pg_numrows($resulttipodebito) > 0) {
                   ?>
                   <select name="tipodebito" onChange='document.form1.submit()'>
-                  <?
+                  <?php
                   for ($i = 0; $i < pg_numrows($resulttipodebito); $i ++) {
                     db_fieldsmemory($resulttipodebito, $i);
                     ?>
                     <option value='<?=$d66_arretipo?>'><?=$k00_descr?></option>
-                    <?
+                    <?php
                   }
                   ?>
 		              </select>
-		              <?
+		              <?php
                 }
               ?>
             </td>
@@ -124,7 +124,7 @@ function js_geraarquivo() {
           <tr> 
 	          <td height="25">Parcela:</td>
             <td height="25">
-             <?
+             <?php
                //if (pg_numrows($resulttipodebito) == 1) {
                  db_fieldsmemory($resulttipodebito, 0);
 
@@ -146,16 +146,16 @@ function js_geraarquivo() {
                  if (pg_numrows($resultnumpar) > 0) {
                    ?>
                    <select name="numpar">
-                   <?
+                   <?php
                    for ($i = 0; $i < pg_numrows($resultnumpar); $i ++) {
                      db_fieldsmemory($resultnumpar, $i);
                      ?>
                      <option value='<?=$k00_numpar?>'><?=$k00_numpar?></option>
-		                 <?
+		                 <?php
 	                 }
                    ?>
                    </select>
-                   <?
+                   <?php
                  }
                //}
                
@@ -167,13 +167,13 @@ function js_geraarquivo() {
 	          <td height="25"><strong>Exercicio do Vencimento:</strong></td>
             <td height="25">
               <select name="anovenc">
-              <?
+              <?php
                 $anousu = db_getsession("DB_anousu");
                 for($x=$anousu-1; $x<=$anousu+2; $x++) {
 									$selected=($x==$anousu)?"selected":"";
                   ?>
                   <option value='<?=$x?>' <?=$selected?>><?=$x?></option>
-                  <?
+                  <?php
                 }
               ?>
               </select>
@@ -183,7 +183,7 @@ function js_geraarquivo() {
           <tr> 
 	          <td height="25"><strong>Mes do Vencimento:</strong></td>
             <td height="25">
-             <?
+             <?php
                $meses = array( "01" => "Janeiro",
                                "02" => "Fevereiro",
                                "03" => "Marco",
@@ -206,7 +206,7 @@ function js_geraarquivo() {
           <tr> 
             <td height="25">Banco:</td>
             <td height="25">
-              <?
+              <?php
 	              $resultbanco = db_query("
                   select distinct 
                          d62_banco,
@@ -218,12 +218,12 @@ function js_geraarquivo() {
                 if (pg_numrows($resultbanco) > 0) {
 	                /*?>
 	                <select name="banco">
-	                <?
+	                <?php
                   for ($i = 0; $i < pg_numrows($resultbanco); $i ++) {
                     db_fieldsmemory($resultbanco, $i);
                     ?>
                     <option value='<?=$d62_banco?>'><?=$d62_banco?></option>
-                    <?
+                    <?php
 	                }
 	                ?>
 	                </select>
@@ -239,7 +239,7 @@ function js_geraarquivo() {
 		 <tr> 
 	          <td height="25"><strong> Formato Arquivo:</strong></td>
             <td height="25">
-             <?
+             <?php
                $formato = array( "U" => "UNIX",
                                  "D" => "DOS");
                db_select("formatoArq", $formato, true, 1);
@@ -250,7 +250,7 @@ function js_geraarquivo() {
           <tr> 
 	        <td height="25"><strong>Linhas em Branco Final Arquivo:</strong></td>
             <td height="25">
-            	<? 
+            	<?php 
 				if(!isset($linhasBranco) || $linhasBranco==""){
 				  $linhasBranco = 1;
 				}
@@ -282,13 +282,13 @@ function js_geraarquivo() {
      </td>
   </tr>
 </table>
-<? 
+<?php 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 if (@$erro == true) {
   echo "<script>alert('$descricao_erro');</script>";

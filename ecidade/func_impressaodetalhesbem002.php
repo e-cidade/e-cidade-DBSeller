@@ -239,83 +239,106 @@ $oPdf->setfont('arial','b',8);
 $oPdf->cell(0,$iAlturaCelula,'DADOS DO BEM',0,1,"L",0);
 $oPdf->cell(0,$iAlturaCelula,'','T',1,"R",0);
 
+// Salva a posição inicial
+$x = $oPdf->GetX();
+$y = $oPdf->GetY();
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Bem :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
-$oPdf->Cell(60, $iAlturaCelula, $sBem, 0, 0, "L", 0);
+$oPdf->SetFont('arial', '', 6);
+$oPdf->MultiCell(60, $iAlturaCelula, $sBem, 0, "L", 0);
+$yAfter = $oPdf->GetY();
+$oPdf->SetXY($x + 90, $y);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Classificação :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sClassificacao, 0, 1, "L", 0);
 
+// Ajusta a posição Y para a próxima linha, baseado na maior altura entre Bem e Classificação
+$oPdf->SetY(max($yAfter, $oPdf->GetY())); 
+$x = $oPdf->GetX();
+$y = $oPdf->GetY();
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Órgão :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
-$oPdf->Cell(60, $iAlturaCelula, $sOrgao, 0, 0, "L", 0);
+$oPdf->SetFont('arial', '', 6);
+$oPdf->MultiCell(60, $iAlturaCelula, $sOrgao, 0, "L", 0);
+$yAfter = $oPdf->GetY();
+$oPdf->SetXY($x + 90, $y);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Unidade :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sUnidade, 0, 1, "L", 0);
 
+$oPdf->SetY(max($yAfter, $oPdf->GetY()));
+$x = $oPdf->GetX();
+$y = $oPdf->GetY();
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Departamento :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
-$oPdf->Cell(60, $iAlturaCelula, $sDepartamento, 0, 0, "L", 0);
+$oPdf->SetFont('arial', '', 6);
+$oPdf->MultiCell(60, $iAlturaCelula, $sDepartamento, 0, "L", 0);
+$yAfter = $oPdf->GetY();
+$oPdf->SetXY($x + 90, $y);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Divisão Depart. :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sDivisaoDepart, 0, 1, "L", 0);
 
+$oPdf->SetY(max($yAfter, $oPdf->GetY()));
+$x = $oPdf->GetX();
+$y = $oPdf->GetY();
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Fornecedor :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
-$oPdf->Cell(60, $iAlturaCelula, $sFornecedor, 0, 0, "L", 0);
+$oPdf->SetFont('arial', '', 6);
+$oPdf->MultiCell(60, $iAlturaCelula, $sFornecedor, 0, "L", 0);
+$yAfter = $oPdf->GetY();
+$oPdf->SetXY($x + 90, $y);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Convênio :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sCedente, 0, 1, "L", 0);
 
+$oPdf->SetY(max($yAfter, $oPdf->GetY()));
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Telefone :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sTelefone, 0, 0, "L", 0);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'E-mail :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sEmail, 0, 1, "L", 0);
 
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Aquisição :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sAquisicao, 0, 0, "L", 0);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Valor Residual :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sValorResidual, 0, 1, "L", 0);
 
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Valor Aquisição :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sValorAquisicao, 0, 0, "L", 0);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Tipo de Depreciação :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sTipoDepreciacao, 0, 1, "L", 0);
 
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Placa Ident. :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sPlacaIdent, 0, 0, "L", 0);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Código do Lote :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->Cell(60, $iAlturaCelula, $sCodigoLote, 0, 1, "L", 0);
 
+$oPdf->Cell(0, $iAlturaCelula, '', 0, 1, "L", 0);
 $oPdf->SetFont('arial', 'b', 8);
 $oPdf->Cell(30, $iAlturaCelula, 'Observações :', 0, 0, "R", 0);
-$oPdf->SetFont('arial', '', 7);
+$oPdf->SetFont('arial', '', 6);
 $oPdf->MultiCell(150, $iAlturaCelula, $sObservacoes, 0, 1, "L", 0);
-
+$oPdf->Cell(0, $iAlturaCelula, '', 0, 1, "L", 0);
 
 if (isset($oGet->lDadosMaterial)){
 

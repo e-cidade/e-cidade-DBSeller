@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@
   <tr style="font-size:12px"> 
     <td align="center"><strong>Imagens em anexo desta ordem de servi&ccedil;o:</strong></td>
   </tr>
-<?
+<?php
   db_query("begin");
   $result = db_query("select * from db_ordemimagens where codordem = $ordem");
   $num = pg_numrows($result);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_cadenderbairro {
                  db73_sigla = varchar(2) = Sigla do Bairro 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderbairro() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderbairro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cadenderbairro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db73_sequencial = ($this->db73_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db73_sequencial"]:$this->db73_sequencial);
        $this->db73_cadendermunicipio = ($this->db73_cadendermunicipio == ""?@$GLOBALS["HTTP_POST_VARS"]["db73_cadendermunicipio"]:$this->db73_cadendermunicipio);
@@ -80,7 +80,7 @@ class cl_cadenderbairro {
      }
    }
    // funcao para inclusao
-   function incluir ($db73_sequencial){ 
+   public function incluir ($db73_sequencial){ 
       $this->atualizacampos();
      if($this->db73_cadendermunicipio == null ){ 
        $this->erro_sql = " Campo Código do Município nao Informado.";
@@ -182,7 +182,7 @@ class cl_cadenderbairro {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db73_sequencial=null) { 
+   public function alterar ($db73_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update cadenderbairro set ";
      $virgula = "";
@@ -283,7 +283,7 @@ class cl_cadenderbairro {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db73_sequencial=null,$dbwhere=null) { 
+   public function excluir ($db73_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db73_sequencial));
      }else{ 
@@ -347,7 +347,7 @@ class cl_cadenderbairro {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -370,7 +370,7 @@ class cl_cadenderbairro {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $db73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -410,7 +410,7 @@ class cl_cadenderbairro {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $db73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

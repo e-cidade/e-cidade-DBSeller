@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,75 +48,75 @@ if($cldb_config->numrows > 0){
 
   <tr>
     <td nowrap title="<?=@$Trh47_instit?>" align="right">
-       <?
+       <?php
        db_ancora(@$Lrh47_instit,"js_pesquisarh47_instit(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh47_instit',4,$Irh47_instit,true,'text',3," onchange='js_pesquisarh47_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',50,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tz01_numcgm?>" align="right">
-      <?
+      <?php
       db_ancora("<b>Interlocutor 1:</b>","js_pesquisaz01_numcgm(true,1);",$db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input("z01_numcgm",8,$Iz01_numcgm,true,"text",$db_opcao,"onchange='js_pesquisaz01_numcgm(false,1);'","inter1")
       ?>
-      <?
+      <?php
       db_input("z01_nome",46,$Iz01_nome,true,"text",3,"","deinter1")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tz01_numcgm?>" align="right">
-      <?
+      <?php
       db_ancora("<b>Interlocutor 2:</b>","js_pesquisaz01_numcgm(true,2);",$db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('z01_numcgm',8,$Iz01_numcgm,true,'text',$db_opcao,"onchange='js_pesquisaz01_numcgm(false,2);'","inter2")
       ?>
-      <?
+      <?php
       db_input('z01_nome',46,$Iz01_nome,true,'text',3,'',"deinter2")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tz01_numcgm?>" align="right">
-      <?
+      <?php
       db_ancora("<b>Interlocutor 3:</b>","js_pesquisaz01_numcgm(true,3);",$db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('z01_numcgm',8,$Iz01_numcgm,true,'text',$db_opcao,"onchange='js_pesquisaz01_numcgm(false,3);'","inter3")
       ?>
-      <?
+      <?php
       db_input('z01_nome',46,$Iz01_nome,true,'text',3,'',"deinter3")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh47_rubric?>" align="right">
-       <?
+       <?php
        db_ancora(@$Lrh47_rubric,"js_pesquisarh47_rubric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh47_rubric',4,$Irh47_rubric,true,'text',$db_opcao," onchange='js_pesquisarh47_rubric(false);'")
 ?>
-       <?
+       <?php
 db_input('rh27_descr',50,$Irh27_descr,true,'text',3,'')
        ?>
     </td>
@@ -126,7 +126,7 @@ db_input('rh27_descr',50,$Irh27_descr,true,'text',3,'')
        <?=@$Lrh47_perc?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh47_perc',5,$Irh47_perc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -136,7 +136,7 @@ db_input('rh47_perc',5,$Irh47_perc,true,'text',$db_opcao,"")
        <?=@$Lrh47_contrato?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh47_contrato',14,$Irh47_contrato,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -144,15 +144,15 @@ db_input('rh47_contrato',14,$Irh47_contrato,true,'text',$db_opcao,"")
 
  <tr>
     <td nowrap title="<?=@$Trh47_db_sysfuncoes?>" align="right">
-       <?
+       <?php
        db_ancora(@$Lrh47_db_sysfuncoes,"js_pesquisarh47_db_sysfuncoes(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('rh47_db_sysfuncoes',5,$Irh47_db_sysfuncoes,true,'text',$db_opcao," onchange='js_pesquisarh47_db_sysfuncoes(false);'")
 ?>
-       <?
+       <?php
 db_input('nomefuncao',49,$Inomefuncao,true,'text',3,'')
        ?>
     </td>
@@ -167,7 +167,7 @@ db_input('nomefuncao',49,$Inomefuncao,true,'text',3,'')
         <?=@$Lrh47_diasuteis?>
     </td>
     <td>
-        <?
+        <?php
         db_input('rh47_diasuteis',14,$Irh47_diasuteis,true,'text',$db_opcao,"")
         ?>
    </td>
@@ -179,7 +179,7 @@ db_input('nomefuncao',49,$Inomefuncao,true,'text',3,'')
        <?=@$Lrh47_tipovale?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Alimentação','2'=>'Refeição');
 db_select('rh47_tipovale',$x,true,$db_opcao,"");
 ?>
@@ -192,7 +192,7 @@ db_select('rh47_tipovale',$x,true,$db_opcao,"");
 
 </table>
 </center>
-<?
+<?php
 if($db_opcao == 2){
   echo "<input name='alterar' type='submit' id='db_opcao' value='Alterar' onclick='return js_retornacampos(1);'>&nbsp;&nbsp;";
   echo "<input name='excluir' type='submit' id='db_opcao' value='Excluir'>";
@@ -200,7 +200,7 @@ if($db_opcao == 2){
   echo "<input name='incluir' type='submit' id='db_opcao' value='Incluir' onclick='return js_retornacampos(1);'>";
 }
 ?>
-<?
+<?php
 db_input('opcaopesquisa',40,0,true,'hidden',3,'');
 ?>
 </form>
@@ -292,7 +292,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhvisavale.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -67,7 +67,7 @@ if (isset($lEmpenhado) && $lEmpenhado) {
               <?=$Lc36_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c36_sequencial",10,$Ic36_sequencial,true,"text",4,"","chave_c36_sequencial");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ if (isset($lEmpenhado) && $lEmpenhado) {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_inscricaopassivo.php")==true){
@@ -128,12 +128,12 @@ if (isset($lEmpenhado) && $lEmpenhado) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

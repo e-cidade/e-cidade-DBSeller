@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clarretipo->rotulo->label("k00_descr");
               
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codigo",4,'',true,"text",4,"","chave_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clarretipo->rotulo->label("k00_descr");
             <td width="4%" align="right" nowrap title="Nome">Nome
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("descr",40,'',true,"text",4,"","chave_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clarretipo->rotulo->label("k00_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if ($lista == ''){
         
          $sMsg = _M('tributario.notificacoes.cai2_geranotif003.selecione_lista');
@@ -215,11 +215,11 @@ $clarretipo->rotulo->label("k00_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>

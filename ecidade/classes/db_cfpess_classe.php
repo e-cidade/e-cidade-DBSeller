@@ -501,7 +501,7 @@ class cl_cfpess
      }
    }
 
-    public function incluir($r11_anousu,$r11_mesusu,$r11_instit)
+    public function incluir($r11_anousu=null,$r11_mesusu=null,$r11_instit=null)
     {
       $this->atualizacampos();
      if($this->r11_cdfpas == null ){
@@ -3288,14 +3288,13 @@ class cl_cfpess
      return $sql;
   }
 
-   function atualiza_incluir (){
+   public function atualiza_incluir (){
   	 $this->incluir($this->r11_anousu,$this->r11_mesusu);
    }
-
-   function sql_query_rubr ( $r11_anousu=null,$r11_mesusu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_rubr ( $r11_anousu=null,$r11_mesusu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -3329,7 +3328,7 @@ class cl_cfpess
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -3341,7 +3340,7 @@ class cl_cfpess
    function sql_query_parametro ( $r11_anousu=null,$r11_mesusu=null,$r11_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -3394,7 +3393,7 @@ class cl_cfpess
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -3413,7 +3412,7 @@ class cl_cfpess
    * @param   integer $iMesUsu
    * @return  integer | boolean
    */
-  function buscaCodigoRelatorio($sTipoRelatorio, $iAnoUsu, $iMesUsu, $iInstituicao = 0) {
+  public function buscaCodigoRelatorio($sTipoRelatorio, $iAnoUsu, $iMesUsu, $iInstituicao = 0) {
 
     if ( $iInstituicao == 0 ) {
       $iInstituicao = db_getsession('DB_instit');

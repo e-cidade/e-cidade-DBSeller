@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("q02_numcgm");
   <tr>
     <td nowrap title="<?=@$Ty94_codtiaf?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Ly94_codtiaf,"js_pesquisay94_codtiaf(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y94_codtiaf',10,$Iy94_codtiaf,true,'text',$db_opcao," onchange='js_pesquisay94_codtiaf(false);'")
 ?>
-       <?
+       <?php
 db_input('y90_codtiaf',10,$Iy90_codtiaf,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty94_inscr?>">
-       <?
+       <?php
        db_ancora(@$Ly94_inscr,"js_pesquisay94_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y94_inscr',8,$Iy94_inscr,true,'text',$db_opcao," onchange='js_pesquisay94_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tiafinscr.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

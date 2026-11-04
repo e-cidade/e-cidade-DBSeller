@@ -74,4 +74,9 @@ class Turno extends Model
         $this->ed15_c_nome = $ed15_c_nome;
         return $ed15_c_nome;
     }
+
+    public function turnosReferentes()
+    {
+        return $this->hasMany(TurnoReferente::class, 'ed231_i_turno', 'ed15_i_codigo');
+    }
 }

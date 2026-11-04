@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ db_app::load('estilos.css');
           </legend>        
         </a>     
         <table class="form-container" id="tbDepartamentos" style="display: none;">
-      		<?
+      		<?php
           // $aux = new cl_arquivo_auxiliar;
           $aux->cabecalho = "<strong>Departamentos</strong>";
           $aux->codigo = "coddepto"; //chave de retorno da func
@@ -101,7 +101,7 @@ db_app::load('estilos.css');
           </legend>        
         </a>     
         <table class="form-container" id="tbDivisao" style="display: none;">
-          <?
+          <?php
 	        $aux1 = new cl_arquivo_auxiliar;
 	        $aux1->cabecalho = "<strong>Divisão</strong>";
 	        $aux1->codigo = "t30_codigo"; //chave de retorno da func
@@ -135,7 +135,7 @@ db_app::load('estilos.css');
           </legend>        
         </a>     
         <table class="form-container" id="tbBens" style="display: none;">
-          <?
+          <?php
           $aux2 = new cl_arquivo_auxiliar;
           $aux2->cabecalho = "<strong>Bens</strong>";
           $aux2->codigo = "t52_bem"; //chave de retorno da func
@@ -169,7 +169,7 @@ db_app::load('estilos.css');
           </legend>        
         </a>     
         <table class="form-container" id="tbClassificacoes" style="display: none;">
-          <?
+          <?php
           $aux3 = new cl_arquivo_auxiliar;
           $aux3->cabecalho = "<strong>Classificações</strong>";
           $aux3->codigo = "t64_codcla"; //chave de retorno da func
@@ -197,10 +197,10 @@ db_app::load('estilos.css');
   <tr id="datas" >
        <td>Período em:</td>
        <td nowrap>
-       <?
+       <?php
           db_inputdata("data_inicial","","","",true,"text",4);
        ?>&nbsp;<b>a</b>&nbsp;
-       <?
+       <?php
           db_inputdata("data_final","","","",true,"text",4);
        ?>
        </td>
@@ -208,7 +208,7 @@ db_app::load('estilos.css');
   <tr>
     <td>Etiquetas:</td>
     <td>
-    <?
+    <?php
       $imp_forn = array("T"=>"Todas","I"=>"Impressas","R"=>"Reimpressas");
       db_select("etiqueta",$imp_forn,true,1);
     ?>
@@ -217,7 +217,7 @@ db_app::load('estilos.css');
   <tr>
     <td>Tipo:</td>
     <td>
-    <?
+    <?php
       $imp_forn = array("T"=>"Todas","L"=>"Lote","I"=>"Individual");
       db_select("tipo",$imp_forn,true,1);
     ?>
@@ -226,7 +226,7 @@ db_app::load('estilos.css');
   <tr>
     <td nowrap align="right"><b>Ordenar por:</b></td>
     <td nowrap>
-    <?
+    <?php
       $ordenar = array("1"=>"Bem","2"=>"Placa","3"=>"Data");
       db_select("ordenar",$ordenar,true,1);
     ?>
@@ -236,7 +236,7 @@ db_app::load('estilos.css');
 </fieldset>
 <input type="button" value="Emitir relatório" onClick="js_emite();">
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

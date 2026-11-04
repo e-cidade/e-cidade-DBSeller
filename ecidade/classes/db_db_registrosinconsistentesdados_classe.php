@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_registrosinconsistentesdados
-class cl_db_registrosinconsistentesdados { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db137_sequencial = 0; 
-   var $db137_db_registrosinconsistentes = 0; 
-   var $db137_correto = 'f'; 
-   var $db137_chave = 0; 
-   var $db137_excluir = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_registrosinconsistentesdados {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db137_sequencial = 0;
+   var $db137_db_registrosinconsistentes = 0;
+   var $db137_correto = 'f';
+   var $db137_chave = 0;
+   var $db137_excluir = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db137_sequencial = int4 = Sequencial 
-                 db137_db_registrosinconsistentes = int4 = Sequencial 
-                 db137_correto = bool = Correto 
-                 db137_chave = int4 = Chave 
-                 db137_excluir = bool = Excluir 
+                 db137_sequencial = int4 = Sequencial
+                 db137_db_registrosinconsistentes = int4 = Sequencial
+                 db137_correto = bool = Correto
+                 db137_chave = int4 = Chave
+                 db137_excluir = bool = Excluir
                  ";
-   //funcao construtor da classe 
-   function cl_db_registrosinconsistentesdados() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_registrosinconsistentesdados"); 
+     $this->rotulo = new rotulo("db_registrosinconsistentesdados");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_db_registrosinconsistentesdados {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db137_sequencial = ($this->db137_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db137_sequencial"]:$this->db137_sequencial);
        $this->db137_db_registrosinconsistentes = ($this->db137_db_registrosinconsistentes == ""?@$GLOBALS["HTTP_POST_VARS"]["db137_db_registrosinconsistentes"]:$this->db137_db_registrosinconsistentes);
@@ -83,9 +83,9 @@ class cl_db_registrosinconsistentesdados {
      }
    }
    // funcao para inclusao
-   function incluir ($db137_sequencial){ 
+   public function incluir ($db137_sequencial){
       $this->atualizacampos();
-     if($this->db137_db_registrosinconsistentes == null ){ 
+     if($this->db137_db_registrosinconsistentes == null ){
        $this->erro_sql = " Campo Sequencial nao Informado.";
        $this->erro_campo = "db137_db_registrosinconsistentes";
        $this->erro_banco = "";
@@ -94,10 +94,10 @@ class cl_db_registrosinconsistentesdados {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db137_correto == null ){ 
+     if($this->db137_correto == null ){
        $this->db137_correto = "f";
      }
-     if($this->db137_chave == null ){ 
+     if($this->db137_chave == null ){
        $this->erro_sql = " Campo Chave nao Informado.";
        $this->erro_campo = "db137_chave";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_db_registrosinconsistentesdados {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db137_excluir == null ){ 
+     if($this->db137_excluir == null ){
        $this->erro_sql = " Campo Excluir nao Informado.";
        $this->erro_campo = "db137_excluir";
        $this->erro_banco = "";
@@ -116,16 +116,16 @@ class cl_db_registrosinconsistentesdados {
        return false;
      }
      if($db137_sequencial == "" || $db137_sequencial == null ){
-       $result = db_query("select nextval('db_registrosinconsistentesdados_db137_sequencial_seq')"); 
+       $result = db_query("select nextval('db_registrosinconsistentesdados_db137_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_registrosinconsistentesdados_db137_sequencial_seq do campo: db137_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_registrosinconsistentesdados_db137_sequencial_seq do campo: db137_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db137_sequencial = pg_result($result,0,0); 
+       $this->db137_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_registrosinconsistentesdados_db137_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $db137_sequencial)){
@@ -136,10 +136,10 @@ class cl_db_registrosinconsistentesdados {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db137_sequencial = $db137_sequencial; 
+         $this->db137_sequencial = $db137_sequencial;
        }
      }
-     if(($this->db137_sequencial == null) || ($this->db137_sequencial == "") ){ 
+     if(($this->db137_sequencial == null) || ($this->db137_sequencial == "") ){
        $this->erro_sql = " Campo db137_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -148,21 +148,21 @@ class cl_db_registrosinconsistentesdados {
        return false;
      }
      $sql = "insert into db_registrosinconsistentesdados(
-                                       db137_sequencial 
-                                      ,db137_db_registrosinconsistentes 
-                                      ,db137_correto 
-                                      ,db137_chave 
-                                      ,db137_excluir 
+                                       db137_sequencial
+                                      ,db137_db_registrosinconsistentes
+                                      ,db137_correto
+                                      ,db137_chave
+                                      ,db137_excluir
                        )
                 values (
-                                $this->db137_sequencial 
-                               ,$this->db137_db_registrosinconsistentes 
-                               ,'$this->db137_correto' 
-                               ,$this->db137_chave 
-                               ,'$this->db137_excluir' 
+                                $this->db137_sequencial
+                               ,$this->db137_db_registrosinconsistentes
+                               ,'$this->db137_correto'
+                               ,$this->db137_chave
+                               ,'$this->db137_excluir'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registros inconsistentes Dados ($this->db137_sequencial) nao Incluído. Inclusao Abortada.";
@@ -203,16 +203,16 @@ class cl_db_registrosinconsistentesdados {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db137_sequencial=null) { 
+   public function alterar ($db137_sequencial=null) {
       $this->atualizacampos();
      $sql = " update db_registrosinconsistentesdados set ";
      $virgula = "";
-     if(trim($this->db137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_sequencial"])){ 
+     if(trim($this->db137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_sequencial"])){
        $sql  .= $virgula." db137_sequencial = $this->db137_sequencial ";
        $virgula = ",";
-       if(trim($this->db137_sequencial) == null ){ 
+       if(trim($this->db137_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db137_sequencial";
          $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_db_registrosinconsistentesdados {
          return false;
        }
      }
-     if(trim($this->db137_db_registrosinconsistentes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_db_registrosinconsistentes"])){ 
+     if(trim($this->db137_db_registrosinconsistentes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_db_registrosinconsistentes"])){
        $sql  .= $virgula." db137_db_registrosinconsistentes = $this->db137_db_registrosinconsistentes ";
        $virgula = ",";
-       if(trim($this->db137_db_registrosinconsistentes) == null ){ 
+       if(trim($this->db137_db_registrosinconsistentes) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db137_db_registrosinconsistentes";
          $this->erro_banco = "";
@@ -235,14 +235,14 @@ class cl_db_registrosinconsistentesdados {
          return false;
        }
      }
-     if(trim($this->db137_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_correto"])){ 
+     if(trim($this->db137_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_correto"])){
        $sql  .= $virgula." db137_correto = '$this->db137_correto' ";
        $virgula = ",";
      }
-     if(trim($this->db137_chave)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_chave"])){ 
+     if(trim($this->db137_chave)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_chave"])){
        $sql  .= $virgula." db137_chave = $this->db137_chave ";
        $virgula = ",";
-       if(trim($this->db137_chave) == null ){ 
+       if(trim($this->db137_chave) == null ){
          $this->erro_sql = " Campo Chave nao Informado.";
          $this->erro_campo = "db137_chave";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_db_registrosinconsistentesdados {
          return false;
        }
      }
-     if(trim($this->db137_excluir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_excluir"])){ 
+     if(trim($this->db137_excluir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_excluir"])){
        $sql  .= $virgula." db137_excluir = '$this->db137_excluir' ";
        $virgula = ",";
-       if(trim($this->db137_excluir) == null ){ 
+       if(trim($this->db137_excluir) == null ){
          $this->erro_sql = " Campo Excluir nao Informado.";
          $this->erro_campo = "db137_excluir";
          $this->erro_banco = "";
@@ -295,7 +295,7 @@ class cl_db_registrosinconsistentesdados {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros inconsistentes Dados nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db137_sequencial;
@@ -323,11 +323,11 @@ class cl_db_registrosinconsistentesdados {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db137_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db137_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (isset($lSessaoDesativarAccount) && $lSessaoDesativarAccount === false) {
@@ -335,7 +335,7 @@ class cl_db_registrosinconsistentesdados {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($db137_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -368,7 +368,7 @@ class cl_db_registrosinconsistentesdados {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros inconsistentes Dados nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db137_sequencial;
@@ -396,11 +396,11 @@ class cl_db_registrosinconsistentesdados {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -422,11 +422,11 @@ class cl_db_registrosinconsistentesdados {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $db137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $db137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,15 +442,15 @@ class cl_db_registrosinconsistentesdados {
      $sql2 = "";
      if($dbwhere==""){
        if($db137_sequencial!=null ){
-         $sql2 .= " where db_registrosinconsistentesdados.db137_sequencial = $db137_sequencial "; 
-       } 
+         $sql2 .= " where db_registrosinconsistentesdados.db137_sequencial = $db137_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,11 +459,11 @@ class cl_db_registrosinconsistentesdados {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $db137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $db137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,15 +476,15 @@ class cl_db_registrosinconsistentesdados {
      $sql2 = "";
      if($dbwhere==""){
        if($db137_sequencial!=null ){
-         $sql2 .= " where db_registrosinconsistentesdados.db137_sequencial = $db137_sequencial "; 
-       } 
+         $sql2 .= " where db_registrosinconsistentesdados.db137_sequencial = $db137_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -494,14 +494,14 @@ class cl_db_registrosinconsistentesdados {
      return $sql;
   }
    /**
-   * Busca dados dos registros inconsistentes 
-   * 
+   * Busca dados dos registros inconsistentes
+   *
    * @param mixed $iRegistroInconsitente - codigo do header das inconsistencias
    * @access public
    * @return string
    */
-  function sql_query_buscaDependencias($iRegistroInconsitente) {
-  
+  public function sql_query_buscaDependencias($iRegistroInconsitente) {
+
     $sSql  = "select db_syscampo.nomecam                         as campo,                                            ";
     $sSql .= "       db_sysarquivo.nomearq                       as tabela,                                           ";
     $sSql .= "       db_registrosinconsistentesdados.db137_chave as chave,                                            ";
@@ -521,7 +521,7 @@ class cl_db_registrosinconsistentesdados {
     $sSql .= "       inner join pg_tables                  on tablename            = db_sysarquivo.nomearq            ";
     $sSql .= " where db137_db_registrosinconsistentes = {$iRegistroInconsitente}                                      ";
     $sSql .= "   and db137_correto is false                                                                           ";
-  
+
     return $sSql;
   }
 }

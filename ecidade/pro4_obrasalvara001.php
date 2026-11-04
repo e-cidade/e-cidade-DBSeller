@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,44 +48,22 @@ $db_botao = true;
 db_app::load('scripts.js, prototype.js, strings.js, widgets/windowAux.widget.js, widgets/dbmessageBoard.widget.js');
 db_app::load('estilos.css');
 ?>
-<style>
 
-  #window {
-    border-collapse: collapse;
-  }
-
-  #window td {
-    margin: 10px;
-    padding: 2px;
-    border: 1px solid #CCC;
-  }
-
-  #window .descricao {
-    font-weight: bold;
-    width: 25%;
-  }
-
-  #window .conteudo {
-    background-color: #FFF;
-    width: 75%;
-  }
-</style>
 </head>
-
 <body class="body-default">
 <div class="container">
   <form name="form1" id="form1">
     <fieldset>
-      <legend>Manuteno de Alvar de Obras</legend>
+      <legend>Manutenção de Alvará de Obras</legend>
       <table class="form-container">
         <tr>
           <td nowrap title="<?= @$Tob04_codobra ?>">
-              <?
+              <?php
               db_ancora(@$Lob04_codobra, "js_pesquisaObra(true);", ($db_opcao == 2 ? 3 : $db_opcao));
               ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob04_codobra', 10, $Iob04_codobra, true, 'text', ($db_opcao == 2 ? 3 : $db_opcao),
                 " onchange='js_pesquisaObra(false);'");
               db_input('ob01_nomeobra', 40, $Iob01_nomeobra, true, 'text', 3, '');
@@ -95,7 +73,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?= @$Tob04_alvara ?>"><?= @$Lob04_alvara ?></td>
           <td nowrap>
-              <?
+              <?php
               db_input('ob04_alvara', 9, $Iob04_alvara, true, 'text', 1, "");
               if ($db_opcao == 1) {
                   echo "(Se no preencher, cdigo ser gerado automaticamente)";
@@ -106,7 +84,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?php echo $Tob04_dataexpedicao; ?>"><?php echo $Lob04_dataexpedicao; ?></td>
           <td>
-              <?
+              <?php
               if ($db_opcao == 1) {
 
                   $ob04_dataexpedicao_dia = date("d", db_getsession("DB_datausu"));
@@ -121,7 +99,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?= @$Tob04_data ?>"><?= @$Lob04_data ?></td>
           <td>
-              <?
+              <?php
               if ($db_opcao == 1) {
 
                   $ob04_data_dia = date("d", db_getsession("DB_datausu"));
@@ -137,7 +115,7 @@ db_app::load('estilos.css');
               <?= @$Lob04_dtvalidade ?>
           </td>
           <td>
-              <?
+              <?php
               db_inputdata('ob04_dtvalidade', @$ob04_dtvalidade_dia, @$ob04_dtvalidade_mes, @$ob04_dtvalidade_ano, true,
                 'text', $db_opcao, "")
               ?>
@@ -148,7 +126,7 @@ db_app::load('estilos.css');
           <td nowrap title="Processos registrado no sistema?"><label id="lbl_lProcessoSistema">Processo do
               Sistema:</label></td>
           <td nowrap>
-              <?
+              <?php
               $lProcessoSistema = true;
               db_select('lProcessoSistema', array(true => 'SIM', false => 'NO'), true, $db_opcao,
                 "onchange='js_processoSistema(this.value)' style='width: 95px'")
@@ -157,12 +135,12 @@ db_app::load('estilos.css');
         </tr>
         <tr id="processoSistema">
           <td nowrap title="<?= @$Tp58_codproc ?>">
-              <?
+              <?php
               db_ancora($Lp58_codproc, 'js_pesquisaProcesso(true)', $db_opcao);
               ?>
           </td>
           <td nowrap>
-              <?
+              <?php
               db_input('p58_codproc', 10, $Ip58_codproc, true, 'text', $db_opcao,
                 'onchange="js_pesquisaProcesso(false)"');
               db_input('p58_requer', 40, $Ip58_requer, true, 'text', 3);
@@ -172,7 +150,7 @@ db_app::load('estilos.css');
         <tr id="processoExterno1" style="display: none;">
           <td nowrap title="Nmero do processo externo"><label id="lbl_ob04_processo">Processo:</label></td>
           <td nowrap>
-              <?
+              <?php
               db_input('ob04_processo', 10, $Iob04_processo, true, 'text', $db_opcao);
               ?>
           </td>
@@ -181,7 +159,7 @@ db_app::load('estilos.css');
         <tr id="processoExterno2" style="display: none;">
           <td nowrap title="Nmero do processo externo"><?= @$Lob04_titularprocesso ?></td>
           <td nowrap>
-              <?
+              <?php
               db_input('ob04_titularprocesso', 54, $Iob04_titularprocesso, true, 'text', $db_opcao);
               ?>
           </td>
@@ -189,7 +167,7 @@ db_app::load('estilos.css');
         <tr id="processoExterno3" style="display: none;">
           <td nowrap title="Nmero do processo externo"><?= @$Lob04_dtprocesso ?></td>
           <td nowrap>
-              <?
+              <?php
               db_inputdata('ob04_dtprocesso', @$ob04_dtprocesso_dia, @$ob04_dtprocesso_mes, @$ob04_dtprocesso_ano, true,
                 'text', $db_opcao);
               ?>
@@ -198,7 +176,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?= @$Tob04_classe ?>"><?= @$Lob04_classe ?></td>
           <td nowrap>
-              <?
+              <?php
               db_input('ob04_classe', 54, $Iob04_classe, true, 'text', 1, "");
               ?>
           </td>
@@ -209,7 +187,7 @@ db_app::load('estilos.css');
               <legend>
                   <?= $Lob04_obsprocesso ?>
               </legend>
-                <?
+                <?php
                 db_textarea('ob04_obsprocesso', 10, 70, $Iob04_obsprocesso, true, 'text', $db_opcao);
                 ?>
             </fieldset>
@@ -217,7 +195,7 @@ db_app::load('estilos.css');
         </tr>
       </table>
     </fieldset>
-    <input type="button" name="btnSalvar" id="btnSalvar" value="Salvar" onclick="js_salvarObrasAlvara()"/>
+    <input type="button" name="btnSalvar" id="btnSalvar" value="Salvar" onclick="js_pesquisaConstrucoes(true)"/>
     <input type="button" name="btnExcluir" id="btnExcluir" value="Excluir" onclick="js_excluirObraAlvara()"
            disabled="disabled"/>
     <input type="button" name="btnCancAti" id="btnCancAti" value="Cancelar" onclick="js_cancelaReativa()"
@@ -236,74 +214,80 @@ db_app::load('estilos.css');
   /**
    * SALVAR
    */
-  function js_salvarObrasAlvara() {
+  function js_salvarObrasAlvara(oAjax) {
 
-    var evtValidate = new Event(Event.CHANGE);
+    js_removeObj('msgbox');
+    var oRetorno = JSON.parse(oAjax.responseText);
 
-    var aCamposValidacao = ['ob04_codobra', 'ob04_alvara', 'p58_codproc'],
-      aDataValidacao = [
-        {'campo': 'ob04_codobra', 'nome': 'Cdigo da Obra '},
-        {'campo': 'ob04_data', 'nome': 'Data do Alvar'},
-        {'campo': 'ob04_dtvalidade', 'nome': 'Data de Validade do Alvar'}
-      ];
+    if(js_verificaSeExistemContrucoes(oAjax)){
+      var evtValidate = new Event(Event.CHANGE);
 
-    var lCamposValidos = true;
+      var aCamposValidacao = ['ob04_codobra', 'ob04_alvara', 'p58_codproc'],
+        aDataValidacao = [
+          {'campo': 'ob04_codobra', 'nome': 'Cdigo da Obra '},
+          {'campo': 'ob04_data', 'nome': 'Data do Alvar'},
+          {'campo': 'ob04_dtvalidade', 'nome': 'Data de Validade do Alvar'}
+        ];
 
-    for(var iCampo = 0; iCampo < aCamposValidacao.length; iCampo++) {
+      var lCamposValidos = true;
 
-      var sId = aCamposValidacao[iCampo];
+      for(var iCampo = 0; iCampo < aCamposValidacao.length; iCampo++) {
 
-      if($F(sId) != "") {
-        $(sId).observe('keyup', evtValidate);
+        var sId = aCamposValidacao[iCampo];
 
-        if($F(sId) == "") {
+        if($F(sId) != "") {
+          $(sId).observe('keyup', evtValidate);
 
+          if($F(sId) == "") {
+
+            lCamposValidos = false;
+            return false;
+          }
+        }
+      }
+
+      for(var iCampo = 0; iCampo < aDataValidacao.length; iCampo++) {
+
+        var oCampo = aDataValidacao[iCampo];
+        if($F(oCampo.campo) == '') {
+
+          alert(_M("tributario.projetos.pro4_obrasalvara.campo_obrigatorio", {sCampo: oCampo.nome}));
           lCamposValidos = false;
           return false;
         }
       }
-    }
 
-    for(var iCampo = 0; iCampo < aDataValidacao.length; iCampo++) {
-
-      var oCampo = aDataValidacao[iCampo];
-      if($F(oCampo.campo) == '') {
-
-        alert(_M("tributario.projetos.pro4_obrasalvara.campo_obrigatorio", {sCampo: oCampo.nome}));
-        lCamposValidos = false;
+      if(!lCamposValidos) {
         return false;
       }
+
+      var oParam = new Object();
+      oParam.iCodigoObra = $F('ob04_codobra');
+      oParam.iCodigoAlvara = $F('ob04_alvara');
+      oParam.dDtAlvara = $F('ob04_data');
+      oParam.sProcesso = encodeURIComponent($F('ob04_processo'));
+      oParam.sTitularProcesso = encodeURIComponent($F('ob04_titularprocesso'));
+      oParam.dDtProcesso = $F('ob04_dtprocesso');
+      oParam.iCodigoProcesso = $F('p58_codproc');
+      oParam.sRequerente = encodeURIComponent($F('p58_requer'));
+      oParam.sObservacao = encodeURIComponent(tagString($F('ob04_obsprocesso')));
+      oParam.dDtValidade = $F('ob04_dtvalidade');
+      oParam.lProcessoSistema = $F('lProcessoSistema');
+      oParam.sClasse = $F('ob04_classe');
+
+      oParam.sExec = 'salvaObraAlvara';
+
+      js_divCarregando(_M('tributario.projetos.pro1_obrasalvara001.pesquisando_construcoes'), 'msgbox');
+
+      var oAjax = new Ajax.Request(sUrl,
+        {
+          method: 'POST',
+          parameters: 'json=' + Object.toJSON(oParam),
+          onComplete: js_retornoOperacao
+        });
+    } else {
+      alert(oRetorno.sMessage.urlDecode().replace(/\\n/g, '\n') + "\nAba Construções deve ser preenchida no Cadastro de Obras.");
     }
-
-    if(!lCamposValidos) {
-      return false;
-    }
-
-    var oParam = new Object();
-
-    oParam.iCodigoObra = $F('ob04_codobra');
-    oParam.iCodigoAlvara = $F('ob04_alvara');
-    oParam.dDtAlvara = $F('ob04_data');
-    oParam.sProcesso = encodeURIComponent($F('ob04_processo'));
-    oParam.sTitularProcesso = encodeURIComponent($F('ob04_titularprocesso'));
-    oParam.dDtProcesso = $F('ob04_dtprocesso');
-    oParam.iCodigoProcesso = $F('p58_codproc');
-    oParam.sRequerente = encodeURIComponent($F('p58_requer'));
-    oParam.sObservacao = encodeURIComponent(tagString($F('ob04_obsprocesso')));
-    oParam.dDtValidade = $F('ob04_dtvalidade');
-    oParam.lProcessoSistema = $F('lProcessoSistema');
-    oParam.sClasse = $F('ob04_classe');
-
-    oParam.sExec = 'salvaObraAlvara';
-
-    js_divCarregando(_M('tributario.projetos.pro1_obrasalvara001.pesquisando_construcoes'), 'msgbox');
-
-    var oAjax = new Ajax.Request(sUrl,
-      {
-        method: 'POST',
-        parameters: 'json=' + Object.toJSON(oParam),
-        onComplete: js_retornoOperacao
-      });
   }
 
   /*
@@ -412,7 +396,7 @@ db_app::load('estilos.css');
     }
   }
 
-  function js_pesquisaConstrucoes() {
+  function js_pesquisaConstrucoes(salvarAlvara = false) {
 
     var iCodigoObra = $F('ob04_codobra');
     var oParam = new Object();
@@ -425,6 +409,7 @@ db_app::load('estilos.css');
     oParam.sExec = 'getConstrucoes';
     oParam.iCodigoObra = iCodigoObra;
 
+    var funcaoOnComplete = salvarAlvara ? js_salvarObrasAlvara : js_retornaConstrucoes;
 
     js_divCarregando(_M('tributario.projetos.pro1_obrasalvara001.pesquisando_construcoes'), 'msgbox');
 
@@ -432,7 +417,7 @@ db_app::load('estilos.css');
       {
         method: 'POST',
         parameters: 'json=' + Object.toJSON(oParam),
-        onComplete: js_retornaConstrucoes
+        onComplete: funcaoOnComplete
       });
 
   }
@@ -443,7 +428,7 @@ db_app::load('estilos.css');
 
     var oRetorno = JSON.parse(oAjax.responseText);
 
-    if(oRetorno.iStatus == 1) {
+    if(js_verificaSeExistemContrucoes(oAjax)) {
 
       with(oRetorno.oConstrucao) {
 
@@ -776,8 +761,17 @@ db_app::load('estilos.css');
     jan.moveTo(0, 0);
   }
 
+  function js_verificaSeExistemContrucoes(oAjax) {
+    var oRetorno = JSON.parse(oAjax.responseText);
+    if (oRetorno.iStatus == 1){
+      return true;
+    }
+    return false;
+  }
+
 </script>
-<?
+
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
   db_getsession("DB_instit"));
 ?>

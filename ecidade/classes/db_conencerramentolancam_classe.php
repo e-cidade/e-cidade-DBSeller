@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -47,18 +47,18 @@ class cl_conencerramentolancam {
    var $c44_conlancam = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c44_sequencial = int4 = Código Sequencial 
-                 c44_encerramento = int4 = Código do  Encerramento 
-                 c44_conlancam = int4 = Código do Lançamento 
+                 c44_sequencial = int4 = Código Sequencial
+                 c44_encerramento = int4 = Código do  Encerramento
+                 c44_conlancam = int4 = Código do Lançamento
                  ";
    //funcao construtor da classe
-   function cl_conencerramentolancam() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conencerramentolancam");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_conencerramentolancam {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c44_sequencial = ($this->c44_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c44_sequencial"]:$this->c44_sequencial);
        $this->c44_encerramento = ($this->c44_encerramento == ""?@$GLOBALS["HTTP_POST_VARS"]["c44_encerramento"]:$this->c44_encerramento);
@@ -77,7 +77,7 @@ class cl_conencerramentolancam {
      }
    }
    // funcao para inclusao
-   function incluir ($c44_sequencial){
+   public function incluir ($c44_sequencial){
       $this->atualizacampos();
      if($this->c44_encerramento == null ){
        $this->erro_sql = " Campo Código do  Encerramento nao Informado.";
@@ -130,14 +130,14 @@ class cl_conencerramentolancam {
        return false;
      }
      $sql = "insert into conencerramentolancam(
-                                       c44_sequencial 
-                                      ,c44_encerramento 
-                                      ,c44_conlancam 
+                                       c44_sequencial
+                                      ,c44_encerramento
+                                      ,c44_conlancam
                        )
                 values (
-                                $this->c44_sequencial 
-                               ,$this->c44_encerramento 
-                               ,$this->c44_conlancam 
+                                $this->c44_sequencial
+                               ,$this->c44_encerramento
+                               ,$this->c44_conlancam
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -176,7 +176,7 @@ class cl_conencerramentolancam {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c44_sequencial=null) {
+   public function alterar ($c44_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conencerramentolancam set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_conencerramentolancam {
      }
    }
    // funcao para exclusao
-   function excluir ($c44_sequencial=null,$dbwhere=null) {
+   public function excluir ($c44_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c44_sequencial));
      }else{
@@ -334,7 +334,7 @@ class cl_conencerramentolancam {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_conencerramentolancam {
       }
      return $result;
    }
-   function sql_query ( $c44_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c44_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_conencerramentolancam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,10 +394,10 @@ class cl_conencerramentolancam {
      }
      return $sql;
   }
-   function sql_query_file ( $c44_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c44_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_conencerramentolancam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,10 +428,10 @@ class cl_conencerramentolancam {
      return $sql;
   }
 
-    function sql_query_documento ( $c44_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_documento ( $c44_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_conencerramentolancam {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];

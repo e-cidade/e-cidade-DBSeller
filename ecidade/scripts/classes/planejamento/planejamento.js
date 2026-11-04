@@ -9,7 +9,13 @@
  */
 class Planejamento {
 
-    _rota = 'financeiro/planejamento/consulta/planos-em-desenvolvimento';
+    /**
+     *
+     * @type {boolean}
+     * @private
+     */
+    _considerarGet = true;
+    _rota = 'financeiro/planejamento/consulta/planos-ativos';
     _planos = [];
     _callbackChange = () => {
     }
@@ -76,14 +82,14 @@ class Planejamento {
     _buscaPlanos = () => {
         let rota = `${PHPSession.requestApi}/${this._rota}`;
         const get = this._getURLParameters(window.location.search);
-        if (get.tipo) {
+        if (this._considerarGet && get.tipo) {
             rota += `/${get.tipo}`;
         }
 
         HttpClient.get(`${rota}`).then(response => {
             response.data.map((plano) => {
                 if (typeof planejamentosTiposExibir !== 'undefined') {
-                    if(planejamentosTiposExibir.includes(plano.pl2_tipo)) {
+                    if (planejamentosTiposExibir.includes(plano.pl2_tipo)) {
                         this.element.add(new Option(plano.pl2_titulo, plano.pl2_codigo));
                     }
                 } else {

@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: empenho
 //CLASSE DA ENTIDADE empagenotasordem
-class cl_empagenotasordem { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e43_sequencial = 0; 
-   var $e43_ordempagamento = 0; 
-   var $e43_empagemov = 0; 
-   var $e43_autorizado = 'f'; 
-   var $e43_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_empagenotasordem {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e43_sequencial = 0;
+   var $e43_ordempagamento = 0;
+   var $e43_empagemov = 0;
+   var $e43_autorizado = 'f';
+   var $e43_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e43_sequencial = int4 = Código  Sequencial 
-                 e43_ordempagamento = int4 = Código ordem pagamento 
-                 e43_empagemov = int4 = Código do movimento da agenda 
-                 e43_autorizado = bool = Pagamento autorizado 
-                 e43_valor = float8 = Valor Liberado 
+                 e43_sequencial = int4 = Código  Sequencial
+                 e43_ordempagamento = int4 = Código ordem pagamento
+                 e43_empagemov = int4 = Código do movimento da agenda
+                 e43_autorizado = bool = Pagamento autorizado
+                 e43_valor = float8 = Valor Liberado
                  ";
-   //funcao construtor da classe 
-   function cl_empagenotasordem() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("empagenotasordem"); 
+     $this->rotulo = new rotulo("empagenotasordem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_empagenotasordem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e43_sequencial = ($this->e43_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e43_sequencial"]:$this->e43_sequencial);
        $this->e43_ordempagamento = ($this->e43_ordempagamento == ""?@$GLOBALS["HTTP_POST_VARS"]["e43_ordempagamento"]:$this->e43_ordempagamento);
@@ -83,9 +83,9 @@ class cl_empagenotasordem {
      }
    }
    // funcao para inclusao
-   function incluir ($e43_sequencial){ 
+   public function incluir ($e43_sequencial){
       $this->atualizacampos();
-     if($this->e43_ordempagamento == null ){ 
+     if($this->e43_ordempagamento == null ){
        $this->erro_sql = " Campo Código ordem pagamento nao Informado.";
        $this->erro_campo = "e43_ordempagamento";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_empagenotasordem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e43_empagemov == null ){ 
+     if($this->e43_empagemov == null ){
        $this->erro_sql = " Campo Código do movimento da agenda nao Informado.";
        $this->erro_campo = "e43_empagemov";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_empagenotasordem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e43_autorizado == null ){ 
+     if($this->e43_autorizado == null ){
        $this->erro_sql = " Campo Pagamento autorizado nao Informado.";
        $this->erro_campo = "e43_autorizado";
        $this->erro_banco = "";
@@ -112,20 +112,20 @@ class cl_empagenotasordem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e43_valor == null ){ 
+     if($this->e43_valor == null ){
        $this->e43_valor = "0";
      }
      if($e43_sequencial == "" || $e43_sequencial == null ){
-       $result = db_query("select nextval('empagenotasordem_e43_sequencial_seq')"); 
+       $result = db_query("select nextval('empagenotasordem_e43_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: empagenotasordem_e43_sequencial_seq do campo: e43_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: empagenotasordem_e43_sequencial_seq do campo: e43_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->e43_sequencial = pg_result($result,0,0); 
+       $this->e43_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from empagenotasordem_e43_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $e43_sequencial)){
@@ -136,10 +136,10 @@ class cl_empagenotasordem {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->e43_sequencial = $e43_sequencial; 
+         $this->e43_sequencial = $e43_sequencial;
        }
      }
-     if(($this->e43_sequencial == null) || ($this->e43_sequencial == "") ){ 
+     if(($this->e43_sequencial == null) || ($this->e43_sequencial == "") ){
        $this->erro_sql = " Campo e43_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -148,21 +148,21 @@ class cl_empagenotasordem {
        return false;
      }
      $sql = "insert into empagenotasordem(
-                                       e43_sequencial 
-                                      ,e43_ordempagamento 
-                                      ,e43_empagemov 
-                                      ,e43_autorizado 
-                                      ,e43_valor 
+                                       e43_sequencial
+                                      ,e43_ordempagamento
+                                      ,e43_empagemov
+                                      ,e43_autorizado
+                                      ,e43_valor
                        )
                 values (
-                                $this->e43_sequencial 
-                               ,$this->e43_ordempagamento 
-                               ,$this->e43_empagemov 
-                               ,'$this->e43_autorizado' 
-                               ,$this->e43_valor 
+                                $this->e43_sequencial
+                               ,$this->e43_ordempagamento
+                               ,$this->e43_empagemov
+                               ,'$this->e43_autorizado'
+                               ,$this->e43_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "notas de ordem do pagamento ($this->e43_sequencial) nao Incluído. Inclusao Abortada.";
@@ -198,16 +198,16 @@ class cl_empagenotasordem {
        $resac = db_query("insert into db_acount values($acount,2150,12330,'','".AddSlashes(pg_result($resaco,0,'e43_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e43_sequencial=null) { 
+   public function alterar ($e43_sequencial=null) {
       $this->atualizacampos();
      $sql = " update empagenotasordem set ";
      $virgula = "";
-     if(trim($this->e43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_sequencial"])){ 
+     if(trim($this->e43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_sequencial"])){
        $sql  .= $virgula." e43_sequencial = $this->e43_sequencial ";
        $virgula = ",";
-       if(trim($this->e43_sequencial) == null ){ 
+       if(trim($this->e43_sequencial) == null ){
          $this->erro_sql = " Campo Código  Sequencial nao Informado.";
          $this->erro_campo = "e43_sequencial";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_ordempagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_ordempagamento"])){ 
+     if(trim($this->e43_ordempagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_ordempagamento"])){
        $sql  .= $virgula." e43_ordempagamento = $this->e43_ordempagamento ";
        $virgula = ",";
-       if(trim($this->e43_ordempagamento) == null ){ 
+       if(trim($this->e43_ordempagamento) == null ){
          $this->erro_sql = " Campo Código ordem pagamento nao Informado.";
          $this->erro_campo = "e43_ordempagamento";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_empagemov"])){ 
+     if(trim($this->e43_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_empagemov"])){
        $sql  .= $virgula." e43_empagemov = $this->e43_empagemov ";
        $virgula = ",";
-       if(trim($this->e43_empagemov) == null ){ 
+       if(trim($this->e43_empagemov) == null ){
          $this->erro_sql = " Campo Código do movimento da agenda nao Informado.";
          $this->erro_campo = "e43_empagemov";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_autorizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_autorizado"])){ 
+     if(trim($this->e43_autorizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_autorizado"])){
        $sql  .= $virgula." e43_autorizado = '$this->e43_autorizado' ";
        $virgula = ",";
-       if(trim($this->e43_autorizado) == null ){ 
+       if(trim($this->e43_autorizado) == null ){
          $this->erro_sql = " Campo Pagamento autorizado nao Informado.";
          $this->erro_campo = "e43_autorizado";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){ 
-        if(trim($this->e43_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){ 
-           $this->e43_valor = "0" ; 
-        } 
+     if(trim($this->e43_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){
+        if(trim($this->e43_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){
+           $this->e43_valor = "0" ;
+        }
        $sql  .= $virgula." e43_valor = $this->e43_valor ";
        $virgula = ",";
      }
@@ -287,7 +287,7 @@ class cl_empagenotasordem {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "notas de ordem do pagamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e43_sequencial;
@@ -315,14 +315,14 @@ class cl_empagenotasordem {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e43_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e43_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e43_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -352,7 +352,7 @@ class cl_empagenotasordem {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "notas de ordem do pagamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e43_sequencial;
@@ -380,11 +380,11 @@ class cl_empagenotasordem {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -406,11 +406,11 @@ class cl_empagenotasordem {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,15 +426,15 @@ class cl_empagenotasordem {
      $sql2 = "";
      if($dbwhere==""){
        if($e43_sequencial!=null ){
-         $sql2 .= " where empagenotasordem.e43_sequencial = $e43_sequencial "; 
-       } 
+         $sql2 .= " where empagenotasordem.e43_sequencial = $e43_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,11 +443,11 @@ class cl_empagenotasordem {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,15 +460,15 @@ class cl_empagenotasordem {
      $sql2 = "";
      if($dbwhere==""){
        if($e43_sequencial!=null ){
-         $sql2 .= " where empagenotasordem.e43_sequencial = $e43_sequencial "; 
-       } 
+         $sql2 .= " where empagenotasordem.e43_sequencial = $e43_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,12 +477,12 @@ class cl_empagenotasordem {
      }
      return $sql;
   }
-  
-  function sql_query_empenho( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
-    
+
+  public function sql_query_empenho( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+
     $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,15 +517,15 @@ class cl_empagenotasordem {
      $sql2 = "";
      if($dbwhere==""){
        if($e43_sequencial!=null ){
-         $sql2 .= " where empagenotasordem.e43_sequencial = $e43_sequencial "; 
-       } 
+         $sql2 .= " where empagenotasordem.e43_sequencial = $e43_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -533,9 +533,9 @@ class cl_empagenotasordem {
        }
      }
      return $sql;
-    
+
   }
-  
-  
+
+
 }
 ?>

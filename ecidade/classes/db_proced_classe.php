@@ -136,16 +136,16 @@ class cl_proced
        return false;
      }
      if($this->k00_hist == null ){
-        $this->erro_sql = " Campo Histórico de Cálculo nao Informado.";
-        $this->erro_campo = "k00_hist";
-        $this->erro_banco = "";
-        $this->erro_msg   = "Usu<E1>rio: \\n\\n ".$this->erro_sql." \\n\\n";
-        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-        $this->erro_status = "0";
-        return false;
-     }      
-     if($this->v03_tributaria == null ){ 
-       $this->erro_sql = " Campo Tipo de Procedência não informado.";
+       $this->erro_sql = " Campo Histórico de Cálculo nao Informado.";
+       $this->erro_campo = "k00_hist";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->v03_tributaria == null ){
+       $this->erro_sql = " Campo Tipo de Procedência nao Informado.";
        $this->erro_campo = "v03_tributaria";
        $this->erro_banco = "";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";

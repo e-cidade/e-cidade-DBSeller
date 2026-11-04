@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -144,7 +144,7 @@ function js_func_nome(){
 }
 
 </script>
-<?
+<?php
   db_postmemory($HTTP_POST_VARS);
   $clcgm = new cl_cgm;
   $cldb_cgmruas = new cl_db_cgmruas;
@@ -256,13 +256,13 @@ function js_tamnome(pessoa){
       action="" 
       <?=($db_opcao == 3?"onSubmit=\"return confirm('Deseja excluir este registro permanentemente!')\"":"")?> 
       <?=(@$municipio == 't' && (isset($pessoa) || $db_opcao == 1 || $db_opcao == 2)?'onSubmit="return js_ValidaOperacao(true)"':(isset($pessoa) || @$municipio == 'f'?'onSubmit="return js_ValidaOperacao(false)"':''))?>>
-<?
+<?php
 if(isset($pessoa)){
   echo "<input type=\"hidden\" name=\"pessoa\" value=\"$pessoa\">";
 }
 ?>
   <table width="730" border="1" cellspacing="0" cellpadding="0">
-    <?
+    <?php
     
     if($db_opcao == 1){
 			 if (isset($ov02_sequencial) && trim($ov02_sequencial) != ""){
@@ -301,7 +301,7 @@ if(isset($pessoa)){
 				?>
 					<input type="hidden" name="ov02_sequencial" id="ov02_sequencial" value="<?=@$ov02_sequencial?>">
 					<input type="hidden" name="ov02_seq" id="ov02_seq" value="<?=@$ov02_seq?>">
-				<?
+				<?php
 				}
 							
 			}
@@ -376,7 +376,7 @@ if(isset($pessoa)){
             </tr>
 	  </table>
 	</table>
-	<?
+	<?php
 	if(strcmp(strrev(substr(strrev($z01_nome),0,2)),"ME") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,4)),"LTDA") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,2)),"SA") == 0){
           echo "<script>document.form1.pessoa.options[1].selected = true</script>";
 	}
@@ -447,7 +447,7 @@ if(isset($pessoa)){
 		</tr>
 	      </table>
 	    </table>
-	    <?
+	    <?php
 	    if(!isset($testanome)){
 	    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	    }
@@ -474,7 +474,7 @@ if(isset($pessoa)){
 		  <?=$Lz01_numcgm?>
 		</td>
 		<td width="73%" nowrap> 
-		  <?
+		  <?php
 		    db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',3);
 		  ?>
 		</td>
@@ -484,19 +484,19 @@ if(isset($pessoa)){
 		  <?=@$Lz01_nome?>
 		</td>
 		<td nowrap title="<?=@$Tz01_nome?>"> 
-		 <?
+		 <?php
 		   db_input('z01_nome',40,$Iz01_nome,true,'text',$db_opcao);
 		 ?>
 		</td>
 	      </tr>
 	      <tr align="center" valign="middle"> 
 		<td height="30" colspan="2" nowrap> <input name="db_opcao" type="submit" id="db_opcao"  value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> > 
-		  <?
+		  <?php
 		  if(!isset($testanome)){
 		  ?>
 		  <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_func_nome();"> 
 		  <input name="voltar" type="button" value="Retornar" <?=($db_opcao == 3 ?"onclick=\"location.href = 'prot1_cadcgm003.php';\"":"")?>> 
-		  <?
+		  <?php
 		  	
 		  }
 		  ?>
@@ -504,7 +504,7 @@ if(isset($pessoa)){
 	      </tr>
 	    </table>  
 	  </table>  
-        <?
+        <?php
       if(!isset($testanome)){ 
         db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       }
@@ -552,12 +552,12 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
 }
 </script>
             <td nowrap title="<?=@$Tz01_cep?>"> 
-	       <?
+	       <?php
 	       db_ancora(@$Lz01_cep,"js_cep(true);",($municipio == "t"?'3':'1'));
 	       ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 	      /********************AQUI FAZ A MÃO DO CEP POR LOGRADOUROS*********************/
 	      $query_dbconfig =  "select munic,uf  from db_config where prefeitura is true";
               $result_dbconfig = db_query($query_dbconfig);
@@ -600,7 +600,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               </tr>
               <tr>
               <td nowrap title="<?=@$Tz01_ender?>">
-              <?
+              <?php
               if (pg_num_rows($res_lograd) > 0)
                  db_ancora(@$Lz01_ender,"js_logradcep();",($municipio == "t"?'1':'3'));
               else
@@ -609,7 +609,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               ?>
              </td>
              <td nowrap> 
-	      <?
+	      <?php
               if($db_opcao == 2 && (isset($z01_numcgm) || isset($numcgm_cgccpf))){
 		if ($numrows_cgmruas!=0){
 		  db_fieldsmemory($result_cgmruas,0);
@@ -617,16 +617,16 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
 	      }
    	      db_input('j14_codigo',5,$Ij14_codigo,true,'hidden',($municipio == "t"?'1':'3'));
 	      ?>
-                <?
+                <?php
 		if($municipio == 'f'){
 		?>
 		  <script>
 		    document.form1.j14_codigo.value = '';
 		  </script>
-		<?
+		<?php
 		}
 		?>
-	      <?
+	      <?php
 		if ($db_opcao == 1) {
 		  $z01_ender = "";
 		}
@@ -640,14 +640,14 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_numero?>
             </td>
             <td width="71%" nowrap  ><a name="AN3"> 
-              <?
+              <?php
 
 		  db_input('z01_numero',8,$Iz01_numero,true,'text',$db_opcao);
 
 		  ?>
               &nbsp; 
               <?=@$Lz01_compl?>
-              <?
+              <?php
 
 		  db_input('z01_compl',10,$Iz01_compl,true,'text',$db_opcao);
 
@@ -659,7 +659,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_munic?>
             </td>
             <td nowrap colspan=4> 
-              <?
+              <?php
 			  if ($municipio == 't') {
 			     $z01_munic = strtoupper($munic);
 			  }else{
@@ -669,7 +669,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
 
 		  ?>
               <?=@$Lz01_uf?>
-              <?
+              <?php
 		  if ($municipio == 't') {
 			$z01_uf = $uf;
                   }else{
@@ -682,16 +682,16 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
           </tr>
           <tr> 
             <td nowrap title="<?=@$Tz01_bairro?>"> 
-	      <?
+	      <?php
 	      db_ancora(@$Lz01_bairro,"js_bairro();",($municipio == "t"?'1':'3'));
 	      ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_bairro',25,$Iz01_uf,true,'text',($municipio == "t"?'3':'1'));
   ?>
-              <?
+              <?php
   		      db_input('j13_codi',6,$Ij13_codi,true,'hidden',1);
 		      ?>
             </td>
@@ -701,7 +701,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_telef?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_telef',18,$Iz01_telef,true,'text',$db_opcao);
 
@@ -713,7 +713,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_fax?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_fax',18,$Iz01_fax,true,'text',$db_opcao);
 
@@ -725,7 +725,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_telcel?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_telcel',18,$Iz01_telcel,true,'text',$db_opcao);
 
@@ -737,7 +737,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_email?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_email',30,$Iz01_email,true,'text',$db_opcao);
 
@@ -749,7 +749,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_cxpostal?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_cxpostal',10,$Iz01_cxpostal,true,'text',$db_opcao);
 
@@ -761,12 +761,12 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
       <td width="61%"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td nowrap title="<?=@$Tz01_cepcon?>"> 
-	       <?
+	       <?php
 	       db_ancora(@$Lz01_cepcon,"js_cepcon(true);",1);
 	       ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
   		      db_input('z01_cepcon',9,$Iz01_cepcon,true,'text',1,'');
 		      ?>
 	    <input type="button" name="buscacep" value="Pesquisar" onClick="js_cepcon(false)">	      
@@ -777,7 +777,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_endcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_endcon',40,$Iz01_endcon,true,'text',$db_opcao);
 
@@ -789,13 +789,13 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_numcon?>
             </td>
             <td width="71%" nowrap > 
-              <?
+              <?php
 
 		  db_input('z01_numcon',8,$Iz01_numcon,true,'text',$db_opcao);
 
 		  ?>
               <?=@$Lz01_comcon?>
-              <?
+              <?php
 
 		  db_input('z01_comcon',10,$Iz01_comcon,true,'text',$db_opcao);
 
@@ -807,13 +807,13 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_muncon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_muncon',20,$Iz01_muncon,true,'text',$db_opcao);
 
 		  ?>
               <?echo "<b>UF:"?>
-              <?
+              <?php
 
 		  db_input('z01_ufcon',2,$Iz01_ufcon,true,'text',$db_opcao);
 
@@ -825,7 +825,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_baicon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_baicon',25,$Iz01_baicon,true,'text',$db_opcao);
 
@@ -837,7 +837,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_telcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_telcon',18,$Iz01_telcon,true,'text',$db_opcao);
 
@@ -849,7 +849,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_celcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_celcon',18,$Iz01_celcon,true,'text',$db_opcao);
 
@@ -861,7 +861,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_emailc?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_emailc',30,$Iz01_emailc,true,'text',$db_opcao);
 
@@ -873,7 +873,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_cxposcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_cxposcon',10,$Iz01_cxposcon,true,'text',$db_opcao);
 
@@ -891,7 +891,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_cadast?>
             </td>
             <td width="76%" nowrap>
-              <?if (isset($z01_cadast)&&$z01_cadast!=""){
+              <?php if (isset($z01_cadast)&&$z01_cadast!=""){
 	      }
 	      if ($db_opcao == 1) {
  	        $z01_cadast_ano = date('Y',db_getsession("DB_datausu"));
@@ -906,7 +906,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               <?=@$Lz01_ultalt?>
             </td>
             <td width="76%" nowrap>
-              <?
+              <?php
  	        $z01_ultalt_ano = date('Y',db_getsession("DB_datausu"));
 	        $z01_ultalt_mes = date('m',db_getsession("DB_datausu"));
 	        $z01_ultalt_dia = date('d',db_getsession("DB_datausu"));
@@ -914,13 +914,13 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
 	      ?>
             </td>
             <td width="6%">
-              <?
+              <?php
   $z01_login = db_getsession("DB_id_usuario");
   db_input("z01_login",6,$Iz01_login,true,'hidden',3);
   ?>
             </td>
             <td width="6%">
-              <?
+              <?php
   $z01_login = db_getsession("DB_id_usuario");
   db_input("z01_login",6,$Iz01_login,true,'hidden',3);
   ?>
@@ -931,23 +931,23 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
     <tr align="center" valign="middle"> 
       <td height="30" colspan="2" nowrap> 
         <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick="return js_tamnome('<?=$pesa?>');" > 
-        <?
+        <?php
 	if(!isset($testanome)){
 	?>
 	<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_func_nome();"> 
   <input name="voltar" type="button" value="Retornar" onclick="location.href = 'prot1_cadcgm00<?=($db_opcao == 1?'1':'2')?>.php';"> 
-	<?
+	<?php
 		$lPermissaoMenu = db_permissaomenu(db_getsession("DB_anousu"),604,7901);
 		if($db_opcao == 2 && $lPermissaoMenu == true && !isset($ov03_numcgm)){
 		?>
 			<input name="vincular" type="button" id="vincular" value="Vincular Cidadao ao CGM" onclick="js_vinculaCadastroCidadaoCGM();">
-		<?
+		<?php
 		}else if ($lPermissaoMenu == true && isset($ov03_numcgm)){
 			?>
 			<input type="hidden" name="ov02_sequencial" id="ov02_sequencial" value="<?= $ov02_sequencial != 0 ? $ov02_sequencial : 0 ?>">
 			<input type="hidden" name="ov02_seq" id="ov02_seq" value="<?= $ov02_seq != 0 ? $ov02_seq : 0 ?>">
 			<input name="importar" type="button" id="importar" value="Importar dados do Cidadão" onclick="js_MICidadao(<?=$ov02_sequencial?>,<?=$ov02_seq?>,<?=$ov03_numcgm?>);">
-			<?
+			<?php
 		}
 	
 	}
@@ -956,7 +956,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
   </table>
 </table>  
   
-<?
+<?php
 if(!isset($testanome)){
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }
@@ -1049,20 +1049,20 @@ function js_preenchecepcon1(chave,chave1,chave2,chave3,chave4){
   document.form1.z01_ufcon.value = chave3;
   document.form1.z01_baicon.value = chave4;
 }
-<?if($db_opcao == 1){
+<?php if($db_opcao == 1){
 ?>
 onLoad = document.form1.z01_nome.focus();
-<?
+<?php
   if($z01_cep != $cep || $municipio == 'f'){
     ?>
     js_cep(false);
-    <?
+    <?php
   }
   ?>
-<?
+<?php
 }
 ?>
-<?
+<?php
 if($db_opcao == 2){
   if($municipio == 'f' && $cep == $z01_cep){
     ?>
@@ -1072,7 +1072,7 @@ if($db_opcao == 2){
     document.form1.z01_ender.value = '';
     document.form1.z01_munic.value = '';
     document.form1.z01_uf.value = '';
-    <?
+    <?php
   }
 }
 ?>
@@ -1135,7 +1135,7 @@ function js_retornoVincularDados(oAjax){
 	
 }
 </script>
-<?
+<?php
 if($temceprua == 't' && $z01_cep != $cep){
 //  echo "<script>onLoad = js_cep(false)</script>";
 }

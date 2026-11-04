@@ -67,7 +67,7 @@ db_postmemory($HTTP_POST_VARS);
         #data1, #data2 {
             width: 70px;
         }
-        label: {
+        label{
             font-weight: bold;
         }
     </style>

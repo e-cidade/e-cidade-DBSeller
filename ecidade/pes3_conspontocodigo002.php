@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -140,7 +140,7 @@ function js_relatorio(){
 </table>
 <center>
 <form name="formatu" action="pes3_conspontocodigo002.php" method="post">
-<?  
+<?php  
 if(isset($pesquisar) || isset($rubric)) {
   if(isset($rubric) && trim($rubric) != ""){
     $rh27_rubric  = $rubric;
@@ -174,10 +174,10 @@ if(isset($pesquisar) || isset($rubric)) {
                   <?=$Lrh27_rubric?>
                 </td>
                 <td nowrap> 
-                  <?
+                  <?php
                   db_input("rh27_rubric",6,$Irh27_rubric,true,'text',3)
                   ?>
-                  <?
+                  <?php
                   db_input("rh27_descr",40,$Irh27_descr,true,'text',3)
                   ?>
                 </td>
@@ -189,7 +189,7 @@ if(isset($pesquisar) || isset($rubric)) {
           </td>
           <td width="67%" valign="top" height="90"> 
             <table border="1" cellspacing="0" cellpadding="0">
-              <?
+              <?php
               $clgerasql = new cl_gera_sql_folha;
               $clgerasql->inicio_rh = false;
               
@@ -233,7 +233,7 @@ if(isset($pesquisar) || isset($rubric)) {
                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                           <td valign="top" class="links2" id="muda<?=$cont?>">
-                            <?
+                            <?php
                             db_ancora("<b>" . $arr_dfolha[$folha] . "</b>", "js_MudaLink('$folha',$cont,'" . $arr_dfolha[$folha] . "');", 4, "' class='links2");
                             ?>
                           </td>
@@ -241,7 +241,7 @@ if(isset($pesquisar) || isset($rubric)) {
                       </table>
                     </td>
                   </tr>
-                  <?
+                  <?php
                   $index = (isset($index) && trim($index) != "" ? $index : $cont);
                 }
                 $cont ++;
@@ -259,7 +259,7 @@ if(isset($pesquisar) || isset($rubric)) {
         <tr> 
           <td align="center"> 
             <iframe id="rubricas" height="400" width="95%" name="rubricas"></iframe> 
-            <?
+            <?php
             db_input("opcaosel",8,"",true,"hidden",4);
             db_input("index",8,"",true,"hidden",4);
             db_input("opcaoselantes",8,"",true,"hidden",4);
@@ -277,28 +277,28 @@ if(isset($pesquisar) || isset($rubric)) {
       &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
       <strong>Período:</strong>
       &nbsp;&nbsp;
-      <?
+      <?php
       db_input("ano",4,'',true,'text',4)
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       db_input("mes",2,'',true,'text',4)
       ?>
      </td>
    </tr>
   </table>
-<?
+<?php
 }
 ?>
 </form>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-<?
+<?php
 if(isset($cont)){
   echo "js_MudaLink('$opcaosel',$index,'$arr_dfolha[$opcaosel]');";
 }

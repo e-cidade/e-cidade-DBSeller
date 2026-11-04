@@ -103,7 +103,7 @@ if (isset($oGet->lDesprocessar) && $oGet->lDesprocessar == "true") {
     </form>
   </div>
  </body>
-  <?
+  <?php
 	  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </html>

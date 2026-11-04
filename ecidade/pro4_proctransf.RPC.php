@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,9 +40,11 @@ require_once(modification('classes/db_proctransand_classe.php'));
 require_once(modification('classes/db_processoouvidoriaprorrogacao_classe.php'));
 require_once(modification('classes/db_calend_classe.php'));
 require_once(modification('model/processoOuvidoria.model.php'));
+require_once  modification("classes/db_processosapensados_classe.php");
 
 use ECidade\Patrimonial\Protocolo\Procedimentos\Parametros\Modelo\MensageriaProcesso;
 
+$clProcessosApensados = new cl_processosapensados();
 $oPost = db_utils::postMemory($_POST);
 $oJson = new services_json();
 $lErro = false;
@@ -85,11 +87,11 @@ switch ($oPost->sMethod) {
         break;
 
     case 'incluirTramite':
-        
+
         $aObjProcessos = $oJson->decode(str_replace("\\", "", $oPost->aObjProcesso));
-        
+
         db_inicio_transacao();
-        
+
         $clProcTransfer->p62_hora        = db_hora();
         $clProcTransfer->p62_dttran      = date('Y-m-d', db_getsession('DB_datausu'));
         $clProcTransfer->p62_id_usuario  = db_getsession("DB_id_usuario");
@@ -102,7 +104,6 @@ switch ($oPost->sMethod) {
           $lErro    = true;
           $sMsgErro = $clProcTransfer->erro_msg;
         }
-        
 
         if (!$lErro) {
             $idsProtprocesso = '';
@@ -129,7 +130,7 @@ switch ($oPost->sMethod) {
                         break;
                     }
                 }
-                
+
                 $oDaoProtProcesso       = db_utils::getDao('protprocesso');
                 $sSqlBuscaProtProcessos = $oDaoProtProcesso->sql_query_file($oProcesso->iCodProc, "p58_dtproc, p58_hora");
                 $rsBuscaProtProcessos   = $oDaoProtProcesso->sql_record($sSqlBuscaProtProcessos);
@@ -138,11 +139,62 @@ switch ($oPost->sMethod) {
                 $oDataAndamento         = new DBDate($oProtProcesso->p58_dtproc." ".$oProtProcesso->p58_hora);
                 $oDataSessao            = new DBDate(date('Y-m-d', db_getsession('DB_datausu'))." ".db_hora());
                 if ($oDataAndamento->calculaIntervaloEntreDatas($oDataSessao, $oDataAndamento) < 0) {
-                
+
                   $lErro    = true;
                   $sMsgErro = "A data do processo é maior que a data atual. Verifique a data da sessão";
                   break;
                 }
+
+                $sSqlProcessosApensados = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal = $oProcesso->iCodProc");
+                $rsProcessosApensados   = $clProcessosApensados->sql_record($sSqlProcessosApensados);
+
+                for ($iProcessosApensados = 0; $iProcessosApensados < pg_num_rows($rsProcessosApensados); $iProcessosApensados++) {
+                    $oProcessoApensado = db_utils::fieldsmemory($rsProcessosApensados, $iProcessosApensados);
+                    $clProcTransferProc->p63_codproc = $oProcessoApensado->p30_procapensado;
+                    $clProcTransferProc->p63_codtran = $clProcTransfer->p62_codtran;
+                    $clProcTransferProc->incluir($clProcTransfer->p62_codtran, $oProcessoApensado->p30_procapensado);
+                    if ($clProcTransferProc->erro_status == 0) {
+
+                        $lErro = true;
+                        $sMsgErro = $clProcTransferProc->erro_msg;
+                        break;
+                    }
+
+                    $sSqlProcessosApensados2 = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal = $oProcessoApensado->p30_procapensado and p30_procapensado not in (select p63_codproc from ProcTransferProc where p63_codtran = " . $clProcTransfer->p62_codtran . ")");
+                    $rsProcessosApensados2 = $clProcessosApensados->sql_record($sSqlProcessosApensados2);
+
+                    for ($iProcessosApensados2 = 0; $iProcessosApensados2 < pg_num_rows($rsProcessosApensados2); $iProcessosApensados2++) {
+
+                        $oProcessoApensado2 = db_utils::fieldsmemory($rsProcessosApensados2, $iProcessosApensados2);
+                        $clProcTransferProc->p63_codproc = $oProcessoApensado2->p30_procapensado;
+                        $clProcTransferProc->p63_codtran = $clProcTransfer->p62_codtran;
+                        $clProcTransferProc->incluir($clProcTransfer->p62_codtran, $oProcessoApensado2->p30_procapensado);
+                        if ($clProcTransferProc->erro_status == 0) {
+
+                            $lErro = true;
+                            $sMsgErro = $clProcTransferProc->erro_msg;
+                            break;
+                        }
+
+                        $sSqlProcessosApensados3 = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal = $oProcessoApensado2->p30_procapensado and p30_procapensado not in (select p63_codproc from ProcTransferProc where p63_codtran = " . $clProcTransfer->p62_codtran . ")");
+                        $rsProcessosApensados3 = $clProcessosApensados->sql_record($sSqlProcessosApensados3);
+
+                        for ($iProcessosApensados3 = 0; $iProcessosApensados3 < pg_num_rows($rsProcessosApensados3); $iProcessosApensados3++) {
+
+                            $oProcessoApensado3 = db_utils::fieldsmemory($rsProcessosApensados3, $iProcessosApensados3);
+                            $clProcTransferProc->p63_codproc = $oProcessoApensado3->p30_procapensado;
+                            $clProcTransferProc->p63_codtran = $clProcTransfer->p62_codtran;
+                            $clProcTransferProc->incluir($clProcTransfer->p62_codtran, $oProcessoApensado3->p30_procapensado);
+                            if ($clProcTransferProc->erro_status == 0) {
+
+                                $lErro = true;
+                                $sMsgErro = $clProcTransferProc->erro_msg;
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 // Caso seja um processo de Ouvidoria
                 if ($oPost->iGrupo == 2) {
                     /**
@@ -271,7 +323,7 @@ switch ($oPost->sMethod) {
                 }
             }
         }
-        
+
         db_fim_transacao($lErro);
         if (!$lErro) {
             $sMsgErro = empty($avisoEnvioNotificacao) ? 'Tramite feito com sucesso!' : 'Tramite feito com sucesso! Aviso: ' . $avisoEnvioNotificacao;
@@ -290,7 +342,7 @@ switch ($oPost->sMethod) {
         $aObjProcessos = $oJson->decode(str_replace("\\", "", $oPost->aObjProcesso));
 
         db_inicio_transacao();
-                
+
         $clProcTransfer->p62_hora        = db_hora();
         $clProcTransfer->p62_dttran      = date('Y-m-d', db_getsession('DB_datausu'));
         $clProcTransfer->p62_id_usuario  = db_getsession("DB_id_usuario");
@@ -300,7 +352,7 @@ switch ($oPost->sMethod) {
         $clProcTransfer->incluir(null);
 
         if ($clProcTransfer->erro_status == 0) {
-        
+
             $lErro    = true;
             $sMsgErro = $clProcTransfer->erro_msg;
         }
@@ -309,7 +361,7 @@ switch ($oPost->sMethod) {
             $idsProtprocesso = '';
 
             foreach ($aObjProcessos as $iIndObj => $oProcesso) {
-                
+
 
                 $oDaoProcAndam         = db_utils::getDao('protprocesso');
                 $sSqlBuscaProcAndam    = $oDaoProcAndam->sql_query_andam($oProcesso->iCodProc, "p58_codandam, p61_dtandam, p61_hora");
@@ -318,17 +370,17 @@ switch ($oPost->sMethod) {
 
                 $dDataProcAndam        = $oProcAndam->p61_dtandam;
                 $dHoraProcAndam        = $oProcAndam->p61_hora;
-    
+
                 $oDaoProcAndamInt      = db_utils::getDao('procandamint');
-                $sSqlBuscaProcAndamInt = "select p78_data, p78_hora 
-                                from procandamint 
-                               where p78_codandam = {$oProcAndam->p58_codandam} 
+                $sSqlBuscaProcAndamInt = "select p78_data, p78_hora
+                                from procandamint
+                               where p78_codandam = {$oProcAndam->p58_codandam}
                                order by p78_sequencial desc limit 1";
 
                 $rsBuscaProcAndamInt   = $oDaoProcAndamInt->sql_record($sSqlBuscaProcAndamInt);
 
                 if($oDaoProcAndamInt->numrows > 0) {
-                  
+
                   $oProcAndamInt  = db_utils::fieldsMemory($rsBuscaProcAndamInt, 0);
                   $dDataProcAndam = $oProcAndamInt->p78_data;
                   $dHoraProcAndam = $oProcAndamInt->p78_hora;
@@ -337,14 +389,14 @@ switch ($oPost->sMethod) {
                 $oDataAndamento   = new DBDate($dDataProcAndam." ".$dHoraProcAndam);
                 $oDataSessao      = new DBDate(date('Y-m-d', db_getsession('DB_datausu'))." ".db_hora());
                 if ( $oDataAndamento->calculaIntervaloEntreDatas($oDataSessao, $oDataAndamento) < 0 ) {
-                        
+
                    $lErro         = true;
                    $sMsgErro      = "A data do processo é maior que a data atual. Verifique a data da sessão";
                    break;
                 }
 
                 $oProcessoProtocolo = new processoProtocolo($oProcesso->iCodProc);
-                
+
                 /**
                  * Só pega o ID de processos que foram inseridos com o controle de Numeração por Órgão
                  */
@@ -366,6 +418,61 @@ switch ($oPost->sMethod) {
                     $sMsgErro = $clProcTransferProc->erro_msg;
                     break;
                 }
+
+                $sSqlProcessosApensados = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal = $oProcesso->iCodProc");
+                $rsProcessosApensados   = $clProcessosApensados->sql_record($sSqlProcessosApensados);
+
+                for($iProcessosApensados = 0; $iProcessosApensados < pg_num_rows($rsProcessosApensados); $iProcessosApensados++) {
+
+                    $oProcessoApensado = db_utils::fieldsmemory($rsProcessosApensados, $iProcessosApensados);
+                    $clProcTransferProc->p63_codproc = $oProcessoApensado->p30_procapensado;
+                    $clProcTransferProc->p63_codtran = $clProcTransfer->p62_codtran;
+                    $clProcTransferProc->incluir($clProcTransfer->p62_codtran, $oProcessoApensado->p30_procapensado);
+                    if ( $clProcTransferProc->erro_status == 0 ) {
+
+                        $lErro = true;
+                        $sMsgErro = $clProcTransferProc->erro_msg;
+                        break;
+                    }
+
+                    $sSqlProcessosApensados2 = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal = $oProcessoApensado->p30_procapensado and p30_procapensado not in (select p63_codproc from ProcTransferProc where p63_codtran = ".$clProcTransfer->p62_codtran.")" );
+                    $rsProcessosApensados2   = $clProcessosApensados->sql_record($sSqlProcessosApensados2);
+
+                    for($iProcessosApensados2 = 0; $iProcessosApensados2 < pg_num_rows($rsProcessosApensados2); $iProcessosApensados2++) {
+
+                        $oProcessoApensado2 = db_utils::fieldsmemory($rsProcessosApensados2, $iProcessosApensados2);
+                        $clProcTransferProc->p63_codproc = $oProcessoApensado2->p30_procapensado;
+                        $clProcTransferProc->p63_codtran = $clProcTransfer->p62_codtran;
+                        $clProcTransferProc->incluir($clProcTransfer->p62_codtran, $oProcessoApensado2->p30_procapensado);
+                        if ( $clProcTransferProc->erro_status == 0 ) {
+
+                            $lErro = true;
+                            $sMsgErro = $clProcTransferProc->erro_msg;
+                            break;
+                        }
+
+                        $sSqlProcessosApensados3 = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal = $oProcessoApensado2->p30_procapensado and p30_procapensado not in (select p63_codproc from ProcTransferProc where p63_codtran = ".$clProcTransfer->p62_codtran.")" );
+                        $rsProcessosApensados3   = $clProcessosApensados->sql_record($sSqlProcessosApensados3);
+
+                        for($iProcessosApensados3 = 0; $iProcessosApensados3 < pg_num_rows($rsProcessosApensados3); $iProcessosApensados3++) {
+
+                            $oProcessoApensado3 = db_utils::fieldsmemory($rsProcessosApensados3, $iProcessosApensados3);
+                            $clProcTransferProc->p63_codproc = $oProcessoApensado3->p30_procapensado;
+                            $clProcTransferProc->p63_codtran = $clProcTransfer->p62_codtran;
+                            $clProcTransferProc->incluir($clProcTransfer->p62_codtran, $oProcessoApensado3->p30_procapensado);
+                            if ( $clProcTransferProc->erro_status == 0 ) {
+
+                                $lErro = true;
+                                $sMsgErro = $clProcTransferProc->erro_msg;
+                                break;
+                            }
+
+                        }
+
+                    }
+
+                }
+
                 // Caso seja um processo de Ouvidoria
                 if ($oPost->iGrupo == 2) {
                     if ($oProcesso->lNovoDepto == 'true') {
@@ -397,7 +504,7 @@ switch ($oPost->sMethod) {
                 }
             }
         }
-        
+
         db_fim_transacao($lErro);
         if (!$lErro) {
             $sMsgErro = 'Transferencia feita com sucesso!';
@@ -449,7 +556,7 @@ switch ($oPost->sMethod) {
      * Busca as informações para jogar na grid.
      */
     case 'buscaProcessos':
-        
+
         /**
          * Busca na sessão dos dados necessários para a query de busca. E verificamos se um campo foi informado para
          * ordenar o resultado, em caso negativo ordenamos pelo campo padrão.
@@ -473,7 +580,7 @@ switch ($oPost->sMethod) {
 
         $sSqlBuscaProcessos = $oDaoProtProcesso->sql_query_processosemtramit($oPost->iGrupo, $sOrdem, $sWhereProcessos);
         $rsBuscaProcessos   = $oDaoProtProcesso->sql_record($sSqlBuscaProcessos);
-        
+
         $aProcessosEncontrados = array();
         for ($iIndiceProcessos = 0; $iIndiceProcessos < $oDaoProtProcesso->numrows; $iIndiceProcessos++) {
             $oProcessoEncontrado = db_utils::fieldsMemory($rsBuscaProcessos, $iIndiceProcessos);
@@ -503,7 +610,7 @@ switch ($oPost->sMethod) {
             $oProcesso->p58_orgao = $oProcessoEncontrado->p58_orgao;
             $aProcessosEncontrados[] = $oProcesso;
         }
-        
+
         $aRetorno = array('aProcessosEncontrados' => $aProcessosEncontrados);
         break;
 }

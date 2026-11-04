@@ -52,6 +52,8 @@ $codigoRelatorio = $oGet->codRelatorio;
 $iAnoSessao = db_getsession('DB_anousu');
 $oBalancoOrcamentarioRepo = BalancoOrcamentarioRepository::getInstance();
 
+
+
 if ($iAnoSessao > 2019 && $codigoRelatorio == BalancoPatrimonialDcasp::CODIGO_RELATORIO) {
     $codigoRelatorio = \ECidade\Financeiro\Contabilidade\Relatorio\DCASP\Model\BalancoPatrimonialDCASP2020::CODIGO_RELATORIO;
 }
@@ -78,6 +80,13 @@ if ($iAnoSessao >= 2015 && $codigoRelatorio == VariacaoPatrimonialDCASP::CODIGO_
 
 $sPathFiltrosRelatorio = "con2_relatoriosdcasp011.php?codigoRelatorio={$codigoRelatorio}&sProgramaRelatorio={$sProgramaRelatorio}";
 
+if ($iAnoSessao >= 2024 && $codigoRelatorio == BalancoFinanceiroDcasp::CODIGO_RELATORIO) {
+    $codigoRelatorio = 277;
+    $balancoFinanceiroFactory = new BalancoFinanceiroFactory;
+    $balancoFinanceiroFactory->adicionarParametro('codigoRelatorio', $codigoRelatorio);
+    $sPathFiltrosRelatorio = $balancoFinanceiroFactory->obterProcessador();
+}
+
 if ($codigoRelatorio == BalancoFinanceiroDcasp::CODIGO_RELATORIO) {
     $balancoFinanceiroFactory = new BalancoFinanceiroFactory;
     $codigoRelatorio = $balancoFinanceiroFactory->obterCodigoRelatorio();
@@ -89,6 +98,7 @@ if ($codigoRelatorio == BalancoOrcamentarioDCASP2015::CODIGO_RELATORIO) {
     $codigoRelatorio = $oBalancoOrcamentarioRepo->getCodigoRelatorioByAno($iAnoSessao);
     $sPathFiltrosRelatorio = "con2_relatoriodcaspBalancoOrcamentario2015011.php?codigoRelatorio={$codigoRelatorio}";
 }
+
 
 ?>
 <html>

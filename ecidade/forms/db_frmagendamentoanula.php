@@ -205,7 +205,7 @@ $oDaorotulo->label("rh70_descr");
                         <b>Situação:</b>
                       </td>
                       <td>
-                        <?
+                        <?php
                         $aOp = array('1' => 'Cancelado', '2' => 'Faltou', '3' => 'Outros');
                         db_select('s114_i_situacao', $aOp, true, 1, "");
                         ?>

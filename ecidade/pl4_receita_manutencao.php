@@ -40,6 +40,7 @@ require_once modification("dbforms/db_funcoes.php");
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="estilos.css"/>
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
     <script rel="script" type="text/javascript" src="scripts/prototype.js"></script>
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>

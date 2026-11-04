@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -65,14 +65,14 @@ function js_testacar2(){
     return false;
   }
 }
-<?if(isset($j52_matric)){?>
+<?php if(isset($j52_matric)){?>
 function js_trocaid(valor){
   id_setor=document.form1.id_setor.value;
   id_quadra=document.form1.id_quadra.value;
   location.href="cad1_constrescralt.php?id_setor="+id_setor+"&id_quadra="+id_quadra+"&j52_matric=<?=$j52_matric?>&j52_idcons="+valor+"&z01_nome="+document.form1.z01_nome.value;
 
 }
-<?}?>
+<?php }?>
 </script>
 
 <fieldset>
@@ -92,7 +92,7 @@ function js_trocaid(valor){
       </td>
 
       <td>
-        <?
+        <?php
         db_input('j52_matric',10,0,true,'text',3,"onchange='js_matri(false)'");
         db_input('z01_nome',75,0,true,'text',3,"");
         ?>
@@ -104,7 +104,7 @@ function js_trocaid(valor){
         <?=$Lj52_idcons?>
       </td>
       <td>
-        <?
+        <?php
         db_input('j52_idcons',10,$Ij52_idcons,true,'text',$db_opcaoid,"");
         ?>
       </td>
@@ -112,7 +112,7 @@ function js_trocaid(valor){
         <table>
           <tr>
             <td align="center">
-              <?
+              <?php
                   if(isset($j52_matric)){
 
                     if(!isset($incluir)){
@@ -147,7 +147,7 @@ function js_trocaid(valor){
             <?=$Lj52_ano?>
           </td>
           <td>
-            <?
+            <?php
             db_input('j52_ano',10,$Ij52_ano,true,'text',1,"");
             ?>
           </td>
@@ -157,7 +157,7 @@ function js_trocaid(valor){
             <?=$Lj52_area?>
           </td>
           <td>
-            <?
+            <?php
             db_input('j52_area',10,4,true,'text',1,"");
             ?>
           </td>
@@ -167,19 +167,19 @@ function js_trocaid(valor){
             <?=$Lj52_areap?>
           </td>
           <td>
-            <?
+            <?php
             db_input('j52_areap',10,4,true,'text',1,"");
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj52_codigo?>">
-            <?
+            <?php
             db_ancora(@$Lj52_codigo,"js_pesquisaj52_codigo(true);",$db_opcao);
             ?>
           </td>
           <td>
-            <?
+            <?php
             db_input('j52_codigo',10,$Ij52_codigo,true,'text',$db_opcao," onchange='js_pesquisaj52_codigo(false);'");
             db_input('j14_nome',75,$Ij14_nome,true,'text',3,'');
             ?>
@@ -190,7 +190,7 @@ function js_trocaid(valor){
             <?=$Lj52_numero?>
           </td>
           <td>
-            <?
+            <?php
             db_input('j52_numero',10,$Ij52_numero,true,'text',1,"");
             ?>
           </td>
@@ -200,17 +200,17 @@ function js_trocaid(valor){
             <?=$Lj52_compl?>
           </td>
           <td>
-            <?
+            <?php
             db_input('j52_compl',88,$Ij52_compl,true,'text',1,"");
             ?>
           </td>
         </tr>
         <tr>
           <td>
-            <b><? db_ancora("Características","js_mostracaracteristica();",1); ?></b>
+            <b><?php db_ancora("Características","js_mostracaracteristica();",1); ?></b>
           </td>
           <td>
-            <?
+            <?php
             db_input('caracteristica',15,1,true,'hidden',1,"")
             ?>
           </td>
@@ -220,7 +220,7 @@ function js_trocaid(valor){
             <?=@$Lj52_dtdemo?>
           </td>
           <td>
-          <?
+          <?php
             db_inputdata('j52_dtdemo',@$j52_dtdemo_dia,@$j52_dtdemo_mes,@$j52_dtdemo_ano,true,'text',$db_opcao,"")
           ?>
           </td>
@@ -230,7 +230,7 @@ function js_trocaid(valor){
             <?=@$Lj52_idaument?>
           </td>
           <td>
-          <?
+          <?php
             db_input('j52_idaument',10,$Ij52_idaument,true,'text',$db_opcao,"")
           ?>
           </td>

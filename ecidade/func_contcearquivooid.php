@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcontcearquivooid->rotulo->label("c14_contcearquivo");
               <?=$Lc14_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c14_sequencial",10,$Ic14_sequencial,true,"text",4,"","chave_c14_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcontcearquivooid->rotulo->label("c14_contcearquivo");
               <?=$Lc14_contcearquivo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c14_contcearquivo",10,$Ic14_contcearquivo,true,"text",4,"","chave_c14_contcearquivo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcontcearquivooid->rotulo->label("c14_contcearquivo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contcearquivooid.php")==true){
@@ -122,12 +122,12 @@ $clcontcearquivooid->rotulo->label("c14_contcearquivo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

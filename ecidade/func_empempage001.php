@@ -55,7 +55,7 @@ $clempagemov->rotulo->label();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
       <input name="fechar" type="button" value="Fechar" onclick="parent.db_iframe_agendamento.hide();">
-      <?
+      <?php
       $sql = $clempagemov->sql_query_consemp(null,"
              distinct e81_codage,
              e43_ordempagamento as DL_OP_auxiliar,

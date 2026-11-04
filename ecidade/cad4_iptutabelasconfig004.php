@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -128,7 +128,7 @@ if (isset($oPost->incluir)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -158,14 +158,14 @@ fieldset table td:first-child {
   </tr>
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
-      <?
+      <?php
         include(modification("forms/db_frmiptutabelasconfig.php"));
       ?>
     </td>
   </tr>
 </table>
 </body>
-<?
+<?php
 if (isset($oPost->incluir)) {
 
   if ($lSqlErro) {

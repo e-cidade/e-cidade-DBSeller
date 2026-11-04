@@ -24,13 +24,13 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_app.utils.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("dbforms/db_funcoes.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_app.utils.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("dbforms/db_funcoes.php");
 ?>
 
 <html>
@@ -39,8 +39,8 @@ require_once(modification("dbforms/db_funcoes.php"));
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     <?php
-      db_app::load( "scripts.js, prototype.js, strings.js, datagrid.widget.js, json2.js" );
-      db_app::load( "estilos.css" );
+      db_app::load("scripts.js, prototype.js, strings.js, datagrid.widget.js, json2.js");
+      db_app::load("estilos.css");
     ?>
   </head>
   <body bgcolor="#CCCCCC">
@@ -51,23 +51,50 @@ require_once(modification("dbforms/db_funcoes.php"));
           <tr>
             <td><label for="atividade">Atividade:</label></td>
             <td>
-              <select id="atividade">
-                <option value="2">2 - Auxiliar/Assistente Educacional</option>
-                <option value="4">4 - Tradutor Intérprete de LIBRAS</option>
-              </select>
+                <?php
+                    $cl_funcaoatividade = new cl_funcaoatividade();
+                    $sSqlfuncaoatividades = $cl_funcaoatividade->sql_query();
+                    $rsFuncaoAtividades = db_query($sSqlfuncaoatividades);
+                    /* As atividades são puxadas da tabela funcaoatividade.
+                     * Porém, na aba de Outras Profissões só devemos exibir
+                     * as atividades que possuem os códigos 2, 4, 7, 8 e 9;
+                    */
+                    $codOutrasProfissoes = [2, 4, 7, 8, 9];
+                    $atividades = [];
+                if (pg_num_rows($rsFuncaoAtividades) > 0) {
+                    for ($i = 0; $i < pg_num_rows($rsFuncaoAtividades); $i++) {
+                        $funcaoAtividade = db_utils::fieldsMemory($rsFuncaoAtividades, $i);
+                        if (in_array($funcaoAtividade->ed119_sequencial, $codOutrasProfissoes)) {
+                            $atividades[] = [
+                                'codigo' => $funcaoAtividade->ed119_sequencial,
+                                'descricao' => $funcaoAtividade->ed119_descricao
+                            ];
+                        }
+                    }
+                    ?>
+                <select id="atividade">
+                    <?php foreach ($atividades as $atividade) { ?>
+                        <option value="<?php echo $atividade['codigo'] ?>"><?php echo $atividade['codigo'] . ' - ' . $atividade['descricao']?></option>
+                    <?php } ?>
+                </select>
+                <?php } else { ?>
+                <select id="atividade">
+                    <option value="0"> Não foram encontradas atividades!</option>
+                </select>
+                <?php } ?>
             </td>
           </tr>
           <tr>
             <td>
               <label for="codigoProfissional">
-                <?db_ancora("<b>Profissional:</b>","pesquisa_profissional(true);", "");?>
+                  <?php db_ancora("<b>Profissional:</b>","pesquisa_profissional(true);", "");?>
               </label>
             </td>
             <td>
               <?php
                 db_input("codigoProfissional",    5, '', false, 'text', 1, " onchange='pesquisa_profissional(false);' ");
-                db_input("descricaoProfissional", 5, '', false, 'text', 3 );
-              ?>
+                db_input("descricaoProfissional", 5, '', false, 'text', 3);
+                ?>
             </td>
           </tr>
         </table>

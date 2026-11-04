@@ -1,69 +1,69 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE notiusu
-class cl_notiusu { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k52_notifica = 0; 
-   var $k52_id_usuario = 0; 
-   var $k52_data_dia = null; 
-   var $k52_data_mes = null; 
-   var $k52_data_ano = null; 
-   var $k52_data = null; 
-   var $k52_hora = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_notiusu {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k52_notifica = 0;
+   var $k52_id_usuario = 0;
+   var $k52_data_dia = null;
+   var $k52_data_mes = null;
+   var $k52_data_ano = null;
+   var $k52_data = null;
+   var $k52_hora = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k52_notifica = int4 = Notificação 
-                 k52_id_usuario = int4 = Cod. Usuário 
-                 k52_data = date = Data 
-                 k52_hora = varchar(5) = Hora 
+                 k52_notifica = int4 = Notificação
+                 k52_id_usuario = int4 = Cod. Usuário
+                 k52_data = date = Data
+                 k52_hora = varchar(5) = Hora
                  ";
-   //funcao construtor da classe 
-   function cl_notiusu() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("notiusu"); 
+     $this->rotulo = new rotulo("notiusu");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_notiusu {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k52_notifica = ($this->k52_notifica == ""?@$GLOBALS["HTTP_POST_VARS"]["k52_notifica"]:$this->k52_notifica);
        $this->k52_id_usuario = ($this->k52_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["k52_id_usuario"]:$this->k52_id_usuario);
@@ -90,9 +90,9 @@ class cl_notiusu {
      }
    }
    // funcao para inclusao
-   function incluir ($k52_notifica){ 
+   public function incluir ($k52_notifica){
       $this->atualizacampos();
-     if($this->k52_id_usuario == null ){ 
+     if($this->k52_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "k52_id_usuario";
        $this->erro_banco = "";
@@ -101,7 +101,7 @@ class cl_notiusu {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k52_data == null ){ 
+     if($this->k52_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "k52_data_dia";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_notiusu {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k52_hora == null ){ 
+     if($this->k52_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "k52_hora";
        $this->erro_banco = "";
@@ -119,8 +119,8 @@ class cl_notiusu {
        $this->erro_status = "0";
        return false;
      }
-       $this->k52_notifica = $k52_notifica; 
-     if(($this->k52_notifica == null) || ($this->k52_notifica == "") ){ 
+       $this->k52_notifica = $k52_notifica;
+     if(($this->k52_notifica == null) || ($this->k52_notifica == "") ){
        $this->erro_sql = " Campo k52_notifica nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -129,19 +129,19 @@ class cl_notiusu {
        return false;
      }
      $sql = "insert into notiusu(
-                                       k52_notifica 
-                                      ,k52_id_usuario 
-                                      ,k52_data 
-                                      ,k52_hora 
+                                       k52_notifica
+                                      ,k52_id_usuario
+                                      ,k52_data
+                                      ,k52_hora
                        )
                 values (
-                                $this->k52_notifica 
-                               ,$this->k52_id_usuario 
-                               ,".($this->k52_data == "null" || $this->k52_data == ""?"null":"'".$this->k52_data."'")." 
-                               ,'$this->k52_hora' 
+                                $this->k52_notifica
+                               ,$this->k52_id_usuario
+                               ,".($this->k52_data == "null" || $this->k52_data == ""?"null":"'".$this->k52_data."'")."
+                               ,'$this->k52_hora'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Notificação e Usuário que gerou ($this->k52_notifica) nao Incluído. Inclusao Abortada.";
@@ -176,19 +176,19 @@ class cl_notiusu {
        $resac = db_query("insert into db_acount values($acount,623,4710,'','".AddSlashes(pg_result($resaco,0,'k52_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k52_notifica=null) { 
+   public function alterar ($k52_notifica=null) {
       $this->atualizacampos();
      $sql = " update notiusu set ";
      $virgula = "";
-     if(trim($this->k52_notifica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_notifica"])){ 
-        if(trim($this->k52_notifica)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k52_notifica"])){ 
-           $this->k52_notifica = "0" ; 
-        } 
+     if(trim($this->k52_notifica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_notifica"])){
+        if(trim($this->k52_notifica)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k52_notifica"])){
+           $this->k52_notifica = "0" ;
+        }
        $sql  .= $virgula." k52_notifica = $this->k52_notifica ";
        $virgula = ",";
-       if(trim($this->k52_notifica) == null ){ 
+       if(trim($this->k52_notifica) == null ){
          $this->erro_sql = " Campo Notificação nao Informado.";
          $this->erro_campo = "k52_notifica";
          $this->erro_banco = "";
@@ -198,13 +198,13 @@ class cl_notiusu {
          return false;
        }
      }
-     if(trim($this->k52_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_id_usuario"])){ 
-        if(trim($this->k52_id_usuario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k52_id_usuario"])){ 
-           $this->k52_id_usuario = "0" ; 
-        } 
+     if(trim($this->k52_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_id_usuario"])){
+        if(trim($this->k52_id_usuario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k52_id_usuario"])){
+           $this->k52_id_usuario = "0" ;
+        }
        $sql  .= $virgula." k52_id_usuario = $this->k52_id_usuario ";
        $virgula = ",";
-       if(trim($this->k52_id_usuario) == null ){ 
+       if(trim($this->k52_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "k52_id_usuario";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_notiusu {
          return false;
        }
      }
-     if(trim($this->k52_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k52_data_dia"] !="") ){ 
+     if(trim($this->k52_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k52_data_dia"] !="") ){
        $sql  .= $virgula." k52_data = '$this->k52_data' ";
        $virgula = ",";
-       if(trim($this->k52_data) == null ){ 
+       if(trim($this->k52_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k52_data_dia";
          $this->erro_banco = "";
@@ -226,11 +226,11 @@ class cl_notiusu {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k52_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k52_data_dia"])){
          $sql  .= $virgula." k52_data = null ";
          $virgula = ",";
-         if(trim($this->k52_data) == null ){ 
+         if(trim($this->k52_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k52_data_dia";
            $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_notiusu {
          }
        }
      }
-     if(trim($this->k52_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_hora"])){ 
+     if(trim($this->k52_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k52_hora"])){
        $sql  .= $virgula." k52_hora = '$this->k52_hora' ";
        $virgula = ",";
-       if(trim($this->k52_hora) == null ){ 
+       if(trim($this->k52_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "k52_hora";
          $this->erro_banco = "";
@@ -276,7 +276,7 @@ class cl_notiusu {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Notificação e Usuário que gerou nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k52_notifica;
@@ -304,14 +304,14 @@ class cl_notiusu {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k52_notifica=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k52_notifica=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k52_notifica));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -340,7 +340,7 @@ class cl_notiusu {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Notificação e Usuário que gerou nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k52_notifica;
@@ -368,11 +368,11 @@ class cl_notiusu {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -394,10 +394,10 @@ class cl_notiusu {
       }
      return $result;
    }
-   function sql_query ( $k52_notifica=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k52_notifica=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,15 +413,15 @@ class cl_notiusu {
      $sql2 = "";
      if($dbwhere==""){
        if($k52_notifica!=null ){
-         $sql2 .= " where notiusu.k52_notifica = $k52_notifica "; 
-       } 
+         $sql2 .= " where notiusu.k52_notifica = $k52_notifica ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,10 +430,10 @@ class cl_notiusu {
      }
      return $sql;
   }
-   function sql_query_file ( $k52_notifica=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k52_notifica=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,15 +446,15 @@ class cl_notiusu {
      $sql2 = "";
      if($dbwhere==""){
        if($k52_notifica!=null ){
-         $sql2 .= " where notiusu.k52_notifica = $k52_notifica "; 
-       } 
+         $sql2 .= " where notiusu.k52_notifica = $k52_notifica ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

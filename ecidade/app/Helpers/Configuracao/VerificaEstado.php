@@ -3,7 +3,10 @@ if (!function_exists('getEstadoInstituicao')) {
     function getEstadoInstituicao()
     {
         $municipio = InstituicaoRepository::getInstituicaoPrefeitura();
-        return $municipio->getUf();
+        if ($municipio) {
+            return $municipio->getUf();
+        }
+        return '';
     }
 }
 

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Custas\Service;
 
+use db_utils;
 use ECidade\Tributario\Arrecadacao\Custas\Calculo\CalculoAdministrativa;
 use ECidade\Tributario\Arrecadacao\Custas\Calculo\CalculoAdministrativaParcelamentoRecibo;
 use ECidade\Tributario\Arrecadacao\Custas\Calculo\CalculoJuridica;
@@ -69,6 +70,11 @@ final class Recibo implements Service
     private $processoForoRepository;
 
     private $termoRepository;
+
+    /**
+     * @var integer
+     */
+    private $numeroTotalParcelas;
 
     public function __construct($cadTipo)
     {
@@ -114,6 +120,23 @@ final class Recibo implements Service
         $this->regraEmissao = $regraEmissao;
     }
 
+    /**
+     * @param integer $numeroTotalParcelas
+     * @return void
+     */
+    public function setTotalParcelas($numeroTotalParcelas)
+    {
+        $this->numeroTotalParcelas = $numeroTotalParcelas;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTotalParcelas()
+    {
+        return $this->numeroTotalParcelas;
+    }
+
     private function emissaoReciboParcelamento()
     {
         return ($this->cadTipo == 13);
@@ -147,7 +170,10 @@ final class Recibo implements Service
         }
     }
 
-    public function processar()
+    /**
+     * @param bool $comCalculoCustas
+     */
+    public function processar($comCalculoCustas = true)
     {
         if (!$this->usaCustas) {
             return false;
@@ -275,10 +301,18 @@ final class Recibo implements Service
             }
         }
 
-        foreach ($partilhas as $partilha) {
-            $partilha->setRecibo($this->recibo);
-
-            $this->recibo = $partilha->processar();
+        if ($comCalculoCustas && !db_utils::ativaParcelamentoCustas()) {
+            foreach ($partilhas as $partilha) {
+                $partilha->setRecibo($this->recibo);
+                
+                $this->recibo = $partilha->processar();
+            }
+        } else {
+            foreach ($partilhas as $partilha) {
+                $partilha->setRecibo($this->recibo);
+                
+                $this->recibo = $partilha->processar(false);
+            }
         }
 
         $this->recibo->processaReceitaCusta();

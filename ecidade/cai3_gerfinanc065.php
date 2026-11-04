@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,22 +25,22 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
-include(modification("dbforms/db_funcoes.php"));
-require(modification("classes/db_cancdebitos_classe.php"));
-require(modification("classes/db_cancdebitosreg_classe.php"));
-require(modification("classes/db_cancdebitosprot_classe.php"));
-require(modification("classes/db_cgm_classe.php"));
-include(modification("classes/db_arrecad_classe.php"));
-require(modification("classes/db_cancdebitosconcarpeculiar_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_cancdebitos_classe.php"));
+require_once(modification("classes/db_cancdebitosreg_classe.php"));
+require_once(modification("classes/db_cancdebitosprot_classe.php"));
+require_once(modification("classes/db_cgm_classe.php"));
+require_once(modification("classes/db_arrecad_classe.php"));
+require_once(modification("classes/db_cancdebitosconcarpeculiar_classe.php"));
 require_once(modification("classes/db_numpref_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER['QUERY_STRING']);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -58,6 +58,7 @@ $clrotulo->label("k25_codproc");
 $clrotulo->label("p58_requer");
 $clrotulo->label("k21_obs");
 $clrotulo->label("c58_sequencial");
+$clrotulo->label("p58_numero");
 
 $db_opcao = 1;
 
@@ -69,7 +70,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
   if (!isset($inicial)) {
 
-    $vt = $HTTP_POST_VARS;
+    $vt = $_POST;
 
     $virgula = "";
     $receit1 = "";
@@ -80,7 +81,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
       if (db_indexOf(key($vt), "CHECK") > 0) {
 
         $numpres = $vt[key($vt)];
-        $mat = split("N", $numpres);
+        $mat = explode("N", $numpres);
         if (isset($oPost->marcarvencidas) && isset($oPost->marcartodas)) {
 
         	if ($oPost->marcarvencidas == 'true' && $oPost->marcartodas == 'false') {
@@ -91,9 +92,9 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 			          continue;
 			        }
 
-	            $numpre = split("P", $mat[$iInd]);
-	            $numpar = split("P", strstr($mat[$iInd], "P"));
-	            $numpar = split("R",$numpar[1]);
+	            $numpre = explode("P", $mat[$iInd]);
+	            $numpar = explode("P", strstr($mat[$iInd], "P"));
+	            $numpar = explode("R",$numpar[1]);
 	            $receit = @$numpar[1];
 	            $numpar = $numpar[0];
 	            $numpre = $numpre[0];
@@ -121,9 +122,9 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
 	            if ($mat[$j] == "") continue;
 
-	            $numpre = split("P", $mat[$j]);
-	            $numpar = split("P", strstr($mat[$j], "P"));
-	            $numpar = split("R",$numpar[1]);
+	            $numpre = explode("P", $mat[$j]);
+	            $numpar = explode("P", strstr($mat[$j], "P"));
+	            $numpar = explode("R",$numpar[1]);
 	            $receit = @$numpar[1];
 	            $numpar = $numpar[0];
 	            $numpre = $numpre[0];
@@ -141,9 +142,9 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
 	          if ($mat[$j] == "") continue;
 
-	          $numpre = split("P", $mat[$j]);
-	          $numpar = split("P", strstr($mat[$j], "P"));
-	          $numpar = split("R",$numpar[1]);
+	          $numpre = explode("P", $mat[$j]);
+	          $numpar = explode("P", strstr($mat[$j], "P"));
+	          $numpar = explode("R",$numpar[1]);
 	          $receit = @$numpar[1];
 	          $numpar = $numpar[0];
 	          $numpre = $numpre[0];
@@ -188,7 +189,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
   } else {
 
-    $vt = $HTTP_POST_VARS;
+    $vt = $_POST;
     $virgula = "";
     $numpar1 = "";
     $numpre1 = "";
@@ -202,16 +203,16 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
           if ($oPost->marcarvencidas == 'true' && $oPost->marcartodas == 'false') {
 
-          	$mat = split("N", $v50_inicial);
+          	$mat = explode("N", $v50_inicial);
             for ($iInd = 0; $iInd < count($mat); $iInd++) {
 
               if ($mat[$iInd] == "") {
                 continue;
               }
 
-              $numpre = split("P", $mat[$iInd]);
-              $numpar = split("P", strstr($mat[$iInd], "P"));
-              $numpar = split("R",$numpar[1]);
+              $numpre = explode("P", $mat[$iInd]);
+              $numpar = explode("P", strstr($mat[$iInd], "P"));
+              $numpar = explode("R",$numpar[1]);
               $receit = @$numpar[1];
               $numpar = $numpar[0];
               $numpre = $numpre[0];
@@ -342,9 +343,9 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
   }
 
   if ($sqlerro == false) {
-    $mat = split(",", $numpre);
-    $mat1 = split(",", $numpar);
-    $mat2 = split(",", $receit);
+    $mat = explode(",", $numpre);
+    $mat1 = explode(",", $numpar);
+    $mat2 = explode(",", $receit);
     for ($i = 0; $i < count($mat); $i ++) {
       $numpre = $mat[$i];
       $numpar = $mat1[$i];
@@ -503,9 +504,9 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
     }
   }
 
-  $mat = split(",", $numpre);
-  $mat1 = split(",", $numpar);
-  $mat2 = split(",", $receit);
+  $mat = explode(",", $numpre);
+  $mat1 = explode(",", $numpar);
+  $mat2 = explode(",", $receit);
 
   for ($i = 0; $i < count($mat); $i ++) {
     $numpre = $mat[$i];
@@ -587,6 +588,9 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
     db_redireciona("cai3_gerfinanc065.php?k20_codigo=$k20_codigo&numpre1=$numpre1&numpar1=$numpar1&receit1=$receit1&k03_tipo=$k03_tipo&ver_matric=$ver_matric");
   }
 }
+
+$rs = $clnumpref->sql_record($clnumpref->sql_query(db_getsession("DB_anousu"), db_getsession("DB_instit"), 'k03_apenastiporenuncia,k03_processoparcelamento'));
+$parametrosTributario = \db_utils::fieldsMemory($rs, 0);
 ?>
 <html>
 <head>
@@ -597,7 +601,7 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
 	onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'; if(document.form1.tipoDebito.value == 2){ document.getElementById('renuncia').style.display = '' };">
-<form name="form1" method="POST"><?
+<form name="form1" method="POST"><?php
 echo "<input type='hidden' name='tipo_filtro' value=''>\n";
 echo "<input type='hidden' name='cod_filtro' value=''>\n";
 echo "<input type='hidden' name='numpre' value='".@$numpre1."'>\n";
@@ -615,19 +619,50 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 	<tr>
 		<td valign="top">
 		<table align=center >
-			<tr>
-				<td colspan="2" >
-					<? db_ancora("<strong>Processo</strong>","js_pesquisak25_codproc(true);",$db_opcao);?>
-				  <? db_input('k25_codproc',10,$Ik25_codproc,true,'text',$db_opcao," onchange='js_pesquisak25_codproc(false);'")?>
-				  <? db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')?>
-				  (Preenchimento Opcional)
-				</td>
-			</tr>
+      <tr id="linhaProcessoSistemaInterno">
+          <td colspan="2">
+              <div>
+                  <fieldset style='width:fit-content;' >
+                      <legend>
+                        <strong>
+                          Dados do Processo (Preenchimento opcional)
+                        </strong>
+                      </legend>
+                      <table align="center">
+                          <tr>
+                              <td title="<?= @$Tp58_numero ?>">
+                                  <?php
+                                  db_ancora($Lp58_numero, 'js_pesquisaProcesso(true)', 1)
+                                  ?>
+                              </td>
+                              <td>
+                                  <?php
+                                  db_input('p58_numero', 10, '', true, 'text', $db_opcao, "onchange='js_pesquisaProcesso(false)'", '', '', '', 20);
+                                  ?>
+                              </td>
+                              <td>
+                                <?php
+                                db_input('z01_nome', 40, isset($Iz01_nome) ? $Iz01_nome : '', true, 'text', 3, "", 'z01_nomeprocesso');
+                                ?>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td title="Ano">Ano</td>
+                              <td>
+                                  <input type="number" id="anoSessao" name="anoSessao" value="<?=$anoSessao?>" style="width: 82px;" onchange='js_pesquisaProcesso(false)'>
+                              </td>
+                          </tr>
+                          <input type="hidden" id='numeroProcessoConcatenado' name='numeroProcessoConcatenado' value=''>
+                          <input type="hidden" id='p58_codproc' name='k25_codproc' value=''>
+                      </table>
+                  </fieldset>
+              </div>
+          </td>
+      </tr>
 			<tr>
 				<td colspan="2" ><b>Tipo de cancelamento:</b>
-				<?
-        $rs = $clnumpref->sql_record($clnumpref->sql_query(db_getsession("DB_anousu"), db_getsession("DB_instit"), 'k03_apenastiporenuncia'));
-        $apenasTipoRenuncia = \db_utils::fieldsMemory($rs, 0)->k03_apenastiporenuncia;
+				<?php
+        $apenasTipoRenuncia = $parametrosTributario->k03_apenastiporenuncia;
 
 				if($apenasTipoRenuncia == 'f'){
           $resulttipo = db_query("select k73_sequencial,k73_descricao from cancdebitostipo order by k73_sequencial");
@@ -654,9 +689,9 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 			<tr id="renuncia" style="display:none" >
 				<td colspan="2" >
 
-			    <b><? db_ancora("Caracteristica peculiar:","js_pesquisac58_sequencial(true);",$db_opcao,"","carac"); ?></b>
+			    <b><?php db_ancora("Caracteristica peculiar:","js_pesquisac58_sequencial(true);",$db_opcao,"","carac"); ?></b>
 
-				  <?
+				  <?php
                   db_input("c58_sequencial",10,$Ic58_sequencial,true,"text",$db_opcao,"onChange='js_pesquisac58_sequencial(false);'","c58_sequencial");
                   db_input("c58_descr",40,0,true,"text",3);
                 ?>
@@ -665,8 +700,8 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 			</tr>
 			<tr>
 				<td><?=$Lk20_descr?><br>
-				<? db_input('k20_descr',58,$Ik20_descr,true,'text',$db_opcao,"","k20_descr") ?></td>
-				<td rowspan=2 valign='top'><?
+				<?php db_input('k20_descr',58,$Ik20_descr,true,'text',$db_opcao,"","k20_descr") ?></td>
+				<td rowspan=2 valign='top'><?php
 				$result = $clcancdebitos->sql_record($clcancdebitos->sql_pendentes( "distinct k20_codigo, k20_descr", "k20_codigo desc", "k20_usuario = ".db_getsession("DB_id_usuario")));
 				if ($clcancdebitos->numrows > 0) {
 				  ?>
@@ -677,16 +712,15 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 					</tr>
 					<tr>
 						<td><strong>Grupos de Débitos:</strong><br>
-						<? db_selectrecord("k20_codigo",$result,true,1,"","","","0-Gerar novo grupo de Débitos","js_pesquisacancdebitosreg(this.value)")?>
+						<?php db_selectrecord("k20_codigo",$result,true,1,"","","","0-Gerar novo grupo de Débitos","js_pesquisacancdebitosreg(this.value)")?>
 						</td>
 					</tr>
-					<!-- <tr><td>Para gerar um novo grupo: <input type="button" onclick="js_cancdebitos('novo')" value="Novo"></td></tr> -->
 				</table>
 				<?}?></td>
 			</tr>
 			<tr>
 				<td><strong>Observações:</strong><br>
-				<? db_textarea('k21_obs',3,70,$Ik21_obs,true,'text',$db_opcao,"")?></td>
+				<?php db_textarea('k21_obs',3,70,$Ik21_obs,true,'text',$db_opcao,"")?></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
@@ -702,8 +736,46 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 </center>
 </form>
 <script>
+const numeroProcesso = document.getElementById('p58_numero');
+const numeroProcessoConcatenado = document.getElementById("numeroProcessoConcatenado");
+const nomeProcesso = document.getElementById('z01_nomeprocesso');
+const codigoProcesso = document.getElementById('p58_codproc');
+
 document.form1.tipo_filtro.value = parent.document.form2.tipo_filtro.value;
 document.form1.cod_filtro.value = parent.document.form2.cod_filtro.value;
+
+function js_pesquisaProcesso(mostra) {
+    numeroProcesso.value = numeroProcesso.value.split('/')[0];
+    numeroProcessoConcatenado.value = numeroProcesso.value + '/' + anoSessao.value;
+    if (mostra == true) {
+        js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?funcao_js=parent.js_mostraProcesso|p58_codproc|z01_nome|p58_numero', 'Pesquisa', true, '0');
+    } else {
+        if (numeroProcesso.value != '') {
+            js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?pesquisa_chave=' + numeroProcessoConcatenado.value + '&funcao_js=parent.js_mostraProcessoHide&sCampoPesquisa=p58_codproc', 'Pesquisa', false, '0');
+        } else {
+            nomeProcesso.value = '';
+            codigoProcesso.value = '';
+        }
+    }
+}
+
+function js_mostraProcessoHide(chave, chave1, erro) {
+    codigoProcesso.value = chave;
+    nomeProcesso.value = chave1;
+    if (erro == true) {
+        numeroProcesso.focus();
+        numeroProcesso.value = '';
+        codigoProcesso.value = '';
+    }
+}
+
+function js_mostraProcesso(chave1, chave2, chave3) {
+    codigoProcesso.value = chave1;
+    nomeProcesso.value = chave2;
+    numeroProcesso.value = chave3.split('/')[0]
+    db_iframe_nomes.hide();
+}
+
 function js_pesquisacancdebitosreg(value){
   if(value!=0){
     js_OpenJanelaIframe('','db_iframe_cgm','func_cancdebitosregalt.php?pesquisa_chave=&pesquisa_chave2='+document.form1.k20_codigo.value+'&funcao_js=parent.js_mostracancdebitosreg','Pesquisa',false);
@@ -780,8 +852,10 @@ function js_verifica(){
      alert("O campo Caracteristica Peculiar não foi informado.");
      return false;
   }
+
    document.form1.submit();
 }
+
 function js_mostraRenuncia(id){
 
 	if (id == 2) {
@@ -817,14 +891,14 @@ function js_mostraconcarpeculiar1(chave1,chave2){
   document.form1.c58_descr.value      = chave2;
   db_iframe_concarpeculiar.hide();
 }
-<?
+<?php
 if(isset($tipoDebito) and $tipoDebito==2){
 
 	echo "js_mostraRenuncia(2);";
 }
 ?>
 
-<?
+<?php
 if(isset($k20_codigo) && $k20_codigo!= 0){
 	echo " document.getElementById('k20_descr').readOnly = true;";
 	echo " document.getElementById('k20_descr').style.background='#DEB887'; ";

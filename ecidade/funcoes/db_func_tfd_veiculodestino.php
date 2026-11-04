@@ -1,27 +1,42 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
+ *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
-$campos = "tfd_veiculodestino.tf18_i_codigo,tfd_veiculodestino.tf18_i_veiculo,tfd_veiculodestino.tf18_i_destino,tfd_destino.tf03_c_descr,tfd_veiculodestino.tf18_i_motorista,tfd_veiculodestino.tf18_d_datasaida,tfd_veiculodestino.tf18_c_horasaida";
+$campos = "
+tfd_veiculodestino.tf18_i_codigo,
+tfd_veiculodestino.tf18_i_veiculo,
+tfd_veiculodestino.tf18_i_destino,
+tfd_destino.tf03_c_descr,
+tfd_veiculodestino.tf18_i_motorista,
+tfd_veiculodestino.tf18_d_datasaida,
+tfd_veiculodestino.tf18_c_horasaida,
+CASE
+    WHEN exists
+            (select 1
+            from cancelamentoviagem where cancelamentoviagem.tf41_veiculodestino = tfd_veiculodestino.tf18_i_codigo)
+            THEN cast('<div\ style=\'color:red; display:inline-block;\' >CANCELADO</div\>' as varchar)
+    ELSE cast('AGENDADO' as varchar)
+END as Situacao
+";

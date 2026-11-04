@@ -66,7 +66,7 @@ class cl_isscnaeanexos
      }
    }
 
-    public function incluir($q178_sequencial)
+    public function incluir($q178_sequencial=null)
     {
       $this->atualizacampos();
      if($this->q178_cnae == null ){ 

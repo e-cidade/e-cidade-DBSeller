@@ -101,7 +101,7 @@ $oGet = db_utils::postMemory($_GET);
               </td>
             </tr>
             <tr>
-              <td class="bold">Disponibilizar para Utilização:</td>
+              <td class="bold">Disponibilizar para Estimativa:</td>
               <td>
                 <?php
                 $aLiberado = array('f' => 'Não', 't' => 'Sim');
@@ -642,3 +642,4 @@ $oGet = db_utils::postMemory($_GET);
   </body>
 </html>
 
+  

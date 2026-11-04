@@ -115,7 +115,7 @@ $clrotulo->label("e83_codtipo");
 					<strong>Impressão Por:</strong>
 				</td>
 				<td>
-					<?
+					<?php
 						$aImpressaoPor = array("t"=>"Conta pagadora","r"=>"Recurso");
 						db_select('form', $aImpressaoPor, true, 4, "style='width: 150px'");
 					?>
@@ -130,7 +130,7 @@ $clrotulo->label("e83_codtipo");
 		<input name="consultar" type="button" value="Gerar Relatório" onclick="js_consultar();"> 			
 	</div>
 	
-	<?
+	<?php
 		db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	?>
 	

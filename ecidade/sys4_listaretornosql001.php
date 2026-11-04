@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ unset($_SESSION['sqlGerador']);
             <div style="width:700px; overflow:auto;">
 				      <table  cellspacing="0" style="border:2px inset white;width:700px;" >
 				        <tr>
-				         <?
+				         <?php
 				             
 				             $aCampos = array_keys($aRetornoSQL[0]);
 	                  
@@ -75,7 +75,7 @@ unset($_SESSION['sqlGerador']);
 				         ?>
 				        </tr>  
 				        <tbody style="width:700px;height:250px; overflow:scroll; overflow-x:hidden; background-color:white"  >
-				          <?
+				          <?php
 				          
 	                   foreach ( $aRetornoSQL as $iIndLinha => $aLinhas ){
 	                   	  

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,7 +100,7 @@ table {
   </tr>
   <tr>
     <td align="center" valign="middle" bgcolor="#E7E7E7">
-	<?
+	<?php
 	$CorFundoCabec = "#438BC5";
 	$CorResult = "#D4D609";
 	$CorResto = "white";
@@ -344,7 +344,7 @@ table {
  	     </label>
           </tr>
         </table>
-		<?
+		<?php
 		}
 		?>
        </td>
@@ -359,7 +359,7 @@ table {
 </tr>
 </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

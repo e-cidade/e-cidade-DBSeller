@@ -86,7 +86,7 @@ require_once modification("dbforms/db_funcoes.php");
             flex-flow: row wrap;
             padding-left: 10px;
             justify-content: space-around;
-            width: 600px;
+            width: 500px;
             font-size: 0.8em;
             align-items: center;
         }
@@ -102,8 +102,6 @@ require_once modification("dbforms/db_funcoes.php");
 </head>
 <body class="body-default">
 <div class="alert alert-primary text-left" role="alert">
-    - <kbd><i class="fas fa-cogs"></i> Vínculo Automático</kbd> procura as contas compatíveis no e-cidade e cria os
-    vínculos de forma automática. <br>
     - <kbd><i class="fas fa-print"></i></kbd> imprime as contas: não mapeadas com movimentação,
     não mapeadas sem movimentação e as contas mapeadas.
 </div>
@@ -124,10 +122,6 @@ require_once modification("dbforms/db_funcoes.php");
         <button type="button" id="btnBuscar" name="btnBuscar" class="btn btn-light" disabled>
             <i class="fas fa-search"></i>
         </button>
-        <button type="button" id="btnVinculoGeral" name="btnVinculoGeral" class="btn btn-light">
-            <i class="fas fa-cogs"></i>
-            Vínculo Automático
-        </button>
         <button type="button" id="btnImprimir" name="btnImprimir" class="btn btn-light">
             <i class="fas fa-print"></i>
         </button>
@@ -141,7 +135,7 @@ require_once modification("dbforms/db_funcoes.php");
                 <table id="tableEcidade"
                        class="table table-sm"
                        data-height="550"
-                       data-virtual-scroll="true"
+                       data-virtual-scroll="false"
                        data-maintain-meta-data="true"
                        style="width: 100%;">
                 </table>
@@ -156,7 +150,7 @@ require_once modification("dbforms/db_funcoes.php");
                    class="table table-sm"
                    data-height="550"
                    data-detail-view="true"
-                   data-virtual-scroll="true"
+                   data-virtual-scroll="false"
                    data-maintain-meta-data="true"
                    style="width: 100%;">
             </table>
@@ -177,14 +171,12 @@ require_once modification("dbforms/db_funcoes.php");
     const cboExercicio = document.getElementById('exercicio');
     const cboPlano = document.getElementById('plano');
     const btnBuscar = document.getElementById('btnBuscar');
-    const btnVinculoGeral = document.getElementById('btnVinculoGeral');
     const btnImprimir = document.getElementById('btnImprimir');
 
     const routs = {
         planoGoverso: 'financeiro/contabilidade/plano-contas/consulta/orcamentario/receita/padrao',
         planoEcidade: 'financeiro/contabilidade/plano-contas/consulta/orcamentario/receita/ecidade',
         vincular: 'financeiro/contabilidade/plano-contas/orcamentario/receita/vincular',
-        vinculoGeral: 'financeiro/contabilidade/plano-contas/orcamentario/receita/vinculo-geral',
         desvincular: 'financeiro/contabilidade/plano-contas/orcamentario/receita/desvincular',
         mapeamento: 'financeiro/contabilidade/plano-contas/emitir/orcamentario/receita/mapeamento'
     };
@@ -440,22 +432,6 @@ require_once modification("dbforms/db_funcoes.php");
             btnBuscar.dispatchEvent(new Event('click'));
         });
     };
-
-    btnVinculoGeral.addEventListener('click', () => {
-        const formData = new FormData();
-        formData.append('tipoPlano', cboPlano.value);
-        formData.append('exercicio', cboExercicio.value);
-        formData.append('receita', 1);
-        formData.append('apenasAnaliticas', 1);
-        PHPSession.appendFormData(formData);
-
-        HttpClient.post(`${PHPSession.requestApi}/${routs.vinculoGeral}`, {body: formData}).then(response => {
-            alert(response.message);
-            if (response.error) {
-                return;
-            }
-        });
-    });
 
     btnImprimir.addEventListener('click', () => {
         const formData = new FormData();

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrhbases->rotulo->label("rh32_descr");
               <?=$Lrh32_base?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh32_base",4,$Irh32_base,true,"text",4,"","chave_rh32_base");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhbases->rotulo->label("rh32_descr");
               <?=$Lrh32_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh32_descr",30,$Irh32_descr,true,"text",4,"","chave_rh32_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhbases->rotulo->label("rh32_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = "";
       if(isset($instit)){
       	$dbwhere = " and rh32_instit = $instit ";
@@ -122,12 +122,12 @@ $clrhbases->rotulo->label("rh32_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

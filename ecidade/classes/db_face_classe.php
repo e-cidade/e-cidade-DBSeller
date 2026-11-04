@@ -80,7 +80,7 @@ class cl_face
     public function erro($mostra, $retorna)
     {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\")</script>";
+        echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
            echo "<script>location.href='".$this->pagina_retorno."'</script>";
         }
@@ -657,3 +657,4 @@ class cl_face
   }
 
 }
+?>

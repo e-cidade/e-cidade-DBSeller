@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -210,16 +210,16 @@ $HTTP_SERVER_VARS['QUERY_STRING']="";
 </head>
 <body bgcolor=#CCCCCC>
 
-			<?
+			<?php
 			  include(modification("forms/db_frmdiversosalt.php"));
 			?>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($foipago) && $foipago=="ok"){
   db_msgbox(_M("tributario.diversos.db_frmdiversosalt.debito_parcela_paga"));      
 } 		

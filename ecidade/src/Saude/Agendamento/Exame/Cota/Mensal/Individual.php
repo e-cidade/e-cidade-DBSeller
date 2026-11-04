@@ -29,31 +29,34 @@ namespace ECidade\Saude\Agendamento\Exame\Cota\Mensal;
 
 use ECidade\Saude\Agendamento\Exame\Cota\Mensal;
 
-class Individual extends Mensal implements CotaMensalInterface {
+class Individual extends Mensal implements CotaMensalInterface
+{
 
-  const TIPO_COTA = 1;
+    const TIPO_COTA = 1;
   /**
    * Código que identifica o prestador e o exame pertencentes da cota
    */
-  protected $iPrestadorExame;
+    protected $iPrestadorExame;
 
   /**
    * Busca Código que identifica o prestador e o exame pertencentes da cota.
    *
    * @return integer
    */
-  public function getPrestadorExame() {
-    return $this->iPrestadorExame;
-  }
+    public function getPrestadorExame()
+    {
+        return $this->iPrestadorExame;
+    }
 
   /**
    * Busca Código que identifica o prestador e o exame pertencentes da cota.
    *
    * @return integer
    */
-  public function getPrestadorExameArray() {
-    return array($this->iPrestadorExame);
-  }
+    public function getPrestadorExameArray()
+    {
+        return array($this->iPrestadorExame);
+    }
 
   /**
    * Altera Código que identifica o prestador e o exame pertencentes da cota.
@@ -62,19 +65,19 @@ class Individual extends Mensal implements CotaMensalInterface {
    *
    * @return self
    */
-  public function setPrestadorExame($prestadorExame) {
+    public function setPrestadorExame($prestadorExame)
+    {
 
-    $this->iPrestadorExame = $prestadorExame;
+        $this->iPrestadorExame = $prestadorExame;
 
-    if ( is_array($prestadorExame) ) {
+        if (is_array($prestadorExame)) {
+            if (count($prestadorExame) > 1) {
+                throw new ParameterException("Cota Individual não pode ter mais de um exame.");
+            }
 
-      if (count($prestadorExame) > 1) {
-        throw new ParameterException("Cota Individual não pode ter mais de um exame.");
-      }
+            $this->iPrestadorExame = $prestadorExame[0];
+        }
 
-      $this->iPrestadorExame = $prestadorExame[0];
+        return $this;
     }
-
-    return $this;
-  }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -160,7 +160,7 @@ include(modification("classes/db_cfautent_classe.php"));
   <input type="button" onclick="return js_valida()" value="Processar">
 </form>
 
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

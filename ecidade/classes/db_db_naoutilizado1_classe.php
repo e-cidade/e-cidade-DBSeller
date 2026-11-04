@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_db_naoutilizado1 {
                  at65_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_db_naoutilizado1() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_naoutilizado1"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_db_naoutilizado1 {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->at65_sequencial = ($this->at65_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["at65_sequencial"]:$this->at65_sequencial);
        $this->at65_projeto = ($this->at65_projeto == ""?@$GLOBALS["HTTP_POST_VARS"]["at65_projeto"]:$this->at65_projeto);
@@ -77,7 +77,7 @@ class cl_db_naoutilizado1 {
      }
    }
    // funcao para inclusao
-   function incluir ($at65_sequencial){ 
+   public function incluir ($at65_sequencial){ 
       $this->atualizacampos();
      if($this->at65_projeto == null ){ 
        $this->erro_sql = " Campo Codigo do projeto nao Informado.";
@@ -176,7 +176,7 @@ class cl_db_naoutilizado1 {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($at65_sequencial=null) { 
+   public function alterar ($at65_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update db_naoutilizado1 set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_db_naoutilizado1 {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($at65_sequencial=null,$dbwhere=null) { 
+   public function excluir ($at65_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($at65_sequencial));
      }else{ 
@@ -334,7 +334,7 @@ class cl_db_naoutilizado1 {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("y90_codtiaf");
        <?=@$Ly96_codigo?>
     </td>
     <td> 
-		<?
+		<?php
 			db_input('y96_codigo',10,$Iy96_codigo,true,'text',$db_opcao,"")
 		?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty96_codtiaf?>">
-       <?
+       <?php
     	   db_ancora(@$Ly96_codtiaf,"js_pesquisay96_codtiaf(true);",$db_opcao);
        ?>
     </td>
     <td> 
-		<?
+		<?php
 			db_input('y96_codtiaf',10,$Iy96_codtiaf,true,'text',$db_opcao," onchange='js_pesquisay96_codtiaf(false);'")
 		?>
-       <?
+       <?php
 			db_input('y90_codtiaf',10,$Iy90_codtiaf,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ $clrotulo->label("y90_codtiaf");
        <?=@$Ly96_prazo?>
     </td>
 	<td> 
-	<?
+	<?php
 		db_inputdata('y96_prazo',@$y96_prazo_dia,@$y96_prazo_mes,@$y96_prazo_ano,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tiafprazo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

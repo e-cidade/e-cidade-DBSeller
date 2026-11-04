@@ -40,29 +40,30 @@ $db_opcao         = 22;
 $db_botao         = false;
 
 if (isset($alterar)) {
+    if (!empty($ed217_t_cabecalho)) {
+        $cledu_relatmodel->ed217_t_cabecalho = null;
+    }
 
-  if (!empty($ed217_t_cabecalho)) {
-    $cledu_relatmodel->ed217_t_cabecalho = null;
-  }
+    if ($ed217_i_relatorio == 3 && $ed217_i_tipomodelo == 2) {
+        $cledu_relatmodel->ed217_t_cabecalho = preg_replace(array('/\r/', '/\n/'), ' ', $ed217_t_cabecalho);
+    }
 
-  if ($ed217_i_relatorio == 3 && $ed217_i_tipomodelo == 2) {
-    $cledu_relatmodel->ed217_t_cabecalho = preg_replace(array('/\r/', '/\n/'), ' ', $ed217_t_cabecalho);
-  }
+    if ($ed217_i_relatorio == 7) {
+        $cledu_relatmodel->ed217_disposicao_brasao = $ed217_disposicao_brasao;
+        $cledu_relatmodel->ed217_disposicao_cabecalho = $ed217_disposicao_cabecalho;
+    }
 
-  $cledu_relatmodel->ed217_exibeturma        = $ed217_exibeturma;
-  $cledu_relatmodel->ed217_exibecargahoraria = $ed217_exibecargahoraria;
-  $db_opcao = 2;
-  db_inicio_transacao();
-  $cledu_relatmodel->alterar($ed217_i_codigo);
-  db_fim_transacao();
-
-} else if(isset($chavepesquisa)) {
-
-  $db_opcao = 2;
-  $result = $cledu_relatmodel->sql_record($cledu_relatmodel->sql_query($chavepesquisa));
-  db_fieldsmemory($result,0);
-  $db_botao = true;
-
+    $cledu_relatmodel->ed217_exibeturma        = $ed217_exibeturma;
+    $cledu_relatmodel->ed217_exibecargahoraria = $ed217_exibecargahoraria;
+    $db_opcao = 2;
+    db_inicio_transacao();
+    $cledu_relatmodel->alterar($ed217_i_codigo);
+    db_fim_transacao();
+} elseif (isset($chavepesquisa)) {
+    $db_opcao = 2;
+    $result = $cledu_relatmodel->sql_record($cledu_relatmodel->sql_query($chavepesquisa));
+    db_fieldsmemory($result, 0);
+    $db_botao = true;
 }
 ?>
 <html>
@@ -80,8 +81,8 @@ if (isset($alterar)) {
 <body class='body-default' >
 
   <div class='container'>
-    <?php 
-      include(modification("forms/db_frmedu_relatmodel.php")); 
+    <?php
+      include(modification("forms/db_frmedu_relatmodel.php"));
     ?>
   </div>
 <?php
@@ -90,26 +91,23 @@ if (isset($alterar)) {
 
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
+    if ($cledu_relatmodel->erro_status == "0") {
+        $cledu_relatmodel->erro(true, false);
+        $db_botao=true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
 
-  if ($cledu_relatmodel->erro_status == "0") {
-
-    $cledu_relatmodel->erro(true,false);
-    $db_botao=true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-
-    if ($cledu_relatmodel->erro_campo != "") {
-
-      echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".focus();</script>";
+        if ($cledu_relatmodel->erro_campo != "") {
+            echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".focus();</script>";
+        }
+    } else {
+        $cledu_relatmodel->erro(true, true);
     }
-  } else {
-     $cledu_relatmodel->erro(true,true);
-  }
 }
 if ($db_opcao == 22) {
-  echo "<script>document.form1.pesquisar.click();</script>";
+    echo "<script>document.form1.pesquisar.click();</script>";
 }
 ?>
 <script>

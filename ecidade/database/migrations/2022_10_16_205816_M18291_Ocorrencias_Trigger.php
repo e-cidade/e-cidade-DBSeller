@@ -609,7 +609,7 @@ AS \$function\$
                     select nextval('cadastro.histocorrenciaprocesso_ar201_sequencial_seq'),fc_getsession('PROCESSO_LOG') , iCodigoOcorrencia;
            END IF;
         end if;
- 
+
         if TG_OP = 'INSERT' then
            return new;
         elseif TG_OP = 'UPDATE' then
@@ -963,7 +963,7 @@ AS \$function\$
            if new.j01_situcad <> old.j01_situcad then
               sLog = sLog || 'situacao cadastral alterada de: ' || old.j01_situcad || ' para: ' || new.j01_situcad  || ' - ';
            end if;
-           if new.j01_datacad <> old.j01_datacad or 
+           if new.j01_datacad <> old.j01_datacad or
               (old.j01_datacad is null and new.j01_datacad is not null) then
               sLog = sLog || 'data de cadastro alterada de: ';
               if old.j01_datacad is null then
@@ -4341,15 +4341,15 @@ AS \$function\$
       sLog              text default '';
       sLogAux           text default '';
       sLogradouro       text;
- 
+
       iMatric           integer;
       iLote             integer;
       iCodigoOcorrencia integer;
 
       bCampoProcesso    boolean;
- 
+
       rLote             record;
- 
+
       sAnos             varchar;
       sOrientacaoOld    varchar;
       sOrientacaoNew    varchar;
@@ -4425,7 +4425,7 @@ AS \$function\$
          select coalesce(j64_descricao, '')::varchar
            into sOrientacaoOld
          from orientacao
-         where j64_sequencial = old.j36_orientacao; 
+         where j64_sequencial = old.j36_orientacao;
 
          select coalesce(j64_descricao, '')::varchar
            into sOrientacaoNew
@@ -4494,7 +4494,7 @@ AS \$function\$
 
       if sLog <> sLogAux then
          SELECT nextval('histocorrencia_ar23_sequencial_seq') INTO iCodigoOcorrencia;
- 
+
           insert into histocorrencia (
              ar23_sequencial,
              ar23_id_usuario,
@@ -4516,7 +4516,7 @@ AS \$function\$
                     1,
                     'Log de alteracoes',
                     sLog;
- 
+
           if TG_OP = 'INSERT' then
              iLote = new.j36_idbql;
           elseif TG_OP = 'UPDATE' then
@@ -4524,7 +4524,7 @@ AS \$function\$
           elseif TG_OP = 'DELETE' then
              iLote = old.j36_idbql;
           end if;
- 
+
           FOR rLote IN SELECT j01_matric FROM iptubase WHERE j01_idbql = iLote
           LOOP
               insert into
@@ -4534,7 +4534,7 @@ AS \$function\$
                                      select nextval('histocorrenciamatric_ar25_sequencial_seq'),
                                             rLote.j01_matric,
                                             iCodigoOcorrencia;
- 
+
           END LOOP;
 
           IF fc_getsession('PROCESSO_LOG') IS NOT NULL THEN

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("p56_coddoc");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tp81_codproc?>">
-       <?
+       <?php
        db_ancora(@$Lp81_codproc,"js_pesquisap81_codproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p81_codproc',8,$Ip81_codproc,true,'text',$db_opcao," onchange='js_pesquisap81_codproc(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',8,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp81_coddoc?>">
-       <?
+       <?php
        db_ancora(@$Lp81_coddoc,"js_pesquisap81_coddoc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p81_coddoc',3,$Ip81_coddoc,true,'text',$db_opcao," onchange='js_pesquisap81_coddoc(false);'")
 ?>
-       <?
+       <?php
 db_input('p56_coddoc',3,$Ip56_coddoc,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('p56_coddoc',3,$Ip56_coddoc,true,'text',3,'')
        <?=@$Lp81_doc?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('p81_doc',$x,true,$db_opcao,"");
 ?>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_procprocessodoc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

@@ -84,7 +84,7 @@ $clrotulo->label("z01_v_nome");
          value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>
   <input type="button" name="sinc" id="sinc" value="Atualizar" onclick="js_atualizar();">
 <br>
-<?
+<?php
 $chavepri = array( "s115_i_codigo" => @$s115_i_codigo );
 $cliframe_alterar_excluir->chavepri = $chavepri;
 

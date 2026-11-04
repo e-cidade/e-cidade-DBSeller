@@ -59,9 +59,15 @@ require_once(modification("dbforms/db_funcoes.php"));
           <tr>
             <td>Data de Corte:</td>
             <td>
-              <input type="text" name="datacorte" id='datacorte' class="readonly field-size2" disabled="disabled" />
+              <input type="text" name="datacorte" id='datacorte' class="readonly field-size4" disabled="disabled" />
             </td>
           </tr>
+            <tr>
+                <td>Data do Relatório:</td>
+                <td>
+                    <input type="date" name="dataRelatorio" id='dataRelatorio' class="field-size4"/>
+                </td>
+            </tr>
           <tr>
             <td>Ensino:</td>
             <td >
@@ -191,6 +197,11 @@ $('imprimir').observe('click', function () {
       sUrl += '&iEnsino=' + $F('ensino');
       sUrl += '&iModelo=' + $F('modelo');
       sUrl += '&dtBase=' + $F('datacorte');
+
+      if (document.querySelector('#dataRelatorio').value != '') {
+          sUrl += '&dtRelatorio=' + document.querySelector('#dataRelatorio').value;
+      }
+
 
   var oJanela = window.open(sUrl, '', 'scrollbars=1,location=0');
   oJanela.moveTo(0,0);

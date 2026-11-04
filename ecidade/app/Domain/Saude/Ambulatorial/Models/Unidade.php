@@ -41,8 +41,8 @@ class Unidade extends Model
     protected $primaryKey = 'sd02_i_codigo';
     public $timestamps = false;
 
-    public $castas = [
-        'sd02_d_data_exped' => 'DateTime'
+    public $casts = [
+        'sd02_d_data_exped' => 'datetime'
     ];
 
     public function departamento()

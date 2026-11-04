@@ -159,7 +159,7 @@ if (isset($oParametros->grupos) && trim($oParametros->grupos) != "") {
 
 $sInnerJoinGrupos = "
     inner join matmatermaterialestoquegrupo on matmater.m60_codmater = matmatermaterialestoquegrupo.m68_matmater
-    inner join materialestoquegrupo on matmatermaterialestoquegrupo.m68_materialestoquegrupo 
+    inner join materialestoquegrupo on matmatermaterialestoquegrupo.m68_materialestoquegrupo
                                     = materialestoquegrupo.m65_sequencial
 	";
 
@@ -223,7 +223,7 @@ $sSqlSaidas .= "       left  join matunid             on matmater.m60_codmatunid
 $sSqlSaidas .= $sInnerJoinGrupos; // string de inner caso venha grupos selecionados
 
 $sSqlSaidas .= "       inner join db_estruturavalor on  m65_db_estruturavalor = db121_sequencial ";
-$sSqlSaidas .= "       inner join db_depart origem on origem.coddepto = m70_coddepto 
+$sSqlSaidas .= "       inner join db_depart origem on origem.coddepto = m70_coddepto
                        left join db_depart destino on destino.coddepto = m40_depto";
 $sSqlSaidas .= "      where {$sWhere} ";
 $sSqlSaidas .= " group by m65_db_estruturavalor, destino.descrdepto,";
@@ -266,16 +266,16 @@ if ( $oParametros->iTipoRelatorio == 0 ) {
               (precomedio * qtde) as total,
               *
          from (
-                  {$sSqlSaidas}                  
+                  {$sSqlSaidas}
               ) as xx
-    inner join db_estruturavalor pai on contapai = pai.db121_sequencial  
+    inner join db_estruturavalor pai on contapai = pai.db121_sequencial
     inner join db_depart origem on  m70_coddepto = origem.coddepto
      left join db_depart destino on  m40_depto = destino.coddepto
     order by {$sOrderBy}
     ";
 
 }
-    
+
 //echo $sSqlSaidas; die();
 
  $pdf = new PDF("L");
@@ -303,10 +303,10 @@ if ( $oParametros->iTipoRelatorio == 0 ) {
 
   $aDados = array();
   for ($i = 0; $i < $iNumRows; $i++) {
-  
+
     $oDados = db_utils::fieldsMemory($rsSaidas, $i);
     $aDados[$oDados->idepto_destino . " - " . $oDados->sdepto_destino]
-             [ $oDados->estrut_pai . " - " . $oDados->descr_pai ] 
+             [ $oDados->estrut_pai . " - " . $oDados->descr_pai ]
                [$oDados->db121_estrutural . " - " .  $oDados->db121_descricao] [] = $oDados;
   }
 
@@ -319,7 +319,7 @@ if ( $oParametros->iTipoRelatorio == 0 ) {
 
     $nQuantTotalDepto = 0;
     $nValorTotalDepto = 0;
-   
+
 
     foreach ($aDestinos as $sGrupo => $aGrupos) {
 
@@ -338,15 +338,15 @@ if ( $oParametros->iTipoRelatorio == 0 ) {
         imprimirCabecalho($pdf, $iAlturalinha, true, $oParametros);
 
         foreach ($aSupGrupo as $oDadosMaterial) {
-          
+
           $sRequisicao = "$oDadosMaterial->m41_codmatrequi - $oDadosMaterial->m81_descr";
-          $pdf->Cell(15, $iAlturalinha, "$oDadosMaterial->m70_codmatmater", "", 0, "R", 0);
-          $pdf->Cell(100, $iAlturalinha, "$oDadosMaterial->m60_descr", "", 0, "L", 0);
+          $pdf->Cell(5, $iAlturalinha, "$oDadosMaterial->m70_codmatmater", "", 0, "R", 0);
+          $pdf->Cell(90, $iAlturalinha, "$oDadosMaterial->m60_descr", "", 0, "L", 0);
           $pdf->Cell(10, $iAlturalinha, "$oDadosMaterial->m61_abrev", "", 0, "C", 0);
           $pdf->Cell(45, $iAlturalinha, "$oDadosMaterial->sdepto_origem", "", 0, "C", 0);
           $pdf->Cell(45, $iAlturalinha,  $sRequisicao, "", 0, "L", 0);
           $pdf->Cell(15, $iAlturalinha, db_formatar("$oDadosMaterial->m80_data", "d"), "", 0, "C", 0);
-          $pdf->Cell(15, $iAlturalinha, "$oDadosMaterial->precomedio", "", 0, "R", 0);
+          $pdf->Cell(35, $iAlturalinha, "$oDadosMaterial->precomedio", "", 0, "R", 0);
           $pdf->Cell(15, $iAlturalinha, "$oDadosMaterial->qtde", "", 0, "R", 0);
           $pdf->Cell(20, $iAlturalinha, db_formatar("$oDadosMaterial->total", "f"), "", 1, "R", 0);
 
@@ -367,8 +367,8 @@ if ( $oParametros->iTipoRelatorio == 0 ) {
         $pdf->Cell(40, $iAlturalinha, "Valor Total: ". db_formatar($nTotalValorSubGrupo, "f"), "", 1, "L", 0);
         $pdf->Cell(70, $iAlturalinha, "", "", 1, "L", 0);
         $pdf->SetFont('arial', '', $iTamFonte);
-      }  
-    }  
+      }
+    }
     $pdf->SetFont('arial', 'b', $iTamFonte);
     $pdf->Cell(70, $iAlturalinha, "Total Depto:  $sDestino", "", 0, "L", 0);
     $pdf->Cell(40, $iAlturalinha, "Quant.:  $nQuantTotalDepto", "", 0, "L", 0);
@@ -483,13 +483,13 @@ function imprimirCabecalho($oPdf, $iAlturalinha, $lImprime, $oParametros)
 
         $oPdf->setfont('arial', 'b', $iTamFonte);
 
-        $oPdf->cell(15,  $iAlturalinha, "Material"             , "", 0, "C", 0);
-        $oPdf->cell(100, $iAlturalinha, "Descrição do Material", "", 0, "C", 0);
+        $oPdf->cell(5,  $iAlturalinha, "Material"             , "", 0, "C", 0);
+        $oPdf->cell(90, $iAlturalinha, "Descrição do Material", "", 0, "C", 0);
         $oPdf->cell(10,  $iAlturalinha, "Unidade"              , "", 0, "C", 0);
         $oPdf->Cell(45,  $iAlturalinha, "Depto Origem"         , "", 0, "C", 0);
         $oPdf->cell(45,  $iAlturalinha, "Lançamento"           , "", 0, "C", 0);
         $oPdf->cell(15,  $iAlturalinha, "Data"                 , "", 0, "C", 0);
-        $oPdf->cell(15,  $iAlturalinha, "Preço Médio"          , "", 0, "C", 0);
+        $oPdf->cell(35,  $iAlturalinha, "Preço Médio"          , "", 0, "C", 0);
         $oPdf->cell(15,  $iAlturalinha, "Quant"                , "", 0, "C", 0);
         $oPdf->cell(20,  $iAlturalinha, "Valor Total"          , "", 1, "C", 0);
         $oPdf->SetFont('arial', '', $iTamFonte);

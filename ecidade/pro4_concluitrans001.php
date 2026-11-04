@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -109,7 +109,7 @@ $db_botao = true;
                                         </td>
                                     </tr>
                                 </table>
-                                <?
+                                <?php
                                 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Receber"){
 
                                     echo "<table cellspacing = 0>";
@@ -140,10 +140,10 @@ $db_botao = true;
 
                                             db_atutermometro($i, pg_num_rows($rs), 'termometro');
                                             db_fieldsmemory($rs,$i);
-                                            $sqlproc = "select p58_despacho, p58_publico 
-                                                          from protprocesso 
+                                            $sqlproc = "select p58_despacho, p58_publico
+                                                          from protprocesso
                                                          where p58_codproc = ".$p63_codproc;
-                                            
+
                                             $rsproc = db_query($sqlproc);
                                             //inclui o andamento
                                             $despach = pg_result($rsproc,0,"p58_despacho");
@@ -153,18 +153,18 @@ $db_botao = true;
                                             $dDataProcesso = $p62_dttran;
                                             $dHoraProcesso = $p62_hora;
 
-                                            if ($dDataProcesso > date('Y-m-d', db_getsession('DB_datausu')) || 
-                                                ( $dDataProcesso == date('Y-m-d', db_getsession('DB_datausu')) 
-                                                && $dHoraProcesso > db_hora() ) ) 
+                                            if ($dDataProcesso > date('Y-m-d', db_getsession('DB_datausu')) ||
+                                                ( $dDataProcesso == date('Y-m-d', db_getsession('DB_datausu'))
+                                                && $dHoraProcesso > db_hora() ) )
                                             {
-                            
+
                                               $erro     = 2;
-                                              $sqlerro  = true;                                              
+                                              $sqlerro  = true;
                                               break;
-                                            } 
+                                            }
 
                                             $publico = ($publico=='f'?"false":"true");
-                                            
+
                                             $result=$clprocandam->sql_record($clprocandam->sql_query_file(null,"*",null,"p61_codproc=$p63_codproc"));
                                             $numrows=$clprocandam->numrows;
 
@@ -178,9 +178,9 @@ $db_botao = true;
                                             $clprocandam->p61_codproc    = $p63_codproc;
 
                                             $date = new DateTime;
-                                            $date->setTimestamp(db_getsession('DB_datausu'));     
+                                            $date->setTimestamp(db_getsession('DB_datausu'));
                                             $clprocandam->p61_dtandam = $date->format('Y-m-d');
-                                            
+
                                             $clprocandam->p61_hora       = db_hora();
                                             $clprocandam->p61_id_usuario = db_getsession("DB_id_usuario");
                                             $clprocandam->p61_coddepto   = db_getsession("DB_coddepto");
@@ -230,14 +230,14 @@ $db_botao = true;
                                         if( $erro == 2 ) {
 
                                             echo "<script>alert('A data da transferência é maior que a data atual. Verifique a data da sessão');</script>";
-                                        }    
+                                        }
                                     if ($erro == 0) {
                                             echo "<script>alert('Recebimento efetuado com sucesso!')</script>";
                                     }
                                     } else {
-                                         
+
                                         echo "<script>alert('Recebimento inválido ou já efetuado');</script>";
-                                        
+
                                     }
                                     db_fim_transacao($sqlerro);
 
@@ -257,10 +257,10 @@ $db_botao = true;
                                                     p62_hora,
                                                     descrdepto,
                                                     login,
-                                                    p58_numero||'/'||p58_ano  as p63_codproc, 
-                                                    (select p51_descr from tipoproc where p51_codigo = p58_codigo) as p51_descr, 
+                                                    p58_numero||'/'||p58_ano  as p63_codproc,
+                                                    (select p51_descr from tipoproc where p51_codigo = p58_codigo) as p51_descr,
                                                     p58_requer
-                                            from  protprocesso  
+                                            from  protprocesso
                                                     inner join proctransferproc on p58_codproc = p63_codproc
                                                     inner join proctransfer on p62_codtran = p63_codtran
                                                     inner join db_depart    on coddepto    = p62_coddepto
@@ -269,9 +269,9 @@ $db_botao = true;
                                             where p62_coddeptorec = " . db_getsession("DB_coddepto")."
                                                 and ( p62_id_usorec = " . db_getsession("DB_id_usuario")." or p62_id_usorec = 0 )
                                                 and not exists (select 1 from proctransand where p64_codtran = p62_codtran)
-                                                and p68_codproc is null                            
+                                                and p68_codproc is null
                                             order by p62_codtran desc";
-                                    
+
                                     db_lovrot($sqltran,15,"()","","js_processo|p62_codtran");
 
                                 }
@@ -282,7 +282,7 @@ $db_botao = true;
             </fieldset>
         </div>
     </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed15_i_codigo");
        <?=@$Led246_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed246_i_codigo',10,$Ied246_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted246_i_turma?>">
-       <?
+       <?php
        db_ancora(@$Led246_i_turma,"js_pesquisaed246_i_turma(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed246_i_turma',5,$Ied246_i_turma,true,'text',$db_opcao," onchange='js_pesquisaed246_i_turma(false);'")
 ?>
-       <?
+       <?php
 db_input('ed57_i_codigo',20,$Ied57_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted246_i_turno?>">
-       <?
+       <?php
        db_ancora(@$Led246_i_turno,"js_pesquisaed246_i_turno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed246_i_turno',10,$Ied246_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed246_i_turno(false);'")
 ?>
-       <?
+       <?php
 db_input('ed15_i_codigo',20,$Ied15_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_turmaturno.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

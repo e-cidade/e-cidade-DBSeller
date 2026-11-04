@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,7 +53,7 @@ switch ($oParam->exec) {
       $aMovimentacoes = $oAlvara->getMovimentacoes();
 
       if ( count($aMovimentacoes) == 0 ) {
-        throw new Excption("Não existem movimentações para este alvara");
+        throw new Exception("Não existem movimentações para este alvara");
       }
 
       /**

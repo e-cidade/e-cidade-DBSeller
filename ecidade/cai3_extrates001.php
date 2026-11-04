@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -94,7 +94,7 @@ function js_mt() {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 	<center>	
-	<?
+	<?php
 	/*
 	  if(!isset($HTTP_POST_VARS["pesquisar"])) {
 	 */
@@ -130,7 +130,7 @@ function js_mt() {
             </tr>
             <tr> 
               <td height="25" nowrap> <select name="conta[]" size="10" id="conta" multiple>
-                  <?
+                  <?php
 //            	     $result = db_query("select k13_reduz,k13_descr from saltes inner join conplanoexe on c62_reduz = k13_reduz and c62_anousu = " . db_getsession("DB_anousu") . " inner join conplanoexe on c62_reduz = c61_reduz and c62_anousu = c61_anousu and c61_instit = " . db_getsession("DB_instit"));
             	     $result = db_query("select k13_reduz, k13_descr 
 		                        from saltes 
@@ -147,7 +147,7 @@ function js_mt() {
               <td height="25" valign="top" nowrap> &nbsp; 
 			  <select name="caixa" id="caixa">
 			  <option value="T">Todos</option>
-                  <?
+                  <?php
 				 $result = db_query("select k11_id,k11_ipterm from cfautent where k11_instit = " . db_getsession("DB_instit") . " order by k11_ipterm");
 				 $numrows = pg_numrows($result);
 				 for($i = 0;$i < $numrows;$i++)
@@ -167,7 +167,7 @@ function js_mt() {
 	</td>
   </tr>
 </table>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

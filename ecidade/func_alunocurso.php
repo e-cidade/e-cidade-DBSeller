@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -60,7 +60,7 @@ $clcurso->rotulo->label("ed29_c_descr");
                   <?=$Led29_i_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input( "ed29_i_codigo", 10, $Ied29_i_codigo, true, "text", 4, "", "chave_ed29_i_codigo" );?>
+                  <?php db_input( "ed29_i_codigo", 10, $Ied29_i_codigo, true, "text", 4, "", "chave_ed29_i_codigo" );?>
                 </td>
               </tr>
               <tr>
@@ -68,7 +68,7 @@ $clcurso->rotulo->label("ed29_c_descr");
                  <?=$Led29_c_descr?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?
+                  <?php
                   db_input( "ed29_c_descr", 30, @$Ied29_c_descr, true, "text", 4, "", "chave_ed29_c_descr" );
                   ?>
                 </td>
@@ -88,18 +88,18 @@ $clcurso->rotulo->label("ed29_c_descr");
         <td align="center" valign="top">
         <?php
           $escola = db_getsession("DB_coddepto");
-          
+
           if ( !isset( $pesquisa_chave ) ) {
-            
+
             if ( isset( $campos ) == false ) {
-              
+
               if ( file_exists( "funcoes/db_func_alunocurso.php" ) == true ) {
                 include(modification( "funcoes/db_func_alunocurso.php" ));
               } else {
                 $campos = "alunocurso.*";
               }
             }
-            
+
             if ( isset( $chave_ed29_i_codigo ) && ( trim( $chave_ed29_i_codigo ) != "" ) ) {
               $where = " AND ed29_i_codigo = {$chave_ed29_i_codigo}";
             } else if ( isset( $chave_ed29_c_descr ) && ( trim( $chave_ed29_c_descr ) != "" ) ) {
@@ -107,7 +107,7 @@ $clcurso->rotulo->label("ed29_c_descr");
             } else {
               $where = "";
             }
-            
+
             $sql  = "SELECT {$campos} ";
             $sql .= "  FROM cursoedu ";
             $sql .= "       inner join ensino      on ensino.ed10_i_codigo     = cursoedu.ed29_i_ensino ";
@@ -124,7 +124,7 @@ $clcurso->rotulo->label("ed29_c_descr");
             $sql .= "       inner join cursoedu on cursoedu.ed29_i_codigo = base.ed31_i_curso ";
             $sql .= "       inner join ensino   on ensino.ed10_i_codigo   = cursoedu.ed29_i_ensino ";
             $sql .= " WHERE alunocurso.ed56_i_aluno = {$aluno}";
-            
+
             db_lovrot( $sql, 15, "()", "", $funcao_js );
           } else {
 
@@ -133,7 +133,7 @@ $clcurso->rotulo->label("ed29_c_descr");
             } else {
               $campos = "alunocurso.*";
             }
-            
+
             if ( $pesquisa_chave != null && $pesquisa_chave != "" ) {
 
               $sql  = "SELECT {$campos} ";
@@ -150,10 +150,10 @@ $clcurso->rotulo->label("ed29_c_descr");
               $sql .= "       inner join cursoedu on cursoedu.ed29_i_codigo = base.ed31_i_curso ";
               $sql .= " WHERE alunocurso.ed56_i_aluno = {$aluno} ";
               $sql .= " ORDER BY ed29_c_descr ";
-              
+
               $result = db_query( $sql );
               $linhas = pg_num_rows( $result );
-              
+
               if ( $linhas != 0 ) {
 
                 db_fieldsmemory( $result, 0 );

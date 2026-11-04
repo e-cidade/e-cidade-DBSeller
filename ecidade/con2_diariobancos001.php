@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009 DBSeller Servicos de Informatica
@@ -87,7 +87,7 @@ function js_emite(){
     </tr>
       <tr>
          <td align="center" colspan="3">
-         <?
+         <?php
            db_selinstit('',300,100);
          ?>
          </td>
@@ -107,7 +107,7 @@ function js_emite(){
              <?=$LDBtxt21?>
            </td>
            <td>
-	   <?
+	   <?php
              $DBtxt21_ano = db_getsession("DB_anousu");
              $DBtxt21_mes = '01';
              $DBtxt21_dia = '01';
@@ -120,7 +120,7 @@ function js_emite(){
           <?=$LDBtxt22?>
         </td>
         <td>
-	  <?
+	  <?php
             $DBtxt22_ano = date("Y",db_getsession("DB_datausu"));
             $DBtxt22_mes = date("m",db_getsession("DB_datausu"));
             $DBtxt22_dia = date("d",db_getsession("DB_datausu"));
@@ -137,7 +137,7 @@ function js_emite(){
     </tr>
     <tr>
       <td colspan="2" align = "center"><strong>Tipo : </strong>
-        <?
+        <?php
        	  $result1=array("A"=>"Analítico","S"=>"Sintético");
 	  db_select("tipo",$result1,true,2);
 	?>
@@ -146,7 +146,7 @@ function js_emite(){
 
     <tr>
       <td colspan="2" align = "center"><strong>Somente contas com Movimento : </strong>
-        <?
+        <?php
        	  $result2=array("S"=>"SIM","N"=>"NÃO");
 	  db_select("movimento",$result2,true,2);
 	?>
@@ -155,7 +155,7 @@ function js_emite(){
 
     <tr>
       <td colspan="2" align = "center"><strong>Somente contas com diferença: </strong>
-        <?
+        <?php
        	  $result2=array("N"=>"NAO","S"=>"SIM");
 	  db_select("diferenca",$result2,true,2);
 	?>
@@ -164,7 +164,7 @@ function js_emite(){
 
     <tr>
       <td colspan="2" align = "center"><strong>Considerar lançamentos genericos (3000): </strong>
-        <?
+        <?php
        	  $result2=array("S"=>"SIM","N"=>"NÃO");
 	  db_select("considerarlancgenericos",$result2,true,2);
 	?>
@@ -183,7 +183,7 @@ function js_emite(){
     </tr>
   </form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

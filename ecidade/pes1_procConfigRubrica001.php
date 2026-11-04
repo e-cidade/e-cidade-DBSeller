@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ require_once(modification("classes/db_rhrubricas_classe.php"));
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
    
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/dbtextField.widget.js");
       db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js, widgets/dbtextField.widget.js");
       db_app::load("widgets/dbcomboBox.widget.js, estilos.css, grid.style.css");

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,13 +58,13 @@ class cl_municipio {
                  senha = varchar(20) = senha 
                  ";
    //funcao construtor da classe 
-   function cl_municipio() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("municipio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_municipio {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cgcter = ($this->cgcter == ""?@$GLOBALS["HTTP_POST_VARS"]["cgcter"]:$this->cgcter);
        $this->nomemun = ($this->nomemun == ""?@$GLOBALS["HTTP_POST_VARS"]["nomemun"]:$this->nomemun);
@@ -86,7 +86,7 @@ class cl_municipio {
      }
    }
    // funcao para inclusao
-   function incluir ($cgcter){ 
+   public function incluir ($cgcter){ 
       $this->atualizacampos();
      if($this->nomemun == null ){ 
        $this->erro_sql = " Campo Nome do Município nao Informado.";
@@ -189,7 +189,7 @@ class cl_municipio {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($cgcter=null) { 
+   public function alterar ($cgcter=null) { 
       $this->atualizacampos();
      $sql = " update municipio set ";
      $virgula = "";
@@ -320,7 +320,7 @@ class cl_municipio {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($cgcter=null,$dbwhere=null) { 
+   public function excluir ($cgcter=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cgcter));
      }else{ 
@@ -386,7 +386,7 @@ class cl_municipio {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

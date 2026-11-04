@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -50,7 +50,7 @@ $db_botao           = true;
 $iLogin             = DB_getsession ( "DB_id_usuario" );
 $dHoje              = date("Y-m-d", db_getsession("DB_datausu"));
 $desabilita         = "";
-$sSql               = $oDaodbconfig->sql_query_file(db_getsession("DB_instit"),"nomeinst as snomedepart,cgc as cnpj"); 
+$sSql               = $oDaodbconfig->sql_query_file(db_getsession("DB_instit"),"nomeinst as snomedepart,cgc as cnpj");
 $resConfig          = $oDaodbconfig->sql_record($sSql);
 db_fieldsmemory ( $resConfig, 0 );
 $clrotulo->label("la02_i_codigo");
@@ -80,7 +80,7 @@ $clrotulo->label("la54_i_compano");
       <td width="140">&nbsp;</td>
     </tr>
   </table>
-  
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"><br>
@@ -92,14 +92,14 @@ $clrotulo->label("la54_i_compano");
         <tr>
           <td><b>Tipo de BPA:</b></td>
           <td>
-            <?
+            <?php
             if (! isset ( $tipo )) {
               $tipo = "02";
             }
             $arr_tipo = array ("02" => "Individual", "01" => "Consolidado" );
             db_select ( 'tipo', $arr_tipo, true, 4 );
             ?>
-          </td>  
+          </td>
         </tr>
         <tr>
           <td colspan="2">
@@ -107,10 +107,10 @@ $clrotulo->label("la54_i_compano");
             <table>
               <tr>
                 <td>
-                  <?db_ancora ( "<b>Competencia</b>", "js_pesquisasd98_i_fechamento(true);", $db_opcao );?>
+                  <?php db_ancora ( "<b>Competencia</b>", "js_pesquisasd98_i_fechamento(true);", $db_opcao );?>
                 </td>
-                <td colspan="3"> 
-                  <?db_input ( 'linhas', 5, @$Ilinhas, true, 'hidden', $db_opcao, "" );
+                <td colspan="3">
+                  <?php db_input ( 'linhas', 5, @$Ilinhas, true, 'hidden', $db_opcao, "" );
                     db_input ( 'la54_i_compmes', 2, @$Isd97_i_compmes, true, 'text', 3, "" );
                     db_input ( 'la54_i_compano', 4, @$Isd97_i_compano, true, 'text', 3, "");
                   ?>
@@ -120,8 +120,8 @@ $clrotulo->label("la54_i_compano");
                 <td nowrap title="<?=@$Tla54_d_dataini?>">
                   <b>Período de Fechamento :</b>
                 </td>
-                <td> 
-                <? db_inputdata('la54_d_dataini',
+                <td>
+                <?php db_inputdata('la54_d_dataini',
                                 @$la54_d_dataini_dia,
                                 @$la54_d_dataini_mes,
                                 @$la54_d_dataini_ano,
@@ -132,8 +132,8 @@ $clrotulo->label("la54_i_compano");
                 <td>
                 A
                 </td>
-                <td> 
-                  <? db_inputdata('la54_d_datafim',
+                <td>
+                  <?php db_inputdata('la54_d_datafim',
                                   @$la54_d_datafim_dia,
                                   @$la54_d_datafim_mes,
                                   @$la54_d_datafim_ano,
@@ -145,7 +145,7 @@ $clrotulo->label("la54_i_compano");
               <tr>
                 <td><b>Tipo de fianciamento</b></td>
                 <td colspan="3">
-                  <?
+                  <?php
                     db_input ( 'la54_i_financiamento', 6, @$sd97_i_financiamento, true, 'hidden', 3, "" );
                     db_input ( 'sd65_c_nome', 30, @$sd65_c_nome, true, 'text', 3, "" );
                   ?>
@@ -154,11 +154,11 @@ $clrotulo->label("la54_i_compano");
             </table>
             </fieldset>
           </td>
-        </tr>  
+        </tr>
         <tr>
           <td>
             <fieldset><legend>Laboratorio</legend>
-              <?
+              <?php
               $sSql           = $cllab_laboratorio->sql_query("","la02_i_codigo,la02_c_descr");
               $rsLaboratorios = $cllab_laboratorio->sql_record($sSql);
               db_multiploselect("la02_i_codigo",
@@ -179,12 +179,12 @@ $clrotulo->label("la54_i_compano");
             <table>
               <tr>
                 <td><b>Nome:</b></td>
-                <td><?db_input ( 'snomedepart', 30, @$Lsnomedepart, true, 'text', 3, "" ); ?></td>
+                <td><?php db_input ( 'snomedepart', 30, @$Lsnomedepart, true, 'text', 3, "" ); ?></td>
               </tr>
               <tr>
                 <td nowrap title="Sigla"><b>Sigla<b/></td>
                 <td colspan=3>
-                  <?
+                  <?php
                     if (! isset ( $sigla )) {
                       $sigla = "";
                     }
@@ -194,7 +194,7 @@ $clrotulo->label("la54_i_compano");
               </tr>
               <tr>
                 <td><b>CNPJ:</b></td>
-                <td><? db_input ( 'cnpj', 30, @$cnpj, true, 'text', 3, "" ); ?></td>
+                <td><?php db_input ( 'cnpj', 30, @$cnpj, true, 'text', 3, "" ); ?></td>
               </tr>
             </table>
             </fieldset>
@@ -207,7 +207,7 @@ $clrotulo->label("la54_i_compano");
             <tr>
               <td nowrap title="Sec. de Destino "><B>Sec. de Destino<B /></td>
               <td colspan=3>
-               <?
+               <?php
                  if (! isset ( $destino )) {
                   $destino = "";
                  }
@@ -222,7 +222,7 @@ $clrotulo->label("la54_i_compano");
                 <br>
                 <input name="orgao" type="radio" value="2">Estadual
               </td>
-            </tr>  
+            </tr>
           </table>
           </fieldset>
           </td>
@@ -235,7 +235,7 @@ $clrotulo->label("la54_i_compano");
                   <td><b>Arquivo:</b></td>
                   <td>
                     PA
-                    <?db_input('sNomeArquivo', 20, @$sNomeArquivo, true, 'text', $db_opcao, "" );?>
+                    <?php db_input('sNomeArquivo', 20, @$sNomeArquivo, true, 'text', $db_opcao, "" );?>
                     .<span id="nomeExtencao" ></span>
                   </td>
                 </tr>
@@ -246,7 +246,7 @@ $clrotulo->label("la54_i_compano");
       </table>
       </fieldset>
       </center>
-      <?
+      <?php
         $regerar = false;
         if (isset ( $sd97_i_compmes )) {
           $result = $clsau_fechamento->sql_record ( $clsau_fechamento->sql_query ( "", "sd97_i_codigo", "", "sd97_i_compmes=$sd97_i_compmes and sd97_i_compano=$sd97_i_compano" ) );
@@ -266,7 +266,7 @@ $clrotulo->label("la54_i_compano");
         }
       ?>
       <center>
-      <input name="gerararquivo" type="submit" id="arquivo" <?=$desabilita?> value="<?=$regerararquivo?>"> 
+      <input name="gerararquivo" type="submit" id="arquivo" <?=$desabilita?> value="<?=$regerararquivo?>">
       <input name="recibo" type="submit" id="recibo" value="Gerar Recibo" disabled onclick='js_recibo();'>
       </center>
       </form>
@@ -281,8 +281,8 @@ $clrotulo->label("la54_i_compano");
     </td>
   </tr>
 </table>
-<?
-db_menu ( db_getsession ( "DB_id_usuario" ), 
+<?php
+db_menu ( db_getsession ( "DB_id_usuario" ),
           db_getsession ( "DB_modulo" ),
           db_getsession ( "DB_anousu" ),
           db_getsession ( "DB_instit" ) );
@@ -290,7 +290,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
   </body>
 </html>
 <script>
-  <?
+  <?php
 	if(isset($sd97_i_compmes)){
 	  echo "document.getElementById('nomeExtencao').innerHTML = js_nomeMes($sd97_i_compmes,1);";
 	}
@@ -303,22 +303,22 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
                           +'la54_i_compmes|la54_i_compano|la54_i_codigo|'
                           +'la54_d_ini|la54_d_fim','Pesquisa',true);
     } else {
-      if (document.form1.sd98_i_fechamento.value != '') { 
+      if (document.form1.sd98_i_fechamento.value != '') {
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_lab_fechamento',
                             'func_lab_fechamento.php?pesquisa_chave='
                             +document.form1.la54_i_codigo.value+'&funcao_js='
                             +'parent.js_mostralab_fechamento','Pesquisa',false);
       } else {
-        document.form1.sd97_i_compmes.value = ''; 
+        document.form1.sd97_i_compmes.value = '';
       }
     }
   }
   function js_mostralab_fechamento(chave,erro){
 
-    document.form1.sd97_i_compmes.value = chave; 
-    if (erro == true) { 
-      document.form1.sd98_i_fechamento.focus(); 
-      document.form1.sd98_i_fechamento.value = ''; 
+    document.form1.sd97_i_compmes.value = chave;
+    if (erro == true) {
+      document.form1.sd98_i_fechamento.focus();
+      document.form1.sd98_i_fechamento.value = '';
     }
 
   }
@@ -339,7 +339,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
                         'Pesquisa',true);
   }
 </script>
-<?
+<?php
   if (isset ( $gerararquivo )) {
 
     $oDados->iCompano     = $la54_i_compano;
@@ -357,7 +357,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
 
     $sSql = $cllab_bpamagnetico->sql_querry_prd_bpa($oDados);
     die("<br><br>".$sSql);
-    
+
     $rsProducao      = db_query ( $sSql ) or die ( "Erro ao selecionar registros. <p>Comunique o adminstrador. <br> " );
     $iLinhasProducao = pg_num_rows ( $rsProducao );
 
@@ -368,7 +368,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
 
     /* Parte Generica */
     $lBpa = geraArquivoBPA($oDados,$rsCabecalho,$rsProducao,true,"tmp/filebpa.txt");
-    
+
     if ($lBpa == true) {
 
       db_inicio_transacao ();
@@ -378,7 +378,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
       $cllab_bpamagnetico->la55_d_data       = $dHoje;
       $cllab_bpamagnetico->la55_c_hora       = date("H:i");
       $cllab_bpamagnetico->la55_t_arquivo    = 'tmp/filebpa.txt';
-      $oidgrava                              = db_geraArquivoOidfarmacia('tmp/filebpa.txt',"",1,$conn); 
+      $oidgrava                              = db_geraArquivoOidfarmacia('tmp/filebpa.txt',"",1,$conn);
       $cllab_bpamagnetico->la55_o_arquivo    = $oidgrava;
       $cllab_bpamagnetico->incluir ( "" );
       db_fim_transacao ();
@@ -400,7 +400,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
 
           }
           </script>
-        <?
+        <?php
         $cllab_bpamagnetico->erro(true,false);
 
       }

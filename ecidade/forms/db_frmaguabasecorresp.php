@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,12 +63,12 @@
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Tx32_codcorresp?>">
-            <?
+            <?php
               db_ancora(@$Lx32_codcorresp, "js_pesquisax32_codcorresp(true);", $db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('x32_codcorresp', 10, $Ix32_codcorresp, true, 'text',
                        $db_opcao, " onchange='js_pesquisax32_codcorresp(false);'");
                        
@@ -83,7 +83,7 @@
             ?>
           </td>
           <td> 
-            <?
+            <?php
               //db_input('x32_matric', 10, $Ix32_matric, true, 'text',
               //         $db_opcao, " onchange='js_pesquisax32_matric(false);'");
               
@@ -110,7 +110,7 @@
       <table>
         <tr>
           <td valign="top" align="center">  
-            <?
+            <?php
 	            $chavepri= array("x32_matric"=>@$x32_matric);
 	            
 	            $cliframe_alterar_excluir->chavepri      = $chavepri;

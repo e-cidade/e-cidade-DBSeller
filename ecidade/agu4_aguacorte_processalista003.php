@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -67,7 +67,7 @@ db_postmemory($HTTP_SERVER_VARS);
 <br>
 <br>
 
-<?
+<?php
 
 db_criatermometro('termometro', 'Concluido...', 'blue', 1);
 flush();
@@ -79,9 +79,9 @@ flush();
  */
 db_inicio_transacao();
 if(empty($x40_codcorte)) {
-  
+
   db_msgbox("E necessario selecionar um Procedimento de Corte!");
-  
+
 } else {
 
   // SQL pra buscar NUMPRES da Lista e seus pagamentos
@@ -121,7 +121,7 @@ if(empty($x40_codcorte)) {
 
       if($iNumRowsRecibo > 0) {
         db_fieldsmemory($rsReciboPaga, 0);
-        list($iAno, $iMes, $iDia) = split("-", $x99_dtoper);
+        list($iAno, $iMes, $iDia) =explode("-", $x99_dtoper);
         $dtOper = "{$iDia}/{$iMes}/{$iAno}";
 
         $sHist .= $sSep."RECIBO [Numpre: {$x99_numnov}  Vencimento: {$dtOper}] )";
@@ -165,7 +165,7 @@ if(empty($x40_codcorte)) {
       $claguacortematmov->x42_data_mes    = date("m", db_getsession("DB_datausu"));
       $claguacortematmov->x42_data_ano    = date("Y", db_getsession("DB_datausu"));
       $claguacortematmov->x42_usuario     = db_getsession("DB_id_usuario");
-       
+
       if($sNaoRegularizado != '') {
         $sHistorico = $sNaoRegularizado."(".$sHistoricoCompleto.")";
         $iSituacao  = $iSituacaoNaoReg;
@@ -176,12 +176,12 @@ if(empty($x40_codcorte)) {
         $sHistorico = $sRegularizado."(".$sHistoricoCompleto.")";
         $iSituacao  = $iSituacaoreg;
       }
-      
+
       $claguacortematmov->x42_historico   = $sHistorico;
       $claguacortematmov->x42_codsituacao = $iSituacao; // Situacao para Regularizacao
-       
+
       $claguacortematmov->incluir(null);
-       
+
       if($claguacortematmov->erro_msg == '0') {
         break;
       }
@@ -198,7 +198,7 @@ if(empty($x40_codcorte)) {
 ?>
 </body>
 </html>
-<?
+<?php
 if($claguacortematmov->erro_status == '0') {
   db_msgbox($claguacortematmov->erro_msg);
   db_fim_transacao(true);

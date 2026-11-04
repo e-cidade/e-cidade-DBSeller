@@ -9,7 +9,7 @@
   "selecione_nova_turma_alterar"          : "Selecione uma nova turma para alterar.",
   "informe_data_modificacao"              : "Informe a Data de Modificação!",
   "data_modificacao_fora_periodo"         : "Data de modificação fora do período do calendário ( [iDataInicial] a [iDataFinal] ).",
-  "data_modificacao_menor_data_matricula" : "Data de Modificação menor que a Data da Matrícula!",
+  "data_modificacao_menor_data_matricula" : "Data de Modificação menor ou igual a Data da Matrícula! Altere para uma data posterior!",
   "data_modificacao_menor_data_saida"     : "Data de Modificação menor que a Data da Saída!",
   "nao_ha_vagas_disponiveis"              : "Não há vagas disponíveis nesta turma!",
   "confirmar_exclusao"                    : "A classificação da turma terá sua sequência reiniciada caso a numeração já tenha sido gerada, de forma a acomodar as demais matrículas no espaço vago deixado por esta exclusão. Confirmar exclusão?",

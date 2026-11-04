@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -37,7 +37,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_anousu ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('r66_anousu', 4, $Ir66_anousu, true, 'text', 3, "")
                     ?>
                 </td>
@@ -47,7 +47,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_mesusu ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('r66_mesusu', 2, $Ir66_mesusu, true, 'text', 3, "")
                     ?>
                 </td>
@@ -57,7 +57,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_codigo ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('r66_codigo', 2, $Ir66_codigo, true, 'text', 3, "")
                     ?>
                 </td>
@@ -67,7 +67,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_descr ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('r66_descr', 40, $Ir66_descr, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -77,7 +77,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_tipo ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('r66_tipo', 1, $Ir66_tipo, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -87,7 +87,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_mensal ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     $x = array("f" => "NAO", "t" => "SIM");
                     db_select('r66_mensal', $x, true, $db_opcao, "");
                     ?>
@@ -98,7 +98,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_ifgtsc ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('r66_ifgtsc', 1, $Ir66_ifgtsc, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -108,7 +108,7 @@ $clcodmovsefip->rotulo->label();
                     <?= @$Lr66_ifgtse ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('r66_ifgtse', 1, $Ir66_ifgtse, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -127,7 +127,7 @@ $clcodmovsefip->rotulo->label();
 
     function js_preenchepesquisa(chave, chave1, chave2) {
         db_iframe_codmovsefip.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
         }

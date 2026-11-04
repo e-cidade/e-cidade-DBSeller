@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,22 +64,22 @@ if(isset($db_opcaoal)){
        <?=@$Lx41_codcortemat?>
     </td>
     <td> 
-<?
+<?php
 db_input('x41_codcortemat',5,$Ix41_codcortemat,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx41_matric?>">
-       <?
+       <?php
        db_ancora(@$Lx41_matric,"js_pesquisax41_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x41_matric',10,$Ix41_matric,true,'text',$db_opcao," onchange='js_pesquisax41_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('x01_numcgm',40,$Ix01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -91,11 +91,11 @@ db_input('x01_numcgm',40,$Ix01_numcgm,true,'text',3,'')
        ?>
     </td>
     <td> 
-<?
+<?php
 //db_input('x41_codcorte',10,$Ix41_codcorte,true,'text',$db_opcao," onchange='js_pesquisax41_codcorte(false);'")
 db_input('x41_codcorte',10,$Ix41_codcorte,true,'text',3," onchange='js_pesquisax41_codcorte(false);'")
 ?>
-       <?
+       <?php
 $data = strtotime($x40_dtinc);
 $x40_dtinc_dia = date("d", $data);
 $x40_dtinc_mes = date("m", $data);
@@ -110,7 +110,7 @@ db_inputdata('x40_dtinc',@$x40_dtinc_dia,@$x40_dtinc_mes,@$x40_dtinc_ano,true,'t
        <?=@$Lx41_dtprazo?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x41_dtprazo',@$x41_dtprazo_dia,@$x41_dtprazo_mes,@$x41_dtprazo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -125,7 +125,7 @@ db_inputdata('x41_dtprazo',@$x41_dtprazo_dia,@$x41_dtprazo_mes,@$x41_dtprazo_ano
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("x41_codcortemat"=>@$x41_codcortemat);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 //$cliframe_alterar_excluir->sql     = $claguacortemat->sql_query_file($x41_codcortemat);

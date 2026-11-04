@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -76,13 +76,13 @@ class cl_disarq {
                  md5 = char(32) = Identificador do arquivo
                  ";
    //funcao construtor da classe
-   function cl_disarq() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disarq");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -91,7 +91,7 @@ class cl_disarq {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->id_usuario = ($this->id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["id_usuario"]:$this->id_usuario);
        $this->k15_codbco = ($this->k15_codbco == ""?@$GLOBALS["HTTP_POST_VARS"]["k15_codbco"]:$this->k15_codbco);
@@ -124,7 +124,7 @@ class cl_disarq {
      }
    }
    // funcao para inclusao
-   function incluir ($codret){
+   public function incluir ($codret){
       $this->atualizacampos();
      if($this->id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
@@ -313,7 +313,7 @@ class cl_disarq {
      return true;
    }
    // funcao para alteracao
-   function alterar ($codret=null) {
+   public function alterar ($codret=null) {
       $this->atualizacampos();
      $sql = " update disarq set ";
      $virgula = "";
@@ -553,7 +553,7 @@ class cl_disarq {
      }
    }
    // funcao para exclusao
-   function excluir ($codret=null,$dbwhere=null) {
+   public function excluir ($codret=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codret));
      }else{
@@ -625,7 +625,7 @@ class cl_disarq {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -648,10 +648,10 @@ class cl_disarq {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $codret=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $codret=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -677,7 +677,7 @@ class cl_disarq {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -687,10 +687,10 @@ class cl_disarq {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $codret=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $codret=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -711,7 +711,7 @@ class cl_disarq {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -727,7 +727,7 @@ class cl_disarq {
    * @param  string $sOrderBy
    * @return string
    */
-  function sql_query_integracaoTJ($sCampos = "*", $sWhere = "", $sOrderBy = "") {
+  public function sql_query_integracaoTJ($sCampos = "*", $sWhere = "", $sOrderBy = "") {
 
     if ( !empty($sWhere) ) {
       $sWhere   = " and  " . $sWhere;
@@ -755,10 +755,10 @@ class cl_disarq {
   }
 
 
-  function sql_query_baixa_banco ($codret=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_baixa_banco ($codret=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -783,7 +783,7 @@ class cl_disarq {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];

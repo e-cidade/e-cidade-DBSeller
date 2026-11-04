@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -78,7 +78,7 @@
   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td align="center">
-<?
+<?php
   if($numrows04>0){
 ?>
 	  <table border="1"  >
@@ -94,7 +94,7 @@
 	      <td>Data</td>
 	      <td>Valor</td>
 	    </tr>
-      <?
+      <?php
 	  for($i=0; $i<$numrows04; $i++){
 	      db_fieldsmemory($result04,$i);
 	  if($q20_numpre!=""){
@@ -130,15 +130,15 @@
 	  <td>&nbsp;<?=$data?></td>
 	  <td>&nbsp;<?=$k00_valor?></td>
 	</tr>
-<?
+<?php
       }
 ?>
       </table>
-<?
+<?php
    }else{
 ?>
    <br><b>Nenhum registro encontrado.</b>
-<?
+<?php
 	}
 ?>
     </td>

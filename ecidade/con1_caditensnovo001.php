@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -43,7 +43,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js");
       db_app::load("strings.js");
       db_app::load("prototype.js");
@@ -57,7 +57,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
   </head>
   <body>
     <div style="margin-top: 20px;" id='ctnAbas'></div>
-    
+
     <!-- CONTAINER DA ABA CADASTRO MENU -->
     <div id="ctnCadastroMenu" class="container">
       <fieldset>
@@ -130,6 +130,14 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
               </td>
             </tr>
             <tr>
+                  <td>
+                      <label>API:</label>
+                  </td>
+                  <td>
+                      <select id="selectApi"></select>
+                  </td>
+            </tr>
+            <tr>
               <td colspan="2">
                 <fieldset id="dadosModulos" class="separator">
                   <legend>Módulo</legend>
@@ -176,7 +184,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
       <input id="btnProcurar"       type="button" value="Procurar"        />
       <input id="btnSelecionar"     type="button" value="Selecionar Menu" />
     </div>
-    
+
     <!-- CONTAINER DA ABA ORGANIZAÇÃO MENU -->
     <div id="ctnOrganizacaoMenu"></div>
   </body>
@@ -224,6 +232,12 @@ $('inputManutencao').style.backgroundColor = '#DEB887';
  */
 $('selectLiberadoCliente').add( new Option( 'NÃO', 'f' ) );
 $('selectLiberadoCliente').add( new Option( 'SIM', 't' ) );
+
+/**
+ * Setadas as opes do select para definir se API ou no
+ */
+$('selectApi').add( new Option( 'NÃO', 'f' ) );
+$('selectApi').add( new Option( 'SIM', 't' ) );
 
 /**
  * Alterações do estado do elemento inputNomeModulo
@@ -278,7 +292,7 @@ $('btnNovoItem').onclick = function() {
   $('btnIncluirAlterar').value   = 'Incluir';
   $('btnExcluir').disabled       = true;
   oAbaOrganizacaoMenu.lBloqueada = true;
-  
+
   oToogleModulo.show( false );
   limpaFormulario();
 };
@@ -319,7 +333,7 @@ function buscaModulo() {
   var oParametro           = new Object();
       oParametro.sExecucao = 'buscaItemMenuModulo';
       oParametro.iCodigo   = $('inputCodigo').value;
-  
+
   oDados.fRetorno  = retornoBuscaModulo;
   oDados.sMensagem = _M( sCaminhoMensagem + "buscando_informacoes_modulo" );
   requisicaoRpc( oParametro, oDados );
@@ -367,6 +381,7 @@ function salvaItemMenu() {
       oParametro.sFuncao           = encodeURIComponent( tagString( $('inputFuncao').value ) );
       oParametro.sDescricaoTecnica = encodeURIComponent( tagString( $('textAreaDescricaoTecnica').value ) );
       oParametro.sLiberadoCliente  = encodeURIComponent( tagString( $('selectLiberadoCliente').value ) );
+      oParametro.sApi  = encodeURIComponent( tagString( $('selectApi').value ) );
       oParametro.sManutencao       = $('inputManutencao').value;
       oParametro.iItemAtivo        = $('inputItemAtivo').value;
       oParametro.lModulo           = lModulo;
@@ -381,7 +396,7 @@ function salvaItemMenu() {
     oParametro.sDescricaoModulo = encodeURIComponent( tagString( $('inputDescricaoModulo').value ) );
     oParametro.sImagemModulo    = encodeURIComponent( tagString( $('inputImagemModulo').value ) );
   }
-  
+
   oDados.fRetorno  = retornoSalvaItemMenu;
   oDados.sMensagem = _M( sCaminhoMensagem + "salvando_informacoes" );
   requisicaoRpc( oParametro, oDados );
@@ -393,7 +408,7 @@ function salvaItemMenu() {
 function retornoSalvaItemMenu( oResposta ) {
 
   js_removeObj( "msgBox" );
-  
+
   var oRetorno = JSON.parse(oResposta.responseText);
 
   alert( oRetorno.sMensagem.urlDecode() );
@@ -433,7 +448,7 @@ function retornoExcluiItemMenu( oResposta ) {
   var oRetorno = JSON.parse(oResposta.responseText);
 
   alert( oRetorno.sMensagem.urlDecode() );
-  
+
   if ( oRetorno.iStatus == 1 ) {
     limpaFormulario();
   }
@@ -444,11 +459,11 @@ function retornoExcluiItemMenu( oResposta ) {
  * @param integer iCodigo - Código do item de menu a ser pesquisado
  */
 function buscaItemMenu( iCodigo ) {
-  
+
   var oParametro           = new Object();
       oParametro.sExecucao = 'buscaItemMenu';
       oParametro.iCodigo   = iCodigo;
-  
+
   oDados.fRetorno  = retornoBuscaItemMenu;
   oDados.sMensagem = _M( sCaminhoMensagem + "buscando_dados_item" );
   requisicaoRpc( oParametro, oDados );
@@ -461,7 +476,7 @@ function retornoBuscaItemMenu( oResposta ) {
 
   js_removeObj( "msgBox" );
   limpaFormulario();
-  
+
   var oRetorno = JSON.parse(oResposta.responseText);
 
   if ( oRetorno.iStatus != 1 ) {
@@ -476,6 +491,7 @@ function retornoBuscaItemMenu( oResposta ) {
   $('inputFuncao').value              = oRetorno.sFuncao.urlDecode();
   $('textAreaDescricaoTecnica').value = oRetorno.mDescricaoTecnica.urlDecode();
   $('selectLiberadoCliente').value    = oRetorno.sLiberadoCliente.urlDecode();
+  $('selectApi').value    = oRetorno.sApi.urlDecode();
   $('inputItemAtivo').value           = oRetorno.iItemAtivo;
   $('inputManutencao').value          = oRetorno.sManutencao.urlDecode();
 
@@ -512,14 +528,14 @@ function tratamentoToogle() {
   var sCor            = '#DEB887';
   var lSomenteLeitura = true;
   lModulo             = false;
-  
+
   if ( oToogleModulo.isDisplayed() ) {
 
     sCor            = '#FFFFFF';
     lSomenteLeitura = false;
     lModulo         = true;
   }
-  
+
   $('inputNomeModulo').readOnly              = lSomenteLeitura;
   $('inputNomeModulo').style.backgroundColor = sCor;
 
@@ -585,13 +601,14 @@ function limpaFormulario() {
   $('inputFuncao').value              = '';
   $('textAreaDescricaoTecnica').value = '';
   $('selectLiberadoCliente').value    = 'f';
+  $('selectApi').value    = 'f';
   $('inputItemAtivo').value           = 1;
   $('inputManutencao').value          = '1';
   $('inputModuloVinculo').value       = '';
 
   $('btnIncluirAlterar').value = 'Incluir';
   $('btnExcluir').disabled     = true;
-  
+
   limpaCamposModulo();
 }
 
@@ -611,7 +628,7 @@ function limpaCamposModulo() {
  * MANTIDA LÓGICA DO PROGRAMA ANTIGO
  */
 function js_pesquisaitemcad( iCodigo ) {
-  
+
   db_iframe.hide();
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?iCodigo=" + iCodigo;
 }
@@ -636,7 +653,7 @@ function requisicaoRpc( oParametro, oDados ) {
 
 /**
  * - Altera o valor do botão Incluir/Alterar
- * - Libera o Excluir 
+ * - Libera o Excluir
  * - Libera a aba de Organização
  * - Instancia DbViewMenus
  */
@@ -664,7 +681,7 @@ function instanciaViewMenus() {
 /**
  * ***************************************************************************************
  * ******************************** CRIAÇÃO DAS ABAS *************************************
- * *************************************************************************************** 
+ * ***************************************************************************************
  */
 var oDBAba                         = new DBAbas( $('ctnAbas') );
 var oAbaCadastroMenu               = oDBAba.adicionarAba( 'Cadastro do Menu',    $('ctnCadastroMenu') );

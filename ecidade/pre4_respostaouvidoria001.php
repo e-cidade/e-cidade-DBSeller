@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -41,16 +41,16 @@ $oPost = db_utils::postMemory($HTTP_POST_VARS);
 
 $oConfigDBpref    = db_utils::getDao("configdbpref");
 $rsConfigDBpref   = $oConfigDBpref->sql_record($oConfigDBpref->sql_query_file(db_getsession('DB_instit'),"w13_emailadmin"));
-$email_remetente  = db_utils::fieldsMemory($rsConfigDBpref,0)->w13_emailadmin; 
+$email_remetente  = db_utils::fieldsMemory($rsConfigDBpref,0)->w13_emailadmin;
 
 if(isset($oPost->enviar)) {
-	
+
 	$email          = $oPost->email;
   $assunto        = $oPost->tipo;
   $corpo_email    = $oPost->corpo_email;
   $id_ouvidoria   = $oPost->id_ouvidoria;
   $email_remetente = $oPost->email_remetente;
-  
+
   $oMail    = new mail();
   $oMail->setUserMail($email_remetente);
   $oMail->setsEmailTo($email);
@@ -59,7 +59,7 @@ if(isset($oPost->enviar)) {
   $sMsgMail = $oMail->Send();
   if (substr($sMsgMail,0,1) != "0") {
     db_msgbox($sMsgMail);
-  
+
 	  db_inicio_transacao();
 
 	  $cl_db_ouvidoria->po01_sequencial = $id_ouvidoria;
@@ -70,15 +70,15 @@ if(isset($oPost->enviar)) {
     if ($cl_db_ouvidoria->erro_status == "0")	 {
     	db_fim_transacao(true);
     	echo "<br><br><Br>Erro atualizando a tabela db_ouvidoria<br>";
-    	exit;    	
+    	exit;
     } else {
 	   db_fim_transacao();
 		}
-		
+
   } else {
   	db_msgbox($sMsgMail);
   }
-  
+
   db_redireciona();
 }
 ?>
@@ -122,9 +122,9 @@ input {
 <br />
 <center>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
 	if(isset($retorno)) {
 		$sCampos  = "to_char(po01_data,'DD-MM-YYYY') 						as data,                        ";
 	  $sCampos .= "po01_nome                       						as nome,w03_tipo as categoria,  ";
@@ -155,135 +155,135 @@ input {
   <center>
   <iframe id="downloadFrame" style="display:none"></iframe>
   <table border="1" cellspacing="0" cellpadding="0">
-    <tr> 
-      <td align="center" valign="middle"> 
+    <tr>
+      <td align="center" valign="middle">
         <form method="post" name="form1">
           <input type="hidden" name="id_ouvidoria" value="<?=@$retorno?>">
 	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr align="center" valign="middle"> 
+            <tr align="center" valign="middle">
               <td height="40" colspan="2"><u><em><strong>Solicita&ccedil;&atilde;o:</strong></em></u></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Data:</strong></td>
               <td width="87%"><?=@$data?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Nome:</strong></td>
               <td width="87%"><?=@$nome?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>E-mail:</strong></td>
               <td width="87%"><?=@$email?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Categoria:</strong></td>
               <td width="87%"><?=@$categoria?></td>
             </tr>
-            <tr> 
-              <? $x = array('f'=>'Não','t'=>'Sim');?>
+            <tr>
+              <?php $x = array('f'=>'Não','t'=>'Sim');?>
               <td width="13%" height="20" nowrap><strong>Deseja manter o nome e<br /> dados em sigilo?</strong></td>
               <td width="87%"><?=@$x[$sigilo]?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Deseja receber resposta?</strong></td>
               <td width="87%"><?=@$x[$resposta]?></td>
             </tr>
-            <? $x = array('0'=>'Carta','1'=>'E-mail','2'=>'Telefone');?>
-            <tr> 
+            <?php $x = array('0'=>'Carta','1'=>'E-mail','2'=>'Telefone');?>
+            <tr>
               <td width="13%" height="20" nowrap><strong>Tipo da resposta?</strong></td>
               <td width="87%"><?=@$x[$tiporesposta]?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Data de nascimento:</strong></td>
               <td width="87%"><?=@($datanascimento!='null')?$datanascimento:''?></td>
             </tr>
-            <tr> 
-              <? $x = array('F'=>'Feminino','M'=>'Masculino');?>
+            <tr>
+              <?php $x = array('F'=>'Feminino','M'=>'Masculino');?>
               <td width="13%" height="20" nowrap><strong>Sexo:</strong></td>
               <td width="87%"><?=@$x[$sexo]?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Profissão:</strong></td>
               <td width="87%"><?=@$profissao?></td>
             </tr>
-            <tr> 
-              <? $x = array('0'=>'Não alfabetizado','1'=>'Nível fundamental','2'=>'Nível médio','3'=>'Graduado');?>
+            <tr>
+              <?php $x = array('0'=>'Não alfabetizado','1'=>'Nível fundamental','2'=>'Nível médio','3'=>'Graduado');?>
               <td width="13%" height="20" nowrap><strong>Escolaridade:</strong></td>
               <td width="87%"><?=@$x[$escolaridade]?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>CPF:</strong></td>
               <td width="87%"><?=@$cpf?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>RG:</strong></td>
               <td width="87%"><?=@$rg?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Telefone:</strong></td>
               <td width="87%"><?=@$telefone?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Celular:</strong></td>
               <td width="87%"><?=@$celular?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Endereço residencial:</strong></td>
               <td width="87%"><?=@$enderecoresidencial?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Endereço comercial:</strong></td>
               <td width="87%"><?=@$enderecocomercial?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Cidade:</strong></td>
               <td width="87%"><?=@$cidade?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Estado:</strong></td>
               <td width="87%"><?=@$estado?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Assunto:</strong></td>
               <td width="87%"><?=@$assunto?></td>
             </tr>
-            <tr> 
+            <tr>
               <td width="13%" height="20" nowrap><strong>Mensagem:</strong></td>
               <td width="87%"><?=@nl2br($comentario)?></td>
             </tr>
-            <? if(!empty($url01)){ ?>
-            <tr> 
+            <?php if(!empty($url01)){ ?>
+            <tr>
               <td width="13%" height="20" nowrap><strong></strong></td>
               <td width="87%"><a href="javascript:void(0);" onclick="js_download('<?=@$url01?>');">Anexo 1</a></td>
             </tr>
-            <?}?>
-            <? if(!empty($url02)){ ?>
-            <tr> 
+            <?php }?>
+            <?php if(!empty($url02)){ ?>
+            <tr>
               <td width="13%" height="20" nowrap><strong></strong></td>
               <td width="87%"><a href="javascript:void(0);" onclick="js_download('<?=@$url02?>');">Anexo 2</a></td>
             </tr>
-            <?}?>
-            <tr align="center" valign="middle"> 
+            <?php }?>
+            <tr align="center" valign="middle">
               <td height="40" colspan="2" nowrap><u><em><strong>Resposta:</strong></em></u></td>
             </tr>
-            <tr> 
+            <tr>
               <td height="20" nowrap><strong>De:</strong></td>
               <td><input name="email_remetente" type="text" id="email_remetete" value="<?=@$email_remetente?>" size="50" maxlength="50" readonly></td>
             </tr>
-            <tr> 
+            <tr>
               <td height="20" nowrap><strong>Para:</strong></td>
               <td><input name="email" style="border:none" type="text" id="email" value="<?=@$email?>" size="50" maxlength="50" readonly></td>
             </tr>
-            <tr> 
+            <tr>
               <td height="20" nowrap><strong>Assunto:</strong></td>
               <td><input name="tipo" type="text" id="tipo" value="RE: <?=@$assunto?>" size="50" maxlength="50"></td>
             </tr>
-            <tr align="left" valign="middle"> 
-              <td height="20" colspan="2" nowrap> 
+            <tr align="left" valign="middle">
+              <td height="20" colspan="2" nowrap>
                 <textarea name="corpo_email" cols="80" rows="10" id="corpo_email"></textarea>
               </td>
             </tr>
-            <tr> 
+            <tr>
               <td height="20" nowrap>&nbsp;</td>
               <td>
                 <input type="submit" name="enviar" value="Enviar">
@@ -292,19 +292,19 @@ input {
             </tr>
           </table>
 		</form>
-		</td>      
+		</td>
     </tr>
 	</table>
 	</center>
-	<?
+	<?php
 	} else {
-      $query = "SELECT po01_sequencial as dl_ouvidoria, 
-      								 w03_tipo        as dl_categoria, 
+      $query = "SELECT po01_sequencial as dl_ouvidoria,
+      								 w03_tipo        as dl_categoria,
       								 po01_nome       as dl_nome,
-      								 po01_email      as dl_email, 
-      								 po01_assunto    as dl_assunto, 
-      								 to_char(po01_data,'DD-MM-YYYY')::varchar as data 
-                FROM db_ouvidoria 
+      								 po01_email      as dl_email,
+      								 po01_assunto    as dl_assunto,
+      								 to_char(po01_data,'DD-MM-YYYY')::varchar as data
+                FROM db_ouvidoria
                 	INNER JOIN db_tipo ON db_tipo.w03_codtipo = db_ouvidoria.po01_tipo
                 WHERE po01_revisado IS NULL
                 ORDER BY po01_sequencial ASC";
@@ -313,7 +313,7 @@ input {
   echo "</center>";
 	}//final do isset($retorno)
 	?>
-	<?
+	<?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 	</td>

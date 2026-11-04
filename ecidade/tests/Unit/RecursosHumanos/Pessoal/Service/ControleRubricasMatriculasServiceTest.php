@@ -43,7 +43,7 @@ class ControleRubricasMatriculasServiceTest extends TestCase
      */
     private $selecao;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = Mockery::mock(ControleRubricasMatriculasRepository::class)->makePartial();
         $this->builder = new ControleRubricasMatriculasBuilder();

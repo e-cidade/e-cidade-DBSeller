@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -43,7 +43,7 @@ $orcparamrel = new cl_orcparamrel;
 $classinatura = new cl_assinatura;
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -98,9 +98,9 @@ $result = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dataini,$datafi
 // db_criatabela($result);exit;
 // sub-totais
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $alt    = 4;
 $pagina = 0;
@@ -111,7 +111,7 @@ $pdf->cell(100,$alt*2,"TITULOS","TBR",0,"C",0);
 $pdf->cell(40,$alt,"SALDO DO EXERCICIO ","TR",0,"C",0);
 $pdf->cell(80,$alt,"MOVIMENTAÇÃO NO EXERCICIO","BTR",0,"C",0);
 $pdf->cell(40,$alt,"SALDO PARA ","T",1,"C",0);
-     
+
 $pdf->setX(110);
 $pdf->cell(40,$alt,"ANTERIOR R$","BR",0,"C",0);
 $pdf->cell(40,$alt,"INSCRIÇÃO","BR",0,"C",0);
@@ -159,20 +159,20 @@ for($i=0;$i<pg_numrows($result);$i++){
       $pdf->cell(40,$alt,db_formatar($saldo_anterior,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_credito,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_debito,'f'),"R",0,"R",0);
-      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);    
+      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);
       $sub_anterior  += $saldo_anterior;
       $sub_inscricao += $saldo_anterior_credito ;
       $sub_baixa     += $saldo_anterior_debito;
-      $sub_saldo     += $saldo_final;    
+      $sub_saldo     += $saldo_final;
    }
-} 
+}
 $pdf->setfont('arial','b',8);
 $pdf->cell(10,$alt,"",0,0,"C",0);
 $pdf->cell(90,$alt,"SUBTOTAL","R",0,"L",0);
 $pdf->cell(40,$alt,db_formatar($sub_anterior,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_inscricao,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_baixa,'f'),"R",0,"R",0);
-$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);    
+$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);
 $pdf->setfont('arial','',8);
 
 
@@ -192,7 +192,7 @@ $pdf->cell(40,$alt,"","R",0,"C",0);
 $pdf->cell(40,$alt,"","0",1,"C",0);
 for($i=0;$i<pg_numrows($result);$i++){
    db_fieldsmemory($result,$i);
-   
+
    $v_elementos = array($estrutural,$c61_instit);
 
    $flag_contar = false;
@@ -215,21 +215,21 @@ for($i=0;$i<pg_numrows($result);$i++){
       $pdf->cell(40,$alt,db_formatar($saldo_anterior,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_credito,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_debito,'f'),"R",0,"R",0);
-      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);    
+      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);
       $sub_anterior  += $saldo_anterior;
       $sub_inscricao += $saldo_anterior_credito ;
       $sub_baixa     += $saldo_anterior_debito;
       $sub_saldo     += $saldo_final;
-      
+
    }
-} 
+}
 $pdf->setfont('arial','b',8);
 $pdf->cell(10,$alt,"",0,0,"C",0);
 $pdf->cell(90,$alt,"SUBTOTAL","R",0,"L",0);
 $pdf->cell(40,$alt,db_formatar($sub_anterior,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_inscricao,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_baixa,'f'),"R",0,"R",0);
-$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);    
+$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);
 $pdf->setfont('arial','',8);
 
 
@@ -249,7 +249,7 @@ $pdf->cell(40,$alt,"","R",0,"C",0);
 $pdf->cell(40,$alt,"","0",1,"C",0);
 for($i=0;$i<pg_numrows($result);$i++){
    db_fieldsmemory($result,$i);
-   
+
    $v_elementos = array($estrutural,$c61_instit);
 
    $flag_contar = false;
@@ -272,21 +272,21 @@ for($i=0;$i<pg_numrows($result);$i++){
       $pdf->cell(40,$alt,db_formatar($saldo_anterior,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_credito,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_debito,'f'),"R",0,"R",0);
-      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);    
+      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);
       $sub_anterior  += $saldo_anterior;
       $sub_inscricao += $saldo_anterior_credito ;
       $sub_baixa     += $saldo_anterior_debito;
       $sub_saldo     += $saldo_final;
-     
+
    }
-} 
+}
 $pdf->setfont('arial','b',8);
 $pdf->cell(10,$alt,"",0,0,"C",0);
 $pdf->cell(90,$alt,"SUBTOTAL","R",0,"L",0);
 $pdf->cell(40,$alt,db_formatar($sub_anterior,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_inscricao,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_baixa,'f'),"R",0,"R",0);
-$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);    
+$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);
 $pdf->setfont('arial','',8);
 
 
@@ -306,7 +306,7 @@ $pdf->cell(40,$alt,"","R",0,"C",0);
 $pdf->cell(40,$alt,"","0",1,"C",0);
 for($i=0;$i<pg_numrows($result);$i++){
    db_fieldsmemory($result,$i);
-   
+
    $v_elementos = array($estrutural,$c61_instit);
 
    $flag_contar = false;
@@ -329,21 +329,21 @@ for($i=0;$i<pg_numrows($result);$i++){
       $pdf->cell(40,$alt,db_formatar($saldo_anterior,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_credito,'f'),"R",0,"R",0);
       $pdf->cell(40,$alt,db_formatar($saldo_anterior_debito,'f'),"R",0,"R",0);
-      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);    
+      $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);
       $sub_anterior  += $saldo_anterior;
       $sub_inscricao += $saldo_anterior_credito ;
       $sub_baixa     += $saldo_anterior_debito;
       $sub_saldo     += $saldo_final;
-      
+
    }
-} 
+}
 $pdf->setfont('arial','b',8);
 $pdf->cell(10,$alt,"",0,0,"C",0);
 $pdf->cell(90,$alt,"SUBTOTAL","R",0,"L",0);
 $pdf->cell(40,$alt,db_formatar($sub_anterior,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_inscricao,'f'),"R",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($sub_baixa,'f'),"R",0,"R",0);
-$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);    
+$pdf->cell(40,$alt,db_formatar($sub_saldo,'f'),"0",1,"R",0);
 $pdf->setfont('arial','',8);
 
 $geral_anterior +=$sub_anterior ;
@@ -356,16 +356,16 @@ $pdf->cell(100,$alt,"TOTAL","RTB",0,"L",0);
 $pdf->cell(40,$alt,db_formatar($geral_anterior,'f'),"TBR",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($geral_inscricao,'f'),"TBR",0,"R",0);
 $pdf->cell(40,$alt,db_formatar($geral_baixa,'f'),"TBR",0,"R",0);
-$pdf->cell(40,$alt,db_formatar($geral_saldo,'f'),"TB",1,"R",0);    
+$pdf->cell(40,$alt,db_formatar($geral_saldo,'f'),"TB",1,"R",0);
 
 $pdf->Ln(2);
 $pdf->setfont('arial','',5);
-notasExplicativas(&$pdf,$iCodRel,"2S",190);
+notasExplicativas($pdf,$iCodRel,"2S",190);
 
 $pdf->ln(14);
-assinaturas(&$pdf,&$classinatura,'BG');
+assinaturas($pdf,$classinatura,'BG');
 
 
 $pdf->Output();
-   
+
 ?>

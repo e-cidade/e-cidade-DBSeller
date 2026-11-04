@@ -16,7 +16,7 @@ class ConferenciaPorRecursosPDF extends \FpdfMultiCellBorder
      * @var string
      */
 
-    private $filtros ;
+    private $filtros;
 
     public function __construct(stdClass $filtros)
     {
@@ -52,8 +52,21 @@ class ConferenciaPorRecursosPDF extends \FpdfMultiCellBorder
                 $this->AddPage("L");
             }
 
-            $this->cell(10, 4, "Recurso", "", 0, "C", 0);
-            $this->cell(70, 4, "Descricao", "", 0, "C", 0);
+            switch ($this->filtros->modeloEmissao) {
+                case 2:
+                    $this->cell(78, 4, "Siconfi", "", 0, "C", 0);
+                    break;
+                case 3:
+                    $this->cell(39, 4, "Siconfi", "", 0, "C", 0);
+                    $this->cell(39, 4, "Complemento", "", 0, "C", 0);
+                    break;
+                case 1:
+                default:
+                    $this->cell(26, 4, "Gestao", "", 0, "C", 0);
+                    $this->cell(26, 4, "Subrecurso", "", 0, "C", 0);
+                    $this->cell(26, 4, "Complemento", "", 0, "C", 0);
+                    break;
+            }
 
             $this->cell(22, 4, "Saldo Ativo", "", 0, "R", 0);
             $this->cell(22, 4, "Saldo Extra", "", 0, "R", 0);
@@ -82,19 +95,33 @@ class ConferenciaPorRecursosPDF extends \FpdfMultiCellBorder
 
         foreach ($dados['registros'] as $oDados) {
             $this->SetFont('Arial', '', 8);
-            $this->cell(10, 4, $oDados->recurso, "", 0, "R", 0);
 
-            $this->cellAdapt(7, 70, 4, $oDados->o15_descr);
+            switch ($this->filtros->modeloEmissao) {
+                case 2:
+                    $this->cell(78, 4, $oDados->siconfi, "", 0, "C", 0);
+                    break;
+                case 3:
+                    $this->cell(39, 4, $oDados->siconfi, "", 0, "C", 0);
+                    $this->cell(39, 4, $oDados->complemento, "", 0, "C", 0);
+                    break;
+                case 1:
+                default:
+                    $this->cell(26, 4, $oDados->gestao, "", 0, "R", 0);
+                    $this->cell(26, 4, $oDados->subrecurso, "", 0, "R", 0);
+                    $this->cell(26, 4, $oDados->complemento, "", 0, "R", 0);
+                    break;
+            }
 
-            $this->cell(22, 4, $oDados->saldo_ativo_at_f, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->saldo_extra_orcamentario, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->valor_a_liquidar, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->valor_a_pagar, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->valor_a_liquidar_rp, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->valor_a_pagar_rp, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->total, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->valor_disponibilidade, "", 0, "R", 0);
-            $this->cell(22, 4, $oDados->diferenca, "", 1, "R", 0);
+
+            $this->cell(22, 4, db_formatar($oDados->saldo_ativo_at_f, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->saldo_extra_orcamentario, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->valor_a_liquidar, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->valor_a_pagar, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->valor_a_liquidar_rp, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->valor_a_pagar_rp, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->total, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->valor_disponibilidade, 'f'), "", 0, "R", 0);
+            $this->cell(22, 4, db_formatar($oDados->diferenca, 'f'), "", 1, "R", 0);
             $this->cabecalho(false);
         }
 
@@ -108,21 +135,21 @@ class ConferenciaPorRecursosPDF extends \FpdfMultiCellBorder
         $this->ln();
         $this->SetFont('Arial', 'B', 7);
         $this->cell(80, 4, "TOTAIS", "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->saldo_ativo_at_f, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->saldo_extra_orcamentario, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->valor_a_liquidar, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->valor_a_pagar, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->valor_a_liquidar_rp, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->valor_a_pagar_rp, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->total, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->valor_disponibilidade, "", 0, "R", 0);
-        $this->cell(22, 4, $oTotais->diferenca, "", 1, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->saldo_ativo_at_f, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->saldo_extra_orcamentario, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->valor_a_liquidar, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->valor_a_pagar, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->valor_a_liquidar_rp, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->valor_a_pagar_rp, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->total, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->valor_disponibilidade, 'f'), "", 0, "R", 0);
+        $this->cell(22, 4, db_formatar($oTotais->diferenca, 'f'), "", 1, "R", 0);
     }
 
     protected function imprimir()
     {
         $fileName = 'tmp/conferencia_por_recursos_' . time() . '.pdf';
         $this->Output($fileName, false, true);
-        return  $fileName;
+        return $fileName;
     }
 }

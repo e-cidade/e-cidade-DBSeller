@@ -18,7 +18,14 @@ class AutenticacaoController extends Controller
     {
         $autenticacaoService = new AutenticacaoService();
         $autenticacaoService->setNumeroGuia($request->numeroGuia);
-        $autenticacaoService->autenticar();
+        $retorno = $autenticacaoService->autenticar();
+        if ($retorno === false) {
+            return new DBJsonResponse([
+                'mensagem' => "A guia {$request->numeroGuia} não está paga.",
+                'erro' => false,
+                'paga' => false
+            ]);
+        }
 
         return new DBJsonResponse([
             "arquivo" => $autenticacaoService->getArquivo()

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-<?
+<?php
 //MODULO: saude
 $clagendamentos->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -98,67 +98,67 @@ $clrotulo->label("nome");
        <?=@$Lsd23_c_atendimento?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_c_atendimento',11,$Isd23_c_atendimento,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd23_i_cgm?>">
-       <?
+       <?php
        db_ancora(@$Lsd23_i_cgm,"js_pesquisasd23_i_cgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_i_cgm',10,$Isd23_i_cgm,true,'text',$db_opcao," onchange='js_pesquisasd23_i_cgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd23_i_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lsd23_i_unidade,"js_pesquisasd23_i_unidade(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_i_unidade',10,$Isd23_i_unidade,true,'text',$db_opcao," onchange='js_pesquisasd23_i_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('sd02_c_nome',50,$Isd02_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd23_i_medico?>">
-       <?
+       <?php
        db_ancora(@$Lsd23_i_medico,"js_pesquisasd23_i_medico(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_i_medico',10,$Isd23_i_medico,true,'text',$db_opcao," onchange='js_pesquisasd23_i_medico(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nomemed',50,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd23_i_especialidade?>">
-       <?
+       <?php
        db_ancora(@$Lsd23_i_especialidade,"js_pesquisasd23_i_especialidade(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_i_especialidade',10,$Isd23_i_especialidade,true,'text',$db_opcao," onchange='js_pesquisasd23_i_especialidade(false);'")
 ?>
-       <?
+       <?php
 db_input('sd05_c_descr',50,$Isd05_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -168,7 +168,7 @@ db_input('sd05_c_descr',50,$Isd05_c_descr,true,'text',3,'')
        <?=@$Lsd23_d_consulta?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('sd23_d_consulta',@$sd23_d_consulta_dia,@$sd23_d_consulta_mes,@$sd23_d_consulta_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -178,7 +178,7 @@ db_inputdata('sd23_d_consulta',@$sd23_d_consulta_dia,@$sd23_d_consulta_mes,@$sd2
        <?=@$Lsd23_i_fichas?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_i_fichas',10,$Isd23_i_fichas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -188,7 +188,7 @@ db_input('sd23_i_fichas',10,$Isd23_i_fichas,true,'text',$db_opcao,"")
        <?=@$Lsd23_c_situacao?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_c_situacao',9,$Isd23_c_situacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -198,7 +198,7 @@ db_input('sd23_c_situacao',9,$Isd23_c_situacao,true,'text',$db_opcao,"")
        <?=@$Lsd23_c_hora?>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_c_hora',5,$Isd23_c_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -214,7 +214,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_agendamentos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -225,12 +225,12 @@ function js_preenchepesquisa(chave){
         </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clagendamentos->erro_status=="0"){
     $clagendamentos->erro(true,false);

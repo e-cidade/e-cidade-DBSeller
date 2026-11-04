@@ -49,7 +49,7 @@ class DiarioClasse extends Controller
         $service = TurmaEspecialFactory::get($request->get('tipo_turma'), $request);
         $diarioClasse = new DiarioClasseTurmaEspecialPdf($request, [$service->processarDados()]);
 
-        $path = $diarioClasse->emitir();
+        $path = $diarioClasse->emitir($request);
 
         return response()->json(
             [
@@ -69,7 +69,7 @@ class DiarioClasse extends Controller
         $service = new TurmaEscolarizacaoService($request);
         $dadosDiarioClasse = $service->processarDados();
         $diarioClasse = new DiarioClasseTurmaEscolarizacaoPdf($request, $dadosDiarioClasse);
-        $path = $diarioClasse->emitir();
+        $path = $diarioClasse->emitir($request);
 
         return response()->json(
             [

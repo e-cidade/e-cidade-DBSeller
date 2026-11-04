@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_avaliacaotipo {
                  db100_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaotipo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaotipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_avaliacaotipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db100_sequencial = ($this->db100_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db100_sequencial"]:$this->db100_sequencial);
        $this->db100_descricao = ($this->db100_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["db100_descricao"]:$this->db100_descricao);
@@ -74,7 +74,7 @@ class cl_avaliacaotipo {
      }
    }
    // funcao para inclusao
-   function incluir ($db100_sequencial){ 
+   public function incluir ($db100_sequencial){ 
       $this->atualizacampos();
      if($this->db100_descricao == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -161,7 +161,7 @@ class cl_avaliacaotipo {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db100_sequencial=null) { 
+   public function alterar ($db100_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update avaliacaotipo set ";
      $virgula = "";
@@ -241,7 +241,7 @@ class cl_avaliacaotipo {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db100_sequencial=null,$dbwhere=null) { 
+   public function excluir ($db100_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db100_sequencial));
      }else{ 
@@ -303,7 +303,7 @@ class cl_avaliacaotipo {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -326,7 +326,7 @@ class cl_avaliacaotipo {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $db100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -360,7 +360,7 @@ class cl_avaliacaotipo {
      return $sql;
   }
     // funcao do sql
-   function sql_query_file ( $db100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

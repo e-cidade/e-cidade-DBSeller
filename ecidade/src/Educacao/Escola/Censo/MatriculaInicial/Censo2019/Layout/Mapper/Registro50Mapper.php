@@ -57,6 +57,16 @@ class Registro50Mapper extends Mapper
         "Código 13" => "codigo13",
         "Código 14" => "codigo14",
         "Código 15" => "codigo15",
+        "Código 16" => "codigo16",
+        "Código 17" => "codigo17",
+        "Código 18" => "codigo18",
+        "Código 19" => "codigo19",
+        "Código 20" => "codigo20",
+        "Código 21" => "codigo21",
+        "Código 22" => "codigo22",
+        "Código 23" => "codigo23",
+        "Código 24" => "codigo24",
+        "Código 25" => "codigo25",
         "Eletivas" => "eletivas",
         "Libras" => "librasUnidadeCurricular",
         "Língua indígena" => "lingaIndigena",
@@ -64,6 +74,7 @@ class Registro50Mapper extends Mapper
         "Língua/Literatura estrangeira - Francês" => "linguaFrances",
         "Língua/Literatura estrangeira - outra" => "linguaOutra",
         "Projeto de vida" => "projetoVida",
-        "Trilhas de aprofundamento/aprendizagens" => "trilhaAprofundamento"
+        "Trilhas de aprofundamento/aprendizagens" => "trilhaAprofundamento",
+        "Outra(s) unidade(s) curricular(es) obrigatória(s)" => "outrasUnidades"
     );
 }

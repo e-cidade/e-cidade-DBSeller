@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -106,12 +106,12 @@ if ($oDaoDocumento->erro_status == "0") {
       <table class="form-container">
         <tr>
           <td title="<?=@$Tt21_codigo?>" >
-	          <?
+	          <?php
 	            db_ancora("Termo de Guarda:", "js_pesquisaBensGuarda(true);", $iDbOpcao);
 	          ?>
           </td>
 			    <td>		     
-	          <?
+	          <?php
 	            db_input('t21_codigo', 10, $It21_codigo, true, 'text', $iDbOpcao, "onchange='js_pesquisaBensGuarda(false);'");
 	          ?>
 			    </td>
@@ -119,7 +119,7 @@ if ($oDaoDocumento->erro_status == "0") {
         <tr>
           <td>Responsável:</td>
           <td>
-            <?
+            <?php
               db_input('cgm',         10, '', true, 'hidden', 3);
 	            db_input('responsavel', 40, '', true, 'text',   3);
 	          ?>
@@ -128,7 +128,7 @@ if ($oDaoDocumento->erro_status == "0") {
         <tr title='Titulo para a assinatura do responsável.'>
           <td>Função: </td>
           <td>
-            <?
+            <?php
 	            db_input('funcao', 40, '', true, 'text', 1);
 	          ?>
           </td>
@@ -138,7 +138,7 @@ if ($oDaoDocumento->erro_status == "0") {
             Documento Template:
           </td>
           <td>
-            <?
+            <?php
              db_selectrecord('documentotemplate',$rsDocumentoTemplate,true,1,'');
             ?>
           </td>

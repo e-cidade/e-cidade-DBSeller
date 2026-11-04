@@ -167,7 +167,7 @@ for($i=0;$i<$numrows;$i++){
 }
 
 $pdf1->tipoalvara = "ALVARÁ SANITÁRIO";
-$pref             = split(" ",$munic);
+$pref             =explode(" ",$munic);
 $munic            = "";
 $espaco           = "";
 for ($x=0; $x < count($pref); $x++) {

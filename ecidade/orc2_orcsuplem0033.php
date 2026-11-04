@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -103,8 +103,8 @@ function emite_lista(){
    <form name="form1" method="post" action="" >
    
    <tr>
-      <td nowrap title="<?=@$To46_codlei?>"><? db_ancora(@$Lo46_codlei,"js_projeto();",$db_opcao);  ?> </td>
-      <td nowrap> <? db_input('o46_codlei',8,$Io46_codlei,true,'text',$db_opcao,"") ?>  </td>
+      <td nowrap title="<?=@$To46_codlei?>"><?php db_ancora(@$Lo46_codlei,"js_projeto();",$db_opcao);  ?> </td>
+      <td nowrap> <?php db_input('o46_codlei',8,$Io46_codlei,true,'text',$db_opcao,"") ?>  </td>
       <td nowrap>
         <select name=modelo>
            <option value="normal"> Modelo 1  </option>
@@ -125,13 +125,13 @@ function emite_lista(){
   <tr>
    <td nowrap>  Período inicial  </td>
       <td colspan="2">
-         <? db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
+         <?php db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
       </td>
    </tr>
   <tr>
    <td nowrap>  Período final  </td>
       <td colspan="2">
-	  <? db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
+	  <?php db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
 
       </td>
    </tr>
@@ -169,6 +169,6 @@ function emite_lista(){
   </tr>
   </table>
  </form>
-<?  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>

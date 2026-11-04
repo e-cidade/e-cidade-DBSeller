@@ -25,16 +25,19 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification('fpdf151/scpdf.php'));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
 require_once(modification('libs/db_sql.php'));
 require_once(modification('libs/db_utils.php'));
 require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('classes/db_sau_config_ext_classe.php'));
 
+use ECidade\Pdf\Pdf;
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 set_time_limit(0);
 
-function novoComprovante(FPDF $oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sIdade, $sDiaSemana) {
+function novoComprovante(Pdf $oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sIdade, $sDiaSemana) {
 
   $iXInicial = $oPdf->getX();
   $iYInicial = $oPdf->getY();
@@ -47,10 +50,10 @@ function novoComprovante(FPDF $oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sI
   $oPdf->cell(20, 4, '', 0, 1, 'C', 0);
 
   $oPdf->setfont('times', 'b', 10);
-  $oPdf->cell(20, 4, 'No', 0, 0, 'L', 0);
+  $oPdf->cell(20, 4, 'Nº', 0, 0, 'L', 0);
   $oPdf->cell(40, 4, 'Data', 0, 0, 'L', 0);
-  $oPdf->cell(40, 4, 'Semana', 0, 0, 'L', 0);
-  $oPdf->cell(20, 4, 'Hora', 0, 1, 'L', 0);
+  $oPdf->cell(40, 4, 'Dia da Semana', 0, 0, 'L', 0);
+  $oPdf->cell(20, 4, 'Horário', 0, 1, 'L', 0);
 
   $oPdf->setfont('times', '', 10);
   $oPdf->cell(20, 4, $oAgendamento->sd23_i_codigo, 0, 0, 'L', 0);
@@ -70,24 +73,16 @@ function novoComprovante(FPDF $oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sI
 
   $iYAntes = $oPdf->GetY();
   $sPaciente = "{$oAgendamento->z01_i_cgsund} - {$oAgendamento->z01_v_nome}";
-  $iLinhas = $oPdf->NbLines(100, $sPaciente);
-  $oPdf->SetXY($oPdf->lMargin, $iYAntes);
+  $oPdf->SetXY($oPdf->getLeftMargin(), $iYAntes);
   $oPdf->cell(20, 4, formataData($oAgendamento->z01_d_nasc, 2), 0, 0, 'L', 0);
   $oPdf->cell(20, 4, $sIdade, 0, 1, 'L', 0);
-
 
   $oPdf->setfont('times', 'b', 10);
   $oPdf->cell(100, 4, 'Paciente', 0, 1, 'L', 0);
   $oPdf->setfont('times', '', 10);
-  $oPdf->cell(100, 4, $sPaciente, 0, 1, 'L', 0);
-  $oPdf->setfont('times', '', 10);
- 
-  if ($iLinhas > 1) {
-    $oPdf->Sety( $iYAntes + ($iLinhas * 4) );
-  }
-
+  $oPdf->cell(100, 4, $sPaciente, 0, 1, 'L');
   $oPdf->setfont('times', 'b', 10);
-  $oPdf->cell(100, 4, 'Médico', 0, 0, 'L', 0);
+  $oPdf->cell(100, 4, 'Profissional Atendimento', 0, 0, 'L', 0);
   $oPdf->cell(20, 4, 'Especialidade', 0, 1, 'L', 0);
   $oPdf->setfont('times', '', 10);
   $oPdf->cell(100, 4, $oAgendamento->med_sd03_i_codigo.' - '.$oAgendamento->med_z01_nome, 0, 0, 'L', 0);
@@ -106,11 +101,11 @@ function novoComprovante(FPDF $oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sI
   $oPdf->cell(20, 4, 'Mensagem: ', 0, 0, 'L', 0);
   $oPdf->cell(170, 4, $oSauConfig->s103_v_msgagenda, 0, 1, 'L', 0);
 
-  $oPdf->setfont('times', 'b', 7);
+  $oPdf->setfont('times', 'b', 10);
   $oPdf->cell(100, 4, 'Atendente', 0, 0, 'L', 0);
   $oPdf->cell(40, 4, 'Data Atend.', 0, 0, 'L', 0);
   $oPdf->cell(40, 4, 'Hora Atend.', 0, 1, 'L', 0);
-  $oPdf->setfont('times', '', 7);
+  $oPdf->setfont('times', '', 10);
   $oPdf->cell(100, 3, $oAgendamento->id_usuario.' - '.$oAgendamento->nome, 0, 0, 'L', 0);
   $oPdf->cell(40, 3, formataData($oAgendamento->sd23_d_agendamento, 2), 0, 0, 'L', 0);
   $oPdf->cell(40, 3, substr($oAgendamento->sd23_c_cadastro, 0, 8), 0, 1, 'L', 0);
@@ -196,15 +191,15 @@ $sSql          = $oDaoSauConfig->sql_query_ext();
 $rs            = $oDaoSauConfig->sql_record($sSql);
 $oSauConfig    = db_utils::fieldsMemory($rs, 0);
 
-$oPdf = new SCPDF();
-$oPdf->Open();
+$oPdf = new Pdf();
+$oPdf->init(false,false);
 $oPdf->AliasNbPages();
 $oPdf->addpage();
 $oPdf->setfillcolor(235);
 
 for ($iCont = 0; $iCont < $oDaoAgendamentos->numrows; $iCont++) {
 
-  if ($oPdf->getY()  > $oPdf->h - 45) {
+  if ($oPdf->getY()  > $oPdf->getH() - 45) {
     $oPdf->addpage();
   }
 
@@ -223,4 +218,4 @@ for ($iCont = 0; $iCont < $oDaoAgendamentos->numrows; $iCont++) {
   novoComprovante($oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sIdade, $diasemana);
 }
 
-$oPdf->Output();
+$oPdf->output();

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_termoprotprocesso {
                  v27_protprocesso = int4 = Código do Processo 
                  ";
    //funcao construtor da classe
-   function cl_termoprotprocesso() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termoprotprocesso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_termoprotprocesso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v27_sequencial = ($this->v27_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v27_sequencial"]:$this->v27_sequencial);
        $this->v27_termo = ($this->v27_termo == ""?@$GLOBALS["HTTP_POST_VARS"]["v27_termo"]:$this->v27_termo);
@@ -77,7 +77,7 @@ class cl_termoprotprocesso {
      }
    }
    // funcao para inclusao
-   function incluir ($v27_sequencial){
+   public function incluir ($v27_sequencial){
       $this->atualizacampos();
      if($this->v27_termo == null ){
        $this->erro_sql = " Campo Parcelamento nao Informado.";
@@ -176,7 +176,7 @@ class cl_termoprotprocesso {
      return true;
    }
    // funcao para alteracao
-   function alterar ($v27_sequencial=null) {
+   public function alterar ($v27_sequencial=null) {
       $this->atualizacampos();
      $sql = " update termoprotprocesso set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_termoprotprocesso {
      }
    }
    // funcao para exclusao
-   function excluir ($v27_sequencial=null,$dbwhere=null) {
+   public function excluir ($v27_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v27_sequencial));
      }else{
@@ -334,7 +334,7 @@ class cl_termoprotprocesso {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -357,7 +357,7 @@ class cl_termoprotprocesso {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $v27_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $v27_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -401,7 +401,7 @@ class cl_termoprotprocesso {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $v27_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $v27_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcids->rotulo->label();
        <?=@$Lsd22_c_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd22_c_codigo',6,$Isd22_c_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('sd22_c_codigo',6,$Isd22_c_codigo,true,'text',$db_opcao,"")
        <?=@$Lsd22_v_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd22_v_descr',80,$Isd22_v_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('sd22_v_descr',80,$Isd22_v_descr,true,'text',$db_opcao,"")
        <?=@$Lsd22_d_validade?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd22_d_validade',@$sd22_d_validade_dia,@$sd22_d_validade_mes,@$sd22_d_validade_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_inputdata('sd22_d_validade',@$sd22_d_validade_dia,@$sd22_d_validade_mes,@$sd2
        <?=@$Lsd22_c_restrsexo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('H'=>'Somente Homens','F'=>'Somente Mulheres','G'=>'Tanto Homem ou Mulher');
 db_select('sd22_c_restrsexo',$x,true,$db_opcao,"");
 ?>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cids.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -84,7 +84,7 @@ class ProcessoEletronicoGrauRisco
 
     /**
      * @param array $state
-     * @return IssCadastroSimples
+     * @return ProcessoEletronicoGrauRisco
      * @throws Exception
      */
     public function fromState(array $state)

@@ -140,9 +140,7 @@ class Registro40Service
         }
         foreach ($this->registros as $registro) {
             $validator = new Registro40Validator();
-
             $registro30 = $this->getRegistro30($registro);
-
             $validator->setRegistro($registro);
             $validator->setRegistro00($this->registro00Service->getRegistro());
             $validator->setRegistro30($registro30);
@@ -164,11 +162,16 @@ class Registro40Service
      */
     private function identificarGestores()
     {
-        $profissionais = ProfissionalEscolaRegistry::getAll();
-        foreach ($profissionais as $profissional) {
-            if ($profissional->isGestor()) {
-                $gestores[$profissional->getCgm()->getCpf()] = $profissional;
-            }
+        $gestores = [];
+        $sql = "select ed325_rechumano from escolagestorcenso where ed325_escola = {$this->escola->getCodigo()}";
+        $rs = db_query($sql);
+        while ($gestor = pg_fetch_assoc($rs)) {
+            $dao = new \cl_rechumano();
+            $where = ["ed75_i_rechumano = {$gestor['ed325_rechumano']}"];
+            $sql = $dao->sqlProfissionaisEscola(null, $this->escola->getCodigo(), $where);
+            $prof = pg_fetch_assoc(db_query($sql));
+            $profissional = ProfissionalEscola::fromState($prof);
+            $gestores[$profissional->getCgm()->getCpf()] = $profissional;
         }
         if (empty($gestores)) {
             return array();

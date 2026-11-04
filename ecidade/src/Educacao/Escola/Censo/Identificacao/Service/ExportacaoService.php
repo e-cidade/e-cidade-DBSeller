@@ -36,6 +36,7 @@ use ECidade\Educacao\Escola\Repository\CensoMunicipioRepository;
 use ECidade\Educacao\Escola\Repository\ProfissionalEscolaRepository;
 use Escola;
 use Exception;
+use DBDate;
 
 /**
  * Class ExportacaoService
@@ -62,6 +63,27 @@ class ExportacaoService
      * @var CensoMunicipio
      */
     private $municipioInstituicao;
+
+    /**
+     * @var DBDate
+     */
+    private $dataCensoPersonalizada = null;
+
+    /**
+     * @param DBDate $dataCensoPersonalizada
+     */
+    public function setDataCensoPersonalizada(DBDate $dataCensoPersonalizada)
+    {
+        $this->dataCensoPersonalizada = $dataCensoPersonalizada;
+    }
+
+    /**
+     * @return DBDate
+     */
+    public function getDataCensoPersonalizada()
+    {
+        return $this->dataCensoPersonalizada;
+    }
 
     /**
      * @param Censo $censo
@@ -110,10 +132,15 @@ class ExportacaoService
      */
     private function buscarProfissionais()
     {
+        $dataFiltro = !is_null($this->dataCensoPersonalizada)
+            ? $this->dataCensoPersonalizada
+            : $this->censo->getDataCenso();
+
         $profissionalEscolaRepository = new ProfissionalEscolaRepository();
-        $profissionalEscolaRepository->scopeDocentePresente();
+        $profissionalEscolaRepository->scopeDocentePresente($dataFiltro);
         $profissionalEscolaRepository->scopeSemCodigoInep();
-        $profissionalEscolaRepository->scopeDiretorProfessorMonitor($this->censo->getDataCenso());
+        
+        $profissionalEscolaRepository->scopeDiretorProfessorMonitor($dataFiltro);
 
         foreach ($this->escolas as $escola) {
             $profissionaisEscola = $profissionalEscolaRepository->getProfissionaisAtivos(
@@ -141,7 +168,10 @@ class ExportacaoService
         $alunoRepository = new AlunoRepository();
         foreach ($this->escolas as $escola) {
             $alunoRepository->scopeSemCodigoInep();
-            $alunosMatriculados = $alunoRepository->getAlunosCenso($escola, $this->censo->getDataCenso());
+            $dataFiltro = !is_null($this->dataCensoPersonalizada)
+                ? $this->dataCensoPersonalizada
+                : $this->censo->getDataCenso();
+            $alunosMatriculados = $alunoRepository->getAlunosCenso($escola, $dataFiltro);
             $alunoRepository->resetScopes();
             foreach ($alunosMatriculados as $aluno) {
                 $builder = new PessoaBuilder();

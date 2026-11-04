@@ -25,9 +25,9 @@
  *                                licenca/licenca_pt.txt
  */
 
-class LicitaConTipoInstrumentoAcordo {  
+class LicitaConTipoInstrumentoAcordo {
 
-  public static $aSiglas = array(    
+  public static $aSiglas = array(
     \Acordo::TIPO_INSTRUMENTO_TERMO_ADESAO => 'A',
     \Acordo::TIPO_INSTRUMENTO_CONTRATO => 'C',
     \Acordo::TIPO_INSTRUMENTO_TERMO_FOMENTO => 'F',
@@ -37,6 +37,7 @@ class LicitaConTipoInstrumentoAcordo {
     \Acordo::TIPO_INSTRUMENTO_CONTRATO_GESTAO => 'G',
     \Acordo::TIPO_INSTRUMENTO_ACORDO_COOPERACAO => 'O',
     \Acordo::TIPO_INSTRUMENTO_TERMO_PERMISSAO_USO => 'U',
+    \Acordo::TIPO_INSTRUMENTO_NOTA_EMPENHO => 'N',
   );
 
   public static function getTipos() {

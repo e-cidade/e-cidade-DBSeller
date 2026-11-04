@@ -26,40 +26,40 @@
  */
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontprofatend
-class cl_prontprofatend { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $s104_i_codigo = 0; 
-   var $s104_i_prontuario = 0; 
-   var $s104_i_profissional = 0; 
-   var $s104_rhcbo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_prontprofatend {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $s104_i_codigo = 0;
+   var $s104_i_prontuario = 0;
+   var $s104_i_profissional = 0;
+   var $s104_rhcbo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 s104_i_codigo = int4 = Código 
-                 s104_i_prontuario = int4 = Prontuário 
-                 s104_i_profissional = int4 = Profissional 
-                 s104_rhcbo = int4 = CBO 
+                 s104_i_codigo = int4 = Código
+                 s104_i_prontuario = int4 = Prontuário
+                 s104_i_profissional = int4 = Profissional
+                 s104_rhcbo = int4 = CBO
                  ";
-   //funcao construtor da classe 
-   function cl_prontprofatend() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("prontprofatend"); 
+     $this->rotulo = new rotulo("prontprofatend");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_prontprofatend {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s104_i_codigo = ($this->s104_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s104_i_codigo"]:$this->s104_i_codigo);
        $this->s104_i_prontuario = ($this->s104_i_prontuario == ""?@$GLOBALS["HTTP_POST_VARS"]["s104_i_prontuario"]:$this->s104_i_prontuario);
@@ -79,9 +79,9 @@ class cl_prontprofatend {
      }
    }
    // funcao para Inclusão
-   function incluir ($s104_i_codigo){ 
+   public function incluir ($s104_i_codigo){
       $this->atualizacampos();
-     if($this->s104_i_prontuario == null ){ 
+     if($this->s104_i_prontuario == null ){
        $this->erro_sql = " Campo Prontuário não informado.";
        $this->erro_campo = "s104_i_prontuario";
        $this->erro_banco = "";
@@ -90,23 +90,23 @@ class cl_prontprofatend {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s104_i_profissional == null ){ 
+     if($this->s104_i_profissional == null ){
        $this->s104_i_profissional = "null";
      }
      if($this->s104_rhcbo == null ){
        $this->s104_rhcbo = "null";
      }
      if($s104_i_codigo == "" || $s104_i_codigo == null ){
-       $result = db_query("select nextval('prontprofatend_codigo_seq')"); 
+       $result = db_query("select nextval('prontprofatend_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: prontprofatend_codigo_seq do campo: s104_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: prontprofatend_codigo_seq do campo: s104_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->s104_i_codigo = pg_result($result,0,0); 
+       $this->s104_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from prontprofatend_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $s104_i_codigo)){
@@ -117,10 +117,10 @@ class cl_prontprofatend {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->s104_i_codigo = $s104_i_codigo; 
+         $this->s104_i_codigo = $s104_i_codigo;
        }
      }
-     if(($this->s104_i_codigo == null) || ($this->s104_i_codigo == "") ){ 
+     if(($this->s104_i_codigo == null) || ($this->s104_i_codigo == "") ){
        $this->erro_sql = " Campo s104_i_codigo não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -129,19 +129,19 @@ class cl_prontprofatend {
        return false;
      }
      $sql = "insert into prontprofatend(
-                                       s104_i_codigo 
-                                      ,s104_i_prontuario 
-                                      ,s104_i_profissional 
-                                      ,s104_rhcbo 
+                                       s104_i_codigo
+                                      ,s104_i_prontuario
+                                      ,s104_i_profissional
+                                      ,s104_rhcbo
                        )
                 values (
-                                $this->s104_i_codigo 
-                               ,$this->s104_i_prontuario 
-                               ,$this->s104_i_profissional 
-                               ,$this->s104_rhcbo 
+                                $this->s104_i_codigo
+                               ,$this->s104_i_prontuario
+                               ,$this->s104_i_profissional
+                               ,$this->s104_rhcbo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Prontuario Profissional Atendimento ($this->s104_i_codigo) não Incluído. Inclusão Abortada.";
@@ -182,16 +182,16 @@ class cl_prontprofatend {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($s104_i_codigo=null) { 
+   public function alterar ($s104_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update prontprofatend set ";
      $virgula = "";
-     if(trim($this->s104_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_i_codigo"])){ 
+     if(trim($this->s104_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_i_codigo"])){
        $sql  .= $virgula." s104_i_codigo = $this->s104_i_codigo ";
        $virgula = ",";
-       if(trim($this->s104_i_codigo) == null ){ 
+       if(trim($this->s104_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "s104_i_codigo";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_prontprofatend {
          return false;
        }
      }
-     if(trim($this->s104_i_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_i_prontuario"])){ 
+     if(trim($this->s104_i_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_i_prontuario"])){
        $sql  .= $virgula." s104_i_prontuario = $this->s104_i_prontuario ";
        $virgula = ",";
-       if(trim($this->s104_i_prontuario) == null ){ 
+       if(trim($this->s104_i_prontuario) == null ){
          $this->erro_sql = " Campo Prontuário não informado.";
          $this->erro_campo = "s104_i_prontuario";
          $this->erro_banco = "";
@@ -214,14 +214,14 @@ class cl_prontprofatend {
          return false;
        }
      }
-     if(trim($this->s104_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_i_profissional"])){ 
-        if(trim($this->s104_i_profissional)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s104_i_profissional"])){ 
-           $this->s104_i_profissional = "0" ; 
-        } 
+     if(trim($this->s104_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_i_profissional"])){
+        if(trim($this->s104_i_profissional)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s104_i_profissional"])){
+           $this->s104_i_profissional = "0" ;
+        }
        $sql  .= $virgula." s104_i_profissional = $this->s104_i_profissional ";
        $virgula = ",";
      }
-     if(trim($this->s104_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_rhcbo"])){ 
+     if(trim($this->s104_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s104_rhcbo"])){
         if(trim($this->s104_rhcbo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s104_rhcbo"])){
            $this->s104_rhcbo = "null" ;
         }
@@ -257,7 +257,7 @@ class cl_prontprofatend {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Prontuario Profissional Atendimento não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->s104_i_codigo;
@@ -285,11 +285,11 @@ class cl_prontprofatend {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($s104_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($s104_i_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -298,7 +298,7 @@ class cl_prontprofatend {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($s104_i_codigo));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -330,7 +330,7 @@ class cl_prontprofatend {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Prontuario Profissional Atendimento não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$s104_i_codigo;
@@ -358,11 +358,11 @@ class cl_prontprofatend {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -384,8 +384,8 @@ class cl_prontprofatend {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($s104_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($s104_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= " from prontprofatend ";
@@ -401,8 +401,8 @@ class cl_prontprofatend {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($s104_i_codigo)) {
-         $sql2 .= " where prontprofatend.s104_i_codigo = $s104_i_codigo "; 
-       } 
+         $sql2 .= " where prontprofatend.s104_i_codigo = $s104_i_codigo ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -412,7 +412,7 @@ class cl_prontprofatend {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($s104_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -420,8 +420,8 @@ class cl_prontprofatend {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($s104_i_codigo)){
-         $sql2 .= " where prontprofatend.s104_i_codigo = $s104_i_codigo "; 
-       } 
+         $sql2 .= " where prontprofatend.s104_i_codigo = $s104_i_codigo ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -432,13 +432,13 @@ class cl_prontprofatend {
      return $sql;
   }
 
-  function sql_query_vinculo_profissional ( $s104_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
+  public function sql_query_vinculo_profissional ( $s104_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
 
     $sql = "select ";
 
     if( $campos != "*" ) {
 
-      $campos_sql = split( "#", $campos );
+      $campos_sql = explode( "#", $campos );
       $virgula    = "";
 
       for( $i = 0; $i < sizeof( $campos_sql ); $i++ ) {
@@ -474,7 +474,7 @@ class cl_prontprofatend {
     if( $ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split( "#", $ordem );
+      $campos_sql  = explode( "#", $ordem );
       $virgula     = "";
 
       for( $i = 0; $i < sizeof( $campos_sql ); $i++ ) {
@@ -487,13 +487,13 @@ class cl_prontprofatend {
     return $sql;
   }
 
-  function sql_query_profissional_especialidade ( $s104_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
+  public function sql_query_profissional_especialidade ( $s104_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
 
     $sql = "select ";
 
     if( $campos != "*" ) {
 
-      $campos_sql = split( "#", $campos );
+      $campos_sql = explode( "#", $campos );
       $virgula    = "";
 
       for( $i = 0; $i < sizeof( $campos_sql ); $i++ ) {
@@ -531,7 +531,7 @@ class cl_prontprofatend {
     if( $ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split( "#", $ordem );
+      $campos_sql  = explode( "#", $ordem );
       $virgula     = "";
 
       for( $i = 0; $i < sizeof( $campos_sql ); $i++ ) {

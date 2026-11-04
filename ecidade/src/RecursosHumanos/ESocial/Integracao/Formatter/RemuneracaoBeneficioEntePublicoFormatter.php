@@ -11,6 +11,7 @@ use stdClass;
 use Exception;
 use CgmRepository;
 use ServidorRepository;
+use ECidade\RecursosHumanos\ESocial\Service\DadosRRAService;
 
 /**
  * Class RemuneracaoBeneficioEntePublico
@@ -288,10 +289,34 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         $dmDev->ideDmDev = $identificadorDemonstrativo;
         $dmDev->nrBeneficio = $nrBeneficio;
 
+        /**
+         * Verificamos se o servidor possui processo RRA
+         */
+        $processoJudicial = DadosRRAService::getDados(
+            $this->remuneracaoService->getAnoCompetencia(),
+            $this->remuneracaoService->getMesCompetencia(),
+            $this->remuneracao->getServidor()
+        );
+
+        if ($processoJudicial) {
+            $dmDev->indRRA = 'S';
+            $dmDev->infoRRA = $processoJudicial->infoRRA;
+        }
+
+        if ($this->remuneracao->getServidor()->getMatriculaAnterior() != "") {
+            $dmDev->nrBeneficio = $this->remuneracao->getServidor()->getMatriculaAnterior();
+        }
         if (count($this->remuneracao->getPagamentos()) > 0) {
             $ideEstab = new stdClass();
             $ideEstab->tpInsc = 1;
             $ideEstab->nrInsc = $this->inscricaoEmpregador;
+            if (!empty($this->remuneracao->getServidor()->getLocalTrabalhoPrincial()) &&
+                !empty($this->remuneracao->getServidor()->getLocalTrabalhoPrincial()->getNumeroInscricao())) {
+                $ideEstab->nrInsc = $this->remuneracao
+                    ->getServidor()
+                    ->getLocalTrabalhoPrincial()
+                    ->getNumeroInscricao();
+            }
             $ideEstab->itensRemun = [];
 
             if (!$this->rescisao) {
@@ -370,6 +395,11 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
             ) {
                 $item->indApurIR = 0;
             }
+            $recisaoFalecimento = $this->remuneracao->getServidor()->getDadosRescisao()->r59_motivoesocial;
+            if ((int) $recisaoFalecimento == 10) {
+                $item->indApurIR = 1;
+            }
+
             if ($this->rubricaDiferenca == $codigoRubrica) {
                 $itensRemunDiferenca[] = $item;
             } else {

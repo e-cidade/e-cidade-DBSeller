@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE disbancoprotprocesso
-class cl_disbancoprotprocesso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k141_sequencial = 0; 
-   var $k141_disbancoprocesso = 0; 
-   var $k141_protprocesso = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_disbancoprotprocesso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k141_sequencial = 0;
+   var $k141_disbancoprocesso = 0;
+   var $k141_protprocesso = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k141_sequencial = int4 = Sequencial 
-                 k141_disbancoprocesso = int4 = Cadastro do Processo 
-                 k141_protprocesso = int4 = Cód. Processo 
+                 k141_sequencial = int4 = Sequencial
+                 k141_disbancoprocesso = int4 = Cadastro do Processo
+                 k141_protprocesso = int4 = Cód. Processo
                  ";
-   //funcao construtor da classe 
-   function cl_disbancoprotprocesso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("disbancoprotprocesso"); 
+     $this->rotulo = new rotulo("disbancoprotprocesso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_disbancoprotprocesso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k141_sequencial = ($this->k141_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k141_sequencial"]:$this->k141_sequencial);
        $this->k141_disbancoprocesso = ($this->k141_disbancoprocesso == ""?@$GLOBALS["HTTP_POST_VARS"]["k141_disbancoprocesso"]:$this->k141_disbancoprocesso);
@@ -77,9 +77,9 @@ class cl_disbancoprotprocesso {
      }
    }
    // funcao para inclusao
-   function incluir ($k141_sequencial){ 
+   public function incluir ($k141_sequencial){
       $this->atualizacampos();
-     if($this->k141_disbancoprocesso == null ){ 
+     if($this->k141_disbancoprocesso == null ){
        $this->erro_sql = " Campo Cadastro do Processo nao Informado.";
        $this->erro_campo = "k141_disbancoprocesso";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_disbancoprotprocesso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k141_protprocesso == null ){ 
+     if($this->k141_protprocesso == null ){
        $this->erro_sql = " Campo Cód. Processo nao Informado.";
        $this->erro_campo = "k141_protprocesso";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_disbancoprotprocesso {
        return false;
      }
      if($k141_sequencial == "" || $k141_sequencial == null ){
-       $result = db_query("select nextval('disbancoprotprocesso_k141_sequencial_seq')"); 
+       $result = db_query("select nextval('disbancoprotprocesso_k141_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: disbancoprotprocesso_k141_sequencial_seq do campo: k141_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: disbancoprotprocesso_k141_sequencial_seq do campo: k141_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k141_sequencial = pg_result($result,0,0); 
+       $this->k141_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from disbancoprotprocesso_k141_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k141_sequencial)){
@@ -118,10 +118,10 @@ class cl_disbancoprotprocesso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k141_sequencial = $k141_sequencial; 
+         $this->k141_sequencial = $k141_sequencial;
        }
      }
-     if(($this->k141_sequencial == null) || ($this->k141_sequencial == "") ){ 
+     if(($this->k141_sequencial == null) || ($this->k141_sequencial == "") ){
        $this->erro_sql = " Campo k141_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_disbancoprotprocesso {
        return false;
      }
      $sql = "insert into disbancoprotprocesso(
-                                       k141_sequencial 
-                                      ,k141_disbancoprocesso 
-                                      ,k141_protprocesso 
+                                       k141_sequencial
+                                      ,k141_disbancoprocesso
+                                      ,k141_protprocesso
                        )
                 values (
-                                $this->k141_sequencial 
-                               ,$this->k141_disbancoprocesso 
-                               ,$this->k141_protprocesso 
+                                $this->k141_sequencial
+                               ,$this->k141_disbancoprocesso
+                               ,$this->k141_protprocesso
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Processo de protocolo da disbanco ($this->k141_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_disbancoprotprocesso {
        $resac = db_query("insert into db_acount values($acount,3406,19178,'','".AddSlashes(pg_result($resaco,0,'k141_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k141_sequencial=null) { 
+   public function alterar ($k141_sequencial=null) {
       $this->atualizacampos();
      $sql = " update disbancoprotprocesso set ";
      $virgula = "";
-     if(trim($this->k141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_sequencial"])){ 
+     if(trim($this->k141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_sequencial"])){
        $sql  .= $virgula." k141_sequencial = $this->k141_sequencial ";
        $virgula = ",";
-       if(trim($this->k141_sequencial) == null ){ 
+       if(trim($this->k141_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k141_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_disbancoprotprocesso {
          return false;
        }
      }
-     if(trim($this->k141_disbancoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_disbancoprocesso"])){ 
+     if(trim($this->k141_disbancoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_disbancoprocesso"])){
        $sql  .= $virgula." k141_disbancoprocesso = $this->k141_disbancoprocesso ";
        $virgula = ",";
-       if(trim($this->k141_disbancoprocesso) == null ){ 
+       if(trim($this->k141_disbancoprocesso) == null ){
          $this->erro_sql = " Campo Cadastro do Processo nao Informado.";
          $this->erro_campo = "k141_disbancoprocesso";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_disbancoprotprocesso {
          return false;
        }
      }
-     if(trim($this->k141_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_protprocesso"])){ 
+     if(trim($this->k141_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_protprocesso"])){
        $sql  .= $virgula." k141_protprocesso = $this->k141_protprocesso ";
        $virgula = ",";
-       if(trim($this->k141_protprocesso) == null ){ 
+       if(trim($this->k141_protprocesso) == null ){
          $this->erro_sql = " Campo Cód. Processo nao Informado.";
          $this->erro_campo = "k141_protprocesso";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_disbancoprotprocesso {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processo de protocolo da disbanco nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k141_sequencial;
@@ -267,14 +267,14 @@ class cl_disbancoprotprocesso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k141_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k141_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k141_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_disbancoprotprocesso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processo de protocolo da disbanco nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k141_sequencial;
@@ -330,11 +330,11 @@ class cl_disbancoprotprocesso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,11 +356,11 @@ class cl_disbancoprotprocesso {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,15 +381,15 @@ class cl_disbancoprotprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($k141_sequencial!=null ){
-         $sql2 .= " where disbancoprotprocesso.k141_sequencial = $k141_sequencial "; 
-       } 
+         $sql2 .= " where disbancoprotprocesso.k141_sequencial = $k141_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,11 +398,11 @@ class cl_disbancoprotprocesso {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,15 +415,15 @@ class cl_disbancoprotprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($k141_sequencial!=null ){
-         $sql2 .= " where disbancoprotprocesso.k141_sequencial = $k141_sequencial "; 
-       } 
+         $sql2 .= " where disbancoprotprocesso.k141_sequencial = $k141_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

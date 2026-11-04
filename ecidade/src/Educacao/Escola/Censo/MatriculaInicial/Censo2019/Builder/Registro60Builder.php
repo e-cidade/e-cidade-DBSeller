@@ -8,11 +8,13 @@
 
 namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Builder;
 
+use App\Domain\Educacao\Secretaria\Models\Base;
 use ECidade\Educacao\Escola\Censo\Helpers\Pessoa;
 use ECidade\Educacao\Escola\Censo\Helpers\Turma;
 use ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Model\Registro60;
 use ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Model\MatriculaCensoVo;
 use ECidade\Educacao\Escola\Model\Aluno;
+use ECidade\Educacao\Escola\Model\BaseCurricular;
 use ECidade\Enum\Educacao\Secretaria\EstruturaCurricularEnum;
 use ECidade\Enum\Educacao\Secretaria\TipoItinerarioFormativoEnum;
 use Exception;
@@ -105,6 +107,8 @@ class Registro60Builder
     {
         $estruturaCurricular =  $this->matricula->getTurma()->getTipoEstruturaCurricular();
         if (in_array(EstruturaCurricularEnum::ITINERARIO_FORMATIVO, $estruturaCurricular)) {
+            $codigoCurso = Base::find($this->matricula->getTurma()->getBase())->curso->ed29_censocursoprofiss;
+            $this->registro->setCodigoCursoTecnico($codigoCurso);
             $disciplinas = $this->matricula->getTurma()->getDisciplinas();
             foreach ($disciplinas as $disciplina) {
                 $tipoBase = $disciplina->getTipoBase();
@@ -154,52 +158,55 @@ class Registro60Builder
     private function buildTransporteEscolar()
     {
         $aluno = $this->matricula->getAluno();
-        $this->registro->setTransporteEscolarPublico($aluno->isUtilizaTransportePublico() ? 1 : 0);
-
-        if ($aluno->isUtilizaTransportePublico()) {
-            $this->registro->setResponsavelTransporteEscolar($aluno->getTransporteResponsavel());
-            $this->registro->setBicicleta(0);
-            $this->registro->setMicroonibus(0);
-            $this->registro->setOnibus(0);
-            $this->registro->setTracaoAnimal(0);
-            $this->registro->setVansKombis(0);
-            $this->registro->setOutro(0);
-            $this->registro->setAquaviarioAte5(0);
-            $this->registro->setAquaviarioEntre5A15(0);
-            $this->registro->setAquaviarioEntre15A35(0);
-            $this->registro->setAquaviarioAcima35(0);
-            foreach ($this->tipoTransporte as $tipo) {
-                switch ($tipo) {
-                    case 1:
-                        $this->registro->setVansKombis(1);
-                        break;
-                    case 2:
-                        $this->registro->setMicroonibus(1);
-                        break;
-                    case 3:
-                        $this->registro->setOnibus(1);
-                        break;
-                    case 4:
-                        $this->registro->setBicicleta(1);
-                        break;
-                    case 5:
-                        $this->registro->setTracaoAnimal(1);
-                        break;
-                    case 6:
-                        $this->registro->setOutro(1);
-                        break;
-                    case 7:
-                        $this->registro->setAquaviarioAte5(1);
-                        break;
-                    case 8:
-                        $this->registro->setAquaviarioEntre5A15(1);
-                        break;
-                    case 9:
-                        $this->registro->setAquaviarioEntre15A35(1);
-                        break;
-                    case 10:
-                        $this->registro->setAquaviarioAcima35(1);
-                        break;
+        if (!is_null($aluno->getPaisResidencia())) {
+            if ($aluno->getPaisResidencia()->getCodigoOnu() == 76) {
+                $this->registro->setTransporteEscolarPublico($aluno->isUtilizaTransportePublico() ? 1 : 0);
+                if ($aluno->isUtilizaTransportePublico()) {
+                    $this->registro->setResponsavelTransporteEscolar($aluno->getTransporteResponsavel());
+                    $this->registro->setBicicleta(0);
+                    $this->registro->setMicroonibus(0);
+                    $this->registro->setOnibus(0);
+                    $this->registro->setTracaoAnimal(0);
+                    $this->registro->setVansKombis(0);
+                    $this->registro->setOutro(0);
+                    $this->registro->setAquaviarioAte5(0);
+                    $this->registro->setAquaviarioEntre5A15(0);
+                    $this->registro->setAquaviarioEntre15A35(0);
+                    $this->registro->setAquaviarioAcima35(0);
+                    foreach ($this->tipoTransporte as $tipo) {
+                        switch ($tipo) {
+                            case 1:
+                                $this->registro->setVansKombis(1);
+                                break;
+                            case 2:
+                                $this->registro->setMicroonibus(1);
+                                break;
+                            case 3:
+                                $this->registro->setOnibus(1);
+                                break;
+                            case 4:
+                                $this->registro->setBicicleta(1);
+                                break;
+                            case 5:
+                                $this->registro->setTracaoAnimal(1);
+                                break;
+                            case 6:
+                                $this->registro->setOutro(1);
+                                break;
+                            case 7:
+                                $this->registro->setAquaviarioAte5(1);
+                                break;
+                            case 8:
+                                $this->registro->setAquaviarioEntre5A15(1);
+                                break;
+                            case 9:
+                                $this->registro->setAquaviarioEntre15A35(1);
+                                break;
+                            case 10:
+                                $this->registro->setAquaviarioAcima35(1);
+                                break;
+                        }
+                    }
                 }
             }
         }

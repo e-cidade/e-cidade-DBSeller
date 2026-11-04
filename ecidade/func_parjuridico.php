@@ -51,11 +51,11 @@ $clparjuridico->rotulo->label("v19_instit");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lv19_instit?></label></td>
-          <td><? db_input("v19_instit",10,$Iv19_instit,true,"text",4,"","chave_v19_instit"); ?></td>
+          <td><?php db_input("v19_instit",10,$Iv19_instit,true,"text",4,"","chave_v19_instit"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lv19_instit?></label></td>
-          <td><? db_input("v19_instit",10,$Iv19_instit,true,"text",4,"","chave_v19_instit");?></td>
+          <td><?php db_input("v19_instit",10,$Iv19_instit,true,"text",4,"","chave_v19_instit");?></td>
         </tr>
       </table>
     </fieldset>
@@ -63,7 +63,7 @@ $clparjuridico->rotulo->label("v19_instit");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_parjuridico.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parjuridico.php")==true){
@@ -105,12 +105,12 @@ $clparjuridico->rotulo->label("v19_instit");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

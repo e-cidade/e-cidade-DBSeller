@@ -72,7 +72,7 @@ $clrotulo->label("");
 <td  align="center" valign="top" >
 <form name='form1'>
 <table border='0'>
-<?
+<?php
 if (isset($codigo)&&$codigo!="") {
   $result=$clmatrequiitem->sql_record($clmatrequiitem->sql_query_atend(null,"m41_codmatmater,m60_descr,m41_quant,sum(m43_quantatend) as m43_quantatend,m41_obs",null,"m41_codmatrequi=$codigo group by m41_codmatmater,m60_descr,m41_quant,m41_obs "));
   $numrows = $clmatrequiitem->numrows;

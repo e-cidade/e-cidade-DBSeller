@@ -61,7 +61,7 @@ $sWhere = " and e54_instit = " . db_getsession("DB_instit");
           <tr>
             <td align="center" nowrap wrap="false">
               Período:
-                <? db_inputdata('dt1', @$dia, @$mes, @$ano, true, 'text', 1, "");
+                <?php db_inputdata('dt1', @$dia, @$mes, @$ano, true, 'text', 1, "");
                 echo " a ";
                 db_inputdata('dt2', @$dia, @$mes, @$ano, true, 'text', 1, "");
                 ?>

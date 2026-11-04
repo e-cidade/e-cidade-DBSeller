@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -82,12 +82,12 @@ db_fieldsmemory( $result, 0 );
                <?=@$Led44_i_codigo?>
              </td>
              <td>
-               <?db_input( 'ed44_i_codigo', 15, $Ied44_i_codigo, true, 'text', 3 );?>
+               <?php db_input( 'ed44_i_codigo', 15, $Ied44_i_codigo, true, 'text', 3 );?>
              </td>
            </tr>
            <tr>
              <td nowrap title="<?=@$Ted44_i_procresultado?>">
-               <?db_ancora(@$Led44_i_procresultado,"",3);?>
+               <?php db_ancora(@$Led44_i_procresultado,"",3);?>
              </td>
              <td>
               <?php
@@ -98,7 +98,7 @@ db_fieldsmemory( $result, 0 );
            </tr>
            <tr>
              <td nowrap title="<?=@$Ted44_i_procavaliacao?>">
-               <?db_ancora( "<b>Elementos:</b>", "js_pesquisaed44_i_procavaliacao(true);", $db_opcao1 );?>
+               <?php db_ancora( "<b>Elementos:</b>", "js_pesquisaed44_i_procavaliacao(true);", $db_opcao1 );?>
              </td>
              <td>
                <?php
@@ -120,7 +120,7 @@ db_fieldsmemory( $result, 0 );
                    $result3      = $clconceito->sql_record( $sSqlConceito );
                ?>
                    <select name='ed44_c_minimoaprov' <?=$db_opcao == 3 ? "disabled" : ""?>>
-               <?
+               <?php
                    echo "<option value=''></option>";
                    for ( $z = 0; $z < $clconceito->numrows; $z++ ) {
 
@@ -132,7 +132,7 @@ db_fieldsmemory( $result, 0 );
                  } else if ( $forma == "NOTA" ) {
                ?>
                    <select name='ed44_c_minimoaprov' <?=$db_opcao == 3 ? "disabled" : ""?>>
-               <?
+               <?php
                    echo "<option value=''></option>";
                    for ( $z = $ed37_i_menorvalor; $z <= $ed37_i_maiorvalor; $z = $z + $ed37_i_variacao ) {
 
@@ -149,7 +149,7 @@ db_fieldsmemory( $result, 0 );
                <?=@$Led44_c_obrigatorio?>
              </td>
              <td>
-               <?
+               <?php
                $x = array('N'=>'NÃO','S'=>'SIM');
                db_select( 'ed44_c_obrigatorio', $x, true, 4 );
                ?>
@@ -253,12 +253,12 @@ db_fieldsmemory( $result, 0 );
     </table>
   </div>
 </form>
-<?
+<?php
 
 if ( @$ed14_c_descr == "RESULTADO" ) {
- ?><script>document.form1.ed44_c_obrigatorio.disabled = true;</script><?
+ ?><script>document.form1.ed44_c_obrigatorio.disabled = true;</script><?php
 } else {
- ?><script>document.form1.ed44_c_obrigatorio.disabled = false;</script><?
+ ?><script>document.form1.ed44_c_obrigatorio.disabled = false;</script><?php
 }
 $query  = db_query( $sql );
 $linhas = pg_num_rows( $query );

@@ -1,79 +1,79 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE vtfdias
-class cl_vtfdias { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r63_anousu = 0; 
-   var $r63_mesusu = 0; 
-   var $r63_regist = 0; 
-   var $r63_vale = null; 
-   var $r63_difere = 'f'; 
-   var $r63_dia_dia = null; 
-   var $r63_dia_mes = null; 
-   var $r63_dia_ano = null; 
-   var $r63_dia = null; 
-   var $r63_quant = 0; 
-   var $r63_obrig = 'f'; 
-   var $r63_quants = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_vtfdias {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r63_anousu = 0;
+   var $r63_mesusu = 0;
+   var $r63_regist = 0;
+   var $r63_vale = null;
+   var $r63_difere = 'f';
+   var $r63_dia_dia = null;
+   var $r63_dia_mes = null;
+   var $r63_dia_ano = null;
+   var $r63_dia = null;
+   var $r63_quant = 0;
+   var $r63_obrig = 'f';
+   var $r63_quants = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r63_anousu = int4 = Ano do Exercicio 
-                 r63_mesusu = int4 = Mes do Exercicio 
-                 r63_regist = int4 = Codigo do Funcionario 
-                 r63_vale = char(     4) = CODIGO DO VALE TRANSPORTE 
-                 r63_difere = boolean = Se difere cal.r922 senao r916 
-                 r63_dia = date = dia do vale transporte 
-                 r63_quant = int4 = Qtda de vales do dia 
-                 r63_obrig = boolean = informa se e obrigatorio 
-                 r63_quants = int4 = qtd vales vinda da semana 
+                 r63_anousu = int4 = Ano do Exercicio
+                 r63_mesusu = int4 = Mes do Exercicio
+                 r63_regist = int4 = Codigo do Funcionario
+                 r63_vale = char(     4) = CODIGO DO VALE TRANSPORTE
+                 r63_difere = boolean = Se difere cal.r922 senao r916
+                 r63_dia = date = dia do vale transporte
+                 r63_quant = int4 = Qtda de vales do dia
+                 r63_obrig = boolean = informa se e obrigatorio
+                 r63_quants = int4 = qtd vales vinda da semana
                  ";
-   //funcao construtor da classe 
-   function cl_vtfdias() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("vtfdias"); 
+     $this->rotulo = new rotulo("vtfdias");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_vtfdias {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r63_anousu = ($this->r63_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r63_anousu"]:$this->r63_anousu);
        $this->r63_mesusu = ($this->r63_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r63_mesusu"]:$this->r63_mesusu);
@@ -110,9 +110,9 @@ class cl_vtfdias {
      }
    }
    // funcao para inclusao
-   function incluir ($r63_anousu,$r63_mesusu,$r63_regist,$r63_vale,$r63_difere,$r63_dia){ 
+   public function incluir ($r63_anousu,$r63_mesusu,$r63_regist,$r63_vale,$r63_difere,$r63_dia){
       $this->atualizacampos();
-     if($this->r63_quant == null ){ 
+     if($this->r63_quant == null ){
        $this->erro_sql = " Campo Qtda de vales do dia nao Informado.";
        $this->erro_campo = "r63_quant";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r63_obrig == null ){ 
+     if($this->r63_obrig == null ){
        $this->erro_sql = " Campo informa se e obrigatorio nao Informado.";
        $this->erro_campo = "r63_obrig";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r63_quants == null ){ 
+     if($this->r63_quants == null ){
        $this->erro_sql = " Campo qtd vales vinda da semana nao Informado.";
        $this->erro_campo = "r63_quants";
        $this->erro_banco = "";
@@ -139,13 +139,13 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-       $this->r63_anousu = $r63_anousu; 
-       $this->r63_mesusu = $r63_mesusu; 
-       $this->r63_regist = $r63_regist; 
-       $this->r63_vale = $r63_vale; 
-       $this->r63_difere = $r63_difere; 
-       $this->r63_dia = $r63_dia; 
-     if(($this->r63_anousu == null) || ($this->r63_anousu == "") ){ 
+       $this->r63_anousu = $r63_anousu;
+       $this->r63_mesusu = $r63_mesusu;
+       $this->r63_regist = $r63_regist;
+       $this->r63_vale = $r63_vale;
+       $this->r63_difere = $r63_difere;
+       $this->r63_dia = $r63_dia;
+     if(($this->r63_anousu == null) || ($this->r63_anousu == "") ){
        $this->erro_sql = " Campo r63_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -153,7 +153,7 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r63_mesusu == null) || ($this->r63_mesusu == "") ){ 
+     if(($this->r63_mesusu == null) || ($this->r63_mesusu == "") ){
        $this->erro_sql = " Campo r63_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -161,7 +161,7 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r63_regist == null) || ($this->r63_regist == "") ){ 
+     if(($this->r63_regist == null) || ($this->r63_regist == "") ){
        $this->erro_sql = " Campo r63_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -169,7 +169,7 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r63_vale == null) || ($this->r63_vale == "") ){ 
+     if(($this->r63_vale == null) || ($this->r63_vale == "") ){
        $this->erro_sql = " Campo r63_vale nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -177,7 +177,7 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r63_difere == null) || ($this->r63_difere == "") ){ 
+     if(($this->r63_difere == null) || ($this->r63_difere == "") ){
        $this->erro_sql = " Campo r63_difere nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -185,7 +185,7 @@ class cl_vtfdias {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r63_dia == null) || ($this->r63_dia == "") ){ 
+     if(($this->r63_dia == null) || ($this->r63_dia == "") ){
        $this->erro_sql = " Campo r63_dia nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,29 +194,29 @@ class cl_vtfdias {
        return false;
      }
      $sql = "insert into vtfdias(
-                                       r63_anousu 
-                                      ,r63_mesusu 
-                                      ,r63_regist 
-                                      ,r63_vale 
-                                      ,r63_difere 
-                                      ,r63_dia 
-                                      ,r63_quant 
-                                      ,r63_obrig 
-                                      ,r63_quants 
+                                       r63_anousu
+                                      ,r63_mesusu
+                                      ,r63_regist
+                                      ,r63_vale
+                                      ,r63_difere
+                                      ,r63_dia
+                                      ,r63_quant
+                                      ,r63_obrig
+                                      ,r63_quants
                        )
                 values (
-                                $this->r63_anousu 
-                               ,$this->r63_mesusu 
-                               ,$this->r63_regist 
-                               ,'$this->r63_vale' 
-                               ,'$this->r63_difere' 
-                               ,".($this->r63_dia == "null" || $this->r63_dia == ""?"null":"'".$this->r63_dia."'")." 
-                               ,$this->r63_quant 
-                               ,'$this->r63_obrig' 
-                               ,$this->r63_quants 
+                                $this->r63_anousu
+                               ,$this->r63_mesusu
+                               ,$this->r63_regist
+                               ,'$this->r63_vale'
+                               ,'$this->r63_difere'
+                               ,".($this->r63_dia == "null" || $this->r63_dia == ""?"null":"'".$this->r63_dia."'")."
+                               ,$this->r63_quant
+                               ,'$this->r63_obrig'
+                               ,$this->r63_quants
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Dias de Vale Transporte ($this->r63_anousu."-".$this->r63_mesusu."-".$this->r63_regist."-".$this->r63_vale."-".$this->r63_difere."-".$this->r63_dia) nao Incluído. Inclusao Abortada.";
@@ -261,16 +261,16 @@ class cl_vtfdias {
        $resac = db_query("insert into db_acount values($acount,599,4531,'','".AddSlashes(pg_result($resaco,0,'r63_quants'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null) { 
+   public function alterar ($r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null) {
       $this->atualizacampos();
      $sql = " update vtfdias set ";
      $virgula = "";
-     if(trim($this->r63_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_anousu"])){ 
+     if(trim($this->r63_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_anousu"])){
        $sql  .= $virgula." r63_anousu = $this->r63_anousu ";
        $virgula = ",";
-       if(trim($this->r63_anousu) == null ){ 
+       if(trim($this->r63_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "r63_anousu";
          $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_vtfdias {
          return false;
        }
      }
-     if(trim($this->r63_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_mesusu"])){ 
+     if(trim($this->r63_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_mesusu"])){
        $sql  .= $virgula." r63_mesusu = $this->r63_mesusu ";
        $virgula = ",";
-       if(trim($this->r63_mesusu) == null ){ 
+       if(trim($this->r63_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r63_mesusu";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_vtfdias {
          return false;
        }
      }
-     if(trim($this->r63_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_regist"])){ 
+     if(trim($this->r63_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_regist"])){
        $sql  .= $virgula." r63_regist = $this->r63_regist ";
        $virgula = ",";
-       if(trim($this->r63_regist) == null ){ 
+       if(trim($this->r63_regist) == null ){
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "r63_regist";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_vtfdias {
          return false;
        }
      }
-     if(trim($this->r63_vale)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_vale"])){ 
+     if(trim($this->r63_vale)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_vale"])){
        $sql  .= $virgula." r63_vale = '$this->r63_vale' ";
        $virgula = ",";
-       if(trim($this->r63_vale) == null ){ 
+       if(trim($this->r63_vale) == null ){
          $this->erro_sql = " Campo CODIGO DO VALE TRANSPORTE nao Informado.";
          $this->erro_campo = "r63_vale";
          $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_vtfdias {
          return false;
        }
      }
-     if(trim($this->r63_difere)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_difere"])){ 
+     if(trim($this->r63_difere)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_difere"])){
        $sql  .= $virgula." r63_difere = '$this->r63_difere' ";
        $virgula = ",";
-       if(trim($this->r63_difere) == null ){ 
+       if(trim($this->r63_difere) == null ){
          $this->erro_sql = " Campo Se difere cal.r922 senao r916 nao Informado.";
          $this->erro_campo = "r63_difere";
          $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_vtfdias {
          return false;
        }
      }
-     if(trim($this->r63_dia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_dia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r63_dia_dia"] !="") ){ 
+     if(trim($this->r63_dia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_dia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r63_dia_dia"] !="") ){
        $sql  .= $virgula." r63_dia = '$this->r63_dia' ";
        $virgula = ",";
-       if(trim($this->r63_dia) == null ){ 
+       if(trim($this->r63_dia) == null ){
          $this->erro_sql = " Campo dia do vale transporte nao Informado.";
          $this->erro_campo = "r63_dia_dia";
          $this->erro_banco = "";
@@ -344,11 +344,11 @@ class cl_vtfdias {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["r63_dia_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["r63_dia_dia"])){
          $sql  .= $virgula." r63_dia = null ";
          $virgula = ",";
-         if(trim($this->r63_dia) == null ){ 
+         if(trim($this->r63_dia) == null ){
            $this->erro_sql = " Campo dia do vale transporte nao Informado.";
            $this->erro_campo = "r63_dia_dia";
            $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_vtfdias {
          }
        }
      }
-     if(trim($this->r63_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_quant"])){ 
+     if(trim($this->r63_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_quant"])){
        $sql  .= $virgula." r63_quant = $this->r63_quant ";
        $virgula = ",";
-       if(trim($this->r63_quant) == null ){ 
+       if(trim($this->r63_quant) == null ){
          $this->erro_sql = " Campo Qtda de vales do dia nao Informado.";
          $this->erro_campo = "r63_quant";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_vtfdias {
          return false;
        }
      }
-     if(trim($this->r63_obrig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_obrig"])){ 
+     if(trim($this->r63_obrig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_obrig"])){
        $sql  .= $virgula." r63_obrig = '$this->r63_obrig' ";
        $virgula = ",";
-       if(trim($this->r63_obrig) == null ){ 
+       if(trim($this->r63_obrig) == null ){
          $this->erro_sql = " Campo informa se e obrigatorio nao Informado.";
          $this->erro_campo = "r63_obrig";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_vtfdias {
          return false;
        }
      }
-     if(trim($this->r63_quants)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_quants"])){ 
+     if(trim($this->r63_quants)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r63_quants"])){
        $sql  .= $virgula." r63_quants = $this->r63_quants ";
        $virgula = ",";
-       if(trim($this->r63_quants) == null ){ 
+       if(trim($this->r63_quants) == null ){
          $this->erro_sql = " Campo qtd vales vinda da semana nao Informado.";
          $this->erro_campo = "r63_quants";
          $this->erro_banco = "";
@@ -450,7 +450,7 @@ class cl_vtfdias {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Dias de Vale Transporte nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r63_anousu."-".$this->r63_mesusu."-".$this->r63_regist."-".$this->r63_vale."-".$this->r63_difere."-".$this->r63_dia;
@@ -478,14 +478,14 @@ class cl_vtfdias {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r63_anousu,$r63_mesusu,$r63_regist,$r63_vale,$r63_difere,$r63_dia));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -554,7 +554,7 @@ class cl_vtfdias {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Dias de Vale Transporte nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r63_anousu."-".$r63_mesusu."-".$r63_regist."-".$r63_vale."-".$r63_difere."-".$r63_dia;
@@ -582,11 +582,11 @@ class cl_vtfdias {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -608,10 +608,10 @@ class cl_vtfdias {
       }
      return $result;
    }
-   function sql_query ( $r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,55 +647,55 @@ class cl_vtfdias {
      $sql2 = "";
      if($dbwhere==""){
        if($r63_anousu!=null ){
-         $sql2 .= " where vtfdias.r63_anousu = $r63_anousu "; 
-       } 
+         $sql2 .= " where vtfdias.r63_anousu = $r63_anousu ";
+       }
        if($r63_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_mesusu = $r63_mesusu "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_mesusu = $r63_mesusu ";
+       }
        if($r63_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_regist = $r63_regist "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_regist = $r63_regist ";
+       }
        if($r63_vale!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_vale = '$r63_vale' "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_vale = '$r63_vale' ";
+       }
        if($r63_difere!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_difere = '$r63_difere' "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_difere = '$r63_difere' ";
+       }
        if($r63_dia!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_dia = '$r63_dia' "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_dia = '$r63_dia' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -704,10 +704,10 @@ class cl_vtfdias {
      }
      return $sql;
   }
-   function sql_query_file ( $r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $r63_anousu=null,$r63_mesusu=null,$r63_regist=null,$r63_vale=null,$r63_difere=null,$r63_dia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -720,55 +720,55 @@ class cl_vtfdias {
      $sql2 = "";
      if($dbwhere==""){
        if($r63_anousu!=null ){
-         $sql2 .= " where vtfdias.r63_anousu = $r63_anousu "; 
-       } 
+         $sql2 .= " where vtfdias.r63_anousu = $r63_anousu ";
+       }
        if($r63_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_mesusu = $r63_mesusu "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_mesusu = $r63_mesusu ";
+       }
        if($r63_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_regist = $r63_regist "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_regist = $r63_regist ";
+       }
        if($r63_vale!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_vale = '$r63_vale' "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_vale = '$r63_vale' ";
+       }
        if($r63_difere!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_difere = '$r63_difere' "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_difere = '$r63_difere' ";
+       }
        if($r63_dia!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtfdias.r63_dia = '$r63_dia' "; 
-       } 
+         }
+         $sql2 .= " vtfdias.r63_dia = '$r63_dia' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,22 +62,22 @@ if(isset($db_opcaoal)){
        <?=@$Lh52_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h52_sequencial',10,$Ih52_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr style='display:none'>
     <td nowrap title="<?=@$Th52_rhestagio?>">
-       <?
+       <?php
        db_ancora(@$Lh52_rhestagio,"js_pesquisah52_rhestagio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h52_rhestagio',10,$Ih52_rhestagio,true,'text',$db_opcao," onchange='js_pesquisah52_rhestagio(false);'")
 ?>
-       <?
+       <?php
 db_input('h50_sequencial',10,$Ih50_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -87,7 +87,7 @@ db_input('h50_sequencial',10,$Ih50_sequencial,true,'text',3,'')
        <?=@$Lh52_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h52_descr',40,$Ih52_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('h52_descr',40,$Ih52_descr,true,'text',$db_opcao,"")
        <?=@$Lh52_pontos?>
     </td>
     <td> 
-<?
+<?php
 db_input('h52_pontos',10,$Ih52_pontos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('h52_pontos',10,$Ih52_pontos,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("h52_sequencial"=>@$h52_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagiocriterio->sql_query_file(null,"*","h52_sequencial","h52_rhestagio={$h52_rhestagio}");

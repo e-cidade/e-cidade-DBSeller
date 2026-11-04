@@ -58,6 +58,8 @@ class Formula extends FormulaCompiler implements FormulaInterface
      */
     private $buscarValoresVariaveis = false;
 
+    private $resultadosAtributos = null;
+
     /**
      * Formula constructor.
      * @param $formula
@@ -69,7 +71,8 @@ class Formula extends FormulaCompiler implements FormulaInterface
         $formula,
         RequisicaoExame $requisicaoExame,
         AtributoExame $atributoExame,
-        $buscarValoresVariaveis = false
+        $buscarValoresVariaveis = false,
+        $resultadosAtributos = null
     ) {
         $formula = str_replace('[', '', str_replace(']', '', $formula));
         parent::__construct($formula);
@@ -77,16 +80,21 @@ class Formula extends FormulaCompiler implements FormulaInterface
         $this->requisicaoExame = $requisicaoExame;
         $this->atributoExame = $atributoExame;
         $this->buscarValoresVariaveis = $buscarValoresVariaveis;
+        $this->resultadosAtributos = $resultadosAtributos;
     }
 
     /**
      * @return string
      * @throws \Exception
      */
-    public function executarCalculo()
+    public function executarCalculo($exibirHistorico = false)
     {
         if ($this->buscarValoresVariaveis === true) {
-            $this->getValoresVariaveis();
+            if ($exibirHistorico) {
+                $this->getValoresVariaveisOtimizado();
+            } else {
+                $this->getValoresVariaveis();
+            }
         }
 
         if ($this->temAtributoSemResultado === true) {
@@ -119,11 +127,11 @@ class Formula extends FormulaCompiler implements FormulaInterface
             $valor = $resultadoAtributo->getValorAbsoluto();
 
             if ($atributoValorReferencia instanceof \AtributoValorReferenciaNumerico
-              && $atributoValorReferencia->getTipoCalculo() == 2) {
+                && $atributoValorReferencia->getTipoCalculo() == 2) {
                 $valor = $resultadoAtributo->getValorPercentual();
             }
 
-            if (empty($valor)) {
+            if (strlen($valor) == 0) {
                 $this->temAtributoSemResultado = true;
             }
 
@@ -165,5 +173,46 @@ class Formula extends FormulaCompiler implements FormulaInterface
     public function setVariavelValor($chave, $valor)
     {
         $this->addVariavelValor($chave, $valor);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function getValoresVariaveisOtimizado()
+    {
+        $atributosFormula = $this->atributoExame->getSiglasFormula();
+
+        $resultadosAtributos = $this->resultadosAtributos;
+
+        if (empty($resultadosAtributos)) {
+            $this->temAtributoSemResultado = true;
+            return;
+        }
+
+        foreach ($resultadosAtributos as $resultadoAtributo) {
+            if (!in_array($resultadoAtributo->getAtributo()->getSigla(), $atributosFormula)) {
+                continue;
+            }
+
+            $atributoExame = $resultadoAtributo->getAtributo();
+            //$atributoValorReferencia = $atributoExame->getValoresDeReferenciaParaExame($this->requisicaoExame);
+
+            $valor = $resultadoAtributo->getValorAbsoluto();
+
+//            if ($atributoValorReferencia instanceof \AtributoValorReferenciaNumerico
+//                && $atributoValorReferencia->getTipoCalculo() == 2) {
+//                $valor = $resultadoAtributo->getValorPercentual();
+//            }
+
+            if (strlen($valor) == 0) {
+                $this->temAtributoSemResultado = true;
+            }
+
+            $this->addVariavelValor($resultadoAtributo->getAtributo()->getSigla(), $valor);
+        }
+
+        if ($this->totalVariaveis() < count($atributosFormula)) {
+            $this->temAtributoSemResultado = true;
+        }
     }
 }

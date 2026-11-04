@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -108,10 +108,10 @@ final class Desmembramento
         $cdasAgrupadas = array();
 
         foreach ($dados as $registro) {
-
             /* PLUGIN CRA 2 */
 
-            $chave = "{$registro->sequencial_processo}#{$registro->codigo_inicial}#{$registro->codigo_certidao}#{$registro->exercicio_divida}";
+            $chave = "{$registro->sequencial_processo}#{$registro->codigo_inicial}#";
+            $chave .= "{$registro->codigo_certidao}#{$registro->exercicio_divida}";
 
             if (empty($cdasAgrupadas[$registro->codigo_inicial])) {
                 $cdasAgrupadas[$registro->codigo_inicial] = array(
@@ -140,29 +140,30 @@ final class Desmembramento
             $this->agrupaValoresDebito($debito, $registro);
         }
 
+        // codigo abaixo comentado para permitir visualizar todos os casos desde que esteja em aberto, sem remover nada
+
         // remove iniciais que possui apenas 1 certidão e 1 divida.
-        foreach ($iniciaisAgrupadas as $key => $inicial) {
+        // foreach ($iniciaisAgrupadas as $key => $inicial) {
+        //     $numpres = array();
 
-            $numpres = array();
+        //     foreach ($inicial->dividas as $divida) {
+        //         foreach ($divida->infos as $info) {
+        //             $numpres[] = $info->numpre;
+        //         }
+        //     }
 
-            foreach ($inicial->dividas as $divida) {
-                foreach ($divida->infos as $info) {
-                    $numpres[] = $info->numpre;
-                }
-            }
+        //     $numpres = array_unique($numpres);
 
-            $numpres = array_unique($numpres);
+        //     if (count($numpres) > 1) {
+        //         continue;
+        //     }
 
-            if (count($numpres) > 1) {
-                continue;
-            }
+        //     $cdasAgrupadas[$inicial->inicial] = array_unique($cdasAgrupadas[$inicial->inicial]);
 
-            $cdasAgrupadas[$inicial->inicial] = array_unique($cdasAgrupadas[$inicial->inicial]);
-
-            if (count($cdasAgrupadas[$inicial->inicial]) == 1) {
-                unset($iniciaisAgrupadas[$key]);
-            }
-        }
+        //     if (count($cdasAgrupadas[$inicial->inicial]) == 1) {
+        //         unset($iniciaisAgrupadas[$key]);
+        //     }
+        // }
 
         sort($iniciaisAgrupadas);
 
@@ -241,7 +242,7 @@ final class Desmembramento
             throw new \Exception('Numpre selecionado parcialmente, não pode ser desmembrado.');
         }
 
-        $iniciais = $this->desmembramentoRepository->getIniciaisPorDividas($dividas);        
+        $iniciais = $this->desmembramentoRepository->getIniciaisPorDividas($dividas);
 
         $certidaoRepository = CertidaoRepository::getInstance();
         $certidaoRepository->setReturnFullItem(true);
@@ -252,7 +253,6 @@ final class Desmembramento
         $usuario = db_getsession('DB_id_usuario');
 
         foreach ($iniciais as $inicial => $certidoes) {
-
             $inicialAntiga = $inicialRepository->getByCode($inicial);
 
             $processoForo = $processoForoRepository->getByInicial($inicialAntiga->getCodigo());
@@ -269,17 +269,22 @@ final class Desmembramento
             }
 
             foreach ($certidoes as $codigoCertidao) {
-
                 $certidaoEntity = $certidaoRepository->getByCode($codigoCertidao);
                 $this->removerDividasCertidao($certidaoEntity, $dividas);
 
                 $cdaOld = $certidaoEntity->getCodigo();
 
-                if ($this->desmembramentoRepository->cdaParcialmenteSelecionada($certidaoEntity->getCodigo(), $dividas)) {
+                if ($this->desmembramentoRepository->cdaParcialmenteSelecionada(
+                    $certidaoEntity->getCodigo(),
+                    $dividas
+                )) {
                     $certidaoEntity->setCodigo(null);
 
                     foreach ($certidaoEntity->getCertidaoDividas() as $certidaoDivida) {
-                        $this->desmembramentoRepository->removeCertDiv($codigoCertidao, $certidaoDivida->getDivida()->getCodigoDivida());
+                        $this->desmembramentoRepository->removeCertDiv(
+                            $codigoCertidao,
+                            $certidaoDivida->getDivida()->getCodigoDivida()
+                        );
 
                         $certidaoDivida->setCodigoCertidao(null);
                     }
@@ -287,9 +292,11 @@ final class Desmembramento
                     $certidaoRepository->persist($certidaoEntity);
 
                     /* PLUGIN CRA 3 */
-
                 } else {
-                    $this->desmembramentoRepository->removeInicialCert($inicialAntiga->getCodigo(), $certidaoEntity->getCodigo());
+                    $this->desmembramentoRepository->removeInicialCert(
+                        $inicialAntiga->getCodigo(),
+                        $certidaoEntity->getCodigo()
+                    );
                 }
 
                 $daoInicialCert = new \cl_inicialcert();
@@ -297,7 +304,7 @@ final class Desmembramento
 
                 if ($daoInicialCert->erro_status == 0) {
                     throw new \Exception($daoInicialCert->erro_msg);
-                }                
+                }
 
                 foreach ($certidaoEntity->getNumpres() as $numpre) {
                     $inicialNumpre = new InicialNumpre();
@@ -381,7 +388,10 @@ final class Desmembramento
         $quantidadeDividasPorInicial = array();
 
         array_map(function ($inicial) use (&$quantidadeDividasPorInicial) {
-            $quantidadeDividasPorInicial[$inicial->inicial] = array_key_exists($inicial->inicial, $quantidadeDividasPorInicial)
+            $quantidadeDividasPorInicial[$inicial->inicial] = array_key_exists(
+                $inicial->inicial,
+                $quantidadeDividasPorInicial
+            )
                 ? $quantidadeDividasPorInicial[$inicial->inicial] + count($inicial->dividas)
                 : count($inicial->dividas);
         }, $iniciais);

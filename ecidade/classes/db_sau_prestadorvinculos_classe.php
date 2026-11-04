@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_sau_prestadorvinculos {
                  s111_c_situacao = char(1) = Situação 
                  ";
    //funcao construtor da classe 
-   function cl_sau_prestadorvinculos() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_prestadorvinculos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_sau_prestadorvinculos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s111_i_codigo = ($this->s111_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s111_i_codigo"]:$this->s111_i_codigo);
        $this->s111_i_prestador = ($this->s111_i_prestador == ""?@$GLOBALS["HTTP_POST_VARS"]["s111_i_prestador"]:$this->s111_i_prestador);
@@ -80,7 +80,7 @@ class cl_sau_prestadorvinculos {
      }
    }
    // funcao para Inclusão
-   function incluir ($s111_i_codigo){ 
+   public function incluir ($s111_i_codigo){ 
       $this->atualizacampos();
      if($this->s111_i_prestador == null ){ 
        $this->erro_sql = " Campo Prestador não informado.";

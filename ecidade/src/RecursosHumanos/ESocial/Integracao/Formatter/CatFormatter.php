@@ -3,6 +3,7 @@
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\Formatter;
+use ServidorRepository;
 
 /**
  * Formata os dados de Comunicação de Acidente de Trabalho
@@ -36,6 +37,11 @@ class CatFormatter extends Formatter
             if (isset($dadoCat->ideVinculo)) {
                 if (empty($dadoCat->ideVinculo->matricula)) {
                     unset($dadoCat->ideVinculo->matricula);
+                } else {
+                    $servidor = ServidorRepository::getInstanciaByCodigo($dadoCat->ideVinculo->matricula);
+                    if (!empty($servidor->getMatriculaAnterior())) {
+                        $dadoCat->ideVinculo->matricula = $servidor->getMatriculaAnterior();
+                    }
                 }
 
                 if (empty($dadoCat->ideVinculo->codCateg)) {

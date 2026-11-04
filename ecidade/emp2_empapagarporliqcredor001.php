@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ if (!isset($testdt)){
          <input  name="filtra_despesa" id="filtra_despesa" type="hidden" value="" >
        <table border="0" >
        <tr> 
-       <?
+       <?php
        db_input('testdt',10,"",true,"hidden",1);
        db_input('listacredor',10,"",true,"hidden",1);
        db_input('listahist',10,"",true,"hidden",1);
@@ -106,7 +106,7 @@ if (!isset($testdt)){
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Credores</strong>";
                  $aux->codigo = "e60_numcgm"; //chave de retorno da func
@@ -143,7 +143,7 @@ if (!isset($testdt)){
       <tr>
          <td nowrap> <b>Período das liquidações:</b></td>
 	 <td nowrap>
-               <? 
+               <?php 
 //	       $resultmin = db_query("select c71_data as e60_emiss from conlancamdoc where c71_coddoc in (3, 23, 33) order by c71_data limit 1");
 	       $resultmin = db_query("select c71_data as e60_emiss from conlancamdoc where c71_coddoc in (3, 23, 33) order by c71_data limit 1");
 	       db_fieldsmemory($resultmin,0);

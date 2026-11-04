@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -133,7 +133,7 @@ function js_abre(){
 			    <b>Tipos de Atendimento:</b> 	
 				</td>
 				<td>
-				  <?
+				  <?php
             $aAtendimento = array ( "a"  => "Atendidas",
 																		"pa" => "Parcialmente Atendidas", 
 												         	  "na" => "Não Atendidas", 
@@ -149,7 +149,7 @@ function js_abre(){
 				  <b> Requisições: </b>
 				</td>
 				<td> 
-				  <? 
+				  <?php 
 					  db_input('m40_codigo',10,$Im40_codigo,true,'text',$db_opcao," onchange='js_copiacampo();'","m40_codigo_ini");
 						echo " &nbsp;&nbsp; até &nbsp; ";
 					  db_input('m40_codigo',10,$Im40_codigo,true,'text',$db_opcao,"","m40_codigo_fim")
@@ -162,7 +162,7 @@ function js_abre(){
           <b> Período: </b>
 				</td>
 				<td>
-          <? 
+          <?php 
 	          db_inputdata('perini','','','',true,'text',1,"");
 						echo " a ";   		          
 	          db_inputdata('perfim','','','',true,'text',1,"");   		          
@@ -175,7 +175,7 @@ function js_abre(){
 			    <b> Observações: </b> 	
 				</td>
 				<td>
-				  <?
+				  <?php
             $aObs = array( 18 => "Resumida", 181 => "Completa");
 					  db_select("tobserva",$aObs,true,1);
 				  ?>
@@ -190,7 +190,7 @@ function js_abre(){
     </form>
 
    </center>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

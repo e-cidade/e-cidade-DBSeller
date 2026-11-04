@@ -65,6 +65,7 @@ try {
             $retorno->session[] = sessionToObject('DB_datausu');
             $retorno->session[] = sessionToObject('DB_uol_hora');
             $retorno->session[] = sessionToObject('DB_anousu');
+            $retorno->session[] = sessionToObject('data_usuario', date('Y-m-d', $_SESSION['DB_datausu']));
             $retorno->requestPath = ECIDADE_REQUEST_PATH;
             $retorno->requestApi = ECIDADE_REQUEST_PATH . 'v4/api';
             $retorno->UF = InstituicaoRepository::getInstituicaoPrefeitura()->getUf();
@@ -84,7 +85,7 @@ try {
 echo JSON::create()->stringify($retorno);
 
 function sessionToObject($index, $defaultValue = null)
-{ 
+{
     $value = array_key_exists($index, $_SESSION) ? $_SESSION[$index] : $defaultValue;
 
     return (object) [

@@ -136,19 +136,19 @@ $db_botao = true;
   </tr>
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <?
+    <?php
       include(modification("forms/db_frmempparametro.php"));
     ?>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
   if($clempparametro->erro_status=="0"){
     $clempparametro->erro(true,false);

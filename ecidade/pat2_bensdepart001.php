@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -264,7 +264,7 @@ function js_mostraFieldset(oLegend){
 <table>
 	<tr>
     <td colspan="1">
-      <?
+      <?php
         $oAuxDpto->cabecalho      = "<strong>Departamento</strong>";
         $oAuxDpto->codigo         = "coddepto"; //chave de retorno da func
         $oAuxDpto->descr          = "descrdepto";   //chave de retorno
@@ -292,7 +292,7 @@ function js_mostraFieldset(oLegend){
 	<tr id='tr_divisao' align='center'>
     <td colspan='4' align='center'>
        <div id='div_divisao' align="center">
-          <?        
+          <?php        
             db_input('lista_departamento', 10, true, 3, 'hidden', 3);
             db_input('lista_divdepartamento', 10, true, 3, 'hidden', 3);
             
@@ -328,7 +328,7 @@ function js_mostraFieldset(oLegend){
   </tr>
 		<tr>
 			<td colspan=2>
-		  <?
+		  <?php
 			// $aux = new cl_arquivo_auxiliar;
 			$aux_bem->cabecalho = "<strong>Bens</strong>";
 			$aux_bem->codigo = "t52_bem"; //chave de retorno da func
@@ -356,7 +356,7 @@ function js_mostraFieldset(oLegend){
 			</td>
 		</tr>
     <tr>
-      <td colspan=2><?
+      <td colspan=2><?php
       // $aux = new cl_arquivo_auxiliar;
       $aux_conta->cabecalho = "<strong>Estruturais</strong>";
       $aux_conta->codigo = "c60_codcon"; //chave de retorno da func
@@ -380,7 +380,7 @@ function js_mostraFieldset(oLegend){
     </tr>
 
     <tr>
-      <td colspan=2><?
+      <td colspan=2><?php
       // $aux = new cl_arquivo_auxiliar;
       //Filtro por situação do bem
       //Controle de seleção de situação de bem
@@ -406,10 +406,10 @@ function js_mostraFieldset(oLegend){
       ?></td>
     </tr>
     	<tr>
-		<td nowrap title="<?=@$Tt64_class?>"><?
+		<td nowrap title="<?=@$Tt64_class?>"><?php
 	 db_ancora(@$Lt64_class,"js_pesquisat64_class(true);",1);
 	 ?></td>
-		<td><?
+		<td><?php
 		$cldb_estrut->autocompletar = true;
 		$cldb_estrut->mascara = false;
 		$cldb_estrut->input   = true;
@@ -423,8 +423,8 @@ function js_mostraFieldset(oLegend){
 		?></td>
 	</tr>
 		<tr>
-			<td align="right" nowrap><? db_ancora(@$Lt52_dtaqu,"",3);?></td>
-			<td align="left" nowrap><?
+			<td align="right" nowrap><?php db_ancora(@$Lt52_dtaqu,"",3);?></td>
+			<td align="left" nowrap><?php
 			db_inputdata('t52_dtaquini',null, null, null, true,'text',1,"");
 			echo "&nbsp;<b> A </b>&nbsp;";
 			db_inputdata('t52_dtaqufim',null, null, null, true,'text',1,"");
@@ -432,7 +432,7 @@ function js_mostraFieldset(oLegend){
 		</tr>
 		<tr>
 			<td align="right" nowrap><strong>Per&iacute;odo da Baixa</strong></td>
-			<td align="left" nowrap><?
+			<td align="left" nowrap><?php
 			db_inputdata('t52_baixainicio',null, null, null, true,'text',1);
 			echo "&nbsp;<b> A </b>&nbsp;";
 			db_inputdata('t52_baixafim',null, null, null, true,'text',1);
@@ -442,7 +442,7 @@ function js_mostraFieldset(oLegend){
 		<tr>
 			<td align="right" nowrap title="Tipo de Agrupamento do Valor"><strong>Convênios
 			:&nbsp;&nbsp;</strong></td>
-			<td><? 
+			<td><?php 
 			$aConvenios = array (1 => "Ambos",
 			2 => "Apenas vinculado a convênios",
 			3 => "Apenas não vinculado a convênios"
@@ -453,7 +453,7 @@ function js_mostraFieldset(oLegend){
 		<tr id='listacedentes' style="display: none;">
 			<td colspan='2'>
 			<table  class="form-container">
-			<?
+			<?php
 			$oListaCedente = new cl_arquivo_auxiliar;
 			$oListaCedente->cabecalho = "<strong>Convênios</strong>";
 			$oListaCedente->codigo = "t04_sequencial"; //chave de retorno da func
@@ -481,7 +481,7 @@ function js_mostraFieldset(oLegend){
 		<tr>
 			<td align="right" nowrap title="Procurar por descrição"><b>Por
 			descrição do bem:</b></td>
-			<td nowrap title=""><?
+			<td nowrap title=""><?php
 
 			db_input('descricao',50,0,true,'text',1,"onKeyUp = js_Maiusculo('descricao')");
 			?></td>
@@ -489,7 +489,7 @@ function js_mostraFieldset(oLegend){
 		<tr>
 			<td nowrap align="right" title="Características adicionais do bem"><b>Características
 			adicionais do bem:</b></td>
-			<td nowrap title=""><?
+			<td nowrap title=""><?php
 			$matriz = array("N"=>"NÃO","S"=>"SIM"); 
 			db_select("opcao_obs",$matriz,true,1);
 			?></td>
@@ -497,28 +497,28 @@ function js_mostraFieldset(oLegend){
 		<tr>
 			<td nowrap align="right" title="Imprimir valor de aquisição"><b>Imprimir
 			valor de aquisição:</b></td>
-			<td nowrap title=""><?
+			<td nowrap title=""><?php
 			$matriz = array("N"=>"NÃO","S"=>"SIM");
 			db_select("imp_valor",$matriz,true,1);
 			?></td>
 		</tr>
 		<tr>
 			<td nowrap align="right" title="Bens a serem listados"><b>Listar:</b></td>
-			<td nowrap title=""><?
+			<td nowrap title=""><?php
 			$matriz_baix = array("t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados"); 
 			db_select("opcao_baixados",$matriz_baix,true,1);
 			?></td>
 		</tr>
 		<tr>
 			<td nowrap align="right" title="Ordem"><b>Ordem:</b></td>
-			<td nowrap title=""><?
+			<td nowrap title=""><?php
 			$matriz_ordem = array(1=>"Placa",2=>"Código", 3=>"Descrição"); 
 			db_select("ordem",$matriz_ordem,true,1);
 			?></td>
 		</tr>
 		<tr>
 			<td nowrap align="right" title="quebradepagina"><b>Quebra de Página:</b></td>
-			<td nowrap title=""><?
+			<td nowrap title=""><?php
 			$matriz_quebra = array(1=>"Não",2=>"Departamento / Divisão"); 
 			db_select("quebra",$matriz_quebra,true,1);
 			?></td>
@@ -528,7 +528,7 @@ function js_mostraFieldset(oLegend){
 <input name="relatorio" type="button"	onclick='js_abre();' value="Gerar relatório">
 </form>
 
-			<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+			<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 
 //--------------------------------

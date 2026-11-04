@@ -136,7 +136,8 @@ abstract class BaseRepository {
   private static function procurarBase($sCodigo, DBCompetencia $oCompetencia, Instituicao $oInstituicao) {
 
     $oDaoBases = new cl_bases();
-    $sSqlBases = $oDaoBases->sql_query($oCompetencia->getAno(), $oCompetencia->getMes(), $sCodigo, $oInstituicao->getCodigo());
+    $sCampos = "r08_codigo, r08_descr, r08_pfixo, r08_calqua, r08_mesant";
+    $sSqlBases = $oDaoBases->sql_query($oCompetencia->getAno(), $oCompetencia->getMes(), $sCodigo, $oInstituicao->getCodigo(), $sCampos);
     $rsBases   = db_query($sSqlBases);
 
     if (!$rsBases) {
@@ -159,6 +160,7 @@ abstract class BaseRepository {
     $oBase->setRubricas($aRubricas);
 
     BaseRepository::adicionarBase($oBase);
+    unset($oDadosBases);
     return $oBase;
   }
 

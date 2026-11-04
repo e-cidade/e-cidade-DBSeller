@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -204,7 +204,7 @@ input {
             </td>
             <td width="50%" valign="top" nowrap> <strong>Exames Favoritos:</strong><br> 
               <select ondblclick="js_inserir(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)" style="width:136px;font-size:9px" name="favoritos" size="10" id="select">
-                <?			 
+                <?php 		 
 			  $result = db_query("select codexa,descr 
 			                     from exames 
 								 where codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)");
@@ -221,7 +221,7 @@ input {
           </tr>
         </table>      
       </form>
-	  		<?			
+	  		<?php 		
 			 if(db_getsession("w03_codigo") != "") {
                $depen = '1';
                $codpaciente = db_getsession("w03_codigo");

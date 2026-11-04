@@ -51,6 +51,7 @@ require_once modification('dbforms/db_funcoes.php');
     <script rel="script" type="text/javascript" src="scripts/widgets/Input/DBInput.widget.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/Input/DBInputDate.widget.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/dbautocomplete.widget.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
 </head>
 <body>
     <?php validaDepartamentoLogado('unidade'); ?>
@@ -62,10 +63,10 @@ require_once modification('dbforms/db_funcoes.php');
             <table class="form-container">
                 <tr>
                     <td>
-                        <label id="unidade">Unidade:</a>
+                        <label id="unidade">Unidade:</label>
                     </td>
                     <td>
-                        <input type="text" id="sd02_i_codigo" value="<?=db_getsession('DB_coddepto')?>" 
+                        <input type="text" id="sd02_i_codigo" value="<?=db_getsession('DB_coddepto')?>"
                             class="field-size2">
                         <input type="text" id="descrdepto" class="readonly field-size9">
                     </td>
@@ -110,7 +111,7 @@ require_once modification('dbforms/db_funcoes.php');
                         <label>Data Atendimento:</label>
                     </td>
                     <td>
-                        <input type="text" id="data_atendimento"> 
+                        <input type="text" id="data_atendimento">
                     </td>
                     <td>
                         <label>Hora Atendimento:</label> &nbsp;
@@ -125,8 +126,8 @@ require_once modification('dbforms/db_funcoes.php');
                 <legend>Evolução</legend>
             </fieldset>
             <div class="subcontainer">
-                <textarea id="evolucao" 
-                          rows="10" cols="65" maxlength="1600" 
+                <textarea id="evolucao"
+                          rows="10" cols="65" maxlength="1600"
                           style="min-width: 540px; max-width: 540px;">
                 </textarea>
             </div>
@@ -144,7 +145,7 @@ require_once modification('dbforms/db_funcoes.php');
     <div id="divAcompanhamentos" class="subcontainer" style="width: 800px; display: none;">
         <fieldset>
             <legend>Acompanhamentos do Paciente</legend>
-            <table id="data-table-acompanhamentos" 
+            <table id="data-table-acompanhamentos"
                 class="table table-sm">
             </table>
         </fieldset>
@@ -153,8 +154,8 @@ require_once modification('dbforms/db_funcoes.php');
 <script rel="script" type="text/javascript" src="scripts/session.js"></script>
 <script type="text/javascript" src="assets/jquery/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="assets/bootstrap-table/bootstrap-table.min.js"></script>
-<script type="text/javascript" src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>   
-<script> 
+<script type="text/javascript" src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>
+<script>
 $.noConflict();
 const routes = {
     salvar: 'saude/ambulatorial/procedimento/acompanhamento-acs/save',
@@ -267,9 +268,9 @@ paciente.inputId.addEventListener('change', () => {
         divAcompanhamentos.style.display = 'none';
         divAlert.hidden = true;
         inputId.value = '';
-        
+
         return false;
-    } 
+    }
 });
 
 btn.limpar.addEventListener('click', () => {
@@ -321,7 +322,7 @@ jQuery(document).ready(jQuery => {
     const buttons = () => {
         return {
             btnImprimir: {
-                html: 
+                html:
                     `<div style="text-align: right; margin-right: 5px;">
                         <button onClick="imprimir();"> Imprimir <i class="fas fa-print"></i></i></button>
                     </div>`
@@ -361,7 +362,7 @@ jQuery(document).ready(jQuery => {
                 inputId.value = '';
                 inputEvolucao.value = '';
             }
-            
+
             const formData = new FormData();
 
             formData.append('id', data.s168_id);
@@ -440,10 +441,10 @@ jQuery(document).ready(jQuery => {
         detailFormatter: (index, row) => {
             return `<p style="text-align: left;"><b>Evolução</b>: ${row.s168_evolucao}</p>`;
         }
-    }); 
+    });
 });
 
-function imprimir() 
+function imprimir()
 {
     let acompanhamentos = tabelaAcompanhamentos.bootstrapTable('getSelections');
 
@@ -452,9 +453,9 @@ function imprimir()
         return false;
     }
 
-    
+
     const formData = new FormData();
-    
+
     for (let acompanhamento of acompanhamentos) {
         formData.append('ids[]', acompanhamento.s168_id);
     }
@@ -494,7 +495,7 @@ function formataTimestamp(timestamp, tipo)
     return dado;
 }
 
-function validaFormulario() 
+function validaFormulario()
 {
     if (unidade.inputId.value == '') {
         alert('Informe a unidade!');

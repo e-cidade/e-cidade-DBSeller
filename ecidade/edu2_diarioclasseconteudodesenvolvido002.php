@@ -30,8 +30,8 @@ use ECidade\Educacao\Secretaria\BNCC\Service\HabilidadeEducacaoInfantilService;
 use ECidade\Educacao\Secretaria\BNCC\Service\HabilidadeEnsinoFundamentalService;
 use ECidade\Educacao\Secretaria\Services\ParametrosGlobaisService;
 use ECidade\Enum\Educacao\Escola\TipoEnsinoEnum;
+use ECidade\Pdf\Pdf;
 
-require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -41,11 +41,10 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-$sDataSessao = date('Y/m/d',db_getsession("DB_datausu"));
 $configuracao = ParametrosGlobaisService::get();
 $oGet = db_utils::postMemory($_GET);
 
-$oPdf = new scpdf('L');
+$oPdf = new Pdf('L');
 $oEscola = new Escola($oGet->escola);
 $oTurma = TurmaRepository::getTurmaByCodigo($oGet->turma);
 $oCalendario = new Calendario($oGet->calendario);
@@ -74,6 +73,12 @@ $exibirAnexo = false;
 if ($oGet->exibirAnexo == 'true') {
     $exibirAnexo = true;
 }
+
+$todosProfessores = false;
+if ($oGet->todosProfessores == 'true') {
+    $todosProfessores = true;
+}
+
 $oDadosCabecalho = new stdClass();
 $oDadosCabecalho->sEscola = $sNomeEscola;
 $oDadosCabecalho->iAnoExecucao = $oCalendario->getAnoExecucao();
@@ -83,9 +88,9 @@ $oDadosCabecalho->iTurma = $oTurma->getCodigo();
 $oDadosCabecalho->sTurno = $oTurma->getTurno()->getDescricao();
 $oDadosCabecalho->sPeriodo = '';
 $oDadosCabecalho->iPaginas = $oGet->paginas;
-$oDadosCabecalho->dataVigentes = $oGet->emitirVigencia;
-$oDadosCabecalho->lDisciplinas = $oGet->mostraTodasDisciplinas;
+$oDadosCabecalho->lDisciplinas = 'false';
 $oDadosCabecalho->sTitulo = "Registro de Aula";
+$oDadosCabecalho->bTodosProfessores = $todosProfessores;
 if ($oGet->preenchimento == "habilidades") {
     $oDadosCabecalho->sTitulo = "Descrição das Habilidades Desenvolvidas";
 }
@@ -105,32 +110,90 @@ if ($oGet->lRegistroOcorrencia == "true") {
 $oPeriodoCalendario = $oCalendario->getPeriodoCalendarioPorPeriodoAvaliacao($oPeriodoAvaliacao);
 $oDadosCabecalho->sPeriodo = $oPeriodoAvaliacao->getDescricao();
 
-$oPdf->Open();
+$oPdf->init(false);
+$oPdf->exibeHeader(false);
 $oPdf->SetAutoPageBreak(false);
 $oPdf->SetFillColor(230);
 /**
  * Percorre as disciplinas selecionadas nos filtros.
  */
 $oDadosCabecalho->sNomeProfessor = [];
+$oDadosCabecalho->sNomeProfessorInativo = [];
 
 /**
  * Se for selecnado a opçao de imprimir todas disciplinas, ele pega as informaçoes da primeira disciplina e imprime 1 pagina
  */
-
 if (count($aDisciplinas) > 0 && $oDadosCabecalho->lDisciplinas == 'false') {
     foreach ($aDisciplinas as $iRegencia) {
         $oRegencia = RegenciaRepository::getRegenciaByCodigo($iRegencia);
         $oDadosCabecalho->sNomeDisciplina = $oRegencia->getDisciplina()->getNomeDisciplina();
         $oDadosCabecalho->ensinoInfantil = $oRegencia->getEtapa()->getEnsino()->getTipoEnsino()->isInfantil();
-        if (count($oRegencia->getDocentesByDataAtual($sDataSessao)) > 0) {
-            foreach ($oRegencia->getDocentesByDataAtual($sDataSessao) as $oDocente) {
+
+        if (count($oRegencia->getDocentesByDataAtual()) > 0) {
+            if (count($oRegencia->getDocentes()) > 1) {
+                $ind = '';
+                $abrePar = '';
+                $fechaPar = '';
+                foreach ($oRegencia->getDocentes() as $iDocente) {
+                    if (!empty($iDocente->getNomeSocial())) {
+                        $ind = 1;
+                        $abrePar = '(';
+                        $fechaPar = ')';
+                    }
+                }
+            }
+
+            foreach ($oRegencia->getDocentesByDataAtual() as $oDocente) {
                 if (!array_key_exists($oDadosCabecalho->sNomeDisciplina, $oDadosCabecalho->sNomeProfessor)) {
-                    $oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina] = $oDocente->getNome();
+                    $oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina] = $oDocente->getNome() . $abrePar . $ind . $fechaPar;
+                    $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina]    = !empty($oDocente->getNomeSocial()) ? $oDocente->getNomeSocial() . $abrePar . $ind . $fechaPar : '';
+                    $ind != '' ? $ind++ : $ind = '';
                     continue;
                 }
-
-                $oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina] .= ", {$oDocente->getNome()}";
+                // Verificação para saber se a diciplina tem mais de um docente para concatenar com vírgula ou não
+                if (count($oRegencia->getDocentes()) > 1) {
+                    $oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina] .= ", {$oDocente->getNome()}" . $abrePar . $ind . $fechaPar;
+                    $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina]    .= !empty($oDocente->getNomeSocial()) ? ", {$oDocente->getNomeSocial()}" . $abrePar . $ind . $fechaPar : '';
+                } else {
+                    $oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina] = " {$oDocente->getNome()}";
+                    $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina]    = " {$oDocente->getNomeSocial()}";
+                }
             }
+            // Se houver mais de um docente na disciplina e não tiverem nome social, manda a variável vazia
+            if ($oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina] == ', ') {
+                $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina] = "";
+            }
+            // Caso não haja nome social em todos, retira a vírgula da concatenação e manda somente o nome
+            $nomeSocial = $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina];
+            if (strpos($nomeSocial, ',') !== false) {
+                $posVirgula = strpos($nomeSocial, ',');
+                $firstContent = substr($nomeSocial, 0, $posVirgula);
+                $otherContent = substr($nomeSocial, $posVirgula + 1);
+
+                if (empty($firstContent) || empty($otherContent)) {
+                    $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina] = str_replace(',', '', $nomeSocial);
+                }
+            }
+        }
+
+        /**
+         *  Pega professores Inativos da Regencia
+         */
+        if ($oDadosCabecalho->bTodosProfessores) {
+            $nRegenciaAtual = $oRegencia->getCodigo();
+            $daoRegencia = new cl_regenciahorario();
+            $sSqlProfessores = $daoRegencia->sql_query_todosProfessoresDaTurma(
+                '',
+                'distinct  cgmpessoal.z01_nome ',
+                '',
+                "ed59_i_turma = $oDadosCabecalho->iTurma 
+                 AND ed58_i_regencia = $nRegenciaAtual AND ed58_ativo = 'false' ");
+            $rsSqlProfessores = db_query($sSqlProfessores);
+            $professoresDaTurma = [];
+            while ($iLinha = pg_fetch_array($rsSqlProfessores)) {
+                $professoresDaTurma[] = $iLinha["z01_nome"];
+            }
+            $oDadosCabecalho->sNomeProfessorInativo = $professoresDaTurma;
         }
 
         /**
@@ -158,7 +221,7 @@ if (count($aDisciplinas) > 0 && $oDadosCabecalho->lDisciplinas == 'false') {
                 break;
         }
     }
-} else if($oDadosCabecalho->lDisciplinas == 'true') {
+} else if ($oDadosCabecalho->lDisciplinas == 'true') {
         $iRegencia = $aDisciplinas[0];
         $oRegencia = RegenciaRepository::getRegenciaByCodigo($iRegencia);
         $oDadosCabecalho->sNomeDisciplina = $oRegencia->getDisciplina()->getNomeDisciplina();
@@ -166,10 +229,9 @@ if (count($aDisciplinas) > 0 && $oDadosCabecalho->lDisciplinas == 'false') {
         if (count($oRegencia->getDocentes()) > 0) {
             foreach ($oRegencia->getDocentes() as $oDocente) {
                 $oDadosCabecalho->sNomeProfessor[] = $oDocente->getNome();
+                $oDadosCabecalho->sNomeSocial[]    = $oDocente->getNomeSocial();
         }
     }
-
-
     imprimeManual($oPdf, $oDadosCabecalho);
 
 } else {
@@ -183,47 +245,133 @@ if (count($aDisciplinas) > 0 && $oDadosCabecalho->lDisciplinas == 'false') {
  */
 function imprimeCabecalho($oPdf, $oDadosCabecalho, $aConteudoDesenvolvido = null)
 {
+    $aulasDadas = 0;
+
+    if (!is_null($aConteudoDesenvolvido) && !empty($aConteudoDesenvolvido)) {
+        $ctd = \App\Domain\Educacao\Escola\Models\ConteudoDesenvolvido::find($aConteudoDesenvolvido[0]->codigoConteudo);
+        $service = new \App\Domain\Educacao\Escola\Services\RegistroAulaService();
+        $periodo = $service->getPeriodoByConteudo($ctd);
+        $procAvaliacao = $service->getProcedimentoByConteudoPeriodo($ctd, $periodo);
+
+        $resultado = \App\Domain\Educacao\Escola\Models\RegenciaPeriodo::where('ed78_i_regencia', $ctd->ed155_regencia)
+            ->where('ed78_i_procavaliacao', $procAvaliacao->ed41_i_codigo)
+            ->first();
+
+        $aulasDadas = isset($resultado) ? $resultado->ed78_i_aulasdadas : $resultado;
+    }
+
+
     $oPdf->AddPage();
 
     $oPdf->SetFont('arial', 'b', 10);
-
+    $alturaInicial = $oPdf->GetY() - 5;
+    $oPdf->SetY($alturaInicial);
     $oPdf->Cell(290, 4, mb_strtoupper($oDadosCabecalho->sTitulo) . " - {$oDadosCabecalho->sPeriodo}", 0, 1, "C");
     $oPdf->Cell(290, 4, $oDadosCabecalho->sEscola, 0, 1, "C");
+    $alturaFinal = $oPdf->GetY();
+
+    // Impressão da linha abaixo do Título
+    $weightLine = 1;
+    for ($i = $weightLine; $i <= 3; $i++) {
+        $oPdf->Line(10, $alturaFinal + $i/10, 287, $alturaFinal + $i/10);
+    }
     $oPdf->Ln();
+
     $oPdf->SetFont('arial', 'b', 9);
     $oPdf->Cell(20, 4, "Ano Letivo:", 0, 0, "L");
-    $oPdf->Cell(40, 4, $oDadosCabecalho->iAnoExecucao, 0, 0, "L");
-    $oPdf->Cell(20, 4, "Etapa:", 0, 0, "L");
-    $oPdf->Cell(50, 4, $oDadosCabecalho->sEtapa, 0, 0, "L");
-    $oPdf->Cell(20, 4, "Turma:", 0, 0, "L");
-    $oPdf->Cell(50, 4, $oDadosCabecalho->sTurma, 0, 0, "L");
-    $oPdf->Cell(20, 4, "Turno:", 0, 0, "L");
-    $oPdf->Cell(30, 4, $oDadosCabecalho->sTurno, 0, 1, "L");
+    $oPdf->SetFont('ARIAL', '', 9);
+    $oPdf->Cell(20, 4, $oDadosCabecalho->iAnoExecucao, 0, 0, "L");
+    $oPdf->SetFont('ARIAL', 'B', 9);
+    $oPdf->Cell(12, 4, "Etapa:", 0, 0, "L");
+    $oPdf->SetFont('ARIAL', '', 9);
+    $oPdf->Cell(58, 4, $oDadosCabecalho->sEtapa, 0, 0, "L");
+    $oPdf->SetFont('ARIAL', 'B', 9);
+    $oPdf->Cell(12, 4, "Turma:", 0, 0, "L");
+    $oPdf->SetFont('ARIAL', '', 9);
+    $oPdf->Cell(58, 4, $oDadosCabecalho->sTurma, 0, 0, "L");
+    $oPdf->SetFont('ARIAL', 'B', 9);
+    $oPdf->Cell(12, 4, "Turno:", 0, 0, "L");
+    $oPdf->SetFont('ARIAL', '', 9);
+    $oPdf->Cell(58, 4, $oDadosCabecalho->sTurno, 0, 0, "L");
+    $oPdf->SetFont('ARIAL', 'B', 9);
+    $oPdf->Cell(20, 4, "Aulas Dadas: ", 0, 0, "L");
+    if (!is_null($aConteudoDesenvolvido)) {
+        $oPdf->SetFont('ARIAL', '', 9);
+        $oPdf->Cell(20, 4, "  " .$aulasDadas, 0, 0, "L");
+    }
+    $oPdf->Ln();
+
+    // Imprimir Disciplina(s)
 
     if (isset($oDadosCabecalho->sNomeDisciplina)) {
         $label = 'Disciplina';
         $tamanhos = [20, 100, 20, 30];
-        $nomeProfessor = "";
-        
-        if(isset($oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina])){
-            $nomeProfessor = $oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina];
-        }
-
         if ($oDadosCabecalho->ensinoInfantil) {
             $label = 'Campos de Experiência';
             $tamanhos = [38, 100, 20, 80, 30];
         }
+        $oPdf->SetFont('ARIAL', 'B', 9);
         $oPdf->Cell($tamanhos[0], 4, "{$label}:", 0, 0, "L");
         if (isset($oDadosCabecalho->lDisciplinas) && $oDadosCabecalho->lDisciplinas == 'true') {
             $oDadosCabecalho->sNomeDisciplina = "TODAS";
         }
-        $oPdf->Cell($tamanhos[1], 4, $oDadosCabecalho->sNomeDisciplina, 0, 0, "L");
-        $oPdf->Cell($tamanhos[2], 4, "Professor:", 0, 0, "L");
+        $oPdf->SetFont('ARIAL', '', 9);
+        $oPdf->Cell(290 - $tamanhos[0], 4, $oDadosCabecalho->sNomeDisciplina, 0, 1, "L");
+    }
 
-        $oPdf->Cell(0, 4, $nomeProfessor, 0, 0, "L", 0);
+    // Imprime nome do professor e nome social (se tiver)
+
+    $nomeProfessor = isset($oDadosCabecalho->sNomeProfessor) && !empty($oDadosCabecalho->sNomeProfessor) &&
+    isset($oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina]) ?
+        mb_strimwidth($oDadosCabecalho->sNomeProfessor[$oDadosCabecalho->sNomeDisciplina], 0, 150) : '';
+
+    $nomeProfessorSocial = isset($oDadosCabecalho->sNomeSocial) &&
+    isset($oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina]) ?
+        mb_strimwidth($oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina], 0, 150) : '';
+
+    /**
+     * Verifica se tem nome social e imprime embaixo do nome civil caso seja true
+     */
+
+    if (empty($nomeProfessorSocial)){
+        $oPdf->SetFont('ARIAL', 'B', 9);
+        $oPdf->Cell(36, 4, "Professor(a): ", 0, 0, "L");
+        $oPdf->SetFont('ARIAL', '', 9);
+        $oPdf->Cell(500, 4, $nomeProfessor, 0, 1, "L");
+    } else {
+        $oPdf->SetFont('ARIAL', 'B', 9);
+        $oPdf->Cell(36, 4, "Professor(a): ", 0, 0, "L");
+        $oPdf->SetFont('ARIAL', '', 9);
+        $oPdf->Cell(500, 4, $nomeProfessor, 0, 1, "L");
+        // Imprimindo Nome Social
+        $oPdf->SetFont('ARIAL', 'B', 9);
+        $oPdf->Cell(36, 4, "Nome Social: ", 0, 0, "L");
+        $oPdf->SetFont('ARIAL', '', 9);
+        $oPdf->Cell(460, 4, trim($nomeProfessorSocial), 0, 1, "L");
+    }
+
+    /**
+     * Imprime no cabeçalho os nomes dos professores inativos, caso a opção
+     * "Exibir Todos os Professores da Regência" esteja ativa.
+     */
+    if ($oDadosCabecalho->bTodosProfessores && count($oDadosCabecalho->sNomeProfessorInativo) > 0) {
+        $aNomeProfessorInativo = $oDadosCabecalho->sNomeProfessorInativo;
+
+        $oPdf->SetFont('ARIAL', 'B', 9);
+        $oPdf->Cell(36, 4, "Professor(a) Inativo(a): ", 0, 0, "L");
+        $oPdf->SetFont('ARIAL', '', 9);
+        $oPdf->Cell(460, 4, implode(", ", $aNomeProfessorInativo), 0, 1, "L");
     }
 
     $oPdf->Ln();
+    $alturaFinal = $oPdf->GetY();
+
+    // Impressão da linha abaixo do Título
+    $weightLine = 1;
+    for ($i = $weightLine; $i <= 3; $i++) {
+        $oPdf->Line(10, $alturaFinal + $i/10, 287, $alturaFinal + $i/10);
+    }
+
     $oPdf->Ln();
 }
 
@@ -241,11 +389,17 @@ function imprimeManual($oPdf, $oDadosCabecalho)
         imprimeCabecalho($oPdf, $oDadosCabecalho);
 
         /**
+         * Modifica a impressão do PDF por uma linha quando for true
+         */
+        $nomeProfessorSocial = $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina];
+
+        /**
          * guarda as posicoes iniciais do eixo x e y antes de comecar a imprimir as linhas.
          */
         $iPosicaoYInicial = $oPdf->GetY();
-        $iMaximoLinha = 33;
-
+        empty($nomeProfessorSocial) && $nomeProfessorSocial == ""
+        ? $iMaximoLinha = 32
+        : $iMaximoLinha = 31;
         /**
          * Conforme layout dividimos cada pagina em duas colunas.
          */
@@ -256,6 +410,7 @@ function imprimeManual($oPdf, $oDadosCabecalho)
             }
 
             $oPdf->Cell(14, 5, "Data", 1, 0, "C", 1);
+            $oPdf->SetFont('ARIAL', '', 9);
             $oPdf->Cell(125, 5, $oDadosCabecalho->sTitulo, 1, 1, "C", 1);
 
             for ($iLinha = 0; $iLinha < $iMaximoLinha; $iLinha++) {
@@ -271,6 +426,42 @@ function imprimeManual($oPdf, $oDadosCabecalho)
 }
 
 /**
+ * Imprime cabecalho do relatório.
+ * @param Fpdf $oPdf
+ * @param stdClass $oDadosCabecalho dados do cabecalho
+ */
+function imprimeRodape($oPdf, $oDadosCabecalho)
+{
+    $daoRegencia = new cl_regenciahorario();
+    $sSqlProfessores = $daoRegencia->sql_query_todosProfessoresDaTurma('', 'distinct  cgmpessoal.z01_nome ', '', "ed59_i_turma = $oDadosCabecalho->iTurma");
+    $rsSqlProfessores = db_query($sSqlProfessores);
+    $professoresDaTurma = [];
+    while ($iLinha = pg_fetch_array($rsSqlProfessores)) {
+        $professoresDaTurma[] = $iLinha["z01_nome"];
+    }
+    if ($oDadosCabecalho->sTurno == "INTEGRAL") {
+    $oPdf->Cell(1, 1, "", 0, 1);
+    $oPdf->SetFont('arial', 'b', 6);
+    $oPdf->Cell(12, 3, "Legenda:", 0, 0);
+
+    $oPdf->SetFillColor(180);
+    $oPdf->Cell(3, 3, "", 1, 0, '', 1);
+    $oPdf->Cell(9, 3, " Manhã", 0, 0, '', 0);
+    $oPdf->Cell(4, 3, "||", 0, 0, '', 0);
+
+    $oPdf->SetFillColor(225);
+    $oPdf->Cell(3, 3, "", 1, 0, '', 1, 1);
+    $oPdf->Cell(7, 3, "Tarde", 0, 0, '', 0);
+    $oPdf->Cell(4, 3, "||", 0, 0, '', 0);
+
+    $oPdf->Cell(3, 3, "", 1, 0, '', 0);
+    $oPdf->Cell(8, 3, "INTEGRAL E/OU SEM TURNO", 0, 0, '', 0);
+    }
+
+    $oPdf->Ln();
+}
+
+/**
  * Imprime os conteudos desenvolvidos que foram lancados no diario,
  * se nao houver conteudos lancados imprime linhas em branco.
  * @param Fpdf $oPdf
@@ -281,6 +472,10 @@ function imprimeManual($oPdf, $oDadosCabecalho)
 function imprimeDiario($oPdf, $aConteudoDesenvolvido, $oDadosCabecalho)
 {
     global $mostrarHabilidades;
+    $nomeProfessorSocial = isset($oDadosCabecalho->sNomeSocial) &&
+        isset($oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina]) ?
+        $oDadosCabecalho->sNomeSocial[$oDadosCabecalho->sNomeDisciplina] : '';
+
     for ($i = 0; $i < $oDadosCabecalho->iPaginas; $i++) {
         imprimeCabecalho($oPdf, $oDadosCabecalho, $aConteudoDesenvolvido);
 
@@ -288,7 +483,9 @@ function imprimeDiario($oPdf, $aConteudoDesenvolvido, $oDadosCabecalho)
          * guarda as posicoes iniciais do eixo x e y antes de comecar a imprimir as linhas.
          */
         $iPosicaoYInicial = $oPdf->GetY();
-        $iMaximoLinha = 33;
+        empty($nomeProfessorSocial) && $nomeProfessorSocial == ""
+        ? $iMaximoLinha = 31
+        : $iMaximoLinha = 30;
         $iAlturaLinha = 5;
         $iAlturaQuadroImpressao = 200;
 
@@ -322,9 +519,14 @@ function imprimeDiario($oPdf, $aConteudoDesenvolvido, $oDadosCabecalho)
                     $eixoXInicial = $oPdf->GetX();
 
                     $conteudo = $oConteudo->conteudo;
-
+                    if (!is_null($oConteudo->tipoInstrumento)) {
+                        $conteudo .= "\nTipo Instrumento Avaliativo: {$oConteudo->tipoInstrumento->nome}";
+                    }
                     if ($mostrarHabilidades && !empty($oConteudo->habilidades)) {
                         $conteudo .= "\nHabilidades: {$oConteudo->habilidades}";
+                    }
+                    if ($oConteudo->aulasDadas && !empty($oConteudo->aulasDadas)) {
+                        $conteudo .= "\nAulas Dadas: {$oConteudo->aulasDadas}";
                     }
 
                     $iLinhasUtilizadas = $oPdf->NbLines(125, $conteudo);
@@ -378,6 +580,10 @@ function imprimeDiario($oPdf, $aConteudoDesenvolvido, $oDadosCabecalho)
                     $oPdf->Cell(125, 5, "", 1, 1);
                 }
             }
+
+                imprimeRodape($oPdf, $oDadosCabecalho);
+
+
         }
 
         if ($oPdf->GetY() < 199) {
@@ -402,6 +608,7 @@ function buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario, $confi
 {
     $sDataInicial = $oPeriodoCalendario->getDataInicio()->convertTo(DBDate::DATA_EN);
     $sDataFinal = $oPeriodoCalendario->getDataTermino()->convertTo(DBDate::DATA_EN);
+
 
     $conteudoDesenvolvidoService = new ConteudoDesenvolvidoService();
     $conteudos = $conteudoDesenvolvidoService->buscarConteudoPeriodo($oRegencia, $sDataInicial, $sDataFinal);
@@ -438,9 +645,13 @@ function buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario, $confi
 
         $conteudoDesenvolvido[] = (object)[
             'data' => $conteudo->getData()->format("d/m/Y"),
+            'codigoConteudo' => $conteudo->getCodigo(),
             'conteudo' => $conteudo->getConteudo(),
-            'habilidades' => implode(', ', $habilidades),
-            'turno' => $turnoDescricao
+            'habilidades' => implode(', ', array_unique($habilidades)),
+            'turno' => $turnoDescricao,
+            'tipoInstrumento' => $conteudo->getTipoInstrumentoAvaliativo(),
+            'aulasDadas' => $conteudo->getAulasDadas(),
+            'regencia' => $oRegencia->getCodigo()
         ];
     }
 
@@ -501,10 +712,13 @@ function buscarDescricaoHabilidades($oRegencia, $oPeriodoCalendario, $configurac
                     $habilidadeBncc = $habilidadeEnsinoFundamentalService->getHabilidade($habilidadeDesenvolvida);
                 }
 
-                $habilidade = (object)[
-                    'codigo' => $habilidadeBncc->getCodigo(),
-                    'descricao' => $habilidadeBncc->getHabilidade()
-                ];
+                $habilidade = null;
+                if(!empty($habilidadeBncc)){
+                    $habilidade = (object)[
+                        'codigo' => $habilidadeBncc->getCodigo(),
+                        'descricao' => $habilidadeBncc->getHabilidade()
+                    ];
+                }
 
                 if (!array_key_exists($data, $habilidadesDesenvolvidas)) {
                     $habilidadesDesenvolvidas[$data] = [];
@@ -550,35 +764,59 @@ function imprimeDescritivoHabilidades($oPdf, $habilidadesDesenvolvidasPeriodo, $
         "sNomeProfessor" => $oDadosCabecalho->sNomeProfessor,
         "ensinoInfantil" => $oDadosCabecalho->ensinoInfantil,
     ];
+
     imprimeCabecalho($oPdf, $cabecalhoHabilidades);
     imprimeCabecalhoHabilidades($oPdf);
 
-    $maximoLinhas = 30;
-    $controleLinhas = 0;
+    $maximoLinhas = 28;
+    $linhasUtilizadas = 0;
+    $posicaoInicial = $oPdf->getY();
+    $posicaoFinal = $posicaoInicial;
 
     foreach ($habilidadesDesenvolvidasPeriodo as $data => $habilidades) {
-        $linhasUtilizadas = 0;
+        $habilidades = array_unique($habilidades, SORT_REGULAR);
+        $linhasUtilizadasData = 0;
+
+        if ($posicaoFinal > 179) {
+            $oPdf->setY($posicaoInicial);
+        }
 
         foreach ($habilidades as $habilidade) {
             $habilidade->descricao = removerCodigo($habilidade->codigo, $habilidade->descricao);
             $habilidade->linhasUtilizadas = $oPdf->NbLines(238, $habilidade->descricao);
+
             $linhasUtilizadas += $habilidade->linhasUtilizadas;
-        }
+            $linhasUtilizadasData += $habilidade->linhasUtilizadas;
 
-        $controleLinhas += $linhasUtilizadas;
-        if ($controleLinhas >= $maximoLinhas) {
-            $controleLinhas = 0;
-            imprimeCabecalho($oPdf, $oDadosCabecalho);
-            imprimeCabecalhoHabilidades($oPdf);
-        }
-
-        $oPdf->Cell(20, ($linhasUtilizadas * 5), $data, 1, 0, "C", 0);
-        $posicaoX = $oPdf->getX();
-
-        foreach ($habilidades as $habilidade) {
-            $oPdf->setX($posicaoX);
+            // Impressão das habilidades
+            $oPdf->setX(30);
             $oPdf->Cell(20, ($habilidade->linhasUtilizadas * 5), $habilidade->codigo, 1, 0, "C", 0);
-            $oPdf->MultiCell(238, 5, $habilidade->descricao, 1, "L");
+            $oPdf->MultiCell(238, 5, $habilidade->descricao, 1, "L", 0);
+            $posicaoFinal = $oPdf->getY();
+
+            // Verifica se a altura máxima de linhas foi atingida
+            if ($linhasUtilizadas >= $maximoLinhas) {
+                // Impressão da data
+                $oPdf->setY($posicaoFinal - ($linhasUtilizadasData * 5));
+                $oPdf->setX(10);
+                $oPdf->Cell(20, ($linhasUtilizadasData * 5), $data, 1, 0, "C", 0);
+
+                // Reinicializa variáveis
+                $linhasUtilizadas = 0;
+                $linhasUtilizadasData = 0;
+
+                imprimeCabecalho($oPdf, $oDadosCabecalho);
+                imprimeCabecalhoHabilidades($oPdf);
+                $oPdf->setY($posicaoInicial);
+            }
+        }
+
+        if ($posicaoFinal < 179) {
+            // Impressão da data para a última seção
+            $oPdf->setY($posicaoFinal - ($linhasUtilizadasData * 5));
+            $oPdf->setX(10);
+            $oPdf->Cell(20, $linhasUtilizadasData * 5, $data, 1, 0, "C", 0);
+            $oPdf->setY($posicaoFinal);
         }
     }
 }

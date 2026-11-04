@@ -138,7 +138,7 @@ class CargaRescisao extends Carga
             $rubricas = $instancia->getRubricasDaRescisao($rescisao->matricula);
 
             if (count($rubricas) > 0) {
-                foreach ($rubricas as $index => &$rubrica) {
+                foreach ($rubricas as $index => $rubrica) {
                     if (empty($rubrica->identificador_grupo)) {
                         $instancia->rubricasSemGrupo[$rescisao->matricula][] = $rubrica->codrubr;
                     }

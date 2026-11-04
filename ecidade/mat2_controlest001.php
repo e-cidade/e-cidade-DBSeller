@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,15 +56,15 @@ $rotulo->label("m81_codtipo");
 		<table    align="center">
 		<tr>
 			<td nowrap title="<?=@$Tm60_codmater?>" align="right">
-				<?
+				<?php
 				db_ancora(@$Lm60_codmater,"js_pesquisam60_codmater(true);",1);
 				?>
 			</td>
 			<td> 
-				<?
+				<?php
 				db_input('m60_codmater',10,$Im60_codmater,true,'text',1," onchange='js_pesquisam60_codmater(false);'")
 				?>
-				<?
+				<?php
 				db_input('m60_descr',40,$Im60_descr,true,'text',3,'')
 				?>
 			</td>
@@ -75,7 +75,7 @@ $rotulo->label("m81_codtipo");
 		</tr>
 		<tr>
 		<td colspan=2 >
-		<?
+		<?php
 		$aux->cabecalho = "<strong>Tipo de Mov.</strong>";
 		$aux->codigo = "m81_codtipo"; //chave de retorno da func
 		$aux->descr  = "m81_descr";   //chave de retorno
@@ -102,7 +102,7 @@ $rotulo->label("m81_codtipo");
 		<b> Período: </b>
 		</td>
 		<td>
-		<? 
+		<?php 
 		db_inputdata('data1','','','',true,'text',1,"");   		          
 		echo "<b> a</b> ";
 		db_inputdata('data2','','','',true,'text',1,"");

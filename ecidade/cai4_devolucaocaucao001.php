@@ -40,48 +40,49 @@ require_once(modification("model/contabilidade/RegraLancamentoContabil.model.php
 $oGet = db_utils::postMemory($_GET);
 
 //Checa parametro e mostra alerta de confirmacao de data
-$clconparametro  = new cl_conparametro();
-$rsconparametro  = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
-$conparametro    = db_utils::fieldsMemory($rsconparametro, 0);
-if($conparametro->c90_confirmadata == 't'){
+$clconparametro = new cl_conparametro();
+$rsconparametro = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
+$conparametro = db_utils::fieldsMemory($rsconparametro, 0);
+if ($conparametro->c90_confirmadata == 't') {
     $data = date('d/m/y', db_getsession('DB_datausu'));
     echo "<db-alertaconfirmadatafinanceiro data=" . $data . "></db-alertaconfirmadatafinanceiro>";
 }
 ?>
 <html>
 <head>
-  <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <meta http-equiv="Expires" CONTENT="0">
-  <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-  <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
-  <link href="estilos.css" rel="stylesheet" type="text/css">
-  <?php
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
+    <?php
     db_app::load("scripts.js, strings.js, estilos.css, prototype.js, datagrid.widget.js, grid.style.css");
     db_app::load("classes/DBViewSlipPagamento.classe.js, widgets/dbtextField.widget.js, widgets/dbcomboBox.widget.js");
-  ?>
+    ?>
 </head>
 <body style="background-color: #cccccc; margin-top: 25px;">
-  <div align="center">
+<div align="center">
     <div id="ctnSlipPagamento">
     </div>
-  </div>
-  <?
-    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-  ?>
+</div>
+<?php
+db_menu();
+?>
 </body>
 </html>
 <script>
     let c90_confirmadata = '<?php echo $conparametro->c90_confirmadata ?>'
     if (c90_confirmadata == 't') {
-        const msg = "Antes de realizar a operação confirme a data em que deseja incluir o movimento";
+        const msg = "Antes de realizar a operaÃ§Ã£o confirme a data em que deseja incluir o movimento";
         alert(msg)
     }
 
-  var oDBViewSlipPagamento = new DBViewSlipPagamento("oDBViewSlipPagamento", 9, 1, $('ctnSlipPagamento'));
-  oDBViewSlipPagamento.setRecursoUniao('<?php echo (FONTE_RECURSO_UNIAO ? 'true' : 'false');?>');
-  oDBViewSlipPagamento.setCampoContaPadrao('C');
-  oDBViewSlipPagamento.show();
-  oDBViewSlipPagamento.setPCASPAtivo('<?php echo db_getsession('DB_use_pcasp');?>');
-  oDBViewSlipPagamento.start();
+    var oDBViewSlipPagamento = new DBViewSlipPagamento("oDBViewSlipPagamento", 9, 1, $('ctnSlipPagamento'));
+    oDBViewSlipPagamento.setRecursoUniao('<?php echo(FONTE_RECURSO_UNIAO ? 'true' : 'false');?>');
+    oDBViewSlipPagamento.filtarContasExtras(true);
+    oDBViewSlipPagamento.setCampoContaPadrao('C');
+    oDBViewSlipPagamento.show();
+    oDBViewSlipPagamento.setPCASPAtivo('<?php echo db_getsession('DB_use_pcasp');?>');
+    oDBViewSlipPagamento.start();
 </script>

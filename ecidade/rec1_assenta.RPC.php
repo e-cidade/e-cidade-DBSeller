@@ -235,9 +235,51 @@ try {
               $oRetorno->erro  = true;
           }
           break;
-  }
-} catch (Exception $oErro) {
+      case 'verificarExistenciaAssentamentoPeriodo':
+          $oRetorno->existeAssentamento = false;
+          
+          $oRetorno->assentamentos = AssentamentoRespository::getInstance()->buscaAssentamentosPeriodo(
+              $oParametros->codigoServidor,
+              $oParametros->tipoAssentamento,
+              $oParametros->dataInicioAfastamento
+          );
 
+          if (count($oRetorno->assentamentos) > 0) {
+              $oRetorno->existeAssentamento = true;
+          }
+
+          break;
+
+      case 'buscarAssentamentosCompetencia':
+
+          $classenta = new cl_assenta;
+          $dbwhere   = "h16_regist = {$oParametros->matricula}";
+          $campos = [
+            'h12_assent', 
+            'h12_descr', 
+            'h16_dtconc', 
+            'h16_dtterm', 
+            'h16_quant', 
+            'h16_nrport', 
+            'h16_anoato', 
+            'h16_atofic'
+          ];
+
+          $sql = $classenta->sql_query_tipo(
+              null,
+              implode(",", $campos),
+              "h16_dtconc desc limit 10",
+              $dbwhere
+          );
+
+          $result                  = db_query($sql);
+          $assentamentos           = db_utils::getCollectionByRecord($result, false, false, true);
+          $oRetorno->assentamentos = $assentamentos;
+
+          break;
+  }
+
+} catch (Exception $oErro) {
   $oRetorno->iStatus   = 2;
   $oRetorno->erro      = true;
   $oRetorno->sMensagem = $oErro->getMessage();

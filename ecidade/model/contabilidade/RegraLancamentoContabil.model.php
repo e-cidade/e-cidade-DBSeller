@@ -155,15 +155,12 @@ class RegraLancamentoContabil
      */
     public function __construct($iSequencialRegra = null)
     {
-
         if (!empty($iSequencialRegra)) {
-
             $oDaoRegraLancamento = new cl_contranslr;
             $sSqlBuscaRegraLancamento = $oDaoRegraLancamento->sql_query_file($iSequencialRegra);
             $rsBuscaRegraLancamento = $oDaoRegraLancamento->sql_record($sSqlBuscaRegraLancamento);
 
             if ($oDaoRegraLancamento->numrows > 0) {
-
                 $oDadoRegra = db_utils::fieldsMemory($rsBuscaRegraLancamento, 0);
                 $this->setAnoUso($oDadoRegra->c47_anousu);
                 $this->setCompara($oDadoRegra->c47_compara);
@@ -178,6 +175,7 @@ class RegraLancamentoContabil
                 unset($oDadoRegra);
             }
         }
+
         return true;
     }
 
@@ -197,7 +195,6 @@ class RegraLancamentoContabil
      */
     public function salvar()
     {
-
         $oDaoConTransLr = new cl_contranslr;
         $oDaoConTransLr->c47_seqtranslr = $this->getSequencialRegra();
         $oDaoConTransLr->c47_seqtranslan = $this->getSequencialLancamento();

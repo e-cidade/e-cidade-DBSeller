@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -236,7 +236,7 @@ fieldset table td:first-child {
   <tr> 
     <td valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php
         include(modification("forms/db_frmavaliacaogrupopergunta.php"));
       ?>
     </center>
@@ -246,7 +246,7 @@ fieldset table td:first-child {
 </body>
 <script> document.form1.db102_descricao.focus();</script>
 </html>
-<?
+<?php
 if (isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)) {
 	
   db_msgbox($erro_msg);

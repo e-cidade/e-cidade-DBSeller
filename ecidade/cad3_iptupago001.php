@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ function js_relatorio(){
               </td>
               <td >	      
 				<select name="anousu" id="anousu">
-			  	<?
+			  	<?php
 	            $result = $cliptucalc->sql_record($cliptucalc->sql_query_file("","","distinct j23_anousu","j23_anousu desc"));
 	            for($i = 0;$i < $cliptucalc->numrows;$i++){
 	              db_fieldsmemory($result,$i);
@@ -91,7 +91,7 @@ function js_relatorio(){
 	        <tr>
 	           <td align="right"><b>Mês inicial:</b></td>
 	           <td>
-	             <?
+	             <?php
 	             $meses = array("01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
 	             $mesini = "01" ;
 	             db_select("mesini",$meses,true,"text",1);
@@ -101,7 +101,7 @@ function js_relatorio(){
 	        <tr>
 	           <td align="right"><b>Mês final:</b></td>
 	           <td>
-	             <?
+	             <?php
 	             $mesfim = date("m");
 	             db_select("mesfim",$meses,true,"text",1);
 	             ?>
@@ -119,7 +119,7 @@ function js_relatorio(){
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

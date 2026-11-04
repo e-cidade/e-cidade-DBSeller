@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrotulo->label("j06_lote");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<? 
+<?php 
 	db_app::load('scripts.js, prototype.js, strings.js, dbcomboBox.widget.js, estilos.css');
 ?>
 </head>
@@ -73,7 +73,7 @@ $clrotulo->label("j06_lote");
               <?=$Lj01_matric?>
             </td>
             <td width="33%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j01_matric",8,$Ij01_matric,true,"text",4,"","chave_j01_matric");
 		       ?>
             </td>
@@ -85,16 +85,16 @@ $clrotulo->label("j06_lote");
 					
           <tr> 
             <td width="34%" align="right" nowrap title="<?=$Tj14_codigo?>">
-                <?
+                <?php
 				db_ancora($Lj14_codigo,' js_mostraruas(true); ',2)
 				?>
             </td>
             <td width="66%" align="left" nowrap> 
-                <?
+                <?php
 				db_input("j14_codigo",6,$Ij14_codigo,true,'text',4," onchange='js_mostraruas(false);'")
 				?>
 
-                <?
+                <?php
  		        db_input("j14_nome",40,$Ij14_nome,true,"text",3);
 				?>
 
@@ -110,7 +110,7 @@ $clrotulo->label("j06_lote");
                 <?=$Lz01_nome?>
             </td>
             <td width="66%" align="left" nowrap> 
-                <?
+                <?php
 		db_input("z01_nome",40,$Iz01_nome,true,'text',4)
 		?>
             </td>
@@ -130,7 +130,7 @@ $clrotulo->label("j06_lote");
 								<?=$Lj34_lote?>
 						</td>
 						<td width="66%" align="left" nowrap> 
-								<?
+								<?php
 								db_input("j34_setor",8,$Ij34_setor,true,'text',4);
 								db_input("j34_quadra",8,$Ij34_quadra,true,'text',4);
 								db_input("j34_lote",8,$Ij34_lote,true,'text',4);
@@ -141,7 +141,7 @@ $clrotulo->label("j06_lote");
 					<tr>
           	<td width="34%" align="right" nowrap title="<?=$Tj06_setorloc?>"><?=$Lj06_setorloc?></td>
           	<td>
-          	<?
+          	<?php
            		db_selectrecord('j05_codigoproprio', $rsSetorLoc, true, 4, '', 'j05_codigoproprio', '', 'todos', 'js_carregaQuadra(this.value)');
           	?>
           	</td>
@@ -178,7 +178,7 @@ $clrotulo->label("j06_lote");
 	</form>
    <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "iptubase.*";
@@ -378,14 +378,14 @@ function js_retornaLote(oAjax) {
 } 
 js_carregaQuadra($F('j05_codigoproprio'));
 </script>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form1.chave_j01_matric.focus();
 document.form1.chave_j01_matric.select();
   </script>
-  <?
+  <?php
 }
 
 $db_iframe= new janela('db_iframe','');

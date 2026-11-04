@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,7 +73,7 @@ $acao="iss1_issbase017.php";
 					<b>Texto:</b>
 		      </td>
 		      <td > 
-					  <?
+					  <?php
 					  db_textarea('q02_memo',10,84,$Iq02_memo,true,'text',$db_opcao,"")
 					  ?>
 					</td>
@@ -83,7 +83,7 @@ $acao="iss1_issbase017.php";
 		    	<?=$Lq02_obs?>
 		     </td>
 		     <td >
-		     	<?
+		     	<?php
 		      	db_textarea('q02_obs',10,84,$q02_obs,true,'text',$db_opcao,"")
 		    	?>
 		     </td>
@@ -95,7 +95,7 @@ $acao="iss1_issbase017.php";
 </table> 
 
 </center>
-<?    
+<?php    
 if($db_opcao==22){
   $db_botao=false;
 }

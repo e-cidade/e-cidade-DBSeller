@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ require_once(modification('dbforms/db_funcoes.php'));
           <table width="100%">
             <tr>
               <td align="center">
-                <?
+                <?php
                 db_input('sd27_i_codigo', 10, '', true, 'hidden', 3, "");
                 db_input('sd23_d_consulta', 10, '', true, 'hidden', 3, "");
                 ?>

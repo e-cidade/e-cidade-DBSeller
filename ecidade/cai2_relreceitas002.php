@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -30,29 +30,29 @@ include(modification("libs/db_sql.php"));
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 
 $head3 = "RELATÓRIO DE RECEITAS PAGAS";
 if ( $codrec == '') {
-  
+
    $head4 = 'TODAS AS RECEITAS';
    $ordem = ' order by g.k02_codigo, f.k00_dtpaga, f.k00_numpre ';
    $where = '';
 } else {
-  
+
    $sql    = "select upper(k02_drecei) as k07_descr from tabrec where k02_codigo = $codrec";
    $result = db_query($sql);
-   $head4  = $codrec.' - '.pg_result($result,0,'k07_descr'); 
+   $head4  = $codrec.' - '.pg_result($result,0,'k07_descr');
    $ordem  = ' order by g.k02_codigo, f.k00_dtpaga, e.z01_nome ';
-   $where  = ' f.k00_receit = '.$codrec.' and '; 
+   $where  = ' f.k00_receit = '.$codrec.' and ';
 }
 $head6 = "Período : ".db_formatar($datai,'d')." a ".db_formatar($dataf,'d');
 
 if ($estrutural != '') {
 
-  $xopcao  = " inner join taborc  a  on a.k02_codigo = g.k02_codigo ";  
+  $xopcao  = " inner join taborc  a  on a.k02_codigo = g.k02_codigo ";
   $xopcao .= " inner join receita b  on b.o08_codigo = a.k02_estorc ";
   $where   = ' b.o08_reduz = '.$estrutural.' and ' ;
   $head6   = 'Reduzido : '.$estrutural;
@@ -61,26 +61,26 @@ if ($estrutural != '') {
  $xopcao = '';
 }
 if ($tipo == 'o') {
-  
+
   $head4   = 'RECEITAS ORÇAMENTÁRIAS';
-  $xxtipo  = " inner join taborc     on taborc.k02_codigo     = g.k02_codigo "; 
+  $xxtipo  = " inner join taborc     on taborc.k02_codigo     = g.k02_codigo ";
   $xxtipo .= "                      and taborc.k02_anousu     = ".db_getsession("DB_anousu");
   $xxtipo .= " inner join orcreceita on orcreceita.o70_anousu = taborc.k02_anousu ";
   $xxtipo .= "                      and orcreceita.o70_codrec = taborc.k02_codrec ";
   $xxtipo .= "                      and orcreceita.o70_instit = ". db_getsession("DB_instit");
-  
+
 } elseif ($tipo == 'e') {
-  
+
   $head4   = 'RECEITAS EXTRA-ORÇAMENTÁRIAS';
-  $xxtipo  = " inner join tabplan p     on p.k02_codigo = g.k02_codigo "; 
+  $xxtipo  = " inner join tabplan p     on p.k02_codigo = g.k02_codigo ";
   $xxtipo .= "                         and p.k02_anousu =".db_getsession("DB_anousu");
   $xxtipo .= " inner join conplanoreduz on conplanoreduz.c61_anousu = p.k02_anousu ";
   $xxtipo .= "                         and conplanoreduz.c61_reduz  = p.k02_reduz ";
   $xxtipo .= "                         and conplanoreduz.c61_instit = ". db_getsession("DB_instit");
-  
+
 } else {
-  
-  $xxtipo  = " left join taborc         on taborc.k02_codigo         = g.k02_codigo "; 
+
+  $xxtipo  = " left join taborc         on taborc.k02_codigo         = g.k02_codigo ";
   $xxtipo .= "                         and taborc.k02_anousu         = ".db_getsession("DB_anousu");
   $xxtipo .= " left join orcreceita     on orcreceita.o70_anousu    = taborc.k02_anousu ";
   $xxtipo .= "                         and orcreceita.o70_codrec    = taborc.k02_codrec ";
@@ -88,18 +88,18 @@ if ($tipo == 'o') {
   $xxtipo .= "                         and p.k02_anousu             = ".db_getsession("DB_anousu");
   $xxtipo .= " left join conplanoreduz  on conplanoreduz.c61_anousu = p.k02_anousu ";
   $xxtipo .= "                         and conplanoreduz.c61_reduz  = p.k02_reduz ";
-  
-  
+
+
   $where .= "  case when o70_instit is null then conplanoreduz.c61_instit = ". db_getsession("DB_instit");
   $where .= "       else o70_instit =  " . db_getsession("DB_instit") . " end ";
   $where .= " and ";
-  
+
 }
 
 
 
 if ($agrupar == 't') {
-  
+
   $sql  ="    select  g.k02_codigo,                                              ";
   $sql .="            g.k02_drecei,                                              ";
   $sql .="            sum(f.k00_valor) as valor                                  ";
@@ -142,6 +142,34 @@ if ($agrupar == 't') {
   $sql .="                 inner join cgm e                on f.k00_numcgm = e.z01_numcgm                  ";
   $sql .="    where $where                                                                                 ";
   $sql .="          k00_dtpaga between '$datai' and '$dataf'                                               ";
+
+/**
+ * para nao buscar as compensacoes
+ */
+  $sql .= " AND NOT exists ";
+  $sql .= "  (SELECT 1 ";
+  $sql .= "   FROM abatimentorecibo ";
+  $sql .= "   INNER JOIN abatimento ON abatimento.k125_sequencial = k127_abatimento ";
+  $sql .= "   LEFT JOIN termo ON termo.v07_numpre = abatimentorecibo.k127_numpreoriginal ";
+  $sql .= "   AND termo.v07_situacao = 2 ";
+  $sql .= "   WHERE abatimentorecibo.k127_numpreoriginal = f.k00_numpre ";
+  $sql .= "     AND k125_tipoabatimento = 4 ";
+  $sql .= "     AND termo IS NULL ";
+  $sql .= "   LIMIT 1)
+
+  and  NOT exists
+  (SELECT 1
+   FROM abatimentoutilizacaodestino
+   INNER JOIN abatimentoutilizacao ON k157_sequencial = k170_utilizacao
+   INNER JOIN abatimento ON abatimento.k125_sequencial = k157_abatimento
+   INNER JOIN abatimentorecibo ON k127_abatimento = k125_sequencial
+   WHERE k170_numpre = f.k00_numpre
+     AND k170_numpar = f.k00_numpar
+     AND k157_tipoutilizacao = '2'
+     AND k125_tipoabatimento = 3
+   LIMIT 1)
+  ";
+
   $sql .=" group by g.k02_codigo,                                                                          ";
   $sql .="           g.k02_drecei,                                                                         ";
   $sql .="           f.k00_numpre,                                                                         ";
@@ -151,12 +179,12 @@ if ($agrupar == 't') {
   $sql .="           k00_histtxt                                                                            ";
   $sql .="   $ordem                                                                                        ";
 }
-// echo $sql;exit;
+ //echo $sql;exit;
 
 $result = db_query($sql);
-$xxnum  = pg_numrows($result);
+$xxnum  = pg_num_rows($result);
 if ($xxnum == 0) {
-  
+
   $sMsgErro  = "db_erros.php?fechar=true&db_erro=Não existem lançamentos para a receita ";
   $sMsgErro .= "{$codrec} no período de ". db_formatar($datai,'d'). " a " . db_formatar($dataf,'d');
   db_redireciona($sMsgErro);
@@ -167,9 +195,9 @@ $total_taxa  = 0;
 $total_geral = 0;
 $pagina = 0;
 if ($agrupar == 't') {
- 
+
   $pdf->ln(2);
-  $pdf->AddPage(); 
+  $pdf->AddPage();
   $pdf->SetTextColor(0,0,0);
   $pdf->SetFillColor(220);
   $pdf->SetFont('Arial','B',9);
@@ -178,10 +206,10 @@ if ($agrupar == 't') {
   $pdf->Cell(25,6,"VALOR",1,1,"C",1);
   $pdf->SetFont('Arial','B',9);
   for ($i = 0; $i < $xxnum; $i++) {
-    
+
     db_fieldsmemory($result,$i);
     if ($pdf->gety() > $pdf->h - 30 ) {
-      
+
        $pdf->addpage();
        $pdf->SetFont('Arial','B',9);
        $pdf->Cell(20,6,"CODIGO",1,0,"C",1);
@@ -198,9 +226,9 @@ if ($agrupar == 't') {
   $pdf->cell(25,4,db_formatar($total_geral,'f'),1,1,"R",0);
 
 } else {
-   
+
   $pdf->ln(2);
-  $pdf->AddPage('L'); 
+  $pdf->AddPage('L');
   $pdf->SetTextColor(0,0,0);
   $pdf->SetFillColor(220);
   $pdf->SetFont('Arial','B',7);
@@ -213,12 +241,12 @@ if ($agrupar == 't') {
   $pdf->Cell(130,6,"HISTORICO",1,0,"C",1);
   $pdf->Cell(20,6,"VALOR",1,1,"C",1);
   $pdf->SetFont('Arial','B',9);
-  
+
   for( $i = 0; $i < $xxnum; $i++) {
-    
+
     db_fieldsmemory($result,$i);
     if ($pdf->gety() > $pdf->h - 30 ) {
-      
+
       $pdf->AddPage('L');
       $pdf->SetFont('Arial','B',7);
       $pdf->multicell(0,6,$k02_codigo.' - '.strtoupper($k02_drecei),0,"L",0);

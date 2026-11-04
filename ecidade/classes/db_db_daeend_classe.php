@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_db_daeend {
                  w05_bairro = varchar(40) = Bairro 
                  ";
    //funcao construtor da classe 
-   function cl_db_daeend() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_daeend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_db_daeend {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->w05_codigo = ($this->w05_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["w05_codigo"]:$this->w05_codigo);
        $this->w05_rua = ($this->w05_rua == ""?@$GLOBALS["HTTP_POST_VARS"]["w05_rua"]:$this->w05_rua);
@@ -83,7 +83,7 @@ class cl_db_daeend {
      }
    }
    // funcao para inclusao
-   function incluir ($w05_codigo){ 
+   public function incluir ($w05_codigo){ 
       $this->atualizacampos();
      if($this->w05_rua == null ){ 
        $this->erro_sql = " Campo Rua nao Informado.";
@@ -183,7 +183,7 @@ class cl_db_daeend {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($w05_codigo=null) { 
+   public function alterar ($w05_codigo=null) { 
       $this->atualizacampos();
      $sql = " update db_daeend set ";
      $virgula = "";
@@ -308,7 +308,7 @@ class cl_db_daeend {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($w05_codigo=null,$dbwhere=null) { 
+   public function excluir ($w05_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($w05_codigo));
      }else{ 
@@ -373,7 +373,7 @@ class cl_db_daeend {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

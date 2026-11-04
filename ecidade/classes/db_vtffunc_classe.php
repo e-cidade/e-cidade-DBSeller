@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009 DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE vtffunc
-class cl_vtffunc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r17_anousu = 0; 
-   var $r17_mesusu = 0; 
-   var $r17_regist = 0; 
-   var $r17_codigo = null; 
-   var $r17_quant = 0; 
-   var $r17_lotac = null; 
-   var $r17_difere = 'f'; 
-   var $r17_situac = null; 
-   var $r17_tipo = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_vtffunc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r17_anousu = 0;
+   var $r17_mesusu = 0;
+   var $r17_regist = 0;
+   var $r17_codigo = null;
+   var $r17_quant = 0;
+   var $r17_lotac = null;
+   var $r17_difere = 'f';
+   var $r17_situac = null;
+   var $r17_tipo = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r17_anousu = int4 = Ano 
-                 r17_mesusu = int4 = Mes do Exercicio 
-                 r17_regist = int4 = Codigo do Funcionario 
-                 r17_codigo = char(4) = Código do Vale Transporte 
-                 r17_quant = int4 = Quantidade de Passagens 
-                 r17_lotac = char(     4) = Lotacao do Funcionario 
-                 r17_difere = boolean = Se difere cal.r922 senao r916 
-                 r17_situac = char(     1) = Situacao (ativo / inativo) 
-                 r17_tipo = bool = Informar o Tipo do Vale 
+                 r17_anousu = int4 = Ano
+                 r17_mesusu = int4 = Mes do Exercicio
+                 r17_regist = int4 = Codigo do Funcionario
+                 r17_codigo = char(4) = Código do Vale Transporte
+                 r17_quant = int4 = Quantidade de Passagens
+                 r17_lotac = char(     4) = Lotacao do Funcionario
+                 r17_difere = boolean = Se difere cal.r922 senao r916
+                 r17_situac = char(     1) = Situacao (ativo / inativo)
+                 r17_tipo = bool = Informar o Tipo do Vale
                  ";
-   //funcao construtor da classe 
-   function cl_vtffunc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("vtffunc"); 
+     $this->rotulo = new rotulo("vtffunc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_vtffunc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r17_anousu = ($this->r17_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r17_anousu"]:$this->r17_anousu);
        $this->r17_mesusu = ($this->r17_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r17_mesusu"]:$this->r17_mesusu);
@@ -99,9 +99,9 @@ class cl_vtffunc {
      }
    }
    // funcao para inclusao
-   function incluir ($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere){ 
+   public function incluir ($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere){
       $this->atualizacampos();
-     if($this->r17_quant == null ){ 
+     if($this->r17_quant == null ){
        $this->erro_sql = " Campo Quantidade de Passagens nao Informado.";
        $this->erro_campo = "r17_quant";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r17_lotac == null ){ 
+     if($this->r17_lotac == null ){
        $this->erro_sql = " Campo Lotacao do Funcionario nao Informado.";
        $this->erro_campo = "r17_lotac";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r17_situac == null ){ 
+     if($this->r17_situac == null ){
        $this->erro_sql = " Campo Situacao (ativo / inativo) nao Informado.";
        $this->erro_campo = "r17_situac";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r17_tipo == null ){ 
+     if($this->r17_tipo == null ){
        $this->erro_sql = " Campo Informar o Tipo do Vale nao Informado.";
        $this->erro_campo = "r17_tipo";
        $this->erro_banco = "";
@@ -137,12 +137,12 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-       $this->r17_anousu = $r17_anousu; 
-       $this->r17_mesusu = $r17_mesusu; 
-       $this->r17_regist = $r17_regist; 
-       $this->r17_codigo = $r17_codigo; 
-       $this->r17_difere = $r17_difere; 
-     if(($this->r17_anousu == null) || ($this->r17_anousu == "") ){ 
+       $this->r17_anousu = $r17_anousu;
+       $this->r17_mesusu = $r17_mesusu;
+       $this->r17_regist = $r17_regist;
+       $this->r17_codigo = $r17_codigo;
+       $this->r17_difere = $r17_difere;
+     if(($this->r17_anousu == null) || ($this->r17_anousu == "") ){
        $this->erro_sql = " Campo r17_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -150,7 +150,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r17_mesusu == null) || ($this->r17_mesusu == "") ){ 
+     if(($this->r17_mesusu == null) || ($this->r17_mesusu == "") ){
        $this->erro_sql = " Campo r17_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -158,7 +158,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r17_regist == null) || ($this->r17_regist == "") ){ 
+     if(($this->r17_regist == null) || ($this->r17_regist == "") ){
        $this->erro_sql = " Campo r17_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r17_codigo == null) || ($this->r17_codigo == "") ){ 
+     if(($this->r17_codigo == null) || ($this->r17_codigo == "") ){
        $this->erro_sql = " Campo r17_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,7 +174,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r17_difere == null) || ($this->r17_difere == "") ){ 
+     if(($this->r17_difere == null) || ($this->r17_difere == "") ){
        $this->erro_sql = " Campo r17_difere nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -183,29 +183,29 @@ class cl_vtffunc {
        return false;
      }
      $sql = "insert into vtffunc(
-                                       r17_anousu 
-                                      ,r17_mesusu 
-                                      ,r17_regist 
-                                      ,r17_codigo 
-                                      ,r17_quant 
-                                      ,r17_lotac 
-                                      ,r17_difere 
-                                      ,r17_situac 
-                                      ,r17_tipo 
+                                       r17_anousu
+                                      ,r17_mesusu
+                                      ,r17_regist
+                                      ,r17_codigo
+                                      ,r17_quant
+                                      ,r17_lotac
+                                      ,r17_difere
+                                      ,r17_situac
+                                      ,r17_tipo
                        )
                 values (
-                                $this->r17_anousu 
-                               ,$this->r17_mesusu 
-                               ,$this->r17_regist 
-                               ,'$this->r17_codigo' 
-                               ,$this->r17_quant 
-                               ,'$this->r17_lotac' 
-                               ,'$this->r17_difere' 
-                               ,'$this->r17_situac' 
-                               ,'$this->r17_tipo' 
+                                $this->r17_anousu
+                               ,$this->r17_mesusu
+                               ,$this->r17_regist
+                               ,'$this->r17_codigo'
+                               ,$this->r17_quant
+                               ,'$this->r17_lotac'
+                               ,'$this->r17_difere'
+                               ,'$this->r17_situac'
+                               ,'$this->r17_tipo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Funcionarios c/ Vale Transporte ($this->r17_anousu."-".$this->r17_mesusu."-".$this->r17_regist."-".$this->r17_codigo."-".$this->r17_difere) nao Incluído. Inclusao Abortada.";
@@ -231,34 +231,34 @@ class cl_vtffunc {
      $resaco = $this->sql_record($this->sql_query_file($this->r17_anousu,$this->r17_mesusu,$this->r17_regist,$this->r17_codigo,$this->r17_difere));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4539,'$this->r17_anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,4540,'$this->r17_mesusu','I')");
        $resac = db_query("insert into db_acountkey values($acount,4541,'$this->r17_regist','I')");
        $resac = db_query("insert into db_acountkey values($acount,4542,'$this->r17_codigo','I')");
        $resac = db_query("insert into db_acountkey values($acount,4545,'$this->r17_difere','I')");
-       $resac = db_query("insert into db_acount values($acount,601,4539,'','".AddSlashes(pg_result($resaco,0,'r17_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4540,'','".AddSlashes(pg_result($resaco,0,'r17_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4541,'','".AddSlashes(pg_result($resaco,0,'r17_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4542,'','".AddSlashes(pg_result($resaco,0,'r17_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4543,'','".AddSlashes(pg_result($resaco,0,'r17_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4544,'','".AddSlashes(pg_result($resaco,0,'r17_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4545,'','".AddSlashes(pg_result($resaco,0,'r17_difere'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4546,'','".AddSlashes(pg_result($resaco,0,'r17_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,601,4547,'','".AddSlashes(pg_result($resaco,0,'r17_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4539,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4540,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4541,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4542,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4543,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4544,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4545,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_difere'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4546,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,601,4547,'','".AddSlashes(pg_fetch_result($resaco,0,'r17_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null) { 
+   public function alterar ($r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null) {
       $this->atualizacampos();
      $sql = " update vtffunc set ";
      $virgula = "";
-     if(trim($this->r17_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_anousu"])){ 
+     if(trim($this->r17_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_anousu"])){
        $sql  .= $virgula." r17_anousu = $this->r17_anousu ";
        $virgula = ",";
-       if(trim($this->r17_anousu) == null ){ 
+       if(trim($this->r17_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "r17_anousu";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_mesusu"])){ 
+     if(trim($this->r17_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_mesusu"])){
        $sql  .= $virgula." r17_mesusu = $this->r17_mesusu ";
        $virgula = ",";
-       if(trim($this->r17_mesusu) == null ){ 
+       if(trim($this->r17_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r17_mesusu";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_regist"])){ 
+     if(trim($this->r17_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_regist"])){
        $sql  .= $virgula." r17_regist = $this->r17_regist ";
        $virgula = ",";
-       if(trim($this->r17_regist) == null ){ 
+       if(trim($this->r17_regist) == null ){
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "r17_regist";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_codigo"])){ 
+     if(trim($this->r17_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_codigo"])){
        $sql  .= $virgula." r17_codigo = '$this->r17_codigo' ";
        $virgula = ",";
-       if(trim($this->r17_codigo) == null ){ 
+       if(trim($this->r17_codigo) == null ){
          $this->erro_sql = " Campo Código do Vale Transporte nao Informado.";
          $this->erro_campo = "r17_codigo";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_quant"])){ 
+     if(trim($this->r17_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_quant"])){
        $sql  .= $virgula." r17_quant = $this->r17_quant ";
        $virgula = ",";
-       if(trim($this->r17_quant) == null ){ 
+       if(trim($this->r17_quant) == null ){
          $this->erro_sql = " Campo Quantidade de Passagens nao Informado.";
          $this->erro_campo = "r17_quant";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_lotac"])){ 
+     if(trim($this->r17_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_lotac"])){
        $sql  .= $virgula." r17_lotac = '$this->r17_lotac' ";
        $virgula = ",";
-       if(trim($this->r17_lotac) == null ){ 
+       if(trim($this->r17_lotac) == null ){
          $this->erro_sql = " Campo Lotacao do Funcionario nao Informado.";
          $this->erro_campo = "r17_lotac";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_difere)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_difere"])){ 
+     if(trim($this->r17_difere)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_difere"])){
        $sql  .= $virgula." r17_difere = '$this->r17_difere' ";
        $virgula = ",";
-       if(trim($this->r17_difere) == null ){ 
+       if(trim($this->r17_difere) == null ){
          $this->erro_sql = " Campo Se difere cal.r922 senao r916 nao Informado.";
          $this->erro_campo = "r17_difere";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_situac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_situac"])){ 
+     if(trim($this->r17_situac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_situac"])){
        $sql  .= $virgula." r17_situac = '$this->r17_situac' ";
        $virgula = ",";
-       if(trim($this->r17_situac) == null ){ 
+       if(trim($this->r17_situac) == null ){
          $this->erro_sql = " Campo Situacao (ativo / inativo) nao Informado.";
          $this->erro_campo = "r17_situac";
          $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_vtffunc {
          return false;
        }
      }
-     if(trim($this->r17_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_tipo"])){ 
+     if(trim($this->r17_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r17_tipo"])){
        $sql  .= $virgula." r17_tipo = '$this->r17_tipo' ";
        $virgula = ",";
-       if(trim($this->r17_tipo) == null ){ 
+       if(trim($this->r17_tipo) == null ){
          $this->erro_sql = " Campo Informar o Tipo do Vale nao Informado.";
          $this->erro_campo = "r17_tipo";
          $this->erro_banco = "";
@@ -392,7 +392,7 @@ class cl_vtffunc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4539,'$this->r17_anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,4540,'$this->r17_mesusu','A')");
@@ -400,23 +400,23 @@ class cl_vtffunc {
          $resac = db_query("insert into db_acountkey values($acount,4542,'$this->r17_codigo','A')");
          $resac = db_query("insert into db_acountkey values($acount,4545,'$this->r17_difere','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,601,4539,'".AddSlashes(pg_result($resaco,$conresaco,'r17_anousu'))."','$this->r17_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4539,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_anousu'))."','$this->r17_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_mesusu"]))
-           $resac = db_query("insert into db_acount values($acount,601,4540,'".AddSlashes(pg_result($resaco,$conresaco,'r17_mesusu'))."','$this->r17_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4540,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_mesusu'))."','$this->r17_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_regist"]))
-           $resac = db_query("insert into db_acount values($acount,601,4541,'".AddSlashes(pg_result($resaco,$conresaco,'r17_regist'))."','$this->r17_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4541,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_regist'))."','$this->r17_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,601,4542,'".AddSlashes(pg_result($resaco,$conresaco,'r17_codigo'))."','$this->r17_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4542,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_codigo'))."','$this->r17_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_quant"]))
-           $resac = db_query("insert into db_acount values($acount,601,4543,'".AddSlashes(pg_result($resaco,$conresaco,'r17_quant'))."','$this->r17_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4543,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_quant'))."','$this->r17_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_lotac"]))
-           $resac = db_query("insert into db_acount values($acount,601,4544,'".AddSlashes(pg_result($resaco,$conresaco,'r17_lotac'))."','$this->r17_lotac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4544,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_lotac'))."','$this->r17_lotac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_difere"]))
-           $resac = db_query("insert into db_acount values($acount,601,4545,'".AddSlashes(pg_result($resaco,$conresaco,'r17_difere'))."','$this->r17_difere',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4545,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_difere'))."','$this->r17_difere',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_situac"]))
-           $resac = db_query("insert into db_acount values($acount,601,4546,'".AddSlashes(pg_result($resaco,$conresaco,'r17_situac'))."','$this->r17_situac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4546,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_situac'))."','$this->r17_situac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r17_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,601,4547,'".AddSlashes(pg_result($resaco,$conresaco,'r17_tipo'))."','$this->r17_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,601,4547,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r17_tipo'))."','$this->r17_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -461,22 +461,22 @@ class cl_vtffunc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4539,'$r17_anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,4540,'$r17_mesusu','E')");
          $resac = db_query("insert into db_acountkey values($acount,4541,'$r17_regist','E')");
          $resac = db_query("insert into db_acountkey values($acount,4542,'$r17_codigo','E')");
          $resac = db_query("insert into db_acountkey values($acount,4545,'$r17_difere','E')");
-         $resac = db_query("insert into db_acount values($acount,601,4539,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4540,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4541,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4542,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4543,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4544,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4545,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_difere'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4546,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,601,4547,'','".AddSlashes(pg_result($resaco,$iresaco,'r17_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4539,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4540,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4541,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4542,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4543,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4544,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4545,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_difere'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4546,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,601,4547,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r17_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vtffunc
@@ -517,7 +517,7 @@ class cl_vtffunc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Funcionarios c/ Vale Transporte nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r17_anousu."-".$r17_mesusu."-".$r17_regist."-".$r17_codigo."-".$r17_difere;
@@ -545,11 +545,11 @@ class cl_vtffunc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -560,7 +560,7 @@ class cl_vtffunc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vtffunc";
@@ -571,10 +571,10 @@ class cl_vtffunc {
       }
      return $result;
    }
-   function sql_query ( $r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,53 +586,54 @@ class cl_vtffunc {
      $sql .= " from vtffunc ";
      $sql .= "      inner join vtfempr      on  vtfempr.r16_anousu      = vtffunc.r17_anousu 
                                            and  vtfempr.r16_mesusu      = vtffunc.r17_mesusu 
-                                           and  vtfempr.r16_codigo      = vtffunc.r17_codigo ";
+                                           and  vtfempr.r16_codigo      = vtffunc.r17_codigo 
+                                           and  vtfempr.r16_instit = ".db_getsession("DB_instit") ;
      $sql .= "      inner join rhempresavt  on  rhempresavt.rh35_codigo = vtfempr.r16_empres::INT 
                                            and  rhempresavt.rh35_instit = ".db_getsession("DB_instit") ;
      $sql2 = "";
      if($dbwhere==""){
        if($r17_anousu!=null ){
-         $sql2 .= " where vtffunc.r17_anousu = $r17_anousu "; 
-       } 
+         $sql2 .= " where vtffunc.r17_anousu = $r17_anousu ";
+       }
        if($r17_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_mesusu = $r17_mesusu "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_mesusu = $r17_mesusu ";
+       }
        if($r17_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_regist = $r17_regist "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_regist = $r17_regist ";
+       }
        if($r17_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_codigo = '$r17_codigo' "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_codigo = '$r17_codigo' ";
+       }
        if($r17_difere!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_difere = '$r17_difere' "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_difere = '$r17_difere' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -641,10 +642,10 @@ class cl_vtffunc {
      }
      return $sql;
   }
-   function sql_query_file ( $r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -657,47 +658,47 @@ class cl_vtffunc {
      $sql2 = "";
      if($dbwhere==""){
        if($r17_anousu!=null ){
-         $sql2 .= " where vtffunc.r17_anousu = $r17_anousu "; 
-       } 
+         $sql2 .= " where vtffunc.r17_anousu = $r17_anousu ";
+       }
        if($r17_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_mesusu = $r17_mesusu "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_mesusu = $r17_mesusu ";
+       }
        if($r17_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_regist = $r17_regist "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_regist = $r17_regist ";
+       }
        if($r17_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_codigo = '$r17_codigo' "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_codigo = '$r17_codigo' ";
+       }
        if($r17_difere!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_difere = '$r17_difere' "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_difere = '$r17_difere' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -706,10 +707,10 @@ class cl_vtffunc {
      }
      return $sql;
   }
-   function sql_query_rhpessoal ( $r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_rhpessoal ( $r17_anousu=null,$r17_mesusu=null,$r17_regist=null,$r17_codigo=null,$r17_difere=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -728,47 +729,47 @@ class cl_vtffunc {
      $sql2 = "";
      if($dbwhere==""){
        if($r17_anousu!=null ){
-         $sql2 .= " where vtffunc.r17_anousu = $r17_anousu "; 
-       } 
+         $sql2 .= " where vtffunc.r17_anousu = $r17_anousu ";
+       }
        if($r17_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_mesusu = $r17_mesusu "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_mesusu = $r17_mesusu ";
+       }
        if($r17_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_regist = $r17_regist "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_regist = $r17_regist ";
+       }
        if($r17_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_codigo = '$r17_codigo' "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_codigo = '$r17_codigo' ";
+       }
        if($r17_difere!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vtffunc.r17_difere = '$r17_difere' "; 
-       } 
+         }
+         $sql2 .= " vtffunc.r17_difere = '$r17_difere' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

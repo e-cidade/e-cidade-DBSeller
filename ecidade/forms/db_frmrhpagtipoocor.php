@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrhpagtipoocor->rotulo->label();
        <?=@$Lrh59_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh59_codigo',6,$Irh59_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh59_codigo',6,$Irh59_codigo,true,'text',3,"")
        <?=@$Lrh59_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh59_descr',40,$Irh59_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('rh59_descr',40,$Irh59_descr,true,'text',$db_opcao,"")
        <?=@$Lrh59_obs?>
     </td>
     <td>
-      <?
+      <?php
       db_textarea("rh59_obs", 3, 38, $Irh59_obs, true, 'text', $db_opcao);
       ?>
    </td>
@@ -66,7 +66,7 @@ db_input('rh59_descr',40,$Irh59_descr,true,'text',$db_opcao,"")
        <?=@$Lrh59_tipo?>
     </td>
     <td>
-      <?
+      <?php
       $arr_tipoocor = Array("S"=>"Somar","D"=>"Descontar");
       db_select("rh59_tipo", $arr_tipoocor, true, $db_opcao);
       ?>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpagtipoocor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

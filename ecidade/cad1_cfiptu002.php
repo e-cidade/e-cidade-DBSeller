@@ -33,8 +33,8 @@ require_once(modification("classes/db_cfiptu_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_documentotemplate_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $cldb_documentotemplate = new cl_db_documentotemplate;
 $clcfiptu               = new cl_cfiptu;
@@ -42,136 +42,126 @@ $oDaoReceita            = new cl_tabrec;
 $oDaoArretipo           = new cl_arretipo();
 $db_botao               = false;
 $db_opcao               = 2;
+$utilizadocpadrao       = '0';
 
 try {
 
  /**
   * Valida Certidao Existencia
   */
-if(isset($j18_templatecertidaoexitencia) && $j18_templatecertidaoexitencia != ""){
+    if (isset($j18_templatecertidaoexitencia) && $j18_templatecertidaoexitencia != "") {
+        $rsExistencia = $cldb_documentotemplate->sql_record($cldb_documentotemplate->sql_query_file(null, '*', null, "db82_sequencial = {$j18_templatecertidaoexitencia} and db82_templatetipo = 18"));
 
-  $rsExistencia = $cldb_documentotemplate->sql_record($cldb_documentotemplate->sql_query_file(null,'*',null,"db82_sequencial = {$j18_templatecertidaoexitencia} and db82_templatetipo = 18"));
-
-  if ($cldb_documentotemplate->numrows == 0) {
-    throw new Exception("Campo Documento Template Existência Inexistente. Alteração abortada.");
-  }
-}
+        if ($cldb_documentotemplate->numrows == 0) {
+            throw new Exception("Campo Documento Template Existência Inexistente. Alteração abortada.");
+        }
+    }
 
  /**
   * Valida Certidao Isenção
   */
 
-if(isset($j18_templatecertidaoisencao) && $j18_templatecertidaoisencao != ""){
+    if (isset($j18_templatecertidaoisencao) && $j18_templatecertidaoisencao != "") {
+        $rsIsencao = $cldb_documentotemplate->sql_record($cldb_documentotemplate->sql_query_file(null, '*', null, "db82_sequencial = {$j18_templatecertidaoisencao} and db82_templatetipo = 44"));
 
-  $rsIsencao = $cldb_documentotemplate->sql_record($cldb_documentotemplate->sql_query_file(null,'*',null,"db82_sequencial = {$j18_templatecertidaoisencao} and db82_templatetipo = 44"));
-
-  if ($cldb_documentotemplate->numrows == 0) {
-    throw new Exception("Campo Documento Template Isenção Inexistente. Alteração abortada.");
-  }
-}
-
-/**
- * Verifica se receita Predial esta vencida
- */
-if( !empty($j18_rpredi) ){
-
-  $rsReceitaPredial = $oDaoReceita->sql_record($oDaoReceita->sql_query_validaReceitaVencida($j18_anousu, $j18_rpredi));
-  if ($oDaoReceita->numrows != 0) {
-    throw new Exception("Receita Predial possui data limite informada inválida. Verifique cadastro da receita.");
-  }
-}
+        if ($cldb_documentotemplate->numrows == 0) {
+            throw new Exception("Campo Documento Template Isenção Inexistente. Alteração abortada.");
+        }
+    }
 
 /**
  * Verifica se receita Predial esta vencida
  */
-if( !empty($j18_rterri) ){
+    if (!empty($j18_rpredi)) {
+        $rsReceitaPredial = $oDaoReceita->sql_record($oDaoReceita->sql_query_validaReceitaVencida($j18_anousu, $j18_rpredi));
+        if ($oDaoReceita->numrows != 0) {
+            throw new Exception("Receita Predial possui data limite informada inválida. Verifique cadastro da receita.");
+        }
+    }
 
-  $rsReceitaTerritorial = $oDaoReceita->sql_record($oDaoReceita->sql_query_validaReceitaVencida($j18_anousu, $j18_rterri));
-  if ($oDaoReceita->numrows != 0) {
-    throw new Exception("Receita Territorial possui data limite informada inválida. Verifique cadastro da receita.");
-  }
-}
+/**
+ * Verifica se receita Predial esta vencida
+ */
+    if (!empty($j18_rterri)) {
+        $rsReceitaTerritorial = $oDaoReceita->sql_record($oDaoReceita->sql_query_validaReceitaVencida($j18_anousu, $j18_rterri));
+        if ($oDaoReceita->numrows != 0) {
+            throw new Exception("Receita Territorial possui data limite informada inválida. Verifique cadastro da receita.");
+        }
+    }
 
-if (!empty($j18_receitacreditorecalculo)) {
+    if (!empty($j18_receitacreditorecalculo)) {
+        $j18_receitacreditorecalculo = preg_replace('/[^0-9]/', '', $j18_receitacreditorecalculo);
 
-  $j18_receitacreditorecalculo = preg_replace('/[^0-9]/', '', $j18_receitacreditorecalculo);
+        $sSqlValidacaoRecalculo = $oDaoArretipo->sql_query_file(null, "*", null, "k00_receitacredito = {$j18_receitacreditorecalculo}");
+        $rsValidacaoRecalculo   = $oDaoArretipo->sql_record($sSqlValidacaoRecalculo);
 
-  $sSqlValidacaoRecalculo = $oDaoArretipo->sql_query_file(null, "*", null, "k00_receitacredito = {$j18_receitacreditorecalculo}");
-  $rsValidacaoRecalculo   = $oDaoArretipo->sql_record($sSqlValidacaoRecalculo);
+        if ($oDaoArretipo->numrows != 0) {
+            throw new Exception("Receita de crédito do recálculo não pode estar configurada em nenhum tipo de débito.");
+        }
+    }
 
-  if ($oDaoArretipo->numrows != 0) {
-    throw new Exception("Receita de crédito do recálculo não pode estar configurada em nenhum tipo de débito.");
-  }
-}
+    if (isset($alterar)) {
+        db_inicio_transacao();
+        $clcfiptu->alterar($j18_anousu);
+        db_fim_transacao();
+    } elseif (isset($incluir)) {
+        db_inicio_transacao();
+        $clcfiptu->incluir($j18_anousu);
+        db_fim_transacao();
+    } else {
+        $db_botao = true;
+        $result   = $clcfiptu->sql_record($clcfiptu->sql_query_param(db_getsession('DB_anousu')));
+        if ($result!=false && $clcfiptu->numrows>0) {
+            db_fieldsmemory($result, 0);
+            $utilizadocpadrao = ($j18_templatecertidaoisencao==""?"0":"1");
+        } else {
+            $db_opcao = 1;
+        }
+    }
 
-if(isset( $alterar )){
+    if (isset($importar)) {
+        $iAnoAnt  = ($j18_anousu-1);
+        $rsCfiptu = $clcfiptu->sql_record($clcfiptu->sql_query_param($iAnoAnt));
 
-  db_inicio_transacao();
-    $clcfiptu->alterar($j18_anousu);
-  db_fim_transacao();
+        if ($rsCfiptu != false && $clcfiptu->numrows > 0) {
+            db_fieldsmemory($rsCfiptu, 0);
 
-} else if ( isset($incluir) ) {
-
-  db_inicio_transacao();
-    $clcfiptu->incluir($j18_anousu);
-  db_fim_transacao();
-
-} else {
-
-	$db_botao = true;
-	$result   = $clcfiptu->sql_record($clcfiptu->sql_query_param(db_getsession('DB_anousu')));
-	if($result!=false && $clcfiptu->numrows>0){
-
-	  db_fieldsmemory($result,0);
-	  $utilizadocpadrao = ($j18_templatecertidaoisencao==""?"0":"1");
-	} else {
-		$db_opcao = 1;
-	}
-}
-
-if (isset($importar)) {
-
-	$iAnoAnt  = ($j18_anousu-1);
-  $rsCfiptu = $clcfiptu->sql_record($clcfiptu->sql_query_param($iAnoAnt));
-
-  if ($rsCfiptu != false && $clcfiptu->numrows > 0) {
-    db_fieldsmemory($rsCfiptu, 0);
-  }
-}
+            if (isset($j18_templatecertidaoisencao) && trim($j18_templatecertidaoisencao) != "") {
+                $utilizadocpadrao = '1';
+            }
+        }
+    }
 
 /**
  * Busca Descrições das receitas
  */
-if(isset($j18_rpredi)){
+    if (isset($j18_rpredi)) {
+        $sSqlReceitaPredial = $oDaoReceita->sql_query_file($j18_rpredi);
+        $rsReceitaPredial   = $oDaoReceita->sql_record($sSqlReceitaPredial);
 
-  $sSqlReceitaPredial = $oDaoReceita->sql_query_file( $j18_rpredi );
-  $rsReceitaPredial   = $oDaoReceita->sql_record( $sSqlReceitaPredial );
+        if ($rsReceitaPredial) {
+            $k02_descrPredial  = db_utils::fieldsMemory($rsReceitaPredial, 0)->k02_descr;
+        }
+    }
 
-  if( $rsReceitaPredial ){
-    $k02_descrPredial  = db_utils::fieldsMemory( $rsReceitaPredial, 0 )->k02_descr;
-  }
-}
+    if (isset($j18_rterri)) {
+        $sSqlReceitaTerritorial = $oDaoReceita->sql_query_file($j18_rterri);
+        $rsReceitaTerritorial   = $oDaoReceita->sql_record($sSqlReceitaTerritorial);
 
-if(isset($j18_rterri)){
+        if ($rsReceitaTerritorial) {
+            $k02_descrTerritorial  = db_utils::fieldsMemory($rsReceitaTerritorial, 0)->k02_descr;
+        }
+    }
 
-  $sSqlReceitaTerritorial = $oDaoReceita->sql_query_file( $j18_rterri );
-  $rsReceitaTerritorial   = $oDaoReceita->sql_record( $sSqlReceitaTerritorial );
-
-  if( $rsReceitaTerritorial ){
-    $k02_descrTerritorial  = db_utils::fieldsMemory( $rsReceitaTerritorial, 0 )->k02_descr;
-  }
-}
-
-if(isset($j18_receitacreditorecalculo)){
-
-  $sSqlReceitaCalculo = $oDaoReceita->sql_query_file( $j18_receitacreditorecalculo );
-  $rsReceitaCalculo   = $oDaoReceita->sql_record( $sSqlReceitaCalculo);
+    if (isset($j18_receitacreditorecalculo)) {
+        $sSqlReceitaCalculo = $oDaoReceita->sql_query_file($j18_receitacreditorecalculo);
+        $rsReceitaCalculo   = $oDaoReceita->sql_record($sSqlReceitaCalculo);
   
-  if($rsReceitaCalculo ){
-    $k02_descrReceitaCred = db_utils::fieldsMemory( $rsReceitaCalculo, 0 )->k02_descr;
-  }
-}
-?>
+        if ($rsReceitaCalculo) {
+            $k02_descrReceitaCred = db_utils::fieldsMemory($rsReceitaCalculo, 0)->k02_descr;
+        }
+    }
+    ?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -186,35 +176,32 @@ if(isset($j18_receitacreditorecalculo)){
       require_once(modification("forms/db_frmcfiptu.php"));
     ?>
   </div>
-  <?php
-    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-  ?>
-</body>
-</html>
-<?php
+    <?php
+    db_menu();
+    ?>
 
-if(isset($alterar) || isset($incluir)){
-  if($clcfiptu->erro_status=="0"){
-    $clcfiptu->erro(true,false);
-    $db_botao=true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    if($clcfiptu->erro_campo!=""){
-      echo "<script> document.form1.".$clcfiptu->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clcfiptu->erro_campo.".focus();</script>";
+    <?php
+    if (isset($alterar) || isset($incluir)) {
+        if ($clcfiptu->erro_status=="0") {
+            $clcfiptu->erro(true, false);
+            $db_botao=true;
+            echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+            if ($clcfiptu->erro_campo!="") {
+                echo "<script> document.form1.".$clcfiptu->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+                echo "<script> document.form1.".$clcfiptu->erro_campo.".focus();</script>";
+            }
+        } else {
+            $clcfiptu->erro(true, true);
+        }
     }
-  }else{
-    $clcfiptu->erro(true,true);
-  }
-}
-if($db_opcao==22){
-  echo "<script>document.form1.pesquisar.click();</script>";
-}
-
-}catch(Exception $oErro) {
-
-  db_msgbox($oErro->getMessage());
-  db_redireciona('cad1_cfiptu002.php');
-  db_fim_transacao(true);
-
+    if ($db_opcao==22) {
+        echo "<script>document.form1.pesquisar.click();</script>";
+    }
+} catch (Exception $oErro) {
+    db_msgbox($oErro->getMessage());
+    db_redireciona('cad1_cfiptu002.php');
+    db_fim_transacao(true);
 }
 ?>
+</body>
+</html>

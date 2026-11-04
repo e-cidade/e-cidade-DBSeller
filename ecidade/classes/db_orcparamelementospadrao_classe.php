@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE orcparamelementospadrao
-class cl_orcparamelementospadrao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o132_sequencial = 0; 
-   var $o132_orcparamrel = 0; 
-   var $o132_orcparamseq = 0; 
-   var $o132_orcelemento = 0; 
-   var $o132_anousu = 0; 
-   var $o132_instit = 0; 
-   var $o132_exclusao = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_orcparamelementospadrao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o132_sequencial = 0;
+   var $o132_orcparamrel = 0;
+   var $o132_orcparamseq = 0;
+   var $o132_orcelemento = 0;
+   var $o132_anousu = 0;
+   var $o132_instit = 0;
+   var $o132_exclusao = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o132_sequencial = int4 = Código Sequencial 
-                 o132_orcparamrel = int4 = Código do Relatório 
-                 o132_orcparamseq = int4 = Sequencia da Linha 
-                 o132_orcelemento = int4 = Código do Elemento 
-                 o132_anousu = int4 = Ano da Configuração 
-                 o132_instit = int4 = Instituição 
-                 o132_exclusao = bool = Elemento de Exclusão 
+                 o132_sequencial = int4 = Código Sequencial
+                 o132_orcparamrel = int4 = Código do Relatório
+                 o132_orcparamseq = int4 = Sequencia da Linha
+                 o132_orcelemento = int4 = Código do Elemento
+                 o132_anousu = int4 = Ano da Configuração
+                 o132_instit = int4 = Instituição
+                 o132_exclusao = bool = Elemento de Exclusão
                  ";
-   //funcao construtor da classe 
-   function cl_orcparamelementospadrao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("orcparamelementospadrao"); 
+     $this->rotulo = new rotulo("orcparamelementospadrao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_orcparamelementospadrao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o132_sequencial = ($this->o132_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o132_sequencial"]:$this->o132_sequencial);
        $this->o132_orcparamrel = ($this->o132_orcparamrel == ""?@$GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"]:$this->o132_orcparamrel);
@@ -89,9 +89,9 @@ class cl_orcparamelementospadrao {
      }
    }
    // funcao para inclusao
-   function incluir ($o132_sequencial){ 
+   public function incluir ($o132_sequencial){
       $this->atualizacampos();
-     if($this->o132_orcparamrel == null ){ 
+     if($this->o132_orcparamrel == null ){
        $this->erro_sql = " Campo Código do Relatório nao Informado.";
        $this->erro_campo = "o132_orcparamrel";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_orcparamelementospadrao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o132_orcparamseq == null ){ 
+     if($this->o132_orcparamseq == null ){
        $this->erro_sql = " Campo Sequencia da Linha nao Informado.";
        $this->erro_campo = "o132_orcparamseq";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_orcparamelementospadrao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o132_orcelemento == null ){ 
+     if($this->o132_orcelemento == null ){
        $this->erro_sql = " Campo Código do Elemento nao Informado.";
        $this->erro_campo = "o132_orcelemento";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_orcparamelementospadrao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o132_anousu == null ){ 
+     if($this->o132_anousu == null ){
        $this->erro_sql = " Campo Ano da Configuração nao Informado.";
        $this->erro_campo = "o132_anousu";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_orcparamelementospadrao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o132_instit == null ){ 
+     if($this->o132_instit == null ){
        $this->erro_sql = " Campo Instituição nao Informado.";
        $this->erro_campo = "o132_instit";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_orcparamelementospadrao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o132_exclusao == null ){ 
+     if($this->o132_exclusao == null ){
        $this->erro_sql = " Campo Elemento de Exclusão nao Informado.";
        $this->erro_campo = "o132_exclusao";
        $this->erro_banco = "";
@@ -146,16 +146,16 @@ class cl_orcparamelementospadrao {
        return false;
      }
      if($o132_sequencial == "" || $o132_sequencial == null ){
-       $result = db_query("select nextval('orcparamelementospadrao_o132_sequencial_seq')"); 
+       $result = db_query("select nextval('orcparamelementospadrao_o132_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: orcparamelementospadrao_o132_sequencial_seq do campo: o132_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: orcparamelementospadrao_o132_sequencial_seq do campo: o132_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o132_sequencial = pg_result($result,0,0); 
+       $this->o132_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from orcparamelementospadrao_o132_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $o132_sequencial)){
@@ -166,10 +166,10 @@ class cl_orcparamelementospadrao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o132_sequencial = $o132_sequencial; 
+         $this->o132_sequencial = $o132_sequencial;
        }
      }
-     if(($this->o132_sequencial == null) || ($this->o132_sequencial == "") ){ 
+     if(($this->o132_sequencial == null) || ($this->o132_sequencial == "") ){
        $this->erro_sql = " Campo o132_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,25 +178,25 @@ class cl_orcparamelementospadrao {
        return false;
      }
      $sql = "insert into orcparamelementospadrao(
-                                       o132_sequencial 
-                                      ,o132_orcparamrel 
-                                      ,o132_orcparamseq 
-                                      ,o132_orcelemento 
-                                      ,o132_anousu 
-                                      ,o132_instit 
-                                      ,o132_exclusao 
+                                       o132_sequencial
+                                      ,o132_orcparamrel
+                                      ,o132_orcparamseq
+                                      ,o132_orcelemento
+                                      ,o132_anousu
+                                      ,o132_instit
+                                      ,o132_exclusao
                        )
                 values (
-                                $this->o132_sequencial 
-                               ,$this->o132_orcparamrel 
-                               ,$this->o132_orcparamseq 
-                               ,$this->o132_orcelemento 
-                               ,$this->o132_anousu 
-                               ,$this->o132_instit 
-                               ,'$this->o132_exclusao' 
+                                $this->o132_sequencial
+                               ,$this->o132_orcparamrel
+                               ,$this->o132_orcparamseq
+                               ,$this->o132_orcelemento
+                               ,$this->o132_anousu
+                               ,$this->o132_instit
+                               ,'$this->o132_exclusao'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Configuração Padrao dos Elementos ($this->o132_sequencial) nao Incluído. Inclusao Abortada.";
@@ -234,16 +234,16 @@ class cl_orcparamelementospadrao {
        $resac = db_query("insert into db_acount values($acount,2706,15423,'','".AddSlashes(pg_result($resaco,0,'o132_exclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o132_sequencial=null) { 
+   public function alterar ($o132_sequencial=null) {
       $this->atualizacampos();
      $sql = " update orcparamelementospadrao set ";
      $virgula = "";
-     if(trim($this->o132_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"])){ 
+     if(trim($this->o132_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"])){
        $sql  .= $virgula." o132_sequencial = $this->o132_sequencial ";
        $virgula = ",";
-       if(trim($this->o132_sequencial) == null ){ 
+       if(trim($this->o132_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o132_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_orcparamrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"])){ 
+     if(trim($this->o132_orcparamrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"])){
        $sql  .= $virgula." o132_orcparamrel = $this->o132_orcparamrel ";
        $virgula = ",";
-       if(trim($this->o132_orcparamrel) == null ){ 
+       if(trim($this->o132_orcparamrel) == null ){
          $this->erro_sql = " Campo Código do Relatório nao Informado.";
          $this->erro_campo = "o132_orcparamrel";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_orcparamseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"])){ 
+     if(trim($this->o132_orcparamseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"])){
        $sql  .= $virgula." o132_orcparamseq = $this->o132_orcparamseq ";
        $virgula = ",";
-       if(trim($this->o132_orcparamseq) == null ){ 
+       if(trim($this->o132_orcparamseq) == null ){
          $this->erro_sql = " Campo Sequencia da Linha nao Informado.";
          $this->erro_campo = "o132_orcparamseq";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_orcelemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcelemento"])){ 
+     if(trim($this->o132_orcelemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcelemento"])){
        $sql  .= $virgula." o132_orcelemento = $this->o132_orcelemento ";
        $virgula = ",";
-       if(trim($this->o132_orcelemento) == null ){ 
+       if(trim($this->o132_orcelemento) == null ){
          $this->erro_sql = " Campo Código do Elemento nao Informado.";
          $this->erro_campo = "o132_orcelemento";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"])){ 
+     if(trim($this->o132_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"])){
        $sql  .= $virgula." o132_anousu = $this->o132_anousu ";
        $virgula = ",";
-       if(trim($this->o132_anousu) == null ){ 
+       if(trim($this->o132_anousu) == null ){
          $this->erro_sql = " Campo Ano da Configuração nao Informado.";
          $this->erro_campo = "o132_anousu";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_instit"])){ 
+     if(trim($this->o132_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_instit"])){
        $sql  .= $virgula." o132_instit = $this->o132_instit ";
        $virgula = ",";
-       if(trim($this->o132_instit) == null ){ 
+       if(trim($this->o132_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "o132_instit";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_exclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_exclusao"])){ 
+     if(trim($this->o132_exclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_exclusao"])){
        $sql  .= $virgula." o132_exclusao = '$this->o132_exclusao' ";
        $virgula = ",";
-       if(trim($this->o132_exclusao) == null ){ 
+       if(trim($this->o132_exclusao) == null ){
          $this->erro_sql = " Campo Elemento de Exclusão nao Informado.";
          $this->erro_campo = "o132_exclusao";
          $this->erro_banco = "";
@@ -359,7 +359,7 @@ class cl_orcparamelementospadrao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuração Padrao dos Elementos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o132_sequencial;
@@ -387,14 +387,14 @@ class cl_orcparamelementospadrao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o132_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o132_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o132_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -426,7 +426,7 @@ class cl_orcparamelementospadrao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuração Padrao dos Elementos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o132_sequencial;
@@ -454,11 +454,11 @@ class cl_orcparamelementospadrao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -480,11 +480,11 @@ class cl_orcparamelementospadrao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $o132_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $o132_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -501,15 +501,15 @@ class cl_orcparamelementospadrao {
      $sql2 = "";
      if($dbwhere==""){
        if($o132_sequencial!=null ){
-         $sql2 .= " where orcparamelementospadrao.o132_sequencial = $o132_sequencial "; 
-       } 
+         $sql2 .= " where orcparamelementospadrao.o132_sequencial = $o132_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -518,11 +518,11 @@ class cl_orcparamelementospadrao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $o132_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $o132_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,15 +535,15 @@ class cl_orcparamelementospadrao {
      $sql2 = "";
      if($dbwhere==""){
        if($o132_sequencial!=null ){
-         $sql2 .= " where orcparamelementospadrao.o132_sequencial = $o132_sequencial "; 
-       } 
+         $sql2 .= " where orcparamelementospadrao.o132_sequencial = $o132_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

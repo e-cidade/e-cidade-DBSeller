@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("e87_descgera");
        <?=@$Le75_codret?>
     </td>
     <td> 
-<?
+<?php
 db_input('e75_codret',10,$Ie75_codret,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te75_codgera?>">
-       <?
+       <?php
        db_ancora(@$Le75_codgera,"js_pesquisae75_codgera(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e75_codgera',6,$Ie75_codgera,true,'text',$db_opcao," onchange='js_pesquisae75_codgera(false);'")
 ?>
-       <?
+       <?php
 db_input('e87_descgera',40,$Ie87_descgera,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('e87_descgera',40,$Ie87_descgera,true,'text',3,'')
        <?=@$Le75_arquivoret?>
     </td>
     <td> 
-<?
+<?php
 db_input('e75_arquivoret',20,$Ie75_arquivoret,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('e75_arquivoret',20,$Ie75_arquivoret,true,'text',$db_opcao,"")
        <?=@$Le75_febraban?>
     </td>
     <td> 
-<?
+<?php
 db_input('e75_febraban',29,$Ie75_febraban,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('e75_febraban',29,$Ie75_febraban,true,'text',$db_opcao,"")
        <?=@$Le75_seqarq?>
     </td>
     <td> 
-<?
+<?php
 db_input('e75_seqarq',6,$Ie75_seqarq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empagedadosret.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

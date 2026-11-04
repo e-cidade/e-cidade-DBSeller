@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -163,7 +163,7 @@ function js_relatorio(){
 </table>
 
     <center>
-    <?	
+    <?php 
 	$mensagem_semdebitos = false;
 	$com_debitos = true;
 	if(isset($HTTP_POST_VARS["pesquisar"]) || isset($matricula) ) {
@@ -304,7 +304,7 @@ function js_relatorio(){
                         <td class="tabcols" nowrap title="Clique Aqui para ver os dados cadastrais."> 
                           <input class="btcols" type="text" name="z01_numcgm" value="<?=@$z01_numcgm?>" size="5" readonly> 
                           &nbsp;&nbsp;&nbsp; 
-                          <?
+                          <?php
 					      parse_str($arg);
 					      $Label = "<a href='' onclick='js_mostrapessoal();return false;'>$Lr01_regist</a>";
 					      echo "<strong style=\"color:blue\">$Label</strong> <input style=\"border: 1px solid blue;font-weight: bold;background-color:#80E6FF\" class=\"btcols\" type=\"text\" name=\"Label\" value=\"".@$matric.@$inscr.@$numpre.@$Parcelamento."\" size=\"10\" readonly>\n";
@@ -337,7 +337,7 @@ function js_relatorio(){
                       </tr>
                       <tr> 
                         <td height="21" colspan="2" nowrap class="tabcols"> 
-                          <?
+                          <?php
                           if(isset($HTTP_POST_VARS["r01_regist"]) && !empty($HTTP_POST_VARS["r01_regist"]))
                             echo "<input type=\"hidden\" name=\"r01_regist\"  value=\"".$HTTP_POST_VARS["r01_regist"]."\">";
                           if(isset($HTTP_POST_VARS["q02_inscr"]) && !empty($HTTP_POST_VARS["q02_inscr"]))
@@ -357,7 +357,7 @@ function js_relatorio(){
                     <table height="80%" border="1" cellspacing="0" cellpadding="0">
 		              <tr class="links">
 		                <td valign="top" style="font-size:11px">
-                          <?
+                          <?php
                           $xopcao = '';
                           if(@$temsalario == true ){
 		                    if($xopcao == '')
@@ -493,7 +493,7 @@ function js_relatorio(){
           </tr>
           <tr> 
             <td  height="5%" colspan="2" align="center"> 
-              <?
+              <?php
 
                 $novapesquisa = "pes3_consponto001.php";
  
@@ -507,18 +507,18 @@ function js_relatorio(){
                 Período:
               </strong>
               &nbsp;&nbsp;
-       	      <?
+       	      <?php
     	      db_input("ano",4,'',true,'text',4)
 	          ?>
 	          &nbsp;/&nbsp;
-	          <?
+	          <?php
     	      db_input("mes",2,'',true,'text',4)
 	          ?>
              </td>
            </tr>
         </table>
       </form>
-    <?
+    <?php
 	} else {
 	?>
       <form name="form1" method="post">
@@ -533,16 +533,16 @@ function js_relatorio(){
           </tr>
           <tr> 
             <td align="right" title="<?=$Tr01_regist?>"> 
-              <?
+              <?php
     		  db_ancora($Lr01_regist,'js_pesquisaregist(true);',2)
     		  ?>
     		  &nbsp;&nbsp;&nbsp;
             </td >
             <td align="left" > 
-              <?
+              <?php
     		  db_input("r01_regist",8,$Ir01_regist,true,'text',4,"onchange='js_pesquisaregist(false);'")
     		  ?>
-              <?
+              <?php
     		  db_input("z01_nome",40,$Iz01_nome,true,'text',3)
     		  ?>
             </td>
@@ -552,12 +552,12 @@ function js_relatorio(){
           </tr>
         </table>
       </form>
-    <?
+    <?php
 	}
 	?>
   </center>
 
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -625,7 +625,7 @@ function js_mostradetalhes(chave){
 
 </script>
 
-<?
+<?php
 
 $func_nome = new janela('db_iframepessoal','');
 $func_nome ->posX=1;

@@ -27,8 +27,9 @@
 
 require_once(modification("fpdf151/pdfwebseller.php"));
 require_once(modification("libs/db_utils.php"));
-$oDaoEfetividade   = db_utils::getdao('efetividade');
-$oDaoEfetividadeRh = db_utils::getdao('efetividaderh');
+$oDaoEfetividade   = new cl_efetividade();
+$oDaoEfetividadeRh = new cl_efetividaderh();
+$oDaoCgmFisico     = new cl_cgmfisico();
 $sSql              = $oDaoEfetividadeRh->sql_query_file("",  "*", "ed98_d_datafim desc, ed98_c_tipo",
                                                         "    ed98_i_codigo in ($sRegistros)"
                                                        );
@@ -70,6 +71,7 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
   $lCor     = true;
   $sCampos = "distinct on (ed97_i_rechumano,z01_nome) ";
   $sCampos .= " case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome,  ";
+  $sCampos .= " case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as z01_numcgm,  ";
   $sCampos .= " case when ed20_i_tiposervidor = 1 then rechumanopessoal.ed284_i_rhpessoal ";
   $sCampos .= " else rechumanocgm.ed285_i_cgm end as identificacao,  efetividade.*";
   $sWhere   = " ed97_i_efetividaderh = $oDadosEfetvRh->ed98_i_codigo AND ed20_c_efetividade = 'S'";
@@ -79,6 +81,9 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
   for ($iContEf = 0; $iContEf < $oDaoEfetividade->numrows; $iContEf++) {
 
     $oDadosEfetividade = db_utils::fieldsmemory($rsEf, $iContEf);
+    $numcgm = $oDadosEfetividade->z01_numcgm;
+    $rsCgmFisico = $oDaoCgmFisico->sql_record($sqlCgmFisico);
+
 
     if (($oPdf->gety() > $oPdf->h - 30 || $lTroca != 0)) {
 
@@ -189,7 +194,9 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
       }
 
       $oPdf->cell(15, 4, $oDadosEfetividade->identificacao, "T", 0, "C", $lCor);
-      $oPdf->cell(60, 4, $oDadosEfetividade->z01_nome, "T", 0, "L", $lCor);
+      $nome = $oDadosEfetividade->z01_nome;
+      $nome = mb_strimwidth($nome, 0, 39);
+      $oPdf->cell(60, 4, $nome, "T", 0, "L", $lCor);
       $oPdf->cell(20, 4, $oDadosEfetividade->ed97_i_diasletivos == 0 ? "-" :
                   $oDadosEfetividade->ed97_i_diasletivos, "T", 0, "C", $lCor
                  );
@@ -287,7 +294,7 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
   }
 
   $oPdf->setfont('arial', '', 6);
-  $oPdf->cell(280, 4, "Assumo inteira responsaboilidade, para todos os fins legais, com as alterações registradas na ".
+  $oPdf->cell(280, 4, "Assumo inteira responsabilidade, para todos os fins legais, com as alterações registradas na ".
               "presente efetividade.", "T", 1, "C", 0);
   $oPdf->cell(280, 8, "", 0, 1, "C", 0);
   $oPdf->cell(80, 4, substr($oDadosEfetvRh->ed98_d_datafim, 8, 2)." de ".

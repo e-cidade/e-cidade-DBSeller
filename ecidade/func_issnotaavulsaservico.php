@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clissnotaavulsaservico->rotulo->label("q62_issnotaavulsa");
               <?=$Lq62_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q62_sequencial",10,$Iq62_sequencial,true,"text",4,"","chave_q62_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clissnotaavulsaservico->rotulo->label("q62_issnotaavulsa");
               <?=$Lq62_issnotaavulsa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q62_issnotaavulsa",10,$Iq62_issnotaavulsa,true,"text",4,"","chave_q62_issnotaavulsa");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clissnotaavulsaservico->rotulo->label("q62_issnotaavulsa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issnotaavulsaservico.php")==true){
@@ -122,12 +122,12 @@ $clissnotaavulsaservico->rotulo->label("q62_issnotaavulsa");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

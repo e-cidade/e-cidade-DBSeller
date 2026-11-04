@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -72,21 +72,21 @@ if(isset($alterar) || isset($excluir) || isset($incluir)){
   $cltarefalog->at43_tarefa  = $at43_tarefa;
   $cltarefalog->at43_usuario = $at43_usuario;
   $cltarefalog->at43_tipomov = $at43_tipomov;
-  
+
   if (!isset($at43_problema)) {
     global $at43_problema;
     $at43_problema='f';
     $GLOBALS["HTTP_POST_VARS"]["at43_problema"]=$at43_problema;
     $cltarefalog->at43_problema = $at43_problema;
   }
-  
+
 }
 
 if(isset($incluir)){
 
   if($sqlerro==false){
     db_inicio_transacao();
-    
+
     if( $sqlerro == false){
       if( isset($at45_usuario) && $at45_usuario > 0 ){
         if( isset($usuario_unico) ){
@@ -94,24 +94,24 @@ if(isset($incluir)){
           if($cltarefaenvol->numrows>0){
             $numrows = $cltarefaenvol->numrows;
             for($xx=0;$xx<$numrows;$xx++){
-              
+
               db_fieldsmemory($result,$xx);
-              
+
               $cltarefaenvol->at45_perc = 10 ;
               $cltarefaenvol->at45_sequencial = $seque ;
               $cltarefaenvol->at45_usuario = $usu ;
-              
+
               $cltarefaenvol->alterar($seque);
               if($cltarefaenvol->erro_status == '0'){
                 $erro_msg= $cltarefaenvol->erro_msg;
                 $sqlerro = true;
                 break;
               }
-              
+
             }
           }
         }
-        
+
         if( $sqlerro == false ){
           $cltarefaenvol = new cl_tarefaenvol;
           $result = $cltarefaenvol->sql_record($cltarefaenvol->sql_query_file(null,'at45_sequencial as seque',null," at45_tarefa = $at43_tarefa and at45_usuario = $at45_usuario "));
@@ -120,14 +120,14 @@ if(isset($incluir)){
             for($xx=0;$xx<$numrows;$xx++){
               db_fieldsmemory($result,$xx);
               $cltarefaenvol->at45_sequencial = $seque ;
-              $cltarefaenvol->excluir($seque);           
+              $cltarefaenvol->excluir($seque);
               if($cltarefaenvol->erro_status == '0'){
                 $erro_msg= $cltarefaenvol->erro_msg;
                 $sqlerro = true;
               }
             }
           }
-          
+
           $cltarefaenvol = new cl_tarefaenvol;
           $cltarefaenvol->at45_sequencial = 0;
           $cltarefaenvol->at45_tarefa     = $at43_tarefa;
@@ -139,19 +139,19 @@ if(isset($incluir)){
             $sqlerro = true;
           }
         }
-        
+
       }
-      
+
     }
-   
+
     if( $sqlerro == false){
-      
+
       $cltarefaclientes->excluir(null," at70_tarefa = $at43_tarefa and at70_cliente = $at70_cliente");
       if( $cltarefaclientes->erro_status == '0'){
         $erro_msg= $cltarefaclientes->erro_msg;
         $sqlerro = true;
       }else{
-        
+
         $cltarefaclientes->at70_sequencial = 0;
         $cltarefaclientes->at70_tarefa     = $at43_tarefa;
         $cltarefaclientes->at70_cliente    = $at70_cliente;
@@ -162,7 +162,7 @@ if(isset($incluir)){
         }
       }
     }
-   
+
     //$cltarefalog->incluir($at43_sequencial);
     $cltarefalog->incluir(null);
     $erro_msg = $cltarefalog->erro_msg;
@@ -173,11 +173,11 @@ if(isset($incluir)){
     if($cltarefalog->erro_status==0){
       $sqlerro=true;
     } else {
-      
+
       $at43_sequencial_novo = $at43_sequencial;
 
       if($cltarefalog->at43_avisar==3||$cltarefalog->at43_avisar==2) {
-			
+
         $rs_tarefa = $cltarefa->sql_record($cltarefa->sql_query_envol($at43_tarefa,"	   		   at45_usuario,
         tarefa.*,
         tarefaenvol.*,
@@ -186,21 +186,21 @@ if(isset($incluir)){
         at36_data,
         at36_hora",
         "at40_sequencial,tarefaenvol.at45_usuario",null));
-        
+
         if($cltarefa->numrows > 0) {
           for($i=0; $i < $cltarefa->numrows; $i++) {
             db_fieldsmemory($rs_tarefa,$i);
-            
+
             if ($at45_usuario == $at43_usuario) {
               continue;
             }
-            
+
             $rs_usuario = $cldb_usuarios->sql_record($cldb_usuarios->sql_query($at45_usuario,"email,nome as nome_criador","id_usuario"));
             if($cldb_usuarios->numrows > 0) {
               db_fieldsmemory($rs_usuario,0);
-              
+
               $emailenviar = $email;
-              
+
               if($at40_prioridade == 1) {
                 $prioridade = "Baixa";
               }
@@ -212,7 +212,7 @@ if(isset($incluir)){
               }
               $rs_resp  = $cldb_usuarios->sql_record($cldb_usuarios->sql_query($at40_responsavel,"nome as nome_resp","id_usuario"));
               db_fieldsmemory($rs_resp,0);
-              
+
               $mensagem  = $nome . "<br><br>";
               $mensagem .= "Um novo registro foi acrescentado a tarefa $at43_tarefa:<br>";
               $mensagem .= "Usuário    : $at43_usuario - $nome            <br>";
@@ -222,11 +222,11 @@ if(isset($incluir)){
               $mensagem .= "Data inicial:        $at43_diaini_dia/$at43_diaini_mes/$at43_diaini_ano - Hora Inicial: $at43_horainidia - ";
               $mensagem .= "Data final prevista: $at43_diafim_dia/$at43_diafim_mes/$at43_diafim_ano - Hora final: $at43_horafim<br>";
               $mensagem .= "Progresso          : " . $at43_progresso. "<br>";
-              
+
               $rs_log = $cltarefalog->sql_record($cltarefalog->sql_query_usua(null,"tarefalog.*, db_usuarios.*","at43_diaini, at43_horainidia"," at43_tarefa = $at43_tarefa"));
-              
+
               $mensagem .= "<br><br>" . str_repeat("=",60) ."<br>";
-              
+
               $mensagem .= "<br>DADOS DA TAREFA<br><br>";
               $mensagem .= "Tarefa: $at40_sequencial<br>";
               $mensagem .= "Responsavel: $at40_responsavel - $nome_resp<br>";
@@ -235,16 +235,16 @@ if(isset($incluir)){
               }
               $mensagem .= "Descricao  : $at40_descr<br>";
               $mensagem .= "Observações: $at40_obs<br>";
-              
+
               $mensagem .= "<br><br>" . str_repeat("=",60) ."<br>";
-              
+
               $mensagem .= "<br>LISTA DE TODOS OS ANDAMENTOS<br><br>";
-              
+
               for ($log=0; $log < $cltarefalog->numrows; $log++) {
                 db_fieldsmemory($rs_log, $log);
-                
+
                 if ($at43_sequencial_novo <> $at43_sequencial) {
-                  
+
                   $mensagem .= "Sequencia  : $at43_sequencial<br>";
                   $mensagem .= "Descricao  : $at43_descr<br>";
                   $mensagem .= "Observações: $at43_obs<br>";
@@ -252,15 +252,15 @@ if(isset($incluir)){
                   $mensagem .= "Inicio     : $at43_diaini - $at43_horainidia<br>";
                   $mensagem .= "Final      : $at43_diafim - $at43_horafim<br>";
                   $mensagem .= "Progresso  : $at43_progresso<br><br>";
-                  
+
                   $mensagem .= "<br><br>" . str_repeat("=",60) ."<br>";
-                  
+
                 }
-                
+
               }
               $envio = false;
               if($at48_situacao==2){
-                $envio = $cltarefalog->enviar_email($emailenviar,"Tarefa Análise: ".$cltarefalog->at43_tarefa . " - " . substr($at43_descr,0,40),$mensagem);                
+                $envio = $cltarefalog->enviar_email($emailenviar,"Tarefa Análise: ".$cltarefalog->at43_tarefa . " - " . substr($at43_descr,0,40),$mensagem);
               }else{
                 $envio = $cltarefalog->enviar_email($emailenviar,"Tarefa: ".$cltarefalog->at43_tarefa . " - " . substr($at43_descr,0,40),$mensagem);
               }
@@ -271,7 +271,7 @@ if(isset($incluir)){
           }
         }
       }
-     
+
       // Gerar tarefalogenvol
       if(isset($usuario_unico)) {
         $cltarefalogenvol->at35_tarefalog = $cltarefalog->at43_sequencial;
@@ -283,24 +283,24 @@ if(isset($incluir)){
           $sqlerro = true;
         }
       }
-      
+
       $cltarefalogsituacao->at48_tarefalog = $cltarefalog->at43_sequencial;
       $cltarefalogsituacao->at48_situacao  = $at48_situacao;
       $cltarefalogsituacao->incluir(null);
       $erro_msg = $cltarefalogsituacao->erro_msg;
-    
+
       if($cltarefalogsituacao->erro_status!=0) {
-        
+
         $cltarefa->at40_progresso  = $cltarefalog->at43_progresso;
         $cltarefa->at40_sequencial = $cltarefalog->at43_tarefa;
         //$cltarefa->at40_autorizada = "true";
-        
+
         $result = $cltarefasituacao->sql_record($cltarefasituacao->sql_query(null,"at47_sequencial",null,"at47_tarefa=" . $cltarefalog->at43_tarefa));
         if ($cltarefasituacao->numrows > 0) {
           db_fieldsmemory($result,0);
           $cltarefasituacao->at47_sequencial = $at47_sequencial;
         }
-        
+
         if ($cltarefalog->at43_progresso == 100) {
           $cltarefasituacao->at47_situacao = 3;
         } else {
@@ -335,9 +335,9 @@ if(isset($incluir)){
 
         // grava os items de menus ligados ao movimento da tarefa
         if ($sqlerro == false) {
-          
-          $tarefaslogitem = split('-',$itens_menu_escolhidos);
-          
+
+          $tarefaslogitem =explode('-',$itens_menu_escolhidos);
+
           if($cltarefalog->at43_tipomov == 3){
             if (count($tarefaslogitem) == 1) {
               $sqlerro = true;
@@ -349,7 +349,7 @@ if(isset($incluir)){
               echo "<script> alert('$erro_msg'); </script>";
             } else {
               //print_r($tarefaslogitem);exit;
-              
+
               $cltarefalogitem->excluir(null,' at66_codmov = '.$cltarefalog->at43_sequencial);
               for($grava_itens=1;$grava_itens<count($tarefaslogitem);$grava_itens++){
                 $cltarefalogitem->at66_sequencial = 0;
@@ -362,16 +362,16 @@ if(isset($incluir)){
                   echo "<script> alert('$erro_msg'); </script>";
                   break;
                 }
-                
+
               }
             }
           }
-          
+
         }
-       
+
         // grava os clientes envolvidos no movimento da tarefa
         if ($sqlerro == false) {
-          
+
 
           if( $cltarefalog->at43_tipomov == 1 || $cltarefalog->at43_tipomov == 3 || $cltarefalog->at43_tipomov == 4  || $cltarefalog->at43_tipomov == 7){
 
@@ -407,7 +407,7 @@ if(isset($incluir)){
               //echo "<script> alert('$erro_msg'); </script>";
             }
           }
-          
+
         }
 
         if ($sqlerro == false) {
@@ -420,24 +420,24 @@ if(isset($incluir)){
             $sqlerro  = true;
             $erro_msg = $cltarefa->erro_msg;
           }
-          
+
         }
       } else {
         $sqlerro  = true;
         $erro_msg = $cltarefalogsituacao->erro_msg;
       }
     }
-    
+
     db_fim_transacao($sqlerro);
-    
+
   }
 
 }else if(isset($alterar)){
   if($sqlerro == false) {
-    
+
     db_inicio_transacao();
     $cltarefalog->alterar($at43_sequencial);
-    
+
     $erro_msg = $cltarefalog->erro_msg;
     if($cltarefalog->erro_status == 0) {
       $sqlerro = true;
@@ -445,18 +445,18 @@ if(isset($incluir)){
     // grava os items de menus ligados ao movimento da tarefa
     if ($sqlerro == false) {
       $cltarefalogitem->excluir(null,' at66_codmov = '.$at43_sequencial);
-      
+
       if($cltarefalog->at43_tipomov == 3){
-        $tarefaslogitem = split('-',$itens_menu_escolhidos);
+        $tarefaslogitem =explode('-',$itens_menu_escolhidos);
         if( count($tarefaslogitem) == 1 ){
-          
+
           $sqlerro = true;
           $erro_msg = " Devera ser informado os itens de menus que foram alterados.";
           echo "<script> alert('$erro_msg'); </script>";
-          
+
         }else{
           //print_r($tarefaslogitem);exit;
-          
+
           for($grava_itens=1;$grava_itens<count($tarefaslogitem);$grava_itens++){
             $cltarefalogitem->at66_sequencial = 0;
             $cltarefalogitem->at66_codmov     = $at43_sequencial;
@@ -468,16 +468,16 @@ if(isset($incluir)){
               //echo "<script> alert('$erro_msg'); </script>";
               //break;
             }
-            
+
           }
         }
       }
-      
+
     }
-    
+
     // grava os clientes ligados ao movimento da tarefa
     if ($sqlerro == false) {
-      
+
       if($cltarefalog->at43_tipomov == 1 || $cltarefalog->at43_tipomov == 3 || $cltarefalog->at43_tipomov == 4  || $cltarefalog->at43_tipomov == 7 ){
         if(trim($itens_clientes_escolhidos) <> "") {
           $tarefalogclientes = explode('-',$itens_clientes_escolhidos);
@@ -486,7 +486,7 @@ if(isset($incluir)){
         }
         $countclientes     = count($tarefalogclientes);
         if( $countclientes > 0 ){
-          
+
           $cltarefalogclientes->excluir(null,' at68_codmov = '.$at43_sequencial);
           for($grava_itens=0; $grava_itens<$countclientes; $grava_itens++){
             if ( $tarefalogclientes[$grava_itens] ==""){
@@ -509,21 +509,21 @@ if(isset($incluir)){
           //echo "<script> alert('$erro_msg'); </script>";
         }
       }
-      
+
     }
 
-    
+
     if($sqlerro == false) {
       $result = $cltarefalogsituacao->sql_record($cltarefalogsituacao->sql_query(null,"at48_sequencial",null,"at48_tarefalog=$cltarefalog->at43_sequencial"));
-      
+
       if($cltarefalogsituacao->numrows > 0) {
         db_fieldsmemory($result,0);
-        
+
         $cltarefalogsituacao->at48_sequencial = $at48_sequencial;
         $cltarefalogsituacao->at48_tarefalog  = $cltarefalog->at43_sequencial;
         $cltarefalogsituacao->at48_situacao   = $at48_situacao;
         $cltarefalogsituacao->alterar($at48_sequencial);
-        
+
         if($cltarefalogsituacao->erro_status == 0) {
           $erro_msg = $cltarefalogsituacao->erro_msg;
           $sqlerro = true;
@@ -532,19 +532,19 @@ if(isset($incluir)){
         }
       }
     }
-    
+
     if($sqlerro == false) {
-      
+
       $cltarefa->at40_progresso  = $cltarefalog->at43_progresso;
       // $cltarefa->at40_autorizada = "true";
       $cltarefa->at40_sequencial = $cltarefalog->at43_tarefa;
       $cltarefa->alterar($cltarefalog->at43_tarefa);
-      
+
       if($cltarefa->erro_status==0) {
         $sqlerro = true;
         $erro_msg = $cltarefa->erro_msg;
       }
-      
+
       if($sqlerro == false) {
         $result = $cltarefasituacao->sql_record($cltarefasituacao->sql_query(null,"at47_sequencial",null,"at47_tarefa=" . $cltarefalog->at43_tarefa));
         if ($cltarefasituacao->numrows > 0) {
@@ -553,7 +553,7 @@ if(isset($incluir)){
           if ($cltarefalog->at43_progresso == 100 ) {
             $cltarefasituacao->at47_situacao = 3;
           }else{
-          	
+
           	 /*
              * busca ultimo registro da tarefa
              */
@@ -561,12 +561,12 @@ if(isset($incluir)){
             $sWhereLog   = "at43_tarefa = $at43_tarefa";
             $sOrderLog   = "at48_tarefalog desc";
             $rsResultLog = $cltarefalogsituacao->sql_record($cltarefalogsituacao->sql_query("", $sCamposLog, $sOrderLog, $sWhereLog));
-          
+
             if($cltarefalogsituacao->numrows > 0){
             db_fieldsmemory($rsResultLog,0);
               $cltarefasituacao->at47_situacao = $at48_situacao;
             } else {
-              $cltarefasituacao->at47_situacao = $at48_situacao;	
+              $cltarefasituacao->at47_situacao = $at48_situacao;
             }
           }
           $cltarefasituacao->alterar($at47_sequencial);
@@ -577,7 +577,7 @@ if(isset($incluir)){
         }
       }
     }
-    
+
   } else {
     echo "<script>(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_tarefalog.location.href='ate1_tarefalogand002.php?a=4&at43_tarefa=".@$at43_tarefa."&xxx=3&at43_usuario=".@$at43_usuario."'</script>";
   }
@@ -587,39 +587,39 @@ if(isset($incluir)){
   if($sqlerro==false){
     db_inicio_transacao();
     $cltarefalogclientes->excluir(null,' at68_codmov = '.$at43_sequencial);
-    
+
     if ($cltarefalogclientes->erro_status == 0) {
       $sqlerro = true;
       $erro_msg = $cltarefalogclientes->erro_msg;
       echo "<script> alert('$erro_msg'); </script>";
     }
-    
+
     $cltarefalogitem->excluir(null,' at66_codmov = '.$at43_sequencial);
-    
+
     if ($cltarefalogitem->erro_status == 0) {
       $sqlerro = true;
       $erro_msg = $cltarefalogitem->erro_msg;
       echo "<script> alert('$erro_msg'); </script>";
     }
-    
-    
+
+
     $cltarefalogsituacao->at48_tarefalog = $at43_sequencial;
     $cltarefalogsituacao->excluir(null,"at48_tarefalog=$at43_sequencial");
-    
+
     if($cltarefalogsituacao->erro_status==0){
       $sqlerro=true;
-    } 
-    $erro_msg = $cltarefalogsituacao->erro_msg; 
-    
+    }
+    $erro_msg = $cltarefalogsituacao->erro_msg;
+
     $cltarefalog->excluir($at43_sequencial);
     if($cltarefalog->erro_status==0){
       $sqlerro=true;
     }
     else {
       echo "<script>(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_tarefalog.location.href='ate1_tarefalogand002.php?a=5&at43_tarefa=".@$at43_tarefa."&xxx=4&at43_usuario=".@$at43_usuario."'</script>";
-    } 
-    $erro_msg = $cltarefalog->erro_msg; 
-    
+    }
+    $erro_msg = $cltarefalog->erro_msg;
+
     db_fim_transacao($sqlerro);
   }
 }else if(isset($opcao)){
@@ -627,13 +627,13 @@ if(isset($incluir)){
   if($result!=false && $cltarefalog->numrows>0){
     db_fieldsmemory($result,0);
   }
-  
+
   $result = $cltarefalogsituacao->sql_record($cltarefalogsituacao->sql_query(null,"*",null,"at48_tarefalog=$at43_sequencial"));
   if($cltarefalogsituacao->numrows > 0) {
     db_fieldsmemory($result,0);
-  } 
+  }
 
-  
+
   $itens_clientes_escolhidos = "";
   $result = $cltarefalogclientes->sql_record($cltarefalogclientes->sql_query(null,"at68_codcli",null,"at68_codmov=$at43_sequencial"));
   if($cltarefalogclientes->numrows>0){
@@ -683,10 +683,10 @@ if(isset($incluir)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+<tr>
+<td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 <center>
-<?
+<?php
 include(modification("forms/db_frmcontarefalogand.php"));
 ?>
 </center>
@@ -695,13 +695,13 @@ include(modification("forms/db_frmcontarefalogand.php"));
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
-	
+
 	if ($sqlerro == true) {
 		$db_opcao=1;
 	}
-  
+
   db_msgbox($erro_msg);
   if($cltarefalog->erro_campo!=""){
     echo "<script> document.form1.".$cltarefalog->erro_campo.".style.backgroundColor='#99A9AE';</script>";

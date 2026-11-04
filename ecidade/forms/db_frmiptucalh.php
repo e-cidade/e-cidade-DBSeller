@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $cliptucalh->rotulo->label();
           <label for="j17_codhis"><?=@$Lj17_codhis?></label>
         </td>
         <td> 
-          <? db_input('j17_codhis',10,$Ij17_codhis,true,'text',$db_opcao,"") ?>
+          <?php db_input('j17_codhis',10,$Ij17_codhis,true,'text',$db_opcao,"") ?>
         </td>
       </tr>
       <tr>
@@ -45,7 +45,7 @@ $cliptucalh->rotulo->label();
           <label for="j17_descr"><?=@$Lj17_descr?></label>
         </td>
         <td> 
-          <? db_input('j17_descr',40,$Ij17_descr,true,'text',$db_opcao,"") ?>
+          <?php db_input('j17_descr',40,$Ij17_descr,true,'text',$db_opcao,"") ?>
         </td>
       </tr>
     </table>
@@ -59,7 +59,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_iptucalh.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

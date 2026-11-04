@@ -362,6 +362,11 @@ LancamentoExameLaboratorio.prototype.preencherAtributos = function(bSelecionou =
                     sStringReferencia = "(" + oAtributo.referencia.faixanormalminimo + " Até ";
                     sStringReferencia += oAtributo.referencia.faixanormalmaximo + ") " + oAtributo.referencia.unidade.urlDecode();
                     break;
+
+                case REFERENCIA_FIXA:
+
+                    sStringReferencia = oAtributo.referencia.fixo.urlDecode();
+                    break;
             }
             aLinha[4] = sStringReferencia;
         }
@@ -520,7 +525,7 @@ LancamentoExameLaboratorio.prototype.inputValorNumerico = function(oAtributo, se
     }
 
     var oSelf = this;
-    var oInput = new Element('input', { 'type': 'text', 'id': 'atributo_' + oAtributo.codigo, 'value': oAtributo.valorabsoluto, 'onchange': this.sNameInstance + '.verificaFormulas(' + oAtributo.codigo + ', this)' });
+    var oInput = new Element('input', { 'type': 'text', 'id': 'atributo_' + oAtributo.codigo, 'value': oAtributo.valorabsoluto.urlDecode(), 'onchange': this.sNameInstance + '.verificaFormulas(' + oAtributo.codigo + ', this)' });
     oInput.style = 'width:99%; text-align: right';
 
     if (oAtributo.referencia.tipocalculo == 1 || oAtributo.referencia.tipocalculo == 2) { // oAtributo.referencia.tipocalculo == 1
@@ -553,6 +558,7 @@ LancamentoExameLaboratorio.prototype.inputValorFixo = function(oAtributo, sequen
 
     var oInput = new Element('input', { type: 'text', value: oAtributo.valorabsoluto.urlDecode(), style: 'width:98%' });
     oInput.setAttribute("id", 'atributo_' + oAtributo.codigo);
+    oInput.setAttribute("maxlength", 50);
 
     if (this.lReadOnly || oAtributo.temFormula) {
 
@@ -1288,7 +1294,12 @@ LancamentoExameLaboratorio.prototype.executarCalculoFormula = function(atributoF
                     return;
                 }
 
+                const valorPrevio = $('atributo_' + retorno.codigoAtributo).value;
                 $('atributo_' + retorno.codigoAtributo).value = retorno.valor;
+
+                if (valorPrevio !== retorno.valor) {
+                    $('atributo_' + retorno.codigoAtributo).dispatchEvent(new Event('change'));
+                }
             }
         }
     );

@@ -31,104 +31,104 @@ require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
-$oParam            = JSON::create()->parse(str_replace("\\","",$_POST["json"]));
+$oParam            = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
 $oRetorno          = new stdClass();
 $oRetorno->erro    = false;
 $oRetorno->message = '';
 
 try {
+    db_inicio_transacao();
 
-  db_inicio_transacao();
+    switch ($oParam->exec) {
 
-  switch ($oParam->exec) {
+      /**
+       * Pesquisa as posicoes do acordo
+       */
+        case "getItensAditar":
+            $oContrato  = AcordoRepository::getByCodigo($oParam->iAcordo);
 
-    /**
-     * Pesquisa as posicoes do acordo
-     */
-    case "getItensAditar":
+            $oPosicao                = $oContrato->getUltimaPosicao();
+            $oRetorno->tipocontrato  = $oContrato->getOrigem();
+            $oRetorno->datainicial   = $oContrato->getDataInicial();
+            $oRetorno->datafinal     = $oContrato->getDataFinal();
+            $oRetorno->posicaoitem   = $oContrato->getItemPosicao();
 
-      $oContrato  = AcordoRepository::getByCodigo($oParam->iAcordo);
+            $oRetorno->valores       = $oContrato->getValoresAcordoItens($oRetorno->posicaoitem);
+            // $oRetorno->valores   = $oContrato->getValoresItens();
 
-      $oPosicao                = $oContrato->getUltimaPosicao();
-      $oRetorno->tipocontrato  = $oContrato->getOrigem();
-      $oRetorno->datainicial   = $oContrato->getDataInicial();
-      $oRetorno->datafinal     = $oContrato->getDataFinal();
-      $oRetorno->valores       = $oContrato->getValoresItens();
-      $oRetorno->origem_manual = ($oContrato->getOrigem() == Acordo::ORIGEM_MANUAL);
+            $oRetorno->origem_manual = ($oContrato->getOrigem() == Acordo::ORIGEM_MANUAL);
 
-      $aItens = array();
-      foreach ($oPosicao->getItens() as $oItemPosicao) {
+            $aItens = array();
+            foreach ($oPosicao->getItens() as $oItemPosicao) {
+                $oItem                 = new stdClass();
 
-        $oItem                 = new stdClass();
+                $oItem->codigo         = $oItemPosicao->getCodigo();
+                $oItem->codigoitem     = $oItemPosicao->getMaterial()->getMaterial();
+                $oItem->elemento       = $oItemPosicao->getDesdobramento();
+                $oItem->descricaoitem  = $oItemPosicao->getMaterial()->getDescricao();
+                $oItem->valorunitario  = $oItemPosicao->getValorUnitario();
+                $oItem->quantidade     = $oItemPosicao->getQuantidadeAtualizadaRenovacao();
+                $oItem->valor          = $oItemPosicao->getValorAtualizadoRenovacao();
+                $oItem->servico        = $oItemPosicao->getMaterial()->isServico();
+                $oItem->servicoquantidade = $oItemPosicao->getControlaQuantidade();
+                $oItem->resumo            = $oItemPosicao->getResumo();
+                $oItem->dotacoes          = array();
 
-        $oItem->codigo         = $oItemPosicao->getCodigo();
-        $oItem->codigoitem     = $oItemPosicao->getMaterial()->getMaterial();
-        $oItem->elemento       = $oItemPosicao->getDesdobramento();
-        $oItem->descricaoitem  = $oItemPosicao->getMaterial()->getDescricao();
-        $oItem->valorunitario  = $oItemPosicao->getValorUnitario();
-        $oItem->quantidade     = $oItemPosicao->getQuantidadeAtualizadaRenovacao();
-        $oItem->valor          = $oItemPosicao->getValorAtualizadoRenovacao();
-        $oItem->servico        = $oItemPosicao->getMaterial()->isServico();
-        $oItem->servicoquantidade = $oItemPosicao->getControlaQuantidade();
-        $oItem->dotacoes          = array();
+                foreach ($oItemPosicao->getDotacoes() as $oDotacao) {
+                    $oDotacaoSaldo = new Dotacao($oDotacao->dotacao, $oDotacao->ano);
+                    $oItem->dotacoes[] = (object) array(
+                    'dotacao' => $oDotacao->dotacao,
+                    'quantidade' => $oDotacao->quantidade,
+                    'valor' => $oDotacao->valor,
+                    'valororiginal' => $oDotacao->valor,
+                    'orgao' => $oDotacaoSaldo->getDescricaoOrgao()
+                    );
+                }
 
-        foreach($oItemPosicao->getDotacoes() as $oDotacao) {
-          $oItem->dotacoes[] = (object) array(
-              'dotacao' => $oDotacao->dotacao,
-              'quantidade' => $oDotacao->quantidade,
-              'valor' => $oDotacao->valor,
-              'valororiginal' => $oDotacao->valor
+                $aItens[] = $oItem;
+            }
+
+            $oRetorno->itens = $aItens;
+            break;
+
+        case "processarAditamento":
+            $oContrato = AcordoRepository::getByCodigo($oParam->iAcordo);
+            $oContrato->aditar(
+                $oParam->aItens,
+                $oParam->tipoaditamento,
+                $oParam->datainicial,
+                $oParam->datafinal,
+                $oParam->sNumeroAditamento,
+                db_stdClass::db_stripTagsJson($oParam->sJustificativa),
+                $oParam->iTipoOperacao,
+                $oParam->iTipoAlteracao
             );
-        }
+            break;
 
-        $aItens[] = $oItem;
-      }
+        case "getUnidades":
+            $oDaoMatUnid  = db_utils::getDao("matunid");
+            $sSqlUnidades = $oDaoMatUnid->sql_query_file(
+                null,
+                "m61_codmatunid,substr(m61_descr,1,20) as m61_descr",
+                "m61_descr"
+            );
+            $rsUnidades      = $oDaoMatUnid->sql_record($sSqlUnidades);
+            $iNumRowsUnidade = $oDaoMatUnid->numrows;
+            for ($i = 0; $i < $iNumRowsUnidade; $i++) {
+                $oUnidade = db_utils::fieldsMemory($rsUnidades, $i);
+                $oUnidade->m61_descr = urlencode($oUnidade->m61_descr);
 
-      $oRetorno->itens = $aItens;
-      break;
+                $aUnidades[] = $oUnidade;
+            }
+            $oRetorno->itens = $aUnidades;
+            break;
+    }
 
-    case "processarAditamento":
-
-      $oContrato = AcordoRepository::getByCodigo($oParam->iAcordo);
-      $oContrato->aditar(
-        $oParam->aItens,
-        $oParam->tipoaditamento,
-        $oParam->datainicial,
-        $oParam->datafinal,
-        $oParam->sNumeroAditamento,
-        db_stdClass::db_stripTagsJson($oParam->sJustificativa),
-        $oParam->iTipoOperacao,
-        $oParam->iTipoAlteracao
-      );
-      break;
-
-    case "getUnidades":
-
-      $oDaoMatUnid  = db_utils::getDao("matunid");
-      $sSqlUnidades = $oDaoMatUnid->sql_query_file( null,
-                                                    "m61_codmatunid,substr(m61_descr,1,20) as m61_descr",
-                                                    "m61_descr" );
-      $rsUnidades      = $oDaoMatUnid->sql_record($sSqlUnidades);
-      $iNumRowsUnidade = $oDaoMatUnid->numrows;
-      for ($i = 0; $i < $iNumRowsUnidade; $i++) {
-
-        $oUnidade = db_utils::fieldsMemory($rsUnidades, $i);
-        $oUnidade->m61_descr = urlencode($oUnidade->m61_descr);
-
-        $aUnidades[] = $oUnidade;
-      }
-      $oRetorno->itens = $aUnidades;
-      break;
-
-  }
-
-  db_fim_transacao(false);
-
+    db_fim_transacao(false);
 } catch (Exception $eErro) {
-
-  db_fim_transacao (true);
-  $oRetorno->erro  = true;
-  $oRetorno->message = urlencode($eErro->getMessage());
+    db_fim_transacao(true);
+    $oRetorno->erro  = true;
+    $oRetorno->message = urlencode($eErro->getMessage());
 }
 
 echo JSON::create()->stringify($oRetorno);

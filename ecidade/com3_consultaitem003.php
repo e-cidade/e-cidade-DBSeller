@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -69,7 +69,7 @@ $clrotulo->label("");
     <center>
  <table border='1' cellspacing="0" cellpadding="0">
 
- <?
+ <?php
  $where="";
 
  if (isset($pc01_codmater) && $pc01_codmater!= "") {

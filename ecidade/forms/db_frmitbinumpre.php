@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("it01_guia");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tit15_guia?>">
-       <?
+       <?php
        db_ancora(@$Lit15_guia,"js_pesquisait15_guia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it15_guia',10,$Iit15_guia,true,'text',$db_opcao," onchange='js_pesquisait15_guia(false);'")
 ?>
-       <?
+       <?php
 db_input('it01_guia',10,$Iit01_guia,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('it01_guia',10,$Iit01_guia,true,'text',3,'')
        <?=@$Lit15_numpre?>
     </td>
     <td> 
-<?
+<?php
 db_input('it15_numpre',20,$Iit15_numpre,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbinumpre.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

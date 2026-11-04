@@ -27,4 +27,14 @@ class Saltes extends Model
     {
         return $this->hasOne(Empagetipo::class, 'e83_codtipo', 'k13_conta');
     }
+
+    public function contaExtra()
+    {
+        return $this->hasOne(SaltesExtra::class, 'k109_saltes', 'k13_conta');
+    }
+
+    public function contaContrapartida()
+    {
+        return $this->hasOne(SaltesContrapartida::class, 'k103_saltes', 'k13_conta');
+    }
 }

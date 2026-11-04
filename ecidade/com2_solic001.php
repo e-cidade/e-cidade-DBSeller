@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("g1"=>"Departamentos","g2"=>"Tipos de compra","g3"=>"Materiais","g4"=>"Dotações");
        $clcriaabas->title = array("g1"=>"Selecionar os departamentos das solicitações","g2"=>"Selecionar os tipos de compra das solicitações","g3"=>"Selecionar os materiais dos itens solicitados","g4"=>"Selecionar as dotações com os itens solicitados");
        $clcriaabas->src = array("g1"=>"com2_solic003.php","g2"=>"com2_solic004.php","g3"=>"com2_solic005.php","g4"=>"com2_solic006.php");
@@ -65,7 +65,7 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

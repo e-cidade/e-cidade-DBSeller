@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -83,15 +83,15 @@ function js_emite(){
       </tr>
       <tr >
         <td align="left" nowrap title="<?=@$Tk02_codigo?>" >
-          <?
+          <?php
              db_ancora(@$Lk02_codigo,"js_pesquisatabrec(true);",4)
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('k02_codigo',4,$Ik02_codigo,true,'text',4,"onchange='js_pesquisatabrec(false);'")
           ?>
-          <?
+          <?php
             db_input('k02_drecei',40,$Ik02_drecei,true,'text',3,'')
           ?>
 
@@ -106,7 +106,7 @@ function js_emite(){
       <tr>
         <td align="left" ><strong>Data Final :</strong></td>
         <td>
-        <?
+        <?php
          $datausu = date("Y/m/d",db_getsession("DB_datausu"));
          $dataf_ano = substr($datausu,0,4);
          $dataf_mes = substr($datausu,5,2);
@@ -128,7 +128,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,15 +57,15 @@ if(isset($db_opcaoal)){
 <table border="0" >
   <tr>
     <td nowrap title="<?=@$Tk41_cadtipoparc?>">
-       <?
+       <?php
        db_ancora(@$Lk41_cadtipoparc,"js_pesquisak41_cadtipoparc(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k41_cadtipoparc',10,$Ik41_cadtipoparc,true,'text',3," onchange='js_pesquisak41_cadtipoparc(false);'")
 ?>
-       <?
+       <?php
        if (isset($k41_cadtipoparc)&&$k41_cadtipoparc!=""){
         $Result_Descr=$clcadtipoparc->sql_record($clcadtipoparc->sql_query_file($k41_cadtipoparc,null,"k40_descr"));        
        	if ($clcadtipoparc->numrows>0){
@@ -78,15 +78,15 @@ db_input('k40_descr',40,$Ik40_descr,true,'text',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk41_arretipo?>">
-       <?
+       <?php
        db_ancora(@$Lk41_arretipo,"js_pesquisak41_arretipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k41_arretipo',10,$Ik41_arretipo,true,'text',$db_opcao," onchange='js_pesquisak41_arretipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
     <td nowrap title="<?=@$Tk41_vencini?>"><?=@$Lk41_vencini?>
     </td>
     <td> 
-      <?
+      <?php
         db_inputdata('k41_vencini',@$k41_vencini_dia,@$k41_vencini_mes,@$k41_vencini_ano,true,'text',$db_opcao,"")
        ?>
     </td>
@@ -104,7 +104,7 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
     <td nowrap title="<?=@$Tk41_vencfim?>"><?=@$Lk41_vencfim?>
     </td>
     <td> 
-      <?
+      <?php
         db_inputdata('k41_vencfim',@$k41_vencfim_dia,@$k41_vencfim_mes,@$k41_vencfim_ano,true,'text',$db_opcao,"")
        ?>
     </td>
@@ -120,7 +120,7 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("k41_cadtipoparc"=>@$k41_cadtipoparc,"k41_arretipo"=>@$k41_arretipo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcadtipoparcdeb->sql_query($k41_cadtipoparc);

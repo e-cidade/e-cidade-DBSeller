@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,12 +38,12 @@ $clrotulo->label("o69_codparamrel");
           <b>Dados</b>
         </legend>
         <table>
-          <tr style=''>
+          <tr>
             <td nowrap title="<?=@$To98_sequencial?>">
               <?=@$Lo98_sequencial?>
             </td>
             <td>
-              <?
+              <?php
               db_input('o98_sequencial',10,$Io98_sequencial,true,'text',3,"")
               ?>
             </td>
@@ -53,7 +53,7 @@ $clrotulo->label("o69_codparamrel");
               <?=@$Lo98_orcparamseq?>
             </td>
             <td>
-              <?      
+              <?php      
                $result = $clorcparamseq->sql_record(
                          $clorcparamseq->sql_query($oGet->c83_codrel,null, "o69_codseq,o69_descr"));
                db_selectrecord("o98_orcparamseq",$result,true,$db_opcao);
@@ -66,7 +66,7 @@ $clrotulo->label("o69_codparamrel");
               <?=@$Lo98_anousu?>
             </td>
             <td>
-              <?
+              <?php
               $o98_anousu = db_getsession('DB_anousu');
               db_input('o98_anousu',10,$Io98_anousu,true,'text',3,"")
               ?>
@@ -77,7 +77,7 @@ $clrotulo->label("o69_codparamrel");
               <?=@$Lo98_identificacao?>
             </td>
             <td>
-              <?
+              <?php
               db_input('o98_identificacao',50,$Io98_identificacao,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -87,7 +87,7 @@ $clrotulo->label("o69_codparamrel");
               <?=@$Lo98_credor?>
             </td>
             <td>
-              <?
+              <?php
                db_input('o98_credor',75,$Io98_credor,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -111,7 +111,7 @@ $clrotulo->label("o69_codparamrel");
               <?=@$Lo98_valor?>
             </td>
             <td>
-              <?
+              <?php
               db_input('o98_valor',15,$Io98_valor,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -126,7 +126,7 @@ $clrotulo->label("o69_codparamrel");
         <?=($db_botao==false?"disabled":"")?>>
         <input name="novo" type="submit" id="Novo" value="Novo">
       
-      <?
+      <?php
        $aChavesPri                         = array(
                                                    "o98_sequencial"=>'',
                                                   );
@@ -243,7 +243,7 @@ $clrotulo->label("o69_codparamrel");
         }
         function js_preenchepesquisa(chave){
           db_iframe_orcparamrelopcre.hide();
-          <?
+          <?php
           if($db_opcao!=1){
             echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
           }

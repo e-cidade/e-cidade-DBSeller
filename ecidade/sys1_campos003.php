@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ input {
 </tr>
 <tr>
 <td>
-<?
+<?php
 $result = db_query("select codcam,nomecam from db_syscampo where nomecam like '$campo%'");
 $numrows = pg_numrows($result);
 if($numrows > 0) {

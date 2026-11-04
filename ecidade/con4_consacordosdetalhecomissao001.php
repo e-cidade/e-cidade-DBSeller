@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $oAcordoComissao = new AcordoComissao ($oGet->iComissao);
 ?>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js");
 db_app::load("widgets/dbmessageBoard.widget.js,widgets/dbtextField.widget.js");
 db_app::load("DBViewAcordoPrevisao.classe.js,widgets/dbtextFieldData.widget.js,classes/DBViewAcordoExecucao.classe.js, widgets/DBHint.widget.js");

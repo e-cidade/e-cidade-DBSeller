@@ -131,7 +131,7 @@ class Lote extends BaseAbstract
         $iFase                     = $this->oLicitacao->getFase();
         $iTipoJulgamento           = $this->oLicitacao->getTipoJulgamento();
         $oJulgamento               = new Julgamento($iTipoJulgamento);
-        
+
         $oFornecedor               = new stdClass();
         $oFornecedor->tipo         = null;
         $oFornecedor->documento    = null;
@@ -163,11 +163,11 @@ class Lote extends BaseAbstract
             $oFornecedores->fornecedor->tipo      = $oFornecedorBusca->tipoPessoa;
             $oFornecedores->fornecedor->documento = $oFornecedorBusca->documento;
         }
-            
+
         if ($iFase != EventoLicitacao::FASE_ADJUDICACAO_HOMOLOGACAO) {
             return $oFornecedores;
         }
-         
+
         /*
           Lógica aplicada conforme layout do Licitacon
         */
@@ -240,11 +240,11 @@ class Lote extends BaseAbstract
     {
         $oResultado = new Resultado($this->oConfiguracao, $this->oLicitacao);
         $oSituacao = $oResultado->getResultadoLote($oFornecedor);
-        
+
         if (empty($oSituacao)) {
             return null;
         }
-        
+
         return $oSituacao->getSigla();
     }
 
@@ -252,7 +252,8 @@ class Lote extends BaseAbstract
     {
         $nivelJulgamento = $licitacao->obterNivelJulgamento();
         $siglaTipoCompraTribunal = $licitacao->getModalidade()->getSiglaTipoCompraTribunal();
-        $modalidades = array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE');
+        $modalidades = array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE', 'CCE',
+            'CCP', 'PCE', 'PCP');
 
         if ($nivelJulgamento == 'L' && in_array($siglaTipoCompraTribunal, $modalidades)) {
             return $licitacao->obterTipoBeneficioMicroempresaEmpresaPequenoPorte();

@@ -57,7 +57,6 @@ if (isset($incluir)) {
     $oDaoEnsino->ed10_i_grauensino = 'null';
     $oDaoEnsino->ed10_mediacaodidaticopedagogica = $ed130_codigo;
     $oDaoEnsino->ed10_ordem = $iOrdemEnsino;
-    $oDaoEnsino->ed10_censocursoprofiss = $ed247_i_codigo;
     $oDaoEnsino->ed10_tipo = $ed10_tipo;
     $oDaoEnsino->incluir($ed10_i_codigo);
     db_fim_transacao();

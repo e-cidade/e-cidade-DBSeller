@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@ db_postmemory($HTTP_POST_VARS);
   $clcontrib->excluir($contri);
   if($clcontrib->erro_status=='0'){
     $sqlerro = true;
-     break;
+     return false;
   }
   $sqlerro=false;
   $vt=$HTTP_POST_VARS;
@@ -59,7 +59,7 @@ db_postmemory($HTTP_POST_VARS);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
     if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+      $dados=explode("_",$chave); 
       $matric=$dados[1];
       $valor=$vt["d07_valor_".$matric];
       $vlrdes=$vt["d07_vlrdes_".$matric];
@@ -196,10 +196,10 @@ class cl_fate extends cl_contrib {
 	     $valparc=$d07_valor+$d07_vlrdes;  
 	   }  
 	   $y="d07_vlrdes_$j01_matric";
-	   global $$y;
+	   global ${$y};
 	   $$y=number_format($d07_vlrdes,2,'.','');
 	   $x="d07_valor_$j01_matric";
-	   global $$x;
+	   global ${$x};
 	   $$x=number_format($d07_valor,2,'.','');
 	  echo "
    	       <tr>
@@ -316,7 +316,7 @@ function js_incluirlinha(matri,refant,nome,setor,quadra,lote,zona,total,desconto
   <table border="0">
     <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
   <b><small>Matriculas  em <span style="color:green;">verde</span> já foram calculadas.</small></b>
-  <?
+  <?php
   if(isset($contri)){
     $clfate = new cl_fate;
       $sql = "select d05_testad,d07_valor,d07_vlrdes,j01_matric,j40_refant,z01_nome,j34_setor,j34_quadra,j34_lote,j34_zona,j34_idbql, d41_testada+d41_eixo as d41_testada 
@@ -347,7 +347,7 @@ function js_incluirlinha(matri,refant,nome,setor,quadra,lote,zona,total,desconto
   </table>
   </body>
 </html>
-<?
+<?php
 if(isset($confirma) && $confirma=="ok"){
   if($clcontrib->erro_status=="0"){
      $clcontrib->erro(true,false);

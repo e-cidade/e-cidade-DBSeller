@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
               <?=$Lrh48_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh48_codigo",10,$Irh48_codigo,true,"text",4,"","chave_rh48_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
               <?=$Lrh48_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh48_numcgm",10,$Irh48_numcgm,true,"text",4,"","chave_rh48_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhvisavalecgm.php")==true){
@@ -118,12 +118,12 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

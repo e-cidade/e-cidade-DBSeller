@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ function js_marca(obj){
     <form name='form1'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <?php
 $sql = "select arrecad.k00_numpre,k00_numpar,k00_dtvenc,sum(k00_valor)as k00_valor,arrecad.k00_tipo,k00_descr
 	              from $tab 
 	                inner join arrecad    on arrecad.k00_numpre = $tab.k00_numpre

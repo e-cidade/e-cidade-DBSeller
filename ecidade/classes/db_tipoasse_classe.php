@@ -61,26 +61,32 @@ class cl_tipoasse
     public $h12_natureza = 0;
     public $h12_gerafaltas = 'f';
     public $h12_permiteduplicar = false;
+    public $h12_lancamentomensal = 0;
+    public $h12_lancamentoanual = 0;
+    public $h12_bloqueioassentamento = 'f';
     // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 h12_codigo = int4 = Sequencial assentamento 
-                 h12_assent = varchar(5) = Código 
-                 h12_descr = varchar(40) = Descrição 
-                 h12_dias = int4 = Dias 
-                 h12_relvan = bool = Relaciona com Vantagem 
-                 h12_relass = bool = Relaciona como Assentamento 
-                 h12_reltot = int4 = Totais 
-                 h12_relgra = bool = Grade de FG 
-                 h12_tipo = varchar(1) = Tipo 
-                 h12_graefe = bool = Grade efetividade 
-                 h12_efetiv = varchar(1) = Efetividade 
-                 h12_tipefe = varchar(1) = Tipo de efetividade 
-                 h12_regenc = bool = Regência 
-                 h12_vinculaperiodoaquisitivo = bool = Vincular Período Aquisitivo de Férias 
-                 h12_tiporeajuste = int4 = Tipo de Reajuste Salarial 
-                 h12_natureza = int4 = Natureza 
-                 h12_gerafaltas = bool = Gerar Faltas 
-                 h12_permiteduplicar = bool = Permite duplicar";
+                 h12_codigo = int4 = Sequencial assentamento
+                 h12_assent = varchar(5) = Código
+                 h12_descr = varchar(40) = Descrição
+                 h12_dias = int4 = Dias
+                 h12_relvan = bool = Relaciona com Vantagem
+                 h12_relass = bool = Relaciona como Assentamento
+                 h12_reltot = int4 = Totais
+                 h12_relgra = bool = Grade de FG
+                 h12_tipo = varchar(1) = Tipo
+                 h12_graefe = bool = Grade efetividade
+                 h12_efetiv = varchar(1) = Efetividade
+                 h12_tipefe = varchar(1) = Tipo de efetividade
+                 h12_regenc = bool = Regência
+                 h12_vinculaperiodoaquisitivo = bool = Vincular Período Aquisitivo de Férias
+                 h12_tiporeajuste = int4 = Tipo de Reajuste Salarial
+                 h12_natureza = int4 = Natureza
+                 h12_gerafaltas = bool = Gerar Faltas
+                 h12_permiteduplicar = bool = Permite duplicar
+                 h12_lancamentomensal = int4 = Lançamento Mensal
+                 h12_lancamentoanual = int4 = Lançamento Anual
+                 h12_bloqueioassentamento = bool = Libera campos Lançamento Mensal e Anual";
 
     /**
      * cl_tipoasse constructor.
@@ -124,6 +130,10 @@ class cl_tipoasse
             $this->h12_natureza = ($this->h12_natureza == "" ? @$GLOBALS["HTTP_POST_VARS"]["h12_natureza"] : $this->h12_natureza);
             $this->h12_gerafaltas = ($this->h12_gerafaltas == "f" ? @$GLOBALS["HTTP_POST_VARS"]["h12_gerafaltas"] : $this->h12_gerafaltas);
             $this->h12_permiteduplicar = ($this->h12_permiteduplicar === true ? 't': 'f');
+            $this->h12_lancamentomensal = ($this->h12_lancamentomensal == "" ? @$GLOBALS["HTTP_POST_VARS"]["h12_lancamentomensal"] : $this->h12_lancamentomensal);
+            $this->h12_lancamentoanual = ($this->h12_lancamentoanual == "" ? @$GLOBALS["HTTP_POST_VARS"]["h12_lancamentoanual"] : $this->h12_lancamentoanual);
+            $this->h12_bloqueioassentamento = ($this->h12_bloqueioassentamento == "f" ? @$GLOBALS["HTTP_POST_VARS"]["h12_bloqueioassentamento"] : $this->h12_bloqueioassentamento);
+
         } else {
             $this->h12_codigo = ($this->h12_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["h12_codigo"] : $this->h12_codigo);
         }
@@ -274,6 +284,16 @@ class cl_tipoasse
             $this->erro_status = "0";
             return false;
         }
+        if ($this->h12_lancamentomensal == null) {
+            $this->h12_lancamentomensal = "0";
+        }
+        if ($this->h12_lancamentoanual == null) {
+            $this->h12_lancamentoanual = "0";
+        }
+
+        if ($this->h12_bloqueioassentamento == null) {
+            $this->h12_bloqueioassentamento = "f";
+        }
         if ($h12_codigo == "" || $h12_codigo == null) {
             $result = db_query("select nextval('tipoasse_h12_codigo_seq')");
             if ($result == false) {
@@ -284,10 +304,10 @@ class cl_tipoasse
                 $this->erro_status = "0";
                 return false;
             }
-            $this->h12_codigo = pg_result($result, 0, 0);
+            $this->h12_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM tipoasse_h12_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $h12_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $h12_codigo)) {
                 $this->erro_sql = " Campo h12_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -307,45 +327,52 @@ class cl_tipoasse
             return false;
         }
         $sql = "insert into tipoasse(
-                                       h12_codigo 
-                                      ,h12_assent 
-                                      ,h12_descr 
-                                      ,h12_dias 
-                                      ,h12_relvan 
-                                      ,h12_relass 
-                                      ,h12_reltot 
-                                      ,h12_relgra 
-                                      ,h12_tipo 
-                                      ,h12_graefe 
-                                      ,h12_efetiv 
-                                      ,h12_tipefe 
-                                      ,h12_regenc 
-                                      ,h12_vinculaperiodoaquisitivo 
-                                      ,h12_tiporeajuste 
-                                      ,h12_natureza 
+                                       h12_codigo
+                                      ,h12_assent
+                                      ,h12_descr
+                                      ,h12_dias
+                                      ,h12_relvan
+                                      ,h12_relass
+                                      ,h12_reltot
+                                      ,h12_relgra
+                                      ,h12_tipo
+                                      ,h12_graefe
+                                      ,h12_efetiv
+                                      ,h12_tipefe
+                                      ,h12_regenc
+                                      ,h12_vinculaperiodoaquisitivo
+                                      ,h12_tiporeajuste
+                                      ,h12_natureza
                                       ,h12_gerafaltas
-                                      ,h12_permiteduplicar 
+                                      ,h12_permiteduplicar
+                                      ,h12_lancamentomensal
+                                      ,h12_lancamentoanual
+                                      ,h12_bloqueioassentamento
                        )
                 values (
-                                $this->h12_codigo 
-                               ,'$this->h12_assent' 
-                               ,'$this->h12_descr' 
-                               ,$this->h12_dias 
-                               ,'$this->h12_relvan' 
-                               ,'$this->h12_relass' 
-                               ,$this->h12_reltot 
-                               ,'$this->h12_relgra' 
-                               ,'$this->h12_tipo' 
-                               ,'$this->h12_graefe' 
-                               ,'$this->h12_efetiv' 
-                               ,'$this->h12_tipefe' 
-                               ,'$this->h12_regenc' 
-                               ,'$this->h12_vinculaperiodoaquisitivo' 
-                               ,$this->h12_tiporeajuste 
-                               ,$this->h12_natureza 
-                               ,'$this->h12_gerafaltas' 
+                                $this->h12_codigo
+                               ,'$this->h12_assent'
+                               ,'$this->h12_descr'
+                               ,$this->h12_dias
+                               ,'$this->h12_relvan'
+                               ,'$this->h12_relass'
+                               ,$this->h12_reltot
+                               ,'$this->h12_relgra'
+                               ,'$this->h12_tipo'
+                               ,'$this->h12_graefe'
+                               ,'$this->h12_efetiv'
+                               ,'$this->h12_tipefe'
+                               ,'$this->h12_regenc'
+                               ,'$this->h12_vinculaperiodoaquisitivo'
+                               ,$this->h12_tiporeajuste
+                               ,$this->h12_natureza
+                               ,'$this->h12_gerafaltas'
                                ,'$this->h12_permiteduplicar'
+                               ,'$this->h12_lancamentomensal'
+                               ,'$this->h12_lancamentoanual'
+                               ,'$this->h12_bloqueioassentamento'
                       )";
+
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
@@ -378,27 +405,30 @@ class cl_tipoasse
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,9508,'$this->h12_codigo','I')");
-                $resac = db_query("insert into db_acount values($acount,596,9508,'','" . AddSlashes(pg_result($resaco, 0, 'h12_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4498,'','" . AddSlashes(pg_result($resaco, 0, 'h12_assent')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4499,'','" . AddSlashes(pg_result($resaco, 0, 'h12_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4500,'','" . AddSlashes(pg_result($resaco, 0, 'h12_dias')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4501,'','" . AddSlashes(pg_result($resaco, 0, 'h12_relvan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4502,'','" . AddSlashes(pg_result($resaco, 0, 'h12_relass')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4503,'','" . AddSlashes(pg_result($resaco, 0, 'h12_reltot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4504,'','" . AddSlashes(pg_result($resaco, 0, 'h12_relgra')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4505,'','" . AddSlashes(pg_result($resaco, 0, 'h12_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4506,'','" . AddSlashes(pg_result($resaco, 0, 'h12_graefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4507,'','" . AddSlashes(pg_result($resaco, 0, 'h12_efetiv')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4508,'','" . AddSlashes(pg_result($resaco, 0, 'h12_tipefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,4509,'','" . AddSlashes(pg_result($resaco, 0, 'h12_regenc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,20385,'','" . AddSlashes(pg_result($resaco, 0, 'h12_vinculaperiodoaquisitivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,20391,'','" . AddSlashes(pg_result($resaco, 0, 'h12_tiporeajuste')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,596,21167,'','" . AddSlashes(pg_result($resaco, 0, 'h12_natureza')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,596,1009520,'','" . AddSlashes(pg_result($resaco, 0, 'h12_gerafaltas')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,596,1010654,'','" . AddSlashes(pg_result($resaco, 0, 'h12_permiteduplicar')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,9508,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4498,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_assent')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4499,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4500,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_dias')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4501,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_relvan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4502,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_relass')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4503,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_reltot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4504,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_relgra')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4505,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4506,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_graefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4507,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_efetiv')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4508,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_tipefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,4509,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_regenc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,20385,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_vinculaperiodoaquisitivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,20391,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_tiporeajuste')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,596,21167,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_natureza')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values ($acount,596,1009520,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_gerafaltas')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values ($acount,596,1010654,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_permiteduplicar')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values ($acount,596,1015581,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_lancamentomensal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values ($acount,596,1015582,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_lancamentoanual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values ($acount,596,1015583,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'h12_bloqueioassentamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -631,6 +661,28 @@ class cl_tipoasse
                 return false;
             }
         }
+
+        if (trim($this->h12_lancamentomensal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["h12_lancamentomensal"])) {
+            if (trim($this->h12_lancamentomensal) == "" && isset($GLOBALS["HTTP_POST_VARS"]["h12_lancamentomensal"])) {
+                $this->h12_lancamentomensal = "0";
+            }
+            $sql .= $virgula . " h12_lancamentomensal = $this->h12_lancamentomensal ";
+            $virgula = ",";
+        }
+
+        if (trim($this->h12_lancamentoanual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["h12_lancamentoanual"])) {
+            if (trim($this->h12_lancamentoanual) == "" && isset($GLOBALS["HTTP_POST_VARS"]["h12_lancamentoanual"])) {
+                $this->h12_lancamentoanual = "0";
+            }
+            $sql .= $virgula . " h12_lancamentoanual = $this->h12_lancamentoanual ";
+            $virgula = ",";
+        }
+
+        if (trim($this->h12_bloqueioassentamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["h12_bloqueioassentamento"])) {
+            $sql .= $virgula . " h12_bloqueioassentamento = '$this->h12_bloqueioassentamento' ";
+            $virgula = ",";
+        }
+
         $sql .= " where ";
         if ($h12_codigo != null) {
             $sql .= " h12_codigo = $this->h12_codigo";
@@ -645,45 +697,51 @@ class cl_tipoasse
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,9508,'$this->h12_codigo','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_codigo"]) || $this->h12_codigo != "")
-                        $resac = db_query("insert into db_acount values($acount,596,9508,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_codigo')) . "','$this->h12_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,9508,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_codigo')) . "','$this->h12_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_assent"]) || $this->h12_assent != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4498,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_assent')) . "','$this->h12_assent'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4498,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_assent')) . "','$this->h12_assent'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_descr"]) || $this->h12_descr != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4499,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_descr')) . "','$this->h12_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4499,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_descr')) . "','$this->h12_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_dias"]) || $this->h12_dias != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4500,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_dias')) . "','$this->h12_dias'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4500,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_dias')) . "','$this->h12_dias'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_relvan"]) || $this->h12_relvan != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4501,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_relvan')) . "','$this->h12_relvan'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4501,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_relvan')) . "','$this->h12_relvan'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_relass"]) || $this->h12_relass != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4502,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_relass')) . "','$this->h12_relass'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4502,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_relass')) . "','$this->h12_relass'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_reltot"]) || $this->h12_reltot != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4503,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_reltot')) . "','$this->h12_reltot'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4503,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_reltot')) . "','$this->h12_reltot'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_relgra"]) || $this->h12_relgra != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4504,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_relgra')) . "','$this->h12_relgra'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4504,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_relgra')) . "','$this->h12_relgra'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_tipo"]) || $this->h12_tipo != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4505,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_tipo')) . "','$this->h12_tipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4505,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_tipo')) . "','$this->h12_tipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_graefe"]) || $this->h12_graefe != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4506,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_graefe')) . "','$this->h12_graefe'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4506,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_graefe')) . "','$this->h12_graefe'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_efetiv"]) || $this->h12_efetiv != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4507,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_efetiv')) . "','$this->h12_efetiv'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4507,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_efetiv')) . "','$this->h12_efetiv'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_tipefe"]) || $this->h12_tipefe != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4508,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_tipefe')) . "','$this->h12_tipefe'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4508,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_tipefe')) . "','$this->h12_tipefe'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_regenc"]) || $this->h12_regenc != "")
-                        $resac = db_query("insert into db_acount values($acount,596,4509,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_regenc')) . "','$this->h12_regenc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,4509,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_regenc')) . "','$this->h12_regenc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_vinculaperiodoaquisitivo"]) || $this->h12_vinculaperiodoaquisitivo != "")
-                        $resac = db_query("insert into db_acount values($acount,596,20385,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_vinculaperiodoaquisitivo')) . "','$this->h12_vinculaperiodoaquisitivo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,20385,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_vinculaperiodoaquisitivo')) . "','$this->h12_vinculaperiodoaquisitivo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_tiporeajuste"]) || $this->h12_tiporeajuste != "")
-                        $resac = db_query("insert into db_acount values($acount,596,20391,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_tiporeajuste')) . "','$this->h12_tiporeajuste'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,20391,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_tiporeajuste')) . "','$this->h12_tiporeajuste'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_natureza"]) || $this->h12_natureza != "")
-                        $resac = db_query("insert into db_acount values($acount,596,21167,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_natureza')) . "','$this->h12_natureza'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,21167,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_natureza')) . "','$this->h12_natureza'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_gerafaltas"]) || $this->h12_gerafaltas != "")
-                        $resac = db_query("insert into db_acount values($acount,596,1009520,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_gerafaltas')) . "','$this->h12_gerafaltas'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,1009520,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_gerafaltas')) . "','$this->h12_gerafaltas'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["h12_permiteduplicar"]) || $this->h12_permiteduplicar != "")
-                        $resac = db_query("insert into db_acount values($acount,596,1010654,'" . AddSlashes(pg_result($resaco, $conresaco, 'h12_permiteduplicar')) . "','$this->h12_permiteduplicar'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,596,1010654,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_permiteduplicar')) . "','$this->h12_permiteduplicar'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    if (isset($GLOBALS["HTTP_POST_VARS"]["h12_lancamentomensal"]) || $this->h12_lancamentomensal != "")
+                        $resac = db_query("insert into db_acount values($acount,596,1015581,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_lancamentomensal')) . "','$this->h12_lancamentomensal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    if (isset($GLOBALS["HTTP_POST_VARS"]["h12_lancamentoanual"]) || $this->h12_lancamentoanual != "")
+                        $resac = db_query("insert into db_acount values($acount,596,1015582,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_lancamentoanual')) . "','$this->h12_lancamentoanual'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    if (isset($GLOBALS["HTTP_POST_VARS"]["h12_bloqueioassentamento"]) || $this->h12_bloqueioassentamento != "")
+                        $resac = db_query("insert into db_acount values($acount,596,1015583,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'h12_bloqueioassentamento')) . "','$this->h12_bloqueioassentamento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -739,27 +797,30 @@ class cl_tipoasse
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,9508,'$h12_codigo','E')");
-                    $resac = db_query("insert into db_acount values($acount,596,9508,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4498,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_assent')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4499,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4500,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_dias')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4501,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_relvan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4502,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_relass')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4503,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_reltot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4504,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_relgra')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4505,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4506,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_graefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4507,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_efetiv')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4508,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_tipefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,4509,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_regenc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,20385,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_vinculaperiodoaquisitivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,20391,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_tiporeajuste')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,21167,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_natureza')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,1009520,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_gerafaltas')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,596,1010654,'','" . AddSlashes(pg_result($resaco, $iresaco, 'h12_permiteduplicar')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,9508,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4498,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_assent')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4499,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4500,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_dias')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4501,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_relvan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4502,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_relass')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4503,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_reltot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4504,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_relgra')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4505,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4506,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_graefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4507,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_efetiv')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4508,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_tipefe')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,4509,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_regenc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,20385,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_vinculaperiodoaquisitivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,20391,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_tiporeajuste')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,21167,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_natureza')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,1009520,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_gerafaltas')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,1010654,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_permiteduplicar')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,1015581,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_lancamentomensal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,1015582,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_lancamentoanual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,596,1015583,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'h12_bloqueioassentamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -846,7 +907,7 @@ class cl_tipoasse
             $sql .= $campos;
         }
         $sql .= "  from tipoasse ";
-        $sql .= "      inner join naturezatipoassentamento  on  naturezatipoassentamento.rh159_sequencial = tipoasse.h12_natureza";
+        $sql .= "      inner join naturezatipoassentamento on naturezatipoassentamento.rh159_sequencial = tipoasse.h12_natureza";
         $sql2 = "";
         if ($dbwhere == "") {
             if ($h12_codigo != null) {

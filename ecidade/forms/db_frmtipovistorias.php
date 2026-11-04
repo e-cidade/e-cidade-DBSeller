@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("y41_descr");
        <?=@$Ly77_codtipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('y77_codtipo',10,$Iy77_codtipo,true,'text',3,"")
 ?>
     </td>
@@ -49,7 +49,7 @@ db_input('y77_codtipo',10,$Iy77_codtipo,true,'text',3,"")
        <?=@$Ly77_dias?>
     </td>
     <td> 
-<?
+<?php
 db_input('y77_dias',10,$Iy77_dias,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -60,7 +60,7 @@ db_input('y77_dias',10,$Iy77_dias,true,'text',$db_opcao,"")
 <?=@$Ly77_diasgeral?>
 </td>
 <td>
-<?
+<?php
 db_input('y77_diasgeral',10,$Iy77_diasgeral,true,'text',$db_opcao,"")
 ?>
 </td>
@@ -70,7 +70,7 @@ db_input('y77_diasgeral',10,$Iy77_diasgeral,true,'text',$db_opcao,"")
 <?=@$Ly77_mesgeral?>
 </td>
 <td>
-<?
+<?php
 db_input('y77_mesgeral',10,$Iy77_mesgeral,true,'text',$db_opcao,"")
 ?>
 </td>
@@ -83,7 +83,7 @@ db_input('y77_mesgeral',10,$Iy77_mesgeral,true,'text',$db_opcao,"")
        <?=@$Ly77_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('y77_descricao',50,$Iy77_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,41 +93,41 @@ db_input('y77_descricao',50,$Iy77_descricao,true,'text',$db_opcao,"")
        <?=@$Ly77_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y77_obs',3,50,$Iy77_obs,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty77_coddepto?>">
-       <?
+       <?php
        db_ancora(@$Ly77_coddepto,"js_pesquisay77_coddepto(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y77_coddepto',10,$Iy77_coddepto,true,'text',3," onchange='js_pesquisay77_coddepto(false);'");
 if($db_opcao == 1){
   echo "<script>document.form1.y77_coddepto.value='".db_getsession('DB_coddepto')."';</script>";
   echo "<script>js_OpenJanelaIframe('','db_iframe_db_depart','func_db_depart.php?pesquisa_chave=".db_getsession('DB_coddepto')."&funcao_js=parent.js_mostradb_depart','Pesquisa',false);</script>";
 }
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty77_tipoandam?>">
-       <?
+       <?php
        db_ancora(@$Ly77_tipoandam,"js_pesquisay77_tipoandam(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y77_tipoandam',10,$Iy77_tipoandam,true,'text',$db_opcao," onchange='js_pesquisay77_tipoandam(false);'")
 ?>
-       <?
+       <?php
 db_input('y41_descr',50,$Iy41_descr,true,'text',3,'')
        ?>
     </td>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipovistorias.hide();
-  <?
+  <?php
   if($db_opcao == 2 || $db_opcao == 22){
     echo " location.href = 'fis1_tipovistorias002.php?abas=1&chavepesquisa='+chave;";
   }elseif($db_opcao == 33 || $db_opcao == 3){

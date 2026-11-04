@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,14 +75,14 @@ $aux = new cl_arquivo_auxiliar;
            <td colspan=2  align="left">
         <strong>&nbsp;&nbsp;&nbsp;Listar:</strong>
       
-	  <? 
+	  <?php 
 	  $tipo = array("t"=>"Todas Receitas","o"=>"Receitas Orcamentárias","e"=>"Receitas Extra-orçamentárias");
 	  db_select("listar",$tipo,true,2,"onchange='document.form1.submit();'"); ?>
         </td>
       </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Receitas</strong>";
                  $aux->codigo = "k02_codigo"; //chave de retorno da func
@@ -108,7 +108,7 @@ $aux = new cl_arquivo_auxiliar;
       <tr>
         <td align='center'  colspan=2 >
                <b> Período </b>
-               <? 
+               <?php 
 	          db_inputdata('data1','','','',true,'text',1,"");   		          
                   echo "<b> a</b> ";
                   db_inputdata('data2','','','',true,'text',1,"");
@@ -123,7 +123,7 @@ $aux = new cl_arquivo_auxiliar;
 
   </form>
     </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

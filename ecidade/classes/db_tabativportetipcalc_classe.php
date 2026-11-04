@@ -1,40 +1,40 @@
-<?
+<?php
 //MODULO: issqn
 //CLASSE DA ENTIDADE tabativportetipcalc
-class cl_tabativportetipcalc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q143_sequencial = 0; 
-   var $q143_ativid = 0; 
-   var $q143_issporte = 0; 
-   var $q143_tipcalc = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tabativportetipcalc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q143_sequencial = 0;
+   var $q143_ativid = 0;
+   var $q143_issporte = 0;
+   var $q143_tipcalc = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q143_sequencial = int4 = Código 
-                 q143_ativid = int4 = Codigo da Atividade 
-                 q143_issporte = int8 = Cod. Porte 
-                 q143_tipcalc = int4 = Código do Tipo de Cálculo 
+                 q143_sequencial = int4 = Código
+                 q143_ativid = int4 = Codigo da Atividade
+                 q143_issporte = int8 = Cod. Porte
+                 q143_tipcalc = int4 = Código do Tipo de Cálculo
                  ";
-   //funcao construtor da classe 
-   function cl_tabativportetipcalc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tabativportetipcalc"); 
+     $this->rotulo = new rotulo("tabativportetipcalc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_tabativportetipcalc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q143_sequencial = ($this->q143_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q143_sequencial"]:$this->q143_sequencial);
        $this->q143_ativid = ($this->q143_ativid == ""?@$GLOBALS["HTTP_POST_VARS"]["q143_ativid"]:$this->q143_ativid);
@@ -54,9 +54,9 @@ class cl_tabativportetipcalc {
      }
    }
    // funcao para inclusao
-   function incluir ($q143_sequencial){ 
+   public function incluir ($q143_sequencial){
       $this->atualizacampos();
-     if($this->q143_ativid == null ){ 
+     if($this->q143_ativid == null ){
        $this->erro_sql = " Campo Codigo da Atividade não informado.";
        $this->erro_campo = "q143_ativid";
        $this->erro_banco = "";
@@ -65,7 +65,7 @@ class cl_tabativportetipcalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q143_issporte == null ){ 
+     if($this->q143_issporte == null ){
        $this->erro_sql = " Campo Cod. Porte não informado.";
        $this->erro_campo = "q143_issporte";
        $this->erro_banco = "";
@@ -74,7 +74,7 @@ class cl_tabativportetipcalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q143_tipcalc == null ){ 
+     if($this->q143_tipcalc == null ){
        $this->erro_sql = " Campo Código do Tipo de Cálculo não informado.";
        $this->erro_campo = "q143_tipcalc";
        $this->erro_banco = "";
@@ -84,16 +84,16 @@ class cl_tabativportetipcalc {
        return false;
      }
      if($q143_sequencial == "" || $q143_sequencial == null ){
-       $result = db_query("select nextval('tabativportetipcalc_q143_sequencial_seq')"); 
+       $result = db_query("select nextval('tabativportetipcalc_q143_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tabativportetipcalc_q143_sequencial_seq do campo: q143_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tabativportetipcalc_q143_sequencial_seq do campo: q143_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q143_sequencial = pg_result($result,0,0); 
+       $this->q143_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tabativportetipcalc_q143_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q143_sequencial)){
@@ -104,10 +104,10 @@ class cl_tabativportetipcalc {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q143_sequencial = $q143_sequencial; 
+         $this->q143_sequencial = $q143_sequencial;
        }
      }
-     if(($this->q143_sequencial == null) || ($this->q143_sequencial == "") ){ 
+     if(($this->q143_sequencial == null) || ($this->q143_sequencial == "") ){
        $this->erro_sql = " Campo q143_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,19 +116,19 @@ class cl_tabativportetipcalc {
        return false;
      }
      $sql = "insert into tabativportetipcalc(
-                                       q143_sequencial 
-                                      ,q143_ativid 
-                                      ,q143_issporte 
-                                      ,q143_tipcalc 
+                                       q143_sequencial
+                                      ,q143_ativid
+                                      ,q143_issporte
+                                      ,q143_tipcalc
                        )
                 values (
-                                $this->q143_sequencial 
-                               ,$this->q143_ativid 
-                               ,$this->q143_issporte 
-                               ,$this->q143_tipcalc 
+                                $this->q143_sequencial
+                               ,$this->q143_ativid
+                               ,$this->q143_issporte
+                               ,$this->q143_tipcalc
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tipo de Cálculo por Porte/Atividade ($this->q143_sequencial) nao Incluído. Inclusao Abortada.";
@@ -169,16 +169,16 @@ class cl_tabativportetipcalc {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q143_sequencial=null) { 
+   public function alterar ($q143_sequencial=null) {
       $this->atualizacampos();
      $sql = " update tabativportetipcalc set ";
      $virgula = "";
-     if(trim($this->q143_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_sequencial"])){ 
+     if(trim($this->q143_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_sequencial"])){
        $sql  .= $virgula." q143_sequencial = $this->q143_sequencial ";
        $virgula = ",";
-       if(trim($this->q143_sequencial) == null ){ 
+       if(trim($this->q143_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "q143_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_tabativportetipcalc {
          return false;
        }
      }
-     if(trim($this->q143_ativid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_ativid"])){ 
+     if(trim($this->q143_ativid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_ativid"])){
        $sql  .= $virgula." q143_ativid = $this->q143_ativid ";
        $virgula = ",";
-       if(trim($this->q143_ativid) == null ){ 
+       if(trim($this->q143_ativid) == null ){
          $this->erro_sql = " Campo Codigo da Atividade não informado.";
          $this->erro_campo = "q143_ativid";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_tabativportetipcalc {
          return false;
        }
      }
-     if(trim($this->q143_issporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_issporte"])){ 
+     if(trim($this->q143_issporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_issporte"])){
        $sql  .= $virgula." q143_issporte = $this->q143_issporte ";
        $virgula = ",";
-       if(trim($this->q143_issporte) == null ){ 
+       if(trim($this->q143_issporte) == null ){
          $this->erro_sql = " Campo Cod. Porte não informado.";
          $this->erro_campo = "q143_issporte";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_tabativportetipcalc {
          return false;
        }
      }
-     if(trim($this->q143_tipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_tipcalc"])){ 
+     if(trim($this->q143_tipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_tipcalc"])){
        $sql  .= $virgula." q143_tipcalc = $this->q143_tipcalc ";
        $virgula = ",";
-       if(trim($this->q143_tipcalc) == null ){ 
+       if(trim($this->q143_tipcalc) == null ){
          $this->erro_sql = " Campo Código do Tipo de Cálculo não informado.";
          $this->erro_campo = "q143_tipcalc";
          $this->erro_banco = "";
@@ -256,7 +256,7 @@ class cl_tabativportetipcalc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Cálculo por Porte/Atividade nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q143_sequencial;
@@ -284,11 +284,11 @@ class cl_tabativportetipcalc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q143_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q143_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -297,7 +297,7 @@ class cl_tabativportetipcalc {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($q143_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -329,7 +329,7 @@ class cl_tabativportetipcalc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Cálculo por Porte/Atividade nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q143_sequencial;
@@ -357,11 +357,11 @@ class cl_tabativportetipcalc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -383,11 +383,11 @@ class cl_tabativportetipcalc {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $q143_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $q143_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_tabativportetipcalc {
      $sql2 = "";
      if($dbwhere==""){
        if($q143_sequencial!=null ){
-         $sql2 .= " where tabativportetipcalc.q143_sequencial = $q143_sequencial "; 
-       } 
+         $sql2 .= " where tabativportetipcalc.q143_sequencial = $q143_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,11 +422,11 @@ class cl_tabativportetipcalc {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $q143_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $q143_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,15 +439,15 @@ class cl_tabativportetipcalc {
      $sql2 = "";
      if($dbwhere==""){
        if($q143_sequencial!=null ){
-         $sql2 .= " where tabativportetipcalc.q143_sequencial = $q143_sequencial "; 
-       } 
+         $sql2 .= " where tabativportetipcalc.q143_sequencial = $q143_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

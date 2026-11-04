@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE pctipocertif
-class cl_pctipocertif { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc70_codigo = 0; 
-   var $pc70_descr = null; 
-   var $pc70_subgrupo = 'f'; 
-   var $pc70_obs = null; 
-   var $pc70_parag2 = null; 
-   var $pc70_tipodoc = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pctipocertif {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc70_codigo = 0;
+   var $pc70_descr = null;
+   var $pc70_subgrupo = 'f';
+   var $pc70_obs = null;
+   var $pc70_parag2 = null;
+   var $pc70_tipodoc = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc70_codigo = int4 = Cod. Tipo Certificado 
-                 pc70_descr = varchar(40) = Descrição Certificado 
-                 pc70_subgrupo = bool = Imprimir Subgrupos 
-                 pc70_obs = text = Parágrafo do Certificado 
-                 pc70_parag2 = text = Paragrafo 2 do certificado 
-                 pc70_tipodoc = int8 = Código do Tipo de Documento 
+                 pc70_codigo = int4 = Cod. Tipo Certificado
+                 pc70_descr = varchar(40) = Descrição Certificado
+                 pc70_subgrupo = bool = Imprimir Subgrupos
+                 pc70_obs = text = Parágrafo do Certificado
+                 pc70_parag2 = text = Paragrafo 2 do certificado
+                 pc70_tipodoc = int8 = Código do Tipo de Documento
                  ";
-   //funcao construtor da classe 
-   function cl_pctipocertif() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pctipocertif"); 
+     $this->rotulo = new rotulo("pctipocertif");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_pctipocertif {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc70_codigo = ($this->pc70_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["pc70_codigo"]:$this->pc70_codigo);
        $this->pc70_descr = ($this->pc70_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["pc70_descr"]:$this->pc70_descr);
@@ -86,9 +86,9 @@ class cl_pctipocertif {
      }
    }
    // funcao para inclusao
-   function incluir ($pc70_codigo){ 
+   public function incluir ($pc70_codigo){
       $this->atualizacampos();
-     if($this->pc70_descr == null ){ 
+     if($this->pc70_descr == null ){
        $this->erro_sql = " Campo Descrição Certificado nao Informado.";
        $this->erro_campo = "pc70_descr";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_pctipocertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc70_subgrupo == null ){ 
+     if($this->pc70_subgrupo == null ){
        $this->erro_sql = " Campo Imprimir Subgrupos nao Informado.";
        $this->erro_campo = "pc70_subgrupo";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_pctipocertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc70_tipodoc == null ){ 
+     if($this->pc70_tipodoc == null ){
        $this->erro_sql = " Campo Código do Tipo de Documento nao Informado.";
        $this->erro_campo = "pc70_tipodoc";
        $this->erro_banco = "";
@@ -116,16 +116,16 @@ class cl_pctipocertif {
        return false;
      }
      if($pc70_codigo == "" || $pc70_codigo == null ){
-       $result = db_query("select nextval('pctipocertif_pc70_codigo_seq')"); 
+       $result = db_query("select nextval('pctipocertif_pc70_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pctipocertif_pc70_codigo_seq do campo: pc70_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pctipocertif_pc70_codigo_seq do campo: pc70_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc70_codigo = pg_result($result,0,0); 
+       $this->pc70_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pctipocertif_pc70_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc70_codigo)){
@@ -136,10 +136,10 @@ class cl_pctipocertif {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc70_codigo = $pc70_codigo; 
+         $this->pc70_codigo = $pc70_codigo;
        }
      }
-     if(($this->pc70_codigo == null) || ($this->pc70_codigo == "") ){ 
+     if(($this->pc70_codigo == null) || ($this->pc70_codigo == "") ){
        $this->erro_sql = " Campo pc70_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -148,23 +148,23 @@ class cl_pctipocertif {
        return false;
      }
      $sql = "insert into pctipocertif(
-                                       pc70_codigo 
-                                      ,pc70_descr 
-                                      ,pc70_subgrupo 
-                                      ,pc70_obs 
-                                      ,pc70_parag2 
-                                      ,pc70_tipodoc 
+                                       pc70_codigo
+                                      ,pc70_descr
+                                      ,pc70_subgrupo
+                                      ,pc70_obs
+                                      ,pc70_parag2
+                                      ,pc70_tipodoc
                        )
                 values (
-                                $this->pc70_codigo 
-                               ,'$this->pc70_descr' 
-                               ,'$this->pc70_subgrupo' 
-                               ,'$this->pc70_obs' 
-                               ,'$this->pc70_parag2' 
-                               ,$this->pc70_tipodoc 
+                                $this->pc70_codigo
+                               ,'$this->pc70_descr'
+                               ,'$this->pc70_subgrupo'
+                               ,'$this->pc70_obs'
+                               ,'$this->pc70_parag2'
+                               ,$this->pc70_tipodoc
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "pctipocertif - tipos de certificado ($this->pc70_codigo) nao Incluído. Inclusao Abortada.";
@@ -201,16 +201,16 @@ class cl_pctipocertif {
        $resac = db_query("insert into db_acount values($acount,1296,17721,'','".AddSlashes(pg_result($resaco,0,'pc70_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc70_codigo=null) { 
+   public function alterar ($pc70_codigo=null) {
       $this->atualizacampos();
      $sql = " update pctipocertif set ";
      $virgula = "";
-     if(trim($this->pc70_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_codigo"])){ 
+     if(trim($this->pc70_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_codigo"])){
        $sql  .= $virgula." pc70_codigo = $this->pc70_codigo ";
        $virgula = ",";
-       if(trim($this->pc70_codigo) == null ){ 
+       if(trim($this->pc70_codigo) == null ){
          $this->erro_sql = " Campo Cod. Tipo Certificado nao Informado.";
          $this->erro_campo = "pc70_codigo";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_pctipocertif {
          return false;
        }
      }
-     if(trim($this->pc70_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_descr"])){ 
+     if(trim($this->pc70_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_descr"])){
        $sql  .= $virgula." pc70_descr = '$this->pc70_descr' ";
        $virgula = ",";
-       if(trim($this->pc70_descr) == null ){ 
+       if(trim($this->pc70_descr) == null ){
          $this->erro_sql = " Campo Descrição Certificado nao Informado.";
          $this->erro_campo = "pc70_descr";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_pctipocertif {
          return false;
        }
      }
-     if(trim($this->pc70_subgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_subgrupo"])){ 
+     if(trim($this->pc70_subgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_subgrupo"])){
        $sql  .= $virgula." pc70_subgrupo = '$this->pc70_subgrupo' ";
        $virgula = ",";
-       if(trim($this->pc70_subgrupo) == null ){ 
+       if(trim($this->pc70_subgrupo) == null ){
          $this->erro_sql = " Campo Imprimir Subgrupos nao Informado.";
          $this->erro_campo = "pc70_subgrupo";
          $this->erro_banco = "";
@@ -246,18 +246,18 @@ class cl_pctipocertif {
          return false;
        }
      }
-     if(trim($this->pc70_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_obs"])){ 
+     if(trim($this->pc70_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_obs"])){
        $sql  .= $virgula." pc70_obs = '$this->pc70_obs' ";
        $virgula = ",";
      }
-     if(trim($this->pc70_parag2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_parag2"])){ 
+     if(trim($this->pc70_parag2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_parag2"])){
        $sql  .= $virgula." pc70_parag2 = '$this->pc70_parag2' ";
        $virgula = ",";
      }
-     if(trim($this->pc70_tipodoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_tipodoc"])){ 
+     if(trim($this->pc70_tipodoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc70_tipodoc"])){
        $sql  .= $virgula." pc70_tipodoc = $this->pc70_tipodoc ";
        $virgula = ",";
-       if(trim($this->pc70_tipodoc) == null ){ 
+       if(trim($this->pc70_tipodoc) == null ){
          $this->erro_sql = " Campo Código do Tipo de Documento nao Informado.";
          $this->erro_campo = "pc70_tipodoc";
          $this->erro_banco = "";
@@ -293,7 +293,7 @@ class cl_pctipocertif {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pctipocertif - tipos de certificado nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc70_codigo;
@@ -321,14 +321,14 @@ class cl_pctipocertif {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc70_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc70_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc70_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -359,7 +359,7 @@ class cl_pctipocertif {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pctipocertif - tipos de certificado nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc70_codigo;
@@ -387,11 +387,11 @@ class cl_pctipocertif {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -413,11 +413,11 @@ class cl_pctipocertif {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $pc70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $pc70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,15 +431,15 @@ class cl_pctipocertif {
      $sql2 = "";
      if($dbwhere==""){
        if($pc70_codigo!=null ){
-         $sql2 .= " where pctipocertif.pc70_codigo = $pc70_codigo "; 
-       } 
+         $sql2 .= " where pctipocertif.pc70_codigo = $pc70_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,11 +448,11 @@ class cl_pctipocertif {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $pc70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $pc70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,15 +465,15 @@ class cl_pctipocertif {
      $sql2 = "";
      if($dbwhere==""){
        if($pc70_codigo!=null ){
-         $sql2 .= " where pctipocertif.pc70_codigo = $pc70_codigo "; 
-       } 
+         $sql2 .= " where pctipocertif.pc70_codigo = $pc70_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,11 +482,11 @@ class cl_pctipocertif {
      }
      return $sql;
   }
-   function sql_query_departamentos ( $pc70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_departamentos ( $pc70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
-  	
+
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,24 +495,24 @@ class cl_pctipocertif {
      }else{
        $sql .= " distinct pctipocertif.* "; //$campos;
      }
-     
+
      $sql .= " from pctipocertif ";
      $sql2 = "";
-     
+
      $sql .= " left join pctipocertifdepartamento ";
      $sql .= " ON pc70_codigo = pc34_pctipocertif ";
-          
+
      if($dbwhere==""){
        if($pc70_codigo!=null ){
-         $sql2 .= " where pctipocertif.pc70_codigo = $pc70_codigo "; 
-       } 
+         $sql2 .= " where pctipocertif.pc70_codigo = $pc70_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

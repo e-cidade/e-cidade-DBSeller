@@ -435,7 +435,7 @@ class EstimativaReceitaMapper
      */
     public function setCodigoComplemento($codigoComplemento)
     {
-        $this->codigo_complemento = $codigoComplemento;
+        $this->codigo_complemento = str_pad($codigoComplemento, 4, '0', STR_PAD_LEFT);
     }
 
     /**

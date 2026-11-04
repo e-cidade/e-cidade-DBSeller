@@ -2,6 +2,7 @@
 
 namespace App\Domain\Educacao\Escola\Models;
 
+use App\Domain\Educacao\Secretaria\Models\Base;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +25,8 @@ use Illuminate\Support\Facades\DB;
  * @property integer $ed57_i_tipoturma
  * @property integer $ed57_i_censoetapa
  * @property boolean $ed57_censoprogramamaiseducacao
+ * @property TurmaEtapaRegimeMatricula[] $etapasTurma
+ * @property Escola $escola
  */
 class Turma extends Model
 {
@@ -31,6 +34,7 @@ class Turma extends Model
     protected $primaryKey = 'ed57_i_codigo';
     public $timestamps = false;
     public $incrementing = false;
+    protected $appends = ['etapa', 'regenciaGlobal'];
 
     /**
      * @var array|mixed
@@ -364,9 +368,54 @@ class Turma extends Model
             ->orderBy('ed59_i_ordenacao', 'ASC');
     }
 
+    public function escola()
+    {
+        return $this->belongsTo(Escola::class, 'ed57_i_escola', 'ed18_i_codigo');
+    }
+
     public function etapaRegimeMatricula()
     {
         return $this->hasOne(TurmaEtapaRegimeMatricula::class, 'ed220_i_turma', 'ed57_i_codigo')
+            ->with('procedimento');
+    }
+
+    public function turno()
+    {
+        return  $this->belongsTo(Turno::class, 'ed57_i_turno', 'ed15_i_codigo');
+    }
+
+    public function base()
+    {
+        return  $this->belongsTo(Base::class, 'ed57_i_base', 'ed31_i_codigo');
+    }
+
+    public function getEtapaAttribute()
+    {
+        if ($this->regencias->count() > 0) {
+            return $this->regencias->first()->etapa;
+        }
+        return null;
+    }
+
+    public function getRegenciaGlobalAttribute()
+    {
+        if ($this->base->ed31_c_contrfreq === 'G' && !is_null($this->etapa)) {
+            $disicplinaEnsino = $this
+                ->base
+                ->disciplinasBase
+                ->where('ed34_disiciplinaglobalizada', true)
+                ->where('ed34_i_serie', $this->etapa->ed11_i_codigo)->first();
+            if (isset($disicplinaEnsino) && is_object($disicplinaEnsino)) {
+                $codDisciplina = $disicplinaEnsino->getAttribute('ed34_i_disciplina');
+                return $this->regencias()->where('ed59_i_disciplina', $codDisciplina)->first();
+            }
+        }
+        return null;
+    }
+
+    public function etapasTurma()
+    {
+        return $this->hasMany(TurmaEtapaRegimeMatricula::class, 'ed220_i_turma', 'ed57_i_codigo')
             ->with('procedimento');
     }
 }

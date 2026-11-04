@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,45 +37,45 @@ $clrotulo->label("j64_descricao");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj54_idbql?>">
-       <?
+       <?php
        db_ancora(@$Lj54_idbql,"js_pesquisaj54_idbql(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j54_idbql',4,$Ij54_idbql,true,'text',$db_opcao," onchange='js_pesquisaj54_idbql(false);'")
 ?>
-       <?
+       <?php
 db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj54_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lj54_codigo,"js_pesquisaj54_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j54_codigo',10,$Ij54_codigo,true,'text',$db_opcao," onchange='js_pesquisaj54_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj54_orientacao?>">
-       <?
+       <?php
        db_ancora(@$Lj54_orientacao,"js_pesquisaj54_orientacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j54_orientacao',10,$Ij54_orientacao,true,'text',$db_opcao," onchange='js_pesquisaj54_orientacao(false);'")
 ?>
-       <?
+       <?php
 db_input('j64_descricao',20,$Ij64_descricao,true,'text',3,'')
        ?>
     </td>
@@ -85,7 +85,7 @@ db_input('j64_descricao',20,$Ij64_descricao,true,'text',3,'')
        <?=@$Lj54_distan?>
     </td>
     <td> 
-<?
+<?php
 db_input('j54_distan',15,$Ij54_distan,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -170,7 +170,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lotedist.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

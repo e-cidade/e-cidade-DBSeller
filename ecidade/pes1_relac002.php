@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,72 +31,80 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_relac_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+
+parse_str($_SERVER['QUERY_STRING'], $query);
+
 db_postmemory($HTTP_POST_VARS);
+
 $clrelac = new cl_relac;
+
 $db_opcao = 22;
 $db_botao = false;
-if(isset($alterar)){
+
+if (isset($alterar)) {
   db_inicio_transacao();
   $db_opcao = 2;
   $clrelac->r55_instit = db_getsession("DB_instit");
-  $clrelac->alterar($r55_codeve,db_getsession("DB_instit"));
+  $clrelac->alterar($r55_codeve, db_getsession("DB_instit"));
   db_fim_transacao();
-}else if(isset($chavepesquisa)){
+} else if (isset($chavepesquisa)) {
   $db_opcao = 2;
-  $result = $clrelac->sql_record($clrelac->sql_query_rubricas($chavepesquisa,"r55_codeve,r55_descr,r55_rubr01,a.rh27_descr as rh27_descr01,r55_rubr02,b.rh27_descr as rh27_descr02,r55_rubr03,c.rh27_descr as rh27_descr03",null," r55_codeve = '$chavepesquisa' and r55_instit = ".db_getsession("DB_instit"))); 
-  db_fieldsmemory($result,0);
+  $result = $clrelac->sql_record($clrelac->sql_query_rubricas($chavepesquisa, "r55_codeve,r55_descr,r55_rubr01,a.rh27_descr as rh27_descr01,r55_rubr02,b.rh27_descr as rh27_descr02,r55_rubr03,c.rh27_descr as rh27_descr03", null, " r55_codeve = '$chavepesquisa' and r55_instit = " . db_getsession("DB_instit")));
+  db_fieldsmemory($result, 0);
   $db_botao = true;
 }
 ?>
 <html>
+
 <head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
+  <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Expires" CONTENT="0">
+  <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+  <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
-    <td width="360" height="18">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <center>
-	<?
-	include(modification("forms/db_frmrelac.php"));
-	?>
-    </center>
-	</td>
-  </tr>
-</table>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-?>
+
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
+    <tr>
+      <td width="360" height="18">&nbsp;</td>
+      <td width="263">&nbsp;</td>
+      <td width="25">&nbsp;</td>
+      <td width="140">&nbsp;</td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
+        <center>
+          <?php
+          include(modification("forms/db_frmrelac.php"));
+          ?>
+        </center>
+      </td>
+    </tr>
+  </table>
+  <?php
+  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
+  ?>
 </body>
+
 </html>
-<?
-if(isset($alterar)){
-  if($clrelac->erro_status=="0"){
-    $clrelac->erro(true,false);
-    $db_botao=true;
+<?php
+if (isset($alterar)) {
+  if ($clrelac->erro_status == "0") {
+    $clrelac->erro(true, false);
+    $db_botao = true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    if($clrelac->erro_campo!=""){
-      echo "<script> document.form1.".$clrelac->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clrelac->erro_campo.".focus();</script>";
+    if ($clrelac->erro_campo != "") {
+      echo "<script> document.form1." . $clrelac->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
+      echo "<script> document.form1." . $clrelac->erro_campo . ".focus();</script>";
     };
-  }else{
-    $clrelac->erro(true,true);
+  } else {
+    $clrelac->erro(true, true);
   };
 };
-if($db_opcao==22){
+if ($db_opcao == 22) {
   echo "<script>document.form1.pesquisar.click();</script>";
 }
 ?>

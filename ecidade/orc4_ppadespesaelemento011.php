@@ -84,7 +84,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("estilos.css");
 db_app::load("prototype.js");
@@ -104,15 +104,15 @@ db_app::load("strings.js");
           </legend>
           <table>
             <td nowrap title="<?=@$To05_ppalei?>">
-                <?
+                <?php
                 db_ancora("<b>Lei do PPA</b>","js_pesquisao05_ppalei(true);",$db_opcao);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                 db_input('o05_ppalei',10,$Io01_sequencial,true,'text',$db_opcao," onchange='js_pesquisao05_ppalei(false);'")
                 ?>
-                <?
+                <?php
                 db_input('o01_descricao',40,$Io01_descricao,true,'text',3,'')
                 ?>
               </td>
@@ -130,7 +130,7 @@ db_app::load("strings.js");
                  <?=@$Lo01_anoinicio?>
                 </td>
                 <td>
-                <?
+                <?php
                   db_input('o01_anoinicio',10,$Io01_anoinicio,true,'text',3,"")
                 ?>
                </td>
@@ -140,7 +140,7 @@ db_app::load("strings.js");
                 <?=@$Lo01_anofinal?>
               </td>
               <td>
-                <?
+                <?php
                   db_input('o01_anofinal',10,$Io01_anofinal,true,'text',3,"")
                 ?>
               </td>
@@ -150,7 +150,7 @@ db_app::load("strings.js");
                  <?=@$Lo01_numerolei?>
               </td>
               <td>
-                <?
+                <?php
                   db_input('o01_numerolei',10,$Io01_numerolei,true,'text',3,"")
                 ?>
               </td>
@@ -158,7 +158,7 @@ db_app::load("strings.js");
             <tr>
                <td>&nbsp;</td>
                <td >
-                 <? db_selinstit('',300,100);
+                 <?php db_selinstit('',300,100);
                   db_input('filtra_despesa', 10,'',true, 'hidden', 3);
                  ?>
               </td>
@@ -251,7 +251,7 @@ function js_imprimeRelatorio() {
 
 }
 js_drawSelectVersaoPPA($('verppa'));
-<?
+<?php
  if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
    echo "js_getVersoesPPA({$oPost->o05_ppalei})\n";
  }

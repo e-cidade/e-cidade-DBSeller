@@ -1,51 +1,51 @@
 <?php
-
-class cl_acordoparalisacao
-{
-   // cria variaveis de erro 
-    public $rotulo = null; 
-    public $query_sql = null; 
-    public $numrows = 0; 
-    public $numrows_incluir = 0; 
-    public $numrows_alterar = 0; 
-    public $numrows_excluir = 0; 
-    public $erro_status = null; 
-    public $erro_sql = null; 
-    public $erro_banco = null;  
-    public $erro_msg = null;  
-    public $erro_campo = null;  
-    public $pagina_retorno = null; 
+//MODULO: acordos
+//CLASSE DA ENTIDADE acordoparalisacao
+class cl_acordoparalisacao {
+   // cria variaveis de erro
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     /* Variáveis do Arquivo */
-    public $ac47_sequencial = 0; 
-    public $ac47_acordo = 0; 
-    public $ac47_datainicio_dia = null; 
-    public $ac47_datainicio_mes = null; 
-    public $ac47_datainicio_ano = null; 
-    public $ac47_datainicio = null; 
-    public $ac47_datafim_dia = null; 
-    public $ac47_datafim_mes = null; 
-    public $ac47_datafim_ano = null; 
-    public $ac47_datafim = null; 
-    public $ac47_acordoevento = 0; 
-   // cria propriedade com as variaveis do arquivo 
+    public $ac47_sequencial = 0;
+    public $ac47_acordo = 0;
+    public $ac47_datainicio_dia = null;
+    public $ac47_datainicio_mes = null;
+    public $ac47_datainicio_ano = null;
+    public $ac47_datainicio = null;
+    public $ac47_datafim_dia = null;
+    public $ac47_datafim_mes = null;
+    public $ac47_datafim_ano = null;
+    public $ac47_datafim = null;
+    public $ac47_acordoevento = 0;
+   // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 ac47_sequencial = int4 = Sequencial da Paralisação 
-                 ac47_acordo = int4 = Acordo 
-                 ac47_datainicio = date = Data Inicial 
-                 ac47_datafim = date = Data Final 
-                 ac47_acordoevento = int4 = Evento 
+                 ac47_sequencial = int4 = Sequencial da Paralisação
+                 ac47_acordo = int4 = Acordo
+                 ac47_datainicio = date = Data Inicial
+                 ac47_datafim = date = Data Final
+                 ac47_acordoevento = int4 = Evento
                  ";
 
     public function __construct()
     {
-        $this->rotulo = new rotulo("acordoparalisacao"); 
+        $this->rotulo = new rotulo("acordoparalisacao");
         $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
     {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\")</script>";
+        echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
            echo "<script>location.href='".$this->pagina_retorno."'</script>";
         }
@@ -82,7 +82,7 @@ class cl_acordoparalisacao
     {
       //dd($this->ac47_acordoevento);
       $this->atualizacampos();
-     if($this->ac47_acordo == null ){ 
+     if($this->ac47_acordo == null ){
        $this->erro_sql = " Campo Acordo não informado.";
        $this->erro_campo = "ac47_acordo";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_acordoparalisacao
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac47_datainicio == null ){ 
+     if($this->ac47_datainicio == null ){
        $this->erro_sql = " Campo Data Inicial não informado.";
        $this->erro_campo = "ac47_datainicio_dia";
        $this->erro_banco = "";
@@ -100,23 +100,23 @@ class cl_acordoparalisacao
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac47_datafim == null ){ 
+     if($this->ac47_datafim == null ){
        $this->ac47_datafim = "null";
      }
-     if($this->ac47_acordoevento == null ){ 
+     if($this->ac47_acordoevento == null ){
        $this->ac47_acordoevento = "null";
      }
      if($ac47_sequencial == "" || $ac47_sequencial == null ){
-       $result = db_query("select nextval('acordoparalisacao_ac47_sequencial_seq')"); 
+       $result = db_query("select nextval('acordoparalisacao_ac47_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: acordoparalisacao_ac47_sequencial_seq do campo: ac47_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: acordoparalisacao_ac47_sequencial_seq do campo: ac47_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ac47_sequencial = pg_result($result,0,0); 
+       $this->ac47_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from acordoparalisacao_ac47_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ac47_sequencial)){
@@ -127,10 +127,10 @@ class cl_acordoparalisacao
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ac47_sequencial = $ac47_sequencial; 
+         $this->ac47_sequencial = $ac47_sequencial;
        }
      }
-     if(($this->ac47_sequencial == null) || ($this->ac47_sequencial == "") ){ 
+     if(($this->ac47_sequencial == null) || ($this->ac47_sequencial == "") ){
        $this->erro_sql = " Campo ac47_sequencial não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -140,21 +140,21 @@ class cl_acordoparalisacao
      }
 
      $sql = "insert into acordoparalisacao(
-                                       ac47_sequencial 
-                                      ,ac47_acordo 
-                                      ,ac47_datainicio 
-                                      ,ac47_datafim 
-                                      ,ac47_acordoevento 
+                                       ac47_sequencial
+                                      ,ac47_acordo
+                                      ,ac47_datainicio
+                                      ,ac47_datafim
+                                      ,ac47_acordoevento
                        )
                 values (
-                                $this->ac47_sequencial 
-                               ,$this->ac47_acordo 
-                               ,".($this->ac47_datainicio == "null" || $this->ac47_datainicio == ""?"null":"'".$this->ac47_datainicio."'")." 
-                               ,".($this->ac47_datafim == "null" || $this->ac47_datafim == ""?"null":"'".$this->ac47_datafim."'")." 
-                               ,$this->ac47_acordoevento 
+                                $this->ac47_sequencial
+                               ,$this->ac47_acordo
+                               ,".($this->ac47_datainicio == "null" || $this->ac47_datainicio == ""?"null":"'".$this->ac47_datainicio."'")."
+                               ,".($this->ac47_datafim == "null" || $this->ac47_datafim == ""?"null":"'".$this->ac47_datafim."'")."
+                               ,$this->ac47_acordoevento
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Paralisação de contratos ($this->ac47_sequencial) não Incluído. Inclusão Abortada.";
@@ -196,17 +196,17 @@ class cl_acordoparalisacao
        }
      }
      return true;
-   } 
+   }
 
     public function alterar($ac47_sequencial=null)
     {
       $this->atualizacampos();
      $sql = " update acordoparalisacao set ";
      $virgula = "";
-     if(trim($this->ac47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_sequencial"])){ 
+     if(trim($this->ac47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_sequencial"])){
        $sql  .= $virgula." ac47_sequencial = $this->ac47_sequencial ";
        $virgula = ",";
-       if(trim($this->ac47_sequencial) == null ){ 
+       if(trim($this->ac47_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial da Paralisação não informado.";
          $this->erro_campo = "ac47_sequencial";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_acordoparalisacao
          return false;
        }
      }
-     if(trim($this->ac47_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordo"])){ 
+     if(trim($this->ac47_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordo"])){
        $sql  .= $virgula." ac47_acordo = $this->ac47_acordo ";
        $virgula = ",";
-       if(trim($this->ac47_acordo) == null ){ 
+       if(trim($this->ac47_acordo) == null ){
          $this->erro_sql = " Campo Acordo não informado.";
          $this->erro_campo = "ac47_acordo";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_acordoparalisacao
          return false;
        }
      }
-     if(trim($this->ac47_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"] !="") ){ 
+     if(trim($this->ac47_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"] !="") ){
        $sql  .= $virgula." ac47_datainicio = '$this->ac47_datainicio' ";
        $virgula = ",";
-       if(trim($this->ac47_datainicio) == null ){ 
+       if(trim($this->ac47_datainicio) == null ){
          $this->erro_sql = " Campo Data Inicial não informado.";
          $this->erro_campo = "ac47_datainicio_dia";
          $this->erro_banco = "";
@@ -241,11 +241,11 @@ class cl_acordoparalisacao
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"])){
          $sql  .= $virgula." ac47_datainicio = null ";
          $virgula = ",";
-         if(trim($this->ac47_datainicio) == null ){ 
+         if(trim($this->ac47_datainicio) == null ){
            $this->erro_sql = " Campo Data Inicial não informado.";
            $this->erro_campo = "ac47_datainicio_dia";
            $this->erro_banco = "";
@@ -256,11 +256,11 @@ class cl_acordoparalisacao
          }
        }
      }
-     if(trim($this->ac47_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"] !="") ){ 
+     if(trim($this->ac47_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"] !="") ){
        $sql  .= $virgula." ac47_datafim = '$this->ac47_datafim' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"])){
          $sql  .= $virgula." ac47_datafim = null ";
          $virgula = ",";
        }
@@ -269,10 +269,10 @@ class cl_acordoparalisacao
           $virgula = ",";
        }
      }
-     if(trim($this->ac47_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){ 
-        if(trim($this->ac47_acordoevento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){ 
-           $this->ac47_acordoevento = "0" ; 
-        } 
+     if(trim($this->ac47_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){
+        if(trim($this->ac47_acordoevento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){
+           $this->ac47_acordoevento = "0" ;
+        }
        $sql  .= $virgula." ac47_acordoevento = $this->ac47_acordoevento ";
        $virgula = ",";
      }
@@ -306,9 +306,8 @@ class cl_acordoparalisacao
          }
        }
      }
-
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Paralisação de contratos não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ac47_sequencial;
@@ -336,9 +335,9 @@ class cl_acordoparalisacao
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
+       }
+     }
+   }
 
     public function excluir($ac47_sequencial=null, $dbwhere = null)
     {
@@ -349,7 +348,7 @@ class cl_acordoparalisacao
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($ac47_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -382,7 +381,7 @@ class cl_acordoparalisacao
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Paralisação de contratos não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ac47_sequencial;
@@ -410,9 +409,9 @@ class cl_acordoparalisacao
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
+       }
+     }
+   }
 
     public function sql_record($sql)
     {
@@ -438,7 +437,7 @@ class cl_acordoparalisacao
      return $result;
    }
 
-    public function sql_query($ac47_sequencial = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+    public function sql_query($ac47_sequencial = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from acordoparalisacao ";
@@ -453,8 +452,8 @@ class cl_acordoparalisacao
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($ac47_sequencial)) {
-         $sql2 .= " where acordoparalisacao.ac47_sequencial = $ac47_sequencial "; 
-       } 
+         $sql2 .= " where acordoparalisacao.ac47_sequencial = $ac47_sequencial ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -472,8 +471,8 @@ class cl_acordoparalisacao
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($ac47_sequencial)){
-         $sql2 .= " where acordoparalisacao.ac47_sequencial = $ac47_sequencial "; 
-       } 
+         $sql2 .= " where acordoparalisacao.ac47_sequencial = $ac47_sequencial ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }

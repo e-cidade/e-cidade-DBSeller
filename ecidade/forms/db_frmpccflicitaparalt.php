@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,7 +51,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	  <b>Tipo de Compra:</b>
 	  </td>
 	  <td nowrap title="<?=@$Tl25_codcflicita?>">
-	  <?
+	  <?php
 	  $result_tipo=$clcflicita->sql_record($clcflicita->sql_query_file(null,"l03_codigo,l03_descr",null,"l03_instit=".db_getsession("DB_instit")));
       if (isset($l25_codcflicita)&&$l25_codcflicita!=""){
         	echo "<script>document.form1.l25_codcflicita.selected=$l25_codcflicita;</script>";
@@ -66,7 +66,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	     <b>Ano:</b> 
 	  </td>
 	  <td nowrap title="<?=@$Tl25_anousu?>">
-         <?
+         <?php
          if (!isset($l25_anousu)||$l25_anousu==""){
            $l25_anousu=date('Y',db_getsession("DB_datausu"));	
          }
@@ -81,7 +81,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	     <b>Numeração:</b> 
 	  </td>
 	  <td nowrap title="<?=@$Tl25_numero?>">
-         <?
+         <?php
               
          db_input('l25_numero',10,$Il25_numero,true,'text',$db_opcao,"");
 	     ?>
@@ -98,7 +98,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <table>
   <tr>
     <td valign="top"> 
-    <?
+    <?php
      $chavepri= array("l25_codcflicita"=>@$l25_codcflicita,"l25_anousu"=>@$l25_anousu,"l25_numero"=>@$l25_numero);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      $cliframe_alterar_excluir->sql = $clpccflicitapar->sql_query(null,'*',null,"");

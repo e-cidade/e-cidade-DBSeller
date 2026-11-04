@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -255,13 +255,13 @@
   </head>
   <body>
     <div class="container">
-      <?
+      <?php
     	  require_once(modification("forms/db_frmregraarredondamentofaixa.php"));
       ?>
     </div>
   </body>
 </html>
-<?
+<?php
   if (isset($alterar) || isset($excluir) || isset($incluir)) {
     
     if ($oDaoRegraArredondamentoFaixa->erro_campo != "") {

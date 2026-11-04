@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clempretencao->rotulo->label("e65_seq");
               <?=$Le65_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e65_seq",6,$Ie65_seq,true,"text",4,"","chave_e65_seq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clempretencao->rotulo->label("e65_seq");
               <?=$Le65_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e65_seq",6,$Ie65_seq,true,"text",4,"","chave_e65_seq");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clempretencao->rotulo->label("e65_seq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empretencao.php")==true){
@@ -122,12 +122,12 @@ $clempretencao->rotulo->label("e65_seq");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

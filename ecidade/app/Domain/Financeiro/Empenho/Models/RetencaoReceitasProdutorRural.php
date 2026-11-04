@@ -22,6 +22,7 @@ class RetencaoReceitasProdutorRural extends Model
             'z01_cgccpf as nrinscProd',
             'e159_tipo as indAquis',
         ])
+        ->distinct()
         ->selectRaw("
             sum(e70_vlrliq) as vlrbruto,
             sum(e158_vlrcp) as vlrcpdescpr,
@@ -45,6 +46,8 @@ class RetencaoReceitasProdutorRural extends Model
             DB::Raw('pagordemnota.e71_codnota and pagordemnota.e71_anulado is false')
         )
         ->leftJoin('retencaoreceitas', 'e158_retencaoreceitas', '=', 'e23_sequencial')
+        ->leftJoin('retencaoempagemov', 'e27_retencaoreceitas', '=', 'e23_sequencial')
+        ->leftJoin('empagemov', 'e81_codmov', '=', 'e27_empagemov')
 
         // grouping
         ->groupBy('e159_tipo', 'db_config.cgc', 'z01_numcgm', 'z01_cgccpf')
@@ -53,6 +56,10 @@ class RetencaoReceitasProdutorRural extends Model
         ->whereMonth('e69_dtnota', '=', $mes)
         ->whereYear('e69_dtnota', '=', $ano)
         ->where('e60_instit', '=', $instit)
+        ->whereNull('e81_cancelado')
+        ->where(function ($q) {
+            $q->whereNull('e23_ativo')->orWhere('e23_ativo', true);
+        })
 
         ->when($filtroOrgaoUnidade, function ($query) use ($unidadeCnpjBase) {
             $query

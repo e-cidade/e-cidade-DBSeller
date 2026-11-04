@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $db_botao = true;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	if(!isset($tipo)){
 	?>
      <br><br>
@@ -73,7 +73,7 @@ $db_botao = true;
 	 <table>
       <tr>
        <td>Saída por:
-       <?
+       <?php
         $x = array("0"=>"Selecione","cgm"=>"Cgm","prontuario"=>"Prontuario");
         db_select("tipo",$x,true,1,"onChange=\"submit()\"");
        ?>
@@ -81,7 +81,7 @@ $db_botao = true;
        </tr>
 	 </table>
 	 </form>
-	<?
+	<?php
 	}else{
      include(modification("forms/db_frmestoquesaudeinc.php"));
 	}
@@ -90,7 +90,7 @@ $db_botao = true;
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

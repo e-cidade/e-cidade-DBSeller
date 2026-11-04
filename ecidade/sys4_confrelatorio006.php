@@ -69,13 +69,13 @@ $cldb_tiporelatorio->rotulo->label();
 	      <tr>
 	        <td>
 	          <b>
-			        <?
+			        <?php
 	          	  db_ancora("Grupo :","js_pesquisaGrupo(true)",1,"");
 	            ?>
 	          </b>
 	        </td>
 	        <td>
-	          <?
+	          <?php
 							db_input("db13_sequencial",10,$Idb13_sequencial,true,"text",1,"onChange='js_pesquisaGrupo(false);'");
 							db_input("db13_descricao" ,40,"",true,"text",3,"");
 	          ?>
@@ -84,13 +84,13 @@ $cldb_tiporelatorio->rotulo->label();
 	      <tr>
 	        <td>
 	          <b>
-			      <?
+			      <?php
 	          	db_ancora("Tipo :","js_pesquisaTipo(true)",1,"");
 	          ?>
 	          </b>
 	        </td>
 	        <td>
-	          <?
+	          <?php
 							db_input("db14_sequencial",10,$Idb14_sequencial,true,"text",1,"onChange='js_pesquisaTipo(false);'");
 							db_input("db14_descricao" ,40,"",true,"text",3,"");
 	          ?>

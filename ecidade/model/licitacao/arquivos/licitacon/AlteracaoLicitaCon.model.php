@@ -25,6 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Patrimonial\Contratos\Services\AcordoLicitacaoCompartilhadaService;
 use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\Alteracao as Regra;
 use ECidade\Patrimonial\Acordo\AlteracaoContratado\Repository\AlteracaoContratadoRepository;
 
@@ -183,6 +184,22 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
                 }
                 $oStdPosicaoAtual->valores = new stdClass;
                 $oStdPosicaoAtual->valores = $this->oRegra->getValoresAtualizadosAtePosicao($oAcordoPosicao);
+
+                if ($oStdPosicaoAtual->tipo_aditamento == AcordoPosicao::TIPO_RENOVACAO) {
+                    $oStdPosicaoAtual->valores->valor_atual = $oStdPosicaoAtual->valores->valor_total;
+                    $oStdPosicaoAtual->valores->valor_atual *= -1;
+                } elseif ($oStdPosicaoAtual->tipo_aditamento == AcordoPosicao::TIPO_ALTERACAO_DOTACAO) {
+                    $oStdPosicaoAtual->valores->valor_atual = $oStdValorPosicaoAnterior->valores->valor_atual - 0;
+                } else {
+                    $oStdPosicaoAtual->valores->valor_atual = $oStdValorPosicaoAnterior->valores->valor_atual - $oStdPosicaoAtual->valores->valor_total;
+                }
+
+                if ($oStdPosicaoAtual->tipo_aditamento == AcordoPosicao::TIPO_ALTERACAO_CESSAO_CONTRATADO ||
+                    $oStdPosicaoAtual->tipo_aditamento == AcordoPosicao::TIPO_VIGENCIA) {
+                    $oStdPosicaoAtual->valores->valor_total = $oStdValorPosicaoAnterior->valores->valor_total;
+                    $oStdPosicaoAtual->valores->quantidade = $oStdValorPosicaoAnterior->valores->quantidade;
+                }
+
                 $oValores = $this->oRegra->getValores($oStdPosicaoAtual, $oStdValorPosicaoAnterior);
 
                 $oStdPosicaoAtual->sigla_tipo_aditamento = $this->oRegra->getTipoOperacao($oStdPosicaoAtual->tipo_aditamento,
@@ -223,10 +240,14 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
                 continue;
             }
 
+            $service = new AcordoLicitacaoCompartilhadaService();
+            $dados = $service->buscarDados($oStdDadosAcordo->sequencial_acordo);
+            $modalidade = $service->getModalidade($dados->ac63_modalidade)->getSiglaTipoCompraTribunal();
+
             $oStdImprimir = $this->obterNullObject();
-            $oStdImprimir->NR_LICITACAO = $oStdDadosAcordo->numero_licitacao;
-            $oStdImprimir->ANO_LICITACAO = $oStdDadosAcordo->ano_licitacao;
-            $oStdImprimir->CD_TIPO_MODALIDADE = $oStdDadosAcordo->sigla_modalidade;
+            $oStdImprimir->NR_LICITACAO = $dados->ac63_sequencial == "" ? $oStdDadosAcordo->numero_licitacao : $dados->ac63_numero;
+            $oStdImprimir->ANO_LICITACAO = $dados->ac63_sequencial == "" ? $oStdDadosAcordo->ano_licitacao : $dados->ac63_ano;
+            $oStdImprimir->CD_TIPO_MODALIDADE = $dados->ac63_sequencial == "" ? $oStdDadosAcordo->sigla_modalidade : $modalidade;
             $oStdImprimir->NR_CONTRATO = $oStdDadosAcordo->numero_acordo;
             $oStdImprimir->ANO_CONTRATO = $oStdDadosAcordo->ano_acordo;
             $oStdImprimir->TP_INSTRUMENTO = $oStdDadosAcordo->tipo_instrumento;

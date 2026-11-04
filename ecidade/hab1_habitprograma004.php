@@ -109,7 +109,7 @@ if (isset($incluir)) {
    </div>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($lSqlErro==true){
     db_msgbox($sErroMsg);

@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ if (isset($oGet->iTipo) && $oGet->iTipo == 2 ) {
 ?>
 <html>
 <head>
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("prototype.js");
 db_app::load("datagrid.widget.js");
@@ -68,7 +68,7 @@ db_app::load("DBViewFormularioFolha/ValidarFolhaPagamento.js");
 ?>
 </head>
 <body bgcolor="#cccccc">
-<?
+<?php
 	include(modification("forms/db_frmgerarempenho.php"));
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clfar_medreferencia->rotulo->label("fa19_c_medreferencia");
               <?=$Lfa19_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa19_i_codigo",10,$Ifa19_i_codigo,true,"text",4,"","chave_fa19_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfar_medreferencia->rotulo->label("fa19_c_medreferencia");
               <?=$Lfa19_c_medreferencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa19_c_medreferencia",20,$Ifa19_c_medreferencia,true,"text",4,"","chave_fa19_c_medreferencia");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfar_medreferencia->rotulo->label("fa19_c_medreferencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_medreferencia.php")==true){
@@ -122,12 +122,12 @@ $clfar_medreferencia->rotulo->label("fa19_c_medreferencia");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

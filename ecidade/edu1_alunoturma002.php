@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ $clmatricula              = new cl_matricula;
 $escola                   = db_getsession("DB_coddepto");
 $oConfig                  = loadConfig('edu_parametros', 'ed233_i_escola = '.$escola);
 if ($oConfig == null) {
-  $oConfig->ed233_i_habilitaordemalfabeticaturma = 2; // Não habilita (não exibe o botão)
+  $oConfig->ed233_i_habilitaordemalfabeticaturma = 2; // Nï¿½o habilita (nï¿½o exibe o botï¿½o)
 }
 if (isset($atualizar)) {
 
@@ -121,7 +121,7 @@ if (isset($atualizar)) {
                            "&ed52_c_descr=<?=$ed52_c_descr?>&ordenar=true&numeracao=true";
      parent.db_iframe_classificacao.hide();
     </script>
-    <?
+    <?php
     exit;
   } catch (Exception $eErro) {
 
@@ -142,11 +142,11 @@ if (isset($atualizar)) {
 <form name="form2" id='form2' method="post" action="">
 <table border="0" cellspacing="3" bgcolor="#CCCCCC" align="center">
  <tr>
- <?if (isset($numeracao) && $numeroaluno =="") {?>
+ <?php if (isset($numeracao) && $numeroaluno =="") {?>
   <td valign="top" align="center">
-   <b>Novo N°</b>
+   <b>Novo Nï¿½</b>
   </td>
-  <?}?>
+  <?php }?>
   <td valign="top" align="center" colspan="2">
    <b>Nome Aluno</b>
   </td>
@@ -154,17 +154,17 @@ if (isset($atualizar)) {
  </tr>
  <tr>
   <td align="right" valign="top" style='overflow:hidden' >
-   <?
+   <?php
    $sWhereTrocaTurma = '';
    if (isset($trocaTurma) && $trocaTurma == 1) {
      $sWhereTrocaTurma = " and ed60_c_situacao <> 'TROCA DE TURMA'";
    }
-   // Busca das matrículas (alunos)
+   // Busca das matrï¿½culas (alunos)
    $sql    = $clmatricula->sql_query("","*","ed60_i_numaluno, to_ascii(ed47_v_nome)",
                                     " ed60_i_turma = $ed60_i_turma {$sWhereTrocaTurma}");
    $result = $clmatricula->sql_record($sql);
 
-   // Verifico se tem ou não ordem por numeração informada
+   // Verifico se tem ou nï¿½o ordem por numeração informada
    $sVisibility = 'hidden';
    if ($clmatricula->numrows > 0) {
 
@@ -180,11 +180,11 @@ if (isset($atualizar)) {
   <select name="numaluno[]" id="numaluno" size="15" style="position:relative;left:18px;font-size:9px;width:50px;
                                                            overflow:hidden;z-Index:0;
                                                            visibility:<?=$sVisibility?>;" multiple >
-    <?
+    <?php
     $iContNum = 1;
     for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
-      if ($sVisibility == 'hidden') { // Sem classificação numérica
+      if ($sVisibility == 'hidden') { // Sem classificação numï¿½rica
         echo '<option value="null">null</option>';
       } else {
 
@@ -192,14 +192,13 @@ if (isset($atualizar)) {
         $iContNum++;
 
       }
-
     }
     ?>
    </select>
   </td>
   <td align="right" valign="top">
    <select name="matriculas[]" id="matriculas" size="15" style="font-size:9px;width:280px;" multiple>
-   <?
+   <?php
    for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
      db_fieldsmemory($result,$x);
@@ -227,28 +226,28 @@ if (isset($atualizar)) {
    <td>
    <input type="button" name="cancelar" value="Cancelar" onClick="js_fechar();">
   </td>
-  <?
+  <?php
   if ($oConfig->ed233_i_habilitaordemalfabeticaturma == 1) {
   ?>
     <td width="50">
      <input type="button" id="ordenar" value="Ordenar Alfabeticamente" onClick="js_OrdenarLista('matriculas', true);"
        <?=$sVisibility == 'hidden' ? 'disabled' : ''?>>
     </td>
-  <?
+  <?php
   }
   if ($ed60_i_numaluno == '') {
   ?>
       <td>
         <input type="button" id="numeracao" value="Gerar Numeração" onClick="js_numeracao('matriculas');"  >
       </td>
-  <?} ?>
-  <?if ( $ed60_i_numaluno != "") {?>
+  <?php } ?>
+  <?php if ( $ed60_i_numaluno != "") {?>
       <td>
         <input type="button" id="numeracao" name="numeracao" value="Cancelar Numeração"
           onClick="js_cancelarNumeracao();"
           style="visibility:visible;">
       </td>
-  <?}?>
+  <?php }?>
   <td>
    <input type="button" id="voltar" value="Restaurar"
           onClick="location.href = 'edu1_alunoturma002.php?ed60_i_turma=<?=$ed60_i_turma?>&ed57_c_descr=<?=$ed57_c_descr?>
@@ -332,7 +331,7 @@ function js_fechar() {
 
 function TiraAcento(string) {
 
-  acentos = 'ÁÉÍÓÚÀÂÊÔÜÏÖÑÃÕÄ\'';
+  acentos = 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\'';
   letras  = 'AEIOUAAEOUIONAOA ';
   new_string = '';
   for (r = 0; r < string.length; r++) {
@@ -351,9 +350,9 @@ function TiraAcento(string) {
   return new_string;
 }
 
-/* Retira o número, o traço e o espaço em branco do início da string
+/* Retira o nï¿½mero, o traï¿½o e o espaï¿½o em branco do inï¿½cio da string
    iTipoRetorno pode assumir 2 valores:
-   1 -> retorna a string sem o número na frente
+   1 -> retorna a string sem o nï¿½mero na frente
    2 -> retorna o que foi retirado da string
 
    Ex: js_retiraNumero('1 - Isabel', 1); // Retorna "Isabel"
@@ -374,7 +373,7 @@ function js_retiraNumero(sStr, iTipoRetorno) {
 
     if (sStr[iNumCharCut] == '-') {
 
-      iNumCharCut += 2; // Contar o espaço em branco também
+      iNumCharCut += 2; // Contar o espaï¿½o em branco tambï¿½m
       lFound = true;
       break;
 
@@ -410,11 +409,11 @@ function js_OrdenarLista(combo, lVerificaOrdemNumerica) {
 
   if (lVerificaOrdemNumerica) {
 
-    if (document.getElementById('numaluno').options[0].value.isInt()) { // Se a ordem for numérica
+    if (document.getElementById('numaluno').options[0].value.isInt()) { // Se a ordem for numï¿½rica
 
-      if (!confirm('Os alunos com matrículas posteriores posicionados ao fim da listagem serão reclassificados'+
-                   ' na ordem alfabética, clique no botão OK para confirmar e no botão Cancelar para manter'+
-                   ' classificação numérica atual.'
+      if (!confirm('Os alunos com matrï¿½culas posteriores posicionados ao fim da listagem serï¿½o reclassificados'+
+                   ' na ordem alfabï¿½tica, clique no botï¿½o OK para confirmar e no botï¿½o Cancelar para manter'+
+                   ' classificação numï¿½rica atual.'
                   )) {
         return false;
       }
@@ -430,7 +429,7 @@ function js_OrdenarLista(combo, lVerificaOrdemNumerica) {
 
 
     if (lb.options[i].text[0].isInt()) {
-      texto       = TiraAcento(js_retiraNumero(lb.options[i].text, 1)); // Retiro o número da frente do texto para ordenar
+      texto       = TiraAcento(js_retiraNumero(lb.options[i].text, 1)); // Retiro o nï¿½mero da frente do texto para ordenar
     } else {
       texto       = TiraAcento(lb.options[i].text);
     }
@@ -457,9 +456,9 @@ function js_OrdenarLista(combo, lVerificaOrdemNumerica) {
 
 function js_cancelarNumeracao() {
 
-  if (!confirm('Os alunos com matrículas posteriores posicionados ao fim da listagem serão reclassificados'+
-               ' na ordem alfabética, clique no botão OK para confirmar e no botão Cancelar para manter'+
-               ' classificação numérica atual.'
+  if (!confirm('Os alunos com matrï¿½culas posteriores posicionados ao fim da listagem serï¿½o reclassificados'+
+               ' na ordem alfabï¿½tica, clique no botï¿½o OK para confirmar e no botï¿½o Cancelar para manter'+
+               ' classificação numï¿½rica atual.'
               )) {
     return false;
   }
@@ -481,7 +480,7 @@ function js_cancelarNumeracao() {
     aOptNum[iCont].value = 'null';
     aOptNum[iCont].text  = 'null';
     if (aOptAluno[iCont].text[0].isInt()) {
-      aOptAluno[iCont].text = js_retiraNumero(aOptAluno[iCont].text, 1); // Retiro o número da frente do nome do aluno
+      aOptAluno[iCont].text = js_retiraNumero(aOptAluno[iCont].text, 1); // Retiro o nï¿½mero da frente do nome do aluno
     }
 
   }
@@ -522,7 +521,7 @@ $('numaluno').observe("scroll", function (Event) {
 
 function js_numeracao(combo) {
 
-  // Mudo o numero dos alunos para valores numéricos
+  // Mudo o numero dos alunos para valores numï¿½ricos
   var aOptNum   = document.getElementById('numaluno').options;
   var iNum      = 1;
   for (var iCont = 0; iCont < aOptNum.length; iCont++) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,17 +39,17 @@ $clrotulo->label("z01_nome");
         <table border="0">
 				  <tr>
 				    <td title="<?=@$Tz01_numcgm?>">
-				       <?
+				       <?php
 				         db_ancora('<b>CGM:</b>', "js_pesquisa_z01_numcgm(true);", 1);
 				       ?>
 				    </td>
 				    <td> 
-				      <?
+				      <?php
 				        db_input('z01_numcgm', 10, @$Iz01_numcgm,true, 'text', 1, " onchange='js_pesquisa_z01_numcgm(false);'");
 				      ?>
 				    </td>
 				    <td colspan="2">
-				      <?
+				      <?php
 				        db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, "");
 				      ?>
 				    </td>
@@ -59,7 +59,7 @@ $clrotulo->label("z01_nome");
 				      <b>Data Inicial</b>
 				    </td>
 				    <td align="left">
-				      <?
+				      <?php
 				        db_inputdata('datainicial', @$datainicial_dia, @$datainicial_mes, @$datainicial_ano, true, 'text', 1, "");
 				      ?>
 				    </td>
@@ -67,7 +67,7 @@ $clrotulo->label("z01_nome");
 				      <b>Data Final</b>
 				    </td>
 				    <td align="right">
-				      <?
+				      <?php
 				        db_inputdata('datafinal', @$datafinal_dia, @$datafinal_mes, @$datafinal_ano, true, 'text', 1, "");
 				      ?>
 				    </td>

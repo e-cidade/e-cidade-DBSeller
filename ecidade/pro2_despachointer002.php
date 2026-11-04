@@ -132,11 +132,7 @@ if ($clprotprocesso->numrows != 0) {
     $pdf->setfont('arial', '', 8);
     $pdf->cell(75, $alt, $dados->p58_requer, 0, 1, "L", 0);
 
-    $pdf->setfont('arial', 'b', 8);
-    $pdf->cell(25, $alt, 'Observação :', 0, 0, "R", 0);
-    $pdf->setfont('arial', '', 8);
     // Alteracao Plugin TaxonomiaDeProcessosDoMinisterioPublico - pro2_despachointer002.php #1
-    $pdf->multicell(160, $alt, $dados->p58_obs, 0, "L", 0);
 }
 
 $pdf->Ln();
@@ -144,7 +140,7 @@ $pdf->cell(190, $alt, '', 'T', 1, "R", 0);
 $pdf->setfont('arial', 'b', 10);
 $pdf->cell(25, $alt, "{$sTipoDespacho} :", 0, 0, "R", 0);
 $pdf->setfont('arial', '', 10);
-$pdf->multicell(160, $alt, $despacho, 0, "L", 0);
+$pdf->multicell(160, $alt, strip_tags($despacho), 0, "L", 0);
 
 /**
  * CAMPOS DINAMICOS
@@ -170,11 +166,13 @@ if ($result) {
     $pdf->Ln();
 
     $camposDinamicos = pg_fetch_all($result);
-    foreach ($camposDinamicos as $campo) {
-        $pdf->setfont('arial', 'b', 10);
-        $pdf->cell(25, $alt, "{$campo['rotulo']} :", 0, 0, "R", 0);
-        $pdf->setfont('arial', '', 10);
-        $pdf->multicell(160, $alt, $campo['p111_resposta'], 0, "L", 0);
+    if (!empty($camposDinamicos)) {
+        foreach ($camposDinamicos as $campo) {
+            $pdf->setfont('arial', 'b', 10);
+            $pdf->cell(25, $alt, "{$campo['rotulo']} :", 0, 0, "R", 0);
+            $pdf->setfont('arial', '', 10);
+            $pdf->multicell(160, $alt, $campo['p111_resposta'], 0, "L", 0);
+        }
     }
 }
 $dataHora = Date('dmYHis');

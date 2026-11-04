@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -82,29 +82,29 @@ $db_opcao = 1;
 $db_botao = true;
 
 if (isset ($incluir)&&$incluir!="") {
-	
+
 	$sqlerro = false;
-	
+
 	db_inicio_transacao();
-	
+
 	$arr_dados = array();
-	$dados 	   = split('#', $valores);
-	
+	$dados 	   =explode('#', $valores);
+
 	for($w=0;$w<count($dados);$w++){
 		if (trim($dados[$w])!=""){
-			$info=split('_', $dados[$w]);
-			if (array_key_exists($info[2],$arr_dados)){	    	
+			$info= explode('_', $dados[$w]);
+			if (array_key_exists($info[2],$arr_dados)){
 	    		$esp="#";
 			} else{
 				$esp="";
-			}			
-			@$arr_dados[@$info[2]] .= @$esp.@$info[1]."_".@$info[3];			
+			}
+			@$arr_dados[@$info[2]] .= @$esp.@$info[1]."_".@$info[3];
 		}
 	}
 	reset($arr_dados);
 	for($w=0;$w<count($arr_dados);$w++){
-		$depto_dest=key($arr_dados);		
-		$cod_ord=split('#',$arr_dados[$depto_dest]);
+		$depto_dest=key($arr_dados);
+		$cod_ord= explode('#',$arr_dados[$depto_dest]);
 		$clproctransfer->p62_hora = db_hora();
 		$clproctransfer->p62_dttran = date("Y-m-d", db_getsession("DB_datausu"));
 		$clproctransfer->p62_id_usuario = db_getsession("DB_id_usuario");
@@ -116,15 +116,15 @@ if (isset ($incluir)&&$incluir!="") {
 		if ($clproctransfer->erro_status == 0) {
 			$sqlerro == true;
 			$erro_msg=$clproctransfer->erro_msg;
-		}		
+		}
 		for($i=0;$i<count($cod_ord);$i++){
-			$info_item=split("_",$cod_ord[$i]);
+			$info_item= explode("_",$cod_ord[$i]);
 			$solicitem=$info_item[0];
 			$ordem=$info_item[1];
 			if ($sqlerro == false) {
 				$result_proc=$clsolicitemprot->sql_record($clsolicitemprot->sql_query_file($solicitem));
 				if ($clsolicitemprot->numrows>0){
-					db_fieldsmemory($result_proc,0);					
+					db_fieldsmemory($result_proc,0);
                     $clproctransferproc->incluir($codtran,$pc49_protprocesso);
                     if ($clproctransferproc->erro_status==0){
                        	$sqlerro=true;
@@ -133,12 +133,12 @@ if (isset ($incluir)&&$incluir!="") {
                     }
                     if ($sqlerro == false) {
                         $clprotprocesso->p58_codproc= $pc49_protprocesso;
-                        $clprotprocesso->p58_despacho="".@$despacho;                        	
+                        $clprotprocesso->p58_despacho="".@$despacho;
                         $clprotprocesso->alterar($pc49_protprocesso);
                       	if ($clprotprocesso->erro_status==0){
                        	  	$sqlerro=true;
                        	  	$erro_msg=$clprotprocesso->erro_msg;
-                    		break;                    		
+                    		break;
                 	    }
             	    }
 				}
@@ -152,15 +152,15 @@ if (isset ($incluir)&&$incluir!="") {
 					$sqlerro=true;
 					$erro_msg=$clsolordemtransf->erro_msg;
 				}
-			}				
+			}
 		}
-		next($arr_dados);				
+		next($arr_dados);
 	}
 	db_fim_transacao($sqlerro);
 	if ($sqlerro==false){
 		db_msgbox("Transferência efetuada com sucesso!!");
 		echo "<script>parent.location.href='com4_soltranfand001.php';</script>";
-	}else{		
+	}else{
 		db_msgbox("Transferência Cancelada!!");
 		db_msgbox(@$erro_msg);
 	}
@@ -176,7 +176,7 @@ if (isset ($incluir)&&$incluir!="") {
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
 
-function js_submit_form(){ 
+function js_submit_form(){
   document.form1.codsolant.value=document.form1.codsol.value;
   document.form1.despacho.value=parent.document.form1.despacho.value;
   //js_gera_chaves();
@@ -206,19 +206,19 @@ border-right-color: <?=$cor?>;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form1" method="post">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr> 
-    <td align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
-    
+    <?php
+
     if (isset ($codsol) && $codsol != "") {
-    	
+
       if (isset($tipo)&&$tipo=="P"){
         $where=" pc81_codproc=$codsol and pc81_codproc is not null ";
       }else {
      	$where=" pc10_numero=$codsol ";
       }
-    	
+
       $result = $clsolicita->sql_record($clsolicita->sql_query_andsol("distinct pc11_numero	,
 	                                                                            pc11_codigo	,
 	                                                                            pc47_pctipoandam as tipoandam,
@@ -232,74 +232,74 @@ border-right-color: <?=$cor?>;
 																				pc17_unid	,
 																				pc17_quant	,
 																				m61_descr	,
-																				m61_usaquant	","where $where 
-      																								 and p64_codtran is not null 
-      																								 and ( case  
-            																							    when ( 	   e61_autori is not null 
-            																							    	   and e54_anulad is not null 
-                     																							   and e54_autori = ( select max(e55_autori)  
+																				m61_usaquant	","where $where
+      																								 and p64_codtran is not null
+      																								 and ( case
+            																							    when ( 	   e61_autori is not null
+            																							    	   and e54_anulad is not null
+                     																							   and e54_autori = ( select max(e55_autori)
                                           																			  					 from empautitem
                                           																			  					      inner join empautitempcprocitem on empautitempcprocitem.e73_autori = empautitem.e55_autori
                                           																			  					                                     and empautitempcprocitem.e73_sequen = empautitem.e55_sequen
-                                          																			  					      inner join pcprocitem           on pcprocitem.pc81_codprocitem     = empautitempcprocitem.e73_pcprocitem  
+                                          																			  					      inner join pcprocitem           on pcprocitem.pc81_codprocitem     = empautitempcprocitem.e73_pcprocitem
                                          																							      where pcprocitem.pc81_solicitem = x.pc11_codigo )
-            																							    	   )  
-																		                   					  or ( e61_autori is null)    
-                   																						   		 then true  
-  																									          else false   
+            																							    	   )
+																		                   					  or ( e61_autori is null)
+                   																						   		 then true
+  																									          else false
    																							              	end )
    																							         and y.pc43_depto=".db_getsession("DB_coddepto")));
-    
+
     $numrows=$clsolicita->numrows;
-    
+
     }else{
       $numrows="0";
     }
-	
+
     if($numrows>0){
-	
+
 	echo " <table border='1' cellspacing='0' cellpadding='0'>
 		     <tr class='bordas'>
 			   <td class='bordas' align='center'title='Inverte marcação' >".(isset($tipo) && $tipo=="S"?"<a title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'><b>M</b></a>":"")."</td>
 		       <td class='bordas' align='center'><b><small>$RLpc11_numero	 </small></b></td>
 		       <td class='bordas' align='center'><b><small>$RLpc11_codigo	 </small></b></td>
 		       <td class='bordas' align='center'><b><small>$RLpc11_quant	 </small></b></td>
-		       <td class='bordas' align='center'><b><small>$RLpc11_vlrun	 </small></b></td>	      
+		       <td class='bordas' align='center'><b><small>$RLpc11_vlrun	 </small></b></td>
 		       <td class='bordas' align='center'><b><small>$RLpc01_codmater	 </small></b></td>
 		       <td class='bordas' align='center'><b><small>$RLpc01_descrmater</small></b></td>
 		       <td class='bordas' align='center'><b><small>$RLpc01_servico	 </small></b></td>
 			   <td class='bordas' align='center'><b><small>Depto. Destino	 </small></b></td> ";
-          
+
   }else echo"<b>Nenhum registro encontrado...</b>";
-	 
+
     echo " </tr>";
-        
+
 	for($i=0; $i<$numrows; $i++){
-	    
+
       db_fieldsmemory($result,$i);
-			    
+
 	  if (isset($tipo)&&$tipo=="S"){
 	    $result_procitem=$clpcprocitem->sql_record($clpcprocitem->sql_query_file(null,"*",null,"pc81_solicitem=$pc11_codigo"));
 	    if ($clpcprocitem->numrows!=0){
 	      continue;
 	    }
 	  }
-	    
+
 	  if ($pc01_servico=='t'){
 	  	$pc01_servico="Sim";
 	  }else{
 	    $pc01_servico="Não";
 	  }
-	       
+
 	  if ( $tipoandam == 5 || $tipoandam == 6 ) {
 	  	$rsLiclicitem = $clliclicitem->sql_record($clliclicitem->sql_query_proc(null,"*",null," pc11_codigo =  {$pc11_codigo}"));
 	  	if($clliclicitem->numrows > 0){
 	  		continue;
 	  	}
 	  }
-	  
-	  
-	  echo "<tr>	    
+
+
+	  echo "<tr>
 			  <td class='bordas_corp' align='center' title='Inverte a marcação'><input type='checkbox' name='CHECK_$pc11_codigo' id='CHECK_$pc11_codigo' ".(isset($tipo) && $tipo=="P"?"onClick='js_marca(this);'":"")."></td>
    	          <td class='bordas_corp' align='center'><small>$pc11_numero	&nbsp; 					  </small></td>
    	          <td class='bordas_corp' align='center'><small>$pc11_codigo&nbsp;	 		 		  </small></td>
@@ -309,7 +309,7 @@ border-right-color: <?=$cor?>;
    	          <td class='bordas_corp' align='center'><small>$pc01_descrmater	&nbsp; 				  </small></td>
    	          <td class='bordas_corp' align='center'><small>$pc01_servico&nbsp;	 				  </small></td>
 		   	  <td class='bordas_corp' align='center'><small>";
-	
+
 	  echo "<select name='depto_$pc11_codigo'>";
 
 $passa=false;
@@ -331,13 +331,13 @@ if ($passa==false){
 			$where_t = " pc47_pctipoandam = 5 ";
 		}else{
 			$ordem=$pc43_ordem+1;
-			$where_t = " pc47_ordem = $ordem ";	
-		}			
+			$where_t = " pc47_ordem = $ordem ";
+		}
 		$result_prox=$clsolandpadraodepto->sql_record($clsolandpadraodepto->sql_query(null,"*",null,"$where_t and pc47_solicitem=$pc11_codigo"));
 		if ($clsolandpadraodepto->numrows>0){
 			db_fieldsmemory($result_prox,0);
 			echo "<option value='".$pc48_depto."_".$pc47_ordem."'>$descrdepto</option>";
-		}	
+		}
 	}
 }
 $wher="";
@@ -350,7 +350,7 @@ if($clsolandam->numrows>0){
 	for($w=1;$w<$clsolandam->numrows;$w++){
 		db_fieldsmemory($result_ant,$w);
 		if(isset($pc48_depto)&&$pc48_depto!=""){
-			if ($pc48_depto==$pc43_depto){				
+			if ($pc48_depto==$pc43_depto){
 				continue;
 			}
 		}
@@ -361,7 +361,7 @@ if($clsolandam->numrows>0){
 echo "</select>
 </small></td>";
 }
-echo "</tr> 
+echo "</tr>
 </table>";
 db_input('incluir', 10, '', true, 'hidden', 3);
 db_input('despacho', 200, '', true, 'hidden', 3);
@@ -383,27 +383,27 @@ db_input('valores', 10, '', true, 'hidden', 3);
 
 
 </html>
-<?
+<?php
 
 if (isset($tipo) && $tipo == "P") {
 	echo " <script>																 ";
-	echo "   function js_marca(obj){											 "; 
+	echo "   function js_marca(obj){											 ";
 	echo "     var OBJ = document.form1;										 ";
 	echo "     for(i=0;i<OBJ.length;i++){										 ";
 	echo "     	 if(OBJ.elements[i].type == 'checkbox'){						 ";
-	echo "         OBJ.elements[i].checked = obj.checked						 ";            
+	echo "         OBJ.elements[i].checked = obj.checked						 ";
 	echo "     	 }			 													 ";
 	echo "     }																 ";
 	echo "     				 													 ";
 	echo "	 }				 													 ";
-	echo "</script>			 													 ";	
+	echo "</script>			 													 ";
 } else {
 	echo " <script>																 ";
-	echo "   function js_marca(obj){											 "; 
+	echo "   function js_marca(obj){											 ";
 	echo "     var OBJ = document.form1;										 ";
 	echo "     for(i=0;i<OBJ.length;i++){										 ";
 	echo "     	 if(OBJ.elements[i].type == 'checkbox'){						 ";
-	echo "         OBJ.elements[i].checked = !(OBJ.elements[i].checked == true); ";            
+	echo "         OBJ.elements[i].checked = !(OBJ.elements[i].checked == true); ";
 	echo "     	 }			 													 ";
 	echo "     }																 ";
 	echo "     return false; 													 ";

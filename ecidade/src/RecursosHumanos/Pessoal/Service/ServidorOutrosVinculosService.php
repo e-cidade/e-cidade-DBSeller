@@ -80,7 +80,8 @@ class ServidorOutrosVinculosService
 
         $servidor = ServidorRepository::getInstanciaByCodigo($parametros->matricula);
 
-        return $this->repositorio->scopeAno($this->anoCompetencia)->scopeMes($this->mesCompetencia)->scopeServidor($servidor)->get();
+        return $this->repositorio->scopeAno($this->anoCompetencia)
+        ->scopeMes($this->mesCompetencia)->scopeServidor($servidor)->get();
     }
 
     /**
@@ -89,9 +90,13 @@ class ServidorOutrosVinculosService
      * @param Instituicao $instituicao
      * @throws Exception
      */
-    public function virarCompetencia(DBCompetencia $competenciaAtual, DBCompetencia $competenciaNova, Instituicao $instituicao)
-    {
-        $servidorOutrosVinculos = $this->repositorio->scopeAno($competenciaAtual->getAno())->scopeMes($competenciaAtual->getMes())->scopeInstituicao($instituicao)->get();
+    public function virarCompetencia(
+        DBCompetencia $competenciaAtual,
+        DBCompetencia $competenciaNova,
+        Instituicao $instituicao
+    ) {
+        $servidorOutrosVinculos = $this->repositorio->scopeAno($competenciaAtual->getAno())
+        ->scopeMes($competenciaAtual->getMes())->scopeInstituicao($instituicao)->get();
 
         foreach ($servidorOutrosVinculos as $servidorOutroVinculo) {
             $parametros = new stdClass();
@@ -161,9 +166,13 @@ class ServidorOutrosVinculosService
      * @param DBCompetencia $competenciaAtual
      * @throws Exception
      */
-    public function voltarCompetencia(DBCompetencia $competenciaAtual)
+    public function voltarCompetencia(DBCompetencia $competenciaAtual, Instituicao $instituicao)
     {
-        $servidorOutrosVinculos = $this->repositorio->scopeMes($competenciaAtual->getMes())->scopeAno($competenciaAtual->getAno())->get();
+        $servidorOutrosVinculos = $this->repositorio
+        ->scopeMes($competenciaAtual->getMes())
+        ->scopeAno($competenciaAtual->getAno())
+        ->scopeInstituicao($instituicao)
+        ->get();
         $this->repositorio->resetScopes();
 
         foreach ($servidorOutrosVinculos as $servidorOutroVinculo) {

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -65,7 +65,7 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
                                 <?= $Ldv09_procdiver ?>
                             </td>
                             <td width="96%" align="left" nowrap>
-                                <?
+                                <?php
                                 db_input("dv09_procdiver", 5, $Idv09_procdiver, true, "text", 4, "", "chave_dv09_procdiver");
                                 ?>
                             </td>
@@ -75,7 +75,7 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
                                 <?= $Ldv09_descr ?>
                             </td>
                             <td width="96%" align="left" nowrap>
-                                <?
+                                <?php
                                 db_input("dv09_descr", 40, $Idv09_descr, true, "text", 4, "", "chave_dv09_descr");
                                 ?>
                             </td>
@@ -93,7 +93,7 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
         </tr>
         <tr>
             <td align="center" valign="top">
-                <?
+                <?php
                 $sWhereExcecao = "";
 
                 if (isset($excecao) AND !empty($excecao)) {
@@ -114,6 +114,13 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
                     }
                 }
 
+                $sWhereTipoInscricao = "";
+                if (isset($k03_tipoinscricao) && !empty($k03_tipoinscricao)) {
+                    if ($k03_tipoinscricao == 1) {
+                        $sWhereTipoInscricao = " and dv09_cobranca = true ";
+                    }
+                }
+
                 if (!isset($pesquisa_chave)) {
 
                     if (isset($campos) == false) {
@@ -127,16 +134,16 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
 
                     if (isset($chave_dv09_procdiver) && (trim($chave_dv09_procdiver) != "")) {
                         $sql = $clprocdiver->sql_query($chave_dv09_procdiver, $campos, "dv09_procdiver", "     dv09_procdiver = $chave_dv09_procdiver
-	                                                                                         and dv09_instit    = {$iInstituicao} 
+	                                                                                         and dv09_instit    = {$iInstituicao}
 	                                                                                         and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}')
-                                                                                             {$sWhereExcecao}");
+                                                                                             {$sWhereExcecao} {$sWhereTipoInscricao}");
                     } else if (isset($chave_dv09_descr) && (trim($chave_dv09_descr) != "")) {
                         $sql = $clprocdiver->sql_query("", $campos, "dv09_descr", " dv09_descr like '$chave_dv09_descr%' and dv09_instit = {$iInstituicao}
-	         																																															 and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}') {$sWhereExcecao}");
+	         																																															 and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}') {$sWhereExcecao} {$sWhereTipoInscricao}");
                     } else if (isset($chave_mostratodas) && trim($chave_mostratodas) != "") {
-                        $sql = $clprocdiver->sql_query("", $campos, "dv09_procdiver", " dv09_instit = {$iInstituicao} {$sWhereExcecao}");
+                        $sql = $clprocdiver->sql_query("", $campos, "dv09_procdiver", " dv09_instit = {$iInstituicao} {$sWhereExcecao} {$sWhereTipoInscricao}");
                     } else {
-                        $sql = $clprocdiver->sql_query("", $campos, "dv09_procdiver", " dv09_instit = {$iInstituicao} and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}') {$sWhereExcecao}");
+                        $sql = $clprocdiver->sql_query("", $campos, "dv09_procdiver", " dv09_instit = {$iInstituicao} and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}') {$sWhereExcecao} {$sWhereTipoInscricao}");
                     }
                     $repassa = array();
                     if (isset($chave_dv09_descr)) {
@@ -148,7 +155,7 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
                     if (!empty($pesquisa_chave)) {
 
                         $result = $clprocdiver->sql_record($clprocdiver->sql_query($pesquisa_chave, "*", null, "    dv09_procdiver = $pesquisa_chave
-                                                                                               and dv09_instit    = {$iInstituicao} 
+                                                                                               and dv09_instit    = {$iInstituicao}
 	         																																										 and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}')"));
                         if ($clprocdiver->numrows != 0) {
 
@@ -168,12 +175,12 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
 </body>
 
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
 ?>
     <script>
     </script>
-<?
+<?php
 }
 ?>
 <script>

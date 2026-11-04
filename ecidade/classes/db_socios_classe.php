@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE socios
 class cl_socios {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q95_cgmpri = 0;
-   var $q95_numcgm = 0;
-   var $q95_perc = 0;
-   var $q95_tipo = 0;
-   var $q95_qualificacaosocio = 0;
+   public $q95_cgmpri = 0;
+   public $q95_numcgm = 0;
+   public $q95_perc = 0;
+   public $q95_tipo = 0;
+   public $q95_qualificacaosocio = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q95_cgmpri = int4 = Numcgm da Empresa
                  q95_numcgm = int4 = Numero do CGM
                  q95_perc = float8 = Valor do capital
@@ -56,13 +56,13 @@ class cl_socios {
                  q95_qualificacaosocio = int8 = Qualificação do Sócio
                  ";
    //funcao construtor da classe
-   function cl_socios() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("socios");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_socios {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q95_cgmpri = ($this->q95_cgmpri == ""?@$GLOBALS["HTTP_POST_VARS"]["q95_cgmpri"]:$this->q95_cgmpri);
        $this->q95_numcgm = ($this->q95_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["q95_numcgm"]:$this->q95_numcgm);
@@ -84,7 +84,7 @@ class cl_socios {
      }
    }
    // funcao para inclusao
-   function incluir ($q95_cgmpri,$q95_numcgm){
+   public function incluir ($q95_cgmpri,$q95_numcgm){
       $this->atualizacampos();
      if($this->q95_perc == null ){
        $this->erro_sql = " Campo Valor do capital nao Informado.";
@@ -160,23 +160,11 @@ class cl_socios {
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
-     $resaco = $this->sql_record($this->sql_query_file($this->q95_cgmpri,$this->q95_numcgm));
-     if(($resaco!=false)||($this->numrows!=0)){
-       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
-       $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-       $resac = db_query("insert into db_acountkey values($acount,3414,'$this->q95_cgmpri','I')");
-       $resac = db_query("insert into db_acountkey values($acount,290,'$this->q95_numcgm','I')");
-       $resac = db_query("insert into db_acount values($acount,66,3414,'','".AddSlashes(pg_result($resaco,0,'q95_cgmpri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,66,290,'','".AddSlashes(pg_result($resaco,0,'q95_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,66,647,'','".AddSlashes(pg_result($resaco,0,'q95_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,66,16684,'','".AddSlashes(pg_result($resaco,0,'q95_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,66,1014200,'','".AddSlashes(pg_result($resaco,0,'q95_qualificacaosocio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     }
+
      return true;
    }
    // funcao para alteracao
-   function alterar ($q95_cgmpri=null,$q95_numcgm=null) {
+   public function alterar ($q95_cgmpri=null,$q95_numcgm=null) {
       $this->atualizacampos();
      $sql = " update socios set ";
      $virgula = "";
@@ -244,26 +232,7 @@ class cl_socios {
      if($q95_numcgm!=null){
        $sql .= " and  q95_numcgm = $this->q95_numcgm";
      }
-     $resaco = $this->sql_record($this->sql_query_file($this->q95_cgmpri,$this->q95_numcgm));
-     if($this->numrows>0){
-       for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,3414,'$this->q95_cgmpri','A')");
-         $resac = db_query("insert into db_acountkey values($acount,290,'$this->q95_numcgm','A')");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q95_cgmpri"]) || $this->q95_cgmpri != "")
-           $resac = db_query("insert into db_acount values($acount,66,3414,'".AddSlashes(pg_result($resaco,$conresaco,'q95_cgmpri'))."','$this->q95_cgmpri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q95_numcgm"]) || $this->q95_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,66,290,'".AddSlashes(pg_result($resaco,$conresaco,'q95_numcgm'))."','$this->q95_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q95_perc"]) || $this->q95_perc != "")
-           $resac = db_query("insert into db_acount values($acount,66,647,'".AddSlashes(pg_result($resaco,$conresaco,'q95_perc'))."','$this->q95_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q95_tipo"]) || $this->q95_tipo != "")
-           $resac = db_query("insert into db_acount values($acount,66,16684,'".AddSlashes(pg_result($resaco,$conresaco,'q95_tipo'))."','$this->q95_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q95_qualificacaosocio"]) || $this->q95_qualificacaosocio != "")
-           $resac = db_query("insert into db_acount values($acount,66,1014200,'".AddSlashes(pg_result($resaco,$conresaco,'q95_qualificacaosocio'))."','$this->q95_qualificacaosocio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
-     }
+
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
@@ -297,26 +266,7 @@ class cl_socios {
      }
    }
    // funcao para exclusao
-   function excluir ($q95_cgmpri=null,$q95_numcgm=null,$dbwhere=null) {
-     if($dbwhere==null || $dbwhere==""){
-       $resaco = $this->sql_record($this->sql_query_file($q95_cgmpri,$q95_numcgm));
-     }else{
-       $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
-     }
-     if(($resaco!=false)||($this->numrows!=0)){
-       for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,3414,'$q95_cgmpri','E')");
-         $resac = db_query("insert into db_acountkey values($acount,290,'$q95_numcgm','E')");
-         $resac = db_query("insert into db_acount values($acount,66,3414,'','".AddSlashes(pg_result($resaco,$iresaco,'q95_cgmpri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,66,290,'','".AddSlashes(pg_result($resaco,$iresaco,'q95_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,66,647,'','".AddSlashes(pg_result($resaco,$iresaco,'q95_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,66,16684,'','".AddSlashes(pg_result($resaco,$iresaco,'q95_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,66,1014200,'','".AddSlashes(pg_result($resaco,$iresaco,'q95_qualificacaosocio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
-     }
+   public function excluir ($q95_cgmpri=null,$q95_numcgm=null,$dbwhere=null) {
      $sql = " delete from socios
                     where ";
      $sql2 = "";
@@ -369,7 +319,7 @@ class cl_socios {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -380,7 +330,7 @@ class cl_socios {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:socios";
@@ -391,10 +341,10 @@ class cl_socios {
       }
      return $result;
    }
-   function sql_query ( $q95_cgmpri=null,$q95_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $q95_cgmpri=null,$q95_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -424,7 +374,7 @@ class cl_socios {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,10 +383,10 @@ class cl_socios {
      }
      return $sql;
   }
-   function sql_query_file ( $q95_cgmpri=null,$q95_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $q95_cgmpri=null,$q95_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,7 +415,7 @@ class cl_socios {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,10 +424,10 @@ class cl_socios {
      }
      return $sql;
   }
-   function sql_query_socios( $q95_cgmpri=null,$q95_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_socios( $q95_cgmpri=null,$q95_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +459,7 @@ class cl_socios {
 $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

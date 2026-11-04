@@ -245,7 +245,7 @@ if (isset($importar) && $importar == true){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmbensmater.php"));
 	?>
     </center>
@@ -254,7 +254,7 @@ if (isset($importar) && $importar == true){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
 }

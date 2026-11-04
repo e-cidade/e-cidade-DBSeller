@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,7 +50,7 @@ $clrhestagiocomissao->rotulo->label();
        <?=@$Lh59_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h59_sequencial',10,$Ih59_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -60,7 +60,7 @@ db_input('h59_sequencial',10,$Ih59_sequencial,true,'text',3,"")
        <?=@$Lh59_dtini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h59_dtini',@$h59_dtini_dia,@$h59_dtini_mes,@$h59_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ db_inputdata('h59_dtini',@$h59_dtini_dia,@$h59_dtini_mes,@$h59_dtini_ano,true,'t
        <?=@$Lh59_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h59_dtfim',@$h59_dtfim_dia,@$h59_dtfim_mes,@$h59_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_inputdata('h59_dtfim',@$h59_dtfim_dia,@$h59_dtfim_mes,@$h59_dtfim_ano,true,'t
        <?=@$Lh59_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h59_descr',40,$Ih59_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhestagiocomissao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

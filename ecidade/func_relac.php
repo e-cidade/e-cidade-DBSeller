@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,11 +31,14 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_relac_classe.php"));
+
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($_SERVER['QUERY_STRING'], $query);
+
 $clrelac = new cl_relac;
 $clrelac->rotulo->label("r55_codeve");
 $clrelac->rotulo->label("r55_descr");
+
 ?>
 <html>
 <head>
@@ -50,23 +53,23 @@ $clrelac->rotulo->label("r55_descr");
         <table width="35%" border="0" align="center" cellspacing="0">
 	     <form name="form2" method="post" action="" >
           <tr> 
-            <td width="4%" align="right" nowrap title="<?=$Tr55_codeve?>">
-              <?=$Lr55_codeve?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tr55_codeve?>">
+              <?php echo $Lr55_codeve?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
-		       db_input("r55_codeve",4,$Ir55_codeve,true,"text",4,"","chave_r55_codeve");
-		       ?>
+            <?php
+		          db_input("r55_codeve",4,$Ir55_codeve,true,"text",4,"","chave_r55_codeve");
+		        ?>
             </td>
           </tr>
           <tr> 
-            <td width="4%" align="right" nowrap title="<?=$Tr55_descr?>">
-              <?=$Lr55_descr?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tr55_descr?>">
+              <?php echo $Lr55_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
-		       db_input("r55_descr",40,$Ir55_descr,true,"text",4,"","chave_r55_descr");
-		       ?>
+            <?php
+		          db_input("r55_descr",40,$Ir55_descr,true,"text",4,"","chave_r55_descr");
+		        ?>
             </td>
           </tr>
           <tr> 
@@ -82,7 +85,7 @@ $clrelac->rotulo->label("r55_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(isset($campos)==false){
          if(file_exists("funcoes/db_func_relac.php")==true){
            include(modification("funcoes/db_func_relac.php"));
@@ -101,7 +104,7 @@ $clrelac->rotulo->label("r55_descr");
         db_lovrot($sql,15,"()","",$funcao_js);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
-          $result = $clrelac->sql_record($clrelac->sql_query($pesquisa_chave,db_getsession("DB_instit"),$campos));
+          $result = $clrelac->sql_record($clrelac->sql_query($pesquisa_chave,db_getsession("DB_instit")));
           if($clrelac->numrows!=0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$r55_descr',false);</script>";
@@ -118,12 +121,12 @@ $clrelac->rotulo->label("r55_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

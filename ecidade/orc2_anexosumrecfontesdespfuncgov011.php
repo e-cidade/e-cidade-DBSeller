@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -48,62 +48,88 @@ $oRelatorioContabil = new relatorioContabil($oGet->codrel);
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
 </head>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc" style="margin-top: 25px;">
+<body>
 
-<center>
-  <form name="form1" id="form1">
-    <table width="300px">
-      <tr>
-        <td colspan="3" nowrap="nowrap" class="table_header">
-        	Sumário Geral da Receita por Fontes e Despesa por Funções de Governo
-        </td>
-      </tr>
-      <tr>
-        <td colspan="3">
-          <fieldset>
-            <legend><b>Filtro Padrão</b></legend>
-            <table>
-              <?
-                db_selinstit('', 420,150);
-              ?>
-              <tr>
-                <td><b>Origem/Fase:</b></td>
-                <td>
-                  <?
-                    $aOrigemFase = array(0 => "Selecione", 
-                                         1 => "Orçamento", 
-                                         2 => "Empenhado", 
-                                         3 => "Liquidado",
-                                         4 => "Pago");
-                    db_select("iOrigemFase", $aOrigemFase, true, 1);
-                  ?>
-                </td>
-              </tr>
-              <tr id='trPeriodos'>
-                <td width="80"><b>Período:</b></td>
-                <td colspan="2">
-                  <?
-                    $aPeriodos         = $oRelatorioContabil->getPeriodos();                  
-                    $aListaPeriodos    = array();
-                    $aListaPeriodos[0] = "Selecione";
-                    foreach ($aPeriodos as $oPeriodo) {
-                      $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
-                    }
-                    
-                    db_select("o116_periodo", $aListaPeriodos, true, 1);
-                  ?>
-                </td>
-              </tr>
-            </table>
-          </fieldset>
-        </td>
-      </tr>
-    </table>
+<div class="container">
+
+    <form name="form1" id="form1">
+        <table >
+          <tr>
+            <td colspan="3" nowrap="nowrap" class="table_header">
+                Sumário Geral da Receita por Fontes e Despesa por Funções de Governo
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <fieldset>
+                <legend>Filtro Padrão</legend>
+                <table class="form-container">
+                  <?php db_selinstit('', 420, 150); ?>
+                    <tr>
+                        <td width="80px">Origem/Fase:</td>
+                        <td>
+                          <?php
+                            $aOrigemFase = array(0 => "Selecione",
+                                                 1 => "Orçamento",
+                                                 2 => "Empenhado",
+                                                 3 => "Liquidado",
+                                                 4 => "Pago");
+                            db_select("iOrigemFase", $aOrigemFase, true, 1);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr id='trPeriodos'>
+                        <td>Período:</td>
+                        <td>
+                          <?php
+                            $aPeriodos         = $oRelatorioContabil->getPeriodos();
+                            $aListaPeriodos    = array();
+                            $aListaPeriodos[0] = "Selecione";
+                            foreach ($aPeriodos as $oPeriodo) {
+                                $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
+                            }
+                            
+                            db_select("o116_periodo", $aListaPeriodos, true, 1);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr id='trEsfera'>
+                        <td title="Escolha a esfera">Esfera: </td>
+                        <td>
+                          <?php
+                            $m = array("0"=>"Selecione", "1"=>"1 - Fiscal","2"=>"2 - Seguridade", "3"=>"3 - Total");
+                            db_select("esfera", $m, true, 1);
+                            ?>
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td title="Orientação Página">Orientação:</td>
+                        <td>
+                          <?php
+                             $m = array ("P" => "Retrato","L" => "Paisagem");
+                             db_select("orientacao_pagina", $m, true, 1);
+                            ?>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td title="Mostrar rodapé">Mostrar rodapé:</td>
+                        <td>
+                          <?php
+                             $m = array ("S"=> "SIM","N" => "NÃO");
+                             db_select("mostrar_rodape", $m, true, 1);
+                            ?>
+                        </td>
+                    </tr>                    
+                </table>
+              </fieldset>
+            </td>
+          </tr>
+        </table>
   
-    <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" />
-  </form>
-</center>
+        <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" />
+    </form>
 
+</div>
 
 <script>
   $("btnImprimir").observe("click", function() {
@@ -139,18 +165,26 @@ $oRelatorioContabil = new relatorioContabil($oGet->codrel);
         sUrlWindow += "&iOrigemFase="+iOrigemFase;
         sUrlWindow += "&iCodRel=115";
         sUrlWindow += "&lConsolidado="+lConsolidado;
+        sUrlWindow += "&esfera="+($F("esfera") == 0 || $F("esfera") == 3?"":$F("esfera"));
+        sUrlWindow += "&orientacao_pagina="+$F("orientacao_pagina");
+        sUrlWindow += "&mostrar_rodape="+$F("mostrar_rodape");
         
-    var oJan = window.open(sUrlWindow, '', 'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
+    var oJan = window.open(
+            sUrlWindow, 
+            '', 
+            'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0'
+        );
     oJan.moveTo(0,0);   
   });
   
   $('iOrigemFase').observe("change", function () {
      if (this.value == 1) {
        
+       $('trEsfera').style.display   = '';
        $('trPeriodos').style.display   = 'none';
        $('o116_periodo').selectedIndex = 1;
      } else {
-       
+       $('trEsfera').style.display = 'none'; 
        $('o116_periodo').selectedIndex = 0;
        $('trPeriodos').style.display   = '';
      }

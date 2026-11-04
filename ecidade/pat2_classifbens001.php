@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -190,12 +190,12 @@ function js_mostraclabens11(chave1,chave2){
               <tr>    
                 <td align='right' nowrap title="<?=@$Tt64_class?>">
                   &emsp;
-                  <?
+                  <?php
                     db_ancora(@$Lt64_class,"js_pesquisat64_class(true);",1);
                   ?>
                 </td>
                 <td>
-                  <?  
+                  <?php  
                     $result = $clcfpatri->sql_record($clcfpatri->sql_query_file());
                     $msg_erro = "";
                     
@@ -234,12 +234,12 @@ function js_mostraclabens11(chave1,chave2){
               <tr>
                 <td align='right' nowrap title="<?=@$Tt64_class?>">
                 &emsp;
-                  <?
+                  <?php
                     db_ancora(@$Lt64_class,"js_pesquisat64_class1(true);",1);
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $cldb_estrut->autocompletar = true;
                     $cldb_estrut->mascara = false;
                     $cldb_estrut->input   = true;
@@ -265,7 +265,7 @@ function js_mostraclabens11(chave1,chave2){
       <tr>
         <td nowrap title="Bens a serem listados"><b>Ordenar:</b></td>
         <td nowrap title="">
-          <?
+          <?php
             $ordenar = array(1=>"Placa",2=>"Descrição do bem", 3=>"Código do bem"); 
             db_select("ordenar",$ordenar,true,1);
           ?>
@@ -274,7 +274,7 @@ function js_mostraclabens11(chave1,chave2){
       <tr>
         <td nowrap title="Bens a serem listados"><b>Listar:</b></td>
         <td nowrap title="">
-          <?
+          <?php
             $matriz_baix = array("t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados"); 
             db_select("opcao_baixados",$matriz_baix,true,1);
           ?>
@@ -285,7 +285,7 @@ function js_mostraclabens11(chave1,chave2){
           Quebrar página por Classificação:
       	</td>
       	<td>
-          <?
+          <?php
             $tipo=array("s"=>"Sim","n"=>"Não");
             db_select("quebra",$tipo,true,"text",1);
           ?>
@@ -295,7 +295,7 @@ function js_mostraclabens11(chave1,chave2){
   </fieldset>
   <input type="button" value="Emitir Relatório" onclick="js_emite();" >
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

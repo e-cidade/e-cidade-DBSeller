@@ -337,7 +337,7 @@ if (isset($codproj)) {
                                         if (isset($codproj)) {
                                             $x = array("false" => "NAO", "true" => "SIM");
                                             $nomem = "d41_pgtopref_" . $j01_matric;
-                                            global $$nomem;
+                                            global ${$nomem};
                                             if (isset($d41_pgtopref)) {
                                                 if ($d41_pgtopref == "t") {
                                                     $chec = "checked";

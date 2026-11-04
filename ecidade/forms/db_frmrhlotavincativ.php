@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,15 +39,15 @@ $clrotulo->label("o55_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh39_codlotavinc?>">
-       <?
+       <?php
        db_ancora(@$Lrh39_codlotavinc,"js_pesquisarh39_codlotavinc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh39_codlotavinc',6,$Irh39_codlotavinc,true,'text',$db_opcao," onchange='js_pesquisarh39_codlotavinc(false);'")
 ?>
-       <?
+       <?php
 db_input('rh25_codigo',4,$Irh25_codigo,true,'text',3,'')
        ?>
     </td>
@@ -57,23 +57,23 @@ db_input('rh25_codigo',4,$Irh25_codigo,true,'text',3,'')
        <?=@$Lrh39_codelenov?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh39_codelenov',6,$Irh39_codelenov,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh39_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lrh39_anousu,"js_pesquisarh39_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $rh39_anousu = db_getsession('DB_anousu');
 db_input('rh39_anousu',4,$Irh39_anousu,true,'text',3," onchange='js_pesquisarh39_anousu(false);'")
 ?>
-       <?
+       <?php
 db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
 db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
        ?>
@@ -81,15 +81,15 @@ db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh39_projativ?>">
-       <?
+       <?php
        db_ancora(@$Lrh39_projativ,"js_pesquisarh39_projativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh39_projativ',4,$Irh39_projativ,true,'text',$db_opcao," onchange='js_pesquisarh39_projativ(false);'")
 ?>
-       <?
+       <?php
 db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
 db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
        ?>
@@ -221,7 +221,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_rhlotavincativ.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

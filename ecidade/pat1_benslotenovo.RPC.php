@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Configuracao\Helpers\StorageHelper;
+
 require_once(modification("std/db_stdClass.php"));
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -81,14 +83,16 @@ switch ($oParam->exec) {
             $oBemLote->setHora(db_hora());
             $oBemLote->setUsuario(db_getsession("DB_id_usuario"));
             $oBemLote->setDescricao(converteStringCodificada($oParam->descr_lote));
-
+            $imagens = [];
             if (!$lLoteCadastrado) {
                 $iNovaPlaca = $oParam->t41_placa;
                 $iPlacaDisponivel = BensParametroPlaca::getPlacaDisponivel(db_getsession('DB_instit'));
                 $oParam->t41_placa = !empty($iPlacaDisponivel) ? $iPlacaDisponivel : $iNovaPlaca;
 
                 for ($i = 0; $i < $oParam->quant_lote; $i++) {
-                    $oBemLote->adicionarBem(setDadosBem($oParam, null, false));
+                    $bem = setDadosBem($oParam, null, false);
+                    $imagens[] = $bem->getFoto();
+                    $oBemLote->adicionarBem($bem);
                     $oParam->t41_placa += 1;
                 }
             } else {
@@ -96,12 +100,16 @@ switch ($oParam->exec) {
                     setDadosBem($oParam, $oBem);
                 }
             }
-
             $oBemLote->salvar();
 
             db_fim_transacao(false);
         } catch (Exception $oException) {
             db_fim_transacao(true);
+            foreach ($imagens as $imagem) {
+                if ($imagem !== 'null') {
+                    StorageHelper::deleteArquivo($imagem);
+                }
+            }
             $oRetorno->status = 2;
             $oRetorno->mesage = urlencode($oException->getMessage());
         }
@@ -126,7 +134,7 @@ switch ($oParam->exec) {
                 $oBemLote->validarBensDoLote();
 
                 if ($oDadosLote->quant_lote > 0) {
-                    $oDadosLote->dadosbem = buscaDadosBem($aBens[0]);
+                    $oDadosLote->dadosbem = buscaDadosBem($aBens[0]->getCodigoBem());
                 }
 
                 $oRetorno->dados = $oDadosLote;
@@ -157,8 +165,9 @@ switch ($oParam->exec) {
 /**
  * @param $oParam
  * @param null $oBem
+ * @param bool $salvar
  * @return Bem|null
- * @throws Exception
+ * @throws exception
  */
 function setDadosBem($oParam, $oBem = null, $salvar = true)
 {
@@ -221,6 +230,7 @@ function setDadosBem($oParam, $oBem = null, $salvar = true)
     $oBem->setMarca($oParam->t65_sequencial);
     $oBem->setValorAtual($oBem->getValorAquisicao());
     $oBem->setValorDepreciavel($oBem->getValorAquisicao() - $oBem->getValorResidual());
+    $oBem->setProcesso(addslashes(db_stdClass::normalizeStringJson($oParam->t52_processo)));
     $oBem->setObservacao($observacao);
     $oBem->setInstituicao(db_getsession("DB_instit"));
 
@@ -231,10 +241,11 @@ function setDadosBem($oParam, $oBem = null, $salvar = true)
         $oBem->setDadosImovel($oBemDadosImovel);
     }
 
-    if ($oParam->cod_notafiscal != '') {
+
+    if (!empty($oParam->cod_notafiscal)) {
         $oBemDadosMaterial = new BemDadosMaterial();
         $oBemDadosMaterial->setNotaFiscal(converteStringCodificada($oParam->cod_notafiscal));
-        $oBemDadosMaterial->setEmpenhoSistema($oParam->cod_notafiscal == 's' ? true : false);
+        $oBemDadosMaterial->setEmpenhoSistema($oParam->cod_notafiscal === 's');
         $oBemDadosMaterial->setEmpenho($oParam->t53_empen);
         $oBemDadosMaterial->setOrdemCompra(converteStringCodificada($oParam->cod_ordemdecompra));
 
@@ -249,19 +260,31 @@ function setDadosBem($oParam, $oBem = null, $salvar = true)
         $oBem->setCodigoItemNota($oParam->iCodigoNotaItem);
     }
 
-    $oBem->setFoto(null);
 
-    // Salva imagem no banco
-    if (!empty($oParam->pathImage)) {
+    if (empty($oParam->pathImage)) {
+        $oBem->setFoto('null');
+        $oBem->setEstorage('f');
+    }
 
-        $oid = DBLargeObject::criaOID(true);
-        $imagemSalva = DBLargeObject::escrita($oParam->pathImage, $oid);
-
-        if (!$imagemSalva) {
-            throw new Exception('Não foi possível salvar imagem.');
+    if ($oParam->acao !== "Incluir") {
+        $dadosBem = buscaDadosBem($oBem->getCodigoBem());
+        if ($oParam->pathImage === '' && $dadosBem->t52_estorage === 't') {
+            $oBem->setFoto('null');
+            $oBem->setEstorage('f');
+            StorageHelper::deleteArquivo($dadosBem->t52_foto);
         }
 
-        $oBem->setFoto($oid);
+        if ($oParam->pathImage !== '' && $dadosBem->t52_estorage === 't') {
+            StorageHelper::deleteArquivo($dadosBem->t52_foto);
+        }
+    }
+
+    // Salva imagem no banco
+
+    if (!empty($oParam->pathImage) && $oParam->nameImage !== '') {
+        $id = StorageHelper::uploadArquivo($oParam->pathImage, [], true, null, null, $oParam->nameImage);
+        $oBem->setFoto($id);
+        $oBem->setEstorage('t');
     }
 
     if ($salvar) {
@@ -308,12 +331,13 @@ function buscaDescricaoDepartamento($iCodigoDepartamento)
 }
 
 /**
- * @param Bem $oBem
+ * @param $oBem
  * @return stdClass
  * @throws Exception
  */
-function buscaDadosBem(Bem $oBem)
+function buscaDadosBem($oBem)
 {
+    $oBem = new Bem($oBem);
     $oDadosBem = new stdClass();
     $iParametroPlaca = BensParametroPlaca::getCodigoParametro();
 
@@ -327,6 +351,7 @@ function buscaDadosBem(Bem $oBem)
 
     $oDadosBem->t52_dtaqu = db_formatar($oBem->getDataAquisicao(), 'd');
     $oDadosBem->t52_descr = urlencode($oBem->getDescricao());
+    $oDadosBem->t52_processo = urlencode($oBem->getProcesso());
     $oDadosBem->t64_class = urlencode($oBem->getClassificacao()->getClassificacao());
     $oDadosBem->t64_codcla = $oBem->getClassificacao()->getCodigo();
     $oDadosBem->t64_descr = urlencode($oBem->getClassificacao()->getDescricao());
@@ -369,7 +394,9 @@ function buscaDadosBem(Bem $oBem)
     $oDadosBem->observacoesimovel = "";
     $oDadosBem->bemComCalculo = false;
     $oDadosBem->imagePath = $oBem->getCaminhoFoto();
+    $oDadosBem->t52_estorage = $oBem->getEstorage();
     $oDadosBem->valorDepreciado = $oBem->getValorCalculo() - $oBem->getValorCalculo(false);
+    $oDadosBem->t52_foto = $oBem->getFoto();
 
     if ($oBem->getQuantidadeMesesDepreciados() > 0) {
         $oDadosBem->bemComCalculo = true;
@@ -394,7 +421,6 @@ function buscaDadosBem(Bem $oBem)
         $oDadosBem->garantia = $oBem->getDadosCompra()->getDataGarantia();
         $oDadosBem->z01_nome_empenho = urlencode($oBem->getDadosCompra()->getCredor());
     }
-
     return $oDadosBem;
 }
 
@@ -402,4 +428,4 @@ function converteStringCodificada($string) {
     return db_stdClass::normalizeStringJsonEscapeString($string);
 }
 
-echo $oJson->encode($oRetorno);
+echo JSON::create()->stringify($oRetorno);

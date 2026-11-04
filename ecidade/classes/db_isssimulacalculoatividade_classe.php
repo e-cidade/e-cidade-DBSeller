@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: issqn
 //CLASSE DA ENTIDADE isssimulacalculoatividade
-class cl_isssimulacalculoatividade { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q131_sequencial = 0; 
-   var $q131_atividade = 0; 
-   var $q131_issimulacalculo = 0; 
-   var $q131_principal = 'f'; 
-   var $q131_quantidade = 0; 
-   var $q131_seq = 0; 
-   var $q131_permanente = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_isssimulacalculoatividade {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q131_sequencial = 0;
+   var $q131_atividade = 0;
+   var $q131_issimulacalculo = 0;
+   var $q131_principal = 'f';
+   var $q131_quantidade = 0;
+   var $q131_seq = 0;
+   var $q131_permanente = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q131_sequencial = int4 = sequencial 
-                 q131_atividade = int4 = Atividade 
-                 q131_issimulacalculo = int4 = Simulação calculo ISSQN 
-                 q131_principal = bool = Principal 
-                 q131_quantidade = int4 = Quantidade 
-                 q131_seq = int4 = Sequência 
-                 q131_permanente = bool = Permanente 
+                 q131_sequencial = int4 = sequencial
+                 q131_atividade = int4 = Atividade
+                 q131_issimulacalculo = int4 = Simulação calculo ISSQN
+                 q131_principal = bool = Principal
+                 q131_quantidade = int4 = Quantidade
+                 q131_seq = int4 = Sequência
+                 q131_permanente = bool = Permanente
                  ";
-   //funcao construtor da classe 
-   function cl_isssimulacalculoatividade() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("isssimulacalculoatividade"); 
+     $this->rotulo = new rotulo("isssimulacalculoatividade");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_isssimulacalculoatividade {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q131_sequencial = ($this->q131_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q131_sequencial"]:$this->q131_sequencial);
        $this->q131_atividade = ($this->q131_atividade == ""?@$GLOBALS["HTTP_POST_VARS"]["q131_atividade"]:$this->q131_atividade);
@@ -90,9 +90,9 @@ class cl_isssimulacalculoatividade {
      }
    }
    // funcao para inclusao
-   function incluir ($q131_sequencial){ 
+   public function incluir ($q131_sequencial){
       $this->atualizacampos();
-     if($this->q131_atividade == null ){ 
+     if($this->q131_atividade == null ){
        $this->erro_sql = " Campo Atividade nao Informado.";
        $this->erro_campo = "q131_atividade";
        $this->erro_banco = "";
@@ -101,7 +101,7 @@ class cl_isssimulacalculoatividade {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q131_issimulacalculo == null ){ 
+     if($this->q131_issimulacalculo == null ){
        $this->erro_sql = " Campo Simulação calculo ISSQN nao Informado.";
        $this->erro_campo = "q131_issimulacalculo";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_isssimulacalculoatividade {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q131_principal == null ){ 
+     if($this->q131_principal == null ){
        $this->erro_sql = " Campo Principal nao Informado.";
        $this->erro_campo = "q131_principal";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_isssimulacalculoatividade {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q131_quantidade == null ){ 
+     if($this->q131_quantidade == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "q131_quantidade";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_isssimulacalculoatividade {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q131_permanente == null ){ 
+     if($this->q131_permanente == null ){
        $this->erro_sql = " Campo Permanente nao Informado.";
        $this->erro_campo = "q131_permanente";
        $this->erro_banco = "";
@@ -138,16 +138,16 @@ class cl_isssimulacalculoatividade {
        return false;
      }
      if($q131_sequencial == "" || $q131_sequencial == null ){
-       $result = db_query("select nextval('isssimulacalculoatividade_q131_sequencial_seq')"); 
+       $result = db_query("select nextval('isssimulacalculoatividade_q131_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: isssimulacalculoatividade_q131_sequencial_seq do campo: q131_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: isssimulacalculoatividade_q131_sequencial_seq do campo: q131_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q131_sequencial = pg_result($result,0,0); 
+       $this->q131_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from isssimulacalculoatividade_q131_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q131_sequencial)){
@@ -158,10 +158,10 @@ class cl_isssimulacalculoatividade {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q131_sequencial = $q131_sequencial; 
+         $this->q131_sequencial = $q131_sequencial;
        }
      }
-     if(($this->q131_sequencial == null) || ($this->q131_sequencial == "") ){ 
+     if(($this->q131_sequencial == null) || ($this->q131_sequencial == "") ){
        $this->erro_sql = " Campo q131_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,25 +170,25 @@ class cl_isssimulacalculoatividade {
        return false;
      }
      $sql = "insert into isssimulacalculoatividade(
-                                       q131_sequencial 
-                                      ,q131_atividade 
-                                      ,q131_issimulacalculo 
-                                      ,q131_principal 
-                                      ,q131_quantidade 
-                                      ,q131_seq 
-                                      ,q131_permanente 
+                                       q131_sequencial
+                                      ,q131_atividade
+                                      ,q131_issimulacalculo
+                                      ,q131_principal
+                                      ,q131_quantidade
+                                      ,q131_seq
+                                      ,q131_permanente
                        )
                 values (
-                                $this->q131_sequencial 
-                               ,$this->q131_atividade 
-                               ,$this->q131_issimulacalculo 
-                               ,'$this->q131_principal' 
-                               ,$this->q131_quantidade 
-                               ,$this->q131_seq 
-                               ,'$this->q131_permanente' 
+                                $this->q131_sequencial
+                               ,$this->q131_atividade
+                               ,$this->q131_issimulacalculo
+                               ,'$this->q131_principal'
+                               ,$this->q131_quantidade
+                               ,$this->q131_seq
+                               ,'$this->q131_permanente'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Simulação calculo atividades ISSQN ($this->q131_sequencial) nao Incluído. Inclusao Abortada.";
@@ -212,16 +212,16 @@ class cl_isssimulacalculoatividade {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q131_sequencial=null) { 
+   public function alterar ($q131_sequencial=null) {
       $this->atualizacampos();
      $sql = " update isssimulacalculoatividade set ";
      $virgula = "";
-     if(trim($this->q131_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_sequencial"])){ 
+     if(trim($this->q131_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_sequencial"])){
        $sql  .= $virgula." q131_sequencial = $this->q131_sequencial ";
        $virgula = ",";
-       if(trim($this->q131_sequencial) == null ){ 
+       if(trim($this->q131_sequencial) == null ){
          $this->erro_sql = " Campo sequencial nao Informado.";
          $this->erro_campo = "q131_sequencial";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_atividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_atividade"])){ 
+     if(trim($this->q131_atividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_atividade"])){
        $sql  .= $virgula." q131_atividade = $this->q131_atividade ";
        $virgula = ",";
-       if(trim($this->q131_atividade) == null ){ 
+       if(trim($this->q131_atividade) == null ){
          $this->erro_sql = " Campo Atividade nao Informado.";
          $this->erro_campo = "q131_atividade";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_issimulacalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_issimulacalculo"])){ 
+     if(trim($this->q131_issimulacalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_issimulacalculo"])){
        $sql  .= $virgula." q131_issimulacalculo = $this->q131_issimulacalculo ";
        $virgula = ",";
-       if(trim($this->q131_issimulacalculo) == null ){ 
+       if(trim($this->q131_issimulacalculo) == null ){
          $this->erro_sql = " Campo Simulação calculo ISSQN nao Informado.";
          $this->erro_campo = "q131_issimulacalculo";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_principal"])){ 
+     if(trim($this->q131_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_principal"])){
        $sql  .= $virgula." q131_principal = '$this->q131_principal' ";
        $virgula = ",";
-       if(trim($this->q131_principal) == null ){ 
+       if(trim($this->q131_principal) == null ){
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "q131_principal";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_quantidade"])){ 
+     if(trim($this->q131_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_quantidade"])){
        $sql  .= $virgula." q131_quantidade = $this->q131_quantidade ";
        $virgula = ",";
-       if(trim($this->q131_quantidade) == null ){ 
+       if(trim($this->q131_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "q131_quantidade";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_seq"])){ 
+     if(trim($this->q131_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_seq"])){
        $sql  .= $virgula." q131_seq = $this->q131_seq ";
        $virgula = ",";
-       if(trim($this->q131_seq) == null ){ 
+       if(trim($this->q131_seq) == null ){
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "q131_seq";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_permanente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_permanente"])){ 
+     if(trim($this->q131_permanente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_permanente"])){
        $sql  .= $virgula." q131_permanente = '$this->q131_permanente' ";
        $virgula = ",";
-       if(trim($this->q131_permanente) == null ){ 
+       if(trim($this->q131_permanente) == null ){
          $this->erro_sql = " Campo Permanente nao Informado.";
          $this->erro_campo = "q131_permanente";
          $this->erro_banco = "";
@@ -314,7 +314,7 @@ class cl_isssimulacalculoatividade {
        $sql .= " q131_sequencial = $this->q131_sequencial";
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Simulação calculo atividades ISSQN nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q131_sequencial;
@@ -342,11 +342,11 @@ class cl_isssimulacalculoatividade {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q131_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q131_sequencial=null,$dbwhere=null) {
      $sql = " delete from isssimulacalculoatividade
                     where ";
      $sql2 = "";
@@ -361,7 +361,7 @@ class cl_isssimulacalculoatividade {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Simulação calculo atividades ISSQN nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q131_sequencial;
@@ -389,11 +389,11 @@ class cl_isssimulacalculoatividade {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -415,11 +415,11 @@ class cl_isssimulacalculoatividade {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $q131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $q131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,15 +439,15 @@ class cl_isssimulacalculoatividade {
      $sql2 = "";
      if($dbwhere==""){
        if($q131_sequencial!=null ){
-         $sql2 .= " where isssimulacalculoatividade.q131_sequencial = $q131_sequencial "; 
-       } 
+         $sql2 .= " where isssimulacalculoatividade.q131_sequencial = $q131_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,11 +456,11 @@ class cl_isssimulacalculoatividade {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $q131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $q131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,15 +473,15 @@ class cl_isssimulacalculoatividade {
      $sql2 = "";
      if($dbwhere==""){
        if($q131_sequencial!=null ){
-         $sql2 .= " where isssimulacalculoatividade.q131_sequencial = $q131_sequencial "; 
-       } 
+         $sql2 .= " where isssimulacalculoatividade.q131_sequencial = $q131_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

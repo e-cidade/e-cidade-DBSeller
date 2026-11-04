@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ include(modification("dbforms/db_funcoes.php"));
    <b>Periodo de : &nbsp;&nbsp;</b>
    </td>
    <td align="left" width="50%" height="30" colspan=""><font size="3">
-		<?
+		<?php
 		db_inputdata('datai', "", "", "", true, 'text', 1, "");
 		echo " a ";
 		db_inputdata('dataf', "", "", "", true, 'text', 1, "");
@@ -76,7 +76,7 @@ include(modification("dbforms/db_funcoes.php"));
 </tr>
 <td align='right' >Receita:</td>
 <td align='left'> 
-<?
+<?php
   $result = db_query("select k02_codigo,k02_drecei from tabrec where k02_limite is null order by k02_codigo ");
   db_selectrecord("receita",$result,true,2,'','','','0');
 ?>
@@ -85,7 +85,7 @@ include(modification("dbforms/db_funcoes.php"));
 <tr>
 <td align='right' >Taxa:</td>
 <td align='left'> 
-<?
+<?php
 
   $result = db_query("select codsubrec,k07_descr from tabdesc order by codsubrec");
   db_selectrecord("taxa",$result,true,2,'','','','0');
@@ -104,7 +104,7 @@ include(modification("dbforms/db_funcoes.php"));
 	</tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

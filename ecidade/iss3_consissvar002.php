@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -214,7 +214,7 @@ border-color: darkblue;
 <table height="395" width="765" border="0" valign="top" cellspacing="0" cellpadding="0" bgcolor="#cccccc">
   <tr> 
   <td valign="top" bgcolor="#cccccc" align="center">     
-<?
+<?php
 ###########QUANDO TIVER UMA OU MAIS INSCRIÇÕES PARA UM CGM###############################################################
 
 if(isset($varias_inscricoes) && $varias_inscricoes==true){
@@ -232,7 +232,7 @@ if(isset($varias_inscricoes) && $varias_inscricoes==true){
     <?=$Lz01_nome?>
     </td>
     <td> 
-    <?
+    <?php
      $z01_numcgmx=$z01_numcgm; 
      db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',3,"",'z01_numcgmx');
      db_input('z01_nome',40,0,true,'text',3);
@@ -240,7 +240,7 @@ if(isset($varias_inscricoes) && $varias_inscricoes==true){
     ?>
    </td>
   </tr>
-  <?
+  <?php
      if(isset($z01_cgccpf)){
   ?>
   <tr>   
@@ -248,18 +248,18 @@ if(isset($varias_inscricoes) && $varias_inscricoes==true){
     <?=$Lz01_cgccpf?>
     </td>
     <td> 
-    <?
+    <?php
      $z01_cgccpfx=$z01_cgccpf; 
      db_input('z01_cgccpf',20,$Iz01_numcgm,true,'text',3,"",'z01_cgccpfx');
     ?>
    </td>
   </tr>
-  <?
+  <?php
      }
   ?>
   <tr>
     <td colspan="2" >
-      <?
+      <?php
        db_lovrot($sql03,15,"()","","js_retorna_inscr|q02_inscr");
       ?> 
     </td>
@@ -268,7 +268,7 @@ if(isset($varias_inscricoes) && $varias_inscricoes==true){
 </form>
 
 
-<?
+<?php
 ###############################################################################################################
 }else{
 ?>
@@ -286,50 +286,50 @@ if(isset($varias_inscricoes) && $varias_inscricoes==true){
 	      <td><font color="darkblue">VALOR</font></td>
 	   </tr>
 	  </table> 
-<?
+<?php
   if($tipo=="cgccpf"){
 ?>
   <tr>   
     <td title="<?=$Tz01_cgccpf?>" colspan="2" align="center">
       <?=$Lz01_cgccpf?>
-    <?
+    <?php
      db_input('z01_cgccpf',40,0,true,'text',3);
     ?>
    </td>
   </tr>
-<?
+<?php
   }else{
 ?>
-  <?
+  <?php
      if(isset($q02_inscr)){
   ?>
   <tr>   
     <td title="<?=$Tq02_inscr?>" colspan="2" align="center">
      <?=db_ancora($Lq02_inscr,"js_JanelaAutomatica('issbase','$q02_inscr')",2)?>
-    <?
+    <?php
      $q02_inscr=$q02_inscr; 
      db_input('q02_inscr',10,$Iq02_inscr,true,'text',3,"",'q02_inscr');
      db_input('z01_nome',40,0,true,'text',3);
     ?>
    </td>
   </tr>
-  <?
+  <?php
      }else if(isset($z01_numcgm)){
   ?>
   <tr>   
     <td title="<?=$Tz01_nome?>" colspan="2" align="center">
       <?=db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm','$z01_numcgm')",2)?>
-    <?
+    <?php
      $z01_numcgmx=$z01_numcgm; 
      db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',3,"",'z01_numcgm');
      db_input('z01_nome',40,0,true,'text',3);
     ?>
    </td>
   </tr>
-  <?
+  <?php
      }
   ?>
-<?
+<?php
  }
 ?>
 </form>
@@ -338,7 +338,7 @@ if(isset($varias_inscricoes) && $varias_inscricoes==true){
       <table width="100%" height="100%" border="0" align="left" cellpadding="0" cellspacing="0">
 	<tr>
 	  <td>
-     <?
+     <?php
        if($tipo=="cgm"){
 	   if($z01_cgccpf!=""){
              $clcriaabas->identifica = array("issvar"=>"$RLDBtxtissvar","issplanit"=>"$RLDBtxtissplanit");
@@ -373,7 +373,7 @@ if(isset($varias_inscricoes) && $varias_inscricoes==true){
     </td>
   </tr>
 </table>
-<?
+<?php
 }
 ?>  
   </td>

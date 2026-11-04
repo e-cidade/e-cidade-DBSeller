@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led24_i_codigo?>
   </td>
   <td>
-   <?db_input('ed24_i_codigo',10,$Ied24_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed24_i_codigo',10,$Ied24_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -71,7 +71,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led24_c_descr?>
   </td>
   <td>
-   <?db_input('ed24_c_descr',30,$Ied24_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed24_c_descr',30,$Ied24_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -80,7 +80,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed24_i_codigo"=>@$ed24_i_codigo,"ed24_horas"=>@$ed24_horas,"ed24_c_descr"=>@$ed24_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clregimetrabalho->sql_query($ed24_i_codigo,"*","ed24_c_descr");

@@ -2,7 +2,8 @@
 
 namespace ECidade\V3\Modification;
 
-use ArrayObject, Exception;
+use ArrayObject;
+use Exception;
 use \ECidade\V3\Extension\Container;
 use \ECidade\V3\Modification\Manager;
 use \ECidade\V3\Modification\Data\File as FileData;
@@ -23,12 +24,6 @@ class ManagerParseFiles
     private $container;
 
     /**
-     * usuario atual
-     * @var string
-     */
-    private $user;
-
-    /**
      * fila de operacoes por arquivo para processar
      *
      * @see ManagerParseFiles::generateOperationsQueue()
@@ -45,25 +40,11 @@ class ManagerParseFiles
      *             'arquivo2' => $metadadoArquivo2
      *         )
      *     )
-     *   ),
-     *   user => array(
-     *      'modification3' => array(
-     *          0 => array(
-     *              'arquivo1' => $metadadoArquivo1.2 (global->$metadadoArquivo1.1)
-     *          )
-     *      )
      *   )
      * )
      * @var ArrayObject
      */
     private $modificationOperationData;
-
-    /**
-     * usuarios que tem arquivos de cache especificos
-     * @see ManagerParseFiles::abortModifications()
-     * @var ArrayObject
-     */
-    private $users;
 
     /**
      * diretorio temporario para gerar caches
@@ -103,12 +84,10 @@ class ManagerParseFiles
 
     /**
      * @param Container $container
-     * @param string $user
      */
-    public function __construct(Container $container, $user = null)
+    public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->user = $user;
     }
 
     /**
@@ -120,32 +99,21 @@ class ManagerParseFiles
         $logger = $this->container->get('logger');
 
         $this->modificationOperationData = new ArrayObject();
-        $this->users = new ArrayObject();
         $this->dataToRemove = new ArrayObject();
         $this->dataToPersist = new ArrayObject();
         $this->abortModifications = new ArrayObject();
         $this->modificationToPersist = new ArrayObject();
 
         // diretorio temporario onde sera gerado arquivos de cache
-        $this->persistPath = ECIDADE_MODIFICATION_CACHE_PATH . 'parsing-' . uniqid() . '/';
+        $this->persistPath = ECIDADE_MODIFICATION_CACHE_PATH . uniqid('parsing-', true) . '/';
 
         $logger->debug('Gerando fila de operacoes');
         $logger->debug(' - Definindo diretorio temporario: ' . str_replace(ECIDADE_PATH, null, $this->persistPath));
-
-        /**
-         * @param string $a
-         * @param string $b
-         * @return integer
-         */
-        $globalSort = function($a, $b) {
-            return ($a === $b ? 0 : ($a == 'global' ? -1 : 1));
-        };
 
         // itera o conteudo do arquivo file-type-modification.data
         // (que contem informacoes de arquivos e suas modificacao globais/usuarios)
         $iterator = $modificationsFiles->getIterator();
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $path = $iterator->key();
             $types = $iterator->current();
 
@@ -167,28 +135,13 @@ class ManagerParseFiles
                 continue;
             }
 
-            // itera os modification globais e por usuario
+            // itera os modification globais
             foreach ($types as $type => $modifications) {
-
-                // verifica se a modificacao eh por usuario
-                $_user = null;
-                if (strpos($type, 'user:') === 0) {
-                    $_user = substr($type, 5);
-                    $this->users[$_user] = $_user;
-                }
-
-                // se for por usuario, a modificacao devera ser feita somente para o usuario passado por parametro
-                // aqui verifica se o usuario passado por parametro eh o mesmo da modificacao atual, se nao for vai pra proxima
-                if (!empty($this->user) && !empty($_user) && $this->user != $_user) {
-                    continue;
-                }
-
                 if (!isset($this->modificationOperationData[$type])) {
                     $this->modificationOperationData[$type] = new ArrayObject();
                 }
 
                 foreach ($modifications as $modificationId) {
-
                     if (!isset($this->modificationOperationData[$type][$modificationId])) {
                         $this->modificationOperationData[$type][$modificationId] = new ArrayObject();
                     }
@@ -197,11 +150,6 @@ class ManagerParseFiles
                 }
             }
         }
-
-        $modificationsFiles = null;
-
-        // garante ordem correta, primeiro modificacoes globais
-        $this->modificationOperationData->uksort($globalSort);
 
         return true;
     }
@@ -214,18 +162,12 @@ class ManagerParseFiles
         // itera todos os modification encontrados que precisam ser executados
         $iterator = $this->modificationOperationData->getIterator();
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $type = $iterator->key();
             $modifications = $iterator->current();
 
-            $user = null;
-            if (strpos($type, 'user:') === 0) {
-                $user = substr($type, 5);
-            }
-
             // itera os operations do modification seguindo a ordem correto que veio do xml
             foreach ($modifications as $modificationId => $files) {
-                $this->parseModification($modificationId, $files, $user);
+                $this->parseModification($modificationId, $files);
             }
         }
 
@@ -251,20 +193,17 @@ class ManagerParseFiles
 
         $iterator = $this->dataToPersist->getIterator();
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $path = $iterator->key();
             $relativePath = str_replace($this->persistPath, null, $path);
             $finalPath = ECIDADE_MODIFICATION_CACHE_PATH . $relativePath;
             $finalPathDir = dirname($finalPath);
 
-            // extrai usuario e caminho original do arquivo
+            // extrai caminho original do arquivo
             // usado para sincronizar cache com arquivo original
             $parts = explode("/", $relativePath);
-            $type = array_shift($parts);
-            $user = $type == 'user' ? array_shift($parts) : null;
             $originalPath = implode('/', $parts);
 
-            $dataFile = new FileData($originalPath, $user);
+            $dataFile = new FileData($originalPath);
             $fileSync = new FileSync($dataFile);
 
             if (!file_exists($path)) {
@@ -278,7 +217,7 @@ class ManagerParseFiles
             }
 
             if (!rename($path, $finalPath)) {
-                $logger->error("Erro ao mover arquivo: '$path' para ''$finalPath'");
+                $logger->error("Erro ao mover arquivo: '$path' para '$finalPath'");
                 continue;
             }
 
@@ -289,8 +228,6 @@ class ManagerParseFiles
 
         $logger->debug(' - Arquivos salvos: ' . $saved);
 
-        $finalPath = null;
-        $saved = null;
         $this->dataToPersist = new ArrayObject();
         return true;
     }
@@ -316,10 +253,9 @@ class ManagerParseFiles
     /**
      * @param string $id
      * @param ArrayObject $files
-     * @param string $user
      * @return boolean
      */
-    private function parseModification($id, ArrayObject $files, $user = null)
+    private function parseModification($id, ArrayObject $files)
     {
         $logger = $this->container->get('logger');
         $cacheLoggerModifications = $this->container->get('cacheLoggerModifications');
@@ -330,7 +266,6 @@ class ManagerParseFiles
 
         // modificacao esta em um grupo com modificacao abortada
         if ($this->inAbortGroup($id)) {
-
             $message = "Modificação em um grupo abortado, abortando processamento";
             $logger->error($message);
             $logModification->error($message);
@@ -353,7 +288,6 @@ class ManagerParseFiles
 
         // realiza parse de cada arquivo da modificacao
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $path = $iterator->current();
 
             if (!$hadErrors && count($dataModification->getFileErrors($path)) > 0) {
@@ -363,7 +297,7 @@ class ManagerParseFiles
             // limpa os erros para o arquivo atual
             $dataModification->setFileError($path, array());
 
-            $error = $this->parseFile($path, $id, $user);
+            $error = $this->parseFile($path, $id);
 
             if ($error !== 0) {
                 $this->hasErrorsOnParse = true;
@@ -381,7 +315,7 @@ class ManagerParseFiles
         // se anteriormente possuiam erros e agora não tem mais
         // isso ajudará depois a identificar possiveis erros nos modifications pelo sistema.
         // essa complexidade serve para evitar overhead na hora de salvar os metadados
-        if ($this->hasErrorsOnParse || ($hadErrors && !$this->hasErrorsOnParse) ) {
+        if ($this->hasErrorsOnParse || $hadErrors) {
             $this->modificationToPersist[$id] = $dataModification;
         }
 
@@ -395,9 +329,7 @@ class ManagerParseFiles
 
         // marca todos os arquivos da modificacao atual para ser removidos
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
-            $_user = $dataModification->isUserType() ? $user : 'global';
-            $path = sprintf("%s%s/%s", $this->persistPath, $_user, $iterator->current());
+            $path = sprintf("%s%s/%s", $this->persistPath, 'global', $iterator->current());
 
             // remove arquivo da lista para salvar
             if (isset($this->dataToPersist[$path])) {
@@ -414,10 +346,9 @@ class ManagerParseFiles
     /**
      * @param string $path
      * @param string $modificationId
-     * @param string $user
      * @return integer | error code
      */
-    private function parseFile($path, $modificationId, $user = null)
+    private function parseFile($path, $modificationId)
     {
         $logger = $this->container->get('logger');
         $cacheLoggerModifications = $this->container->get('cacheLoggerModifications');
@@ -426,9 +357,8 @@ class ManagerParseFiles
         $logModification = $cacheLoggerModifications($modificationId);
         $dataModification = $cacheDataModifications($modificationId);
 
-        $_user = $dataModification->isUserType() ? $user : null;
-        $data = new FileData($path, $_user);
-        $data->type = $dataModification->isUserType() ? $user : 'global';
+        $data = new FileData($path);
+        $data->type = 'global';
         $data->setPersistPath($this->persistPath);
         $this->loadDataContent($data);
 
@@ -436,7 +366,6 @@ class ManagerParseFiles
         $operations = $dataModification->getOperationsFile($path);
 
         if (empty($operations)) {
-
             $logger->error('Nenhum operacao para o arquivo: ' . $path);
             return true;
         }
@@ -449,14 +378,13 @@ class ManagerParseFiles
         $code = 0;
 
         try {
-
             // total de operacoes
             $countOperations = count($operations);
 
             // tipo de operacao
-            $type = $user ? "user: $user" : "global";
+            $type = "global";
 
-            $logger->debug("Realizando parse: $path | operacoes: ". $countOperations . " | $type");
+            $logger->debug("Realizando parse: $path | operacoes: " . $countOperations . " | $type");
 
             // aplica as operacoes no conteudo do arquivo
             $parseFile->parse();
@@ -476,8 +404,7 @@ class ManagerParseFiles
             $logModification->info($logOperationsParsed);
 
             // para cada operacao com falha, nos salvamos no log
-            foreach($parseFile->getFailOperations() as $operation) {
-
+            foreach ($parseFile->getFailOperations() as $operation) {
                 $code = Operation::ERROR_SKIP;
                 $message = sprintf($messageTemplate, $originalPath, $operation->label());
                 // log do modification
@@ -491,9 +418,7 @@ class ManagerParseFiles
 
             // persiste conteudo
             $this->persistData($data);
-
-        } catch(AbortException $error) {
-
+        } catch (AbortException $error) {
             $code = Operation::ERROR_ABORT;
             $message = "[ABORT] " . sprintf($messageTemplate, $originalPath, $error->getMessage());
             // log do modification
@@ -511,44 +436,12 @@ class ManagerParseFiles
      */
     private function loadDataContent(FileData $data)
     {
-        if ($data->type != 'global') {
-            $data->global = new FileData($data->getOriginalPath());
-            $data->global->setPersistPath($this->persistPath);
-        }
-
-        // arquivo for do tipo global
-        // ou arquivo for de usuario e nao tiver conteudo global
-        if ($data->type == 'global' || !isset($data->global) || !$data->global->exists()) {
-
-            if ($data->exists()) {
-                // carrega o conteudo cacheado
-                $data->load();
-            } else {
-                // carrega o conteudo original
-                $data->loadContent();
-            }
-
-            return true;
-        }
-
-        // se o metadado for do tipo user
-        // e nenhum cache de usuario para esse arquivo salvo
-        // entao seta o conteudo com o conteudo do metadado global
-        if (isset($data->global) && !$data->exists()) {
-
-            // carrega o conteudo do arquivo de cache do tipo global
-            if ($data->global->exists()) {
-                $data->global->load();
-            } else {
-                $data->global->loadContent();
-            }
-
-            // define conteudo do cache atual
-            $data->setContent($data->global->getContent());
-
-            // "libera" memoria
-            $data->global->getStorage()->clear();
-            return true;
+        if ($data->exists()) {
+            // carrega o conteudo cacheado
+            $data->load();
+        } else {
+            // carrega o conteudo original
+            $data->loadContent();
         }
 
         return true;
@@ -561,13 +454,8 @@ class ManagerParseFiles
     {
         $logger = $this->container->get('logger');
 
-        $originalContent = file_get_contents(ECIDADE_PATH . $data->getOriginalPath());
-        $diff = $data->getContent() != $originalContent;
-        $originalContent = null;
-
         // se o arquivo nao sofreu modificacao, entao segue para o proximo
-        if (!$diff) {
-
+        if ($data->getContent() == file_get_contents(ECIDADE_PATH . $data->getOriginalPath())) {
             $this->dataToRemove[$data->getPath()] = true;
             return false;
         }
@@ -616,10 +504,10 @@ class ManagerParseFiles
             default:
             case Operation::ERROR_SKIP:
                 $logModification->warning($message);
-            break;
+                break;
             case Operation::ERROR_ABORT:
                 $logModification->error($message);
-            break;
+                break;
         }
 
         return true;
@@ -640,7 +528,6 @@ class ManagerParseFiles
 
         $iterator = $this->abortModifications->getIterator();
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $abortModificationID = $iterator->key();
             $dataModification = $iterator->current();
             $siblings = array();
@@ -665,24 +552,21 @@ class ManagerParseFiles
      * Ao abortar uma modificacao ele dessincroniza arquivo, este metodo ressincroniza
      *
      * @param array $modifications
-     * @param string $user
      * @return boolean
      */
-    private function resyncModificationFiles(Array $modifications, $user = null)
+    private function resyncModificationFiles(array $modifications)
     {
         $logger = $this->container->get('logger');
         $cacheDataModifications = $this->container->get('cacheDataModifications');
 
         foreach ($modifications as $id) {
-
             $dataModification = $cacheDataModifications($id);
 
-            $logger->debug('Sincronizando arquivos da modificação: ' . $id .  '('. count($dataModification->getFiles()) . ')');
+            $filesTotal = count($dataModification->getFiles());
+            $logger->debug("Sincronizando arquivos da modificação: {$id} ({$filesTotal})");
 
             foreach ($dataModification->getFiles() as $path) {
-
-                $_user = $dataModification->isUserType() ? $user : null;
-                $dataFile = new FileData($path, $_user);
+                $dataFile = new FileData($path);
                 $fileSync = new FileSync($dataFile);
                 $fileSync->touch();
             }
@@ -720,7 +604,10 @@ class ManagerParseFiles
         $logger = $this->container->get('logger');
         $logger->debug(' - removendo diretorio temporario: ' . str_replace(ECIDADE_PATH, null, $this->persistPath));
 
-        $directoryIterator = new \RecursiveDirectoryIterator($this->persistPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $directoryIterator = new \RecursiveDirectoryIterator(
+            $this->persistPath,
+            \RecursiveDirectoryIterator::SKIP_DOTS
+        );
         $files = new \RecursiveIteratorIterator($directoryIterator, \RecursiveIteratorIterator::CHILD_FIRST);
 
         foreach ($files as $fileinfo) {
@@ -749,7 +636,6 @@ class ManagerParseFiles
         // itera os arquivos que devem ser removidos
         $iterator = $this->dataToRemove->getIterator();
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $path = $iterator->key();
             $finalPath = str_replace($this->persistPath, ECIDADE_MODIFICATION_CACHE_PATH, $path);
 
@@ -787,9 +673,7 @@ class ManagerParseFiles
             $manager = new Manager($this->container);
         }
 
-        // separa modificacoes globais e por usuario
         $abortModificationsGlobal = array();
-        $abortModificationsUser = array();
 
         $abortModifications = $this->abortModifications;
         $logger = $this->container->get('logger');
@@ -797,11 +681,9 @@ class ManagerParseFiles
 
         // get modifications group
         foreach ($abortModifications as $modificationId => $dataModification) {
-
             $modificationsGroup = $group->getSiblings($modificationId);
 
             foreach ($modificationsGroup as $_modificationId) {
-
                 if (!isset($abortModifications[$_modificationId])) {
                     $abortModifications[$_modificationId] = ModificationData::restore($_modificationId);
                 }
@@ -809,18 +691,6 @@ class ManagerParseFiles
         }
 
         foreach ($abortModifications as $modificationId => $dataModification) {
-
-            if ($dataModification->isUserType()) {
-
-                foreach ($this->users as $_user) {
-                    if ($dataModification->isEnabled($_user)) {
-                        $abortModificationsUser[$_user][] = $modificationId;
-                    }
-                }
-
-                continue;
-            }
-
             if ($dataModification->isEnabled()) {
                 $abortModificationsGlobal[] = $modificationId;
             }
@@ -828,30 +698,13 @@ class ManagerParseFiles
 
         // remove modificacoes do tipo GLOBAL
         if (!empty($abortModificationsGlobal)) {
-
             $logger->error("Abortando modificações globais: " . implode(', ', $abortModificationsGlobal));
 
             try {
-                $manager->abort($abortModificationsGlobal, null);
+                $manager->abort($abortModificationsGlobal);
                 $this->resyncModificationFiles($abortModificationsGlobal);
             } catch (Exception $error) {
                 $logger->error("erro ao abortar modificações glboais: " . $error->getMessage());
-            }
-        }
-
-        // remove modificacoes do tipo USER
-        if (!empty($abortModificationsUser)) {
-
-            foreach ($abortModificationsUser as $_user => $modificationsID) {
-
-                $logger->error("Abortando modificações para usuário: " . implode(', ', $modificationsID));
-
-                try {
-                    $manager->abort($modificationsID, $_user);
-                    $this->resyncModificationFiles($modificationsID, $_user);
-                } catch (Exception $error) {
-                    $logger->error("erro ao abortar modificações para usuário '$_user': " . $error->getMessage());
-                }
             }
         }
 
@@ -869,12 +722,10 @@ class ManagerParseFiles
         $cacheLoggerModifications = $this->container->get('cacheLoggerModifications');
         $iterator = $this->modificationOperationData->getIterator();
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
-
             $type = $iterator->key();
             $modifications = $iterator->current();
 
             foreach ($modifications as $modificationId => $files) {
-
                 $logModification = $cacheLoggerModifications($modificationId);
                 $logModification->setVerbosity($verbosity);
             }

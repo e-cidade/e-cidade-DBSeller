@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,7 +110,7 @@ if(!isset($pri)){
     <td height="100" align="center" valign="top" bgcolor="#CCCCCC"> 
       <fieldset>
       <legend align="center">VISTORIA</legend>
-	<?
+	<?php
         $clvistorias->rotulo->label();
         db_ancora(@$Ly70_codvist,"js_vist('".@$y70_codvist."');",$db_opcao);
         db_input('y70_codvist',20,$Iy70_codvist,true,'text',3,"");
@@ -121,7 +121,7 @@ if(!isset($pri)){
   <tr>
     <td height="100%" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-        <?
+        <?php
 	$db_opcao=1;
         $db_botao = true;
 	include(modification("forms/db_frmfandam.php"));
@@ -137,7 +137,7 @@ function js_vist(codigo){
   js_OpenJanelaIframe('','db_iframe_vistorias','fis3_vistorias006.php?y70_codvist='+codigo,'Pesquisa',true);
 }
 </script>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
   if($clvistorias->erro_status=="0"){
     $clvistorias->erro(true,false);

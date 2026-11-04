@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,13 +67,13 @@ $oRotulo->label('ob16_codobrasenvio');
           
 		        <tr> 
 		          <td>     
-		            <?
+		            <?php
 		             db_ancora($Lob16_codobrasenvio,' js_pesquisa(true); ',1);
 		            ?>
               </td>
                 
 		          <td> 
-		            <?
+		            <?php
 		             db_input('ob16_codobrasenvio',  6, $Iob16_codobrasenvio, true, 'text', 1, "onchange='js_pesquisa(false)'");
 		             db_input('ob16_nomearq'      , 40, 0                   , true, 'text', 3, "");
 		            ?>

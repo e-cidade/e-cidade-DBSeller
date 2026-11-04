@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ if (isset ($incluir)) {
 } elseif (isset ($alterar)) {
   
   //Verifica se tem registro para gerar o BPA
-  $la54_d_ini             = substr(la54_d_ini, 6, 4)."-".substr($la54_d_ini, 3, 2)."-".substr($la54_d_ini, 0, 2);
+  $la54_d_ini             = substr($la54_d_ini, 6, 4)."-".substr($la54_d_ini, 3, 2)."-".substr($la54_d_ini, 0, 2);
   $la54_d_fim             = substr($la54_d_fim, 6, 4)."-".substr($la54_d_fim, 3, 2)."-".substr($la54_d_fim, 0, 2);
   $oDados->sTipo          = '03';
   $oDados->iCompano       = date('Y');
@@ -265,14 +265,14 @@ if (isset ($incluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"><br>
     <br>
     <br>
-    <?
+    <?php
       include(modification("forms/db_frmlab_fechamento.php"));
     ?>
   </td>
   </tr>
 </table>
 </center>
-<?
+<?php
   db_menu (db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
            db_getsession("DB_instit" ));
 ?>
@@ -281,7 +281,7 @@ if (isset ($incluir)) {
 <script>
   js_tabulacaoforms("form1", "sd97_i_login", true, 1, "sd97_i_login", true);
 </script>
-<?
+<?php
 /////mensagem de inclusao efetuada com sucesso
 if (isset ($incluir) || isset($alterar)) {
   if ($oDaoLabFechamento->erro_status == "0") {

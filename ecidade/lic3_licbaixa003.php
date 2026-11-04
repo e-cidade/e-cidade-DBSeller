@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ $clrotulo->label("");
 <td  align="center" valign="top" > 
 <form name='form1'>
 <table border='0'>  
-<?
+<?php
 $where="";
 $and="";
 if (isset($l20_codigo)&&$l20_codigo!="") {

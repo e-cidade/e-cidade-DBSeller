@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/pdf.php"));
@@ -69,7 +69,7 @@ $sqlerro = false;
 
 db_sel_instit();
 
-$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));    
+$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
 if($clrharqbanco->numrows>0){
 
   db_fieldsmemory($result_arqbanco,0);
@@ -85,8 +85,8 @@ if($clrharqbanco->numrows>0){
     $contaheader = $rh34_conta;
     $contalote   = $rh34_conta;
 
-    $conveniobanco = trim($rh34_convenio); 
-    
+    $conveniobanco = trim($rh34_convenio);
+
     $descrarquivo = "FOLHA PAGAMENTO"; // Campo somente do layout 3
 
     $dvagenciaheader = "0";
@@ -108,17 +108,17 @@ if($clrharqbanco->numrows>0){
     $dvcontalote   = $dvcontaheader;
     $dvagenciacontalote = $dvagenciacontaheader;
 
-    $datageracao = $datagera; 
+    $datageracao = $datagera;
     $horageracao = date("H").date("i").date("s");
- 
+
     if(isset($datageracao) && $datageracao!=""){
-      $datag = split('-',$datageracao);
+      $datag =explode('-',$datageracao);
       $datag_dia = $datag[2];
       $datag_mes = $datag[1];
       $datag_ano = $datag[0];
     }
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad =explode('-',$datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
@@ -129,7 +129,7 @@ if($clrharqbanco->numrows>0){
 
     $adatadegeracao = $datag_ano."-".$datag_mes."-".$datag_dia;
     $datadedeposito = $datad_ano."-".$datad_mes."-".$datad_dia;
- 
+
     $sequenciaarqui = $rh34_sequencial;
     $versaodoarquiv = "030";
 
@@ -137,7 +137,7 @@ if($clrharqbanco->numrows>0){
     $nomearquivo = "folha_".$db90_codban."_".$paramnome.".txt";
     $db_layouttxt = new db_layouttxt($layoutimprime,"tmp/".$nomearquivo, $posicao);
 
-    $conveniobanco = trim($rh34_convenio); 
+    $conveniobanco = trim($rh34_convenio);
     ////// DADOS SOMENTE CNAB240 CEF
     $parametrotransmiss = substr($rh34_convenio,10,2);
     $indicaambcaixa   = "P";
@@ -167,13 +167,13 @@ if($sqlerro == false){
 
     $sql = $clrhgeracaofolhareg->sql_query_geraTXT(null,"
                                                rh104_sequencial,
-                                               case when trim(translate(rh44_conta,'0','')) = '' then '02' 
-                                                    when (select rh02_fpagto 
+                                               case when trim(translate(rh44_conta,'0','')) = '' then '02'
+                                                    when (select rh02_fpagto
                                                             from rhpessoalmov
                                                            where rh02_regist    = rh01_regist
                                                              and rh02_anousu    = ".db_anofolha()."
                                                              and rh02_mesusu    = ".db_mesfolha()."
-                                                             and rh02_instit    = ".db_getsession("DB_instit").") = 4 then '02' 
+                                                             and rh02_instit    = ".db_getsession("DB_instit").") = 4 then '02'
                                                else '01' end as tipo_pagamento,
                                                rh02_seqpes,
                                                rh02_regist,
@@ -195,39 +195,39 @@ if($sqlerro == false){
     $result  = $clfolha->sql_record($sql);
     $numrows = $clfolha->numrows;
   }else{
-  	
+
     $titrelatorio = "PENSÃO JUDICIAL ";
-    
+
     if($qfolha == 1){
-    	
+
       $campovalor = " r52_valor+r52_valfer ";
       $rh34_wherepensa .= " and (r52_valor > 0 or r52_valfer > 0 ) ";
     }else if($qfolha == 2){
-    	
+
       $campovalor = " r52_valcom ";
       $rh34_wherepensa .= " and r52_valcom > 0 ";
     }else if($qfolha == 3){
-    	
+
       $campovalor = " r52_val13 ";
       $rh34_wherepensa .= " and r52_val13 > 0 ";
     }else if($qfolha == 4){
-    	
+
       $campovalor = " r52_valres ";
       $rh34_wherepensa .= " and r52_valres > 0 ";
     }
 
     $sql = $clpensao->sql_query_gerarqbag(null,null,null,null,"
-                                               $campovalor as rh104_vlrliquido, 
+                                               $campovalor as rh104_vlrliquido,
                                                length(trim(r52_codage)||trim(r52_dvagencia)) as qtddigitosagencia,
                                                r52_numcgm as rh02_regist,
                                                r52_codbco as rh44_codban,
-                                               case when trim(translate(r38_conta,'0','')) = '' then '02' 
-                                                    when (select rh02_fpagto 
+                                               case when trim(translate(r38_conta,'0','')) = '' then '02'
+                                                    when (select rh02_fpagto
                                                             from rhpessoalmov
                                                            where rh02_regist = r38_regist
                                                              and rh02_anousu = ".db_anofolha()."
                                                             and rh02_mesusu     = ".db_mesfolha()."
-                                                            and rh02_instit     = ".db_getsession("DB_instit").") = 4 then '02' 
+                                                            and rh02_instit     = ".db_getsession("DB_instit").") = 4 then '02'
                                                 else '01' end as tipo_pagamento,
 	                                        trim(r52_conta)||trim(coalesce(r52_dvconta,'')) as r38_conta,
 	                                       trim(r52_codage)||trim(coalesce(r52_dvagencia,'')) as r38_agenc,
@@ -246,7 +246,7 @@ if($sqlerro == false){
   $oDados  = db_utils::getCollectionByRecord($result);
   //echo $sql;exit;
   if ($numrows > 0) {
-    
+
     db_fieldsmemory($result, 1);
 
     $idregistroimpressao = $posicao;
@@ -254,7 +254,7 @@ if($sqlerro == false){
     if(!is_writable("/tmp/")){
       $sqlerro= true;
       $erro_msg = 'Sem permissão de gravar o arquivo. Contate suporte.';
-    }  
+    }
 
     ///// INICIA IMPRESSÃO DO RELATÓRIO
     $pdf = new PDF();
@@ -285,7 +285,7 @@ if($sqlerro == false){
     }
 
     $sequencialnolote = 0;
-  
+
     $troca_header = 0;
 
     $quantidadefuncionarios = 0;
@@ -312,9 +312,9 @@ if($sqlerro == false){
       //////////////////////////////////////////////
       $quantidaderegistarq ++;
       if($troca_header != $oRegistros->tipo_pagamento){
-      	
+
         if($troca_header != 0){
-        	
+
           $quantidadetotallote = $sequencialnolote + 2;
           //$valortotallote = $valortotal;
           ///// TRAILLER DE LOTE
@@ -360,7 +360,7 @@ if($sqlerro == false){
       $numerocontrolemov   = $oRegistros->rh02_regist;
       $sequencialreg       = $i + 1;
 
-      
+
       $valordebito        = $oRegistros->rh104_vlrliquido;
       $dataprocessamento  = $datadedeposito;
 
@@ -490,14 +490,14 @@ if($numrows > 0){
 	  db_msgbox($clrhgeracaofolhaarquivo->erro_msg);
 	  $erro = true;
 	} else {
-	  
+
 	  foreach ($oDados as $oLinhas){
-	    
+
 	    $clrhgeracaofolhaarquivoreg->rh106_rhgeracaofolhareg     = $oLinhas->rh104_sequencial;
 	    $clrhgeracaofolhaarquivoreg->rh106_rhgeracaofolhaarquivo = $clrhgeracaofolhaarquivo->rh105_sequencial;
 	    $clrhgeracaofolhaarquivoreg->incluir("");
 	    if($clrhgeracaofolhaarquivoreg->erro_status == "0"){
-	      
+
 	      db_msgbox($clrhgeracaofolhaarquivoreg->erro_msg);
 	      $erro = true;
 	      exit;

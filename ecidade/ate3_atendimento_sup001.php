@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ db_postmemory($HTTP_POST_VARS);
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <br>
     <strong>Área:</strong>
-    <?
+    <?php
     $sql = "select * from (select * from atendcadarea order by at25_descr ) as x union all select 9999,'NENHUMA'";
     $result = db_query($sql);
     //db_selectrecord("area",$result,true,2," ","","","0","js_troca(this.value)");
@@ -80,7 +80,7 @@ db_postmemory($HTTP_POST_VARS);
     <td>
     <br>
     <strong>Intervalor de Data:</strong>
-    <?
+    <?php
     if(!isset($pesquisar)){
       $dataini_ano = date('Y',db_getsession('DB_datausu'));
       $dataini_mes = date('m',db_getsession('DB_datausu'));
@@ -92,7 +92,7 @@ db_postmemory($HTTP_POST_VARS);
     db_inputdata("dataini",@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',2);
     ?>
     a
-    <?
+    <?php
     db_inputdata("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',2);
     ?>
       <input name='ordenar' value='' type='hidden'>
@@ -103,7 +103,7 @@ db_postmemory($HTTP_POST_VARS);
   <td>
   <br>
 
-<?
+<?php
 
 if( isset($pesquisar) ){
 
@@ -176,7 +176,7 @@ if( isset($pesquisar) ){
   </tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

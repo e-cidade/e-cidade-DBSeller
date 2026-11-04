@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,11 +73,12 @@ if (isset($chavepesquisa)) {
 <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/widgets/dbautocomplete.widget.js"></script>
+<script type="text/javascript" language="JavaScript" src="scripts/AjaxRequest.js"> </script>
 </head>
 <body onLoad="a=1">
   <div class="container">
     <fieldset style='width: 75%;'> <legend><b>Receita Médica</b></legend>
-      <?
+      <?php
       require_once(modification('forms/db_frmsau_receitamedica.php'));
       ?>
     </fieldset>

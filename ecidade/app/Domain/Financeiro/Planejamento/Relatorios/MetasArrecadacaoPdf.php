@@ -81,6 +81,7 @@ class MetasArrecadacaoPdf extends Pdf
         if ($this->dados['filtros']['filtrouRecurso']) {
             $this->addTitulo("Filtrou recurso");
         }
+        $this->headerOrigemEmentario();
 
         $this->wValores = $this->wValor * 7;
         $this->wReceita = $this->wLinha - $this->wValores;
@@ -148,18 +149,61 @@ class MetasArrecadacaoPdf extends Pdf
         }
     }
 
+    /**
+     * @param integer $w tamanho do campo no multicell
+     * @param integer $h altura linha
+     * @param integer $x2 tamanho para re-setar o eixo X e tb usado para desenhar a linha
+     * @param string $txt texto a ser impresso
+     * @param integer $wWordwarp tamanho usado para cortar a string
+     * @return void
+     */
+    protected function imprimeDescricaoValidandoQuebraLinha($w, $h, $x2, $txt, $wWordwarp)
+    {
+        $yAntes = $this->getY();
+        $yLinhaBotton = $this->getY() + $h;
+
+        $descricao = wordwrap($txt, $wWordwarp, "\n");
+
+        $linhas = explode("\n", $descricao);
+        if (count($linhas) > 2) {
+            $descricao = "$linhas[0]\n$linhas[1]...";
+        }
+
+        if ($this->porBimestre && count($linhas) > 1) {
+            $descricao = "$linhas[0]...";
+        }
+
+        $this->multiCell($w, 5, $descricao, '', 'L');
+
+        $this->line(10, $yAntes, $x2, $yAntes);
+        $this->line(10, $yLinhaBotton, $x2, $yLinhaBotton);
+        $this->setXY($x2, $yAntes);
+    }
+
+    /**
+     * @param \stdClass $dado
+     * @param integer $hLinha
+     */
     protected function imprimeLinhaDescricao($dado, $hLinha = 5)
     {
         if ($this->porReceita) {
             $this->Cell($this->wValor, $hLinha, $dado->estrutural, 'TBR', 0, 'C');
-            $this->cellAdapt($this->fonte, $this->wDescricaoReceita, $hLinha, $dado->natureza, 1, 'L');
+
+            $x2 = $this->wValor + $this->wDescricaoReceita + 10;
+            $this->imprimeDescricaoValidandoQuebraLinha($this->wDescricaoReceita, $hLinha, $x2, $dado->natureza, 79);
         } else {
             $descricao = sprintf('%s - %s', $dado->fonte_recurso, $dado->descricao_recurso);
             if ($this->tipoAgrupador === 'recurso') {
-                $descricao .= sprintf(' | %s - %s', $dado->complemento, $dado->descricao_complemento);
+                $descricao = sprintf(
+                    '%s - %s - %s',
+                    $dado->fonte_recurso,
+                    str_pad($dado->complemento, 4, '0', STR_PAD_LEFT),
+                    $dado->descricao_recurso
+                );
             }
 
-            $this->cellAdapt($this->fonte, $this->wReceita, $hLinha, $descricao, 'TBR', 'L');
+            $x2 = $this->wReceita + 10;
+            $this->imprimeDescricaoValidandoQuebraLinha($this->wReceita, $hLinha, $x2, $descricao, 95);
         }
     }
 

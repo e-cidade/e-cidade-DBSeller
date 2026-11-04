@@ -289,7 +289,6 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
          }
        }
 
-
        if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "f" ){
          $registra_assenta = "F";
          $inicio = false;
@@ -809,7 +808,6 @@ function cria_assenta($tipo_contagem, $somatorio,$certinic,$datacert,$tipo_certd
     $dias_final  = db_day($assenta[$Iassenta]["h16_dtterm"]) ;
   }
 
-
   // data do Inicio do Assentamento
 
 
@@ -938,18 +936,17 @@ function cria_assenta($tipo_contagem, $somatorio,$certinic,$datacert,$tipo_certd
       $mat1 = array();
       $mat2 = array();
 
-      $mat1[01] = "w_regist";
-      $mat1[02] = "w_ano";
-      $mat1[03] = "w_mes";
-      $mat1[04] = "w_assent";
-      $mat1[05] = "w_dias";
+      $mat1[1] = "w_regist";
+      $mat1[2] = "w_ano";
+      $mat1[3] = "w_mes";
+      $mat1[4] = "w_assent";
+      $mat1[5] = "w_dias";
 
-      $mat2[01] = $pessoal[0]["r01_regist"];
-      $mat2[02] = db_str($ano_inicio,4);
-      $mat2[03] = db_str($mes_inicio,2,0,"0");
-      $mat2[04] = $codigo_assentamento;
-      $mat2[05] = $qtde_dias_do_assentamento;
-      //echo "<BR> mat2[05] = $qtde_dias_do_assentamento;";
+      $mat2[1] = $pessoal[0]["r01_regist"];
+      $mat2[2] = db_str($ano_inicio,4);
+      $mat2[3] = db_str($mes_inicio,2,0,"0");
+      $mat2[4] = $codigo_assentamento;
+      $mat2[5] = $qtde_dias_do_assentamento;
 
       db_insert($arquivo,$mat1,$mat2);
     }else{

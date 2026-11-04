@@ -581,7 +581,7 @@ $clissgruposervico->rotulo->label("q126_sequencial");
     db_iframe_ativid.hide();
     <?php
     if ($db_opcao != 1) {
-      echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave;";
+      echo " location.href = '" . basename($_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave;";
     }
     ?>
   }
@@ -604,40 +604,24 @@ $clissgruposervico->rotulo->label("q126_sequencial");
   }
 
   function js_mostracbo(estrutural, descr, sequencial, tipo) {
+    db_iframe_cbo.hide();
+    document.form1.rh70_estrutural.value = estrutural;
+    document.form1.rh70_descr.value = descr;
+    document.form1.rh70_sequencial.value = sequencial;
 
-    if (tipo == 'Sintetico') {
-      alert("Selecione uma atividade do tipo 'Analitico'.");
-    } else {
-
-      db_iframe_cbo.hide();
-      document.form1.rh70_estrutural.value = estrutural;
-      document.form1.rh70_descr.value = descr;
-      document.form1.rh70_sequencial.value = sequencial;
-
-      <?php if ($db_opcao == 1) { ?>
-        document.form1.q03_descr.value = descr;
-      <?php } ?>
-    }
+    <?php if ($db_opcao == 1) { ?>
+      document.form1.q03_descr.value = descr;
+    <?php } ?>
   }
 
   function js_mostracbo2(estrutural, descr, sequencial, tipo, erro) {
+    document.form1.rh70_estrutural.value = estrutural;
+    document.form1.rh70_descr.value = descr;
+    document.form1.rh70_sequencial.value = sequencial;
 
-    if (tipo == 'Sintetico') {
-
-      alert("Selecione uma atividade do tipo 'Analitico'.");
-      document.form1.rh70_estrutural.value = "";
-      document.form1.rh70_sequencial.value = "";
-      document.form1.rh70_descr.value = "";
-    } else {
-
-      document.form1.rh70_estrutural.value = estrutural;
-      document.form1.rh70_descr.value = descr;
-      document.form1.rh70_sequencial.value = sequencial;
-
-      <?php if ($db_opcao == 1) { ?>
-        document.form1.q03_descr.value = descr;
-      <?php } ?>
-    }
+    <?php if ($db_opcao == 1) { ?>
+      document.form1.q03_descr.value = descr;
+    <?php } ?>
 
     if (erro == true) {
 
@@ -1054,7 +1038,7 @@ $clissgruposervico->rotulo->label("q126_sequencial");
   }
 
   function js_preenchepesquisa(chave){
-    location.href = "<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>"+"?chavepesquisa="+chave;
+    location.href = "<?=basename($_SERVER["PHP_SELF"])?>"+"?chavepesquisa="+chave;
   }
 
   function js_insSelect(){

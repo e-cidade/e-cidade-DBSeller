@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,7 +72,7 @@ function js_pesquisa(){
        <tr>
          <td align="right" height="25" nowrap title="<?=$Tk11_id?>"><?=$Lk11_id?></td>
          <td align="left" height="25" nowrap>&nbsp; &nbsp;&nbsp; &nbsp;
-         <?
+         <?php
            $clcfautent = new cl_cfautent;
            $result = $clcfautent->sql_record($clcfautent->sql_query("","k11_id#k11_local","k11_local"));
            db_selectrecord("k11_id",$result,true,2,"","","","0");
@@ -82,7 +82,7 @@ function js_pesquisa(){
        <tr>
         <td align="right"><strong>Data Final :</strong></td>
         <td align="left">&nbsp; &nbsp;&nbsp; &nbsp;
-        <?
+        <?php
          $datausu = date("Y/m/d",db_getsession("DB_datausu"));
          $dataf_ano = substr($datausu,0,4);
          $dataf_mes = substr($datausu,5,2);
@@ -106,7 +106,7 @@ function js_pesquisa(){
       </table>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

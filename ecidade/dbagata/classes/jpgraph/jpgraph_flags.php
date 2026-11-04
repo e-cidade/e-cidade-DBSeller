@@ -267,7 +267,7 @@ class FlagImages {
     var $iFlagData ;
     var $iOrdIdx=array();
 
-    function FlagImages($aSize=FLAGSIZE1) {
+    public function __construct($aSize=FLAGSIZE1) {
 	switch($aSize) {
 	    case FLAGSIZE1 :
 	    case FLAGSIZE2 :
@@ -285,7 +285,7 @@ class FlagImages {
 	$this->iFlagCount = count($this->iCountryNameMap);
     }
 
-    function GetNum() {
+    public function GetNum() {
 	return $this->iFlagCount;
     }
 
@@ -294,7 +294,7 @@ class FlagImages {
 	return $this->GetImgByIdx($idx);
     }
 
-    function GetImgByIdx($aIdx) {
+    public function GetImgByIdx($aIdx) {
 	if( array_key_exists($aIdx,$this->iFlagData) ) {
 	    $d = $this->iFlagData[$aIdx][1];   
 	    return Image::CreateFromString($d);   

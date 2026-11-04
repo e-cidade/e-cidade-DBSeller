@@ -51,7 +51,7 @@ class AlteracaoSituacaoInscricaoTask extends Command
                 file_put_contents('tmp/alteracaosituacaotask.log', $log);
             }
         }
-        return true;
+        return 0;
     }
 
     private function requireDependencies()

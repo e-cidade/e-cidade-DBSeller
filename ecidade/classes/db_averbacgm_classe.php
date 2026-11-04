@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,40 +29,44 @@
 //CLASSE DA ENTIDADE averbacgm
 class cl_averbacgm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j76_codigo = 0; 
-   var $j76_averbacao = 0; 
-   var $j76_numcgm = 0; 
-   var $j76_tipo = 0; 
-   var $j76_principal = 'f'; 
+   public $j76_codigo = 0; 
+   public $j76_averbacao = 0; 
+   public $j76_numcgm = 0; 
+   public $j76_tipo = 0; 
+   public $j76_principal = 'f'; 
+   public $j76_tipoproprietario = 'null';
+   public $j76_tipopromitente = 'null';
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j76_codigo = int4 = Código 
                  j76_averbacao = int4 = Código Averbação 
                  j76_numcgm = int4 = Numcgm 
                  j76_tipo = int4 = Tipo 
                  j76_principal = bool = Principal 
+                 j76_tipoproprietario = int4 = Tipo de Proprietário
+                 j76_tipopromitente = int4 = Tipo de Promitente
                  ";
    //funcao construtor da classe 
-   function cl_averbacgm() { 
+   public function cl_averbacgm() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbacgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,19 +75,21 @@ class cl_averbacgm {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j76_codigo = ($this->j76_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j76_codigo"]:$this->j76_codigo);
        $this->j76_averbacao = ($this->j76_averbacao == ""?@$GLOBALS["HTTP_POST_VARS"]["j76_averbacao"]:$this->j76_averbacao);
        $this->j76_numcgm = ($this->j76_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["j76_numcgm"]:$this->j76_numcgm);
        $this->j76_tipo = ($this->j76_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["j76_tipo"]:$this->j76_tipo);
        $this->j76_principal = ($this->j76_principal == "f"?@$GLOBALS["HTTP_POST_VARS"]["j76_principal"]:$this->j76_principal);
+       $this->j76_tipoproprietario = ($this->j76_tipoproprietario == ""?@$GLOBALS["HTTP_POST_VARS"]["j76_tipoproprietario"]:$this->j76_tipoproprietario);
+       $this->j76_tipopromitente = ($this->j76_tipopromitente == ""?@$GLOBALS["HTTP_POST_VARS"]["j76_tipopromitente"]:$this->j76_tipopromitente);
      }else{
        $this->j76_codigo = ($this->j76_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j76_codigo"]:$this->j76_codigo);
      }
    }
    // funcao para inclusao
-   function incluir ($j76_codigo){ 
+   public function incluir ($j76_codigo){ 
       $this->atualizacampos();
      if($this->j76_averbacao == null ){ 
        $this->erro_sql = " Campo Código Averbação nao Informado.";
@@ -112,7 +118,10 @@ class cl_averbacgm {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j76_principal == null ){ 
+     if(!$this->j76_principal){
+         $this->j76_principal = 'false';
+     }
+     if($this->j76_principal == null ){
        $this->erro_sql = " Campo Principal nao Informado.";
        $this->erro_campo = "j76_principal";
        $this->erro_banco = "";
@@ -153,19 +162,30 @@ class cl_averbacgm {
        $this->erro_status = "0";
        return false;
      }
+     if(empty($this->j76_tipoproprietario)){
+       $this->j76_tipoproprietario = 'null' ;
+     }
+     if(empty($this->j76_tipopromitente)){
+       $this->j76_tipopromitente = 'null' ;
+     }
+
      $sql = "insert into averbacgm(
                                        j76_codigo 
                                       ,j76_averbacao 
                                       ,j76_numcgm 
                                       ,j76_tipo 
                                       ,j76_principal 
+                                      ,j76_tipoproprietario
+                                      ,j76_tipopromitente
                        )
                 values (
                                 $this->j76_codigo 
                                ,$this->j76_averbacao 
                                ,$this->j76_numcgm 
                                ,$this->j76_tipo 
-                               ,'$this->j76_principal' 
+                               ,'$this->j76_principal'
+                               ,$this->j76_tipoproprietario
+                               ,$this->j76_tipopromitente 
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -202,11 +222,13 @@ class cl_averbacgm {
        $resac = db_query("insert into db_acount values($acount,1651,9602,'','".AddSlashes(pg_result($resaco,0,'j76_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,1651,9603,'','".AddSlashes(pg_result($resaco,0,'j76_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,1651,9604,'','".AddSlashes(pg_result($resaco,0,'j76_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1651,1011157,'','".AddSlashes(pg_result($resaco,0,'j76_tipoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1651,1011158,'','".AddSlashes(pg_result($resaco,0,'j76_tipopromitente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j76_codigo=null) { 
+   public function alterar ($j76_codigo=null) { 
       $this->atualizacampos();
      $sql = " update averbacgm set ";
      $virgula = "";
@@ -275,6 +297,14 @@ class cl_averbacgm {
          return false;
        }
      }
+     if(trim($this->j76_tipoproprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j76_tipoproprietario"])){
+       $sql  .= $virgula." j76_tipoproprietario = $this->j76_tipoproprietario ";
+       $virgula = ",";
+     }
+     if(trim($this->j76_tipopromitente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j76_tipopromitente"])){
+       $sql  .= $virgula." j76_tipopromitente = $this->j76_tipopromitente ";
+       $virgula = ",";
+     }
      $sql .= " where ";
      if($j76_codigo!=null){
        $sql .= " j76_codigo = $this->j76_codigo";
@@ -296,6 +326,10 @@ class cl_averbacgm {
            $resac = db_query("insert into db_acount values($acount,1651,9603,'".AddSlashes(pg_result($resaco,$conresaco,'j76_tipo'))."','$this->j76_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j76_principal"]))
            $resac = db_query("insert into db_acount values($acount,1651,9604,'".AddSlashes(pg_result($resaco,$conresaco,'j76_principal'))."','$this->j76_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j76_tipoproprietario"]))
+           $resac = db_query("insert into db_acount values($acount,1651,1011157,'".AddSlashes(pg_result($resaco,$conresaco,'j76_tipoproprietario'))."','$this->j76_tipoproprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j76_tipopromitente"]))
+           $resac = db_query("insert into db_acount values($acount,1651,1011158,'".AddSlashes(pg_result($resaco,$conresaco,'j76_tipopromitente'))."','$this->j76_tipopromitente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -331,7 +365,7 @@ class cl_averbacgm {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j76_codigo=null,$dbwhere=null) { 
+   public function excluir ($j76_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j76_codigo));
      }else{ 
@@ -348,6 +382,8 @@ class cl_averbacgm {
          $resac = db_query("insert into db_acount values($acount,1651,9602,'','".AddSlashes(pg_result($resaco,$iresaco,'j76_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1651,9603,'','".AddSlashes(pg_result($resaco,$iresaco,'j76_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1651,9604,'','".AddSlashes(pg_result($resaco,$iresaco,'j76_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1651,1011157,'','".AddSlashes(pg_result($resaco,$iresaco,'j76_tipoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1651,1011158,'','".AddSlashes(pg_result($resaco,$iresaco,'j76_tipopromitente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from averbacgm
@@ -396,7 +432,7 @@ class cl_averbacgm {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,10 +454,10 @@ class cl_averbacgm {
       }
      return $result;
    }
-   function sql_query ( $j76_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j76_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,6 +470,8 @@ class cl_averbacgm {
      $sql .= "      inner join cgm  on  cgm.z01_numcgm = averbacgm.j76_numcgm";
      $sql .= "      inner join averbacao  on  averbacao.j75_codigo = averbacgm.j76_averbacao";
      $sql .= "      inner join iptubase  on  iptubase.j01_matric = averbacao.j75_matric";
+     $sql .= "      left join tipoproprietario  on  tipoproprietario.j163_tipoproprietario = averbacgm.j76_tipoproprietario";
+     $sql .= "      left join tipopromitente  on  tipopromitente.j164_tipopromitente = averbacgm.j76_tipopromitente";
      $sql2 = "";
      if($dbwhere==""){
        if($j76_codigo!=null ){
@@ -445,7 +483,7 @@ class cl_averbacgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,10 +492,10 @@ class cl_averbacgm {
      }
      return $sql;
   }
-   function sql_query_file ( $j76_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+  public function sql_query_file ( $j76_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +516,7 @@ class cl_averbacgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,6 +524,53 @@ class cl_averbacgm {
        }
      }
      return $sql;
+  }
+
+  public function sqlAdquirentes($chavepesquisa) {
+    $sqlGetAdquirentes = "select 
+        j76_codigo as codigo, 
+        z01_numcgm as numcgm, 
+        z01_nome as nome,
+        z01_cgccpf as cgccpf,
+        j163_abreviatura as tipopromitente,  
+        j164_abreviatura as tipoproprietario,
+        (
+          case 
+            when (j76_principal = true) then 'Sim' 
+            else 'Não'
+          end
+        ) as isprincipal
+    from averbacgm 
+    inner join cgm on averbacgm.j76_numcgm = cgm.z01_numcgm 
+    left join tipopromitente on averbacgm.j76_tipopromitente = tipopromitente.j164_tipopromitente 
+    left join tipoproprietario on averbacgm.j76_tipoproprietario = tipoproprietario.j163_tipoproprietario 
+    where j76_averbacao = $chavepesquisa";
+      
+    return $sqlGetAdquirentes;
+  }
+
+  public function sqlTransmitentes($chavepesquisa) {
+    $sqlGetTransmitentes = "select 
+        j79_codigo as codigo, 
+        z01_numcgm as numcgm, 
+        z01_nome as nome,
+        z01_cgccpf as cgccpf,
+        j163_abreviatura as tipopromitente,  
+        j164_abreviatura as tipoproprietario,
+        (
+          case 
+            when (j79_principal = true) then 'Sim' 
+            else 'Não'
+          end
+        ) as isprincipal
+    from averbacgmold 
+    inner join cgm on averbacgmold.j79_numcgm = cgm.z01_numcgm 
+    left join tipopromitente on averbacgmold.j79_tipopromitente = tipopromitente.j164_tipopromitente 
+    left join tipoproprietario on averbacgmold.j79_tipoproprietario = tipoproprietario.j163_tipoproprietario 
+    where j79_averbacao = $chavepesquisa";
+      
+      
+    return $sqlGetTransmitentes;
   }
 }
 ?>

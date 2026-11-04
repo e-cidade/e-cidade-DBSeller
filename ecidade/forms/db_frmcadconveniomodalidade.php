@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcadconveniomodalidade->rotulo->label();
        <?=@$Lar15_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar15_sequencial',10,$Iar15_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('ar15_sequencial',10,$Iar15_sequencial,true,'text',$db_opcao,"")
        <?=@$Lar15_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar15_nome',50,$Iar15_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadconveniomodalidade.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

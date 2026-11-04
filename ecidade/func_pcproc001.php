@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr>
     <td height="100%" align="center" valign="top" bgcolor="#CCCCCC">
       <center>
-      <?
+      <?php
         if (isset($lNovaConsulta) && !$lNovaConsulta) {
           echo '<input name="fechar" type="button" value="Fechar" onclick="parent.db_iframe_pcproc.hide();">';
         }

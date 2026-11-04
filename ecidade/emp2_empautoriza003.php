@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -150,11 +150,11 @@ db_postmemory($HTTP_POST_VARS);
 	               <strong>Autorizações de</strong>
 		       </td>
 		       <td valign='center'>      
-		     <?
+		     <?php
                  db_input('e54_autori',8,$Ie54_autori,true,'text',1,"onChange=\"js_testa('i',this.value)\"","e54_autoriINI","");
 	             ?>
 		       <strong>&nbsp;À&nbsp;</strong>
-		     <?
+		     <?php
 		 db_input('e54_autori',8,$Ie54_autori,true,'text',1,"onChange=\"js_testa('f',this.value)\"","e54_autoriFIM","");
 		     ?>
 		       </td>
@@ -170,11 +170,11 @@ db_postmemory($HTTP_POST_VARS);
 	               <strong>Data de emissão</strong>
 		       </td>
 		       <td valign='center'>
-			   <?
+			   <?php
 		       db_inputdata('e54_emiss',@$e54_emiss_dia,@$e54_emiss_mes,@$e54_emiss_ano,true,'text',1,"","e54_emissINI")
 			   ?>
 			   <strong>&nbsp;À&nbsp;</strong>
-			   <?
+			   <?php
 		       db_inputdata('e54_emiss',@$e54_emiss_dia,@$e54_emiss_mes,@$e54_emiss_ano,true,'text',1,"","e54_emissFIM")
 			    ?>
                        </td>
@@ -187,7 +187,7 @@ db_postmemory($HTTP_POST_VARS);
 		   <table>
 		     <tr>
 		       <td align="center">
-			  <?
+			  <?php
 			  $aux = new cl_arquivo_auxiliar;
 			  $aux->cabecalho = "<strong>AUTORIZAÇÕES DE EMPENHO</strong>";
 			  $aux->codigo = "e54_autori";
@@ -214,7 +214,7 @@ db_postmemory($HTTP_POST_VARS);
                <tr>
 	         <td align="right"> <strong>Opção de Seleção :<strong></td>
 		 <td align="left">&nbsp;&nbsp;&nbsp;
-		   <?
+		   <?php
 		   $xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
 		   db_select('param_autoriza',$xxx,true,2);
 		   ?>
@@ -241,7 +241,7 @@ db_postmemory($HTTP_POST_VARS);
                <tr>
 	         <td align="right"> <strong>Processar :<strong></td>
 		 <td align="left" colspan=2 >&nbsp;&nbsp;&nbsp;
-		   <?
+		   <?php
 		   $rrr= array("N"=>"Não Anuladas","A"=>"Anuladas","T"=>"Todas");
 		   db_select('anula',$rrr,true,2);
 		   ?>
@@ -250,7 +250,7 @@ db_postmemory($HTTP_POST_VARS);
                <tr>
 	         <td align="right"> <strong>Tipo :<strong></td>
 		 <td align="left" colspan=2 >&nbsp;&nbsp;&nbsp;
-		   <?
+		   <?php
 		   $rr= array("T"=>"Todas","E"=>"Empenhadas","N"=>"Não Empenhadas");
 		   db_select('tipo',$rr,true,2);
 		   
@@ -260,7 +260,7 @@ db_postmemory($HTTP_POST_VARS);
                <tr>
 	         <td align="right"> <strong>Listar Itens :<strong></td>
 		 <td align="left" colspan=2 >&nbsp;&nbsp;&nbsp;
-		   <?
+		   <?php
 		   $ll= array("s"=>"Sim","n"=>"Não");
 		   db_select('listar',$ll,true,2);
 		   ?>
@@ -269,37 +269,37 @@ db_postmemory($HTTP_POST_VARS);
 		 
 	     </table>
 	   </center>
-		     <?
+		     <?php
 		 db_input('inp_autoriza',"",0,true,'hidden',3,"");
 		 db_input('cod_autoriza',"",0,true,'hidden',3,"");
 		 db_input('par_autoriza',"",0,true,'hidden',3,"");
 		     ?>
 		     <br>
-		     <?
+		     <?php
 		 db_input('inp_cgm',"",0,true,'hidden',3,"");
 		 db_input('cod_cgm',"",0,true,'hidden',3,"");
 		 db_input('par_cgm',"",0,true,'hidden',3,"");
 		     ?>
 		     <br>
-		     <?
+		     <?php
 		 db_input('inp_usuarios',"",0,true,'hidden',3,"");
 		 db_input('cod_usuarios',"",0,true,'hidden',3,"");
 		 db_input('par_usuarios',"",0,true,'hidden',3,"");
 		     ?>
 		     <br>
-		     <?
+		     <?php
 		 db_input('inp_tipcompra',"",0,true,'hidden',3,"");
 		 db_input('cod_tipcompra',"",0,true,'hidden',3,"");
 		 db_input('par_tipcompra',"",0,true,'hidden',3,"");
 		     ?>
 		     <br>
-		     <?
+		     <?php
 		 db_input('inp_config',"",0,true,'hidden',3,"");
 		 db_input('cod_config',"",0,true,'hidden',3,"");
 		 db_input('par_config',"",0,true,'hidden',3,"");
 		     ?>
 		     <br>
-		     <?
+		     <?php
 		 db_input('inp_depart',"",0,true,'hidden',3,"");
 		 db_input('cod_depart',"",0,true,'hidden',3,"");
 		 db_input('par_depart',"",0,true,'hidden',3,"");

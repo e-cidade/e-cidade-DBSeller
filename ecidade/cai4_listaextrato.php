@@ -150,19 +150,25 @@ db_postmemory($_GET);
     }
 
 
-    function js_processaRequest(data,conta){
+    function js_processaRequest(data,conta, lCarregarPendente, datainicio){
 
-    	js_divCarregando('Aguarde processando...','msgBoxExtrato');
+        js_divCarregando('Aguarde processando...','msgBoxExtrato');
 
-    	parent.$("load_extrato").value = "false";
+        parent.$("load_extrato").value = "false";
 
       var concilia  = parent.document.form1.concilia.value;
       var url       = 'cai4_carregadadosextrato.php';
+      var parametro = 'data='+data+'&conta='+conta+'&concilia='+concilia+'&datainicio='+datainicio;
 
-      var parametro = 'data='+data+'&conta='+conta+'&concilia='+concilia;
+      if (lCarregarPendente == undefined) {
+        lCarregarPendente = "";
+      }
+
+      parametro += "&lCarregarPendente="+lCarregarPendente;
 
       var objAjax   = new Ajax.Request (url,{method:'post',parameters:parametro, onComplete:js_loadTable});
-    }
+
+    } 
 
     function js_loadTable(resposta){
 
@@ -235,6 +241,7 @@ db_postmemory($_GET);
          */
         var sDesativarInput = parent.lDataMenorUltimaConciliacao ? 'disabled' : '';
 
+        objJ[i].numeroDocumento = objJ[i].numeroDocumento;
         objJ[i].detalhe         = tagString(objJ[i].detalhe);
         tabela +=" <tr id='tabLinha"+i+"' class='"+objJ[i].classe+"' onDblClick='parent.js_desprocessarItens("+objJ[i].itemconciliacao+",\"extrato\");'> "+
                  "   <td nowrap id='chk"+i+"'     align='center' > " +

@@ -17,7 +17,7 @@ require_once('dbforms/db_funcoes.php');
 	<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta http-equiv="Expires" CONTENT="0">
-	<?
+	<?php
 	db_app::load('scripts.js, prototype.js, strings.js, AjaxRequest.js, DBLookUp.widget.js, DBViewFormularioFolha/CompetenciaFolha.js');
 	db_app::load('DBDownload.widget.js, estilos.css');
 	?>

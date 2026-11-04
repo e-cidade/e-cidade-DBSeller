@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clapolice->rotulo->label("t81_codseg");
               <?=$Lt81_codapo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t81_codapo",10,$It81_codapo,true,"text",4,"","chave_t81_codapo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clapolice->rotulo->label("t81_codseg");
               <?=$Lt81_codseg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t81_codseg",10,$It81_codseg,true,"text",4,"","chave_t81_codseg");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clapolice->rotulo->label("t81_codseg");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
        $where_instit = "t81_instit = ".db_getsession("DB_instit");
        if(isset($campos)==false){
          if(file_exists("funcoes/db_func_apolice.php")==true){
@@ -121,12 +121,12 @@ $clapolice->rotulo->label("t81_codseg");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

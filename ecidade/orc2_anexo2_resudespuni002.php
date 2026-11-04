@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -38,7 +38,7 @@ db_postmemory($HTTP_POST_VARS);
 $classinatura = new cl_assinatura;
 
 $tipo_agrupa = substr($nivel,0,1);
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = pg_exec("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -87,7 +87,7 @@ $result = pg_exec($sql);
 //$result = pg_exec("select * from work");
 //db_criatabela($result);exit;
 
-$xcampos = split("-",$orgaos);
+$xcampos =explode("-",$orgaos);
 
 
 if(substr($nivel,0,1) == '1'){
@@ -102,7 +102,7 @@ if(substr($nivel,0,1) == '1'){
 }
 $virgula1 = ' ';
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos =explode("_",$xcampos[$i]);
    $virgula = '';
    $where  = "'";
    $where1 = "'";

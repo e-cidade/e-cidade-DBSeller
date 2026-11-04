@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -260,7 +260,7 @@ if(isset($incluir)){
     <table style="padding-top:15px">
     	<tr>
     	  <td>
-	      <?
+	      <?php
 	        include(modification("forms/db_frmcustoplanoanaliticabens.php"));
 	      ?>
 	      </td>
@@ -272,7 +272,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","cc05_bens",true,1,"cc05_bens",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  
   if ($lSqlErro) {

@@ -130,10 +130,10 @@ $clrotulo->label("rh70_descr");
 
               $aWhere[] = "sd03_i_codigo = {$pesquisa_chave}";
               $sWhere   = implode(' AND ', $aWhere);
-              $sSql     = $clespecmedico->sql_query(null, "*", null, $sWhere);
-              $result   = $clespecmedico->sql_record($sSql);
+              $sSql     = $clespecmedico->sql_query(null, "*", null, $sWhere);              
+              $result   = db_query($sSql);
 
-              if($clespecmedico->numrows != 0) {
+              if(pg_num_rows($result) != 0 ) {
 
                 db_fieldsmemory($result,0);
                 echo "<script>".$funcao_js."(false, '$sd03_i_codigo', '$z01_nome', '$sd27_i_codigo');</script>";

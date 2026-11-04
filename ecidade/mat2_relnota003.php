@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,7 +95,7 @@ db_postmemory($HTTP_POST_VARS);
        </tr>
 		     <tr>
 		       <td align="center">
-			  <?
+			  <?php
 			  $aux = new cl_arquivo_auxiliar;
 			  $aux->cabecalho = "<strong>USUÁRIOS</strong>";
 			  $aux->codigo = "e69_id_usuario";

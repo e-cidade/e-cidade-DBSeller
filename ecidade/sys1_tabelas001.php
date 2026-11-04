@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -188,7 +188,7 @@ input {
 <table width="790" height="100%" align='center' border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
 	     $sql = "SELECT codarq as db_codarq,codarq ,nomearq , descricao ,sigla
               FROM db_sysarquivo
@@ -215,7 +215,7 @@ input {
           <tr> 
             <td><strong>Data de Inclusão:&nbsp;</strong></td>
             <td> 
-              <?
+              <?php
         include(modification("dbforms/db_funcoes.php"));
 	    $dataincl_dia = date("d");
 	    $dataincl_mes = date("m");
@@ -232,7 +232,7 @@ input {
           <tr>
             <td> <strong>Módulo:&nbsp;</strong> </td>
             <td nowrap><select name="modulo" size="1">
-                <?
+                <?php
 		  function db_retSelected($valor) {
 		    global $HTTP_POST_VARS;
 			global $retorno;
@@ -268,7 +268,7 @@ input {
             <td title="Quando a chave primaria for igual da tabela pai." nowrap>
 			<select name="tabelapai" size="1" id="select">
 		    <option value="0">Nenhuma...</option>
-                <?
+                <?php
 		  function db_retSelecteda($valor) {
 		    global $HTTP_POST_VARS;
 			global $retorno;
@@ -302,26 +302,26 @@ input {
 	  </tr>
           <tr> 
             <td>&nbsp;</td>
-            <td> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+            <td> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>> 
               &nbsp; <input name="procurar" onClick="Botao = 'procurar'" accesskey="p" type="submit" id="procurar2" value="Procurar">	
-              <? if(isset($retorno)) { ?>
-              &nbsp; <input type="button" onClick="location.href='sys3_campos001.php?<? echo base64_encode("tabelacod=$retorno&manutabela=true") ?>'" value="Mais Detalhes"> 
+              <?php if(isset($retorno)) { ?>
+              &nbsp; <input type="button" onClick="location.href='sys3_campos001.php?<?php echo base64_encode("tabelacod=$retorno&manutabela=true") ?>'" value="Mais Detalhes"> 
               &nbsp; <input type="button" onClick="location.href='sys1_camposnovo001.php?iTabela=<?php echo $retorno; ?>'" value="Lançar Campos"> 
-              <? } ?>
+              <?php } ?>
             </td>
           </tr>
         </table>
       </form>
-      <?
+      <?php
 	  } // fim do else do if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
 	  
     ?>
     </td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>

@@ -74,11 +74,11 @@ db_app::load("dbcomboBox.widget.js");
 	  <tr>
 	    <td nowrap title="Conta a ser reprocessada">
 	      <strong>
-	        <? db_ancora("Conta Corrente:","js_pesquisaConta(true);", 1); ?>
+	        <?php db_ancora("Conta Corrente:","js_pesquisaConta(true);", 1); ?>
 	      </strong>
 	    </td>
 	    <td nowrap>
-	      <?
+	      <?php
 	        db_input('iContaCorrente',10,"",true,'text',1,"onchange='js_pesquisaConta(false);'onkeyup='js_ValidaCampos(this,1,\"\",\"\",\"\",event);'");
 	        db_input('sDescricao',40,"",true,'text',3,'');
 	      ?>
@@ -130,7 +130,7 @@ db_app::load("dbcomboBox.widget.js");
 </center>
 
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

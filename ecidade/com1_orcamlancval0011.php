@@ -184,8 +184,8 @@ function js_calcvaltot(valor,param,nome){
 
     quant = eval("document.form1.qtde_"+param+".value");
     valortotal = new Number(eval("document.form1.valor_"+param+".value"));
-    if(valor!='' && quant!=''){
-        valor = new Number(valor);
+    if(quant!=''){
+        valor = valor != '' ? new Number(valor) : new Number(0);
         quant = new Number(quant);
         valortotal = new Number(quant * valor.toFixed(numdec));
         if (isPB) {
@@ -225,8 +225,8 @@ function js_calcvalunit(valor,param,nome){
     }
     quant = eval("document.form1.qtde_"+param+".value");
     valorunit = new Number(eval("document.form1.vlrun_"+param+".value"));
-    if(valor!='' && quant!=''){
-      valor = new Number(valor);
+    if(quant!=''){
+      valor = valor != '' ? new Number(valor) : new Number(0);
       if (isPB) {
         valor = new Number(js_truncar(valor));
       }

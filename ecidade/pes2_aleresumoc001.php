@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,14 +92,14 @@ function js_emite(){
         <strong>Ano / Mes:</strong>
         </td>
         <td>
-          <?
+          <?php
 	  if(!isset($DBtxt23) || (isset($DBtxt23) && (trim($DBtxt23) == "" || $DBtxt23 == 0))){
             $DBtxt23 = db_anofolha();
 	  }
             db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'onchange="js_anomes();"')
           ?>
 	  &nbsp;/&nbsp;
-          <?
+          <?php
 	  if(!isset($DBtxt25) || (isset($DBtxt25) && trim($DBtxt25) == "" || $DBtxt25 == 0)){
             $DBtxt25 = db_mesfolha();
 	  }
@@ -112,7 +112,7 @@ function js_emite(){
         <?=$LDBtxt27?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt27',4,$IDBtxt27,true,'text',2,'')
           ?>
 	</td>
@@ -122,7 +122,7 @@ function js_emite(){
         <?=$LDBtxt28?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt28',4,$IDBtxt28,true,'text',2,'')
           ?>
 	</td>
@@ -148,7 +148,7 @@ function js_emite(){
              <option value = 'r22' <?=((isset($folha)&&$folha=="r22")?"selected":"")?>>Adiantamento
        </td>
      </tr>
-     <?
+     <?php
      if(isset($folha) && $folha == "r48"){
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($DBtxt23,$DBtxt25,null,null,"distinct r48_semest"));
        if($clgerfcom->numrows > 0){
@@ -172,13 +172,13 @@ function js_emite(){
        <tr>
          <td colspan="2" align="center">
            <font color="red">Sem complementar para este período.</font>
-           <?
+           <?php
            $r48_semest = 0;
            db_input("r48_semest", 2,0, true, 'hidden', 3);
            ?>
          </td>
        </tr>
-       <?
+       <?php
        }
      }
      ?>
@@ -187,7 +187,7 @@ function js_emite(){
         <td align="right" nowrap title="Vinculo" ><strong>Vinculo :</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $v = array("g"=>"Geral", "a"=>"Ativo", "i"=>"Inativo", "p"=>"Pensionista");
           db_select('vinculo',$v,true,4,"");
           ?>
@@ -198,7 +198,7 @@ function js_emite(){
         <td align="right" nowrap title="Ordem" ><strong>Ordem</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $o = array("n"=>"Numerica","a"=>"Alfabetica");
           db_select('ordem',$o,true,4,"");
           ?>
@@ -217,7 +217,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -258,7 +258,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        // js_emite();

@@ -81,7 +81,7 @@ if ($oGet->e42_sequencial != "") {
   </head>
   <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
     <center>
-    <?
+    <?php
      require(modification("forms/db_frmempageautoriza.php"));
     ?>
     </center>

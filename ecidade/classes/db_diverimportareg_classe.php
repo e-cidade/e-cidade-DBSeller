@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: diversos
 //CLASSE DA ENTIDADE diverimportareg
-class cl_diverimportareg { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $dv12_sequencial = 0; 
-   var $dv12_diversos = 0; 
-   var $dv12_diverimporta = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_diverimportareg {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $dv12_sequencial = 0;
+   var $dv12_diversos = 0;
+   var $dv12_diverimporta = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 dv12_sequencial = int4 = Código 
-                 dv12_diversos = int4 = Código do diversos 
-                 dv12_diverimporta = int8 = Código 
+                 dv12_sequencial = int4 = Código
+                 dv12_diversos = int4 = Código do diversos
+                 dv12_diverimporta = int8 = Código
                  ";
-   //funcao construtor da classe 
-   function cl_diverimportareg() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("diverimportareg"); 
+     $this->rotulo = new rotulo("diverimportareg");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_diverimportareg {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->dv12_sequencial = ($this->dv12_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["dv12_sequencial"]:$this->dv12_sequencial);
        $this->dv12_diversos = ($this->dv12_diversos == ""?@$GLOBALS["HTTP_POST_VARS"]["dv12_diversos"]:$this->dv12_diversos);
@@ -77,9 +77,9 @@ class cl_diverimportareg {
      }
    }
    // funcao para inclusao
-   function incluir ($dv12_sequencial){ 
+   public function incluir ($dv12_sequencial){
       $this->atualizacampos();
-     if($this->dv12_diversos == null ){ 
+     if($this->dv12_diversos == null ){
        $this->erro_sql = " Campo Código do diversos nao Informado.";
        $this->erro_campo = "dv12_diversos";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_diverimportareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv12_diverimporta == null ){ 
+     if($this->dv12_diverimporta == null ){
        $this->erro_sql = " Campo Código nao Informado.";
        $this->erro_campo = "dv12_diverimporta";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_diverimportareg {
        return false;
      }
      if($dv12_sequencial == "" || $dv12_sequencial == null ){
-       $result = db_query("select nextval('diverimportareg_dv12_sequencial_seq')"); 
+       $result = db_query("select nextval('diverimportareg_dv12_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: diverimportareg_dv12_sequencial_seq do campo: dv12_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: diverimportareg_dv12_sequencial_seq do campo: dv12_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->dv12_sequencial = pg_result($result,0,0); 
+       $this->dv12_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from diverimportareg_dv12_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $dv12_sequencial)){
@@ -118,10 +118,10 @@ class cl_diverimportareg {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->dv12_sequencial = $dv12_sequencial; 
+         $this->dv12_sequencial = $dv12_sequencial;
        }
      }
-     if(($this->dv12_sequencial == null) || ($this->dv12_sequencial == "") ){ 
+     if(($this->dv12_sequencial == null) || ($this->dv12_sequencial == "") ){
        $this->erro_sql = " Campo dv12_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_diverimportareg {
        return false;
      }
      $sql = "insert into diverimportareg(
-                                       dv12_sequencial 
-                                      ,dv12_diversos 
-                                      ,dv12_diverimporta 
+                                       dv12_sequencial
+                                      ,dv12_diversos
+                                      ,dv12_diverimporta
                        )
                 values (
-                                $this->dv12_sequencial 
-                               ,$this->dv12_diversos 
-                               ,$this->dv12_diverimporta 
+                                $this->dv12_sequencial
+                               ,$this->dv12_diversos
+                               ,$this->dv12_diverimporta
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "diverimportareg ($this->dv12_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_diverimportareg {
        $resac = db_query("insert into db_acount values($acount,3294,18611,'','".AddSlashes(pg_result($resaco,0,'dv12_diverimporta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($dv12_sequencial=null) { 
+   public function alterar ($dv12_sequencial=null) {
       $this->atualizacampos();
      $sql = " update diverimportareg set ";
      $virgula = "";
-     if(trim($this->dv12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv12_sequencial"])){ 
+     if(trim($this->dv12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv12_sequencial"])){
        $sql  .= $virgula." dv12_sequencial = $this->dv12_sequencial ";
        $virgula = ",";
-       if(trim($this->dv12_sequencial) == null ){ 
+       if(trim($this->dv12_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "dv12_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_diverimportareg {
          return false;
        }
      }
-     if(trim($this->dv12_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv12_diversos"])){ 
+     if(trim($this->dv12_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv12_diversos"])){
        $sql  .= $virgula." dv12_diversos = $this->dv12_diversos ";
        $virgula = ",";
-       if(trim($this->dv12_diversos) == null ){ 
+       if(trim($this->dv12_diversos) == null ){
          $this->erro_sql = " Campo Código do diversos nao Informado.";
          $this->erro_campo = "dv12_diversos";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_diverimportareg {
          return false;
        }
      }
-     if(trim($this->dv12_diverimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv12_diverimporta"])){ 
+     if(trim($this->dv12_diverimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv12_diverimporta"])){
        $sql  .= $virgula." dv12_diverimporta = $this->dv12_diverimporta ";
        $virgula = ",";
-       if(trim($this->dv12_diverimporta) == null ){ 
+       if(trim($this->dv12_diverimporta) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "dv12_diverimporta";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_diverimportareg {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "diverimportareg nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->dv12_sequencial;
@@ -267,14 +267,14 @@ class cl_diverimportareg {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($dv12_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($dv12_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($dv12_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_diverimportareg {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "diverimportareg nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$dv12_sequencial;
@@ -330,11 +330,11 @@ class cl_diverimportareg {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,11 +356,11 @@ class cl_diverimportareg {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $dv12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $dv12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,15 +380,15 @@ class cl_diverimportareg {
      $sql2 = "";
      if($dbwhere==""){
        if($dv12_sequencial!=null ){
-         $sql2 .= " where diverimportareg.dv12_sequencial = $dv12_sequencial "; 
-       } 
+         $sql2 .= " where diverimportareg.dv12_sequencial = $dv12_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,11 +397,11 @@ class cl_diverimportareg {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $dv12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $dv12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,15 +414,15 @@ class cl_diverimportareg {
      $sql2 = "";
      if($dbwhere==""){
        if($dv12_sequencial!=null ){
-         $sql2 .= " where diverimportareg.dv12_sequencial = $dv12_sequencial "; 
-       } 
+         $sql2 .= " where diverimportareg.dv12_sequencial = $dv12_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

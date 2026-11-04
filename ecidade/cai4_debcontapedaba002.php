@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $tipo           = $oGet->sTipo;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
        if (isset($z01_numcgm)&&$z01_numcgm!=""){
        	$codtipo=$z01_numcgm;
        	$tipo="CGM";
@@ -84,7 +84,7 @@ $tipo           = $oGet->sTipo;
       </tr>
     </table>
     </form>
-	<? 
+	<?php 
 	  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	?>
     </body>

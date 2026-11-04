@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("o16_convenio");
        <?=@$Lo74_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o74_sequencial',10,$Io74_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To74_orctiporecconvenio?>">
-       <?
+       <?php
        db_ancora(@$Lo74_orctiporecconvenio,"js_pesquisao74_orctiporecconvenio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o74_orctiporecconvenio',10,$Io74_orctiporecconvenio,true,'text',$db_opcao," onchange='js_pesquisao74_orctiporecconvenio(false);'")
 ?>
-       <?
+       <?php
 db_input('o16_convenio',48,$Io16_convenio,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('o16_convenio',48,$Io16_convenio,true,'text',3,'')
        <?=@$Lo74_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o74_descricao',62,$Io74_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('o74_descricao',62,$Io74_descricao,true,'text',$db_opcao,"")
        <?=@$Lo74_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('o74_obs',5,60,$Io74_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pactoplano.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

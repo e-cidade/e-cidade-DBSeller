@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsau_tipoleito->rotulo->label("sd80_c_nome");
               <?=$Lsd80_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd80_i_codigo",5,$Isd80_i_codigo,true,"text",4,"","chave_sd80_i_codigo");
                  ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_tipoleito->rotulo->label("sd80_c_nome");
               <?=$Lsd80_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd80_c_nome",60,$Isd80_c_nome,true,"text",4,"","chave_sd80_c_nome");
                  ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_tipoleito->rotulo->label("sd80_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_tipoleito.php")==true){
@@ -122,12 +122,12 @@ $clsau_tipoleito->rotulo->label("sd80_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

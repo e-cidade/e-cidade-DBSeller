@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,25 +60,25 @@ $clorcfontes->rotulo->label("o57_descr");
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To70_codrec?>"><?=$Lo70_codrec?></td>
             <td width="96%" align="left" nowrap>
-	       <? db_input("o70_codrec",6,$Io70_codrec,true,"text",4,"","chave_o70_codrec"); ?>
+	       <?php db_input("o70_codrec",6,$Io70_codrec,true,"text",4,"","chave_o70_codrec"); ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To70_codfon?>"><?=$Lo70_codfon?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("o70_codfon",6,$Io70_codfon,true,"text",4,"","chave_o70_codfon"); ?>
+              <?php db_input("o70_codfon",6,$Io70_codfon,true,"text",4,"","chave_o70_codfon"); ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To57_fonte?>"><?=$Lo57_fonte?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("o57_fonte",15,$Io57_fonte,true,"text",4,"","chave_o57_fonte"); ?>  % 
+              <?php db_input("o57_fonte",15,$Io57_fonte,true,"text",4,"","chave_o57_fonte"); ?>  % 
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To57_descr?>"><?=$Lo57_descr?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("o57_descr",40,$Io57_descr,true,"text",4,"","chave_o57_descr"); ?>
+              <?php db_input("o57_descr",40,$Io57_descr,true,"text",4,"","chave_o57_descr"); ?>
             </td>
           </tr>
           <tr> 
@@ -94,7 +94,7 @@ $clorcfontes->rotulo->label("o57_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       //$dbwhere = "o70_anousu = 2010 and o70_instit = ".db_getsession("DB_instit");
       $dbwhere = "o70_anousu = ".db_getsession("DB_anousu")." and o70_instit = ".db_getsession("DB_instit");
       
@@ -147,12 +147,12 @@ $clorcfontes->rotulo->label("o57_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
  }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clorcsuplemtipo->rotulo->label("o48_descr");
               <?=$Lo48_tiposup?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o48_tiposup",4,$Io48_tiposup,true,"text",4,"","chave_o48_tiposup");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcsuplemtipo->rotulo->label("o48_descr");
               <?=$Lo48_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o48_descr",60,$Io48_descr,true,"text",4,"","chave_o48_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcsuplemtipo->rotulo->label("o48_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcsuplemtipo.php")==true){
@@ -118,12 +118,12 @@ $clorcsuplemtipo->rotulo->label("o48_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

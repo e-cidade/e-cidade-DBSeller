@@ -9,6 +9,15 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[app/Jobs/**]
+charset = utf-8
+
+[app/Domain/**/Requests/**]
+charset = utf-8
+
+[app/Domain/**/Request/**]
+charset = utf-8
+
 [extension/**]
 charset = utf-8
 
@@ -16,6 +25,9 @@ charset = utf-8
 charset = latin1
 
 [extension/modification/data/cache/**/src/V3/**]
+charset = utf-8
+
+[resources/**]
 charset = utf-8
 
 [src/V3/**]
@@ -45,3 +57,7 @@ charset = utf-8
 [*.md]
 insert_final_newline = false
 trim_trailing_whitespace = false
+
+[*.yml]
+indent_style = space
+indent_size = 2

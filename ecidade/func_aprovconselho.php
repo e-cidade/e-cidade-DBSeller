@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $claprovconselho->rotulo->label("ed253_i_codigo");
               <?=$Led253_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed253_i_codigo",20,$Ied253_i_codigo,true,"text",4,"","chave_ed253_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claprovconselho->rotulo->label("ed253_i_codigo");
               <?=$Led253_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed253_i_codigo",20,$Ied253_i_codigo,true,"text",4,"","chave_ed253_i_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claprovconselho->rotulo->label("ed253_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aprovconselho.php")==true){
@@ -122,12 +122,12 @@ $claprovconselho->rotulo->label("ed253_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

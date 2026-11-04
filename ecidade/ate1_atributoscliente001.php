@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -150,7 +150,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat94_sequencial?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_input('at94_sequencial',10,$Iat94_sequencial,true,'text',3,'');
 	                db_input('at94_cliente'   ,10,'',true,'hidden',3,'');
 	              ?>
@@ -159,13 +159,13 @@ if (isset($db_opcaoal)){
             <tr>
               <td>
                 <b>
-                <?
+                <?php
                   db_ancora($Lat94_clienteatributo,"js_pesquisaAtributo(true);",$db_opcao);
                 ?>
                 </b>
               </td>        
               <td>
-                <?
+                <?php
                   db_input('at94_clienteatributo',10,$Iat94_clienteatributo,true,'text',$db_opcao,"onChange='js_pesquisaAtributo(false)'");
                   db_input('at93_descricao'      ,40,'',true,'text',3,'');
                 ?>
@@ -176,7 +176,7 @@ if (isset($db_opcaoal)){
                 <?=@$Lat94_valor?>
               </td>        
               <td>
-                <?
+                <?php
                   db_input('at94_valor',54,$Iat94_valor,true,'text',$db_opcao,'');
                 ?>
               </td>  
@@ -196,7 +196,7 @@ if (isset($db_opcaoal)){
 			  <table>
 				  <tr>
 				    <td valign="top"  align="center">  
-					    <?
+					    <?php
 					    
 					      $aChavePri     = array("at94_sequencial"=>@$at94_sequencial);
 					      $sWhereAtributo = "at94_cliente = {$oGet->at94_cliente} "; 
@@ -219,7 +219,7 @@ if (isset($db_opcaoal)){
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
 
  db_msgbox($sMsgErro);

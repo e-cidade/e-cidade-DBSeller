@@ -1,80 +1,80 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: issqn
 //CLASSE DA ENTIDADE issnotaavulsaservico
-class cl_issnotaavulsaservico { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q62_sequencial = 0; 
-   var $q62_issnotaavulsa = 0; 
-   var $q62_qtd = 0; 
-   var $q62_discriminacao = null; 
-   var $q62_vlruni = 0; 
-   var $q62_aliquota = 0; 
-   var $q62_vlrdeducao = 0; 
-   var $q62_vlrtotal = 0; 
-   var $q62_vlrbasecalc = 0; 
-   var $q62_vlrissqn = 0; 
-   var $q62_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_issnotaavulsaservico {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q62_sequencial = 0;
+   var $q62_issnotaavulsa = 0;
+   var $q62_qtd = 0;
+   var $q62_discriminacao = null;
+   var $q62_vlruni = 0;
+   var $q62_aliquota = 0;
+   var $q62_vlrdeducao = 0;
+   var $q62_vlrtotal = 0;
+   var $q62_vlrbasecalc = 0;
+   var $q62_vlrissqn = 0;
+   var $q62_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q62_sequencial = int4 = Código Sequencial 
-                 q62_issnotaavulsa = int4 = Número da Nota 
-                 q62_qtd = float4 = Quantidade 
-                 q62_discriminacao = text = Discriminação do Serviço 
-                 q62_vlruni = float4 = Valor Unitário 
-                 q62_aliquota = float4 = Aliquota 
-                 q62_vlrdeducao = float4 = Deduções 
-                 q62_vlrtotal = float4 = Valor Total 
-                 q62_vlrbasecalc = float4 = Base de Cálculo 
-                 q62_vlrissqn = float4 = Valor ISSQN 
-                 q62_obs = text = Observações 
+                 q62_sequencial = int4 = Código Sequencial
+                 q62_issnotaavulsa = int4 = Número da Nota
+                 q62_qtd = float4 = Quantidade
+                 q62_discriminacao = text = Discriminação do Serviço
+                 q62_vlruni = float4 = Valor Unitário
+                 q62_aliquota = float4 = Aliquota
+                 q62_vlrdeducao = float4 = Deduções
+                 q62_vlrtotal = float4 = Valor Total
+                 q62_vlrbasecalc = float4 = Base de Cálculo
+                 q62_vlrissqn = float4 = Valor ISSQN
+                 q62_obs = text = Observações
                  ";
-   //funcao construtor da classe 
-   function cl_issnotaavulsaservico() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("issnotaavulsaservico"); 
+     $this->rotulo = new rotulo("issnotaavulsaservico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_issnotaavulsaservico {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q62_sequencial = ($this->q62_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q62_sequencial"]:$this->q62_sequencial);
        $this->q62_issnotaavulsa = ($this->q62_issnotaavulsa == ""?@$GLOBALS["HTTP_POST_VARS"]["q62_issnotaavulsa"]:$this->q62_issnotaavulsa);
@@ -101,9 +101,9 @@ class cl_issnotaavulsaservico {
      }
    }
    // funcao para inclusao
-   function incluir ($q62_sequencial){ 
+   public function incluir ($q62_sequencial){
       $this->atualizacampos();
-     if($this->q62_issnotaavulsa == null ){ 
+     if($this->q62_issnotaavulsa == null ){
        $this->erro_sql = " Campo Número da Nota nao Informado.";
        $this->erro_campo = "q62_issnotaavulsa";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_issnotaavulsaservico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q62_qtd == null ){ 
+     if($this->q62_qtd == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "q62_qtd";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_issnotaavulsaservico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q62_discriminacao == null ){ 
+     if($this->q62_discriminacao == null ){
        $this->erro_sql = " Campo Discriminação do Serviço nao Informado.";
        $this->erro_campo = "q62_discriminacao";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_issnotaavulsaservico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q62_vlruni == null ){ 
+     if($this->q62_vlruni == null ){
        $this->erro_sql = " Campo Valor Unitário nao Informado.";
        $this->erro_campo = "q62_vlruni";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_issnotaavulsaservico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q62_aliquota == null ){ 
+     if($this->q62_aliquota == null ){
        $this->erro_sql = " Campo Aliquota nao Informado.";
        $this->erro_campo = "q62_aliquota";
        $this->erro_banco = "";
@@ -148,10 +148,10 @@ class cl_issnotaavulsaservico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q62_vlrdeducao == null ){ 
+     if($this->q62_vlrdeducao == null ){
        $this->q62_vlrdeducao = "0";
      }
-     if($this->q62_vlrtotal == null ){ 
+     if($this->q62_vlrtotal == null ){
        $this->erro_sql = " Campo Valor Total nao Informado.";
        $this->erro_campo = "q62_vlrtotal";
        $this->erro_banco = "";
@@ -160,23 +160,23 @@ class cl_issnotaavulsaservico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q62_vlrbasecalc == null ){ 
+     if($this->q62_vlrbasecalc == null ){
        $this->q62_vlrbasecalc = "0";
      }
-     if($this->q62_vlrissqn == null ){ 
+     if($this->q62_vlrissqn == null ){
        $this->q62_vlrissqn = "0";
      }
      if($q62_sequencial == "" || $q62_sequencial == null ){
-       $result = db_query("select nextval('issnotaavulsaservico_q62_sequencial_seq')"); 
+       $result = db_query("select nextval('issnotaavulsaservico_q62_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: issnotaavulsaservico_q62_sequencial_seq do campo: q62_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: issnotaavulsaservico_q62_sequencial_seq do campo: q62_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q62_sequencial = pg_result($result,0,0); 
+       $this->q62_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from issnotaavulsaservico_q62_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q62_sequencial)){
@@ -187,10 +187,10 @@ class cl_issnotaavulsaservico {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q62_sequencial = $q62_sequencial; 
+         $this->q62_sequencial = $q62_sequencial;
        }
      }
-     if(($this->q62_sequencial == null) || ($this->q62_sequencial == "") ){ 
+     if(($this->q62_sequencial == null) || ($this->q62_sequencial == "") ){
        $this->erro_sql = " Campo q62_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,33 +199,33 @@ class cl_issnotaavulsaservico {
        return false;
      }
      $sql = "insert into issnotaavulsaservico(
-                                       q62_sequencial 
-                                      ,q62_issnotaavulsa 
-                                      ,q62_qtd 
-                                      ,q62_discriminacao 
-                                      ,q62_vlruni 
-                                      ,q62_aliquota 
-                                      ,q62_vlrdeducao 
-                                      ,q62_vlrtotal 
-                                      ,q62_vlrbasecalc 
-                                      ,q62_vlrissqn 
-                                      ,q62_obs 
+                                       q62_sequencial
+                                      ,q62_issnotaavulsa
+                                      ,q62_qtd
+                                      ,q62_discriminacao
+                                      ,q62_vlruni
+                                      ,q62_aliquota
+                                      ,q62_vlrdeducao
+                                      ,q62_vlrtotal
+                                      ,q62_vlrbasecalc
+                                      ,q62_vlrissqn
+                                      ,q62_obs
                        )
                 values (
-                                $this->q62_sequencial 
-                               ,$this->q62_issnotaavulsa 
-                               ,$this->q62_qtd 
-                               ,'$this->q62_discriminacao' 
-                               ,$this->q62_vlruni 
-                               ,$this->q62_aliquota 
-                               ,$this->q62_vlrdeducao 
-                               ,$this->q62_vlrtotal 
-                               ,$this->q62_vlrbasecalc 
-                               ,$this->q62_vlrissqn 
-                               ,'$this->q62_obs' 
+                                $this->q62_sequencial
+                               ,$this->q62_issnotaavulsa
+                               ,$this->q62_qtd
+                               ,'$this->q62_discriminacao'
+                               ,$this->q62_vlruni
+                               ,$this->q62_aliquota
+                               ,$this->q62_vlrdeducao
+                               ,$this->q62_vlrtotal
+                               ,$this->q62_vlrbasecalc
+                               ,$this->q62_vlrissqn
+                               ,'$this->q62_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Servicos Prestados ($this->q62_sequencial) nao Incluído. Inclusao Abortada.";
@@ -267,16 +267,16 @@ class cl_issnotaavulsaservico {
        $resac = db_query("insert into db_acount values($acount,1831,10612,'','".AddSlashes(pg_result($resaco,0,'q62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q62_sequencial=null) { 
+   public function alterar ($q62_sequencial=null) {
       $this->atualizacampos();
      $sql = " update issnotaavulsaservico set ";
      $virgula = "";
-     if(trim($this->q62_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_sequencial"])){ 
+     if(trim($this->q62_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_sequencial"])){
        $sql  .= $virgula." q62_sequencial = $this->q62_sequencial ";
        $virgula = ",";
-       if(trim($this->q62_sequencial) == null ){ 
+       if(trim($this->q62_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "q62_sequencial";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_issnotaavulsaservico {
          return false;
        }
      }
-     if(trim($this->q62_issnotaavulsa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_issnotaavulsa"])){ 
+     if(trim($this->q62_issnotaavulsa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_issnotaavulsa"])){
        $sql  .= $virgula." q62_issnotaavulsa = $this->q62_issnotaavulsa ";
        $virgula = ",";
-       if(trim($this->q62_issnotaavulsa) == null ){ 
+       if(trim($this->q62_issnotaavulsa) == null ){
          $this->erro_sql = " Campo Número da Nota nao Informado.";
          $this->erro_campo = "q62_issnotaavulsa";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_issnotaavulsaservico {
          return false;
        }
      }
-     if(trim($this->q62_qtd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_qtd"])){ 
+     if(trim($this->q62_qtd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_qtd"])){
        $sql  .= $virgula." q62_qtd = $this->q62_qtd ";
        $virgula = ",";
-       if(trim($this->q62_qtd) == null ){ 
+       if(trim($this->q62_qtd) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "q62_qtd";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_issnotaavulsaservico {
          return false;
        }
      }
-     if(trim($this->q62_discriminacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_discriminacao"])){ 
+     if(trim($this->q62_discriminacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_discriminacao"])){
        $sql  .= $virgula." q62_discriminacao = '$this->q62_discriminacao' ";
        $virgula = ",";
-       if(trim($this->q62_discriminacao) == null ){ 
+       if(trim($this->q62_discriminacao) == null ){
          $this->erro_sql = " Campo Discriminação do Serviço nao Informado.";
          $this->erro_campo = "q62_discriminacao";
          $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_issnotaavulsaservico {
          return false;
        }
      }
-     if(trim($this->q62_vlruni)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlruni"])){ 
+     if(trim($this->q62_vlruni)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlruni"])){
        $sql  .= $virgula." q62_vlruni = $this->q62_vlruni ";
        $virgula = ",";
-       if(trim($this->q62_vlruni) == null ){ 
+       if(trim($this->q62_vlruni) == null ){
          $this->erro_sql = " Campo Valor Unitário nao Informado.";
          $this->erro_campo = "q62_vlruni";
          $this->erro_banco = "";
@@ -338,10 +338,10 @@ class cl_issnotaavulsaservico {
          return false;
        }
      }
-     if(trim($this->q62_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_aliquota"])){ 
+     if(trim($this->q62_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_aliquota"])){
        $sql  .= $virgula." q62_aliquota = $this->q62_aliquota ";
        $virgula = ",";
-       if(trim($this->q62_aliquota) == null ){ 
+       if(trim($this->q62_aliquota) == null ){
          $this->erro_sql = " Campo Aliquota nao Informado.";
          $this->erro_campo = "q62_aliquota";
          $this->erro_banco = "";
@@ -351,17 +351,17 @@ class cl_issnotaavulsaservico {
          return false;
        }
      }
-     if(trim($this->q62_vlrdeducao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrdeducao"])){ 
-        if(trim($this->q62_vlrdeducao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrdeducao"])){ 
-           $this->q62_vlrdeducao = "0" ; 
-        } 
+     if(trim($this->q62_vlrdeducao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrdeducao"])){
+        if(trim($this->q62_vlrdeducao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrdeducao"])){
+           $this->q62_vlrdeducao = "0" ;
+        }
        $sql  .= $virgula." q62_vlrdeducao = $this->q62_vlrdeducao ";
        $virgula = ",";
      }
-     if(trim($this->q62_vlrtotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrtotal"])){ 
+     if(trim($this->q62_vlrtotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrtotal"])){
        $sql  .= $virgula." q62_vlrtotal = $this->q62_vlrtotal ";
        $virgula = ",";
-       if(trim($this->q62_vlrtotal) == null ){ 
+       if(trim($this->q62_vlrtotal) == null ){
          $this->erro_sql = " Campo Valor Total nao Informado.";
          $this->erro_campo = "q62_vlrtotal";
          $this->erro_banco = "";
@@ -371,21 +371,21 @@ class cl_issnotaavulsaservico {
          return false;
        }
      }
-     if(trim($this->q62_vlrbasecalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrbasecalc"])){ 
-        if(trim($this->q62_vlrbasecalc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrbasecalc"])){ 
-           $this->q62_vlrbasecalc = "0" ; 
-        } 
+     if(trim($this->q62_vlrbasecalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrbasecalc"])){
+        if(trim($this->q62_vlrbasecalc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrbasecalc"])){
+           $this->q62_vlrbasecalc = "0" ;
+        }
        $sql  .= $virgula." q62_vlrbasecalc = $this->q62_vlrbasecalc ";
        $virgula = ",";
      }
-     if(trim($this->q62_vlrissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrissqn"])){ 
-        if(trim($this->q62_vlrissqn)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrissqn"])){ 
-           $this->q62_vlrissqn = "0" ; 
-        } 
+     if(trim($this->q62_vlrissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrissqn"])){
+        if(trim($this->q62_vlrissqn)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q62_vlrissqn"])){
+           $this->q62_vlrissqn = "0" ;
+        }
        $sql  .= $virgula." q62_vlrissqn = $this->q62_vlrissqn ";
        $virgula = ",";
      }
-     if(trim($this->q62_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_obs"])){ 
+     if(trim($this->q62_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q62_obs"])){
        $sql  .= $virgula." q62_obs = '$this->q62_obs' ";
        $virgula = ",";
      }
@@ -425,7 +425,7 @@ class cl_issnotaavulsaservico {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Servicos Prestados nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q62_sequencial;
@@ -453,14 +453,14 @@ class cl_issnotaavulsaservico {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q62_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q62_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q62_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -496,7 +496,7 @@ class cl_issnotaavulsaservico {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Servicos Prestados nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q62_sequencial;
@@ -524,11 +524,11 @@ class cl_issnotaavulsaservico {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -550,10 +550,10 @@ class cl_issnotaavulsaservico {
       }
      return $result;
    }
-   function sql_query ( $q62_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q62_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,15 +569,15 @@ class cl_issnotaavulsaservico {
      $sql2 = "";
      if($dbwhere==""){
        if($q62_sequencial!=null ){
-         $sql2 .= " where issnotaavulsaservico.q62_sequencial = $q62_sequencial "; 
-       } 
+         $sql2 .= " where issnotaavulsaservico.q62_sequencial = $q62_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,10 +586,10 @@ class cl_issnotaavulsaservico {
      }
      return $sql;
   }
-   function sql_query_file ( $q62_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q62_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -602,15 +602,15 @@ class cl_issnotaavulsaservico {
      $sql2 = "";
      if($dbwhere==""){
        if($q62_sequencial!=null ){
-         $sql2 .= " where issnotaavulsaservico.q62_sequencial = $q62_sequencial "; 
-       } 
+         $sql2 .= " where issnotaavulsaservico.q62_sequencial = $q62_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,8 +619,8 @@ class cl_issnotaavulsaservico {
      }
      return $sql;
   }
-   function sql_query_total ( $q62_sequencial=null,$ordem=null,$dbwhere=""){ 
-     
+   public function sql_query_total ( $q62_sequencial=null,$ordem=null,$dbwhere=""){
+
      $sql  = "select ";
 	   $sql .= "q62_sequencial,";
      $sql .= "q62_issnotaavulsa,q62_qtd,";
@@ -633,8 +633,8 @@ class cl_issnotaavulsaservico {
      $sql2 = "";
      if($dbwhere==""){
        if($q62_sequencial!=null ){
-         $sql2 .= " where issnotaavulsaservico.q62_issnotaavulsa = $q62_issnotaavulsa "; 
-       } 
+         $sql2 .= " where issnotaavulsaservico.q62_issnotaavulsa = $q62_issnotaavulsa ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -654,16 +654,16 @@ class cl_issnotaavulsaservico {
      $sql2 = "";
      if($dbwhere==""){
        if($q62_sequencial!=null ){
-         $sql2 .= " where issnotaavulsaservico.q62_issnotaavulsa = $q62_issnotaavulsa "; 
-       } 
+         $sql2 .= " where issnotaavulsaservico.q62_issnotaavulsa = $q62_issnotaavulsa ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
-    // $sql .= "group by q62_aliquota,q62_sequencial,q62_issnotaavulsa,q62_qtd,q62_discriminacao "; 
+    // $sql .= "group by q62_aliquota,q62_sequencial,q62_issnotaavulsa,q62_qtd,q62_discriminacao ";
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -27,83 +27,84 @@
 
 require_once(modification("fpdf151/impcarne.php"));
 require_once(modification("fpdf151/scpdf.php"));
-
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_libpessoal.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
-
 require_once(modification("classes/db_rhdepend_classe.php"));
 require_once(modification("classes/db_cfpess_classe.php"));
 require_once(modification("classes/db_rhpessoalmov_classe.php"));
+require_once(modification("classes/db_rhfuncao_classe.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING'], $query);
+
 db_postmemory($_POST);
 
 $oDaoCfpess      = new cl_cfpess;
 $cl_depend       = new cl_rhdepend;
 $cl_rhpessoalmov = new cl_rhpessoalmov;
+$cl_rhfuncao     = new cl_rhfuncao;
 $clsql           = new cl_gera_sql_folha;
 
 /**
  * Tipo de relatório comprovante de rescisão
  * Retorna false caso der erro na consulta
- */   
-$iTipoRelatorio = $oDaoCfpess->buscaCodigoRelatorio('termorescisao', db_anofolha(), db_mesfolha());
-if ( !$iTipoRelatorio ) {
+ */
+
+$iTipoRelatorio = $oDaoCfpess->buscaCodigoRelatorio('termorescisao', \DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha());
+if (!$iTipoRelatorio) {
   db_redireciona('db_erros.php?fechar=true&db_erro=' . urlencode('Modelo de impressão invalido, verifique parametros.'));
 }
 
-if ( $iTipoRelatorio == 80 ) {
+if ($iTipoRelatorio == 80) {
 
-	try {
+  try {
 
-		require_once(modification('pes2_termorescisaomodimprime80.php'));
+    require_once(modification('pes2_termorescisaomodimprime80.php'));
+  } catch (Exception $oErro) {
+    db_redireciona('db_erros.php?fechar=true&db_erro=' . urlencode($oErro->getMessage()));
+  }
 
-	} catch (Exception $oErro) {
-		db_redireciona('db_erros.php?fechar=true&db_erro='. urlencode($oErro->getMessage()) );
-	}
-
-	exit;
+  exit;
 }
 
 db_sel_cfpess($anofolha, $mesfolha, "r11_codaec");
 
-$sql_inst = "select * from db_config where codigo = ".db_getsession("DB_instit");
+$sql_inst = "select * from db_config where codigo = " . db_getsession("DB_instit");
 $result_inst = db_query($sql_inst);
 
-db_fieldsmemory($result_inst,0);
+db_fieldsmemory($result_inst, 0);
 
 $dbwhere = "";
-if($tipores == "m"){
-  if($tipofil == "s"){
+if ($tipores == "m") {
+  if ($tipofil == "s") {
     $vir = "";
-    foreach($selregist as $index=>$valor) {
-      $dbwhere.= $vir.$valor;
+    foreach ($selregist as $index => $valor) {
+      $dbwhere .= $vir . $valor;
       $vir = ",";
     }
-    $dbwhere = " and rh01_regist in (".$dbwhere.") ";
-  }else if($tipofil == "i"){
-    if(trim($registro1) != "" && trim($registro2)){
-      $dbwhere = " and rh01_regist between ".$registro1." and ".$registro2;
-    }else if(trim($registro1) != ""){
-      $dbwhere = " and rh01_regist >= ".$registro1;
-    }else if(trim($registro2) != ""){
-      $dbwhere = " and rh01_regist <= ".$registro2;
+    $dbwhere = " and rh01_regist in (" . $dbwhere . ") ";
+  } else if ($tipofil == "i") {
+    if (trim($registro1) != "" && trim($registro2)) {
+      $dbwhere = " and rh01_regist between " . $registro1 . " and " . $registro2;
+    } else if (trim($registro1) != "") {
+      $dbwhere = " and rh01_regist >= " . $registro1;
+    } else if (trim($registro2) != "") {
+      $dbwhere = " and rh01_regist <= " . $registro2;
     }
   }
 }
 
 if (DBPessoal::utilizaFiltroLotacoesPorUsuario()) {
-    $oLotacoesUsuario = DBPessoal::buscaLotacoesPorUsuario();
-    $dbwhere .= " and rhpessoalmov.rh02_lota in (".implode(",",$oLotacoesUsuario->aLotacoes).")";
+  $oLotacoesUsuario = DBPessoal::buscaLotacoesPorUsuario();
+  $dbwhere .= " and rhpessoalmov.rh02_lota in (" . implode(",", $oLotacoesUsuario->aLotacoes) . ")";
 }
-$sql_cad = $cl_rhpessoalmov->sql_query_rescisao_afastamento($anofolha,$mesfolha,$dbwhere);
+$sql_cad = $cl_rhpessoalmov->sql_query_rescisao_afastamento($anofolha, $mesfolha, $dbwhere);
 $result_cad = db_query($sql_cad);
 
-$xxnum = pg_numrows($result_cad);
-if ($xxnum == 0){
-   db_redireciona('db_erros.php?fechar=true&db_erro=Não existe rescisões para os funcionarios escolhidos no período de '.$mesfolha.' / '.$anofolha);
+$xxnum = pg_num_rows($result_cad);
+if ($xxnum == 0) {
+  db_redireciona('db_erros.php?fechar=true&db_erro=Não existe rescisões para os funcionarios escolhidos no período de ' . $mesfolha . ' / ' . $anofolha);
 }
 
 $clsql->usar_doc = false;
@@ -111,16 +112,15 @@ $clsql->usar_cgm  = false;
 $clsql->usar_tpc  = false;
 $clsql->usar_rub  = true;
 
-
 global $pdf;
 $pdf = new scpdf();
 $pdf->Open();
-$pdf->setfont('Arial','',14);
+$pdf->setfont('Arial', '', 14);
 
-$pdf1 = new db_impcarne($pdf, $iTipoRelatorio);
+$pdf1             = new db_impcarne($pdf, $iTipoRelatorio);
 $pdf1->logo       = $logo;
 $pdf1->prefeitura = $nomeinst;
-$pdf1->enderpref  = $ender.', '.$numero;
+$pdf1->enderpref  = $ender . ', ' . $numero;
 $pdf1->cgcpref    = $cgc;
 $pdf1->bairropref = $bairro;
 $pdf1->ceppref    = $cep;
@@ -129,65 +129,90 @@ $pdf1->cgcpref    = $cgc;
 $pdf1->municpref  = $munic;
 $pdf1->telefpref  = $telef;
 $pdf1->emailpref  = $email;
-$pdf1->cnae	  = $r11_codaec;
-for($ixx=0; $ixx<$xxnum; $ixx++){
-  db_fieldsmemory($result_cad,$ixx);
+$pdf1->cnae       = $r11_codaec;
 
-  $res_depend = $cl_depend->sql_record($cl_depend->sql_query_file(null,"rh31_nome",null,"rh31_regist = $rh01_regist and rh31_gparen = 'M'"));
-  if($cl_depend->numrows > 0){
-    db_fieldsmemory($res_depend,0);
-  }else{
+for ($ixx = 0; $ixx < $xxnum; $ixx++) {
+  db_fieldsmemory($result_cad, $ixx);
+
+  $res_depend = $cl_depend->sql_record(
+    $cl_depend->sql_query_file(
+      null, 
+      "rh31_nome", 
+      null, 
+      "rh31_regist = $rh01_regist 
+      and rh31_gparen = 'M'"
+    )
+  );
+
+  if ($cl_depend->numrows > 0) {
+    db_fieldsmemory($res_depend, 0);
+  } else {
     $rh31_nome = "";
   }
-  /// dados pessoais
-  $pdf1->nome           = $z01_nome;
-  $pdf1->pis		= $rh16_pis;
-  $pdf1->endereco	= $z01_ender.', '.$z01_numero.'   '.$z01_compl;
-  $pdf1->bairro		= $z01_bairro;
-  $pdf1->munic		= $z01_munic;
-  $pdf1->uf		= $z01_uf;
-  $pdf1->cep		= $z01_cep;
-  $pdf1->ctps		= $rh16_ctps_n.'/'.$rh16_ctps_s.' '.($rh16_ctps_d==0?'':$rh16_ctps_d).' '.$rh16_ctps_uf;
-  $pdf1->cpf		= $z01_cgccpf;
-  $pdf1->nasc		= $rh01_nasc;
-  $pdf1->admiss         = $rh01_admiss;
-  $pdf1->aviso		= '';
-  $pdf1->recis		= $rh05_recis;
-  $pdf1->causa		= $r59_descr;
-  $pdf1->cod_afas	= $r59_movsef; //$r59_codsaq;
-  $pdf1->pensao		= 0;
-  $pdf1->categoria	= $h13_tpcont;
-  $pdf1->regime		= $rh30_regime;
-  $pdf1->projativ	= $o55_projativ;
-  $pdf1->descr_projativ = $o55_descr;
-  if(strtoupper($munic)=='SAPIRANGA'){
-    $pdf1->descr_recurso 	= $recurso;
-  }else{
-    $pdf1->descr_recurso 	= $o15_descr;
+
+  $res_rhfuncao = $cl_rhfuncao->sql_record(
+    $cl_rhfuncao->sql_query_cgm(
+      null,                      
+      "rh37_funcao, rh37_descr", 
+      null,                      
+      "rh01_regist = $rh01_regist"                   
+    )
+  );
+  if ($cl_rhfuncao->numrows > 0) {
+    db_fieldsmemory($res_rhfuncao, 0);
+  } else {
+    $rh37_descr = "";
   }
-  $pdf1->recurso 	    = $o15_codigo;
-  $pdf1->orgao     	  = db_formatar($o40_orgao,'orgao');
-  $pdf1->descr_orgao 	= $o40_descr;
-  $pdf1->unidade 	    = db_formatar($o40_orgao,'orgao').db_formatar($o41_unidade,'orgao');
-  $pdf1->descr_unidade 	= $o41_descr;
-  if($rh05_mremun == 0 || $rh05_mremun == null){
-    $pdf1->mremun    	= $f010;
-  }else{
-    $pdf1->mremun    	= $rh05_mremun;
+
+  ///dados pessoais
+  $pdf1->nome            = $z01_nome;
+  $pdf1->cargo           = $rh37_funcao . ' - ' . $rh37_descr;
+  $pdf1->pis             = $rh16_pis;
+  $pdf1->endereco        = $z01_ender . ', ' . $z01_numero . '   ' . $z01_compl;
+  $pdf1->bairro          = $z01_bairro;
+  $pdf1->munic           = $z01_munic;
+  $pdf1->uf              = $z01_uf;
+  $pdf1->cep             = $z01_cep;
+  $pdf1->ctps            = $rh16_ctps_n . '/' . $rh16_ctps_s . ' ' . ($rh16_ctps_d == 0 ? '' : $rh16_ctps_d) . ' ' . $rh16_ctps_uf;
+  $pdf1->cpf             = $z01_cgccpf;
+  $pdf1->nasc            = $rh01_nasc;
+  $pdf1->admiss          = $rh01_admiss;
+  $pdf1->aviso           = '';
+  $pdf1->recis           = $rh05_recis;
+  $pdf1->causa           = $r59_descr;
+  $pdf1->cod_afas        = $r59_movsef; //$r59_codsaq;
+  $pdf1->pensao          = 0;
+  $pdf1->categoria       = $h13_tpcont;
+  $pdf1->regime          = $rh30_regime;
+  $pdf1->projativ        = $o55_projativ;
+  $pdf1->descr_projativ  = $o55_descr;
+
+  if (strtoupper($munic) == 'SAPIRANGA') {
+    $pdf1->descr_recurso   = $recurso;
+  } else {
+    $pdf1->descr_recurso   = $o15_descr;
   }
-  $pdf1->mae	   	    = $z01_mae;
+  $pdf1->recurso       = $o15_codigo;
+  $pdf1->orgao         = db_formatar($o40_orgao, 'orgao');
+  $pdf1->descr_orgao   = $o40_descr;
+  $pdf1->unidade       = db_formatar($o40_orgao, 'orgao') . db_formatar($o41_unidade, 'orgao');
+  $pdf1->descr_unidade   = $o41_descr;
+  if ($rh05_mremun == 0 || $rh05_mremun == null) {
+    $pdf1->mremun      = $f010;
+  } else {
+    $pdf1->mremun      = $rh05_mremun;
+  }
+  $pdf1->mae           = $z01_mae;
   $pdf1->ano          = $anofolha;
   $pdf1->mes          = $mesfolha;
-
-
 
   $sql_valPROV = $clsql->gerador_sql("r20", $anofolha, $mesfolha, $rh01_regist, "", " rh27_rubric, rh27_descr, #s#_quant, #s#_valor ", " rh01_regist ", " #s#_pd = 1");
   $sql_valDESC = $clsql->gerador_sql("r20", $anofolha, $mesfolha, $rh01_regist, "", " rh27_rubric, rh27_descr, #s#_quant, #s#_valor ", " rh01_regist ", " #s#_pd = 2");
   $result_valPROV = db_query($sql_valPROV);
   $result_valDESC = db_query($sql_valDESC);
 
-  $pdf1->linhasproventos  = pg_numrows($result_valPROV);
-  $pdf1->linhasdescontos  = pg_numrows($result_valDESC);
+  $pdf1->linhasproventos  = pg_num_rows($result_valPROV);
+  $pdf1->linhasdescontos  = pg_num_rows($result_valDESC);
   $pdf1->resultproventos  = $result_valPROV;
   $pdf1->resultdescontos  = $result_valDESC;
 

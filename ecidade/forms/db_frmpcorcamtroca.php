@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -32,7 +32,7 @@
   <tr align="center">
     <td nowrap>    
       <iframe name="iframe_solicitem" id="solicitem" marginwidth="0" marginheight="0" frameborder="0" src="com1_trocpcorcamtroca.php" width="95%" height="550"></iframe>
-      <?
+      <?php
       db_input('pc20_codorc',8,$Ipc20_codorc,true,'hidden',3);
       db_input('sol',6,0,true,'hidden',3);
       ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -46,7 +46,7 @@ $clestrutura = new cl_estrutura;
 $sWhere = null;
 if (isset($pactoplano) && $pactoplano != "") {
 
-  $oDaoPactoSolicita = db_utils::getDao("pactoplano");
+  $oDaoPactoSolicita = new cl_pactoplano();
   $sSqlPacto         = $oDaoPactoSolicita->sql_query(null,"*",null,"o74_sequencial={$pactoplano}");
   $rsPacto           = $oDaoPactoSolicita->sql_record($sSqlPacto);
   if ($oDaoPactoSolicita->numrows > 0) {
@@ -62,11 +62,12 @@ if (isset($pactoplano) && $pactoplano != "") {
   pois o zero normalmente é considerado TODOS (sem Filtro) agora se selecionar o programa ZERO - Encargos especiais
   sistema vai filtra o58_programa = 0 cuidado que ainda ele filtra o elemento do item
 */
-$programa = trim($programa);
-if ( $programa != null  ) {
-    $sWhere .= " o58_programa = {$programa}";
+if (isset($programa)) {
+    $programa = trim($programa);
+    if ($programa != null) {
+        $sWhere .= " o58_programa = {$programa}";
+    }
 }
-
 if(empty($elemento)){
   $elemento=null;
 }
@@ -190,11 +191,11 @@ db_app::load("prototype.js");
           <form name="form1" method="post" action="" >
             <table border="0" cellspacing="0">
               <tr>
-                <td align="center" nowrap title="<?=$To58_coddot?>">
-                  <?=$Lo58_coddot?>
+                <td align="center" nowrap title="<?php echo $To58_coddot?>">
+                  <?php echo $Lo58_coddot?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php
                   db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot");
                   ?>
                 </td>
@@ -217,7 +218,7 @@ db_app::load("prototype.js");
               <tr>
                 <td><strong>Secretaria:</strong></td>
                 <td>
-                  <?
+                  <?php
                   if($clpermusuario_dotacao->sql!=""){
 //            echo "<br>";
 //            echo $clpermusuario_dotacao->orgaos;
@@ -232,6 +233,9 @@ db_app::load("prototype.js");
                       }
 
                     }
+                  } else {
+                    //  $result[] = "";
+                //  db_selectrecord("secretaria", $result, true, 2, "", "", "", "0", "js_secretaria()");
                   }
 
                   ?>
@@ -240,7 +244,7 @@ db_app::load("prototype.js");
               <tr>
                 <td><strong>Departamentos:</strong></td>
                 <td>
-                  <?
+                  <?php
                   if($clpermusuario_dotacao->sql!=""){
                     //echo "<br>";
                     //echo $clpermusuario_dotacao->depart;
@@ -259,6 +263,9 @@ db_app::load("prototype.js");
                       db_input("sem_departamento",50,1,true,3);
                     }
 
+                  } else {
+                     // $result[] = "";
+                     // db_selectrecord("departamento", $result, true, 2, "", "", "", "0", "js_departamento()");
                   }
 
                   ?>
@@ -269,9 +276,9 @@ db_app::load("prototype.js");
                 <td colspan="2" align="center">
                   <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
                   <input name="limpar" type="button" id="reset" value="Limpar" onclick="js_limparCampos()">
-                  <input name="executar" type="hidden" id="executar" value="<?=$funcao_js?>" >
+                  <input name="executar" type="hidden" id="executar" value="<?php echo $funcao_js?>" >
                   <input name="obriga_depto" type="hidden" id="obriga_depto"
-                    value="<?=(isset($obriga_depto)?"sim":"nao")?>" >
+                    value="<?php echo (isset($obriga_depto)?"sim":"nao")?>" >
                   <input name="Fechar" type="button" id="fechar" value="Fechar"
                     onClick="parent.db_iframe_orcdotacao.hide();">
                   <input name="origempermissao" type="button" id="origempermissao" value="Origem Permissão"
@@ -280,7 +287,7 @@ db_app::load("prototype.js");
               </tr>
             </table>
           </form>
-          <?
+          <?php
 
 
           // echo $elemento;
@@ -297,6 +304,7 @@ db_app::load("prototype.js");
 
           }else{
             echo "<table><tr><td><br><strong>Não existe dotação para este item</strong>.</td></tr></table>";
+            //echo "<script>document.getElementById('pesquisar2').click();</script>";
           }
 
           ?>
@@ -316,7 +324,7 @@ db_app::load("prototype.js");
       }
   </script>
   </html>
-<?
+<?php
 if($erro!=""){
   db_msgbox($erro);
   echo "<script>document.form1.chave_o58_coddot.value = '';</script>";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsituabens->rotulo->label("t70_descr");
               <?=$Lt70_situac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t70_situac",10,$It70_situac,true,"text",4,"","chave_t70_situac");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsituabens->rotulo->label("t70_descr");
               <?=$Lt70_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t70_descr",40,$It70_descr,true,"text",4,"","chave_t70_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsituabens->rotulo->label("t70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_situabens.php")==true){
@@ -118,12 +118,12 @@ $clsituabens->rotulo->label("t70_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

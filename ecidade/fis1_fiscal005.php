@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("fiscal"=>"Notificação","fiscaltipo"=>"Procedência","receitas"=>"Receitas","fiscais"=>"Fiscais","test"=>"Testemunhas","artigos"=>"Artigos","venc"=>"Vencimento"); 
        $clcriaabas->title = array("fiscal"=>"Notificação","fiscaltipo"=>"Procedência","receitas"=>"Receitas","fiscais"=>"Fiscais","test"=>"Testemunhas","artigos"=>"Artigos","venc"=>"Vencimento");    
        $clcriaabas->src = array("fiscal"=>"fis1_fiscal001.php?abas=1&como=".@$como."","fiscaltipo"=>"fis1_fiscaltipo001.php","receitas"=>"fis1_fiscalrec001.php","fiscais"=>"fis1_fiscalusuario001.php","test"=>"fis1_fisctestem001.php","artigos"=>"fis1_fiscarquivos001.php","venc"=>"fis1_vencimento001.php");  
@@ -65,12 +65,12 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($db_opcao) && $db_opcao==2){
   echo "
          <script>

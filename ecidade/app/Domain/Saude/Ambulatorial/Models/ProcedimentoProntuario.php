@@ -29,8 +29,8 @@ class ProcedimentoProntuario extends Model
     protected $primaryKey = 'sd29_i_codigo';
 
     public $casts = [
-        'sd29_d_data' => 'DateTime',
-        'sd29_d_cadastro' => 'DateTime'
+        'sd29_d_data' => 'datetime',
+        'sd29_d_cadastro' => 'datetime'
     ];
 
     public function procedimentoCid()

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE pagordemdescontoempanulado
 class cl_pagordemdescontoempanulado {
@@ -26,13 +26,13 @@ class cl_pagordemdescontoempanulado {
                  e06_pagordemdesconto = int4 = Desconto da Ordem de Pagamento
                  ";
    //funcao construtor da classe
-   function cl_pagordemdescontoempanulado() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pagordemdescontoempanulado");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_pagordemdescontoempanulado {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e06_sequencial = ($this->e06_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e06_sequencial"]:$this->e06_sequencial);
        $this->e06_empanulado = ($this->e06_empanulado == ""?@$GLOBALS["HTTP_POST_VARS"]["e06_empanulado"]:$this->e06_empanulado);
@@ -51,7 +51,7 @@ class cl_pagordemdescontoempanulado {
      }
    }
    // funcao para Inclusão
-   function incluir ($e06_sequencial){
+   public function incluir ($e06_sequencial){
       $this->atualizacampos();
      if($this->e06_pagordemdesconto == null ){
        $this->erro_sql = " Campo Desconto da Ordem de Pagamento não informado.";

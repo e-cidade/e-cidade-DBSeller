@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -145,7 +145,7 @@ switch($oParam->exec) {
     $sJoin .= " left join empageordem      on e43_ordempagamento = e42_sequencial ";
     //$aOrdensAgenda = $oAgenda->getMovimentosAgenda($sWhere,$sJoin,false,true);
     $aOrdensAgenda = $oAgenda->getMovimentosCheque($sWhere, $sWhereSlip, $sJoin);
-    foreach ($aOrdensAgenda as &$ordem) {
+    foreach ($aOrdensAgenda as $ordem) {
         $ordem->o15_codigo = getFonteReduzidaRecurso($ordem->o15_codigo);
     }
     if (count($aOrdensAgenda) > 0) {
@@ -175,7 +175,7 @@ switch($oParam->exec) {
   case "getSaldos":
 
     $oAgenda        = new agendaPagamento();
-    $oDaoEmpAgeTipo = db_utils::getDao("empagetipo");
+    $oDaoEmpAgeTipo = new cl_empagetipo;
     $oAgenda->setUrlEncode(true);
     if ((int)$_SESSION['DB_itemmenu_acessado'] === 7050) {
 
@@ -227,7 +227,7 @@ switch($oParam->exec) {
 
     try {
 
-      $oDaoCfAutent       = db_utils::getDao("cfautent");
+      $oDaoCfAutent       = new cl_cfautent;
       $sSqlTipoImpressora = $oDaoCfAutent->sql_query_file(null,"k11_tipoimpcheque,
                                                                k11_portaimpcheque,
                                                                k11_tipautent,
@@ -240,7 +240,7 @@ switch($oParam->exec) {
         throw new Exception("Não há informações sobre impressoras cadastradas!");
       }
       $oDadosImpressora = db_utils::fieldsMemory($rsTipoImpressora, 0);
-      $oDaoEmpAgeTipo   = db_utils::getDao("empagetipo");
+      $oDaoEmpAgeTipo   = new cl_empagetipo;
 
       if ($oDadosImpressora->k11_tipautent == "2") {
 
@@ -251,7 +251,7 @@ switch($oParam->exec) {
       $rsCodigoBanco    = $oDaoEmpAgeTipo->sql_record($sSqlCodigoBanco);
       $iCodigoBanco     = db_utils::fieldsMemory($rsCodigoBanco, 0)->c63_banco;
 
-      $oDaoConfig       = db_utils::getDao("db_config");
+      $oDaoConfig       = new cl_db_config;
       $rsPref           = $oDaoConfig->sql_record($oDaoConfig->sql_query_file(db_getsession("DB_instit"),
                                                                              "pref as prefeito,munic as municipio"));
       $oPref            = db_utils::fieldsMemory($rsPref, 0);
@@ -280,11 +280,11 @@ switch($oParam->exec) {
     $oAgenda->setUrlEncode(true);
     //echo $oParam->params[0]->sStringVerso;
     $sStringVerso       = str_replace('/n',"\n",urlDecode($oParam->params[0]->sStringVerso));
-    $oDaoConfig         = db_utils::getDao("db_config");
+    $oDaoConfig         = new cl_db_config;
     $rsPref             = $oDaoConfig->sql_record($oDaoConfig->sql_query_file(db_getsession("DB_instit"),
                                                                              "pref as prefeito,munic as municipio"));
     $oPref              = db_utils::fieldsMemory($rsPref, 0);
-    $oDaoCfAutent       = db_utils::getDao("cfautent");
+    $oDaoCfAutent       = new cl_cfautent;
     $sSqlTipoImpressora = $oDaoCfAutent->sql_query_file(null, "k11_tipoimpcheque,
                                                              k11_portaimpcheque,
                                                              k11_tesoureiro as tesoureiro",
@@ -306,7 +306,7 @@ switch($oParam->exec) {
 
       if ($oParam->params[0]->lImprimirComplemento) {
 
-        $oDaoEmpAgeTipo   = db_utils::getDao("empagetipo");
+        $oDaoEmpAgeTipo   = new cl_empagetipo;
         $sSqlCodigoBanco  = $oDaoEmpAgeTipo->sql_query_conplanoconta($oParam->params[0]->aMovimentos[0]->iCodTipo);
         $rsCodigoBanco    = $oDaoEmpAgeTipo->sql_record($sSqlCodigoBanco);
         $oBanco           = db_utils::fieldsMemory($rsCodigoBanco, 0);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tx08_matric?>">
-       <?
+       <?php
 	 db_ancora(@$Lx08_matric,"js_pesquisax08_matric(true);",$db_opcao);
 	 ?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('x08_matric',10,$Ix08_matric,true,'text',$db_opcao," onchange='js_pesquisax08_matric(false);'")
   ?>
-	 <?
+	 <?php
 db_input('x01_numcgm',40,$Ix01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -54,7 +54,7 @@ db_input('x01_numcgm',40,$Ix01_numcgm,true,'text',3,'')
        <?=@$Lx08_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x08_data',@$x08_data_dia,@$x08_data_mes,@$x08_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_inputdata('x08_data',@$x08_data_dia,@$x08_data_mes,@$x08_data_ano,true,'text'
        <?=@$Lx08_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('x08_obs',4,60,$Ix08_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,14 +75,14 @@ db_textarea('x08_obs',4,60,$Ix08_obs,true,'text',$db_opcao,"")
        <?=@$Lx08_usuario?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1) {
   $x08_usuario = db_getsession("DB_id_usuario");
 }
 
 db_input('x08_usuario',10,$Ix08_usuario,true,'text',3," onchange='js_pesquisax08_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -145,7 +145,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguabasebaixa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

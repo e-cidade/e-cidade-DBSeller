@@ -1,0 +1,99 @@
+<?php
+/*
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
+ */
+
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_fis_lancrec_classe.php"));
+require_once(modification("classes/db_fis_fiscalprocrec_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+
+db_postmemory($HTTP_POST_VARS);
+
+$cllancrec       = new cl_fis_lancrec;
+$clfiscalprocrec = new cl_fis_fiscalprocrec;
+$db_opcao = 1;
+$db_botao = true;
+global $nl18_codlanc;
+
+if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+die('código fis1_fis_lancrec001.php ###############'.$nl18_codlanc);
+  db_inicio_transacao();
+  $cllancrec->incluir($nl18_codlanc,$y57_receit);
+  db_fim_transacao();
+}
+if(isset($nl18_codlanc) && $nl18_codlanc != ""){
+  $result = $cllancrec->sql_record($cllancrec->sql_query_file($nl18_codlanc));
+  if($cllancrec->numrows == 0){
+    $result = $clfiscalprocrec->sql_record($clfiscalprocrec->sql_query_autotipo("",""," *",""," nl18_codlanc = $nl18_codlanc"));
+    if($clfiscalprocrec->numrows > 0){
+      db_inicio_transacao();
+      $numrows = $clfiscalprocrec->numrows;
+      for($i=0;$i<$numrows;$i++){
+	db_fieldsmemory($result,$i);
+	$cllancrec->nl22_valor = $y45_valor;
+	$cllancrec->nl22_descr = $y45_descr;
+	$cllancrec->incluir($nl18_codlanc,$y45_receit);
+      }
+      db_fim_transacao();
+    }
+  }
+}
+?>
+<html>
+<head>
+<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Expires" CONTENT="0">
+<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<link href="estilos.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="container">
+	<?php
+	include(modification("forms/db_frm_fis_lancrec.php"));
+	?>
+</div>
+</body>
+</html>
+<?php
+if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+  if($cllancrec->erro_status=="0"){
+    $cllancrec->erro(true,false);
+    $db_botao=true;
+    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+    if($cllancrec->erro_campo!=""){
+      echo "<script> document.form1.".$cllancrec->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+      echo "<script> document.form1.".$cllancrec->erro_campo.".focus();</script>";
+    };
+  }else{
+    $cllancrec->erro(true,false);
+    echo "<script>parent.iframe_receitas.location.href='fis1_fis_lancrec001.php?nl18_codlanc=$nl18_codlanc';</script>";
+  };
+};
+?>

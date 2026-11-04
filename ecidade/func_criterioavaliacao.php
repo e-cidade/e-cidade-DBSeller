@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -27,7 +27,7 @@ $aWhere[] = " ed338_escola = {$iEscola} ";
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td height="63" align="center" valign="top">
       <form name="form2" method="post" action="" >
         <table width="35%" border="0" align="center" cellspacing="0">
@@ -37,7 +37,7 @@ $aWhere[] = " ed338_escola = {$iEscola} ";
               <b>Código:</b>
             </td>
             <td>
-              <?db_input("ed338_sequencial", 10, $Ied338_sequencial, true, "text", 4, "", "chave_ed338_sequencial");?>
+              <?php db_input("ed338_sequencial", 10, $Ied338_sequencial, true, "text", 4, "", "chave_ed338_sequencial");?>
             </td>
           </tr>
           <tr>
@@ -45,7 +45,7 @@ $aWhere[] = " ed338_escola = {$iEscola} ";
               <b>Descrição:</b>
             </td>
             <td>
-              <?db_input("ed338_descricao", 30, $Ied338_descricao, true, "text", 4, "", "chave_ed338_descricao");?>
+              <?php db_input("ed338_descricao", 30, $Ied338_descricao, true, "text", 4, "", "chave_ed338_descricao");?>
             </td>
           </tr>
 
@@ -61,9 +61,9 @@ $aWhere[] = " ed338_escola = {$iEscola} ";
       </form>
     </td>
   </tr>
-  <tr> 
-    <td align="center" valign="top"> 
-      <?
+  <tr>
+    <td align="center" valign="top">
+      <?php
       if (!isset( $pesquisa_chave) ) {
 
         $sCampos = "criterioavaliacao.*";
@@ -108,12 +108,12 @@ $aWhere[] = " ed338_escola = {$iEscola} ";
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 

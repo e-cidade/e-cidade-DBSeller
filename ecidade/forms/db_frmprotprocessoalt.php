@@ -44,17 +44,17 @@ if ($p58_prottipodocumentoprocesso) {
 
 
 $sqlDepartamento = "
-  SELECT 
+  SELECT
     descrdepto,
     o40_descr,
     o40_orgao
-  FROM 
+  FROM
     db_depart
   LEFT JOIN db_departorg
     ON db_departorg.db01_coddepto = db_depart.coddepto
   LEFT JOIN orcorgao
     ON db_departorg.db01_orgao = orcorgao.o40_orgao
-  WHERE 
+  WHERE
     coddepto = " . db_getsession("DB_coddepto") ."
     AND o40_anousu = " . db_getsession("DB_anousu") . "
     AND db01_anousu = " . db_getsession("DB_anousu")
@@ -94,7 +94,7 @@ if ($p58_codigo) {
             <b>Usuário:</b>
           </td>
           <td>
-              <?
+              <?php
               $sql = "select nome from db_usuarios where id_usuario = " . db_getsession("DB_id_usuario");
               echo pg_result(db_query($sql), 0, "nome");
               ?>
@@ -125,7 +125,7 @@ if ($p58_codigo) {
               <?= @$Lp58_codproc; ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('p58_codproc', 30, $Ip58_codproc, true, 'text', 3, "");
               ?>
           </td>
@@ -135,7 +135,7 @@ if ($p58_codigo) {
               <?= @$Lp58_numero; ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('p58_numero', 30, $Ip58_numero, true, 'text', 3, "");
               ?>
           </td>
@@ -145,7 +145,7 @@ if ($p58_codigo) {
               <?= @$Lp58_dtproc; ?>
           </td>
           <td>
-              <?
+              <?php
               if ($db_opcao == 3) {
                   db_inputdata('p58_dtproc', @$p58_dtproc_dia, @$p58_dtproc_mes, @$p58_dtproc_ano, false, 'text', 2, "",
                     "p58_dtproc");
@@ -171,7 +171,7 @@ if ($p58_codigo) {
                 ?>
               </td>
             </tr>
-        <?php 
+        <?php
           } ?>
           <?php
             $op_tip = 1;
@@ -212,17 +212,17 @@ if ($p58_codigo) {
                   if (!$p58_codigo) {
                     $op_tip_tipoprocesso = 3;
                   }
-          
+
                   $styleAncoraTipoProcesso = 'display:none';
                   $styleSpanTipoProcesso = 'display:inline-block';
-          
+
                   if (!empty($p58_codigo)) {
                     $styleAncoraTipoProcesso = 'display:inline-block';
                     $styleSpanTipoProcesso = 'display:none';
-                  } 
-          
+                  }
+
                   echo db_ancora(@$Lp58_codigo, "js_pesquisap58_codigo(true)", $op_tip, $styleAncoraTipoProcesso, 'ancora_tipoprocesso');
-          
+
                   echo '<span id="span_tipoprocesso" style="'. $styleSpanTipoProcesso .'">'. @$Lp58_codigo . '</span>';
                 } else {
                   echo db_ancora(@$Lp58_codigo, "js_pesquisap58_codigo(true)", $op_tip, '', 'ancora_tipoprocesso');
@@ -230,10 +230,10 @@ if ($p58_codigo) {
               ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('p58_codigo', 5, $Ip58_codigo, true, 'text', $op_tip_tipoprocesso, " 'js_pesquisap58_codigo(false)'")
               ?>
-              <?
+              <?php
               db_input('p51_descr', 40, $Ip51_descr, true, 'text', 3, '');
               if ($db_opcao == 1) {
                   $p58_hora = db_hora();
@@ -247,7 +247,7 @@ if ($p58_codigo) {
               <?= @$Lp58_hora; ?>
           </td>
           <td>
-              <?
+              <?php
               if ($db_opcao == 1) {
                   $p58_hora = db_hora();
                   db_input('p58_hora', 7, @$Ip58_hora, true, 'text', '3', '');
@@ -259,12 +259,12 @@ if ($p58_codigo) {
         </tr>
         <tr>
           <td nowrap title="<?= @$Tp58_numcgm ?>">
-              <?
+              <?php
               db_ancora(@$Lp58_numcgm, "js_pesquisap58_numcgm(true);", $db_opcao);
               ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('p58_numcgm', 5, $Ip58_numcgm, true, 'text', 3, " onchange='js_pesquisap58_numcgm(false);'");
 
               db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
@@ -276,7 +276,7 @@ if ($p58_codigo) {
               <?= @$Lp58_requer ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('p58_requer', 50, $Ip58_requer, true, 'text', $db_opcao, "")
               ?>
           </td>
@@ -303,7 +303,7 @@ if ($p58_codigo) {
                 </tr>
                 <tr>
                   <td>
-                      <?
+                      <?php
                       if ($db_opcao != 22) {
                           $funcaojava = null;
                           $clprocvar = new cl_procvar;
@@ -535,7 +535,7 @@ if ($p58_codigo) {
       var parametros = "?funcao_js=parent.js_mostra_tipo_documento_processo";
 
       parametros += !mostra ? `&pesquisa_chave=${$('p91_sequencial').value}` : '|0|1';
-      
+
       js_OpenJanelaIframe("", "iframe_tipodocumento", url + parametros, "Pesquisa Tipo de Documento", mostra);
     }
 
@@ -698,7 +698,7 @@ if ($p58_codigo) {
       parent.iframe_processosapensados.location.href = sUrl;
     }
 
-    <?
+    <?php
     if (isset($p58_ano)) {
         echo "document.form1.p58_numero.value = '" . $p58_numero . "/" . $p58_ano . "'";
     }
@@ -712,11 +712,16 @@ if ($p58_codigo) {
         return false;
       }
 
+      var quebraLinhas = $F('p58_obs').match(/(\r\n|\n|\r)/gm);
+      if (quebraLinhas.length > 4) {
+          alert('Você informou no campo observação mais de 4 quebras de linhas.');
+          return false;
+      }
       return true;
     }
 
   </script>
-<?
+<?php
 
 if ($db_opcao == 22) {
     echo "<script>

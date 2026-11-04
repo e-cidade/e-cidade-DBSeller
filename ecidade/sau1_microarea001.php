@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,7 +63,7 @@ if(isset($incluir)){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <fieldset>
-     <?
+     <?php
      include(modification("forms/db_frmmicroarea.php"));
      ?>
     </fieldset>
@@ -71,7 +71,7 @@ if(isset($incluir)){
      </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -79,7 +79,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","sd34_v_descricao",true,1,"sd34_v_descricao",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clmicroarea->erro_status=="0"){
     $clmicroarea->erro(true,false);

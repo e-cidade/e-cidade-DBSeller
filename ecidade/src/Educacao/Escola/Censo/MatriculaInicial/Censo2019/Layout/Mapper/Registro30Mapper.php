@@ -48,6 +48,7 @@ class Registro30Mapper extends Mapper
         "Pessoa física com deficiência, transtorno do espectro autista ou altas habilidades/ superdotação"
         => "deficienciaOuAltismoOuSuperdotacao",
         "Cegueira" => "cegueira",
+        "Visão monocular" => "visaoMonocular",
         "Baixa visão" => "baixaVisao",
         "Surdez" => "surdez",
         "Deficiência auditiva" => "deficienciaAuditiva",
@@ -121,6 +122,8 @@ class Registro30Mapper extends Mapper
         "Educação do campo" => "educacaoCampo",
         "Educação ambiental" => "educacaoAmbiental",
         "Educação em direitos humanos" => "educacaoDireitosHumanos",
+        "Educação bilíngue de surdos" => "educacaoBilingueSurdos",
+        "Educação e Tecnologia de Informação e Comunicação (TIC)" => "educacaoTIC",
         "Gênero e diversidade sexual" => "generoDiversidadeSexual",
         "Direitos de criança e adolescente" => "direitosCriancaAdolescente",
         "Educação para as relações étnico-raciais e História e cultura Afro-Brasileira e Africana"

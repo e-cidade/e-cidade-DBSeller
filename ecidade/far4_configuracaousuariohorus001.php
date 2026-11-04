@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009 DBSeller Servicos de Informatica
@@ -35,142 +35,121 @@ require_once modification("dbforms/db_funcoes.php");
 
 $oDao = new cl_horususuario();
 $sSql = $oDao->sql_query_file(
-    null, 
-    "*", 
-    null, 
+    null,
+    "*",
+    null,
     "fa66_unidade = " . db_getsession("DB_coddepto")
-  );
+);
 
 $rsSql = db_query($sSql);
 
 $sErro = '';
-$iSequencial  = null;
-$fa66_senha   = null;
+$iSequencial = null;
+$fa66_senha = null;
 $fa66_usuario = null;
 
 if (!$rsSql) {
-  $sErro = "Erro ao buscar os dados do hórus do departamento atual.";
+    $sErro = "Erro ao buscar os dados do hórus do departamento atual.";
 }
 
-if ($objeto = db_utils::fieldsMemory($rsSql, 0) ) {
-  $iSequencial  = $objeto->fa66_sequencial;
-  $fa66_senha   = $objeto->fa66_senha  ;
-  $fa66_usuario = $objeto->fa66_usuario;
+if ($objeto = db_utils::fieldsMemory($rsSql, 0)) {
+    $iSequencial = $objeto->fa66_sequencial;
+    $fa66_senha = $objeto->fa66_senha;
+    $fa66_usuario = $objeto->fa66_usuario;
 }
 
 ?>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
     <title>DBSeller Informática Ltda</title>
     <meta http-equiv="Expires" CONTENT="0">
     <?php
-      /**
-       * Default
-       */
-      $aLibs   = array("scripts.js");
-      $aLibs[] = "prototype.js";
-      $aLibs[] = "AjaxRequest.js";
-      $aLibs[] = "strings.js";
-      $aLibs[] = "estilos.css";
-      db_app::load(implode(",", $aLibs));
+    /**
+     * Default
+     */
+    $aLibs = array("scripts.js");
+    $aLibs[] = "prototype.js";
+    $aLibs[] = "AjaxRequest.js";
+    $aLibs[] = "strings.js";
+    $aLibs[] = "estilos.css";
+    db_app::load(implode(",", $aLibs));
     ?>
-  </head>
-  <body>
-  <?php 
+</head>
+<body>
+<?php validaDepartamentoLogado('unidade'); ?>
+<form class="container" id="formularioPassagens" method="post">
 
-    try {
-      new UnidadeProntoSocorro(db_getsession("DB_coddepto"));
-    } catch(\Exception $e) {
-      die(
-        "<div class='container'><h2>{$e->getMessage()}</h2></div>"
-      );
-    }
-  ?>
-
-  <form class="container" id="formularioPassagens" method="post">
-   
     <fieldset>
 
-      <legend>
-        Dados de Acesso ao Hórus
-      </legend>
+        <legend>
+            Dados de Acesso ao Hórus
+        </legend>
 
-      <table class="form-container">
+        <table class="form-container">
 
-        <tr>
-          <td>
-            <label for="fa66_usuario">
-              Usuário:
-            </label>
-          </td>
-          <td>
-          <input id="fa66_usuario" name="fa66_usuario" maxlength="100" class="field-size5" value="<?= $fa66_usuario; ?>"/>
-          <td>
-        </tr>
+            <tr>
+                <td>
+                    <label for="fa66_usuario">
+                        Usuário:
+                    </label>
+                </td>
+                <td>
+                    <input id="fa66_usuario" name="fa66_usuario" maxlength="100" class="field-size5"
+                           value="<?= $fa66_usuario; ?>"/>
+                <td>
+            </tr>
 
-        <tr>
-          <td>
-            <label for="fa66_senha">
-              Senha:
-            </label>
-          </td>
-          <td>
-            <input id="fa66_senha" name="fa66_senha" maxlength="40" class="field-size5" value="<?= $fa66_senha; ?>"/>
-          <td>
-        </tr>
+            <tr>
+                <td>
+                    <label for="fa66_senha">
+                        Senha:
+                    </label>
+                </td>
+                <td>
+                    <input id="fa66_senha" name="fa66_senha" maxlength="40" class="field-size5"
+                           value="<?= $fa66_senha; ?>"/>
+                <td>
+            </tr>
 
-      </table>  
+        </table>
     </fieldset>
-    <input type="submit" value="Salvar"   id="salvar" />    
-    <input type="button" value="Limpar"   id="limpar" />
-  </form>
-    <?php
-     db_menu();
-    ?>
-  </body>
-  <script>
-    $('limpar').observe('click', function(){
-      $("fa66_usuario").setValue('');
-      $("fa66_senha").setValue('');
+    <input type="submit" value="Salvar" id="salvar"/>
+    <input type="button" value="Limpar" id="limpar"/>
+</form>
+<?php
+db_menu();
+?>
+</body>
+<script>
+    $('limpar').observe('click', function () {
+        $("fa66_usuario").setValue('');
+        $("fa66_senha").setValue('');
     });
-    var validacao = function(event){
+    document.forms[0].observe('submit', validacao);
+    $('fa66_usuario').observe('change', validacao);
 
-      var regex = /^([0-9a-z\.\-_])+@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
-      
-      if (!regex.test($F('fa66_usuario'))) {
-        alert('O campo Usuário deve ser um endereço de email válido.')
-        $('fa66_usuario').focus();
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        return;
-      }
-      return;
-    }; 
-   document.forms[0].observe('submit', validacao);
-   $('fa66_usuario').observe('change', validacao);
-
-  </script>
+</script>
 </html>
-<?php 
+<?php
 
-  if(count($_POST) > 0) {
-      
+if (count($_POST) > 0) {
     $oPost = db_utils::postMemory($_POST);
-    $oDao  = new cl_horususuario();
-    $oDao->fa66_usuario  = $oPost->fa66_usuario;
-    $oDao->fa66_senha    = $oPost->fa66_senha;
-    $oDao->fa66_unidade  = db_getsession('DB_coddepto') ;
-    
+    $oDao = new cl_horususuario();
+    $oDao->fa66_usuario = $oPost->fa66_usuario;
+    $oDao->fa66_senha = $oPost->fa66_senha;
+    $oDao->fa66_unidade = db_getsession('DB_coddepto');
+
     if ($iSequencial) {
-      $oDao->fa66_sequencial = $iSequencial;
-      $oDao->alterar($iSequencial);
+        $oDao->fa66_sequencial = $iSequencial;
+        $oDao->alterar($iSequencial);
     } else {
-      $oDao->incluir(null);
+        $oDao->incluir(null);
     }
-   
+
     if ($oDao->erro_status == "0") {
-      db_msgbox("Erro ao salvar os dados do usuário");
+        db_msgbox("Erro ao salvar os dados do usuário");
     } else {
-      db_redireciona('');
+        db_redireciona('');
     }
-  }
+}

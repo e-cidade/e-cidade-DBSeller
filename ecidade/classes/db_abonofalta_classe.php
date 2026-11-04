@@ -54,13 +54,13 @@ class cl_abonofalta {
                  ed80_i_numfaltas = int4 = Faltas Abonadas
                  ";
    //funcao construtor da classe
-   function cl_abonofalta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abonofalta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_abonofalta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed80_i_codigo = ($this->ed80_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed80_i_codigo"]:$this->ed80_i_codigo);
        $this->ed80_i_diarioavaliacao = ($this->ed80_i_diarioavaliacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed80_i_diarioavaliacao"]:$this->ed80_i_diarioavaliacao);
@@ -80,7 +80,7 @@ class cl_abonofalta {
      }
    }
    // funcao para inclusao
-   function incluir ($ed80_i_codigo){
+   public function incluir ($ed80_i_codigo){
       $this->atualizacampos();
      if($this->ed80_i_diarioavaliacao == null ){
        $this->erro_sql = " Campo Período de Avaliação nao Informado.";
@@ -185,7 +185,7 @@ class cl_abonofalta {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed80_i_codigo=null) {
+   public function alterar ($ed80_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update abonofalta set ";
      $virgula = "";
@@ -289,7 +289,7 @@ class cl_abonofalta {
      }
    }
    // funcao para exclusao
-   function excluir ($ed80_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed80_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed80_i_codigo));
      }else{
@@ -353,7 +353,7 @@ class cl_abonofalta {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -375,7 +375,7 @@ class cl_abonofalta {
       }
      return $result;
    }
-   function sql_query ( $ed80_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed80_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -412,7 +412,7 @@ class cl_abonofalta {
      }
      return $sql;
   }
-   function sql_query_file ( $ed80_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed80_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: biblioteca
@@ -70,7 +70,7 @@ db_fieldsmemory($result_bib,  0);
                   <?=$Lbi10_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
+                  <?php db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
                 </td>
               </tr>
               <tr>
@@ -78,7 +78,7 @@ db_fieldsmemory($result_bib,  0);
                   <b>Código do Cidadão:</b>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ov02_sequencial",6,@$Iov02_sequencial,true,"text",4,"","chave_ov02_sequencial");?>
+                  <?php db_input("ov02_sequencial",6,@$Iov02_sequencial,true,"text",4,"","chave_ov02_sequencial");?>
                 </td>
               </tr>
               <tr style="display:none">
@@ -86,7 +86,7 @@ db_fieldsmemory($result_bib,  0);
                   <b>Código Sequencial:</b>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ov02_seq", 6, @$Iov02_seq, true, "text", 4, "", "chave_ov02_seq");?>
+                  <?php db_input("ov02_seq", 6, @$Iov02_seq, true, "text", 4, "", "chave_ov02_seq");?>
                 </td>
               </tr>
               <tr>
@@ -94,7 +94,7 @@ db_fieldsmemory($result_bib,  0);
                   <?=$Lov02_nome?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ov02_nome",40,$Iov02_nome,true,"text",4,"","chave_ov02_nome");?>
+                  <?php db_input("ov02_nome",40,$Iov02_nome,true,"text",4,"","chave_ov02_nome");?>
                 </td>
               </tr>
               <tr>
@@ -107,7 +107,7 @@ db_fieldsmemory($result_bib,  0);
                     <option value="<?=$codbiblioteca?>" <?=!isset($chave_bi07_biblioteca)||@$chave_bi07_biblioteca!=""?"selected":""?>>
                       <?=$nomebiblioteca?>
                     </option>
-                  </select> 
+                  </select>
                 </td>
               </tr>
              <tr>
@@ -123,9 +123,9 @@ db_fieldsmemory($result_bib,  0);
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?
+          <?php
             if (isset($chave_bi07_biblioteca) && (trim($chave_bi07_biblioteca)!="") ) {
-             
+
                $restricao = " exists(select * from carteira
                                                    inner join leitorcategoria on bi07_codigo = bi16_leitorcategoria
                                              where bi16_leitor = bi10_codigo
@@ -133,7 +133,7 @@ db_fieldsmemory($result_bib,  0);
             } else {
               $restricao = "";
             }
-         
+
             if (isset($chave_bi10_codigo) && (trim($chave_bi10_codigo) != "") ) {
               $condicao = " $restricao bi10_codigo = '$chave_bi10_codigo'";
             } else if (isset($chave_ov02_nome) && (trim($chave_ov02_nome) != "") ) {
@@ -143,13 +143,13 @@ db_fieldsmemory($result_bib,  0);
             } else {
               $condicao = " $restricao bi10_codigo > 0";
             }
-         
+
             if (isset($pesquisa_chave) && $pesquisa_chave != "") {
               $condicao = " $restricao bi10_codigo = '$pesquisa_chave'";
             } else if(isset($pesquisa_chave2) && $pesquisa_chave2 != "") {
               $condicao = " $restricao bi10_codigo = '$pesquisa_chave2'";
             }
-         
+
             $campos = "bi10_codigo,
                        ov02_sequencial,
                        ov02_seq,
@@ -157,42 +157,42 @@ db_fieldsmemory($result_bib,  0);
                        'CIDADAO' as tipo
                     ";
             $sql = $clleitor->sql_query_leitorcidadao("", $campos, "ov02_nome", $condicao);
-         
+
             if (!isset($pesquisa_chave) && !isset($pesquisa_chave2)) {
-            
+
               $repassa = array();
               if (isset($chave_bi10_codigo)) {
-            
-                $repassa = array("chave_bi10_codigo"     => $chave_bi10_codigo, 
+
+                $repassa = array("chave_bi10_codigo"     => $chave_bi10_codigo,
                                  "chave_ov02_nome"       => $chave_ov02_nome,
                                  "chave_ov02_seq"        => $chave_ov02_seq,
                                  "chave_ov02_sequencial" => $chave_ov02_sequencial,
                                  "chave_bi07_biblioteca" => $chave_bi07_biblioteca
                                 );
               }
-             
+
               if (isset($chave_bi10_codigo)) {
                 db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
               }
             } else if (isset($pesquisa_chave) && $pesquisa_chave != "") {
-            
+
               $result = db_query($sql);
               $linhas = pg_num_rows($result);
-              
+
               if ($linhas != 0) {
-            
+
                 db_fieldsmemory($result,0);
                 echo "<script>".$funcao_js."('$ov02_nome',false);</script>";
               } else {
                 echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
               }
             } else if (isset($pesquisa_chave2) && $pesquisa_chave2 != "") {
-            
+
               $result = db_query($sql);
               $linhas = pg_num_rows($result);
-              
+
               if ($linhas != 0) {
-            
+
                 db_fieldsmemory($result,0);
                 echo "<script>".$funcao_js."('$ov02_nome','$bi07_tempo','$bi07_qtdlivros',false);</script>";
               } else {

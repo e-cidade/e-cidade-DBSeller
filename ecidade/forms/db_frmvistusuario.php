@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,22 +58,22 @@ if(isset($opcao) && $opcao == "excluir"){
     <?=$Ly75_codvist?>
     </td>
     <td>
-<?
+<?php
 db_input('y75_codvist',5,$Iy75_codvist,true,'text',3,"");
 db_input('y39_codandam',5,$Iy39_codandam,true,'hidden',3,"");
 ?>
-       <?
+       <?php
 db_input('y70_data',10,$Iy70_data,true,'hidden',3,'')
        ?>
     </td>
   </tr>
 
-  <?
+  <?php
     if($db_opcao == 1 || $db_opcao == 11) {
   ?>
       <tr>
         <td colspan=2 align=center>
-        <?
+        <?php
             $aux->cabecalho = "<strong>Fiscais</strong>";
             $aux->codigo = "id_usuario";
             $aux->descr  = "nome";
@@ -97,30 +97,30 @@ db_input('y70_data',10,$Iy70_data,true,'hidden',3,'')
        </td>
       </tr>
 
-   <?
+   <?php
     } else {
    ?>
    <tr>
     <td nowrap title="<?=$Ty75_id_usuario?>">
-       <?
+       <?php
        db_ancora($Ly75_id_usuario,"js_pesquisay75_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td>
-    <?
+    <?php
 			db_input('y75_id_usuario',5,$Iy75_id_usuario,true,'text',$db_opcao," onchange='js_pesquisay75_id_usuario(false);'");
 			if($db_opcao == 2){
 			  db_input('y75_id_usuario',5,$Iy75_id_usuario,true,'hidden',$db_opcao," onchange='js_pesquisay75_id_usuario(false);'","y75_id_usuario_old");
 			  echo "<script>document.form1.y75_id_usuario_old.value = '$y75_id_usuario'</script>";
 			}
 		?>
-       <?
+       <?php
         db_input('nome',20,$Inome,true,'text',3,'');
        ?>
     </td>
   </tr>
 
-   <? }	?>
+   <?php }	?>
 
 
   <tr>
@@ -128,7 +128,7 @@ db_input('y70_data',10,$Iy70_data,true,'hidden',3,'')
        <?=$Ly75_obs?>
     </td>
     <td>
-<?
+<?php
 db_textarea('y75_obs',3,50,$Iy75_obs,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -148,11 +148,11 @@ db_textarea('y75_obs',3,50,$Iy75_obs,true,'text',$db_opcao,"");
   <tr>
     <td align="center" colspan="2">
       <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+      <?php
       if($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_vistusuario001.php?y75_codvist=<?=$y75_codvist?>&y79_codandam=<?=$y39_codandam?>'" >
-      <?
+      <?php
       }
       ?>
     </td>
@@ -178,7 +178,7 @@ db_textarea('y75_obs',3,50,$Iy75_obs,true,'text',$db_opcao,"");
      }
    ?>
    </td>
-   <?
+   <?php
    if(!empty($y75_codvist)){
 
      $resultvistusuario = db_query($clvistusuario->sql_query("",""," vistusuario.*,db_usuarios.*",""," y75_codvist = $y75_codvist"));
@@ -260,7 +260,7 @@ function js_seleciona_fiscais() {
 
 
 </script>
-<?
+<?php
 if(isset($y75_codvist)){
   echo "<script>js_OpenJanelaIframe('','db_iframe_vistorias','func_vistorias.php?pesquisa_chave=$y75_codvist&funcao_js=parent.js_mostravistorias','Pesquisa',false);</script>";
 }else{

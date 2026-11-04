@@ -167,20 +167,34 @@ class ReceitaPlanilha
 
         if (!empty($iCodigo)) {
 
-            $oDaoReceitaPlanilha = db_utils::getDao('placaixarec');
+            $oDaoReceitaPlanilha = new cl_placaixarec;
             $sSqlReceitaPlanilha = $oDaoReceitaPlanilha->sql_query_matric_inscr($iCodigo);
             $rsReceitaPlanilha = $oDaoReceitaPlanilha->sql_record($sSqlReceitaPlanilha);
 
             if ($rsReceitaPlanilha && $oDaoReceitaPlanilha->numrows > 0) {
 
                 $oReceitaPlanilha = db_utils::fieldsMemory($rsReceitaPlanilha, 0);
+
+
+                /**
+                 * busca o recurso da receita
+                 */
+                $receitaDao = new cl_tabrec();
+                $sql = $receitaDao->sql_query_instComplementoFonteRecurso($oReceitaPlanilha->k81_receita , "*", null, null);
+                $rsRecursoReceita = $receitaDao->sql_record($sql);
+                if ($receitaDao->numrows <= 0) {
+                    throw new BusinessException("Erro ao Buscar o Recurso da Receita.");
+                }
+
+                $recursoReceita = db_utils::fieldsMemory($rsRecursoReceita, 0)->db_id_recurso;
+
                 $this->sDescricaoReceita = $oReceitaPlanilha->k02_drecei;
                 $this->iCodigo = $oReceitaPlanilha->k81_seqpla;
                 $this->oContaTesouraria = new contaTesouraria($oReceitaPlanilha->k81_conta);
                 $this->iTipoReceita = $oReceitaPlanilha->k81_receita;
                 $this->nValor = $oReceitaPlanilha->k81_valor;
                 $this->sObservacao = $oReceitaPlanilha->k81_obs;
-                $this->oRecurso = new Recurso($oReceitaPlanilha->k81_codigo);
+                $this->oRecurso = new Recurso($recursoReceita);
                 $this->oDataRecebimento = new DBDate($oReceitaPlanilha->k81_datareceb);
                 $this->sOperacaoBancaria = $oReceitaPlanilha->k81_operbanco;
                 $this->iOrigem = $oReceitaPlanilha->k81_origem;
@@ -630,7 +644,7 @@ class ReceitaPlanilha
     protected function vinculaComMatricula()
     {
 
-        $oDaoReceitaMatricula = db_utils::getDao('placaixarecmatric');
+        $oDaoReceitaMatricula = new cl_placaixarecmatric;
 
         $oDaoReceitaMatricula->k77_sequencial = null;
         $oDaoReceitaMatricula->k77_placaixarec = $this->iCodigo;
@@ -656,7 +670,7 @@ class ReceitaPlanilha
     protected function vincularComInscricao()
     {
 
-        $oDaoReceitaInscricao = db_utils::getDao('placaixarecinscr');
+        $oDaoReceitaInscricao = new cl_placaixarecinscr;
 
         $oDaoReceitaInscricao->k76_sequencial = null;
         $oDaoReceitaInscricao->k76_placaixarec = $this->iCodigo;

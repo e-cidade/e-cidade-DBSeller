@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $oDaoSauDistritoSanitario->rotulo->label();
       <?=@$Ls153_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('s153_i_codigo', 10, $Is153_i_codigo, true, 'text', 3, "");
       ?>
     </td>
@@ -46,7 +46,7 @@ $oDaoSauDistritoSanitario->rotulo->label();
       <?=@$Ls153_c_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('s153_c_codigo', 2, $Is153_c_codigo, true, 'text', $db_opcao, "");
       ?>
       <sup>*Valores de 01 a 77</sup>
@@ -57,11 +57,24 @@ $oDaoSauDistritoSanitario->rotulo->label();
       <?=@$Ls153_c_descr?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('s153_c_descr', 40, $Is153_c_descr, true, 'text', $db_opcao, "");
       ?>
     </td>
   </tr>
+  <tr>
+    <td>
+      <label><b>Ativo:</b></label>
+    </td>
+    <td nowrap>
+    <input id = "s153_ativo" 
+           <?php echo ($db_opcao == 1 || $s153_ativo == 't') ? "checked" :  "" ?>   
+           <?php echo ($db_opcao == 3) ? "disabled" : "" ?>          
+           name = "s153_ativo" 
+           type = "checkbox"/>
+    </td>
+  </tr>
+
 </table>
 </center>
 <input name="<?=($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir"))?>" 
@@ -84,7 +97,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_sau_distritosanitario.hide();
-  <?
+  <?php
   if($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

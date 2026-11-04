@@ -83,13 +83,13 @@ class cl_receita {
                  o08_instit = int4 = Instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_receita() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("receita"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -98,7 +98,7 @@ class cl_receita {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o08_anousu = ($this->o08_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o08_anousu"]:$this->o08_anousu);
        $this->o08_codigo = ($this->o08_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["o08_codigo"]:$this->o08_codigo);
@@ -126,7 +126,7 @@ class cl_receita {
      }
    }
    // funcao para inclusao
-   function incluir ($o08_anousu,$o08_codigo){ 
+   public function incluir ($o08_anousu,$o08_codigo){ 
       $this->atualizacampos();
      if($this->o08_reduz == null ){ 
        $this->erro_sql = " Campo Codigo Reduzido da Receita nao Informado.";
@@ -402,7 +402,7 @@ class cl_receita {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($o08_anousu=null,$o08_codigo=null) { 
+   public function alterar ($o08_anousu=null,$o08_codigo=null) { 
       $this->atualizacampos();
      $sql = " update receita set ";
      $virgula = "";
@@ -728,7 +728,7 @@ class cl_receita {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($o08_anousu=null,$o08_codigo=null) { 
+   public function excluir ($o08_anousu=null,$o08_codigo=null) { 
      $this->atualizacampos(true);
      $resaco = $this->sql_record($this->sql_query_file($this->o08_anousu,$this->o08_codigo));
      $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
@@ -801,7 +801,7 @@ class cl_receita {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = @pg_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -824,7 +824,7 @@ class cl_receita {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $o08_anousu=null,$o08_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $o08_anousu=null,$o08_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = split("#",$campos);
@@ -869,7 +869,7 @@ class cl_receita {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $o08_anousu=null,$o08_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $o08_anousu=null,$o08_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = split("#",$campos);

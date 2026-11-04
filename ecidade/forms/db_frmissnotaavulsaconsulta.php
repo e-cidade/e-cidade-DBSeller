@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,12 +44,12 @@ $clrotulo->label("q51_numnota");
  <table>
   <tr>
     <td nowrap title="<?=@$Tq51_numnota?>">
-       <?
+       <?php
        db_ancora(@$Lq51_numnota,"js_pesquisaq51_sequencial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
        db_input('q51_sequencial',10,$Iq51_sequencial,true,'hidden',$db_opcao," onchange='js_pesquisaq51_sequencial(false);'");
        db_input('q51_numnota',10,$Iq51_numnota,true,'text',$db_opcao," onchange='js_pesquisaq51_sequencial(false);'");
       ?>
@@ -57,30 +57,30 @@ $clrotulo->label("q51_numnota");
     </tr>
   <tr>
     <td nowrap title="<?=@$Tq51_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq51_inscr,"js_pesquisaq51_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
        db_input('q51_inscr',10,$Iq51_inscr,true,'text',$db_opcao," onchange='js_pesquisaq51_inscr(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome',35,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
     </tr>
   <tr>
     <td nowrap title="<?=@$Tz01_nome?>">
-       <?
+       <?php
        db_ancora(@$Lz01_nome,"js_pesquisaz01_nome(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
        db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_nome(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome2',35,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
@@ -90,11 +90,11 @@ $clrotulo->label("q51_numnota");
        <?=@$Lq51_dtemiss?>
     </td>
     <td> 
-      <?
+      <?php
        db_inputdata('q51_dtemissini',@$q51_dtemiss_dia,@$q51_dtemiss_mes,@$q51_dtemiss_ano,true,'text',$db_opcao,"")
       ?>
       <b>A</b> 
-      <?
+      <?php
        db_inputdata('q51_dtemissfim',@$q51_dtemiss_dia,@$q51_dtemiss_mes,@$q51_dtemiss_ano,true,'text',$db_opcao,"")
       ?>
      
@@ -206,7 +206,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

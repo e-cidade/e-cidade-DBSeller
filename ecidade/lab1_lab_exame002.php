@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -103,27 +103,27 @@ if (isset($alterar)) {
         }
         $db_botao = true;
         ?>
-      <script>
-        parent.document.formaba.a2.disabled = false;
-        parent.document.formaba.a3.disabled = false;
-        parent.document.formaba.a4.disabled = false;
-        parent.document.formaba.a5.disabled = false;
-        parent.document.formaba.a6.disabled = false;
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'lab1_lab_examematerial001.php?la19_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href = 'lab1_lab_exame004.php?la19_i_exame=<?=$la08_i_codigo?>&la08_i_codigo=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href = 'lab1_lab_examerequisito001.php?la20_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href = 'lab1_lab_exameatributo001.php?la42_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'lab1_lab_exameproced001.php?la53_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
-      </script>
-    <?php
+        <script>
+            parent.document.formaba.a2.disabled = false;
+            parent.document.formaba.a3.disabled = false;
+            parent.document.formaba.a4.disabled = false;
+            parent.document.formaba.a5.disabled = false;
+            parent.document.formaba.a6.disabled = false;
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'lab1_lab_examematerial001.php?la19_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href = 'lab1_lab_exame004.php?la19_i_exame=<?=$la08_i_codigo?>&la08_i_codigo=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href = 'lab1_lab_examerequisito001.php?la20_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href = 'lab1_lab_exameatributo001.php?la42_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'lab1_lab_exameproced001.php?la53_i_exame=<?=$la08_i_codigo?>&la08_c_descr=<?=$la08_c_descr?>';
+        </script>
+        <?php
     }
 }
 ?>
 <html>
 <head>
-  <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <meta http-equiv="Expires" CONTENT="0">
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
     <?php
     db_app::load("scripts.js");
     db_app::load("prototype.js");
@@ -133,26 +133,26 @@ if (isset($alterar)) {
     db_app::load("estilos.css");
     db_app::load("/widgets/dbautocomplete.widget.js");
     ?>
-  <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-  <link href="estilos.css" rel="stylesheet" type="text/css">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <center>
-  <br><br>
-  <table width="790" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-        <center>
-          <fieldset style='width: 75%;'>
-            <legend><b>Exames</b></legend>
-              <?php
-              include(modification("forms/db_frmlab_exame.php"));
-              ?>
-          </fieldset>
-        </center>
-      </td>
-    </tr>
-  </table>
+    <br><br>
+    <table width="790" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
+                <center>
+                    <fieldset style='width: 75%;'>
+                        <legend><b>Exames</b></legend>
+                        <?php
+                        include(modification("forms/db_frmlab_exame.php"));
+                        ?>
+                    </fieldset>
+                </center>
+            </td>
+        </tr>
+    </table>
 </body>
 </center>
 </html>
@@ -168,7 +168,7 @@ if (isset($alterar)) {
             echo "<script> document.form1." . $cllab_exame->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
             echo "<script> document.form1." . $cllab_exame->erro_campo . ".focus();</script>";
         }
-    //Operacao 3 - PluginAlteracoesSaude
+        //Operacao 3 - PluginAlteracoesSaude
     } else {
         $cllab_exame->erro(true, false);
         db_redireciona("lab1_lab_exame002.php?chavepesquisa=$la08_i_codigo");
@@ -190,5 +190,5 @@ if ($db_opcao == 2) {
 }
 ?>
 <script>
-  js_tabulacaoforms("form1", "la08_c_sigla", true, 1, "la08_c_sigla", true);
+    js_tabulacaoforms("form1", "la08_c_sigla", true, 1, "la08_c_sigla", true);
 </script>

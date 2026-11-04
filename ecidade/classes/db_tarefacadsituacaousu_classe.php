@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: atendimento
 //CLASSE DA ENTIDADE tarefacadsituacaousu
-class cl_tarefacadsituacaousu { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $at17_sequencial = 0; 
-   var $at17_usuario = 0; 
-   var $at17_tarefacadsituacao = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tarefacadsituacaousu {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $at17_sequencial = 0;
+   var $at17_usuario = 0;
+   var $at17_tarefacadsituacao = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 at17_sequencial = int4 = Código sequencial 
-                 at17_usuario = int4 = Usuário 
-                 at17_tarefacadsituacao = int4 = Situação 
+                 at17_sequencial = int4 = Código sequencial
+                 at17_usuario = int4 = Usuário
+                 at17_tarefacadsituacao = int4 = Situação
                  ";
-   //funcao construtor da classe 
-   function cl_tarefacadsituacaousu() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tarefacadsituacaousu"); 
+     $this->rotulo = new rotulo("tarefacadsituacaousu");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_tarefacadsituacaousu {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->at17_sequencial = ($this->at17_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["at17_sequencial"]:$this->at17_sequencial);
        $this->at17_usuario = ($this->at17_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["at17_usuario"]:$this->at17_usuario);
@@ -77,9 +77,9 @@ class cl_tarefacadsituacaousu {
      }
    }
    // funcao para inclusao
-   function incluir ($at17_sequencial){ 
+   public function incluir ($at17_sequencial){
       $this->atualizacampos();
-     if($this->at17_usuario == null ){ 
+     if($this->at17_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "at17_usuario";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_tarefacadsituacaousu {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at17_tarefacadsituacao == null ){ 
+     if($this->at17_tarefacadsituacao == null ){
        $this->erro_sql = " Campo Situação nao Informado.";
        $this->erro_campo = "at17_tarefacadsituacao";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_tarefacadsituacaousu {
        return false;
      }
      if($at17_sequencial == "" || $at17_sequencial == null ){
-       $result = db_query("select nextval('tarefacadsituacaousu_at17_sequencial_seq')"); 
+       $result = db_query("select nextval('tarefacadsituacaousu_at17_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tarefacadsituacaousu_at17_sequencial_seq do campo: at17_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tarefacadsituacaousu_at17_sequencial_seq do campo: at17_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->at17_sequencial = pg_result($result,0,0); 
+       $this->at17_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tarefacadsituacaousu_at17_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $at17_sequencial)){
@@ -118,10 +118,10 @@ class cl_tarefacadsituacaousu {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->at17_sequencial = $at17_sequencial; 
+         $this->at17_sequencial = $at17_sequencial;
        }
      }
-     if(($this->at17_sequencial == null) || ($this->at17_sequencial == "") ){ 
+     if(($this->at17_sequencial == null) || ($this->at17_sequencial == "") ){
        $this->erro_sql = " Campo at17_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_tarefacadsituacaousu {
        return false;
      }
      $sql = "insert into tarefacadsituacaousu(
-                                       at17_sequencial 
-                                      ,at17_usuario 
-                                      ,at17_tarefacadsituacao 
+                                       at17_sequencial
+                                      ,at17_usuario
+                                      ,at17_tarefacadsituacao
                        )
                 values (
-                                $this->at17_sequencial 
-                               ,$this->at17_usuario 
-                               ,$this->at17_tarefacadsituacao 
+                                $this->at17_sequencial
+                               ,$this->at17_usuario
+                               ,$this->at17_tarefacadsituacao
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Usuário / Situação ($this->at17_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_tarefacadsituacaousu {
        $resac = db_query("insert into db_acount values($acount,1692,9865,'','".AddSlashes(pg_result($resaco,0,'at17_tarefacadsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($at17_sequencial=null) { 
+   public function alterar ($at17_sequencial=null) {
       $this->atualizacampos();
      $sql = " update tarefacadsituacaousu set ";
      $virgula = "";
-     if(trim($this->at17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at17_sequencial"])){ 
+     if(trim($this->at17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at17_sequencial"])){
        $sql  .= $virgula." at17_sequencial = $this->at17_sequencial ";
        $virgula = ",";
-       if(trim($this->at17_sequencial) == null ){ 
+       if(trim($this->at17_sequencial) == null ){
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "at17_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_tarefacadsituacaousu {
          return false;
        }
      }
-     if(trim($this->at17_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at17_usuario"])){ 
+     if(trim($this->at17_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at17_usuario"])){
        $sql  .= $virgula." at17_usuario = $this->at17_usuario ";
        $virgula = ",";
-       if(trim($this->at17_usuario) == null ){ 
+       if(trim($this->at17_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "at17_usuario";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_tarefacadsituacaousu {
          return false;
        }
      }
-     if(trim($this->at17_tarefacadsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at17_tarefacadsituacao"])){ 
+     if(trim($this->at17_tarefacadsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at17_tarefacadsituacao"])){
        $sql  .= $virgula." at17_tarefacadsituacao = $this->at17_tarefacadsituacao ";
        $virgula = ",";
-       if(trim($this->at17_tarefacadsituacao) == null ){ 
+       if(trim($this->at17_tarefacadsituacao) == null ){
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "at17_tarefacadsituacao";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_tarefacadsituacaousu {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Usuário / Situação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->at17_sequencial;
@@ -267,14 +267,14 @@ class cl_tarefacadsituacaousu {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($at17_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($at17_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($at17_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_tarefacadsituacaousu {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Usuário / Situação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$at17_sequencial;
@@ -330,11 +330,11 @@ class cl_tarefacadsituacaousu {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_tarefacadsituacaousu {
       }
      return $result;
    }
-   function sql_query ( $at17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $at17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -374,15 +374,15 @@ class cl_tarefacadsituacaousu {
      $sql2 = "";
      if($dbwhere==""){
        if($at17_sequencial!=null ){
-         $sql2 .= " where tarefacadsituacaousu.at17_sequencial = $at17_sequencial "; 
-       } 
+         $sql2 .= " where tarefacadsituacaousu.at17_sequencial = $at17_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,10 +391,10 @@ class cl_tarefacadsituacaousu {
      }
      return $sql;
   }
-   function sql_query_file ( $at17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $at17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,15 +407,15 @@ class cl_tarefacadsituacaousu {
      $sql2 = "";
      if($dbwhere==""){
        if($at17_sequencial!=null ){
-         $sql2 .= " where tarefacadsituacaousu.at17_sequencial = $at17_sequencial "; 
-       } 
+         $sql2 .= " where tarefacadsituacaousu.at17_sequencial = $at17_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

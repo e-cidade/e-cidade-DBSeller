@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -50,7 +50,7 @@ function js_emite(){
   jan = window.open('com2_pcmater002.php?ordem='+document.form1.ordem.value+'&grupo='+document.form1.grupo.value+'&elemento='+document.form1.o56_elemento.value,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -74,25 +74,25 @@ function js_emite(){
         <strong>Ordem :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <? 
+	  <?php
 	    $tipo_ordem = array("a"=>"Alfabética","b"=>"Numérica");
-	    db_select("ordem",$tipo_ordem,true,2); 
+	    db_select("ordem",$tipo_ordem,true,2);
 	  ?>
         </td>
       </tr>
       <tr>
         <td><strong>Grupo :&nbsp;&nbsp;</strong></td>
         <td>
-	  <?
+	  <?php
 	    $tipo_grupo = array("geral"=>"Geral","sub_grupo"=>"Sub-grupo","elemento"=>"Elemento");
 	    db_select("grupo",$tipo_grupo,true,2,"OnChange='js_grupo();'");
 	  ?>
 	</td>
       </tr>
       <tr>
-        <td id="td1" style="visibility:hidden" nowrap align="right" title="<?=@$o56_descr?>"><?db_ancora(@$Lo56_elemento,"js_elemento(true);",1);?></td>
+        <td id="td1" style="visibility:hidden" nowrap align="right" title="<?=@$o56_descr?>"><?php db_ancora(@$Lo56_elemento,"js_elemento(true);",1);?></td>
         <td id="td2" style="visibility:hidden" nowrap>
-        <?
+        <?php
            db_input('o56_elemento',13,$Io56_elemento,true,'text',1," onchange='js_elemento(false);'");
            db_input('o56_descr',60,$Io56_descr,true,'text',3,'');
         ?>
@@ -103,14 +103,14 @@ function js_emite(){
         <td >&nbsp;</td>
       </tr>
       <tr>
-        <td colspan="2" align = "center"> 
+        <td colspan="2" align = "center">
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
         </td>
       </tr>
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -122,14 +122,14 @@ function js_elemento(mostra){
   }else{
     if (document.form1.o56_elemento.value != "") {
 	   js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_elemento','func_pcmaterele.php?pesquisa_chave=xx&chave_o56_elem='+document.form1.o56_elemento.value+'&funcao_js=parent.js_mostraelemento','Pesquisa',false);
-    }	 
+    }
   }
 }
 function js_mostraelemento(chave,erro){
    document.form1.o56_descr.value = chave;
 
-   if(erro==true){ 
-       document.form1.o56_elemento.focus(); 
+   if(erro==true){
+       document.form1.o56_elemento.focus();
        document.form1.o56_elemento.value = "";
    }
 }
@@ -142,12 +142,12 @@ function js_grupo(){
   var td1 = document.getElementById("td1");
   var td2 = document.getElementById("td2");
   if (document.form1.grupo.value == "elemento"){
-       td1.style.visibility = "visible";       
-       td2.style.visibility = "visible";       
+       td1.style.visibility = "visible";
+       td2.style.visibility = "visible";
        document.form1.o56_elemento.value = "";
        document.form1.o56_descr.value    = "";
   } else {
-       td1.style.visibility = "hidden";       
+       td1.style.visibility = "hidden";
        td2.style.visibility = "hidden";
        document.form1.o56_elemento.value = "";
        document.form1.o56_descr.value    = "";
@@ -178,11 +178,11 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();
-       </script>";  
+       </script>";
 }
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;

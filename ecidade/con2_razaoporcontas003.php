@@ -46,7 +46,6 @@ $oDataFinal   = new DBDate($oGet->data2);
 $oGet->quebrapaginaporconta == "s" ? $oGet->quebrapaginaporconta = true : $oGet->quebrapaginaporconta = false;
 
 if ($oGet->saldopordia == "s") {
-
   $oGet->saldopordia = true;
   $lImprimirData     = true;
 } else {
@@ -96,12 +95,21 @@ $sSqlBuscaLancamentos .= "         and c61_instit = {$iInstituicaoSessao} ";
 if (trim($oGet->sDocumentos) != "") {
   $sSqlBuscaLancamentos .= "       and conhistdoc.c53_coddoc in ({$oGet->sDocumentos})";
 }
+if(trim($oGet->recurso) != ""){
+  $sSqlBuscaLancamentos  .= "AND EXISTS ( 
+                                    SELECT 1 FROM  conlancamrecurso 
+                                    WHERE conplanoreduz.c61_reduz = conlancamrecurso.c130_conta
+                                        AND conlancamrecurso.c130_conlancam = c69_codlan
+                                        AND conlancamrecurso.c130_orctiporec in ({$oGet->recurso}))";
+}
 if (trim($oGet->lista) != "") {
   $sSqlBuscaLancamentos .= "       and conplanoreduz.c61_reduz in ({$oGet->lista})";
 }
 if (trim($oGet->estrut_inicial) != "") {
   $sSqlBuscaLancamentos .= "       and conplano.c60_estrut ilike '{$oGet->estrut_inicial}%'";
 }
+
+
 $sSqlBuscaLancamentos .= "       order by c70_data, c61_reduz) as x";
 $sSqlBuscaLancamentos .= "       group by x.c60_descr,";
 $sSqlBuscaLancamentos .= "                x.c60_estrut,";
@@ -114,12 +122,15 @@ $sSqlBuscaLancamentos .= "                x.c61_reduz";
 $sSqlBuscaLancamentos .= "       order by x.c61_reduz";
 
 
-//echo $sSqlBuscaLancamentos; die();
-
 $rsBuscaLancamentos = db_query($sSqlBuscaLancamentos);
 $iTotalRegistros    = pg_num_rows($rsBuscaLancamentos);
 $iCodigoReduzido    = null;
 $aDadosImprimir     = array();
+
+if($iTotalRegistros == 0){
+  $sMsgErro = "Não foi encontrada nenhuma correspondecia aos dados pesquisados";
+  db_redireciona("db_erros.php?fechar=true&db_erro={$sMsgErro}");
+}
 
 /**
  * Percorremos os dados para imprimir estes dados posteriormente
@@ -200,6 +211,9 @@ if (!$oGet->quebrapaginaporconta) {
 }
 $iAltura = '4';
 
+
+
+$oAgrupa = array();
 /**
  * Imprimimos os dados no PDF
  *
@@ -209,14 +223,13 @@ foreach ($aDadosImprimir as $iIndice => $oStdDadoRelatorio) {
 
 
   if (($oStdDadoRelatorio->nValorTotalDebito == 0 && $oStdDadoRelatorio->nValorTotalCredito == 0)) {
-    continue;
+    continue; 
   }
 
   if ($oGet->quebrapaginaporconta) {
     $oPdf->AddPage();
   }
   imprimirCabecalhoDaConta($oPdf, $iAltura, $oStdDadoRelatorio);
-
   foreach ($oStdDadoRelatorio->aLancamentos as $iIndice => $oStdLancamento) {
 
     if ($oPdf->gety() > $oPdf->h-50) {
@@ -241,10 +254,43 @@ foreach ($aDadosImprimir as $iIndice => $oStdDadoRelatorio) {
     $oPdf->cell(94+$iColunaData, $iAltura, $sDescricaoDocumento                , 0, 0, "L", 0);
     $oPdf->cell(40, $iAltura, db_formatar($oStdLancamento->nValorDebito, "f")  , 0, 0, "R", 0);
     $oPdf->cell(40, $iAltura, db_formatar($oStdLancamento->nValorCredito, "f") , 0, 1, "R", 0);
+
+    if ( !isset($oAgrupa[$oStdLancamento->iCodigoDocumento]) ) {
+      $oAgrupa[$oStdLancamento->iCodigoDocumento] = array($sDescricaoDocumento, $oStdLancamento->nValorDebito, $oStdLancamento->nValorCredito);
+    } else {
+      $oAgrupa[$oStdLancamento->iCodigoDocumento][1] += $oStdLancamento->nValorDebito;
+      $oAgrupa[$oStdLancamento->iCodigoDocumento][2] += $oStdLancamento->nValorCredito;
+    }
   }
+
   imprimeTotalPorConta($oPdf, $iAltura, $oStdDadoRelatorio, $lImprimirData);
 }
 unset($aDadosImprimir);
+
+/* 
+ *Inicia a Impressão do Total geral
+ */
+$oPdf->ln(10);
+
+$oPdf->SetFont('', 'B', 10);
+$oPdf->cell(189, $iAltura, "TOTAL GERAL", 0, 1, "C", 1);
+$oPdf->SetFont('', 'B', 8);
+$oPdf->cell(109, $iAltura, "DOCUMENTO", 0, 0, "C", 1);
+$oPdf->cell(40, $iAltura, "DÉBITO"   , 0, 0, "C", 1);
+$oPdf->cell(40, $iAltura, "CRÉDITO"  , 0, 1, "C", 1);
+$oPdf->SetFont('', '', 8);
+foreach ($oAgrupa as $aRetorno ) {
+  $oPdf->cell(109, $iAltura, $aRetorno[0], 0, 0, "L", 0);
+  $oPdf->cell(40,  $iAltura, db_formatar($aRetorno[1],'f'), 0, 0, "R", 0);
+  $oPdf->cell(40,  $iAltura, db_formatar($aRetorno[2],'f'), 0, 1, "R", 0);
+  $nTotalDebito  += $aRetorno[1];
+  $nTotalCredito += $aRetorno[2]; 
+}
+$oPdf->SetFont('Arial', 'B', 8);
+$oPdf->cell(109, $iAltura, "TOTALIZAÇÃO GERAL", 0, 0, "R", 1);
+$oPdf->cell(40,  $iAltura, db_formatar($nTotalDebito,'f'), 0, 0, "R", 1);
+$oPdf->cell(40,  $iAltura, db_formatar($nTotalCredito,'f'), 0, 1, "R", 1);
+
 
 $oPdf->output();
 

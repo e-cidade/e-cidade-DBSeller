@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -137,15 +137,15 @@ function js_receita(){
       <td><b> EXTRA-ORÇAMENTARIA </b></td>
     </tr>
    <tr>
-	   <td><? db_ancora($Lo48_seq,'','3'); ?></td>
-	   <td><? db_input('o48_seq',10,$Io48_seq,true,'text',3); ?></td>	
+	   <td><?php db_ancora($Lo48_seq,'','3'); ?></td>
+	   <td><?php db_input('o48_seq',10,$Io48_seq,true,'text',3); ?></td>	
     </tr>
 
 
     <tr>
-	   <td><? db_ancora($Lo48_codrec,'js_pesquisarec(true);',$db_opcao); ?></td>
-	   <td><? db_input('o48_codrec',10,$Io48_codrec,true,'text',$db_opcao,"onchange=js_pesquisarec(false);"); ?></td>	
-	   <td><? db_input('o15_descr',40,$Io15_descr,true,'text',3,""); ?></td>
+	   <td><?php db_ancora($Lo48_codrec,'js_pesquisarec(true);',$db_opcao); ?></td>
+	   <td><?php db_input('o48_codrec',10,$Io48_codrec,true,'text',$db_opcao,"onchange=js_pesquisarec(false);"); ?></td>	
+	   <td><?php db_input('o15_descr',40,$Io15_descr,true,'text',3,""); ?></td>
     </tr>
 	 
     <tr>
@@ -161,18 +161,18 @@ function js_receita(){
 	                 value=<?=($db_opcao==1?'Incluir':($db_opcao==2||$db_opcao==22?'Alterar':'Excluir'))?>
                     <?=($db_botao==false?'disabled':'') ?> 
           >
-          <?
+          <?php
            if ($db_opcao!=1){
            	    ?>
            	    <input  name="novo" value="Novo" type="submit">
-           	    <?
+           	    <?php
            }	
           ?>
 	  </td>
      </tr>
     </table> 
     <br>
-    <?
+    <?php
 	$db_opcao = 1;
 	$chavepri = array ("o48_seq" =>@$o48_seq);
 	$cliframe_alterar_excluir->chavepri = $chavepri;

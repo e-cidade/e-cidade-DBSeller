@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -30,7 +30,15 @@ $clisencao->rotulo->label();
 $clisencaoproc->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("v11_descr");
+$clrotulo->label("v10_anoinicio");
+$clrotulo->label("v10_anofim");
+$clrotulo->label("v10_observacao");
+$clrotulo->label("v10_dtlan");
 $clrotulo->label("nome");
+
+$origem = (isset($origem) && !empty($origem)) ? $origem : '';
+$valorigem = (isset($valorigem) && !empty($valorigem)) ? $valorigem : '';
+
 if($db_opcao==1){
   $db_action="tri1_isencao004.php?origem=$origem&valorigem=$valorigem";
 }else if($db_opcao==2||$db_opcao==22){
@@ -40,11 +48,11 @@ if($db_opcao==1){
 }  
 ?>
 <form name="form1" method="post" action="<?=$db_action?>">
-<center>
+<fieldset>
+  <legend>ISSQN Isenção</legend>
 <table border="0">
 <tr>
-	<?
-//	db_msgbox("$origem -- $valorigem");
+	<?php
 		if(!isset($origem) || $origem == ''){
 			$sqlBuscaOrigem  = " select case ";
 			$sqlBuscaOrigem .= "          when v12_isencao is not null then '1' ";
@@ -66,7 +74,7 @@ if($db_opcao==1){
 			$sqlBuscaOrigem .= "    left join isencaocgm    on v12_isencao = v10_sequencial ";
 			$sqlBuscaOrigem .= "    left join isencaoinscr  on v16_isencao = v10_sequencial ";
 			$sqlBuscaOrigem .= " where v10_sequencial = ".($v10_sequencial!=""?$v10_sequencial:$chavepesquisa);
-//			echo $sqlBuscaOrigem; 
+
       if ($v10_sequencial != '' || $chavepesquisa != '') {
 			  $rsBuscaOrigem = db_query($sqlBuscaOrigem);
 			  if(pg_numrows($rsBuscaOrigem) > 0){
@@ -81,7 +89,7 @@ if($db_opcao==1){
 		  }else if($origem == 3){
 		  	$sqlNome = "select z01_nome as mostranome from iptubase inner join cgm on z01_numcgm = j01_numcgm where j01_matric = $valorigem limit 1 ";
 	  	}
-//			echo $sqlNome;
+
       $rsNome = db_query($sqlNome);
 		  $intNumrows = pg_numrows($rsNome);
 		  if($intNumrows > 0){
@@ -92,7 +100,7 @@ if($db_opcao==1){
 				exit;
 			}
 		}
-//		echo $origem;
+
     if($origem == 1){
 			echo "<td>";
 		  db_ancora("<b>Numcgm</b>","",3);
@@ -124,70 +132,107 @@ if($db_opcao==1){
     <td nowrap >
     </td>
     <td> 
-<?
+<?php
 db_input('v10_sequencial',10,$Iv10_sequencial,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv10_isencaotipo?>">
-       <?
+       <?php
        db_ancora(@$Lv10_isencaotipo,"js_pesquisav10_isencaotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'text',$db_opcao," onchange='js_pesquisav10_isencaotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('v11_descr',40,$Iv11_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv17_protprocesso?>">
-       <?
+       <?php
        db_ancora(@$Lv17_protprocesso,"js_pesquisav17_protprocesso(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
-db_input('v17_protprocesso',10,$Iv17_protprocesso,true,'text',$db_opcao," onchange='js_pesquisav17_protprocesso(false);'")
+<?php
+db_input('v17_protprocesso',10,'',true,'text',$db_opcao," onchange='js_pesquisav17_protprocesso(false);'", '', '', '', 20)
 ?>
-       <?
-db_input('p58_codproc',40,$Ip58_codproc,true,'text',3,'')
+       <?php
+db_input('p58_codproc',40,@$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
   <tr>
-    <td nowrap title="<?=@$Tv10_dtisen?>">
-       <?=@$Lv10_dtisen?>
+    <td nowrap title="<?=$Tv10_anoinicial?>">
+       <?=$Lv10_anoinicial?>
     </td>
     <td> 
-<?
-db_inputdata('v10_dtisen',@$v10_dtisen_dia,@$v10_dtisen_mes,@$v10_dtisen_ano,true,'text',$db_opcao,"")
-?>
+      <?php
+      db_input('v10_anoinicial', 10, 4, true, 'text', $db_opcao);
+      ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap title="<?=$Tv10_anofinal?>">
+       <?=$Lv10_anofinal?>
+    </td>
+    <td> 
+      <?php
+      db_input('v10_anofinal', 10, 4, true, 'text', $db_opcao);
+      ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap title="<?=$Tv10_dtlan?>">
+       <?=$Lv10_dtlan?>
+    </td>
+    <td> 
+      <?php
+      $diaSistema = (isset($v10_dtlan_dia) && !empty($v10_dtlan_dia)) ? $v10_dtlan_dia : date("d", db_getsession("DB_datausu"));
+      $mesSistema = (isset($v10_dtlan_mes) && !empty($v10_dtlan_mes)) ? $v10_dtlan_mes : date("m", db_getsession("DB_datausu"));
+      $anoSistema = (isset($v10_dtlan_ano) && !empty($v10_dtlan_ano)) ? $v10_dtlan_ano : date("Y", db_getsession("DB_datausu"));
+
+      db_inputdata('v10_dtlan',$diaSistema,$mesSistema,$anoSistema,true,'text');
+      ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap title="<?=$Tv10_observacao?>">
+       <?=$Lv10_observacao?>
+    </td>
+    <td> 
+      <?php
+      db_textarea('v10_observacao', 5, 53, 'v10_observacao', true, 'text', $db_opcao);
+      ?>
     </td>
   </tr>
   </table>
-  </center>
-<input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
+</fieldset>
+
+<input onclick="return js_validaCampos();" name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 <script>
+
 function js_pesquisav17_protprocesso(mostra){
   if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_isencao','db_iframe_protprocesso','func_protprocesso.php?funcao_js=parent.js_mostraprotprocesso1|p58_codproc|z01_nome','Pesquisa',true,'0');
+    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_isencao','db_iframe_protprocesso','func_protprocesso_isencao.php?funcao_js=parent.js_mostraprotprocesso1|p58_codproc|z01_nome','Pesquisa',true,'0');
   }else{
      if(document.form1.v17_protprocesso.value != ''){ 
-       js_OpenJanelaIframe('CurrentWindow.corpo.iframe_isencao','db_iframe_protprocesso','func_protprocesso.php?pesquisa_chave='+document.form1.v17_protprocesso.value+'&funcao_js=parent.js_mostraprotprocesso','Pesquisa',false,'0');
+       js_OpenJanelaIframe('CurrentWindow.corpo.iframe_isencao','db_iframe_protprocesso','func_protprocesso_isencao.php?pesquisa_chave='+document.form1.v17_protprocesso.value+'&funcao_js=parent.js_mostraprotprocesso','Pesquisa',false,'0');
      }else{
        document.form1.p58_codproc.value = ''; 
      }
   }
 }
 function js_mostraprotprocesso(chave,chave1,erro){
+  document.form1.v17_protprocesso.value = chave;
   document.form1.p58_codproc.value = chave1; 
   if(erro==true){ 
     document.form1.v17_protprocesso.focus(); 
@@ -195,7 +240,6 @@ function js_mostraprotprocesso(chave,chave1,erro){
   }
 }
 function js_mostraprotprocesso1(chave1,chave2){
-//	alert(chave1+' - '+chave2);
   document.form1.v17_protprocesso.value = chave1;
   document.form1.p58_codproc.value = chave2;
   db_iframe_protprocesso.hide();
@@ -251,10 +295,46 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isencao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
+
+function js_validaCampos(){
+  try {
+    if (!document.form1.v10_isencaotipo.value || document.form1.v10_isencaotipo.value.toString().trim() === '') {
+      throw new Error('Tipo de isenção inválido');
+    }
+
+    if (!document.form1.v17_protprocesso.value || document.form1.v17_protprocesso.value.toString().trim() === '') {
+      throw new Error('Código do processo inválido');
+    }
+
+    if (!document.form1.v10_anoinicial.value || document.form1.v10_anoinicial.value.toString().trim() === '') {
+      throw new Error('Ano inicial inválido');
+    }
+
+    if (!document.form1.v10_anofinal.value || document.form1.v10_anofinal.value.toString().trim() === '') {
+      throw new Error('Ano final inválido');
+    }
+
+    if (!document.form1.v10_dtlan.value || document.form1.v10_dtlan.value.toString().trim() === '') {
+      throw new Error('Data de lançamento inválida');
+    }
+
+    if (Number(document.form1.v10_anofinal.value) < Number(document.form1.v10_anoinicial.value)) {
+      throw new Error('Ano final não deve ser menor que o ano inicial');
+    }
+  } catch(error) {
+    alert(error.message)
+
+    return false;
+  }
+  
+  return true;
+}
+
+js_pesquisav17_protprocesso(false);
 </script>

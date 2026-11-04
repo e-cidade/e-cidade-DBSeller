@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcustocriteriorateiobens->rotulo->label("cc06_custoplanoanaliticabens");
               <?=$Lcc06_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cc06_sequencial",10,$Icc06_sequencial,true,"text",4,"","chave_cc06_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcustocriteriorateiobens->rotulo->label("cc06_custoplanoanaliticabens");
               <?=$Lcc06_custoplanoanaliticabens?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cc06_custoplanoanaliticabens",10,$Icc06_custoplanoanaliticabens,true,"text",4,"","chave_cc06_custoplanoanaliticabens");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcustocriteriorateiobens->rotulo->label("cc06_custoplanoanaliticabens");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_custocriteriorateiobens.php")==true){
@@ -122,12 +122,12 @@ $clcustocriteriorateiobens->rotulo->label("cc06_custoplanoanaliticabens");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

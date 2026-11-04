@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -35,7 +35,7 @@ db_postmemory($HTTP_SERVER_VARS);
 $head1 = "BALANCETE DA DESPESA";
 $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 $head5 = "PERÍODO: ".db_formatar($dataini,'d')." A ".db_formatar($datafin,'d');
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -43,10 +43,10 @@ $flag_abrev = false;
 for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   if (strlen(trim($nomeinstabrev)) > 0){
-       $descr_inst .= $xvirg.$nomeinstabrev; 
+       $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   } else {
-       $descr_inst .= $xvirg.$nomeinst; 
+       $descr_inst .= $xvirg.$nomeinst;
   }
 
   $xvirg = ', ';
@@ -89,7 +89,7 @@ $sql = "select o58_funcao,
 	       sum(pago_acumulado) as pago_acumulado,
 	       sum(suplementado_acumulado) as suplementado_acumulado,
 	       sum(reduzido_acumulado) as reduzido_acumulado
-        from ($result) as rr 
+        from ($result) as rr
 	group by o58_funcao,o52_descr,o58_subfuncao,o53_descr
 	order by o58_funcao,o58_subfuncao";
 //db_criatabela($result);exit;
@@ -100,9 +100,9 @@ $res = db_query($sql);
 
 db_query("commit");
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
@@ -111,7 +111,7 @@ $alt = 4;
 
 $funcao = '';
 
-$totfuncadot_ini                = 0; 
+$totfuncadot_ini                = 0;
 $totfuncasuplementado_acumulado = 0;
 $totfuncareduzido_acumulado     = 0;
 $totfuncaatual                  = 0;
@@ -124,9 +124,9 @@ $totfuncaempenhado_acumulado    = 0;
 $totfuncaanulado_acumulado      = 0;
 $totfuncaliquidado_acumulado    = 0;
 $totfuncapago_acumulado         = 0;
-$totfuncaatual_a_pagar_liquidado= 0;      
+$totfuncaatual_a_pagar_liquidado= 0;
 
-$totgeraldot_ini                = 0; 
+$totgeraldot_ini                = 0;
 $totgeralsuplementado_acumulado = 0;
 $totgeralreduzido_acumulado     = 0;
 $totgeralatual                  = 0;
@@ -139,21 +139,21 @@ $totgeralempenhado_acumulado    = 0;
 $totgeralanulado_acumulado      = 0;
 $totgeralliquidado_acumulado    = 0;
 $totgeralpago_acumulado         = 0;
-$totgeralatual_a_pagar_liquidado= 0;      
+$totgeralatual_a_pagar_liquidado= 0;
 
 for($i=0;$i<pg_numrows($res);$i++){
 
   db_fieldsmemory($res,$i);
-  
+
   $codigo = db_formatar($o58_subfuncao,'subfuncao');
   $descr  = $o53_descr;
-  
+
   if($pdf->gety() > $pdf->h-40 || $pagina == 1){
     $pagina = 0;
 
     $pdf->addpage();
     $pdf->setfont('arial','b',7);
-    
+
     $pdf->ln(2);
     $pdf->cell(40,$alt,"",0,0,"C",0);
     $pdf->cell(30,$alt,"SALDO INICIAL",0,0,"R",0);
@@ -174,8 +174,8 @@ for($i=0;$i<pg_numrows($res);$i++){
     $pdf->cell(30,$alt,"PAGO NO ANO",0,0,"R",0);
     $pdf->cell(30,$alt,"A PAGAR LIQUIDO",0,1,"R",0);
     $pdf->cell(0,$alt,'',"T",1,"C",0);
-  
-    
+
+
   }
   if ($funcao != $o58_funcao){
     if($funcao != ''){
@@ -187,14 +187,14 @@ for($i=0;$i<pg_numrows($res);$i++){
     $pdf->cell(30,$alt,db_formatar($totfuncareduzido_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncadot_ini + $totfuncasuplementado_acumulado - $totfuncareduzido_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaatual,'f'),0,1,"R",0);
-    
+
     $pdf->cell(40,$alt,"",0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaempenhado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaanulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaliquidado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncapago,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaatual_a_pagar,'f'),0,1,"R",0);
-    
+
     $pdf->cell(40,$alt,"",0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaempenhado_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaanulado_acumulado,'f'),0,0,"R",0);
@@ -206,7 +206,7 @@ for($i=0;$i<pg_numrows($res);$i++){
     $pdf->ln(3);
     $pdf->setfont('arial','B',8);
     $pdf->cell(10,$alt,'FUNÇÃO :  '.$o58_funcao.'  -  '.$o52_descr,0,1,"L",0);
-    $totfuncadot_ini                = 0; 
+    $totfuncadot_ini                = 0;
     $totfuncasuplementado_acumulado = 0;
     $totfuncareduzido_acumulado     = 0;
     $totfuncaatual                  = 0;
@@ -219,7 +219,7 @@ for($i=0;$i<pg_numrows($res);$i++){
     $totfuncaanulado_acumulado      = 0;
     $totfuncaliquidado_acumulado    = 0;
     $totfuncapago_acumulado         = 0;
-    $totfuncaatual_a_pagar_liquidado= 0;      
+    $totfuncaatual_a_pagar_liquidado= 0;
     $funcao = $o58_funcao;
   }
     $pdf->ln(3);
@@ -261,8 +261,8 @@ for($i=0;$i<pg_numrows($res);$i++){
     $totfuncaempenhado_acumulado    += $empenhado_acumulado;
     $totfuncaanulado_acumulado      += $anulado_acumulado;
     $totfuncaliquidado_acumulado    += $liquidado_acumulado;
-    $totfuncapago_acumulado         += $pago_acumulado;      
-    $totfuncaatual_a_pagar_liquidado+= $atual_a_pagar_liquidado;      
+    $totfuncapago_acumulado         += $pago_acumulado;
+    $totfuncaatual_a_pagar_liquidado+= $atual_a_pagar_liquidado;
 
     $totgeraldot_ini                += $dot_ini;
     $totgeralsuplementado_acumulado += $suplementado_acumulado;
@@ -276,10 +276,10 @@ for($i=0;$i<pg_numrows($res);$i++){
     $totgeralempenhado_acumulado    += $empenhado_acumulado;
     $totgeralanulado_acumulado      += $anulado_acumulado;
     $totgeralliquidado_acumulado    += $liquidado_acumulado;
-    $totgeralpago_acumulado         += $pago_acumulado;      
-    $totgeralatual_a_pagar_liquidado+= $atual_a_pagar_liquidado;      
+    $totgeralpago_acumulado         += $pago_acumulado;
+    $totgeralatual_a_pagar_liquidado+= $atual_a_pagar_liquidado;
 //  }
-  
+
 }
 $pdf->setfont('arial','b',7);
 

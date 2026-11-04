@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -155,7 +155,7 @@ function validaTurno( $oDaoCursoTurno, $iEscola, $iCurso, $iTurno ) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Informe os turnos deste curso na escola <?=$ed18_c_nome?></b></legend>
-    <?
+    <?php
     if($clcursoescola->numrows==0){
      echo "<br><center>Para ter acesso a esta rotina, primeiro vincule este curso nesta escola. (Aba Vincular Curso)</center>";
      exit;
@@ -173,7 +173,7 @@ function validaTurno( $oDaoCursoTurno, $iEscola, $iCurso, $iTurno ) {
 <script>
 js_tabulacaoforms("form1","ed85_i_turno",true,1,"ed85_i_turno",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  if($clcursoturno->erro_status=="0"){
   $clcursoturno->erro(true,false);

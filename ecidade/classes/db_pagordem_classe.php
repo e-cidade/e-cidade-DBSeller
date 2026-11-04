@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,13 +63,13 @@ class cl_pagordem {
                  e50_anousu = int4 = Ano da Ordem
                  ";
    //funcao construtor da classe
-   function cl_pagordem() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pagordem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_pagordem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e50_codord = ($this->e50_codord == ""?@$GLOBALS["HTTP_POST_VARS"]["e50_codord"]:$this->e50_codord);
        $this->e50_numemp = ($this->e50_numemp == ""?@$GLOBALS["HTTP_POST_VARS"]["e50_numemp"]:$this->e50_numemp);
@@ -99,7 +99,7 @@ class cl_pagordem {
      }
    }
    // funcao para inclusao
-   function incluir ($e50_codord){
+   public function incluir ($e50_codord){
       $this->atualizacampos();
      if($this->e50_numemp == null ){
        $this->erro_sql = " Campo Empenho nao Informado.";
@@ -237,7 +237,7 @@ class cl_pagordem {
      return true;
    }
    // funcao para alteracao
-   function alterar ($e50_codord=null) {
+   public function alterar ($e50_codord=null) {
       $this->atualizacampos();
      $sql = " update pagordem set ";
      $virgula = "";
@@ -397,7 +397,7 @@ class cl_pagordem {
      }
    }
    // funcao para exclusao
-   function excluir ($e50_codord=null,$dbwhere=null) {
+   public function excluir ($e50_codord=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e50_codord));
      }else{
@@ -464,7 +464,7 @@ class cl_pagordem {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -487,7 +487,7 @@ class cl_pagordem {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -529,7 +529,7 @@ class cl_pagordem {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -562,7 +562,7 @@ class cl_pagordem {
      }
      return $sql;
   }
-   function sql_query_cheques( $e50_codord=null,$campos="*",$ordem=null,$dbwhere="", $sJoin = ""){
+   public function sql_query_cheques( $e50_codord=null,$campos="*",$ordem=null,$dbwhere="", $sJoin = ""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -615,7 +615,7 @@ class cl_pagordem {
      }
      return $sql;
   }
-   function sql_query_emp ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_emp ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -651,7 +651,7 @@ class cl_pagordem {
     }
     return $sql;
   }
-   function sql_query_empagemovforma( $e50_codord=null,$campos="*",$ordem=null,$dbwhere="", $sJoin = ""){
+   public function sql_query_empagemovforma( $e50_codord=null,$campos="*",$ordem=null,$dbwhere="", $sJoin = ""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -675,6 +675,8 @@ class cl_pagordem {
      $sql .= "      inner join orcdotacao      on orcdotacao.o58_anousu     = empempenho.e60_anousu  ";
      $sql .= "                                and orcdotacao.o58_coddot     = empempenho.e60_coddot  ";
      $sql .= "      inner join orctiporec      on orctiporec.o15_codigo     = orcdotacao.o58_codigo  ";
+     $sql .= "      join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                         and fonterecurso.exercicio = orcdotacao.o58_anousu  ";
      $sql .= "      inner join emptipo         on emptipo.e41_codtipo       = empempenho.e60_codtipo ";
      $sql .= "      left  join empresto        on empresto.e91_numemp       = empempenho.e60_numemp ";
      $sql .= "                                and empresto.e91_anousu       = ".db_getsession("DB_anousu");
@@ -718,7 +720,7 @@ class cl_pagordem {
      }
      return $sql;
   }
-   function sql_query_impconsulta ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_impconsulta ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -757,7 +759,7 @@ class cl_pagordem {
     }
     return $sql;
   }
-   function sql_query_notaliquidacao ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_notaliquidacao ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -800,7 +802,7 @@ class cl_pagordem {
     }
     return $sql;
   }
-   function sql_query_pag ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pag ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -848,7 +850,7 @@ class cl_pagordem {
     }
     return $sql;
   }
-   function sql_query_pagordemagenda ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pagordemagenda ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -892,7 +894,7 @@ class cl_pagordem {
     }
     return $sql;
   }
-   function sql_query_pagordemele ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pagordemele ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -946,7 +948,7 @@ class cl_pagordem {
     //     echo $sql."<br><br>";
     return $sql;
   }
-   function sql_query_pagordemele2 ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pagordemele2 ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1002,7 +1004,7 @@ class cl_pagordem {
     }
     return $sql;
   }
-   function sql_query_pagordemeleempage ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pagordemeleempage ( $e50_codord=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1051,7 +1053,7 @@ class cl_pagordem {
     return $sql;
   }
 
-  function sql_query_pagDiversos( $e50_codord=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_pagDiversos( $e50_codord=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if($campos != "*" ) {
 
@@ -1109,7 +1111,7 @@ class cl_pagordem {
   }
 
 
-  function sql_query_movimento($e50_codord = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_movimento($e50_codord = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if($campos != "*" ) {
@@ -1151,7 +1153,7 @@ class cl_pagordem {
     return $sql;
   }
 
-  function sql_query_empenho_rp($e50_codord = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_empenho_rp($e50_codord = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if($campos != "*" ) {

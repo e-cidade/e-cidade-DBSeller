@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -131,14 +131,14 @@ if(isset($opcao)){
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
         <br><br>
-        <?
+        <?php
         include(modification("forms/db_frmausencia.php"));
         ?>
     </center>
         </td>
   </tr>
 </table>
-<?
+<?php
 db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 ?>
 </body>
@@ -146,7 +146,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
 <script>
 js_tabulacaoforms("form1","sd04_i_medico",true,1,"sd04_i_medico",true);
 </script>
-<?
+<?php
 if(isset($incluir)||isset($alterar)){
 	if($clausencias->erro_status=="0"){
 		$clausencias->erro(true,false);

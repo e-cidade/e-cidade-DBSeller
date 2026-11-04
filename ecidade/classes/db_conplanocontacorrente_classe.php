@@ -56,7 +56,7 @@ class cl_conplanocontacorrente
                  ";
 
     //funcao construtor da classe
-    function cl_conplanocontacorrente()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conplanocontacorrente");
@@ -64,7 +64,7 @@ class cl_conplanocontacorrente
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -75,7 +75,7 @@ class cl_conplanocontacorrente
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->c18_sequencial = ($this->c18_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["c18_sequencial"] : $this->c18_sequencial);
@@ -88,7 +88,7 @@ class cl_conplanocontacorrente
     }
 
     // funcao para inclusao
-    function incluir($c18_sequencial)
+    public function incluir($c18_sequencial)
     {
         $this->atualizacampos();
         if ($this->c18_codcon == null) {
@@ -208,7 +208,7 @@ class cl_conplanocontacorrente
     }
 
     // funcao para alteracao
-    function alterar($c18_sequencial = null)
+    public function alterar($c18_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update conplanocontacorrente set ";
@@ -318,7 +318,7 @@ class cl_conplanocontacorrente
     }
 
     // funcao para exclusao
-    function excluir($c18_sequencial = null, $dbwhere = null)
+    public function excluir($c18_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($c18_sequencial));
@@ -378,7 +378,7 @@ class cl_conplanocontacorrente
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -408,7 +408,7 @@ class cl_conplanocontacorrente
     }
 
     // funcao do sql
-    function sql_query($c18_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($c18_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -451,7 +451,7 @@ class cl_conplanocontacorrente
         return $sql;
     }
 
-    function sql_query_conplano_contacorrente($c18_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_conplano_contacorrente($c18_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -495,7 +495,7 @@ class cl_conplanocontacorrente
     }
 
     // funcao do sql
-    function sql_query_file($c18_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($c18_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

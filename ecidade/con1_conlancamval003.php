@@ -39,8 +39,8 @@ require_once(modification("classes/db_conlancamdig_classe.php"));
 require_once(modification("classes/db_conlancamdoc_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 
 $clconplano       = new cl_conplano;
 $clconlancamval   = new cl_conlancamval;
@@ -55,13 +55,13 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 
     $sql1="select c71_codlan from conlancamdoc where c71_codlan=$c70_codlan";
     $result1=db_query($sql1);
-    $linhas1=pg_numrows($result1);
+    $linhas1=pg_num_rows($result1);
 
     if ($linhas1 > 0){
 
         $sql2="select * from conlancamdoc inner join conhistdoc on c71_coddoc=c53_coddoc where c71_codlan=$c70_codlan";
         $result2=db_query($sql2);
-        $linhas2=pg_numrows($result2);
+        $linhas2=pg_num_rows($result2);
         if ($linhas2>0){
 
             $oResultado  = db_utils::fieldsMemory($result2, 0);
@@ -81,11 +81,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
     else{
         $alt=true;
     }
-
-
-
     if ($alt==true){
-
         db_inicio_transacao();
         $db_opcao = 3;
         $erro = false;
@@ -219,10 +215,11 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
         <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <meta http-equiv="Expires" CONTENT="0">
-        <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-        <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-        <script language="JavaScript" type="text/javascript" src="scripts/classes/AtributosLancamento.js"></script>
-        <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
+        <script type="text/javascript" src="scripts/scripts.js"></script>
+        <script type="text/javascript" src="scripts/prototype.js"></script>
+        <script type="text/javascript" src="scripts/AjaxRequest.js"></script>
+        <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+        <script type="text/javascript" src="scripts/classes/AtributosLancamento.js"></script>
         <link href="estilos.css" rel="stylesheet" type="text/css">
     </head>
     <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >

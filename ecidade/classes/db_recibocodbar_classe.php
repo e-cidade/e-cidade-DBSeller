@@ -54,13 +54,13 @@ class cl_recibocodbar {
                  k00_nossonumero = varchar(20) = Nosso Número
                  ";
    //funcao construtor da classe
-   function cl_recibocodbar() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibocodbar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_recibocodbar {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
        $this->k00_codbar = ($this->k00_codbar == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_codbar"]:$this->k00_codbar);
@@ -80,7 +80,7 @@ class cl_recibocodbar {
      }
    }
    // funcao para Inclusão
-   function incluir ($k00_numpre){
+   public function incluir ($k00_numpre){
       $this->atualizacampos();
      if($this->k00_codbar == null ){
        $this->erro_sql = " Campo Código de Barras não informado.";

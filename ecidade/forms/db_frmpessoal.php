@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("r37_descr");
        <?=@$Lr01_anousu?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_anousu',4,$Ir01_anousu,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -49,7 +49,7 @@ db_input('r01_anousu',4,$Ir01_anousu,true,'text',$db_opcao,"")
        <?=@$Lr01_mesusu?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_mesusu',2,$Ir01_mesusu,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -59,7 +59,7 @@ db_input('r01_mesusu',2,$Ir01_mesusu,true,'text',$db_opcao,"")
        <?=@$Lr01_numcgm?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -69,7 +69,7 @@ db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',$db_opcao,"")
        <?=@$Lr01_regist?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_regist',6,$Ir01_regist,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -79,7 +79,7 @@ db_input('r01_regist',6,$Ir01_regist,true,'text',$db_opcao,"")
        <?=@$Lr01_admiss?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_admiss',@$r01_admiss_dia,@$r01_admiss_mes,@$r01_admiss_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -89,22 +89,22 @@ db_inputdata('r01_admiss',@$r01_admiss_dia,@$r01_admiss_mes,@$r01_admiss_ano,tru
        <?=@$Lr01_regime?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_regime',1,$Ir01_regime,true,'text',$db_opcao,"")
 ?>
     <td>
   <tr>
   <tr>
     <td nowrap title="<?=@$Tr01_lotac?>">
-       <?
+       <?php
        db_ancora(@$Lr01_lotac,"js_pesquisar01_lotac(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_lotac',4,$Ir01_lotac,true,'text',$db_opcao," onchange='js_pesquisar01_lotac(false);'")
 ?>
-       <?
+       <?php
 db_input('r13_descr',40,$Ir13_descr,true,'text',3,'')
        ?>
     <td>
@@ -114,7 +114,7 @@ db_input('r13_descr',40,$Ir13_descr,true,'text',3,'')
        <?=@$Lr01_vincul?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_vincul',2,$Ir01_vincul,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -124,7 +124,7 @@ db_input('r01_vincul',2,$Ir01_vincul,true,'text',$db_opcao,"")
        <?=@$Lr01_cbo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_cbo',5,$Ir01_cbo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -134,7 +134,7 @@ db_input('r01_cbo',5,$Ir01_cbo,true,'text',$db_opcao,"")
        <?=@$Lr01_padrao?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_padrao',10,$Ir01_padrao,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -144,7 +144,7 @@ db_input('r01_padrao',10,$Ir01_padrao,true,'text',$db_opcao,"")
        <?=@$Lr01_salari?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_salari',12,$Ir01_salari,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -154,7 +154,7 @@ db_input('r01_salari',12,$Ir01_salari,true,'text',$db_opcao,"")
        <?=@$Lr01_tipsal?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_tipsal',1,$Ir01_tipsal,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -164,7 +164,7 @@ db_input('r01_tipsal',1,$Ir01_tipsal,true,'text',$db_opcao,"")
        <?=@$Lr01_folha?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_folha',1,$Ir01_folha,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -174,7 +174,7 @@ db_input('r01_folha',1,$Ir01_folha,true,'text',$db_opcao,"")
        <?=@$Lr01_fpagto?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_fpagto',1,$Ir01_fpagto,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -184,7 +184,7 @@ db_input('r01_fpagto',1,$Ir01_fpagto,true,'text',$db_opcao,"")
        <?=@$Lr01_banco?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_banco',3,$Ir01_banco,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -194,7 +194,7 @@ db_input('r01_banco',3,$Ir01_banco,true,'text',$db_opcao,"")
        <?=@$Lr01_agenc?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_agenc',5,$Ir01_agenc,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -204,7 +204,7 @@ db_input('r01_agenc',5,$Ir01_agenc,true,'text',$db_opcao,"")
        <?=@$Lr01_contac?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_contac',15,$Ir01_contac,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -214,7 +214,7 @@ db_input('r01_contac',15,$Ir01_contac,true,'text',$db_opcao,"")
        <?=@$Lr01_ctps?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_ctps',12,$Ir01_ctps,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -224,7 +224,7 @@ db_input('r01_ctps',12,$Ir01_ctps,true,'text',$db_opcao,"")
        <?=@$Lr01_pis?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_pis',11,$Ir01_pis,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -234,7 +234,7 @@ db_input('r01_pis',11,$Ir01_pis,true,'text',$db_opcao,"")
        <?=@$Lr01_fgts?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_fgts',@$r01_fgts_dia,@$r01_fgts_mes,@$r01_fgts_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -244,7 +244,7 @@ db_inputdata('r01_fgts',@$r01_fgts_dia,@$r01_fgts_mes,@$r01_fgts_ano,true,'text'
        <?=@$Lr01_bcofgt?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_bcofgt',3,$Ir01_bcofgt,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -254,7 +254,7 @@ db_input('r01_bcofgt',3,$Ir01_bcofgt,true,'text',$db_opcao,"")
        <?=@$Lr01_agfgts?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_agfgts',5,$Ir01_agfgts,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -264,7 +264,7 @@ db_input('r01_agfgts',5,$Ir01_agfgts,true,'text',$db_opcao,"")
        <?=@$Lr01_ccfgts?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_ccfgts',11,$Ir01_ccfgts,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -274,7 +274,7 @@ db_input('r01_ccfgts',11,$Ir01_ccfgts,true,'text',$db_opcao,"")
        <?=@$Lr01_hrssem?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_hrssem',2,$Ir01_hrssem,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -284,7 +284,7 @@ db_input('r01_hrssem',2,$Ir01_hrssem,true,'text',$db_opcao,"")
        <?=@$Lr01_situac?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_situac',1,$Ir01_situac,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -294,7 +294,7 @@ db_input('r01_situac',1,$Ir01_situac,true,'text',$db_opcao,"")
        <?=@$Lr01_nasc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_nasc',@$r01_nasc_dia,@$r01_nasc_mes,@$r01_nasc_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -304,7 +304,7 @@ db_inputdata('r01_nasc',@$r01_nasc_dia,@$r01_nasc_mes,@$r01_nasc_ano,true,'text'
        <?=@$Lr01_nacion?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_nacion',2,$Ir01_nacion,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -314,7 +314,7 @@ db_input('r01_nacion',2,$Ir01_nacion,true,'text',$db_opcao,"")
        <?=@$Lr01_anoche?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_anoche',2,$Ir01_anoche,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -324,7 +324,7 @@ db_input('r01_anoche',2,$Ir01_anoche,true,'text',$db_opcao,"")
        <?=@$Lr01_instru?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_instru',1,$Ir01_instru,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -334,7 +334,7 @@ db_input('r01_instru',1,$Ir01_instru,true,'text',$db_opcao,"")
        <?=@$Lr01_sexo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_sexo',1,$Ir01_sexo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -344,7 +344,7 @@ db_input('r01_sexo',1,$Ir01_sexo,true,'text',$db_opcao,"")
        <?=@$Lr01_recis?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_recis',@$r01_recis_dia,@$r01_recis_mes,@$r01_recis_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -354,7 +354,7 @@ db_inputdata('r01_recis',@$r01_recis_dia,@$r01_recis_mes,@$r01_recis_ano,true,'t
        <?=@$Lr01_causa?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_causa',2,$Ir01_causa,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -364,7 +364,7 @@ db_input('r01_causa',2,$Ir01_causa,true,'text',$db_opcao,"")
        <?=@$Lr01_ponto?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_ponto',6,$Ir01_ponto,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -374,7 +374,7 @@ db_input('r01_ponto',6,$Ir01_ponto,true,'text',$db_opcao,"")
        <?=@$Lr01_alim?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_alim',5,$Ir01_alim,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -384,7 +384,7 @@ db_input('r01_alim',5,$Ir01_alim,true,'text',$db_opcao,"")
        <?=@$Lr01_digito?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_digito',1,$Ir01_digito,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -394,7 +394,7 @@ db_input('r01_digito',1,$Ir01_digito,true,'text',$db_opcao,"")
        <?=@$Lr01_tpvinc?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_tpvinc',1,$Ir01_tpvinc,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -404,7 +404,7 @@ db_input('r01_tpvinc',1,$Ir01_tpvinc,true,'text',$db_opcao,"")
        <?=@$Lr01_arredn?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_arredn',12,$Ir01_arredn,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -414,7 +414,7 @@ db_input('r01_arredn',12,$Ir01_arredn,true,'text',$db_opcao,"")
        <?=@$Lr01_progr?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_progr',1,$Ir01_progr,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -424,7 +424,7 @@ db_input('r01_progr',1,$Ir01_progr,true,'text',$db_opcao,"")
        <?=@$Lr01_carth?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_carth',11,$Ir01_carth,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -434,7 +434,7 @@ db_input('r01_carth',11,$Ir01_carth,true,'text',$db_opcao,"")
        <?=@$Lr01_rubric?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_rubric',4,$Ir01_rubric,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -444,7 +444,7 @@ db_input('r01_rubric',4,$Ir01_rubric,true,'text',$db_opcao,"")
        <?=@$Lr01_tbprev?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_tbprev',1,$Ir01_tbprev,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -454,7 +454,7 @@ db_input('r01_tbprev',1,$Ir01_tbprev,true,'text',$db_opcao,"")
        <?=@$Lr01_adia13?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_adia13',12,$Ir01_adia13,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -464,7 +464,7 @@ db_input('r01_adia13',12,$Ir01_adia13,true,'text',$db_opcao,"")
        <?=@$Lr01_anter?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_anter',@$r01_anter_dia,@$r01_anter_mes,@$r01_anter_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -474,7 +474,7 @@ db_inputdata('r01_anter',@$r01_anter_dia,@$r01_anter_mes,@$r01_anter_ano,true,'t
        <?=@$Lr01_dtafas?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_dtafas',@$r01_dtafas_dia,@$r01_dtafas_mes,@$r01_dtafas_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -484,7 +484,7 @@ db_inputdata('r01_dtafas',@$r01_dtafas_dia,@$r01_dtafas_mes,@$r01_dtafas_ano,tru
        <?=@$Lr01_ctpsuf?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_ctpsuf',2,$Ir01_ctpsuf,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -494,7 +494,7 @@ db_input('r01_ctpsuf',2,$Ir01_ctpsuf,true,'text',$db_opcao,"")
        <?=@$Lr01_dadi13?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_dadi13',@$r01_dadi13_dia,@$r01_dadi13_mes,@$r01_dadi13_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -504,22 +504,22 @@ db_inputdata('r01_dadi13',@$r01_dadi13_dia,@$r01_dadi13_mes,@$r01_dadi13_ano,tru
        <?=@$Lr01_estciv?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_estciv',1,$Ir01_estciv,true,'text',$db_opcao,"")
 ?>
     <td>
   <tr>
   <tr>
     <td nowrap title="<?=@$Tr01_funcao?>">
-       <?
+       <?php
        db_ancora(@$Lr01_funcao,"js_pesquisar01_funcao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_funcao',5,$Ir01_funcao,true,'text',$db_opcao," onchange='js_pesquisar01_funcao(false);'")
 ?>
-       <?
+       <?php
 db_input('r37_descr',30,$Ir37_descr,true,'text',3,'')
        ?>
     <td>
@@ -529,7 +529,7 @@ db_input('r37_descr',30,$Ir37_descr,true,'text',3,'')
        <?=@$Lr01_trien?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_trien',@$r01_trien_dia,@$r01_trien_mes,@$r01_trien_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -539,7 +539,7 @@ db_inputdata('r01_trien',@$r01_trien_dia,@$r01_trien_mes,@$r01_trien_ano,true,'t
        <?=@$Lr01_tipadm?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_tipadm',1,$Ir01_tipadm,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -549,7 +549,7 @@ db_input('r01_tipadm',1,$Ir01_tipadm,true,'text',$db_opcao,"")
        <?=@$Lr01_caub?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_caub',2,$Ir01_caub,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -559,7 +559,7 @@ db_input('r01_caub',2,$Ir01_caub,true,'text',$db_opcao,"")
        <?=@$Lr01_aviso?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_aviso',@$r01_aviso_dia,@$r01_aviso_mes,@$r01_aviso_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -569,7 +569,7 @@ db_inputdata('r01_aviso',@$r01_aviso_dia,@$r01_aviso_mes,@$r01_aviso_ano,true,'t
        <?=@$Lr01_hrsmen?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_hrsmen',6,$Ir01_hrsmen,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -579,7 +579,7 @@ db_input('r01_hrsmen',6,$Ir01_hrsmen,true,'text',$db_opcao,"")
        <?=@$Lr01_rfi1?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_rfi1',@$r01_rfi1_dia,@$r01_rfi1_mes,@$r01_rfi1_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -589,7 +589,7 @@ db_inputdata('r01_rfi1',@$r01_rfi1_dia,@$r01_rfi1_mes,@$r01_rfi1_ano,true,'text'
        <?=@$Lr01_rfi2?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_rfi2',@$r01_rfi2_dia,@$r01_rfi2_mes,@$r01_rfi2_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -599,7 +599,7 @@ db_inputdata('r01_rfi2',@$r01_rfi2_dia,@$r01_rfi2_mes,@$r01_rfi2_ano,true,'text'
        <?=@$Lr01_rff1?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_rff1',@$r01_rff1_dia,@$r01_rff1_mes,@$r01_rff1_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -609,7 +609,7 @@ db_inputdata('r01_rff1',@$r01_rff1_dia,@$r01_rff1_mes,@$r01_rff1_ano,true,'text'
        <?=@$Lr01_rff2?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_rff2',@$r01_rff2_dia,@$r01_rff2_mes,@$r01_rff2_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -619,7 +619,7 @@ db_inputdata('r01_rff2',@$r01_rff2_dia,@$r01_rff2_mes,@$r01_rff2_ano,true,'text'
        <?=@$Lr01_rnd1?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_rnd1',6,$Ir01_rnd1,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -629,7 +629,7 @@ db_input('r01_rnd1',6,$Ir01_rnd1,true,'text',$db_opcao,"")
        <?=@$Lr01_rnd2?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_rnd2',6,$Ir01_rnd2,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -639,7 +639,7 @@ db_input('r01_rnd2',6,$Ir01_rnd2,true,'text',$db_opcao,"")
        <?=@$Lr01_r13i?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_r13i',@$r01_r13i_dia,@$r01_r13i_mes,@$r01_r13i_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -649,7 +649,7 @@ db_inputdata('r01_r13i',@$r01_r13i_dia,@$r01_r13i_mes,@$r01_r13i_ano,true,'text'
        <?=@$Lr01_r13f?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_r13f',@$r01_r13f_dia,@$r01_r13f_mes,@$r01_r13f_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -659,7 +659,7 @@ db_inputdata('r01_r13f',@$r01_r13f_dia,@$r01_r13f_mes,@$r01_r13f_ano,true,'text'
        <?=@$Lr01_rnd3?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_rnd3',6,$Ir01_rnd3,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -669,7 +669,7 @@ db_input('r01_rnd3',6,$Ir01_rnd3,true,'text',$db_opcao,"")
        <?=@$Lr01_ndres?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_ndres',6,$Ir01_ndres,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -679,7 +679,7 @@ db_input('r01_ndres',6,$Ir01_ndres,true,'text',$db_opcao,"")
        <?=@$Lr01_ndsal?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_ndsal',6,$Ir01_ndsal,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -689,7 +689,7 @@ db_input('r01_ndsal',6,$Ir01_ndsal,true,'text',$db_opcao,"")
        <?=@$Lr01_prores?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_prores',7,$Ir01_prores,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -699,7 +699,7 @@ db_input('r01_prores',7,$Ir01_prores,true,'text',$db_opcao,"")
        <?=@$Lr01_matipe?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_matipe',13,$Ir01_matipe,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -709,7 +709,7 @@ db_input('r01_matipe',13,$Ir01_matipe,true,'text',$db_opcao,"")
        <?=@$Lr01_dtvinc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_dtvinc',@$r01_dtvinc_dia,@$r01_dtvinc_mes,@$r01_dtvinc_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -719,7 +719,7 @@ db_inputdata('r01_dtvinc',@$r01_dtvinc_dia,@$r01_dtvinc_mes,@$r01_dtvinc_ano,tru
        <?=@$Lr01_estado?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_estado',2,$Ir01_estado,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -729,7 +729,7 @@ db_input('r01_estado',2,$Ir01_estado,true,'text',$db_opcao,"")
        <?=@$Lr01_dtalt?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_dtalt',@$r01_dtalt_dia,@$r01_dtalt_mes,@$r01_dtalt_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -739,7 +739,7 @@ db_inputdata('r01_dtalt',@$r01_dtalt_dia,@$r01_dtalt_mes,@$r01_dtalt_ano,true,'t
        <?=@$Lr01_natura?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_natura',25,$Ir01_natura,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -749,7 +749,7 @@ db_input('r01_natura',25,$Ir01_natura,true,'text',$db_opcao,"")
        <?=@$Lr01_tpcont?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_tpcont',2,$Ir01_tpcont,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -759,7 +759,7 @@ db_input('r01_tpcont',2,$Ir01_tpcont,true,'text',$db_opcao,"")
        <?=@$Lr01_titele?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_titele',11,$Ir01_titele,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -769,7 +769,7 @@ db_input('r01_titele',11,$Ir01_titele,true,'text',$db_opcao,"")
        <?=@$Lr01_zonael?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_zonael',3,$Ir01_zonael,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -779,7 +779,7 @@ db_input('r01_zonael',3,$Ir01_zonael,true,'text',$db_opcao,"")
        <?=@$Lr01_secaoe?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_secaoe',4,$Ir01_secaoe,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -789,7 +789,7 @@ db_input('r01_secaoe',4,$Ir01_secaoe,true,'text',$db_opcao,"")
        <?=@$Lr01_taviso?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_taviso',1,$Ir01_taviso,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -799,7 +799,7 @@ db_input('r01_taviso',1,$Ir01_taviso,true,'text',$db_opcao,"")
        <?=@$Lr01_cc?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_cc',1,$Ir01_cc,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -809,7 +809,7 @@ db_input('r01_cc',1,$Ir01_cc,true,'text',$db_opcao,"")
        <?=@$Lr01_ocorre?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_ocorre',2,$Ir01_ocorre,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -819,7 +819,7 @@ db_input('r01_ocorre',2,$Ir01_ocorre,true,'text',$db_opcao,"")
        <?=@$Lr01_basefo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_basefo',10,$Ir01_basefo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -829,7 +829,7 @@ db_input('r01_basefo',10,$Ir01_basefo,true,'text',$db_opcao,"")
        <?=@$Lr01_descfo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_descfo',10,$Ir01_descfo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -839,7 +839,7 @@ db_input('r01_descfo',10,$Ir01_descfo,true,'text',$db_opcao,"")
        <?=@$Lr01_b13fo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_b13fo',10,$Ir01_b13fo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -849,7 +849,7 @@ db_input('r01_b13fo',10,$Ir01_b13fo,true,'text',$db_opcao,"")
        <?=@$Lr01_d13fo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_d13fo',10,$Ir01_d13fo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -859,7 +859,7 @@ db_input('r01_d13fo',10,$Ir01_d13fo,true,'text',$db_opcao,"")
        <?=@$Lr01_equip?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r01_equip',$x,true,$db_opcao,"");
 ?>
@@ -870,7 +870,7 @@ db_select('r01_equip',$x,true,$db_opcao,"");
        <?=@$Lr01_raca?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_raca',1,$Ir01_raca,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -880,7 +880,7 @@ db_input('r01_raca',1,$Ir01_raca,true,'text',$db_opcao,"")
        <?=@$Lr01_mremun?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_mremun',10,$Ir01_mremun,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -890,7 +890,7 @@ db_input('r01_mremun',10,$Ir01_mremun,true,'text',$db_opcao,"")
        <?=@$Lr01_reserv?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_reserv',15,$Ir01_reserv,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -900,7 +900,7 @@ db_input('r01_reserv',15,$Ir01_reserv,true,'text',$db_opcao,"")
        <?=@$Lr01_catres?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_catres',4,$Ir01_catres,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -910,7 +910,7 @@ db_input('r01_catres',4,$Ir01_catres,true,'text',$db_opcao,"")
        <?=@$Lr01_propi?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_propi',8,$Ir01_propi,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -920,7 +920,7 @@ db_input('r01_propi',8,$Ir01_propi,true,'text',$db_opcao,"")
        <?=@$Lr01_cargo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_cargo',5,$Ir01_cargo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -930,7 +930,7 @@ db_input('r01_cargo',5,$Ir01_cargo,true,'text',$db_opcao,"")
        <?=@$Lr01_clas1?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_clas1',5,$Ir01_clas1,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -940,7 +940,7 @@ db_input('r01_clas1',5,$Ir01_clas1,true,'text',$db_opcao,"")
        <?=@$Lr01_origp?>
     </td>
     <td> 
-<?
+<?php
 db_input('r01_origp',6,$Ir01_origp,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -950,7 +950,7 @@ db_input('r01_origp',6,$Ir01_origp,true,'text',$db_opcao,"")
        <?=@$Lr01_clas2?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r01_clas2',@$r01_clas2_dia,@$r01_clas2_mes,@$r01_clas2_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -1016,7 +1016,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("q87_descr");
        <?=@$Lq85_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('q85_codigo',10,$Iq85_codigo,true,'text',3)
 ?>
     </td>
@@ -49,7 +49,7 @@ db_input('q85_codigo',10,$Iq85_codigo,true,'text',3)
        <?=@$Lq85_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('q85_descr',40,$Iq85_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -59,7 +59,7 @@ db_input('q85_descr',40,$Iq85_descr,true,'text',$db_opcao,"")
        <?=@$Lq85_uniref?>
     </td>
     <td> 
-<?
+<?php
 db_input('q85_uniref',10,$Iq85_uniref,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -69,22 +69,22 @@ db_input('q85_uniref',10,$Iq85_uniref,true,'text',$db_opcao,"")
        <?=@$Lq85_dtoper?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q85_dtoper',@$q85_dtoper_dia,@$q85_dtoper_mes,@$q85_dtoper_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq85_codven?>">
-       <?
+       <?php
        db_ancora(@$Lq85_codven,"js_pesquisaq85_codven(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q85_codven',10,$Iq85_codven,true,'text',$db_opcao," onchange='js_pesquisaq85_codven(false);'")
 ?>
-       <?
+       <?php
 db_input('q92_descr',40,$Iq92_descr,true,'text',3,'')
        ?>
     </td>
@@ -94,7 +94,7 @@ db_input('q92_descr',40,$Iq92_descr,true,'text',3,'')
        <?=@$Lq85_var?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('q85_var',$x,true,$db_opcao,"");
 ?>
@@ -105,7 +105,7 @@ db_select('q85_var',$x,true,$db_opcao,"");
        <?=@$Lq85_fixmes?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('q85_fixmes',$x,true,$db_opcao,"");
 ?>
@@ -113,15 +113,15 @@ db_select('q85_fixmes',$x,true,$db_opcao,"");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq85_forcal?>">
-       <?
+       <?php
        db_ancora(@$Lq85_forcal,"js_pesquisaq85_forcal(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q85_forcal',10,$Iq85_forcal,true,'text',$db_opcao," onchange='js_pesquisaq85_forcal(false);'")
 ?>
-       <?
+       <?php
 db_input('q87_descr',40,$Iq87_descr,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ db_input('q87_descr',40,$Iq87_descr,true,'text',3,'')
        <?=@$Lq85_perman?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('q85_perman',$x,true,$db_opcao,"");
 ?>
@@ -142,7 +142,7 @@ db_select('q85_perman',$x,true,$db_opcao,"");
        <?=@$Lq85_outromun?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('q85_outromun',$x,true,$db_opcao,"");
 ?>
@@ -197,7 +197,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadcalc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

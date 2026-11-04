@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: patrim
 //CLASSE DA ENTIDADE seguradoras
-class cl_seguradoras { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $t80_segura = 0; 
-   var $t80_numcgm = 0; 
-   var $t80_contato = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_seguradoras {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $t80_segura = 0;
+   var $t80_numcgm = 0;
+   var $t80_contato = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 t80_segura = int8 = Seguradora 
-                 t80_numcgm = int4 = Numcgm 
-                 t80_contato = varchar(40) = Contato na seguradora 
+                 t80_segura = int8 = Seguradora
+                 t80_numcgm = int4 = Numcgm
+                 t80_contato = varchar(40) = Contato na seguradora
                  ";
-   //funcao construtor da classe 
-   function cl_seguradoras() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("seguradoras"); 
+     $this->rotulo = new rotulo("seguradoras");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_seguradoras {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t80_segura = ($this->t80_segura == ""?@$GLOBALS["HTTP_POST_VARS"]["t80_segura"]:$this->t80_segura);
        $this->t80_numcgm = ($this->t80_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["t80_numcgm"]:$this->t80_numcgm);
@@ -77,9 +77,9 @@ class cl_seguradoras {
      }
    }
    // funcao para inclusao
-   function incluir ($t80_segura){ 
+   public function incluir ($t80_segura){
       $this->atualizacampos();
-     if($this->t80_numcgm == null ){ 
+     if($this->t80_numcgm == null ){
        $this->erro_sql = " Campo Numcgm nao Informado.";
        $this->erro_campo = "t80_numcgm";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_seguradoras {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t80_contato == null ){ 
+     if($this->t80_contato == null ){
        $this->erro_sql = " Campo Contato na seguradora nao Informado.";
        $this->erro_campo = "t80_contato";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_seguradoras {
        return false;
      }
      if($t80_segura == "" || $t80_segura == null ){
-       $result = db_query("select nextval('seguradoras_t80_segura_seq')"); 
+       $result = db_query("select nextval('seguradoras_t80_segura_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: seguradoras_t80_segura_seq do campo: t80_segura"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: seguradoras_t80_segura_seq do campo: t80_segura";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->t80_segura = pg_result($result,0,0); 
+       $this->t80_segura = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from seguradoras_t80_segura_seq");
        if(($result != false) && (pg_result($result,0,0) < $t80_segura)){
@@ -118,10 +118,10 @@ class cl_seguradoras {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->t80_segura = $t80_segura; 
+         $this->t80_segura = $t80_segura;
        }
      }
-     if(($this->t80_segura == null) || ($this->t80_segura == "") ){ 
+     if(($this->t80_segura == null) || ($this->t80_segura == "") ){
        $this->erro_sql = " Campo t80_segura nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_seguradoras {
        return false;
      }
      $sql = "insert into seguradoras(
-                                       t80_segura 
-                                      ,t80_numcgm 
-                                      ,t80_contato 
+                                       t80_segura
+                                      ,t80_numcgm
+                                      ,t80_contato
                        )
                 values (
-                                $this->t80_segura 
-                               ,$this->t80_numcgm 
-                               ,'$this->t80_contato' 
+                                $this->t80_segura
+                               ,$this->t80_numcgm
+                               ,'$this->t80_contato'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Seguradoras ($this->t80_segura) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_seguradoras {
        $resac = db_query("insert into db_acount values($acount,927,5815,'','".AddSlashes(pg_result($resaco,0,'t80_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($t80_segura=null) { 
+   public function alterar ($t80_segura=null) {
       $this->atualizacampos();
      $sql = " update seguradoras set ";
      $virgula = "";
-     if(trim($this->t80_segura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_segura"])){ 
+     if(trim($this->t80_segura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_segura"])){
        $sql  .= $virgula." t80_segura = $this->t80_segura ";
        $virgula = ",";
-       if(trim($this->t80_segura) == null ){ 
+       if(trim($this->t80_segura) == null ){
          $this->erro_sql = " Campo Seguradora nao Informado.";
          $this->erro_campo = "t80_segura";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_seguradoras {
          return false;
        }
      }
-     if(trim($this->t80_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_numcgm"])){ 
+     if(trim($this->t80_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_numcgm"])){
        $sql  .= $virgula." t80_numcgm = $this->t80_numcgm ";
        $virgula = ",";
-       if(trim($this->t80_numcgm) == null ){ 
+       if(trim($this->t80_numcgm) == null ){
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "t80_numcgm";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_seguradoras {
          return false;
        }
      }
-     if(trim($this->t80_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_contato"])){ 
+     if(trim($this->t80_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_contato"])){
        $sql  .= $virgula." t80_contato = '$this->t80_contato' ";
        $virgula = ",";
-       if(trim($this->t80_contato) == null ){ 
+       if(trim($this->t80_contato) == null ){
          $this->erro_sql = " Campo Contato na seguradora nao Informado.";
          $this->erro_campo = "t80_contato";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_seguradoras {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Seguradoras nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->t80_segura;
@@ -267,14 +267,14 @@ class cl_seguradoras {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($t80_segura=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($t80_segura=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t80_segura));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_seguradoras {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Seguradoras nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$t80_segura;
@@ -330,11 +330,11 @@ class cl_seguradoras {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_seguradoras {
       }
      return $result;
    }
-   function sql_query ( $t80_segura=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $t80_segura=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -373,15 +373,15 @@ class cl_seguradoras {
      $sql2 = "";
      if($dbwhere==""){
        if($t80_segura!=null ){
-         $sql2 .= " where seguradoras.t80_segura = $t80_segura "; 
-       } 
+         $sql2 .= " where seguradoras.t80_segura = $t80_segura ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,10 +390,10 @@ class cl_seguradoras {
      }
      return $sql;
   }
-   function sql_query_file ( $t80_segura=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t80_segura=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,15 +406,15 @@ class cl_seguradoras {
      $sql2 = "";
      if($dbwhere==""){
        if($t80_segura!=null ){
-         $sql2 .= " where seguradoras.t80_segura = $t80_segura "; 
-       } 
+         $sql2 .= " where seguradoras.t80_segura = $t80_segura ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -146,7 +146,7 @@ if (count($aTermosAprovadoParcial) > 0) {
 </style>
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 $sCamposRegPer       = "ed78_i_regencia,ed78_i_procavaliacao,ed78_i_aulasdadas,ed09_c_descr,ed232_c_descr,ed59_i_ordenacao";
 $sWhereRegPer        = " ed59_i_turma = $ed59_i_turma AND ed59_i_serie = $codserieregencia AND ed59_c_freqglob!='A' ";
 $sWhereRegPer       .= " AND ed09_c_somach = 'S' AND ed59_c_condicao = 'OB'";
@@ -182,13 +182,13 @@ if (strstr($embranco,"S")) {
 
   $mensagens = explode("|",$mensagem);
   ?>
-  <table border='0' width="100%" bgcolor="#cccccc" style="" cellspacing="0" cellpading="0">
+  <table border='0' width="100%" bgcolor="#cccccc" cellspacing="0" cellpading="0">
    <tr>
     <td class='titulo'>
       Não foi possível encerrar as avaliações da turma <?=$ed57_c_descr?>
     </td>
    </tr>
-   <?
+   <?php
    for ($x = 0; $x < count($mensagens); $x++) {
 
      ?>
@@ -197,10 +197,10 @@ if (strstr($embranco,"S")) {
        <?=$mensagens[$x]?>
       </td>
      </tr>
-   <?
+   <?php
 
    }
- ?></table><?
+ ?></table><?php
 
 } else {
 
@@ -253,7 +253,7 @@ if (strstr($embranco,"S")) {
     if (count($aPendenciasGeral) > 0) {
       ?>
 
-      <table border='1' width="100%" bgcolor="#cccccc" style="" cellspacing="0" cellpading="0">
+      <table border='1' width="100%" bgcolor="#cccccc" cellspacing="0" cellpading="0">
        <tr>
         <td class='titulo' colspan="3">
          Não foi possível encerrar as avaliações dos seguintes alunos:
@@ -264,7 +264,7 @@ if (strstr($embranco,"S")) {
         <td class='cabec1'>Aluno</td>
         <td class='cabec1'>Detalhes</td>
        </tr>
-       <?
+       <?php
        $cor1 = "#f3f3f3";
        $cor2 = "#DBDBDB";
        $cor  = "";
@@ -290,9 +290,9 @@ if (strstr($embranco,"S")) {
           <?=$oPendencia->detalhe?>
       </td>
      </tr>
-     <?
+     <?php
     }
-    ?></table><br><?
+    ?></table><br><?php
     }
  }
  $sSqlMatri     = " SELECT DISTINCT ";
@@ -355,7 +355,7 @@ if (strstr($embranco,"S")) {
   if ($iLinhasMatri > 0) {
 
   ?>
-  <table border='1' width="100%" bgcolor="#cccccc" style="" cellspacing="0" cellpading="0">
+  <table border='1' width="100%" bgcolor="#cccccc" cellspacing="0" cellpading="0">
   <tr>
    <td class='titulo' colspan="3">
     O sistema vai encerrar as matrículas dos seguintes alunos desta turma:
@@ -366,7 +366,7 @@ if (strstr($embranco,"S")) {
    <td class='cabec1'>Aluno</td>
    <td class='cabec1'>Resultado Final</td>
   </tr>
-  <?
+  <?php
   $cor1   = "#f3f3f3";
   $cor2   = "#DBDBDB";
   $cor    = "";
@@ -388,7 +388,7 @@ if (strstr($embranco,"S")) {
     <td class='aluno'><?=$ed60_i_numaluno==""||$ed60_i_numaluno==null?"&nbsp;":$ed60_i_numaluno?></td>
     <td class='aluno'><?=$ed60_i_aluno?> - <?=$ed47_v_nome?></td>
     <td class='aluno'>
-     <?
+     <?php
      if ($ed60_c_situacao != "MATRICULADO") {
        echo trim($ed60_c_situacao);
      } else {
@@ -469,7 +469,7 @@ if (strstr($embranco,"S")) {
      ?>
     </td>
    </tr>
-   <?
+   <?php
   }
   ?>
   <tr bgcolor="#f3f3f3">
@@ -484,10 +484,10 @@ if (strstr($embranco,"S")) {
     </form>
    </td>
   </tr>
-  </table><?
+  </table><?php
  } else if ($iLinhasMatri == 0 && $faltaaprov == false) {
   ?>
-  <table border='1' width="100%" bgcolor="#cccccc" style="" cellspacing="0" cellpading="0">
+  <table border='1' width="100%" bgcolor="#cccccc" cellspacing="0" cellpading="0">
   <tr>
    <td class='titulo'>
     Todos os alunos já possuem avaliações encerradas.
@@ -498,7 +498,7 @@ if (strstr($embranco,"S")) {
     <input type="button" name="fechar" value="Fechar" onclick="parent.db_iframe_encerrar<?=$turma?>.hide();">
    </td>
   </tr>
-  <?
+  <?php
  }
 }
 ?>

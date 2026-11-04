@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ $clempagemov->rotulo->label("e81_numemp");
               <?=$Le81_codmov?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("e81_codmov",6,$Ie81_codmov,true,"text",4,"","chave_e81_codmov");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clempagemov->rotulo->label("e81_numemp");
               <?=$Le81_numemp?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("e81_numemp",10,$Ie81_numemp,true,"text",4,"","chave_e81_numemp");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clempagemov->rotulo->label("e81_numemp");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
         if (!isset($pesquisa_chave)) {
 
           if (isset($campos)==false) {
@@ -142,12 +142,12 @@ $clempagemov->rotulo->label("e81_numemp");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

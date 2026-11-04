@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ db_postmemory($HTTP_POST_VARS);
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
    db_app::load("scripts.js, estilos.css, prototype.js, strings.js");
   ?>
  </head>
@@ -71,7 +71,7 @@ db_postmemory($HTTP_POST_VARS);
           Tipo:
         </td>
         <td>
-          <?
+          <?php
             $aTipos = array( 
                             1 => "Ambos",
                             2 => "Dívida",
@@ -84,21 +84,21 @@ db_postmemory($HTTP_POST_VARS);
       </tr>
       <tr>
         <td>
-          <?
+          <?php
             db_ancora(@$Lv14_certid,"js_pesquisaparcel(true)",4)
           ?>   
         </td> 
         <td nowrap>   
-          <?
+          <?php
             db_input('v14_certid',10,$Iv14_certid,true,'text',4,
                      "onchange='js_pesquisaparcel(false);'");
           ?>   
 
          <b> Até </b>
-          <?
+          <?php
             db_ancora(@$Lv14_certid,"js_pesquisaparcel1(true)",4);
           ?>
-          <? 
+          <?php 
             db_input('v14_certid1',10,$Iv14_certid,true,'text',4,"onchange='js_pesquisaparcel1(false);'","v14_certid1");
           ?>
         </td>
@@ -119,7 +119,7 @@ db_postmemory($HTTP_POST_VARS);
           Complementar:
         </td>
         <td>
-          <?
+          <?php
             $aComplementar = array( 
                                    1 => "Não",
                                    2 => "Sim",
@@ -133,7 +133,7 @@ db_postmemory($HTTP_POST_VARS);
           Livro:
         </td> 
         <td>
-          <?
+          <?php
             db_input("livro",10,4,true,"text");
           ?>
         </td>
@@ -143,7 +143,7 @@ db_postmemory($HTTP_POST_VARS);
           Folha:
         </td> 
         <td>
-          <?
+          <?php
             db_input("pagina",10,4,true,"text");
           ?>
         </td>
@@ -154,7 +154,7 @@ db_postmemory($HTTP_POST_VARS);
 </form>        
         
 
-  <? 
+  <?php 
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
  </body>

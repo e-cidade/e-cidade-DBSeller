@@ -1,7 +1,7 @@
 <?php
 /**
  * E-cidade Software Público para Gestão Municipal
- *   Copyright (C) 2014 DBSeller Serviços de Informática Ltda
+ *   Copyright (C) 2009 DBSeller Serviços de Informática Ltda
  *                          www.dbseller.com.br
  *                          e-cidade@dbseller.com.br
  *   Este programa é software livre; você pode redistribuí-lo e/ou
@@ -408,10 +408,15 @@ switch ($oParam->exec) {
     
     case 'insereDadosServico':
       try{
-        $sSql = "SELECT DISTINCT q127_issgruposerviso,db121_descricao,db121_estrutural 
-                        FROM issgruposervicoativid 
-                        INNER JOIN issgruposervico ON q126_sequencial = q127_issgruposerviso 
-                        INNER JOIN db_estruturavalor ON q126_db_estruturavalor = db121_sequencial WHERE q127_issgruposerviso = $oParam->sequencial ORDER BY db121_estrutural";
+        $sSql = "SELECT
+                      q126_sequencial AS q127_issgruposerviso,
+                      db121_descricao,
+                      db121_estrutural
+                  FROM
+                      db_estruturavalor
+                      JOIN issqn.issgruposervico ON issgruposervico.q126_db_estruturavalor = db_estruturavalor.db121_sequencial
+                  WHERE
+                      issgruposervico.q126_sequencial = $oParam->sequencial"; 
         $execute = pg_exec($sSql);
         $oDados = [];
         for ($i = 0; $i < pg_numrows($execute); $i++) {

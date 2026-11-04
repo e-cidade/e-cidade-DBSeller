@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,47 +35,47 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td align="right" nowrap title="<?=@$Tr30_regist?>">
-      <?
+      <?php
       db_ancora(@$Lr30_regist, "js_pesquisar30_regist(true);", $db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r30_regist', 6, $Ir30_regist, true, 'text', $db_opcao, " onchange='js_pesquisar30_regist(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3);
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="Período de aquisição" align="right">
-      <?
+      <?php
       db_ancora("<b>Período aquisição:</b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_inputdata('r30_perai', @$r30_perai_dia, @$r30_perai_mes, @$r30_perai_ano, true, 'text', 3);
       ?>
       &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-      <?
+      <?php
       db_inputdata('r30_peraf', @$r30_peraf_dia, @$r30_peraf_mes, @$r30_peraf_ano, true, 'text', 3);
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="Período de gozo" align="right">
-      <?
+      <?php
       db_ancora("<b>Período de gozo:</b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_inputdata('r30_per2i', @$r30_per2i_dia, @$r30_per2i_mes, @$r30_per2i_ano, true, 'text', 3);
       ?>
       &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-      <?
+      <?php
       db_inputdata('r30_per2f', @$r30_per2f_dia, @$r30_per2f_mes, @$r30_per2f_ano, true, 'text', 3);
       ?>
     </td>

@@ -1,32 +1,32 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 if (!isset($arqinclude)){
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -35,13 +35,13 @@ if (!isset($arqinclude)){
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_orcparamrelopcre_classe.php"));
-  
+
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
-  
+
 }
 
 include_once(modification("classes/db_conrelinfo_classe.php"));
@@ -53,7 +53,7 @@ $clconrelinfo      = new cl_conrelinfo;
 $clconrelvalor     = new cl_conrelvalor;
 $oOrcParamRelopcre = new cl_orcparamrelopcre;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,munic,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -87,9 +87,9 @@ $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $period = '';
 if ($periodo=="1Q"){
   $period = "JANEIRO A ABRIL DE {$anousu}";
-}elseif($periodo=="2Q"){  
+}elseif($periodo=="2Q"){
   $period = "JANEIRO A AGOSTO DE {$anousu}";
-}elseif($periodo=="3Q"){  
+}elseif($periodo=="3Q"){
   $period = "JANEIRO A DEZEMBRO DE {$anousu}";
 }elseif($periodo=="1S"){
   $period = "JANEIRO A JUNHO DE {$anousu}";
@@ -109,7 +109,7 @@ $dt               = data_periodo($anousu,$periodo); // no dbforms/db_funcoes.php
 $dt_ini           = "{$anousu}-01-01";  // data inicial do periodo
 $dt_fim           = $dt[1];  // data final do período
 
-$dt = split('-',$dt_fim);  // mktime -- (mes,caddia,ano)
+$dt =explode('-',$dt_fim);  // mktime -- (mes,caddia,ano)
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]+1,"01",$anousu_ant));
 $dt_fim_ant = $anousu_ant.'-12-31';
 
@@ -121,30 +121,30 @@ $sWhere                  = '';
 switch ($periodo){
 
   case "1Q":
-  
+
     $sWhere = "o98_periodo = '1Q'";
     break;
-    
+
   case "2Q":
-   
+
     $sWhere = "o98_periodo in('1Q', '2Q')";
     break;
-    
-  case "3Q":     
-  
+
+  case "3Q":
+
     $sWhere = "o98_periodo in('1Q', '2Q', '3Q')";
     break;
-    
-  case "1S":     
-  
+
+  case "1S":
+
     $sWhere = "o98_periodo = '1S'";
-    break;   
-  
-  case "2S":     
-  
+    break;
+
+  case "2S":
+
     $sWhere = "o98_periodo in('1S', '2S')";
-    break;  
-    
+    break;
+
 }
 $nTotalOperacoesCredito  = 0;
 $nTotalInternas          = 0;
@@ -163,42 +163,42 @@ $sSqllinhaUsuario .= "       substring(o98_credor,1,28) as o98_credor,";
 $sSqllinhaUsuario .= "       o98_orcparamseq    ";
 $sSqllinhaUsuario .= "  from orcparamrelopcre   ";
 $sSqllinhaUsuario .= " where o98_instit in ({$instituicao}) ";
-$sSqllinhaUsuario .= "   and o98_anousu = {$anousu}"; 
-$sSqllinhaUsuario .= "   and {$sWhere}"; 
+$sSqllinhaUsuario .= "   and o98_anousu = {$anousu}";
+$sSqllinhaUsuario .= "   and {$sWhere}";
 $rsLInhaUsuario    = $oOrcParamRelopcre->sql_record($sSqllinhaUsuario);
 if ($oOrcParamRelopcre->numrows > 0){
-  
+
   for ($iInd = 0; $iInd < $oOrcParamRelopcre->numrows; $iInd++){
-  
+
     $oLinhaAtual = db_utils::fieldsMemory($rsLInhaUsuario, $iInd);
     //Atualizamos as operacoes internas
     if ($oLinhaAtual->o98_orcparamseq == 1){
-        
+
        $aOperacaoCredito["interna"][] = array(
                                               "identificacao" => $oLinhaAtual->o98_identificacao,
                                               "credor"        => $oLinhaAtual->o98_credor,
                                               "valor"         => $oLinhaAtual->o98_valor
                                               );
-       $nTotalInternas +=  $oLinhaAtual->o98_valor;                                       
+       $nTotalInternas +=  $oLinhaAtual->o98_valor;
     }
     if ($oLinhaAtual->o98_orcparamseq == 2){
-        
+
       $aOperacaoCredito["externa"][] = array(
                                               "identificacao" => $oLinhaAtual->o98_identificacao,
                                               "credor"        => $oLinhaAtual->o98_credor,
                                               "valor"         => $oLinhaAtual->o98_valor
                                              );
-       $nTotalExternas +=  $oLinhaAtual->o98_valor;                                       
+       $nTotalExternas +=  $oLinhaAtual->o98_valor;
     }
-    
+
     if ($oLinhaAtual->o98_orcparamseq == 3){
-        
+
       $aOperacaoCredito["antecipacao"][] = array(
                                               "identificacao" => $oLinhaAtual->o98_identificacao,
                                               "credor"        => $oLinhaAtual->o98_credor,
                                               "valor"         => $oLinhaAtual->o98_valor
                                              );
-      $nTotalOperacoesCredito +=  $oLinhaAtual->o98_valor;                                       
+      $nTotalOperacoesCredito +=  $oLinhaAtual->o98_valor;
     }
   }
 }
@@ -216,23 +216,23 @@ $nTotalRcl += calcula_rcl2($anousu_ant,$dt_ini_ant,$dt_fim_ant,$sTodasInstit, fa
 if (!isset($arqinclude)) {
 
 //totais das variaveis
-  if ( $nTotalRcl == 0 || $oOrcParamRelopcre->numrows == 0 ) { 
+  if ( $nTotalRcl == 0 || $oOrcParamRelopcre->numrows == 0 ) {
     db_redireciona("db_erros.php?db_erro=Período sem movimentação.&fechar=true");
   }
 
 }
- 
+
 $res_variaveis = $clconrelinfo->sql_record($clconrelinfo->sql_query_valores(32,str_replace('-',',',$db_selinstit),$periodo));
 if ($clconrelinfo->numrows > 0){
   for($i = 0; $i < $clconrelinfo->numrows; $i++){
     db_fieldsmemory($res_variaveis,$i);
 
     if ($c83_codigo == 364){
-      $nValorInternoExterno = $c83_informacao;  
+      $nValorInternoExterno = $c83_informacao;
     }
 
     if ($c83_codigo == 365){
-      $nValorAntecipacao = $c83_informacao;  
+      $nValorAntecipacao = $c83_informacao;
     }
   }
 }
@@ -246,8 +246,8 @@ if ($nValorInternoExterno == 0){
 if ($nValorAntecipacao == 0){
    $nValorAntecipacao = '< % >';
 }else{
-  $nPercValorAntecipacao  = db_formatar(($nTotalRcl*$nValorAntecipacao)/100,"f"); 
-  $nValorAntecipacao     .= '%'; 
+  $nPercValorAntecipacao  = db_formatar(($nTotalRcl*$nValorAntecipacao)/100,"f");
+  $nValorAntecipacao     .= '%';
 }
 //linhas do relatório;
 $texto[0]  = 'OPERAÇÕES DE CRÉDITO (I)';
@@ -263,10 +263,10 @@ $texto[9]  = "LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FEDERAL PARA AS OPERAÇÕES 
 $texto[10] = '';
 
 if (!isset($arqinclude)){
-  
-  $pdf = new PDF("L", "mm", "A4"); 
-  $pdf->Open(); 
-  $pdf->AliasNbPages(); 
+
+  $pdf = new PDF("L", "mm", "A4");
+  $pdf->Open();
+  $pdf->AliasNbPages();
   $pdf->setfillcolor(235);
   $pdf->setfont('arial','b',7);
   $alt            = 4;
@@ -278,8 +278,8 @@ if (!isset($arqinclude)){
   $pdf->cell(185,$alt,"EMPRÉSTIMOS E FINANCIAMENTOS",'R',0,"C",0);
   $pdf->cell(90,$alt,"OPERAÇÕES REALIZADAS",'',1,"C",0);
   $pdf->cell(185,$alt,"",'R',0,"R",0);
-  
-  
+
+
   if ($periodo!="1S"&&$periodo!="2S"){
     $period = "Quadrimestre";
   }else{
@@ -289,95 +289,95 @@ if (!isset($arqinclude)){
   $pdf->cell(185,$alt,"",'RB',0,"C",0);
   $pdf->cell(45,$alt,"CREDOR",'BR',0,"C",0);
   $pdf->cell(45,$alt,"VALOR",'LB',1,"C",0);
-  
+
   //linha dos totais de Credito
   $pdf->setfont('arial','',7);
   $pdf->cell(185,$alt,$texto[0],'R',0,"L",0);
   $pdf->cell(45,$alt,"",0,0,"R",0);
   $pdf->cell(45,$alt,db_formatar($nTotalExternas+$nTotalInternas,"f"),'L',1,"R",0);
-      
+
   //linha dos totais de Credito internos
   $pdf->cell(185,$alt,$texto[1],'R',0,"L",0);
   $pdf->cell(45,$alt,"",0,0,"R",0);
-  $pdf->cell(45,$alt,db_formatar($nTotalInternas,"f"),'L',1,"R",0);  
+  $pdf->cell(45,$alt,db_formatar($nTotalInternas,"f"),'L',1,"R",0);
   /*
    * Varremos todos os itens que o usuario cadastrou como interna
    */
   for ($iInd = 0; $iInd < count($aOperacaoCredito["interna"]); $iInd++){
-    
-    setHeaderOP(&$pdf, $period);
+
+    setHeaderOP($pdf, $period);
     $pdf->cell(185,$alt,"    {$aOperacaoCredito["interna"][$iInd]["identificacao"]}",'R',0,"L",0);
     $pdf->cell(45,$alt,$aOperacaoCredito["interna"][$iInd]["credor"],"R",0,"L",0);
     $pdf->cell(45,$alt,db_formatar($aOperacaoCredito["interna"][$iInd]["valor"],"f"),'L',1,"R",0);
-        
+
   }
 //Totais Externa
-    
+
   $pdf->cell(185,$alt,$texto[2],'R',0,"L",0);
   $pdf->cell(45,$alt,"",0,0,"R",0);
-  $pdf->cell(45,$alt,db_formatar($nTotalExternas,"f"),'L',1,"R",0);  
+  $pdf->cell(45,$alt,db_formatar($nTotalExternas,"f"),'L',1,"R",0);
   /*
    * Varremos todos os itens que o usuario cadastrou como externa
    */
   for ($iInd = 0; $iInd < count($aOperacaoCredito["externa"]); $iInd++){
-    
-    setHeaderOP(&$pdf, $period);
+
+    setHeaderOP($pdf, $period);
     $pdf->cell(185,$alt,"    {$aOperacaoCredito["externa"][$iInd]["identificacao"]}",'R',0,"L",0);
     $pdf->cell(45,$alt,$aOperacaoCredito["externa"][$iInd]["credor"],"R",0,"L",0);
     $pdf->cell(45,$alt,db_formatar($aOperacaoCredito["externa"][$iInd]["valor"],"f"),'L',1,"R",0);
-        
+
   }
    //Totais de antecipacao
   $pdf->cell(185,$alt,$texto[3],'R',0,"L",0);
   $pdf->cell(45,$alt,"","R",0,"",0);
-  $pdf->cell(45,$alt,db_formatar($nTotalOperacoesCredito,"f"),'L',1,"R",0);  
+  $pdf->cell(45,$alt,db_formatar($nTotalOperacoesCredito,"f"),'L',1,"R",0);
   /*
    * Varremos todos os itens que o usuario cadastrou como externa
    */
   for ($iInd = 0; $iInd < count($aOperacaoCredito["antecipacao"]); $iInd++){
-    
-    setHeaderOP(&$pdf, $period);
+
+    setHeaderOP($pdf, $period);
     $pdf->cell(185,$alt,"    {$aOperacaoCredito["antecipacao"][$iInd]["identificacao"]}",'R',0,"L",0);
     $pdf->cell(45,$alt,$aOperacaoCredito["antecipacao"][$iInd]["credor"],"R",0,"L",0);
     $pdf->cell(45,$alt,db_formatar($aOperacaoCredito["antecipacao"][$iInd]["valor"],"f"),'L',1,"R",0);
-        
+
   }
    //Totais da operacao de credito
   $pdf->cell(230,$alt,$texto[4],'RTB',0,"L",0);
   $pdf->cell(45,$alt,db_formatar($nTotalOperacoesCredito+$nTotalExternas+$nTotalInternas,"f"),'TBL',1,"R",0);
-  
+
   //Totais da RCL
   $pdf->cell(230,$alt,$texto[5],'RTB',0,"L",0);
-  $pdf->cell(45,$alt,db_formatar($nTotalRcl,"f"),'TBL',1,"R",0);  
-  
+  $pdf->cell(45,$alt,db_formatar($nTotalRcl,"f"),'TBL',1,"R",0);
+
   // % operacoes internas/externas sobre RCL
   $pdf->cell(230,$alt,$texto[6],'RTB',0,"L",0);
-  $pdf->cell(45,$alt,db_formatar((($nTotalExternas + $nTotalInternas) / $nTotalRcl)*100,"f"),'TBL',1,"R",0);  
-  
+  $pdf->cell(45,$alt,db_formatar((($nTotalExternas + $nTotalInternas) / $nTotalRcl)*100,"f"),'TBL',1,"R",0);
+
    // % operacoes antecipadas RCL
   $pdf->cell(230,$alt,$texto[7],'RTB',0,"L",0);
   $pdf->cell(45,$alt,db_formatar((($nTotalOperacoesCredito)/$nTotalRcl)*100,"f"),'TBL',1,"R",0);
-  
+
   // %  antecipadas RCL
   $pdf->cell(230,$alt,$texto[8],'RTB',0,"L",0);
   $pdf->cell(45,$alt,$nPercValorInterno,'TBL',1,"R",0);
-  
+
   // % operacoes antecipadas RCL
   $pdf->cell(230,$alt,$texto[9],'RTB',0,"L",0);
   $pdf->cell(45,$alt,$nPercValorAntecipacao,'TBL',1,"R",0);
   if ($pdf->pageNo() > 1){
     $pdf->cell(275,$alt,"(".$pdf->pageNo()."/{nb})",0,1,"R");
   }
-  
-  
+
+
   // assinaturas
   $pdf->setfont('arial','',5);
-  notasExplicativas(&$pdf, 32, "{$periodo}",195);
+  notasExplicativas($pdf, 32, "{$periodo}",195);
   $pdf->ln(20);
-  assinaturas(&$pdf,&$classinatura,'GF');
-  
+  assinaturas($pdf,$classinatura,'GF');
+
   $pdf->Output();
-  
+
 }
 
 $total_operacoes_credito      = 0;
@@ -406,11 +406,11 @@ if ($clconrelinfo->numrows > 0){
     db_fieldsmemory($res_variaveis,$i);
 
     if ($c83_codigo == 364){
-      $valor_int_ext = $c83_informacao;  
+      $valor_int_ext = $c83_informacao;
     }
 
     if ($c83_codigo == 365){
-      $valor_antecipacao = $c83_informacao;  
+      $valor_antecipacao = $c83_informacao;
     }
   }
 }
@@ -432,10 +432,10 @@ if ($valor_antecipacao > 0){
   $limite_senado_antecipacao = 0;
 }
 
-function setHeaderOP(&$pdf, $period){
-  
+function setHeaderOP($pdf, $period){
+
   if ($pdf->getY() > $pdf-> h-35){
-    
+
     $pdf->cell(275,5 ,"Continua (".($pdf->pageNo()+1)."/{nb})","T",1,"R");
     $pdf->addPage();
     $pdf->setfillcolor(235);
@@ -453,7 +453,7 @@ function setHeaderOP(&$pdf, $period){
     $pdf->cell(45,$alt,"CREDOR",'BR',0,"C",0);
     $pdf->cell(45,$alt,"VALOR",'LB',1,"C",0);
     $pdf->cell(275,5 ,"Continuação","B",1,"R");
-    
-    }  
+
+    }
 }
 ?>

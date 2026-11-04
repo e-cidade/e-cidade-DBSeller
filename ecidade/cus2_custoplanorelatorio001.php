@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,7 +75,7 @@ $cldbconfig = new cl_db_config;
   <tr>    	
     <td>
 	    <label> <b> Instituição: </b> </label>
-			<?			
+			<?php 		
 			  $rsConsultaInst = $cldbconfig->sql_record($cldbconfig->sql_query_file(null,"codigo, nomeinst","codigo")); 
 			  db_selectrecord("instit",$rsConsultaInst,false,2);
 			?>
@@ -84,7 +84,7 @@ $cldbconfig = new cl_db_config;
   <tr>
     <td>
 		<label> <b> Listar bens: </b> </label>
-    <?			
+    <?php 		
       $aOpcoes = array("n" => "Não", "s"=> "Sim");
       db_select("listabens", $aOpcoes, false, 2);
     ?>	
@@ -97,7 +97,7 @@ $cldbconfig = new cl_db_config;
   </form>
 </center>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

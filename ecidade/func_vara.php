@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clvara->rotulo->label("v53_descr");
               <?=$Lv53_codvara?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v53_codvara",6,$Iv53_codvara,true,"text",4,"","chave_v53_codvara");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clvara->rotulo->label("v53_descr");
               <?=$Lv53_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v53_descr",40,$Iv53_descr,true,"text",4,"","chave_v53_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clvara->rotulo->label("v53_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "vara.*";
@@ -114,14 +114,14 @@ $clvara->rotulo->label("v53_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v53_codvara.focus();
 document.form2.chave_v53_codvara.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

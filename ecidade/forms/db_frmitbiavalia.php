@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -65,7 +65,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
             <?=@$Lit14_guia?>
           </td>
           <td>
-          <?
+          <?php
             db_input('it14_guia',10,$Iit14_guia,true,'text',3," onchange='js_pesquisait14_guia(false);'");
             db_input('tipo',10,"",true,'hidden',3);
             db_input('listaFormas',10,"",true,'hidden',3);
@@ -76,7 +76,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
             <?=@$Lit01_data?>
           </td>
           <td>
-            <?
+            <?php
             db_inputdata('it01_data',@$it01_data_dia,@$it01_data_mes,@$it01_data_ano,true,'text',3,"");
             ?>
           </td>
@@ -84,7 +84,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
             <?=@$Lit01_id_usuario?>
           </td>
           <td>
-            <?
+            <?php
             db_input('it01_id_usuario',10,"",true,'hidden',3,"");
             db_input('nome',50,"",true,'text'  ,3,"");
             ?>
@@ -98,7 +98,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                 <?=@$Lit01_processo?>
             </td>
             <td colspan="6">
-                <?
+                <?php
                     db_input('it01_processo',10,$Lit01_processo,true,'text',3);
                     db_input('it01_tituprocesso',50,"",true,'text'  ,3,"");
                 ?>
@@ -111,7 +111,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                     <?=@$Lit01_dtprocesso?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_inputdata('it01_dtprocesso',@$it01_dtprocesso_dia,@$it01_dtprocesso_mes,@$it01_dtprocesso_ano,true,'text',3,"");
                     ?>
                 </td>
@@ -133,7 +133,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                 <strong>Cartório:</strong>
             </td>
             <td colspan="6">
-                <?
+                <?php
                     db_input('j167_descricao',50,"",true,'text'  ,3,"");
                 ?>
             </td>
@@ -151,16 +151,16 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 			            <b>Matrícula RI:</b>
 			          </td>
 			          <td>
-			            <?
+			            <?php
 				  	 	  db_input('it22_matricri',10,$Iit22_matricri,true,'text',3,"");
 			            ?>
 			          </td>
-			          <? if ( $tipo == "urbano" ) {?>
+			          <?php if ( $tipo == "urbano" ) {?>
 			          <td>
 			            <b>Matrícula:</b>
 			          </td>
 			          <td>
-			            <?
+			            <?php
 				  	 	  db_input('it06_matric',10,$Iit06_matric,true,'text',3,"");
 			            ?>
 			            <input type="button" name="verMatric" value="Ver" onClick="js_verMatric();" <?=($db_botao==false?"disabled":"")?>/>
@@ -169,28 +169,28 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                   <?=$Lj40_refant?>
 			          </td>
 			          <td align="right">
-			            <?
+			            <?php
 				  	 	  db_input('j40_refant',25,"",true,'text',3,"");
 			            ?>
 			          </td>
-			          <? } else { ?>
+			          <?php } else { ?>
 			          <td>
 			            <b>Distância da Cidade:</b>
 			          </td>
 			          <td align="right" colspan="3">
-			            <?
+			            <?php
 				  	 	  db_input('it18_distcidade	',10,"",true,'text',3,"");
 			            ?>
 			            <b>Km</b>
 			          </td>
-			          <? }?>
+			          <?php }?>
 			        </tr>
 			        <tr>
 			          <td>
 			            <b>Setor/Bairro:</b>
 			          </td>
 			          <td colspan="5">
-			            <?
+			            <?php
 				  	 	  db_input('it22_setor',100,"",true,'text',3,"");
 			            ?>
 			          </td>
@@ -200,18 +200,18 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 			            <b>Logradouro:</b>
 			          </td>
 			          <td colspan="5">
-			            <?
+			            <?php
 				  	 	  db_input('it22_descrlograd',100,"",true,'text',3,"");
 			            ?>
 			          </td>
 			        </tr>
-					<? if ( $tipo == "urbano" ) {?>
+					<?php if ( $tipo == "urbano" ) {?>
 					<tr>
 					  <td>
 					    <?=@$Lit22_numero?>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 					  	  db_input('it22_numero',20,$Iit22_numero,true,'text',3,"");
 						?>
 					  </td>
@@ -219,7 +219,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <?=@$Lit22_compl?>
 					  </td>
 					  <td align="right" colspan="2">
-					    <?
+					    <?php
 						  db_input('it22_compl',20,$Iit22_compl,true,'text',3,"");
 						?>
 					  </td>
@@ -229,7 +229,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <?=@$Lit22_quadra?>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 					   	  db_input('it22_quadra',20,$Iit22_quadra,true,'text',3,"");
 						?>
 					  </td>
@@ -237,18 +237,18 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <?=@$Lit22_lote?>
 					  </td>
 					  <td align="right" colspan="2">
-						<?
+						<?php
 						  db_input('it22_lote',20,$Iit22_lote,true,'text',3,"");
 						?>
 					  </td>
 					</tr>
-					<? } ?>
+					<?php } ?>
                     <tr>
                       <td>
                         <b>Área:</b>
                       </td>
                       <td>
-                        <?
+                        <?php
                           db_input('it01_areaterreno',20,$Iit01_areaterreno,true,'text',3,"");
                         ?>
                         <b><?=$sMedida?></b>
@@ -257,7 +257,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                         <b>Área Transmitida:</b>
                       </td>
                       <td  align="right" colspan="2">
-                        <?
+                        <?php
                           db_input('it01_areatrans',20,$Iit01_areatrans,true,'text',3,"");
                         ?>
                         <b><?=$sMedida?></b>
@@ -268,7 +268,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 			            <b>Transmitente Princ:</b>
 			          </td>
 			          <td colspan="5">
-			            <?
+			            <?php
 				  	 	  db_input('transmitenteprinc',100,"",true,'text',3,"");
 			            ?>
 			          </td>
@@ -278,7 +278,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 			            <b>Adquirente Princ:</b>
 			          </td>
 			          <td colspan="5">
-			            <?
+			            <?php
 				  	 	  db_input('adquirenteprinc',100,"",true,'text',3,"");
 			            ?>
 			          </td>
@@ -299,7 +299,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <?=@$Lit01_tipotransacao?>
 					  </td>
 					  <td colspan="5">
-						<?
+						<?php
 						  db_input('it01_tipotransacao',20,"",true,'hidden',3);
 						  db_input('it04_descr',100,$Iit04_descr,true,'text',3,'');
 					    ?>
@@ -310,7 +310,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Valor  <?=$sPrefix.$sTerraLabel?>:</b>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 					      db_input('it01_valorterreno',15,$Iit01_valorterreno,true,'text',3, "", "", "", "text-align:right");
 					    ?>
 					  </td>
@@ -318,7 +318,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Valor das Benfeitorias:</b>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 					      db_input('it01_valorconstr',15,$Iit01_valorconstr,true,'text',3, "", "", "", "text-align:right");
 					    ?>
 					  </td>
@@ -326,7 +326,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Valor Total:</b>
 					  </td>
 					  <td align="right">
-						<?
+						<?php
 						  db_input('it01_valortransacao',15,$Iit01_valortransacao,true,'text',3, "", "", "", "text-align:right");
 					    ?>
 					  </td>
@@ -379,7 +379,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                   <strong>Valor Total:</strong>
                 </td>
                 <td colspan="1">
-                  <?
+                  <?php
                     db_input('valorVenalTotal',20,$Iit01_valortransacao,true,'text',3,"onchange='js_validaValores(this)'", "", "", "text-align:right");
                   ?>
                 </td>
@@ -402,12 +402,12 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 			      <table>
 					<tr>
 					  <td title="<?=@$Tit01_tipotransacao?>">
-			      		<?
+			      		<?php
 			        	  db_ancora(@$Lit01_tipotransacao,"js_pesquisait01_tipotransacao(true);",3);
 			      		?>
 					  </td>
 					  <td colspan="5">
-						<?
+						<?php
 						  db_input('it01_tipotransacao_avalia',20,"",true,'hidden',3);
 						  db_input('it04_descr_avalia',100,$Iit04_descr,true,'text',3,'');
 					    ?>
@@ -418,7 +418,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Valor <?=$sPrefix.$sTerraLabel?>:</b>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 					      db_input('it01_valorterreno_avalia',15,$Iit01_valorterreno,true,'text',$db_opcao_avaliados,"onkeyup='jsFormataMoeda(this, (nValor) => {js_validaValores(this);})'", "", "", "text-align:right", 50, true);
 					    ?>
 					  </td>
@@ -426,7 +426,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Valor das Benfeitorias:</b>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 					      db_input('it01_valorconstr_avalia',15,$Iit01_valorconstr,true,'text',$db_opcao_avaliados,"onkeyup='jsFormataMoeda(this, (nValor) => {js_validaValores(this);})'", "", "", "text-align:right", 50, true);
 					    ?>
 					  </td>
@@ -434,7 +434,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Valor Total:</b>
 					  </td>
 					  <td align="right">
-						<?
+						<?php
 						  db_input('it01_valortransacao_avalia',15,$Iit01_valortransacao,true,'text',$db_opcao_avaliados,"onkeyup='jsFormataMoeda(this, (nValor) => {js_validaValores(this);})'", "", "", "text-align:right", 50, true);
 					    ?>
 					  </td>
@@ -464,7 +464,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Valor do Imposto R$:</b>
 					  </td>
 					  <td>
-					    <?
+					    <?php
 					      db_input('imposto_avalia',15,"",true,'text',3, "", "", "", "text-align:right");
 					    ?>
                       </td>
@@ -472,7 +472,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                           <b>Valor das Taxas R$:</b>
                       </td>
                       <td>
-                        <?
+                        <?php
 					      db_input('taxas_avalia',15,"",true,'text',3, "", "", "", "text-align:right");
 					    ?>
                       </td>
@@ -480,7 +480,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
                           <b>Valor Total R$:</b>
                       </td>
                       <td>
-                        <?
+                        <?php
 					      db_input('total_avalia',15,"",true,'text',3, "", "", "", "text-align:right");
 					    ?>
                       </td>
@@ -490,7 +490,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 					    <b>Vencimento:</b>
 					  </td>
 					  <td>
-						<?
+						<?php
 				 		  db_inputdata('it14_dtvenc',@$it14_dtvenc_dia,@$it14_dtvenc_mes,@$it14_dtvenc_ano,true,'text',$db_opcao,"");
 					    ?>
 					  </td>
@@ -508,7 +508,7 @@ if (isset($it14_guia) && !empty($it14_guia)) {
 	              <table>
 				    <tr>
 				      <td>
-	 			        <?
+	 			        <?php
 						  db_textarea('it14_obs',3,120	,$Iit01_obs,true,'text',$db_opcao,"");
 				        ?>
 				      </td>
@@ -1035,7 +1035,7 @@ function js_verMatric(){
 js_criaGrid();
 js_criaGridAvalia();
 
-<?
+<?php
   if ( isset($oGet->chavepesquisa) && !isset($oPost->liberar) ) {
 	echo "js_consultaFormaPgtoCadastrada(".$oGet->chavepesquisa.",js_retornoFormaPgtoCadastrada);";
 	echo "js_pesquisait01_tipotransacao(false)";
@@ -1274,5 +1274,36 @@ function js_atualizaValorTotal()
 function js_removeMascaraMoeda(sValor)
 {
     return sValor.replaceAll(".", "").replace(",", ".");
+}
+
+js_adicionarTabindexNosInputs();
+function js_adicionarTabindexNosInputs() {
+  const inputArray = document.querySelectorAll('input,select');
+  const inputs = [];
+  for (let index = 0; index < inputArray.length; index++) {
+    if(inputArray[index].type != "hidden"){
+      inputs.push(inputArray[index]);
+    }
+  }
+  for (let index = 0; index < inputs.length; index++) {
+      inputs[index].setAttribute('tabindex', index.toString());
+  }
+}
+
+js_interacaoTeclaEnter();
+function js_interacaoTeclaEnter() {
+  const inputs = document.querySelectorAll("input,select");
+  for (let i = 0 ; i < inputs.length; i++) {
+    inputs[i].addEventListener("keypress", function(e){
+      if (e.which == 13) {
+        e.preventDefault();
+        let nextInput = document.querySelectorAll('[tabIndex="' + (this.tabIndex + 1) + '"]');
+        if (nextInput.length === 0) {
+          nextInput = document.querySelectorAll('[tabIndex="0"]');
+        }
+        nextInput[0].focus();
+      }
+    })
+  }
 }
 </script>

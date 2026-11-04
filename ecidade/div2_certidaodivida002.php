@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,7 @@ require_once(modification("fpdf151/pdf3.php"));
 require_once(modification("model/cda.model.php"));
 require_once(modification("libs/db_conecta.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING']);
 
 if( empty($ordenarpor) ){
   $ordenarpor = '';

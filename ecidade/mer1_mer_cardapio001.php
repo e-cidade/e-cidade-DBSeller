@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -43,28 +43,28 @@ $naopode            = false;
 $me01_i_escola      = db_getsession("DB_coddepto");
 $ed18_c_nome        = db_getsession("DB_nomedepto");
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   $clmer_cardapio->me01_f_versao = 0.1;
   $clmer_cardapio->me01_i_id     = 9999;
   $clmer_cardapio->incluir(null);
   if ($clmer_cardapio->erro_status=="1") {
- 	
+
     $vet = explode(",",$lista);
     for ($x=0;$x<count($vet);$x++) {
-  	
+
       $clmer_cardapiotipo->me21_i_cardapio   = $clmer_cardapio->me01_i_codigo;
       $clmer_cardapiotipo->me21_i_tprefeicao = $vet[$x];
       $clmer_cardapiotipo->incluir(null);
-   
+
     }
-    
+
   }
   db_fim_transacao();
- 
+
 } elseif (isset($chavepesquisa)) {
   db_redireciona("mer1_mer_cardapio002.php?chavepesquisa=$chavepesquisa");
-} 
+}
 ?>
 <html>
 <head>
@@ -81,7 +81,7 @@ if (isset($incluir)) {
       <br>
       <center>
       <fieldset style="width:95%"><legend><b>Inclusão de Refeição</b></legend>
-        <?include(modification("forms/db_frmmer_cardapio.php"));?>
+        <?php include(modification("forms/db_frmmer_cardapio.php"));?>
       </fieldset>
       </center>
     </td>
@@ -92,31 +92,31 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me01_c_nome",true,1,"me01_c_nome",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
-	
+
   if ($clmer_cardapio->erro_status=="0"){
-  	
+
     $clmer_cardapio->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
     if ($clmer_cardapio->erro_campo!="") {
-    	
+
       echo "<script> document.form1.".$clmer_cardapio->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_cardapio->erro_campo.".focus();</script>";
-      
+
     }
-    
+
   } else {
-  	
+
     $clmer_cardapio->erro(true,false);
     $codigo                        = $clmer_cardapio->me01_i_codigo;
     $clmer_cardapio->me01_i_id     = $codigo;
     $clmer_cardapio->me01_i_codigo = $codigo;
     $clmer_cardapio->alterar($codigo);
     db_redireciona("mer1_mer_cardapio002.php?chavepesquisa=$codigo");
-    
-  } 
- 
+
+  }
+
 }
 ?>

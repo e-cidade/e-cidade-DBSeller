@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -101,13 +101,11 @@ db_app::load("scripts.js,
 
 </style>
 
-<body style="margin-top: 30px; background-color: #CCCCCC;">
-<center>
+<body>
+<div class="container">
     <form id="form1" name="form1">
 
-        <div style="width: 600px;">
-
-            <fieldset style="width: 100%;">
+            <fieldset>
 
                 <legend><strong>Dados do Slip</strong></legend>
                 <table align='left'>
@@ -117,8 +115,19 @@ db_app::load("scripts.js,
                         </td>
                         <td>
                             <?php
-                            db_input('k17_codigo', 10, $Ik17_codigo, true, 'text', $db_opcao,
-                                " onchange='js_pesquisak17_codigo(false);'", "", "", "", 7)
+                            db_input(
+                                'k17_codigo',
+                                10,
+                                $Ik17_codigo,
+                                true,
+                                'text',
+                                $db_opcao,
+                                " onchange='js_pesquisak17_codigo(false);'",
+                                "",
+                                "",
+                                "",
+                                7
+                            )
                             ?>
                         </td>
                         <td>
@@ -126,8 +135,19 @@ db_app::load("scripts.js,
                         </td>
                         <td>
                             <?php
-                            db_input('k17_codigo', 10, $Ik17_codigo, true, 'text', $db_opcao,
-                                " onchange='js_pesquisak17_codigo02(false);'", "k17_codigo02", "", "", 7)
+                            db_input(
+                                'k17_codigo',
+                                10,
+                                $Ik17_codigo,
+                                true,
+                                'text',
+                                $db_opcao,
+                                " onchange='js_pesquisak17_codigo02(false);'",
+                                "k17_codigo02",
+                                "",
+                                "",
+                                7
+                            )
                             ?>
                         </td>
                     </tr>
@@ -153,8 +173,15 @@ db_app::load("scripts.js,
                         </td>
                         <td colspan="4">
                             <?php
-                            db_input('k17_hist', 10, $Ik17_hist, true, 'text', $db_opcao,
-                                " onchange='js_pesquisac50_codhist(false);'");
+                            db_input(
+                                'k17_hist',
+                                10,
+                                $Ik17_hist,
+                                true,
+                                'text',
+                                $db_opcao,
+                                " onchange='js_pesquisac50_codhist(false);'"
+                            );
                             db_input('c50_descr', 40, $Ic50_descr, true, 'text', 3);
                             ?>
                         </td>
@@ -205,12 +232,10 @@ db_app::load("scripts.js,
 
             <div id="divLancadorCGM"></div>
 
-            <p align="center">
-                <input name="emite2" id="emite2" type="button" value="Consultar" onclick="js_emite();">
-            </p>
-        </div>
+            <input name="emite2" id="emite2" type="button" value="Consultar" onclick="js_emite();">
+
     </form>
-</center>
+</div>
 <?php
 db_menu();
 ?>
@@ -228,7 +253,6 @@ db_menu();
     oDBLancadorCGM.setParametrosPesquisa('func_nome.php', ['z01_numcgm', 'z01_nome']);
     oDBLancadorCGM.show($('divLancadorCGM'));
     var oFieldsetLancador = oDBLancadorCGM.getFieldset();
-    oFieldsetLancador.style.width = "100%";
 
     //-----------------------------------------------------------
     //---slip 01

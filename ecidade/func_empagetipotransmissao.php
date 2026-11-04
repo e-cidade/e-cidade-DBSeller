@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clempagetipotransmissao->rotulo->label("e57_descricao");
               <?=$Le57_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e57_sequencial",10,$Ie57_sequencial,true,"text",4,"","chave_e57_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clempagetipotransmissao->rotulo->label("e57_descricao");
               <?=$Le57_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e57_descricao",100,$Ie57_descricao,true,"text",4,"","chave_e57_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clempagetipotransmissao->rotulo->label("e57_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empagetipotransmissao.php")==true){
@@ -122,12 +122,12 @@ $clempagetipotransmissao->rotulo->label("e57_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

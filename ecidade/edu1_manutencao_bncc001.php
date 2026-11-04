@@ -132,12 +132,12 @@ require_once(modification("dbforms/db_funcoes.php"));
         </form>
     </div>
 
-    <div class="container" id="inserirObjConhecimento" style="">
+    <div class="container" id="inserirObjConhecimento">
         <div class="container">
             <fieldset style="width: 400px;">
                 <legend>Cadastrar Nova Habilidade / Objeto de Conhecimento</legend>
-                
-               
+
+
                 <table class="form-container">
                     <tr>
                         <td><label for="objetoConhecimento">Disciplina: </label></td>
@@ -353,7 +353,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     const containerModalEdicao = document.getElementById('ctnEdicao');
     const containerModalReferencial = document.getElementById('ctnReferencial');
     const editaObjConhecimento = document.getElementById('editaObjConhecimento');
-    
+
     /**
      * Função utilizada para fechar uma window aux
      * @param  windowAux instância da window
@@ -378,7 +378,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     windowEdicao.setShutDownFunction(() => {
         closeWindowAux(windowEdicao);
     });
-    
+
     const ctnEdicaoObj = document.querySelector("#ctnEdicaoObj");
     const windowEdicaoObj = new windowAux('windowEdicaoObj', 'Editar Objetos de Conhecimento', 1000, 600);
     windowEdicaoObj.setContent(ctnEdicaoObj);
@@ -462,7 +462,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     });
 
     gridEditaObj.addColumn('nome', {label: "Objeto de Conhecimento", width: '90%', align: 'center'});
-    
+
     gridEditaObj.addAction('Editar', 'Editar', (event, linha) => {
         document.querySelector('#btnEditaObj').disabled = false;
         document.querySelector('#editaObjetoConhecimento').disabled = false;
@@ -471,7 +471,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     }, true, 'fa-edit');
 
     gridEditaObj.addAction('Excluir', 'Excluir', (event, linha) => {
-        const formData = new FormData();  
+        const formData = new FormData();
         var disciplina = document.querySelector('#editaDisciplina').value;
         var unidade_tematica = document.querySelector('#editaUndTematica').value;
         formData.append('acao', 'excluirObjetoConhecimento');
@@ -489,7 +489,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     }
                 }
                 await setCollectionObjetosConhecimento(unidade_tematica, disciplina);
-                gridEditaObj.reload(); 
+                gridEditaObj.reload();
             });
         }
     }, true, 'fa-trash');
@@ -514,8 +514,8 @@ require_once(modification("dbforms/db_funcoes.php"));
         formData.append('ed148_unidade_tematica', unidade_tematica);
         formData.append('acao', 'editarObjetoConhecimento');
         formData.append('novoNome', document.querySelector('#editaObjetoConhecimento').value);
-       
-       
+
+
         HttpClient.post('edu4_manutencao_bncc.RPC.php', {body: formData}).then(async response => {
                 gridEditaObj.clear();
                 if (response.erro) {
@@ -532,7 +532,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 document.querySelector('#editaObjetoConhecimento').value = "";
                 document.querySelector('#editaObjetoConhecimento').disabled = true;
                 document.querySelector('#btnEditaObj').disabled = true;
-                gridEditaObj.reload(); 
+                gridEditaObj.reload();
         });
     });
 
@@ -592,7 +592,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         document.querySelector('#editaDisciplina').value = cboDisciplina.value;
         document.querySelector('#editaUndTematica').value = cboUnidadeTematica.value;
         await setCollectionObjetosConhecimento(cboUnidadeTematica.value, cboDisciplina.value);
-        gridEditaObj.reload();  
+        gridEditaObj.reload();
         gridEditaObj.show(ctnGridEditaObj);
 
     })
@@ -619,7 +619,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             alert("Descreva a Habilidade");
             return;
         }
-        
+
         for (var i = 0; i < values.length; i++) {
             etapas.push(values[i].value);
         }
@@ -627,8 +627,8 @@ require_once(modification("dbforms/db_funcoes.php"));
             alert("Selecione Pelo Menos um Ano / Etapa");
             return;
         }
-        
-        habilidade.objetoConhecimento = novoObjetoConhecimento.value == "" ? cboObjConhecimento.value : novoObjetoConhecimento.value;
+
+        habilidade.objetoConhecimento = novoObjetoConhecimento.value == "" ? removeNovaLinha(cboObjConhecimento.value) : removeNovaLinha(novoObjetoConhecimento.value);
         let c = 0;
         collectionEditaObj.itens.each(item =>{
             if(item.nome == novoObjetoConhecimento.value) {
@@ -644,7 +644,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         habilidade.disciplina = disciplina.value;
         habilidade.codigo = codigo.value;
         habilidade.unidadeTematica  = unidadeTematica.value;
-        habilidade.habilidade = `(${codigoHabilidade.value}) ${descricao.value}`;
+        habilidade.habilidade = `(${codigoHabilidade.value}) ${removeNovaLinha(descricao.value)}`;
         habilidade.etapas = etapas.join(',');
         formData.append('habilidades[]', JSON.stringify(habilidade));
         formData.append('novaHabilidade', true);
@@ -674,8 +674,8 @@ require_once(modification("dbforms/db_funcoes.php"));
                 codigoHabilidade: habilidade.codigo,
                 codigo: habilidade.codigo,
                 codigoReferencial: habilidade.codigo,
-                habilidade: habilidade.habilidade,
-                objetoConhecimento: habilidade.objetoConhecimento,
+                habilidade: removeNovaLinha(habilidade.habilidade),
+                objetoConhecimento: removeNovaLinha(habilidade.objetoConhecimento),
                 etapa: etapas.join(','),
                 ensino: cboEnsino.value,
                 ano: cboAno.value
@@ -705,9 +705,9 @@ require_once(modification("dbforms/db_funcoes.php"));
             fechaModalObjConhecimento();
             autalizaGridHabilidades();
         });
-        
+
     })
-    
+
      windowObjConhecimento.setShutDownFunction(() => {
         fechaModalObjConhecimento();
     });
@@ -766,7 +766,6 @@ require_once(modification("dbforms/db_funcoes.php"));
             order: false,
             height: 300
         });
-
         gridHabilidades.getGrid().setCheckbox(0);
         gridHabilidades.addColumn('codigo', {label: "Código", width: '15%', align: 'center'});
         gridHabilidades.addColumn('habilidade_editada',
@@ -799,7 +798,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     }
                     inputCodigoHiden.value = linha.codigo;
                     inputCodigo.value = linha.codigo;
-                    txtHabilidadeEditada.value = linha.habilidade_editada;
+                    txtHabilidadeEditada.value = removeNovaLinha(linha.habilidade_editada);
                     btnRestaurar.style.display = 'none';
 
                     btnEditar.onclick = () => {
@@ -815,7 +814,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     }
 
                     inputCodigo.value = linha.codigo;
-                    txtHabilidadeEditada.value = linha.habilidade_editada;
+                    txtHabilidadeEditada.value = removeNovaLinha(linha.habilidade_editada);
 
                     btnRestaurar.onclick = () => {
                         txtHabilidadeEditada.value = linha.habilidade;
@@ -832,7 +831,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 }, true, 'fa-edit');
             }
         }
-    
+
         if (configuracao.value === 3) {
             gridHabilidades.addAction('Adicionar Sub-nível', 'Adicionar Sub-nível', (event, linha) => {
                 if (isEnsinoFundamental()) {
@@ -941,7 +940,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         if (!habilidade.habilidadeComentada) {
             habilidade.habilidadeComentada = criaHabilidadeComentada(habilidade);
         }
-
+        txtHabilidadeEditada.value = removeNovaLinha(txtHabilidadeEditada.value);
         habilidade.habilidade_editada = txtHabilidadeEditada.value;
         habilidade.habilidadeComentada.habilidade = txtHabilidadeEditada.value;
         if (configuracao.value == 3) {
@@ -958,7 +957,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         }
         if (configuracao.value != 3) {
             verificaSeHabilidadeFoiEditada(habilidade);
-        } 
+        }
         gridHabilidades.reload();
         closeWindowAux(windowEdicao);
     }
@@ -1086,7 +1085,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             if (response.erro) {
                 alert(response.mensagem);
                 return;
-            }         
+            }
             filtros = response.filtros;
             montaFiltrosEnsinoFundamental();
         });
@@ -1107,7 +1106,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             resetSelect(cboObjConhecimento, 'Selecione');
             resetSelect(cboObjetoConhecimento, 'Selecione')
             if (cboDisciplina.value === '') {
-                editaObjConhecimento.style.display = "none"; 
+                editaObjConhecimento.style.display = "none";
                 return;
             }
 
@@ -1135,7 +1134,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             unidadeTematica.objetos.map((objeto) => {
                 cboObjConhecimento.add(new Option(objeto.nome, objeto.nome));
                 cboObjetoConhecimento.add(new Option(objeto.nome, objeto.nome));
-            }); 
+            });
         });
     };
     const filtraArray = (dados, elementoComparacao) => {
@@ -1160,7 +1159,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         formData.append("ano", cboAno.value);
         await HttpClient.post('edu4_manutencao_bncc.RPC.php', {body: formData}).then(response => {
             response.filtros.map(disc => {
-                if (disc.nome == disciplina) { 
+                if (disc.nome == disciplina) {
                     disc.unidades_tematicas.map(undTematica => {
                        if(undTematica.nome == unidadeTematica) {
                             undTematica.objetos.map(objt => {
@@ -1211,13 +1210,13 @@ require_once(modification("dbforms/db_funcoes.php"));
                     habilidade.habilidade_editada = habilidade.habilidadeComentada.habilidade;
                     habilidade.etapas_editada = habilidade.habilidadeComentada.etapa;
                 }
-            
+
                 if (configuracao.value == 3) {
                     habilidade.habilidade_editada = habilidade.habilidade;
                     habilidade.etapas_editada = habilidade.etapa;
-                } 
+                }
 
-            
+
                 if (configuracao.value != 3) {
                     verificaSeHabilidadeFoiEditada(habilidade);
                 }
@@ -1297,7 +1296,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             } else {
                 linha.habilidadeComentada.etapas = linha.etapas;
                 linha.etapas_editada = linha.etapas;
-              
+
             }
         }
         if (configuracao.value == 2) {
@@ -1432,11 +1431,13 @@ require_once(modification("dbforms/db_funcoes.php"));
             codigoHabilidade: inputCodigoHabilidade.value,
             codigo: inputCodigoReferencial.value,
             codigoReferencial: inputCodigoReferencial.value,
-            habilidade: txtHabilidadeReferencial.value,
+            habilidade: removeNovaLinha(txtHabilidadeReferencial.value),
             etapa: buscaEtapasSelecionadas(),
             ensino: cboEnsino.value,
-            ano: cboAno.value
+            ano: cboAno.value,
+            objetoConhecimento: cboObjetoConhecimento.value
         };
+        
         const formData = new FormData();
         formData.append('acao', 'adicionarReferencial');
         formData.append('novaHabilidade', JSON.stringify(novaHabilidade));
@@ -1478,6 +1479,10 @@ require_once(modification("dbforms/db_funcoes.php"));
             closeWindowAux(windowReferencial, 'msgBoardHabilidades');
             gridHabilidades.reload();
 
+    }
+
+    const removeNovaLinha = (texto) => {
+        return texto.replace(/(\n|\r)+/g ," ");
     }
 
     inputToUpperCase(inputCodigoReferencial);

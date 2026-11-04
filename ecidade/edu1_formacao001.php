@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -130,7 +130,7 @@ db_fieldsmemory($result11,0);
 <link type="text/css" href="assets/bootstrap-table/css/bootstrap.min.css" rel="stylesheet">
 <link href="estilos.css" rel="stylesheet" type="text/css">
 
-<?
+<?php
   db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                dbViewAvaliacoes.classe.js,dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,
                datagrid.widget.js");
@@ -147,7 +147,7 @@ db_fieldsmemory($result11,0);
    <fieldset style="width:95%"><legend><b>Formação do Recurso Humano</b></legend>
    <?php
     ?>
-    <?include(modification("forms/db_frmformacao.php"));?>
+    <?php include(modification("forms/db_frmformacao.php"));?>
    </fieldset>
    </center>
   </td>
@@ -158,9 +158,9 @@ db_fieldsmemory($result11,0);
 <script>
 js_tabulacaoforms("form1","ed27_i_cursoformacao",true,1,"ed27_i_cursoformacao",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
-  
+
     try {
       db_query("begin");
       $arquivoFormacao = "";
@@ -197,7 +197,7 @@ if (isset($incluir)) {
       db_query("rollback");
       print_r($oErro->getMessage());
       db_msgbox($oErro->getMessage());
-    }  
+    }
 
   if ($clformacao->erro_status == "0") {
 

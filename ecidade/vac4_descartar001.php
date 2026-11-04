@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -137,7 +137,7 @@ if (isset($vc19_i_codigo)) {
   </tr>
 </table>
 <br><br>
-<?
+<?php
 if ((isset($incluir)) || (isset($alterar)) || (isset($excluir))) {
 
   if ($oDaoVacDescarte->erro_status == "0") {
@@ -169,7 +169,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
       <center>
-        <?
+        <?php
         require_once(modification("forms/db_frmvac_descartar.php"));
         ?>
       </center>

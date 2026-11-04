@@ -58,13 +58,13 @@ class cl_orcelemento {
                  o56_orcado = bool = Orçado
                  ";
    //funcao construtor da classe
-   function cl_orcelemento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcelemento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_orcelemento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o56_codele = ($this->o56_codele == ""?@$GLOBALS["HTTP_POST_VARS"]["o56_codele"]:$this->o56_codele);
        $this->o56_anousu = ($this->o56_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o56_anousu"]:$this->o56_anousu);
@@ -87,7 +87,7 @@ class cl_orcelemento {
      }
    }
    // funcao para inclusao
-   function incluir ($o56_codele,$o56_anousu){
+   public function incluir ($o56_codele,$o56_anousu){
       $this->atualizacampos();
      if($this->o56_elemento == null ){
        $this->erro_sql = " Campo Elemento nao Informado.";
@@ -178,7 +178,7 @@ class cl_orcelemento {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o56_codele=null,$o56_anousu=null) {
+   public function alterar ($o56_codele=null,$o56_anousu=null) {
       $this->atualizacampos();
      $sql = " update orcelemento set ";
      $virgula = "";
@@ -292,7 +292,7 @@ class cl_orcelemento {
      }
    }
    // funcao para exclusao
-   function excluir ($o56_codele=null,$o56_anousu=null,$dbwhere=null) {
+   public function excluir ($o56_codele=null,$o56_anousu=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o56_codele,$o56_anousu));
      }else{
@@ -350,7 +350,7 @@ class cl_orcelemento {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -373,7 +373,7 @@ class cl_orcelemento {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $o56_codele=null,$o56_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o56_codele=null,$o56_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -415,7 +415,7 @@ class cl_orcelemento {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $o56_codele=null,$o56_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o56_codele=null,$o56_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -456,7 +456,7 @@ class cl_orcelemento {
      }
      return $sql;
   }
-   function db_verifica_elemento($elemento){
+   public function db_verifica_elemento($elemento){
     $nivel = db_le_mae($elemento,true);
     if($nivel == 1){
       return true;
@@ -509,7 +509,7 @@ class cl_orcelemento {
     $this->erro_msg = 'Elemento válido!';
     return true;
   }
-   function db_verifica_elemento_exclusao($elemento,$o56_anousu=null){
+   public function db_verifica_elemento_exclusao($elemento,$o56_anousu=null){
    	 if ($o56_anousu==null){
    		 $o56_anousu = db_getsession("DB_anousu");
    	 }
@@ -559,7 +559,7 @@ class cl_orcelemento {
       return true;
   }
 
-   function sql_query_def ( $o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_def ( $o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -593,7 +593,7 @@ class cl_orcelemento {
      }
      return $sql;
   }
-   function sql_query_exercicio ( $anousu, $instits,$o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_exercicio ( $anousu, $instits,$o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
   	 /*
   	  *  monta lista das instituições
   	  */
@@ -639,7 +639,7 @@ class cl_orcelemento {
      return analiseQueryPlanoOrcamento($sql);
   }
 
-   function sql_query_nov ( $o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_nov ( $o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -673,7 +673,7 @@ class cl_orcelemento {
      }
      return analiseQueryPlanoOrcamento($sql);
   }
-   function sql_query_pcmater ( $o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pcmater ( $o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -708,7 +708,7 @@ class cl_orcelemento {
      }
      return $sql;
   }
-   function sql_query_razao($o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_razao($o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -752,7 +752,7 @@ class cl_orcelemento {
      return $sql;
   }
 
-  function sql_query_conplano ($anousu, $instits,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_conplano ($anousu, $instits,$campos="*",$ordem=null,$dbwhere=""){
   	 /*
   	  *  monta lista das instituições
   	  */
@@ -790,7 +790,7 @@ class cl_orcelemento {
      return analiseQueryPlanoOrcamento($sql);
   }
 
-  function sql_query_conplanoreduz ($anousu, $campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_conplanoreduz ($anousu, $campos="*",$ordem=null,$dbwhere=""){
   	 /*
   	  *  monta lista das instituições
   	  */
@@ -833,7 +833,7 @@ class cl_orcelemento {
      return analiseQueryPlanoOrcamento($sql);
   }
 
-  function sql_query_contascomreduzido ($anousu, $campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_contascomreduzido ($anousu, $campos="*",$ordem=null,$dbwhere=""){
     /*
      *  monta lista das instituições
     */
@@ -876,7 +876,7 @@ class cl_orcelemento {
       return analiseQueryPlanoOrcamento($sql);
   }
 
-  function sql_query_desdobramento($o56_codele=null, $o56_anousu= null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_desdobramento($o56_codele=null, $o56_anousu= null,$campos="*",$ordem=null,$dbwhere="") {
   	 /*
   	  *  monta lista das instituições
   	  */
@@ -919,7 +919,7 @@ class cl_orcelemento {
      return analiseQueryPlanoOrcamento($sql);
   }
 
-  function sql_query_desdobramento_liberados($o56_codele=null, $o56_anousu= null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_desdobramento_liberados($o56_codele=null, $o56_anousu= null,$campos="*",$ordem=null,$dbwhere="") {
 
      $sql = "select ";
      if($campos != "*" ){
@@ -966,7 +966,7 @@ class cl_orcelemento {
      return analiseQueryPlanoOrcamento($sql);
   }
 
-  function sql_query_dotacao($o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_dotacao($o56_codele=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
@@ -1006,7 +1006,7 @@ class cl_orcelemento {
   }
 
 
-  function sql_query_plano_contas_execucao($anousu, $campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_plano_contas_execucao($anousu, $campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
     if($campos != "*" ) {
@@ -1046,7 +1046,7 @@ class cl_orcelemento {
     }
     return analiseQueryPlanoOrcamento($sql);
   }
-  function sql_query_plano_contas_dotacao($anousu, $campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_plano_contas_dotacao($anousu, $campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
     if($campos != "*" ) {
@@ -1092,7 +1092,7 @@ class cl_orcelemento {
    * @param string $dbwhere
    * @return string
    */
-  function sql_query_despesa_orcamento($campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_despesa_orcamento($campos="*",$ordem=null,$dbwhere=""){
 
     $sql  = "select ";
     $sql .= $campos;

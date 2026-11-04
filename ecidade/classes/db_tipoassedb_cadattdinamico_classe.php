@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE tipoassedb_cadattdinamico
 class cl_tipoassedb_cadattdinamico { 
@@ -24,13 +24,13 @@ class cl_tipoassedb_cadattdinamico {
                  h79_tipoasse = int4 = Sequencial do Tipo assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassedb_cadattdinamico() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassedb_cadattdinamico"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -39,7 +39,7 @@ class cl_tipoassedb_cadattdinamico {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h79_db_cadattdinamico = ($this->h79_db_cadattdinamico == ""?@$GLOBALS["HTTP_POST_VARS"]["h79_db_cadattdinamico"]:$this->h79_db_cadattdinamico);
        $this->h79_tipoasse = ($this->h79_tipoasse == ""?@$GLOBALS["HTTP_POST_VARS"]["h79_tipoasse"]:$this->h79_tipoasse);
@@ -49,7 +49,7 @@ class cl_tipoassedb_cadattdinamico {
      }
    }
    // funcao para Inclusão
-   function incluir ($h79_db_cadattdinamico,$h79_tipoasse){ 
+   public function incluir ($h79_db_cadattdinamico,$h79_tipoasse){ 
       $this->atualizacampos();
        $this->h79_db_cadattdinamico = $h79_db_cadattdinamico; 
        $this->h79_tipoasse = $h79_tipoasse; 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 if(!isset($automatico)){
 ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
@@ -90,21 +90,21 @@ if(!isset($automatico)){
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
 }
 ?>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmdb_cadhelp.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 if(!isset($automatico)){
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }else{
@@ -125,7 +125,7 @@ if(!isset($automatico)){
 ?>
 </body>
 </html>
-<?
+<?php
 if($cldb_cadhelp->erro_status=="0"){
   $cldb_cadhelp->erro(true,false);
   $db_botao=true;

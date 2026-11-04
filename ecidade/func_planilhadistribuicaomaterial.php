@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clplanilhadistribuicaomaterial->rotulo->label("pd03_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lpd03_sequencial?></label></td>
-          <td><? db_input("pd03_sequencial",10,$Ipd03_sequencial,true,"text",4,"","chave_pd03_sequencial"); ?></td>
+          <td><?php db_input("pd03_sequencial",10,$Ipd03_sequencial,true,"text",4,"","chave_pd03_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lpd03_sequencial?></label></td>
-          <td><? db_input("pd03_sequencial",10,$Ipd03_sequencial,true,"text",4,"","chave_pd03_sequencial");?></td>
+          <td><?php db_input("pd03_sequencial",10,$Ipd03_sequencial,true,"text",4,"","chave_pd03_sequencial");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clplanilhadistribuicaomaterial->rotulo->label("pd03_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_planilhadistribuicaomaterial.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_planilhadistribuicaomaterial.php")==true){
@@ -78,12 +78,12 @@ $clplanilhadistribuicaomaterial->rotulo->label("pd03_sequencial");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

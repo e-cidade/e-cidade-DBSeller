@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -103,7 +103,7 @@ if (isset($ov03_numcgm) && trim($ov03_numcgm) != "" && $z01_numcgm == ""){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 	db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
 	db_app::load('estilos.css,grid.style.css');
 ?>
@@ -229,7 +229,7 @@ function js_retornoAlteraCgm(oAjax){
 </table>
 
 <table width="790" border="0" cellspacing="0" cellpadding="0" align="center">
-<? 
+<?php 
 	if (!$cidadao_false){
 ?>
   <tr align="center"> 
@@ -240,11 +240,11 @@ function js_retornoAlteraCgm(oAjax){
     	
 	    <table cellspacing = 1 align="left" width="790" style="border: 2px inset white;">
 	    	<tr bgcolor="#EEEFF2" align="center">
-	    		<? 
+	    		<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="button" onclick="js_marcar();" value="M" id="btnMarcar" name="btnMarcar" style="font-weight: bold;"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left" width="80" height="25">&nbsp;</td>
@@ -252,30 +252,30 @@ function js_retornoAlteraCgm(oAjax){
 	    		<td align="center"><b>CGM</b></td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    		<? 
+	    		<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center" height="25"><input type="checkbox" id="chkNome"  name="chkNome" class="chkBox" value="<?=trim($ov02_nome);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Nome:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_nome) != trim($z01_nome)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$ov02_nome?></td>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$z01_nome?></td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center" height="25"><input type="checkbox" id="chkEndereco" name="chkEndereco" class="chkBox" value="<?=trim($ov02_endereco);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Endereço:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_endereco." nº".$ov02_numero) != trim($z01_ender." nº".$z01_numero)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>">
@@ -287,43 +287,43 @@ function js_retornoAlteraCgm(oAjax){
 	    		</td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkNumero" name="chkNumero" class="chkBox" value="<?=trim($ov02_numero);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Número:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_numero) != trim($z01_numero)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>">
-	    			<? echo $ov02_endereco != "" ? "$ov02_numero" : ''?></td>
+	    			<?php echo $ov02_endereco != "" ? "$ov02_numero" : ''?></td>
 	    		<td align="left" bgcolor="<?=$background?>">
-	    			<? echo $z01_ender != "" ? "$z01_numero" : '' ?>
+	    			<?php echo $z01_ender != "" ? "$z01_numero" : '' ?>
 	    		</td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center" height="25"><input type="checkbox" id="chkCompl" name="chkCompl" class="chkBox" value="<?=trim($ov02_compl);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Complemento:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_compl) != trim($z01_compl)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>">
-	    			<? echo $ov02_compl ?></td>
+	    			<?php echo $ov02_compl ?></td>
 	    		<td align="left" bgcolor="<?=$background?>">
-	    			<? echo $z01_compl ?>
+	    			<?php echo $z01_compl ?>
 	    		</td>
 	    	</tr>
 	    <tr bgcolor="#FFFFFF">
-	    		<? 
+	    		<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				if($ov07_ddd == 0){
 	    					$telefone = $ov07_numero;
@@ -332,11 +332,11 @@ function js_retornoAlteraCgm(oAjax){
 	    				}
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkTelefone" name="chkTelefone" class="chkBox" value="<?=$telefone;?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Telefone:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (str_replace(" ","",$ov07_ddd.$ov07_numero) != str_replace(" ","",$z01_telef)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    			if($ov07_ddd == 0){
 	    					$telefone = $ov07_numero;
@@ -348,105 +348,105 @@ function js_retornoAlteraCgm(oAjax){
 	    		<td align="left" bgcolor="<?=$background?>"><?=$z01_telef ?></td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkEmail" name="chkEmail" class="chkBox" value="<?=trim($ov08_email);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>E-Mail:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov08_email) != trim($z01_email)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$ov08_email ?></td>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$z01_email ?></td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkCNPJCPF" name="chkCNPJCPF" class="chkBox" value="<?=trim($ov02_cnpjcpf);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>CNPJ/CPF:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_cnpjcpf) != trim($z01_cgccpf)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$ov02_cnpjcpf ?></td>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$z01_cgccpf ?></td>
 	    	</tr>
         <tr bgcolor="#FFFFFF">
-        <? 
+        <?php 
             if(isset($importa)&& $importa=='true'){
               ?>
               <td align="center"  height="25"><input type="checkbox" id="chkIdent" name="chkIdent" class="chkBox" value="<?=trim($ov02_ident);?>"></td>
-              <?
+              <?php
             }
           ?>
           <td align="left"><b>Identidade:</b></td>
-          <? 
+          <?php 
             $background = (trim($ov02_ident) != trim($z01_ident)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
           ?>
           <td align="left" bgcolor="<?=$background?>"><?=$ov02_ident ?></td>
           <td align="left" bgcolor="<?=$background?>"><?=$z01_ident ?></td>
         </tr>	    	
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkMunic" name="chkMunic" class="chkBox" value="<?=trim($ov02_munic);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Município:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_munic) != trim($z01_munic)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$ov02_munic ?></td>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$z01_munic ?></td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkUF" name="chkUF" class="chkBox" value="<?=trim($ov02_uf);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>UF:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_uf) != trim($z01_uf)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$ov02_uf ?></td>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$z01_uf ?></td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkBairro" name="chkBairro" class="chkBox" value="<?=trim($ov02_bairro);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Bairro:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_bairro) != trim($z01_bairro)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$ov02_bairro ?></td>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$z01_bairro ?></td>
 	    	</tr>
 	    	<tr bgcolor="#FFFFFF">
-	    	<? 
+	    	<?php 
 	    			if(isset($importa)&& $importa=='true'){
 	    				?>
 	    				<td align="center"  height="25"><input type="checkbox" id="chkCep" name="chkCep" class="chkBox" value="<?=trim($ov02_cep);?>"></td>
-	    				<?
+	    				<?php
 	    			}
 	    		?>
 	    		<td align="left"><b>Cep:</b></td>
-	    		<? 
+	    		<?php 
 	    			$background = (trim($ov02_cep) != trim($z01_cep)) && $ov03_numcgm != ""  ? '#FFFF66' : '';
 	    		?>
 	    		<td align="left" bgcolor="<?=$background?>"><?=$ov02_cep ?></td>
@@ -460,7 +460,7 @@ function js_retornoAlteraCgm(oAjax){
   </tr> 
   <tr align="center">
   	<td height="40" valign="middle">
-  		<? 
+  		<?php 
   		if(isset($importa) && $importa == 'true') {
   		?>
 	  		<input type="hidden" name="ov02_sequencial" id="ov02_sequencial" value="<?=$ov02_sequencial ?>">
@@ -468,7 +468,7 @@ function js_retornoAlteraCgm(oAjax){
 				<input type="hidden" name="ov03_numcgm" id="ov03_numcgm" value="<?=$ov03_numcgm ?>">
 				<input type="hidden" name="z01_cpf" id="z01_cpf" value="<?=trim($ov02_cnpjcpf);?>">
 	  		<input type="button" name="importar" value="Importar dados selecionados" onclick="js_importaDadosSelecionados();">
-  		<?
+  		<?php
   		}
 }else {
   		?>
@@ -477,7 +477,7 @@ function js_retornoAlteraCgm(oAjax){
   	</tr>	
   	<tr align="center">
 		<td>
-<?
+<?php
 }
 ?>
   		<input type="button" name="fechar" value="Fechar" onclick="parent.db_iframe.hide()">

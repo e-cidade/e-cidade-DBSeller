@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,11 +77,11 @@ function js_relatorio(){
   <tr> 
     <td align="right" nowrap><strong>Demitidos entre:</strong></td>
     <td align="left"  nowrap>
-      <?
+      <?php
       db_inputdata('datai',@$k00_dtoper_dia,@$k00_dtoper_mes,@$k00_dtoper_ano,true,'text',1,"")
       ?>
       &nbsp;<strong>e</strong>&nbsp;
-      <?
+      <?php
       db_inputdata('dataf',@$k00_dtoper_dia,@$k00_dtoper_mes,@$k00_dtoper_ano,true,'text',1,"")
       ?>
     </td>
@@ -90,7 +90,7 @@ function js_relatorio(){
     <td align="right" nowrap title="Ordem para a emissão do relatório" ><strong>Ordem : </strong>
     </td>
     <td align="left">
-    <?
+    <?php
      $xx = array("a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão");
      db_select('ordem',$xx,true,4,"");
     ?>
@@ -104,7 +104,7 @@ function js_relatorio(){
 </table>
 </form>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

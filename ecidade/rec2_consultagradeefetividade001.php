@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
   db_app::load("scripts.js");
   db_app::load("datagrid.widget.js");
   db_app::load("strings.js");
@@ -60,7 +60,7 @@ require_once(modification("dbforms/db_funcoes.php"));
           <strong>Competência:</strong>
         </td>
         <td>
-          <?
+          <?php
           $anocompetencia = db_anofolha();
           $mescompetencia = db_mesfolha();
           db_input('anocompetencia', 4, 1, true, 'text', 1);
@@ -74,7 +74,7 @@ require_once(modification("dbforms/db_funcoes.php"));
           <strong>Filtro:</strong>
         </td>
         <td>
-          <?
+          <?php
           $aFiltro = array('' => 'Nenhum', 'lotacao' => 'Lotação', 'matricula' => 'Matrícula');
           db_select('filtro', $aFiltro, true, 1, 'onchange="js_mudaTela()"');
           ?>

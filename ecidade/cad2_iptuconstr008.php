@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
       <td nowrap width="50%">
-<?
+<?php
 $aux1 = new cl_arquivo_auxiliar;
 $aux1->cabecalho = "<strong>QUE NÃO CONTENHAM ESTAS RUAS</strong>";
 $aux1->codigo = "j14_codigo";

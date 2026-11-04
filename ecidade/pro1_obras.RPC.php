@@ -103,7 +103,7 @@ switch ($oParam->acao) {
         if ($oParam->ob01_nomeobra == '') {
             throw new Exception('Campo Nome da obra nao informado.');
         } else {
-            $clobras->ob01_nomeobra = db_stdClass::normalizeStringJsonEscapeString($oParam->ob01_nomeobra);
+            $clobras->ob01_nomeobra = trim(db_stdClass::normalizeStringJsonEscapeString($oParam->ob01_nomeobra));
         }
         
         if ($oParam->ob01_dtobra == '') {
@@ -115,8 +115,8 @@ switch ($oParam->acao) {
         $clobras->ob01_tiporesp = $oParam->ob01_tiporesp;
         $clobras->ob01_regular = $oParam->ob01_regular;
         $clobras->ob01_processo = $oParam->ob01_processo;
-        $clobras->ob01_nometitularproc = db_stdClass::normalizeStringJsonEscapeString($oParam->z01_nome);
-        $clobras->ob01_obs = db_stdClass::normalizeStringJsonEscapeString($oParam->ob01_obs);
+        $clobras->ob01_nometitularproc = trim(db_stdClass::normalizeStringJsonEscapeString($oParam->z01_nome));
+        $clobras->ob01_obs = trim(db_stdClass::normalizeStringJsonEscapeString($oParam->ob01_obs));
         $clobras->ob01_responsavelprojeto = $oParam->ob15_sequencial;
         $clobras->ob01_arquitetoobra = $oParam->ob01_arquitetoobra;
         $clobras->ob01_numeroartprojeto = $oParam->ob01_numeroartprojeto;

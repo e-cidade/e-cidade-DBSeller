@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("k15_numcgm");
        <?=@$Lk22_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k22_sequencial',10,$Ik22_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk22_modcarnepadrao?>">
-       <?
+       <?php
        db_ancora(@$Lk22_modcarnepadrao,"js_pesquisak22_modcarnepadrao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k22_modcarnepadrao',10,$Ik22_modcarnepadrao,true,'text',$db_opcao," onchange='js_pesquisak22_modcarnepadrao(false);'")
 ?>
-       <?
+       <?php
 db_input('k48_cadmodcarne',10,$Ik48_cadmodcarne,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk22_cadban?>">
-       <?
+       <?php
        db_ancora(@$Lk22_cadban,"js_pesquisak22_cadban(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k22_cadban',6,$Ik22_cadban,true,'text',$db_opcao," onchange='js_pesquisak22_cadban(false);'")
 ?>
-       <?
+       <?php
 db_input('k15_numcgm',10,$Ik15_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('k15_numcgm',10,$Ik15_numcgm,true,'text',3,'')
        <?=@$Lk22_datafim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k22_datafim',@$k22_datafim_dia,@$k22_datafim_mes,@$k22_datafim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_inputdata('k22_datafim',@$k22_datafim_dia,@$k22_datafim_mes,@$k22_datafim_ano
        <?=@$Lk22_dataini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k22_dataini',@$k22_dataini_dia,@$k22_dataini_mes,@$k22_dataini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_modcarnepadraocobranca.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

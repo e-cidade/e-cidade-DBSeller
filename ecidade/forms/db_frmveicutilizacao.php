@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,14 +35,14 @@ $clrotulo->label("ve19_veiccadconvenio");
 $clrotulo->label("ve17_descr");
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
    db_input("ve15_veiculos",10,0,true,"hidden",3);
    db_input("sequencial",   10,0,true,"hidden",3);
 ?>
 <table class="container" border="0" width="790">
   <tr>
     <td nowrap align="center" title="<?=@$Tve15_veiccadutilizacao?>">
-    <? 
+    <?php 
        db_ancora(@$Lve15_veiccadutilizacao,"js_pesquisave15_veiccadutilizacao(true);",$db_opcao);
        db_input('ve15_veiccadutilizacao',10,$Ive15_veiccadutilizacao,true,'text',$db_opcao,"onChange='js_pesquisave15_veiccadutilizacao(false);'");
        db_input('ve14_descr',40,0,true,'text',3); 
@@ -51,34 +51,34 @@ $clrotulo->label("ve17_descr");
   </tr>
   <tr id="bens" style="display:none;">
     <td nowrap align="right" title="<?=@$Tv16_bens?>">
-    <?
+    <?php
        db_ancora(@$Lve16_bens,"js_pesquisave16_bens(true);",$db_opcao);
     ?>
     </td>
     <td nowrap>
-    <?
+    <?php
        db_input('ve16_bens',10,$Ive16_bens,true,'text',$db_opcao,"onChange='js_pesquisave16_bens(false);'"); 
     ?>
     </td>
     <td nowrap>
-    <? 
+    <?php 
        db_input('t52_descr',40,0,true,'text',3); 
     ?>
     </td>
   </tr>
   <tr id="convenio" style="display:none;">
     <td nowrap align="right" title="<?=@$Tv19_veiccadconvenio?>">
-    <?
+    <?php
        db_ancora(@$Lve19_veiccadconvenio,"js_pesquisave19_veiccadconvenio(true);",$db_opcao);
     ?>
     </td>
     <td nowrap>
-    <?
+    <?php
        db_input('ve19_veiccadconvenio',10,$Ive19_veiccadconvenio,true,'text',$db_opcao,"onChange='js_pesquisave19_veiccadconvenio(false);'"); 
     ?>
     </td>
     <td nowrap>
-    <? 
+    <?php 
        db_input('ve17_descr',40,0,true,'text',3); 
     ?>
     </td>
@@ -90,18 +90,18 @@ $clrotulo->label("ve17_descr");
           value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
           <?=($db_botao==false?"disabled":"")?> 
        >
-       <?
+       <?php
           if ($db_opcao != 1) {
        ?>
          <input name="novo" id="novo" type="submit" value="Novo">
-       <?
+       <?php
           }
        ?>
     </td>
   </tr>	
   <tr>
     <td nowrap colspan="3">
-    <?
+    <?php
 	     $chavepri = array ("ve15_sequencial"=>@$ve15_sequencial);
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveicutilizacao->sql_query_uso(null,"distinct ve15_sequencial,ve15_veiccadutilizacao,ve14_descr,t52_descr,ve17_descr",null,"ve15_veiculos = $ve15_veiculos");

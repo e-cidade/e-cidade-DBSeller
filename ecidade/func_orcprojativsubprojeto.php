@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clorcprojativsubprojeto->rotulo->label("o99_orcsubprojeto");
               <?=$Lo99_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o99_sequencial",10,$Io99_sequencial,true,"text",4,"","chave_o99_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcprojativsubprojeto->rotulo->label("o99_orcsubprojeto");
               <?=$Lo99_orcsubprojeto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o99_orcsubprojeto",10,$Io99_orcsubprojeto,true,"text",4,"","chave_o99_orcsubprojeto");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcprojativsubprojeto->rotulo->label("o99_orcsubprojeto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcprojativsubprojeto.php")==true){
@@ -122,12 +122,12 @@ $clorcprojativsubprojeto->rotulo->label("o99_orcsubprojeto");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

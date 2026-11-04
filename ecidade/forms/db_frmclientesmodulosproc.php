@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,16 +60,16 @@ $at75_seqclimod = $sequencial;
 ?>
 <form name="form1" method="post" action="">
 <table border="0" width='100%'>
-<?
+<?php
 db_input('at75_seqclimod',6,$Iat75_seqclimod,true,'hidden',3,"");
 
 for($i=0;$i<pg_numrows($result);$i++){
   db_fieldsmemory($result,$i);
   $var1= "at75_codproced_".$codproced;
-  global $$var1;
+  global ${$var1};
   $$var1 = $codproced;
   $var2= "descrproced_".$codproced;
-  global $$var2;
+  global ${$var2};
   $$var2 = $descrproced;
   
   $sql = "select at75_data,at75_obs, at75_sequen
@@ -83,20 +83,20 @@ for($i=0;$i<pg_numrows($result);$i++){
   if(pg_numrows($res)>0){
     db_fieldsmemory($res,0);
     $var3= "at75_data_".$codproced;
-    global $$var3;
+    global ${$var3};
     $$var3 = $at75_data;
     $at75_data_dia = substr($at75_data,8,2);
     $at75_data_mes = substr($at75_data,5,2);
     $at75_data_ano = substr($at75_data,0,4);
     $var4= "at75_obs_".$codproced;
-    global $$var4;
+    global ${$var4};
     $$var4= $at75_obs;
   }else{
     $at75_data_dia = "";
     $at75_data_mes = "";
     $at75_data_ano = "";
     $var4= "at75_obs_".$codproced;
-    global $$var4;
+    global ${$var4};
     $$var4= "";
     $at75_sequen = 0;
   }
@@ -104,20 +104,20 @@ for($i=0;$i<pg_numrows($result);$i++){
 ?>
   <tr width="100%">
     <td> 
-    <?
+    <?php
     db_input('at75_codproced_'.$codproced,10,$Iat75_codproced,true,'text',3)
     ?>
-    <?
+    <?php
     db_input('descrproced_'.$codproced,40,$Idescrproced,true,'text',3,'')
     ?>
     </td>
     <td> 
-    <?
+    <?php
     db_inputdata('at75_data_'.$codproced,@$at75_data_dia,@$at75_data_mes,@$at75_data_ano,true,'text',$db_opcao,"")
     ?>
     </td>
     <td> 
-    <?
+    <?php
     db_textarea('at75_obs_'.$codproced,1,50,$Iat75_obs,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -127,7 +127,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     <input name="at76_sequen_<?=$codproced?>" value="<?=$at75_sequen?>" type="hidden">
     </td>
   </tr>
-<?
+<?php
 }
 ?>
   </table>

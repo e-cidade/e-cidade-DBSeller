@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -65,13 +65,13 @@ class cl_cancdebitos {
                  k20_depart = int8 = Departamento
                  ";
    //funcao construtor da classe
-   function cl_cancdebitos() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_cancdebitos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
 
      if ($this->k20_depart == null) {
        $this->k20_depart = db_getsession("DB_coddepto");
@@ -110,7 +110,7 @@ class cl_cancdebitos {
      }
    }
    // funcao para inclusao
-   function incluir ($k20_codigo){
+   public function incluir ($k20_codigo){
 
       $this->atualizacampos();
      if($this->k20_cancdebitostipo == null ){
@@ -288,7 +288,7 @@ class cl_cancdebitos {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k20_codigo=null) {
+   public function alterar ($k20_codigo=null) {
       $this->atualizacampos();
      $sql = " update cancdebitos set ";
      $virgula = "";
@@ -352,7 +352,7 @@ class cl_cancdebitos {
          return false;
        }
      }
-     if(trim($this->k20_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k20_data_dia"]) &&  
+     if(trim($this->k20_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k20_data_dia"]) &&
                                ($GLOBALS["HTTP_POST_VARS"]["k20_data_dia"] !="") ){
        $sql  .= $virgula." k20_data = '$this->k20_data' ";
        $virgula = ",";
@@ -491,7 +491,7 @@ class cl_cancdebitos {
      }
    }
    // funcao para exclusao
-   function excluir ($k20_codigo=null,$dbwhere=null) {
+   public function excluir ($k20_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k20_codigo));
      }else{
@@ -578,7 +578,7 @@ class cl_cancdebitos {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -602,10 +602,10 @@ class cl_cancdebitos {
       }
      return $result;
    }
-   function sql_pendentes($campos="*",$ordem="",$dbwhere=""){
+   public function sql_pendentes($campos="*",$ordem="",$dbwhere=""){
    $sql = "select ";
    if($campos != "*" ){
-    $campos_sql = split("#",$campos);
+    $campos_sql = explode("#",$campos);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];
@@ -632,7 +632,7 @@ class cl_cancdebitos {
    }
    if($ordem != null ){
     $sql .= " order by ";
-    $campos_sql = split("#",$ordem);
+    $campos_sql = explode("#",$ordem);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];
@@ -641,10 +641,10 @@ class cl_cancdebitos {
    }
    return $sql;
   }
-   function sql_pendentesproc($campos="*",$ordem="",$dbwhere=""){
+   public function sql_pendentesproc($campos="*",$ordem="",$dbwhere=""){
    $sql = "select ";
    if($campos != "*" ){
-    $campos_sql = split("#",$campos);
+    $campos_sql = explode("#",$campos);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];
@@ -676,7 +676,7 @@ class cl_cancdebitos {
    }
    if($ordem != null ){
     $sql .= " order by ";
-    $campos_sql = split("#",$ordem);
+    $campos_sql = explode("#",$ordem);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];
@@ -685,10 +685,10 @@ class cl_cancdebitos {
    }
    return $sql;
   }
-   function sql_query ( $k20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -713,7 +713,7 @@ class cl_cancdebitos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -722,10 +722,10 @@ class cl_cancdebitos {
      }
      return $sql;
   }
-   function sql_query_file ( $k20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -746,7 +746,7 @@ class cl_cancdebitos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -761,7 +761,7 @@ class cl_cancdebitos {
    *
    * @param boolean $cancdebitosissplan se a anulação é de uma planilha de retencao;
    */
-  function incluir_cancelamento( $cancdebitosissplan = true){
+  public function incluir_cancelamento( $cancdebitosissplan = true){
 
       // $cancdebitosissplan = Se grava na cancdebitosissplan...true: grava false: não grava
     //gravar na cancdebitos, cancdebitosreg, cancdebitosproc, cancdebitosprocreg
@@ -811,7 +811,7 @@ class cl_cancdebitos {
     //echo "<br> cancdebitosproc = ".$clcancdebitosproc->k23_codigo;
     $clcancdebitosprocreg = db_utils::getDao("cancdebitosprocreg");
     $clcancdebitosreg     = db_utils::getDao("cancdebitosreg");
-    $sqlarrecad = "select k00_receit from arrecad where k00_numpre = " . $this->numpre . " and k00_numpar=" . 
+    $sqlarrecad = "select k00_receit from arrecad where k00_numpre = " . $this->numpre . " and k00_numpar=" .
       $this->numpar;
     //echo "<br>".$sqlarrecad;
     $resultarrecad = db_query($sqlarrecad);
@@ -869,10 +869,10 @@ class cl_cancdebitos {
     }
   }
 
-   function sql_query_proc( $k20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_proc( $k20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -896,7 +896,7 @@ class cl_cancdebitos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,3 @@
-
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
@@ -98,7 +97,6 @@ $iInstituicaoSessao = db_getsession('DB_instit');
 $aSlipAutomatico = array();
 
 if (isset($atualizar)) {
-
   db_inicio_transacao();
   $sqlerro=false;
   $sCodigoRetornoGerado = urldecode($retornoarq);
@@ -383,7 +381,8 @@ if (!isset($db_opcao)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<script type="text/javascript" src="scripts/scripts.js"></script>
+<script type="text/javascript" src="scripts/strings.js"></script>
 <script>
     function verificaCampos(){
 
@@ -480,7 +479,7 @@ function js_atualizar(){
           <?php
 
             if (isset($e87_data) && trim($e87_data) != "") {
-              $arr_data = split("-",$e87_data);
+              $arr_data =explode("-",$e87_data);
               $data_proc_dia = $arr_data[2];
               $data_proc_mes = $arr_data[1];
               $data_proc_ano = $arr_data[0];

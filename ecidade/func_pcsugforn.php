@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clpcsugforn->rotulo->label("pc40_numcgm");
               <?=$Lpc40_solic?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc40_solic",10,$Ipc40_solic,true,"text",4,"","chave_pc40_solic");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpcsugforn->rotulo->label("pc40_numcgm");
               <?=$Lpc40_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc40_numcgm",10,$Ipc40_numcgm,true,"text",4,"","chave_pc40_numcgm");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clpcsugforn->rotulo->label("pc40_numcgm");
               <?=$Lpc40_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc40_numcgm",10,$Ipc40_numcgm,true,"text",4,"","chave_pc40_numcgm");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clpcsugforn->rotulo->label("pc40_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcsugforn.php")==true){
@@ -129,12 +129,12 @@ $clpcsugforn->rotulo->label("pc40_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

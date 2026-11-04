@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -47,7 +47,7 @@ $clprocavaliacao = new cl_procavaliacao;
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    if(!isset($pesquisa_chave)){
     $sql = $clprocavaliacao->sql_query("","ed41_i_codigo,ed09_c_descr","ed41_i_sequencia"," ed41_i_procedimento = $procedimento AND ed41_i_codigo not in ($periodos)");
     db_lovrot($sql,15,"()","",$funcao_js);

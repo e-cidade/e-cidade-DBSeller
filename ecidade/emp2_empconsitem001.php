@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -65,7 +65,7 @@ db_postmemory($HTTP_POST_VARS);
 function js_abre(){
    // js_OpenJanelaIframe('','db_iframe_orgao','func_saldoorcdotacao.php?coddot='+coddot,'pesquisa',true);
    obj = document.form1;
-   if (    (obj.e60_emiss1_dia.value !='') 
+   if (    (obj.e60_emiss1_dia.value !='')
         && (obj.e60_emiss2_dia.value !='')
         && (obj.e60_emiss1_mes.value !='')
         && (obj.e60_emiss2_mes.value !='')
@@ -76,9 +76,9 @@ function js_abre(){
    } else {
       dt1='';
       dt2='';
-   }  
+   }
 
-   codemp = document.form1.e60_codemp.value ;    
+   codemp = document.form1.e60_codemp.value ;
   js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empconsulta002','emp2_empconsitem002.php?e60_codemp='+codemp+'&e60_numemp='+document.form1.e60_numemp.value+'&o58_coddot='+document.form1.o58_coddot.value+'&pc01_codmater='+document.form1.pc01_codmater.value+'&z01_numcgm='+document.form1.z01_numcgm.value+'&dt1='+dt1+'&dt2='+dt2+'&e53_codord='+document.form1.e53_codord.value+'&funcao_js=parent.js_consulta002|e60_numemp','Pesquisa',true);}
 function js_consulta002(chave1){
 	if(!isNaN(chave1)){
@@ -90,22 +90,22 @@ function js_consulta002(chave1){
 function js_consulta003(chave1){
 	jan = window.open('emp2_emiteconsitem002.php?e60_numemp='+chave1,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
 	jan.moveTo(0,0);
-  db_iframe_empconsulta002.hide(); 
+  db_iframe_empconsulta002.hide();
 }
 function js_limpa(){
-   location.href='emp1_empconsulta001.php'; 
+   location.href='emp1_empconsulta001.php';
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
     function js_mascara(evt){
       var evt = (evt) ? evt : (window.event) ? window.event : "";
-      
-      if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:. 
+
+      if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:.
 	return true;
       }else{
 	return false;
-      }  
+      }
     }
 </script>
 </head>
@@ -127,62 +127,62 @@ function js_limpa(){
 <td ></td>
 </tr>
 
-          <tr> 
+          <tr>
             <td  align="left" nowrap title="<?=$Te60_numemp?>">
-                 <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
+                 <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
             </td>
-	    
-            <td  nowrap> 
-             
+
+            <td  nowrap>
+
 	      <input name="e60_codemp" title='<?=$Te60_codemp?>' size="12" type='text'  onKeyPress="return js_mascara(event);" >
             </td>
-          </tr> 
-  <tr> 
-    <td  align="left" nowrap title="<?=$Te60_numemp?>"> <? db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1);?>  </td>
+          </tr>
+  <tr>
+    <td  align="left" nowrap title="<?=$Te60_numemp?>"> <?php db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
-         db_input("e60_numemp",13,$Ie60_numemp,true,"text",4); 
-         //  db_input("z01_nome1",40,"",true,"text",3);  
+      <?php
+         db_input("e60_numemp",13,$Ie60_numemp,true,"text",4);
+         //  db_input("z01_nome1",40,"",true,"text",3);
         ?></td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$To58_coddot?>"><?db_ancora(@$Lo58_coddot,"js_pesquisa_dotacao(true);",1);?> </td>
+  <tr>
+    <td  align="left" nowrap title="<?=$To58_coddot?>"><?php db_ancora(@$Lo58_coddot,"js_pesquisa_dotacao(true);",1);?> </td>
     <td align="left" nowrap>
-      <? db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"onchange='js_pesquisa_dotacao(false);'"); 
-         db_input("o40_descr",40,"",true,"text",3);  
+      <?php db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"onchange='js_pesquisa_dotacao(false);'");
+         db_input("o40_descr",40,"",true,"text",3);
         ?></td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tpc01_codmater ?>"><?db_ancora(@$Lpc01_codmater,"js_pesquisa_pcmater(true);",1);?></td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tpc01_codmater ?>"><?php db_ancora(@$Lpc01_codmater,"js_pesquisa_pcmater(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"onchange='js_pesquisa_pcmater(false);'"); 
-         db_input("pc01_descrmater",40,"",true,"text",3);  
+      <?php db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"onchange='js_pesquisa_pcmater(false);'");
+         db_input("pc01_descrmater",40,"",true,"text",3);
         ?></td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora(@$Lz01_numcgm,"js_pesquisa_cgm(true);",1);?></td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora(@$Lz01_numcgm,"js_pesquisa_cgm(true);",1);?></td>
     <td align="left" nowrap>
-      <? 
+      <?php
 	      db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"onchange='js_pesquisa_cgm(false);'");
-	      db_input("z01_nome2",40,"",true,"text",3);  
+	      db_input("z01_nome2",40,"",true,"text",3);
       ?>
     </td>
   </tr>
-  <tr> 
-    <td align="left" nowrap title="<?=$Te60_emiss?>"><?db_ancora(@$Le60_emiss,"",3);?></td>
+  <tr>
+    <td align="left" nowrap title="<?=$Te60_emiss?>"><?php db_ancora(@$Le60_emiss,"",3);?></td>
     <td align="left" nowrap>
-      <? 
-         db_inputdata('e60_emiss1',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");   		          
+      <?php
+         db_inputdata('e60_emiss1',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");
          echo " a ";
          db_inputdata('e60_emiss2',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");
       ?>
     </td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Te53_codord?>"><?db_ancora(@$Le53_codord,"js_buscae53_codord(true)",1);?></td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Te53_codord?>"><?php db_ancora(@$Le53_codord,"js_buscae53_codord(true)",1);?></td>
     <td align="left" nowrap>
-        <?
-		   db_input("e53_codord",13,$Ie53_codord,true,"text",4,"onchange='js_buscae53_codord(false);'"); 
+        <?php
+		   db_input("e53_codord",13,$Ie53_codord,true,"text",4,"onchange='js_buscae53_codord(false);'");
         ?>
     </td>
   </tr>
@@ -199,7 +199,7 @@ function js_limpa(){
   </table>
   </form>
 </center>
-<? 
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -220,22 +220,22 @@ function js_pesquisa_cgm(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_cgm_empenho.php?funcao_js=parent.js_mostracgm1|e60_numcgm|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.z01_numcgm.value != ''){ 
+     if(document.form1.z01_numcgm.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_cgm_empenho.php?pesquisa_chave='+document.form1.z01_numcgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
      }else{
-       document.form1.z01_nome2.value = ''; 
+       document.form1.z01_nome2.value = '';
      }
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome2.value = chave; 
-  if(erro==true){ 
-    document.form1.z01_nome2.value = ''; 
-    document.form1.z01_numcgm.focus(); 
+  document.form1.z01_nome2.value = chave;
+  if(erro==true){
+    document.form1.z01_nome2.value = '';
+    document.form1.z01_numcgm.focus();
   }
 }
 function js_mostracgm1(chave1,chave2){
-   document.form1.z01_numcgm.value = chave1;  
+   document.form1.z01_numcgm.value = chave1;
    document.form1.z01_nome2.value = chave2;
    db_iframe_cgm.hide();
 }
@@ -244,22 +244,22 @@ function js_pesquisa_pcmater(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pcmater','func_pcmater.php?funcao_js=parent.js_mostrapcmater1|pc01_codmater|pc01_descrmater','Pesquisa',true);
   }else{
-     if(document.form1.pc01_codmater.value != ''){ 
+     if(document.form1.pc01_codmater.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pcmater','func_pcmater.php?pesquisa_chave='+document.form1.pc01_codmater.value+'&funcao_js=parent.js_mostrapcmater','Pesquisa',false);
      }else{
-       document.form1.pc01_descrmater.value = ''; 
+       document.form1.pc01_descrmater.value = '';
      }
   }
 }
 function js_mostrapcmater(chave,erro){
-  document.form1.pc01_descrmater.value = chave; 
-  if(erro==true){ 
-    document.form1.pc01_codmater.focus(); 
-    document.form1.pc01_descrmater.value = ''; 
+  document.form1.pc01_descrmater.value = chave;
+  if(erro==true){
+    document.form1.pc01_codmater.focus();
+    document.form1.pc01_descrmater.value = '';
   }
 }
 function js_mostrapcmater1(chave1,chave2){
-   document.form1.pc01_codmater.value = chave1;  
+   document.form1.pc01_codmater.value = chave1;
    document.form1.pc01_descrmater.value = chave2;
    db_iframe_pcmater.hide();
 }
@@ -268,22 +268,22 @@ function js_pesquisa_dotacao(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_orcdotacao','func_orcdotacao.php?funcao_js=parent.js_mostradotacao1|o58_coddot|o56_descr','Pesquisa',true);
   }else{
-     if(document.form1.o58_coddot.value != ''){ 
+     if(document.form1.o58_coddot.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_orcdotacao','func_orcdotacao.php?pesquisa_chave='+document.form1.o58_coddot.value+'&funcao_js=parent.js_mostradotacao','Pesquisa',false);
      }else{
-       document.form1.o40_descr.value = ''; 
+       document.form1.o40_descr.value = '';
      }
   }
 }
 function js_mostradotacao(chave,erro){
-  document.form1.o40_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.o58_coddot.focus(); 
-    document.form1.o58_coddot.value = ''; 
+  document.form1.o40_descr.value = chave;
+  if(erro==true){
+    document.form1.o58_coddot.focus();
+    document.form1.o58_coddot.value = '';
   }
 }
 function js_mostradotacao1(chave1,chave2){
-  document.form1.o58_coddot.value = chave1;  
+  document.form1.o58_coddot.value = chave1;
   document.form1.o40_descr.value = chave2;
   db_iframe_orcdotacao.hide();
 }
@@ -292,18 +292,18 @@ function js_pesquisa_empenho(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_empempenho.php?funcao_js=parent.js_mostraempenho1|e60_numemp','Pesquisa',true);
   }else{
-     if(document.form1.e60_numemp.value != ''){ 
+     if(document.form1.e60_numemp.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_empempenho.php?pesquisa_chave='+document.form1.e60_numemp.value+'&funcao_js=parent.js_mostraempenho','Pesquisa',false);
      }else{
-       document.form1.z01_nome1.value = ''; 
+       document.form1.z01_nome1.value = '';
      }
   }
 }
 function js_mostraempenho(erro,chave){
-  document.form1.z01_nome1.value = chave; 
-  if(erro==true){ 
-    document.form1.e60_numemp.focus(); 
-    document.form1.z01_nome1.value = ''; 
+  document.form1.z01_nome1.value = chave;
+  if(erro==true){
+    document.form1.e60_numemp.focus();
+    document.form1.z01_nome1.value = '';
   }
 }
 function js_mostraempenho1(chave1){
@@ -320,23 +320,23 @@ function js_buscae53_codord(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordemele','func_pagordemele.php?funcao_js=parent.js_mostracodord1|e53_codord','Pesquisa',true);
   }else{
-     if(document.form1.e53_codord.value != ''){ 
+     if(document.form1.e53_codord.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordemele','func_pagordemele.php?pesquisa_chave='+document.form1.e53_codord.value+'&funcao_js=parent.js_mostracodord','Pesquisa',false);
      }else{
-       document.form1.e53_codord.value = ''; 
+       document.form1.e53_codord.value = '';
      }
   }
 }
 
 function js_mostracodord(chave,erro){
-  if(erro==true){ 
-    document.form1.e53_codord.value = ''; 
-    document.form1.e53_codord.focus(); 
+  if(erro==true){
+    document.form1.e53_codord.value = '';
+    document.form1.e53_codord.focus();
   }
 }
 
 function js_mostracodord1(chave1){
-   document.form1.e53_codord.value = chave1;  
+   document.form1.e53_codord.value = chave1;
    //document.form1.z01_nome2.value = chave2;
    db_iframe_pagordemele.hide();
 }

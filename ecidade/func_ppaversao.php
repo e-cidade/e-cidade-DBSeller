@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clppaversao->rotulo->label("o119_versao");
               <?=$Lo119_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("o119_sequencial",10,$Io119_sequencial,true,"text",4,"","chave_o119_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clppaversao->rotulo->label("o119_versao");
               <?=$Lo119_versao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("o119_versao",10,$Io119_versao,true,"text",4,"","chave_o119_versao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clppaversao->rotulo->label("o119_versao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $sWhere = "1=1";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -130,12 +130,12 @@ $clppaversao->rotulo->label("o119_versao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $clativid->rotulo->label("q03_descr");
               <?=$Lq03_ativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q03_ativ",8,$Iq03_ativ,true,"text",4,"","chave_q03_ativ");
 		       ?>
             </td>
@@ -70,7 +70,7 @@ $clativid->rotulo->label("q03_descr");
               <?=$Lq03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q03_descr",40,$Iq03_descr,true,"text",4,"","chave_q03_descr");
 		       ?>
             </td>
@@ -88,7 +88,7 @@ $clativid->rotulo->label("q03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ativid.php")==true){
@@ -124,14 +124,14 @@ $clativid->rotulo->label("q03_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
     document.form2.chave_q03_descr.focus();
     document.form2.chave_q03_descr.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

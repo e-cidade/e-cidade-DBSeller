@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,7 +49,7 @@ $clrotulo->label("DBtxt_cgmerrado");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
@@ -83,12 +83,12 @@ td {
 		<table align="left" border="0" class="table-campos">
 			<tr>
 				<td nowrap align="left"><b>
-                  <?
+                  <?php
                   db_ancora($LDBtxt_cgmcorreto, "js_pesquisaz10_numcgm(true);", 1);
                   ?>
                 </b></td>
 				<td>
-                  <?
+                  <?php
                   db_input("z10_numcgm", 10, $Iz10_numcgm, true, "text", 1, "onchange='js_pesquisaz10_numcgm(false);'");
                   db_input("z01_nome", 45, $Iz01_nome, TRUE, "text", 3);
                   ?>  
@@ -96,19 +96,19 @@ td {
 
 
 				<td align="left" nowrap>
-                 <?
+                 <?php
                 
                 ?>
                 </td>
 			</tr>
 			<tr>
 				<td nowrap align="left"><b>
-                    <?
+                    <?php
                     db_ancora($LDBtxt_cgmerrado, "js_pesquisaz11_numcgm(true);", 1);
                     ?>   
                   </b></td>
 				<td align="left" nowrap>
-                 <?
+                 <?php
                 db_input("z11_numcgm", 10, $Iz11_numcgm, true, "text", 1, "onchange='js_pesquisaz11_numcgm(false);'");
                 db_input("z11_nome", 45, $Iz11_nome, TRUE, "text", 3);
                 ?>
@@ -130,7 +130,7 @@ td {
 				<table align="center" border="0">
 					<tr>
 						<td>
-                         <?
+                         <?php
                         $cl_cgm = new cl_arquivo_auxiliar();
                         $cl_cgm->nome_botao = "db_lanca_cgm";
                         $cl_cgm->cabecalho = "<strong>Usuários selecionados</strong>";
@@ -175,7 +175,7 @@ td {
 		</td>
 	</tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

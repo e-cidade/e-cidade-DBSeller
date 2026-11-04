@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,13 +54,13 @@ if(isset($db_opcaoal)){
 		  <tr>
 		    <td nowrap title="<?=@$Tl42_db_documentotemplate?>">
 		      <b>
-		      <?
+		      <?php
 		        db_ancora("Modelo:","js_pesquisal42_db_documentotemplate(true);",$db_opcao,"");
 		      ?>
 		      </b>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					
 					  db_input('l42_db_documentotemplate',10,$Il42_db_documentotemplate,true,'text',$db_opcao,
 					           "onChange='js_pesquisal42_db_documentotemplate(false)'");
@@ -85,7 +85,7 @@ if(isset($db_opcaoal)){
 	<table>
 	  <tr>
 	    <td valign="top"  align="center">  
-		    <?
+		    <?php
 					 $chavepri= array("l42_sequencial"=>@$l42_sequencial);
 					 
 					 $cliframe_alterar_excluir->chavepri      = $chavepri;

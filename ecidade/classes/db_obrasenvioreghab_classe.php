@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -49,18 +49,18 @@ class cl_obrasenvioreghab {
    // cria propriedade com as variaveis do arquivo
    var $campos = "
                  ob18_codigo = int8 = Código
-                 ob18_codobraenvioreg = int8 = Código 
+                 ob18_codobraenvioreg = int8 = Código
                  ob18_codhabite = int4 = Habite-se
                  ob18_protocolo = int4 = Protocolo
                  ";
    //funcao construtor da classe
-   function cl_obrasenvioreghab() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasenvioreghab");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_obrasenvioreghab {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ob18_codigo = ($this->ob18_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ob18_codigo"]:$this->ob18_codigo);
        $this->ob18_codobraenvioreg = ($this->ob18_codobraenvioreg == ""?@$GLOBALS["HTTP_POST_VARS"]["ob18_codobraenvioreg"]:$this->ob18_codobraenvioreg);
@@ -80,7 +80,7 @@ class cl_obrasenvioreghab {
      }
    }
    // funcao para inclusao
-   function incluir ($ob18_codigo){
+   public function incluir ($ob18_codigo){
       $this->atualizacampos();
      if($this->ob18_codobraenvioreg == null ){
        $this->erro_sql = " Campo Código nao Informado.";
@@ -182,7 +182,7 @@ class cl_obrasenvioreghab {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ob18_codigo=null) {
+   public function alterar ($ob18_codigo=null) {
       $this->atualizacampos();
      $sql = " update obrasenvioreghab set ";
      $virgula = "";
@@ -285,7 +285,7 @@ class cl_obrasenvioreghab {
      }
    }
    // funcao para exclusao
-   function excluir ($ob18_codigo=null,$dbwhere=null) {
+   public function excluir ($ob18_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ob18_codigo));
      }else{
@@ -349,7 +349,7 @@ class cl_obrasenvioreghab {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -371,10 +371,10 @@ class cl_obrasenvioreghab {
       }
      return $result;
    }
-   function sql_query ( $ob18_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ob18_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_obrasenvioreghab {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,10 +409,10 @@ class cl_obrasenvioreghab {
      }
      return $sql;
   }
-   function sql_query_file ( $ob18_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ob18_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,7 +433,7 @@ class cl_obrasenvioreghab {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

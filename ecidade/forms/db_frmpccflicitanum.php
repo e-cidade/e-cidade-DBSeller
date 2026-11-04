@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clrotulo->label("nomeinst");
        <b>Instituição :</b>
     </td>
     <td> 
-			<?
+			<?php
 			  $l24_instit=db_getsession("DB_instit"); 
 			  $result_instit=$cldb_config->sql_record($cldb_config->sql_query_file());
 			  if (isset($l24_instit)&&$l24_instit!=""){
@@ -61,7 +61,7 @@ $clrotulo->label("nomeinst");
       <?=@$Ll24_anousu?>
     </td>
     <td> 
-			<?
+			<?php
 				$l24_anousu = db_getsession('DB_anousu');
 				db_input('l24_anousu',6,$Il24_anousu,true,'text',3,"")
 			?>
@@ -72,7 +72,7 @@ $clrotulo->label("nomeinst");
       <?=@$Ll24_numero?>
     </td>
     <td> 
-			<?
+			<?php
 		  	db_input('l24_numero',8,$Il24_numero,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pccflicitanum.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

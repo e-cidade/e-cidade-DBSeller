@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsau_rubrica->rotulo->label("sd64_c_nome");
               <?=$Lsd64_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("sd64_i_codigo",5,$Isd64_i_codigo,true,"text",4,"","chave_sd64_i_codigo");
                  ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_rubrica->rotulo->label("sd64_c_nome");
               <?=$Lsd64_c_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("sd64_c_nome",60,$Isd64_c_nome,true,"text",4,"","chave_sd64_c_nome");
                  ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_rubrica->rotulo->label("sd64_c_nome");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_rubrica.php")==true){
@@ -122,12 +122,12 @@ $clsau_rubrica->rotulo->label("sd64_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

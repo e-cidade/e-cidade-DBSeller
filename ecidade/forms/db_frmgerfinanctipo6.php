@@ -272,7 +272,9 @@ $oTermo = new cl_termoprotprocesso();
 
 $sCampos  = "termoprotprocesso.v27_sequencial,  ";
 $sCampos .= "termoprotprocesso.v27_termo,       ";
-$sCampos .= "termoprotprocesso.v27_protprocesso ";
+$sCampos .= "termoprotprocesso.v27_protprocesso, ";
+$sCampos .= "(select (p58_numero || '/' || p58_ano) as processo ";
+$sCampos .= "   from protprocesso where p58_codproc = v27_protprocesso) as numerodoprocesso ";
 
 $sWhere = " termoprotprocesso.v27_termo = {$v07_parcel} ";
 
@@ -355,8 +357,8 @@ if ($k03_tipo != 16) {
       <td>
         <?php echo $v07_hist; ?> 
         <?php
-          if ($oProtocolo->v27_protprocesso) {
-            echo 'Protocolo: '.$oProtocolo->v27_protprocesso; 
+          if ($oProtocolo->numerodoprocesso) {
+            echo 'Protocolo: '.$oProtocolo->numerodoprocesso; 
           }
         ?>
       </td>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,13 +40,13 @@ $clrotulo->label("k15_codage");
          <table>
           <tr>
            <td nowrap title="<?=@$Tq17_sequencial?>"><b>
-          <?
+          <?php
            db_ancora("Código","js_pesquisaq17_sequencial(true);",$db_opcao);
            ?>
            </b>
          </td>
          <td> 
-         <?
+         <?php
             db_input('q17_sequencial',10,$Iq17_sequencial,true,'text',3);
             db_input('q17_nomearq',60,$Iq17_nomearq,true,'text',3,'');
          ?>
@@ -55,13 +55,13 @@ $clrotulo->label("k15_codage");
           <tr>
            <td nowrap title="<?=@$Tk15_codbco?>">
            <B>
-          <?
+          <?php
            db_ancora("$Lk15_codbco","js_pesquisacadban(true);",$db_opcao);
            ?>
            </b>
          </td>
          <td> 
-         <?
+         <?php
             db_input('k15_codbco',10,$Ik15_codbco,true,'text',3);
             db_input('nomebanco',60,'',true,'text',3,'');
          ?>
@@ -70,7 +70,7 @@ $clrotulo->label("k15_codage");
               <tr>
                 <td><?=$Lk15_codage;?><b>/Conta</b></td>
                 <td>
-            <?
+            <?php
               db_input('k15_codage',10,$Ik15_codage,true,'text',3,'');
               db_input('k15_conta',20,'',true,'text',3,'');
               
@@ -129,13 +129,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issarqsimples.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php
 if (!isset($post->processar)){
  echo " js_pesquisa();\n";
 }

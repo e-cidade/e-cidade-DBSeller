@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -112,7 +112,7 @@ if (isset($excluir)) {
     <td align="left" valign="top" bgcolor="#CCCCCC">
      <center>
       <fieldset style="width:95%;height:445px;"><legend><b>Curso</b></legend>
-       <?include(modification("forms/db_frmhistoricoesc.php"));?>
+       <?php include(modification("forms/db_frmhistoricoesc.php"));?>
       </fieldset>
      </center>
     </td>
@@ -120,7 +120,7 @@ if (isset($excluir)) {
   </table>
  </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($oDaoHistorico->erro_status == "0") {
@@ -144,7 +144,7 @@ if (isset($alterar)) {
      location.href = "edu1_historico002.php?chavepesquisa=<?=$ed61_i_codigo?>";
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
 
   }
 
@@ -162,7 +162,7 @@ if (isset($excluir)) {
      location.href = "edu1_historico001.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
 
   }
 

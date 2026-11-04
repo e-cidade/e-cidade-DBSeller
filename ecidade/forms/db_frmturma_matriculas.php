@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("ed09_c_situacao");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ted36_i_turma?>">
-       <?
+       <?php
        db_ancora(@$Led36_i_turma,"js_pesquisaed36_i_turma(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed36_i_turma',5,$Ied36_i_turma,true,'text',$db_opcao," onchange='js_pesquisaed36_i_turma(false);'")
 ?>
-       <?
+       <?php
 db_input('ed05_c_nome',40,$Ied05_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted36_i_matricula?>">
-       <?
+       <?php
        db_ancora(@$Led36_i_matricula,"js_pesquisaed36_i_matricula(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed36_i_matricula',5,$Ied36_i_matricula,true,'text',$db_opcao," onchange='js_pesquisaed36_i_matricula(false);'")
 ?>
-       <?
+       <?php
 db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_turma_matriculas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

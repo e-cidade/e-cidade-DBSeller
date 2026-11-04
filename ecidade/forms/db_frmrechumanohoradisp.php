@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
+ *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("dbforms/db_classesgenericas.php"));
@@ -57,7 +57,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Ted20_i_codigo?>">
-          <?db_ancora( @$Led20_i_codigo, "", 3 );?>
+          <?php db_ancora( @$Led20_i_codigo, "", 3 );?>
         </td>
         <td>
           <?php
@@ -128,7 +128,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        </td>
       </tr>
      </table>
-    </td><?
+    </td><?php
     $result = $cldiasemana->sql_record($cldiasemana->sql_query_rh("","ed32_i_codigo,ed32_c_abrev","ed32_i_codigo",$where));
     //db_criatabela($result);
     for($x=0;$x<$cldiasemana->numrows;$x++){
@@ -154,11 +154,11 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        </tr>
       </table>
      </td>
-    <?}?>
+    <?php }?>
     </tr>
    <?}
    $turno = $ed15_c_nome?>
-   <td align="center" width="30" style="font-weight: bold; background-color: #f3f3f3;"> <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?></td><?
+   <td align="center" width="30" style="font-weight: bold; background-color: #f3f3f3;"> <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?></td><?php
    for($x=0;$x<$cldiasemana->numrows;$x++){
     $quadro = "Q".$z.$x;
     db_fieldsmemory($result,$x);
@@ -185,18 +185,18 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        <td>
         <table class="texto" bgcolor="#cccccc" id="<?=$quadro?>" cellspacing="0" cellpading="0" style="border: 2px outset #f3f3f3; border-bottom-color:#999999; border-right-color:#999999;">
          <tr>
-          <?if($marcar==""){?>
+          <?php if($marcar==""){?>
            <td onclick="GravarHorario(<?=$ed32_i_codigo?>,<?=$ed17_i_codigo?>,<?=$ed17_i_periodoaula?>,<?=$ed17_i_turno?>)" width="50" height="15" onmouseover="InSet('<?=$quadro?>',false)" onmouseout="OutSet('<?=$quadro?>',false)">
-          <?}elseif($marcar=="OK" && $habilitar==true){?>
+          <?php }elseif($marcar=="OK" && $habilitar==true){?>
            <td onclick="ExcluirHorario(<?=$ed33_i_codigo?>)" width="50" height="15" onmouseover="InSet('<?=$quadro?>',true)" onmouseout="OutSet('<?=$quadro?>',true)">
-          <?}elseif($marcar=="OK" && $habilitar==false){?>
+          <?php }elseif($marcar=="OK" && $habilitar==false){?>
            <td width="50" height="15" onmouseover="InSet('<?=$quadro?>',true)" onmouseout="OutSet('<?=$quadro?>',true)">
-          <?}?>
+          <?php }?>
            <div align="center"><b><?=$escolacod?></b></div>
           </td>
          </tr>
         </table>
-        <?
+        <?php
         if($marcar=="OK"){
          ?>
          <table id="escola<?=$quadro?>" style="position:absolute;visibility:hidden;" border="1" bgcolor="#f3f3f3">
@@ -206,18 +206,18 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
            </td>
           </tr>
          </table>
-         <?
+         <?php
         }
         ?>
        </td>
       </tr>
      </table>
     </td>
-   <?
+   <?php
    $marcar = "";
    }?>
    <tr>
-  <?}?>
+  <?php }?>
   </tr>
   </table>
 </center>

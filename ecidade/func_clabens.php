@@ -33,6 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_clabens_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+
 $clclabens = new cl_clabens;
 $clclabens->rotulo->label("t64_codcla");
 $clclabens->rotulo->label("t64_descr");
@@ -56,8 +57,8 @@ $iInstituicaoSessao = db_getsession("DB_instit");
                 </td>
                 <td width="96%" align="left" nowrap>
                   <?php
-                    db_input("t64_codcla",10,$It64_codcla,true,"text",4,"","chave_t64_codcla");
-                  ?>
+                    db_input("t64_codcla", 10, $It64_codcla, true, "text", 4, "", "chave_t64_codcla");
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -66,8 +67,8 @@ $iInstituicaoSessao = db_getsession("DB_instit");
                 </td>
                 <td width="96%" align="left" nowrap>
                   <?php
-                    db_input("t64_descr",50,$It64_descr,true,"text",4,"","chave_t64_descr");
-                  ?>
+                    db_input("t64_descr", 50, $It64_descr, true, "text", 4, "", "chave_t64_descr");
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -84,81 +85,126 @@ $iInstituicaoSessao = db_getsession("DB_instit");
       <tr>
         <td align="center" valign="top">
           <?php
-          if(isset($campos)==false){
-        	  if(file_exists("funcoes/db_func_clabens.php")==true){
-        	    include(modification("funcoes/db_func_clabens.php"));
-        	  }else{
-        	    $campos = "clabens.*";
-        	  }
-          }
-
-          $param = "";
-          $aParam = array();
-          if(isset($analitica)){
-          	if($analitica==true){
-          	  $aParam[] = " t64_analitica <> 'f' ";
-    	      }
-          }
-
-          $aParam[] = "t64_instit = {$iInstituicaoSessao}";
-          $param = implode(" and ", $aParam);
-          if(!isset($pesquisa_chave)){
-            if(isset($chave_t64_codcla) && (trim($chave_t64_codcla)!="") ){
-    	         $sql = $clclabens->sql_query(null,$campos,"t64_codcla", " t64_codcla=$chave_t64_codcla and $param");
-            }else if(isset($chave_t64_class) && (trim($chave_t64_class)!="") ){
-    	         $sql = $clclabens->sql_query("",$campos,"t64_class","t64_class like '$chave_t64_class%' and $param");
-            }else if(isset($chave_t64_descr) && (trim($chave_t64_descr)!="") ){
-    	         $sql = $clclabens->sql_query("",$campos,"t64_descr"," t64_descr like '$chave_t64_descr%' and $param ");
-            }else{
-    	        if($param!=""){
-                    $sql = $clclabens->sql_query("",$campos,"t64_codcla"," $param");
-
-                }else{
-                $sql = $clclabens->sql_query("",$campos,"t64_codcla", "t64_instit = {$iInstituicaoSessao}");
-    	        }
+            if (isset($campos)==false) {
+                if (file_exists("funcoes/db_func_clabens.php")==true) {
+                    include(modification("funcoes/db_func_clabens.php"));
+                } else {
+                    $campos = "clabens.t64_codcla,
+                               clabens.t64_class,
+                               clabens.t64_descr,
+                               clabens.t64_obs,
+                               clabens.t64_analitica,
+                               clabens.t64_bemtipos,
+                               clabens.t64_benstipodepreciacao,
+                               clabens.t64_vidautil,
+                               clabens.t64_instit,
+                               clabens.t64_valorresidual
+                              ";
+                }
             }
-            db_lovrot($sql,15,"()","",$funcao_js);
-          }else{
-            if($pesquisa_chave!=null && $pesquisa_chave!=""){
 
-						  if(isset($chave_t64_codcla)){
-								$sWhere = "t64_codcla = '$pesquisa_chave'";
-							}else{
-								$sWhere = "t64_class = '$pesquisa_chave'";
-							}
-
-              if(isset($lClass)) {
-                $sWhere = "t64_class = '$pesquisa_chave'";
-              }
-
-              $sWhere .= " and t64_instit = {$iInstituicaoSessao}";
-
-              $sSqlBens = $clclabens->sql_query(null, "*", null, $sWhere);
-              $result   = $clclabens->sql_record($sSqlBens);
-
-              if($clclabens->numrows!=0){
-
-                db_fieldsmemory($result,0);
-                echo "<script>".$funcao_js."('$t64_descr',false, $t64_codcla, '{$t64_benstipodepreciacao}', '{$t46_descricao}', '{$t64_vidautil}', '{$t64_valorresidual}');</script>";
-              }else{
-    	          echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
-              }
-            }else{
-    	        echo "<script>".$funcao_js."('',false);</script>";
+            if (strpos($_SERVER['REQUEST_URI'], 't46_descricao')) {
+                $campos .= ", t46_descricao";
             }
-          }
-          ?>
+
+            $param = "";
+            $aParam = array();
+            if (isset($analitica)) {
+                if ($analitica) {
+                    $aParam[] = " t64_analitica <> 'f' ";
+                }
+            }
+
+            if ($classincluir) {
+                $class =" and t64_ativa=true ";
+            } else {
+                $class="";
+            }
+            $aParam[] = "t64_instit = {$iInstituicaoSessao}";
+            $param = implode(" and ", $aParam);
+            if (!isset($pesquisa_chave)) {
+                if (isset($chave_t64_codcla) && (trim($chave_t64_codcla)!="")) {
+                     $sql = $clclabens->sql_query(
+                         null,
+                         $campos,
+                         "t64_codcla",
+                         " t64_codcla=$chave_t64_codcla and $param $class"
+                     );
+                } elseif (isset($chave_t64_class) && (trim($chave_t64_class)!="")) {
+                     $sql = $clclabens->sql_query(
+                         "",
+                         $campos,
+                         "t64_class",
+                         "t64_class like '$chave_t64_class%' and $param $class"
+                     );
+                } elseif (isset($chave_t64_descr) && (trim($chave_t64_descr)!="")) {
+                     $sql = $clclabens->sql_query(
+                         "",
+                         $campos,
+                         "t64_descr",
+                         " t64_descr like '$chave_t64_descr%' and $param $class"
+                     );
+                } else {
+                    if ($param!="") {
+                        $sql = $clclabens->sql_query(
+                            "",
+                            $campos,
+                            "t64_codcla",
+                            " $param $class"
+                        );
+                    } else {
+                        $sql = $clclabens->sql_query(
+                            "",
+                            $campos,
+                            "t64_codcla",
+                            "t64_instit = {$iInstituicaoSessao} $class"
+                        );
+                    }
+                }
+                db_lovrot($sql, 15, "()", "", $funcao_js);
+            } else {
+                if ($pesquisa_chave!=null && $pesquisa_chave!="") {
+                    if (isset($chave_t64_codcla)) {
+                          $sWhere = "t64_codcla = '$pesquisa_chave'";
+                    } else {
+                        $sWhere = "t64_class = '$pesquisa_chave'";
+                    }
+
+                    if (isset($lClass)) {
+                        $sWhere = "t64_class = '$pesquisa_chave'";
+                    }
+                    if ($classincluir) {
+                        $class =" and t64_ativa=true ";
+                    } else {
+                        $class="";
+                    }
+                    $sWhere .= " and t64_instit = {$iInstituicaoSessao} $class";
+
+                    $sSqlBens = $clclabens->sql_query(null, "*", null, $sWhere);
+                    $result   = $clclabens->sql_record($sSqlBens);
+
+                    if ($clclabens->numrows!=0) {
+                        db_fieldsmemory($result, 0);
+                        echo "<script>".$funcao_js."('$t64_descr',false, $t64_codcla, '{$t64_benstipodepreciacao}', '{$t46_descricao}', '{$t64_vidautil}', '{$t64_valorresidual}');</script>";
+                    } else {
+                        echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+                    }
+                } else {
+                    echo "<script>".$funcao_js."('',false);</script>";
+                }
+            }
+            ?>
          </td>
        </tr>
     </table>
   </body>
 </html>
 <?php
-if(!isset($pesquisa_chave)){
-  ?>
+if (!isset($pesquisa_chave)) {
+    ?>
   <script>
   </script>
-  <?php
+    <?php
 }
 ?>
 <script type="text/javascript">

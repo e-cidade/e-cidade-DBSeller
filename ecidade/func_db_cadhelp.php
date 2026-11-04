@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_cadhelp->rotulo->label("dhelp_resum");
               <?=$Lid_help?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("id_help",5,$Iid_help,true,"text",4,"","chave_id_help");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_cadhelp->rotulo->label("dhelp_resum");
               <?=$Ldhelp_resum?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("dhelp_resum",60,$Idhelp_resum,true,"text",4,"","chave_dhelp_resum");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_cadhelp->rotulo->label("dhelp_resum");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_cadhelp.php")==true){
@@ -118,12 +118,12 @@ $cldb_cadhelp->rotulo->label("dhelp_resum");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

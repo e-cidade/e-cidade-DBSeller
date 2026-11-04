@@ -26,7 +26,7 @@ import('phpdocwriter.pdw_document');
 class pdw_drawing extends pdw_document
 {
 
-function pdw_drawing()
+public function pdw_drawing()
 {
 	$this->paragstyle =& $this->parent->paragstyle;
 	$this->grno = $this->parent->_getNo('g');
@@ -54,7 +54,7 @@ function pdw_drawing()
 	$this->styleprop->setTagAttribute('draw:textarea-vertical-align', 'middle');
 }
 
-function Insert()
+public function Insert()
 {
 	/////<style:style> <- <style:propieties>
 	$this->style->addXMLBranch($this->styleprop);

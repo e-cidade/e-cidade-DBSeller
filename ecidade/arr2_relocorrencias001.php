@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,7 +50,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
 		<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<meta http-equiv="Expires" CONTENT="0">
-		<?
+		<?php
       db_app::load('scripts.js, prototype.js');
       db_app::load('estilos.css');
     ?>
@@ -177,7 +177,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
       <td title="Tipos de ocorr&ecirc;ncia"><strong>Tipo</strong></td>
       
       <td>
-      <?
+      <?php
         $aTipos = array('matric'=>'Matr&iacute;cula', 'cgm'=>'CGM', 'inscr'=>'Inscri&ccedil;&atilde;o');
         
         db_select('tipo', $aTipos, true, 1, ' onchange="js_filtros(this.value)" ;');
@@ -189,11 +189,11 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
       <td title="Per&iacute;odo das ocorr&ecirc;ncias"><strong>Per&iacute;odo</strong></td>
       
       <td>
-      <?
+      <?php
         db_inputdata('data_inicial', '', '', '', true, 'text', 1)
       ?>
       a
-      <?
+      <?php
         db_inputdata('data_final'  , '', '', '', true, 'text', 1)
       ?>
       </td>
@@ -203,7 +203,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
       <td title="Descri&ccedil;&atilde;o da ocorr&ecirc;ncia"><strong>Descri&ccedil;&atilde;o</strong></td>
       
       <td>
-      <?
+      <?php
         db_input('descricao', 50, null, true, 'text', 1)
       ?>
       </td>
@@ -213,7 +213,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
       <td title="Ocorr&ecirc;ncia"><strong>Ocorr&ecirc;ncia</strong></td>
       
       <td>
-      <?
+      <?php
         db_input('ocorrencia', 50, null, true, 'text', 1)
       ?>
       </td>
@@ -223,7 +223,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
       <td title="Ordem do relat&oacute;rio"><strong>Ordenar</strong></td>
       
       <td>
-      <?
+      <?php
         $aOrdenar = array('codigo'       => 'C&oacute;digo (CGM, Matr&iacute;cula, Inscri&ccedil;&atilde;o)', 
                           'data'         => 'Data Ocorr&ecirc;ncia', 
                           'descricao'    => 'Descri&ccedil;&atilde;o');
@@ -240,7 +240,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
     
     <tr>
       <td colspan="2">
-      <?
+      <?php
         $oArqAuxiliarLog->cabecalho      = '<strong>Logradouros</strong>';
 	      $oArqAuxiliarLog->codigo         = 'j14_codigo'; //chave de retorno da func
 	      $oArqAuxiliarLog->descr          = 'j14_nome';   //chave de retorno
@@ -263,7 +263,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
 
     <tr>
       <td colspan="2">
-      <?
+      <?php
         $oArqAuxiliarBai->cabecalho      = '<strong>Bairros</strong>';
 	      $oArqAuxiliarBai->codigo         = 'j13_codi'; //chave de retorno da func
 	      $oArqAuxiliarBai->descr          = 'j13_descr';   //chave de retorno
@@ -286,7 +286,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
     
     <tr>
       <td colspan="2">
-      <?          
+      <?php          
         $oArqAuxiliarFis->cabecalho      = '<strong>Zona Fiscal</strong>';
 	      $oArqAuxiliarFis->codigo         = 'j50_zona'; //chave de retorno da func
 	      $oArqAuxiliarFis->descr          = 'j50_descr';   //chave de retorno
@@ -309,7 +309,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
     
     <tr>
       <td>
-      <?
+      <?php
         $oArqAuxiliarEnt->cabecalho      = '<strong>Zona de Entrega</strong>';
 	      $oArqAuxiliarEnt->codigo         = 'j85_codigo'; //chave de retorno da func
 	      $oArqAuxiliarEnt->descr          = 'j85_descr';   //chave de retorno
@@ -339,7 +339,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
   </form>
 
   </body>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

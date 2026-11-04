@@ -40,7 +40,8 @@ require_once modification("dbforms/db_funcoes.php");
                             <b><a href="#" title="l20_codigo" class="licitacao_link">Licitacao: </a></b>
                         </td>
                         <td>
-                            <input id="licitacao_codigo_export" title="l20_codigo" name="licitacao_codigo_export" type="text" size="10" disabled>
+                            <input id="licitacao_codigo_export" title="l20_codigo" name="licitacao_codigo_export"
+                                type="text" size="10" disabled>
                         </td>
                     </tr>
                     <tr>
@@ -51,7 +52,19 @@ require_once modification("dbforms/db_funcoes.php");
                     </tr>
                     <tr>
                         <td>
-                            <label for="">Layout: </label>
+                            <label for="casas_decimais">Casas decimais: </label>
+                        </td>
+                        <td>
+                            <select name="casas_decimais" id="casas_decimais">
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="layout_export">Layout: </label>
                         </td>
                         <td>
                             <select name="layout_export" id="layout_export" disabled>
@@ -77,7 +90,8 @@ require_once modification("dbforms/db_funcoes.php");
                             <b><a href="#" title="l20_codigo" class="licitacao_link">Licitacao: </a></b>
                         </td>
                         <td>
-                            <input id="licitacao_codigo_import" title="l20_codigo" name="licitacao_codigo_import" type="text" size="10" disabled>
+                            <input id="licitacao_codigo_reprocessar" title="l20_codigo" name="licitacao_codigo_import"
+                                type="text" size="10" disabled>
                         </td>
                     </tr>
                     <tr>
@@ -93,6 +107,27 @@ require_once modification("dbforms/db_funcoes.php");
         </fieldset>
     </div>
 
+    <div id="abaReprocessamento" class="container">
+        <fieldset>
+            <legend>Dados</legend>
+            <form id="form_reprocessar">
+                <table class="form-container">
+                    <tr>
+                        <td>
+                            <b><a href="#" title="l20_codigo" class="licitacao_link">Licitacao: </a></b>
+                        </td>
+                        <td>
+                            <input id="licitacao_codigo_import" title="l20_codigo" name="licitacao_codigo_import"
+                                type="text" size="10" disabled>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <button type="submit">Reprocessar</button>
+            </form>
+        </fieldset>
+    </div>
+
     <script>
         // globais
         const url = "<?= ECIDADE_REQUEST_PATH ?>";
@@ -104,6 +139,10 @@ require_once modification("dbforms/db_funcoes.php");
         const oDBAba = new DBAbas($('abas'));
         const oAbaImportacao = oDBAba.adicionarAba("Exportar Dados", $('abaExportacao'));
         const oAbaExportacao = oDBAba.adicionarAba("Importar Dados", $('abaImportacao'));
+        const oAbaReprocessamento = oDBAba.adicionarAba("Reprocessar", $('abaReprocessamento'));
+
+        // fields
+        const casas_decimais = document.querySelector('#casas_decimais');
 
         /**
          *  Licitacao funcoes de pesquisa
@@ -111,10 +150,12 @@ require_once modification("dbforms/db_funcoes.php");
         const licitacao_link = document.querySelectorAll('.licitacao_link');
         const licitacao_codigo_export = document.querySelector('#licitacao_codigo_export');
         const licitacao_codigo_import = document.querySelector('#licitacao_codigo_import');
+        const licitacao_codigo_reprocessar = document.querySelector('#licitacao_codigo_reprocessar');
 
         function licitacaoFunc(codigo) {
             licitacao_codigo_export.value = codigo;
             licitacao_codigo_import.value = codigo;
+            licitacao_codigo_reprocessar.value = codigo;
 
             db_iframe_liclicita.hide();
         }
@@ -126,12 +167,49 @@ require_once modification("dbforms/db_funcoes.php");
                 js_OpenJanelaIframe(
                     'CurrentWindow.corpo',
                     'db_iframe_liclicita',
-                    'func_liclicita.php?sTipoCompra=10&funcao_js=parent.licitacaoFunc|l20_codigo',
+                    'func_liclicita.php?sTipoCompra=10,5,4&funcao_js=parent.licitacaoFunc|l20_codigo',
                     'Pesquisa',
                     true
                 );
             });
         });
+
+        const form_reprocessar = document.querySelector('#form_reprocessar');
+        form_reprocessar.addEventListener('submit', sendFormReprocessar);
+
+        function validate_reprocessar() {
+            if (licitacao_codigo_reprocessar.value == null || licitacao_codigo_reprocessar.value == '') {
+                return false;
+            }
+
+            return true;
+        }
+
+        async function sendFormReprocessar(event) {
+            event.preventDefault();
+            if (!validate_reprocessar()) {
+                return alert('Informe o código da licitação.');;
+            }
+
+            let action = url + 'v4/api/patrimonial/licitacoes/integracaocomprasbr/reprocessar';
+
+            const formData = new FormData;
+            formData.append('licitacao', licitacao_codigo_reprocessar.value);
+
+            try {
+                let response = await HttpClient.post(action, { body: formData });
+                let page = false;
+
+                if (response.error == true) {
+                    alert ('Houve um erro ao reprocessar: \n\n' + response.message);
+                } else {
+                    alert('Reprocessamento concluído, importe os dados novamente na aba de importação.')
+                }
+
+            } catch (error) {
+                alert('Houve um erro ao reprocessar.');
+            }
+        }
 
         /**
          * Exportacao
@@ -158,21 +236,22 @@ require_once modification("dbforms/db_funcoes.php");
 
             const formData = new FormData;
             formData.append('licitacao', licitacao_codigo_export.value);
+            formData.append('casas_decimais', casas_decimais.value);
 
             try {
-                let repsonse = await HttpClient.post(action, {
+                let response = await HttpClient.post(action, {
                     body: formData,
                     reportMessage: 'Gerando arquivo...'
                 });
                 let page = false;
 
-                if (repsonse.error == true || repsonse.path == undefined) {
-                    let msg = 'Algo de errado aconteceu na geração do arquivo: \n\n' + repsonse.message;
+                if (response.error == true || response.path == undefined) {
+                    let msg = 'Algo de errado aconteceu na geração do arquivo: \n\n' + response.message;
                     alert(msg);
                     return false;
                 }
 
-                downloadFile(repsonse.path);
+                downloadFile(response.path);
             } catch (error) {
                 console.log(error);
                 alert('Algo de errado aconteceu na geração do arquivo.');
@@ -235,10 +314,10 @@ require_once modification("dbforms/db_funcoes.php");
             options.body = formData;
 
             try {
-                let repsonse = await HttpClient.post(action, options);
+                let response = await HttpClient.post(action, options);
 
-                if (repsonse.error == true) {
-                    let msg = 'Algo de errado aconteceu na importacao do arquivo: \n\n' + repsonse.message;
+                if (response.error == true) {
+                    let msg = 'Algo de errado aconteceu na importacao do arquivo: \n\n' + response.message;
                     alert(msg);
                     return false;
                 }

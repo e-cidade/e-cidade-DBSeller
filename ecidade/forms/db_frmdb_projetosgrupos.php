@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ if(isset($db_opcaoal)){
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('at63_sequencial',10,$Iat63_sequencial,true,'hidden',3,"")
 ?>
   <tr>
@@ -62,22 +62,22 @@ db_input('at63_sequencial',10,$Iat63_sequencial,true,'hidden',3,"")
        <?=@$Lat63_projeto?>
     </td>
     <td> 
-<?
+<?php
 db_input('at63_projeto',10,$Iat63_projeto,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat63_grupo?>">
-       <?
+       <?php
        db_ancora("<b>Grupo:</b>","js_pesquisaat63_grupo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at63_grupo',10,$Iat63_grupo,true,'text',$db_opcao," onchange='js_pesquisaat63_grupo(false);'")
 ?>
-       <?
+       <?php
 db_input('at62_descr',40,$Iat62_descr,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ db_input('at62_descr',40,$Iat62_descr,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at63_sequencial"=>@$at63_sequencial,"at63_projeto"=>@$at63_projeto);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_projetosgrupos->sql_query(null,"*","at63_sequencial","at63_projeto=$at63_projeto");

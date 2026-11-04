@@ -66,13 +66,13 @@ class cl_conplanoorcamentoconta {
                  c63_tipoconta = int4 = Tipo da Conta
                  ";
    //funcao construtor da classe
-   function cl_conplanoorcamentoconta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoorcamentoconta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_conplanoorcamentoconta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c63_codcon = ($this->c63_codcon == ""?@$GLOBALS["HTTP_POST_VARS"]["c63_codcon"]:$this->c63_codcon);
        $this->c63_anousu = ($this->c63_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c63_anousu"]:$this->c63_anousu);
@@ -99,7 +99,7 @@ class cl_conplanoorcamentoconta {
      }
    }
    // funcao para inclusao
-   function incluir ($c63_codcon,$c63_anousu){
+   public function incluir ($c63_codcon,$c63_anousu){
       $this->atualizacampos();
      if($this->c63_banco == null ){
        $this->erro_sql = " Campo Banco nao Informado.";
@@ -219,7 +219,7 @@ class cl_conplanoorcamentoconta {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c63_codcon=null,$c63_anousu=null) {
+   public function alterar ($c63_codcon=null,$c63_anousu=null) {
       $this->atualizacampos();
      $sql = " update conplanoorcamentoconta set ";
      $virgula = "";
@@ -370,7 +370,7 @@ class cl_conplanoorcamentoconta {
      }
    }
    // funcao para exclusao
-   function excluir ($c63_codcon=null,$c63_anousu=null,$dbwhere=null) {
+   public function excluir ($c63_codcon=null,$c63_anousu=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c63_codcon,$c63_anousu));
      }else{
@@ -428,7 +428,7 @@ class cl_conplanoorcamentoconta {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -451,10 +451,10 @@ class cl_conplanoorcamentoconta {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $c63_codcon=null,$c63_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c63_codcon=null,$c63_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,7 +488,7 @@ class cl_conplanoorcamentoconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,10 +498,10 @@ class cl_conplanoorcamentoconta {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $c63_codcon=null,$c63_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c63_codcon=null,$c63_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_conplanoorcamentoconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

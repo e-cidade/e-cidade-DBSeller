@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,37 +41,37 @@ $clrotulo->label("j17_descr");
                       <?=@$Lj89_sequencial?>
                     </td>
                     <td>
-                      <?
+                      <?php
                       db_input('j89_sequencial',10,$Ij89_sequencial,true,'text',3,"")
                       ?>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap title="<?=@$Tj89_codhis?>">
-                      <?
+                      <?php
                       db_ancora("<b>Histórico:</b>","js_pesquisaj89_codhis(true);",$db_opcao);
                       ?>
                     </td>
                     <td>
-                      <?
+                      <?php
                       db_input('j89_codhis',10,$Ij89_codhis,true,'text',$db_opcao," onchange='js_pesquisaj89_codhis(false);'")
                       ?>
-                      <?
+                      <?php
                       db_input('j17_descr',40,$Ij17_descr,true,'text',3,'')
                       ?>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap title="<?=@$Tj89_codhispai?>">
-                      <?
+                      <?php
                       db_ancora("<b>Histórico pai:</b>","js_pesquisaj89_codhispai(true);",$db_opcao);
                       ?>
                     </td>
                     <td>
-                      <?
+                      <?php
                       db_input('j89_codhispai',10,$Ij89_codhispai,true,'text',$db_opcao," onchange='js_pesquisaj89_codhispai(false);'")
                       ?>
-                      <?
+                      <?php
                       db_input('j17_descr2',40,$Ij17_descr,true,'text',3,'')
                       ?>
                     </td>
@@ -145,7 +145,7 @@ $clrotulo->label("j17_descr");
 
     function js_preenchepesquisa(chave){
         db_iframe_iptucalhconf.hide();
-      <?
+      <?php
       if($db_opcao!=1){
         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }

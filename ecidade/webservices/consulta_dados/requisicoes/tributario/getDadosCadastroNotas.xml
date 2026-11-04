@@ -86,12 +86,15 @@
                     where db139_sequencial  = 1
                       and issbase.q02_inscr = q138_inscr )"  label="tipo_classificacao" />
 
-    <campo campo="(select db140_sequencial
-                     from issbasecaracteristica
-                          left join caracteristica      on db140_sequencial = q138_caracteristica
-        	          left join grupocaracteristica on db139_sequencial = db140_grupocaracteristica
-                    where db139_sequencial = 2
-                      and issbase.q02_inscr = q138_inscr )"  label="tipo_emissao" />
+    <campo campo="(case when exists(select 1 from  tabativ
+                                     inner join ativid on q03_ativ = q07_ativ
+                                     inner join issgruposervicoativid on q07_ativ = q127_ativid
+                                     where q07_inscr = issbase.q02_inscr
+                                       and q07_databx is null
+                                       and ( q07_datafi is null
+                                             or q07_datafi >= current_date )
+                                    ) then 10
+                        else 11 end )"  label="tipo_emissao" />
 
     <campo campo="(select db140_sequencial
                      from issbasecaracteristica

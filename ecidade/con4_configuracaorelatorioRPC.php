@@ -40,194 +40,167 @@ require_once(modification("libs/JSON.php"));
 $oGet              = db_utils::postMemory($_GET);
 
 $oJson             = new services_json();
-$oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
+$oParam            = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 
 $oRetorno          = new stdClass;
 $oRetorno->status  = 1;
 $oRetorno->message = "";
 $oRetorno->itens   = array();
 switch ($oParam->exec) {
-
-  case "salvarParametros":
-
-    try {
-
-      db_inicio_transacao();
-      $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-      $oParam->filters->observacao = db_stdClass::db_stripTagsJson(($oParam->filters->observacao));
-      $oLinhaRelatorio->salvarParametrosDefault($oParam->filters);
-      db_fim_transacao(false);
-    } catch (Exception $eErro) {
-
-      db_fim_transacao(true);
-      $oRetorno->message = urlencode(str_replace("\\n","\n",$eErro->getMessage()));
-      $oRetorno->status  = 2;
-
-    }
-    break;
-
-  case "getParametrosPadrao" :
-
-    $oLinhaRelatorio          = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-    $oRetorno->filter         = $oLinhaRelatorio->getParametrosPadrao();
-    $oRetorno->lDesdobraLinha = false;
-    break;
-
-  case "salvarParametrosUsuario":
-
-    try {
-
-      db_inicio_transacao();
-      $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-      $oParam->filters->observacao = db_stdClass::db_stripTagsJson(($oParam->filters->observacao));
-      $oLinhaRelatorio->salvarParametros($oParam->filters);
-      db_fim_transacao(false);
-    } catch (Exception $eErro) {
-
-      db_fim_transacao(true);
-      $oRetorno->message = urlencode(str_replace("\\n","\n",$eErro->getMessage()));
-      $oRetorno->status  = 2;
-
-    }
-    break;
-
-  case "getParametrosUsuario" :
-
-    $oLinhaRelatorio          = $oLinhaRelatorio  = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-    $oRetorno->filter         = $oLinhaRelatorio->getParametrosOrcamentoUsuario();
-    $oRetorno->iRelatorio     = $oParam->relatorio;
-    $oRetorno->iLinha         = $oParam->linha;
-    $oRetorno->lDesdobraLinha = $oLinhaRelatorio->desdobraLinha();
-    break;
-
-  case "getRelatoriosPorPeriodos" :
-
-    $oDaoOrcparamrelPeriodo = db_utils::getDao("orcparamrelperiodos");
-    $sSqlPeriodos           = $oDaoOrcparamrelPeriodo->sql_query_file(null,"o113_orcparamrel", null,
-                                                                     "o113_periodo = {$oParam->iCodigoPeriodo}"
-                                                                       );
-    $rsPeriodos             = $oDaoOrcparamrelPeriodo->sql_record($sSqlPeriodos);
-    $oRetorno->itens        = db_utils::getCollectionByRecord($rsPeriodos);
-    break;
-
-     case "salvarParametroRelatorioUsuario":
-
-    try {
-
-      db_inicio_transacao();
-
-        $idUsuario = db_getsession("DB_id_usuario");
-        $oDaoLinhas = new  cl_orcparamseqfiltrousuario;
-        $sWhere = "o72_orcparamrel = {$oParam->iRelatorio}";
-        $order = " 1 desc limit 1";
-        $sqlFiltroPadrao = $oDaoLinhas->sql_query_file(null, "o72_idusuario", $order, $sWhere);
-        $rsFiltroPadrao = db_query($sqlFiltroPadrao);
-        if ($rsFiltroPadrao && pg_num_rows($rsFiltroPadrao) > 0) {
-            $idUsuario = pg_fetch_result($rsFiltroPadrao, 0, 'o72_idusuario');
+    case "salvarParametros":
+        try {
+            db_inicio_transacao();
+            $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+            $oParam->filters->observacao = db_stdClass::db_stripTagsJsonSemEscape(($oParam->filters->observacao));
+            $oLinhaRelatorio->salvarParametrosDefault($oParam->filters);
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
+            $oRetorno->status  = 2;
         }
+        break;
 
-      $oLinhaRelatorio = new relatorioContabil($oParam->iRelatorio, false);
-      $oLinhaRelatorio->salvarParametrosUsuario($oParam->filters, $idUsuario);
-      db_fim_transacao(false);
-    } catch (Exception $eErro) {
+    case "getParametrosPadrao":
+        $oLinhaRelatorio          = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+        $oRetorno->filter         = $oLinhaRelatorio->getParametrosPadrao();
+        $oRetorno->lDesdobraLinha = false;
+        break;
 
-      db_fim_transacao(true);
-      $oRetorno->message = urlencode(str_replace("\\n","\n",$eErro->getMessage()));
-      $oRetorno->status  = 2;
+    case "salvarParametrosUsuario":
+        try {
+            db_inicio_transacao();
+            $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+            $oParam->filters->observacao = db_stdClass::db_stripTagsJsonSemEscape(($oParam->filters->observacao));
+            $oLinhaRelatorio->salvarParametros($oParam->filters);
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
+            $oRetorno->status  = 2;
+        }
+        break;
 
-    }
-    break;
+    case "getParametrosUsuario":
+        $oLinhaRelatorio          = $oLinhaRelatorio  = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+        $oRetorno->filter         = $oLinhaRelatorio->getParametrosOrcamentoUsuario();
+        $oRetorno->iRelatorio     = $oParam->relatorio;
+        $oRetorno->iLinha         = $oParam->linha;
+        $oRetorno->lDesdobraLinha = $oLinhaRelatorio->desdobraLinha();
+        break;
 
-    case "getParametrosRelatorioUsuario" :
+    case "getRelatoriosPorPeriodos":
+        $oDaoOrcparamrelPeriodo = new cl_orcparamrelperiodos();
+        $sSqlPeriodos           = $oDaoOrcparamrelPeriodo->sql_query_file(
+            null,
+            "o113_orcparamrel",
+            null,
+            "o113_periodo = {$oParam->iCodigoPeriodo}"
+        );
+        $rsPeriodos             = $oDaoOrcparamrelPeriodo->sql_record($sSqlPeriodos);
+        $oRetorno->itens        = db_utils::getCollectionByRecord($rsPeriodos);
+        break;
 
-      $oRelatorio               = new relatorioContabil($oParam->iRelatorio, false);
-      $oRetorno->filter         = $oRelatorio->getParametrosUsuario(db_getsession("DB_id_usuario"));
-      $oRetorno->iRelatorio     = $oParam->iRelatorio;
-      break;
+    case "salvarParametroRelatorioUsuario":
+        try {
+            db_inicio_transacao();
 
-    case "excluirParametrosOrcamentoUsuario" :
+            $idUsuario = db_getsession("DB_id_usuario");
+            $oDaoLinhas = new  cl_orcparamseqfiltrousuario;
+            $sWhere = "o72_orcparamrel = {$oParam->iRelatorio}";
+            $order = " 1 desc limit 1";
+            $sqlFiltroPadrao = $oDaoLinhas->sql_query_file(null, "o72_idusuario", $order, $sWhere);
+            $rsFiltroPadrao = db_query($sqlFiltroPadrao);
+            if ($rsFiltroPadrao && pg_num_rows($rsFiltroPadrao) > 0) {
+                $idUsuario = pg_fetch_result($rsFiltroPadrao, 0, 'o72_idusuario');
+            }
 
-      db_inicio_transacao();
-      try {
+            $oLinhaRelatorio = new relatorioContabil($oParam->iRelatorio, false);
+            $oLinhaRelatorio->salvarParametrosUsuario($oParam->filters, $idUsuario);
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
+            $oRetorno->status  = 2;
+        }
+        break;
 
-        $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-        $oLinhaRelatorio->excluirFiltroUsuario(db_getsession("DB_anousu"));
-        db_fim_transacao(false);
-      } catch (Exception $eErro) {
+    case "getParametrosRelatorioUsuario":
+        $oRelatorio               = new relatorioContabil($oParam->iRelatorio, false);
+        $oRetorno->filter         = $oRelatorio->getParametrosUsuario(db_getsession("DB_id_usuario"));
+        $oRetorno->iRelatorio     = $oParam->iRelatorio;
+        break;
 
-        db_fim_transacao(true);
-        $oRetorno->status  = 2;
-        $oRetorno->message = urlencode($eErro->getMessage());
-      }
-      break;
-
-    case "importarParametros" :
-
-      db_inicio_transacao();
-      try {
-
-        $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-        $oLinhaRelatorio->importarParametros(db_getsession("DB_anousu"));
-        db_fim_transacao(false);
-      } catch (Exception $eErro) {
-
-        db_fim_transacao(true);
-        $oRetorno->status  = 2;
-        $oRetorno->message = urlencode($eErro->getMessage());
-      }
-    break;
-
-    case "getVinculoSigap" :
-
-	    $oLinhaRelatorio      = $oLinhaRelatorio  = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-      $oRetorno->filter     = $oLinhaRelatorio->getVinculoSigap();
-	    $oRetorno->iRelatorio = $oParam->relatorio;
-	    $oRetorno->iLinha     = $oParam->linha;
-    break;
-
-  case "salvarVinculoSigap":
-
-    try {
-
-      db_inicio_transacao();
-
-      $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-      $oParam->filters->contasigap = db_stdClass::db_stripTagsJson(($oParam->filters->contasigap));
-      $oParam->filters->descricao  = db_stdClass::db_stripTagsJson(($oParam->filters->descricao));
-      $oParam->filters->estrutural = db_stdClass::db_stripTagsJson(($oParam->filters->estrutural));
-      $oLinhaRelatorio->salvarVinculoSigap($oParam->filters);
-
-      $oRetorno->iRelatorio = $oParam->relatorio;
-      $oRetorno->iLinha     = $oParam->linha;
-
-      db_fim_transacao(false);
-    } catch (Exception $eErro) {
-
-      db_fim_transacao(true);
-      $oRetorno->message = urlencode(str_replace("\\n","\n",$eErro->getMessage()));
-      $oRetorno->status  = 2;
-    }
-    break;
-
-    case "excluirVinculoSigap":
-
-      try {
-
+    case "excluirParametrosOrcamentoUsuario":
         db_inicio_transacao();
+        try {
+            $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+            $oLinhaRelatorio->excluirFiltroUsuario(db_getsession("DB_anousu"));
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->status  = 2;
+            $oRetorno->message = urlencode($eErro->getMessage());
+        }
+        break;
 
-        $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
-        $oLinhaRelatorio->excluirVinculoSigap(db_getsession("DB_anousu"));
+    case "importarParametros":
+        db_inicio_transacao();
+        try {
+            $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+            $oLinhaRelatorio->importarParametros(db_getsession("DB_anousu"));
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->status  = 2;
+            $oRetorno->message = urlencode($eErro->getMessage());
+        }
+        break;
 
+    case "getVinculoSigap":
+        $oLinhaRelatorio      = $oLinhaRelatorio  = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+        $oRetorno->filter     = $oLinhaRelatorio->getVinculoSigap();
         $oRetorno->iRelatorio = $oParam->relatorio;
         $oRetorno->iLinha     = $oParam->linha;
+        break;
 
-        db_fim_transacao(false);
-      } catch (Exception $eErro) {
+    case "salvarVinculoSigap":
+        try {
+            db_inicio_transacao();
 
-        db_fim_transacao(true);
-        $oRetorno->status  = 2;
-        $oRetorno->message = urlencode($eErro->getMessage());
-      }
-      break;
+            $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+            $oParam->filters->contasigap = db_stdClass::db_stripTagsJsonSemEscape(($oParam->filters->contasigap));
+            $oParam->filters->descricao  = db_stdClass::db_stripTagsJsonSemEscape(($oParam->filters->descricao));
+            $oParam->filters->estrutural = db_stdClass::db_stripTagsJsonSemEscape(($oParam->filters->estrutural));
+            $oLinhaRelatorio->salvarVinculoSigap($oParam->filters);
+
+            $oRetorno->iRelatorio = $oParam->relatorio;
+            $oRetorno->iLinha     = $oParam->linha;
+
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
+            $oRetorno->status  = 2;
+        }
+        break;
+
+    case "excluirVinculoSigap":
+        try {
+            db_inicio_transacao();
+
+            $oLinhaRelatorio = new linhaRelatorioContabil($oParam->relatorio, $oParam->linha);
+            $oLinhaRelatorio->excluirVinculoSigap(db_getsession("DB_anousu"));
+
+            $oRetorno->iRelatorio = $oParam->relatorio;
+            $oRetorno->iLinha     = $oParam->linha;
+
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->status  = 2;
+            $oRetorno->message = urlencode($eErro->getMessage());
+        }
+        break;
 }
 echo $oJson->encode($oRetorno);

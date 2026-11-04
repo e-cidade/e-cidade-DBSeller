@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -309,7 +309,7 @@ $clrotulo->label("r08_descr");
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input("r11_rubpgintegral",38,$Ir11_rubpgintegral,true,"text",$db_opcao,"");
               ?>
             </td>

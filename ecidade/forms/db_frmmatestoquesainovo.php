@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,20 +44,20 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tm70_codmatmater?>" align="right" >
-<?
+<?php
 db_ancora(@$Lm70_codmatmater,"js_pesquisam70_codmatmater(true);",((isset($m70_codmatmater) && trim($m70_codmatmater)!="" && (isset($numrows_matestoque) && $numrows_matestoque>0))?"3":"1"));
 ?>
     </td>
     <td align="left" nowrap>     
-<? 
+<?php 
 db_input('m70_codmatmater',10,$Im70_codmatmater,true,"text",((isset($m70_codmatmater) && trim($m70_codmatmater)!="" && (isset($numrows_matestoque) && $numrows_matestoque>0))?"3":"1"),"onchange='js_pesquisam70_codmatmater(false);'");
 ?>
-<? 
+<?php 
 db_input('m60_descr',40,$Im60_descr,true,"text",3);
 ?>
     </td>
   </tr>
-<?
+<?php
 if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
   if(isset($numrows_matestoque) && $numrows_matestoque>0){
 ?>
@@ -71,7 +71,7 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="button" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick='js_verificarcampos();'>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <input name="voltar" type="button" id="voltar" value="Voltar" onclick="document.location.href='mat1_matestoquesai00<?=(isset($mostraiframeexclui)?"3":"1")?>.php'" >
-<?
+<?php
   }else{
     echo "  <tr>";
     echo "    <td align='center' colspan='2'><BR><BR><BR><BR><BR><BR><BR><BR><BR>";
@@ -191,7 +191,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matestoqueinimei.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

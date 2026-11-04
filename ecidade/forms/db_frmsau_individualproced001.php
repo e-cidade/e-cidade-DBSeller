@@ -70,13 +70,13 @@ $clrotulo->label ( "sd70_c_nome" );
 				       <?=@$Lsd24_i_codigo?>
 				    </td>
 				<td>
-						<?
+						<?php
 						db_input ( 'sd24_i_codigo', 10, $Isd24_i_codigo, true, 'text', 3, "" );
 						?>
 				    </td>
 				<td colspan="2" align="right" title="<?=@$Tsd24_i_login?>">
 				        <?=@$Lsd24_i_login?>
-						<?
+						<?php
 						db_input ( 'sd24_i_login', 10, $Isd24_i_login, true, 'hidden', $db_opcao, "" );
 						db_input ( 'sd24_i_unidade', 10, $Isd24_i_unidade, true, 'hidden', $db_opcao, "" );
 						db_input ( 'login', 10, $Ilogin, true, 'text', 3, '' );
@@ -84,7 +84,7 @@ $clrotulo->label ( "sd70_c_nome" );
 				    </td>
 			</tr>
 			<!-- Segunda parte do formulário -->
-				<?
+				<?php
 				$intQuant = 1;
 				include modification("forms/db_frmsau_loteproced002.php");
 				?>
@@ -454,7 +454,7 @@ function js_limpadados(){
 	$('sd29_d_data_mes').value   = '<?=date ( "m", db_getsession ( "DB_datausu" ) );?>';
 	$('sd29_d_data_ano').value   = '<?=date ( "Y", db_getsession ( "DB_datausu" ) );?>';
 	$('sd29_d_data').value       = '<?=date ( "d/m/Y", db_getsession ( "DB_datausu" ) );?>';
-	$('sd29_c_hora').value       = '<?=date ( "H" ) . ":" . date ( "m" );?>';
+	$('sd29_c_hora').value       = '<?=date ( "H" ) . ":" . date ( "i" );?>';
 	if( $F('intQuant') != undefined ){
 		$('intQuant').value      = 1;
 	}
@@ -832,31 +832,27 @@ function js_validacid( objCID ){
 		$('sd70_c_cid').focus();
 	}
 }
+
 /**
  * valida data
  */
 function js_validadata( sData ){
+	let datInfo  = $( sData ).value.split('/');
+	const dia   = '<?=date ( "d", db_getsession ( "DB_datausu" ) );?>';
+	const mes   = '<?=date ( "m", db_getsession ( "DB_datausu" ) );?>';
+	const ano   = '<?=date ( "Y", db_getsession ( "DB_datausu" ) );?>';
 
-	datInfo  = $( sData ).value.split('/');
+	let dIni = new Date( datInfo[2], Number(datInfo[1]) - 1,  datInfo[0] );
+	const dFim = new Date( ano, Number(mes) - 1, dia );
 
-	dia   = '<?=date ( "d", db_getsession ( "DB_datausu" ) );?>';
-	mes   = '<?=date ( "m", db_getsession ( "DB_datausu" ) );?>';
-	ano   = '<?=date ( "Y", db_getsession ( "DB_datausu" ) );?>';
-
-
-	dIni = new Date( datInfo[2],  datInfo[1],  datInfo[0] );
-	dFim = new Date( ano, mes, dia );
-
-    if( dIni > dFim) {
-
+    if( dIni.getTime() > dFim.getTime()) {
       alert("Data maior que data atual.");
-      //$( sData ).value = '';
 	  $( sData ).focus();
 	  $( sData ).select();
       return false;
     }else{
        return true;
     }
-
 }
+
 </script>

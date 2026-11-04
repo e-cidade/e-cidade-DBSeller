@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("nome");
        <?=@$Ls127_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('s127_i_codigo',10,$Is127_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts127_i_numcgs?>">
-       <?
+       <?php
        db_ancora(@$Ls127_i_numcgs,"js_pesquisas127_i_numcgs(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('s127_i_numcgs',8,$Is127_i_numcgs,true,'text',$db_opcao," onchange='js_pesquisas127_i_numcgs(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,'')
        <?=@$Ls127_d_data?>
     </td>
     <td> 
-<?
+<?php
 if(empty($s127_d_data_dia)){
   $s127_d_data_dia = date("d",db_getsession("DB_datausu"));
   $s127_d_data_mes = date("m",db_getsession("DB_datausu"));
@@ -79,7 +79,7 @@ db_inputdata('s127_d_data',@$s127_d_data_dia,@$s127_d_data_mes,@$s127_d_data_ano
        <?=@$Ls127_c_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('s127_c_hora',5,$Is127_c_hora,true,'text',$db_opcao,"");
 if($db_opcao == 1){
   echo "<script>document.form1.s127_c_hora.value='".db_hora()."'</script>";
@@ -89,19 +89,19 @@ if($db_opcao == 1){
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts127_i_login?>">
-       <?
+       <?php
        db_ancora(@$Ls127_i_login,"js_pesquisas127_i_login(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 if (isset($s127_i_login)&&$s127_i_login!=""){
 $sql = "select nome,id_usuario as s127_i_login from db_usuarios where id_usuario = ".@$s127_i_login;
 db_fieldsmemory(db_query($sql),0);
 }
 db_input('s127_i_login',5,$Is127_i_login,true,'text',3," onchange='js_pesquisas127_i_login(false);'");
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -111,7 +111,7 @@ db_input('nome',20,$Inome,true,'text',3,'')
        <?=@$Ls127_b_proc?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('s127_b_proc',$x,true,$db_opcao,($db_opcao == 1?"onChange='this.options[0].selected = true'":""));
 ?>
@@ -166,7 +166,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_cgscorreto.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'sau4_cgscorreto002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,35 +38,35 @@ $clrotulo->label("rh27_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh54_regist?>">
-      <?
+      <?php
       db_ancora(@$Lrh54_regist,"js_pesquisarh54_regist(true);",$db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh54_regist',6,$Irh54_regist,true,'text',$db_opcao," onchange='js_pesquisarh54_regist(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh54_base?>">
-      <?
+      <?php
       db_ancora(@$Lrh54_base,"js_pesquisarh54_base(true);",$db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh54_base',6,$Irh54_base,true,'text',$db_opcao," onchange='js_pesquisarh54_base(false);'")
       ?>
-      <?
+      <?php
       db_input('r08_descr',40,$Ir08_descr,true,'text',3,'')
       ?>
     </td>
   </tr>
-  <?
+  <?php
   if(isset($rh54_regist) && trim($rh54_regist) != ""){
     $dbwhere = " rh54_regist = ".$rh54_regist;
     if(isset($rh54_base) && trim($rh54_base) != ""){
@@ -93,19 +93,19 @@ $clrotulo->label("rh27_descr");
     ?>
     <tr>
       <td colspan="2">
-        <?
+        <?php
         db_multiploselect("value","descr", "naosel", "simsel", $arr_nselecionados, $arr_sselecionados, 25, 300, "Rubricas selecionadas", "Rubricas não selecionadas");
         ?>
       </td>
     </tr>
-    <?
+    <?php
     }else{
 
    $sql_bases = $clrhbasesreg->sql_query_base(null,"distinct rh54_regist, rh54_base, r08_descr","rh54_base",$dbwhere);
   ?>
   <tr>
     <td colspan="2" align="center">
-      <?
+      <?php
       $chavepri = Array("rh54_base"=>@$rh54_base,"rh54_regist"=>$rh54_regist);
       $cliframe_alterar_excluir->chavepri = $chavepri;
       $cliframe_alterar_excluir->sql      = $sql_bases;
@@ -117,7 +117,7 @@ $clrotulo->label("rh27_descr");
       ?>
     </td>
   </tr>
-  <?
+  <?php
     }
   }
   ?>
@@ -188,7 +188,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhbasesreg.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

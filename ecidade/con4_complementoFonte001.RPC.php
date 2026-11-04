@@ -45,13 +45,18 @@ $oRetorno->erro = false;
 
 $instituicaoSessao = db_getsession('DB_instit');
 $anoSessao = db_getsession('DB_anousu');
+$dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
 try {
     switch ($parametros->exec) {
+        /**
+         * @deprecated usar o case getComplementosPorFonteRecurso
+         */
         case 'getComplementosPorRecurso':
             if (empty($parametros->codigo_recurso)) {
                 throw new Exception('Código do recurso não informado.');
             }
-            $complementosEncontrados = RecursoRepository::getComplementos($parametros->codigo_recurso);
+
+            $complementosEncontrados = RecursoRepository::getComplementos($parametros->codigo_recurso, $dataLimite);
             $oRetorno->complementos = [];
             if (!empty($complementosEncontrados)) {
                 $oRetorno->complementos = $complementosEncontrados;
@@ -65,7 +70,31 @@ try {
 
             $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($parametros->codigo_dotacao, $anoSessao);
             $recurso = $dotacao->getDadosRecurso();
-            $oRetorno->complementos = RecursoRepository::getComplementos($recurso->getRecurso());
+            $fonte = $recurso->getFonteRecurso($anoSessao);
+
+            $oRetorno->complementos = RecursoRepository::getComplementosByGestao(
+                $fonte->gestao,
+                $recurso->getRecurso(),
+                $fonte->exercicio,
+                $dataLimite
+            );
+            break;
+        case 'getComplementosPorFonteRecurso':
+            if (empty($parametros->gestao)) {
+                throw new Exception('Fonte de recurso não informado.');
+            }
+
+            $complementosEncontrados = RecursoRepository::getComplementosByGestao(
+                $parametros->gestao,
+                $parametros->subrecurso,
+                $anoSessao,
+                $dataLimite
+            );
+            $oRetorno->complementos = [];
+            if (!empty($complementosEncontrados)) {
+                $oRetorno->complementos = $complementosEncontrados;
+            }
+
             break;
         default:
             throw new \Exception('Metodo ' . $parametros->exec . ' não existe;');

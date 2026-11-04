@@ -55,7 +55,9 @@ sql;
             $whereFim .= "and m80_data <= '{$this->dataFinal->getDate()}'";
         }
 
-        $where = ["instit = 1"];
+        $instit = db_getsession('DB_instit');
+
+        $where = ["instit = $instit"];
         $where[] = "m71_servico = false";
         $where[] = "m60_servico = false";
         $where[] = "m81_tipo in (1, 2)";
@@ -76,7 +78,6 @@ sql;
         }
 
         $anousu = db_getsession('DB_anousu');
-        $instit = db_getsession('DB_instit');
 
         $ordem = [];
         if ($this->agruparPorConta) {

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBseller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -280,7 +280,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                         </td>
                       </tr>
 
-            <? if ( $oGet->tipo == "urbano" ) {?>
+            <?php if ( $oGet->tipo == "urbano" ) {?>
 
                       <tr>
                         <td colspan="1" nowrap title="<?php echo $Tit05_itbisituacao; ?>">
@@ -296,7 +296,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                         </td>
                       </tr>
 
-            <? } else { ?>
+            <?php } else { ?>
 
                       <tr>
                         <td colspan="1">
@@ -378,7 +378,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                         </td>
                       </tr>
 
-            <? } ?>
+            <?php } ?>
 
                     </table>
                   </fieldset>
@@ -624,7 +624,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                   <strong>Valor Total:</strong>
                 </td>
                 <td colspan="1">
-                  <?
+                  <?php
                     db_input('it01_valortransacao',20,$Iit01_valortransacao,true,'text',$db_opcao,"onkeyup='jsFormataMoeda(this, (nValor) => {js_validaValores(this);})'", "", "", "", 50, true);
                   ?>
                 </td>
@@ -854,34 +854,6 @@ function js_frenteLogradouro(sValor){
       alert("Valor da área do terreno deve ser maior que zero");
       return false;
     }
-
-    if ( doc.it01_areatrans.value == "" ) {
-      alert("Área Transmitida não informada!");
-      return false;
-    }
-
-    if (+doc.it01_areatrans.value > +doc.it01_areaterreno.value) {
-      alert("Área Transmitida deve ser inferior ou igual a Área Total.");
-      return false;
-    }
-
-    <?php if (strtolower($oGet->tipo) <> 'rural') : ?>
-       if( doc.it01_areatrans.value <= 0) {
-
-         alert("Valor da área transmitida deve ser maior que zero");
-         doc.it01_areatrans.value = '';
-         doc.it01_areatrans.focus();
-         return false;
-       }
-
-       if( doc.it01_percentualareatransmitida.value <= 0) {
-
-         alert("Percentual da área transmitida deve ser maior que zero.");
-         doc.it01_percentualareatransmitida.value = '';
-         doc.it01_percentualareatransmitida.focus();
-         return false;
-       }
-    <?php endif; ?>
 
     if( !isNumeric( doc.it01_percentualareatransmitida.value ) ) {
 

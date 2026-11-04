@@ -45,6 +45,10 @@ class AlunoDiarioClasse
      */
     protected $codigo;
     /**
+     * @var integer
+     */
+    protected $matriculaAnterior;
+    /**
      * @var string
      */
     protected $nome;
@@ -94,6 +98,25 @@ class AlunoDiarioClasse
      * @var boolean
      */
     private $amparado = false;
+
+    /**
+     * @return int
+     */
+    public function getMatriculaAnterior()
+    {
+        return $this->matriculaAnterior;
+    }
+
+    /**
+     * @param int $matriculaAnterior
+     * @return AlunoDiarioClasse
+     */
+    public function setMatriculaAnterior($matriculaAnterior)
+    {
+        $this->matriculaAnterior = $matriculaAnterior;
+        return $this;
+    }
+
 
     /**
      * @return int

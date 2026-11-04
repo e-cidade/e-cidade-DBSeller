@@ -1651,7 +1651,7 @@ class cl_layout_IPE
     public $nomearq = null;
 
     // Construtor
-    public function cl_layout_IPE()
+    public function __construct()
     {
         $this->nomearq = '/tmp/IPE' . date("mY") . '.TXT';
     }
@@ -1771,7 +1771,7 @@ class cl_layout_BLV
     public $nomearq = null;
 
     // Construtor
-    public function cl_layout_BLV()
+    public function __construct()
     {
         $this->nomearq = '/tmp/BLV' . date("mY") . '.TXT';
     }

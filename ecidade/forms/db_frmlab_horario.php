@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clrotulo->label ( "la08_c_descr" );
        <?=@$Lla35_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input ( 'la35_i_codigo', 10, $Ila35_i_codigo, true, 'text', 3, "" )?>
     </td>
   </tr>
@@ -56,21 +56,21 @@ db_input ( 'la35_i_codigo', 10, $Ila35_i_codigo, true, 'text', 3, "" )?>
        <b>Laboratorio:</b>
     </td>
     <td>
-<?
+<?php
 db_input ( 'la02_i_codigo', 10, @$Ila09_i_labsetor, true, 'text', 3, "" )?>
-       <?
+       <?php
 							db_input ( 'la02_c_descr', 50, @$Ila02_c_descr, true, 'text', 3, '' )?>
     </td>
   </tr>
 
   <tr>
     <td nowrap title="<?=@$Tla35_i_setorexame?>">
-       <?
+       <?php
 							db_ancora ('<b>Exame:</b>', "js_pesquisala35_i_setorexame(true);", $db_opcao );
 							?>
     </td>
     <td> 
-<?
+<?php
 db_input ( 'la08_i_codigo', 10, $Ila35_i_setorexame, true, 'text', $db_opcao, " onchange='js_pesquisala35_i_setorexame(false);'" );
 db_input ( 'la35_i_setorexame', 10,'', true, 'hidden', $db_opcao,'');
 db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
@@ -120,7 +120,7 @@ db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
 									<tr>
 										<td nowrap title="<?=@$Tla35_d_valinicio?>"><?=@$Lla35_d_valinicio?></td>
 										<td>
-                      <?
+                      <?php
                       if(isset($la35_d_valinicio)) {
                         
                         $aDataTmp = explode('/', $la35_d_valinicio);
@@ -141,7 +141,7 @@ db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
 									<tr>
 										<td nowrap title="<?=@$Tla35_d_valfim?>"><?=@$Lla35_d_valfim?></td>
 										<td>
-                      <?
+                      <?php
                       if(isset($la35_d_valfim)) {
                         
                         $aDataTmp = explode('/', $la35_d_valfim);
@@ -168,7 +168,7 @@ db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
 									<tr>
 										<td nowrap title="<?=@$Tla35_c_horaini?>"> <?=@$Lla35_c_horaini?> </td>
 										<td>
-                                          <?
+                                          <?php
 											db_input ( 'la35_c_horaini', 5, $Ila35_c_horaini, true, 'text', $db_opcao, "onKeyUp=\"mascara_hora(this.value,'la35_c_horaini', event)\"  " );
 										   ?>                                                            
                                          </td>
@@ -176,7 +176,7 @@ db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
 									<tr>
 										<td nowrap title="<?=@$Tla35_c_horafim?>"> <?=@$Lla35_c_horafim?> </td>
 										<td>
-                                          <?
+                                          <?php
 											db_input ( 'la35_c_horafim', 5, $Ila35_c_horafim, true, 'text', $db_opcao, "OnKeyUp=\"mascara_hora(this.value,'la35_c_horafim',event)\" " );
 									      ?>                                                            
                                         </td>
@@ -202,7 +202,7 @@ db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
 		<table width="100%">
 			<tr>
 				<td valign="top"><br>
-                <?
+                <?php
 				  $chavepri = array ('la08_i_codigo' => @$la08_i_codigo,
                              'la08_c_descr' => @$la08_c_descr, 
                              "la35_i_codigo" => @$la35_i_codigo, 
@@ -274,7 +274,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_horario.hide();
-  <?
+  <?php
 		if ($db_opcao != 1) {
 			echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
 		}

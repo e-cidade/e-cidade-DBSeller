@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed43_i_codigo");
        <?=@$Led74_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_i_codigo',10,$Ied74_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted74_i_diario?>">
-       <?
+       <?php
        db_ancora(@$Led74_i_diario,"js_pesquisaed74_i_diario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_i_diario',10,$Ied74_i_diario,true,'text',$db_opcao," onchange='js_pesquisaed74_i_diario(false);'")
 ?>
-       <?
+       <?php
 db_input('ed95_i_codigo',10,$Ied95_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted74_i_procresultado?>">
-       <?
+       <?php
        db_ancora(@$Led74_i_procresultado,"js_pesquisaed74_i_procresultado(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_i_procresultado',10,$Ied74_i_procresultado,true,'text',$db_opcao," onchange='js_pesquisaed74_i_procresultado(false);'")
 ?>
-       <?
+       <?php
 db_input('ed43_i_codigo',10,$Ied43_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed43_i_codigo',10,$Ied43_i_codigo,true,'text',3,'')
        <?=@$Led74_c_valoraprov?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_c_valoraprov',10,$Ied74_c_valoraprov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('ed74_c_valoraprov',10,$Ied74_c_valoraprov,true,'text',$db_opcao,"")
        <?=@$Led74_c_resultadoaprov?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_c_resultadoaprov',1,$Ied74_c_resultadoaprov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('ed74_c_resultadoaprov',1,$Ied74_c_resultadoaprov,true,'text',$db_opcao
        <?=@$Led74_i_percfreq?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_i_percfreq',10,$Ied74_i_percfreq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('ed74_i_percfreq',10,$Ied74_i_percfreq,true,'text',$db_opcao,"")
        <?=@$Led74_c_resultadofreq?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_c_resultadofreq',1,$Ied74_c_resultadofreq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_input('ed74_c_resultadofreq',1,$Ied74_c_resultadofreq,true,'text',$db_opcao,"
        <?=@$Led74_c_resultadofinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed74_c_resultadofinal',1,$Ied74_c_resultadofinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_diariofinal.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

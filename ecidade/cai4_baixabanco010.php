@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,7 +44,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -68,7 +68,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 								</td>
 				        <td align="left">
 
-											   <?
+											   <?php
 									          $result = db_query("select *
                                                   from cadban
 															                         inner join cgm on k15_numcgm = z01_numcgm
@@ -91,7 +91,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
                  </td>
                  <td  nowrap>
-		               <?
+		               <?php
                      $xdata = date('d-m-Y',db_getsession("DB_datausu"));
 					           db_inputdata("datai",substr($xdata,0,2),substr($xdata,3,2),substr($xdata,6,4),true,'text',1);
                     ?>
@@ -102,7 +102,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
                     <?=$Lautent?>
                  </td>
                  <td align="left">
-                    <?
+                    <?php
 		                  $xx = array('f'=>'SIM','t'=>'NÃO');
                       db_select('autent',$xx,true,4,'');
                     ?>
@@ -111,7 +111,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
               <tr>
                 <td align="left"><strong>Arquivo: </strong></td>
                 <td >
-                   <?
+                   <?php
                       $aArquivoExistente = array('nao'=>'NÃO','sim'=>'SIM');
                       db_select('arqexistente',$aArquivoExistente,true,4,"onchange='js_exibe_codarquivo();'");
                     ?>
@@ -119,12 +119,12 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
               </tr>
               <tr id="arquivoexistente" style="display: none;">
                 <td align="left" >
-                  <?
+                  <?php
                    db_ancora("Nome Arquivo: ","js_pesquisaarquivos(true);",1,'font-weight:bold;');
                   ?>
                 </td>
                 <td >
-                  <?
+                  <?php
                     db_input('codret',10,"",true,'text',3,'')
                   ?>
                    <input id='cod_agencia' style="width: 25px;" type="hidden" value="<?=$k15_codage?>">
@@ -156,7 +156,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 </table>
 </body>
 </html>
-<?
+<?php
       $disbanco = new janela("disbanco","");
       $disbanco->iniciarVisivel = false;
       $disbanco->largura = "470";

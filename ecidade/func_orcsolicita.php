@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -96,7 +96,7 @@ if (isset($datafinal)){
               <?=$Lpc20_codorc?>
             </td>
             <td align="left" > 
-              <?
+              <?php
 		       db_input("pc20_codorc",10,$Ipc20_codorc,true,"text",4,"","chave_pc20_codorc");
 		       ?>
             </td>
@@ -106,7 +106,7 @@ if (isset($datafinal)){
               <?=$Lpc10_numero?>
             </td>
             <td align="left" > 
-              <?
+              <?php
 		       db_input("pc10_numero",10,$Ipc10_numero,true,"text",4,"","chave_pc10_numero");
 		       ?>
             </td>
@@ -119,7 +119,7 @@ if (isset($datafinal)){
 	              <b>Data Entrega Inicial</b>
 	            </td>
 	            <td> 
-	              <?
+	              <?php
 					 db_inputdata("pc20_dtate",@$pc20_dtatei_dia,@$pc20_dtatei_mes,@$pc20_dtatei_ano,true,"text",1,"","pc20_dtatei");
 	              ?>
 	            </td>
@@ -129,7 +129,7 @@ if (isset($datafinal)){
 	              <b>Data Entrega Final</b>
 	            </td>
 	            <td> 
-	              <?
+	              <?php
 					 db_inputdata("pc20_dtate",@$pc20_dtatef_dia,@$pc20_dtatef_mes,@$pc20_dtatef_ano,true,"text",1,"","pc20_dtatef");
 	              ?>
 	            </td>            
@@ -150,7 +150,7 @@ if (isset($datafinal)){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(isset($campos)==false){
         if(file_exists("funcoes/db_func_pcorcam.php")==true){
           include(modification("funcoes/db_func_pcorcam.php"));
@@ -207,12 +207,12 @@ if (isset($datafinal)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

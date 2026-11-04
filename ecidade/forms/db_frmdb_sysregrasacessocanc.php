@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -37,28 +37,28 @@ $clrotulo->label("nome");
     <table border="0">
   <tr>
     <td nowrap title="<?=@$Tdb49_idacesso?>">
-       <?
+       <?php
        echo @$Ldb49_idacesso;
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('db49_idacesso',6,$Idb49_idacesso,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb49_id_usuario?>">
-       <?
+       <?php
        echo @$Ldb49_id_usuario;
        ?>
     </td>
     <td>
-<?
+<?php
 $db49_id_usuario = db_getsession("DB_id_usuario");
 db_input('db49_id_usuario',10,$Idb49_id_usuario,true,'text',3,"")
 ?>
-       <?
+       <?php
 $nome = db_getsession('DB_login');
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
@@ -69,7 +69,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Ldb49_dtcancela?>
     </td>
     <td>
-<?
+<?php
 $db49_dtcancela_dia = date('d',db_getsession("DB_datausu"));
 $db49_dtcancela_mes = date('m',db_getsession("DB_datausu"));
 $db49_dtcancela_ano = date('Y',db_getsession("DB_datausu"));
@@ -83,7 +83,7 @@ db_inputdata('db49_dtcancela',@$db49_dtcancela_dia,@$db49_dtcancela_mes,@$db49_d
        <?=@$Ldb49_observ?>
     </td>
     <td>
-<?
+<?php
 db_textarea('db49_observ',6,90,$Idb49_observ,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -148,7 +148,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_sysregrasacessocanc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

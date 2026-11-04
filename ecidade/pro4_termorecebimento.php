@@ -2,7 +2,7 @@
 
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,7 +36,63 @@ if ($cldb_config->numrows > 0) {
 } else {
   $nomeinst = '';
 }
-$sqlpara = "select pd.descrdepto as pdepto,
+
+
+if (isset($telaNova)) {
+    $sqlpara = "select pd.descrdepto as pdepto,
+                      p62_coddepto,
+                      p63_codtran,
+                      pu.nome as pusu,
+                      instip.nomeinst as instipara,
+                      dd.descrdepto as ddepto,
+                      p62_coddeptorec,
+                      instid.nomeinst as instide,
+                      du.nome as dusu,
+                      to_char(p58_dtproc,'YYYY') as anoproc,
+                      to_char(p62_dttran,'DD/MM/YYYY') as dttran,
+                      p62_hora,
+                      p58_numero,
+                      p58_ano,
+                      p58_codproc,
+                      case when ov09_protprocesso::varchar is null then ''
+                        else ov01_numero||' / '||ov01_anousu
+                      end as atendimento
+                 from proctransferproc inner join proctransfer on p63_codtran     = p62_codtran
+                      inner join protprocesso                  on p63_codproc     = p58_codproc
+                      inner join db_depart pd                  on pd.coddepto     =  p62_coddeptorec
+                      inner join db_config as instip           on pd.instit       = instip.codigo
+                      inner join db_depart dd                  on dd.coddepto     =  p62_coddepto
+                      inner join db_config as instid           on dd.instit       = instid.codigo
+                      left join db_usuarios pu                 on pu.id_usuario   = p62_id_usorec
+                      left join db_usuarios du                 on du.id_usuario   = p62_id_usuario
+                      left  join processoouvidoria             on p58_codproc     = ov09_protprocesso
+                      left  join ouvidoriaatendimento          on ov01_sequencial = ov09_ouvidoriaatendimento
+
+                where p63_codproc in ($codProcs) order by dttran, p62_hora desc limit 1 ";
+
+    $rspara = db_query($sqlpara);
+
+    if (pg_num_rows($rspara) == 0) {
+
+        db_redireciona('db_erros.php?fechar=true&db_erro=Sem processos nesta transferência!');
+        exit;
+    }
+
+    $sqlproc = "select distinct p63_codproc,
+                       z01_nome,
+                       p51_descr,
+                       p58_obs,
+                       to_char(p58_dtproc,'YYYY') as anoproc,
+                       to_char(p58_dtproc,'DD/MM/YYYY') as dtproc,
+                       p58_numero,
+                       p58_ano
+                  from proctransferproc
+                       inner join protprocesso on p63_codproc = p58_codproc
+                       inner join cgm on p58_numcgm = z01_numcgm
+                       inner join tipoproc on p58_codigo = p51_codigo
+                 where p58_codproc in ($codProcs)";
+} else {
+    $sqlpara = "select pd.descrdepto as pdepto,
                       p62_coddepto,
                       p63_codtran,
                       pu.nome as pusu,
@@ -67,7 +123,7 @@ $sqlpara = "select pd.descrdepto as pdepto,
 
                 where p63_codtran = $codtran ";
 
-$sqlproc = "select p63_codproc,
+    $sqlproc = "select p63_codproc,
                        z01_nome,
                        p51_descr,
                        p58_obs,
@@ -80,13 +136,16 @@ $sqlproc = "select p63_codproc,
                        inner join cgm on p58_numcgm = z01_numcgm
                        inner join tipoproc on p58_codigo = p51_codigo
                  where p63_codtran = $codtran";
-$rspara = db_query($sqlpara);
 
-if (pg_numrows($rspara) == 0) {
+    $rspara = db_query($sqlpara);
 
-  db_redireciona('db_erros.php?fechar=true&db_erro=Sem processos nesta transferência!');
-  exit;
+    if (pg_num_rows($rspara) == 0) {
+
+        db_redireciona('db_erros.php?fechar=true&db_erro=Sem processos nesta transferência!');
+        exit;
+    }
 }
+
 
 $iLinhasPorPagina = 15;
 $rsproc           = db_query($sqlproc);
@@ -123,7 +182,12 @@ for ($multiplo = 1; $multiplo <= $iNumeroPaginas; $multiplo++) {
     $aAnoTransferencia = explode("/", $dttran);
     $iAnoTransferencia = $aAnoTransferencia[2];
 
-    $pdf->text(120, $xlin - 13, 'Termo de Recebimento nº ' . db_formatar($p63_codtran, "s", "0", 5, "e") . " / " . $iAnoTransferencia);
+    if (isset($telaNova)) {
+        $pdf->text(120, $xlin - 13, 'Termo de Recebimento');
+    } else {
+        $pdf->text(120, $xlin - 13, 'Termo de Recebimento nº ' . db_formatar($p63_codtran, "s", "0", 5, "e") . " / " . $iAnoTransferencia);
+    }
+
     if ($nNumeroLinhas == 1) {
       $pdf->text(120, $xlin - 9, "Processo nº $p58_numero / $p58_ano");
     }
@@ -179,14 +243,24 @@ for ($multiplo = 1; $multiplo <= $iNumeroPaginas; $multiplo++) {
 
     for ($ii = $multiplofor; $ii < ($multiplo * 15); $ii++) {
 
-      if ($ii >= pg_numrows($rsproc)) {
+      if ($ii >= pg_num_rows($rsproc)) {
         break;
       }
 
       db_fieldsmemory($rsproc, $ii);
       $pdf->setx($xcol + 1);
 
-      $sNumeroProtocolo = $p58_numero . "/" . $p58_ano;
+        $sqlapen = "select * from processosapensados where p30_procapensado = $p63_codproc";
+        $rsapen  = db_query($sqlapen);
+
+        if (pg_num_rows($rsapen) > 0) {
+            $sApen = "(A)";
+        } else {
+            $sApen = '';
+        }
+
+        $sNumeroProtocolo = $sApen.$p58_numero."/".$p58_ano;
+
       if ($p58_numero == "") {
         $sNumeroProtocolo = "";
       }
@@ -195,8 +269,8 @@ for ($multiplo = 1; $multiplo <= $iNumeroPaginas; $multiplo++) {
       $pdf->cell(30, 3, $sNumeroProtocolo, 0, 0, "L", 0);
       $pdf->Setfont('Arial', '', 8);
       $pdf->cell(75, 3, $z01_nome, 0, 0, "L", 0);
-      $pdf->cell(50, 3, substr($p58_obs, 0, 30), 0, 0, "L", 0);
-      $pdf->cell(75, 3, substr("$p51_descr", 0, 35), 0, 1, "L", 0);
+      $pdf->cell(50, 3, substr(strip_tags($p58_obs), 0, 25), 0, 0, "L", 0);
+      $pdf->cell(75, 3, substr("$p51_descr", 0, 24), 0, 1, "L", 0);
       if ($ii == $nNumeroLinhas - 1) {
         break;
       }

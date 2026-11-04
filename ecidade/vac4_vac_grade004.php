@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ $db_botao = true;
   font-size: 12;
   color: #DEB887;
   background-color:#444444;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
 }
 .corpo {
   font-size: 16;
@@ -84,7 +84,7 @@ $db_botao = true;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_aplicavacina.php"));
 	?>
     </center>

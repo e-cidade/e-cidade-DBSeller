@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhpeslota
-class cl_rhpeslota { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh10_anousu = 0; 
-   var $rh10_mesusu = 0; 
-   var $rh10_regist = 0; 
-   var $rh10_lotac = 0; 
-   var $rh10_percrateio = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhpeslota {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh10_anousu = 0;
+   var $rh10_mesusu = 0;
+   var $rh10_regist = 0;
+   var $rh10_lotac = 0;
+   var $rh10_percrateio = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh10_anousu = int4 = Ano 
-                 rh10_mesusu = int4 = Mês 
-                 rh10_regist = int4 = Matrícula 
-                 rh10_lotac = int4 = Lotação 
-                 rh10_percrateio = int4 = Percentual de Reteio 
+                 rh10_anousu = int4 = Ano
+                 rh10_mesusu = int4 = Mês
+                 rh10_regist = int4 = Matrícula
+                 rh10_lotac = int4 = Lotação
+                 rh10_percrateio = int4 = Percentual de Reteio
                  ";
-   //funcao construtor da classe 
-   function cl_rhpeslota() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhpeslota"); 
+     $this->rotulo = new rotulo("rhpeslota");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_rhpeslota {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh10_anousu = ($this->rh10_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh10_anousu"]:$this->rh10_anousu);
        $this->rh10_mesusu = ($this->rh10_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh10_mesusu"]:$this->rh10_mesusu);
@@ -86,9 +86,9 @@ class cl_rhpeslota {
      }
    }
    // funcao para inclusao
-   function incluir ($rh10_anousu,$rh10_mesusu,$rh10_regist,$rh10_lotac){ 
+   public function incluir ($rh10_anousu,$rh10_mesusu,$rh10_regist,$rh10_lotac){
       $this->atualizacampos();
-     if($this->rh10_percrateio == null ){ 
+     if($this->rh10_percrateio == null ){
        $this->erro_sql = " Campo Percentual de Reteio nao Informado.";
        $this->erro_campo = "rh10_percrateio";
        $this->erro_banco = "";
@@ -97,11 +97,11 @@ class cl_rhpeslota {
        $this->erro_status = "0";
        return false;
      }
-       $this->rh10_anousu = $rh10_anousu; 
-       $this->rh10_mesusu = $rh10_mesusu; 
-       $this->rh10_regist = $rh10_regist; 
-       $this->rh10_lotac = $rh10_lotac; 
-     if(($this->rh10_anousu == null) || ($this->rh10_anousu == "") ){ 
+       $this->rh10_anousu = $rh10_anousu;
+       $this->rh10_mesusu = $rh10_mesusu;
+       $this->rh10_regist = $rh10_regist;
+       $this->rh10_lotac = $rh10_lotac;
+     if(($this->rh10_anousu == null) || ($this->rh10_anousu == "") ){
        $this->erro_sql = " Campo rh10_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -109,7 +109,7 @@ class cl_rhpeslota {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh10_mesusu == null) || ($this->rh10_mesusu == "") ){ 
+     if(($this->rh10_mesusu == null) || ($this->rh10_mesusu == "") ){
        $this->erro_sql = " Campo rh10_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -117,7 +117,7 @@ class cl_rhpeslota {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh10_regist == null) || ($this->rh10_regist == "") ){ 
+     if(($this->rh10_regist == null) || ($this->rh10_regist == "") ){
        $this->erro_sql = " Campo rh10_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -125,7 +125,7 @@ class cl_rhpeslota {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh10_lotac == null) || ($this->rh10_lotac == "") ){ 
+     if(($this->rh10_lotac == null) || ($this->rh10_lotac == "") ){
        $this->erro_sql = " Campo rh10_lotac nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -134,21 +134,21 @@ class cl_rhpeslota {
        return false;
      }
      $sql = "insert into rhpeslota(
-                                       rh10_anousu 
-                                      ,rh10_mesusu 
-                                      ,rh10_regist 
-                                      ,rh10_lotac 
-                                      ,rh10_percrateio 
+                                       rh10_anousu
+                                      ,rh10_mesusu
+                                      ,rh10_regist
+                                      ,rh10_lotac
+                                      ,rh10_percrateio
                        )
                 values (
-                                $this->rh10_anousu 
-                               ,$this->rh10_mesusu 
-                               ,$this->rh10_regist 
-                               ,$this->rh10_lotac 
-                               ,$this->rh10_percrateio 
+                                $this->rh10_anousu
+                               ,$this->rh10_mesusu
+                               ,$this->rh10_regist
+                               ,$this->rh10_lotac
+                               ,$this->rh10_percrateio
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lotação dos Funcionários ($this->rh10_anousu."-".$this->rh10_mesusu."-".$this->rh10_regist."-".$this->rh10_lotac) nao Incluído. Inclusao Abortada.";
@@ -187,16 +187,16 @@ class cl_rhpeslota {
        $resac = db_query("insert into db_acount values($acount,973,6059,'','".AddSlashes(pg_result($resaco,0,'rh10_percrateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null) { 
+   public function alterar ($rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null) {
       $this->atualizacampos();
      $sql = " update rhpeslota set ";
      $virgula = "";
-     if(trim($this->rh10_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_anousu"])){ 
+     if(trim($this->rh10_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_anousu"])){
        $sql  .= $virgula." rh10_anousu = $this->rh10_anousu ";
        $virgula = ",";
-       if(trim($this->rh10_anousu) == null ){ 
+       if(trim($this->rh10_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "rh10_anousu";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_rhpeslota {
          return false;
        }
      }
-     if(trim($this->rh10_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_mesusu"])){ 
+     if(trim($this->rh10_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_mesusu"])){
        $sql  .= $virgula." rh10_mesusu = $this->rh10_mesusu ";
        $virgula = ",";
-       if(trim($this->rh10_mesusu) == null ){ 
+       if(trim($this->rh10_mesusu) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "rh10_mesusu";
          $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_rhpeslota {
          return false;
        }
      }
-     if(trim($this->rh10_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_regist"])){ 
+     if(trim($this->rh10_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_regist"])){
        $sql  .= $virgula." rh10_regist = $this->rh10_regist ";
        $virgula = ",";
-       if(trim($this->rh10_regist) == null ){ 
+       if(trim($this->rh10_regist) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "rh10_regist";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_rhpeslota {
          return false;
        }
      }
-     if(trim($this->rh10_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_lotac"])){ 
+     if(trim($this->rh10_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_lotac"])){
        $sql  .= $virgula." rh10_lotac = $this->rh10_lotac ";
        $virgula = ",";
-       if(trim($this->rh10_lotac) == null ){ 
+       if(trim($this->rh10_lotac) == null ){
          $this->erro_sql = " Campo Lotação nao Informado.";
          $this->erro_campo = "rh10_lotac";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_rhpeslota {
          return false;
        }
      }
-     if(trim($this->rh10_percrateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_percrateio"])){ 
+     if(trim($this->rh10_percrateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh10_percrateio"])){
        $sql  .= $virgula." rh10_percrateio = $this->rh10_percrateio ";
        $virgula = ",";
-       if(trim($this->rh10_percrateio) == null ){ 
+       if(trim($this->rh10_percrateio) == null ){
          $this->erro_sql = " Campo Percentual de Reteio nao Informado.";
          $this->erro_campo = "rh10_percrateio";
          $this->erro_banco = "";
@@ -294,7 +294,7 @@ class cl_rhpeslota {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotação dos Funcionários nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh10_anousu."-".$this->rh10_mesusu."-".$this->rh10_regist."-".$this->rh10_lotac;
@@ -322,14 +322,14 @@ class cl_rhpeslota {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh10_anousu,$rh10_mesusu,$rh10_regist,$rh10_lotac));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -380,7 +380,7 @@ class cl_rhpeslota {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotação dos Funcionários nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh10_anousu."-".$rh10_mesusu."-".$rh10_regist."-".$rh10_lotac;
@@ -408,11 +408,11 @@ class cl_rhpeslota {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -434,10 +434,10 @@ class cl_rhpeslota {
       }
      return $result;
    }
-   function sql_query ( $rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,65 +447,65 @@ class cl_rhpeslota {
        $sql .= $campos;
      }
      $sql .= " from rhpeslota ";
-     $sql .= "      inner join pessoal  on  pessoal.r01_anousu = rhpeslota.rh10_anousu 
-		                                   and  pessoal.r01_mesusu = rhpeslota.rh10_mesusu 
-																			 and  pessoal.r01_regist = rhpeslota.rh10_regist 
+     $sql .= "      inner join pessoal  on  pessoal.r01_anousu = rhpeslota.rh10_anousu
+		                                   and  pessoal.r01_mesusu = rhpeslota.rh10_mesusu
+																			 and  pessoal.r01_regist = rhpeslota.rh10_regist
 																			 and  pessoal.r01_instit = ".db_getsession("DB_instit")." ";
      $sql .= "      inner join rhlota  on  rhlota.r70_codigo = rhpeslota.rh10_lotac
 		                                  and  rhlota.r70_instit = pessoal.r01_instit ";
      $sql .= "      inner join cgm  on  cgm.z01_numcgm = pessoal.r01_numcgm";
-     $sql .= "      inner join funcao  on  funcao.r37_anousu = pessoal.r01_anousu 
-		                                  and  funcao.r37_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join funcao  on  funcao.r37_anousu = pessoal.r01_anousu
+		                                  and  funcao.r37_mesusu = pessoal.r01_mesusu
 																			and  funcao.r37_funcao = pessoal.r01_funcao	";
-     $sql .= "      inner join inssirf  on  inssirf.r33_anousu = pessoal.r01_anousu 
-		                                   and  inssirf.r33_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join inssirf  on  inssirf.r33_anousu = pessoal.r01_anousu
+		                                   and  inssirf.r33_mesusu = pessoal.r01_mesusu
 																			 and  inssirf.r33_codtab = pessoal.r01_tbprev
 																			 and  inssirf.r33_instit = pessoal.r01_instit ";
-     $sql .= "      inner join lotacao  on  lotacao.r13_anousu = pessoal.r01_anousu 
-		                                   and  lotacao.r13_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join lotacao  on  lotacao.r13_anousu = pessoal.r01_anousu
+		                                   and  lotacao.r13_mesusu = pessoal.r01_mesusu
 																			 and  lotacao.r13_codigo = pessoal.r01_lotac
 																			 and  lotacao.r13_instit = pessoal.r01_instit ";
-     $sql .= "      inner join cargo  on  cargo.r65_anousu = pessoal.r01_anousu 
-		                                 and  cargo.r65_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join cargo  on  cargo.r65_anousu = pessoal.r01_anousu
+		                                 and  cargo.r65_mesusu = pessoal.r01_mesusu
 																		 and  cargo.r65_cargo = pessoal.r01_cargo";
      $sql .= "      inner join db_config  on  db_config.codigo = rhlota.r70_instit";
      $sql .= "      inner join db_estrutura  on  db_estrutura.db77_codestrut = rhlota.r70_codestrut";
      $sql2 = "";
      if($dbwhere==""){
        if($rh10_anousu!=null ){
-         $sql2 .= " where rhpeslota.rh10_anousu = $rh10_anousu "; 
-       } 
+         $sql2 .= " where rhpeslota.rh10_anousu = $rh10_anousu ";
+       }
        if($rh10_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslota.rh10_mesusu = $rh10_mesusu "; 
-       } 
+         }
+         $sql2 .= " rhpeslota.rh10_mesusu = $rh10_mesusu ";
+       }
        if($rh10_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslota.rh10_regist = $rh10_regist "; 
-       } 
+         }
+         $sql2 .= " rhpeslota.rh10_regist = $rh10_regist ";
+       }
        if($rh10_lotac!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslota.rh10_lotac = $rh10_lotac "; 
-       } 
+         }
+         $sql2 .= " rhpeslota.rh10_lotac = $rh10_lotac ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -514,10 +514,10 @@ class cl_rhpeslota {
      }
      return $sql;
   }
-   function sql_query_file ( $rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh10_anousu=null,$rh10_mesusu=null,$rh10_regist=null,$rh10_lotac=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,39 +530,39 @@ class cl_rhpeslota {
      $sql2 = "";
      if($dbwhere==""){
        if($rh10_anousu!=null ){
-         $sql2 .= " where rhpeslota.rh10_anousu = $rh10_anousu "; 
-       } 
+         $sql2 .= " where rhpeslota.rh10_anousu = $rh10_anousu ";
+       }
        if($rh10_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslota.rh10_mesusu = $rh10_mesusu "; 
-       } 
+         }
+         $sql2 .= " rhpeslota.rh10_mesusu = $rh10_mesusu ";
+       }
        if($rh10_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslota.rh10_regist = $rh10_regist "; 
-       } 
+         }
+         $sql2 .= " rhpeslota.rh10_regist = $rh10_regist ";
+       }
        if($rh10_lotac!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslota.rh10_lotac = $rh10_lotac "; 
-       } 
+         }
+         $sql2 .= " rhpeslota.rh10_lotac = $rh10_lotac ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

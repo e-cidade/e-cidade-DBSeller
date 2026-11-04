@@ -40,8 +40,8 @@ require_once(modification("dbforms/db_funcoes.php"));
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="ECIDADE_REQUEST_PATH" content="<?= ECIDADE_REQUEST_PATH ?>">
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
@@ -90,6 +90,9 @@ require_once(modification("dbforms/db_funcoes.php"));
                             <select name="evento" id="evento">
                                 <option value="r2010">R-2010</option>
                                 <option value="r2055">R-2055</option>
+                                <option value="r4010">R-4010</option>
+                                <option value="r4020">R-4020</option>
+                                <option value="r4040">R-4040</option>
                             </select>
                         </td>
                     </tr>
@@ -132,15 +135,15 @@ require_once(modification("dbforms/db_funcoes.php"));
                     </tr>
 
                     <!--nota fiscal-->
-                    <tr>
-                        <td><label for="nota">Nota Fiscal: </label></td>
+                    <tr class="d-none" id="filtro-nf">
+                        <td><label for="nota" id="">Nota Fiscal: </label></td>
                         <td><input type="text" name="nota" id="nota"></td>
                     </tr>
 
                     <!-- periodo -->
                     <tr>
                         <td>
-                            <span style="cursor: help;" title="Período da emissão da Nota Fiscal">
+                            <span style="cursor: help;" title="" id="title-periodo">
                                 Período:
                             </span>
                         </td>
@@ -156,34 +159,43 @@ require_once(modification("dbforms/db_funcoes.php"));
         <br>
     </form>
     <div style="width: 70%; display: none;" class="subcontainer" id="notasContainer">
+        <div class="alert alert-danger d-none" id="rowErrorAlert">
+            <i class="fa fa-exclamation-triangle"></i> <b>Existem notas inconsistentes.</b>
+        </div>
         <fieldset>
             <legend>Notas</legend>
-            <table id="gridNotas" class="table table-sm" data-height="250" data-virtual-scroll="true"
-                style="width: 100%;">
+            <table id="gridNotas" class="table table-sm" data-height="250" data-virtual-scroll="true" style="width: 100%;">
             </table>
         </fieldset>
     </div>
     <script src="assets/jquery/jquery-3.5.1.min.js"></script>
     <script src="assets/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>
+    <script src="scripts/classes/http/http.js"></script>
     <script src="scripts/session.js"></script>
+    <script src="public/js/app.js"></script>
+    <script src="scripts/classes/efdreinf/retencao/GridR2010.js"></script>
+    <script src="scripts/classes/efdreinf/retencao/GridR2055.js"></script>
+    <script src="scripts/classes/efdreinf/retencao/GridR4010.js"></script>
+    <script src="scripts/classes/efdreinf/retencao/GridR4020.js"></script>
+    <script src="scripts/classes/efdreinf/retencao/GridR4040.js"></script>
     <script>
         $.noConflict();
 
         /**
          * Sessoes
-        */
+         */
         const instit = $F('instit');
 
         /*
-        * EFDReinf - Configuracoes
-        */
+         * EFDReinf - Configuracoes
+         */
         let efdConfig = false;
 
         /**
-         * RPC (controller) das retencoes
+         * API (controller) das retencoes
          * */
-        const rpc = 'emp4_manutencaoretencoes.RPC.php';
+        const API = 'v4/api/integracoes/efd-reinf/retencao';
 
         /**
          * Loockup do cgm
@@ -202,11 +214,11 @@ require_once(modification("dbforms/db_funcoes.php"));
             'sLabel': 'Pesquisar Órgão',
             'sObjetoLookUp': 'db_iframe_orgao',
             'aParametrosAdicionais': [`instit=${instit}`],
-            'fCallBack' : () => {
+            'fCallBack': () => {
                 lookUpUnidade.desabilitar();
 
                 $('o41_unidade').value = '';
-                $('o41_descr').value   = '';
+                $('o41_descr').value = '';
 
                 if ($F('o40_orgao')) {
                     let param = [
@@ -221,7 +233,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
         /**
          * Loockup do Unidade
-        */
+         */
         const lookUpUnidade = new DBLookUp($('ancoraUnidade'), $('o41_unidade'), $('o41_descr'), {
             'sArquivo': 'func_orcunidade.php',
             'sLabel': 'Pesquisar Unidade',
@@ -245,6 +257,13 @@ require_once(modification("dbforms/db_funcoes.php"));
         const notasContainer = document.querySelector('#notasContainer');
 
         /**
+         * Evento El
+         */
+        const eventos = document.querySelector('#evento');
+        eventos.addEventListener('change', changeTitlePeriodo);
+        eventos.dispatchEvent(new Event('change'));
+
+        /**
          * Entrypoint
          */
         PHPSession.loadData().then(async () => {
@@ -254,7 +273,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
         function enabledFiltroOrgaounidade() {
             if (efdConfig && efdConfig.efd07_filtraorgaounidade) {
-                const trOrgao   = document.querySelector('#trOrgao');
+                const trOrgao = document.querySelector('#trOrgao');
                 const trUnidade = document.querySelector('#trUnidade');
 
                 trOrgao.classList.remove('d-none');
@@ -263,8 +282,8 @@ require_once(modification("dbforms/db_funcoes.php"));
         }
 
         /*
-        * Request para obter as configuracoes do efd-reinf
-        */
+         * Request para obter as configuracoes do efd-reinf
+         */
         async function getEfdConfig() {
             const url = PHPSession.requestApi;
             const api = url + '/integracoes/efd-reinf/configuracao/get';
@@ -275,7 +294,9 @@ require_once(modification("dbforms/db_funcoes.php"));
             formData.append('get', true);
             PHPSession.appendFormData(formData);
 
-            response = await HttpClient.post(api, { body: formData });
+            response = await HttpClient.post(api, {
+                body: formData
+            });
             if (response.error) {
                 let msg = "Erro ao buscar as configurações do efd-reinf: \n" + response.message;
                 alert(msg);
@@ -291,12 +312,14 @@ require_once(modification("dbforms/db_funcoes.php"));
          * Request para retornar as retencoes de
          * acordo com os filtros de pesquisa
          * */
-        function js_getRetencoes() {
+        async function js_getRetencoes() {
             if (!js_validateFilter()) {
                 return false;
             }
 
             js_divCarregando("Aguarde, pesquisando retencões.", "msgBox");
+
+            const action = `${API}/get-retencoes`;
 
             let params = {
                 nota: $F('nota'),
@@ -307,60 +330,57 @@ require_once(modification("dbforms/db_funcoes.php"));
 
             // se tiver o filtro orgaounidade habilitado
             if ($F('o40_orgao') || $F('o41_unidade')) {
-                params.orgaoUnidade = {};
-                params.orgaoUnidade.orgao = $F('o40_orgao');
-                params.orgaoUnidade.unidade = $F('o41_unidade');
+                params.orgaoUnidade = true;
+                params.orgao = $F('o40_orgao');
+                params.unidade = $F('o41_unidade');
             }
 
-            let body = JSON.stringify({ exec: 'getRetencoes', filters: params });
-            let options = {
-                method: 'post',
-                parameters: 'json=' + body,
-                onComplete: js_retornoRetencoes
-            }
+            try {
+                const response = await window.axios.get(action, {
+                    params: params
+                });
+                const responseData = response.data;
+                const closingDates = await getClosingDates();
 
-            let request = new Ajax.Request(rpc, options);
-        }
-
-        /**
-         * Retorno das retencoes e monta o grid
-         * */
-        function js_retornoRetencoes(response) {
-            js_removeObj("msgBox");
-
-            if (response.status == 200 && response.responseText) {
-                retencoes = JSON.parse(response.responseText);
-
-                if (retencoes.lErro == true) {
-                    let msg = "Erro ao buscar as retenções: \n" + retencoes.sMessage;
-                    alert(msg);
-                    return;
+                if (responseData.error) {
+                    alert(responseData.message);
+                    return false;
                 }
 
                 // monta grid
                 notasContainer.style.display = 'block';
-                ($F('evento') == 'r2010') ? buildGridR2010(retencoes.data) : buildGridR2055(retencoes.data);
-            } else {
-                alert('Erro na Requisição.');
-                return;
-            }
-        }
+                switch ($F('evento')) {
+                    case 'r2010':
+                        new GridR2010(responseData.data, gridNotas, closingDates);
+                        break;
 
-        /**
-         * Adiciona status nas linhas inconsistentes
-         * e estrura os campos
-        * */
-        function js_validateRows(item) {
-            let className = '';
-            let erros = ($F('evento') == 'r2010') ? validateR2010(item) : validateR2055(item);
+                    case 'r2055':
+                        new GridR2055(responseData.data, gridNotas, closingDates);
+                        break;
 
-            if (erros.length > 0) {
-                className = 'bad-row'
-            }
+                    case 'r4010':
+                        new GridR4010(responseData.data, gridNotas, closingDates);
+                        break;
 
-            return {
-                class: className,
-                erros: erros
+                    case 'r4020':
+                        new GridR4020(responseData.data, gridNotas, closingDates);
+                        break;
+
+                    case 'r4040':
+                        new GridR4040(responseData.data, gridNotas);
+                        break;
+
+                    default:
+                        alert('Erro: Evento não encontrado.');
+                        break;
+                }
+
+                showAlertRowsWithErros();
+            } catch (error) {
+                alert('Erro ao buscar retenções');
+                console.error('An error occurred:', error.message);
+            } finally {
+                js_removeObj("msgBox");
             }
         }
 
@@ -369,7 +389,32 @@ require_once(modification("dbforms/db_funcoes.php"));
          * */
         function js_manutencaoRentecao(ev, evento) {
             let retencao = ev.dataset.retencao;
-            let action = evento == 'r2010' ? 'emp4_manutencaoRetencaoR2010.php' : 'emp4_manutencaoRetencaoR2055.php'
+            let action = '';
+
+            switch (evento) {
+                case 'r2010':
+                    action = 'emp4_manutencaoRetencaoR2010.php';
+                    break;
+
+                case 'r2055':
+                    action = 'emp4_manutencaoRetencaoR2055.php';
+                    break;
+
+                case 'r4010':
+                    action = 'web/integracoes/efd-reinf/retencao/manutencaoR4010';
+                    break;
+
+                case 'r4020':
+                    action = 'web/integracoes/efd-reinf/retencao/manutencaoR4020';
+                    break;
+
+                case 'r4040':
+                    action = 'web/integracoes/efd-reinf/retencao/manutencaoR4040';
+                    break;
+                default:
+                    alert('Erro: Evento não encontrado.');
+                    break;
+            }
 
             sessionStorage.removeItem('retencao');
             sessionStorage.setItem('retencao', retencao);
@@ -386,13 +431,6 @@ require_once(modification("dbforms/db_funcoes.php"));
                 return false;
             }
 
-            if (efdConfig && efdConfig.efd07_filtraorgaounidade) {
-                if (!$F('o40_orgao') && $F('o41_unidade')) {
-                    alert('Você deve informar o Órgão');
-                    return false;
-                }
-            }
-
             return true;
         }
 
@@ -400,7 +438,10 @@ require_once(modification("dbforms/db_funcoes.php"));
         function js_errosRetencao(ev) {
             let erros = JSON.parse(ev.dataset.erros);
 
-            if (erros.length == 0) { alert('Sem detalhes para este item'); return; }
+            if (erros.length == 0) {
+                alert('Sem detalhes para este item');
+                return;
+            }
 
             windowAuxRetencao.setTitle('Detalhes');
             windowAuxRetencao.setContent(js_pageErrosRetencao(erros));
@@ -428,274 +469,24 @@ require_once(modification("dbforms/db_funcoes.php"));
             return container;
         }
 
-        /**
-         * Validacaoes dos campos do evento R-2010
-         *
-         * @return array
-         */
-        function validateR2010(item) {
-            const erros = [];
-            const filters =  [
-                {
-                    name: 'Número da Nota Fiscal',
-                    value: item.numero_nota,
-                    validate: '^[0-9]+$'
-                },
-                {
-                    name: 'Indicativo de serviço de Obra',
-                    value: item.indicativo_obra_tipo,
-                    validate: '^[0-2]$'
-                },
-                {
-                    name: 'Tipo de serviço da nota fiscal',
-                    value: item.referencia_tipo_servico,
-                    validate: '^[0-9]+$'
-                },
-                {
-                    name: 'Valores das retenções adicionais',
-                    value: item.receitasadicionais_sequencial,
-                    validate: '^[1-9][0-9]*$'
-                },
-                {
-                    name: 'Número de série nota fiscal',
-                    value: item.serie_nota,
-                    validate: '^[A-Za-z0-9]{0,5}$'
-                }
-            ];
-
-            // validacoes de regex
-            filters.forEach(i => {
-                let validate = new RegExp(i.validate);
-                let value = i.value;
-
-                if (typeof value == 'string') {
-                    value = i.value.trim();
-                }
-
-                if (!validate.test(value)) {
-                    erros.push(i.name);
-                }
-            });
-
-
-            // validacoes personalizadas
-            let retencao = Number(item.valor_retencao);
-            let aliquota = (item.indicativo_cprb === true) ? 0.035 : 0.11;
-            let base = (item.indicativo_valor_base === true)
-                ? Number(item.valor_base_retido)
-                : Number(item.valor_nota_liq) + Number(item.notas_nao_retidas)
-
-            // o valor da retencao lancada nao pode ser maior que equacao de calculo
-            // o efdreinf trunca as casas decimais e adiciona 1 centavo para a margem
-            if (retencao > ((aliquota * base) + 0.01).toFixed(2)) {
-                let percent = (100 * aliquota).toFixed(2);
-                let msg = `
-                    Retenção de ${js_formatar(retencao, 'f')}
-                    maior que ${percent}%
-                    de ${js_formatar(base, 'f')}
-                `;
-
-                erros.push(msg);
-            }
-
-            return erros;
-        }
-
-        /**
-         * Validacaoes dos campos do evento R-2055
-         *
-         * @return array
-         */
-        function validateR2055(item) {
-            const erros = [];
-            const filters = [
-                {
-                    name: 'Valores da retenção (senar, gilrat, cp)',
-                    value: item.e158_sequencial,
-                    validate: '^[1-9][0-9]*$'
-                },
-                {
-                    name: 'Indicativo de aquisição',
-                    value: item.indAqProd,
-                    validate: '^[1-7]$'
-                }
-            ];
-
-            // validacoes de regex
-            filters.forEach(i => {
-                let validate = new RegExp(i.validate);
-                let value = i.value;
-
-                if (typeof value == 'string') {
-                    value = i.value.trim();
-                }
-
-                if (!validate.test(value)) {
-                    erros.push(i.name);
-                }
-            });
-
-            return erros;
-        }
-
-        /**
-         * Grid evento R-2010
-         */
-        function buildGridR2010(retencoes) {
-            let data = [];
-
-            // header grid
-            const columns = [
-                { field: "status", title: "Status", align: "center" },
-                { field: "statusCode", title: "Status", visible: false },
-                { field: "nf", title: "NF", align: "center" },
-                { field: "nfdata", title: "Data da NF", align: "center" },
-                { field: "prestador", title: "Prestador de Serviço", align: "center" },
-                { field: "nfservico", title: "Tipo de Serviço da NF", align: "center" },
-                { field: "nfvalor", title: "Valor da NF", align: "center" },
-                { field: "nfvalorbase", title: "Valor base", align: "center"},
-                { field: "nfvalorbruto", title: "Valor Total", align: "center"},
-                { field: "aliquota", title: "Alíquota", align: "center" },
-                { field: "retencao", title: "Valor Retido", align: "center" },
-                {
-                    field: "orgunid",
-                    title: "Órgão Unidade",
-                    align: "center",
-                    visible: $F('o40_orgao') || $F('o41_unidade') ? true : false
-                },
-                { field: "acao", title: "Ação", align: "center" }
-            ];
-
-            // body grid
-            retencoes.forEach(item => {
-                let rowValidate = js_validateRows(item);
-                let row = {};
-
-                if (rowValidate.erros.length > 0) {
-                    row.statusCode = 0;
-                    row.status = `
-                <a href="#" onclick='js_errosRetencao(this)'
-                    data-erros='${JSON.stringify(rowValidate.erros)}'
-                    class='${rowValidate.class}' title="Clique para visualizar">
-                        <i class="fa fa-exclamation-triangle"></i>
-                </a>`;
-                } else {
-                    row.statusCode = 1;
-                    row.status = "<span class='ok-row' title='Item de acordo para o processamento do R-2010'><i class='fa fa-check-circle'></i>";
-                }
-
-                row.nf = item.numero_nota;
-                row.nfdata = js_formatar(item.data_emissao, 'd');
-                row.prestador = item.nome_prestador;
-                row.nfservico = item.referencia_tipo_servico_desc === null ? '-' : item.referencia_tipo_servico_desc;
-                row.nfvalor = js_formatar(item.valor_nota_liq, 'f');
-                row.nfvalorbase = js_formatar(item.valor_base_retido, 'f');
-                row.nfvalorbruto = js_formatar((Number(item.valor_nota_liq) + Number(item.notas_nao_retidas)).toFixed(2), 'f');
-                row.aliquota = item.aliquota + '%';
-                row.retencao = js_formatar(item.valor_retencao, 'f');
-                row.orgunid = item.orgao_unidade;
-                row.acao = `<button onclick="js_manutencaoRentecao(this, 'r2010')" data-retencao='${JSON.stringify(item)}'>Alterar</button>`;
-
-                data.push(row);
-            });
-
-            gridNotas.bootstrapTable('destroy');
-            gridNotas.bootstrapTable({
-                data: data,
-                locale: 'pt-BR',
-                search: true,
-                searchHighlight: true,
-                columns: columns,
-                buttons: buttons,
-                showButtonText: true
-            });
-        }
-
-        /**
-         * Grid evento R-2055
-         */
-        function buildGridR2055(retencoes) {
-            let data = [];
-
-            // header grid
-            const columns = [
-                { field: "status", title: "Status", align: "center" },
-                { field: "statusCode", title: "Status", visible: false },
-                { field: "nfdata", title: "Data da NF", align: "center" },
-                { field: "nfnumero", title: "Número da NF", align: "center" },
-                { field: "prestador", title: "Prestador", align: "center" },
-                { field: "indaquis", title: "Ind. de Aquisição", align: "center" },
-                { field: "vlrbruto", title: "Valor Bruto", align: "center" },
-                { field: "vlrsenar", title: "Valor Senar", align: "center" },
-                { field: "vlrrat", title: "Valor Gilrat", align: "center" },
-                { field: "vlrcp", title: "Valor CP", align: "center"},
-                {
-                    field: "orgunid",
-                    title: "Órgão Unidade",
-                    align: "center",
-                    visible: $F('o40_orgao') || $F('o41_unidade') ? true : false
-                },
-                { field: "acao", title: "Ação", align: "center" }
-            ];
-
-            // body grid
-            retencoes.forEach(item => {
-                let rowValidate = js_validateRows(item);
-                let row = {};
-
-                if (rowValidate.erros.length > 0) {
-                    row.statusCode = 0;
-                    row.status = `
-                <a href="#" onclick='js_errosRetencao(this)'
-                    data-erros='${JSON.stringify(rowValidate.erros)}'
-                    class='${rowValidate.class}' title="Clique para visualizar">
-                        <i class="fa fa-exclamation-triangle"></i>
-                </a>`;
-                } else {
-                    row.statusCode = 1;
-                    row.status = "<span class='ok-row' title='Item de acordo para o processamento do R-2055'><i class='fa fa-check-circle'></i>";
-                }
-
-                row.nfdata = js_formatar(item.data_nota, 'd');
-                row.nfnumero = item.nfnumero;
-                row.prestador = item.prestador;
-                row.vlrbruto = item.vlrBruto ? js_formatar(item.vlrBruto, 'f') : '-';
-                row.vlrsenar = item.e158_vlrsenar ? js_formatar(item.e158_vlrsenar, 'f') : '-';
-                row.vlrrat = item.e158_vlrrat ? js_formatar(item.e158_vlrrat, 'f') : '-';
-                row.vlrcp = item.e158_vlrcp ? js_formatar(item.e158_vlrcp, 'f') : '-';
-                row.indaquis = item.indAqProd === null ? '-' : String(item.indAqProd);
-                row.acao = `<button onclick="js_manutencaoRentecao(this, 'r2055')" data-retencao='${JSON.stringify(item)}'>Alterar</button>`;
-
-                data.push(row);
-            });
-
-            gridNotas.bootstrapTable('destroy');
-            gridNotas.bootstrapTable({
-                data: data,
-                locale: 'pt-BR',
-                search: true,
-                searchHighlight: true,
-                columns: columns,
-                buttons: buttons,
-                showButtonText: true
-            });
-        }
-
         function buttons() {
             return {
                 btnFilterError: {
                     text: 'Inconsistentes',
                     icon: 'fa-exclamation-triangle',
                     event(e) {
-                        console.log(this, e);
-                        gridNotas.bootstrapTable('filterBy', {statusCode: 0});
+                        gridNotas.bootstrapTable('filterBy', {
+                            statusCode: 0
+                        });
                     }
                 },
                 btnFilterSuccess: {
                     text: 'Corretas',
                     icon: 'fa-check-circle',
                     event() {
-                        gridNotas.bootstrapTable('filterBy', {statusCode: 1});
+                        gridNotas.bootstrapTable('filterBy', {
+                            statusCode: 1
+                        });
                     }
                 },
                 btnRefresh: {
@@ -705,6 +496,87 @@ require_once(modification("dbforms/db_funcoes.php"));
                         gridNotas.bootstrapTable('refreshOptions', {});
                     }
                 }
+            }
+        }
+
+        function changeTitlePeriodo() {
+            let title = '';
+
+            switch (evento.value) {
+                case 'r2010':
+                case 'r2055':
+                    title = 'Período da emissão da Nota Fiscal'
+                    document.querySelector('#filtro-nf').classList.remove('d-none');
+                    break;
+                case 'r4010':
+                case 'r4020':
+                case 'r4040':
+                    title = 'Período do Pagamento'
+                    document.querySelector('#filtro-nf').classList.add('d-none');
+                    break;
+            }
+
+            document.querySelector('#title-periodo').title = title;
+        }
+
+        /**
+         * Data do fechamento do periodo filtrado (R-2099, R-4099)
+         */
+        async function getClosingDates() {
+            const selectedEvent = document.querySelector('#evento');
+            const closingEvent = (selectedEvent.value.startsWith('r2')) ? 'R-2099' : 'R-4099';
+            const startDate = document.querySelector('#dataNotaInicial')?.value;
+            const endDate = document.querySelector('#dataNotaFinal')?.value;
+            const competences = {};
+
+            if (startDate) {
+                const [startYear, startMonth] = startDate.split('/').reverse();
+                const startComptence = `${startYear}-${startMonth.padStart(2, '0')}`;
+                const closedPeriod = await getClosingDateCompetence(closingEvent, startComptence);
+                if (closedPeriod) {
+                    competences[startComptence] = closedPeriod.date;
+                }
+            }
+
+            if (endDate) {
+                const [endYear, endMonth] = endDate.split('/').reverse();
+                const endCompetence = `${endYear}-${endMonth.padStart(2, '0')}`;
+                if (!competences.hasOwnProperty(endCompetence)) {
+                    const closedPeriod = await getClosingDateCompetence(closingEvent, endCompetence);
+                    if (closedPeriod) {
+                        competences[endCompetence] = closedPeriod.date;
+                    }
+                }
+            }
+
+            return (Object.keys(competences).length === 0) ? false : competences;
+        }
+
+        async function getClosingDateCompetence(event, competence) {
+            try {
+                const url = '/v4/api/integracoes/efd-reinf/events/checkPeriodIsClosed';
+                const params = {event, competence}
+                const req = await CurrentWindow.axios.get(url, {params});
+                const {data: resp} = req;
+                const {data: eventData} = resp;
+                if (!eventData) return false;
+                return eventData;
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
+        }
+
+        function showAlertRowsWithErros() {
+            const gridNotas = document.querySelector('#gridNotas');
+            const dataErros = gridNotas.querySelector('[data-erros]');
+            const rowErrorAlert = document.querySelector('#rowErrorAlert');
+
+            if (dataErros) {
+                rowErrorAlert.classList.remove('d-none');
+                rowErrorAlert.style.display = 'inline-block';
+            } else {
+                rowErrorAlert.classList.add('d-none');
             }
         }
     </script>

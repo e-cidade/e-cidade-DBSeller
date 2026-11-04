@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("k02_descr");
 	      <?=@$Lht16_anousu?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 					$ht16_anousu = db_getsession('DB_anousu');
 					db_input('ht16_anousu',10,$Iht16_anousu,true,'text',3,"");
 				?>
@@ -50,12 +50,12 @@ $clrotulo->label("k02_descr");
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tht16_avaliacao?>">
-	      <?
+	      <?php
 	        db_ancora(@$Lht16_avaliacao,"js_pesquisaht16_avaliacao(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('ht16_avaliacao',10,$Iht16_avaliacao,true,'text',$db_opcao," onchange='js_pesquisaht16_avaliacao(false);'");
 	        db_input('db101_descricao',40,$Idb101_descricao,true,'text',3,'');
 	      ?>
@@ -63,12 +63,12 @@ $clrotulo->label("k02_descr");
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tht16_receitapadrao?>">
-	      <?
+	      <?php
 	        db_ancora(@$Lht16_receitapadrao,"js_pesquisaht16_receitapadrao(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('ht16_receitapadrao',10,$Iht16_receitapadrao,true,'text',$db_opcao," onchange='js_pesquisaht16_receitapadrao(false);'");
 	        db_input('k02_descr',40,$Ik02_descr,true,'text',3,'');
 	      ?>
@@ -79,7 +79,7 @@ $clrotulo->label("k02_descr");
 	      <?=@$Lht16_qtdparcelaspagamento?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('ht16_qtdparcelaspagamento',10,$Iht16_qtdparcelaspagamento,true,'text',$db_opcao,"");
 				?>
 	    </td>
@@ -89,7 +89,7 @@ $clrotulo->label("k02_descr");
 	      <?=@$Lht16_diaspadraopagamento?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('ht16_diaspadraopagamento',10,$Iht16_diaspadraopagamento,true,'text',$db_opcao,"");
 				?>
 	    </td>
@@ -99,7 +99,7 @@ $clrotulo->label("k02_descr");
 	      <?=@$Lht16_mesescarencia?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('ht16_mesescarencia',10,$Iht16_mesescarencia,true,'text',$db_opcao,"");
 				?>
 	    </td>
@@ -163,7 +163,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_habitparametro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

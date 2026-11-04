@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("h64_data");
        <?=@$Lh56_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h56_sequencial',10,$Ih56_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th56_rhestagiocomissao?>">
-       <?
+       <?php
        db_ancora(@$Lh56_rhestagiocomissao,"js_pesquisah56_rhestagiocomissao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h56_rhestagiocomissao',10,$Ih56_rhestagiocomissao,true,'text',$db_opcao," onchange='js_pesquisah56_rhestagiocomissao(false);'")
 ?>
-       <?
+       <?php
 db_input('h59_sequencial',10,$Ih59_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th56_rhestagioagenda?>">
-       <?
+       <?php
        db_ancora(@$Lh56_rhestagioagenda,"js_pesquisah56_rhestagioagenda(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h56_rhestagioagenda',10,$Ih56_rhestagioagenda,true,'text',$db_opcao," onchange='js_pesquisah56_rhestagioagenda(false);'")
 ?>
-       <?
+       <?php
 db_input('h64_data',10,$Ih64_data,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('h64_data',10,$Ih64_data,true,'text',3,'')
        <?=@$Lh56_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h56_data',@$h56_data_dia,@$h56_data_mes,@$h56_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_inputdata('h56_data',@$h56_data_dia,@$h56_data_mes,@$h56_data_ano,true,'text'
        <?=@$Lh56_avaliador?>
     </td>
     <td> 
-<?
+<?php
 db_input('h56_avaliador',10,$Ih56_avaliador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhestagioavaliacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

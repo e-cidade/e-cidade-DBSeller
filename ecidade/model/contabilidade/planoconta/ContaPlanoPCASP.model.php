@@ -96,9 +96,76 @@ class ContaPlanoPCASP extends ContaPlano
     }
 
     /**
+     * vai buscar a conta da tesouraria vinculada ao reduzido
+     * 
+     * @return contaTesouraria
+     */
+    public function getContaTesouraria()
+    {
+
+        $daoSaltes = new cl_saltes;
+        $sql = $daoSaltes->sql_query_file( null, "k13_conta", null, "k13_reduz = {$this->getReduzido()}");
+        $rs = $daoSaltes->sql_record($sql);
+        $conta = db_utils::fieldsMemory($rs, 0)->k13_conta;
+        return $contaTesouraria = new contaTesouraria($conta);
+    }
+
+    /**
+     * retorna o tipo de conta, pelo estrutural
+     *
+     * TIPO |    Descricao
+     *   1  | Conta Corrente
+     *   2  | Poupança
+     *   3  | Conta Aplicação
+     *
+     * 1111119   ...   - conta corrente
+     * 1111150   ...   - conta aplicacao
+     * 1111106   ...   - RPPS -  Conta corrente
+     *
+     */
+    public function getTipoConta()
+    {
+        $aTipoConta["1111119"] = "1";
+        $aTipoConta["1111106"] = "1";
+        $aTipoConta["1111150"] = "2, 3";
+        $aTipoConta["1111151"] = "2, 3";
+        $aTipoConta["1111153"] = "2, 3";
+        $inicioEstrut = substr($this->getEstrutural(), 0, 7);
+        return array_key_exists($inicioEstrut, $aTipoConta) ? $aTipoConta[$inicioEstrut] : null;
+    }
+
+    /**
+     * necessário validar o estrutural para contas CAIXA e BANCO (c60_codsis)
+     * uma conta  c60_codsis = 5 ou 6 so pode ter estruturais de inicio em: 
+     * 
+     * 5 - FINANCEIRO - CAIXA - somente conta caixa (1111101)
+     * 6 - FINANCEIRO - BANCOS - somente contas bancárias (1111119) e de aplicação (1111150) e "1111102","1111106"
+     */
+    public function validaEstruturalContaCaixaBanco()
+    {
+
+        $estruturalContabilidade = substr($this->getEstrutural(), 0, 7);
+        $contaCaixa = ["1111101"];
+        $contaBanco = ["1111102", "1111106", "1111119", "1111150"];
+
+        switch ($this->getSistemaConta()->getCodigoSistemaConta()) {
+            case "5":
+                if (!in_array($estruturalContabilidade, $contaCaixa)) {
+                    throw new Exception("O estrutural {$this->getEstrutural()} não pode ser 5 - FINANCEIRO - CAIXA.");
+                }
+                break;
+            case "6":
+                if (!in_array($estruturalContabilidade, $contaBanco)) {
+                    throw new Exception("O estrutural {$this->getEstrutural()} não pode ser 6 - FINANCEIRO - BANCOS.");
+                }   
+            }
+
+    }
+
+    /**
      * Salva os dados na tabela conplano/conplanoreduz
-     * @throws Exception
      * @return boolean
+     * @throws Exception
      */
     public function salvar()
     {
@@ -119,6 +186,8 @@ class ContaPlanoPCASP extends ContaPlano
         if (!$this->getSistemaConta() instanceof SistemaConta) {
             throw new Exception("Nao foi possivel instanciar o Sistema de Conta do plano de contas.");
         }
+
+        $this->validaEstruturalContaCaixaBanco();
 
         $oDaoConPlano = new cl_conplano;
         $oDaoConPlano->c60_codcon = $this->getCodigoConta();
@@ -166,7 +235,7 @@ class ContaPlanoPCASP extends ContaPlano
              * Sempre exclui vinculo com conta corrente se houver
              */
             $oDaoPCASPContaCorrente = new cl_conplanocontacorrente;
-            $sWhereExcluiVinculo  = "     c18_codcon = " . $this->getCodigoConta();
+            $sWhereExcluiVinculo = "     c18_codcon = " . $this->getCodigoConta();
             $sWhereExcluiVinculo .= " and c18_anousu = " . $iAno;
             $oDaoPCASPContaCorrente->excluir(null, $sWhereExcluiVinculo);
 
@@ -200,7 +269,7 @@ class ContaPlanoPCASP extends ContaPlano
                 $stdDados = db_utils::fieldsMemory($buscaMaisReduzidos, $row);
 
                 if ($stdDados->total > 1) {
-                    $mensagem  = "Foram encontrados mais de um código reduzido para esta conta dentro do mesmo ano e instituição, ";
+                    $mensagem = "Foram encontrados mais de um código reduzido para esta conta dentro do mesmo ano e instituição, ";
                     $mensagem .= "portanto não é possível alterar o detalhamento do sistema.";
                     throw new BusinessException($mensagem);
                 }
@@ -218,7 +287,6 @@ class ContaPlanoPCASP extends ContaPlano
     }
 
 
-
     /*
        retorna se um reduzido possui conciliacao bancaria aberta
     */
@@ -228,7 +296,7 @@ class ContaPlanoPCASP extends ContaPlano
         $oContaBancaria = $this->getContaBancaria();
         $iContaBancaria = $oContaBancaria->getSequencialContaBancaria();
         $oDaoConcilia = new cl_concilia();
-        $sSql = $oDaoConcilia->sql_query_file ( null, "*", null, "k68_contabancaria = {$iContaBancaria} ");
+        $sSql = $oDaoConcilia->sql_query_file(null, "*", null, "k68_contabancaria = {$iContaBancaria} ");
         $oDaoConcilia->sql_record($sSql);
         if ($oDaoConcilia->numrows > 0) {
             return true;
@@ -239,24 +307,24 @@ class ContaPlanoPCASP extends ContaPlano
     /**
      * Faz o vinculo dos atributos com os conta correntes selecionados
      * @param $iContaSistemaContaCorrente
-     * @throws Exception
      * @return true
+     * @throws Exception
      */
     public function vincularContaCorrente($iContaSistemaContaCorrente)
     {
 
         $daoConplanoAtributos = new cl_conplanoatributos();
-        $where = "c120_conplano = ".$this->getCodigoConta()." and c120_conplanosistema = {$iContaSistemaContaCorrente} ";
-        $rsAtributos = db_query($daoConplanoAtributos->sql_query_file(null,"*",null, $where));
-        if ( pg_num_rows($rsAtributos) > 0 ) {
+        $where = "c120_conplano = " . $this->getCodigoConta() . " and c120_conplanosistema = {$iContaSistemaContaCorrente} ";
+        $rsAtributos = db_query($daoConplanoAtributos->sql_query_file(null, "*", null, $where));
+        if (pg_num_rows($rsAtributos) > 0) {
             throw new Exception("Conta corrente já vinculado a conta contábil");
         }
 
         $oDaoConplanoSistema = new cl_conplanosistemaatributos();
         $where = "c129_conplanosistema = {$iContaSistemaContaCorrente}";
-        $sSqlAtributos = $oDaoConplanoSistema->sql_query_file(null, "*","c129_ordem", $where);
+        $sSqlAtributos = $oDaoConplanoSistema->sql_query_file(null, "*", "c129_ordem", $where);
         $rsAtributos = db_query($sSqlAtributos);
-        $atributos   = db_utils::getCollectionByRecord($rsAtributos);
+        $atributos = db_utils::getCollectionByRecord($rsAtributos);
 
         $ultimoAnoPlano = $this->getUltimoAnoPlano();
         for ($anoPercorrido = $this->iAno; $anoPercorrido <= $ultimoAnoPlano; $anoPercorrido++) {
@@ -284,38 +352,38 @@ class ContaPlanoPCASP extends ContaPlano
      * verifica o parametro da contabilidade domicilio bancario
      *  - se estiver ativo poderemos ter varios reduzidos para mesma conta e mesma instituicao
      *  - se estiver desativado nao permitira ter mais de um reduzido para conta e instit
-     * @throws Exception
      * @return true
      *
+     * @throws Exception
      */
     private function validaDamicilioBancario()
     {
 
-      // parametro da contabilidade Domicilio Bancario
-      $lUtilizaDomicilioBancario = UTILIZA_DOMICILIO_BANCARIO;
-      $iConta = $this->getCodigoConta();
-      $iInstituicaoProximoReduzido = $this->getInstituicao();
+        // parametro da contabilidade Domicilio Bancario
+        $lUtilizaDomicilioBancario = UTILIZA_DOMICILIO_BANCARIO;
+        $iConta = $this->getCodigoConta();
+        $iInstituicaoProximoReduzido = $this->getInstituicao();
 
-      // percorre os reduzidos da conta para verificar a instituicao que possui cadastro
-      foreach($this->getContasReduzidas() as $oReduzidos ){
+        // percorre os reduzidos da conta para verificar a instituicao que possui cadastro
+        foreach ($this->getContasReduzidas() as $oReduzidos) {
 
-        $iInstituicaoReduzidoExistente = $oReduzidos->c61_instit;
-        // compara cada instit cadastrada com a que se esta tentando incluir
-        if ($iInstituicaoProximoReduzido == $iInstituicaoReduzidoExistente && !$lUtilizaDomicilioBancario) {
+            $iInstituicaoReduzidoExistente = $oReduzidos->c61_instit;
+            // compara cada instit cadastrada com a que se esta tentando incluir
+            if ($iInstituicaoProximoReduzido == $iInstituicaoReduzidoExistente && !$lUtilizaDomicilioBancario) {
 
-          $sMensagem  = "Já existem reduzidos para a conta: {$iConta}.\n";
-          $sMensagem .= "Permitido somente ao utilizar Domicilio Bancário." ;
-          throw new Exception($sMensagem);
+                $sMensagem = "Já existem reduzidos para a conta: {$iConta}.\n";
+                $sMensagem .= "Permitido somente ao utilizar Domicilio Bancário.";
+                throw new Exception($sMensagem);
+            }
+
         }
-
-      }
-      return true;
+        return true;
     }
 
     /**
      * Persiste dados reduzidos de uma conta
-     * @throws Exception
      * @return true
+     * @throws Exception
      */
     public function persistirReduzido()
     {
@@ -331,8 +399,8 @@ class ContaPlanoPCASP extends ContaPlano
         $oDaoReduzido = new cl_conplanoreduz();
         $oDaoConPlanoExe = new cl_conplanoexe();
         if ($this->getSistemaConta()->getCodigoSistemaConta() !== 6 &&
-             $this->hasReduzidoAnoInstituicao() && $this->lInclusao &&
-             $this->getRecurso() == $this->oDadosAnteriores->c61_codigo) {
+            $this->hasReduzidoAnoInstituicao() && $this->lInclusao &&
+            $this->getRecurso() == $this->oDadosAnteriores->c61_codigo) {
 
             throw new Exception("Existe uma conta reduzida para o ano e instituição informados.");
         }
@@ -349,7 +417,7 @@ class ContaPlanoPCASP extends ContaPlano
         $iUltimoAno = $this->getUltimoAnoPlano();
         $lAlteraReduz = false;
 
-        $oIntituicao  = InstituicaoRepository::getInstituicaoSessao();
+        $oIntituicao = InstituicaoRepository::getInstituicaoSessao();
         $lPrefeitura = $oIntituicao->prefeitura();
 
         for ($iAno = $this->getAno(); $iAno <= $iUltimoAno; $iAno++) {
@@ -387,7 +455,7 @@ class ContaPlanoPCASP extends ContaPlano
                 if ($oDaoReduzido->numrows > 0) {
 
                     $oDadoReduzidoInstituicao = db_utils::fieldsMemory($rsReduzidoInstituicao, 0);
-                    if (  ($oDadoReduzidoInstituicao->c61_instit != $this->getInstituicao() ) && !$lPrefeitura ) {
+                    if (($oDadoReduzidoInstituicao->c61_instit != $this->getInstituicao()) && !$lPrefeitura) {
 
                         $oDaoReduzido->c61_reduz = null;
                     }
@@ -395,7 +463,6 @@ class ContaPlanoPCASP extends ContaPlano
             }
 
             if ($this->getReduzido() == "" && !$lAlteraReduz) {
-
                 $this->validaDamicilioBancario();
                 $oDaoReduzido->incluir($oDaoReduzido->c61_reduz, $iAno);
                 $this->setReduzido($oDaoReduzido->c61_reduz);
@@ -403,21 +470,15 @@ class ContaPlanoPCASP extends ContaPlano
                 $oDaoConPlanoExe->c62_vlrcre = "0";
                 $oDaoConPlanoExe->c62_vlrdeb = "0";
                 $oDaoConPlanoExe->incluir($iAno, $this->getReduzido());
+            } else if (!$lAlteraReduz) {
+                $oDaoReduzido->incluir($oDaoReduzido->c61_reduz, $iAno);
+                $this->setReduzido($oDaoReduzido->c61_reduz);
+                $oDaoConPlanoExe->c62_vlrcre = "0";
+                $oDaoConPlanoExe->c62_vlrdeb = "0";
+                $oDaoConPlanoExe->incluir($iAno, $this->getReduzido());
             } else {
-
-                if (!$lAlteraReduz) {
-
-                   // $this->validaDamicilioBancario();
-                    $oDaoReduzido->incluir($oDaoReduzido->c61_reduz, $iAno);
-                    $this->setReduzido($oDaoReduzido->c61_reduz);
-                    $oDaoConPlanoExe->c62_vlrcre = "0";
-                    $oDaoConPlanoExe->c62_vlrdeb = "0";
-                    $oDaoConPlanoExe->incluir($iAno, $this->getReduzido());
-                } else {
-
-                    $oDaoReduzido->alterar($oDaoReduzido->c61_reduz, $iAno);
-                    $oDaoConPlanoExe->alterar($iAno, $oDaoReduzido->c61_reduz);
-                }
+                $oDaoReduzido->alterar($oDaoReduzido->c61_reduz, $iAno);
+                $oDaoConPlanoExe->alterar($iAno, $oDaoReduzido->c61_reduz);
             }
 
             $lAlteraReduz = false;
@@ -435,8 +496,8 @@ class ContaPlanoPCASP extends ContaPlano
                 $sMsgConPlanoExe .= $oDaoConPlanoExe->erro_msg;
                 throw new Exception($sMsgConPlanoExe);
             }
-            if (!empty($this->oContaBancaria)) {
 
+            if (!empty($this->oContaBancaria)) {
                 /**
                  *
                  * Salva os dados de conta bancaria
@@ -452,28 +513,25 @@ class ContaPlanoPCASP extends ContaPlano
                 $rsBuscaSequenciais = db_query($buscaSequenciais);
                 if (!$rsBuscaSequenciais) {
 
-                  $sMensagem = "Ocorreu um erro ao buscar os sequenciais de vínculo entre a conta ";
-                  $sMensagem .= "bancária e plano de contas.";
-                  throw new DBException($sMensagem);
+                    $sMensagem = "Ocorreu um erro ao buscar os sequenciais de vínculo entre a conta ";
+                    $sMensagem .= "bancária e plano de contas.";
+                    throw new DBException($sMensagem);
                 }
 
                 $sequenciaisContas = db_utils::fieldsMemory($rsBuscaSequenciais, 0)->sequenciais;
 
                 if ($sequenciaisContas != '') {
+                    $contas = explode(',', $sequenciaisContas);
 
-                  $contas = explode(',', $sequenciaisContas);
-                  foreach ($contas as $sequencial) {
-
-                    $daoConplanoContabancaria->c56_sequencial = $sequencial;
-                    $daoConplanoContabancaria->c56_contabancaria = $this->oContaBancaria->getSequencialContaBancaria();
-                    $daoConplanoContabancaria->c56_reduz = $this->getReduzido();
-                    $daoConplanoContabancaria->c56_anousu = $iAno;
-                    $daoConplanoContabancaria->c56_codcon = $this->getCodigoConta();
-                    $daoConplanoContabancaria->alterar($sequencial);
-                  }
-                } else {
-
-                  if ($this->oContaBancaria->getSequencialContaBancaria() != '') {
+                    foreach ($contas as $sequencial) {
+                        $daoConplanoContabancaria->c56_sequencial = $sequencial;
+                        $daoConplanoContabancaria->c56_contabancaria = $this->oContaBancaria->getSequencialContaBancaria();
+                        $daoConplanoContabancaria->c56_reduz = $this->getReduzido();
+                        $daoConplanoContabancaria->c56_anousu = $iAno;
+                        $daoConplanoContabancaria->c56_codcon = $this->getCodigoConta();
+                        $daoConplanoContabancaria->alterar($sequencial);
+                    }
+                } else if ($this->oContaBancaria->getSequencialContaBancaria() != '') {
                     $daoConplanoContabancaria->c56_anousu = $iAno;
                     $daoConplanoContabancaria->c56_codcon = $this->getCodigoConta();
                     $daoConplanoContabancaria->c56_contabancaria = $this->oContaBancaria->getSequencialContaBancaria();
@@ -481,14 +539,55 @@ class ContaPlanoPCASP extends ContaPlano
                     $daoConplanoContabancaria->incluir(null);
                     if ($daoConplanoContabancaria->erro_status == 0) {
 
-                        $sMensagem  = "Ocorreu um erro vincular a conta bancária a conta contábil.\n";
+                        $sMensagem = "Ocorreu um erro vincular a conta bancária a conta contábil.\n";
                         $sMensagem .= $daoConplanoContabancaria->erro_msg;
-                        throw new DBException( $sMensagem);
+                        throw new DBException($sMensagem);
                     }
-                  }
                 }
             }
         }
+
+        $daoSaldoRecurso = new cl_conplanoexecontacorrente();
+        if (!empty($this->oDadosAnteriores->c61_codigo) && $this->getRecurso() != $this->oDadosAnteriores->c61_codigo) {
+            $sql = $daoSaldoRecurso->sql_saldo_recurso(
+                $this->getReduzido(),
+                $this->getAno(),
+                $this->oDadosAnteriores->c61_codigo
+            );
+
+            $rs = db_query($sql);
+            if ($rs && pg_num_rows($rs) !== 0) {
+                $daoSaldoRecurso->excluir(db_utils::fieldsMemory($rs, 0)->id);
+            }
+        }
+
+        $sql = $daoSaldoRecurso->sql_saldo_recurso($this->getReduzido(), $this->getAno(), $this->getRecurso());
+        $rs = db_query($sql);
+
+        if ($rs && pg_num_rows($rs) === 0) {
+            $natureza = sinalContaBalanceteVerificacao(substr($this->getEstrutural(), 0, 1), 0);
+            $daoSaldoRecurso->c143_conplanoreduz = $this->getReduzido();
+            $daoSaldoRecurso->c143_exercicio = $this->getAno();
+            $daoSaldoRecurso->c143_conplanosistema = 100;
+            $daoSaldoRecurso->c143_saldo = 0;
+            $daoSaldoRecurso->c143_natureza = $natureza;
+            $daoSaldoRecurso->incluir(null);
+
+            if ($daoSaldoRecurso->erro_status == 0) {
+                throw new DBException('Erro ao incluir saldo inicial por recurso.');
+            }
+
+            $daoCA = new cl_conplanoexecontacorrenteatributo();
+
+            $daoCA->c144_conplanoexecontacorrente = $daoSaldoRecurso->id;
+            $daoCA->c144_conplanoinfocomplementar = 100;
+            $daoCA->c144_valor = $this->getRecurso();
+            $daoCA->incluir(null);
+            if ($daoCA->erro_status == 0) {
+                throw new DBException('Erro ao incluir recurso do saldo inicial.');
+            }
+        }
+
 
         $this->getSistemaConta()->integrarDados($this);
         return true;
@@ -496,8 +595,8 @@ class ContaPlanoPCASP extends ContaPlano
 
     /**
      * Exclui um plano de conta caso as validações ocorram com sucesso
-     * @throws Exception
      * @return boolean
+     * @throws Exception
      */
     public function excluir()
     {
@@ -604,6 +703,10 @@ class ContaPlanoPCASP extends ContaPlano
         $this->getSistemaConta()->excluirDadosIntegrados($this);
 
         for ($iAnoFor = $iAnoUso; $iAnoFor <= $iUltimoAno; $iAnoFor++) {
+            $daoSaldoRecurso = new cl_conplanoexecontacorrente();
+
+            $where = "c143_exercicio >= $iAnoFor and c143_conplanoreduz = {$iCodigoReduzido}";
+            $daoSaldoRecurso->excluir(null, $where);
 
             /**
              * Exclui da tabela conplanoexe
@@ -893,7 +996,6 @@ class ContaPlanoPCASP extends ContaPlano
     }
 
 
-
     /**
      * Verifica se o estrutural informado está apto a ser utilizado
      *
@@ -1017,17 +1119,17 @@ class ContaPlanoPCASP extends ContaPlano
 
         $daoConplanoAtributos = new cl_conplanoatributos();
         $ultimoAno = $this->getUltimoAnoPlano("c60_estrut = '{$this->getEstrutural()}'");
-        $anoAtual  = $this->getAno();
+        $anoAtual = $this->getAno();
         foreach ($informacoesComplementares as $informacaoComplementar) {
 
             for ($ano = $anoAtual; $ano <= $ultimoAno; $ano++) {
 
-               $daoConplanoAtributos->c120_anousu = $ano;
-               $daoConplanoAtributos->c120_sequencial = null;
-               $daoConplanoAtributos->c120_conplano = $this->getCodigoConta();
-               $daoConplanoAtributos->c120_conplanosistema = $sistema;
-               $daoConplanoAtributos->c120_infocomplementar = $informacaoComplementar;
-               $daoConplanoAtributos->incluir(null);
+                $daoConplanoAtributos->c120_anousu = $ano;
+                $daoConplanoAtributos->c120_sequencial = null;
+                $daoConplanoAtributos->c120_conplano = $this->getCodigoConta();
+                $daoConplanoAtributos->c120_conplanosistema = $sistema;
+                $daoConplanoAtributos->c120_infocomplementar = $informacaoComplementar;
+                $daoConplanoAtributos->incluir(null);
                 if ($daoConplanoAtributos->erro_status == 0) {
                     throw new Exception("Erro ao salvar informacao complementar da conta {$this->getEstruturalComMascara()} = {$this->getDescricao()}");
                 }
@@ -1059,8 +1161,8 @@ class ContaPlanoPCASP extends ContaPlano
     {
         $daoConplanoAtributos = new cl_conplanoatributos();
         $campos = "distinct c120_conplanosistema as codigo, c122_descricao as descricao";
-        $where  = "c120_conplano = {$this->getCodigoConta()} and c120_anousu = {$this->getAno()} and c120_conplanosistema > 1";
-        $sql    = $daoConplanoAtributos->sql_query(null, $campos, null, $where);
+        $where = "c120_conplano = {$this->getCodigoConta()} and c120_anousu = {$this->getAno()} and c120_conplanosistema > 1";
+        $sql = $daoConplanoAtributos->sql_query(null, $campos, null, $where);
         $rsDadosConta = db_query($sql);
         if (pg_num_rows($rsDadosConta) == 0) {
             return null;
@@ -1072,7 +1174,8 @@ class ContaPlanoPCASP extends ContaPlano
     /**
      * @param $lInclusao
      */
-    public function setInclusao($lInclusao) {
+    public function setInclusao($lInclusao)
+    {
         $this->lInclusao = $lInclusao;
     }
 
@@ -1094,8 +1197,8 @@ class ContaPlanoPCASP extends ContaPlano
     public function toArray()
     {
         return array(
-          'codigoConta' => $this->getCodigoConta(),
-          'estrutural' => $this->getEstrutural()
+            'codigoConta' => $this->getCodigoConta(),
+            'estrutural' => $this->getEstrutural()
         );
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,7 +73,7 @@ class cl_processoforo
                  ";
 
     //funcao construtor da classe
-    function cl_processoforo()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("processoforo");
@@ -81,7 +81,7 @@ class cl_processoforo
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -92,7 +92,7 @@ class cl_processoforo
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->v70_sequencial = ($this->v70_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["v70_sequencial"] : $this->v70_sequencial);
@@ -119,7 +119,7 @@ class cl_processoforo
     }
 
     // funcao para inclusao
-    function incluir($v70_sequencial)
+    public function incluir($v70_sequencial)
     {
         $this->atualizacampos();
         if ($this->v70_codforo == null) {
@@ -319,7 +319,7 @@ class cl_processoforo
     }
 
     // funcao para alteracao
-    function alterar($v70_sequencial = null)
+    public function alterar($v70_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " UPDATE processoforo SET ";
@@ -574,7 +574,7 @@ class cl_processoforo
     }
 
     // funcao para exclusao
-    function excluir($v70_sequencial = null, $dbwhere = null)
+    public function excluir($v70_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($v70_sequencial));
@@ -672,7 +672,7 @@ class cl_processoforo
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -699,7 +699,7 @@ class cl_processoforo
     }
 
     // funcao do sql
-    function sql_query($v70_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($v70_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -749,7 +749,7 @@ class cl_processoforo
     }
 
     // funcao do sql
-    function sql_query_file($v70_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($v70_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -786,7 +786,7 @@ class cl_processoforo
         return $sql;
     }
 
-    function sql_query_cgm_inicial($v70_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_cgm_inicial($v70_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select distinct ";
         if ($campos != "*") {

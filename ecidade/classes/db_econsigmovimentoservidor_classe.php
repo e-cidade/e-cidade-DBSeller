@@ -57,13 +57,13 @@ class cl_econsigmovimentoservidor {
                  rh134_nome = varchar(50) = Nome do Servidor 
                  ";
    //funcao construtor da classe 
-   function cl_econsigmovimentoservidor() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("econsigmovimentoservidor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_econsigmovimentoservidor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh134_sequencial = ($this->rh134_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh134_sequencial"]:$this->rh134_sequencial);
        $this->rh134_econsigmovimento = ($this->rh134_econsigmovimento == ""?@$GLOBALS["HTTP_POST_VARS"]["rh134_econsigmovimento"]:$this->rh134_econsigmovimento);
@@ -84,7 +84,7 @@ class cl_econsigmovimentoservidor {
      }
    }
    // funcao para inclusao
-   function incluir ($rh134_sequencial){ 
+   public function incluir ($rh134_sequencial){ 
       $this->atualizacampos();
      if($this->rh134_econsigmovimento == null ){ 
        $this->erro_sql = " Campo E-CONSIG Movimento não informado.";

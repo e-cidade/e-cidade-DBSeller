@@ -46,6 +46,8 @@ final class CPP implements DeparaInterface
     public function __construct()
     {
         $this->aFundamentacoes = array(
+          '11947A14P1',
+          '11947A21',
           'OUT',
         );
     }

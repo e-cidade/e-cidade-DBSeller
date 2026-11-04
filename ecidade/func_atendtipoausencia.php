@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clatendtipoausencia->rotulo->label("at71_descr");
               <?=$Lat71_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at71_codigo",8,$Iat71_codigo,true,"text",4,"","chave_at71_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clatendtipoausencia->rotulo->label("at71_descr");
               <?=$Lat71_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at71_descr",20,$Iat71_descr,true,"text",4,"","chave_at71_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clatendtipoausencia->rotulo->label("at71_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendtipoausencia.php")==true){
@@ -122,12 +122,12 @@ $clatendtipoausencia->rotulo->label("at71_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

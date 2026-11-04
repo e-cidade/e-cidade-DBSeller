@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ if (isset($incluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_campanha.php"));
 	?>
     </center>
@@ -73,7 +73,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "vc11_c_nome", true, 1  ,"vc11_c_nome" ,true );
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($clvac_campanha->erro_status == "0") {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -262,7 +262,7 @@ function js_imprimirreceita() {
   </tr>
   <tr>
     <td height="334" valign="top" bgcolor="#FFFF64">	
-	<?
+	<?php
 	$result = db_query("select * from atendmed where ag40_codigo = ".db_getsession("COD_atendimento"));
 	if(pg_numrows($result) > 0)
 	  db_fieldsmemory($result,0);
@@ -277,38 +277,38 @@ function js_imprimirreceita() {
                   <td nowrap> 
 				    <fieldset>
                     <legend><strong>Tipo de Consulta:&nbsp;</strong></legend>
-                    <input type="radio" name="ag40_tipocons" id="tipoc1" value="pa" <? echo (isset($ag40_tipocons)?($ag40_tipocons=="pa"?"checked":""):"") ?>>
+                    <input type="radio" name="ag40_tipocons" id="tipoc1" value="pa" <?php echo (isset($ag40_tipocons)?($ag40_tipocons=="pa"?"checked":""):"") ?>>
                     <label for="tipoc1">Pronto Atendimento</label>
                     <br>
-                    <input type="radio" name="ag40_tipocons" id="tipoc2" value="cm" <? echo (isset($ag40_tipocons)?($ag40_tipocons=="cm"?"checked":""):"checked") ?>>
+                    <input type="radio" name="ag40_tipocons" id="tipoc2" value="cm" <?php echo (isset($ag40_tipocons)?($ag40_tipocons=="cm"?"checked":""):"checked") ?>>
                     <label for="tipoc2">Consultorio Medico</label>
                     </fieldset>
                     <fieldset>
                     <legend><strong>Tipo do Formulario:&nbsp;</strong></legend>
-                    <input type="radio" name="ag40_tipoform" onClick="(this.checked?js_habilitar():js_desabilitar());this.form.imprimirate.value = 'Imprimir Atestado'" id="tipoc3" value="a" <? echo (isset($ag40_tipoform)?($ag40_tipoform=="a"?"checked":""):"") ?>>
+                    <input type="radio" name="ag40_tipoform" onClick="(this.checked?js_habilitar():js_desabilitar());this.form.imprimirate.value = 'Imprimir Atestado'" id="tipoc3" value="a" <?php echo (isset($ag40_tipoform)?($ag40_tipoform=="a"?"checked":""):"") ?>>
                     <label for="tipoc3">Atestado</label>
                     <br>
-                    <input type="radio" name="ag40_tipoform" onClick="js_desabilitar();this.form.imprimirate.value = 'Imprimir Comprovante'" id="tipoc4" value="c" <? echo (isset($ag40_tipoform)?($ag40_tipoform=="c"?"checked":""):"checked") ?>>
+                    <input type="radio" name="ag40_tipoform" onClick="js_desabilitar();this.form.imprimirate.value = 'Imprimir Comprovante'" id="tipoc4" value="c" <?php echo (isset($ag40_tipoform)?($ag40_tipoform=="c"?"checked":""):"checked") ?>>
                     <label for="tipoc4">Comprovante</label>
                     
                     </fieldset>
                     <fieldset>
                     <legend><strong>Tipo de Atendimento:&nbsp;</strong></legend>
-                    <input type="checkbox" name="ag40_taconsulta" id="tipoc5" value="1" <? echo (isset($ag40_taconsulta)?($ag40_taconsulta=="1"?"checked":""):"checked") ?>>
+                    <input type="checkbox" name="ag40_taconsulta" id="tipoc5" value="1" <?php echo (isset($ag40_taconsulta)?($ag40_taconsulta=="1"?"checked":""):"checked") ?>>
                     <label for="tipoc5">Consulta</label>
                     <br>
-                    <input type="checkbox" name="ag40_tacurativo" id="tipoc6" value="1" <? echo (isset($ag40_tacurativo)?($ag40_tacurativo=="1"?"checked":""):"") ?>>
+                    <input type="checkbox" name="ag40_tacurativo" id="tipoc6" value="1" <?php echo (isset($ag40_tacurativo)?($ag40_tacurativo=="1"?"checked":""):"") ?>>
                     <label for="tipoc6">Curativo</label>
                     <br>
-                    <input type="checkbox" name="ag40_tarevisao" id="tipoc7" value="1" <? echo (isset($ag40_tarevisao)?($ag40_tarevisao=="1"?"checked":""):"") ?>>
+                    <input type="checkbox" name="ag40_tarevisao" id="tipoc7" value="1" <?php echo (isset($ag40_tarevisao)?($ag40_tarevisao=="1"?"checked":""):"") ?>>
                     <label for="tipoc7">Revisão</label>
                     </fieldset><br>
-					<input type="checkbox" name="ag40_altcid" id="tipoc8" value="t" <? echo (isset($ag40_altcid)?($ag40_altcid=="t"?"checked":""):"") ?>>
+					<input type="checkbox" name="ag40_altcid" id="tipoc8" value="t" <?php echo (isset($ag40_altcid)?($ag40_altcid=="t"?"checked":""):"") ?>>
                     <label for="tipoc8">Autoriza CID</label><br>
 					<strong>Dias de Atestado:</strong><br>
 					<input type="text" name="ag40_diasatestado" value="<?=@$ag40_diasatestado?>" size="3" maxlength="3"><br>
 					<strong>Atestado a partir da data:</strong><Br>
-					<?
+					<?php
  					  $dataat_ano = date('Y');  
 					  $dataat_mes = date('m');  
 					  $dataat_dia = date('d');  
@@ -343,7 +343,7 @@ function js_imprimirreceita() {
                         <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                               <td><select style="width:50ex;" name="ag40_cid[]" multiple size="3">
-                                  <?
+                                  <?php
 					$result = db_query("select c.codcid,c.descr 
 					                   from cid10 c
 									   inner join atendmedcid a

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,18 +74,18 @@
   	<table class="form-container">
   		<tr> 
         <td nowrap title="<?=@$Tv50_inicial?>" >
-  				<?
+  				<?php
   					db_ancora(@$Lv50_inicial,"js_pesquisainicial(true,false);",4)
   				?>
         </td>
         <td>
-  				<?
+  				<?php
   			    db_input('v50_inicial',10,$Iv50_inicial,true,'text',4,"onchange='js_pesquisainicial(false,false);'")
   				?>
-  				<?
+  				<?php
   				  db_ancora("<b>até</b>","js_pesquisainicial(true,true);",4)
   				?>
-  				<?
+  				<?php
   				  db_input('v50_inicial',10,$Iv50_inicial,true,'text',4,"onchange='js_pesquisainicial(false,false);'","v50_inicial_fim")
   				?>
         </td>
@@ -93,7 +93,7 @@
   		<tr>
         <td>Valor Atualizado:</td>
         <td>
-          <?
+          <?php
   			    $x = array("s"=>"Sim","n"=>"Não");
   			    db_select('atualiza',$x,true,4,"");
           ?>
@@ -102,7 +102,7 @@
   		<tr>
          <td>Tamanho da Fonte:</td>
          <td>
-          <?
+          <?php
   					$tamanho = 10;
   					db_input('tamanho',10,$tamanho,true,'text',2,'');
           ?>
@@ -111,7 +111,7 @@
   		<tr>
         <td>Imprime Número da Pagina:</td>
         <td>
-          <?
+          <?php
 					  $y = array("s"=>"Sim","n"=>"Não");
 					  db_select('numeropg',$y,true,4,"");
           ?>
@@ -121,7 +121,7 @@
 	</fieldset>
   <input size='10' name="exibir_relatorio" type="button" id="exibir_relatorio" value="Exibir relat&oacute;rio" onClick="js_AbreJanelaRelatorio()">
 </form>
-<?
+<?php
   if (!isset($oGet->iInicialIni) && !isset($oGet->iInicialFim) ) {
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   }
@@ -158,7 +158,7 @@ function js_mostratermofim(chave1){
      db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

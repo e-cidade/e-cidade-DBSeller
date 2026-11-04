@@ -64,7 +64,7 @@ $sSqlProcessoCompras = $oDaoPcProc->sql_query_proc($oGet->iProcesso,
         <div style="display: table;">
           <fieldset>
             <legend><b>Autorizações de Empenho do Processo de Compras</b></legend>
-          <?
+          <?php
            db_lovrot($sSqlProcessoCompras, 15);
           ?>
           </fieldset>

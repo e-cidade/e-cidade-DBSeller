@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -183,7 +183,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
             <tr>
               <td width="20%"><?=$Lrh27_rubric?></td>
               <td width="80%">
-                <?
+                <?php
                   db_input('rh27_rubric', 8, $Irh27_rubric, true, 'text', 3); 
                   db_input('rh27_descr', 30, $Irh27_descr, true, 'text', 3);
                 ?>  
@@ -197,7 +197,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
                  <tr>
                    <td><b>Tipo de Documento:</b></td>
                    <td>
-                     <?
+                     <?php
                        $x = array('1' => 'Decreto',
                      		          '2' => 'Decreto Lei',
                      		          '3' => 'Emenda Constitucional',
@@ -247,7 +247,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
         <fieldset style="height:92%">
           <legend><b><?=$tipo_rubrica?></b></legend>
           <table id="pontos">
-           <? $sQuery = montaLinkPontos($rubrica, $iAno, $iMes); ?>
+           <?php $sQuery = montaLinkPontos($rubrica, $iAno, $iMes); ?>
           </table>
         </fieldset>
       </td>
@@ -264,7 +264,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
       <td colspan=2 align="center">
         <table>
           <tr>
-            <?
+            <?php
             
             if(!isset($chamada_origem)){
             	$chamada_origem = 'pes3_codfinanc001.php';
@@ -286,7 +286,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
             </td>
             <td>
               <strong>Período:</strong> 
-              <?
+              <?php
     	         db_input("iAno",4,'',true,'text',4);
     	         echo "/";
 	             db_input("iMes",2,'',true,'text',4)
@@ -300,7 +300,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
  </fieldset>
 </form> 
 </div>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

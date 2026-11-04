@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -27,7 +27,7 @@
 ?>
 <br>
      <table border="1">
-      <?
+      <?php
     	   if(!isset($contribs)){
              db_fieldsmemory($result01,0);
 	     $contribs=$d02_contri;
@@ -37,14 +37,14 @@
       ?>
         <tr>
 	  <td colspan="2">
-	  <?
+	  <?php
 	   echo  "<b>$legenda </b>";
 	  ?> 
 	  </td>
 	</tr>
         <tr>
 	  <td colspan="2">
-	  <?
+	  <?php
 	   echo  "<b>Edital numero $d01_numero. $d01_descr </b>";
 	  ?> 
 	  </td>
@@ -56,7 +56,7 @@
 	<tr>  
 	  <td valign="top" align="center"> 
            <select name="contribs" size="5" onchange="js_trocacontri()">
-           <?
+           <?php
            for($i=0; $i<$numrows01; $i++){
 	     db_fieldsmemory($result01,$i);
              if($i%2==0){
@@ -71,7 +71,7 @@
 	  </td>  
 	  <td valign="top">  
 	    <select name="matriculas" size="10"  onClick="js_troca(this)">
-            <?
+            <?php
 	    
             $result03=$clcontlot->sql_record($clcontlot->sql_query($contribs,"","d05_idbql"));
    	    $numrows03=$clcontlot->numrows;

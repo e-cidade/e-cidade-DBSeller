@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: meioambiente
 //CLASSE DA ENTIDADE mensagerialicencaprocessado
 class cl_mensagerialicencaprocessado { 
@@ -26,13 +26,13 @@ class cl_mensagerialicencaprocessado {
                  am15_licencaempreendimento = int4 = Licença 
                  ";
    //funcao construtor da classe 
-   function cl_mensagerialicencaprocessado() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagerialicencaprocessado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_mensagerialicencaprocessado {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am15_sequencial = ($this->am15_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am15_sequencial"]:$this->am15_sequencial);
        $this->am15_mensagerialicencadb_usuarios = ($this->am15_mensagerialicencadb_usuarios == ""?@$GLOBALS["HTTP_POST_VARS"]["am15_mensagerialicencadb_usuarios"]:$this->am15_mensagerialicencadb_usuarios);
@@ -51,7 +51,7 @@ class cl_mensagerialicencaprocessado {
      }
    }
    // funcao para inclusao
-   function incluir ($am15_sequencial){ 
+   public function incluir ($am15_sequencial){ 
       $this->atualizacampos();
      if($this->am15_mensagerialicencadb_usuarios == null ){ 
        $this->erro_sql = " Campo Usuário não informado.";

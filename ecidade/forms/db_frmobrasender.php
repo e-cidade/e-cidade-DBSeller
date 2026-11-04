@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("j13_descr");
        <?=@$Lob07_codconstr?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_codconstr',10,$Iob07_codconstr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -49,22 +49,22 @@ db_input('ob07_codconstr',10,$Iob07_codconstr,true,'text',$db_opcao,"")
        <?=@$Lob07_codobra?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_codobra',10,$Iob07_codobra,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tob07_lograd?>">
-       <?
+       <?php
        db_ancora(@$Lob07_lograd,"js_pesquisaob07_lograd(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_lograd',7,$Iob07_lograd,true,'text',$db_opcao," onchange='js_pesquisaob07_lograd(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
@@ -74,7 +74,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lob07_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_numero',10,$Iob07_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,22 +84,22 @@ db_input('ob07_numero',10,$Iob07_numero,true,'text',$db_opcao,"")
        <?=@$Lob07_compl?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_compl',20,$Iob07_compl,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tob07_bairro?>">
-       <?
+       <?php
        db_ancora(@$Lob07_bairro,"js_pesquisaob07_bairro(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_bairro',4,$Iob07_bairro,true,'text',$db_opcao," onchange='js_pesquisaob07_bairro(false);'")
 ?>
-       <?
+       <?php
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     </td>
@@ -109,7 +109,7 @@ db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        <?=@$Lob07_areaatual?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_areaatual',10,$Iob07_areaatual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_input('ob07_areaatual',10,$Iob07_areaatual,true,'text',$db_opcao,"")
        <?=@$Lob07_unidades?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_unidades',10,$Iob07_unidades,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('ob07_unidades',10,$Iob07_unidades,true,'text',$db_opcao,"")
        <?=@$Lob07_pavimentos?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob07_pavimentos',10,$Iob07_pavimentos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -139,7 +139,7 @@ db_input('ob07_pavimentos',10,$Iob07_pavimentos,true,'text',$db_opcao,"")
        <?=@$Lob07_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ob07_inicio',@$ob07_inicio_dia,@$ob07_inicio_mes,@$ob07_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -149,7 +149,7 @@ db_inputdata('ob07_inicio',@$ob07_inicio_dia,@$ob07_inicio_mes,@$ob07_inicio_ano
        <?=@$Lob07_fim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ob07_fim',@$ob07_fim_dia,@$ob07_fim_mes,@$ob07_fim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -211,7 +211,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obrasender.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

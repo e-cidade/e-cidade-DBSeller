@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $rotulo->label("z01_nome");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 	db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
 	db_app::load('estilos.css,grid.style.css');
 ?>
@@ -461,7 +461,7 @@ function js_ImprimeProcesso(){
 			       <b>Número:</b>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_codproc',10,0,true,'text',3,'')
 			      ?>
 			    </td>
@@ -471,7 +471,7 @@ function js_ImprimeProcesso(){
 			       <b>Usuário:</b>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_id_usuario',10,0,true,'text',3,'');
 						echo "&nbsp";
 						db_input('nomeUsuario',40,0,true,'text',3,'');
@@ -483,7 +483,7 @@ function js_ImprimeProcesso(){
 			       <b>Departamento:</b>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_coddepto',10,0,true,'text',3,'');
 						echo "&nbsp";
 						db_input('nomeDepto',40,0,true,'text',3,'');
@@ -495,11 +495,11 @@ function js_ImprimeProcesso(){
 			       <b>Data Criação:</b>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_dtproc',10,0,true,'text',3,'');
 			      ?>
 			      &nbsp;&nbsp;<b>Hora Criação:</b>&nbsp;
-			      <?
+			      <?php
 						db_input('p58_hora',10,0,true,'text',3,'')
 			      ?>
 			    </td>
@@ -509,7 +509,7 @@ function js_ImprimeProcesso(){
 			       <b>Tipo de Processo:</b>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_codigo',10,0,true,'text',3,'');
 						echo "&nbsp";
 						db_input('nomeProcesso',40,0,true,'text',3,'');
@@ -521,7 +521,7 @@ function js_ImprimeProcesso(){
 			       <b>Requerente:</b>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_requer',54,0,true,'text',3,'')
 			      ?>
 			    </td>
@@ -531,7 +531,7 @@ function js_ImprimeProcesso(){
 			       <b>Titular do Processo:</b>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_numcgm',10,0,true,'text',3,'');
 						echo "&nbsp";
 						db_input('nomeTitular',40,0,true,'text',3,'');
@@ -543,7 +543,7 @@ function js_ImprimeProcesso(){
 			       <b>Motivo:</b>
 			    </td>
 			    <td> 
-						<? 
+						<?php 
 						db_textarea('ov15_motivo',5,52,'',true,'text',1);
 						?>
 			    </td>

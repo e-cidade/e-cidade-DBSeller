@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,5 +25,4 @@
  *                                licenca/licenca_pt.txt
  */
 
-$campos = "acervo.bi06_seq,acervo.bi06_biblioteca,acervo.bi06_dataregistro,acervo.bi06_edicao,acervo.bi06_titulo, acervo.bi06_subtitulo, acervo.bi06_classcdd,acervo.bi06_isbn,acervo.bi06_volume,acervo.bi06_tipoitem,acervo.bi06_editora,acervo.bi06_classiliteraria,acervo.bi06_anoedicao";
-?>
+$campos = "acervo.bi06_seq,acervo.bi06_biblioteca,acervo.bi06_dataregistro,acervo.bi06_edicao,acervo.bi06_titulo, acervo.bi06_subtitulo, acervo.bi06_classcdd,acervo.bi06_tipoitem,acervo.bi06_editora,acervo.bi06_classiliteraria,acervo.bi06_anoedicao";

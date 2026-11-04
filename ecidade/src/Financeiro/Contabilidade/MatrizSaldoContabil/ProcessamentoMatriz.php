@@ -299,11 +299,12 @@ class ProcessamentoMatriz
         foreach ($arquivos as $linha) {
             $conteudo_arquivo = $linha->conteudo_arquivo;
             if (!empty($conteudo_arquivo)) {
-                file_put_contents($file, $conteudo_arquivo, FILE_APPEND);
+                file_put_contents($file, $conteudo_arquivo . "\n", FILE_APPEND);
                 $this->temImportacao = true;
                 $this->totalLinhasEcidade = count($dadosMatriz) + 2;
             }
         }
+
         $zipArchive->addFile($file);
         $zipArchive->close();
 
@@ -359,11 +360,17 @@ class ProcessamentoMatriz
         );
 
         $this->repository->setAtributosParaProcessamento(MatrizSaldoContabil::getAtributos($ano));
+
+        $tipoDocumentos = [];
+        if ($this->mes == 12 && $this->encerramento) {
+            $tipoDocumentos = [1000];
+        }
         $sSqlLancamentos = $this->repository->getQueryLancamentosPorCompetencia(
             $mes,
             $ano,
             $instituicoes,
-            $codigoLancamentos
+            $codigoLancamentos,
+            $tipoDocumentos
         );
 
         $rsLancamentos = db_query($sSqlLancamentos);

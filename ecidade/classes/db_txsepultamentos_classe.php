@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_txsepultamentos {
                  cm31_i_sepultamento = int4 = Sepultamento
                  ";
    //funcao construtor da classe
-   function cl_txsepultamentos() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("txsepultamentos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_txsepultamentos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm31_i_codigo = ($this->cm31_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["cm31_i_codigo"]:$this->cm31_i_codigo);
        $this->cm31_i_itenserv = ($this->cm31_i_itenserv == ""?@$GLOBALS["HTTP_POST_VARS"]["cm31_i_itenserv"]:$this->cm31_i_itenserv);
@@ -77,7 +77,7 @@ class cl_txsepultamentos {
      }
    }
    // funcao para inclusao
-   function incluir ($cm31_i_codigo){
+   public function incluir ($cm31_i_codigo){
       $this->atualizacampos();
      if($this->cm31_i_itenserv == null ){
        $this->erro_sql = " Campo Código Item Serviço nao Informado.";
@@ -176,7 +176,7 @@ class cl_txsepultamentos {
      return true;
    }
    // funcao para alteracao
-   function alterar ($cm31_i_codigo=null) {
+   public function alterar ($cm31_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update txsepultamentos set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_txsepultamentos {
      }
    }
    // funcao para exclusao
-   function excluir ($cm31_i_codigo=null,$dbwhere=null) {
+   public function excluir ($cm31_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cm31_i_codigo));
      }else{
@@ -334,7 +334,7 @@ class cl_txsepultamentos {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_txsepultamentos {
       }
      return $result;
    }
-   function sql_query ( $cm31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $cm31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_txsepultamentos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,10 +402,10 @@ class cl_txsepultamentos {
      }
      return $sql;
   }
-   function sql_query_file ( $cm31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $cm31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_txsepultamentos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -28,24 +28,17 @@
 
 class libParagrafoTabela {
   
-  var $oParag = null;
-  var $aTabela = array();      
+  public $oParag = null;
+  public $aTabela = array();      
   
-  function libParagrafoTabela( $oParag, $aTabela ){
+  public function __construct( $oParag, $aTabela ){
     
     $this->oParag  = $oParag;
     $this->aTabela = $aTabela;
     
   }
   
-  function writeText( $oPdf, $aTabela ){
-/*    
-    foreach () {
-      
-      
-    }
-  */  
-//  $this->
+  public function writeText( $oPdf, $aTabela = [] ){
     return $oPdf->MultiCell( $this->oParag->db02_largura,
                              $this->oParag->db02_altura,
                              $this->oParag->db02_texto,
@@ -55,5 +48,4 @@ class libParagrafoTabela {
                              $this->oParag->db02_inicia );
                              
   }  
-
 }

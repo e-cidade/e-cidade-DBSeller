@@ -69,8 +69,8 @@ class AnexoTresMdfService extends AnexoTresService
     {
         // realiza as subtraçoes
         $this->calcularLinhaRCL();
-        $this->calcularLinha31();
-        $this->calcularLinha33();
+        $this->calcularLinhaRclAjustadaLimiteEndividamento();
+        $this->calcularLinhaRclAjustadaLimiteDespesaPessoal();
     }
 
 
@@ -92,12 +92,12 @@ class AnexoTresMdfService extends AnexoTresService
         $rcl->previsao_atualizada = $linhaReceita->previsao_atualizada - $linhaDeducoes->previsao_atualizada;
     }
 
-    protected function calcularLinha31()
+    protected function calcularLinhaRclAjustadaLimiteEndividamento()
     {
         $this->calculaLinhaSubtracao(31, 29, 30);
     }
 
-    protected function calcularLinha33()
+    protected function calcularLinhaRclAjustadaLimiteDespesaPessoal()
     {
         $this->calculaLinhaSubtracao(33, 31, 32);
     }

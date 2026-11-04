@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -47,9 +47,9 @@ function db_fputs($variavel,$conteudo){
 </head>
 <body bgcolor=#CCCCCC  marginwidth="0" marginheight="0" bgcolor="#cccccc" valign="top" >
 
-<?
+<?php
 
-  //cria o arquivo 
+  //cria o arquivo
   $arquivo = "/tmp/processa002.sql";
   global $fd;
   $fd = "";
@@ -60,12 +60,12 @@ function db_fputs($variavel,$conteudo){
                                      on am.codmod = m.codmod
                                      inner join db_sysarquivo a
                                      on a.codarq = am.codarq
-                              where a.codarq = $codarq  
+                              where a.codarq = $codarq
                               order by codmod");
-	    
+
            if(pg_numrows($campos) > 0){
                db_fieldsmemory($campos,0);
-               @db_query("DROP TABLE ".trim($nomearq));      	  
+               @db_query("DROP TABLE ".trim($nomearq));
 	  }
   //cria drop sequences;
   db_fputs($fd,"--Criando drop sequences\n");
@@ -77,7 +77,7 @@ function db_fputs($variavel,$conteudo){
 					  and a.codarq = $codarq");
 	   if (pg_numrows($seq) > 0){
               $rsseq = pg_fetch_array($seq);
-  	      @db_query("DROP SEQUENCE ".$rsseq["nomesequencia"]);      	 
+  	      @db_query("DROP SEQUENCE ".$rsseq["nomesequencia"]);
            }
   //cria  sequences;
   db_fputs($fd, "\n\n-- Criando  sequences\n");
@@ -92,10 +92,10 @@ function db_fputs($variavel,$conteudo){
   	      db_fputs($fd,"CREATE SEQUENCE ".$rsseq["nomesequencia"]."\n");
   	      db_fputs($fd,"INCREMENT ".trim($rscseq["incrseq"])."\n");
   	      db_fputs($fd, "MINVALUE ".trim($rscseq["minvalueseq"])."\n");
-  	      db_fputs($fd, "MAXVALUE ".trim($rscseq["maxvalueseq"])."\n");		 
-  	      db_fputs($fd, "START ".trim($rscseq["startseq"])."\n");		 		 
+  	      db_fputs($fd, "MAXVALUE ".trim($rscseq["maxvalueseq"])."\n");
+  	      db_fputs($fd, "START ".trim($rscseq["startseq"])."\n");
   	      db_fputs($fd, "CACHE ".trim($rscseq["cacheseq"]).";\n");
-	      db_fputs($fd,"\n\n"); 
+	      db_fputs($fd,"\n\n");
            }
    //cria as tabelas e sua estrutura
      db_fputs($fd,"-- TABELAS E ESTRUTURA\n");
@@ -105,9 +105,9 @@ function db_fputs($variavel,$conteudo){
                                      on am.codmod = m.codmod
                                      inner join db_sysarquivo a
                                      on a.codarq = am.codarq
-                              where a.codarq = $codarq  
+                              where a.codarq = $codarq
                               order by codmod");
-	    
+
            if(pg_numrows($tabela) > 0){
                 db_fieldsmemory($tabela,0);
            }
@@ -122,7 +122,7 @@ function db_fputs($variavel,$conteudo){
 	  $Ncampos = pg_numrows($campo);
 	  if ($Ncampos > 0) {
              db_fputs($fd, "\n-- Módulo: ".trim($nomemod)."\n");
-             db_fputs($fd, "CREATE TABLE ".trim($nomearq)."(\n");      
+             db_fputs($fd, "CREATE TABLE ".trim($nomearq)."(\n");
         for($j = 0;$j < $Ncampos;$j++) {
           if($j == $Ncampos - 1) {
             // Chave Primaria
@@ -144,7 +144,7 @@ function db_fputs($variavel,$conteudo){
                 $primary_key = "(";
                 $nomePK = trim($nomearq)."_";
                 for($p = 0;$p < $Npk;$p++) {
-                  $cc = split("_",trim(pg_result($pk,$p,"nomecam")));
+                  $cc =explode("_",trim(pg_result($pk,$p,"nomecam")));
                   if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
                     $nomePK = $nomePK."ae_";
                   else if(strlen(strstr(strtoupper(@$cc[1]),"MESUSU")) > 0)
@@ -215,7 +215,7 @@ function db_fputs($variavel,$conteudo){
           $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).")";
 	   else
           $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).",";
-        $cc = split("_",trim(pg_result($fk,$f,"nomecam")));
+        $cc =explode("_",trim(pg_result($fk,$f,"nomecam")));
         if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
           $NomeFK = $NomeFK."ae_";
         else if(strlen(strstr(strtoupper(@$cc[1]),"MESEXE")) > 0)
@@ -229,7 +229,7 @@ function db_fputs($variavel,$conteudo){
 		        $NomeFK = $NomeFK.$cc[$ICC][0].$cc[$ICC][1].$cc[$ICC][2].$cc[$ICC][3]."_";
           } else {
             $NomeFK = $NomeFK.@$cc[$ICC];
-          } 
+          }
 		}
         $TabPai = trim(pg_result($fk,$f,"t_pai"));
       }
@@ -264,7 +264,7 @@ function db_fputs($variavel,$conteudo){
         }
         $campos = $campos.");";
         db_fputs($fd,"CREATE ".( pg_result($ind,$j,"campounico")=="1"?"UNIQUE":"")." INDEX ".trim(pg_result($ind,$j,"nomeind"))." ON ".trim(pg_result($nome,0,"nomearq")).$campos."\n\n");
-     } 
+     }
 }
 
 
@@ -273,14 +273,14 @@ function db_fputs($variavel,$conteudo){
 ?>
 <center><h3>Erro processamento<br><?=$fd?></h3></center>
 
-<?
+<?php
 
     }else{
 
 ?>
 <table width="100%"><tr><td align="center"><h3>Concluído...</h3></td></tr></table>
 
-<?
+<?php
     }
 ?>
 

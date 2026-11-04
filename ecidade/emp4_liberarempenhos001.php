@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ if ($oParam->e30_liberaempenho != 't') {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -97,24 +97,24 @@ if ($oParam->e30_liberaempenho != 't') {
 					  <table  align="center" border="0">
 					      <tr>
 					        <td nowrap title="<?=@$Te60_codemp?>" align="left">
-					         <? db_ancora(@$Le60_codemp,"js_pesquisae60_codempIni();",$dbopcao); ?>
+					         <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codempIni();",$dbopcao); ?>
 					        </td>
 					        <td> 
-					         <? db_input('e60_codemp',10,$Ie60_codemp,$bOpcao,
+					         <?php db_input('e60_codemp',10,$Ie60_codemp,$bOpcao,
 					                     'text',$dbopcao,"","e60_codemp_ini");  ?>
 					          <strong>
-					            <? db_ancora('até',"js_pesquisae60_codempFim();",$dbopcao); ?>
+					            <?php db_ancora('até',"js_pesquisae60_codempFim();",$dbopcao); ?>
 					          </strong>   
-					         <? db_input('e60_codemp',10,$Ie60_codemp,$bOpcao,
+					         <?php db_input('e60_codemp',10,$Ie60_codemp,$bOpcao,
 					                     'text',$dbopcao,"","e60_codemp_fim");  ?>
 					        </td>
 					      </tr>
 					      <tr>
 					          <td nowrap align="left">
-					            <? db_ancora("<b>Razão Social:</b>","js_pesquisa_z01_numcgm(true);",$dbopcao); ?>
+					            <?php db_ancora("<b>Razão Social:</b>","js_pesquisa_z01_numcgm(true);",$dbopcao); ?>
 					          </td>
 					          <td  align="left" nowrap>
-					            <? db_input('z01_numcgm',10,@$Iz01_numcgm,$bOpcao,'text',
+					            <?php db_input('z01_numcgm',10,@$Iz01_numcgm,$bOpcao,'text',
 					                        $dbopcao," onchange='js_pesquisa_z01_numcgm(false);'","" ); 
 					                        
 					               db_input('z01_nome',40,@$Iz01_nome,$bOpcao,'text',3,"","" );  ?>
@@ -123,7 +123,7 @@ if ($oParam->e30_liberaempenho != 't') {
 					      <tr>
 					          <td nowrap align="left"><b>Data Emissão:</b></td>
 					          <td  align="left" nowrap>
-					           <?      
+					           <?php      
 					             db_inputdata('dtemissaoini',@$dia,@$mes,@$ano,$bOpcao,'text',$dbopcao,"");
 					             echo " <b>até:</b> ";
 					             db_inputdata('dtemissaofim',@$dia2,@$mes2,@$ano2,$bOpcao,'text',$dbopcao,"");
@@ -149,7 +149,7 @@ if ($oParam->e30_liberaempenho != 't') {
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

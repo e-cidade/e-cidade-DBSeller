@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $oRotuloRequiItem->label('m41_codmatrequi');
               <?=$Lc70_codlan?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?  db_input("c70_codlan",10,$Ic70_codlan,true,"text",4,"","chave_c70_codlan");  ?>
+              <?php  db_input("c70_codlan",10,$Ic70_codlan,true,"text",4,"","chave_c70_codlan");  ?>
             </td>
           </tr>
           <tr>
@@ -66,7 +66,7 @@ $oRotuloRequiItem->label('m41_codmatrequi');
               <?=$Lc70_anousu?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?  db_input("c70_anousu",10,$Ic70_anousu,true,"text",4,"","chave_c70_anousu");  ?>
+              <?php  db_input("c70_anousu",10,$Ic70_anousu,true,"text",4,"","chave_c70_anousu");  ?>
             </td>
           </tr>
           <tr>
@@ -74,7 +74,7 @@ $oRotuloRequiItem->label('m41_codmatrequi');
               <b>Requisição:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?  db_input("m41_codmatrequi",10,$Im41_codmatrequi,true,"text",4);  ?>
+              <?php  db_input("m41_codmatrequi",10,$Im41_codmatrequi,true,"text",4);  ?>
             </td>
           </tr>
 
@@ -93,7 +93,7 @@ $oRotuloRequiItem->label('m41_codmatrequi');
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
       $aWherePadrao   = array();
       $aWherePadrao[] = "c70_data >= '2013-01-01'";
@@ -147,12 +147,12 @@ $oRotuloRequiItem->label('m41_codmatrequi');
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

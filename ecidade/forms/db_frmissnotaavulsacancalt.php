@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("q51_sequencial");
       <b>Data:</b>
    </td>
    <td>
-   <?
+   <?php
       db_inputdata("q63_data",$q63_data_dia,$q63_data_mes,$q63_data_ano,"text",3);
    ?>
    </td>
@@ -50,7 +50,7 @@ $clrotulo->label("q51_sequencial");
       <b>Usuário:</b>
    </td>
    <td>
-   <?
+   <?php
       db_input("q63_usuario",10,null,3,"text",3);
       db_input("nome",30,null,3,"text",3);
       
@@ -62,7 +62,7 @@ $clrotulo->label("q51_sequencial");
        <?=@$Lq63_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('q63_motivo',6,50,$Iq63_motivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsacanc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

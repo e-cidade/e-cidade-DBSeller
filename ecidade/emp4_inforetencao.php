@@ -149,7 +149,7 @@ $sAno      = date("Y",db_getsession("DB_datausu"));
       <td class='table_header'>Valor Retido</td>
       <td class='table_header' width='5%'>&nbsp;</td>
     </tr>
-      <?
+      <?php
       $sJoin    = " left join empagenotasordem  on e81_codmov         = e43_empagemov   ";
       $sJoin   .= " left join empageordem       on e43_ordempagamento = e42_sequencial  ";
       if (isset($aNotas)) {
@@ -271,7 +271,7 @@ $sAno      = date("Y",db_getsession("DB_datausu"));
     </table>
     <input type='button' onclick='js_setValorBase()' value='Confirmar'>
     </form>
-    <?
+    <?php
 
       if ($oGet->iTipoCalculo == 2) {
 

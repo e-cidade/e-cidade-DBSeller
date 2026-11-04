@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,17 +60,17 @@ if(isset($alterar)){
 <div style="margin-top: 25px;"></div>
 <center>
 <div style="width: 500px;">
-	<?
+	<?php
 	include(modification("forms/db_frmbenstipodepreciacao.php"));
 	?>
 </div>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clbenstipodepreciacao->erro_status=="0"){
     $clbenstipodepreciacao->erro(true,false);

@@ -1,75 +1,75 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: divida
 //CLASSE DA ENTIDADE certidlivro
-class cl_certidlivro { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $v25_sequencial = 0; 
-   var $v25_usuario = 0; 
-   var $v25_datainc_dia = null; 
-   var $v25_datainc_mes = null; 
-   var $v25_datainc_ano = null; 
-   var $v25_datainc = null; 
-   var $v25_hora = null; 
-   var $v25_numero = 0; 
-   var $v25_instit = 0; 
-   var $v25_tipolivro = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_certidlivro {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $v25_sequencial = 0;
+   var $v25_usuario = 0;
+   var $v25_datainc_dia = null;
+   var $v25_datainc_mes = null;
+   var $v25_datainc_ano = null;
+   var $v25_datainc = null;
+   var $v25_hora = null;
+   var $v25_numero = 0;
+   var $v25_instit = 0;
+   var $v25_tipolivro = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v25_sequencial = int4 = Código Sequencial 
-                 v25_usuario = int4 = Usuário 
-                 v25_datainc = date = Data de Inclusão 
-                 v25_hora = char(5) = Hora 
-                 v25_numero = int4 = Livro 
-                 v25_instit = int4 = Instituição 
-                 v25_tipolivro = int4 = Tipo do Livro 
+                 v25_sequencial = int4 = Código Sequencial
+                 v25_usuario = int4 = Usuário
+                 v25_datainc = date = Data de Inclusão
+                 v25_hora = char(5) = Hora
+                 v25_numero = int4 = Livro
+                 v25_instit = int4 = Instituição
+                 v25_tipolivro = int4 = Tipo do Livro
                  ";
-   //funcao construtor da classe 
-   function cl_certidlivro() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("certidlivro"); 
+     $this->rotulo = new rotulo("certidlivro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_certidlivro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v25_sequencial = ($this->v25_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v25_sequencial"]:$this->v25_sequencial);
        $this->v25_usuario = ($this->v25_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["v25_usuario"]:$this->v25_usuario);
@@ -99,9 +99,9 @@ class cl_certidlivro {
      }
    }
    // funcao para inclusao
-   function incluir ($v25_sequencial){ 
+   public function incluir ($v25_sequencial){
       $this->atualizacampos();
-     if($this->v25_usuario == null ){ 
+     if($this->v25_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "v25_usuario";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_certidlivro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v25_datainc == null ){ 
+     if($this->v25_datainc == null ){
        $this->erro_sql = " Campo Data de Inclusão nao Informado.";
        $this->erro_campo = "v25_datainc_dia";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_certidlivro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v25_hora == null ){ 
+     if($this->v25_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "v25_hora";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_certidlivro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v25_numero == null ){ 
+     if($this->v25_numero == null ){
        $this->erro_sql = " Campo Livro nao Informado.";
        $this->erro_campo = "v25_numero";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_certidlivro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v25_instit == null ){ 
+     if($this->v25_instit == null ){
        $this->erro_sql = " Campo Instituição nao Informado.";
        $this->erro_campo = "v25_instit";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_certidlivro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v25_tipolivro == null ){ 
+     if($this->v25_tipolivro == null ){
        $this->erro_sql = " Campo Tipo do Livro nao Informado.";
        $this->erro_campo = "v25_tipolivro";
        $this->erro_banco = "";
@@ -156,16 +156,16 @@ class cl_certidlivro {
        return false;
      }
      if($v25_sequencial == "" || $v25_sequencial == null ){
-       $result = db_query("select nextval('certidlivro_v25_sequencial_seq')"); 
+       $result = db_query("select nextval('certidlivro_v25_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: certidlivro_v25_sequencial_seq do campo: v25_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: certidlivro_v25_sequencial_seq do campo: v25_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->v25_sequencial = pg_result($result,0,0); 
+       $this->v25_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from certidlivro_v25_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $v25_sequencial)){
@@ -176,10 +176,10 @@ class cl_certidlivro {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->v25_sequencial = $v25_sequencial; 
+         $this->v25_sequencial = $v25_sequencial;
        }
      }
-     if(($this->v25_sequencial == null) || ($this->v25_sequencial == "") ){ 
+     if(($this->v25_sequencial == null) || ($this->v25_sequencial == "") ){
        $this->erro_sql = " Campo v25_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -188,25 +188,25 @@ class cl_certidlivro {
        return false;
      }
      $sql = "insert into certidlivro(
-                                       v25_sequencial 
-                                      ,v25_usuario 
-                                      ,v25_datainc 
-                                      ,v25_hora 
-                                      ,v25_numero 
-                                      ,v25_instit 
-                                      ,v25_tipolivro 
+                                       v25_sequencial
+                                      ,v25_usuario
+                                      ,v25_datainc
+                                      ,v25_hora
+                                      ,v25_numero
+                                      ,v25_instit
+                                      ,v25_tipolivro
                        )
                 values (
-                                $this->v25_sequencial 
-                               ,$this->v25_usuario 
-                               ,".($this->v25_datainc == "null" || $this->v25_datainc == ""?"null":"'".$this->v25_datainc."'")." 
-                               ,'$this->v25_hora' 
-                               ,$this->v25_numero 
-                               ,$this->v25_instit 
-                               ,$this->v25_tipolivro 
+                                $this->v25_sequencial
+                               ,$this->v25_usuario
+                               ,".($this->v25_datainc == "null" || $this->v25_datainc == ""?"null":"'".$this->v25_datainc."'")."
+                               ,'$this->v25_hora'
+                               ,$this->v25_numero
+                               ,$this->v25_instit
+                               ,$this->v25_tipolivro
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Livro de CDA ($this->v25_sequencial) nao Incluído. Inclusao Abortada.";
@@ -244,16 +244,16 @@ class cl_certidlivro {
        $resac = db_query("insert into db_acount values($acount,2611,14857,'','".AddSlashes(pg_result($resaco,0,'v25_tipolivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($v25_sequencial=null) { 
+   public function alterar ($v25_sequencial=null) {
       $this->atualizacampos();
      $sql = " update certidlivro set ";
      $virgula = "";
-     if(trim($this->v25_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_sequencial"])){ 
+     if(trim($this->v25_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_sequencial"])){
        $sql  .= $virgula." v25_sequencial = $this->v25_sequencial ";
        $virgula = ",";
-       if(trim($this->v25_sequencial) == null ){ 
+       if(trim($this->v25_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "v25_sequencial";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_usuario"])){ 
+     if(trim($this->v25_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_usuario"])){
        $sql  .= $virgula." v25_usuario = $this->v25_usuario ";
        $virgula = ",";
-       if(trim($this->v25_usuario) == null ){ 
+       if(trim($this->v25_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "v25_usuario";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_datainc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"] !="") ){ 
+     if(trim($this->v25_datainc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"] !="") ){
        $sql  .= $virgula." v25_datainc = '$this->v25_datainc' ";
        $virgula = ",";
-       if(trim($this->v25_datainc) == null ){ 
+       if(trim($this->v25_datainc) == null ){
          $this->erro_sql = " Campo Data de Inclusão nao Informado.";
          $this->erro_campo = "v25_datainc_dia";
          $this->erro_banco = "";
@@ -288,11 +288,11 @@ class cl_certidlivro {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"])){
          $sql  .= $virgula." v25_datainc = null ";
          $virgula = ",";
-         if(trim($this->v25_datainc) == null ){ 
+         if(trim($this->v25_datainc) == null ){
            $this->erro_sql = " Campo Data de Inclusão nao Informado.";
            $this->erro_campo = "v25_datainc_dia";
            $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_certidlivro {
          }
        }
      }
-     if(trim($this->v25_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_hora"])){ 
+     if(trim($this->v25_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_hora"])){
        $sql  .= $virgula." v25_hora = '$this->v25_hora' ";
        $virgula = ",";
-       if(trim($this->v25_hora) == null ){ 
+       if(trim($this->v25_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "v25_hora";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_numero"])){ 
+     if(trim($this->v25_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_numero"])){
        $sql  .= $virgula." v25_numero = $this->v25_numero ";
        $virgula = ",";
-       if(trim($this->v25_numero) == null ){ 
+       if(trim($this->v25_numero) == null ){
          $this->erro_sql = " Campo Livro nao Informado.";
          $this->erro_campo = "v25_numero";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_instit"])){ 
+     if(trim($this->v25_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_instit"])){
        $sql  .= $virgula." v25_instit = $this->v25_instit ";
        $virgula = ",";
-       if(trim($this->v25_instit) == null ){ 
+       if(trim($this->v25_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "v25_instit";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_tipolivro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_tipolivro"])){ 
+     if(trim($this->v25_tipolivro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_tipolivro"])){
        $sql  .= $virgula." v25_tipolivro = $this->v25_tipolivro ";
        $virgula = ",";
-       if(trim($this->v25_tipolivro) == null ){ 
+       if(trim($this->v25_tipolivro) == null ){
          $this->erro_sql = " Campo Tipo do Livro nao Informado.";
          $this->erro_campo = "v25_tipolivro";
          $this->erro_banco = "";
@@ -383,7 +383,7 @@ class cl_certidlivro {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Livro de CDA nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->v25_sequencial;
@@ -411,14 +411,14 @@ class cl_certidlivro {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($v25_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($v25_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v25_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -450,7 +450,7 @@ class cl_certidlivro {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Livro de CDA nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$v25_sequencial;
@@ -478,11 +478,11 @@ class cl_certidlivro {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -504,11 +504,11 @@ class cl_certidlivro {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -524,15 +524,15 @@ class cl_certidlivro {
      $sql2 = "";
      if($dbwhere==""){
        if($v25_sequencial!=null ){
-         $sql2 .= " where certidlivro.v25_sequencial = $v25_sequencial "; 
-       } 
+         $sql2 .= " where certidlivro.v25_sequencial = $v25_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -541,11 +541,11 @@ class cl_certidlivro {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,15 +558,15 @@ class cl_certidlivro {
      $sql2 = "";
      if($dbwhere==""){
        if($v25_sequencial!=null ){
-         $sql2 .= " where certidlivro.v25_sequencial = $v25_sequencial "; 
-       } 
+         $sql2 .= " where certidlivro.v25_sequencial = $v25_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -575,11 +575,11 @@ class cl_certidlivro {
      }
      return $sql;
   }
-  
- function sql_query_livro ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+ public function sql_query_livro ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -599,15 +599,15 @@ class cl_certidlivro {
     $sql2 = "";
     if($dbwhere==""){
      if($v25_sequencial!=null ){
-         $sql2 .= " where certidlivro.v25_sequencial = $v25_sequencial "; 
-       }  
+         $sql2 .= " where certidlivro.v25_sequencial = $v25_sequencial ";
+       }
     }else if($dbwhere != ""){
       $sql2 = " where $dbwhere";
     }
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

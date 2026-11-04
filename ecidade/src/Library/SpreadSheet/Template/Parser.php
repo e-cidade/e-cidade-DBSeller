@@ -3,6 +3,7 @@
 namespace ECidade\Library\SpreadSheet\Template;
 
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 use PhpOffice\PhpSpreadsheet\Writer\Ods;
@@ -43,6 +44,10 @@ class Parser
      */
     public function __construct()
     {
+        \PhpOffice\PhpSpreadsheet\Settings::setLocale('pt_br');
+
+        StringHelper::setDecimalSeparator(',');
+        StringHelper::setThousandsSeparator('.');
         $this->setSpreadSheet(new Spreadsheet());
     }
 
@@ -342,8 +347,9 @@ class Parser
                 break;
             case 'pdf':
                 $writer = new Mpdf($this->getSpreadSheet());
-                $writer->setOrientation('P');
-                $writer->setPaperSize('A4');
+                $writer->setTempDir(ECIDADE_TEMP_MPDF_PATH);
+                $writer->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+                $writer->setPaperSize(PageSetup::PAPERSIZE_A4);
                 break;
             default:
                 throw new \ParameterException('O tipo de arquivo. ' . $extension . ' não é suportado.');
@@ -439,14 +445,16 @@ class Parser
                 break;
             case 'pdf':
                 $writer = new Mpdf($this->getSpreadSheet());
-                $writer->setOrientation('P');
-                $writer->setPaperSize('A4');
+                // $writer->setOrientation('P');
+                // $writer->setPaperSize('A4');
+                $writer->setPaperSize(PageSetup::PAPERSIZE_A4);
                 break;
             default:
                 throw new \ParameterException('O tipo de arquivo. ' . $extension . ' não é suportado.');
         }
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="'. urlencode($path).'"');
+        header('Content-Disposition: attachment; filename="' . urlencode($path) . '"');
+        header('Content-Disposition: attachment; filename="' . urlencode($path) . '"');
         $writer->save('php://output');
     }
 
@@ -507,24 +515,5 @@ class Parser
         $this->spreadsheet->getSheet(0)
             ->getPageSetup()
             ->setOrientation($orientation);
-    }
-
-    /**
-     * Gera o pdf mas antes tem que chamar o parse
-     * @param $filePath
-     * @return mixed
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     */
-    public function saveAsPdf($filePath)
-    {
-        /**
-         * Não precisa setar a orientação, pois por default usa do spreadSheet
-         */
-        $writer = new Mpdf($this->getSpreadSheet());
-        $writer->setPaperSize(PageSetup::PAPERSIZE_A4);
-        $writer->save($filePath);
-
-        return $filePath;
     }
 }

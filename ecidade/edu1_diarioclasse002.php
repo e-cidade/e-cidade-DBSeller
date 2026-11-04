@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -184,7 +184,7 @@ get_element = document.all ?
 
 var TREE_ITEMS = [
                    ['Escola: <b><?=$escola?></b>', '',
-                   <?
+                   <?php
                    $sql = "SELECT DISTINCT ed52_i_codigo,ed52_c_descr,ed52_i_ano
                            FROM calendario
                             inner join turma on ed57_i_calendario = ed52_i_codigo
@@ -199,12 +199,12 @@ var TREE_ITEMS = [
                    if($linhas==0){
                     ?>
                     ['Calendário: <b>Nenhuma turma com matrículas</b>', ''],
-                    <?
+                    <?php
                    }else{
                     for($a=0;$a<$linhas;$a++){
                     ?>
                      ['Calendário: <b><?=trim(pg_result($query,$a,"ed52_c_descr"))?></b>', 'edu1_diarioclasse003.php?ed52_i_codigo=<?=pg_result($query,$a,"ed52_i_codigo")?>&ed52_c_descr=<?=trim(pg_result($query,$a,"ed52_c_descr"))?>',
-                     <?
+                     <?php
                      $sql1 = "SELECT DISTINCT ed29_i_codigo,ed29_c_descr,ed10_c_abrev
                               FROM cursoedu
                                inner join cursoescola on ed71_i_curso = ed29_i_codigo
@@ -222,7 +222,7 @@ var TREE_ITEMS = [
                      for($b=0;$b<$linhas1;$b++){
                      ?>
                        ['Curso: <b><?=trim(pg_result($query1,$b,"ed29_c_descr"))?></b>', 'edu1_diarioclasse003.php?ed29_i_codigo=<?=pg_result($query1,$b,"ed29_i_codigo")?>&proximo=<?=trim(pg_result($query1,$b,"ed29_c_descr"))?>&calendario=<?=pg_result($query,$a,"ed52_i_codigo")?>&ed52_c_descr=<?=trim(pg_result($query,$a,"ed52_c_descr"))?>',
-                       <?
+                       <?php
                        $sql11 = "SELECT DISTINCT ed218_i_codigo,ed218_c_nome
                                  FROM regimemat
                                   inner join base on ed31_i_regimemat = ed218_i_codigo
@@ -239,7 +239,7 @@ var TREE_ITEMS = [
                        for($bb=0;$bb<$linhas11;$bb++){
                        ?>
                          ['Regime de Matrícula: <b><?=trim(pg_result($query11,$bb,"ed218_c_nome"))?></b>', 'edu1_diarioclasse003.php?ed218_i_codigo=<?=pg_result($query11,$bb,"ed218_i_codigo")?>&ed29_i_codigo=<?=pg_result($query1,$b,"ed29_i_codigo")?>&proximo=<?=trim(pg_result($query11,$bb,"ed218_c_nome"))?>&calendario=<?=pg_result($query,$a,"ed52_i_codigo")?>&ed52_c_descr=<?=trim(pg_result($query,$a,"ed52_c_descr"))?>&',
-                         <?
+                         <?php
                          $sql2 = "SELECT DISTINCT ed31_i_codigo,ed31_c_descr,ed31_i_regimemat
                                   FROM base
                                    inner join turma on ed57_i_base = ed31_i_codigo
@@ -256,7 +256,7 @@ var TREE_ITEMS = [
                          for($c=0;$c<$linhas2;$c++){
                          ?>
                            ['Base Curricular: <b><?=trim(pg_result($query2,$c,"ed31_c_descr"))?></b>', 'edu1_diarioclasse003.php?ed31_i_codigo=<?=pg_result($query2,$c,"ed31_i_codigo")?>&ed31_i_regimemat=<?=pg_result($query2,$c,"ed31_i_regimemat")?>&proximo=<?=trim(pg_result($query2,$c,"ed31_c_descr"))?>&calendario=<?=pg_result($query,$a,"ed52_i_codigo")?>&ed52_c_descr=<?=trim(pg_result($query,$a,"ed52_c_descr"))?>&',
-                           <?
+                           <?php
                            $sql3 = "SELECT si.ed11_i_sequencia as inicial,sf.ed11_i_sequencia as final,si.ed11_i_ensino as ensino
                                      FROM baseserie
                                       inner join serie as si on si.ed11_i_codigo = baseserie.ed87_i_serieinicial
@@ -282,7 +282,7 @@ var TREE_ITEMS = [
                            for($d=0;$d<$linhas4;$d++){
                            ?>
                              ['Etapa: <b><?=trim(pg_result($query4,$d,"ed11_c_descr"))?></b>', 'edu1_diarioclasse003.php?ed11_i_codigo=<?=pg_result($query4,$d,"ed11_i_codigo")?>&ed31_i_regimemat=<?=pg_result($query2,$c,"ed31_i_regimemat")?>&proximo=<?=trim(pg_result($query4,$d,"ed11_c_descr"))?>&ed52_c_descr=<?=trim(pg_result($query,$a,"ed52_c_descr"))?>&calendario=<?=pg_result($query,$a,"ed52_i_codigo")?>',
-                             <?
+                             <?php
 
                              $sql5 = "SELECT DISTINCT ed57_i_codigo, ed57_c_descr,
                                              (select count(*)
@@ -313,18 +313,18 @@ var TREE_ITEMS = [
                               }
                              ?>
                                ['Turma: <b><?=trim(pg_result($query5,$e,"ed57_c_descr"))?></b>', 'edu1_diarioclasse004.php?turma=<?=pg_result($query5,$e,"ed57_i_codigo")?>&ed57_c_descr=<?=trim(pg_result($query5,$e,"ed57_c_descr"))?>&codserieregencia=<?=pg_result($query4,$d,"ed11_i_codigo")?>&ed52_c_descr=<?=trim(pg_result($query,$a,"ed52_c_descr"))?>'],
-                             <?}?>
+                             <?php }?>
                              ],
-                           <?}?>
+                           <?php }?>
                             ],
-                           <?}?>
+                           <?php }?>
                           ],
-                        <?}?>
+                        <?php }?>
                        ],
-                     <?}?>
+                     <?php }?>
                      ],
-                    <?}?>
-                   <?}?>
+                    <?php }?>
+                   <?php }?>
                    ]
                  ];
 

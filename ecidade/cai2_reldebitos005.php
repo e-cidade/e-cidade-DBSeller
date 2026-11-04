@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,14 +55,14 @@ $db_opcao = 1;
 	   <strong>Opção de Seleção :<strong>
 	</td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
 	 $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
 	  db_select('seledeb',$xxx,true,2);
           ?>
 
         </td>
       </tr>
-      <?
+      <?php
       //$aux->cabecalho = "<strong>Selecione um tipo de dívida ou deixe em branco para todos</strong>";
       $aux->codigo = "k00_tipo";
       $aux->descr  = "k00_descr";

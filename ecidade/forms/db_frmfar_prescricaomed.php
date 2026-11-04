@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("fa20_i_codigo");
        <?=@$Lfa31_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa31_i_codigo',10,$Ifa31_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa31_i_medanvisa?>">
-       <?
+       <?php
        db_ancora(@$Lfa31_i_medanvisa,"js_pesquisafa31_i_medanvisa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa31_i_medanvisa',10,$Ifa31_i_medanvisa,true,'text',$db_opcao," onchange='js_pesquisafa31_i_medanvisa(false);'")
 ?>
-       <?
+       <?php
 db_input('fa14_c_medanvisa',40,@$Ifa14_c_medanvisa,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa31_i_prescricao?>">
-       <?
+       <?php
        db_ancora(@$Lfa31_i_prescricao,"js_pesquisafa31_i_prescricao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa31_i_prescricao',10,$Ifa31_i_prescricao,true,'text',$db_opcao," onchange='js_pesquisafa31_i_prescricao(false);'")
 ?>
-       <?
+       <?php
 db_input('fa20_c_prescricao',40,@$Ifa20_c_prescricao,true,'text',3,'')
        ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_prescricaomed.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

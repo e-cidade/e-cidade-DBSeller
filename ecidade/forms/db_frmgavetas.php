@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("cm26_i_codigo");
        <?=@$Lcm27_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm27_i_codigo',10,$Icm27_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm27_i_restogaveta?>">
-       <?
+       <?php
        db_ancora(@$Lcm27_i_restogaveta,"js_pesquisacm27_i_restogaveta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm27_i_restogaveta',10,$Icm27_i_restogaveta,true,'text',$db_opcao," onchange='js_pesquisacm27_i_restogaveta(false);'")
 ?>
-       <?
+       <?php
 db_input('cm26_i_codigo',10,$Icm26_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('cm26_i_codigo',10,$Icm26_i_codigo,true,'text',3,'')
        <?=@$Lcm27_d_exumprevista?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('cm27_d_exumprevista',@$cm27_d_exumprevista_dia,@$cm27_d_exumprevista_mes,@$cm27_d_exumprevista_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('cm27_d_exumprevista',@$cm27_d_exumprevista_dia,@$cm27_d_exumprevis
        <?=@$Lcm27_d_exumfeita?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('cm27_d_exumfeita',@$cm27_d_exumfeita_dia,@$cm27_d_exumfeita_mes,@$cm27_d_exumfeita_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('cm27_d_exumfeita',@$cm27_d_exumfeita_dia,@$cm27_d_exumfeita_mes,@$
        <?=@$Lcm27_c_ossoario?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm27_c_ossoario',1,$Icm27_c_ossoario,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('cm27_c_ossoario',1,$Icm27_c_ossoario,true,'text',$db_opcao,"")
        <?=@$Lcm27_i_gaveta?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm27_i_gaveta',10,$Icm27_i_gaveta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_gavetas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

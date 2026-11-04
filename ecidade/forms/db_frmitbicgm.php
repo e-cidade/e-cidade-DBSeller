@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,34 +46,34 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tit02_guia?>">
-       <?
+       <?php
        db_ancora(@$Lit02_guia,"js_pesquisait02_guia(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it02_guia',10,$Iit02_guia,true,'text',3," onchange='js_pesquisait02_guia(false);'")
 ?>
-       <?
+       <?php
 db_input('it01_guia',10,$Iit01_guia,true,'hidden',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit02_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lit02_numcgm,"js_pesquisait02_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it02_numcgm',8,$Iit02_numcgm,true,'text',3," onchange='js_pesquisait02_numcgm(false);'");
 db_input('it02_numcgm',8,$Iit02_numcgm,true,'hidden',$db_opcao,"","it02_numcgm_old");
 if($db_opcao == 2){
   echo "<script>document.form1.it02_numcgm_old.value='$it02_numcgm'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -85,7 +85,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("it02_guia"=>@$it02_guia,"it02_numcgm"=>@$it02_numcgm);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="it02_guia,it02_numcgm,z01_nome";
@@ -162,7 +162,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_itbicgm.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

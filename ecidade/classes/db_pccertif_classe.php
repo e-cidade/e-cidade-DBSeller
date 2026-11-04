@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE pccertif
-class cl_pccertif { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc59_certif = 0; 
-   var $pc59_descr = null; 
-   var $pc59_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pccertif {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc59_certif = 0;
+   var $pc59_descr = null;
+   var $pc59_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc59_certif = int4 = Certificado 
-                 pc59_descr = varchar(40) = Descrição 
-                 pc59_obs = text = Observações 
+                 pc59_certif = int4 = Certificado
+                 pc59_descr = varchar(40) = Descrição
+                 pc59_obs = text = Observações
                  ";
-   //funcao construtor da classe 
-   function cl_pccertif() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pccertif"); 
+     $this->rotulo = new rotulo("pccertif");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_pccertif {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc59_certif = ($this->pc59_certif == ""?@$GLOBALS["HTTP_POST_VARS"]["pc59_certif"]:$this->pc59_certif);
        $this->pc59_descr = ($this->pc59_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["pc59_descr"]:$this->pc59_descr);
@@ -77,9 +77,9 @@ class cl_pccertif {
      }
    }
    // funcao para inclusao
-   function incluir ($pc59_certif){ 
+   public function incluir ($pc59_certif){
       $this->atualizacampos();
-     if($this->pc59_descr == null ){ 
+     if($this->pc59_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "pc59_descr";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_pccertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc59_obs == null ){ 
+     if($this->pc59_obs == null ){
        $this->erro_sql = " Campo Observações nao Informado.";
        $this->erro_campo = "pc59_obs";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_pccertif {
        return false;
      }
      if($pc59_certif == "" || $pc59_certif == null ){
-       $result = db_query("select nextval('pccertif_pc59_certif_seq')"); 
+       $result = db_query("select nextval('pccertif_pc59_certif_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pccertif_pc59_certif_seq do campo: pc59_certif"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pccertif_pc59_certif_seq do campo: pc59_certif";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc59_certif = pg_result($result,0,0); 
+       $this->pc59_certif = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pccertif_pc59_certif_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc59_certif)){
@@ -118,10 +118,10 @@ class cl_pccertif {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc59_certif = $pc59_certif; 
+         $this->pc59_certif = $pc59_certif;
        }
      }
-     if(($this->pc59_certif == null) || ($this->pc59_certif == "") ){ 
+     if(($this->pc59_certif == null) || ($this->pc59_certif == "") ){
        $this->erro_sql = " Campo pc59_certif nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_pccertif {
        return false;
      }
      $sql = "insert into pccertif(
-                                       pc59_certif 
-                                      ,pc59_descr 
-                                      ,pc59_obs 
+                                       pc59_certif
+                                      ,pc59_descr
+                                      ,pc59_obs
                        )
                 values (
-                                $this->pc59_certif 
-                               ,'$this->pc59_descr' 
-                               ,'$this->pc59_obs' 
+                                $this->pc59_certif
+                               ,'$this->pc59_descr'
+                               ,'$this->pc59_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Certificados  ($this->pc59_certif) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_pccertif {
        $resac = db_query("insert into db_acount values($acount,960,5993,'','".AddSlashes(pg_result($resaco,0,'pc59_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc59_certif=null) { 
+   public function alterar ($pc59_certif=null) {
       $this->atualizacampos();
      $sql = " update pccertif set ";
      $virgula = "";
-     if(trim($this->pc59_certif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc59_certif"])){ 
+     if(trim($this->pc59_certif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc59_certif"])){
        $sql  .= $virgula." pc59_certif = $this->pc59_certif ";
        $virgula = ",";
-       if(trim($this->pc59_certif) == null ){ 
+       if(trim($this->pc59_certif) == null ){
          $this->erro_sql = " Campo Certificado nao Informado.";
          $this->erro_campo = "pc59_certif";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_pccertif {
          return false;
        }
      }
-     if(trim($this->pc59_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc59_descr"])){ 
+     if(trim($this->pc59_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc59_descr"])){
        $sql  .= $virgula." pc59_descr = '$this->pc59_descr' ";
        $virgula = ",";
-       if(trim($this->pc59_descr) == null ){ 
+       if(trim($this->pc59_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "pc59_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_pccertif {
          return false;
        }
      }
-     if(trim($this->pc59_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc59_obs"])){ 
+     if(trim($this->pc59_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc59_obs"])){
        $sql  .= $virgula." pc59_obs = '$this->pc59_obs' ";
        $virgula = ",";
-       if(trim($this->pc59_obs) == null ){ 
+       if(trim($this->pc59_obs) == null ){
          $this->erro_sql = " Campo Observações nao Informado.";
          $this->erro_campo = "pc59_obs";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_pccertif {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Certificados  nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc59_certif;
@@ -267,14 +267,14 @@ class cl_pccertif {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc59_certif=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc59_certif=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc59_certif));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_pccertif {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Certificados  nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc59_certif;
@@ -330,11 +330,11 @@ class cl_pccertif {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_pccertif {
       }
      return $result;
    }
-   function sql_query ( $pc59_certif=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $pc59_certif=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,15 +372,15 @@ class cl_pccertif {
      $sql2 = "";
      if($dbwhere==""){
        if($pc59_certif!=null ){
-         $sql2 .= " where pccertif.pc59_certif = $pc59_certif "; 
-       } 
+         $sql2 .= " where pccertif.pc59_certif = $pc59_certif ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,10 +389,10 @@ class cl_pccertif {
      }
      return $sql;
   }
-   function sql_query_file ( $pc59_certif=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $pc59_certif=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_pccertif {
      $sql2 = "";
      if($dbwhere==""){
        if($pc59_certif!=null ){
-         $sql2 .= " where pccertif.pc59_certif = $pc59_certif "; 
-       } 
+         $sql2 .= " where pccertif.pc59_certif = $pc59_certif ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

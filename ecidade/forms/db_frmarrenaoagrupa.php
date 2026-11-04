@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("k00_descr");
        <?=@$Lk00_numpre?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_numpre',8,$Ik00_numpre,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk00_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lk00_tipo,"js_pesquisak00_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_tipo',4,$Ik00_tipo,true,'text',$db_opcao," onchange='js_pesquisak00_tipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
@@ -93,7 +93,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_arrenaoagrupa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

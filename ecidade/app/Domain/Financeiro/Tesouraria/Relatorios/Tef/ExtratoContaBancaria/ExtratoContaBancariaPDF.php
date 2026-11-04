@@ -12,6 +12,11 @@ class ExtratoContaBancariaPDF extends Pdf
      */
     private $dados;
 
+    public $lQuebra_Historico;
+    public $quebra_data;
+    public $contas;
+    public $lImprimeSaldo;
+
     public function setDadosRelatorio(ExtratoContaBancariaModel $dadosRelatorio)
     {
         $this->dados = $dadosRelatorio;
@@ -57,7 +62,7 @@ class ExtratoContaBancariaPDF extends Pdf
                     $oConta->credito,
                     $this->lImprimeSaldo
                 );
-    
+
                 $this->lImprimeSaldo = false;
                 $this->imprimeCabecalho();
                 $this->processaDadosConta($oConta);
@@ -72,7 +77,7 @@ class ExtratoContaBancariaPDF extends Pdf
             if (property_exists($oData, 'movimentacoes') && !empty($oData->movimentacoes)) {
                 $this->processaMovimentosConta($conta, $oData);
             }
-           
+
             if ($this->dados->totalizador_diario == 's') {
                 $this->dados->saldo_dia_credito = $oData->saldo_dia_credito;
                 $this->dados->saldo_dia_debito = $oData->saldo_dia_debito;
@@ -93,7 +98,7 @@ class ExtratoContaBancariaPDF extends Pdf
         if ($this->GetY() > $this->geth() - 40) {
             $this->AddPage("L");
         }
-        
+
         $this->imprimeTotalMovConta($conta->debitado, $conta->creditado, $conta->atual);
         $this->Ln(5);
     }
@@ -114,7 +119,7 @@ class ExtratoContaBancariaPDF extends Pdf
                 $this->dados->saldo_dia_credito = 0;
                 $this->dados->saldo_dia_final = 0;
             }
-        
+
             if ($this->GetY() > $this->geth() - 25) {
                 $this->AddPage('L');
                 $this->imprimeConta(
@@ -127,7 +132,7 @@ class ExtratoContaBancariaPDF extends Pdf
                 );
                 $this->imprimeCabecalho();
             }
-           
+
             if ($this->lQuebra_Historico) {
                 $this->imprimeConta(
                     $oConta->k13_reduz,
@@ -142,18 +147,18 @@ class ExtratoContaBancariaPDF extends Pdf
             }
 
             $this->imprimeDadosMovimento($oMovimento, $oData->data);
-            
+
             if ($this->dados->imprime_analitico == 'a') {
                 $this->imprimeAnalitico($oConta, $oMovimento);
             }
-            
+
             $this->quebra_data = $oData->data;
         }
     }
 
     public function imprimeAnalitico($oConta, $oMovimento)
     {
-        
+
         if (!isset($oMovimento->agrupado)) {
             if ($this->GetY() > $this->geth() - 25) {
                 $this->AddPage("L");
@@ -216,26 +221,18 @@ class ExtratoContaBancariaPDF extends Pdf
                     $this->lQuebra_Historico = true;
                 }
                 $this->Cell(20, 5, "", 0, 0, "C", 0);
-                $this->Cell(25, 5, "Histórico:", "", 0, "L", 0);
-                $oMovimento->historico = $this->row(array(
-                    '',
-                    '',
-                    '',
-                    $oMovimento->historico,
-                    '',
-                    ''
-                ), 5, false, 5, 0, true, true, 3, ($this->geth() - 25), 180);
+                $oMovimento->historico = $this->MultiCell(0, 5, "Historico: {$oMovimento->historico}", 0, "L", 0);
             }
         }
     }
 
     public function headers()
     {
-        
+
         $this->exibeHeader(true);
         $this->addTitulo('EXTRATO BANCÁRIO ' . ($this->dados->imprime_analitico == 'a' ? 'ANALÍTICO' : 'SINTÉTICO'));
         $this->addTitulo('PERÍODO : ' . $this->dados->data_inicial . ' À ' . $this->dados->data_final);
-     
+
         if ($this->dados->somente_contas_bancarias == 's') {
             $this->addTitulo('SOMENTE CONTAS BANCÁRIAS');
         }
@@ -260,12 +257,12 @@ class ExtratoContaBancariaPDF extends Pdf
         $this->SetFont('Arial', '', 8);
         $this->Cell(90, 5, $codigo . " - " . $descricao, 0, 0, "L", 0);
         $this->SetFont('Arial', 'b', 8);
-    
+
         $this->Cell(72, 5, "DATA IMPLANTAÇÃO DA CONTA NA TESOURARIA: ", 0, 0, "L", 0);
         $this->SetFont('Arial', '', 8);
         $this->Cell(10, 5, db_formatar($dtimplantacao, 'd'), 0, 0, "L", 0);
         $this->SetFont('Arial', 'b', 8);
-    
+
         if ($lImprimeSaldo) {
             $this->Cell(40, 5, "SALDO ANTERIOR:", 0, 0, "R", 0);
             $this->Cell(25, 5, $debito == 0 ? "" : formataValorMonetario($debito), 0, 0, "R", 0);

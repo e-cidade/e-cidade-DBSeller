@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -28,6 +28,8 @@
 $cliptubaseregimovel->rotulo->label();
 $clpercposserural->rotulo->label();
 
+$clcgm = new cl_cgm();
+$clcgm->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("j69_descr");
 $clrotulo->label("j01_numcgm");
@@ -62,6 +64,9 @@ function js_verinome(){
 }
 </script>
 <br>
+<?php
+  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
+?>
 <table border="0" bgcolor="#CCCCCC">
 	<tr>
 		<td colspan="2">
@@ -89,7 +94,14 @@ function js_verinome(){
                     ?>
 				</td>
 			</tr>
-		<?php
+                       <!--Tipo de proprietário-->
+                    
+                    <tr>
+                        <td nowrap title="<?php echo $Tj163_descricao ?>"><?php echo $Lj163_descricao ?></td>
+                        <td id="listaProprietario"></td>
+                    </tr>
+		<?php 
+
 		empty($j01_tipoimovel) ? $j01_tipoimovel="" : $j01_tipoimovel ;
 		empty($tipoImovel) ? $tipoImovel="" : $tipoImovel ;
 
@@ -106,18 +118,15 @@ function js_verinome(){
 				</td>
 			</tr>
 		<?php endif;?>
-      <!--
-			<tr>
-				<td nowrap title="<?php echo @$Tj01_baixa?>"><?php echo @$Lj01_baixa?></td>
-				<td><?php
-				db_inputdata('j01_baixa',@$j01_baixa_dia,@$j01_baixa_mes,@$j01_baixa_ano,true,'text',3,"");
-				?></td>
-			</tr>
-      -->
+
 	  <?php if ($tipoImovel != "2" && $j01_tipoimovel != "2") : ?>
+		    <tr>
+                <td nowrap title="Fra&ccedil;&atilde;o por propriet&aacute;rio"><b>Fra&ccedil;&atilde;o por propriet&aacute;rio</b></td>
+                <td><?php db_input('j01_fracaoproprietario',9,$Ij01_fracaoproprietario,true,'text',"3","") ?>%</td>
+            </tr>
 			<tr>
 				<td nowrap title="<?php echo @$Tj01_fracao?>"><?php echo @$Lj01_fracao?></td>
-				<td><?php db_input('j01_fracao',20,$Ij01_fracao,true,'text',$db_opcao,"onchange=\"js_calculaFracao('fracao');\""); ?></td>
+				<td><?php db_input('j01_fracao',9,$Ij01_fracao,true,'text',$db_opcao,"onchange=\"js_calculaFracao('fracao');\""); ?>%</td>
 			</tr>
 			<?php
 			    $escondeInput = 'hidden';
@@ -128,7 +137,7 @@ function js_verinome(){
 				<td nowrap title="<?php echo @$Tj01_areaprivativa?>"><?php echo $Lj01_areaprivativa?></td>
 				<td>
             <?php } ?>
-					<?php db_input('j01_areaprivativa',10,$Ij01_areaprivativa,true,$escondeInput,$db_opcao,"onchange=\"js_calculaFracao('areaprivativa');\"") ?>
+					<?php db_input('j01_areaprivativa',9,$Ij01_areaprivativa,true,$escondeInput,$db_opcao,"onchange=\"js_calculaFracao('areaprivativa');\"") ?>
 					<input type="hidden" name="j34_area" id="j34_area" value="<?php echo $j34_area?>">
 					<?php if ($j18_utilizaareaprivativa != "f") { ?>
 				</td>
@@ -136,11 +145,11 @@ function js_verinome(){
 			<?php } ?>
 			<tr>
 				<td nowrap title="<?php echo @$Tj40_refant?>"><?php echo @$Lj40_refant?></td>
-				<td><?php db_input('j40_refant',20,$Ij40_refant,true,'text',isset($db_opcaorefant)?$db_opcaorefant:$db_opcao,"") ?></td>
+				<td><?php db_input('j40_refant',9,$Ij40_refant,true,'text',isset($db_opcaorefant)?$db_opcaorefant:$db_opcao,"") ?></td>
 			</tr>
             <tr>
                 <td nowrap title="<?php echo @$Tj40_registrocartografico?>"><?php echo @$Lj40_registrocartografico?></td>
-                <td><?php db_input('j40_registrocartografico',20,$Ij40_registrocartografico,true,'text',$db_opcao,"") ?></td>
+                <td><?php db_input('j40_registrocartografico',9,$Ij40_registrocartografico,true,'text',$db_opcao,"") ?></td>
             </tr>
 			<tr>
 				<td><?php db_ancora('<b>Cód Condomínio</b>','js_pesquisa_j107_sequencial(true)',$db_opcao); ?></td>
@@ -415,7 +424,70 @@ function js_verinome(){
 	<?php echo ($db_botao==false?"disabled":"")?> onclick="return js_verinome()"
 	>
 </center>
+
+<?php
+
+if (!isset($j01_tipoproprietario)) {
+    $tipoproprietario = 0;
+} else {
+    $tipoproprietario = $j01_tipoproprietario;
+}
+?>
 <script>
+
+js_listaTipoProprietario();
+
+    const tipoproprietario = parseInt(<?=$tipoproprietario?>);
+
+    function js_listaTipoProprietario() {
+        var oParam = new Object();
+        oParam.executa = "lista";
+
+        new AjaxRequest("cad1_tipoproprietario.RPC.php", oParam, js_getTipoProprietario).execute();
+    }
+
+    function js_getTipoProprietario(oRetorno) {
+        if (oRetorno.mensagem != "") {
+            alert(oRetorno.mensagem);
+        }
+
+        if (oRetorno.erro) {
+            return;
+        }
+
+        const lista = document.getElementById("listaProprietario");
+        lista.innerHTML = "";
+
+        var select = document.createElement("select");
+        select.setAttribute("id", "j01_tipoproprietario");
+        select.setAttribute("name", "j01_tipoproprietario");
+        lista.appendChild(select);
+
+        for (var index = 0; index < oRetorno.lista.length; index++) {
+            var option = document.createElement("option");
+            option.setAttribute("value", oRetorno.lista[index].j163_tipoproprietario);
+            option.setAttribute("id", "j01_tipoproprietario_"+oRetorno.lista[index].j163_tipoproprietario);
+            var t = document.createTextNode(oRetorno.lista[index].j163_descricao);
+
+            if (oRetorno.lista[index].j163_descricao == 'Proprietário') {
+                option.setAttribute("selected", "selected");
+            }
+
+            option.appendChild(t);
+            select.appendChild(option);
+        }
+
+        if (tipoproprietario != NaN) {
+            js_selecionaCampo();
+        }
+    }
+
+    function js_selecionaCampo()
+    {
+        const j01_tipoproprietario = document.getElementById("j01_tipoproprietario_"+tipoproprietario);
+        j01_tipoproprietario.selected = true;
+    }
+
 function js_pesquisa_j107_sequencial(mostra){
   if(mostra==true){
      js_OpenJanelaIframe('CurrentWindow.corpo.iframe_iptubase','db_iframe_condominio','func_condominio.php?funcao_js=parent.js_mostra_j107_sequencial1|j107_sequencial|j107_nome','Pesquisa',true);
@@ -487,25 +559,35 @@ function js_loadSelect(resposta){
 
 }
 
-function js_pesquisaj01_numcgm(mostra){
-  if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_iptubase','func_nome','func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome&testanome=true','Pesquisa',true,0);
-  }else{
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_iptubase','func_nome','func_nome.php?pesquisa_chave='+document.form1.j01_numcgm.value+'&funcao_js=parent.js_mostracgm',false,0);
-  }
+function js_pesquisaj01_numcgm(mostra) {
+	if (mostra == true) {
+		js_OpenJanelaIframe('CurrentWindow.corpo.iframe_iptubase', 'func_nome', 'func_nome.php?testanome=true&funcao_js=parent.js_mostranumcgm1|z01_numcgm|z01_nome', 'Pesquisa', true);
+	} else {
+		if (document.form1.j01_numcgm.value != '') {
+		js_OpenJanelaIframe('CurrentWindow.corpo.iframe_iptubase', 'func_nome', 'func_nome.php?testanome=true&pesquisa_chave=' + document.form1.j01_numcgm.value + '&funcao_js=parent.js_mostranumcgm', 'Pesquisa', false);
+		} else {
+		document.form1.z01_nome.value = "";
+		}
+	}
 }
-function js_mostracgm(erro,chave){
-  document.form1.z01_nome.value = chave;
-  if(erro==true){
-    document.form1.j01_numcgm.focus();
-    document.form1.j01_numcgm.value = '';
-  }
+
+function js_mostranumcgm(erro, chave) {
+	document.form1.z01_nome.value = chave;
+	if (erro == true) {
+		document.form1.j01_numcgm.value = '';
+		document.form1.j01_numcgm.focus();
+	} else {
+		js_defineFracaoDefault();
+	}
 }
-function js_mostracgm1(chave1,chave2){
-  document.form1.j01_numcgm.value = chave1;
-  document.form1.z01_nome.value = chave2;
-  func_nome.hide();
+
+function js_mostranumcgm1(chave1, chave2) {
+	document.form1.j01_numcgm.value = chave1;
+	document.form1.z01_nome.value = chave2;
+	js_defineFracaoDefault();
+	func_nome.hide();
 }
+
 function js_pesquisaj01_idbql(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_iptubase','db_iframe_lote','func_lote.php?funcao_js=parent.js_mostralote1|0|1','Pesquisa',true,0);
@@ -698,6 +780,14 @@ function js_alteraInscricaoImobiliaria() {
 		let tamUnidade = $('j01_unidade').value.length;
 		$('j40_refant').value = $('j40_refant').value.slice(0,-(tamUnidade < 4 ? 4 : tamUnidade)) + ($('j01_unidade').value).padStart(4,'0');
 	}
+}
+
+function js_defineFracaoDefault() {
+	<?php
+	if (!isset($_GET['j01_matric'])) {
+		echo "document.getElementById('j01_fracaoproprietario').value = '100.0000'";
+	}
+	?>
 }
 
 </script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cliptucalcpadraolog->rotulo->label("j19_iptucalcpadrao");
               <?=$Lj19_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j19_sequencial",10,$Ij19_sequencial,true,"text",4,"","chave_j19_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cliptucalcpadraolog->rotulo->label("j19_iptucalcpadrao");
               <?=$Lj19_iptucalcpadrao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j19_iptucalcpadrao",10,$Ij19_iptucalcpadrao,true,"text",4,"","chave_j19_iptucalcpadrao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cliptucalcpadraolog->rotulo->label("j19_iptucalcpadrao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptucalcpadraolog.php")==true){
@@ -122,12 +122,12 @@ $cliptucalcpadraolog->rotulo->label("j19_iptucalcpadrao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

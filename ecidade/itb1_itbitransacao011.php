@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ if(isset($oPost->incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmitbitransacao.php"));
 	?>
     </center>
@@ -92,7 +92,7 @@ if(isset($oPost->incluir)){
 <script>
 js_tabulacaoforms("form1","it04_descr",true,1,"it04_descr",true);
 </script>
-<?
+<?php
 
 if(isset($oPost->incluir)){
 	

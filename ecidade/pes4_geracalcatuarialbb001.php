@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
         <tr>
           <td><strong>Ano / Mês:</strong></td>
           <td>
-            <?
+            <?php
               $ano = db_anofolha();
               db_input('ano',4,$IDBtxt23,true,'text',2,'');
               echo "&nbsp;/&nbsp;";
@@ -79,12 +79,12 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
         </tr>
         <tr>
           <td nowrap title="Seleção:">
-            <?
+            <?php
               db_ancora("<b>Seleção:</b>","js_pesquisasel(true)",1);
             ?>
           </td>
           <td>
-            <?
+            <?php
               db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisasel(false)"');
               db_input('r44_descr',40,$Ir44_selec,true,'text',3,'');
             ?>          
@@ -93,7 +93,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
         <tr>
           <td><strong>Vínculo:</strong></td>
           <td>
-            <?
+            <?php
               $aVinculos = array (
                                   ''  => 'Selecione',
                                   'A' => 'Ativo',
@@ -113,13 +113,13 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
         <tr>
           <td><strong>Usa Separdor de Campo:</strong></td>
           <td>
-            <?
+            <?php
               $aSeparadorCampo = array('S' => 'Sim', 'N' => 'Não');
               db_select("separador",$aSeparadorCampo,true,1);
             ?>
           </td>
         </tr>
-        <?
+        <?php
           // Banco 104 = Caixa Econômica Federal
           if ($banco == 104) {
             
@@ -137,13 +137,13 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
     <br />
     <input  name="gera" id="gera" type="submit" value="Processar" onclick="return js_validapars()" >
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-  <?
+  <?php
  // if(isset($gera)){
  // 	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
  // }

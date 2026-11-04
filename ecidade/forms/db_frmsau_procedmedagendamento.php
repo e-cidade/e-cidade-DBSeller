@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,12 +44,12 @@ $oRotulo->label('rh70_sequencial');
   <table border="0">
     <tr>
       <td nowrap title="<?=@$Ts156_i_especmed?>">
-        <?
+        <?php
         db_ancora(@$Lsd04_i_medico, '', 3);
         ?>
       </td>
       <td nowrap> 
-        <?
+        <?php
         db_input('sd04_i_medico', 10, $Isd04_i_medico, true, 'text', 3, '');
         db_input('z01_nome', 50, $Iz01_nome, true, 'text', 3, '');
         ?>
@@ -57,12 +57,12 @@ $oRotulo->label('rh70_sequencial');
     </tr>
     <tr>
       <td nowrap title="<?=@$Ts156_i_especmed?>">
-        <?
+        <?php
         db_ancora(@$Ls156_i_especmed, "js_pesquisas156_i_especmed(true);", $db_opcao);
         ?>
       </td>
       <td nowrap> 
-        <?
+        <?php
         db_input('s156_i_especmed', 10, $Is156_i_especmed, true, 'text', $db_opcao,
                  " onchange='js_pesquisas156_i_especmed(false);'"
                 );
@@ -76,7 +76,7 @@ $oRotulo->label('rh70_sequencial');
         <?=@$Lsd04_i_unidade?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('sd04_i_unidade', 10, $Isd04_i_unidade, true, 'text', 3);
         db_input('descrdepto', 50, $Idescrdepto, true, 'text', 3, '');;
         ?>
@@ -84,12 +84,12 @@ $oRotulo->label('rh70_sequencial');
     </tr>
     <tr>
       <td nowrap title="<?=@$Ts156_i_procedimento?>">
-        <?
+        <?php
         db_ancora(@$Ls156_i_procedimento, "js_pesquisas156_i_procedimento(true);", $db_opcao);
         ?>
       </td>
       <td nowrap> 
-        <?
+        <?php
         db_input('sd63_c_procedimento', 10, $Isd63_c_procedimento, true, 'text', $db_opcao, 
                  " onchange='js_pesquisas156_i_procedimento(false);'"
                 );

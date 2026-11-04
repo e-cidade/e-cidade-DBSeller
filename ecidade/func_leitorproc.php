@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: biblioteca
@@ -61,7 +61,7 @@ $clcidadao->rotulo->label("ov02_nome");
       <b>Carteira:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
+      <?php db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
      </td>
     </tr>
     <tr>
@@ -69,7 +69,7 @@ $clcidadao->rotulo->label("ov02_nome");
       <?=$Lov02_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ov02_nome", 40, $Iov02_nome, true, "text", 4, "", "chave_ov02_nome");?>
+      <?php db_input("ov02_nome", 40, $Iov02_nome, true, "text", 4, "", "chave_ov02_nome");?>
      </td>
     </tr>
     <tr>
@@ -85,11 +85,11 @@ $clcidadao->rotulo->label("ov02_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $depto = db_getsession("DB_coddepto");
 
    $sSqlWhere = " AND bi16_valida = 'S' ";
-  
+
    if (isset($lNaoValidaCarteira)) {
      $sSqlWhere = '';
    }
@@ -101,13 +101,13 @@ $clcidadao->rotulo->label("ov02_nome");
    } else {
      $sql1 = "";
    }
-   
+
    if (isset($pesquisa_chave) && $pesquisa_chave != "") {
      $sql1 = " AND bi16_codigo = '$pesquisa_chave'";
    } else if (isset($pesquisa_chave2) && $pesquisa_chave2 != "") {
      $sql1 = " AND bi16_codigo = '$pesquisa_chave2'";
    }
-   
+
    $campos = "bi16_codigo,
               ov02_nome,
               bi07_nome,
@@ -118,14 +118,14 @@ $clcidadao->rotulo->label("ov02_nome");
               ";
 
    $sql = $clcarteira->sql_query_leitorcidadao("", $campos, "ov02_nome", " bi17_coddepto = $depto ".$sSqlWhere.$sql1);
-   
+
    if (!isset($pesquisa_chave) && !isset($pesquisa_chave2)) {
      db_lovrot($sql,15,"()","",$funcao_js);
    } else if (isset($pesquisa_chave) && $pesquisa_chave != "") {
 
      $result = pg_query($sql);
      $linhas = pg_num_rows($result);
-     
+
      if ($linhas != 0) {
 
        db_fieldsmemory($result,0);
@@ -137,7 +137,7 @@ $clcidadao->rotulo->label("ov02_nome");
 
      $result = pg_query($sql);
      $linhas = pg_num_rows($result);
-     
+
      if ($linhas != 0) {
 
        db_fieldsmemory($result,0);

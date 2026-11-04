@@ -29,6 +29,7 @@ namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Remessa;
 
 use \cl_remessacobrancaregistrada as RemessaCobrancaRegistradaDAO;
 use \cl_conveniocobranca as ConvenioCobrancaDAO;
+use DateTime;
 use \Exception;
 use \db_utils;
 
@@ -238,6 +239,8 @@ class RemessaRepository
     {
         $data = "> '2016-01-01'";
         if (!empty($sDataEmissao)) {
+            $sTime        = date_format(date_create_from_format('d/m/Y', $sDataEmissao), 'Y/m/d');
+            $sDataEmissao = (new DateTime($sTime))->format('Y-m-d');
             $data = "= '{$sDataEmissao}'";
         }
 
@@ -299,7 +302,6 @@ class RemessaRepository
 
         $rsRemessaCobrancaRegistradaDAO = $this->oRemessaCobrancaRegistradaDAO->sql_record($sSql);
 
-
         if ($this->oRemessaCobrancaRegistradaDAO->erro_banco) {
             throw new Exception($this->oRemessaCobrancaRegistradaDAO->erro_msg);
         }
@@ -346,7 +348,7 @@ class RemessaRepository
         return $sql;
     }
 
-    public function getSqlTiposDebitoRecibo($sTiposDebito, $sTable)
+    public function getSqlTiposDebitoRecibo($sTiposDebito, $sTable = '')
     {
         $sql = "";
         if ($sTiposDebito) {

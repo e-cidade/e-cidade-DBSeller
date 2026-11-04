@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_levret {
                  y64_inscr = int4 = Inscricao 
                  ";
    //funcao construtor da classe 
-   function cl_levret() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levret"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_levret {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y64_sequencia = ($this->y64_sequencia == ""?@$GLOBALS["HTTP_POST_VARS"]["y64_sequencia"]:$this->y64_sequencia);
        $this->y64_inscr = ($this->y64_inscr == ""?@$GLOBALS["HTTP_POST_VARS"]["y64_inscr"]:$this->y64_inscr);
@@ -74,7 +74,7 @@ class cl_levret {
      }
    }
    // funcao para inclusao
-   function incluir ($y64_sequencia){ 
+   public function incluir ($y64_sequencia){ 
       $this->atualizacampos();
      if($this->y64_inscr == null ){ 
        $this->erro_sql = " Campo Inscricao nao Informado.";
@@ -138,7 +138,7 @@ class cl_levret {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y64_sequencia=null) { 
+   public function alterar ($y64_sequencia=null) { 
       $this->atualizacampos();
      $sql = " update levret set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_levret {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y64_sequencia=null,$dbwhere=null) { 
+   public function excluir ($y64_sequencia=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y64_sequencia));
      }else{ 
@@ -280,7 +280,7 @@ class cl_levret {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

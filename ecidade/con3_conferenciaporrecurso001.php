@@ -54,58 +54,66 @@ require_once modification("dbforms/db_funcoes.php");
         <legend>Conferência por Recurso</legend>
 
         <table class="form-container">
-          <tr class="text-left">
-            <td><label class="bold" for="dataInicial">Data Inicial:</label></td>
-            <td>
-               <?php db_inputdata("txtDataInicial", null, null, null, true, null, 1) ?>
-            </td>
-          </tr>
-          <tr class="text-left">
-             <td><label class="bold" for="dataFinal">Data Final:</label></td>
-             <td>
-               <?php db_inputdata("txtDataFinal", null, null, null, true, null, 1) ?>
-            </td>
-          </tr>
-          <tr>
-            <td id="ctnInstituicao" colspan="2" style="font-weight: normal">
-                <input type="hidden" name="db_selinstit" id="db_selinstit" value="">
-            </td>
-          </tr>
+            <tr class="text-left">
+                <td><label class="bold" for="dataInicial">Data Inicial:</label></td>
+                <td>
+                    <?php db_inputdata("txtDataInicial", null, null, null, true, null, 1) ?>
+                </td>
+            </tr>
+            <tr class="text-left">
+                <td><label class="bold" for="dataFinal">Data Final:</label></td>
+                <td>
+                    <?php db_inputdata("txtDataFinal", null, null, null, true, null, 1) ?>
+                </td>
+            </tr>
+            <tr class="text-left">
+                <td><label class="bold" for="modeloEmissao">Template Emissão:</label></td>
+                <td>
+                    <select id="modeloEmissao" >
+                        <option value="1" selected>Utiliza Subrecurso</option>
+                        <option value="2">Siconfi</option>
+                        <option value="3">Siconfi + CO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="ctnInstituicao" colspan="2" style="font-weight: normal">
+                    <input type="hidden" name="db_selinstit" id="db_selinstit" value="">
+                </td>
+            </tr>
         </table>
     </fieldset>
     <button id="btnEmitir" type="button">
-        <i class="fas fa-print"></i>  Emitir
+        <i class="fas fa-print"></i> Emitir
     </button>
 
 </div>
 </body>
 <?php db_menu() ?>
 <script type="text/javascript" src="scripts/session.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
+<script type="text/javascript" src="scripts/datagrid.widget.js"></script>
 <script rel="script" type="text/javascript" src="scripts/widgets/DBViewInstituicao.widget.js"></script>
 <script rel="script" type="text/javascript" src="scripts/classes/planejamento/planejamento.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
+<script type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
 <script>
 
+    const sApiUrl = "<?= ECIDADE_REQUEST_PATH ?>v4/api/financeiro/contabilidade/";
+    const routs = {
+        processar: sApiUrl + "relatorio-conferencia-por-recurso"
+    };
 
-const sApiUrl = "<?= ECIDADE_REQUEST_PATH ?>v4/api/financeiro/contabilidade/";
-const routs = {
-   // processar : sApiUrl + "relatorio-disponibilidade-recurso"
-    processar : sApiUrl + "relatorio-conferencia-por-recurso"
-};
+    const dataInicial = $("txtDataInicial");//new Planejamento(document.getElementById('txtDataInicial'));
+    const dataFinal = $("txtDataFinal");//new Planejamento(document.getElementById('txtDataInicial'));
 
-const dataInicial = $("txtDataInicial");//new Planejamento(document.getElementById('txtDataInicial'));
-const dataFinal =   $("txtDataFinal");//new Planejamento(document.getElementById('txtDataInicial'));
-
-var viewInstituicao = new DBViewInstituicao('viewInstituicao', $('ctnInstituicao'));
+    var viewInstituicao = new DBViewInstituicao('viewInstituicao', $('ctnInstituicao'));
     viewInstituicao.show();
 
     btnEmitir.addEventListener('click', () => {
-
         const formData = new FormData();
 
         formData.append('dataInicial', js_formatar(dataInicial.value, 'd'));
         formData.append('dataFinal', js_formatar(dataFinal.value, 'd'));
+        formData.append('modeloEmissao', $('modeloEmissao').value);
 
         if (dataInicial.value == "" || dataFinal.value == "") {
 
@@ -117,30 +125,19 @@ var viewInstituicao = new DBViewInstituicao('viewInstituicao', $('ctnInstituicao
             formData.append('instituicoes[]', codigo);
         }
 
-        //console.log(dataInicial.getValue()); "
-
-
         PHPSession.appendFormData(formData);
-
         HttpClient.post(`${routs.processar}`, {body: formData}).then(response => {
 
             if (response.error) {
-              alert(response.message);
-              return;
+                alert(response.message);
+                return;
             }
 
-            //console.log(response.data.pdf);
-
             const download = new DBDownload();
-                  download.addFile(response.data.pdf, "Conferência por Recursos - PDF");
-                  download.show();
+            download.addFile(response.data.arquivos.pdf, "Conferência por Recursos - PDF");
+            download.addFile(response.data.arquivos.csv, "Conferência por Recursos - CSV");
+            download.show();
 
         });
-
-
-
     });
-
-
-
 </script>

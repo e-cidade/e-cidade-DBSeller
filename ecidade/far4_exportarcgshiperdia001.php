@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -47,9 +47,9 @@ function formataData($dData, $iTipo = 1) {
     $dData = explode('/',$dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
-  
+
   }
- 
+
  $dData = explode('-',$dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
@@ -108,20 +108,20 @@ $departamento = db_getsession("DB_coddepto");
             <table border="0" align="left">
               <tr>
                 <td>
-                  <?db_ancora(@$Lfa56_d_dataini,"",3);?>
+                    <?php db_ancora(@$Lfa56_d_dataini,"",3);?>
                 </td>
                 <td>
-                  <?db_inputdata('fa56_d_dataini',@$fa56_d_dataini_dia,@$fa56_d_dataini_mes,@$fa56_d_dataini_ano,true,'text',1,"")?>
+                    <?php db_inputdata('fa56_d_dataini',@$fa56_d_dataini_dia,@$fa56_d_dataini_mes,@$fa56_d_dataini_ano,true,'text',1,"")?>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <?db_ancora(@$Lfa56_d_datafim,"",3);?>
+                    <?php db_ancora(@$Lfa56_d_datafim,"",3);?>
                 </td>
                 <td>
-                  <?db_inputdata('fa56_d_datafim',@$fa56_d_datafim_dia,@$fa56_d_datafim_mes,@$fa56_d_datafim_ano,true,'text',1,"")?>
+                    <?php db_inputdata('fa56_d_datafim',@$fa56_d_datafim_dia,@$fa56_d_datafim_mes,@$fa56_d_datafim_ano,true,'text',1,"")?>
                 </td>
-              </tr> 
+              </tr>
               <tr>
                 <td><b>Executando:</b></td>
                 <td>
@@ -153,11 +153,11 @@ $departamento = db_getsession("DB_coddepto");
       </td>
     </tr>
   </table>
-<?
-db_menu(db_getsession("DB_id_usuario"), 
+  <?php
+db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
-        db_getsession("DB_instit") 
+        db_getsession("DB_instit")
        );
 ?>
   </body>
@@ -172,7 +172,7 @@ db_menu(db_getsession("DB_id_usuario"),
       return false;
 
     }
-    aDini = oF.fa56_d_dataini.value.split('/'); 
+    aDini = oF.fa56_d_dataini.value.split('/');
     aDfim = oF.fa56_d_datafim.value.split('/');
     if (aDini.reverse().join('') > aDfim.reverse().join('')) {
 
@@ -185,7 +185,7 @@ db_menu(db_getsession("DB_id_usuario"),
 
   }
 </script>
-<?
+<?php
 if (isset($gerararquivo)) {
 
   $dDataIni = formataData($fa56_d_dataini);
@@ -575,11 +575,11 @@ if (isset($gerararquivo)) {
   $aNomesArquivosTmp = array();;
   for ($iCont = 0; $iCont < 3; $iCont++) {
 
-    $sSql               = $oDaoFarAcompPacHiperdia->sql_query2(null, $sCampos[$iCont], 
+    $sSql               = $oDaoFarAcompPacHiperdia->sql_query2(null, $sCampos[$iCont],
                                                                $sOrder[$iCont], $sWhere[$iCont]
                                                               );
     $rs[$iCont]         = $oDaoFarAcompPacHiperdia->sql_record($sSql);
-    
+
     $aNumLinhas[$iCont] = $oDaoFarAcompPacHiperdia->numrows;
     if ($oDaoFarAcompPacHiperdia->erro_status == '0') {
       continue;
@@ -595,7 +595,7 @@ if (isset($gerararquivo)) {
     }
 
     //função que gera o arquivo
-    $lSucesso = geraArquivoHiperdia($iCont + 1, 
+    $lSucesso = geraArquivoHiperdia($iCont + 1,
                                     $aNomesArquivosTmp[count($aNomesArquivosTmp)] = '/tmp/exportacao_hiperdia'.
                                     ($iCont + 1).'.txt',
                                     $rs[$iCont], $oDaoFarAcompPacHiperdia->numrows
@@ -611,7 +611,7 @@ if (isset($gerararquivo)) {
       die();
 
     }
-    
+
   }
 
   $dDataCriacao  = date('d/m/Y', db_getsession('DB_datausu'));
@@ -665,11 +665,11 @@ if (isset($gerararquivo)) {
 
   //Nome do arquivo de importação do hiperdia
   $sAlvo = '/tmp/E'.$iCodMunic.$sDataCriacao.$sHoraCriacao2.'.APL';
-  
+
   //função que une os arquivos
   array_multisort($aNomesArquivosTmp, SORT_ASC);
   $lSucesso = unirArquivos($aNomesArquivosTmp, $sAlvo, true);
-  
+
   //se o arquivo foi gerado corretamente gravar no banco
   if ($lSucesso) {
 
@@ -692,7 +692,7 @@ if (isset($gerararquivo)) {
             </script> ";
 
     }
-    
+
   }
 
 }

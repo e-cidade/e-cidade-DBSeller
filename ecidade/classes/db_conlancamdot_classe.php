@@ -1,69 +1,69 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conlancamdot
-class cl_conlancamdot { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c73_codlan = 0; 
-   var $c73_anousu = 0; 
-   var $c73_coddot = 0; 
-   var $c73_data_dia = null; 
-   var $c73_data_mes = null; 
-   var $c73_data_ano = null; 
-   var $c73_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_conlancamdot {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c73_codlan = 0;
+   var $c73_anousu = 0;
+   var $c73_coddot = 0;
+   var $c73_data_dia = null;
+   var $c73_data_mes = null;
+   var $c73_data_ano = null;
+   var $c73_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c73_codlan = int4 = Código Lançamento 
-                 c73_anousu = int4 = Exercício 
-                 c73_coddot = int4 = Código da Dotação 
-                 c73_data = date = Data 
+                 c73_codlan = int4 = Código Lançamento
+                 c73_anousu = int4 = Exercício
+                 c73_coddot = int4 = Código da Dotação
+                 c73_data = date = Data
                  ";
-   //funcao construtor da classe 
-   function cl_conlancamdot() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("conlancamdot"); 
+     $this->rotulo = new rotulo("conlancamdot");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_conlancamdot {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c73_codlan = ($this->c73_codlan == ""?@$GLOBALS["HTTP_POST_VARS"]["c73_codlan"]:$this->c73_codlan);
        $this->c73_anousu = ($this->c73_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c73_anousu"]:$this->c73_anousu);
@@ -90,9 +90,9 @@ class cl_conlancamdot {
      }
    }
    // funcao para inclusao
-   function incluir ($c73_codlan){ 
+   public function incluir ($c73_codlan){
       $this->atualizacampos();
-     if($this->c73_anousu == null ){ 
+     if($this->c73_anousu == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
        $this->erro_campo = "c73_anousu";
        $this->erro_banco = "";
@@ -101,7 +101,7 @@ class cl_conlancamdot {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c73_coddot == null ){ 
+     if($this->c73_coddot == null ){
        $this->erro_sql = " Campo Código da Dotação nao Informado.";
        $this->erro_campo = "c73_coddot";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_conlancamdot {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c73_data == null ){ 
+     if($this->c73_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "c73_data_dia";
        $this->erro_banco = "";
@@ -119,8 +119,8 @@ class cl_conlancamdot {
        $this->erro_status = "0";
        return false;
      }
-       $this->c73_codlan = $c73_codlan; 
-     if(($this->c73_codlan == null) || ($this->c73_codlan == "") ){ 
+       $this->c73_codlan = $c73_codlan;
+     if(($this->c73_codlan == null) || ($this->c73_codlan == "") ){
        $this->erro_sql = " Campo c73_codlan nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -129,19 +129,19 @@ class cl_conlancamdot {
        return false;
      }
      $sql = "insert into conlancamdot(
-                                       c73_codlan 
-                                      ,c73_anousu 
-                                      ,c73_coddot 
-                                      ,c73_data 
+                                       c73_codlan
+                                      ,c73_anousu
+                                      ,c73_coddot
+                                      ,c73_data
                        )
                 values (
-                                $this->c73_codlan 
-                               ,$this->c73_anousu 
-                               ,$this->c73_coddot 
-                               ,".($this->c73_data == "null" || $this->c73_data == ""?"null":"'".$this->c73_data."'")." 
+                                $this->c73_codlan
+                               ,$this->c73_anousu
+                               ,$this->c73_coddot
+                               ,".($this->c73_data == "null" || $this->c73_data == ""?"null":"'".$this->c73_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Dotação do Lançamento ($this->c73_codlan) nao Incluído. Inclusao Abortada.";
@@ -176,16 +176,16 @@ class cl_conlancamdot {
        $resac = db_query("insert into db_acount values($acount,765,5899,'','".AddSlashes(pg_result($resaco,0,'c73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c73_codlan=null) { 
+   public function alterar ($c73_codlan=null) {
       $this->atualizacampos();
      $sql = " update conlancamdot set ";
      $virgula = "";
-     if(trim($this->c73_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_codlan"])){ 
+     if(trim($this->c73_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_codlan"])){
        $sql  .= $virgula." c73_codlan = $this->c73_codlan ";
        $virgula = ",";
-       if(trim($this->c73_codlan) == null ){ 
+       if(trim($this->c73_codlan) == null ){
          $this->erro_sql = " Campo Código Lançamento nao Informado.";
          $this->erro_campo = "c73_codlan";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_conlancamdot {
          return false;
        }
      }
-     if(trim($this->c73_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_anousu"])){ 
+     if(trim($this->c73_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_anousu"])){
        $sql  .= $virgula." c73_anousu = $this->c73_anousu ";
        $virgula = ",";
-       if(trim($this->c73_anousu) == null ){ 
+       if(trim($this->c73_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c73_anousu";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_conlancamdot {
          return false;
        }
      }
-     if(trim($this->c73_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_coddot"])){ 
+     if(trim($this->c73_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_coddot"])){
        $sql  .= $virgula." c73_coddot = $this->c73_coddot ";
        $virgula = ",";
-       if(trim($this->c73_coddot) == null ){ 
+       if(trim($this->c73_coddot) == null ){
          $this->erro_sql = " Campo Código da Dotação nao Informado.";
          $this->erro_campo = "c73_coddot";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_conlancamdot {
          return false;
        }
      }
-     if(trim($this->c73_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c73_data_dia"] !="") ){ 
+     if(trim($this->c73_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c73_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c73_data_dia"] !="") ){
        $sql  .= $virgula." c73_data = '$this->c73_data' ";
        $virgula = ",";
-       if(trim($this->c73_data) == null ){ 
+       if(trim($this->c73_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "c73_data_dia";
          $this->erro_banco = "";
@@ -233,11 +233,11 @@ class cl_conlancamdot {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c73_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c73_data_dia"])){
          $sql  .= $virgula." c73_data = null ";
          $virgula = ",";
-         if(trim($this->c73_data) == null ){ 
+         if(trim($this->c73_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "c73_data_dia";
            $this->erro_banco = "";
@@ -270,7 +270,7 @@ class cl_conlancamdot {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Dotação do Lançamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c73_codlan;
@@ -298,14 +298,14 @@ class cl_conlancamdot {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c73_codlan=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c73_codlan=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c73_codlan));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -334,7 +334,7 @@ class cl_conlancamdot {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Dotação do Lançamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c73_codlan;
@@ -362,11 +362,11 @@ class cl_conlancamdot {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -388,10 +388,10 @@ class cl_conlancamdot {
       }
      return $result;
    }
-   function sql_query ( $c73_codlan=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $c73_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -424,15 +424,15 @@ class cl_conlancamdot {
      $sql2 = "";
      if($dbwhere==""){
        if($c73_codlan!=null ){
-         $sql2 .= " where conlancamdot.c73_codlan = $c73_codlan "; 
-       } 
+         $sql2 .= " where conlancamdot.c73_codlan = $c73_codlan ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,10 +441,10 @@ class cl_conlancamdot {
      }
      return $sql;
   }
-   function sql_query_file ( $c73_codlan=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $c73_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,15 +457,15 @@ class cl_conlancamdot {
      $sql2 = "";
      if($dbwhere==""){
        if($c73_codlan!=null ){
-         $sql2 .= " where conlancamdot.c73_codlan = $c73_codlan "; 
-       } 
+         $sql2 .= " where conlancamdot.c73_codlan = $c73_codlan ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

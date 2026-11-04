@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@ $queryst = "";
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
       <form name="form1" method="post" action="pes2_RetornoConsignados001.php">
-      <?
+      <?php
       if(!isset($r54_codeve) && !isset($r54_codrel)){
       ?>
         <table border="0">
@@ -78,14 +78,14 @@ $queryst = "";
           <tr>
             <td align="right"><strong>Ano/Mês:</strong></td>
             <td>
-              <?
+              <?php
 	      if(!isset($ano)){
                 $ano = db_anofolha();
 	      }
               db_input("ano",4,'',true,'text',2)
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php
 	      if(!isset($mes)){
                 $mes = db_mesfolha();
 	      }
@@ -95,12 +95,12 @@ $queryst = "";
           </tr>
           <tr>
             <td align="right" nowrap title="<?=@$Tr54_codrel?>">
-              <?
+              <?php
               db_ancora(@$Lr54_codrel,"js_pesquisar54_codrel(true);",1);
               ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('r54_codrel',8,$Ir54_codrel,true,'text',1,"onchange='js_pesquisar54_codrel(false);' tabIndex='1'");
               db_input('r56_descr',40,$Ir56_descr,true,'text',3,"");
               ?>
@@ -108,12 +108,12 @@ $queryst = "";
           </tr>
           <tr>
             <td nowrap title="<?=@$Tr54_codeve?>">
-              <?
+              <?php
               db_ancora(@$Lr54_codeve,"js_pesquisar54_codeve(true);",1);
               ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('r54_codeve',8,$Ir54_codeve,true,'text',1,"onchange='js_pesquisar54_codeve(false);' tabIndex='3'");
               db_input('r55_descr',40,$Ir55_descr,true,'text',3,"");
               ?>
@@ -125,7 +125,7 @@ $queryst = "";
             </td>
           </tr>
         </table>
-      <?
+      <?php
       }else{
         $dbwhere = "";
 //        $ano = db_anofolha();
@@ -156,7 +156,7 @@ $queryst = "";
         <BR>
         <input type='button' value='Nova consulta' onclick='location.href=\"pes2_RetornoConsignados001.php\"' tabIndex='1'>
         <input type='button' value='Imprimir' name='relatorio' onclick='js_abrejan(false);' tabIndex='4'>
-        <?
+        <?php
       }
       ?>
       </form>
@@ -164,7 +164,7 @@ $queryst = "";
     </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

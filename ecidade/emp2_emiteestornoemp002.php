@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/impcarne.php"));
@@ -102,7 +102,7 @@ $sqlemp = "
    	  from empempenho
      inner join conlancamemp  on c75_numemp     = e60_numemp
      inner join conlancam	  on c70_codlan     = c75_codlan
-     inner join conlancamdoc  on c71_codlan     = c70_codlan 
+     inner join conlancamdoc  on c71_codlan     = c70_codlan
      inner join conhistdoc    on c53_coddoc     = c71_coddoc  and c53_tipo = 31
      left  join cflicita	  on l03_tipo       = e60_tipol
                              and l03_instit     = e60_instit
@@ -126,13 +126,13 @@ $sqlemp = "
                                  o58_anousu     = o56_anousu
      inner join orctiporec    on o58_codigo     = o15_codigo
      inner join cgm 		  on z01_numcgm     = e60_numcgm
-     left  outer join empempaut	     on e60_numemp = e61_numemp	     
+     left  outer join empempaut	     on e60_numemp = e61_numemp
      left  outer join conlancamcompl on c72_codlan = c70_codlan
-         
+
     $dbwhere
 	";
 
-$result = db_query($sqlemp);	
+$result = db_query($sqlemp);
 //db_criatabela($result);exit;
 
 if (pg_numrows($result)==0){
@@ -158,7 +158,7 @@ $result02 = $clempparametro->sql_record($clempparametro->sql_query_file(db_getse
 //echo $clempparametro->sql_query_file(db_getsession("DB_anousu"),"e30_nroviaemp");
 if($clempparametro->numrows>0){
   db_fieldsmemory($result02,0);
-}     	 
+}
 
 $pdf1->nvias= $e30_nroviaemp;
 
@@ -167,11 +167,11 @@ $pdf1->db21_instit = $db21_tipoinstit;
 
 for($i = 0;$i < pg_numrows($result);$i++){
    db_fieldsmemory($result,$i);
-   
+
    if ($c72_complem != "") {
-     $matrizdados= split("Motivo:",$c72_complem);
+     $matrizdados=explode("Motivo:",$c72_complem);
    }
-   
+
    $pdf1->prefeitura       = $nomeinst;
    $pdf1->logo		       = $logo;
    $pdf1->enderpref        = $ender.', '.$z01_numero;
@@ -192,7 +192,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
    $pdf1->resumo           = $e60_resumo;
    $pdf1->licitacao        = $e60_codtipo;
 
-   $pdf1->orcado	   = $e60_vlrorc; 
+   $pdf1->orcado	   = $e60_vlrorc;
    $pdf1->saldo_ant        = $e60_salant;
    $pdf1->empenhado        = $e60_vlremp;
    $pdf1->numemp           = $e60_numemp;
@@ -224,7 +224,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
 
    $sQueryConta  = "select c61_codcon, c61_reduz ";
    $sQueryConta .= "  from conplanoreduz ";
-   $sQueryConta .= "       inner join conplano on c60_codcon = c61_codcon and c60_anousu = c61_anousu  "; 
+   $sQueryConta .= "       inner join conplano on c60_codcon = c61_codcon and c60_anousu = c61_anousu  ";
    $sQueryConta .= "       inner join consistema on c52_codsis = c60_codsis ";
    $sQueryConta .= " where c61_instit = ".db_getsession("DB_instit");
    $sQueryConta .= "   and c61_anousu = ".db_getsession("DB_anousu");
@@ -285,7 +285,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
       db_fieldsmemory($resparag,0);
       $pdf1->assinatura3 = $assinatura3;
    }
-																								  
+
    // assinatura prefeito
 
    $sqlparag = "select db02_texto as assinaturaprefeito
@@ -300,11 +300,11 @@ for($i = 0;$i < pg_numrows($result);$i++){
       $pdf1->assinaturaprefeito = $assinaturaprefeito;
    }
 */
-			  
+
    $pdf1->imprime();
 }
 //include(modification("fpdf151/geraarquivo.php"));
 $pdf1->objpdf->Output();
 
-   
+
 ?>

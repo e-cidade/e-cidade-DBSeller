@@ -1,78 +1,78 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_remessawebservice
-class cl_db_remessawebservice { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db127_sequencial = 0; 
-   var $db127_sistemaexterno = 0; 
-   var $db127_usuario = 0; 
-   var $db127_descricao = null; 
-   var $db127_datacriacao_dia = null; 
-   var $db127_datacriacao_mes = null; 
-   var $db127_datacriacao_ano = null; 
-   var $db127_datacriacao = null; 
-   var $db127_dataprocessamento_dia = null; 
-   var $db127_dataprocessamento_mes = null; 
-   var $db127_dataprocessamento_ano = null; 
-   var $db127_dataprocessamento = null; 
-   var $db127_processada = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_remessawebservice {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db127_sequencial = 0;
+   var $db127_sistemaexterno = 0;
+   var $db127_usuario = 0;
+   var $db127_descricao = null;
+   var $db127_datacriacao_dia = null;
+   var $db127_datacriacao_mes = null;
+   var $db127_datacriacao_ano = null;
+   var $db127_datacriacao = null;
+   var $db127_dataprocessamento_dia = null;
+   var $db127_dataprocessamento_mes = null;
+   var $db127_dataprocessamento_ano = null;
+   var $db127_dataprocessamento = null;
+   var $db127_processada = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db127_sequencial = int4 = Sequencial 
-                 db127_sistemaexterno = int4 = Sistema Externo 
-                 db127_usuario = int4 = Usuario 
-                 db127_descricao = varchar(200) = Descricao da Remessa 
-                 db127_datacriacao = date = Data criacao 
-                 db127_dataprocessamento = date = Data Processamento 
-                 db127_processada = bool = Processada 
+                 db127_sequencial = int4 = Sequencial
+                 db127_sistemaexterno = int4 = Sistema Externo
+                 db127_usuario = int4 = Usuario
+                 db127_descricao = varchar(200) = Descricao da Remessa
+                 db127_datacriacao = date = Data criacao
+                 db127_dataprocessamento = date = Data Processamento
+                 db127_processada = bool = Processada
                  ";
-   //funcao construtor da classe 
-   function cl_db_remessawebservice() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_remessawebservice"); 
+     $this->rotulo = new rotulo("db_remessawebservice");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_db_remessawebservice {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db127_sequencial = ($this->db127_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db127_sequencial"]:$this->db127_sequencial);
        $this->db127_sistemaexterno = ($this->db127_sistemaexterno == ""?@$GLOBALS["HTTP_POST_VARS"]["db127_sistemaexterno"]:$this->db127_sistemaexterno);
@@ -109,9 +109,9 @@ class cl_db_remessawebservice {
      }
    }
    // funcao para inclusao
-   function incluir ($db127_sequencial){ 
+   public function incluir ($db127_sequencial){
       $this->atualizacampos();
-     if($this->db127_sistemaexterno == null ){ 
+     if($this->db127_sistemaexterno == null ){
        $this->erro_sql = " Campo Sistema Externo nao Informado.";
        $this->erro_campo = "db127_sistemaexterno";
        $this->erro_banco = "";
@@ -120,7 +120,7 @@ class cl_db_remessawebservice {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db127_usuario == null ){ 
+     if($this->db127_usuario == null ){
        $this->erro_sql = " Campo Usuario nao Informado.";
        $this->erro_campo = "db127_usuario";
        $this->erro_banco = "";
@@ -129,7 +129,7 @@ class cl_db_remessawebservice {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db127_descricao == null ){ 
+     if($this->db127_descricao == null ){
        $this->erro_sql = " Campo Descricao da Remessa nao Informado.";
        $this->erro_campo = "db127_descricao";
        $this->erro_banco = "";
@@ -138,7 +138,7 @@ class cl_db_remessawebservice {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db127_datacriacao == null ){ 
+     if($this->db127_datacriacao == null ){
        $this->erro_sql = " Campo Data criacao nao Informado.";
        $this->erro_campo = "db127_datacriacao_dia";
        $this->erro_banco = "";
@@ -147,10 +147,10 @@ class cl_db_remessawebservice {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db127_dataprocessamento == null ){ 
+     if($this->db127_dataprocessamento == null ){
        $this->db127_dataprocessamento = "null";
      }
-     if($this->db127_processada == null ){ 
+     if($this->db127_processada == null ){
        $this->erro_sql = " Campo Processada nao Informado.";
        $this->erro_campo = "db127_processada";
        $this->erro_banco = "";
@@ -160,16 +160,16 @@ class cl_db_remessawebservice {
        return false;
      }
      if($db127_sequencial == "" || $db127_sequencial == null ){
-       $result = db_query("select nextval('db_remessawebservice_db127_sequencial_seq')"); 
+       $result = db_query("select nextval('db_remessawebservice_db127_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_remessawebservice_db127_sequencial_seq do campo: db127_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_remessawebservice_db127_sequencial_seq do campo: db127_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db127_sequencial = pg_result($result,0,0); 
+       $this->db127_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_remessawebservice_db127_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $db127_sequencial)){
@@ -180,10 +180,10 @@ class cl_db_remessawebservice {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db127_sequencial = $db127_sequencial; 
+         $this->db127_sequencial = $db127_sequencial;
        }
      }
-     if(($this->db127_sequencial == null) || ($this->db127_sequencial == "") ){ 
+     if(($this->db127_sequencial == null) || ($this->db127_sequencial == "") ){
        $this->erro_sql = " Campo db127_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -192,25 +192,25 @@ class cl_db_remessawebservice {
        return false;
      }
      $sql = "insert into db_remessawebservice(
-                                       db127_sequencial 
-                                      ,db127_sistemaexterno 
-                                      ,db127_usuario 
-                                      ,db127_descricao 
-                                      ,db127_datacriacao 
-                                      ,db127_dataprocessamento 
-                                      ,db127_processada 
+                                       db127_sequencial
+                                      ,db127_sistemaexterno
+                                      ,db127_usuario
+                                      ,db127_descricao
+                                      ,db127_datacriacao
+                                      ,db127_dataprocessamento
+                                      ,db127_processada
                        )
                 values (
-                                $this->db127_sequencial 
-                               ,$this->db127_sistemaexterno 
-                               ,$this->db127_usuario 
-                               ,'$this->db127_descricao' 
-                               ,".($this->db127_datacriacao == "null" || $this->db127_datacriacao == ""?"null":"'".$this->db127_datacriacao."'")." 
-                               ,".($this->db127_dataprocessamento == "null" || $this->db127_dataprocessamento == ""?"null":"'".$this->db127_dataprocessamento."'")." 
-                               ,'$this->db127_processada' 
+                                $this->db127_sequencial
+                               ,$this->db127_sistemaexterno
+                               ,$this->db127_usuario
+                               ,'$this->db127_descricao'
+                               ,".($this->db127_datacriacao == "null" || $this->db127_datacriacao == ""?"null":"'".$this->db127_datacriacao."'")."
+                               ,".($this->db127_dataprocessamento == "null" || $this->db127_dataprocessamento == ""?"null":"'".$this->db127_dataprocessamento."'")."
+                               ,'$this->db127_processada'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Remessa de Dados ($this->db127_sequencial) nao Incluído. Inclusao Abortada.";
@@ -248,16 +248,16 @@ class cl_db_remessawebservice {
        $resac = db_query("insert into db_acount values($acount,3389,19054,'','".AddSlashes(pg_result($resaco,0,'db127_processada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db127_sequencial=null) { 
+   public function alterar ($db127_sequencial=null) {
       $this->atualizacampos();
      $sql = " update db_remessawebservice set ";
      $virgula = "";
-     if(trim($this->db127_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sequencial"])){ 
+     if(trim($this->db127_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sequencial"])){
        $sql  .= $virgula." db127_sequencial = $this->db127_sequencial ";
        $virgula = ",";
-       if(trim($this->db127_sequencial) == null ){ 
+       if(trim($this->db127_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db127_sequencial";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_sistemaexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sistemaexterno"])){ 
+     if(trim($this->db127_sistemaexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sistemaexterno"])){
        $sql  .= $virgula." db127_sistemaexterno = $this->db127_sistemaexterno ";
        $virgula = ",";
-       if(trim($this->db127_sistemaexterno) == null ){ 
+       if(trim($this->db127_sistemaexterno) == null ){
          $this->erro_sql = " Campo Sistema Externo nao Informado.";
          $this->erro_campo = "db127_sistemaexterno";
          $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_usuario"])){ 
+     if(trim($this->db127_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_usuario"])){
        $sql  .= $virgula." db127_usuario = $this->db127_usuario ";
        $virgula = ",";
-       if(trim($this->db127_usuario) == null ){ 
+       if(trim($this->db127_usuario) == null ){
          $this->erro_sql = " Campo Usuario nao Informado.";
          $this->erro_campo = "db127_usuario";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_descricao"])){ 
+     if(trim($this->db127_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_descricao"])){
        $sql  .= $virgula." db127_descricao = '$this->db127_descricao' ";
        $virgula = ",";
-       if(trim($this->db127_descricao) == null ){ 
+       if(trim($this->db127_descricao) == null ){
          $this->erro_sql = " Campo Descricao da Remessa nao Informado.";
          $this->erro_campo = "db127_descricao";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"] !="") ){ 
+     if(trim($this->db127_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"] !="") ){
        $sql  .= $virgula." db127_datacriacao = '$this->db127_datacriacao' ";
        $virgula = ",";
-       if(trim($this->db127_datacriacao) == null ){ 
+       if(trim($this->db127_datacriacao) == null ){
          $this->erro_sql = " Campo Data criacao nao Informado.";
          $this->erro_campo = "db127_datacriacao_dia";
          $this->erro_banco = "";
@@ -318,11 +318,11 @@ class cl_db_remessawebservice {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"])){
          $sql  .= $virgula." db127_datacriacao = null ";
          $virgula = ",";
-         if(trim($this->db127_datacriacao) == null ){ 
+         if(trim($this->db127_datacriacao) == null ){
            $this->erro_sql = " Campo Data criacao nao Informado.";
            $this->erro_campo = "db127_datacriacao_dia";
            $this->erro_banco = "";
@@ -333,19 +333,19 @@ class cl_db_remessawebservice {
          }
        }
      }
-     if(trim($this->db127_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"] !="") ){ 
+     if(trim($this->db127_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"] !="") ){
        $sql  .= $virgula." db127_dataprocessamento = '$this->db127_dataprocessamento' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"])){
          $sql  .= $virgula." db127_dataprocessamento = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->db127_processada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_processada"])){ 
+     if(trim($this->db127_processada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_processada"])){
        $sql  .= $virgula." db127_processada = '$this->db127_processada' ";
        $virgula = ",";
-       if(trim($this->db127_processada) == null ){ 
+       if(trim($this->db127_processada) == null ){
          $this->erro_sql = " Campo Processada nao Informado.";
          $this->erro_campo = "db127_processada";
          $this->erro_banco = "";
@@ -383,7 +383,7 @@ class cl_db_remessawebservice {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Remessa de Dados nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db127_sequencial;
@@ -411,14 +411,14 @@ class cl_db_remessawebservice {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db127_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db127_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db127_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -450,7 +450,7 @@ class cl_db_remessawebservice {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Remessa de Dados nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db127_sequencial;
@@ -478,11 +478,11 @@ class cl_db_remessawebservice {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -504,11 +504,11 @@ class cl_db_remessawebservice {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $db127_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $db127_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,15 +523,15 @@ class cl_db_remessawebservice {
      $sql2 = "";
      if($dbwhere==""){
        if($db127_sequencial!=null ){
-         $sql2 .= " where db_remessawebservice.db127_sequencial = $db127_sequencial "; 
-       } 
+         $sql2 .= " where db_remessawebservice.db127_sequencial = $db127_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,11 +540,11 @@ class cl_db_remessawebservice {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $db127_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $db127_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,15 +557,15 @@ class cl_db_remessawebservice {
      $sql2 = "";
      if($dbwhere==""){
        if($db127_sequencial!=null ){
-         $sql2 .= " where db_remessawebservice.db127_sequencial = $db127_sequencial "; 
-       } 
+         $sql2 .= " where db_remessawebservice.db127_sequencial = $db127_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

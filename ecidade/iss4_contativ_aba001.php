@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,7 +77,7 @@ td {
 		      <b>Mostrar Atividades sem Inscr: </b>
 		    </td>
 		    <td>
-					<?
+					<?php
 					  $aAtividades = array ("n" => "Não", 
 					                        "s" => "Sim");
 					  db_select('mostrar', $aAtividades, true, 2);
@@ -89,7 +89,7 @@ td {
 	        <b>Agrupar por: </b>     
 	      </td>
 			  <td>
-					<?
+					<?php
 						$aAgrupar = array ("a" => "Atividade", 
 						                   "c" => "Classe", 
 						                   "r" => "Ruas", 
@@ -103,7 +103,7 @@ td {
 	       <b>Data Início de: </b> 
 	      </td>
 		    <td>
-					<?
+					<?php
 					  db_inputdata('data', "", "", "", true, 'text', 1, "");
 					  echo "&nbsp;&nbsp;a&nbsp;&nbsp;";
 					  db_inputdata('data1', "", "", "", true, 'text', 1, "");
@@ -115,7 +115,7 @@ td {
 	        <b>Mostrar atividades: </b>
 	      </td>
 			  <td>
-					<?
+					<?php
 						$aMostrarAtividades = array ("p" => "Apenas principal", 
 						                             "t" => "Todas atividades");
 						db_select('tativ', $aMostrarAtividades, true, 2);
@@ -127,7 +127,7 @@ td {
 	        <b>Processar Inscrições: </b>      
 	      </td>
 			  <td>
-					<?
+					<?php
 						$aProcessar = array ("t" => "Todas", 
 						                     "n" => "Não baixadas", 
 						                     "s" => "Baixadas");
@@ -140,7 +140,7 @@ td {
 	        <b>Tipo de Inscrição: </b>
 	      </td>
 		    <td>
-				  <?
+				  <?php
 				    $aTipoInscricao = array ("t"   => "Todas", 
 				                             "per" => "Permanentes", 
 				                             "pro" => "Provisórios");
@@ -153,7 +153,7 @@ td {
 			    <b>Periodo de baixa: </b>
 			  </td>
 				<td>
-					<?
+					<?php
 					  db_inputdata('baixai', "", "", "", true, 'text', 1, "");
 						echo "&nbsp;&nbsp;a&nbsp;&nbsp;";
 						db_inputdata('baixaf', "", "", "", true, 'text', 1, "");
@@ -165,7 +165,7 @@ td {
 	        <b>Período de Vencimento: </b>
 	      </td>
 	      <td>
-	        <?
+	        <?php
 	          db_inputdata('dataini', "", "", "", true, 'text', 1, "");
 	          echo "&nbsp;&nbsp;a&nbsp;&nbsp;";
 	          db_inputdata('datafim', "", "", "", true, 'text', 1, "");
@@ -191,7 +191,7 @@ td {
 	<table width="50%" align="center" border="0" cellspacing="2" cellspacing="0" cellpadding="0">
 		<tr>
 		 <td height=100% valign=top width=100%>
-				<?
+				<?php
 				db_input('dados1',"","","",'hidden',"","",'dados1',"");
 				db_input('dados2',"","","",'hidden',"","",'dados2',"");
 				db_input('dados3',"","","",'hidden',"","",'dados3',"");

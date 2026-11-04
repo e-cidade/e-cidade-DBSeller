@@ -74,13 +74,13 @@ class cl_ppadotacao {
                  o08_concarpeculiar = varchar(100) = C.Peculiar/ C. Aplicação
                  ";
   //funcao construtor da classe
-  function cl_ppadotacao() {
+  public function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("ppadotacao");
     $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra, $retorna) {
+  public function erro($mostra, $retorna) {
     if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
       echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
       if ($retorna == true) {
@@ -89,7 +89,7 @@ class cl_ppadotacao {
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao = false) {
+  public function atualizacampos($exclusao = false) {
     if ($exclusao == false) {
       $this->o08_sequencial = ($this->o08_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["o08_sequencial"]
           : $this->o08_sequencial);
@@ -119,7 +119,7 @@ class cl_ppadotacao {
     }
   }
   // funcao para inclusao
-  function incluir($o08_sequencial) {
+  public function incluir($o08_sequencial) {
     $this->atualizacampos();
     if ($this->o08_ano == null) {
       $this->erro_sql = " Campo Ano da Dotação nao Informado.";
@@ -341,7 +341,7 @@ class cl_ppadotacao {
     return true;
   }
   // funcao para alteracao
-  function alterar($o08_sequencial = null) {
+  public function alterar($o08_sequencial = null) {
     $this->atualizacampos();
     $sql = " update ppadotacao set ";
     $virgula = "";
@@ -575,7 +575,7 @@ class cl_ppadotacao {
     }
   }
   // funcao para exclusao
-  function excluir($o08_sequencial = null, $dbwhere = null) {
+  public function excluir($o08_sequencial = null, $dbwhere = null) {
     if ($dbwhere == null || $dbwhere == "") {
       $resaco = $this->sql_record($this->sql_query_file($o08_sequencial));
     } else {
@@ -630,7 +630,7 @@ class cl_ppadotacao {
     }
   }
   // funcao do recordset
-  function sql_record($sql) {
+  public function sql_record($sql) {
     $result = db_query($sql);
     if ($result == false) {
       $this->numrows = 0;
@@ -655,10 +655,10 @@ class cl_ppadotacao {
     return $result;
   }
   // funcao do sql
-  function sql_query($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -696,7 +696,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -706,10 +706,10 @@ class cl_ppadotacao {
     return $sql;
   }
   // funcao do sql
-  function sql_query_file($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_file($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -730,7 +730,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -753,7 +753,7 @@ class cl_ppadotacao {
     $sql = "select ";
     if ($campos != "*") {
 
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -791,7 +791,7 @@ class cl_ppadotacao {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -800,10 +800,10 @@ class cl_ppadotacao {
     }
     return $sql;
   }
-  function sql_query_estimativa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_estimativa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -842,7 +842,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -852,10 +852,10 @@ class cl_ppadotacao {
     return $sql;
   }
 
-  function sql_query_despesa_ppa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_despesa_ppa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -880,7 +880,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -890,10 +890,10 @@ class cl_ppadotacao {
     return $sql;
   }
 
-  function sql_query_despesa_programa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_despesa_programa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -920,7 +920,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];

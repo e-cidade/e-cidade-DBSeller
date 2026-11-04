@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contrib
 //CLASSE DA ENTIDADE projmelhoriasmatric
-class cl_projmelhoriasmatric { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $d41_codigo = 0; 
-   var $d41_matric = 0; 
-   var $d41_testada = 0; 
-   var $d41_eixo = 0; 
-   var $d41_obs = null; 
-   var $d41_auto = 'f'; 
-   var $d41_pgtopref = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_projmelhoriasmatric {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $d41_codigo = 0;
+   var $d41_matric = 0;
+   var $d41_testada = 0;
+   var $d41_eixo = 0;
+   var $d41_obs = null;
+   var $d41_auto = 'f';
+   var $d41_pgtopref = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 d41_codigo = int4 = Código da lista de projeto 
-                 d41_matric = int4 = Matrícula 
-                 d41_testada = float8 = Testada Ml 
-                 d41_eixo = float8 = Eixo 
-                 d41_obs = varchar(200) = Observações 
-                 d41_auto = bool = Automático 
-                 d41_pgtopref = bool = Pgto prefeitura 
+                 d41_codigo = int4 = Código da lista de projeto
+                 d41_matric = int4 = Matrícula
+                 d41_testada = float8 = Testada Ml
+                 d41_eixo = float8 = Eixo
+                 d41_obs = varchar(200) = Observações
+                 d41_auto = bool = Automático
+                 d41_pgtopref = bool = Pgto prefeitura
                  ";
-   //funcao construtor da classe 
-   function cl_projmelhoriasmatric() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("projmelhoriasmatric"); 
+     $this->rotulo = new rotulo("projmelhoriasmatric");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_projmelhoriasmatric {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d41_codigo = ($this->d41_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["d41_codigo"]:$this->d41_codigo);
        $this->d41_matric = ($this->d41_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["d41_matric"]:$this->d41_matric);
@@ -90,9 +90,9 @@ class cl_projmelhoriasmatric {
      }
    }
    // funcao para inclusao
-   function incluir ($d41_codigo,$d41_matric){ 
+   public function incluir ($d41_codigo,$d41_matric){
       $this->atualizacampos();
-     if($this->d41_testada == null ){ 
+     if($this->d41_testada == null ){
        $this->erro_sql = " Campo Testada Ml nao Informado.";
        $this->erro_campo = "d41_testada";
        $this->erro_banco = "";
@@ -101,10 +101,10 @@ class cl_projmelhoriasmatric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d41_eixo == null ){ 
+     if($this->d41_eixo == null ){
        $this->d41_eixo = "0";
      }
-     if($this->d41_auto == null ){ 
+     if($this->d41_auto == null ){
        $this->erro_sql = " Campo Automático nao Informado.";
        $this->erro_campo = "d41_auto";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_projmelhoriasmatric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d41_pgtopref == null ){ 
+     if($this->d41_pgtopref == null ){
        $this->erro_sql = " Campo Pgto prefeitura nao Informado.";
        $this->erro_campo = "d41_pgtopref";
        $this->erro_banco = "";
@@ -122,9 +122,9 @@ class cl_projmelhoriasmatric {
        $this->erro_status = "0";
        return false;
      }
-       $this->d41_codigo = $d41_codigo; 
-       $this->d41_matric = $d41_matric; 
-     if(($this->d41_codigo == null) || ($this->d41_codigo == "") ){ 
+       $this->d41_codigo = $d41_codigo;
+       $this->d41_matric = $d41_matric;
+     if(($this->d41_codigo == null) || ($this->d41_codigo == "") ){
        $this->erro_sql = " Campo d41_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -132,7 +132,7 @@ class cl_projmelhoriasmatric {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->d41_matric == null) || ($this->d41_matric == "") ){ 
+     if(($this->d41_matric == null) || ($this->d41_matric == "") ){
        $this->erro_sql = " Campo d41_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -141,25 +141,25 @@ class cl_projmelhoriasmatric {
        return false;
      }
      $sql = "insert into projmelhoriasmatric(
-                                       d41_codigo 
-                                      ,d41_matric 
-                                      ,d41_testada 
-                                      ,d41_eixo 
-                                      ,d41_obs 
-                                      ,d41_auto 
-                                      ,d41_pgtopref 
+                                       d41_codigo
+                                      ,d41_matric
+                                      ,d41_testada
+                                      ,d41_eixo
+                                      ,d41_obs
+                                      ,d41_auto
+                                      ,d41_pgtopref
                        )
                 values (
-                                $this->d41_codigo 
-                               ,$this->d41_matric 
-                               ,$this->d41_testada 
-                               ,$this->d41_eixo 
-                               ,'$this->d41_obs' 
-                               ,'$this->d41_auto' 
-                               ,'$this->d41_pgtopref' 
+                                $this->d41_codigo
+                               ,$this->d41_matric
+                               ,$this->d41_testada
+                               ,$this->d41_eixo
+                               ,'$this->d41_obs'
+                               ,'$this->d41_auto'
+                               ,'$this->d41_pgtopref'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Matrículas da lista de projeto ($this->d41_codigo."-".$this->d41_matric) nao Incluído. Inclusao Abortada.";
@@ -198,16 +198,16 @@ class cl_projmelhoriasmatric {
        $resac = db_query("insert into db_acount values($acount,514,4857,'','".AddSlashes(pg_result($resaco,0,'d41_pgtopref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($d41_codigo=null,$d41_matric=null) { 
+   public function alterar ($d41_codigo=null,$d41_matric=null) {
       $this->atualizacampos();
      $sql = " update projmelhoriasmatric set ";
      $virgula = "";
-     if(trim($this->d41_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_codigo"])){ 
+     if(trim($this->d41_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_codigo"])){
        $sql  .= $virgula." d41_codigo = $this->d41_codigo ";
        $virgula = ",";
-       if(trim($this->d41_codigo) == null ){ 
+       if(trim($this->d41_codigo) == null ){
          $this->erro_sql = " Campo Código da lista de projeto nao Informado.";
          $this->erro_campo = "d41_codigo";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_projmelhoriasmatric {
          return false;
        }
      }
-     if(trim($this->d41_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_matric"])){ 
+     if(trim($this->d41_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_matric"])){
        $sql  .= $virgula." d41_matric = $this->d41_matric ";
        $virgula = ",";
-       if(trim($this->d41_matric) == null ){ 
+       if(trim($this->d41_matric) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "d41_matric";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_projmelhoriasmatric {
          return false;
        }
      }
-     if(trim($this->d41_testada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_testada"])){ 
+     if(trim($this->d41_testada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_testada"])){
        $sql  .= $virgula." d41_testada = $this->d41_testada ";
        $virgula = ",";
-       if(trim($this->d41_testada) == null ){ 
+       if(trim($this->d41_testada) == null ){
          $this->erro_sql = " Campo Testada Ml nao Informado.";
          $this->erro_campo = "d41_testada";
          $this->erro_banco = "";
@@ -243,21 +243,21 @@ class cl_projmelhoriasmatric {
          return false;
        }
      }
-     if(trim($this->d41_eixo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_eixo"])){ 
-        if(trim($this->d41_eixo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d41_eixo"])){ 
-           $this->d41_eixo = "0" ; 
-        } 
+     if(trim($this->d41_eixo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_eixo"])){
+        if(trim($this->d41_eixo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d41_eixo"])){
+           $this->d41_eixo = "0" ;
+        }
        $sql  .= $virgula." d41_eixo = $this->d41_eixo ";
        $virgula = ",";
      }
-     if(trim($this->d41_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_obs"])){ 
+     if(trim($this->d41_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_obs"])){
        $sql  .= $virgula." d41_obs = '$this->d41_obs' ";
        $virgula = ",";
      }
-     if(trim($this->d41_auto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_auto"])){ 
+     if(trim($this->d41_auto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_auto"])){
        $sql  .= $virgula." d41_auto = '$this->d41_auto' ";
        $virgula = ",";
-       if(trim($this->d41_auto) == null ){ 
+       if(trim($this->d41_auto) == null ){
          $this->erro_sql = " Campo Automático nao Informado.";
          $this->erro_campo = "d41_auto";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_projmelhoriasmatric {
          return false;
        }
      }
-     if(trim($this->d41_pgtopref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_pgtopref"])){ 
+     if(trim($this->d41_pgtopref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d41_pgtopref"])){
        $sql  .= $virgula." d41_pgtopref = '$this->d41_pgtopref' ";
        $virgula = ",";
-       if(trim($this->d41_pgtopref) == null ){ 
+       if(trim($this->d41_pgtopref) == null ){
          $this->erro_sql = " Campo Pgto prefeitura nao Informado.";
          $this->erro_campo = "d41_pgtopref";
          $this->erro_banco = "";
@@ -312,7 +312,7 @@ class cl_projmelhoriasmatric {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Matrículas da lista de projeto nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->d41_codigo."-".$this->d41_matric;
@@ -340,14 +340,14 @@ class cl_projmelhoriasmatric {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($d41_codigo=null,$d41_matric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($d41_codigo=null,$d41_matric=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d41_codigo,$d41_matric));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -386,7 +386,7 @@ class cl_projmelhoriasmatric {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Matrículas da lista de projeto nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$d41_codigo."-".$d41_matric;
@@ -414,11 +414,11 @@ class cl_projmelhoriasmatric {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -440,10 +440,10 @@ class cl_projmelhoriasmatric {
       }
      return $result;
    }
-   function sql_query ( $d41_codigo=null,$d41_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $d41_codigo=null,$d41_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,23 +462,23 @@ class cl_projmelhoriasmatric {
      $sql2 = "";
      if($dbwhere==""){
        if($d41_codigo!=null ){
-         $sql2 .= " where projmelhoriasmatric.d41_codigo = $d41_codigo "; 
-       } 
+         $sql2 .= " where projmelhoriasmatric.d41_codigo = $d41_codigo ";
+       }
        if($d41_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " projmelhoriasmatric.d41_matric = $d41_matric "; 
-       } 
+         }
+         $sql2 .= " projmelhoriasmatric.d41_matric = $d41_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -487,10 +487,10 @@ class cl_projmelhoriasmatric {
      }
      return $sql;
   }
-   function sql_query_file ( $d41_codigo=null,$d41_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $d41_codigo=null,$d41_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,23 +503,23 @@ class cl_projmelhoriasmatric {
      $sql2 = "";
      if($dbwhere==""){
        if($d41_codigo!=null ){
-         $sql2 .= " where projmelhoriasmatric.d41_codigo = $d41_codigo "; 
-       } 
+         $sql2 .= " where projmelhoriasmatric.d41_codigo = $d41_codigo ";
+       }
        if($d41_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " projmelhoriasmatric.d41_matric = $d41_matric "; 
-       } 
+         }
+         $sql2 .= " projmelhoriasmatric.d41_matric = $d41_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

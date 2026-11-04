@@ -47,7 +47,7 @@ if ($clexemplar->numrows == 0) {
    parent.document.form2.bi23_codbarras.value = "";
    parent.document.form2.bi23_codbarras.focus();
   </script>
-  <?
+  <?php
    db_msgbox("Código de Barras $bi23_codbarras não encontrado.");
 
 } else {
@@ -61,7 +61,7 @@ if ($clexemplar->numrows == 0) {
    parent.document.form2.ov02_nome.value     = '';
    parent.buscarEmprestimos();
   </script>
- <?
+ <?php
 
 }
 ?>

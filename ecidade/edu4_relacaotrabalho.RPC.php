@@ -40,7 +40,7 @@ $oRetorno->sMessage     = '';
 $iEscola                = db_getsession('DB_coddepto');
 
 define('MSG_EDU4_RELACAOTRABALHORPC', "educacao.escola.edu4_relacaotrabalhoRPC.");
-
+define('MSG_PROFISSIONALESCOLAREPOSITORY', "educacao.escola.edu4_relacaotrabalhoRPC.erro_buscar_relacao_trabalho");
 try {
 
   db_inicio_transacao();

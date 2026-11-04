@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -88,7 +88,7 @@ db_postmemory($HTTP_POST_VARS);
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc" onload="">
 <center>
     <form name="form1" method="post" action="com3_conssolic002.php">
-        <?
+        <?php
         if (isset($solicitacao)) {
             if ($solicitacao == "1") {
                 $result_itensdotac = $clsolicitem->sql_record(
@@ -242,7 +242,7 @@ db_postmemory($HTTP_POST_VARS);
                 $numrows_orcamsol = $clpcorcam->numrows;
                 if ($numrows_orcamsol > 0) {
                     echo "<fieldset>";
-                    echo "<legend><strong>Orçamento da solicitação</strong></legend>";
+                    echo "<legend><strong>Orçamento</strong></legend>";
                     echo "<table width='70%' border='0'>\n";
                     $antigorcam = "";
                     $antigoforn = "";
@@ -386,7 +386,8 @@ db_postmemory($HTTP_POST_VARS);
                             if ($pc80_codproc != $pc80_codproc_ant) {
                                 echo "  <tr>\n";
                                 echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#CCCCCC'><strong>Número PC: </strong></td>\n";
-                                echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#FFFFFF'><font color='#333333'>$pc80_codproc</font></td>\n";
+                                echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#FFFFFF'><font color='#333333'>
+                                        <a href='#' class='DBAncora' onClick='js_consultaProcCompras($pc80_codproc)'>$pc80_codproc</a></font></td>\n";
                                 echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#CCCCCC'><strong>Data: </strong></td>\n";
                                 echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#FFFFFF'><font color='#333333'>" . db_formatar($pc80_data, "d") . "</font></td>\n";
                                 echo "  </tr>\n";
@@ -528,129 +529,6 @@ db_postmemory($HTTP_POST_VARS);
                         echo "</table>\n";
                     }
                 }
-            } else if ($solicitacao == "7") {
-                $res_liclicitem = $clliclicitem->sql_record($clliclicitem->sql_query(null, "distinct l20_codigo", "l20_codigo", "pc11_numero=$numero"));
-                if ($clliclicitem->numrows > 0) {
-                    db_fieldsmemory($res_liclicitem, 0);
-                    $res_liclicita = $clliclicita->sql_record($clliclicita->sql_query($l20_codigo));
-                    if ($clliclicita->numrows > 0) {
-                        db_fieldsmemory($res_liclicita, 0);
-                        ?>
-                        <table width="70%" border="0">
-                            <tr>
-                                <td nowrap="nowrap"><strong><h3>Licitação</h3></strong></td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap">
-                                    <? echo "<b>" . $Ll20_codigo . "</b>&nbsp;"; ?>
-                                </td>
-                                <td nowrap="nowrap">
-                                    <? db_input('l20_codigo', 20, $Il20_codigo, true, 'text', 4, "readonly"); ?>
-                                </td>
-                                <td nowrap="nowrap"><b>Modalidade:</b>&nbsp;</td>
-                                <td nowrap="nowrap">
-                                    <?
-                                    db_input('l20_codtipocom', 6, $Il20_codtipocom, true, 'text', 4, "readonly");
-                                    db_input('l03_descr', 35, $Il03_descr, true, 'text', 4, "readonly");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap"><b><?= @$Ll20_datacria ?></b>&nbsp;</td>
-                                <td nowrap="nowrap">
-                                    <?php
-                                    $ano = substr(@$l20_datacria, 0, 4);
-                                    $mes = substr(@$l20_datacria, 5, 2);
-                                    $dia = substr(@$l20_datacria, 8, 2);
-                                    db_inputdata('l20_datacria', "$dia", "$mes", "$ano", true, 'text', 3, "", "", "#FFFFFF");
-                                    ?>
-                                </td>
-                                <td nowrap="nowrap"><b><?= @$Ll20_horacria ?></b>&nbsp;</td>
-                                <td nowrap="nowrap">
-                                    <?php
-                                    db_input('l20_horacria', 5, $Il20_horacria, true, 'text', 4, "readonly");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap"><b><?= @$Ll20_dataaber ?></b>&nbsp;</td>
-                                <td nowrap="nowrap">
-                                    <?php
-                                    $ano1 = substr(@$l20_dataaber, 0, 4);
-                                    $mes1 = substr(@$l20_dataaber, 5, 2);
-                                    $dia1 = substr(@$l20_dataaber, 8, 2);
-                                    db_inputdata('l20_dataaber', "$dia1", "$mes1", "$ano1", true, 'text', 3, "", "", "#FFFFFF");
-                                    ?>
-                                </td>
-                                <td nowrap="nowrap"><b><?= @$Ll20_horaaber ?></b>&nbsp;</td>
-                                <td nowrap="nowrap">
-                                    <?php
-                                    db_input('l20_horaaber', 5, $Il20_horaaber, true, 'text', 4, "readonly");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap"><b><?= @$Ll20_dtpublic ?></b>&nbsp;</td>
-                                <td nowrap="nowrap">
-                                    <?php
-                                    $ano2 = substr($l20_dtpublic, 0, 4);
-                                    $mes2 = substr($l20_dtpublic, 5, 2);
-                                    $dia2 = substr($l20_dtpublic, 8, 2);
-                                    db_inputdata('l20_dtpublic', "$dia2", "$mes2", "$ano2", true, 'text', 3, "", "", "#FFFFFF");
-                                    ?>
-                                </td>
-                                <td nowrap="nowrap"><b><?= @$Ll20_id_usucria ?></b>&nbsp;</td>
-                                <td nowrap="nowrap">
-                                    <?php
-                                    db_input('l20_id_usucria', 6, $Il20_id_usucria, true, 'text', 4, "readonly");
-                                    db_input('nome', 34, @$Inome, true, 'text', 4, "readonly");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap" colspan="1"><b><?= @$Ll20_local ?></b>&nbsp;</td>
-                                <td nowrap="nowrap" colspan="3">
-                                    <?
-                                    db_textarea("l20_local", "", "60", $Il20_local, true, 'text', 4, "readonly");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap" colspan="1"><b><?= @$Ll20_objeto ?></b>&nbsp;</td>
-                                <td nowrap="nowrap" colspan="3">
-                                    <?
-                                    db_textarea("l20_objeto", "", "60", $Il20_objeto, true, 'text', 4, "readonly");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap" colspan="4" align="center">
-                                    <table border="0" align="center">
-                                        <tr>
-                                            <td colspan="2" align="">
-                                                <iframe name="itens" id="itens"
-                                                        src="forms/db_frminfolic.php?l20_codigo=<?= $l20_codigo ?>"
-                                                        width="540" height="150" marginwidth="0" marginheight="0"
-                                                        frameborder="1"></iframe>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                        <?
-                    }
-                } else {
-                    ?>
-
-                    <table border="0">
-                        <tr>
-                            <td align="center"><h3><strong>Essa solicitação não esta em processo licitatório.</strong>
-                                </h3></td>
-                        </tr>
-                    </table>
-                    <?
-                }
             }
         }
         ?>
@@ -673,6 +551,11 @@ db_postmemory($HTTP_POST_VARS);
 
     function js_pesquisaemp(empenho) {
         js_OpenJanelaIframe('CurrentWindow.corpo', 'iframeautoriza', 'func_empempenho001.php?e60_numemp=' + empenho, 'Empenho ' + empenho, true);
+    }
+
+    function js_consultaProcCompras(codproc) {
+        js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_infproc', 'com3_pesquisaprocessocompras003.php?pc80_codproc=' + codproc, 'Pesquisa Processo de Compras', true);
+
     }
 </script>
 </body>

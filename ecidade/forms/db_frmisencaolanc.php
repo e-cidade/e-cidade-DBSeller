@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -26,12 +26,15 @@
  */
 
 //MODULO: tributario
-include(modification("dbforms/db_classesgenericas.php"));
+require_once(modification("dbforms/db_classesgenericas.php"));
+
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clisencaolanc->rotulo->label();
+
 $clrotulo = new rotulocampo;
 $clrotulo->label("k09_cadtipoitemgrupo");
 $clrotulo->label("v10_isencaotipo");
+
 if(isset($db_opcaoal)){
    $db_opcao=33;
     $db_botao=false;
@@ -46,7 +49,6 @@ if(isset($db_opcaoal)){
     $db_botao=true;
     if(isset($novo) || isset($alterar) ||   isset($excluir) || (isset($incluir) && $sqlerro==false ) ){
      $v18_cadtipoitem = "";
-     //$v18_isencao = "";
      $v18_dtini_dia = "";
      $v18_dtfim_dia = "";
      $v18_dtini_mes = "";
@@ -60,27 +62,28 @@ if(isset($db_opcaoal)){
 } 
 ?>
 <form name="form1" method="post" action="">
-<center>
+<fieldset>
+  <legend>Lançamento</legend>
 <table border="0">
   <tr>
     <td nowrap>
     </td>
     <td> 
-<?
+<?php
 db_input('v18_sequencial',10,$Iv18_sequencial,true,'hidden',3,"")
 ?>
     </td>
    <tr>
     <td nowrap title="<?=@$Tv18_isencao?>">
-       <?
+       <?php
        db_ancora(@$Lv18_isencao,"js_pesquisav18_isencao(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v18_isencao',10,$Iv18_isencao,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
        ?>
     </td>
@@ -90,7 +93,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
     <td nowrap title="">
 		   <b> Grupo de débito : </b>
     </td>
-       <?
+       <?php
 			  // caso alteracao: a varivel $origem nao existe
         if((!isset($origem) || $origem == '') && $v18_isencao != ''){
 					$sqlBuscaOrigem  = " select case  ";
@@ -151,7 +154,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
     <td nowrap title="<?=@$v18_cadtipoitem?>">
 		  <b> Item da isenção : </b>
     </td>
-       <?
+       <?php
   			if(isset($v18_cadtipoitem) && $v18_cadtipoitem != ''){
 					$v18_cadtipoitemant = $v18_cadtipoitem;
        	}  
@@ -191,14 +194,18 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
 				}
         ?>
   </tr>
- <tr>
+  <tr>
     <td nowrap title="<?=@$Tv18_dtini?>">
        <?=@$Lv18_dtini?>
     </td>
     <td> 
-<?
-db_inputdata('v18_dtini',@$v18_dtini_dia,@$v18_dtini_mes,@$v18_dtini_ano,true,'text',$db_opcao,"")
-?>
+      <?php
+      $diaSistema = (isset($v10_dtlan_dia) && !empty($v10_dtlan_dia)) ? $v10_dtlan_dia : date("d", db_getsession("DB_datausu"));
+      $mesSistema = (isset($v10_dtlan_mes) && !empty($v10_dtlan_mes)) ? $v10_dtlan_mes : date("m", db_getsession("DB_datausu"));
+      $anoSistema = (isset($v10_dtlan_ano) && !empty($v10_dtlan_ano)) ? $v10_dtlan_ano : date("Y", db_getsession("DB_datausu"));
+
+      db_inputdata('v18_dtini',$diaSistema,$mesSistema,$anoSistema,true,'text', $db_opcao);
+      ?>
     </td>
   </tr>
   <tr>
@@ -206,7 +213,7 @@ db_inputdata('v18_dtini',@$v18_dtini_dia,@$v18_dtini_mes,@$v18_dtini_ano,true,'t
        <?=@$Lv18_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('v18_dtfim',@$v18_dtfim_dia,@$v18_dtfim_mes,@$v18_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -216,7 +223,7 @@ db_inputdata('v18_dtfim',@$v18_dtfim_dia,@$v18_dtfim_mes,@$v18_dtfim_ano,true,'t
        <?=@$Lv18_tipovalor?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'PERCENTUAL','2'=>'VALOR');
 db_select('v18_tipovalor',$x,true,$db_opcao,"onChange='js_controlavalor();'");
 ?>
@@ -227,22 +234,21 @@ db_select('v18_tipovalor',$x,true,$db_opcao,"onChange='js_controlavalor();'");
        <?=@$Lv18_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('v18_valor',10,$Iv18_valor,true,'text',$db_opcao,"onChange='js_controlavalor();'")
 ?>
     </td>
   </tr>
-  </tr>
-    <td colspan="2" align="center">
-      <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
-      <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
-    </td>
-  </tr>
-  </table>
- <table>
+</table>
+</fieldset>
+  <div class="container" style="margin-top: 2px;">
+    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
+    <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
+  </div>
+ <table class="container">
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("v18_sequencial"=>@$v18_sequencial);
 	 $cliframe_alterar_excluir->chavepri    = $chavepri;
 	 $cliframe_alterar_excluir->iframe_nome = "itenslanc";
@@ -256,13 +262,8 @@ db_input('v18_valor',10,$Iv18_valor,true,'text',$db_opcao,"onChange='js_controla
     </td>
    </tr>
  </table>
-  </center>
 </form>
 <script>
-if(!document.form1.v18_cadtipoitem.value){
-//  js_ajaxRequest(document.form1.k03_tipo.value);
-}
-
 //v18_tipovalor
 function js_controlavalor(){
 	if(document.form1.v18_tipovalor.value == 1 && document.form1.v18_valor.value > 100){
@@ -272,14 +273,12 @@ function js_controlavalor(){
   }	
 }
 function js_ajaxRequest(obj){
-//	alert(val);
   var url       = 'tri4_carregadadosisencao.php';
   var parametro = 'cadtipo='+obj.value;
   var objAjax   = new Ajax.Request (url,{method:'post',parameters:parametro, onComplete:carregaDadosSelect});
 	document.form1.v18_cadtipoitem.disabled = true;
 }
 function carregaDadosSelectxxx(resposta){
-//  alert(resposta.responseXML+" -- "+resposta.responseText);
   alert(xmlArvore(resposta.responseXML,""));
 }
 function carregaDadosSelect(resposta){

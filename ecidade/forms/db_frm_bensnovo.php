@@ -46,6 +46,7 @@ $clrotulo->label("t52_descr");
 $clrotulo->label("t52_dtaqu");
 $clrotulo->label("t52_dtinclusao");
 $clrotulo->label("t52_numcgm");
+$clrotulo->label("t52_processo");
 
 $clrotulo->label("t64_descr");
 $clrotulo->label("t64_class");
@@ -132,8 +133,18 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                                     </td>
                                     <td>
                                         <?php
-                                        db_input('sPlaca', 10, "", true, "text", 1, "onblue='js_ValidaMaiusculo(this,'t',event);'",
-                                            "", "", "text-transform: uppercase;");
+                                        db_input(
+                                            'sPlaca',
+                                            10,
+                                            "",
+                                            true,
+                                            "text",
+                                            1,
+                                            "onblue='js_ValidaMaiusculo(this,'t',event);'",
+                                            "",
+                                            "",
+                                            "text-transform: uppercase;"
+                                        );
                                         db_input('t41_placa', 10, "", true, "text", 1, "", '', '', '', $iLimitePlaca);
                                         ?>
                                         <label>Placa Impressa:</label>
@@ -152,7 +163,15 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                                         $t52_dtaqu_mes = !empty($t52_dtaqu_mes) ? $t52_dtaqu_mes : '';
                                         $t52_dtaqu_ano = !empty($t52_dtaqu_ano) ? $t52_dtaqu_ano : '';
 
-                                        db_inputdata('t52_dtaqu', $t52_dtaqu_dia, $t52_dtaqu_mes, $t52_dtaqu_ano, true, 'text', $db_opcao);
+                                        db_inputdata(
+                                            't52_dtaqu',
+                                            $t52_dtaqu_dia,
+                                            $t52_dtaqu_mes,
+                                            $t52_dtaqu_ano,
+                                            true,
+                                            'text',
+                                            $db_opcao
+                                        );
                                         ?>
                                     </td>
                                 </tr>
@@ -167,7 +186,8 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
 
                                         $data = date('d/m/Y', db_getsession('DB_datausu'));
 
-                                        echo "<input type='text' id='t52_dtinclusao' name='t52_dtinclusao' value='{$data}' size='10' style='background-color: #DEB887' readonly />";
+                                        echo "<input type='text' id='t52_dtinclusao' name='t52_dtinclusao'
+                                               value='{$data}' size='10' style='background-color: #DEB887' readonly />";
                                         ?>
                                     </td>
                                 </tr>
@@ -190,16 +210,25 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                     <tr>
                         <td nowrap="nowrap" title="<?php echo $Tt64_class; ?>">
                             <?php
-                            db_ancora($Lt64_class, "js_pesquisaClasse(true);",
-                                (($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao));
+                            db_ancora(
+                                $Lt64_class,
+                                "js_pesquisaClasse(true);",
+                                (($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao)
+                            );
                             ?>
                         </td>
                         <td class="field-size2">
                             <?php
                             db_input('t64_codcla', 10, "", true, 'hidden', $db_opcao);
-                            db_input('t64_class', 10, $It64_class, true, 'text',
+                            db_input(
+                                't64_class',
+                                10,
+                                $It64_class,
+                                true,
+                                'text',
                                 (($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao),
-                                "onchange='js_pesquisaClasse(false);'");
+                                "onchange='js_pesquisaClasse(false);'"
+                            );
                             db_input('t64_descr', 100, $It64_descr, true, 'text', 3);
                             ?>
                         </td>
@@ -212,8 +241,15 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                         </td>
                         <td>
                             <?php
-                            db_input('t52_numcgm', 10, $It52_numcgm, true, 'text', $db_opcao,
-                                "onchange='js_pesquisaFornecedor(false);'");
+                            db_input(
+                                't52_numcgm',
+                                10,
+                                $It52_numcgm,
+                                true,
+                                'text',
+                                $db_opcao,
+                                "onchange='js_pesquisaFornecedor(false);'"
+                            );
                             db_input('z01_nome', 100, $Iz01_nome, true, 'text', 3);
                             ?>
                         </td>
@@ -226,8 +262,15 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                         </td>
                         <td>
                             <?php
-                            db_input('t45_sequencial', 10, $It45_sequencial, true, 'text', $db_opcao,
-                                "onchange='js_pesquisaTipoAquisicao(false);'");
+                            db_input(
+                                't45_sequencial',
+                                10,
+                                $It45_sequencial,
+                                true,
+                                'text',
+                                $db_opcao,
+                                "onchange='js_pesquisaTipoAquisicao(false);'"
+                            );
                             db_input('t45_descricao', 100, $It45_descricao, true, 'text', 3);
                             ?>
                         </td>
@@ -260,8 +303,15 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                         </td>
                         <td>
                             <?php
-                            db_input('t52_depart', 10, $It52_depart, true, 'text', $db_opcao,
-                                "onchange='js_pesquisaDepartamento(false);'");
+                            db_input(
+                                't52_depart',
+                                10,
+                                $It52_depart,
+                                true,
+                                'text',
+                                $db_opcao,
+                                "onchange='js_pesquisaDepartamento(false);'"
+                            );
                             db_input('descrdepto', 100, $Idescrdepto, true, 'text', 3);
                             ?>
                         </td>
@@ -283,8 +333,15 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                         </td>
                         <td>
                             <?php
-                            db_input('t04_sequencial', 10, $It04_sequencial, true, 'text', $db_opcao,
-                                "onchange='js_pesquisaConvenio(false);'");
+                            db_input(
+                                't04_sequencial',
+                                10,
+                                $It04_sequencial,
+                                true,
+                                'text',
+                                $db_opcao,
+                                "onchange='js_pesquisaConvenio(false);'"
+                            );
                             db_input('z01_nome_convenio', 100, '', true, 'text', 3);
                             ?>
                         </td>
@@ -303,6 +360,14 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                             ?>
                         </td>
                     </tr>
+                    <tr>
+                        <td> <b>Processo:</b></td>
+                        <td colspan="5">
+                            <?php
+                            db_input('t52_processo', 10, $It52_processo, true, 'text', $db_opcao, '');
+                            ?>
+                        </td>
+                    </tr>
                 </table>
             </fieldset>
             <fieldset class="separator">
@@ -314,16 +379,30 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                         </td>
                         <td class="field-size2">
                             <?php
-                            db_input('vlAquisicao', 10, $It64_descr, true, 'text', $db_opcao,
-                                'onchange = "js_calculaValorTotal();"');
+                            db_input(
+                                'vlAquisicao',
+                                10,
+                                $It64_descr,
+                                true,
+                                'text',
+                                $db_opcao,
+                                'onchange = "js_calculaValorTotal();"'
+                            );
                             ?>
                         </td>
                         <td style="text-align: left;">
               <label for="vlResidual" class="bold">Valor Residual (%):</label>
                             <?php
-                            db_input('perc_residual', 5, $It64_descr, true,'text',1, '', '', '', "text-align: right");
-                            db_input('vlResidual', 10, $It64_descr, true, 'text', 3,
-                                ' onchange = "js_calculaValorTotal()"');
+                            db_input('perc_residual', 5, $It64_descr, true, 'text', 1, '', '', '', "text-align: right");
+                            db_input(
+                                'vlResidual',
+                                10,
+                                $It64_descr,
+                                true,
+                                'text',
+                                3,
+                                ' onchange = "js_calculaValorTotal()"'
+                            );
                             ?>
                         </td>
                         <td  class="field-size2" style="text-align: left;">
@@ -342,14 +421,26 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                     <tr>
                         <td title="" id='tdLookupTipoDepreciacao' class="field-size2">
                             <?php
-                            db_ancora("Tipo Depreciação:", "js_pesquisaTipoDepreciacao(true);", $db_opcao, "",
-                                "linkLookupTipoDepreciacao");
+                            db_ancora(
+                                "Tipo Depreciação:",
+                                "js_pesquisaTipoDepreciacao(true);",
+                                $db_opcao,
+                                "",
+                                "linkLookupTipoDepreciacao"
+                            );
                             ?>
                         </td>
                         <td>
                             <?php
-                            db_input('cod_depreciacao', 10, $It64_class, true, 'text', $db_opcao,
-                                "onchange='js_pesquisaTipoDepreciacao(false);'");
+                            db_input(
+                                'cod_depreciacao',
+                                10,
+                                $It64_class,
+                                true,
+                                'text',
+                                $db_opcao,
+                                "onchange='js_pesquisaTipoDepreciacao(false);'"
+                            );
                             ?>
                         </td>
                         <td colspan="2" style="text-align: left;">
@@ -444,7 +535,7 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
 <script type="text/javascript" src="scripts/widgets/Input/DBInput.widget.js"></script>
 <script type="text/javascript" src="scripts/widgets/Input/DBInputValor.widget.js"></script>
 <script type="text/javascript">
-    // Essa variável é = ao parâmetro cfpatriplaca.t07_confplaca
+    // Essa variável é = ao parametro cfpatriplaca.t07_confplaca
     $("form1").reset();
     var iParametro;
     var dbOpcao = <?php echo $db_opcao;?>;
@@ -480,7 +571,6 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
      * Retorno do js_carregaDadosForm
      */
     function js_retornoBusca(oRetorno) {
-        console.log(oRetorno);
 
         if(oRetorno.status == 2) {
             alert(oRetorno.message.urlDecode());
@@ -585,9 +675,11 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
     function js_pesquisaClasse(mostra) {
 
         if(mostra) {
-            js_OpenJanelaIframe('CurrentWindow.corpo.iframe_bens', 'db_iframe_clabens',
+
+
+                js_OpenJanelaIframe('CurrentWindow.corpo.iframe_bens', 'db_iframe_clabens',
                 'func_clabens.php?funcao_js=parent.js_mostraclabens1|t64_class|t64_descr|' +
-        't64_codcla|t64_benstipodepreciacao|t46_descricao|t64_vidautil|t64_valorresidual&analitica=true',
+        't64_codcla|t64_benstipodepreciacao|t46_descricao|t64_vidautil|t64_valorresidual&analitica=true&classincluir=true',
                 'Pesquisa', true);
         } else {
 
@@ -600,7 +692,7 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
                     testa = testa.replace('.', '');
                 }
                 js_OpenJanelaIframe('CurrentWindow.corpo.iframe_bens', 'db_iframe_clabens',
-                    'func_clabens.php?pesquisa_chave=' + testa + '&funcao_js=parent.js_mostraclabens&analitica=true',
+                    'func_clabens.php?pesquisa_chave=' + testa + '&funcao_js=parent.js_mostraclabens&analitica=true&classincluir=true',
                     'Pesquisa', false);
             } else {
 
@@ -1113,8 +1205,17 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
         oObject.t66_sequencial = $F("t66_sequencial");
         oObject.t65_sequencial = $F("t65_sequencial");
         oObject.iCodigoItemNota = $F("iCodigoItemNota");
+        oObject.t52_processo = encodeURIComponent(tagString($F("t52_processo")));
         oObject.obser = encodeURIComponent(tagString($F("obser")));
         oObject.acao = encodeURIComponent(tagString("Incluir"));
+        oObject.nameImage = '';
+        if (oObject.pathImage) {
+            if (fotoBem.inputFileElement.files && fotoBem.inputFileElement.files.length > 0) {
+                oObject.nameImage = fotoBem.inputFileElement.files[0].name;
+            } else {
+                oObject.nameImage = null; // Mantém vazio se não há arquivo novo
+            }
+        }
 
         if($F("db_opcao") == "Alterar") {
             oObject.acao = encodeURIComponent(tagString("Alterar"));
@@ -1132,7 +1233,7 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
         }
 
         if (oObject.vlResidual == 0 && oObject.cod_depreciacao == QUOTAS_CONSTATES) {
-            alert("Valor residual (%) é obrigatório para Tipo de depreciação QUOTAS CONSTANTES");
+            alert("Valor residual (%) ? obrigatório para Tipo de depreciação QUOTAS CONSTANTES");
             return;
         }
 
@@ -1290,7 +1391,7 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
         $("t66_sequencial").value = oRetorno.dados.t66_sequencial;
         $("t65_sequencial").value = oRetorno.dados.t65_sequencial;
         $("obser").value = oRetorno.dados.obser.urlDecode();
-
+        $("t52_processo").value = oRetorno.dados.t52_processo.urlDecode();
         fotoBem.setValue(oRetorno.imagePath);
 
         js_ProcCod_t66_sequencial('t66_sequencial', 't66_sequencialdescr');
@@ -1311,9 +1412,9 @@ if ($rsCfPatriPlaca && pg_num_rows($rsCfPatriPlaca) > 0) {
             $("divisao").setValue(oRetorno.dados.divisao);
         }
 
+        js_liberarAbas();
         bemComCalculo = oRetorno.dados.bemComCalculo;
         js_controlaDadosFinanceiros(oRetorno.dados.bemComCalculo);
-        js_liberarAbas();
 
     }
 

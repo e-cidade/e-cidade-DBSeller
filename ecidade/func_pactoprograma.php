@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clpactoprograma->rotulo->label("o107_descricao");
               <?=$Lo107_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o107_sequencial",10,$Io107_sequencial,true,"text",4,"","chave_o107_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpactoprograma->rotulo->label("o107_descricao");
               <?=$Lo107_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o107_descricao",50,$Io107_descricao,true,"text",4,"","chave_o107_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpactoprograma->rotulo->label("o107_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pactoprograma.php")==true){
@@ -122,12 +122,12 @@ $clpactoprograma->rotulo->label("o107_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

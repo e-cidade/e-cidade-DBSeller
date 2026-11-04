@@ -91,7 +91,7 @@ if ($iDBOpcao == 1) {
     <title>DBSeller Inform&aacute;tica Ltda</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-		<? 
+		<?php 
 		 db_app::load("scripts.js");
 		 db_app::load("strings.js");
 		 db_app::load("estilos.css"); 
@@ -109,7 +109,7 @@ if ($iDBOpcao == 1) {
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
         <center>
-		    	<?
+		    	<?php
 		        include(modification("forms/db_frmobrasconstr.php"));
 		    	?>
         </center>
@@ -118,7 +118,7 @@ if ($iDBOpcao == 1) {
     </table>
   </body>
 </html>
-<?
+<?php
 if ( isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir") {
 	
 	if ( $sqlerro == true ) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -168,7 +168,7 @@ if (isset($oParametros->grupos) && trim($oParametros->grupos) != "") {
 
 $sInnerJoinGrupos = "
     inner join matmatermaterialestoquegrupo on matmater.m60_codmater = matmatermaterialestoquegrupo.m68_matmater
-    inner join materialestoquegrupo on matmatermaterialestoquegrupo.m68_materialestoquegrupo 
+    inner join materialestoquegrupo on matmatermaterialestoquegrupo.m68_materialestoquegrupo
                                     = materialestoquegrupo.m65_sequencial
 	";
 
@@ -232,7 +232,7 @@ $sSqlSaidas .= "       left  join matunid             on matmater.m60_codmatunid
 $sSqlSaidas .= $sInnerJoinGrupos; // string de inner caso venha grupos selecionados
 
 $sSqlSaidas .= "       inner join db_estruturavalor on  m65_db_estruturavalor = db121_sequencial ";
-$sSqlSaidas .= "       inner join db_depart origem on origem.coddepto = m70_coddepto 
+$sSqlSaidas .= "       inner join db_depart origem on origem.coddepto = m70_coddepto
                        left join db_depart destino on destino.coddepto = m40_depto";
 $sSqlSaidas .= "      where {$sWhere} ";
 $sSqlSaidas .= " group by m65_db_estruturavalor, destino.descrdepto,";
@@ -275,9 +275,9 @@ if ( $oParametros->iTipoRelatorio == 0 ) {
               (precomedio * qtde) as total,
               *
          from (
-                  {$sSqlSaidas}                  
+                  {$sSqlSaidas}
               ) as xx
-    inner join db_estruturavalor pai on contapai = pai.db121_sequencial  
+    inner join db_estruturavalor pai on contapai = pai.db121_sequencial
     inner join db_depart origem on  m70_coddepto = origem.coddepto
      left join db_depart destino on  m40_depto = destino.coddepto
     order by {$sOrderBy}
@@ -355,8 +355,8 @@ foreach ($aLinhas as $oLinha) {
   $pdf->Cell(15, $iAlt, db_formatar($oLinha->m80_data, "d"), 1, 0, "C");
   $pdf->Cell(18, $iAlt, number_format($nValorPrecoMedio, $iParametroNumeroDecimal), 1, 0, "R");
   $pdf->Cell(15, $iAlt, $oLinha->qtde, 1, 0, "R");
-  $pdf->Cell(20, $iAlt, db_formatar($oLinha->m89_valorfinanceiro, 'f'), "LTB", 1, "R");
-  $nValorTotal += $oLinha->m89_valorfinanceiro;
+  $pdf->Cell(20, $iAlt, db_formatar($oLinha->total, 'f'), "LTB", 1, "R");
+  $nValorTotal += $oLinha->total;
   $nTotalItens += $oLinha->qtde;
 }
 

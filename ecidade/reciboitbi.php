@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -33,6 +33,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("fpdf151/impcarne.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
+use App\Domain\Tributario\Arrecadacao\Services\ArrecadacaoPixItbiService;
 use \ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 use ECidade\Tributario\ITBI\Repository\ItbitaxasavaliaRepository;
 use ECidade\Tributario\ITBI\Model\Itbitaxasavalia;
@@ -141,7 +142,7 @@ if($db21_codcli == 19985 or $db21_codcli == 18 or $db21_codcli == 74 or $db21_co
     exit;
   } elseif ( isset($tipoguia) && $tipoguia == "q" and $dk00_dtpaga_testa == "" ) {
 
-    $sMensagemErro = 'Guia não está paga!';
+    $sMensagemErro = 'Guia não estã paga!';
     db_redireciona("db_erros.php?fechar=true&db_erro={$sMensagemErro}");
     exit;
   }
@@ -194,7 +195,11 @@ if ($clitbi->numrows == 0) {
   exit;
 }
 
-
+$rsDadosITBI = $clitbi->sql_record($clitbi->sql_query_dados($itbi, 'it29_setorloc, *'));
+$dadosITBI = new stdClass();
+if (pg_num_rows($rsDadosITBI) > 0) {
+  $dadosITBI->it29_setorloc = db_utils::getCollectionByRecord($rsDadosITBI)[0]->it29_setorloc;
+}
 
 
 /**
@@ -307,6 +312,8 @@ $proprietarios = "";
 
 /*===================================  COM A NOVA EXTRUTURA BUSCA OS DADOS DE TRANSMISSORES E ADQUIRENTES NA TABELA ITBINOME ===================================================*/
 
+$arrayAdquirentes = [];
+
 /* AQUI PEGA SO O ADQUIRENTE PRINCIPAL E SEUS DADOS */
 $rscompprinc = $clitbinome->sql_record($clitbinome->sql_query("","
                                    it03_nome     as nomecompprinc,
@@ -321,29 +328,34 @@ $rscompprinc = $clitbinome->sql_record($clitbinome->sql_query("","
                                    it03_sexo     as sexocomprador,
                                    it03_princ    as principalcomprador,
                                    it03_bairro   as bairrocomprador,
-                                   it21_numcgm   as cgmcompprinc",
+                                   it21_numcgm   as cgmcompprinc,
+                                   it21_numcgm   as numcgm",
                                    ""," it03_guia = $itbi
                                    and upper(it03_tipo)  = 'C'
                                    and it03_princ = 't' "));
 
 if($clitbinome->numrows  > 0){
   db_fieldsmemory($rscompprinc,$p);
-}else{
+  $arrayAdquirentes = array_merge($arrayAdquirentes, db_utils::getCollectionByRecord($rscompprinc));
 
+}else{
   $sMensagemErro = 'Adquirente principal não encontrado ! ';
   db_redireciona("db_erros.php?fechar=true&db_erro={$sMensagemErro}");
   exit;
-
 }
 
 /* AQUI PEGA OS ADQUIRENTES SECUNDARIOS */
 
-$result = $clitbinome->sql_record($clitbinome->sql_query(""," it03_nome as nomecomp,  it03_sexo as sexocomprador",""," it03_guia = $itbi and upper(it03_tipo)  = 'C' and it03_princ = 'f' "));
+$result = $clitbinome->sql_record($clitbinome->sql_query(""," 
+                              it03_nome   as nomecomp,
+                              it03_sexo   as sexocomprador,
+                              it21_numcgm as numcgm ",
+                            ""," it03_guia = $itbi and upper(it03_tipo)  = 'C' and it03_princ = 'f' "));
 
 if($clitbinome->numrows  > 0){
   $traco = '';
   $proprietarios .= "-".'ADQUIRENTES : ';
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
     // acumula o numero compradores homens e mulheres para colocar na observação da guia
@@ -367,13 +379,14 @@ if($clitbinome->numrows  > 0){
     $outroscompradores = " e outras... ";
   }
 
+  $arrayAdquirentes = array_merge($arrayAdquirentes, db_utils::getCollectionByRecord($result));
 }
 
 $resultcons = $clitbiconstr->sql_record( $clitbiconstr->sql_query(null,"*",null," it08_guia = $itbi"));
 $linhasresultcons = $clitbiconstr->numrows;
 
 if($clitbiconstr->numrows  > 0){
-  $num = pg_numrows($resultcons);
+  $num = pg_num_rows($resultcons);
   $linhasresultcons = $num;
   $areatotal = 0;
   $areatrans = 0;
@@ -405,10 +418,47 @@ if($oItbiIntermediador->numrows > 0){
 /********************************************************** T R A N S M I T E N T E S *****************************************************************************************/
 /*============================================================================================================================================================================*/
 
-$result1 = $clitbinome->sql_record($clitbinome->sql_queryguia("","z01_numcgm,it03_nome as z01_nome,z01_telef as fonetransmitente,it03_mail as mailtransmitente ,it03_sexo,it03_cpfcnpj as z01_cgccpf,it03_endereco as z01_ender,it03_numero,it03_compl,it03_cxpostal,it03_bairro as z01_bairro,it03_munic as z01_munic,it03_uf as z01_uf,it03_cep as z01_cep,it03_mail,it22_itbi,it22_setor as j34_setor,it22_quadra as j34_quadra,it22_lote as j34_lote,it22_descrlograd as j14_nome,j13_descr,it22_numero as j39_numero,it22_compl as j39_compl,it06_matric,it04_codigo,it04_descr,it04_desconto,it04_obs,itbi.*,itburbano.*,itbirural.*,itbiavalia.*",""," it03_guia  = $itbi and upper(it03_tipo)  = 'T' and it03_princ = 't' "));
-//kill(pg_fetch_all($result1));
+$arrayTransmitentes = [];
+
+$result1 = $clitbinome->sql_record($clitbinome->sql_queryguia("","
+z01_numcgm,
+it03_nome as z01_nome,
+z01_telef as fonetransmitente,
+it03_mail as mailtransmitente,
+it03_sexo,it03_cpfcnpj as z01_cgccpf,
+it03_endereco as z01_ender,
+it03_numero,
+it03_compl,
+it03_cxpostal,
+it03_bairro as z01_bairro,
+it03_munic as z01_munic,
+it03_uf as z01_uf,
+it03_cep as z01_cep,
+it03_mail,
+it22_itbi,
+it22_setor as j34_setor,
+it22_quadra as j34_quadra,
+it22_lote as j34_lote,
+it22_descrlograd as j14_nome,
+j13_descr,
+it22_numero as j39_numero,
+it22_compl as j39_compl,
+it06_matric,
+it04_codigo,
+it04_descr,
+it04_desconto,
+it04_obs,
+itbi.*,
+itburbano.*,
+itbirural.*,
+itbiavalia.*,
+z01_numcgm as numcgm",
+""
+," it03_guia  = $itbi and upper(it03_tipo)  = 'T' and it03_princ = 't' "));
+
 if($clitbinome->numrows  > 0){
   db_fieldsmemory($result1,0);
+  $arrayTransmitentes = array_merge($arrayTransmitentes, db_utils::getCollectionByRecord($result1));
 }
 $transmitente = $z01_nome;
 
@@ -419,14 +469,19 @@ $pdf1->transmitente = $transmitente;
 
 $propri = "";
 
-$result = $clitbinome->sql_record($clitbinome->sql_queryguia("","it03_nome as nomeoutro, it03_guia as it20_guia,it03_sexo ",""," it03_guia = $itbi and upper(it03_tipo) = 'T' and it03_princ= 'f' "));
+$result = $clitbinome->sql_record($clitbinome->sql_queryguia("","
+it03_nome as nomeoutro,
+it03_guia as it20_guia,
+it03_sexo,
+z01_numcgm as numcgm ",
+""," it03_guia = $itbi and upper(it03_tipo) = 'T' and it03_princ= 'f' "));
 
 $transmitentesm = 0;
 $transmitentesf = 0;
 if($clitbinome->numrows  > 0){
   $traco = '';
   $propri .= "-".'OUTRO(S) TRANSMITENTE(S) : ';
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
 
   // acumula o numero compradores homens e mulheres para colocar na observação da guia
   for ($p = 0;$p < $num;$p++){
@@ -450,6 +505,7 @@ if($clitbinome->numrows  > 0){
     $outrostransmitentes = " e outras...";
   }
 
+  $arrayTransmitentes = array_merge($arrayTransmitentes, db_utils::getCollectionByRecord($result));
 }
 
 /*================================================  B U S C A   O   C G M   D O   D E V E D O R   =======================================================================*/
@@ -459,17 +515,12 @@ if($clparreciboitbi->numrows > 0){
   db_fieldsmemory($result,0);
   $cgmdevedor = $it17_numcgm;
 }
-$rscgmdevedor = $clitbinomecgm->sql_record($clitbinomecgm->sql_query(null," it21_numcgm ",null," itbinome.it03_princ = 't' and itbinome.it03_tipo = 'C' and itbinome.it03_guia  = $itbi"));
+$rscgmdevedor = $clitbinomecgm->sql_record($clitbinomecgm->sql_query(null," it21_numcgm ",null," itbinome.it03_tipo = 'C' and itbinome.it03_guia  = $itbi"));
 if($clitbinomecgm->numrows > 0){
   db_fieldsmemory($rscgmdevedor,0);
   $cgmdevedor = $it21_numcgm;
-}else{
-  $rscgmdevedor = $clitbinomecgm->sql_record($clitbinomecgm->sql_query(null," it21_numcgm ",null," itbinome.it03_princ = 'f' and itbinome.it03_tipo = 'C' and itbinome.it03_guia  = $itbi"));
-  if($clitbinomecgm->numrows > 0){
-    db_fieldsmemory($rscgmdevedor,0);
-    $cgmdevedor = $it21_numcgm;
-  }
 }
+
 if(!isset($cgmdevedor) || $cgmdevedor == ""){
 
   $sMensagemErro = 'Parâmetros do recibo não configurados! \n Contate suporte!';
@@ -720,11 +771,11 @@ if ($lLiberado and $tipoguia != "q") {
       $clarrematric->k00_numpre = $numpre;
       $clarrematric->k00_matric = $it06_matric;
       $clarrematric->k00_perc   = 100;
-      $clarrematric->incluir($numpre,$it06_matric);
-      if($clarrematric->erro_status == 0){
-          $sqlerro = true;
-          $erromsg = "Erro arrematric ".$clarrematric->erro_msg;
-      }
+      //$clarrematric->incluir($numpre,$it06_matric);
+      // if($clarrematric->erro_status == 0){
+      //     $sqlerro = true;
+      //     $erromsg = "Erro arrematric ".$clarrematric->erro_msg;
+      // }
     }
   }
 
@@ -735,6 +786,14 @@ if ($lLiberado and $tipoguia != "q") {
           $sqlerro = true;
           $erromsg = "Erro arrenumcgm ".$clarrenumcgm->erro_msg;
       }
+
+      if($clitbinomecgm->numrows > 0){
+        for ($i=0; $i < $clitbinomecgm->numrows; $i++) {
+          db_fieldsmemory($rscgmdevedor,$i);
+          $clarrenumcgm->incluir_se_nao_existir($it21_numcgm,$numpre);
+        }
+      }
+  
   }
 
   if ($sqlerro == true) {
@@ -832,7 +891,7 @@ $pdf1->nosso_numero    = null;
 $pdf1->carteira        = null;
 
 if ($lLiberado) {
-  // Nao gera código de barras quando não estiver liberada
+  // Nao gera cãdigo de barras quando não estiver liberada
   try {
     $oConvenio = new convenio($oRegraEmissao->getConvenio(),$numpre,1,$it14_valorpaga,$vlrbar,$datavencimento,6);
 
@@ -855,8 +914,8 @@ if ($lLiberado) {
   /// Fim código barras
 }
 
-$areaterrenomat   = explode('\.',$areatran);
-$areaedificadamat = explode('\.',@$areatotal);
+$areaterrenomat   =explode('.',$areatran);
+$areaedificadamat =explode('.',@$areatotal);
 
 $result = $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query($itbi,"","*","j31_codigo"));
 $linhasitbiruralcaract = $clitbiruralcaract->numrows;
@@ -989,9 +1048,14 @@ if($oRegraEmissao->isCobranca()){
       $oDadosImovel->it22_matricri = '';
      }
 
-     $iMatricri    = $oDadosImovel->it22_matricri;
-     $iQuadrari    = $oDadosImovel->it22_quadrari;
-     $iLoteri      = $oDadosImovel->it22_loteri;
+     $iMatricri        = $oDadosImovel->it22_matricri;
+     $iQuadrari        = $oDadosImovel->it22_quadrari;
+     $iLoteri          = $oDadosImovel->it22_loteri;
+     $it22_descrlograd = $oDadosImovel->it22_descrlograd;
+     $it22_numero      = $oDadosImovel->it22_numero;
+     $it22_compl       = $oDadosImovel->it22_compl;
+     $it22_setor       = $oDadosImovel->it22_setor;
+     
   }
 
   if ( isset($it24_impsituacaodeb) && $it24_impsituacaodeb != 'f') {
@@ -1025,7 +1089,7 @@ if($oRegraEmissao->isCobranca()){
 
             default:
 
-              $sMsgSituacao = 'IMÓVEL EM DIA NESTA DATA';
+              $sMsgSituacao = 'IMOVEL EM DIA NESTA DATA';
 
           }
 
@@ -1045,9 +1109,9 @@ if($oRegraEmissao->isCobranca()){
     $pdf1->sOrigemRetificacaoNumero = $oItbiRetificada->it32_itbiretif;
     $pdf1->sOrigemRetificacaoAno    = date('Y', strtotime($oItbiRetificativa->it01_data));
 
-    // Se for de Araruama, não escreve esta observação, pois é escrita em outra parte do relatório
+    // Se for de Araruama, não escreve esta observação, pois é escrita em outra parte do relatãrio
     if ($db21_codcli != 74) {
-      $sMsgObs .= " GUIA RETIFICATIVA À GUIA DE NÚMERO {$oItbiRetificada->it32_itbiretif}";
+      $sMsgObs .= " GUIA RETIFICATIVA A GUIA DE NUMERO {$oItbiRetificada->it32_itbiretif}";
     }
   }
 
@@ -1064,7 +1128,7 @@ if($oRegraEmissao->isCobranca()){
   $sUsuarioAtual .= " left join pessoal.rhpesrescisao on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes ";
   $sUsuarioAtual .= " where db_usuarios.id_usuario = " . db_getsession("DB_id_usuario") . " and rhpesrescisao.rh05_seqpes is null ";
   $rsUsuarioAtual = db_query($sUsuarioAtual) or die($sUsuarioAtual);
-  if ( pg_numrows($rsUsuarioAtual) > 0 ) {
+  if (pg_num_rows($rsUsuarioAtual) > 0 ) {
      $oUsuarioAtual = db_utils::fieldsMemory($rsUsuarioAtual,0);
   } else {
 
@@ -1073,7 +1137,44 @@ if($oRegraEmissao->isCobranca()){
     $oUsuarioAtual->rh37_descr  = "";
   }
 
+if ($lLiberado) {
+  $servicePixItbiArrecadao = new ArrecadacaoPixItbiService();
+  $servicePixItbiArrecadao->setConvenio($oConvenio);
+  $servicePixItbiArrecadao->setRegraEmissao($oRegraEmissao);
+  $servicePixItbiArrecadao->setVencimento($datavencimento);
+  $servicePixItbiArrecadao->setCodigoArrecadacao($numpre);
+  $servicePixItbiArrecadao->setRecibo($oRecibo);
+  $servicePixItbiArrecadao->setTipoDebito(29);
+  $servicePixItbiArrecadao->setValorRecibo($it14_valorpaga);
+  $servicePixItbiArrecadao->setNumpreRecibo($numpre);
+  $servicePixItbiArrecadao->setCgm($cgmdevedor);
+  $servicePixItbiArrecadao->gerarPix();
+  
+  $codigobarras = $servicePixItbiArrecadao->getCodigoBarras();
+}
 
+$informacoesImovel = null;
+
+if (isset($it06_matric) && !empty($it06_matric)) {
+  $sSqlInformacoesImovel = (new cl_iptubase())->sql_query_informacoesImovel($it06_matric);
+  $informacoesImovel = db_utils::getCollectionByRecord(db_query($sSqlInformacoesImovel))[0];
+}
+
+$mapArray = function($item) {
+  $cgm = $item->numcgm;
+  $oDaoCgm = new cl_cgm();
+  $sSqlBuscaCgm = $oDaoCgm->sql_query_file($cgm,'*', null, "z01_numcgm = $cgm");
+  $rsBuscaCgm = db_query($sSqlBuscaCgm);
+  return db_utils::getCollectionByRecord($rsBuscaCgm)[0];
+};
+
+$arrayAdquirentes = array_map($mapArray,$arrayAdquirentes);
+$arrayTransmitentes = array_map($mapArray,$arrayTransmitentes);
+
+$pdf1->it29_setorloc      = $dadosITBI->it29_setorloc;
+$pdf1->informacoesImovel  = $informacoesImovel;
+$pdf1->arrayAdquirentes   = $arrayAdquirentes;
+$pdf1->arrayTransmitentes = $arrayTransmitentes;
 
 /** Extensao : Inicio [guia-itbi-remove-informacao-transmitente-usucapiao] */
 /** Extensao : Fim [guia-itbi-remove-informacao-transmitente-usucapiao] */
@@ -1082,6 +1183,7 @@ $pdf1->usuario_atual_regist = $oUsuarioAtual->rh01_regist;
 $pdf1->usuario_atual_nome   = $oUsuarioAtual->z01_nome;
 $pdf1->usuario_atual_funcao = $oUsuarioAtual->rh37_descr;
 
+$pdf1->codigobarras              =@$codigobarras;
 $pdf1->z01_nome                  =@$z01_nome;
 $pdf1->logoitbi                  =@$logo;
 $pdf1->nomeinst                  =@$nomeinst;
@@ -1089,7 +1191,7 @@ $pdf1->tipoitbi                  =@$tipo;
 $pdf1->datavencimento            =@$datavencimento;
 $pdf1->it04_descr                =@$it04_descr;
 $pdf1->numpreitbi                =@$numpre;
-$pdf1->ano                       =db_getsession("DB_anousu");
+$pdf1->ano                       =date("Y", strtotime($it14_dtliber));
 $pdf1->itbi                      =@$itbi;
 $pdf1->nomecompprinc             =@$nomecompprinc;
 $pdf1->outroscompradores         =@$outroscompradores;
@@ -1178,13 +1280,16 @@ $pdf1->it22_matricri             =@$iMatricri;
 $pdf1->it22_quadrari             =@$iQuadrari;
 $pdf1->it22_loteri               =@$iLoteri;
 $pdf1->it22_descrlograd          =@$it22_descrlograd;
+$pdf1->it22_numero               = $it22_numero;
+$pdf1->it22_compl                = $it22_compl;
+$pdf1->it22_setor                = $it22_setor;
 $pdf1->lLiberado                 =@$lLiberado;
 $pdf1->dataemissao               =@$dtEmissao;
 $pdf1->sMsgSituacaoImovel        =@$sMsgSituacao;
 $pdf1->sMensagemRecibo           = $k00_msgrecibo;
 $pdf1->sMensagemCaixa            = null;
 
-$pdf1->lFrenteVia                =(isset($it18_nomelograd)&&trim($it18_nomelograd)!=""?"Sim":"Não");
+$pdf1->lFrenteVia                =(isset($it18_nomelograd)&&trim($it18_nomelograd)!=""?"Sim":"NÃO");
 
 $pdf1->mailcomprador             =@$mailcomprador;
 $pdf1->mailtransmitente          =@$mailtransmitente;
@@ -1266,7 +1371,11 @@ if ( $db21_codcli == 19985 or $db21_codcli == 18 or $db21_codcli == 74 or $cgc =
   $pdf1->lUtilizaModeloDefault = false;
 }
 
-$resultFracaoIdeal = db_query("select rnfracao AS fracaoideal from fc_iptu_fracionalote({$it06_matric}, {$iAnoUsu}, false, false);");
+$resultFracaoIdeal = null;
+if (isset($it06_matric) && !empty($it06_matric)) {
+  $resultFracaoIdeal = db_query("select rnfracao AS fracaoideal from fc_iptu_fracionalote({$it06_matric}, {$iAnoUsu}, false, false);");
+}
+
 $pdf1->fracaoIdeal = \db_utils::fieldsMemory($resultFracaoIdeal, 0)->fracaoideal;
 $pdf1->imprime();
 $pdf1->objpdf->output();

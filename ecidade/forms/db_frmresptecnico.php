@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ if(isset($opcao) && $opcao == "excluir"){
        ?>
     </td>
     <td> 
-<?
+<?php
 if (isset($y22_codsani)&&$y22_codsani!=""){
     // $xx = $clsanitario->sql_query($y22_codsani,"z01_nome as z01_nomesani");
     // echo "$xx"; 
@@ -67,26 +67,26 @@ if (isset($y22_codsani)&&$y22_codsani!=""){
 db_input('y22_codsani',8,$Iy22_codsani,true,'text',3,"");
 //echo "<script>js_OpenJanelaIframe('','db_iframe_sanitario','func_sanitario.php?pesquisa_chave='+document.form1.y22_codsani.value+'&funcao_js=parent.js_mostrasanitario','Pesquisa',false);</script>";
 ?>
-       <?
+       <?php
 db_input('z01_nomesani',40,$Iy80_numcgm,true,'text',3,'','z01_nomesani'); 
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty22_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Ly22_numcgm,"js_pesquisay22_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y22_numcgm',8,$Iy22_numcgm,true,'text',$db_opcao," onchange='js_pesquisay22_numcgm(false);'");
 if($db_opcao == 2){
   db_input('y22_numcgm',8,$Iy22_numcgm,true,'hidden',$db_opcao," ",'y22_numcgm_old');
   echo "<script>document.form1.y22_numcgm_old.value='$y22_numcgm'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -98,7 +98,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("y22_codsani"=>$y22_codsani,"y22_numcgm"=>@$y22_numcgm);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y22_codsani,y22_numcgm,z01_nome";

@@ -219,8 +219,8 @@ if ($this->tipoitbi == "urbano") {
   $this->objpdf->setx(100);
   $this->objpdf->cell(24,$altura,'Terreno: '	   ,1,0,"L",$iPreencheFundo);
   $this->objpdf->SetFont('Arial','' ,8);
-  $this->objpdf->cell(42,$altura,db_formatar($this->areaterreno+0,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha')		       ,1,0,"R",0);
-  $this->objpdf->cell(41,$altura,(count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'):(strlen($this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'))),1,1,"R",0);
+  $this->objpdf->cell(42,$altura,db_formatar($this->areaterreno+0,'f',' ',' ',' ',10).($this->tipoitbi=="urbano"?'m2':'ha')		       ,1,0,"R",0);
+  $this->objpdf->cell(41,$altura,(count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',10).($this->tipoitbi=="urbano"?'m2':'ha'):(strlen($this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',10).($this->tipoitbi=="urbano"?'m2':'ha'))),1,1,"R",0);
   $this->objpdf->setx(100);
   $this->objpdf->SetFont('Arial','B',8);
   $this->objpdf->cell(24,$altura,'Construções:',1,0,"L",$iPreencheFundo);
@@ -276,8 +276,8 @@ if ($this->tipoitbi == "urbano") {
   $this->objpdf->setx(100);
   $this->objpdf->cell(24,$altura,'Terra: '	   ,1,0,"L",$iPreencheFundo);
   $this->objpdf->SetFont('Arial','' ,8);
-  $this->objpdf->cell(42,$altura,db_formatar($this->areaterreno+0,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha')		       ,1,0,"R",0);
-  $this->objpdf->cell(41,$altura,(count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'):(strlen($this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'))),1,1,"R",0);
+  $this->objpdf->cell(42,$altura,db_formatar($this->areaterreno+0,'f',' ',' ',' ',10).($this->tipoitbi=="urbano"?'m2':'ha')		       ,1,0,"R",0);
+  $this->objpdf->cell(41,$altura,(count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',10).($this->tipoitbi=="urbano"?'m2':'ha'):(strlen($this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',10).($this->tipoitbi=="urbano"?'m2':'ha'))),1,1,"R",0);
   $this->objpdf->setx(100);
   $this->objpdf->SetFont('Arial','B',8);
   $this->objpdf->cell(24,$altura,'Benfeitorias:',1,0,"L",$iPreencheFundo);

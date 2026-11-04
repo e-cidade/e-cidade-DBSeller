@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -40,46 +40,40 @@ $clretencaotiporeccgm = new cl_retencaotiporeccgm();
 $db_opcao = 1;
 $db_botao = true;
 
-if(isset($incluir)){
-
-	
-  $lSqlErro = false; 	
-  db_inicio_transacao();
-  $clretencaotiporec->e21_instit = db_getsession("DB_instit");
-  $clretencaotiporec->e21_enterecebedor = $_POST["e21_enterecebedor"];
-  $clretencaotiporec->e21_receitaenterecebedor = $_POST["e21_receitaenterecebedor"];
-  $clretencaotiporec->incluir($e21_sequencial);
-  if ($clretencaotiporec->erro_status == 0) {
-  	
-  	$lSqlErro = true;
-  	
-  } else {
-    if ($e31_retencaonatureza != '') {
-  	
-      $oDaoRetencaoNaturezaTipoRec = db_utils::getDao("retencaonaturezatiporec");
-  	  $oDaoRetencaoNaturezaTipoRec->e31_retencaonatureza = $e31_retencaonatureza;
-  	  $oDaoRetencaoNaturezaTipoRec->e31_retencaotiporec  = $clretencaotiporec->e21_sequencial;
-  	  $oDaoRetencaoNaturezaTipoRec->incluir(null);
-  	  if ($oDaoRetencaoNaturezaTipoRec->erro_status == 0 ) {
-  	    $lSqlErro = true;
-  	    $clretencaotiporec->erro_msg    = $oDaoRetencaoNaturezaTipoRec->erro_msg;
-  	    $clretencaotiporec->erro_status = 0;
-  	  }
-    }
-    
-    if ( isset($e48_cgm) && trim($e48_cgm) != '' ) {
-      $clretencaotiporeccgm->e48_cgm             = $e48_cgm;
-      $clretencaotiporeccgm->e48_retencaotiporec = $clretencaotiporec->e21_sequencial;
-      $clretencaotiporeccgm->incluir(null);
-      if ( $clretencaotiporeccgm->erro_status == '0') {
+if (isset($incluir)) {
+    $lSqlErro = false;
+    db_inicio_transacao();
+    $clretencaotiporec->e21_instit = db_getsession("DB_instit");
+    $clretencaotiporec->e21_enterecebedor = $_POST["e21_enterecebedor"];
+    $clretencaotiporec->e21_receitaenterecebedor = $_POST["e21_receitaenterecebedor"];
+    $clretencaotiporec->incluir($e21_sequencial);
+    if ($clretencaotiporec->erro_status == 0) {
         $lSqlErro = true;
-        $clretencaotiporec->erro_msg    = $clretencaotiporeccgm->erro_msg;
-        $clretencaotiporec->erro_status = 0;
-      }
+    } else {
+        if ($e31_retencaonatureza != '') {
+            $oDaoRetencaoNaturezaTipoRec = db_utils::getDao("retencaonaturezatiporec");
+            $oDaoRetencaoNaturezaTipoRec->e31_retencaonatureza = $e31_retencaonatureza;
+            $oDaoRetencaoNaturezaTipoRec->e31_retencaotiporec  = $clretencaotiporec->e21_sequencial;
+            $oDaoRetencaoNaturezaTipoRec->incluir(null);
+            if ($oDaoRetencaoNaturezaTipoRec->erro_status == 0) {
+                $lSqlErro = true;
+                $clretencaotiporec->erro_msg    = $oDaoRetencaoNaturezaTipoRec->erro_msg;
+                $clretencaotiporec->erro_status = 0;
+            }
+        }
+    
+        if (isset($e48_cgm) && trim($e48_cgm) != '') {
+            $clretencaotiporeccgm->e48_cgm             = $e48_cgm;
+            $clretencaotiporeccgm->e48_retencaotiporec = $clretencaotiporec->e21_sequencial;
+            $clretencaotiporeccgm->incluir(null);
+            if ($clretencaotiporeccgm->erro_status == '0') {
+                $lSqlErro = true;
+                $clretencaotiporec->erro_msg    = $clretencaotiporeccgm->erro_msg;
+                $clretencaotiporec->erro_status = 0;
+            }
+        }
     }
-        
-  }
-  db_fim_transacao($lSqlErro);
+    db_fim_transacao($lSqlErro);
 }
 ?>
 <html>
@@ -90,7 +84,7 @@ if(isset($incluir)){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
+<body>
 <div class="container">
 <?php
   include(modification("forms/db_frmretencaotiporec.php"));
@@ -102,18 +96,18 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","e21_retencaotipocalc",true,1,"e21_retencaotipocalc",true);
 </script>
-<?
-if(isset($incluir)){
-  if($clretencaotiporec->erro_status=="0"){
-    $clretencaotiporec->erro(true,false);
-    $db_botao=true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    if($clretencaotiporec->erro_campo!=""){
-      echo "<script> document.form1.".$clretencaotiporec->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clretencaotiporec->erro_campo.".focus();</script>";
+<?php
+if (isset($incluir)) {
+    if ($clretencaotiporec->erro_status=="0") {
+        $clretencaotiporec->erro(true, false);
+        $db_botao=true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+        if ($clretencaotiporec->erro_campo!="") {
+            echo "<script> document.form1.".$clretencaotiporec->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clretencaotiporec->erro_campo.".focus();</script>";
+        }
+    } else {
+        $clretencaotiporec->erro(true, true);
     }
-  }else{
-    $clretencaotiporec->erro(true,true);
-  }
 }
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <? 
+    <?php 
       db_app::load('strings.js');
       db_app::load('scripts.js');
       db_app::load('datagrid.widget.js');
@@ -93,7 +93,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
 		  		    <b>Tipo Origem</b>
 		  		  </td>
 		        <td>
-		          <?
+		          <?php
 		            $aOrigem = array(''           => 'Selecione',
 		                             'matric'     => 'Matr&iacute;cula',
 		                             'inscr'      => 'Inscri&ccedil;&atilde;o',
@@ -104,17 +104,17 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
 		          ?>
 		        </td>  
 		      </tr>
-          <?
+          <?php
             if (isset($oGet->origem) and $oGet->origem == 'matric') {
           ?>
             <tr>    
 	            <td title="<?=$Tj01_matric?>"  width="25%"> 
-                <?
+                <?php
                   db_ancora($Lj01_matric, " js_mostramatricula(true, '$j18_nomefunc'); ", 2);
                 ?>
 	            </td>
 	            <td> 
-	              <?
+	              <?php
 	                db_input('j01_matric', 10, $Ij01_matric, true, 'text', 1,
 	                         " onchange=\"js_mostramatricula(false,'$j18_nomefunc')\" ");
 	                db_input('z01_nome'  , 30, $Iz01_nome  , true, 'text', 3);
@@ -127,17 +127,17 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
                   onclick="js_pesquisa_declaracoes(j01_matric.value, 'matric')" />
               </td>
             </tr>
-	        <?   
+	        <?php   
 	          } elseif (isset($oGet->origem) and ($oGet->origem == 'cgm' || $oGet->origem == 'somentecgm')) {   
 	        ?>
             <tr> 
               <td title="<?=$Tz01_nome?>" width="25%"> 
-                <?
+                <?php
                   db_ancora($Lz01_nome, ' js_mostracgm(true); ', 4);
                 ?>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('z01_numcgm', 10, $Iz01_numcgm, true, 'text', 4, ' onchange="js_mostracgm(false);" ');
                   db_input('z01_nome'  , 30, $Iz01_nome  , true, 'text', 3);
                 ?>  
@@ -149,17 +149,17 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
                   onclick="js_pesquisa_declaracoes(z01_numcgm.value, '<?=$oGet->origem?>')"/>
               </td>
             </tr>
-	        <?    
+	        <?php    
 	          } elseif (isset($oGet->origem) and $oGet->origem == 'inscr') {
 	        ?>
             <tr>  
               <td title="<?=$Tq02_inscr?>" width="25%">     
-                <?
+                <?php
                   db_ancora($Lq02_inscr,' js_mostrainscr(true); ',1);
                 ?>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('q02_inscr', 10, $Iq02_inscr, true, 'text', 1, 'onchange="js_mostrainscr(false)"');
                   db_input('z01_nome' , 30, $Iz01_nome , true, 'text', 3);
                 ?>
@@ -171,7 +171,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
                   onclick="js_pesquisa_declaracoes(q02_inscr.value, 'inscr')" />
               </td>
             </tr>
-	        <? } ?>
+	        <?php } ?>
         </table>
       </fieldset>
 
@@ -189,7 +189,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
           <strong>Observação</strong>
         </legend>
         
-	      <? 
+	      <?php 
 	        db_textarea('x48_motivo', 10, 75, $Ix48_motivo, true, 'text', 1 );
 	      ?>
 
@@ -203,7 +203,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
         </tr>
       </table>
   
-      <?
+      <?php
         db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
                 db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>

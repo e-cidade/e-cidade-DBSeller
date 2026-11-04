@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ if($clexemplar->numrows==0){
   Nenhum Exemplar encontrado com esta informação.<br><br>
   <input name="voltar" type="button" id="voltar" value="Voltar" onclick="location='bib1_baixa001.php'">
  </center>
- <?
+ <?php
 }else{
  db_fieldsmemory($result,0);
  $bi08_exemplar = $bi23_codigo;
@@ -56,8 +56,8 @@ if($clexemplar->numrows==0){
       <label for="bi08_exemplar"><?=@$Lbi23_codigo?></label>
    </td>
    <td>
-    <?db_input('bi08_exemplar',10,@$Ibi08_exemplar,true,'text',3,"")?>
-    <?db_input('bi06_titulo',60,@$Ibi06_titulo,true,'text',3,'')?>
+    <?php db_input('bi08_exemplar',10,@$Ibi08_exemplar,true,'text',3,"")?>
+    <?php db_input('bi06_titulo',60,@$Ibi06_titulo,true,'text',3,'')?>
    </td>
   </tr>
   <tr>
@@ -65,7 +65,7 @@ if($clexemplar->numrows==0){
      <label for="bi08_descr"><?=@$Lbi08_descr?></label>
    </td>
    <td>
-    <?db_textarea('bi08_descr',5,50,$Ibi08_descr,true,'text',$db_opcao,"")?>
+    <?php db_textarea('bi08_descr',5,50,$Ibi08_descr,true,'text',$db_opcao,"")?>
    </td>
   </tr>
   <tr>
@@ -73,7 +73,7 @@ if($clexemplar->numrows==0){
      <label for="bi08_inclusao"><?=@$Lbi08_inclusao?></label>
    </td>
    <td>
-    <?db_inputdata('bi08_inclusao',@$bi08_inclusao_dia,@$bi08_inclusao_mes,@$bi08_inclusao_ano,true,'text',3,"")?>
+    <?php db_inputdata('bi08_inclusao',@$bi08_inclusao_dia,@$bi08_inclusao_mes,@$bi08_inclusao_ano,true,'text',3,"")?>
    </td>
   </tr>
  </table>
@@ -81,4 +81,4 @@ if($clexemplar->numrows==0){
  <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
  <input name="voltar" type="button" id="voltar" value="Voltar" onclick="location='bib1_baixa001.php'">
  </form>
-<?}?>
+<?php }?>

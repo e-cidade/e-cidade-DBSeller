@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE empagemovjustificativa
 class cl_empagemovjustificativa {
@@ -28,13 +28,13 @@ class cl_empagemovjustificativa {
                  e09_justificativa = text = Justificativa
                  ";
    //funcao construtor da classe
-   function cl_empagemovjustificativa() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemovjustificativa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_empagemovjustificativa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e09_sequencial = ($this->e09_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e09_sequencial"]:$this->e09_sequencial);
        $this->e09_codnota = ($this->e09_codnota == ""?@$GLOBALS["HTTP_POST_VARS"]["e09_codnota"]:$this->e09_codnota);
@@ -54,7 +54,7 @@ class cl_empagemovjustificativa {
      }
    }
    // funcao para Inclusão
-   function incluir ($e09_sequencial = null){
+   public function incluir ($e09_sequencial = null){
       $this->atualizacampos();
      if($this->e09_codnota == null ){
        $this->erro_sql = " Campo Código da Nota não informado.";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ class cl_formulario_relcampos {
 	  $valcam = $this->nomecampo;
 		$codigo = $this->varcodigo;
 		$descri = $this->vardescri;
-   	global $$codigo,$$descri,$$valcam;
+   	global ${$codigo},${$descri},${$valcam};
    	if(!isset($$valcam)){
    		$$valcam = 0;
    	}
@@ -236,7 +236,7 @@ class cl_formulario_relcampos {
         	}
         }
         if(isset($campo_auxilio_sselecion) && $campo_auxilio_sselecion != ""){
-          $arr_selecionados = split(",",$campo_auxilio_sselecion);
+          $arr_selecionados = explode(",",$campo_auxilio_sselecion);
           for($i=0; $i<count($arr_selecionados); $i++){
         		$result_campos = @db_query("select db_syscampo.codcam, rotulo, conteudo from db_syscampo where codcam in (".$campo_auxilio_sselecion.") ");
         		if($result_campos != false){

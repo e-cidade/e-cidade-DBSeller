@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -29,14 +29,6 @@ require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("fpdf151/impcarne.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
-require_once(modification("classes/db_solicita_classe.php"));
-require_once(modification("classes/db_solicitem_classe.php"));
-require_once(modification("classes/db_pcdotac_classe.php"));
-require_once(modification("classes/db_pcsugforn_classe.php"));
-require_once(modification("classes/db_db_departorg_classe.php"));
-require_once(modification("classes/db_orcreservasol_classe.php"));
-require_once(modification("classes/db_pcparam_classe.php"));
-require_once(modification("classes/db_empparametro_classe.php"));
 
 /*
  * Configurações GED
@@ -59,11 +51,11 @@ if ($oConfiguracaoGed->utilizaGED()) {
   }
 }
 
-$oDaoPcProc       = db_utils::getDao("pcproc");
-$oDaoEmparametro  = db_utils::getDao("empparametro");
-$oDaoPcProcItem   = db_utils::getDao("pcprocitem");
-$oDaoDbDepartOrg  = db_utils::getDao("db_departorg");
-$oDaoSolicitem    = db_utils::getDao("solicitem");
+$oDaoPcProc       = new cl_pcproc();
+$oDaoEmparametro  = new cl_empparametro();
+$oDaoPcProcItem   = new cl_pcprocitem();
+$oDaoDbDepartOrg  = new cl_db_departorg();
+$oDaoSolicitem    = new cl_solicitem();
 $classinatura     = new cl_assinatura();
 $sqlpref    = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $resultpref = db_query($sqlpref);
@@ -214,7 +206,7 @@ for ($iContador = 0;$iContador < $iTotalLinhasProcessoDeCompras; $iContador++) {
                                                                                   $sCamposItem,
                                                                                    'pc11_seq',
                                                                                    "pc81_codproc = {$oDadosProcessoDeCompras->pc80_codproc}");
-  
+
 
   $rsDadosItem                   = $oDaoSolicitem->sql_record($sSqlItensDoProcessoDeCompras);
   $iTotalLinhasItens             = $oDaoSolicitem->numrows;
@@ -275,8 +267,10 @@ for ($iContador = 0;$iContador < $iTotalLinhasProcessoDeCompras; $iContador++) {
                                                                 pc19_orctiporec,
                                                                 o56_elemento as do56_elemento,
                                                                 o41_descr,
+                                                                gestao,
                                                                 o15_recurso,
-                                                                o15_descr,
+                                                                o15_complemento,
+                                                                descricao,
                                                                 o55_projativ,
                                                                 o55_descr,
                                                                 o56_descr as descrestrutural",
@@ -291,8 +285,9 @@ for ($iContador = 0;$iContador < $iTotalLinhasProcessoDeCompras; $iContador++) {
   $pdf1->descrunid      = 'o41_descr';
   $pdf1->dcprojativ     = 'o55_projativ';
   $pdf1->dprojativ      = 'o55_descr';
-  $pdf1->dctiporec      = 'o15_recurso';
-  $pdf1->dtiporec       = 'o15_descr';
+  $pdf1->dctiporec      = 'gestao';
+  $pdf1->dtiporec       = 'descricao';
+  $pdf1->complemento_recurso = 'o15_complemento';
   $pdf1->dcodigo        = 'pc13_codigo';
   $pdf1->dcoddot        = 'pc13_coddot';
   $pdf1->danousu        = 'pc13_anousu';
@@ -331,4 +326,3 @@ if ($oConfiguracaoGed->utilizaGED()) {
 } else {
   $pdf1->objpdf->Output();
 }
-?>

@@ -146,13 +146,13 @@ class cl_aguacoletorexportadados {
                  x50_avisoleiturista = text = Aviso Leiturista
                  ";
    //funcao construtor da classe
-   function cl_aguacoletorexportadados() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacoletorexportadados");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -161,7 +161,7 @@ class cl_aguacoletorexportadados {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x50_sequencial = ($this->x50_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["x50_sequencial"]:$this->x50_sequencial);
        $this->x50_aguacoletorexportadados = ($this->x50_aguacoletorexportadados == ""?@$GLOBALS["HTTP_POST_VARS"]["x50_aguacoletorexportadados"]:$this->x50_aguacoletorexportadados);
@@ -235,7 +235,7 @@ class cl_aguacoletorexportadados {
      }
    }
    // funcao para inclusao
-   function incluir ($x50_sequencial){
+   public function incluir ($x50_sequencial){
       $this->atualizacampos();
      if($this->x50_aguacoletorexportadados == null ){
        $this->x50_aguacoletorexportadados = "0";
@@ -570,7 +570,7 @@ class cl_aguacoletorexportadados {
      return true;
    }
    // funcao para alteracao
-   function alterar ($x50_sequencial=null) {
+   public function alterar ($x50_sequencial=null) {
       $this->atualizacampos();
      $sql = " update aguacoletorexportadados set ";
      $virgula = "";
@@ -1031,7 +1031,7 @@ class cl_aguacoletorexportadados {
      }
    }
    // funcao para exclusao
-   function excluir ($x50_sequencial=null,$dbwhere=null) {
+   public function excluir ($x50_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x50_sequencial));
      }else{
@@ -1136,7 +1136,7 @@ class cl_aguacoletorexportadados {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -1159,10 +1159,10 @@ class cl_aguacoletorexportadados {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $x50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $x50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1209,7 +1209,7 @@ class cl_aguacoletorexportadados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1219,10 +1219,10 @@ class cl_aguacoletorexportadados {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $x50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $x50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1243,7 +1243,7 @@ class cl_aguacoletorexportadados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1349,10 +1349,10 @@ class cl_aguacoletorexportadados {
     return $sqlDadosMatriculas;
   }
    // funcao do sql dados
-	function sql_query_dados ( $x50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query_dados ( $x50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
-			$campos_sql = split("#",$campos);
+			$campos_sql = explode("#",$campos);
 			$virgula = "";
 			for($i=0;$i<sizeof($campos_sql);$i++){
 				$sql .= $virgula.$campos_sql[$i];
@@ -1389,7 +1389,7 @@ class cl_aguacoletorexportadados {
 		$sql .= $sql2;
 		if($ordem != null ){
 			$sql .= " order by ";
-			$campos_sql = split("#",$ordem);
+			$campos_sql = explode("#",$ordem);
 			$virgula = "";
 			for($i=0;$i<sizeof($campos_sql);$i++){
 				$sql .= $virgula.$campos_sql[$i];

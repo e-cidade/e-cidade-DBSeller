@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,12 +98,12 @@ $clorcimpactomov->rotulo->label("o63_unidade");
               <?=$Lo63_codimpmov?>
             </td>
 	    <td>
-              <?
+              <?php
 		       db_input("o63_codimpmov",5,$Io63_codimpmov,true,"text",4,"","chave_o63_codimpmov");
 		       ?>
               <?=$Lo63_anoexe?>
 
-              <?
+              <?php
 		       db_input("o63_anoexe",4,$Io63_anoexe,true,"text",4,"","chave_o63_anoexe");
 		       ?>
             </td>
@@ -117,7 +117,7 @@ $clorcimpactomov->rotulo->label("o63_unidade");
 	    <?=$Lo63_orgao?>
             </td>
 	    <td >
-	  <?
+	  <?php
 	  $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit")));
 	  db_selectrecord("o63_orgao",$result,true,2,"","chave_o63_orgao","","0","document.form1.submit();");
 	  ?>
@@ -130,7 +130,7 @@ $clorcimpactomov->rotulo->label("o63_unidade");
 	      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    <?=$Lo63_unidade?></td>
 	    <td>
-	      <?
+	      <?php
 		if(isset($chave_o63_orgao) && $chave_o63_orgao != 0){
 		  $result = $clorcunidade->sql_record($clorcunidade->sql_query(null,null,null,"o41_unidade,o41_descr||' -'||o41_anousu as o41_descr","o41_unidade","o41_anousu=".db_getsession("DB_anousu")."  and o41_orgao=$chave_o63_orgao " ));
 	          db_selectrecord("o63_unidade",$result,true,2,"","chave_o63_unidade","",($clorcunidade->numrows>1?"0":""),"document.form1.submit();");
@@ -155,7 +155,7 @@ $clorcimpactomov->rotulo->label("o63_unidade");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
 	
 	$campos_impactomov  = "'I' as DB_tipo,'Impacto' ,o63_codimpmov,o63_codperiodo,o63_anoexe,o63_orgao,o63_unidade,o63_funcao,";
@@ -205,12 +205,12 @@ $clorcimpactomov->rotulo->label("o63_unidade");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

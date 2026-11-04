@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: notificacoes
 //CLASSE DA ENTIDADE notiemissaoreg
-class cl_notiemissaoreg { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k137_sequencial = 0; 
-   var $k137_notiemissao = 0; 
-   var $k137_notificacao = 0; 
-   var $k137_numpre = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_notiemissaoreg {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k137_sequencial = 0;
+   var $k137_notiemissao = 0;
+   var $k137_notificacao = 0;
+   var $k137_numpre = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k137_sequencial = int4 = Sequencial 
-                 k137_notiemissao = int4 = Código da Emissão 
-                 k137_notificacao = int4 = Notificação 
-                 k137_numpre = int4 = Numpre 
+                 k137_sequencial = int4 = Sequencial
+                 k137_notiemissao = int4 = Código da Emissão
+                 k137_notificacao = int4 = Notificação
+                 k137_numpre = int4 = Numpre
                  ";
-   //funcao construtor da classe 
-   function cl_notiemissaoreg() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("notiemissaoreg"); 
+     $this->rotulo = new rotulo("notiemissaoreg");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_notiemissaoreg {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k137_sequencial = ($this->k137_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k137_sequencial"]:$this->k137_sequencial);
        $this->k137_notiemissao = ($this->k137_notiemissao == ""?@$GLOBALS["HTTP_POST_VARS"]["k137_notiemissao"]:$this->k137_notiemissao);
@@ -80,9 +80,9 @@ class cl_notiemissaoreg {
      }
    }
    // funcao para inclusao
-   function incluir ($k137_sequencial){ 
+   public function incluir ($k137_sequencial){
       $this->atualizacampos();
-     if($this->k137_notiemissao == null ){ 
+     if($this->k137_notiemissao == null ){
        $this->erro_sql = " Campo Código da Emissão nao Informado.";
        $this->erro_campo = "k137_notiemissao";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_notiemissaoreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k137_notificacao == null ){ 
+     if($this->k137_notificacao == null ){
        $this->erro_sql = " Campo Notificação nao Informado.";
        $this->erro_campo = "k137_notificacao";
        $this->erro_banco = "";
@@ -100,20 +100,20 @@ class cl_notiemissaoreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k137_numpre == null ){ 
+     if($this->k137_numpre == null ){
        $this->k137_numpre = "0";
      }
      if($k137_sequencial == "" || $k137_sequencial == null ){
-       $result = db_query("select nextval('notiemissaoreg_k137_sequencial_seq')"); 
+       $result = db_query("select nextval('notiemissaoreg_k137_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: notiemissaoreg_k137_sequencial_seq do campo: k137_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: notiemissaoreg_k137_sequencial_seq do campo: k137_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k137_sequencial = pg_result($result,0,0); 
+       $this->k137_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from notiemissaoreg_k137_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k137_sequencial)){
@@ -124,10 +124,10 @@ class cl_notiemissaoreg {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k137_sequencial = $k137_sequencial; 
+         $this->k137_sequencial = $k137_sequencial;
        }
      }
-     if(($this->k137_sequencial == null) || ($this->k137_sequencial == "") ){ 
+     if(($this->k137_sequencial == null) || ($this->k137_sequencial == "") ){
        $this->erro_sql = " Campo k137_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -136,19 +136,19 @@ class cl_notiemissaoreg {
        return false;
      }
      $sql = "insert into notiemissaoreg(
-                                       k137_sequencial 
-                                      ,k137_notiemissao 
-                                      ,k137_notificacao 
-                                      ,k137_numpre 
+                                       k137_sequencial
+                                      ,k137_notiemissao
+                                      ,k137_notificacao
+                                      ,k137_numpre
                        )
                 values (
-                                $this->k137_sequencial 
-                               ,$this->k137_notiemissao 
-                               ,$this->k137_notificacao 
-                               ,$this->k137_numpre 
+                                $this->k137_sequencial
+                               ,$this->k137_notiemissao
+                               ,$this->k137_notificacao
+                               ,$this->k137_numpre
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registros de Notificações da Emissão
@@ -186,16 +186,16 @@ class cl_notiemissaoreg {
        $resac = db_query("insert into db_acount values($acount,3283,18554,'','".AddSlashes(pg_result($resaco,0,'k137_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k137_sequencial=null) { 
+   public function alterar ($k137_sequencial=null) {
       $this->atualizacampos();
      $sql = " update notiemissaoreg set ";
      $virgula = "";
-     if(trim($this->k137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_sequencial"])){ 
+     if(trim($this->k137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_sequencial"])){
        $sql  .= $virgula." k137_sequencial = $this->k137_sequencial ";
        $virgula = ",";
-       if(trim($this->k137_sequencial) == null ){ 
+       if(trim($this->k137_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k137_sequencial";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_notiemissaoreg {
          return false;
        }
      }
-     if(trim($this->k137_notiemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_notiemissao"])){ 
+     if(trim($this->k137_notiemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_notiemissao"])){
        $sql  .= $virgula." k137_notiemissao = $this->k137_notiemissao ";
        $virgula = ",";
-       if(trim($this->k137_notiemissao) == null ){ 
+       if(trim($this->k137_notiemissao) == null ){
          $this->erro_sql = " Campo Código da Emissão nao Informado.";
          $this->erro_campo = "k137_notiemissao";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_notiemissaoreg {
          return false;
        }
      }
-     if(trim($this->k137_notificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_notificacao"])){ 
+     if(trim($this->k137_notificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_notificacao"])){
        $sql  .= $virgula." k137_notificacao = $this->k137_notificacao ";
        $virgula = ",";
-       if(trim($this->k137_notificacao) == null ){ 
+       if(trim($this->k137_notificacao) == null ){
          $this->erro_sql = " Campo Notificação nao Informado.";
          $this->erro_campo = "k137_notificacao";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_notiemissaoreg {
          return false;
        }
      }
-     if(trim($this->k137_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_numpre"])){ 
-        if(trim($this->k137_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k137_numpre"])){ 
-           $this->k137_numpre = "0" ; 
-        } 
+     if(trim($this->k137_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k137_numpre"])){
+        if(trim($this->k137_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k137_numpre"])){
+           $this->k137_numpre = "0" ;
+        }
        $sql  .= $virgula." k137_numpre = $this->k137_numpre ";
        $virgula = ",";
      }
@@ -260,7 +260,7 @@ class cl_notiemissaoreg {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros de Notificações da Emissão
  nao Alterado. Alteracao Abortada.\\n";
@@ -290,14 +290,14 @@ class cl_notiemissaoreg {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k137_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k137_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k137_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -326,7 +326,7 @@ class cl_notiemissaoreg {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros de Notificações da Emissão
  nao Excluído. Exclusão Abortada.\\n";
@@ -356,11 +356,11 @@ class cl_notiemissaoreg {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -382,11 +382,11 @@ class cl_notiemissaoreg {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,15 +404,15 @@ class cl_notiemissaoreg {
      $sql2 = "";
      if($dbwhere==""){
        if($k137_sequencial!=null ){
-         $sql2 .= " where notiemissaoreg.k137_sequencial = $k137_sequencial "; 
-       } 
+         $sql2 .= " where notiemissaoreg.k137_sequencial = $k137_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,11 +421,11 @@ class cl_notiemissaoreg {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,15 +438,15 @@ class cl_notiemissaoreg {
      $sql2 = "";
      if($dbwhere==""){
        if($k137_sequencial!=null ){
-         $sql2 .= " where notiemissaoreg.k137_sequencial = $k137_sequencial "; 
-       } 
+         $sql2 .= " where notiemissaoreg.k137_sequencial = $k137_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,22 +48,22 @@ function js_submit(){
        <?=@$Lj75_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j75_codigo',6,$Ij75_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tj75_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj75_matric,"js_consulta_matric();",1);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j75_matric',10,$Ij75_matric,true,'text',3," onchange='js_pesquisaj75_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -74,7 +74,7 @@ db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')
        <?=@$Lj75_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j75_data',@$j75_data_dia,@$j75_data_mes,@$j75_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -85,7 +85,7 @@ db_inputdata('j75_data',@$j75_data_dia,@$j75_data_mes,@$j75_data_ano,true,'text'
        <?=@$Lj75_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('j75_obs',0,60,$Ij75_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -95,12 +95,12 @@ db_textarea('j75_obs',0,60,$Ij75_obs,true,'text',$db_opcao,"")
        <?=@$Lj75_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Escritura','2'=>'Registro de Imóveis','3'=>'Contrato');
 db_select('j75_tipo',$x,true,$db_opcao,"onchange='js_submit();'");
 ?>
 <?=@$Lj75_dttipo?>
-<?
+<?php
 if ($db_opcao==1){
 	$opc=1;
 }else{
@@ -118,7 +118,7 @@ db_inputdata('j75_dttipo',@$j75_dttipo_dia,@$j75_dttipo_mes,@$j75_dttipo_ano,tru
        <?=@$Lj75_dttipo?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j75_dttipo',@$j75_dttipo_dia,@$j75_dttipo_mes,@$j75_dttipo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,20 +126,20 @@ db_inputdata('j75_dttipo',@$j75_dttipo_dia,@$j75_dttipo_mes,@$j75_dttipo_ano,tru
   -->
   <tr>
     <td align="right" nowrap title="<?=@$Tj77_codproc?>">
-       <?
+       <?php
        db_ancora(@$Lj77_codproc,"js_pesquisaj77_codproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j77_codproc',10,$Ij77_codproc,true,'text',$db_opcao," onchange='js_pesquisaj77_codproc(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_requer',50,$Ip58_requer,true,'text',3,'')
        ?>
     </td>
   </tr>
-  <?
+  <?php
     if (isset($j75_tipo)&&$j75_tipo==2){
     ?>
     <tr>
@@ -147,7 +147,7 @@ db_input('p58_requer',50,$Ip58_requer,true,'text',3,'')
        <?=@$Lj78_matric?>
     </td>
     <td> 
-<?
+<?php
 db_input('j78_matric',30,$Ij78_matric,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -157,12 +157,12 @@ db_input('j78_matric',30,$Ij78_matric,true,'text',$db_opcao,"")
        <?=@$Lj78_protocolo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j78_protocolo',30,$Ij78_protocolo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
-    <?
+    <?php
     }else if (isset($j75_tipo)&&$j75_tipo==1){   	 	
   	?>
     <tr>
@@ -170,7 +170,7 @@ db_input('j78_protocolo',30,$Ij78_protocolo,true,'text',$db_opcao,"")
        <?=@$Lj94_livro?>
     </td>
     <td> 
-<?
+<?php
 db_input('j94_livro',30,$Ij94_livro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -180,7 +180,7 @@ db_input('j94_livro',30,$Ij94_livro,true,'text',$db_opcao,"")
        <?=@$Lj94_folha?>
     </td>
     <td> 
-<?
+<?php
 db_input('j94_folha',30,$Ij94_folha,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -190,7 +190,7 @@ db_input('j94_folha',30,$Ij94_folha,true,'text',$db_opcao,"")
        <?=@$Lj94_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('j94_numero',30,$Ij94_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -200,12 +200,12 @@ db_input('j94_numero',30,$Ij94_numero,true,'text',$db_opcao,"")
        <?=@$Lj94_tabelionato?>
     </td>
     <td> 
-<?
+<?php
 db_input('j94_tabelionato',30,$Ij94_tabelionato,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>  	  
-    <?
+    <?php
     }
     ?>
     <tr>
@@ -213,7 +213,7 @@ db_input('j94_tabelionato',30,$Ij94_tabelionato,true,'text',$db_opcao,"")
        <?=@$Lj75_situacao?>
     </td>
     <td> 
-<?
+<?php
 if (!isset($j75_situacao)){
 	$j75_situacao = 1;
 }
@@ -279,7 +279,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_averbacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -323,7 +323,7 @@ db_app::load("grid.style.css");
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <fieldset style='width: 83%; padding-bottom: 1px;'> <legend><b>Pedido de Tratamento Fora do Município</b></legend>
-	        <?
+          <?php
 	        require_once(modification("forms/db_frmtfd_pedidotfd.php"));
           ?>
       </fieldset>

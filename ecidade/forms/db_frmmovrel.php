@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,12 +37,12 @@ $clrotulo->label("r55_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tr54_codrel?>">
-       <?
+       <?php
        db_ancora(@$Lr54_codrel,"js_pesquisar54_codrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r54_codrel',4,$Ir54_codrel,true,'text',$db_opcao,"onchange='js_pesquisar54_codrel(false);'");
 db_input('r56_descr',40,$Ir56_descr,true,'text',3,"");
 ?>
@@ -50,12 +50,12 @@ db_input('r56_descr',40,$Ir56_descr,true,'text',3,"");
   </tr>
   <tr>
 	<td align='left' nowrap title="<?=@$Tr56_dirarq?>">
-       <?
+       <?php
        db_ancora(@$Lr56_dirarq,"",3);
        ?>
 	</td>
 	<td nowrap align='left'>
-<?
+<?php
 db_input('diretorio_arquivo'  ,47,$Ir56_dirarq,true,'text',3,"");
 ?>
 	</td>
@@ -64,19 +64,19 @@ db_input('diretorio_arquivo'  ,47,$Ir56_dirarq,true,'text',3,"");
 	<td align='left' nowrap>
 	</td>
 	<td nowrap align='left'>
-<?
+<?php
 db_input('r56_dirarq',46,$Ir56_dirarq,true,'file',$db_opcao,"");
 ?>
 	</td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr54_codeve?>">
-       <?
+       <?php
        db_ancora(@$Lr54_codeve,"js_pesquisar54_codeve(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r54_codeve',4,$Ir54_codeve,true,'text',$db_opcao,"onchange='js_pesquisar54_codeve(false);'");
 db_input('r55_descr',40,$Ir55_descr,true,'text',3,"");
 ?>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_movrel.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

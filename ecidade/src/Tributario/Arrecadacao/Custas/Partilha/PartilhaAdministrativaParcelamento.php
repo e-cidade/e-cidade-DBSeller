@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -34,6 +34,7 @@ use ECidade\Tributario\Divida\Termo\Termo;
 use ECidade\Tributario\Juridico\Inicial\Inicial;
 use ECidade\Tributario\Juridico\InicialPartilha\InicialPartilha;
 use ECidade\Tributario\Juridico\InicialPartilha\InicialPartilhaCustas;
+use ECidade\Tributario\Arrecadacao\Custas\Calculo\Valor;
 use \DateTime;
 use \Taxa;
 
@@ -131,6 +132,10 @@ abstract class PartilhaAdministrativaParcelamento extends PartilhaAdministrativa
         }
 
         $valor = $this->valores[$parcela];
+
+        if (!isset($valor) || !($valor instanceof Valor)) {
+            return 0;
+        }
 
         return $this->calculaValorTaxa($taxa, $valor);
     }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,10 +42,10 @@ $clrotulo->label("z01_nome");
                 <td align="left">
                   <table align="center">
                     <td nowrap title="<?=@$Tm51_codordem?>">
-                      <b> <?db_ancora("Ordem de Compra:","js_consultaordem(\$F('m51_codordem'));",1);?></b>
+                      <b> <?php db_ancora("Ordem de Compra:","js_consultaordem(\$F('m51_codordem'));",1);?></b>
                     </td>
                     <td>
-                      <?
+                      <?php
                       db_input('m51_codordem',5,$Im51_codordem,true,'text',3);
                       db_input('z01_nome',30,$Iz01_nome,true,'text',3,'');
                       ?>
@@ -54,7 +54,7 @@ $clrotulo->label("z01_nome");
                       <?=@$Le69_numero?>
                     </td>
                     <td>
-                      <?
+                      <?php
                       db_input('e69_numero',20,$Ie69_numero,true,'text',3,"")
                       ?>
                     </td>
@@ -64,7 +64,7 @@ $clrotulo->label("z01_nome");
                         <?=@$Le69_id_usuario?>
                       </td>
                       <td>
-                        <?
+                        <?php
                         db_input('e69_id_usuario',5,$Ie69_id_usuario,true,'text',3);
                         db_input('nome',30,$Inome,true,'text',3,'');
                         ?>
@@ -73,7 +73,7 @@ $clrotulo->label("z01_nome");
                         <?=@$Le69_dtnota?>
                       </td>
                       <td>
-                        <?
+                        <?php
                         db_inputdata('e69_dtnota',@$e69_dtnota_dia,@$e69_dtnota_mes,@$e69_dtnota_ano,true,'text',3,"");
                         ?>
                       </td>
@@ -83,7 +83,7 @@ $clrotulo->label("z01_nome");
                         <?=@$Le69_dtrecebe?>
                       </td>
                       <td>
-                        <?
+                        <?php
                         db_inputdata('e69_dtrecebe',null,null,null,true,'text',3);
                         ?>
                       </td>
@@ -91,7 +91,7 @@ $clrotulo->label("z01_nome");
                         <?=@$Le70_valor ?>
                       </td>
                       <td>
-                        <?
+                        <?php
                         db_input('e70_valor',20,$Ie70_valor,true,'text',3);
                         ?>
                       </td>

@@ -33,10 +33,10 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (!isset($pesquisar)) {
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str($_SERVER["QUERY_STRING"]);
 }
 
 $oGet = db_utils::postMemory($_GET);
@@ -56,7 +56,7 @@ if(isset($script) && !empty($script)) { ?>
   <?php
     $vals = "";
     $vir  = "";
-    $camp = split(",",$valores);
+    $camp = explode(",",$valores);
 
     for ($f = 0; $f < count($camp); $f++) {
       $vals .= $vir . "'" . $camp[$f] . "'";
@@ -71,7 +71,7 @@ exit;
 
 if (isset($testanome) && !isset($pesquisa_chave)) {
 
-  $funmat = split("\|",$funcao_js);
+  $funmat = explode("|",$funcao_js);
   $func_antes = $funmat[0];
   $valores = "";
   $camp = "";
@@ -269,7 +269,11 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
                 if (isset($lNovoDetalhe) && $lNovoDetalhe == 1) {
                   echo "<script>" . $funcao_js . "('{$z01_nome}', false);</script>";
                 } else if ( isset($familia) ){
-                  echo "<script>" . $funcao_js . "(false, \"$z01_nome\",\"$z01_mae\",\"$z01_pai\");</script>";
+                  if(isset($cgccpf)){
+                    echo "<script>" . $funcao_js . "(false, \"$z01_nome\",\"$z01_mae\",\"$z01_pai\",\"$z01_cgccpf\");</script>";
+                  } else {
+                    echo "<script>" . $funcao_js . "(false, \"$z01_nome\",\"$z01_mae\",\"$z01_pai\");</script>";
+                  }
                 } else {
                   echo "<script>" . $funcao_js . "(false, \"$z01_nome\");</script>";
                 }

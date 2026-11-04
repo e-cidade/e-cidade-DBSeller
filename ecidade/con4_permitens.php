@@ -307,7 +307,7 @@ input {
 <tr><td height="430" align="left" valign="top" bgcolor="#CCCCCC">
   <center>
     <form name="form1" method="post">
-      <?
+      <?php
 	    if(!isset($HTTP_POST_VARS["selecionar"]) && !isset($HTTP_POST_VARS["mod"]) && !isset($HTTP_POST_VARS["verificar"])) {
 	  ?>     
 		  <table border="0" cellspacing="0" cellpadding="0">
@@ -318,7 +318,7 @@ input {
                <td> 
 			   <strong>Institui&ccedil;&atilde;o:</strong><br> 
 			<select onDblClick="document.form1.selecionar.click()" name="instit" size="18">                        
-		 <?
+		 <?php
 		   if(db_getsession("DB_id_usuario") == 1 || db_getsession("DB_administrador") == 1) {
 		    $result = db_query("select codigo,nomeinst from db_config");
 		  } else {
@@ -337,14 +337,14 @@ input {
            </tr>
            <tr>
              <td><input onClick="if(document.form1.instit.selectedIndex == -1 ) { alert('Selecione uma Instituição!'); return false; }" name="selecionar" type="submit" id="selecionar" value="Selecionar"></td>
-	       <?
+	       <?php
 	       if($i==1){
 	         echo "<script>document.form1.selecionar.click()</script>";
 	       }
 	       ?>
            </tr>
           </table>
-      <?
+      <?php
 	  } else if(isset($HTTP_POST_VARS["mod"])) {
 	  ?>
       <table border="0" cellspacing="0" cellpadding="0">
@@ -356,7 +356,7 @@ input {
 	  <Tr>
 	    <td> <strong>M&oacute;dulo:</strong><br> 
 	  <select onDblClick="document.form1.verificar.click()" name="modulos" size="18" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
-        <?
+        <?php
 	   	      if(db_getsession("DB_id_usuario") == 1 || db_getsession("DB_administrador") == 1 ) {
 			    $result = db_query("select i.id_item,nome_modulo,descr_modulo 
 			    from db_modulos m
@@ -399,7 +399,7 @@ input {
 
 
 		 <!--<td><strong>Usuários:</strong><br>-->
-	         <?
+	         <?php
 	         $record_select = "select d.id_perfil
 		                   from db_permherda d
 		                   where d.id_usuario = $usuario";
@@ -410,7 +410,7 @@ input {
 	
 		 ?>
 		 </td>
-	         <?
+	         <?php
 		 //
    	         $sql = "select i.id_usuario,i.nome 
 		         from db_usuarios i
@@ -424,11 +424,11 @@ input {
 		 if(pg_numrows($result) > 0){
 		 ?>  
 		 <td><strong>Perfis:</strong><br>
-		 <?
+		 <?php
 		   db_selectmultiple("perfil",$result,18,2,"","","",$record_select);
 		 ?>
                  </td>
-		 <?
+		 <?php
 		 }
 	         ?>
 	   
@@ -443,17 +443,17 @@ input {
 		<input name="atuusuarios" type="submit" id="atuusuarios" value="Gravar"></td>
 	    </td>-->
 	    <td>
-	        <?
+	        <?php
 		if(pg_numrows($result) > 0){
 		?>
 		  <input name="atuperfil" type="submit" id="atuperfil" value="Gravar"></td>
-		<?
+		<?php
 		}
 		?>
 	    </td>
             </tr>
 	  </table>
-	  <?
+	  <?php
 	  } else if(isset($HTTP_POST_VARS["selecionar"])) {
 	  ?>
 	   <table border="0" cellspacing="0" cellpadding="0">
@@ -465,7 +465,7 @@ input {
             <td valign="top"><strong>Usuário:</strong><br>
 	      <select onDblClick="document.form1.mod.click()" name="usuario" size="18" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
 	        <optgroup style="text-align:center;color:#333333;background-color:#6699cc;letter-spacing:0.4em" label="Usuários" onClick="return false">
-		<?
+		<?php
 		if(db_getsession("DB_id_usuario") == 1 || db_getsession("DB_administrador") == 1) {
 		  $result = db_query("select id_usuario,nome,login from db_usuarios where usuarioativo = 1 and usuext = 0 order by lower(login)");
 		} else {
@@ -486,7 +486,7 @@ input {
 		?>
 		</optgroup>
 	        <optgroup style="text-align:center;color:#333333;background-color:#6699cc;letter-spacing:0.4em" label="Perfis">
-		<?
+		<?php
 		if(db_getsession("DB_id_usuario") == 1 || db_getsession("DB_administrador") == 1) {
 		  $result = db_query("select id_usuario,nome,login from db_usuarios where usuarioativo = 1 and usuext = 2 order by lower(login)");
 		} else {
@@ -510,7 +510,7 @@ input {
             <td valign="top" width="80" align="right"> <strong>Exercício:</strong><br> 
 	        <input type="hidden" name="instit" value="<?=$HTTP_POST_VARS["instit"]?>">	  
 			<select name="anousu" id="anousu">
-          <?
+          <?php
 		       $ano = date("Y");
 	         for($i=($ano-10); $i < $ano+7; $i++){
           	 echo "<option ";
@@ -529,7 +529,7 @@ input {
 			</td>
 		  </tr>
 		 </table>
-      <?
+      <?php
 	} else if(isset($HTTP_POST_VARS["verificar"])) {
 		  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$HTTP_POST_VARS["modulos"]);
 	  $mod = pg_result($result,0,0);
@@ -578,9 +578,9 @@ input {
 		  <tr style='display:none'>
 		    <td align="center"><strong>Ambiente:</strong>
 			<input name="verificar" type="hidden" value="verificar">
-			 <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+			 <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
              <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
              <label for="caracter"><strong>Caracter</strong></label>
 			</td>
 		  </tr>
@@ -588,7 +588,7 @@ input {
       <table border="1" cellspacing="0" cellpadding="0">	  
          <tr> 
            <td> 
-		   <? 
+		   <?php 
 		   $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);		  		   
 		   	$wid = 15;
 			$conta = 0;
@@ -662,7 +662,7 @@ input {
          </tr>
 		 <tr>
 		 <td>
-		 <? /*
+		 <?php /*
 		 $result = db_query("select id_item 
 		                    from db_permissao 
 							where id_usuario = ".$HTTP_POST_VARS["usuario"]." 
@@ -677,12 +677,12 @@ input {
        </table>
 </td></tr>
 </table>
-	<?
+	<?php
 	}
 	?>	  
     </form>
   </center>
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </td></tr>

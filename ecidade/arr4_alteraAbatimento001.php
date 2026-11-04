@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ include_once(modification("libs/db_utils.php"));
   	   <b>Procedimento indisponível</b>
   	 </fieldset>
   	 </div>
-  	<?
+  	<?php
   	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   	exit;
   } 
@@ -74,12 +74,12 @@ include_once(modification("libs/db_utils.php"));
        <table>
         <tr>
          <td width="100px;">
-          <?
+          <?php
            db_ancora("Abatimento:","js_pesquisaAbatimento();",1);
           ?> 
          </td>
          <td>
-          <?
+          <?php
            db_input("abatimento",10,"1",true,'text',3);
           ?>
          </td>
@@ -89,7 +89,7 @@ include_once(modification("libs/db_utils.php"));
            <b>Valor Abatido:</b>
          </td>
          <td>
-           <?
+           <?php
              db_input("vlrAbatimento",10,null,true,'text',3);
            ?>
          </td>
@@ -99,14 +99,14 @@ include_once(modification("libs/db_utils.php"));
            <b>Valor Origens:</b>
          </td>
          <td>
-           <?
+           <?php
              db_input("vlrOrigens",10,null,true,'text',3);
            ?>
          </td>
         </tr>
         <tr>
           <td colspan=2 style="visibility:hidden;" id ="MI">
-            <?
+            <?php
              db_ancora('Consultar Origens Atuais do Abatimento',"js_consultaOrigemCredito()",1,'');
             ?>
           </td>
@@ -130,7 +130,7 @@ include_once(modification("libs/db_utils.php"));
 <div align="center">
   <input type="button" name="btnSalvar" id="btnSalvar" value="Salvar" disabled />
 </div>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

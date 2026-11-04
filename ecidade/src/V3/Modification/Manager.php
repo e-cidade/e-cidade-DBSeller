@@ -32,7 +32,6 @@ class Manager extends AbstractManager
 
         // cache de \ECidade\V3\Modification\Data\Modification
         if (!$this->container->has('cacheDataModifications')) {
-
             $this->container->register('cacheDataModifications', function ($container) {
 
                 $cacheDataModifications = new ArrayObject();
@@ -49,7 +48,6 @@ class Manager extends AbstractManager
 
         // cache de \ECidade\V3\Modification\Logger
         if (!$this->container->has('cacheLoggerModifications')) {
-
             $this->container->register('cacheLoggerModifications', function ($container) {
 
                 $cacheLoggerModifications = new ArrayObject();
@@ -93,7 +91,6 @@ class Manager extends AbstractManager
         // nao altera status e type de modificacoes ja instaladas
         // @todo - buscar um metodo melhor
         if ($force === false || !$dataModification->exists()) {
-
             $dataModification->setStatus(ModificationData::STATUS_DISABLED);
             $dataModification->setType($parseModification->getType());
         }
@@ -108,12 +105,11 @@ class Manager extends AbstractManager
 
     /**
      * @param string|array $modifications
-     * @param string $user
      * @return boolean
      */
-    public function install($modifications, $user = null)
+    public function install($modifications)
     {
-        $data = $this->prepare($modifications, 'install', 'add', $user);
+        $data = $this->prepare($modifications, 'install', 'add');
         $modifications = $data->modifications;
         $filesReparse = $data->filesReparse;
         $dataFileTypeModification = $data->dataFileTypeModification;
@@ -122,10 +118,7 @@ class Manager extends AbstractManager
         $logger = $this->container->get('logger');
         $groupUpdated = false;
 
-        $logger->debug(
-            "Instalando modificações: " . implode(', ',
-            $modifications) . (!empty($user) ? ' user ' . $user : null)
-        );
+        $logger->debug("Instalando modificações: " . implode(', ', $modifications));
 
         // cache-data das modificacoes
         $cacheDataModifications = $this->container->get('cacheDataModifications');
@@ -138,7 +131,6 @@ class Manager extends AbstractManager
         }
 
         foreach ($modifications as $id) {
-
             $data = $cacheDataModifications($id);
             $data->setFilesErrors(array());
 
@@ -148,10 +140,10 @@ class Manager extends AbstractManager
                 $group->add($data->getGroup(), $id);
             }
 
-            $data->setStatus(ModificationData::STATUS_ENABLED, $user);
+            $data->setStatus(ModificationData::STATUS_ENABLED, null);
         }
 
-        $this->parseFiles($filesReparse, $user);
+        $this->parseFiles($filesReparse);
 
         $filesReparse = null;
 
@@ -173,12 +165,11 @@ class Manager extends AbstractManager
 
     /**
      * @param string|array $modifications
-     * @param string $user
      * @return boolean
      */
-    public function uninstall($modifications, $user = null)
+    public function uninstall($modifications)
     {
-        $data = $this->prepare($modifications, 'uninstall', 'remove', $user);
+        $data = $this->prepare($modifications, 'uninstall', 'remove');
         $modifications = $data->modifications;
         $filesReparse = $data->filesReparse;
         $dataFileTypeModification = $data->dataFileTypeModification;
@@ -193,20 +184,16 @@ class Manager extends AbstractManager
         // cache-data dos loggers de modficacoes
         $cacheLoggerModifications = $this->container->get('cacheLoggerModifications');
 
-        $logger->debug(
-            "Desinstalando modificações: " . implode(', ',
-            $modifications) . (!empty($user) ? ' user ' . $user : null)
-        );
+        $logger->debug("Desinstalando modificações: " . implode(', ', $modifications));
 
         foreach ($modifications as $id) {
             $cacheLoggerModifications($id)->info('Desinstalando modificação');
         }
 
         // remove todos os caches criados das modificacoes
-        $this->removeDataModificationFiles($modifications, $user);
+        $this->removeDataModificationFiles($modifications);
 
         foreach ($modifications as $id) {
-
             $data = $cacheDataModifications($id);
             $data->setFilesErrors(array());
 
@@ -216,12 +203,12 @@ class Manager extends AbstractManager
                 $group->removeItem($data->getGroup(), $id);
             }
 
-            $data->setStatus(ModificationData::STATUS_DISABLED, $user);
+            $data->setStatus(ModificationData::STATUS_DISABLED, null);
         }
 
         // recria os caches caso arquivo possua mais modificacoes
         if (count($filesReparse) > 0) {
-            $this->parseFiles($filesReparse, $user);
+            $this->parseFiles($filesReparse);
         }
 
         $filesReparse = null;
@@ -242,9 +229,9 @@ class Manager extends AbstractManager
         return true;
     }
 
-    public function abort($modifications, $user = null)
+    public function abort($modifications)
     {
-        $data = $this->prepare($modifications, 'uninstall', 'remove', $user);
+        $data = $this->prepare($modifications, 'uninstall', 'remove');
         $modifications = $data->modifications;
         $filesReparse = $data->filesReparse;
         $logger = $this->container->get('logger');
@@ -252,21 +239,18 @@ class Manager extends AbstractManager
         // cache-data dos loggers de modficacoes
         $cacheLoggerModifications = $this->container->get('cacheLoggerModifications');
 
-        $logger->debug(
-            "Abortando modificações: " . implode(', ',
-            $modifications) . (!empty($user) ? ' user ' . $user : null)
-        );
+        $logger->debug("Abortando modificações: " . implode(', ', $modifications));
 
         foreach ($modifications as $id) {
             $cacheLoggerModifications($id)->info('Abortando modificação');
         }
 
         // remove todos os caches criados das modificacoes
-        $this->removeDataModificationFiles($modifications, $user);
+        $this->removeDataModificationFiles($modifications);
 
         // recria os caches caso arquivo possua mais modificacoes
         if (count($filesReparse) > 0) {
-            $this->parseFiles($filesReparse, $user);
+            $this->parseFiles($filesReparse);
         }
 
         $filesReparse = null;
@@ -274,18 +258,15 @@ class Manager extends AbstractManager
         return true;
     }
 
-    public function apply($modifications, $user = null)
+    public function apply($modifications)
     {
-        $data = $this->prepare($modifications, 'apply', 'add', $user);
+        $data = $this->prepare($modifications, 'apply', 'add');
         $modifications = $data->modifications;
         $filesReparse = $data->filesReparse;
         $group = $this->container->get('group');
         $logger = $this->container->get('logger');
 
-        $logger->debug(
-            "Aplicando modificações: " . implode(', ',
-            $modifications) . (!empty($user) ? ' user ' . $user : null)
-        );
+        $logger->debug("Aplicando modificações: " . implode(', ', $modifications));
 
         // cache-data das modificacoes
         $cacheDataModifications = $this->container->get('cacheDataModifications');
@@ -298,13 +279,12 @@ class Manager extends AbstractManager
         }
 
         foreach ($modifications as $id) {
-
             $data = $cacheDataModifications($id);
             $data->setFilesErrors(array());
-            $data->setStatus(ModificationData::STATUS_ENABLED, $user);
+            $data->setStatus(ModificationData::STATUS_ENABLED, null);
         }
 
-        $this->parseFiles($filesReparse, $user);
+        $this->parseFiles($filesReparse);
 
         return true;
     }
@@ -315,10 +295,9 @@ class Manager extends AbstractManager
      * @param string $mode add|remove
      *                     modo de alteracao no arquivo de modificacoes
      *                     por arquivo(FileTypeModification)
-     * @param string user
      * @return array
      */
-    private function prepare($modifications, $type, $mode, $user = null)
+    private function prepare($modifications, $type, $mode)
     {
         if (!is_array($modifications)) {
             $modifications = array($modifications);
@@ -356,34 +335,26 @@ class Manager extends AbstractManager
         }
 
         foreach ($modifications as $id) {
-
             $dataModification = $cacheDataModifications($id);
-            $modificationUserType = $dataModification->getType() === ModificationData::TYPE_USER;
 
             if (!$dataModification->exists()) {
                 throw new \Exception("Modificação sem cache: $id");
             }
 
-            if ($modificationUserType && empty($user)) {
-                throw new \Exception("Usuário não definido para modificação: $id");
-            }
-
-            if ($type == 'uninstall' && !$dataModification->isEnabled($user)) {
+            if ($type == 'uninstall' && !$dataModification->isEnabled()) {
                 throw new \Exception("Modificação não instalada: $id");
-            }
-            else if ($type == 'install' && $dataModification->isEnabled($user)) {
+            } elseif ($type == 'install' && $dataModification->isEnabled()) {
                 throw new \Exception("Modificação já instalada: $id");
             }
 
             if ($mode == 'add') {
-                $this->addFileTypeModification($dataModification, $fileTypeModification, $filesReparse, $user);
-            }
-            else if ($mode == 'remove') {
-                $this->removeFileTypeModification($dataModification, $fileTypeModification, $filesReparse, $user);
+                $this->addFileTypeModification($dataModification, $fileTypeModification, $filesReparse);
+            } elseif ($mode == 'remove') {
+                $this->removeFileTypeModification($dataModification, $fileTypeModification, $filesReparse);
             }
         }
 
-        return (object) array(
+        return (object)array(
             // array com ids das modificacoes
             'modifications' => $modifications,
 
@@ -398,10 +369,9 @@ class Manager extends AbstractManager
 
     /**
      * @param string path
-     * @param string $user
      * @return boolean
      */
-    public function updateFile($path, $user = null)
+    public function updateFile($path)
     {
         if (!file_exists($path)) {
             throw new \Exception('Arquivo não existe: ' . $path);
@@ -423,15 +393,14 @@ class Manager extends AbstractManager
         }
 
         $filesReparse = new ArrayObject(array($path => $fileTypeModification[$path]));
-        return $this->parseFiles($filesReparse, $user);
+        return $this->parseFiles($filesReparse);
     }
 
     /**
      * @param string path
-     * @param string $user
      * @return boolean
      */
-    public function updateFileTest($path, $user = null)
+    public function updateFileTest($path)
     {
         $logger = $this->container->get('logger');
 
@@ -457,7 +426,7 @@ class Manager extends AbstractManager
         }
 
         $filesReparse = new ArrayObject(array($path => $fileTypeModification[$path]));
-        $managerParseFiles = new ManagerParseFiles($this->container, $user);
+        $managerParseFiles = new ManagerParseFiles($this->container);
 
         // agrupa operacoes para executar parse na ordem correta
         $managerParseFiles->generateOperationsQueue($filesReparse);
@@ -476,17 +445,16 @@ class Manager extends AbstractManager
 
     /**
      * @param ArrayObject $modificationsFiles
-     * @param string $user
      * @return boolean
      */
-    private function parseFiles(ArrayObject $modificationsFiles, $user = null)
+    private function parseFiles(ArrayObject $modificationsFiles)
     {
         $logger = $this->container->get('logger');
         $logger->debug('Total de arquivos para processar: ' . count($modificationsFiles));
 
-        $managerParseFiles = new ManagerParseFiles($this->container, $user);
+        $managerParseFiles = new ManagerParseFiles($this->container);
 
-        // gera fila de operacoes para processar de acordo com modificacoes e usuarios passados
+        // gera fila de operacoes para processar de acordo com modificacoes
         $managerParseFiles->generateOperationsQueue($modificationsFiles);
 
         // realiza parse das modificacoes, gerando cache temporario
@@ -512,25 +480,22 @@ class Manager extends AbstractManager
      * Remover arquivos de cache de modificacoes
      *
      * @param array $modifications
-     * @param string $user
      * @return boolean
      */
-    private function removeDataModificationFiles(Array $modifications, $user)
+    private function removeDataModificationFiles(array $modifications)
     {
         $logger = $this->container->get('logger');
         $cacheDataModifications = $this->container->get('cacheDataModifications');
 
         foreach ($modifications as $id) {
-
             $dataModification = $cacheDataModifications($id);
             $dataRemoved = 0;
 
-            $logger->debug('Removendo caches da modificação: ' . $id . '(' . count($dataModification->getFiles()) . ')');
+            $filesTotal = count($dataModification->getFiles());
+            $logger->debug("Removendo caches da modificação: {$id} ($filesTotal)");
 
             foreach ($dataModification->getFiles() as $path) {
-
-                $_user = $dataModification->isUserType() ? $user : null;
-                $dataFile = new FileData($path, $_user);
+                $dataFile = new FileData($path);
                 $fileSync = new FileSync($dataFile);
 
                 // dessincroniza arquivo
@@ -551,14 +516,12 @@ class Manager extends AbstractManager
         return true;
     }
 
-    private function addFileTypeModification($dataModification, & $fileTypeModification, & $filesReparse, $user = null)
+    private function addFileTypeModification($dataModification, &$fileTypeModification, &$filesReparse)
     {
         $id = $dataModification->getId();
-        $modificationUserType = $dataModification->getType() === ModificationData::TYPE_USER;
-        $type = $modificationUserType ? 'user:' . $user : 'global';
+        $type = 'global';
 
         foreach ($dataModification->getFiles() as $path) {
-
             if (!isset($fileTypeModification[$path][$type])) {
                 $fileTypeModification[$path][$type] = array();
             }
@@ -573,21 +536,18 @@ class Manager extends AbstractManager
         return true;
     }
 
-    private function removeFileTypeModification($dataModification, & $fileTypeModification, & $filesReparse, $user = null)
+    private function removeFileTypeModification($dataModification, &$fileTypeModification, &$filesReparse)
     {
         $id = $dataModification->getId();
-        $modificationUserType = $dataModification->getType() === ModificationData::TYPE_USER;
-        $type = $modificationUserType ? 'user:' . $user : 'global';
+        $type = 'global';
 
         foreach ($dataModification->getFiles() as $path) {
-
             if (!isset($fileTypeModification[$path])) {
                 continue;
             }
 
             // remove id da modificacao do cache global de arquivos
             if (!empty($fileTypeModification[$path][$type])) {
-
                 $key = array_search($id, $fileTypeModification[$path][$type]);
 
                 if ($key !== false) {
@@ -645,8 +605,8 @@ class Manager extends AbstractManager
     }
 
     /**
-     * @throws \Exception
      * @return bool
+     * @throws \Exception
      */
     public function setup()
     {

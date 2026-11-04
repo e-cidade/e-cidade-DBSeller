@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ include(modification("libs/db_usuariosonline.php"));
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
   parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
   // Tabelas
 
@@ -53,7 +53,7 @@ include(modification("libs/db_usuariosonline.php"));
   if($tipotabela=='2'){
     ?>
     <table width="100%"><tr><td align="center"><h3>Tabela Dependente. Sem programas.</h3></td></tr></table>
-    <?
+    <?php
   }else{
 
      // Tabelas
@@ -85,7 +85,7 @@ include(modification("libs/db_usuariosonline.php"));
       <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>001"</h6></td></tr></table>
       </body>
       </html>
-      <?
+      <?php
       exit;
     } 
 
@@ -179,7 +179,7 @@ include(modification("libs/db_usuariosonline.php"));
             <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>002"</h6></td></tr></table>
             </body>
             </html>
-            <?
+            <?php
             exit;
           } 
 	  umask(74); 
@@ -292,7 +292,7 @@ include(modification("libs/db_usuariosonline.php"));
             <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>003"</h6></td></tr></table>
             </body>
             </html>
-            <?
+            <?php
             exit;
           }
 	  umask(74);
@@ -408,7 +408,7 @@ include(modification("libs/db_usuariosonline.php"));
             <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>002"</h6></td></tr></table>
             </body>
             </html>
-            <?
+            <?php
             exit;
           } 
 	  umask(74); 
@@ -529,7 +529,7 @@ include(modification("libs/db_usuariosonline.php"));
 } 
 ?>
 <table width="100%"><tr><td align="center"><h3>Concluído...</h3></td></tr></table>
-<?
+<?php
   }
 ?>
 </body>

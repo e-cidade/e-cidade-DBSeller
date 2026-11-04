@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("j14_nome");
        <?=@$Lj49_idbql?>
     </td>
     <td> 
-<?
+<?php
 db_input('j49_idbql',4,$Ij49_idbql,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -48,22 +48,22 @@ db_input('j49_idbql',4,$Ij49_idbql,true,'text',$db_opcao,"")
        <?=@$Lj49_face?>
     </td>
     <td> 
-<?
+<?php
 db_input('j49_face',4,$Ij49_face,true,'text',$db_opcao,"")
 ?>
     <td>
   <tr>
   <tr>
     <td nowrap title="<?=@$Tj49_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lj49_codigo,"js_pesquisaj49_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j49_codigo',4,$Ij49_codigo,true,'text',$db_opcao," onchange='js_pesquisaj49_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     <td>
@@ -107,7 +107,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

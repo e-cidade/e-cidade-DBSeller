@@ -87,12 +87,12 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     </label>
                 </td>
                 <td>
-                    <? db_input('ed57_i_codigo', 15, $Ied57_i_codigo, true, 'text', 3, "") ?>
+                    <?php db_input('ed57_i_codigo', 15, $Ied57_i_codigo, true, 'text', 3, "") ?>
                     <spam id='codigoInep'>
                         <label for="ed57_i_codigoinep">
                             <?= @$Led57_i_codigoinep ?>
                         </label>
-                        <? db_input('ed57_i_codigoinep', 10, $Ied57_i_codigoinep, true, 'text', $db_opcao, "") ?>
+                        <?php db_input('ed57_i_codigoinep', 10, $Ied57_i_codigoinep, true, 'text', $db_opcao, "") ?>
                     </spam>
                     <label for="ed57_i_tipoturma">
                         <?= @$Led57_i_tipoturma ?>
@@ -202,8 +202,11 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 $sSqlQuery = $clturmaserieregimemat->sql_query_censo("", "*", "ed223_i_ordenacao", $sWhere);
                 $result_etapa = $clturmaserieregimemat->sql_record($sSqlQuery);
 
-                $ed219_i_codigo = pg_result($result_etapa, 0, 'ed219_i_codigo');
-                $ed219_c_nome = pg_result($result_etapa, 0, 'ed219_c_nome');
+
+                $ed219_i_codigo = $result_etapa ? pg_fetch_result($result_etapa, 0, 'ed219_i_codigo') : "";
+                $ed219_c_nome = $result_etapa ? pg_fetch_result($result_etapa, 0, 'ed219_c_nome') : "";
+
+
                 if ($ed219_i_codigo != "") {
                     ?>
                     <tr>
@@ -280,7 +283,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 ?>
                 <tr id='etapaCenso'>
                     <td nowrap title="<?= @$Ted132_censoetapa ?>">
-                        <label for="ed132_censoetapa"><? db_ancora(@$Led132_censoetapa, "", 3); ?> </label>
+                        <label for="ed132_censoetapa"><?php db_ancora(@$Led132_censoetapa, "", 3); ?> </label>
                     </td>
                     <td>
                         <?php
@@ -295,7 +298,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             <tr>
                 <td nowrap title="<?= @$Ted57_i_turno ?>">
                     <label
-                        for="ed57_i_turno"><? db_ancora(@$Led57_i_turno, "js_pesquisaed57_i_turno(true);", $db_opcao); ?></label>
+                        for="ed57_i_turno"><?php db_ancora(@$Led57_i_turno, "js_pesquisaed57_i_turno(true);", $db_opcao); ?></label>
                 </td>
                 <td>
                     <?php
@@ -308,7 +311,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             <tr>
                 <td nowrap title="<?= @$Ted57_i_sala ?>">
                     <label
-                        for="ed57_i_sala"><? db_ancora(@$Led57_i_sala, "js_pesquisaed57_i_sala(true);", $db_opcao); ?></label>
+                        for="ed57_i_sala"><?php db_ancora(@$Led57_i_sala, "js_pesquisaed57_i_sala(true);", $db_opcao); ?></label>
 
                 </td>
                 <td>
@@ -332,7 +335,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     ?>
                     <spam id='tipoAtendimento'>
                         <label for="ed57_i_tipoatend"><?= @$Led57_i_tipoatend ?></label>
-                        <?
+                        <?php
                         $x = array('0' => 'NÃO SE APLICA', '1' => 'CLASSE HOSPITALAR', '2' => 'UNIDADE DE INTERNAÇÃO', '3' => 'UNIDADE PRISIONAL');
                         db_select('ed57_i_tipoatend', $x, true, $db_opcao, "");
                         ?>
@@ -347,7 +350,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     <table>
                         <tr>
                             <td>
-                                <? db_textarea('ed57_t_obs', 6, 90, $Ied57_t_obs, true, 'text', $db_opcao, "", "", "") ?>
+                                <?php db_textarea('ed57_t_obs', 6, 90, $Ied57_t_obs, true, 'text', $db_opcao, "", "", "") ?>
                             </td>
                         </tr>
                     </table>
@@ -356,7 +359,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             <tr id='turnoAdicional'>
                 <td nowrap title="<?= @$Ted246_i_turno ?>">
                     <label
-                        for="ed246_i_turno"><? db_ancora(@$Led246_i_turno, "js_pesquisaed246_i_turno(true);", $db_opcao); ?></label>
+                        for="ed246_i_turno"><?php db_ancora(@$Led246_i_turno, "js_pesquisaed246_i_turno(true);", $db_opcao); ?></label>
                 </td>
                 <td>
                     <?php
@@ -380,42 +383,45 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     ?>
                 </td>
             </tr>
-            <?
+
+            <tr id='trBilingue'>
+                <td nowrap title="<?= @$Ted57_is_bilingue ?>">
+                    <label for="ed57_is_bilingue"> <?= @$Led57_is_bilingue ?> </label>
+                </td>
+                <td>
+                    <?php
+                    $x = array('f' => 'NÃO', 't' => 'SIM', );
+                    db_select('ed57_is_bilingue', $x, true, $db_opcao, '');
+                    ?>
+                </td>
+            </tr>
+
+            <?php
+            $displayCurso = (empty($ed29_censocursoprofiss) || $ed29_censocursoprofiss == "") ? 'none' : '';
             $visivel = "hidden";
-
             if ($db_opcao == 2 || $db_opcao == 3 && !isset($excluir)) {
-
                 for ($p = 0; $p < $clturmaserieregimemat->numrows; $p++) {
-
                     db_fieldsmemory($result_etapa, $p);
-
                     $aEtapasEnsinoRegular = array(30, 31, 32, 33, 34, 39, 40);
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "ER" && in_array($ed133_censoetapa, $aEtapasEnsinoRegular)) {
-
                         $visivel = "visible";
                         $ver_cursoprofiss = "OK";
                         break;
                     }
-
                     $aEtapasEnsinoEspecial = array(30, 31, 32, 33, 34, 39, 40, 62, 63);
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "ES" && in_array($ed133_censoetapa, $aEtapasEnsinoEspecial)) {
-
                         $visivel = "visible";
                         $ver_cursoprofiss = "OK";
                         break;
                     }
-
                     $aEtapasEJA = array(62, 63);
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "EJ" && in_array($ed133_censoetapa, $aEtapasEJA)) {
-
                         $visivel = "visible";
                         $ver_cursoprofiss = "OK";
                         break;
                     }
-
                     $aEtapasProfissionalizantes = array(30, 31, 32, 33, 34, 39, 40, 73, 74, 64, 67, 68);
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "EP" && in_array($ed133_censoetapa, $aEtapasProfissionalizantes)) {
-
                         $visivel = "visible";
                         $ver_cursoprofiss = "OK";
                         break;
@@ -423,19 +429,18 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 }
             }
             ?>
-            <tr name="cursoprofiss" id="cursoprofiss" style="visibility:<?= $visivel ?>">
-                <td nowrap title="<?= @$Ted57_i_censocursoprofiss ?>">
-                    <label for="ed57_i_censocursoprofiss">
-                        <?= @$Led57_i_censocursoprofiss ?>
+            <tr name="cursoprofiss" id="cursoprofiss" style="display: <?=$displayCurso?>">
+                <td nowrap title="Curso Profissionalizante">
+                    <label for="ed29_censocursoprofiss">
+                        <b>Curso Profissionalizante:</b>
                     </label>
                 </td>
                 <td>
                     <?php
-                    db_input('ed57_i_censocursoprofiss', 15, $Ied57_i_censocursoprofiss, true, 'text', 3,
-                        " onchange='js_pesquisaed57_i_censocursoprofiss(false);'");
+                    db_input('ed29_censocursoprofiss', 15, 1, true, 'text', 3,
+                        " onchange='js_pesquisaed29_censocursoprofiss(false);'");
                     db_input('ed247_c_descr', 40, @$Ied247_c_descr, true, 'text', 3);
                     db_input('ver_cursoprofiss', 2, @$Iver_cursoprofiss, true, 'hidden', 3);
-                    db_input('ed10_censocursoprofiss', 15, @$Ied10_censocursoprofiss, true, 'hidden', 3);
                     ?>
                 </td>
             </tr>
@@ -476,7 +481,6 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         js_verificaTurnoIntegral();
         js_adicionaLinhaVagasTurma();
         buscaVagasTurma();
-        verificaCensoCursoProfissionalizante();
         lTurnoAtualIntegral = lTurnoIntegral;
         sTurnoAnterior = $F("ed15_c_nome");
         iTurnoAnterior = $F("ed57_i_turno");
@@ -543,7 +547,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
 
             js_OpenJanelaIframe('', 'db_iframe_base', 'func_baseturma.php?funcao_js=parent.js_mostrabase1|ed31_i_codigo|' +
                 'ed31_c_descr|ed29_i_codigo|ed29_c_descr|ed36_c_abrev|ed218_i_codigo|ed218_c_nome|' +
-                'ed218_c_divisao|ed31_c_medfreq|ed29_i_ensino|ed29_c_historico|ed10_censocursoprofiss&lBaseAtiva=' + lBaseAtiva,
+                'ed218_c_divisao|ed31_c_medfreq|ed29_i_ensino|ed29_c_historico|ed29_censocursoprofiss|ed247_c_descr&lBaseAtiva=' + lBaseAtiva,
                 'Pesquisa de Bases Curriculares', true);
 
         } else {
@@ -565,10 +569,8 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 document.form1.ed57_c_medfreq.value = '';
                 document.form1.ed29_i_ensino.value = '';
                 document.form1.ed29_c_historico.value = '';
-                document.form1.ed57_i_censocursoprofiss.value = '';
+                document.form1.ed29_censocursoprofiss.value = '';
                 document.form1.ed247_c_descr.value = '';
-                document.form1.ed10_censocursoprofiss.value = '';
-
             }
         }
 
@@ -601,12 +603,6 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         document.form1.ed57_c_medfreq.value = freq;
         document.form1.ed29_i_ensino.value = chave9;
         document.form1.ed29_c_historico.value = chave10;
-        document.form1.ed10_censocursoprofiss.value = chave11;
-
-        if (chave11 !== undefined || chave11 != '') {
-            verificaCensoCursoProfissionalizante();
-        }
-
         if (erro == true) {
 
             document.form1.ed57_i_base.focus();
@@ -624,7 +620,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         js_validaTipoTurma();
     }
 
-    function js_mostrabase1(chave1, chave2, chave3, chave4, chave5, chave6, chave7, chave8, chave9, chave10, chave11, chave12) {
+    function js_mostrabase1(chave1, chave2, chave3, chave4, chave5, chave6, chave7, chave8, chave9, chave10, chave11, chave12, chave13) {
 
         document.form1.ed57_i_base.value = chave1;
         document.form1.ed31_c_descr.value = chave2;
@@ -644,13 +640,16 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         document.form1.ed57_c_medfreq.value = freq;
         document.form1.ed29_i_ensino.value = chave10;
         document.form1.ed29_c_historico.value = chave11;
+        document.form1.ed29_censocursoprofiss.value = chave12;
+        document.form1.ed247_c_descr.value = chave13;
+        console.log(chave12)
+        if (chave12 != '' ) {
+            document.querySelector('#cursoprofiss').style.display = '';
+        } else {
+            document.querySelector('#cursoprofiss').style.display = 'none';
+        }
         document.form1.ed57_i_turno.value = '';
         document.form1.ed15_c_nome.value = '';
-        document.form1.ed10_censocursoprofiss.value = chave12;
-
-        if (chave12 !== undefined || chave12 != '') {
-            verificaCensoCursoProfissionalizante();
-        }
 
         if (chave8 == "S") {
             js_divisoes(chave1);
@@ -661,7 +660,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         js_verificaEnsinoIsInfantil();
     }
 
-    function js_pesquisaed57_i_censocursoprofiss(mostra) {
+    function js_pesquisaed29_censocursoprofiss(mostra) {
 
         if (mostra == true) {
 
@@ -674,7 +673,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
 
     function js_mostracensocursoprofiss1(chave1, chave2) {
 
-        document.form1.ed57_i_censocursoprofiss.value = chave1;
+        document.form1.ed29_censocursoprofiss.value = chave1;
         document.form1.ed247_c_descr.value = chave2;
         db_iframe_censocursoprofiss.hide();
 
@@ -1177,7 +1176,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             return false;
         }
 
-        if (document.form1.ver_cursoprofiss.value == "OK" && document.form1.ed57_i_censocursoprofiss.value == "") {
+        if (document.form1.ver_cursoprofiss.value == "OK" && document.form1.ed29_censocursoprofiss.value == "") {
 
             alert("Informe o Curso Profissionalizante!");
             return false;
@@ -1329,25 +1328,15 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
 
             var sMensagem = "";
 
-            if (!lTurnoAtualIntegral && lTurnoIntegral && lEnsinoInfantil) {
-
-                sMensagem += "Turno da turma será alterado para ( " + $F("ed15_c_nome").trim() + " ), ";
-                sMensagem += "porém os alunos ficarão vinculados apenas a ";
-                sMensagem += "referência ( " + sTurnoAnterior.trim() + " ). ";
-                sMensagem += '\nPara alterar o vinculo dos alunos com os turnos acesse: \n';
-                sMensagem += "\t- Procedimentos > Matrículas > Alterar Turno Matrícula Ed. Infantil";
-            } else {
-
-                sMensagem += 'Turno da turma será alterado para ( ' + $F("ed15_c_nome").trim() + ' ).\n';
-                sMensagem += "O sistema irá vincular todas as matrículas para o turno ( " + $F("ed15_c_nome").trim() + " ).";
-            }
+            sMensagem += 'Turno da turma será alterado para ( ' + $F("ed15_c_nome").trim() + ' ).\n';
+            sMensagem += "O sistema irá vincular todas as matrículas para o turno ( " + $F("ed15_c_nome").trim() + " ).";
 
             if (!confirm(sMensagem)) {
                 return false;
             }
         }
 
-        if (document.form1.ver_cursoprofiss.value == "OK" && document.form1.ed57_i_censocursoprofiss.value == "") {
+        if (document.form1.ver_cursoprofiss.value == "OK" && document.form1.ed29_censocursoprofiss.value == "") {
 
             alert("Informe o Curso Profissionalizante!");
             return false;
@@ -1417,14 +1406,11 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 $('div_censoetapa').innerHTML = "";
                 $('procavalauto0').innerHTML = "";
                 document.getElementById('cursoprofiss').style.visibility = "hidden";
-                document.form1.ed57_i_censocursoprofiss.value = "";
+                document.form1.ed29_censocursoprofiss.value = "";
                 document.form1.ed247_c_descr.value = "";
                 document.form1.ver_cursoprofiss.value = "";
 
             } else {
-
-                verificaCensoCursoProfissionalizante();
-
                 codcenso = document.form1.etapacenso.value;
                 if (document.form1.ed36_c_abrev.value == "ER" && aEtapasEnsinoRegular.in_array(codcenso)) {
 
@@ -1560,7 +1546,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             if (chekado == "") {
 
                 document.getElementById('cursoprofiss').style.visibility = "hidden";
-                document.form1.ed57_i_censocursoprofiss.value = "";
+                document.form1.ed29_censocursoprofiss.value = "";
                 document.form1.ed247_c_descr.value = "";
                 document.form1.ver_cursoprofiss.value = "";
 
@@ -1770,6 +1756,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         var sIdLinha = "";
         var aTurnoReferente = [];
         aTurnoReferente = $F('ed336_turnoreferente').split(", ");
+        aTurnoReferente = [...new Set(aTurnoReferente)];
 
         aTurnoReferente.each(function (sTurno) {
 
@@ -1793,7 +1780,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 "for": sDisponivel
             }).update(" Vagas disponíveis: ");
             var oInputVagas = new Element("input", {
-                "type": "text", "name": sVagas, "size": 8, "id": sVagas, "value": iVagasSala,
+                "type": "number", "name": sVagas, "size": 8, "id": sVagas, "value": iVagasSala,
                 "referente": sTurnoLower.removeAcento(), "class": "vagasTurma"
             });
 
@@ -1863,7 +1850,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         }).update(" Vagas disponíveis: ");
 
         var oInputVagas = new Element("input", {
-            "type": "text", "name": sVagas, "size": 8, "id": sVagas, "value": iVagasSala,
+            "type": "number", "name": sVagas, "size": 8, "id": sVagas, "value": iVagasSala,
             "class": "vagasTurma"
         });
 
@@ -1901,13 +1888,10 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
     }
 
     function js_limparLinhas() {
-
         aLinhasCriadas.each(function (oElement) {
-
             var oPai = oElement.parentNode;
             oPai.removeChild(oElement);
         });
-
         aLinhasCriadas = [];
     }
 
@@ -2061,20 +2045,6 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             $('turnoAdicional').style.display = 'none';
         } else {
             $('turnoAdicional').style.display = 'table-row';
-        }
-    }
-
-    /**
-     * Verifica se a base curricular possui curso profissionalizante
-     */
-    function verificaCensoCursoProfissionalizante() {
-
-        var iCensoCursoProfissionalizante = $F('ed10_censocursoprofiss');
-
-        if (iCensoCursoProfissionalizante != '') {
-
-            js_OpenJanelaIframe('', 'db_iframe_censocursoprofiss', 'func_censocursoprofiss.php?pesquisa_chave=' + iCensoCursoProfissionalizante +
-                '&funcao_js=parent.js_mostracensocursoprofiss1', 'Pesquisa', false);
         }
     }
 

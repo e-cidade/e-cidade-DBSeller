@@ -1,4 +1,4 @@
-<?
+<?php
 $classinatura = new cl_assinatura;
 $xlin = 20;
 $xcol = 4;
@@ -64,10 +64,10 @@ $this->objpdf->text($xcol +2, $xlin +95, 'RECURSOS');
   // escreve os recursos na tela
   $altura_topo = $xlin + 95;
   $listagem = $this->recursos;
-  foreach($listagem as  $chave=>$recurso){   
+  foreach($listagem as  $chave=>$recurso){
        $altura_topo += 5;
-       $sp = split('#',$recurso);
-       $this->objpdf->Setfont('Arial','', 9);     
+       $sp =explode('#',$recurso);
+       $this->objpdf->Setfont('Arial','', 9);
        $this->objpdf->setXY($xcol + 6,$altura_topo);
 
        if ( FONTE_RECURSO_UNIAO ) {
@@ -77,7 +77,7 @@ $this->objpdf->text($xcol +2, $xlin +95, 'RECURSOS');
            $this->objpdf->Cell(100, 4, $sp[1], '0');
        }
        $this->objpdf->Cell(10,4,"R$",'0');
-       $this->objpdf->Cell(20, 4, db_formatar($sp[2],'f'),'0','0','R'); 
+       $this->objpdf->Cell(20, 4, db_formatar($sp[2],'f'),'0','0','R');
 
   }
 
@@ -90,7 +90,7 @@ $ass_tesFunc  = $classinatura->assinatura(1004,"","1");
 $ass_cont     = $classinatura->assinatura(1005,"","0");
 $ass_contFunc = $classinatura->assinatura(1005,"","1");
 
-/// retângulo dos dados da contabilidade 
+/// retângulo dos dados da contabilidade
 
 $this->objpdf->rect($xcol, $xlin +160, $xcol +198, 40, 10, 'DF', '1234');
 $this->objpdf->Setfont('Arial', 'B', 6);

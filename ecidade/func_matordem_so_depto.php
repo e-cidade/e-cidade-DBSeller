@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $departamento=db_getsession("DB_coddepto");
               <?=$Lm51_codordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m51_codordem",10,$Im51_codordem,true,"text",4,"","chave_m51_codordem");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $departamento=db_getsession("DB_coddepto");
               <?=$Lm51_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m51_data",10,$Im51_data,true,"text",4,"","chave_m51_data");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $departamento=db_getsession("DB_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matordem.php")==true){
@@ -119,12 +119,12 @@ $departamento=db_getsession("DB_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

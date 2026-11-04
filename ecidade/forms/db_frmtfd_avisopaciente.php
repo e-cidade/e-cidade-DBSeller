@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf21_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf21_i_codigo',10,$Itf21_i_codigo,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -52,19 +52,19 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf21_i_pedidotfd?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf21_i_pedidotfd',10,$Itf21_i_pedidotfd,true,'text',3,'');
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf01_i_cgsund?>">
-      <?
+      <?php
       echo $Ltf01_i_cgsund;
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf01_i_cgsund',10,$Itf01_i_cgsund,true,'text',3,'');
       db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
       ?>
@@ -75,7 +75,7 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf21_i_formaaviso?>
     </td>
     <td> 
-      <?
+      <?php
       $aX = array();
       $sSql = $oDaotfd_formaaviso->sql_query_file(null, ' * ', ' tf20_i_codigo ');
       $rs = $oDaotfd_formaaviso->sql_record($sSql);
@@ -95,7 +95,7 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf21_t_obs?>
     </td>
     <td> 
-      <?
+      <?php
       db_textarea('tf21_t_obs',2,50,$Itf21_t_obs,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -110,7 +110,7 @@ $clrotulo->label("z01_v_nome");
   <table width="100%">
 	  <tr>
 		  <td valign="top"><br>
-        <?
+        <?php
 				$aChavepri = array ('tf21_i_codigo' => @$tf21_i_codigo,
                             'tf21_i_pedidotfd' => @$tf21_i_pedidotfd, 
                             'tf21_i_formaaviso' => @$tf21_i_formaaviso, 
@@ -158,7 +158,7 @@ $clrotulo->label("z01_v_nome");
 
 function js_cancelar() {
  
-  <?
+  <?php
   echo ' location.href = "'.basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf21_i_pedidotfd='.
                           $tf21_i_pedidotfd.'&tf01_i_cgsund="'.
                           '+document.getElementById(\'tf01_i_cgsund\').value+"&z01_v_nome='.$z01_v_nome.'";'

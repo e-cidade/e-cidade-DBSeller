@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -64,21 +64,21 @@ $clrotulo->label("sd24_t_diagnostico");
 						<?=@$Lsd58_i_codigo?>
 					</td>
 					<td>
-						<?
+						<?php
 						db_input('sd58_i_codigo',10,$Isd58_i_codigo,true,'text',3,"tabIndex='0' ");
 						db_input('sd59_i_codigo',10,$Isd59_i_codigo,true,'hidden',3,"tabIndex='0' ");
 						?>
 					</td>
 					<td align="right" title="<?=@$Tsd58_i_login?>">
 						<?=@$Lsd58_i_login?>
-						<?
+						<?php
 						db_input('sd58_i_login',10,$Isd58_i_login,true,'hidden',3,"tabIndex='0' ");
 						db_input('login',10,$Ilogin,true,'text',3,"tabIndex='0'");
 						?>
 					</td>
 				</tr>
 				<!-- Incluí segunda parte do formulário -->
-				<?
+				<?php
 				include(modification("forms/db_frmsau_lote001.php"));
 				?>
 
@@ -113,12 +113,12 @@ $clrotulo->label("sd24_t_diagnostico");
 				<?=($db_opcao<>1?"disabled":"")?>
 			>
 
-			<?
+			<?php
   			if($db_opcao==3){
-  			?><input name="excluirlote" type="submit" id="excluirlote" value="Excluir Lote" <?=($db_botao==false?"disabled":"")?>  onClick="return confirm('Você quer realmente excluir este registro?')"  ><?
+  			?><input name="excluirlote" type="submit" id="excluirlote" value="Excluir Lote" <?=($db_botao==false?"disabled":"")?>  onClick="return confirm('Você quer realmente excluir este registro?')"  ><?php
   			}
   			if(@$idarq==2||@$idarq==3||@$idarq==22){
-    		?><input name="pesquisarlote" type="button" id="pesquisarlote" value="Consulta Lote" onclick="js_pesquisalote();"> <?
+    		?><input name="pesquisarlote" type="button" id="pesquisarlote" value="Consulta Lote" onclick="js_pesquisalote();"> <?php
   			}
 			?>
 
@@ -465,7 +465,7 @@ function js_preenchepesquisa(chave){
 
 	$('sd59_i_codigo').value = chave;
   db_iframe_sau_lotepront.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?idarq=$idarq&chavepesquisalotepront='+chave";
   ?>
 }
@@ -475,7 +475,7 @@ function js_pesquisalote(){
 }
 function js_preenchepesquisalote(chave){
   db_iframe_sau_lote.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?idarq=$idarq&chavepesquisalote='+chave";
   ?>
 }

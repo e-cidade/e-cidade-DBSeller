@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,7 +64,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_iptuconstr004.php'</script>
 <table border="0">
   <tr>
     <td align="top" colspan="3">
-   <?
+   <?php
       $cliframe_seleciona->campos  = "j31_codigo,j31_descr,j32_descr";
       $cliframe_seleciona->legenda="QUE CONTENHAM ESTAS CARACTERÍSTICAS DE CONSTRUÇÃO";
       $cliframe_seleciona->sql=$clcaracter->sql_query("","*","j32_descr"," j32_tipo = 'C'");
@@ -96,7 +96,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_iptuconstr004.php'</script>
      document.form1.j14_semruas.value = j14_semruas;
      for(i=0;i<caracteristicas.document.form1.length;i++){
        if(caracteristicas.document.form1.elements[i].type == "checkbox"){
-	 if(caracteristicas.document.form1.elements[i].checked == true){
+	    if(caracteristicas.document.form1.elements[i].checked == true){
            x = true;
 	   i = caracteristicas.document.form1.length;
          }else{
@@ -129,11 +129,11 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_iptuconstr004.php'</script>
     </td>
     <td valign='center'>
        
-<?
+<?php
 db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text',1,"")
 ?>
 <strong>&nbsp;À&nbsp;</strong>
-<?
+<?php
 db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text',1,"","j39_dtlanfim")
 ?><br><br>
         <input type="text" name="anoini" size="6">
@@ -153,15 +153,15 @@ db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'t
   </tr>
   <tr>
     <td align="left" nowrap title="<?=@$Tj32_grupo?>">
-       <?
+       <?php
        db_ancora($Lj32_grupo,"js_pesquisagrupo(true)",1);
        ?>
      </td>
      <td>
-<?
+<?php
 db_input('j32_grupo',4,$Ij32_grupo,true,'text',1,"onChange='js_pesquisagrupo(false)'")
 ?>
-<?
+<?php
 db_input('j32_descr',40,$Ij32_descr,true,'text',1,"")
 ?>
  <input type='hidden' name='chaves_caract'>
@@ -179,12 +179,18 @@ db_input('j32_descr',40,$Ij32_descr,true,'text',1,"")
         <input type="text" name="areaini" size="6">
       <strong>&nbsp;e&nbsp;</strong>
         <input type="text" name="areafim" size="6">
-      <strong>&nbsp;m&sup2;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <strong>&nbsp;m&sup2;</strong>&nbsp;&nbsp;
       <strong>Pontuação entre:</strong> 
         <input type="text" name="pontini" size="6">
       <strong>&nbsp;e&nbsp;</strong>
         <input type="text" name="pontfim" size="6">
       <strong>&nbsp;</strong>
+      <strong>Origem:</strong> 
+      <select name="origem">
+        <option value="to">Todas</option>
+        <option value="sn">Somente Novas</option>
+        <option value="sa">Somente Ampliações</option>
+      </select>
     </td>
   </tr>
   <tr>
@@ -236,11 +242,11 @@ db_input('j32_descr',40,$Ij32_descr,true,'text',1,"")
     </td>
     <td nowrap width="50"> 
       <fieldset>
-      <legend><strong>Origem: </strong></legend>
-      <select name="origem">
-        <option value="to">Todas</option>
-        <option value="sn">Somente Novas</option>
-        <option value="sa">Somente Ampliações</option>
+      <legend><strong>Matrícula: </strong></legend>
+      <select name="status">
+        <option value="t">Todas</option>
+        <option value="sa">Somente Ativas</option>
+        <option value="sb">Somente Baixadas</option>
       </select>
       </fieldset>
     </td>
@@ -285,7 +291,7 @@ function js_mostracargrup1(chave1,chave2){
 </table>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=1;

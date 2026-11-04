@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -103,7 +103,7 @@ function js_relatorio(){
 	<tr>
 	  <td colspan="4">
 	    <table>
-	    <?
+	    <?php
 	    $aux = new cl_arquivo_auxiliar;
 	    $aux->cabecalho  = "<strong>Seleciona Clientes</strong>";
 	    $aux->codigo     = "at01_codcli";
@@ -135,7 +135,7 @@ function js_relatorio(){
 	  </td>
     <td colspan="3">
 	  <select name='versao_inicial' >
-    <?
+    <?php
     $cldb_versao = new cl_db_versao;
     $result = $cldb_versao->sql_record($cldb_versao->sql_query_file(null,"db30_codver,db30_codversao,db30_codrelease","db30_codver desc"));
     if( $cldb_versao->numrows > 0 ){
@@ -173,7 +173,7 @@ function js_relatorio(){
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

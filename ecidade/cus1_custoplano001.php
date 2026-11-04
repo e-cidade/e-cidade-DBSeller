@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -74,7 +74,7 @@ $custoplanoanalitica = null;
   <table style="padding-top:15px">
     <tr>
       <td width="500">
-        <?
+        <?php
         include(modification("forms/db_frmcustoplano.php"));
         ?>
       </td>
@@ -84,7 +84,7 @@ $custoplanoanalitica = null;
 <script>
   js_tabulacaoforms("form1", "cc01_instit", true, 1, "cc01_instit", true);
 </script>
-<?
+<?php
 
 if (isset($incluir) && isset($cc01_estrutural)) {
 

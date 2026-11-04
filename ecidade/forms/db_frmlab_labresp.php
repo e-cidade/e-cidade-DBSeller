@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -45,7 +45,7 @@ $clrotulo->label("rh70_descr");
        <?=@$Lla06_i_codigo?>
     </td>
     <td>
-<?
+        <?php
 db_input('la06_i_codigo',10,$Ila06_i_codigo,true,'text',3,"");
 ?>
     </td>
@@ -53,45 +53,45 @@ db_input('la06_i_codigo',10,$Ila06_i_codigo,true,'text',3,"");
        </tr>
   <tr>
     <td nowrap title="<?=@$Tla06_i_laboratorio?>">
-       <?
+        <?php
        db_ancora(@$Lla06_i_laboratorio,"js_pesquisala06_i_laboratorio(true);",3);
        ?>
     </td>
     <td>
-<?
+        <?php
 db_input('la06_i_laboratorio',10,$Ila06_i_laboratorio,true,'text',3,"")
 ?>
-       <?
+        <?php
 db_input('la02_c_descr',40,$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla06_i_cgm?>">
-       <?
+        <?php
        db_ancora(@$Lla06_i_cgm,"js_pesquisala06_i_cgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+        <?php
 db_input('la06_i_cgm',10,$Ila06_i_cgm,true,'text',$db_opcao," onchange='js_pesquisala06_i_cgm(false);'");
 ?>
-       <?
+        <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla06_i_cbo?>">
-       <?
+        <?php
        db_ancora(@$Lla06_i_cbo,"js_pesquisala06_i_cbo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+        <?php
 db_input('la06_i_cbo',10,$Ila06_i_cbo,true,'text',$db_opcao," onchange='js_pesquisala06_i_cbo(false);'");
 ?>
-       <?
+        <?php
 db_input('rh70_descr',40,$Irh70_descr,true,'text',3,'')
        ?>
     </td>
@@ -101,7 +101,7 @@ db_input('rh70_descr',40,$Irh70_descr,true,'text',3,'')
        <?=@$Lla06_c_cns?>
     </td>
     <td>
-<?
+        <?php
 db_input('la06_c_cns',10,$Ila06_c_cns,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('la06_c_cns',10,$Ila06_c_cns,true,'text',$db_opcao,"");
                       <tr>
                         <td nowrap align="right" title="<?=@$Tla06_d_inicio?>">
                            <?=@$Lla06_d_inicio?>
-                         <?
+                           <?php
                           if(isset($la06_d_inicio)&&($la06_d_inicio!="")){
                                        $vet=explode("/",$la06_d_inicio);
                                        $la06_d_inicio_dia=$vet[0];
@@ -128,7 +128,7 @@ db_input('la06_c_cns',10,$Ila06_c_cns,true,'text',$db_opcao,"");
                       <tr>
                       <td nowrap align="right" title="<?=@$Tla06_d_fim?>">
                        <?=@$Lla06_d_fim?>
-                       <?
+                       <?php
                          if(isset($la06_d_fim)&&($la06_d_fim!="")){
                                        $vet=explode("/",$la06_d_fim);
                                        $la06_d_fim_dia=$vet[0];
@@ -151,22 +151,22 @@ db_input('la06_c_cns',10,$Ila06_c_cns,true,'text',$db_opcao,"");
        <?=@$Lla06_c_orgaoclasse?>
     </td>
     <td>
-<?
+        <?php
 db_input('la06_c_orgaoclasse',20,$Ila06_c_orgaoclasse,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr id="linha_tec">
     <td nowrap title="<?=@$Tla06_i_uf?>">
-       <?
+        <?php
        db_ancora(@$Lla06_i_uf,"js_pesquisala06_i_uf(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+        <?php
 db_input('la06_i_uf',10,$Ila06_i_uf,true,'text',$db_opcao," onchange='js_pesquisala06_i_uf(false);'");
 ?>
-       <?
+        <?php
 db_input('db12_uf',2,$Idb12_uf,true,'text',3,'')
        ?>
     </td>
@@ -177,7 +177,7 @@ db_input('db12_uf',2,$Idb12_uf,true,'text',3,'')
          <?=@$Lla06_i_tipo?>
       </td>
       <td>
-         <?$y = array("0"=>"Selecione:::","1"=>"Técnico","2"=>"Legal");
+          <?php $y = array("0"=>"Selecione:::","1"=>"Técnico","2"=>"Legal");
            db_select('la06_i_tipo',$y,true,$db_opcao," onchange='js_tipo(this.value);'");
          ?>
       </td>
@@ -208,7 +208,7 @@ db_input('db12_uf',2,$Idb12_uf,true,'text',3,'')
 <table width="100%">
   <tr>
     <td valign="top"><br>
-      <?
+        <?php
        $chavepri = array ("la06_i_codigo" => @$la06_i_codigo,
                           "la02_c_descr" => @$la02_c_descr ,
                           "z01_nome"=> @$z01_nome,
@@ -373,7 +373,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_labresp.hide();
-  <?
+    <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

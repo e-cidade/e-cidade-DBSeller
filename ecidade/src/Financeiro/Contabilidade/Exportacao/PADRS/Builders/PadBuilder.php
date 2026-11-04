@@ -17,6 +17,12 @@ abstract class PadBuilder
     protected $dados;
 
     /**
+     * Se for para emitir o modelo MGS
+     * @var bool
+     */
+    protected $modeloMGS = false;
+
+    /**
      * Cria a instancia do layout do pad.
      */
     abstract protected function create();
@@ -29,6 +35,20 @@ abstract class PadBuilder
         $this->dados = $dados;
         return $this;
     }
+
+    /**
+     * Até 2023 tanto PAD e MGS emitiam o arquivo no mesmo layout.
+     * Isso mudou agora e esse parâmetro visa realizar os ajustes no layout
+     *
+     * @param $emissaoMGS
+     * @return $this
+     */
+    public function addModelo($emissaoMGS)
+    {
+        $this->modeloMGS = $emissaoMGS;
+        return $this;
+    }
+
 
     /**
      * @return LayoutPad
@@ -46,6 +66,13 @@ abstract class PadBuilder
      */
     abstract protected function processar();
 
+    /**
+     * @param $input
+     * @param $length
+     * @param $padString
+     * @param $type
+     * @return string
+     */
     protected function formatar($input, $length, $padString, $type)
     {
         return str_pad($input, $length, $padString, $type);
@@ -61,35 +88,63 @@ abstract class PadBuilder
         return $this->formatar($string, $length, ' ', STR_PAD_RIGHT);
     }
 
+    /**
+     * @param $valor
+     * @param $length
+     * @return string
+     */
     protected function formataNumerico($valor, $length)
     {
         $numero = preg_replace("/[^\d]/s", '', $valor);
         return $this->formatar($numero, $length, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * @param $valor
+     * @param $length
+     * @return string
+     */
     protected function formatEstrutural($valor, $length)
     {
         return $this->formatar($valor, $length, '0', STR_PAD_RIGHT);
     }
 
+    /**
+     * @param $valor
+     * @param $length
+     * @return string
+     */
     protected function formatEstruturalReceita($valor, $length)
     {
         return $this->formatar($valor, $length, '0', STR_PAD_LEFT);
     }
 
-    public function formataValor($valor, $length)
+    /**
+     * @param $valor
+     * @param $length
+     * @param $comSinalPositivo
+     * @return string
+     */
+    public function formataValor($valor, $length, $comSinalPositivo = false)
     {
         if ($valor < 0) {
             $valor *= -1;
             $numero = number_format($valor, 2, '', '');
             $valor = '-' . $this->formatar($numero, $length - 1, '0', STR_PAD_LEFT);
             return $valor;
+        } elseif ($comSinalPositivo) {
+            $numero = number_format($valor, 2, '', '');
+            return '+' . $this->formatar($numero, $length - 1, '0', STR_PAD_LEFT);
         } else {
             $numero = number_format($valor, 2, '', '');
             return $this->formatar($numero, $length, '0', STR_PAD_LEFT);
         }
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     public function formataData($data)
     {
         $data = implode(array_reverse(explode('-', $data)));

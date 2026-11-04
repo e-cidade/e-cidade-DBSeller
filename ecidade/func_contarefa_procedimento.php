@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,20 +67,20 @@ function js_pesquisa() {
 <tr>
 <td>
 <strong>Modulo:
-<?
+<?php
 global $codmod,$codcliente,$codprocedimento,$codusuario,$tarefas_finalizadas,$at40_sequencial;
 $res = $cldb_sysmodulo->sql_record($cldb_sysmodulo->sql_query_file(null,'*','nomemod'));
 db_selectrecord('codmod',$res,true,2,'','','','0-Todos',' js_pesquisa();');
 ?></strong>
 <strong>
 Procedimento:
-<?
+<?php
 $res = $cldb_syscadproced->sql_record($cldb_syscadproced->sql_query(null,'codproced,substr(descrproced,1,40)::varchar as descrproced',"descrproced",($codmod != 0?" db_syscadproced.codmod = $codmod ":"")));
 db_selectrecord('codprocedimento',$res,true,2,'','','','0-Todos',' js_pesquisa();');
 ?>
 </strong>
 <strong>Clientes:
-<?
+<?php
 $res = $clclientes->sql_record($clclientes->sql_query_file(null,'*','at01_nomecli',' at01_ativo is true '));
 db_selectrecord('codcliente',$res,true,2,'','','','0-Todos',' js_pesquisa();');
 ?>
@@ -91,7 +91,7 @@ db_selectrecord('codcliente',$res,true,2,'','','','0-Todos',' js_pesquisa();');
 <tr>
 <td>
 <strong>Usuário:
-<?
+<?php
 $res = $cldb_usuclientes->sql_record($cldb_usuclientes->sql_query_file(null,'at10_usuario, at10_login','at10_login',($codcliente > 0?" at10_codcli = $codcliente":"")));
 db_selectrecord('codusuario',$res,true,2,'','','','0-Todos',' js_pesquisa();');
 
@@ -123,13 +123,13 @@ db_input("at40_sequencial",10,$Iat40_sequencial,true,'text',2," onchange='js_pes
 <option value="s"<?=($tarefas_finalizadas=='s'?"selected":"")?>>Sim</option>
 </select>
 <strong>Versão do Cliente:</strong>
-<?
+<?php
 if( isset($codver) ) {	
   $resultversao = $cldb_versao->sql_record($cldb_versao->sql_query_file(null,"db30_codver,fc_versao(db30_codversao, db30_codrelease) as versao",'db30_codver desc'));
   db_selectrecord('codver',$resultversao,true,2,"","","","");
 ?>
 <input name='pesquisa_versao' type='submit' value='Pesquisa Versão' > 
-<?
+<?php
 }
 ?>
 </td>
@@ -137,7 +137,7 @@ if( isset($codver) ) {
 </form>
 <tr>
 <td>
-<?
+<?php
 
 if( isset($pesquisa_versao) ) {
 

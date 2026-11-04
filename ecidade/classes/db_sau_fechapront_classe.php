@@ -1,65 +1,65 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE sau_fechapront
 
-class cl_sau_fechapront { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd98_i_codigo = 0; 
-   var $sd98_i_prontproced = 0; 
-   var $sd98_i_fechamento = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_sau_fechapront {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd98_i_codigo = 0;
+   var $sd98_i_prontproced = 0;
+   var $sd98_i_fechamento = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd98_i_codigo = int4 = Código 
-                 sd98_i_prontproced = int4 = Prontproced 
-                 sd98_i_fechamento = int4 = Fechamento 
+                 sd98_i_codigo = int4 = Código
+                 sd98_i_prontproced = int4 = Prontproced
+                 sd98_i_fechamento = int4 = Fechamento
                  ";
-   //funcao construtor da classe 
-   function cl_sau_fechapront() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("sau_fechapront"); 
+     $this->rotulo = new rotulo("sau_fechapront");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_sau_fechapront {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd98_i_codigo = ($this->sd98_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd98_i_codigo"]:$this->sd98_i_codigo);
        $this->sd98_i_prontproced = ($this->sd98_i_prontproced == ""?@$GLOBALS["HTTP_POST_VARS"]["sd98_i_prontproced"]:$this->sd98_i_prontproced);
@@ -78,9 +78,9 @@ class cl_sau_fechapront {
      }
    }
    // funcao para inclusao
-   function incluir ($sd98_i_codigo){ 
+   public function incluir ($sd98_i_codigo){
       $this->atualizacampos();
-     if($this->sd98_i_prontproced == null ){ 
+     if($this->sd98_i_prontproced == null ){
        $this->erro_sql = " Campo Prontproced nao Informado.";
        $this->erro_campo = "sd98_i_prontproced";
        $this->erro_banco = "";
@@ -89,7 +89,7 @@ class cl_sau_fechapront {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd98_i_fechamento == null ){ 
+     if($this->sd98_i_fechamento == null ){
        $this->erro_sql = " Campo Fechamento nao Informado.";
        $this->erro_campo = "sd98_i_fechamento";
        $this->erro_banco = "";
@@ -99,16 +99,16 @@ class cl_sau_fechapront {
        return false;
      }
      if($sd98_i_codigo == "" || $sd98_i_codigo == null ){
-       $result = db_query("select nextval('sau_fechapront_sd98_codigo_seq')"); 
+       $result = db_query("select nextval('sau_fechapront_sd98_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: sau_fechapront_sd98_codigo_seq do campo: sd98_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: sau_fechapront_sd98_codigo_seq do campo: sd98_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->sd98_i_codigo = pg_result($result,0,0); 
+       $this->sd98_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from sau_fechapront_sd98_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $sd98_i_codigo)){
@@ -119,10 +119,10 @@ class cl_sau_fechapront {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->sd98_i_codigo = $sd98_i_codigo; 
+         $this->sd98_i_codigo = $sd98_i_codigo;
        }
      }
-     if(($this->sd98_i_codigo == null) || ($this->sd98_i_codigo == "") ){ 
+     if(($this->sd98_i_codigo == null) || ($this->sd98_i_codigo == "") ){
        $this->erro_sql = " Campo sd98_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -131,17 +131,17 @@ class cl_sau_fechapront {
        return false;
      }
      $sql = "insert into sau_fechapront(
-                                       sd98_i_codigo 
-                                      ,sd98_i_prontproced 
-                                      ,sd98_i_fechamento 
+                                       sd98_i_codigo
+                                      ,sd98_i_prontproced
+                                      ,sd98_i_fechamento
                        )
                 values (
-                                $this->sd98_i_codigo 
-                               ,$this->sd98_i_prontproced 
-                               ,$this->sd98_i_fechamento 
+                                $this->sd98_i_codigo
+                               ,$this->sd98_i_prontproced
+                               ,$this->sd98_i_fechamento
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "sau_fechapront ($this->sd98_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -165,16 +165,16 @@ class cl_sau_fechapront {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd98_i_codigo=null) { 
+   public function alterar ($sd98_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update sau_fechapront set ";
      $virgula = "";
-     if(trim($this->sd98_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd98_i_codigo"])){ 
+     if(trim($this->sd98_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd98_i_codigo"])){
        $sql  .= $virgula." sd98_i_codigo = $this->sd98_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd98_i_codigo) == null ){ 
+       if(trim($this->sd98_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd98_i_codigo";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_sau_fechapront {
          return false;
        }
      }
-     if(trim($this->sd98_i_prontproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd98_i_prontproced"])){ 
+     if(trim($this->sd98_i_prontproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd98_i_prontproced"])){
        $sql  .= $virgula." sd98_i_prontproced = $this->sd98_i_prontproced ";
        $virgula = ",";
-       if(trim($this->sd98_i_prontproced) == null ){ 
+       if(trim($this->sd98_i_prontproced) == null ){
          $this->erro_sql = " Campo Prontproced nao Informado.";
          $this->erro_campo = "sd98_i_prontproced";
          $this->erro_banco = "";
@@ -197,10 +197,10 @@ class cl_sau_fechapront {
          return false;
        }
      }
-     if(trim($this->sd98_i_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd98_i_fechamento"])){ 
+     if(trim($this->sd98_i_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd98_i_fechamento"])){
        $sql  .= $virgula." sd98_i_fechamento = $this->sd98_i_fechamento ";
        $virgula = ",";
-       if(trim($this->sd98_i_fechamento) == null ){ 
+       if(trim($this->sd98_i_fechamento) == null ){
          $this->erro_sql = " Campo Fechamento nao Informado.";
          $this->erro_campo = "sd98_i_fechamento";
          $this->erro_banco = "";
@@ -215,7 +215,7 @@ class cl_sau_fechapront {
        $sql .= " sd98_i_codigo = $this->sd98_i_codigo";
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "sau_fechapront nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd98_i_codigo;
@@ -243,11 +243,11 @@ class cl_sau_fechapront {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd98_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd98_i_codigo=null,$dbwhere=null) {
      $sql = " delete from sau_fechapront
                     where ";
      $sql2 = "";
@@ -262,7 +262,7 @@ class cl_sau_fechapront {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "sau_fechapront nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd98_i_codigo;
@@ -290,11 +290,11 @@ class cl_sau_fechapront {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -316,11 +316,11 @@ class cl_sau_fechapront {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $sd98_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $sd98_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -340,15 +340,15 @@ class cl_sau_fechapront {
      $sql2 = "";
      if($dbwhere==""){
        if($sd98_i_codigo!=null ){
-         $sql2 .= " where sau_fechapront.sd98_i_codigo = $sd98_i_codigo "; 
-       } 
+         $sql2 .= " where sau_fechapront.sd98_i_codigo = $sd98_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,11 +357,11 @@ class cl_sau_fechapront {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $sd98_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $sd98_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -374,15 +374,15 @@ class cl_sau_fechapront {
      $sql2 = "";
      if($dbwhere==""){
        if($sd98_i_codigo!=null ){
-         $sql2 .= " where sau_fechapront.sd98_i_codigo = $sd98_i_codigo "; 
-       } 
+         $sql2 .= " where sau_fechapront.sd98_i_codigo = $sd98_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

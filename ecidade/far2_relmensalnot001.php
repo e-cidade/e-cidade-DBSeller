@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,7 +86,7 @@ db_postmemory($HTTP_POST_VARS);
                 <b> Mês :</b>
               </td>
               <td nowrap>
-	            <?
+	            <?php
                   $p= array("0"=>"Escolha um Mês",
                             "01"=>"JANEIRO","02"=>"FEVEREIRO",
                             "03"=>"MARÇO",
@@ -120,7 +120,7 @@ db_postmemory($HTTP_POST_VARS);
 	    <input  name="emite2" id="emite2" type="button" value="Imprimir" onclick="js_emite();" >
 	  </center>
     </form>
-	<?
+	<?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>

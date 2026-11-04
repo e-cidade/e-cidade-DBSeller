@@ -55,7 +55,7 @@ if(isset($chavepesquisa)) {
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='tfd1_tfd_tipotratamentodoc001.php?tf06_i_tipotratamento=<?=@$chavepesquisa?>&tf04_c_descr=<?=@$tf04_c_descr?>';
 
      </script>
-<?
+<?php
 }
 ?>
 <html>
@@ -74,7 +74,7 @@ if(isset($chavepesquisa)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <fieldset style='width: 75%;'> <legend><b>Tratamento</b></legend>
-      	<?
+      	<?php
 	      require_once(modification("forms/db_frmtfd_tipotratamento.php"));
 	      ?>
       </fieldset>
@@ -88,7 +88,7 @@ if(isset($chavepesquisa)) {
 <script>
 js_tabulacaoforms("form1","tf04_c_descr",true,1,"tf04_c_descr",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($cltfd_tipotratamento->erro_status=="0"){
     $cltfd_tipotratamento->erro(true,false);

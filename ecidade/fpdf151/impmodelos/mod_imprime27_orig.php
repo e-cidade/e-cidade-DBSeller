@@ -1,4 +1,4 @@
-<?
+<?php
 global $contapagina;
 	$contapagina=1;
 ////////// MODELO 26  -  TRANSFERÊNCIAS DE MATERIAIS 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -770,7 +770,7 @@ if (isset($incluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <br>
-      <?
+      <?php
 			if (USE_PCASP && db_getsession("DB_anousu") >= 2013) {
 
 			  $sMensagem  = "Esta rotina está desabilitada para o ano de 2013.\\n";
@@ -791,7 +791,7 @@ if (isset($incluir)) {
 
 </body>
 </html>
-<?
+<?php
 if (isset ($incluir) || (isset($importar) && $importar == true)) {
 	if (isset ($perg_msg)) {
 		echo "<script>";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_impres {
                  d50_padrao = bool = Se padrao ou nao 
                  ";
    //funcao construtor da classe 
-   function cl_impres() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("impres"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_impres {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d50_codigo = ($this->d50_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["d50_codigo"]:$this->d50_codigo);
        $this->d50_descr = ($this->d50_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["d50_descr"]:$this->d50_descr);
@@ -80,7 +80,7 @@ class cl_impres {
      }
    }
    // funcao para inclusao
-   function incluir ($d50_codigo){ 
+   public function incluir ($d50_codigo){ 
       $this->atualizacampos();
      if($this->d50_descr == null ){ 
        $this->erro_sql = " Campo descricao da impressora nao Informado.";
@@ -168,7 +168,7 @@ class cl_impres {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($d50_codigo=null) { 
+   public function alterar ($d50_codigo=null) { 
       $this->atualizacampos();
      $sql = " update impres set ";
      $virgula = "";
@@ -278,7 +278,7 @@ class cl_impres {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($d50_codigo=null,$dbwhere=null) { 
+   public function excluir ($d50_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d50_codigo));
      }else{ 
@@ -342,7 +342,7 @@ class cl_impres {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

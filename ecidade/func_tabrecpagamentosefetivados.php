@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $cltabrec->rotulo->label("k02_descr");
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tk02_codigo?>"><?=$Lk02_codigo?></td>
             <td width="96%" align="left" nowrap> 
-              <? 
+              <?php 
                 db_input("k02_codigo",4,$Ik02_codigo,true,"text",1,"","chave_k02_codigo");
               ?>
             </td>
@@ -65,7 +65,7 @@ $cltabrec->rotulo->label("k02_descr");
           <tr>             
             <td width="4%" align="right" nowrap title="<?=$Tk02_descr?>"><?=$Lk02_descr?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("k02_descr",15,$Ik02_descr,true,"text",1,"","chave_k02_descr"); ?>
+              <?php db_input("k02_descr",15,$Ik02_descr,true,"text",1,"","chave_k02_descr"); ?>
             </td>
           </tr>
           <tr> 
@@ -81,7 +81,7 @@ $cltabrec->rotulo->label("k02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
       	
         if(isset($campos)==false){
@@ -153,14 +153,14 @@ $cltabrec->rotulo->label("k02_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_k02_codigo.focus();
 document.form2.chave_k02_codigo.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

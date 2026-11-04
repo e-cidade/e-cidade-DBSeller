@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clselecao->rotulo->label();
@@ -46,7 +46,7 @@ $TRTDF = "
 $tagaf = true;
 
 if(isset($valores_campos_rel)){
-	$arr_pontos = split(",",$valores_campos_rel);
+	$arr_pontos =explode(",",$valores_campos_rel);
 	$pontosselecionados = "<table cellspacing='10' width='100%'>";
 	for($ii=0; $ii<count($arr_pontos); $ii++){
 		$ponto = $arr_pontos[$ii];
@@ -212,8 +212,8 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
   </tr>
   <tr>
     <td colspan="2" align='center'>
-    <?
-    if($iae != "e"){ 
+    <?php
+    if($iae != "e"){
     ?>
       <fieldset>
         <Legend align="left">
@@ -237,7 +237,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('r90_valor',15, $Ir90_valor, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'valoratu');
 			                ?>
 								    </td>
@@ -248,7 +248,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('r90_valor',15, $Ir90_valor, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'valornov');
 			                ?>
 								    </td>
@@ -259,12 +259,12 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('porcentv', 3, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'");
 			                ?>
 								    </td>
 								    <td>
-								      <?
+								      <?php
 				              db_select("sosuv",$arr_opcao,true,1,"");
                       ?>
 								    </td>
@@ -275,15 +275,15 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 		      </table>
         </center>
       </fieldset>
-      <?
+      <?php
        }
        ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align='center'>
-    <?
-    if($iae != "e"){ 
+    <?php
+    if($iae != "e"){
     ?>
       <fieldset>
         <Legend align="left">
@@ -307,7 +307,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('r90_quant',15, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'quantatu');
 			                ?>
 								    </td>
@@ -318,7 +318,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('r90_quant',15, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'quantnov');
 			                ?>
 								    </td>
@@ -329,12 +329,12 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('porcentq', 3, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'");
 			                ?>
 								    </td>
 								    <td>
-								      <?
+								      <?php
 				              db_select("sosuq",$arr_opcao,true,1,"");
                       ?>
 								    </td>
@@ -345,15 +345,15 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 		      </table>
         </center>
       </fieldset>
-      <?
+      <?php
       }
       ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align='center'>
-    <?
-    if($iae != "e"){ 
+    <?php
+    if($iae != "e"){
     ?>
       <fieldset>
         <Legend align="left">
@@ -374,7 +374,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('r90_datlim',15, $Ir90_datlim, true, 'text', 1, "onKeyUp='js_mascaradata(this.value, this.name, false);' onchange='js_desabcampos(this.name);'", "datlimatu");
 			                ?>
 								    </td>
@@ -385,7 +385,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?
+								      <?php
 			                db_input('r90_datlim',15, $Ir90_datlim, true, 'text', 1, "onKeyUp='js_mascaradata(this.value, this.name, true);' onchange='js_desabcampos(this.name);'", "datlimnov");
 			                ?>
 								    </td>
@@ -396,7 +396,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 		      </table>
         </center>
       </fieldset>
-      <?    
+      <?php
       }
       ?>
     </td>
@@ -409,7 +409,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
     </td>
   </tr>
 </table>
-<?
+<?php
 db_input('rh27_rubric',15,"",true,'hidden',3);
 db_input('valores_campos_rel',15, "", true, 'hidden', 3);
 db_input('r44_selec',15, "", true, 'hidden', 3);
@@ -433,7 +433,7 @@ function js_testecampos(){
 		obrigav = false;
 		obrigaq = false;
 		obrigad = false;
-	
+
 		obrigaV = false;
 		obrigaQ = false;
 		obrigaD = false;
@@ -478,7 +478,7 @@ function js_testecampos(){
 			erro ++;
 			obrigaD = true;
 		}
-	
+
 	  if(obrigav == true && obrigaV == false){
 	  	alert("Informe o novo valor ou uma porcentagem a acrescentar ao valor.");
 	  	return false;
@@ -490,7 +490,7 @@ function js_testecampos(){
 	  	return false;
 	  }
   }else{
-    erro ++;  
+    erro ++;
   }
 
   if(erro == 0){
@@ -603,7 +603,7 @@ function js_trancadtl(atu,nov){
 	    document.form1.datlimatu.readOnly = false;
 	    document.form1.datlimatu.style.backgroundColor="";
 		}
-	
+
 	  if(nov == true){
 			document.form1.datlimnov.value    = "";
 	    document.form1.datlimnov.readOnly = true;
@@ -751,7 +751,7 @@ function js_mascaradata(valor,campo,VERANOMES){
   	  }
     }
   }
-  
+
   xz.value = valor;
   return js_verificaposicoes(valor,'false',campo,VERANOMES);
 
@@ -777,7 +777,7 @@ function js_verificaposicoes(valor,TorF,campo,VERANOMES){
     mesi = new Number(mes);
     anot = new Number("<?=db_anofolha();?>");
     mest = new Number("<?=db_mesfolha();?>");
-    
+
    	if(ano.match(expr)){
       erro ++;
   	}else if(mes.match(expr)){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("g02_descr");
        <?=@$Lg01_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_id',5,$Ig01_id,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tg01_tipocon?>">
-       <?
+       <?php
        db_ancora(@$Lg01_tipocon,"js_pesquisag01_tipocon(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_tipocon',4,$Ig01_tipocon,true,'text',$db_opcao," onchange='js_pesquisag01_tipocon(false);'")
 ?>
-       <?
+       <?php
 db_input('g02_descr',40,$Ig02_descr,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('g02_descr',40,$Ig02_descr,true,'text',3,'')
        <?=@$Lg01_organizacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_organizacao',50,$Ig01_organizacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('g01_organizacao',50,$Ig01_organizacao,true,'text',$db_opcao,"")
        <?=@$Lg01_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_nome',40,$Ig01_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('g01_nome',40,$Ig01_nome,true,'text',$db_opcao,"")
        <?=@$Lg01_rua?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_rua',50,$Ig01_rua,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('g01_rua',50,$Ig01_rua,true,'text',$db_opcao,"")
        <?=@$Lg01_bairro?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_bairro',40,$Ig01_bairro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('g01_bairro',40,$Ig01_bairro,true,'text',$db_opcao,"")
        <?=@$Lg01_cidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_cidade',50,$Ig01_cidade,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('g01_cidade',50,$Ig01_cidade,true,'text',$db_opcao,"")
        <?=@$Lg01_uf?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_uf',2,$Ig01_uf,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ db_input('g01_uf',2,$Ig01_uf,true,'text',$db_opcao,"")
        <?=@$Lg01_cep?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_cep',12,$Ig01_cep,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_input('g01_cep',12,$Ig01_cep,true,'text',$db_opcao,"")
        <?=@$Lg01_telef?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_telef',12,$Ig01_telef,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -143,7 +143,7 @@ db_input('g01_telef',12,$Ig01_telef,true,'text',$db_opcao,"")
        <?=@$Lg01_fax?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_fax',12,$Ig01_fax,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_input('g01_fax',12,$Ig01_fax,true,'text',$db_opcao,"")
        <?=@$Lg01_celular?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_celular',12,$Ig01_celular,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('g01_celular',12,$Ig01_celular,true,'text',$db_opcao,"")
        <?=@$Lg01_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('g01_obs',3,80,$Ig01_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ db_textarea('g01_obs',3,80,$Ig01_obs,true,'text',$db_opcao,"")
        <?=@$Lg01_email?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_email',40,$Ig01_email,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -183,7 +183,7 @@ db_input('g01_email',40,$Ig01_email,true,'text',$db_opcao,"")
        <?=@$Lg01_site?>
     </td>
     <td> 
-<?
+<?php
 db_input('g01_site',40,$Ig01_site,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -222,7 +222,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_contatos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

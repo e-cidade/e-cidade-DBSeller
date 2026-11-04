@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,11 +50,11 @@ $Icodigo = 1;
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lcodigo?></label></td>
-          <td><? db_input("codigo",2,$Icodigo,true,"text",4,"","chave_codigo"); ?></td>
+          <td><?php db_input("codigo",2,$Icodigo,true,"text",4,"","chave_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lnomeinst?></label></td>
-          <td><? db_input("nomeinst",25,$Inomeinst,true,"text",4,"","chave_nomeinst");?></td>
+          <td><?php db_input("nomeinst",25,$Inomeinst,true,"text",4,"","chave_nomeinst");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +62,7 @@ $Icodigo = 1;
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_db_config.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_config.php")==true){
@@ -104,12 +104,12 @@ $Icodigo = 1;
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,71 +1,71 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Caixa
 //CLASSE DA ENTIDADE tabplansaldorecursomov
-class cl_tabplansaldorecursomov { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k113_sequencial = 0; 
-   var $k113_recurso = 0; 
-   var $k113_conta = 0; 
-   var $k113_valor = 0; 
-   var $k113_data_dia = null; 
-   var $k113_data_mes = null; 
-   var $k113_data_ano = null; 
-   var $k113_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tabplansaldorecursomov {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k113_sequencial = 0;
+   var $k113_recurso = 0;
+   var $k113_conta = 0;
+   var $k113_valor = 0;
+   var $k113_data_dia = null;
+   var $k113_data_mes = null;
+   var $k113_data_ano = null;
+   var $k113_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k113_sequencial = int4 = Código Sequêncial 
-                 k113_recurso = int4 = Código do Recurso 
-                 k113_conta = int4 = Cód. Plano Contas 
-                 k113_valor = float8 = Valor 
-                 k113_data = date = Data 
+                 k113_sequencial = int4 = Código Sequêncial
+                 k113_recurso = int4 = Código do Recurso
+                 k113_conta = int4 = Cód. Plano Contas
+                 k113_valor = float8 = Valor
+                 k113_data = date = Data
                  ";
-   //funcao construtor da classe 
-   function cl_tabplansaldorecursomov() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tabplansaldorecursomov"); 
+     $this->rotulo = new rotulo("tabplansaldorecursomov");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_tabplansaldorecursomov {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k113_sequencial = ($this->k113_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k113_sequencial"]:$this->k113_sequencial);
        $this->k113_recurso = ($this->k113_recurso == ""?@$GLOBALS["HTTP_POST_VARS"]["k113_recurso"]:$this->k113_recurso);
@@ -93,9 +93,9 @@ class cl_tabplansaldorecursomov {
      }
    }
    // funcao para inclusao
-   function incluir ($k113_sequencial){ 
+   public function incluir ($k113_sequencial){
       $this->atualizacampos();
-     if($this->k113_recurso == null ){ 
+     if($this->k113_recurso == null ){
        $this->erro_sql = " Campo Código do Recurso nao Informado.";
        $this->erro_campo = "k113_recurso";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_tabplansaldorecursomov {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k113_conta == null ){ 
+     if($this->k113_conta == null ){
        $this->erro_sql = " Campo Cód. Plano Contas nao Informado.";
        $this->erro_campo = "k113_conta";
        $this->erro_banco = "";
@@ -113,10 +113,10 @@ class cl_tabplansaldorecursomov {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k113_valor == null ){ 
+     if($this->k113_valor == null ){
        $this->k113_valor = "0";
      }
-     if($this->k113_data == null ){ 
+     if($this->k113_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "k113_data_dia";
        $this->erro_banco = "";
@@ -126,16 +126,16 @@ class cl_tabplansaldorecursomov {
        return false;
      }
      if($k113_sequencial == "" || $k113_sequencial == null ){
-       $result = db_query("select nextval('tabplansaldorecursomov_k113_sequencial_seq')"); 
+       $result = db_query("select nextval('tabplansaldorecursomov_k113_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tabplansaldorecursomov_k113_sequencial_seq do campo: k113_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tabplansaldorecursomov_k113_sequencial_seq do campo: k113_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k113_sequencial = pg_result($result,0,0); 
+       $this->k113_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tabplansaldorecursomov_k113_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k113_sequencial)){
@@ -146,10 +146,10 @@ class cl_tabplansaldorecursomov {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k113_sequencial = $k113_sequencial; 
+         $this->k113_sequencial = $k113_sequencial;
        }
      }
-     if(($this->k113_sequencial == null) || ($this->k113_sequencial == "") ){ 
+     if(($this->k113_sequencial == null) || ($this->k113_sequencial == "") ){
        $this->erro_sql = " Campo k113_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -158,21 +158,21 @@ class cl_tabplansaldorecursomov {
        return false;
      }
      $sql = "insert into tabplansaldorecursomov(
-                                       k113_sequencial 
-                                      ,k113_recurso 
-                                      ,k113_conta 
-                                      ,k113_valor 
-                                      ,k113_data 
+                                       k113_sequencial
+                                      ,k113_recurso
+                                      ,k113_conta
+                                      ,k113_valor
+                                      ,k113_data
                        )
                 values (
-                                $this->k113_sequencial 
-                               ,$this->k113_recurso 
-                               ,$this->k113_conta 
-                               ,$this->k113_valor 
-                               ,".($this->k113_data == "null" || $this->k113_data == ""?"null":"'".$this->k113_data."'")." 
+                                $this->k113_sequencial
+                               ,$this->k113_recurso
+                               ,$this->k113_conta
+                               ,$this->k113_valor
+                               ,".($this->k113_data == "null" || $this->k113_data == ""?"null":"'".$this->k113_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Movimentações dos Saldos Extras ($this->k113_sequencial) nao Incluído. Inclusao Abortada.";
@@ -208,16 +208,16 @@ class cl_tabplansaldorecursomov {
        $resac = db_query("insert into db_acount values($acount,2561,14545,'','".AddSlashes(pg_result($resaco,0,'k113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k113_sequencial=null) { 
+   public function alterar ($k113_sequencial=null) {
       $this->atualizacampos();
      $sql = " update tabplansaldorecursomov set ";
      $virgula = "";
-     if(trim($this->k113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_sequencial"])){ 
+     if(trim($this->k113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_sequencial"])){
        $sql  .= $virgula." k113_sequencial = $this->k113_sequencial ";
        $virgula = ",";
-       if(trim($this->k113_sequencial) == null ){ 
+       if(trim($this->k113_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequêncial nao Informado.";
          $this->erro_campo = "k113_sequencial";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_tabplansaldorecursomov {
          return false;
        }
      }
-     if(trim($this->k113_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_recurso"])){ 
+     if(trim($this->k113_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_recurso"])){
        $sql  .= $virgula." k113_recurso = $this->k113_recurso ";
        $virgula = ",";
-       if(trim($this->k113_recurso) == null ){ 
+       if(trim($this->k113_recurso) == null ){
          $this->erro_sql = " Campo Código do Recurso nao Informado.";
          $this->erro_campo = "k113_recurso";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_tabplansaldorecursomov {
          return false;
        }
      }
-     if(trim($this->k113_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_conta"])){ 
+     if(trim($this->k113_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_conta"])){
        $sql  .= $virgula." k113_conta = $this->k113_conta ";
        $virgula = ",";
-       if(trim($this->k113_conta) == null ){ 
+       if(trim($this->k113_conta) == null ){
          $this->erro_sql = " Campo Cód. Plano Contas nao Informado.";
          $this->erro_campo = "k113_conta";
          $this->erro_banco = "";
@@ -253,17 +253,17 @@ class cl_tabplansaldorecursomov {
          return false;
        }
      }
-     if(trim($this->k113_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){ 
-        if(trim($this->k113_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){ 
-           $this->k113_valor = "0" ; 
-        } 
+     if(trim($this->k113_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){
+        if(trim($this->k113_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){
+           $this->k113_valor = "0" ;
+        }
        $sql  .= $virgula." k113_valor = $this->k113_valor ";
        $virgula = ",";
      }
-     if(trim($this->k113_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"] !="") ){ 
+     if(trim($this->k113_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"] !="") ){
        $sql  .= $virgula." k113_data = '$this->k113_data' ";
        $virgula = ",";
-       if(trim($this->k113_data) == null ){ 
+       if(trim($this->k113_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k113_data_dia";
          $this->erro_banco = "";
@@ -272,11 +272,11 @@ class cl_tabplansaldorecursomov {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"])){
          $sql  .= $virgula." k113_data = null ";
          $virgula = ",";
-         if(trim($this->k113_data) == null ){ 
+         if(trim($this->k113_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k113_data_dia";
            $this->erro_banco = "";
@@ -311,7 +311,7 @@ class cl_tabplansaldorecursomov {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Movimentações dos Saldos Extras nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k113_sequencial;
@@ -339,14 +339,14 @@ class cl_tabplansaldorecursomov {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k113_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k113_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k113_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -376,7 +376,7 @@ class cl_tabplansaldorecursomov {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Movimentações dos Saldos Extras nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k113_sequencial;
@@ -404,11 +404,11 @@ class cl_tabplansaldorecursomov {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -430,11 +430,11 @@ class cl_tabplansaldorecursomov {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,15 +450,15 @@ class cl_tabplansaldorecursomov {
      $sql2 = "";
      if($dbwhere==""){
        if($k113_sequencial!=null ){
-         $sql2 .= " where tabplansaldorecursomov.k113_sequencial = $k113_sequencial "; 
-       } 
+         $sql2 .= " where tabplansaldorecursomov.k113_sequencial = $k113_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,11 +467,11 @@ class cl_tabplansaldorecursomov {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,15 +484,15 @@ class cl_tabplansaldorecursomov {
      $sql2 = "";
      if($dbwhere==""){
        if($k113_sequencial!=null ){
-         $sql2 .= " where tabplansaldorecursomov.k113_sequencial = $k113_sequencial "; 
-       } 
+         $sql2 .= " where tabplansaldorecursomov.k113_sequencial = $k113_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

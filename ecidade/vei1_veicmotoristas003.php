@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,11 +61,11 @@ $db_opcao   = 3;
           <?php
           $clcriaabas->identifica = array(
             "veicmotoristas" => "Dados do Motorista",
-            "veicmotoristascentral" => "Central de Veículos"
+            "veicmotoristascentral" => "Central de VeÃ­culos"
           );
           $clcriaabas->title      = array(
             "veicmotoristas" => "Dados do Motorista",
-            "veicmotoristascentral" => "Central de Veículos"
+            "veicmotoristascentral" => "Central de VeÃ­culos"
           );
           $clcriaabas->src        = array("veicmotoristas" => "vei1_veicmotoristas006.php");
           $clcriaabas->disabled   = array(

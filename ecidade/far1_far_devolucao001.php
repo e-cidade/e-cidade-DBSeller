@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ if(isset($incluir)){
   <tr> 
     <td  align="left" valign="top" bgcolor="#CCCCCC"> 
      <fieldset style="width:95%"><legend><b>Inclusão Devolução</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmfar_devolucao.php"));
 	?>
 	</fieldset>
@@ -65,7 +65,7 @@ if(isset($incluir)){
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -74,7 +74,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","fa22_i_cgsund",true,1,"fa22_i_cgsund",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clfar_devolucao->erro_status=="0"){
     $clfar_devolucao->erro(true,false);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -89,7 +89,7 @@ if($clrhfopag->numrows > 0){
       <tr>
 
 	<td nowrap align='left'>
-  <?
+  <?php
   db_input('AArquivo',46,"",true,'file',1,"");
   ?>
 	</td>
@@ -101,21 +101,21 @@ if($clrhfopag->numrows > 0){
 	
       <tr>
        	<td colspan="2" align = "center">
-          <?
+          <?php
             if($excluir == true){
           ?>    
              <input  name="gera" id="gera" type="submit" value="Gera" onclick ='return js_confirma()'>
-          <?
+          <?php
             }else{
           ?>    
              <input  name="gera" id="gera" type="submit" value="Gera">
 
-          <?
+          <?php
             }
           ?>  
         </td>
       </tr>
-<?
+<?php
 // testa se esta setado o bota de carregamento e se o input nao esta vazio
 if(isset($gera) && $AArquivo != ""){
 
@@ -197,7 +197,7 @@ if(isset($gera) && $AArquivo != ""){
 ?>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

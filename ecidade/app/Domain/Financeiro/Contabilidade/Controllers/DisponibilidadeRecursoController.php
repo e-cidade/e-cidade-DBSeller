@@ -1,12 +1,12 @@
 <?php
 namespace App\Domain\Financeiro\Contabilidade\Controllers;
 
-use App\Domain\Financeiro\Contabilidade\Services\DisponibilidadeRecursoService;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
-use stdClass;
+use App\Domain\Financeiro\Contabilidade\Services\DisponibilidadeRecursoService;
+use App\Http\Controllers\Controller;
 use DBDate;
+use Illuminate\Http\Request;
+use stdClass;
 
 /**
  * Class DisponibilidadeRecursoController
@@ -33,14 +33,14 @@ class DisponibilidadeRecursoController extends Controller
     {
         $this->parseFiltros($request);
         $file = $this->service->relatorioConferenciaPorRecurso($this->filtros);
-        return new DBJsonResponse(['pdf' => $file]);
+        return new DBJsonResponse(['arquivos' => $file]);
     }
-    
+
     public function obterDadosConferenciaPorRecurso(Request $request)
     {
         $this->parseFiltros($request);
-        $response = $this->service->obterDadosConferenciaPorRecurso($this->filtros);
-        return new DBJsonResponse($response);
+        $response = $this->service->apenasDadosComDiferenca($this->filtros);
+        return new DBJsonResponse(array_values($response));
     }
 
     private function parseFiltros(Request $request)
@@ -65,6 +65,11 @@ class DisponibilidadeRecursoController extends Controller
         $filtros->dataFinal = DBDate::converter($request->dataFinal);
         $filtros->instituicoes = implode(", ", $request->instituicoes);
         $filtros->ano = $request->DB_anousu;
+
+        $filtros->modeloEmissao = 1;
+        if ($request->has('modeloEmissao')) {
+            $filtros->modeloEmissao = $request->modeloEmissao;
+        }
 
         $this->filtros =  $filtros;
     }

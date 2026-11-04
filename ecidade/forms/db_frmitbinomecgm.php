@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("z01_nome");
        <?=@$Lit21_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('it21_sequencial',10,$Iit21_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit21_itbinome?>">
-       <?
+       <?php
        db_ancora(@$Lit21_itbinome,"js_pesquisait21_itbinome(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it21_itbinome',10,$Iit21_itbinome,true,'text',$db_opcao," onchange='js_pesquisait21_itbinome(false);'")
 ?>
-       <?
+       <?php
 db_input('it03_seq',10,$Iit03_seq,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit21_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lit21_numcgm,"js_pesquisait21_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it21_numcgm',10,$Iit21_numcgm,true,'text',$db_opcao," onchange='js_pesquisait21_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbinomecgm.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

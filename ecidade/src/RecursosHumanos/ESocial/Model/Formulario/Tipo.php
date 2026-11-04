@@ -169,6 +169,8 @@ class Tipo
      */
     const INFORMACOES_COMPLEMENTARES_EVENTOS_PERIODICOS = 56;
 
+    const EXAME_TOXICOLOGICO_MOTORISTA_PROFISSIONAL_EMPREGADO = 57;
+
     /**
      * Cessão/Exercício em Outro Órgão
      */
@@ -412,6 +414,10 @@ class Tipo
      */
     const S2220 = 2220;
     /**
+     * S-2220
+     */
+    const S2221 = 2221;
+    /**
      * S-2230
      */
     const S2230 = 2230;
@@ -576,6 +582,7 @@ class Tipo
             Tipo::S2206 => "S2206 - Alteração de Contrato de Trabalho",
             Tipo::S2210 => "S2210 - Comunicação de Acidente de Trabalho",
             Tipo::S2220 => "S2220 - Monitoramento da Saúde do Trabalhador",
+            Tipo::S2221 => "S2221 - Exame Toxicológico do Motorista Profissional Empregado",
             Tipo::S2230 => "S2230 - Afastamento Temporário",
             Tipo::S2231 => "S2231 - Cessão/Exercício em Outro Órgão",
             Tipo::S2240 => "S2240 - Condições Ambientais do Trabalho - Agentes Nocivos",
@@ -636,6 +643,7 @@ class Tipo
             Tipo::S2205,
             Tipo::S2210,
             Tipo::S2220,
+            Tipo::S2221,
             Tipo::S2230,
             Tipo::S2240,
             Tipo::S2298,
@@ -703,6 +711,8 @@ class Tipo
             Tipo::ALTERACAO_CONTRATUAL => "S2206 - Alteração de Contrato de Trabalho",
             Tipo::CAT => "S2210 - Comunicação de Acidente de Trabalho",
             Tipo::MONITORAMENTO_SAUDE => "S2220 - Monitoramento da Saúde do Trabalhador",
+            Tipo::EXAME_TOXICOLOGICO_MOTORISTA_PROFISSIONAL_EMPREGADO =>
+                "S2221 - Exame Toxicológico do Motorista Profissional Empregado",
             Tipo::AFASTAMENTO_TEMPORARIO => "S2230 - Afastamento Temporário",
             Tipo::CESSAO_EXERCICIO => "S2231 - Cessão/Exercício em Outro Órgão",
             Tipo::EXPOSICAO_RISCO => "S2240 - Condições Ambientais do Trabalho - Agentes Nocivos",
@@ -837,6 +847,7 @@ class Tipo
             Tipo::S2206 => Tipo::ALTERACAO_CONTRATUAL,
             Tipo::S2210 => Tipo::CAT,
             Tipo::S2220 => Tipo::MONITORAMENTO_SAUDE,
+            Tipo::S2221 => Tipo::EXAME_TOXICOLOGICO_MOTORISTA_PROFISSIONAL_EMPREGADO,
             Tipo::S2230 => Tipo::AFASTAMENTO_TEMPORARIO,
             Tipo::S2231 => Tipo::CESSAO_EXERCICIO,
             Tipo::S2240 => Tipo::EXPOSICAO_RISCO,
@@ -2526,9 +2537,9 @@ class Tipo
             return [];
         }
         if ($reenvio) {
-            return [['layout' => Tipo::S2210 ]];
+            return [['layout' => Tipo::S2210 ], ['layout' => Tipo::S2221 ]];
         }
-        return [['layout' => Tipo::S2210 ]];
+        return [['layout' => Tipo::S2210 ], ['layout' => Tipo::S2221 ]];
     }
 
     /**

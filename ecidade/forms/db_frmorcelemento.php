@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clorcelemento->rotulo->label();
        <?=@$Lo56_codele?>
     </td>
     <td> 
-<?
+<?php
 db_input('o56_codele',6,$Io56_codele,true,'text',3)
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o56_codele',6,$Io56_codele,true,'text',3)
        <?=@$Lo56_elemento?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1){
     $db_opcao02=1;
 }else{
@@ -61,7 +61,7 @@ db_input('o56_elemento',20,$Io56_elemento,true,'text',$db_opcao02);
        <?=@$Lo56_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('o56_descr',40,$Io56_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -71,7 +71,7 @@ db_input('o56_descr',40,$Io56_descr,true,'text',$db_opcao,"")
        <?=@$Lo56_finali?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('o56_finali',0,40,$Io56_finali,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -81,7 +81,7 @@ db_textarea('o56_finali',0,40,$Io56_finali,true,'text',$db_opcao,"")
        <?=@$Lo56_orcado?>
     </td>
     <td> 
-<?
+<?php
 $matriz = array("t"=>"SIM","f"=>'Não');
 db_select('o56_orcado',$matriz,true,'text',$db_opcao,"")
 ?>
@@ -109,7 +109,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcelemento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

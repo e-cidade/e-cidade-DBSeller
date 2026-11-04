@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ $oRotulo->label('z01_nomecomple');
       <?=$Lsd03_i_tipo?>
     </td>
     <td>
-      <?
+      <?php
       $aX = array('1'=>'DA REDE', '2'=>'FORA DA REDE');
       db_select('sd03_i_tipo', $aX, true, $db_opcao, 'onchange="js_tipo();"');
       ?>
@@ -54,7 +54,7 @@ $oRotulo->label('z01_nomecomple');
       <?=@$Lsd03_i_codigo?>
     </td>
     <td>
-      <?
+      <?php
       db_input('sd03_i_codigo', 10, $Isd03_i_codigo, true, 'text', 3, "");
       db_input('s154_i_codigo', 10, $Is154_i_codigo, true, 'hidden', 3, "");
 
@@ -68,7 +68,7 @@ $oRotulo->label('z01_nomecomple');
       <?=$Lsd03_i_crm?>
     </td>
     <td>
-      <?
+      <?php
       db_input('sd03_i_crm', 10, $Isd03_i_crm, true, 'text', $db_opcao, '');
       ?>
     </td>
@@ -78,7 +78,7 @@ $oRotulo->label('z01_nomecomple');
       <?=$Ls154_c_cns?>
     </td>
     <td>
-      <?
+      <?php
       db_input('s154_c_cns', 15, $Is154_c_cns, true, 'text', $db_opcao, '');
       ?>
     </td>
@@ -88,7 +88,7 @@ $oRotulo->label('z01_nomecomple');
       <?=$Ls154_c_nome?>
     </td>
     <td>
-      <?
+      <?php
       if (isset($s154_c_nome)) {
 
         $aOrig = array('á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç');
@@ -102,15 +102,15 @@ $oRotulo->label('z01_nomecomple');
   </tr>
   <tr name="linhaRede">
     <td nowrap title="<?=$Tsd03_i_cgm?>">
-      <?
+      <?php
       db_ancora($Lsd03_i_cgm, "js_pesquisasd03_i_cgm(true);", $db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('sd03_i_cgm', 10, $Isd03_i_cgm, true, 'text', $db_opcao, " onchange='js_pesquisasd03_i_cgm(false);'");
       ?>
-      <?
+      <?php
       db_input('z01_nome', 40, $Iz01_nome, true, 'text', $db_opcao, '');
       ?>
     </td>
@@ -123,11 +123,11 @@ $oRotulo->label('z01_nomecomple');
    <?=($db_botao == false ? "disabled" : "")?>
    <?=($db_opcao == 3 ? '' : 'onclick="return js_validaEnvio();"')?>>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-<?
+<?php
 if (isset($lBotao) && $lBotao == 'true') {
 ?>
   <input name="fechar" type="button" id="fechar" value="Fechar" onclick="parent.db_iframe_cadprof.hide();">
-<?
+<?php
 }
 ?>
 </form>
@@ -139,7 +139,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_cgccpf?>
       </td>
       <td width="35%">
-        <?
+        <?php
         db_input('z01_cgccpf', 15, @$Iz01_cgccpf, true, 'text', 3, "");
         ?>
       </td>
@@ -147,7 +147,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_ident?>
       </td>
       <td width="20%">
-        <?
+        <?php
         db_input('z01_ident', 15, $Iz01_ident, true, 'text', 3);
         ?>
       </td>
@@ -157,7 +157,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=$Lz01_numcgm?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('z01_numcgm', 10, $Iz01_numcgm, true, 'text', 3);
         ?>
       </td>
@@ -167,7 +167,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_nome?>
       </td>
       <td nowrap title="<?=@$Tz01_nome?>">
-        <?
+        <?php
         $z01_nome2 = @$z01_nome;
         db_input('z01_nome2', 40, $Iz01_nome, true, 'text', 3, "");
         ?>
@@ -178,7 +178,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_nomecomple?>
       </td>
       <td nowrap title="<?=@$Tz01_nomecomple?>">
-        <?
+        <?php
         db_input('z01_nomecomple', 40, $Iz01_nomecomple, true, 'text', 3, "");
         ?>
       </td>
@@ -188,7 +188,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_pai?>
       </td>
       <td nowrap title="<?=@$Tz01_pai?>">
-        <?
+        <?php
         db_input('z01_pai', 40, $Iz01_pai, true, 'text', 3, "");
         ?>
       </td>
@@ -198,7 +198,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_mae?>
       </td>
       <td nowrap title="<?=@$Tz01_mae?>">
-        <?
+        <?php
         db_input('z01_mae', 40, $Iz01_mae, true, 'text', 3, "");
         ?>
       </td>
@@ -208,7 +208,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=$Lz01_nasc?>
       </td>
       <td nowrap title="<?=$Tz01_nasc?>">
-        <?
+        <?php
         db_inputdata('z01_nasc', @$z01_nasc_dia, @$z01_nasc_mes, @$z01_nasc_ano, true, 'text', 3);
         ?>
       </td>
@@ -216,7 +216,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=$Lz01_estciv?>
       </td>
       <td>
-        <?
+        <?php
         db_input('z01_estciv', 10, '', true, 'text', 3, '');
         ?>
       </td>
@@ -226,7 +226,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=$Lz01_sexo?>
       </td>
       <td>
-        <?
+        <?php
         $sex = array("M"=>"Masculino", "F"=>"Feminino");
         db_select('z01_sexo', $sex, true, 3);
         ?>
@@ -241,7 +241,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_ender?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('z01_ender', 40, $Iz01_ender, true, 'text', 3);
         ?>
       </td>
@@ -252,7 +252,7 @@ if (isset($lBotao) && $lBotao == 'true') {
       </td>
       </td>
       <td nowrap width="35%">
-        <?
+        <?php
         db_input('z01_numero', 8, $Iz01_numero, true, 'text', 3);
         ?>
       </td>
@@ -260,7 +260,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_compl?>
       </td>
       <td width="20%">
-        <?
+        <?php
         db_input('z01_compl', 10, $Iz01_compl, true, 'text', 3);
         ?>
      </td>
@@ -270,17 +270,17 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_munic?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('z01_munic', 20, $Iz01_munic, true, 'text', 3);
         ?>
       </td>
       <td align="right">
-       <?
+       <?php
        echo "<b>UF:</b>";
        ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('z01_uf', 2, $Iz01_uf, true, 'text', 3);
         ?>
       </td>
@@ -290,7 +290,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_bairro?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('z01_bairro', 25, $Iz01_bairro, true, 'text', 3);
         ?>
       </td>
@@ -300,7 +300,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_cep?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('z01_cep', 9, $Iz01_cep, true, 'text', 3);
         ?>
       </td>
@@ -308,7 +308,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_cxpostal?>
       </td>
       <td>
-        <?
+        <?php
         db_input('z01_cxpostal', 10, $Iz01_cxpostal, true, 'text', 3);
         ?>
       </td>
@@ -318,7 +318,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_telef?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('z01_telef', 12, $Iz01_telef, true, 'text', 3);
         ?>
       </td>
@@ -326,7 +326,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_telcel?>
       </td>
       <td>
-        <?
+        <?php
         db_input('z01_telcel', 12, $Iz01_telcel, true, 'text', 3);
         ?>
       </td>
@@ -336,7 +336,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_email?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('z01_email', 30, $Iz01_email, true, 'text', 3);
         ?>
       </td>
@@ -346,7 +346,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <b>Cadastrado Em:</b>
       </td>
       <td>
-        <?
+        <?php
         db_inputdata('z01_cadast', @$z01_cadast_dia, @$z01_cadast_mes, @$z01_cadast_ano, true, 'text', 3);
         ?>
       </td>
@@ -354,7 +354,7 @@ if (isset($lBotao) && $lBotao == 'true') {
         <?=@$Lz01_ultalt?>
       </td>
       <td>
-        <?
+        <?php
         db_inputdata('z01_ultalt', @$z01_ultalt_dia, @$z01_ultalt_mes, @$z01_ultalt_ano, true, 'text', 3);
         ?>
       </td>
@@ -540,7 +540,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_medicos.hide();
-  <?
+  <?php
   if ($db_opcao!=1) {
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

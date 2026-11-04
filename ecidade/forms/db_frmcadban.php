@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -38,22 +38,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lk15_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_codigo',10,$Ik15_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk15_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lk15_numcgm,"js_pesquisak15_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_numcgm',10,$Ik15_numcgm,true,'text',$db_opcao," onchange='js_pesquisak15_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lk15_codbco?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_codbco',10,$Ik15_codbco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('k15_codbco',10,$Ik15_codbco,true,'text',$db_opcao,"")
        <?=@$Lk15_codage?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
        <?=@$Lk15_contat?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_contat',40,$Ik15_contat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('k15_contat',40,$Ik15_contat,true,'text',$db_opcao,"")
        <?=@$Lk15_gerent?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_gerent',40,$Ik15_gerent,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('k15_gerent',40,$Ik15_gerent,true,'text',$db_opcao,"")
        <?=@$Lk15_agenci?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_agenci',40,$Ik15_agenci,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('k15_agenci',40,$Ik15_agenci,true,'text',$db_opcao,"")
        <?=@$Lk15_conta?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_conta',10,$Ik15_conta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ db_input('k15_conta',10,$Ik15_conta,true,'text',$db_opcao,"")
        <?=@$Lk15_rectxb?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_rectxb',10,$Ik15_rectxb,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_input('k15_rectxb',10,$Ik15_rectxb,true,'text',$db_opcao,"")
        <?=@$Lk15_txban?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_txban',20,$Ik15_txban,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -143,7 +143,7 @@ db_input('k15_txban',20,$Ik15_txban,true,'text',$db_opcao,"")
        <?=@$Lk15_local?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_local',40,$Ik15_local,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_input('k15_local',40,$Ik15_local,true,'text',$db_opcao,"")
        <?=@$Lk15_carte?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_carte',10,$Ik15_carte,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('k15_carte',10,$Ik15_carte,true,'text',$db_opcao,"")
        <?=@$Lk15_espec?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_espec',20,$Ik15_espec,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ db_input('k15_espec',20,$Ik15_espec,true,'text',$db_opcao,"")
        <?=@$Lk15_aceite?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_aceite',10,$Ik15_aceite,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -183,7 +183,7 @@ db_input('k15_aceite',10,$Ik15_aceite,true,'text',$db_opcao,"")
        <?=@$Lk15_ageced?>
     </td>
     <td>
-<?
+<?php
 db_input('k15_ageced',40,$Ik15_ageced,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -193,7 +193,7 @@ db_input('k15_ageced',40,$Ik15_ageced,true,'text',$db_opcao,"")
             <?=@$Lk15_bancotef?>
         </td>
         <td>
-            <?
+            <?php
                 db_input('k15_bancotef',40,$Ik15_bancotef,true,'checkbox',$db_opcao,"")
             ?>
         </td>
@@ -243,7 +243,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadban.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

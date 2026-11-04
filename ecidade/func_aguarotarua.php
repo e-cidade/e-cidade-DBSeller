@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $claguarotarua->rotulo->label("x07_codrota");
               <?=$Lx07_codrotarua?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x07_codrotarua",5,$Ix07_codrotarua,true,"text",4,"","chave_x07_codrotarua");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claguarotarua->rotulo->label("x07_codrota");
               <?=$Lx07_codrota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x07_codrota",5,$Ix07_codrota,true,"text",4,"","chave_x07_codrota");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claguarotarua->rotulo->label("x07_codrota");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguarotarua.php")==true){
@@ -118,12 +118,12 @@ $claguarotarua->rotulo->label("x07_codrota");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

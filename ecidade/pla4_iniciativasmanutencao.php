@@ -180,6 +180,49 @@ require_once modification("dbforms/db_funcoes.php");
                 </tr>
             </table>
         </fieldset>
+        <div id="modalUnidade" class="container">
+        <fieldset>
+            <table class="form-container">
+              <tr>
+                <td>
+                  <label><b>Ano:</b></label>
+                  <input readonly type="text" name="ano_unidade" id="ano_unidade" width = '80px' value="">
+                </td>              
+              </tr>
+              <tr>  
+                <td> 
+                  <label>Unidade:</label>     
+                  <select id = 'unidadeMedida' name = 'unidadeMedida' onChange = 'js_controleUnidadeMedida()'
+                      style= 'width:150px'>
+                  <option value="0">PERSONALIZADO</option>
+                  <?php                                
+                    $clSigfisUnidadeMedida = new cl_sigfisunidademedida;
+                    $sqlSigfisUnidade = $clSigfisUnidadeMedida->sql_query_file(
+                      null,
+                      "o220_sequencial, 
+                      o220_abreviacao");
+                    $rsSigfisUnidade = db_query($sqlSigfisUnidade);
+                    for($i = 0; $i < pg_num_rows($rsSigfisUnidade); $i++){
+                      $unidadeMedidaObjeto = db_utils::fieldsMemory($rsSigfisUnidade,$i);
+                      $optionTag = "<option value = '$unidadeMedidaObjeto->o220_sequencial'>";
+                      $optionTag .= "$unidadeMedidaObjeto->o220_abreviacao</option>";
+                      echo $optionTag;
+                    }                    
+                  ?>
+                  </select>  
+                  <?php 
+                    db_input('descricao_unidade',10,3,true,'text',1);                    
+                  ?>                                      
+                </td>
+              </tr>
+            </table>
+        </fieldset>
+        
+        <button class="btn btn-light" id="btnAdicionarUnidade">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            Adicionar
+        </button>
+        </div>           
         <button type="button" id="btnSalvarMetas">
             <i class="far fa-save"></i>
             Salvar
@@ -253,6 +296,7 @@ require_once modification("dbforms/db_funcoes.php");
     var plano = {}
     var dadosIniciaitiva = {}
     var programaEstrategico = {}
+    let isRJ = '<?=isRioDeJaneiro()?>';
 
     // Abas
     const ctnAbaIniciativa = document.getElementById('abaIniciativa')
@@ -307,6 +351,7 @@ require_once modification("dbforms/db_funcoes.php");
         };
 
         const btnNovo = document.getElementById('btnNovo');
+        const btnAdicionarUnidade = document.getElementById('btnAdicionarUnidade');
 
         /** ------------------------------------- IMPUTS DA ABA INICIATIVA ------------------------------------------*/
         const formIniciativa = {
@@ -598,15 +643,19 @@ require_once modification("dbforms/db_funcoes.php");
                 let row = formMeta.table.insertRow();
                 row.style.padding = '3px 0 3px 0';
                 row.style.height = '25px';
-                let cellLabel = row.insertCell();
+                let cellLabel = row.insertCell();                
                 cellLabel.className = 'bold';
                 cellLabel.innerText = ano;
-                let cellValorMetaFinanceira = row.insertCell();
+                let cellIdUnidade = row.insertCell();
+                cellIdUnidade.setAttribute('style','display:none');
+
+                let cellValorMetaFinanceira = row.insertCell();                
                 let cellUnidade = row.insertCell();
                 let cellValorMetaFisica = row.insertCell();
-
+                
                 cellValorMetaFinanceira.append(createInputValor('meta-financeira valor', ano));
                 cellUnidade.append(createInput('unidade', ano));
+                cellIdUnidade.append(createInput('id_unidade', ano));
                 cellValorMetaFisica.append(createInputValor('meta-fisica valor', ano));
             }
         };
@@ -674,9 +723,51 @@ require_once modification("dbforms/db_funcoes.php");
 
         const setValoresMetas = () => {
             for (let meta of dadosIniciaitiva.metas) {
-                getInputMeta(meta.exercicio, 'meta-financeira').value = meta.meta_financeira
-                getInputMeta(meta.exercicio, 'meta-fisica').value = meta.meta_fisica
-                getInputMeta(meta.exercicio, 'unidade').value = meta.unidade
+                getInputMeta(meta.exercicio, 'meta-financeira').value = meta.meta_financeira;
+                getInputMeta(meta.exercicio, 'meta-fisica').value = meta.meta_fisica;
+                
+                /**
+                 * Bloco de controle para o RJ no qual há uma
+                 * vinculo padrão de unidades de medidas fixas com a ação
+                 */                
+                if(isRJ){
+                    getInputMeta(meta.exercicio, 'unidade').addEventListener('click',() => {
+                        WindowUnidade.show(0, 0, true);
+                        document.getElementById('descricao_unidade').style.display = 'initial';
+                        document.getElementById('ano_unidade').value = meta.exercicio;                                                     
+                        document.getElementById('unidadeMedida').value = '0'; 
+                        document.getElementById('descricao_unidade').value = '';
+    
+                        document.getElementById('unidadeMedida').value = getInputMeta(meta.exercicio, 'id_unidade').value;
+                        document.getElementById('descricao_unidade').value = getInputMeta(meta.exercicio, 'unidade').value;
+                        /**
+                         * Na inicialização do componente
+                         */
+                        if(getInputMeta(meta.exercicio, 'id_unidade').value.length == 0){
+                            document.getElementById('unidadeMedida').value = '0';                       
+                        } 
+                        
+                        /**
+                         * No controle do componente 
+                         * */
+                        if(document.getElementById('unidadeMedida').value != '0'){
+                            document.getElementById('descricao_unidade').style.display = 'none';
+    
+                        } else {
+                            document.getElementById('descricao_unidade').style.display = 'initial';
+                        }                                                           
+                    });  
+                }
+                              
+                getInputMeta(meta.exercicio, 'unidade').value = meta.unidade;                            
+            }
+            
+            /**
+             * BLoco apenas para o RJ. Para os demais clientes do e-cidade
+             * não há iteração. 
+             */
+            for (let vinculo of dadosIniciaitiva.vinculoSigfisUnidadeMedida){
+                getInputMeta(vinculo.o221_anousu, 'id_unidade').value = vinculo.o221_unidade;
             }
         }
 
@@ -685,11 +776,21 @@ require_once modification("dbforms/db_funcoes.php");
             for (let ano = plano.pl2_ano_inicial; ano <= plano.pl2_ano_final; ano++) {
                 let vlrMetaFinanceira = getInputMeta(ano, 'meta-financeira').value.replace(',', '.');
                 let vlrMetaFisica = getInputMeta(ano, 'meta-fisica').value.replace(',', '.');
+                
+                /**
+                 * o idUnidade funciona apenas para o RJ
+                 *  */
+                let idUnidade = '';
+                if(getInputMeta(ano, 'id_unidade').value != undefined 
+                    && getInputMeta(ano, 'id_unidade').value != ''){
+                    idUnidade = getInputMeta(ano, 'id_unidade').value;
+                }
 
                 metas.push({
                     "exercicio": ano,
-                    "meta_financeira": Number(vlrMetaFinanceira),
+                    "meta_financeira": Number(vlrMetaFinanceira),                    
                     "unidade": getInputMeta(ano, 'unidade').value,
+                    "id_unidade": idUnidade,
                     "meta_fisica": vlrMetaFisica
                 });
             }
@@ -880,7 +981,50 @@ require_once modification("dbforms/db_funcoes.php");
             ];
             location.href = `pla4_iniciativas.php?${parametros.join('&')}`;
         }));
+
+        const modalUnidade     = document.getElementById('modalUnidade');
+        const hideWindowUnidade = () => {
+            
+            if (!!WindowUnidade.oDBMask) {
+                WindowUnidade.oDBMask.destroy();
+            }
+            
+          WindowUnidade.hide();
+        }
+        
+        var WindowUnidade = new windowAux('WindowUnidade', 'Escolher Unidade', 600, 400);
+        WindowUnidade.setContent(modalUnidade);
+        WindowUnidade.allowCloseWithEsc(true);
+        WindowUnidade.setShutDownFunction(function () {
+          hideWindowUnidade();
+        });   
+
+        btnAdicionarUnidade.on('click',() => {
+            
+            let ano = document.getElementById('ano_unidade').value;
+            let unidadeMedidaElement = document.getElementById('unidadeMedida');
+
+            getInputMeta(ano, 'id_unidade').value = unidadeMedidaElement.value;
+
+            if(unidadeMedidaElement.value == 0){
+                getInputMeta(ano, 'unidade').value = document.getElementById('descricao_unidade').value;
+            } else {
+                getInputMeta(ano, 'unidade').value = unidadeMedidaElement[unidadeMedidaElement.selectedIndex].text;
+            }            
+            hideWindowUnidade();
+        });                    
     });
+
+    function js_controleUnidadeMedida(){
+        if(document.getElementById('unidadeMedida').value != '0'){
+            let unidadeMedidaElement = document.getElementById('unidadeMedida');            
+            document.getElementById('descricao_unidade').value =  unidadeMedidaElement[unidadeMedidaElement.selectedIndex].text;
+            document.getElementById('descricao_unidade').style.display = 'none';
+        } else {      
+          document.getElementById('descricao_unidade').value = '';
+          document.getElementById('descricao_unidade').style.display = 'initial';
+        }        
+    }
 
     const liberaAbas = () => {
         abaMetas.desbloquear();

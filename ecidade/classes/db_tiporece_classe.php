@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_tiporece {
                  p08_qtufir = float8 = Quantidade de UFIR 
                  ";
    //funcao construtor da classe 
-   function cl_tiporece() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiporece"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_tiporece {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p08_tipo = ($this->p08_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["p08_tipo"]:$this->p08_tipo);
        $this->p08_receit = ($this->p08_receit == ""?@$GLOBALS["HTTP_POST_VARS"]["p08_receit"]:$this->p08_receit);
@@ -84,7 +84,7 @@ class cl_tiporece {
      }
    }
    // funcao para inclusao
-   function incluir ($p08_tipo,$p08_receit){ 
+   public function incluir ($p08_tipo,$p08_receit){ 
       $this->atualizacampos();
      if($this->p08_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -185,7 +185,7 @@ class cl_tiporece {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($p08_tipo=null,$p08_receit=null) { 
+   public function alterar ($p08_tipo=null,$p08_receit=null) { 
       $this->atualizacampos();
      $sql = " update tiporece set ";
      $virgula = "";
@@ -314,7 +314,7 @@ class cl_tiporece {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($p08_tipo=null,$p08_receit=null,$dbwhere=null) { 
+   public function excluir ($p08_tipo=null,$p08_receit=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($p08_tipo,$p08_receit));
      }else{ 
@@ -386,7 +386,7 @@ class cl_tiporece {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <style type="text/css">
@@ -46,7 +47,6 @@
   </style>
   <link type="text/css" rel="stylesheet" href="assets/vendors/alertify/themes/alertify.core.css" />
   <link type="text/css" rel="stylesheet" href="assets/vendors/alertify/themes/alertify.bootstrap.css" />
-
 </head>
 <body>
 
@@ -109,6 +109,16 @@ var Desktop = parent.Desktop, CurrentWindow, Window, corpo, bstatus;
 
   CurrentWindow._eventHandler =  CurrentWindow.eventHandler.bind(CurrentWindow);
 
+  CurrentWindow.axios = Desktop.axios.create();
+  CurrentWindow.axios.defaults.headers['X-Window-Session'] = windowId.substring(1);
+  // recria o interceptador pq ele não é repassado pelo create
+  CurrentWindow.axios.interceptors.request.use((config) => {
+    const token = JSON.parse(window.localStorage.getItem('ecidade@user_token'));
+    config.headers['Authorization'] = token ? `Bearer ${token.access_token}` : '';
+
+    return config
+  });
+
   CurrentWindow.createLoading = function(iframe, parentNode) {
 
     // loader ja registrado
@@ -160,7 +170,8 @@ var Desktop = parent.Desktop, CurrentWindow, Window, corpo, bstatus;
     if (lastUrl != current) {
 
       lastUrl = current;
-      $.getJSON(ECIDADE_REQUEST_PATH + 'extension/desktop/menu/getMenuArquivo/?file=' + escape(current), function(data) {
+
+      $.getJSON(ECIDADE_REQUEST_PATH + 'extension/desktop/menu/getMenuArquivo/?file=' + encodeURI(current), function(data) {
 
         // erro ao buscar menu ou arquivo nao eh um menu
         if (!data || !data.breadcrumb) {
@@ -214,6 +225,19 @@ var Desktop = parent.Desktop, CurrentWindow, Window, corpo, bstatus;
     frame.document.addEventListener('mousedown', CurrentWindow._eventHandler)
   }
 
+  function loadStyle(src) {
+    return new Promise(function (resolve, reject) {
+      let link = document.createElement('link');
+      link.href = src;
+      link.rel = 'stylesheet';
+
+      link.onload = () => resolve(link);
+      link.onerror = () => reject(new Error(`Style load error for ${src}`));
+
+      corpo.document.head.append(link);
+    });
+  }
+
   if (browser.webkit) {
     $('#corpo').css({visibility: 'hidden'});
   }
@@ -225,7 +249,6 @@ var Desktop = parent.Desktop, CurrentWindow, Window, corpo, bstatus;
   $('#corpo').on('load', function() {
 
     inject(corpo);
-    CurrentWindow.loader.hide();
 
     checkSystemDate();
     checkUrl();
@@ -247,6 +270,11 @@ var Desktop = parent.Desktop, CurrentWindow, Window, corpo, bstatus;
       CurrentWindow.loader.show();
     });
 
+    const baseUrl = Desktop.requestPath;
+    loadStyle(`${baseUrl}skins/estilos.php?file=widgets/DBModal.css`).then(async () => {
+        await loadStyle(`${baseUrl}estilos/widgets/DBModalBase.css`);
+        CurrentWindow.loader.hide();
+    });
   });
 
   ;(function(global) {
@@ -362,8 +390,8 @@ var Desktop = parent.Desktop, CurrentWindow, Window, corpo, bstatus;
 
     document.getElementById('corpo').src = '<?php echo $this->pathBody; ?>';
     document.getElementById('bstatus').src = '<?php echo $this->pathStatus; ?>';
-
   });
+
 
 })(jQuery, this);
 </script>

@@ -1,66 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE ruascep
-class cl_ruascep { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j29_codigo = 0; 
-   var $j29_inicio = 0; 
-   var $j29_final = 0; 
-   var $j29_cep = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_ruascep {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j29_codigo = 0;
+   var $j29_inicio = 0;
+   var $j29_final = 0;
+   var $j29_cep = null;
+   var $j29_lado = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j29_codigo = int4 = Rua 
-                 j29_inicio = int4 = Numero Inicial 
-                 j29_final = int4 = Numeracao Final 
-                 j29_cep = char(8) = CEP 
+                 j29_codigo = int4 = Rua
+                 j29_inicio = int4 = Numero Inicial
+                 j29_final = int4 = Numeracao Final
+                 j29_cep = char(8) = CEP
+                 j29_lado = int4 = Lado
                  ";
-   //funcao construtor da classe 
-   function cl_ruascep() { 
+   //funcao construtor da classe
+   function cl_ruascep() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("ruascep"); 
+     $this->rotulo = new rotulo("ruascep");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,17 +75,18 @@ class cl_ruascep {
      if($exclusao==false){
        $this->j29_codigo = ($this->j29_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_codigo"]:$this->j29_codigo);
        $this->j29_inicio = ($this->j29_inicio == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_inicio"]:$this->j29_inicio);
-       $this->j29_final = ($this->j29_final == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_final"]:$this->j29_final);
-       $this->j29_cep = ($this->j29_cep == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_cep"]:$this->j29_cep);
+       $this->j29_final  = ($this->j29_final == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_final"]:$this->j29_final);
+       $this->j29_cep    = ($this->j29_cep == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_cep"]:$this->j29_cep);
+       $this->j29_lado   = ($this->j29_lado == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_lado"]:$this->j29_lado);
      }else{
        $this->j29_codigo = ($this->j29_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_codigo"]:$this->j29_codigo);
        $this->j29_inicio = ($this->j29_inicio == ""?@$GLOBALS["HTTP_POST_VARS"]["j29_inicio"]:$this->j29_inicio);
      }
    }
    // funcao para inclusao
-   function incluir ($j29_codigo,$j29_inicio){ 
+   function incluir ($j29_codigo,$j29_inicio){
       $this->atualizacampos();
-     if($this->j29_final == null ){ 
+     if($this->j29_final == null ){
        $this->erro_sql = " Campo Numeracao Final nao Informado.";
        $this->erro_campo = "j29_final";
        $this->erro_banco = "";
@@ -92,7 +95,7 @@ class cl_ruascep {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j29_cep == null ){ 
+     if($this->j29_cep == null ){
        $this->erro_sql = " Campo CEP nao Informado.";
        $this->erro_campo = "j29_cep";
        $this->erro_banco = "";
@@ -101,9 +104,18 @@ class cl_ruascep {
        $this->erro_status = "0";
        return false;
      }
-       $this->j29_codigo = $j29_codigo; 
-       $this->j29_inicio = $j29_inicio; 
-     if(($this->j29_codigo == null) || ($this->j29_codigo == "") ){ 
+     if($this->j29_lado == null ){
+       $this->erro_sql = " Campo Lado nao Informado.";
+       $this->erro_campo = "j29_lado";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+       $this->j29_codigo = $j29_codigo;
+       $this->j29_inicio = $j29_inicio;
+     if(($this->j29_codigo == null) || ($this->j29_codigo == "") ){
        $this->erro_sql = " Campo j29_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +123,7 @@ class cl_ruascep {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->j29_inicio == null) || ($this->j29_inicio == "") ){ 
+     if(($this->j29_inicio == null) || ($this->j29_inicio == "") ){
        $this->erro_sql = " Campo j29_inicio nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +132,21 @@ class cl_ruascep {
        return false;
      }
      $sql = "insert into ruascep(
-                                       j29_codigo 
-                                      ,j29_inicio 
-                                      ,j29_final 
-                                      ,j29_cep 
+                                       j29_codigo
+                                      ,j29_inicio
+                                      ,j29_final
+                                      ,j29_cep
+                                      ,j29_lado
                        )
                 values (
-                                $this->j29_codigo 
-                               ,$this->j29_inicio 
-                               ,$this->j29_final 
-                               ,'$this->j29_cep' 
+                                $this->j29_codigo
+                               ,$this->j29_inicio
+                               ,$this->j29_final
+                               ,'$this->j29_cep'
+                               ,$this->j29_lado
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->j29_codigo."-".$this->j29_inicio) nao Incluído. Inclusao Abortada.";
@@ -166,18 +180,19 @@ class cl_ruascep {
        $resac = db_query("insert into db_acount values($acount,17,74,'','".AddSlashes(pg_result($resaco,0,'j29_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,17,75,'','".AddSlashes(pg_result($resaco,0,'j29_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,17,76,'','".AddSlashes(pg_result($resaco,0,'j29_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,17,77,'','".AddSlashes(pg_result($resaco,0,'j29_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j29_codigo=null,$j29_inicio=null) { 
+   function alterar ($j29_codigo=null,$j29_inicio=null) {
       $this->atualizacampos();
      $sql = " update ruascep set ";
      $virgula = "";
-     if(trim($this->j29_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_codigo"])){ 
+     if(trim($this->j29_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_codigo"])){
        $sql  .= $virgula." j29_codigo = $this->j29_codigo ";
        $virgula = ",";
-       if(trim($this->j29_codigo) == null ){ 
+       if(trim($this->j29_codigo) == null ){
          $this->erro_sql = " Campo Rua nao Informado.";
          $this->erro_campo = "j29_codigo";
          $this->erro_banco = "";
@@ -187,10 +202,10 @@ class cl_ruascep {
          return false;
        }
      }
-     if(trim($this->j29_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_inicio"])){ 
+     if(trim($this->j29_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_inicio"])){
        $sql  .= $virgula." j29_inicio = $this->j29_inicio ";
        $virgula = ",";
-       if(trim($this->j29_inicio) == null ){ 
+       if(trim($this->j29_inicio) == null ){
          $this->erro_sql = " Campo Numero Inicial nao Informado.";
          $this->erro_campo = "j29_inicio";
          $this->erro_banco = "";
@@ -200,10 +215,10 @@ class cl_ruascep {
          return false;
        }
      }
-     if(trim($this->j29_final)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_final"])){ 
+     if(trim($this->j29_final)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_final"])){
        $sql  .= $virgula." j29_final = $this->j29_final ";
        $virgula = ",";
-       if(trim($this->j29_final) == null ){ 
+       if(trim($this->j29_final) == null ){
          $this->erro_sql = " Campo Numeracao Final nao Informado.";
          $this->erro_campo = "j29_final";
          $this->erro_banco = "";
@@ -213,12 +228,25 @@ class cl_ruascep {
          return false;
        }
      }
-     if(trim($this->j29_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_cep"])){ 
+     if(trim($this->j29_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_cep"])){
        $sql  .= $virgula." j29_cep = '$this->j29_cep' ";
        $virgula = ",";
-       if(trim($this->j29_cep) == null ){ 
+       if(trim($this->j29_cep) == null ){
          $this->erro_sql = " Campo CEP nao Informado.";
          $this->erro_campo = "j29_cep";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->j29_lado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j29_lado"])){
+       $sql  .= $virgula." j29_lado = '$this->j29_lado' ";
+       $virgula = ",";
+       if(trim($this->j29_cep) == null ){
+         $this->erro_sql = " Campo Lado nao Informado.";
+         $this->erro_campo = "j29_lado";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -249,10 +277,13 @@ class cl_ruascep {
            $resac = db_query("insert into db_acount values($acount,17,75,'".AddSlashes(pg_result($resaco,$conresaco,'j29_final'))."','$this->j29_final',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j29_cep"]))
            $resac = db_query("insert into db_acount values($acount,17,76,'".AddSlashes(pg_result($resaco,$conresaco,'j29_cep'))."','$this->j29_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j29_lado"]))
+           $resac = db_query("insert into db_acount values($acount,17,77,'".AddSlashes(pg_result($resaco,$conresaco,'j29_cep'))."','$this->j29_lado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
+
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j29_codigo."-".$this->j29_inicio;
@@ -280,14 +311,14 @@ class cl_ruascep {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j29_codigo=null,$j29_inicio=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   function excluir ($j29_codigo=null,$j29_inicio=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j29_codigo,$j29_inicio));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -301,6 +332,7 @@ class cl_ruascep {
          $resac = db_query("insert into db_acount values($acount,17,74,'','".AddSlashes(pg_result($resaco,$iresaco,'j29_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,17,75,'','".AddSlashes(pg_result($resaco,$iresaco,'j29_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,17,76,'','".AddSlashes(pg_result($resaco,$iresaco,'j29_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,17,77,'','".AddSlashes(pg_result($resaco,$iresaco,'j29_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ruascep
@@ -323,7 +355,7 @@ class cl_ruascep {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j29_codigo."-".$j29_inicio;
@@ -351,11 +383,11 @@ class cl_ruascep {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,7 +409,7 @@ class cl_ruascep {
       }
      return $result;
    }
-   function sql_query ( $j29_codigo=null,$j29_inicio=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   function sql_query ( $j29_codigo=null,$j29_inicio=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = split("#",$campos);
@@ -394,16 +426,16 @@ class cl_ruascep {
      $sql2 = "";
      if($dbwhere==""){
        if($j29_codigo!=null ){
-         $sql2 .= " where ruascep.j29_codigo = $j29_codigo "; 
-       } 
+         $sql2 .= " where ruascep.j29_codigo = $j29_codigo ";
+       }
        if($j29_inicio!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ruascep.j29_inicio = $j29_inicio "; 
-       } 
+         }
+         $sql2 .= " ruascep.j29_inicio = $j29_inicio ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -419,7 +451,7 @@ class cl_ruascep {
      }
      return $sql;
   }
-   function sql_query_file ( $j29_codigo=null,$j29_inicio=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   function sql_query_file ( $j29_codigo=null,$j29_inicio=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = split("#",$campos);
@@ -435,16 +467,16 @@ class cl_ruascep {
      $sql2 = "";
      if($dbwhere==""){
        if($j29_codigo!=null ){
-         $sql2 .= " where ruascep.j29_codigo = $j29_codigo "; 
-       } 
+         $sql2 .= " where ruascep.j29_codigo = $j29_codigo ";
+       }
        if($j29_inicio!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ruascep.j29_inicio = $j29_inicio "; 
-       } 
+         }
+         $sql2 .= " ruascep.j29_inicio = $j29_inicio ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }

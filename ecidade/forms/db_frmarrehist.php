@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("nome");
        <?=@$Lk00_idhist?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_idhist',10,$Ik00_idhist,true,'text',3,"")
 ?>
     </td>
@@ -50,7 +50,7 @@ db_input('k00_idhist',10,$Ik00_idhist,true,'text',3,"")
        <?=@$Lk00_numpre?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_numpre',10,$Ik00_numpre,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -60,37 +60,37 @@ db_input('k00_numpre',10,$Ik00_numpre,true,'text',$db_opcao,"")
        <?=@$Lk00_numpar?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_numpar',10,$Ik00_numpar,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk00_hist?>">
-       <?
+       <?php
        db_ancora(@$Lk00_hist,"js_pesquisak00_hist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist',10,$Ik00_hist,true,'text',$db_opcao," onchange='js_pesquisak00_hist(false);'")
 ?>
-       <?
+       <?php
 db_input('k01_descr',40,$Ik01_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk00_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lk00_id_usuario,"js_pesquisak00_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_id_usuario',10,$Ik00_id_usuario,true,'text',$db_opcao," onchange='js_pesquisak00_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lk00_histtxt?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_histtxt',10,52,$Ik00_histtxt,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ db_textarea('k00_histtxt',10,52,$Ik00_histtxt,true,'text',$db_opcao,"")
        <?=@$Lk00_limithist?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k00_limithist',@$k00_limithist_dia,@$k00_limithist_mes,@$k00_limithist_ano,true,'text',$db_opcao,"")
 ?>
   </td>
@@ -172,7 +172,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_arrehist.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

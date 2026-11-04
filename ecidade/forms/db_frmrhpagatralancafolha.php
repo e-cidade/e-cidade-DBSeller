@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,27 +45,27 @@ if(!isset($rh58_data_dia) && !isset($rh58_data_mes) && !isset($rh58_data_ano)){
       <table>
         <tr>
           <td nowrap title="<?=@$Trh58_data?>" align="right">
-            <?
+            <?php
             db_ancora(@$Lrh58_data,"",3);
             ?>
           </td>
           <td nowrap> 
-            <?
+            <?php
             db_inputdata("rh58_data", $rh58_data_dia, $rh58_data_mes, $rh58_data_ano, true, 'text', 1);
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Trh58_tipoocor?>" align="right">
-            <?
+            <?php
             db_ancora(@$Lrh58_tipoocor,"js_pesquisarh58_tipoocor(true);",1);
             ?>
           </td>
           <td nowrap> 
-            <?
+            <?php
             db_input('rh58_tipoocor',8,$Irh58_tipoocor,true,'text',1," onchange='js_pesquisarh58_tipoocor(false);'")
             ?>
-            <?
+            <?php
             db_input('rh59_descr',40,$Irh59_descr,true,'text',3,'');
             db_input('rh59_tipo',2,$Irh59_tipo,true,'hidden',3,'');
             ?>
@@ -74,7 +74,7 @@ if(!isset($rh58_data_dia) && !isset($rh58_data_mes) && !isset($rh58_data_ano)){
         <tr>
           <td align="right"><b>Pagar:</b></td>
           <td>
-            <?
+            <?php
             $arr_pagar = Array(0=>"Todos",1=>"Funcionários que não estão na justiça");
             db_select("pagar", $arr_pagar, true, 1, "");
             ?>

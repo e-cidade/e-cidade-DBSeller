@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,15 +44,15 @@ if($clcfpess->numrows > 0){
 <table border="0">
   <tr>
     <td align="right" nowrap title="<?=@$Tr44_selec?>">
-      <?
+      <?php
       db_ancora(@$Lr44_selec, "js_pesquisar44_selec(true);", $db_opcao);
       ?>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
       db_input('r44_selec', 8, $Ir44_selec, true, 'text', $db_opcao, " onchange='js_pesquisar44_selec(false);'")
       ?>
-      <?
+      <?php
       db_input('r44_descr', 60, $Ir44_descr, true, 'text', 3);
       ?>
     </td>
@@ -63,7 +63,7 @@ if($clcfpess->numrows > 0){
             </td>
             <td>
                 
-               <? 
+               <?php 
                $aTipos = array(1 => "Período Aquisitivo Normal",
                                2 => "Período Específico"
                               );
@@ -74,12 +74,12 @@ if($clcfpess->numrows > 0){
     
   <tr>
     <td nowrap title="Período a gozar" align="right">
-      <?
+      <?php
       db_ancora("<b>Período a gozar:</b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       $perini = "";
       $perini_dia = "";
       $perini_mes = "";
@@ -87,7 +87,7 @@ if($clcfpess->numrows > 0){
       db_inputdata('perini', @$perini_dia, @$perini_mes, @$perini_ano, true, 'text', 1, "onchange='js_verificadataini();'","","","parent.js_verificadataini();");
       ?>
       &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-      <?
+      <?php
       $perfim = "";
       $perfim_dia = "";
       $perfim_mes = "";
@@ -97,12 +97,12 @@ if($clcfpess->numrows > 0){
     </td>
     <!--
     <td nowrap title="Dias a gozar" align="right">
-      <?
+      <?php
       db_ancora("<b>Dias a gozar:</b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($saldofer) || (isset($saldofer) && trim($saldofer) == "")){
         $saldofer = 30;
       }
@@ -118,7 +118,7 @@ if($clcfpess->numrows > 0){
         </b>
       </td>
       <td colspan="3">
-        <?
+        <?php
         db_inputdata('r30_periodolivreinicial', 
                      @$r30_periodolivreinicial_dia, 
                      @$r30_periodolivreinicial_mes, 
@@ -129,7 +129,7 @@ if($clcfpess->numrows > 0){
                      );
         ?>
         &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-        <?
+        <?php
         db_inputdata('r30_periodolivrefinal',
                      @$r30_periodolivrefinal_dia, 
                      @$r30_periodolivrefinal_mes, 
@@ -142,12 +142,12 @@ if($clcfpess->numrows > 0){
     </tr>
   <tr>
     <td nowrap title="Forma de gozo" align="right">
-      <?
+      <?php
       db_ancora("<b>Forma de gozo</b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       $arr_fpagto = Array(
                           "01"=>"01 - 30 dias ferias",
                           "02"=>"02 - 20 dias ferias",
@@ -165,12 +165,12 @@ if($clcfpess->numrows > 0){
   </tr>
   <tr>
     <td nowrap title="Pagar férias" align="right">
-      <?
+      <?php
       db_ancora("<b>Pagar férias: </b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($pontofer)){
         $pontofer = "S";
       }
@@ -181,12 +181,12 @@ if($clcfpess->numrows > 0){
   </tr>
   <tr>
     <td nowrap title="Pagar somente 1/3 férias" align="right">
-      <?
+      <?php
       db_ancora("<b>Pagar somente 1/3 férias:</b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($pagafer13)){
         $pagafer13 = "f";
       }
@@ -197,18 +197,18 @@ if($clcfpess->numrows > 0){
   </tr>
   <tr>
     <td nowrap title="Digite o Ano / Mês de competência" align="right">
-      <?
+      <?php
       db_ancora("<b>Ano / Mês pagamento:</b>", "", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       $preanopagto = db_anofolha();
       $premespagto = db_mesfolha();
       db_input("DBtxt23", 4, $IDBtxt23, true, "text", 1,"","preanopagto");
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       db_input("DBtxt25", 2, $IDBtxt25, true, "text", 1,"","premespagto");
       ?>
     </td>
@@ -218,7 +218,7 @@ if($clcfpess->numrows > 0){
       <b>Trazer Férias já Processadas no Lote :</b>
     </td>
     <td>
-     <?
+     <?php
       $filtraferiasprocessadas = 2;
       
       $aFiltroFerias  = Array("1" => "Sim",
@@ -235,7 +235,7 @@ if($clcfpess->numrows > 0){
       <b>Períodos Aquisitivos :</b>
     </td>
     <td>
-     <?
+     <?php
       //$filtraferiasprocessadas = 2;
       
       $aFiltroPeriodo  = Array("3" => "Todos",
@@ -252,7 +252,7 @@ if($clcfpess->numrows > 0){
       <b>Período Vencidos até :</b>
     </td>
     <td>
-     <?
+     <?php
       //$filtraferiasprocessadas = 2;
       
         db_inputdata('periodosvencidosate', '', '', '', true, 'text', 1);
@@ -266,7 +266,7 @@ if($clcfpess->numrows > 0){
               <b>Observações:</b>
             </td>
             <td> 
-              <?
+              <?php
                 db_textarea("r30_obs",5, 45,  "", true,null, 1)
               ?>
             </td>

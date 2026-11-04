@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -107,7 +107,7 @@ function js_fechaiframe(){
   <tr>
     <td><b>Data da Geração:</b></td>
     <td colspan="3">
-      <?
+      <?php
       if((!isset($datagera_dia) || (isset($datagera_dia) && trim($datagera_dia) == "")) && (!isset($datagera_mes) || (isset($datagera_mes) && trim($datagera_mes) == "")) && (!isset($datagera_ano) || (isset($datagera_ano) && trim($datagera_ano) == ""))){
 	    $datagera_dia=date('d',db_getsession('DB_datausu'));
 	    $datagera_mes=date('m',db_getsession('DB_datausu'));
@@ -120,7 +120,7 @@ function js_fechaiframe(){
   <tr>
     <td><b>Data do Pagamento:</b></td>
     <td colspan="3">
-      <?
+      <?php
       if((!isset($datapagto_dia) || (isset($datapagto_dia) && trim($datapagto_dia) == "")) && (!isset($datapagto_mes) || (isset($datapagto_mes) && trim($datapagto_mes) == "")) && (!isset($datapagto_ano) || (isset($datapagto_ano) && trim($datapagto_ano) == ""))){
         $datapagto_dia = "";
         $datapagto_mes = "";
@@ -135,7 +135,7 @@ function js_fechaiframe(){
       <?=@$Lrh34_convenio?>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
       db_input('rh34_convenio',15,$Irh34_convenio,true,'text',1,"")
       ?>
     </td>
@@ -145,7 +145,7 @@ function js_fechaiframe(){
       <b>Agencia de Controle:
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh34_agencia1',5,$Irh34_agencia,true,'text',1,"")
       ?>
     </td>
@@ -153,7 +153,7 @@ function js_fechaiframe(){
       <?=@$Lrh34_dvagencia?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh34_dvagencia1',2,$Irh34_dvagencia,true,'text',1,"")
       ?>
     </td>
@@ -163,7 +163,7 @@ function js_fechaiframe(){
      <b>Agencia p/deposito:
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh34_agencia',5,$Irh34_agencia,true,'text',1,"")
       ?>
     </td>
@@ -171,7 +171,7 @@ function js_fechaiframe(){
       <?=@$Lrh34_dvagencia?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh34_dvagencia',2,$Irh34_dvagencia,true,'text',1,"")
       ?>
     </td>
@@ -181,7 +181,7 @@ function js_fechaiframe(){
       <b>Conta p/deposito:
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh34_conta',15,$Irh34_conta,true,'text',1,"")
       ?>
     </td>
@@ -189,7 +189,7 @@ function js_fechaiframe(){
       <?=@$Lrh34_dvconta?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh34_dvconta',2,$Irh34_dvconta,true,'text',1,"")
       ?>
     </td>
@@ -199,7 +199,7 @@ function js_fechaiframe(){
       <?=@$Lrh34_sequencial?>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
       db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',1,"")
       ?>
     </td>
@@ -214,7 +214,7 @@ function js_fechaiframe(){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cleditaltemplategeral->rotulo->label("l36_db_documentotemplate");
               <?=$Ll36_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l36_sequencial",10,$Il36_sequencial,true,"text",4,"","chave_l36_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cleditaltemplategeral->rotulo->label("l36_db_documentotemplate");
               <?=$Ll36_db_documentotemplate?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l36_db_documentotemplate",10,$Il36_db_documentotemplate,true,"text",4,"","chave_l36_db_documentotemplate");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cleditaltemplategeral->rotulo->label("l36_db_documentotemplate");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_editaltemplategeral.php")==true){
@@ -122,12 +122,12 @@ $cleditaltemplategeral->rotulo->label("l36_db_documentotemplate");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

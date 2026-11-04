@@ -92,28 +92,28 @@
 
 			 	  	<tr>
 			 	  		<td>
-								<input type="checkbox" value="<? echo GeracaoArquivoPit::IPTU ?>" id="iptu" name="iptu"  checked="true"/><strong>IPTU</strong>
+								<input type="checkbox" value="<?php echo GeracaoArquivoPit::IPTU ?>" id="iptu" name="iptu"  checked="true"/><strong>IPTU</strong>
 			 	  		</td>
 			 	  		<td>
-								<input type="checkbox" value="<? echo GeracaoArquivoPit::ITBI_PVR ?>" id="itbi_pvr" name="itbi_pvr"  checked="true"/><strong>ITBI-PVR</strong>
-			 	  		</td>
-			 	  	</tr>
-
-			 	  	<tr>
-			 	  		<td>
-								<input type="checkbox" value="<? echo GeracaoArquivoPit::ITBI_URBANO ?>" id="itbi_urbano" name="itbi_urbano"  checked="true"/><strong>ITBI-Urbano</strong>
-			 	  		</td>
-			 	  		<td>
-								<input type="checkbox" value="<? echo GeracaoArquivoPit::ITBI_PVU ?>" id="itbi_pvu" name="itbi_pvu"  checked="true"/><strong>ITBI-PVU</strong>
+								<input type="checkbox" value="<?php echo GeracaoArquivoPit::ITBI_PVR ?>" id="itbi_pvr" name="itbi_pvr"  checked="true"/><strong>ITBI-PVR</strong>
 			 	  		</td>
 			 	  	</tr>
 
 			 	  	<tr>
 			 	  		<td>
-								<input type="checkbox" value="<? echo GeracaoArquivoPit::ITBI_RURAL ?>" id="itbi_rural" name="itbi_rural"  checked="true"/><strong>ITBI-Rural</strong>
+								<input type="checkbox" value="<?php echo GeracaoArquivoPit::ITBI_URBANO ?>" id="itbi_urbano" name="itbi_urbano"  checked="true"/><strong>ITBI-Urbano</strong>
 			 	  		</td>
 			 	  		<td>
-								<input type="checkbox" value="<? echo GeracaoArquivoPit::LOGRADOUROS ?>" id="logradouros" name="logradouros"  checked="true"/><strong>Logradouros</strong>
+								<input type="checkbox" value="<?php echo GeracaoArquivoPit::ITBI_PVU ?>" id="itbi_pvu" name="itbi_pvu"  checked="true"/><strong>ITBI-PVU</strong>
+			 	  		</td>
+			 	  	</tr>
+
+			 	  	<tr>
+			 	  		<td>
+								<input type="checkbox" value="<?php echo GeracaoArquivoPit::ITBI_RURAL ?>" id="itbi_rural" name="itbi_rural"  checked="true"/><strong>ITBI-Rural</strong>
+			 	  		</td>
+			 	  		<td>
+								<input type="checkbox" value="<?php echo GeracaoArquivoPit::LOGRADOUROS ?>" id="logradouros" name="logradouros"  checked="true"/><strong>Logradouros</strong>
 			 	  		</td>
 			 	  	</tr>
 			 	  </table>

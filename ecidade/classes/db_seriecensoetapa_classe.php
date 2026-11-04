@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,13 +54,13 @@ class cl_seriecensoetapa {
                  ed133_ano = int4 = Ano
                  ";
    //funcao construtor da classe
-   function cl_seriecensoetapa() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("seriecensoetapa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_seriecensoetapa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed133_codigo = ($this->ed133_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed133_codigo"]:$this->ed133_codigo);
        $this->ed133_serie = ($this->ed133_serie == ""?@$GLOBALS["HTTP_POST_VARS"]["ed133_serie"]:$this->ed133_serie);
@@ -80,7 +80,7 @@ class cl_seriecensoetapa {
      }
    }
    // funcao para inclusao
-   function incluir ($ed133_codigo){
+   public function incluir ($ed133_codigo){
       $this->atualizacampos();
      if($this->ed133_serie == null ){
        $this->erro_sql = " Campo Etapa não informado.";

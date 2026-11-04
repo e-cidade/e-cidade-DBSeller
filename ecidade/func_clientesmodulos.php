@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clclientesmodulos->rotulo->label("at74_codcli");
               <?=$Lat74_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at74_sequencial",6,$Iat74_sequencial,true,"text",4,"","chave_at74_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clclientesmodulos->rotulo->label("at74_codcli");
               <?=$Lat74_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at74_codcli",4,$Iat74_codcli,true,"text",4,"","chave_at74_codcli");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clclientesmodulos->rotulo->label("at74_codcli");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_clientesmodulos.php")==true){
@@ -122,12 +122,12 @@ $clclientesmodulos->rotulo->label("at74_codcli");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -48,9 +48,9 @@ require_once modification("dbforms/db_funcoes.php");
     <link rel="stylesheet" type="text/css" href="estilos.css"/>
     <link type="text/css" href="assets/bootstrap-table/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css"
           rel="stylesheet">
-
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
 </head>
 <body class="body-default">
 <div class="alert alert-primary text-left" role="alert">
@@ -444,6 +444,7 @@ require_once modification("dbforms/db_funcoes.php");
 
             const colunas = [];
             colunas.push(createColumn('Natureza', 'estrutural', 'left', 150));
+            colunas.push(createColumn('Subrecurso', 'subrecurso', 'left', 80));
             colunas.push(createColumnValor('Meta Anual', 'valor_base'));
 
             colunas.push(recalcular);

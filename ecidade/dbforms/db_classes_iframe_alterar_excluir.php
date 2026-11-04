@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -146,7 +146,7 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
         <table border="0" cellspacing="2px" width="100%" height="100%" cellpadding="1px" bgcolor="#cccccc">
             <tr>
                 <td align="center" valign="top">
-                    <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px"
+                    <table border='1px' width="100%" bgcolor="#cccccc" cellspacing="0px"
                            class="tabela_iframe_alterar_excluir">
                         <?php
                         $result = @db_query($sql);
@@ -274,7 +274,7 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                     reset($quais_chaves);
                                     for ($qw = 0; $qw < sizeof($quais_chaves); $qw++) {
                                         $chave = key($quais_chaves);
-                                        echo $virgula . $$quais_chaves[$chave];
+                                        echo $virgula . ${$quais_chaves[$chave]};
                                         $virgula = "-";
                                         next($quais_chaves);
                                     }
@@ -289,7 +289,7 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                     reset($quais_chaves);
                                     for ($qw = 0; $qw < sizeof($quais_chaves); $qw++) {
                                         $chave = key($quais_chaves);
-                                        echo $virgula . $$quais_chaves[$chave];
+                                        echo $virgula . ${$quais_chaves[$chave]};
                                         $virgula = "-";
                                         next($quais_chaves);
                                     }
@@ -303,7 +303,7 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                     for ($s = 0; $s < $numrows01; $s++) {
                                         for ($w = 0; $w < sizeof($quais_chaves); $w++) {
                                             $campo = pg_result($result01, $s, $quais_chaves[$w]);
-                                            if (trim($campo) == trim($$quais_chaves[$w])) {
+                                            if (trim($campo) == trim(${$quais_chaves[$w]})) {
                                                 $pode = true;
                                             } else {
                                                 $pode = false;

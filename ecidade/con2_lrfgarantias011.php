@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -97,7 +97,7 @@ function js_emite(sFonte){
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
   <center>
   <form name="form1" method="post" action="con2_lrfdivida002.php" > 
-  <?
+  <?php
     if ($anousu < 2010) {
   ?>
    <table  align="center">
@@ -107,7 +107,7 @@ function js_emite(sFonte){
     </tr>
     <tr>
         <td align="center" colspan="3">
-	     <?	db_selinstit('',300,100);	?>
+	     <?php db_selinstit('',300,100);	?>
 	    </td>
     </tr>
     
@@ -133,7 +133,7 @@ function js_emite(sFonte){
         </td>
    </tr>
   </table>
-  <?
+  <?php
    } else {
   ?>
   <table  align="center">
@@ -149,7 +149,7 @@ function js_emite(sFonte){
                 <b>Período :</b>
               </td>
               <td>
-                 <?                 
+                 <?php                 
                   $aPeriodos = $oRelatorio->getPeriodos();
                   $aListaPeriodos = array();
                   $aListaPeriodos[0] = "Selecione";
@@ -172,7 +172,7 @@ function js_emite(sFonte){
       </td>
     </tr>          
   </table>        
-  <?
+  <?php
    }
    ?>
 </form>

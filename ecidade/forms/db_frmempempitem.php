@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ function e(){
 <table>
     <tr>
       <td><b>Total de itens:</b>
-  <?
+  <?php
   $result02 = $clempautitem->sql_record($clempautitem->sql_query_file($e55_autori,null,"count(e55_sequen) as tot_item")); 
    db_fieldsmemory($result02,0);
 
@@ -65,7 +65,7 @@ function e(){
   db_input('tot_item',8,0,true,'text',3);
   ?>
       <b>Total dos valores:</b>
-  <?
+  <?php
   db_input('tot_valor',13,0,true,'text',3,"onchange=\"js_calcula('quant');\"")
   ?>
       
@@ -73,7 +73,7 @@ function e(){
     </tr>
   <tr>
     <td valign="top"  align='center'>  
-     <?
+     <?php
 //     $sql     = $clempautitem->sql_query($e55_autori,null,"e55_autori,e55_item,pc01_descrmater,e55_sequen,e55_descr,e55_quant,e55_vltot");
   $sql =        $clempautitem->sql_query_pcmaterele($e55_autori,null,"e55_autori,e55_item,pc07_codele,e55_sequen,e55_descr,e55_quant,e55_vltot,pc01_descrmater");
       

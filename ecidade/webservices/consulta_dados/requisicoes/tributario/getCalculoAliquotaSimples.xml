@@ -94,7 +94,7 @@
         <join tipo="inner" tabela="issgruposervico"                        condicao="issgruposervico.q126_sequencial = issconfiguracaogruposervico.q136_issgruposervico" />
         <join tipo="inner" tabela="db_estruturavalor"                      condicao="db_estruturavalor.db121_sequencial = issgruposervico.q126_db_estruturavalor" />
         <join tipo="inner" tabela="issgsanexos"                            condicao="q162_issgruposervico = q126_sequencial" />
-        <join tipo="inner" tabela="issgscadanexos"                         condicao="q162_issgscadanexos = q157_sequencial" />
+        <join tipo="inner" tabela="issgscadanexos"                         condicao="(case when (q162_issgscadanexos = 3 and $fatorR > 28 ) then 1 else q162_issgscadanexos end) = q157_sequencial" />
         <join tipo="inner" tabela="issgsanexosfaixas"                      condicao="q163_issgscadanexos = q157_sequencial" />
         <join tipo="inner" tabela="issgsanexosfaixasimpostosfaixas"        condicao="q164_issgsanexosfaixas = q163_sequencial" />
         <join tipo="inner" tabela="issgsanexosfaixasimpostosfaixaslimites" condicao="q166_issgsanexosfaixasimpostosfaixas = q164_sequencial" />

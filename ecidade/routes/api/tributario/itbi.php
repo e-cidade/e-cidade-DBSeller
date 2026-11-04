@@ -28,3 +28,16 @@
         Route::get("especie", "{$path}ItbiController@getEspecieBenfeitoria");
         Route::get("padrao-construtivo", "{$path}ItbiController@getPadraoConstrutivoBenfeitoria");
     });
+
+    Route::middleware(["auth:api"])->group(function () {
+
+        Route::prefix('arquivoitbi')->group(function () {
+ 
+          $path = "\App\Domain\Tributario\ITBI\Controllers\\";
+          Route::post("processar-arquivo", "{$path}ItbiController@processarArquivo");
+          Route::post("get-arquivos", "{$path}ItbiController@getArquivosItbi");
+          Route::post("delete-arquivo", "{$path}ItbiController@deleteArquivo");
+          Route::post("update-dados-arquivo", "{$path}ItbiController@updateDadosArquivo");
+          Route::post("download-arquivo", "{$path}ItbiController@downloadArquivo");
+        });
+     });

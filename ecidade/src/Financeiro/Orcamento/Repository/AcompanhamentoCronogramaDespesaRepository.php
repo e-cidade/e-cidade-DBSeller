@@ -201,8 +201,12 @@ class AcompanhamentoCronogramaDespesaRepository extends Repository
 
         $rs = db_query($sql);
 
-        if (!$rs || pg_num_rows($rs) === 0) {
+        if (!$rs) {
             throw new Exception("Erro ao buscar dados do cronograma da despesa", 400);
+        }
+
+        if (pg_num_rows($rs) === 0) {
+            throw new Exception("Sem registros para os filtros informados no cronograma da despesa", 400);
         }
 
         return \db_utils::getCollectionByRecord($rs);

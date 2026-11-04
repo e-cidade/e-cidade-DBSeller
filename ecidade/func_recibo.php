@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $clrecibo = new cl_recibo;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 			if (isset($dias_paga) && $dias_paga != ''){
          
 				  $iPaga = $dias_paga;
@@ -106,12 +106,12 @@ $clrecibo = new cl_recibo;
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

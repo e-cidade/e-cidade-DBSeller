@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("libs/db_stdlibwebseller.php"));
@@ -62,11 +62,11 @@ $db_botao = true;
     <table width="100%" border="0" cellspacing="2" cellpadding="0">
      <tr>
       <td width="10%" nowrap title="<?=@$Ted90_c_tabela?>">
-       <?db_ancora("<b>Tabela:</b>","js_pesquisaed90_c_tabela();",$db_opcao);?>
+       <?php db_ancora("<b>Tabela:</b>","js_pesquisaed90_c_tabela();",$db_opcao);?>
       </td>
       <td>
-       <?db_input('ed90_c_tabela',30,@$Ied90_c_tabela,true,'text',3,"")?>
-       <?db_input('ed90_c_modulo',40,@$Ied90_c_modulo,true,'text',3,"")?>
+       <?php db_input('ed90_c_tabela',30,@$Ied90_c_tabela,true,'text',3,"")?>
+       <?php db_input('ed90_c_modulo',40,@$Ied90_c_modulo,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -74,13 +74,13 @@ $db_botao = true;
        <b>Tipo de Ação:</b>
       </td>
       <td>
-       <?
+       <?php
        $x = array(''=>'','I'=>'INCLUSÃO','A'=>'ALTERAÇÃO','E'=>'EXCLUSÃO');
        db_select('actipo',$x,true,$db_opcao," onchange='js_registros(this.value)'");
        ?>
        <span id="reg">
        <b>Registro:</b>
-       <?db_input('registro',20,@$Iregistro,true,'text',$db_opcao,"")?>
+       <?php db_input('registro',20,@$Iregistro,true,'text',$db_opcao,"")?>
        </span>
       </td>
      </tr>
@@ -95,7 +95,7 @@ $db_botao = true;
   </td>
  </tr>
 </table>
-<?
+<?php
  if(isset($ed90_c_tabela)){
  $where = "";
  $where .= $actipo==""?"":" AND db_acountkey.actipo = '$actipo'";
@@ -136,7 +136,7 @@ $db_botao = true;
     <td>Atual</td>
     <td>Tipo</td>
    </tr>
-  <?
+  <?php
   for($x=0;$x<$linhas;$x++){
    db_fieldsmemory($result,$x);
    $data = date("d/m/Y",trim($datahr));
@@ -148,7 +148,7 @@ $db_botao = true;
       <b>Data: <?=$data?></b>
      </td>
     </tr>
-    <?
+    <?php
     $datainicial = $data;
    }
    if($campotext!=$codigoinicial){
@@ -158,7 +158,7 @@ $db_botao = true;
       <b>Registro:</b> <?=$campotext?> <?=Registro($ed90_c_tabela,$campotext)?>
      </td>
     </tr>
-    <?
+    <?php
     $codigoinicial = $campotext;
    }
    if($id_acount!=$idinicial){
@@ -169,7 +169,7 @@ $db_botao = true;
       <b>Código:</b> <?=$id_acount?> <b>Usuário:</b> <?=$nome?>
      </td>
     </tr>
-    <?
+    <?php
     $idinicial = $id_acount;
    }
    ?>
@@ -180,12 +180,12 @@ $db_botao = true;
     <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contatu==""?"&nbsp;":trim($contatu)?></td>
     <td style="font-size:9px;"><?=($actipo=="I")?"INCLUSÃO":($actipo=="A"?"ALTERAÇÃO":"EXCLUSÃO")?></td>
    </tr>
-   <?
+   <?php
   }
   ?>
   </table>
   <br><br>
-  <?
+  <?php
  }else{
   ?>
   <table align="center" width="760" border="1" cellspacing="0" cellpadding="0">
@@ -195,10 +195,10 @@ $db_botao = true;
     </td>
    </tr>
   </table>
-  <?
+  <?php
  }
 }?>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -228,7 +228,7 @@ function js_registros(valor){
  }
 }
 </script>
-<?
+<?php
 function Registro($tabela,$valor){
  if(trim($tabela)=="regencia"){
   $sql = "SELECT ed232_c_descr, ed18_c_nome FROM regencia

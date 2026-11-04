@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,6 +47,8 @@ $campos = " distinct
                                                                      where q02_inscr = isencaoinscr.v16_inscr limit 1) 
 						   when isencaocgm.v12_sequencial    is not null then (select z01_nome from cgm where z01_numcgm = isencaocgm.v12_numcgm limit 1)
 					 end as dl_nome,
-					 isencao.v10_dtisen,
+					 isencao.v10_anoinicial,
+					 isencao.v10_anofinal,
+					 isencao.v10_observacao,
 					 isencao.v10_dtlan ";
 ?>

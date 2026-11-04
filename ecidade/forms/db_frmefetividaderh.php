@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,16 +40,16 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
    <?=@$Led98_i_codigo?>
   </td>
   <td>
-   <?db_input('ed98_i_codigo', 15, $Ied98_i_codigo, true, 'text', 3, "")?>
+   <?php db_input('ed98_i_codigo', 15, $Ied98_i_codigo, true, 'text', 3, "")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted98_i_escola?>">
-   <?db_ancora(@$Led98_i_escola, "", 3);?>
+   <?php db_ancora(@$Led98_i_escola, "", 3);?>
   </td>
   <td>
-   <?db_input('ed98_i_escola', 15, $Ied98_i_escola, true, 'text', 3, "")?>
-   <?db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '')?>
+   <?php db_input('ed98_i_escola', 15, $Ied98_i_escola, true, 'text', 3, "")?>
+   <?php db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
@@ -57,7 +57,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
    <?=@$Led98_c_tipo?>
   </td>
   <td>
-   <?
+   <?php
    $x = array(""=>"", "P"=>"PROFESSORES", "F"=>"FUNCIONÁRIOS");
    db_select('ed98_c_tipo', $x, true, $db_opcao1, "onchange='js_pesquisaultimo()'")
    ?>
@@ -70,7 +70,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
  </tr>
  <tr>
   <td nowrap colspan="2">
-   <?$visible = isset($ed98_c_tipocomp)?"visible":"hidden"?>
+   <?php $visible = isset($ed98_c_tipocomp)?"visible":"hidden"?>
    <div id="tipo_comp" style="visibility:<?=$visible?>;">
     <table>
      <tr>
@@ -78,7 +78,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
        <?=@$Led98_c_tipocomp?>
       </td>
       <td>
-       <?
+       <?php
        $x = array(""=>"", "M"=>"MENSAL", "P"=>"PERIÓDICA");
        db_select('ed98_c_tipocomp', $x, true, $db_opcao1, "onchange='js_competencia(this.value)'");
        ?>
@@ -90,13 +90,13 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
  </tr>
  <tr>
   <td nowrap colspan="2">
-   <?$visible = isset($ed98_c_tipocomp)&&$ed98_c_tipocomp=="M"?"visible":"hidden"?>
+   <?php $visible = isset($ed98_c_tipocomp)&&$ed98_c_tipocomp=="M"?"visible":"hidden"?>
    <div id="comp_mensal" style="position:absolute;visibility:<?=$visible?>;">
     <table>
      <tr>
       <td nowrap title="<?=@$Ted98_i_mes?>">
        <?=@$Led98_i_mes?>
-       <?
+       <?php
        $x = array(""=>"", "1"=>"JANEIRO", "2"=>"FEVEREIRO", "3"=>"MARÇO", "4"=>"ABRIL", "5"=>"MAIO", "6"=>"JUNHO",
                   "7"=>"JULHO", "8"=>"AGOSTO", "9"=>"SETEMBRO", "10"=>"OUTUBRO", "11"=>"NOVEMBRO", "12"=>"DEZEMBRO"
                  );
@@ -105,7 +105,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
       </td>
       <td>
        <?=@$Led98_i_ano?>
-       <?
+       <?php
        $arr_anos[""] = "";
        for($y=(date("Y")+1);$y>(date("Y")-30);$y--){
         $arr_anos[$y] = $y;
@@ -117,20 +117,20 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
     </tr>
     </table>
    </div>
-   <?$visible = isset($ed98_c_tipocomp)&&$ed98_c_tipocomp=="P"?"visible":"hidden"?>
+   <?php $visible = isset($ed98_c_tipocomp)&&$ed98_c_tipocomp=="P"?"visible":"hidden"?>
    <div id="comp_periodo" style="position:absolute;visibility:<?=$visible?>;">
     <table>
      <tr>
       <td nowrap title="<?=@$Ted98_d_dataini?>">
        <?=@$Led98_d_dataini?>
-       <?db_inputdata('ed98_d_dataini', @$ed98_d_dataini_dia, @$ed98_d_dataini_mes,
+       <?php db_inputdata('ed98_d_dataini', @$ed98_d_dataini_dia, @$ed98_d_dataini_mes,
                       @$ed98_d_dataini_ano, true, 'text', $db_opcao1, ""
                      )
        ?>
       </td>
       <td>
        <?=@$Led98_d_datafim?>
-       <?db_inputdata('ed98_d_datafim', @$ed98_d_datafim_dia, @$ed98_d_datafim_mes,
+       <?php db_inputdata('ed98_d_datafim', @$ed98_d_datafim_dia, @$ed98_d_datafim_mes,
                       @$ed98_d_datafim_ano, true, 'text', $db_opcao1, ""
                      )
        ?>
@@ -166,7 +166,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_efetividaderh.hide();
-  <?
+  <?php
    if ($db_opcao != 1) {
      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }

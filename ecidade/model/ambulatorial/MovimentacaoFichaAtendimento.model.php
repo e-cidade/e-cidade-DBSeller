@@ -34,10 +34,11 @@
 class MovimentacaoFichaAtendimento {
 
   const MENSAGEM                    = 'saude.ambulatorial.MovimentacaoFichaAtendimento.';
-  const SITUACAO_ENTRADA            = 1;
-  const SITUACAO_ENCAMINHADA        = 2;
-  const SITUACAO_FINALIZADA         = 3;
-  const SITUACAO_ATESTADO_EM_BRANCO = 4;
+    const SITUACAO_ENTRADA            = 1;
+    const EM_ATENDIMENTO              = 2;
+    const SITUACAO_FINALIZADA         = 3;
+    const SITUACAO_ATESTADO_EM_BRANCO = 4;
+    const SITUACAO_ENCAMINHADA        = 5;
 
   /**
    * Codigo
@@ -87,11 +88,24 @@ class MovimentacaoFichaAtendimento {
    */
   private $sObservacao;
 
+  /**
+   * Profissional escolhido para atender o paciente
+   * @var integer
+   */
+   private $profissionalEncaminhado;
+
+   /**
+   * Profissional que está atendendo o paciente
+   * @var integer
+   */
+   private $profissionalAtendimento;
+
   static $aSituacoes = array(
     1 => "ENTRADA",
-    2 => "ENCAMINHADA",
+    2 => "EM ATENDIMENTO",
     3 => "FINALIZADA",
-    4 => "ATESTADO EM BRANCO"
+    4 => "ATESTADO EM BRANCO",
+    5 => "ENCAMINHADA",
   );
 
   public function __construct ($iCodigo = null) {
@@ -121,6 +135,8 @@ class MovimentacaoFichaAtendimento {
         $this->sHora              = $oDados->sd102_hora;
         $this->iSituacao          = $oDados->sd102_situacao;
         $this->sObservacao        = $oDados->sd102_observacao;
+        $this->profissionalEncaminhado = $oDados->sd102_profissionalencaminhado;
+        $this->profissionalAtendimento = $oDados->sd102_profissionalatendimento;
       }
 
     }
@@ -134,13 +150,15 @@ class MovimentacaoFichaAtendimento {
 
     $oDaoMovimentacao = new cl_movimentacaoprontuario();
 
-    $oDaoMovimentacao->sd102_prontuarios       = $this->iFichaAtendimento;
-    $oDaoMovimentacao->sd102_db_usuarios       = $this->oUsuarioSistema->getIdUsuario();
-    $oDaoMovimentacao->sd102_setorambulatorial = $this->oSetorAmbulatorial->getCodigo();
-    $oDaoMovimentacao->sd102_data              = $this->oData->getDate();
-    $oDaoMovimentacao->sd102_hora              = $this->sHora;
-    $oDaoMovimentacao->sd102_situacao          = $this->iSituacao;
-    $oDaoMovimentacao->sd102_observacao        = $this->sObservacao;
+    $oDaoMovimentacao->sd102_prontuarios                    = $this->iFichaAtendimento;
+    $oDaoMovimentacao->sd102_db_usuarios                    = $this->oUsuarioSistema->getIdUsuario();
+    $oDaoMovimentacao->sd102_setorambulatorial              = $this->oSetorAmbulatorial->getCodigo();
+    $oDaoMovimentacao->sd102_data                           = $this->oData->getDate();
+    $oDaoMovimentacao->sd102_hora                           = $this->sHora;
+    $oDaoMovimentacao->sd102_situacao                       = $this->iSituacao;
+    $oDaoMovimentacao->sd102_observacao                     = $this->sObservacao;
+    $oDaoMovimentacao->sd102_profissionalencaminhado        = $this->profissionalEncaminhado;
+    $oDaoMovimentacao->sd102_profissionalatendimento        = $this->profissionalAtendimento;
 
     if ( empty($this->iCodigo) ) {
 
@@ -292,4 +310,40 @@ class MovimentacaoFichaAtendimento {
 
     return null;
   }
+
+    /**
+     * Getter profissional encaminhado
+     * @return int
+     */
+    public function getProfissionalEncaminhado()
+    {
+        return $this->profissionalEncaminhado;
+    }
+
+    /**
+     * Setter profissional encaminhado
+     * @param int
+     */
+    public function setProfissionalEncaminhado($profissionalEncaminhado)
+    {
+        $this->profissionalEncaminhado = $profissionalEncaminhado;
+    }
+
+    /**
+     * Getter profissional de atendimento
+     * @return int
+     */
+    public function getProfissionalAtendimento()
+    {
+        return $this->profissionalAtendimento;
+    }
+
+    /**
+     * Setter profissional de atendimento
+     * @param int
+     */
+    public function setProfissionalAtendimento($profissionalAtendimento)
+    {
+        $this->profissionalAtendimento = $profissionalAtendimento;
+    }
 }

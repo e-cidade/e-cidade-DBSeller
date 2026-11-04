@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -98,7 +98,7 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
         <b>Solicitação: </b>
       </td>
       <td>
-        <?
+        <?php
         db_input('m97_sequencial',10,$Im97_sequencial,true,'text',3,"");
         $m98_sequencial=@$m98_sequencial;
         db_input('m98_sequencial',10,$Im98_sequencial,true,'hidden',3,"");
@@ -108,12 +108,12 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
     </tr>
     <tr>
       <td nowrap title="<?=@$Tm60_codmater?>">
-        <?
+        <?php
         db_ancora(@$Lm60_codmater,"js_pesquisa_codmater(true);",$db_opcao);
         ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('m98_matmater',10,$Im60_codmater,true,'text',$db_opcao,"onchange='js_pesquisa_codmater(false);'");
         db_input('m60_descr',40,$Im60_descr,true,'text',1,"");
         ?>
@@ -125,12 +125,12 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
         <?=@$Lm98_quant?>
       </td>
       <td>
-        <?
+        <?php
         db_input('m98_quant',10,$Im98_quant,true,'text',$db_opcao,"");
         ?>
-        <?if (isset($m98_matmater)&&$m98_matmater!=""){?>
+        <?php if (isset($m98_matmater)&&$m98_matmater!=""){?>
           <b>Unid. Saída:</b>
-          <?
+          <?php
           $result_unisai=$clmatmaterunisai->sql_record($clmatmaterunisai->sql_query($m98_matmater));
           if ($clmatmaterunisai->numrows>0){
             db_fieldsmemory($result_unisai,0);
@@ -140,13 +140,13 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
           db_input('codunid',10,'',true,'hidden',3,"");
           db_input('unisai',10,'',true,'text',3,"");
           ?>
-        <?
+        <?php
         }
         db_input('m97_db_almox',10,'',true,'hidden',3,"");
         ?>
       </td>
     </tr>
-    <?
+    <?php
     $testquan='f';
     if (!empty($m98_matmater)&&$m98_matmater!=""){
 
@@ -193,7 +193,7 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
           <b>Quantidade Disponível:</b>
         </td>
         <td>
-          <?
+          <?php
           if (isset($quantot)&&($quantot!="")){
             $quant_disp=$quantot;
           } else {
@@ -204,44 +204,44 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
           ?>
         </td>
       </tr>
-    <?}?>
+    <?php }?>
     <tr>
       <td nowrap title="<?=@$Tm98_obs?>">
         <?=@$Lm98_obs?>
       </td>
       <td>
-        <?
+        <?php
         db_textarea('m98_obs',0,50,$Im98_obs,true,'text',$db_opcao,"")
         ?>
       </td>
     </tr>
     <tr>
       <td colspan=2 align=center>
-        <?
+        <?php
         if (!isset($opcao) && isset($db_opcao) && $db_opcao==3){
           $db_botao=false;
         }
         ?>
-        <?db_input('m91_depto',10,@$m91_depto,true,'hidden',3,"");?>
+        <?php db_input('m91_depto',10,@$m91_depto,true,'hidden',3,"");?>
         <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> <?=(($db_opcao==1||$db_opcao==2||$db_opcao==22)&&$testquan=='f'?"onclick='return js_testaquant();'":"")?>  >
-        <?if ($db_opcao==1||$db_opcao==2){ ?>
+        <?php if ($db_opcao==1||$db_opcao==2){ ?>
           <input name='pesquisar' type='button' id='emite' value='Emite Solicitação' onclick='js_abre();' <?=($db_botao==false?"disabled":"")?>>
-        <?}?>
-        <?
+        <?php }?>
+        <?php
         $clmatpedidoitem->numrows = 0;
         if (!empty($m97_sequencial)) {
           $resul1=$clmatpedidoitem->sql_record($clmatpedidoitem->sql_query(null,'*',null,"m98_matpedido= {$m97_sequencial}"));
         }
         if ($clmatpedidoitem->numrows==0){?>
           <script>document.form1.emite.disabled=true;</script>
-        <?}?>
+        <?php }?>
       </td>
     </tr>
   </table>
   <table>
     <tr>
       <td valign="top">
-        <?
+        <?php
         $chavepri= array("m97_sequencial"=>@$m97_sequencial,"m98_sequencial"=>@$m98_sequencial,"m98_obs"=>@$m98_obs,"m98_quant"=>@$m98_quant,"m98_matunid"=>@$m98_matunid,"m61_descr"=>@$m61_descr,"m98_matmater"=>@$m98_matmater,"m60_descr"=>@$m60_descr);
         $cliframe_alterar_excluir->chavepri=$chavepri;
 
@@ -328,7 +328,7 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
     document.form1.submit();
   }
   function js_testaquant(){
-    <?
+    <?php
     if ($oParam->m90_validarsaldosolictransf == 2) { // não valida o saldo disponível
       echo 'return true;';
     }

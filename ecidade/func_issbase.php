@@ -1,7 +1,7 @@
-<?
+<?php
     /*
      *     E-cidade Software Publico para Gestao Municipal
-     *  Copyright (C) 2009  DBselller Servicos de Informatica
+     *  Copyright (C) 2009  DBSeller Servicos de Informatica
      *                            www.dbseller.com.br
      *                         e-cidade@dbseller.com.br
      *
@@ -32,6 +32,7 @@
     include(modification("dbforms/db_funcoes.php"));
     include(modification("classes/db_issbase_classe.php"));
     include(modification("classes/db_cgm_classe.php"));
+    include(modification("classes/db_isssetorfiscal_classe.php"));
 
     db_postmemory($_POST);
     db_postmemory($_GET);
@@ -39,13 +40,14 @@
 
     $clissbase = new cl_issbase;
     $clcgm     = new cl_cgm;
-    $clissbase->rotulo->label("q02_inscr");
-    $clcgm->rotulo->label("z01_nome");
-    $clissbase->rotulo->label("q02_inscmu");
+    $clisssetorfiscal = new cl_isssetorfiscal;
     $clrotulo = new rotulocampo;
-    $clrotulo->label("q02_inscr");
-    $clrotulo->label("z01_nome");
-    $clrotulo->label("q177_setorfiscal");
+
+    $clissbase->rotulo->label("q02_inscr");
+    $clissbase->rotulo->label("q02_inscmu");
+    $clcgm->rotulo->label("z01_nome");
+    $clcgm->rotulo->label("z01_cgccpf");
+    $clisssetorfiscal->rotulo->label("q177_setorfiscal");
 
     $clrotulo->label("DBtxt30");
     $clrotulo->label("DBtxt31");
@@ -113,7 +115,7 @@
                             <?=$Lq02_inscr?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php
                                 db_input("q02_inscr",10,$Iq02_inscr,true,"text",10,"","chave_q02_inscr");
                             ?>
                         </td>
@@ -123,7 +125,7 @@
                             <?=$Lz01_nome?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php
                                 db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
                             ?>
                         </td>
@@ -134,7 +136,7 @@
                             <label for="cpf"><?=$DBtxt30?>:</label>
                         </td>
                         <td>
-                            <?
+                            <?php
                                 db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CPF\",\"\",\"\",event);'",'cpf');
                             ?>
                         </td>
@@ -144,7 +146,7 @@
                             <label for="cnpj"><?=$DBtxt31?>:</label>
                         </td>
                         <td>
-                            <?
+                            <?php
                                 db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CNPJ\",\"\",\"\",event);'",'cnpj');
                             ?>
                         </td>
@@ -155,7 +157,7 @@
                             <?=$Lq02_inscmu?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php
                                 db_input("q02_inscmu",10,$Iq02_inscmu,true,"text",4,"","chave_q02_inscmu");
                             ?>
                         </td>
@@ -195,7 +197,7 @@
     </tr>
     <tr>
         <td align="center" valign="top">
-            <?
+            <?php
                 $propaga["chave_z01_nome"] = @$chave_z01_nome;
                 $propaga["chave_q02_inscr"] = @$chave_q02_inscr;
                 $propaga["cpf"] = @$cpf;
@@ -224,16 +226,18 @@
                 if(!empty($sql)){
                     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$propaga);
                 }else{
-                    $result = $clissbase->sql_record($clissbase->sql_query(null, "*", null, "q02_inscr = {$pesquisa_chave} {$sVeiculo}"));
-                    if($clissbase->numrows!=0){
-                        db_fieldsmemory($result,0);
-                        if(@$sani==1){
-                            echo "<script>".$funcao_js."(\"$q02_inscr\",\"$z01_nome\");</script>";
-                        }else{
-                            echo "<script>".$funcao_js."(\"$z01_nome\",false,\"$q02_dtbaix\",$z01_numcgm);</script>";
-                        }
-                    }else{
-                        echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+                    if (isset($pesquisa_chave)){
+                       $result = $clissbase->sql_record($clissbase->sql_query(null, "*",null,"q02_inscr = {$pesquisa_chave} {$sVeiculo}"));
+                       if($clissbase->numrows!=0){
+                           db_fieldsmemory($result,0);
+                           if(@$sani==1){
+                               echo "<script>".$funcao_js."(\"$q02_inscr\",\"$z01_nome\");</script>";
+                           }else{
+                               echo "<script>".$funcao_js."(\"$z01_nome\",false,\"$q02_dtbaix\",$z01_numcgm);</script>";
+                           }
+                       }else{
+                           echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+                       }
                     }
                 }
             ?>
@@ -242,7 +246,7 @@
 </table>
 </body>
 </html>
-<?
+<?php
     if(!isset($pesquisa_chave)){
         ?>
         <script>
@@ -256,7 +260,7 @@
             document.form2.chave_z01_nome.select();
 
         </script>
-        <?
+        <?php
     }
 ?>
 <script type="text/javascript">

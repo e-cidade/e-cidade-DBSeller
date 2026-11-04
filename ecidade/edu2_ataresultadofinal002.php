@@ -68,6 +68,10 @@ $oFiltroRelatorio->iTamanhoColunaResultado = $oFiltroRelatorio->iCodigoTipoModel
 $oFiltroRelatorio->iDataRelatorio = $oGet->dataRelatorio;
 $oFiltroRelatorio->sObservacao = $oGet->sObservacao;
 $oFiltroRelatorio->imprimirIdade = $oGet->imprimirIdade == 2;
+$oFiltroRelatorio->incluirCPF = ($oGet->incluirCPF == 2);
+$oFiltroRelatorio->incluirDataNascimento = ($oGet->incluirDataNascimento == 2);
+$oFiltroRelatorio->incluirIDINEP = ($oGet->incluirIDINEP == 2);
+
 if ($oGet->transfer == 'yes') {
     $oFiltroRelatorio->lTransferencia = true;
 }
@@ -455,9 +459,38 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
             }
 
             $oPdf->setfont('arial', '', 6);
-            $idade = $aListaDeAlunos[$iContadorAluno]->getAluno()->getIdade();
-            $sNomeAluno = trim($aListaDeAlunos[$iContadorAluno]->getAluno()->getNome());
-            $iLinhasAluno = $oPdf->NbLines($oFiltroRelatorio->iTamanhoTotalColunaDisciplina, $sNomeAluno);
+
+            $cpf                       = $aListaDeAlunos[$iContadorAluno]->getAluno()->getCpf(true);
+            $dataNascimento            = $aListaDeAlunos[$iContadorAluno]->getAluno()->getDataNascimento('d/m/Y');
+            $idade                     = $aListaDeAlunos[$iContadorAluno]->getAluno()->getIdade();
+            $inep                      = $aListaDeAlunos[$iContadorAluno]->getAluno()->getCodigoInep();
+            $sNomeAluno                = trim($aListaDeAlunos[$iContadorAluno]->getAluno()->getNome());
+
+            if ($oFiltroRelatorio->imprimirIdade) {
+                $sNomeAluno .= ' - Idade: ' . $idade;
+            }
+
+            if ($oFiltroRelatorio->incluirCPF and strlen($cpf) > 11) {
+                $sNomeAluno .= ' - CPF: ' . $cpf;
+            } elseif ($oFiltroRelatorio->incluirCPF) {
+                $sNomeAluno .= ' - CPF: S/N';
+            }
+
+            if ($oFiltroRelatorio->incluirDataNascimento) {
+                $sNomeAluno .= ' - D.N.: ' . $dataNascimento;
+            }
+
+            if ($oFiltroRelatorio->incluirIDINEP and strlen($inep) > 0) {
+                $sNomeAluno .= ' - INEP: ' . $inep;
+            } elseif ($oFiltroRelatorio->incluirIDINEP) {
+                $sNomeAluno .= ' - INEP: S/N';
+            }
+
+            $iLinhasAluno              = $oPdf->NbLines(
+                $oFiltroRelatorio->iTamanhoTotalColunaDisciplina,
+                $sNomeAluno
+            );
+
             $oFiltroRelatorio->iAltura = $iLinhasAluno * 4;
 
             $iPreenchimento = $iContadorAluno;
@@ -500,11 +533,13 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
                 $iContadorSequencial = 0;
                 $iAlunosImpressos = 0;
             }
+
             if ($oPdf->GetY() > 227) {
                 $oPdf->Line(10, $oPdf->GetY(), 202, $oPdf->GetY());
                 $oPdf->AddPage();
                 $lQuebrouPagina = true;
             }
+
             $iAlunosImpressos++;
 
             /**
@@ -519,9 +554,11 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
                 $lPrimeiroLaco = false;
                 cabecalhoPadrao($oPdf, $oFiltroRelatorio, $aDisciplinasPagina, $oTurma, $iCodigoEtapa);
             }
+
             if ($oFiltroRelatorio->iTrocaTurma == 1 && $aListaDeAlunos[$iContadorAluno]->getSituacao() == "TROCA DE TURMA") {
                 continue;
             }
+
             $oPdf->setfont('arial', '', 6);
 
             if ($lSequencialDiario) {
@@ -537,10 +574,10 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
             $oPdf->SetXY($iPosicaoX + $oFiltroRelatorio->iTamanhoTotalColunaDisciplina, $iPosicaoY);
 
             // idade
-            if ($oFiltroRelatorio->imprimirIdade) {
-                $oPdf->setX($oPdf->getX() - 5);
-                $oPdf->Cell(5, $oFiltroRelatorio->iAltura, $idade, $sBordaAluno, 0, "C", $iCorLinha);
-            }
+//            if ($oFiltroRelatorio->imprimirIdade) {
+//                $oPdf->setX($oPdf->getX() - 5);
+//                $oPdf->Cell(5, $oFiltroRelatorio->iAltura, $idade, $sBordaAluno, 0, "C", $iCorLinha);
+//            }
 
             /**
              * Buscamos os dados do resultado final
@@ -641,7 +678,10 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
                     /**
                      * Se for parecer devemos utilizar o resultado da aprovacao do aluno
                      */
-                    $oFormaAvaliacao = $oResultadoFinal->getResultadoAvaliacao()->getFormaDeAvaliacao();
+
+                    $oFormaAvaliacao = !is_null($oResultadoFinal->getResultadoAvaliacao()) ?
+                                        $oResultadoFinal->getResultadoAvaliacao()->getFormaDeAvaliacao() :
+                                        "";
                     if (!empty($oFormaAvaliacao) && $oFormaAvaliacao->getTipo() == "PARECER") {
 
                         $nValorAproveitamento = $oResultadoFinal->getResultadoAprovacao();
@@ -716,7 +756,8 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
                         }
                     }
 
-                    if ($oResultadoFinal->getResultadoAvaliacao()->getFormaDeObtencao() == 'AP') {
+                    if (!is_null($oResultadoFinal->getResultadoAvaliacao()) &&
+                        $oResultadoFinal->getResultadoAvaliacao()->getFormaDeObtencao() == 'AP') {
                         $nValorAproveitamento = '-';
                     }
 
@@ -1096,8 +1137,27 @@ function cabecalhoPadrao($oPdf, $oFiltroRelatorio, $aDisciplinasPagina, Turma $o
     /**
      * Quebramos a linha para impressao da linha com Nº, Nome do Aluno, ...
      */
+
+    $scellHeader = "Nome do Aluno";
+
+    if ($oFiltroRelatorio->imprimirIdade) {
+        $scellHeader .= ' - Idade';
+    }
+
+    if ($oFiltroRelatorio->incluirCPF) {
+        $scellHeader .= ' - CPF';
+    }
+
+    if ($oFiltroRelatorio->incluirDataNascimento) {
+        $scellHeader .= ' - D.N.';
+    }
+
+    if ($oFiltroRelatorio->incluirIDINEP) {
+        $scellHeader .= ' - INEP';
+    }
+
     $oPdf->Cell(5, 4, "Nº", "LRT", 0, "C", 0);
-    $oPdf->Cell($oFiltroRelatorio->iTamanhoTotalColunaDisciplina, 4, "Nome do Aluno", "LRT", 0, "C", 0);
+    $oPdf->Cell($oFiltroRelatorio->iTamanhoTotalColunaDisciplina, 4, $scellHeader, "LRT", 0, "L", 0);
 
     /**
      * Impressao de "Aprov" para cada disciplina, referente ao aproveitamento do aluno. Caso a turma possua calculo

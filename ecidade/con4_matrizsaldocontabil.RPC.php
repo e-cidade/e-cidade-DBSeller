@@ -34,6 +34,9 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/JSON.php"));
 ini_set('memory_limit', '-1');
 
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\MapeamentoPcaspService;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\MapeamentoPlanoDespesaService;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\MapeamentoPlanoReceitaService;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Services\Processamento;
 use ECidade\Financeiro\Contabilidade\Encerramento\PeriodoContabil;
 use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\Model\Lancamento;
@@ -47,13 +50,10 @@ $oRetorno->sMessage = '';
 define("MENSAGENS", "con4_matrizsaldocontabil.RPC.json");
 
 try {
-
     db_inicio_transacao();
 
     switch ($oParametros->sExecucao) {
-
         case "processarMatriz":
-
             db_putsession("DB_desativar_account", true);
             $rsDesabilitarAuditoria = db_query("SELECT fc_putsession('__disable_audit__', 'on');");
             if ( ! $rsDesabilitarAuditoria ){
@@ -81,7 +81,7 @@ try {
             switch ($oParametros->processamento) {
 
                 case 1:
-
+                    validaContasSemVinculo($ano);
                     $processamentoMatriz->excluirProcessamento();
                     $processamentoMatriz->processar();
                     $processamentoMatriz->setPersistirSaldoFinal(false);
@@ -90,7 +90,7 @@ try {
                     $oRetorno->fileName = end($fileName);
                     break;
                 case 2:
-
+                    validaContasSemVinculo($ano);
                     $processamentoMatriz->excluirProcessamento();
                     $processamentoMatriz->processar();
 
@@ -102,16 +102,13 @@ try {
                     break;
             }
 
-
             if ($oParametros->encerrar) {
-
                 $dia = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
                 $dbDate = new DBDate("$dia/$mes/$ano");
                 $usuario = new UsuarioSistema(db_getsession("DB_id_usuario"));
                 $anousu = db_getsession("DB_anousu");
 
                 foreach ($oParametros->instituicoes as $instituicao) {
-
                     $periodoContabil = new PeriodoContabil(new Instituicao($instituicao->codigo), $dbDate, $usuario,
                         $anousu);
                     $periodoContabil->encerrar();
@@ -213,7 +210,6 @@ try {
 
 
 } catch (Exception $oErro) {
-
     db_fim_transacao(true);
     $oRetorno->iStatus = 2;
     $oRetorno->sMessage = $oErro->getMessage();
@@ -221,3 +217,122 @@ try {
 
 $oRetorno->erro = $oRetorno->iStatus == 2;
 echo JSON::create()->stringify($oRetorno);
+
+
+/**
+ * @param $exercicio
+ * @return true
+ * @throws Exception
+ */
+function validaContasSemVinculo($exercicio) {
+
+    $pcasp = hasContasSemVinculoPcasp($exercicio);
+    $despesa = hasContasDespesaSemVinculoPcasp($exercicio);
+    $receita = hasContasReceitaSemVinculoPcasp($exercicio);
+
+    if ($pcasp or $despesa or $receita) {
+        $msg = "Existem contas sem o vínculo do mapeamento com o Plano da União.\n";
+        if ($pcasp) {
+            $msg .= "\n - Plano PCASP: Contabilidade > Cadastros > Plano de Contas > PCASP > Mapear";
+        }
+
+        if ($despesa) {
+            $msg .= "\n - Despesa: Contabilidade > Cadastros > Plano de Contas > Orçamentário > Mapear Despesa > Por Conta";
+        }
+
+        if ($receita) {
+            $msg .= "\n - Receita: Contabilidade > Cadastros > Plano de Contas > Orçamentário > Mapear Receita > Por Conta";
+        }
+        throw new Exception($msg);
+    }
+
+    return true;
+}
+
+/**
+ * @param $exercicio
+ * @return bool
+ */
+function hasContasSemVinculoPcasp($exercicio)
+{
+    $filtros = [
+        'exercicio' => $exercicio,
+        'tipoPlano' => 'uniao'
+    ];
+    $servicePcasp = new MapeamentoPcaspService();
+    $servicePcasp->filtros($filtros);
+    $pcasp = $servicePcasp->getContasSemVinculoComMovimentacao();
+    return count($pcasp) > 0;
+}
+
+/**
+ * @param $exercicio
+ * @return bool
+ */
+function hasContasDespesaSemVinculoPcasp($exercicio)
+{
+    $sql = "
+    with contas_com_movimento as (
+      select c60_codigo
+        from conlancam
+        join conlancamele on c67_codlan = c70_codlan
+        join conplanoorcamento on conplanoorcamento.c60_anousu = c70_anousu
+             and conplanoorcamento.c60_codcon = c67_codele
+       where c70_anousu = {$exercicio}
+      union
+      select c60_codigo
+        from conlancam
+        join conlancamdot on c73_anousu = c70_anousu
+             and c73_codlan = c70_codlan
+        join orcdotacao on (o58_anousu, o58_coddot) = (c73_anousu, c73_coddot)
+        join conplanoorcamento on conplanoorcamento.c60_anousu = c70_anousu
+             and conplanoorcamento.c60_codcon = o58_codele
+       where c70_anousu = {$exercicio}
+    ) select *
+    from contas_com_movimento
+    where not exists (
+        select 1
+          from planodespesaconplanoorcamento
+          join planodespesa on planodespesa.id = planodespesa_id
+         where conplanoorcamento_codigo = c60_codigo
+           and uniao is true
+     )
+    ";
+    $rs = db_query($sql);
+    return pg_num_rows($rs) > 0;
+}
+
+/**
+ * @param $exercicio
+ * @return bool
+ */
+function hasContasReceitaSemVinculoPcasp($exercicio)
+{
+    $dInicio = "$exercicio-01-01";
+    $dFim = "$exercicio-12-31";
+    $sql = "
+    select c60_codigo
+      from orcreceita
+      join balancete_receita_complemento( o70_anousu, o70_codfon, o70_concarpeculiar, '$dInicio', '$dFim')
+           on o70_codfon = fonte
+           and o70_anousu = ano
+      join conplanoorcamento on (c60_codcon, c60_anousu) = (o70_codfon, o70_anousu)
+     where o70_anousu = $exercicio
+       and (   previsao_adicional_acumulado != 0
+            or valor_a_arrecadar != 0
+            or arrecadado_periodo != 0
+            or arrecadado_acumulado != 0
+            or previsao_atualizada != 0
+           )
+      and not exists (
+        select 1
+          from planoreceitaconplanoorcamento
+          join planoreceita on planoreceita.id = planoreceita_id
+         where conplanoorcamento_codigo = c60_codigo
+           and uniao is true
+      )
+    ";
+
+    $rs = db_query($sql);
+    return pg_num_rows($rs) > 0;
+}

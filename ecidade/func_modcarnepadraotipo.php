@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmodcarnepadraotipo->rotulo->label("k49_cadmodcarne");
               <?=$Lk49_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k49_sequencial",10,$Ik49_sequencial,true,"text",4,"","chave_k49_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmodcarnepadraotipo->rotulo->label("k49_cadmodcarne");
               <?=$Lk49_cadmodcarne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k49_cadmodcarne",10,$Ik49_cadmodcarne,true,"text",4,"","chave_k49_cadmodcarne");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmodcarnepadraotipo->rotulo->label("k49_cadmodcarne");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_modcarnepadraotipo.php")==true){
@@ -122,12 +122,12 @@ $clmodcarnepadraotipo->rotulo->label("k49_cadmodcarne");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

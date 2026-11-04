@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -47,18 +47,18 @@ class cl_listadeb {
    var $k61_numpar = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k61_codigo = int4 = Código da Lista 
-                 k61_numpre = int4 = Numpre 
-                 k61_numpar = int4 = Parcela 
+                 k61_codigo = int4 = Código da Lista
+                 k61_numpre = int4 = Numpre
+                 k61_numpar = int4 = Parcela
                  ";
    //funcao construtor da classe
-   function cl_listadeb() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("listadeb");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_listadeb {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k61_codigo = ($this->k61_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["k61_codigo"]:$this->k61_codigo);
        $this->k61_numpre = ($this->k61_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k61_numpre"]:$this->k61_numpre);
@@ -79,7 +79,7 @@ class cl_listadeb {
      }
    }
    // funcao para inclusao
-   function incluir ($k61_codigo,$k61_numpre,$k61_numpar){
+   public function incluir ($k61_codigo,$k61_numpre,$k61_numpar){
       $this->atualizacampos();
        $this->k61_codigo = $k61_codigo;
        $this->k61_numpre = $k61_numpre;
@@ -109,14 +109,14 @@ class cl_listadeb {
        return false;
      }
      $sql = "insert into listadeb(
-                                       k61_codigo 
-                                      ,k61_numpre 
-                                      ,k61_numpar 
+                                       k61_codigo
+                                      ,k61_numpre
+                                      ,k61_numpar
                        )
                 values (
-                                $this->k61_codigo 
-                               ,$this->k61_numpre 
-                               ,$this->k61_numpar 
+                                $this->k61_codigo
+                               ,$this->k61_numpre
+                               ,$this->k61_numpar
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -157,7 +157,7 @@ class cl_listadeb {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k61_codigo=null,$k61_numpre=null,$k61_numpar=null) {
+   public function alterar ($k61_codigo=null,$k61_numpre=null,$k61_numpar=null) {
       $this->atualizacampos();
      $sql = " update listadeb set ";
      $virgula = "";
@@ -260,7 +260,7 @@ class cl_listadeb {
      }
    }
    // funcao para exclusao
-   function excluir ($k61_codigo=null,$k61_numpre=null,$k61_numpar=null,$dbwhere=null) {
+   public function excluir ($k61_codigo=null,$k61_numpre=null,$k61_numpar=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k61_codigo,$k61_numpre,$k61_numpar));
      }else{
@@ -337,7 +337,7 @@ class cl_listadeb {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -359,7 +359,7 @@ class cl_listadeb {
       }
      return $result;
    }
-   function excluir_lista ($k61_codigo=null,$k61_numpre=null,$k61_numpar=null) {
+   public function excluir_lista ($k61_codigo=null,$k61_numpre=null,$k61_numpar=null) {
      $this->atualizacampos(true);
      $resaco = $this->sql_record($this->sql_query_file($this->k61_codigo,$this->k61_numpre,$this->k61_numpar));
 
@@ -427,10 +427,10 @@ class cl_listadeb {
        }
      }
    }
-   function sql_query ( $k61_codigo=null,$k61_numpre=null,$k61_numpar=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k61_codigo=null,$k61_numpre=null,$k61_numpar=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_listadeb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,10 +477,10 @@ class cl_listadeb {
      }
      return $sql;
   }
-   function sql_query_file ( $k61_codigo=null,$k61_numpre=null,$k61_numpar=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k61_codigo=null,$k61_numpre=null,$k61_numpar=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_listadeb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,10 +526,10 @@ class cl_listadeb {
      }
      return $sql;
   }
-   function sql_query_tipodeb($k61_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_tipodeb($k61_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_listadeb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

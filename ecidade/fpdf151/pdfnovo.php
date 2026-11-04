@@ -1,8 +1,5 @@
-<?
-set_time_limit(0);
+<?php
 if(!defined('DB_BIBLIOT')){
-
-  session_cache_limiter('none');
   if ( !isset($_SESSION) ) {
     session_start();
   }
@@ -15,23 +12,23 @@ if(!defined('DB_BIBLIOT')){
 
   define('FPDF_FONTPATH','fpdf151/font/');
   require_once modification("fpdf151/fpdf.php");
-  
+
 }
 
  /**
   * PDFNovo
   *
-  * Esta classe é uma extensão da classe |fpdf| e difere da mesma pelo fato de que nesta  classe 
-  * foram alterados os métodos |header| (cabeçalho da página) de  |footer|  (rodapé)  para   que  
+  * Esta classe é uma extensão da classe |fpdf| e difere da mesma pelo fato de que nesta  classe
+  * foram alterados os métodos |header| (cabeçalho da página) de  |footer|  (rodapé)  para   que
   * atendessem as nossas necessidades, da seguinte maneira:
   * |header|     :    - O logotipo da prefeitura ficou alinhado a esquerda;
   *                   - Os dados da prefeitura tais como: nome,  enderço,  município,  telefone,
-  *                     email, e site ficaram alinhados a  esquerda,  ao  lado  do  logotipo  da 
+  *                     email, e site ficaram alinhados a  esquerda,  ao  lado  do  logotipo  da
   *                     prefeitura;
   *                Contem ainda variáveis livres para o desenvolvedor as quais  serão  impressas
   *                na parte superior direita da tela, são elas:
   *                   - head1, head2, head3, head4, head5, head6, head7, head8, head9
-  * 
+  *
   * |footer|     :    - contem dados como:
   *                       - programa que gerou o relatório;
   *                       - emissor;
@@ -90,7 +87,7 @@ class PDFNovo extends FPDF {
   //#10#//deve ser chamado diretamente pela aplicação. A implementação em FPDF está  vazia,  então  você
   //#10#//precisa criar uma subclasse dele para  sobrepor o  método  se  você  quiser  um  processamento
   //#10#//específico para o cabeçalho.
-  //#15#//header()  
+  //#15#//header()
   //#99#//Exemplo:
   //#99#//class PDF extends FPDF
   //#99#//{
@@ -126,7 +123,7 @@ class PDFNovo extends FPDF {
                                    telef,
                                    email,
                                    url,
-                                   logo 
+                                   logo
                             from db_config where codigo = ".db_getsession("DB_instit"));
     $url = @pg_result($dados,0,"url");
     $this->SetXY(1,1);
@@ -136,11 +133,11 @@ class PDFNovo extends FPDF {
     $nome = pg_result($dados,0,"nomeinst");
     global $nomeinst;
     $nomeinst = pg_result($dados,0,"nomeinst");
-    
+
     if(strlen($nome) > 42)
       $TamFonteNome = 8;
     else
-      $TamFonteNome = 9;  
+      $TamFonteNome = 9;
 
     $this->SetFont('Arial','BI',$TamFonteNome);
     $this->Text(33,9,$nome);
@@ -150,17 +147,17 @@ class PDFNovo extends FPDF {
       $sComplento = ", ".substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
     }
     $this->Text(33,14,trim(pg_result($dados,0,"rua")).", ".trim(pg_result($dados,0,"numero")).$sComplento );
-    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));  
+    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));
     $this->Text(33,22,trim(pg_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_result($dados,0,"cgc"),"cnpj"));
     $this->Text(33,26,trim(pg_result($dados,0,"email")));
 
     $comprim = ($this->w - $this->rMargin - $this->lMargin);
-    $this->Text(33,30,$url);  
+    $this->Text(33,30,$url);
 
     $Espaco = $this->w - 80 ;
     $this->SetFont('Arial','',7);
 
-    $margemesquerda = $this->lMargin; 
+    $margemesquerda = $this->lMargin;
 
     $this->setleftmargin($Espaco);
     $this->sety(6);
@@ -176,7 +173,7 @@ class PDFNovo extends FPDF {
       foreach ($this->aHeaders as $sHeader) {
         $this->multicell(0, 3, $sHeader, 0, 1, "J", 0);
       }
-    }    
+    }
 
     $this->setfillcolor(235);
 
@@ -186,7 +183,7 @@ class PDFNovo extends FPDF {
     $this->renderTableHeaders();
   }
 
-  public function removeTableHeaders() { 
+  public function removeTableHeaders() {
     $this->aTableHeaders = array();
   }
 
@@ -216,15 +213,15 @@ class PDFNovo extends FPDF {
         }
       }
 
-      $this->cell( $iLarguraCelula, 
+      $this->cell( $iLarguraCelula,
                    $this->oQuebra->iAltura,
                    $this->oQuebra->sQuebra,
                    true,
-                   true, 
+                   true,
                    $this->oQuebra->sAlinhamento,
                    $this->oQuebra->lPreenche );
     }
-    
+
     /**
      * Adiciona os headers da tabela ao final do header do cabeçalho
      */
@@ -232,10 +229,10 @@ class PDFNovo extends FPDF {
 
       if(!empty($this->oTableTitleHeaders)) {
 
-        $this->cell( $this->oTableTitleHeaders->iTamanho, 
-                     $this->oTableTitleHeaders->iAltura, 
-                     $this->oTableTitleHeaders->sTitulo, 
-                     false, 
+        $this->cell( $this->oTableTitleHeaders->iTamanho,
+                     $this->oTableTitleHeaders->iAltura,
+                     $this->oTableTitleHeaders->sTitulo,
+                     false,
                      1,
                      $this->oTableTitleHeaders->sAlinhamento,
                      $this->oTableTitleHeaders->lPreenche );
@@ -244,10 +241,10 @@ class PDFNovo extends FPDF {
       $this->setFont('', 'b');
 
       foreach ($this->aTableHeaders as $iIndice => $aColuna) {
-        $this->cell( $aColuna->iTamanho, 
-                     $aColuna->iAltura, 
-                     $aColuna->sTitulo, 
-                     true, 
+        $this->cell( $aColuna->iTamanho,
+                     $aColuna->iAltura,
+                     $aColuna->sTitulo,
+                     true,
                      (($iIndice == count($this->aTableHeaders)-1) ? 1 : 0),
                      $aColuna->sAlinhamento,
                      $aColuna->lPreenche );
@@ -287,27 +284,27 @@ class PDFNovo extends FPDF {
   function Footer() {
 
     global $conn;
-    global $result; 
+    global $result;
     global $url;
 
     if($this->imprime_rodape == true) {
-      
+
     /*
-     * Modificação para exibir o caminho do menu 
+     * Modificação para exibir o caminho do menu
      * na base do relatório
-     */         
+     */
       //$sSqlMenuAcess = "SELECT fc_montamenu(funcao) as menu from db_itensmenu where id_item =".db_getsession("DB_itemmenu_acessado");
       $sSqlMenuAcess = " select trim(modulo.descricao)||'>'||trim(menu.descricao)||'>'||trim(item.descricao) as menu
-                           from db_menu 
-                          inner join db_itensmenu as modulo on modulo.id_item = db_menu.modulo 
-                          inner join db_itensmenu as menu on menu.id_item = db_menu.id_item 
-                          inner join db_itensmenu as item on item.id_item = db_menu.id_item_filho 
-                          where id_item_filho = ".db_getsession("DB_itemmenu_acessado")." 
+                           from db_menu
+                          inner join db_itensmenu as modulo on modulo.id_item = db_menu.modulo
+                          inner join db_itensmenu as menu on menu.id_item = db_menu.id_item
+                          inner join db_itensmenu as item on item.id_item = db_menu.id_item_filho
+                          where id_item_filho = ".db_getsession("DB_itemmenu_acessado")."
                             and modulo = ".db_getsession("DB_modulo");
-          
+
       $rsMenuAcess   = db_query($conn,$sSqlMenuAcess);
       $sMenuAcess    = substr(pg_result($rsMenuAcess, 0, "menu"), 0, 50);
-       
+
       //Position at 1.5 cm from bottom
       $this->SetFont('Arial','',5);
       $this->text(10,$this->h-8,'Base: '.@$GLOBALS["DB_NBASE"]);
@@ -326,7 +323,7 @@ class PDFNovo extends FPDF {
       }
       $this->Cell(0,10,$sMenuAcess. "  ". $nome.'   Emissor: '.substr(ucwords(strtolower($emissor)),0,30).'  Exerc: '.db_getsession("DB_anousu").
                                                 '   Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'L');
-      
+
       $this->Cell(0,10,'Pág '.$this->PageNo().'/{nb}',0,1,'R');
     }
   }

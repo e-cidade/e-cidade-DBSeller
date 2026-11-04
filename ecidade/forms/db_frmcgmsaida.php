@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,52 +41,52 @@ $clrotulo->label("descrdepto");
        <?=@$Lsd28_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_codigo',10,$Isd28_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd28_i_cgm?>">
-       <?
+       <?php
        db_ancora(@$Lsd28_i_cgm,"js_pesquisasd28_i_cgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_cgm',10,$Isd28_i_cgm,true,'text',$db_opcao," onchange='js_pesquisasd28_i_cgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd28_i_departamento?>">
-       <?
+       <?php
        db_ancora(@$Lsd28_i_departamento,"js_pesquisasd28_i_departamento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_departamento',10,$Isd28_i_departamento,true,'text',$db_opcao," onchange='js_pesquisasd28_i_departamento(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd28_i_material?>">
-       <?
+       <?php
        db_ancora(@$Lsd28_i_material,"js_pesquisasd28_i_material(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_material',10,$Isd28_i_material,true,'text',$db_opcao," onchange='js_pesquisasd28_i_material(false);'")
 ?>
-       <?
+       <?php
 db_input('m70_codmatmater',10,$Im70_codmatmater,true,'text',3,'')
        ?>
     </td>
@@ -96,22 +96,22 @@ db_input('m70_codmatmater',10,$Im70_codmatmater,true,'text',3,'')
        <?=@$Lsd28_i_quantidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_quantidade',10,$Isd28_i_quantidade,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd28_i_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lsd28_i_usuario,"js_pesquisasd28_i_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_usuario',10,$Isd28_i_usuario,true,'text',$db_opcao," onchange='js_pesquisasd28_i_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lsd28_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd28_d_data',@$sd28_d_data_dia,@$sd28_d_data_mes,@$sd28_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -229,7 +229,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cgmsaida.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -49,7 +49,7 @@ if(isset($salvar)){
  if(isset($turmasaprov)){
   $tam = count($turmasaprov);
   for($y=0;$y<$tam;$y++){
-   $result = db_query("UPDATE turmaserieregimemat SET 
+   $result = db_query("UPDATE turmaserieregimemat SET
                         ed220_c_aprovauto = 'S'
                        WHERE ed220_i_codigo = $turmasaprov[$y]");
   }
@@ -67,7 +67,7 @@ if(isset($salvar)){
 </head>
 <script>
  team = new Array(
- <?
+ <?php
  # Seleciona todos os calendários
  $sql = "SELECT ed52_i_codigo,ed52_c_descr
          FROM calendario
@@ -156,7 +156,7 @@ if(isset($salvar)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?=MsgAviso(db_getsession("DB_coddepto"),"escola")?>	
+   <?=MsgAviso(db_getsession("DB_coddepto"),"escola")?>
    <br>
    <center>
     <fieldset style="width:95%"><legend><b>Definir Aprovação Automática para as turmas</b></legend>
@@ -171,7 +171,7 @@ if(isset($salvar)){
           <b>Selecione o Calendário:</b><br>
           <select name="grupo" onChange="js_zerar();fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:250px;height:18px;">
            <option></option>
-           <?
+           <?php
            $sql = "SELECT ed52_i_codigo,ed52_c_descr
                    FROM calendario
                     inner join calendarioescola on ed38_i_calendario = ed52_i_codigo
@@ -185,7 +185,7 @@ if(isset($salvar)){
             $desc_curso=$row["ed52_c_descr"];
             ?>
             <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-            <?
+            <?php
            }
            ?>
           </select>
@@ -200,15 +200,15 @@ if(isset($salvar)){
        </table>
       </td>
      </tr>
-     <?if(isset($serie)){?>
+     <?php if(isset($serie)){?>
      <tr>
       <td colspan="2" align="center">
-       <?
+       <?php
        $result = $clturma->sql_record($clturma->sql_query_turmaserie("","DISTINCT ed220_i_codigo,ed57_c_descr,ed220_c_aprovauto","ed57_c_descr"," ed223_i_serie = $serie AND ed57_i_escola = $escola AND ed57_i_calendario = $calendario"));
        ?>
        <b>Turmas com aprovação automática na etapa <span id="nomeserie"></span>:</b><br>
        <select name="turmasaprov[]" id="turmasaprov" style="font-size:9px;width:400px;height:350px" multiple>
-        <?
+        <?php
         for($x=0;$x<$clturma->numrows;$x++){
          db_fieldsmemory($result,$x);
          if($ed220_c_aprovauto=="S"){
@@ -218,7 +218,7 @@ if(isset($salvar)){
          }
          ?>
          <option value="<?=$ed220_i_codigo?>" <?=$selected?>><?=$ed57_c_descr?></option>
-         <?
+         <?php
         }
         ?>
        </select>
@@ -239,13 +239,13 @@ if(isset($salvar)){
         Para selecionar mais de uma turma<br>mantenha pressionada a tecla CTRL <br>e clique sobre os nomes das turmas.
        </fieldset>
       </td>
-     </tr>     
+     </tr>
      <script>
      fillSelectFromArray(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));
      document.form1.subgrupo.value = <?=$serie?>;
      document.getElementById("nomeserie").innerHTML = document.form1.subgrupo[document.form1.subgrupo.selectedIndex].text;
      </script>
-     <?}?>
+     <?php }?>
     </table>
     </center>
     </form>
@@ -256,8 +256,8 @@ if(isset($salvar)){
 </table>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
-<?
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php
 if(isset($salvar)){
  db_msgbox("Alteração efetuada com sucesso!");
 }
@@ -277,13 +277,13 @@ function js_limpar(){
  }
 }
 function js_zerar(){
- <?if(isset($serie)){?>
+ <?php if(isset($serie)){?>
   qtd = document.form1.turmasaprov.length;
   for (i = 0; i < qtd; i++) {
   document.form1.turmasaprov.options[0] = null;
  }
  document.getElementById("nomeserie").innerHTML = "_________";
- <?}?>
+ <?php }?>
 }
 function js_geral(){
  js_OpenJanelaIframe('','db_iframe_geral','edu4_aprovautomatica002.php','Quadro Geral de Aprovação Automática de Turmas',true);

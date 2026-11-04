@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -73,7 +73,7 @@ if(isset($atualizar)){
       <?=@$Led106_i_codigo?>
      </td>
      <td>
-      <?db_input('ed106_i_codigo',10,$Ied106_i_codigo,true,'text',3,"")?>
+      <?php db_input('ed106_i_codigo',10,$Ied106_i_codigo,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ if(isset($atualizar)){
       <?=@$Led106_c_descr?>
      </td>
      <td>
-      <?db_input('ed106_c_descr',20,$Ied106_c_descr,true,'text',$db_opcao,"")?>
+      <?php db_input('ed106_c_descr',20,$Ied106_c_descr,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -89,7 +89,7 @@ if(isset($atualizar)){
       <?=@$Led106_f_pontuacao?>
      </td>
      <td>
-      <?db_input('ed106_f_pontuacao',10,$Ied106_f_pontuacao,true,'text',$db_opcao,"")?>
+      <?php db_input('ed106_f_pontuacao',10,$Ied106_f_pontuacao,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -97,7 +97,7 @@ if(isset($atualizar)){
       <?=@$Led106_c_ativo?>
      </td>
      <td>
-      <?
+      <?php
       $x = array('S'=>'SIM','N'=>'NÃO');
       db_select('ed106_c_ativo',$x,true,$db_opcao,"");
       ?>
@@ -117,7 +117,7 @@ if(isset($atualizar)){
      <td>
       <b>Ordenar Respostas:</b><br>
       <select name="campos[]" id="campos" size="4" style="width:125px" multiple>
-      <?
+      <?php
        $sql = "SELECT ed106_i_codigo,ed106_c_descr from opcaoquestao order by ed106_i_sequencia";
        $query = db_query($sql);
        $linhas = pg_num_rows($query);
@@ -146,7 +146,7 @@ if(isset($atualizar)){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("ed106_i_codigo"=>@$ed106_i_codigo,"ed106_c_descr"=>@$ed106_c_descr,"ed106_i_sequencia"=>@$ed106_i_sequencia,"ed106_f_pontuacao"=>@$ed106_f_pontuacao,"ed106_c_ativo"=>@$ed106_c_ativo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clopcaoquestao->sql_query($ed106_i_codigo,"*","ed106_i_sequencia");

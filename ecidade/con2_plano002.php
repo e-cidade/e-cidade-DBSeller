@@ -24,8 +24,9 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
-require_once(modification("fpdf151/pdf.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("libs/db_libcontabilidade.php"));
@@ -82,47 +83,52 @@ if (isset($estrutural) && $estrutural != "") {
 }
 
 $campos = "
-    c60_estrut,c61_reduz,c60_descr,c51_descr,c52_descrred,c62_codrec,o15_descr,codigo as inst_codigo,
-    nomeinst as inst_nome,c63_banco,c63_agencia,c63_dvagencia,c63_conta,c63_dvconta, o15_recurso
+c60_estrut, c61_reduz, c60_descr, c51_descr, c52_descrred, c62_codrec, c61_codigo, codigo as inst_codigo, c60_anousu,
+nomeinst as inst_nome, c63_banco, c63_agencia, c63_dvagencia, c63_conta, c63_dvconta, o15_recurso,o15_complemento
 ";
 $sql = $clconplano->sql_vs_planocontas(null, $campos, 'c60_estrut,c61_instit', $where);
+$sql = "
+  select x.*, gestao from ($sql) as x
+    left join fonterecurso on orctiporec_id = c61_codigo and exercicio = c60_anousu
+    ORDER BY c60_estrut,
+             inst_codigo
+";
+
 $result = $clconplano->sql_record($sql);
 if ($clconplano->numrows == 0) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Plano de Contas não Cadastrado. Exercício: " . db_getsession("DB_anousu"));
 }
 
-$head3 = "PLANO DE CONTAS ";
-$head4 = "";
-$head5 = "EXERCICIO: " . db_getsession("DB_anousu");
+$pdf = new \ECidade\Pdf\Pdf();
+$pdf->init(false);
+$pdf->addTitulo('PLANO DE CONTAS');
+$pdf->addTitulo('');
+$pdf->addTitulo("EXERCICIO: " . db_getsession("DB_anousu"));
 
-$pdf = new PDF();
-$pdf->Open();
-$pdf->AliasNbPages();
-$pdf->setfillcolor(245);
+$pdf->setFillColor(245);
 
 $alt = 4;
 $pagina = 1;
 
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
-    if ($pdf->gety() > $pdf->h - 40 || $pagina == 1) {
+    if ($pdf->gety() > $pdf->getH() - 40 || $pagina == 1) {
         $pagina = 0;
         $pdf->addpage('L');
         $pdf->setfont('arial', 'b', 7);
 
-        $pdf->cell(132, $alt, "PLANO DE CONTA", 1, 0, "C", 0);
-        $pdf->cell(101, $alt, "REDUZIDO", 1, 0, "C", 0);
+        $pdf->cell(141, $alt, "PLANO DE CONTA", 1, 0, "C", 0);
+        $pdf->cell(97, $alt, "REDUZIDO", 1, 0, "C", 0);
         $pdf->cell(40, $alt, "BANCO", 1, 1, "C", 0);
 
         $pdf->cell(25, $alt, "Estrutural", 1, 0, "C", 0);
         $pdf->cell(15, $alt, "Reduz", 1, 0, "C", 0);
-        $pdf->cell(80, $alt, "Descrição", 1, 0, "C", 0);
-        $pdf->cell(6, $alt, "Clas", 1, 0, "C", 0);
-        $pdf->cell(6, $alt, "Sist", 1, 0, "C", 0);
-        $pdf->cell(11, $alt, "Recurso", 1, 0, "C", 0);
-        $pdf->cell(30, $alt, $RLo15_descr, 1, 0, "C", 0);
-        $pdf->cell(60, $alt, "Instituição", 1, 0, "C", 0);
+        $pdf->cell(85, $alt, "Descrição", 1, 0, "C", 0);
+        $pdf->cell(8, $alt, "Clas", 1, 0, "C", 0);
+        $pdf->cell(8, $alt, "Sist", 1, 0, "C", 0);
+        $pdf->cell(25, $alt, "Fonte Recurso", 1, 0, "C", 0);
+        $pdf->cell(72, $alt, "Instituição", 1, 0, "C", 0);
         $pdf->cell(10, $alt, "BAN", 1, 0, "C", 0);
         $pdf->cell(10, $alt, "AGE", 1, 0, "C", 0);
         $pdf->cell(20, $alt, "CONTA", 1, 1, "C", 0);
@@ -135,16 +141,21 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $espaco = php_espaco($nivel);
     $pdf->cell(25, $alt, $c60_estrut, 0, 0, "L", $cfundo);
     $pdf->cell(15, $alt, $c61_reduz, 0, 0, "C", $cfundo);
-    $pdf->cell(80, $alt, "$espaco" . substr($c60_descr, 0, 42), 0, 0, "L", $cfundo);
-    $pdf->cell(6, $alt, substr($c51_descr, 0, 1), 0, 0, "L", $cfundo);
-    $pdf->cell(6, $alt, "$c52_descrred", 0, 0, "L", $cfundo);
+    $pdf->cell(85, $alt, "$espaco" . substr($c60_descr, 0, 44), 0, 0, "L", $cfundo);
+    $pdf->cell(8, $alt, substr($c51_descr, 0, 1), 0, 0, "C", $cfundo);
+    $pdf->cell(8, $alt, "$c52_descrred", 0, 0, "C", $cfundo);
 
-    $pdf->cell(11, $alt, $o15_recurso, 0, 0, "C", $cfundo);
-    $pdf->cell(30, $alt, $o15_descr, 0, 0, "L", $cfundo);
-    $pdf->cell(60, $alt, $inst_codigo . " " . $inst_nome, 0, 0, "L", $cfundo);
-    $pdf->cell(10, $alt, $c63_banco, 0, 0, "L", $cfundo);
+
+    $recurso = '';
+    if (!empty($c61_codigo)) {
+        $recurso = sprintf('%s - %s -%s', $gestao, $o15_recurso, $o15_complemento);
+    }
+
+    $pdf->cell(25, $alt, $recurso, 0, 0, "C", $cfundo);
+    $pdf->cell(72, $alt, $inst_codigo . " " . $inst_nome, 0, 0, "L", $cfundo);
+    $pdf->cell(10, $alt, $c63_banco, 0, 0, "R", $cfundo);
     $pdf->cell(10, $alt, $c63_agencia . " " . $c63_dvagencia, 0, 0, "L", $cfundo);
     $pdf->cell(10, $alt, $c63_conta . " " . $c63_dvconta, 0, 1, "L", $cfundo);
 }
 
-$pdf->Output();
+$pdf->Output('I');

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Patrimonial\Protocolo\Model\Processo;
 
+use App\Domain\Patrimonial\Protocolo\Model\DocumentoSolicitacaoAssinatura;
 use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Boolean;
 
@@ -22,6 +23,8 @@ use phpDocumentor\Reflection\Types\Boolean;
  * @property integer $p01_assinado_por
  * @property boolean $p01_assinado
  * @property string $p01_documento_hash
+ * @property int $p01_c70codlan
+ * @property string $p01_upload_name
  * @method hash(string $hash)
  */
 class ProcessoDocumento extends Model
@@ -149,6 +152,42 @@ class ProcessoDocumento extends Model
     }
 
     /**
+     * @param int $p01_c70codlan
+     * @return $this
+     */
+    public function setC70codlan($p01_c70codlan)
+    {
+        $this->p01_c70codlan = $p01_c70codlan;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getC70codlan()
+    {
+        return $this->p01_c70codlan;
+    }
+
+    /**
+     * @param string $p01_upload_name
+     * @return $this
+     */
+    public function setNomeUpload($p01_upload_name)
+    {
+        $this->p01_upload_name = $p01_upload_name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNomeUpload()
+    {
+        return $this->p01_upload_name;
+    }
+
+    /**
      * @return int
      */
     public function getAndamento()
@@ -235,5 +274,15 @@ class ProcessoDocumento extends Model
     public function scopeHash($query, $hash)
     {
         return $query->where('p01_documento_hash', $hash);
+    }
+
+    public function solicitacaoAssinatura()
+    {
+        return $this->hasMany(DocumentoSolicitacaoAssinatura::class, "documento_id", "p01_sequencial");
+    }
+
+    public function processo()
+    {
+        return $this->belongsTo(Processo::class, "p01_protprocesso", "p58_codproc");
     }
 }

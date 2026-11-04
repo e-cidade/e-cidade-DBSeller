@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhemissaochequeitem
-class cl_rhemissaochequeitem { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r18_sequencial = 0; 
-   var $r18_emissaocheque = 0; 
-   var $r18_regist = 0; 
-   var $r18_anousu = 0; 
-   var $r18_mesusu = 0; 
-   var $r18_numcgm = 0; 
-   var $r18_numcheque = null; 
-   var $r18_valor = 0; 
-   var $r18_tipo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhemissaochequeitem {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r18_sequencial = 0;
+   var $r18_emissaocheque = 0;
+   var $r18_regist = 0;
+   var $r18_anousu = 0;
+   var $r18_mesusu = 0;
+   var $r18_numcgm = 0;
+   var $r18_numcheque = null;
+   var $r18_valor = 0;
+   var $r18_tipo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r18_sequencial = int4 = Sequencial 
-                 r18_emissaocheque = int4 = Emissão Cheque 
-                 r18_regist = int4 = Matrícula 
-                 r18_anousu = int4 = Exercício 
-                 r18_mesusu = int4 = Mês 
-                 r18_numcgm = int4 = Cgm 
-                 r18_numcheque = varchar(20) = Número do Cheque 
-                 r18_valor = float4 = Valor 
-                 r18_tipo = int4 = Tipo 
+                 r18_sequencial = int4 = Sequencial
+                 r18_emissaocheque = int4 = Emissão Cheque
+                 r18_regist = int4 = Matrícula
+                 r18_anousu = int4 = Exercício
+                 r18_mesusu = int4 = Mês
+                 r18_numcgm = int4 = Cgm
+                 r18_numcheque = varchar(20) = Número do Cheque
+                 r18_valor = float4 = Valor
+                 r18_tipo = int4 = Tipo
                  ";
-   //funcao construtor da classe 
-   function cl_rhemissaochequeitem() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhemissaochequeitem"); 
+     $this->rotulo = new rotulo("rhemissaochequeitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_rhemissaochequeitem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r18_sequencial = ($this->r18_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["r18_sequencial"]:$this->r18_sequencial);
        $this->r18_emissaocheque = ($this->r18_emissaocheque == ""?@$GLOBALS["HTTP_POST_VARS"]["r18_emissaocheque"]:$this->r18_emissaocheque);
@@ -95,9 +95,9 @@ class cl_rhemissaochequeitem {
      }
    }
    // funcao para inclusao
-   function incluir ($r18_sequencial){ 
+   public function incluir ($r18_sequencial){
       $this->atualizacampos();
-     if($this->r18_emissaocheque == null ){ 
+     if($this->r18_emissaocheque == null ){
        $this->erro_sql = " Campo Emissão Cheque nao Informado.";
        $this->erro_campo = "r18_emissaocheque";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_rhemissaochequeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r18_regist == null ){ 
+     if($this->r18_regist == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
        $this->erro_campo = "r18_regist";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_rhemissaochequeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r18_anousu == null ){ 
+     if($this->r18_anousu == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
        $this->erro_campo = "r18_anousu";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_rhemissaochequeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r18_mesusu == null ){ 
+     if($this->r18_mesusu == null ){
        $this->erro_sql = " Campo Mês nao Informado.";
        $this->erro_campo = "r18_mesusu";
        $this->erro_banco = "";
@@ -133,7 +133,7 @@ class cl_rhemissaochequeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r18_numcgm == null ){ 
+     if($this->r18_numcgm == null ){
        $this->erro_sql = " Campo Cgm nao Informado.";
        $this->erro_campo = "r18_numcgm";
        $this->erro_banco = "";
@@ -142,7 +142,7 @@ class cl_rhemissaochequeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r18_numcheque == null ){ 
+     if($this->r18_numcheque == null ){
        $this->erro_sql = " Campo Número do Cheque nao Informado.";
        $this->erro_campo = "r18_numcheque";
        $this->erro_banco = "";
@@ -151,7 +151,7 @@ class cl_rhemissaochequeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r18_valor == null ){ 
+     if($this->r18_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "r18_valor";
        $this->erro_banco = "";
@@ -160,7 +160,7 @@ class cl_rhemissaochequeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r18_tipo == null ){ 
+     if($this->r18_tipo == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
        $this->erro_campo = "r18_tipo";
        $this->erro_banco = "";
@@ -170,16 +170,16 @@ class cl_rhemissaochequeitem {
        return false;
      }
      if($r18_sequencial == "" || $r18_sequencial == null ){
-       $result = db_query("select nextval('rhemissaochequeitem_r18_sequencial_seq')"); 
+       $result = db_query("select nextval('rhemissaochequeitem_r18_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhemissaochequeitem_r18_sequencial_seq do campo: r18_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhemissaochequeitem_r18_sequencial_seq do campo: r18_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->r18_sequencial = pg_result($result,0,0); 
+       $this->r18_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhemissaochequeitem_r18_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $r18_sequencial)){
@@ -190,10 +190,10 @@ class cl_rhemissaochequeitem {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->r18_sequencial = $r18_sequencial; 
+         $this->r18_sequencial = $r18_sequencial;
        }
      }
-     if(($this->r18_sequencial == null) || ($this->r18_sequencial == "") ){ 
+     if(($this->r18_sequencial == null) || ($this->r18_sequencial == "") ){
        $this->erro_sql = " Campo r18_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -202,29 +202,29 @@ class cl_rhemissaochequeitem {
        return false;
      }
      $sql = "insert into rhemissaochequeitem(
-                                       r18_sequencial 
-                                      ,r18_emissaocheque 
-                                      ,r18_regist 
-                                      ,r18_anousu 
-                                      ,r18_mesusu 
-                                      ,r18_numcgm 
-                                      ,r18_numcheque 
-                                      ,r18_valor 
-                                      ,r18_tipo 
+                                       r18_sequencial
+                                      ,r18_emissaocheque
+                                      ,r18_regist
+                                      ,r18_anousu
+                                      ,r18_mesusu
+                                      ,r18_numcgm
+                                      ,r18_numcheque
+                                      ,r18_valor
+                                      ,r18_tipo
                        )
                 values (
-                                $this->r18_sequencial 
-                               ,$this->r18_emissaocheque 
-                               ,$this->r18_regist 
-                               ,$this->r18_anousu 
-                               ,$this->r18_mesusu 
-                               ,$this->r18_numcgm 
-                               ,'$this->r18_numcheque' 
-                               ,$this->r18_valor 
-                               ,$this->r18_tipo 
+                                $this->r18_sequencial
+                               ,$this->r18_emissaocheque
+                               ,$this->r18_regist
+                               ,$this->r18_anousu
+                               ,$this->r18_mesusu
+                               ,$this->r18_numcgm
+                               ,'$this->r18_numcheque'
+                               ,$this->r18_valor
+                               ,$this->r18_tipo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "rhemissaochequeitem ($this->r18_sequencial) nao Incluído. Inclusao Abortada.";
@@ -264,16 +264,16 @@ class cl_rhemissaochequeitem {
        $resac = db_query("insert into db_acount values($acount,2473,14071,'','".AddSlashes(pg_result($resaco,0,'r18_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($r18_sequencial=null) { 
+   public function alterar ($r18_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhemissaochequeitem set ";
      $virgula = "";
-     if(trim($this->r18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_sequencial"])){ 
+     if(trim($this->r18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_sequencial"])){
        $sql  .= $virgula." r18_sequencial = $this->r18_sequencial ";
        $virgula = ",";
-       if(trim($this->r18_sequencial) == null ){ 
+       if(trim($this->r18_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "r18_sequencial";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_emissaocheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_emissaocheque"])){ 
+     if(trim($this->r18_emissaocheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_emissaocheque"])){
        $sql  .= $virgula." r18_emissaocheque = $this->r18_emissaocheque ";
        $virgula = ",";
-       if(trim($this->r18_emissaocheque) == null ){ 
+       if(trim($this->r18_emissaocheque) == null ){
          $this->erro_sql = " Campo Emissão Cheque nao Informado.";
          $this->erro_campo = "r18_emissaocheque";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_regist"])){ 
+     if(trim($this->r18_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_regist"])){
        $sql  .= $virgula." r18_regist = $this->r18_regist ";
        $virgula = ",";
-       if(trim($this->r18_regist) == null ){ 
+       if(trim($this->r18_regist) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "r18_regist";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_anousu"])){ 
+     if(trim($this->r18_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_anousu"])){
        $sql  .= $virgula." r18_anousu = $this->r18_anousu ";
        $virgula = ",";
-       if(trim($this->r18_anousu) == null ){ 
+       if(trim($this->r18_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "r18_anousu";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_mesusu"])){ 
+     if(trim($this->r18_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_mesusu"])){
        $sql  .= $virgula." r18_mesusu = $this->r18_mesusu ";
        $virgula = ",";
-       if(trim($this->r18_mesusu) == null ){ 
+       if(trim($this->r18_mesusu) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "r18_mesusu";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_numcgm"])){ 
+     if(trim($this->r18_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_numcgm"])){
        $sql  .= $virgula." r18_numcgm = $this->r18_numcgm ";
        $virgula = ",";
-       if(trim($this->r18_numcgm) == null ){ 
+       if(trim($this->r18_numcgm) == null ){
          $this->erro_sql = " Campo Cgm nao Informado.";
          $this->erro_campo = "r18_numcgm";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_numcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_numcheque"])){ 
+     if(trim($this->r18_numcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_numcheque"])){
        $sql  .= $virgula." r18_numcheque = '$this->r18_numcheque' ";
        $virgula = ",";
-       if(trim($this->r18_numcheque) == null ){ 
+       if(trim($this->r18_numcheque) == null ){
          $this->erro_sql = " Campo Número do Cheque nao Informado.";
          $this->erro_campo = "r18_numcheque";
          $this->erro_banco = "";
@@ -361,10 +361,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_valor"])){ 
+     if(trim($this->r18_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_valor"])){
        $sql  .= $virgula." r18_valor = $this->r18_valor ";
        $virgula = ",";
-       if(trim($this->r18_valor) == null ){ 
+       if(trim($this->r18_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "r18_valor";
          $this->erro_banco = "";
@@ -374,10 +374,10 @@ class cl_rhemissaochequeitem {
          return false;
        }
      }
-     if(trim($this->r18_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_tipo"])){ 
+     if(trim($this->r18_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r18_tipo"])){
        $sql  .= $virgula." r18_tipo = $this->r18_tipo ";
        $virgula = ",";
-       if(trim($this->r18_tipo) == null ){ 
+       if(trim($this->r18_tipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "r18_tipo";
          $this->erro_banco = "";
@@ -419,7 +419,7 @@ class cl_rhemissaochequeitem {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "rhemissaochequeitem nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r18_sequencial;
@@ -447,14 +447,14 @@ class cl_rhemissaochequeitem {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($r18_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r18_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r18_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -488,7 +488,7 @@ class cl_rhemissaochequeitem {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "rhemissaochequeitem nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r18_sequencial;
@@ -516,11 +516,11 @@ class cl_rhemissaochequeitem {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -542,11 +542,11 @@ class cl_rhemissaochequeitem {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $r18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $r18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -562,15 +562,15 @@ class cl_rhemissaochequeitem {
      $sql2 = "";
      if($dbwhere==""){
        if($r18_sequencial!=null ){
-         $sql2 .= " where rhemissaochequeitem.r18_sequencial = $r18_sequencial "; 
-       } 
+         $sql2 .= " where rhemissaochequeitem.r18_sequencial = $r18_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,11 +579,11 @@ class cl_rhemissaochequeitem {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $r18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $r18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -596,15 +596,15 @@ class cl_rhemissaochequeitem {
      $sql2 = "";
      if($dbwhere==""){
        if($r18_sequencial!=null ){
-         $sql2 .= " where rhemissaochequeitem.r18_sequencial = $r18_sequencial "; 
-       } 
+         $sql2 .= " where rhemissaochequeitem.r18_sequencial = $r18_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -613,11 +613,11 @@ class cl_rhemissaochequeitem {
      }
      return $sql;
   }
-  
-   function sql_query_lota( $r18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+   public function sql_query_lota( $r18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -637,15 +637,15 @@ class cl_rhemissaochequeitem {
      $sql2 = "";
      if($dbwhere==""){
        if($r18_sequencial!=null ){
-         $sql2 .= " where rhemissaochequeitem.r18_sequencial = $r18_sequencial "; 
-       } 
+         $sql2 .= " where rhemissaochequeitem.r18_sequencial = $r18_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -653,7 +653,7 @@ class cl_rhemissaochequeitem {
        }
      }
      return $sql;
-  }  
-  
+  }
+
 }
 ?>

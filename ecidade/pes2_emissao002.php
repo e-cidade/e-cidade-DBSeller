@@ -304,10 +304,10 @@ try {
   }
 
   $sSqlRhPessoalMov = $oDaoRhPessoalMov->sql_query_baseServidores( $oParametros->iMesCompetencia,
-  																															 	 $oParametros->iAnoCompetencia,
-  																															 	 $iInstituicao,
-  																															 	 $sCampos,
- 																																	 $sWhere,
+                                                                   $oParametros->iAnoCompetencia,
+                                                                   $iInstituicao,
+                                                                   $sCampos,
+                                                                   $sWhere,
                                                                    $sOrdem,
                                                                    $sAgrupamento );
 

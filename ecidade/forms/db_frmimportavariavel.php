@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -193,12 +193,12 @@ function js_verifica() {
 				<table border="0">
 					<tr>   
 						<td title="<?=$Tq07_inscr?>" >
-							<?
+							<?php
 								db_ancora($Lq07_inscr,' js_inscr(true); ',1);
 							?>
 						</td>    
 						<td title="<?=$Tq07_inscr?>" colspan="4">
-							<?
+							<?php
 							  db_input('q07_inscr',10,$Iq07_inscr,true,'text',1,"onchange='js_inscr(false)'");
 							  isset($q07_inscr)?$inscricao=$q07_inscr:"";
 							  db_input('inscricao',10,$Iq07_inscr,true,'hidden',1);
@@ -208,12 +208,12 @@ function js_verifica() {
 					</tr>
 					<tr>   
 						<td>
-							<?
+							<?php
 							  db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
 							?>
 						</td>
 						<td> 
-							<?
+							<?php
 							 db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
 							 db_input('z01_nome',60,0,true,'text',3,"","z01_nomecgm");
 							?>
@@ -224,7 +224,7 @@ function js_verifica() {
 							<b>Tipo de Débito:</b>
 						</td>
 						<td>
-							<?
+							<?php
 							  $sWhereAretipo = "k03_tipo = 5 and k00_instit = ".db_getsession('DB_instit');
 							  $sSqlArretipo  = $clarretipo->sql_query_file(null, "k00_tipo, k00_descr", "k00_descr", $sWhereAretipo);
 								$rsArretipo    = $clarretipo->sql_record($sSqlArretipo);
@@ -239,7 +239,7 @@ function js_verifica() {
 						<strong>Processo do Sistema:</strong>
 					</td>
 					<td nowrap>
-						<?
+						<?php
 						  $lProcessoSistema = true;
 							db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, 1, "onchange='js_processoSistema()' style='width: 95px'")
 						?>
@@ -249,13 +249,13 @@ function js_verifica() {
 				<tr id="processoSistema">
 					<td nowrap title="<?=@$Tp58_codproc?>">
 					  <strong>
-						<?
+						<?php
 							db_ancora('Processo:', 'js_pesquisaProcesso(true)', 1);
 						?>
 					  </strong>
 					</td>
 					<td nowrap>
-						<? 
+						<?php 
 						  db_input('v01_processo', 10, false, true, 'text', 1, 'onchange="js_pesquisaProcesso(false)"') ;
 						  db_input('p58_requer', 60, false, true, 'text', 3);
 						?>
@@ -267,7 +267,7 @@ function js_verifica() {
 						<strong>Processo:</strong>
 					</td>
 					<td nowrap>
-						<? 
+						<?php 
 						  db_input('v01_processoExterno', 10, "", true, 'text', 1, null, null, null, "background-color: rgb(230, 228, 241);") ;
 						?>
 					</td>
@@ -280,7 +280,7 @@ function js_verifica() {
 						</strong>
 					</td>
 					<td nowrap>
-					<? 
+					<?php 
 						db_input('v01_titular', 74, 'false', true, 'text', 1) ;
 					?>
 					</td>
@@ -293,7 +293,7 @@ function js_verifica() {
 					  </strong>
 					</td>
 					<td nowrap>
-						<? 
+						<?php 
 						  db_inputdata('v01_dtprocesso', @$v01_dtprocesso_dia, @$v01_dtprocesso_mes, @$v01_dtprocesso_ano, true, 'text', 1);
 						?>
 					</td>
@@ -308,7 +308,7 @@ function js_verifica() {
 <td>  
   <tr>   
     <td align="center" colspan="2"> 
-		  <?
+		  <?php
 				
 				$cliframe_seleciona->legenda 		 = "ISSVAR";
 				$cliframe_seleciona->campos			 = "q05_codigo,q05_numpre,q05_numpar,q05_mes,v03_descr,q05_ano";
@@ -405,7 +405,7 @@ function js_mostrainscr1(chave,erro) {
   }
 }
 
-<?
+<?php
   if ($lMostraProcedTipo) {
     
     echo "document.form1.lancar.disabled = false;";

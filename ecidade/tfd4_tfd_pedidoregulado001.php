@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -128,7 +128,7 @@ if (isset($confirmar)) {
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
 db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
 db_app::load(" grid.style.css");
 ?>
@@ -140,7 +140,7 @@ db_app::load(" grid.style.css");
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-       <?
+       <?php
        $sSql = $oDaoDbUsuaCgm->sql_query(null, 'nome, cgmlogin', '', 
                                          ' db_usuacgm.id_usuario = '.db_getsession('DB_id_usuario')
                                         );
@@ -165,7 +165,7 @@ db_app::load(" grid.style.css");
        ?>
  
       <fieldset style='width: 92%;'> <legend><b>Regular Pedidos de TFD</b></legend>
-    	  <?
+    	  <?php
 	      require_once(modification("forms/db_frmtfd_pedidoregulado.php"));
 	      ?>
       </fieldset>
@@ -174,7 +174,7 @@ db_app::load(" grid.style.css");
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
         db_getsession("DB_anousu"), db_getsession("DB_instit")
        );
@@ -184,7 +184,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
 <script>
 js_tabulacaoforms("form1","tf01_i_cgsund",true,1,"tf01_i_cgsund",true);
 </script>
-<?
+<?php
 if (isset($confirmar)) {
 
   if ($oDaoTfdPedidoRegulado->erro_status == '0') {

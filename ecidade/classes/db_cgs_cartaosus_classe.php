@@ -58,7 +58,7 @@ class cl_cgs_cartaosus
                  ";
 
     //funcao construtor da classe
-    function cl_cgs_cartaosus()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("cgs_cartaosus");
@@ -66,7 +66,7 @@ class cl_cgs_cartaosus
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -77,7 +77,7 @@ class cl_cgs_cartaosus
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->s115_i_codigo = ($this->s115_i_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["s115_i_codigo"] : $this->s115_i_codigo);
@@ -91,7 +91,7 @@ class cl_cgs_cartaosus
     }
 
     // funcao para inclusao
-    function incluir($s115_i_codigo)
+    public function incluir($s115_i_codigo)
     {
         $this->atualizacampos();
         if ($this->s115_i_cgs == null) {
@@ -369,7 +369,7 @@ class cl_cgs_cartaosus
     }
 
     // funcao para exclusao
-    function excluir($s115_i_codigo = null, $dbwhere = null)
+    public function excluir($s115_i_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($s115_i_codigo));
@@ -452,7 +452,7 @@ class cl_cgs_cartaosus
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -482,7 +482,7 @@ class cl_cgs_cartaosus
     }
 
     // funcao do sql
-    function sql_query($s115_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($s115_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -498,6 +498,7 @@ class cl_cgs_cartaosus
         $sql .= " from cgs_cartaosus ";
         $sql .= "      inner join cgs  on  cgs.z01_i_numcgs = cgs_cartaosus.s115_i_cgs";
         $sql .= "      inner join cgs_und  on  cgs_und.z01_i_cgsund = cgs.z01_i_numcgs";
+        $sql .= "      left join cgs_und_ext on cgs_und.z01_i_cgsund = cgs_und_ext.z01_i_cgsund";
         $sql2 = "";
         if ($dbwhere == "") {
             if ($s115_i_codigo != null) {
@@ -523,7 +524,7 @@ class cl_cgs_cartaosus
     }
 
     // funcao do sql
-    function sql_query_file($s115_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($s115_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

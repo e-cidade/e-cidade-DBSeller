@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -103,10 +103,10 @@ $codigoProcessoProtocolo = isset($oGet->codigoProcessoProtocolo) ? $oGet->codigo
 <body bgcolor="#CCCCCC" onLoad="a=1">
 <div class="container">
     <form id="form1" name="form1">
-        <? db_input('tipoProcesso', 10, 0, false, 'hidden', 3, ""); ?>
-        <? db_input('processo', 10, 0, false, 'hidden', 3, ""); ?>
-        <? db_input('ano', 10, 0, false, 'hidden', 3, ""); ?>
-        <? db_input('codigoProcessoProtocolo', 10, 0, false, 'hidden', 3, ""); ?>
+        <?php db_input('tipoProcesso', 10, 0, false, 'hidden', 3, ""); ?>
+        <?php db_input('processo', 10, 0, false, 'hidden', 3, ""); ?>
+        <?php db_input('ano', 10, 0, false, 'hidden', 3, ""); ?>
+        <?php db_input('codigoProcessoProtocolo', 10, 0, false, 'hidden', 3, ""); ?>
         <fieldset id="containerSolicitacaoAlvara" name="containerSolicitacaoAlvara">
             <legend id="CotaMunicipio"><b>Solicitação de Álvará</b></legend>
         </fieldset>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -371,11 +371,32 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
 
 
   $resultitem = db_query($sqlitem);
-  $result_cgmalt=$clcgmalt->sql_record($clcgmalt->sql_query_file(null,"z05_numcgm as z01_numcgm,z05_nome as z01_nome,z05_telef as z01_telef,z05_ender as z01_ender,z05_numero as z01_numero,z05_munic as z01_munic,z05_cgccpf as z01_cgccpf,z05_cep as z01_cep"," abs(z05_data_alt - date '$e60_emiss') asc, z05_sequencia desc limit 1","z05_numcgm = $z01_numcgm and z05_data_alt > '$e60_emiss' "));
+  $result_cgmalt=$clcgmalt->sql_record(
+      $clcgmalt->sql_query_file(null,
+      "z05_numcgm as z01_numcgm,z05_nome as z01_nome,z05_telef as z01_telef,z05_ender as z01_ender,z05_numero as z01_numero,
+      z05_munic as z01_munic,z05_cgccpf as z01_cgccpf,z05_cep as z01_cep",
+          " abs(z05_data_alt - date '$e60_emiss') asc, z05_sequencia desc limit 1",
+          "z05_numcgm = $z01_numcgm and z05_data_alt > '$e60_emiss' "));
 
   if ($clcgmalt->numrows>0) {
     db_fieldsmemory($result_cgmalt,0);
   }
+
+/**
+ * buscar as ordens de pagamentos para empenhos da folha
+ */
+$sqlOrdem = "
+      select e50_codord
+       from pagordem
+       join rhempenhofolhaempenho on e50_numemp = rh76_numemp
+      where e50_numemp = {$e60_numemp};
+";
+$rsOp = db_query($sqlOrdem );
+$pdf1->e50_codord = "";
+if (pg_num_rows($rsOp) > 0) {
+  $pdf1->e50_codord = db_utils::fieldsMemory($rsOp, 0)->e50_codord;
+}
+//echo $sqlOrdem; die();
 
   /**
    * Verificamos o cnpj da unidade. caso diferente de null, e diferente do xcnpj da instituição,
@@ -437,7 +458,9 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    $pdf1->resumo = "";
    $resumo_lic   = "";
 
-   $result_licita = $clempautitem->sql_record($clempautitem->sql_query_lic(null,null,"distinct l20_edital, l20_numero, l20_anousu, l20_objeto, l03_descr",null,"e55_autori = $e61_autori "));
+   $result_licita = $clempautitem->sql_record($clempautitem->sql_query_lic(
+       null,null,"distinct l20_edital, l20_numero, l20_anousu, l20_objeto, l03_descr",
+       null,"e55_autori = $e61_autori "));
    if ($clempautitem->numrows>0){
      db_fieldsmemory($result_licita,0);
 
@@ -495,7 +518,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    if (isset($l03_descr)&&($l03_descr!="")){
      $pdf1->descr_licitacao = $l03_descr;
    } else {
-     $sqllic = "select l03_descr from cflicita where l03_codcom=$e60_codcom and l03_tipo='$e60_tipol'";
+    $sqllic = "select l03_descr from cflicita where l03_codcom=$e60_codcom and l03_tipo='$e60_tipol' and l03_instit=".db_getsession("DB_instit");
      $rpc    = db_query($sqllic);
 
      //  system("echo '".$sqllic."\n' >> tmp/logsql.txt");
@@ -584,6 +607,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    $pdf1->emissao          = db_formatar($e60_emiss,'d');
    $pdf1->texto            = "";
 
+  // dd($pdf1);
 //   dd('z');
    $pdf1->imprime();
 }

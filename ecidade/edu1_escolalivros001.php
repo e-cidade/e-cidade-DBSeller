@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -94,8 +94,8 @@ if(isset($incluir)){
        <?=$Led134_i_escola?>
       </td>
       <td>
-       <?db_input('ed134_i_escola',20,$Ied134_i_escola,true,'text',3,"")?>
-       <?db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
+       <?php db_input('ed134_i_escola',20,$Ied134_i_escola,true,'text',3,"")?>
+       <?php db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -103,11 +103,11 @@ if(isset($incluir)){
        <?=$Led134_i_ano?>
       </td>
       <td>
-       <?db_input('ed134_i_ano',4,@$Ied134_i_ano,true,'text',$db_opcao,"")?>
+       <?php db_input('ed134_i_ano',4,@$Ied134_i_ano,true,'text',$db_opcao,"")?>
        <input name="pesquisar" type="button" value="Pesquisar" onclick="js_pesquisar();">
       </td>
      </tr>
-     <?if(isset($chavepesquisa)){?>
+     <?php if(isset($chavepesquisa)){?>
      <tr>
       <td colspan="2">
        <br><br>
@@ -117,7 +117,7 @@ if(isset($incluir)){
          <td><?=$Led134_i_devolucao?></td>
          <td><?=$Led134_i_reutilizavel?></td>
         </tr>
-        <?
+        <?php
         $arr_serie = array('1'=>'2ª SÉRIE / 3º ANO','2'=>'3ª SÉRIE / 4º ANO','3'=>'4ª SÉRIE / 5º ANO','4'=>'5ª SÉRIE / 6º ANO','5'=>'6ª SÉRIE / 7º ANO','6'=>'7ª SÉRIE / 8º ANO','7'=>'8ª SÉRIE / 9º ANO');
         for($x=0;$x<7;$x++){
          $linha = $x+1;
@@ -133,7 +133,7 @@ if(isset($incluir)){
           <td><input name="ed134_i_devolucao_x[]" id="ed134_i_devolucao_x" type="text" value="<?=@$ed134_i_devolucao?>" size="4" maxlength="4" onchange="js_valida(this,1,<?=$x?>);" style="text-align:center;"></td>
           <td><input name="ed134_i_reutilizavel_x[]" id="ed134_i_reutilizavel_x" type="text" value="<?=@$ed134_i_reutilizavel?>" size="4" maxlength="4" onchange="js_valida(this,2,<?=$x?>);" style="text-align:center;"></td>
          </tr>
-         <?
+         <?php
         }
         ?>
        </table>
@@ -144,7 +144,7 @@ if(isset($incluir)){
        <input name="incluir" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>>
       </td>
      </tr>
-     <?}?>
+     <?php }?>
     </table>
    </fieldset>
   </td>
@@ -173,14 +173,14 @@ function js_valida(campo,tipo,linha){
  if(campo.value!=""){
   if(tipo==1){
    if(document.form1.ed134_i_devolucao_x[linha].value<document.form1.ed134_i_reutilizavel_x[linha].value){
-    alert("Quantidade de Livros Devolvidos deve ser maior quantidade que Livros com Reutilização!"); 
+    alert("Quantidade de Livros Devolvidos deve ser maior quantidade que Livros com Reutilização!");
     campo.value = "";
     campo.focus();
    }
   }
   if(tipo==2){
    if(document.form1.ed134_i_reutilizavel_x[linha].value>document.form1.ed134_i_devolucao_x[linha].value){
-    alert("Quantidade de Livros com Reutilização deve ser menor quantidade que Livros Devolvidos!"); 
+    alert("Quantidade de Livros com Reutilização deve ser menor quantidade que Livros Devolvidos!");
     campo.value = "";
     campo.focus();
    }

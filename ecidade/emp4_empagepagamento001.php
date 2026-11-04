@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -148,7 +148,7 @@ if (isset ($atualizar)) {
   db_inicio_transacao();
   $sqlerro = false;
 
-  $arr_chaves = split("#", $chaves);
+  $arr_chaves =explode("#", $chaves);
 
   for ($d = 0; $d < count($arr_chaves); $d ++) {
     if ($sqlerro == true) {
@@ -156,7 +156,7 @@ if (isset ($atualizar)) {
     }
     if ($tipo == 'banco') {
       //e81_codmov,e82_codord,e81_valor
-      $arr_dad = split("-", $arr_chaves[$d]);
+      $arr_dad =explode("-", $arr_chaves[$d]);
       $codmov = $arr_dad[0];
       $codord = $arr_dad[1];
       $codigomovimento = $codmov;
@@ -225,7 +225,7 @@ if (isset ($atualizar)) {
         //---SLIP
         //--- k17_codigo,e89_codmov,k17_instit,k17_valor,e91_codcheque
 
-        $arr_dad = split("-", $arr_chaves[$d]);
+        $arr_dad =explode("-", $arr_chaves[$d]);
 
         if ($tipo == 'slip_cheque') {
           $e91_codcheque = $arr_dad[0];
@@ -302,7 +302,7 @@ if (isset ($atualizar)) {
       } else
 
         if ($tipo == 'cheque') {
-          $arr_dad = split("-", $arr_chaves[$d]);
+          $arr_dad =explode("-", $arr_chaves[$d]);
           $codcheque = $arr_dad[0];
           $codmov = $arr_dad[1];
           $codord = $arr_dad[2];
@@ -357,7 +357,7 @@ if (isset ($atualizar)) {
           //quando o  pagamento for  por ordem
         } else
           if ($tipo == "ordem") {
-            $arr_dad = split("-", $arr_chaves[$d]);
+            $arr_dad =explode("-", $arr_chaves[$d]);
             $e83_codtipo = $arr_dad[2];
 
             //retorna codord
@@ -480,7 +480,7 @@ if (isset ($atualizar)) {
     <table width="90%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-          <?
+          <?php
 
 
           $clrotulo = new rotulocampo;
@@ -496,12 +496,12 @@ if (isset ($atualizar)) {
       </tr>
     </table>
   </center>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
   ?>
   </body>
   </html>
-<?
+<?php
 
 
 if (isset ($atualizar)) {

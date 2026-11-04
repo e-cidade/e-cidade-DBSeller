@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -124,8 +124,8 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
   $result_pesq_divida = $clarrecad->sql_record( $sSqlArrecad );
 
   $numrows 	  = $clarrecad->numrows;
-  $codigo_k02 = split(",", $cod_k02_codigo);
-  $codigo_v03 = split(",", $cod_v03_codigo);
+  $codigo_k02 = explode(",", $cod_k02_codigo);
+  $codigo_v03 = explode(",", $cod_v03_codigo);
   $sqlerro	  = false;
   $dataini    = date("Y-m-d",db_getsession('DB_datausu'));
   $horaini    = db_hora();
@@ -150,6 +150,52 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
 	  $sqlerro = true;
   }
   $iDivImporta = $cldivimporta->v02_divimporta;
+
+
+    /**
+     * Busca o ultimo livro e folha do exercicio
+     */
+    $anoSessao = date('Y', db_getsession("DB_datausu"));
+    $sqlLivroFolha = "
+      select v01_livro,
+             v01_folha,
+             count(*) as total_registros
+        FROM divida
+       WHERE v01_livro = (SELECT max(v01_livro)
+                            FROM divida
+                           WHERE extract(YEAR FROM v01_dtinclusao) = {$anoSessao}
+                           and v01_livro < 998 )
+      group by v01_livro, v01_folha
+      having v01_folha = max(v01_folha)
+      order by 2 desc
+      limit 1
+    ";
+
+    $buscaLivroExercicio = db_query($sqlLivroFolha);
+    if (!$buscaLivroExercicio) {
+        db_erro("Erro ao buscar livro e folha do exercicio");
+    }
+
+    $criaNovoLivro = false;
+    if (pg_num_rows($buscaLivroExercicio) == 0) {
+        $criaNovoLivro = true;
+    } else {
+        $livroExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_livro;
+        $criaNovoLivro = empty($livroExercicio);
+        unset($livroExercicio);
+    }
+
+    if ($criaNovoLivro) {
+      $novoLivro = db_query($cldivida->sql_query_file(null, "coalesce(max(v01_livro), 0) + 1 as v01_livro"));
+      $livroExercicio = \db_utils::fieldsMemory($novoLivro, 0)->v01_livro;
+      $folhaExercicio = 1;
+      $totalRegistrosPorFolha = 0;
+    } else {
+        $livroExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_livro;
+        $folhaExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_folha;
+        $totalRegistrosPorFolha = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->total_registros;
+    }
+
 
   for ($i = 0; $i < $numrows;$i++ ) {
 
@@ -182,7 +228,7 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
 
 	  	    $resultjadivida  = db_query($sqljadivida);
 	  	    $jaexiste        = false;
-          $numrowsjadivida = pg_numrows($resultjadivida);
+          $numrowsjadivida = pg_num_rows($resultjadivida);
 
           // Trata tipo de Debito 20 - Saneamento Basico
           if ($numrowsjadivida == 0 || ( $numrowsjadivida > 0 && $k03_tipo == 20) ) {
@@ -246,9 +292,16 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
         $v01_obs = "";
 
         if (in_array($k03_tipo, $aTipos)) {
-
           $v01_obs = $cldivida->resumo_importacao($k00_numpre, $k03_tipo);
         }
+
+        // Controla quantidade de registros por folha
+        $totalRegistrosPorFolha++;
+        if ($totalRegistrosPorFolha > 30) {
+            $totalRegistrosPorFolha = 1;
+            $folhaExercicio++;
+        }
+
         $iExercicioDivida         = $cldivida->getExercicioDivida($k00_numpre, $k03_tipo, substr($k00_dtoper, 6, 4));
 
       	$cldivida->v01_numcgm     = $k00_numcgm;
@@ -264,12 +317,12 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
       	$cldivida->v01_vlrhis     = $k00_valor;
       	$cldivida->v01_proced     = $cod_v03_codigo;
       	$cldivida->v01_obs        = pg_escape_string($v01_obs);
-      	$cldivida->v01_livro      = "";
-      	$cldivida->v01_folha      = "";
-      	$dt_venc			            = split("/",$k00_dtvenc);
+      	$cldivida->v01_livro      = $livroExercicio;
+      	$cldivida->v01_folha      = $folhaExercicio;
+      	$dt_venc			            = explode("/",$k00_dtvenc);
       	$dt_venc_data 		        = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
       	$cldivida->v01_dtvenc     = $dt_venc_data;
-      	$dt_oper			            = split("/",$k00_dtoper);
+      	$dt_oper			            = explode("/",$k00_dtoper);
       	$dt_oper_data 		        = $dt_oper[2]."-".$dt_oper[1]."-".$dt_oper[0];
       	$cldivida->v01_dtoper     = $dt_oper_data;
       	$cldivida->v01_valor      = $k00_valor;
@@ -302,7 +355,7 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
       	   */
       	  if ($lProcessoSistema == 1 && $iProcesso != null) {
 
-      	    $oDaoDividaProtprocesso = db_utils::getDao('dividaprotprocesso');
+      	    $oDaoDividaProtprocesso = new cl_dividaprotprocesso;
       	    $oDaoDividaProtprocesso->v88_divida       = $cldivida->v01_coddiv;
       	    $oDaoDividaProtprocesso->v88_protprocesso = $iProcesso;
       	    $oDaoDividaProtprocesso->incluir(null);
@@ -459,13 +512,13 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
 
 		  if ($sqlerro == false) {
 
-			 $dataInsc = date("Y-m-d",db_getsession('DB_datausu'));					
+			 $dataInsc = date("Y-m-d",db_getsession('DB_datausu'));
 			 $usuario = db_getsession('DB_id_usuario');
 			 $instit = db_getsession('DB_instit');
 			 TermoInscricaoService::salvar($numpre_novo, $cldivida, $v03_receit, $dataInsc, $usuario, $instit);
 		  }
 
-	    } 
+	    }
       }
     }
 
@@ -583,6 +636,29 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
       $vir1           = "";
       $cod_v03_codigo = "";
 
+      /**
+       * Busca vinculo de receita com procedencia
+       */
+      $sqlVinculoProced = "
+        select v03_codigo, v03_descr, k202_receita
+        from caixa.vinculoreceitaprocedencia
+        inner join proced on proced.v03_codigo = k202_proced
+        where v03_limite is null or v03_limite >= current_date
+      ";
+
+      $rsVinculoProced = db_query($sqlVinculoProced);
+      if (!$rsVinculoProced) {
+        db_erro("Erro ao buscar vinculo de receita com procedencia");
+      }
+
+      $aVinculoReceitaProced = [];
+      if (pg_num_rows($rsVinculoProced) > 0) {
+        for ($i = 0; $i < pg_num_rows($rsVinculoProced); $i++) {
+          $oDadosVinculo = db_utils::fieldsMemory($rsVinculoProced, $i);
+          $aVinculoReceitaProced[$oDadosVinculo->k202_receita] = $oDadosVinculo;
+        }
+      }
+
       for ($i = 0; $i < $numrows0; $i++) {
 
         db_fieldsmemory($result0, $i);
@@ -593,19 +669,29 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
           <td nowrap>";
              db_input("$k02_drecei",40,"",true,"text",3,"","k02_drecei");
         echo "
-        	    <select name=\"v03_descr\" onchange=\"js_troca();\" id=\"v03_descr\">
+        	    <select name=\"v03_descr\" onchange=\"js_troca();\" id=\"v03_descr\" style=\"min-width: 200px\">
         	     <option value=\"0\" >Escolha uma procedencia</option>
         	   ";
-            for( $ii = 0; $ii < $numrows1; $ii++) {
 
-              db_fieldsmemory($result1,$ii);
-              echo "<option value=\"$v03_codigo\" >$v03_codigo - $v03_descr</option>";
+            if (isset($aVinculoReceitaProced[$k02_codigo])) {
+                $vinculo = $aVinculoReceitaProced[$k02_codigo];
+                echo "
+                    <option value=\"{$vinculo->v03_codigo}\" selected>
+                        {$vinculo->v03_codigo} - {$vinculo->v03_descr}
+                    </option>
+                ";
+                $cod_v03_codigo .= $vir1.$vinculo->v03_codigo;
+                $vir1=",";
+            } else {
+                for( $ii = 0; $ii < $numrows1; $ii++) {
+                  db_fieldsmemory($result1,$ii);
+                  echo "<option value=\"$v03_codigo\" >$v03_codigo - $v03_descr</option>";
 
-              if($ii == 0){
-
-              	$cod_v03_codigo .= $vir1.$v03_codigo;
-              	$vir1=",";
-              }
+                  if($ii == 0){
+                      $cod_v03_codigo .= $vir1.$v03_codigo;
+                      $vir1=",";
+                  }
+                }
             }
         echo "
         	</select>
@@ -654,6 +740,7 @@ function js_troca(){
   }
   document.form1.cod_v03_codigo.value = codigo;
 }
+js_troca();
 </script>
 <?php
 if ($teste == true){

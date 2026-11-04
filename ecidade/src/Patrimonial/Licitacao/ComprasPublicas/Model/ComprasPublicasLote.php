@@ -45,7 +45,8 @@ class ComprasPublicasLote
             throw new Exception("Não existem itens");
         }
 
-        if ($this->licitacao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE") {
+        if ($this->licitacao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE" ||
+            $this->licitacao->getModalidade()->getSiglaTipoCompraTribunal() == "PCE") {
             switch ($this->licitacao->getTipoJulgamento()) {
                 case 1:
                     foreach ($dadosItens as $itensLicitacao) {
@@ -107,7 +108,8 @@ class ComprasPublicasLote
             }
         }
 
-        if ($this->licitacao->getModalidade()->getSiglaTipoCompraTribunal() == "PRP") {
+        if ($this->licitacao->getModalidade()->getSiglaTipoCompraTribunal() == "PRP" ||
+            $this->licitacao->getModalidade()->getSiglaTipoCompraTribunal() == "PCP") {
             switch ($this->licitacao->getTipoJulgamento()) {
                 case 1:
                     foreach ($dadosItens as $itensLicitacao) {
@@ -199,8 +201,8 @@ class ComprasPublicasLote
                 null,
                 "l21_codigo",
                 "l21_ordem",
-                "l21_codliclicita = {$iCodLicitacao} 
-                 and not exists (select 1 
+                "l21_codliclicita = {$iCodLicitacao}
+                 and not exists (select 1
                                    from licitacaoreservacotas
                                   where l19_liclicitemreserva = l21_codigo)"
             );
@@ -222,7 +224,7 @@ class ComprasPublicasLote
             null,
             "l21_codigo",
             "l21_ordem",
-            "l21_codliclicita  = {$iCodLicitacao} 
+            "l21_codliclicita  = {$iCodLicitacao}
                  and l04_descricao = '{$descricao}'"
         );
         $rsLicLicitem        = $oDaoLicLicitemLote->sql_record($sSqlLicLicitemLote);

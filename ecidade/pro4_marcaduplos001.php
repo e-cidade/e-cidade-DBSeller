@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,12 +35,13 @@ include_once(modification("classes/db_db_syscampodep_classe.php"));
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
+$clrotulo->label("z01_cgccpf");
 
 $db_opcao = 1;
 $db_botao = true;
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str($_SERVER["QUERY_STRING"], $queryString);
 
 ?>
 <html>
@@ -56,34 +57,32 @@ parse_str($_SERVER['QUERY_STRING']);
 <body background-color=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
     <form name='form1'>
         <div class="container">
-            <table width="790" border="0" cellspacing="0" cellpadding="0">
-                <tr>
+            <table class="form-container">
+                <tr title="<?php echo $Tz01_nome ?>">
                     <td>
-                        <table border="0">
-                            <tr>
-                                <td style="text-align:center" title="<?= $Tz01_nome ?>">
-                                    <?= $Lz01_nome; ?>
-                                    <?php db_input("z01_nome", 50, $Iz01_nome, true, "text", 2); ?>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td style="display:block;text-align:center">
-                                    <input name='selecionar' type='button' value='Selecionar' onclick='js_selecionar();'>
-                                    <input name='gravar' type='button' value='Gravar' onclick='js_gravar();'>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">
-                                    <iframe name="campos" marginwidth="0" marginheight="0" frameborder="0" src="" width="1200" height="400">
-                                    </iframe>
-                                </td>
-                            </tr>
-                        </table>
+                        <?php echo $Lz01_nome; ?>
+                    </td>
+                    <td>
+                        <?php db_input("z01_nome", 50, $Iz01_nome, true, "text", 2); ?>
+                    </td>
+                </tr>
+                <tr title="<?php echo $Tz01_cgccpf ?>">
+                    <td>
+                        <?php echo $Lz01_cgccpf; ?>
+                    </td>
+                    <td>
+                        <?php db_input("z01_cgccpf", 50, $Iz01_cgccpf, true, "text", 2); ?>
                     </td>
                 </tr>
             </table>
+            <div style="padding: 1rem;">
+                <input name='selecionar' type='button' value='Selecionar' onclick='js_selecionar();'>
+                <input name='gravar' type='button' value='Gravar' onclick='js_gravar();'>
+            </div>
+        </div>
+        <div class="subcontainer">
+            <iframe name="campos" marginwidth="0" marginheight="0" frameborder="0" src="" width="1200" height="400">
+            </iframe>
         </div>
     </form>
     <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
@@ -93,7 +92,10 @@ parse_str($_SERVER['QUERY_STRING']);
 <script>
     function js_selecionar() {
         var nome = document.form1.z01_nome.value.replace('%', '|');
-        campos.location.href = 'pro4_marcaduplos002.php?z01_nome=' + nome;
+        var cpf_cnpj = document.form1.z01_cgccpf.value;
+        if (nome != "" || cpf_cnpj != "") {
+            campos.location.href = 'pro4_marcaduplos002.php?z01_nome=' + nome + "&z01_cgccpf=" + cpf_cnpj;
+        }
     }
 
     function js_gravar() {

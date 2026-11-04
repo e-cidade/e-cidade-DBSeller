@@ -49,7 +49,7 @@ $res_sau_config  = db_query( $clsau_config->sql_query_ext() );
 $booProced       = pg_num_rows( $res_sau_config ) > 0 && pg_result($res_sau_config, 0, "s103_c_agendaproc") == "S";
 
 $sd02_c_centralagenda = "N";
-$iUpssolicitante      = db_getsession("DB_coddepto"); 
+$iUpssolicitante      = db_getsession("DB_coddepto");
 $lAgendaLiberada      = true;
 $sSqlUnidades         = $clunidades->sql_query( $iUpssolicitante, "sd02_c_centralagenda,descrdepto", null, "" );
 $result_unidades      = $clunidades->sql_record( $sSqlUnidades );
@@ -66,14 +66,14 @@ if ($oResult->lStatus != 1) {
   $sd02_i_codigo  = $iUpssolicitante;
   $db_opcao_cotas = 3;
 } else {
-	 
+
   $sd02_i_codigo  = "";
-  $descrdepto     = ""; 
+  $descrdepto     = "";
 }
 
 $oAgendaParametros = loadConfig('sau_parametrosagendamento');
 if ($oAgendaParametros != null) {
-  $s165_formatocomprovanteagend = $oAgendaParametros->s165_formatocomprovanteagend; 
+  $s165_formatocomprovanteagend = $oAgendaParametros->s165_formatocomprovanteagend;
 }
 
 if( isset( $chave_diasemana ) && $chave_diasemana != "" ) {
@@ -141,7 +141,7 @@ if( isset( $confirma ) ) {
 	$sql             = $clagendamentos->sql_query_ext( "", "*", "", $strWhere );
 	$rsAgendamentos  = $clagendamentos->sql_record( $sql );
 	$iValidaPaciente = $clagendamentos->numrows;
-	
+
   /*
    * =====================================================
    *   TESTA PARA VER SE O AGENDAMENTO É FEITO POR COTAS
@@ -292,7 +292,7 @@ if( isset( $anular ) ) {
 
 	db_inicio_transacao();
 	$clagendamentos->excluir($chavepesquisaagenda);
-	db_fim_transacao();	
+	db_fim_transacao();
 }
 
 $db_opcao = 1;
@@ -321,6 +321,7 @@ db_app::load("webseller.js");
   } catch(\Exception $e) {
     die("<div class='container'><h2>{$e->getMessage()}</h2></div>");
   }
+  //AO ARRUMAR ESSA ROTINA É NECESSÁRIO TAMBÉM FAZER O AJUSTE FEITO NA TAREFA 28145
   include(modification("forms/db_frmagendamento_ext.php"));
   ?>
 </body>

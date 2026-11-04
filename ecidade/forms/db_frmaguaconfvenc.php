@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $claguaconfvenc->rotulo->label();
        <?=@$Lx33_exerc?>
     </td>
     <td> 
-<?
+<?php
 db_input('x33_exerc',5,$Ix33_exerc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('x33_exerc',5,$Ix33_exerc,true,'text',$db_opcao,"")
        <?=@$Lx33_parcela?>
     </td>
     <td> 
-<?
+<?php
 db_input('x33_parcela',5,$Ix33_parcela,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('x33_parcela',5,$Ix33_parcela,true,'text',$db_opcao,"")
        <?=@$Lx33_dtvenc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x33_dtvenc',@$x33_dtvenc_dia,@$x33_dtvenc_mes,@$x33_dtvenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_aguaconfvenc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
      <td>
-     <?
+     <?php
 
        $clcriaabas->identifica = array("dados"   =>"Dados do imovel",
                    					           "transm"  =>"Transmitentes",
@@ -82,12 +82,12 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 echo "<script>document.formaba.compnome.size='20';</script>";
 echo "<script>document.formaba.inter.size='20';</script>";

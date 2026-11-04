@@ -53,7 +53,7 @@ class ComplementoRecurso
          * portanto não temos como obter o recurso da receita
          */
         if (empty($complemento) || $complemento->o15_codigo === '') {
-            return true;
+            throw new Exception('Erro ao buscar o complemento do recurso para o lançamento.');
         }
 
         return $this->salvarComplementoRecurso($codigoLancamento, $complemento);
@@ -67,12 +67,26 @@ class ComplementoRecurso
      */
     public function getComplementoPorLancamento($codigoLancamento, $ano)
     {
-
         /**
          * Foi identificado que quando a receita possui desdobramento, devesse salvar o recurso da receita.
          */
         if ($this->isLancamentoReceitaComDesdobramento($codigoLancamento)) {
             return $this->retornaRecursoReceita($codigoLancamento);
+        }
+
+        $sql = "
+        select orctiporec.*, complementofonterecurso.*
+          from conlancamdoc
+          join conlancamrec on c74_codlan = c71_codlan
+          join orcreceita on (o70_anousu, o70_codrec) = (c74_anousu, c74_codrec)
+          join orctiporec on o15_codigo = o70_codigo
+          join complementofonterecurso on o200_sequencial = o15_complemento
+         where c71_codlan = $codigoLancamento
+           and c71_coddoc in (6000,  6001,  6006, 6007)
+        ";
+        $rs = db_query($sql);
+        if (pg_num_rows($rs) > 0) {
+            return \db_utils::fieldsMemory($rs, 0);
         }
 
         $daoEmpenho = new \cl_conlancamemp();
@@ -84,65 +98,80 @@ class ComplementoRecurso
             return Origem::getEmpenho($numeroEmpenho, $ano);
         }
 
-        /* receita */
-        $where = implode(' and ', [
-            "conlancamcorrente.c86_conlancam = {$codigoLancamento}"
-        ]);
-        $daoPlanilha = new \cl_placaixarec();
-        $sqlPlanilha = $daoPlanilha->sql_query_planilha_autenticada("placaixarec.*", null, $where);
-        $resPlanilha = db_query($sqlPlanilha);
-        if (pg_num_rows($resPlanilha) > 0) {
-            $numero = \db_utils::fieldsMemory($resPlanilha, 0)->k81_seqpla;
-            return Origem::getPlanilhaArrecadacao($numero);
+        /**
+         * Lançamento com origem de suplementação tem que pegar o recurso da receita/despesa.
+         */
+        $sql = "
+        with origem_suplementacao as (
+            select c70_codlan
+              from conlancam
+              join contabilidade.conlancamsup on c79_codlan = c70_codlan
+            where c70_codlan = {$codigoLancamento}
+        ), origem_recurso as (
+            select o70_codigo as id_recurso
+              from origem_suplementacao
+              join conlancamrec on  c74_codlan = c70_codlan
+              join orcreceita on orcreceita.o70_codrec = conlancamrec.c74_codrec
+                   and orcreceita.o70_anousu = conlancamrec.c74_anousu
+
+            union
+
+            select o58_codigo as id_recurso
+              from origem_suplementacao
+              join conlancamdot on c73_codlan = c70_codlan
+              join orcdotacao on (o58_anousu, o58_coddot) = (c73_anousu, c73_coddot)
+        ) select orctiporec.*, complementofonterecurso.*
+            from origem_recurso
+            join orctiporec on o15_codigo = id_recurso
+            join complementofonterecurso on o200_sequencial = o15_complemento
+        ";
+
+        $rs = db_query($sql);
+        if (!$rs || pg_num_rows($rs) > 0) {
+            return \db_utils::fieldsMemory($rs, 0);
         }
 
-        $where = implode(' and ', [
-            "conlancamcorrente.c86_conlancam = {$codigoLancamento}",
-            "taborc.k02_anousu = ".db_getsession('DB_anousu'),
-            "orcreceita.o70_anousu = ".db_getsession('DB_anousu')
-        ]);
-        $daoRecibo = new \cl_cornump();
-        $sqlRecibo = $daoRecibo->sql_query_recibo_autenticado("cornump.*, k02_complemento, o70_codigo", $where);
-        $resRecibo = db_query($sqlRecibo);
-        if (pg_num_rows($resRecibo) > 0) {
-            $autenticacao = \db_utils::fieldsMemory($resRecibo, 0);
-            $complemento = Origem::getRecibo($autenticacao->k12_numpre);
+        /**
+         * Alterado busca do recurso quando se trata de um lançamento de receita Orçamentária/Extra
+         */
+        $sql = "
+        with origem_recurso as (
+            select o70_codigo as recurso_receita
+              from conlancamrec
+              join orcreceita on orcreceita.o70_codrec = conlancamrec.c74_codrec
+                   and orcreceita.o70_anousu = conlancamrec.c74_anousu
+              where c74_codlan = {$codigoLancamento}
+             union
+            select c61_codigo as recurso_receita
+              from conlancam
+              join conlancamval on conlancamval.c69_codlan = conlancam.c70_codlan
+                   and conlancamval.c69_ordem = 1
+              join conplanoreduz on conplanoreduz.c61_reduz = conlancamval.c69_credito
+                   and conplanoreduz.c61_anousu = conlancamval.c69_anousu
+             where c70_codlan = {$codigoLancamento}
+               and not exists( select 1 from conlancamrec where conlancamrec.c74_codlan = conlancam.c70_codlan)
+        ) select orctiporec.*, complementofonterecurso.*
+            from origem_recurso
+            join orctiporec on o15_codigo = recurso_receita
+            join complementofonterecurso on o200_sequencial = o15_complemento
+        ";
 
-            if (!empty($complemento)) {
-                return $complemento;
-            }
-
-            if (empty($autenticacao->k12_numpre)) {
-                return $this->retornaRecursoReceita($codigoLancamento);
-            } else {
-                $complemento = Origem::getPadrao($autenticacao->k12_numpre);
-                if (!$complemento) {
-                    Origem::set(
-                        Origem::COMPLEMENTO_PADRAO,
-                        $autenticacao->k12_numpre,
-                        $autenticacao->o70_codigo,
-                        $autenticacao->k02_complemento
-                    );
-                    $complemento = Origem::getPadrao($autenticacao->k12_numpre);
-                }
-
-                return $complemento;
-            }
+        $rs = db_query($sql);
+        if (!$rs || pg_num_rows($rs) === 0) {
+            throw new Exception('Erro ao executar lançamento. Entre em contato com o suporte.');
         }
 
-        /* proxima consulta aqui */
-
-        return false;
+        return \db_utils::fieldsMemory($rs, 0);
     }
 
 
     /**
-     * @param $codigoLancamento
-     * @param $complemento
+     * @param integer $codigoLancamento
+     * @param \stdClass $complemento  exemplo {o200_sequencial: 0, o15_codigo: 1}
      * @return boolean
      * @throws Exception
      */
-    protected function salvarComplementoRecurso($codigoLancamento, $complemento)
+    public function salvarComplementoRecurso($codigoLancamento, $complemento)
     {
         if (!empty($complemento)) {
             $daoRecursoComplemento = new \cl_conlancamcomplementorecurso();

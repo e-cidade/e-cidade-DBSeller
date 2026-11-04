@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -135,7 +135,7 @@ if((isset($incluir) || isset($alterar) || isset($excluir)) && $cltabrecregrasjm-
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-      <?
+      <?php
       include(modification("forms/db_frmreceitasregrasjm.php"));
       ?>
       </center>
@@ -144,7 +144,7 @@ if((isset($incluir) || isset($alterar) || isset($excluir)) && $cltabrecregrasjm-
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cltabrecregrasjm->erro_status=="0"){
     $cltabrecregrasjm->erro(true,false);

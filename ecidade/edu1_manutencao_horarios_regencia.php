@@ -104,7 +104,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 </tr>
             </table>
         </fieldset>
-        <div id="ctnGrid" style="1000px"> </div>
+        <div id="ctnGrid"> </div>
     </fieldset>
     <button type="button" id="salvar">
         <i class="far fa-save"></i>

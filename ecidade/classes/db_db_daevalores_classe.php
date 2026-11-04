@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,13 +63,13 @@ class cl_db_daevalores {
                  w07_dtpaga = date = Data de pagamento 
                  ";
    //funcao construtor da classe 
-   function cl_db_daevalores() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_daevalores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_db_daevalores {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->w07_codigo = ($this->w07_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["w07_codigo"]:$this->w07_codigo);
        $this->w07_item = ($this->w07_item == ""?@$GLOBALS["HTTP_POST_VARS"]["w07_item"]:$this->w07_item);
@@ -100,7 +100,7 @@ class cl_db_daevalores {
      }
    }
    // funcao para inclusao
-   function incluir ($w07_codigo,$w07_item){ 
+   public function incluir ($w07_codigo,$w07_item){ 
       $this->atualizacampos();
      if($this->w07_mes == null ){ 
        $this->erro_sql = " Campo mês nao Informado.";
@@ -225,7 +225,7 @@ class cl_db_daevalores {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($w07_codigo=null,$w07_item=null) { 
+   public function alterar ($w07_codigo=null,$w07_item=null) { 
       $this->atualizacampos();
      $sql = " update db_daevalores set ";
      $virgula = "";
@@ -398,7 +398,7 @@ class cl_db_daevalores {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($w07_codigo=null,$w07_item=null,$dbwhere=null) { 
+   public function excluir ($w07_codigo=null,$w07_item=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($w07_codigo,$w07_item));
      }else{ 
@@ -472,7 +472,7 @@ class cl_db_daevalores {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -2,6 +2,8 @@
 
 namespace App\Domain\Financeiro\Orcamento\Services\Relatorios;
 
+use App\Domain\Financeiro\Contabilidade\Models\PlanoReceita;
+
 abstract class BaseCronograma
 {
     /**

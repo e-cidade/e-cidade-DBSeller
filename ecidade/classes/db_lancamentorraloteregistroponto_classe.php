@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE lancamentorraloteregistroponto
 class cl_lancamentorraloteregistroponto { 
@@ -26,13 +26,13 @@ class cl_lancamentorraloteregistroponto {
                  rh174_loteregistroponto = int4 = Código do Lote de Registros do Ponto 
                  ";
    //funcao construtor da classe 
-   function cl_lancamentorraloteregistroponto() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lancamentorraloteregistroponto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_lancamentorraloteregistroponto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh174_sequencial = ($this->rh174_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh174_sequencial"]:$this->rh174_sequencial);
        $this->rh174_lancamentorra = ($this->rh174_lancamentorra == ""?@$GLOBALS["HTTP_POST_VARS"]["rh174_lancamentorra"]:$this->rh174_lancamentorra);
@@ -51,7 +51,7 @@ class cl_lancamentorraloteregistroponto {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh174_sequencial){ 
+   public function incluir ($rh174_sequencial){ 
       $this->atualizacampos();
      if($this->rh174_lancamentorra == null ){ 
        $this->erro_sql = " Campo Código não informado.";

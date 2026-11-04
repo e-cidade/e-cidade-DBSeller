@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clisencaotipo->rotulo->label("v11_descr");
               <?=$Lv11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v11_sequencial",10,$Iv11_sequencial,true,"text",4,"","chave_v11_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clisencaotipo->rotulo->label("v11_descr");
               <?=$Lv11_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v11_descr",40,$Iv11_descr,true,"text",4,"","chave_v11_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clisencaotipo->rotulo->label("v11_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_isencaotipo.php")==true){
@@ -122,12 +122,12 @@ $clisencaotipo->rotulo->label("v11_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

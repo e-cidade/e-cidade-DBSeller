@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -242,7 +242,7 @@ class cl_lab_atributo_componente
     function dadosRef($iAtributo_codigo)
     {
         $sCampos = " la30_i_codigo, la30_f_normalmin, la30_f_normalmax, la30_f_absurdomin, la30_f_absurdomax";
-        $sCampos .= ", la30_c_calculavel, la13_c_descr, la29_i_codigo, la29_i_fixo";
+        $sCampos .= ", la30_c_calculavel, la13_c_descr, la29_i_codigo, la29_v_fixo";
 
         $daoLabValorReferencia = new cl_lab_valorreferencia();
         $sSql = $daoLabValorReferencia->sql_query_tipos("", $sCampos, "", "la27_i_atributo = {$iAtributo_codigo} ");
@@ -259,7 +259,7 @@ class cl_lab_atributo_componente
             $oResultado->calculavel = $aResultado[0]->la30_c_calculavel;
             $oResultado->unidade = $aResultado[0]->la13_c_descr;
             $oResultado->alfanumerico = $aResultado[0]->la29_i_codigo;
-            $oResultado->fixo = $aResultado[0]->la29_i_fixo;
+            $oResultado->fixo = $aResultado[0]->la29_v_fixo;
 
             return $oResultado;
         } else {

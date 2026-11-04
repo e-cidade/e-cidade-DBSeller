@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -155,12 +155,12 @@ if (isset($liberar)) {
 
         <tr>
           <td><strong>
-  				  <?
+  				  <?php
   				    db_ancora("Inscrição:", 'js_mostranomes(true);', $dbOpcao)
   				  ?></strong>
           </td>
           <td>
-  			   <?
+  			   <?php
   			     db_input("q123_inscr", 8,true, true, 'text',$dbOpcao,"onchange='js_mostranomes(false);'" );
   			     db_input("z01_nome", 50,"", true, 'text', 3);
   			   ?>
@@ -171,7 +171,7 @@ if (isset($liberar)) {
           <td><strong>Alvará:</strong>
           </td>
           <td>
-  			   <?
+  			   <?php
   			     db_input("q120_issalvara", 8,"", true, 'text', 3);
   			   ?>
           </td>
@@ -179,13 +179,13 @@ if (isset($liberar)) {
         <tr>
           <td>
             <strong>
-            <?
+            <?php
               db_ancora("Tipo de Alvará:","js_pesquisaTipoAlvara(true);",1);
             ?>
             </strong>
           </td>
           <td>
-           <?
+           <?php
              db_input("q123_isstipoalvara", 8,"", true, 'text', 3);
              db_input("q98_descricao",     50,"", true, 'text', 3);
            ?>
@@ -196,7 +196,7 @@ if (isset($liberar)) {
           <td><strong>Data da Movimentação:</strong>
           </td>
           <td>
-  			   <?
+  			   <?php
   			    echo date("d/m/Y",db_getsession("DB_datausu"));
   			   ?>
           </td>
@@ -206,7 +206,7 @@ if (isset($liberar)) {
           <td title="Validade em Dias"><strong>Validade do Alvará:</strong>
           </td>
           <td>
-  			   <?
+  			   <?php
   			    db_input("q120_validadealvara", 8,"", true, 'text', 1);
   			   ?>
           </td>
@@ -214,12 +214,12 @@ if (isset($liberar)) {
 
           <tr>
             <td nowrap><strong>
-               <?
+               <?php
                  db_ancora("Processo:","js_pesquisap58_codproc(true);",1);
                ?></strong>
             </td>
             <td>
-              <?
+              <?php
                 db_input('p58_codproc',8,"",true,'text',1," onchange='js_pesquisap58_codproc(false);'");
                 db_input('p58_requer',50,"",true,'text',3,'');
               ?>
@@ -230,7 +230,7 @@ if (isset($liberar)) {
           <td ><strong>Observação:</strong>
           </td>
           <td>
-  			   <?
+  			   <?php
   			    db_textarea("q120_obs",5, 58,  "", true,null, 1)
   			   ?>
           </td>
@@ -246,7 +246,7 @@ if (isset($liberar)) {
       <input type='hidden' id='documentos' name='documentos'>
 
     </fieldset>
-    <input type="submit" <? echo $lLiberado ?>  name="liberar"  id='liberar' value="Liberar Alvará" />
+    <input type="submit" <?php echo $lLiberado ?>  name="liberar"  id='liberar' value="Liberar Alvará" />
   </form>
 
   <div id='ficha'></div>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -122,7 +122,7 @@ if (isset($codigo)&&$codigo!=""){
        <?=@$Lve62_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_codigo',10,$Ive62_codigo,true,'text',3,"")
 ?>
     </td>
@@ -131,10 +131,10 @@ db_input('ve62_codigo',10,$Ive62_codigo,true,'text',3,"")
        <?=@$Lve62_veiculos?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_veiculos',10,$Ive62_veiculos,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        ?>
     </td>
@@ -144,7 +144,7 @@ db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        <?=@$Lve62_dtmanut?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve62_dtmanut',@$ve62_dtmanut_dia,@$ve62_dtmanut_mes,@$ve62_dtmanut_ano,true,'text',3,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_inputdata('ve62_dtmanut',@$ve62_dtmanut_dia,@$ve62_dtmanut_mes,@$ve62_dtmanut
        <?=@$Lve62_vlrmobra?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_vlrmobra',15,$Ive62_vlrmobra,true,'text',3,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('ve62_vlrmobra',15,$Ive62_vlrmobra,true,'text',3,"")
        <?=@$Lve62_vlrpecas?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_vlrpecas',15,$Ive62_vlrpecas,true,'text',3,"")
 ?>
     </td>
@@ -172,7 +172,7 @@ db_input('ve62_vlrpecas',15,$Ive62_vlrpecas,true,'text',3,"")
        <?=@$Lve62_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_descr',60,$Ive62_descr,true,'text',3,"")
 ?>
     </td>
@@ -182,7 +182,7 @@ db_input('ve62_descr',60,$Ive62_descr,true,'text',3,"")
        <?=@$Lve62_notafisc?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_notafisc',10,$Ive62_notafisc,true,'text',3,"")
 ?>
     </td>
@@ -191,7 +191,7 @@ db_input('ve62_notafisc',10,$Ive62_notafisc,true,'text',3,"")
        <?=@$Lve62_medida?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_medida',15,$Ive62_medida,true,'text',3,"");
 if (isset($ve07_sigla) && trim($ve07_sigla)!=""){
   db_input("ve07_sigla",3,0,true,"text",3);
@@ -204,10 +204,10 @@ if (isset($ve07_sigla) && trim($ve07_sigla)!=""){
        <?=@$Lve62_veiccadtiposervico?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_veiccadtiposervico',10,$Ive62_veiccadtiposervico,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('ve28_descr',40,$Ive28_descr,true,'text',3,'')
        ?>
     </td>
@@ -216,10 +216,10 @@ db_input('ve28_descr',40,$Ive28_descr,true,'text',3,'')
        <?=@$Lve66_veiccadoficinas?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve66_veiccadoficinas',10,$Ive66_veiccadoficinas,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -229,10 +229,10 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lve65_veicretirada?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve65_veicretirada',10,$Ive65_veicretirada,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('ve60_codigo',10,$Ive60_codigo,true,'hidden',3,'')
        ?>
     </td>
@@ -240,7 +240,7 @@ db_input('ve60_codigo',10,$Ive60_codigo,true,'hidden',3,'')
        <?=@$Lve62_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_usuario',10,$Ive62_usuario,true,'text',3,"")
 ?>
     </td>
@@ -250,7 +250,7 @@ db_input('ve62_usuario',10,$Ive62_usuario,true,'text',3,"")
        <?=@$Lve62_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve62_data',@$ve62_data_dia,@$ve62_data_mes,@$ve62_data_ano,true,'text',3,"")
 ?>
     </td>
@@ -259,7 +259,7 @@ db_inputdata('ve62_data',@$ve62_data_dia,@$ve62_data_mes,@$ve62_data_ano,true,'t
        <?=@$Lve62_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve62_hora',5,$Ive62_hora,true,'text',3,"")
 ?>
     </td>

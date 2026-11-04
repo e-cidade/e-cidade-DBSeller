@@ -488,7 +488,7 @@ $iOpcaoTipoSolicitacao = $db_opcao;
 
         js_OpenJanelaIframe('CurrentWindow.corpo.iframe_solicita',
             'db_iframe_solicita',
-            'func_solicita.php?funcao_js=parent.js_preencheimporta|pc10_numero|pc52_sequencial&nada=true&param_mostra_regprecos=nao',
+            'func_solicita.php?funcao_js=parent.js_preencheimporta|pc10_numero|pc52_sequencial&nada=true&param_mostra_regprecos=nao&tiposolicitacao=1',
             'Pesquisa', true, '0');
     }
 

@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Compras
@@ -56,31 +56,32 @@ class cl_pcmater {
    var $pc01_validademinima = 'f'; 
    var $pc01_obrigatorio = 'f'; 
    var $pc01_liberaresumo = 'f'; 
+   var $pc01_familia = null; 
    // cria propriedade com as variaveis do arquivo 
    var $campos = "
-                 pc01_codmater = int4 = Código do Material 
-                 pc01_descrmater = varchar(80) = Descrição do Material 
-                 pc01_complmater = text = Complemento Material 
-                 pc01_codsubgrupo = int4 = Código do Sub-Grupo 
-                 pc01_ativo = bool = Material inativo 
-                 pc01_conversao = bool = Conversão 
-                 pc01_id_usuario = int4 = Cod. Usuário 
-                 pc01_libaut = bool = Liberado para Autorização de Empenho 
-                 pc01_servico = bool = Serviço 
-                 pc01_veiculo = bool = Veículo 
-                 pc01_fraciona = bool = Fraciona 
-                 pc01_validademinima = bool = Validade Mínima 
-                 pc01_obrigatorio = bool = Obrigatório 
-                 pc01_liberaresumo = bool = Liberar Resumo 
+                 pc01_codmater = int4 = Código do Material
+                 pc01_descrmater = varchar(80) = Descrição do Material
+                 pc01_complmater = text = Complemento Material
+                 pc01_codsubgrupo = int4 = Código do Sub-Grupo
+                 pc01_ativo = bool = Material inativo
+                 pc01_conversao = bool = Conversão
+                 pc01_id_usuario = int4 = Cod. Usuário
+                 pc01_libaut = bool = Liberado para Autorização de Empenho
+                 pc01_servico = bool = Serviço
+                 pc01_veiculo = bool = Veículo
+                 pc01_fraciona = bool = Fraciona
+                 pc01_validademinima = bool = Validade Mínima
+                 pc01_obrigatorio = bool = Obrigatório
+                 pc01_liberaresumo = bool = Liberar Resumo
                  ";
-   //funcao construtor da classe 
-   function cl_pcmater() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pcmater"); 
+     $this->rotulo = new rotulo("pcmater");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +90,7 @@ class cl_pcmater {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc01_codmater = ($this->pc01_codmater == ""?@$GLOBALS["HTTP_POST_VARS"]["pc01_codmater"]:$this->pc01_codmater);
        $this->pc01_descrmater = ($this->pc01_descrmater == ""?@$GLOBALS["HTTP_POST_VARS"]["pc01_descrmater"]:$this->pc01_descrmater);
@@ -110,9 +111,9 @@ class cl_pcmater {
      }
    }
    // funcao para inclusao
-   function incluir ($pc01_codmater){ 
+   public function incluir ($pc01_codmater){
       $this->atualizacampos();
-     if($this->pc01_descrmater == null ){ 
+     if($this->pc01_descrmater == null ){
        $this->erro_sql = " Campo Descrição do Material nao Informado.";
        $this->erro_campo = "pc01_descrmater";
        $this->erro_banco = "";
@@ -121,7 +122,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_codsubgrupo == null ){ 
+     if($this->pc01_codsubgrupo == null ){
        $this->erro_sql = " Campo Código do Sub-Grupo nao Informado.";
        $this->erro_campo = "pc01_codsubgrupo";
        $this->erro_banco = "";
@@ -130,7 +131,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_ativo == null ){ 
+     if($this->pc01_ativo == null ){
        $this->erro_sql = " Campo Material inativo nao Informado.";
        $this->erro_campo = "pc01_ativo";
        $this->erro_banco = "";
@@ -139,7 +140,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_conversao == null ){ 
+     if($this->pc01_conversao == null ){
        $this->erro_sql = " Campo Conversão nao Informado.";
        $this->erro_campo = "pc01_conversao";
        $this->erro_banco = "";
@@ -148,7 +149,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_id_usuario == null ){ 
+     if($this->pc01_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "pc01_id_usuario";
        $this->erro_banco = "";
@@ -157,7 +158,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_libaut == null ){ 
+     if($this->pc01_libaut == null ){
        $this->erro_sql = " Campo Liberado para Autorização de Empenho nao Informado.";
        $this->erro_campo = "pc01_libaut";
        $this->erro_banco = "";
@@ -166,7 +167,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_servico == null ){ 
+     if($this->pc01_servico == null ){
        $this->erro_sql = " Campo Serviço nao Informado.";
        $this->erro_campo = "pc01_servico";
        $this->erro_banco = "";
@@ -175,7 +176,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_veiculo == null ){ 
+     if($this->pc01_veiculo == null ){
        $this->erro_sql = " Campo Veículo nao Informado.";
        $this->erro_campo = "pc01_veiculo";
        $this->erro_banco = "";
@@ -184,7 +185,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_fraciona == null ){ 
+     if($this->pc01_fraciona == null ){
        $this->erro_sql = " Campo Fraciona nao Informado.";
        $this->erro_campo = "pc01_fraciona";
        $this->erro_banco = "";
@@ -193,7 +194,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_validademinima == null ){ 
+     if($this->pc01_validademinima == null ){
        $this->erro_sql = " Campo Validade Mínima nao Informado.";
        $this->erro_campo = "pc01_validademinima";
        $this->erro_banco = "";
@@ -202,7 +203,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_obrigatorio == null ){ 
+     if($this->pc01_obrigatorio == null ){
        $this->erro_sql = " Campo Obrigatório nao Informado.";
        $this->erro_campo = "pc01_obrigatorio";
        $this->erro_banco = "";
@@ -211,7 +212,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc01_liberaresumo == null ){ 
+     if($this->pc01_liberaresumo == null ){
        $this->erro_sql = " Campo Liberar Resumo nao Informado.";
        $this->erro_campo = "pc01_liberaresumo";
        $this->erro_banco = "";
@@ -221,16 +222,16 @@ class cl_pcmater {
        return false;
      }
      if($pc01_codmater == "" || $pc01_codmater == null ){
-       $result = db_query("select nextval('pcmater_pc01_codmater_seq')"); 
+       $result = db_query("select nextval('pcmater_pc01_codmater_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pcmater_pc01_codmater_seq do campo: pc01_codmater"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pcmater_pc01_codmater_seq do campo: pc01_codmater";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc01_codmater = pg_result($result,0,0); 
+       $this->pc01_codmater = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pcmater_pc01_codmater_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc01_codmater)){
@@ -241,10 +242,10 @@ class cl_pcmater {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc01_codmater = $pc01_codmater; 
+         $this->pc01_codmater = $pc01_codmater;
        }
      }
-     if(($this->pc01_codmater == null) || ($this->pc01_codmater == "") ){ 
+     if(($this->pc01_codmater == null) || ($this->pc01_codmater == "") ){
        $this->erro_sql = " Campo pc01_codmater nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -267,6 +268,7 @@ class cl_pcmater {
                                       ,pc01_validademinima 
                                       ,pc01_obrigatorio 
                                       ,pc01_liberaresumo 
+                                      ,pc01_familia 
                        )
                 values (
                                 $this->pc01_codmater 
@@ -283,9 +285,10 @@ class cl_pcmater {
                                ,'$this->pc01_validademinima' 
                                ,'$this->pc01_obrigatorio' 
                                ,'$this->pc01_liberaresumo' 
+                               , " . (empty($this->pc01_familia) ? "null" : $this->pc01_familia) . "
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de Materiais ($this->pc01_codmater) nao Incluído. Inclusao Abortada.";
@@ -330,16 +333,16 @@ class cl_pcmater {
        $resac = db_query("insert into db_acount values($acount,855,17390,'','".AddSlashes(pg_result($resaco,0,'pc01_liberaresumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc01_codmater=null) { 
+   public function alterar ($pc01_codmater=null) {
       $this->atualizacampos();
      $sql = " update pcmater set ";
      $virgula = "";
-     if(trim($this->pc01_codmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codmater"])){ 
+     if(trim($this->pc01_codmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codmater"])){
        $sql  .= $virgula." pc01_codmater = $this->pc01_codmater ";
        $virgula = ",";
-       if(trim($this->pc01_codmater) == null ){ 
+       if(trim($this->pc01_codmater) == null ){
          $this->erro_sql = " Campo Código do Material nao Informado.";
          $this->erro_campo = "pc01_codmater";
          $this->erro_banco = "";
@@ -349,10 +352,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_descrmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_descrmater"])){ 
+     if(trim($this->pc01_descrmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_descrmater"])){
        $sql  .= $virgula." pc01_descrmater = '$this->pc01_descrmater' ";
        $virgula = ",";
-       if(trim($this->pc01_descrmater) == null ){ 
+       if(trim($this->pc01_descrmater) == null ){
          $this->erro_sql = " Campo Descrição do Material nao Informado.";
          $this->erro_campo = "pc01_descrmater";
          $this->erro_banco = "";
@@ -362,14 +365,14 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_complmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_complmater"])){ 
+     if(trim($this->pc01_complmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_complmater"])){
        $sql  .= $virgula." pc01_complmater = '$this->pc01_complmater' ";
        $virgula = ",";
      }
-     if(trim($this->pc01_codsubgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codsubgrupo"])){ 
+     if(trim($this->pc01_codsubgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codsubgrupo"])){
        $sql  .= $virgula." pc01_codsubgrupo = $this->pc01_codsubgrupo ";
        $virgula = ",";
-       if(trim($this->pc01_codsubgrupo) == null ){ 
+       if(trim($this->pc01_codsubgrupo) == null ){
          $this->erro_sql = " Campo Código do Sub-Grupo nao Informado.";
          $this->erro_campo = "pc01_codsubgrupo";
          $this->erro_banco = "";
@@ -379,10 +382,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_ativo"])){ 
+     if(trim($this->pc01_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_ativo"])){
        $sql  .= $virgula." pc01_ativo = '$this->pc01_ativo' ";
        $virgula = ",";
-       if(trim($this->pc01_ativo) == null ){ 
+       if(trim($this->pc01_ativo) == null ){
          $this->erro_sql = " Campo Material inativo nao Informado.";
          $this->erro_campo = "pc01_ativo";
          $this->erro_banco = "";
@@ -392,10 +395,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_conversao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_conversao"])){ 
+     if(trim($this->pc01_conversao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_conversao"])){
        $sql  .= $virgula." pc01_conversao = '$this->pc01_conversao' ";
        $virgula = ",";
-       if(trim($this->pc01_conversao) == null ){ 
+       if(trim($this->pc01_conversao) == null ){
          $this->erro_sql = " Campo Conversão nao Informado.";
          $this->erro_campo = "pc01_conversao";
          $this->erro_banco = "";
@@ -405,10 +408,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_id_usuario"])){ 
+     if(trim($this->pc01_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_id_usuario"])){
        $sql  .= $virgula." pc01_id_usuario = $this->pc01_id_usuario ";
        $virgula = ",";
-       if(trim($this->pc01_id_usuario) == null ){ 
+       if(trim($this->pc01_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "pc01_id_usuario";
          $this->erro_banco = "";
@@ -418,10 +421,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_libaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_libaut"])){ 
+     if(trim($this->pc01_libaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_libaut"])){
        $sql  .= $virgula." pc01_libaut = '$this->pc01_libaut' ";
        $virgula = ",";
-       if(trim($this->pc01_libaut) == null ){ 
+       if(trim($this->pc01_libaut) == null ){
          $this->erro_sql = " Campo Liberado para Autorização de Empenho nao Informado.";
          $this->erro_campo = "pc01_libaut";
          $this->erro_banco = "";
@@ -431,10 +434,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_servico"])){ 
+     if(trim($this->pc01_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_servico"])){
        $sql  .= $virgula." pc01_servico = '$this->pc01_servico' ";
        $virgula = ",";
-       if(trim($this->pc01_servico) == null ){ 
+       if(trim($this->pc01_servico) == null ){
          $this->erro_sql = " Campo Serviço nao Informado.";
          $this->erro_campo = "pc01_servico";
          $this->erro_banco = "";
@@ -444,10 +447,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_veiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_veiculo"])){ 
+     if(trim($this->pc01_veiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_veiculo"])){
        $sql  .= $virgula." pc01_veiculo = '$this->pc01_veiculo' ";
        $virgula = ",";
-       if(trim($this->pc01_veiculo) == null ){ 
+       if(trim($this->pc01_veiculo) == null ){
          $this->erro_sql = " Campo Veículo nao Informado.";
          $this->erro_campo = "pc01_veiculo";
          $this->erro_banco = "";
@@ -457,10 +460,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_fraciona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_fraciona"])){ 
+     if(trim($this->pc01_fraciona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_fraciona"])){
        $sql  .= $virgula." pc01_fraciona = '$this->pc01_fraciona' ";
        $virgula = ",";
-       if(trim($this->pc01_fraciona) == null ){ 
+       if(trim($this->pc01_fraciona) == null ){
          $this->erro_sql = " Campo Fraciona nao Informado.";
          $this->erro_campo = "pc01_fraciona";
          $this->erro_banco = "";
@@ -470,10 +473,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_validademinima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_validademinima"])){ 
+     if(trim($this->pc01_validademinima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_validademinima"])){
        $sql  .= $virgula." pc01_validademinima = '$this->pc01_validademinima' ";
        $virgula = ",";
-       if(trim($this->pc01_validademinima) == null ){ 
+       if(trim($this->pc01_validademinima) == null ){
          $this->erro_sql = " Campo Validade Mínima nao Informado.";
          $this->erro_campo = "pc01_validademinima";
          $this->erro_banco = "";
@@ -483,10 +486,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_obrigatorio"])){ 
+     if(trim($this->pc01_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_obrigatorio"])){
        $sql  .= $virgula." pc01_obrigatorio = '$this->pc01_obrigatorio' ";
        $virgula = ",";
-       if(trim($this->pc01_obrigatorio) == null ){ 
+       if(trim($this->pc01_obrigatorio) == null ){
          $this->erro_sql = " Campo Obrigatório nao Informado.";
          $this->erro_campo = "pc01_obrigatorio";
          $this->erro_banco = "";
@@ -496,10 +499,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_liberaresumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_liberaresumo"])){ 
+     if(trim($this->pc01_liberaresumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_liberaresumo"])){
        $sql  .= $virgula." pc01_liberaresumo = '$this->pc01_liberaresumo' ";
        $virgula = ",";
-       if(trim($this->pc01_liberaresumo) == null ){ 
+       if(trim($this->pc01_liberaresumo) == null ){
          $this->erro_sql = " Campo Liberar Resumo nao Informado.";
          $this->erro_campo = "pc01_liberaresumo";
          $this->erro_banco = "";
@@ -509,6 +512,10 @@ class cl_pcmater {
          return false;
        }
      }
+     if(trim($this->pc01_familia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_familia"])){ 
+        $sql  .= $virgula." pc01_familia = '$this->pc01_familia' ";
+        $virgula = ",";
+      }
      $sql .= " where ";
      if($pc01_codmater!=null){
        $sql .= " pc01_codmater = $this->pc01_codmater";
@@ -551,7 +558,7 @@ class cl_pcmater {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de Materiais nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc01_codmater;
@@ -579,14 +586,14 @@ class cl_pcmater {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc01_codmater=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc01_codmater=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc01_codmater));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -625,7 +632,7 @@ class cl_pcmater {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de Materiais nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc01_codmater;
@@ -653,11 +660,11 @@ class cl_pcmater {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -679,7 +686,7 @@ class cl_pcmater {
       }
      return $result;
    }
-   function sql_query ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -696,16 +703,17 @@ class cl_pcmater {
      $sql .= "      inner join pcsubgrupo  on  pcsubgrupo.pc04_codsubgrupo = pcmater.pc01_codsubgrupo";
      $sql .= "      inner join pcgrupo  on  pcgrupo.pc03_codgrupo = pcsubgrupo.pc04_codgrupo";
      $sql .= "      inner join pctipo  on  pctipo.pc05_codtipo = pcsubgrupo.pc04_codtipo";
+     $sql .= "      left  join matfamilias on pcmater.pc01_familia = matfamilias.m105_sequencial";
      $sql2 = "";
      if($dbwhere==""){
        if($pc01_codmater!=null ){
-         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater "; 
+         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater ";
        }
-       
+
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
-     $sql2 .= ($sql2 == ""?" where pc01_conversao is false ":" and pc01_conversao is false "); 
+     $sql2 .= ($sql2 == ""?" where pc01_conversao is false ":" and pc01_conversao is false ");
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
@@ -718,7 +726,7 @@ class cl_pcmater {
      }
      return $sql;
   }
-   function sql_query_desdobra ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_desdobra ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -740,8 +748,8 @@ class cl_pcmater {
      $sql2 = "";
      if($dbwhere==""){
        if($pc01_codmater!=null ){
-         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater "; 
-       } 
+         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -749,7 +757,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -758,10 +766,10 @@ class cl_pcmater {
      }
      return $sql;
   }
-   function sql_query_elemento ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_elemento ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -770,7 +778,7 @@ class cl_pcmater {
      }else{
        $sql .= $campos;
      }
-    
+
      $sql .= " from pcmater ";
      $sql .= "      inner join pcmaterele   on  pcmaterele.pc07_codmater = pcmater.pc01_codmater  ";
      $sql .= "      inner join orcelemento  on  orcelemento.o56_codele  = pcmaterele.pc07_codele and orcelemento.o56_anousu = ".db_getsession("DB_anousu");
@@ -786,7 +794,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -795,10 +803,10 @@ class cl_pcmater {
      }
      return $sql;
   }
-   function sql_query_elementoautoriza ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_elementoautoriza ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -807,11 +815,11 @@ class cl_pcmater {
      }else{
        $sql .= $campos;
      }
-    
+
      $sql .= " from pcmater ";
      $sql .= "      inner join pcmaterele   on  pcmaterele.pc07_codmater = pcmater.pc01_codmater ";
      $sql .= "      inner join orcelemento  on  orcelemento.o56_codele  = pcmaterele.pc07_codele and orcelemento.o56_anousu = ".db_getsession("DB_anousu");
-     $sql .= "      inner join empautitem   on  empautitem.e55_item = pcmater.pc01_codmater 
+     $sql .= "      inner join empautitem   on  empautitem.e55_item = pcmater.pc01_codmater
                                            and  empautitem.e55_codele = orcelemento.o56_codele";
      $sql2 = "";
      if($dbwhere==""){
@@ -825,7 +833,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -834,7 +842,7 @@ class cl_pcmater {
      }
      return $sql;
   }
-   function sql_query_file ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -850,15 +858,15 @@ class cl_pcmater {
      $sql2 = "";
      if($dbwhere==""){
        if($pc01_codmater!=null ){
-         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater "; 
-       } 
+         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -867,10 +875,10 @@ class cl_pcmater {
      }
      return $sql;
   }
-   function sql_query_grupo ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_grupo ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -897,7 +905,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -906,9 +914,9 @@ class cl_pcmater {
      }
      return $sql;
   }
-  
- function sql_query_desdobraregistropreco( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere="") {
-     
+
+ public function sql_query_desdobraregistropreco( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere="") {
+
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -937,8 +945,8 @@ class cl_pcmater {
      $sql2 = "";
      if($dbwhere==""){
        if($pc01_codmater!=null ){
-         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater "; 
-       } 
+         $sql2 .= " where pcmater.pc01_codmater = $pc01_codmater ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }

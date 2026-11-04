@@ -223,6 +223,11 @@ class Pdf
         $this->pdf->Cell($w, $h, $txt, $border, $ln, $align, $fill, $link);
     }
 
+    public function vcell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false)
+    {
+        $this->pdf->VCell($w, $h, $txt, $border, $ln, $align, $fill);
+    }
+
     public function multiCell($w, $h, $txt, $border = 0, $align = 'J', $fill = false)
     {
         $this->pdf->MultiCell($w, $h, $txt, $border, $align, $fill);
@@ -287,7 +292,7 @@ class Pdf
      * @param $isUTF8
      * @return void
      */
-    public function output($dest = '', $name = '', $isUTF8 = false)
+    public function output($dest = 'I', $name = '', $isUTF8 = false)
     {
         $this->pdf->Output($dest, $name, $isUTF8);
     }
@@ -295,16 +300,22 @@ class Pdf
     /**
      * Adiciona um título para impressão no cabeçalho
      * @param string $titulo texto do título
-     * @param string $key chave do titulo. Usado para substituir a informação em nova página por exemplo
+     * @param string $key chave do título. Usado para substituir a informação em nova página por exemplo
      */
     public function addTitulo($titulo, $key = null)
     {
         $this->pdf->addTitulo($titulo, $key);
     }
 
+    /* Buscando título pela chave */
+    public function getTitleByKey($key)
+    {
+        return $this->pdf->getTitleByKey($key);
+    }
+
     /**
      * Edita um título para impressão no cabeçalho
-     * @param $texto -> String exato do Título a editar
+     * @param $texto -> String exato do título a editar
      * @param $novoTexto -> String do novo texto
      */
 
@@ -316,7 +327,7 @@ class Pdf
 
     /**
      * Edita um título para impressão no cabeçalho pela chave
-     * @param $key -> Chave do Título a editar
+     * @param $key -> Chave do título a editar
      * @param $novoTexto -> String do novo texto
      */
     public function editTitleByKey($key, $novoTexto)
@@ -378,6 +389,17 @@ class Pdf
         $this->pdf->cellAdapt($fonteOriginal, $w, $h, $content, $border, $ln, $align, $fill, $link);
     }
 
+    /**
+     * @param integer $width tamanho da celula
+     * @param integer $fontSize tamanho da fonte padrao
+     * @param string $content
+     * @return float|int
+     */
+    public function getFonteSizeByWidthCell($width, $fontSize, $content)
+    {
+        return $this->pdf->getFonteSizeByWidthCell($width, $fontSize, $content);
+    }
+
     public function getAvailableHeight()
     {
         return $this->pdf->getAvailableHeight();
@@ -416,6 +438,20 @@ class Pdf
     public function roundedRect($x, $y, $w, $h, $r, $style = '')
     {
         $this->pdf->RoundedRect($x, $y, $w, $h, $r, $style);
+    }
+
+    public function rectBorderRadius(
+        $x,
+        $y,
+        $w,
+        $h,
+        $rtopleft = 0,
+        $rtopright = 0,
+        $rbottomleft = 0,
+        $rbottomright = 0,
+        $style = ''
+    ) {
+        $this->pdf->RectBorderRadius($x, $y, $w, $h, $rtopleft, $rtopright, $rbottomleft, $rbottomright, $style);
     }
 
     public function setWidths($w)
@@ -474,6 +510,24 @@ class Pdf
     }
 
     /**
+     * @var array
+     */
+    protected $savePoint;
+    protected function savePoint($x = null, $y = null)
+    {
+        !$x && $x = $this->getX();
+        !$y && $y = $this->getY();
+        $this->savePoint = [$x, $y];
+    }
+
+    protected function rollbackToSavePoint($x = null, $y = null)
+    {
+        !$x && $x = $this->savePoint[0];
+        !$y && $y = $this->savePoint[1];
+        $this->setXY($x, $y);
+    }
+
+    /**
      * Para facilitar a atualização de alguns pdfs que usam a classe antiga, foi re-implementado
      * Retorna o altura disponivel para escrita
      * @return integer
@@ -490,5 +544,14 @@ class Pdf
     public function writeHTML($html)
     {
         $this->pdf->writeHTML($html);
+    }
+
+    /**
+     * retorna o eixo y (altura) que o header acabou a escrita
+     * @return int
+     */
+    public function yFimHeader()
+    {
+        return $this->pdf->yFimHeader();
     }
 }

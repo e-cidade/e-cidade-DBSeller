@@ -1,4 +1,4 @@
-<?
+<?php
 
 
 ///  global $regist_afa, $dias_afa, $rubrica_af, $res_afasta , $sql_afasta; 

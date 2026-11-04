@@ -29,6 +29,7 @@ namespace App\Domain\Financeiro\Planejamento\Services;
 
 use App\Domain\Financeiro\Planejamento\Models\Iniciativa;
 use App\Domain\Financeiro\Planejamento\Models\MetasIniciativa;
+use App\Domain\Financeiro\Orcamento\Models\ProjetoAtividadeUnidadeMedida;
 use Exception;
 use stdClass;
 
@@ -53,9 +54,9 @@ class MetasIniciativaService
 
         $iniciativa = Iniciativa::find($dados->pl12_codigo);
         $iniciativa->metas()->delete();
-
+        
         foreach ($dados->metas as $dadosMeta) {
-            $dadosMeta = json_decode(str_replace('\"', '"', $dadosMeta));
+            $dadosMeta = \JSON::create()->parse(str_replace('\"', '"', $dadosMeta));
             $meta = new MetasIniciativa();
 
             if (empty($dadosMeta->exercicio)) {
@@ -66,6 +67,39 @@ class MetasIniciativaService
                 throw new Exception("Você não pode salvar uma meta sem informar o valor da meta financeira.", 403);
             }
 
+            /**
+             * Bloco de vinculo da atividade projeto com o id da unidade de medida do Sigfis
+             * especificamente para os clientes do RJ
+             */
+            $model = ProjetoAtividadeUnidadeMedida::where('o221_orcprojativ', $iniciativa->pl12_orcprojativ)
+            ->where('o221_anousu', $dadosMeta->exercicio);
+            
+            $modelResult = $model->get();
+
+            if (isRioDeJaneiro() && count($modelResult) == 0 && !empty($dadosMeta->id_unidade)) {
+                $projetoAtividadeUnidadeMedida = new ProjetoAtividadeUnidadeMedida();
+                
+                $projetoAtividadeUnidadeMedida->o221_orcprojativ = $iniciativa->pl12_orcprojativ;
+                $projetoAtividadeUnidadeMedida->o221_anousu =$dadosMeta->exercicio;
+                $projetoAtividadeUnidadeMedida->o221_unidade = $dadosMeta->id_unidade;
+                
+                if (!$projetoAtividadeUnidadeMedida->save()) {
+                    throw new Exception("Não foi possível vincular a unidade de medida a atividade projeto!");
+                }
+            } elseif (isRioDeJaneiro() && count($modelResult) > 0 && !empty($dadosMeta->id_unidade)) {
+                if (!$model->update([
+                    'o221_unidade' => $dadosMeta->id_unidade
+                ])) {
+                    throw new Exception("Não foi possível atualizar a unidade de medida a atividade projeto!");
+                }
+            } elseif (isRioDeJaneiro() && count($modelResult) > 0 && empty($dadosMeta->id_unidade)) {
+                if (!$model->delete([
+                    'o221_unidade' => $dadosMeta->id_unidade
+                ])) {
+                    throw new Exception("Não foi possível desvincular a unidade de medida da atividade projeto!");
+                }
+            }
+                                    
             $meta->exercicio = $dadosMeta->exercicio;
             $meta->meta_financeira = $dadosMeta->meta_financeira;
             $meta->unidade = $dadosMeta->unidade;

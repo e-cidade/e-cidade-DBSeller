@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("o74_descricao");
        <?=@$Lo79_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o79_sequencial',10,$Io79_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To79_pactoplano?>">
-       <?
+       <?php
        db_ancora(@$Lo79_pactoplano,"js_pesquisao79_pactoplano(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o79_pactoplano',10,$Io79_pactoplano,true,'text',$db_opcao," onchange='js_pesquisao79_pactoplano(false);'")
 ?>
-       <?
+       <?php
 db_input('o74_descricao',46,$Io74_descricao,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('o74_descricao',46,$Io74_descricao,true,'text',3,'')
        <?=@$Lo79_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o79_descricao',60,$Io79_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('o79_descricao',60,$Io79_descricao,true,'text',$db_opcao,"")
        <?=@$Lo79_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('o79_obs',5,58,$Io79_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pactoacoes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

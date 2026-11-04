@@ -77,11 +77,11 @@ if($conparametro->c90_confirmadata == 't'){
 		  <tr>
 		    <td nowrap >
 		      <strong>
-		        <? db_ancora("Slip:","js_pesquisaSlip(true);", 1); ?>
+		        <?php db_ancora("Slip:","js_pesquisaSlip(true);", 1); ?>
 		      </strong>
 		    </td>
 		    <td nowrap>
-		      <?
+		      <?php
 		        db_input('iSlip',10,"",true,'text',1,"onchange='js_pesquisaSlip(false);' onkeyup='js_ValidaCampos(this,1,\"\",\"\",\"\",event);' ");
 		      ?>
 		      <!--  <input name="consultaslip" type="button" id="consultaslip" value="Consulta Slip" onclick="js_consultaslip();"> -->
@@ -108,7 +108,7 @@ if($conparametro->c90_confirmadata == 't'){
 </form>
 </center>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -159,6 +159,11 @@ function js_retornoGetDados(oAjax) {
 	  return false;
 	}
 
+  if (<?=$oGet->db_opcao?> == "3" && oRetorno.configuracao_agenda == "true" ) {
+    alert('Operação não permitida.\nSlip possui movimentos configurados na Agenda.');   
+    return false;
+  }
+  
   $('ctnSlipPagamento').innerHTML = "";
   oDBViewSlipPagamento = new DBViewSlipPagamento("oDBViewSlipPagamento", oRetorno.iTipoOperacao, 1, $('ctnSlipPagamento'), null, lComponenteReadOnly);
   oDBViewSlipPagamento.setRecursoUniao('<?php echo (FONTE_RECURSO_UNIAO ? 'true' : 'false');?>');

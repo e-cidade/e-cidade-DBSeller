@@ -229,7 +229,8 @@ switch ($oParam->exec) {
 
         $aWhere = array(
             "l03_instit = " . db_getsession("DB_instit"),
-            "l03_codcom = {$oParam->iTipoCompra}"
+            "l03_codcom = {$oParam->iTipoCompra}",
+            "l03_modalidadeativa = 't'"
         );
 
         $oDaoCfgLiclicita = new cl_cflicita;
@@ -260,14 +261,21 @@ switch ($oParam->exec) {
             $oRetorno->aItens = array();
             $oRetorno->complementos = [];
             $oRetorno->listaMetaHistoricos = AutorizacaoEmpenho::getListaCompletaMetasHistoricos();
-
+            $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
+            $anousu = DB_getsession('DB_anousu');
             foreach ($aItensSolicitacao as $item) {
-                $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($item->codigodotacao, DB_getsession('DB_anousu'));
+                $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($item->codigodotacao, $anousu);
                 $idRecurso = $dotacao->getRecurso();
                 $recursoDotacao = $dotacao->getDadosRecurso();
+                $fonte = $recursoDotacao->getFonteRecurso($anousu);
 
                 $complementos = [];
-                $dadosComplemento = RecursoRepository::getComplementos($recursoDotacao->getRecurso());
+                $dadosComplemento = RecursoRepository::getComplementosByGestao(
+                    $fonte->gestao,
+                    $recursoDotacao->getRecurso(),
+                    $anousu,
+                    $dataLimite
+                );
                 foreach ($dadosComplemento as &$complemento) {
                     $complemento->selecionado = $complemento->codigo == $recursoDotacao->getComplemento();
                     $complementos[] = $complemento;

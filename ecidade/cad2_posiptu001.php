@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ $sizecp  = array();
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?
+     <?php
        $clcriaabas->identifica = array("g1"=>"Bairro","g2"=>"Rua","g3"=>"Setor","g4"=>"Quadra","g5"=>"Zona");
        $clcriaabas->title = array("g1"=>"Selecionar Bairro ","g2"=>"Selecionar Rua ","g3"=>"Selecionar Setor ","g4"=>"Selecionar Quadra ","g5"=>"Selecionar Zona ");
        $clcriaabas->src = array("g1"=>"cad2_posiptu002.php","g2"=>"cad2_posiptu003.php","g3"=>"cad2_posiptu004.php","g4"=>"cad2_posiptu005.php","g5"=>"cad2_posiptu006.php");
@@ -71,7 +71,7 @@ $sizecp  = array();
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

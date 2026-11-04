@@ -28,9 +28,9 @@
 namespace ECidade\Saude\Laboratorio\Exame\ColetaAmostra\Relatorio;
 
 use DateTime;
+use ECidade\Pdf\Pdf;
 use RequisicaoExame;
 use RequisicaoLaboratorial;
-use scpdf;
 use stdClass;
 
 /**
@@ -50,7 +50,7 @@ class Modelo3
     private $codigosExames = array();
 
     /**
-     * @var scpdf
+     * @var Pdf
      */
     private $pdf;
 
@@ -94,17 +94,26 @@ class Modelo3
      */
     private $requisicaoExame;
 
+    const ETIQUETA_SEM_PRIORIDADE = [34,85];
+
+    const ETIQUETA_COM_PRIORIDADE = [41,85];
+
     /**
      * Modelo3 constructor.
      * @param RequisicaoLaboratorial $requisicaoLaboratorial
-     * @param scpdf $scpdf
+     * @param Pdf $fpdf
      */
-    public function __construct(RequisicaoLaboratorial $requisicaoLaboratorial, scpdf $scpdf)
+    public function __construct(RequisicaoLaboratorial $requisicaoLaboratorial, Pdf $fpdf)
     {
         $this->requisicao = $requisicaoLaboratorial;
-        $this->pdf = $scpdf;
-        $this->pdf->Open();
-        $this->pdf->AliasNbPages();
+        $this->pdf = $fpdf;
+        $this->pdf->init(
+            false,
+            false,
+            false,
+            false,
+            false
+        );
         $this->pdf->setfillcolor(243);
         $this->pdf->SetAutoPageBreak(false);
     }
@@ -126,7 +135,7 @@ class Modelo3
      */
     public function imprimir()
     {
-        $this->pdf->addpage('P');
+        $this->pdf->addpage('', self::ETIQUETA_SEM_PRIORIDADE);
         $this->setFonte();
 
         $this->imprimirEtiquetaPaciente();
@@ -163,18 +172,26 @@ class Modelo3
             $numeroCodigoBarras = $requisicaoExame->getNumeroCodigoBarras($codigoMaterialColeta, $setor);
         }
 
+        $alturasCodigoBarras = $this->imprimirPrioridade($primeiraEtiqueta);
+
         $this->setFonte();
         $this->pdf->SetFillColor(000);
-        $this->pdf->int25($this->tamanhoLinha/3.7, 2, $numeroCodigoBarras, 13, 0.41);
+        $this->pdf->int25(
+            $this->tamanhoLinha / 3.7,
+            $alturasCodigoBarras['alturaCodigoBarras'],
+            $numeroCodigoBarras,
+            13,
+            0.41
+        );
 
-        $this->pdf->SetXY($this->margemXInicial, 16);
+        $this->pdf->SetXY($this->margemXInicial, $alturasCodigoBarras['alturaNumeroCodigoBarras']);
         $this->setFonte(true);
         $this->pdf->Cell($this->tamanhoLinha, $this->alturaLinha, $numeroCodigoBarras, $this->borda, 1, 'C');
 
         $this->setFonte();
     }
 
-    private function imprimirDadosPaciente($etiquetaPaciente = false)
+    private function imprimirDadosPaciente($etiquetaPaciente = null, $imprimirDepartamento = null, $diminuiLinha = null)
     {
         $dadosPaciente = $this->dadosPaciente();
 
@@ -182,15 +199,35 @@ class Modelo3
         $this->setFonte(true);
         $this->pdf->Cell($this->tamanhoLinha, $this->alturaLinha, $dadosPaciente->nome, $this->borda, 1, 'C');
         $this->setFonte();
-        
+
         if ($etiquetaPaciente) {
             $linhaIdade = $this->tamanhoLinha;
             $this->pdf->SetX($this->margemXInicial);
-            $this->pdf->Cell($linhaIdade, $this->alturaLinha, "Idade: " . $dadosPaciente->idade, $this->borda, 0, 'C');
-        } else {
-            $linhaIdade = $this->tamanhoLinha/2;
+            $this->pdf->Cell($linhaIdade, $this->alturaLinha, "Idade: " . $dadosPaciente->idade, $this->borda, 1, 'C');
+
+            $nomeLaboratorio = $this->getLaboratorio();
             $this->pdf->SetX($this->margemXInicial);
-            $this->pdf->Cell($linhaIdade, $this->alturaLinha, "Idade: " . $dadosPaciente->idade, $this->borda, 0, 'R');
+
+            if ($this->pdf->GetStringWidth($nomeLaboratorio) > 78) {
+                $this->pdf->SetFontSize(7);
+            }
+            $this->pdf->Cell($this->tamanhoLinha, $this->alturaLinha, $nomeLaboratorio, $this->borda, 0, 'C');
+        } else {
+            $departamento = '';
+
+            if ($imprimirDepartamento) {
+                $departamento ='DEP: ' . $this->getDepartamento() . '  ';
+            }
+            $linhaIdade = $this->tamanhoLinha - $diminuiLinha;
+            $this->pdf->SetX($this->margemXInicial);
+            $this->pdf->Cell(
+                $linhaIdade,
+                $this->alturaLinha,
+                $departamento . 'Idade: ' . $dadosPaciente->idade,
+                $this->borda,
+                0,
+                'R'
+            );
         }
     }
 
@@ -216,14 +253,13 @@ class Modelo3
         $examesMaterial = $this->organizarExamesMaterial();
 
         foreach ($examesMaterial as $codigoMaterial => $exameMaterial) {
-            $this->pdf->addpage('P');
-
             $setores = explode('#', $codigoMaterial);
             $this->gerarCodigoBarras(false, $setores[0], $setores[1]);
 
             $dataColetaExame = $exameMaterial->dataColetaExame;
-            $this->imprimirDadosPaciente(false);
+
             if ($dataColetaExame) {
+                $this->imprimirDadosPaciente(false, true, 39);
                 $this->pdf->Cell(
                     $this->tamanhoLinha/2,
                     $this->alturaLinha,
@@ -233,9 +269,9 @@ class Modelo3
                     'L'
                 );
             } else {
-                $this->pdf->Cell($this->tamanhoLinha/2, $this->alturaLinha, "Não Coletado", $this->borda, 1, 'L');
+                $this->imprimirDadosPaciente(false, true, 33);
+                $this->pdf->Cell($this->tamanhoLinha - 33, $this->alturaLinha, "Não Coletado", $this->borda, 1, 'L');
             }
-            
 
             $this->setFonte();
             $this->pdf->SetX($this->margemXInicial);
@@ -263,14 +299,14 @@ class Modelo3
     private function organizarExamesMaterial()
     {
         $examesMaterial = array();
-        
+
         $requisicoesExame = $this->requisicao->getRequisicoesDeExames();
 
         foreach ($requisicoesExame as $requisicaoExame) {
             if (!array_key_exists($requisicaoExame->getCodigo(), $this->codigosExames)) {
                 continue;
             }
-            
+
             $dataColetaExame = $this->codigosExames[$requisicaoExame->getCodigo()]['dataColetaExame'];
             $setor = $requisicaoExame->getLaboratorioSetor()->getCodigo();
             $materiasColeta = $requisicaoExame->getExame()->getMaterialColeta();
@@ -294,17 +330,76 @@ class Modelo3
                     $examesMaterial[$chaveCodigoColetaSetor] = new stdClass();
                     $examesMaterial[$chaveCodigoColetaSetor]->siglasExames = array();
                 }
-                
+
                 $exameMaterial = $examesMaterial[$chaveCodigoColetaSetor];
                 $exame = $requisicaoExame->getExame();
-                
+
                 $exameMaterial->descricaoMaterial = $material->material_coleta;
                 $exameMaterial->siglasExames[$exame->getCodigo()] = $exame->getSigla();
                 $exameMaterial->dataColetaExame = $dataColetaExame;
-                
+
                 $examesMaterial[$chaveCodigoColetaSetor] = $exameMaterial;
             }
         }
         return $examesMaterial;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDepartamento()
+    {
+        return $this->requisicao->getDepartamento()->getCodigo();
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getLaboratorio()
+    {
+        $laboratorio = $this->requisicao->getLaboratorio();
+
+        if ($laboratorio !== null) {
+            return $laboratorio->getDescricao();
+        }
+        return '';
+    }
+
+    private function imprimirPrioridade($primeiraEtiqueta)
+    {
+        $oConfig = loadConfig("lab_parametros");
+        $prioridade = $this->requisicao->getPrioridadeTipo();
+        $tamanhoEtiqueta = self::ETIQUETA_SEM_PRIORIDADE;
+        $alturaCodigoBarras = 2;
+        $alturaNumeroCodigoBarras = 16;
+
+        if ($oConfig->la49_identificaprioridade == 't' && !empty($prioridade)) {
+            $tamanhoEtiqueta = self::ETIQUETA_COM_PRIORIDADE;
+        }
+
+        if (!$primeiraEtiqueta) {
+            $this->pdf->addpage('', $tamanhoEtiqueta);
+        }
+
+        if (!$primeiraEtiqueta && $oConfig->la49_identificaprioridade == 't' && !empty($prioridade)) {
+            $alturaCodigoBarras = 7;
+            $alturaNumeroCodigoBarras = 21;
+
+            $this->pdf->SetXY($this->margemXInicial, 2);
+            $this->pdf->Cell(
+                $this->tamanhoLinha,
+                $this->alturaLinha,
+                $prioridade[0]['descricao'],
+                $this->borda,
+                1,
+                'C'
+            );
+        }
+
+        return [
+            'alturaCodigoBarras' => $alturaCodigoBarras,
+            'alturaNumeroCodigoBarras' => $alturaNumeroCodigoBarras
+        ];
     }
 }

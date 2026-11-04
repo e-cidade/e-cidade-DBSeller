@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_emptipo {
                  e41_descr = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_emptipo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emptipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_emptipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e41_codtipo = ($this->e41_codtipo == ""?@$GLOBALS["HTTP_POST_VARS"]["e41_codtipo"]:$this->e41_codtipo);
        $this->e41_descr = ($this->e41_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["e41_descr"]:$this->e41_descr);
@@ -74,7 +74,7 @@ class cl_emptipo {
      }
    }
    // funcao para inclusao
-   function incluir ($e41_codtipo){ 
+   public function incluir ($e41_codtipo){ 
       $this->atualizacampos();
      if($this->e41_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -138,7 +138,7 @@ class cl_emptipo {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($e41_codtipo=null) { 
+   public function alterar ($e41_codtipo=null) { 
       $this->atualizacampos();
      $sql = " update emptipo set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_emptipo {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($e41_codtipo=null,$dbwhere=null) { 
+   public function excluir ($e41_codtipo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e41_codtipo));
      }else{ 
@@ -280,7 +280,7 @@ class cl_emptipo {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,7 +302,7 @@ class cl_emptipo {
       }
      return $result;
    }
-   function sql_query ( $e41_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $e41_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -335,7 +335,7 @@ class cl_emptipo {
      }
      return $sql;
   }
-   function sql_query_file ( $e41_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $e41_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

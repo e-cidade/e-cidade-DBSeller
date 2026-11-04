@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,13 +58,13 @@ class cl_consiste {
                  r46_descr = varchar(40) = Descrição da Ocorrência 
                  ";
    //funcao construtor da classe 
-   function cl_consiste() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("consiste"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_consiste {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r46_rubdig = ($this->r46_rubdig == ""?@$GLOBALS["HTTP_POST_VARS"]["r46_rubdig"]:$this->r46_rubdig);
        $this->r46_rubcon = ($this->r46_rubcon == ""?@$GLOBALS["HTTP_POST_VARS"]["r46_rubcon"]:$this->r46_rubcon);
@@ -87,7 +87,7 @@ class cl_consiste {
      }
    }
    // funcao para inclusao
-   function incluir ($r46_rubdig,$r46_rubcon){ 
+   public function incluir ($r46_rubdig,$r46_rubcon){ 
       $this->atualizacampos();
      if($this->r46_quant == null ){ 
        $this->erro_sql = " Campo Qtda ou Valor para inicializar nao Informado.";
@@ -200,7 +200,7 @@ class cl_consiste {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r46_rubdig=null,$r46_rubcon=null) { 
+   public function alterar ($r46_rubdig=null,$r46_rubcon=null) { 
       $this->atualizacampos();
      $sql = " update consiste set ";
      $virgula = "";
@@ -344,7 +344,7 @@ class cl_consiste {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r46_rubdig=null,$r46_rubcon=null,$dbwhere=null) { 
+   public function excluir ($r46_rubdig=null,$r46_rubcon=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r46_rubdig,$r46_rubcon));
      }else{ 
@@ -417,7 +417,7 @@ class cl_consiste {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

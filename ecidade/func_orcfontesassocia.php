@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,12 +67,12 @@ function js_limpa(){
               <?=$Lo57_codfon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o57_codfon",6,$Io57_codfon,true,"text",4,"","chave_o57_codfon");
 		       ?>
             </td>
           </tr>
-<?
+<?php
          $clestrutura->mascara =false;
          $clestrutura->input   =false;
          $clestrutura->nomeform="form2";//o nome do campo é DB_txtdotacao
@@ -91,7 +91,7 @@ function js_limpa(){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = "o57_anousu = ".db_getsession("DB_anousu") ;
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -126,12 +126,12 @@ function js_limpa(){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 

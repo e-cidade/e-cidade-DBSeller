@@ -106,7 +106,7 @@ $aOpcoes = array('in'=>'Contendo','not in'=>'Não Contendo');
               <tr>
                 <td width='110'><b>Conta :</b></td>
                 <td>
-                  <?
+                  <?php
                   db_input('c60_estrut', 10, @$Ic60_estrut, true, 'text', $iOpcaoCodigo);
                   ?>
                 </td>

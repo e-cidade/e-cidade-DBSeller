@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,13 +70,13 @@ class cl_termocontrib {
                  vlrdescjur = float8 = Desconto Juros 
                  ";
    //funcao construtor da classe 
-   function cl_termocontrib() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termocontrib"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_termocontrib {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->parcel = ($this->parcel == ""?@$GLOBALS["HTTP_POST_VARS"]["parcel"]:$this->parcel);
        $this->contricalc = ($this->contricalc == ""?@$GLOBALS["HTTP_POST_VARS"]["contricalc"]:$this->contricalc);
@@ -105,7 +105,7 @@ class cl_termocontrib {
      }
    }
    // funcao para inclusao
-   function incluir ($parcel,$contricalc){ 
+   public function incluir ($parcel,$contricalc){ 
       $this->atualizacampos();
      if($this->valor == null ){ 
        $this->erro_sql = " Campo valor nao Informado.";
@@ -290,7 +290,7 @@ class cl_termocontrib {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($parcel=null,$contricalc=null) { 
+   public function alterar ($parcel=null,$contricalc=null) { 
       $this->atualizacampos();
      $sql = " update termocontrib set ";
      $virgula = "";
@@ -524,7 +524,7 @@ class cl_termocontrib {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($parcel=null,$contricalc=null,$dbwhere=null) { 
+   public function excluir ($parcel=null,$contricalc=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($parcel,$contricalc));
      }else{ 
@@ -603,7 +603,7 @@ class cl_termocontrib {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -80,7 +80,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 <tr><td height="430" align="left" valign="top" bgcolor="#CCCCCC">
   <center>
     <form name="form1" method="post">
-      <?
+      <?php
      if(!isset($mod)){
       ?>
       <table border="0" cellspacing="0" cellpadding="0">
@@ -89,7 +89,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
       </tr>
     <Tr>
       <td> <strong>M&oacute;dulo:</strong><br>
-        <?
+        <?php
 
        $sSqlModulos = "select distinct db_modulos.id_item,nome_modulo,descr_modulo
                            from db_modulos
@@ -115,7 +115,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
     <input onClick="if(document.form1.modulos.selectedIndex == -1 ) { alert('Selecione um módulo!'); return false; }" name="mod" type="submit" id="selecionar" value="Selecionar"></td>
     </tr>
     </table>
-    <?
+    <?php
     } else {
         $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$modulos);
         $mod = pg_result($result,0,0);
@@ -138,7 +138,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
       <table border="1" cellspacing="0" cellpadding="0">
          <tr>
            <td>
-       <?
+       <?php
        $ambiente = (!isset($ambiente)?"1":$ambiente);
        $wid      = 15;
        $conta    = 0;
@@ -175,7 +175,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
        </table>
 </td></tr>
 </table>
-  <?
+  <?php
   }
   ?>
     </form>
@@ -184,7 +184,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 </table>
 </body>
 </html>
-<?
+<?php
 function submenus($item,$id,$mod) {
 
   $sWhereUsuario = "";

@@ -5,6 +5,7 @@ namespace App\Domain\Financeiro\Contabilidade\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 /**
  * Class BalanceteDespesaService
@@ -102,7 +103,7 @@ class BalanceteDespesaService
 
     /**
      * Vem da aba de filtros da despesa
-     * @param stdClass $filtro
+     * @param stdClass|null $filtro
      * @return BalanceteDespesaService
      */
     public function setFiltro($filtro)
@@ -193,12 +194,15 @@ class BalanceteDespesaService
                    o56_elemento as elemento,
                    trim(o56_descr) as descricao_elemento,
                    o15_recurso as fonte_recurso,
-                   trim(o15_descr) as descricao_recurso,
+                   gestao,
+                   codigo_siconfi as siconfi,
+                   trim(descricao) as descricao_recurso,
                    o200_descricao as descricao_complemento,
                    o58_localizadorgastos as localizador_gasto,
                    o11_descricao as descricao_localizador_gasto,
                    c58_descr as caracteristica_peculiar,
-                   nomeinst as nome_instituicao
+                   nomeinst as nome_instituicao,
+                   o58_codele
              from orcdotacao
              join fc_saldo_dotacao(o58_anousu, o58_coddot, '{$dataInicio}', '{$dataFinal}') on o58_coddot = reduzido
                   and o58_anousu = ano
@@ -208,6 +212,8 @@ class BalanceteDespesaService
              join orcprojativ on (o55_anousu, o55_projativ) = (o58_anousu, o58_projativ)
              join orcelemento on (o56_codele, o56_anousu) = (o58_codele, o58_anousu)
              join orctiporec on orctiporec.o15_codigo = recurso
+             join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                  and fonterecurso.exercicio = ano
              join complementofonterecurso on complementofonterecurso.o200_sequencial = complemento
              join concarpeculiar on (c58_sequencial)= (o58_concarpeculiar)
              join orcfuncao on (o52_funcao) = (o58_funcao)
@@ -282,6 +288,8 @@ class BalanceteDespesaService
         $camposRecursos = [
             'recurso',
             'fonte_recurso',
+            'gestao',
+            'siconfi',
             'descricao_recurso',
             'complemento',
             'descricao_complemento',

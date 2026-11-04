@@ -128,45 +128,53 @@ class tceCadastroFuncionarios extends tceEstruturaBasica
         list ($iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni) = explode("-", $sDataini);
 
         $sql = <<<SQL
-            select (cast(rh02_anousu::varchar||'-'||rh02_mesusu::varchar||'-01'::varchar as date))  as dataatualizacao,
-                rh01_regist                   as codigoregistrofuncionario,
-                rh01_regist                   as matricula,
-                z01_cgccpf                    as cpf,
-                z01_nome                      as nomefuncionario,
-                rh01_nasc                     as datanacimento,
-                rh01_admiss                   as dataadmissao,
-                rh01_admiss                   as datavantagem,
-                '00'                          as matricula_vinculo,
-                coalesce(to_char(rh05_recis, 'DDMMYYYY')) as datademissao,
-                rh01_funcao                   as codigocargofuncionario,
-                rh37_descr                    as nomecargofuncionario,
-                rh02_lota                     as codigosetor,
-                r70_descr                     as nomesetor,
-                case
-                  when upper(rh01_sexo) = 'M'
-                    then 1
-                  else 2
-                end                           as sexofuncionario,
-                cast( cast( replace(trim( substr(db_fxxx(rh01_regist,rh02_anousu,rh02_mesusu,rh02_instit),46,11)),',','.') as numeric) as integer) as quantidadedependentesfinsirrf,
-                case
-                  when upper(rh30_vinculo) = 'A' then '01'
-                  when upper(rh30_vinculo) = 'I' then '02'
-                  when upper(rh30_vinculo) = 'P' then '03'
-                  else '99'
-                end as situacaofuncionario,
-                case
-                  when rh30_regime = 1 then 'E'
-                  when rh30_regime = 2 then 'C'
-                  else 'O'
-                end as regimejuridico,
-                case
-                  when rh71_sequencial = 1 then 'E'
-                  when rh71_sequencial = 2 then 'C'
-                  when rh71_sequencial = 3 then 'T'
-                  when rh71_sequencial = 5 then 'A'
-                  when rh71_sequencial = 6 then 'S'
-                  else 'O'
-                end as naturezacargo,
+        select
+              *,
+              CASE
+                  WHEN observacoes_original = '' and naturezacargo = 'O' THEN 'outro vinculo'
+                  WHEN observacoes_original != '' THEN observacoes_original
+                  ELSE ''
+                END AS observacoes
+            from (
+              select (cast(rh02_anousu::varchar||'-'||rh02_mesusu::varchar||'-01'::varchar as date))  as dataatualizacao,
+                  rh01_regist                   as codigoregistrofuncionario,
+                  rh01_regist                   as matricula,
+                  z01_cgccpf                    as cpf,
+                  z01_nome                      as nomefuncionario,
+                  rh01_nasc                     as datanacimento,
+                  rh01_admiss                   as dataadmissao,
+                  rh01_admiss                   as datavantagem,
+                  '00'                          as matricula_vinculo,
+                  coalesce(to_char(rh05_recis, 'DDMMYYYY')) as datademissao,
+                  rh01_funcao                   as codigocargofuncionario,
+                  rh37_descr                    as nomecargofuncionario,
+                  rh02_lota                     as codigosetor,
+                  r70_descr                     as nomesetor,
+                  case
+                    when upper(rh01_sexo) = 'M'
+                      then 1
+                    else 2
+                  end                           as sexofuncionario,
+                  cast( cast( replace(trim( substr(db_fxxx(rh01_regist,rh02_anousu,rh02_mesusu,rh02_instit),46,11)),',','.') as numeric) as integer) as quantidadedependentesfinsirrf,
+                  case
+                    when upper(rh30_vinculo) = 'A' then '01'
+                    when upper(rh30_vinculo) = 'I' then '02'
+                    when upper(rh30_vinculo) = 'P' then '03'
+                    else '99'
+                  end as situacaofuncionario,
+                  case
+                    when rh30_regime = 1 then 'E'
+                    when rh30_regime = 2 then 'C'
+                    else 'O'
+                  end as regimejuridico,
+                  case
+                    when rh71_sequencial = 1 then 'E'
+                    when rh71_sequencial = 2 then 'C'
+                    when rh71_sequencial = 3 then 'T'
+                    when rh71_sequencial = 5 then 'A'
+                    when rh71_sequencial = 6 then 'S'
+                    else 'O'
+                  end as naturezacargo,
 SQL;
         $sqlTabelaRegimePrev = " (
             select coalesce
@@ -197,107 +205,107 @@ SQL;
         )
         ";
         $sql .= <<<SQL
-                to_char({$sqlTabelaRegimePrev}, 'FM00') as regimeprevidenciario,
-                z01_ident                     as registrogeralindentificacao,
-                rh37_cbo                      as cbo,
-                rh16_pis                      as nitpispasep,
-                rh02_tpcont                   as categoriatrabalhador,
-                trim(z01_ender)               as endereco,
-                z01_munic                     as cidade,
-                z01_uf                        as unidadeferderacaouf,
-                z01_cep                       as cep,
-                case when rh02_tbprev = 0 then 'Servidor sem previdencia.' else '' end as observacoes,
-                case
-                  when rh02_folha = 'D' then rh02_horasdiarias
-                  when rh02_folha = 'M' then rh02_hrsmen
-                  when rh02_folha = 'S' then rh02_hrssem
-                  else null
-                end as carga_horaria,
-                case
-                  when rh02_folha = 'Q' then null
-                  else rh02_folha
-                end as tipo_carga_horaria,
-                rh02_folha                    as tipo_carga_horaria,
-                coalesce((select rh261_credencial from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), 'X') as tipo_cedencia,
-                coalesce((select rh261_onus from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), 'X') as onus_origem,
-                coalesce((select case when rh261_ressarcimento = 'S' then 'S' else 'N' end as ressarcimento from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), 'X') as ressarcimento,
-                coalesce((select rh261_datamovimentacao from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), null) as data_movimentacao_cedencia,
-                case
-                  when rh02_cnpjcedencia = '0' then ''
-                  else rh02_cnpjcedencia
-                end as cnpj_origem_destino,
-                coalesce(LPAD(rhlotaexe.rh26_orgao::text, 2, '0'), '00') || coalesce(LPAD(rhlotaexe.rh26_unidade::text, 2, '0'), '00') AS orgao_unidade
-           from rhpessoal
-                inner join cgm              on cgm.z01_numcgm                   = rhpessoal.rh01_numcgm
-                inner join rhpessoalmov     on rhpessoalmov.rh02_regist         = rhpessoal.rh01_regist
-                                           and rhpessoalmov.rh02_anousu         = {$iAnoUsuFim}
-                                           and rhpessoalmov.rh02_mesusu         = {$iMesUsuFim}
-                                           and rhpessoalmov.rh02_instit         in ({$this->sInstituicoes})
-                inner join rhfuncao         on rhfuncao.rh37_funcao             = rhpessoalmov.rh02_funcao
-                                           and rhfuncao.rh37_instit             = rhpessoalmov.rh02_instit
-                left  join rhpesdoc         on rhpesdoc.rh16_regist             = rhpessoal.rh01_regist
-                left  join cfpess           on cfpess.r11_anousu                = rhpessoalmov.rh02_anousu
-                                           and cfpess.r11_mesusu                = rhpessoalmov.rh02_mesusu
-                                           and cfpess.r11_tbprev                = {$sqlTabelaRegimePrev}
-                                           and cfpess.r11_instit                = rhpessoalmov.rh02_instit
-                inner join rhlota           on rhlota.r70_codigo                = rhpessoalmov.rh02_lota
-                                           and rhlota.r70_instit                = rh02_instit
-                inner join rhregime         on rhregime.rh30_codreg             = rhpessoalmov.rh02_codreg
-                                           and rhregime.rh30_instit             = rh02_instit
-                left  join rhnaturezaregime on rhnaturezaregime.rh71_sequencial = rhregime.rh30_naturezaregime
-                left  join rhpesrescisao    on rhpesrescisao.rh05_seqpes        = rhpessoalmov.rh02_seqpes
-                left  join rhlotaexe        on rhlotaexe.rh26_codigo            = rhlota.r70_codigo AND rh26_anousu = {$iAnoUsuFim}
-           where rh02_instit in ({$this->sInstituicoes})
-           and ( rhpesrescisao.rh05_recis is null
-            or rhpesrescisao.rh05_recis >= '{$iAnoUsuIni}-{$iMesUsuIni}-{$iDiaUsuIni}'
-            or rh02_regist in (select distinct
-                                      r20_regist
-                                 from gerfres
-                                where (r20_anousu >= {$iAnoUsuIni} and r20_mesusu >= {$iMesUsuIni} )
-                                  and (r20_anousu <= {$iAnoUsuFim} and r20_mesusu <= {$iMesUsuFim} )
-                               )
-            or
-              exists (
-                     select 1
-                       from gerffer
-                     where r31_regist = rh01_regist
-                       and (r31_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r31_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
-                       and r31_instit in ({$this->sInstituicoes})
-                     union
-                     select 1
-                       from gerfadi
-                     where r22_regist = rh01_regist
-                       and (r22_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r22_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
-                       and r22_instit in ({$this->sInstituicoes})
-                     union
-                     select 1
-                       from gerfcom
-                     where r48_regist = rh01_regist
-                       and (r48_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r48_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
-                       and r48_instit in ({$this->sInstituicoes})
-                     union
-                     select 1
-                       from gerfres
-                     where r20_regist = rh01_regist
-                       and (r20_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r20_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
-                       and r20_instit in ({$this->sInstituicoes})
-                     union
-                     select 1
-                       from gerfs13
-                     where r35_regist = rh01_regist
-                       and (r35_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r35_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
-                       and r35_instit in ({$this->sInstituicoes})
-                     union
-                     select 1
-                       from gerfsal
-                     where r14_regist = rh01_regist
-                       and (r14_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r14_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
-                       and r14_instit in ({$this->sInstituicoes})
-                     )
-             )
-        order by rh01_regist
+                  to_char({$sqlTabelaRegimePrev}, 'FM00') as regimeprevidenciario,
+                  z01_ident                     as registrogeralindentificacao,
+                  rh37_cbo                      as cbo,
+                  rh16_pis                      as nitpispasep,
+                  rh02_tpcont                   as categoriatrabalhador,
+                  trim(z01_ender)               as endereco,
+                  z01_munic                     as cidade,
+                  z01_uf                        as unidadeferderacaouf,
+                  z01_cep                       as cep,
+                  case when rh02_tbprev = 0 then 'Servidor sem previdencia.' else '' end as observacoes_original,
+                  case
+                    when rh02_folha = 'D' then rh02_horasdiarias
+                    when rh02_folha = 'M' then rh02_hrsmen
+                    when rh02_folha = 'S' then rh02_hrssem
+                    else null
+                  end as carga_horaria,
+                  case
+                    when rh02_folha = 'Q' then null
+                    else rh02_folha
+                  end as tipo_carga_horaria,
+                  rh02_folha                    as tipo_carga_horaria,
+                  coalesce((select rh261_credencial from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), 'X') as tipo_cedencia,
+                  coalesce((select rh261_onus from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), 'X') as onus_origem,
+                  coalesce((select case when rh261_ressarcimento = 'S' then 'S' else 'N' end as ressarcimento from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), 'X') as ressarcimento,
+                  coalesce((select rh261_datamovimentacao from rhcedencia where rhcedencia.rh261_regist = rh01_regist order by rh261_sequencial desc limit 1), null) as data_movimentacao_cedencia,
+                  case
+                    when rh02_cnpjcedencia = '0' then ''
+                    else rh02_cnpjcedencia
+                  end as cnpj_origem_destino,
+                  coalesce(LPAD(rhlotaexe.rh26_orgao::text, 2, '0'), '00') || coalesce(LPAD(rhlotaexe.rh26_unidade::text, 2, '0'), '00') AS orgao_unidade
+            from rhpessoal
+                  inner join cgm              on cgm.z01_numcgm                   = rhpessoal.rh01_numcgm
+                  inner join rhpessoalmov     on rhpessoalmov.rh02_regist         = rhpessoal.rh01_regist
+                                            and rhpessoalmov.rh02_anousu         = {$iAnoUsuFim}
+                                            and rhpessoalmov.rh02_mesusu         = {$iMesUsuFim}
+                                            and rhpessoalmov.rh02_instit         in ({$this->sInstituicoes})
+                  inner join rhfuncao         on rhfuncao.rh37_funcao             = rhpessoalmov.rh02_funcao
+                                            and rhfuncao.rh37_instit             = rhpessoalmov.rh02_instit
+                  left  join rhpesdoc         on rhpesdoc.rh16_regist             = rhpessoal.rh01_regist
+                  left  join cfpess           on cfpess.r11_anousu                = rhpessoalmov.rh02_anousu
+                                            and cfpess.r11_mesusu                = rhpessoalmov.rh02_mesusu
+                                            and cfpess.r11_tbprev                = {$sqlTabelaRegimePrev}
+                                            and cfpess.r11_instit                = rhpessoalmov.rh02_instit
+                  inner join rhlota           on rhlota.r70_codigo                = rhpessoalmov.rh02_lota
+                                            and rhlota.r70_instit                = rh02_instit
+                  inner join rhregime         on rhregime.rh30_codreg             = rhpessoalmov.rh02_codreg
+                                            and rhregime.rh30_instit             = rh02_instit
+                  left  join rhnaturezaregime on rhnaturezaregime.rh71_sequencial = rhregime.rh30_naturezaregime
+                  left  join rhpesrescisao    on rhpesrescisao.rh05_seqpes        = rhpessoalmov.rh02_seqpes
+                  left  join rhlotaexe        on rhlotaexe.rh26_codigo            = rhlota.r70_codigo AND rh26_anousu = {$iAnoUsuFim}
+            where rh02_instit in ({$this->sInstituicoes})
+            and ( rhpesrescisao.rh05_recis is null
+              or rhpesrescisao.rh05_recis >= '{$iAnoUsuIni}-{$iMesUsuIni}-{$iDiaUsuIni}'
+              or rh02_regist in (select distinct
+                                        r20_regist
+                                  from gerfres
+                                  where (r20_anousu >= {$iAnoUsuIni} and r20_mesusu >= {$iMesUsuIni} )
+                                    and (r20_anousu <= {$iAnoUsuFim} and r20_mesusu <= {$iMesUsuFim} )
+                                )
+              or
+                exists (
+                      select 1
+                        from gerffer
+                      where r31_regist = rh01_regist
+                        and (r31_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r31_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
+                        and r31_instit in ({$this->sInstituicoes})
+                      union
+                      select 1
+                        from gerfadi
+                      where r22_regist = rh01_regist
+                        and (r22_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r22_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
+                        and r22_instit in ({$this->sInstituicoes})
+                      union
+                      select 1
+                        from gerfcom
+                      where r48_regist = rh01_regist
+                        and (r48_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r48_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
+                        and r48_instit in ({$this->sInstituicoes})
+                      union
+                      select 1
+                        from gerfres
+                      where r20_regist = rh01_regist
+                        and (r20_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r20_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
+                        and r20_instit in ({$this->sInstituicoes})
+                      union
+                      select 1
+                        from gerfs13
+                      where r35_regist = rh01_regist
+                        and (r35_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r35_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
+                        and r35_instit in ({$this->sInstituicoes})
+                      union
+                      select 1
+                        from gerfsal
+                      where r14_regist = rh01_regist
+                        and (r14_anousu between {$iAnoUsuIni} and {$iAnoUsuFim} and r14_mesusu between {$iMesUsuIni} and {$iMesUsuFim})
+                        and r14_instit in ({$this->sInstituicoes})
+                      )
+              )
+          order by rh01_regist
+        ) as x
 SQL;
-
         return $sql;
     }
 

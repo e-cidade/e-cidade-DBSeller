@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_fornrequ {
                  l10_2_auto = char(     8) = Numero Autorizacao 
                  ";
    //funcao construtor da classe 
-   function cl_fornrequ() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fornrequ"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_fornrequ {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l10_n_requ = ($this->l10_n_requ == ""?@$GLOBALS["HTTP_POST_VARS"]["l10_n_requ"]:$this->l10_n_requ);
        $this->l10_n_forn = ($this->l10_n_forn == ""?@$GLOBALS["HTTP_POST_VARS"]["l10_n_forn"]:$this->l10_n_forn);
@@ -82,7 +82,7 @@ class cl_fornrequ {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->l10_n_requ == null ){ 
        $this->erro_sql = " Campo Numero da Requisicao nao Informado.";
@@ -169,7 +169,7 @@ class cl_fornrequ {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update fornrequ set ";
      $virgula = "";
@@ -269,7 +269,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from fornrequ
                     where ";
      $sql2 = "";
@@ -308,7 +308,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -131,7 +131,7 @@ function js_calcula(){
     <form name="form1" method="post" action="">
       <center>
 
-<?
+<?php
 
           $sql_disabled     = $clempageconfche->sql_query_cheques(null,"e91_codcheque","",$dbwhere." and k12_codmov is not null and e91_ativo is true");
           $sql     = $clempageconfche->sql_query_cheques(null,"e91_codcheque,e83_descr,z01_nome,e91_codmov,e91_cheque,e60_codemp,e82_codord,e91_valor","e82_codord",$dbwhere." and e91_ativo is true");
@@ -188,7 +188,7 @@ function js_calcula(){
    parent.document.form1.registros.value = '<?=$registros?>';
    parent.document.form1.tipo.value = 'cheque';
 </script>
-<?
+<?php
 if($numrows>0){
   echo "<script>";
   echo "parent.document.form1.atualizar.disabled=false;";

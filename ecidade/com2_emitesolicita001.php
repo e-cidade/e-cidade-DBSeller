@@ -101,7 +101,7 @@ $db_opcao = 1;
                             <td><b>Imprimir valor orçado:</b></td>
                             <td colspan='3' >
                                 <?php
-                                    $x = array("f"=>"NAO","t"=>"SIM");
+                                    $x = array("f"=>"NÃO","t"=>"SIM");
                                     db_select('valor_orcado', $x, true, $db_opcao, "");
                                 ?>
                           </td>
@@ -149,6 +149,7 @@ function js_mostrasolicitade(chave,erro) {
   if(erro==true){
     document.form1.pc10_numerode.focus();
     document.form1.pc10_numerode.value = '';
+    document.form1.pc10_numeroate.value = '';
   }
 }
 

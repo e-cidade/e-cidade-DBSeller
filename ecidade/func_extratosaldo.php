@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clextratosaldo->rotulo->label("k97_dtsaldofinal");
               <?=$Lk97_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k97_sequencial",10,$Ik97_sequencial,true,"text",4,"","chave_k97_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clextratosaldo->rotulo->label("k97_dtsaldofinal");
               <?=$Lk97_dtsaldofinal?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k97_dtsaldofinal",10,$Ik97_dtsaldofinal,true,"text",4,"","chave_k97_dtsaldofinal");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clextratosaldo->rotulo->label("k97_dtsaldofinal");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_extratosaldo.php")==true){
@@ -122,12 +122,12 @@ $clextratosaldo->rotulo->label("k97_dtsaldofinal");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

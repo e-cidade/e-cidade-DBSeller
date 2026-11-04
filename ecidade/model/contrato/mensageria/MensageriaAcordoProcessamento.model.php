@@ -121,9 +121,7 @@ class MensageriaAcordoProcessamento {
     foreach ($this->aUsuariosAviso as $oUsuarioSistema) {
 
       foreach ($this->aDiasAviso as $iDia) {
-
         if ( ! MensageriaAcordoUsuarioRepository::getPorUsuarioDia($oUsuarioSistema, $iDia)) {
-
           $oMensageriaUsuario = new MensageriaAcordoUsuario(null);
           $oMensageriaUsuario->setUsuario($oUsuarioSistema);
           $oMensageriaUsuario->setDias($iDia);

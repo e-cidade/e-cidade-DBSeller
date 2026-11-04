@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -137,7 +137,7 @@ if(isset($oPost->incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 
 if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 	
@@ -174,19 +174,19 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		    <?=$Lo14_orcprograma?>
 		  </td>
           <td>
-            <?
+            <?php
 		      db_input('o14_orcprograma',10,"",true,'text',3,'');
 		    ?>
           </td>
         </tr>
   		<tr>
 		  <td nowrap title="<?=@$To14_orgao?>">
-		    <?
+		    <?php
 			  db_ancora($Lo14_orcunidade,"js_pesquisaUnidade(true)",$db_opcao);		    
 		    ?>
 		  </td>
 		  <td> 
-		    <?
+		    <?php
 		      db_input('o14_sequencial',10,"",true,'hidden',3,'');
 		      db_input('o14_anousu',10,"",true,'hidden',3,'');
 		      db_input('o14_orgao',10,"",true,'hidden',3,'');
@@ -206,7 +206,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
  	  <table>
 		<tr>
 		  <td valign="top"  align="center">  
-		    <?
+		    <?php
 			  $aChavePri = array( "o14_sequencial"  => @$o14_sequencial,
 			  					  "o14_orcprograma" => @$o14_orcprograma,
 			  					  "o14_orgao" 		=> @$o14_orgao );
@@ -231,7 +231,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
   </table>   
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
 	
     db_msgbox($sErroMsg);

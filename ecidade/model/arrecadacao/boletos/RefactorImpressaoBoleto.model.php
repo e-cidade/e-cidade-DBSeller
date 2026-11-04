@@ -328,7 +328,6 @@ class RefactorImpressaoBoleto {
     $oResultadoUF = db_utils::fieldsMemory($resultuf,0);
     $db12_uf      = $oResultadoUF->db12_uf;
     $db12_extenso = $oResultadoUF->db12_extenso;
-//    db_fieldsmemory($resultuf,0);
 
     if (!isset($emite_recibo_protocolo) and !isset($reemite_recibo)) {
 
@@ -402,7 +401,7 @@ class RefactorImpressaoBoleto {
           if(db_indexOf(key($vt) ,"CHECK") > 0){
 
             $numpres .= "N" . $vt[key($vt)];
-            $matnumpres = split("N", $vt[key($vt)]);
+            $matnumpres = explode("N", $vt[key($vt)]);
 
             if (!isset($inicial)) {
 
@@ -417,9 +416,9 @@ class RefactorImpressaoBoleto {
                 /**
                  * Numpre e numpar
                  */
-                $resultado = split("P",$numprecerto);
-                $numpar    = split("P",$resultado[1]);
-                $numpar    = split("R",$numpar[0]);
+                $resultado = explode("P",$numprecerto);
+                $numpar    = explode("P",$resultado[1]);
+                $numpar    = explode("R",$numpar[0]);
 
                 $sSqlInflatores  = " select distinct   ";
                 $sSqlInflatores .= "        k00_numpar, ";
@@ -543,7 +542,6 @@ class RefactorImpressaoBoleto {
 
             for ($agrupa=0; $agrupa<pg_num_rows($resultagrupa);$agrupa++) {
 
-              //db_fieldsmemory($resultagrupa,$agrupa);
               $oDadosAgrupa = db_utils::fieldsMemory($resultagrupa, $agrupa);
 
               $numpreagrupa = $oDadosAgrupa->numpreagrupa;
@@ -560,7 +558,7 @@ class RefactorImpressaoBoleto {
 
           if ($this->marcarvencidas == 'true' && $this->marcartodas == 'false') {
 
-            $aNumpres   = split("N",$numpres);
+            $aNumpres   = explode("N",$numpres);
             $numpres   = "";
             $sNumPreAnt = "";
             $sAuxiliar  = "";
@@ -570,9 +568,9 @@ class RefactorImpressaoBoleto {
                 continue;
               }
 
-              $iNumpre = split("P",$aNumpres[$iInd]);
-              $iNumpar = split("P", strstr($aNumpres[$iInd],"P"));
-              $iNumpar = split("R",$iNumpar[1]);
+              $iNumpre = explode("P",$aNumpres[$iInd]);
+              $iNumpar = explode("P", strstr($aNumpres[$iInd],"P"));
+              $iNumpar = explode("R",$iNumpar[1]);
               $iReceit = $iNumpar[1];
               $iNumpar = $iNumpar[0];
               $iNumpre = $iNumpre[0];
@@ -606,12 +604,12 @@ class RefactorImpressaoBoleto {
 
         }
 
-        $numpres   = split("N",$numpres);
+        $numpres   = explode("N",$numpres);
 
         $totalregistrospassados=0;
 
         for($iii = 0;$iii < sizeof($numpres);$iii++) {
-          $valores = split("P",$numpres[$iii]);
+          $valores = explode("P",$numpres[$iii]);
           if ($numpres[$iii] <> "") {
             if(!isset($inicial)) {
               $totalregistrospassados+=sizeof($valores)-1;
@@ -659,7 +657,7 @@ class RefactorImpressaoBoleto {
             continue;
           }
 
-          $valores = split("P",$numpres[$ii]);
+          $valores = explode("P",$numpres[$ii]);
 
           if (isset($inicial)) {
 
@@ -711,7 +709,7 @@ class RefactorImpressaoBoleto {
 
           } else {
 
-            $numpar = split("R", $valores[1]);
+            $numpar = explode("R", $valores[1]);
 
             if ( in_array(array($valores[0],$numpar[0]),$aDebitosRecibo) ) {
               continue;
@@ -919,7 +917,6 @@ class RefactorImpressaoBoleto {
             throw new Exception(pg_last_error());
           }
 
-          //db_fieldsmemory($resultvenc,0);
           if ( pg_num_rows($resultvenc) > 0 ) {
             $k00_dtvenc = db_utils::fieldsMemory($resultvenc, 0)->k00_dtvenc;
           }
@@ -1229,8 +1226,6 @@ class RefactorImpressaoBoleto {
         throw new Exception('Erro [9] - Problemas no Cadastro da Matricula ' . $numero);
       }
 
-      //db_fieldsmemory($Identificacao,0);
-
       $ident_tipo_ii = 'Imóvel';
 
     } else if(!empty($ver_inscr) || $inscricaorecibo > 0 ) {
@@ -1318,7 +1313,6 @@ class RefactorImpressaoBoleto {
         throw new Exception('db_erro=[11] - Problema no Cadastro do CGM ' . $numero);
       }
 
-      //db_fieldsmemory($Identificacao,0);
       $ident_tipo_ii = '';
 
     } else {
@@ -1351,7 +1345,6 @@ class RefactorImpressaoBoleto {
 
           throw new Exception('erro=[12] - Problema no Cadastro do Recibo do Protocolo Numpre ' . $k03_numpre);
         }
-        //db_fieldsmemory($Identificacao,0);
 
       }
 
@@ -1502,7 +1495,6 @@ class RefactorImpressaoBoleto {
 
               if (pg_num_rows($resulthistor) > 0) {
 
-                //db_fieldsmemory($resulthistor,0);
                 $oDadosReciboWeb = db_utils::fieldsMemory($resulthistor,0);
                 $q05_histor = $oDadosReciboWeb->q05_histor;
 
@@ -1712,7 +1704,7 @@ class RefactorImpressaoBoleto {
           $oDadosAuto   = db_utils::fieldsmemory($rsDadosHist,0);
           $sObsAuto     = "";
 
-          $aObs = split("\n",$oDadosAuto->y50_obs);
+          $aObs = explode("\n",$oDadosAuto->y50_obs);
           if (count($aObs) > 3) {
             $sObsAuto = $aObs[0]."\n".$aObs[1]."\n".$aObs[2];
           } else {
@@ -1792,7 +1784,6 @@ class RefactorImpressaoBoleto {
                    from arretipo
                    where k00_tipo = $tipo_debito";
 
-    //db_fieldsmemory(db_query($sqlvalor),0);
     $rsArretipo = db_query($sqlvalor);
 
     if ( pg_num_rows($rsArretipo) > 0 ) {
@@ -1818,7 +1809,6 @@ class RefactorImpressaoBoleto {
 
 
     try {
-      //$oConvenio = new convenio($oRegraEmissao->getConvenio(),$k03_numpre,0,$total_recibo,$db_vlrbar,$datavencimento,$k00_tercdigrecnormal);
       $oConvenio = $this->oConvenio;
     } catch (Exception $eException){
 
@@ -1844,7 +1834,6 @@ class RefactorImpressaoBoleto {
 
     $pdf1->uf_config     = $db12_uf;
     $pdf1->modelo       = 2;
-    //$pdf1->logo         = 'logo_boleto.png';
     $pdf1->logo         = $db_logo;
 
     if ($oRegraEmissao->getCadTipoConvenio() == 6 ) {
@@ -1951,7 +1940,9 @@ class RefactorImpressaoBoleto {
     $pdf1->valtotal       = db_formatar(@$valor_parm,'f');
     $pdf1->linhadigitavel = $linhadigitavel;
     $pdf1->codigobarras   = $codigobarras;
-    $pdf1->texto          = db_getsession('DB_login').' - '.date("d-m-Y - H-i").'   '.db_base_ativa();
+    $sql = 'select nome from db_usuarios where login = \''.db_getsession('DB_login').'\'';
+    $rSql = db_query($sql);
+    $pdf1->texto = pg_fetch_all($rSql)[0]['nome'] . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
 
     $pdf1->descr3_1       = trim(pg_result($Identificacao,0,"z01_numcgm")) . "-" . trim(pg_result($Identificacao,0,"z01_nome")); // contribuinte
     $pdf1->descr3_2       = trim(pg_result($Identificacao,0,"z01_ender")).', '.pg_result($Identificacao,0,"z01_numero").' '.trim(pg_result($Identificacao,0,"z01_compl")) . (strlen(trim(pg_result($Identificacao,0,"z01_bairro"))) > 0?"/":"") . trim(pg_result($Identificacao,0,"z01_bairro"));// endereco
@@ -2034,7 +2025,6 @@ class RefactorImpressaoBoleto {
 
     for ($x=0;$x<$intnumrows;$x++) {
 
-      // db_fieldsmemory($rsReceitas,$x);
       $oDadosReceitas = db_utils::fieldsMemory( $rsReceitas,$x );
       $pdf1->arraycodreceitas[$x]   = $oDadosReceitas->codreceita;
       $pdf1->arrayreduzreceitas[$x] = $oDadosReceitas->reduzreceita;
@@ -2072,7 +2062,6 @@ class RefactorImpressaoBoleto {
     $rsMsgcarne = db_query($sSqlMsgCarne);
     $iNumrows   = pg_num_rows($rsMsgcarne);
     if($iNumrows > 0){
-      //      db_fieldsmemory($rsMsgcarne,0);
       $k03_msgbanco = db_utils::fieldsMemory($rsMsgcarne,0)->k03_msgbanco;
 
     }else{
@@ -2117,12 +2106,11 @@ class RefactorImpressaoBoleto {
 
     for ($mensdesc=0; $mensdesc < pg_num_rows($resultmensagemdesconto); $mensdesc++) {
 
-      //db_fieldsmemory($resultmensagemdesconto, $mensdesc);
-      $oDadosDesconto = db_utils::fieldsMemory($resultmensagemdesconto);
+      $oDadosDesconto = db_utils::fieldsMemory($resultmensagemdesconto,$mensdesc);
       $k99_desconto = $oDadosDesconto->k99_desconto;
       $k40_descr    = $oDadosDesconto->k40_descr;
 
-      $descrlei = split("#",$k40_descr);
+      $descrlei = explode("#",$k40_descr);
       $k00_mensagemdesconto .= $descrlei[0] . ($mensdesc == pg_num_rows($resultmensagemdesconto)?"":"-");
       $temdesconto = true;
     }
@@ -2503,7 +2491,6 @@ class RefactorImpressaoBoleto {
     }
 
     // desconto
-    //global $k00_dtvenc, $k40_codigo, $k40_todasmarc, $cadtipoparc;
 
     $k00_dtvenc    = $this->k00_dtvenc;
     $k40_codigo    = $this->k40_codigo;

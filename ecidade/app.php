@@ -6,7 +6,6 @@ use \ECidade\V3\Extension\Dispatcher;
 use \ECidade\V3\Extension\Router;
 use \ECidade\V3\Extension\Request;
 use \ECidade\V3\Extension\Response;
-use \ECidade\V3\Extension\Manager as ExtensionManager;
 use \ECidade\V3\Extension\Exceptions\ResponseException;
 use \ECidade\V3\Extension\Glob;
 use \ECidade\V3\Extension\Error\Handler as ErrorHandler;
@@ -154,9 +153,13 @@ try {
     }
 
     // lazyload para verificar se usuario tem extensao desktop instalada
-    Registry::get('app.container')->register('ECIDADE_DESKTOP', function () use ($request) {
-        return ExtensionManager::isEnabled('Desktop', $request->session()->get('DB_login'));
-    });
+    Registry::get('app.container')->register('ECIDADE_DESKTOP', true);
+
+    $guestFiles = ['index.php', 'login.php'];
+    if (in_array($filePath, $guestFiles) && $request->session()->has('DB_id_usuario')) {
+        $request->session()->close();
+        $response->redirect(ECIDADE_REQUEST_PATH . 'extension/desktop');
+    }
 
     $request->session()->close();
     $response->send();
@@ -166,7 +169,8 @@ try {
 
     if ($isLaravel) {
         $pos = explode('/', $_SERVER['REQUEST_URI']);
-        unset($pos[2], $pos[3]);
+        $index = array_search('w', $pos);
+        unset($pos[$index], $pos[$index + 1]);
         $_SERVER['REQUEST_URI'] = implode('/', $pos);
         require_once(__DIR__ . '/public/index.php');
     } else {

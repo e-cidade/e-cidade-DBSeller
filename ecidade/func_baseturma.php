@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ $clbase->rotulo->label("ed31_c_descr");
         <label for="chave_ed31_i_codigo"><?=$Led31_i_codigo?></label>
       </td>
       <td width="96%" align="left" nowrap>
-        <?db_input("ed31_i_codigo",10,$Ied31_i_codigo,true,"text",4,"","chave_ed31_i_codigo");?>
+        <?php db_input("ed31_i_codigo",10,$Ied31_i_codigo,true,"text",4,"","chave_ed31_i_codigo");?>
       </td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ $clbase->rotulo->label("ed31_c_descr");
         <label for="chave_ed31_c_descr"><?=$Led31_c_descr?></label>
       </td>
       <td width="96%" align="left" nowrap>
-        <?db_input("ed31_c_descr",40,$Ied31_c_descr,true,"text",4,"","chave_ed31_c_descr");?>
+        <?php db_input("ed31_c_descr",40,$Ied31_c_descr,true,"text",4,"","chave_ed31_c_descr");?>
       </td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ $clbase->rotulo->label("ed31_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $sWhereBaseAtiva = "";
    if ( isset($lBaseAtiva) && $lBaseAtiva = 'true') {
      $sWhereBaseAtiva = "and  ed31_c_ativo = 'S'";
@@ -102,7 +102,8 @@ $clbase->rotulo->label("ed31_c_descr");
                tipoensino.ed36_c_abrev,
                cursoedu.ed29_i_ensino,
                cursoedu.ed29_c_historico,
-               ensino.ed10_censocursoprofiss
+               cursoedu.ed29_censocursoprofiss,
+               ed247_c_descr
               ";
     if (isset($chave_ed31_i_codigo) && (trim($chave_ed31_i_codigo)!="") ) {
 
@@ -129,11 +130,11 @@ $clbase->rotulo->label("ed31_c_descr");
       $sWhere  = " ed31_i_codigo = {$pesquisa_chave} AND ed71_c_situacao = 'S' AND ed77_i_escola = {$escola} AND ed71_i_escola = {$escola}";
       $sWhere .= $sWhereBaseAtiva ;
       $sSql    = $clbase->sql_query_baseturma("","*","", $sWhere);
-      $result  = $clbase->sql_record();
+      $result  = $clbase->sql_record($sSql);
       if ($clbase->numrows!=0) {
 
        db_fieldsmemory($result,0);
-       echo "<script>".$funcao_js."('$ed31_c_descr','$ed29_i_codigo','$ed29_c_descr','$ed36_c_abrev','$ed218_i_codigo','$ed218_c_nome','$ed218_c_divisao','$ed31_c_medfreq','$ed29_i_ensino','$ed29_c_historico', '$ed10_censocursoprofiss', false);</script>";
+       echo "<script>".$funcao_js."('$ed31_c_descr','$ed29_i_codigo','$ed29_c_descr','$ed36_c_abrev','$ed218_i_codigo','$ed218_c_nome','$ed218_c_divisao','$ed31_c_medfreq','$ed29_i_ensino','$ed29_c_historico', false);</script>";
       }else{
        echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado','','','','','','','','',true);</script>";
       }

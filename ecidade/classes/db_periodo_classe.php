@@ -54,15 +54,15 @@ class cl_periodo
     public $o114_ordem = 0;
     // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 o114_sequencial = int4 = Código Sequencial 
-                 o114_descricao = varchar(20) = Descrição 
-                 o114_qdtporano = int4 = Quantidade por Ano 
-                 o114_diainicial = int4 = Dia Inicial 
-                 o114_mesinicial = int4 = Mês Inicial 
-                 o114_diafinal = int4 = Dia Final 
-                 o114_mesfinal = int4 = Mês Final 
-                 o114_sigla = varchar(10) = Sigla do Período 
-                 o114_ordem = int4 = Ordem do Periodo 
+                 o114_sequencial = int4 = Código Sequencial
+                 o114_descricao = varchar(20) = Descrição
+                 o114_qdtporano = int4 = Quantidade por Ano
+                 o114_diainicial = int4 = Dia Inicial
+                 o114_mesinicial = int4 = Mês Inicial
+                 o114_diafinal = int4 = Dia Final
+                 o114_mesfinal = int4 = Mês Final
+                 o114_sigla = varchar(10) = Sigla do Período
+                 o114_ordem = int4 = Ordem do Periodo
                  ";
 
     /**
@@ -219,26 +219,26 @@ class cl_periodo
             return false;
         }
         $sql = "insert into periodo(
-                                       o114_sequencial 
-                                      ,o114_descricao 
-                                      ,o114_qdtporano 
-                                      ,o114_diainicial 
-                                      ,o114_mesinicial 
-                                      ,o114_diafinal 
-                                      ,o114_mesfinal 
-                                      ,o114_sigla 
-                                      ,o114_ordem 
+                                       o114_sequencial
+                                      ,o114_descricao
+                                      ,o114_qdtporano
+                                      ,o114_diainicial
+                                      ,o114_mesinicial
+                                      ,o114_diafinal
+                                      ,o114_mesfinal
+                                      ,o114_sigla
+                                      ,o114_ordem
                        )
                 values (
-                                $this->o114_sequencial 
-                               ,'$this->o114_descricao' 
-                               ,$this->o114_qdtporano 
-                               ,$this->o114_diainicial 
-                               ,$this->o114_mesinicial 
-                               ,$this->o114_diafinal 
-                               ,$this->o114_mesfinal 
-                               ,'$this->o114_sigla' 
-                               ,$this->o114_ordem 
+                                $this->o114_sequencial
+                               ,'$this->o114_descricao'
+                               ,$this->o114_qdtporano
+                               ,$this->o114_diainicial
+                               ,$this->o114_mesinicial
+                               ,$this->o114_diafinal
+                               ,$this->o114_mesfinal
+                               ,'$this->o114_sigla'
+                               ,$this->o114_ordem
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -749,7 +749,7 @@ class cl_periodo
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -772,7 +772,7 @@ class cl_periodo
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -787,7 +787,7 @@ class cl_periodo
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -810,7 +810,7 @@ class cl_periodo
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

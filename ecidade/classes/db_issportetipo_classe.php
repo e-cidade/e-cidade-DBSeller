@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: issqn
 //CLASSE DA ENTIDADE issportetipo
-class cl_issportetipo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q41_codigo = 0; 
-   var $q41_codporte = 0; 
-   var $q41_codclasse = 0; 
-   var $q41_codtipcalc = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_issportetipo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q41_codigo = 0;
+   var $q41_codporte = 0;
+   var $q41_codclasse = 0;
+   var $q41_codtipcalc = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q41_codigo = int8 = Codigo 
-                 q41_codporte = int8 = Cod. Porte 
-                 q41_codclasse = int4 = codigo da classe 
-                 q41_codtipcalc = int4 = codigo do tipo de calculo 
+                 q41_codigo = int8 = Codigo
+                 q41_codporte = int8 = Cod. Porte
+                 q41_codclasse = int4 = codigo da classe
+                 q41_codtipcalc = int4 = codigo do tipo de calculo
                  ";
-   //funcao construtor da classe 
-   function cl_issportetipo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("issportetipo"); 
+     $this->rotulo = new rotulo("issportetipo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_issportetipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q41_codigo = ($this->q41_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["q41_codigo"]:$this->q41_codigo);
        $this->q41_codporte = ($this->q41_codporte == ""?@$GLOBALS["HTTP_POST_VARS"]["q41_codporte"]:$this->q41_codporte);
@@ -80,9 +80,9 @@ class cl_issportetipo {
      }
    }
    // funcao para inclusao
-   function incluir ($q41_codigo){ 
+   public function incluir ($q41_codigo){
       $this->atualizacampos();
-     if($this->q41_codporte == null ){ 
+     if($this->q41_codporte == null ){
        $this->erro_sql = " Campo Cod. Porte nao Informado.";
        $this->erro_campo = "q41_codporte";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_issportetipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q41_codclasse == null ){ 
+     if($this->q41_codclasse == null ){
        $this->erro_sql = " Campo codigo da classe nao Informado.";
        $this->erro_campo = "q41_codclasse";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_issportetipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q41_codtipcalc == null ){ 
+     if($this->q41_codtipcalc == null ){
        $this->erro_sql = " Campo codigo do tipo de calculo nao Informado.";
        $this->erro_campo = "q41_codtipcalc";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_issportetipo {
        return false;
      }
      if($q41_codigo == "" || $q41_codigo == null ){
-       $result = db_query("select nextval('issportetipo_q41_codigo_seq')"); 
+       $result = db_query("select nextval('issportetipo_q41_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: issportetipo_q41_codigo_seq do campo: q41_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: issportetipo_q41_codigo_seq do campo: q41_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q41_codigo = pg_result($result,0,0); 
+       $this->q41_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from issportetipo_q41_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $q41_codigo)){
@@ -130,10 +130,10 @@ class cl_issportetipo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q41_codigo = $q41_codigo; 
+         $this->q41_codigo = $q41_codigo;
        }
      }
-     if(($this->q41_codigo == null) || ($this->q41_codigo == "") ){ 
+     if(($this->q41_codigo == null) || ($this->q41_codigo == "") ){
        $this->erro_sql = " Campo q41_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_issportetipo {
        return false;
      }
      $sql = "insert into issportetipo(
-                                       q41_codigo 
-                                      ,q41_codporte 
-                                      ,q41_codclasse 
-                                      ,q41_codtipcalc 
+                                       q41_codigo
+                                      ,q41_codporte
+                                      ,q41_codclasse
+                                      ,q41_codtipcalc
                        )
                 values (
-                                $this->q41_codigo 
-                               ,$this->q41_codporte 
-                               ,$this->q41_codclasse 
-                               ,$this->q41_codtipcalc 
+                                $this->q41_codigo
+                               ,$this->q41_codporte
+                               ,$this->q41_codclasse
+                               ,$this->q41_codtipcalc
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tipo de calculo por porte e classe ($this->q41_codigo) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_issportetipo {
        $resac = db_query("insert into db_acount values($acount,1048,6395,'','".AddSlashes(pg_result($resaco,0,'q41_codtipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q41_codigo=null) { 
+   public function alterar ($q41_codigo=null) {
       $this->atualizacampos();
      $sql = " update issportetipo set ";
      $virgula = "";
-     if(trim($this->q41_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codigo"])){ 
+     if(trim($this->q41_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codigo"])){
        $sql  .= $virgula." q41_codigo = $this->q41_codigo ";
        $virgula = ",";
-       if(trim($this->q41_codigo) == null ){ 
+       if(trim($this->q41_codigo) == null ){
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "q41_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_issportetipo {
          return false;
        }
      }
-     if(trim($this->q41_codporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codporte"])){ 
+     if(trim($this->q41_codporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codporte"])){
        $sql  .= $virgula." q41_codporte = $this->q41_codporte ";
        $virgula = ",";
-       if(trim($this->q41_codporte) == null ){ 
+       if(trim($this->q41_codporte) == null ){
          $this->erro_sql = " Campo Cod. Porte nao Informado.";
          $this->erro_campo = "q41_codporte";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_issportetipo {
          return false;
        }
      }
-     if(trim($this->q41_codclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codclasse"])){ 
+     if(trim($this->q41_codclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codclasse"])){
        $sql  .= $virgula." q41_codclasse = $this->q41_codclasse ";
        $virgula = ",";
-       if(trim($this->q41_codclasse) == null ){ 
+       if(trim($this->q41_codclasse) == null ){
          $this->erro_sql = " Campo codigo da classe nao Informado.";
          $this->erro_campo = "q41_codclasse";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_issportetipo {
          return false;
        }
      }
-     if(trim($this->q41_codtipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codtipcalc"])){ 
+     if(trim($this->q41_codtipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codtipcalc"])){
        $sql  .= $virgula." q41_codtipcalc = $this->q41_codtipcalc ";
        $virgula = ",";
-       if(trim($this->q41_codtipcalc) == null ){ 
+       if(trim($this->q41_codtipcalc) == null ){
          $this->erro_sql = " Campo codigo do tipo de calculo nao Informado.";
          $this->erro_campo = "q41_codtipcalc";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_issportetipo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de calculo por porte e classe nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q41_codigo;
@@ -297,14 +297,14 @@ class cl_issportetipo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q41_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q41_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q41_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_issportetipo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de calculo por porte e classe nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q41_codigo;
@@ -361,11 +361,11 @@ class cl_issportetipo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -388,11 +388,11 @@ class cl_issportetipo {
      return $result;
    }
 
-	function sql_query ( $q41_codigo=null,$campos="*",$ordem=null,$dbwhere="",$iAnoUsu = null){
-		
+	public function sql_query ( $q41_codigo=null,$campos="*",$ordem=null,$dbwhere="",$iAnoUsu = null){
+
    	$sql = "select ";
    	if($campos != "*" ){
-   		$campos_sql = split("#",$campos);
+   		$campos_sql = explode("#",$campos);
    		$virgula = "";
    		for($i=0;$i<sizeof($campos_sql);$i++){
    			$sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_issportetipo {
    	$sql .= $sql2;
    	if($ordem != null ){
    		$sql .= " order by ";
-   		$campos_sql = split("#",$ordem);
+   		$campos_sql = explode("#",$ordem);
    		$virgula = "";
    		for($i=0;$i<sizeof($campos_sql);$i++){
    			$sql .= $virgula.$campos_sql[$i];
@@ -437,10 +437,10 @@ class cl_issportetipo {
    	}
    	return $sql;
    }
-   function sql_query_file ( $q41_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q41_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,15 +453,15 @@ class cl_issportetipo {
      $sql2 = "";
      if($dbwhere==""){
        if($q41_codigo!=null ){
-         $sql2 .= " where issportetipo.q41_codigo = $q41_codigo "; 
-       } 
+         $sql2 .= " where issportetipo.q41_codigo = $q41_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

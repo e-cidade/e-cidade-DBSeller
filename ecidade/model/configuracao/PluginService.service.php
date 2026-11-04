@@ -42,7 +42,7 @@ class PluginService
 {
 
     const MENSAGEM = 'configuracao.configuracao.pluginService.';
-    const TMP_DIR  = "tmp/plugins/";
+    const TMP_DIR = "tmp/plugins/";
 
     private $oPluginDatabase;
 
@@ -54,9 +54,9 @@ class PluginService
     /**
      * Instala o plugin validado
      *
-     * @param  string $sNomeArquivo - Nome do plugin (É retornado pela função validarPlugin())
-     * @throws Exception
+     * @param string $sNomeArquivo - Nome do plugin (É retornado pela função validarPlugin())
      * @return boolean
+     * @throws Exception
      */
     public function instalarPlugin($sNomeArquivo)
     {
@@ -84,24 +84,24 @@ class PluginService
     public function downloadPlugin(Plugin $oPlugin)
     {
 
-        $sNomeArquivo    = $oPlugin->getNome();
-        $sCaminhoArquivo = "plugins/".$sNomeArquivo;
+        $sNomeArquivo = $oPlugin->getNome();
+        $sCaminhoArquivo = "plugins/" . $sNomeArquivo;
 
         if (!is_dir($sCaminhoArquivo)) {
             throw new Exception("Plugin inválido.");
         }
 
         try {
-            $tar = $sCaminhoArquivo.".tar";
+            $tar = $sCaminhoArquivo . ".tar";
             $oDir = new PharData($tar);
             $oDir->compress(Phar::GZ)->buildFromDirectory($sCaminhoArquivo);
-            $sFile = $sCaminhoArquivo.".tar.gz";
-            rename($sFile, self::TMP_DIR.$sNomeArquivo.".tar.gz");
+            $sFile = $sCaminhoArquivo . ".tar.gz";
+            rename($sFile, self::TMP_DIR . $sNomeArquivo . ".tar.gz");
         } catch (Exception $erro) {
             throw new Exception($erro->getMessage() . "-" . $erro->getPrevious());
         }
 
-        $sFile = self::TMP_DIR.$sNomeArquivo.".tar.gz";
+        $sFile = self::TMP_DIR . $sNomeArquivo . ".tar.gz";
 
         return $sFile;
     }
@@ -110,9 +110,9 @@ class PluginService
     /**
      * Valida o arquivo do plugin
      *
-     * @param  string $sCaminhoArquivo - Caminho do arquivo importado
-     * @throws Exception
+     * @param string $sCaminhoArquivo - Caminho do arquivo importado
      * @return string - Nome do plugin Validado
+     * @throws Exception
      */
     public function validarPlugin($sCaminhoArquivo)
     {
@@ -129,8 +129,8 @@ class PluginService
         $sCaminhoPlugin = self::TMP_DIR . $this->descompactar($sCaminhoArquivo);
 
         $oDataManifest = $this->loadManifest($sCaminhoPlugin . "/Manifest.xml");
-        $sNomePlugin   = $oDataManifest->plugin->attributes()->name;
-        $sNomeArquivo  = $sNomePlugin . uniqid();
+        $sNomePlugin = $oDataManifest->plugin->attributes()->name;
+        $sNomeArquivo = $sNomePlugin . uniqid();
 
         $logger = $this->createContainer($sNomePlugin)->get('logger');
 
@@ -158,9 +158,9 @@ class PluginService
     /**
      * Instala o plugin
      *
-     * @param  string $sCaminhoArquivo - Caminho do arquivo que foi feito upload
-     * @throws Exception
+     * @param string $sCaminhoArquivo - Caminho do arquivo que foi feito upload
      * @return boolean                 - True se plugin instalado com sucesso
+     * @throws Exception
      */
     private function instalar($sNomePlugin)
     {
@@ -168,15 +168,15 @@ class PluginService
         $this->descompactar(self::TMP_DIR . "{$sNomePlugin}.tar.gz");
 
         $sCaminhoPlugin = self::TMP_DIR . $sNomePlugin;
-        $oDataManifest  = $this->loadManifest("{$sCaminhoPlugin}/Manifest.xml");
-        $sNomePlugin    = $oDataManifest->plugin->attributes()->name;
+        $oDataManifest = $this->loadManifest("{$sCaminhoPlugin}/Manifest.xml");
+        $sNomePlugin = $oDataManifest->plugin->attributes()->name;
 
         $logger = $this->createContainer($sNomePlugin)->get('logger');
         $logger->info('instalando plugin ' . $sNomePlugin);
 
         $sNomePluginAnterior = null;
-        $lInstalarArquivos   = false;
-        $oManifestAnterior   = null;
+        $lInstalarArquivos = false;
+        $oManifestAnterior = null;
 
         $aModificacoesInstaladas = array();
         $aModificacoesDesinstaladas = array();
@@ -196,7 +196,7 @@ class PluginService
 
             $sNomePluginAnterior = $sNomePlugin . uniqid();
 
-            $logger->debug("Movendo plugins/{$sNomePlugin} para ". self::TMP_DIR . $sNomePluginAnterior);
+            $logger->debug("Movendo plugins/{$sNomePlugin} para " . self::TMP_DIR . $sNomePluginAnterior);
 
             $oManifestAnterior = $this->loadManifest("plugins/{$sNomePlugin}/Manifest.xml");
             rename("plugins/{$sNomePlugin}", self::TMP_DIR . $sNomePluginAnterior);
@@ -228,7 +228,7 @@ class PluginService
         $this->restaurarConexaoPadrao();
 
         try {
-            $lAtivo  = false;
+            $lAtivo = false;
             $oPlugin = new Plugin(null, $oDataManifest->plugin->attributes()->name);
 
             /**
@@ -290,7 +290,7 @@ class PluginService
                 }
 
                 if ($oManifestAnterior) {
-                    $this->rodaEstrutura($oPlugin, "update", (string) $oManifestAnterior->plugin['plugin-version']);
+                    $this->rodaEstrutura($oPlugin, "update", (string)$oManifestAnterior->plugin['plugin-version']);
                 }
             }
 
@@ -380,7 +380,7 @@ class PluginService
             }
 
             if (!unlink(".{$sFile}")) {
-                throw new Exception(_M(self::MENSAGEM . "erro_remover_arquivo", (object) array('sPath' => $sFile)));
+                throw new Exception(_M(self::MENSAGEM . "erro_remover_arquivo", (object)array('sPath' => $sFile)));
             }
         }
     }
@@ -402,10 +402,10 @@ class PluginService
     /**
      * Descompacta um arquivo tar.gz no diretório temporario do projeto
      *
-     * @param  string $sCaminhoArquivo - Caminho do arquivo tar.gz
-     * @param  string $sDestino - Caminho destino
-     * @throws Exception
+     * @param string $sCaminhoArquivo - Caminho do arquivo tar.gz
+     * @param string $sDestino - Caminho destino
      * @return string - Nome do arquivo descompactado
+     * @throws Exception
      */
     private function descompactar($sCaminhoArquivo, $sDestino = '')
     {
@@ -423,7 +423,7 @@ class PluginService
     /**
      * Valida se o plugin esta instalado
      *
-     * @param  string $sNomePlugin - Nome do plugin
+     * @param string $sNomePlugin - Nome do plugin
      * @return boolean
      */
     private function instalado($sNomePlugin)
@@ -455,8 +455,8 @@ class PluginService
 
     /**
      * Descompacta os arquivos da estrutura e inclui o fonte dos callbacks
-     * @param  string $sPathEstrutura
-     * @param  string $sPathDestino
+     * @param string $sPathEstrutura
+     * @param string $sPathDestino
      */
     private function requireEstruturaCallback($sPathEstrutura, $sPathDestino)
     {
@@ -469,7 +469,7 @@ class PluginService
 
     /**
      * Retorna array com os itens de menu
-     * @param  object $oMenu
+     * @param object $oMenu
      * @return array  $aMenus
      */
     private function getMenus(SimpleXMLElement $oMenus = null)
@@ -496,13 +496,13 @@ class PluginService
     {
 
         foreach ($oMenu->item as $oItem) {
-            $aMenu = (object) array(
-                'type' => (string) $oMenu['type'],
-                'parentId' => (string) $oMenu['parent-id'],
-                'name' => (string) $oItem['name'],
-                'file' => (string) $oItem['file'],
-                'uid' => (string) $oItem['uid'],
-                'liberadoCliente' => (string) $oItem['liberado-cliente'],
+            $aMenu = (object)array(
+                'type' => (string)$oMenu['type'],
+                'parentId' => (string)$oMenu['parent-id'],
+                'name' => (string)$oItem['name'],
+                'file' => (string)$oItem['file'],
+                'uid' => (string)$oItem['uid'],
+                'liberadoCliente' => (string)$oItem['liberado-cliente'],
                 'items' => array()
             );
 
@@ -523,18 +523,18 @@ class PluginService
         $aModulos = array();
 
         if (!empty($idModulo)) {
-            $aModulos[] = (object) array(
+            $aModulos[] = (object)array(
                 'id' => $idModulo,
                 'menus' => $this->getMenus($oManifest->plugin->menus->menu),
             );
         } elseif (!empty($oManifest->plugin->modulos->modulo)) {
             foreach ($oManifest->plugin->modulos->modulo as $oModulo) {
-                $aModulos[] = (object) array(
-                    'id' => (string) $oModulo['id'],
-                    'uid' => (string) $oModulo['uid'],
-                    'areaId' => (string) $oModulo['area-id'],
-                    'name' => (string) $oModulo['name'],
-                    'imagem' => (string) $oModulo['imagem'],
+                $aModulos[] = (object)array(
+                    'id' => (string)$oModulo['id'],
+                    'uid' => (string)$oModulo['uid'],
+                    'areaId' => (string)$oModulo['area-id'],
+                    'name' => (string)$oModulo['name'],
+                    'imagem' => (string)$oModulo['imagem'],
                     'menus' => $this->getMenus($oModulo->menus->menu),
                 );
             }
@@ -553,9 +553,9 @@ class PluginService
         }
 
         foreach ($oManifest->plugin->{'release-notes'}->{'release-note'} as $oReleaseNote) {
-            $aReleaseNotes[] = (object) array(
-                'menuId' => (string) $oReleaseNote['menu-id'],
-                'menuUid' => (string) $oReleaseNote['menu-uid'],
+            $aReleaseNotes[] = (object)array(
+                'menuId' => (string)$oReleaseNote['menu-id'],
+                'menuUid' => (string)$oReleaseNote['menu-uid'],
                 'files' => $this->getFilesReleaseNote($oReleaseNote)
             );
         }
@@ -569,9 +569,9 @@ class PluginService
         $aFiles = array();
 
         foreach ($oReleaseNote->file as $oFile) {
-            $aFiles[] = (object) array(
-                'version' => (string) $oFile['version'],
-                'name' => (string) $oFile['name']
+            $aFiles[] = (object)array(
+                'version' => (string)$oFile['version'],
+                'name' => (string)$oFile['name']
             );
         }
 
@@ -581,20 +581,20 @@ class PluginService
     /**
      * Retorna um array com a arvore do Plugin.
      *
-     * @param  string $sCaminho Caminho do diretorio
-     * @param  string $sFolder  Diretorio a ser percorrido
+     * @param string $sCaminho Caminho do diretorio
+     * @param string $sFolder Diretorio a ser percorrido
      * @return array  $aRetorno caminho dos fontes.
      */
     private function getArquivosPlugin($sCaminho, $sFolder = '')
     {
 
-        $sPathFontes     = 'phar://' . $sCaminho . $sFolder;
-        $aRetorno        = array();
+        $sPathFontes = 'phar://' . $sCaminho . $sFolder;
+        $aRetorno = array();
         $aArquivosPlugin = scandir($sPathFontes);
 
         foreach ($aArquivosPlugin as $sArquivo) {
             if (is_dir($sPathFontes . '/' . $sArquivo)) {
-                $aRetornoDiretorio = $this->getArquivosPlugin($sCaminho, $sFolder.'/'.$sArquivo);
+                $aRetornoDiretorio = $this->getArquivosPlugin($sCaminho, $sFolder . '/' . $sArquivo);
                 $aRetorno = array_merge($aRetorno, $aRetornoDiretorio);
             } else {
                 $aRetorno[] = $sFolder . '/' . $sArquivo;
@@ -606,7 +606,7 @@ class PluginService
 
     /**
      * Carrega o arquivo manifest.xml
-     * @param  string $sCaminhosManifest
+     * @param string $sCaminhosManifest
      * @return SimpleXml
      */
     public function loadManifest($sCaminhosManifest)
@@ -622,7 +622,7 @@ class PluginService
     /**
      * Desinstala um plugin do sistema
      *
-     * @param  Plugin $oPlugin instância do plugin a ser desinstalado
+     * @param Plugin $oPlugin instância do plugin a ser desinstalado
      * @return boolean         True se desinstalado com sucesso
      */
     public function desinstalar(Plugin $oPlugin)
@@ -711,7 +711,7 @@ class PluginService
 
     /**
      * Ativa um plugin para uso
-     * @param  Plugin $oPlugin instancia do Plugin que será ativado
+     * @param Plugin $oPlugin instancia do Plugin que será ativado
      * @return boolean          Situação alterada
      */
     public function ativar(Plugin $oPlugin)
@@ -726,7 +726,7 @@ class PluginService
         // Se estiver faltando alguma dependência
         if (!empty($aDependenciasFaltando)) {
             $sListaPlugins = implode(', ', $aDependenciasFaltando);
-            throw new BusinessException(_M(self::MENSAGEM . 'dependencias_faltando', (object) array('sListaPlugins' => $sListaPlugins)));
+            throw new BusinessException(_M(self::MENSAGEM . 'dependencias_faltando', (object)array('sListaPlugins' => $sListaPlugins)));
         }
 
         // usado para saber as modificacoes que devem ser removidas caso ocorra algum erro
@@ -787,7 +787,7 @@ class PluginService
             $this->desinstalarModificacoes($aModificacoesInstaladas, $oPlugin->getNome(), $logger);
 
             // remove arquivos
-            $aArquivosDesinstalar = $this->getArquivosPlugin("plugins/". $oPlugin->getNome(). "/fontes.tar.gz");
+            $aArquivosDesinstalar = $this->getArquivosPlugin("plugins/" . $oPlugin->getNome() . "/fontes.tar.gz");
             $this->removerArquivosInstalados($aArquivosDesinstalar);
 
             throw $oErro;
@@ -797,7 +797,7 @@ class PluginService
     /**
      * Desativa um plugin para uso
      *
-     * @param  Plugin $oPlugin instancia do Plugin que será desativado
+     * @param Plugin $oPlugin instancia do Plugin que será desativado
      * @return boolean          Situação alterada
      */
     public function desativar(Plugin $oPlugin)
@@ -812,7 +812,7 @@ class PluginService
 
         $oPlugin->setSituacao(false);
 
-        $oDataManifest = $this->loadManifest("plugins/". $oPlugin->getNome()."/Manifest.xml");
+        $oDataManifest = $this->loadManifest("plugins/" . $oPlugin->getNome() . "/Manifest.xml");
         $oFiles = $oDataManifest->plugin->files;
 
         if ($oPlugin->getCodigo()) {
@@ -827,10 +827,10 @@ class PluginService
         $aDependenciasReversas = $this->validarDependenciasReversas($oDataManifest);
         if (!empty($aDependenciasReversas)) {
             $sDependenciasReversas = implode(', ', $aDependenciasReversas);
-            throw new BusinessException(_M(self::MENSAGEM . "dependencias_reversas", (object) array("sListaPlugins" => $sDependenciasReversas)));
+            throw new BusinessException(_M(self::MENSAGEM . "dependencias_reversas", (object)array("sListaPlugins" => $sDependenciasReversas)));
         }
 
-        $aArquivosDesinstalar = $this->getArquivosPlugin("plugins/". $oPlugin->getNome(). "/fontes.tar.gz");
+        $aArquivosDesinstalar = $this->getArquivosPlugin("plugins/" . $oPlugin->getNome() . "/fontes.tar.gz");
 
         $aModificacoesDesinstaladas = array();
 
@@ -858,11 +858,11 @@ class PluginService
     /**
      * Roda a estrutura do plugin na base de dados
      *
-     * @param  Plugin $oPlugin
-     * @param  string $sEstrutura - Tipo do arquivo de estrutura (install|uninstall|update)
-     * @param  string $sOldVersion - Versão do plugin instalada para atualizar
-     * @throws Exception
+     * @param Plugin $oPlugin
+     * @param string $sEstrutura - Tipo do arquivo de estrutura (install|uninstall|update)
+     * @param string $sOldVersion - Versão do plugin instalada para atualizar
      * @return boolean
+     * @throws Exception
      */
     private function rodaEstrutura(Plugin $oPlugin, $sEstrutura, $sVersaoAnterior = null)
     {
@@ -870,13 +870,13 @@ class PluginService
         $lCallback = false;
 
         $sPathEstrutura = "plugins/{$oPlugin->getNome()}/estrutura.tar.gz";
-        $oDataManifest  = $this->loadManifest("plugins/{$oPlugin->getNome()}/Manifest.xml");
+        $oDataManifest = $this->loadManifest("plugins/{$oPlugin->getNome()}/Manifest.xml");
 
         if (!property_exists($oDataManifest->plugin, 'estrutura')) {
             return false;
         }
 
-        $aEstruturas   = array();
+        $aEstruturas = array();
         $aAtualizacoes = (property_exists($oDataManifest->plugin->estrutura, 'estrutura') ? $oDataManifest->plugin->estrutura->estrutura : array());
 
         $logger = $this->getContainer()->get('logger');
@@ -914,7 +914,7 @@ class PluginService
                 }
 
                 foreach ($aAtualizacoes as $aAtualizacao) {
-                    if ($aAtualizacao['version'] > $sVersaoAnterior && $aAtualizacao['version'] <= (string) $oDataManifest->plugin['plugin-version']) {
+                    if ($aAtualizacao['version'] > $sVersaoAnterior && $aAtualizacao['version'] <= (string)$oDataManifest->plugin['plugin-version']) {
                         $aEstruturas[] = file_get_contents("phar://{$sPathEstrutura}{$aAtualizacao['file']}");
                     }
                 }
@@ -977,8 +977,8 @@ class PluginService
 
     /**
      * Lê o arquivo de configuração "config/plugins.json" e retorna seu conteúdo
-     * @throws Exception
      * @return JSON
+     * @throws Exception
      */
     public function getConfig()
     {
@@ -1008,13 +1008,13 @@ class PluginService
 
     /**
      * Cria os menus do plugin
-     * @param  stdClass         $oItemMenu    Nó menu do xml Manifest
-     * @param  integer          $iPlugin  Id do plugin
-     * @param  integer          $iModulo  Id do módulo, especificado no xml Manifest
-     * @param  integer          $iMenuPai Item de menu pai (utilizado para recursão da arvore)
+     * @param stdClass $oItemMenu Nó menu do xml Manifest
+     * @param integer $iPlugin Id do plugin
+     * @param integer $iModulo Id do módulo, especificado no xml Manifest
+     * @param integer $iMenuPai Item de menu pai (utilizado para recursão da arvore)
      *                                    Caso não passe o pai, o método pega o pai de acordo com o xml Manifest e o módulo
-     * @throws Exception
      * @return array Array com o id dos menus salvos
+     * @throws Exception
      */
     private function salvarMenus($oItemMenu, $iPlugin, $iModulo, $iMenuPai = null)
     {
@@ -1023,8 +1023,8 @@ class PluginService
 
         $oDaoDbitensmenu = new cl_db_itensmenu();
         $oDaoDbpermissao = new cl_db_permissao();
-        $oDaoDbmenu      = new cl_db_menu();
-        $oDaoPluginMenu  = new cl_db_pluginitensmenu();
+        $oDaoDbmenu = new cl_db_menu();
+        $oDaoPluginMenu = new cl_db_pluginitensmenu();
 
         $idItemMenu = null;
 
@@ -1043,7 +1043,7 @@ class PluginService
                     $sTipoDescricao = "Procedimentos";
                     break;
                 default:
-                    throw new Exception(_M(self::MENSAGEM . "tipo_menu_desconhecido", (object) array("sTipo" => $oItemMenu->type)));
+                    throw new Exception(_M(self::MENSAGEM . "tipo_menu_desconhecido", (object)array("sTipo" => $oItemMenu->type)));
             }
 
             $sSqlItenMenu = $oDaoDbitensmenu->sql_query_menus(
@@ -1081,13 +1081,13 @@ class PluginService
         /**
          * Insere item de menu no sistema
          */
-        $oDaoDbitensmenu->id_item    = $iIdItemMenu;
-        $oDaoDbitensmenu->descricao  = utf8_decode($oItemMenu->name);
-        $oDaoDbitensmenu->help       = utf8_decode($oItemMenu->name);
-        $oDaoDbitensmenu->funcao     = $oItemMenu->file;
-        $oDaoDbitensmenu->itemativo  = "1";
+        $oDaoDbitensmenu->id_item = $iIdItemMenu;
+        $oDaoDbitensmenu->descricao = utf8_decode($oItemMenu->name);
+        $oDaoDbitensmenu->help = utf8_decode($oItemMenu->name);
+        $oDaoDbitensmenu->funcao = $oItemMenu->file;
+        $oDaoDbitensmenu->itemativo = "1";
         $oDaoDbitensmenu->manutencao = "1";
-        $oDaoDbitensmenu->desctec    = utf8_decode($oItemMenu->name);
+        $oDaoDbitensmenu->desctec = utf8_decode($oItemMenu->name);
         $oDaoDbitensmenu->libcliente = $oItemMenu->liberadoCliente;
 
         if ($lIncluir) {
@@ -1103,8 +1103,8 @@ class PluginService
         }
 
         if ($lIncluir) {
-            $oDaoPluginMenu->db146_sequencial   = null;
-            $oDaoPluginMenu->db146_db_plugin    = $iPlugin;
+            $oDaoPluginMenu->db146_sequencial = null;
+            $oDaoPluginMenu->db146_db_plugin = $iPlugin;
             $oDaoPluginMenu->db146_db_itensmenu = $oDaoDbitensmenu->id_item;
             $oDaoPluginMenu->db146_uid = $oItemMenu->uid;
             $oDaoPluginMenu->incluir(null);
@@ -1124,7 +1124,7 @@ class PluginService
             ));
 
             if (!$rsSequenciaMenu) {
-                throw new DBException(_M(self::MENSAGEM . "falha_organizar_menu", (object) array('sMenu' => $oItemMenu->name)));
+                throw new DBException(_M(self::MENSAGEM . "falha_organizar_menu", (object)array('sMenu' => $oItemMenu->name)));
             }
 
             $oMenuSequencia = db_utils::fieldsMemory($rsSequenciaMenu, 0);
@@ -1132,10 +1132,10 @@ class PluginService
             /**
              * Organizando o item de menu abaixo do item selecionado
              */
-            $oDaoDbmenu->id_item        = $iMenuPai;
-            $oDaoDbmenu->id_item_filho  = $oDaoDbitensmenu->id_item;
-            $oDaoDbmenu->menusequencia  = $oMenuSequencia->menusequencia == null ? 1 : $oMenuSequencia->menusequencia;
-            $oDaoDbmenu->modulo         = $iModulo;
+            $oDaoDbmenu->id_item = $iMenuPai;
+            $oDaoDbmenu->id_item_filho = $oDaoDbitensmenu->id_item;
+            $oDaoDbmenu->menusequencia = $oMenuSequencia->menusequencia == null ? 1 : $oMenuSequencia->menusequencia;
+            $oDaoDbmenu->modulo = $iModulo;
             $oDaoDbmenu->incluir(null);
 
             if ($oDaoDbmenu->erro_status == '0') {
@@ -1145,12 +1145,12 @@ class PluginService
             /**
              * Liberando permissao de menu para o usuario que criou o relatorio
              */
-            $oDaoDbpermissao->id_item        = $oDaoDbitensmenu->id_item;
-            $oDaoDbpermissao->id_usuario     = db_getsession('DB_id_usuario');
+            $oDaoDbpermissao->id_item = $oDaoDbitensmenu->id_item;
+            $oDaoDbpermissao->id_usuario = db_getsession('DB_id_usuario');
             $oDaoDbpermissao->permissaoativa = '1';
-            $oDaoDbpermissao->anousu         = db_getsession('DB_anousu');
-            $oDaoDbpermissao->id_instit      = db_getsession('DB_instit');
-            $oDaoDbpermissao->id_modulo      = $iModulo;
+            $oDaoDbpermissao->anousu = db_getsession('DB_anousu');
+            $oDaoDbpermissao->id_instit = db_getsession('DB_instit');
+            $oDaoDbpermissao->id_modulo = $iModulo;
 
             $oDaoDbpermissao->incluir(
                 db_getsession('DB_id_usuario'),
@@ -1287,14 +1287,14 @@ class PluginService
     }
 
     /**
-     * @param  Array  $aModulos
+     * @param Array $aModulos
      * @return bool
      */
-    private function instalarModulos(Array $aModulos)
+    private function instalarModulos(array $aModulos)
     {
 
         $logger = $this->getContainer()->get('logger');
-        $logger->debug("Instalando modulos: ". count($aModulos));
+        $logger->debug("Instalando modulos: " . count($aModulos));
 
         foreach ($aModulos as $oModulo) {
             if (empty($oModulo->imagem)) {
@@ -1361,8 +1361,8 @@ class PluginService
     }
 
     /**
-     * @param  SimpleXMLElement $oDataManifest
-     * @param  Plugin $oPlugin
+     * @param SimpleXMLElement $oDataManifest
+     * @param Plugin $oPlugin
      * @return bool
      */
     private function excluirEstruturaModulos(Plugin $oPlugin, SimpleXMLElement $oDataManifest)
@@ -1391,13 +1391,13 @@ class PluginService
     }
 
     /**
-     * @param  Plugin $oPlugin
+     * @param Plugin $oPlugin
      * @return array
      */
     private function getModulosPlugin(Plugin $oPlugin)
     {
 
-        $oDaoPluginModulos  = new cl_db_pluginmodulos();
+        $oDaoPluginModulos = new cl_db_pluginmodulos();
         $sSqlPluginModulos = $oDaoPluginModulos->sql_query_file(
             null,
             "db152_sequencial, db152_db_modulo",
@@ -1421,7 +1421,7 @@ class PluginService
     public function getItensMenuPlugin(Plugin $oPlugin)
     {
 
-        $oDaoPluginItensMenu  = new cl_db_pluginitensmenu();
+        $oDaoPluginItensMenu = new cl_db_pluginitensmenu();
         $sSqlPluginItensMenu = $oDaoPluginItensMenu->sql_query_file(
             null,
             "db146_sequencial, db146_db_itensmenu",
@@ -1443,10 +1443,10 @@ class PluginService
     }
 
     /**
-     * @param  Array  $aModulos
+     * @param Array $aModulos
      * @return bool
      */
-    private function excluirModulos(Array $aModulos)
+    private function excluirModulos(array $aModulos)
     {
 
         $oDaoDbitensmenu = new cl_db_itensmenu();
@@ -1513,16 +1513,16 @@ class PluginService
 
     /**
      * Apaga os menus passados por parametro no formato db_utils::getCollectionByRedord
-     * @param  Array $aItensMenu array de menus, exemplo: $this->getItensMenuPlugin()
+     * @param Array $aItensMenu array de menus, exemplo: $this->getItensMenuPlugin()
      * @return bool
      */
-    private function excluirMenus(Array $aItensMenu)
+    private function excluirMenus(array $aItensMenu)
     {
 
         $oDaoDbitensmenu = new cl_db_itensmenu();
         $oDaoDbpermissao = new cl_db_permissao();
-        $oDaoDbmenu      = new cl_db_menu();
-        $oDaoPluginMenu  = new cl_db_pluginitensmenu();
+        $oDaoDbmenu = new cl_db_menu();
+        $oDaoPluginMenu = new cl_db_pluginitensmenu();
 
         foreach ($aItensMenu as $oPluginMenu) {
             $oDaoDbpermissao->excluir(null, null, null, null, null, "id_item = " . $oPluginMenu->db146_db_itensmenu);
@@ -1552,23 +1552,34 @@ class PluginService
                 $oDataManifest = $this->loadManifest($sManifest);
 
                 if (!$oPluginSistema->getCodigo()) {
-                    $oPluginSistema->setNome((string) $oDataManifest->plugin->attributes()->name);
-                    $oPluginSistema->setLabel((string) $oDataManifest->plugin->attributes()->label);
+                    $oPluginSistema->setNome((string)$oDataManifest->plugin->attributes()->name);
+                    $oPluginSistema->setLabel((string)$oDataManifest->plugin->attributes()->label);
                     $oPluginSistema->setSituacao(false);
                     $oPluginSistema->salvar();
                 }
 
                 $oPlugin = new stdClass();
-                $oPlugin->iCodigo       = $oPluginSistema->getCodigo();
-                $oPlugin->sNome         = $oPluginSistema->getNome();
-                $oPlugin->sLabel        = $oPluginSistema->getLabel();
-                $oPlugin->lConfiguracao = (boolean) $this->getPluginConfig($oPluginSistema);
-                $oPlugin->nVersao       = (string) $oDataManifest->plugin['plugin-version'];
-                $oPlugin->lSituacao     = $this->isAtivo($oPluginSistema);
+                $oPlugin->iCodigo = $oPluginSistema->getCodigo();
+                $oPlugin->sNome = $oPluginSistema->getNome();
+                $oPlugin->sLabel = $oPluginSistema->getLabel();
+                $oPlugin->lConfiguracao = (boolean)$this->getPluginConfig($oPluginSistema);
+                $oPlugin->nVersao = (string)$oDataManifest->plugin['plugin-version'];
+                $oPlugin->lSituacao = $this->isAtivo($oPluginSistema);
+                $oPlugin->sModulo = 'N/A';
+                if (isset($oDataManifest->plugin['id-modulo'])) {
+                    $idModulo = (string)$oDataManifest->plugin['id-modulo'];
+                    $dao = new \cl_db_modulos();
+                    $sql = $dao->sql_query_file($idModulo, 'nome_modulo');
+                    $rs = $dao->sql_record($sql);
+
+                    if ($dao->numrows > 0) {
+                        $oPlugin->sModulo = utf8_encode(\db_utils::fieldsMemory($rs, 0)->nome_modulo);
+                    }
+                }
 
                 // plugin ativo, busca erros nos logs de modificacoes
                 $oPlugin->oErrosModificacoes = $this->getErrosModificacoes(
-                    $oPlugin->lSituacao ?  $this->getModificacoes($oPluginSistema->getNome()) : array()
+                    $oPlugin->lSituacao ? $this->getModificacoes($oPluginSistema->getNome()) : array()
                 );
 
                 $aPlugins[] = $oPlugin;
@@ -1581,7 +1592,7 @@ class PluginService
     /**
      * Retorna a configuração de um plugin, caso exista o arquivo de configuração
      *
-     * @param  Plugin $oPlugin
+     * @param Plugin $oPlugin
      * @return mixed array|null
      */
     public static function getPluginConfig(Plugin $oPlugin)
@@ -1601,20 +1612,20 @@ class PluginService
      * Retorna a configuração de um plugin informada por parâmetro,
      * caso exista o arquivo de configuração
      *
-     * @param  String  $sNamePlugin   Nome do plugin
-     * @param  String  $sChaveConfig  Nome da chave a ser buscada
+     * @param String $sNamePlugin Nome do plugin
+     * @param String $sChaveConfig Nome da chave a ser buscada
      *
      * @return  String Valor da chave;
      */
     public static function getPluginConfigByName($sNamePlugin, $sChaveConfig)
     {
 
-        $sIndice       = "ConfiguracaoPlugin:{$sNamePlugin}";
+        $sIndice = "ConfiguracaoPlugin:{$sNamePlugin}";
 
         if (DBRegistry::get($sIndice)) {
-            $aConfiguracao =  DBRegistry::get($sIndice);
+            $aConfiguracao = DBRegistry::get($sIndice);
         } else {
-            $oPlugin       = new Plugin(null, $sNamePlugin);
+            $oPlugin = new Plugin(null, $sNamePlugin);
             $aConfiguracao = PluginService::getPluginConfig($oPlugin);
             DBRegistry::add($sIndice, $aConfiguracao);
         }
@@ -1622,7 +1633,7 @@ class PluginService
 
         if (!isset($aConfiguracao[$sChaveConfig])) {
             throw new BusinessException(_M(self::MENSAGEM . 'configuracao_nao_encontrada',
-                                          (object)array('configuracao'=>$sChaveConfig, 'nomeplugin'=>$sNamePlugin)));
+                (object)array('configuracao' => $sChaveConfig, 'nomeplugin' => $sNamePlugin)));
         }
 
         return $aConfiguracao[$sChaveConfig];
@@ -1649,22 +1660,22 @@ class PluginService
             $sContent .= "{$sProperty}=\"{$sValue}\"\n";
         }
 
-        return (boolean) file_put_contents($sPathConfig, $sContent);
+        return (boolean)file_put_contents($sPathConfig, $sContent);
     }
 
     /**
      * Verifica se o Plugin esta ativo
      *
-     * @param  Plugin  $oPlugin
+     * @param Plugin $oPlugin
      * @return boolean
      */
     public function isAtivo(Plugin $oPlugin)
     {
 
-        $lAtivoPlugin  = $oPlugin->isAtivo();
+        $lAtivoPlugin = $oPlugin->isAtivo();
         $oDataManifest = $this->loadManifest("plugins/{$oPlugin->getNome()}/Manifest.xml");
 
-        $oFiles         = $oDataManifest->plugin->files;
+        $oFiles = $oDataManifest->plugin->files;
         $lAtivoArquivos = (count((array)$oFiles) == 0);
 
         foreach ($oFiles->file as $oFile) {
@@ -1684,9 +1695,9 @@ class PluginService
      *  -A versão especificada no Manifest.XML deve ser <= que a versão atual do e-cidade.
      *  -Todas as dependências do plugin devem estar instaladas e ativadas
      *
-     * @param  string $sPlugin caminho temporário do plugin.
-     * @throws Exception
+     * @param string $sPlugin caminho temporário do plugin.
      * @return boolean
+     * @throws Exception
      */
     private function validar($sPlugin)
     {
@@ -1699,14 +1710,14 @@ class PluginService
          * Carrega o Manifest.XML
          */
         $sCaminhosManifest = $sPlugin . "/Manifest.xml";
-        $oPluginManifest   = $this->loadManifest($sCaminhosManifest);
-        $oPlugin           = $oPluginManifest->plugin;
-        $sNomePlugin       = $oPlugin->attributes()->name;
+        $oPluginManifest = $this->loadManifest($sCaminhosManifest);
+        $oPlugin = $oPluginManifest->plugin;
+        $sNomePlugin = $oPlugin->attributes()->name;
 
         /**
          * Verifica se o plugin já esta instalado
          */
-        $lPluginInstalado  = $this->instalado($sNomePlugin);
+        $lPluginInstalado = $this->instalado($sNomePlugin);
 
         /**
          * Array com todos os arquivos especificados no XML.
@@ -1716,7 +1727,7 @@ class PluginService
         /**
          * Array com todos o arquivos fontes do pluguin.
          */
-        $sPathFontes     = $sPlugin . "fontes.tar.gz";
+        $sPathFontes = $sPlugin . "fontes.tar.gz";
         $aArquivosPlugin = $this->getArquivosPlugin($sPathFontes);
 
         /**
@@ -1729,7 +1740,7 @@ class PluginService
             $aFilesXML[] = $aFile['path'];
 
             if (!in_array($aFile['path'], $aArquivosPlugin)) {
-                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_nao_encontrado', (object) array('sPath' => $aFile['path'])));
+                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_nao_encontrado', (object)array('sPath' => $aFile['path'])));
             }
         }
 
@@ -1739,7 +1750,7 @@ class PluginService
          */
         foreach ($aArquivosPlugin as $sArquivo) {
             if (!in_array($sArquivo, $aFilesXML)) {
-                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_nao_especificado', (object) array('sPath' => $sArquivo)));
+                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_nao_especificado', (object)array('sPath' => $sArquivo)));
             }
         }
 
@@ -1747,11 +1758,11 @@ class PluginService
          * Verifica se o plugin já esta instalado para validar a atualização
          */
         if ($lPluginInstalado) {
-            $oManifestInstalado  = $this->loadManifest("plugins/{$sNomePlugin}/Manifest.xml");
+            $oManifestInstalado = $this->loadManifest("plugins/{$sNomePlugin}/Manifest.xml");
             $aArquivosInstalados = $this->getArquivosPlugin("plugins/{$sNomePlugin}/fontes.tar.gz");
             $versaoPlugin = $this->getPluginVersion($oPlugin);
             $versaoPluginInstalado = $this->getPluginVersion($oManifestInstalado->plugin);
-            
+
             /**
              * Testa a versão do plugin comparando cada "posição" de versionamento
              */
@@ -1776,36 +1787,36 @@ class PluginService
          */
         foreach ($aArquivosPlugin as $sArquivo) {
             // corrige arquivos com caracteres especiais
-            $sArquivo =  DBString::utf8_decode_all($sArquivo);
+            $sArquivo = DBString::utf8_decode_all($sArquivo);
 
             /**
              * Verifica se os arquivos estão incluindo o "db_conecta.php"
              */
             if (file_exists("phar://{$sPlugin}fontes.tar.gz{$sArquivo}") && preg_match('/db_conecta\.php/', file_get_contents("phar://{$sPlugin}fontes.tar.gz{$sArquivo}"))) {
-                throw new BusinessException(_M(self::MENSAGEM . 'db_conecta_incluido', (object) array('sPath' => $sArquivo)));
+                throw new BusinessException(_M(self::MENSAGEM . 'db_conecta_incluido', (object)array('sPath' => $sArquivo)));
             }
 
             /**
              * Verifica se o plugin já não esta instalado e se o arquivo já existe no eCidade
              */
             if (!$lPluginInstalado && file_exists("./$sArquivo")) {
-                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_ja_existe', (object) array('sPath' => $sArquivo)));
+                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_ja_existe', (object)array('sPath' => $sArquivo)));
             }
 
             /**
              * Verifica se o plugin já esta instalado e se o arquivo informado é um arquivo novo desta versão do plugin e se já existe no eCidade
              */
             if ($lPluginInstalado && !in_array($sArquivo, $aArquivosInstalados) && file_exists("./{$sArquivo}")) {
-                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_ja_existe', (object) array('sPath' => $sArquivo)));
+                throw new BusinessException(_M(self::MENSAGEM . 'arquivo_ja_existe', (object)array('sPath' => $sArquivo)));
             }
         }
 
         /**
          * Verifica se a versão especificada no XML é menor ou igual a do e-cidade.
          */
-        $iVersao  = $GLOBALS['db_fonte_codversao'];
+        $iVersao = $GLOBALS['db_fonte_codversao'];
         $iRelease = $GLOBALS['db_fonte_codrelease'];
-        $sVersao  = "2.{$iVersao}.{$iRelease}";
+        $sVersao = "2.{$iVersao}.{$iRelease}";
 
         if ($oPlugin['ecidade-version'] > $sVersao) {
             throw new BusinessException(_M(self::MENSAGEM . 'versao_invalida'));
@@ -1837,7 +1848,7 @@ class PluginService
 
             if (!empty($oMenu->uid)) {
                 if (in_array($oMenu->uid, $aUidsManifest)) {
-                    throw new BusinessException('UID informado no menu: ' . $oMenu->name  . ' já foi informado em outra tag.');
+                    throw new BusinessException('UID informado no menu: ' . $oMenu->name . ' já foi informado em outra tag.');
                 }
 
                 $aUidsManifest[] = $oMenu->uid;
@@ -1848,7 +1859,7 @@ class PluginService
             $sArquivoMenu = current(explode('?', $sArquivoMenu));
 
             if (!in_array($sArquivoMenu, $aArquivosPlugin)) {
-                throw new BusinessException(_M(PluginService::MENSAGEM . 'arquivo_nao_especificado_menu', (object) array('sPath' => $sArquivoMenu)));
+                throw new BusinessException(_M(PluginService::MENSAGEM . 'arquivo_nao_especificado_menu', (object)array('sPath' => $sArquivoMenu)));
             }
         };
 
@@ -1874,7 +1885,7 @@ class PluginService
 
             if (!empty($oModulo->uid)) {
                 if (in_array($oModulo->uid, $aUidsManifest)) {
-                    throw new BusinessException('UID informado no módulo: ' . $oModulo->name  . ' já foi informado em outra tag.');
+                    throw new BusinessException('UID informado no módulo: ' . $oModulo->name . ' já foi informado em outra tag.');
                 }
 
                 $aUidsManifest[] = $oModulo->uid;
@@ -1932,7 +1943,7 @@ class PluginService
                 // valida uid
                 if (!in_array($oHelp->menuUid, $aUidsMenus)) {
                     throw new BusinessException(
-                        "Atributo 'menu-uid' informado no Help não encontrado nas tags de menu: " .$oHelp->menuUid
+                        "Atributo 'menu-uid' informado no Help não encontrado nas tags de menu: " . $oHelp->menuUid
                     );
                 }
             } else {
@@ -1976,7 +1987,7 @@ class PluginService
             if (!file_exists($sPathEstrutura)) {
                 throw new BusinessException(_M(
                     self::MENSAGEM . 'arquivo_nao_encontrado',
-                    (object) array('sPath' => 'estrutura.tar.gz')
+                    (object)array('sPath' => 'estrutura.tar.gz')
                 ));
             }
 
@@ -1996,14 +2007,14 @@ class PluginService
             if (!in_array($oPlugin->estrutura['install'], $aArquivosEstrutura)) {
                 throw new BusinessException(_M(
                     self::MENSAGEM . 'arquivo_nao_encontrado',
-                    (object) array('sPath' => $oPlugin->estrutura['install'])
+                    (object)array('sPath' => $oPlugin->estrutura['install'])
                 ));
             }
 
             if (!in_array($oPlugin->estrutura['uninstall'], $aArquivosEstrutura)) {
                 throw new BusinessException(_M(
                     self::MENSAGEM . 'arquivo_nao_encontrado',
-                    (object) array('sPath' => $oPlugin->estrutura['uninstall'])
+                    (object)array('sPath' => $oPlugin->estrutura['uninstall'])
                 ));
             }
 
@@ -2017,7 +2028,7 @@ class PluginService
                     }
 
                     if (!in_array($oEstrutura["file"], $aArquivosEstrutura)) {
-                        throw new Exception(_M(self::MENSAGEM . 'arquivo_nao_encontrado', (object) array('sPath' => $oEstrutura["file"])));
+                        throw new Exception(_M(self::MENSAGEM . 'arquivo_nao_encontrado', (object)array('sPath' => $oEstrutura["file"])));
                     }
                 }
             }
@@ -2042,7 +2053,7 @@ class PluginService
          */
         if (!empty($aDependenciasFaltando)) {
             $sListaPlugins = implode(', ', $aDependenciasFaltando);
-            throw new BusinessException(_M(self::MENSAGEM . 'dependencias_faltando', (object) array('sListaPlugins' => $sListaPlugins)));
+            throw new BusinessException(_M(self::MENSAGEM . 'dependencias_faltando', (object)array('sListaPlugins' => $sListaPlugins)));
         }
 
         return true;
@@ -2059,7 +2070,7 @@ class PluginService
             $oDaoModulo = new cl_db_modulos();
 
             $sSqlModulo = $oDaoModulo->sql_query_file($oModulo->id);
-            $rsModulo   = $oDaoModulo->sql_record($sSqlModulo);
+            $rsModulo = $oDaoModulo->sql_record($sSqlModulo);
 
             if (!$rsModulo || !pg_num_rows($rsModulo)) {
                 throw new BusinessException(_M(self::MENSAGEM . 'id_modulo_invalido'));
@@ -2096,14 +2107,14 @@ class PluginService
     private function validarDependenciasReversas($oPlugin)
     {
 
-        $aPlugins              = $this->getPlugins();
+        $aPlugins = $this->getPlugins();
         $aDependenciasReversas = array();
-        $sNomePlugin           = $oPlugin->plugin->attributes()->name;
+        $sNomePlugin = $oPlugin->plugin->attributes()->name;
 
         foreach ($aPlugins as $oPluginComparado) {
             $oPluginComparadoConfig = $this->loadManifest("plugins/{$oPluginComparado->sNome}/Manifest.xml");
-            $sNomePluginComparado   = (string) $oPluginComparadoConfig->plugin['name'];
-            $nVersaoPluginComparado = (string) $oPluginComparadoConfig->plugin['plugin-version'];
+            $sNomePluginComparado = (string)$oPluginComparadoConfig->plugin['name'];
+            $nVersaoPluginComparado = (string)$oPluginComparadoConfig->plugin['plugin-version'];
 
             if (property_exists($oPluginComparadoConfig->plugin, "dependencies")) {
 
@@ -2112,7 +2123,7 @@ class PluginService
                  */
                 $aDependenciasPlugin = array();
                 foreach ($oPluginComparadoConfig->plugin->dependencies->plugin as $aDependencia) {
-                    $aDependenciasPlugin[] = (string) $aDependencia['name'];
+                    $aDependenciasPlugin[] = (string)$aDependencia['name'];
                 }
 
                 /**
@@ -2171,7 +2182,7 @@ class PluginService
 
         foreach ($aPlugins as $oPlugin) {
             $oPluginConfig = $this->loadManifest("plugins/{$oPlugin->sNome}/Manifest.xml");
-            $nVersao       = (float) $oPluginConfig->plugin['plugin-version'];
+            $nVersao = (float)$oPluginConfig->plugin['plugin-version'];
 
             if ($aDependencia['name'] == $oPlugin->sNome && $oPlugin->lSituacao && $nVersao >= $aDependencia['version']) {
                 return true;
@@ -2233,7 +2244,7 @@ class PluginService
     {
 
         return $GLOBALS['conn'] = pg_connect(
-            "host="  . db_getsession("DB_servidor", false) .
+            "host=" . db_getsession("DB_servidor", false) .
             " dbname=" . (db_getsession("DB_NBASE", false) ?: db_getsession("DB_base", false)) .
             " port=" . db_getsession("DB_porta", false) .
             " user=" . db_getsession("DB_user", false) .
@@ -2273,7 +2284,7 @@ class PluginService
      * @param \ECidade\V3\Extension\Logger $logger
      * @return array
      */
-    public function instalarModificacoes(Array $aModificacoes, $sNomePlugin, Logger $logger = null)
+    public function instalarModificacoes(array $aModificacoes, $sNomePlugin, Logger $logger = null)
     {
 
         $logger = $this->getContainer()->get('logger');
@@ -2292,7 +2303,6 @@ class PluginService
             $oConfig = Registry::get('app.config');
 
             $oManager = new ModificationManager($container);
-            $sLogin = db_getsession('DB_login');
 
             // mais de uma modificacao no plugin, agrupa para poder abortar se necessario
             $lAgrupar = count($aModificacoes) > 1;
@@ -2315,7 +2325,7 @@ class PluginService
                 $lModificacaoAlterada = false;
 
                 // modificacao por algum motivo desconhecido esta ativa
-                if ($oModification->isEnabled($sLogin)) {
+                if ($oModification->isEnabled()) {
                     $oModification->setStatus(ModificationData::STATUS_DISABLED);
                     $lModificacaoAlterada = true;
                 }
@@ -2338,7 +2348,7 @@ class PluginService
             }
 
             if (!empty($aModificacoesID)) {
-                $oManager->install($aModificacoesID, $sLogin);
+                $oManager->install($aModificacoesID);
             }
 
             $oManager = null;
@@ -2350,14 +2360,13 @@ class PluginService
     }
 
 
-
     /**
      * @param string $aModificacoes
      * @param string $sNomePlugin
      * @param \ECidade\V3\Extension\Logger $logger
      * @return array
      */
-    public function desinstalarModificacoes(Array $aModificacoes, $sNomePlugin, Logger $logger = null)
+    public function desinstalarModificacoes(array $aModificacoes, $sNomePlugin, Logger $logger = null)
     {
 
         $logger = $this->getContainer()->get('logger');
@@ -2375,7 +2384,6 @@ class PluginService
 
             $oConfig = Registry::get('app.config', Registry::get('config'));
             $oManager = new ModificationManager($container);
-            $sLogin = db_getsession('DB_login');
             $lAgrupar = false;
             $lGruposAlterado = false;
 
@@ -2395,7 +2403,7 @@ class PluginService
                 $oData = ModificationDataModification::restore($oParse->getId());
 
                 // modificacao desinstalada ou abortada
-                if (!$oData->isEnabled($sLogin)) {
+                if (!$oData->isEnabled()) {
                     $logger->debug(" - modificação desabilita: " . $oParse->getId());
                     continue;
                 }
@@ -2416,7 +2424,7 @@ class PluginService
             }
 
             if (!empty($aModificacoesID)) {
-                $oManager->uninstall($aModificacoesID, $sLogin);
+                $oManager->uninstall($aModificacoesID);
             }
 
             return $aRemovidas;
@@ -2466,7 +2474,7 @@ class PluginService
 
             // pegar id do item de menu pelo uid
             if (!empty($oReleaseNote->menuUid)) {
-                $sSqlPluginItensMenu = $oDaoPluginItensMenu->sql_query_file(null, 'db146_db_itensmenu', null, 'db146_uid = \'' . $oReleaseNote->menuUid ."'");
+                $sSqlPluginItensMenu = $oDaoPluginItensMenu->sql_query_file(null, 'db146_db_itensmenu', null, 'db146_uid = \'' . $oReleaseNote->menuUid . "'");
                 $rsPluginItensMenu = $oDaoPluginItensMenu->sql_record($sSqlPluginItensMenu);
 
                 if (!$rsPluginItensMenu) {
@@ -2490,7 +2498,7 @@ class PluginService
                 $iIndice = $aIndices["$iIndiceReleaseNote"]["$sVersao"];
 
                 $sCaminhoReleaseNoteOrigem = 'phar://' . $sDiretorioReleaseNotes . '.tar.gz/release_notes/' . $oFile->version . $oFile->name;
-                $sCaminhoReleaseNoteDestino = $sDiretorioReleaseNotes . "/" . $oFile->version . '/' . $iIdItemMenu . '_' . str_pad(( $iIndice + 1 ), 2, '0', STR_PAD_LEFT) . '.md';
+                $sCaminhoReleaseNoteDestino = $sDiretorioReleaseNotes . "/" . $oFile->version . '/' . $iIdItemMenu . '_' . str_pad(($iIndice + 1), 2, '0', STR_PAD_LEFT) . '.md';
 
                 if (!file_exists($sCaminhoReleaseNoteOrigem)) {
                     throw new Exception("Arquivo de origem do release notes não existe: " . $sCaminhoReleaseNoteOrigem);
@@ -2547,7 +2555,7 @@ class PluginService
     {
 
         $logger = $this->getContainer()->get('logger');
-        $logger->debug('Instalando helps: '. count($aHelps));
+        $logger->debug('Instalando helps: ' . count($aHelps));
 
         $sDiretorioHelp = ECIDADE_PATH . 'plugins/' . $oPlugin->getNome() . '/helps';
 
@@ -2563,7 +2571,7 @@ class PluginService
 
             // pegar id do item de menu pelo uid
             if (empty($oHelp->menuId) && !empty($oHelp->menuUid)) {
-                $sSqlPluginItensMenu = $oDaoPluginItensMenu->sql_query_file(null, 'db146_db_itensmenu', null, 'db146_uid = \'' . $oHelp->menuUid ."'");
+                $sSqlPluginItensMenu = $oDaoPluginItensMenu->sql_query_file(null, 'db146_db_itensmenu', null, 'db146_uid = \'' . $oHelp->menuUid . "'");
                 $rsPluginItensMenu = $oDaoPluginItensMenu->sql_record($sSqlPluginItensMenu);
 
                 if (!$rsPluginItensMenu) {
@@ -2602,10 +2610,10 @@ class PluginService
         }
 
         foreach ($oManifest->plugin->{'helps'}->{'help'} as $oHelp) {
-            $aHelps[] = (object) array(
-                'menuId' => (string) $oHelp['menu-id'],
-                'menuUid' => (string) $oHelp['menu-uid'],
-                'file' => (string) $oHelp['file'],
+            $aHelps[] = (object)array(
+                'menuId' => (string)$oHelp['menu-id'],
+                'menuUid' => (string)$oHelp['menu-uid'],
+                'file' => (string)$oHelp['file'],
             );
         }
 
@@ -2630,7 +2638,7 @@ class PluginService
             return null;
         }
 
-        $oDaoPluginMenu  = new cl_db_pluginitensmenu();
+        $oDaoPluginMenu = new cl_db_pluginitensmenu();
         $sqlPluginMenu = $oDaoPluginMenu->sql_query_file(null, '*', null, 'db146_db_itensmenu = ' . $idItemMenu);
         $rsPluginMenu = $oDaoPluginMenu->sql_record($sqlPluginMenu);
 
@@ -2650,7 +2658,7 @@ class PluginService
      * @param string $sNomePlugin
      * @return stdClass
      */
-    public function getErrosModificacoes(Array $aModificacoes)
+    public function getErrosModificacoes(array $aModificacoes)
     {
 
         $aErros = array('error' => 0, 'warning' => 0);
@@ -2672,7 +2680,7 @@ class PluginService
             }
         }
 
-        return (object) $aErros;
+        return (object)$aErros;
     }
 
     /**
@@ -2761,7 +2769,7 @@ class PluginService
      * $versao[1] => MINOR(funcionalidade)
      * $versao[2] => PATCH(correção de bugs)
      * $versao[3] => PRE-RELEASE(versão candidata)
-     * 
+     *
      * @param SimpleXMLElement $plugin
      * @return array
      */

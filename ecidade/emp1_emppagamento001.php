@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -93,15 +93,15 @@ $clrotulo->label("e50_codord");
       <table>
 		<tr>
 		  <td nowrap title="<?=@$Te50_codord?>" align='right'>
-		     <? db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
+		     <?php db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
 		  </td>
 		  <td> 
-		     <? db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
+		     <?php db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
 		  </td>
 		</tr>
           <tr> 
             <td  align="right" nowrap title="<?=$Te60_numemp?>">
-                 <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+                 <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
             </td>
 	    
             <td  nowrap> 
@@ -111,10 +111,10 @@ $clrotulo->label("e50_codord");
           </tr> 
 		<tr>
 		  <td nowrap title="<?=@$Te60_numemp?>" align='right'>
-		     <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
+		     <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
 		  </td>
 		  <td> 
-		     <? db_input('e60_numemp',12,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
+		     <?php db_input('e60_numemp',12,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
 		  </td>
 		</tr>
 		<tr>
@@ -128,7 +128,7 @@ $clrotulo->label("e50_codord");
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -203,7 +203,7 @@ function js_mostrapagordem1(chave1,chave2){
   db_iframe_pagordem.hide();
 }
 </script>
-<?
+<?php
 if(isset($erro_msg)){
   db_msgbox($erro_msg);
   if(isset($e60_numemp)){

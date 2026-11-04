@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -113,7 +113,7 @@ if (isset($excluir)) {
 <table border="0" style="padding-top:15px" cellspacing="0" cellpadding="0">
   <tr> 
     <td align="center" bgcolor="#CCCCCC"> 
-	  <?
+	  <?php
 	    include(modification("forms/db_frmdb_almox.php"));
 	  ?>
     </td>
@@ -122,7 +122,7 @@ if (isset($excluir)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

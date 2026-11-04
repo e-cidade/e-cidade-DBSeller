@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -93,7 +93,7 @@ function js_emite(){
   <table  align="center">
       <tr >
         <td nowrap colspan="2" >
-        <?
+        <?php
             $DBtxt23 = db_anofolha();
             $DBtxt25 = db_mesfolha();
         $gform->selecao = true;
@@ -105,13 +105,13 @@ function js_emite(){
 
           <tr>
             <td nowrap align="right" title="" width="30%"><b>
-              <?
+              <?php
                db_ancora('Remuneração',"js_pesquisabase01(true)",@$db_opcao);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
                db_input('base01',4,@$base01,true,'text',@$db_opcao,"onchange='js_pesquisabase01(false)'");
                db_input("r08_descr",30,@$Ir08_descr,true,"text",3,"","descr_base01");
               ?>
@@ -119,13 +119,13 @@ function js_emite(){
           </tr>
           <tr>
             <td nowrap align="right" title="" width="30%"><b>
-              <?
+              <?php
                db_ancora('Desc. Obrigatórios',"js_pesquisabase02(true)",@$db_opcao);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
                db_input('base02',4,@$base02,true,'text',@$db_opcao,"onchange='js_pesquisabase02(false)'");
                db_input("r08_descr",30,@$Ir08_descr,true,"text",3,"","descr_base02");
               ?>
@@ -133,13 +133,13 @@ function js_emite(){
           </tr>
           <tr>
             <td nowrap align="right" title="" width="30%"><b>
-              <?
+              <?php
                db_ancora('Comprometido',"js_pesquisabase03(true)",@$db_opcao);
               ?>
 	      </b>&nbsp;&nbsp;
             </td>
             <td nowrap> 
-              <?
+              <?php
                db_input('base03',4,@$base03,true,'text',@$db_opcao,"onchange='js_pesquisabase03(false)'");
                db_input("r08_descr",30,@$Ir08_descr,true,"text",3,"","descr_base03");
               ?>
@@ -150,7 +150,7 @@ function js_emite(){
         <strong>Perc. Consignável :</strong>
         </td>
         <td>
-          <?
+          <?php
 	         @$perc=0;
            db_input('perc',3,$perc,true,'text',2,'')
           ?>
@@ -160,7 +160,7 @@ function js_emite(){
 	      <td align="right" nowrap><strong>Apresentar Servidores :</strong>
         </td>
         <td>
-         <?
+         <?php
            $xx = array("t"=>"Todos","s"=>"Sem Margem","c"=>"Com Margem");
            db_select('tipo_margem',$xx,true,4,"");
          ?>
@@ -169,7 +169,7 @@ function js_emite(){
       <tr>
         <td align="right" nowrap><strong>Ordem :</strong></td>
         <td>
-         <?
+         <?php
            $xy = array("a"=>"Nome","n"=>"Matricula");
            db_select('ordem',$xy,true,4,"");
          ?>
@@ -187,7 +187,7 @@ function js_emite(){
 </form>
 </center>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

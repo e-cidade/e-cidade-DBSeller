@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -28,6 +28,8 @@
 namespace ECidade\RecursosHumanos\RH\Assentamento\Service;
 
 use AfastaAssenta;
+use AfastaAssentaRepository;
+
 //use Afastamento;
 use Afastamento;
 use AfastamentoRepository;
@@ -36,6 +38,7 @@ use AssentamentoFuncional;
 use AssentamentoFuncionalRepository;
 use AssentamentoRRA;
 use AssentamentoSubstituicao;
+use TipoAssentamento;
 use BusinessException;
 use DBDate;
 use DBException;
@@ -97,6 +100,7 @@ final class Inclusao implements Service
     {
         return $this->assentamentoSalvo;
     }
+
     /**
      * Codigo da instituicao
      * tem a finalidade de desvincular dependencia da instituicao da sessao
@@ -646,7 +650,7 @@ final class Inclusao implements Service
 
             if ($this->assentamento->getInstanciaTipoAssentamento()->getNatureza()
                 != Assentamento::NATUREZA_ABONO_FALTA) {
-                    $assentamentoRet = $assentamento->persist();
+                $assentamentoRet = $assentamento->persist();
                 if (gettype($assentamentoRet) == 'string') {
                     throw new BusinessException($assentamentoRet);
                 }
@@ -808,6 +812,10 @@ final class Inclusao implements Service
                     throw new BusinessException('A data final deve ser menor ou igual a data inicial.');
                 }
             }
+
+            $this->validaAssentamentoComBloqueio($dataInicial);
+
+
             $this->validaAssentamento();
             $this->validaTipoAssentamento();
             AssentamentoRepository::verificaAssentamento($this->assentamento);
@@ -980,6 +988,11 @@ final class Inclusao implements Service
      */
     private function geraAfastamento($assentamento)
     {
+        $afastaAssentaRepository = AfastaAssentaRepository::getAfastamentosPorAssentamento($assentamento);
+        $codigoAfastamento = null;
+        if (!empty($afastaAssentaRepository) && sizeof($afastaAssentaRepository) > 0) {
+            $codigoAfastamento = $afastaAssentaRepository[0]->getCodigoAfastamento();
+        }
         $servidor = $assentamento->getServidor();
 
         $afastamento = new Afastamento();
@@ -994,6 +1007,7 @@ final class Inclusao implements Service
         $afastamento->setCompetencia(
             $this->assentamentoGeraAfastamento[$assentamento->getTipoAssentamento()]->getCompetencia()
         );
+        $afastamento->setCodigoAfastamento($codigoAfastamento);
         $afastamento->setServidor($servidor);
         $afastamento->setDataAfastamento($assentamento->getDataConcessao());
         $afastamento->setDataRetorno($assentamento->getDataTermino());
@@ -1008,9 +1022,11 @@ final class Inclusao implements Service
         if (!$afastamento instanceof Afastamento) {
             throw new BusinessException("Erro ao salvar afastamento na base de dados.");
         }
-
         $afastaAssenta = new AfastaAssenta($assentamento, $afastamento);
-        $afastaAssenta = $afastaAssenta->persist();
+
+        if (empty($codigoAfastamento)) {
+            $afastaAssenta = $afastaAssenta->persist();
+        }
 
         if (!$afastaAssenta instanceof AfastaAssenta) {
             throw new BusinessException("Erro ao salvar vínculo entre assentamento e afastamento.");
@@ -1203,7 +1219,7 @@ final class Inclusao implements Service
         $assentamentoRRA->setNumeroDeMeses((int)$this->quantidadeMes);
         $assentamentoRRA->setValorDosEncargosJudiciais((float)$this->encargo);
 
-        AssentaRRARepository::salvar($assentamento, $this->somenteRRA);
+        AssentaRRARepository::salvar($assentamentoRRA, $this->somenteRRA);
     }
 
     /**
@@ -1272,5 +1288,61 @@ final class Inclusao implements Service
     public function clonaAtributoDinamico($codigoGrupo)
     {
         $this->setAtributosDinamicos(AtributoDinamicoRepository::getByGrupo($codigoGrupo));
+    }
+
+    public function validaAssentamentoComBloqueio($dataInicial)
+    {
+        $tipoAssentamentoInfo = TipoAssentamento::getTipoAssentamentoInfo(
+            $this->assentamento->getTipoAssentamento()
+        );
+
+        if (empty($tipoAssentamentoInfo)) {
+            return;
+        }
+
+
+        $limiteAssentamentosMes = $tipoAssentamentoInfo[0]->h12_lancamentomensal;
+        $limiteAssentamentosAno = $tipoAssentamentoInfo[0]->h12_lancamentoanual;
+        $assentamentoComBloqueio = $tipoAssentamentoInfo[0]->h12_codigo;
+        $lancamento = TipoAssentamento::contaLancamentosPorServidor(
+            $dataInicial,
+            $this->assentamento->getTipoAssentamento(),
+            $this->assentamento->getMatricula()
+        );
+
+        // Obtém a quantidade de lançamentos por servidor
+        $quantidadeAssentamentosMes = $lancamento->quantidade_mes + $this->assentamento->getDias();
+        $quantidadeAssentamentosAno = $lancamento->quantidade_ano + $this->assentamento->getDias();
+        $assentamentoServidor = $lancamento->h16_assent;
+
+
+
+
+        if (TipoAssentamento::getExisteAssentamentosComBloqueio(
+            $this->assentamento->getMatricula(),
+            $this->assentamento->getDataConcessao(),
+            $this->assentamento->getDataTermino()
+        )) {
+            throw new Exception("Já existe assentamentos com bloqueio cadastrado nesse período");
+        }
+        if ($quantidadeAssentamentosMes > $limiteAssentamentosMes) {
+            throw new BusinessException('O servidor atingiu o limite de lançamentos mensais
+                                                    permitidos para este tipo de assentamento.');
+        }
+
+        if ($quantidadeAssentamentosAno > $limiteAssentamentosAno) {
+            throw new BusinessException('O servidor atingiu o limite de lançamentos anuais
+                                                    permitidos para este tipo de assentamento.');
+        }
+
+        if ($quantidadeAssentamentosMes > $limiteAssentamentosMes) {
+            throw new BusinessException('O servidor atingiu o limite de lançamentos mensais
+                                                    permitidos para este tipo de assentamento.');
+        }
+
+        if ($quantidadeAssentamentosAno > $limiteAssentamentosAno) {
+            throw new BusinessException('O servidor atingiu o limite de lançamentos anuais
+                                                    permitidos para este tipo de assentamento.');
+        }
     }
 }

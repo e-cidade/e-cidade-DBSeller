@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("fa19_i_codigo");
        <?=@$Lfa34_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa34_i_codigo',10,$Ifa34_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa34_i_medanvisa?>">
-       <?
+       <?php
        db_ancora(@$Lfa34_i_medanvisa,"js_pesquisafa34_i_medanvisa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa34_i_medanvisa',10,$Ifa34_i_medanvisa,true,'text',$db_opcao," onchange='js_pesquisafa34_i_medanvisa(false);'")
 ?>
-       <?
+       <?php
 db_input('fa14_c_medanvisa',40,@$Ifa14_c_medanvisa,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa34_i_medreferencia?>">
-       <?
+       <?php
        db_ancora(@$Lfa34_i_medreferencia,"js_pesquisafa34_i_medreferencia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa34_i_medreferencia',10,$Ifa34_i_medreferencia,true,'text',$db_opcao," onchange='js_pesquisafa34_i_medreferencia(false);'")
 ?>
-       <?
+       <?php
 db_input('fa19_c_medreferencia',40,@$Ifa19_c_medreferencia,true,'text',3,'')
        ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_medreferenciamed.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

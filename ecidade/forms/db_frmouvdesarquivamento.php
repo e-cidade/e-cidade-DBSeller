@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,12 +42,12 @@ $clouvidoriaatendimento->rotulo->label("ov01_tipoprocesso");
         <?=$Lp58_codproc?>
       </td>
       <td title="<?=$Tp58_codproc?>">
-        <?
+        <?php
           db_input("p58_codproc",10,$Ip58_codproc,true,"text",3,"");
         ?>
       </td>
       <td title="<?=$Tp58_requer?>">
-        <?
+        <?php
           db_input("p58_requer",50,$Ip58_requer,true,"text",3,"");
         ?>
       </td>
@@ -57,12 +57,12 @@ $clouvidoriaatendimento->rotulo->label("ov01_tipoprocesso");
         <?=$Lov01_tipoprocesso?>
       </td>
       <td title="<?=$Tp58_codproc?>">
-        <?
+        <?php
           db_input("ov01_tipoprocesso",10,$Iov01_tipoprocesso,true,"text",3,"");
         ?>
       </td>
       <td title="<?=$Tp51_descr?>">
-        <?
+        <?php
           db_input("p51_descr",50,$Ip51_descr,true,"text",3,"");
         ?>
       </td>
@@ -72,7 +72,7 @@ $clouvidoriaatendimento->rotulo->label("ov01_tipoprocesso");
         <?=$Lp67_dtarq?>
       </td>
 	    <td colspan="2" title="<?=$Tp67_dtarq?>">
-	      <?
+	      <?php
 	        db_inputdata('p67_dtarq','','','',true,'text',3);
 	      ?>
 	    </td> 
@@ -83,7 +83,7 @@ $clouvidoriaatendimento->rotulo->label("ov01_tipoprocesso");
 		       <legend>
 		         <b>Observação</b>
 		       </legend>
-		       <?
+		       <?php
 		         db_textarea('p58_obs',4,78,$Ip58_obs,true,'text',3,'');
 		       ?>
 		     </fieldset>

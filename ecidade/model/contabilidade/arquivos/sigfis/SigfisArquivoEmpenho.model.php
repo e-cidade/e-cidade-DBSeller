@@ -1,34 +1,36 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 require_once  modification("SigfisArquivoBase.model.php");
 require_once  modification("model/contabilidade/arquivos/sigfis/SigfisArquivoBase.model.php");
 require_once  modification("model/contabilidade/arquivos/sigfis/SigfisVinculoRecurso.model.php");
+
+use ECidade\Financeiro\Orcamento\Repository\FonteRecursoSiconfiRepository;
 
 /**
  * Classe que processa as informações para serem inseridas no
@@ -123,23 +125,7 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
         $sCampos .= " orcdotacao.o58_funcao,                         ";
         $sCampos .= " orcdotacao.o58_subfuncao,                      ";
         $sCampos .= " orcdotacao.o58_programa,                       ";
-        $sCampos .= " empempenho.e60_numemp,                     ";
-
-        $sCampos .= " 
-            ( select distinct l20_numero || '/' || l20_anousu 
-                from liclicita 
-                     inner join liclicitem on l21_codliclicita = l20_codigo 
-                     inner join empautitempcprocitem on empautitempcprocitem.e73_pcprocitem = liclicitem.l21_codpcprocitem 
-                     inner join empautitem on empautitem.e55_autori = empautitempcprocitem.e73_autori and empautitem.e55_sequen = empautitempcprocitem.e73_sequen 
-                     inner join empempaut on empempaut.e61_autori = empautitem.e55_autori 
-               where e61_numemp = empempenho.e60_numemp ) as procadm_licitacao, ";
-
-        $sCampos .= " 
-            ( select e54_numerl 
-                from empempaut 
-                     inner join empautoriza on e61_autori = e54_autori 
-                  inner join empautorizaprocesso on e150_empautoriza = e54_autori 
-               where e61_numemp = empempenho.e60_numemp ) as procadm ";
+        $sCampos .= " empempenho.e60_numemp                     ";
 
         $sWhereBuscaEmpenhos  = "     empempenho.e60_anousu = {$iAnoSessao}                                            ";
         $sWhereBuscaEmpenhos .= " and empempenho.e60_emiss between '{$this->dtDataInicial}' and '{$this->dtDataFinal}' ";
@@ -159,12 +145,7 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
             foreach ($oEmpenhos as $oEmpenho) {
 
                 $numemp = $oEmpenho->e60_numemp;
-
-                if ( $oEmpenho->procadm_licitacao != "" ) {
-                    $rsProc = $oEmpenho->procadm_licitacao;
-                } else {
-                    $rsProc = $oEmpenho->procadm;
-                }
+                $rsProc = $oEmpenho->e60_numerol;
 
                 $rsProcDispensa = '';
                 if ( $oEmpenho->e60_codcom == 5 or $oEmpenho->e60_codcom == 7 ) {
@@ -187,16 +168,19 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
                 $sDataFormatada = $aDadosData[0].$aDadosData[1];
 
                 /**
-                 * Recuperando os dados do XML
+                 * Buscando novas informaoes da fonte de recurso
                  */
-                $iFonteRecurso = '';
-                if ($oVinculoRecurso = SigfisVinculoRecurso::getVinculoRecurso($oEmpenho->o58_codigo)) {
-                    $iFonteRecurso = $oVinculoRecurso->recursotce;
-                } else {
+                $repositorySiconfi = new FonteRecursoSiconfiRepository();
+                $repositorySiconfi->scopeCodigoRecurso($oEmpenho->o58_codigo);
+                $repositorySiconfi->scopeExercicio($iAnoSessao);
+                $novoRecurso = $repositorySiconfi->first();
 
-                    $sErroLog = "O Recurso {$oEmpenho->o58_codigo} não possui vínculo com o SIGFIS.\n";
+                if (empty($novoRecurso)) {
+                    $sErroLog  = "Recurso {$oEmpenho->o58_codigo} - {$oEmpenho->o15_descr} ";
+                    $sErroLog .= "Sem Vinculo com Dotao {$oEmpenho->o58_coddot} do SIGFIS.\n";
                     $this->addLog($sErroLog);
                 }
+
 
                 $acordo = '';
                 if (!empty($oEmpenho->acordo) && !empty($oEmpenho->acordo2)) {
@@ -207,6 +191,8 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
                         $acordo = $oEmpenho->acordo2;
                     }
                 }
+
+
 
                 /**
                  * Manipulmos o campo e60_resumo eliminando quebras de linha
@@ -224,8 +210,11 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
                 $oDadosLinha->nu_ProcessoLicitatorio     = str_pad($rsProc, 36, ' ', STR_PAD_RIGHT );
                 $oDadosLinha->dt_Ano                     = $oEmpenho->e60_anousu;
                 $oDadosLinha->Tp_ProjetoAtividade        = str_pad($oEmpenho->o55_tipo,                 1, ' ', STR_PAD_LEFT);
-                $oDadosLinha->nu_ProjetoAtividade        = str_pad(substr($oEmpenho->o58_projativ,-3),  4, ' ', STR_PAD_LEFT);
-                $oDadosLinha->cd_FonteRecurso            = str_pad($oEmpenho->o58_codigo,               4, ' ', STR_PAD_LEFT); // nao vem mais do XML
+                $oDadosLinha->nu_ProjetoAtividade        = str_pad(substr($oEmpenho->o58_projativ, 0 ,4),  4, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_FonteRecurso            = str_pad(' ', 4, ' ', STR_PAD_LEFT);
+                if ($oEmpenho->e60_anousu <= 2018) {
+                    $oDadosLinha->cd_FonteRecurso            = str_pad($oEmpenho->o58_codigo, 4, ' ', STR_PAD_LEFT);
+                }
                 $oDadosLinha->Reservado_tce              = str_repeat('0', 14);
                 $oDadosLinha->cd_Elemento                = str_pad(substr($oEmpenho->o56_elemento, 1, 8), 8, ' ', STR_PAD_LEFT);
                 $oDadosLinha->vl_Empenho                 = str_pad($iValorEmpenhoSemSeparador,         16, ' ', STR_PAD_LEFT);
@@ -253,13 +242,20 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
 
                 $oDadosLinha->RESERVADO_TCE_3 = '  ';
                 $oDadosLinha->RESERVADO_TCE_4 = ' ';
-//                $oDadosJustificativaEmpenho = getJustificativaByEmpenho( $numemp );
+
                 $oDadosJustificativaEmpenho = self::getJustificativas( $numemp );
                 $oDadosLinha->TPJUSTIFICATIVACONTRATO = str_pad($oDadosJustificativaEmpenho->tipoJustificativaContrato,      2, '0', STR_PAD_LEFT);
                 $oDadosLinha->DEJUSTIFICATIVACONTRATO = str_pad($oDadosJustificativaEmpenho->descricaoJustificativaContrato, 255, ' ', STR_PAD_RIGHT);
                 $oDadosLinha->TPJUSTIFICATIVALICITA   = str_pad($oDadosJustificativaEmpenho->tipoJustificativaLicitacao,     2, '0', STR_PAD_LEFT);
                 $oDadosLinha->DEJUSTIFICATIVALICITA   = str_pad($oDadosJustificativaEmpenho->descricaoJustificativaLicitacao,255, ' ', STR_PAD_RIGHT);
 
+                if($oEmpenho->e60_anousu > 2018){
+                   $oDadosLinha->Nm_FonteRecurso = str_pad($novoRecurso->getCodigoSiconfi(), 8, ' ', STR_PAD_RIGHT);
+                }else{
+                    $oDadosLinha->Nm_FonteRecurso = str_pad(" ",8, ' ', STR_PAD_LEFT);
+                    $oDadosLinha->Nm_FonteRecurso = str_pad(" ",8, ' ', STR_PAD_RIGHT);
+                }
+                $oDadosLinha->COVID_19 = '';
                 $oDadosLinha->codigolinha = $iAnoSessao >= 2018 ? 1013 : 668;
                 if(db_getsession('DB_anousu') < 2013 ) {
                     $oDadosLinha->codigolinha = 413;
@@ -307,33 +303,3 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
         return $stdJustificativa;
     }
 }
-
-function getJustificativaByEmpenho( $iNumEmp ) {
-
-    $sSqlBuscaJustificativa = " select * from plugins.justificativacontrato where empempenho = {$iNumEmp}";
-    $rsBuscaJustificativa   = db_query($sSqlBuscaJustificativa);
-    $oDadosJustificativa    = db_utils::fieldsMemory($rsBuscaJustificativa,0);
-
-    $oRetornoJustificavia = new stdClass;
-
-    if( $oDadosJustificativa->tipojustificativa == 7 ){
-        $iJustificativaContrato = $oDadosJustificativa->tipojustificativa;
-        $iJustificativaLicita   = 8;
-    }elseif ( $oDadosJustificativa->tipojustificativa == 8 ) {
-        $iJustificativaContrato = 7;
-        $iJustificativaLicita   = $oDadosJustificativa->tipojustificativa;
-    }else{
-        $iJustificativaContrato = $oDadosJustificativa->tipojustificativa;
-        $iJustificativaLicita   = $oDadosJustificativa->tipojustificativa;
-        $oDadosJustificativa->justiticativa = "";
-    }
-
-    $oRetornoJustificavia->tpjustificativacontrato = $iJustificativaContrato;
-    $oRetornoJustificavia->dejustificativacontrato = $oDadosJustificativa->justiticativa;
-    $oRetornoJustificavia->tpjustificativalicita   = $iJustificativaLicita;
-    $oRetornoJustificavia->dejustificativalicita   = $oDadosJustificativa->justiticativa;
-
-    return $oRetornoJustificavia;
-}
-
-?>

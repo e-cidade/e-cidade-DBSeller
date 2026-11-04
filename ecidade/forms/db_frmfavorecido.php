@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -30,10 +30,10 @@
 <table>
    <tr>
       <td>
-        <? $db_opcao = 3; db_ancora ( $Lz01_nome, "js_pesquisacgm(true)", 1 )?>
+        <?php $db_opcao = 3; db_ancora ( $Lz01_nome, "js_pesquisacgm(true)", 1 )?>
       </td>
       <td>
-        <? 
+        <?php 
           db_input ( "z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, " onchange='js_pesquisacgm(false);' " );
           db_input ( "z01_nome", 41, $Iz01_nome, true, "text", 3 );
         ?>
@@ -55,10 +55,10 @@
     <table>
       <tr>
         <td>
-          <? db_ancora('<b>Banco:</b>',"js_pesquisabanco(true);",$db_opcao,""); ?>                    
+          <?php db_ancora('<b>Banco:</b>',"js_pesquisabanco(true);",$db_opcao,""); ?>                    
         </td>
         <td colspan="3">
-          <?
+          <?php
             db_input('db89_db_bancos',10,$Idb89_db_bancos,true,'text',3,'');
             db_input('db90_descr',40,'',true,'text',3,'');
           ?>
@@ -69,7 +69,7 @@
           <b>Código da Agência</b>
         </td>
         <td>
-          <?
+          <?php
             db_input('db89_codagencia',10,$Idb89_codagencia,true,'text',$db_opcao);
             db_input('db83_bancoagencia',10,'',true,'hidden',3);
           ?>
@@ -78,7 +78,7 @@
           <b>DV Agência:</b>
         </td>
         <td>
-            <? db_input('db89_digito',5,$Idb89_digito,true,'text',$db_opcao,'');?>
+            <?php db_input('db89_digito',5,$Idb89_digito,true,'text',$db_opcao,'');?>
         </td>                  
       </tr>
       <tr>
@@ -86,7 +86,7 @@
           <b>Conta Bancária:</b>
         </td>
         <td>
-          <?
+          <?php
             db_input('db83_conta',10,$Idb83_conta,true,'text',$db_opcao);
             db_input('c56_contabancaria',10,'',true,'hidden',1);
           ?>
@@ -95,7 +95,7 @@
           <b>DV Conta:</b>
         </td>
         <td>
-          <?
+          <?php
             db_input('db83_dvconta',5,$Idb83_dvconta,true,'text',$db_opcao,'');
           ?>
         </td>                  
@@ -105,7 +105,7 @@
           <b>Identificador (CNPJ)</b>
         </td>
         <td colspan="4">
-          <? db_input('db83_identificador',54,$Idb83_identificador,true,'text',$db_opcao,'');?>
+          <?php db_input('db83_identificador',54,$Idb83_identificador,true,'text',$db_opcao,'');?>
         </td>                 
       </tr>
       <tr>
@@ -113,13 +113,13 @@
           <b>Código da Operação</b>                     
         </td>
         <td>
-          <? db_input('db83_codigooperacao',10,$Idb83_codigooperacao,true,'text',$db_opcao,''); ?>
+          <?php db_input('db83_codigooperacao',10,$Idb83_codigooperacao,true,'text',$db_opcao,''); ?>
         </td>    
         <td>
           <b>Tipo da Conta:</b>
         </td>
         <td>
-          <?
+          <?php
             $aTipoConta = array( 0 => 'Conta Corrente',
                                  1 => 'Conta Poupança' );
             db_select('c63_tipoconta',$aTipoConta,true,1);
@@ -131,7 +131,7 @@
           <b>Conta Interna Contábil:</b>                     
         </td>
         <td colspan="3">
-          <? db_input('v86_containterna',54,$Iv86_containterna,true,'text',$db_opcao,''); ?>
+          <?php db_input('v86_containterna',54,$Iv86_containterna,true,'text',$db_opcao,''); ?>
         </td>    
       </tr>
       

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,6 @@ $db_opcao = 22;
 $db_botao = false;
 
 if (isset($alterar)) {
-
     db_inicio_transacao();
     try {
         $db_opcao = 2;
@@ -64,8 +63,7 @@ if (isset($alterar)) {
         $clcontabancaria->erro_status = "0";
         $clcontabancaria->erro_msg = $exception->getMessage();
     }
-} else if (isset($chavepesquisa)) {
-
+} elseif (isset($chavepesquisa)) {
     $db_opcao = 2;
     $result = $clcontabancaria->sql_record($clcontabancaria->sql_query($chavepesquisa));
     db_fieldsmemory($result, 0);
@@ -89,15 +87,12 @@ if (isset($alterar)) {
 </html>
 <?php
 if (isset($alterar)) {
-
     if ($clcontabancaria->erro_status == "0") {
-
         $clcontabancaria->erro(true, false);
         $db_botao = true;
         echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
 
         if ($clcontabancaria->erro_campo != "") {
-
             echo "<script> document.form1." . $clcontabancaria->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
             echo "<script> document.form1." . $clcontabancaria->erro_campo . ".focus();</script>";
         }

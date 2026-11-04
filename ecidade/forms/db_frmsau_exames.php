@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("s130_c_descricao");
        <?=@$Ls108_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('s108_i_codigo',10,$Is108_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -48,20 +48,20 @@ db_input('s108_i_codigo',10,$Is108_i_codigo,true,'text',3,"")
        <?=@$Ls108_c_exame?>
     </td>
     <td> 
-<?
+<?php
 db_input('s108_c_exame',40,$Is108_c_exame,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts108_i_grupoexame?>">
-       <? db_ancora('<b>Grupo:</b>',"js_pesquisa_s108_i_grupoexame(true)",$db_opcao)?>
+       <?php db_ancora('<b>Grupo:</b>',"js_pesquisa_s108_i_grupoexame(true)",$db_opcao)?>
     </td>
     <td> 
-			<?
+			<?php
         db_input('s108_i_grupoexame',10,$Is108_i_grupoexame,true,'text',$db_opcao," onchange='js_pesquisa_s108_i_grupoexame(false);' onFocus=\"nextfield='db_opcao'\" ");
       ?>
-      <?
+      <?php
         db_input('s130_c_descricao',40,$Is130_c_descricao,true,'text',3,'');
       ?>
     </td>
@@ -107,7 +107,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_exames.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

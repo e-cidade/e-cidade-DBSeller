@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ function js_op(obj){
   <tr>
     <td align="center" valign="top">
       <table border='1' width="100%">
-<?    
+<?php    
      if(isset($q95_cgmpri)){
        $result22=$clsocios->sql_record($clsocios->sql_query_file($q95_cgmpri,"","q95_numcgm,q95_perc"));
        $numrows22=$clsocios->numrows;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ if (!isset($testdt)){
       <form name="form1" method="post" action="emp2_despesamaterialdesd002.php">
       <table border="0">
         <tr>         
-          <?
+          <?php
           db_input('fornecedores',10,"",true,"hidden",1);
           db_input('mostrafornec',10,"",true,"hidden",1);
           db_input('tipodecompra',10,"",true,"hidden",1);
@@ -99,7 +99,7 @@ if (!isset($testdt)){
           ?>
           <td align="center">
             <strong>Opções:</strong>
-            <?
+            <?php
             $opcoes = Array("com"=>"Com os credores selecionados","sem"=>"Sem os credores selecionadas");
             db_select("ver",$opcoes,true,1);
             ?>
@@ -113,7 +113,7 @@ if (!isset($testdt)){
         </tr>
         <tr>
           <td nowrap width="50%">
-            <?
+            <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux->cabecalho = "<strong>Credores</strong>";
             $aux->codigo = "e60_numcgm"; //chave de retorno da func
@@ -136,7 +136,7 @@ if (!isset($testdt)){
           </td>
         </tr>
       </table>
-      <?
+      <?php
       $resultmin = db_query("select e54_emiss from empautoriza where e54_anulad is null order by e54_emiss limit 1");
 	  db_fieldsmemory($resultmin,0);
       $dia=substr($e54_emiss,8,2);
@@ -150,7 +150,7 @@ if (!isset($testdt)){
         <tr>
           <td nowrap align="right"><b>Emissão autorização:</b></td>
           <td nowrap align="left">
-            <? 
+            <?php 
 	        db_inputdata('data1',@$dia,@$mes,@$ano,true,'text',1,"");
             echo " a ";
             db_inputdata('data11',@$dia2,@$mes2,@$ano2,true,'text',1,"");
@@ -163,7 +163,7 @@ if (!isset($testdt)){
 	        <input type="checkbox" name="mostrafil" value="mostrafil" checked>
 	      </td>
 	      <td align="left" valign="top">
-	        <?
+	        <?php
 	        $opcoes = Array(
                             "1" => "Todos",
                             "2" => "Não empenhados",

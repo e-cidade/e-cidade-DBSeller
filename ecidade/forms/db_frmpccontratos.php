@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,28 +46,28 @@ $clrotulo->label("pc50_descr");
        <?=@$Lp71_codcontr?>
     </td>
     <td> 
-<?
+<?php
 db_input('p71_codcontr',10,$Ip71_codcontr,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp71_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Lp71_codtipo,"js_pesquisap71_codtipo(true);",($db_opcao == 1?1:3));
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p71_codtipo',8,$Ip71_codtipo,true,'text',($db_opcao == 1?1:3)," onchange='js_pesquisap71_codtipo(false);'");
 //db_input('p71_codtipo',8,$Ip71_codtipo,true,'text',$db_opcao," onchange='js_pesquisap71_codtipo(false);'","p71_codtipo_old")
 ?>
-       <?
+       <?php
 db_input('p70_descr',40,$Ip70_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
-  <?
+  <?php
   if(isset($p71_codtipo)){
     include(modification("classes/db_pctipocontrato_classe.php"));
     $clpctipocontrato = new cl_pctipocontrato;
@@ -82,7 +82,7 @@ db_input('p70_descr',40,$Ip70_descr,true,'text',3,'')
        <?=@$Lp74_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('p74_valor',20,$Ip74_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,30 +92,30 @@ db_input('p74_valor',20,$Ip74_valor,true,'text',$db_opcao,"")
        <?=@$Lp74_perc?>
     </td>
     <td> 
-<?
+<?php
 db_input('p74_perc',20,$Ip74_perc,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
 
-      <?
+      <?php
       }elseif($p70_tipo == 'L'){
         $clpccontrlic->rotulo->label();
       ?>
   <tr>
     <td nowrap title="<?=@$Tp75_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lp75_tipo,"js_pesquisap75_tipo(true);",($db_opcao == 1?1:3));
        ?>
     </td>
     <td> 
-<?
+<?php
 include(modification("classes/db_cflicita_classe.php"));
 $clcflicita = new cl_cflicita;
 $result = $clcflicita->sql_record($clcflicita->sql_query());
 db_selectrecord("p75_tipo",$result,true,($db_opcao == 1?1:3),"","p75_tipo");
 ?>
-       <?
+       <?php
 db_input('l03_tipo',1,$Il03_tipo,true,'hidden',3,'')
        ?>
     </td>
@@ -125,23 +125,23 @@ db_input('l03_tipo',1,$Il03_tipo,true,'hidden',3,'')
        <?=@$Lp75_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('p75_numero',8,$Ip75_numero,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
-      <?
+      <?php
       }elseif($p70_tipo == 'C'){
         $clpccontrcompra->rotulo->label();
       ?>
   <tr>
     <td nowrap title="<?=@$Tp72_codcom?>">
-       <?
+       <?php
        db_ancora(@$Lp72_codcom,"js_pesquisap72_codcom(true);",($db_opcao == 1?1:3));
        ?>
     </td>
     <td> 
-<?
+<?php
 include(modification("classes/db_pctipocompra_classe.php"));
 $clpctipocompra = new cl_pctipocompra;
 $result = $clpctipocompra->sql_record($clpctipocompra->sql_query());
@@ -149,7 +149,7 @@ db_selectrecord("p72_codcom",$result,true,($db_opcao == 1?1:3),"","p72_codcom");
        ?>
     </td>
   </tr>
-      <?
+      <?php
       }
     }
   }
@@ -159,7 +159,7 @@ db_selectrecord("p72_codcom",$result,true,($db_opcao == 1?1:3),"","p72_codcom");
        <?=@$Lp71_datalanc?>
     </td>
     <td> 
-<?
+<?php
 if(empty($p71_datalanc_dia)){
   $p71_datalanc_dia = date("d",db_getsession("DB_datausu"));
   $p71_datalanc_mes = date("m",db_getsession("DB_datausu"));
@@ -171,15 +171,15 @@ db_inputdata('p71_datalanc',@$p71_datalanc_dia,@$p71_datalanc_mes,@$p71_datalanc
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp71_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lp71_numcgm,"js_pesquisap71_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p71_numcgm',8,$Ip71_numcgm,true,'text',$db_opcao," onchange='js_pesquisap71_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -189,7 +189,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lp71_dtini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('p71_dtini',@$p71_dtini_dia,@$p71_dtini_mes,@$p71_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -199,7 +199,7 @@ db_inputdata('p71_dtini',@$p71_dtini_dia,@$p71_dtini_mes,@$p71_dtini_ano,true,'t
        <?=@$Lp71_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('p71_dtfim',@$p71_dtfim_dia,@$p71_dtfim_mes,@$p71_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -250,7 +250,7 @@ function js_mostrapctipocontrato(chave,erro){
     document.form1.p71_codtipo.focus(); 
     document.form1.p71_codtipo.value = ''; 
   }else{
-    <?
+    <?php
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao=$db_opcao&abas=1&p71_codtipo='+document.form1.p71_codtipo.value+'&p70_descr='+chave";
     ?>
   }
@@ -258,7 +258,7 @@ function js_mostrapctipocontrato(chave,erro){
 function js_mostrapctipocontrato1(chave1,chave2){
   document.form1.p71_codtipo.value = chave1;
   document.form1.p70_descr.value = chave2;
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao=$db_opcao&".($db_opcao == 2 && @$p71_codcontr != ""?"chavepesquisa=$p71_codcontr&":"")."abas=1&p71_codtipo='+chave1+'&p70_descr='+chave2\n";
   ?>
   db_iframe_pctipocontrato.hide();
@@ -268,7 +268,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pccontratos.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'com1_pccontratos002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){

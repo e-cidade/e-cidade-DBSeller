@@ -25,8 +25,6 @@
  *                                licenca/licenca_pt.txt
  */
 
-use Symfony\Component\Validator\Constraints\Length;
-
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_conecta.php"));

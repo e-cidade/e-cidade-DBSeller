@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,13 +112,13 @@
   </head>
   <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
     <center>
-      <?
+      <?php
         require_once(modification("forms/db_frmregraarredondamento.php"));
       ?>
     </center>
   </body>
 </html>
-<?
+<?php
   if (isset($excluir)) {
     if ($sqlerro == true) {
       

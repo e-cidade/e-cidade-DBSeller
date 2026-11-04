@@ -65,7 +65,7 @@ class cl_empnotasuspensao {
                  cc36_dataretorno = date = Data de Retorno
                  ";
   //funcao construtor da classe
-  function cl_empnotasuspensao() {
+  public function __construct() {
 
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("empnotasuspensao");
@@ -73,7 +73,7 @@ class cl_empnotasuspensao {
   }
 
   // funcao para Inclusão
-  function incluir ($cc36_sequencial){
+  public function incluir ($cc36_sequencial){
 
     if($this->cc36_empnota == null ){
       $this->erro_sql = " Campo Nota de Liquidação não informado.";

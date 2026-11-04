@@ -25,8 +25,10 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_escrito_classe.php"));
 require_once(modification("classes/db_issquant_classe.php"));
@@ -34,6 +36,8 @@ $clescrito = new cl_escrito;
 $clissquant = new cl_issquant;
 $clrotulo = new rotulocampo;
 $clrotulo->label("q177_setorfiscal");
+$clrotulo->label("q02_inscr");
+$clrotulo->label("z01_cgccpf");
 
 db_postmemory($_POST);
 
@@ -66,15 +70,15 @@ $sql="select issbase.*,
              p58_numero,
              p58_ano,
              q40_descr,
-             case 
+             case
              when q123_situacao = 1
-              and exists(select 1 
-                           from issmovalvara 
+              and exists(select 1
+                           from issmovalvara
                           where q120_issalvara = q123_sequencial
-                        )                          
-             then                
+                        )
+             then
                q98_descricao
-             else 
+             else
                ''
              end as q98_descricao,
              q167_descricao,
@@ -91,9 +95,9 @@ $sql="select issbase.*,
              left outer join issprocesso on issbase.q02_inscr = q14_inscr
              left outer join ruastipo on j88_codigo = ruas.j14_tipo
              left outer join protprocesso on p58_codproc = q14_proces
-             inner join issbaseporte on issbaseporte.q45_inscr = issbase.q02_inscr
-             inner join issporte on issporte.q40_codporte = issbaseporte.q45_codporte
-             inner join issalvara on issalvara.q123_inscr = issbase.q02_inscr                                 
+             left join issbaseporte on issbaseporte.q45_inscr = issbase.q02_inscr
+             left join issporte on issporte.q40_codporte = issbaseporte.q45_codporte
+             inner join issalvara on issalvara.q123_inscr = issbase.q02_inscr
              inner join isstipoalvara on isstipoalvara.q98_sequencial = issalvara.q123_isstipoalvara
              left join issqn.formalocalvara on issbase.q02_formalocalvara = formalocalvara.q167_sequencial
              left join isssetorfiscal on isssetorfiscal.q177_issbase = issbase.q02_inscr
@@ -110,21 +114,45 @@ if($numrows>0){
 if($numrows==0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.");
 }
-$head4 = "BIC Alvará";
-$head5 = "Inscrição: {$inscr}";
-$head6 = "CGM: {$z01_numcgm}";
 
-$pdf = new PDF();
-$pdf->Open();
+/**
+ * Filtro de atividades
+ *
+ * 1 - todas
+ * 2 - ativas
+ * 3 - baixadas
+ */
+$filtroAtividades = '';
+$filtroAtividadesLabel = 'Atividades: Todas';
+if (isset($_GET['atividades']) && !empty($_GET['atividades'])) {
+    switch ($_GET['atividades']) {
+        case '2':
+            $filtroAtividadesLabel = 'Atividades: Somente Ativas';
+            $filtroAtividades = ' and q07_databx is null ';
+            break;
+        case '3':
+            $filtroAtividadesLabel = 'Atividades: Somente Baixadas';
+            $filtroAtividades = ' and q07_databx is not null ';
+            break;
+    }
+}
+
+$pdf = new ECidade\Pdf\Pdf();
+$pdf->init(false);
 $pdf->AliasNbPages();
 $total = 0;
 $alt = 4;
 $pri = true;
 
+$pdf->addTitulo("BIC Alvará");
+$pdf->addTitulo("$RLq02_inscr: {$inscr}");
+$pdf->addTitulo("CGM: {$z01_numcgm}");
+$pdf->addTitulo($filtroAtividadesLabel);
+
 for ($i = 0;$i < $numrows;$i++){
  db_fieldsmemory($result,$i);
 
- if (($pdf->gety() > $pdf->h -30)  || $pri==true ){
+ if (($pdf->gety() > $pdf->getH() -30)  || $pri==true ){
      $pdf->addpage("");
      $pdf->setfillcolor(235);
      $titulo = 9;
@@ -156,7 +184,7 @@ for ($i = 0;$i < $numrows;$i++){
      }
      $pdf->setX(120);
      $pdf->SetFont('Arial','',$titulo);
-     $pdf->Cell(30,4,"CNPJ/CPF:","",0,"L",1);
+     $pdf->Cell(30,4,"$RLz01_cgccpf:","",0,"L",1);
      $pdf->SetFont('Arial','',$texto);
      $pdf->Cell(60,4,"$cpfcnpj","",1,"L",0);
      $pdf->Cell(30,1,"","",0,"R",0);
@@ -240,7 +268,7 @@ for ($i = 0;$i < $numrows;$i++){
      // fim
  }
 
- if (($pdf->gety() > $pdf->h -30)  || $pri==true ){
+ if (($pdf->gety() > $pdf->getH() -30)  || $pri==true ){
      $pdf->setfillcolor(235);
      $titulo = 9;
      $texto = 8;
@@ -254,7 +282,7 @@ for ($i = 0;$i < $numrows;$i++){
 
      $pdf->setX(10);
      $pdf->SetFont('Arial','',$titulo);
-     $pdf->Cell(34,4,"Inscrição Municipal:","",0,"L",1);
+     $pdf->Cell(34,4,"$RLq02_inscr:","",0,"L",1);
      $pdf->SetFont('Arial','',$texto);
      $pdf->Cell(60,4,"$inscr","",0,"L",0);
      $pdf->Cell(30,1,"","",0,"R",0);
@@ -361,7 +389,7 @@ for ($i = 0;$i < $numrows;$i++){
      //lado esquerdo da tela
      $pdf->setX(10);
      $pdf->SetFont('Arial','',$titulo);
-     $pdf->Cell(34,4,"Lograduro:","",0,"L",1);
+     $pdf->Cell(34,4,"Logradouro:","",0,"L",1);
      $pdf->SetFont('Arial','',$texto);
      $pdf->Cell(60,4,"$j14_codigo - $j88_descricao $j14_nome","",0,"L",0);
      $pdf->Cell(30,1,"","",0,"R",0);
@@ -404,7 +432,7 @@ for ($i = 0;$i < $numrows;$i++){
      $pdf->Cell(30,1,"","",0,"R",0);
      $pdf->Cell(60,1,"","",0,"L",0);
 
-     $result_area=$clissquant->sql_record($clissquant->sql_query_file(null,$q02_inscr,"q30_area,q30_quant,q30_tempofuncionamento,q30_areapublicidade",null," q30_inscr = $q02_inscr and q30_anousu = ".db_getsession('DB_anousu')));
+     $result_area=$clissquant->sql_record($clissquant->sql_query_file(null,$q02_inscr,"q30_area,q30_quant,q30_tempofuncionamento,q30_areapublicidade, case when q30_graurisco = 'A' then 'ALTO'  when q30_graurisco = 'M' then 'MÉDIO' when q30_graurisco = 'B' then 'BAIXO' else '' end as q30_graurisco",null," q30_inscr = $q02_inscr and q30_anousu = ".db_getsession('DB_anousu')));
 
      if ($clissquant->numrows>0){
      	db_fieldsmemory($result_area,0);
@@ -524,7 +552,13 @@ for ($i = 0;$i < $numrows;$i++){
      $pdf->SetFont('Arial','',$titulo);
      $pdf->Cell(30,4,"Contador:","",0,"L",1);
      $pdf->SetFont('Arial','',$texto);
-     $pdf->Cell(60,4,"$escri","",1,"L",0);
+     $y = $pdf->getY()+4;
+      if(strlen($escri) < 35){
+         $pdf->Cell(50,4,"$escri","",1,"L",0);
+      }else {
+         $pdf->MultiCell(50,4,$escri,"","J",0,0);
+      }
+      $pdf->setY($y);
      $pdf->Cell(30,1,"","",0,"R",0);
      $pdf->Cell(60,1,"","",1,"L",0);
 
@@ -537,6 +571,14 @@ for ($i = 0;$i < $numrows;$i++){
     $pdf->Cell(34,4,"Área de Publicidade:","",0,"L",1);
     $pdf->SetFont('Arial','',$texto);
     $pdf->Cell(60,4,"$q30_areapublicidade","",1,"L",0);
+    $pdf->Cell(30,1,"","",0,"R",0);
+    $pdf->Cell(60,1,"","",1,"L",0);
+
+    $pdf->setX(10);
+    $pdf->SetFont('Arial','',$titulo);
+    $pdf->Cell(34,4,"Grau de Risco:","",0,"L",1);
+    $pdf->SetFont('Arial','',$texto);
+    $pdf->Cell(60,4,"$q30_graurisco","",1,"L",0);
     $pdf->Cell(30,1,"","",0,"R",0);
     $pdf->Cell(60,1,"","",1,"L",0);
 
@@ -563,12 +605,21 @@ $sql = "select q07_ativ,
 			case when q11_oficio = 'true' then 'NORMAL'
 				when q11_oficio = 'false' then 'OFICIO'
 			     else ''
-               end as q11_oficio
+               end as q11_oficio,
+                  case
+                     when q71_classificacaorisco = 'A' or q71_classificacaorisco = 'a' then 'ALTO'
+                     when q71_classificacaorisco = 'M' or q71_classificacaorisco = 'm' then 'MÉDIO'
+                     when q71_classificacaorisco = 'B' or q71_classificacaorisco = 'b' then 'BAIXO'
+                     else ''
+                  end as q71_classificacaorisco
         from tabativ
                      inner join ativid on q07_ativ = q03_ativ
                      left join ativprinc on ativprinc.q88_inscr = tabativ.q07_inscr and ativprinc.q88_seq = tabativ.q07_seq
                      left join tabativbaixa on tabativ.q07_inscr = tabativbaixa.q11_inscr and tabativ.q07_seq = tabativbaixa.q11_seq
-        where q07_inscr = $inscr
+                     left join  atividcnae on q03_ativ = q74_ativid
+                     left join  cnaeanalitica on  q72_sequencial = q74_cnaeanalitica
+                     left join  cnae on q71_sequencial = q72_cnae
+        where q07_inscr = $inscr {$filtroAtividades}
         order by case when q88_inscr is null then 2 else 1 end, q07_datain, q07_datafi
         ";
 
@@ -587,33 +638,37 @@ if($numrows <> 0){
    $pdf->cell(15,4,"Cod.",0,0,"C",1);
    $pdf->cell(20,4,"Ativ. Interna",0,0,"C",1);
    $pdf->cell(20,4,"Imp. Alvará",0,0,"C",1);
-   $pdf->cell(74,4,"Atividade",0,0,"C",1);
+   $pdf->cell(62,4,"Atividade",0,0,"C",1);
    $pdf->cell(6,4,"Tipo",0,0,"C",1);
    $pdf->cell(20,4,"Data Inicio",0,0,"C",1);
    $pdf->cell(20,4,"Data Fim",0,0,"C",1);
-   $pdf->cell(20,4,"Data Baixa",0,1,"C",1);
+   $pdf->cell(20,4,"Data Baixa",0,0,"C",1);
+   $pdf->cell(10,4,"Risco",0,1,"C",1);
 
 
     for ($i = 0;$i < $numrows;$i++){
       db_fieldsmemory($result,$i);
-      $y = $pdf->y;
+      $y = $pdf->getY();
       $pdf->setX(10);
       $pdf->SetFont('Arial','',$texto);
       $pdf->cell(15,4,"$q07_ativ",0,0,"C",0);
       $pdf->cell(20,4,"$q07_val_ativ_int",0,0,"C",0);
       $pdf->cell(20,4,"$q07_imprimealvara",0,0,"C",0);
-      $pdf->multicell(74,4,"$q03_descr",0,"L",0);
-      $ym = $pdf->y;
+      $pdf->multicell(64,4,"$q03_descr",0,"L",0);
+      $ym = $pdf->getY();
+      if($y > 270 ){
+         $y = 35;
+      }
       $pdf->setY($y);
-      $pdf->setX(140);
-      $pdf->cell(6,4,$q88_tipo,0,0,"L",0);
+      $pdf->setX(128);
+      $pdf->cell(5,4,$q88_tipo,0,0,"L",0);
       $pdf->cell(20,4,db_formatar($q07_datain,"d"),0,0,"C",0);
       $pdf->cell(20,4,db_formatar($q07_datafi,"d"),0,0,"C",0);
-      $pdf->cell(20,4,db_formatar($q07_databx,"d"),0,1,"C",0);
-
+      $pdf->cell(20,4,db_formatar($q07_databx,"d"),0,0,"C",0);
+      $pdf->cell(10,4,$q71_classificacaorisco,0,1,"R",0);
       // Quebra linhas para descrições com muitos caracteres
       $iTotalCaracterDescricao = strlen($q03_descr);
-      $iTotalCaracterLinha =  47;
+      $iTotalCaracterLinha =  35;
       if($iTotalCaracterDescricao >= $iTotalCaracterLinha){
          for ($ii = 0;$ii < ($iTotalCaracterDescricao - $iTotalCaracterLinha);$ii+=$iTotalCaracterLinha){
             $pdf->ln();
@@ -623,12 +678,16 @@ if($numrows <> 0){
 
       if(isset($q11_obs) && $q11_obs != ""){
          $pdf->multicell(190,4,"Observações da baixa - $q11_obs  ",0,"L","L",0);
-         $ym = $pdf->y;
+         $ym = $pdf->getY();
       }
       $pdf->setY($ym);
     }
 }else{
-  $pdf->cell(190,4,"NÃO POSSUI ATIVIDADE",0,1,"C",0);
+    if (!empty($filtroAtividades)) {
+        db_redireciona("db_erros.php?db_erro=Nenhum registro encontrado com os filtros: {$filtroAtividadesLabel}");
+    }
+
+    $pdf->cell(190,4,"NÃO POSSUI ATIVIDADE",0,1,"C",0);
 }
 
 $sql="select cgmsocio.z01_numcgm,
@@ -654,11 +713,11 @@ $pdf->Cell(200,2,"","",1,"C",0);
 if($numrows <> 0){
    $pdf->setX(10);
    $pdf->SetFont('Arial','',$titulo);
-   $pdf->cell(10,4,"CGM",0,0,"C",1);
+   $pdf->cell(15,4,"CGM",0,0,"C",1);
    $pdf->cell(65,4,"Nome",0,0,"C",1);
    $pdf->cell(65,4,"Endereço",0,0,"C",1);
-   $pdf->cell(30,4,"Município",0,0,"C",1);
-   $pdf->cell(24,4,"Valor do Capital",0,1,"C",1);
+   $pdf->cell(28,4,"Município",0,0,"C",1);
+   $pdf->cell(22,4,"Valor do Capital",0,1,"C",1);
 
 
    for ($i = 0;$i < $numrows;$i++){
@@ -668,11 +727,11 @@ if($numrows <> 0){
 
       $pdf->setX(10);
       $pdf->SetFont('Arial','',$texto);
-      $pdf->cell(10,4,"$z01_numcgm",0,0,"C",0);
+      $pdf->cell(15,4,"$z01_numcgm",0,0,"C",0);
       $pdf->cell(65,4,"$z01_nome",0,0,"L",0);
       $pdf->cell(65,4,"$z01_ender",0,0,"L",0);
-      $pdf->cell(30,4,"$z01_munic",0,0,"C",0);
-      $pdf->cell(24,4,"$q95_perc",0,1,"C",0);
+      $pdf->cell(28,4,"$z01_munic",0,0,"C",0);
+      $pdf->cell(22,4,"$q95_perc",0,1,"C",0);
    }
 }
 else{
@@ -853,7 +912,7 @@ $sSqlParalisacoes = "select
                      q140_usuario as dl_usuario,
                      q141_descricao as dl_motivo,
                      q140_observacao as dl_obs
-                    from 
+                    from
                      issbaseparalisacao
                     inner join issmotivoparalisacao on
                      q141_sequencial = q140_issmotivoparalisacao
@@ -894,7 +953,4 @@ else{
   $pdf->cell(190,4,"NÃO POSSUI PARALISAÇÕES",0,1,"C",0);
 }
 
-$pdf->Output();
-
-
-?>
+$pdf->Output('I');

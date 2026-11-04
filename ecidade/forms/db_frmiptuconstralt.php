@@ -26,6 +26,16 @@
  */
 ?>
 <script>
+function js_limpaDtDemo(dtDemo){
+  let codCons = document.form1.j39_idcons.value
+  let dataNova = document.form1.j39_dtdemo
+  
+  dataNova.value = "";
+  dataNova.text = "";
+  return false;
+}
+
+
 
 function js_verificaDataInclusao(){
 
@@ -36,40 +46,131 @@ function js_verificaDataInclusao(){
     document.form1.j39_dtlan.focus();
     return false;
   }
-
 }
 
-  function js_verificaid(valor){
+function js_parseDate(dateStr) {
+      var parts = dateStr.split('/');
+      return new Date(parts[2], parts[1] - 1, parts[0]);
+  }
 
-    num=(document.form1.selid.options.length)-1;
-    for(i=1;i<=num;i++){
-
-      selid=document.form1.selid.options[i].value;
-      if(valor==selid){
-
-        alert("Construção já cadastrada!");
-        document.form1.j39_idcons.value="";
-        document.form1.j39_idcons.focus();
-        return false;
-        break;
-      }
-    }
-
-    if($('nomebo').name=="alterar"){
-
-      if(document.form1.testaprinc.value=="t" && document.form1.j39_idprinc.value =="f" ){
-        alert("Não será possível alterar esta construção para secundária sem antes selecionar outra como principal.");
-        return false;
-      }
-    }
-
-    if ( empty(document.form1.j39_area.value) ) {
-
-      alert("A Área m2 do lote não foi informada!");
+function js_verificaid(valor){
+   js_divCarregando('Aguarde!', 'msgbox');
+   const sApiUrl = "<?= ECIDADE_REQUEST_PATH ?>v4/api/";
+   trConstPrinc = document.getElementById('trConstPrinc');
+   idConsPrinc = document.getElementById('j39_idcons');
+   constrPrinc = document.getElementById('j39_idprinc');
+   idMatr = document.getElementById('j39_matric');
+   idSelectPrinc = document.getElementById('selectConstPrinc');
+   let tipoConstrucao = document.getElementById('IDTestaPrincp').value;
+   let verificaDispn = "<?= $verificaResult; ?>";
+   var dt_atual = "<?php echo date('d/m/Y', db_getsession('DB_datausu')); ?>";
+   var dtDemo = document.getElementById('j39_dtdemo');
+   var dateAtual = js_parseDate(dt_atual);
+   var dateDemo = js_parseDate(dtDemo.value);
+   let pavimento = document.getElementById('j39_pavim');
+   if(dateDemo > dateAtual){
+    js_removeObj('msgbox');
+     alert("Data de Demolição inválida");
+     return false;
+   }
+   
+   if(verificaDispn != 0 && (tipoConstrucao == 't' && constrPrinc.value == 'f') && idSelectPrinc.value == ""){
+    const data = new FormData();
+     data.append('j39_idcons', idConsPrinc.value);
+     data.append('j39_matric', idMatr.value);
+    
+      HttpClient.post(`${sApiUrl}tributario/cadastro/construcao/lista-principal`, {body: data, reportProgress: false}).then(response => {
+        if (response.data.length > 0) {
+         js_removeObj('msgbox');
+         alert("Selecione a Próxima Construção Principal");
+         trConstPrinc.removeAttribute('hidden');
+         for(let i = 0; i < response.data.length; i++) {
+           idSelectPrinc.options[i] = new Option(response.data[i].j39_idcons, response.data[i].j39_idcons);
+         }
+         
+        }
+        
+        if (response.error) {
+           alert(response.message);
+           return false;
+        }
+       
+      });
+     
       return false;
-    }
- }
+   }
 
+   if(dtDemo.value != "" && idSelectPrinc.value == "" && verificaDispn != 0 && tipoConstrucao == 't'){ 
+     const data = new FormData();
+     data.append('j39_idcons', idConsPrinc.value);
+     data.append('j39_matric', idMatr.value);
+    
+      HttpClient.post(`${sApiUrl}tributario/cadastro/construcao/lista-principal`, {body: data, reportProgress: false}).then(response => {
+        if (response.data.length > 0) {
+          js_removeObj('msgbox');
+         alert("Selecione a Próxima Construção Principal");
+         trConstPrinc.removeAttribute('hidden');
+         for(let i = 0; i < response.data.length; i++) {
+           idSelectPrinc.options[i] = new Option(response.data[i].j39_idcons, response.data[i].j39_idcons);
+         }
+         
+        }
+        
+        if (response.error) {
+           alert(response.message);
+           return false;
+        }
+       
+      });
+     
+      return false;
+   }
+   if(pavimento.value == "0" || pavimento.value == ""){
+     js_removeObj('msgbox');
+     alert("Pavimento deve ser informado!");
+     return false;
+   }
+   num= "<?=$num?>";
+   for(i=1;i<=num;i++){
+       selid=document.form1.selid.options[i].value;
+     if(valor==selid){
+         alert("Construção já cadastrada!");
+       document.form1.j39_idcons.value="";
+       document.form1.j39_idcons.focus();
+       return false;
+       break;
+     }
+   }
+   if($('nomebo').name=="alterar"){
+     if(document.form1.testaprinc.value=="t"
+         && document.form1.j39_idprinc.value =="f"
+         && contaConstrucoesPrincipais() < 1){
+          js_removeObj('msgbox');
+       alert("Não será possível alterar esta construção para secundária sem antes selecionar outra como principal.");
+       return false;
+     }
+   }
+   if ( empty(document.form1.j39_area.value) ) {
+    js_removeObj('msgbox');
+     alert("A Área m2 do lote não foi informada!");
+     return false;
+   }
+   js_divCarregando('Aguarde!', 'msgbox');
+}
+ 
+
+function contaConstrucoesPrincipais () {
+    numConstrucoes = (document.form1.selid.options.length) - 1;
+    numConstrucoesPrincipais = 0;
+    for (i = 0; i <= numConstrucoes; i++) {
+        valor = document.form1.selid.options[i].text;
+        valor = valor.split(' ');
+        if (valor.length > 1 ) {
+            numConstrucoesPrincipais ++;
+        }
+    }
+    return numConstrucoesPrincipais;
+}
 <?php
   if(isset($j39_matric)) {
     ?>
@@ -110,7 +211,7 @@ function js_verificaDataInclusao(){
     }
 
   <?php
-  }
+}
 ?>
 
 function js_confir() {
@@ -123,6 +224,8 @@ function js_confir() {
     return false;
   }
 }
+
+js_removeObj('msgbox');
 </script>
 
 <br>
@@ -146,13 +249,112 @@ function js_confir() {
 			<tr>
 				<td width="208"><?=$Lj39_matric?>
 				</td>
-				<td><?
+				<td><?php
 				db_input('j39_matric',10,0,true,'text',3,"onchange='js_matri(false)'");
 				db_input('z01_nome',35,0,true,'text',3,"");
 				?>
 				</td>
 			</tr>
 		</table>
+    <?php 
+      			if (isset($j39_matric)) {
+
+              $num = 0;
+      
+              
+      
+              $result = $oDaoIPTUConstr->sql_record($oDaoIPTUConstr->sql_query_file(
+                  $j39_matric,
+                  ""
+                  ,"j39_idcons as jj39_idcons,j39_idprinc as jj39_idprinc, j39_dtdemo as jj39_dtdemo, j39_ano as jj39_ano, j39_dtlan as jj39_dtlan, j39_area as jj39_area, j39_areap as jj39_areap"
+                  ,""
+                  ,""));
+              
+              if ( !empty($result) ) {
+                $num = pg_num_rows($result);
+              }
+      
+              if (!empty($num)) {
+      
+                ?>
+                <br>
+                <fieldset>                                         
+                  <legend><b>Construções Cadastradas :</b></legend> 
+                    <table id="selid" name="selid" class="form-container" border="1">
+                      <thead>
+                        <tr style="background-color: #e1e1e1">
+                            <th class="text-center">Cód Construção</th>
+                            <th class="text-center">Data Inclusão</th>
+                            <th class="text-center">Data Demolição</th>
+                            <th class="text-center">Ano da Construção</th>
+                            <th class="text-center">Área</th>
+                            <th class="text-center">Área Privativa</th>
+                        </tr>
+                        <tr class="cores">
+                          <td class="text-center field-size2 <?= !isset($j39_idcons) ? 'selected' : '' ?>"
+                              onclick="js_trocaid('nova')">
+                              <input style="width:100%;" type="button" value="Nova">
+                          </td>
+                          <td class="dtinclusao text-center field-size4">-</td>
+                          <td class="anoConstrucao text-center field-size4">-</td>
+                          <td class="areaConstrucao text-center field-size2">-</td>
+                          <td class="areaPrivativa text-center field-size4">-</td>
+                          <td class="areaPrivativa text-center field-size4">-</td>
+                      </tr>
+                      </thead>
+                    <tbody>
+                <?php
+      
+                $idcons   = empty($j39_idcons) ? null : $j39_idcons;
+                $testasel = true;
+                $nPrincipalDtDemo = true;
+                $nPrincipal = true;
+                $qtdNulls = 0;
+                
+                for ($i=0; $i < $num; $i++) {
+      
+                  db_fieldsmemory($result,$i);
+                  
+                  if ( $jj39_idcons != $idcons ) {  
+                    
+                    ?>
+                      <tr class="cores">
+                        <td class="text-center field-size2" value="
+                        <?= $jj39_idcons;?>" 
+                        <?= $jj39_idcons==$idcons?"selected":"";?> onclick="js_trocaid('<?= $jj39_idcons;?>')"><input style="width:100%;" type="button" value="<?php echo $jj39_idcons." ".($jj39_idprinc=="t"?"Principal":"");?>"></td>
+                        <td class="dtinclusao text-center field-size4"><?=  date('d/m/Y', strtotime($jj39_dtlan)) ?></td>
+                        <td class="dtinclusao text-center field-size4"><?= ($jj39_dtdemo != null ? date('d/m/Y', strtotime($jj39_dtdemo)) : "-")  ?></td>
+                        <td class="anoConstrucao text-center field-size4"><?=$jj39_ano?></td>
+                        <td class="areaConstrucao text-center field-size2"><?=$jj39_area?></td>
+                        <td class="areaPrivativa text-center field-size4"><?=$jj39_areap?></td>
+                        
+                      </tr>
+                    <?php
+                  }
+      
+                  if($jj39_idprinc=="t" && $jj39_dtdemo != null){
+                    $nPrincipalDtDemo = false;
+                  }
+      
+                  if($jj39_idprinc=="t" && $jj39_dtdemo == null && $jj39_idcons == $idcons){
+                    $nPrincipal = false;
+                  }
+                  
+                  if($jj39_dtdemo == null){
+                    $qtdNulls++;
+                  }
+                  
+                }
+                
+                
+                echo "     </td>  ";
+                echo "   </tr>    ";
+                echo " </table>   ";
+                echo " </fieldset>";
+              }
+            }
+    
+    ?>
 	</fieldset>
 	<br>
 	<fieldset>
@@ -163,51 +365,11 @@ function js_confir() {
 		<table border="0" width=100%>
 
 			<td width="200px"><?=$Lj39_idcons?>*</td>
-			<td><? db_input('j39_idcons',10,$Ij39_idcons,true,'text',$db_opcaoid,""); ?>
+			<td><?php db_input('j39_idcons',10,$Ij39_idcons,true,'text',$db_opcaoid,""); ?>
 			</td>
 
-			<td rowspan="13" valign="top" align="center" width=150><?
-			if (isset($j39_matric)) {
+			<td rowspan="13" valign="top" align="center" width=150><?php
 
-        $num = 0;
-
-			  if (!isset($incluir)) {
-
-			    $result = $oDaoIPTUConstr->sql_record($oDaoIPTUConstr->sql_query_file($j39_matric,"","j39_idcons as jj39_idcons,j39_idprinc as jj39_idprinc","",""));
-
-          if ( !empty($result) ) {
-			      $num = pg_num_rows($result);
-          }
-        }
-
-			  if (!empty($num)) {
-
-			    echo "<fieldset>                                            ";
-			    echo " <legend><b>Construções Cadastradas :</b></legend>    ";
-			    echo "   <table border='0' cellpadding='0' cellspacing='0'> ";
-			    echo "     <tr>                                             ";
-			    echo "       <td align='center'>                            ";
-
-			    echo "<select id='selid' name='selid' onchange='js_trocaid(this.value)'  size='".($num>5?6:($num+1))."' style=\"width:140px; height:50px\" >";
-			    echo "<option value='nova' ".(!isset($j39_idcons)?"selected":"").">Nova</option>";
-
-			    $idcons   = empty($j39_idcons) ? null : $j39_idcons;
-			    $testasel = true;
-
-			    for ($i=0; $i < $num; $i++) {
-
-			      db_fieldsmemory($result,$i);
-
-			      if ( $jj39_idcons != $idcons ) {
-			        echo "<option  value='".$jj39_idcons."' ".($jj39_idcons==$idcons?"selected":"").">$jj39_idcons ".($jj39_idprinc=="t"?"Principal":"")." </option>";
-			      }
-			    }
-			    echo "     </td>  ";
-			    echo "   </tr>    ";
-			    echo " </table>   ";
-			    echo " </fieldset>";
-			  }
-			}
 
 			$jj39_idcons="";
 
@@ -258,31 +420,31 @@ function js_confir() {
 			<tr>
 				<td><?=$Lj39_dtlan?>
 				</td>
-				<td><? db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text', 1) ?>
+				<td><?php db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text', 1) ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_ano?>
 				</td>
-				<td><? db_input('j39_ano',10,$Ij39_ano,true,'text',1,""); ?>
+				<td><?php db_input('j39_ano',10,$Ij39_ano,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_area?>
 				</td>
-				<td><? db_input('j39_area',10,4,true,'text',1,$sOnChangeArea); ?>
+				<td><?php db_input('j39_area',10,4,true,'text',1,$sOnChangeArea); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_areap?>
 				</td>
-				<td><? db_input('j39_areap',10,4,true,'text',1,""); ?>
+				<td><?php db_input('j39_areap',10,4,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_pavim?>
 				</td>
-				<td><? if ($db_opcao==1 && empty($j39_pavim)) {
+				<td><?php if ($db_opcao==1 && empty($j39_pavim)) {
 				  $j39_pavim=1;
 				}
 				db_input('j39_pavim',10,$Ij39_pavim,true,'text',1,"");
@@ -290,9 +452,9 @@ function js_confir() {
 				</td>
 			</tr>
 			<tr>
-				<td nowrap title="<?=@$Tj39_codigo?>"><? db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao); ?>
+				<td nowrap title="<?=@$Tj39_codigo?>"><?php db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao); ?>
 				</td>
-				<td><?
+				<td><?php
 				db_input('j39_codigo',10,$Ij39_codigo,true,'text',$db_opcao," onchange='js_pesquisaj39_codigo(false);'");
 				db_input('j14_nome',34,$Ij14_nome,true,'text',3,'');
 				?>
@@ -301,20 +463,20 @@ function js_confir() {
 			<tr>
 				<td><?=$Lj39_numero?>
 				</td>
-				<td><? db_input('j39_numero',10,$Ij39_numero,true,'text',1,""); ?>
+				<td><?php db_input('j39_numero',10,$Ij39_numero,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_compl?>
 				</td>
-				<td><? db_input('j39_compl',48,$Ij39_compl,true,'text',1,""); ?>
+				<td><?php db_input('j39_compl',48,$Ij39_compl,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
-				<td><b><? db_ancora("Características","js_mostracaracteristica();",1); ?>
+				<td><b><?php db_ancora("Características","js_mostracaracteristica();",1); ?>
 				</b>
 				</td>
-				<td><? db_input('caracteristica',15,1,true,'hidden',1,"") ?>
+				<td><?php db_input('caracteristica',15,1,true,'hidden',1,"") ?>
 
 				<td>
 
@@ -322,26 +484,42 @@ function js_confir() {
 			<tr>
 				<td nowrap title="<?=@$Tj39_idaument?>"><?=@$Lj39_idaument?>
 				</td>
-				<td><? db_input('j39_idaument',10,$Ij39_idaument,true,'text',$db_opcao,"") ?>
+				<td><?php db_input('j39_idaument',10,$Ij39_idaument,true,'text',$db_opcao,"") ?>
 				</td>
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tj39_idprinc?>"><?=@$Lj39_idprinc?>
 				</td>
-				<td><? if (isset($j39_matric) && $num > 0) {
-				  $x = array("f"=>"Construção Secundária","t"=>"Construção Principal");
-				} else {
+				<td><?php 
+        if($idcons != null){
+          $resultEspecifico = $oDaoIPTUConstr->sql_record($oDaoIPTUConstr->sql_query_file($j39_matric,$idcons,"j39_idcons as jj39_idcons,j39_idprinc as jj39_idprinc, j39_dtdemo","",""));
+          $resultSelect = pg_fetch_assoc($resultEspecifico);
+        }
+        
+        if($num == 0 ||
+          $nPrincipalDtDemo == true && $nPrincipal == true && $idcons != null && empty($resultSelect['j39_dtdemo']) &&  $qtdNulls <= 1||
+          $nPrincipalDtDemo == true && $nPrincipal == false &&  $qtdNulls < 2||
+          isset($j39_matric) && $num > 0 && $nPrincipalDtDemo == false
+          ){
+          $x = array("t"=>"Construção Principal");  
+        }else if(isset($j39_matric) && $num > 0 && $nPrincipal== true && $nPrincipalDtDemo == true && $idcons != null && !empty($resultSelect['j39_dtdemo'])){
+          $x = array("f"=>"Construção Secundária");
+        }
+        else if(isset($j39_matric) && $num > 0 && $nPrincipalDtDemo== true){
+          $x = array("f"=>"Construção Secundária","t"=>"Construção Principal");
+        }else {
 				  $x = array("t"=>"Construção Principal","f"=>"Construção Secundária");
 				}
 				db_select('j39_idprinc',$x,true,$db_opcao,"");
-				?> <input type="hidden" name="testaprinc" value="<?=@$j39_idprinc?>">
+				?> <input type="hidden" name="testaprinc" id="IDTestaPrincp" value="<?=@$j39_idprinc?>">
 				</td>
 			</tr>
-			<?
-			$result_util = $oDaoCfIPTU->sql_record($oDaoCfIPTU->sql_query(db_getsession("DB_anousu")));
+			<?php
+			$result_util = $oDaoCfIPTU->sql_record($oDaoCfIPTU->sql_query_file(db_getsession("DB_anousu")));
+      
 			if ($oDaoCfIPTU->numrows>0) {
 			  db_fieldsmemory($result_util,0);
-
+        
 			  if ($j18_utilpontos==1) {
 
 			    echo " <tr> ";
@@ -360,7 +538,7 @@ function js_confir() {
 						<legend>
 							<?=$Lj39_obs?>
 						</legend>
-						<? db_textarea('j39_obs', 5, 101, $Ij39_obs, true, 'text', $db_opcao); ?>
+						<?php db_textarea('j39_obs', 5, 101, $Ij39_obs, true, 'text', $db_opcao); ?>
 					</fieldset>
 				</td>
 			</tr>
@@ -376,13 +554,26 @@ function js_confir() {
 							<tr>
 								<td width="210px" title="<?=@$Tj39_dtdemo?>"><?=@$Lj39_dtdemo?>
 								</td>
-								<td width="620px"><? db_inputdata('j39_dtdemo',@$j39_dtdemo_dia,@$j39_dtdemo_mes,@$j39_dtdemo_ano,true,'text',$db_opcao,"") ?>
+                
+								<td width="620px"><?php db_inputdata('j39_dtdemo',@$j39_dtdemo_dia,@$j39_dtdemo_mes,@$j39_dtdemo_ano,true,'text',$db_opcao,"") ?>
+                <script> if(document.form1.j39_idcons.value == "" && document.form1.j39_dtdemo.value != ""){
+                            js_limpaDtDemo("");
+                          }
+                </script>
+								</td>
+							</tr>
+              <tr id="trConstPrinc" hidden>
+								<td title="Construcao Principal"><b style="background-color: red;">Construção Principal:</b>
+								</td>
+								<td>
+                  <select name="selectPrincipal" id="selectConstPrinc">
+                  </select>
 								</td>
 							</tr>
 							<tr>
 								<td title="Origem do Processo"><b>Processo do Sistema:</b>
 								</td>
-								<td><?
+								<td><?php
 								$x = array("S"=>"Sim", "N"=>"Não");
 								db_select("lProcesso", $x, true, $db_opcao, "onChange=js_montaCampoProcesso()");
 								?>
@@ -392,7 +583,7 @@ function js_confir() {
 								<td id="Processo" name="Processo">
 
 									<div id="ProcessoId1" style='display: none;'>
-										<? db_ancora("<b>Processo :</b>","js_pesquisaProcesso(true)",$db_opcao); ?>
+										<?php db_ancora("<b>Processo :</b>","js_pesquisaProcesso(true)",$db_opcao); ?>
 									</div>
 									<div id="ProcessoId2" style='display: none;'>
 										<strong>Processo :</strong>
@@ -428,14 +619,16 @@ function js_confir() {
 	</fieldset>
 
 	<br> <input id="nomebo" name="<?=($db_botao==1?"incluir":"alterar")?>"
-		type="submit" value="<?=($db_botao==1?"Incluir":"Alterar")?>"
+		type="submit" value="<?=($db_botao==1?"Incluir":"Alterar")?> "
 		<?=($testasel==true?"onclick=\"return js_verificaid(document.form1.j39_idcons.value)\"":"")?>>
-	<?  if ($db_botao!=1) {
+	
+  <?php  if ($db_botao!=1) {
 	  echo "<input  name='excluir' type=\"submit\" value='Excluir' onclick='return js_confir();'>";
 	}
 	?>
 
 	<script>
+
 
 var oGet = new Object();
 var lParseGet = false;
@@ -486,15 +679,15 @@ function js_mostra1(chave,erro){
 function js_mostracaracteristica(){
 
   oCaracteristicas.show();
-  
+
    if (aCaracteristicas.length > 0 ) {
-  
-      aCaracteristicas.each( 
-           function (oDado, iInd) {       
+
+      aCaracteristicas.each(
+           function (oDado, iInd) {
 
 
               $("comboCaracter" + oDado.iGrupo ).setValue(oDado.iCaracteristica );
-              
+
            });
     }
 }
@@ -874,7 +1067,7 @@ var aFonteDadosFormulario = new Array();
     if ( iRegistros > 0 ) {
       sPrincipal = "f";
     }
-    //console.log(oDados);
+    
 
     $('j39_ano').setValue(oDados.iAnoConstrucao);
     $('j39_area').setValue(oDados.nAreaConstrucao);
@@ -949,7 +1142,7 @@ var aFonteDadosFormulario = new Array();
           alert(oRetorno.sMessage.urlDecode());
         } else {
 
-            
+
           aCaracteristicas = oRetorno.aCaracteristicas;//[ "111", "2222" ]
 
           //$('caracteristica').setValue( oRetorno.aCaracteristicas.join("X") );

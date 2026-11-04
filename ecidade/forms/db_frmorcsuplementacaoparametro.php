@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clorcsuplementacaoparametro->rotulo->label();
            <?=@$Lo134_anousu?>
         </td>
         <td> 
-    <?
+    <?php
     $o134_anousu = db_getsession('DB_anousu');
     db_input('o134_anousu',10,$Io134_anousu,true,'text',3,"")
     ?>
@@ -57,7 +57,7 @@ $clorcsuplementacaoparametro->rotulo->label();
            <?=@$Lo134_percentuallimiteloa?>
         </td>
         <td> 
-    <? db_input('o134_percentuallimiteloa',10,$Io134_percentuallimiteloa,true,'text',$db_opcao,"")?>
+    <?php db_input('o134_percentuallimiteloa',10,$Io134_percentuallimiteloa,true,'text',$db_opcao,"")?>
         </td>
       </tr>
       </table>
@@ -76,7 +76,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcsuplementacaoparametro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

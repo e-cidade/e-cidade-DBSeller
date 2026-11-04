@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("nomeinst");
        <b>Código :</b>
     </td>
     <td> 
-	<?
+	<?php
 	db_input('k05_sequencial',5,$Ik05_sequencial,true,'text',$opcaoseq,"")
 	?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk05_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lk05_codigo,"js_pesquisak05_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k05_codigo',5,$Ik05_codigo,true,'text',$db_opcao," onchange='js_pesquisak05_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',50,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk05_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lk05_tipo,"js_pesquisak05_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k05_tipo',5,$Ik05_tipo,true,'text',$db_opcao," onchange='js_pesquisak05_tipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_descr',50,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('k00_descr',50,$Ik00_descr,true,'text',3,'')
        <?=@$Lk05_modcarne?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Carne febraban 1','30'=>'Carne febraban 2');
 db_select('k05_modcarne',$x,true,$db_opcao,"");
 ?>
@@ -145,7 +145,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_modcarne.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

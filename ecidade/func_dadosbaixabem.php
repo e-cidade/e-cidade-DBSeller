@@ -104,14 +104,14 @@ if (empty($oGet->t52_bem)) {
       $('tdData').innerHTML   =  oRetorno.oDadosBaixa.databaixa;
       $('tdMotivo').innerHTML = oRetorno.oDadosBaixa.motivo + " - " +oRetorno.oDadosBaixa.descricao_motivo.urlDecode();
       $('textObservacoes').innerHTML = oRetorno.oDadosBaixa.observacao.urlDecode();
-      
+
       var documentPath = oRetorno.oDadosBaixa.documentPath;
       var extension = oRetorno.oDadosBaixa.extension;
       if (documentPath != '') {
         $('fieldsetDocumento').style.display = 'block';
         $('btnDownload').addEventListener('click', event => {
           var download = new DBDownload();
-          var nomeArquivo = documentPath.split('/')[1];
+          var nomeArquivo = documentPath.split('/').pop();
 
           download.addFile(documentPath, nomeArquivo);
           download.show();
@@ -119,8 +119,9 @@ if (empty($oGet->t52_bem)) {
 
         if (oRetorno.oDadosBaixa.extension === 'pdf') {
           $('btnVisualizar').style.display = 'inline-block';
+          relativePath = documentPath.replace('var/www/html/', '');
           $('btnVisualizar').addEventListener('click', event => {
-            parent.js_visualizarPDF(documentPath, 100, 100, true);
+            parent.js_visualizarPDF(relativePath, 100, 100, true);
           });
         }
       }

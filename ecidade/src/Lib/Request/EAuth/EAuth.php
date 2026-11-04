@@ -1,4 +1,5 @@
 <?php
+
 namespace ECidade\Lib\Request\EAuth;
 
 use \GuzzleHttp\Client;
@@ -13,7 +14,12 @@ class EAuth
     private $client_id;
     private $client_secret;
     private $token;
+    private $clientGuzzle;
+    private $frontend_id_client;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->getAuthorization();
@@ -55,6 +61,16 @@ class EAuth
     public function getRouteUserCpf()
     {
         return $this->getUrlApi() . "/users/cpfcnpj";
+    }
+
+    public function getRouteNotificaAssinatura()
+    {
+        return $this->getUrlApi() . "/users/notifica-assinatura";
+    }
+
+    public function getRouteVerificaUserMunicipio()
+    {
+        return $this->getUrlApi() . "/users/verifica-user-municipio";
     }
 
     /**
@@ -145,12 +161,28 @@ class EAuth
         $this->municipio = $municipio;
     }
 
+    /**
+     * @param mixed $frontend_id
+     */
+    public function setFrontend($frontend_id)
+    {
+        $this->frontend_id_client = $frontend_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFrontendId()
+    {
+        return $this->frontend_id_client;
+    }
+
     private function validateConfig()
     {
 
         if (!Registry::get('app.config')->has('app.api')) {
             $msg = "Erro ao buscar as credencias das api's";
-            $msg .= "\nVerifique o arquivo de configuração (application).";
+            $msg .= "\nVerifique o arquivo de configurao (application).";
             throw new \Exception($msg);
         }
 
@@ -158,7 +190,7 @@ class EAuth
 
         if (empty($configApi) || empty($configApi->eauth)) {
             $msg = "Erro ao buscar as credencias do eauth";
-            $msg .= "\nVerifique o arquivo de configuração (application).";
+            $msg .= "\nVerifique o arquivo de configurao (application).";
             throw new \Exception($msg);
         }
 
@@ -169,33 +201,41 @@ class EAuth
         $this->setClientSecret($eauth->client_secret);
         $this->setGrantType($eauth->grant_type);
         $this->setMunicipio($eauth->municipio);
+        $this->setFrontend($eauth->frontend_client_id);
 
         if (empty($this->getUrlApi())) {
-            throw new \Exception("eauth url NÃO CONFIGURADO");
+            throw new \Exception("eauth url NO CONFIGURADO");
         }
 
         if (empty($this->getGrantType())) {
-            throw new \Exception("eauth grant_type NÃO CONFIGURADO");
+            throw new \Exception("eauth grant_type NO CONFIGURADO");
         }
 
         if (empty($this->getClientId())) {
-            throw new \Exception("eauth client_id NÃO CONFIGURADO");
+            throw new \Exception("eauth client_id NO CONFIGURADO");
         }
 
         if (empty($this->getClientSecret())) {
-            throw new \Exception("eauth client_secret NÃO CONFIGURADO");
+            throw new \Exception("eauth client_secret NO CONFIGURADO");
         }
 
         if (empty($this->getMunicipio())) {
-            throw new \Exception("eauth municipio NÃO CONFIGURADO");
+            throw new \Exception("eauth municipio NO CONFIGURADO");
         }
+
+        $optionsGuzzle = [];
+
+        if (!empty($eauth->disableVerifySSL) and (bool)$eauth->disableVerifySSL === true) {
+            $optionsGuzzle["verify"] = false;
+        }
+
+        $this->clientGuzzle = new Client($optionsGuzzle);
     }
 
     private function getAuthorization()
     {
         try {
             $this->validateConfig();
-            $request = new Client();
             $options = [
                 'form_params' => [
                     'grant_type' => $this->getGrantType(),
@@ -204,7 +244,7 @@ class EAuth
                 ]
             ];
 
-            $response = $request->request('POST', $this->getRouteToken(), $options);
+            $response = $this->clientGuzzle->request('POST', $this->getRouteToken(), $options);
             $obj = (object)json_decode($response->getBody(), true);
 
             if (empty($obj->access_token)) {
@@ -226,7 +266,6 @@ class EAuth
 
     public function validarUsuarioExiste($cpfcnpj)
     {
-        $request = new Client();
         $options = array(
             'headers' => $this->getHeaders(),
             'form_params' => array(
@@ -235,41 +274,44 @@ class EAuth
             )
         );
 
-        return $request->request('POST', $this->getRouteValidaExsite(), $options);
+        return $this->clientGuzzle->request('POST', $this->getRouteValidaExsite(), $options);
     }
 
-    public function salvarUsuarioEauth($nome, $email, $cpfcnpj, $client_app_id)
-    {
-        if (!mb_detect_encoding($nome, 'UTF-8', true)) {
-            $nome = mb_convert_encoding($nome, "UTF-8");
+    public function salvarUsuarioEauth(
+        $nome,
+        $email,
+        $cpfcnpj,
+        $client_app_id = null,
+        $processo = null,
+        $notifica_assinatura = false
+    ) {
+        if ($client_app_id === null) {
+            $client_app_id = $this->frontend_id_client;
         }
 
-        if (!mb_detect_encoding($email, 'UTF-8', true)) {
-            $email = mb_convert_encoding($email, "UTF-8");
+        $form_params = array(
+            'name' => \DBString::utf8_encode_all($nome),
+            'email' => \DBString::utf8_encode_all($email),
+            'cpfcnpj' => \DBString::utf8_encode_all($cpfcnpj),
+            'municipio' => $this->getMunicipio(),
+            'client_id' => $client_app_id
+        );
+
+        if ($notifica_assinatura) {
+            $form_params['processo'] = \DBString::utf8_encode_all($processo);
+            $form_params['notifica_assinatura'] =  $notifica_assinatura;
         }
 
-        if (!mb_detect_encoding($cpfcnpj, 'UTF-8', true)) {
-            $cpfcnpj = mb_convert_encoding($cpfcnpj, "UTF-8");
-        }
-
-        $request = new Client();
         $options = array(
             'headers' => $this->getHeaders(),
-            'form_params' => array(
-                'name' => $nome,
-                'email' => $email,
-                'cpfcnpj' => $cpfcnpj,
-                'municipio' => $this->getMunicipio(),
-                'client_id' => $client_app_id
-            )
+            'form_params' => $form_params
         );
-        $response = $request->request('POST', $this->getRouteUserSave(), $options);
+        $response = $this->clientGuzzle->request('POST', $this->getRouteUserSave(), $options);
         return (object)json_decode($response->getBody(), true);
     }
 
     public function consultaUserCpf($cpfcnpj)
     {
-        $request = new Client();
         $options = array(
             'headers' => $this->getHeaders(),
         );
@@ -277,13 +319,12 @@ class EAuth
             'cpfcnpj' => str_replace(array(".", "-", "/"), "", $cpfcnpj),
             'municipio' => $this->getMunicipio()
         ));
-        $response = $request->get($this->getRouteUserCpf()."?{$params}", $options);
+        $response = $this->clientGuzzle->get($this->getRouteUserCpf() . "?{$params}", $options);
         return (object)json_decode($response->getBody(), true);
     }
 
     public function sendMessage($cpfCnpj, $client_app_id, $message, $email = null, $anonimo = false)
     {
-        $request = new Client();
         $message = \DBString::utf8_encode_all($message);
         $options = array(
             'headers' => $this->getHeaders(),
@@ -295,7 +336,34 @@ class EAuth
                 'anonimo' => $anonimo
             )
         );
-        $response = $request->request('POST', $this->getRouteEmailMessage(), $options);
+        $response = $this->clientGuzzle->request('POST', $this->getRouteEmailMessage(), $options);
+        return (object)json_decode($response->getBody(), true);
+    }
+
+    public function verificaUserMunicipio($cpfcnpj)
+    {
+        $options = array(
+            'headers' => $this->getHeaders(),
+            'form_params' => array(
+                'cpfcnpj' => $cpfcnpj,
+                'id_municipio' => $this->getMunicipio()
+            )
+        );
+        $response = $this->clientGuzzle->request('POST', $this->getRouteVerificaUserMunicipio(), $options);
+        return (object)json_decode($response->getBody(), true);
+    }
+
+    public function notificaAssinatura($mensagem, $cpfCnpj)
+    {
+        $options = array(
+            'headers' => $this->getHeaders(),
+            'form_params' => array(
+                'message' => \DBString::utf8_encode_all($mensagem),
+                'cpfcnpj' => \DBString::utf8_encode_all($cpfCnpj),
+                'frontend_client_id' => $this->frontend_id_client
+            )
+        );
+        $response = $this->clientGuzzle->request('POST', $this->getRouteNotificaAssinatura(), $options);
         return (object)json_decode($response->getBody(), true);
     }
 }

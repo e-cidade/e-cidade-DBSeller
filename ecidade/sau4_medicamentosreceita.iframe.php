@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-        <?
+        <?php
         $oRotulo = new rotulocampo;
         $oRotulo->label('s159_i_receita');
         $oRotulo->label('fa04_i_cgsund');
@@ -71,7 +71,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=$Ls159_i_receita?>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       db_input('s159_i_receita', 10, $Is159_i_receita, true, 'text', 3, '');
                       db_input('fa04_i_cgsund', 10, $Ifa04_i_cgsund, true, 'hidden', 3, '');
                       ?>

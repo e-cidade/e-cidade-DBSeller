@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -82,12 +82,12 @@ if ($clveicparam->numrows > 0) {
         </tr>
         <tr>
           <td nowrap title="<?=@$Tve62_veiculos?>">
-             <?
+             <?php
              db_ancora(@$Lve62_veiculos,"js_pesquisave62_veiculos(true);",$db_opcao);
              ?>
           </td>
           <td>
-            <?
+            <?php
             db_input('ve62_veiculos',10,$Ive62_veiculos,true,'text',$db_opcao,
                      " onchange='js_pesquisave62_veiculos(false);'");
             db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
@@ -100,7 +100,7 @@ if ($clveicparam->numrows > 0) {
              <?=@$Lve62_dtmanut?>
           </td>
           <td>
-          <?
+          <?php
           db_inputdata('ve62_dtmanut',@$ve62_dtmanut_dia,@$ve62_dtmanut_mes,@$ve62_dtmanut_ano,
                        true,'text',$db_opcao,
                        "onchange='js_pesquisa_medida();'","","","none","","", "js_pesquisa_medida();")
@@ -121,7 +121,7 @@ if ($clveicparam->numrows > 0) {
              <?=@$Lve62_descr?>
           </td>
           <td>
-            <?
+            <?php
             db_input('ve62_descr',60,$Ive62_descr,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -131,7 +131,7 @@ if ($clveicparam->numrows > 0) {
              <?=@$Lve62_notafisc?>
           </td>
           <td>
-          <?
+          <?php
           db_input('ve62_notafisc',10,$Ive62_notafisc,true,'text',$db_opcao,"")
           ?>
           </td>
@@ -139,7 +139,7 @@ if ($clveicparam->numrows > 0) {
         <tr>
          <td nowrap title="Última Medida"><b>Última Medida:</b></td>
           <td>
-           <?
+           <?php
            $ultimamedida = 0;
            if (isset($ve62_veiculos) && $ve62_veiculos != "" && !empty($ve62_dtmanut)) {
 
@@ -159,7 +159,7 @@ if ($clveicparam->numrows > 0) {
              <?=@$Lve62_medida?>
           </td>
           <td>
-            <?
+            <?php
               db_input('ve62_medida',15,$Ive62_medida,true,'text',$db_opcao,"");
               db_input("ve07_sigla",3,0,true,"text",3);
             ?>
@@ -187,12 +187,12 @@ if ($clveicparam->numrows > 0) {
         </tr>
         <tr>
           <td nowrap title="<?=@$Tve62_veiccadtiposervico?>">
-             <?
+             <?php
              db_ancora(@$Lve62_veiccadtiposervico,"js_pesquisave62_veiccadtiposervico(true);",$db_opcao);
              ?>
           </td>
           <td>
-            <?
+            <?php
             db_input('ve62_veiccadtiposervico',10,$Ive62_veiccadtiposervico,true,'text',$db_opcao,
             " onchange='js_pesquisave62_veiccadtiposervico(false);'");
             db_input('ve28_descr',40,$Ive28_descr,true,'text',3,'');
@@ -201,12 +201,12 @@ if ($clveicparam->numrows > 0) {
         </tr>
         <tr>
           <td nowrap title="<?=@$Tve66_veiccadoficinas?>">
-             <?
+             <?php
              db_ancora(@$Lve66_veiccadoficinas,"js_pesquisave66_veiccadoficinas(true);",$db_opcao);
              ?>
           </td>
           <td>
-            <?
+            <?php
             db_input('ve66_veiccadoficinas',10,$Ive66_veiccadoficinas,true,'text',$db_opcao,
                      "onchange='js_pesquisave66_veiccadoficinas(false);'");
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
@@ -215,7 +215,7 @@ if ($clveicparam->numrows > 0) {
         </tr>
         <tr>
           <td nowrap title="<?=@$Tve65_veicretirada?>">
-             <?
+             <?php
              db_ancora(@$Lve65_veicretirada,"js_pesquisave65_veicretirada(true);",$db_opcao);
              ?>
           </td>
@@ -610,7 +610,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_veicmanut.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -641,7 +641,7 @@ function js_valida(){
   var oServicoExecutado = $('ve62_descr');
   var oHora             = $('ve62_hora');
 
- <? if ($db_opcao !=3 ) { ?>
+ <?php if ($db_opcao !=3 ) { ?>
   document.form1.ve62_medida.style.backgroundColor = '';
 
   if (!validaCampo(oServicoExecutado, 'Campo Serviço Executado é de preenchimento obrigatório.')) {
@@ -652,25 +652,8 @@ function js_valida(){
     return false;
   }
 
-  if (empty(medidamanut.toString())) {
-    alert ("Campo Medida é de preenchimento obrigatório.");
-    document.form1.ve62_medida.style.backgroundColor='#99A9AE';
-    document.form1.ve62_medida.value='';
-    document.form1.ve62_medida.focus();
-    return false;
-  }
 
-  if(ultimamanut > medidamanut){
-
-    alert ("O valor do campo Medida não pode ser menor que o valor do campo Última Medida.");
-    document.form1.ve62_medida.style.backgroundColor='#99A9AE';
-    document.form1.ve62_medida.value='';
-    document.form1.ve62_medida.focus();
-    return false;
-  }
-
-
- <? } ?>
+ <?php } ?>
 
   return true;
 }

@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com
  *                         e-cidade@dbseller.com.br
  *
@@ -72,7 +72,7 @@ class ConsultaDados {
   private $iTempoLimite       = 1;
 
   /**
-   * Parte Inicial da Consulta de Dados, método chamado no webservice
+   * Parte Inicial da Consulta de Dados, mï¿½todo chamado no webservice
    *
    * @param string $sMetodo
    * @param array  $aParametrosEntrada
@@ -157,7 +157,7 @@ class ConsultaDados {
     $lEnviouQuery        = pg_send_query( $this->rsConn, $sSQL);
 
     if (!$lEnviouQuery) {
-       throw new SoapFault('e-Cidade', 'Não Foi possivel enviar a Query.'.pg_last_error().'...');
+       throw new SoapFault('e-Cidade', 'Nï¿½o Foi possivel enviar a Query.'.pg_last_error().'...');
     }
 
     $iTempoExecucaoQuery = 0;
@@ -187,7 +187,7 @@ class ConsultaDados {
     if ( !empty($sErro) ) {
 
       $sLog                        = "--------------------------------------------------------------------\n";
-      $sLog                       .= "CHAMADA PARA O MÉTODO: \n{$sMetodo}                                 \n";
+      $sLog                       .= "CHAMADA PARA O Mï¿½TODO: \n{$sMetodo}                                 \n";
       $sLog                       .= "--------------------------------------------------------------------\n";
       $sLog                       .= "FILTROS PARA CONSULTA:\n".print_r($this->aParametrosEntrada, 1)."   \n";
       $sLog                       .= "--------------------------------------------------------------------\n";
@@ -214,7 +214,7 @@ class ConsultaDados {
         $oDados->$sCampo = urlencode($sValor);
       }
 
-      if ( $iMemoriaUtilizada >= $iMemoriaLimite * 0.90 ) { // Deixa 10% da memória para responder
+      if ( $iMemoriaUtilizada >= $iMemoriaLimite * 0.90 ) { // Deixa 10% da memï¿½ria para responder
         throw new SoapFault("e-Cidade","Quantidade de Dados Retornada nao Suportada Pelo Servidor. Registros Encontrados: " . pg_num_rows($rsSQL));
       }
     }
@@ -240,7 +240,7 @@ class ConsultaDados {
       $oArquivoXML->load( $sCaminhoXML );
 
       /**
-       * Nodes básicos do XML
+       * Nodes bï¿½sicos do XML
        */
       $oNodeConsulta    = $oArquivoXML->getElementsByTagName('consulta')->item(0);
       $oNodeCampos      = $oNodeConsulta->getElementsByTagName('campos')->item(0);
@@ -252,7 +252,7 @@ class ConsultaDados {
 
 
       /**
-       * Estruturando Variáveis para criar a String SQL
+       * Estruturando Variï¿½veis para criar a String SQL
        */
 
       $lDistinct        = $oNodeConsulta->getAttribute("distinct") == "true";
@@ -295,6 +295,12 @@ class ConsultaDados {
         $sTipoJoin     = $oNodeJoin->getAttribute("tipo");
         $sTabelajoin   = $oNodeJoin->getAttribute("tabela");
         $sCondicaoJoin = $oNodeJoin->getAttribute("condicao");
+        if ( strpos($sCondicaoJoin,'$') ) {
+          foreach ($aFiltrosInformados as $key => $variavel) {
+
+            $sCondicaoJoin = str_replace("\${$key}", $variavel, $sCondicaoJoin);
+          }
+        }
         $aJuncoes[]    = "{$sTipoJoin} join {$sTabelajoin} on {$sCondicaoJoin}";
       }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 //// RECIBO
 
 $this->objpdf->AliasNbPages();

@@ -114,7 +114,7 @@ $clrotulo->label("h42_descr");
       <?php
 
       $lErro = false;
-              
+
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_portaria.php")==true){
@@ -130,25 +130,25 @@ $clrotulo->label("h42_descr");
           $sqlSituacao = "
             h31_sequencial IN ( select h33_portaria
                                   from (  select pa.*,
-                                                (  select rh236_situacao 
+                                                (  select rh236_situacao
                                                     from portariaassentasituacao
-                                                    where rh236_portariaassenta = pa.h33_sequencial 
+                                                    where rh236_portariaassenta = pa.h33_sequencial
                                                 order by rh236_momento desc
                                                     limit 1
-                                                ) as rh236_situacao 
+                                                ) as rh236_situacao
                                             from portariaassenta as pa
-                                          where h33_portaria IN (h31_sequencial) 
+                                          where h33_portaria IN (h31_sequencial)
                                         order by h33_portaria desc
                                         ) as xx
-                                where xx.rh236_situacao is null 
+                                where xx.rh236_situacao is null
                                     or xx.rh236_situacao = 'D'
           )";
         } else {
-          $campos .= ", arquivoestorage.db177_idestorage as id_estorage";
+            $campos .= ", arquivoestorage.db177_idestorage as id_estorage";
         }
 
         $sSqlVerificaLotacao = null;
-        
+
         if (DBPessoal::utilizaFiltroLotacoesPorUsuario()) {
             $filtro_lotacao = true;
         }
@@ -163,7 +163,7 @@ $clrotulo->label("h42_descr");
                                                             and rh02_mesusu = ".DBPessoal::getMesFolha()."
                                                             AND rh157_usuario = ".db_getsession("DB_id_usuario").")";
         }
-        
+
         $sSqlVerificoesAdicionais = "";
         $sSqlVerificoesAdicionais .= $sqlSituacao;
         $sSqlVerificoesAdicionais .= ' AND ';
@@ -175,8 +175,8 @@ $clrotulo->label("h42_descr");
 	         $sql = $clportaria->sql_query_assentamento_funcional(
              "",
              $campos,
-             " h31_numero ", 
-             " h31_numero like '$chave_h31_numero' AND h31_dtportaria between to_date('$dataini','dd/mm/yyyy') and to_date('$datafim','dd/mm/yyyy') ", 
+             " h31_numero ",
+             " h31_numero like '$chave_h31_numero' AND h31_dtportaria between to_date('$dataini','dd/mm/yyyy') and to_date('$datafim','dd/mm/yyyy') ",
              $sSqlVerificoesAdicionais,
               "2"
            );
@@ -199,7 +199,7 @@ $clrotulo->label("h42_descr");
             "chave_h42_descr" => $chave_h42_descr
           );
         }
-       
+
 
         $sql2 = $sql;
         $sql = "select h31_sequencial,
@@ -231,12 +231,11 @@ $clrotulo->label("h42_descr");
         if(isset($sql) && trim($sql) != ""){
            db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa,false);
         }
-        
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
           $result = $clportaria->sql_record($clportaria->sql_query_assentamento_funcional($pesquisa_chave), $sSqlVerificoesAdicionais, "2");
-          
-          if($clportaria->numrows!=0){ 
+
+          if($clportaria->numrows!=0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$h31_sequencial', false);</script>";
           }else{

@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: licitacao
 //CLASSE DA ENTIDADE liclicitaitemlog
-class cl_liclicitaitemlog { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $l14_liclicita = 0; 
-   var $l14_xml = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_liclicitaitemlog {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $l14_liclicita = 0;
+   var $l14_xml = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 l14_liclicita = int4 = Código da Licitação 
-                 l14_xml = text = XML com os itens 
+                 l14_liclicita = int4 = Código da Licitação
+                 l14_xml = text = XML com os itens
                  ";
-   //funcao construtor da classe 
-   function cl_liclicitaitemlog() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("liclicitaitemlog"); 
+     $this->rotulo = new rotulo("liclicitaitemlog");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_liclicitaitemlog {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l14_liclicita = ($this->l14_liclicita == ""?@$GLOBALS["HTTP_POST_VARS"]["l14_liclicita"]:$this->l14_liclicita);
        $this->l14_xml = ($this->l14_xml == ""?@$GLOBALS["HTTP_POST_VARS"]["l14_xml"]:$this->l14_xml);
@@ -74,9 +74,9 @@ class cl_liclicitaitemlog {
      }
    }
    // funcao para inclusao
-   function incluir ($l14_liclicita){ 
+   public function incluir ($l14_liclicita){
       $this->atualizacampos();
-     if($this->l14_xml == null ){ 
+     if($this->l14_xml == null ){
        $this->erro_sql = " Campo XML com os itens nao Informado.";
        $this->erro_campo = "l14_xml";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_liclicitaitemlog {
        $this->erro_status = "0";
        return false;
      }
-       $this->l14_liclicita = $l14_liclicita; 
-     if(($this->l14_liclicita == null) || ($this->l14_liclicita == "") ){ 
+       $this->l14_liclicita = $l14_liclicita;
+     if(($this->l14_liclicita == null) || ($this->l14_liclicita == "") ){
        $this->erro_sql = " Campo l14_liclicita nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_liclicitaitemlog {
        return false;
      }
      $sql = "insert into liclicitaitemlog(
-                                       l14_liclicita 
-                                      ,l14_xml 
+                                       l14_liclicita
+                                      ,l14_xml
                        )
                 values (
-                                $this->l14_liclicita 
-                               ,'$this->l14_xml' 
+                                $this->l14_liclicita
+                               ,'$this->l14_xml'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "logs dos itens da licitação ($this->l14_liclicita) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_liclicitaitemlog {
        $resac = db_query("insert into db_acount values($acount,2425,13866,'','".AddSlashes(pg_result($resaco,0,'l14_xml'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($l14_liclicita=null) { 
+   public function alterar ($l14_liclicita=null) {
       $this->atualizacampos();
      $sql = " update liclicitaitemlog set ";
      $virgula = "";
-     if(trim($this->l14_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_liclicita"])){ 
+     if(trim($this->l14_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_liclicita"])){
        $sql  .= $virgula." l14_liclicita = $this->l14_liclicita ";
        $virgula = ",";
-       if(trim($this->l14_liclicita) == null ){ 
+       if(trim($this->l14_liclicita) == null ){
          $this->erro_sql = " Campo Código da Licitação nao Informado.";
          $this->erro_campo = "l14_liclicita";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_liclicitaitemlog {
          return false;
        }
      }
-     if(trim($this->l14_xml)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_xml"])){ 
+     if(trim($this->l14_xml)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_xml"])){
        $sql  .= $virgula." l14_xml = '$this->l14_xml' ";
        $virgula = ",";
-       if(trim($this->l14_xml) == null ){ 
+       if(trim($this->l14_xml) == null ){
          $this->erro_sql = " Campo XML com os itens nao Informado.";
          $this->erro_campo = "l14_xml";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_liclicitaitemlog {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "logs dos itens da licitação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->l14_liclicita;
@@ -214,14 +214,14 @@ class cl_liclicitaitemlog {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($l14_liclicita=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($l14_liclicita=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($l14_liclicita));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_liclicitaitemlog {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "logs dos itens da licitação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$l14_liclicita;
@@ -276,11 +276,11 @@ class cl_liclicitaitemlog {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,11 +302,11 @@ class cl_liclicitaitemlog {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $l14_liclicita=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $l14_liclicita=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -326,15 +326,15 @@ class cl_liclicitaitemlog {
      $sql2 = "";
      if($dbwhere==""){
        if($l14_liclicita!=null ){
-         $sql2 .= " where liclicitaitemlog.l14_liclicita = $l14_liclicita "; 
-       } 
+         $sql2 .= " where liclicitaitemlog.l14_liclicita = $l14_liclicita ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -343,11 +343,11 @@ class cl_liclicitaitemlog {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $l14_liclicita=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $l14_liclicita=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -360,15 +360,15 @@ class cl_liclicitaitemlog {
      $sql2 = "";
      if($dbwhere==""){
        if($l14_liclicita!=null ){
-         $sql2 .= " where liclicitaitemlog.l14_liclicita = $l14_liclicita "; 
-       } 
+         $sql2 .= " where liclicitaitemlog.l14_liclicita = $l14_liclicita ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

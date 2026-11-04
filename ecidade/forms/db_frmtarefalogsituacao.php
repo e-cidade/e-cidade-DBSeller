@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("at46_descr");
        <?=@$Lat48_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at48_sequencial',10,$Iat48_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat48_tarefalog?>">
-       <?
+       <?php
        db_ancora(@$Lat48_tarefalog,"js_pesquisaat48_tarefalog(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at48_tarefalog',10,$Iat48_tarefalog,true,'text',$db_opcao," onchange='js_pesquisaat48_tarefalog(false);'")
 ?>
-       <?
+       <?php
 db_input('at43_descr',1,$Iat43_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat48_situacao?>">
-       <?
+       <?php
        db_ancora(@$Lat48_situacao,"js_pesquisaat48_situacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at48_situacao',10,$Iat48_situacao,true,'text',$db_opcao," onchange='js_pesquisaat48_situacao(false);'")
 ?>
-       <?
+       <?php
 db_input('at46_descr',40,$Iat46_descr,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tarefalogsituacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -140,6 +140,16 @@ if ($db_opcao == 1) {
                 <td>
                     <?php
                     db_select("l03_usaregistropreco", array("t" => "Sim", "f" => "Não"), true, $db_opcao);
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap title="<?= @$Tl03_modalidadeativa ?>">
+                    <?= @$Ll03_modalidadeativa ?>
+                </td>
+                <td>
+                    <?php
+                    db_select("l03_modalidadeativa", array("t" => "Sim", "f" => "Não"), true, $db_opcao);
                     ?>
                 </td>
             </tr>

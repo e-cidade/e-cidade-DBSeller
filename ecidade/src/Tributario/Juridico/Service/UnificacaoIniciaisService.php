@@ -28,6 +28,11 @@ final class UnificacaoIniciaisService
                 $aIniciaisAux[$aInicial->codigo_inicial]["origem"][] = $aInicial->origem;
             }
             $aIniciaisAux[$aInicial->codigo_inicial]["codigo_processo"] = $aInicial->codigo_processo;
+            $aIniciaisAux[$aInicial->codigo_inicial]["tipo_debito"] = $aInicial->tipo_debito;
+            $aIniciaisAux[$aInicial->codigo_inicial]["data_inicial"] = date(
+                'd/m/Y',
+                strtotime($aInicial->data_inicial)
+            );
 
             $aIniciaisAux[$aInicial->codigo_inicial]["cdas"][$aInicial->codigo_certidao]["codigo_certidao"]
                 = $aInicial->codigo_certidao;
@@ -165,7 +170,7 @@ final class UnificacaoIniciaisService
     ) {
         $aCda = $unificacaoIniciaisRepository->getByCda($iCda);
 
-        $oCda = array_first($aCda);
+        $oCda = array_shift($aCda);
 
         $inicialCertRepository   = Registry::get('app.container')
                                              ->get('tributario.container')

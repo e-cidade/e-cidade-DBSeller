@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,7 +44,7 @@ $clrotulo->label("z01_nome");
        <?=@$Lcm25_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('cm25_i_codigo',10,$Icm25_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -54,7 +54,7 @@ db_input('cm25_i_codigo',10,$Icm25_i_codigo,true,'text',3,"")
        <strong>Numero:</strong>
     </td>
     <td>
-<?
+<?php
 db_input('cm25_c_numero',10,@$cm25_c_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,15 +62,15 @@ db_input('cm25_c_numero',10,@$cm25_c_numero,true,'text',$db_opcao,"")
 
   <tr>
     <td nowrap title="<?=@$Tcm25_i_lotecemit?>">
-       <?
+       <?php
        db_ancora(@$Lcm25_i_lotecemit,"js_pesquisacm25_i_lotecemit(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('cm25_i_lotecemit',10,$Icm25_i_lotecemit,true,'hidden',$db_opcao," onchange='js_pesquisacm25_i_lotecemit(false);'")
 ?>
-       <?
+       <?php
 db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
        ?>
     </td>
@@ -82,7 +82,7 @@ db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
        <?=@$Lcm23_i_quadracemit?>
     </td>
     <td>
-       <?
+       <?php
          db_input('cm23_i_quadracemit',10,$Icm23_i_quadracemit,true,'hidden',3,"");
          db_input('cm22_c_quadra',10,$Icm22_c_quadra,true,'text',3,"");
        ?>
@@ -93,7 +93,7 @@ db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
        <?=@$Lcm22_i_cemiterio?>
     </td>
     <td>
-       <?
+       <?php
          db_input('cm22_i_cemiterio',10,$Icm22_i_cemiterio,true,'text',3,"");
          db_input('z01_nome',40,$Iz01_nome,true,'text',3,"");
        ?>
@@ -107,7 +107,7 @@ db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
        <?=@$Lcm25_f_comprimento?>
     </td>
     <td>
-<?
+<?php
 db_input('cm25_f_comprimento',10,$Icm25_f_comprimento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -117,7 +117,7 @@ db_input('cm25_f_comprimento',10,$Icm25_f_comprimento,true,'text',$db_opcao,"")
        <?=@$Lcm25_f_largura?>
     </td>
     <td>
-<?
+<?php
 db_input('cm25_f_largura',10,$Icm25_f_largura,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ db_input('cm25_f_largura',10,$Icm25_f_largura,true,'text',$db_opcao,"")
     <?=@$Lcm25_f_altura?>
    </td>
    <td>
-    <?
+    <?php
      db_input('cm25_f_altura',10,@$Icm25_f_altura,true,'text',$db_opcao,"")
     ?>
    </td>
@@ -143,7 +143,7 @@ db_input('cm25_f_largura',10,$Icm25_f_largura,true,'text',$db_opcao,"")
        <?=@$Lcm25_c_tipo?>
     </td>
     <td>
-<?
+<?php
 $x = array('O'=>'Ossário','J'=>'Jazigo');
 db_select('cm25_c_tipo',$x,true,$db_opcao,"");
 ?>
@@ -188,7 +188,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ossoariojazigo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

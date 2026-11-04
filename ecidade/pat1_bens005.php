@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -167,28 +167,16 @@ if (isset($alterar)) {
     if ($sqlerro == false) {
       if (isset($t52_ident)&&trim(str_replace(".","",$t52_ident))!=""&&$t07_confplaca==4) {
         $placaseq      = str_replace(".","",$t52_ident);
-        //        $flag_grava    = true;
         $sqlbensplaca = $clbensplaca->sql_query(null,"t41_bem as codbem,t52_ident as identificacao",null,"t52_ident = '$placaseq' and t41_placaseq = $placaseq and t52_instit = $t52_instit and t41_bem <> $t52_bem");
         $res_t52_ident = $clbensplaca->sql_record($sqlbensplaca);
-        //        echo($sqlbensplaca);
-        //        exit;
 
         if ($clbensplaca->numrows > 0) {
-          //db_fieldsmemory($res_t52_ident,0);
-          //if ($codbem != $t52_bem) { // && $identificacao == $t52_ident){
 
             $clbens->erro_campo = "t52_ident";
             $sqlerro            = true;
             $erro_msg           = "Usuário: \\n\\n Alteração não concluída, placa de identificação já cadastrada para outro bem\\n\\n Administrador.";
-          //}
-          /*
-             if ($t52_bem == $codbem && $t52_ident == $identificacao){
-             $flag_grava = false;
-             }
-           */          
         }
 
-        //        if ($sqlerro == false && $flag_grava == true) {
         if ($sqlerro == false) {
           if ($t52_ident != $t52_ident_atual){
             $clbensplaca->t41_bem=$t52_bem;
@@ -224,8 +212,7 @@ if (isset($alterar)) {
 	          $erro_msg = $clbenscedente->erro_msg;
 	          if ($clbenscedente->erro_status==0) {
 	            $sqlerro=true;
-	            //db_msgbox("9 -> ".$erro_msg);
-	            break;
+	            return false;
 	          }
     		}
       }
@@ -273,7 +260,6 @@ if (isset($alterar)) {
       $t52_depart_alt=$t52_depart;
       $descrdepto_alt=$descrdepto;
     }
-    //$result = $clbens->sql_record($clbens->sql_query($t52_bem));
     $result = $clbens->sql_record($clbens->sql_query($t52_bem));
     if ($clbens->numrows>0) {
       db_fieldsmemory($result,0);
@@ -300,7 +286,6 @@ if (isset($alterar)) {
           $t52_ident=$t41_placa;
           $t52_ident_seq=db_formatar($t41_placaseq,'f','0',$t07_digseqplaca,'e',0);
         } else if ($t07_confplaca==4) {
-          //      $t52_ident=$t41_placa.$t41_placaseq;
         }
       }
     }
@@ -327,7 +312,7 @@ if (isset($alterar)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    	<?
+    	<?php
     	  include(modification("forms/db_frmbens.php"));
     	?>
     </center>
@@ -336,7 +321,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) && $erro_msg!=""){
   db_msgbox($erro_msg);
   if($sqlerro==true){

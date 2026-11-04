@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clrotulo->label("j107_nome");
        <?=@$Lj111_sequencial?>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('j111_sequencial',10,$Ij111_sequencial,true,'text',3,"")
 		?>
     </td>
@@ -53,22 +53,22 @@ $clrotulo->label("j107_nome");
        <?=@$Lj111_nome?>
     </td>
     <td> 
-		<?
+		<?php
 			db_input('j111_nome',54,$Ij111_nome,true,'text',$db_opcao,"")
 		?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj111_condominio?>">
-       <?
+       <?php
        db_ancora(@$Lj111_condominio,"js_pesquisaj111_condominio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('j111_condominio',10,$Ij111_condominio,true,'text',$db_opcao," onchange='js_pesquisaj111_condominio(false);'")
 			?>
-			<?
+			<?php
 			db_input('j107_nome',40,$Ij107_nome,true,'text',3,'')
       ?>
     </td>
@@ -111,7 +111,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_predio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

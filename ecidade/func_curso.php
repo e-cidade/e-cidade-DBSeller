@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcurso->rotulo->label("s_nomecurso");
               <?=$Ls_codcurso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s_codcurso",8,$Is_codcurso,true,"text",4,"","chave_s_codcurso");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcurso->rotulo->label("s_nomecurso");
               <?=$Ls_nomecurso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s_nomecurso",40,$Is_nomecurso,true,"text",4,"","chave_s_nomecurso");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcurso->rotulo->label("s_nomecurso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "curso.*";
@@ -110,14 +110,14 @@ $clcurso->rotulo->label("s_nomecurso");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_s_codcurso.focus();
 document.form2.chave_s_codcurso.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

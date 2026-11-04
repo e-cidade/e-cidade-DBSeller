@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("ed15_i_codigo");
        <?=@$Led79_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed79_i_codigo',10,$Ied79_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted79_i_alunocurso?>">
-       <?
+       <?php
        db_ancora(@$Led79_i_alunocurso,"js_pesquisaed79_i_alunocurso(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed79_i_alunocurso',10,$Ied79_i_alunocurso,true,'text',$db_opcao," onchange='js_pesquisaed79_i_alunocurso(false);'")
 ?>
-       <?
+       <?php
 db_input('ed56_i_codigo',10,$Ied56_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted79_i_serie?>">
-       <?
+       <?php
        db_ancora(@$Led79_i_serie,"js_pesquisaed79_i_serie(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed79_i_serie',10,$Ied79_i_serie,true,'text',$db_opcao," onchange='js_pesquisaed79_i_serie(false);'")
 ?>
-       <?
+       <?php
 db_input('ed11_i_codigo',10,$Ied11_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted79_i_turno?>">
-       <?
+       <?php
        db_ancora(@$Led79_i_turno,"js_pesquisaed79_i_turno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed79_i_turno',10,$Ied79_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed79_i_turno(false);'")
 ?>
-       <?
+       <?php
 db_input('ed15_i_codigo',10,$Ied15_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('ed15_i_codigo',10,$Ied15_i_codigo,true,'text',3,'')
        <?=@$Led79_i_turmaant?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed79_i_turmaant',10,$Ied79_i_turmaant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_input('ed79_i_turmaant',10,$Ied79_i_turmaant,true,'text',$db_opcao,"")
        <?=@$Led79_c_resulant?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed79_c_resulant',1,$Ied79_c_resulant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -115,7 +115,7 @@ db_input('ed79_c_resulant',1,$Ied79_c_resulant,true,'text',$db_opcao,"")
        <?=@$Led79_c_situacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed79_c_situacao',1,$Ied79_c_situacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -200,7 +200,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_alunopossib.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

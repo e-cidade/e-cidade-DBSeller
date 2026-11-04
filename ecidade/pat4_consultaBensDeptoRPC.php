@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -107,12 +107,12 @@ if ($clbenstransf->numrows > 0) {
 	if ($clbens->numrows > 0) {
 		$aRetornaBens = db_utils::getCollectionByRecord($rsConsultaBens, false, false, true);
 	} else {
-		$sMensagem    = "Nenhuma bem encontrado!";
+		$sMensagem    = "Nenhum bem encontrado!";
 		$aRetornaBens = array("lErro" => true, "sMensagem" => urlencode($sMensagem));
 	}
 
 } else {
-	$sMensagem    = "Nenhuma bem encontrado!";
+	$sMensagem    = "Nenhum bem encontrado!";
 	$aRetornaBens = array("lErro" => true, "sMensagem" => urlencode($sMensagem));
 }
 

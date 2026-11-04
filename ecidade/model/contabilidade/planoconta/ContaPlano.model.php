@@ -104,8 +104,8 @@ abstract class ContaPlano {
    */
   public function __construct($iCodigoConta = null, $iAnoUsu = null, $iReduz = null, $iInstituicao = null) {
 
-
-    $oDaoConPlano = db_utils::getDao($this->getNomeDao());
+    $sClasse = "cl_".$this->getNomeDao();
+    $oDaoConPlano = new $sClasse;
     $aWhere       = array();
     if (!empty($iCodigoConta)) {
       $aWhere[] = "c60_codcon = {$iCodigoConta}";
@@ -130,12 +130,19 @@ abstract class ContaPlano {
 
     if (!empty($sWhere)) {
 
-
-      $sSqlContaPlano = $oDaoConPlano->sql_query_dados_plano(null,"*", "c61_instit", $sWhere);
+      $sCampos = "c61_reduz, c61_instit, c60_codcon, c60_anousu, c60_estrut, c60_descr, c60_finali, ";
+      $sCampos .= "c60_funcao, c60_identificadorfinanceiro, c60_codsis, c60_codcla, c56_contabancaria, ";
+      $sCampos .= "c61_codigo, c61_contrapartida, c60_consistemaconta, c60_naturezasaldo, c56_sequencial ";
+      if ($this->sNomeDao == 'conplano') {
+        $sCampos .= ", c60_saldocontinuo ";
+      }
+      if ($this->sNomeDao == 'conplanoorcamento') {
+          $sCampos .= ", c60_identificadoresultadoprimario ";
+      }
+      $sSqlContaPlano = $oDaoConPlano->sql_query_dados_plano(null, $sCampos, "c61_instit", $sWhere);
       $rsContaPlano   = $oDaoConPlano->sql_record($sSqlContaPlano);
 
       if ($oDaoConPlano->numrows > 0) {
-
 
         /**
          * @todo
@@ -194,13 +201,14 @@ abstract class ContaPlano {
    */
   protected function hasEstruturalCadastrado() {
 
-    $oDaoPlano            = db_utils::getDao($this->getNomeDao());
+    $sClasse              = "cl_".$this->getNomeDao();
+    $oDaoPlano            = new $sClasse;
     $sWhereEstrutural     = "     c60_estrut = '{$this->getEstrutural()}'";
     $sWhereEstrutural    .= " and c60_anousu = {$this->getAno()}";
     if ($this->getCodigoConta() != "") {
       $sWhereEstrutural  .= " and c60_codcon = {$this->getCodigoConta()}";
     }
-    $sSqlBuscaEstrutural  = $oDaoPlano->sql_query_file(null, null, "*", null, $sWhereEstrutural);
+    $sSqlBuscaEstrutural  = $oDaoPlano->sql_query_file(null, null, "c60_anousu", null, $sWhereEstrutural);
     $rsBuscaEstrutural    = $oDaoPlano->sql_record($sSqlBuscaEstrutural);
 
     if ($oDaoPlano->numrows > 0) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("cm01_i_codigo");
        <?=@$Lcm09_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm09_i_codigo',10,$Icm09_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm09_i_sepultamento?>">
-       <?
+       <?php
        db_ancora(@$Lcm09_i_sepultamento,"js_pesquisacm09_i_sepultamento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm09_i_sepultamento',10,$Icm09_i_sepultamento,true,'text',$db_opcao," onchange='js_pesquisacm09_i_sepultamento(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Icm01_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('z01_nome',40,$Icm01_i_codigo,true,'text',3,'')
        <?=@$Lcm09_d_emissao?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('cm09_d_emissao',@$cm09_d_emissao_dia,@$cm09_d_emissao_mes,@$cm09_d_emissao_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_notaserv.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

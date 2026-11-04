@@ -1,93 +1,93 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE concur
-class cl_concur { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $h06_refer = 0; 
-   var $h06_eaber = null; 
-   var $h06_daber_dia = null; 
-   var $h06_daber_mes = null; 
-   var $h06_daber_ano = null; 
-   var $h06_daber = null; 
-   var $h06_ehomo = null; 
-   var $h06_dhomo_dia = null; 
-   var $h06_dhomo_mes = null; 
-   var $h06_dhomo_ano = null; 
-   var $h06_dhomo = null; 
-   var $h06_concur = null; 
-   var $h06_dvalid_dia = null; 
-   var $h06_dvalid_mes = null; 
-   var $h06_dvalid_ano = null; 
-   var $h06_dvalid = null; 
-   var $h06_dprorr_dia = null; 
-   var $h06_dprorr_mes = null; 
-   var $h06_dprorr_ano = null; 
-   var $h06_dprorr = null; 
-   var $h06_dpubl_dia = null; 
-   var $h06_dpubl_mes = null; 
-   var $h06_dpubl_ano = null; 
-   var $h06_dpubl = null; 
-   var $h06_nrproc = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_concur {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $h06_refer = 0;
+   var $h06_eaber = null;
+   var $h06_daber_dia = null;
+   var $h06_daber_mes = null;
+   var $h06_daber_ano = null;
+   var $h06_daber = null;
+   var $h06_ehomo = null;
+   var $h06_dhomo_dia = null;
+   var $h06_dhomo_mes = null;
+   var $h06_dhomo_ano = null;
+   var $h06_dhomo = null;
+   var $h06_concur = null;
+   var $h06_dvalid_dia = null;
+   var $h06_dvalid_mes = null;
+   var $h06_dvalid_ano = null;
+   var $h06_dvalid = null;
+   var $h06_dprorr_dia = null;
+   var $h06_dprorr_mes = null;
+   var $h06_dprorr_ano = null;
+   var $h06_dprorr = null;
+   var $h06_dpubl_dia = null;
+   var $h06_dpubl_mes = null;
+   var $h06_dpubl_ano = null;
+   var $h06_dpubl = null;
+   var $h06_nrproc = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 h06_refer = int4 = Codigo do Concurso 
-                 h06_eaber = varchar(10) = Edital de Abertura 
-                 h06_daber = date = Data da Abertura 
-                 h06_ehomo = varchar(10) = Edital de Homologação 
-                 h06_dhomo = date = Data da Homologacao 
-                 h06_concur = varchar(15) = Concurso Público 
-                 h06_dvalid = date = Validade 
-                 h06_dprorr = date = Prorrogação 
-                 h06_dpubl = date = Publicação 
-                 h06_nrproc = varchar(16) = No. Processo 
+                 h06_refer = int4 = Codigo do Concurso
+                 h06_eaber = varchar(10) = Edital de Abertura
+                 h06_daber = date = Data da Abertura
+                 h06_ehomo = varchar(10) = Edital de Homologação
+                 h06_dhomo = date = Data da Homologacao
+                 h06_concur = varchar(15) = Concurso Público
+                 h06_dvalid = date = Validade
+                 h06_dprorr = date = Prorrogação
+                 h06_dpubl = date = Publicação
+                 h06_nrproc = varchar(16) = No. Processo
                  ";
-   //funcao construtor da classe 
-   function cl_concur() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("concur"); 
+     $this->rotulo = new rotulo("concur");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -96,7 +96,7 @@ class cl_concur {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h06_refer = ($this->h06_refer == ""?@$GLOBALS["HTTP_POST_VARS"]["h06_refer"]:$this->h06_refer);
        $this->h06_eaber = ($this->h06_eaber == ""?@$GLOBALS["HTTP_POST_VARS"]["h06_eaber"]:$this->h06_eaber);
@@ -148,9 +148,9 @@ class cl_concur {
      }
    }
    // funcao para inclusao
-   function incluir ($h06_refer){ 
+   public function incluir ($h06_refer){
       $this->atualizacampos();
-     if($this->h06_eaber == null ){ 
+     if($this->h06_eaber == null ){
        $this->erro_sql = " Campo Edital de Abertura nao Informado.";
        $this->erro_campo = "h06_eaber";
        $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_concur {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h06_daber == null ){ 
+     if($this->h06_daber == null ){
        $this->erro_sql = " Campo Data da Abertura nao Informado.";
        $this->erro_campo = "h06_daber_dia";
        $this->erro_banco = "";
@@ -168,10 +168,10 @@ class cl_concur {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h06_dhomo == null ){ 
+     if($this->h06_dhomo == null ){
        $this->h06_dhomo = "null";
      }
-     if($this->h06_concur == null ){ 
+     if($this->h06_concur == null ){
        $this->erro_sql = " Campo Concurso Público nao Informado.";
        $this->erro_campo = "h06_concur";
        $this->erro_banco = "";
@@ -180,17 +180,17 @@ class cl_concur {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h06_dvalid == null ){ 
+     if($this->h06_dvalid == null ){
        $this->h06_dvalid = "null";
      }
-     if($this->h06_dprorr == null ){ 
+     if($this->h06_dprorr == null ){
        $this->h06_dprorr = "null";
      }
-     if($this->h06_dpubl == null ){ 
+     if($this->h06_dpubl == null ){
        $this->h06_dpubl = "null";
      }
-       $this->h06_refer = $h06_refer; 
-     if(($this->h06_refer == null) || ($this->h06_refer == "") ){ 
+       $this->h06_refer = $h06_refer;
+     if(($this->h06_refer == null) || ($this->h06_refer == "") ){
        $this->erro_sql = " Campo h06_refer nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,31 +199,31 @@ class cl_concur {
        return false;
      }
      $sql = "insert into concur(
-                                       h06_refer 
-                                      ,h06_eaber 
-                                      ,h06_daber 
-                                      ,h06_ehomo 
-                                      ,h06_dhomo 
-                                      ,h06_concur 
-                                      ,h06_dvalid 
-                                      ,h06_dprorr 
-                                      ,h06_dpubl 
-                                      ,h06_nrproc 
+                                       h06_refer
+                                      ,h06_eaber
+                                      ,h06_daber
+                                      ,h06_ehomo
+                                      ,h06_dhomo
+                                      ,h06_concur
+                                      ,h06_dvalid
+                                      ,h06_dprorr
+                                      ,h06_dpubl
+                                      ,h06_nrproc
                        )
                 values (
-                                $this->h06_refer 
-                               ,'$this->h06_eaber' 
-                               ,".($this->h06_daber == "null" || $this->h06_daber == ""?"null":"'".$this->h06_daber."'")." 
-                               ,'$this->h06_ehomo' 
-                               ,".($this->h06_dhomo == "null" || $this->h06_dhomo == ""?"null":"'".$this->h06_dhomo."'")." 
-                               ,'$this->h06_concur' 
-                               ,".($this->h06_dvalid == "null" || $this->h06_dvalid == ""?"null":"'".$this->h06_dvalid."'")." 
-                               ,".($this->h06_dprorr == "null" || $this->h06_dprorr == ""?"null":"'".$this->h06_dprorr."'")." 
-                               ,".($this->h06_dpubl == "null" || $this->h06_dpubl == ""?"null":"'".$this->h06_dpubl."'")." 
-                               ,'$this->h06_nrproc' 
+                                $this->h06_refer
+                               ,'$this->h06_eaber'
+                               ,".($this->h06_daber == "null" || $this->h06_daber == ""?"null":"'".$this->h06_daber."'")."
+                               ,'$this->h06_ehomo'
+                               ,".($this->h06_dhomo == "null" || $this->h06_dhomo == ""?"null":"'".$this->h06_dhomo."'")."
+                               ,'$this->h06_concur'
+                               ,".($this->h06_dvalid == "null" || $this->h06_dvalid == ""?"null":"'".$this->h06_dvalid."'")."
+                               ,".($this->h06_dprorr == "null" || $this->h06_dprorr == ""?"null":"'".$this->h06_dprorr."'")."
+                               ,".($this->h06_dpubl == "null" || $this->h06_dpubl == ""?"null":"'".$this->h06_dpubl."'")."
+                               ,'$this->h06_nrproc'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Concursos Publicos                                 ($this->h06_refer) nao Incluído. Inclusao Abortada.";
@@ -264,16 +264,16 @@ class cl_concur {
        $resac = db_query("insert into db_acount values($acount,539,4624,'','".AddSlashes(pg_result($resaco,0,'h06_nrproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($h06_refer=null) { 
+   public function alterar ($h06_refer=null) {
       $this->atualizacampos();
      $sql = " update concur set ";
      $virgula = "";
-     if(trim($this->h06_refer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_refer"])){ 
+     if(trim($this->h06_refer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_refer"])){
        $sql  .= $virgula." h06_refer = $this->h06_refer ";
        $virgula = ",";
-       if(trim($this->h06_refer) == null ){ 
+       if(trim($this->h06_refer) == null ){
          $this->erro_sql = " Campo Codigo do Concurso nao Informado.";
          $this->erro_campo = "h06_refer";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_concur {
          return false;
        }
      }
-     if(trim($this->h06_eaber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_eaber"])){ 
+     if(trim($this->h06_eaber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_eaber"])){
        $sql  .= $virgula." h06_eaber = '$this->h06_eaber' ";
        $virgula = ",";
-       if(trim($this->h06_eaber) == null ){ 
+       if(trim($this->h06_eaber) == null ){
          $this->erro_sql = " Campo Edital de Abertura nao Informado.";
          $this->erro_campo = "h06_eaber";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_concur {
          return false;
        }
      }
-     if(trim($this->h06_daber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_daber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_daber_dia"] !="") ){ 
+     if(trim($this->h06_daber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_daber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_daber_dia"] !="") ){
        $sql  .= $virgula." h06_daber = '$this->h06_daber' ";
        $virgula = ",";
-       if(trim($this->h06_daber) == null ){ 
+       if(trim($this->h06_daber) == null ){
          $this->erro_sql = " Campo Data da Abertura nao Informado.";
          $this->erro_campo = "h06_daber_dia";
          $this->erro_banco = "";
@@ -308,11 +308,11 @@ class cl_concur {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_daber_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_daber_dia"])){
          $sql  .= $virgula." h06_daber = null ";
          $virgula = ",";
-         if(trim($this->h06_daber) == null ){ 
+         if(trim($this->h06_daber) == null ){
            $this->erro_sql = " Campo Data da Abertura nao Informado.";
            $this->erro_campo = "h06_daber_dia";
            $this->erro_banco = "";
@@ -323,23 +323,23 @@ class cl_concur {
          }
        }
      }
-     if(trim($this->h06_ehomo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_ehomo"])){ 
+     if(trim($this->h06_ehomo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_ehomo"])){
        $sql  .= $virgula." h06_ehomo = '$this->h06_ehomo' ";
        $virgula = ",";
      }
-     if(trim($this->h06_dhomo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dhomo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dhomo_dia"] !="") ){ 
+     if(trim($this->h06_dhomo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dhomo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dhomo_dia"] !="") ){
        $sql  .= $virgula." h06_dhomo = '$this->h06_dhomo' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dhomo_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dhomo_dia"])){
          $sql  .= $virgula." h06_dhomo = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->h06_concur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_concur"])){ 
+     if(trim($this->h06_concur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_concur"])){
        $sql  .= $virgula." h06_concur = '$this->h06_concur' ";
        $virgula = ",";
-       if(trim($this->h06_concur) == null ){ 
+       if(trim($this->h06_concur) == null ){
          $this->erro_sql = " Campo Concurso Público nao Informado.";
          $this->erro_campo = "h06_concur";
          $this->erro_banco = "";
@@ -349,34 +349,34 @@ class cl_concur {
          return false;
        }
      }
-     if(trim($this->h06_dvalid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dvalid_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dvalid_dia"] !="") ){ 
+     if(trim($this->h06_dvalid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dvalid_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dvalid_dia"] !="") ){
        $sql  .= $virgula." h06_dvalid = '$this->h06_dvalid' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dvalid_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dvalid_dia"])){
          $sql  .= $virgula." h06_dvalid = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->h06_dprorr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dprorr_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dprorr_dia"] !="") ){ 
+     if(trim($this->h06_dprorr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dprorr_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dprorr_dia"] !="") ){
        $sql  .= $virgula." h06_dprorr = '$this->h06_dprorr' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dprorr_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dprorr_dia"])){
          $sql  .= $virgula." h06_dprorr = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->h06_dpubl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dpubl_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dpubl_dia"] !="") ){ 
+     if(trim($this->h06_dpubl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_dpubl_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h06_dpubl_dia"] !="") ){
        $sql  .= $virgula." h06_dpubl = '$this->h06_dpubl' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dpubl_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h06_dpubl_dia"])){
          $sql  .= $virgula." h06_dpubl = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->h06_nrproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_nrproc"])){ 
+     if(trim($this->h06_nrproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h06_nrproc"])){
        $sql  .= $virgula." h06_nrproc = '$this->h06_nrproc' ";
        $virgula = ",";
      }
@@ -414,7 +414,7 @@ class cl_concur {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Concursos Publicos                                 nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->h06_refer;
@@ -442,14 +442,14 @@ class cl_concur {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($h06_refer=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($h06_refer=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h06_refer));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -484,7 +484,7 @@ class cl_concur {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Concursos Publicos                                 nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$h06_refer;
@@ -512,11 +512,11 @@ class cl_concur {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -538,10 +538,10 @@ class cl_concur {
       }
      return $result;
    }
-   function sql_query ( $h06_refer=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $h06_refer=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -554,15 +554,15 @@ class cl_concur {
      $sql2 = "";
      if($dbwhere==""){
        if($h06_refer!=null ){
-         $sql2 .= " where concur.h06_refer = $h06_refer "; 
-       } 
+         $sql2 .= " where concur.h06_refer = $h06_refer ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,10 +571,10 @@ class cl_concur {
      }
      return $sql;
   }
-   function sql_query_file ( $h06_refer=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $h06_refer=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -587,15 +587,15 @@ class cl_concur {
      $sql2 = "";
      if($dbwhere==""){
        if($h06_refer!=null ){
-         $sql2 .= " where concur.h06_refer = $h06_refer "; 
-       } 
+         $sql2 .= " where concur.h06_refer = $h06_refer ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,13 +68,13 @@ class cl_cadastro {
                  outros = char(35) = Outros 
                  ";
    //funcao construtor da classe 
-   function cl_cadastro() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadastro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_cadastro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->anousu = ($this->anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["anousu"]:$this->anousu);
        $this->cgcter = ($this->cgcter == ""?@$GLOBALS["HTTP_POST_VARS"]["cgcter"]:$this->cgcter);
@@ -103,7 +103,7 @@ class cl_cadastro {
      }
    }
    // funcao para inclusao
-   function incluir ($anousu,$cgcter,$cgcte){ 
+   public function incluir ($anousu,$cgcter,$cgcte){ 
       $this->atualizacampos();
      if($this->cnpj == null ){ 
        $this->erro_sql = " Campo Inscrição Federal nao Informado.";
@@ -277,7 +277,7 @@ class cl_cadastro {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($anousu=null,$cgcter=null,$cgcte=null) { 
+   public function alterar ($anousu=null,$cgcter=null,$cgcte=null) { 
       $this->atualizacampos();
      $sql = " update cadastro set ";
      $virgula = "";
@@ -500,7 +500,7 @@ class cl_cadastro {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($anousu=null,$cgcter=null,$cgcte=null,$dbwhere=null) { 
+   public function excluir ($anousu=null,$cgcter=null,$cgcte=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($anousu,$cgcter,$cgcte));
      }else{ 
@@ -585,7 +585,7 @@ class cl_cadastro {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

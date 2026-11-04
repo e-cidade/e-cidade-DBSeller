@@ -47,7 +47,7 @@ $db_opcao = 1;
 <table width="100" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-            <?
+            <?php
             $clcriaabas->identifica = array (
                 "orcdotacao"      => "Dotação",
                 "orcdotacaocontr" => "Contra-Partida",

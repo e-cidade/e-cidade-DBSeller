@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmodcarne->rotulo->label("k05_tipo");
               <?=$Lk05_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k05_sequencial",10,$Ik05_sequencial,true,"text",4,"","chave_k05_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmodcarne->rotulo->label("k05_tipo");
               <?=$Lk05_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k05_tipo",4,$Ik05_tipo,true,"text",4,"","chave_k05_tipo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmodcarne->rotulo->label("k05_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_modcarne.php")==true){
@@ -118,12 +118,12 @@ $clmodcarne->rotulo->label("k05_tipo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

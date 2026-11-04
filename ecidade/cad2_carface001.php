@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("g1"=>"Com as características","g2"=>"Sem as características","g3"=>"Setor","g4"=>"Quadra","g5"=>"Ruas"); 
        $clcriaabas->title = array("g1"=>"Com as características","g2"=>"Sem as características","g3"=>"Setor","g4"=>"Quadra","g5"=>"Ruas");    
        $clcriaabas->src = array("g1"=>"cad2_carface003.php","g2"=>"cad2_carface004.php","g3"=>"cad2_carface005.php","g4"=>"cad2_carface006.php","g5"=>"cad2_carface007.php");  
@@ -65,12 +65,12 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
   echo "
          <script>
 	 document.formaba.g1.size = 25; 

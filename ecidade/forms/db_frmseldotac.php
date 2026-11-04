@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -70,11 +70,11 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
 }
 ?>
 <form name="form1">
-<? $pc13_anousu = db_getsession("DB_anousu"); ?>
-<? db_input('pc13_anousu',4,$Ipc13_anousu,true,'hidden',3); ?>
-<? db_input('pc11_numero',4,$Ipc11_numero,true,'hidden',3); ?>
-<? db_input('pc16_codmater',10,$Ipc16_codmater,true,'hidden',3); ?>
-<?
+<?php $pc13_anousu = db_getsession("DB_anousu"); ?>
+<?php db_input('pc13_anousu',4,$Ipc13_anousu,true,'hidden',3); ?>
+<?php db_input('pc11_numero',4,$Ipc11_numero,true,'hidden',3); ?>
+<?php db_input('pc16_codmater',10,$Ipc16_codmater,true,'hidden',3); ?>
+<?php
    $where_codmater = "";
    if(isset($pc16_codmater) && trim($pc16_codmater)!=""){
      $where_codmater = " pc01_codmater=$pc16_codmater ";
@@ -96,21 +96,21 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
 <table height="20" border="0">
   <tr>
     <td nowrap title="<?=@$Tpc13_codigo?>">
-      <?db_ancora(@$Lpc11_codigo,"",3); ?>
+      <?php db_ancora(@$Lpc11_codigo,"",3); ?>
     </td>
     <td nowrap>
-      <?db_input('pc13_codigo',8,$Ipc13_codigo,true,'text',3); ?>
+      <?php db_input('pc13_codigo',8,$Ipc13_codigo,true,'text',3); ?>
     </td>
   </tr>
 </table>
 <center>
-<?if(!isset($consulta)){?>
+<?php if(!isset($consulta)){?>
   <input name="voltar" type="button" id="voltar" value="Voltar" onClick='location.href="com1_liberasol001.php?codigo=<?=@$numero?>"' >
 <?}else{
 	db_input('consulta',8,0,true,'hidden',3);
 ?>
   <input name="fechar" type="button" id="fechar" value="Fechar" onClick='parent.db_iframe_dotac.hide();' >
-<?}?>
+<?php }?>
 <table width="100%" height="20" border="0">
   <tr>
     <td colspan="4">
@@ -118,7 +118,7 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
       <table border = "0" width="100%">
         <tr align="center">
 	        <td align="center">
-	  <?
+	  <?php
 	  $where_coddot = "";
 	  $chavepri= array("pc13_sequencial");
 	  $cliframe_alterar_excluir->chavepri= $chavepri;
@@ -160,7 +160,7 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
 								    <strong>Valor disponível</strong>
 								  </td>
 								</tr>
-	      <?
+	      <?php
 				// módulo  116 - orçamento
 				// menu   3238 - alteração
 				$permissao = 3;
@@ -235,9 +235,9 @@ function js_dot(){
 }
 function js_pesquisapc13_coddot(mostra){
   qry= 'obriga_depto=sim';
-  <?if($numrows_materele>0){?>
+  <?php if($numrows_materele>0){?>
   qry+= '&elemento='+document.form1.o56_elemento.value;
-  <?}?>
+  <?php }?>
   qry+= '&departamento=<?=(db_getsession("DB_coddepto"))?>';
   qry+= '&retornadepart=true';
   if(mostra==true){

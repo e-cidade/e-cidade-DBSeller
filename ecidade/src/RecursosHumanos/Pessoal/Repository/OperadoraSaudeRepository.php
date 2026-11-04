@@ -75,7 +75,9 @@ class OperadoraSaudeRepository
         $dao->excluir($sequencial, implode(' AND ', $this->scopes));
 
         if ($dao->erro_status === '0') {
-            throw new Exception("Não foi possível excluir a operadora de saúde {$operadoraSaude->getCgm()->getNome()}.\nContate o suporte.");
+            $msg = "Não foi possível excluir a operadora de saúde {$operadoraSaude->getCgm()->getNome()}.";
+            $msg .= "\nContate o suporte.";
+            throw new Exception($msg);
         }
     }
 
@@ -87,8 +89,10 @@ class OperadoraSaudeRepository
      */
     public static function find($id, $columns = array('*'))
     {
+        $where = "rh221_instituicao = " . db_getsession('DB_instit');
+        $where .= " and rh221_sequencial = $id";
         $dao = new cl_operadorasaude();
-        $sql = $dao->sql_query($id, implode(', ', $columns));
+        $sql = $dao->sql_query($id, implode(', ', $columns), null, $where);
         $rs = db_query($sql);
 
         if (!$rs) {
@@ -109,10 +113,11 @@ class OperadoraSaudeRepository
      * @return OperadoraSaude[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
+        $where = "rh221_instituicao = " . db_getsession('DB_instit');
         $dao = new cl_operadorasaude();
-        $sql = $dao->sql_query(null, implode(', ', $columns));
+        $sql = $dao->sql_query(null, implode(', ', $columns), null, $where);
         $rs = db_query($sql);
 
         $operadorasSaude = array();
@@ -157,7 +162,25 @@ class OperadoraSaudeRepository
      */
     public function scopeAns($ans, $operator = '=')
     {
-        $this->scopes['ans'] = "rh221_ans {$operator} {$ans}";
+        if (!empty($ans)) {
+            $this->scopes['ans'] = "rh221_ans {$operator} {$ans}";
+        } else {
+            $this->scopes['ans'] = "rh221_ans is null";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $codigoInstituicao
+     * @return $this
+     */
+    public function scopeInstituicao($codigoInstituicao = null)
+    {
+        if (!empty($codigoInstituicao)) {
+            $this->scopes['instituicao'] = "rh221_instituicao = {$codigoInstituicao}";
+        } else {
+            $this->scopes['instituicao'] = "rh221_instituicao = " . db_getsession('DB_instit');
+        }
         return $this;
     }
 
@@ -208,6 +231,7 @@ class OperadoraSaudeRepository
     public function get()
     {
         $dao = new cl_operadorasaude();
+        $this->scopeInstituicao();
         $sql = $dao->sql_query(null, '*', null, implode(' AND ', $this->scopes));
         $rs = db_query($sql);
 
@@ -239,6 +263,7 @@ class OperadoraSaudeRepository
         $dao->rh221_sequencial = $operadoraSaude->getSequencial();
         $dao->rh221_cgm = $operadoraSaude->getCgm()->getCodigo();
         $dao->rh221_ans = $operadoraSaude->getAns();
+        $dao->rh221_instituicao = $operadoraSaude->getCodigoInstituicao();
         $dao->rh221_ativo = $operadoraSaude->isAtivo() ? 'true' : 'false';
 
         $operadoraSaude->getSequencial() ? $dao->alterar($operadoraSaude->getSequencial()) : $dao->incluir(null);

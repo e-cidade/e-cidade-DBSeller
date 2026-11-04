@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrotulo->label("pc80_codproc");
     <td align="center" nowrap>
       <center>
       <iframe name="iframe_solicitemele" id="solicitem" marginwidth="0" marginheight="0" frameborder="0" src="com1_solicitemeleiframe001.php" width="770" height="380"></iframe>
-      <?
+      <?php
       db_input('pc80_codproc',8,$Ipc80_codproc,true,'hidden',3);
       ?>
       </center>
@@ -57,7 +57,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcproc.hide();
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&liberaaba=false'";
   ?>
 }

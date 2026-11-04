@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconlancamnota->rotulo->label("c66_codnota");
               <?=$Lc66_codlan?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c66_codlan",8,$Ic66_codlan,true,"text",4,"","chave_c66_codlan");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconlancamnota->rotulo->label("c66_codnota");
               <?=$Lc66_codnota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c66_codnota",6,$Ic66_codnota,true,"text",4,"","chave_c66_codnota");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clconlancamnota->rotulo->label("c66_codnota");
               <?=$Lc66_codnota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c66_codnota",6,$Ic66_codnota,true,"text",4,"","chave_c66_codnota");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clconlancamnota->rotulo->label("c66_codnota");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancamnota.php")==true){
@@ -129,12 +129,12 @@ $clconlancamnota->rotulo->label("c66_codnota");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

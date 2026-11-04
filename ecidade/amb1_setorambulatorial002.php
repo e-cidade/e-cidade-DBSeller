@@ -36,22 +36,10 @@ if (isset($alterar)) {
     $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 } else if(isset($chavepesquisa)) {
-
-  $oDaoMovimentacaoProntuario = new cl_movimentacaoprontuario;
-  $sWhere                     = " sd102_setorambulatorial = {$chavepesquisa} ";
-  $sQuery                     = $oDaoMovimentacaoProntuario->sql_query_file(null, "1", null, $sWhere);
-  $rsMovimentoProntuario      = db_query($sQuery);
-
-  $db_opcao = 22;
-  if( $rsMovimentoProntuario && pg_num_rows($rsMovimentoProntuario) > 0 ) {
-    $sPosScripts .= 'alert("Setor não pode ser alterado pois possui vínculo com FAA.");' . "\n";
-  } else {
-
     $db_opcao = 2;
     $db_botao = true;
     $result   = $oDaoSetorambulatorial->sql_record( $oDaoSetorambulatorial->sql_query($chavepesquisa) );
     db_fieldsmemory($result, 0);
-  }
 }
 
 if ($db_opcao == 22) {

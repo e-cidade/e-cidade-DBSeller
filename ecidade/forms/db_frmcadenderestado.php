@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,22 +45,22 @@ $clrotulo->label("db70_descricao");
        <?=@$Ldb71_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db71_sequencial',10,$Idb71_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb71_cadenderpais?>">
-       <?
+       <?php
        db_ancora(@$Ldb71_cadenderpais,"js_pesquisadb71_cadenderpais(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db71_cadenderpais',10,$Idb71_cadenderpais,true,'text',$db_opcao," onchange='js_pesquisadb71_cadenderpais(false);'")
 ?>
-       <?
+       <?php
 db_input('db70_descricao',26,$Idb70_descricao,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('db70_descricao',26,$Idb70_descricao,true,'text',3,'')
        <?=@$Ldb71_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db71_descricao',40,$Idb71_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_input('db71_descricao',40,$Idb71_descricao,true,'text',$db_opcao,"")
        <?=@$Ldb71_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('db71_sigla',2,$Idb71_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadenderestado.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

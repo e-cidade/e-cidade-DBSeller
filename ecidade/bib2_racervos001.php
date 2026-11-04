@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -59,7 +59,8 @@ $clrotulo->label("bi29_abreviatura");
 
 $depto = db_getsession("DB_coddepto");
 $sql = "SELECT bi17_codigo,bi17_nome FROM biblioteca WHERE bi17_coddepto = $depto";
-$result = db_query($sql);;
+$result = db_query($sql);
+;
 $linhas = pg_num_rows($result);
 if ($linhas != 0) {
     db_fieldsmemory($result, 0);
@@ -191,6 +192,15 @@ if ($linhas != 0) {
                         ?>
                     </td>
                 </tr>
+                <tr>
+                    <td><strong>Tipo de Saída:</strong></td>
+                    <td>
+                        <select name="formatoImpressao" id="formatoImpressao">
+                            <option value="pdf">PDF</option>
+                            <option value="csv">CSV</option>
+                        </select>
+                    </td>
+                </tr>
             </table>
         </fieldset>
         <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();">
@@ -200,6 +210,10 @@ if ($linhas != 0) {
 </body>
 </html>
 <script>
+
+    const formatoImpressao = document.getElementById('formatoImpressao');
+    const apiUrl = "edu4_biblioteca.RPC.php";
+
     function js_pesquisaColecao(lMostra) {
         var sUrl = 'func_colecaoacervo.php?';
         if (lMostra) {
@@ -232,7 +246,48 @@ if ($linhas != 0) {
     }
 
     function js_emite() {
-        jan = window.open('bib2_racervos002.php?ordem=' + document.form1.ordem.value + '&editora=' + document.form1.editora.value + '&classi=' + document.form1.classi.value + '&tipo=' + document.form1.tipo.value + '&localizacao=' + document.form1.localizacao.value + '&autor=' + document.form1.autor.value + '&rel=' + document.form1.rel.value + '&biblioteca=' + document.form1.bi17_codigo.value + '&desc_biblioteca=' + document.form1.bi17_nome.value + '&iColecao=' + document.form1.bi29_sequencial.value, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0 ');
-        jan.moveTo(0, 0);
+        if (formatoImpressao.value === 'pdf') {
+            jan = window.open('bib2_racervos002.php?ordem=' + document.form1.ordem.value 
+                + '&editora=' + document.form1.editora.value + '&classi=' + document.form1.classi.value 
+                + '&tipo=' + document.form1.tipo.value + '&localizacao=' + document.form1.localizacao.value 
+                + '&autor=' + document.form1.autor.value + '&rel=' + document.form1.rel.value 
+                + '&biblioteca=' + document.form1.bi17_codigo.value + '&desc_biblioteca=' 
+                + document.form1.bi17_nome.value + '&iColecao=' + document.form1.bi29_sequencial.value, 
+                '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) 
+                + ',scrollbars=1,location=0 '
+            );
+            jan.moveTo(0, 0);
+            return false;
+        }
+
+        var oParametros = new Object();
+        oParametros.exec = 'processarRelatorioAcervoCSV';
+        oParametros.ordem = document.form1.ordem.value;
+        oParametros.filtroEditora = document.form1.editora.value;
+        oParametros.filtroClassificacao = document.form1.classi.value;
+        oParametros.filtroTipo = document.form1.tipo.value;
+        oParametros.filtroLocalizacao = document.form1.localizacao.value;
+        oParametros.filtroAutor = document.form1.autor.value;
+        oParametros.filtroRel = document.form1.rel.value;
+        oParametros.filtroBiblioteca = document.form1.bi17_codigo.value;
+        oParametros.filtroColecao = document.form1.bi29_sequencial.value;
+        const body = {
+            method:'post',
+            parameters: 'json='+Object.toJSON(oParametros),
+            onComplete: js_trataRetornoRelatorioCSV
+        }
+        //js_divCarregando('Aguarde... Imprimindo o relatório','msgbox');
+        var oAjax = new Ajax.Request(apiUrl, body);
+    }
+
+    function js_trataRetornoRelatorioCSV(oAjax) 
+    {
+        const retorno = JSON.parse(oAjax.responseText);
+        //js_removeObj("msgbox");
+        if (retorno.iStatus != 0 && retorno.pathRelatorioCSV != "") {
+            jan = window.open(retorno.pathRelatorioCSV,'');
+        } else {
+            alert(retorno.sMessage.urlDecode());
+        } 
     }
 </script>

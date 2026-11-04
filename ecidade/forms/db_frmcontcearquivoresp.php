@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,19 +70,19 @@ if(isset($db_opcaoal)){
     <td nowrap>
     </td>
     <td> 
-<?
+<?php
 db_input('c12_sequencial',10,$Ic12_sequencial,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc12_contcearquivo?>">
-       <?
+       <?php
        db_ancora("<b>Código da Geração :</b>","js_pesquisac12_contcearquivo(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c12_contcearquivo',10,$Ic12_contcearquivo,true,'text',3," onchange='js_pesquisac12_contcearquivo(false);'")
 ?>
     </td>
@@ -92,7 +92,7 @@ db_input('c12_contcearquivo',10,$Ic12_contcearquivo,true,'text',3," onchange='js
        <?=@$Lc12_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('c12_nome',34,$Ic12_nome,true,'text',$db_opcao,"onkeyup='js_testaNome();'")
 ?>
     </td>
@@ -102,7 +102,7 @@ db_input('c12_nome',34,$Ic12_nome,true,'text',$db_opcao,"onkeyup='js_testaNome()
        <?=@$Lc12_cargo?>
     </td>
     <td> 
-<?
+<?php
 db_input('c12_cargo',34,$Ic12_cargo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ db_input('c12_cargo',34,$Ic12_cargo,true,'text',$db_opcao,"")
        <?=@$Lc12_nrodoc?>
     </td>
     <td> 
-<?
+<?php
 db_input('c12_nrodoc',10,$Ic12_nrodoc,true,'text',$db_opcao,"onKeyup = \"js_ValidaCampos(this,1,'Número do Documento','f','f',event);\"")
 ?>
     </td>
@@ -122,7 +122,7 @@ db_input('c12_nrodoc',10,$Ic12_nrodoc,true,'text',$db_opcao,"onKeyup = \"js_Vali
        <?=@$Lc12_tipodoc?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'CPF','2'=>'CRC');
 db_select('c12_tipodoc',$x,true,$db_opcao,"onchange='js_mudatipo();'");
 ?>
@@ -133,7 +133,7 @@ db_select('c12_tipodoc',$x,true,$db_opcao,"onchange='js_mudatipo();'");
        <?=@$Lc12_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Titular Reponsável','2'=>'Responsável da Época','3'=>'Responsável Geração dos Dados','4'=>'Contador Reponsável pelas Informações ','5'=>'Responsável Controle Interno');
 db_select('c12_tipo',$x,true,$db_opcao,"");
 ?>
@@ -152,7 +152,7 @@ db_select('c12_tipo',$x,true,$db_opcao,"");
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
    $sCampos  = "c12_sequencial, c12_nome, c12_cargo, c12_contcearquivo, c12_nrodoc, ";
    $sCampos .= " case ";
    $sCampos .= "   when c12_tipo = 1 then 'Titular Responsável' ";

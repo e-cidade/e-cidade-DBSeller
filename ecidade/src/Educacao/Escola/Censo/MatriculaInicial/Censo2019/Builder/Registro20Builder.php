@@ -27,6 +27,7 @@
 
 namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Builder;
 
+use App\Domain\Educacao\Secretaria\Models\UnidadeCurricular;
 use ECidade\Educacao\Escola\Censo\Helpers\Turma;
 use ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Model\Registro20;
 use ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Model\TurmaCensoVo;
@@ -191,10 +192,10 @@ class Registro20Builder
         $base = $this->dadosTurma->getBase();
         $organizacao = null;
         if (!is_null($base)) {
-            $sql = "select ed218_organizacaoturma 
+            $sql = "select ed218_organizacaoturma
                         from regimemat
                     where ed218_i_codigo =
-                        (select ed31_i_regimemat 
+                        (select ed31_i_regimemat
                             from base where ed31_i_codigo = {$base})";
             $rs = db_query($sql);
             if ($rs) {
@@ -202,7 +203,7 @@ class Registro20Builder
                 $organizacao = $organizacao['ed218_organizacaoturma'];
             }
         }
-        
+
         $this->registro->setFromaOrganizaTurma($organizacao);
 
         if (in_array($this->registro->getEtapaCenso(), [1, 2, 3])) {
@@ -545,11 +546,59 @@ class Registro20Builder
         $this->registro->setFormacaoGeralBasica();
         $this->registro->setItinerarioFormativo();
         $this->registro->setNaoAplica();
+
+        foreach ($disciplinas as $disciplina) {
+            if ($this->registro->getItinerarioFormativo() === 1 && !is_null($disciplina->getUnidadeCurricular())) {
+                $outrasUnidade = [];
+                $this->registro->setEletivas(0);
+                $this->registro->setLibras(0);
+                $this->registro->setLinguaIndigenaUnidade(0);
+                $this->registro->setLinguaEspanhol(0);
+                $this->registro->setLinguaFrances(0);
+                $this->registro->setLinguaOutra(0);
+                $this->registro->setProjetoVidaUnidade(0);
+                $this->registro->setTrilhaAprofundamento(0);
+                switch ($disciplina->getUnidadeCurricular()) {
+                    case 1:
+                        $this->registro->setEletivas(1);
+                        break;
+                    case 2:
+                        $this->registro->setLibras(1);
+                        break;
+                    case 3:
+                        $this->registro->setLinguaIndigenaUnidade(1);
+                        break;
+                    case 4:
+                        $this->registro->setLinguaEspanhol(1);
+                        break;
+                    case 5:
+                        $this->registro->setLinguaFrances(1);
+                        break;
+                    case 6:
+                        $this->registro->setLinguaOutra(1);
+                        break;
+                    case 7:
+                        $this->registro->setProjetoVidaUnidade(1);
+                        break;
+                    case 8:
+                        $this->registro->setTrilhaAprofundamento(1);
+                        break;
+                    default:
+                        $outrasUnidades[] =
+                            UnidadeCurricular::find($disciplina->getUnidadeCurricular())->ed199_descricao;
+                }
+
+                $outrasUnidades = count($outrasUnidade) === 0 ? 0 : implode(";", $outrasUnidades);
+                $this->registro->setOutrasUnidades($outrasUnidades);
+            }
+        }
     }
 
     private function removerAcentuacao($sString)
     {
 
+        $sString = str_replace(chr(176), chr(186), $sString);
+        $sString = str_replace('', '', $sString);
         $sString = preg_replace("/[¡¿¬√]/", "A", $sString);
         $sString = preg_replace("/[·‡‚„]/", "a", $sString);
 

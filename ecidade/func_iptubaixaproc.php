@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cliptubaixaproc->rotulo->label("j03_codproc");
               <?=$Lj03_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j03_matric",10,$Ij03_matric,true,"text",4,"","chave_j03_matric");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cliptubaixaproc->rotulo->label("j03_codproc");
               <?=$Lj03_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j03_codproc",10,$Ij03_codproc,true,"text",4,"","chave_j03_codproc");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cliptubaixaproc->rotulo->label("j03_codproc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptubaixaproc.php")==true){
@@ -122,12 +122,12 @@ $cliptubaixaproc->rotulo->label("j03_codproc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -94,7 +94,7 @@ if(isset($alterar)){
     if($sOpcaoAssentamento == 2) {
       $oAssentamento = AssentamentoFuncionalRepository::getInstanciaPorCodigo($h16_codigo);
     }
-          
+
     $oAssentamento->setCodigo($h16_codigo);
     $oAssentamento->setMatricula($h16_regist);
     $oAssentamento->setTipoAssentamento($oPortariaTipo->h30_tipoasse);
@@ -117,7 +117,7 @@ if(isset($alterar)){
     $oAssentamento->setAnoPortaria($h31_anousu);
 
     try {
-      
+
       if($sOpcaoAssentamento == 1) {
         $oAssentamentoSalvo = AssentamentoRepository::persist($oAssentamento);
       } else {
@@ -127,7 +127,7 @@ if(isset($alterar)){
 
 
       if(!$oAssentamentoSalvo instanceof Assentamento && !$oAssentamentoSalvo instanceof AssentamentoFuncional) {
-          
+
         throw new BusinessException();
       }
 
@@ -236,7 +236,7 @@ if(isset($alterar)){
   if($rsAssentamentoFuncional && pg_num_rows($rsAssentamentoFuncional) > 0) {
     $sOpcaoAssentamento    = 2;
   }
-          
+
   db_fieldsmemory($result,0);
 
   if(isset($h16_regist) && trim($h16_regist)!="") {
@@ -271,7 +271,7 @@ if(isset($alterar)){
   $rsDocumentoPortaria = $clDocumentoPortaria->sql_record(
     $clDocumentoPortaria->sql_query_file(null, 'rh235_documento', null, "rh235_portaria = {$h31_sequencial}")
   );
-  
+
   if (!empty($clDocumentoPortaria->numrows)) {
     $idEstorage = pg_fetch_object($rsDocumentoPortaria, 0)->rh235_documento;
   }
@@ -292,20 +292,19 @@ if(isset($alterar)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-
   <?php include(modification("forms/db_frmportaria.php")); ?>
   <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if ($clportaria->erro_status == "0") {
     $clportaria->erro(true, false);
     $db_botao=true;
 
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if($clportaria->erro_campo != ""){
       echo "<script> document.form1.".$clportaria->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clportaria->erro_campo.".focus();</script>";
@@ -334,7 +333,7 @@ if ($db_opcao == 22) {
 
 
 <?php
-  if(isset($alterar) && $clportaria->erro_status != '0') { 
+  if(isset($alterar) && $clportaria->erro_status != '0') {
     echo "js_consultaPortarias(js_alteraPortaria);";
   }
 ?>
@@ -343,7 +342,7 @@ function js_alteraPortaria(oAjax){
 
   const aRetorno = JSON.parse(oAjax.responseText);
   const iModelo = Boolean(aRetorno.iModIndividual) ? aRetorno.iModIndividual : aRetorno.iModColetiva;
-  
+
   const formData = new FormData();
 
   const parametros = [

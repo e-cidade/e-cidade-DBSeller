@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ if (isset($alterar)) {
                                         'vc10_i_vacina=<?=$vc06_i_codigo?>&vc06_c_descr=<?=$vc06_c_descr?>';
 
   </script>
-<?
+<?php
 }
 ?>
 <html>
@@ -76,7 +76,7 @@ if (isset($alterar)) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js");
     db_app::load("prototype.js");
     db_app::load("datagrid.widget.js");
@@ -94,7 +94,7 @@ if (isset($alterar)) {
         <tr> 
           <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
             <center>
-              <?
+              <?php
               require_once(modification("forms/db_frmvac_vacina.php"));
               ?>
             </center>
@@ -104,7 +104,7 @@ if (isset($alterar)) {
     </center>
   </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($oDaoVacVacina->erro_status == "0") {

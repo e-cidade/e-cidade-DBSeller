@@ -1,67 +1,67 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: prefeitura
 //CLASSE DA ENTIDADE dbempresaatividade
-class cl_dbempresaatividade { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q58_sequencial = 0; 
-   var $q58_dbprefempresa = 0; 
-   var $q58_dtinc_dia = null; 
-   var $q58_dtinc_mes = null; 
-   var $q58_dtinc_ano = null; 
-   var $q58_dtinc = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_dbempresaatividade {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q58_sequencial = 0;
+   var $q58_dbprefempresa = 0;
+   var $q58_dtinc_dia = null;
+   var $q58_dtinc_mes = null;
+   var $q58_dtinc_ano = null;
+   var $q58_dtinc = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q58_sequencial = int4 = Código sequencial 
-                 q58_dbprefempresa = int4 = Código empresa 
-                 q58_dtinc = date = Data de inclusão 
+                 q58_sequencial = int4 = Código sequencial
+                 q58_dbprefempresa = int4 = Código empresa
+                 q58_dtinc = date = Data de inclusão
                  ";
-   //funcao construtor da classe 
-   function cl_dbempresaatividade() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("dbempresaatividade"); 
+     $this->rotulo = new rotulo("dbempresaatividade");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_dbempresaatividade {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q58_sequencial = ($this->q58_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q58_sequencial"]:$this->q58_sequencial);
        $this->q58_dbprefempresa = ($this->q58_dbprefempresa == ""?@$GLOBALS["HTTP_POST_VARS"]["q58_dbprefempresa"]:$this->q58_dbprefempresa);
@@ -87,9 +87,9 @@ class cl_dbempresaatividade {
      }
    }
    // funcao para inclusao
-   function incluir ($q58_sequencial){ 
+   public function incluir ($q58_sequencial){
       $this->atualizacampos();
-     if($this->q58_dbprefempresa == null ){ 
+     if($this->q58_dbprefempresa == null ){
        $this->erro_sql = " Campo Código empresa nao Informado.";
        $this->erro_campo = "q58_dbprefempresa";
        $this->erro_banco = "";
@@ -98,7 +98,7 @@ class cl_dbempresaatividade {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q58_dtinc == null ){ 
+     if($this->q58_dtinc == null ){
        $this->erro_sql = " Campo Data de inclusão nao Informado.";
        $this->erro_campo = "q58_dtinc_dia";
        $this->erro_banco = "";
@@ -108,16 +108,16 @@ class cl_dbempresaatividade {
        return false;
      }
      if($q58_sequencial == "" || $q58_sequencial == null ){
-       $result = db_query("select nextval('dbempresaatividade_q58_sequencial_seq')"); 
+       $result = db_query("select nextval('dbempresaatividade_q58_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: dbempresaatividade_q58_sequencial_seq do campo: q58_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: dbempresaatividade_q58_sequencial_seq do campo: q58_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q58_sequencial = pg_result($result,0,0); 
+       $this->q58_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from dbempresaatividade_q58_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q58_sequencial)){
@@ -128,10 +128,10 @@ class cl_dbempresaatividade {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q58_sequencial = $q58_sequencial; 
+         $this->q58_sequencial = $q58_sequencial;
        }
      }
-     if(($this->q58_sequencial == null) || ($this->q58_sequencial == "") ){ 
+     if(($this->q58_sequencial == null) || ($this->q58_sequencial == "") ){
        $this->erro_sql = " Campo q58_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -140,17 +140,17 @@ class cl_dbempresaatividade {
        return false;
      }
      $sql = "insert into dbempresaatividade(
-                                       q58_sequencial 
-                                      ,q58_dbprefempresa 
-                                      ,q58_dtinc 
+                                       q58_sequencial
+                                      ,q58_dbprefempresa
+                                      ,q58_dtinc
                        )
                 values (
-                                $this->q58_sequencial 
-                               ,$this->q58_dbprefempresa 
-                               ,".($this->q58_dtinc == "null" || $this->q58_dtinc == ""?"null":"'".$this->q58_dtinc."'")." 
+                                $this->q58_sequencial
+                               ,$this->q58_dbprefempresa
+                               ,".($this->q58_dtinc == "null" || $this->q58_dtinc == ""?"null":"'".$this->q58_dtinc."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "dbempresaatividade ($this->q58_sequencial) nao Incluído. Inclusao Abortada.";
@@ -184,16 +184,16 @@ class cl_dbempresaatividade {
        $resac = db_query("insert into db_acount values($acount,1763,10214,'','".AddSlashes(pg_result($resaco,0,'q58_dtinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q58_sequencial=null) { 
+   public function alterar ($q58_sequencial=null) {
       $this->atualizacampos();
      $sql = " update dbempresaatividade set ";
      $virgula = "";
-     if(trim($this->q58_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q58_sequencial"])){ 
+     if(trim($this->q58_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q58_sequencial"])){
        $sql  .= $virgula." q58_sequencial = $this->q58_sequencial ";
        $virgula = ",";
-       if(trim($this->q58_sequencial) == null ){ 
+       if(trim($this->q58_sequencial) == null ){
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "q58_sequencial";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_dbempresaatividade {
          return false;
        }
      }
-     if(trim($this->q58_dbprefempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q58_dbprefempresa"])){ 
+     if(trim($this->q58_dbprefempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q58_dbprefempresa"])){
        $sql  .= $virgula." q58_dbprefempresa = $this->q58_dbprefempresa ";
        $virgula = ",";
-       if(trim($this->q58_dbprefempresa) == null ){ 
+       if(trim($this->q58_dbprefempresa) == null ){
          $this->erro_sql = " Campo Código empresa nao Informado.";
          $this->erro_campo = "q58_dbprefempresa";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_dbempresaatividade {
          return false;
        }
      }
-     if(trim($this->q58_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q58_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q58_dtinc_dia"] !="") ){ 
+     if(trim($this->q58_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q58_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q58_dtinc_dia"] !="") ){
        $sql  .= $virgula." q58_dtinc = '$this->q58_dtinc' ";
        $virgula = ",";
-       if(trim($this->q58_dtinc) == null ){ 
+       if(trim($this->q58_dtinc) == null ){
          $this->erro_sql = " Campo Data de inclusão nao Informado.";
          $this->erro_campo = "q58_dtinc_dia";
          $this->erro_banco = "";
@@ -228,11 +228,11 @@ class cl_dbempresaatividade {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["q58_dtinc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["q58_dtinc_dia"])){
          $sql  .= $virgula." q58_dtinc = null ";
          $virgula = ",";
-         if(trim($this->q58_dtinc) == null ){ 
+         if(trim($this->q58_dtinc) == null ){
            $this->erro_sql = " Campo Data de inclusão nao Informado.";
            $this->erro_campo = "q58_dtinc_dia";
            $this->erro_banco = "";
@@ -263,7 +263,7 @@ class cl_dbempresaatividade {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "dbempresaatividade nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q58_sequencial;
@@ -291,14 +291,14 @@ class cl_dbempresaatividade {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q58_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q58_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q58_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -326,7 +326,7 @@ class cl_dbempresaatividade {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "dbempresaatividade nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q58_sequencial;
@@ -354,11 +354,11 @@ class cl_dbempresaatividade {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -380,10 +380,10 @@ class cl_dbempresaatividade {
       }
      return $result;
    }
-   function sql_query ( $q58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,15 +400,15 @@ class cl_dbempresaatividade {
      $sql2 = "";
      if($dbwhere==""){
        if($q58_sequencial!=null ){
-         $sql2 .= " where dbempresaatividade.q58_sequencial = $q58_sequencial "; 
-       } 
+         $sql2 .= " where dbempresaatividade.q58_sequencial = $q58_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,10 +417,10 @@ class cl_dbempresaatividade {
      }
      return $sql;
   }
-   function sql_query_file ( $q58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,15 +433,15 @@ class cl_dbempresaatividade {
      $sql2 = "";
      if($dbwhere==""){
        if($q58_sequencial!=null ){
-         $sql2 .= " where dbempresaatividade.q58_sequencial = $q58_sequencial "; 
-       } 
+         $sql2 .= " where dbempresaatividade.q58_sequencial = $q58_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

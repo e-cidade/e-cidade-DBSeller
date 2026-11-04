@@ -1,69 +1,69 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE corautent
-class cl_corautent { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k12_id = 0; 
-   var $k12_data_dia = null; 
-   var $k12_data_mes = null; 
-   var $k12_data_ano = null; 
-   var $k12_data = null; 
-   var $k12_autent = 0; 
-   var $k12_codautent = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_corautent {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k12_id = 0;
+   var $k12_data_dia = null;
+   var $k12_data_mes = null;
+   var $k12_data_ano = null;
+   var $k12_data = null;
+   var $k12_autent = 0;
+   var $k12_codautent = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k12_id = int4 = Autenticação 
-                 k12_data = date = Data Autenticação 
-                 k12_autent = int4 = Código Autenticação 
-                 k12_codautent = text = código da autenticação 
+                 k12_id = int4 = Autenticação
+                 k12_data = date = Data Autenticação
+                 k12_autent = int4 = Código Autenticação
+                 k12_codautent = text = código da autenticação
                  ";
-   //funcao construtor da classe 
-   function cl_corautent() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("corautent"); 
+     $this->rotulo = new rotulo("corautent");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_corautent {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k12_id = ($this->k12_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_id"]:$this->k12_id);
        if($this->k12_data == ""){
@@ -92,9 +92,9 @@ class cl_corautent {
      }
    }
    // funcao para inclusao
-   function incluir ($k12_id,$k12_data,$k12_autent){ 
+   public function incluir ($k12_id,$k12_data,$k12_autent){
       $this->atualizacampos();
-     if($this->k12_codautent == null ){ 
+     if($this->k12_codautent == null ){
        $this->erro_sql = " Campo código da autenticação nao Informado.";
        $this->erro_campo = "k12_codautent";
        $this->erro_banco = "";
@@ -103,10 +103,10 @@ class cl_corautent {
        $this->erro_status = "0";
        return false;
      }
-       $this->k12_id = $k12_id; 
-       $this->k12_data = $k12_data; 
-       $this->k12_autent = $k12_autent; 
-     if(($this->k12_id == null) || ($this->k12_id == "") ){ 
+       $this->k12_id = $k12_id;
+       $this->k12_data = $k12_data;
+       $this->k12_autent = $k12_autent;
+     if(($this->k12_id == null) || ($this->k12_id == "") ){
        $this->erro_sql = " Campo k12_id nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -114,7 +114,7 @@ class cl_corautent {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->k12_data == null) || ($this->k12_data == "") ){ 
+     if(($this->k12_data == null) || ($this->k12_data == "") ){
        $this->erro_sql = " Campo k12_data nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -122,7 +122,7 @@ class cl_corautent {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->k12_autent == null) || ($this->k12_autent == "") ){ 
+     if(($this->k12_autent == null) || ($this->k12_autent == "") ){
        $this->erro_sql = " Campo k12_autent nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -131,19 +131,19 @@ class cl_corautent {
        return false;
      }
      $sql = "insert into corautent(
-                                       k12_id 
-                                      ,k12_data 
-                                      ,k12_autent 
-                                      ,k12_codautent 
+                                       k12_id
+                                      ,k12_data
+                                      ,k12_autent
+                                      ,k12_codautent
                        )
                 values (
-                                $this->k12_id 
-                               ,".($this->k12_data == "null" || $this->k12_data == ""?"null":"'".$this->k12_data."'")." 
-                               ,$this->k12_autent 
-                               ,'$this->k12_codautent' 
+                                $this->k12_id
+                               ,".($this->k12_data == "null" || $this->k12_data == ""?"null":"'".$this->k12_data."'")."
+                               ,$this->k12_autent
+                               ,'$this->k12_codautent'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "corautent ($this->k12_id."-".$this->k12_data."-".$this->k12_autent) nao Incluído. Inclusao Abortada.";
@@ -180,16 +180,16 @@ class cl_corautent {
        $resac = db_query("insert into db_acount values($acount,1725,10040,'','".AddSlashes(pg_result($resaco,0,'k12_codautent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k12_id=null,$k12_data=null,$k12_autent=null) { 
+   public function alterar ($k12_id=null,$k12_data=null,$k12_autent=null) {
       $this->atualizacampos();
      $sql = " update corautent set ";
      $virgula = "";
-     if(trim($this->k12_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_id"])){ 
+     if(trim($this->k12_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_id"])){
        $sql  .= $virgula." k12_id = $this->k12_id ";
        $virgula = ",";
-       if(trim($this->k12_id) == null ){ 
+       if(trim($this->k12_id) == null ){
          $this->erro_sql = " Campo Autenticação nao Informado.";
          $this->erro_campo = "k12_id";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_corautent {
          return false;
        }
      }
-     if(trim($this->k12_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"] !="") ){ 
+     if(trim($this->k12_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"] !="") ){
        $sql  .= $virgula." k12_data = '$this->k12_data' ";
        $virgula = ",";
-       if(trim($this->k12_data) == null ){ 
+       if(trim($this->k12_data) == null ){
          $this->erro_sql = " Campo Data Autenticação nao Informado.";
          $this->erro_campo = "k12_data_dia";
          $this->erro_banco = "";
@@ -211,11 +211,11 @@ class cl_corautent {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"])){
          $sql  .= $virgula." k12_data = null ";
          $virgula = ",";
-         if(trim($this->k12_data) == null ){ 
+         if(trim($this->k12_data) == null ){
            $this->erro_sql = " Campo Data Autenticação nao Informado.";
            $this->erro_campo = "k12_data_dia";
            $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_corautent {
          }
        }
      }
-     if(trim($this->k12_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_autent"])){ 
+     if(trim($this->k12_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_autent"])){
        $sql  .= $virgula." k12_autent = $this->k12_autent ";
        $virgula = ",";
-       if(trim($this->k12_autent) == null ){ 
+       if(trim($this->k12_autent) == null ){
          $this->erro_sql = " Campo Código Autenticação nao Informado.";
          $this->erro_campo = "k12_autent";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_corautent {
          return false;
        }
      }
-     if(trim($this->k12_codautent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_codautent"])){ 
+     if(trim($this->k12_codautent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_codautent"])){
        $sql  .= $virgula." k12_codautent = '$this->k12_codautent' ";
        $virgula = ",";
-       if(trim($this->k12_codautent) == null ){ 
+       if(trim($this->k12_codautent) == null ){
          $this->erro_sql = " Campo código da autenticação nao Informado.";
          $this->erro_campo = "k12_codautent";
          $this->erro_banco = "";
@@ -282,7 +282,7 @@ class cl_corautent {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "corautent nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k12_id."-".$this->k12_data."-".$this->k12_autent;
@@ -310,14 +310,14 @@ class cl_corautent {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k12_id,$k12_data,$k12_autent));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -360,7 +360,7 @@ class cl_corautent {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "corautent nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k12_id."-".$k12_data."-".$k12_autent;
@@ -388,11 +388,11 @@ class cl_corautent {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -414,11 +414,11 @@ class cl_corautent {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,31 +431,31 @@ class cl_corautent {
      $sql2 = "";
      if($dbwhere==""){
        if($k12_id!=null ){
-         $sql2 .= " where corautent.k12_id = $k12_id "; 
-       } 
+         $sql2 .= " where corautent.k12_id = $k12_id ";
+       }
        if($k12_data!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " corautent.k12_data = '$k12_data' "; 
-       } 
+         }
+         $sql2 .= " corautent.k12_data = '$k12_data' ";
+       }
        if($k12_autent!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " corautent.k12_autent = $k12_autent "; 
-       } 
+         }
+         $sql2 .= " corautent.k12_autent = $k12_autent ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,11 +464,11 @@ class cl_corautent {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,31 +481,31 @@ class cl_corautent {
      $sql2 = "";
      if($dbwhere==""){
        if($k12_id!=null ){
-         $sql2 .= " where corautent.k12_id = $k12_id "; 
-       } 
+         $sql2 .= " where corautent.k12_id = $k12_id ";
+       }
        if($k12_data!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " corautent.k12_data = '$k12_data' "; 
-       } 
+         }
+         $sql2 .= " corautent.k12_data = '$k12_data' ";
+       }
        if($k12_autent!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " corautent.k12_autent = $k12_autent "; 
-       } 
+         }
+         $sql2 .= " corautent.k12_autent = $k12_autent ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

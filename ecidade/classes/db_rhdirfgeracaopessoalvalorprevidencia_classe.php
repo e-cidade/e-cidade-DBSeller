@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhdirfgeracaopessoalvalorprevidencia
 class cl_rhdirfgeracaopessoalvalorprevidencia { 
@@ -26,13 +26,13 @@ class cl_rhdirfgeracaopessoalvalorprevidencia {
                  rh204_numcgm = int4 = Previdência 
                  ";
    //funcao construtor da classe 
-   function cl_rhdirfgeracaopessoalvalorprevidencia() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdirfgeracaopessoalvalorprevidencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_rhdirfgeracaopessoalvalorprevidencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh204_sequencial = ($this->rh204_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh204_sequencial"]:$this->rh204_sequencial);
        $this->rh204_rhdirfgeracaodadospessoalvalor = ($this->rh204_rhdirfgeracaodadospessoalvalor == ""?@$GLOBALS["HTTP_POST_VARS"]["rh204_rhdirfgeracaodadospessoalvalor"]:$this->rh204_rhdirfgeracaodadospessoalvalor);
@@ -51,7 +51,7 @@ class cl_rhdirfgeracaopessoalvalorprevidencia {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh204_sequencial){ 
+   public function incluir ($rh204_sequencial){ 
       $this->atualizacampos();
      if($this->rh204_rhdirfgeracaodadospessoalvalor == null ){ 
        $this->erro_sql = " Campo Valor da Dirf não informado.";

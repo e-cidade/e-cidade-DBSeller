@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,13 +60,13 @@ class cl_itbiintermediador {
                  it35_principal = bool = Principal
                  ";
    //funcao construtor da classe
-   function cl_itbiintermediador() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiintermediador");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_itbiintermediador {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->it35_sequencial = ($this->it35_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["it35_sequencial"]:$this->it35_sequencial);
        $this->it35_itbi = ($this->it35_itbi == ""?@$GLOBALS["HTTP_POST_VARS"]["it35_itbi"]:$this->it35_itbi);
@@ -89,7 +89,7 @@ class cl_itbiintermediador {
      }
    }
    // funcao para Inclusão
-   function incluir ($it35_sequencial = null){
+   public function incluir ($it35_sequencial = null){
       $this->atualizacampos();
      if($this->it35_itbi == null ){
        $this->erro_sql   = " Campo Código ITBI não informado.";

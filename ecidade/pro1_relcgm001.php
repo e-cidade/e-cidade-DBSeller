@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -205,13 +205,13 @@ function js_mostranumcgm1fim(chave1,chave2)
 					<table >
 					<tr> 
 				    <td  align="right" nowrap title="<?=$Tz01_numcgm?>"> 
-				      <? 
+				      <?php 
 				         //Clicando na ancora para buscar o cgm atraves do formulario de pesquisa.
 				         db_ancora("<b>CGM Inicial</b>","js_pesquisaz01_numcgmini(true);",1);
 				      ?>
 				    </td> 
 				    <td align="left" nowrap>
-				      <?
+				      <?php
 				         //Digitando um numero de cgm para buscar
 							 db_input("z01_numcgm_inicial",10,$Iz01_numcgm,true,"text",1,"onchange='js_pesquisaz01_numcgmini(false);'"); 
 							 db_input("z01_nomecgm_inicial",45,$Iz01_nome,true,"text",3);
@@ -220,13 +220,13 @@ function js_mostranumcgm1fim(chave1,chave2)
 				  </tr>
 					<tr> 
 				    <td  align="right" nowrap title="<?=$Tz01_numcgm?>"> 
-				      <? 
+				      <?php 
 				         //Clicando na ancora para buscar o cgm atraves do formulario de pesquisa.
 				         db_ancora("<b>CGM Final</b>","js_pesquisaz01_numcgmfim(true);",1);
 				      ?>
 				    </td> 
 				    <td align="left" nowrap>
-				      <?
+				      <?php
 				         //Digitando um numero de cgm para buscar
 							 db_input("z01_numcgm_final",10,$Iz01_numcgm,true,"text",1,"onchange='js_pesquisaz01_numcgmfim(false);'"); 
 							 db_input("z01_nomecgm_final",45,$Iz01_nome,true,"text",3);
@@ -255,7 +255,7 @@ function js_mostranumcgm1fim(chave1,chave2)
 						<tr>
 							
 							<td colspan="2">
-							<?
+							<?php
                 $aux->cabecalho = "<strong>Cidades</strong>";
                 $aux->codigo = "cp05_codlocalidades";
                 $aux->descr  = "cp05_localidades";
@@ -287,7 +287,7 @@ function js_mostranumcgm1fim(chave1,chave2)
 		</td>
 	</tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

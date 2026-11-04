@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,7 +63,7 @@ db_postmemory($HTTP_POST_VARS);
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-  <?
+  <?php
   if(!isset($tipo)){
     $tipo = "l";
   }
@@ -90,12 +90,12 @@ db_postmemory($HTTP_POST_VARS);
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $ano1 = db_anofolha();
            db_input('ano1',4,$IDBtxt23,true,'text',3,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes1 = db_mesfolha();
            db_input('mes1',2,$IDBtxt25,true,'text',3,'')
           ?>
@@ -103,15 +103,15 @@ db_postmemory($HTTP_POST_VARS);
       </tr>
     <tr>
       <td align="right" title="<?=$Trh27_rubric?>"> 
-        <?
+        <?php
         db_ancora($Lrh27_rubric,'js_pesquisarh27_rubric(true);',2)
         ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input("rh27_rubric",8,$Irh27_rubric,true,'text',4,"onchange='js_pesquisarh27_rubric(false);'")
         ?>
-        <?
+        <?php
         db_input("rh27_descr",40,$Irh27_descr,true,'text',3)
         ?>
       </td>
@@ -120,7 +120,7 @@ db_postmemory($HTTP_POST_VARS);
         <td align="right"><strong>Ponto:</strong>
         </td>
         <td>
-          <?
+          <?php
           $arr_ponto = array("s"=>"Salário", "c"=>"Complementar");
           db_select('ponto',$arr_ponto,true,4);
           ?>
@@ -140,7 +140,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

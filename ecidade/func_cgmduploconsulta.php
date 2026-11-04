@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -71,7 +71,7 @@ db_app::load('prototype.js');
 		             <?=$LDBtxt_cgmcorreto ?>
 		            </td>
 		            <td width="96%"  nowrap> 
-		              <?
+		              <?php
 		               $DBtxt_cgmcorreto = $oGet->z10_numcgm;
 		              //db_input("k65_descricao",50,$Ik65_descricao,true,"text",4,"","chave_k65_descricao");
 		                db_input("DBtxt_cgmcorreto",10,$oGet->z10_numcgm,true,"text",4,"","");
@@ -82,7 +82,7 @@ db_app::load('prototype.js');
 		              <?=$Lz01_nome ?>
 		            </td>
 		            <td>
-		              <?
+		              <?php
 		                $DBtxt_z01_nome = $oGet->z01_nome;
 		                db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","");
 		              ?>
@@ -93,7 +93,7 @@ db_app::load('prototype.js');
 		              <b>Data de processamento:</b>
 		            </td>
 		            <td  align="left" nowrap> 
-		              <?
+		              <?php
 		                $z10_data = $oGet->z10_data;
 		               db_input("z10_data",10,$oGet->z10_data,true,"text",4,"","");
 		              ?>
@@ -103,7 +103,7 @@ db_app::load('prototype.js');
 		              <b>Hora:</b>
 		            </td>
 		            <td>
-		              <?
+		              <?php
 		                $z10_hora = $oGet->z10_hora;
 		                db_input("z10_hora",10,$oGet->z10_hora,true,"text",4,"","");
 		              ?>
@@ -115,7 +115,7 @@ db_app::load('prototype.js');
 		              <b>Usuário</b>
 		            </td>
 		          <td colspan="3">
-		             <?
+		             <?php
 		              $usuario = $oGet->usuario;
 		              db_input("usuario",40,$oGet->usuario,true,"text",4,"","");
 		             ?>
@@ -141,7 +141,7 @@ db_app::load('prototype.js');
 		 <table border="0" align="center" cellspacing="0">
 		  <tr>
 		    <td>
-		        <?
+		        <?php
 		     
 		        $sWhere = "";
 		        $sAnd = "";

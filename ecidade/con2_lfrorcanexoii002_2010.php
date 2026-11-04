@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -89,12 +89,12 @@ $classinatura = new cl_assinatura;
   db_query("begin");
   db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
 
-  $xcampos = split("-",$orgaos);
+  $xcampos =explode("-",$orgaos);
 
   for($i=0;$i < sizeof($xcampos);$i++){
      $where = '';
      $virgula = '';
-     $xxcampos = split("_",$xcampos[$i]);
+     $xxcampos =explode("_",$xcampos[$i]);
      for($ii=0;$ii<sizeof($xxcampos);$ii++){
         if($ii > 0){
           $where .= $virgula.$xxcampos[$ii];
@@ -143,8 +143,8 @@ $sData           = $sSiglaPeriodo;
 $dados = data_periodo($anousu,$sData);
 
 $periodo  = strtoupper($dados["periodo"]);
-$perini   = split("-",$dados[0]);
-$perfin   = split("-",$dados[1]);
+$perini   =explode("-",$dados[0]);
+$perfin   =explode("-",$dados[1]);
 
 $mesini   = strtoupper(db_mes($perini[1]));
 $mesfin   = strtoupper(db_mes($perfin[1]));

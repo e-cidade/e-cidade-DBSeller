@@ -373,7 +373,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
                  ,pl12_orcprojativ as iniciativa
                  ,o56_elemento as elemento
                  ,codigo_siconfi||'#'||o15_complemento as recurso
-                 ,o15_recurso||'#'||o15_complemento as recurso_original
+                 ,codigo_siconfi||'#'||o15_recurso||'#'||o15_complemento as recurso_original
                  ,pl20_valorbase as valor_base
                  ,(select json_agg(
                                   json_build_object(

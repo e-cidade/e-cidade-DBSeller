@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -116,7 +116,7 @@ $numrows= $clempageconf->numrows;
           <td class='bordas02'><small><b><?=$RLe81_valor?></b></small></td>
           <td class='bordas02'><small><b><?=$RLe83_codtipo?></b></small></td>
 	</tr>
-        <?
+        <?php
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
 	?>
@@ -129,7 +129,7 @@ $numrows= $clempageconf->numrows;
           <td class='bordas' align='right'><small><?=number_format($e81_valor,"2",".","")?></small></td>
           <td class='bordas' align='left'><small><?=$e83_descr?></small></td>
 	</tr>
-        <?
+        <?php
 	  }
 	?>
       </table>

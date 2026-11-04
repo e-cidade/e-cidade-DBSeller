@@ -14,7 +14,6 @@ class M20460AtualizaTabelasIptuconstrIptuant extends Migration
      */
     public function up()
     {
-
         DB::connection()->getPdo()->exec(<<<SQL1
 
 DROP VIEW if exists proprietario_ender;
@@ -374,7 +373,7 @@ CREATE OR REPLACE VIEW public.proprietario_ender AS
                     ELSE iptuconstr.j39_compl
                 END AS j39_compl,
 		                   r.j14_codigo,
-			                 r.j14_nome, 
+			                 r.j14_nome,
             rt.j88_sigla AS j14_tipo,
             bairro.j13_descr
            FROM iptubase

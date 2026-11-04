@@ -68,13 +68,13 @@ class cl_rhferias {
                  rh109_perdeudireitoferias = bool = Perdeu Direito a Férias 
                  ";
    //funcao construtor da classe
-   function cl_rhferias() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhferias");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_rhferias {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh109_sequencial = ($this->rh109_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh109_sequencial"]:$this->rh109_sequencial);
        $this->rh109_regist = ($this->rh109_regist == ""?@$GLOBALS["HTTP_POST_VARS"]["rh109_regist"]:$this->rh109_regist);
@@ -112,7 +112,7 @@ class cl_rhferias {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh109_sequencial){
+   public function incluir ($rh109_sequencial){
       $this->atualizacampos();
      if($this->rh109_regist == null ){
        $this->erro_sql = " Campo Matrícula não informado.";
@@ -605,7 +605,7 @@ class cl_rhferias {
    * @param DBDate $oDataFechamentoFolhaFim
    * @return string
    */
-  function sql_queryAlteracaoPeriodoAquisitivoServidores(DBDate $oDataFechamentoFolhaInicio, DBDate $oDataFechamentoFolhaFim) {
+  public function sql_queryAlteracaoPeriodoAquisitivoServidores(DBDate $oDataFechamentoFolhaInicio, DBDate $oDataFechamentoFolhaFim) {
 
   	$iInstituicao = db_getsession('DB_instit');
 
@@ -640,7 +640,7 @@ class cl_rhferias {
 
   }
 
-  function sql_query_busca_matriculas_selecao($iAnoUsu, $iMesUsu, $sCampos, $sWhere) {
+  public function sql_query_busca_matriculas_selecao($iAnoUsu, $iMesUsu, $sCampos, $sWhere) {
 
   	$sWhereSql = "";
   	$iInstit   = db_getsession('DB_instit');
@@ -700,7 +700,7 @@ class cl_rhferias {
 
   }
 
-  function sql_query_ferias_selecao($iAnoUsu, $iMesUsu, $sCampos, $sWhere) {
+  public function sql_query_ferias_selecao($iAnoUsu, $iMesUsu, $sCampos, $sWhere) {
 
   	$sWhereSql = "";
   	if(!empty($sWhere)){
@@ -773,7 +773,7 @@ class cl_rhferias {
    * @param  array
    * @return string  $sSql
    */
-  function sql_query_proximo_periodo_aquisitivo($iMatricula, $sCampos, $aWhere = array()) {
+  public function sql_query_proximo_periodo_aquisitivo($iMatricula, $sCampos, $aWhere = array()) {
 
     $sWhere = count($aWhere) > 0 ? ' AND ' . implode(' AND ', $aWhere) : '';
 
@@ -796,7 +796,7 @@ class cl_rhferias {
    * @param  integer $iSituacao    Situação do periodo
    * @return string                sSql
    */
-  function sql_query_periodos_aquisitivos_competencia($iAnoPagamento, $iMesPagamento, $iSituacao){
+  public function sql_query_periodos_aquisitivos_competencia($iAnoPagamento, $iMesPagamento, $iSituacao){
 
     $sSql  = "select z01_nome,                                                                       ";
     $sSql .= "       rh110_sequencial,                                                               ";
@@ -829,7 +829,7 @@ class cl_rhferias {
    * @param  array
    * @return string  $sSql
    */
-  function sql_query_periodos_aquisitivos_com_saldo($iMatricula, $sCampos, $aWhere = array()) {
+  public function sql_query_periodos_aquisitivos_com_saldo($iMatricula, $sCampos, $aWhere = array()) {
 
     $sWhere = count($aWhere) > 0 ? ' AND ' . implode(' AND ', $aWhere) : '';
 

@@ -57,7 +57,7 @@ $aNotas        =  $oArquivoPit->getNotasParaArquivo($dtInicial, $dtFinal);
   </head>  
   <body>
   <form name='form1'>
-      <?
+      <?php
        db_criatermometro("progressbarpit","Arquivo Gerado");
        $i = 0;
        $lArquivoGerado = false;
@@ -87,7 +87,7 @@ $aNotas        =  $oArquivoPit->getNotasParaArquivo($dtInicial, $dtFinal);
   </body>
 </html>
 <script>
-<?
+<?php
  if ($lArquivoGerado) {
   
    echo "var sLista = '{$sArquivoPit}#Arquivo pit'\n";

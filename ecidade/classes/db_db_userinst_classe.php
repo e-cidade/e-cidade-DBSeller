@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_db_userinst {
                  id_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_db_userinst() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_userinst"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_db_userinst {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->id_instit = ($this->id_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["id_instit"]:$this->id_instit);
        $this->id_usuario = ($this->id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["id_usuario"]:$this->id_usuario);
@@ -73,7 +73,7 @@ class cl_db_userinst {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->id_instit == null ){
        $this->erro_sql = " Campo Instituição nao Informado.";
@@ -143,7 +143,7 @@ class cl_db_userinst {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $id_instit=null,$id_usuario=null ) { 
+   public function alterar ( $id_instit=null,$id_usuario=null ) { 
       $this->atualizacampos();
      $sql = " update db_userinst set ";
      $virgula = "";
@@ -233,7 +233,7 @@ class cl_db_userinst {
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $id_instit=null,$id_usuario=null ,$dbwhere=null) { 
+   public function excluir ( $id_instit=null,$id_usuario=null ,$dbwhere=null) { 
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount) && ($lSessaoDesativarAccount === false))) {
@@ -311,7 +311,7 @@ class cl_db_userinst {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -333,7 +333,7 @@ class cl_db_userinst {
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="db_userinst.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $oid = null,$campos="db_userinst.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -378,7 +378,7 @@ class cl_db_userinst {
      }
      return $sql;
   }
-   function sql_query_file ( $id_instit=null,$id_usuario=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $id_instit=null,$id_usuario=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

@@ -106,10 +106,10 @@ class Admissao
 
     public function setIsTemporario($isTemporario)
     {
-        if ($isTemporario == 't') {
+        if ($isTemporario === 't') {
             $isTemporario = true;
         }
-        if ($isTemporario == 'f') {
+        if ($isTemporario === 'f') {
             $isTemporario = false;
         }
         $this->isTemporario = $isTemporario;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,7 +86,7 @@ if ($oDaoSituacaoAtendimento->numrows > 0) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 	db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
 	db_app::load('estilos.css,grid.style.css');
 ?>
@@ -155,7 +155,7 @@ function js_ImprimeProcesso(){
 					<tr>
 						<td align="left"><b>Período:</b></td>
 						<td align="left">
-						<? 
+						<?php 
 							db_inputdata('dt_ini','','','',true,'text',1);
 							echo "&nbsp;à&nbsp;";
 							db_inputdata('dt_fim','','','',true,'text',1);
@@ -165,7 +165,7 @@ function js_ImprimeProcesso(){
 					<tr>
 						<td align="left"><b>Ouvidoria:</b></td>
 						<td align="left">
-						<? 
+						<?php 
 							$x = array(0=>"Atual",1=>"Todos");
 							db_select('ouvidoria',$x,true,1);
 						?>
@@ -174,7 +174,7 @@ function js_ImprimeProcesso(){
 					<tr>
 						<td align="left"><b>Quebras:</b></td>
 						<td align="left">
-						<? 
+						<?php 
 							$x = array(0=>"Tipo de Processo",1=>"Ouvidor",2=>"Destino");
 							db_select('quebra',$x,true,1);
 						?>
@@ -184,7 +184,7 @@ function js_ImprimeProcesso(){
 					<tr>
 						<td align="left"><b>Ordenação:</b></td>
 						<td align="left">
-						<? 
+						<?php 
 							$x = array(0=>"Código do Atendimento",1=>"Situação");
 							db_select('ordenacao',$x,true,1);
 						?>
@@ -195,7 +195,7 @@ function js_ImprimeProcesso(){
 					<tr>
 						<td align="left"><b>Situação:</b></td>
 						<td align="left">
-						<? 
+						<?php 
 					
 						db_select('situacaoatendimento',$aSituacaoAtendimento,true,1);
 						?>
@@ -254,7 +254,7 @@ function js_ImprimeProcesso(){
 		</td>
 	</tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

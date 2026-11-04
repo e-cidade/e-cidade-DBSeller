@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -78,19 +78,19 @@ input {
   <legend><b>&nbsp;Vistorias&nbsp;</b></legend>
 
    <table align="center" border="0" cellspacing="0" cellpadding="0">
-   <?
+   <?php
    $sim = 2;
    if(isset($cgm)){
      $sim = 1;
    ?>
 
       <td  >
-      <?
+      <?php
        db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
       ?>
        </td>
        <td>
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -108,18 +108,18 @@ function js_testacamp(){
   document.form1.submit();
 }
 </script>
-   <?
+   <?php
    }elseif(isset($matric)){
      $sim = 1;
    ?>
      <tr align="center" >
        <td>
-      <?
+      <?php
        db_ancora($Lj01_matric,' js_matri(true); ',1);
       ?>
        </td>
        <td>
-      <?
+      <?php
        db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
       db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
       ?>
@@ -137,19 +137,19 @@ function js_testacamp(){
   document.form1.submit();
 }
 </script>
-   <?
+   <?php
    }elseif(isset($inscr)){
      $sim = 1;
    ?>
 
      <tr align="center" >
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td>
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
        echo "<script>parent.document.formaba.calculo.disabled = true</script>";
@@ -168,18 +168,18 @@ function js_testacamp(){
   document.form1.submit();
 }
 </script>
-   <?
+   <?php
    }elseif(isset($sani)){
      $sim = 1;
    ?>
    <tr align="center" >
       <td nowrap title="<?=@$Ty80_codsani?>">
-         <?
+         <?php
          db_ancora(@$Ly80_codsani,"js_sanitario(true);",1);
          ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('y80_codsani',5,$Iy80_codsani,true,'text',1,"onchange='js_sanitario(false)'");
         db_input('z01_nome',30,0,true,'text',3,"","z01_nomesani");
         echo "<script>parent.document.formaba.calculo.disabled = true</script>";
@@ -198,7 +198,7 @@ function js_testacamp(){
   document.form1.submit();
 }
 </script>
-    <?
+    <?php
     }
     ?>
 
@@ -310,7 +310,7 @@ function js_mostracgm1(erro,chave){
 }
 
 function js_setatabulacao(){
-  <?
+  <?php
   if(isset($cgm)){
     echo 'js_tabulacaoforms("form1","z01_numcgm",true,1,"z01_numcgm",true);';
   }elseif(isset($matric)){

@@ -83,8 +83,7 @@ class CalendarioEvento {
    * @param integer $iCodigoEvento
    */
   public function setCodigoEvento($iCodigoEvento) {
-    
-    $this->iCodigoEvento;
+    $this->iCodigoEvento = $iCodigoEvento;
   }
   
   /**
@@ -231,4 +230,31 @@ class CalendarioEvento {
     
     return true;
   }
+
+    /**
+     * @throws Exception
+     */
+    public function excluir()
+    {
+        $oDaoFeriado = new cl_feriado();
+        if ($this->lDiaLetivo === 'S') {
+            $where = " ed58_tipovinculo = 3 and ed58_datainicio = '" . $this->oDtEvento->getDate() . "'";
+            $daoRegenciaHorario = new cl_regenciahorario();
+
+            $rsValida = db_query($daoRegenciaHorario->sql_query_file(null, '1', null, $where));
+
+            if (!$rsValida) {
+                throw new Exception(
+                    "Erro ao verificar se o feriado/sábado letivo tinha um regente vinculado.\n" . pg_last_error()
+                );
+            }
+            if (pg_num_rows($rsValida) > 0) {
+                $erro_msg = "Não é possível excluir o feriado/sábado letivo pois existe uma agenda cadastrada.\n";
+                $erro_msg .= "Para exclui-la acesse a rotina: Cadastros > Turmas > Agenda de Sábado Letivo.";
+                throw new Exception($erro_msg);
+            }
+        }
+
+        $oDaoFeriado->excluir($this->getCodigoEvento());
+    }
 }

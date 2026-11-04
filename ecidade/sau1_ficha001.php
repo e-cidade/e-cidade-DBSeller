@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $db_botao = true;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-<?
+<?php
 if(!isset($start)){
 ?>
 <form name="form1" method="post" action="">
@@ -69,15 +69,15 @@ if(!isset($start)){
 <table border="0">
   <tr>
     <td nowrap title="Unidade">
-      <?
+      <?php
        db_ancora("<b>Unidade</b>","js_pesquisasd04_i_unidade(true);",$db_opcao01);
       ?>
     </td>
     <td colspan="4">
-<?
+<?php
  db_input('sd04_i_unidade',10,$Isd04_i_unidade,true,'text',$db_opcao," onchange='js_pesquisasd04_i_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('sd02_c_nome',40,$Isd02_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -87,7 +87,7 @@ db_input('sd02_c_nome',40,$Isd02_c_nome,true,'text',3,'')
       <b>Numero de Atendimento</b>
     </td>
     <td>
-<?
+<?php
 db_input('sd23_c_atendimento',10,$Isd23_c_atendimento,true,'text',$db_opcao," onchange='js_pesquisasd23_c_atendimento(false);'")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('sd23_c_atendimento',10,$Isd23_c_atendimento,true,'text',$db_opcao," on
   </tr>
  </table>
 </form>
-<?
+<?php
  }else{
  //busca o registro do Atendiemnto
  @$result = $clagendamentos->sql_record($clagendamentos->sql_query("","sd23_i_unidade, sd02_c_razao, sd23_i_cgm, z01_nome, sd23_c_atendimento, to_char(sd23_d_consulta,'dd/mm/yyyy') as sd23_d_consulta","","sd23_c_atendimento = '$sd23_c_atendimento' and sd23_i_unidade = $sd04_i_unidade"));
@@ -119,7 +119,7 @@ db_input('sd23_c_atendimento',10,$Isd23_c_atendimento,true,'text',$db_opcao," on
    </td>
   </tr>
  <table>
- <?
+ <?php
  }else{
   //aviso e retorna à página anterior
   db_msgbox("Agendamento não Cadastrado");
@@ -166,7 +166,7 @@ function js_mostraunidades1(chave1,chave2){
         </td>
   </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

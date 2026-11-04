@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,22 +72,22 @@ if ($db_opcao == 33 or $db_opcao == 3){
        <?=@$Lh64_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h64_sequencial',10,@$Ih64_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
     <tr style='display:none'>
     <td nowrap title="<?=@$Th64_estagioagenda?>">
-       <?
+       <?php
        db_ancora(@$Lh64_estagioagenda,"js_pesquisah64_estagioagenda(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h64_estagioagenda',10,@$Ih64_estagioagenda,true,'text',$db_opcao," onchange='js_pesquisah64_estagioagenda(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,@$Ih57_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -97,19 +97,19 @@ db_input('z01_nome',40,@$Ih57_sequencial,true,'text',3,'')
        <?=@$Lh64_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h64_data',@$h64_data_dia,@$h64_data_mes,@$h64_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Th64_seqaval?>">
-       <?
+       <?php
        echo @$Lh64_seqaval;
        ?>
     </td>
     <td> 
-     <?
+     <?php
       db_input('h64_seqaval',10,@$Ih64_seqaval,true,'text',$db_opcao);
      ?>
     </td>
@@ -129,7 +129,7 @@ db_inputdata('h64_data',@$h64_data_dia,@$h64_data_mes,@$h64_data_ano,true,'text'
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("h64_sequencial"=>@$h64_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagioagendadata->sql_query_file(null,"*","h64_data","h64_estagioagenda=".@$h64_estagioagenda);

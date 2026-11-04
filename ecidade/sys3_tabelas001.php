@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ input {
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
 
 	$sql_mod = "select db_sysmodulo.nomemod,
 			   db_sysarquivo.codarq,
@@ -124,7 +124,7 @@ input {
 	  <th><u>Tabela Principal</u></th>
 	  <th nowrap><u>Data de Inclusão</u></th>
 	</tr>
-    <?
+    <?php
 	$cor1 = "#CAF59A";
 	$cor2 = "#B0FDD2";
 	$cor = "";
@@ -148,7 +148,7 @@ input {
 	</td>
   </tr>
 </table>
-	<?
+	<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

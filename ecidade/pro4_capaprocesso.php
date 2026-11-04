@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,7 +44,7 @@ require_once(modification("model/processoProtocolo.model.php"));
 
 // **********************************************
 if (!empty($HTTP_SERVER_VAR)) {
-    parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+   parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
 }
 
 // Alteracao Plugin TaxonomiaDeProcessosDoMinisterioPublico - pro4_capaprocesso.php #1
@@ -56,21 +56,18 @@ $iAnoUsuInicial = db_getsession("DB_anousu");
 $iAnoUsuFinal = db_getsession("DB_anousu");
 
 if (isset($oGet->numeroProcessoInicial) && !empty($oGet->numeroProcessoInicial)) {
-
     $aProcessoInicial = explode("/", $oGet->numeroProcessoInicial);
     $aProcessoFinal = explode("/", $oGet->numeroProcessoFinal);
     $iNumeroProcessoInicical = $aProcessoInicial[0];
     $iNumeroProcessoFinal = $aProcessoFinal[0];
 
     if ($oGet->numeroProcessoInicial != '') {
-
         if (count($aProcessoInicial) > 1) {
             $iAnoUsuInicial = $aProcessoInicial[1];
         }
     }
 
     if ($oGet->numeroProcessoFinal != '') {
-
         if (count($aProcessoFinal) > 1) {
             $iAnoUsuFinal = $aProcessoFinal[1];
         }
@@ -82,7 +79,6 @@ if (isset($oGet->numeroProcessoInicial) && !empty($oGet->numeroProcessoInicial))
 }
 
 if (isset($oGet->codproc) && !empty($oGet->codproc)) {
-
     /*
      * aqui é parte de impresao quando se inclui um processo
      * como é um só, definimos inicial e final o mesmo, para fazer o between na query
@@ -94,14 +90,13 @@ if (isset($oGet->codproc) && !empty($oGet->codproc)) {
 
     $iAnoUsuFinal = $iAnoUsuInicial;
     $iNumeroProcessoFinal = $iNumeroProcessoInicical;
-
 }
 
 
 $sWhere = " where p58_numero between '{$iNumeroProcessoInicical}' and '{$iNumeroProcessoFinal}' ";
 $sWhere .= " and p58_ano between {$iAnoUsuInicial} and {$iAnoUsuFinal} ";
 
-$sWhere .= " and p58_instit = " . db_getsession("DB_instit");
+$sWhere .= " and p51_instit = " . db_getsession("DB_instit");
 
 $clprotparam = new cl_protparam;
 $clprocvar = new cl_procvar;
@@ -112,7 +107,8 @@ $iCodigoDepartamento = db_getsession('DB_coddepto');
 
 
 $sCamposParam = "p90_modelcapaproc, p90_db_documentotemplate, db82_templatetipo";
-$sSqlParam = $clprotparam->sql_query_documentos(null, $sCamposParam);
+$sWhereParam  = "p90_instit = " . db_getsession("DB_instit");
+$sSqlParam = $clprotparam->sql_query_documentos(null, $sCamposParam, "", $sWhereParam);
 $rsParm = $clprotparam->sql_record($sSqlParam);
 $oProtParam = db_utils::fieldsMemory($rsParm, 0);
 
@@ -141,57 +137,56 @@ $sql = " select	p58_codproc,
  * Verifica se o parâmetro não esta setado como Documento Template
  */
 if ($oProtParam->p90_modelcapaproc != 3) {
-
     $result = db_query($sql);
-
-    $numrows = pg_numrows($result);
-
-    if (pg_numrows($result) == 0) {
-
+    if (pg_num_rows($result) == 0) {
+        throw new \Exception("Processo não cadastrado!");
         db_redireciona('db_erros.php?fechar=true&db_erro=Processo nao cadastrado!');
         exit;
     }
 
+    $numrows = pg_num_rows($result);
 
     $pdf = new pdf1();
     $pdf->Open();
-    $result_param = $clprotparam->sql_record($clprotparam->sql_query_file(null, "*", null,
-      "p90_instit = " . db_getsession("DB_instit")));
-    
-    if ($clprotparam->numrows > 0) {
+    $result_param = $clprotparam->sql_record($clprotparam->sql_query_file(
+        null,
+        "*",
+        null,
+        "p90_instit = " . db_getsession("DB_instit")
+    ));
+
+    if (pg_num_rows($result_param) > 0) {
         db_fieldsmemory($result_param, 0);
     }
 
     $modelo = 40;
-    
-    if (isset($p90_modelcapaproc) ) {
 
+    if (isset($p90_modelcapaproc)) {
         switch ($p90_modelcapaproc) {
             case '1':
-
                 $modelo = 41;
-            break;
+                break;
 
             case '2':
-
                 $modelo = 42;
-            break;
+                break;
 
             case '4':
-
                 $modelo = 401;
-            break;
+                break;
 
             default:
-
                 $modelo = 40;
-            break;
+                break;
         }
     }
 
     $pdf1 = new db_impcarne($pdf, "$modelo");
-    $pdf1->telefinstit = pg_result(db_query("select telef from db_config where codigo = " . db_getsession("DB_instit")),
-      0, 0);
+    $pdf1->telefinstit = pg_fetch_result(
+        db_query("select telef from db_config where codigo = " . db_getsession("DB_instit")),
+        0,
+        0
+    );
 
     for ($w = 0; $w < $numrows; $w++) {
         db_fieldsmemory($result, $w);
@@ -223,11 +218,11 @@ if ($oProtParam->p90_modelcapaproc != 3) {
 
         if (isset($p90_imprimevar) && $p90_imprimevar == "t") {
             $pdf1->result_vars = $clprocvar->sql_record($clprocvar->sql_query_varconteudo(
-              $p58_codproc,
-              null,
-              "distinct rotulo, p55_conteudo, p55_codcam",
-              "p55_codcam")
-            );
+                $p58_codproc,
+                null,
+                "distinct rotulo, p55_conteudo, p55_codcam",
+                "p55_codcam"
+            ));
         } else {
             $pdf1->result_vars = "";
         }
@@ -244,9 +239,7 @@ if ($oProtParam->p90_modelcapaproc != 3) {
     }
 
     $pdf1->objpdf->Output($caminho, false, $mostrarPDF);
-
 } else {
-
     ini_set("error_reporting", "E_ALL & ~NOTICE");
     $sDescrDoc = date("YmdHis") . db_getsession("DB_id_usuario");
     $sNomeRelatorio = "tmp/geraCapaProtocolo{$sDescrDoc}.pdf";
@@ -259,7 +252,6 @@ if ($oProtParam->p90_modelcapaproc != 3) {
 
     $rsCodProc = $oDaoProtPocesso->sql_record($sql);
     if ($oDaoProtPocesso->numrows > 0) {
-
         $iCodProcInicial = db_utils::fieldsMemory($rsCodProc, 0)->p58_codproc;
         $iCodProcFinal = db_utils::fieldsMemory($rsCodProc, $oDaoProtPocesso->numrows - 1)->p58_codproc;
     }
@@ -272,7 +264,7 @@ if ($oProtParam->p90_modelcapaproc != 3) {
     $aParam['$codigo_processo'] = $iCodProcInicial;
 
     // Se for imprimir mais de uma capa
-    if (isset($iCodProcFinal) && !empty($iCodProcFinal)) {
+    if (!empty($iCodProcFinal)) {
         $aParam['$codigo_processo_fim'] = $iCodProcFinal;
     } else {
         $aParam['$codigo_processo_fim'] = $iCodProcInicial;
@@ -281,11 +273,12 @@ if ($oProtParam->p90_modelcapaproc != 3) {
     $aParam['$codigo_instituicao'] = $iCodigoInstituicao;
     $aParam['$codigo_departamento'] = $iCodigoDepartamento;
 
-
-    db_stdClass::oo2pdf($oProtParam->db82_templatetipo,
-      $oProtParam->p90_db_documentotemplate,
-      $sAgt,
-      $aParam,
-      $sCaminhoSalvoSxw,
-      $sNomeRelatorio);
+    db_stdClass::oo2pdf(
+        $oProtParam->db82_templatetipo,
+        $oProtParam->p90_db_documentotemplate,
+        $sAgt,
+        $aParam,
+        $sCaminhoSalvoSxw,
+        $sNomeRelatorio
+    );
 }

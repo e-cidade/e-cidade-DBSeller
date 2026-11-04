@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE debcontapedidoinscr
-class cl_debcontapedidoinscr { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $d69_codigo = 0; 
-   var $d69_inscr = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_debcontapedidoinscr {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $d69_codigo = 0;
+   var $d69_inscr = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 d69_codigo = int4 = Codigo sequencial 
-                 d69_inscr = int4 = Inscrição no ISSQN 
+                 d69_codigo = int4 = Codigo sequencial
+                 d69_inscr = int4 = Inscrição no ISSQN
                  ";
-   //funcao construtor da classe 
-   function cl_debcontapedidoinscr() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("debcontapedidoinscr"); 
+     $this->rotulo = new rotulo("debcontapedidoinscr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_debcontapedidoinscr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d69_codigo = ($this->d69_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["d69_codigo"]:$this->d69_codigo);
        $this->d69_inscr = ($this->d69_inscr == ""?@$GLOBALS["HTTP_POST_VARS"]["d69_inscr"]:$this->d69_inscr);
@@ -74,9 +74,9 @@ class cl_debcontapedidoinscr {
      }
    }
    // funcao para inclusao
-   function incluir ($d69_codigo){ 
+   public function incluir ($d69_codigo){
       $this->atualizacampos();
-     if($this->d69_inscr == null ){ 
+     if($this->d69_inscr == null ){
        $this->erro_sql = " Campo Inscrição no ISSQN nao Informado.";
        $this->erro_campo = "d69_inscr";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_debcontapedidoinscr {
        $this->erro_status = "0";
        return false;
      }
-       $this->d69_codigo = $d69_codigo; 
-     if(($this->d69_codigo == null) || ($this->d69_codigo == "") ){ 
+       $this->d69_codigo = $d69_codigo;
+     if(($this->d69_codigo == null) || ($this->d69_codigo == "") ){
        $this->erro_sql = " Campo d69_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_debcontapedidoinscr {
        return false;
      }
      $sql = "insert into debcontapedidoinscr(
-                                       d69_codigo 
-                                      ,d69_inscr 
+                                       d69_codigo
+                                      ,d69_inscr
                        )
                 values (
-                                $this->d69_codigo 
-                               ,$this->d69_inscr 
+                                $this->d69_codigo
+                               ,$this->d69_inscr
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Inscricao do debito em conta ($this->d69_codigo) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_debcontapedidoinscr {
        $resac = db_query("insert into db_acount values($acount,1336,7966,'','".AddSlashes(pg_result($resaco,0,'d69_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($d69_codigo=null) { 
+   public function alterar ($d69_codigo=null) {
       $this->atualizacampos();
      $sql = " update debcontapedidoinscr set ";
      $virgula = "";
-     if(trim($this->d69_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d69_codigo"])){ 
+     if(trim($this->d69_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d69_codigo"])){
        $sql  .= $virgula." d69_codigo = $this->d69_codigo ";
        $virgula = ",";
-       if(trim($this->d69_codigo) == null ){ 
+       if(trim($this->d69_codigo) == null ){
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "d69_codigo";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_debcontapedidoinscr {
          return false;
        }
      }
-     if(trim($this->d69_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d69_inscr"])){ 
+     if(trim($this->d69_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d69_inscr"])){
        $sql  .= $virgula." d69_inscr = $this->d69_inscr ";
        $virgula = ",";
-       if(trim($this->d69_inscr) == null ){ 
+       if(trim($this->d69_inscr) == null ){
          $this->erro_sql = " Campo Inscrição no ISSQN nao Informado.";
          $this->erro_campo = "d69_inscr";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_debcontapedidoinscr {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inscricao do debito em conta nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->d69_codigo;
@@ -214,14 +214,14 @@ class cl_debcontapedidoinscr {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($d69_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($d69_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d69_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_debcontapedidoinscr {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inscricao do debito em conta nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$d69_codigo;
@@ -276,11 +276,11 @@ class cl_debcontapedidoinscr {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_debcontapedidoinscr {
       }
      return $result;
    }
-   function sql_query ( $d69_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $d69_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -323,15 +323,15 @@ class cl_debcontapedidoinscr {
      $sql2 = "";
      if($dbwhere==""){
        if($d69_codigo!=null ){
-         $sql2 .= " where debcontapedidoinscr.d69_codigo = $d69_codigo "; 
-       } 
+         $sql2 .= " where debcontapedidoinscr.d69_codigo = $d69_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -340,10 +340,10 @@ class cl_debcontapedidoinscr {
      }
      return $sql;
   }
-   function sql_query_file ( $d69_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $d69_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -356,15 +356,15 @@ class cl_debcontapedidoinscr {
      $sql2 = "";
      if($dbwhere==""){
        if($d69_codigo!=null ){
-         $sql2 .= " where debcontapedidoinscr.d69_codigo = $d69_codigo "; 
-       } 
+         $sql2 .= " where debcontapedidoinscr.d69_codigo = $d69_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -100,7 +100,7 @@ if ( isset($oGet->oid_arq) && $oGet->oid_arq != "" ){
               <b>Lista de Atas</b>
             </legend>
 	          <table width="100%">
-		        	<?
+		        	<?php
 		        	  $sWhereAnexos = "l39_liclicita = {$oGet->l20_codigo}";
 		        	  $sSqlAnexos   = $clliclicitaata->sql_query_file(null,"*",null,$sWhereAnexos);
 		         	  $rsAnexos     = $clliclicitaata->sql_record($sSqlAnexos);

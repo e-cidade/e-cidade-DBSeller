@@ -37,10 +37,11 @@ db_postmemory($HTTP_POST_VARS);
 
 $clemppresta = new cl_emppresta;
 $oGet = db_utils::postMemory($_GET);
+$oPost = db_utils::postMemory($_POST);
 
 $db_opcao = 2;
 $db_botao = true;
-
+$erro_msg = "Alteração efetuada com sucesso.";
 if (isset($atualizar) ) {
 
   db_inicio_transacao();
@@ -55,15 +56,53 @@ if (isset($atualizar) ) {
     $erro_msg = "Nenhum item lançado na prestação de contas.";
   } else {
 
-    $clemppresta->e45_numemp     = $e60_numemp;
-    $clemppresta->e45_sequencial = $oGet->e45_sequencial;
-    $clemppresta->alterar($oGet->e45_sequencial);
+    
+    /**
+     * como a prestacao é por OP devemos alterar todos movimentos da OP na emppresta.e45_acerta
+     */
+    $sqlMovimentos = "
 
-    $erro_msg = $clemppresta->erro_msg;
+WITH ordem AS
 
-    if($clemppresta->erro_status==0){
-      $sqlerro=true;
+  (
+
+select e82_codord as ordem 
+  from emppresta 
+  join empord on e82_codmov = e45_codmov 
+  where e45_sequencial = {$oGet->e45_sequencial}
+
+  ), movimentos as 
+
+  (
+
+     select e82_codmov ,
+            e45_sequencial
+       from  ordem 
+       join empord on ordem = e82_codord
+       join emppresta on e82_codmov = e45_codmov
+  )
+
+select * from movimentos;
+    ";
+    $rsMovimentos = db_query($sqlMovimentos);
+    if (pg_num_rows($rsMovimentos) > 0 ) {
+
+      for ($i=0; $i < pg_num_rows($rsMovimentos); $i++) {
+        
+              $movimento = db_utils::fieldsMemory($rsMovimentos, $i)->e82_codmov;
+              $sequencial = db_utils::fieldsMemory($rsMovimentos, $i)->e45_sequencial;
+
+              $altera = "update emppresta set e45_acerta = '{$oPost->e45_acerta}' where e45_sequencial = {$sequencial}";
+              if (!db_query($altera )) {
+                if($clemppresta->erro_status == 0){
+                  $erro_msg = "Erro ao alterar a data da prestação";
+                  $sqlerro=true;
+                }
+              }
+
+      }
     }
+
   }
   db_fim_transacao($sqlerro);
 }

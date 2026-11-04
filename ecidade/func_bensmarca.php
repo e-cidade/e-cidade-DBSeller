@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbensmarca->rotulo->label("t65_descricao");
               <?=$Lt65_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t65_sequencial",10,$It65_sequencial,true,"text",4,"","chave_t65_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbensmarca->rotulo->label("t65_descricao");
               <?=$Lt65_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t65_descricao",50,$It65_descricao,true,"text",4,"","chave_t65_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbensmarca->rotulo->label("t65_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensmarca.php")==true){
@@ -122,12 +122,12 @@ $clbensmarca->rotulo->label("t65_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

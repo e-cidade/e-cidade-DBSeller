@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ $clrotulo->label("j01_matric");
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 //      if(!isset($pesquisa_chave)){
 		  if(isset($origem) && $origem == "cgm"){
 				$sql = " select y50_codauto,y50_data,y50_nome,y50_dtvenc from auto inner join autocgm on auto.y50_codauto = autocgm.y54_codauto where autocgm.y54_numcgm = $num ";

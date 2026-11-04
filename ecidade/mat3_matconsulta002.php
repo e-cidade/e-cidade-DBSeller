@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -140,7 +140,7 @@ function js_lotes(){
 <tr>
 <td><b>Material: <b></td>
 <td>
-<?
+<?php
 db_input('codmater',6,'',true,'text',3);
 db_input('descrmater',40,'',true,'text',3);
 ?>
@@ -217,7 +217,7 @@ db_input('inner',6,'',true,'hidden',3);
 ?>
 <td><b>Valor total em estoque:</b></td>
 <td>
-<?
+<?php
 $vlrtot = db_formatar(@$pr_medio* ($quantidadeestoque + $quantidadetransferencia), 'f');
 $vlrtot = trim($vlrtot);
 db_input('vlrtot',15,'',true,'text',3);
@@ -253,7 +253,7 @@ db_input('quantidadetransferencia',15,'',true,'text',3);
 <tr>
 <td><b>Preço Médio Atual :</b></td>
 <td>
-<?
+<?php
 db_input('pr_medio',15,'',true,'text',3);
 ?>
 </td>
@@ -305,7 +305,7 @@ document.getElementById('quantot').style.textAlign                 = 'right';
 document.getElementById('quantidadetransferencia').style.textAlign = 'right';
 document.getElementById('valortotaltransferencia').style.textAlign = 'right';Y
 </script>
-<?
+<?php
 
 function db_calculapm($codmater,$data=null){
   $clmatestoqueitem = new cl_matestoqueitem;

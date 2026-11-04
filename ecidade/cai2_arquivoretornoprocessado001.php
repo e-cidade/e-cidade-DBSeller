@@ -1,7 +1,7 @@
 <?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,10 +58,10 @@ $oRotuloEmpagegera->label();
     <!-- input código do arquivo gerado -->
     <tr> 
       <td  align="left" nowrap title="<?=$Te87_codgera?>">
-        <? db_ancora(@$Le87_codgera,"js_pesquisaCodigo(true);",1);?>  
+        <?php db_ancora(@$Le87_codgera,"js_pesquisaCodigo(true);",1);?>  
       </td>
       <td align="left" nowrap>
-        <?
+        <?php
         db_input("e87_codgera",8,$Ie87_codgera,true,"text",4,"onchange='js_pesquisaCodigo(false);'"); 
         db_input("e87_descgera",60,$Ie87_descgera,true,"text",3);
         ?>

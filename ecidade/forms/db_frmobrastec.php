@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,16 +36,16 @@ $clrotulo->label("z01_nome");
 		<table class="form-container">
 			<tr>
 				<td nowrap title="<?=@$Tob15_numcgm?>">
-					<?
+					<?php
 						db_ancora(@$Lob15_numcgm,"js_pesquisaob15_numcgm(true);",$db_opcao);
 					?>
 				</td>
 				<td> 
-					<?
+					<?php
 						db_input('ob15_sequencial',10,"",true,'hidden',1,"");
 						db_input('ob15_numcgm',10,$Iob15_numcgm,true,'text',$db_opcao," onchange='js_pesquisaob15_numcgm(false);'");
 					?>
-					<?
+					<?php
 						db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 					?>
 				</td>
@@ -55,7 +55,7 @@ $clrotulo->label("z01_nome");
 					<?=@$Lob15_crea?>
 				</td>
 				<td> 
-					<?
+					<?php
 						db_input('ob15_crea',20,$Iob15_crea,true,'text',$db_opcao,"style='background-color:#fff'")
 					?>
 				</td>
@@ -65,7 +65,7 @@ $clrotulo->label("z01_nome");
 					<?=@$Lob15_tipo?>
 				</td>
 				<td> 
-					<?
+					<?php
 						$aTipo = array("1"=>"Obra","2"=>"Prefeitura");
 						db_select('ob15_tipo',$aTipo,true,$db_opcao,"");
 					?>
@@ -76,7 +76,7 @@ $clrotulo->label("z01_nome");
 					<?=@$Lob15_profissao?>
 				</td>
 				<td> 
-					<?
+					<?php
 						$aProfissao = array("1"=>"Arquiteto","2"=>"Engenheiro");
 						db_select('ob15_profissao',$aProfissao,true,$db_opcao,"");
 					?>
@@ -127,7 +127,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obrastec.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

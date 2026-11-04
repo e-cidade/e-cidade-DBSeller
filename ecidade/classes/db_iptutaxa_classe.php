@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptutaxa
-class cl_iptutaxa { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j19_anousu = 0; 
-   var $j19_receit = 0; 
-   var $j19_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_iptutaxa {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j19_anousu = 0;
+   var $j19_receit = 0;
+   var $j19_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j19_anousu = int4 = Exercicio 
-                 j19_receit = int4 = Receita 
-                 j19_valor = float8 = Valor 
+                 j19_anousu = int4 = Exercicio
+                 j19_receit = int4 = Receita
+                 j19_valor = float8 = Valor
                  ";
-   //funcao construtor da classe 
-   function cl_iptutaxa() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("iptutaxa"); 
+     $this->rotulo = new rotulo("iptutaxa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_iptutaxa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j19_anousu = ($this->j19_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["j19_anousu"]:$this->j19_anousu);
        $this->j19_receit = ($this->j19_receit == ""?@$GLOBALS["HTTP_POST_VARS"]["j19_receit"]:$this->j19_receit);
@@ -78,9 +78,9 @@ class cl_iptutaxa {
      }
    }
    // funcao para inclusao
-   function incluir ($j19_anousu,$j19_receit){ 
+   public function incluir ($j19_anousu,$j19_receit){
       $this->atualizacampos();
-     if($this->j19_valor == null ){ 
+     if($this->j19_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "j19_valor";
        $this->erro_banco = "";
@@ -89,9 +89,9 @@ class cl_iptutaxa {
        $this->erro_status = "0";
        return false;
      }
-       $this->j19_anousu = $j19_anousu; 
-       $this->j19_receit = $j19_receit; 
-     if(($this->j19_anousu == null) || ($this->j19_anousu == "") ){ 
+       $this->j19_anousu = $j19_anousu;
+       $this->j19_receit = $j19_receit;
+     if(($this->j19_anousu == null) || ($this->j19_anousu == "") ){
        $this->erro_sql = " Campo j19_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -99,7 +99,7 @@ class cl_iptutaxa {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->j19_receit == null) || ($this->j19_receit == "") ){ 
+     if(($this->j19_receit == null) || ($this->j19_receit == "") ){
        $this->erro_sql = " Campo j19_receit nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -108,17 +108,17 @@ class cl_iptutaxa {
        return false;
      }
      $sql = "insert into iptutaxa(
-                                       j19_anousu 
-                                      ,j19_receit 
-                                      ,j19_valor 
+                                       j19_anousu
+                                      ,j19_receit
+                                      ,j19_valor
                        )
                 values (
-                                $this->j19_anousu 
-                               ,$this->j19_receit 
-                               ,$this->j19_valor 
+                                $this->j19_anousu
+                               ,$this->j19_receit
+                               ,$this->j19_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->j19_anousu."-".$this->j19_receit) nao Incluído. Inclusao Abortada.";
@@ -153,16 +153,16 @@ class cl_iptutaxa {
        $resac = db_query("insert into db_acount values($acount,114,584,'','".AddSlashes(pg_result($resaco,0,'j19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j19_anousu=null,$j19_receit=null) { 
+   public function alterar ($j19_anousu=null,$j19_receit=null) {
       $this->atualizacampos();
      $sql = " update iptutaxa set ";
      $virgula = "";
-     if(trim($this->j19_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_anousu"])){ 
+     if(trim($this->j19_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_anousu"])){
        $sql  .= $virgula." j19_anousu = $this->j19_anousu ";
        $virgula = ",";
-       if(trim($this->j19_anousu) == null ){ 
+       if(trim($this->j19_anousu) == null ){
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "j19_anousu";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_iptutaxa {
          return false;
        }
      }
-     if(trim($this->j19_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_receit"])){ 
+     if(trim($this->j19_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_receit"])){
        $sql  .= $virgula." j19_receit = $this->j19_receit ";
        $virgula = ",";
-       if(trim($this->j19_receit) == null ){ 
+       if(trim($this->j19_receit) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "j19_receit";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_iptutaxa {
          return false;
        }
      }
-     if(trim($this->j19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_valor"])){ 
+     if(trim($this->j19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_valor"])){
        $sql  .= $virgula." j19_valor = $this->j19_valor ";
        $virgula = ",";
-       if(trim($this->j19_valor) == null ){ 
+       if(trim($this->j19_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "j19_valor";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_iptutaxa {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j19_anousu."-".$this->j19_receit;
@@ -250,14 +250,14 @@ class cl_iptutaxa {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j19_anousu=null,$j19_receit=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j19_anousu=null,$j19_receit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j19_anousu,$j19_receit));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -292,7 +292,7 @@ class cl_iptutaxa {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j19_anousu."-".$j19_receit;
@@ -320,11 +320,11 @@ class cl_iptutaxa {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -346,10 +346,10 @@ class cl_iptutaxa {
       }
      return $result;
    }
-   function sql_query ( $j19_anousu=null,$j19_receit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j19_anousu=null,$j19_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -364,23 +364,23 @@ class cl_iptutaxa {
      $sql2 = "";
      if($dbwhere==""){
        if($j19_anousu!=null ){
-         $sql2 .= " where iptutaxa.j19_anousu = $j19_anousu "; 
-       } 
+         $sql2 .= " where iptutaxa.j19_anousu = $j19_anousu ";
+       }
        if($j19_receit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " iptutaxa.j19_receit = $j19_receit "; 
-       } 
+         }
+         $sql2 .= " iptutaxa.j19_receit = $j19_receit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,10 +389,10 @@ class cl_iptutaxa {
      }
      return $sql;
   }
-   function sql_query_file ( $j19_anousu=null,$j19_receit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j19_anousu=null,$j19_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,23 +405,23 @@ class cl_iptutaxa {
      $sql2 = "";
      if($dbwhere==""){
        if($j19_anousu!=null ){
-         $sql2 .= " where iptutaxa.j19_anousu = $j19_anousu "; 
-       } 
+         $sql2 .= " where iptutaxa.j19_anousu = $j19_anousu ";
+       }
        if($j19_receit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " iptutaxa.j19_receit = $j19_receit "; 
-       } 
+         }
+         $sql2 .= " iptutaxa.j19_receit = $j19_receit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

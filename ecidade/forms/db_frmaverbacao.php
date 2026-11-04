@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,7 @@ $db_opcaonome= $db_opcao;
 
 ?>
 <div class="container">
-<form name="form1" method="post" action="" >
+<form id="form1" name="form1" method="post" action="" >
 
 <fieldset>
   <legend>Averbação</legend>
@@ -344,7 +344,7 @@ db_input('j94_tabelionato',15,$Ij94_tabelionato,true,'text',$db_opcao,"")
     </td>
 
     <td>
-      <?
+      <?php
       db_input('j75_responsavel_a',50,'',true,'text',3,"");
       db_input('j75_responsavel',10,$Ij75_responsavel,true,'hidden',$db_opcao,"");
       ?>
@@ -374,7 +374,7 @@ db_input('j94_tabelionato',15,$Ij94_tabelionato,true,'text',$db_opcao,"")
          }
        }
    ?>
-      <input name="processar" type="submit" id="db_opcao" value="Processar" <?=($db_botao==false?"disabled":"")?> >
+      <input name="processar"  type="submit" id="db_opcao" value="Processar" <?=($db_botao==false?"disabled":"")?>  onclick="return js_vincula_debitos()" >
     <?php }else{ ?>
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
     <?php
@@ -389,6 +389,9 @@ db_input('j94_tabelionato',15,$Ij94_tabelionato,true,'text',$db_opcao,"")
        }
    }
 ?>
+      <input name="chavepesquisa" type="hidden" id="chavepesquisa" value="<?php echo $chavepesquisa; ?>" />
+      <input name="vinculadebitoscgm" type="hidden" id="vinculadebitoscgm" value="" />
+      <input name="numpredebitos" type="hidden" id="numpredebitos" value="<?= $numpresDebitosEncontrados ?>" />
 </form>
 </div>
 <script type="text/javascript">
@@ -398,6 +401,20 @@ $("j75_tipo").addClassName("field-size2");
 $("j75_tipodescr").setAttribute("rel","ignore-css");
 $("j75_tipodescr").addClassName("field-size4");
 $("j75_situacao_select_descr").addClassName("field-size3");
+
+function js_vincula_debitos() {
+  <?php
+    if (isset($debitosEncontrados) && count($debitosEncontrados) > 0 && count($transmitentes) > 0) {
+      $matricula = $j75_matric;
+      $descricaoDebito = $debitosEncontrados[0]->k03_descr;
+      $cgmTransmitentePrincipal = $transmitentes[0]['numcgm'];
+      $mensagem = "Matrícula com débito {$descricaoDebito} em aberto. Deseja desvincular da matrícula {$matricula} e manter no CGM {$cgmTransmitentePrincipal}?";
+      echo "if (window.confirm('{$mensagem}')) { document.getElementById('vinculadebitoscgm').value = '$cgmTransmitentePrincipal'; };";
+    }
+    $mensagem = "Confirmar processamento dessa averbação?";
+    echo "if (window.confirm('{$mensagem}')) { return true; } else { return false; }";
+  ?>
+}
 
 function js_submit(){
   document.form1.submit();

@@ -33,8 +33,6 @@ require_once modification('libs/db_utils.php');
 require_once modification('libs/JSON.php');
 require_once modification('dbforms/db_funcoes.php');
 
-use App\Domain\Integracoes\EFDReinf\Repository\UnidadeResponsavelRepository;
-use App\Domain\Integracoes\EFDReinf\Services\ConfiguracaoService;
 use ECidade\Integracao\Sped\Common\Avaliacao\AvaliacaoSped;
 use ECidade\Integracao\Sped\Common\Avaliacao\AvaliacaoSpedAdapter;
 use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
@@ -42,6 +40,8 @@ use ECidade\Integracao\Sped\Common\Evento\EventoFactory;
 use ECidade\RecursosHumanos\ESocial\Factory\SugestaoPreenchimento;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\RecursosHumanos\ESocial\Transformer\Sugestao;
+use App\Domain\Integracoes\EFDReinf\Repository\UnidadeResponsavelRepository;
+use App\Domain\Integracoes\EFDReinf\Services\ConfiguracaoService;
 
 $retorno = new stdClass();
 $retorno->erro = false;
@@ -108,13 +108,13 @@ try {
                 $exclusao = true;
             }
             $retorno->exibeCompetencia = Tipo::getExibeCompetencias($reenvio, $exclusao);
-            $retorno->exibeMatricula = Tipo::getExibeMatricula($reenvio);
+            $retorno->exibeMatricula = Tipo::getExibeMatricula($reenvio, $exclusao);
             $retorno->exibeDataPreenchimento = Tipo::getExibeDataDePreenchimento($reenvio);
             $retorno->exibeIndicativoPeriodoApuracao = Tipo::getExibeIndicativoPeriodoApuracao($reenvio);
             $retorno->exibeForcarMatricula = Tipo::getExibeForcarMatricula($reenvio);
             $retorno->exibePeriodoData = Tipo::getExibePeriodoData($reenvio, $exclusao);
-            $retorno->exibeSelecao = Tipo::getExibeSelecao($reenvio);
-            $retorno->exibeFiltro = Tipo::getExibeFiltro($reenvio);
+            $retorno->exibeSelecao = Tipo::getExibeSelecao($reenvio, $exclusao);
+            $retorno->exibeFiltro = Tipo::getExibeFiltro($reenvio, $exclusao);
             $retorno->exibeTipoDataPagamento = Tipo::getExibeTipoDataPagamento();
             $retorno->exibeRubrica = Tipo::getExibeRubrica($reenvio);
             $retorno->exibeCaixa = Tipo::getExibeCaixa($reenvio, $exclusao);
@@ -218,7 +218,6 @@ try {
               (array)$parametros
             );
 
-            
             $retorno->mensagem = 'Preenchimento salvo com sucesso.';
             break;
     }

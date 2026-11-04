@@ -57,9 +57,6 @@ class AnexoIII extends AnexoIII2018
                 $this->recalcularSaldoExercicio();
             }
 
-            if ($this->getPeriodo()->getCodigo() != 16 && $this->getPeriodo()->getCodigo() != 13) {
-                $this->zerarTodasLinhas();
-            }
             $this->calcularRCL();
             $this->processarFormulasLinhasTotalizadoras();
             $this->calcularTotalGarantiasRCL();
@@ -99,7 +96,7 @@ class AnexoIII extends AnexoIII2018
         $linhaDivida->codigo = 0;
         $linhaDivida->lMulticell = true;
         $linhaDivida->totalizar = false;
-        $linhaDivida->descricao = "RECEITA CORRENTE LÍQUIDA AJUSTADA P ARA CÁLCULO DOS LIMITES DE ENDIVIDAMENTO ";
+        $linhaDivida->descricao = "RECEITA CORRENTE LÍQUIDA AJUSTADA PARA CÁLCULO DOS LIMITES DE ENDIVIDAMENTO ";
         $linhaDivida->descricao .= "(VIII) = (VI - VII)";
         $linhaDivida->colunas = [];
         $linhaDivida->contas = array();
@@ -178,15 +175,15 @@ class AnexoIII extends AnexoIII2018
     {
         $nLimiteAlerta = 28.8;
         $linhas = $this->aLinhasConsistencia;
-        $linhas[15]->saldo_exercicio_anterior = ($linhas[12]->saldo_exercicio_anterior * $nLimiteAlerta) / 100;
+        $linhas[15]->saldo_exercicio_anterior = ($linhas["12.2"]->saldo_exercicio_anterior * $nLimiteAlerta) / 100;
 
         if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
-            $linhas[15]->semestre_1 = ($linhas[12]->semestre_1 * $nLimiteAlerta) / 100;
-            $linhas[15]->semestre_2 = ($linhas[12]->semestre_2 * $nLimiteAlerta) / 100;
+            $linhas[15]->semestre_1 = ($linhas["12.2"]->semestre_1 * $nLimiteAlerta) / 100;
+            $linhas[15]->semestre_2 = ($linhas["12.2"]->semestre_2 * $nLimiteAlerta) / 100;
         } else {
-            $linhas[15]->ate_1_quadrimestre = ($linhas[12]->ate_1_quadrimestre * $nLimiteAlerta) / 100;
-            $linhas[15]->ate_2_quadrimestre = ($linhas[12]->ate_2_quadrimestre * $nLimiteAlerta) / 100;
-            $linhas[15]->ate_3_quadrimestre = ($linhas[12]->ate_3_quadrimestre * $nLimiteAlerta) / 100;
+            $linhas[15]->ate_1_quadrimestre = ($linhas["12.2"]->ate_1_quadrimestre * $nLimiteAlerta) / 100;
+            $linhas[15]->ate_2_quadrimestre = ($linhas["12.2"]->ate_2_quadrimestre * $nLimiteAlerta) / 100;
+            $linhas[15]->ate_3_quadrimestre = ($linhas["12.2"]->ate_3_quadrimestre * $nLimiteAlerta) / 100;
         }
     }
 
@@ -353,12 +350,12 @@ class AnexoIII extends AnexoIII2018
     private function getServiceNovoRCL($codigoPeriodo, $exercicio)
     {
         $filtros = [
-            'codigo_relatorio' => AnexoTresFactory::getCodigoRelatorio($this->getAno()),
+            'codigo_relatorio' => AnexoTresFactory::getCodigoRelatorio($exercicio),
             'periodo' => AnexoTresFactory::transformPeriodo($codigoPeriodo),
             'DB_anousu' => $exercicio,
             'DB_instit' => db_getsession('DB_instit')
         ];
 
-        return AnexoTresFactory::getService($this->getAno(), $filtros);
+        return AnexoTresFactory::getService($exercicio, $filtros);
     }
 }

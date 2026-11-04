@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -90,12 +90,12 @@ function js_imprimeLista(sLista) {
     <table class="form-container">
       <tr>
         <td title="<?=@$Tk60_codigo?>" >
-          <?
+          <?php
 		    db_ancora("Lista:","js_pesquisalista(true);",$db_opcao);
           ?>
         </td>
         <td>
-          <?
+          <?php
 			db_input('k60_codigo',10,$Ik60_codigo,true,'text',$db_opcao,"onchange='js_pesquisalista(false);'");
 	        db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
           ?>
@@ -106,7 +106,7 @@ function js_imprimeLista(sLista) {
           Ordem:
         </td>
         <td>
-          <?
+          <?php
             $aOrdem = array('n'=>'Nome',
                        	    'c'=>'CGM',
                          	'm'=>'Matrícula',
@@ -122,7 +122,7 @@ function js_imprimeLista(sLista) {
 		  Quantidade de Registros a Processar:
 		</td>
   		<td>
-	      <?
+	      <?php
             db_input('quantidade',10,'',true,'text',$db_opcao);
   	      ?>
 	    </td>
@@ -132,7 +132,7 @@ function js_imprimeLista(sLista) {
     	  Valor Inicial:
        	</td>
        	<td>
-		  <?
+		  <?php
             db_input('vlrini',10,'',true,'text',$db_opcao);
             echo '&nbsp;<b>Valor Final:</b>';
             db_input('vlrfin',10,'',true,'text',$db_opcao);
@@ -144,7 +144,7 @@ function js_imprimeLista(sLista) {
 		  Data de Vencimento:
 		</td>
 		<td>
-		  <?
+		  <?php
 		    db_inputdata("dtvencimento",null,null,null,true,'text',$db_opcao);
 	      ?>
 		</td>
@@ -154,7 +154,7 @@ function js_imprimeLista(sLista) {
           Utilização (se data preenchida):
         </td>
         <td>
-          <?
+          <?php
         	$aUtilizacao = array('t'=>'Em todas as parcelas',
                                  'v'=>'Apenas nas vencidas');				            
 		    db_select('utilizacao',$aUtilizacao,true,$db_opcao," style='width: 100%'");
@@ -166,7 +166,7 @@ function js_imprimeLista(sLista) {
   <input name="processar" type="button" id="processar" value="Processar" onClick="js_processa();"
        <?=($db_botao ? '' : 'disabled')?>>                                                     
 </form>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

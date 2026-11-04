@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ function js_troca(valor){
        <?=@$Lcodordem?>
     </td>
     <td> 
-<?
+<?php
 if(empty($alertado)){
   $alertado='false';
 }
@@ -88,7 +88,7 @@ db_input('codordem',8,$Icodordem,true,'text',3);
        <?=@$Lnome?>
     </td>
     <td> 
-<?
+<?php
 if(empty($id_usuario)){
   $id_usuario = db_getsession("DB_id_usuario");
   $result=$cldb_usuarios->sql_record($cldb_usuarios->sql_query_file($id_usuario,"nome"));
@@ -101,7 +101,7 @@ db_input('nome',40,$Inome,true,'text',3);
   </tr>
   <tr>
     <td> 
-<?
+<?php
   $usuario_fixo = 999999;
   db_input('usureceb',10,$usuario_fixo,true,'hidden',$db_opcao,"");
 //  $result=$cldb_usuarios->sql_record($cldb_usuarios->sql_query_file($usuario_fixo,"id_usuario,nome","nome"));
@@ -114,7 +114,7 @@ db_input('nome',40,$Inome,true,'text',3);
        <?=@$Lcoddepto?>
     </td>
     <td> 
-<?
+<?php
   $result=$cldb_depart->sql_record(
      $cldb_depart->sql_query_file(null,"coddepto,descrdepto"));
      db_selectrecord("coddepto",$result,true,$db_opcao,"","","");
@@ -127,7 +127,7 @@ db_input('nome',40,$Inome,true,'text',3);
           <b>Solicitante</b>
 	  </td>
 	  <td>
-          <?
+          <?php
            $result=$clclientes->sql_record("select 0 as at01_codcli, 'DBSELLER' union " . $clclientes->sql_query_file(null,"at01_codcli, at01_nomecli","at01_codcli"));
            db_selectrecord("codcli",$result,true,$db_opcao);
           ?>   
@@ -142,9 +142,9 @@ db_input('nome',40,$Inome,true,'text',3);
   <tr>
     <td nowrap title="<?=@$Tdataordem?>"><?=@$Ldataordem?></td>
     <td> 
-     <? db_inputdata('dataordem',@$dataordem_dia,@$dataordem_mes,@$dataordem_ano,true,'text',$db_opcao,"") ?>
+     <?php db_inputdata('dataordem',@$dataordem_dia,@$dataordem_mes,@$dataordem_ano,true,'text',$db_opcao,"") ?>
      <?=@$Ldataprev?>
-     <? db_inputdata('dataprev',@$dataprev_dia,@$dataprev_mes,@$dataprev_ano,true,'text',$db_opcao,"") ?>
+     <?php db_inputdata('dataprev',@$dataprev_dia,@$dataprev_mes,@$dataprev_ano,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr> 
@@ -161,7 +161,7 @@ db_input('nome',40,$Inome,true,'text',3);
           <b>Origem da Ordem</b>
 	  </td>
 	  <td>
-          <?
+          <?php
            $result=$cldb_ordemorigem->sql_record($cldb_ordemorigem->sql_query_file(null,"*","or11_codigo"));
            db_selectrecord("codorigem",$result,true,$db_opcao);
           ?>   
@@ -176,7 +176,7 @@ db_input('nome',40,$Inome,true,'text',3);
           <b>Prioridade</b>
 	  </td>
 	  <td>
-          <?
+          <?php
            $result=$clclientes->sql_record("select 1, 'urgente' union select 2, 'normal' union select 3, 'sem urgencia'");
 	   $prioridade = 2;
            db_selectrecord("prioridade",$result,true,$db_opcao);
@@ -187,7 +187,7 @@ db_input('nome',40,$Inome,true,'text',3);
      </td>    
      <td>
      
-<?    
+<?php    
   $result=$cldb_modulos->sql_record($cldb_modulos->sql_query_file(null,"id_item,nome_modulo","nome_modulo"));
   if(isset($result_modulo)){
     db_selectmultiple("id_item",$result,"12",$db_opcao,"","","",$result_modulo);
@@ -213,14 +213,14 @@ db_input('nome',40,$Inome,true,'text',3);
       <b>Permitir anexos:</b>
     </td>  
     <td>
-  <?
+  <?php
   $xy = array("nao"=>"NÂO","sim"=>"SIM");
   db_select('tipo',$xy,true,$db_opcao,"onchange='js_troca(this.value);'");
   ?>
     </td> 
   </tr>  
 -->  
-<?
+<?php
 if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && $tipo=="sim" || isset($excluir_anexo) ){
   /*
 ?>
@@ -244,7 +244,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
 	      <table cellspacing="0" cellpadding="0">
 	        <tr>
 		  <td>
-<?
+<?php
     $result='';
     db_selectmultiple("arquivos",$result,"3",$db_opcao);
 ?>    
@@ -256,7 +256,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
 	       </table>  	
 	    </td>
 	    <td valign='top'>
-	    <?
+	    <?php
 	    if(isset($codordem)){
 		  $result_anexo=$cldb_ordemimagens->sql_record($cldb_ordemimagens->sql_query_file($codordem));
 		  $numrows_anexo=$cldb_ordemimagens->numrows;
@@ -270,7 +270,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
 		  </td>
 		  
 		  <td>
-		  <?
+		  <?php
 		    for($i=0; $i<$numrows_anexo; $i++){
 		      db_fieldsmemory($result_anexo,$i);
 		      if($db_botao==true && $db_opcao!=22){
@@ -283,7 +283,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
 		  </td>
 		</tr>
 	      </table>
-	      <?
+	      <?php
 	      }
 	      ?>
 	    </td>
@@ -294,7 +294,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
  </table>
    </td>
  </tr>  
-<?
+<?php
 */
 }
 ?>
@@ -305,7 +305,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
       <b>Atendimento:</b>
     </td>
     <td nowrap>
-    <?
+    <?php
          db_input('or10_codatend',10,0,true,'text',3);
          db_input('or10_seq',10,0,true,'hidden',3);
          db_input('data_dia',10,0,true,'hidden',3);
@@ -318,13 +318,13 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdescricao?>" valign='top' colspan='1' align='left'>
-       <?
+       <?php
        db_ancora(@$Ldescricao,"js_pesquisaor10_codatend(true);",$db_opcao);
 
        ?>
     </td>
     <td colspan='1'> 
-<?
+<?php
 db_textarea('descricao',10,100,$Idescricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -397,7 +397,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_ordem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

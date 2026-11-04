@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -80,7 +80,7 @@ $lPrefeitura  = $oInstituicao->prefeitura();
             </tr>
             <tr>
               <td colspan=2 nowrap><b><label for="o116_periodo">Período:</label></b>
-                <?
+                <?php
                 if ($iAnoUsu < 2010) {
                   ?>
                   <select name="o116_periodo">
@@ -91,7 +91,7 @@ $lPrefeitura  = $oInstituicao->prefeitura();
                     <option value="5B">Quinto   Bimestre </option>
                     <option value="6B">Sexto    Bimestre </option>
                   </select>
-                  <?
+                  <?php
                 } else {
 
                   $oRelatorio = new relatorioContabil(97, false);

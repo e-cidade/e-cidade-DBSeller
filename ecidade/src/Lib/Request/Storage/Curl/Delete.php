@@ -27,7 +27,8 @@
 
 namespace ECidade\Lib\Request\Storage\Curl;
 
-use ECidade\Lib\Request\Curl;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Class Delete
@@ -35,12 +36,48 @@ use ECidade\Lib\Request\Curl;
  *
  * @todo IMPLEMENTAÇÃO/TESTE NÃO CONCLUÍDOS
  */
-class Delete extends File
+class Delete
 {
+    private $client;
+
+    private $autenticacao;
+
+    private $headers;
+
     public function __construct(Autenticacao $autenticacao)
     {
-        parent::__construct($autenticacao);
+        $optionsGuzzle = [];
+        if ($autenticacao->isDisableSSLverification()) {
+            $optionsGuzzle["verify"] = false;
+        }
+        $this->client = new Client($optionsGuzzle);
+        $this->autenticacao = $autenticacao;
+        $this->autenticacao->execute();
+        $authorization = $this->autenticacao->getTokenType();
+        $authorization .= ' ';
+        $authorization .= $this->autenticacao->getAccessToken();
+        $this->headers = [
+            'Authorization' => $authorization,
+            'Accept' => 'application/json',
+        ];
+    }
 
-        $this->setTipoRequisicao(File::REQUISICAO_DELETE);
+    /**
+     * @param $idStorage
+     * @return bool
+     */
+    public function delete($idStorage)
+    {
+        $resp = $this->client->delete($this->autenticacao->url() . File::ROUTE . $idStorage, [
+            'headers' => $this->headers,
+            'params' => [
+                'oauth_client' => $this->autenticacao->getClientId()
+            ]
+        ]);
+
+        if ($resp->getStatusCode() == 200) {
+            return true;
+        }
+        return false;
     }
 }

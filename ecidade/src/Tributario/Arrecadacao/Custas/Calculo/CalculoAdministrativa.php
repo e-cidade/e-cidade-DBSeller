@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,14 +44,15 @@ final class CalculoAdministrativa extends Calculo implements Interfaces\Calculo
 
     public function calcular()
     {
-        $sql = " select sum(case when k00_hist <> 401 and k00_hist <> 400 and k00_hist <> 918 then k00_valor else 0 end) as valor_corrigido, 
-                        sum(case when k00_hist = 400 then k00_valor else 0 end) as valor_juros,                                              
-                        sum(case when k00_hist = 401 then k00_valor else 0 end) as valor_multa,                                              
-                        sum(case when k00_hist = 918 then k00_valor else 0 end) as valor_desconto                                            
-                   from recibopaga 
-                  where k00_numnov = $this->numnov 
-                    and k00_numpre in (select v59_numpre 
-                        	             from inicialnumpre 
+        $sql = " select sum(case when k00_hist <> 401 and k00_hist <> 400 and
+                                      k00_hist <> 918 then k00_valor else 0 end) as valor_corrigido,
+                        sum(case when k00_hist = 400 then k00_valor else 0 end) as valor_juros,
+                        sum(case when k00_hist = 401 then k00_valor else 0 end) as valor_multa,
+                        sum(case when k00_hist = 918 then k00_valor else 0 end) as valor_desconto
+                   from recibopaga
+                  where k00_numnov = $this->numnov
+                    and k00_numpre in (select v59_numpre
+                        	             from inicialnumpre
                     	                where v59_inicial = {$this->inicial->getCodigo()}) ";
 
         $rs = db_query($sql);

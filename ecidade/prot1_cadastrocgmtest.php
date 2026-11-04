@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -106,7 +106,7 @@ function js_func_nome(){
   func_nome.focus();
 }
 </script>
-<?
+<?php
   db_postmemory($HTTP_POST_VARS);
   $clcgm = new cl_cgm;
   $cldb_cgmruas = new cl_db_cgmruas;
@@ -150,7 +150,7 @@ function js_func_nome(){
   </tr>
 </table>
 <script>// onMousemove="js_mover(document.getElementById('teste'),event)"</script>
-<?
+<?php
 /*
 <div id="teste" style="position:absolute;left:300px;top:250px;visibility:hidden;z-index:100">
       <small>AGUARDE<br><blink>&nbsp;&nbsp;processando...</blink></small>
@@ -183,13 +183,13 @@ function js_tamnome(nome,pessoa){
 </script>
 <iframe name="pesqnome" src="prot1_comparanomes.php" width="0" height="0" style="visibility:hidden"></iframe>
 <form name="form1" method="post" action="" <?=($db_opcao == 3?"onSubmit=\"return confirm('Deseja excluir este registro permanentemente!')\"":"")?> <?=(@$municipio == 't' && (isset($pessoa) || $db_opcao == 1 || $db_opcao == 2)?'onSubmit="return js_ruacorreta()"':(isset($pessoa) || @$municipio == 'f'?'onSubmit="return js_ruacorreta1()"':''))?>>
-<?
+<?php
 if(isset($pessoa)){
   echo "<input type=\"hidden\" name=\"pessoa\" value=\"$pessoa\">";
 }
 ?>
   <table width="730" border="1" cellspacing="0" cellpadding="0">
-    <?
+    <?php
     if($db_opcao == 1){
       if(isset($cpf) && $cpf != ""){
 	$cpf = str_replace(".","",$cpf);
@@ -253,7 +253,7 @@ if(isset($pessoa)){
             </tr>
 	  </table>
 	</table>
-	<?
+	<?php
 	if(strcmp(strrev(substr(strrev($z01_nome),0,2)),"ME") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,4)),"LTDA") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,2)),"SA") == 0){
           echo "<script>document.form1.pessoa.options[1].selected = true</script>";
 	}
@@ -324,7 +324,7 @@ if(isset($pessoa)){
 		</tr>
 	      </table>
 	    </table>
-	    <?
+	    <?php
 	    if(!isset($testanome)){
 	    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	    }
@@ -351,7 +351,7 @@ if(isset($pessoa)){
 		  <?=$Lz01_numcgm?>
 		</td>
 		<td width="73%" nowrap> 
-		  <?
+		  <?php
 		    db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',3);
 		  ?>
 		</td>
@@ -361,26 +361,26 @@ if(isset($pessoa)){
 		  <?=@$Lz01_nome?>
 		</td>
 		<td nowrap title="<?=@$Tz01_nome?>"> 
-		 <?
+		 <?php
 		   db_input('z01_nome',40,$Iz01_nome,true,'text',$db_opcao);
 		 ?>
 		</td>
 	      </tr>
 	      <tr align="center" valign="middle"> 
 		<td height="30" colspan="2" nowrap> <input name="db_opcao" type="submit" id="db_opcao"  value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> > 
-		  <?
+		  <?php
 		  if(!isset($testanome)){
 		  ?>
 		  <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_func_nome();"> 
 		  <input name="voltar" type="button" value="Retornar" <?=($db_opcao == 3 ?"onclick=\"location.href = 'prot1_cadcgm003.php';\"":"")?>> 
-		  <?
+		  <?php
 		  }
 		  ?>
 		</td>
 	      </tr>
 	    </table>  
 	  </table>  
-        <?
+        <?php
       if(!isset($testanome)){ 
         db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       }
@@ -400,12 +400,12 @@ if(isset($pessoa)){
       <td width="39%">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-	       <td><?
+	       <td><?php
 	      db_ancora(@$Lz01_cep,"js_dbceplog();",($ceplog == "t"?'1':'3'));
 	      db_input('z01_cep',10,$Iz01_cep,true,'text',3);
 	      ?>
 	       </td>
-	      <?
+	      <?php
 	      db_ancora(@$Lz01_cep,"js_dbceplog();",($ceplog == "t"?'1':'3'));
 	      db_input('z01_cep',10,$Iz01_cep,true,'text',3);
 	      ?>
@@ -417,14 +417,14 @@ if(isset($pessoa)){
               <?=@$Lz01_numero?>
             </td>
             <td width="71%" nowrap  ><a name="AN3"> 
-              <?
+              <?php
 
 		  db_input('z01_numero',8,$Iz01_numero,true,'text',$db_opcao);
 
 		  ?>
               &nbsp; 
               <?=@$Lz01_compl?>
-              <?
+              <?php
 
 		  db_input('z01_compl',10,$Iz01_compl,true,'text',$db_opcao);
 
@@ -436,7 +436,7 @@ if(isset($pessoa)){
               <?=@$Lz01_munic?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 			  if ($municipio == 't') {
 			     $z01_munic = strtoupper($munic);
 			  }else{
@@ -452,7 +452,7 @@ if(isset($pessoa)){
               <?=@$Lz01_uf?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 		  if ($municipio == 't') {
 			$z01_uf = $uf;
                   }else{
@@ -465,16 +465,16 @@ if(isset($pessoa)){
           </tr>
           <tr> 
             <td nowrap title="<?=@$Tz01_bairro?>"> 
-	      <?
+	      <?php
 	      db_ancora(@$Lz01_bairro,"js_bairro();",($municipio == "t"?'1':'3'));
 	      ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_bairro',25,$Iz01_uf,true,'text',($municipio == "t"?'3':'1'));
   ?>
-              <?
+              <?php
   		      db_input('j13_codi',6,$Ij13_codi,true,'hidden',1);
 		      ?>
             </td>
@@ -484,7 +484,7 @@ if(isset($pessoa)){
               <?=@$Lz01_telef?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_telef',12,$Iz01_telef,true,'text',$db_opcao);
 
@@ -496,7 +496,7 @@ if(isset($pessoa)){
               <?=@$Lz01_fax?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_fax',12,$Iz01_fax,true,'text',$db_opcao);
 
@@ -508,7 +508,7 @@ if(isset($pessoa)){
               <?=@$Lz01_telcel?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_telcel',12,$Iz01_telcel,true,'text',$db_opcao);
 
@@ -520,7 +520,7 @@ if(isset($pessoa)){
               <?=@$Lz01_email?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_email',30,$Iz01_email,true,'text',$db_opcao);
 
@@ -532,7 +532,7 @@ if(isset($pessoa)){
               <?=@$Lz01_cxpostal?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_cxpostal',10,$Iz01_cxpostal,true,'text',$db_opcao);
 
@@ -544,12 +544,12 @@ if(isset($pessoa)){
       <td width="61%"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td nowrap title="<?=@$Tz01_cepcon?>"> 
-	       <?
+	       <?php
 	       db_ancora(@$Lz01_cepcon,"js_cepcon(true);",1);
 	       ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
   		      db_input('z01_cepcon',9,$Iz01_cepcon,true,'text',1,'');
 		      ?>
 	    <input type="button" value="Pesquisar" onClick="js_cepcon(false)">
@@ -560,7 +560,7 @@ if(isset($pessoa)){
               <?=@$Lz01_endcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_endcon',40,$Iz01_endcon,true,'text',$db_opcao);
 
@@ -572,13 +572,13 @@ if(isset($pessoa)){
               <?=@$Lz01_numcon?>
             </td>
             <td width="71%" nowrap > 
-              <?
+              <?php
 
 		  db_input('z01_numcon',8,$Iz01_numcon,true,'text',$db_opcao);
 
 		  ?>
               <?=@$Lz01_comcon?>
-              <?
+              <?php
 
 		  db_input('z01_comcon',10,$Iz01_comcon,true,'text',$db_opcao);
 
@@ -590,7 +590,7 @@ if(isset($pessoa)){
               <?=@$Lz01_muncon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_muncon',20,$Iz01_muncon,true,'text',$db_opcao);
 
@@ -602,7 +602,7 @@ if(isset($pessoa)){
               <?=@$Lz01_ufcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_ufcon',2,$Iz01_ufcon,true,'text',$db_opcao);
 
@@ -614,7 +614,7 @@ if(isset($pessoa)){
               <?=@$Lz01_baicon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_baicon',25,$Iz01_baicon,true,'text',$db_opcao);
 
@@ -626,7 +626,7 @@ if(isset($pessoa)){
               <?=@$Lz01_telcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_telcon',12,$Iz01_telcon,true,'text',$db_opcao);
 
@@ -638,7 +638,7 @@ if(isset($pessoa)){
               <?=@$Lz01_celcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_celcon',12,$Iz01_celcon,true,'text',$db_opcao);
 
@@ -650,7 +650,7 @@ if(isset($pessoa)){
               <?=@$Lz01_emailc?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_emailc',30,$Iz01_emailc,true,'text',$db_opcao);
 
@@ -662,7 +662,7 @@ if(isset($pessoa)){
               <?=@$Lz01_cxposcon?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
 		  db_input('z01_cxposcon',10,$Iz01_cxposcon,true,'text',$db_opcao);
 
@@ -680,7 +680,7 @@ if(isset($pessoa)){
               <?=@$Lz01_cadast?>
             </td>
             <td width="76%" nowrap>
-              <?if (isset($z01_cadast)&&$z01_cadast!=""){
+              <?php if (isset($z01_cadast)&&$z01_cadast!=""){
 	      }
 	      if ($db_opcao == 1) {
  	        $z01_cadast_ano = date('Y',db_getsession("DB_datausu"));
@@ -695,7 +695,7 @@ if(isset($pessoa)){
               <?=@$Lz01_ultalt?>
             </td>
             <td width="76%" nowrap>
-              <?
+              <?php
  	        $z01_ultalt_ano = date('Y',db_getsession("DB_datausu"));
 	        $z01_ultalt_mes = date('m',db_getsession("DB_datausu"));
 	        $z01_ultalt_dia = date('d',db_getsession("DB_datausu"));
@@ -703,13 +703,13 @@ if(isset($pessoa)){
 	      ?>
             </td>
             <td width="6%">
-              <?
+              <?php
   $z01_login = db_getsession("DB_id_usuario");
   db_input("z01_login",6,$Iz01_login,true,'hidden',3);
   ?>
             </td>
             <td width="6%">
-              <?
+              <?php
   $z01_login = db_getsession("DB_id_usuario");
   db_input("z01_login",6,$Iz01_login,true,'hidden',3);
   ?>
@@ -719,19 +719,19 @@ if(isset($pessoa)){
     </tr>
     <tr align="center" valign="middle"> 
       <td height="30" colspan="2" nowrap> <input name="db_opcao" type="submit" id="db_opcao"  value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> > 
-        <?
+        <?php
 	if(!isset($testanome)){
 	?>
 	<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_func_nome();"> 
         <input name="voltar" type="button" value="Retornar" onclick="location.href = 'prot1_cadcgm00<?=($db_opcao == 1?'1':'2')?>.php';"> 
-	<?
+	<?php
 	}
 	?>
     </tr>
   </table>
 </table>  
   
-<?
+<?php
 if(!isset($testanome)){
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }
@@ -820,20 +820,20 @@ function js_mover(obj,evt) {
   return false;
 }
 */
-<?if($db_opcao == 1){
+<?php if($db_opcao == 1){
 ?>
 onLoad = document.form1.z01_nome.focus();
-<?
+<?php
   if($z01_cep != $cep || $municipio == 'f'){
     ?>
     js_cep(false);
-    <?
+    <?php
   }
   ?>
-<?
+<?php
 }
 ?>
-<?
+<?php
 if($db_opcao == 2){
   if($municipio == 'f' && $cep == $z01_cep){
     ?>
@@ -843,12 +843,12 @@ if($db_opcao == 2){
     document.form1.z01_ender.value = '';
     document.form1.z01_munic.value = '';
     document.form1.z01_uf.value = '';
-    <?
+    <?php
   }
 }
 ?>
 </script>
-<?
+<?php
 if($temceprua == 't' && $z01_cep != $cep){
   echo "<script>onLoad = js_cep(false)</script>";
 }

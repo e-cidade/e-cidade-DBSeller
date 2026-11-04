@@ -56,13 +56,13 @@ class cl_orcfontes {
                  o57_finali = text = Finalidade
                  ";
    //funcao construtor da classe
-   function cl_orcfontes() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcfontes");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_orcfontes {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o57_codfon = ($this->o57_codfon == ""?@$GLOBALS["HTTP_POST_VARS"]["o57_codfon"]:$this->o57_codfon);
        $this->o57_anousu = ($this->o57_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o57_anousu"]:$this->o57_anousu);
@@ -84,7 +84,7 @@ class cl_orcfontes {
      }
    }
    // funcao para inclusao
-   function incluir ($o57_codfon,$o57_anousu){
+   public function incluir ($o57_codfon,$o57_anousu){
       $this->atualizacampos();
      if($this->o57_fonte == null ){
        $this->erro_sql = " Campo Fonte da Receita nao Informado.";
@@ -165,7 +165,7 @@ class cl_orcfontes {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o57_codfon=null,$o57_anousu=null) {
+   public function alterar ($o57_codfon=null,$o57_anousu=null) {
       $this->atualizacampos();
      $sql = " update orcfontes set ";
      $virgula = "";
@@ -265,7 +265,7 @@ class cl_orcfontes {
      }
    }
    // funcao para exclusao
-   function excluir ($o57_codfon=null,$o57_anousu=null,$dbwhere=null) {
+   public function excluir ($o57_codfon=null,$o57_anousu=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o57_codfon,$o57_anousu));
      }else{
@@ -337,7 +337,7 @@ class cl_orcfontes {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -360,7 +360,7 @@ class cl_orcfontes {
      return $result;
    }
 
-   function sql_query ( $o57_codfon=null,$o57_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o57_codfon=null,$o57_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -406,7 +406,7 @@ class cl_orcfontes {
      }
      return analiseQueryPlanoOrcamento($sql);
   }
-   function sql_query_file ( $o57_codfon=null,$o57_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o57_codfon=null,$o57_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -447,7 +447,7 @@ class cl_orcfontes {
      }
      return $sql;
   }
-   function sql_query_previsao ( $o57_codfon=null,$o57_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   function sql_query_previsao ( $o57_codfon=null,$o57_anousu=null,$campos="*",$ordem=null,$dbwhere="",$filtraInstit=false){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -469,6 +469,13 @@ class cl_orcfontes {
      $sql .= "       left join orcreceita on orcreceita.o70_anousu  = conplano.c60_anousu ";
      $sql .= "                            and orcreceita.o70_codfon = conplano.c60_codcon ";
      $sql .= "                            and orcreceita.o70_instit = ".db_getsession("DB_instit");
+
+     if ($filtraInstit) {
+        $sql .= " inner join conplanoorcamentoanalitica on c60_codcon = c61_codcon";
+        $sql .= " and c60_anousu = c61_anousu";
+        $sql .= " and c61_instit = ".db_getsession("DB_instit");
+     }
+
      $sql2 = "";
      if($dbwhere==""){
        if($o57_codfon!=null ){
@@ -497,9 +504,9 @@ class cl_orcfontes {
      }
      return analiseQueryPlanoOrcamento($sql);
   }
-   function db_verifica_fonte_exclusao($elemento,$anousu=null){
+   public function db_verifica_fonte_exclusao($elemento,$anousu=null){
    	if ($anousu==null){
-   	     $anousu = db_getsessoin("DB_anousu");
+   	     $anousu = db_getsession("DB_anousu");
    	}
     $nivel = db_le_mae_rec($elemento,true);
     $cod_mae = db_le_mae_rec($elemento,false);
@@ -549,9 +556,9 @@ class cl_orcfontes {
 
 
 
-   function db_verifica_fonte($elemento,$anousu=null){
+   public function db_verifica_fonte($elemento,$anousu=null){
    	if ($anousu==null){
-   		  $anousu = db_getsesson("DB_anousu");
+   		  $anousu = db_getsession("DB_anousu");
    	}
     $nivel = db_le_mae_rec($elemento,true);
     if($nivel == 1){

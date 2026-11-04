@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ if(isset($excluir)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Exclusão de Modelo de Livros</b></legend>
-	<? include(modification("forms/db_frmfar_modelolivro.php"));?>
+	<?php include(modification("forms/db_frmfar_modelolivro.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -71,7 +71,7 @@ if(isset($excluir)){
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clfar_modelolivro->erro_status=="0"){
     $clfar_modelolivro->erro(true,false);

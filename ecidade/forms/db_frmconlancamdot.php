@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,31 +39,31 @@ $clrotulo->label("o58_orgao");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tc73_codlan?>">
-       <?
+       <?php
        db_ancora(@$Lc73_codlan,"js_pesquisac73_codlan(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c73_codlan',8,$Ic73_codlan,true,'text',$db_opcao," onchange='js_pesquisac73_codlan(false);'")
 ?>
-       <?
+       <?php
 db_input('c70_anousu',4,$Ic70_anousu,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc73_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lc73_anousu,"js_pesquisac73_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $c73_anousu = db_getsession('DB_anousu');
 db_input('c73_anousu',4,$Ic73_anousu,true,'text',3," onchange='js_pesquisac73_anousu(false);'")
 ?>
-       <?
+       <?php
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
        ?>
@@ -71,15 +71,15 @@ db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc73_coddot?>">
-       <?
+       <?php
        db_ancora(@$Lc73_coddot,"js_pesquisac73_coddot(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c73_coddot',6,$Ic73_coddot,true,'text',$db_opcao," onchange='js_pesquisac73_coddot(false);'")
 ?>
-       <?
+       <?php
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
        ?>
@@ -191,7 +191,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conlancamdot.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

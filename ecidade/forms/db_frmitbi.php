@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $clrotulo->label("it19_valor");
        <?=@$Lit01_guia?>
     </td>
     <td> 
-	  <?
+	  <?php
 	  
 		db_input('it01_guia',15,$Iit01_areaterreno,true,'text',3,"");
 		
@@ -79,13 +79,13 @@ $clrotulo->label("it19_valor");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit01_tipotransacao?>">
-      <?
+      <?php
         db_ancora(@$Lit01_tipotransacao,"js_pesquisait01_tipotransacao(true);",$db_opcao);
         db_input('it01_guia',40,$Iit04_descr,true,'hidden',3,'');
       ?>
     </td>
     <td> 
-	   <?
+	   <?php
 		 db_input('it01_tipotransacao',15,$Iit01_tipotransacao,true,'text',$db_opcao," onchange='js_pesquisait01_tipotransacao(false);'");
 		 db_input('it04_descr',40,$Iit04_descr,true,'text',3,'');
        ?>
@@ -96,7 +96,7 @@ $clrotulo->label("it19_valor");
        <?=@$Lit01_areaterreno?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it01_areaterreno',15,$Iit01_areaterreno,true,'text',$db_opcao," onChange='document.form1.it01_areatrans.value=this.value'");
 	  ?>
     </td>
@@ -106,7 +106,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit01_areaedificada?>
     </td>
     <td> 
-	  <?
+	  <?php
 		if (!(isset($it01_areaedificada))) {
 			$it01_areaedificada = 0;
 		}
@@ -119,7 +119,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit01_obs?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_textarea('it01_obs',10,120,$Iit01_obs,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -129,7 +129,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit01_valortransacao?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it01_valortransacao',15,$Iit01_valortransacao,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -139,7 +139,7 @@ $clrotulo->label("it19_valor");
        <?=@$Lit01_areatrans?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it01_areatrans',15,$Iit01_areatrans,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -149,12 +149,12 @@ $clrotulo->label("it19_valor");
       <?=@$Lit01_mail?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it01_mail',50,$Iit01_mail,true,'text',$db_opcao,"");
 	  ?>
     </td>
   </tr>
-  <?
+  <?php
   if($tipo == "urbano"){
   ?>
   <tr>
@@ -162,7 +162,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit05_frente?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it05_frente',15,$Iit05_frente,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -172,7 +172,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit05_fundos?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it05_fundos',15,$Iit05_fundos,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -182,7 +182,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit05_direito?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it05_direito',15,$Iit05_direito,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -192,30 +192,30 @@ $clrotulo->label("it19_valor");
       <?=@$Lit05_esquerdo?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it05_esquerdo',15,$Iit05_esquerdo,true,'text',$db_opcao,"");
 	  ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit05_itbisituacao?>">
-      <?
+      <?php
         db_ancora(@$Lit05_itbisituacao,"js_pesquisait05_itbisituacao(true);",$db_opcao);
       ?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it05_itbisituacao',15,$Iit05_itbisituacao,true,'text',$db_opcao," onchange='js_pesquisait05_itbisituacao(false);'");
 		db_input('it07_descr',40,$Iit07_descr,true,'text',3,'');
       ?>
     </td>
   </tr>
-  <?
+  <?php
   } else if ($tipo == "rural") {
   ?>
   <tr>
     <td>
-  	 <?
+  	 <?php
 		db_input('it18_guia',10,$Iit18_guia,true,'hidden',$db_opcao," onchange='js_pesquisait18_guia(false);'");
   	 ?>
     </td>
@@ -225,7 +225,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit18_frente?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it18_frente',20,$Iit18_frente,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -235,7 +235,7 @@ $clrotulo->label("it19_valor");
       <?=@$Lit18_fundos?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it18_fundos',20,$Iit18_fundos,true,'text',$db_opcao,"")
 	  ?>
     </td>
@@ -245,21 +245,21 @@ $clrotulo->label("it19_valor");
       <?=@$Lit18_prof?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('it18_prof',20,$Iit18_prof,true,'text',$db_opcao,"")
 	  ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit19_codigo?>" colspan="2">
-       <?
+       <?php
        db_ancora(@$Lj31_codigo,"js_caract();",$db_opcao);
        db_input('codigo',20,@$Icodigo,true,'hidden',$db_opcao,"");
        db_input('valor',20,$Iit19_valor,true,'hidden',$db_opcao,"");
        ?>
     </td>
   </tr>
-  <?
+  <?php
   }
   ?>
   </table>
@@ -338,7 +338,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbi.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'itb1_itbi002.php?abas=1&chavepesquisa='+chave+'&tipo=$tipo';";
     }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -346,11 +346,11 @@ function js_preenchepesquisa(chave){
     }
   ?>
 }
-<?
+<?php
 if(isset($it01_guia)){
 ?>
 document.form1.it18_guia.value = '<?=@$it01_guia?>';
-<?
+<?php
 }
 ?>
 </script>

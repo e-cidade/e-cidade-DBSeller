@@ -573,6 +573,10 @@ class ESocialEnvio
                     $referencias = explode("_", $dados->referencia);
                     $cgm = CgmFactory::getInstanceByCgm($referencias[0]);
 
+                    if (empty($cgm)) {
+                        $cpf = $dados->ideBenef->cpfBenef;
+                        $cgm = CgmFactory::getCgmByCnpjCpf($cpf);
+                    }
                     $competencia = str_split($referencias[1], 4);
                     if (strlen($competencia[1]) == 3) {
                         $competencia[1] = substr($competencia[1], 0, 2);

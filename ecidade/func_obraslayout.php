@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clobraslayout->rotulo->label("ob14_codobra");
               <?=$Lob14_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ob14_seq",10,$Iob14_seq,true,"text",4,"","chave_ob14_seq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clobraslayout->rotulo->label("ob14_codobra");
               <?=$Lob14_codobra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ob14_codobra",10,$Iob14_codobra,true,"text",4,"","chave_ob14_codobra");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clobraslayout->rotulo->label("ob14_codobra");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "distinct ob01_codobra,ob01_nomeobra";
@@ -115,12 +115,12 @@ $clobraslayout->rotulo->label("ob14_codobra");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

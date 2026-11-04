@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,18 +51,18 @@ db_postmemory($HTTP_POST_VARS);
         <strong>Ano / Mês :</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,' ',true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,' ',true,'text',2,'')
           ?>
         </td>
       </tr>
-	<?
+	<?php
   if(!isset($opcao_gml)){
     $opcao_gml = "m";
   }
@@ -104,7 +104,7 @@ db_postmemory($HTTP_POST_VARS);
      <strong>Local de Trabalho : </strong>
      </td>
      <td align="left">
-       <?
+       <?php
         db_input('local',2,@$local,true,'text',2,'')
        ?>
      </td>
@@ -117,7 +117,7 @@ db_postmemory($HTTP_POST_VARS);
   </form>
 </table>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

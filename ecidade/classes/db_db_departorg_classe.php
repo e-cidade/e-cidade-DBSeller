@@ -56,7 +56,7 @@ class cl_db_departorg
                  ";
 
     //funcao construtor da classe
-    function cl_db_departorg()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("db_departorg");
@@ -64,7 +64,7 @@ class cl_db_departorg
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -75,7 +75,7 @@ class cl_db_departorg
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->db01_coddepto = ($this->db01_coddepto == "" ? @$GLOBALS["HTTP_POST_VARS"]["db01_coddepto"] : $this->db01_coddepto);
@@ -89,7 +89,7 @@ class cl_db_departorg
     }
 
     // funcao para inclusao
-    function incluir($db01_coddepto, $db01_anousu)
+    public function incluir($db01_coddepto, $db01_anousu)
     {
         $this->atualizacampos();
         if ($this->db01_orgao == null) {
@@ -197,7 +197,7 @@ class cl_db_departorg
     }
 
     // funcao para alteracao
-    function alterar($db01_coddepto = null, $db01_anousu = null)
+    public function alterar($db01_coddepto = null, $db01_anousu = null)
     {
         $this->atualizacampos();
         $sql = " update db_departorg set ";
@@ -339,7 +339,7 @@ class cl_db_departorg
     }
 
     // funcao para exclusao
-    function excluir($db01_coddepto = null, $db01_anousu = null, $dbwhere = null)
+    public function excluir($db01_coddepto = null, $db01_anousu = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($db01_coddepto, $db01_anousu));
@@ -426,7 +426,7 @@ class cl_db_departorg
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -455,7 +455,7 @@ class cl_db_departorg
         return $result;
     }
 
-    function sql_query($db01_coddepto = null, $db01_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($db01_coddepto = null, $db01_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -509,7 +509,7 @@ class cl_db_departorg
         return $sql;
     }
 
-    function sql_query_file($db01_coddepto = null, $db01_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($db01_coddepto = null, $db01_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -555,7 +555,7 @@ class cl_db_departorg
         return $sql;
     }
 
-    function sql_query_orgunid($db01_coddepto = null, $db01_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_orgunid($db01_coddepto = null, $db01_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

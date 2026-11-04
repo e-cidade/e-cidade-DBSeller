@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,13 +50,13 @@ class cl_zonas {
                  j50_descr = varchar(40) = Descrição
                  ";
    //funcao construtor da classe
-   function cl_zonas() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_zonas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j50_zona = ($this->j50_zona == ""?@$GLOBALS["HTTP_POST_VARS"]["j50_zona"]:$this->j50_zona);
        $this->j50_descr = ($this->j50_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j50_descr"]:$this->j50_descr);
@@ -74,7 +74,7 @@ class cl_zonas {
      }
    }
    // funcao para Inclusão
-   function incluir ($j50_zona){
+   public function incluir ($j50_zona){
       $this->atualizacampos();
      if($this->j50_descr == null ){
        $this->erro_sql = " Campo Descrição não informado.";

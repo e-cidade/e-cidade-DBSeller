@@ -50,113 +50,105 @@ db_fieldsmemory($resultpref, 0);
 
 
 $sFornecedor = null;
-if ( isset($oGet->aFornecedor) && !empty($oGet->aFornecedor) ) {
-  $sFornecedor = $oGet->aFornecedor;
+if (isset($oGet->aFornecedor) && !empty($oGet->aFornecedor)) {
+    $sFornecedor = $oGet->aFornecedor;
 }
 
 $dbwhere = "";
 if ((isset($e60_codemp_ini) && !empty($e60_codemp_ini)) && !isset($e60_codemp_fim)) {
-
-  $aEmpenhoIni = explode("/", $e60_codemp_ini);
-  $dbwhere    .= " e60_codemp  = ";
-  $dbwhere    .= " '{$aEmpenhoIni[0]}'";
-  $dbwhere    .= " and e60_anousu = ";
-  $dbwhere    .= " {$aEmpenhoIni[1]} ";
-
+    $aEmpenhoIni = explode("/", $e60_codemp_ini);
+    $dbwhere    .= " e60_codemp  = ";
+    $dbwhere    .= " '{$aEmpenhoIni[0]}'";
+    $dbwhere    .= " and e60_anousu = ";
+    $dbwhere    .= " {$aEmpenhoIni[1]} ";
 }
 
 if ((isset($e60_codemp_ini) && !empty($e60_codemp_ini)) && (isset($e60_codemp_fim) && !empty($e60_codemp_fim))) {
-
-  $aEmpenhoIni = explode("/", $e60_codemp_ini);
-  $aEmpenhoFim = explode("/", $e60_codemp_fim);
-  $dbwhere    .= " cast(e60_codemp as integer) between ";
-  $dbwhere    .= " {$aEmpenhoIni[0]} and {$aEmpenhoFim[0]} ";
-  $dbwhere    .= " and e60_anousu between";
-  $dbwhere    .= " {$aEmpenhoIni[1]} and {$aEmpenhoFim[1]} ";
+    $aEmpenhoIni = explode("/", $e60_codemp_ini);
+    $aEmpenhoFim = explode("/", $e60_codemp_fim);
+    $dbwhere    .= " cast(e60_codemp as integer) between ";
+    $dbwhere    .= " {$aEmpenhoIni[0]} and {$aEmpenhoFim[0]} ";
+    $dbwhere    .= " and e60_anousu between";
+    $dbwhere    .= " {$aEmpenhoIni[1]} and {$aEmpenhoFim[1]} ";
 }
 
-if(isset($codordem) && $codordem != ''){
-  if(strlen($dbwhere) > 0) {
-	  $dbwhere .= " and ";
-  }
-  $dbwhere .= " e50_codord=$codordem ";
-}elseif(isset($e50_codord_ini) && $e50_codord_ini != ''){
-  if(isset($e50_codord_fim) && $e50_codord_fim != ''){
-    if(strlen($dbwhere) > 0) {
-  	  $dbwhere .= " and ";
+if (isset($codordem) && $codordem != '') {
+    if (strlen($dbwhere) > 0) {
+        $dbwhere .= " and ";
     }
-    $dbwhere .= " e50_codord between $e50_codord_ini and $e50_codord_fim ";
-  }else{
-    if(strlen($dbwhere) > 0) {
-  	  $dbwhere .= " and ";
+    $dbwhere .= " e50_codord=$codordem ";
+} elseif (isset($e50_codord_ini) && $e50_codord_ini != '') {
+    if (isset($e50_codord_fim) && $e50_codord_fim != '') {
+        if (strlen($dbwhere) > 0) {
+            $dbwhere .= " and ";
+        }
+        $dbwhere .= " e50_codord between $e50_codord_ini and $e50_codord_fim ";
+    } else {
+        if (strlen($dbwhere) > 0) {
+            $dbwhere .= " and ";
+        }
+        $dbwhere .= " e50_codord=$e50_codord_ini ";
     }
-    $dbwhere .= " e50_codord=$e50_codord_ini ";
-  }
-
-} else if (isset($listaordem)) {
-
-  if (strlen($dbwhere) > 0) {
-    $dbwhere .= " and ";
-  }
-  $dbwhere .= " e50_codord in($listaordem)";
-
-}else{
-  if(strlen($dbwhere) > 0) {
-	  $dbwhere .= " and ";
-  }
-  $dbwhere .= "1=1 ";
+} elseif (isset($listaordem)) {
+    if (strlen($dbwhere) > 0) {
+        $dbwhere .= " and ";
+    }
+    $dbwhere .= " e50_codord in($listaordem)";
+} else {
+    if (strlen($dbwhere) > 0) {
+        $dbwhere .= " and ";
+    }
+    $dbwhere .= "1=1 ";
 }
 
-if(isset($dtini) && $dtini!=""){
-  if(strlen($dbwhere) > 0) {
-	  $dbwhere .= " and ";
-  }
-  $dtini=str_replace("X","-",$dtini);
-  $dbwhere.=" e50_data >= '$dtini'";
+if (isset($dtini) && $dtini!="") {
+    if (strlen($dbwhere) > 0) {
+        $dbwhere .= " and ";
+    }
+    $dtini=str_replace("X", "-", $dtini);
+    $dbwhere.=" e50_data >= '$dtini'";
 }
 
-if(isset($dtfim) && $dtfim!=""){
-  if(strlen($dbwhere) > 0) {
-	  $dbwhere .= " and ";
-  }
-  $dtfim=str_replace("X","-",$dtfim);
-  $dbwhere.=" e50_data <= '$dtfim'";
+if (isset($dtfim) && $dtfim!="") {
+    if (strlen($dbwhere) > 0) {
+        $dbwhere .= " and ";
+    }
+    $dtfim=str_replace("X", "-", $dtfim);
+    $dbwhere.=" e50_data <= '$dtfim'";
 }
 
 if (!empty($sFornecedor)) {
-
-  if(strlen($dbwhere) > 0) {
-    $dbwhere .= " and ";
-  }
-  $dbwhere.= " z01_numcgm in ({$sFornecedor}) ";
+    if (strlen($dbwhere) > 0) {
+        $dbwhere .= " and ";
+    }
+    $dbwhere.= " z01_numcgm in ({$sFornecedor}) ";
 }
 
 $pdf = new scpdf();
 $pdf->Open();
-$pdf1 = new db_impcarne($pdf,'7');
-$pdf1->objpdf->SetTextColor(0,0,0);
+$pdf1 = new db_impcarne($pdf, '7');
+$pdf1->objpdf->SetTextColor(0, 0, 0);
 
 //rotina que pega as ordens a serem impressas
-$sSqlPagOrdem = $clpagordem->sql_query('',' e50_codord ',' e50_codord ', $dbwhere);
+$sSqlPagOrdem = $clpagordem->sql_query('', ' e50_codord ', ' e50_codord ', $dbwhere);
 $result       = $clpagordem->sql_record($sSqlPagOrdem);
 
 if ($clpagordem->numrows>0) {
-  db_fieldsmemory($result,0);
+    db_fieldsmemory($result, 0);
 } else {
-  db_redireciona('db_erros.php?fechar=true&db_erro=Não a Ordem de Pagamento No. '.$codordem.'. Verifique!');
+    db_redireciona('db_erros.php?fechar=true&db_erro=Não a Ordem de Pagamento No. '.$codordem.'. Verifique!');
 }
 
 $result2 = db_query("select * from empparametro where e39_anousu = {$iAnoUso} ");
 
-if (pg_numrows($result2)>0) {
-  db_fieldsmemory($result2,0);
-  $pdf1->nvias= $e30_nroviaord;
+if (pg_num_rows($result2)>0) {
+    db_fieldsmemory($result2, 0);
+    $pdf1->nvias= $e30_nroviaord;
 }
 
-for ($i = 0;$i < $clpagordem->numrows;$i++) {
-
-   db_fieldsmemory($result,$i);
-   $sql = "select *, e03_numeroprocesso as processo
+for ($i = 0; $i < $clpagordem->numrows; $i++) {
+    db_fieldsmemory($result, $i);
+    $sql = "select *, e03_numeroprocesso as processo
            from
            (select *,fc_estruturaldotacao(o58_anousu,o58_coddot) as estrutural,
 	           case when e49_numcgm is null then e60_numcgm else e49_numcgm end as _numcgm
@@ -189,16 +181,56 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
            left  join pcfornecon on pc63_numcgm = _numcgm
 	   ";
 
-  $resultord = db_query($sql);
 
-  //
-  // coloquei a linha abaixo porque emitindo por data em charqueadas dava erro
-  //
-  if (pg_numrows($resultord)==0) continue;
+    $resultord = db_query($sql);
 
-  db_fieldsmemory($resultord,0);
+    if (pg_num_rows($resultord)==0) {
+        continue;
+    }
 
-  $sqlitem = "select *,e53_valor - e53_vlranu  as saldo , e53_valor - e53_vlranu - e53_vlrpag as saldo_final
+    db_fieldsmemory($resultord, 0);
+
+
+
+    /**
+     * Buscamos o Contrato
+     */
+    $sqlContratos = "
+
+    select distinct numero || '/' || ano as contrato
+      from conlancam
+      join conlancamemp on c70_codlan = c75_codlan
+      join conlancamdoc on c70_codlan = c71_codlan
+      join conhistdoc on c71_coddoc = c53_coddoc
+      join empempenho on c75_numemp = e60_numemp
+      join plugins.contratospadrs on c70_codlan = lancamento
+      join plugins.padrsinstrumentocontratual on plugins.contratospadrs.instrumentocontratual = plugins.padrsinstrumentocontratual.sequencial
+     where e60_numemp = {$e60_numemp}
+ 
+   union
+
+    select ac16_numero || '/' || ac16_anousu as contrato 
+      from empempenhocontrato
+      join acordo on (e100_acordo) = (ac16_sequencial)
+     where e100_numemp = {$e60_numemp}
+    ";
+
+    $rsContrato = db_query($sqlContratos);
+
+    $pdf1->contrato = "";
+    if (pg_num_rows($rsContrato) > 0 ) {
+
+        $pdf1->contrato = db_utils::fieldsMemory($rsContrato, 0)->contrato;
+    }
+
+
+
+    $registro = \ECidade\Financeiro\Orcamento\Recurso\Origem::getEmpenho($e60_numemp, $e60_anousu);
+    $recurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::where('orctiporec_id',$registro->o15_codigo)
+        ->where('exercicio', $e60_anousu)
+        ->first();
+
+    $sqlitem = "select *,e53_valor - e53_vlranu  as saldo , e53_valor - e53_vlranu - e53_vlrpag as saldo_final
               from pagordemele
 
 	           inner join pagordem on pagordem.e50_codord = pagordemele.e53_codord
@@ -211,9 +243,9 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
 		   			 and orcelemento.o56_codele = empelemento.e64_codele
 
 		   where pagordemele.e53_codord = $e50_codord ";
-  $resultitem = db_query($sqlitem);
+    $resultitem = db_query($sqlitem);
 
-  $sqloutrasordens = " select sum(saldo) as outrasordens
+    $sqloutrasordens = " select sum(saldo) as outrasordens
               from
               (select *,e53_valor - e53_vlranu as saldo
               from pagordemele
@@ -227,19 +259,19 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
 		   where pagordem.e50_codord < $e50_codord
 		     and pagordem.e50_numemp = $e50_numemp) as x";
 //  echo $clpagordemele->sql_query($e50_codord);
-  $resultoutrasordens = db_query($sqloutrasordens);
-  db_fieldsmemory($resultoutrasordens,0);
+    $resultoutrasordens = db_query($sqloutrasordens);
+    db_fieldsmemory($resultoutrasordens, 0);
 //   db_criatabela($resultoutrasordens);exit;
-   $sqlretencoes = "select e52_codord,
+    $sqlretencoes = "select e52_codord,
    			                    k02_codigo,
 			                      k02_drecei,
 			                      e52_valor as e23_valorretencao
 		                        from pagordemrec
 		    	                  inner join tabrec on k02_codigo = e52_receit
 	                    where e52_codord = $e50_codord ";
-   $resultretencoes = db_query($sqlretencoes);
-   $aRetencoes      = db_utils::getCollectionByRecord($resultretencoes);
-   $result_pcfornecon = db_query("select *,
+    $resultretencoes = db_query($sqlretencoes);
+    $aRetencoes      = db_utils::getCollectionByRecord($resultretencoes);
+    $result_pcfornecon = db_query("select *,
                                        case when pc63_cnpjcpf is not null and trim(pc63_cnpjcpf) <> ''
                                                                           and pc63_cnpjcpf::text::int8 > 0
                                             then pc63_cnpjcpf
@@ -248,37 +280,35 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
                                          inner join pcforneconpad on pc64_contabanco = pc63_contabanco
                                    where pc63_numcgm = ".$z01_numcgm);
 
-   if(pg_numrows($result_pcfornecon) > 0){
-     db_fieldsmemory($result_pcfornecon,0);
-   }
+    if (pg_num_rows($result_pcfornecon) > 0) {
+        db_fieldsmemory($result_pcfornecon, 0);
+    }
 
    /**
     * Verificamos o cnpj da unidade. caso diferente de null, e diferente do xcnpj da instituição,
     * mostramso a descrição e o cnpj da unidade
     */
-   if ($o41_cnpj != "" && $o41_cnpj!= $cgc) {
-
-     $nomeinst = $o41_descr;
-     $cgc      = $o41_cnpj;
-
-   }
-   $pdf1->codigo_ordem     = $e50_codord;
-   $pdf1->logo             = $logo;
-   $pdf1->prefeitura       = $nomeinst;
-   $pdf1->enderpref        = trim($ender).",".$numero;
-   $pdf1->municpref        = $munic;
-   $pdf1->cgcpref          = $cgc;
-   $pdf1->telefpref        = $telef;
-   $pdf1->banco            = $pc63_banco;
-   $pdf1->agencia          = $pc63_agencia;
-   $pdf1->agenciadv        = $pc63_agencia_dig;
-   $pdf1->conta            = $pc63_conta;
-   $pdf1->contadv          = $pc63_conta_dig;
-   $pdf1->emailpref        = $email;
-   $pdf1->bancorec         = null;
-   $pdf1->agenciarec       = null;
-   $pdf1->contarec         = null;
-	 $sql                    = "select c61_codcon,c61_codigo, c61_reduz
+    if ($o41_cnpj != "" && $o41_cnpj!= $cgc) {
+        $nomeinst = $o41_descr;
+        $cgc      = $o41_cnpj;
+    }
+    $pdf1->codigo_ordem     = $e50_codord;
+    $pdf1->logo             = $logo;
+    $pdf1->prefeitura       = $nomeinst;
+    $pdf1->enderpref        = trim($ender).",".$numero;
+    $pdf1->municpref        = $munic;
+    $pdf1->cgcpref          = $cgc;
+    $pdf1->telefpref        = $telef;
+    $pdf1->banco            = $pc63_banco;
+    $pdf1->agencia          = $pc63_agencia;
+    $pdf1->agenciadv        = $pc63_agencia_dig;
+    $pdf1->conta            = $pc63_conta;
+    $pdf1->contadv          = $pc63_conta_dig;
+    $pdf1->emailpref        = $email;
+    $pdf1->bancorec         = null;
+    $pdf1->agenciarec       = null;
+    $pdf1->contarec         = null;
+     $sql                    = "select c61_codcon,c61_codigo, c61_reduz
                                 from conplanoreduz
                                        inner join conplano on c60_codcon      = c61_codcon and c60_anousu=c61_anousu
                                        inner join consistema on c52_codsis    = c60_codsis
@@ -289,150 +319,146 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
                                  and c61_anousu   = {$iAnoUso}
                                  and c61_codigo   = {$o58_codigo}
                                  and c52_descrred = 'F' ";
-   $result_conta = db_query(analiseQueryPlanoOrcamento($sql));
-//	 echo $sql;
+    $result_conta = db_query(analiseQueryPlanoOrcamento($sql));
+//   echo $sql;
 //   die("<br><br>".$sqlConta);
-   if ($result_conta != false && (pg_numrows($result_conta) == 1)) {
-     db_fieldsmemory($result_conta,0);
-     $sqlConta = "select * from conplanoconta where c63_codcon = $c61_codcon and c63_anousu = {$iAnoUso} and c63_reduz = {$c61_reduz} ";
-     $result_conta = db_query($sqlConta);
-		 if (pg_num_rows($result_conta) == 1){
+    if ($result_conta != false && (pg_num_rows($result_conta) == 1)) {
+        db_fieldsmemory($result_conta, 0);
+        $sqlConta = "select * from conplanoconta where c63_codcon = $c61_codcon and c63_anousu = {$iAnoUso} and c63_reduz = {$c61_reduz} ";
+        $result_conta = db_query($sqlConta);
+        if (pg_num_rows($result_conta) == 1) {
+               db_fieldsmemory($result_conta, 0);
+            $pdf1->bancorec    = $c63_banco;
+            $pdf1->agenciarec  = $c63_agencia;
+            $pdf1->contarec    = $c63_conta;
+        }
+    }
 
-				db_fieldsmemory($result_conta,0);
-        $pdf1->bancorec    = $c63_banco;
-        $pdf1->agenciarec  = $c63_agencia;
-        $pdf1->contarec    = $c63_conta;
-	   }
-	 }
-
-   $pdf1->numcgm           = $z01_numcgm;
-   $pdf1->processo         = $processo;
-   $pdf1->nome             = $z01_nome;
-   $pdf1->cnpj             = $z01_cgccpf;
-   $pdf1->ender            = $z01_ender;
-   $pdf1->munic            = $z01_munic;
-   $pdf1->ordpag           = $e50_codord;
-   $pdf1->ufFornecedor     = $z01_uf;
-   $pdf1->coddot           = $o58_coddot;
-   $pdf1->dotacao          = $estrutural;
-   $pdf1->outrasordens     = $outrasordens;
-   $pdf1->recorddositens   = $resultitem;
-   $pdf1->ano		           = $e60_anousu;
-   $pdf1->linhasdositens   = pg_numrows($resultitem);
-   $pdf1->elementoitem     = "o56_elemento";
-   $pdf1->descr_elementoitem = "o56_descr";
-   $pdf1->vlremp           = "e53_valor";
-   $pdf1->vlranu           = "e53_vlranu";
-   $pdf1->vlrpag           = "e53_vlrpag";
-   $pdf1->vlrsaldo         = "saldo";
-   $pdf1->saldo_final      = "saldo_final";
-   $pdf1->recordretencoes  = $resultretencoes;
-   $pdf1->linhasretencoes  = pg_numrows($resultretencoes);
-   $pdf1->receita          = "e52_receit";
-   $pdf1->dreceita         = "k02_drecei";
-   $pdf1->vlrrec           = "e52_valor";
-   $pdf1->aRetencoes       = $aRetencoes;
-   $pdf1->orcado	       = $e60_vlrorc;
-   $pdf1->saldo_ant        = $e60_salant;
-   $pdf1->empenhado        = $e60_vlremp ;
-   $pdf1->empenho_anulado  = $e60_vlranu ;
-   $pdf1->numemp           = $e60_codemp.'/'.$e60_anousu;
-   $pdf1->orgao            = $o58_orgao;
-   $pdf1->descr_orgao      = $o40_descr;
-   $pdf1->unidade          = $o58_unidade;
-   $pdf1->descr_unidade    = $o41_descr;
-   $pdf1->funcao           = $o58_funcao;
-   $pdf1->descr_funcao     = $o52_descr;
-   $pdf1->subfuncao        = $o58_subfuncao;
-   $pdf1->descr_subfuncao  = $o53_descr;
-   $pdf1->programa         = $o58_programa;
-   $pdf1->descr_programa   = $o54_descr;
-   $pdf1->projativ         = $o58_projativ;
-   $pdf1->descr_projativ   = $o55_descr;
-   $pdf1->recurso          = $o15_loaespecificacao;
-   $pdf1->descr_recurso    = $o15_descr;
-   $pdf1->elemento     	   = $o56_elemento;
-   $pdf1->descr_elemento   = $o56_descr;
+    $pdf1->numcgm           = $z01_numcgm;
+    $pdf1->processo         = $processo;
+    $pdf1->nome             = $z01_nome;
+    $pdf1->cnpj             = $z01_cgccpf;
+    $pdf1->ender            = $z01_ender;
+    $pdf1->munic            = $z01_munic;
+    $pdf1->ordpag           = $e50_codord;
+    $pdf1->ufFornecedor     = $z01_uf;
+    $pdf1->coddot           = $o58_coddot;
+    $pdf1->dotacao          = $estrutural;
+    $pdf1->outrasordens     = $outrasordens;
+    $pdf1->recorddositens   = $resultitem;
+    $pdf1->ano                  = $e60_anousu;
+    $pdf1->linhasdositens   = pg_num_rows($resultitem);
+    $pdf1->elementoitem     = "o56_elemento";
+    $pdf1->descr_elementoitem = "o56_descr";
+    $pdf1->vlremp           = "e53_valor";
+    $pdf1->vlranu           = "e53_vlranu";
+    $pdf1->vlrpag           = "e53_vlrpag";
+    $pdf1->vlrsaldo         = "saldo";
+    $pdf1->saldo_final      = "saldo_final";
+    $pdf1->recordretencoes  = $resultretencoes;
+    $pdf1->linhasretencoes  = pg_num_rows($resultretencoes);
+    $pdf1->receita          = "e52_receit";
+    $pdf1->dreceita         = "k02_drecei";
+    $pdf1->vlrrec           = "e52_valor";
+    $pdf1->aRetencoes       = $aRetencoes;
+    $pdf1->orcado           = $e60_vlrorc;
+    $pdf1->saldo_ant        = $e60_salant;
+    $pdf1->empenhado        = $e60_vlremp ;
+    $pdf1->empenho_anulado  = $e60_vlranu ;
+    $pdf1->numemp           = $e60_codemp.'/'.$e60_anousu;
+    $pdf1->orgao            = $o58_orgao;
+    $pdf1->descr_orgao      = $o40_descr;
+    $pdf1->unidade          = $o58_unidade;
+    $pdf1->descr_unidade    = $o41_descr;
+    $pdf1->funcao           = $o58_funcao;
+    $pdf1->descr_funcao     = $o52_descr;
+    $pdf1->subfuncao        = $o58_subfuncao;
+    $pdf1->descr_subfuncao  = $o53_descr;
+    $pdf1->programa         = $o58_programa;
+    $pdf1->descr_programa   = $o54_descr;
+    $pdf1->projativ         = $o58_projativ;
+    $pdf1->descr_projativ   = $o55_descr;
+    $pdf1->recurso          = sprintf('%s - %s', $recurso->gestao, $recurso->recurso->o15_complemento);
+    $pdf1->gestao           = $recurso->gestao;
+    $pdf1->complemento      = $recurso->recurso->o15_complemento;
+    $pdf1->subrecurso       = $recurso->recurso->o15_recurso;
+    $pdf1->descr_recurso    = $recurso->descricao;
+    $pdf1->elemento         = $o56_elemento;
+    $pdf1->descr_elemento   = $o56_descr;
 
 
-   $pdf1->emissao      = db_formatar($e50_data,'d');
-   $pdf1->texto		     = $sLogin.'  -  '.date("d-m-Y",$sDataUsu).'    '.db_hora($sDataUsu);
+    $pdf1->emissao      = db_formatar($e50_data, 'd');
+    $pdf1->texto          = $sLogin.'  -  '.date("d-m-Y", $sDataUsu).'    '.db_hora($sDataUsu);
 
-   $pdf1->telef            = $z01_telef;
-   $pdf1->fax              = $z01_fax;
+    $pdf1->telef            = $z01_telef;
+    $pdf1->fax              = $z01_fax;
 
    /**
     * Variáveis utilizadas na assinatura. Sómente utilizada na impressão por movimento
     */
-   $pdf1->iReduzido         = "";
-   $pdf1->sContaContabil    = "";
-   $pdf1->sBanco            = "";
-   $pdf1->sAgencia          = "";
-   $pdf1->sDigtoAgencia     = "";
-   $pdf1->sContaBanco       = "";
-   $pdf1->sDigitoContaBanco = "";
-   $pdf1->iTipoPagamento    = "";
-   $pdf1->sCheque           = "";
-   $pdf1->sAutenticacao     = "";
-   $pdf1->nValorMovimento   = "";
+    $pdf1->iReduzido         = "";
+    $pdf1->sContaContabil    = "";
+    $pdf1->sBanco            = "";
+    $pdf1->sAgencia          = "";
+    $pdf1->sDigtoAgencia     = "";
+    $pdf1->sContaBanco       = "";
+    $pdf1->sDigitoContaBanco = "";
+    $pdf1->iTipoPagamento    = "";
+    $pdf1->sCheque           = "";
+    $pdf1->sAutenticacao     = "";
+    $pdf1->nValorMovimento   = "";
 
 
-   if($clpagordem->numrows == 1 && isset($valor_ordem)){
+    if ($clpagordem->numrows == 1 && isset($valor_ordem)) {
+        if ($valor_ordem > pg_result($resultitem, 0, "saldo")) {
+             $valor_ordem = pg_result($resultitem, 0, "saldo");
+        }
 
-   	if( $valor_ordem > pg_result($resultitem,0,"saldo") ){
-       $valor_ordem = pg_result($resultitem,0,"saldo");
-     }
-
-     $pdf1->valor_ordem  = "$valor_ordem";
-     if (isset($historico) && trim($historico)!= ""){
-       $pdf1->obs = "$historico";
-     }else{
-       $pdf1->obs = "$e50_obs";
-     }
-   } else {
-   	 $pdf1->valor_ordem = "";
-   	 $pdf1->obs 		= "$e50_obs";
-   }
-   $pdf1->imprime();
+        $pdf1->valor_ordem  = "$valor_ordem";
+        if (isset($historico) && trim($historico)!= "") {
+            $pdf1->obs = "$historico";
+        } else {
+            $pdf1->obs = "$e50_obs";
+        }
+    } else {
+        $pdf1->valor_ordem = "";
+        $pdf1->obs         = "$e50_obs";
+    }
+    $pdf1->imprime();
 }
 //include(modification("fpdf151/geraarquivo.php"));
 require_once(modification("integracao_externa/ged/GerenciadorEletronicoDocumentoConfiguracao.model.php"));
 
 if (GerenciadorEletronicoDocumentoConfiguracao::getInstance()->utilizaGED()) {
+    try {
+        require_once(modification("integracao_externa/ged/GerenciadorEletronicoDocumento.model.php"));
+        require_once(modification("libs/exceptions/BusinessException.php"));
+        if (isset($e50_codord_ini) && isset($e50_codord_fim) && $e50_codord_ini != $e50_codord_fim) {
+            $sMsgErro  = "A configuração para utilização do GED (Gerenciador Eletrônico de Documentos) está ativado.<br><br>Neste ";
+            $sMsgErro .= "caso não é possível somente um documento referente a ordem de compra por vez. <br><br>";
+            $sMsgErro .= "Por favor, informe informe um único código de ordem de compra.";
+            throw new BusinessException($sMsgErro);
+        }
 
-  try {
+        if (!empty($codordem)) {
+            $e50_codord_ini = $codordem;
+        }
 
-    require_once(modification("integracao_externa/ged/GerenciadorEletronicoDocumento.model.php"));
-    require_once(modification("libs/exceptions/BusinessException.php"));
-    if (isset($e50_codord_ini) && isset($e50_codord_fim) && $e50_codord_ini != $e50_codord_fim) {
+        $sTipoDocumento = GerenciadorEletronicoDocumentoConfiguracao::ORDEM_PAGAMENTO;
 
-      $sMsgErro  = "A configuração para utilização do GED (Gerenciador Eletrônico de Documentos) está ativado.<br><br>Neste ";
-      $sMsgErro .= "caso não é possível somente um documento referente a ordem de compra por vez. <br><br>";
-      $sMsgErro .= "Por favor, informe informe um único código de ordem de compra.";
-      throw new BusinessException($sMsgErro);
+        $oGerenciador = new GerenciadorEletronicoDocumento();
+        $oGerenciador->setLocalizacaoOrigem("tmp/");
+        $oGerenciador->setNomeArquivo("{$sTipoDocumento}_{$e50_codord_ini}.pdf");
+
+        $oStdDadosGED        = new stdClass();
+        $oStdDadosGED->nome  = $sTipoDocumento;
+        $oStdDadosGED->tipo  = "NUMERO";
+        $oStdDadosGED->valor = $e50_codord_ini;
+        $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$e50_codord_ini}.pdf");
+        $oGerenciador->moverArquivo(array($oStdDadosGED));
+    } catch (Exception $eErro) {
+        db_redireciona("db_erros.php?fechar=true&db_erro=".$eErro->getMessage());
     }
-
-    if (!empty($codordem)) {
-      $e50_codord_ini = $codordem;
-    }
-
-    $sTipoDocumento = GerenciadorEletronicoDocumentoConfiguracao::ORDEM_PAGAMENTO;
-
-    $oGerenciador = new GerenciadorEletronicoDocumento();
-    $oGerenciador->setLocalizacaoOrigem("tmp/");
-    $oGerenciador->setNomeArquivo("{$sTipoDocumento}_{$e50_codord_ini}.pdf");
-
-    $oStdDadosGED        = new stdClass();
-    $oStdDadosGED->nome  = $sTipoDocumento;
-    $oStdDadosGED->tipo  = "NUMERO";
-    $oStdDadosGED->valor = $e50_codord_ini;
-    $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$e50_codord_ini}.pdf");
-    $oGerenciador->moverArquivo(array($oStdDadosGED));
-
-
-  } catch (Exception $eErro) {
-    db_redireciona("db_erros.php?fechar=true&db_erro=".$eErro->getMessage());
-  }
 } else {
-  $pdf1->objpdf->Output();
+    $pdf1->objpdf->Output();
 }

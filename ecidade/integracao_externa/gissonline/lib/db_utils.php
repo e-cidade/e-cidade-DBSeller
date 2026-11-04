@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,12 +33,12 @@ class _db_fields {
 class db_utils {
   
   
-  function db_utils()
+  public function __construct()
   {
     
   }
   
-  function fieldsMemory($rs, $idx, $formata=false, $mostra = false)
+  public function fieldsMemory($rs, $idx, $formata=false, $mostra = false)
   {
     $oFields   = new _db_fields();
     $numFields = pg_num_fields($rs);
@@ -71,7 +71,7 @@ class db_utils {
     return $oFields;
   }
   
-  function postMemory($aVetor, $mostra=false)
+  public function postMemory($aVetor, $mostra=false)
   {
     
     $oFields   = new _db_fields();

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -98,14 +98,14 @@ if(isset($excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<? include(modification("forms/db_frmorcsuplem.php")); ?>
+	<?php include(modification("forms/db_frmorcsuplem.php")); ?>
     </center>
 	</td>
   </tr>
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clorcsuplem->erro_status=="0"){
     $clorcsuplem->erro(true,false);

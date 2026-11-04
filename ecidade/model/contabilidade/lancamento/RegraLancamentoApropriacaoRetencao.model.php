@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Financeiro\Contabilidade\PlanoDeContas\Estrutural;
+
 require_once(modification("interfaces/IRegraLancamentoContabil.interface.php"));
 
 /**
@@ -39,6 +41,22 @@ class RegraLancamentoApropriacaoRetencao implements IRegraLancamentoContabil
     private $iCodigoDocumento;
 
     /**
+     * A regra para buscar a transação é a seguinte.
+     * Primeiro para saber se está configurado corretamente o sistema a transação tem que ter:
+     * compara 15 (c47_compara) e todas regras tem que ter o refêrencia (c47_ref) informado.
+     * Uma mesma referência pode ter inúmeras regras com elementos diferentes, mas apenas uma regra pode ter conta
+     * crédito informado.
+     *
+     * Sabendo isso a regra tem prioridade de validação.
+     * 1º Primeira
+     * Se informado o elemento (c114_elemento) na transação, primeiro validamos o elemento.
+     * Nesse caso a transação não poder ter conta crédito informada.
+     * Se for compatível o elemento com o do empenho, deve-se usar essa regra. A conta crédito vai depender do documento
+     * Se não, pula a regra e tenta a próxima
+     *
+     * 2º Segunda
+     * Não estando configurado o elemento, deve-se usar a conta crédito informada na transação.
+     *
      * @param int $iCodigoDocumento
      * @param int $iCodigoLancamento
      * @param LancamentoAuxiliarEmpenhoLiquidacao|\ILancamentoAuxiliar $oLancamentoAuxiliar
@@ -75,59 +93,75 @@ class RegraLancamentoApropriacaoRetencao implements IRegraLancamentoContabil
 
             switch ($oDadosTransacao->c47_compara) {
                 /**
-                 * criado case 0 para ser usado em ordem acima de um onde o reduzido do elenento nao precisa ser igual ao da conta
-                 * configurado na regra.
+                 * Criado case 0 para ser usado em ordem acima de um onde o reduzido do elemento nao precisa ser igual
+                 * ao da conta configurado na regra.
                  */
                 case RegraLancamentoContabil::COMPARA_TIPO_RETENCAO:
-                    if ($oLancamentoAuxiliar->getTipoCalculoRetencao() == $oDadosTransacao->c47_ref && $oDadosTransacao->c46_ordem == 1) {
+                    if ($oLancamentoAuxiliar->getTipoCalculoRetencao() != $oDadosTransacao->c47_ref) {
+                        break;
+                    }
+
+                    if ($oLancamentoAuxiliar->getTipoCalculoRetencao() == $oDadosTransacao->c47_ref
+                        && $oDadosTransacao->c46_ordem == 1) {
+                        // validando o elemento
                         if (method_exists($oLancamentoAuxiliar, 'getEmpenhoFinanceiro')) {
-                            $empenhoFinanceiro = $oLancamentoAuxiliar->getEmpenhoFinanceiro();
-                            $estruturalOrcamento = $empenhoFinanceiro->getContaOrcamento()->getEstrutural();
+                            $empenho = $oLancamentoAuxiliar->getEmpenhoFinanceiro();
+                            $estruturalEmpenho = new Estrutural($empenho->getContaOrcamento()->getEstrutural());
                             $estruturalValido = !empty($oDadosTransacao->c114_elemento) && $oDadosTransacao->c114_elemento != '000000000000000';
-                            if ($estruturalValido && $estruturalOrcamento <= $oDadosTransacao->c114_elemento) {
-                                continue;
+
+                            if ($estruturalValido) {
+                                $estruturalTransacao = new Estrutural($oDadosTransacao->c114_elemento);
+                                $nivel = $estruturalTransacao->getNivel();
+                                if ($estruturalTransacao->getEstruturalAteNivel() != substr($estruturalEmpenho->getEstrutural(), 0, $nivel)) {
+                                    break;
+                                }
                             }
                         }
 
                         $oRegraLancamentoContabil = new RegraLancamentoContabil($oDadosTransacao->c47_seqtranslr);
-                        if (in_array($iCodigoDocumento, array(6000, 6001))) {
-                            if ($iCodigoDocumento == 6001) {
-                                $oRegraLancamentoContabil->setContaDebito($oLancamentoAuxiliar->getContaDebito());
-                            } else {
-                                $oRegraLancamentoContabil->setContaCredito($oLancamentoAuxiliar->getContaCredito());
-                            }
+                        /**
+                         * NO LANÇAMENTO
+                         * Se o tipo da retenção é o mesmo da refêrencia da transação (c47_ref) e for o primeiro
+                         * lançamento (ordem = 1) e a conta crédito está informada na transação.
+                         * Deve-se usar a conta da transação! Isso é válido para todos os documentos de retenção.
+                         */
+                        $docs = [6000, 6002, 6004, 6006, 6008, 6010, 6012];
+                        if (in_array($iCodigoDocumento, $docs) && !empty($oDadosTransacao->c47_credito)) {
+                            return $oRegraLancamentoContabil;
+                        }
+                        /**
+                         * NO ESTORNO LANÇAMENTO
+                         * Mesma regra acima,só que validando a conta débito
+                         */
+                        $docs = [6001, 6003, 6005, 6007, 6009, 6011, 6013];
+                        if (in_array($iCodigoDocumento, $docs) && !empty($oDadosTransacao->c47_debito)) {
+                            return $oRegraLancamentoContabil;
                         }
 
-                        if (in_array($iCodigoDocumento, array(6002, 6003))) {
-                            if ($iCodigoDocumento == 6002) {
-                                $oRegraLancamentoContabil->setContaCredito($this->getContaExtraOrcamentariaDaRetencao($oLancamentoAuxiliar->getRetencao()));
+                        /**
+                         * Não atendendo a regra acima, ou seja, não tem a conta informada na transação, devemos
+                         * buscar a conta extra orçamentária da retenção.
+                         * Isso aplicado aos documentos 6000 e 6001
+                         */
+
+                        if (in_array($iCodigoDocumento, [6000, 6001, 6002, 6003, 6004, 6005, 6008, 6009, 6010, 6011])) {
+                            $conta = $this->getContaExtraOrcamentariaDaRetencao($oLancamentoAuxiliar->getRetencao());
+                            if (in_array($iCodigoDocumento, [6001, 6003, 6005, 6009, 6011])) {
+                                $oRegraLancamentoContabil->setContaDebito($conta);
                             } else {
-                                $oRegraLancamentoContabil->setContaDebito($this->getContaExtraOrcamentariaDaRetencao($oLancamentoAuxiliar->getRetencao()));
+                                $oRegraLancamentoContabil->setContaCredito($conta);
                             }
                         }
-
-
-                        /*
-
-                        if (in_array($iCodigoDocumento, array(6002, 6003, 6010, 6011, 6008, 6009))) {
-                            if (in_array($iCodigoDocumento, array(6002, 6010, 6008))) {
-                                $oRegraLancamentoContabil->setContaCredito($this->getContaExtraOrcamentariaDaRetencao($oLancamentoAuxiliar->getRetencao()));
-                            } else {
-                                $oRegraLancamentoContabil->setContaDebito($this->getContaExtraOrcamentariaDaRetencao($oLancamentoAuxiliar->getRetencao()));
-                            }
-                        }
-                        */
 
                         if (in_array($iCodigoDocumento, array(6012, 6013))) {
-
                             if (!$oLancamentoAuxiliar->isEstorno()) {
                                 $oRegraLancamentoContabil->setContaCredito($oLancamentoAuxiliar->getCodigoReduzido());
                             } else {
                                 $oRegraLancamentoContabil->setContaDebito($oLancamentoAuxiliar->getCodigoReduzido());
                             }
                         }
-                        if (in_array($iCodigoDocumento, array(6006, 6007))) {
 
+                        if (in_array($iCodigoDocumento, array(6006, 6007))) {
                             if ($iCodigoDocumento == 6006) {
                                 $oRegraLancamentoContabil->setContaDebito($oLancamentoAuxiliar->getContaDebito());
                             } else {
@@ -154,19 +188,51 @@ class RegraLancamentoApropriacaoRetencao implements IRegraLancamentoContabil
     /**
      *
      * @param $codigoRetencao
-     * @return null|int
+     * @return int
+     * @throws \BusinessException
      */
     protected function getContaExtraOrcamentariaDaRetencao($codigoRetencao)
     {
+        $anousu = db_getsession("DB_anousu");
+        $instit = db_getsession("DB_instit");
         $sSqlTipoRec = " SELECT k02_reduz                                                   ";
         $sSqlTipoRec .= "   from retencaotiporec ";
         $sSqlTipoRec .= "       inner join tabrec  on e21_receita = k02_codigo               ";
         $sSqlTipoRec .= "       inner join tabplan on tabrec.k02_codigo = tabplan.k02_codigo ";
         $sSqlTipoRec .= " where e21_sequencial  = {$codigoRetencao} ";
-        $sSqlTipoRec .= "   and k02_anousu = " . db_getsession("DB_anousu");
+        $sSqlTipoRec .= "   and k02_anousu = {$anousu}";
+
+        // devido aos RPs poderem ter receita Extra ou Orçamentaria vamos fazer um union com a taborc
+        $sSqlTipoRec .= "
+
+        union
+
+        select conplanoreduz.c61_reduz as k02_codigo
+           from retencaotiporec
+             inner join tabrec on e21_receita = k02_codigo
+             inner join taborc on tabrec.k02_codigo = taborc.k02_codigo
+             inner join orcreceita on taborc.k02_codrec = orcreceita.o70_codrec
+                                  and orcreceita.o70_anousu = taborc.k02_anousu
+                                  and orcreceita.o70_instit = {$instit}
+             inner join conplanoorcamento on c60_codcon = orcreceita.o70_codfon and c60_anousu=o70_anousu
+             inner join conplanoconplanoorcamento  on conplanoconplanoorcamento.c72_conplanoorcamento = conplanoorcamento.c60_codcon
+                                                  and conplanoconplanoorcamento.c72_anousu            = conplanoorcamento.c60_anousu
+             inner join conplano       on conplano.c60_codcon     = conplanoconplanoorcamento.c72_conplano
+                                      and conplano.c60_anousu     = conplanoconplanoorcamento.c72_anousu
+             inner join conplanoreduz  on conplano.c60_codcon     = conplanoreduz.c61_codcon
+                  where e21_sequencial = {$codigoRetencao}
+                    and c61_anousu = {$anousu}
+                    and o70_anousu = {$anousu}
+                    and c61_instit = {$instit}
+
+        ";
+
         $rsTipoRec = db_query($sSqlTipoRec);
         if (pg_num_rows($rsTipoRec) == 0) {
-            return null;
+            throw new \BusinessException("
+                Receita da retenção {$codigoRetencao} sem ligação com Orçamento/Plano de Contas.
+                Verifique o cadastro.
+            ");
         }
         return db_utils::fieldsMemory($rsTipoRec, 0)->k02_reduz;
     }

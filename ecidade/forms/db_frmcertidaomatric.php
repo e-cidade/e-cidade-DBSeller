@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("p50_tipo");
   <tr>
     <td nowrap title="<?=@$Tp47_sequencial?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lp47_sequencial,"js_pesquisap47_sequencial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p47_sequencial',10,$Ip47_sequencial,true,'text',$db_opcao," onchange='js_pesquisap47_sequencial(false);'")
 ?>
-       <?
+       <?php
 db_input('p50_tipo',1,$Ip50_tipo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp47_matric?>">
-       <?
+       <?php
        db_ancora(@$Lp47_matric,"js_pesquisap47_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p47_matric',10,$Ip47_matric,true,'text',$db_opcao," onchange='js_pesquisap47_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',10,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_certidaomatric.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

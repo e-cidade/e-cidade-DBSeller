@@ -64,13 +64,13 @@ class cl_rhlota {
                  r70_concarpeculiar = varchar(100) = Caracteristica Peculiar 
                  ";
    //funcao construtor da classe 
-   function cl_rhlota() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlota"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_rhlota {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r70_codigo = ($this->r70_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["r70_codigo"]:$this->r70_codigo);
        $this->r70_codestrut = ($this->r70_codestrut == ""?@$GLOBALS["HTTP_POST_VARS"]["r70_codestrut"]:$this->r70_codestrut);
@@ -95,7 +95,7 @@ class cl_rhlota {
      }
    }
    // funcao para inclusao
-   function incluir ($r70_codigo){ 
+   public function incluir ($r70_codigo){ 
       $this->atualizacampos();
      if($this->r70_codestrut == null ){ 
        $this->erro_sql = " Campo Código da estrutura nao Informado.";
@@ -266,7 +266,7 @@ class cl_rhlota {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r70_codigo=null) { 
+   public function alterar ($r70_codigo=null) { 
       $this->atualizacampos();
      $sql = " update rhlota set ";
      $virgula = "";
@@ -451,7 +451,7 @@ class cl_rhlota {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r70_codigo=null,$dbwhere=null) { 
+   public function excluir ($r70_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r70_codigo));
      }else{ 
@@ -520,7 +520,7 @@ class cl_rhlota {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -543,7 +543,7 @@ class cl_rhlota {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -580,7 +580,7 @@ class cl_rhlota {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -613,7 +613,7 @@ class cl_rhlota {
      }
      return $sql;
   }
-   function sql_query_cgm ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_cgm ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -653,7 +653,7 @@ class cl_rhlota {
      }
      return $sql;
   }
-   function sql_query_leftorgao ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_leftorgao ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -690,7 +690,7 @@ class cl_rhlota {
   }
   
   
-  function sql_query_lota_cgm ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_lota_cgm ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
    $sql = "select ";
      if($campos != "*" ){
@@ -725,7 +725,7 @@ class cl_rhlota {
      }
      return $sql;
   }
-   function sql_query_orgao ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_orgao ( $r70_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -809,7 +809,7 @@ class cl_rhlota {
    * @param string $sOrdem
    * @return string
    */
-	function sql_query_dadosElemento ($dAno, $iInstituicao, $sWhere, $sOrdem) {
+	public function sql_query_dadosElemento ($dAno, $iInstituicao, $sWhere, $sOrdem) {
 		
 		$sSql  = "select distinct                                                                                           ";
 		$sSql .= "     rhlota.r70_estrut         ,                                                                          ";

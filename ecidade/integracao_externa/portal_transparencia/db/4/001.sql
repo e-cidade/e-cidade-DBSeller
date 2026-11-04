@@ -27,8 +27,9 @@ CREATE TABLE servidor_movimentacoes (
   CONSTRAINT servidor_movimentacoes_servidores_fk FOREIGN KEY (servidor_id) REFERENCES servidores(id)
 );
 
-create index servidores_ano_in     on servidor_movimentacoes using btree ( ano );
-create index servidores_mes_in     on servidor_movimentacoes using btree ( mes );
+-- create index servidores_ano_in     on servidor_movimentacoes using btree ( ano );
+create index servidores_servidor_in on servidor_movimentacoes using btree ( servidor_id );
+-- create index servidores_mes_in     on servidor_movimentacoes using btree ( mes );
 create index servidores_cargo_in   on servidor_movimentacoes using btree ( cargo );
 create index servidores_lotacao_in on servidor_movimentacoes using btree ( lotacao );
 create index servidores_vinculo_in on servidor_movimentacoes using btree ( vinculo );

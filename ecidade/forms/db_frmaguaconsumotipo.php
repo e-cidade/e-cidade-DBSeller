@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("k01_descr");
        <?=@$Lx25_codconsumotipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('x25_codconsumotipo',5,$Ix25_codconsumotipo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx25_receit?>">
-       <?
+       <?php
        db_ancora(@$Lx25_receit,"js_pesquisax25_receit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x25_receit',5,$Ix25_receit,true,'text',$db_opcao," onchange='js_pesquisax25_receit(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -64,22 +64,22 @@ db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        <?=@$Lx25_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('x25_descr',40,$Ix25_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx25_codhist?>">
-       <?
+       <?php
        db_ancora(@$Lx25_codhist,"js_pesquisax25_codhist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x25_codhist',5,$Ix25_codhist,true,'text',$db_opcao," onchange='js_pesquisax25_codhist(false);'")
 ?>
-       <?
+       <?php
 db_input('k01_descr',20,$Ik01_descr,true,'text',3,'')
        ?>
     </td>
@@ -141,7 +141,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguaconsumotipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

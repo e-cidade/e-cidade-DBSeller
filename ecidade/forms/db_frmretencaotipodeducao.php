@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("pc01_descrmater");
        <?=@$Le24_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('e24_sequencial',10,$Ie24_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te24_pcmater?>">
-       <?
+       <?php
        db_ancora(@$Le24_pcmater,"js_pesquisae24_pcmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e24_pcmater',10,$Ie24_pcmater,true,'text',$db_opcao," onchange='js_pesquisae24_pcmater(false);'")
 ?>
-       <?
+       <?php
 db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',3,'')
        <?=@$Le24_aliquota?>
     </td>
     <td> 
-<?
+<?php
 db_input('e24_aliquota',10,$Ie24_aliquota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('e24_aliquota',10,$Ie24_aliquota,true,'text',$db_opcao,"")
        <?=@$Le24_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('e24_descricao',40,$Ie24_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_retencaotipodeducao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

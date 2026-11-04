@@ -72,6 +72,7 @@ $recursosEncontrados = array();
 $clselorcdotacao = new cl_selorcdotacao();
 $clselorcdotacao->setDados($filtra_despesa); // passa os parametros vindos da func_selorcdotacao_abas.php
 $instits = $clselorcdotacao->getInstit();
+$instits = str_replace(['( ', ')', ' '], '', $instits);
 
 if (trim(@$instits) == "") {
     $instits = db_getsession("DB_instit");
@@ -107,19 +108,33 @@ $pdf->AliasNbPages();
 /**
  * @param int $o58_codigo
  * @param int $anousu
- * @param string $apresentarCodigoSiconfi
+ * @param string $apresentarRecurso
  * @return string
  */
-function getFonteRecurso($o58_codigo, $anousu, $apresentarCodigoSiconfi)
+function getFonteRecurso($o58_codigo, $anousu, $apresentarRecurso)
 {
     $fonteRecurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::query()
         ->where('orctiporec_id', $o58_codigo)
         ->where('exercicio', $anousu)
         ->first();
 
-    $fonte = $apresentarCodigoSiconfi === 'N' ? $fonteRecurso->gestao : $fonteRecurso->codigo_siconfi;
+    $fonte = $fonteRecurso->gestao;
+    switch ($apresentarRecurso) {
+        case 'fonteRecurso':
+            break;
+        case 'depara':
+            $fonte = sprintf('%s | %s', $fonteRecurso->recurso->o15_recurso, $fonteRecurso->gestao);
+            break;
+        case 'Siconfi':
+            $fonte = $fonteRecurso->codigo_siconfi;
+            break;
+    }
 
-    return sprintf('%s - %s', $fonte, $fonteRecurso->recurso->o15_complemento);
+    $complemento = str_pad($fonteRecurso->recurso->o15_complemento, 4, '0', STR_PAD_LEFT);
+    return [
+        'fonte' => sprintf('%s - %s', $fonte, $complemento),
+        'descricao' => $fonteRecurso->descricao
+    ];
 }
 
 if (substr($nivel, 1, 1) == 'A') {
@@ -253,7 +268,7 @@ if (substr($nivel, 1, 1) == 'A') {
             $totunidapag = 0;
         }
 
-        if ($xorgao != $o58_orgao && $quebra_orgao == 'S') {
+        if ($xorgao != $o58_orgao && $quebra_orgao == 'S' &&  $xorgao != 0) {
             $pdf->setfont('arial', 'b', 7);
             $pagina = 1;
             $pdf->ln(3);
@@ -631,12 +646,12 @@ if (substr($nivel, 1, 1) == 'A') {
         if ($o58_codigo > 0) {
             $descr = $o56_descr;
 
-            $codigo_recurso = getFonteRecurso($o58_codigo, $anousu, $apresentarCodigoSiconfi);
+            $recurso = getFonteRecurso($o58_codigo, $anousu, $apresentarRecurso);
 
             if ($completo == false) {
                 $pdf->cell(27, $alt, substr($o58_elemento, 1, 14), 0, 0, "L", 0);
                 $pdf->cell(77, $alt, $descr, 0, 0, "L", 0);
-                $pdf->cell(15, $alt, $codigo_recurso, 0, 0, "R", 0);
+                $pdf->cell(15, $alt, $recurso['fonte'], 0, 0, "R", 0);
                 $pdf->cell(16, $alt, $o58_coddot . "-" . db_CalculaDV($o58_coddot), 0, 0, "C", 0);
             }
 
@@ -667,7 +682,7 @@ if (substr($nivel, 1, 1) == 'A') {
                 $pdf->setfont('arial', 'b', 7);
                 $pdf->cell(27, $alt, $o58_elemento, 0, 0, "L", 0);
                 $pdf->cellAdapt(7, 63, $alt, substr($descr, 0, 50), 0, 0, "L", 0);
-                $pdf->cell(15, $alt, $codigo_recurso, 0, 0, "L", 0);
+                $pdf->cell(15, $alt, $recurso['fonte'], 0, 0, "L", 0);
 
                 $pdf->cell(30, $alt, $o58_coddot . "-" . db_CalculaDV($o58_coddot), 0, 0, "C", 0);
                 //Inicial
@@ -849,8 +864,6 @@ if (substr($nivel, 1, 1) == 'A') {
     $nivela = substr($nivel, 0, 1);
     $anousu = db_getsession("DB_anousu");
     $result = db_dotacaosaldo($nivela, 3, 2, true, $sele_work, $anousu, $dataini, $datafin);
-//db_criatabela($result);
-
 
     $total = 0;
     $pdf->setfillcolor(235);
@@ -1118,11 +1131,16 @@ if (substr($nivel, 1, 1) == 'A') {
             $descr = $o56_descr;
 
 
-            $codigo_recurso = getFonteRecurso($o58_codigo, $anousu, $apresentarCodigoSiconfi);
+            $recurso = getFonteRecurso($o58_codigo, $anousu, $apresentarCodigoSiconfi);
 
-            $pdf->cell(20, $alt, $codigo_recurso, 0, 0, "L", 0);
+            $pdf->cell(15, $alt, $recurso['fonte'], 0, 0, "L", 0);
 
-            $pdf->cell(100, $alt, substr($o15_descr, 0, 25), 0, 0, "L", 0);
+            $descicao = $recurso['descricao'];
+            if (strlen($recurso['descricao']) > 80) {
+                $descicao = explode('\n', wordwrap($recurso['descricao'], 83, '\n'))[0] . '...';
+            }
+
+            $pdf->cell(105, $alt, $descicao, 0, 0, "L", 0);
             $pdf->cell(15, $alt, $o58_coddot . "-" . db_CalculaDV($o58_coddot), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);

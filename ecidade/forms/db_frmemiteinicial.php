@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -80,7 +80,7 @@ function js_verificacerti(){
   }
 }
 </script>
-<?
+<?php
 $clrotulo = new rotulocampo;
 $clrotulo->label("v50_inicial");
 $clrotulo->label("v50_advog");
@@ -97,19 +97,19 @@ $clrotulo->label("v51_certidao");
   <table class="form-container">
     <tr>
 			<td>
-        <?
+        <?php
 					db_input('v50_inicial',10,$Iv50_inicial,true,'hidden',$db_opcao);
         ?>
       </td>
     </tr>
     <tr>
       <td title="<?=@$Tv50_advog?>">
-        <?
+        <?php
 					db_ancora($Lv50_advog,' js_advog(true); ',$db_opcao);
         ?>
       </td>
       <td>
-        <?
+        <?php
 					db_input('v50_advog',6,$Iv50_advog,true,'text',$db_opcao,"onchange='js_advog(false)'");
 					db_input('z01_nome',40,$Iz01_nome,true,'text',3,"","z01_nomeadvog");
         ?>
@@ -117,15 +117,15 @@ $clrotulo->label("v51_certidao");
     </tr>
 		<tr>
       <td nowrap title="<?=@$Tv50_codlocal?>">
-        <?
+        <?php
 					db_ancora(@$Lv50_codlocal,"js_pesquisav50_codlocal(true);",$db_opcao);
         ?>
       </td>
       <td>
-				<?
+				<?php
 					db_input('v50_codlocal',6,$Iv50_codlocal,true,'text',$db_opcao," onchange='js_pesquisav50_codlocal(false);'")
 				?>
-				<?
+				<?php
 					db_input('v54_descr',40,$Iv54_descr,true,'text',3,'')
 				?>
 			</td>
@@ -134,7 +134,7 @@ $clrotulo->label("v51_certidao");
 			 <td>&nbsp;</td>
 		</tr>
 
-	<? if($db_opcao==1||isset($v50_inicial)){ ?>
+	<?php if($db_opcao==1||isset($v50_inicial)){ ?>
 
 	 <tr>
        <td align="center" colspan="2" valign="top">
@@ -145,7 +145,7 @@ $clrotulo->label("v51_certidao");
 		   <table>
 			 <tr>
 			   <td>
-				  <?
+				  <?php
 					 if($db_opcao!=1){
 						$resulta = $clinicialcert->sql_record($clinicialcert->sql_query_file($v50_inicial,"","v51_certidao as certidao","",""));
 						$numrows = $clinicialcert->numrows;
@@ -202,7 +202,7 @@ $clrotulo->label("v51_certidao");
         </fieldset>
 	  </td>
     </tr>
-  <? } ?>
+  <?php } ?>
   </table>
   </fieldset>
          <input type="hidden" name="numcert" value="<?=@$numrows?>">
@@ -210,7 +210,7 @@ $clrotulo->label("v51_certidao");
          <input type="hidden" name="valorchave" value="<?=@$valorchave?>">
         <input name="<?=($db_botao==1?"incluir":($db_botao==2?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_botao==1?"Incluir":($db_botao==2?"Alterar":"Excluir"))?>" <?=($db_opcao==1||$db_opcao==2?'onclick="return js_verificacerti();"':'')?>  <?=($botao==3?'disabled':'')?>>
         <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-        <?
+        <?php
         if ($db_opcao == 2) {
 		  echo '<input name="novacert" type="button" id="novacert" value="Nova Certidão" onclick="js_novaCert();" >';
         }
@@ -225,9 +225,9 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  <?if($db_botao!=1){?>
+  <?php if($db_botao!=1){?>
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
-  <?}?>
+  <?php }?>
 }
 function js_advog(mostra){
   var advog=document.form1.v50_advog.value;

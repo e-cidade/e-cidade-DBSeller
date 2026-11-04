@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE solicitemprot
-class cl_solicitemprot { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc49_solicitem = 0; 
-   var $pc49_protprocesso = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_solicitemprot {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc49_solicitem = 0;
+   var $pc49_protprocesso = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc49_solicitem = int8 = Código Item da Solicitação 
-                 pc49_protprocesso = int4 = Código do processo 
+                 pc49_solicitem = int8 = Código Item da Solicitação
+                 pc49_protprocesso = int4 = Código do processo
                  ";
-   //funcao construtor da classe 
-   function cl_solicitemprot() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("solicitemprot"); 
+     $this->rotulo = new rotulo("solicitemprot");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_solicitemprot {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc49_solicitem = ($this->pc49_solicitem == ""?@$GLOBALS["HTTP_POST_VARS"]["pc49_solicitem"]:$this->pc49_solicitem);
        $this->pc49_protprocesso = ($this->pc49_protprocesso == ""?@$GLOBALS["HTTP_POST_VARS"]["pc49_protprocesso"]:$this->pc49_protprocesso);
@@ -74,9 +74,9 @@ class cl_solicitemprot {
      }
    }
    // funcao para inclusao
-   function incluir ($pc49_solicitem){ 
+   public function incluir ($pc49_solicitem){
       $this->atualizacampos();
-     if($this->pc49_protprocesso == null ){ 
+     if($this->pc49_protprocesso == null ){
        $this->erro_sql = " Campo Código do processo nao Informado.";
        $this->erro_campo = "pc49_protprocesso";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_solicitemprot {
        $this->erro_status = "0";
        return false;
      }
-       $this->pc49_solicitem = $pc49_solicitem; 
-     if(($this->pc49_solicitem == null) || ($this->pc49_solicitem == "") ){ 
+       $this->pc49_solicitem = $pc49_solicitem;
+     if(($this->pc49_solicitem == null) || ($this->pc49_solicitem == "") ){
        $this->erro_sql = " Campo pc49_solicitem nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_solicitemprot {
        return false;
      }
      $sql = "insert into solicitemprot(
-                                       pc49_solicitem 
-                                      ,pc49_protprocesso 
+                                       pc49_solicitem
+                                      ,pc49_protprocesso
                        )
                 values (
-                                $this->pc49_solicitem 
-                               ,$this->pc49_protprocesso 
+                                $this->pc49_solicitem
+                               ,$this->pc49_protprocesso
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Processos   para os itens ($this->pc49_solicitem) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_solicitemprot {
        $resac = db_query("insert into db_acount values($acount,1311,7833,'','".AddSlashes(pg_result($resaco,0,'pc49_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc49_solicitem=null) { 
+   public function alterar ($pc49_solicitem=null) {
       $this->atualizacampos();
      $sql = " update solicitemprot set ";
      $virgula = "";
-     if(trim($this->pc49_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_solicitem"])){ 
+     if(trim($this->pc49_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_solicitem"])){
        $sql  .= $virgula." pc49_solicitem = $this->pc49_solicitem ";
        $virgula = ",";
-       if(trim($this->pc49_solicitem) == null ){ 
+       if(trim($this->pc49_solicitem) == null ){
          $this->erro_sql = " Campo Código Item da Solicitação nao Informado.";
          $this->erro_campo = "pc49_solicitem";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_solicitemprot {
          return false;
        }
      }
-     if(trim($this->pc49_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_protprocesso"])){ 
+     if(trim($this->pc49_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_protprocesso"])){
        $sql  .= $virgula." pc49_protprocesso = $this->pc49_protprocesso ";
        $virgula = ",";
-       if(trim($this->pc49_protprocesso) == null ){ 
+       if(trim($this->pc49_protprocesso) == null ){
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "pc49_protprocesso";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_solicitemprot {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processos   para os itens nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc49_solicitem;
@@ -214,14 +214,14 @@ class cl_solicitemprot {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc49_solicitem=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc49_solicitem=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc49_solicitem));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_solicitemprot {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processos   para os itens nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc49_solicitem;
@@ -276,11 +276,11 @@ class cl_solicitemprot {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_solicitemprot {
       }
      return $result;
    }
-   function sql_query ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -325,15 +325,15 @@ class cl_solicitemprot {
      $sql2 = "";
      if($dbwhere==""){
        if($pc49_solicitem!=null ){
-         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem "; 
-       } 
+         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -342,10 +342,10 @@ class cl_solicitemprot {
      }
      return $sql;
   }
-   function sql_query_and ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_and ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -367,15 +367,15 @@ class cl_solicitemprot {
      $sql2 = "";
      if($dbwhere==""){
        if($pc49_solicitem!=null ){
-         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem "; 
-       } 
+         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,10 +384,10 @@ class cl_solicitemprot {
      }
      return $sql;
   }
-   function sql_query_andam ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_andam ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,20 +402,20 @@ class cl_solicitemprot {
      $sql .= "      left join solicitempcmater  on  solicitem.pc11_codigo = solicitempcmater.pc16_solicitem";
      $sql .= "      left join pcmater  on  pcmater.pc01_codmater = solicitempcmater.pc16_codmater";
      $sql .= "      left join proctransferproc on p63_codproc = p58_codproc";
-     $sql .= "      left join proctransfer on p63_codtran = p62_codtran";     
-     $sql .= "      left join db_depart on p62_coddeptorec = coddepto";     
+     $sql .= "      left join proctransfer on p63_codtran = p62_codtran";
+     $sql .= "      left join db_depart on p62_coddeptorec = coddepto";
      $sql2 = "";
      if($dbwhere==""){
        if($pc49_solicitem!=null ){
-         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem "; 
-       } 
+         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -424,10 +424,10 @@ class cl_solicitemprot {
      }
      return $sql;
   }
-   function sql_query_file ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,15 +440,15 @@ class cl_solicitemprot {
      $sql2 = "";
      if($dbwhere==""){
        if($pc49_solicitem!=null ){
-         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem "; 
-       } 
+         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,10 +457,10 @@ class cl_solicitemprot {
      }
      return $sql;
   }
-   function sql_query_transf ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_transf ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,15 +477,15 @@ class cl_solicitemprot {
      $sql2 = "";
      if($dbwhere==""){
        if($pc49_solicitem!=null ){
-         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem "; 
-       } 
+         $sql2 .= " where solicitemprot.pc49_solicitem = $pc49_solicitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,14 +83,14 @@ function js_preenchelivro(livro,folha){
 <form class="container" name="form1" action="div4_processalivro001.php" method="post" target="" onSubmit="js_marca()">
   <fieldset>
     <legend>Processamento do Livro - Livro da Dívida</legend>	
-	<?
+	<?php
 	  if(!isset($processar)) {
 	?>
 	<table class="form-container">
 	<tr>
 	  <td>Complementar:</td>
 	  <td>
-	    <?
+	    <?php
 	      $arr=array("nao"=>"Não","sim"=>"Sim");
 	      db_select("complementar",$arr,true,1,"onchange='js_trocalivro(this.value)'");
 	    ?>
@@ -99,7 +99,7 @@ function js_preenchelivro(livro,folha){
     <tr>
       <td><?=$Lv01_exerc?></td>
       <td>
-		<?
+		<?php
 		  $sSqlDivida = $cldivida->sql_query_file(null, "distinct v01_exerc",""," coalesce(v01_livro,0) = 0");
 		  $result     = $cldivida->sql_record($sSqlDivida);
 		  $numrows    = $cldivida->numrows;
@@ -124,12 +124,12 @@ function js_preenchelivro(livro,folha){
 		?>
 	  </td>
 	</tr>
-	<?
+	<?php
 	//<tr>
 	//<td><b>Data para correção:<b/></td>
 	//<td>
 	?>
-	<?
+	<?php
 	//if(empty($v01_dtoper_dia)){
 	//  $v01_dtoper_dia =  date("d",db_getsession("DB_datausu"));
 	//  $v01_dtoper_mes =  date("m",db_getsession("DB_datausu"));
@@ -140,11 +140,11 @@ function js_preenchelivro(livro,folha){
 	<tr>
 	  <td>Data inicial de inscrição:</td>
 	  <td>
-		<?
+		<?php
 		  db_inputdata('dtini',@$dtini_dia,@$dtini_mes,@$dtini_ano,true,'text',$db_opcao,"");
 		?>
 		<b>&nbsp;À&nbsp;</b>
-		<?
+		<?php
 		  db_inputdata('dtfim',@$dtfim_dia,@$dtfim_mes,@$dtfim_ano,true,'text',$db_opcao,"");
 		?>
 	  </td>
@@ -152,7 +152,7 @@ function js_preenchelivro(livro,folha){
 	<tr>
 	  <td>Numero da ultima página:</td>
 	  <td>
-		<?
+		<?php
 		  if(empty($v01_folha)&&(!isset($complementar)||isset($complementar)&&$complementar!="sim")){
 		    $v01_folha=1;
 		  }
@@ -168,7 +168,7 @@ function js_preenchelivro(livro,folha){
 	</tr>
 	<tr>
 	  <td>
-		<?	   
+		<?php	   
 		  if (isset($complementar)&&$complementar=="sim"){
 		    $opc = 1;
 		  }else{
@@ -178,7 +178,7 @@ function js_preenchelivro(livro,folha){
 		?>
 	  </td>
 	  <td>
-		<?
+		<?php
 		  if(empty($processar)&&(!isset($complementar)||isset($complementar)&&$complementar!="sim")){	   
 		    $result=$cldivida->sql_record($cldivida->sql_query_file(null,"max(v01_livro)+1 as v01_livro",""," v01_folha <> 0"));
 		    db_fieldsmemory($result,0);        
@@ -191,7 +191,7 @@ function js_preenchelivro(livro,folha){
 	<tr>
 	  <td>Opção de Seleção:</td>
 	  <td>
-		<?
+		<?php
 		  $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
 		  db_select('sele',$xxx,true,2);
 		?>
@@ -199,7 +199,7 @@ function js_preenchelivro(livro,folha){
 	</tr>
 	<tr>
 	  <td colspan="2">
-		<?
+		<?php
 		  $aux = new cl_arquivo_auxiliar;
 		  $aux->cabecalho = "<strong>PROCEDÊNCIAS</strong>";
 		  $aux->codigo = "v03_codigo";
@@ -226,13 +226,13 @@ function js_preenchelivro(livro,folha){
   <input name="processar" type='submit' value="Processar">
   <input name="mostra" type='button' value="Mostra Livros" onclick="js_mostralivro();" >
 
-<?
+<?php
 }
 ?>
 <table>
 <tr>
 <td  colspan='2' align='center'>
-<?
+<?php
 if(isset($processar)){
   db_criatermometro("termometro", "Concluído");
 }
@@ -244,7 +244,7 @@ if(isset($processar)){
 
 </form>
 
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -257,7 +257,7 @@ function js_marca(){
   }
 }
 </script>
-<?
+<?php
 
 if(isset($processar)){
   $sqlerro=false;
@@ -314,7 +314,7 @@ if(isset($processar)){
     }
     $tot_reg=$numrows-1;
     for($i=0; $i<$numrows; $i++){
-      db_atutermometro($i, $numrows, "termometro");
+      //   db_atutermometro($i, $numrows, "termometro");
       if($count_div >= 30){
         $v01_folha++;
 		$count_div = 0;
@@ -360,7 +360,7 @@ if(isset($processar)){
     alert("Livro processado com Sucesso!! \n Imprima o Livro na Rotina de Reemissão");
     location.href='div4_processalivro001.php';
     </script>
-    <?
+    <?php
   }
 }
 ?>

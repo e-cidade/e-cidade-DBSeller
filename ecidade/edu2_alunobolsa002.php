@@ -124,7 +124,7 @@ for ($iCont = 0; $iCont < $iNumLinhas; $iCont++) {
   $oDadosMatricula = db_utils::fieldsmemory($rsMatricula, $iCont);
   
   /**
-   * Alunos maiores que 17 Anos, não entram no calculo do Auxílio Brasil
+   * Alunos maiores que 17 Anos, não entram no calculo do Bolsa Família
    */
   if ( $oDadosMatricula->idade > 17 ) {
     continue;
@@ -175,7 +175,7 @@ for ($iCont = 0; $iCont < $iNumLinhas; $iCont++) {
   $sWhereMat     = " ed59_i_turma = {$oDadosMatricula->ed57_i_codigo} and ed59_i_serie = {$oDadosMatricula->ed11_i_codigo} ";
   $sWhereMat    .= " AND ed60_i_turma = $oDadosMatricula->ed57_i_codigo ";
   $sWhereMat    .= " AND ed72_c_amparo = 'N' AND ed59_c_freqglob != 'A' AND ed95_i_aluno = $oDadosMatricula->ed47_i_codigo ";
-  $sWhereMat    .= " AND ed60_c_ativa = 'S' AND ed09_c_somach = 'S'" ;
+  $sWhereMat    .= " AND ed60_c_ativa = 'S' AND ed09_c_somach = 'S' AND ed09_i_codigo = $oGet->iPeriodo " ;
   $sSqlMat       = $oDaoMatricula->sql_query_frequencia("", $sCamposMat, null,$sWhereMat);
   
   $rsMat         = $oDaoMatricula->sql_record($sSqlMat);
@@ -187,7 +187,7 @@ for ($iCont = 0; $iCont < $iNumLinhas; $iCont++) {
     $iPercFreq = db_utils::fieldsMemory($rsMat, 0)->percent == "0" ? 100 : db_utils::fieldsMemory($rsMat, 0)->percent;
   }
   $_SESSION["DB_coddepto"] = $oDadosMatricula->ed57_i_escola;
-  $oAluno->nFrequencia = ArredondamentoFrequencia::arredondar($iPercFreq, $oGet->iAno);
+  $oAluno->nFrequencia = ArredondamentoFrequencia::formatar($iPercFreq, $oGet->iAno);
   if (empty($oParametros->iEscola)) {
     ArredondamentoFrequencia::destroy();
   }
@@ -219,11 +219,12 @@ $oPdf = new PDF();
 $oPdf->AliasNbPages();
 $oPdf->Open();
 $oPdf->SetAutoPageBreak(false, 20);
-$head1 = "RELATÓRIO DE ALUNOS COM AUXÍLIO BRASIL";
+$head1 = "RELATÓRIO DE ALUNOS COM BOLSA FAMÍLIA";
 $head2 = "Escola: {$sNomeEscola}";
 $head3 = "Etapa: {$sNomeEtapa}";
 $head4 = "Ano: {$oGet->iAno}";
 $head5 = "Frequência: {$sLabelFrequencia}";
+$head6 = "Período: ".utf8_decode($oGet->oPeriodo);
 $oPdf->SetFillColor(240);
 $iTotalGeral  = 0;
 

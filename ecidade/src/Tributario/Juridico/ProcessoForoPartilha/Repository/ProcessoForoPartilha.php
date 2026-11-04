@@ -55,10 +55,11 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
 
     /**
      * @param ProcessoForoPartilhaEntity $oProcessoForoPartilha
+     * @param bool $comCalculoCustas
      * @return bool
      * @throws DBException
      */
-    public function persist(ProcessoForoPartilhaEntity $oProcessoForoPartilha)
+    public function persist(ProcessoForoPartilhaEntity $oProcessoForoPartilha, $comCalculoCustas = true)
     {
         $oDaoProcessoForoPartilha = new cl_processoforopartilha();
         $iSequencial = $oProcessoForoPartilha->getCodigo();
@@ -99,11 +100,13 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
 
         $oProcessoForoPartilha->setCodigo($oDaoProcessoForoPartilha->v76_sequencial);
 
-        if (count($oProcessoForoPartilha->getCustas()) > 0) {
-            foreach ($oProcessoForoPartilha->getCustas() as $oCustas) {
-                $oCustas->setProcessoForoPartilha($oProcessoForoPartilha);
-                $oProcessoForoPartilhaCustaRepository = ProcessoForoPartilhaCustaRepository::getInstance();
-                $oProcessoForoPartilhaCustaRepository->persist($oCustas);
+        if ($comCalculoCustas) {
+            if (count($oProcessoForoPartilha->getCustas()) > 0) {
+                foreach ($oProcessoForoPartilha->getCustas() as $oCustas) {
+                    $oCustas->setProcessoForoPartilha($oProcessoForoPartilha);
+                    $oProcessoForoPartilhaCustaRepository = ProcessoForoPartilhaCustaRepository::getInstance();
+                    $oProcessoForoPartilhaCustaRepository->persist($oCustas);
+                }
             }
         }
 

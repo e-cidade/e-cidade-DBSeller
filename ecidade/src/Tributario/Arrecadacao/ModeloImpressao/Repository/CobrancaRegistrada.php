@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -103,13 +103,14 @@ class CobrancaRegistrada
         $sSql .= "                              from arrecad                                                          ";
         $sSql .= "                             where arrecad.k00_numpre = recibopaga.k00_numpre                       ";
         $sSql .= "                               and arrecad.k00_numpar = recibopaga.k00_numpar                       ";
-        $sSql .= "      and arrecad.k00_receit = recibopaga.k00_receit and k00_hist <> 11403) as k00_valor_historico, ";
+        $sSql .= "                               and arrecad.k00_receit = recibopaga.k00_receit                       ";
+        $sSql .= "                               and k00_hist not in (11403, 11404)) as k00_valor_historico,          ";
         $sSql .= "                          recibopaga.k00_receit,                                                    ";
         $sSql .= "                          recibopaga.k00_numpar,                                                    ";
         $sSql .= "                          recibopaga.k00_numpre,                                                    ";
         $sSql .= "                          recibopaga.k00_numnov                                                     ";
         $sSql .= "                     from recibopaga                                                                ";
-        $sSql .= "                    where k00_numnov = {$iNumnov} and k00_hist <> 11403                             ";
+        $sSql .= "                    where k00_numnov = {$iNumnov} and k00_hist not in (11403, 11404)                ";
         $sSql .= "                    group by recibopaga.k00_receit,                                                 ";
         $sSql .= "                             recibopaga.k00_numpar,                                                 ";
         $sSql .= "                             recibopaga.k00_numpre,                                                 ";

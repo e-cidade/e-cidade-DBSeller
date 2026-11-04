@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -98,13 +98,13 @@ function js_emite() {
          <table  align="center">
             <tr>
               <td align="center" colspan="3">
-                <? db_selinstit('',300,100); ?>
+                <?php db_selinstit('',300,100); ?>
               </td>
             </tr>
             
             <tr>
                 <td colspan=2 nowrap><b>Período:&nbsp;</b>
-                    <?
+                    <?php
 	                    if ($iAnoUsu < 2010 ) {
 	              
 	                      $aListaPeriodos = array("1B" => "1 º Bimestre",

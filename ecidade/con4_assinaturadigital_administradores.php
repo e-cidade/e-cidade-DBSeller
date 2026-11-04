@@ -129,7 +129,7 @@ $db_opcao = 1;
           <label for="db67_cpf_cnpj"><?= $Ldb67_cpf_cnpj ?></label>
         </td>
         <td colspan="3">
-          <? db_input('db67_cpf_cnpj', 20, '', true, 'text', 3, "", "", "", "field-size6", 20) ?>
+          <?php db_input('db67_cpf_cnpj', 20, '', true, 'text', 3, "", "", "", "field-size6", 20) ?>
         </td>
       </tr>
       <tr>
@@ -137,13 +137,13 @@ $db_opcao = 1;
           <label for="db67_tipo"><?= $Ldb67_tipo ?></label>
         </td>
         <td>
-          <? db_select('db67_tipo', $tipos, true, $db_opcao, 'class="field-size3"') ?>
+          <?php db_select('db67_tipo', $tipos, true, $db_opcao, 'class="field-size3"') ?>
         </td>
         <td>
           <label for="db67_permissao"><?= $Ldb67_permissao ?></label>
         </td>
         <td>
-          <? db_select('db67_permissao', $permissoes, true, $db_opcao, 'class="field-size5"') ?>
+          <?php db_select('db67_permissao', $permissoes, true, $db_opcao, 'class="field-size5"') ?>
         </td>
       </tr>
     </table>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("q02_numcgm");
        <?=@$Ly91_termovist?>
     </td>
     <td> 
-<?
+<?php
 db_input('y91_termovist',10,$Iy91_termovist,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty91_inscr?>">
-       <?
+       <?php
        db_ancora(@$Ly91_inscr,"js_pesquisay91_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y91_inscr',8,$Iy91_inscr,true,'text',$db_opcao," onchange='js_pesquisay91_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',3,'')
        <?=@$Ly91_datatermo?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y91_datatermo',@$y91_datatermo_dia,@$y91_datatermo_mes,@$y91_datatermo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('y91_datatermo',@$y91_datatermo_dia,@$y91_datatermo_mes,@$y91_datat
        <?=@$Ly91_exerc?>
     </td>
     <td> 
-<?
+<?php
 db_input('y91_exerc',4,$Iy91_exerc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('y91_exerc',4,$Iy91_exerc,true,'text',$db_opcao,"")
        <?=@$Ly91_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('y91_codigo',7,$Iy91_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('y91_codigo',7,$Iy91_codigo,true,'text',$db_opcao,"")
        <?=@$Ly91_tipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('y91_tipo',3,$Iy91_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_termovist.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

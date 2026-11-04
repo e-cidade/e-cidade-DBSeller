@@ -32,6 +32,7 @@
  */
 
 use App\Domain\Financeiro\Empenho\Models\RetencaoReceitasProdutorRural;
+use App\Domain\Financeiro\Empenho\Services\RetencaoReceitasSubcontratacaoService;
 use App\Domain\Financeiro\Empenho\Services\TipoServicoObraService;
 use ECidade\Financeiro\Empenho\Retencao\Apropriacao\Apropriacao;
 
@@ -122,6 +123,8 @@ class retencaoNota {
      */
     private $aRetencoes = array();
 
+    private $iCodigoNovoMovimento = null;
+
     private $codigoOrdem;
 
     /**
@@ -199,19 +202,20 @@ class retencaoNota {
         /*
          * Verificamos se o credor refere-se a pessoa juridica
          */
-        
+
         $clPagOrdem = new cl_pagordem();
-        $sqlCgm = $clPagOrdem->sql_query_pag($oRetencao->codigoOrdem, 
+        $sqlCgm = $clPagOrdem->sql_query_pag($oRetencao->codigoOrdem,
                                              "case when e49_numcgm is null then e60_numcgm else e49_numcgm end as cgm");
+        $sqlCgm = "select distinct cgm from ({$sqlCgm}) as x";
         $rsCgm = $clPagOrdem->sql_record($sqlCgm);
         if ($clPagOrdem->numrows == 0) {
             throw new Exception("Erro [3] - Erro ao buscar os dados do credor");
         }
-        
+
         $iNumCgm = db_utils::fieldsMemory($rsCgm, 0)->cgm;
-        
+
         $isPessoaJuridica = false;
-        
+
         $cgm = CgmFactory::getInstanceByCgm($iNumCgm);
         if ($cgm instanceof CgmJuridico) {
             $isPessoaJuridica = true;
@@ -223,7 +227,7 @@ class retencaoNota {
             foreach ($aRetencoes as $oRetencaoAtiva) {
 
                 if ( (   $oRetencaoAtiva->e21_retencaotipocalc == 1
-                       || $oRetencaoAtiva->e21_retencaotipocalc == 2 ) 
+                       || $oRetencaoAtiva->e21_retencaotipocalc == 2 )
                      && !$isPessoaJuridica) {
 
                     $sMsg  = "Erro [3] - Retenção de INSS não pode ser cadastrada, pois já foi informado ";
@@ -234,27 +238,48 @@ class retencaoNota {
             }
         }
 
-        if (isset($oRetencao->dadosReinf)) {
+        /**
+         * Cadastro dos dados Reinf
+         */
+        if (isset($oRetencao->dadosReinf) &&  $oRetencao->dadosReinf != null) {
+
             $dadosReinf = $oRetencao->dadosReinf;
             $oDadosRetencao->dadosReinf = new stdClass;
-            $oDadosRetencao->dadosReinf->evento = $dadosReinf->evento;
+            $oDadosRetencao->dadosReinf->evento = (isset($dadosReinf->evento)?$dadosReinf->evento:null);
 
-            if ($dadosReinf->evento == 'R-2010' && !empty($dadosReinf->tipoServicoNotaFiscal)) {
-                $oDadosRetencao->dadosReinf->e19_tiposerviconotafiscal   = $dadosReinf->tipoServicoNotaFiscal;
-                $oDadosRetencao->dadosReinf->e18_descricao               = $dadosReinf->tipoServicoNotaFiscal_descricao;
-                $oDadosRetencao->dadosReinf->e19_valornaoretidoprincipal = $dadosReinf->valorNaoRetidoPrincipal;
-                $oDadosRetencao->dadosReinf->e19_valorservico15          = $dadosReinf->valorServico15;
-                $oDadosRetencao->dadosReinf->e19_valorservico20          = $dadosReinf->valorServico20;
-                $oDadosRetencao->dadosReinf->e19_valorservico25          = $dadosReinf->valorServico25;
-                $oDadosRetencao->dadosReinf->e19_valornaoretidoadicional = $dadosReinf->valorNaoRetidoAdicional;
-                $oDadosRetencao->dadosReinf->e154_tipo                   = $dadosReinf->indObra;
-                $oDadosRetencao->dadosReinf->e154_cno                    = $dadosReinf->indObraCNO;
-                $oDadosRetencao->dadosReinf->e154_numemp                 = $dadosReinf->numemp;
-            } elseif ($dadosReinf->evento == 'R-2055') {
-                $oDadosRetencao->dadosReinf->e158_vlrrat     = $dadosReinf->vlrrat ;
-                $oDadosRetencao->dadosReinf->e158_vlrsenar   = $dadosReinf->vlrsenar;
-                $oDadosRetencao->dadosReinf->e158_empnota    = $dadosReinf->empnota;
+            switch ($dadosReinf->evento) {
+                case 'R-2010':
+                    $oDadosRetencao->dadosReinf->e19_tiposerviconotafiscal   = $dadosReinf->tipoServicoNotaFiscal;
+                    $oDadosRetencao->dadosReinf->e18_descricao               = $dadosReinf->tipoServicoNotaFiscal_descricao;
+                    $oDadosRetencao->dadosReinf->e19_valornaoretidoprincipal = $dadosReinf->valorNaoRetidoPrincipal;
+                    $oDadosRetencao->dadosReinf->e19_valorservico15          = $dadosReinf->valorServico15;
+                    $oDadosRetencao->dadosReinf->e19_valorservico20          = $dadosReinf->valorServico20;
+                    $oDadosRetencao->dadosReinf->e19_valorservico25          = $dadosReinf->valorServico25;
+                    $oDadosRetencao->dadosReinf->e19_valornaoretidoadicional = $dadosReinf->valorNaoRetidoAdicional;
+                    $oDadosRetencao->dadosReinf->e154_tipo                   = $dadosReinf->indObra;
+                    $oDadosRetencao->dadosReinf->e154_cno                    = $dadosReinf->indObraCNO;
+                    $oDadosRetencao->dadosReinf->e154_numemp                 = $dadosReinf->numemp;
+                    $oDadosRetencao->dadosReinf->e19_indvalorbase            = true;
+                    break;
+                case 'R-2055':
+                    $oDadosRetencao->dadosReinf->e158_vlrrat     = $dadosReinf->vlrrat ;
+                    $oDadosRetencao->dadosReinf->e158_vlrsenar   = $dadosReinf->vlrsenar;
+                    $oDadosRetencao->dadosReinf->e158_empnota    = $dadosReinf->empnota;
+                    $oDadosRetencao->dadosReinf->e158_vlrcp      = $dadosReinf->vlrcp;
+                    break;
+                case 'R-4010-4020':
+                    $oDadosRetencao->dadosReinf->e167_sequencial = $dadosReinf->id;
+                    $oDadosRetencao->dadosReinf->e167_codigo = $dadosReinf->codigo;
+                    $oDadosRetencao->dadosReinf->e167_descricao = $dadosReinf->descricao;
+                    break;
             }
+        }
+
+        /**
+         * Cadastro das Subcontratacoes
+         */
+        if (isset($oRetencao->subcontratacoes) && is_array($oRetencao->subcontratacoes)) {
+            $oDadosRetencao->subcontratacoes = $oRetencao->subcontratacoes;
         }
 
         $oDadosRetencao->e23_valorretencao = $oRetencao->nValorRetencao;
@@ -394,7 +419,6 @@ class retencaoNota {
 
 				}
 				if (is_array($oRetencao->aMovimentos) && count($oRetencao->aMovimentos) > 0) {
-
 					for ($i = 0; $i < count($oRetencao->aMovimentos); $i++) {
 
 						$oDaoRetencaoMov = new cl_retencaoempagemov;
@@ -403,58 +427,85 @@ class retencaoNota {
 						$oDaoRetencaoMov->e27_principal        = "false";
 						$oDaoRetencaoMov->incluir(null);
 						if ($oDaoRetencaoMov->erro_status == 0) {
-
 							$sMsg  = "Erro[6] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
 							$sMsg .= "Erro Técnico: {$oDaoRetencaoMov->erro_msg}";
 							throw new Exception($sMsg);
-
 						}
 					}
 				}
 
+                // Dados do EFD-REINF
                 if (isset($oRetencao->dadosReinf)) {
-                    if ($oRetencao->dadosReinf->evento == 'R-2010' && !empty($oRetencao->dadosReinf->e19_tiposerviconotafiscal)) {
-                        $oDaoRetencaoReceitasAdicionais = new cl_retencaoreceitasadicionais();
-                        $oDaoRetencaoReceitasAdicionais->e19_retencaoreceitas        = $oDaoRetencaoReceita->e23_sequencial;
-                        $oDaoRetencaoReceitasAdicionais->e19_tiposerviconotafiscal   = $oRetencao->dadosReinf->e19_tiposerviconotafiscal;
-                        $oDaoRetencaoReceitasAdicionais->e19_valornaoretidoprincipal = str_replace(',', '.', $oRetencao->dadosReinf->e19_valornaoretidoprincipal);
-                        $oDaoRetencaoReceitasAdicionais->e19_valorservico15          = str_replace(',', '.', $oRetencao->dadosReinf->e19_valorservico15);
-                        $oDaoRetencaoReceitasAdicionais->e19_valorservico20          = str_replace(',', '.', $oRetencao->dadosReinf->e19_valorservico20);
-                        $oDaoRetencaoReceitasAdicionais->e19_valorservico25          = str_replace(',', '.', $oRetencao->dadosReinf->e19_valorservico25);
-                        $oDaoRetencaoReceitasAdicionais->e19_valornaoretidoadicional = str_replace(',', '.', $oRetencao->dadosReinf->e19_valornaoretidoadicional);
+                    switch ($oRetencao->dadosReinf->evento) {
+                        case 'R-2010':
+                            if (!empty($oRetencao->dadosReinf->e19_tiposerviconotafiscal)) {
+                                $oDaoRetencaoReceitasAdicionais = new cl_retencaoreceitasadicionais();
+                                $oDaoRetencaoReceitasAdicionais->e19_retencaoreceitas        = $oDaoRetencaoReceita->e23_sequencial;
+                                $oDaoRetencaoReceitasAdicionais->e19_tiposerviconotafiscal   = $oRetencao->dadosReinf->e19_tiposerviconotafiscal;
+                                $oDaoRetencaoReceitasAdicionais->e19_valornaoretidoprincipal = str_replace(',', '.', $oRetencao->dadosReinf->e19_valornaoretidoprincipal);
+                                $oDaoRetencaoReceitasAdicionais->e19_valorservico15          = str_replace(',', '.', $oRetencao->dadosReinf->e19_valorservico15);
+                                $oDaoRetencaoReceitasAdicionais->e19_valorservico20          = str_replace(',', '.', $oRetencao->dadosReinf->e19_valorservico20);
+                                $oDaoRetencaoReceitasAdicionais->e19_valorservico25          = str_replace(',', '.', $oRetencao->dadosReinf->e19_valorservico25);
+                                $oDaoRetencaoReceitasAdicionais->e19_valornaoretidoadicional = str_replace(',', '.', $oRetencao->dadosReinf->e19_valornaoretidoadicional);
+                                $oDaoRetencaoReceitasAdicionais->e19_indvalorbase            = true;
 
-                        $oDaoRetencaoReceitasAdicionais->incluir(null);
-                        if ($oDaoRetencaoReceitasAdicionais->erro_status == 0) {
-                            $sMsg  = "Erro[7] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
-                            $sMsg .= "Erro Técnico: {$oDaoRetencaoReceitasAdicionais->erro_msg}";
-                            throw new Exception($sMsg);
-                        }
+                                $oDaoRetencaoReceitasAdicionais->incluir(null);
+                                if ($oDaoRetencaoReceitasAdicionais->erro_status == 0) {
+                                    $sMsg  = "Erro[7] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
+                                    $sMsg .= "Erro Técnico: {$oDaoRetencaoReceitasAdicionais->erro_msg}";
+                                    throw new Exception($sMsg);
+                                }
 
-                        try {
-                            $tipoServicoObra = new TipoServicoObraService();
-                            $tipoServicoObra->setNumemp($oRetencao->dadosReinf->e154_numemp);
-                            $tipoServicoObra->setTipo($oRetencao->dadosReinf->e154_tipo);
-                            $tipoServicoObra->setCNO($oRetencao->dadosReinf->e154_cno);
-                            $tipoServicoObra->save();
-                        } catch (Exception $e) {
-                            $sMsg  = "Erro[9] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
-                            $sMsg .= "Erro Técnico: {$e->getMessage()}";
-                            throw new Exception($sMsg);
-                        }
-                    } elseif ($oRetencao->dadosReinf->evento == 'R-2055') {
-                        $retencaoReceitasProdutorRural = new RetencaoReceitasProdutorRural();
-                        $retencaoReceitasProdutorRural->e158_retencaoreceitas = $oDaoRetencaoReceita->e23_sequencial;
-                        $retencaoReceitasProdutorRural->e158_vlrrat           = $oRetencao->dadosReinf->e158_vlrrat;
-                        $retencaoReceitasProdutorRural->e158_vlrsenar         = $oRetencao->dadosReinf->e158_vlrsenar;
-                        $retencaoReceitasProdutorRural->e158_empnota          = $oRetencao->dadosReinf->e158_empnota;
+                                try {
+                                    $tipoServicoObra = new TipoServicoObraService();
+                                    $tipoServicoObra->setNumemp($oRetencao->dadosReinf->e154_numemp);
+                                    $tipoServicoObra->setTipo($oRetencao->dadosReinf->e154_tipo);
+                                    $tipoServicoObra->setCNO($oRetencao->dadosReinf->e154_cno);
+                                    $tipoServicoObra->save();
+                                } catch (Exception $e) {
+                                    $sMsg  = "Erro[9] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
+                                    $sMsg .= "Erro Técnico: {$e->getMessage()}";
+                                    throw new Exception($sMsg);
+                                }
+                            }
+                            break;
+                        case 'R-2055':
+                            $retencaoReceitasProdutorRural = new RetencaoReceitasProdutorRural();
+                            $retencaoReceitasProdutorRural->e158_retencaoreceitas = $oDaoRetencaoReceita->e23_sequencial;
+                            $retencaoReceitasProdutorRural->e158_vlrrat           = $oRetencao->dadosReinf->e158_vlrrat;
+                            $retencaoReceitasProdutorRural->e158_vlrsenar         = $oRetencao->dadosReinf->e158_vlrsenar;
+                            $retencaoReceitasProdutorRural->e158_vlrcp            = $oRetencao->dadosReinf->e158_vlrcp;
+                            $retencaoReceitasProdutorRural->e158_empnota          = $oRetencao->dadosReinf->e158_empnota;
 
-                        try {
-                            $retencaoReceitasProdutorRural->save();
-                        } catch (Exception $e) {
-                            $sMsg  = "Erro[10] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
-                            $sMsg .= "Erro Técnico: {$e->getMessage()}";
-                            throw new Exception($sMsg);
+                            try {
+                                $retencaoReceitasProdutorRural->save();
+                            } catch (Exception $e) {
+                                $sMsg  = "Erro[10] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
+                                $sMsg .= "Erro Técnico: {$e->getMessage()}";
+                                throw new Exception($sMsg);
+                            }
+                            break;
+                        case 'R-4010-4020':
+                            $this->vincularRetencaoNaturezaRendimento(
+                                $oDaoRetencaoReceita->e23_sequencial,
+                                $oRetencao->dadosReinf->e167_sequencial
+                            );
+                            break;
+                    }
+                }
+
+                // Dados de Subcontratacoes
+                if (isset($oRetencao->subcontratacoes)) {
+                    try {
+                        foreach ($oRetencao->subcontratacoes as $subcontratacao) {
+                            $subcontratacao->e163_retencaoreceitas = $oDaoRetencaoReceita->e23_sequencial;
+                            $oSubcontratacaoService = new RetencaoReceitasSubcontratacaoService;
+                            $oSubcontratacaoService->saveWithOldConnection($subcontratacao);
                         }
+                    } catch (Exception $e) {
+                        $sMsg  = "Erro[11] - Não foi possível incluir Retencao {$oRetencao->e21_sequencial}.\n";
+                        $sMsg .= "Erro Técnico: {$e->getMessage()}";
+                        throw new Exception($sMsg);
                     }
                 }
 			}
@@ -482,6 +533,24 @@ class retencaoNota {
 	function getCodigoMovimento() {
 		return $this->iCodMovimento;
 	}
+
+	/**
+         * Seta  o Codigo do novo movimento da agenda gerado para a retencao
+         *
+         * @param integer $iCodigoNovoMovimento Código do movimento
+         */
+        function setCodigoNovoMovimento($iCodigoNovoMovimento) {
+           $this->iCodigoNovoMovimento = $iCodigoNovoMovimento;
+        }
+
+        /**
+         * retorna o Codigo do novo movimento da agenda gerado para a retencao
+         *
+         * @return integer
+         */
+        function getCodigoNovoMovimento() {
+           return $this->iCodigoNovoMovimento;
+        }
 
 	/**
 	 * Seta o codigo da nota de liquidacao (pagordem)
@@ -650,8 +719,16 @@ class retencaoNota {
                         $oRetencao->dadosReinf->e158_retencaoreceitas = $oRetencao->e23_sequencial;
                         $oRetencao->dadosReinf->e158_vlrrat = $oRetencao->e158_vlrrat;
                         $oRetencao->dadosReinf->e158_vlrsenar = $oRetencao->e158_vlrsenar;
+                        $oRetencao->dadosReinf->e158_vlrcp = $oRetencao->e158_vlrcp;
                         $oRetencao->dadosReinf->e158_empnota = $oRetencao->e158_empnota;
                     }
+
+                    /**
+                     * Dados da subcontratacao
+                     */
+                    $oSubcontratacaoService = new RetencaoReceitasSubcontratacaoService;
+                    $aSubcontratacoes = $oSubcontratacaoService->getSubcontratacao($oRetencao->e23_sequencial);
+                    $oRetencao->subcontratacoes = $aSubcontratacoes;
 
                     /**
                      * Buscamos todos os movimentos que foram usados para fazer parte do calculo.
@@ -827,7 +904,9 @@ class retencaoNota {
        $codord = $this->iNotaLiquidacao;
        $empenho = "{$oNotaLiquidacao->getDadosOrdem()->e60_codemp}/{$oNotaLiquidacao->getDadosOrdem()->e60_anousu}";
 
-       $sObservacao = "Valor Correspondente a Retenção de Pagamento: Empenho: {$empenho}  OP: {$codord} Nota: {$nota}.";
+       $oNota = new NotaLiquidacao($nota);
+
+       $sObservacao = "Valor Correspondente a Retenção de Pagamento: Empenho: {$empenho}  OP: {$codord} Nota: {$oNota->getNumeroNota()}.";
 
        $oSlip = new slip();
        $oSlip->setContaCredito($iCodigoCredito);
@@ -844,7 +923,6 @@ class retencaoNota {
        Slip::vincularTipoOperacaoSlip($oSlip->getSlip(), 13);
        Slip::vincularSlipReceitaRetencao($oSlip->getSlip(), $retencaoReceita);
 
-       //dump($oSlip);
      }
 
   }
@@ -864,12 +942,16 @@ class retencaoNota {
     $oDaoSaltes = new cl_saltes;
 
     $sWhere  = "c61_codigo = $iRecurso" ;
-    $sWhere .= "and substr(c60_estrut,1,7) = '1111119' limit 1" ;
+    $sWhere .= " and substr(c60_estrut,1,7) in ('1111106', '1111119') limit 1" ;
 
     $sql = $oDaoSaltes->sql_query_orcamento_recurso(null, $iInstit,$iAnousu ,"c61_reduz",null, $sWhere, null);
     $rs = $oDaoSaltes->sql_record($sql);
     if ($oDaoSaltes->numrows <= 0) {
-      throw new Exception("Erro ao buscar Reduzido para credito para o slip da retençao.");
+
+      $msg =   "Erro ao buscar Reduzido para credito para o slip da retençao. \n";
+      $msg .= " Não foi encontrado reduzido para o estrutural: ('1111106...', '1111109...') \n";
+      $msg .= " com recurso código: {$iRecurso} ";
+      throw new Exception($msg);
     }
 
     return db_utils::fieldsMemory($rs, 0)->c61_reduz;
@@ -916,6 +998,7 @@ class retencaoNota {
 
         foreach ($aRetencoes as $oRetencao) {
 
+
             if (empty($oRetencao->e23_sequencial)){
                 throw new Exception("Erro [2] - Retenção não Informada");
             }
@@ -926,10 +1009,19 @@ class retencaoNota {
             $this->setConta($iContaOriginal);
 
 
-            if (slip::getParametroSlipAutomatico()) {
+            /**
+             * se o parametro do caixa Utiliza Conta Extra Orçamentária: for SIM
+             *   vamos alterar para o debito ser a extra da conta da tesouraria
+             */
+            $ParametroContaExtra = ParametroCaixa::getUtilizaContaExtraOrcamentaria(db_getsession("DB_instit"));
+            $sParametroSlipAuto = ParametroCaixa::getParametroMomentoSlipAutomatico(db_getsession("DB_instit"));
+
+            $oContaTesouraria = new contaTesouraria($iContaOriginal);
+
+
+            if ($sParametroSlipAuto == 1) {
                 $this->gerarSlipsDasRetencoesReceitaExtra($oRetencao);
             }
-
 
             $oDaoRetencaoReceitas                 = new cl_retencaoreceitas;
             $oDaoRetencaoReceitas->e23_sequencial = $oRetencao->e23_sequencial;
@@ -952,22 +1044,25 @@ class retencaoNota {
                  * Verificamos se a receita da retencao não e uma receita-extra(receita encontra-se na tabela tabplan)
                 */
                 $receitaExtra = $this->getTipoReceita($oRetencao->k02_codigo) == 2;
-                if ($receitaExtra && (!APROPRIACAO_RETENCAO || (APROPRIACAO_RETENCAO && $empenho->isFolhaPagamento()))) {
+                if ( $ParametroContaExtra && $oRetencao->k02_tipo == "E" &&
+                    !APROPRIACAO_RETENCAO ) {
 
-                    /*
-                     * Buscamos na tabela saltesextra para verificar se foi cadastrado uma conta
-                    * para realizar o recolhimento de receita.
-                    */
 
-                    $oDaoSaltesExtra = new cl_saltesextra;
-                    $sSqlContaExtra  = $oDaoSaltesExtra->sql_query_file(null, "*",null,"k109_saltes = {$iContaOriginal}");
-                    $rsContaExtra    = $oDaoSaltesExtra->sql_record($sSqlContaExtra);
-                    if ($oDaoSaltesExtra->numrows == 1) {
+                            /**
+                            * validar a conta extra com data limite
+                            */
+                            if ($oContaTesouraria->getContaExtra() != null) {
+                                $validaContaExtra = new contaTesouraria($oContaTesouraria->getContaExtra());
+                                if (  $validaContaExtra->getDataLimite() != null) {
+                                    $dataLimiteExtra = db_formatar($validaContaExtra->getDataLimite(), "d");
+                                    $erro = "Erro [3] - Conta extra: {$oContaTesouraria->getContaExtra()} da conta: {$iContaOriginal} possui data limite: {$dataLimiteExtra}" ;
+                                    throw new Exception($erro);
+                                }
+                            }
 
-                        $iContaExtra = db_utils::fieldsMemory($rsContaExtra, 0)->k109_contaextra;
-                        if (!empty($iContaExtra)) {
-
+                            $iContaExtra = $oContaTesouraria->getContaExtra();
                             $this->setConta($iContaExtra);
+
                             /*
                              * Pesquisamos se foi incluido valores para fazer transferencia bancaria.
                             * caso exista transferencia, devemos deduzir o valor da retencao do valor a transferir
@@ -983,6 +1078,8 @@ class retencaoNota {
                                     $nValorRetencao                      = round(($oMovimentoSlip->k107_valor - $oRetencao->e23_valorretencao),2);
                                     $oDaoEmpageMovSlips->k107_valor      = "$nValorRetencao";
                                     $oDaoEmpageMovSlips->k107_sequencial = $oMovimentoSlip->k107_sequencial;
+                                    $oDaoEmpageMovSlips->k107_ctacredito = $oMovimentoSlip->k107_ctacredito;
+                                    $oDaoEmpageMovSlips->k107_ctadebito = $oMovimentoSlip->k107_ctadebito;
                                     $oDaoEmpageMovSlips->alterar($oMovimentoSlip->k107_sequencial);
                                     if ($oDaoEmpageMovSlips->erro_status == 0) {
 
@@ -992,8 +1089,6 @@ class retencaoNota {
                                     }
                                 }
                             }
-                        }
-                    }
 
                 }
 
@@ -1014,6 +1109,10 @@ class retencaoNota {
 
 
                     $oReciboAvulso = new \recibo(1, $this->getNumCgm());
+
+                    //$iConta =
+                    //dump("Conta: {$this->getConta()} ");
+
                     $oReciboAvulso->setConta($this->getConta());
                     $oReciboAvulso->adicionarRecurso($oDotacao->getRecurso());
                     $oReciboAvulso->setDataRecibo($this->getDataBase());
@@ -1037,14 +1136,13 @@ class retencaoNota {
                         }
                         $oReciboAvulso->emiteRecibo();
                         $codigoRetencao = '';
-                        if (APROPRIACAO_RETENCAO && !$empenho->isFolhaPagamento()) {
+                        if (APROPRIACAO_RETENCAO) {
 
                             $codigoRetencao = $oRetencao->e21_sequencial;
                             if ($receitaExtra) {
                                 $oReciboAvulso->setExecutaLancamentoContabil(false);
                             }
                         }
-
                         $oReciboAvulso->autenticarRecibo($this->getDataBase(), $oNotaLiquidacao->oDadosOrdem->e60_concarpeculiar, $oNotaLiquidacao->oDadosOrdem->e50_numemp, $codigoRetencao);
                     }
 
@@ -1104,6 +1202,7 @@ class retencaoNota {
                     if ($oDaoDotacao->numrows == 1) {
                         $oReciboDebito->adicionarRecurso(db_utils::fieldsMemory($rsRecurso, 0)->o58_codigo);
                     }
+
                     $oReciboDebito->setConta($this->getConta());
                     $oReciboDebito->adicionarRecurso($oDotacao->getRecurso());
                     $oReciboDebito->setDataRecibo($this->getDataBase());
@@ -1112,7 +1211,7 @@ class retencaoNota {
                     $oReciboDebito->setHistorico(str_replace("'","",$sHistoricoRecibo));
                     $oReciboDebito->emiteRecibo();
                     $codigoRetencao = '';
-                    if (APROPRIACAO_RETENCAO && !$empenho->isFolhaPagamento()) {
+                    if (APROPRIACAO_RETENCAO) {
 
                         $codigoRetencao = $oRetencao->e21_sequencial;
                         if ($receitaExtra) {
@@ -1130,6 +1229,7 @@ class retencaoNota {
                         throw new Exception($sMsgValorRetencao);
                     }
                 }
+
                 /**
                  * Vinculamos a retencao ao grupo do lancamento
                  */
@@ -1242,7 +1342,7 @@ class retencaoNota {
         /*
          * Verificamos se a receita da retencao não e uma receita-extra(receita encontra-se na tabela tabplan)
         */
-        if ($this->getTipoReceita($oRetencao->k02_codigo) == 2 && (!APROPRIACAO_RETENCAO || (APROPRIACAO_RETENCAO && $empenho->isFolhaPagamento()))) {
+        if ($this->getTipoReceita($oRetencao->k02_codigo) == 2 && (!APROPRIACAO_RETENCAO)) {
 
             /*
              * Buscamos na tabela saltesextra para verificar se foi cadastrado uma conta
@@ -1274,6 +1374,8 @@ class retencaoNota {
                             $nValorRetencao                      = round(($oMovimentoSlip->k107_valor + $oRetencao->e23_valorretencao),2);
                             $oDaoEmpageMovSlips->k107_valor      = "$nValorRetencao";
                             $oDaoEmpageMovSlips->k107_sequencial = $oMovimentoSlip->k107_sequencial;
+                            $oDaoEmpageMovSlips->k107_ctacredito = $oMovimentoSlip->k107_ctacredito;
+                            $oDaoEmpageMovSlips->k107_ctadebito = $oMovimentoSlip->k107_ctadebito;
                             $oDaoEmpageMovSlips->alterar($oMovimentoSlip->k107_sequencial);
 
                             if ($oDaoEmpageMovSlips->erro_status == 0) {
@@ -1311,7 +1413,7 @@ class retencaoNota {
                                               where retencaoreceitas.e23_sequencial = {$oRetencao->e23_sequencial}";
                 $sCaracteristicaPeculiar = db_utils::fieldsMemory(db_query($sSqlBuscaCaracteristica), 0)->e60_concarpeculiar;
 
-                if (APROPRIACAO_RETENCAO && !$empenho->isFolhaPagamento()) {
+                if (APROPRIACAO_RETENCAO) {
                     $codigoRetencao = $oRetencao->e21_sequencial;
                     if ($oRetencao->k02_tipo === 'E') {
                         $oReciboDebito->setExecutaLancamentoContabil(false);
@@ -1342,7 +1444,7 @@ class retencaoNota {
                            $codigoRetencao = null;
 
 
-                           if (APROPRIACAO_RETENCAO && !$empenho->isFolhaPagamento()) {
+                           if (APROPRIACAO_RETENCAO) {
 
                                $codigoRetencao = $oRetencao->e21_sequencial;
                                if ($oRetencao->k02_tipo === 'E') {
@@ -1359,7 +1461,7 @@ class retencaoNota {
                             * na apropriacao pois ele gera outro debito devido ao valor poder ser diferente
                             * deveremos gerar as cancdebitos e remover da arrecad
                             */
-                           if ($codigoRetencao != "" && APROPRIACAO_RETENCAO && !$empenho->isFolhaPagamento()) {
+                           if ($codigoRetencao != "" && APROPRIACAO_RETENCAO) {
 
                              $oRetencao = (object)$oRetencao;
                              $numeroEmpenho = "{$empenho->getCodigo()}/{$empenho->getAno()}";
@@ -1512,7 +1614,44 @@ class retencaoNota {
     }
 
     /**
-     * Configura o pagamento  das retencoes ativas do movimento
+     * Busca uma conta pagadora para a apropriação compatível com o empenho.
+     * Caso não encontre, retorna do recurso livre.
+     *
+     * @param integer $codigoRecurso
+     * @return integer
+     */
+    public function buscaSugestaoContaPagadora($codigoRecurso)
+    {
+        $ano = db_getsession('DB_anousu');
+        $instit = db_getsession('DB_instit');
+
+        // busca todos os recursos compatíveis com o recurso do empenho
+        $sqlFiltraRecurso = "
+            select o15_codigo
+              from ( select o15_recurso, gestao
+                      from orctiporec
+                      join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$ano}
+                     where o15_codigo = {$codigoRecurso}
+                   ) as x
+              join fonterecurso on exercicio = {$ano}
+                   and x.gestao = fonterecurso.gestao
+              join orctiporec on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                   and x.o15_recurso = orctiporec.o15_recurso
+        ";
+
+        $sql = $this->getSqlSugereConta($ano, $instit, $sqlFiltraRecurso);
+        $rs = db_query($sql);
+        // se não encontrar nenhuma conta, retorna vazio
+        if ($rs && pg_num_rows($rs) === 0) {
+            return '';
+        }
+
+        $rs = db_query($sql);
+        return db_utils::fieldsMemory($rs, 0)->e83_codtipo;
+    }
+
+    /**
+     * Configura o pagamento das retenções ativas do movimento
      * Cria um movimento novo com as informações do movimento original,
      * e configura o movimento atual com as informações das retenções
      *
@@ -1540,11 +1679,20 @@ class retencaoNota {
         $sJoin  = " left join empagenotasordem on e81_codmov  = e43_empagemov     ";
         $sJoin .= " left join empageordem      on e43_ordempagamento = e42_sequencial ";
         $oMovimento = $oAgendaPagamento->getMovimentosAgenda("e81_codmov = {$iCodigoMovimento}", $sJoin, false,false);
+        /**
+         * Quando não encontrar existir uma conta pagadora para a instituição, busca uma compativel com o recurso
+         * do empenho
+         */
+        foreach ($oMovimento as $index => $movimento) {
+            if (empty($movimento->e85_codtipo)) {
+                $oMovimento[$index]->e85_codtipo = $this->buscaSugestaoContaPagadora($movimento->o15_codigo);
+            }
+        }
+
         $oAgendaPagamento->setCodigoAgenda($oMovimento[0]->e80_codage);
         /**
          * Verificamos se o movimento já está configurado, caso nao esteje, devemos cancelar a operação
          */
-
         $formaPagamento = '';
 
         if (!APROPRIACAO_RETENCAO) {
@@ -1584,6 +1732,7 @@ class retencaoNota {
         $oNovoMovimento->iForma   = $formaPagamento;
 
         $iCodigoNovoMovimento     = $oAgendaPagamento->addMovimentoAgenda(1, $oNovoMovimento);
+        $this->setCodigoNovoMovimento($iCodigoNovoMovimento);
 
         $dao = new cl_empagemovretencoes();
         $dao->e145_pagordem_id = $oMovimento[0]->e50_codord;
@@ -1661,9 +1810,7 @@ class retencaoNota {
 
         $oEmpenhoFinanceiro = new EmpenhoFinanceiro($oMovimento[0]->e60_numemp);
 
-        $lEmpenhoFolha = $oEmpenhoFinanceiro->isFolhaPagamento();
-
-        if (APROPRIACAO_RETENCAO && !$lEmpenhoFolha) {
+        if (APROPRIACAO_RETENCAO) {
 
             $oDaoEmpAgePag = new cl_empagepag();
             $oDaoEmpAgePag->excluir($iCodigoMovimento);
@@ -1887,5 +2034,39 @@ class retencaoNota {
     public function setCodigoOrdem($codigoOrdem)
     {
         $this->codigoOrdem = $codigoOrdem;
+    }
+
+    /**
+     * @param $ano
+     * @param $instit
+     * @param $sqlFiltraRecurso
+     * @return string
+     */
+    public function getSqlSugereConta($ano, $instit, $sqlFiltraRecurso)
+    {
+        $sql = "
+            select e83_codtipo
+                from conplano
+                join conplanoreduz on (c61_codcon, c61_anousu) = (c60_codcon, c60_anousu)
+                join saltes on saltes.k13_conta = (c61_reduz)
+                join empagetipo on empagetipo.e83_conta = saltes.k13_conta
+               where c60_estrut like '111%'
+                 and c60_anousu = {$ano}
+                 and c61_instit = {$instit}
+                 and c61_codigo in ({$sqlFiltraRecurso})
+                 limit 1
+            ";
+        return $sql;
+    }
+
+    private function vincularRetencaoNaturezaRendimento($idRetencaoReceita, $idNaturezaRendimento)
+    {
+        $dao = new cl_retencaonaturezarendimento();
+        $dao->e168_retencaoreceitas = $idRetencaoReceita;
+        $dao->e168_naturezarendimento = $idNaturezaRendimento;
+        $dao->incluir(null);
+        if ($dao->erro_status == 0) {
+            throw new Exception($dao->erro_msg);
+        }
     }
 }

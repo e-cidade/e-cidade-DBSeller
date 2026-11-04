@@ -40,7 +40,7 @@ class BalanceteReceitaAnteriorBuilder2020 extends PadBuilder
         }
 
         $tipo = empty($this->dados['o70_codrec']) ? 'S' : 'A';
-        $this->layout->setCodigoReceita($this->formatEstruturalReceita($this->dados['o57_fonte'], 20));
+        $this->layout->setCodigoReceita($this->formatEstruturalReceita($this->dados['fonte'], 20));
         $this->layout->setOrgaoUnidade($this->formataNumerico($this->dados['orgao_unidade'], 4));
         $this->layout->setSaldoInicial($this->formataValor($this->dados['saldo_inicial'], 13));
         $this->layout->setSaldoArrecadadoAcumulado($this->formataValor($this->dados['saldo_arrecadado_acumulado'], 13));

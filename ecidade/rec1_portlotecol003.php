@@ -1,4 +1,4 @@
-<?
+<?php
 /**
 *     E-cidade Software Publico para Gestao Municipal
 *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -335,7 +335,7 @@ if (isset($oPost->incluir)) {
   <table>
     <tr>
       <td>
-	    <?
+	    <?php
 	      include(modification("forms/db_frmportarialotecol.php"));
 	    ?>
 	  </td>
@@ -347,7 +347,7 @@ if (isset($oPost->incluir)) {
 <script>
 js_tabulacaoforms("form1","h31_portariatipo",true,1,"h31_portariatipo",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
 
   if ($lSqlErro){

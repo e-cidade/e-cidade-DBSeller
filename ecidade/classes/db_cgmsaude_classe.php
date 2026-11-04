@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_cgmsaude {
                  z01_cartaosus = varchar(15) = Cartão SUS 
                  ";
    //funcao construtor da classe 
-   function cl_cgmsaude() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmsaude"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cgmsaude {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->z01_numcgm = ($this->z01_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["z01_numcgm"]:$this->z01_numcgm);
        $this->z01_tiposangue = ($this->z01_tiposangue == ""?@$GLOBALS["HTTP_POST_VARS"]["z01_tiposangue"]:$this->z01_tiposangue);
@@ -80,7 +80,7 @@ class cl_cgmsaude {
      }
    }
    // funcao para inclusao
-   function incluir ($z01_numcgm){ 
+   public function incluir ($z01_numcgm){ 
       $this->atualizacampos();
      if($this->z01_tiposangue == null ){ 
        $this->erro_sql = " Campo Tipo Sanguineo nao Informado.";
@@ -168,7 +168,7 @@ class cl_cgmsaude {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($z01_numcgm=null) { 
+   public function alterar ($z01_numcgm=null) { 
       $this->atualizacampos();
      $sql = " update cgmsaude set ";
      $virgula = "";
@@ -278,7 +278,7 @@ class cl_cgmsaude {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($z01_numcgm=null,$dbwhere=null) { 
+   public function excluir ($z01_numcgm=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($z01_numcgm));
      }else{ 
@@ -342,7 +342,7 @@ class cl_cgmsaude {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

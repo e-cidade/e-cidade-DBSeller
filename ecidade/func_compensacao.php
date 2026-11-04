@@ -70,7 +70,7 @@ if ($abatimentoOrigem != 'undefined') {
 
   $usuarioDevolucao = pg_fetch_assoc($rsUsuarioDevolucao);
 } else {
-  $rsDadosAbatimento = $clAbatimento->sql_record($clAbatimento->sql_query($abatimento)); 
+  $rsDadosAbatimento = $clAbatimento->sql_record($clAbatimento->sql_queryAbatimentoUtilizacao($abatimento));
 }
 
 if ( $clAbatimento->numrows == 0 ) {

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
@@ -44,10 +44,10 @@ if(isset($db_opcaoal)){
 }else if(isset($opcao) && $opcao=="excluir"){
     $db_opcao = 3;
     $db_botao=true;
-}else{  
+}else{
     $db_opcao = 1;
     $db_botao=true;
-} 
+}
 ?>
 <script>
 function js_verificar(){
@@ -73,16 +73,16 @@ function js_verificar(){
         }else{
 	  eval("document.form1.o26_codigo_"+ano+".value = 1");
 	  eval("document.form1.o24_valor_"+ano+".value  = 0");
-	  eval("document.form1.o24_quantmed_"+ano+".value  = 0");	  
+	  eval("document.form1.o24_quantmed_"+ano+".value  = 0");
 	  eval("document.form1.o56_elemento_"+ano+".value  = 0");
 	  liberado++;
 	}
       }
-    } 
+    }
   }
 
   if(liberado < 3){
-    <?
+    <?php
     if($db_opcao!=3 && $db_opcao!=33){
       echo "alert('Informe o campo Recurso do exercício '+exercicio);";
       echo "eval('document.form1.o26_codigo_'+exercicio+'.focus()');";
@@ -96,87 +96,87 @@ function js_verificar(){
 <form name="form1" method="post" action="">
 <center>
 
-<?
+<?php
 db_input('o24_codppa',8,$Io24_codppa,true,'hidden',3);
 
 db_input('o24_proces',8,$Io24_proces,true,'hidden',3);
 ?>
 
-<?
+<?php
 
 $result = $clorcppa->sql_record($clorcppa->sql_query_compl($o24_codppa,"o23_codleippa,o21_anoini,o21_anofim"));
 db_fieldsmemory($result,0);
 ?>
 <table>
-<?
+<?php
 for($i=$o21_anoini; $i<= $o21_anofim; $i++){
-    
+
      $x  = "o24_codseqppa_$i";
      $$x  = "";
-    
+
      $x = "o24_valor_$i";
      $$x  = "";
-      
+
      $x = "o56_elemento_$i";
      $$x = "";
-     
+
      $x = "o24_quantmed_$i";
      $$x = "";
-     
+
      $x = "o26_codigo_$i";
      $$x = "";
 
-      
+
    if(isset($o24_proces) && $o24_proces!='' && empty($novo) && empty($incluir) && empty($alterar)){
     $result = $clorcppaval->sql_record($clorcppaval->sql_query_file(null,"*","","o24_proces=$o24_proces and o24_exercicio=$i and o24_codppa=$o24_codppa"));
     $numrows = $clorcppaval->numrows;
      if($numrows>0){
        db_fieldsmemory($result,0);
-   
+
        $x  = "o24_codseqppa_$i";
        $$x  = $o24_codseqppa;
-	  
+
        $x = "o24_valor_$i";
        $$x = $o24_valor;
-       
+
        $x = "o24_quantmed_$i";
        $$x = $o24_quantmed;
-   
-       //retorna os dados do orcppatiporec 
+
+       //retorna os dados do orcppatiporec
        $result = $clorcppatiporec->sql_record($clorcppatiporec->sql_query_file($o24_codseqppa));
        if($clorcppatiporec->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o26_codigo_$i";
          $$x = $o26_codigo;
-       }  	 
-       
-       //retorna os dados do orcppavaele 
+       }
+
+       //retorna os dados do orcppavaele
        $result = $clorcppavalele->sql_record($clorcppavalele->sql_query($o24_codseqppa,'',"o56_elemento"));
        if($clorcppavalele->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o56_elemento_$i";
          $$x = $o56_elemento;
-       }  	 
-       
+       }
+
      }
-     
+
    }
 
 ?>
 <tr>
   <td>
-<?
+<?php
 db_input("o24_codseqppa_$i",8,$Io24_codseqppa,true,'hidden',1);
 ?>
-  
+
   <fieldset>
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To24_exercicio?>">
        <?=@$Lo24_exercicio?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $x = "o24_exercicio_$i";
 if(empty($$x)){
   $$x = $i;
@@ -187,45 +187,45 @@ db_input("o24_exercicio_$i",4,$Io24_exercicio,true,'text',3)
     <td nowrap title="<?=@$To24_valor?>">
        <?=@$Lo24_valor?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input("o24_valor_$i",8,$Io24_valor,true,'text',$db_opcao,($i == $o21_anoini?"onchange='js_valor();js_formataro24_valor();'":"onchange='js_formataro24_valor();'"));
 ?>
     </td>
     <td nowrap title="<?=@$To24_quantmed?>">
        <?=@$Lo24_quantmed?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input("o24_quantmed_$i",10,$Io24_quantmed,true,'text',$db_opcao,($i == $o21_anoini?"onchange='js_quant();'":""),"",($db_opcao!=3?"#E6E4F1":""));
 ?>
     </td>
     <td nowrap title="<?=@$To56_elemento?>">
-       <?
+       <?php
        db_ancora(@$Lo56_elemento,"js_elemento_$i(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-    <?
+    <td>
+    <?php
        $x = "o56_elemento_$i";
     ?>
     <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
-    
+
     </td>
     <td nowrap title="<?=@$To26_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lo26_codigo,"js_codigo_$i(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $x = "o26_codigo_$i";
 if(empty($$x)){
   $$x = 1;
-}  
+}
 db_input("o26_codigo_$i",4,$Io26_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>
-       <?
+       <?php
 //db_input('o56_descr',30,$Io56_descr,true,'text',3,'');
        ?>
     </td>
@@ -234,8 +234,8 @@ db_input("o26_codigo_$i",4,$Io26_codigo,true,'text',$db_opcao," onchange='js_cod
 
   </fieldset>
   </td>
-</tr> 
-<?
+</tr>
+<?php
 }
 ?>
 
@@ -244,8 +244,8 @@ db_input("o26_codigo_$i",4,$Io26_codigo,true,'text',$db_opcao," onchange='js_cod
  <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
  <table>
   <tr>
-    <td valign="top"  align="center">  
-    <?
+    <td valign="top"  align="center">
+    <?php
 	 $chavepri= array("o24_codseqppa"=>@$o24_codseqppa,"o24_proces"=>@$o24_proces);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clorcppaval->sql_query_dad(null,"o24_codseqppa,o24_codppa,o24_exercicio,o24_valor,o24_quantmed,o24_proces,o56_elemento,o15_codigo","o24_exercicio","o24_codppa =$o24_codppa");
@@ -270,7 +270,7 @@ function js_cancelar(){
   document.form1.submit();
 }
 
-<?
+<?php
 for($i=$o21_anoini; $i<= $o21_anofim; $i++){
   //rotina  para repetir os valores digitado na primeira linha para os campos abaixo
   if($i == $o21_anoini){
@@ -279,17 +279,17 @@ for($i=$o21_anoini; $i<= $o21_anofim; $i++){
 	  echo "if(document.form1.o24_quantmed_$c.value=='' || document.form1.o24_quantmed_$c.value==0){";
           echo "  document.form1.o24_quantmed_$c.value = document.form1.o24_quantmed_$i.value;\n";
 	  echo "}";
-        }  
-      echo "}";  
-      
+        }
+      echo "}";
+
       echo "function js_valor(){\n";
         for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){
           echo "valor= new Number(document.form1.o24_valor_$c.value);";
           echo "if(document.form1.o24_valor_$c.value!='' && valor == 0){\n";
           echo "  document.form1.o24_valor_$c.value = document.form1.o24_valor_$i.value;\n";
 	  echo "}";
-        }  
-      echo "}";  
+        }
+      echo "}";
   }
   //final
 ?>
@@ -308,45 +308,45 @@ function js_elemento_<?=$i?>(mostra){
       }
        document.form1.o56_elemento_<?=$i?>.value=elemento;
       js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcppaval','db_iframe_orcelemento','func_orcelemento_orcs.php?pesquisa_chave='+document.form1.o56_elemento_<?=$i?>.value+'&funcao_js=parent.js_mostraorcelemento_<?=$i?>','Pesquisa',false);
-    }      
+    }
   }
 }
 function js_mostraorcelemento_<?=$i?>(chave,erro){
-//  document.form1.o56_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.o56_elemento_<?=$i?>.focus(); 
-    document.form1.o56_elemento_<?=$i?>.value = ''; 
+//  document.form1.o56_descr.value = chave;
+  if(erro==true){
+    document.form1.o56_elemento_<?=$i?>.focus();
+    document.form1.o56_elemento_<?=$i?>.value = '';
     return false;
   }
-  <?
+  <?php
   if($i == $o21_anoini){
      for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = document.form1.o56_elemento_$i.value;";
-     }  
+     }
   }
   ?>
-  
+
 }
 
 function js_formataro24_valor(){
-  <?
+  <?php
   for($c=$o21_anoini; $c<= $o21_anofim; $c++){
     echo "valor= new Number(document.form1.o24_valor_$c.value);";
     echo "if(document.form1.o24_valor_$c.value!='' || valor == 0){\n";
     echo "  valorecebe = new Number(document.form1.o24_valor_$c.value);\n";
     echo "  document.form1.o24_valor_$c.value = valorecebe.toFixed(2);\n";
     echo "}\n";
-  } 
-  ?>  
+  }
+  ?>
 }
 
 function js_mostraorcelemento1_<?=$i?>(chave1,chave2){
   document.form1.o56_elemento_<?=$i?>.value = chave1;
-  <?
+  <?php
   if($i == $o21_anoini){
      for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = chave1;";
-     }  
+     }
   }
   ?>
   db_iframe_orcelemento.hide();
@@ -358,45 +358,45 @@ function js_codigo_<?=$i?>(mostra){
   }else{
     if( document.form1.o26_codigo_<?=$i?>.value != ''){
       js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcppaval','db_iframe_orctiporec','func_orctiporec.php?pesquisa_chave='+document.form1.o26_codigo_<?=$i?>.value+'&funcao_js=parent.js_mostraorctiporec_<?=$i?>','Pesquisa',false);
-     }       
+     }
   }
 }
 function js_mostraorctiporec_<?=$i?>(chave,erro){
-//  document.form1.o15_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.o26_codigo_<?=$i?>.focus(); 
-    document.form1.o26_codigo_<?=$i?>.value = ''; 
+//  document.form1.o15_descr.value = chave;
+  if(erro==true){
+    document.form1.o26_codigo_<?=$i?>.focus();
+    document.form1.o26_codigo_<?=$i?>.value = '';
     return false;
   }
-  <?
+  <?php
   if($i == $o21_anoini){
      for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){
         echo "document.form1.o26_codigo_$c.value = document.form1.o26_codigo_$i.value ;";
-     }  
+     }
   }
   ?>
 }
 function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
   document.form1.o26_codigo_<?=$i?>.value = chave1;
 //  document.form1.o15_descr.value = chave2;
-  <?
+  <?php
   if($i == $o21_anoini){
      for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){
         echo "document.form1.o26_codigo_$c.value = document.form1.o26_codigo_$i.value ;";
-     }  
+     }
   }
   ?>
   db_iframe_orctiporec.hide();
 }
-<?}?>
+<?php }?>
 function js_formatarvaloresinicio(){
-  <?
+  <?php
   for($c=$o21_anoini;$c<=$o21_anofim;$c++){
      echo "if(document.form1.o24_valor_$c.value!=''){";
      echo "  valorecebe = new Number(document.form1.o24_valor_$c.value);\n";
      echo "  document.form1.o24_valor_$c.value = valorecebe.toFixed(2);\n";
      echo "}";
-  } 
+  }
   ?>
 }
 

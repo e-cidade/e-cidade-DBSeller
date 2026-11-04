@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,42 +57,42 @@ $clrotulo->label("o05_valor");
 
    <tr>
               <td nowrap title="<?=@$To05_ppaversao?>">
-                <?
+                <?php
                 db_ancora(@$Lo05_ppaversao,"js_pesquisao05_ppalei(true);",3);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                 db_input('o05_ppaversao',10,$Io05_ppaversao,true,'text',3," onchange='js_pesquisao05_ppalei(false);'")
                 ?>
-                <?
+                <?php
                 db_input('o01_descricao',40,$Io01_descricao,true,'text',3,'')
                 ?>
               </td>
             </tr>
     <tr>
     <td nowrap title="<?=@$To08_orgao?>">
-       <?
+       <?php
        db_ancora(@$Lo08_orgao,"js_pesquisao08_orgao(true);",$db_opcao);
        ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('o08_orgao',10,$Io08_orgao,true,'text',$db_opcao," onchange='js_pesquisao08_orgao(false);'");
       db_input('o40_descr',40,$Io40_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
-	<?
+	<?php
 	?>
   <tr>
     <td nowrap title="<?=@$To08_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lo08_unidade,"js_pesquisao08_unidade(true);",1);
        ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('o08_unidade',10,$Io08_unidade,true,'text',1," onchange='js_pesquisao08_unidade(false);'");
       db_input('o41_descr',40,$Io41_descr,true,'text',3,'')
       ?>
@@ -100,60 +100,60 @@ $clrotulo->label("o05_valor");
   </tr>
   <tr>
     <td nowrap title="<?=@$To08_funcao?>">
-       <?
+       <?php
        db_ancora(@$Lo08_funcao,"js_pesquisao08_funcao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('o08_funcao',10,$Io08_funcao,true,'text',$db_opcao," onchange='js_pesquisao08_funcao(false);'")
 ?>
-       <?
+       <?php
 db_input('o52_descr',40,$Io52_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To08_subfuncao?>">
-       <?
+       <?php
        db_ancora(@$Lo08_subfuncao,"js_pesquisao08_subfuncao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('o08_subfuncao',10,$Io08_subfuncao,true,'text',$db_opcao," onchange='js_pesquisao08_subfuncao(false);'")
 ?>
-       <?
+       <?php
 db_input('o53_descr',40,$Io53_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To08_programa?>">
-       <?
+       <?php
        db_ancora(@$Lo08_programa,"js_pesquisao08_programa(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('o08_programa',10,$Io08_programa,true,'text',$db_opcao," onchange='js_pesquisao08_programa(false);'")
 ?>
-       <?
+       <?php
 db_input('o54_descr',40,$Io54_anousu,true,'text',3);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To08_projativ?>">
-       <?
+       <?php
        db_ancora(@$Lo08_projativ,"js_pesquisao08_projativ(true);",$db_opcao);
        ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('o08_projativ',10,$Io08_projativ,true,'text',$db_opcao," onchange='js_pesquisao08_projativ(false);'")
       ?>
-       <?
+       <?php
        db_input('o55_descr',40,$Io55_descr,true,'text',3,'')
        ?>
     </td>

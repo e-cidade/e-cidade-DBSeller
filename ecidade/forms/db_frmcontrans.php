@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("c53_descr");
        <?=@$Lc45_anousu?>
     </td>
     <td> 
-<?
+<?php
 $c45_anousu = db_getsession('DB_anousu');
 db_input('c45_anousu',4,$Ic45_anousu,true,'text',$db_opcao,"")
 ?>
@@ -53,15 +53,15 @@ db_input('c45_anousu',4,$Ic45_anousu,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc45_coddoc?>">
-       <?
+       <?php
        db_ancora(@$Lc45_coddoc,"js_pesquisac45_coddoc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c45_coddoc',4,$Ic45_coddoc,true,'text',$db_opcao," onchange='js_pesquisac45_coddoc(false);'")
 ?>
-       <?
+       <?php
 db_input('c53_descr',50,$Ic53_descr,true,'text',3,'')
        ?>
     </td>
@@ -71,7 +71,7 @@ db_input('c53_descr',50,$Ic53_descr,true,'text',3,'')
        <?=@$Lc45_hist?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('c45_hist',4,60,$Ic45_hist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_contrans.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

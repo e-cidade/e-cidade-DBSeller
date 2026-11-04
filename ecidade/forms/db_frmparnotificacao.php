@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clrotulo->label("nomeinst");
           <?=@$Lk102_anousu?>
         </td>
         <td> 
-	      <?
+	      <?php
 	  	    $k102_anousu = db_getsession('DB_anousu');
 	  	    db_input('k102_anousu',10,$Ik102_anousu,true,'text',3,"");
 	  	  ?>
@@ -51,12 +51,12 @@ $clrotulo->label("nomeinst");
       </tr>
       <tr>
         <td title="<?=@$Tk102_docnotpadrao?>">
-          <?
+          <?php
             db_ancora(@$Lk102_docnotpadrao,"js_pesquisak102_docnotpadrao(true);",$db_opcao);
           ?>
         </td>
         <td> 
-	  	  <?
+	  	  <?php
 	  	  	db_input('k102_docnotpadrao',10,$Ik102_docnotpadrao,true,'text',$db_opcao," onchange='js_pesquisak102_docnotpadrao(false);'");
 	  	  	db_input('db03_descr',40,$Idb03_descr,true,'text',3,'');
 	  	  	db_input('k102_instit',10,$Ik102_instit,true,'hidden',$db_opcao,"");
@@ -68,7 +68,7 @@ $clrotulo->label("nomeinst");
           <?=@$Lk102_tipoemissao?>
         </td>
         <td> 
-	      <?
+	      <?php
 	  	    $aTipoEmissao = array( 1=>"Conforme Lista Gerada",
 	  	    					   2=>"Corrigir Históricos Conforme Situação Atual",
 	  	    					   3=>"Não Emitir Notificações com Diferença" );

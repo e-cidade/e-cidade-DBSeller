@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conlancamprovisaodecimoterceiro
-class cl_conlancamprovisaodecimoterceiro { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c100_sequencial = 0; 
-   var $c100_codlan = 0; 
-   var $c100_instit = 0; 
-   var $c100_mes = 0; 
-   var $c100_ano = 0; 
-   var $c100_escrituraprovisao = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_conlancamprovisaodecimoterceiro {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c100_sequencial = 0;
+   var $c100_codlan = 0;
+   var $c100_instit = 0;
+   var $c100_mes = 0;
+   var $c100_ano = 0;
+   var $c100_escrituraprovisao = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c100_sequencial = int4 = Sequencial 
-                 c100_codlan = int4 = Código Lançamento 
-                 c100_instit = int4 = Cod. Instituição 
-                 c100_mes = int4 = Mês 
-                 c100_ano = int4 = Ano 
-                 c100_escrituraprovisao = int4 = Escritura Provisao 
+                 c100_sequencial = int4 = Sequencial
+                 c100_codlan = int4 = Código Lançamento
+                 c100_instit = int4 = Cod. Instituição
+                 c100_mes = int4 = Mês
+                 c100_ano = int4 = Ano
+                 c100_escrituraprovisao = int4 = Escritura Provisao
                  ";
-   //funcao construtor da classe 
-   function cl_conlancamprovisaodecimoterceiro() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("conlancamprovisaodecimoterceiro"); 
+     $this->rotulo = new rotulo("conlancamprovisaodecimoterceiro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_conlancamprovisaodecimoterceiro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c100_sequencial = ($this->c100_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c100_sequencial"]:$this->c100_sequencial);
        $this->c100_codlan = ($this->c100_codlan == ""?@$GLOBALS["HTTP_POST_VARS"]["c100_codlan"]:$this->c100_codlan);
@@ -86,9 +86,9 @@ class cl_conlancamprovisaodecimoterceiro {
      }
    }
    // funcao para inclusao
-   function incluir ($c100_sequencial){ 
+   public function incluir ($c100_sequencial){
       $this->atualizacampos();
-     if($this->c100_codlan == null ){ 
+     if($this->c100_codlan == null ){
        $this->erro_sql = " Campo Código Lançamento nao Informado.";
        $this->erro_campo = "c100_codlan";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_conlancamprovisaodecimoterceiro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c100_instit == null ){ 
+     if($this->c100_instit == null ){
        $this->erro_sql = " Campo Cod. Instituição nao Informado.";
        $this->erro_campo = "c100_instit";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_conlancamprovisaodecimoterceiro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c100_mes == null ){ 
+     if($this->c100_mes == null ){
        $this->erro_sql = " Campo Mês nao Informado.";
        $this->erro_campo = "c100_mes";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_conlancamprovisaodecimoterceiro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c100_ano == null ){ 
+     if($this->c100_ano == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "c100_ano";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_conlancamprovisaodecimoterceiro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c100_escrituraprovisao == null ){ 
+     if($this->c100_escrituraprovisao == null ){
        $this->erro_sql = " Campo Escritura Provisao nao Informado.";
        $this->erro_campo = "c100_escrituraprovisao";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_conlancamprovisaodecimoterceiro {
        return false;
      }
      if($c100_sequencial == "" || $c100_sequencial == null ){
-       $result = db_query("select nextval('conlancamprovisaodecimoterceiro_c100_sequencial_seq')"); 
+       $result = db_query("select nextval('conlancamprovisaodecimoterceiro_c100_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: conlancamprovisaodecimoterceiro_c100_sequencial_seq do campo: c100_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: conlancamprovisaodecimoterceiro_c100_sequencial_seq do campo: c100_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->c100_sequencial = pg_result($result,0,0); 
+       $this->c100_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from conlancamprovisaodecimoterceiro_c100_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $c100_sequencial)){
@@ -154,10 +154,10 @@ class cl_conlancamprovisaodecimoterceiro {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->c100_sequencial = $c100_sequencial; 
+         $this->c100_sequencial = $c100_sequencial;
        }
      }
-     if(($this->c100_sequencial == null) || ($this->c100_sequencial == "") ){ 
+     if(($this->c100_sequencial == null) || ($this->c100_sequencial == "") ){
        $this->erro_sql = " Campo c100_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_conlancamprovisaodecimoterceiro {
        return false;
      }
      $sql = "insert into conlancamprovisaodecimoterceiro(
-                                       c100_sequencial 
-                                      ,c100_codlan 
-                                      ,c100_instit 
-                                      ,c100_mes 
-                                      ,c100_ano 
-                                      ,c100_escrituraprovisao 
+                                       c100_sequencial
+                                      ,c100_codlan
+                                      ,c100_instit
+                                      ,c100_mes
+                                      ,c100_ano
+                                      ,c100_escrituraprovisao
                        )
                 values (
-                                $this->c100_sequencial 
-                               ,$this->c100_codlan 
-                               ,$this->c100_instit 
-                               ,$this->c100_mes 
-                               ,$this->c100_ano 
-                               ,$this->c100_escrituraprovisao 
+                                $this->c100_sequencial
+                               ,$this->c100_codlan
+                               ,$this->c100_instit
+                               ,$this->c100_mes
+                               ,$this->c100_ano
+                               ,$this->c100_escrituraprovisao
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lançamento contábil de provisão de 13º salário ($this->c100_sequencial) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_conlancamprovisaodecimoterceiro {
        $resac = db_query("insert into db_acount values($acount,3453,19514,'','".AddSlashes(pg_result($resaco,0,'c100_escrituraprovisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c100_sequencial=null) { 
+   public function alterar ($c100_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conlancamprovisaodecimoterceiro set ";
      $virgula = "";
-     if(trim($this->c100_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_sequencial"])){ 
+     if(trim($this->c100_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_sequencial"])){
        $sql  .= $virgula." c100_sequencial = $this->c100_sequencial ";
        $virgula = ",";
-       if(trim($this->c100_sequencial) == null ){ 
+       if(trim($this->c100_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "c100_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_conlancamprovisaodecimoterceiro {
          return false;
        }
      }
-     if(trim($this->c100_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_codlan"])){ 
+     if(trim($this->c100_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_codlan"])){
        $sql  .= $virgula." c100_codlan = $this->c100_codlan ";
        $virgula = ",";
-       if(trim($this->c100_codlan) == null ){ 
+       if(trim($this->c100_codlan) == null ){
          $this->erro_sql = " Campo Código Lançamento nao Informado.";
          $this->erro_campo = "c100_codlan";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_conlancamprovisaodecimoterceiro {
          return false;
        }
      }
-     if(trim($this->c100_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_instit"])){ 
+     if(trim($this->c100_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_instit"])){
        $sql  .= $virgula." c100_instit = $this->c100_instit ";
        $virgula = ",";
-       if(trim($this->c100_instit) == null ){ 
+       if(trim($this->c100_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "c100_instit";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_conlancamprovisaodecimoterceiro {
          return false;
        }
      }
-     if(trim($this->c100_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_mes"])){ 
+     if(trim($this->c100_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_mes"])){
        $sql  .= $virgula." c100_mes = $this->c100_mes ";
        $virgula = ",";
-       if(trim($this->c100_mes) == null ){ 
+       if(trim($this->c100_mes) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "c100_mes";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_conlancamprovisaodecimoterceiro {
          return false;
        }
      }
-     if(trim($this->c100_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_ano"])){ 
+     if(trim($this->c100_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_ano"])){
        $sql  .= $virgula." c100_ano = $this->c100_ano ";
        $virgula = ",";
-       if(trim($this->c100_ano) == null ){ 
+       if(trim($this->c100_ano) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "c100_ano";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_conlancamprovisaodecimoterceiro {
          return false;
        }
      }
-     if(trim($this->c100_escrituraprovisao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_escrituraprovisao"])){ 
+     if(trim($this->c100_escrituraprovisao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c100_escrituraprovisao"])){
        $sql  .= $virgula." c100_escrituraprovisao = $this->c100_escrituraprovisao ";
        $virgula = ",";
-       if(trim($this->c100_escrituraprovisao) == null ){ 
+       if(trim($this->c100_escrituraprovisao) == null ){
          $this->erro_sql = " Campo Escritura Provisao nao Informado.";
          $this->erro_campo = "c100_escrituraprovisao";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_conlancamprovisaodecimoterceiro {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lançamento contábil de provisão de 13º salário nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c100_sequencial;
@@ -357,14 +357,14 @@ class cl_conlancamprovisaodecimoterceiro {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c100_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c100_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c100_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -395,7 +395,7 @@ class cl_conlancamprovisaodecimoterceiro {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lançamento contábil de provisão de 13º salário nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c100_sequencial;
@@ -423,11 +423,11 @@ class cl_conlancamprovisaodecimoterceiro {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -449,11 +449,11 @@ class cl_conlancamprovisaodecimoterceiro {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $c100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $c100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,15 +472,15 @@ class cl_conlancamprovisaodecimoterceiro {
      $sql2 = "";
      if($dbwhere==""){
        if($c100_sequencial!=null ){
-         $sql2 .= " where conlancamprovisaodecimoterceiro.c100_sequencial = $c100_sequencial "; 
-       } 
+         $sql2 .= " where conlancamprovisaodecimoterceiro.c100_sequencial = $c100_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,11 +489,11 @@ class cl_conlancamprovisaodecimoterceiro {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $c100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $c100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,15 +506,15 @@ class cl_conlancamprovisaodecimoterceiro {
      $sql2 = "";
      if($dbwhere==""){
        if($c100_sequencial!=null ){
-         $sql2 .= " where conlancamprovisaodecimoterceiro.c100_sequencial = $c100_sequencial "; 
-       } 
+         $sql2 .= " where conlancamprovisaodecimoterceiro.c100_sequencial = $c100_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

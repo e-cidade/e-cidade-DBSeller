@@ -40,7 +40,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbmessageBoard.widget.js, datagrid.widget.js");
       db_app::load("estilos.css,grid.style.css");
@@ -74,7 +74,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 		<input type="button" name="btnConsultaProcesso" id="btnConsultaProcesso" value="Consulta Processo" onclick="js_buscaProcessoCompras();">
 	</form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

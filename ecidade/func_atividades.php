@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@
   </tr>
   <tr> 
     <td align="center" valign="middle"> 
-      <?
+      <?php
   $nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
   $sql = "
          select  q03_ativ, q03_descr, q03_atmemo

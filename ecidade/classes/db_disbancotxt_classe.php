@@ -1,78 +1,78 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE disbancotxt
-class cl_disbancotxt { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k34_sequencial = 0; 
-   var $k34_numpremigra = null; 
-   var $k34_valor = 0; 
-   var $k34_dtvenc_dia = null; 
-   var $k34_dtvenc_mes = null; 
-   var $k34_dtvenc_ano = null; 
-   var $k34_dtvenc = null; 
-   var $k34_dtpago_dia = null; 
-   var $k34_dtpago_mes = null; 
-   var $k34_dtpago_ano = null; 
-   var $k34_dtpago = null; 
-   var $k34_codret = 0; 
-   var $k34_diferenca = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_disbancotxt {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k34_sequencial = 0;
+   var $k34_numpremigra = null;
+   var $k34_valor = 0;
+   var $k34_dtvenc_dia = null;
+   var $k34_dtvenc_mes = null;
+   var $k34_dtvenc_ano = null;
+   var $k34_dtvenc = null;
+   var $k34_dtpago_dia = null;
+   var $k34_dtpago_mes = null;
+   var $k34_dtpago_ano = null;
+   var $k34_dtpago = null;
+   var $k34_codret = 0;
+   var $k34_diferenca = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k34_sequencial = int4 = Sequencial 
-                 k34_numpremigra = varchar(50) = Numpre do txt 
-                 k34_valor = float8 = Valor 
-                 k34_dtvenc = date = Vencimento 
-                 k34_dtpago = date = Data do pagamento 
-                 k34_codret = int4 = Codret 
-                 k34_diferenca = float8 = Diferenca 
+                 k34_sequencial = int4 = Sequencial
+                 k34_numpremigra = varchar(50) = Numpre do txt
+                 k34_valor = float8 = Valor
+                 k34_dtvenc = date = Vencimento
+                 k34_dtpago = date = Data do pagamento
+                 k34_codret = int4 = Codret
+                 k34_diferenca = float8 = Diferenca
                  ";
-   //funcao construtor da classe 
-   function cl_disbancotxt() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("disbancotxt"); 
+     $this->rotulo = new rotulo("disbancotxt");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_disbancotxt {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k34_sequencial = ($this->k34_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k34_sequencial"]:$this->k34_sequencial);
        $this->k34_numpremigra = ($this->k34_numpremigra == ""?@$GLOBALS["HTTP_POST_VARS"]["k34_numpremigra"]:$this->k34_numpremigra);
@@ -109,9 +109,9 @@ class cl_disbancotxt {
      }
    }
    // funcao para inclusao
-   function incluir ($k34_sequencial){ 
+   public function incluir ($k34_sequencial){
       $this->atualizacampos();
-     if($this->k34_numpremigra == null ){ 
+     if($this->k34_numpremigra == null ){
        $this->erro_sql = " Campo Numpre do txt nao Informado.";
        $this->erro_campo = "k34_numpremigra";
        $this->erro_banco = "";
@@ -120,7 +120,7 @@ class cl_disbancotxt {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k34_valor == null ){ 
+     if($this->k34_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "k34_valor";
        $this->erro_banco = "";
@@ -129,7 +129,7 @@ class cl_disbancotxt {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k34_dtvenc == null ){ 
+     if($this->k34_dtvenc == null ){
        $this->erro_sql = " Campo Vencimento nao Informado.";
        $this->erro_campo = "k34_dtvenc_dia";
        $this->erro_banco = "";
@@ -138,7 +138,7 @@ class cl_disbancotxt {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k34_dtpago == null ){ 
+     if($this->k34_dtpago == null ){
        $this->erro_sql = " Campo Data do pagamento nao Informado.";
        $this->erro_campo = "k34_dtpago_dia";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_disbancotxt {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k34_codret == null ){ 
+     if($this->k34_codret == null ){
        $this->erro_sql = " Campo Codret nao Informado.";
        $this->erro_campo = "k34_codret";
        $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_disbancotxt {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k34_diferenca == null ){ 
+     if($this->k34_diferenca == null ){
        $this->erro_sql = " Campo Diferenca nao Informado.";
        $this->erro_campo = "k34_diferenca";
        $this->erro_banco = "";
@@ -166,16 +166,16 @@ class cl_disbancotxt {
        return false;
      }
      if($k34_sequencial == "" || $k34_sequencial == null ){
-       $result = db_query("select nextval('disbancotxt_k34_sequencial_seq')"); 
+       $result = db_query("select nextval('disbancotxt_k34_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: disbancotxt_k34_sequencial_seq do campo: k34_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: disbancotxt_k34_sequencial_seq do campo: k34_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k34_sequencial = pg_result($result,0,0); 
+       $this->k34_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from disbancotxt_k34_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k34_sequencial)){
@@ -186,10 +186,10 @@ class cl_disbancotxt {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k34_sequencial = $k34_sequencial; 
+         $this->k34_sequencial = $k34_sequencial;
        }
      }
-     if(($this->k34_sequencial == null) || ($this->k34_sequencial == "") ){ 
+     if(($this->k34_sequencial == null) || ($this->k34_sequencial == "") ){
        $this->erro_sql = " Campo k34_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,25 +198,25 @@ class cl_disbancotxt {
        return false;
      }
      $sql = "insert into disbancotxt(
-                                       k34_sequencial 
-                                      ,k34_numpremigra 
-                                      ,k34_valor 
-                                      ,k34_dtvenc 
-                                      ,k34_dtpago 
-                                      ,k34_codret 
-                                      ,k34_diferenca 
+                                       k34_sequencial
+                                      ,k34_numpremigra
+                                      ,k34_valor
+                                      ,k34_dtvenc
+                                      ,k34_dtpago
+                                      ,k34_codret
+                                      ,k34_diferenca
                        )
                 values (
-                                $this->k34_sequencial 
-                               ,'$this->k34_numpremigra' 
-                               ,$this->k34_valor 
-                               ,".($this->k34_dtvenc == "null" || $this->k34_dtvenc == ""?"null":"'".$this->k34_dtvenc."'")." 
-                               ,".($this->k34_dtpago == "null" || $this->k34_dtpago == ""?"null":"'".$this->k34_dtpago."'")." 
-                               ,$this->k34_codret 
-                               ,$this->k34_diferenca 
+                                $this->k34_sequencial
+                               ,'$this->k34_numpremigra'
+                               ,$this->k34_valor
+                               ,".($this->k34_dtvenc == "null" || $this->k34_dtvenc == ""?"null":"'".$this->k34_dtvenc."'")."
+                               ,".($this->k34_dtpago == "null" || $this->k34_dtpago == ""?"null":"'".$this->k34_dtpago."'")."
+                               ,$this->k34_codret
+                               ,$this->k34_diferenca
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registros do txt ($this->k34_sequencial) nao Incluído. Inclusao Abortada.";
@@ -254,16 +254,16 @@ class cl_disbancotxt {
        $resac = db_query("insert into db_acount values($acount,1481,8698,'','".AddSlashes(pg_result($resaco,0,'k34_diferenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k34_sequencial=null) { 
+   public function alterar ($k34_sequencial=null) {
       $this->atualizacampos();
      $sql = " update disbancotxt set ";
      $virgula = "";
-     if(trim($this->k34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_sequencial"])){ 
+     if(trim($this->k34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_sequencial"])){
        $sql  .= $virgula." k34_sequencial = $this->k34_sequencial ";
        $virgula = ",";
-       if(trim($this->k34_sequencial) == null ){ 
+       if(trim($this->k34_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k34_sequencial";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_disbancotxt {
          return false;
        }
      }
-     if(trim($this->k34_numpremigra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_numpremigra"])){ 
+     if(trim($this->k34_numpremigra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_numpremigra"])){
        $sql  .= $virgula." k34_numpremigra = '$this->k34_numpremigra' ";
        $virgula = ",";
-       if(trim($this->k34_numpremigra) == null ){ 
+       if(trim($this->k34_numpremigra) == null ){
          $this->erro_sql = " Campo Numpre do txt nao Informado.";
          $this->erro_campo = "k34_numpremigra";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_disbancotxt {
          return false;
        }
      }
-     if(trim($this->k34_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_valor"])){ 
+     if(trim($this->k34_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_valor"])){
        $sql  .= $virgula." k34_valor = $this->k34_valor ";
        $virgula = ",";
-       if(trim($this->k34_valor) == null ){ 
+       if(trim($this->k34_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "k34_valor";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_disbancotxt {
          return false;
        }
      }
-     if(trim($this->k34_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k34_dtvenc_dia"] !="") ){ 
+     if(trim($this->k34_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k34_dtvenc_dia"] !="") ){
        $sql  .= $virgula." k34_dtvenc = '$this->k34_dtvenc' ";
        $virgula = ",";
-       if(trim($this->k34_dtvenc) == null ){ 
+       if(trim($this->k34_dtvenc) == null ){
          $this->erro_sql = " Campo Vencimento nao Informado.";
          $this->erro_campo = "k34_dtvenc_dia";
          $this->erro_banco = "";
@@ -311,11 +311,11 @@ class cl_disbancotxt {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k34_dtvenc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k34_dtvenc_dia"])){
          $sql  .= $virgula." k34_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->k34_dtvenc) == null ){ 
+         if(trim($this->k34_dtvenc) == null ){
            $this->erro_sql = " Campo Vencimento nao Informado.";
            $this->erro_campo = "k34_dtvenc_dia";
            $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_disbancotxt {
          }
        }
      }
-     if(trim($this->k34_dtpago)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_dtpago_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k34_dtpago_dia"] !="") ){ 
+     if(trim($this->k34_dtpago)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_dtpago_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k34_dtpago_dia"] !="") ){
        $sql  .= $virgula." k34_dtpago = '$this->k34_dtpago' ";
        $virgula = ",";
-       if(trim($this->k34_dtpago) == null ){ 
+       if(trim($this->k34_dtpago) == null ){
          $this->erro_sql = " Campo Data do pagamento nao Informado.";
          $this->erro_campo = "k34_dtpago_dia";
          $this->erro_banco = "";
@@ -338,11 +338,11 @@ class cl_disbancotxt {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k34_dtpago_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k34_dtpago_dia"])){
          $sql  .= $virgula." k34_dtpago = null ";
          $virgula = ",";
-         if(trim($this->k34_dtpago) == null ){ 
+         if(trim($this->k34_dtpago) == null ){
            $this->erro_sql = " Campo Data do pagamento nao Informado.";
            $this->erro_campo = "k34_dtpago_dia";
            $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_disbancotxt {
          }
        }
      }
-     if(trim($this->k34_codret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_codret"])){ 
+     if(trim($this->k34_codret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_codret"])){
        $sql  .= $virgula." k34_codret = $this->k34_codret ";
        $virgula = ",";
-       if(trim($this->k34_codret) == null ){ 
+       if(trim($this->k34_codret) == null ){
          $this->erro_sql = " Campo Codret nao Informado.";
          $this->erro_campo = "k34_codret";
          $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_disbancotxt {
          return false;
        }
      }
-     if(trim($this->k34_diferenca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_diferenca"])){ 
+     if(trim($this->k34_diferenca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k34_diferenca"])){
        $sql  .= $virgula." k34_diferenca = $this->k34_diferenca ";
        $virgula = ",";
-       if(trim($this->k34_diferenca) == null ){ 
+       if(trim($this->k34_diferenca) == null ){
          $this->erro_sql = " Campo Diferenca nao Informado.";
          $this->erro_campo = "k34_diferenca";
          $this->erro_banco = "";
@@ -407,7 +407,7 @@ class cl_disbancotxt {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros do txt nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k34_sequencial;
@@ -435,14 +435,14 @@ class cl_disbancotxt {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k34_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k34_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k34_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -474,7 +474,7 @@ class cl_disbancotxt {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros do txt nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k34_sequencial;
@@ -502,11 +502,11 @@ class cl_disbancotxt {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -528,10 +528,10 @@ class cl_disbancotxt {
       }
      return $result;
    }
-   function sql_query ( $k34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,15 +544,15 @@ class cl_disbancotxt {
      $sql2 = "";
      if($dbwhere==""){
        if($k34_sequencial!=null ){
-         $sql2 .= " where disbancotxt.k34_sequencial = $k34_sequencial "; 
-       } 
+         $sql2 .= " where disbancotxt.k34_sequencial = $k34_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,10 +561,10 @@ class cl_disbancotxt {
      }
      return $sql;
   }
-   function sql_query_file ( $k34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,15 +577,15 @@ class cl_disbancotxt {
      $sql2 = "";
      if($dbwhere==""){
        if($k34_sequencial!=null ){
-         $sql2 .= " where disbancotxt.k34_sequencial = $k34_sequencial "; 
-       } 
+         $sql2 .= " where disbancotxt.k34_sequencial = $k34_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

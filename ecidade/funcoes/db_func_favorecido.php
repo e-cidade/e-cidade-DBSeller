@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,5 +25,5 @@
  *                                licenca/licenca_pt.txt 
  */
 
-$campos = "favorecido.v86_sequencial as Sequencial,cgm.z01_numcgm, cgm.z01_nome,favorecido.v86_containterna";
+$campos = "favorecido.v86_sequencial as Sequencial,cgm.z01_numcgm, cgm.z01_nome,favorecido.v86_containterna, db83_conta";
 ?>

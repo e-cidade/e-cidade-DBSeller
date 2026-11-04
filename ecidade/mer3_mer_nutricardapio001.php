@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -67,7 +67,7 @@ $clrotulo->label("me01_c_nome");
 <form name="form1" method="post" action="">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td align="left" valign="top" bgcolor="#CCCCCC">   
+  <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Informações Nutricionais por Refeição</b></legend>
@@ -77,27 +77,28 @@ $clrotulo->label("me01_c_nome");
      <td>
       <select name="cardapio" onchange="js_load();">
        <option></option>
-       <?       
+       <?php
          $hoje = date("Y-m-d",db_getsession("DB_datausu"));
          $result = $clmer_tipocardapio->sql_record($clmer_tipocardapio->sql_query("",
                                                                                           "me27_i_codigo,me27_c_nome,me27_f_versao,me27_i_id",
                                                                                           "me27_i_id,me27_f_versao desc",
-                                                                                          "((me27_d_inicio is not null 
+                                                                                          "((me27_d_inicio is not null
                                                                                              and me27_d_fim is null
-                                                                                             and me27_d_inicio <= '$hoje') 
+                                                                                             and me27_d_inicio <= '$hoje')
                                                                                             or (me27_d_fim is not null and '$hoje'
                                                                                                 between me27_d_inicio and me27_d_fim))"
                                                                                          ));
+       
        $linhas = pg_num_rows($result);
        for ($x=0;$x<$linhas;$x++) {
-       	
+
          db_fieldsmemory($result,$x);
          if (@$cardapio == $me27_i_codigo) {
            echo "<option value=\"$me27_i_codigo\" selected>$me27_c_nome - Versão: $me27_f_versao</option>";
          } else {
            echo "<option value=\"$me27_i_codigo\">$me27_c_nome - Versão: $me27_f_versao</option>";
          }
-         
+
         }
         ?>
        </select>
@@ -108,19 +109,19 @@ $clrotulo->label("me01_c_nome");
      <td>
       <select name="item">
        <option value="0">Todos</option>
-       <?if (isset($cardapio)) {
-       	
+       <?php if (isset($cardapio)) {
+
            $sql    = " select distinct me01_i_codigo,me01_c_nome,me01_f_versao from mer_cardapiodia ";
-           $sql   .= "             inner join mer_cardapio on me01_i_codigo=mer_cardapiodia.me12_i_cardapio "; 
+           $sql   .= "             inner join mer_cardapio on me01_i_codigo=mer_cardapiodia.me12_i_cardapio ";
            $sql   .= "             where me01_i_tipocardapio=$cardapio";
            $result = db_query($sql);
            $linhas = pg_num_rows($result);
            for ($x=0;$x<$linhas;$x++) {
-        	
+
     	     db_fieldsmemory($result,$x);
     	     echo "<option value=\"$me01_i_codigo\">$me01_c_nome - V.$me01_f_versao </option>";
-    	   
-           }        
+
+           }
          }
        ?>
       </select>
@@ -129,7 +130,7 @@ $clrotulo->label("me01_c_nome");
     <tr>
      <td><b>Data:</b></td>
      <td>
-      <?db_inputdata("data","","","","","",1); ?>
+      <?php db_inputdata("data","","","","","",1); ?>
      </td>
     </tr>
     <tr>
@@ -147,7 +148,7 @@ $clrotulo->label("me01_c_nome");
 </table>
 <iframe name="iframe_tabela" id="iframe_tabela" src="" frameborder="0" width="100%" height="340"></iframe>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -157,30 +158,30 @@ $clrotulo->label("me01_c_nome");
 </html>
 <script>
 function js_load() {
-	
+
   cardapio = document.form1.cardapio.value
   location.href='mer3_mer_nutricardapio001.php?cardapio='+cardapio;
-  
+
 }
 
 function changeSrc() {
-	
+
   data     = document.form1.data.value;
   refeicao = document.form1.item.value;
   cardapio = document.form1.cardapio.value;
   str      = '';
   sep      = '?';
   if (data!='') {
-	  
+
     str = str+sep+'data='+data;
     sep = '&';
-    
+
   }
   if (refeicao!='') {
-	  
+
     str = str+sep+'refeicao='+refeicao;
     sep = '&';
-    
+
   }
   if (cardapio!=0) {
     str = str+sep+'cardapio='+cardapio;

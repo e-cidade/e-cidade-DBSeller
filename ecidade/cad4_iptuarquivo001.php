@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -8,14 +8,14 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 require_once(modification("classes/db_arquivo_classe.php"));
 
-if(is_null($z01_nome) || $z01_nome == ""){
-  $cliptubase = new cl_iptubase;
-  $result = $cliptubase->sql_record($cliptubase->sql_query($j01_matric));  
-  if($cliptubase->numrows != 0){
-    $iptubase = db_utils::fieldsMemory($result,0);
-    $z01_nome = $iptubase->z01_nome;
-  } 
-} 
+if (is_null($z01_nome) || $z01_nome == "") {
+    $cliptubase = new cl_iptubase;
+    $result = $cliptubase->sql_record($cliptubase->sql_query($j01_matric));
+    if ($cliptubase->numrows != 0) {
+        $iptubase = db_utils::fieldsMemory($result, 0);
+        $z01_nome = $iptubase->z01_nome;
+    }
+}
 ?>
 
 <html>
@@ -52,10 +52,10 @@ if(is_null($z01_nome) || $z01_nome == ""){
           <table border="0" cellspacing="0" cellpadding="0" width=100%>
             <tr>
               <td width="208"><strong>Matrícula do Imóvel:</strong></td>
-              <td><?              
-                db_input('j01_matric',10,0,true,'text',3,"");
-                db_input('z01_nome',35,0,true,'text',3,"");
-              ?>            
+              <td><?php
+                db_input('j01_matric', 10, 0, true, 'text', 3, "");
+                db_input('z01_nome', 35, 0, true, 'text', 3, "");
+                ?>            
               </td>
             </tr>
           </table>
@@ -85,8 +85,8 @@ if(is_null($z01_nome) || $z01_nome == ""){
                           <legend>
                             Descrição do arquivo:
                           </legend>
-                          <? db_input('db59_sequencial',10,0,false,'hidden',3,""); ?>
-                          <? db_textarea('j151_descricao', 5, 101, '', true, 'text', ""); ?>
+                          <?php db_input('db59_sequencial', 10, 0, false, 'hidden', 3, ""); ?>
+                          <?php db_textarea('j151_descricao', 5, 101, '', true, 'text', ""); ?>
                           <input type="hidden" id="exec" name="exec">
                         </fieldset>
                       </td>
@@ -125,15 +125,15 @@ if(is_null($z01_nome) || $z01_nome == ""){
 <script rel="script" type="text/javascript">
   const 
     urlRpc = 'cad4_anexomatriculaimovel.RPC.php';
-    oMatricula = $('j01_matric'),
-    btnSalvar =  $('btnSalvar'),
-    btnLimpar =  $('btnLimpar'),
-    btnDownload =  $('btnDownload'),
-    fileUpload = new DBFileUpload({callBack: retornoEnvioArquivo, labelButton: 'Arquivo'}),
-    oArquivosCollection = new Collection().setId('db59_sequencial'),
-    oGridArquivos = DatagridCollection.create(oArquivosCollection).configure("order", false),    
-    inputFile = initFileUpload(),
-    inputSequencial = $('db59_sequencial'),
+    oMatricula = $('j01_matric');
+    btnSalvar =  $('btnSalvar');
+    btnLimpar =  $('btnLimpar');
+    btnDownload =  $('btnDownload');
+    fileUpload = new DBFileUpload({callBack: retornoEnvioArquivo, labelButton: 'Arquivo'});
+    oArquivosCollection = new Collection().setId('db59_sequencial');
+    oGridArquivos = DatagridCollection.create(oArquivosCollection).configure("order", false);
+    inputFile = initFileUpload();
+    inputSequencial = $('db59_sequencial');
     inputDescricao = $('j151_descricao');
 
   initGrid();
@@ -147,7 +147,7 @@ if(is_null($z01_nome) || $z01_nome == ""){
       return false;
     }
 
-    if(inputSequencial.value != ''){
+    if(inputSequencial.value !== ''){
       fileUpload.filePath  = fileUpload.extension  = undefined;
     }
 
@@ -271,10 +271,10 @@ if(is_null($z01_nome) || $z01_nome == ""){
   }
 
   function validarDados(){
-    if(inputDescricao.value == ''){      
+    if(inputDescricao.value === ''){
       alert('Descrição Obrigatória!');
       return false;
-    } else if (inputSequencial.value == '' && inputFile.value == ''){
+    } else if (inputSequencial.value === '' && inputFile.value === ''){
       alert('Arquivo inválido');
       return false;
     }
@@ -315,7 +315,7 @@ if(is_null($z01_nome) || $z01_nome == ""){
 
       var 
         oParametros = {
-          "exec"         : "excluir",
+          "exec"        : "excluir",
           'j01_matric'  :    oMatricula.value,
           'db59_sequencial' : oItem.db59_sequencial
         },

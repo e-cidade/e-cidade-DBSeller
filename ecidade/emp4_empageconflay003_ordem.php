@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -71,8 +71,8 @@ if(isset($e83_codtipo) && $e83_codtipo != '' ){
 
 $sql    = $clempagemov->sql_query_lay(null,"e81_codmov,e83_codtipo,e83_descr,e60_emiss,e60_codemp,e82_codord,z01_numcgm,z01_nome,e81_valor","","$dbwhere");
 
-$result = $clpagordem->sql_record($sql); 
-$numrows= $clpagordem->numrows; 
+$result = $clpagordem->sql_record($sql);
+$numrows= $clpagordem->numrows;
 ?>
 <html>
 <head>
@@ -101,12 +101,12 @@ $numrows= $clpagordem->numrows;
 }
 </style>
 <script>
-function js_marca(obj){ 
+function js_marca(obj){
    var OBJ = document.form1;
    soma=new Number();
    for(i=0;i<OBJ.length;i++){
      if(OBJ.elements[i].type == 'checkbox' && OBJ.elements[i].disabled==false){
-       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
+       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);
 
        if(OBJ.elements[i].checked==true){
          valor = new Number(eval("document.form1.valor_"+OBJ.elements[i].value+".value"));
@@ -114,7 +114,7 @@ function js_marca(obj){
        }
      }
    }
-   parent.document.form1.total.value = soma.toFixed(2); 
+   parent.document.form1.total.value = soma.toFixed(2);
    return false;
 }
 
@@ -127,14 +127,14 @@ function js_calcula(campo){
     soma = new Number(total-valor);
   }
 
-  parent.document.form1.total.value = soma.toFixed(2); 
+  parent.document.form1.total.value = soma.toFixed(2);
 }
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
 <form name="form1" method="post" action="">
     <center>
       <table  class='bordas'>
@@ -148,16 +148,16 @@ function js_calcula(campo){
           <td class='bordas02'><small><b><?=$RLe81_valor?></b></small></td>
           <td class='bordas02'><small><b><?=$RLe83_codtipo?></b></small></td>
 	</tr>
-        <?
+        <?php
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
-            
+
 	    $disab = false;
 //            $clpcfornecon->sql_record($clpcfornecon->sql_query_conta(null,"c63_conta","","pc63_numcgm=$z01_numcgm"));
 //	    if($clpcfornecon->numrows==0){
 //	      $disab = true;
 //	    }
-	    
+
 	?>
         <tr>
           <td class='bordas' ><input value="<?=$e81_codmov?>"  name="CHECK_<?=$e81_codmov?>" <?=($disab==true?"disabled":"")?> type='checkbox' onclick="js_calcula(this);"  ><?=($disab==true?"*":"")?></td>
@@ -167,20 +167,20 @@ function js_calcula(campo){
           <td class='bordas' align='right'><small label='Numcgm:<?=$z01_numcgm?>'><?=$z01_nome?>  </small></td>
           <td class='bordas' align='center'><small><?=$e60_emiss?>  </small></td>
           <td class='bordas' align='right'><small><?=number_format($e81_valor,"2",".","")?></small></td>
-           <?
+           <?php
 	     $x= "valor_$e81_codmov";
   	     $$x = $e81_valor;
              db_input("valor_$e81_codmov",10,'',true,'hidden',1);
-	     
+
 	     $x= "e83_codtipo_$e81_codmov";
   	     $$x = $e83_codtipo;
              db_input("e83_codtipo_$e81_codmov",10,'',true,'hidden',1);
 	     $coloca =true;
-            ?>       
-	  
+            ?>
+
           <td class='bordas' align='left'><small><?=$e83_descr?></small></td>
 	</tr>
-        <?
+        <?php
 	  }
 	?>
       </table>
@@ -191,8 +191,8 @@ function js_calcula(campo){
 </table>
 </body>
 </html>
-<?if(isset($coloca)){?>
+<?php if(isset($coloca)){?>
 <script>
   parent.document.form1.codtipo.value = '<?=$e83_codtipo?>';
 </script>
-<?}?>
+<?php }?>

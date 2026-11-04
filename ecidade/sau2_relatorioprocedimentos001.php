@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@ db_postmemory($HTTP_POST_VARS);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">  
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("prototype.js, strings.js, webseller.js, scripts.js");
     db_app::load("estilos.css");
     ?>
@@ -61,12 +61,12 @@ db_postmemory($HTTP_POST_VARS);
                         <legend><b>Período Antendimento:</b></legend> 
                         &nbsp;
                         <b>Inicio:</b>
-                        <?
+                        <?php
                         db_inputdata('dataini', @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', 1, '');
                         ?>
                         &nbsp;&nbsp;
                         <b>Fim:</b>
-                        <?
+                        <?php
                         db_inputdata('datafim', @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', 1, '');
                         ?>
                       </fieldset>
@@ -75,7 +75,7 @@ db_postmemory($HTTP_POST_VARS);
                   <tr>
                     <td align="left"nowrap>
                       <b>Listar Pacientes:</b>
-                      <?
+                      <?php
                       $aX = array('1' => 'SIM', '2' => 'NÃO');
                       db_select('pacientes', $aX, true, 1, 'onchange="js_filtraOrden(this.value)"');
                       ?>
@@ -83,7 +83,7 @@ db_postmemory($HTTP_POST_VARS);
                     <td nowrap>
                       &nbsp;
                       <b>Ordem:</b>
-                      <?
+                      <?php
                       $aX = array('1' => 'DATA ATENDIMENTO', '2' => 'NOME PACIENTE');
                       db_select('ordem', $aX, true, 1, '');
                       ?>
@@ -91,7 +91,7 @@ db_postmemory($HTTP_POST_VARS);
                     <td nowrap>
                       &nbsp;
                       <b>Agrupar:</b>
-                      <?
+                      <?php
                       $aX = array('1' => 'UNIDADE x PROFISSIONAL', '2' => 'PROFISSIONAL x UNIDADE');
                       db_select('agrupar', $aX, true, 1, '');
                       ?>
@@ -119,12 +119,12 @@ db_postmemory($HTTP_POST_VARS);
                 <table border='0'>
                   <tr>
                     <td nowrap title="<?=@$Ts143_i_procedimento?>">
-                      <?
+                      <?php
                       db_ancora('<b>Procedimento:</b>', ' js_pesquisaProcedimento(true);', 1);
                       ?>
                     </td>
                     <td nowrap> 
-                      <?
+                      <?php
                       db_input('sd63_c_procedimento', 10, '', true, 'text', 1, 
                                " onchange='js_pesquisaProcedimento(false);'");
                       db_input('sd63_i_codigo', 10, '', true, 'hidden', 1, '');
@@ -161,12 +161,12 @@ db_postmemory($HTTP_POST_VARS);
               <table  border="0"  align="center" width="100%">
                 <tr>
                   <td>
-                    <?
+                    <?php
                     db_ancora('<b>Profissional:</b>', 'js_pesquisaProfissional(true);', '');
                     ?>
                   </td>
                   <td nowrap>
-                    <?
+                    <?php
                     db_input('iProfissional', 10, '', true, 'text', 1, 
                              'onchange="js_pesquisaProfissional(false);" '.
                              'onkeydown="return js_controla_tecla_enter(this, event);" '.
@@ -237,7 +237,7 @@ db_postmemory($HTTP_POST_VARS);
       </table>
     </form>
   </center>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
           db_getsession("DB_anousu"), db_getsession("DB_instit")
          );

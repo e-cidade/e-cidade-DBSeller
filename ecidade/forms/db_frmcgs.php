@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -45,42 +45,42 @@ if($db_opcao == 2){
     <td nowrap title="<?=@$Tsd01_c_siasus?>">
        <?=@$Lsd01_c_siasus?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd01_c_siasus',18,$Isd01_c_siasus,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
- <?if($db_opcao == 2){?>
+ <?php if($db_opcao == 2){?>
   <tr>
    <td><?=@$Lz01_cep?></td>
    <td>
-    <?db_input('z01_cep',9,$Iz01_cep,true,'text',$db_opcao);?>
+    <?php db_input('z01_cep',9,$Iz01_cep,true,'text',$db_opcao);?>
    </td>
   </tr>
   <tr>
-   <td><?db_ancora(@$Lz01_ender,"js_pesquisarua(true);",$db_opcao);?></td>
+   <td><?php db_ancora(@$Lz01_ender,"js_pesquisarua(true);",$db_opcao);?></td>
    <td>
-    <?db_input('z01_ender',40,$Iz01_ender,true,'text',3);?>
+    <?php db_input('z01_ender',40,$Iz01_ender,true,'text',3);?>
    </td>
   </tr>
-  <tr><td><?=@$Lz01_numero?></td><td><?db_input('z01_numero',8,$Iz01_numero,true,'text',$db_opcao);?></td></tr>
-  <tr><td><?=@$Lz01_compl?></td><td><?db_input('z01_compl',10,$Iz01_compl,true,'text',$db_opcao);?></td></tr>
+  <tr><td><?=@$Lz01_numero?></td><td><?php db_input('z01_numero',8,$Iz01_numero,true,'text',$db_opcao);?></td></tr>
+  <tr><td><?=@$Lz01_compl?></td><td><?php db_input('z01_compl',10,$Iz01_compl,true,'text',$db_opcao);?></td></tr>
   <tr>
-   <td><?db_ancora(@$Lz01_bairro,"js_pesquisabairro(true);",$db_opcao);?></td>
+   <td><?php db_ancora(@$Lz01_bairro,"js_pesquisabairro(true);",$db_opcao);?></td>
    <td>
-    <?db_input('z01_bairro',25,$Iz01_bairro,true,'text',3);?>
+    <?php db_input('z01_bairro',25,$Iz01_bairro,true,'text',3);?>
    </td>
   </tr>
-  <tr><td><?=@$Lz01_telef?></td><td><?db_input('z01_telef',12,$Iz01_telef,true,'text',$db_opcao);?></td></tr>
-  <tr><td><?=@$Lz01_telcel?></td><td><?db_input('z01_telcel',12,$Iz01_telcel,true,'text',$db_opcao);?></td></tr>
-  <?}?>
+  <tr><td><?=@$Lz01_telef?></td><td><?php db_input('z01_telef',12,$Iz01_telef,true,'text',$db_opcao);?></td></tr>
+  <tr><td><?=@$Lz01_telcel?></td><td><?php db_input('z01_telcel',12,$Iz01_telcel,true,'text',$db_opcao);?></td></tr>
+  <?php }?>
   <tr>
     <td nowrap title="<?=@$Tsd01_c_parentesco?>">
        <?=@$Lsd01_c_parentesco?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $x = array('TITULAR'=>'TITULAR','ESPOSO(A)'=>'ESPOSO(A)','COMPANHEIRO(A)'=>'COMPANHEIRO(A)','FILHO(A)'=>'FILHO(A)','PAI'=>'PAI','MÃE'=>'MÃE','SOGRO(A)'=>'SOGRO(A)','FILHO(A) ADOTIVO(A)'=>'FILHO(A) ADOTIVO(A)','OUTROS'=>'OUTROS');
 db_select('sd01_c_parentesco',$x,true,$db_opcao,"");
 ?>
@@ -90,8 +90,8 @@ db_select('sd01_c_parentesco',$x,true,$db_opcao,"");
     <td nowrap title="<?=@$Tsd01_c_sangue?>">
        <?=@$Lsd01_c_sangue?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $x = array('A+'=>'A+','A-'=>'A-','O+'=>'O+','O-'=>'O-','AB'=>'AB');
 db_select('sd01_c_sangue',$x,true,$db_opcao,"");
 ?>
@@ -101,8 +101,8 @@ db_select('sd01_c_sangue',$x,true,$db_opcao,"");
     <td nowrap title="<?=@$Tsd01_i_familia?>">
        <?=@$Lsd01_i_familia?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd01_i_familia',8,$Isd01_i_familia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,8 +111,8 @@ db_input('sd01_i_familia',8,$Isd01_i_familia,true,'text',$db_opcao,"")
     <td nowrap title="<?=@$Tsd01_c_alfabetizado?>">
        <?=@$Lsd01_c_alfabetizado?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('sd01_c_alfabetizado',$x,true,$db_opcao,"");
 ?>
@@ -122,8 +122,8 @@ db_select('sd01_c_alfabetizado',$x,true,$db_opcao,"");
     <td nowrap title="<?=@$Tsd01_c_escola?>">
        <?=@$Lsd01_c_escola?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('sd01_c_escola',$x,true,$db_opcao,"");
 ?>

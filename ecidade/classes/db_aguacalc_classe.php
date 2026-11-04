@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: agua
 //CLASSE DA ENTIDADE aguacalc
 class cl_aguacalc { 
@@ -53,13 +53,13 @@ class cl_aguacalc {
                  x22_responsavelpagamento = int4 = Responsável Pagamento 
                  ";
    //funcao construtor da classe 
-   function cl_aguacalc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_aguacalc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x22_codcalc = ($this->x22_codcalc == ""?@$GLOBALS["HTTP_POST_VARS"]["x22_codcalc"]:$this->x22_codcalc);
        $this->x22_codconsumo = ($this->x22_codconsumo == ""?@$GLOBALS["HTTP_POST_VARS"]["x22_codconsumo"]:$this->x22_codconsumo);
@@ -97,7 +97,7 @@ class cl_aguacalc {
      }
    }
    // funcao para Inclusão
-   function incluir ($x22_codcalc){ 
+   public function incluir ($x22_codcalc){ 
       $this->atualizacampos();
      if($this->x22_codconsumo == null ){ 
        $this->x22_codconsumo = "0";

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -51,7 +51,7 @@ $escola = db_getsession("DB_coddepto");
 }
 </style>
 </head>
-<?
+<?php
 $sql    = "select me09_i_codigo,me09_c_descr
            from mer_nutriente order by me09_c_descr";
 $result = db_query($sql);
@@ -60,7 +60,7 @@ $sql2   = " select me35_c_nomealimento,me35_i_codigo from mer_alimento ";
 if ($item!="") {
   $sql2 .= " where me35_i_codigo = $item ";
 }elseif($grupo!=""){
-  $sql2 .= " where me35_i_grupoalimentar = $grupo ";	
+  $sql2 .= " where me35_i_grupoalimentar = $grupo ";
 }
 $result2 = db_query($sql2);
 $linhas2 = pg_num_rows($result2);
@@ -72,21 +72,21 @@ $linhas2 = pg_num_rows($result2);
   <td>
    <b>Item</b>
   </td>
-  <?for ($x=0;$x<$linhas;$x++) {
-  	
+  <?php for ($x=0;$x<$linhas;$x++) {
+
       db_fieldsmemory($result,$x);?>
       <td>
        <b><?=$me09_c_descr?></b>
       </td>
-      
-  <?}?>
+
+  <?php } ?>
  </tr>
- <?
+ <?php
  $cor1 = "#DBDBDB";
  $cor2 = "#f3f3f3";
- $cor = ""; 
+ $cor = "";
  for ($y=0;$y<$linhas2;$y++) {
- 	
+
    if ($cor == $cor1) {
      $cor = $cor2;
    } else {
@@ -97,21 +97,21 @@ $linhas2 = pg_num_rows($result2);
     <td>
      <b><?=substr($me35_c_nomealimento,0,30)?></b>
     </td>
-    <?for ($x=0;$x<$linhas;$x++) {
-    	
+    <?php for ($x=0;$x<$linhas;$x++) {
+
         db_fieldsmemory($result,$x);
-        $sqln    = " select me08_f_quant,m61_descr from mer_infnutricional 
-                      inner join mer_nutriente on me09_i_codigo = me08_i_nutriente        
+        $sqln    = " select me08_f_quant,m61_descr from mer_infnutricional
+                      inner join mer_nutriente on me09_i_codigo = me08_i_nutriente
                       inner join matunid on m61_codmatunid = me09_i_unidade
-                   ";        
+                   ";
         $sqln   .= "  where me08_i_alimento=$me35_i_codigo";
         $sqln   .= "  and me08_i_nutriente=$me09_i_codigo";
         $resultn = db_query($sqln);
         if (pg_num_rows($resultn)>0) {
-        	
+
           db_fieldsmemory($resultn,0);
           $quantnutri=$me08_f_quant." ".$m61_descr;
-          
+
         } else {
           $quantnutri="0";
         }
@@ -119,10 +119,10 @@ $linhas2 = pg_num_rows($result2);
         <td>
          <?=$quantnutri?>
         </td>
-        
-    <?}?>
+
+    <?php } ?>
   </tr>
-  
-<?}?>
+
+<?php } ?>
 </table>
 </center>

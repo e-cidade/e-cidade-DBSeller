@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -45,10 +45,10 @@ $clrotulo->label("DBtxt31");
 if(isset($script) && $script != ""){
 ?>
 <script>
-<?
+<?php
   $vals = "";
   $vir = "";
-  $camp = split(",",$valores);
+  $camp =explode(",",$valores);
   for($f=0;$f<count($camp);$f++){
     $vals .= $vir."'".$camp[$f]."'";
     $vir = ",";
@@ -56,11 +56,11 @@ if(isset($script) && $script != ""){
   echo $script."(".$vals.")";
 ?>
 </script>
-<?
+<?php
 exit;
 }
 if(isset($testanome) && !isset($pesquisa_chave)){
-  $funmat = split("\|",$funcao_js);
+  $funmat =explode("\|",$funcao_js);
   $func_antes = $funmat[0];
   $valores = "";
   $camp = "";
@@ -112,7 +112,7 @@ if(netscape)
     document.form_busca_dados.numcgm_busca_dados.value = numcgm;
     document.form_busca_dados.submit();
   }
-<?
+<?php
 if(isset($testanome) && !isset($pesquisa_chave)){
 ?>
   function js_testanome(z01_numcgm,ender,cgccpf,<?=$camp?>){
@@ -125,7 +125,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
     }
     if(alerta != ""){
       alert("O Contribuinte não possui o CGM atualizado")
-      <?
+      <?php
       //testa permissao de menu
 
       echo "location.href = 'prot1_cadcgm002.php?chavepesquisa='+z01_numcgm+'&testanome=$func_antes&valores=$valores&funcao_js=".$func_antes.$valores."';";
@@ -134,7 +134,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
       <?=$func_antes."(".$camp.")"?>;
     }
   }
-<?
+<?php
 }
 ?>
 </script>
@@ -148,13 +148,13 @@ if(isset($testanome) && !isset($pesquisa_chave)){
         <tr>
           <td align="right">C&oacute;digo: </td>
           <td >
-          <?
+          <?php
           db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',4,"onFocus=\"nextfield='pesquisar2'\"","numcgmDigitadoParaPesquisa");
           ?>
           </td>
           <td align="right">&nbsp;<?=$DBtxt30?>: </td>
           <td>
-          <?
+          <?php
           db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onFocus=\"nextfield='pesquisar2'\"",'cpf');
           ?>
           </td>
@@ -162,7 +162,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
         <tr>
           <td align="right">&nbsp;Nome: </td>
           <td>
-          <?
+          <?php
           db_input('z01_nome',40,$Iz01_nome,true,'text',4,"onFocus=\"nextfield='pesquisar2'\"",'nomeDigitadoParaPesquisa');
           ?>
           </td>
@@ -173,7 +173,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
             <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar" onFocus="nextfield='done'">
             <input name="limpar" type="button" id="naoencontrado2" value="Limpar" onClick="js_limpa()">
             <input name="Fechar" type="button" id="limpar" value="Fechar" onClick="parent.func_nome.hide();">
-            <?
+            <?php
         if(isset($testanome)){
         ?>
         <input name="Incluir" type="button" value="Incluir Novo CGM" onClick="location.href = 'prot1_cadcgm001.php?testanome=<?=$func_antes?>&valores=<?=$valores?>&funcao_js=<?=$func_antes.$valores?>'">
@@ -183,7 +183,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
           document.form2.Incluir.disabled = true;
         }
         </script>
-        <?
+        <?php
         }
         ?>
         </td>
@@ -204,7 +204,7 @@ function js_limpa(){
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 if(!isset($pesquisa_chave)){
 
    echo "<script>

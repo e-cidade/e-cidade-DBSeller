@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -92,7 +92,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmveiccadcentral.php"));
 	?>
     </center>
@@ -104,7 +104,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","ve36_coddepto",true,1,"ve36_coddepto",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clveiccadcentral->erro_status=="0" || $sqlerro==true){
     db_msgbox($erro_msg);

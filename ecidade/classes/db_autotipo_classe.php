@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: fiscal
 //CLASSE DA ENTIDADE autotipo
-class cl_autotipo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $y59_codigo = 0; 
-   var $y59_codauto = 0; 
-   var $y59_codtipo = 0; 
-   var $y59_valor = 0; 
-   var $y59_tipo = 0; 
-   var $y59_fator = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_autotipo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $y59_codigo = 0;
+   var $y59_codauto = 0;
+   var $y59_codtipo = 0;
+   var $y59_valor = 0;
+   var $y59_tipo = 0;
+   var $y59_fator = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 y59_codigo = int4 = Codigo Sequencial 
-                 y59_codauto = int4 = Código do Auto de Infração 
-                 y59_codtipo = int8 = Código da Procedência 
-                 y59_valor = float8 = Valor 
-                 y59_tipo = int4 = Tipo de Correção 
-                 y59_fator = int4 = Fator 
+                 y59_codigo = int4 = Codigo Sequencial
+                 y59_codauto = int4 = Código do Auto de Infração
+                 y59_codtipo = int8 = Código da Procedência
+                 y59_valor = float8 = Valor
+                 y59_tipo = int4 = Tipo de Correção
+                 y59_fator = int4 = Fator
                  ";
-   //funcao construtor da classe 
-   function cl_autotipo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("autotipo"); 
+     $this->rotulo = new rotulo("autotipo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_autotipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y59_codigo = ($this->y59_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["y59_codigo"]:$this->y59_codigo);
        $this->y59_codauto = ($this->y59_codauto == ""?@$GLOBALS["HTTP_POST_VARS"]["y59_codauto"]:$this->y59_codauto);
@@ -86,9 +86,9 @@ class cl_autotipo {
      }
    }
    // funcao para inclusao
-   function incluir ($y59_codigo){ 
+   public function incluir ($y59_codigo){
       $this->atualizacampos();
-     if($this->y59_codauto == null ){ 
+     if($this->y59_codauto == null ){
        $this->erro_sql = " Campo Código do Auto de Infração nao Informado.";
        $this->erro_campo = "y59_codauto";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_autotipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y59_codtipo == null ){ 
+     if($this->y59_codtipo == null ){
        $this->erro_sql = " Campo Código da Procedência nao Informado.";
        $this->erro_campo = "y59_codtipo";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_autotipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y59_valor == null ){ 
+     if($this->y59_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "y59_valor";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_autotipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y59_tipo == null ){ 
+     if($this->y59_tipo == null ){
        $this->erro_sql = " Campo Tipo de Correção nao Informado.";
        $this->erro_campo = "y59_tipo";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_autotipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y59_fator == null ){ 
+     if($this->y59_fator == null ){
        $this->erro_sql = " Campo Fator nao Informado.";
        $this->erro_campo = "y59_fator";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_autotipo {
        return false;
      }
      if($y59_codigo == "" || $y59_codigo == null ){
-       $result = db_query("select nextval('autotipo_y59_codigo_seq')"); 
+       $result = db_query("select nextval('autotipo_y59_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: autotipo_y59_codigo_seq do campo: y59_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: autotipo_y59_codigo_seq do campo: y59_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->y59_codigo = pg_result($result,0,0); 
+       $this->y59_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from autotipo_y59_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $y59_codigo)){
@@ -154,10 +154,10 @@ class cl_autotipo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->y59_codigo = $y59_codigo; 
+         $this->y59_codigo = $y59_codigo;
        }
      }
-     if(($this->y59_codigo == null) || ($this->y59_codigo == "") ){ 
+     if(($this->y59_codigo == null) || ($this->y59_codigo == "") ){
        $this->erro_sql = " Campo y59_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_autotipo {
        return false;
      }
      $sql = "insert into autotipo(
-                                       y59_codigo 
-                                      ,y59_codauto 
-                                      ,y59_codtipo 
-                                      ,y59_valor 
-                                      ,y59_tipo 
-                                      ,y59_fator 
+                                       y59_codigo
+                                      ,y59_codauto
+                                      ,y59_codtipo
+                                      ,y59_valor
+                                      ,y59_tipo
+                                      ,y59_fator
                        )
                 values (
-                                $this->y59_codigo 
-                               ,$this->y59_codauto 
-                               ,$this->y59_codtipo 
-                               ,$this->y59_valor 
-                               ,$this->y59_tipo 
-                               ,$this->y59_fator 
+                                $this->y59_codigo
+                               ,$this->y59_codauto
+                               ,$this->y59_codtipo
+                               ,$this->y59_valor
+                               ,$this->y59_tipo
+                               ,$this->y59_fator
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "autotipo ($this->y59_codigo) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_autotipo {
        $resac = db_query("insert into db_acount values($acount,700,6661,'','".AddSlashes(pg_result($resaco,0,'y59_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($y59_codigo=null) { 
+   public function alterar ($y59_codigo=null) {
       $this->atualizacampos();
      $sql = " update autotipo set ";
      $virgula = "";
-     if(trim($this->y59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_codigo"])){ 
+     if(trim($this->y59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_codigo"])){
        $sql  .= $virgula." y59_codigo = $this->y59_codigo ";
        $virgula = ",";
-       if(trim($this->y59_codigo) == null ){ 
+       if(trim($this->y59_codigo) == null ){
          $this->erro_sql = " Campo Codigo Sequencial nao Informado.";
          $this->erro_campo = "y59_codigo";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_autotipo {
          return false;
        }
      }
-     if(trim($this->y59_codauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_codauto"])){ 
+     if(trim($this->y59_codauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_codauto"])){
        $sql  .= $virgula." y59_codauto = $this->y59_codauto ";
        $virgula = ",";
-       if(trim($this->y59_codauto) == null ){ 
+       if(trim($this->y59_codauto) == null ){
          $this->erro_sql = " Campo Código do Auto de Infração nao Informado.";
          $this->erro_campo = "y59_codauto";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_autotipo {
          return false;
        }
      }
-     if(trim($this->y59_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_codtipo"])){ 
+     if(trim($this->y59_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_codtipo"])){
        $sql  .= $virgula." y59_codtipo = $this->y59_codtipo ";
        $virgula = ",";
-       if(trim($this->y59_codtipo) == null ){ 
+       if(trim($this->y59_codtipo) == null ){
          $this->erro_sql = " Campo Código da Procedência nao Informado.";
          $this->erro_campo = "y59_codtipo";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_autotipo {
          return false;
        }
      }
-     if(trim($this->y59_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_valor"])){ 
+     if(trim($this->y59_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_valor"])){
        $sql  .= $virgula." y59_valor = $this->y59_valor ";
        $virgula = ",";
-       if(trim($this->y59_valor) == null ){ 
+       if(trim($this->y59_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "y59_valor";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_autotipo {
          return false;
        }
      }
-     if(trim($this->y59_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_tipo"])){ 
+     if(trim($this->y59_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_tipo"])){
        $sql  .= $virgula." y59_tipo = $this->y59_tipo ";
        $virgula = ",";
-       if(trim($this->y59_tipo) == null ){ 
+       if(trim($this->y59_tipo) == null ){
          $this->erro_sql = " Campo Tipo de Correção nao Informado.";
          $this->erro_campo = "y59_tipo";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_autotipo {
          return false;
        }
      }
-     if(trim($this->y59_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_fator"])){ 
+     if(trim($this->y59_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y59_fator"])){
        $sql  .= $virgula." y59_fator = $this->y59_fator ";
        $virgula = ",";
-       if(trim($this->y59_fator) == null ){ 
+       if(trim($this->y59_fator) == null ){
          $this->erro_sql = " Campo Fator nao Informado.";
          $this->erro_campo = "y59_fator";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_autotipo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "autotipo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->y59_codigo;
@@ -357,14 +357,14 @@ class cl_autotipo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($y59_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($y59_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y59_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -395,7 +395,7 @@ class cl_autotipo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "autotipo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$y59_codigo;
@@ -423,11 +423,11 @@ class cl_autotipo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -449,10 +449,10 @@ class cl_autotipo {
       }
      return $result;
    }
-   function sql_query ( $y59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $y59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,15 +472,15 @@ class cl_autotipo {
      $sql2 = "";
      if($dbwhere==""){
        if($y59_codigo!=null ){
-         $sql2 .= " where autotipo.y59_codigo = $y59_codigo "; 
-       } 
+         $sql2 .= " where autotipo.y59_codigo = $y59_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,10 +489,10 @@ class cl_autotipo {
      }
      return $sql;
   }
-   function sql_query_baixa ( $y59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_baixa ( $y59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,15 +510,15 @@ class cl_autotipo {
      $sql2 = "";
      if($dbwhere==""){
        if($y59_codigo!=null ){
-         $sql2 .= " where autotipo.y59_codigo = $y59_codigo "; 
-       } 
+         $sql2 .= " where autotipo.y59_codigo = $y59_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,10 +527,10 @@ class cl_autotipo {
      }
      return $sql;
   }
-   function sql_query_file ( $y59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $y59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,15 +543,15 @@ class cl_autotipo {
      $sql2 = "";
      if($dbwhere==""){
        if($y59_codigo!=null ){
-         $sql2 .= " where autotipo.y59_codigo = $y59_codigo "; 
-       } 
+         $sql2 .= " where autotipo.y59_codigo = $y59_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -560,10 +560,10 @@ class cl_autotipo {
      }
      return $sql;
   }
-   function sql_query_rec ( $y59_codauto=null,$y59_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_rec ( $y59_codauto=null,$y59_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -598,7 +598,7 @@ class cl_autotipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

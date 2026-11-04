@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-include(modification("dbforms/db_classesgenericas.php"));
+require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("model/compilacaoRegistroPreco.model.php"));
 $cliframe_alterar_excluir      = new cl_iframe_alterar_excluir();
 $cliframe_alterar_excluir_html = new cl_iframe_alterar_excluir_html_novo();
@@ -483,6 +483,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
 
         if (isset ($pc11_vlrun) && $pc11_vlrun != "") {
           $pc11_vlrun = str_replace(",", ".", $pc11_vlrun);
+          $pc11_vlrun = sprintf("%.4f",$pc11_vlrun);
           if (strpos($pc11_vlrun, ".") == "") {
             $pc11_vlrun .= ".";
             $tam        = strlen($pc11_vlrun) + 2;
@@ -675,9 +676,10 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
           }
 
           $sql_dot = $clsolicitem->sql_query_dot(null,
-                                                 "pc11_codigo,
-                                             					      pc11_quant,
-                    						                            sum(pc13_quant)",
+                                                 "
+                                                    pc11_codigo,
+                                                    round(pc11_quant, 3),
+                                                    round(sum(pc13_quant), 3)",
                                                  "",
                                                  "",
                                                  "group by pc10_numero,
@@ -686,7 +688,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
                     							                                   pc11_quant,
                     							                                   pc11_numero,
                     							                                   pc13_codigo
-                    						                              having (pc11_quant > sum(pc13_quant) or pc13_codigo is null)
+                    						                              having (round(pc11_quant, 3) > round(sum(pc13_quant), 3) or pc13_codigo is null)
                     						                                 and pc11_numero = " . $pc11_numero);
 
           $sSqlVerificaAut = " select solicitem.* ";
@@ -1149,7 +1151,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
   if (document.form1.pc16_codmater.value != "") {
     <?php if ($iRegistroPreco == "") {?>
     js_pesquisapc16_codmater(false);
-    <?} ?>
+    <?php } ?>
   }
 
   function js_materanterior() {
@@ -1178,7 +1180,14 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
 
       }
     }
+
+    var controlaQuantidade = document.getElementById('pc11_servicoquantidade').value;
     var nQuant = new Number(document.getElementById('pc17_quant').value);
+    var qtdSolicitada = new Number(document.getElementById('pc11_quant').value);
+    if (controlaQuantidade == 'true' && qtdSolicitada <= 1) {
+        alert('Serviço controlado por quantidade, quantidade não pode ser igual ou inferior a 1!');
+        return false;
+    }
     if (nQuant <= 0) {
 
       alert('Quantidade da unidade deve ser maior que zero!');
@@ -1293,6 +1302,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
       document.form1.pc11_quant.style.backgroundColor = "";
       document.form1.pc11_quant.focus();
       document.form1.pc17_unid.style.visibility = 'visible';
+      document.form1.pc11_servicoquantidade.value = 'false';
       js_desabilidaqtd(document.form1.pc17_unid.value);
     }
     <?php
@@ -1349,7 +1359,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
       alert('Selecione a forma de controle da quantidade do serviço');
       $('pc11_servicoquantidade').focus;
       $('pc11_servicoquantidade').style.backgroundColor = '#99A9AE';
-      return false;
+       return false;
     }
     return true;
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class PDF_Javascript extends FPDF {
 

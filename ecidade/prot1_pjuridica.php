@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,7 @@
     </script>
     <tr>
       <input type="hidden" name="municipio" value="<?=($municipio == "t"?'f':'t')?>">
-      <?
+      <?php
       if(isset($z01_cgccpf) && $z01_cgccpf != ""){
         if(strlen($z01_cgccpf) == 14){
 	  $cnpj = $z01_cgccpf;
@@ -53,13 +53,13 @@
       <input type="hidden" name="cnpj" value="<?=$cnpj?>">
               <td nowrap title="<?=@$Tz01_cgc?>"> 
                 <?=$LDBtxt31?>
-                <?
+                <?php
 		  db_input('z01_cgc',15,@$Iz01_cgc,true,'text',$db_opcao,"onBlur='js_verificaCGCCPF(this);js_testanome(\"\",\"\",this.value)'");
 		?>
 	      </td>	  
       <td align="left" title="<?=$TDBtxt29?>">
 	<strong><?=$LDBtxt29?></strong>
-	<?
+	<?php
 	  $x = array("t"=>"SIM","f"=>"NÃO");
 	  db_select('municipio',$x,true,$db_opcao,'onChange="js_zerac()"');
 	?>
@@ -72,14 +72,14 @@
               <?=$Lz01_numcgm?>
             </td>
             <td width="73%" nowrap> 
-              <?
+              <?php
 		  db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',3);
 		  ?>
             <td nowrap title=<?=@$Tz01_nome?>> 
               <?=@$Lz01_nome?>
             </td>
             <td nowrap title="<?=@$Tz01_nome?>" colspan=2 > 
-             <?
+             <?php
 	  	  db_input('z01_nome',60,$Iz01_nome,true,'text',$db_opcao,"onBlur='js_testanome(\"\",\"\",this.value)'; onChange='if(document.form1.z01_nomecomple.value == \"\") document.form1.z01_nomecomple.value = document.form1.z01_nome.value'");
 	     ?>
             </td>
@@ -90,7 +90,7 @@
               <?=@$Lz01_nomecomple?>
             </td>
             <td nowrap title="<?=@$Tz01_nomecomple?>" colspan=4 > 
-              <?
+              <?php
 	  	  db_input('z01_nomecomple',100,$Iz01_nomecomple,true,'text',$db_opcao,"onBlur='js_testanome(\"\",\"\",this.value);");
 	      ?>
             </td>
@@ -101,7 +101,7 @@
               <?=$Lz01_tipcre?>
             </td>
             <td nowrap>
-              <?
+              <?php
 		    $x = array("2"=>"Empresa Privada","1"=>"Empresa Pública");
 		    db_select('z01_tipcre',$x,true,$db_opcao);
 		    ?>
@@ -110,7 +110,7 @@
               <?=@$Lz01_contato?>
             </td>
             <td nowrap title="<?=@$Tz01_contato?>"  > 
-              <?
+              <?php
 	  	  db_input('z01_contato',40,$Iz01_contato,true,'text',$db_opcao,"");
 	      ?>
             </td>
@@ -120,7 +120,7 @@
               <?=@$Lz01_incest?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 		  db_input('z01_incest',15,$Iz01_incest,true,'text',$db_opcao);
 	      ?>
             </td>
@@ -128,16 +128,16 @@
               <?=@$Lz01_nomefanta?>
             </td>
             <td nowrap title="<?=@$Tz01_nomefanta?>"  > 
-              <?
+              <?php
 	          db_input('z01_nomefanta',40,$Iz01_nomefanta,true,'text',$db_opcao,"");
 	      ?>
             </td>
           </tr>
         </table></tr>
-	  <?
+	  <?php
   	  db_input('z01_cpf',15,@$Iz01_cpf,true,'hidden',$db_opcao,'');
 	  ?>
-	  <?
+	  <?php
 	    if($cnpj != ""){
 	      echo "<script>document.form1.z01_cgc.value = '$cnpj'</script>";
 	    }

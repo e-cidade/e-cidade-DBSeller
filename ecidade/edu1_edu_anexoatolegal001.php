@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -112,7 +112,7 @@ if (isset($incluir)) {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     
-    <?
+    <?php
       $sLib  = "scripts.js,prototype.js,webseller.js,strings.js,datagrid.widget.js,grid.style.css,";
       db_app::load($sLib);
     ?>
@@ -125,7 +125,7 @@ if (isset($incluir)) {
         <tr> 
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
             <center>
-	            <?
+	            <?php
 	              include(modification("forms/db_frmedu_anexoatolegal.php"));
 	            ?>
             </center>
@@ -140,7 +140,7 @@ if (isset($incluir)) {
   js_tabulacaoforms("form1", "ed292_atolegal", true, 1, "ed292_atolegal", true);
 </script>
 
-<?
+<?php
 
 if (isset($incluir)) {
 

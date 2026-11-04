@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,35 +46,35 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty38_codnoti?>">
-       <?
+       <?php
        db_ancora(@$Ly38_codnoti,"js_pesquisay38_codnoti(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y38_codnoti',20,$Iy38_codnoti,true,'text',3," onchange='js_pesquisay38_codnoti(false);'");
 db_input('y39_codandam',20,$Iy39_codandam,true,'hidden',3,"")
 ?>
-       <?
+       <?php
 db_input('y30_data',10,$Iy30_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty38_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Ly38_id_usuario,"js_pesquisay38_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y38_id_usuario',5,$Iy38_id_usuario,true,'text',$db_opcao," onchange='js_pesquisay38_id_usuario(false);'");
 db_input('y38_id_usuario',5,$Iy38_id_usuario,true,'hidden',$db_opcao," ","y38_id_usuario_old");
 if($db_opcao == 2){
   echo "<script>document.form1.y38_id_usuario_old.value='$y38_id_usuario'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -84,7 +84,7 @@ db_input('nome',20,$Inome,true,'text',3,'')
        <?=@$Ly38_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y38_obs',3,50,$Iy38_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,18 +92,18 @@ db_textarea('y38_obs',3,50,$Iy38_obs,true,'text',$db_opcao,"")
   <tr>
     <td align="center" colspan="2">
       <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+      <?php
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_fiscalusuario001.php?y38_codnoti=<?=$y38_codnoti?>'">
-      <?
+      <?php
       }
       ?>
     </td>
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("y38_codnoti"=>@$y38_codnoti,"y38_id_usuario"=>@$y38_id_usuario);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y38_codnoti,y38_id_usuario,y38_obs";
@@ -118,12 +118,12 @@ db_textarea('y38_obs',3,50,$Iy38_obs,true,'text',$db_opcao,"")
     $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);    
    ?>
    </td>
-   <?
+   <?php
    $clfiscalusuario->sql_record($clfiscalusuario->sql_query("","","*",""," y38_codnoti = $y38_codnoti"));
    if($clfiscalusuario->numrows == 0){  
    ?>
    <p align="center"><small>*A Notificação deve ter no mínimo um fiscal cadastrado!</small></p>
-   <?
+   <?php
    }
    ?>
  </tr>  

@@ -75,6 +75,6 @@ $oAbasImportacaoCompilacao = new cl_criaabas;
     </td>
   </tr>
 </table>
-<? db_menu(); ?>
+<?php db_menu(); ?>
 </body>
 </html>

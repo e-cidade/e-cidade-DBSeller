@@ -25,6 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -80,6 +81,12 @@ require_once(modification("model/tceLeiaute.model.php"));
 require_once(modification("model/tceLeiame.model.php"));
 require_once(modification("model/tceCadastroDependentes.model.php"));
 require_once(modification("model/tceCadastroPensionistas.model.php"));
+
+$app = require_once ECIDADE_PATH . 'bootstrap/app.php';
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
 ?>
 <html>
 <head>
@@ -89,15 +96,15 @@ require_once(modification("model/tceCadastroPensionistas.model.php"));
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
-<?
+<body>
+<?php
 
 $oGet = db_utils::postMemory($_GET);
 
 $iAnoAtual = db_getsession("DB_anousu");
 
-$oContcearquivoDAO = db_utils::getDao('contcearquivo');
-$oContcearquivooidDAO = db_utils::getDao('contcearquivooid');
+$oContcearquivoDAO = new cl_contcearquivo();
+$oContcearquivooidDAO = new cl_contcearquivooid();
 
 $oJson = new services_json();
 $aArquivos = $oJson->decode(str_replace("\\", "", $oGet->sArquivos));
@@ -109,20 +116,20 @@ $oDados = new stdClass();
 $tribinst = db_getsession("DB_instit");
 
 $instituicoes[0] = "0000";
-$rsInstituicoes = $oDaoDBConfig->sql_record($oDaoDBConfig->sql_query_file(null,
-    'codigo,
-                                                                             codtrib', '
-                                                                             tribinst,
-                                                                             codigo',
-    'tribinst = ' . db_getsession("DB_instit")));
-
+$rsInstituicoes = $oDaoDBConfig->sql_record($oDaoDBConfig->sql_query_file(
+    null,
+    'codigo, codtrib',
+    'tribinst, codigo',
+    'tribinst = ' . db_getsession("DB_instit")
+));
 
 if ($oDaoDBConfig->numrows > 0) {
     $sInstituicoes = '';
     $sVirgula = "";
     for ($i = 0; $i < $oDaoDBConfig->numrows; $i++) {
-        $instituicoes[pg_result($rsInstituicoes, $i, 'codigo')] = pg_result($rsInstituicoes, $i, 'codtrib');
-        $sInstituicoes .= $sVirgula . pg_result($rsInstituicoes, $i, 'codigo');
+        $instituicao = db_utils::fieldsMemory($rsInstituicoes, $i);
+        $instituicoes[$instituicao->codigo] = $instituicao->codtrib;
+        $sInstituicoes .= $sVirgula . $instituicao->codigo;
         $sVirgula = ",";
     }
 
@@ -161,8 +168,8 @@ $sNomeArquivo = getNomeArquivo($iInstit, $sDataInicial, $sDataFinal, $sCodRemess
  * as classes de negocio responsaveis por gera-los
  *
  */
-$aArquivosGerados = array();
-$aClasseArquivos = array(
+$aArquivosGerados = [];
+$aClasseArquivos = [
     "301" => "tceFolhaPagamento",
     "34" => "tceFolhaPagamento",
     "35" => "tceCadastroFuncionarios",
@@ -173,7 +180,7 @@ $aClasseArquivos = array(
     "308" => "tceFolhaPagamentoPosterior",
     "309" => "tceCadastroDependentes",
     "310" => "tceCadastroPensionistas",
-);
+];
 
 try {
     db_inicio_transacao();
@@ -186,8 +193,16 @@ try {
             continue;
         }
 
-        $oArquivoTCE = new $aClasseArquivos [$iCodArquivo]($iInstit, $sCodRemessa, $sDataInicial, $sDataFinal, $oDados,
-            $oLeiaute, $sInstituicoes, $iCodArquivo);
+        $oArquivoTCE = new $aClasseArquivos [$iCodArquivo](
+            $iInstit,
+            $sCodRemessa,
+            $sDataInicial,
+            $sDataFinal,
+            $oDados,
+            $oLeiaute,
+            $sInstituicoes,
+            $iCodArquivo
+        );
         $oArquivoTCE->setAnoAtual($iAnoAtual);
         $aArquivosGerados[] = $oArquivoTCE->getNomeArquivo();
 
@@ -205,7 +220,7 @@ try {
      */
 
     // verifica se o orcamento foi feito no elemento ou subelemento
-    $oOrcparametroDAO = db_utils::getDao('orcparametro');
+    $oOrcparametroDAO = new cl_orcparametro();
     $rsSubelemento = $oOrcparametroDAO->sql_record($oOrcparametroDAO->sql_query_file($iAnoUsu));
     if ($oOrcparametroDAO->numrows > 0) {
         $oSubelemento = db_utils::fieldsMemory($rsSubelemento, 0);
@@ -350,34 +365,34 @@ function getNomeArquivo($iInstit, $sDataini, $sDatafim, $sRemessa)
     }
     $oInstit = db_utils::fieldsMemory($rsInstit, 0);
     switch ($oInstit->db21_tipoinstit) {
-        case '1' :
+        case '1':
             $sTipoGoverno = 'P';
             break;
-        case '2' :
+        case '2':
             $sTipoGoverno = 'C';
             break;
-        case '6' :
+        case '6':
             $sTipoGoverno = 'A';
             break;
-        case '7' :
+        case '7':
             $sTipoGoverno = 'A';
             break;
-        case '8' :
+        case '8':
             $sTipoGoverno = 'F';
             break;
-        case '9' :
+        case '9':
             $sTipoGoverno = 'E';
             break;
-        case '10' :
+        case '10':
             $sTipoGoverno = 'E';
             break;
-        case '11' :
+        case '11':
             $sTipoGoverno = 'E';
             break;
-        case '12' :
+        case '12':
             $sTipoGoverno = 'E';
             break;
-        default :
+        default:
             $sTipoGoverno = 'O';
     }
 
@@ -413,11 +428,11 @@ function headerPad($iInstit = 1, $sDataInicial = '', $sDataFinal = '', $sDataGer
     $rs = db_query("SELECT nomeinst,cgc FROM db_config WHERE codigo= " . $iInstit);
     $oInstit = db_utils::fieldsMemory($rs, 0);
 
-    $ini = split("-", $sDataInicial);
+    $ini = explode("-", $sDataInicial);
     $ini = "$ini[2]$ini[1]$ini[0]";
-    $fim = split("-", $sDataFinal);
+    $fim = explode("-", $sDataFinal);
     $fim = "$fim[2]$fim[1]$fim[0]";
-    $dt = split("-", $sDataGeracao);
+    $dt = explode("-", $sDataGeracao);
     $dt = "$dt[2]$dt[1]$dt[0]";
     $iCodigoRemessa = str_pad($iCodigoRemessa, 12, "0", STR_PAD_LEFT);
     return formatar($oInstit->cgc, 14, 'n') . $ini . $fim . $dt . formatar($oInstit->nomeinst, 80, 'c') . $iCodigoRemessa;

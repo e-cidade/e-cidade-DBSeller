@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("descrdepto");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tbo06_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lbo06_id_usuario,"js_pesquisabo06_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo06_id_usuario',10,$Ibo06_id_usuario,true,'text',$db_opcao," onchange='js_pesquisabo06_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbo06_coddepto?>">
-       <?
+       <?php
        db_ancora(@$Lbo06_coddepto,"js_pesquisabo06_coddepto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo06_coddepto',5,$Ibo06_coddepto,true,'text',$db_opcao," onchange='js_pesquisabo06_coddepto(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bousudepto.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

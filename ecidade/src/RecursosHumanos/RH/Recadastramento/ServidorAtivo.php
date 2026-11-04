@@ -152,29 +152,6 @@ class ServidorAtivo extends Servidor
             AssentamentoFuncionalRepository::persist($assentamento);
         }
 
-        $deficiente = $this->servidor->deficiente();
-
-        if (!$deficiente) {
-            $deficiente = new ServidorDeficiente();
-            $deficiente->setMatricula($this->servidor->getMatricula());
-            $deficiente->setInstituicao($this->servidor->getCodigoInstituicao());
-        }
-
-        $campoReabilitado = $secao->getCampo("reabilitado");
-        $campoReadaptado = $secao->getCampo("readaptado");
-
-        $reabilitado = false;
-
-        if ($campoReabilitado->getResposta()->codigo == 1 || $campoReadaptado->getResposta()->codigo == 1) {
-            $reabilitado = true;
-        }
-
-        $deficiente->setReabilitado($reabilitado);
-        $campo = $secao->getCampo("pre_cota");
-        $deficiente->setCota($campo->getResposta()->codigo == 1);
-
-        $deficiente->save();
-
         $this->cgm->save();
         $this->servidor->save();
     }
@@ -247,17 +224,23 @@ class ServidorAtivo extends Servidor
         $documento->setCnhNumero($campo->getResposta());
 
         $campo = $secao->getCampo("cnh_categoria");
-        $documento->setCnhCategoria($campo->getResposta());
+        $documento->setCnhCategoria(
+            is_object($campo->getResposta()) ?
+                $campo->getResposta()->descricao :
+                $campo->getResposta()
+        );
 
         $campo = $secao->getCampo("uf_cnh");
         $documento->setCnhUf($campo->getResposta()->descricao);
 
         $campo = $secao->getCampo("data_validade_cnh");
-        $documento->setCnhValidade(
-            empty($this->apenasNumero($campo->getResposta()))
-                ? null
-                : new DBDate($campo->getResposta())
-        );
+        if ($campo) {
+            $documento->setCnhValidade(
+                empty($this->apenasNumero($campo->getResposta()))
+                    ? null
+                    : new DBDate($campo->getResposta())
+            );
+        }
 
         $campo = $secao->getCampo("data_emissao_cnh");
         $documento->setCnhEmissao(
@@ -267,31 +250,45 @@ class ServidorAtivo extends Servidor
         );
 
         $campo = $secao->getCampo("rne");
-        $documento->setRneRegistro($campo->getResposta());
+        if ($campo) {
+            $documento->setRneRegistro($campo->getResposta());
+        }
 
         $campo = $secao->getCampo("orgao_emissor_rne");
-        $documento->setRneOrgaoEmissor($campo->getResposta());
+
+        if ($campo) {
+            $documento->setRneOrgaoEmissor($campo->getResposta());
+        }
 
         $campo = $secao->getCampo("data_emissao_rne");
-        $documento->setRneEmissao(
-            empty($this->apenasNumero($campo->getResposta()))
-                ? null
-                : new DBDate($campo->getResposta())
-        );
+
+        if ($campo) {
+            $documento->setRneEmissao(
+                empty($this->apenasNumero($campo->getResposta()))
+                    ? null
+                    : new DBDate($campo->getResposta())
+            );
+        }
+
 
         $campo = $secao->getCampo("data_validade_rne");
-        $documento->setRneValidade(
-            empty($this->apenasNumero($campo->getResposta()))
-                ? null
-                : new DBDate($campo->getResposta())
-        );
+        if ($campo) {
+            $documento->setRneValidade(
+                empty($this->apenasNumero($campo->getResposta()))
+                    ? null
+                    : new DBDate($campo->getResposta())
+            );
+        }
+
 
         $campo = $secao->getCampo("data_entrada_rne");
-        $documento->setRneEntrada(
-            empty($this->apenasNumero($campo->getResposta()))
-                ? null
-                : new DBDate($campo->getResposta())
-        );
+        if ($campo) {
+            $documento->setRneEntrada(
+                empty($this->apenasNumero($campo->getResposta()))
+                    ? null
+                    : new DBDate($campo->getResposta())
+            );
+        }
 
         $documento->save();
     }
@@ -338,11 +335,17 @@ class ServidorAtivo extends Servidor
     private function salvarEnderecoExterior()
     {
         $secao = $this->form->getSecao("endereco_exterior");
-
+        if (!$secao) {
+            return;
+        }
         $campo = $secao->getCampo("pais_exterior");
         $pais = $campo->getResposta();
         if (empty($pais)) {
             return;
+        }
+
+        if (is_object($pais)) {
+            $pais = $pais->descricao;
         }
         $pais = strtoupper(trim(DBString::removerCaracteresEspeciaisAcentos($pais)));
 
@@ -394,6 +397,9 @@ class ServidorAtivo extends Servidor
     {
 
         $secao = $this->form->getSecao("estrangeiro");
+        if (!$secao) {
+            return;
+        }
 
         $campoResidencia = $secao->getCampo("tempo_de_residenci");
         $campoCondicao = $secao->getCampo("cond_ingre_traba");
@@ -491,6 +497,15 @@ class ServidorAtivo extends Servidor
             if (empty($dependente->nome_dependentes)) {
                 continue;
             }
+
+            $secaoDadosPessoais = $this->form->getSecao("dados_pessoais");
+            $campo = $secaoDadosPessoais->getCampo("cpf_conjuge");
+            $cpfConjuge = $this->apenasNumero($campo->getResposta());
+
+            if ($this->apenasNumero($dependente->cpf_dependente) == $cpfConjuge) {
+                continue;
+            }
+
             $dependenteModel = new Dependente();
             $dependenteModel->setMatricula($this->servidor->getMatricula());
             $dependenteModel->setInstituicao($this->servidor->getCodigoInstituicao());

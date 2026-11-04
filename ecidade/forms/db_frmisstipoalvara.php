@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $q98_instit = db_getsession('DB_instit');
        <?=@$Lq98_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 				db_input('q98_sequencial',5,$Iq98_sequencial,true,'text',3,"")
 			?>
     </td>
@@ -54,7 +54,7 @@ $q98_instit = db_getsession('DB_instit');
        <?=@$Lq98_descricao?>
     </td>
     <td> 
-			<?
+			<?php
 				db_input('q98_descricao',77,$Iq98_descricao,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -63,30 +63,30 @@ $q98_instit = db_getsession('DB_instit');
   
   <tr>
     <td nowrap title="<?=@$Tq98_documento?>">&nbsp;
-       <?
+       <?php
        db_ancora(@$Lq98_documento,"js_pesquisaq98_documento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-				<?
+				<?php
 					db_input('q98_documento',5,$Iq98_documento,true,'text',$db_opcao," onchange='js_pesquisaq98_documento(false);'")
 				?>
-       <?
+       <?php
        		db_input('db82_descricao',70,$Idb82_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq98_issgrupotipoalvara?>">&nbsp;
-       <?
+       <?php
        	db_ancora(@$Lq98_issgrupotipoalvara,"js_pesquisaq98_issgrupotipoalvara(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 				db_input('q98_issgrupotipoalvara',5,$Iq98_issgrupotipoalvara,true,'text',$db_opcao," onchange='js_pesquisaq98_issgrupotipoalvara(false);'")
 			?>
-       <?
+       <?php
        	db_input('q97_descricao',70,$Iq97_descricao,true,'text',3,'')
        ?>
     </td>
@@ -97,7 +97,7 @@ $q98_instit = db_getsession('DB_instit');
        &nbsp;<b>Tipo de Validade</b>
     </td>
     <td> 
-			<?
+			<?php
 				$x = array("" => "SELECIONE...",
 				           "1" => "FIXO",
 				           "2" => "VARIÁVEL", 
@@ -118,7 +118,7 @@ $q98_instit = db_getsession('DB_instit');
 				       <?=@$Lq98_quantvalidade?>
 				    </td>
 				    <td align="left"> 
-							<?
+							<?php
 								db_input('q98_quantvalidade',10,$Iq98_quantvalidade,true,'text',$db_opcao,"")
 							?>
 				    </td>
@@ -137,7 +137,7 @@ $q98_instit = db_getsession('DB_instit');
 				       <?=@$Lq98_permiterenovacao?>
 				    </td>
 				    <td align="left"> 
-							<?
+							<?php
 								$x = array(""  => "SELECIONE...",
 								           "f" => "NAO",
 								           "t" => "SIM");
@@ -160,7 +160,7 @@ $q98_instit = db_getsession('DB_instit');
 				       <?=@$Lq98_quantrenovacao?>
 				    </td>
 				    <td align="left"> 
-							<?
+							<?php
 								db_input('q98_quantrenovacao',10,$Iq98_quantrenovacao,true,'text',$db_opcao,"")
 							?>
 				    </td>
@@ -176,7 +176,7 @@ $q98_instit = db_getsession('DB_instit');
        <?=@$Lq98_permitetransformacao?>
     </td>
     <td> 
-			<?
+			<?php
 					$x = array(""  => "SELECIONE...",
 					           "f" => "NAO",
 					           "t" => "SIM");
@@ -189,7 +189,7 @@ $q98_instit = db_getsession('DB_instit');
        <?=@$Lq98_permiteimpressao?>
     </td>
     <td> 
-			<?
+			<?php
 				$x = array(""  => "SELECIONE...",
 				           "f" => "NAO",
 				           "t" => "SIM");
@@ -202,7 +202,7 @@ $q98_instit = db_getsession('DB_instit');
        <?=@$Lq98_gerataxa?>
     </td>
     <td> 
-			<?
+			<?php
 				$x = array(""  => "SELECIONE...","f"=>"NAO","t"=>"SIM");
 				db_select('q98_gerataxa',$x,true,$db_opcao,"");
 			?>
@@ -213,7 +213,7 @@ $q98_instit = db_getsession('DB_instit');
        <?=@$Lq98_instit?>
     </td>
     <td> 
-			<?
+			<?php
 				db_input('q98_instit',10,$Iq98_instit,true,'hidden',$db_opcao,"")
 			?>
     </td>
@@ -407,7 +407,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isstipoalvara.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

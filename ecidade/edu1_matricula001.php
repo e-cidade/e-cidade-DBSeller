@@ -310,19 +310,19 @@ if ( isset( $incluir ) ) {
                                                                 +'&ed57_c_descr=<?=$ed57_c_descr?>';
                                                                 +'&ed52_c_descr=<?=$ed52_c_descr?>';
 </script>
-<?
+<?php
 }
 ?>
 
 <body bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
-    <?include(modification("forms/db_frmmatricula.php"));?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+    <?php include(modification("forms/db_frmmatricula.php"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed60_i_turma",true,1,"ed60_i_turma",true);
 </script>
-<?
+<?php
 if ( isset( $incluir ) ) {
 
   if ( $clmatricula->erro_status == "0" ) {

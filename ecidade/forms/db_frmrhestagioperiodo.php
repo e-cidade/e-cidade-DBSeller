@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,22 +42,22 @@ $clrotulo->label("h50_sequencial");
        <?=@$Lh55_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h55_sequencial',10,$Ih55_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th55_rhestagio?>">
-       <?
+       <?php
        db_ancora(@$Lh55_rhestagio,"js_pesquisah55_rhestagio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h55_rhestagio',10,$Ih55_rhestagio,true,'text',$db_opcao," onchange='js_pesquisah55_rhestagio(false);'")
 ?>
-       <?
+       <?php
 db_input('h50_sequencial',10,$Ih50_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -67,7 +67,7 @@ db_input('h50_sequencial',10,$Ih50_sequencial,true,'text',3,'')
        <?=@$Lh55_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h55_descr',40,$Ih55_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,7 +77,7 @@ db_input('h55_descr',40,$Ih55_descr,true,'text',$db_opcao,"")
        <?=@$Lh55_nroaval?>
     </td>
     <td> 
-<?
+<?php
 db_input('h55_nroaval',10,$Ih55_nroaval,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -120,7 +120,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhestagioperiodo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

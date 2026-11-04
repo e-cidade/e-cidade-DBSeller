@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,12 +60,12 @@ db_postmemory($HTTP_POST_VARS);
             <table  border="0"  align="center" width='100%'>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php
                   db_ancora("<b>Almoxarifado:</b>", "js_pesquisacoddepto(true);", "");
                   ?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php
                   db_input('coddepto', 10, '', true, 'text', 1, " onchange='js_pesquisacoddepto(false);'");
                   db_input('descrdepto', 55, '', true, 'text', 3, '');
                   ?>
@@ -95,12 +95,12 @@ db_postmemory($HTTP_POST_VARS);
             <table  border="0"  align="center" width='100%'>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php
                   db_ancora('<b>Medicamento:</b>', "js_pesquisafa01_i_medicamento(true);", "");
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('fa01_i_codigo', 10, @$Ifa01_i_codigo, true, 'text', 1, 
                            " onchange='js_pesquisafa01_i_medicamento(false);'"
                           );
@@ -129,14 +129,14 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
         <td>
           <b>Tratamento sem movimentação: </b>
-          <?
+          <?php
           $aX = array('1' => 'Apresentar junto com os outros', '2' => 'Não apresente os pacientes', 
                       '3' => 'Apresentar somente os sem movimentação'
                      );
           db_select('iMovimentacao', $aX, true, ""); 
           ?>
           &nbsp;&nbsp;  </nbr><b>Relatório exato conforme os medicamentos: </b>
-          <?
+          <?php
           $aY = array('1' => 'NÃO', '2' => 'SIM' );
           db_select('iExato', $aY, true, ""); 
           ?>
@@ -153,7 +153,7 @@ db_postmemory($HTTP_POST_VARS);
 
   </center>
 </form>
-<?
+<?php
         db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
                 db_getsession("DB_anousu"), db_getsession("DB_instit")
                );

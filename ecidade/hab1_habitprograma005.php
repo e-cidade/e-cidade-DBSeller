@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -141,7 +141,7 @@ if(isset($oPost->alterar)){
 <table align="center">
   <tr> 
     <td> 
-			<?
+			<?php
 			  include(modification("forms/db_frmhabitprograma.php"));
 			?>
 	  </td>
@@ -149,7 +149,7 @@ if(isset($oPost->alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar)){
   
 	if ($lSqlErro) {

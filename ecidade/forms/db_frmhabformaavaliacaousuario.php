@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,7 +68,7 @@ if (isset($oPost->db_opcaoal)) {
 		      <b>Código:</b>
 		    </td>
 		    <td> 
-		      <?
+		      <?php
 		        db_input('ht08_sequencial',10,$Iht08_sequencial,true,'text',3,"")
 		      ?>
 		    </td>
@@ -78,7 +78,7 @@ if (isset($oPost->db_opcaoal)) {
 		      <?=@$Lht08_habitformaavaliacao?>
 		    </td>
 		    <td> 
-		      <?
+		      <?php
 		        db_input('ht08_habitformaavaliacao',10,$Iht08_habitformaavaliacao,true,'text',3,"");
 		        db_input('ht07_descricao',50,$Iht07_descricao,true,'text',3,'');
 		      ?>
@@ -86,12 +86,12 @@ if (isset($oPost->db_opcaoal)) {
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tid_usuario?>">
-		      <?
+		      <?php
 		        db_ancora(@$Lid_usuario,"js_pesquisaid_usuario(true);",$db_opcao);
 		      ?>
 		    </td>
 		    <td> 
-		      <?
+		      <?php
 		        db_input('id_usuario',10,$Iid_usuario,true,'text',$db_opcao," onchange='js_pesquisaid_usuario(false);'");
 		        db_input('nome',50,$Inome,true,'text',3,'');
 		      ?>
@@ -122,7 +122,7 @@ if (isset($oPost->db_opcaoal)) {
   <table>
     <tr>
       <td valign="top"  align="center">  
-        <?
+        <?php
           $chavepri= array("ht08_sequencial"=>@$ht08_sequencial);
           
           $sWhere                    = "ht08_habitformaavaliacao = ".@$ht08_habitformaavaliacao;

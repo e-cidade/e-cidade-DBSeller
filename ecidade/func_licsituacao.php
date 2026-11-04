@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cllicsituacao->rotulo->label("l08_descr");
               <?=$Ll08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l08_sequencial",5,$Il08_sequencial,true,"text",4,"","chave_l08_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cllicsituacao->rotulo->label("l08_descr");
               <?=$Ll08_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l08_descr",20,$Il08_descr,true,"text",4,"","chave_l08_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cllicsituacao->rotulo->label("l08_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_licsituacao.php")==true){
@@ -122,12 +122,12 @@ $cllicsituacao->rotulo->label("l08_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

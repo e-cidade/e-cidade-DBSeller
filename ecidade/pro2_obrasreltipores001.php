@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -78,7 +78,7 @@ $clrotulo = new rotulocampo;
       </tr>
       <tr>
         <td colspan="2">
-          <?
+          <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux->cabecalho = "<strong>Tipos de Responsável</strong>";
             $aux->codigo = "ob02_cod"; //chave de retorno da func

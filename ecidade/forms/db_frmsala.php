@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,16 +62,16 @@ if (isset($opcao) && $opcao == "alterar") {
                     <?= @$Led16_i_codigo ?>
                 </td>
                 <td colspan="2">
-                    <? db_input('ed16_i_codigo', 15, $Ied16_i_codigo, true, 'text', 3, "") ?>
+                    <?php db_input('ed16_i_codigo', 15, $Ied16_i_codigo, true, 'text', 3, "") ?>
                 </td>
             </tr>
             <tr>
                 <td nowrap title="<?= @$Ted16_i_escola ?>">
-                    <? db_ancora(@$Led16_i_escola, "js_pesquisaed16_i_escola(true);", 3); ?>
+                    <?php db_ancora(@$Led16_i_escola, "js_pesquisaed16_i_escola(true);", 3); ?>
                 </td>
                 <td colspan="2">
-                    <? db_input('ed16_i_escola', 15, @$Ied16_i_escola, true, 'text', 3, '') ?>
-                    <? db_input('descrdepto', 50, @$Idescrdepto, true, 'text', 3, '') ?>
+                    <?php db_input('ed16_i_escola', 15, @$Ied16_i_escola, true, 'text', 3, '') ?>
+                    <?php db_input('descrdepto', 50, @$Idescrdepto, true, 'text', 3, '') ?>
                 </td>
             </tr>
             <tr>
@@ -101,9 +101,9 @@ if (isset($opcao) && $opcao == "alterar") {
                         <?= @$Led16_f_metragem ?>
                         <?php db_input('ed16_f_metragem', 10, $Ied16_f_metragem, true, 'text', $db_opcao, " onchange='js_calculo(this.value);'") ?><br>
                         <?= @$Led233_f_medidaaluno ?>
-                        <? db_input('ed233_f_medidaaluno', 10, $Ied233_f_medidaaluno, true, 'text', 3, "") ?> <?= isset($ed233_f_medidaaluno) && $ed233_f_medidaaluno != "" ? "" : " (Procedimentos -> Parâmetros)" ?><br>
+                        <?php db_input('ed233_f_medidaaluno', 10, $Ied233_f_medidaaluno, true, 'text', 3, "") ?> <?= isset($ed233_f_medidaaluno) && $ed233_f_medidaaluno != "" ? "" : " (Procedimentos -> Parâmetros)" ?><br>
                         <?= @$Led16_i_calculoaluno ?>
-                        <? db_input('ed16_i_calculoaluno', 10, $Ied16_i_calculoaluno, true, 'text', 3, "") ?>
+                        <?php db_input('ed16_i_calculoaluno', 10, $Ied16_i_calculoaluno, true, 'text', 3, "") ?>
                     </fieldset>
                 </td>
             </tr>

@@ -30,9 +30,9 @@ class ProblemaPaciente extends Model
     public $timestamps = false;
 
     public $casts = [
-        's170_data' => 'DateTime',
-        's170_data_inicio' => 'DateTime',
-        's170_data_fim' => 'DateTime'
+        's170_data' => 'datetime',
+        's170_data_inicio' => 'datetime',
+        's170_data_fim' => 'datetime'
     ];
 
     public function scopePreNatal(Builder $query)

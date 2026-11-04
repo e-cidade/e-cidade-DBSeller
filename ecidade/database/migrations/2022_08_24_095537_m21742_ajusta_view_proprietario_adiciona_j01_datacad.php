@@ -14,7 +14,6 @@ class M21742AjustaViewProprietarioAdicionaJ01Datacad extends Migration
      */
     public function up()
     {
-
         DB::connection()->getPdo()->exec(<<<SQL
 
 --
@@ -469,6 +468,6 @@ SQL
 
     public function down()
     {
-      return true;
+        return true;
     }
 }

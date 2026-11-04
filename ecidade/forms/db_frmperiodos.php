@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ed28_i_ano");
        <?=@$Led23_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed23_i_codigo',5,$Ied23_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted23_i_anoletivo?>">
-       <?
+       <?php
        db_ancora(@$Led23_i_anoletivo,"js_pesquisaed23_i_anoletivo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed23_i_anoletivo',4,$Ied23_i_anoletivo,true,'text',$db_opcao," onchange='js_pesquisaed23_i_anoletivo(false);'")
 ?>
-       <?
+       <?php
 db_input('ed28_i_ano',4,$Ied28_i_ano,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ed28_i_ano',4,$Ied28_i_ano,true,'text',3,'')
        <?=@$Led23_c_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed23_c_nome',30,$Ied23_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('ed23_c_nome',30,$Ied23_c_nome,true,'text',$db_opcao,"")
        <?=@$Led23_d_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed23_d_inicio',@$ed23_d_inicio_dia,@$ed23_d_inicio_mes,@$ed23_d_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('ed23_d_inicio',@$ed23_d_inicio_dia,@$ed23_d_inicio_mes,@$ed23_d_in
        <?=@$Led23_d_fim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed23_d_fim',@$ed23_d_fim_dia,@$ed23_d_fim_mes,@$ed23_d_fim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('ed23_d_fim',@$ed23_d_fim_dia,@$ed23_d_fim_mes,@$ed23_d_fim_ano,tru
        <?=@$Led23_c_encerrado?>
     </td>
     <td> 
-<?
+<?php
 $x = array('f'=>'Não','t'=>'Não');
 db_select('ed23_c_encerrado',$x,true,$db_opcao,"");
 ?>
@@ -133,7 +133,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_periodos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -79,7 +79,7 @@ function js_ponto_proximo(sDataInicio,sDataFim,aMatriculas,lMostraObservacoes,iE
     }  
   }
   </script>
-<?
+<?php
 
 use ECidade\RecursosHumanos\RH\Efetividade\Repository\Periodo as PeriodoRepository;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\EspelhoPonto;
@@ -517,7 +517,7 @@ function escreverPDF($aServidores, $lMostraObservacoes, $lEmiteTodosAfastamentos
     echo "</table>";
 ?>
   <div align="left" id="divlabel" style="position:relative; width:200px; z-index:12; top:-20; left:-100px; visibility: hidden; border: 2px outset #666666; background-color: #6699cc; font-style:italic;"><span color="#9966cc" id="vlr"></span></div>
-<?
+<?php
 
     echo "</body>";
     echo "</html>";

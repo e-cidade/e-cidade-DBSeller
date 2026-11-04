@@ -33,6 +33,12 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 require_once modification('dbforms/db_funcoes.php');
 
+if (isset($_POST['getExtArq'])){
+    $getExtArq = (bool) $_POST['getExtArq'];
+}else{
+    $getExtArq = true;
+}
+
 $definicoesCamposDinamicos = array();
 
 if (!empty($_REQUEST['campos'])) {
@@ -53,6 +59,7 @@ $definicoes = array_merge($definicoesCamposDinamicos, array(
     'mensagemPreitura' => FILTER_VALIDATE_BOOLEAN,
     'campos' => FILTER_SANITIZE_STRING,
     'acao' => FILTER_SANITIZE_STRING,
+    'anoProcesso' => null,
     'ultimaTransferencia' => FILTER_VALIDATE_INT,
     'filtros' => FILTER_REQUIRE_ARRAY,
     'hash' => FILTER_SANITIZE_STRING,
@@ -69,6 +76,7 @@ try {
 
     $retorno = new stdClass();
     $retorno->erro = false;
+    $retorno->processamento = new stdClass();
 
     $servico = new AndamentoProcessoService($parametros);
 
@@ -88,14 +96,14 @@ try {
             $retorno->processo = $servico->buscarProcessos();
             break;
         case 'transferir':
-            $retorno->processamento = $servico->transferir();
+            $retorno->processamento->transferido = $servico->transferir();
             $retorno->processo = $servico->buscarProcessos();
             break;
         case 'uploadAnexosDespacho':
             $retorno->uploads = $servico->upload();
             break;
         case 'prepararDocumentos':
-            $retorno->documentos = $servico->prepararDocumentos();
+            $retorno->documentos = $servico->prepararDocumentos($getExtArq);
             break;
         case "respostaPrefeitura":
             $retorno->respotaCidadao = $servico->salvarMensagemOuvidoria();

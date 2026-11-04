@@ -188,12 +188,12 @@ if(isset($oGet->lMatriz) && $oGet->lMatriz == 1){
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
     </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

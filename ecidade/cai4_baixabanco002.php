@@ -42,7 +42,7 @@ db_postmemory($HTTP_SERVER_VARS);
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
 if(isset($pesquisar)){
 
   if($db_opcao==1){
@@ -96,11 +96,11 @@ if(isset($pesquisar)){
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-  <?
+  <?php
   if (isset($pesquisar)) {
 
     $instit      = db_getsession("DB_instit");
-    $whereinstit = " and disarq.instit = $instit ";
+    $whereinstit = " and disarq.instit = $instit and cadban.k15_instit = $instit";
 
     $xwhere = "";
     $sAnd = "";
@@ -221,7 +221,7 @@ if(isset($pesquisar)){
   </tr>
 </table>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

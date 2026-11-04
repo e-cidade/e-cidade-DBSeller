@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,42 +36,42 @@ $clrotulo->label("at81_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tat85_respcli?>">
-       <?
+       <?php
        db_ancora(@$Lat85_respcli,"",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at85_respcli',6,$Iat85_respcli,true,'text',3)
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
-<?
+<?php
 db_input('at85_seq',6,$Iat85_seq,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat85_cliitem?>">
-       <?
+       <?php
        db_ancora(@$Lat85_cliitem,"js_pesquisaat85_cliitem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at85_cliitem',6,$Iat85_cliitem,true,'text',$db_opcao," onchange='js_pesquisaat85_cliitem(false);'")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat81_descr?>">
-       <?
+       <?php
        db_ancora(@$Lat81_descr,"",3);
        ?>
     </td>
     <td> 
-       <?
+       <?php
 db_textarea('at81_descr',4,49,$Iat81_descr,true,'text',3,"")
        ?>
     </td>
@@ -81,7 +81,7 @@ db_textarea('at81_descr',4,49,$Iat81_descr,true,'text',3,"")
        <?=@$Lat85_prioridade?>
     </td>
     <td> 
-<?
+<?php
   $x = array("1"=>"Baixa",
              "2"=>"Média",
              "3"=>"Alta"
@@ -147,7 +147,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_atendordemcli.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

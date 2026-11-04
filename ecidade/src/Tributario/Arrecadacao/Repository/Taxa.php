@@ -68,6 +68,7 @@ class Taxa extends \BaseClassRepository
         $oDaoTaxa->ar36_debitossemprocesso = ($oTaxa->isDebitosSemProcesso() ? 't' : 'f');
         $oDaoTaxa->ar36_aplicajurosmulta = ($oTaxa->isAplicaJuroMulta() ? 't' : 'f');
         $oDaoTaxa->ar36_honorario = ($oTaxa->isAplicaHonorario() ? 't' : 'f');
+        $oDaoTaxa->ar36_permiteparcelamento = ($oTaxa->getPermissaoParcelamento() ? 't' : 'f');
 
         if (!empty($iSequencial)) {
             $oDaoTaxa->ar36_sequencial = $iSequencial;
@@ -134,6 +135,7 @@ class Taxa extends \BaseClassRepository
         $oTaxa->setDebitosSemProcesso($dados->ar36_debitossemprocesso == 't');
         $oTaxa->aplicaJuroMulta($dados->ar36_aplicajurosmulta == 't');
         $oTaxa->aplicaHonorario($dados->ar36_honorario == 't');
+        $oTaxa->setPermissaoParcelamento($dados->ar36_permiteparcelamento== 't');
 
         return $oTaxa;
     }
@@ -209,6 +211,7 @@ class Taxa extends \BaseClassRepository
             $dado->taxaInicial = $taxa->isDebitosSemProcesso();
             $dado->aplicaJurosMulta = $taxa->isAplicaJuroMulta();
             $dado->aplicaHonorario = $taxa->isAplicaHonorario();
+            $dado->lPermiteParcelamento = $taxa->getPermissaoParcelamento();
 
             $dadoTaxas[] = $dado;
         }
@@ -241,7 +244,6 @@ class Taxa extends \BaseClassRepository
         if (!$rsResult) {
             throw new DBException('Ocorreu um erro ao buscar as Taxas aplicadas a Débitos sem Processo.');
         }
-
         return $this->makeCollection($rsResult);
     }
 
@@ -260,7 +262,7 @@ class Taxa extends \BaseClassRepository
         if (!is_null($taxa)) {
             $sWhere .= " and ar36_sequencial <> {$taxa}";
         }
-        
+
         $sSql = $oDaoTaxa->sql_query_file(null, '*', null, $sWhere);
 
         $rsResult = db_query($sSql);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -84,7 +84,7 @@ if($clempparametro->numrows>0){
 $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_comsaldo,pc30_permsemdotac,pc30_gerareserva,pc30_libdotac"));
 db_fieldsmemory($result_pcparam,0);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING']);
 
 $where_solicita = "";
 if(isset($ini) && trim($ini)!=""){
@@ -117,8 +117,8 @@ if($pc30_permsemdotac=='f'){
                                               $clsolicitem->sql_query_dot(
                                                                           null,
                                                                           "pc11_codigo,
-                                                                           pc11_quant,
-                                                                           sum(pc13_quant)",
+                                                                           round(pc11_quant, 3),
+                                                                           round(sum(pc13_quant), 3)",
                                                                            "",
                                                                            "",
                                                                            "
@@ -128,15 +128,13 @@ if($pc30_permsemdotac=='f'){
                                                                                      pc11_quant,
                                                                                      pc11_numero,
                                                                                      pc13_codigo
-                                                                            having   (pc11_quant > sum(pc13_quant) or pc13_codigo is null) and $where_teste
+                                                                            having (round(pc11_quant, 3) > round(sum(pc13_quant), 3) or pc13_codigo is null) and $where_teste
                                                                            "));
   if($clsolicitem->numrows > 0){
-//    db_redireciona("db_erros.php?fechar=true&db_erro=Existe item sem dotação ou sem quantidade total lançada em dotação!!");
-
       $lista_itens = "";
       $virgula     = "";
       $cod_item    = "";
-      for($i = 0; $i < pg_numrows($result_test_dot); $i++){
+      for($i = 0; $i < pg_num_rows($result_test_dot); $i++){
 	   db_fieldsmemory($result_test_dot,$i);
 	   if ($cod_item != $pc11_codigo){
 	        $cod_item     = $pc11_codigo;
@@ -150,7 +148,7 @@ if($pc30_permsemdotac=='f'){
       if ($clsolicitem->numrows > 0){
 	   $erro_msg = "Verifique o(s) item(ns) ";
 	   $virgula  = "";
-	   for($i = 0; $i < pg_numrows($res_itens); $i++){
+	   for($i = 0; $i < pg_num_rows($res_itens); $i++){
  	        db_fieldsmemory($res_itens,$i);
 	        $erro_msg .= $virgula."<b>".$pc01_codmater." - ".$pc01_descrmater."</b>";
 		$virgula   = ",";
@@ -166,8 +164,6 @@ if($pc30_permsemdotac=='f'){
   }
 }
 $where_solicita .= $and." pc10_correto='t' ";
-
-//die($clsolicita->sql_query_solicita(null," distinct pc10_numero,pc10_data,pc10_resumo,pc12_vlrap,descrdepto,coddepto,nomeresponsavel,pc50_descr,pc10_login,nome",'pc10_numero',$where_solicita));
 $sSqlSolicita         = $clsolicita->sql_query_solicita(null,
                                                         "distinct pc10_numero,
                                                          pc67_sequencial,
@@ -188,7 +184,7 @@ $sSqlSolicita         = $clsolicita->sql_query_solicita(null,
 $result_pesq_solicita = $clsolicita->sql_record($sSqlSolicita);
 $numrows_solicita = $clsolicita->numrows;
 if($numrows_solicita==0){
-  db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado! Verifique seu departamento.");
+  db_redireciona("db_erros.php?fechar=true&db_erro=Verifique seu departamento ou se a solicitação esta correta.");
 }
 
 $erros = "";
@@ -316,8 +312,6 @@ if (trim($erros) == ""){
 
             if ($total_reserva == 0 && $total_dotacao == 0){
 		          $erros = "";
-		        } else if (round($total_reserva,2) < round($pc11_vlrun,2) || round($total_reserva,2) > round($pc11_vlrun,2) && $sServicoQuantidade != "t"){
-		          $erros = "Valor total de RESERVAS ";
 		        } else if (round($total_dotacao,2) < round($pc11_vlrun,2) || round($total_dotacao,2) > round($pc11_vlrun,2) && $sServicoQuantidade != "t"){
 		          $erros = "Valor total de DOTAÇÃO(ÕES) ";
 		        }
@@ -334,7 +328,6 @@ if (trim($erros) == ""){
      }
 }
 
-// exit;
 if($erros != ""){
   db_redireciona("db_erros.php?fechar=true&db_erro=$erros");
 }
@@ -344,7 +337,6 @@ $pdf = new scpdf();
 $pdf->Open();
 $pdf->SetAutoPageBreak(false);
 $pdf1 = new db_impcarne($pdf, '11');
-//$pdf1->modelo = 11;
 $pdf1->objpdf->SetTextColor(0,0,0);
 $pdf1->Snumero_ant = "";
 $pdf1->logo        = $logo;
@@ -368,7 +360,6 @@ for($contador=0;$contador<$numrows_solicita;$contador++) {
     $sSqlLicitacao .= "       inner join liclicita  on l21_codliclicita = l20_codigo";
     $sSqlLicitacao .= "       inner join cflicita   on l20_codtipocom    = l03_codigo";
     $sSqlLicitacao .= " where pc53_solicitafilho = {$pc10_numero}";
-//    echo $sSqlLicitacao."<br>";
     $rsLicitacao   = db_query($sSqlLicitacao);
     if (pg_num_rows($rsLicitacao) > 0) {
 
@@ -535,10 +526,6 @@ for($contador=0;$contador<$numrows_solicita;$contador++) {
         $campos,
         'pc13_codigo', "pc11_numero=$pc10_numero");
     $result_pesq_pcdotac = $clpcdotac->sql_record($sql);
-//    echo $sql;
-//    die();
-
-
 
   $numrows_pcdotac          = $clpcdotac->numrows;
   $pdf1->recorddasdotac     = $result_pesq_pcdotac;

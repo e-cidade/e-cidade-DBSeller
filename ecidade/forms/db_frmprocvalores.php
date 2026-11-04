@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -42,7 +42,7 @@ if(isset($start))
             </script>
            ";
     }
-   
+
    $result = $clprocvalores->sql_record($clprocvalores->sql_query($sd10_i_procedimento));
    @db_fieldsmemory($result,0);
    if($clprocvalores->numrows > 0)
@@ -57,28 +57,28 @@ if(isset($start))
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tsd10_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd10_i_procedimento,"js_pesquisasd10_i_procedimento(true);",$db_opcao1);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_i_procedimento',10,$Isd10_i_procedimento,true,'text',$db_opcao1," onchange='js_pesquisasd10_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd09_c_descr',50,$Isd09_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
-  <?if(!isset($start)){?>
+  <?php if(!isset($start)){?>
   <tr>
    <td>
     <input type="submit" value="Processar" name="start">
    </td>
   </tr>
- <?}?>
+ <?php }?>
 </table>
-<?
+<?php
  if(isset($start))
  {
 ?>
@@ -87,8 +87,8 @@ db_input('sd09_c_descr',50,$Isd09_c_descr,true,'text',3,'')
     <td nowrap title="<?=@$Tsd10_c_sala?>" width="400">
        <?=@$Lsd10_c_sala?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_c_sala',10,$Isd10_c_sala,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -97,8 +97,8 @@ db_input('sd10_c_sala',10,$Isd10_c_sala,true,'text',$db_opcao,"onBlur=\"FormataV
     <td nowrap title="<?=@$Tsd10_f_valor?>">
        <?=@$Lsd10_f_valor?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_valor',10,$Isd10_f_valor,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -107,8 +107,8 @@ db_input('sd10_f_valor',10,$Isd10_f_valor,true,'text',$db_opcao,"onBlur=\"Format
     <td nowrap title="<?=@$Tsd10_f_servico?>">
        <?=@$Lsd10_f_servico?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_servico',10,$Isd10_f_servico,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -117,8 +117,8 @@ db_input('sd10_f_servico',10,$Isd10_f_servico,true,'text',$db_opcao,"onBlur=\"Fo
     <td nowrap title="<?=@$Tsd10_f_anestesia?>">
        <?=@$Lsd10_f_anestesia?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_anestesia',10,$Isd10_f_anestesia,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -127,8 +127,8 @@ db_input('sd10_f_anestesia',10,$Isd10_f_anestesia,true,'text',$db_opcao,"onBlur=
     <td nowrap title="<?=@$Tsd10_f_material?>">
        <?=@$Lsd10_f_material?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_material',10,$Isd10_f_material,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -137,8 +137,8 @@ db_input('sd10_f_material',10,$Isd10_f_material,true,'text',$db_opcao,"onBlur=\"
     <td nowrap title="<?=@$Tsd10_f_contraste?>">
        <?=@$Lsd10_f_contraste?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_contraste',10,$Isd10_f_contraste,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -147,8 +147,8 @@ db_input('sd10_f_contraste',10,$Isd10_f_contraste,true,'text',$db_opcao,"onBlur=
     <td nowrap title="<?=@$Tsd10_f_filme?>">
        <?=@$Lsd10_f_filme?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_filme',10,$Isd10_f_filme,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -157,8 +157,8 @@ db_input('sd10_f_filme',10,$Isd10_f_filme,true,'text',$db_opcao,"onBlur=\"Format
     <td nowrap title="<?=@$Tsd10_f_gesso?>">
        <?=@$Lsd10_f_gesso?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_gesso',10,$Isd10_f_gesso,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -167,8 +167,8 @@ db_input('sd10_f_gesso',10,$Isd10_f_gesso,true,'text',$db_opcao,"onBlur=\"Format
     <td nowrap title="<?=@$Tsd10_f_quimio?>">
        <?=@$Lsd10_f_quimio?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_quimio',10,$Isd10_f_quimio,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -177,8 +177,8 @@ db_input('sd10_f_quimio',10,$Isd10_f_quimio,true,'text',$db_opcao,"onBlur=\"Form
     <td nowrap title="<?=@$Tsd10_f_dialise?>">
        <?=@$Lsd10_f_dialise?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_dialise',10,$Isd10_f_dialise,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -187,8 +187,8 @@ db_input('sd10_f_dialise',10,$Isd10_f_dialise,true,'text',$db_opcao,"onBlur=\"Fo
     <td nowrap title="<?=@$Tsd10_f_sadtrat?>">
        <?=@$Lsd10_f_sadtrat?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_sadtrat',10,$Isd10_f_sadtrat,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -197,8 +197,8 @@ db_input('sd10_f_sadtrat',10,$Isd10_f_sadtrat,true,'text',$db_opcao,"onBlur=\"Fo
     <td nowrap title="<?=@$Tsd10_f_sadtpc?>">
        <?=@$Lsd10_f_sadtpc?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_sadtpc',10,$Isd10_f_sadtpc,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -207,8 +207,8 @@ db_input('sd10_f_sadtpc',10,$Isd10_f_sadtpc,true,'text',$db_opcao,"onBlur=\"Form
     <td nowrap title="<?=@$Tsd10_f_sadtout?>">
        <?=@$Lsd10_f_sadtout?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_sadtout',10,$Isd10_f_sadtout,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -217,8 +217,8 @@ db_input('sd10_f_sadtout',10,$Isd10_f_sadtout,true,'text',$db_opcao,"onBlur=\"Fo
     <td nowrap title="<?=@$Tsd10_f_outro?>">
        <?=@$Lsd10_f_outro?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_outro',10,$Isd10_f_outro,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -227,8 +227,8 @@ db_input('sd10_f_outro',10,$Isd10_f_outro,true,'text',$db_opcao,"onBlur=\"Format
     <td nowrap title="<?=@$Tsd10_f_filme2?>">
        <?=@$Lsd10_f_filme2?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_filme2',10,number_format($Isd10_f_filme2,2,'.',''),true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -237,8 +237,8 @@ db_input('sd10_f_filme2',10,number_format($Isd10_f_filme2,2,'.',''),true,'text',
     <td nowrap title="<?=@$Tsd10_f_total?>">
        <?=@$Lsd10_f_total?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd10_f_total',10,number_format($Isd10_f_total,2,'.',''),true,'text',3)
 ?>
     </td>
@@ -246,7 +246,7 @@ db_input('sd10_f_total',10,number_format($Isd10_f_total,2,'.',''),true,'text',3)
   </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":"alterar")?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":"Alterar")?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
  if($db_opcao == 2)
   {
    echo "<input type=\"submit\" name=\"excluir\" value=\"Excluir\"> ";
@@ -255,7 +255,7 @@ db_input('sd10_f_total',10,number_format($Isd10_f_total,2,'.',''),true,'text',3)
 <input type="reset" value="Refazer">
 <input type="button" value="Voltar" onclick="history.back()">
 </form>
-<?
+<?php
   }
 ?>
 <script>
@@ -303,18 +303,18 @@ function js_pesquisasd10_i_procedimento(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_procedimentos','func_procedimentos.php?funcao_js=parent.js_mostraprocedimentos1|sd09_i_codigo|sd09_c_descr','Pesquisa',true);
   }else{
-     if(document.form1.sd10_i_procedimento.value != ''){ 
+     if(document.form1.sd10_i_procedimento.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_procedimentos','func_procedimentos.php?pesquisa_chave='+document.form1.sd10_i_procedimento.value+'&funcao_js=parent.js_mostraprocedimentos','Pesquisa',false);
      }else{
-       document.form1.sd09_c_descr.value = ''; 
+       document.form1.sd09_c_descr.value = '';
      }
   }
 }
 function js_mostraprocedimentos(chave,erro){
-  document.form1.sd09_c_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.sd10_i_procedimento.focus(); 
-    document.form1.sd10_i_procedimento.value = ''; 
+  document.form1.sd09_c_descr.value = chave;
+  if(erro==true){
+    document.form1.sd10_i_procedimento.focus();
+    document.form1.sd10_i_procedimento.value = '';
   }
 }
 function js_mostraprocedimentos1(chave1,chave2){
@@ -327,7 +327,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procvalores.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

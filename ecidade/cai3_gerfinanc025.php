@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -41,7 +41,7 @@ $k00_inscr  = null;
 
 $oArrebanco = new stdClass;
 
-$mat_numpre = split("#",base64_decode(@$HTTP_SERVER_VARS['QUERY_STRING']));
+$mat_numpre =explode("#",base64_decode(@$HTTP_SERVER_VARS['QUERY_STRING']));
 //var_dump(base64_decode(@$HTTP_SERVER_VARS['QUERY_STRING']));
 //echo $mat_numpre[0]."-";
 //echo $mat_numpre[1]."-";
@@ -78,6 +78,17 @@ $sql_arrebanco_nbant = "select array_to_string( array_accum(arrebanco.k00_nbant)
 //echo $sql_arrebanco_nbant;
 $rs_arrebanco_nbant = db_query($sql_arrebanco_nbant) or die($sql_arrebanco_nbant);
 $oArrebanco->k00_nbant = pg_result($rs_arrebanco_nbant,0,0);
+
+
+//BUSCA CODIGO DO PROCESSO FORO
+$sSqlProcessoForo  = "select distinct v70_codforo 
+                      from processoforo                                                                                    
+                      inner join processoforoinicial on processoforoinicial.v71_processoforo = processoforo.v70_sequencial
+                      inner join termoini on termoini.inicial = processoforoinicial.v71_inicial 
+                      inner join termo on termo.v07_parcel = termoini.parcel 
+                      where termo.v07_numpre = {$numpre} and v70_anulado is false order by v70_codforo ";
+$rsProcessoForo = db_query($sSqlProcessoForo);
+$v70_codforo = pg_fetch_result($rsProcessoForo, 0, 0);
 
 /**
  * Legend dos fieldset
@@ -118,6 +129,9 @@ switch ( $k03_tipo ) {
 
   case 6  :
   case 13 :
+  case 16 :
+    $sLegend = 'Parcelamento';
+  break;
   case 17 :
   case 30 :
     $sLegend = 'Parcelamento';
@@ -768,13 +782,13 @@ if ( $k03_tipo == 1 ) {
      */
     } else if ( $k03_tipo == 16 ) {
 
-      $sSqlParcelamentoDiversos = " select *                                                                                  ";
+      $sSqlParcelamentoDiversos = " select *,(select 	sum(dv10_total) from 	termodiver where dv10_parcel = v07_parcel) as total";
       $sSqlParcelamentoDiversos .= "   from termodiver                                                                         ";
       $sSqlParcelamentoDiversos .= "        inner join termo        on v07_parcel            = dv10_parcel                     ";
       $sSqlParcelamentoDiversos .= "                                and v07_instit            = ".db_getsession('DB_instit')." ";
       $sSqlParcelamentoDiversos .= "        inner join cgm          on v07_numcgm            = z01_numcgm                      ";
-      $sSqlParcelamentoDiversos .= "        inner join arrecad      on k00_numpre            = v07_numpre                      ";
-      $sSqlParcelamentoDiversos .= "        inner join arreinstit   on arreinstit.k00_numpre = arrecad.k00_numpre              ";
+      $sSqlParcelamentoDiversos .= "        left join arrecad      on k00_numpre            = v07_numpre                      ";
+      $sSqlParcelamentoDiversos .= "        left join arreinstit   on arreinstit.k00_numpre = arrecad.k00_numpre              ";
       $sSqlParcelamentoDiversos .= "                               and arreinstit.k00_instit = ".db_getsession('DB_instit')."  ";
       $sSqlParcelamentoDiversos .= "                                                                                           ";
       $sSqlParcelamentoDiversos .= "   left outer join arrematric a on v07_numpre            = a.k00_numpre                    ";
@@ -783,7 +797,7 @@ if ( $k03_tipo == 1 ) {
 
       $rsParcelamentoDeiversos = db_query($sSqlParcelamentoDiversos);
 
-      if ( pg_numrows($rsParcelamentoDeiversos) == 0 ) {
+      if ( pg_num_rows($rsParcelamentoDeiversos) == 0 ) {
 
         echo "Parcelamento não cadastrado no diversos.";
         exit;
@@ -804,7 +818,7 @@ if ( $k03_tipo == 1 ) {
           <td>&nbsp; <?=$v07_totpar?></td>
 
           <td>Valor Total Parcelado:</td>
-          <td>&nbsp; <?=($k00_valor * $v07_totpar)?></td>
+          <td>&nbsp; <?=($total)?></td>
         </tr>
 
         <tr>
@@ -814,26 +828,20 @@ if ( $k03_tipo == 1 ) {
           <td>Data Primeira parcela:</td>
           <td>&nbsp; <?=$v07_datpri?></td>
         </tr>
-
         <tr>
-          <td>Termo:</td>
-          <form name="form1" method="post">
-						<td>
-							<input type="button" name="Submit3" value="Visualizar o Termo" onclick="js_AbreJanelaRelatorio();">
-							<input type="hidden" id="v07_parcel" name="v07_parcel" value="<?=$v07_parcel?>">
-						</td>
-          </form>
-
           <td>Contribu&iacute;nte:</td>
           <td>&nbsp; <?=$z01_nome?></td>
-        </tr>
-
-        <tr>
           <td>Nome Respons&aacute;vel:</td>
           <td>&nbsp; <?=$z01_nome?></td>
-
+        </tr>
+        <tr>
+          <td>Termo:</td>
+          <td align="center">
+              <input type="button" name="Submit3" value="Visualizar o Termo" onclick="js_AbreJanelaRelatorio();">
+              <input type="hidden" id="v07_parcel" name="v07_parcel" value="<?=$v07_parcel?>">
+          </td>
           <td>C&oacute;digo Arrecada&ccedil;&atilde;o:</td>
-          <td>&nbsp; <?=$k00_numpre?></td>
+          <td>&nbsp; <?=$numpre?></td>
         </tr>
 
         <tr>
@@ -922,7 +930,7 @@ if ( $k03_tipo == 1 ) {
 					?>
 				</td>
       </tr>
-
+      
       <tr>
         <td>Inscri&ccedil;&atilde;o Alvar&aacute;:</td>
 				<td>&nbsp;
@@ -939,6 +947,10 @@ if ( $k03_tipo == 1 ) {
 						}
 					?>
 				</td>
+      </tr>
+      <tr>
+        <td>C&oacute;digo do Processo do Foro:</td>
+        <td>&nbsp; <?=$v70_codforo?></td>
       </tr>
 
     <?php

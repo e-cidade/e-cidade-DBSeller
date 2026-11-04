@@ -1,67 +1,67 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: material
 //CLASSE DA ENTIDADE matestoqueitemlancconf
-class cl_matestoqueitemlancconf { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $m96_codlanc = 0; 
-   var $m96_id_usuario = 0; 
-   var $m96_data_dia = null; 
-   var $m96_data_mes = null; 
-   var $m96_data_ano = null; 
-   var $m96_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_matestoqueitemlancconf {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $m96_codlanc = 0;
+   var $m96_id_usuario = 0;
+   var $m96_data_dia = null;
+   var $m96_data_mes = null;
+   var $m96_data_ano = null;
+   var $m96_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 m96_codlanc = int8 = Código sequencial do lançamento 
-                 m96_id_usuario = int4 = Cod. Usuário 
-                 m96_data = date = Data de entrada 
+                 m96_codlanc = int8 = Código sequencial do lançamento
+                 m96_id_usuario = int4 = Cod. Usuário
+                 m96_data = date = Data de entrada
                  ";
-   //funcao construtor da classe 
-   function cl_matestoqueitemlancconf() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("matestoqueitemlancconf"); 
+     $this->rotulo = new rotulo("matestoqueitemlancconf");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_matestoqueitemlancconf {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m96_codlanc = ($this->m96_codlanc == ""?@$GLOBALS["HTTP_POST_VARS"]["m96_codlanc"]:$this->m96_codlanc);
        $this->m96_id_usuario = ($this->m96_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["m96_id_usuario"]:$this->m96_id_usuario);
@@ -87,9 +87,9 @@ class cl_matestoqueitemlancconf {
      }
    }
    // funcao para inclusao
-   function incluir ($m96_codlanc){ 
+   public function incluir ($m96_codlanc){
       $this->atualizacampos();
-     if($this->m96_id_usuario == null ){ 
+     if($this->m96_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "m96_id_usuario";
        $this->erro_banco = "";
@@ -98,7 +98,7 @@ class cl_matestoqueitemlancconf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m96_data == null ){ 
+     if($this->m96_data == null ){
        $this->erro_sql = " Campo Data de entrada nao Informado.";
        $this->erro_campo = "m96_data_dia";
        $this->erro_banco = "";
@@ -107,8 +107,8 @@ class cl_matestoqueitemlancconf {
        $this->erro_status = "0";
        return false;
      }
-       $this->m96_codlanc = $m96_codlanc; 
-     if(($this->m96_codlanc == null) || ($this->m96_codlanc == "") ){ 
+       $this->m96_codlanc = $m96_codlanc;
+     if(($this->m96_codlanc == null) || ($this->m96_codlanc == "") ){
        $this->erro_sql = " Campo m96_codlanc nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -117,17 +117,17 @@ class cl_matestoqueitemlancconf {
        return false;
      }
      $sql = "insert into matestoqueitemlancconf(
-                                       m96_codlanc 
-                                      ,m96_id_usuario 
-                                      ,m96_data 
+                                       m96_codlanc
+                                      ,m96_id_usuario
+                                      ,m96_data
                        )
                 values (
-                                $this->m96_codlanc 
-                               ,$this->m96_id_usuario 
-                               ,".($this->m96_data == "null" || $this->m96_data == ""?"null":"'".$this->m96_data."'")." 
+                                $this->m96_codlanc
+                               ,$this->m96_id_usuario
+                               ,".($this->m96_data == "null" || $this->m96_data == ""?"null":"'".$this->m96_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Itens retirados da matestoqueitemlanc ($this->m96_codlanc) nao Incluído. Inclusao Abortada.";
@@ -161,16 +161,16 @@ class cl_matestoqueitemlancconf {
        $resac = db_query("insert into db_acount values($acount,1661,9651,'','".AddSlashes(pg_result($resaco,0,'m96_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($m96_codlanc=null) { 
+   public function alterar ($m96_codlanc=null) {
       $this->atualizacampos();
      $sql = " update matestoqueitemlancconf set ";
      $virgula = "";
-     if(trim($this->m96_codlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m96_codlanc"])){ 
+     if(trim($this->m96_codlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m96_codlanc"])){
        $sql  .= $virgula." m96_codlanc = $this->m96_codlanc ";
        $virgula = ",";
-       if(trim($this->m96_codlanc) == null ){ 
+       if(trim($this->m96_codlanc) == null ){
          $this->erro_sql = " Campo Código sequencial do lançamento nao Informado.";
          $this->erro_campo = "m96_codlanc";
          $this->erro_banco = "";
@@ -180,10 +180,10 @@ class cl_matestoqueitemlancconf {
          return false;
        }
      }
-     if(trim($this->m96_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m96_id_usuario"])){ 
+     if(trim($this->m96_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m96_id_usuario"])){
        $sql  .= $virgula." m96_id_usuario = $this->m96_id_usuario ";
        $virgula = ",";
-       if(trim($this->m96_id_usuario) == null ){ 
+       if(trim($this->m96_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "m96_id_usuario";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_matestoqueitemlancconf {
          return false;
        }
      }
-     if(trim($this->m96_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m96_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m96_data_dia"] !="") ){ 
+     if(trim($this->m96_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m96_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m96_data_dia"] !="") ){
        $sql  .= $virgula." m96_data = '$this->m96_data' ";
        $virgula = ",";
-       if(trim($this->m96_data) == null ){ 
+       if(trim($this->m96_data) == null ){
          $this->erro_sql = " Campo Data de entrada nao Informado.";
          $this->erro_campo = "m96_data_dia";
          $this->erro_banco = "";
@@ -205,11 +205,11 @@ class cl_matestoqueitemlancconf {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["m96_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["m96_data_dia"])){
          $sql  .= $virgula." m96_data = null ";
          $virgula = ",";
-         if(trim($this->m96_data) == null ){ 
+         if(trim($this->m96_data) == null ){
            $this->erro_sql = " Campo Data de entrada nao Informado.";
            $this->erro_campo = "m96_data_dia";
            $this->erro_banco = "";
@@ -240,7 +240,7 @@ class cl_matestoqueitemlancconf {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens retirados da matestoqueitemlanc nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->m96_codlanc;
@@ -268,14 +268,14 @@ class cl_matestoqueitemlancconf {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($m96_codlanc=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($m96_codlanc=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m96_codlanc));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -303,7 +303,7 @@ class cl_matestoqueitemlancconf {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens retirados da matestoqueitemlanc nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$m96_codlanc;
@@ -331,11 +331,11 @@ class cl_matestoqueitemlancconf {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -357,10 +357,10 @@ class cl_matestoqueitemlancconf {
       }
      return $result;
    }
-   function sql_query ( $m96_codlanc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $m96_codlanc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -376,15 +376,15 @@ class cl_matestoqueitemlancconf {
      $sql2 = "";
      if($dbwhere==""){
        if($m96_codlanc!=null ){
-         $sql2 .= " where matestoqueitemlancconf.m96_codlanc = $m96_codlanc "; 
-       } 
+         $sql2 .= " where matestoqueitemlancconf.m96_codlanc = $m96_codlanc ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,10 +393,10 @@ class cl_matestoqueitemlancconf {
      }
      return $sql;
   }
-   function sql_query_file ( $m96_codlanc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $m96_codlanc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,15 +409,15 @@ class cl_matestoqueitemlancconf {
      $sql2 = "";
      if($dbwhere==""){
        if($m96_codlanc!=null ){
-         $sql2 .= " where matestoqueitemlancconf.m96_codlanc = $m96_codlanc "; 
-       } 
+         $sql2 .= " where matestoqueitemlancconf.m96_codlanc = $m96_codlanc ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

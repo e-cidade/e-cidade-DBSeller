@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,5 +25,5 @@
  *                                licenca/licenca_pt.txt 
  */
 
-$campos = "cadtipoparc.k40_codigo,cadtipoparc.k40_descr,cadtipoparc.k40_datalanc,cadtipoparc.k40_dtini,cadtipoparc.k40_dtfim,cadtipoparc.k40_todasmarc";
+$campos = "cadtipoparc.k40_codigo,cadtipoparc.k40_descr,cadtipoparc.k40_datalanc,cadtipoparc.k40_dtini,cadtipoparc.k40_dtfim,cadtipoparc.k40_todasmarc,cadtipoparc.k40_separajuremul";
 ?>

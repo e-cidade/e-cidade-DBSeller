@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $mes = substr($max,4,2);
               <?=$Lr01_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r01_regist",6,$Ir01_regist,true,"text",4,"","chave_r01_regist");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $mes = substr($max,4,2);
               <?=$Lz01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $mes = substr($max,4,2);
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	         db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 	       ?>
             </td>
@@ -103,7 +103,7 @@ $mes = substr($max,4,2);
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "pessoal.*";
@@ -214,14 +214,14 @@ $mes = substr($max,4,2);
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_r01_regist.focus();
 document.form2.chave_r01_regist.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
 //CLASSE DA ENTIDADE telefonealuno
-class cl_telefonealuno { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed50_i_codigo = 0; 
-   var $ed50_i_aluno = 0; 
-   var $ed50_i_tipotelefone = 0; 
-   var $ed50_i_numero = 0; 
-   var $ed50_i_ramal = 0; 
-   var $ed50_t_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_telefonealuno {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed50_i_codigo = 0;
+   var $ed50_i_aluno = 0;
+   var $ed50_i_tipotelefone = 0;
+   var $ed50_i_numero = 0;
+   var $ed50_i_ramal = 0;
+   var $ed50_t_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed50_i_codigo = int8 = Código 
-                 ed50_i_aluno = int8 = Aluno 
-                 ed50_i_tipotelefone = int8 = Tipo de Telefone 
-                 ed50_i_numero = int8 = Número 
-                 ed50_i_ramal = int4 = Ramal 
-                 ed50_t_obs = text = Observações 
+                 ed50_i_codigo = int8 = Código
+                 ed50_i_aluno = int8 = Aluno
+                 ed50_i_tipotelefone = int8 = Tipo de Telefone
+                 ed50_i_numero = int8 = Número
+                 ed50_i_ramal = int4 = Ramal
+                 ed50_t_obs = text = Observações
                  ";
-   //funcao construtor da classe 
-   function cl_telefonealuno() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("telefonealuno"); 
+     $this->rotulo = new rotulo("telefonealuno");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]."?ed50_i_aluno=".@$GLOBALS["HTTP_POST_VARS"]["ed50_i_aluno"]."&ed47_v_nome=".@$GLOBALS["HTTP_POST_VARS"]["ed47_v_nome"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_telefonealuno {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed50_i_codigo = ($this->ed50_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed50_i_codigo"]:$this->ed50_i_codigo);
        $this->ed50_i_aluno = ($this->ed50_i_aluno == ""?@$GLOBALS["HTTP_POST_VARS"]["ed50_i_aluno"]:$this->ed50_i_aluno);
@@ -86,9 +86,9 @@ class cl_telefonealuno {
      }
    }
    // funcao para inclusao
-   function incluir ($ed50_i_codigo){ 
+   public function incluir ($ed50_i_codigo){
       $this->atualizacampos();
-     if($this->ed50_i_aluno == null ){ 
+     if($this->ed50_i_aluno == null ){
        $this->erro_sql = " Campo Aluno nao Informado.";
        $this->erro_campo = "ed50_i_aluno";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_telefonealuno {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed50_i_tipotelefone == null ){ 
+     if($this->ed50_i_tipotelefone == null ){
        $this->erro_sql = " Campo Tipo de Telefone nao Informado.";
        $this->erro_campo = "ed50_i_tipotelefone";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_telefonealuno {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed50_i_numero == null ){ 
+     if($this->ed50_i_numero == null ){
        $this->erro_sql = " Campo Número nao Informado.";
        $this->erro_campo = "ed50_i_numero";
        $this->erro_banco = "";
@@ -115,20 +115,20 @@ class cl_telefonealuno {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed50_i_ramal == null ){ 
+     if($this->ed50_i_ramal == null ){
        $this->ed50_i_ramal = "0";
      }
      if($ed50_i_codigo == "" || $ed50_i_codigo == null ){
-       $result = db_query("select nextval('telefonealuno_ed50_i_codigo_seq')"); 
+       $result = db_query("select nextval('telefonealuno_ed50_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: telefonealuno_ed50_i_codigo_seq do campo: ed50_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: telefonealuno_ed50_i_codigo_seq do campo: ed50_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed50_i_codigo = pg_result($result,0,0); 
+       $this->ed50_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from telefonealuno_ed50_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed50_i_codigo)){
@@ -139,10 +139,10 @@ class cl_telefonealuno {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed50_i_codigo = $ed50_i_codigo; 
+         $this->ed50_i_codigo = $ed50_i_codigo;
        }
      }
-     if(($this->ed50_i_codigo == null) || ($this->ed50_i_codigo == "") ){ 
+     if(($this->ed50_i_codigo == null) || ($this->ed50_i_codigo == "") ){
        $this->erro_sql = " Campo ed50_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -151,23 +151,23 @@ class cl_telefonealuno {
        return false;
      }
      $sql = "insert into telefonealuno(
-                                       ed50_i_codigo 
-                                      ,ed50_i_aluno 
-                                      ,ed50_i_tipotelefone 
-                                      ,ed50_i_numero 
-                                      ,ed50_i_ramal 
-                                      ,ed50_t_obs 
+                                       ed50_i_codigo
+                                      ,ed50_i_aluno
+                                      ,ed50_i_tipotelefone
+                                      ,ed50_i_numero
+                                      ,ed50_i_ramal
+                                      ,ed50_t_obs
                        )
                 values (
-                                $this->ed50_i_codigo 
-                               ,$this->ed50_i_aluno 
-                               ,$this->ed50_i_tipotelefone 
-                               ,$this->ed50_i_numero 
-                               ,$this->ed50_i_ramal 
-                               ,'$this->ed50_t_obs' 
+                                $this->ed50_i_codigo
+                               ,$this->ed50_i_aluno
+                               ,$this->ed50_i_tipotelefone
+                               ,$this->ed50_i_numero
+                               ,$this->ed50_i_ramal
+                               ,'$this->ed50_t_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Telefones do aluno ($this->ed50_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_telefonealuno {
        $resac = db_query("insert into db_acount values($acount,1010054,1008317,'','".AddSlashes(pg_result($resaco,0,'ed50_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed50_i_codigo=null) { 
+   public function alterar ($ed50_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update telefonealuno set ";
      $virgula = "";
-     if(trim($this->ed50_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_codigo"])){ 
+     if(trim($this->ed50_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_codigo"])){
        $sql  .= $virgula." ed50_i_codigo = $this->ed50_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed50_i_codigo) == null ){ 
+       if(trim($this->ed50_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed50_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_telefonealuno {
          return false;
        }
      }
-     if(trim($this->ed50_i_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_aluno"])){ 
+     if(trim($this->ed50_i_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_aluno"])){
        $sql  .= $virgula." ed50_i_aluno = $this->ed50_i_aluno ";
        $virgula = ",";
-       if(trim($this->ed50_i_aluno) == null ){ 
+       if(trim($this->ed50_i_aluno) == null ){
          $this->erro_sql = " Campo Aluno nao Informado.";
          $this->erro_campo = "ed50_i_aluno";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_telefonealuno {
          return false;
        }
      }
-     if(trim($this->ed50_i_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_tipotelefone"])){ 
+     if(trim($this->ed50_i_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_tipotelefone"])){
        $sql  .= $virgula." ed50_i_tipotelefone = $this->ed50_i_tipotelefone ";
        $virgula = ",";
-       if(trim($this->ed50_i_tipotelefone) == null ){ 
+       if(trim($this->ed50_i_tipotelefone) == null ){
          $this->erro_sql = " Campo Tipo de Telefone nao Informado.";
          $this->erro_campo = "ed50_i_tipotelefone";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_telefonealuno {
          return false;
        }
      }
-     if(trim($this->ed50_i_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_numero"])){ 
+     if(trim($this->ed50_i_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_numero"])){
        $sql  .= $virgula." ed50_i_numero = $this->ed50_i_numero ";
        $virgula = ",";
-       if(trim($this->ed50_i_numero) == null ){ 
+       if(trim($this->ed50_i_numero) == null ){
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "ed50_i_numero";
          $this->erro_banco = "";
@@ -262,14 +262,14 @@ class cl_telefonealuno {
          return false;
        }
      }
-     if(trim($this->ed50_i_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_ramal"])){ 
-        if(trim($this->ed50_i_ramal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_ramal"])){ 
-           $this->ed50_i_ramal = "0" ; 
-        } 
+     if(trim($this->ed50_i_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_ramal"])){
+        if(trim($this->ed50_i_ramal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed50_i_ramal"])){
+           $this->ed50_i_ramal = "0" ;
+        }
        $sql  .= $virgula." ed50_i_ramal = $this->ed50_i_ramal ";
        $virgula = ",";
      }
-     if(trim($this->ed50_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_t_obs"])){ 
+     if(trim($this->ed50_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed50_t_obs"])){
        $sql  .= $virgula." ed50_t_obs = '$this->ed50_t_obs' ";
        $virgula = ",";
      }
@@ -299,7 +299,7 @@ class cl_telefonealuno {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Telefones do aluno nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed50_i_codigo;
@@ -327,14 +327,14 @@ class cl_telefonealuno {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed50_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed50_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed50_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -365,7 +365,7 @@ class cl_telefonealuno {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Telefones do aluno nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed50_i_codigo;
@@ -393,11 +393,11 @@ class cl_telefonealuno {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -419,10 +419,10 @@ class cl_telefonealuno {
       }
      return $result;
    }
-   function sql_query ( $ed50_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ed50_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,15 +437,15 @@ class cl_telefonealuno {
      $sql2 = "";
      if($dbwhere==""){
        if($ed50_i_codigo!=null ){
-         $sql2 .= " where telefonealuno.ed50_i_codigo = $ed50_i_codigo "; 
-       } 
+         $sql2 .= " where telefonealuno.ed50_i_codigo = $ed50_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,10 +454,10 @@ class cl_telefonealuno {
      }
      return $sql;
   }
-   function sql_query_file ( $ed50_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ed50_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,15 +470,15 @@ class cl_telefonealuno {
      $sql2 = "";
      if($dbwhere==""){
        if($ed50_i_codigo!=null ){
-         $sql2 .= " where telefonealuno.ed50_i_codigo = $ed50_i_codigo "; 
-       } 
+         $sql2 .= " where telefonealuno.ed50_i_codigo = $ed50_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

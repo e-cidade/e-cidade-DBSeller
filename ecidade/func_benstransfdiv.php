@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbenstransfdiv->rotulo->label("t31_codigo");
               <?=$Lt31_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t31_codigo",8,$It31_codigo,true,"text",4,"","chave_t31_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbenstransfdiv->rotulo->label("t31_codigo");
               <?=$Lt31_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t31_codigo",8,$It31_codigo,true,"text",4,"","chave_t31_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbenstransfdiv->rotulo->label("t31_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benstransfdiv.php")==true){
@@ -122,12 +122,12 @@ $clbenstransfdiv->rotulo->label("t31_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -14,11 +14,13 @@ use ECidade\RecursosHumanos\ESocial\DadosESocial;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
 use ECidade\RecursosHumanos\ESocial\Integracao\Recurso;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
-use ECidade\RecursosHumanos\ESocial\Model\JobEsocial;
 use ECidade\Integracao\Sped\API\Enum\ConsultaTipo;
 use ECidade\V3\Extension\Registry;
 use ECidade\RecursosHumanos\ESocial\Entity\ExclusaoEvento;
 use ECidade\RecursosHumanos\ESocial\Repository\Referencia;
+use ECidade\RecursosHumanos\ESocial\ESocialContextException;
+use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\Error as FormatterError;
+
 
 $parametros = JSON::create()->parse(str_replace('\\', '', $_POST['json']));
 
@@ -82,6 +84,11 @@ try {
             $exportar = new ESocial(Registry::get('app.config'), Recurso::CADASTRO_EMPREGADOR);
             $exportar->setDados([$empregador]);
             $retorno = $exportar->request();
+            $certificado = new ESocial(Registry::get('app.config'), Recurso::CERTIFICADO_VALIDADE);
+            $empregador->cnpj = $empregador->inscricao;
+            unset($empregador->inscricao);
+            $certificado->setDados($empregador);
+            $dados = $certificado->request('GET');
             
             $retorno->sMessage = "Certificado configurado com sucesso.";
             $retorno->dataValidadeCertificado = $dados;
@@ -120,7 +127,46 @@ try {
                     );
                 }
             } else {
-                throw new Exception("N?o existe arquivos para envio.");
+                throw new Exception("Não existe arquivos para envio.");
+            }
+            break;
+
+        case 'getCertificado':
+            $certificado = new ESocial(Registry::get('app.config'), Recurso::CERTIFICADO_VALIDADE);
+            $where = " z01_numcgm = {$parametros->cgmEmpregador}";
+            $campos = ' distinct  z01_cgccpf as empregador ';
+            $dao = new cl_rhlota();
+            $sql = $dao->sql_query_lota_cgm(null, $campos, null, $where);
+            $rs = db_query($sql);
+            $cnpjEmpregador = \db_utils::fieldsMemory($rs, 0)->empregador;
+            $integracao = $parametros->integracao;
+            if (isset($parametros->integracao)) {
+                if ($parametros->integracao == 1) {
+                    $cnpjEmpregador = CgmRepository::buscarCNPJEmpregador($parametros->cgmEmpregador);
+                }
+            }
+            $body = ['cnpj' => $cnpjEmpregador, 'integracao' => $integracao];
+            $certificado->setDados($body);
+            $dados = $certificado->request('GET');
+            if (!isset($dados->erro)) {
+                $hoje = date('Y-m-d');
+                $diferenca = strtotime($dados->dataValidadeCertificado) - strtotime($hoje);
+                $dias = (int) floor($diferenca / (60 * 60 * 24));
+                $dataMsg = date('d/m/Y',  strtotime($dados->dataValidadeCertificado));
+                $retorno->msgCertificado = 'Data do Certificado Digital atual possui validade até <strong>' . $dataMsg . '</strong>.';
+                $retorno->tipoAlerta = 'Verde';
+                if ($dias < 31) {
+                    $retorno->tipoAlerta = 'Laranja';
+                    $retorno->msgCertificado = '<strong>Atenção!</strong> Faltam <strong>' . $dias . '</strong> para o Certificado Digital expirar. Data do Certificado Digital atual possui validade até <strong>' . $dataMsg . '</strong>.';
+                }
+                if ($dias < 1) {
+                    $retorno->tipoAlerta = 'Vermelho';
+                    $retorno->msgCertificado = '<strong>Atenção!</strong> Certificado Digital expirado. Data do Certificado Digital atual possui validade até <strong>' . $dataMsg . '</strong>.';
+                }
+            } else {
+                $retorno->tipoAlerta = 'Vermelho';
+                $retorno->msgCertificado = "<strong>Atenção! </strong>"
+                    . mb_convert_encoding($dados->erro, 'ISO-8859-1', 'UTF-8');
             }
             break;
 
@@ -155,7 +201,8 @@ try {
             break;
 
         case 'enviarEventosParaApi':
-
+            // finalizamos a transacao para evitar gerar inconsistencias com dados da api
+            db_fim_transacao();
             if ((isset($parametros->anoCaixa) && !empty($parametros->anoCaixa)) &&
                 (isset($parametros->mesCaixa) && !empty($parametros->mesCaixa))
             ) {
@@ -252,7 +299,13 @@ try {
                 }
             }
             $daoEsocialEnvio = new cl_esocialenvio();
-            $sqlEsocialEnvio = $daoEsocialEnvio->sql_query_file(null, "*", null, $where, $join);
+            $sqlEsocialEnvio = $daoEsocialEnvio->sql_query_file(
+                null,
+                "rh213_sequencial as id, rh213_evento as tipoevento, rh213_dados as evento",
+                null,
+                $where,
+                $join
+            );
 
             if ($parametros->layout == '1010') {
                 $codigoInstituicao = empty($parametros->instituicao)
@@ -283,12 +336,37 @@ try {
             $esocialEnvios = db_utils::getCollectionByRecord($rsEsocialEnvio);
 
             foreach ($esocialEnvios as $envio) {
-                $job = new JobEsocial();
-                $job->setNome('FilaESocialTask');
+                db_inicio_transacao();
+                $sRecurso = Recurso::getRecursoByEvento($envio->tipoevento);
 
-                $task = new FilaESocialTask();
-                $task->setTarefa($job);
-                $enviado = $task->iniciar($envio->rh213_sequencial);
+                $exportar = new ESocial(Registry::get('app.config'), $sRecurso);
+                try {
+                    $exportar->setDados(array(json_decode($envio->evento)));
+                    $exportar->sendEvent();
+                    $exportar->updateEvento($envio->id, 2);
+                    $exportar->updateEventStatus($envio->id, true, "Enviado para a API");
+                } catch (ESocialContextException $e) {
+
+                    $message = sprintf("Erro ao enviar para API\n%s", DBString::utf8_decode_all($e->getMessage()));                    
+                    $context = $e->getContext();
+        
+                    // evento recusado, formatado retorno para buscar descricao dos campos do layout
+                    if ($e->getCode() == 422 && is_object($context)
+                        && isset($context->errors) && is_array($context->errors)) {
+        
+                        $errorFormatter = new FormatterError($envio->tipoevento, true);
+                        $message = $errorFormatter->formatErrors($context->errors);
+                    }
+        
+                    $exportar->updateEvento($envio->id, 1, true);
+                    $exportar->updateEventStatus($envio->id, false, $message);
+                } catch (Exception $e) {
+                    $exportar->updateEvento($envio->id, 1, true);
+                    $exportar->updateEventStatus(
+                        $envio->id, false, "Ocorreu um erro técnico, tente novamente mais tarde."
+                    );
+                }
+                db_fim_transacao();
             }
 
             $mensagem = "Envio finalizado com sucesso.\nConsulte as informações em Consultas > Situação de"
@@ -381,6 +459,9 @@ try {
             if (!$alteracao) {
                 $retorno->sMessage = "Não encontramos alterações para o arquivo {$titulo}.";
             }
+
+            $limpaCache = new ESocial(Registry::get('app.config'), Recurso::LIMPA_CACHE);
+            $limpaCache->request("GET");
             break;
 
         case "gerarCargaExclusao":

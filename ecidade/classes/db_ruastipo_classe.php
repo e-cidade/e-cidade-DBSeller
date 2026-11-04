@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_ruastipo {
                  j88_descricao = varchar(20) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_ruastipo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ruastipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_ruastipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j88_codigo = ($this->j88_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j88_codigo"]:$this->j88_codigo);
        $this->j88_sigla = ($this->j88_sigla == ""?@$GLOBALS["HTTP_POST_VARS"]["j88_sigla"]:$this->j88_sigla);
@@ -77,7 +77,7 @@ class cl_ruastipo {
      }
    }
    // funcao para inclusao
-   function incluir ($j88_codigo){ 
+   public function incluir ($j88_codigo){ 
       $this->atualizacampos();
      if($this->j88_sigla == null ){ 
        $this->erro_sql = " Campo Sigla nao Informado.";
@@ -153,7 +153,7 @@ class cl_ruastipo {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j88_codigo=null) { 
+   public function alterar ($j88_codigo=null) { 
       $this->atualizacampos();
      $sql = " update ruastipo set ";
      $virgula = "";
@@ -248,7 +248,7 @@ class cl_ruastipo {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j88_codigo=null,$dbwhere=null) { 
+   public function excluir ($j88_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j88_codigo));
      }else{ 
@@ -311,7 +311,7 @@ class cl_ruastipo {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -334,7 +334,7 @@ class cl_ruastipo {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $j88_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j88_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -368,7 +368,7 @@ class cl_ruastipo {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $j88_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j88_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

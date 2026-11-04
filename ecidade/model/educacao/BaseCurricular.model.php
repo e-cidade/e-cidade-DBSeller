@@ -262,12 +262,12 @@ class BaseCurricular {
 
     $this->aDisciplinas = array();
 
-    $oDaoBaseMPS = db_utils::getDao('basemps');
+    $oDaoBaseMPS = new cl_basemps();
 
     $sWhere  = "     ed34_i_base = {$this->iCodigoSequencial}";
     $sWhere .= " and ed34_i_serie = " . $oEtapa->getCodigo();
 
-    $sSqlBaseMPS = $oDaoBaseMPS->sql_query_file(null, "ed34_i_disciplina", "ed34_i_ordenacao", $sWhere);
+    $sSqlBaseMPS = $oDaoBaseMPS->sql_query_file(null, "ed34_i_disciplina, ed34_unidade_curricular", "ed34_i_ordenacao", $sWhere);
     $rsBaseMPS   = $oDaoBaseMPS->sql_record($sSqlBaseMPS);
     $iTotalMPS   = $oDaoBaseMPS->numrows;
 
@@ -276,7 +276,9 @@ class BaseCurricular {
       for ($iContador = 0; $iContador < $iTotalMPS; $iContador++) {
 
         $iCodigoDisciplina    = db_utils::fieldsMemory($rsBaseMPS, $iContador)->ed34_i_disciplina;
-        $this->aDisciplinas[] = DisciplinaRepository::getDisciplinaByCodigo($iCodigoDisciplina);
+        $disciplina =  DisciplinaRepository::getDisciplinaByCodigo($iCodigoDisciplina);
+        $disciplina->unidadeCurricular = db_utils::fieldsMemory($rsBaseMPS, $iContador)->ed34_unidade_curricular;
+        $this->aDisciplinas[] = $disciplina;
         unset($iCodigoDisciplina);
       }
     }

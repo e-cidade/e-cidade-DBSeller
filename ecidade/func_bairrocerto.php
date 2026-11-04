@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbairro->rotulo->label("j13_descr");
               <?=$Lj13_codi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j13_codi",4,$Ij13_codi,true,"text",4,"","chave_j13_codi");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbairro->rotulo->label("j13_descr");
               <?=$Lj13_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbairro->rotulo->label("j13_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "bairro.*";
@@ -110,14 +110,14 @@ $clbairro->rotulo->label("j13_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j13_codi.focus();
 document.form2.chave_j13_codi.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -64,11 +64,11 @@ if($ponto == "fx"){
               <strong>Ano / Mês :</strong>
             </td>
             <td>
-              <?
+             <?php
                 db_input('DBtxt23', 4, $IDBtxt23, true, 'text', 3, "onchange='js_submita();'", 'r90_anousu');
               ?>
               &nbsp;/&nbsp;
-              <?
+             <?php
                 db_input('DBtxt25'         , 2, $IDBtxt25, true, 'text', 3, "onchange='js_submita();'", 'r90_mesusu');
                 db_input('ponto'           , 15, 0, true, 'hidden', 3, "");
                 db_input('data_de_admissao', 15, 0, true, 'hidden', 3, "");
@@ -87,24 +87,24 @@ if($ponto == "fx"){
             </td>
           </tr>
           <tr>
-            <td align="right" nowrap title="<? echo (isset($Tr90_regist) && !empty($Tr90_regist)) ? $Tr90_regist : '' ?>">
-              <? echo (isset($Lr90_regist) && !empty($Lr90_regist)) ? $Lr90_regist : '' ?>
+            <td align="right" nowrap title="<?php echo (isset($Tr90_regist) && !empty($Tr90_regist)) ? $Tr90_regist : '' ?>">
+             <?php echo (isset($Lr90_regist) && !empty($Lr90_regist)) ? $Lr90_regist : '' ?>
             </td>
             <td>
-              <?
+             <?php
                 db_input('r90_regist', 8, $Ir90_regist, true, 'text',3, " onchange='js_pesquisar90_regist(false);' tabIndex=1 ");
                 db_input('z01_nome', 60, $Iz01_nome, true, 'text', 3, '');
               ?>
             </td>
           </tr>
           <tr>
-            <td align="right" nowrap title="<? echo (isset($Tr90_lotac) && !empty($Tr90_lotac)) ? $Tr90_lotac : '' ?>">
-              <?
+            <td align="right" nowrap title="<?php echo (isset($Tr90_lotac) && !empty($Tr90_lotac)) ? $Tr90_lotac : '' ?>">
+             <?php
                 db_ancora(@$Lr90_lotac, "js_pesquisar90_lotac(true);", 3);
               ?>
             </td>
             <td>
-              <?
+             <?php
                 db_input('r90_lotac', 8, $Ir90_lotac, true, 'text', 3, " onchange='js_pesquisar90_lotac(false);'");
                 db_input('r70_descr', 60, $Ir70_descr, true, 'text', 3, '');
               ?>
@@ -119,40 +119,40 @@ if($ponto == "fx"){
       <fieldset>
       <table border="0">
         <tr>
-          <td id="ancoraEnable" align="left" nowrap title="<? echo (isset($Tr90_rubric) && !empty($Tr90_rubric)) ? $Tr90_rubric : '' ?>">
-            <?
+          <td id="ancoraEnable" align="left" nowrap title="<?php echo (isset($Tr90_rubric) && !empty($Tr90_rubric)) ? $Tr90_rubric : '' ?>">
+           <?php
               db_ancora(@$Lr90_rubric, "js_pesquisar90_rubric(true);", (($db_opcao==1)?"1":"3"));
             ?>
           </td>
-          <td id="ancoraDisable" align="left" nowrap title="<? echo (isset($Tr90_rubric) && !empty($Tr90_rubric)) ? $Tr90_rubric : '' ?>" style="display:none">
-            <? echo (isset($Lr90_rubric) && !empty($Lr90_rubric)) ? $Lr90_rubric : '' ?>
+          <td id="ancoraDisable" align="left" nowrap title="<?php echo (isset($Tr90_rubric) && !empty($Tr90_rubric)) ? $Tr90_rubric : '' ?>" style="display:none">
+           <?php echo (isset($Lr90_rubric) && !empty($Lr90_rubric)) ? $Lr90_rubric : '' ?>
           </td>
-          <td align='left' nowrap title="<? echo (isset($Tr90_datlim) && !empty($Tr90_datlim)) ? $Tr90_datlim : '' ?>">
+          <td align='left' nowrap title="<?php echo (isset($Tr90_datlim) && !empty($Tr90_datlim)) ? $Tr90_datlim : '' ?>">
              <?=$Lr90_datlim?>
           </td>
-          <td align="left" nowrap title="<? echo (isset($Tr90_quant) && !empty($Tr90_quant)) ? $Tr90_quant : '' ?>">
-            <? echo (isset($Lr90_quant) && !empty($Lr90_quant)) ? $Lr90_quant : '' ?>
+          <td align="left" nowrap title="<?php echo (isset($Tr90_quant) && !empty($Tr90_quant)) ? $Tr90_quant : '' ?>">
+           <?php echo (isset($Lr90_quant) && !empty($Lr90_quant)) ? $Lr90_quant : '' ?>
           </td>
-          <td align="left" nowrap title="<? echo (isset($Tr90_valor) && !empty($Tr90_valor)) ? $Tr90_valor : '' ?>">
-            <? echo (isset($Lr90_valor) && !empty($Lr90_valor)) ? $Lr90_valor : '' ?>
+          <td align="left" nowrap title="<?php echo (isset($Tr90_valor) && !empty($Tr90_valor)) ? $Tr90_valor : '' ?>">
+           <?php echo (isset($Lr90_valor) && !empty($Lr90_valor)) ? $Lr90_valor : '' ?>
           </td>
         </tr>
         <tr>
           <td>
-            <?
+           <?php
                db_input('r90_rubric', 8, $Ir90_rubric, true, 'text', (($db_opcao==1)?"1":"3"), " onchange='js_pesquisar90_rubric(false);' tabIndex=2 ");
                db_input('rh27_descr', 30, $Irh27_descr, true, 'text', 3, '');
             ?>
           </td>
           <td>
-             <?
+            <?php
                db_input('r90_datlim', 15, $Ir90_datlim, true, 'text', 3, "onChange='js_calculaQuant(this.value);' onKeyUp='js_mascaradata(this.value);' tabIndex=3 ");
                db_input('rh27_limdat',15, '', true, 'hidden', 3, "");
                db_input('rh27_tipo'  ,15,'', true, 'hidden', 3, "");
              ?>
           </td>
           <td>
-            <?
+           <?php
               if(!isset($r90_quant) || (isset($r90_quant) && trim($r90_quant)=="")){
                 $r90_quant = '0';
               }
@@ -162,7 +162,7 @@ if($ponto == "fx"){
             ?>
           </td>
           <td>
-            <?
+           <?php
               if(!isset($r90_valor) || (isset($r90_valor) && trim($r90_valor)=="")){
                 $r90_valor = '0';
               }
@@ -172,6 +172,18 @@ if($ponto == "fx"){
               db_input('rh27_valorlimite', 15, $Irh27_valorlimite, true, 'hidden', 3);
               db_input('rh27_tipobloqueio', 15, $Irh27_tipobloqueio, true, 'hidden', 3);
             ?>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <div>
+              <fieldset>
+                <legend>Histórico:</legend>
+                <?php
+                  db_textarea('observacao', 3, 90, "", true, 'text', $db_opcao);
+                ?>
+            </fieldset>
+            </div>
           </td>
         </tr>
       </table>
@@ -358,6 +370,7 @@ function js_getDadosTela(){
   oDadosRubrica.r90_quant  = $F('r90_quant');
   oDadosRubrica.r90_lotac  = $F('r90_lotac');
   oDadosRubrica.r90_datlim = $F('r90_datlim');
+  oDadosRubrica.observacao = $F('observacao');
 
   return oDadosRubrica;
 
@@ -461,6 +474,7 @@ function js_telaAlterarExcluir(iInd,sAcao){
   doc.rh27_quantidadelimite.value = oDadosRubric.rh27_quantidadelimite;
   doc.rh27_valorlimite.value = oDadosRubric.rh27_valorlimite;
   doc.rh27_tipobloqueio.value     = oDadosRubric.rh27_tipobloqueio;
+  doc.observacao.value     = oDadosRubric.observacao.urlDecode();
 
   doc.r90_rubric.disabled = true;
   doc.novo.disabled       = false;
@@ -646,15 +660,18 @@ function js_limpaCampos(){
   doc.r90_datlim.value    = '';
   doc.rh27_limdat.value   = '';
   doc.rh27_tipo.value     = '';
-
+  
   doc.rh27_quantidadelimite.value = '';
   doc.rh27_valorlimite.value      = '';
   doc.rh27_tipobloqueio.value     = '';
+
+  doc.observacao.value  = '';
 
   doc.r90_rubric.disabled = false;
   doc.r90_quant.disabled  = false;
   doc.r90_valor.disabled  = false;
   doc.r90_datlim.disabled = false;
+
 
   doc.novo.disabled       = true;
 
@@ -1379,7 +1396,7 @@ function js_calcular(iMatricula, iPonto) {
 
 }
 
-<?
+<?php
 
 $lDesabilitaData = "true";
 

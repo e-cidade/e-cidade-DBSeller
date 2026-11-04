@@ -106,7 +106,7 @@ class InscricaoPassivoOrcamentoItem {
    */
   public function salvar(){
 
-  	$oDaoInscricaoPassivoOrcamento = db_utils::getDao("inscricaopassivoitem");
+  	$oDaoInscricaoPassivoOrcamento = new cl_inscricaopassivoitem;
     $oDaoInscricaoPassivoOrcamento->c38_inscricaopassivo = $this->iInscricaoPassivo;
     $oDaoInscricaoPassivoOrcamento->c38_pcmater          = $this->oMaterialCompras->getMaterial();
     $oDaoInscricaoPassivoOrcamento->c38_quantidade       = $this->iQuantidade;
@@ -133,7 +133,7 @@ class InscricaoPassivoOrcamentoItem {
    *  @return integer
    **/
   public function getInscricaoPassivo() {
-  	return  $iInscricaoPassivo;
+  	return  $this->iInscricaoPassivo;
   }
   
   /**

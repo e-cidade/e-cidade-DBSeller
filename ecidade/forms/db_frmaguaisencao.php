@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,37 +46,37 @@ $clrotulo->label("x29_descr");
        <?=@$Lx10_codisencao?>
     </td>
     <td> 
-<?
+<?php
 db_input('x10_codisencao',5,$Ix10_codisencao,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx10_codisencaotipo?>">
-       <?
+       <?php
        db_ancora(@$Lx10_codisencaotipo,"js_pesquisax10_codisencaotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x10_codisencaotipo',5,$Ix10_codisencaotipo,true,'text',$db_opcao," onchange='js_pesquisax10_codisencaotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('x29_descr',40,$Ix29_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx10_matric?>">
-       <?
+       <?php
        db_ancora(@$Lx10_matric,"js_pesquisax10_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x10_matric',10,$Ix10_matric,true,'text',$db_opcao," onchange='js_pesquisax10_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -86,7 +86,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lx10_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('x10_obs',3,40,$Ix10_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_textarea('x10_obs',3,40,$Ix10_obs,true,'text',$db_opcao,"")
        <?=@$Lx10_dtini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x10_dtini',@$x10_dtini_dia,@$x10_dtini_mes,@$x10_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -106,7 +106,7 @@ db_inputdata('x10_dtini',@$x10_dtini_dia,@$x10_dtini_mes,@$x10_dtini_ano,true,'t
        <?=@$Lx10_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x10_dtfim',@$x10_dtfim_dia,@$x10_dtfim_mes,@$x10_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -116,7 +116,7 @@ db_inputdata('x10_dtfim',@$x10_dtfim_dia,@$x10_dtfim_mes,@$x10_dtfim_ano,true,'t
        <?=@$Lx10_processo?>
     </td>
     <td> 
-<?
+<?php
 db_input('x10_processo',5,$Ix10_processo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguaisencao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

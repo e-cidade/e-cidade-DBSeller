@@ -50,11 +50,11 @@ $clevolucaodividaativa->rotulo->label("v30_receita");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lv30_sequencial?></label></td>
-          <td><? db_input("v30_sequencial",10,$Iv30_sequencial,true,"text",4,"","chave_v30_sequencial"); ?></td>
+          <td><?php db_input("v30_sequencial",10,$Iv30_sequencial,true,"text",4,"","chave_v30_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lv30_receita?></label></td>
-          <td><? db_input("v30_receita",10,$Iv30_receita,true,"text",4,"","chave_v30_receita");?></td>
+          <td><?php db_input("v30_receita",10,$Iv30_receita,true,"text",4,"","chave_v30_receita");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +62,7 @@ $clevolucaodividaativa->rotulo->label("v30_receita");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_evolucaodividaativa.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_evolucaodividaativa.php")==true){
@@ -104,12 +104,12 @@ $clevolucaodividaativa->rotulo->label("v30_receita");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

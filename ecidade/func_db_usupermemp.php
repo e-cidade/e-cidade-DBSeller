@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
               <?=$Ldb21_codperm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db21_codperm",6,$Idb21_codperm,true,"text",4,"","chave_db21_codperm");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
               <?=$Ldb21_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db21_id_usuario",5,$Idb21_id_usuario,true,"text",4,"","chave_db21_id_usuario");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
               <?=$Ldb21_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db21_id_usuario",5,$Idb21_id_usuario,true,"text",4,"","chave_db21_id_usuario");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_usupermemp.php")==true){
@@ -129,12 +129,12 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

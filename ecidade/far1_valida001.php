@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -165,7 +165,7 @@ if($clfar_controlemed->numrows>0){
                         parent.document.form1.fa06_f_quant.readOnly=true;            
                         parent.document.form1.fa10_quantidade.value=0;
                       </script>
-                    <?      
+                    <?php      
                  }
                  $calculo = 0;
                  db_msgbox("Podera retirar o medicamento a partir ".db_formatar($datamargem,"d")); 
@@ -182,7 +182,7 @@ if($clfar_controlemed->numrows>0){
                 parent.document.form1.fa06_f_quant.readOnly=true;            
                 parent.document.form1.fa10_quantidade.value=0;
               </script>
-            <?      
+            <?php      
 	          }
             $calculo = 0;
             if($fa10_i_margem > 0){
@@ -196,7 +196,7 @@ if($clfar_controlemed->numrows>0){
         <script>                    
         parent.document.form1.datamargem1.value="<?=$fa10_d_dataini?>";
         </script>                    
-        <?
+        <?php
 
      ?>
         <script>                    
@@ -206,7 +206,7 @@ if($clfar_controlemed->numrows>0){
         parent.document.form1.quantretirada.value="<?=$fa06_f_quant?>";
         parent.document.form1.fa06_f_quant.value= <?=$calculo?>
         </script>       
-     <?   
+     <?php   
   }else{
      if($fa10_i_margem > 0){
 	      $result2=$clfar_retiradaitens->sql_record($clfar_retiradaitens->sql_query("","sum(fa06_f_quant) as fa06_f_quant","","fa04_d_data between '$fa10_d_dataini' and '$datamargem' and fa04_i_cgsund=$fa11_i_cgsund and fa06_i_matersaude= $fa10_i_medicamento and trim(fa06_t_controlado)=$fa02_c_medcontrolado"));

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -133,10 +133,10 @@ if (isset ($alterar) || isset ($alterarimp)) {
 
 		//rotina que altera em pagordemele
 		if ($sqlerro == false) {
-			$arr_dados = split("#", $dados);
+			$arr_dados =explode("#", $dados);
 			$tam = count($arr_dados);
 			for ($i = 0; $i < $tam; $i ++) {
-				$arr_ele = split("-", $arr_dados[$i]);
+				$arr_ele =explode("-", $arr_dados[$i]);
 				$elemento = $arr_ele[0];
 
 				if (isset ($chaves) && $chaves != '') {
@@ -255,7 +255,7 @@ if (isset ($alterar) || isset ($alterarimp)) {
 		}
 		//rotina pega as notas marcadas para atualizar os valores liquidados da notas
 		if ($sqlerro == false && isset ($chaves) && $chaves != '') {
-			$arr_notas = split("#", $chaves);
+			$arr_notas =explode("#", $chaves);
 			$tam = count($arr_notas);
 			for ($i = 0; $i < $tam; $i ++) {
 				$nota = $arr_notas[$i];
@@ -324,11 +324,11 @@ if (isset ($chavepesquisa) || isset ($e50_codord)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <?if(isset($agendado)){?>
+  <?php if(isset($agendado)){?>
      <tr>
        <td align='center'>
          	<b><font color='red'>
-             <?
+             <?php
                 $tam = strlen($e81_codage) + 2;
              ?>
              Esta Ordem de Pagamento pertence a Agenda <?=db_formatar($e81_codage,"s","0",$tam,"e",0)?>.<br>
@@ -338,11 +338,11 @@ if (isset ($chavepesquisa) || isset ($e50_codord)) {
        </td>
      </tr>
      <tr><td>&nbsp;</td></tr>
-  <?}?>
+  <?php }?>
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 
 
 include(modification("forms/db_frmpagordem.php"));
@@ -353,7 +353,7 @@ include(modification("forms/db_frmpagordem.php"));
 </table>
 </body>
 </html>
-<?
+<?php
 
 
 if (isset ($alterar) || isset ($alterarimp)) {

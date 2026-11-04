@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ $clrotulo->label("descrdepto");
             <td nowrap title="<?=@$Tm97_sequencial?>">
               <b>Código da Solicitação: </b></td>
             <td>
-              <?db_input( 'm97_sequencial', 10, $Im97_sequencial, true, 'text', 3, "" )?>
+              <?php db_input( 'm97_sequencial', 10, $Im97_sequencial, true, 'text', 3, "" )?>
             </td>
           </tr>
           <tr>
@@ -51,7 +51,7 @@ $clrotulo->label("descrdepto");
               <?=@$Lm97_data?>
             </td>
             <td>
-              <?db_inputdata( 'm97_data', @$m97_data_dia, @$m97_data_mes, @$m97_data_ano, true, 'text', 3, "" )?>
+              <?php db_inputdata( 'm97_data', @$m97_data_dia, @$m97_data_mes, @$m97_data_ano, true, 'text', 3, "" )?>
             </td>
           </tr>
           <tr>
@@ -59,7 +59,7 @@ $clrotulo->label("descrdepto");
               <?=@$Lm97_hora?>
             </td>
             <td>
-              <?db_input( 'm97_hora', 10, $Im97_hora, true, 'text', 3, "" )?>
+              <?php db_input( 'm97_hora', 10, $Im97_hora, true, 'text', 3, "" )?>
             </td>
           </tr>
           <tr>
@@ -67,8 +67,8 @@ $clrotulo->label("descrdepto");
               <?=@$Lm97_login?>
             </td>
             <td>
-              <?db_input( 'm97_login', 10, $Im97_login, true, 'text', 3, " " )?>
-              <?db_input( 'nome', 40, $Inome, true, 'text', 3, '' )?>
+              <?php db_input( 'm97_login', 10, $Im97_login, true, 'text', 3, " " )?>
+              <?php db_input( 'nome', 40, $Inome, true, 'text', 3, '' )?>
             </td>
           </tr>
           <tr>
@@ -76,7 +76,7 @@ $clrotulo->label("descrdepto");
               <b>Departamento Destino</b>
             </td>
             <td>
-              <?
+              <?php
               db_input( 'm97_coddepto', 10, $Im97_coddepto, true, 'text', 3, "" );
               db_input( 'descrdepto', 40, $Idescrdepto, true, 'text', 3, '' );
               ?>
@@ -87,7 +87,7 @@ $clrotulo->label("descrdepto");
               <b>Departamento Origem</b>
             </td>
             <td>
-              <?
+              <?php
               db_input( 'm91_depto', 10, $Im97_coddepto, true, 'text', 3, "" );
               db_input( 'descr_depto', 40, @$Idescr_depto, true, 'text', 3, '' );
               db_input( 'linha', 40, @$linha, true, 'hidden', 3, '' );
@@ -115,7 +115,7 @@ $clrotulo->label("descrdepto");
     <td align="center">
       <input name="incluir" type="button" value="Efetuar Atendimento" onclick="return js_atendeSolicitacao();">
       <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-      <?
+      <?php
       db_input( 'solicitacao', 10, '', true, 'hidden', 3 );
       db_input( 'm80_codigo', 10, '', true, 'hidden', 3 );
       db_input( "valores", 100, 0, true, "hidden", 3 );

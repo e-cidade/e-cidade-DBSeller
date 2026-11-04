@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ if(isset($alterar)){
   if($clitenserv->numrows_alterar != 0){
    db_inicio_transacao();
    $result_arrecad=db_query("select fc_cemitarrecad(5,$cm01_i_numpre,false,$cm10_i_sepultamento) as retorno") or die("Erro ao incluir em arrecad.");
-   db_fieldmemory( $result_arrecad, 0 );
+   db_fieldsmemory( $result_arrecad, 0 );
    if( substr( $retorno, 0, 1 ) != '9' ){
      db_msgbox($retorno);
    }
@@ -87,19 +87,19 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-     <?
+     <?php
      include(modification("forms/db_frmitenserv.php"));
      ?>
     </center>
      </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($sove=="true"){
   db_msgbox("Débito com parcela paga. Alteração não permitida.");
 }

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-$clrotulo  = new rotulocampo;
+$clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label("o15_descr");
@@ -42,25 +42,28 @@ require_once(modification("libs/JSON.php"));
 // seleciona conta a creditar
 $db_opcao = 1;
 
+$dao = new cl_caiparametro();
+$sql = $dao->sql_query_file(db_getsession("DB_instit"), 'k29_gerarslipautomaticoreceitaretencao');
+$rs = db_query($sql);
 
-$where  = " c61_instit = ".db_getsession("DB_instit");
-$where  .= " and (k13_limite is null";
-$where  .= "  or k13_limite > '".date("Y-m-d",db_getsession("DB_datausu"))."')";
-$where .= " and c60_codsis in(5,6) ";
-$sqlsaltes = $clsaltes->sql_query_anousu(null,
-    "k13_conta,
-                                         k13_descr",
-    null,
-    $where);
+$msg = "O Sistema esta configurado para gerar slips automaticamente. ";
+$style = "display: none";
+$desabilitaPesquisa = '';
+if (!$rs) {
+    $msg = "Acesse: DB:FINANCEIRO > Tesouraria > Procedimentos > Parâmetros > Financeiro e configure os parâmetros ";
+}
+
+if (db_utils::fieldsMemory($rs, 0)->k29_gerarslipautomaticoreceitaretencao != 0) {
+    $style = "";
+    $db_opcao = 3;
+    $desabilitaPesquisa = 'disabled';
+}
 
 /* [Extensão] - Filtro da Despesa */
 
-$result_conta_creditar = $clsaltes->sql_record($sqlsaltes);
-$oJson = new Services_JSON();
 echo "<script>\n";
-echo "aContasDebito = eval('(".$oJson->encode(db_utils::getCollectionByRecord($result_conta_creditar,false, false, true)).")');\n";
 
-if ($folha==1) {
+if ($folha == 1) {
     echo "isFolha=true\n";
 } else {
     echo "isFolha=false\n";
@@ -68,10 +71,14 @@ if ($folha==1) {
 echo "</script>\n";
 ?>
 <style type="text/css">
-    .primeiraColuna{
+    .primeiraColuna {
         width: 110px;
     }
 </style>
+<div style="<?=$style?>" class="alert alert-danger text-left" role="alert">
+    <?=$msg?>
+</div>
+
 <form class="container" name="form1" method="post" action="">
 
     <fieldset>
@@ -142,45 +149,50 @@ echo "</script>\n";
             </tr>
         </table>
 
-
         <table style='display: none' id='fornecedores' class="form-container">
             <tr>
                 <td class="primeiraColuna">
                     <b>Data Inicial:</b>
                 </td>
                 <td>
-                    <?
-                    db_inputdata("datainicial", null, null, null, true, "text", 1);
+                    <?php
+                    db_inputdata("datainicial", null, null, null, true, "text", $db_opcao);
                     ?>
                 </td>
                 <td class="primeiraColuna">
                     <b>Data Final:</b>
                 </td>
                 <td>
-                    <?
-                    db_inputdata("datafinal", null, null, null, true, "text", 1);
+                    <?php
+                    db_inputdata("datafinal", null, null, null, true, "text", $db_opcao);
                     ?>
                 </td>
             </tr>
         </table>
         <table class="form-container">
-            <tr>
-                <td class="primeiraColuna"><a id='ancoraRecurso' href="#">Fonte de Recurso:</a></td>
-                <td>
-                    <input type="text" name="o15_recurso" id="o15_recurso" class="field-size2">
-                    <input type="text" id="o15_descr" class="field-size8 readonly" readonly>
-                </td>
-            </tr>
+            <td>
+                <?php
+                db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", $db_opcao);
+                ?>
+            </td>
+            <td>
+                <?php
+                db_input("codigosRecursos", 8, null, false, "hidden", 3);
+                db_input("gestao", 10, null, true, "text", $db_opcao, "onchange='js_pesquisaRecurso(false);'");
+                db_input("o15_recurso", 8, null, true, "text", 3);
+                db_input("descricao", 40, null, true, "text", 3);
+                ?>
+            </td>
             <tr>
                 <td nowrap title="<?= @$Tz01_numcgm ?>" class="primeiraColuna">
-                    <?
+                    <?php
                     db_ancora("<b>Credor:</b>", "js_pesquisaz01_numcgm(true);", $db_opcao);
                     ?>
                 </td>
                 <td colspan='4' nowrap>
-                    <?
+                    <?php
                     db_input('z01_numcgm', 10, $Iz01_numcgm, true, 'text', $db_opcao, " onchange='js_pesquisaz01_numcgm(false);'");
-                    db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '')
+                    db_input('z01_nome', 48, $Iz01_nome, true, 'text', 3, '')
                     ?>
                 </td>
             </tr>
@@ -189,20 +201,20 @@ echo "</script>\n";
                     <b>Ordem Pag:</b>
                 </td>
                 <td colspan='4' nowrap>
-                    <?
+                    <?php
                     $Ie50_codord = empty($Ie50_codord) ? 1 : $Ie50_codord;
-                    db_input('e50_codord', 10, $Ie50_codord, true, 'text', "", "");
+                    db_input('e50_codord', 10, $Ie50_codord, true, 'text', $db_opcao, "");
                     ?>
                 </td>
             </tr>
         </table>
     </fieldset>
-    <input type='button' value='Pesquisar' onclick="js_getMovimentos()">
+    <input type='button' value='Pesquisar' <?= $desabilitaPesquisa ?> onclick="js_getMovimentos()">
 </form>
 
 <fieldset class="subcontainer" style='width: 80%'>
     <legend>Valores a serem transferidos</legend>
-    <div id='gridSlip'> </div>
+    <div id='gridSlip'></div>
     <input type='button' value='Processar' onclick="js_gerarsLip();">
 </fieldset>
 <div style='position:absolute;top: 200px; left:15px;
@@ -216,89 +228,121 @@ echo "</script>\n";
 </div>
 
 <script type="text/javascript">
-
+    const sUrlRPC = "emp4_gerarslipRPC.php";
     $('k02_codigo').className = 'field-size2';
     $('k02_drecei').className = 'field-size8';
     $('z01_numcgm').className = 'field-size2';
     $('z01_nome').className = 'field-size8';
 
-    function js_pesquisatabrec(mostra){
-        if(mostra==true){
+    $('gestao').classList.add('field-size2')
+    $('descricao').classList.add('field-size6')
+
+
+    let contasCreditar = [];
+    function buscaContas() {
+        js_divCarregando("Aguarde, consultando contas.", "msgBox");
+        new Ajax.Request(
+            sUrlRPC,
+            {
+                method: 'post',
+                parameters: 'json=' + Object.toJSON({exec: "getContas"}),
+                onComplete: js_retornoContas
+            }
+        );
+    }
+
+    function js_retornoContas(oAjax) {
+
+        js_removeObj("msgBox");
+        const retorno = JSON.parse(oAjax.responseText);
+
+        retorno.contas.forEach(function (conta) {
+            conta.nome = conta.nome.urlDecode();
+            contasCreditar.push(conta);
+        });
+    }
+
+    buscaContas();
+
+    function js_pesquisatabrec(mostra) {
+        if (mostra == true) {
             js_OpenJanelaIframe('CurrentWindow.corpo',
                 'db_iframe_tabrec',
                 'func_tabrec.php?tiporec=E&funcao_js=parent.js_mostratabrec1|k02_codigo|k02_drecei|recurso|arretipo|k00_descr'
-                ,'Pesquisa',true,'15');
-        }else{
-            if( document.form1.k02_codigo.value != ''){
+                , 'Pesquisa', true, '15');
+        } else {
+            if (document.form1.k02_codigo.value != '') {
                 js_OpenJanelaIframe('CurrentWindow.corpo',
                     'db_iframe_tabrec',
-                    'func_tabrec.php?tiporec=E&pesquisa_chave='+
-                    document.form1.k02_codigo.value+'&funcao_js=parent.js_mostratabrec',
+                    'func_tabrec.php?tiporec=E&pesquisa_chave=' +
+                    document.form1.k02_codigo.value + '&funcao_js=parent.js_mostratabrec',
                     'Pesquisa',
                     false);
-            }else{
+            } else {
                 document.form1.k02_drecei.value = '';
             }
         }
     }
 
-    function js_pesquisaz01_numcgm(mostra){
-        if(mostra==true){
-            js_OpenJanelaIframe('','func_nome',
-                'func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
-        }else{
-            if(document.form1.z01_numcgm.value != ''){
-                js_OpenJanelaIframe('','func_nome','func_nome.php?pesquisa_chave='+document.form1.z01_numcgm.value+
-                    '&funcao_js=parent.js_mostracgm','Pesquisa',false);
-            }else{
+    function js_pesquisaz01_numcgm(mostra) {
+        if (mostra == true) {
+            js_OpenJanelaIframe('', 'func_nome',
+                'func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome', 'Pesquisa', true);
+        } else {
+            if (document.form1.z01_numcgm.value != '') {
+                js_OpenJanelaIframe('', 'func_nome', 'func_nome.php?pesquisa_chave=' + document.form1.z01_numcgm.value +
+                    '&funcao_js=parent.js_mostracgm', 'Pesquisa', false);
+            } else {
                 document.form1.z01_nome.value = '';
             }
         }
     }
-    function js_mostracgm(erro,chave){
+
+    function js_mostracgm(erro, chave) {
         document.form1.z01_nome.value = chave;
-        if(erro==true){
+        if (erro == true) {
             document.form1.z01_numcgm.focus();
             document.form1.z01_numcgm.value = '';
         }
     }
 
-    function js_mostracgm1(chave1,chave2){
-
+    function js_mostracgm1(chave1, chave2) {
         document.form1.z01_numcgm.value = chave1;
-        document.form1.z01_nome.value   = chave2;
+        document.form1.z01_nome.value = chave2;
         func_nome.hide();
 
     }
-    function js_mostratabrec(chave2,erro,chave3,chave4,chave5) {
 
-        document.form1.k02_drecei.value  = chave2;
+    function js_mostratabrec(chave2, erro, chave3, chave4, chave5) {
+        document.form1.k02_drecei.value = chave2;
 
-        if(erro==true){
+        if (erro == true) {
             document.form1.k02_codigo.focus();
             document.form1.k02_codigo.value = '';
         }
 
     }
-    function js_mostratabrec1(chave1,chave2,chave3,chave4,chave5){
+
+    function js_mostratabrec1(chave1, chave2, chave3, chave4, chave5) {
 
         document.form1.k02_codigo.value = chave1;
         document.form1.k02_drecei.value = chave2;
         db_iframe_tabrec.hide();
     }
+
     /**
      * Iniciamos a construcao do aplicativo.
      */
     function init() {
 
-        iTipoGerarSlip         = 1;
-        oGridSlip              = new DBGrid("gridSlip");
+        iTipoGerarSlip = 1;
+        oGridSlip = new DBGrid("gridSlip");
         oGridSlip.nameInstance = "oGridSlip";
 
         /**
          * sobreescrevemos o metodo selectSingle do DBGrid
          */
-        oGridSlip.selectSingle = function (oCheckbox, sRow, oRow,lVerificaSaldo) {
+        oGridSlip.selectSingle = function (oCheckbox, sRow, oRow, lVerificaSaldo) {
 
             if (lVerificaSaldo == null) {
                 var lVerificaSaldo = true;
@@ -306,46 +350,46 @@ echo "</script>\n";
 
             if (oCheckbox.checked) {
 
-                oRow.isSelected    = true;
-                $(sRow).className  = 'marcado';
+                oRow.isSelected = true;
+                $(sRow).className = 'marcado';
                 if (lVerificaSaldo) {
-                    $('TotalForCol8').innerHTML = js_formatar(oGridSlip.sum(8).toFixed(2),'f');
+                    $('TotalForCol8').innerHTML = js_formatar(oGridSlip.sum(8).toFixed(2), 'f');
                 }
-                $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML)+1;
+                $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML) + 1;
             } else {
 
                 $(sRow).className = oRow.getClassName();
-                oRow.isSelected   = false;
+                oRow.isSelected = false;
                 if (lVerificaSaldo) {
-                    $('TotalForCol8').innerHTML = js_formatar(oGridSlip.sum(13).toFixed(2),'f');
+                    $('TotalForCol8').innerHTML = js_formatar(oGridSlip.sum(13).toFixed(2), 'f');
                 }
-                $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML)-1;
+                $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML) - 1;
             }
         }
 
         /**
          * sobreescrevemos o metodo selectall do DBGrid
          */
-        oGridSlip.selectAll = function(idObjeto, sClasse, sLinha) {
+        oGridSlip.selectAll = function (idObjeto, sClasse, sLinha) {
 
             var obj = document.getElementById(idObjeto);
-            if (obj.checked){
+            if (obj.checked) {
                 obj.checked = false;
-            } else{
+            } else {
                 obj.checked = true;
             }
 
             itens = this.getElementsByClass(sClasse);
-            for (var i = 0;i < itens.length;i++){
+            for (var i = 0; i < itens.length; i++) {
 
-                if (itens[i].disabled == false){
-                    if (obj.checked == true){
+                if (itens[i].disabled == false) {
+                    if (obj.checked == true) {
 
                         if ($(this.aRows[i].sId).style.display != 'none') {
                             if (!itens[i].checked) {
 
-                                itens[i].checked=true;
-                                this.selectSingle($(itens[i].id), (sLinha+i), this.aRows[i], false);
+                                itens[i].checked = true;
+                                this.selectSingle($(itens[i].id), (sLinha + i), this.aRows[i], false);
 
                             }
 
@@ -354,17 +398,17 @@ echo "</script>\n";
 
                         if (itens[i].checked) {
 
-                            itens[i].checked=false;
-                            this.selectSingle($(itens[i].id), (sLinha+i), this.aRows[i], false);
+                            itens[i].checked = false;
+                            this.selectSingle($(itens[i].id), (sLinha + i), this.aRows[i], false);
                         }
                     }
                 }
             }
-            $('TotalForCol8').innerHTML = js_formatar(oGridSlip.sum(8).toFixed(2),'f');
+            $('TotalForCol8').innerHTML = js_formatar(oGridSlip.sum(8).toFixed(2), 'f');
         }
         oGridSlip.setCheckbox(0);
-        oGridSlip.setCellAlign(new Array("right", "Right", "right", "right", "left", "right","left", "right","right"));
-        var aHeaders = new Array(
+        oGridSlip.setCellAlign(["right", "Right", "right", "right", "left", "right", "left", "right", "right"]);
+        var aHeaders = [
             "Arrecadacao",
             "OP",
             "Cta Credito",
@@ -377,7 +421,7 @@ echo "</script>\n";
             "Retenção",
             "id recurso",
             "id retencaoreceitas"
-        );
+        ];
         oGridSlip.setHeader(aHeaders);
         oGridSlip.aHeaders[9].lDisplayed = false;
         oGridSlip.aHeaders[10].lDisplayed = false;
@@ -385,43 +429,41 @@ echo "</script>\n";
         oGridSlip.aHeaders[12].lDisplayed = false;
         oGridSlip.hasTotalizador = true;
         oGridSlip.show($('gridSlip'));
-        $('ponto').style.width="150px";
-        $('tipo').style.width="150px";
+        $('ponto').style.width = "150px";
+        $('tipo').style.width = "150px";
         $('gridSlipstatus').innerHTML = "&nbsp;<span style='color:blue' id ='total_selecionados'>0</span> Selecionados";
         if (isFolha) {
-            $('folha').style.display='';
+            $('folha').style.display = '';
         } else {
-            $('fornecedores').style.display='';
+            $('fornecedores').style.display = '';
         }
     }
-    sUrlRPC = "emp4_gerarslipRPC.php";
 
     function js_getMovimentos() {
 
-        js_divCarregando("Aguarde, consultando informações.","msgBox");
+        js_divCarregando("Aguarde, consultando informações.", "msgBox");
         js_controleBotoes(true);
         var oRequisicao = {
-            exec : "getArrecExtra",
-            isFolha : isFolha,
-            paramFolha : js_getQueryDadosFolha(),
-            fonteRecurso : $F('o15_recurso'),
-            iNumCgm : $F('z01_numcgm'),
-            ordemPag : $F('e50_codord')
+            exec: "getArrecExtra",
+            isFolha: isFolha,
+            paramFolha: js_getQueryDadosFolha(),
+            idsRecursos: $F('codigosRecursos'),
+            iNumCgm: $F('z01_numcgm'),
+            ordemPag: $F('e50_codord')
         };
 
         if (!isFolha) {
-            dtInicial = $F('datainicial');
-            dtFinal   = $F('datafinal');
-            oRequisicao.dtIni   = dtInicial;
-            oRequisicao.dtFim   = dtFinal;
+            oRequisicao.dtIni = $F('datainicial');
+            oRequisicao.dtFim = $F('datafinal');
         }
+
         oRequisicao.iReceita = $F('k02_codigo');
 
         new Ajax.Request(
             sUrlRPC,
             {
-                method    : 'post',
-                parameters:'json='+Object.toJSON(oRequisicao),
+                method: 'post',
+                parameters: 'json=' + Object.toJSON(oRequisicao),
                 onComplete: js_retornoGetMovimentos
             }
         );
@@ -435,35 +477,32 @@ echo "</script>\n";
         oGridSlip.clearAll(true);
 
         if (oRetorno.status == 1) {
-            var conta = aContasDebito;
-            var iRowAtiva = 0;
-
-            for (var i = 0; i < oRetorno.itens.length;i++ ){
-
+            for (var i = 0; i < oRetorno.itens.length; i++) {
                 with (oRetorno.itens[i]) {
                     if (k13_conta != "") {
-                        conta =  k13_conta;
+                        conta = k13_conta;
                     }
+
                     var aLinha = new Array();
-                    aLinha[0]  = k12_numpre;
-                    aLinha[1]  = "<a onclick='js_JanelaAutomatica(\"empempenho\","+e60_numemp+");return false;' href='#'>";
-                    aLinha[1] += e50_codord+"</a>";
-                    aLinha[2]  = js_createComboContas(k12_numpre, conta, k13_descr, credito, false);
-                    aLinha[3]  = debito;
-                    aLinha[4]  = k02_drecei.urlDecode().substring(0,20);
-                    aLinha[5]  = o15_recurso;
-                    aLinha[6]  = z01_nome.urlDecode().substring(0, 30);
-                    aLinha[7]  = js_formatar(k12_valor, "f");
-                    aLinha[8]  = z01_numcgm;
-                    aLinha[9]  = k107_sequencial;
-                    aLinha[10]  = k00_recurso;
-                    aLinha[11]  = e23_sequencial;
+                    aLinha[0] = k12_numpre;
+                    aLinha[1] = "<a onclick='js_JanelaAutomatica(\"empempenho\"," + e60_numemp + ");return false;' href='#'>";
+                    aLinha[1] += e50_codord + "</a>";
+                    aLinha[2] = js_createComboContas(k12_numpre, contasCreditar, k13_descr, credito, false);
+                    aLinha[3] = debito;
+                    aLinha[4] = k02_drecei.urlDecode().substring(0, 20);
+                    aLinha[5] = `${gestao} - ${o15_recurso} - ${o15_complemento}`;
+                    aLinha[6] = z01_nome.urlDecode().substring(0, 30);
+                    aLinha[7] = js_formatar(k12_valor, "f");
+                    aLinha[8] = z01_numcgm;
+                    aLinha[9] = k107_sequencial;
+                    aLinha[10] = k00_recurso;
+                    aLinha[11] = e23_sequencial;
 
                     oGridSlip.addRow(aLinha);
 
-                    oGridSlip.aRows[i].aCells[7].sEvents  = "onmouseover='js_setAjuda(\""+z01_nome.urlDecode()+"\",true)'";
+                    oGridSlip.aRows[i].aCells[7].sEvents = "onmouseover='js_setAjuda(\"" + z01_nome.urlDecode() + "\",true)'";
                     oGridSlip.aRows[i].aCells[7].sEvents += "onmouseOut='js_setAjuda(null,false)'";
-                    oGridSlip.aRows[i].aCells[4].sEvents  = "onmouseover='js_setAjuda(\""+descrdebito.urlDecode()+"\",true)'";
+                    oGridSlip.aRows[i].aCells[4].sEvents = "onmouseover='js_setAjuda(\"" + descrdebito.urlDecode() + "\",true)'";
                     oGridSlip.aRows[i].aCells[4].sEvents += "onmouseOut='js_setAjuda(null,false)'";
                 }
             }
@@ -489,31 +528,31 @@ echo "</script>\n";
             return false;
         }
 
-        var oRequisicao             = new Object();
-        oRequisicao.exec            = "gerarSlipsExtra";
-        oRequisicao.aSlips          = new Array();
-        oRequisicao.isFolha         = isFolha;
-        oRequisicao.paramFolha      = js_getQueryDadosFolha();
+        var oRequisicao = new Object();
+        oRequisicao.exec = "gerarSlipsExtra";
+        oRequisicao.aSlips = new Array();
+        oRequisicao.isFolha = isFolha;
+        oRequisicao.paramFolha = js_getQueryDadosFolha();
         oRequisicao.lCreditarExtra = true;
-        for (var i = 0; i < aItens.length;i++ ) {
+        for (var i = 0; i < aItens.length; i++) {
 
             var oSlip = new Object();
-            oSlip.iCtaCredito  = aItens[i].aCells[3].getValue();
+            oSlip.iCtaCredito = aItens[i].aCells[3].getValue();
             if (aItens[i].aCells[3].getValue() == "") {
 
-                alert('Arrecadação '+aItens[i].aCells[1].getValue()+" sem conta crédito informada.");
+                alert('Arrecadação ' + aItens[i].aCells[1].getValue() + " sem conta crédito informada.");
                 delete oSlip;
                 delete oRequisicao;
                 return false;
             }
 
-            oSlip.iCtaDebito        = aItens[i].aCells[4].getValue();
-            oSlip.iRecurso          = aItens[i].aCells[11].getValue();
-            oSlip.iArrecadacao      = aItens[i].aCells[1].getValue();
-            oSlip.iCGM              = aItens[i].aCells[9].getValue();
-            oSlip.iRetencao         = aItens[i].aCells[10].getValue().trim();
-            oSlip.iOrdem            = aItens[i].aCells[2].getValue();
-            oSlip.nValor            = js_strToFloat(aItens[i].aCells[8].getValue()).valueOf();
+            oSlip.iCtaDebito = aItens[i].aCells[4].getValue();
+            oSlip.iRecurso = aItens[i].aCells[11].getValue();
+            oSlip.iArrecadacao = aItens[i].aCells[1].getValue();
+            oSlip.iCGM = aItens[i].aCells[9].getValue();
+            oSlip.iRetencao = aItens[i].aCells[10].getValue().trim();
+            oSlip.iOrdem = aItens[i].aCells[2].getValue();
+            oSlip.nValor = js_strToFloat(aItens[i].aCells[8].getValue()).valueOf();
             oSlip.iRetencaoReceitas = aItens[i].aCells[12].getValue().trim();
 
             oRequisicao.aSlips.push(oSlip);
@@ -521,12 +560,12 @@ echo "</script>\n";
         if (!confirm('Confirma a emissão dos slips?')) {
             return false;
         }
-        js_divCarregando("Aguarde, Gerando slips.","msgBox");
+        js_divCarregando("Aguarde, Gerando slips.", "msgBox");
         var oAjax = new Ajax.Request(
             sUrlRPC,
             {
-                method    : 'post',
-                parameters:'json='+Object.toJSON(oRequisicao),
+                method: 'post',
+                parameters: 'json=' + Object.toJSON(oRequisicao),
                 onComplete: js_retornoGerarSlips
             }
         );
@@ -536,10 +575,16 @@ echo "</script>\n";
 
         js_removeObj("msgBox");
         var oRetorno = JSON.parse(oAjax.responseText);
-        if (oRetorno.status == 1 ) {
+
+        if (oRetorno.status == 2) {
+            alert(oRetorno.message.urlDecode());
+            return;
+        }
+
+        if (oRetorno.status == 1) {
 
             var sSlis = oRetorno.aSlipsRetorno.implode(',');
-            if (confirm(('Slip(s) ('+sSlis+') gerado(s) com sucesso.\n\nDeseja Emiti-lo(s)?'))) {
+            if (confirm(('Slip(s) (' + sSlis + ') gerado(s) com sucesso.\n\nDeseja Emiti-lo(s)?'))) {
                 js_emiteSlips(sSlis);
             }
             js_getMovimentos();
@@ -547,18 +592,19 @@ echo "</script>\n";
     }
 
     function js_emiteSlips(sSlips) {
-        window.open('cai3_emiteslips002.php?slips='+sSlips,'','location=0');
+        window.open('cai3_emiteslips002.php?slips=' + sSlips, '', 'location=0');
     }
 
     function js_controleBotoes(lDisabled) {
 
         var aItens = $$('input[type=submit], input[type=button], button');
-        aItens.each(function(input,id) {
+        aItens.each(function (input, id) {
 
             input.disabled = lDisabled;
 
         });
     }
+
     var sUrl = 'pes1_rhempenhofolhaRPC.php';
 
     function js_consultaPontoComplementar() {
@@ -580,24 +626,24 @@ echo "</script>\n";
 
     }
 
-    function js_retornoPontoComplementar(oAjax){
+    function js_retornoPontoComplementar(oAjax) {
 
         js_removeObj("msgBox");
         js_bloqueiaTela(false);
 
         var aRetorno = JSON.parse(oAjax.responseText);
-        var sExpReg  = new RegExp('\\\\n','g');
+        var sExpReg = new RegExp('\\\\n', 'g');
 
 
-        if ( aRetorno.lErro ) {
-            alert(aRetorno.sMsg.urlDecode().replace(sExpReg,'\n'));
+        if (aRetorno.lErro) {
+            alert(aRetorno.sMsg.urlDecode().replace(sExpReg, '\n'));
             return false;
         }
 
-        var sLinha          = "";
+        var sLinha = "";
         var iLinhasSemestre = aRetorno.aSemestre.length;
 
-        if ( iLinhasSemestre > 0 ) {
+        if (iLinhasSemestre > 0) {
 
 
             sLinha += " <td align='left' title='Nro. Complementar'> ";
@@ -607,9 +653,9 @@ echo "</script>\n";
             sLinha += "   <select id='semestre' name='semestre' style='width:150px'>    ";
             sLinha += "     <option value = '0'>Todos</option>      ";
 
-            for ( var iInd=0; iInd < iLinhasSemestre; iInd++ ) {
-                with( aRetorno.aSemestre[iInd] ){
-                    sLinha += " <option value = '"+semestre+"'>"+semestre+"</option>";
+            for (var iInd = 0; iInd < iLinhasSemestre; iInd++) {
+                with (aRetorno.aSemestre[iInd]) {
+                    sLinha += " <option value = '" + semestre + "'>" + semestre + "</option>";
                 }
             }
 
@@ -623,26 +669,27 @@ echo "</script>\n";
 
         }
 
-        $('linhaComplementar').innerHTML     = sLinha;
+        $('linhaComplementar').innerHTML = sLinha;
         $('linhaComplementar').style.display = '';
 
     }
 
-    function js_validaTipoPonto(){
+    function js_validaTipoPonto() {
 
-        if ( $F('ponto') == 'r48') {
+        if ($F('ponto') == 'r48') {
             js_consultaPontoComplementar();
         } else {
             $('linhaComplementar').style.display = 'none';
         }
 
     }
-    function js_bloqueiaTela(lBloq){
 
-        if ( lBloq ) {
+    function js_bloqueiaTela(lBloq) {
+
+        if (lBloq) {
             $('anofolha').disabled = true;
             $('mesfolha').disabled = true;
-            $('ponto').disabled    = true;
+            $('ponto').disabled = true;
 
             if ($F('ponto') == 'r48') {
                 if ($('semestre')) {
@@ -654,7 +701,7 @@ echo "</script>\n";
 
             $('anofolha').disabled = false;
             $('mesfolha').disabled = false;
-            $('ponto').disabled    = false;
+            $('ponto').disabled = false;
 
             if ($F('ponto') == 'r48') {
                 if ($('semestre')) {
@@ -666,16 +713,16 @@ echo "</script>\n";
     }
 
 
-    function js_getQueryDadosFolha(){
+    function js_getQueryDadosFolha() {
 
-        var oParam       = new Object();
+        var oParam = new Object();
         oParam.iAnoFolha = $F('anofolha');
         oParam.iMesFolha = $F('mesfolha');
-        oParam.sSigla    = $F('ponto');
-        oParam.iTipo     = $F('tipo');
+        oParam.sSigla = $F('ponto');
+        oParam.iTipo = $F('tipo');
         oParam.sSemestre = "0";
 
-        if ( $F('ponto') == 'r48' ) {
+        if ($F('ponto') == 'r48') {
             if ($('semestre')) {
                 oParam.sSemestre = $F('semestre');
             }
@@ -686,11 +733,11 @@ echo "</script>\n";
     }
 
 
-    function js_setAjuda(sTexto,lShow) {
+    function js_setAjuda(sTexto, lShow) {
 
         if (lShow) {
 
-            el =  $('gridSlip');
+            el = $('gridSlip');
             var x = 0;
             var y = el.offsetHeight;
             while (el.offsetParent && el.tagName.toUpperCase() != 'BODY') {
@@ -702,18 +749,17 @@ echo "</script>\n";
             }
             x += el.offsetLeft;
             y += el.offsetTop;
-            $('ajudaItem').innerHTML     = sTexto;
+            $('ajudaItem').innerHTML = sTexto;
             $('ajudaItem').style.display = '';
-            $('ajudaItem').style.top     = y+10;
-            $('ajudaItem').style.left    = x;
+            $('ajudaItem').style.top = y + 10;
+            $('ajudaItem').style.left = x;
 
         } else {
             $('ajudaItem').style.display = 'none';
         }
     }
 
-
-    function js_createComboContas(iCodMov,aContas, k13_descr, iContaConfig, lDisabled) {
+    function js_createComboContas(iCodMov, aContas, k13_descr, iContaConfig, lDisabled) {
         var sDisabled = "";
         if (lDisabled == null) {
             lDisabled = false;
@@ -721,20 +767,20 @@ echo "</script>\n";
         if (lDisabled) {
             sDisabled = " disabled ";
         }
-        var sCombo  = "<select id='ctapag"+iCodMov+"' class='ctapag' style='width:100%'";
-        sCombo     += "<option value=''>Selecione</option>";
+        var sCombo = "<select id='ctapag" + iCodMov + "' class='ctapag' style='width:100%'";
+        sCombo += "<option value=''>Selecione</option>";
 
         if (aContas != null) {
 
-            if (Array.isArray(aContas)){
+            if (Array.isArray(aContas)) {
                 for (var i = 0; i < aContas.length; i++) {
 
                     var sSelected = "";
-                    if (iContaConfig == aContas[i].k13_conta) {
+                    if (iContaConfig == aContas[i].conta) {
                         sSelected = " selected ";
                     }
-                    var sDescrConta =  aContas[i].k13_conta+" - "+aContas[i].k13_descr.urlDecode();
-                    sCombo += "<option "+sSelected+" value = "+aContas[i].k13_conta+">"+sDescrConta+"</option>";
+                    var sDescrConta = aContas[i].conta + " - " + aContas[i].nome.urlDecode();
+                    sCombo += "<option " + sSelected + " value = " + aContas[i].conta + ">" + sDescrConta + "</option>";
 
                 }
             } else {
@@ -743,19 +789,42 @@ echo "</script>\n";
                     sSelected = " selected ";
                 }
 
-                var sDescrConta =  k13_descr.urlDecode();
-                sCombo += "<option "+sSelected+" value = "+aContas+">"+sDescrConta+"</option>";
+                var sDescrConta = k13_descr.urlDecode();
+                sCombo += "<option " + sSelected + " value = " + aContas + ">" + sDescrConta + "</option>";
             }
         }
-        sCombo  += "</select>";
+        sCombo += "</select>";
         return sCombo;
 
     }
+
     init();
 
-    const lookupRecurso = new DBLookUp($('ancoraRecurso'), $('o15_recurso'), $('o15_descr'), {
-        "sArquivo": "func_fonterecurso.php",
-        "sObjetoLookUp": "db_iframe_orctiporec",
-        "sLabel": "Pesquisar Recurso"
-    });
+    function js_pesquisaRecurso(lMostraWindow) {
+        if (!lMostraWindow && $('gestao').value == '') {
+            $("codigosRecursos").value = '';
+            $("o15_recurso").value = '';
+            $('descricao').value = '';
+            return
+        }
+
+        let param = 'gestao=' + $('gestao').value;
+        pesquisaRecurso(param);
+    }
+
+    const pesquisaRecurso = (parametroAdicional) => {
+        let sUrl = 'func_fontesubrecurso.php?funcao_js=parent.js_preencheRecurso|gestao|o15_recurso|descricao|db_ids_recursos';
+        if (parametroAdicional) {
+            sUrl += `&${parametroAdicional}`;
+        }
+        js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+    };
+
+    function js_preencheRecurso(gestao, recurso, descricao, db_ids_recursos) {
+        $('gestao').value = gestao;
+        $('o15_recurso').value = recurso;
+        $('descricao').value = descricao;
+        $('codigosRecursos').value = db_ids_recursos;
+        db_iframe_recurso.hide();
+    }
 </script>

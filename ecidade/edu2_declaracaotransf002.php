@@ -103,7 +103,7 @@ if ($linhas == 0) {?>
    </td>
   </tr>
  </table>
- <?
+ <?php
  exit;
 }
 
@@ -202,7 +202,7 @@ for ($x=0;$x<$linhas;$x++) {
   } else {
 
    if ($ed47_c_bolsafamilia == "S") {
-     $bolsa = "Auxílio Brasil Ativo";
+     $bolsa = "Bolsa Família Ativo";
    }else{
      $bolsa = "";
    }

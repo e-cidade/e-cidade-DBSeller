@@ -31,7 +31,6 @@ use App\Domain\Configuracao\Helpers\StorageHelper;
 use ECidade\Lib\Request\Curl;
 use ECidade\V3\Extension\Registry;
 use Exception;
-use ParameterException;
 
 /**
  * Class Autenticacao
@@ -45,6 +44,7 @@ class Autenticacao
     private $grant_type;
     private $client_id;
     private $client_secret;
+    private $scope;
 
     /**
      * @var Autenticacao
@@ -61,6 +61,8 @@ class Autenticacao
      */
     private $properties;
 
+    private $disableSSLverification;
+
     /**
      * Autenticacao constructor.
      * @param Curl $curl
@@ -68,13 +70,15 @@ class Autenticacao
     private function __construct(Curl $curl)
     {
         $configStorage = StorageHelper::getStorageConfig();
-
         $this->url           = $configStorage->url;
         $this->grant_type    = $configStorage->grant_type;
         $this->client_id     = $configStorage->client_id;
         $this->client_secret = $configStorage->client_secret;
         $this->scope         = isset($configStorage->scope) ? $configStorage->scope : '*';
-
+        $this->disableSSLverification = false;
+        if (!empty($configStorage->disableSSLverification)) {
+            $this->disableSSLverification = (bool)  $configStorage->disableSSLverification;
+        }
         $this->curl = $curl;
     }
 
@@ -120,9 +124,10 @@ class Autenticacao
         );
 
         $options = array();
-        $options[CURLOPT_URL] = $this->url .'/'. self::ROUTE;
+        $options[CURLOPT_URL] = $this->url . '/' . self::ROUTE;
         $options[CURLOPT_POSTFIELDS] = $aplicacao;
         $options[CURLOPT_RETURNTRANSFER] = true;
+        $options[CURLOPT_SSL_VERIFYPEER] = !$this->disableSSLverification;
 
         return $options;
     }
@@ -155,8 +160,9 @@ class Autenticacao
         $_SESSION['estorage_properties'] = $this->properties;
     }
 
+
     /**
-     * @return array
+     * @return array|mixed
      * @throws Exception
      */
     public function getAccessToken()
@@ -165,13 +171,15 @@ class Autenticacao
     }
 
     /**
-     * @param null|string $key
+     * @param $key
      * @return array|mixed
      * @throws Exception
      */
     public function getProperties($key = null)
     {
         if (empty($this->properties)) {
+            $logger = Registry::get('app.container')->get('app.logger');
+            $logger->error($this->curl->getErro());
             throw new Exception('Propriedades de autenticação não existentes.');
         }
 
@@ -223,5 +231,47 @@ class Autenticacao
         }
 
         return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGrantType()
+    {
+        return $this->grant_type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClientId()
+    {
+        return $this->client_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClientSecret()
+    {
+        return $this->client_secret;
+    }
+
+
+
+    /**
+     * @return bool
+     */
+    public function isDisableSSLverification()
+    {
+        return $this->disableSSLverification;
     }
 }

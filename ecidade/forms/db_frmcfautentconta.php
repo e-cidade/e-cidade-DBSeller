@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("k13_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tk16_id?>">
-       <?
+       <?php
        db_ancora(@$Lk16_id,"js_pesquisak16_id(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k16_id',5,$Ik16_id,true,'text',$db_opcao," onchange='js_pesquisak16_id(false);'")
 ?>
-       <?
+       <?php
 db_input('k11_local',30,$Ik11_local,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk16_conta?>">
-       <?
+       <?php
        db_ancora(@$Lk16_conta,"js_pesquisak16_conta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k16_conta',5,$Ik16_conta,true,'text',$db_opcao," onchange='js_pesquisak16_conta(false);'")
 ?>
-       <?
+       <?php
 db_input('k13_descr',40,$Ik13_descr,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cfautentconta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_impressora->rotulo->label("db64_nome");
               <?=$Ldb64_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db64_sequencial",10,$Idb64_sequencial,true,"text",4,"","chave_db64_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_impressora->rotulo->label("db64_nome");
               <?=$Ldb64_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db64_nome",50,$Idb64_nome,true,"text",4,"","chave_db64_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_impressora->rotulo->label("db64_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
       $sWhere = " 1=1 ";
       
@@ -130,12 +130,12 @@ $cldb_impressora->rotulo->label("db64_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

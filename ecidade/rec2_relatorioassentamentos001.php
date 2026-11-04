@@ -53,12 +53,12 @@ $db_opcao = 1;
       <table align="center">
         <tr>
           <td title="<?=@$Trh01_regist?>">
-          <?
+          <?php
             db_ancora(@$Lrh01_regist,"js_pesquisarh01_regist(true);",$db_opcao);
           ?>
           </td>
           <td> 
-          <?
+          <?php
             db_input('rh01_regist',10,$Irh01_regist,true,'text',$db_opcao," onchange='js_pesquisarh01_regist(false);'"); 
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
           ?>
@@ -69,7 +69,7 @@ $db_opcao = 1;
             <strong>Período:</strong>
           </td>
           <td>
-          <?
+          <?php
             db_inputdata('h64_dataini',null,null,null,true,'text',$db_opcao,"");
           ?>
             <strong>até</strong>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ $clrotulo->label("o45_numlei");
       <td><?php db_textarea('o39_descr',0,35,$Io39_descr,true,'text',$db_opcao,"") ?></td>
     </tr>
    <tr>
-    <td nowrap title="<?PHP echo @$To39_codlei?>"><?db_ancora(@$Lo39_codlei,"js_pesquisao39_codlei(true);",$db_opcao);?></td>
+    <td nowrap title="<?PHP echo @$To39_codlei?>"><?php db_ancora(@$Lo39_codlei,"js_pesquisao39_codlei(true);",$db_opcao);?></td>
     <td>
        <?php db_input('o39_codlei',5,$Io39_codlei,true,'text',$db_opcao," onchange='js_pesquisao39_codlei(false);'")?>
        <?php db_input('o45_numlei',30,$Io45_numlei,true,'text',3,'')     ?>
@@ -186,7 +186,7 @@ function js_mostraorclei1(chave1,chave2){
   db_iframe_orclei.hide();
 }
 function js_pesquisa(){
-  <?
+  <?php
  //  if($db_opcao==22){
      echo "js_OpenJanelaIframe('CurrentWindow.corpo.iframe_projeto','db_iframe_orcprojeto','func_orcprojeto001.php?funcao_js=parent.js_preenchepesquisa|o39_codproj','Pesquisa',true);";
  // }else {
@@ -196,7 +196,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcprojeto.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

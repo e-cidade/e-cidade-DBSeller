@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ if(isset($chavepesquisa)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmempempenho_prazos.php"));
 	?>
     </center>
@@ -64,7 +64,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($confirmar)){
   if($clempautoriza->erro_status=="0"){
     $clempautoriza->erro(true,false);

@@ -136,7 +136,7 @@ class RubricaMapeador implements FormularioMapeador
     {
     }
 
-    public function getSqlDePara()
+    public function getSqlDePara($ano, $mes)
     {
         $instituicao = \InstituicaoRepository::getInstituicaoSessao();
         $campos = array_merge($this->getCamposSistema(), $this->getCamposAuxiliares());
@@ -144,21 +144,75 @@ class RubricaMapeador implements FormularioMapeador
         $oCompetenciaAtual = \DBPessoal::getCompetenciaFolha();
         $sql = "
             select
-                   {$campos}
-            from
-                 rhrubricas
-                inner join basesr on
-                    rh27_rubric = r09_rubric
-                    and r09_instit = rh27_instit
-                    and r09_anousu = {$oCompetenciaAtual->getAno()}
-                    and r09_mesusu = {$oCompetenciaAtual->getMes()}
-
-            where
-                  rh27_instit = {$instituicao->getCodigo()}
+              codRubr,
+              dscRubr,
+              ideTabRubr,
+              iniValid,
+              fimValid,
+              natRubr,
+              tpRubr,
+              coalesce(array_to_string(array_accum(codIncCP), ','), '') as codIncCP,
+              coalesce(array_to_string(array_accum(codIncIRRF), ','), '') as codIncIRRF,
+              coalesce(array_to_string(array_accum(codIncFGTS), ','), '') as codIncFGTS,
+              codIncSIND,
+              observacao,
+              array_to_string(array_accum(bases), ',') as bases,
+              tiporubrica
+            from (
+                select
+                       {$campos}
+                from
+                     rhrubricas
+                    left join basesr on
+                        rh27_rubric = r09_rubric
+                        and r09_instit = rh27_instit
+                        and r09_anousu = {$ano}
+                        and r09_mesusu = {$mes}
+                    left join bases on
+                        r08_instit = r09_instit
+                        and r08_anousu = {$ano}
+                        and r08_mesusu = {$mes}
+                        and r08_codigo = r09_base
+                where
+                      rh27_instit = {$instituicao->getCodigo()}
+                      and rh27_rubric in (select distinct rubrica from (
+                            select distinct r14_rubric as rubrica
+                            from gerfsal
+                            where r14_instit = {$instituicao->getCodigo()}
+                                and  r14_mesusu = {$mes} and r14_anousu = {$ano}
+                            union
+                            select distinct r20_rubric as rubrica
+                            from gerfres
+                            where r20_instit = {$instituicao->getCodigo()}
+                                and  r20_mesusu = {$mes} and r20_anousu = {$ano}
+                            union
+                            select distinct r48_rubric as rubrica
+                            from gerfcom
+                            where r48_instit = {$instituicao->getCodigo()}
+                                and  r48_mesusu = {$mes} and r48_anousu = {$ano}
+                            union
+                            select distinct r35_rubric as rubrica
+                            from gerfs13
+                            where r35_instit = {$instituicao->getCodigo()}
+                                and  r35_mesusu = {$mes} and r35_anousu = {$ano}
+                            ) as x)
+                group by
+                    rh27_rubric,
+                    rh27_pd,
+                    rh27_descr,
+                    r09_base ) as x
             group by
-                rh27_rubric,
-                rh27_pd,
-                rh27_descr
+                codRubr,
+                dscRubr,
+                ideTabRubr,
+                iniValid,
+                fimValid,
+                natRubr,
+                tpRubr,
+                codIncSIND,
+                observacao,
+                tiporubrica
+            order by codRubr asc
             ";
         return $sql;
     }
@@ -183,18 +237,21 @@ class RubricaMapeador implements FormularioMapeador
         return $this->dadosFormulario;
     }
 
-    public function processarDadosEcidade()
+    public function processarDadosEcidade($mes, $ano)
     {
-        $sql = $this->getSqlDePara();
+        $sql = $this->getSqlDePara($mes, $ano);
         $rs = db_query($sql);
 
         if (!$rs) {
             throw new DBException("Erro ao buscar as informações do sistema.");
         }
 
-        $this->dadosEcidade =\db_utils::makeCollectionFromRecord($rs, function ($dadoEcidade) {
-            return (get_object_vars($dadoEcidade));
-        });
+        $this->dadosEcidade =\db_utils::makeCollectionFromRecord(
+            $rs,
+            function ($dadoEcidade) {
+                return (get_object_vars($dadoEcidade));
+            }
+        );
     }
 
     public function getColunas()

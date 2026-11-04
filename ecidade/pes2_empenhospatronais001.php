@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -111,12 +111,12 @@ function js_emite(){
         <strong>Ano / Mês :</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -126,7 +126,7 @@ function js_emite(){
       <tr>
         <td align="right"><b>Arquivo</b</td>
         <td >
-         <?
+         <?php
            $xx = array("s"=>"Salário","d"=>"13o. Salário");
            db_select('salario',$xx,true,4,"");
          ?>
@@ -138,14 +138,14 @@ function js_emite(){
            <strong>Coluna Extra (%) :</strong>
         </td>
         <td align="left" >
-          <?
+          <?php
           db_input('perc_extra',4,null,true,'text',2,'');
           ?>
        </td>
      </tr>
       <tr >
         <td align="center" colspan="2" >
-         <?
+         <?php
 	       $sql = "select distinct r33_codtab as r33_codtab,
                        case when r33_codtab = 2 then 'FGTS' else r33_nome end as r33_nome 
                  from inssirf 
@@ -163,7 +163,7 @@ function js_emite(){
       <fieldset>
         <legend><b>Salário família para dedução</b></legend>
           <table>
-            <?
+            <?php
             $result_dados_rubricas = $clrhrubricas->sql_record($clrhrubricas->sql_query_file(null,db_getsession('DB_instit'),"rh27_rubric, rh27_descr","rh27_rubric"," rh27_rubric in ('R918','R919','R920') and rh27_instit = ".db_getsession('DB_instit')));
             if($clrhrubricas->numrows > 0){
               for($i=0; $i<$clrhrubricas->numrows; $i++){
@@ -194,7 +194,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

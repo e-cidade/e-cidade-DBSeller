@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -72,7 +72,7 @@ $iCodigoRelatorio = 96;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php
     if ($dtAnousu <= 2007) {
 
       $oAbas->identifica = array("relatorio"=>"Relatório");
@@ -95,7 +95,7 @@ $iCodigoRelatorio = 96;
   </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

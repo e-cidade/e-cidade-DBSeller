@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,13 +63,13 @@ class cl_processoforomov {
                  v73_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe
-   function cl_processoforomov() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforomov");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_processoforomov {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v73_sequencial = ($this->v73_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v73_sequencial"]:$this->v73_sequencial);
        $this->v73_processoforomovsituacao = ($this->v73_processoforomovsituacao == ""?@$GLOBALS["HTTP_POST_VARS"]["v73_processoforomovsituacao"]:$this->v73_processoforomovsituacao);
@@ -99,7 +99,7 @@ class cl_processoforomov {
      }
    }
    // funcao para inclusao
-   function incluir ($v73_sequencial){
+   public function incluir ($v73_sequencial){
       $this->atualizacampos();
      if($this->v73_processoforomovsituacao == null ){
        $this->erro_sql = " Campo Processo Foro Movimentação Situação nao Informado.";
@@ -237,7 +237,7 @@ class cl_processoforomov {
      return true;
    }
    // funcao para alteracao
-   function alterar ($v73_sequencial=null) {
+   public function alterar ($v73_sequencial=null) {
       $this->atualizacampos();
      $sql = " update processoforomov set ";
      $virgula = "";
@@ -397,7 +397,7 @@ class cl_processoforomov {
      }
    }
    // funcao para exclusao
-   function excluir ($v73_sequencial=null,$dbwhere=null) {
+   public function excluir ($v73_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v73_sequencial));
      }else{
@@ -464,7 +464,7 @@ class cl_processoforomov {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -487,7 +487,7 @@ class cl_processoforomov {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $v73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $v73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -525,7 +525,7 @@ class cl_processoforomov {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $v73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $v73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

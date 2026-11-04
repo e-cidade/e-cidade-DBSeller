@@ -88,7 +88,7 @@ class SigfisArquivoEstorno extends SigfisArquivoBase implements iPadArquivoTXTBa
                                 inner join orcdotacao on o58_anousu = e60_anousu
                                                      and o58_coddot = e60_coddot
                            where c70_data between  '{$this->dtDataInicial}' and '{$this->dtDataFinal}'
-                             and c71_coddoc in (2)
+                             and c71_coddoc in (2, 411)
                              and empempenho.e60_instit = {$iInstituicaoSessao} 
                          ";
 
@@ -124,9 +124,9 @@ class SigfisArquivoEstorno extends SigfisArquivoBase implements iPadArquivoTXTBa
     	  $oDadosLinha = new stdClass();
     	  $oDadosLinha->cd_Unidade              = str_pad($this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
     	  $oDadosLinha->cd_UnidadeOrcamentaria  = str_pad($oEstorno->o58_unidade, 4, ' ', STR_PAD_LEFT);
-    	  $oDadosLinha->nu_Empenho              = str_pad($oEstorno->e60_codemp, 10, ' ', STR_PAD_RIGHT);
-    	  $oDadosLinha->dt_Ano                  = $oEstorno->e60_anousu;
-    	  $oDadosLinha->nu_Estorno              = str_pad($oEstorno->e94_codanu,  6, ' ', STR_PAD_LEFT);
+    	  $oDadosLinha->nu_Empenho              = str_pad(substr($oEstorno->e60_codemp,0,10), 10, ' ', STR_PAD_RIGHT);
+    	  $oDadosLinha->dt_Ano                  = substr($oEstorno->e60_anousu,0,4);
+    	  $oDadosLinha->nu_Estorno              = str_pad(substr($oEstorno->e94_codanu,0,6),  6, ' ', STR_PAD_LEFT);
     	  $oDadosLinha->dt_Estorno              = str_replace('/', '', db_formatar($oEstorno->e94_data,"d"));
     	  $oDadosLinha->de_MotivoEstorno        = str_pad($sMotivoestorno,      120, ' ', STR_PAD_RIGHT);
     	  $oDadosLinha->vl_Estorno              = str_pad($iValorSemSeparador,   16, ' ', STR_PAD_LEFT);
@@ -142,4 +142,3 @@ class SigfisArquivoEstorno extends SigfisArquivoBase implements iPadArquivoTXTBa
     return $this->aDados;
 	}
 }
-?>

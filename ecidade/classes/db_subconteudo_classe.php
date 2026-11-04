@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_subconteudo {
                  ed239_i_conteudo = int4 = Conteúdo 
                  ";
    //funcao construtor da classe 
-   function cl_subconteudo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("subconteudo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_subconteudo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed239_i_codigo = ($this->ed239_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed239_i_codigo"]:$this->ed239_i_codigo);
        $this->ed239_c_descr = ($this->ed239_c_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["ed239_c_descr"]:$this->ed239_c_descr);
@@ -77,7 +77,7 @@ class cl_subconteudo {
      }
    }
    // funcao para inclusao
-   function incluir ($ed239_i_codigo){ 
+   public function incluir ($ed239_i_codigo){ 
       $this->atualizacampos();
      if($this->ed239_c_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -176,7 +176,7 @@ class cl_subconteudo {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($ed239_i_codigo=null) { 
+   public function alterar ($ed239_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update subconteudo set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_subconteudo {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($ed239_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($ed239_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed239_i_codigo));
      }else{ 
@@ -334,7 +334,7 @@ class cl_subconteudo {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

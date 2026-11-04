@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clrotulo->label("z01_nome");
        <?=@$Lm76_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('m76_sequencial',10,$Im76_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,22 +53,22 @@ db_input('m76_sequencial',10,$Im76_sequencial,true,'text',3,"")
        <?=@$Lm76_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('m76_nome',50,$Im76_nome,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm76_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lm76_numcgm,"js_pesquisam76_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m76_numcgm',10,$Im76_numcgm,true,'text',$db_opcao," onchange='js_pesquisam76_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -111,7 +111,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matfabricante.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

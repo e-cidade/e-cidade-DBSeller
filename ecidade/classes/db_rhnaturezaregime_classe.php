@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_rhnaturezaregime {
                  rh71_descricao = varchar(50) = Descrição da Natureza 
                  ";
    //funcao construtor da classe 
-   function cl_rhnaturezaregime() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhnaturezaregime"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_rhnaturezaregime {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh71_sequencial = ($this->rh71_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh71_sequencial"]:$this->rh71_sequencial);
        $this->rh71_descricao = ($this->rh71_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh71_descricao"]:$this->rh71_descricao);
@@ -74,7 +74,7 @@ class cl_rhnaturezaregime {
      }
    }
    // funcao para inclusao
-   function incluir ($rh71_sequencial){ 
+   public function incluir ($rh71_sequencial){ 
       $this->atualizacampos();
      if($this->rh71_descricao == null ){ 
        $this->erro_sql = " Campo Descrição da Natureza nao Informado.";
@@ -161,7 +161,7 @@ class cl_rhnaturezaregime {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($rh71_sequencial=null) { 
+   public function alterar ($rh71_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update rhnaturezaregime set ";
      $virgula = "";
@@ -241,7 +241,7 @@ class cl_rhnaturezaregime {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($rh71_sequencial=null,$dbwhere=null) { 
+   public function excluir ($rh71_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh71_sequencial));
      }else{ 
@@ -303,7 +303,7 @@ class cl_rhnaturezaregime {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

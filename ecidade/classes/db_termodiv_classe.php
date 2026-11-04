@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,13 +70,13 @@ class cl_termodiv {
                  vlrdescmul = float8 = Desconto Multa
                  ";
    //funcao construtor da classe
-   function cl_termodiv() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termodiv");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_termodiv {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->parcel = ($this->parcel == ""?@$GLOBALS["HTTP_POST_VARS"]["parcel"]:$this->parcel);
        $this->coddiv = ($this->coddiv == ""?@$GLOBALS["HTTP_POST_VARS"]["coddiv"]:$this->coddiv);
@@ -105,7 +105,7 @@ class cl_termodiv {
      }
    }
    // funcao para inclusao
-   function incluir ($parcel,$coddiv){
+   public function incluir ($parcel,$coddiv){
       $this->atualizacampos();
      if($this->valor == null ){
        $this->erro_sql = " Campo valor nao Informado.";
@@ -290,7 +290,7 @@ class cl_termodiv {
      return true;
    }
    // funcao para alteracao
-   function alterar ($parcel=null,$coddiv=null) {
+   public function alterar ($parcel=null,$coddiv=null) {
       $this->atualizacampos();
      $sql = " update termodiv set ";
      $virgula = "";
@@ -524,7 +524,7 @@ class cl_termodiv {
      }
    }
    // funcao para exclusao
-   function excluir ($parcel=null,$coddiv=null,$dbwhere=null) {
+   public function excluir ($parcel=null,$coddiv=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($parcel,$coddiv));
      }else{
@@ -603,7 +603,7 @@ class cl_termodiv {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -625,10 +625,10 @@ class cl_termodiv {
       }
      return $result;
    }
-   function sql_query ( $parcel=null,$coddiv=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $parcel=null,$coddiv=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -658,7 +658,7 @@ class cl_termodiv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -668,10 +668,10 @@ class cl_termodiv {
      return $sql;
   }
 
-  function sql_query_file( $parcel=null,$coddiv=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file( $parcel=null,$coddiv=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -700,7 +700,7 @@ class cl_termodiv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -710,10 +710,10 @@ class cl_termodiv {
      return $sql;
   }
 
-  function sql_query_arreold ( $parcel=null,$coddiv=null,$campos="*",$ordem=null,$dbwhere="", $groupBy = ""){
+  public function sql_query_arreold ( $parcel=null,$coddiv=null,$campos="*",$ordem=null,$dbwhere="", $groupBy = ""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -744,7 +744,7 @@ class cl_termodiv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

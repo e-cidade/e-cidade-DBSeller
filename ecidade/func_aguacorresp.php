@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $claguacorresp->rotulo->label("x02_codcorresp");
               <?=$Lx02_codcorresp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x02_codcorresp",10,$Ix02_codcorresp,true,"text",4,"","chave_x02_codcorresp");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claguacorresp->rotulo->label("x02_codcorresp");
               <?=$Lx02_codcorresp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x02_codcorresp",10,$Ix02_codcorresp,true,"text",4,"","chave_x02_codcorresp");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claguacorresp->rotulo->label("x02_codcorresp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacorresp.php")==true){
@@ -118,12 +118,12 @@ $claguacorresp->rotulo->label("x02_codcorresp");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
               <?=$Lpc49_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc49_solicitem",10,$Ipc49_solicitem,true,"text",4,"","chave_pc49_solicitem");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
               <?=$Lpc49_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc49_solicitem",10,$Ipc49_solicitem,true,"text",4,"","chave_pc49_solicitem");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitemprot.php")==true){
@@ -118,12 +118,12 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

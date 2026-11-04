@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("nome");
        <?=@$Le14_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('e14_sequencial',10,$Ie14_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te14_idusuario?>">
-       <?
+       <?php
        db_ancora(@$Le14_idusuario,"js_pesquisae14_idusuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e14_idusuario',10,$Ie14_idusuario,true,'text',$db_opcao," onchange='js_pesquisae14_idusuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Le14_nomearquivo?>
     </td>
     <td> 
-<?
+<?php
 db_input('e14_nomearquivo',50,$Ie14_nomearquivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('e14_nomearquivo',50,$Ie14_nomearquivo,true,'text',$db_opcao,"")
        <?=@$Le14_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('e14_hora',5,$Ie14_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('e14_hora',5,$Ie14_hora,true,'text',$db_opcao,"")
        <?=@$Le14_dtarquivo?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('e14_dtarquivo',@$e14_dtarquivo_dia,@$e14_dtarquivo_mes,@$e14_dtarquivo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('e14_dtarquivo',@$e14_dtarquivo_dia,@$e14_dtarquivo_mes,@$e14_dtarq
        <?=@$Le14_situacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('e14_situacao',1,$Ie14_situacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_emparquivopit.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

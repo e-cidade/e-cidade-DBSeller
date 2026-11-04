@@ -250,17 +250,17 @@ if (isset($incluir)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-        <? MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
+        <?php MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
         <br>
         <center>
         <fieldset style="width:95%"><legend><b>Transferência entre escolas da rede municipal</b></legend>
-          <? include(modification("forms/db_frmtransfescolarede.php")); ?>
+          <?php include(modification("forms/db_frmtransfescolarede.php")); ?>
         </fieldset>
         </center>
       </td>
     </tr>
   </table>
-  <? db_menu(db_getsession("DB_id_usuario"),
+  <?php db_menu(db_getsession("DB_id_usuario"),
              db_getsession("DB_modulo"),
              db_getsession("DB_anousu"),
              db_getsession("DB_instit")
@@ -271,7 +271,7 @@ if (isset($incluir)) {
 <script>
   js_tabulacaoforms("form1","ed103_i_atestvaga",true,1,"ed103_i_atestvaga",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($oDaoTransfEscolaRede->erro_status == "0") {
@@ -308,7 +308,7 @@ if (isset($incluir)) {
       var oGuiaTransferencia = new EmissaoRelatorio('edu2_guiatransf002.php', oParametros);
           oGuiaTransferencia.open();
     </script>
-    <?
+    <?php
     db_redireciona("edu1_transfescolarede001.php");
 
   }

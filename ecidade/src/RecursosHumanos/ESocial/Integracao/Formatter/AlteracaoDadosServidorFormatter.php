@@ -9,7 +9,7 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use stdClass;
 
 /**
- * Formata os dados do Cargo
+ * Formata os dados de Alteração Cadastral do Servidor
  *
  * @package ECidade\RecursosHumanos\ESocial\Integracao\Formatter
  */
@@ -23,8 +23,9 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
         2 => 1,
         6 => 4,
         8 => 3,
-        9 => 6,
-        4 => 2
+        9 => '',
+        4 => 2,
+        11 => '',
     ];
 
 
@@ -44,18 +45,20 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
         12 => '11'
     ];
 
+    private $dataAlteracao;
+
     /**
      * Realiza a formatação dos dados para envio da API
      *
      * @param array $dados
      * @return array
      */
-    public function formatar($servidores)
+    public function formatar($servidores, $alteracao = false)
     {
         $retorno = [];
 
         foreach ($servidores as $servidor) {
-            if ($servidor->isAtivo()) {
+            if ($servidor->isAtivo() && !$servidor->isRescindido()) {
                 $this->dataAlteracao =
                     ServidorAlteracao::findMatriculaByLayout(
                         $servidor->getMatricula(),
@@ -112,7 +115,6 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
         $dadoServidor->ideTrabalhador->cpfTrab = $this->servidorAtual->getCgm()->getCpf();
 
         $dadoServidor->alteracao = $this->dadosAlteracao();
-
         return $dadoServidor;
     }
 
@@ -136,51 +138,53 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
      */
     private function dadosTrabalhador()
     {
-        $dados = new stdClass();
+        $dados = [];
 
-        $dados->nmTrab    = $this->servidorAtual->getCgm()->getNomeCompleto();
-        $dados->sexo      = $this->servidorAtual->getSexo();
-        $dados->racaCor   = $this->deParaRacaCor[$this->servidorAtual->getRacaCor()];
-        $dados->estCiv    = $this->deParaEstadoCivil[$this->servidorAtual->getEstadoCivil()];
-        $dados->grauInstr = str_pad($this->servidorAtual->getGrauInstrucao(), 2, '0', STR_PAD_LEFT);
+        $dados['nmTrab'] = $this->servidorAtual->getCgm()->getNomeCompleto();
+        $dados['sexo'] = $this->servidorAtual->getSexo();
+        $dados['racaCor'] = $this->deParaRacaCor[$this->servidorAtual->getRacaCor()];
+        if (!empty($this->deParaEstadoCivil[$this->servidorAtual->getEstadoCivil()])) {
+            $dados['estCiv'] = $this->deParaEstadoCivil[$this->servidorAtual->getEstadoCivil()];
+        }
+        $dados['grauInstr'] = str_pad($this->servidorAtual->getGrauInstrucao(), 2, '0', STR_PAD_LEFT);
 
         if (array_key_exists($this->servidorAtual->getGrauInstrucao(), $this->deParaGrauInstrucao)) {
-            $dados->grauInstr = $this->deParaGrauInstrucao[$this->servidorAtual->getGrauInstrucao()];
+            $dados['grauInstr'] = $this->deParaGrauInstrucao[$this->servidorAtual->getGrauInstrucao()];
         }
 
-        $dados->nmSoc   = $this->servidorEntity->getDadosTrabalhador()['nmSoc'];
-        $dados->paisNac = $this->servidorAtual->getCgm()->getCodigoPaisNacionalidade();
+        $dados['nmSoc'] = $this->servidorEntity->getDadosTrabalhador()['nmSoc'];
+        $dados['paisNac'] = $this->servidorAtual->getCgm()->getCodigoPaisNacionalidade();
 
         if ($this->servidorAtual->getCgm()->getNacionalidade() == '1' ||
             empty($this->servidorAtual->getCgm()->getNacionalidade())
         ) {
-            $dados->paisNac = '105';
+            $dados['paisNac'] = '105';
         }
 
-        $dados->endereco = $this->montaGrupoEndereco();
+        $dados['endereco'] = $this->montaGrupoEndereco();
 
-        $dados->trabImig = $this->servidorEntity->getImigrante();
+        $dados['trabImig'] = $this->servidorEntity->getImigrante();
 
-        $dados->infoDeficiencia = $this->montaGrupoDeficiencia();
+        $dados['infoDeficiencia'] = $this->montaGrupoDeficiencia();
 
-        $dados->dependente = $this->montaGrupoDependentes();
+        $dados['dependente'] = $this->montaGrupoDependentes();
 
         $contato = $this->montaDadosContato();
         if (!empty($contato)) {
-            $dados->contato = $contato;
+            $dados['contato'] = $contato;
         }
 
         /**
          * Remove grupos não preenchidos.
          */
 
-        if (!isset($dados->trabImig->tmpResid) &&
-            (!isset($dados->trabImig->condIng) || $dados->trabImig->condIng == 0)) {
-            unset($dados->trabImig);
+        if (!isset($dados['trabImi']->tmpResid) &&
+            (!isset($dados['trabImig']->condIng) || $dados['trabImig']->condIng == 0)) {
+            unset($dados['trabImig']);
         }
 
-        if (empty($dados->infoDeficiencia)) {
-            unset($dados->infoDeficiencia);
+        if (empty($dados['infoDeficiencia'])) {
+            unset($dados['infoDeficiencia']);
         }
 
         return $dados;
@@ -254,8 +258,30 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
                 && $deficiencia['infoCota'] == 'N'));
 
         if ($naoExisteGrupoDeficiencia) {
-            return [];
+            return null;
         } else {
+            //Validação conforme layout eSocial v1.2 item 53 do S-2205
+            if ((int) $this->servidorEntity->getVinculoTrabalho()['tpRegTrab'] != 1) {
+                unset($deficiencia['infoCota']);
+            }
+            if (isset($deficiencia['infoCota'])) {
+                $informaSim = false;
+                foreach ($deficiencia as $opcao => $resposta) {
+                    if ($opcao == 'observacao') {
+                        continue;
+                    }
+                    if ($opcao == 'infoCota') {
+                        continue;
+                    }
+                    if ($resposta == 'S') {
+                        $informaSim = true;
+                    }
+                }
+                if ((!$informaSim and $deficiencia['infoCota']='S')) {
+                    $deficiencia['infoCota']='N';
+                }
+            }
+
             return $deficiencia;
         }
     }
@@ -277,13 +303,25 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
                 if (empty($dependente['cpfDep'])) {
                     unset($dependente['cpfDep']);
                 }
+                // Implementada regra conforme layout do eSocial
+                // sexo do dependente nao pode ser enviado para servidores tpRegPrev != 2
+                if ($this->servidorEntity->getVinculoTrabalho()['tpRegPrev'] != 2) {
+                    unset($dependente['sexoDep']);
+                }
+                // Caso servidor enviado no S2300, é removido o sexo do dependente, seguindo o layout do eSocial
+                if (!$this->servidorAtual->temVinculoEmpregaticio() && !$this->servidorAtual->isEstagiario()) {
+                    unset($dependente['sexoDep']);
+                }
 
                 if (empty($dependente['nmDep']) && empty($dependente['dtNascto']) && empty($dependente['cpfDep'])) {
                     unset($dependentes[$chave]);
                 }
+
+                if ($dependente['tpDep'] != "99" && isset($dependente['descrDep'])) {
+                    unset($dependente['descrDep']);
+                }
             }
         }
-
         return $dependentes;
     }
 

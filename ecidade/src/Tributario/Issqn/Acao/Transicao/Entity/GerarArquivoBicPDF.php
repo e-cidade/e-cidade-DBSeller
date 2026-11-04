@@ -358,7 +358,7 @@ class GerarArquivoBicPDF
         //lado esquerdo da tela
         $this->pdf->setX(10);
         $this->pdf->SetFont('Arial', '', $this->titulo);
-        $this->pdf->Cell(34, 4, "Lograduro:", "", 0, "L", 1);
+        $this->pdf->Cell(34, 4, "Logradouro:", "", 0, "L", 1);
         $this->pdf->SetFont('Arial', '', $this->texto);
         $this->pdf->Cell(
             60,

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbensguarda->rotulo->label("t21_codigo");
               <?=$Lt21_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t21_codigo",8,$It21_codigo,true,"text",4,"","chave_t21_codigo");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clbensguarda->rotulo->label("t21_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where        = " t23_guardaitem is null ";
       $where_instit = " and t21_instit = ".db_getsession("DB_instit");
 
@@ -107,12 +107,12 @@ $clbensguarda->rotulo->label("t21_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

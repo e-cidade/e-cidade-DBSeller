@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@
                   <?=$Led316_sequencial?>
                 </td>
                 <td width="96%" align="left" nowrap> 
-                  <?
+                  <?php
     		            db_input("ed316_sequencial",10,$Ied316_sequencial,true,"text",4,"","chave_ed316_sequencial");
     		          ?>
                 </td>
@@ -66,7 +66,7 @@
                   <?=$Led316_descricao?>
                 </td>
                 <td width="96%" align="left" nowrap> 
-                  <?
+                  <?php
     		            db_input("ed316_descricao",100,$Ied316_descricao,true,"text",4,"","chave_ed316_descricao");
     		          ?>
                 </td>
@@ -84,7 +84,7 @@
       </tr>
       <tr> 
         <td align="center" valign="top"> 
-          <?
+          <?php
             $sWhere = " ed316_ativo <> 'f'";
             if (!isset($pesquisa_chave)) {
               
@@ -142,12 +142,12 @@
     </table>
   </body>
 </html>
-<?
+<?php
   if (!isset($pesquisa_chave)) {
 ?>
 <script>
 </script>
-<?
+<?php
   }
 ?>
 <script>

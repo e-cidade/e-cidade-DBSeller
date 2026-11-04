@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_emparquivos {
                  e84_codgera = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_emparquivos() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emparquivos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_emparquivos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e84_arquivo = ($this->e84_arquivo == ""?@$GLOBALS["HTTP_POST_VARS"]["e84_arquivo"]:$this->e84_arquivo);
        $this->e84_codgera = ($this->e84_codgera == ""?@$GLOBALS["HTTP_POST_VARS"]["e84_codgera"]:$this->e84_codgera);
@@ -73,7 +73,7 @@ class cl_emparquivos {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->e84_arquivo == null ){ 
        $this->erro_sql = " Campo Arquivo nao Informado.";
@@ -127,7 +127,7 @@ class cl_emparquivos {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update emparquivos set ";
      $virgula = "";
@@ -188,7 +188,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from emparquivos
                     where ";
      $sql2 = "";
@@ -227,7 +227,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

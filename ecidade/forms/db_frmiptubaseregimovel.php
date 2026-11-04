@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("j01_numcgm");
        <?=@$Lj04_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('j04_sequencial',10,$Ij04_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj04_setorregimovel?>">
-       <?
+       <?php
        db_ancora(@$Lj04_setorregimovel,"js_pesquisaj04_setorregimovel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j04_setorregimovel',10,$Ij04_setorregimovel,true,'text',$db_opcao," onchange='js_pesquisaj04_setorregimovel(false);'")
 ?>
-       <?
+       <?php
 db_input('j69_descr',40,$Ij69_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj04_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj04_matric,"js_pesquisaj04_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j04_matric',10,$Ij04_matric,true,'text',$db_opcao," onchange='js_pesquisaj04_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',10,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('j01_numcgm',10,$Ij01_numcgm,true,'text',3,'')
        <?=@$Lj04_matricregimo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j04_matricregimo',20,$Ij04_matricregimo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('j04_matricregimo',20,$Ij04_matricregimo,true,'text',$db_opcao,"")
        <?=@$Lj04_quadraregimo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j04_quadraregimo',4,$Ij04_quadraregimo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('j04_quadraregimo',4,$Ij04_quadraregimo,true,'text',$db_opcao,"")
        <?=@$Lj04_loteregimo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j04_loteregimo',4,$Ij04_loteregimo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_iptubaseregimovel.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

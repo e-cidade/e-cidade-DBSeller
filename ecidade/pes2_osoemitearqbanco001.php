@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -89,7 +89,7 @@ if (isset($emite2)) {
   <tr>
     <td><b>Data da Geração:</b></td>
     <td>
-      <?
+      <?php
       if (   (!isset($datageracao_dia) || (isset($datageracao_dia) && trim($datageracao_dia) == ""))
       		&& (!isset($datageracao_mes) || (isset($datageracao_mes) && trim($datageracao_mes) == ""))
       		&& (!isset($datageracao_ano) || (isset($datageracao_ano) && trim($datageracao_ano) == "")) ) {
@@ -104,7 +104,7 @@ if (isset($emite2)) {
   <tr>
     <td><b>Data do Depósito:</b></td>
     <td>
-      <?
+      <?php
       if (   (!isset($datadeposito_dia) || (isset($datadeposito_dia) && trim($datadeposito_dia) == ""))
       		&& (!isset($datadeposito_mes) || (isset($datadeposito_mes) && trim($datadeposito_mes) == ""))
       		&& (!isset($datadeposito_ano) || (isset($datadeposito_ano) && trim($datadeposito_ano) == "")) ) {
@@ -118,36 +118,36 @@ if (isset($emite2)) {
   </tr>
   <tr>
     <td align="left" nowrap title="<?=@$Trh34_codarq?>">
-      <?db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
+      <?php db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
     </td>
     <td align="left" nowrap colspan="3">
-      <?db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
-      <?db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
-      <?db_input("rodape",40,0,true,"hidden",3);?>
+      <?php db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
+      <?php db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
+      <?php db_input("rodape",40,0,true,"hidden",3);?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_codban?>">
-      <?
+      <?php
       db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",1);
       ?>
     </td>
     <td colspan="3">
-      <?
+      <?php
       db_input('rh34_codban',6,$Irh34_codban,true,'text',1," onchange='js_pesquisarh34_codban(false);'")
       ?>
-      <?
+      <?php
       db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
       ?>
     </td>
   </tr>
   <tr id='ctnGeracaoDisco' style="visibility: hidden;">
     <td align="left" nowrap title="<?=@$Trh102_sequencial?>">
-      <?db_ancora(@$Lrh102_sequencial,"js_pesquisafolha(true);",1);?>
+      <?php db_ancora(@$Lrh102_sequencial,"js_pesquisafolha(true);",1);?>
     </td>
     <td align="left" nowrap colspan="3">
-      <?db_input("rh102_sequencial",6,@$Irh102_sequencial,true,"text",4,"onchange='js_pesquisafolha(false);'");?>
-      <?db_input("rh102_descricao",40,@$Irh102_descricao,true,"text",3);?>
+      <?php db_input("rh102_sequencial",6,@$Irh102_sequencial,true,"text",4,"onchange='js_pesquisafolha(false);'");?>
+      <?php db_input("rh102_descricao",40,@$Irh102_descricao,true,"text",3);?>
     </td>
   </tr>
   </table>
@@ -159,7 +159,7 @@ if (isset($emite2)) {
       <?=@$Lrh34_agencia?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh34_agencia',5,$Irh34_agencia,true,'text',3,"")
       ?>
     </td>
@@ -167,7 +167,7 @@ if (isset($emite2)) {
       <?=@$Lrh34_dvagencia?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh34_dvagencia',2,$Irh34_dvagencia,true,'text',3,"")
       ?>
     </td>
@@ -177,7 +177,7 @@ if (isset($emite2)) {
       <?=@$Lrh34_conta?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh34_conta',15,$Irh34_conta,true,'text',3,"")
       ?>
     </td>
@@ -185,7 +185,7 @@ if (isset($emite2)) {
       <?=@$Lrh34_dvconta?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh34_dvconta',2,$Irh34_dvconta,true,'text',3,"")
       ?>
     </td>
@@ -195,16 +195,16 @@ if (isset($emite2)) {
       <?=@$Lrh34_convenio?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh34_convenio',15,$Irh34_convenio,true,'text',3,"")
       ?>
     </td>
-    <?if(isset($rh34_codban) && $rh34_codban == "104"){?>
+    <?php if(isset($rh34_codban) && $rh34_codban == "104"){?>
     <td align="right">
       <strong>Layout:</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_layout = Array(
                           "9"=>"CNAB240",
                           "3"=>"CEF",
@@ -213,14 +213,14 @@ if (isset($emite2)) {
       db_select("layout", $arr_layout, true, 1, "");
       ?>
     </td>
-    <?}?>
+    <?php }?>
   </tr>
   <tr>
     <td align="left">
       <strong>Vinculo:</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_vinculo = Array(
                           "T"=>"Todos",
                           "A"=>"Ativo",
@@ -235,7 +235,7 @@ if (isset($emite2)) {
       <strong>Tipo de Conta:</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_tipo = Array(
                           "C"=>"Conta Corrente",
                           "O"=>"Ordem de Pagamento",
@@ -249,7 +249,7 @@ if (isset($emite2)) {
       <?=@$Lrh34_sequencial?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',3,"")
       ?>
     </td>
@@ -261,7 +261,7 @@ if (isset($emite2)) {
   <input name="emite2" id="emite2" type="submit" value="Processar" onclick="return js_valores();" />
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -459,7 +459,7 @@ function js_mostrafolha1(chave1,chave2){
 }
 
 </script>
-<?
+<?php
 if(isset($emite2)){
   if($clrharqbanco->erro_status=="0"){
     $clrharqbanco->erro(true,false);

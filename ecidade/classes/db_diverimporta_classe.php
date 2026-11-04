@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE diverimporta
 class cl_diverimporta {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $dv11_sequencial = 0;
-   var $dv11_instit = 0;
-   var $dv11_id_usuario = 0;
-   var $dv11_data_dia = null;
-   var $dv11_data_mes = null;
-   var $dv11_data_ano = null;
-   var $dv11_data = null;
-   var $dv11_hora = null;
-   var $dv11_tipo = 0;
-   var $dv11_obs = null;
+   public $dv11_sequencial = 0;
+   public $dv11_instit = 0;
+   public $dv11_id_usuario = 0;
+   public $dv11_data_dia = null;
+   public $dv11_data_mes = null;
+   public $dv11_data_ano = null;
+   public $dv11_data = null;
+   public $dv11_hora = null;
+   public $dv11_tipo = 0;
+   public $dv11_obs = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  dv11_sequencial = int8 = Código
                  dv11_instit = int4 = Cod. Instituição
                  dv11_id_usuario = int4 = Cod. Usuário
@@ -63,13 +63,13 @@ class cl_diverimporta {
                  dv11_obs = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_diverimporta() {
+   public function cl_diverimporta() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diverimporta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_diverimporta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->dv11_sequencial = ($this->dv11_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["dv11_sequencial"]:$this->dv11_sequencial);
        $this->dv11_instit = ($this->dv11_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["dv11_instit"]:$this->dv11_instit);
@@ -99,7 +99,7 @@ class cl_diverimporta {
      }
    }
    // funcao para inclusao
-   function incluir ($dv11_sequencial){
+   public function incluir ($dv11_sequencial){
       $this->atualizacampos();
      if($this->dv11_instit == null ){
        $this->erro_sql = " Campo Cod. Instituição nao Informado.";
@@ -237,7 +237,7 @@ class cl_diverimporta {
      return true;
    }
    // funcao para alteracao
-   function alterar ($dv11_sequencial=null) {
+   public function alterar ($dv11_sequencial=null) {
       $this->atualizacampos();
      $sql = " update diverimporta set ";
      $virgula = "";
@@ -397,7 +397,7 @@ class cl_diverimporta {
      }
    }
    // funcao para exclusao
-   function excluir ($dv11_sequencial=null,$dbwhere=null) {
+   public function excluir ($dv11_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($dv11_sequencial));
      }else{
@@ -464,7 +464,7 @@ class cl_diverimporta {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -487,10 +487,10 @@ class cl_diverimporta {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $dv11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $dv11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_diverimporta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,10 +525,10 @@ class cl_diverimporta {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $dv11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $dv11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -549,7 +549,7 @@ class cl_diverimporta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ class cl_diverimporta {
      return $sql;
   }
 
-   function sql_query_dadosImportacao( $iCodigoImporta ) {
+   public function sql_query_dadosImportacao( $iCodigoImporta ) {
 
   	$sSql   = "select x.dv13_numpre                                                                           ";
     $sSql  .= "  from (select dv13_sequencial,dv12_diverimporta,                                              ";
@@ -590,7 +590,7 @@ class cl_diverimporta {
 
    }
 
-   function sql_query_debitos_diversos($iNumpre, $iNumpar, $iReceita) {
+   public function sql_query_debitos_diversos($iNumpre, $iNumpar, $iReceita) {
 
   	$sSql  = "select k00_numpre,                     ";
   	$sSql .= "			 k00_numcgm,                     ";
@@ -619,7 +619,7 @@ class cl_diverimporta {
 
   }
 
-   function sql_query_debitos_importados($iTipoPesquisa, $iChavePequisa) {
+   public function sql_query_debitos_importados($iTipoPesquisa, $iChavePequisa) {
 
   	$iInstituicao = db_getsession('DB_instit');
 
@@ -669,7 +669,7 @@ class cl_diverimporta {
 		return $sSql;
   }
 
-  function sql_query_importa_iptu($iTipoPesquisa, $aChavePesquisa) {
+  public function sql_query_importa_iptu($iTipoPesquisa, $aChavePesquisa) {
 
     switch ($iTipoPesquisa) {
 
@@ -735,15 +735,15 @@ class cl_diverimporta {
 		$sSql.= "                         inner join tabrec     on tabrec.k02_codigo     = arrecad.k00_receit      \n";
 		$sSql.= "                         inner join arrenumcgm on arrenumcgm.k00_numpre = arrecad.k00_numpre      \n";
     $sSql.= "                         inner join arrematric on arrematric.k00_numpre = arrecad.k00_numpre      \n";
-		$sSql.= "                         left  join iptunump   on iptunump.j20_numpre   = arrecad.k00_numpre      \n"; /** Força o debito a ser agua ou IPTU **/
-		$sSql.= "                                              and iptunump.j20_matric   = arrematric.k00_matric   \n"; /** Força o debito a ser agua ou IPTU **/
+    $sSql.= "                         left  join iptunump   on iptunump.j20_numpre   = arrecad.k00_numpre      \n"; /** Força o debito a ser agua ou IPTU **/
+    $sSql.= "                                              and iptunump.j20_matric   = arrematric.k00_matric   \n"; /** Força o debito a ser agua ou IPTU **/
    // $sSql.= "                                              and iptunump.j20_anousu   = {$iAnousu}              \n"; /** Força o debito a ser agua ou IPTU **/
-		$sSql.= "                         left  join aguacalc   on aguacalc.x22_numpre   = arrecad.k00_numpre      \n"; /** Força o debito a ser agua ou IPTU **/
-		$sSql.= "                                              and aguacalc.x22_matric   = arrematric.k00_matric   \n"; /** Força o debito a ser agua ou IPTU **/
+    $sSql.= "                         left  join aguacalc   on aguacalc.x22_numpre   = arrecad.k00_numpre      \n"; /** Força o debito a ser agua ou IPTU **/
+    $sSql.= "                                              and aguacalc.x22_matric   = arrematric.k00_matric   \n"; /** Força o debito a ser agua ou IPTU **/
    // $sSql.= "                                              and aguacalc.x22_exerc    = {$iAnousu}              \n"; /** Força o debito a ser agua ou IPTU **/
     $sSql.= "                   where arreinstit.k00_instit = {$iInstituicao}                                  \n";
     $sSql.= "                     and {$sWhere}                                                                \n";
-		$sSql.= "                     and cadtipo.k03_tipo in (1, 20)                                              \n";
+    $sSql.= "                     and cadtipo.k03_tipo in (1,20)                                               \n";
     $sSql.= "                     and case when iptunump.j20_numpre is null                                    \n"; /** Força o debito a ser agua ou IPTU **/
     $sSql.= "                           then case when aguacalc.x22_numpre is null                             \n"; /** Força o debito a ser agua ou IPTU **/
     $sSql.= "                                     then false                                                   \n"; /** Força o debito a ser agua ou IPTU **/
@@ -771,7 +771,7 @@ class cl_diverimporta {
     return $sSql;
   }
 
-  function sql_query_relatorio_importacao( $oWherePesquisa ) {
+  public function sql_query_relatorio_importacao( $oWherePesquisa ) {
 
   	$sWhere = '';
   	$iInstituicao = db_getsession('DB_instit');
@@ -865,7 +865,7 @@ class cl_diverimporta {
 
   }
 
-  function sql_queryDebitosImportadosAlvara($iChavePequisa) {
+  public function sql_queryDebitosImportadosAlvara($iChavePequisa) {
 
     $iInstituicao = db_getsession('DB_instit');
 
@@ -904,7 +904,7 @@ class cl_diverimporta {
     return $sSql;
   }
 
-  function sql_queryImportacaoAlvara($aChavePesquisa) {
+  public function sql_queryImportacaoAlvara($aChavePesquisa) {
 
     $iInstituicao = db_getsession('DB_instit');
 
@@ -938,6 +938,7 @@ class cl_diverimporta {
     $sSql .= "                         inner join cadtipo    on cadtipo.k03_tipo      = arretipo.k03_tipo       \n";
     $sSql .= "                         inner join tabrec     on tabrec.k02_codigo     = arrecad.k00_receit      \n";
     $sSql .= "                         inner join arrenumcgm on arrenumcgm.k00_numpre = arrecad.k00_numpre      \n";
+    $sSql .= "                         and arrenumcgm.k00_numcgm = arrecad.k00_numcgm                           \n";
     $sSql .= "                         inner join arreinscr  on arreinscr.k00_numpre  = arrecad.k00_numpre      \n";
     $sSql .= "                         left join issvar on issvar.q05_numpre = arrecad.k00_numpre               \n";
     $sSql .= "                                         and issvar.q05_numpar = arrecad.k00_numpar               \n";
@@ -964,7 +965,7 @@ class cl_diverimporta {
     return $sSql;
   }
 
-  function sql_query_cobranca_adm($iTipoPesquisa, $aChavePesquisa, $origemDebito) {
+  public function sql_query_cobranca_adm($iTipoPesquisa, $aChavePesquisa, $origemDebito) {
 
     switch ($iTipoPesquisa) {
 
@@ -1003,10 +1004,20 @@ class cl_diverimporta {
         $sWhere = implode(" or ", $aWhere);
         break;
 
-      case 5: // INSCRICAO
+      case 5: // INSCRIÇÃO
+          $sWhere = " arreinscr.k00_inscr in (".implode(",", $aChavePesquisa).") ";
+          break;
 
-        $sWhere = " arreinscr.k00_inscr in (".implode(",", $aChavePesquisa).") ";
+
+      case 6: // Código do Auto de Infração
+
+        $sWhere = " arreauto.k00_auto in (".implode(",", $aChavePesquisa).") ";
         break;
+
+      case 7: // Notificação de Lançamento
+
+      $sWhere = " arrelanc.k00_codlanc in (".implode(",", $aChavePesquisa).") ";
+      break;
     }
 
     $iInstituicao = db_getsession('DB_instit');
@@ -1017,8 +1028,9 @@ class cl_diverimporta {
     $sSql .= "       k00_descr,                                                                            ";
     $sSql .= "       k02_codigo,                                                                           ";
     $sSql .= "       k02_descr,                                                                            ";
-    $sSql .= "       k00_auto                                                                              ";
-    $sSql .= "  from ( select k00_numpre,                                                                  ";
+    $sSql .= "       k00_auto,                                                                             ";
+    $sSql .= "       k00_codlanc                                                                             ";
+    $sSql .= "  from ( select distinct k00_numpre,                                                                  ";
     $sSql .= "                k00_numpar,                                                                  ";
     $sSql .= "                k00_descr,                                                                   ";
     $sSql .= "                k02_codigo,                                                                  ";
@@ -1028,7 +1040,8 @@ class cl_diverimporta {
     $sSql .= "                 when k03_tipo = 3 and q05_valor = 0 then q05_vlrinf                         ";
     $sSql .= "                 else k00_valor                                                              ";
     $sSql .= "                end as vlr_total,                                                            ";
-    $sSql .= "                k00_auto                                                                     ";
+    $sSql .= "                k00_auto,                                                                    ";
+    $sSql .= "                k00_codlanc                                                                  ";
     $sSql .= "           from ( select arrecad.k00_numpre,                                                 ";
     $sSql .= "                         arrecad.k00_valor,                                                  ";
     $sSql .= "                         arrecad.k00_numpar,                                                 ";
@@ -1038,7 +1051,8 @@ class cl_diverimporta {
     $sSql .= "                         cadtipo.k03_tipo,                                                   ";
     $sSql .= "                         issvar.q05_valor,                                                   ";
     $sSql .= "                         issvar.q05_vlrinf,                                                  ";
-    $sSql .= "                         k00_auto                                                            ";
+    $sSql .= "                         k00_auto,                                                           ";
+    $sSql .= "                         k00_codlanc                                                         ";
     $sSql .= "                    from arrecad                                                             ";
     $sSql .= "                         inner join arreinstit on arreinstit.k00_numpre = arrecad.k00_numpre ";
     $sSql .= "                         inner join arretipo on arretipo.k00_tipo = arrecad.k00_tipo         ";
@@ -1050,6 +1064,7 @@ class cl_diverimporta {
     $sSql .= "                         left join issvar on issvar.q05_numpre = arrecad.k00_numpre          ";
     $sSql .= "                                         and issvar.q05_numpar = arrecad.k00_numpar          ";
     $sSql .= "                         left join arreauto on arreauto.k00_numpre = arrecad.k00_numpre      ";
+    $sSql .= "                         left join arrelanc on arrelanc.k00_numpre = arrecad.k00_numpre";
     $sSql .= "                   where arreinstit.k00_instit = {$iInstituicao}                             ";
     $sSql .= "                     and ({$sWhere})                                                         ";
     $sSql .= "                     and arrecad.k00_tipo = {$origemDebito}                                  ";
@@ -1061,7 +1076,8 @@ class cl_diverimporta {
     $sSql .= "       k00_descr,                                                                            ";
     $sSql .= "       k02_codigo,                                                                           ";
     $sSql .= "       k02_descr,                                                                            ";
-    $sSql .= "       k00_auto                                                                              ";
+    $sSql .= "       k00_auto,                                                                             ";
+    $sSql .= "       k00_codlanc                                                                           ";
     $sSql .= " having                                                                                      ";
     $sSql .= "       sum(vlr_total) > 0                                                                    ";
     $sSql .= " order by                                                                                    ";
@@ -1070,12 +1086,13 @@ class cl_diverimporta {
     $sSql .= "       k00_descr,                                                                            ";
     $sSql .= "       k02_codigo,                                                                           ";
     $sSql .= "       k02_descr,                                                                            ";
-    $sSql .= "       k00_auto                                                                              ";
+    $sSql .= "       k00_auto,                                                                             ";
+    $sSql .= "       k00_codlanc                                                                           ";
 
     return $sSql;
   }
 
-  function sql_query_importa_auto( $iTipoPesquisa, $aChavePesquisa ) {
+  public function sql_query_importa_auto( $iTipoPesquisa, $aChavePesquisa ) {
 
     switch ($iTipoPesquisa) {
       case 1: // CODIGO IMPORTACAO
@@ -1110,6 +1127,7 @@ class cl_diverimporta {
 
         $sWhere = implode(" or ",$aWhere);
         break;
+
     }
 
 
@@ -1140,6 +1158,7 @@ class cl_diverimporta {
     $sSql.= "                         inner join cadtipo    on cadtipo.k03_tipo      = arretipo.k03_tipo       \n";
     $sSql.= "                         inner join tabrec     on tabrec.k02_codigo     = arrecad.k00_receit      \n";
     $sSql.= "                         inner join arrenumcgm on arrenumcgm.k00_numpre = arrecad.k00_numpre      \n";
+    $sSql .= "                         and arrenumcgm.k00_numcgm = arrecad.k00_numcgm                          \n";
     $sSql.= "                         left  join arrematric on arrematric.k00_numpre = arrecad.k00_numpre      \n";
     $sSql.= "                         left  join arreinscr  on arreinscr.k00_numpre = arrecad.k00_numpre       \n";
     $sSql.= "                   where arreinstit.k00_instit = {$iInstituicao}                                  \n";
@@ -1162,5 +1181,6 @@ class cl_diverimporta {
     $sSql.= "       k02_codigo,                                                                                \n";
     $sSql.= "       k02_descr                                                                                  \n";
     return $sSql;
+
   }
 }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -47,7 +47,7 @@ $ed102_i_escola = db_getsession("DB_coddepto");
 $ed18_c_nome    = db_getsession("DB_nomedepto");
 
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   $oDaoAtestVaga->ed102_i_usuario = db_getsession("DB_id_usuario");
   $oDaoAtestVaga->incluir($ed102_i_codigo);
@@ -64,13 +64,14 @@ if (isset($incluir)) {
   <script type="text/javascript" src="scripts/strings.js"></script>
   <link href="estilos.css" rel="stylesheet" type="text/css">
  </head>
+
  <body bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
-   
-   <?include(modification("forms/db_frmatestvaga.php"));?>
-   
-   <?
-     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
+   <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+
+   <?php include(modification("forms/db_frmatestvaga.php"));?>
+
+   <?php
+     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
              db_getsession("DB_anousu"), db_getsession("DB_instit")
             );
    ?>
@@ -79,32 +80,32 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "ed102_i_aluno", true, 1, "ed102_i_aluno", true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
-	
+
   if ($oDaoAtestVaga->erro_status == "0") {
-  	
+
     $oDaoAtestVaga->erro(true, false);
     $db_botao = true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
     echo "<script> document.form1.db_opcao.style.visibility='visible';</script>  ";
-    
+
     if ($oDaoAtestVaga->erro_campo != "") {
-    	
+
       echo "<script> document.form1.".$oDaoAtestVaga->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$oDaoAtestVaga->erro_campo.".focus();</script>";
     }
   } else {
-  	
-    $oDaoAtestVaga->erro(true, false);   
+
+    $oDaoAtestVaga->erro(true, false);
     ?>
     <script>
-     jan = window.open('edu2_atestvaga002.php?alunos=<?=$oDaoAtestVaga->ed102_i_codigo?>', '', 
+     jan = window.open('edu2_atestvaga002.php?alunos=<?=$oDaoAtestVaga->ed102_i_codigo?>', '',
     	               'width='+(screen.availWidth-5)+', height='+(screen.availHeight-40)+', scrollbars=1, location=0 '
     	              );
      jan.moveTo(0, 0);
     </script>
-    <?
+    <?php
     db_redireciona("edu1_atestvaga001.php");
   }
 }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
@@ -57,13 +57,13 @@ class cl_corplacaixa {
                  k82_seqpla = int4 = PLanilha
                  ";
    //funcao construtor da classe
-   function cl_corplacaixa() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("corplacaixa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_corplacaixa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k82_id = ($this->k82_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k82_id"]:$this->k82_id);
        if($this->k82_data == ""){
@@ -92,7 +92,7 @@ class cl_corplacaixa {
      }
    }
    // funcao para inclusao
-   function incluir ($k82_id,$k82_data,$k82_autent){
+   public function incluir ($k82_id,$k82_data,$k82_autent){
       $this->atualizacampos();
      if($this->k82_seqpla == null ){
        $this->erro_sql = " Campo PLanilha nao Informado.";
@@ -182,7 +182,7 @@ class cl_corplacaixa {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k82_id=null,$k82_data=null,$k82_autent=null) {
+   public function alterar ($k82_id=null,$k82_data=null,$k82_autent=null) {
       $this->atualizacampos();
      $sql = " update corplacaixa set ";
      $virgula = "";
@@ -314,7 +314,7 @@ class cl_corplacaixa {
      }
    }
    // funcao para exclusao
-   function excluir ($k82_id=null,$k82_data=null,$k82_autent=null,$dbwhere=null) {
+   public function excluir ($k82_id=null,$k82_data=null,$k82_autent=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k82_id,$k82_data,$k82_autent));
      }else{
@@ -392,7 +392,7 @@ class cl_corplacaixa {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -414,10 +414,10 @@ class cl_corplacaixa {
       }
      return $result;
    }
-   function sql_query ( $k82_id=null,$k82_data=null,$k82_autent=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k82_id=null,$k82_data=null,$k82_autent=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_corplacaixa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,10 +469,10 @@ class cl_corplacaixa {
      }
      return $sql;
   }
-   function sql_query_file ( $k82_id=null,$k82_data=null,$k82_autent=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k82_id=null,$k82_data=null,$k82_autent=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_corplacaixa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,10 +522,10 @@ class cl_corplacaixa {
   }
 
 
-  function sql_query_planilha_receita ( $k82_id=null,$k82_data=null,$k82_autent=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_planilha_receita ( $k82_id=null,$k82_data=null,$k82_autent=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -566,7 +566,7 @@ class cl_corplacaixa {
   $sql .= $sql2;
       if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
          $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
     $sql .= $virgula.$campos_sql[$i];

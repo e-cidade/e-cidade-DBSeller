@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ function abre() {
           <table border='0' align='left'>
             <tr>
               <td nowrap="nowrap">
-                <?=db_ancora('Processo:',"js_pesquisaprotocolo(true, 'p58_codproc');",1); ?>
+                <?php echo db_ancora('Processo:',"js_pesquisaprotocolo(true, 'p58_codproc');",1); ?>
               </td>
               <td>
                 <input type="text" size="20" id='p58_codproc' name="p58_codproc" onChange="js_pesquisaprotocolo(false, 'p58_codproc');">
@@ -93,7 +93,7 @@ function abre() {
                <!--  <input type="checkbox" name="entre" value="1"> -->
               </td>
               <td nowrap="nowrap">
-                <?=db_ancora("Até:","js_pesquisaprotocolo(true, 'p58_codprocfin');",1);?>
+                <?php echo db_ancora("Até:","js_pesquisaprotocolo(true, 'p58_codprocfin');",1);?>
               </td>
               <td>
                 <input type="text" size="20" id='p58_codprocfin' name="p58_codprocfin" onChange="js_pesquisaprotocolo(false, 'p58_codprocfin');">
@@ -109,7 +109,7 @@ function abre() {
 </form>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

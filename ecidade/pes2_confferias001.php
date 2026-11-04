@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -96,7 +96,7 @@ function js_emite(){
 
   <table  align="center">
     <form name="form1" method="post" action="" onsubmit="return js_verifica();">
-  <?
+  <?php
   if(!isset($tipo)){
     $tipo = "l";
   }
@@ -144,7 +144,7 @@ function js_emite(){
 	  <strong>Data de Referência :&nbsp;&nbsp;</strong>
 	</td>
 	<td align="left">
-	<?
+	<?php
 	$DBtxt22_ano = db_getsession("DB_anousu");
 	$DBtxt22_mes = date("m", db_getsession("DB_datausu"));
 	$DBtxt22_dia = date("d", db_getsession("DB_datausu"));
@@ -157,7 +157,7 @@ function js_emite(){
         <strong>Dias :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $dias = 730;
            db_input('dias',4,$dias,true,'text',2,'')
           ?>
@@ -167,7 +167,7 @@ function js_emite(){
         <td align="right" nowrap  ><strong>Imprime os Afastados :</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $xvy = array("n"=>"Não","s"=>"Sim");
           db_select('afastados',$xvy,true,4,"");
           ?>
@@ -185,7 +185,7 @@ function js_emite(){
 
   </form>
   </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

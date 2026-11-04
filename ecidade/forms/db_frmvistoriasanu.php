@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("nome");
        <?=@$Ly28_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('y28_codigo',8,$Iy28_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty28_codvist?>">
-       <?
+       <?php
        db_ancora(@$Ly28_codvist,"js_pesquisay28_codvist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y28_codvist',10,$Iy28_codvist,true,'text',$db_opcao," onchange='js_pesquisay28_codvist(false);'")
 ?>
-       <?
+       <?php
 //db_input('y70_id_usuario',10,$Iy70_id_usuario,true,'text',3,'')
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('y28_codvist',10,$Iy28_codvist,true,'text',$db_opcao," onchange='js_pes
        <?=@$Ly28_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y28_data',@$y28_data_dia,@$y28_data_mes,@$y28_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,22 +75,22 @@ db_inputdata('y28_data',@$y28_data_dia,@$y28_data_mes,@$y28_data_ano,true,'text'
        <?=@$Ly28_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('y28_hora',5,$Iy28_hora,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty28_usuario?>">
-       <?
+       <?php
        db_ancora(@$Ly28_usuario,"js_pesquisay28_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y28_usuario',10,$Iy28_usuario,true,'text',$db_opcao," onchange='js_pesquisay28_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -101,7 +101,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Ly28_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y28_motivo',0,50,$Iy28_motivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_vistoriasanu.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

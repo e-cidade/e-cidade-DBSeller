@@ -423,7 +423,7 @@ if (isset($incluir)) {
           sum(proven) as proven,
           sum(descon) as descon,
           rh44_codban,
-          lpad(trim(to_char(to_number(rh44_agencia,'9999'),'9999'))::varchar(4)||rh44_dvagencia,5,'0') as rh44_agencia,
+          lpad(trim(to_char(to_number(rh44_agencia,'9999'),'9999'))::varchar(4)||rh44_dvagencia,4+length(trim(rh44_dvagencia)),'0') as rh44_agencia,
           rh44_conta||rh44_dvconta as rh44_conta,
           rh02_fpagto,
           r70_estrut
@@ -442,6 +442,7 @@ if (isset($incluir)) {
               rh02_tbprev,
               rh44_codban,
               trim(to_char(to_number(rh44_agencia,'9999'),'9999'))::varchar(4)||rh44_dvagencia,
+              rh44_dvagencia,
               rh44_conta||rh44_dvconta,
               rh02_fpagto,
               rh05_seqpes

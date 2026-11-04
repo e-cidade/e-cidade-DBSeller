@@ -58,13 +58,13 @@ $anodestino   = $anoorigem+1;
 					          <b> Ano origem : </b>
 					        </td>
 					        <td>
-					          <? db_input("anoorigem", 10, "", true, "text", 3)?>
+					          <?php db_input("anoorigem", 10, "", true, "text", 3)?>
 					        </td>
 							    <td>
 							      <b> Ano destino : </b>
 							    </td>
 							    <td>
-							      <? db_input("anodestino", 10, "", true, "text",1, "onkeypress=\"return js_mask(event, '0-9');\"")?>
+							      <?php db_input("anodestino", 10, "", true, "text",1, "onkeypress=\"return js_mask(event, '0-9');\"")?>
 							    </td>
 					      </tr>
 					      <tr>
@@ -72,7 +72,7 @@ $anodestino   = $anoorigem+1;
 							      <b> Duplica permissoes do perfil para usuário :</b>
 							    </td>
 							    <td colspan="3">
-							      <?
+							      <?php
 								      $aDuplicaPermissao = array("N" => "Não", "S" => "Sim");
 						          db_select("duplicaperfil", $aDuplicaPermissao, true, 1);
 							      ?>
@@ -81,7 +81,7 @@ $anodestino   = $anoorigem+1;
 					      <tr>
 					        <td><b>Ação: </b></td>
 					        <td colspan="3">
-					          <?
+					          <?php
 					            $aAcoes = array("0" => "Padrão", "1" => "Substituir", "2" => "Acrescentar");
 					            db_select('acao', $aAcoes, true, 1);
 					          ?>
@@ -95,7 +95,7 @@ $anodestino   = $anoorigem+1;
 						     <table>
 						     	<tr>
 							      <td colspan="4">
-										<?
+										<?php
 											$sSqlUsuario  = "   select distinct db_usuarios.id_usuario,                                             ";
 											$sSqlUsuario .= "          db_usuarios.nome,                                                            ";
 											$sSqlUsuario .= "          db_usuarios.id_usuario || ' - ' ||                                           ";

@@ -314,7 +314,7 @@ function js_saveLote() {
    return false;
 
   }
-  <? if(isset($fa01_i_codigo)){?>
+  <?php if(isset($fa01_i_codigo)){?>
 
        parent.$('lote_edit').value     = sNumero;
        parent.$('lote').value          = sLotes;
@@ -323,14 +323,14 @@ function js_saveLote() {
        }
        parent.$('validade_edit').value = sValidade;
 
-  <? }
+  <?php }
      if(isset($iGrid)){?>
 
        parent.js_atualizaCampo(<?=$iGrid?>,sNumero,13);
        parent.js_atualizaCampo(<?=$iGrid?>,sLotes,10);
        parent.js_atualizaCampo(<?=$iGrid?>,sValidade,9);
 
-  <? } ?>
+  <?php } ?>
   js_divCarregando("Aguarde, Salvando Lote","msgBox");
   strJson = '{"exec":"saveLote","params":[{"iCodMater":'+iCodMater+',"aItens":['+sJsonItem+']}]}';
   var url     = 'mat4_requisicaoRPC.php';
@@ -379,7 +379,7 @@ function js_saidaSave(oAjax) {
 
       nQtdeTotal += new Number(aItens[i].value);
     }
-    <? if (isset($oGet->updateField) && $oGet->updateField != '') {
+    <?php if (isset($oGet->updateField) && $oGet->updateField != '') {
 
         echo "parent.$('{$oGet->updateField}').value = nQtdeTotal;\n";
         if(isset($ilancaDireto)){
@@ -443,7 +443,7 @@ function js_verificaQuantidade(nValor, nMaximo,sMsg) {
   return true;
 }
 
-<?
+<?php
 echo "js_consultaItens({$iCodMater},{$oGet->iCodDepto},{$oGet->nValor});\n";
 ?>
 </script>

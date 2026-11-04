@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,22 +45,22 @@ $clrotulo->label("db74_descricao");
        <?=@$Ldb86_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db86_sequencial',10,$Idb86_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb86_cadenderrua?>">
-       <?
+       <?php
        db_ancora(@$Ldb86_cadenderrua,"js_pesquisadb86_cadenderrua(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db86_cadenderrua',10,$Idb86_cadenderrua,true,'text',$db_opcao," onchange='js_pesquisadb86_cadenderrua(false);'")
 ?>
-       <?
+       <?php
 db_input('db74_descricao',40,$Idb74_descricao,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('db74_descricao',40,$Idb74_descricao,true,'text',3,'')
        <?=@$Ldb86_cep?>
     </td>
     <td> 
-<?
+<?php
 db_input('db86_cep',10,$Idb86_cep,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -115,7 +115,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadenderruacep.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

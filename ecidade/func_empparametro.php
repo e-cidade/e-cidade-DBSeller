@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clempparametro->rotulo->label("e30_codemp");
               <?=$Le30_codemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e30_codemp",15,$Ie30_codemp,true,"text",4,"","chave_e30_codemp");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clempparametro->rotulo->label("e30_codemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empparametro.php")==true){
@@ -108,12 +108,12 @@ $clempparametro->rotulo->label("e30_codemp");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

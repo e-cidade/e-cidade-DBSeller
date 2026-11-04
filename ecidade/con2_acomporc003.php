@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -200,7 +200,7 @@ function js_emite(){
       </tr>
       <tr>
         <td align="center" colspan="3">
-					<?
+					<?php
 						db_selinstit('',300,100);
 					?>
 				</td>
@@ -214,7 +214,7 @@ function js_emite(){
 									<b>Posição Até :</b> 
 								</td>
 								<td>
-									<?
+									<?php
 										$iDia = date("d",db_getsession("DB_datausu"));
                     $iMes = date("m",db_getsession("DB_datausu"));
                     $iAno = date("Y",db_getsession("DB_datausu"));
@@ -224,7 +224,7 @@ function js_emite(){
 									
 									<b>Despesa :</b> 
 									
-									<?
+									<?php
 										$aTipoDespesa = array("1"=>"Empenhada","2"=>"Liquidada","3"=>"Paga");									
 										db_select('iTipoDespesa',$aTipoDespesa,true,1,"");				
 									?>	

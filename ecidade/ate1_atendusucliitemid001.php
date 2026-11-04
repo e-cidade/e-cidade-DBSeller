@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-      <?
+      <?php
       include(modification("forms/db_frmatendusucliitemid.php"));
       ?>
       </center>
@@ -75,7 +75,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   $clatendusucliitemid->erro(true,false);
   if($clatendusucliitemid->erro_status=="0"){

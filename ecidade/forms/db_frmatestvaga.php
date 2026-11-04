@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -43,9 +43,9 @@ $clrotulo->label("nome");
     <legend>Atestado de Vaga</legend>
     <table class="form-container">
       <tr>
-        <td nowrap title="<?=@$Ted102_i_codigo?>">
-          <?=@$Led102_i_codigo?>
-          <?db_input( 'ed102_i_codigo', 15, $Ied102_i_codigo, true, 'text', 3);?>
+        <td nowrap title="<?php echo @$Ted102_i_codigo?>">
+          <?php echo @$Led102_i_codigo?>
+          <?php db_input('ed102_i_codigo', 15, $Ied102_i_codigo, true, 'text', 3);?>
         </td>
       </tr>
       <tr>
@@ -54,14 +54,14 @@ $clrotulo->label("nome");
            <legend>Situação Atual</legend>
             <table>
               <tr>
-                <td nowrap title="<?=@$Ted102_i_aluno?>">
-                  <?db_ancora( @$Led102_i_aluno, "js_pesquisaed102_i_aluno(true);", $db_opcao );?>
+                <td nowrap title="<?php echo @$Ted102_i_aluno?>">
+                  <?php db_ancora(@$Led102_i_aluno, "js_pesquisaed102_i_aluno(true);", $db_opcao);?>
                 </td>
                 <td>
                   <?php
-                    db_input( 'ed102_i_aluno', 15, $Ied102_i_aluno, true, 'text', 3 );
-                    db_input( 'ed47_v_nome',   40, @$Ied47_v_nome,  true, 'text', 3 );
-                  ?>
+                    db_input('ed102_i_aluno', 15, $Ied102_i_aluno, true, 'text', 3);
+                    db_input('ed47_v_nome',   40, @$Ied47_v_nome,  true, 'text', 3);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -70,9 +70,9 @@ $clrotulo->label("nome");
                 </td>
                 <td>
                   <?php
-                    db_input( 'codigoescola', 15, @$codigoescola, true, 'text', 3 );
-                    db_input( 'nomeescola',   40, @$nomeescola,   true, 'text', 3 );
-                  ?>
+                    db_input('codigoescola', 15, @$codigoescola, true, 'text', 3);
+                    db_input('nomeescola',   40, @$nomeescola,   true, 'text', 3);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -81,9 +81,9 @@ $clrotulo->label("nome");
                 </td>
                 <td>
                   <?php
-                    db_input( 'codigocurso', 15, @$codigocurso, true, 'text', 3 );
-                    db_input( 'nomecurso',   40, @$nomecurso,   true, 'text', 3 );
-                  ?>
+                    db_input('codigocurso', 15, @$codigocurso, true, 'text', 3);
+                    db_input('nomecurso',   40, @$nomecurso,   true, 'text', 3);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -91,7 +91,7 @@ $clrotulo->label("nome");
                   <b>Situação:</b>
                 </td>
                 <td>
-                  <?db_input( 'situacao', 20, @$situacao, true, 'text', 3 );?>
+                  <?php db_input('situacao', 20, @$situacao, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -99,7 +99,7 @@ $clrotulo->label("nome");
                   <b>Data Matrícula:</b>
                 </td>
                 <td>
-                  <?db_input( 'datamatricula', 10, @$situacao, true, 'text', 3 );?>
+                  <?php db_input('datamatricula', 10, @$situacao, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -108,9 +108,9 @@ $clrotulo->label("nome");
                 </td>
                 <td>
                   <?php
-                    db_input( 'codigoserie', 15, @$codigoserie, true, 'text', 3 );
-                    db_input( 'nomeserie',   40, @$nomeserie,   true, 'text', 3 );
-                  ?>
+                    db_input('codigoserie', 15, @$codigoserie, true, 'text', 3);
+                    db_input('nomeserie',   40, @$nomeserie,   true, 'text', 3);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -118,7 +118,7 @@ $clrotulo->label("nome");
                   <b>Ano:</b>
                 </td>
                 <td>
-                  <?db_input( 'anocal', 15, @$anocal, true, 'text', 3 );?>
+                  <?php db_input('anocal', 15, @$anocal, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -139,24 +139,24 @@ $clrotulo->label("nome");
             <legend>Dados do destino</legend>
               <table>
                 <tr>
-                  <td nowrap title="<?=@$Ted102_i_escola?>">
-                    <?db_ancora( @$Led102_i_escola, "", 3 );?>
+                  <td nowrap title="<?php echo @$Ted102_i_escola?>">
+                    <?php db_ancora(@$Led102_i_escola, "", 3);?>
                   </td>
                   <td>
                     <?php
-                      db_input( 'ed102_i_escola', 15, $Ied102_i_escola, true, 'text', 3 );
-                      db_input( 'ed18_c_nome',    50, @$Ied18_c_nome,   true, 'text', 3 );
+                      db_input('ed102_i_escola', 15, $Ied102_i_escola, true, 'text', 3);
+                      db_input('ed18_c_nome',    50, @$Ied18_c_nome,   true, 'text', 3);
                     ?>
                   </td>
                 </tr>
                 <tr>
-                  <td nowrap title="<?=@$Ted102_i_base?>">
-                    <?db_ancora( @$Led102_i_base, "js_pesquisaed102_i_base(true);", $db_opcao );?>
+                  <td nowrap title="<?php echo @$Ted102_i_base?>">
+                    <?php db_ancora(@$Led102_i_base, "js_pesquisaed102_i_base(true);", $db_opcao);?>
                   </td>
                   <td>
                     <?php
-                      db_input( 'ed102_i_base', 15, $Ied102_i_base,  true, 'text', $db_opcao, " onchange='js_pesquisaed102_i_base(false);'" );
-                      db_input( 'ed31_c_descr', 50, @$Ied31_c_descr, true, 'text', 3 );
+                      db_input('ed102_i_base', 15, $Ied102_i_base,  true, 'text', $db_opcao, " onchange='js_pesquisaed102_i_base(false);'");
+                      db_input('ed31_c_descr', 50, @$Ied31_c_descr, true, 'text', 3);
                     ?>
                   </td>
                 </tr>
@@ -164,84 +164,84 @@ $clrotulo->label("nome");
                   <td nowrap title="Curso">
                     <b>Curso:</b>
                   </td>
-                  <?
-                    if ( $db_opcao == 3 ) {
-                  ?>
+                  <?php
+                    if ($db_opcao == 3 ) {
+                        ?>
                     <td>
-                      <?php
-                        db_input( 'ed29_i_codigo', 15, @$Ied29_i_codigo, true, 'text', 3 );
-                        db_input( 'ed29_c_descr',  50, @$Ied29_c_descr,  true, 'text', 3 );
-                      ?>
+                        <?php
+                        db_input('ed29_i_codigo', 15, @$Ied29_i_codigo, true, 'text', 3);
+                        db_input('ed29_c_descr',  50, @$Ied29_c_descr,  true, 'text', 3);
+                        ?>
                     </td>
-                  <?
+                        <?php
                     } else {
-                  ?>
+                        ?>
                     <td>
-                      <?php
-                        db_input( 'codcursodest',  15, @$Icodcursodest,  true, 'text', 3 );
-                        db_input( 'nomecursodest', 50, @$Inomecursodest, true, 'text', 3 );
-                      ?>
+                        <?php
+                        db_input('codcursodest',  15, @$Icodcursodest,  true, 'text', 3);
+                        db_input('nomecursodest', 50, @$Inomecursodest, true, 'text', 3);
+                        ?>
                     </td>
-                  <?
+                        <?php
                     }
-                  ?>
+                    ?>
                 </tr>
                 <tr>
-                  <td nowrap title="<?=@$Ted34_i_serie?>">
-                    <?db_ancora( "<b>Etapa:</b>", "js_pesquisaed34_i_serie(true);", $db_opcao );?>
+                  <td nowrap title="<?php echo @$Ted34_i_serie?>">
+                    <?php db_ancora("<b>Etapa:</b>", "js_pesquisaed34_i_serie(true);", $db_opcao);?>
                   </td>
                   <td>
                     <?php
-                      db_input( 'ed102_i_serie', 15, @$Ied102_i_serie, true, 'text', 3, " onchange='js_pesquisaed102_i_serie(false);'" );
-                      db_input( 'ed11_c_descr',  50, @$Ied11_c_descr,  true, 'text', 3 );
+                      db_input('ed102_i_serie', 15, @$Ied102_i_serie, true, 'text', 3, " onchange='js_pesquisaed102_i_serie(false);'");
+                      db_input('ed11_c_descr',  50, @$Ied11_c_descr,  true, 'text', 3);
                     ?>
                   </td>
                 </tr>
                 <tr>
-                  <td nowrap title="<?=@$Ted102_i_turno?>">
-                    <?db_ancora( @$Led102_i_turno, "js_pesquisaed102_i_turno(true);", $db_opcao );?>
+                  <td nowrap title="<?php echo @$Ted102_i_turno?>">
+                    <?php db_ancora(@$Led102_i_turno, "js_pesquisaed102_i_turno(true);", $db_opcao);?>
                   </td>
                   <td>
                     <?php
-                      db_input( 'ed102_i_turno', 15, $Ied102_i_turno, true, 'text', $db_opcao, " onchange='js_pesquisaed102_i_turno(false);'" );
-                      db_input( 'ed15_c_nome',   50, @$Ied15_c_nome,  true, 'text', 3 );
+                      db_input('ed102_i_turno', 15, $Ied102_i_turno, true, 'text', $db_opcao, " onchange='js_pesquisaed102_i_turno(false);'");
+                      db_input('ed15_c_nome',   50, @$Ied15_c_nome,  true, 'text', 3);
                     ?>
                   </td>
                 </tr>
                 <tr>
-                  <td nowrap title="<?=@$Ted102_i_calendario?>">
-                    <?db_ancora( @$Led102_i_calendario, "js_pesquisaed102_i_calendario(true);", $db_opcao );?>
+                  <td nowrap title="<?php echo @$Ted102_i_calendario?>">
+                    <?php db_ancora(@$Led102_i_calendario, "js_pesquisaed102_i_calendario(true);", $db_opcao);?>
                   </td>
                   <td>
                     <?php
-                      db_input( 'ed102_i_calendario', 15, $Ied102_i_calendario, true, 'text', 3 );
-                      db_input( 'ed52_c_descr',       50, @$Ied52_c_descr,      true, 'text', 3 );
+                      db_input('ed102_i_calendario', 15, $Ied102_i_calendario, true, 'text', 3);
+                      db_input('ed52_c_descr',       50, @$Ied52_c_descr,      true, 'text', 3);
                     ?>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <?=@$Led52_d_inicio?>
+                    <?php echo @$Led52_d_inicio?>
                   </td>
                   <td>
-                    <?db_input( 'ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'text', 3 );?>
-                    <?=@$Led52_d_fim?>
-                    <?db_input( 'ed52_d_fim', 10, @$Ied52_d_fim, true, 'text', 3 );?>
+                    <?php db_input('ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'text', 3);?>
+                    <?php echo @$Led52_d_fim?>
+                    <?php db_input('ed52_d_fim', 10, @$Ied52_d_fim, true, 'text', 3);?>
                   </td>
                 </tr>
                 <tr>
-                  <td nowrap title="<?=@$Ted102_d_data?>">
-                    <?=@$Led102_d_data?>
+                  <td nowrap title="<?php echo @$Ted102_d_data?>">
+                    <?php echo @$Led102_d_data?>
                   </td>
                   <td>
-                    <?db_inputdata( 'ed102_d_data', @$ed102_d_data_dia, @$ed102_d_data_mes, @$ed102_d_data_ano, true, 'text', $db_opcao );?>
+                    <?php db_inputdata('ed102_d_data', @$ed102_d_data_dia, @$ed102_d_data_mes, @$ed102_d_data_ano, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
-                  <td nowrap title="<?=@$Ted102_t_obs?>" colspan="2">
+                  <td nowrap title="<?php echo @$Ted102_t_obs?>" colspan="2">
                     <fieldset class="separator">
-                      <legend><?=@$Led102_t_obs?></legend>
-                      <?db_textarea( 'ed102_t_obs', 4, 54, $Ied102_t_obs, true, 'text', $db_opcao );?>
+                      <legend><?php echo @$Led102_t_obs?></legend>
+                      <?php db_textarea('ed102_t_obs', 4, 54, $Ied102_t_obs, true, 'text', $db_opcao);?>
                     </fieldset>
                   </td>
                 </tr>
@@ -251,13 +251,13 @@ $clrotulo->label("nome");
       </tr>
     </table>
   </fieldset>
-  <input name="<?=( $db_opcao == 1 ? "incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir" ) )?>" 
-         type="submit" 
-         id="db_opcao" 
-         value="<?=( $db_opcao == 1 ? "Incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir" ) )?>" 
-         <?=( $db_botao == false ? "disabled" : "" )?> 
-         <?=( $db_opcao == 1 ? "onclick='return js_submit();'" : "" )?>  
-         <?=isset( $incluir ) || isset( $excluir ) ? "style='visibility:hidden;'" : ""?>>
+  <input name="<?php echo ( $db_opcao == 1 ? "incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir" ) )?>"
+         type="submit"
+         id="db_opcao"
+         value="<?php echo ( $db_opcao == 1 ? "Incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir" ) )?>"
+         <?php echo ( $db_botao == false ? "disabled" : "" )?>
+         <?php echo ( $db_opcao == 1 ? "onclick='return js_submit();'" : "" )?>
+         <?php echo isset($incluir) || isset($excluir) ? "style='visibility:hidden;'" : ""?>>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 <script>
@@ -272,7 +272,7 @@ var oLabelProgressao           = document.createElement( "label" );
 $('mensagemProgressao').appendChild( oLabelProgressao );
 
 function js_pesquisaed34_i_serie( mostra ) {
-  
+
   if ( document.form1.ed102_i_base.value == "" ) {
     alert( _M( sCaminhoMensagens + 'informe_base' ) );
   } else {
@@ -285,7 +285,7 @@ function js_pesquisaed34_i_serie( mostra ) {
     if ( $('etapasProgressao').value != "" ) {
       sSerie += ", " + $('etapasProgressao').value;
     }
-    
+
     js_OpenJanelaIframe(
                          'CurrentWindow.corpo',
                          'db_iframe_serieatest',
@@ -301,16 +301,16 @@ function js_pesquisaed34_i_serie( mostra ) {
 }
 
 function js_mostraserie1( chave1, chave2 ) {
-  
+
   document.form1.ed102_i_serie.value = chave1;
   document.form1.ed11_c_descr.value  = chave2;
   db_iframe_serieatest.hide();
 }
 
 function js_pesquisaed102_i_base( mostra ) {
-  
+
   if ( document.form1.ed102_i_aluno.value == "" ) {
-    
+
     alert( _M( sCaminhoMensagens + 'informe_aluno' ) );
     js_OpenJanelaIframe(
                          'CurrentWindow.corpo',
@@ -322,7 +322,7 @@ function js_pesquisaed102_i_base( mostra ) {
                          true
                        );
   } else {
-    
+
     if ( mostra == true ) {
 
       js_OpenJanelaIframe(
@@ -335,7 +335,7 @@ function js_pesquisaed102_i_base( mostra ) {
                            true
                          );
     } else {
-      
+
       if ( document.form1.ed102_i_base.value != '' ) {
 
         js_OpenJanelaIframe(
@@ -356,13 +356,13 @@ function js_pesquisaed102_i_base( mostra ) {
 }
 
 function js_mostrabase( chave1, chave2, chave3, erro ) {
-  
+
   document.form1.ed31_c_descr.value  = chave1;
   document.form1.codcursodest.value  = chave2;
   document.form1.nomecursodest.value = chave3;
-  
+
   if ( erro == true ) {
-    
+
     document.form1.ed102_i_base.focus();
     document.form1.ed102_i_base.value  = '';
     document.form1.ed102_i_serie.value = '';
@@ -373,7 +373,7 @@ function js_mostrabase( chave1, chave2, chave3, erro ) {
 }
 
 function js_mostrabase1( chave1, chave2, chave3, chave4 ) {
-  
+
   document.form1.ed102_i_base.value  = chave1;
   document.form1.ed31_c_descr.value  = chave2;
   document.form1.codcursodest.value  = chave3;
@@ -384,9 +384,9 @@ function js_mostrabase1( chave1, chave2, chave3, chave4 ) {
 }
 
 function js_pesquisaed102_i_calendario( mostra ) {
-  
+
   if ( document.form1.ed102_i_aluno.value == "" ) {
-    
+
     alert( _M( sCaminhoMensagens + 'informe_aluno_calendario' ) );
     js_OpenJanelaIframe(
                          'CurrentWindow.corpo',
@@ -398,7 +398,7 @@ function js_pesquisaed102_i_calendario( mostra ) {
                          true
                        );
   } else {
-    
+
     if ( mostra == true ) {
 
       js_OpenJanelaIframe(
@@ -415,29 +415,30 @@ function js_pesquisaed102_i_calendario( mostra ) {
 }
 
 function js_mostracalendario1( chave1, chave2, chave3, chave4, chave5 ) {
-  
+
   situacaoaluno = document.form1.situacao.value.replace(/^\s+|\s+$/g,'');
-  
-  if (    Number( document.form1.anocal.value ) != Number( chave3 ) 
-       && situacaoaluno != "APROVADO" 
-       && situacaoaluno != "APROVADO PARCIAL" 
-       && situacaoaluno != "REPETENTE" 
-       && situacaoaluno != "EVADIDO" 
+
+  if (    Number( document.form1.anocal.value ) != Number( chave3 )
+       && situacaoaluno != "APROVADO"
+       && situacaoaluno != "APROVADO PARCIAL"
+       && situacaoaluno != "REPETENTE"
+       && situacaoaluno != "EVADIDO"
+       && situacaoaluno != "ABANDONO ESCOLAR"
        && situacaoaluno != "CANCELADO" ) {
 
     var oMensagem             = new Object();
         oMensagem.iAno        = document.form1.anocal.value;
         oMensagem.iCalendario = chave3;
-        
+
     alert( _M( sCaminhoMensagens + 'aluno_pertence_calendario_diferente', oMensagem ) );
-    
+
     document.form1.ed52_c_descr.value       = '';
     document.form1.ed52_d_inicio.value      = '';
     document.form1.ed52_d_fim.value         = '';
     document.form1.ed102_i_calendario.value = '';
     document.form1.ed102_i_calendario.focus();
   } else {
-    
+
     document.form1.ed102_i_calendario.value = chave1;
     document.form1.ed52_c_descr.value       = chave2;
     document.form1.ed52_d_inicio.value      = chave4.substr(8,2) + "/" + chave4.substr(5,2) + "/" + chave4.substr(0,4);
@@ -447,9 +448,9 @@ function js_mostracalendario1( chave1, chave2, chave3, chave4, chave5 ) {
 }
 
 function js_pesquisaed102_i_turno( mostra ) {
-  
+
   if ( document.form1.ed102_i_aluno.value == "" ) {
-    
+
     alert( _M( sCaminhoMensagens + 'informe_aluno_turno' ) );
     js_OpenJanelaIframe(
                          'CurrentWindow.corpo',
@@ -461,7 +462,7 @@ function js_pesquisaed102_i_turno( mostra ) {
                          true
                        );
   } else if( document.form1.ed102_i_base.value == "" ) {
-    
+
     alert( _M( sCaminhoMensagens + 'informe_base_curricular_turno' ) );
     js_OpenJanelaIframe(
                          'CurrentWindow.corpo',
@@ -473,9 +474,9 @@ function js_pesquisaed102_i_turno( mostra ) {
                          true
                        );
   } else {
-    
+
     if ( mostra == true ) {
-      
+
       js_OpenJanelaIframe(
                            'CurrentWindow.corpo',
                            'db_iframe_turno',
@@ -485,9 +486,9 @@ function js_pesquisaed102_i_turno( mostra ) {
                            true
                          );
     } else {
-      
+
       if ( document.form1.ed102_i_turno.value != '' ) {
-        
+
         js_OpenJanelaIframe(
                              'CurrentWindow.corpo',
                              'db_iframe_turno',
@@ -505,25 +506,25 @@ function js_pesquisaed102_i_turno( mostra ) {
 }
 
 function js_mostraturno( chave, erro ) {
-  
+
   document.form1.ed15_c_nome.value = chave;
-  
+
   if ( erro == true ) {
-    
+
     document.form1.ed102_i_turno.focus();
     document.form1.ed102_i_turno.value = '';
   }
 }
 
 function js_mostraturno1( chave1, chave2 ) {
-  
+
   document.form1.ed102_i_turno.value = chave1;
   document.form1.ed15_c_nome.value   = chave2;
   db_iframe_turno.hide();
 }
 
 function js_pesquisaed102_i_aluno( mostra ) {
-  
+
   if ( mostra == true ) {
 
     js_OpenJanelaIframe(
@@ -540,7 +541,7 @@ function js_pesquisaed102_i_aluno( mostra ) {
 }
 
 function js_mostraaluno1( chave1, chave2, chave3, chave4, chave5, chave6, chave7, chave8, chave9, chave10, chave11 ) {
-  
+
   document.form1.ed102_i_aluno.value      = chave1;
   document.form1.ed47_v_nome.value        = chave2;
   document.form1.codigoescola.value       = chave3;
@@ -580,37 +581,37 @@ function js_pesquisa() {
 }
 
 function js_preenchepesquisa( chave ) {
-  
+
   db_iframe_atestvaga.hide();
-  <?
-  if ( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
-  }
-  ?>
+  <?php
+    if ($db_opcao != 1 ) {
+        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    }
+    ?>
 }
 
 function js_submit(){
-  
+
   if ( document.form1.ed102_d_data.value == "" ) {
-    
+
     alert( _M( sCaminhoMensagens + 'informe_data_atestado' ) );
-    
+
     document.form1.ed102_d_data.focus();
     document.form1.ed102_d_data.style.backgroundColor = '#99A9AE';
     return false;
   } else {
-    
+
     datamat   = document.form1.datamatricula.value;
     dataatest = document.form1.ed102_d_data_ano.value + "-" + document.form1.ed102_d_data_mes.value + "-"+document.form1.ed102_d_data_dia.value;
-    
+
     if ( document.form1.ed52_d_inicio.value != "" ) {
-      
+
       dataini = document.form1.ed52_d_inicio.value.substr(6,4) + "-" + document.form1.ed52_d_inicio.value.substr(3,2) + "-"+document.form1.ed52_d_inicio.value.substr(0,2);
       datafim = document.form1.ed52_d_fim.value.substr(6,4) + "-" + document.form1.ed52_d_fim.value.substr(3,2) + "-"+document.form1.ed52_d_fim.value.substr(0,2);
       check   = js_validata(dataatest,dataini,datafim);
-      
+
       if ( check == false ) {
-        
+
         data_ini = dataini.substr(8,2) + "/" + dataini.substr(5,2) + "/" + dataini.substr(0,4);
         data_fim = datafim.substr(8,2) + "/" + datafim.substr(5,2) + "/" + datafim.substr(0,4);
 
@@ -618,29 +619,29 @@ function js_submit(){
             oMensagem.iDataInicial = data_ini;
             oMensagem.iDataFinal   = data_fim;
         alert( _M( sCaminhoMensagens + 'data_atestado_fora_periodo', oMensagem ) );
-        
+
         document.form1.ed102_d_data.focus();
         document.form1.ed102_d_data.style.backgroundColor = '#99A9AE';
         return false;
       }
     }
-    
+
     if ( datamat != "" ) {
-      
+
       datamat   = datamat.substr(6,4) + '' + datamat.substr(3,2) + '' + datamat.substr(0,2);
       dataatest = dataatest.substr(0,4) + '' + dataatest.substr(5,2) + '' + dataatest.substr(8,2);
-      
+
       if ( parseInt( datamat ) > parseInt( dataatest ) ) {
-        
+
         alert( _M( sCaminhoMensagens + 'data_atestado_menor_data_matricula' ) );
-        
+
         document.form1.ed102_d_data.focus();
         document.form1.ed102_d_data.style.backgroundColor = '#99A9AE';
         return false;
       }
     }
   }
-  
+
   document.form1.db_opcao.style.visibility = "hidden";
   return true;
 }
@@ -682,7 +683,7 @@ function retornoVerificaExistenciaProgressao( oResponse ) {
     oRetorno.aProgressoes.each(function( oProgressao, iSeq ) {
 
       aEtapas.push( oProgressao.iEtapa );
-      
+
       sMensagem += ' &nbsp;&nbsp; Etapa: ' + oProgressao.sEtapa.urlDecode();
       sMensagem += ' - Disciplina: ' + oProgressao.sDisciplina.urlDecode();
       sMensagem += ' - Ensino: ' + oProgressao.sEnsino.urlDecode();

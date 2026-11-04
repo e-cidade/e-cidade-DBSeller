@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -49,23 +49,23 @@ function js_processa(tarefa){
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 
 
 
 $sql = "
   select * from (
   select at02_codatend,login,case when t.at40_sequencial is null then ta.at40_sequencial else t.at40_sequencial end as at40_sequencial ,
-                    descrproced,at05_data,at05_horaini,at05_horafim, 
+                    descrproced,at05_data,at05_horaini,at05_horafim,
                              case when t.at40_progresso is null then ta.at40_progresso else t.at40_progresso end as at40_progresso, at05_solicitado,at05_feito,at54_sequencial,
          db_sysmodulo.codmod,
          db_usuarios.id_usuario,
          db_depart.coddepto,db_syscadproced.codproced,at01_codcli
-                             
+
   from atenditem
        left join atendimento         on at02_codatend   = at05_codatend
        left join clientes on clientes.at01_codcli = at02_codcli
-       
+
        left  join tarefaitem         on at44_atenditem  = at05_seq
        left  join tarefa  t       on at44_tarefa        = t.at40_sequencial
 
@@ -74,22 +74,22 @@ $sql = "
 
        left  join tecnico         on at03_codatend   = at05_codatend
        left  join db_usuarios         on id_usuario        = at03_id_usuario
-       
+
        left  join db_depusu           on db_usuarios.id_usuario = db_depusu.id_usuario
        left  join db_depart           on db_depusu.coddepto = db_depart.coddepto
-       
+
        left join atenditemmotivo     on at34_atenditem  = at05_seq
        left join tarefacadmotivo     on at54_sequencial   = at34_tarefacadmotivo
        left join atenditemmod         on at22_atenditem    = at05_seq
        left join db_sysmodulo          on at22_modulo       = db_sysmodulo.codmod
        left join atenditemsyscadproced on at29_atenditem    = at05_seq
        left join db_syscadproced       on at29_syscadproced = db_syscadproced.codproced
-       
+
          left  join atendarea             on at02_codatend = at28_atendimento
          left  join atendcadarea          on at28_atendcadarea = at26_sequencial
   Where at01_codcli not in (25) and ";
 if($mes>0){
-   $sql .= " date_part('month',at02_datafim) = $mes and "; 
+   $sql .= " date_part('month',at02_datafim) = $mes and ";
 }
 $sql .= "
     at02_datafim >= '$dataini'
@@ -100,8 +100,8 @@ if($codigo != ""){
   $sql .= "  and at28_atendcadarea = $codigo ";
 }
 $sql .= "
-  ) as x 
-  where 1 = 1 
+  ) as x
+  where 1 = 1
     ";
 
 
@@ -125,7 +125,7 @@ if($tipo!=0){
   }
 }
 if($scodigo!=""){
-  $campos = split("-",$scodigo);
+  $campos =explode("-",$scodigo);
   $sql .= " and ".$campos[0]." = ".$campos[1];
 }
 

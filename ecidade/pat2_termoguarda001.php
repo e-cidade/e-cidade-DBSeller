@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -66,13 +66,13 @@ function js_AbreJanelaRelatorio() {
     <table class="form-container">
     <tr>
       <td nowrap title="<?=@$Tt21_codigo?>" >
-        <?
+        <?php
           db_ancora(@$Lt21_codigo,"js_pesquisabensguarda(true);",4)
         ?>
         <b>:</b>
       </td>
       <td>
-        <?
+        <?php
           db_input('t21_codigo',10,$It21_codigo,true,'text',4,"onchange='js_pesquisabensguarda(false);'")
         ?>
       </td>
@@ -81,7 +81,7 @@ function js_AbreJanelaRelatorio() {
   </fieldset>
   <input name="exibir_relatorio" type="button" id="exibir_relatorio" value="Exibir relat&oacute;rio" onClick="js_AbreJanelaRelatorio()">
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

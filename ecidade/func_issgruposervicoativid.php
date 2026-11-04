@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clissgruposervicoativid->rotulo->label("q127_sequencial");
               <?=$Lq127_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q127_sequencial",10,$Iq127_sequencial,true,"text",4,"","chave_q127_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clissgruposervicoativid->rotulo->label("q127_sequencial");
               <?=$Lq127_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q127_sequencial",10,$Iq127_sequencial,true,"text",4,"","chave_q127_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clissgruposervicoativid->rotulo->label("q127_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issgruposervicoativid.php")==true){
@@ -122,12 +122,12 @@ $clissgruposervicoativid->rotulo->label("q127_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

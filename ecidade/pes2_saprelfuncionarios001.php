@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,12 +81,12 @@ function js_emite(){
       <strong>Ano / Mês:</strong>
       </td>
       <td>
-        <?
+        <?php
          $DBtxt23 = db_anofolha();
          db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
         ?>
         &nbsp;/&nbsp;
-        <?
+        <?php
          $DBtxt25 = db_mesfolha();
          db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
         ?>
@@ -97,7 +97,7 @@ function js_emite(){
         <strong>Ordem:</strong>
       </td>
       <td align="left">
-        <?
+        <?php
         $xx = array("n"=>"Numérica","a"=>"Alfabética");
         db_select('ordem',$xx,true,4,"");
         ?>
@@ -107,7 +107,7 @@ function js_emite(){
         <td align="right" nowrap><strong>Secretaria:</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $xx = array(
 	              "00"=>"TODAS",
 		      "01"=>"GABINETE", 
@@ -129,7 +129,7 @@ function js_emite(){
       </tr>
     <tr>
       <td align="center" colspan="2">
-        <?
+        <?php
         $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_codreg, rh30_descr", "rh30_descr"));
         db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
         ?>
@@ -142,7 +142,7 @@ function js_emite(){
     </tr>
   </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

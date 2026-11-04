@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -99,7 +99,7 @@ $numdec = 2;
 <form name='form1' method="post"> 
 <center>
 <table border='0' cellspacing='0' style='background-color:white;border:2px inset white'>   
-<?
+<?php
 $conitens = 0;
 $errosomaquant = "";
 
@@ -513,7 +513,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
         ?>
         <td class='linhagrid' align='center' nowrap ><small>
         <input name='Incluir' type='button' value='Incluir' onclick='js_novomatmater(<?=@$pc01_codmater?>,<?=@$e62_numemp?>,<?=@$e62_sequen?>);' >	       
-        <?
+        <?php
         echo " </small></td>
         </tr> ";
         if ($clmatordemitement->numrows != 0) {

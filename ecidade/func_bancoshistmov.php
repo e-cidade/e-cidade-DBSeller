@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $oGet = db_utils::postMemory($_GET);
               <?=$Lk66_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k66_sequencial",10,$Ik66_sequencial,true,"text",4,"","chave_k66_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $oGet = db_utils::postMemory($_GET);
               <?=$Lk66_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k66_descricao",50,$Ik66_descricao,true,"text",4,"","chave_k66_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $oGet = db_utils::postMemory($_GET);
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhereBanco = "1=1";
       
       if (!empty($oGet->iCodigoBanco)) {
@@ -133,12 +133,12 @@ $oGet = db_utils::postMemory($_GET);
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

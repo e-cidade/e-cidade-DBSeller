@@ -1,4 +1,4 @@
-<?
+<?php
 //$this->objpdf->SetRightMargin(152);
 //$this->objpdf->SetTopMargin(95);
 //$this->objpdf->Image('imagens/files/alvarapreimp.jpg','','',152,95);

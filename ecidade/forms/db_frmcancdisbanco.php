@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcancdisbanco->rotulo->label();
        <?=@$Lk124_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k124_sequencial',10,$Ik124_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('k124_sequencial',10,$Ik124_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk124_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('k124_usuario',10,$Ik124_usuario,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('k124_usuario',10,$Ik124_usuario,true,'text',$db_opcao,"")
        <?=@$Lk124_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k124_data',@$k124_data_dia,@$k124_data_mes,@$k124_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_inputdata('k124_data',@$k124_data_dia,@$k124_data_mes,@$k124_data_ano,true,'t
        <?=@$Lk124_ip?>
     </td>
     <td> 
-<?
+<?php
 db_input('k124_ip',15,$Ik124_ip,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('k124_ip',15,$Ik124_ip,true,'text',$db_opcao,"")
        <?=@$Lk124_codret?>
     </td>
     <td> 
-<?
+<?php
 db_input('k124_codret',10,$Ik124_codret,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('k124_codret',10,$Ik124_codret,true,'text',$db_opcao,"")
        <?=@$Lk124_codcla?>
     </td>
     <td> 
-<?
+<?php
 db_input('k124_codcla',10,$Ik124_codcla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('k124_codcla',10,$Ik124_codcla,true,'text',$db_opcao,"")
        <?=@$Lk124_nomearq?>
     </td>
     <td> 
-<?
+<?php
 db_input('k124_nomearq',40,$Ik124_nomearq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cancdisbanco.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ db_postmemory($HTTP_POST_VARS);
 		<td height="30">&nbsp;</td>
 	</tr>
 	<tr>
-		<td align='center' colspan=2><b> Período : </b> <? 
+		<td align='center' colspan=2><b> Período : </b> <?php 
 		db_inputdata('data1','','','',true,'text',1,"");
 		echo "<b> a </b> ";
 		db_inputdata('data2','','','',true,'text',1,"");
@@ -84,7 +84,7 @@ db_postmemory($HTTP_POST_VARS);
 	</tr>
 
 	<tr>
-		<td align="center"><?
+		<td align="center"><?php
 
 		// motivo
 		$sqlmot ="select  at54_sequencial,at54_descr from tarefacadmotivo where at54_tipo = 1 order by at54_descr";
@@ -99,7 +99,7 @@ db_postmemory($HTTP_POST_VARS);
 		<td align="center"><b> Clientes</b></td>
 	</tr>
 	<tr>
-		<td align="center"><?
+		<td align="center"><?php
 		//cliente
 		$sqlcliente = "select at01_codcli,at01_nomecli from clientes where at01_ativo is true";
 		$resultcliente=db_query($sqlcliente);
@@ -111,7 +111,7 @@ db_postmemory($HTTP_POST_VARS);
 	</tr>
 	<tr>
 		<td align="center">
-      <?
+      <?php
       $arr_tipo = Array(
                           "1"=>"Tudo",
                           "2"=>"Somente Totais",

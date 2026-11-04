@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ $clouvidoriaatendimentoretorno = new cl_ouvidoriaatendimentoretorno;
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
         
        $sCampos = "ov20_dataretorno,ov20_horaretorno,ov22_descricao,ov20_informa,ov20_resposta,ov20_confirma";
        $sWhere  = "ov20_ouvidoriaatendimento = {$oGet->iCodAtendimento}";

@@ -53,6 +53,7 @@ class TipoDebitoPixRequest extends FormRequest
 
         if (is_null($codbank)) {
             unset($rules["codbank"], $rules["codbank.*"]);
+            array_shift($rules["qtdemissao"]);
         } else {
             if (!is_null($codbank) and
                 is_array($codbank) and

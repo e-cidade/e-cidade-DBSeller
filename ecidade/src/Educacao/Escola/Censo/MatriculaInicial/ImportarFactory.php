@@ -18,7 +18,7 @@ class ImportarFactory
      */
     public static function factory($ano)
     {
-        if ($ano >= 2019 && $ano <= 2020) {
+        if ($ano >= 2019 && $ano <= 2022) {
             return new Importar();
         }
 

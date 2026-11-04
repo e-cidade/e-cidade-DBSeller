@@ -111,6 +111,9 @@ class CadastroBeneficioFormatter extends Formatter
         $dadosServidor->beneficiario = new \stdClass();
         $dadosServidor->beneficiario->cpfBenef = $this->servidorAtual->getCgm()->getCpf();
         $dadosServidor->beneficiario->matricula = $this->servidorAtual->getMatricula();
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $dadosServidor->beneficiario->matricula = $this->servidorAtual->getMatriculaAnterior();
+        }
         $dadosServidor->beneficiario->cnpjOrigem = $this->empregador->getCnpj();
         $matriculaOrigem = $this->servidorAtual->getOrigem();
         if ($matriculaOrigem) {
@@ -146,6 +149,9 @@ class CadastroBeneficioFormatter extends Formatter
         }
         // Numero do Beneficio é a própria matricula
         $infoBenInicio->nrBeneficio = $this->servidorAtual->getMatricula();
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $infoBenInicio->nrBeneficio = $this->servidorAtual->getMatriculaAnterior();
+        }
         $infoBenInicio->dtIniBeneficio = $this->servidorAtual->getDataAdmissao()->getDate();
         $infoBenInicio->dtPublic = $this->servidorAtual->getDataAdmissao()->getProximoDia()->getDate();
         $dadosServidor->infoBenInicio = $infoBenInicio;
@@ -197,6 +203,9 @@ class CadastroBeneficioFormatter extends Formatter
         if ($infoPenMorte) {
             $dadosBeneficio->infoPenMorte = $infoPenMorte;
             $dadosServidor->beneficiario->matricula = $this->servidorOrigem->getMatricula();
+            if ($this->servidorOrigem->getMatriculaAnterior() != "") {
+                $dadosServidor->beneficiario->matricula = $this->servidorOrigem->getMatriculaAnterior();
+            }
             $dadosServidor->beneficiario->cnpjOrigem = $this->servidorOrigem->getInstituicao()->getCgm()->getCnpj();
         }
         $dadosServidor->infoBenInicio->dadosBeneficio = $dadosBeneficio;

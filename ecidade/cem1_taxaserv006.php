@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ if ( isset($excluir) ) {
   </tr>
   <tr> 
     <td valign="top"> 
-      <?
+      <?php
         include(modification("forms/db_frmtaxaserv.php"));
       ?>
   </td>
@@ -83,7 +83,7 @@ if ( isset($excluir) ) {
 </table>
 </body>
 </html>
-<?
+<?php
 if ( isset($excluir) ) {
 	
   if ( $cltaxaserv->erro_status == "0" ) {

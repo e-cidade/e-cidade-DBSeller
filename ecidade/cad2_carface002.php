@@ -57,7 +57,7 @@ if( isset( $relatorio1 ) ) {
 
   if (isset($chaves) && $chaves != "") {
 
-    $chaves = split( "#", $chaves );
+    $chaves =explode( "#", $chaves );
 
     for( $i = 0; $i < sizeof($chaves); $i++ ) {
 
@@ -126,8 +126,8 @@ if (isset($setor) && $setor != "") {
 
     if (isset($setor) && $setor != "") {
 
-      $chaves  = split( ",", $setor );
-      $chaves1 = split( ",", $quadra );
+      $chaves  =explode( ",", $setor );
+      $chaves1 =explode( ",", $quadra );
       $or      = "";
       $setor   = "";
 
@@ -390,8 +390,8 @@ if (isset($setores) && $setores != "") {
 
   if (isset($setor) && $setor != "") {
 
-    $chaves  = split( ",", $setores );
-    $chaves1 = split( ",", $quadra );
+    $chaves  =explode( ",", $setores );
+    $chaves1 =explode( ",", $quadra );
     $and     = "";
     $setores = "";
 

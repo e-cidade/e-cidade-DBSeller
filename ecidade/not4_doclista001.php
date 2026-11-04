@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,14 +81,14 @@ if (isset($incluir)) {
     <table class="form-container">
       <tr>
         <td title="<?= $Tk60_codigo ?>">
-            <? db_ancora('Lista', "js_pesquisa_lista(true);", 1); ?>:
+            <?php db_ancora('Lista', "js_pesquisa_lista(true);", 1); ?>:
         </td>
         <td>
-            <? db_input("k60_codigo", 6, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisa_lista(false);'"); ?>
-            <? db_input("k60_descr", 40, $Ik60_descr, true, "text", 3); ?>
+            <?php db_input("k60_codigo", 6, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisa_lista(false);'"); ?>
+            <?php db_input("k60_descr", 40, $Ik60_descr, true, "text", 3); ?>
         </td>
       </tr>
-        <?
+        <?php
         if (isset($k60_codigo) && $k60_codigo != "") {
             $result_listadoc = $cllistadoc->sql_record($cllistadoc->sql_query("", "k64_docum,db03_descr", "",
               "k64_codigo = $k60_codigo and k60_instit = $instit"));
@@ -100,17 +100,17 @@ if (isset($incluir)) {
             ?>
           <tr>
             <td title="<?= $Tdb03_docum ?>">
-                <?
+                <?php
                 db_ancora('Documento', "js_pesquisa_docum(true);", 1); ?>:
             </td>
             <td>
-                <?
+                <?php
                 db_input("db03_docum", 6, $Idb03_docum, true, "text", 4, "onchange='js_pesquisa_docum(false);'"); ?>
-                <?
+                <?php
                 db_input("db03_descr", 40, $Idb03_descr, true, "text", 3); ?>
             </td>
           </tr>
-            <?
+            <?php
         }
         ?>
     </table>
@@ -118,7 +118,7 @@ if (isset($incluir)) {
   <input name="incluir" id="incluir" type="submit" value="Incluir" <?= $abil == false ? 'disabled' : '' ?>>
 </form>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
   db_getsession("DB_instit"));
 ?>
@@ -197,7 +197,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
     db_iframe_db_documento.hide();
   }
 </script>
-<?
+<?php
 if (isset($incluir)) {
     db_msgbox($erro_msg);
     if ($sqlerro == false) {

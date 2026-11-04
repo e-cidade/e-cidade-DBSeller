@@ -57,7 +57,7 @@ require_once modification("dbforms/db_funcoes.php");
     const inputMes = document.getElementById('mes');
 
     const routs = {
-        importar: 'financeiro/contabilidade/importar/msc'
+        importar: 'financeiro/contabilidade/msc/importar'
     }
 
     const erroRetornoArquivo = mensagem => {

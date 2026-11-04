@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ echo " sel = $ssel4[2] <br> "; */
 	</tr>
 	<tr>
 		<td align="center">
-		<?
+		<?php
 		//tecnico
 		$sqltecnico = "	select distinct id_usuario,nome 
 						from tecnico 
@@ -90,7 +90,7 @@ echo " sel = $ssel4[2] <br> "; */
 	</tr>
 	<tr>
 		<td align="center">
-		<?
+		<?php
 		//Area
 		$sqlarea = "select at26_sequencial,at25_descr from atendcadarea order by at25_descr ;";
 		$resultarea=db_query($sqlarea);
@@ -109,7 +109,7 @@ echo " sel = $ssel4[2] <br> "; */
 	
 	<tr>
 		<td align="center">
-		<?
+		<?php
 		//Módulo
 		$sqlmodulo = "select codmod,nomemod from db_sysmodulo where ativo = 't' order by nomemod";
 		$resultmodulo=db_query($sqlmodulo);

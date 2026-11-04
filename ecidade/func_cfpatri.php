@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcfpatri->rotulo->label("t06_codcla");
               <?=$Lt06_codcla?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t06_codcla",8,$It06_codcla,true,"text",4,"","chave_t06_codcla");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcfpatri->rotulo->label("t06_codcla");
               <?=$Lt06_codcla?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t06_codcla",8,$It06_codcla,true,"text",4,"","chave_t06_codcla");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcfpatri->rotulo->label("t06_codcla");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cfpatri.php")==true){
@@ -122,12 +122,12 @@ $clcfpatri->rotulo->label("t06_codcla");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

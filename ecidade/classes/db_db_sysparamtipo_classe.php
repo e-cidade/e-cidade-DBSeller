@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_db_sysparamtipo {
                  db24_codigo = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysparamtipo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysparamtipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_sysparamtipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db24_conversao = ($this->db24_conversao == ""?@$GLOBALS["HTTP_POST_VARS"]["db24_conversao"]:$this->db24_conversao);
        $this->db24_primitivo = ($this->db24_primitivo == ""?@$GLOBALS["HTTP_POST_VARS"]["db24_primitivo"]:$this->db24_primitivo);
@@ -80,7 +80,7 @@ class cl_db_sysparamtipo {
      }
    }
    // funcao para inclusao
-   function incluir ($db24_codigo){ 
+   public function incluir ($db24_codigo){ 
       $this->atualizacampos();
      if($this->db24_conversao == null ){ 
        $this->erro_sql = " Campo Conversão nao Informado.";
@@ -191,7 +191,7 @@ class cl_db_sysparamtipo {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db24_codigo=null) { 
+   public function alterar ($db24_codigo=null) { 
       $this->atualizacampos();
      $sql = " update db_sysparamtipo set ";
      $virgula = "";
@@ -301,7 +301,7 @@ class cl_db_sysparamtipo {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db24_codigo=null,$dbwhere=null) { 
+   public function excluir ($db24_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db24_codigo));
      }else{ 
@@ -365,7 +365,7 @@ class cl_db_sysparamtipo {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

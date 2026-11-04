@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,13 +25,14 @@
  *                                licenca/licenca_pt.txt 
  */
 
-include(modification("fpdf151/pdf.php"));
-include(modification("libs/db_sql.php"));
-include(modification("libs/db_utils.php"));
-include(modification("classes/db_cgm_classe.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once(modification("libs/db_sql.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("classes/db_cgm_classe.php"));
 
 $oGet  = db_utils::postMemory($_GET);
-$sDataHoje = date('Y-m-d');
 $clcgm = new cl_cgm();
 
    if(!isset($oGet->numcgm) && !isset($oGet->matric) && !isset($oGet->inscr) && !isset($oGet->numpre)) {
@@ -39,85 +40,100 @@ $clcgm = new cl_cgm();
    }
 
   if(isset($oGet->numcgm)) {
-   	
- 	$querystring   = "numcgm=$oGet->numcgm";
-   	$sSqlInnerSusp = "";
+    
+  $querystring   = "numcgm=$oGet->numcgm";
+    $sSqlInnerSusp = "";
     $sSqlWhereSusp = " arresusp.k00_numcgm = ".$oGet->numcgm;
-	  
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+      $sSqlInnerSusp .= " inner join arreauto on arrenumcgm.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sSqlInnerSusp .= " inner join arrelanc on arrenumcgm.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+    }
+    
   }else if(isset($oGet->matric)){
-		
+    
     $querystring   = "matric=$oGet->matric";
-	$sSqlInnerSusp = " inner join arrematric on arrematric.k00_numpre = arresusp.k00_numpre"; 
-	$sSqlWhereSusp = " k00_matric = ".$oGet->matric;
-	  
+  $sSqlInnerSusp = " inner join arrematric on arrematric.k00_numpre = arresusp.k00_numpre"; 
+  $sSqlWhereSusp = " k00_matric = ".$oGet->matric;
+  if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+      $sSqlInnerSusp .= " inner join arreauto on arrematric.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+    }
+  if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+    $sSqlInnerSusp .= " inner join arrelanc on arrematric.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+  }  
   }else if(isset($oGet->inscr)){
-		
+    
     $querystring   = "inscr=$oGet->inscr";
-	$sSqlInnerSusp = " inner join arreinscr  on arreinscr.k00_numpre  = arresusp.k00_numpre"; 
-	$sSqlWhereSusp = " k00_inscr = ".$oGet->inscr;
-	  
+  $sSqlInnerSusp = " inner join arreinscr  on arreinscr.k00_numpre  = arresusp.k00_numpre"; 
+  $sSqlWhereSusp = " k00_inscr = ".$oGet->inscr;
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+      $sSqlInnerSusp .= " inner join arreauto on arreinscr.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sSqlInnerSusp .= " inner join arrelanc on arreinscr.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+    }
   } else {
-		
+    
     $querystring   = "numpre=$oGet->numpre";
     $sSqlInnerSusp = "";   
     $sSqlWhereSusp = " arresusp.k00_numpre = ".$oGet->numpre;
       
   }
 
-  $sSqlSusp  = " select distinct 											      ";
-  $sSqlSusp .= "        arresusp.k00_numcgm, 	   									      ";
-  $sSqlSusp .= "        arresusp.*, 		    									      ";
-  $sSqlSusp .= "	    suspensao.*,		    								      ";
-  $sSqlSusp .= "		k02_drecei,										      ";
-  $sSqlSusp .= "		k01_descr,										      ";
-  $sSqlSusp .= "		arrehist.k00_histtxt,									      ";
-  $sSqlSusp .= "		arrehist.k00_dtoper as dtlhist,								      ";
-  $sSqlSusp .= "		arrehist.k00_hora   as hrlhist,								      ";
-  $sSqlSusp .= "	  	db_usuarios.login									      ";
-  $sSqlSusp .= "   from arresusp 											      ";
-  $sSqlSusp .= "	    inner join suspensao   on suspensao.ar18_sequencial = arresusp.k00_suspensao	              ";
-  $sSqlSusp .= "	 	inner join db_usuarios on db_usuarios.id_usuario    = suspensao.ar18_usuario                  ";
-  $sSqlSusp .= "	 	inner join arreinstit  on arreinstit.k00_numpre     = arresusp.k00_numpre		      ";
-  $sSqlSusp .= "	    				      and arreinstit.k00_instit     = ".db_getsession('DB_instit')."  ";
-  $sSqlSusp .= "	    left  join arrehist    on arrehist.k00_numpre		= arresusp.k00_numpre		      "; 
-  $sSqlSusp .= "                              and (    arresusp.k00_numpar  = arrehist.k00_numpar 			      ";
-  $sSqlSusp .= "									or arrehist.k00_numpar  = 0)	      ";
-  $sSqlSusp .= "		{$sSqlInnerSusp}									      "; 
-  $sSqlSusp .= "		inner join tabrec      on arresusp.k00_receit       = k02_codigo			      ";
-  $sSqlSusp .= "		inner join cgm ON z01_numcgm = k00_numcgm				 	              ";
-  $sSqlSusp .= "     	inner join tabrecjm    on tabrecjm.k02_codjm        = tabrec.k02_codjm			  	      ";
-  $sSqlSusp .= "		inner join histcalc    on arresusp.k00_hist 	    = k01_codigo 			      ";
-  $sSqlSusp .= "  where {$sSqlWhereSusp}										      ";
-  $sSqlSusp .= "  and not exists (select 1
-                                  from suspensaofinaliza
-                                  where ar19_suspensao = ar18_sequencial
-                                  and ar19_data <=  '{$sDataHoje}')                                                           ";
-  $sSqlSusp .= "  order by arresusp.k00_numpre,										      ";
-  $sSqlSusp .= "  	       arresusp.k00_numpar									      ";
-  $rsDebitosSuspensos = db_query($sSqlSusp);
+  $sSqlSusp  = " select distinct                                        ";
+  $sSqlSusp .= "        arrecadacao.arresusp.k00_suspensao,                                     ";
+  $sSqlSusp .= "        arresusp.*,                                         ";
+  $sSqlSusp .= "      suspensao.*,                                        ";
+  $sSqlSusp .= "    k02_drecei,                                         ";
+  $sSqlSusp .= "    k01_descr,                                          ";
+  //$sSqlSusp .= "    arrehist.k00_histtxt,                                 ";
+  $sSqlSusp .= "    arrehist.k00_dtoper as dtlhist,                             ";
+  $sSqlSusp .= "    arrehist.k00_hora   as hrlhist,                             ";
+  $sSqlSusp .= "      db_usuarios.login                                   ";
+  $sSqlSusp .= "     ,ar19_data, case when ar19_tipo = 1 then 'Reativação' when ar19_tipo = 2 then 'Cancelamento' when ar19_tipo is null and ar18_situacao = 2 then 'Sem Suspensão F' else '' end as ar19_tipo, ar19_obs";
+  $sSqlSusp .= "   from arresusp                                        ";
+  $sSqlSusp .= "      inner join arrenumcgm  on arrenumcgm.k00_numpre     = arresusp.k00_numpre         ";
+  $sSqlSusp .= "      inner join suspensao   on suspensao.ar18_sequencial = arresusp.k00_suspensao        ";
+  $sSqlSusp .= "    inner join db_usuarios on db_usuarios.id_usuario    = suspensao.ar18_usuario          ";
+  $sSqlSusp .= "    inner join arreinstit  on arreinstit.k00_numpre     = arresusp.k00_numpre         ";
+  $sSqlSusp .= "                    and arreinstit.k00_instit     = ".db_getsession('DB_instit')."  ";
+  $sSqlSusp .= "      left  join arrehist    on arrehist.k00_numpre   = arresusp.k00_numpre       "; 
+  $sSqlSusp .= "                              AND arresusp.k00_hist = k00_idhist       ";
+  $sSqlSusp .= "    {$sSqlInnerSusp}                                    "; 
+  $sSqlSusp .= "    inner join tabrec      on arresusp.k00_receit       = k02_codigo            ";
+  $sSqlSusp .= "      inner join tabrecjm    on tabrecjm.k02_codjm        = tabrec.k02_codjm            ";
+  $sSqlSusp .= "    inner join histcalc    on arresusp.k00_hist       = k01_codigo            ";
+  $sSqlSusp .= "		    left join suspensaofinaliza on ar19_suspensao = ar18_sequencial";
+  $sSqlSusp .= "  where {$sSqlWhereSusp}                                    ";
+  $sSqlSusp .= "  order by arresusp.k00_numpre,                                 ";
+  $sSqlSusp .= "           arresusp.k00_numpar                                  ";
+  
+  $rsDebitosSuspensos = pg_query($sSqlSusp);
   $iLinhasDebitosSusp = pg_num_rows($rsDebitosSuspensos);
-
 
   if($iLinhasDebitosSusp == 0){
     db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
   } 
 
   $oDebitosSusp = db_utils::fieldsMemory($rsDebitosSuspensos,0);
-  $rsCgm	    = $clcgm->sql_record($clcgm->sql_query_file($oDebitosSusp->k00_numcgm,"z01_nome,z01_ender,z01_munic,z01_uf,z01_cgccpf,z01_ident,z01_numero"));
+  $rsCgm      = $clcgm->sql_record($clcgm->sql_query_file($oDebitosSusp->k00_numcgm,"z01_nome,z01_ender,z01_munic,z01_uf,z01_cgccpf,z01_ident,z01_numero"));
   
   if($clcgm->numrows == 0){
-  	
+    
     db_redireciona("db_erros.php?fechar=true&db_erro=CGM não encontrado");
     
   }else{
-  	
+    
     $oCgm  = db_utils::fieldsMemory($rsCgm,0);
-    $head2 = "SUSPENSÃO DE DÉBITOS";
+    $pdf->addTitulo("");
+    $pdf->addTitulo("SUSPENSÃO DE DÉBITOS");
+    $pdf->addTitulo("");
   
-  	if(isset($oGet->dataini)){
+    if(isset($oGet->dataini)){
       $head3 = "Período entre ".db_formatar($oGet->dataini,'d')." e ".db_formatar($oGet->datafim,'d');
-  	}
-  	
+    }
+    
     $head5 = $oDebitosSusp->k00_numcgm." - ".$oCgm->z01_nome;
     $head6 = $oCgm->z01_ender.", ".$oCgm->z01_numero;
     $head7 = $oCgm->z01_munic." / ".$oCgm->z01_uf;
@@ -132,38 +148,39 @@ $pdf->setfillcolor(215);
   
 $nTotal = 0;
 $troca  = 1;
-$p 	    = 1;
+$p      = 1;
 $alt    = 4;
 
 for($cont=0; $cont < $iLinhasDebitosSusp; $cont++){
 
   $oDebitosSusp = db_utils::fieldsMemory($rsDebitosSuspensos,$cont);
+  $finalizado = $oDebitosSusp->finalizado === 't' ? 'Finalizado' : 'Ativo';
   
   if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
-  	
+    
     $pdf->addpage("L");
     $pdf->setfont('arial','b',8);
     
-    $pdf->cell(15,$alt,"NUMPRE"	   ,1,0,"C",1);
-    $pdf->cell(15,$alt,"PAR."	   ,1,0,"C",1);
-    $pdf->cell(15,$alt,"TOT."	   ,1,0,"C",1);
-    $pdf->cell(15,$alt,"VENC."	   ,1,0,"C",1);
-    $pdf->cell(15,$alt,"HIST."	   ,1,0,"C",1);
+    $pdf->cell(15,$alt,"NUMPRE"    ,1,0,"C",1);
+    $pdf->cell(15,$alt,"PAR."    ,1,0,"C",1);
+    $pdf->cell(15,$alt,"TOT."    ,1,0,"C",1);
+    $pdf->cell(15,$alt,"VENC."     ,1,0,"C",1);
+    $pdf->cell(15,$alt,"HIST."     ,1,0,"C",1);
     $pdf->cell(70,$alt,"DESCRIÇÃO" ,1,0,"C",1);
-    $pdf->cell(15,$alt,"REC."	   ,1,0,"C",1);
-    $pdf->cell(70,$alt,"DESCRIÇÃO" ,1,0,"C",1);	
-    $pdf->cell(15,$alt,"VALOR"	   ,1,0,"C",1);
-    $pdf->cell(35,$alt,"USUÁRIO"   ,1,1,"C",1);
-    $pdf->cell(280,$alt,"HISTÓRICO",1,1,"C",1);
-    $pdf->cell(280,1,""			   ,0,1,"C",0);
+    $pdf->cell(15,$alt,"REC."    ,1,0,"C",1);
+    $pdf->cell(70,$alt,"DESCRIÇÃO" ,1,0,"C",1); 
+    $pdf->cell(15,$alt,"VALOR"     ,1,0,"C",1);
+    $pdf->cell(25,$alt,"USUÁRIO"   ,1,1,"C",1);
+    $pdf->cell(20,$alt,"FINALIZAÇÃO"   ,1,0,"C",1);
+    $pdf->cell(20,$alt,"TIPO"   ,1,0,"C",1);
+    $pdf->cell(240,$alt,"HISTÓRICO",1,1,"C",1);
+    $pdf->cell(280,1,""        ,0,1,"C",0);
     
     $troca = 0;
-    
   }
   
-  
   $pdf->setfont('arial','',6);
-	if($cont % 2 == 0){
+  if($cont % 2 == 0){
     $corfundo = 236;
   }else{
     $corfundo = 245;
@@ -181,13 +198,20 @@ for($cont=0; $cont < $iLinhasDebitosSusp; $cont++){
   $pdf->cell(70,$alt,$oDebitosSusp->k02_drecei,"0",0,"L",1);    
   $pdf->cell(15,$alt,db_formatar(($oDebitosSusp->k00_valor*-1),"f"),"0",0,"R",1);
   $pdf->cell(35,$alt,$oDebitosSusp->login,"0",1,"L",1);
-  $pdf->multicell(280,$alt,db_formatar($oDebitosSusp->dtlhist,"d") . " (" .$oDebitosSusp->hrlhist. ") - " . $oDebitosSusp->k00_histtxt,0,"J",1);
+  $pdf->cell(20,$alt,db_formatar($oDebitosSusp->ar19_data,"d"),"0",0,"C",1);
+  $pdf->cell(20,$alt,$oDebitosSusp->ar19_tipo,"0",0,"C",1);
+  $pdf->multicell(240,$alt,db_formatar($oDebitosSusp->dtlhist,"d") . " (" .$oDebitosSusp->hrlhist. ") - Suspensão: " . $oDebitosSusp->k00_suspensao." -    Obs Finalização : ".$oDebitosSusp->ar19_obs,0,"J",1);
   $nTotal += ($oDebitosSusp->k00_valor*-1);
 }
 
 $pdf->setfont('arial','b',8);
-$pdf->cell(210,$alt,'VALOR TOTAL',"T",0,"L",0);
-$pdf->cell(35,$alt,db_formatar($nTotal,"f"),"T",0,"R",0);
+$pdf->cell(210,$alt,'VALOR TOTAL ATIVO',"T",0,"L",0);
+$pdf->cell(35,$alt,db_formatar($nTotalAtivo,"f"),"T",0,"R",0);
 $pdf->cell(35,$alt,"","T",0,"L",0);
-$pdf->Output();
+$pdf->ln();
+$pdf->cell(210,$alt,'VALOR TOTAL FINALIZADO',"T",0,"L",0);
+$pdf->cell(35,$alt,db_formatar($nTotalFinalizado,"f"),"T",0,"R",0);
+$pdf->cell(35,$alt,"","T",0,"L",0);
+
+$pdf->Output('I');
 ?>

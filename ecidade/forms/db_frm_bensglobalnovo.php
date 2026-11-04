@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -45,6 +45,7 @@ $clrotulo->label("t52_descr");
 $clrotulo->label("t52_dtaqu");
 $clrotulo->label("t52_dtinclusao");
 $clrotulo->label("t52_numcgm");
+$clrotulo->label("t52_processo");
 $clrotulo->label("t64_descr");
 $clrotulo->label("t64_class");
 $clrotulo->label("t64_codcla");
@@ -81,30 +82,33 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	      <table>
 	        <tr>
 	          <td><b>Lote:</b></td>
-	          <td><? db_input('cod_lote', 10, '', true, 'text', 3, '') ?></td>
+	          <td><?php db_input('cod_lote', 10, '', true, 'text', 3, '') ?></td>
 	          <td><b>Quantidade:</b></td>
-	          <td><? db_input('quant_lote', 10, '', true, 'text', 1, "onkeypress=\"return js_mask(event,'0-9');\"") ?></td>
+	          <td><?php db_input('quant_lote', 10, '', true, 'text', 1, "onkeypress=\"return js_mask(event,'0-9');\"") ?></td>
 	        </tr>
 	        <tr>
 	          <td><b>Descrição:</b></td>
-	          <td colspan="3"><? db_input('descr_lote',
-                                         80,
-                                        '',
-                                        true,
-                                        'text',
-                                        1,
-                                        "onblue='js_ValidaMaiusculo(this,'t',event);'",
-                                        "",
-                                        "",
-                                        "text-transform: uppercase;", 40 ); ?>
+	          <td colspan="3"><?php db_input(
+                  'descr_lote',
+                  80,
+                  '',
+                  true,
+                  'text',
+                  1,
+                  "onblue='js_ValidaMaiusculo(this,'t',event);'",
+                  "",
+                  "",
+                  "text-transform: uppercase;",
+                  40
+              ); ?>
             </td>
-	        </tr>
-	      </table>
-	    </fieldset>
-	    <fieldset style="border:none; border-top:2px groove #FFF;">
-	      <legend class="bold">Informações do Bem</legend>
-	      <table>
-	        <tr>
+            </tr>
+          </table>
+        </fieldset>
+        <fieldset style="border:none; border-top:2px groove #FFF;">
+          <legend class="bold">Informações do Bem</legend>
+          <table>
+            <tr>
             <td>
               <div class="ctnFoto">
                 <fieldset>
@@ -122,8 +126,8 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                     <?=$Lt52_bem?>
                   </td>
                   <td>
-                    <?
-                      db_input('t52_bem',10,$It52_bem,true,"text",3,"");
+                    <?php
+                      db_input('t52_bem', 10, $It52_bem, true, "text", 3, "");
                     ?>
                   </td>
                 </tr>
@@ -132,19 +136,29 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                     <?=$Lt41_placa?>
                   </td>
                   <td>
-                    <?
-                      db_input('sPlaca', 10, "text", true, "text", 1, "onblue='js_ValidaMaiusculo(this,'t',event);'",
-                              "", "", "text-transform: uppercase;" );
+                    <?php
+                      db_input(
+                          'sPlaca',
+                          10,
+                          "",
+                          true,
+                          "text",
+                          1,
+                          "onblue='js_ValidaMaiusculo(this,'t',event);'",
+                          "",
+                          "",
+                          "text-transform: uppercase;"
+                      );
                       db_input('t41_placa', 10, "", true, "text", 1, "onkeypress=\"return js_mask(event, '0-9')\"", "", "", "", 10);
-                    ?>
+                        ?>
                   </td>
                   <td colspan="2"></td>
                 </tr>
                 <tr >
                   <td title="<?=$Tt52_dtaqu?>"><?=$Lt52_dtaqu?></td>
                   <td colspan="6">
-                    <?
-                      db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'text',$db_opcao,"");
+                    <?php
+                      db_inputdata('t52_dtaqu', @$t52_dtaqu_dia, @$t52_dtaqu_mes, @$t52_dtaqu_ano, true, 'text', $db_opcao, "");
                     ?>
                   </td>
                 </tr>
@@ -152,7 +166,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                 <tr >
                   <td title="<?=$Tt52_dtinclusao?>"><?=$Lt52_dtinclusao?></td>
                   <td colspan="6">
-                    <?
+                    <?php
                       $data = date('d/m/Y', db_getsession('DB_datausu'));
                       echo "<input type='text' id='t52_dtinclusao' name='t52_dtinclusao' value='{$data}' size='10' style='background-color: #DEB887' readonly />";
                     ?>
@@ -161,307 +175,334 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                 <tr>
                   <td title="<?=$Tt52_descr?>"><?=$Lt52_descr?></td>
                   <td colspan="6">
-                    <?
-                      db_input('t52_descr',81,$It52_descr,true,'text',$db_opcao);
+                    <?php
+                      db_input('t52_descr', 81, $It52_descr, true, 'text', $db_opcao);
                     ?>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
-	        <tr>
-	          <td nowrap="nowrap" title="<?=@$Tt64_class?>">
-	            <?
-	              db_ancora(@$Lt64_class,"js_pesquisaClasse(true);",(($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao));
-	            ?>
-	          </td>
-	          <td colspan="6">
-	            <?
-	              db_input('t64_codcla',10,"",true,'hidden',$db_opcao);
-	              db_input('t64_class',10,$It64_class,true,'text',(($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao),"onchange='js_pesquisaClasse(false);'");
-	              db_input('t64_descr',85,$It64_descr,true,'text',3,'');
-	             ?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td nowrap="nowrap" id='td-fornecedor' title="<?=@$Tt52_numcgm?>">
-	            <?
-	              db_ancora(@$Lt52_numcgm,"js_pesquisaFornecedor(true);",$db_opcao);
-	            ?>
-	          </td>
-	          <td colspan="6">
-	            <?
-	              db_input('t52_numcgm', 10, $It52_numcgm, true, 'text', $db_opcao, "onchange='js_pesquisaFornecedor(false);'");
-	              db_input('z01_nome', 85, $Iz01_nome, true, 'text', 3, '');
-	             ?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td nowrap="nowrap" title="<?=@$Tt45_sequencial?>">
-	            <?
-	              db_ancora(@$Lt45_descricao,"js_pesquisaTipoAquisicao(true);",$db_opcao);
-	            ?>
-	          </td>
-	          <td colspan="6">
-	            <?
-	              db_input('t45_sequencial', 10, $It45_sequencial, true, 'text', $db_opcao,
-	                       "onchange='js_pesquisaTipoAquisicao(false);'");
-	              db_input('t45_descricao', 85, $It45_descricao, true, 'text', 3, '');
-	             ?>
-	          </td>
-	        </tr>
-	        <tr id='orgao' style="display: none">
-	          <td><b>Orgão:</b></td>
-	          <td colspan="5">
-	            <?
-	              db_input('o40_descr', 85, "", true, 'text', 3);
-	            ?>
-	          </td>
-	        </tr>
-	        <tr id='unidade' style="display: none">
-	          <td><b>Unidade:</b></td>
-	          <td colspan="5">
-	            <?
-	              db_input('o41_descr', 85, "", true, 'text', 3);
-	            ?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td nowrap="nowrap" title="<?=@$Tt52_depart?>">
-	            <?
-	              db_ancora(@$Lt52_depart, "js_pesquisaDepartamento(true);", $db_opcao);
-	            ?>
-	          </td>
-	          <td colspan="3">
-	            <?
-	              db_input('t52_depart', 10, $It52_depart, true, 'text', $db_opcao, "onchange='js_pesquisaDepartamento(false);'");
-	              db_input('descrdepto', 85, $Idescrdepto, true, 'text', 3, '');
-	             ?>
-	          </td>
-	          <td id="l-divisao" style="display: none;" title="<?=$Tt52_dtaqu?>">
-	            <b>Divisão</b>
-	          </td>
-	          <td id="c-divisao" style="display: none;">
-	            <?
-	              $x = array("0" => "Selecione");
-	              db_select('divisao',$x,true,$db_opcao,"");
-	            ?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td nowrap="nowrap" title="Convênio">
-	            <?
-	              db_ancora("<b>Convênio</b>","js_pesquisaConvenio(true);",$db_opcao);
-	            ?>
-	          </td>
-	          <td nowrap="nowrap" colspan="6">
-	            <?
-	              db_input('t04_sequencial', 10, $It04_sequencial, true, 'text', $db_opcao, "onchange='js_pesquisaConvenio(false);'");
-	              db_input('z01_nome_convenio', 85, '', true, 'text', 3, '');
-	             ?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td nowrap="nowrap" title="<?=@$Tt56_situac?>">
-	            <?
-	              db_ancora(@$Lt56_situac,"js_pesquisaSituacaoBem(true);",1);
-	            ?>
-	          </td>
-	          <td nowrap="nowrap" colspan="6">
-	            <?
-	              db_input('t56_situac',10,$It56_situac,true,'text',1," onchange='js_pesquisaSituacaoBem(false);'");
-	              db_input('t70_descr',85,$It70_descr,true,'text',3,'');
-	              db_input("tipo_inclui",40,"0",true,"hidden",3,"");
-	             ?>
-	          </td>
-	        </tr>
-	      </table>
-	    </fieldset>
-	    <fieldset style="border:none; border-top:2px groove #FFF;">
-	      <legend class="bold">Dados Financeiros</legend>
-	      <table>
-	        <tr>
-	          <td><b>Valor de Aquisição:</b></td>
-	          <td>
-	            <?
-	              db_input('vlAquisicao',10,$It64_descr,true,'text',$db_opcao,
-	                       'onchange = "js_calculaValorTotal();"');
-	            ?>
-	          </td>
-	          <td style="text-align: right;">
-	            <b><?php echo $valor = $db_opcao==2 ? $valor = 'Valor Residual(%):' : 'Valor Residual (%):' ?></b>
-	          </td>
-	          <td style="text-align: left ;">
-	            <?
-                  db_input('perc_residual', 5, $It64_descr, true,'text',1, '', '', '', "text-align: right");
-	              db_input('vlResidual', 10,
-	                       $It64_descr,
-	                       true,
-	                       'text',
-	                       3,
-	                       'onchange = "js_calculaValorTotal();"');
-	            ?>
-	          </td>
-	          <td style="text-align: right;">
-	            <b>Valor Depreciável:</b>
-	          </td>
-	          <td>
-	            <?
-	              db_input('vlTotalDepreciavel',10,$It64_descr,true,'text',3,'');
-	            ?>
-	          </td>
-	        </tr>
-	        <tr>
+            <tr>
+              <td nowrap="nowrap" title="<?=@$Tt64_class?>">
+                <?php
+                  db_ancora(@$Lt64_class, "js_pesquisaClasse(true);", (($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao));
+                ?>
+              </td>
+              <td colspan="6">
+                <?php
+                  db_input('t64_codcla', 10, "", true, 'hidden', $db_opcao);
+                  db_input('t64_class', 10, $It64_class, true, 'text', (($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao), "onchange='js_pesquisaClasse(false);'");
+                  db_input('t64_descr', 85, $It64_descr, true, 'text', 3, '');
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td nowrap="nowrap" id='td-fornecedor' title="<?=@$Tt52_numcgm?>">
+                <?php
+                  db_ancora(@$Lt52_numcgm, "js_pesquisaFornecedor(true);", $db_opcao);
+                ?>
+              </td>
+              <td colspan="6">
+                <?php
+                  db_input('t52_numcgm', 10, $It52_numcgm, true, 'text', $db_opcao, "onchange='js_pesquisaFornecedor(false);'");
+                  db_input('z01_nome', 85, $Iz01_nome, true, 'text', 3, '');
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td nowrap="nowrap" title="<?=@$Tt45_sequencial?>">
+                <?php
+                  db_ancora(@$Lt45_descricao, "js_pesquisaTipoAquisicao(true);", $db_opcao);
+                ?>
+              </td>
+              <td colspan="6">
+                <?php
+                  db_input(
+                      't45_sequencial',
+                      10,
+                      $It45_sequencial,
+                      true,
+                      'text',
+                      $db_opcao,
+                      "onchange='js_pesquisaTipoAquisicao(false);'"
+                  );
+                  db_input('t45_descricao', 85, $It45_descricao, true, 'text', 3, '');
+                    ?>
+              </td>
+            </tr>
+            <tr id='orgao' style="display: none">
+              <td><b>Orgão:</b></td>
+              <td colspan="5">
+                <?php
+                  db_input('o40_descr', 85, "", true, 'text', 3);
+                ?>
+              </td>
+            </tr>
+            <tr id='unidade' style="display: none">
+              <td><b>Unidade:</b></td>
+              <td colspan="5">
+                <?php
+                  db_input('o41_descr', 85, "", true, 'text', 3);
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td nowrap="nowrap" title="<?=@$Tt52_depart?>">
+                <?php
+                  db_ancora(@$Lt52_depart, "js_pesquisaDepartamento(true);", $db_opcao);
+                ?>
+              </td>
+              <td colspan="3">
+                <?php
+                  db_input('t52_depart', 10, $It52_depart, true, 'text', $db_opcao, "onchange='js_pesquisaDepartamento(false);'");
+                  db_input('descrdepto', 85, $Idescrdepto, true, 'text', 3, '');
+                ?>
+              </td>
+              <td id="l-divisao" style="display: none;" title="<?=$Tt52_dtaqu?>">
+                <b>Divisão</b>
+              </td>
+              <td id="c-divisao" style="display: none;">
+                <?php
+                  $x = array("0" => "Selecione");
+                  db_select('divisao', $x, true, $db_opcao, "");
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td nowrap="nowrap" title="Convênio">
+                <?php
+                  db_ancora("<b>Convênio</b>", "js_pesquisaConvenio(true);", $db_opcao);
+                ?>
+              </td>
+              <td nowrap="nowrap" colspan="6">
+                <?php
+                  db_input('t04_sequencial', 10, $It04_sequencial, true, 'text', $db_opcao, "onchange='js_pesquisaConvenio(false);'");
+                  db_input('z01_nome_convenio', 85, '', true, 'text', 3, '');
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td nowrap="nowrap" title="<?=@$Tt56_situac?>">
+                <?php
+                  db_ancora(@$Lt56_situac, "js_pesquisaSituacaoBem(true);", 1);
+                ?>
+              </td>
+              <td nowrap="nowrap" colspan="6">
+                <?php
+                  db_input('t56_situac', 10, $It56_situac, true, 'text', 1, " onchange='js_pesquisaSituacaoBem(false);'");
+                  db_input('t70_descr', 85, $It70_descr, true, 'text', 3, '');
+                  db_input("tipo_inclui", 40, "0", true, "hidden", 3, "");
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td> <b>Processo:</b></td>
+              <td colspan="5">
+              <?php
+                db_input('t52_processo', 10, $It52_processo, true, 'text', $db_opcao, '');
+                ?>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+        <fieldset style="border:none; border-top:2px groove #FFF;">
+          <legend class="bold">Dados Financeiros</legend>
+          <table>
+            <tr>
+              <td><b>Valor de Aquisição:</b></td>
+              <td>
+                <?php
+                  db_input(
+                      'vlAquisicao',
+                      10,
+                      $It64_descr,
+                      true,
+                      'text',
+                      $db_opcao,
+                      'onchange = "js_calculaValorTotal();"'
+                  );
+                    ?>
+              </td>
+              <td style="text-align: right;">
+                <b><?php echo $valor = $db_opcao==2 ? $valor = 'Valor Residual(%):' : 'Valor Residual (%):' ?></b>
+              </td>
+              <td style="text-align: left ;">
+                <?php
+                  db_input('perc_residual', 5, $It64_descr, true, 'text', 1, '', '', '', "text-align: right");
+                  db_input(
+                      'vlResidual',
+                      10,
+                      $It64_descr,
+                      true,
+                      'text',
+                      3,
+                      'onchange = "js_calculaValorTotal();"'
+                  );
+                    ?>
+              </td>
+              <td style="text-align: right;">
+                <b>Valor Depreciável:</b>
+              </td>
+              <td>
+                <?php
+                  db_input('vlTotalDepreciavel', 10, $It64_descr, true, 'text', 3, '');
+                ?>
+              </td>
+            </tr>
+            <tr>
             <td><b>Valor Atual:</b>
             </td>
             <td>
-    	        <?
-    	          db_input('vlTotal',10,$It64_descr,true,'text',3,'');
-    	        ?>
+                <?php
+                  db_input('vlTotal', 10, $It64_descr, true, 'text', 3, '');
+                ?>
             </td>
           </tr>
-	        <tr>
-	          <td id="tdLookupTipoDepreciacao" nowrap="nowrap" title=" alterar  <?=@$Tt64_class?>">
-	            <b><?
-	              db_ancora("Tipo Depreciação","js_pesquisaTipoDepreciacao(true);", $db_opcao, "",
-                      "linkLookupTipoDepreciacao");
-	            ?></b>
-	          </td>
-	          <td nowrap="nowrap" colspan="3">
-	            <?
-	              db_input('cod_depreciacao',10,$It64_class,true,'text',$db_opcao,"onchange='js_pesquisaTipoDepreciacao(false);'");
-	              db_input('descr',40,$It64_descr,true,'text',3,'');
-	             ?>
-	          </td>
-	          <td nowrap="nowrap" title = "Vida util do bem em anos.">
-	            <b>Vida Util:</b>
-	          </td>
-	          <td title = "Vida util do bem em anos.">
-	            <?
-                db_input('vidaUtil',10,$It44_vidautil,true,'text',$db_opcao,'');
-	            ?>
-	          </td>
-	        </tr>
-	      </table>
-	    </fieldset>
-	    <fieldset id='outros-dados'>
-	      <legend class='bold'>Outros Dados</legend>
-	      <table style="width: 100%">
-	        <tr>
-	          <td><b>Medida:</b></td>
-	          <td colspan="5">
-	            <?
-	              $rsBensMedida = $oDaoBensMedida->sql_record($oDaoBensMedida->sql_query());
-	              db_selectrecord('t67_sequencial',$rsBensMedida,'true',$db_opcao);
-	            ?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td style="width: "><b>Modelo:</b></td>
-	          <td colspan="5">
-	            <?
-	              $rsBensModelo = $oDaoBensModelo->sql_record($oDaoBensModelo->sql_query());
-	              db_selectrecord('t66_sequencial',$rsBensModelo,'true',$db_opcao, "");
-	            ?>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td><b>Marca:</b></td>
-	          <td colspan="5">
-	          <?
-	            $rsBensMarca = $oDaoBensMarca->sql_record($oDaoBensMarca->sql_query());
-	            db_selectrecord('t65_sequencial',$rsBensMarca,'true',$db_opcao);
-	          ?>
-	          </td>
-	        </tr>
-	      </table>
-	    </fieldset>
-	    <fieldset id="dadosdoimovel">
-	      <legend class='bold' onclick="js_mostraToogleDadosImovel();">Dados do imóvel</legend>
-	      <table style="width: 100%;">
-	        <tr>
-	          <td><b><? db_ancora(@$Lt54_idbql,"js_pesquisaCodigoLote(true);",$db_opcao); ?></b></td>
-	          <td><? db_input('t54_itbql',10,'',true,'text',$db_opcao,"") ?></td>
-	        </tr>
-	        <tr>
-	          <td colspan="2">
-	           <fieldset>
-	             <legend><b>Observações:</b></legend>
-	             <? db_textarea('observacoesimovel', 5, 85, '', true, 'text', 2) ?>
-	           </fieldset>
-	          </td>
-	        </tr>
-	      </table>
-	    </fieldset>
-	    <fieldset id="dadosdomaterial">
-	      <legend class="bold" onclick="js_mostraToogleDadosMaterial();">Dados do Material</legend>
-	      <table>
-	        <tr>
-	          <td><b>Nota Fiscal:</b></td>
-	          <td><? db_input('cod_notafiscal', 40, $It53_ntfisc, 'text', $db_opcao, '') ?></td>
-	        </tr>
-	        <tr>
-	          <td><b>Empenho do Sistema</b></td>
-	          <td>
-	            <select id="emp_sistema" name="emp_sistema" style="width: 80px;" onChange='js_mudaProc(this.value);'>
+            <tr>
+              <td id="tdLookupTipoDepreciacao" nowrap="nowrap" title=" alterar  <?=@$Tt64_class?>">
+                <b><?php
+                  db_ancora(
+                      "Tipo Depreciação",
+                      "js_pesquisaTipoDepreciacao(true);",
+                      $db_opcao,
+                      "",
+                      "linkLookupTipoDepreciacao"
+                  );
+                    ?></b>
+              </td>
+              <td nowrap="nowrap" colspan="3">
+                <?php
+                  db_input('cod_depreciacao', 10, $It64_class, true, 'text', $db_opcao, "onchange='js_pesquisaTipoDepreciacao(false);'");
+                  db_input('descr', 40, $It64_descr, true, 'text', 3, '');
+                ?>
+              </td>
+              <td nowrap="nowrap" title = "Vida util do bem em anos.">
+                <b>Vida Util:</b>
+              </td>
+              <td title = "Vida util do bem em anos.">
+                <?php
+                db_input('vidaUtil', 10, $It44_vidautil, true, 'text', $db_opcao, '');
+                ?>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+        <fieldset id='outros-dados'>
+          <legend class='bold'>Outros Dados</legend>
+          <table style="width: 100%">
+            <tr>
+              <td><b>Medida:</b></td>
+              <td colspan="5">
+                <?php
+                  $rsBensMedida = $oDaoBensMedida->sql_record($oDaoBensMedida->sql_query());
+                  db_selectrecord('t67_sequencial', $rsBensMedida, 'true', $db_opcao);
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: "><b>Modelo:</b></td>
+              <td colspan="5">
+                <?php
+                  $rsBensModelo = $oDaoBensModelo->sql_record($oDaoBensModelo->sql_query());
+                  db_selectrecord('t66_sequencial', $rsBensModelo, 'true', $db_opcao, "");
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td><b>Marca:</b></td>
+              <td colspan="5">
+              <?php
+                $rsBensMarca = $oDaoBensMarca->sql_record($oDaoBensMarca->sql_query());
+                db_selectrecord('t65_sequencial', $rsBensMarca, 'true', $db_opcao);
+                ?>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+        <fieldset id="dadosdoimovel">
+          <legend class='bold' onclick="js_mostraToogleDadosImovel();">Dados do imóvel</legend>
+          <table style="width: 100%;">
+            <tr>
+              <td><b><?php db_ancora(@$Lt54_idbql, "js_pesquisaCodigoLote(true);", $db_opcao); ?></b></td>
+              <td><?php db_input('t54_itbql', 10, '', true, 'text', $db_opcao, "") ?></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+               <fieldset>
+                 <legend><b>Observações:</b></legend>
+                 <?php db_textarea('observacoesimovel', 5, 85, '', true, 'text', 2) ?>
+               </fieldset>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+        <fieldset id="dadosdomaterial">
+          <legend class="bold" onclick="js_mostraToogleDadosMaterial();">Dados do Material</legend>
+          <table>
+            <tr>
+              <td><b>Nota Fiscal:</b></td>
+              <td><?php db_input('cod_notafiscal', 40, $It53_ntfisc, 'text', $db_opcao, '') ?></td>
+            </tr>
+            <tr>
+              <td><b>Empenho do Sistema</b></td>
+              <td>
+                <select id="emp_sistema" name="emp_sistema" style="width: 80px;" onChange='js_mudaProc(this.value);'>
                 <option value="s">Sim</option>
                 <option value="n">Não</option>
               </select>
             </td>
-	        </tr>
-	        <tr>
-	          <td><b>
-	            <span id="procAdm"><? db_ancora(@$Le60_numemp,"js_pesquisaEmpenho(true);",$db_opcao) ?></span>
-	            <span id="procAdm1" style="display:none;"><?php echo @$Le60_numemp?>:</span>
-	          </b></td>
-	          <td>
-	            <?
+            </tr>
+            <tr>
+              <td><b>
+                <span id="procAdm"><?php db_ancora(@$Le60_numemp, "js_pesquisaEmpenho(true);", $db_opcao) ?></span>
+                <span id="procAdm1" style="display:none;"><?php echo @$Le60_numemp?>:</span>
+              </b></td>
+              <td>
+                <?php
                 db_input('t53_empen', 10, $It53_empen, true, 'text', $db_opcao, " onchange='js_pesquisaEmpenho(false);'");
-              ?>
+                ?>
               <span id="campoDescricao">
-                <?db_input('z01_nome_empenho',30,$Iz01_nome,true,'text',3,""); ?>
+                <?php db_input('z01_nome_empenho', 30, $Iz01_nome, true, 'text', 3, ""); ?>
               </span>
-	          </td>
-	        </tr>
-	        <tr>
-	          <td><b>Ordem de compra:</b></td>
-	          <td><? db_input('cod_ordemdecompra', 10, '', true, 'text', $db_opcao, "") ?></td>
-	        </tr>
-	        <tr>
-	          <td><b>Garantia:</b></td>
-	          <td><? db_inputdata('garantia', '', '', '', true, 'text', $db_opcao, ""); ?></td>
-	        </tr>
-	      </table>
-	    </fieldset>
-	    <fieldset id='observacoes'>
+              </td>
+            </tr>
+            <tr>
+              <td><b>Ordem de compra:</b></td>
+              <td><?php db_input('cod_ordemdecompra', 10, '', true, 'text', $db_opcao, "") ?></td>
+            </tr>
+            <tr>
+              <td><b>Garantia:</b></td>
+              <td><?php db_inputdata('garantia', '', '', '', true, 'text', $db_opcao, "", '', "style='background-color:#E6E4F1'"); ?></td>
+            </tr>
+          </table>
+        </fieldset>
+        <fieldset id='observacoes'>
         <legend class='bold'>Observações</legend>
-        <?
+        <?php
           db_textarea('obser', 5, 98, "", true, "text", 2);
         ?>
       </fieldset>
-	  </form>
+      </form>
   </div>
 </fieldset>
 
 <div>
   <?php
     /**
-     * Efetuamos a validação da $db_opcao para setar o rótulo e nome do "db_opcao"
+     * Efetuamos a validação da $db_opcao para setar o r?tulo e nome do "db_opcao"
      */
     if ($db_opcao == 1) {
-
-    	$sNmDbOpcao = 'incluir';
-    	$sVlDbOpcao = 'Incluir';
-    } else if ($db_opcao == 2 || $db_opcao == 22) {
-
-    	$sNmDbOpcao = 'alterar';
-    	$sVlDbOpcao = 'Alterar';
+        $sNmDbOpcao = 'incluir';
+        $sVlDbOpcao = 'Incluir';
+    } elseif ($db_opcao == 2 || $db_opcao == 22) {
+        $sNmDbOpcao = 'alterar';
+        $sVlDbOpcao = 'Alterar';
     } else {
-
-    	$sNmDbOpcao = 'excluir';
-    	$sVlDbOpcao = 'Excluir';
+        $sNmDbOpcao = 'excluir';
+        $sVlDbOpcao = 'Excluir';
     }
-  ?>
+    ?>
   <input type="button" id="db_opcao" name="<?= $sNmDbOpcao ?>" value="<?= $sVlDbOpcao ?>" onclick="salvarDados();" />
   <input type="button" id="pesquisar" name="pesquisar" value="Pesquisar" onclick="js_pesquisa();" />
 </div>
@@ -569,7 +610,8 @@ $("sPlaca").observe('change', js_buscaPlacaStringDigitda);
 function js_buscaPlacaStringDigitda(){
 
   var url             = 'pat1_bensnovo.RPC.php';
-  var oObject         = new ObjoDaoBensMedidaect();
+  //var oObject         = new ObjoDaoBensMedidaect();
+  var oObject = {};
   oObject.exec        = "buscaPlacaString";
   oObject.sPlaca      = $F("sPlaca");
   oObject.iParametro  = iParametroPlaca;
@@ -1084,14 +1126,26 @@ function salvarDados() {
    oObject.t53_empen         = $F("t53_empen");
    oObject.cod_ordemdecompra = encodeURIComponent(tagString($F("cod_ordemdecompra")));
    oObject.garantia          = $F("garantia");
+   oObject.t52_processo      = encodeURIComponent(tagString($F("t52_processo")));
    oObject.obser             = encodeURIComponent(tagString($F("obser")));
    oObject.empenhosistema    = $F("emp_sistema");
+   oObject.nameImage = '';
+
+   if (oObject.pathImage && fotoBem.inputFileElement.files.length !== 0) {
+       oObject.nameImage = fotoBem.inputFileElement.files[0].name;
+   }
+   oObject.acao = encodeURIComponent(tagString("Incluir"));
+
+    if($F("db_opcao") == "Alterar") {
+        oObject.acao = encodeURIComponent(tagString("Alterar"));
+    }
 
     let inclusao = $F("t52_dtinclusao").split('/');
     let dataInclusao = inclusao[2] + '-' + inclusao[1] + '-' + inclusao[0];
 
     var aquisicao = $F("t52_dtaqu").split('/');
     var dataAquisicao = aquisicao[2] + '-' + aquisicao[1] + '-' + aquisicao[0];
+
 
     if (new Date(dataAquisicao) > new Date(dataInclusao)) {
         alert("Data de aquisição maior que a data de inclusão");
@@ -1106,7 +1160,7 @@ function salvarDados() {
 
    if (oObject.vlResidual == 0 && oObject.cod_depreciacao == QUOTAS_CONSTATES) {
        $('db_opcao').disabled = false;
-      alert("Valor residual (%) é obrigatório para Tipo de depreciação QUOTAS CONSTANTES");
+      alert("Valor residual (%) ? obrigatório para Tipo de depreciação QUOTAS CONSTANTES");
       return false;
    }
 
@@ -1136,6 +1190,7 @@ function salvarDados() {
 
      alert(_M('patrimonial.patrimonio.db_frm_bensglobalnovo.bens_cadastrados'));
      $('form1').reset();
+     fotoBem.setValue('');
      js_carregaDadosForm(1);
    }
  }
@@ -1298,13 +1353,13 @@ function js_mudaProc(sValor) {
   $('z01_nome').value = '';
   if (sValor == 's') {
 
-	  $('t53_empen').setAttribute('onChange', 'js_pesquisaEmpenho(false)');
+      $('t53_empen').setAttribute('onChange', 'js_pesquisaEmpenho(false)');
 
     $('campoDescricao').style.display = '';
     $('procAdm1').style.display = 'none';
     $('procAdm').style.display = '';
   } else {
-	  $('t53_empen').onchange = function(){};
+      $('t53_empen').onchange = function(){};
 
     $('campoDescricao').style.display = 'none';
     $('procAdm').style.display = 'none';
@@ -1369,7 +1424,7 @@ function js_limpaCamposAlteracao() {
 
     $("cod_depreciacao").style.backgroundColor = "#FFFFFF";
     $("vidaUtil").style.backgroundColor = "#FFFFFF";
-
+    fotoBem.setValue('');
 }
 
 var sLinkLookupTipoDepreciacao = $('tdLookupTipoDepreciacao').innerHTML;
@@ -1395,39 +1450,39 @@ function js_retornoBuscaDadoLote(oAjax) {
     $('vlTotal').value  = js_formatar(oRetorno.dados.dadosbem.vlTotal, "f");
 
     if (oRetorno.dados.dadosbem.t54_itbql) {
-    	$('t54_itbql').value 				 = oRetorno.dados.dadosbem.t54_itbql;
+        $('t54_itbql').value                 = oRetorno.dados.dadosbem.t54_itbql;
     }
 
     if(oRetorno.dados.dadosbem.observacoesimovel){
-    	$('observacoesimovel').value = oRetorno.dados.dadosbem.observacoesimovel.urlDecode();
+        $('observacoesimovel').value = oRetorno.dados.dadosbem.observacoesimovel.urlDecode();
     }
 
     if(oRetorno.dados.dadosbem.cod_notafiscal){
-    	$('cod_notafiscal').value    = oRetorno.dados.dadosbem.cod_notafiscal;
+        $('cod_notafiscal').value    = oRetorno.dados.dadosbem.cod_notafiscal;
     }
 
     if(oRetorno.dados.dadosbem.t53_empen){
-    	$('t53_empen').value         = oRetorno.dados.dadosbem.t53_empen;
+        $('t53_empen').value         = oRetorno.dados.dadosbem.t53_empen;
     }
 
     if(oRetorno.dados.dadosbem.cod_ordemdecompra){
-    	$('cod_ordemdecompra').value = oRetorno.dados.dadosbem.cod_ordemdecompra;
+        $('cod_ordemdecompra').value = oRetorno.dados.dadosbem.cod_ordemdecompra;
     }
 
     if(oRetorno.dados.dadosbem.garantia){
-    	$('garantia').value          = oRetorno.dados.dadosbem.garantia;
+        $('garantia').value          = oRetorno.dados.dadosbem.garantia;
     }
 
     if(oRetorno.dados.dadosbem.obser){
-    	$('obser').value             = oRetorno.dados.dadosbem.obser.urlDecode();
+        $('obser').value             = oRetorno.dados.dadosbem.obser.urlDecode();
     }
 
     if(oRetorno.dados.dadosbem.empenhosistema){
-    	$('emp_sistema').value       = oRetorno.dados.dadosbem.empenhosistema;
+        $('emp_sistema').value       = oRetorno.dados.dadosbem.empenhosistema;
     }
 
     if(oRetorno.dados.dadosbem.z01_nome_empenho){
-    	$('z01_nome_empenho').value  = oRetorno.dados.dadosbem.z01_nome_empenho.urlDecode();
+        $('z01_nome_empenho').value  = oRetorno.dados.dadosbem.z01_nome_empenho.urlDecode();
     }
 
     if(oRetorno.dados.dadosbem.imagePath) {
@@ -1519,14 +1574,14 @@ function js_bloquearValores(lBloquear) {
 
   } else {
 
-	  $("vlAquisicao").disabled                  = lBloquear;
-	  $("vlAquisicao").style.backgroundColor     = sCor;
-	  $("vlAquisicao").style.color               = "#000000";
-	  $("vlResidual").disabled                   = lBloquear;
-	  $("vlResidual").style.backgroundColor      = "#DEB887";
-	  $("vlResidual").style.color                = "#000000";
-	  $("perc_residual").style.backgroundColor   = sCor;
-	  $("perc_residual").style.color             = "#000000";
+      $("vlAquisicao").disabled                  = lBloquear;
+      $("vlAquisicao").style.backgroundColor     = sCor;
+      $("vlAquisicao").style.color               = "#000000";
+      $("vlResidual").disabled                   = lBloquear;
+      $("vlResidual").style.backgroundColor      = "#DEB887";
+      $("vlResidual").style.color                = "#000000";
+      $("perc_residual").style.backgroundColor   = sCor;
+      $("perc_residual").style.color             = "#000000";
 
 
   }

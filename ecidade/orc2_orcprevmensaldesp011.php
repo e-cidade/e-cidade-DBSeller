@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ function js_emite(){
       <tr>
         <td align="right" ><strong>Nível :</strong></td>
         <td>
-	  <?
+	  <?php
 
 
 $xy = array ('1' => 'Orgão', '2' => 'Unidade','3' => 'Função', '4' => 'Subfunção','5' => 'Programa', '6' => 'Proj/Ativ','7' => 'Elemento','8' => 'Recurso');
@@ -83,7 +83,7 @@ db_input("db_selinstit",10,0,true,"hidden",3);
       <tr>
         <td align="right" ><strong>Bimestre :</strong></td>
         <td>
-        <?
+        <?php
         $xx = array ('1' => 'Primeiro', '2' => 'Segundo','3' => 'Terceiro', '4' => 'Quarto','5' => 'Quinto', '6' => 'Sexto');
         db_select('bimestre', $xx, true, 2, "");
         ?>
@@ -92,7 +92,7 @@ db_input("db_selinstit",10,0,true,"hidden",3);
       <tr>
         <td align="right" ><strong>Tipo Impressão :</strong></td>
         <td>
-        <?
+        <?php
         $aTipoImp = array ('B' => 'Bimestral', 'M' => 'Mensal');
         db_select('tipoimp', $aTipoImp, true, 2, "");
         ?>

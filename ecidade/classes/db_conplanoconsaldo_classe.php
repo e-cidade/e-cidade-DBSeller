@@ -58,13 +58,13 @@ class cl_conplanoconsaldo {
                  c59_credito = float8 = Crédito
                  ";
    //funcao construtor da classe
-   function cl_conplanoconsaldo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoconsaldo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_conplanoconsaldo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c59_anoexe = ($this->c59_anoexe == ""?@$GLOBALS["HTTP_POST_VARS"]["c59_anoexe"]:$this->c59_anoexe);
        $this->c59_codcon = ($this->c59_codcon == ""?@$GLOBALS["HTTP_POST_VARS"]["c59_codcon"]:$this->c59_codcon);
@@ -89,7 +89,7 @@ class cl_conplanoconsaldo {
      }
    }
    // funcao para inclusao
-   function incluir ($c59_anoexe,$c59_codcon,$c59_instit,$c59_mes){
+   public function incluir ($c59_anoexe,$c59_codcon,$c59_instit,$c59_mes){
       $this->atualizacampos();
      if($this->c59_debito == null ){
        $this->erro_sql = " Campo Débito nao Informado.";
@@ -189,7 +189,7 @@ class cl_conplanoconsaldo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null) {
+   public function alterar ($c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null) {
       $this->atualizacampos();
      $sql = " update conplanoconsaldo set ";
      $virgula = "";
@@ -318,7 +318,7 @@ class cl_conplanoconsaldo {
      }
    }
    // funcao para exclusao
-   function excluir ($c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$dbwhere=null) {
+   public function excluir ($c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c59_anoexe,$c59_codcon,$c59_instit,$c59_mes));
      }else{
@@ -388,7 +388,7 @@ class cl_conplanoconsaldo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -410,10 +410,10 @@ class cl_conplanoconsaldo {
       }
      return $result;
    }
-   function sql_query ( $c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_conplanoconsaldo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,10 +471,10 @@ class cl_conplanoconsaldo {
      }
      return $sql;
   }
-   function sql_query_file ( $c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_conplanoconsaldo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

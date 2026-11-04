@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,13 +53,13 @@ $oRotulo->label("j131_obs");
       <?=@$Lj131_idcons?>
     </td>
     <td>
-      <? db_input('j131_idcons',10,$Ij131_idcons,true,'text',3,"") ?>
+      <?php db_input('j131_idcons',10,$Ij131_idcons,true,'text',3,"") ?>
     </td>
   </tr>
   <tr>
     <td title="Origem do Processo"> <b>Processo do Sistema:</b> </td>
     <td >
-     <?
+     <?php
       $x = array("S"=>"Sim", "N"=>"Não");
       db_select("lProcesso", $x, true, $db_opcao, "onChange=js_montaCampoProcesso()");
      ?>
@@ -68,7 +68,7 @@ $oRotulo->label("j131_obs");
   <tr>
     <td nowrap title="<?=@$Tj131_codprot?>">
       <div id="ProcessoLabel1" style='display: none;'>
-         <?db_ancora(@$Lj131_codprot, "js_pesquisaj131_codprot(true)", $db_opcao)?>
+         <?php db_ancora(@$Lj131_codprot, "js_pesquisaj131_codprot(true)", $db_opcao)?>
       </div>
       <div id="ProcessoLabel2" style='display: none;'>
          <?=@$Lj131_codprot?>
@@ -140,7 +140,7 @@ $oRotulo->label("j131_obs");
   <tr>
     <td title="Habite-se do Sistema?"> <b>Habite-se do Sistema:</b> </td>
     <td >
-     <?
+     <?php
       $x = array("S"=>"Sim", "N"=>"Não");
       db_select("lHabite", $x, true, $db_opcao, "onChange=js_montaCampoHabite()");
      ?>
@@ -149,7 +149,7 @@ $oRotulo->label("j131_obs");
   <tr>
     <td nowrap title="<?=@$Tj131_cadhab?>">
       <div id="HabiteLabel1" style='display: none;'>
-         <?db_ancora(@$Lj131_cadhab, "js_pesquisaj131_cadhab(true)", $db_opcao)?>
+         <?php db_ancora(@$Lj131_cadhab, "js_pesquisaj131_cadhab(true)", $db_opcao)?>
       </div>
       <div id="HabiteLabel2" style='display: none;'>
          <?=@$Lj131_cadhab?>
@@ -233,7 +233,7 @@ $oRotulo->label("j131_obs");
   	</td>
   	<td>
   		<div id="labelDtHabite1">
-  			<?
+  			<?php
   				db_textarea('j131_obs', 5, 50, $Ij131_obs, true, 'text', 1);
   			?>
   		</div>
@@ -258,7 +258,7 @@ $oRotulo->label("j131_obs");
 
   <tr>
    <td colspan="2">
-     <?
+     <?php
      if(isset($j131_idcons)){
          $chavepri= array("j131_idcons"=>$j131_idcons,"j131_matric"=>$j131_matric,"j131_sequencial"=>@$j131_sequencial);
          $cliframe_alterar_excluir->chavepri= $chavepri;

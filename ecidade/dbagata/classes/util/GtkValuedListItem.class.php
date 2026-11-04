@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -27,18 +27,18 @@
 
 class GtkValuedListItem extends GtkListItem
 {
-    function GtkValuedListItem($label = "", $value = "")
+    public function GtkValuedListItem($label = "", $value = "")
     {
         GtkListItem::GtkListItem($label);
         $this->value = $value;
     }
     
-    function set_value($value)
+    public function set_value($value)
     {
         $this->value = $value;
     }
     
-    function get_value()
+    public function get_value()
     {
         return $this->value;
     }

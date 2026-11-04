@@ -95,7 +95,7 @@ if ($p58_codigo) {
         <b>Usuário:</b>
       </td>
       <td>
-      <?
+      <?php
         $sql = "select nome from db_usuarios where id_usuario = ".$sDbIdUsuario;
         echo pg_result(db_query($sql),0,"nome");
       ?>
@@ -152,7 +152,7 @@ if ($p58_codigo) {
         <?=@$Lp58_codproc; ?>
       </td>
       <td>
-      <?
+      <?php
         db_input('p58_codproc',20,$Ip58_codproc,true,'text',3,"");
       ?>
     </td>
@@ -166,7 +166,7 @@ if ($p58_codigo) {
             <?=@$Lp58_numero; ?>
           </td>
           <td>
-          <?
+          <?php
             db_input('p58_numero', 20, $numeracao, true, 'text',3,"");
           ?>
         </td>
@@ -178,7 +178,7 @@ if ($p58_codigo) {
       <?=@$Lp58_dtproc;?>
       </td>
       <td>
-    <?
+    <?php
         db_inputdata('p58_dtproc',@$p58_dtproc_dia,@$p58_dtproc_mes,@$p58_dtproc_ano,false,'text',3,"","p58_dtproc");
     ?>
     </td>
@@ -188,7 +188,7 @@ if ($p58_codigo) {
       <?=@$Lp58_hora;?>
       </td>
       <td>
-    <?
+    <?php
     if($db_opcao == 1){
       $p58_hora = db_hora();
       db_input('p58_hora',10,@$Ip58_hora,true,'text','3','');
@@ -208,7 +208,7 @@ if ($p58_codigo) {
         ?>
       </td>
     </tr>
-  <?
+  <?php
     $op_tip = 1;
 
     if($db_opcao==2){
@@ -243,10 +243,10 @@ if ($p58_codigo) {
         ?>
       </td>
       <td>
-        <?
+        <?php
           db_input('p58_codigo', 10, $Ip58_codigo, true, 'text');
         ?>
-        <?
+        <?php
           db_input('p51_descr', 40, $Ip51_descr, true, 'text', 3, '');
           if($db_opcao == 1){
             $p58_hora = db_hora();
@@ -257,7 +257,7 @@ if ($p58_codigo) {
     </tr>
     <tr>
       <td nowrap title="<?=@$Tp58_numcgm?>">
-        <?
+        <?php
         db_ancora(@$Lp58_numcgm,"js_pesquisap58_numcgm(true);",$db_opcao);
         ?>
       </td>

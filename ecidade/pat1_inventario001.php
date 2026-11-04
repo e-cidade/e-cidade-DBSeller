@@ -110,7 +110,7 @@ db_app::load("estilos.css");
           <?=@$Lt75_periodofinal?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('t75_periodofinal',@$t75_periodofinal_dia,@$t75_periodofinal_mes,@$t75_periodofinal_ano,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -120,7 +120,7 @@ db_app::load("estilos.css");
           <?=@$Lt75_exercicio?>
         </td>
         <td> 
-          <?
+          <?php
             $t75_exercicio = db_getsession("DB_anousu");
             db_input('t75_exercicio',10,$It75_exercicio,true,'text', 3,"")
           ?>
@@ -128,24 +128,24 @@ db_app::load("estilos.css");
       </tr>
       <tr>
         <td title="<?=@$Tt75_processo?>">
-          <?
+          <?php
             db_ancora(@$Lt75_processo,"js_pesquisat75_processo(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t75_processo',10,$It75_processo,true,'text',$db_opcao," onchange='js_pesquisat75_processo(false);'");
           ?>
         </td>
       </tr>
       <tr>
         <td title="<?=@$Tt75_acordocomissao?>">
-          <?
+          <?php
             db_ancora(@$Lt75_acordocomissao,"js_pesquisat75_acordocomissao(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t75_acordocomissao',10,$It75_acordocomissao,true,'text',$db_opcao," onchange='js_pesquisat75_acordocomissao(false);'");
             db_input('ac08_descricao',39,$Iac08_descricao,true,'text',3,'');
           ?>
@@ -155,7 +155,7 @@ db_app::load("estilos.css");
         <td title="<?=@$Tt75_observacao?>" colspan="2">
           <fieldset class="separator">
             <legend>Observação</legend>
-            <?
+            <?php
               db_textarea('t75_observacao',5,70,$It75_observacao,true,'text',$db_opcao,"")
             ?>
           </fieldset>
@@ -167,7 +167,7 @@ db_app::load("estilos.css");
   <input name="limpar" type="reset" id="limpar" value="Limpar"  >
 </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -337,7 +337,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_inventario.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

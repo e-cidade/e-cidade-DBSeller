@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,13 +56,13 @@ class cl_conhistdocregra {
                  c92_anousu = int4 = Ano Exercício
                  ";
    //funcao construtor da classe
-   function cl_conhistdocregra() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conhistdocregra");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_conhistdocregra {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c92_sequencial = ($this->c92_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c92_sequencial"]:$this->c92_sequencial);
        $this->c92_conhistdoc = ($this->c92_conhistdoc == ""?@$GLOBALS["HTTP_POST_VARS"]["c92_conhistdoc"]:$this->c92_conhistdoc);
@@ -83,7 +83,7 @@ class cl_conhistdocregra {
      }
    }
    // funcao para inclusao
-   function incluir ($c92_sequencial=null){
+   public function incluir ($c92_sequencial=null){
       $this->atualizacampos();
      if($this->c92_conhistdoc == null ){
        $this->erro_sql = " Campo Documento nao Informado.";
@@ -206,7 +206,7 @@ class cl_conhistdocregra {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c92_sequencial=null) {
+   public function alterar ($c92_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conhistdocregra set ";
      $virgula = "";
@@ -331,7 +331,7 @@ class cl_conhistdocregra {
      }
    }
    // funcao para exclusao
-   function excluir ($c92_sequencial=null,$dbwhere=null) {
+   public function excluir ($c92_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c92_sequencial));
      }else{
@@ -396,7 +396,7 @@ class cl_conhistdocregra {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -419,7 +419,7 @@ class cl_conhistdocregra {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $c92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -455,7 +455,7 @@ class cl_conhistdocregra {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $c92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

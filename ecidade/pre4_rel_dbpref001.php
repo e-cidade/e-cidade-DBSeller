@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -112,7 +112,7 @@ if( !isset($HTTP_GET_VARS["ano"]) && !isset( $HTTP_GET_VARS["mes"])){
                           <td>
                                Competência:
                                 <select name="ano" onchange="js_criames(this)">
-                                <?
+                                <?php
                                   $sano = date("Y");
                                   if(date("m")==12)
                                    $sano ++;
@@ -147,13 +147,13 @@ if( !isset($HTTP_GET_VARS["ano"]) && !isset( $HTTP_GET_VARS["mes"])){
           </tr>
         </form>
        </table>
-      <?
+      <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
     ?>
     </body>
     </html>
-    <?
+    <?php
 } else {
     db_postmemory($HTTP_POST_VARS);
     $str_sql = "select issqnret.*,

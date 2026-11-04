@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE turmacenso
 class cl_turmacenso
@@ -28,7 +28,7 @@ class cl_turmacenso
                  ";
 
     //funcao construtor da classe
-    function cl_turmacenso()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("turmacenso");
@@ -36,7 +36,7 @@ class cl_turmacenso
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -47,7 +47,7 @@ class cl_turmacenso
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ed342_sequencial = ($this->ed342_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed342_sequencial"] : $this->ed342_sequencial);
@@ -59,7 +59,7 @@ class cl_turmacenso
     }
 
     // funcao para inclusao
-    function incluir($ed342_sequencial)
+    public function incluir($ed342_sequencial)
     {
 
         $this->atualizacampos();
@@ -159,7 +159,7 @@ class cl_turmacenso
     }
 
     // funcao para alteracao
-    function alterar($ed342_sequencial = null)
+    public function alterar($ed342_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update turmacenso set ";
@@ -254,7 +254,7 @@ class cl_turmacenso
     }
 
     // funcao para exclusao
-    function excluir($ed342_sequencial = null, $dbwhere = null)
+    public function excluir($ed342_sequencial = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -328,7 +328,7 @@ class cl_turmacenso
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -353,11 +353,11 @@ class cl_turmacenso
     }
 
     // funcao do sql
-    function sql_query($ed342_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ed342_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_turmacenso
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -392,11 +392,11 @@ class cl_turmacenso
     }
 
     // funcao do sql
-    function sql_query_file($ed342_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ed342_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_turmacenso
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -433,8 +433,8 @@ class cl_turmacenso
     public function sql_censo($ed342_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
         $sql  = "
-            select {$campos} 
-              from turmacenso 
+            select {$campos}
+              from turmacenso
                    inner join turmacensoturma on turmacenso.ed342_sequencial = turmacensoturma.ed343_turmacenso
                    inner join censoetapaturmacenso on censoetapaturmacenso.ed134_turmacenso = turmacenso.ed342_sequencial
                    inner join turma on turma.ed57_i_codigo = turmacensoturma.ed343_turma

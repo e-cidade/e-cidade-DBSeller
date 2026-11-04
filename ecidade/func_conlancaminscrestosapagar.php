@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clconlancaminscrestosapagar->rotulo->label("c108_sequencial");
     <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
       <tr>
         <td><label><?=$Lc108_sequencial?></label></td>
-        <td><? db_input("c108_sequencial",10,$Ic108_sequencial,true,"text",4,"","chave_c108_sequencial"); ?></td>
+        <td><?php db_input("c108_sequencial",10,$Ic108_sequencial,true,"text",4,"","chave_c108_sequencial"); ?></td>
       </tr>
       <tr>
         <td><label><?=$Lc108_sequencial?></label></td>
-        <td><? db_input("c108_sequencial",10,$Ic108_sequencial,true,"text",4,"","chave_c108_sequencial");?></td>
+        <td><?php db_input("c108_sequencial",10,$Ic108_sequencial,true,"text",4,"","chave_c108_sequencial");?></td>
       </tr>
     </table>
   </fieldset>
@@ -36,7 +36,7 @@ $clconlancaminscrestosapagar->rotulo->label("c108_sequencial");
   <input name="limpar" type="reset" id="limpar" value="Limpar" >
   <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_conlancaminscrestosapagar.hide();">
 </form>
-<?
+<?php
 if(!isset($pesquisa_chave)){
 
   $campos = "conlancaminscrestosapagar.*";
@@ -73,12 +73,12 @@ if(!isset($pesquisa_chave)){
 ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

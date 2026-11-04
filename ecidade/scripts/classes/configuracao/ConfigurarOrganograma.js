@@ -23,18 +23,19 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-require('scripts/widgets/windowAux.widget.js');
-require('scripts/widgets/DBTreeView.widget.js');
-require('scripts/session.js');
-require('scripts/classes/http');
 
 /**
  * Monta uma view utilizando windowAux para configurar o organograma.
- * @param {integer} codigoInstituicao 
- * @param {integer} codigoDepartamento 
+ * @param {integer} codigoInstituicao
+ * @param {integer} codigoDepartamento
+ *
+ * @requires scripts/widgets/windowAux.widget.js
+ * @requires scripts/widgets/DBTreeView.widget.js
+ * @requires scripts/classes/http/http.js
+ * @requires scripts/session.js
  */
 const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
-    
+
     let wndWidth = screen.availWidth / 2;
     let wndHeight = screen.availHeight / 2;
     const window = new windowAux('Organograma', 'Configurar Organograma', wndWidth, wndHeight);
@@ -69,7 +70,7 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
         const btnSalvar = document.createElement('button');
 
         let li = document.createElement('li');
-        li.innerHTML = `Selecione o Departamento desejado e clique em 
+        li.innerHTML = `Selecione o Departamento desejado e clique em
             <kbd><i class="fas fa-save"></i> Salvar</kbd> para vincular o departamento;`;
 
         divAlert.classList.add('alert', 'alert-primary');
@@ -91,15 +92,15 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
 
         inputAssociado.setAttribute('type', 'checkbox');
         inputAssociado.setAttribute('id', 'associado');
-    
+
         btnSalvar.setAttribute('id', 'btnSalvar');
         btnSalvar.innerHTML = '<i class="far fa-save"></i> Salvar';
         btnSalvar.addEventListener('click', salvar);
-        
+
 
         let tr = document.createElement('tr');
         let td = document.createElement('td');
-        
+
         td.appendChild(labelDescricao);
         td.appendChild(inputDescricao);
         tr.appendChild(td);
@@ -109,23 +110,23 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
         td.appendChild(labelAssociado);
         td.appendChild(inputAssociado);
         tr.appendChild(td);
-        
+
         table.appendChild(tr);
 
         fieldsetTreeView.appendChild(divTreeView);
         fieldset.append(table);
         fieldset.appendChild(fieldsetTreeView);
-        
+
         montaTreeView(divTreeView);
-        
+
         divSubContainer.appendChild(fieldset);
-        
+
         divBtn.appendChild(btnSalvar);
 
         divWindowAux.appendChild(divAlert);
         divWindowAux.appendChild(divSubContainer);
         divWindowAux.appendChild(divBtn);
-    
+
         window.setContent(divWindowAux);
     }
 
@@ -143,8 +144,8 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
 
     /**
      * evento do Click no checkbox. Somente um checkbox pode estar selecionado.
-     * @param {DBTreeView} node 
-     * @param {Event} event 
+     * @param {DBTreeView} node
+     * @param {Event} event
      */
     const eventoCheckBox = (node, event) => {
         const checkeds = document.querySelectorAll('.marker-checked');
@@ -158,13 +159,13 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
                 no.uncheckAll(event);
             });
             treeView.setChecked(event, event.target);
-        } 
+        }
     }
 
     /**
      * Monta a TreeView de acordo com o Objeto passado por parametro
-     * @param {Object} data 
-     * @param {integer} parentNode 
+     * @param {Object} data
+     * @param {integer} parentNode
      */
     const montaOrganograma = (data, parentNode) => {
         const checkbox = {
@@ -198,14 +199,14 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
         if (chkNode.length === 0) {
             return alert('Necessário informar o departamento pai.');
         }
-        
+
         chkNode = chkNode.pop();
 
         formData.append('departamentofilho', codigoDepartamento);
         formData.append('descricao', txtDescricao.value);
         formData.append('associado', chkAssociado.checked);
         formData.append('departamento', chkNode.value)
-        
+
         PHPSession.appendFormData(formData);
 
         HttpClient.post(`${PHPSession.requestApi}/${rotas.salvar}`, {body: formData}).then(response => {
@@ -216,7 +217,7 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
             recarregaTreeView();
         });
     }
-    
+
     const recarregaTreeView = () => {
         let li = document.getElementById('TreeViewOrganograma').querySelectorAll('li');
         li.forEach(li => li.remove());
@@ -228,6 +229,6 @@ const ConfigurarOrganograma = function(codigoInstituicao, codigoDepartamento) {
         window.show();
     }
 
-    montaWindow(); 
+    montaWindow();
     loadData();
 }

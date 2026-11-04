@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -62,7 +62,7 @@ $db_botao           = true;
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Inclusão de Procedimento de Avaliação</b></legend>
-        <?include(modification("forms/db_frmprocedimento.php"));?>
+        <?php include(modification("forms/db_frmprocedimento.php"));?>
       </fieldset>
      </center>
     </td>

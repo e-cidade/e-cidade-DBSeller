@@ -1,4 +1,4 @@
-<?
+<?php
 //require(modification('fpdf151/alphapdf.php'));
 //$obj_alpha   = new alphapdf;
 //ie("aki");

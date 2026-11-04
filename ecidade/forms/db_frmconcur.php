@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clconcur->rotulo->label();
        <?=@$Lh06_refer?>
     </td>
     <td> 
-<?
+<?php
 db_input('h06_refer',5,$Ih06_refer,true,'text',($db_opcao == 1 ? 1 : 3),"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('h06_refer',5,$Ih06_refer,true,'text',($db_opcao == 1 ? 1 : 3),"")
        <?=@$Lh06_eaber?>
     </td>
     <td> 
-<?
+<?php
 db_input('h06_eaber',28,$Ih06_eaber,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('h06_eaber',28,$Ih06_eaber,true,'text',$db_opcao,"")
        <?=@$Lh06_daber?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h06_daber',@$h06_daber_dia,@$h06_daber_mes,@$h06_daber_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_inputdata('h06_daber',@$h06_daber_dia,@$h06_daber_mes,@$h06_daber_ano,true,'t
        <?=@$Lh06_ehomo?>
     </td>
     <td> 
-<?
+<?php
 db_input('h06_ehomo',28,$Ih06_ehomo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('h06_ehomo',28,$Ih06_ehomo,true,'text',$db_opcao,"")
        <?=@$Lh06_dhomo?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h06_dhomo',@$h06_dhomo_dia,@$h06_dhomo_mes,@$h06_dhomo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_inputdata('h06_dhomo',@$h06_dhomo_dia,@$h06_dhomo_mes,@$h06_dhomo_ano,true,'t
        <?=@$Lh06_concur?>
     </td>
     <td> 
-<?
+<?php
 db_input('h06_concur',28,$Ih06_concur,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('h06_concur',28,$Ih06_concur,true,'text',$db_opcao,"")
        <?=@$Lh06_dpubl?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h06_dpubl',@$h06_dpubl_dia,@$h06_dpubl_mes,@$h06_dpubl_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -106,7 +106,7 @@ db_inputdata('h06_dpubl',@$h06_dpubl_dia,@$h06_dpubl_mes,@$h06_dpubl_ano,true,'t
        <?=@$Lh06_dvalid?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h06_dvalid',@$h06_dvalid_dia,@$h06_dvalid_mes,@$h06_dvalid_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -116,7 +116,7 @@ db_inputdata('h06_dvalid',@$h06_dvalid_dia,@$h06_dvalid_mes,@$h06_dvalid_ano,tru
        <?=@$Lh06_dprorr?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h06_dprorr',@$h06_dprorr_dia,@$h06_dprorr_mes,@$h06_dprorr_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ db_inputdata('h06_dprorr',@$h06_dprorr_dia,@$h06_dprorr_mes,@$h06_dprorr_ano,tru
        <?=@$Lh06_nrproc?>
     </td>
     <td> 
-<?
+<?php
 db_input('h06_nrproc',28,$Ih06_nrproc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -142,7 +142,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_concur.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

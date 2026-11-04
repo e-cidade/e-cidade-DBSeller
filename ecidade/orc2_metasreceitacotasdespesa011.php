@@ -57,7 +57,7 @@ $db_opcao = 1;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("estilos.css");
 db_app::load("prototype.js");
@@ -78,12 +78,12 @@ db_app::load("strings.js");
           <table>
             <tr>
               <td>
-                <?
+                <?php
                  db_ancora("<b>Perspectiva:</b>","js_pesquisao125_cronogramaperspectiva(true);",$db_opcao);
                 ?>
               </td>
               <td> 
-                <?
+                <?php
                 db_input('o124_sequencial',10,$Io124_sequencial,true,'text',
                          $db_opcao," onchange='js_pesquisao125_cronogramaperspectiva(false);'");
                 db_input('o124_descricao',40,$Io124_descricao,true,'text',3,'')
@@ -92,7 +92,7 @@ db_app::load("strings.js");
             <tr>
                <td>&nbsp;</td>
                <td>
-                 <? db_selinstit('',300,100); 
+                 <?php db_selinstit('',300,100); 
                   db_input('filtra_despesa', 10,'',true, 'hidden', 3);
                  ?>
               </td>
@@ -114,7 +114,7 @@ db_app::load("strings.js");
                  <b>Periodicidade:</b>
                </td>
                <td>
-                 <?
+                 <?php
                    db_select("periodicidade",array(1 => "mensal", 2 => "Bimestral"), true, 1);
                  ?>
                </td>
@@ -124,14 +124,14 @@ db_app::load("strings.js");
                  <b>Forma de Emissão:</b>
                </td>
                <td>
-                 <?
+                 <?php
                    db_select("forma",array(1 => "Por Recurso", 2 => "Totalizaçao Geral"), true, 1);
                  ?>
                </td>
              </tr>
-             <tr id='listarecursos' style='display:'>
+             <tr id='listarecursos' style='display:text'>
               <td colspan=2><table>
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $oListaRecurso->cabecalho = "<strong>Recurso</strong>";
                  $oListaRecurso->codigo = "o15_codigo"; //chave de retorno da func

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcadorigem->rotulo->label("k33_descr");
               <?=$Lk33_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k33_sequencial",10,$Ik33_sequencial,true,"text",4,"","chave_k33_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadorigem->rotulo->label("k33_descr");
               <?=$Lk33_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k33_descr",40,$Ik33_descr,true,"text",4,"","chave_k33_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadorigem->rotulo->label("k33_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadorigem.php")==true){
@@ -122,12 +122,12 @@ $clcadorigem->rotulo->label("k33_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

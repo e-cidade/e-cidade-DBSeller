@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrhtipoperdatipoassentamento->rotulo->label("h71_sequencial");
               <?=$Lh71_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h71_sequencial",10,$Ih71_sequencial,true,"text",4,"","chave_h71_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhtipoperdatipoassentamento->rotulo->label("h71_sequencial");
               <?=$Lh71_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h71_sequencial",10,$Ih71_sequencial,true,"text",4,"","chave_h71_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhtipoperdatipoassentamento->rotulo->label("h71_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhtipoperdatipoassentamento.php")==true){
@@ -122,12 +122,12 @@ $clrhtipoperdatipoassentamento->rotulo->label("h71_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

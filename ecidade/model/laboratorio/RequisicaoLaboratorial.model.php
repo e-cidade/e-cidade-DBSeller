@@ -27,6 +27,7 @@ const CAMINHO_MENSAGEM_REQUISICAO_LABORATORIAL = "laboratorio.RequisicaoLaborato
 
 /**
  * Class RequisicaoLaboratorial
+ * Representa a tabela lab_requisicao
  * @package Laboratorio
  * @author André Mello andre.mello@dbseller.com.br
  * @version $
@@ -114,6 +115,11 @@ class RequisicaoLaboratorial
     private $dataUltimaMenstruacao;
 
     /**
+     * @var array $prioridadeTipo
+     */
+    private $prioridadeTipo;
+
+    /**
      * Construtor da RequisiçãoExame (lab_requisicao)
      * @param integer $iCodigo Código da tabela lab_requisicao
      * @throws BusinessException If Código informado não for encontrado
@@ -127,7 +133,9 @@ class RequisicaoLaboratorial
             $rsRequisicaoLaboratorial = $oDaoRequisicaoLaboratorial->sql_record($sSqlRequisicaoLaboratorial);
 
             if (!$rsRequisicaoLaboratorial || $oDaoRequisicaoLaboratorial->numrows == 0) {
-                throw new BusinessException(_M(CAMINHO_MENSAGEM_REQUISICAO_LABORATORIAL . ".codigo_nao_encontrado"));
+                $mensagem = _M(CAMINHO_MENSAGEM_REQUISICAO_LABORATORIAL . ".codigo_nao_encontrado") . PHP_EOL;
+                $mensagem .= "Requisição laboratorial: " . $iCodigo;
+                throw new BusinessException($mensagem);
             }
 
             $oDadosRequisicao = db_utils::fieldsMemory($rsRequisicaoLaboratorial, 0);
@@ -144,6 +152,7 @@ class RequisicaoLaboratorial
             $this->observacao = $oDadosRequisicao->la22_t_observacao;
             $this->autorizacao = $oDadosRequisicao->la22_i_autoriza;
             $this->contato = $oDadosRequisicao->la22_c_contato;
+            $this->prioridadeTipo = $this->setPrioridadeTipo();
         }
     }
 
@@ -482,8 +491,12 @@ class RequisicaoLaboratorial
                 return null;
             }
 
-            $this->laboratorio = LaboratorioRepository::getLaboratorioByCodigo(db_utils::fieldsMemory($rs,
-              0)->la02_i_codigo);
+            $this->laboratorio = LaboratorioRepository::getLaboratorioByCodigo(
+                db_utils::fieldsMemory(
+                    $rs,
+                    0
+                )->la02_i_codigo
+            );
         }
 
         return $this->laboratorio;
@@ -520,7 +533,7 @@ class RequisicaoLaboratorial
 
         if (array_key_exists('la22_i_departamento', $state)) {
             $requisicaoLaboratorial->setDepartamento(
-              \DBDepartamentoRepository::getDBDepartamentoByCodigo((int)$state['la22_i_departamento'])
+                \DBDepartamentoRepository::getDBDepartamentoByCodigo((int)$state['la22_i_departamento'])
             );
         }
 
@@ -541,8 +554,9 @@ class RequisicaoLaboratorial
         }
 
         if (array_key_exists('la22_d_data', $state)) {
-            $requisicaoLaboratorial->setData(!is_null($state['la22_d_data']) ? new DBDate($state['la22_d_data']) :
-              ''
+            $requisicaoLaboratorial->setData(
+                !is_null($state['la22_d_data']) ? new DBDate($state['la22_d_data']) :
+                    ''
             );
         }
 
@@ -556,8 +570,8 @@ class RequisicaoLaboratorial
 
         if (array_key_exists('la22_d_dum', $state)) {
             $requisicaoLaboratorial->setDataUltimaMenstruacao(
-              !is_null($state['la22_d_dum']) ? new DBDate($state['la22_d_dum']) :
-                ''
+                !is_null($state['la22_d_dum']) ? new DBDate($state['la22_d_dum']) :
+                    ''
             );
         }
 
@@ -596,21 +610,70 @@ class RequisicaoLaboratorial
         }
 
         return array(
-          'la22_i_codigo'       => $this->getCodigo(),
-          'la22_i_departamento' => $this->getDepartamento(),
-          'la22_i_cgs'          => $this->getCgs(),
-          'la22_c_responsavel'  => $this->getResponsavel(),
-          'la22_d_data'         => !is_null($this->getData()) ? $this->getData()->convertTo('Y-m-d') : null,
-          'la22_c_hora'         => $this->getHora(),
-          'la22_c_medico'       => $this->getMedico(),
-          'la22_d_dum'          => !empty($this->getDataUltimaMenstruacao()) ?
-            $this->getDataUltimaMenstruacao()->convertTo('Y-m-d') :
-            null,
-          'la22_t_medicamento'  => $this->getMedicamento(),
-          'la22_t_diagnostico'  => $this->getDiagnostico(),
-          'la22_t_observacao'   => $this->getObservacao(),
-          'la22_c_contato'      => $this->getContato(),
-          'requisicaoExames'    => $exames,
+            'la22_i_codigo' => $this->getCodigo(),
+            'la22_i_departamento' => $this->getDepartamento(),
+            'la22_i_cgs' => $this->getCgs(),
+            'la22_c_responsavel' => $this->getResponsavel(),
+            'la22_d_data' => !is_null($this->getData()) ? $this->getData()->convertTo('Y-m-d') : null,
+            'la22_c_hora' => $this->getHora(),
+            'la22_c_medico' => $this->getMedico(),
+            'la22_d_dum' => !empty($this->getDataUltimaMenstruacao()) ?
+                $this->getDataUltimaMenstruacao()->convertTo('Y-m-d') :
+                null,
+            'la22_t_medicamento' => $this->getMedicamento(),
+            'la22_t_diagnostico' => $this->getDiagnostico(),
+            'la22_t_observacao' => $this->getObservacao(),
+            'la22_c_contato' => $this->getContato(),
+            'requisicaoExames' => $exames,
         );
+    }
+
+    /**
+     * Seta as prioridades que a requisição possuir.
+     * É possível informar essas prioridades através de um array de objetos.
+     * @param array $prioridadesDaRequisicao
+     * @return array|mixed
+     */
+    public function setPrioridadeTipo($prioridadesDaRequisicao = null)
+    {
+        if (!empty($this->prioridadeTipo)) {
+            return $this->prioridadeTipo;
+        }
+
+        if (empty($this->getCodigo())) {
+            throw new BadMethodCallException('Número de requisição não informado!');
+        }
+
+        $prioridades = [];
+
+        if (empty($prioridadesDaRequisicao)) {
+            $sqlPrioridade = "
+                select prioridadetipo.* from lab_requisicao
+                inner join labrequisicao_prioridadetipo on la70_labrequisicao = la22_i_codigo
+                inner join prioridadetipo on la69_sequencial = la70_prioridadetipo
+                where la22_i_codigo = {$this->getCodigo()}
+            ";
+            $rsSqlPrioridade = db_query($sqlPrioridade);
+
+            $prioridadesDaRequisicao = db_utils::getCollectionByRecord($rsSqlPrioridade);
+        }
+
+        if (empty($prioridadesDaRequisicao)) {
+            return [];
+        }
+
+        foreach ($prioridadesDaRequisicao as $prioridade) {
+            $prioridades[] = [
+                'id' => $prioridade->la69_sequencial,
+                'descricao' => $prioridade->la69_descricao
+            ];
+        }
+
+        return $prioridades;
+    }
+
+    public function getPrioridadeTipo()
+    {
+        return $this->prioridadeTipo;
     }
 }

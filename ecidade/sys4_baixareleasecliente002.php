@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@ include(modification("libs/db_usuariosonline.php"));
 </body>
 </html>
 
-<?
+<?php
 $atu_completa=false;
 $aborta=0;
 umask(000);
@@ -337,7 +337,7 @@ $dolar="$";
 $db_versao="db_fonte_codversao";
 $db_release="db_fonte_codrelease";
 $db_acessa = "
-<?
+<?php
 $dolar$db_versao='$db30_codversao'; 
 $dolar$db_release='$db30_codrelease'; 
 ?> ";

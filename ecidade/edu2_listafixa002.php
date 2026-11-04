@@ -25,7 +25,11 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/pdfwebseller.php"));
+use ECidade\Pdf\Pdf;
+
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("classes/db_matricula_classe.php"));
 require_once(modification("classes/db_alunonecessidade_classe.php"));
@@ -51,16 +55,15 @@ $sSql   = $clturma->sql_query_turmaserie("", $sCampos, "ed57_c_descr", " ed220_i
 $result = $clturma->sql_record($sSql);
 
 if ($clturma->numrows == 0) {?>
-
   <table width='100%'>
-   <tr>
-    <td align='center'>
-     <font color='#FF0000' face='arial'>
-      <b>Nenhuma turma para o curso selecionado<br>
-      <input type='button' value='Fechar' onclick='window.close()'></b>
-     </font>
-    </td>
-   </tr>
+    <tr>
+      <td align='center'>
+        <font color='#FF0000' face='arial'>
+          <b>Nenhuma turma para o curso selecionado<br>
+          <input type='button' value='Fechar' onclick='window.close()'></b>
+        </font>
+      </td>
+    </tr>
   </table>
   <?php
   exit;
@@ -76,31 +79,28 @@ $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query(
                                                   );
 
 if ($cledu_parametros->numrows > 0) {
-
   db_fieldsmemory($result_parametros,0);
   if (!strstr($ed233_c_database,"/") || !strstr($ed233_c_limitemov,"/")) {
-
-   ?>
+  ?>
     <table width='100%'>
-     <tr>
-      <td align='center'>
-       <font color='#FF0000' face='arial'>
-        <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
-           devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
-           Valor atual do parâmetro Dia/Mês Limite da Movimentação:
-           <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
-           Valor atual do parâmetro Data Base para Cálculo da Idade:
-           <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
-          <input type='button' value='Fechar' onclick='window.close()'>
-       </font>
-      </td>
-     </tr>
+      <tr>
+        <td align='center'>
+          <font color='#FF0000' face='arial'>
+            <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
+              devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
+              Valor atual do parâmetro Dia/Mês Limite da Movimentação:
+              <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
+              Valor atual do parâmetro Data Base para Cálculo da Idade:
+              <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
+              <input type='button' value='Fechar' onclick='window.close()'>
+          </font>
+        </td>
+      </tr>
     </table>
-   <?
+   <?php
    exit;
 
   }
-
 
   $database      = explode("/",$ed233_c_database);
   $limitemov     = explode("/",$ed233_c_limitemov);
@@ -111,28 +111,27 @@ if ($cledu_parametros->numrows > 0) {
 
   if (   !checkdate($mes_database, $dia_database, $ano_calendario)
       || !checkdate($mes_limitemov, $dia_limitemov, $ano_calendario)) {
-
     ?>
     <table width='100%'>
-     <tr>
-      <td align='center'>
-       <font color='#FF0000' face='arial'>
-        <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
-           devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e devem ser uma data válida.<br><br>
-           Valor atual do parâmetro Dia/Mês Limite da Movimentação:
-           <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
-           Valor atual do parâmetro Data Base para Cálculo da Idade:
-           <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br>
-           Data Limite da Movimentação: <?=$dia_limitemov."/".$mes_limitemov."/".$ano_calendario?>
-           <?=@!checkdate($mes_limitemov,$dia_limitemov,$ano_calendario)?"(Data Inválida)":"(Data Válida)"?><br>
-           Data Base para Cálculo Idade: <?=$dia_database."/".$mes_database."/".$ano_calendario?>
-           <?=@!checkdate($mes_database,$dia_database,$ano_calendario)?"(Data Inválida)":"(Data Válida)"?><br><br></b>
-        <input type='button' value='Fechar' onclick='window.close()'>
-       </font>
-      </td>
-     </tr>
+      <tr>
+        <td align='center'>
+          <font color='#FF0000' face='arial'>
+            <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
+              devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e devem ser uma data válida.<br><br>
+              Valor atual do parâmetro Dia/Mês Limite da Movimentação:
+              <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
+              Valor atual do parâmetro Data Base para Cálculo da Idade:
+              <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br>
+              Data Limite da Movimentação: <?=$dia_limitemov."/".$mes_limitemov."/".$ano_calendario?>
+              <?=@!checkdate($mes_limitemov,$dia_limitemov,$ano_calendario)?"(Data Inválida)":"(Data Válida)"?><br>
+              Data Base para Cálculo Idade: <?=$dia_database."/".$mes_database."/".$ano_calendario?>
+              <?=@!checkdate($mes_database,$dia_database,$ano_calendario)?"(Data Inválida)":"(Data Válida)"?><br><br></b>
+            <input type='button' value='Fechar' onclick='window.close()'>
+          </font>
+        </td>
+      </tr>
     </table>
-    <?
+    <?php
     exit;
 
   }
@@ -143,7 +142,6 @@ if ($cledu_parametros->numrows > 0) {
   $datalimitemov .= "-".(strlen($dia_limitemov)==1?"0".$dia_limitemov:$dia_limitemov);
 
 } else {
-
   $databasecalc  = $ano_calendario."-12-31";
   $datalimitemov = $ano_calendario."-01-01";
 
@@ -164,22 +162,29 @@ function Entrada($situacao,$matricula) {
   return $retorno;
 }
 
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new Pdf();
+$pdf->init(false);
+$pdf->exibeHeader(true, \Fpdf\Pdf::HEADER_ESCOLA);
 $pdf->AliasNbPages();
+$pdf->SetAutoPageBreak(true, 15);
+$pdf->addTitulo("LISTA OFICIAL DAS TURMAS", "0");
+$pdf->addTitulo("Turma: $ed57_c_descr", "1");
+$pdf->addTitulo("Curso: $ed29_i_codigo - $ed29_c_descr", "2");
+$pdf->addTitulo("Calendário: $ed52_c_descr", "3");
+$pdf->addTitulo("Etapa: $ed11_c_descr", "4");
+$pdf->addTitulo("Dia / Mês Limite Movimentação: $ed233_c_limitemov", "5");
 $linhas = $clturma->numrows;
 
 for ($x = 0; $x < $linhas; $x++) {
-
   db_fieldsmemory($result,$x);
   $pdf->setfillcolor(223);
-  $head1 = "LISTA OFICIAL DAS TURMAS";
-  $head2 = "Turma: $ed57_c_descr";
-  $head3 = "Curso: $ed29_i_codigo - $ed29_c_descr";
-  $head4 = "Calendário: $ed52_c_descr";
-  $head5 = "Etapa: $ed11_c_descr";
-  $head6 = "Turno: $ed15_c_nome";
-  $head7 = "Dia / Mês Limite Movimentação: $ed233_c_limitemov";
+
+  $pdf->editTitleByKey("1", "Turma: $ed57_c_descr");
+  $pdf->editTitleByKey("2", "Curso: $ed29_i_codigo - $ed29_c_descr");
+  $pdf->editTitleByKey("3","Calendário: $ed52_c_descr");
+  $pdf->editTitleByKey("4","Etapa: $ed11_c_descr");
+  $pdf->editTitleByKey("5","Dia / Mês Limite Movimentação: $ed233_c_limitemov");
+
   $pdf->setfont('arial','b',8);
   $limite     = 55;
   $somacampos = 0;
@@ -203,15 +208,13 @@ for ($x = 0; $x < $linhas; $x++) {
                                            );
 
   for ($p = 0; $p < $clmatricula->numrows; $p++) {
-
     db_fieldsmemory($result2, $p);
 
     if ($trocaTurma == 1 && $ed60_c_situacao == 'TROCA DE TURMA') {
       continue;
     }
 
-    if ( $lPrimeiraPagina || $pdf->GetY() >= ($pdf->h -20) ) {
-
+    if ( $lPrimeiraPagina || $pdf->GetY() >= ($pdf->getPageHeight() -20) ) {
       imprimeCabecalho($pdf);
       $lPrimeiraPagina = false;
     }
@@ -223,7 +226,6 @@ for ($x = 0; $x < $linhas; $x++) {
     $pdf->cell(20,4,$datasaida,1,0,"C",0);
 
     if ($datasaida != "") {
-
       if (trim($ed60_c_situacao)=="TRANSFERIDO REDE"){
         $sit = "TR";
       } elseif (trim($ed60_c_situacao)=="TRANSFERIDO FORA"){
@@ -245,7 +247,7 @@ for ($x = 0; $x < $linhas; $x++) {
     }
 
     $pdf->cell(10,4,$ed47_v_sexo,1,0,"C",0);
-    $nome = is_null($ed47_v_nomesocial) || empty($ed47_v_nomesocial) ? $ed47_v_nome : $ed47_v_nomesocial; 
+    $nome = is_null($ed47_v_nomesocial) || empty($ed47_v_nomesocial) ? $ed47_v_nome : $ed47_v_nomesocial;
     $pdf->cell(85,4,$nome,1,0,"L",0);
     $pdf->cell(10,4,$idadealuno,1,0,"C",0);
     $pdf->cell(20,4,db_formatar($ed47_d_nasc,'d'),1,0,"C",0);
@@ -266,7 +268,6 @@ for ($x = 0; $x < $linhas; $x++) {
   }
 
   for ($p = $clmatricula->numrows; $p < $limite; $p++) {
-
     $pdf->cell(15, 4, "", 1, 0, "C", 0);
     $pdf->cell(20, 4, "", 1, 0, "C", 0);
     $pdf->cell(5,  4, "", 1, 0, "C", 0);
@@ -282,7 +283,7 @@ for ($x = 0; $x < $linhas; $x++) {
 
   $pdf->setfont('arial','',7);
   $pdf->cell(95,4,"ALUNOS ATIVOS: " .$cont,0,0,"L",0);
-  $pdf->cell(95,4,"ID = Idade no ano  I = Aluno de Inclusão",0,1,"R",0);
+  $pdf->cell(95,4,"E = Tipo de Entrada  S = Situação  ID = Idade no Ano  I = Aluno de Inclusão",0,1,"R",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(190,4,"",0,1,"L",0);
   $sCampos = "case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome";
@@ -293,7 +294,6 @@ for ($x = 0; $x < $linhas; $x++) {
                                                                          )
                                            );
   if ($clregenteconselho->numrows > 0) {
-
     db_fieldsmemory($result3,0);
     $pdf->cell(190,4,"CONSELHEIRO: ".$z01_nome,0,1,"L",0);
 

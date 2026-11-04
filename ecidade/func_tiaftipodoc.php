@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltiaftipodoc->rotulo->label("y98_descr");
               <?=$Ly98_tiafdoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y98_tiafdoc",10,$Iy98_tiafdoc,true,"text",4,"","chave_y98_tiafdoc");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltiaftipodoc->rotulo->label("y98_descr");
               <?=$Ly98_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y98_descr",100,$Iy98_descr,true,"text",4,"","chave_y98_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltiaftipodoc->rotulo->label("y98_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tiaftipodoc.php")==true){
@@ -118,12 +118,12 @@ $cltiaftipodoc->rotulo->label("y98_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

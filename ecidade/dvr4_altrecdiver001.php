@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -72,28 +72,28 @@ input {
 </head>
 <body bgcolor=#CCCCCC>
   <form class="container" name="form1" method="post" action="">
-   <?
+   <?php
    if (isset($pesquisar)){
    	   db_input('dv05_coddiver',5,$Idv05_coddiver,true,'hidden',1,"");
    	   db_input('dv05_numcgm',5,$Idv05_numcgm,true,'hidden',1,"");
    	   db_input('j01_matric',5,$Ij01_matric,true,'hidden',1,"");
    	   db_input('q02_inscr',5,$Iq02_inscr,true,'hidden',1,"");
-   	   db_input('dv09_procdiver',5,$Idv09_procdiver,true,'hidden',1,"");   	 
-   ?>   
+   	   db_input('dv09_procdiver',5,$Idv09_procdiver,true,'hidden',1,"");
+   ?>
      <fieldset>
       <legend>Procedimentos - Receitas de Diversos</legend>
        <table class="form-container">
          <tr >
         <td align="right" nowrap title="<?=@$Tk02_codigo?>" >
-          <?
+          <?php
              db_ancora(@$Lk02_codigo,"js_pesquisatabrec(true);",4)
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('k02_codigo',4,$Ik02_codigo,true,'text',4,"onchange='js_pesquisatabrec(false);'")
           ?>
-          <?
+          <?php
             db_input('k02_drecei',40,$Ik02_drecei,true,'text',3,'')
           ?>
 
@@ -101,11 +101,11 @@ input {
       </tr>
       <tr>
       	<td nowrap>
-      	<b>Tipo de Processamento:</b> 
+      	<b>Tipo de Processamento:</b>
         </td>
-          
+
         <td>
-       		<?
+       		<?php
        		$tipos = array("t"=>"Todos","v"=>"Débitos Vencidos","n"=>"Débitos Não Vencidos");
        		db_select("tipo",$tipos,true,"text",1);
        		?>
@@ -115,86 +115,86 @@ input {
       </fieldset>
 	   		 <input type="submit" name="processar" value="Processar" onclick="return js_processa();">
 
-   <?  
-   }else if (isset($processar)){   	
-   	db_criatermometro('termometro', 'Concluido...', 'blue', 1);   	
+   <?php
+   }else if (isset($processar)){
+   	db_criatermometro('termometro', 'Concluido...', 'blue', 1);
    }else{
    ?>
     <fieldset>
     <legend>Procedimentos - Receitas de Diversos</legend>
     <table class="form-container">
-     <tr>   
+     <tr>
        <td>
-      <?
+      <?php
        db_ancora($Ldv05_coddiver,'js_diver(true); ',1);
       ?>
        </td>
-       <td> 
-      <?
+       <td>
+      <?php
        db_input('dv05_coddiver',5,$Idv05_coddiver,true,'text',1,"onchange='js_diver(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomediver");
       ?>
        </td>
      </tr>
-     <tr>   
+     <tr>
       <td>
-      <?
+      <?php
        db_ancora($Ldv05_numcgm,' js_cgm(true); ',1);
       ?>
        </td>
-       <td> 
-      <?
+       <td>
+      <?php
        db_input('dv05_numcgm',5,$Idv05_numcgm,true,'text',1,"onchange='js_cgm(false)'","dv05_numcgm");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomecgm");
       ?>
        </td>
      </tr>
-     <tr>   
+     <tr>
        <td>
-      <?
+      <?php
        db_ancora($Lj01_matric,' js_matri(true); ',1);
       ?>
        </td>
-       <td> 
-      <?
+       <td>
+      <?php
        db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomematri");
       ?>
        </td>
-     </tr>     
-     <tr>   
+     </tr>
+     <tr>
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
-       <td> 
-      <?
+       <td>
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomeinscr");
       ?>
        </td>
      </tr>
-     <tr>   
+     <tr>
        <td>
-      <?
+      <?php
        db_ancora($Ldv09_procdiver,'js_proc(true); ',1);
       ?>
        </td>
-       <td> 
-      <?
+       <td>
+      <?php
        db_input('dv09_procdiver',5,$Idv09_procdiver,true,'text',1,"onchange='js_proc(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomeproc");
       ?>
        </td>
-      </tr>          
+      </tr>
      </table>
      </fieldset>
 	   <input type="submit" name="pesquisar" value="Pesquisar" onclick="return js_pesquisa();" >
-     <?}?> 
+     <?php }?>
 
   </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -231,10 +231,10 @@ function js_mostraproc(chave1,chave2){
   db_iframe.hide();
 }
 function js_mostraproc1(chave,erro){
-  document.form1.z01_nomeproc.value = chave; 
-  if(erro==true){ 
-    document.form1.dv09_procdiver.focus(); 
-    document.form1.dv09_procdiver.value = ''; 
+  document.form1.z01_nomeproc.value = chave;
+  if(erro==true){
+    document.form1.dv09_procdiver.focus();
+    document.form1.dv09_procdiver.value = '';
   }
 }
 function js_diver(mostra){
@@ -251,10 +251,10 @@ function js_mostradiver(chave1,chave2){
   db_iframe.hide();
 }
 function js_mostradiver1(chave,erro){
-  document.form1.z01_nomediver.value = chave; 
-  if(erro==true){ 
-    document.form1.dv05_coddiver.focus(); 
-    document.form1.dv05_coddiver.value = ''; 
+  document.form1.z01_nomediver.value = chave;
+  if(erro==true){
+    document.form1.dv05_coddiver.focus();
+    document.form1.dv05_coddiver.value = '';
   }
 }
 function js_matri(mostra){
@@ -271,10 +271,10 @@ function js_mostramatri(chave1,chave2){
   db_iframe_iptubase.hide();
 }
 function js_mostramatri1(chave,erro){
-  document.form1.z01_nomematri.value = chave; 
-  if(erro==true){ 
-    document.form1.j01_matric.focus(); 
-    document.form1.j01_matric.value = ''; 
+  document.form1.z01_nomematri.value = chave;
+  if(erro==true){
+    document.form1.j01_matric.focus();
+    document.form1.j01_matric.value = '';
   }
 }
 function js_inscr(mostra){
@@ -291,10 +291,10 @@ function js_mostrainscr(chave1,chave2){
   db_iframe_issbase.hide();
 }
 function js_mostrainscr1(chave,erro){
-  document.form1.z01_nomeinscr.value = chave; 
-  if(erro==true){ 
-    document.form1.q02_inscr.focus(); 
-    document.form1.q02_inscr.value = ''; 
+  document.form1.z01_nomeinscr.value = chave;
+  if(erro==true){
+    document.form1.q02_inscr.focus();
+    document.form1.q02_inscr.value = '';
   }
 }
 function js_cgm(mostra){
@@ -311,17 +311,17 @@ function js_mostracgm(chave1,chave2){
   db_iframe_cgm.hide();
 }
 function js_mostracgm1(erro,chave){
-  document.form1.z01_nomecgm.value = chave; 
-  if(erro==true){ 
-    document.form1.dv05_numcgm.focus(); 
-    document.form1.dv05_numcgm.value = ''; 
+  document.form1.z01_nomecgm.value = chave;
+  if(erro==true){
+    document.form1.dv05_numcgm.focus();
+    document.form1.dv05_numcgm.value = '';
   }
 }
 function js_pesquisatabrec(mostra){
      if(mostra==true){
-     	js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_tabrec','func_tabrec.php?funcao_js=parent.js_mostratabrec1|k02_codigo|k02_descr','Pesquisa',true);       
+     	js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_tabrec','func_tabrec.php?funcao_js=parent.js_mostratabrec1|k02_codigo|k02_descr','Pesquisa',true);
      }else{
-     	js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_tabrec','func_tabrec.php?pesquisa_chave='+document.form1.k02_codigo.value+'&funcao_js=parent.js_mostratabrec','Pesquisa',false);      
+     	js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_tabrec','func_tabrec.php?pesquisa_chave='+document.form1.k02_codigo.value+'&funcao_js=parent.js_mostratabrec','Pesquisa',false);
      }
 }
 function js_mostratabrec(chave,erro){
@@ -337,7 +337,7 @@ function js_mostratabrec1(chave1,chave2){
      db_iframe_tabrec.hide();
 }
 </script>
-<?
+<?php
 if (isset($processar)){
 	 db_inicio_transacao();
 	 $tab = "";
@@ -347,12 +347,12 @@ if (isset($processar)){
 	 $erro_msg = "";
 	 if (isset($j01_matric)&&$j01_matric != ""){
 	 	  $tab = " arrematric ";
-	 		$where = " arrematric.k00_matric = $j01_matric ";	 	
-	 }	
+	 		$where = " arrematric.k00_matric = $j01_matric ";
+	 }
 	 if (isset($q02_inscr)&&$q02_inscr != ""){
 	 	  $tab = " arreinscr ";
-	 		$where = " arreinscr.k00_inscr = $q02_inscr ";	 	
-	 }	
+	 		$where = " arreinscr.k00_inscr = $q02_inscr ";
+	 }
 	 if (isset($dv05_numcgm)&&$dv05_numcgm!=""){
 	 		$tab = " arrenumcgm ";
 	 		$where = " arrenumcgm.k00_numcgm = $dv05_numcgm ";
@@ -362,41 +362,41 @@ if (isset($processar)){
 	 }
 	 if (isset($dv05_coddiver)&&$dv05_coddiver!=""){
 	 		$where = " diversos.dv05_coddiver = $dv05_coddiver ";
-	 }	 
-	 if ($tab!=""){	 	
+	 }
+	 if ($tab!=""){
 	 		$inner = " inner join $tab on $tab.k00_numpre = diversos.dv05_numpre ";
 	 }
 	 $dt_hoje = date('Y-m-d',db_getsession('DB_datausu'));
-	 if (isset($tipo)&&$tipo=="v"){	 	
-	 		$where .= " and arrecad.k00_dtvenc<'$dt_hoje'"; 
+	 if (isset($tipo)&&$tipo=="v"){
+	 		$where .= " and arrecad.k00_dtvenc<'$dt_hoje'";
 	 }else if (isset($tipo)&&$tipo=="n"){
-	 		$where .= " and arrecad.k00_dtvenc>='$dt_hoje'";	 	
+	 		$where .= " and arrecad.k00_dtvenc>='$dt_hoje'";
 	 }
-	 $sql = "select distinct arrecad.k00_numpre as numpre,arrecad.k00_numpar as numpar 
-           from diversos 
+	 $sql = "select distinct arrecad.k00_numpre as numpre,arrecad.k00_numpar as numpar
+           from diversos
                 inner join arrecad on arrecad.k00_numpre = dv05_numpre
 								$inner
-           where $where and dv05_instit = ".db_getsession('DB_instit');   
-           
+           where $where and dv05_instit = ".db_getsession('DB_instit');
+
    $result = db_query($sql);
-   $numrows = pg_numrows($result);   
+   $numrows = pg_numrows($result);
    if ($numrows==0){
    		db_msgbox(_M("tributario.diversos.dvr4_altrecdiver001.nao_exitem_registro"));
    		echo "<script>location.href='dvr4_altrecdiver001.php';</script>";
    		exit;
    }
-   $perc = 0;   
+   $perc = 0;
    for($w=0;$w<$numrows;$w++){
    		db_fieldsmemory($result,$w);
    		db_atutermometro($w, $numrows, 'termometro');
-   		if ($sqlerro==false){		
+   		if ($sqlerro==false){
    			$clarrecad->k00_receit = $k02_codigo;
    			$clarrecad->k00_numpre = $numpre;
    			$clarrecad->alterar_arrecad("k00_numpre = $numpre and k00_numpar = $numpar");
    			if ($clarrecad->erro_status==0){
    				$sqlerro=true;
    				$erro_msg = $clarrecad->erro_msg;
-   				break;   			
+   				break;
    			}
    		}
    }
@@ -428,5 +428,5 @@ if (isset($processar)){
   $("k02_codigo").addClassName("field-size2");
   $("k02_drecei").addClassName("field-size7");
 <?php }?>
-  
+
 </script>

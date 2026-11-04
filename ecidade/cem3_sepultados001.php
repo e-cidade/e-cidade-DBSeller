@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -115,7 +115,7 @@ if( !isset($tipo) ){
              <?php if($tipo == 'J'){ ?>
     	        <td><?php echo $cm27_d_exumprevista; ?></td>
               <td><?php echo $cm27_d_exumfeita; ?></td>
-             <?}?>
+             <?php }?>
 
     	       <td><?php echo $cm27_c_ossoario == 'N' ? 'NÃO' : 'SIM'; ?></td>
 

@@ -243,7 +243,7 @@ if (isset($processar)) {
                               inner join orcsuplem on c79_codsup = o46_codsup
                          where c79_codlan = $c70_codlan";
                     $resres = db_query($verinst);
-                    if (pg_numrows($resres) > 0) {
+                    if (pg_num_rows($resres) > 0) {
 
                         $iInstituicaoSuplementacao = pg_result($resres, 0, 0);
 
@@ -268,7 +268,7 @@ if (isset($processar)) {
                     $sql = "select e60_instit from conlancamemp inner join empempenho on e60_numemp = c75_numemp where c75_codlan = $c70_codlan";
                     $result111 = db_query($sql);
 
-                    if ($result111 != false && pg_numrows($result111) > 0) {
+                    if ($result111 != false && pg_num_rows($result111) > 0) {
 
                         $institit = pg_result($result111, 0, 0);
 
@@ -317,7 +317,7 @@ if (isset($processar)) {
                             /**
                              * Excluindo vínculo entre a conlancamval e a contacorrentedetalhe
                              */
-                            $oDaoContaCorrenteDetalheConLancamVal = db_utils::getDao("contacorrentedetalheconlancamval");
+                            $oDaoContaCorrenteDetalheConLancamVal = new cl_contacorrentedetalheconlancamval;
                             $sWhere                               = " c28_conlancamval = {$oStdConlanCamVal->c69_sequen}";
                             $oDaoContaCorrenteDetalheConLancamVal->excluir(null, $sWhere);
 
@@ -534,17 +534,17 @@ RPS
                 case 6004 :
                 case 6008 :
                 case 6010 :
-
                 case 6003 :
                 case 6005 :
                 case 6009 :
-                case 6011 :
 
-
-                    $cltranslan->db_trans_pagamentoApropriacao($e64_codele, $c82_reduz, $e60_anousu, $e60_numemp, $c53_coddoc, $c80_codord);
-
+                    $cltranslan->db_trans_pagamentoApropriacao($e64_codele, $c82_reduz, $e60_anousu, $e60_numemp, $c53_coddoc, $c80_codord, $c69_codlan);
                     break;
 
+                case 6011 :
+
+                    $cltranslan->db_trans_pagamentoApropriacaoEstorno($e64_codele, $c82_reduz, $e60_anousu, $e60_numemp, $c53_coddoc, $c80_codord, $c69_codlan);
+                    break;
 
                 case 6  : //ESTORNAR PAGAMENTO
                     $cltranslan->db_trans_estorna_pagamento($e64_codele, $c82_reduz, $e60_anousu, $e60_numemp, $c53_coddoc);
@@ -614,7 +614,7 @@ RPS
                         db_criatabela($resres);
                     }
 
-                    if (pg_numrows($resres) > 0) {
+                    if (pg_num_rows($resres) > 0) {
 
                         $iInstituicaoSuplementacao = pg_result($resres, 0, 0);
                         if ($iInstituicaoSuplementacao != db_getsession("DB_instit")) {
@@ -658,9 +658,9 @@ RPS
 
                         $HTTP_SESSION_VARS["DB_instit"] = $instit_atual;
 
-                        if ($result_sup == true && pg_numrows($result_sup) > 0) {
+                        if ($result_sup == true && pg_num_rows($result_sup) > 0) {
 
-                            for ($sup = 0; $sup < pg_numrows($result_sup); $sup ++) {
+                            for ($sup = 0; $sup < pg_num_rows($result_sup); $sup ++) {
 
                                 db_fieldsmemory($result_sup, $sup);
                                 if ($c47_ref == 0 || ($c47_ref != 0 && $c47_ref == $codcom)) {
@@ -698,11 +698,12 @@ RPS
                 case 6000 :
 
 
+
                     // busca o codcon da conta no plano de contas para pegar o reduzido
 
                     if (USE_PCASP) {
 
-                        $oDaoConPlanoOrcamentoAnalitica = db_utils::getDao("conplanoorcamentoanalitica");
+                        $oDaoConPlanoOrcamentoAnalitica = new cl_conplanoorcamentoanalitica;
                         $sCampos                        = "conplanoreduz.c61_reduz, conplanoreduz.c61_codcon as deducao";
                         $sOrder                         = "conplanoreduz.c61_reduz";
                         $sWhere                         = "     conplanoorcamentoanalitica.c61_anousu = " . db_getsession("DB_anousu");
@@ -718,6 +719,7 @@ RPS
                                 ', ' . $codrec . ') na conplanoreduz.'
                             );
                         }
+
 
                     } else {
 
@@ -745,7 +747,7 @@ RPS
                         and fc_conplano_grupo(" . db_getsession("DB_anousu") . ", substr(c60_estrut,1,2)||'%', 9000) is true";
 
                     $resultded = db_query($sSql);
-                    if (pg_numrows($resultded) > 0) {
+                    if (pg_num_rows($resultded) > 0) {
                         $cltranslan->db_trans_estorno_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);
                     } else {
                         $cltranslan->db_trans_arrecada_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);
@@ -765,7 +767,7 @@ RPS
 
                     if (USE_PCASP) {
 
-                        $oDaoConPlanoOrcamentoAnalitica = db_utils::getDao("conplanoorcamentoanalitica");
+                        $oDaoConPlanoOrcamentoAnalitica = new cl_conplanoorcamentoanalitica;
                         $sCampos                        = "conplanoreduz.c61_reduz, conplanoreduz.c61_codcon as deducao";
                         $sOrder                         = "conplanoreduz.c61_reduz";
                         $sWhere                         = "     conplanoorcamentoanalitica.c61_anousu = " . db_getsession("DB_anousu");
@@ -806,7 +808,7 @@ RPS
                           fc_conplano_grupo(".db_getsession("DB_anousu").",substr(c60_estrut,1,2)||'%',9000) is true";
                     $resultded = db_query($sql);
 
-                    if (pg_numrows($resultded) > 0) {
+                    if (pg_num_rows($resultded) > 0) {
                         $cltranslan->db_trans_arrecada_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);
                     } else {
                         $cltranslan->db_trans_estorno_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);
@@ -823,7 +825,7 @@ RPS
                 case 208:
                 case 209:
 
-                    $oDaoBensNota  = db_utils::getDao("bensempnotaitem");
+                    $oDaoBensNota  = new cl_bensempnotaitem;
                     $sWhereEmpenho = "e69_numemp = {$e60_numemp}";
                     $sSqlBuscaBem  = $oDaoBensNota->sql_query_bens_nota(null, "distinct t52_bem", " t52_bem limit 1", $sWhereEmpenho);
                     $rsBuscaBem    = $oDaoBensNota->sql_record($sSqlBuscaBem);
@@ -881,18 +883,21 @@ RPS
                     flush();
                 }
 
-                for ($t = 0; $t < count($arr_credito); $t ++) {
+                foreach ($arr_credito as $indice => $dados) {
 
+                    if (empty($arr_debito[$indice])) {
+                        throw new Exception("Erro lancamento " . $c70_codlan .
+                            "para conta credito/debito.\n");
+                    }
 
-                    // Verifica se a conta é a da instituição da sessão, caso não seja, busca o reduzido da instituição
-                    $contaDebito  = getContaReduzidaNaInstituicao($arr_debito[$t], $c70_anousu);
-                    $contaCredito = getContaReduzidaNaInstituicao($arr_credito[$t], $c70_anousu);
+                    $contaDebito  = getContaReduzidaNaInstituicao($arr_debito[$indice], $c70_anousu);
+                    $contaCredito = getContaReduzidaNaInstituicao($arr_credito[$indice], $c70_anousu);
 
                     $clconlancamval->c69_sequen  = null;
                     $clconlancamval->c69_codlan  = $c70_codlan;
                     $clconlancamval->c69_credito = $contaCredito;
                     $clconlancamval->c69_debito  = $contaDebito;
-                    $clconlancamval->c69_codhist = $arr_histori[$t];
+                    $clconlancamval->c69_codhist = $arr_histori[$indice];
                     $clconlancamval->c69_valor   = $c70_valor;
                     $clconlancamval->c69_data    = $c70_data;
                     $clconlancamval->c69_anousu  = $c70_anousu;
@@ -902,7 +907,6 @@ RPS
                     if ($clconlancamval->erro_status == '0') {
                         throw new Exception("Erro ao incluir lancamento para conta credito/debito.\n" . $clconlancamval->erro_msg);
                     }
-
 
                     if (USE_PCASP) {
 
@@ -919,8 +923,7 @@ RPS
                         }
 
                     }
-
-                } // for
+                }
 
                 EventoContabil::salvarLancamento($c70_codlan);
 

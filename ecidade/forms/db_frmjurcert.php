@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,7 +49,7 @@
   <tr> 
     <td width="18%"><b>Data:</b></td>
     <td width="82%"> 
-	  <?
+	  <?php
 	   db_data("data",@$data_dia,@$data_mes,@$data_ano);  
 	  ?>
               <b>at&eacute;</b> 
@@ -68,12 +68,12 @@
   </tr>
   <tr> 
     <td width="18%">
-      <?
+      <?php
 	    db_label_blur('vara','vara','vara','varadescr');	  
 	  ?>
     </td>
     <td width="82%"> 
-     <?
+     <?php
 	  db_text_blur('vara','vara','varadescr',5,10,$v56_vara,$v56_vara);
 	  db_text_blur('vara','varadescr','vara',15,15,$varadescr,$varadescr);
 	?>	

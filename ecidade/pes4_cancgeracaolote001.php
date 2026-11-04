@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -110,7 +110,7 @@ if ( isset($oPost->cancelar) ) {
 				        <b>Cód Geração:</b>
 				      </td>
 				      <td>
-				        <?
+				        <?php
                   db_input("r15_sequencial",10,$Ir15_sequencial,true,"text",$db_opcao,"");
 				        ?>
 				      </td>
@@ -120,7 +120,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Descrição</b>
               </td>
               <td>
-                <?
+                <?php
                   db_input("r15_descricao",55,$Ir15_descricao,true,"text",$db_opcao,"");
                 ?>
               </td>
@@ -130,7 +130,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Usuário:</b>
               </td>
               <td>
-                <?
+                <?php
                   db_input("r15_idusuario",10,$Ir15_idusuario,true,"text",$db_opcao,"");
                   db_input("nome",40,"",true,"text",3,"");
                 ?>
@@ -141,7 +141,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Data Geração:</b>
               </td>
               <td>
-                <?
+                <?php
                   db_inputdata('r15_dtgeracao',@$r15_dtgeracao_dia,@$r15_dtgeracao_mes,@$r15_dtgeracao_ano,true,"text",$db_opcao,"");
                 ?>                
               </td>
@@ -151,7 +151,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Hora:</b>
               </td>
               <td>
-                <?
+                <?php
                   db_input("r15_hora",5,$Ir15_hora,true,"text",$db_opcao,"");
                 ?>
               </td>
@@ -170,7 +170,7 @@ if ( isset($oPost->cancelar) ) {
 	  </tr>
 	</table> 	  
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -187,7 +187,7 @@ function js_mostraGeracao(chave1){
 }
 </script>
 
-<?
+<?php
    
    if ( isset($oPost->cancelar) ) {
 

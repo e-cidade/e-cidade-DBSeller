@@ -30,15 +30,11 @@ class suspensaoDebitos {
 
   private $iCodSuspensao = null;
 
-
-  /**
-   *
-   */
-  function __construct() {
+  public function __construct() {
 
   }
 
-  function incluirSuspensao($iProcesso="",$iSituacao=1,$sObs="",$dtData="",$sHora="",$iInstit="",$iIdUsuario="") {
+  public function incluirSuspensao($iProcesso="",$iSituacao=1,$sObs="",$dtData="",$sHora="",$iInstit="",$iIdUsuario="") {
 
   	if(trim($iProcesso) == ""){
   	  throw new Exception("Suspensão cancelada, processo não informado!");
@@ -76,16 +72,16 @@ class suspensaoDebitos {
 
   }
 
-  function reativarDebito($iCodSuspensao,$lGeraArrehist=true){
+  public function reativarDebito($iCodSuspensao,$lGeraArrehist=true){
 
   	if(trim($iCodSuspensao) == ""){
   	  throw new Exception(" Operação cancelada, código da suspensão inválido!");
   	}
 
-  	$oDaoSuspensao = db_utils::getDao("suspensao");
-  	$oDaoArresusp  = db_utils::getDao("arresusp");
-  	$oDaoArrecad   = db_utils::getDao("arrecad");
-  	$oDaoArrehist  = db_utils::getDao("arrehist");
+  	$oDaoSuspensao = new cl_suspensao;
+  	$oDaoArresusp  = new cl_arresusp;
+  	$oDaoArrecad   = new cl_arrecad;
+  	$oDaoArrehist  = new cl_arrehist;
 
   	$rsDadosArresusp = $oDaoArresusp->sql_record($oDaoArresusp->sql_query(null,"*",null," k00_suspensao = {$iCodSuspensao}"));
   	$iLinhasArresusp = $oDaoArresusp->numrows;
@@ -136,7 +132,7 @@ class suspensaoDebitos {
   	}
   }
 
-  function cancelarDebitoSuspensao($iCodSuspensao){
+  public function cancelarDebitoSuspensao($iCodSuspensao){
 
   	if(trim($iCodSuspensao) == ""){
   	  throw new Exception(" Operação cancelada, código da suspensão inválido!");
@@ -303,7 +299,7 @@ class suspensaoDebitos {
     }
   }
 
-  function suspendeDebito($aDadosDebitos=null){
+  public function suspendeDebito($aDadosDebitos=null){
 
     if(empty($aDadosDebitos)){
       throw new Exception("Suspensão cancelada, Dados do débito não informado!");
@@ -423,7 +419,7 @@ class suspensaoDebitos {
  	  }
   }
 
-  function finalizaSuspensao($iCodSuspensao="",$sObs="",$sStatusDebito=""){
+  public function finalizaSuspensao($iCodSuspensao="",$sObs="",$sStatusDebito=""){
 
     if(trim($iCodSuspensao) == "" || $iCodSuspensao == null ){
   	  throw new Exception("Finalização de suspensão abortada, código de suspensão inválido");
@@ -466,11 +462,11 @@ class suspensaoDebitos {
     if ( $sStatusDebito == "r" ) {
       $this->reativarDebito($iCodSuspensao);
     } else if ( $sStatusDebito == "c" ) {
-      $this->cancelarDebitoSuspensao($iCodSuspensao);
+    //   $this->cancelarDebitoSuspensao($iCodSuspensao);
     }
   }
 
-  function cancelaCertidao($iCertid){
+  public function cancelaCertidao($iCertid){
 
     if(trim($iCertid) == "" || $iCertid == null ){
   	  throw new Exception("Cancelamento de certidão abortada, certidão não informada!");
@@ -580,7 +576,7 @@ class suspensaoDebitos {
               $oDaoArreforo->excluir(null,"k00_certidao=$iCertid and k00_numpre={$oDadosArreforo->k00_numpre} and k00_numpar={$oDadosArreforo->k00_numpar}");
 
   	          if ($oDaoArreforo->erro_status==0){
-  	            throw new Exception($oDaoArreforo>erro_msg);
+  	            throw new Exception($oDaoArreforo->erro_msg);
   	          }
 
   	          $rsDadosCertdiv = $oDaoCertdiv->sql_record($oDaoCertdiv->sql_query_file($iCertid,$oDadosDiv->v01_coddiv));
@@ -645,7 +641,7 @@ class suspensaoDebitos {
 
                 $oDaoArreforo->excluir(null,"k00_certidao=$iCertid and k00_numpre = {$oDadosArreforo->k00_numpre}");
   	          if ($oDaoArreforo->erro_status==0){
-  	            throw new Exception($oDaoArreforo>erro_msg);
+  	            throw new Exception($oDaoArreforo->erro_msg);
   	          }
 
   	          $rsCertter = $oDaoCertter->sql_record($oDaoCertter->sql_query_file($iCertid,$oDadosTermo->v07_parcel));
@@ -694,14 +690,6 @@ class suspensaoDebitos {
       if ($oDaoListaCDA->erro_status==0){
         throw new Exception($oDaoListaCDA->erro_msg);
       }
-    }
-
-    /**
-     * Enfim, excluimos a certidao
-     */
-    $oDaoCertid->excluir($iCertid);
-    if ($oDaoCertid->erro_status==0){
-      throw new Exception($oDaoCertid->erro_msg);
     }
   }
 }

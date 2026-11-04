@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -135,7 +135,7 @@ input {
 -->
 </style>
 <script>
-<?
+<?php
 if(isset($inicial)){
   $dadosini = "xx".$inicial."ww".$chave."ww".$modo;
   ?>
@@ -162,7 +162,7 @@ if(isset($inicial)){
       location.href="jur2_atuender.php";
     }  
   }
-  <?
+  <?php
 }
 ?>
 </script>
@@ -183,7 +183,7 @@ if(isset($inicial)){
 <table  border="0" cellspacing="0" cellpadding="0">
 <br>
 <br>
-<?
+<?php
 if($retorno==true){
   ?>  
   <tr>
@@ -191,7 +191,7 @@ if($retorno==true){
   <b>Confirma  endereços:</b>      
   </td>
   </tr>
-  <? 
+  <?php 
   if(isset($j01_matric)){     
     
     $reiptu = $cliptubase->sql_record($cliptubase->sql_query($j01_matric,"cgm.z01_nome as nome,cgm.z01_numcgm")); 
@@ -248,17 +248,17 @@ if($retorno==true){
   </td>
   </tr>
   
-  <?
+  <?php
 }else if($retorno==false){
   ?>  
   <tr>
   <td nowrap title="<?=@$Tv50_inicial?>">
-  <?
+  <?php
   db_ancora(@$Lv50_inicial,"js_pesquisav50_inicial(true);",1);
   ?>
   </td>
   <td> 
-  <?
+  <?php
   db_input('v50_inicial',8,$Iv50_inicial,true,'text',1," onchange='js_pesquisav50_inicial(false);'")
   ?>
   </td>
@@ -270,7 +270,7 @@ if($retorno==true){
   </td>   	 
   </tr>	 
   
-  <?
+  <?php
 }
 ?>     
 </table> 	 
@@ -278,7 +278,7 @@ if($retorno==true){
 </td>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -307,7 +307,7 @@ function js_mostrainicial(chave,erro){
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

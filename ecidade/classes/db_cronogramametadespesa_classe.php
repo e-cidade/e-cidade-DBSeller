@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,13 +56,13 @@ class cl_cronogramametadespesa {
                  o131_valor = float8 = Valor
                  ";
    //funcao construtor da classe
-   function cl_cronogramametadespesa() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cronogramametadespesa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_cronogramametadespesa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o131_sequencial = ($this->o131_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o131_sequencial"]:$this->o131_sequencial);
        $this->o131_cronogramaperspectivadespesa = ($this->o131_cronogramaperspectivadespesa == ""?@$GLOBALS["HTTP_POST_VARS"]["o131_cronogramaperspectivadespesa"]:$this->o131_cronogramaperspectivadespesa);
@@ -83,7 +83,7 @@ class cl_cronogramametadespesa {
      }
    }
    // funcao para inclusao
-   function incluir ($o131_sequencial){
+   public function incluir ($o131_sequencial){
       $this->atualizacampos();
      if($this->o131_cronogramaperspectivadespesa == null ){
        $this->erro_sql = " Campo despesa nao Informado.";
@@ -206,7 +206,7 @@ class cl_cronogramametadespesa {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o131_sequencial=null) {
+   public function alterar ($o131_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cronogramametadespesa set ";
      $virgula = "";
@@ -331,7 +331,7 @@ class cl_cronogramametadespesa {
      }
    }
    // funcao para exclusao
-   function excluir ($o131_sequencial=null,$dbwhere=null) {
+   public function excluir ($o131_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o131_sequencial));
      }else{
@@ -396,7 +396,7 @@ class cl_cronogramametadespesa {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -419,10 +419,10 @@ class cl_cronogramametadespesa {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $o131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_cronogramametadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,10 +459,10 @@ class cl_cronogramametadespesa {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $o131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -483,7 +483,7 @@ class cl_cronogramametadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_cronogramametadespesa {
   function sql_query_metas ( $o131_sequencial=null,$campos="*",$ordem=null,$dbwhere="", $iMes=''){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -571,7 +571,7 @@ class cl_cronogramametadespesa {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

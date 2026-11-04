@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -41,6 +41,10 @@ $clorcdotacao->rotulo->label("o58_coddot");
 $clorcdotacao->rotulo->label("o58_orgao");
 $clestrutura = new cl_estrutura;
 $clorcparametro = new cl_orcparametro;
+$elemento = false;
+if (isset($pesquisa_elemento) && $pesquisa_elemento) {
+  $elemento = true;
+}
 ?>
   <html>
   <head>
@@ -53,17 +57,17 @@ $clorcparametro = new cl_orcparametro;
     <tr>
       <td height="63" align="center" valign="top">
         <table width="35%" border="0" align="center" cellspacing="0">
-          <form name="form2" method="post" action="" >
+          <form name="navega_lovNoMe"id="navega_lovNoMe"  method="post" action="" >
             <tr>
               <td width="4%" align="right" nowrap title="<?=$To58_coddot?>">
                 <?=$Lo58_coddot?>
               </td>
               <td width="96%" align="left" nowrap>
-                <? db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?>
+                  <?php db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?>
               </td>
             </tr>
-            <?
-            $clestrutura->nomeform="form2";//o nome do campo é DB_txtdotacao
+              <?php
+            $clestrutura->nomeform="navega_lovNoMe";//o nome do campo é DB_txtdotacao
             $clestrutura->estrutura('o50_estrutdespesa')
             ?>
             <tr>
@@ -78,8 +82,8 @@ $clorcparametro = new cl_orcparametro;
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
-        if(!isset($pesquisa_chave)){
+          <?php
+        if(!isset($pesquisa_chave) && !$elemento){
           if(isset($campos)==false){
             if(file_exists("funcoes/db_func_orcdotacao.php")==true){
               include(modification("funcoes/db_func_orcdotacao.php"));
@@ -91,7 +95,7 @@ $clorcparametro = new cl_orcparametro;
           if(isset($chave_o58_coddot) && (trim($chave_o58_coddot)!="") ){
             $dbwhere=" and o58_coddot=$chave_o58_coddot";
           }else if(isset($o50_estrutdespesa) && ($o50_estrutdespesa!="") ){
-            $matriz=split('\.',$o50_estrutdespesa);
+            $matriz= explode('.',$o50_estrutdespesa);
             for($i=0; $i<count($matriz); $i++){
               switch($i){
                 case 0://orgao
@@ -136,11 +140,13 @@ $clorcparametro = new cl_orcparametro;
           $sql = "
      select fc_estruturaldotacao(".db_getsession("DB_anousu").",o58_coddot) as dl_estrutural,
             o56_elemento,
+            o15_recurso,
 	    o55_descr::text,
 	    o56_descr,
 	    o58_coddot,
 	    o58_instit
      from orcdotacao d
+     join orctiporec on o15_codigo = o58_codigo
  	  inner join orcprojativ p on p.o55_anousu = ".db_getsession("DB_anousu")." and p.o55_projativ = d.o58_projativ
 	  inner join orcelemento e on e.o56_codele = d.o58_codele and o56_anousu = o58_anousu
      where  $where_instit
@@ -160,7 +166,7 @@ $clorcparametro = new cl_orcparametro;
           if($pesquisa_chave!=null && $pesquisa_chave!=""){
             // Dim result as RecordSet
 
-            $sql = $clorcdotacao->sql_query(db_getsession("DB_anousu"),$pesquisa_chave);
+            $sql = $clorcdotacao->sql_query2(db_getsession("DB_anousu"),$pesquisa_chave);
 
             /* [Extensão] - Filtro da Despesa */
 
@@ -173,7 +179,19 @@ $clorcparametro = new cl_orcparametro;
               echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
             }
           }else{
-            echo "<script>".$funcao_js."('',false);</script>";
+            if ($o56_elemento !=null && $o56_elemento != "") {
+              $where = "orcdotacao.o58_anousu = " . db_getsession("DB_anousu") . "and o56_elemento='{$o56_elemento}'";
+              $sql = $clorcdotacao->sql_query2(null, null, "distinct o56_descr", null, $where);
+              $result = $clorcdotacao->sql_record($sql);
+              if($clorcdotacao->numrows!=0){
+                db_fieldsmemory($result,0);
+                echo "<script>".$funcao_js."('$o56_descr',false);</script>";
+              }else{
+                echo "<script>".$funcao_js."('Elemento (".$o56_elemento.") não Encontrado',true);</script>";
+              }
+            } else {
+                echo "<script>".$funcao_js."('',false);</script>";
+            }
           }
         }
         ?>
@@ -183,12 +201,12 @@ $clorcparametro = new cl_orcparametro;
   </form>
   </body>
   </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?
+    <?php
 }
 ?>
 <script type="text/javascript">

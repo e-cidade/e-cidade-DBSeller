@@ -51,11 +51,11 @@ $clcarcaractervalor->rotulo->label("j119_caracteristica1");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj119_sequencial?></label></td>
-          <td><? db_input("j119_sequencial",10,$Ij119_sequencial,true,"text",4,"","chave_j119_sequencial"); ?></td>
+          <td><?php db_input("j119_sequencial",10,$Ij119_sequencial,true,"text",4,"","chave_j119_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lj119_caracteristica1?></label></td>
-          <td><? db_input("j119_caracteristica1",10,$Ij119_caracteristica1,true,"text",4,"","chave_j119_caracteristica1");?></td>
+          <td><?php db_input("j119_caracteristica1",10,$Ij119_caracteristica1,true,"text",4,"","chave_j119_caracteristica1");?></td>
         </tr>
       </table>
     </fieldset>
@@ -63,7 +63,7 @@ $clcarcaractervalor->rotulo->label("j119_caracteristica1");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_carcaractervalor.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_carcaractervalor.php")==true){
@@ -105,12 +105,12 @@ $clcarcaractervalor->rotulo->label("j119_caracteristica1");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

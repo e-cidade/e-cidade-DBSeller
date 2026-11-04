@@ -1,9 +1,8 @@
 <?php
-use Zend\Stdlib\DateTime;
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -154,6 +153,24 @@ switch ($oParametro->sExec) {
 
         db_inicio_transacao();
 
+        if ($oParametro->iTipoCalculo == 2) {
+
+          $oDaoParIssqn = new cl_parissqn;
+          $rsParIssqn   = $oDaoParIssqn->sql_record($oDaoParIssqn->sql_query_file(null, "q60_calcbaixorisco"));
+          $oCalcbaixoRisco = db_utils::fieldsMemory($rsParIssqn, 0);
+
+          if ($oCalcbaixoRisco = 'f') {
+            $oDaoIssquant = new cl_issquant;
+            $rsIssquant   = db_query($oDaoIssquant->sql_query_file(null, $oParametro->iInscricao, 'q30_inscr', null, 
+                                                      "q30_inscr = $oParametro->iInscricao and q30_graurisco = 'B'"));
+            $oInscrIssquant = db_utils::fieldsMemory($rsIssquant, 0);
+            
+            if(!empty($oInscrIssquant->q30_inscr)) {
+              throw new Exception("Empresa com grau de risco baixo, para calcular o alvará altere o parâmetro Gerar cálculo para baixo risco");
+            }
+          }
+        }
+
         $oEmpresa = new Empresa($oParametro->iInscricao);
 
         /**
@@ -179,12 +196,16 @@ switch ($oParametro->sExec) {
           $iInstituicao = db_getsession('DB_instit');
 
           $dataCalculo = new \DateTime();
+
+          $anoCalculo = (int)$dataCalculo->format('Y');
+          $diferencaAnos = $anoCalculo - $iAno;
+
           $dataCalculo->setTimestamp(db_getsession('DB_datausu'));
+          $dataCalculo->sub(new DateInterval('P' . $diferencaAnos . 'Y'));
 
           $sSqlAnoEmpresa = "select extract(year from q02_dtinic) as anoempresa from issbase where q02_inscr = {$oParametro->iInscricao}";
           $rsAnoEmpresa   = db_query($sSqlAnoEmpresa);
           $oAnoEmpresa    = db_utils::fieldsMemory($rsAnoEmpresa,0);
-
 
           if ((int)$oAnoEmpresa->anoempresa > (int)$iAno) {
 
@@ -195,7 +216,11 @@ switch ($oParametro->sExec) {
           }
 
           $lProcessaCalculo = true;
-          $sSqlCalculo    = "SELECT fc_issqn({$oParametro->iInscricao},
+          $idUsuario = db_getsession("DB_id_usuario");
+
+          $sSqlCalculo    = "SELECT fc_issqn(
+                                             $idUsuario,
+                                             {$oParametro->iInscricao},
                                              '{$dataCalculo->format('Y-m-d')}',
                                              {$iAno},
                                              null,

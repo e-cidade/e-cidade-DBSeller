@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_clientedebito {
                  j98_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_clientedebito() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clientedebito"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_clientedebito {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j98_sequencia = ($this->j98_sequencia == ""?@$GLOBALS["HTTP_POST_VARS"]["j98_sequencia"]:$this->j98_sequencia);
        $this->j98_codigo_cliente = ($this->j98_codigo_cliente == ""?@$GLOBALS["HTTP_POST_VARS"]["j98_codigo_cliente"]:$this->j98_codigo_cliente);
@@ -77,7 +77,7 @@ class cl_clientedebito {
      }
    }
    // funcao para inclusao
-   function incluir ($j98_sequencia){ 
+   public function incluir ($j98_sequencia){ 
       $this->atualizacampos();
      if($this->j98_codigo_cliente == null ){ 
        $this->erro_sql = " Campo Código do Cliente nao Informado.";
@@ -176,7 +176,7 @@ class cl_clientedebito {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j98_sequencia=null) { 
+   public function alterar ($j98_sequencia=null) { 
       $this->atualizacampos();
      $sql = " update clientedebito set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_clientedebito {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j98_sequencia=null,$dbwhere=null) { 
+   public function excluir ($j98_sequencia=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j98_sequencia));
      }else{ 
@@ -334,7 +334,7 @@ class cl_clientedebito {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

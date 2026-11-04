@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE orcppaval
-class cl_orcppaval { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o24_codseqppa = 0; 
-   var $o24_codppa = 0; 
-   var $o24_exercicio = 0; 
-   var $o24_valor = 0; 
-   var $o24_quantmed = 0; 
-   var $o24_proces = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_orcppaval {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o24_codseqppa = 0;
+   var $o24_codppa = 0;
+   var $o24_exercicio = 0;
+   var $o24_valor = 0;
+   var $o24_quantmed = 0;
+   var $o24_proces = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o24_codseqppa = int8 = Sequencia PPA 
-                 o24_codppa = int8 = Código 
-                 o24_exercicio = int4 = Exercicío 
-                 o24_valor = float8 = Valor 
-                 o24_quantmed = float8 = Quant. Medida 
-                 o24_proces = int4 = Processo 
+                 o24_codseqppa = int8 = Sequencia PPA
+                 o24_codppa = int8 = Código
+                 o24_exercicio = int4 = Exercicío
+                 o24_valor = float8 = Valor
+                 o24_quantmed = float8 = Quant. Medida
+                 o24_proces = int4 = Processo
                  ";
-   //funcao construtor da classe 
-   function cl_orcppaval() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("orcppaval"); 
+     $this->rotulo = new rotulo("orcppaval");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_orcppaval {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o24_codseqppa = ($this->o24_codseqppa == ""?@$GLOBALS["HTTP_POST_VARS"]["o24_codseqppa"]:$this->o24_codseqppa);
        $this->o24_codppa = ($this->o24_codppa == ""?@$GLOBALS["HTTP_POST_VARS"]["o24_codppa"]:$this->o24_codppa);
@@ -86,9 +86,9 @@ class cl_orcppaval {
      }
    }
    // funcao para inclusao
-   function incluir ($o24_codseqppa){ 
+   public function incluir ($o24_codseqppa){
       $this->atualizacampos();
-     if($this->o24_codppa == null ){ 
+     if($this->o24_codppa == null ){
        $this->erro_sql = " Campo Código nao Informado.";
        $this->erro_campo = "o24_codppa";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_orcppaval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o24_exercicio == null ){ 
+     if($this->o24_exercicio == null ){
        $this->erro_sql = " Campo Exercicío nao Informado.";
        $this->erro_campo = "o24_exercicio";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_orcppaval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o24_valor == null ){ 
+     if($this->o24_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "o24_valor";
        $this->erro_banco = "";
@@ -115,10 +115,10 @@ class cl_orcppaval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o24_quantmed == null ){ 
+     if($this->o24_quantmed == null ){
        $this->o24_quantmed = "0";
      }
-     if($this->o24_proces == null ){ 
+     if($this->o24_proces == null ){
        $this->erro_sql = " Campo Processo nao Informado.";
        $this->erro_campo = "o24_proces";
        $this->erro_banco = "";
@@ -128,16 +128,16 @@ class cl_orcppaval {
        return false;
      }
      if($o24_codseqppa == "" || $o24_codseqppa == null ){
-       $result = db_query("select nextval('orcppaval_o24_codseqppa_seq')"); 
+       $result = db_query("select nextval('orcppaval_o24_codseqppa_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: orcppaval_o24_codseqppa_seq do campo: o24_codseqppa"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: orcppaval_o24_codseqppa_seq do campo: o24_codseqppa";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o24_codseqppa = pg_result($result,0,0); 
+       $this->o24_codseqppa = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from orcppaval_o24_codseqppa_seq");
        if(($result != false) && (pg_result($result,0,0) < $o24_codseqppa)){
@@ -148,10 +148,10 @@ class cl_orcppaval {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o24_codseqppa = $o24_codseqppa; 
+         $this->o24_codseqppa = $o24_codseqppa;
        }
      }
-     if(($this->o24_codseqppa == null) || ($this->o24_codseqppa == "") ){ 
+     if(($this->o24_codseqppa == null) || ($this->o24_codseqppa == "") ){
        $this->erro_sql = " Campo o24_codseqppa nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -160,23 +160,23 @@ class cl_orcppaval {
        return false;
      }
      $sql = "insert into orcppaval(
-                                       o24_codseqppa 
-                                      ,o24_codppa 
-                                      ,o24_exercicio 
-                                      ,o24_valor 
-                                      ,o24_quantmed 
-                                      ,o24_proces 
+                                       o24_codseqppa
+                                      ,o24_codppa
+                                      ,o24_exercicio
+                                      ,o24_valor
+                                      ,o24_quantmed
+                                      ,o24_proces
                        )
                 values (
-                                $this->o24_codseqppa 
-                               ,$this->o24_codppa 
-                               ,$this->o24_exercicio 
-                               ,$this->o24_valor 
-                               ,$this->o24_quantmed 
-                               ,$this->o24_proces 
+                                $this->o24_codseqppa
+                               ,$this->o24_codppa
+                               ,$this->o24_exercicio
+                               ,$this->o24_valor
+                               ,$this->o24_quantmed
+                               ,$this->o24_proces
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Valores PPA ($this->o24_codseqppa) nao Incluído. Inclusao Abortada.";
@@ -213,16 +213,16 @@ class cl_orcppaval {
        $resac = db_query("insert into db_acount values($acount,1066,6518,'','".AddSlashes(pg_result($resaco,0,'o24_proces'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o24_codseqppa=null) { 
+   public function alterar ($o24_codseqppa=null) {
       $this->atualizacampos();
      $sql = " update orcppaval set ";
      $virgula = "";
-     if(trim($this->o24_codseqppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_codseqppa"])){ 
+     if(trim($this->o24_codseqppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_codseqppa"])){
        $sql  .= $virgula." o24_codseqppa = $this->o24_codseqppa ";
        $virgula = ",";
-       if(trim($this->o24_codseqppa) == null ){ 
+       if(trim($this->o24_codseqppa) == null ){
          $this->erro_sql = " Campo Sequencia PPA nao Informado.";
          $this->erro_campo = "o24_codseqppa";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_orcppaval {
          return false;
        }
      }
-     if(trim($this->o24_codppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_codppa"])){ 
+     if(trim($this->o24_codppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_codppa"])){
        $sql  .= $virgula." o24_codppa = $this->o24_codppa ";
        $virgula = ",";
-       if(trim($this->o24_codppa) == null ){ 
+       if(trim($this->o24_codppa) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o24_codppa";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_orcppaval {
          return false;
        }
      }
-     if(trim($this->o24_exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_exercicio"])){ 
+     if(trim($this->o24_exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_exercicio"])){
        $sql  .= $virgula." o24_exercicio = $this->o24_exercicio ";
        $virgula = ",";
-       if(trim($this->o24_exercicio) == null ){ 
+       if(trim($this->o24_exercicio) == null ){
          $this->erro_sql = " Campo Exercicío nao Informado.";
          $this->erro_campo = "o24_exercicio";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_orcppaval {
          return false;
        }
      }
-     if(trim($this->o24_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_valor"])){ 
+     if(trim($this->o24_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_valor"])){
        $sql  .= $virgula." o24_valor = $this->o24_valor ";
        $virgula = ",";
-       if(trim($this->o24_valor) == null ){ 
+       if(trim($this->o24_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "o24_valor";
          $this->erro_banco = "";
@@ -271,17 +271,17 @@ class cl_orcppaval {
          return false;
        }
      }
-     if(trim($this->o24_quantmed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_quantmed"])){ 
-        if(trim($this->o24_quantmed)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o24_quantmed"])){ 
-           $this->o24_quantmed = "0" ; 
-        } 
+     if(trim($this->o24_quantmed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_quantmed"])){
+        if(trim($this->o24_quantmed)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o24_quantmed"])){
+           $this->o24_quantmed = "0" ;
+        }
        $sql  .= $virgula." o24_quantmed = $this->o24_quantmed ";
        $virgula = ",";
      }
-     if(trim($this->o24_proces)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_proces"])){ 
+     if(trim($this->o24_proces)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o24_proces"])){
        $sql  .= $virgula." o24_proces = $this->o24_proces ";
        $virgula = ",";
-       if(trim($this->o24_proces) == null ){ 
+       if(trim($this->o24_proces) == null ){
          $this->erro_sql = " Campo Processo nao Informado.";
          $this->erro_campo = "o24_proces";
          $this->erro_banco = "";
@@ -317,7 +317,7 @@ class cl_orcppaval {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores PPA nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o24_codseqppa;
@@ -345,14 +345,14 @@ class cl_orcppaval {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o24_codseqppa=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o24_codseqppa=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o24_codseqppa));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -383,7 +383,7 @@ class cl_orcppaval {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores PPA nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o24_codseqppa;
@@ -411,11 +411,11 @@ class cl_orcppaval {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -438,10 +438,10 @@ class cl_orcppaval {
      return $result;
    }
 
-   function sql_query ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,15 +463,15 @@ class cl_orcppaval {
      $sql2 = "";
      if($dbwhere==""){
        if($o24_codseqppa!=null ){
-         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa "; 
-       } 
+         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,10 +481,10 @@ class cl_orcppaval {
      return $sql;
   }
 
-   function sql_query_dad ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_dad ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,15 +502,15 @@ class cl_orcppaval {
      $sql2 = "";
      if($dbwhere==""){
        if($o24_codseqppa!=null ){
-         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa "; 
-       } 
+         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,11 +519,11 @@ class cl_orcppaval {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,15 +536,15 @@ class cl_orcppaval {
      $sql2 = "";
      if($dbwhere==""){
        if($o24_codseqppa!=null ){
-         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa "; 
-       } 
+         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -553,11 +553,11 @@ class cl_orcppaval {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_completo ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_completo ( $o24_codseqppa=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -584,15 +584,15 @@ class cl_orcppaval {
      $sql2 = "";
      if($dbwhere==""){
        if($o24_codseqppa!=null ){
-         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa "; 
-       } 
+         $sql2 .= " where orcppaval.o24_codseqppa = $o24_codseqppa ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

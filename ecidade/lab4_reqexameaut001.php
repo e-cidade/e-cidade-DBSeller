@@ -1,28 +1,28 @@
 <?php
 /**
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -59,13 +59,21 @@ function laboratorioLogado()
     $iDepto = db_getsession('DB_coddepto');
     $oLab_labusuario = new cl_lab_labusuario();
     $oLab_labdepart = new cl_lab_labdepart();
-    $sql = $oLab_labusuario->sql_query(null, 'la02_i_codigo, la02_c_descr', "la02_i_codigo",
-      " la05_i_usuario = $iUsuario");
+    $sql = $oLab_labusuario->sql_query(
+        null,
+        'la02_i_codigo, la02_c_descr',
+        "la02_i_codigo",
+        " la05_i_usuario = $iUsuario"
+    );
     $rResult = $oLab_labusuario->sql_record($sql);
 
     if ($oLab_labusuario->numrows == 0) {
-        $sql = $oLab_labdepart->sql_query(null, 'la02_i_codigo, la02_c_descr', "la02_i_codigo",
-          " la03_i_departamento = $iDepto");
+        $sql = $oLab_labdepart->sql_query(
+            null,
+            'la02_i_codigo, la02_c_descr',
+            "la02_i_codigo",
+            " la03_i_departamento = $iDepto"
+        );
         $rResult = $oLab_labdepart->sql_record($sql);
 
         if ($oLab_labdepart->numrows == 0) {
@@ -131,51 +139,52 @@ if (isset($incluir)) {
     db_fim_transacao();
 }
 ?>
-  <html>
-  <head>
-    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/dbautocomplete.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/webseller.js"></script>
-    <script language="JavaScript" type="text/javascript"
-            src="scripts/classes/saude/laboratorio/ViewNumeroControleInterno.classe.js"></script>
-    <link href="estilos.css" rel="stylesheet" type="text/css">
-    <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
-  </head>
-  <body class="body-default">
-  <?php
-  db_menu();
-  ?>
+    <html>
+    <head>
+        <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <meta http-equiv="Expires" CONTENT="0">
+        <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/widgets/dbautocomplete.widget.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/webseller.js"></script>
+        <script language="JavaScript" type="text/javascript"
+                src="scripts/classes/saude/laboratorio/ViewNumeroControleInterno.classe.js"></script>
+        <link href="estilos.css" rel="stylesheet" type="text/css">
+        <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
+    </head>
+    <body class="body-default">
+    <?php
+    db_menu();
+    ?>
 
-  <?php if ($iLaboratorioLogado == 0) { ?>
-    <div class="container">
-      <table class="form-container">
-        <tr>
-          <td align='center'>
-            <span style="color: #FF0000">Usuário ou departamento não consta como laboratório!</span>
-          </td>
-        </tr>
-      </table>
-    </div>
-      <?php
-      exit;
-  }
-  ?>
+    <?php
+    if ($iLaboratorioLogado == 0) { ?>
+        <div class="container">
+            <table class="form-container">
+                <tr>
+                    <td align='center'>
+                        <span style="color: #FF0000">Usuário ou departamento não consta como laboratório!</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <?php
+        exit;
+    }
+    ?>
 
-  <?php
-  include(modification("forms/db_frmlab_autoriza.php"));
-  ?>
-  </body>
-  </html>
-  <script>
-    js_tabulacaoforms("form1", "la23_c_descr", true, 1, "la23_c_descr", true);
-  </script>
+    <?php
+    include(modification("forms/db_frmlab_autoriza.php"));
+    ?>
+    </body>
+    </html>
+    <script>
+        js_tabulacaoforms("form1", "la23_c_descr", true, 1, "la23_c_descr", true);
+    </script>
 <?php
 if (isset($incluir)) {
     if ($cllab_autoriza->erro_status == "0") {

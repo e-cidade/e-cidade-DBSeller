@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clconplanorec->rotulo->label("c62_codrec");
               <?=$Lc62_reduz?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c62_reduz",6,$Ic62_reduz,true,"text",4,"","chave_c62_reduz");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconplanorec->rotulo->label("c62_codrec");
               <?=$Lc62_codrec?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c62_codrec",4,$Ic62_codrec,true,"text",4,"","chave_c62_codrec");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconplanorec->rotulo->label("c62_codrec");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplanorec.php")==true){
@@ -119,12 +119,12 @@ $clconplanorec->rotulo->label("c62_codrec");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

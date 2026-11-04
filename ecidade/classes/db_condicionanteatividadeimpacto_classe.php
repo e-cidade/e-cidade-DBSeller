@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,13 +52,13 @@ class cl_condicionanteatividadeimpacto {
                  am11_atividadeimpacto = int4 = Atividade
                  ";
    //funcao construtor da classe
-   function cl_condicionanteatividadeimpacto() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condicionanteatividadeimpacto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_condicionanteatividadeimpacto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am11_sequencial = ($this->am11_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am11_sequencial"]:$this->am11_sequencial);
        $this->am11_condicionante = ($this->am11_condicionante == ""?@$GLOBALS["HTTP_POST_VARS"]["am11_condicionante"]:$this->am11_condicionante);
@@ -77,7 +77,7 @@ class cl_condicionanteatividadeimpacto {
      }
    }
    // funcao para Inclusão
-   function incluir ($am11_sequencial = null){
+   public function incluir ($am11_sequencial = null){
       $this->atualizacampos();
      if($this->am11_condicionante == null ){
        $this->erro_sql = " Campo Condicionante não informado.";

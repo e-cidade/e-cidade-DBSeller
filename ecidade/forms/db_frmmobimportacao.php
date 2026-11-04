@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("nome");
        <?=@$Lj95_codimporta?>
     </td>
     <td> 
-<?
+<?php
 db_input('j95_codimporta',8,$Ij95_codimporta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('j95_codimporta',8,$Ij95_codimporta,true,'text',$db_opcao,"")
        <?=@$Lj95_pda?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Pda 1','2'=>'Pda 2','3'=>'Pda 3','4'=>'Pda 4','5'=>'Pda 5','6'=>'Pda 6','7'=>'Pda 7','8'=>'Pda 8','9'=>'Pda 9','10'=>'pda 10','11'=>'Pda 11','12'=>'Pda 12','13'=>'Pda 13','14'=>'Pda 14','15'=>'Pda 15');
 db_select('j95_pda',$x,true,$db_opcao,"");
 ?>
@@ -59,22 +59,22 @@ db_select('j95_pda',$x,true,$db_opcao,"");
        <?=@$Lj95_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j95_data',@$j95_data_dia,@$j95_data_mes,@$j95_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj95_idusuario?>">
-       <?
+       <?php
        db_ancora(@$Lj95_idusuario,"js_pesquisaj95_idusuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j95_idusuario',10,$Ij95_idusuario,true,'text',$db_opcao," onchange='js_pesquisaj95_idusuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_mobimportacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

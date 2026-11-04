@@ -92,7 +92,7 @@ try {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -130,12 +130,12 @@ try {
 
       <tr>
         <td><strong>
-				  <?
+				  <?php
 				    db_ancora("Inscrição:", 'js_mostranomes(true);', $dbOpcao)
 				  ?></b>
         </td>
         <td>
-			   <?
+			   <?php
 			     db_input("q123_inscr", 8,true, true, 'text',$dbOpcao,"onchange='js_mostranomes(false);'" );
 			     db_input("z01_nome", 40,"", true, 'text', 3);
 			   ?>
@@ -145,7 +145,7 @@ try {
         <td><strong>Alvará:</strong>
         </td>
         <td>
-			   <?
+			   <?php
 			     db_input("q120_issalvara", 8,"", true, 'text', 3);
 			   ?>
         </td>
@@ -154,17 +154,17 @@ try {
         <td><strong>Data da Movimentação:</strong>
         </td>
         <td>
-			   <?
+			   <?php
 			    echo date("d/m/Y",db_getsession("DB_datausu"));
 			   ?>
         </td>
       </tr>
       <tr>
         <td nowrap>
-         <strong><? db_ancora("Processo:","js_pesquisap58_codproc(true);",1); ?></b>
+         <strong><?php db_ancora("Processo:","js_pesquisap58_codproc(true);",1); ?></b>
         </td>
         <td>
-          <?
+          <?php
             db_input('p58_codproc',8,"",true,'text',1," onchange='js_pesquisap58_codproc(false);'");
             db_input('p58_requer',40,"",true,'text',3,'');
           ?>
@@ -175,7 +175,7 @@ try {
          <strong>Motivo da Baixa:</strong>
         </td>
         <td>
-          <?
+          <?php
             $aMotivos = array( "" => "Selecione",
                                "1" => "Pedido",
                                "2" => "Oficio"
@@ -189,7 +189,7 @@ try {
         <td colspan="2">
           <fieldset>
           <legend>Observação:</legend>
-          <? db_textarea("q120_obs",5, 48,  "", true,null, 1); ?>
+          <?php db_textarea("q120_obs",5, 48,  "", true,null, 1); ?>
         </td>
       </tr>
       <tr>
@@ -214,13 +214,13 @@ try {
 
       ?>
   </fieldset>
-  <input type="submit" <? echo $lLiberado ?>  name="liberar" id='liberar' value="Baixa de Alvará" onclick="jsMontaDocumentos();return verifica();" />
+  <input type="submit" <?php echo $lLiberado ?>  name="liberar" id='liberar' value="Baixa de Alvará" onclick="jsMontaDocumentos();return verifica();" />
 </form>
 
 <div id='ficha'></div>
 
 </div>
-<?
+<?php
  if (!isset($oGet->aba)){
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
  }

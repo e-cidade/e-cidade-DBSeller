@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -77,7 +77,7 @@ $escola = db_getsession("DB_coddepto");
    <br>
    <form name="form1" method="post" action="">
    <fieldset style="width:95%"><legend><b><?=$nomeescola?> - Trocas de Turmas</b></legend>
-    <?
+    <?php
     $result = $clcalendario->sql_record($clcalendario->sql_query_calturma("","ed52_i_codigo,ed52_c_descr,ed52_i_ano","ed52_i_ano desc"," ed38_i_escola = $escola AND ed52_c_passivo = 'N'"));?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
      <tr>
@@ -85,7 +85,7 @@ $escola = db_getsession("DB_coddepto");
        <b>Selecione o Calendário:</b>
        <select name="calendario" style="font-size:9px;width:200px;height:18px;" onchange="js_botao(this.value)">
         <option value=""></option>
-        <?
+        <?php
         for($i=0;$i<$clcalendario->numrows;$i++) {
          db_fieldsmemory($result,$i);
          $selected = isset( $calendario ) && $ed52_i_codigo == $calendario ? "selected" : "";
@@ -96,12 +96,12 @@ $escola = db_getsession("DB_coddepto");
       </td>
      </tr>
     </table>
-    <?if(isset($calendario)){?>
+    <?php if(isset($calendario)){?>
      <br>
      <table border="0" cellspacing="2px" width="100%" height="100%" cellpadding="1px" bgcolor="#cccccc">
      <tr>
       <td align="center" valign="top">
-       <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+       <table border='1px' width="100%" bgcolor="#cccccc" cellspacing="0px">
         <tr class='cabec'>
          <td rowspan="2" align='center'><b>Matrícula</b></td>
          <td rowspan="2" align='center'><b>Aluno</b></td>
@@ -116,7 +116,7 @@ $escola = db_getsession("DB_coddepto");
          <td align='center'><b>Calendario</b></td>
          <td align='center'><b>Data da Troca de Turma</b></td>
         </tr>
-        <?
+        <?php
         $campos1 = "ed60_i_codigo,
                     ed60_matricula,
                     ed47_i_codigo,
@@ -163,29 +163,29 @@ $escola = db_getsession("DB_coddepto");
            <td class='aluno' align='center'><?=$caldescrdestino?></td>
            <td class='aluno' align='center'><?=db_formatar($ed69_d_datatransf,'d')?></td>
           </tr>
-          <?
+          <?php
          }
         }else{
          ?>
-         <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+         <table border='1px' width="100%" bgcolor="#cccccc" cellspacing="0px">
           <tr bgcolor="#EAEAEA">
            <td class='aluno'>NENHUMA TRANSFERÊNCIA NESTE CALENDÁRIO.</td>
           </tr>
          </table>
-         <?
+         <?php
         }
         ?>
        </table>
       </td>
      </tr>
      </table>
-    <?}?>
+    <?php }?>
    </fieldset>
    </form>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -194,8 +194,8 @@ function js_botao(calendario){
   location.href = "edu3_transfturma001.php?calendario="+calendario;
  }
 }
-<?if(!isset($calendario) && pg_num_rows($result)>0){?>
+<?php if(!isset($calendario) && pg_num_rows($result)>0){?>
  document.form1.calendario.options[1].selected = true;
  js_botao(document.form1.calendario.options[1].value);
-<?}?>
+<?php }?>
 </script>

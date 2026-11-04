@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE orcprojetoorcprojetolei
-class cl_orcprojetoorcprojetolei { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o139_sequencial = 0; 
-   var $o139_orcprojetolei = 0; 
-   var $o139_orcprojeto = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_orcprojetoorcprojetolei {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o139_sequencial = 0;
+   var $o139_orcprojetolei = 0;
+   var $o139_orcprojeto = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o139_sequencial = int4 = Código Sequencial 
-                 o139_orcprojetolei = int4 = Código do Projeto de lei 
-                 o139_orcprojeto = int4 = Código do Decreto 
+                 o139_sequencial = int4 = Código Sequencial
+                 o139_orcprojetolei = int4 = Código do Projeto de lei
+                 o139_orcprojeto = int4 = Código do Decreto
                  ";
-   //funcao construtor da classe 
-   function cl_orcprojetoorcprojetolei() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("orcprojetoorcprojetolei"); 
+     $this->rotulo = new rotulo("orcprojetoorcprojetolei");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_orcprojetoorcprojetolei {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o139_sequencial = ($this->o139_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o139_sequencial"]:$this->o139_sequencial);
        $this->o139_orcprojetolei = ($this->o139_orcprojetolei == ""?@$GLOBALS["HTTP_POST_VARS"]["o139_orcprojetolei"]:$this->o139_orcprojetolei);
@@ -77,9 +77,9 @@ class cl_orcprojetoorcprojetolei {
      }
    }
    // funcao para inclusao
-   function incluir ($o139_sequencial){ 
+   public function incluir ($o139_sequencial){
       $this->atualizacampos();
-     if($this->o139_orcprojetolei == null ){ 
+     if($this->o139_orcprojetolei == null ){
        $this->erro_sql = " Campo Código do Projeto de lei nao Informado.";
        $this->erro_campo = "o139_orcprojetolei";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_orcprojetoorcprojetolei {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o139_orcprojeto == null ){ 
+     if($this->o139_orcprojeto == null ){
        $this->erro_sql = " Campo Código do Decreto nao Informado.";
        $this->erro_campo = "o139_orcprojeto";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_orcprojetoorcprojetolei {
        return false;
      }
      if($o139_sequencial == "" || $o139_sequencial == null ){
-       $result = db_query("select nextval('orcprojetoorcprojetolei_o139_sequencial_seq')"); 
+       $result = db_query("select nextval('orcprojetoorcprojetolei_o139_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: orcprojetoorcprojetolei_o139_sequencial_seq do campo: o139_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: orcprojetoorcprojetolei_o139_sequencial_seq do campo: o139_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o139_sequencial = pg_result($result,0,0); 
+       $this->o139_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from orcprojetoorcprojetolei_o139_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $o139_sequencial)){
@@ -118,10 +118,10 @@ class cl_orcprojetoorcprojetolei {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o139_sequencial = $o139_sequencial; 
+         $this->o139_sequencial = $o139_sequencial;
        }
      }
-     if(($this->o139_sequencial == null) || ($this->o139_sequencial == "") ){ 
+     if(($this->o139_sequencial == null) || ($this->o139_sequencial == "") ){
        $this->erro_sql = " Campo o139_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_orcprojetoorcprojetolei {
        return false;
      }
      $sql = "insert into orcprojetoorcprojetolei(
-                                       o139_sequencial 
-                                      ,o139_orcprojetolei 
-                                      ,o139_orcprojeto 
+                                       o139_sequencial
+                                      ,o139_orcprojetolei
+                                      ,o139_orcprojeto
                        )
                 values (
-                                $this->o139_sequencial 
-                               ,$this->o139_orcprojetolei 
-                               ,$this->o139_orcprojeto 
+                                $this->o139_sequencial
+                               ,$this->o139_orcprojetolei
+                               ,$this->o139_orcprojeto
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ligação do projeto de lei com o Decreto ($this->o139_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_orcprojetoorcprojetolei {
        $resac = db_query("insert into db_acount values($acount,3124,17689,'','".AddSlashes(pg_result($resaco,0,'o139_orcprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o139_sequencial=null) { 
+   public function alterar ($o139_sequencial=null) {
       $this->atualizacampos();
      $sql = " update orcprojetoorcprojetolei set ";
      $virgula = "";
-     if(trim($this->o139_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o139_sequencial"])){ 
+     if(trim($this->o139_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o139_sequencial"])){
        $sql  .= $virgula." o139_sequencial = $this->o139_sequencial ";
        $virgula = ",";
-       if(trim($this->o139_sequencial) == null ){ 
+       if(trim($this->o139_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o139_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_orcprojetoorcprojetolei {
          return false;
        }
      }
-     if(trim($this->o139_orcprojetolei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o139_orcprojetolei"])){ 
+     if(trim($this->o139_orcprojetolei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o139_orcprojetolei"])){
        $sql  .= $virgula." o139_orcprojetolei = $this->o139_orcprojetolei ";
        $virgula = ",";
-       if(trim($this->o139_orcprojetolei) == null ){ 
+       if(trim($this->o139_orcprojetolei) == null ){
          $this->erro_sql = " Campo Código do Projeto de lei nao Informado.";
          $this->erro_campo = "o139_orcprojetolei";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_orcprojetoorcprojetolei {
          return false;
        }
      }
-     if(trim($this->o139_orcprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o139_orcprojeto"])){ 
+     if(trim($this->o139_orcprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o139_orcprojeto"])){
        $sql  .= $virgula." o139_orcprojeto = $this->o139_orcprojeto ";
        $virgula = ",";
-       if(trim($this->o139_orcprojeto) == null ){ 
+       if(trim($this->o139_orcprojeto) == null ){
          $this->erro_sql = " Campo Código do Decreto nao Informado.";
          $this->erro_campo = "o139_orcprojeto";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_orcprojetoorcprojetolei {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação do projeto de lei com o Decreto nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o139_sequencial;
@@ -267,14 +267,14 @@ class cl_orcprojetoorcprojetolei {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o139_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o139_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o139_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_orcprojetoorcprojetolei {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação do projeto de lei com o Decreto nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o139_sequencial;
@@ -330,11 +330,11 @@ class cl_orcprojetoorcprojetolei {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,11 +356,11 @@ class cl_orcprojetoorcprojetolei {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $o139_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $o139_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,15 +377,15 @@ class cl_orcprojetoorcprojetolei {
      $sql2 = "";
      if($dbwhere==""){
        if($o139_sequencial!=null ){
-         $sql2 .= " where orcprojetoorcprojetolei.o139_sequencial = $o139_sequencial "; 
-       } 
+         $sql2 .= " where orcprojetoorcprojetolei.o139_sequencial = $o139_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,11 +394,11 @@ class cl_orcprojetoorcprojetolei {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $o139_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $o139_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,15 +411,15 @@ class cl_orcprojetoorcprojetolei {
      $sql2 = "";
      if($dbwhere==""){
        if($o139_sequencial!=null ){
-         $sql2 .= " where orcprojetoorcprojetolei.o139_sequencial = $o139_sequencial "; 
-       } 
+         $sql2 .= " where orcprojetoorcprojetolei.o139_sequencial = $o139_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

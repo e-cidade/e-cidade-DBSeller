@@ -7,8 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
 use App\Domain\Patrimonial\Protocolo\Model\Processo\AndamentoPadrao\CamposDinamicos;
 use App\Domain\Patrimonial\Protocolo\Repository\Processo\AndamentoPadrao\CamposDinamicosRepository;
-use App\Domain\Patrimonial\Protocolo\Transformers\Processo\AndamentoPadrao
-\CamposDinamicos as CamposDinamicosTransform;
+use App\Domain\Patrimonial\Protocolo\Transformers\Processo\AndamentoPadrao\CamposDinamicos as CamposDinamicosTransform;
 
 class CamposDinamicosController extends Controller
 {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("bi06_titulo");
        <?=@$Lbi19_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi19_codigo',10,$Ibi19_codigo,true,'text',3,"")
 ?>
     </td>
@@ -49,27 +49,27 @@ db_input('bi19_codigo',10,$Ibi19_codigo,true,'text',3,"")
        <?=@$Lbi19_qtdunidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi19_qtdunidade',4,$Ibi19_qtdunidade,true,'text',$db_opcao,"")
 ?>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <b>Limite:</b>
-<?
+<?php
 db_input('bi07_qtdlivros',4,$bi07_qtdlivros,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbi19_acervo?>">
-       <?
+       <?php
        db_ancora(@$Lbi19_acervo,"js_pesquisabi19_acervo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi19_acervo',10,$Ibi19_acervo,true,'text',$db_opcao," onchange='js_pesquisabi19_acervo(false);'")
 ?>
-<?
+<?php
 db_input('bi06_titulo',50,$Ibi06_titulo,true,'text',3,'')
 ?>
     </td>
@@ -129,7 +129,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_emprestimoacervo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

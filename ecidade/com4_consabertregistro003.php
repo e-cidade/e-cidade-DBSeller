@@ -46,12 +46,13 @@ $clrotulo->label("pc67_motivo");
 $oGet = db_utils::postMemory($_GET);
 
 $clAbertRegPreco = new aberturaRegistroPreco($oGet->pc10_numero);
+$instituicao = InstituicaoRepository::getInstituicaoByCodigo($clAbertRegPreco->getCodigoInstituicao());
 
 ?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js,
              classes/infoLancamentoContabil.classe.js,dbmessageBoard.widget.js");
 db_app::load("estilos.css, grid.style.css,tab.style.css");
@@ -80,17 +81,25 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
           <?=$clAbertRegPreco->getCodigoSolicitacao(); ?>
         </td>
         <td width="120" style="text-align: right;">
-          <b>Vigência de:</b>
+          <b>Vigência para Estimativa:</b>
         </td>
         <td width="" style="background-color:#FFFFFF;color: #000000">
           <?=db_formatar($clAbertRegPreco->getDataInicio(),'d'); ?>
         </td>
         <td width="20" style="text-align: center;">
-          <b>A</b>
+          <b>à</b>
         </td>
         <td style="background-color:#FFFFFF;color: #000000">
           <?=db_formatar($clAbertRegPreco->getDataTermino(),'d'); ?>
         </td>
+      </tr>
+      <tr>
+          <td>
+              <b>Instituição:</b>
+          </td>
+          <td colspan="5" style="background-color:#FFFFFF;color: #000000">
+            <?= $instituicao->getDescricao();  ?>
+          </td>
       </tr>
       <tr>
         <td width="200">
@@ -101,17 +110,25 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
         </td>
       </tr>
       <tr>
+        <td>
+          <b>Usuário Solicitante:</b>
+        </td>
+        <td colspan="5" style="background-color:#FFFFFF;color: #000000">
+          <?= $clAbertRegPreco->getUsuario()->getNome();  ?>
+        </td>
+      </tr>
+      <tr>
         <td width="200">
           <b>Data Inclusão:</b>
         </td>
-        <td style="background-color:#FFFFFF;color: #000000">
-          <?=db_formatar($clAbertRegPreco->getDataInicio(),'d'); ?>
+        <td style="background-color:#FFFFFF;color: #000000;">
+          <?= db_formatar($clAbertRegPreco->getDataInicio(), 'd'); ?>
         </td>
         <td width="120" style="text-align: right;">
-          <b>data da anulação:</b>
+          <b>Anulada:</b>
         </td>
-        <td width="" style="background-color:#FFFFFF;color: #000000">
-          <?=db_formatar($clAbertRegPreco->getDataAnulacao(),'d'); ?>
+        <td colspan="3" style="background-color:#FFFFFF;color: #000000">
+          <?= db_formatar($clAbertRegPreco->getDataAnulacao(), 'd') ?: 'Não'; ?>
         </td>
         <td width="20" style="text-align: center;">
           &nbsp;
@@ -125,7 +142,13 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
           <b>Forma de Controle:</b>
         </td>
         <td style="background-color:#FFFFFF;color: #000000">
-          <?=$clAbertRegPreco->getFormaDeControle() == aberturaRegistroPreco::CONTROLA_VALOR ?" Por Valor":"Por Quantidade";?>
+          <?= $clAbertRegPreco->getFormaDeControle() == aberturaRegistroPreco::CONTROLA_VALOR ? "Por Valor" : "Por Quantidade";?>
+        </td>
+        <td style="text-align: right;width:200px">
+            <b>Disponibilizado para Estimativa:</b>
+        </td>
+        <td colspan="3" style="background-color:#FFFFFF;color: #000000">
+            <?= $clAbertRegPreco->isLiberado() ? "Sim" : "Não" ;?>
         </td>
       </tr>
       <tr>
@@ -142,13 +165,13 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
  </tr>
  </table>
  <fieldset>
-    <?
+    <?php
     $oTabDetalhes = new verticalTab("detalhesemp",300);
     $oTabDetalhes->add("estimativas", "Estimativas",
                        "com4_consabertregistodetalhes001.php?pc10_numero={$oGet->pc10_numero}&exec=estimativa");
     $oTabDetalhes->add("compilacao" , "Compilação" ,
                        "com4_consabertregistodetalhes001.php?pc10_numero={$oGet->pc10_numero}&exec=compilacao");
-    $oTabDetalhes->add("compilacao" , "Ítens" ,
+    $oTabDetalhes->add("compilacao" , "Itens" ,
                        "com4_consabertregistodetalhes001.php?pc10_numero={$oGet->pc10_numero}&exec=itens");
 
     $oTabDetalhes->show();
@@ -169,8 +192,10 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
 
 <script>
 
-var sUrlRC                      = 'com4_solicitacaoComprasRegistroPreco.RPC.php';
+var sUrlRC = 'com4_solicitacaoComprasRegistroPreco.RPC.php';
 var iFormaControleRegistroPreco = '<?=$clAbertRegPreco->getFormaDeControle()?>';
+let gridSolicitacoesVinculadas = {};
+let frameSolicitacoesVinculadas = {};
 function js_completaPesquisa(iSolicitacao) {
 
    var oParam          = new Object();
@@ -214,9 +239,8 @@ function js_imprimeEstimativa ( iSolicita ){
     oJanela.moveTo(0,0);
 }
 
-function js_showItens(iTipo, iSolicita, sDepartamento) {
-
-	if ($('wndAuxiliar')) {
+function js_showItens(iTipo, iSolicita, sDepartamento, anulada) {
+  if ($('wndAuxiliar')) {
     windowAuxiliar.destroy();
   }
   var sTituloJanela = 'Itens';
@@ -235,6 +259,12 @@ function js_showItens(iTipo, iSolicita, sDepartamento) {
 	  	sConteudo += "<fieldset>                                                                                                                          ";
 	  	sConteudo += " 	<center>                                                                                                                           ";
 	  	sConteudo += " 		<input name='imprimir' value='Imprimir' id='imprimir' type='button' onclick='js_imprimeEstimativa("+iSolicita+"); return false;'>";
+	  	sConteudo += ` 		<input
+            value='Solicitações Vinculadas'
+            id='btnSolicitacoesVinculadas'
+            type='button'
+            onclick='js_showSolicitacoesVinculadas(${iSolicita}, ${anulada})'
+        >`;
 	  	sConteudo += " 	</center>                                                                                                                          ";
 	  	sConteudo += "</fieldset>                                                                                                                         ";
 
@@ -245,7 +275,7 @@ function js_showItens(iTipo, iSolicita, sDepartamento) {
   });
 
   var sMsgHelpItens = "Itens lançados para a estimativa "+iSolicita+".";
-  oMessagaBoard = new DBMessageBoard ('sMessageBoard', sTituloJanela, sMsgHelpItens, windowAuxiliar.getContentContainer());
+  oMessagaBoard = new DBMessageBoard ('sMessageBoarjs_showItensd', sTituloJanela, sMsgHelpItens, windowAuxiliar.getContentContainer());
   oMessagaBoard.show();
   oGrvDetalhes = new DBGrid('detalhes');
   oGrvDetalhes.nameInstance = 'oGrvDetalhes';
@@ -266,7 +296,7 @@ function js_showItens(iTipo, iSolicita, sDepartamento) {
       oGrvDetalhes.setHeader(new Array('Seq',
                                        'Código',
                                        'Descricao',
-                                       'Unidade',
+                                       'Unidade(Qtd)',
                                        'Quantidade',
                                        'Cedida',
                                        'Recebida',
@@ -284,6 +314,119 @@ function js_showItens(iTipo, iSolicita, sDepartamento) {
       oGrvDetalhes.renderRows();
       getItensTipo(iTipo, iSolicita);
       windowAuxiliar.show();
+}
+
+function js_showSolicitacoesVinculadas(estimativa, anulada) {
+    if (anulada) {
+        return alert('Estimativa anulada!');
+    }
+
+    if ($('frameSolicitacoesVinculadas')) {
+        frameSolicitacoesVinculadas.destroy();
+    }
+
+    const tituloJanela = `Solicitações vinculadas à estimativa ${estimativa}`
+    frameSolicitacoesVinculadas = new windowAux(
+        'frameSolicitacoesVinculadas',
+        tituloJanela,
+        screen.width / 1.4,
+        500
+    );
+
+    const conteudo  =  `<fieldset><div id="solicitacoesVinculadas"></div></fieldset>`;
+
+    frameSolicitacoesVinculadas.setContent(conteudo);
+    frameSolicitacoesVinculadas.setShutDownFunction(function() {
+        frameSolicitacoesVinculadas.destroy();
+    });
+
+    let subTexto = "Para visualizar mais detalhes da solicitação de compras vinculada a estimativa, ";
+    subTexto += 'clique sobre o número da solicitação desejada.';
+
+    const subFrameSolicitacoesVinculadas = new DBMessageBoard(
+        'solicitacoesVinculadasBoard',
+        'Solicitações de Compra Vinculadas',
+        subTexto,
+        frameSolicitacoesVinculadas.getContentContainer()
+    );
+    subFrameSolicitacoesVinculadas.show();
+
+    frameSolicitacoesVinculadas.setChildOf(windowAuxiliar);
+
+    gridSolicitacoesVinculadas = new DBGrid('solicitacoesVinculadas');
+    gridSolicitacoesVinculadas.nameInstance = 'gridSolicitacoesVinculadas';
+    gridSolicitacoesVinculadas.clearAll(true);
+    gridSolicitacoesVinculadas.setCellWidth(["10%", "10%", "50%", '20%', '10%']);
+    gridSolicitacoesVinculadas.setCellAlign(['center', 'center', 'left', 'center', 'center']);
+    gridSolicitacoesVinculadas.setHeader(['Número', 'Data', 'Resumo', 'Usuário', 'Anulada']);
+    buscarSolicitacoesVinculadas(estimativa);
+    gridSolicitacoesVinculadas.show($('solicitacoesVinculadas'));
+}
+
+function buscarSolicitacoesVinculadas(estimativa) {
+    js_divCarregando('Aguarde, carregando itens...', 'msgBox');
+
+    const parametros = {};
+    parametros.estimativa = estimativa;
+    parametros.exec = 'buscarSolicitacoesVinculadas';
+
+    new Ajax.Request(
+        sUrlRC,
+        {
+            method: 'post',
+            parameters:`json=${JSON.stringify(parametros)}`,
+            onComplete: resposta => {
+                resposta = JSON.parse(resposta.responseText);
+                js_retornoBuscarSolicitacoesVinculadas(resposta)
+            }
+        }
+    );
+}
+
+function js_retornoBuscarSolicitacoesVinculadas(resposta) {
+    js_removeObj('msgBox');
+
+    const dados = resposta.dados;
+    if (!dados) {
+        return alert('Nenhuma solicitação vinculada!');
+    }
+
+    frameSolicitacoesVinculadas.show();
+    gridSolicitacoesVinculadas.clearAll();
+    dados.each(function (solicitacao) {
+        const row = [];
+        const numeroSolicitacao = solicitacao.pc10_numero;
+        let resumoSolicitacao = solicitacao.pc10_resumo.urlDecode();
+
+        if (resumoSolicitacao.length > 92) {
+            resumoSolicitacao = resumoSolicitacao.slice(0, 92).trim() + '...';
+        }
+
+        row[0] = `<a
+            href="#"
+            onclick="js_mostrarSolicitacao(${numeroSolicitacao})"
+            style="color:blue;"
+            >${numeroSolicitacao}
+        </a>`;
+        row[1] = js_formatar(solicitacao.pc10_data, 'd');
+        row[2] = resumoSolicitacao;
+        row[3] = solicitacao.pc10_usuariosolicitante.urlDecode();
+        row[4] = solicitacao.anulada ? 'Sim' : 'Não';
+
+        gridSolicitacoesVinculadas.addRow(row);
+    })
+
+    gridSolicitacoesVinculadas.renderRows();
+}
+
+function js_mostrarSolicitacao(solicitacao) {
+    js_OpenJanelaIframe(
+        'CurrentWindow.corpo',
+        'db_iframe_solicita',
+        `com3_conssolicitacao002.php?pc10_numero=${solicitacao}`,
+        'Pesquisa Solicitação de Compras',
+        true
+    );
 }
 
 function getItensTipo(iTipo, iSolicita) {
@@ -318,7 +461,7 @@ function js_retornoCompletaPesquisaItens(oAjax) {
             aRow[0] = iInd+1;
             aRow[1] = oDado.codigo;
             aRow[2] = oDado.material.urlDecode();
-            aRow[3] = oDado.unidade;
+            aRow[3] = oDado.unidade.urlDecode() + `(${oDado.quantidadeUnidade})`;
             aRow[4] = oDado.quantidade;
 
             /**
@@ -380,7 +523,7 @@ function js_showItensCompilacao(iCompilacao) {
                  "Descrição",
                  "Vlr Uni.",
                  "Fornecedor",
-                 "Unidade",
+                 "Unidade(Qtd)",
                  "Qtd. Min.",
                  "Qtd. Max.",
                  "Ativo"
@@ -449,7 +592,7 @@ function js_preencheGridCompilacao(oAjax) {
     aLinha[2]  = oItem.material.urlDecode();
     aLinha[3]  = js_formatar(oItem.valorunitario,"f");
     aLinha[4]  = oItem.fornecedor.urlDecode();
-    aLinha[5]  = oItem.unidade.urlDecode();
+    aLinha[5]  = oItem.unidade.urlDecode() + `(${oItem.quantidadeUnidade})`;
     aLinha[6]  = oItem.quantmin;
     aLinha[7]  = oItem.quantmax;
     aLinha[8]  = oItem.ativo?"Sim":"Não";
@@ -548,8 +691,6 @@ function js_preencheItensCedidosRecebidos(oAjax) {
 	});
   oGridItensDepart.renderRows();
 }
-
-
 
 createDivModal = function (oNode) {
 

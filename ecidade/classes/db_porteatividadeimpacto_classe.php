@@ -1,7 +1,7 @@
-<?
+<?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,13 +50,13 @@ class cl_porteatividadeimpacto {
                  am02_descricao = varchar(50) = Descrição do Porte
                  ";
    //funcao construtor da classe
-   function cl_porteatividadeimpacto() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("porteatividadeimpacto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_porteatividadeimpacto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am02_sequencial = ($this->am02_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am02_sequencial"]:$this->am02_sequencial);
        $this->am02_descricao = ($this->am02_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["am02_descricao"]:$this->am02_descricao);
@@ -74,7 +74,7 @@ class cl_porteatividadeimpacto {
      }
    }
    // funcao para inclusao
-   function incluir ($am02_sequencial){
+   public function incluir ($am02_sequencial){
       $this->atualizacampos();
      if($this->am02_descricao == null ){
        $this->erro_sql = " Campo Descrição do Porte não informado.";

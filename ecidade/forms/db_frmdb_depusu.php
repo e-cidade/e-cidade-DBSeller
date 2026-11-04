@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $nome = stripslashes($nome);
   </tr>
   <tr>
     <td colspan="4">
-     <?
+     <?php
        db_ancora(@$Lid_usuario,"",3);echo "&nbsp";
        db_input('id_usuario',10,$Iid_usuario,true,'text',3,"");
        db_input('nome',40,$Inome,true,'text',3,'');

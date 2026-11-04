@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("descrdepto");
        <?=@$Lbo04_codmov?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo04_codmov',9,$Ibo04_codmov,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbo04_codbo?>">
-       <?
+       <?php
        db_ancora(@$Lbo04_codbo,"js_pesquisabo04_codbo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo04_codbo',6,$Ibo04_codbo,true,'text',$db_opcao," onchange='js_pesquisabo04_codbo(false);'")
 ?>
-       <?
+       <?php
 db_input('bo01_obs',200,$Ibo01_obs,true,'text',3,'')
        ?>
     </td>
@@ -64,22 +64,22 @@ db_input('bo01_obs',200,$Ibo01_obs,true,'text',3,'')
        <?=@$Lbo04_datamov?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('bo04_datamov',@$bo04_datamov_dia,@$bo04_datamov_mes,@$bo04_datamov_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbo04_coddepto_ori?>">
-       <?
+       <?php
        db_ancora(@$Lbo04_coddepto_ori,"js_pesquisabo04_coddepto_ori(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo04_coddepto_ori',5,$Ibo04_coddepto_ori,true,'text',$db_opcao," onchange='js_pesquisabo04_coddepto_ori(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -89,7 +89,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        <?=@$Lbo04_coddepto_dest?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo04_coddepto_dest',5,$Ibo04_coddepto_dest,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('bo04_coddepto_dest',5,$Ibo04_coddepto_dest,true,'text',$db_opcao,"")
        <?=@$Lbo04_entrada?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo04_entrada',3,$Ibo04_entrada,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('bo04_entrada',3,$Ibo04_entrada,true,'text',$db_opcao,"")
        <?=@$Lbo04_saida?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo04_saida',3,$Ibo04_saida,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -171,7 +171,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bomov.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

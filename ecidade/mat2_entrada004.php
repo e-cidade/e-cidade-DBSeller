@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clmatestoquetipo       = new cl_matestoquetipo;
 
       <td colspan=2>
       <br>
-      <?
+      <?php
       $instit=db_getsession("DB_instit");
       $anousu=db_getsession("DB_anousu");
       $cliframe_seleciona->chaves = "o40_orgao";
@@ -75,7 +75,7 @@ $clmatestoquetipo       = new cl_matestoquetipo;
       </td>
       <td colspan=2>
       <br>
-      <?
+      <?php
       $cliframe_seleciona->chaves = "m81_codtipo";
       $cliframe_seleciona->campos  = "m81_codtipo, m81_descr";
       $cliframe_seleciona->legenda="Tipos de Entradas";      

@@ -62,7 +62,7 @@ if ($iTipo == 1) {
 <form name='frmReprocessa'>
   <table width="100%" height="100%"; cellspacing="0" cellpadding="0">
     <tr>
-      <td height="10%" align="center" valign='center' bgcolor="white" style=';border-bottom:2px groove white'>
+      <td height="10%" align="center" valign='center' bgcolor="white" style='border-bottom:2px groove white'>
       <b>  
      <?=$sTextoTipo?>
       </b> 

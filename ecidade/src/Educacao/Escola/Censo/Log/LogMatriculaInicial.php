@@ -26,7 +26,6 @@
  */
 namespace ECidade\Educacao\Escola\Censo\Log;
 
-
 use FpdfMultiCellBorder;
 use JSON;
 
@@ -43,6 +42,11 @@ class LogMatriculaInicial extends Log
     public function add($type, $log)
     {
         $this->logs[$type][] = $log;
+    }
+
+    public function getLogs()
+    {
+        return $this->logs;
     }
 
     public function write()

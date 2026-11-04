@@ -1,5 +1,5 @@
 <?php
-// php5.6 artisan route:list --path=v4/api/financeiro/orcamento
+// php artisan route:list --path=v4/api/financeiro/orcamento
 Route::prefix('cadastro')->group(function () {
 
     Route::post('especificacao-recurso/salvar', "EspecificacaoRecursoController@salvar");
@@ -16,22 +16,24 @@ Route::prefix('cadastro')->group(function () {
     Route::post('recurso/inativar', "RecursoController@inativar");
     Route::post('recurso/excluir', "RecursoController@excluir");
 
+    Route::get('recursos/depreciados/{exercicio}', "RecursoController@depreciados2022");
+
     Route::get('complemento', "ComplementoController@get");
     Route::post('complemento/salvar', "ComplementoController@salvar")->middleware('legacySession');
     Route::post('complemento/excluir', "ComplementoController@excluir")->middleware('legacySession');
 });
 
-Route::get('recursos/{data?}', "RecursoAntes2022Controller@get");
-
 Route::get('utiliza-decimal/{exercicio}', "ParametroController@utilizaDecimal");
-
-
 
 Route::prefix('relatorios')->group(function () {
     Route::post('siconfi-recursos-2022', "RecursoController@listaSiconfi2022");
     Route::post('meta-arrecadacao', "RelatoriosCronogramaController@metaArrecadacao");
     Route::post('cotas-despesa', "RelatoriosCronogramaController@cotaDespesa");
     Route::post('meta-x-cotas', "RelatoriosCronogramaController@metaVersusCota");
+
+    // anexos do orçamento
+    Route::post('anexo-3', "AnexosController@anexo3");
+    Route::post('anexo-2-receita', "AnexosController@receitaAnexo2");
 });
 
 Route::prefix('de-para-siconfi')->group(function () {
@@ -39,9 +41,41 @@ Route::prefix('de-para-siconfi')->group(function () {
     Route::post('importar', "RecursoController@importarPlanilhaSiconfi");
 });
 
+/**
+ * Rotas envolvendo recursos
+ */
+Route::prefix('recursos')->group(function () {
+    Route::get('byFilters', "RecursoController@byFilters");
+    Route::get('classificacoes', "ClassificacaoFonteRecursoController@get");
+    Route::get('complementos', "ComplementoController@byFilters");
+    Route::get('confere-vinculo', "RecursoController@confereVinculo");
+    // @todo se for criar outra rota com GET tem que ser em cima dessa.
+    Route::get('{exercicio}/{data?}', "RecursoController@get");
+
+});
+
+Route::prefix('despesa')->group(function () {
+    Route::get('naturezas-despesas', "NaturezaDespesaController@index");
+    Route::get('dotacoes', "DotacaoController@index");
+});
+
+Route::prefix('receita')->group(function () {
+    Route::get('natureza-receita', "NaturezaReceitaController@index");
+    Route::get('receitas', "ReceitaController@index");
+});
+
+/**
+ * @todo mover a rota para o prefixo recursos
+ */
 Route::get('classificacao/com-siconfi', "ClassificacaoFonteRecursoController@comSiconfi");
 
 Route::get('tipos-detalhamento', "RecursoController@tiposDetalhamento");
+Route::get('buscar-dotacoes/{elemento}', "BuscarDadosDotacoesController@getDotacoes");
+Route::get('buscar-saldo-dotacao/{codigoDotacao}', "BuscarDadosDotacoesController@getSaldoDotacao");
+Route::get('get-desdobramento/{codigoMaterial}', "BuscarDadosDotacoesController@getDesdobramentoMaterial");
+Route::get('get-desdobramento-item/{codele}', "BuscarDadosDotacoesController@getDesdobramentoItem");
+Route::get('buscar-filtros-dotacoes', "BuscarDadosDotacoesController@buscarDadosFiltrosDotacoes");
+
 
 Route::prefix('acompanhamento')->group(function () {
     Route::get('cronograma/bases-calculo-despesa', 'AcompanhamentoDesembolsoDespesaController@baseCalculo');

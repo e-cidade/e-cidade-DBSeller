@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cltipo_habilitacao->rotulo->label("tr09_tipo");
               <?=$Ltr09_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tr09_id",5,$Itr09_id,true,"text",4,"","chave_tr09_id");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipo_habilitacao->rotulo->label("tr09_tipo");
               <?=$Ltr09_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tr09_tipo",3,$Itr09_tipo,true,"text",4,"","chave_tr09_tipo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipo_habilitacao->rotulo->label("tr09_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipo_habilitacao.php")==true){
@@ -118,12 +118,12 @@ $cltipo_habilitacao->rotulo->label("tr09_tipo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

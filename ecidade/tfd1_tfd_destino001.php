@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($incluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 75%;'> <legend><b>Destino</b></legend>
-	      <?
+	      <?php
         require_once(modification("forms/db_frmtfd_destino.php"));
         ?>
 	    </fieldset>
@@ -71,7 +71,7 @@ if(isset($incluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -79,7 +79,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","tf03_c_descr",true,1,"tf03_c_descr",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($cltfd_destino->erro_status=="0"){
     $cltfd_destino->erro(true,false);

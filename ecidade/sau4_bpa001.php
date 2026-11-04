@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -66,7 +66,7 @@ if ($oSauConfig != false) {
     <meta http-equiv="Expires" CONTENT="0">
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
-    <?
+      <?php
       db_app::load("scripts.js");
       db_app::load("prototype.js");
     ?>
@@ -84,7 +84,7 @@ if ($oSauConfig != false) {
       <tr>
         <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"><br>
           <center>
-          
+
           <form name="form1" method="post" action="">
             <center>
             <fieldset style="width: 40%"><legend><b>Gerador de Arquivo:</b></legend>
@@ -92,7 +92,7 @@ if ($oSauConfig != false) {
                 <tr>
                   <td colspan="2">
                     <b>Tipo de BPA:</b>
-                    <?
+                      <?php
                       $arr_tipo = array ("02" => "Individual", "01" => "Consolidado" );
                       db_select('sTipo', $arr_tipo, true, 4 );
                     ?>
@@ -104,12 +104,12 @@ if ($oSauConfig != false) {
                       <table>
                         <tr>
                           <td>
-                            <?
+                              <?php
                               db_ancora("<b>Competencia:</b>", "js_pesquisasd98_i_fechamento(true);", $db_opcao );
                             ?>
                           </td>
-                          <td colspan="3"> 
-                            <?
+                          <td colspan="3">
+                              <?php
                               db_input('linhas', 5, @$Ilinhas, true, 'hidden', $db_opcao, "");
                               db_input('campocontrole', 2, "" , false, 'hidden', 3, "");
                               db_input('sd97_i_codigo', 2, @$Isd97_i_compmes, true, 'hidden', 3,'');
@@ -122,10 +122,10 @@ if ($oSauConfig != false) {
                                 } else {
                                   $strfi  = "";
                                 }
-                                $sSql    = $oDaoSauFechamento->sql_query("", "sd97_c_tipo", "", 
+                                $sSql    = $oDaoSauFechamento->sql_query("", "sd97_c_tipo", "",
                                                                        " sd97_i_codigo=$sd97_i_codigo ");
                                 $result1 = $oDaoSauFechamento->sql_record($sSql);
-                                $sSql    = $oDaoSauFechapront->sql_query("", "sd98_i_codigo", "", 
+                                $sSql    = $oDaoSauFechapront->sql_query("", "sd98_i_codigo", "",
                                                                           " sd97_i_codigo=$sd97_i_codigo ");
                                 $result2 = $oDaoSauFechapront->sql_record ($sSql);
                                 if ($oDaoSauFechamento->numrows > 0) {
@@ -145,7 +145,7 @@ if ($oSauConfig != false) {
 
                                   db_fieldsmemory ( $result2, 0 );
                                   $desabilita = "";
-                                         
+
                                 } else {
 
                                   $desabilita = "disabled";
@@ -160,20 +160,20 @@ if ($oSauConfig != false) {
                           <td nowrap title="<?=@$Tsd97_d_dataini?>">
                             <b>Período de Fechamento :</b>
                           </td>
-                          <td> 
-                            <? db_inputdata('sd97_d_dataini', @$sd97_d_dataini_dia, @$sd97_d_dataini_mes, 
+                          <td>
+                              <?php db_inputdata('sd97_d_dataini', @$sd97_d_dataini_dia, @$sd97_d_dataini_mes,
                                             @$sd97_d_dataini_ano, true, 'text', 3);?>
 
                             A
 
-                            <? db_inputdata('sd97_d_datafim', @$sd97_d_datafim_dia, @$sd97_d_datafim_mes,
+                              <?php db_inputdata('sd97_d_datafim', @$sd97_d_datafim_dia, @$sd97_d_datafim_mes,
                                   @$sd97_d_datafim_ano, true, 'text', 3);?>
                           </td>
                         </tr>
                         <tr>
                           <td><b>Tipo de Fianciamento:</b></td>
                           <td colspan="3">
-                            <?
+                              <?php
                               db_input('sd97_i_financiamento', 6, @$sd97_i_financiamento, true, 'hidden', 3, "");
                               db_input('sd65_c_nome', 60, @$sd65_c_nome, true, 'text', 3, "");
                             ?>
@@ -182,11 +182,11 @@ if ($oSauConfig != false) {
                       </table>
                     </fieldset>
                   </td>
-                </tr>  
+                </tr>
                 <tr>
                   <td colspan="2">
                     <fieldset><legend><b>UPS:</b></legend>
-                      <?
+                        <?php
                         $sSql       = $oDaoUnidades->sql_query("", "sd02_i_codigo,descrdepto");
                         $rsUnidades = $oDaoUnidades->sql_record($sSql);
                         db_multiploselect("sd02_i_codigo", "descrdepto", "nselecionados", "sselecionados", $rsUnidades,
@@ -205,8 +205,8 @@ if ($oSauConfig != false) {
                             <b>Nome:</b>
                           </td>
                           <td>
-                            <?
-                              db_input('snomedepart', 40, @$Lsnomedepart, true, 'text', 3, ""); 
+                              <?php
+                              db_input('snomedepart', 40, @$Lsnomedepart, true, 'text', 3, "");
                             ?>
                           </td>
                         </tr>
@@ -215,7 +215,7 @@ if ($oSauConfig != false) {
                             <b>Sigla:</b>
                           </td>
                           <td colspan=3>
-                            <?
+                              <?php
                               db_input('sSigla', 6, @$siglas, true, 'text', 3, "");
                             ?>
                           </td>
@@ -225,7 +225,7 @@ if ($oSauConfig != false) {
                             <b>CNPJ:</b>
                           </td>
                           <td>
-                            <?
+                              <?php
                               db_input('cnpj', 30, @$cnpj, true, 'text', 3, "");
                             ?>
                           </td>
@@ -243,7 +243,7 @@ if ($oSauConfig != false) {
                             <B>Sec. de Destino:</b>
                           </td>
                           <td colspan=3>
-                            <?
+                              <?php
                               db_input('sDestino', 40, @$destino, true, 'text', 3, "");
                             ?>
                           </td>
@@ -257,7 +257,7 @@ if ($oSauConfig != false) {
                             <br>
                             <input name="iOrgao" id="orgEstadual"  type="radio" value="2">Estadual
                           </td>
-                        </tr>  
+                        </tr>
                       </table>
                     </fieldset>
                   </td>
@@ -272,7 +272,7 @@ if ($oSauConfig != false) {
                           </td>
                           <td>
                             PA
-                            <?
+                              <?php
                               db_input('sNomeArquivo', 8, @$sNomeArquivo, true, 'text', $db_opcao, "","","","",8);
                             ?>
                             .<span id="nomeExtencao" ></span>
@@ -285,14 +285,14 @@ if ($oSauConfig != false) {
               </table>
             </fieldset>
             </center>
-            <?
+              <?php
               $regerar = false;
               if (isset($sd97_i_codigo)) {
 
                 $sSql   = $oDaoSauFechamento->sql_query("", "sd97_i_codigo", "", "sd97_i_codigo=$sd97_i_codigo");
                 $result = $oDaoSauFechamento->sql_record($sSql);
                 if ($oDaoSauFechamento->numrows > 0) {
-                  
+
                   db_fieldsmemory ($result, 0);
                   $sSql    = $oDaoSauFecharquivo->sql_query("", "sd99_i_codigo", "", "sd99_i_fechamento=$sd97_i_codigo");
                   $result1 = $oDaoSauFecharquivo->sql_record ($sSql);
@@ -302,7 +302,7 @@ if ($oSauConfig != false) {
                     $regerar = true;
 
                   }
-                  
+
                 }
               }
               if ($regerar == true) {
@@ -312,8 +312,8 @@ if ($oSauConfig != false) {
               }
             ?>
             <center>
-            <input name="gerararquivo" type="submit" id="arquivo" <?=$desabilita?> 
-                   value="<?=$regerararquivo?>" onclick="return js_listUnidades();"> 
+            <input name="gerararquivo" type="submit" id="arquivo" <?=$desabilita?>
+                   value="<?=$regerararquivo?>" onclick="return js_listUnidades();">
             <input name="recibo" type="submit" id="recibo" value="Gerar Recibo" disabled onclick='js_recibo();'>
             </center>
           </form>
@@ -329,25 +329,25 @@ if ($oSauConfig != false) {
       </tr>
     </table>
     </center>
-<?
-  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), 
+    <?php
+  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
           db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-<?
+    <?php
   if (isset($sd97_i_compmes)) {
     echo "document.getElementById('nomeExtencao').innerHTML = js_nomeMes($sd97_i_compmes,1);";
   }
   if (isset($orgao) && $orgao == 2) {
-    echo "$('orgEstadual').checked = true;";  
-  } else { 
+    echo "$('orgEstadual').checked = true;";
+  } else {
     echo "$('orgMunicipal').checked = true;";
   }
 ?>
 function js_listUnidades() {
-    
+
     iTam = document.getElementById('sselecionados').length;
     sStr = '';
     sSep = '';
@@ -357,7 +357,7 @@ function js_listUnidades() {
       sSep=",";
 
     }
-    document.getElementById('sd24_i_unidade').value = sStr; 
+    document.getElementById('sd24_i_unidade').value = sStr;
     return true;
 
 }
@@ -367,7 +367,7 @@ function js_pesquisasd98_i_fechamento(mostra) {
                       'db_iframe_sau_fechamento',
                       'func_sau_fechamento.php?funcao_js=parent.js_mostrasau_fechamento1|sd97_i_compmes|sd97_i_compano'+
                       '|sd97_i_financiamento|sd65_c_nome|sd97_d_dataini|sd97_d_datafim|sd97_i_codigo','Pesquisa',true);
-  
+
 }
 function js_mostrasau_fechamento1(chave1, chave2, iFinanciamento, sFinanciamento, sd97_d_dataini,
                                                                                                sd97_d_datafim, codigo) {
@@ -395,10 +395,10 @@ function js_mostrasau_fechamento1(chave1, chave2, iFinanciamento, sFinanciamento
   document.form1.sd97_d_datafim_mes.value           = aVet[1];
   document.form1.sd97_d_datafim_ano.value           = aVet[0];
   document.getElementById('nomeExtencao').innerHTML = js_nomeMes(chave1,1);
-  
+
   db_iframe_sau_fechamento.hide();
   document.form1.submit();
-  
+
 }
 function js_nomeMes(iNumero,iTipo) {
 
@@ -442,11 +442,11 @@ function js_nomeMes(iNumero,iTipo) {
             break;
     case 12:aNome[0]='dezembro';
             aNome[1]='DEZ';
-            break;              
+            break;
   default:
     return '';
   }
-  return aNome[iTipo]; 
+  return aNome[iTipo];
 }
 function js_detectaarquivo(arquivo, pdf, sintetico) {
 
@@ -456,7 +456,7 @@ function js_detectaarquivo(arquivo, pdf, sintetico) {
 
 }
 </script>
-<?
+<?php
 if (isset($gerararquivo)) {
 
   /* Seleciona o codigo da ultima reliase para informar a versão so programa */
@@ -499,7 +499,7 @@ if (isset($gerararquivo)) {
     /* Monta nome do arquivo */
     $sAbrevMes       = data_farmacia($sd97_i_compano,$sd97_i_compmes."M");
     $sAbrevMes       = strtoupper(substr($sAbrevMes['periodo'], 0, 3));
-    $sArquivo        = "/tmp/PA".$sNomeArquivo.".".$sAbrevMes;
+    $sArquivo        = ECIDADE_PATH . "/tmp/PA".$sNomeArquivo.".".$sAbrevMes;
 
     /* Pega o numero de controle gerado*/
     $oCabecalho      = db_utils::fieldsmemory($rsCabecalho, 0);
@@ -520,7 +520,7 @@ if (isset($gerararquivo)) {
     $oDaoSauFecharquivo->sd99_d_data       = $dHoje;
     $oDaoSauFecharquivo->sd99_c_hora       = date("H:i");
     $oDaoSauFecharquivo->sd99_t_arquivo    = $sArquivo;
-    $oidgrava                              = db_geraArquivoOidfarmacia($sArquivo, "", 1, $conn); 
+    $oidgrava                              = db_geraArquivoOidfarmacia($sArquivo, "", 1, $conn);
     $oDaoSauFecharquivo->sd99_objarquivo   = $oidgrava;
     $oDaoSauFecharquivo->incluir ("");
     db_fim_transacao ();
@@ -538,10 +538,10 @@ if (isset($gerararquivo)) {
           oF=document.form1;
           jan = window.open('sau2_recibobpa001.php?&linhas=<?=$iLinhasProducao?>&sd97_i_compmes='+
                              oF.sd97_i_compmes.value +'&iBpa=<?=$iBpa?>'+
-                            '&sNomeorg='+ $('snomedepart').value + '&sSigla='+ $('sSigla').value + 
+                            '&sNomeorg='+ $('snomedepart').value + '&sSigla='+ $('sSigla').value +
                             '&iOrgao=' + <?=$iOrgao?> + '&sNomearq='+ $('sNomeArquivo').value +
-                            '&iCnpj=' + $('cnpj').value + '&sDestino=' + $('sDestino').value + 
-                            '&iCntrl=<?=$cbc_smt_vrf?>' + 
+                            '&iCnpj=' + $('cnpj').value + '&sDestino=' + $('sDestino').value +
+                            '&iCntrl=<?=$cbc_smt_vrf?>' +
                             '&sd97_i_compano='+oF.sd97_i_compano.value,
                             '',
                             'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+
@@ -550,7 +550,7 @@ if (isset($gerararquivo)) {
 
         }
         </script>
-      <?
+        <?php
       $oDaoSauFecharquivo->erro(true, false);
 
     }

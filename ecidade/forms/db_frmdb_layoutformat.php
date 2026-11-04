@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cldb_layoutformat->rotulo->label();
        <?=@$Ldb53_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db53_codigo',6,$Idb53_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('db53_codigo',6,$Idb53_codigo,true,'text',3,"")
        <?=@$Ldb53_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('db53_descr',40,$Idb53_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('db53_descr',40,$Idb53_descr,true,'text',$db_opcao,"")
        <?=@$Ldb53_mascara?>
     </td>
     <td> 
-<?
+<?php
 db_input('db53_mascara',40,$Idb53_mascara,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('db53_mascara',40,$Idb53_mascara,true,'text',$db_opcao,"")
        <?=@$Ldb53_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'String','2'=>'Inteiro','3'=>'Decimal','4'=>'Data','5'=>'Hora','6'=>'CEP','7'=>'CGC / CPF','8'=>'Executa eval','9'=>'String livre');
 db_select('db53_tipo',$x,true,$db_opcao,"");
 ?>
@@ -77,7 +77,7 @@ db_select('db53_tipo',$x,true,$db_opcao,"");
        <?=@$Ldb53_tamanho?>
     </td>
     <td> 
-<?
+<?php
 db_input('db53_tamanho',4,$Idb53_tamanho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -87,7 +87,7 @@ db_input('db53_tamanho',4,$Idb53_tamanho,true,'text',$db_opcao,"")
        <?=@$Ldb53_decimais?>
     </td>
     <td> 
-<?
+<?php
 db_input('db53_decimais',4,$Idb53_decimais,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('db53_decimais',4,$Idb53_decimais,true,'text',$db_opcao,"")
        <?=@$Ldb53_caracdec?>
     </td>
     <td> 
-<?
+<?php
 db_input('db53_caracdec',4,$Idb53_caracdec,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -107,7 +107,7 @@ db_input('db53_caracdec',4,$Idb53_caracdec,true,'text',$db_opcao,"")
        <?=@$Ldb53_alinha?>
     </td>
     <td> 
-<?
+<?php
 $x = array('d'=>'Esquerda','e'=>'Direita');
 db_select('db53_alinha',$x,true,$db_opcao,"");
 ?>
@@ -124,7 +124,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_layoutformat.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -234,7 +234,7 @@ if ((isset ($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Inc
          </td>
       </tr>  
      </table>
-    <?
+    <?php
 
 
 
@@ -293,7 +293,7 @@ db_lovrot($sqltran, 15, "()", "", "js_processo|p62_codtran");
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 $func_iframe = new janela('db_iframe', '');
 $func_iframe->posX = 1;

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -45,22 +45,22 @@ $clrotulo->label("ed72_t_parecer");
 <fieldset style="width:95%"><legend><b>Parecer Descritivo</b></legend>
 <form name="form1" method="post" action="">
 <table border="0" width="100%" cellspacing="0" cellpading="0">
- <?
+ <?php
  $result = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed72_t_parecer,ed59_i_serie",""," ed72_i_codigo = $ed93_i_diarioavaliacao"));
  db_fieldsmemory($result,0);
  ?>
  <tr>
   <td colspan="4" align="center">
    <br>
-   <?
+   <?php
    $sJs  = "onblur='this.value.toUpperCase();' onkeypress='js_disciplinas(this.value);' onchange='js_disciplinas(this.value)';";
    if ($encerrado=="S") {
      $sJs .= "readonly  onclick=alert('Aluno possui avaliações encerradas para esta disciplina!')";
    }
    ?>
-   <?db_textarea('ed72_t_parecer',5,120,@$Ied72_t_parecer,true,'text',$db_opcao,$sJs)?>
+   <?php db_textarea('ed72_t_parecer',5,120,@$Ied72_t_parecer,true,'text',$db_opcao,$sJs)?>
    <br><br>
-   <?
+   <?php
    $sql = "SELECT ed59_i_codigo,ed232_c_descr,ed59_i_ordenacao
            FROM regencia
             inner join disciplina on ed12_i_codigo = ed59_i_disciplina
@@ -82,20 +82,20 @@ $clrotulo->label("ed72_t_parecer");
    if($linhas>0){
     ?>
     <b>Selecione outras disciplinas para conter<br>este parecer no período <?=$periodo?></b>:<br>
-    <select name="reg_outras[]" id="reg_outras" size="10" style="width:200px;font-size:10px;padding:0px;" 
-            multiple <?=@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":""?> 
+    <select name="reg_outras[]" id="reg_outras" size="10" style="width:200px;font-size:10px;padding:0px;"
+            multiple <?=@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":""?>
             onchange='js_disciplinas(this.value)';>
-    <?
+    <?php
     for($r=0;$r<$linhas;$r++){
      db_fieldsmemory($result,$r);
      ?>
       <option value="<?=$ed59_i_codigo?>"> <?=$ed232_c_descr?></option>
-     <?
+     <?php
     }
     ?>
     </select>
     <br><br>
-   <?}?>
+   <?php }?>
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar2":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Salvar":"Excluir"))?>" <?=($db_botao==false||@$encerrado=="S"?"disabled":"")?> >
   </td>
  </tr>
@@ -113,26 +113,26 @@ $clrotulo->label("ed72_t_parecer");
 </form>
 <script>
 js_disciplinas();
-<?
+<?php
 if (isset($alterar2)) {?>
   if (document.form1.ed72_t_parecer.value == "") {
 	alert("Não há Parecer Descritivo para salvar!");
   }
 
-<?
-} 
+<?php
+}
 ?>
 
 function js_disciplinas(valor) {
 
 	if (document.form1.ed72_t_parecer.value != "") {
-		
+
 		document.getElementById("reg_outras").disabled = false;
 	}
-	if (document.form1.ed72_t_parecer.value == "") {		
-		
+	if (document.form1.ed72_t_parecer.value == "") {
+
 		document.getElementById("reg_outras").disabled = true;
 	}
-	
+
 }
 </script>

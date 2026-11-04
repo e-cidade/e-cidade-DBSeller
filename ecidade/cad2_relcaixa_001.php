@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,7 +58,7 @@
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
   if (isset($db_opcao)) {
 ?>
 <table width="790" height="100%" border="0" cellpadding="0" cellspacing="0">
@@ -76,7 +76,7 @@
                         <td width="34%" bgcolor="#0099CC"><strong>Relatorio</strong></td>
                         <td colspan="2" bgcolor="#0099CC"><strong>Ordem</strong></td>
                       </tr>
-                      <?
+                      <?php
     if ($db_opcao == "tabrec") {
 ?>
                       <tr>
@@ -87,7 +87,7 @@
                         <td>&nbsp; <input type="radio" name="ordem_relatorio" value="numerica">
                           Numerica&nbsp;</td>
                       </tr>
-                      <?
+                      <?php
     } else if ($db_opcao == "tabrecjm") {
 ?>
                       <tr>
@@ -98,7 +98,7 @@
                         <td>&nbsp; <input type="radio" name="ordem_relatorio" value="numerica">
                           Numerica&nbsp;</td>
                       </tr>
-                      <?
+                      <?php
     } else if ($db_opcao == "saltes") {
 ?>
                       <tr>
@@ -109,7 +109,7 @@
                         <td>&nbsp; <input type="radio" name="ordem_relatorio" value="numerica">
                           Numerica&nbsp;</td>
                       </tr>
-                      <?
+                      <?php
     } else if ($db_opcao == "cadban") {
 ?>
                       <tr>
@@ -120,7 +120,7 @@
                         <td>&nbsp; <input type="radio" name="ordem_relatorio" value="numerica">
                           Numerica&nbsp;</td>
                       </tr>
-                      <?
+                      <?php
     } else if ($db_opcao == "arretipo") {
 ?>
                       <tr>
@@ -131,7 +131,7 @@
                         <td width="37%">&nbsp; <input type="radio" name="ordem_relatorio" value="numerica">
                           Numerica&nbsp;</td>
                       </tr>
-                      <?
+                      <?php
     } else if ($db_opcao == "histcalc") {
 ?>
                       <tr>
@@ -142,7 +142,7 @@
                         <td>&nbsp; <input type="radio" name="ordem_relatorio" value="numerica">
                           Numerica&nbsp;</td>
                       </tr>
-                      <?
+                      <?php
     } else if ($db_opcao == "cfautent") {
 ?>
                       <tr>
@@ -153,7 +153,7 @@
                         <td>&nbsp; <input type="radio" name="ordem_relatorio" value="numerica">
                           Numerica&nbsp;</td>
                       </tr>
-                      <?
+                      <?php
     }
 ?>
                       <tr align="center">
@@ -170,7 +170,7 @@
       </table></td>
   </tr>
 </table>
-<?
+<?php
   }
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

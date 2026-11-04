@@ -29,9 +29,9 @@
     require_once(modification("dbforms/db_layouttxt.php"));
     include(modification("classes/db_db_layoutcampos_classe.php"));
 
-    $sArquivo       = "/tmp/arquivobpa.txt";
+    $sArquivo       = ECIDADE_PATH . "/tmp/arquivobpa.txt";
     $cldb_layouttxt = new db_layouttxt(85, $sArquivo, "");
-    $sValida        = "/tmp/validacns.bpa";
+    $sValida        = ECIDADE_PATH . "/tmp/validacns.bpa";
     $pValidacns     = fopen ( $sValida, "w" );
 
     $iPagina = 1;
@@ -137,7 +137,7 @@
                           location=0 ');
         jan.moveTo(0,0);
       </script>
-      <?
+        <?php
       return false;
 
     }else{
@@ -146,7 +146,7 @@
         listagem = '<?=$sArquivo?>#Download arquivo TXT (BPA)|';
         js_montarlista(listagem,'form1');
       </script>
-      <?
+        <?php
       return true;
     }
     function arr_search( $array, $valor ){

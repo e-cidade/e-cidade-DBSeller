@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,9 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
+use App\Domain\Tributario\ISSQN\Factories\Reports\GenerateAlvaraFactory;
+use App\Domain\Tributario\ISSQN\Model\Base\IssBase;
 
 require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("fpdf151/impcarne.php"));
@@ -48,6 +51,14 @@ db_postmemory($HTTP_SERVER_VARS);
  * inscricao  (código)
  */
 $oGet  = db_utils::postMemory($_GET);
+
+if (toBoolean(env("NOVA_GERACAO_ALVARA"))) {
+    $issBase = IssBase::query()->where("q02_inscr", $oGet->inscricao)->first();
+    $generateAlvaraFactory = GenerateAlvaraFactory::get($issBase);
+    $generateAlvaraFactory->generate();
+
+    db_redireciona(ECIDADE_REQUEST_PATH.$generateAlvaraFactory->getFilePath());
+}
 
 /* VERIFICA SE É DOCUMENTO ALVARÁ */
 /* SE FOR, IMPRIME UTILIZANDO O ARQUIVO AGT */

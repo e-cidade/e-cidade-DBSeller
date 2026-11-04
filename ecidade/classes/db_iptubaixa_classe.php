@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptubaixa
-class cl_iptubaixa { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j02_matric = 0; 
-   var $j02_dtbaixa_dia = null; 
-   var $j02_dtbaixa_mes = null; 
-   var $j02_dtbaixa_ano = null; 
-   var $j02_dtbaixa = null; 
-   var $j02_motivo = null; 
-   var $j02_usuario = 0; 
-   var $j02_data_dia = null; 
-   var $j02_data_mes = null; 
-   var $j02_data_ano = null; 
-   var $j02_data = null; 
-   var $j02_hora = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_iptubaixa {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j02_matric = 0;
+   var $j02_dtbaixa_dia = null;
+   var $j02_dtbaixa_mes = null;
+   var $j02_dtbaixa_ano = null;
+   var $j02_dtbaixa = null;
+   var $j02_motivo = null;
+   var $j02_usuario = 0;
+   var $j02_data_dia = null;
+   var $j02_data_mes = null;
+   var $j02_data_ano = null;
+   var $j02_data = null;
+   var $j02_hora = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j02_matric = int4 = Matrícula do Imóvel 
-                 j02_dtbaixa = date = Data 
-                 j02_motivo = text = Motivo da baixa 
-                 j02_usuario = int4 = Cod. Usuário 
-                 j02_data = date = Data 
-                 j02_hora = char(5) = Hora 
+                 j02_matric = int4 = Matrícula do Imóvel
+                 j02_dtbaixa = date = Data
+                 j02_motivo = text = Motivo da baixa
+                 j02_usuario = int4 = Cod. Usuário
+                 j02_data = date = Data
+                 j02_hora = char(5) = Hora
                  ";
-   //funcao construtor da classe 
-   function cl_iptubaixa() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("iptubaixa"); 
+     $this->rotulo = new rotulo("iptubaixa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_iptubaixa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j02_matric = ($this->j02_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j02_matric"]:$this->j02_matric);
        if($this->j02_dtbaixa == ""){
@@ -106,9 +106,9 @@ class cl_iptubaixa {
      }
    }
    // funcao para inclusao
-   function incluir ($j02_matric){ 
+   public function incluir ($j02_matric){
       $this->atualizacampos();
-     if($this->j02_dtbaixa == null ){ 
+     if($this->j02_dtbaixa == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "j02_dtbaixa_dia";
        $this->erro_banco = "";
@@ -117,7 +117,7 @@ class cl_iptubaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j02_motivo == null ){ 
+     if($this->j02_motivo == null ){
        $this->erro_sql = " Campo Motivo da baixa nao Informado.";
        $this->erro_campo = "j02_motivo";
        $this->erro_banco = "";
@@ -126,7 +126,7 @@ class cl_iptubaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j02_usuario == null ){ 
+     if($this->j02_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "j02_usuario";
        $this->erro_banco = "";
@@ -135,7 +135,7 @@ class cl_iptubaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j02_data == null ){ 
+     if($this->j02_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "j02_data_dia";
        $this->erro_banco = "";
@@ -144,7 +144,7 @@ class cl_iptubaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j02_hora == null ){ 
+     if($this->j02_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "j02_hora";
        $this->erro_banco = "";
@@ -153,8 +153,8 @@ class cl_iptubaixa {
        $this->erro_status = "0";
        return false;
      }
-       $this->j02_matric = $j02_matric; 
-     if(($this->j02_matric == null) || ($this->j02_matric == "") ){ 
+       $this->j02_matric = $j02_matric;
+     if(($this->j02_matric == null) || ($this->j02_matric == "") ){
        $this->erro_sql = " Campo j02_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -163,23 +163,23 @@ class cl_iptubaixa {
        return false;
      }
      $sql = "insert into iptubaixa(
-                                       j02_matric 
-                                      ,j02_dtbaixa 
-                                      ,j02_motivo 
-                                      ,j02_usuario 
-                                      ,j02_data 
-                                      ,j02_hora 
+                                       j02_matric
+                                      ,j02_dtbaixa
+                                      ,j02_motivo
+                                      ,j02_usuario
+                                      ,j02_data
+                                      ,j02_hora
                        )
                 values (
-                                $this->j02_matric 
-                               ,".($this->j02_dtbaixa == "null" || $this->j02_dtbaixa == ""?"null":"'".$this->j02_dtbaixa."'")." 
-                               ,'$this->j02_motivo' 
-                               ,$this->j02_usuario 
-                               ,".($this->j02_data == "null" || $this->j02_data == ""?"null":"'".$this->j02_data."'")." 
-                               ,'$this->j02_hora' 
+                                $this->j02_matric
+                               ,".($this->j02_dtbaixa == "null" || $this->j02_dtbaixa == ""?"null":"'".$this->j02_dtbaixa."'")."
+                               ,'$this->j02_motivo'
+                               ,$this->j02_usuario
+                               ,".($this->j02_data == "null" || $this->j02_data == ""?"null":"'".$this->j02_data."'")."
+                               ,'$this->j02_hora'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tabela das baixas de matricula ($this->j02_matric) nao Incluído. Inclusao Abortada.";
@@ -216,16 +216,16 @@ class cl_iptubaixa {
        $resac = db_query("insert into db_acount values($acount,1693,9873,'','".AddSlashes(pg_result($resaco,0,'j02_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j02_matric=null) { 
+   public function alterar ($j02_matric=null) {
       $this->atualizacampos();
      $sql = " update iptubaixa set ";
      $virgula = "";
-     if(trim($this->j02_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_matric"])){ 
+     if(trim($this->j02_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_matric"])){
        $sql  .= $virgula." j02_matric = $this->j02_matric ";
        $virgula = ",";
-       if(trim($this->j02_matric) == null ){ 
+       if(trim($this->j02_matric) == null ){
          $this->erro_sql = " Campo Matrícula do Imóvel nao Informado.";
          $this->erro_campo = "j02_matric";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_iptubaixa {
          return false;
        }
      }
-     if(trim($this->j02_dtbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_dtbaixa_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j02_dtbaixa_dia"] !="") ){ 
+     if(trim($this->j02_dtbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_dtbaixa_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j02_dtbaixa_dia"] !="") ){
        $sql  .= $virgula." j02_dtbaixa = '$this->j02_dtbaixa' ";
        $virgula = ",";
-       if(trim($this->j02_dtbaixa) == null ){ 
+       if(trim($this->j02_dtbaixa) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "j02_dtbaixa_dia";
          $this->erro_banco = "";
@@ -247,11 +247,11 @@ class cl_iptubaixa {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j02_dtbaixa_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j02_dtbaixa_dia"])){
          $sql  .= $virgula." j02_dtbaixa = null ";
          $virgula = ",";
-         if(trim($this->j02_dtbaixa) == null ){ 
+         if(trim($this->j02_dtbaixa) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "j02_dtbaixa_dia";
            $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_iptubaixa {
          }
        }
      }
-     if(trim($this->j02_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_motivo"])){ 
+     if(trim($this->j02_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_motivo"])){
        $sql  .= $virgula." j02_motivo = '$this->j02_motivo' ";
        $virgula = ",";
-       if(trim($this->j02_motivo) == null ){ 
+       if(trim($this->j02_motivo) == null ){
          $this->erro_sql = " Campo Motivo da baixa nao Informado.";
          $this->erro_campo = "j02_motivo";
          $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_iptubaixa {
          return false;
        }
      }
-     if(trim($this->j02_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_usuario"])){ 
+     if(trim($this->j02_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_usuario"])){
        $sql  .= $virgula." j02_usuario = $this->j02_usuario ";
        $virgula = ",";
-       if(trim($this->j02_usuario) == null ){ 
+       if(trim($this->j02_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "j02_usuario";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_iptubaixa {
          return false;
        }
      }
-     if(trim($this->j02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j02_data_dia"] !="") ){ 
+     if(trim($this->j02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j02_data_dia"] !="") ){
        $sql  .= $virgula." j02_data = '$this->j02_data' ";
        $virgula = ",";
-       if(trim($this->j02_data) == null ){ 
+       if(trim($this->j02_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "j02_data_dia";
          $this->erro_banco = "";
@@ -300,11 +300,11 @@ class cl_iptubaixa {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j02_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j02_data_dia"])){
          $sql  .= $virgula." j02_data = null ";
          $virgula = ",";
-         if(trim($this->j02_data) == null ){ 
+         if(trim($this->j02_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "j02_data_dia";
            $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_iptubaixa {
          }
        }
      }
-     if(trim($this->j02_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_hora"])){ 
+     if(trim($this->j02_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j02_hora"])){
        $sql  .= $virgula." j02_hora = '$this->j02_hora' ";
        $virgula = ",";
-       if(trim($this->j02_hora) == null ){ 
+       if(trim($this->j02_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "j02_hora";
          $this->erro_banco = "";
@@ -354,7 +354,7 @@ class cl_iptubaixa {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tabela das baixas de matricula nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j02_matric;
@@ -382,14 +382,14 @@ class cl_iptubaixa {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j02_matric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j02_matric=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j02_matric));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -420,7 +420,7 @@ class cl_iptubaixa {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tabela das baixas de matricula nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j02_matric;
@@ -448,11 +448,11 @@ class cl_iptubaixa {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -474,10 +474,10 @@ class cl_iptubaixa {
       }
      return $result;
    }
-   function sql_query ( $j02_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j02_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -494,15 +494,15 @@ class cl_iptubaixa {
      $sql2 = "";
      if($dbwhere==""){
        if($j02_matric!=null ){
-         $sql2 .= " where iptubaixa.j02_matric = $j02_matric "; 
-       } 
+         $sql2 .= " where iptubaixa.j02_matric = $j02_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,10 +511,10 @@ class cl_iptubaixa {
      }
      return $sql;
   }
-   function sql_query_file ( $j02_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j02_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,15 +527,15 @@ class cl_iptubaixa {
      $sql2 = "";
      if($dbwhere==""){
        if($j02_matric!=null ){
-         $sql2 .= " where iptubaixa.j02_matric = $j02_matric "; 
-       } 
+         $sql2 .= " where iptubaixa.j02_matric = $j02_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,12 +544,12 @@ class cl_iptubaixa {
      }
      return $sql;
   }
-  
-  function sql_query_loteloc($j02_matric=null, $campos="*", $ordem=null, $dbwhere=""){ 
+
+  public function sql_query_loteloc($j02_matric=null, $campos="*", $ordem=null, $dbwhere=""){
 
     $sql = "select ";
     if($campos != "*" ){
-     $campos_sql = split("#",$campos);
+     $campos_sql = explode("#",$campos);
      $virgula = "";
      for($i=0;$i<sizeof($campos_sql);$i++){
        $sql .= $virgula.$campos_sql[$i];
@@ -568,15 +568,15 @@ class cl_iptubaixa {
     $sql2 = "";
     if($dbwhere==""){
      if($j02_matric!=null ){
-       $sql2 .= " where iptubaixa.j02_matric = $j02_matric "; 
-     } 
+       $sql2 .= " where iptubaixa.j02_matric = $j02_matric ";
+     }
     }else if($dbwhere != ""){
      $sql2 = " where $dbwhere";
     }
     $sql .= $sql2;
     if($ordem != null ){
      $sql .= " order by ";
-     $campos_sql = split("#",$ordem);
+     $campos_sql = explode("#",$ordem);
      $virgula = "";
      for($i=0;$i<sizeof($campos_sql);$i++){
        $sql .= $virgula.$campos_sql[$i];
@@ -584,7 +584,7 @@ class cl_iptubaixa {
      }
     }
     return $sql;
-    
+
   }
 }
 ?>

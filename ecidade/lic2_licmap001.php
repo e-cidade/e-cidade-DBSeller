@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -82,12 +82,12 @@ function js_emite(){
   <tr>
     <td  align="right" nowrap title="<?=$Tl20_codigo?>">
     <b>
-    <?db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
+    <?php db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
     </b>&nbsp;&nbsp;
     </td>
 
     <td align="left" nowrap>
-      <? db_input("l20_codigo",6,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
+      <?php db_input("l20_codigo",6,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
          ?></td>
   </tr>
   <tr>
@@ -95,7 +95,7 @@ function js_emite(){
         <strong>Modelo :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <?
+	  <?php
 	  $tipo_ordem = array("1"=>"Modelo 1","2"=>"Modelo 2");
 	  db_select("modelo",$tipo_ordem,true,2); ?>
         </td>
@@ -105,7 +105,7 @@ function js_emite(){
         <strong>Imprimir valor unitário :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <?
+	  <?php
 	  $matriz_vlrun = array("S"=>"SIM","N"=>"NÃO");
 	  db_select("imp_vlrun",$matriz_vlrun,true,2); ?>
         </td>
@@ -115,7 +115,7 @@ function js_emite(){
         <strong>Imprimir valor total :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <?
+	  <?php
 	  $matriz_vlrtotal = array("S"=>"SIM","N"=>"NÃO");
 	  db_select("imp_vlrtotal",$matriz_vlrtotal,true,2); ?>
         </td>
@@ -124,7 +124,7 @@ function js_emite(){
         <td align="right" nowrap title="Imprimir justificativa de desclassificacao">
         <b>Imprimir justificativa de desclassificacao:&nbsp;&nbsp;</b></td>
         <td>
-        <?
+        <?php
           $matriz_descla = array("S"=>"SIM","N"=>"NÃO");
           db_select("imp_descla",$matriz_descla,true,2);
         ?>
@@ -134,7 +134,7 @@ function js_emite(){
         <td align="right" nowrap title="Imprimir justificativa de troca de fornecedor">
         <b>Imprimir justificativa de troca de fornecedor:&nbsp;&nbsp;</b></td>
         <td>
-        <?
+        <?php
           $matriz_troca = array("S"=>"SIM","N"=>"NÃO");
           db_select("imp_troca",$matriz_troca,true,2);
         ?>
@@ -144,7 +144,7 @@ function js_emite(){
         <td align="right" nowrap title="Imprimir justificativa de lote/itens anulados">
         <b>Imprimir justificativa de lote/itens anulados:&nbsp;&nbsp;</b></td>
         <td>
-        <?
+        <?php
           $matriz_lote = array("S"=>"SIM","N"=>"NÃO");
           db_select("imp_lote",$matriz_lote,true,2);
         ?>
@@ -162,7 +162,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

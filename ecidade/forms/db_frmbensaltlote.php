@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -254,7 +254,7 @@ function js_escondeFieldsetMaterial(mostra){
        <?=@$Lt42_codigo?>
     </td>
     <td>
-      <?
+      <?php
         db_input('t42_codigo',8,$It42_codigo,true,'text',3,"");
       ?>
     </td>
@@ -264,7 +264,7 @@ function js_escondeFieldsetMaterial(mostra){
        <?=@$Lt42_descr?>
     </td>
     <td>
-      <?
+      <?php
         db_input('t42_descr',51,$It42_descr,true,'text',3,"");
       ?>
     </td>
@@ -274,19 +274,19 @@ function js_escondeFieldsetMaterial(mostra){
        <?=@$Lt52_descr?>
     </td>
     <td>
-      <?
+      <?php
         db_input('t52_descr',51,$It52_descr,true,'text',$db_opcao,"");
       ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Tt64_class?>">
-       <?
+       <?php
          db_ancora(@$Lt64_class,"js_pesquisat64_class(true);",(($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao));
        ?>
     </td>
     <td>
-      <?
+      <?php
         $cldb_estrut->autocompletar = true;
         $cldb_estrut->mascara = false;
         $cldb_estrut->input   = true;
@@ -307,12 +307,12 @@ function js_escondeFieldsetMaterial(mostra){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt52_numcgm?>">
-      <?
+      <?php
         db_ancora(@$Lt52_numcgm,"js_pesquisat52_numcgm(true);",$db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('t52_numcgm',8,$It52_numcgm,true,'text',$db_opcao," onchange='js_pesquisat52_numcgm(false);'");
         db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
        ?>
@@ -323,7 +323,7 @@ function js_escondeFieldsetMaterial(mostra){
        <?=@$Lt52_valaqu?>
     </td>
     <td>
-      <?
+      <?php
         db_input('t52_valaqu',15,$It52_valaqu,true,'text',$db_opcao,"");
       ?>
     </td>
@@ -333,7 +333,7 @@ function js_escondeFieldsetMaterial(mostra){
        <?=@$Lt52_dtaqu?>
     </td>
     <td>
-      <?
+      <?php
         db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'text',$db_opcao,"");
       ?>
     </td>
@@ -343,7 +343,7 @@ function js_escondeFieldsetMaterial(mostra){
        <?=@$Lt52_obs?>
     </td>
     <td>
-			<?
+			<?php
 			  db_textarea('t52_obs',3,48,$It52_obs,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -371,68 +371,68 @@ function js_escondeFieldsetMaterial(mostra){
   ?>
   <tr>
   	<td><b>Órgão:</b></td>
-  	<td><? db_input('o40_descr',51,$Io40_descr,3,'text',3); ?></td>
+  	<td><?php db_input('o40_descr',51,$Io40_descr,3,'text',3); ?></td>
   </tr>
   <tr>
   	<td><b>Unidade:</b></td>
-  	<td><? db_input('o41_descr',51,$Io41_descr,3,'text',3); ?></td>
+  	<td><?php db_input('o41_descr',51,$Io41_descr,3,'text',3); ?></td>
   </tr>
   <?php
   }
   ?>
   <tr>
     <td nowrap title="<?=@$Tt52_depart?>">
-       <?
+       <?php
        db_ancora(@$Lt52_depart,"js_pesquisat52_depart(true);",$db_opcao);
        ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('t52_depart',8,$It52_depart,true,'text',$db_opcao," onchange='js_pesquisat52_depart(false);'");
         db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
        ?>
     </td>
   </tr>
-    <?if (isset($t52_depart)&&$t52_depart!=""){?>
+    <?php if (isset($t52_depart)&&$t52_depart!=""){?>
   <tr>
     <td nowrap title="Divisão do Depart.">
     <b> Divisão:</b>
     </td>
     <td>
-    <?if($db_opcao != 3){?>
+    <?php if($db_opcao != 3){?>
     <select name='t33_divisao'>
 	<option value=''>Nenhuma</option>
-	<?
+	<?php
 	$result=$cldepartdiv->sql_record($cldepartdiv->sql_query_file(null,"t30_codigo,t30_descr",null,"t30_depto=$t52_depart"));
 	for($y=0;$y<$cldepartdiv->numrows;$y++){
  	  db_fieldsmemory($result,$y);
  	  ?>
 	  <option value=<?=@$t30_codigo?> <?=(isset($t33_divisao)&&$t33_divisao==$t30_codigo?"selected":"")?> > <?=@$t30_descr?></option>
-   	<?}?>
+   	<?php }?>
      </select>
      </td>
 
   <?}else{?>
   	<td>
-<?
+<?php
 db_input('t33_divisao',6,$It33_divisao,true,'text',$db_opcao,"");
 db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
 ?>
     </td>
-  <?}?>
+  <?php }?>
   </tr>
-  	<?  }?>
+  	<?php  }?>
   <tr>
     <td nowrap title="<?=@$Tt56_situac?>">
-       <?
+       <?php
        db_ancora(@$Lt56_situac,"js_pesquisat56_situac(true);",1);
        ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('t56_situac',8,$It56_situac,true,'text',1," onchange='js_pesquisat56_situac(false);'")
       ?>
-      <?
+      <?php
         db_input('t70_descr',40,$It70_descr,true,'text',3,'');
       ?>
     </td>
@@ -442,7 +442,7 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
         <b>Quantidade:</b>
     </td>
     <td>
-       <?
+       <?php
          db_input('qtd',8,"",true,'text',3,'onchange="js_isnumber(this.value,this.name);"');
        ?>
     </td>
@@ -452,7 +452,7 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
         <b>Descrição do lote:</b>
     </td>
     <td>
-       <?
+       <?php
          db_input('t42_descr',50,$It42_descr,true,'text',1,'');
        ?>
     </td>
@@ -473,12 +473,12 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
       <table id="tabelaImovel" style="display:none;">
         <tr>
           <td width="4%" align="right" nowrap title="<?=$Tt54_idbql?>">
-            <?
+            <?php
               db_ancora(@$Lt54_idbql,"js_pesquisat54_idbql(true);",$db_opcao);
             ?>
           </td>
           <td>
-            <?
+            <?php
               db_input('t54_idbql',10,$It54_idbql,true,'text',$db_opcao," onchange='js_pesquisat54_idbql(false);'");
             ?>
           </td>
@@ -488,7 +488,7 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
             <?=$Lt54_obs?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php
               db_textarea("t54_obs", 5, 40, $It54_obs, true, '', $db_opcao);
             ?>
           </td>
@@ -507,7 +507,7 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
             <?=@$Lt53_ntfisc?>
           </td>
           <td>
-            <?
+            <?php
               db_input('t53_ntfisc',40,$It53_ntfisc,true,'text',$db_opcao,"");
              ?>
           </td>
@@ -527,7 +527,7 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
         <tr>
           <td nowrap title="<?=@$Tt53_empen;?>">
             <label style="font-weight: bold;" id='procAdm'>
-              <? db_ancora(@$Lt53_empen,"js_pesquisat53_empen(true);",$db_opcao); ?>
+              <?php db_ancora(@$Lt53_empen,"js_pesquisat53_empen(true);",$db_opcao); ?>
             </label>
 
               <label style="font-weight: bold; display: none;" id='procAdm1'>
@@ -536,11 +536,11 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
 
           </td>
           <td>
-            <?
+            <?php
               db_input('t53_empen',6,$It53_empen,true,'text',$db_opcao," onchange='js_pesquisat53_empen(false);'");
             ?>
             <span id="campoDescricao">
-              <?db_input('z01_nome_empenho',30,$Iz01_nome,true,'text',3,""); ?>
+              <?php db_input('z01_nome_empenho',30,$Iz01_nome,true,'text',3,""); ?>
             </span>
           </td>
         </tr>
@@ -549,7 +549,7 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
             <?=@$Lt53_ordem;?>
           </td>
           <td>
-          <?
+          <?php
             db_input('t53_ordem',6,$It53_ordem,true,'text',$db_opcao,"");
           ?>
           </td>
@@ -559,7 +559,7 @@ db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
             <?=@$Lt53_garant;?>
           </td>
           <td>
-          <?
+          <?php
             db_inputdata('t53_garant',@$t53_garant_dia,@$t53_garant_mes,@$t53_garant_ano,true,'text',$db_opcao,"");
           ?>
           </td>
@@ -678,12 +678,12 @@ function js_mostratext(placa){
 function js_retplaca(placa,seq){
   //alert(placa);
   //alert(seq);
-  <?if($t07_confplaca==2){?>
+  <?php if($t07_confplaca==2){?>
     document.form1.t52_ident.value = placa+seq;
   <?}else if ($t07_confplaca==3){?>
     document.form1.t52_ident.value = placa;
     document.form1.t52_ident_seq.value = seq;
-  <?}?>
+  <?php }?>
 }
 function js_buscplaca(classif){
       js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_bp','pat1_retseqplaca.php?classif='+classif,'',false);
@@ -709,9 +709,9 @@ function js_pesquisat64_class(mostra){
        }
        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_clabens','func_clabens.php?pesquisa_chave='+testa+'&funcao_js=parent.js_mostraclabens&analitica=true','Pesquisa',false,'20','1','775','390');
      }else{
-      <?if ($t07_confplaca==2&&$db_opcao==1){?>
+      <?php if ($t07_confplaca==2&&$db_opcao==1){?>
     document.form1.t52_ident.value ="";
-  <?}?>
+  <?php }?>
        document.form1.t64_descr.value = '';
      }
   }
@@ -721,13 +721,13 @@ function js_mostraclabens(chave,erro){
   if(erro==true){
     document.form1.t64_class.value = '';
     document.form1.t64_class.focus();
-      <?if ($t07_confplaca==2&&$db_opcao==1){?>
+      <?php if ($t07_confplaca==2&&$db_opcao==1){?>
     document.form1.t52_ident.value ="";
-  <?}?>
+  <?php }?>
   }else{
-    <?if ($t07_confplaca==2&&$db_opcao==1){?>
+    <?php if ($t07_confplaca==2&&$db_opcao==1){?>
   js_buscplaca(document.form1.t64_class.value);
-  <?}?>
+  <?php }?>
   }
 }
 
@@ -838,13 +838,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benslote.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php
 if(isset($chavepesquisa)){
       echo "\njs_mascara03_t64_class(document.form1.t64_class.value);\n";
 }

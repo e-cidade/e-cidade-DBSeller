@@ -77,6 +77,7 @@ db_menu(
 );
 ?>
 
+
 <script>
 
     var sMsgTitle = "Registros de Preço que o Departamento Participa "
@@ -91,6 +92,7 @@ db_menu(
      *  Função JS executada no momento em que a página é aberta
      */
     function js_init() {
+
         oGridCompilacao = new DBGrid('ctnGridCompilacao');
         oGridCompilacao.nameInstance = "oGridCompilacao";
         oGridCompilacao.setHeight(250);
@@ -195,10 +197,15 @@ db_menu(
         oWindowDepart.setContent(sHtmlDepart);
         oWindowDepart.allowCloseWithEsc(false);
         $("windowwinId_" + iIdSolicita + "_btnclose").onclick = function () {
+
             lWindowCompilacoes = false;
             oWindowDepart.destroy();
+
         }
 
+        /**
+         *  Message Board
+         */
         var sMsgTitle = "Departamentos da Compilação " + iIdSolicita;
         var sMsgHelp = "Duplo clique sobre o departamento para escolher os itens que deseja ceder.";
         oMsgBoardDepart = new DBMessageBoard("msgBoard_" + iIdSolicita, sMsgTitle, sMsgHelp, oWindowDepart.getContentContainer());
@@ -297,9 +304,11 @@ db_menu(
     }
 
     function js_pesquisat94_depart(mostra) {
+
+
         if (mostra == true) {
             oWindowCriaEstimativa.hide();
-            js_OpenJanelaIframe('', 'db_iframe_depart', 'func_db_depart.php?funcao_js=parent.js_mostradb_depart1|coddepto|descrdepto&todasinstit=1&chave_t93_depart=' + $F('t94_depart'), 'Pesquisa', true);
+            js_OpenJanelaIframe('', 'db_iframe_depart', 'func_db_depart.php?funcao_js=parent.js_mostradb_depart1|coddepto|descrdepto&todasinstit=1&chave_t93_depart=' + $F('t94_depart') + '&automatico=0', 'Pesquisa', true);
         } else {
             if ($F('t94_depart') != '') {
                 js_OpenJanelaIframe('', 'db_iframe_depart', 'func_db_depart.php?pesquisa_chave=' + document.form1.t94_depart.value + '&todasinstit=1&funcao_js=parent.js_mostradb_depart&chave_t93_depart=' + document.form1.t94_depart.value, 'Pesquisa', false);
@@ -606,6 +615,7 @@ db_menu(
         });
 
         if (sErro.trim() != "") {
+
             alert(sErro);
         } else {
 
@@ -632,6 +642,7 @@ db_menu(
         var oRetorno = JSON.parse(oAjax.responseText);
 
         if (oRetorno.status == 2) {
+
             alert(oRetorno.message.urlDecode());
             return false;
         } else {
@@ -656,6 +667,7 @@ db_menu(
     }
 
     createDivModal = function (oNode) {
+
         var oDiv = document.createElement('div');
         oDiv.id = "modalfor" + oNode.id;
         oDiv.style.width = oNode.clientWidth;
@@ -669,10 +681,14 @@ db_menu(
         oDiv.style.zIndex = oNode.style.zIndex + 1;
         oNode.appendChild(oDiv);
         oNode.setAttribute('modal', oDiv.id);
+
+
     }
 
     destroyDivModal = function (oNode) {
+
         if (oNode.getAttribute('modal')) {
+
             var oDiv = $(oNode.getAttribute('modal'));
             oDiv.parentNode.removeChild(oDiv);
             oNode.setAttribute('modal', '');

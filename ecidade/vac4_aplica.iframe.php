@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -149,7 +149,7 @@ if (isset($chavepesquisa)) {
   <tr> 
     <td height="220" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-  <?
+  <?php
   include(modification("forms/db_frmvac_aplica_iframe.php"));
   ?>
     </center>
@@ -161,7 +161,7 @@ if (isset($chavepesquisa)) {
 <script>
 js_tabulacaoforms("form1", "vc16_i_dosevacina", true, 1, "vc16_i_dosevacina", true);
 </script>
-<?
+<?php
 if ((isset($incluir)) || (isset($alterar))) {
   if ($clvac_aplica->erro_status == "0") {
 

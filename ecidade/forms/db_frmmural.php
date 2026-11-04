@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ed02_i_codigo");
        <?=@$Led20_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed20_i_codigo',5,$Ied20_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted20_i_escola?>">
-       <?
+       <?php
        db_ancora(@$Led20_i_escola,"js_pesquisaed20_i_escola(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed20_i_escola',5,$Ied20_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed20_i_escola(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$z01_nome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('z01_nome',40,$z01_nome,true,'text',3,'')
        <?=@$Led20_c_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('AGENDA DE PROVAS'=>'AGENDA DE PROVAS','AVISO'=>'AVISO','EVENTO'=>'EVENTO');
 db_select('ed20_c_tipo',$x,true,$db_opcao,"");
 ?>
@@ -74,7 +74,7 @@ db_select('ed20_c_tipo',$x,true,$db_opcao,"");
        <?=@$Led20_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed20_d_data',@$ed20_d_data_dia,@$ed20_d_data_mes,@$ed20_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_inputdata('ed20_d_data',@$ed20_d_data_dia,@$ed20_d_data_mes,@$ed20_d_data_ano
        <?=@$Led20_c_assunto?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed20_c_assunto',50,$Ied20_c_assunto,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('ed20_c_assunto',50,$Ied20_c_assunto,true,'text',$db_opcao,"")
        <?=@$Led20_t_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed20_t_descr',3,40,$Ied20_t_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_mural.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -63,16 +63,16 @@ class cl_pcorcamforne {
                  pc21_importado = bool = Importado
                  pc21_prazoent = date = Prazo de Entrega
                  pc21_validadorc = date = Validade do Orçamento
-                 pc21_taxaestimadaglobal = float4 = Taxa Estimada Global 
+                 pc21_taxaestimadaglobal = float4 = Taxa Estimada Global
                  ";
    //funcao construtor da classe
-   function cl_pcorcamforne() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamforne");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_pcorcamforne {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc21_orcamforne = ($this->pc21_orcamforne == ""?@$GLOBALS["HTTP_POST_VARS"]["pc21_orcamforne"]:$this->pc21_orcamforne);
        $this->pc21_codorc = ($this->pc21_codorc == ""?@$GLOBALS["HTTP_POST_VARS"]["pc21_codorc"]:$this->pc21_codorc);
@@ -109,7 +109,7 @@ class cl_pcorcamforne {
      }
    }
    // funcao para Inclusão
-   function incluir ($pc21_orcamforne){
+   public function incluir ($pc21_orcamforne){
       $this->atualizacampos();
      if($this->pc21_codorc == null ){
        $this->erro_sql = " Campo Código do Orçamento não informado.";
@@ -171,7 +171,7 @@ class cl_pcorcamforne {
          $this->pc21_orcamforne = $pc21_orcamforne;
        }
      }
-     if(($this->pc21_orcamforne == null) || ($this->pc21_orcamforne == "") ){ 
+     if(($this->pc21_orcamforne == null) || ($this->pc21_orcamforne == "") ){
        $this->erro_sql = " Campo pc21_orcamforne não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -318,10 +318,10 @@ class cl_pcorcamforne {
          $virgula = ",";
        }
      }
-     if(trim($this->pc21_taxaestimadaglobal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){ 
-        if(trim($this->pc21_taxaestimadaglobal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){ 
-           $this->pc21_taxaestimadaglobal = "null" ; 
-        } 
+     if(trim($this->pc21_taxaestimadaglobal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){
+        if(trim($this->pc21_taxaestimadaglobal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){
+           $this->pc21_taxaestimadaglobal = "null" ;
+        }
        $sql  .= $virgula." pc21_taxaestimadaglobal = $this->pc21_taxaestimadaglobal ";
        $virgula = ",";
      }
@@ -360,7 +360,7 @@ class cl_pcorcamforne {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fornecedores do orçamento não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc21_orcamforne;
@@ -388,11 +388,11 @@ class cl_pcorcamforne {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($pc21_orcamforne=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc21_orcamforne=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -401,7 +401,7 @@ class cl_pcorcamforne {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($pc21_orcamforne));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -436,7 +436,7 @@ class cl_pcorcamforne {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fornecedores do orçamento não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc21_orcamforne;
@@ -464,11 +464,11 @@ class cl_pcorcamforne {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -490,8 +490,8 @@ class cl_pcorcamforne {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($pc21_orcamforne = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($pc21_orcamforne = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from pcorcamforne ";
@@ -500,8 +500,8 @@ class cl_pcorcamforne {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc21_orcamforne)) {
-         $sql2 .= " where pcorcamforne.pc21_orcamforne = $pc21_orcamforne "; 
-       } 
+         $sql2 .= " where pcorcamforne.pc21_orcamforne = $pc21_orcamforne ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -511,7 +511,7 @@ class cl_pcorcamforne {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($pc21_orcamforne = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -519,8 +519,8 @@ class cl_pcorcamforne {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc21_orcamforne)){
-         $sql2 .= " where pcorcamforne.pc21_orcamforne = $pc21_orcamforne "; 
-       } 
+         $sql2 .= " where pcorcamforne.pc21_orcamforne = $pc21_orcamforne ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -531,10 +531,10 @@ class cl_pcorcamforne {
      return $sql;
   }
 
-   function sql_query_fornec ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_fornec ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_pcorcamforne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -573,10 +573,10 @@ class cl_pcorcamforne {
      }
      return $sql;
   }
-   function sql_query_orcitem ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_orcitem ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -599,7 +599,7 @@ class cl_pcorcamforne {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -608,10 +608,10 @@ class cl_pcorcamforne {
     }
     return $sql;
   }
-   function sql_query_solsugforne ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_solsugforne ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -637,7 +637,7 @@ class cl_pcorcamforne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        }
      return $sql;
@@ -652,11 +652,11 @@ class cl_pcorcamforne {
    * @param string $dbwhere fitro de selecao
    * @return string
    */
-  function sql_query_forneclic ($pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_forneclic ($pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -681,7 +681,7 @@ class cl_pcorcamforne {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

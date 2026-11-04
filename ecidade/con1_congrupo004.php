@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -192,14 +192,14 @@ if (isset($excluir)){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmconplanogrupo.php"));
 	?>
     </center>
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)||isset($alterar)||isset($excluir)){
   if($sqlerro == true){
     $db_botao=true;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $oRelatorio = new relatorioContabil(122);
     
       <fieldset style="margin-top: 10px;">
         <legend><strong>Instituição</strong></legend>
-           <?
+           <?php
              db_selinstit('',300,100);
            ?>
       </fieldset>
@@ -79,7 +79,7 @@ $oRelatorio = new relatorioContabil(122);
             </td>  
             <td align="left">
             
-			          <?			
+			          <?php 		
 			           if ($iAnoUsu < 2010 ) {
               
                    $aListaPeriodos = array(

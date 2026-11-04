@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrhpestrienio->rotulo->label();
        <?=@$Lrh09_regist?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh09_regist',6,$Irh09_regist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh09_regist',6,$Irh09_regist,true,'text',$db_opcao,"")
        <?=@$Lrh09_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('rh09_data',@$rh09_data_dia,@$rh09_data_mes,@$rh09_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpestrienio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

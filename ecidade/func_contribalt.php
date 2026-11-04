@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label('z01_nome');
              <?=$Ld08_notif?>
              </td>
              <td width="96%" align="left" nowrap>
-             <?
+             <?php
                db_input("d08_notif",6,$Id08_notif,true,"text",4,"","chave_notificacao");
              ?>
              </td>
@@ -68,7 +68,7 @@ $clrotulo->label('z01_nome');
 	     <?=$Lj01_matric?>
              </td>
              <td width="96%" align="left" nowrap>
-             <?
+             <?php
                db_input("j01_matric",4,'',true,"text",4,"","chave_matricula");
              ?>
              </td>
@@ -78,7 +78,7 @@ $clrotulo->label('z01_nome');
 	     <?=$Lz01_nome?>
              </td>
              <td width="96%" align="left" nowrap>
-             <?
+             <?php
                db_input("z01_nome",40,'',true,"text",4,"","chave_nome");
              ?>
              </td>
@@ -97,7 +97,7 @@ $clrotulo->label('z01_nome');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if($contribuicao == ''){
 //	echo "<script>alert('Nenhuma contribuição foi escolhida.')</script>";
 //	echo "<script>location.href=parent.con2_geranotif001.php</script>";
@@ -167,12 +167,12 @@ $clrotulo->label('z01_nome');
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

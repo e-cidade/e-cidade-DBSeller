@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clliclicitatipoempresa->rotulo->label();
        <?=@$Ll32_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('l32_sequencial',10,$Il32_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -51,7 +51,7 @@ db_input('l32_sequencial',10,$Il32_sequencial,true,'text',3,"")
        <?=@$Ll32_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('l32_descricao',40,$Il32_descricao,true,'text',3,"")
 ?>
     </td>
@@ -61,7 +61,7 @@ db_input('l32_descricao',40,$Il32_descricao,true,'text',3,"")
        <?=@$Ll32_percentual?>
     </td>
     <td> 
-<?
+<?php
 db_input('l32_percentual',10,$Il32_percentual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -81,13 +81,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_liclicitatipoempresa.hide();
-  <?
+  <?php
   if($db_opcao !=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php
 if (!isset($chavepesquisa)) {
   echo "js_pesquisa();\n"; 
 }

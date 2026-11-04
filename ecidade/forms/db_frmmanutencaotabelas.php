@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ $clrotulo->label("j121_codarq");
 					  <table border="0" align="center" id="tab<?=@$oManutensaoTabela->sNomeCampo?>" class="tabelatextarea" style="display: none">
 					    <tr>
 					      <td>
-					        <?
+					        <?php
                     montarCampos($oManutensaoTabela->sNomeCampo,
                                  "",
                                  $sTipoCampo,
@@ -71,7 +71,7 @@ $clrotulo->label("j121_codarq");
           </fieldset>
         </td>
       </tr>
-      <?
+      <?php
           } else {
       ?>
       <tr>
@@ -175,7 +175,7 @@ $clrotulo->label("j121_codarq");
     </tr>
     <tr>
       <td>
-        <?
+        <?php
           /* Verifica se existe o arquivo da lockup de pesquisa */
           if (!file_exists("func_{$oDadoManutensaoTabela->sNomeTabela}.php")) {
 
@@ -187,12 +187,12 @@ $clrotulo->label("j121_codarq");
           if ($db_botao) {
         ?>
             <input name="incluir" type="submit" id="incluir" value="Incluir" onclick="return js_validar();">
-        <?
+        <?php
           } else {
         ?>
             <input name="alterar" type="submit" id="alterar" value="Alterar" onclick="return js_validar();">
             <input name="excluir" type="submit" id="excluir" value="Excluir" onclick="return js_validar();">
-        <?
+        <?php
           }
         ?>
         <input name="voltar" type="button" id="voltar" value="Voltar" onclick="js_voltar();">
@@ -201,7 +201,7 @@ $clrotulo->label("j121_codarq");
     </tr>
   </table>
 </form>
-<?
+<?php
   /* Verifica se existe chave primaria na tabela */
 	if (isset($sListaPriKeyChave) && empty($sListaPriKeyChave)) {
 
@@ -234,7 +234,7 @@ $clrotulo->label("j121_codarq");
             }
         }
 
-        <?
+        <?php
         echo "function js_pesquisar() {
           var sNomeTabela = '".@$oDadoManutensaoTabela->sNomeTabela."';
           var sUrl        = 'func_'+sNomeTabela+'.php?funcao_js=parent.js_preenchepesquisa|".$sListaPriKeyLockup."';

@@ -20,31 +20,31 @@ class ErrorPlot extends Plot {
     var $errwidth=2;
 //---------------
 // CONSTRUCTOR
-    function ErrorPlot(&$datay,$datax=false) {
+    public function __construct(&$datay,$datax=false) {
 	$this->Plot($datay,$datax);
 	$this->numpoints /= 2;
     }
 //---------------
 // PUBLIC METHODS
-	
+
     // Gets called before any axis are stroked
-    function PreStrokeAdjust(&$graph) {
+    public function PreStrokeAdjust(&$graph) {
 	if( $this->center ) {
 	    $a=0.5; $b=0.5;
-	    ++$this->numpoints;			
+	    ++$this->numpoints;
 	} else {
 	    $a=0; $b=0;
 	}
 	$graph->xaxis->scale->ticks->SetXLabelOffset($a);
-	$graph->SetTextScaleOff($b);						
+	$graph->SetTextScaleOff($b);
 	//$graph->xaxis->scale->ticks->SupressMinorTickMarks();
     }
-	
+
     // Method description
-    function Stroke(&$img,&$xscale,&$yscale) {
+    public function Stroke(&$img,&$xscale,&$yscale) {
 	$numpoints=count($this->coords[0])/2;
 	$img->SetColor($this->color);
-	$img->SetLineWeight($this->weight);	
+	$img->SetLineWeight($this->weight);
 
 	if( isset($this->coords[1]) ) {
 	    if( count($this->coords[1])!=$numpoints )
@@ -52,7 +52,7 @@ class ErrorPlot extends Plot {
 	    else
 		$exist_x = true;
 	}
-	else 
+	else
 	    $exist_x = false;
 
 	if( $exist_x )
@@ -60,7 +60,7 @@ class ErrorPlot extends Plot {
 	else
 	    $xs=0;
 
-		
+
 	for( $i=0; $i<$numpoints; ++$i) {
 	    if( $exist_x ) $x=$this->coords[1][$i];
 	    else $x=$i;
@@ -70,7 +70,7 @@ class ErrorPlot extends Plot {
 	    $img->Line($xt,$yt1,$xt,$yt2);
 	    $img->Line($xt-$this->errwidth,$yt1,$xt+$this->errwidth,$yt1);
 	    $img->Line($xt-$this->errwidth,$yt2,$xt+$this->errwidth,$yt2);
-	}			
+	}
 	return true;
     }
 } // Class
@@ -86,24 +86,24 @@ class ErrorLinePlot extends ErrorPlot {
     var $line=null;
 //---------------
 // CONSTRUCTOR
-    function ErrorLinePlot(&$datay,$datax=false) {
+    public function __construct(&$datay,$datax=false) {
 	$this->ErrorPlot($datay,$datax);
 	// Calculate line coordinates as the average of the error limits
 	for($i=0; $i < count($datay); $i+=2 ) {
 	    $ly[]=($datay[$i]+$datay[$i+1])/2;
-	}		
+	}
 	$this->line=new LinePlot($ly,$datax);
     }
 
 //---------------
 // PUBLIC METHODS
-    function Legend(&$graph) {
+    public function Legend(&$graph) {
 	if( $this->legend != "" )
 	    $graph->legend->Add($this->legend,$this->color);
 	$this->line->Legend($graph);
     }
-			
-    function Stroke(&$img,&$xscale,&$yscale) {
+
+    public function Stroke(&$img,&$xscale,&$yscale) {
 	parent::Stroke($img,$xscale,$yscale);
 	$this->line->Stroke($img,$xscale,$yscale);
     }
@@ -119,7 +119,7 @@ class LineErrorPlot extends ErrorPlot {
 //---------------
 // CONSTRUCTOR
     // Data is (val, errdeltamin, errdeltamax)
-    function LineErrorPlot(&$datay,$datax=false) {
+    public function __construct(&$datay,$datax=false) {
 	$ly=array(); $ey=array();
 	$n = count($datay);
 	if( $n % 3 != 0 ) {
@@ -130,20 +130,20 @@ class LineErrorPlot extends ErrorPlot {
 	    $ly[]=$datay[$i];
 	    $ey[]=$datay[$i]+$datay[$i+1];
 	    $ey[]=$datay[$i]+$datay[$i+2];
-	}		
+	}
 	$this->ErrorPlot($ey,$datax);
 	$this->line=new LinePlot($ly,$datax);
     }
 
 //---------------
 // PUBLIC METHODS
-    function Legend(&$graph) {
+    public function Legend(&$graph) {
 	if( $this->legend != "" )
 	    $graph->legend->Add($this->legend,$this->color);
 	$this->line->Legend($graph);
     }
-			
-    function Stroke(&$img,&$xscale,&$yscale) {
+
+    public function Stroke(&$img,&$xscale,&$yscale) {
 	parent::Stroke($img,$xscale,$yscale);
 	$this->line->Stroke($img,$xscale,$yscale);
     }

@@ -27,6 +27,7 @@
 
 namespace App\Domain\Educacao\Escola\Models;
 
+use App\Domain\Educacao\Secretaria\Models\BaseDisciplina;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -95,5 +96,14 @@ class DisciplinaEnsino extends Model
     public function disciplina()
     {
         return $this->belongsTo(Disciplina::class, 'ed12_i_caddisciplina', 'ed232_i_codigo');
+    }
+
+    public function scopeMatrizCurricular($query)
+    {
+        return $query->where('ed12_matrizcurricular', true);
+    }
+    public function disciplinasBase()
+    {
+        return $this->hasMany(BaseDisciplina::class, 'ed34_i_disciplina', 'ed12_i_codigo');
     }
 }

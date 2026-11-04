@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -163,7 +163,7 @@ function js_emite(){
       <tr>
         <td>Data Final :</td>
         <td>
-        <?
+        <?php
          $datausu = date("Y/m/d",db_getsession("DB_datausu"));
          $dataf_ano = substr($datausu,0,4);
          $dataf_mes = substr($datausu,5,2);
@@ -178,7 +178,7 @@ function js_emite(){
         <td>Tipo de Pagamento :
 	</td>
         <td>
-         <?
+         <?php
          $x = array("c"=>"Competência","p"=>"Pagamento");
          ?>
          <?=db_select('tipo',$x,'text',2)?>
@@ -190,11 +190,11 @@ function js_emite(){
         <td>Ordem:
 	</td>
         <td>
-         <?
+         <?php
          $x = array("i"=>"Inscrição","n"=>"Nome","t"=>"Total");
          ?>
          <?=db_select('ordem',$x,'text',2)?>
-         <?
+         <?php
          $x = array("a"=>"Ascendente","d"=>"Descendente");
          ?>
          <?=db_select('tipoordem',$x,'text',2)?>
@@ -211,13 +211,13 @@ function js_emite(){
       <table border="0">
          <tr>
            <td nowrap title="<?=@$Tq02_inscr?>" colspan="2">
-            <?
+            <?php
               db_ancora(@$Lq02_inscr,"js_pesquisaq02_inscr(true);",2);
             ?>
-            <?
+            <?php
               db_input('q02_inscr',8,$Iq02_inscr,true,'text',2," onchange='js_pesquisaq02_inscr(false);'")
             ?>
-            <?
+            <?php
               db_input('z01_nome',25,$Iz01_nome,true,'text',3,'')
             ?>
 	    <input name="lanca" type="button" value="Lançar" >
@@ -227,7 +227,7 @@ function js_emite(){
 	   <td align="right" colspan="" width="80%">
 
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?
+              <?php
               if(isset($chavepesquisa)){
 
 	 $resulta = $clissbase->empresa_record($clissbase->empresa_query($chavepesquisa,"","q02_inscr,z01_nome",""));
@@ -272,7 +272,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -318,7 +318,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

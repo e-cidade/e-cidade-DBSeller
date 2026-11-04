@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE cronogramabasereceita
-class cl_cronogramabasereceita { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o126_sequencial = 0; 
-   var $o126_codrec = 0; 
-   var $o126_anousu = 0; 
-   var $o126_cronogramabasecalculo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cronogramabasereceita {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o126_sequencial = 0;
+   var $o126_codrec = 0;
+   var $o126_anousu = 0;
+   var $o126_cronogramabasecalculo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o126_sequencial = int4 = Código Sequencial 
-                 o126_codrec = int4 = Código da Receita 
-                 o126_anousu = int4 = Ano da Receita 
-                 o126_cronogramabasecalculo = int4 = Código da Base de Calculo 
+                 o126_sequencial = int4 = Código Sequencial
+                 o126_codrec = int4 = Código da Receita
+                 o126_anousu = int4 = Ano da Receita
+                 o126_cronogramabasecalculo = int4 = Código da Base de Calculo
                  ";
-   //funcao construtor da classe 
-   function cl_cronogramabasereceita() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cronogramabasereceita"); 
+     $this->rotulo = new rotulo("cronogramabasereceita");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cronogramabasereceita {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o126_sequencial = ($this->o126_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o126_sequencial"]:$this->o126_sequencial);
        $this->o126_codrec = ($this->o126_codrec == ""?@$GLOBALS["HTTP_POST_VARS"]["o126_codrec"]:$this->o126_codrec);
@@ -80,9 +80,9 @@ class cl_cronogramabasereceita {
      }
    }
    // funcao para inclusao
-   function incluir ($o126_sequencial){ 
+   public function incluir ($o126_sequencial){
       $this->atualizacampos();
-     if($this->o126_codrec == null ){ 
+     if($this->o126_codrec == null ){
        $this->erro_sql = " Campo Código da Receita nao Informado.";
        $this->erro_campo = "o126_codrec";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_cronogramabasereceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o126_anousu == null ){ 
+     if($this->o126_anousu == null ){
        $this->erro_sql = " Campo Ano da Receita nao Informado.";
        $this->erro_campo = "o126_anousu";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_cronogramabasereceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o126_cronogramabasecalculo == null ){ 
+     if($this->o126_cronogramabasecalculo == null ){
        $this->erro_sql = " Campo Código da Base de Calculo nao Informado.";
        $this->erro_campo = "o126_cronogramabasecalculo";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_cronogramabasereceita {
        return false;
      }
      if($o126_sequencial == "" || $o126_sequencial == null ){
-       $result = db_query("select nextval('cronogramabasereceita_o126_sequencial_seq')"); 
+       $result = db_query("select nextval('cronogramabasereceita_o126_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cronogramabasereceita_o126_sequencial_seq do campo: o126_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cronogramabasereceita_o126_sequencial_seq do campo: o126_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o126_sequencial = pg_result($result,0,0); 
+       $this->o126_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cronogramabasereceita_o126_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $o126_sequencial)){
@@ -130,10 +130,10 @@ class cl_cronogramabasereceita {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o126_sequencial = $o126_sequencial; 
+         $this->o126_sequencial = $o126_sequencial;
        }
      }
-     if(($this->o126_sequencial == null) || ($this->o126_sequencial == "") ){ 
+     if(($this->o126_sequencial == null) || ($this->o126_sequencial == "") ){
        $this->erro_sql = " Campo o126_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_cronogramabasereceita {
        return false;
      }
      $sql = "insert into cronogramabasereceita(
-                                       o126_sequencial 
-                                      ,o126_codrec 
-                                      ,o126_anousu 
-                                      ,o126_cronogramabasecalculo 
+                                       o126_sequencial
+                                      ,o126_codrec
+                                      ,o126_anousu
+                                      ,o126_cronogramabasecalculo
                        )
                 values (
-                                $this->o126_sequencial 
-                               ,$this->o126_codrec 
-                               ,$this->o126_anousu 
-                               ,$this->o126_cronogramabasecalculo 
+                                $this->o126_sequencial
+                               ,$this->o126_codrec
+                               ,$this->o126_anousu
+                               ,$this->o126_cronogramabasecalculo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Receita da Base de Calculo ($this->o126_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_cronogramabasereceita {
        $resac = db_query("insert into db_acount values($acount,2620,14887,'','".AddSlashes(pg_result($resaco,0,'o126_cronogramabasecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o126_sequencial=null) { 
+   public function alterar ($o126_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cronogramabasereceita set ";
      $virgula = "";
-     if(trim($this->o126_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_sequencial"])){ 
+     if(trim($this->o126_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_sequencial"])){
        $sql  .= $virgula." o126_sequencial = $this->o126_sequencial ";
        $virgula = ",";
-       if(trim($this->o126_sequencial) == null ){ 
+       if(trim($this->o126_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o126_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_cronogramabasereceita {
          return false;
        }
      }
-     if(trim($this->o126_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_codrec"])){ 
+     if(trim($this->o126_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_codrec"])){
        $sql  .= $virgula." o126_codrec = $this->o126_codrec ";
        $virgula = ",";
-       if(trim($this->o126_codrec) == null ){ 
+       if(trim($this->o126_codrec) == null ){
          $this->erro_sql = " Campo Código da Receita nao Informado.";
          $this->erro_campo = "o126_codrec";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_cronogramabasereceita {
          return false;
        }
      }
-     if(trim($this->o126_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_anousu"])){ 
+     if(trim($this->o126_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_anousu"])){
        $sql  .= $virgula." o126_anousu = $this->o126_anousu ";
        $virgula = ",";
-       if(trim($this->o126_anousu) == null ){ 
+       if(trim($this->o126_anousu) == null ){
          $this->erro_sql = " Campo Ano da Receita nao Informado.";
          $this->erro_campo = "o126_anousu";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_cronogramabasereceita {
          return false;
        }
      }
-     if(trim($this->o126_cronogramabasecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_cronogramabasecalculo"])){ 
+     if(trim($this->o126_cronogramabasecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o126_cronogramabasecalculo"])){
        $sql  .= $virgula." o126_cronogramabasecalculo = $this->o126_cronogramabasecalculo ";
        $virgula = ",";
-       if(trim($this->o126_cronogramabasecalculo) == null ){ 
+       if(trim($this->o126_cronogramabasecalculo) == null ){
          $this->erro_sql = " Campo Código da Base de Calculo nao Informado.";
          $this->erro_campo = "o126_cronogramabasecalculo";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_cronogramabasereceita {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Receita da Base de Calculo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o126_sequencial;
@@ -297,14 +297,14 @@ class cl_cronogramabasereceita {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o126_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o126_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o126_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_cronogramabasereceita {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Receita da Base de Calculo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o126_sequencial;
@@ -361,11 +361,11 @@ class cl_cronogramabasereceita {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,11 +387,11 @@ class cl_cronogramabasereceita {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $o126_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $o126_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,15 +411,15 @@ class cl_cronogramabasereceita {
      $sql2 = "";
      if($dbwhere==""){
        if($o126_sequencial!=null ){
-         $sql2 .= " where cronogramabasereceita.o126_sequencial = $o126_sequencial "; 
-       } 
+         $sql2 .= " where cronogramabasereceita.o126_sequencial = $o126_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,11 +428,11 @@ class cl_cronogramabasereceita {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $o126_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $o126_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,15 +445,15 @@ class cl_cronogramabasereceita {
      $sql2 = "";
      if($dbwhere==""){
        if($o126_sequencial!=null ){
-         $sql2 .= " where cronogramabasereceita.o126_sequencial = $o126_sequencial "; 
-       } 
+         $sql2 .= " where cronogramabasereceita.o126_sequencial = $o126_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

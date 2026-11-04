@@ -130,7 +130,7 @@ class contaTesouraria
 
 
 
-    function __construct($iConta)
+    function __construct($iConta = null)
     {
 
         if (!empty($iConta)) {
@@ -171,6 +171,19 @@ class contaTesouraria
         return $this;
     }
 
+    public static function getListaContasExtras($campos = "*" , $where ){
+
+        $aContasExtras = [];
+
+        $DaoSaltes = new cl_saltes;
+
+        $sql = $DaoSaltes->sql_query_ListaContasExtras(null, $campos, null, $where);
+        $rs = $DaoSaltes->sql_record($sql);
+        if ($DaoSaltes->numrows > 0) {
+            $aContasExtras = db_utils::getCollectionByRecord($rs);
+        }
+        return $aContasExtras ;
+    }
 
     public function getContaExtra()
     {

@@ -50,15 +50,11 @@ if( $oPost->sAction == 'PesquisaDivisao' ) {
 
 if( $oPost->sAction == 'PesquisaEtapaDivisao' ) {
 
-  $iAnoConsulta = 2014;
   if ( !empty($oPost->iCalendario) ) {
 
     $oCalendario  = new Calendario( $oPost->iCalendario );
     $iAnoCenso    = DadosCenso::getUltimoAnoEtapaCenso();
-
-    if ( $oCalendario->getAnoExecucao() > 2014 && $oCalendario->getAnoExecucao() == $iAnoCenso ) {
-      $iAnoConsulta = $iAnoCenso;
-    }
+    $iAnoConsulta = $oCalendario->getAnoExecucao() > $iAnoCenso ? $iAnoCenso : $oCalendario->getAnoExecucao();
   }
 
   $sCampos  = " DISTINCT ed223_i_codigo, ed11_i_codigo, ed133_censoetapa as ed11_i_codcenso, ";
@@ -82,15 +78,9 @@ if( $oPost->sAction == 'PesquisaEtapa' ) {
 
   $oCalendario  = new Calendario( $oPost->iCalendario );
   $iAnoCenso    = DadosCenso::getUltimoAnoEtapaCenso();
-  $iAnoConsulta = 2014;
 
-  if ( $oCalendario->getAnoExecucao() > 2014 && $oCalendario->getAnoExecucao() == $iAnoCenso ) {
-    $iAnoConsulta = $iAnoCenso;
-  }
 
-  if ($oCalendario->getAnoExecucao() < $iAnoCenso) {
-      $iAnoConsulta = $oCalendario->getAnoExecucao();
-  }
+    $iAnoConsulta = $oCalendario->getAnoExecucao() > $iAnoCenso ? $iAnoCenso : $oCalendario->getAnoExecucao();
 
 
   $sCamposEtapaCenso  = " DISTINCT ed223_i_codigo, ed11_i_codigo, ed133_censoetapa as ed11_i_codcenso, ed11_c_descr";

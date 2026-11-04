@@ -21,6 +21,7 @@ require_once modification("dbforms/db_funcoes.php");
           rel="stylesheet"/>
     <script type="text/javascript" src="scripts/prototype.js"></script>
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
 </head>
 <body>
@@ -54,7 +55,7 @@ require_once modification("dbforms/db_funcoes.php");
                 </table>
             </fieldset>
         </div>
-        <fieldset style="width: 850px">
+        <fieldset style="width: 1100px">
             <legend>Recursos</legend>
             <table id="data-table"
                    class="table table-sm"
@@ -62,7 +63,6 @@ require_once modification("dbforms/db_funcoes.php");
                    data-virtual-scroll="true"
                    style="width: 100%;">
             </table>
-
         </fieldset>
         <button type="button" id="btnExcluir" class="btn btn-light">
             <i class="fas fa-trash"></i>
@@ -130,6 +130,12 @@ require_once modification("dbforms/db_funcoes.php");
             {
                 field: 'check',
                 checkbox: true,
+                align: 'center',
+                valign: 'middle',
+                sortable: true
+            }, {
+                title: 'Subrecurso',
+                field: 'recurso.o15_recurso',
                 align: 'center',
                 valign: 'middle',
                 sortable: true

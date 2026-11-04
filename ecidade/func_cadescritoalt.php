@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -53,7 +53,7 @@ $clcadescrito->rotulo->label("q86_numcgm");
               <?=$Lq86_numcgm?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("q86_numcgm",6,$Iq86_numcgm,true,"text",4,"","chave_q86_numcgm");
 		       ?>
             </td>
@@ -71,7 +71,7 @@ $clcadescrito->rotulo->label("q86_numcgm");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
       if(!isset($pesquisa_chave)){
 
@@ -119,12 +119,12 @@ $clcadescrito->rotulo->label("q86_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ $clrotulo->label('fa01_i_codmater');
                 <b>Escolha um Período:</b>
               </td>
               <td nowrap>
-	            <?
+	            <?php
                   $aPeriodos = array("0"=>"Escolha um Trimestre",
                                      "1T"=>"Primeiro Trimestre",
                                      "2T"=>"Segundo Trimestre",
@@ -83,7 +83,7 @@ $clrotulo->label('fa01_i_codmater');
                 <b>Ano:</b>
               </td>
               <td>             
-                 <? db_input('iAno', 5, $Ifa01_i_codmater, true, 'text', 1, '', '', '', '', 4); ?>
+                 <?php db_input('iAno', 5, $Ifa01_i_codmater, true, 'text', 1, '', '', '', '', 4); ?>
               </td>
             </tr>
           </table>
@@ -94,7 +94,7 @@ $clrotulo->label('fa01_i_codmater');
 	    </center>
       </form>
     </center>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ $clRotulo->label("z01_nome");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -64,7 +64,7 @@ $clRotulo->label("z01_nome");
           <?=$Lv70_sequencial?>
       	</td>
       	<td nowrap> 
-      	  <?
+      	  <?php
             db_input("v70_sequencial",10,$Iv70_sequencial,true,"text",4,"","chave_v70_sequencial");
           ?>
         </td>
@@ -74,7 +74,7 @@ $clRotulo->label("z01_nome");
           <?=$Lv70_codforo?>
     		</td>
     		<td nowrap> 
-          <?
+          <?php
             db_input("v70_codforo",30,$Iv70_codforo,true,"text",4,"","chave_v70_codforo");
           ?>
     		</td>
@@ -84,19 +84,19 @@ $clRotulo->label("z01_nome");
           <?=$Lv71_inicial?>
     		</td>
     		<td nowrap> 
-          <?
+          <?php
             db_input("v71_inicial",10,$Iv71_inicial,true,"text",4,"","chave_v71_inicial");
           ?>
       	</td>
     	</tr>          
     	<tr>
       	<td nowrap title="<?=@$Tv58_numcgm?>">
-          <?
+          <?php
             db_ancora(@$Lv58_numcgm," js_pesquisaCgm(true); ",1);
           ?>
     		</td>
     		<td> 
-      	  <?
+      	  <?php
             db_input('v58_numcgm',10,$Iv58_numcgm,true,'text',4," onchange='js_pesquisaCgm(false);'","chave_v58_numcgm");
             db_input('z01_nome',40,$Iz01_nome,true,'text',3);
           ?>
@@ -107,7 +107,7 @@ $clRotulo->label("z01_nome");
     			Situação:
       	</td>
     		<td> 
-      	  <?
+      	  <?php
             $aSituacao = array('T'  => 'Todos',
                                'AT' => 'Ativo',
                                'AN' => 'Anulado');
@@ -133,7 +133,7 @@ $clRotulo->label("z01_nome");
   </fieldset>
   <input name="pesquisa" type="submit" value="Pesquisa">
 </form>
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

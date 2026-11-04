@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,7 +100,7 @@ if(isset($excluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 80%;'> <legend><b>Aviso de Agendamento</b></legend>
-	      <?
+	      <?php
 	      require_once(modification("forms/db_frmtfd_avisopaciente.php"));
 	      ?>
     </center>
@@ -108,7 +108,7 @@ if(isset($excluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -116,7 +116,7 @@ if(isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","tf21_i_pedidotfd",true,1,"tf21_i_pedidotfd",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)) {
 
   if($oDaotfd_avisopaciente->erro_status == '0') {

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 /*  classe cl_estrutura
@@ -39,20 +39,20 @@
     var $estrut_debito_descr;
     var $estrut_credito;
     var $estrut_credito_descr;
-    
+
     var $mostra_conta = null;
 
-    function menu_estrutural(){
+    public function __construct(){
      //-- constructor
-    }  
-    function monta_select(){
+    }
+    public function monta_select(){
      echo"<center>
           <select id=\"tipo_conta\" name=\"tipo_conta\" size=\"1\" onchange=\"js_plano_contas()\">
                <option value=\"plano\">Plano de Contas</option>
                <option value=\"sistema\">Sistema de Contas</option>
           </select>
          <script>
-            function js_plano_contas(){
+            public function js_plano_contas(){
 	    var a = document.getElementById(\"div_conplano\");
 	    var b = document.getElementById(\"div_conplanosis\");
 	    var s = document.getElementById(\"tipo_conta\");
@@ -62,18 +62,18 @@
 	    }else {
 	        a.style.visibility='hidden';
 	        b.style.visibility='visible';
-	    }  
-	} 
-        </script>";      
+	    }
+	}
+        </script>";
     }
 
-    function show_conta(){
+    public function show_conta(){
 
         //----- conplano ---------------------------------------
 	 echo "<div id=\"div_conplano\" style=\"visibility:visible;position:absolute\">";
          echo "<table border=0 align=center>
-               <tr><td><strong>Estrutural</strong></td><td><strong>Descrição </strong></b></td></tr>     
-               <tr><td colspan='2'><hr></td></tr>     
+               <tr><td><strong>Estrutural</strong></td><td><strong>Descrição </strong></b></td></tr>
+               <tr><td colspan='2'><hr></td></tr>
               ";
          $matriz01=array();
 	 $matriz02=array();
@@ -98,28 +98,28 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut;
 	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
-	          } 
+	          }
 	      }
-         }	
+         }
          if($testamae==true){
    	     for($t=count($matriz01); $t>0; $t--){
 	          $tt=intval($t-1);  /*rotina para verificar se a estrutura nao esta se repetindo*/
-                  $testa_repete=true; 
+                  $testa_repete=true;
 	          for($f=0; $f<count($matriz02); $f++){
 	              if($matriz02[$f]==$matriz01[$tt]){
-                          $testa_repete=false; 
+                          $testa_repete=false;
 	              	  break;
                       }
 	          }
 	          if($testa_repete==false){
 	               continue;
-	          }	
-	          $matriz02[$cont02]=$matriz01[$tt];    
+	          }
+	          $matriz02[$cont02]=$matriz01[$tt];
 	          $cont02++;
 	          //-- out screen
                   $nivel02 = db_le_mae_conplano($matriz01[$tt],true);
@@ -127,8 +127,8 @@
 		  echo "<tr>
 		         <td nowrap> <strong>$matriz01[$tt] </strong></td>
 			 <td nowrap> <strong>$espaco$matriz_descr[$tt] </strong></td>
-			</tr> 
-		       ";		  
+			</tr>
+		       ";
 	     }
          }
          unset($matriz01);
@@ -137,19 +137,19 @@
 	 $espaco=$this->php_espaco($nivel02);
 	 echo "<tr> <td nowrap> $f_estrut </td>
 	            <td nowrap> $espaco$f_descr </td>
-	       </tr>	    	     
+	       </tr>
 	      ";
     }
 
-    
-    function show(){
 
-        $this->monta_select(); 
+    public function show(){
+
+        $this->monta_select();
         //----- conplano ---------------------------------------
 	 echo "<div id=\"div_conplano\" style=\"visibility:visible;position:absolute\">";
          echo "<table border=0 align=center>
 	       <tr><td colspan=2><b>Conta Débito             </td></tr>
-               <tr><td>Estrutural</td><td>Descrição </b></td></tr>     
+               <tr><td>Estrutural</td><td>Descrição </b></td></tr>
               ";
          $matriz01=array();
 	 $matriz02=array();
@@ -174,28 +174,28 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut;
 	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
-	          } 
+	          }
 	      }
-         }	
+         }
          if($testamae==true){
    	     for($t=count($matriz01); $t>0; $t--){
 	          $tt=intval($t-1);  /*rotina para verificar se a estrutura nao esta se repetindo*/
-                  $testa_repete=true; 
+                  $testa_repete=true;
 	          for($f=0; $f<count($matriz02); $f++){
 	              if($matriz02[$f]==$matriz01[$tt]){
-                          $testa_repete=false; 
+                          $testa_repete=false;
 	              	  break;
                       }
 	          }
 	          if($testa_repete==false){
 	               continue;
-	          }	
-	          $matriz02[$cont02]=$matriz01[$tt];    
+	          }
+	          $matriz02[$cont02]=$matriz01[$tt];
 	          $cont02++;
 	          //-- out screen
                   $nivel02 = db_le_mae_conplano($matriz01[$tt],true);
@@ -203,8 +203,8 @@
 		  echo "<tr>
 		         <td nowrap> $matriz01[$tt] </td>
 			 <td nowrap> $espaco.$matriz_descr[$tt] </td>
-			</tr> 
-		       ";		  
+			</tr>
+		       ";
 	     }
          }
          unset($matriz01);
@@ -213,11 +213,11 @@
 	 $espaco=$this->php_espaco($nivel02);
 	 echo "<tr> <td nowrap> $f_estrut </td>
 	            <td nowrap> $espaco.$f_descr </td>
-	       </tr>	    	     
+	       </tr>
 	      ";
          //-- credito
 	 echo "<tr><td colspan=2><b> Conta Crédito            </td></tr>
-               <tr><td>Estrutural</td><td>Descrição </b> </td></tr>     
+               <tr><td>Estrutural</td><td>Descrição </b> </td></tr>
               ";
          $matriz01=array();
 	 $matriz02=array();
@@ -242,28 +242,28 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut;
 	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
-	          } 
+	          }
 	      }
-         }	
+         }
          if($testamae==true){
    	     for($t=count($matriz01); $t>0; $t--){
 	          $tt=intval($t-1);  /*rotina para verificar se a estrutura nao esta se repetindo*/
-                  $testa_repete=true; 
+                  $testa_repete=true;
 	          for($f=0; $f<count($matriz02); $f++){
 	              if($matriz02[$f]==$matriz01[$tt]){
-                          $testa_repete=false; 
+                          $testa_repete=false;
 	              	  break;
                       }
 	          }
 	          if($testa_repete==false){
 	               continue;
-	          }	
-	          $matriz02[$cont02]=$matriz01[$tt];    
+	          }
+	          $matriz02[$cont02]=$matriz01[$tt];
 	          $cont02++;
 	          //-- out screen
                   $nivel02 = db_le_mae_conplano($matriz01[$tt],true);
@@ -271,8 +271,8 @@
 		  echo "<tr>
 		         <td nowrap> $matriz01[$tt] </td>
 			 <td nowrap> $espaco.$matriz_descr[$tt] </td>
-			</tr> 
-		       ";		  
+			</tr>
+		       ";
 	     }
          }
          unset($matriz01);
@@ -281,9 +281,9 @@
 	 $espaco=$this->php_espaco($nivel02);
 	 echo "<tr> <td nowrap> $f_estrut </td>
 	            <td nowrap> $espaco.$f_descr </td>
-	       </tr>	    	     
+	       </tr>
 	      ";
- 
+
 	 echo "</table>";
 	 echo "</div>";
          //------------------------------------------------------------
@@ -291,7 +291,7 @@
 	 echo "<div id=\"div_conplanosis\" style=\"visibility:hidden;position:absolute\">";
          echo "<table border=0 align=center>
 	       <tr><td colspan=2><b> Conta Débito             </td></tr>
-               <tr><td>Estrutural</td><td>Descrição </b></td></tr>     
+               <tr><td>Estrutural</td><td>Descrição </b></td></tr>
               ";
          $matriz01=array();
 	 $matriz02=array();
@@ -318,28 +318,28 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut;
 	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
-	          } 
+	          }
 	      }
-         }	
+         }
          if($testamae==true){
    	     for($t=count($matriz01); $t>0; $t--){
 	          $tt=intval($t-1);  /*rotina para verificar se a estrutura nao esta se repetindo*/
-                  $testa_repete=true; 
+                  $testa_repete=true;
 	          for($f=0; $f<count($matriz02); $f++){
 	              if($matriz02[$f]==$matriz01[$tt]){
-                          $testa_repete=false; 
+                          $testa_repete=false;
 	              	  break;
                       }
 	          }
 	          if($testa_repete==false){
 	               continue;
-	          }	
-	          $matriz02[$cont02]=$matriz01[$tt];    
+	          }
+	          $matriz02[$cont02]=$matriz01[$tt];
 	          $cont02++;
 	          //-- out screen
                   $nivel02 = db_le_mae_sistema($matriz01[$tt],true);
@@ -347,8 +347,8 @@
 		  echo "<tr>
 		         <td nowrap> $matriz01[$tt] </td>
 			 <td nowrap> $espaco$matriz_descr[$tt] </td>
-			</tr> 
-		       ";		  
+			</tr>
+		       ";
 	     }
          }
          unset($matriz01);
@@ -357,11 +357,11 @@
 	 $espaco=$this->php_espaco($nivel02);
 	 echo "<tr> <td nowrap> $f_estrut </td>
 	            <td nowrap> $espaco$f_descr </td>
-	       </tr>	    	     
+	       </tr>
 	      ";
          //-- credito
 	 echo "<tr><td colspan=2><b>Conta Crédito            </td></tr>
-               <tr><td>Estrutural</td><td>Descrição  </b></td></tr>     
+               <tr><td>Estrutural</td><td>Descrição  </b></td></tr>
               ";
          $matriz01=array();
 	 $matriz02=array();
@@ -386,28 +386,28 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");    // $this->estrut; 
+	               $matriz01[$cont]= pg_result($result65,0,"estrut");    // $this->estrut;
 	               $matriz_descr[$cont]= pg_result($result65,0,"descr"); // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
-	          } 
+	          }
 	      }
-         }	
+         }
          if($testamae==true){
    	     for($t=count($matriz01); $t>0; $t--){
 	          $tt=intval($t-1);  /*rotina para verificar se a estrutura nao esta se repetindo*/
-                  $testa_repete=true; 
+                  $testa_repete=true;
 	          for($f=0; $f<count($matriz02); $f++){
 	              if($matriz02[$f]==$matriz01[$tt]){
-                          $testa_repete=false; 
+                          $testa_repete=false;
 	              	  break;
                       }
 	          }
 	          if($testa_repete==false){
 	               continue;
-	          }	
-	          $matriz02[$cont02]=$matriz01[$tt];    
+	          }
+	          $matriz02[$cont02]=$matriz01[$tt];
 	          $cont02++;
 	          //-- out screen
                   $nivel02 = db_le_mae_sistema($matriz01[$tt],true);
@@ -415,8 +415,8 @@
 		  echo "<tr>
 		         <td nowrap> $matriz01[$tt] </td>
 			 <td nowrap> $espaco$matriz_descr[$tt] </td>
-			</tr> 
-		       ";		  
+			</tr>
+		       ";
 	     }
          }
          unset($matriz01);
@@ -425,16 +425,16 @@
 	 $espaco=$this->php_espaco($nivel02);
 	 echo "<tr> <td nowrap> $f_estrut </td>
 	            <td nowrap> $espaco$f_descr </td>
-	       </tr>	    	     
+	       </tr>
 	      ";
- 
+
 	 echo "</table>";
 	 echo "</div>";
-  
+
     }//- end função
 
    //------------------------
-   function php_espaco($nivel){
+   public function php_espaco($nivel){
       $espaco="";
       switch($nivel){
  	 case 1:
@@ -450,7 +450,7 @@
 		$espaco="&nbsp &nbsp &nbsp ";
      		break;
 	 case 5:
-		$espaco="&nbsp &nbsp &nbsp &nbsp ";       
+		$espaco="&nbsp &nbsp &nbsp &nbsp ";
 		break;
 	 case 6:
 	        $espaco="&nbsp &nbsp &nbsp &nbsp &nbsp ";
@@ -463,11 +463,11 @@
 		break;
        }
        return $espaco;
-   } // end php_espaco  
+   } // end php_espaco
 
 
 
- }  //- end classe 
+ }  //- end classe
 
 
 ?>

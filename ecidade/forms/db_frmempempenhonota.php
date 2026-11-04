@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
+use \ECidade\Financeiro\Orcamento\Repository\RecursoRepository;
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("model/empenho/AutorizacaoEmpenho.model.php"));
 
@@ -59,6 +61,29 @@ if ($rsClassificacaoCredor != false && $oDaoClassificaoCredor->numrows > 0) {
   for ($i = 0; $i < $oDaoClassificaoCredor->numrows; $i++) {
     $oClassificacaoCredor = db_utils::fieldsMemory($rsClassificacaoCredor, $i);
     $aClassificacaoCredor[$oClassificacaoCredor->cc30_codigo] = $oClassificacaoCredor->cc30_descricao;
+  }
+}
+$dispensaElementosAtoJuridico = [];
+$tiposCompraJustificaveis = ['7','8', '9', '13', '14'];
+
+if(isRioDeJaneiro()){
+
+  $daoOrcElemento = new cl_orcelemento;
+  $anoUsu = db_getsession("DB_anousu");
+  $where = "
+    o56_anousu = $anoUsu and (
+      substr(o56_elemento,3,1) in ('1','2','5','6') OR
+      substr(o56_elemento,6,2) in (
+        '01','04','03','06','07','08','10','11','12','13','14','15','16','17','18',
+        '19','20','21','22','23','24','25','26','27','28','29','41','42','43','45','46','47','48','49','53','54',
+        '55','56','57','58','59','65','70','71','72','73','74','75','76','77','81','91','93','94','95','96','97','98'
+      )
+    )
+  ";
+  $sqlElementosDispensados = $daoOrcElemento->sql_query_file(null,null,'o56_codele',null,$where);
+  $rsElementosDispensados = db_query($sqlElementosDispensados);
+  for($i = 0;$i < pg_num_rows($rsElementosDispensados); $i++){
+    $dispensaElementosAtoJuridico[] = db_utils::fieldsMemory($rsElementosDispensados,$i)->o56_codele;
   }
 }
 
@@ -225,6 +250,7 @@ if (!isset($chavepesquisa)) {
             <?= @$Le54_tipol?>
           </td>
           <td>
+              <input type='hidden' id='tipoAtribuidoAnterior' value='<?=$e54_tipol?>' >
             <?php
             $liberaLicictacao = false;
             if (isset($tipocompra) || isset($e54_codcom)) {
@@ -253,7 +279,7 @@ if (!isset($chavepesquisa)) {
 
           </td>
         </tr>
-          <tr>
+          <tr id="numeroLicitacaoTr">
               <td><strong>Número da Licitação:</strong></td>
               <td><?php
                   $bloqueia = '';
@@ -279,7 +305,20 @@ if (!isset($chavepesquisa)) {
                          value="<?= $anoLicitacao?>">
               </td>
           </tr>
-          <tr>
+
+            <tr class="d-none" id="licProcessoField">
+                <td>
+                    <label for="licProcesso" class="bold">
+                        <a href="#" id="licProcessoAncora">Processo Licitatório: </a>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="licProcessoNumero" id="licProcessoNumero" size="10">
+                    <input type="text" name="licProcessoDescr" id="licProcessoDescr" size="40" disabled>
+                </td>
+            </tr>
+
+            <tr>
               <td><label class="bold" for="licitacaoCompartilhada">Licitação Compartilhada:</label></td>
               <td>
                   <select id="licitacaoCompartilhada" name="licitacao_compartilhada" >
@@ -440,11 +479,18 @@ if (!isset($chavepesquisa)) {
               <td>
                   <?php
                   $complementosDisponiveis = [];
+                  $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
                   if (!empty($e54_autori)) {
                       $autorizacao = new AutorizacaoEmpenho($e54_autori);
                       $recurso = $autorizacao->getDotacaoOrcamentaria()->getDadosRecurso();
+                      $fonte = $recurso->getFonteRecurso($autorizacao->getAno());
 
-                      $complementosEncontrados = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getComplementos($recurso->getRecurso());
+                      $complementosEncontrados = RecursoRepository::getComplementosByGestao(
+                          $fonte->gestao,
+                          $recurso->getRecurso(),
+                          $autorizacao->getAno(),
+                          $dataLimite
+                      );
 
                       foreach ($complementosEncontrados as $complemento) {
                           $complementosDisponiveis[$complemento->codigo] = $complemento->descricao;
@@ -464,6 +510,81 @@ if (!isset($chavepesquisa)) {
                   ?>
               </td>
           </tr>
+
+          <?php if(isRioDeJaneiro() && !empty($iElemento) && !in_array($iElemento,$dispensaElementosAtoJuridico)) {?>
+            <tr>
+              <td class = 'bold'>Ato jurídico:</td>
+              <td>
+                <?php
+                  $daoEmpTipoAtoJuridoco = new cl_tipoatojuridico;
+                  $sqlAtoJuridico = $daoEmpTipoAtoJuridoco->sql_query_file(null, "*",  "e165_sequencial", "e165_ativo = true");
+                  $rsAtoJuridico = db_query($sqlAtoJuridico);
+//                  $tiposAtoJuridico = [];
+//                  $tiposAtoJuridico = ['0 - Ausncia de Ato Jurdico'];
+
+                  for($i=0;$i<pg_num_rows($rsAtoJuridico);$i++){
+                    $tipoAtoJuridico =  db_utils::fieldsMemory($rsAtoJuridico,$i);
+                    if($tipoAtoJuridico->e165_ativo){
+                      $codigoAtoJuridico = $tipoAtoJuridico->e165_sequencial;
+                      $descricaoAtoJuridico = $tipoAtoJuridico->e165_sequencial.' - ';
+                      $descricaoAtoJuridico .= $tipoAtoJuridico->e165_descricao;
+                      $tiposAtoJuridico[$codigoAtoJuridico] = $descricaoAtoJuridico;
+                    }
+                  }
+
+                  db_select('tipoatojuridico', $tiposAtoJuridico, true, 1,"onchange='js_abreFechaBlocoJustificativa()'");
+                ?>
+              </td>
+            </tr>
+
+            <tr id="justificativaatojuridico_bloco" style = "display:none">
+              <td class = 'bold'>Justificativa Ausência de Ato Jurídico: </td>
+              <td>
+                <?php
+                  $daoJustificativaAtoJuridico = new \cl_justificativaatojuridico;
+                  $sqlJustificativaAtoJuridico = $daoJustificativaAtoJuridico->sql_query_file();
+                  $rsJustificativaAtoJuridico =  db_query($sqlJustificativaAtoJuridico);
+                  $justificativasAtoJuridico = [];
+                  for($i=0;$i<pg_num_rows($rsJustificativaAtoJuridico);$i++){
+                    $justificativaAtoJuridico =  db_utils::fieldsMemory($rsJustificativaAtoJuridico,$i);
+                    if($justificativaAtoJuridico->e173_ativo){
+                      $codigoJustificativa = $justificativaAtoJuridico->e173_sequencial;
+                      $descricaoJustificativa = $justificativaAtoJuridico->e173_sequencial.' - ';
+                      $descricaoJustificativa .= $justificativaAtoJuridico->e173_descricao;
+                      $justificativasAtoJuridico[$codigoJustificativa] = $descricaoJustificativa;
+                    }
+                  }
+
+                  db_select('justificativaatojuridico', $justificativasAtoJuridico, true, 1);
+
+                ?>
+              </td>
+            </tr>
+
+            <?php if(in_array($e54_codcom,$tiposCompraJustificaveis)){ ?>
+              <tr>
+                <td class = 'bold'>Justificativa Ausência de Instrumento Prévio: </td>
+                <td>
+                  <?php
+                    $daoJustificativaInstrumentoPrevio = new \cl_justificativainstrumentoprevio;
+                    $sqlJustificativaInstrumentoPrevio = $daoJustificativaInstrumentoPrevio->sql_query_file();
+                    $rsJustificativaInstrumentoPrevio =  db_query($sqlJustificativaInstrumentoPrevio);
+                    $justificativasInstrumentoPrevio = [];
+                    for($i=0;$i<pg_num_rows($rsJustificativaInstrumentoPrevio);$i++){
+                      $justificativaInstrumentoPrevio =  db_utils::fieldsMemory($rsJustificativaInstrumentoPrevio,$i);
+                      if($justificativaInstrumentoPrevio->e174_ativo){
+                        $codigoJustificativa = $justificativaInstrumentoPrevio->e174_sequencial;
+                        $descricaoJustificativa = $justificativaInstrumentoPrevio->e174_sequencial.' - ';
+                        $descricaoJustificativa .= $justificativaInstrumentoPrevio->e174_descricao;
+                        $justificativasInstrumentoPrevio[$codigoJustificativa] = $descricaoJustificativa;
+                      }
+                    }
+                    db_select('justificativainstrumentoprevio', $justificativasInstrumentoPrevio, true, 1);
+                  ?>
+                </td>
+              </tr>
+            <?php }?>
+          <?php }?>
 
           <!-- indicativo de aquisição de produção rural -->
           <tr id="trAqProd" style="display: none;">
@@ -675,10 +796,10 @@ if (!isset($chavepesquisa)) {
                   </td>
                 </tr>
                 <tr>
-                  <td class="regime_competencia" style="display:">
+                  <td class="regime_competencia">
                     <label for="competencia_regime"><b>Competência:</b></label>
                   </td>
-                  <td class="regime_competencia" style="display:">
+                  <td class="regime_competencia">
                     <input id="competencia_regime" name="competencia_regime" class="field-size3">
                   </td>
                 </tr>
@@ -748,9 +869,15 @@ $e69_localrecebimento = !empty($_POST['e69_localrecebimento']) ? $_POST['e69_loc
 
   const UF = '<?=getEstadoInstituicao();?>'
   var isPB = UF === 'PB';
+  var isRJ = UF === 'RJ';
+  var isJustificavel = '<?php echo !in_array($iElemento,$dispensaElementosAtoJuridico) ? 'true': 'false';?>';
 
   if (isPB){
       bloquearCamposLicitacao();
+  }
+
+  if(isRJ){
+    js_abreFechaBlocoJustificativa();
   }
 
   oCodClassificacaoCredor = $('cc31_classificacaocredores');
@@ -1341,11 +1468,48 @@ function bloquearCamposLicitacao() {
     selectLicitacaoCompartilhada.setAttribute('disabled','');
     selectLicitacaoCompartilhada.setAttribute('readonly','readonly');
     selectLicitacaoCompartilhada.className += 'readonly';
+}
 
+// Processo licitatorio TCE-RJ SIGFIS
+if (UF == 'RJ') {
+    const licProcessoAncora = document.querySelector('#licProcessoAncora');
+    const licProcessoNumero = document.querySelector('#licProcessoNumero');
+    const licProcessoField  = document.querySelector('#licProcessoField');
+    const licProcessoDescr  = document.querySelector('#licProcessoDescr');
+    const numeroLicitacaoTr = document.querySelector('#numeroLicitacaoTr');
 
+    document.querySelector('#numeroLicitacao').setAttribute('readonly','readonly');
+    document.querySelector('#anoLicitacao').setAttribute('readonly','readonly');
 
+    licProcessoField.classList.remove('d-none');
+    numeroLicitacaoTr.classList.add('d-none');
 
+    licProcessoAncora.addEventListener('click',  () => {licProcessoPesquisa(true)});
+    licProcessoNumero.addEventListener('keyup',  () => licProcessoDescr.value = '');
 
+    licProcessoNumero.addEventListener('blur', () => {
+        const numero = licProcessoNumero.value;
+        const validate = /^(\d+)(\/\d{4})$/;
+        if (numero.length) {
+            if (!validate.test(numero)) {
+                alert("Processo licitatório deve ser no formato 'numero/ano'");
+                licProcessoNumero.value = '';
+            }
+        }
+    });
+
+    function licProcessoPesquisa(mostra) {
+        const func   = 'func_protprocesso_protocolo.php?';
+        const params = 'funcao_js=parent.licProcessoFunc|p58_numero|dl_titular'
+        const url = func + params;
+        js_OpenJanelaIframe('', 'iframe_licprocesso', url, 'Pesquisa', mostra);
+    }
+
+    function licProcessoFunc(numero, descr) {
+        iframe_licprocesso.hide();
+        licProcessoNumero.value = numero;
+        licProcessoDescr.value  = descr;
+    }
 }
 
 /* =============================
@@ -1431,4 +1595,82 @@ async function getTipoaAquisicaoProducaoRuralLabels() {
 
     js_removeObj('aqProdLoad');
 }
+
+  function pesquisarTipoLicitacao() {
+
+      if(isRJ && isJustificavel == 'true') {
+          $('justificativainstrumentoprevio_bloco').style.display = 'none';
+          let tiposCompraJustificaveis = <?php echo json_encode($tiposCompraJustificaveis) ?>;
+          if(tiposCompraJustificaveis.includes($F('e54_codcom'))){
+              $('justificativainstrumentoprevio_bloco').style.display = 'table-row';
+          }
+      }
+
+      $('numeroLicitacao').className = ''
+      $('anoLicitacao').className = '';
+      $('numeroLicitacao').removeAttribute('readonly');
+      $('anoLicitacao').removeAttribute('readonly');
+
+      var oTipoLicitacao = $('e54_tipol');
+
+      new AjaxRequest(
+          'lic4_geraAutorizacoes.RPC.php',
+          { exec : 'getTipoLicitacao', iTipoCompra : $F('e54_codcom') },
+          function (oRetorno, lErro) {
+
+              if (!oRetorno.obrigaLicitacao) {
+                  $('numeroLicitacao').value = '';
+                  $('anoLicitacao').value = '';
+                  $('numeroLicitacao').className += 'readonly'
+                  $('anoLicitacao').className += 'readonly';
+                  $('numeroLicitacao').setAttribute('readonly', 'readonly');
+                  $('anoLicitacao').setAttribute('readonly', 'readonly');
+              }
+
+              if (oRetorno.aTiposLicitacao.length == 0) {
+                  return;
+              }
+
+              oTipoLicitacao.options.length = 0;
+              oRetorno.aTiposLicitacao.each(
+                  function (oTipo) {
+                      oTipoLicitacao.add(new Option(`${oTipo.l03_tipo} - ${oTipo.l03_descr}`, oTipo.l03_tipo));
+                      oTipoLicitacao.value = $F('tipoAtribuidoAnterior');
+                  }
+              );
+          }
+      ).setMessage('Aguarde, carregando tipo de licitação...').execute();
+  }
+
+  if(isRJ) {
+      pesquisarTipoLicitacao();
+  }
+
+
+function js_abreFechaBlocoJustificativa(){
+
+  $('justificativaatojuridico_bloco').style.display = 'none';
+  if($F('tipoatojuridico') == "0"){
+    $('justificativaatojuridico_bloco').style.display = 'contents';
+  }
+}
+
+  function iniciarJustificativasSigfis(){
+      if(isRJ && isJustificavel == 'true'){
+
+          let tipoAtoJuridico = '<?=!empty($tipoatojuridico) ? $tipoatojuridico : ''?>';
+          let tipoCompra = '<?=!empty($e54_codcom) ? $e54_codcom : ''?>';
+          let tiposCompraJustificaveis = <?php echo json_encode($tiposCompraJustificaveis) ?>;
+
+          if(tipoAtoJuridico == '99'){
+              $('justificativaatojuridico_bloco').style.display = 'table-row';
+          }
+          if(tiposCompraJustificaveis.includes(tipoCompra)){
+              $('justificativainstrumentoprevio_bloco').style.display = 'table-row';
+          }
+      }
+  }
+  if(isRJ) {
+      iniciarJustificativasSigfis();
+  }
 </script>

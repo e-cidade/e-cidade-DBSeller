@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,7 +69,7 @@ if(isset($pc34_pctipocertif) && $pc34_pctipocertif!="") {
 <legend><b>Departamentos</b></legend>
 
 <table border="0">     
-<?
+<?php
 db_input('pc34_sequencial',10,$Ipc34_sequencial,true,'hidden',3,"")
 ?>   
   <tr>
@@ -77,25 +77,25 @@ db_input('pc34_sequencial',10,$Ipc34_sequencial,true,'hidden',3,"")
        <?=$Lpc34_pctipocertif?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc34_pctipocertif',10,$Ipc34_pctipocertif,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('pc70_descr',40,$Ipc70_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc34_coddepto?>">
-       <?
+       <?php
        db_ancora(@$Lpc34_coddepto,"js_pesquisapc34_coddepto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc34_coddepto',10,$Ipc34_coddepto,true,'text',$db_opcao," onchange='js_pesquisapc34_coddepto(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -119,7 +119,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("pc34_sequencial"=>@$pc34_sequencial);
 	 $cliframe_alterar_excluir->chavepri= $chavepri;
 	 $sSqlIframe = $clpctipocertifdepartamento->sql_query(null, "*", "", "pc34_pctipocertif = {$pc34_pctipocertif}");

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -33,58 +33,11 @@ require_once(modification("dbforms/db_funcoes.php"));
 $iInstit = db_getsession("DB_instit");
 $anousu = db_getsession("DB_anousu");
 
+$oGet = db_utils::postMemory($_GET);
+
 $lValidaDataCredito = ParametroCaixa::getValidaDataCreditoBaixaBanco($iInstit);
 
-?>
-<html>
-<head>
-<title>Documento sem t&iacute;tulo</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
-
-<script>
-
-var lValidaDataCredito = '<?php echo $lValidaDataCredito == true ? "true" : "false"; ?>';
-
-function js_recriaDataCredito(data_credito){
-
-    parent.js_divCarregando("Aguarde, buscando classificações...", "msgBox");
-    document.location.href = 'cai4_arrecada005.php?data_credito=' + data_credito;
-    parent.recibos.document.location.href = 'cai4_arrecada006.php';
-}
-
-function js_autenticar() {
-
-  var dataCredito = document.form1.dt_credito.value;
-  var dataSessao = '<?php echo date("Y-m-d",db_getsession("DB_datausu")) ?>';
-
-  if ( (dataCredito != dataSessao) && (lValidaDataCredito == 'true') ) {
-
-    alert("Antes de realizar a operação confirme a data em que deseja incluir o movimento");
-    return;
-  }
-
-  parent.js_divCarregando("Aguarde, executando baixa de banco...", "msgBox");
-  document.form1.action = 'cai4_arrecada007.php?system=linux';
-  document.form1.submit();
-}
-
-function js_calculacodcla(codcla){
-
-  parent.js_divCarregando("Aguarde, buscando receitas...", "msgBox");
-  parent.recibos.document.location.href = 'cai4_arrecada006.php?codcla='+codcla;
-}
-function js_baixacaixa(){
-   document.location.href = 'cai4_arrecada002.php';
-   parent.recibos.document.location.href = 'cai4_arrecada004.php';
-}
-</script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
-</head>
-<body bgcolor=#CCCCCC bgcolor="#AAB7D5" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="";>
-<form name="form1" method="post" >
-<?php
+$dataSessao = date("Y-m-d", db_getsession("DB_datausu"));
 
 $sql_conta = "
 	select k13_reduz as c01_reduz,
@@ -98,9 +51,9 @@ $sql_conta = "
 /* [Extensão] Filtro da Despesa */
 
 $result_conta = db_query($sql_conta);
-if(pg_numrows($result_conta) == 0){
-  echo "<script>parent.alert('Sem Contas Cadastradas.');</script>";
-  exit;
+if (pg_num_rows($result_conta) == 0) {
+    echo "<script>parent.alert('Sem Contas Cadastradas.');</script>";
+    exit;
 }
 
 $sContasTesouraria = "";
@@ -121,96 +74,140 @@ $sqlDataCredito = "
     inner join saltes on disarq.k00_conta = saltes.k13_conta
     where dtaute is null
     and discla.instit =  {$iInstit}
-    and extract(year from dtarquivo)  = $anousu
+    and extract(year from dtarquivo)  = {$anousu}
     {$sContasTesouraria}
     order by 1 ;
 ";
+
 $rsDtCredito = db_query($sqlDataCredito);
-$aDtCredito = array();
-$dataCredito = date("Y-m-d",db_getsession("DB_datausu"));
+$aDtCredito = ["" => "Mostrar todas as datas"];
+$dataCredito = $dataSessao;
 
-if (pg_numrows($rsDtCredito) > 0) {
-
+if (pg_num_rows($rsDtCredito) > 0) {
     $dataCredito = db_utils::fieldsMemory($rsDtCredito, 0)->data_cred;
 
-    for( $i = 0; $i < pg_numrows($rsDtCredito); $i++ ){
-
+    for ($i = 0; $i < pg_num_rows($rsDtCredito); $i++) {
         $dados = db_utils::fieldsMemory($rsDtCredito, $i);
 
         if ($dados->data_cred == "") {
-           continue;
+            continue;
         }
         $aDtCredito[$dados->data_cred] =  DBDate::converter($dados->data_cred);
     }
 }
 
-
-$oGet = db_utils::postMemory($_GET);
+$whereDataCredito = null;
 if (isset($oGet->data_credito) && !empty($oGet->data_credito)) {
     $dataCredito = $oGet->data_credito;
     $dt_credito = $oGet->data_credito;
+    $whereDataCredito = "where data_cred = '{$dataCredito}'";
 }
-
-$sSqlBuscaClassificacao  = "   select codcla,k15_codbco,k15_codage,k00_conta,k13_descr, ";
-$sSqlBuscaClassificacao .= "
-(
-    select distinct dtcredito
-     from disbanco
-    where codret = discla.codret
-      and instit = discla.instit
-      and dtcredito is not null
-      limit 1
-  ) as data_cred
-";
-$sSqlBuscaClassificacao .= "	   from discla ";
-$sSqlBuscaClassificacao .= "		      inner join disarq on disarq.codret = discla.codret ";
-$sSqlBuscaClassificacao .= "					inner join saltes on disarq.k00_conta = saltes.k13_conta ";
-$sSqlBuscaClassificacao .= "	  where dtaute is null and discla.instit = {$iInstit} {$sContasTesouraria} ";
-$sSqlBuscaClassificacao .= "	 	order by codcla ";
 
 $sSqlBuscaClassificacao = "
   select *
-    from ( {$sSqlBuscaClassificacao} ) as xx
-    where data_cred = '{$dataCredito }';
-";
-
-if ( !$lValidaDataCredito ) {
-
-    $iInstit = db_getsession("DB_instit");
-    $sSqlBuscaClassificacao  = "   select codcla,k15_codbco,k15_codage,k00_conta,k13_descr ";
-    $sSqlBuscaClassificacao .= "	   from discla ";
-    $sSqlBuscaClassificacao .= "		      inner join disarq on disarq.codret = discla.codret ";
-    $sSqlBuscaClassificacao .= "					inner join saltes on disarq.k00_conta = saltes.k13_conta ";
-    $sSqlBuscaClassificacao .= "	  where dtaute is null and discla.instit = {$iInstit} {$sContasTesouraria} ";
-    $sSqlBuscaClassificacao .= "	 	order by codcla ";
-
-}
+    from (  
+        select codcla,
+               k15_codbco,
+               k15_codage,
+               k00_conta,
+               k13_descr,
+               ( select distinct dtcredito
+                   from disbanco
+                  where codret = discla.codret
+                    and instit = discla.instit
+                    and dtcredito is not null
+                  limit 1 ) as data_cred
+          from discla 
+               inner join disarq on disarq.codret = discla.codret 
+               inner join saltes on disarq.k00_conta = saltes.k13_conta 
+         where dtaute is null 
+           and discla.instit = {$iInstit} 
+           {$sContasTesouraria} 
+    ) as classificacoes
+    {$whereDataCredito}
+    order by codcla";
 
 $result = db_query($sSqlBuscaClassificacao);
-
-if(pg_numrows($result) == 0){
-  echo "<script>parent.alert('Não Existe Classificacao para ser Autenticada.');js_baixacaixa();</script>";
-  exit;
+if (pg_num_rows($result) == 0) {
+    echo "
+    <script>
+        parent.alert('Não Existe Classificacao para ser Autenticada.');
+        parent.js_removeObj('msgBox');
+        document.location.href = 'cai4_arrecada005.php';
+    </script>
+    ";
+    exit;
 }
+
 ?>
-  <table width="99%" style="margin-top: 20px;">
-    <tr style='<?php echo $lValidaDataCredito == true ? "display:table-row;" : "display:none;"; ?>'    >
+<html>
+<head>
+<title>Documento sem t&iacute;tulo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<link href="estilos.css" rel="stylesheet" type="text/css">
+</head>
+
+<script>
+
+var lValidaDataCredito = '<?php echo $lValidaDataCredito == true ? "true" : "false"; ?>';
+
+function js_recriaDataCredito(data_credito){
+
+    parent.js_divCarregando("Aguarde, buscando classificações...", "msgBox");
+    document.location.href = 'cai4_arrecada005.php?data_credito=' + data_credito;
+    parent.recibos.document.location.href = 'cai4_arrecada006.php';
+}
+
+function js_autenticar() {
+
+  var dataCredito = document.form1.dt_credito.value;
+  var dataSessao = '<?php echo $dataSessao ?>';
+
+  if ( (dataCredito != dataSessao) && (lValidaDataCredito == 'true') ) {
+
+    alert("Antes de realizar a operação confirme a data em que deseja incluir o movimento");
+    return;
+  }
+
+  parent.js_divCarregando("Aguarde, executando baixa de banco...", "msgBox");
+  document.form1.action = 'cai4_arrecada007.php?system=linux';
+  document.form1.submit();
+}
+
+function js_calculacodcla(codcla){
+
+  parent.js_divCarregando("Aguarde, buscando receitas...", "msgBox");
+  parent.recibos.document.location.href = 'cai4_arrecada006.php?codcla='+codcla;
+}
+
+function js_baixacaixa(){
+   document.location.href = 'cai4_arrecada002.php';
+   parent.recibos.document.location.href = 'cai4_arrecada004.php';
+}
+</script>
+
+<body>
+<form name="form1" method="post" >
+  <table style="margin-top: 20px; width:99%">
+    <tr>
       <td align="right" valign="middle"><strong>Data de Crédito:</strong> </td>
-      <td align="left" valign="middle"><?php db_select('dt_credito', $aDtCredito, true, 1, "onchange='js_recriaDataCredito(this.value)'");?></td>
+      <td align="left"  valign="middle">
+        <?php db_select('dt_credito', $aDtCredito, true, 1, "onchange='js_recriaDataCredito(this.value)'");?>
+      </td>
       <td align="right" valign="middle">&nbsp;</td>
       <td align="right" valign="middle">&nbsp;</td>
     </tr>
     <tr>
-      <td  align="right" valign="middle"><b>Classificação:&nbsp;</b> </td>
-
+      <td align="right" valign="middle"><b>Classificação:&nbsp;</b> </td>
       <td>
-      <select  onChange="js_calculacodcla(this.value);" name="codcla">
+      <select onChange="js_calculacodcla(this.value);" name="codcla">
       <?php
-		for($i=0;$i<pg_numrows($result);$i++){
-		  db_fieldsmemory($result,$i);
-		  echo '<option value="'.$codcla.'">'.$codcla.'-'.$k15_codbco.'-'.$k15_codage.'-'.$k00_conta.'-'.$k13_descr.'</option>';
-		}
-		?>
+        for ($i=0; $i<pg_num_rows($result); $i++) {
+            db_fieldsmemory($result, $i);
+            echo '<option value="'.$codcla.'">'.$codcla.'-'.$k15_codbco.'-'.$k15_codage.'-'.$k00_conta.'-'.$k13_descr.'</option>';
+        }
+        ?>
         </select>
         <input style="margin-left: 20px;;"name="imprimir" type="button" id="imprimir" onClick="js_imprime()" value="Imprimir">
     </td>

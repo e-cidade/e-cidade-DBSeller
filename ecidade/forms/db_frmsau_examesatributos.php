@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
        <?=@$Ls132_i_codigo?>
     </td>
     <td> 
-     <?
+     <?php
       db_input('s132_i_codigo',10,$Is132_i_codigo,true,'text',3,"")
      ?>
     </td>
@@ -55,25 +55,25 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
       <?=@$Ls108_c_exame?>
     </td>
     <td> 
-    <?
+    <?php
      db_input('s131_i_exames',10,@$Is131_i_exames,true,'text',3,"")
     ?>
-    <?
+    <?php
      db_input('s108_c_exame',40,@$Is108_c_exame,true,'text',3,'')
     ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts131_i_codigo?>">
-       <?
+       <?php
        db_ancora(@$Ls131_i_codigo,"js_pesquisas132_i_atributoexames(true);",$db_opcao);
        ?>
     </td>
     <td> 
-     <?
+     <?php
        db_input('s132_i_atributoexames',10,$Is132_i_atributoexames,true,'text',$db_opcao," onchange='js_pesquisas132_i_atributoexames(false);'")
      ?>
-     <?
+     <?php
        db_input('s131_c_descricao',40,@$Is131_c_descricao,true,'text',3,'')
      ?>
     </td>
@@ -84,7 +84,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 <table>
 <tr>
 	<td>
-		<?
+		<?php
 		$chavepri= array("s132_i_atributoexames"=>@$s132_i_atributoexames,"s132_i_codigo"=>@$s132_i_codigo);
 		$cliframe_alterar_excluir->chavepri=$chavepri;
 		@$cliframe_alterar_excluir->sql = $clsau_examesatributos->sql_query(null,'*',null,"s131_i_exames=$s131_i_exames");
@@ -134,7 +134,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_examesatributos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

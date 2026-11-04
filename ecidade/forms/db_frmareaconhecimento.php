@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -44,24 +44,24 @@ $oDaoAreaConhecimento->rotulo->label();
         <td nowrap title="<?=@$Ted293_sequencial?>">
           <?=@$Led293_sequencial?>
         </td>
-        <td> 
-          <?db_input('ed293_sequencial', 10, $Ied293_sequencial, true, 'text', "3", "")?>
+        <td>
+          <?php db_input('ed293_sequencial', 10, $Ied293_sequencial, true, 'text', "3", "")?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted293_descr?>">
           <?=@$Led293_descr?>
         </td>
-        <td> 
-          <?db_input('ed293_descr', 100, $Ied293_descr, true, 'text', $db_opcao, "")?>
+        <td>
+          <?php db_input('ed293_descr', 100, $Ied293_descr, true, 'text', $db_opcao, "")?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted293_ativo?>">
           <?=@$Led293_ativo?>
         </td>
-        <td> 
-          <?
+        <td>
+          <?php
             $aOpcoes = array("2" => "NÃO", "1" => "SIM");
             db_select('ed293_ativo', $aOpcoes, true, $db_opcao, '');
           ?>
@@ -69,13 +69,13 @@ $oDaoAreaConhecimento->rotulo->label();
       </tr>
     </table>
   </center>
-  
-  <input name="<?=($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir"))?>" 
-         type="submit" id="db_opcao" value="<?=($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? 
-                                     "Alterar" : "Excluir"))?>" <?=($db_botao == false ? "disabled" : "")?> 
+
+  <input name="<?=($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir"))?>"
+         type="submit" id="db_opcao" value="<?=($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ?
+                                     "Alterar" : "Excluir"))?>" <?=($db_botao == false ? "disabled" : "")?>
          onclick="js_valida();">
-  
-  <input name="cancelar" type="button" value="Cancelar" onclick="js_cancelar();" 
+
+  <input name="cancelar" type="button" value="Cancelar" onclick="js_cancelar();"
          <?=($db_opcao == 1 ? "disabled" : "")?> >
 </form>
 
@@ -115,7 +115,7 @@ function js_criaGridAreasConhecimento() {
   aAligns[2]  = 'center';
   aAligns[3]  = 'center';
   oDBGrid.setCellAlign(aAligns);
-  
+
   oDBGrid.show($('areasConhecimento'));
   oDBGrid.clearAll(true);
 
@@ -146,7 +146,7 @@ function js_retornoBuscaArea(oRetorno) {
   } else {
 
     var iResultado = oRetorno.iResultado;
-    
+
     if (parseInt(iResultado, 10) > 0) {
 
       var aLinha = new Array();
@@ -154,7 +154,7 @@ function js_retornoBuscaArea(oRetorno) {
       oDBGridAreas.renderRows();
 
       for (var iCont = 0; iCont < iResultado; iCont++) {
-        
+
         sOpcoes   = "<span onclick='js_alterarArea("+oRetorno.aResultado[iCont].ed293_sequencial+");'> <u>A</u> </span>";
         sOpcoes  += "<span onclick='js_excluirArea("+oRetorno.aResultado[iCont].ed293_sequencial+");'> <u>E</u> </span>";
 
@@ -195,13 +195,13 @@ function js_valida() {
   var sDBOpcao = $('db_opcao').value;
 
   if (sDBOpcao == "Excluir") {
-    
+
     return true;
-  
+
   } else if (sDBOpcao == "Incluir" || sDBOpcao == "Alterar") {
 
     if ($('ed293_descr').value.trim() == "") {
-      
+
       alert("Digite a descrição da Área de Conhecimento antes de incluir.");
       return false;
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("p51_descr");
        <?=@$Lbo01_codbo?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo01_codbo',6,$Ibo01_codbo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbo01_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lbo01_numcgm,"js_pesquisabo01_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo01_numcgm',10,$Ibo01_numcgm,true,'text',$db_opcao," onchange='js_pesquisabo01_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbo01_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Lbo01_codtipo,"js_pesquisabo01_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo01_codtipo',3,$Ibo01_codtipo,true,'text',$db_opcao," onchange='js_pesquisabo01_codtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('p51_descr',60,$Ip51_descr,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('p51_descr',60,$Ip51_descr,true,'text',3,'')
        <?=@$Lbo01_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('bo01_obs',5,80,$Ibo01_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_textarea('bo01_obs',5,80,$Ibo01_obs,true,'text',$db_opcao,"")
        <?=@$Lbo01_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('bo01_data',@$bo01_data_dia,@$bo01_data_mes,@$bo01_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

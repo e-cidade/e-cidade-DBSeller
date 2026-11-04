@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,12 +35,12 @@ $clsuspensaofinaliza->rotulo->label();
     <table border="0">
       <tr>
         <td>
-          <?
+          <?php
 			db_ancora($Lar19_suspensao,"js_pesquisaar19_suspensao(true)",$db_opcao);
           ?>
         </td>
         <td>
-          <?
+          <?php
 			db_input("ar19_suspensao",10,$Iar19_suspensao,true,"text",$db_opcao,"onChange='js_pesquisaar19_suspensao(false)'"); 
           ?>
         </td>
@@ -50,9 +50,10 @@ $clsuspensaofinaliza->rotulo->label();
           <b>Status Débito:</b>
         </td>
         <td>
-          <?
-            $aStatusDebito = array("c"=>"Cancelar","r"=>"Reativar");
-			db_select("statusDebito",$aStatusDebito,true,1,""); 
+          <?php
+            $aStatusDebito = array("r"=>"Reativar");
+            $statusDebito = 'r';
+			      db_select("statusDebito",$aStatusDebito,true);
           ?>
         </td>
       </tr> 
@@ -61,7 +62,7 @@ $clsuspensaofinaliza->rotulo->label();
 	      <?=@$Lar19_obs?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 		    db_textarea('ar19_obs',5,51,$Iar19_obs,true,'text',$db_opcao,"");
 	      ?>
 	    </td>

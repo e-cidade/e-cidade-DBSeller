@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -59,22 +59,22 @@ $codsit="";
 if(isset($pesquisar)){
   $codsit="";
   $chave="";
-  $xx="#"; 
+  $xx="#";
  if(isset($v56_codsit) && $v56_codsit!=""){
     $codsit =" and v56_codsit= $v56_codsit ";
  }
   $sql=$clinicial->sql_query_sit("","v50_inicial,v52_descr,v53_descr,v54_descr,cgm.z01_nome","v50_inicial"," 1 =1 ".$codsit);
-   $result=$clinicial->sql_record($sql); 
-  
+   $result=$clinicial->sql_record($sql);
+
   if($clinicial->numrows==0){
-    db_redireciona("jur3_emiteinicial002.php?invalido=true");  
+    db_redireciona("jur3_emiteinicial002.php?invalido=true");
   }
 
  db_fieldsmemory($result,0);
  if(isset($v56_codsit) && $v56_codsit!=""){
     $chave .= $Lv56_codsit.$v52_descr.$xx ;
  }
-}  
+}
 ?>
 <html>
 <head>
@@ -99,7 +99,7 @@ input {
 </style>
 <script>
 function js_volta(){
-  location.href="jur4_inicialmov002.php";  
+  location.href="jur4_inicialmov002.php";
 }
 function js_gerar(){
     window.open('movisitupdf.php?codsit=<?=$v56_codsit?>','','toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,directories=no,status=no');
@@ -108,7 +108,7 @@ function js_gerar(){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -117,39 +117,39 @@ function js_gerar(){
 </table>
 <table height="430" width="790" border="0" valign="top" cellspacing="0" cellpadding="0" bgcolor="#cccccc">
 <form name="form1" method="post" action="">
-  <tr > 
+  <tr >
     <td valign="top" width="30%" valign="top" align="center">
       <input name="voltar" type="button" value="Nova Pesquisa" onclick="js_volta()">
-    </td>  
+    </td>
     <td valign="top" width="30%" valign="top" align="left">
-          <? 
-            $matriz=split("#",$chave);
+          <?php
+            $matriz= explode("#",$chave);
        	    for($y=0;$y<sizeof($matriz);$y++){
        	      if($matriz[$y]!=""){
    	        echo "<small>";
 	        echo $matriz[$y];
     	        echo "</small>";
-	      } 
-	    }  
+	      }
+	    }
           ?>
-    </td>  
+    </td>
   </tr>
   <tr>
     <td colspan="2" width="30%" align="center">
 	<input type="button" name="gerar" value="Emitir Aviso Fórum" onclick="js_gerar()">
     </td>
   </tr>
-  <tr height="90%"> 
+  <tr height="90%">
     <td valign="top" align="center" colspan="2" >
-     <? 
+     <?php
         db_lovrot($sql,15);
      ?>
-    
+
     </td>
   </tr>
   </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -165,7 +165,7 @@ function js_oculta(){
   db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

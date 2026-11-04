@@ -35,7 +35,7 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("libs/db_app.utils.php");
 require_once modification("classes/db_db_configarquivos_classe.php");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($HTTP_POST_VARS);
 
 $cldb_config = new cl_db_config;
@@ -93,6 +93,7 @@ if(isset($alterar)){
           $cldb_config->db21_unidade_gestora_rpps = $db21_unidade_gestora_rpps;
           $cldb_config->db21_esfera_op = $db21_esfera_op;
           $cldb_config->db21_cnpj_efr = $db21_cnpj_efr;
+          $cldb_config->db21_permiteinscricaocgf = $db21_permiteinscricaocgf;
   		$cldb_config->alterar($codigo);
 		  $sMsg = $cldb_config->erro_msg;
 		  if ($cldb_config->erro_status == "0") {
@@ -117,8 +118,8 @@ if(isset($alterar)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
-  db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
+<?php
+   db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
   db_app::load('estilos.css,grid.style.css');
 ?>
 <script language="JavaScript" type="text/javascript" src="scripts/widgets/Input/DBInput.widget.js"></script>
@@ -130,8 +131,8 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-		  <?
-		   include(modification("forms/db_frmdb_config.php"));
+		  <?php
+ 		   include(modification("forms/db_frmdb_config.php"));
 		  ?>
     </center>
   </td>
@@ -139,8 +140,8 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
-if(isset($alterar)){
+<?php
+ if(isset($alterar)){
 
 	db_msgbox($sMsg);
   if ($cldb_config->erro_status == "0") {

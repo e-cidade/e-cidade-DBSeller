@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("descricao");
        <?=@$Lid_help?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_help',5,$Iid_help,true,'text',3,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tid_item?>">
-       <?
+       <?php
        db_ancora(@$Lid_item,"js_pesquisaid_item(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_item',5,$Iid_item,true,'text',$db_opcao," onchange='js_pesquisaid_item(false);'")
 ?>
-       <?
+       <?php
 db_input('descricao',40,$Idescricao,true,'text',3,'')
        ?>
     </td>
@@ -65,15 +65,15 @@ db_input('descricao',40,$Idescricao,true,'text',3,'')
   
   <tr>
     <td nowrap title="<?=@$Tid_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Lid_codtipo,"js_pesquisaid_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_codtipo',5,$Iid_codtipo,true,'text',$db_opcao," onchange='js_pesquisaid_codtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('descrtipohelp',40,$Idescrtipohelp,true,'text',3,'')
        ?>
     </td>
@@ -83,7 +83,7 @@ db_input('descrtipohelp',40,$Idescrtipohelp,true,'text',3,'')
        <?=@$Ldhelp_resum?>
     </td>
     <td> 
-<?
+<?php
 db_input('dhelp_resum',60,$Idhelp_resum,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('dhelp_resum',60,$Idhelp_resum,true,'text',$db_opcao,"")
        <?=@$Ldhelp?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('dhelp',15,110,$Idhelp,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -148,7 +148,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_cadhelp.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

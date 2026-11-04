@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -44,12 +44,12 @@ $clrotulo->label('k60_descr');
 
 $instit = db_getsession("DB_instit");
 if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
-  
+
   db_msgbox(_M('tributario.notificacoes.not2_geratxtcorreios001.problema_indices_debitos'));
-  $db_botao = false; 
+  $db_botao = false;
   $db_opcao = 3;
 } else {
-  
+
   $db_botao = true;
   $db_opcao = 4;
 }
@@ -59,12 +59,12 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('estilos.css');
   db_app::load('scripts.js');
   db_app::load('strings.js');
   db_app::load('prototype.js');
-  
+
 ?>
 </head>
 <body bgcolor="#cccccc">
@@ -76,10 +76,10 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tk60_codigo?>">
-          <? db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao) ?>
+          <?php db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao) ?>
         </td>
         <td>
-          <?
+          <?php
 	       db_input('k60_codigo',10,$Ik60_codigo,true,'text',$db_opcao,"onchange='js_pesquisalista(false);'");
            db_input('k60_descr',37,$Ik60_descr,true,'text',3,'');
           ?>
@@ -90,7 +90,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
           Ordernar por:
         </td>
         <td>
-          <?
+          <?php
             $xx = array("a"=>"Alfabética",
       	   	 	      "n"=>"Numérica",
       	  		      "t"=>'Notificação',
@@ -105,22 +105,22 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
           Tratamento do Endereço:
         </td>
         <td>
-          <?
+          <?php
 	        $xxx = array();
-	        
+
 	        if ( isset($k60_codigo) && trim($k60_codigo) != "" ) {
-	        	
+
 	          $sSqlLista  = " select k60_tipo					          ";
 	          $sSqlLista .= "   from lista					            ";
 	          $sSqlLista .= "  where k60_codigo = {$k60_codigo} ";
-	        
+
 	          $rsConsultaLista = db_query($sSqlLista);
 	          $iLinhasConsulta = pg_num_rows($rsConsultaLista);
-	        
+
 	          $oLista = db_utils::fieldsMemory($rsConsultaLista,0);
-	        
+
 	          $xxx["1"] = "Sempre do CGM";
-	             
+
 	          if ( $oLista->k60_tipo == "M") {
 	            $sqlordendent    = "select defcampo, defdescr from db_syscampodef where codcam = 9856";
 	            $resultordendent = db_query($sqlordendent) or die($sqlordendent);
@@ -131,7 +131,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 	            }
 	          }
 	        }
-	        
+
 	        db_select('tratamento',$xxx,true,$db_opcao,"");
       	  ?>
         </td>
@@ -148,7 +148,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td title="Serviço AR">
           Serviço AR:
         <td>
-          <? db_input("lServAr", 1, null, true, "checkbox",1); ?>
+          <?php db_input("lServAr", 1, null, true, "checkbox",1); ?>
         </td>
       </tr>
       <tr>
@@ -161,7 +161,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Fonte:
                 </td>
                 <td>
-                  <?
+                  <?php
              	    $aFontes = array("16602"=>"16602 - Arial", "4099"=>"4099 - Currier", "16901"=>"16901 - Times New Roman");
              	    db_select("fonte", $aFontes, true, 1, "");
            		  ?>
@@ -172,7 +172,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Espaçamento entre linhas:
                 </td>
                 <td>
-                  <?
+                  <?php
              	    $aEspacamento = array("1.0"=>"1.0", "1.5"=>"1.5", "2.0"=>"2.0");
              	    db_select("espacamento", $aEspacamento, true, 1, "");
            		  ?>
@@ -183,7 +183,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Estilo da fonte:
                 </td>
                 <td>
-                <?
+                <?php
              	  $aEstiloFonte = array(""=>"Normal", "I"=>"Itálico", "N"=>"Negrito", "IN"=>"Negrito e Itálico");
              	  db_select("estilofonte", $aEstiloFonte, true, 1, "");
            		?>
@@ -194,7 +194,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Tamanho da fonte do texto:
                 </td>
                 <td>
-                  <?
+                  <?php
 	        	    $tamanhofonte=10;
 	        	    db_input('tamanhofonte', 10, "Tamanho da fonte do texto", true, 'text', @$db_opcao);
 		          ?>
@@ -214,21 +214,21 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 Gera boleto:
               </td>
               <td>
-                <? db_select('lBoleto', array('1' => 'Sim', '0' => 'Não'), true, 1, "onChange='js_boleto();'"); ?>
+                <?php db_select('lBoleto', array('1' => 'Sim', '0' => 'Não'), true, 1, "onChange='js_boleto();'"); ?>
               </td>
             </tr>
             <tr id="datavenc" style="display: none;">
               <td nowrap title="Data para vencimento do boleto">
                 Vencimento do Boleto:
               <td>
-                <?db_inputdata('datavencimento', @$datavencimento_dia, @$datavencimento_mes, @$datavencimento_ano, true, 'text', 1) ?>
+                <?php db_inputdata('datavencimento', @$datavencimento_dia, @$datavencimento_mes, @$datavencimento_ano, true, 'text', 1) ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="Local para Pagto">
                 Local para Pagto:
               <td>
-                <? db_input('localpgto', 51, null, true, 'text', @$db_opcao); ?>
+                <?php db_input('localpgto', 51, null, true, 'text', @$db_opcao); ?>
               </td>
             </tr>
           </table>
@@ -238,10 +238,10 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
   </fieldset>
   <input name="db_opcao" type="button" id="db_opcao" value="Processar" onClick="js_processar();" <?=($db_botao ? '' : 'disabled')?>>
 </form>
-        
-        
-        
-<?
+
+
+
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -253,7 +253,7 @@ function js_boleto() {
     document.getElementById("datavenc").style.display  = '';
   } else {
     document.getElementById("datavenc").style.display  = 'none';
-  } 
+  }
 }
 
 function js_pesquisalista(mostra){
@@ -270,14 +270,14 @@ function js_pesquisalista(mostra){
 function js_mostralista(chave,erro){
 
   document.form1.k60_descr.value = chave;
-  
+
   if(erro==true){
      document.form1.k60_descr.focus();
      document.form1.k60_descr.value = '';
   } else {
     document.form1.submit();
   }
-  
+
 }
 function js_mostralista1(chave1,chave2){
 
@@ -290,12 +290,12 @@ function js_mostralista1(chave1,chave2){
 function js_processar() {
 
   var erro = false;
-  //Realizamos todas as consistencias dos dados que são obrigatórios 
+  //Realizamos todas as consistencias dos dados que são obrigatórios
   if (document.form1.k60_codigo.value == "") {
     alert(_M('tributario.notificacoes.not2_geratxtcorreios001.informe_lista'));
     document.form1.k60_codigo.focus();
     erro = true;
-  }   
+  }
 
   if (document.form1.tratamento.value == "") {
     alert(_M('tributario.notificacoes.not2_geratxtcorreios001.informe_tratamento_endereco'));
@@ -307,16 +307,16 @@ function js_processar() {
     alert(_M('tributario.notificacoes.not2_geratxtcorreios001.informe_tamanho_fonte'));
     document.form1.tamanhofonte.focus();
     erro = true;
-  }  
+  }
 
   if (document.form1.lBoleto.value == 1 && document.form1.datavencimento.value == "") {
     alert(_M('tributario.notificacoes.not2_geratxtcorreios001.informe_vencimento_boleto'));
     document.form1.datavencimento.focus();
-    erro = true;    
-  }  
+    erro = true;
+  }
 
   if ( erro == false ) {
-    
+
     var obj = document.form1;
     var sQuery  = "lista="        +obj.k60_codigo.value;
         sQuery += "&ordem="       +obj.ordem.value;
@@ -330,7 +330,7 @@ function js_processar() {
         sQuery += "&lBoleto="     +obj.lBoleto.value;
         sQuery += "&datavenc="    +obj.datavencimento.value;
         sQuery += "&localpgto="   +obj.localpgto.value;
-        
+
         js_OpenJanelaIframe("","db_iframe_correios", 'not2_geratxtcorreios002.php?'+sQuery, "Processamento de Notificação Correios",
             true,
             20,
@@ -338,13 +338,13 @@ function js_processar() {
             document.clientWidth,
             document.clientHeight
          );
-  }     
+  }
 }
 function fechar() {
-  db_iframe_correios.hide();  
+  db_iframe_correios.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

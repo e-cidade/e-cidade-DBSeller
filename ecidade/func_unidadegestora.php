@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clunidadegestora->rotulo->label("k171_nome");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lk171_sequencial?></label></td>
-          <td><? db_input("k171_sequencial",10,$Ik171_sequencial,true,"text",4,"","chave_k171_sequencial"); ?></td>
+          <td><?php db_input("k171_sequencial",10,$Ik171_sequencial,true,"text",4,"","chave_k171_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lk171_nome?></label></td>
-          <td><? db_input("k171_nome",10,$Ik171_nome,true,"text",4,"","chave_k171_nome");?></td>
+          <td><?php db_input("k171_nome",10,$Ik171_nome,true,"text",4,"","chave_k171_nome");?></td>
         </tr>
       </table>
     </fieldset>
@@ -81,12 +81,12 @@ $clunidadegestora->rotulo->label("k171_nome");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

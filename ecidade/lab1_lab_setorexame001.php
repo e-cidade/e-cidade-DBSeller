@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -157,7 +157,7 @@ if(isset($incluir)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <fieldset style='width: 75%;'> <legend><b>Setor Exame</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_setorexame.php"));
 	?>
 	</fieldset>
@@ -166,7 +166,7 @@ if(isset($incluir)){
   </tr>
 </table>
 </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -174,7 +174,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","la09_i_setor",true,1,"la09_i_setor",true);
 </script>
-<?
+<?php
 if( (isset($incluir)) || (isset($alterar)) || (isset($excluir)) ){
   if($cllab_setorexame->erro_status=="0" && $error == false){
     $cllab_setorexame->erro(true,false);

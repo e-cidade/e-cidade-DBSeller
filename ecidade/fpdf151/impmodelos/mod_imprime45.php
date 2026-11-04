@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -271,14 +271,14 @@ for ($i = 0; $i < 2; $i++) {
 
         $this->objpdf->cell(24, $altura, 'Terreno: ', 1, 0, "L", $iPreencheFundo);
         $this->objpdf->SetFont('Arial', '', 8);
-        $this->objpdf->cell(42, $altura, db_formatar($this->areaterreno + 0, 'f', ' ', ' ', ' ', 6) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha'), 1, 0, "R", 0);
-        $this->objpdf->cell(40, $altura, (count($this->areaterrenomat) == 1 ? db_formatar($this->areatran, 'f', ' ', ' ', ' ', 6) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha') : (strlen($this->areaterrenomat[1]) > 2 ? $this->areatran : db_formatar($this->areatran, 'f', ' ', ' ', ' ', 6) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha'))), 1, 1, "R", 0);
+        $this->objpdf->cell(42, $altura, db_formatar($this->areaterreno + 0, 'f', ' ', ' ', ' ', 10) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha'), 1, 0, "R", 0);
+        $this->objpdf->cell(40, $altura, (isValidArray($this->areaterrenomat, 1) ? db_formatar($this->areatran, 'f', ' ', ' ', ' ', 10) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha') : (isValidArray($this->areaterrenomat, null, 1) && isValidString($this->areaterrenomat[1], null, 2) ? $this->areatran : db_formatar($this->areatran, 'f', ' ', ' ', ' ', 10) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha'))), 1, 1, "R", 0);
         $this->objpdf->setx(100);
         $this->objpdf->SetFont('Arial', 'B', 8);
         $this->objpdf->cell(24, $altura, 'Construções:', 1, 0, "L", $iPreencheFundo);
         $this->objpdf->SetFont('Arial', '', 8);
-        $this->objpdf->cell(42, $altura, (@$this->areatotal == 0 ? '' : (count(@$this->areaedificadamat) == 1 ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : (strlen(@$this->areaedificadamat[1]) > 2 ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 0, "R", 0);
-        $this->objpdf->cell(40, $altura, (@$this->areatotal == 0 ? '' : (count(@$this->areaedificadamat) == 1 ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : (strlen(@$this->areaedificadamat[1]) > 2 ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 1, "R", 0);
+        $this->objpdf->cell(42, $altura, (@$this->areatotal == 0 ? '' : (isValidArray($this->areaedificadamat, 1) ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : ((isValidArray($this->areaedificadamat, null, 1) && isValidString($this->areaedificadamat[1], null, 2)) ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 0, "R", 0);
+        $this->objpdf->cell(40, $altura, (@$this->areatotal == 0 ? '' : (isValidArray($this->areaedificadamat, 1) ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : ((isValidArray($this->areaedificadamat, null, 1) && isValidString($this->areaedificadamat[1], null, 2)) ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 1, "R", 0);
 
         $iPosicaoYObs = $this->objpdf->getY();
 
@@ -352,14 +352,14 @@ for ($i = 0; $i < 2; $i++) {
         $this->objpdf->setx(100);
         $this->objpdf->cell(24, $altura, 'Terra: ', 1, 0, "L", $iPreencheFundo);
         $this->objpdf->SetFont('Arial', '', 8);
-        $this->objpdf->cell(41, $altura, db_formatar($this->areaterreno + 0, 'f', ' ', ' ', ' ', 6) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha'), 1, 0, "R", 0);
-        $this->objpdf->cell(41, $altura, (count($this->areaterrenomat) == 1 ? db_formatar($this->areatran, 'f', ' ', ' ', ' ', 6) . $unMedida : (strlen($this->areaterrenomat[1]) > 2 ? $this->areatran . $unMedida : db_formatar($this->areatran, 'f', ' ', ' ', ' ', 6) . $unMedida)), 1, 1, "R", 0);
+        $this->objpdf->cell(41, $altura, db_formatar($this->areaterreno + 0, 'f', ' ', ' ', ' ', 10) . ($this->tipoitbi == "urbano" ? 'm2' : 'ha'), 1, 0, "R", 0);
+        $this->objpdf->cell(41, $altura, (isValidArray($this->areaterrenomat, 1) ? db_formatar($this->areatran, 'f', ' ', ' ', ' ', 10) . $unMedida : (isValidArray($this->areaterrenomat, null, 1) && isValidString($this->areaterrenomat[1], null, 2) ? $this->areatran . $unMedida : db_formatar($this->areatran, 'f', ' ', ' ', ' ', 10) . $unMedida)), 1, 1, "R", 0);
         $this->objpdf->setx(100);
         $this->objpdf->SetFont('Arial', 'B', 8);
         $this->objpdf->cell(24, $altura, 'Benfeitorias:', 1, 0, "L", $iPreencheFundo);
         $this->objpdf->SetFont('Arial', '', 8);
-        $this->objpdf->cell(41, $altura, (@$this->areatotal == 0 ? '' : (count(@$this->areaedificadamat) == 1 ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : (strlen(@$this->areaedificadamat[1]) > 2 ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 0, "R", 0);
-        $this->objpdf->cell(41, $altura, (@$this->areatotal == 0 ? '' : (count(@$this->areaedificadamat) == 1 ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : (strlen(@$this->areaedificadamat[1]) > 2 ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 1, "R", 0);
+        $this->objpdf->cell(41, $altura, (@$this->areatotal == 0 ? '' : (isValidArray($this->areaedificadamat, 1) ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : ((isValidArray($this->areaedificadamat, null, 1) && isValidString($this->areaedificadamat[1], null, 2)) ? db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatotal, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 0, "R", 0);
+        $this->objpdf->cell(41, $altura, (@$this->areatotal == 0 ? '' : (isValidArray($this->areaedificadamat, 1) ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : ((isValidArray($this->areaedificadamat, null, 1) && isValidString($this->areaedificadamat[1], null, 2)) ? db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2' : db_formatar(@$this->areatrans, 'f', ' ', ' ', ' ', 6) . 'm2'))), 1, 1, "R", 0);
 
         $iPosicaoYObs = $this->objpdf->getY();
 
@@ -555,8 +555,8 @@ for ($i = 0; $i < 2; $i++) {
                 $lExibeMsg = true;
             }
 
-            $nTotalImposto += $aDadosFormas['Imposto'];
-            $nTotalAvaliado += $aDadosFormas['Valor'];
+            $nTotalImposto += (float)$aDadosFormas['Imposto'];
+            $nTotalAvaliado += (float)$aDadosFormas['Valor'];
         }
     }
 
@@ -619,4 +619,32 @@ for ($i = 0; $i < 2; $i++) {
     }
 
     $this->objpdf->ln(20);
+}
+
+function isValidArray($value, $lengthEqual = null, $lengthGreatherThan = null) {
+    $isValid = isset($value) && is_array($value);
+
+    if ($lengthEqual) {
+        $isValid = $isValid && count($value) == $lengthEqual;
+    }
+
+    if ($lengthGreatherThan) {
+        $isValid = $isValid && count($value) > $lengthGreatherThan;
+    }
+
+    return $isValid;
+}
+
+function isValidString($value, $lengthEqual = null, $lengthGreatherThan = null) {
+    $isValid = isset($value) && is_string($value);
+
+    if ($lengthEqual) {
+        $isValid = $isValid && strlen($value) == $lengthEqual;
+    }
+
+    if ($lengthGreatherThan) {
+        $isValid = $isValid && strlen($value) > $lengthGreatherThan;
+    }
+
+    return $isValid;
 }

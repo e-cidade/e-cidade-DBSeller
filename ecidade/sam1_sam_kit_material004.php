@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ if (isset($incluir)) {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <?
+    <?php
      include(modification("forms/db_frmsam_kit_material.php"));
     ?>
     </td>
@@ -70,7 +70,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form2","sm03_descr",true,1,"sm03_descr",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($oDaoSamKitMaterial->erro_status=="0"){
     $oDaoSamKitMaterial->erro(true,false);

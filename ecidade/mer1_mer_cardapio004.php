@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -50,7 +50,7 @@ $clmer_modpreparo    = new cl_mer_modpreparo;
 $clmer_subitem       = new cl_mer_subitem;
 $escola              = db_getsession("DB_coddepto");
 if (isset($cod_refeicao)) {
-	
+
   db_inicio_transacao();
   $antigo = $cod_refeicao;
   //Seleciona o cardapio antigo
@@ -62,7 +62,7 @@ if (isset($cod_refeicao)) {
   $clmer_cardapio->me01_i_percapita    = $me01_i_percapita;
   $clmer_cardapio->me01_f_versao       = $me01_f_versao+0.1;
   $clmer_cardapio->me01_i_id           = $me01_i_id;
-  $clmer_cardapio->me01_i_tipocardapio = $me01_i_tipocardapio;  
+  $clmer_cardapio->me01_i_tipocardapio = $me01_i_tipocardapio;
   $clmer_cardapio->incluir(null);
   $novaversao                         = $clmer_cardapio->me01_i_codigo;
   $num_novaversao                     = $clmer_cardapio->me01_f_versao;
@@ -79,13 +79,13 @@ if (isset($cod_refeicao)) {
   $sql_ver   .= "	          AND not exists(select * from mer_cardapiodata inner join mer_cardapiodiaescola on me37_i_codigo = me13_i_cardapiodiaescola where me12_i_codigo = me37_i_cardapiodia) ";
   $result_ver = db_query($sql_ver);
   for ($t=0;$t<pg_num_rows($result_ver);$t++) {
-  	
+
     db_fieldsmemory($result_ver,$t);
     db_query("update mer_cardapiodia set
                me12_i_cardapio    = $novaversao
                where me12_i_codigo = $cod_carddia"
             );
-    
+
   }
   //seleciona os tprefeição associados ao antigo cardapio
   $result = $clmer_cardapiotipo->sql_record(
@@ -98,12 +98,12 @@ if (isset($cod_refeicao)) {
   $linhas = $clmer_cardapiotipo->numrows;
   //Adiciona os tprefeicao do antigo cardapio na nova versão
   for ($x=0; $x<$linhas; $x++) {
-  	
+
     db_fieldsmemory($result,$x);
     $clmer_cardapiotipo->me21_i_tprefeicao = $me21_i_tprefeicao;
     $clmer_cardapiotipo->me21_i_cardapio   = $novaversao;
     $clmer_cardapiotipo->incluir(null);
-    
+
   }
 
   //seleciona nutricionistas associados ao antigo cardapio
@@ -117,12 +117,12 @@ if (isset($cod_refeicao)) {
   $linhas = $clmer_cardapionutri->numrows;
   //Adiciona nutricionistas do antigo cardapio na nova versão
   for ($x=0;$x<$linhas;$x++) {
-  	
+
     db_fieldsmemory($result,$x);
     $clmer_cardapionutri->me04_i_nutricionista = $me04_i_nutricionista;
     $clmer_cardapionutri->me04_i_cardapio      = $novaversao;
     $clmer_cardapionutri->incluir(null);
-    
+
   }
   //seleciona modo preparo associados ao antigo cardapio
   $campos = " me05_t_obs,me05_c_natureza,me05_f_porcao,me05_i_alimento ";
@@ -130,7 +130,7 @@ if (isset($cod_refeicao)) {
   $linhas = $clmer_modpreparo->numrows;
   //Adiciona modo de preparo do antigo cardapio na nova versão
   for ($x=0;$x<$linhas;$x++) {
-  	
+
     db_fieldsmemory($result,$x);
     $clmer_modpreparo->me05_t_obs       = $me05_t_obs;
     $clmer_modpreparo->me05_c_natureza  = $me05_c_natureza;
@@ -138,7 +138,7 @@ if (isset($cod_refeicao)) {
     $clmer_modpreparo->me05_i_alimento  = $me05_i_alimento;
     $clmer_modpreparo->me05_i_cardapio  = $novaversao;
     $clmer_modpreparo->incluir(null);
-    
+
   }
   //seleciona caracteristica de preparo associados ao antigo cardapio
   $campos = " me06_c_tempopreparo,me06_c_graudificuldade,me06_c_descr ";
@@ -150,14 +150,14 @@ if (isset($cod_refeicao)) {
   $linhas = $clmer_caractpreparo->numrows;
   //Adiciona caracteristica de preparo do antigo cardapio na nova versão
   if ($linhas>0) {
-  	
+
     db_fieldsmemory($result,0);
     $clmer_caractpreparo->me06_c_tempopreparo    = $me06_c_tempopreparo;
     $clmer_caractpreparo->me06_c_graudificuldade = $me06_c_graudificuldade;
     $clmer_caractpreparo->me06_c_descr           = $me06_c_descr;
     $clmer_caractpreparo->me06_i_cardapio        = $novaversao;
     $clmer_caractpreparo->incluir(null);
-    
+
   }
   //seleciona os itens do antigo cardapio
   $campos = " me07_f_quantidade,me07_i_alimento,me07_c_medida,me07_i_unidade ";
@@ -169,15 +169,15 @@ if (isset($cod_refeicao)) {
   $linhas = $clmer_cardapioitem->numrows;
   //Adiciona os itens do antigo cardapio na nova versão
   for ($x=0;$x<$linhas;$x++) {
-  	
+
     db_fieldsmemory($result,$x);
     $clmer_cardapioitem->me07_c_medida     = $me07_c_medida;
     $clmer_cardapioitem->me07_f_quantidade = $me07_f_quantidade;
     $clmer_cardapioitem->me07_i_alimento   = $me07_i_alimento;
-    $clmer_cardapioitem->me07_i_unidade   = $me07_i_unidade;    
+    $clmer_cardapioitem->me07_i_unidade   = $me07_i_unidade;
     $clmer_cardapioitem->me07_i_cardapio   = $novaversao;
     $clmer_cardapioitem->incluir(null);
-    
+
   }
   //seleciona as substituições do antigo cardapio
   $campos  = " me29_i_alimentoorig,me29_i_alimentonovo,me29_f_quantidade, ";
@@ -190,7 +190,7 @@ if (isset($cod_refeicao)) {
   $linhas = $clmer_subitem->numrows;
   //Adiciona as substituições do antigo cardapio na nova versão
   for ($x=0;$x<$linhas;$x++) {
-  	
+
     db_fieldsmemory($result,$x);
     $clmer_subitem->me29_i_alimentoorig  = $me29_i_alimentoorig;
     $clmer_subitem->me29_i_alimentonovo  = $me29_i_alimentonovo;
@@ -201,7 +201,7 @@ if (isset($cod_refeicao)) {
     $clmer_subitem->me29_t_obs           = $me29_t_obs;
     $clmer_subitem->me29_i_refeicao      = $novaversao;
     $clmer_subitem->incluir(null);
-    
+
   }
   db_fim_transacao();
   ?>
@@ -209,6 +209,6 @@ if (isset($cod_refeicao)) {
    alert("Criada nova versão n° <?=$num_novaversao?> para a refeição <?=$me01_c_nome?>");
    parent.location.href = "mer1_mer_cardapio002.php?chavepesquisa=<?=$novaversao?>";
   </script>
-  <?
+  <?php
 }
 ?>

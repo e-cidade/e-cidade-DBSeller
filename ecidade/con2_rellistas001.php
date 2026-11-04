@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,11 +92,11 @@ function js_relatorio() {
 	    <b>Listas a partir de </b>
 	  </td>
 	  <td>
-<?
+<?php
 db_inputdata('dataini',"","","",true,'text',$db_opcao,"")
 ?>
 	  <b>até </b>
-<?
+<?php
 db_inputdata('datafim',"","","",true,'text',$db_opcao,"")
 ?>
 
@@ -107,7 +107,7 @@ db_inputdata('datafim',"","","",true,'text',$db_opcao,"")
 	    <b>Ordenar por</b>
 	  </td>
 	  <td>
-<? 
+<?php 
 $result=array("d40_data"=>"DATA","j14_nome"=>"LOGRADOURO","d40_codigo"=>"LISTAS");
 db_select("ordem",$result,true,$db_opcao);
 ?>
@@ -125,7 +125,7 @@ db_select("ordem",$result,true,$db_opcao);
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

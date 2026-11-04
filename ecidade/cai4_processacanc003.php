@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,7 +72,7 @@ $sql = "SELECT cancdebitosreg.k21_sequencia,
       <td align='center'><?=$Lk21_numpar?></td>
       <td align='center'><b>Valor</b></td>
     </tr>
-     <?
+     <?php
       for($x = 0; $x < $clcancdebitosreg->numrows; $x++) {
       db_fieldsmemory($result,$x);
        echo "<tr>
@@ -87,7 +87,7 @@ $sql = "SELECT cancdebitosreg.k21_sequencia,
       <td colspan="4"><strong>Observações:</strong></td>
      </tr>
      <tr>
-      <td colspan="3"><? db_textarea('k23_obs',2,50,@Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
+      <td colspan="3"><?php db_textarea('k23_obs',2,50,@Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
       <td> 
        <input name="processa" type="button" id="db_opcao" value="Processar" onclick="js_processar(<?=$clcancdebitosreg->numrows?>,this)" <?=($db_botao==false?"disabled":"")?> >
       </td>

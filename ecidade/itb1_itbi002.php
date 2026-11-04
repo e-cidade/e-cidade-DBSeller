@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -63,19 +63,22 @@ $clcriaabas = new cl_criaabas;
                    					           "transm"   => "Transmitentes",
                                        "inter"    => "Intermediadores",
                    					           "compnome" => "Adquirentes",
-                   					           "constr"   => "Benfeitorias");
+                   					           "constr"   => "Benfeitorias",
+                                       "anexo"    => "Anexo");
 
        $clcriaabas->title = array("dados"    => "Dados do imovel",
                  								  "transm"   => "Transmitentes",
                                   "inter"    => "Intermediadores",
                  								  "compnome" => "Adquirentes",
-                 								  "constr"	 => "Benfeitorias");
+                 								  "constr"	 => "Benfeitorias",
+                                  "anexo"    => "Anexo");
 
        $clcriaabas->src = array("dados"	   => "itb1_itbidadosimovel002.php",
                      					  "transm"   => "itb1_itbinome001.php?tiponome=t",
                                 "inter"    => "itb1_itbiintermediario001.php",
                      						"compnome" => "itb1_itbinomecomp001.php?tiponome=c",
-                     						"constr"	 => "itb1_itbiconstr001.php");
+                     						"constr"	 => "itb1_itbiconstr001.php",
+                                "anexo"    => "itb1_itbianexo001.php");
 
 
        $clcriaabas->cria_abas();
@@ -107,6 +110,7 @@ echo "<script>document.formaba.constr.size='20';</script>";
 		    document.formaba.inter.disabled=true;
 		    document.formaba.compnome.disabled=true;
 		    document.formaba.constr.disabled=true;
+        document.formaba.anexo.disabled=true;
 		   }
 		   js_src();
       </script>";

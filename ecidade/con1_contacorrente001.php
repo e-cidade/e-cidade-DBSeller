@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,13 +53,13 @@ if(isset($incluir)){
 <div style='margin-top: 30px;'></div>
 <center>
   <div style="width: 450px;">
-  	<?
+  	<?php
   	include(modification("forms/db_frmcontacorrente.php"));
   	?>
   </div>
 </center>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -67,7 +67,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","c17_contacorrente",true,1,"c17_contacorrente",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clcontacorrente->erro_status=="0"){
     $clcontacorrente->erro(true,false);

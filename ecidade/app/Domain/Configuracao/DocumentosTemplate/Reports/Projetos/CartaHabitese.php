@@ -65,6 +65,7 @@ class CartaHabitese extends ProcessaDocumentoTemplate
                               alvara                   ,
                               data_alvara              ,
                               data_expedicao_extenso   ,
+                              data_atual_extenso       ,
                               cgm_responsavel_execucao ,
                               nome_responsavel_execucao,
                               cpf_responsavel_execucao ,

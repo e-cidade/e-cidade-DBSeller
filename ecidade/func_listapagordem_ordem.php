@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label("o56_elemento");
     <input name='verificador' type='hidden' value='ok'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <?php
  if(isset($e50_codord) && $e50_codord!= ""){
       $result = $clpagordemele->sql_record($clpagordemele->sql_query($e50_codord));
       $numrows = $clpagordemele->numrows;

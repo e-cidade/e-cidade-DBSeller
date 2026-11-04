@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -183,7 +183,7 @@ $rotulo->label("z01_cgccpf");
                 $where = "{$dbwhere} and e60_numemp = {$chave_e60_numemp}";
                 $sql = $clempempenho->sql_query($chave_e60_numemp, $campos, "e60_numemp", $where);
             } elseif (isset($chave_e60_codemp) && !empty($chave_e60_codemp)) {
-                $arr = split("/", $chave_e60_codemp);
+                $arr =explode("/", $chave_e60_codemp);
 
                 if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
                     $dbwhere_ano = " and e60_anousu = " . $arr[1];
@@ -212,7 +212,6 @@ $rotulo->label("z01_cgccpf");
             $repassa = array(
               "chave_z01_nome" => @$chave_z01_nome
             );
-
             ?>
           <fieldset>
             <legend><strong>Resultado da Pesquisa</strong></legend>
@@ -222,18 +221,16 @@ $rotulo->label("z01_cgccpf");
             <?php
         } else {
             if ($pesquisa_chave != null && $pesquisa_chave != "") {
-                $where = array(" e60_numemp = {$pesquisa_chave}", "e60_instit = " . db_getsession("DB_instit"));
-
+                $whereEmp = "e60_numemp = {$pesquisa_chave}";
+                $where = ["e60_instit = " . db_getsession("DB_instit")];
                 if (isset($lPesquisaPorCodigoEmpenho)) {
+                    $whereEmp = "e60_codemp = '$pesquisa_chave'";
                     $where[] = " e60_anousu = " . db_getsession("DB_anousu");
-
                     if (!empty($iAnoEmpenho)) {
                         $where[] = " e60_anousu = " . $iAnoEmpenho;
                     }
-
-                    $where[] = " e60_codemp = '$pesquisa_chave'";
                 }
-
+                $where[] = $whereEmp;
                 $sSql = $clempempenho->sql_query(null, '*', null, implode(' AND ', $where) . $sFiltraEmpenhoFolha);
 
                 /* [Extensão] Filtro da Despesa - Parte 2 */

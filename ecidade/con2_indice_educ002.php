@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("libs/db_liborcamento.php"));
@@ -59,7 +59,7 @@ $rec["2"]["valor"] = 0;
 $rec["3"]["valor"] = 0;
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,uf from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -72,24 +72,24 @@ $iTipoAcao        = 0;
 $iTipoAcaoEstorno = 0;
 
 if ($modelo == 2) {
-  
+
   $xtipo            = "EMPENHADA";
   $iTipoAcao        = 10;
   $iTipoAcaoEstorno = 11;
-    
+
 } else if( $modelo == 3 ) {
 
   $xtipo = "LIQUIDADA";
   $iTipoAcao        = 20;
   $iTipoAcaoEstorno = 21;
-    
+
 } else {
-  
+
   $xtipo            = "PAGA";
   $iTipoAcao        = 30;
   $iTipoAcaoEstorno = 31;
-  
-}  
+
+}
 
 $anousu  = db_getsession("DB_anousu");
 $dataini = $DBtxt21_ano.'-'.$DBtxt21_mes.'-'.$DBtxt21_dia;
@@ -116,9 +116,9 @@ for ($i = 0; $i < pg_numrows($result_receita); $i ++) {
     continue;
   }
 
-  for ($p=1;$p<=3;$p++) { 
+  for ($p=1;$p<=3;$p++) {
     if (in_array($estrutural, $rec[$p]['estrut'])) {
-      $rec[$p]['valor'] += $saldo_arrecadado_acumulado;     
+      $rec[$p]['valor'] += $saldo_arrecadado_acumulado;
     }
   }
 }
@@ -135,7 +135,7 @@ $result_deducao = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dataini,$dataf
 */
 $plus_fundef            = 0;
 $plus_fundeb            = 0;
-$rendimentos_mde_fundef = 0; 
+$rendimentos_mde_fundef = 0;
 
 // echo "<br>".$dataini;
 // echo "<br>".$datafin;
@@ -143,7 +143,7 @@ $rendimentos_mde_fundef = 0;
 //db_criatabela($result_deducao);
 for ($x=0;$x < pg_numrows($result_deducao);$x++){
   db_fieldsmemory($result_deducao,$x);
-  
+
 //  if ($o57_fonte == '417240100000000'){
   if (db_conplano_grupo($anousu,$o57_fonte,9005) == true){
     if ($o70_codrec > 0){
@@ -151,23 +151,23 @@ for ($x=0;$x < pg_numrows($result_deducao);$x++){
       $plus_fundef += $saldo_arrecadado;
     }
 //     echo "<br> aumenta ".db_formatar($plus_fundef,"f")." => ".$o57_fonte."<br>";
-  }    
+  }
 //  if ($o57_fonte == '497000000000000'){  // este estrutural representa uma conta de dedução ( negativa )
   if (db_conplano_grupo($anousu,$o57_fonte,9001) == true){  // este estrutural representa uma conta de dedução ( negativa )
     if ($o70_codrec > 0 and $o70_concarpeculiar == 105){
 //      echo "9001 - codrec: ".$o70_codrec." - carpeculiar: $o70_concarpeculiar => ".db_formatar($saldo_arrecadado,"f")."<br>";
-      $plus_fundeb += abs($saldo_arrecadado); 
+      $plus_fundeb += abs($saldo_arrecadado);
       $plus_fundeb  = abs($plus_fundeb);
     }
 //     echo "<br> diminui ".db_formatar($plus_fundeb,"f")." => ".$o57_fonte."<br>";
-  }    
-  
+  }
+
 //  if ($o57_fonte == '413250100000000'){
   if (db_conplano_grupo($anousu,$o57_fonte,9003) == true){
-    $rendimentos_mde_fundef += $saldo_arrecadado;  
-  }        
-  
-}  
+    $rendimentos_mde_fundef += $saldo_arrecadado;
+  }
+
+}
 
 /*
 if ( $plus_fundef <  0 ){
@@ -192,8 +192,8 @@ $sqlperiodo = " select e60_instit, nomeinst, o58_subfuncao, o53_descr,
                 sum(case when e60_anousu < " . db_getsession("DB_anousu") . "
                 then e91_vlrliq-e91_vlrpag else 0 end ) as inscricao_ant,
                 sum(case when e60_anousu = " . db_getsession("DB_anousu") . "
-                then e91_vlrliq-e91_vlrpag else 0 end ) as  valor_processado,  
-                sum(coalesce(canc_proc+canc_nproc,0)) as empenhado, 
+                then e91_vlrliq-e91_vlrpag else 0 end ) as  valor_processado,
+                sum(coalesce(canc_proc+canc_nproc,0)) as empenhado,
                 sum(coalesce(vlrliq,0)) as liquidado,
                 sum(coalesce(vlrpag,0)) as pago
                 from ($sqlperiodo) as x
@@ -209,8 +209,8 @@ $nValorCP502  = 0;
 /**
  * Calculamos o total da deducao do fundeb (Caracteristica Peculiar 502
  */
-$sSqlValorCP502  = "SELECT round(sum(case when c53_tipo = {$iTipoAcao}"; 
-$sSqlValorCP502 .= "                      then c70_valor "; 
+$sSqlValorCP502  = "SELECT round(sum(case when c53_tipo = {$iTipoAcao}";
+$sSqlValorCP502 .= "                      then c70_valor ";
 $sSqlValorCP502 .= "                      when c53_tipo = {$iTipoAcaoEstorno} then c70_valor *-1 end ),2) as valor";
 $sSqlValorCP502 .= "  from conlancam ";
 $sSqlValorCP502 .= "       inner join conlancamdoc on c70_codlan = c71_codlan";
@@ -226,16 +226,16 @@ $nValorCP502 = db_utils::fieldsMemory($rsSsqlValorCP502, 0)->valor;
 
 ////////////////////////////////////////////////////
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','',10);
-$pdf->AddPage(); 
+$pdf->AddPage();
 
 $alt = 4;
 
-/// receitas 
+/// receitas
 
 $pdf->setfont('arial','',12);
 $pdf->cell(100,$alt,"Base de Cálculo Constitucional da Receita da Educação",0,1,"L");
@@ -292,35 +292,35 @@ $array_subfuncao = array();
 
 for ($x=0;$x < pg_numrows($result_despesa);$x++) {
   db_fieldsmemory($result_despesa,$x);
-  
+
   // se valor zerado continua na proxima
   $valor = 0;
   if ($modelo==2) { // empenhado
     if ($empenhado==0)
     continue;
-    
+
     $soma_subfuncao_exe +=  $empenhado - $anulado;
     $valor = $empenhado;
-    
-    
+
+
   }elseif ($modelo==3){ // liquidado
     if ($liquidado==0)
     continue;
-    
+
     $soma_subfuncao_exe +=  $liquidado;
     $valor = $liquidado;
-    
-    
+
+
   }elseif ($modelo==4){ // pago
-    if ($pago==0) 
+    if ($pago==0)
     continue;
-    
+
     $soma_subfuncao_exe +=  $pago;
-    $valor = $pago;      
+    $valor = $pago;
   }
-  
+
   $array_subfuncao[$o53_descr][0] = $valor;
-  
+
 }
 
 $pdf->setfont('arial','',8);
@@ -351,38 +351,38 @@ $soma_subfuncao_rp = 0;
 $array_subfuncao = array();
 for ($x=0;$x < pg_numrows($resultado_rp);$x++) {
   db_fieldsmemory($resultado_rp,$x);
-  
+
   // se valor zerado continua na proxima
   $valor = 0;
   if ($modelo==2) { // empenhado
     if ($empenhado==0)
     continue;
-    
+
     $soma_subfuncao_rp +=  $empenhado;
     $valor = $empenhado;
-    
+
   }elseif ($modelo==3){ // liquidado
     if ($liquidado==0)
     continue;
-    
+
     $soma_subfuncao_rp +=  $liquidado;
     $valor = $liquidado;
-    
+
   }elseif ($modelo==4){ // pago
-    if ($pago==0) 
+    if ($pago==0)
     continue;
-    
+
     $soma_subfuncao_rp +=  $pago;
     $valor = $pago;
-    
+
   }
-  
+
   if (!isset($array_subfuncao[$o53_descr][0])) {
     $array_subfuncao[$o53_descr][0] = $valor;
   } else {
     $array_subfuncao[$o53_descr][0] += $valor;
   }
-  
+
 }
 
 $pdf->setfont('arial','',8);
@@ -414,19 +414,19 @@ $pdf->cell(40,$alt,"Valor",0,1,"C",1);
 $soma_patrimonial = 0;
 for ($x=0;$x < pg_numrows($result_plano);$x++){
   db_fieldsmemory($result_plano,$x);
-  
+
   if (in_array($estrutural,$m_contas)){
-    
+
     $pdf->setfont('arial','',8);
     $pdf->setX(20);
     $pdf->cell(40,$alt,"$estrutural",0,0,"L");
     $pdf->cell(90,$alt,"$c60_descr",0,0,"L");
     $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),0,1,"R");
-    
+
     $soma_patrimonial += $saldo_final;
-    
-  }            
-}  
+
+  }
+}
 $pdf->setfont('arial','b',9);
 $pdf->setX(20);
 $pdf->cell(130,$alt,"Total",'B',0,"C",0);
@@ -463,7 +463,7 @@ $pdf->setX(20);
 $pdf->cell(130,$alt,"(-) Despesas Liquidadas com Recursos do Superávit do FUNDEB - CP 502",0,0,"L");
 $pdf->cell(40,$alt,db_formatar($nValorCP502,'f'),0,1,"R");
 
-/// 
+///
 
 $pdf->setfont('arial','b',9);
 $pdf->setX(20);
@@ -492,8 +492,8 @@ $pdf->setX(80);
 $pdf->cell(70,$alt+2,"Valor Aplicado",'0',0,"R",1);
 $pdf->cell(40,$alt+2,db_formatar($total_gastos,'f'),'0',1,"R",1);
 
-// $soma_receitas  = 100% 
-// $total_deducoes = ? 
+// $soma_receitas  = 100%
+// $total_deducoes = ?
 
 $pdf->setX(80);
 $pdf->cell(70,$alt+2,"% de Aplicação",'0',0,"R",1);

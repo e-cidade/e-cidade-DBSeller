@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,14 +79,14 @@ function js_emite(){
       <strong>Ano / Mês:</strong>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($DBtxt23) || (isset($DBtxt23) && (trim($DBtxt23) == "" || $DBtxt23 == 0))){
         $DBtxt23 = db_anofolha();
       }
       db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       if(!isset($DBtxt25) || (isset($DBtxt25) && (trim($DBtxt25) == "" || $DBtxt25 == 0))){
         $DBtxt25 = db_mesfolha();
       }
@@ -97,13 +97,13 @@ function js_emite(){
   <tr>
     <td align="right"><b>Cálculo:</b</td>
     <td>
-      <?
+      <?php
       $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
       db_select('ponto',$x,true,4,"onchange='js_submita(this.value);'");
       ?>
     </td>
   </tr>
-  <?
+  <?php
   if(isset($ponto) && $ponto == "c"){
     $result_gerfcom = $clgerfcom->sql_record($clgerfcom->sql_query_file($DBtxt23,$DBtxt25,null,null,"distinct r48_semest,r48_semest"));
     if($clgerfcom->numrows > 0){
@@ -111,29 +111,29 @@ function js_emite(){
   <tr>
     <td align="right"><b>Complementar:</b</td>
     <td>
-     <?
+     <?php
      db_selectrecord('complementar', $result_gerfcom, true, 4, "", "", "", Array("0","Todos..."), "", 1);
      ?>
     </td>
   </tr>
-  <?
+  <?php
     }else{
   ?>
   <tr>
     <td align="center" colspan="2">
       <b><font color="red">Sem complementar para este período.</font></b>
-      <?
+      <?php
       db_input('complementar',1,0,true,'hidden',3,'')
       ?>
     </td>
   </tr>
-  <?
+  <?php
     }
   }
   ?>
   <tr>
     <td colspan=2>
-      <?
+      <?php
       $sql_exec = "";
       if(isset($lista) && count($lista) > 0){
         $in_ = "";
@@ -172,7 +172,7 @@ function js_emite(){
   </tr>
   </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

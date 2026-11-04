@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ TRIM(ed18_c_nome)  AS ESCOLA,
 TRIM(ed57_c_descr) AS TURMA,
 TRIM(ed11_c_descr) AS etapa,
 CASE
-    WHEN ed20_i_tiposervidor = 1 THEN TRIM(cgmrh.z01_nome)
+     WHEN ed20_i_tiposervidor = 1 THEN TRIM(cgmrh.z01_nome)
      WHEN ed20_i_tiposervidor = 2 THEN  TRIM(cgmcgm.z01_nome)
      ELSE 'Turma não possui outros profissionais vinculados'
 END AS nome,
@@ -81,10 +81,11 @@ LEFT JOIN turmaoutrosprofissionais ON ed57_i_codigo          = ed347_turma
      INNER JOIN regencia           ON ed59_i_turma           = ed57_i_codigo
      INNER JOIN serie              ON ed11_i_codigo          = ed59_i_serie
 WHERE ed18_i_codigo = {$iEscola}
+  AND ed18_i_codigo = ed75_i_escola
   AND ed52_i_ano = {$ano}
- 
+  AND ed22_ativo = true
+  AND ed22_datafim IS NULL
  UNION ALL
- 
 SELECT 
       ed18_c_nome AS escola,
       ed57_c_descr AS turma,
@@ -107,24 +108,28 @@ INNER JOIN caddisciplina    ON ed232_i_codigo = ed12_i_caddisciplina
  LEFT JOIN regenciahorario  ON ed58_i_regencia = ed59_i_codigo AND ed58_ativo = 't'
 INNER JOIN serie            ON ed11_i_codigo = ed59_i_serie
  LEFT JOIN rechumano        ON ed20_i_codigo = ed58_i_rechumano
+ LEFT JOIN rechumanoescola  ON ed75_i_rechumano = ed20_i_codigo
  LEFT JOIN rechumanocgm     ON ed285_i_rechumano = ed20_i_codigo
  LEFT JOIN cgm AS cgmcgm    ON cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm
  LEFT JOIN rechumanopessoal ON rechumanopessoal.ed284_i_rechumano = rechumano.ed20_i_codigo
  LEFT JOIN rhpessoal        ON rhpessoal.rh01_regist = rechumanopessoal.ed284_i_rhpessoal
  LEFT JOIN cgm AS cgmrh     ON cgmrh.z01_numcgm = rhpessoal.rh01_numcgm
  WHERE ed18_i_codigo = {$iEscola}
-  AND ed52_i_ano = {$ano}
+  AND  ed52_i_ano = {$ano}
+  AND  ed18_i_codigo = ed75_i_escola
 GROUP BY 1,2,3,4,5
 ORDER BY 1,2,3,7,5,4";
-
-//  echo"<pre>"; print_r($sSql);exit;
 
 $rsDados = db_query($sSql);
 $oDados =  db_utils::fieldsMemory($rsDados, 0);
 $head6 = $iEscola.' - '.$oDados->escola;
 
-if ($tipo == 0 || $tipo == 1) {
-    $iLinhas = pg_num_rows($rsDados);
+$iLinhas = pg_num_rows($rsDados);
+
+if (!is_null($tipo)){
+    if ($tipo == 0 || $tipo == 1) {
+        $iLinhas = pg_num_rows($rsDados);
+    }
 }
 
 if ($iLinhas == 0) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_pcorcamdescla {
                  pc32_motivo = text = Motivo da desclassificação
                  ";
    //funcao construtor da classe
-   function cl_pcorcamdescla() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamdescla");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_pcorcamdescla {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc32_orcamitem = ($this->pc32_orcamitem == ""?@$GLOBALS["HTTP_POST_VARS"]["pc32_orcamitem"]:$this->pc32_orcamitem);
        $this->pc32_orcamforne = ($this->pc32_orcamforne == ""?@$GLOBALS["HTTP_POST_VARS"]["pc32_orcamforne"]:$this->pc32_orcamforne);
@@ -78,7 +78,7 @@ class cl_pcorcamdescla {
      }
    }
    // funcao para inclusao
-   function incluir ($pc32_orcamitem,$pc32_orcamforne){
+   public function incluir ($pc32_orcamitem,$pc32_orcamforne){
       $this->atualizacampos();
      if($this->pc32_motivo == null ){
        $this->erro_sql = " Campo Motivo da desclassificação nao Informado.";
@@ -155,7 +155,7 @@ class cl_pcorcamdescla {
      return true;
    }
    // funcao para alteracao
-   function alterar ($pc32_orcamitem=null,$pc32_orcamforne=null) {
+   public function alterar ($pc32_orcamitem=null,$pc32_orcamforne=null) {
       $this->atualizacampos();
      $sql = " update pcorcamdescla set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_pcorcamdescla {
      }
    }
    // funcao para exclusao
-   function excluir ($pc32_orcamitem=null,$pc32_orcamforne=null,$dbwhere=null) {
+   public function excluir ($pc32_orcamitem=null,$pc32_orcamforne=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc32_orcamitem,$pc32_orcamforne));
      }else{
@@ -324,7 +324,7 @@ class cl_pcorcamdescla {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -346,7 +346,7 @@ class cl_pcorcamdescla {
       }
      return $result;
    }
-   function sql_query ( $pc32_orcamitem=null,$pc32_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $pc32_orcamitem=null,$pc32_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -392,7 +392,7 @@ class cl_pcorcamdescla {
      }
      return $sql;
   }
-   function sql_query_descla_lote ( $pc32_orcamitem=null,$pc32_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_descla_lote ( $pc32_orcamitem=null,$pc32_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -447,7 +447,7 @@ class cl_pcorcamdescla {
      }
      return $sql;
   }
-   function sql_query_file ( $pc32_orcamitem=null,$pc32_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $pc32_orcamitem=null,$pc32_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

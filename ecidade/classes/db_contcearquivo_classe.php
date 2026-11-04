@@ -1,85 +1,85 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE contcearquivo
-class cl_contcearquivo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c11_sequencial = 0; 
-   var $c11_concadtce = 0; 
-   var $c11_instit = 0; 
-   var $c11_dataini_dia = null; 
-   var $c11_dataini_mes = null; 
-   var $c11_dataini_ano = null; 
-   var $c11_dataini = null; 
-   var $c11_datageracao_dia = null; 
-   var $c11_datageracao_mes = null; 
-   var $c11_datageracao_ano = null; 
-   var $c11_datageracao = null; 
-   var $c11_datafim_dia = null; 
-   var $c11_datafim_mes = null; 
-   var $c11_datafim_ano = null; 
-   var $c11_datafim = null; 
-   var $c11_codigoremessa = 0; 
-   var $c11_diapagtofolha = 0; 
-   var $c11_infleiame = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_contcearquivo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c11_sequencial = 0;
+   var $c11_concadtce = 0;
+   var $c11_instit = 0;
+   var $c11_dataini_dia = null;
+   var $c11_dataini_mes = null;
+   var $c11_dataini_ano = null;
+   var $c11_dataini = null;
+   var $c11_datageracao_dia = null;
+   var $c11_datageracao_mes = null;
+   var $c11_datageracao_ano = null;
+   var $c11_datageracao = null;
+   var $c11_datafim_dia = null;
+   var $c11_datafim_mes = null;
+   var $c11_datafim_ano = null;
+   var $c11_datafim = null;
+   var $c11_codigoremessa = 0;
+   var $c11_diapagtofolha = 0;
+   var $c11_infleiame = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c11_sequencial = int4 = Codigo sequencial 
-                 c11_concadtce = int4 = Codigo tribunal de contas 
-                 c11_instit = int4 = Cod. Instituição 
-                 c11_dataini = date = Data inicial 
-                 c11_datageracao = date = Data de Geração 
-                 c11_datafim = date = Data final 
-                 c11_codigoremessa = int4 = Codigo da remessa do lote 
-                 c11_diapagtofolha = int4 = Dia de pagamento da follha 
-                 c11_infleiame = text = Informações Adicionais leiame 
+                 c11_sequencial = int4 = Codigo sequencial
+                 c11_concadtce = int4 = Codigo tribunal de contas
+                 c11_instit = int4 = Cod. Instituição
+                 c11_dataini = date = Data inicial
+                 c11_datageracao = date = Data de Geração
+                 c11_datafim = date = Data final
+                 c11_codigoremessa = int4 = Codigo da remessa do lote
+                 c11_diapagtofolha = int4 = Dia de pagamento da follha
+                 c11_infleiame = text = Informações Adicionais leiame
                  ";
-   //funcao construtor da classe 
-   function cl_contcearquivo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("contcearquivo"); 
+     $this->rotulo = new rotulo("contcearquivo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_contcearquivo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c11_sequencial = ($this->c11_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c11_sequencial"]:$this->c11_sequencial);
        $this->c11_concadtce = ($this->c11_concadtce == ""?@$GLOBALS["HTTP_POST_VARS"]["c11_concadtce"]:$this->c11_concadtce);
@@ -125,9 +125,9 @@ class cl_contcearquivo {
      }
    }
    // funcao para inclusao
-   function incluir ($c11_sequencial){ 
+   public function incluir ($c11_sequencial){
       $this->atualizacampos();
-     if($this->c11_concadtce == null ){ 
+     if($this->c11_concadtce == null ){
        $this->erro_sql = " Campo Codigo tribunal de contas nao Informado.";
        $this->erro_campo = "c11_concadtce";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_contcearquivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c11_instit == null ){ 
+     if($this->c11_instit == null ){
        $this->erro_sql = " Campo Cod. Instituição nao Informado.";
        $this->erro_campo = "c11_instit";
        $this->erro_banco = "";
@@ -145,7 +145,7 @@ class cl_contcearquivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c11_dataini == null ){ 
+     if($this->c11_dataini == null ){
        $this->erro_sql = " Campo Data inicial nao Informado.";
        $this->erro_campo = "c11_dataini_dia";
        $this->erro_banco = "";
@@ -154,7 +154,7 @@ class cl_contcearquivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c11_datageracao == null ){ 
+     if($this->c11_datageracao == null ){
        $this->erro_sql = " Campo Data de Geração nao Informado.";
        $this->erro_campo = "c11_datageracao_dia";
        $this->erro_banco = "";
@@ -163,7 +163,7 @@ class cl_contcearquivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c11_datafim == null ){ 
+     if($this->c11_datafim == null ){
        $this->erro_sql = " Campo Data final nao Informado.";
        $this->erro_campo = "c11_datafim_dia";
        $this->erro_banco = "";
@@ -172,7 +172,7 @@ class cl_contcearquivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c11_codigoremessa == null ){ 
+     if($this->c11_codigoremessa == null ){
        $this->erro_sql = " Campo Codigo da remessa do lote nao Informado.";
        $this->erro_campo = "c11_codigoremessa";
        $this->erro_banco = "";
@@ -181,7 +181,7 @@ class cl_contcearquivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c11_diapagtofolha == null ){ 
+     if($this->c11_diapagtofolha == null ){
        $this->erro_sql = " Campo Dia de pagamento da follha nao Informado.";
        $this->erro_campo = "c11_diapagtofolha";
        $this->erro_banco = "";
@@ -191,16 +191,16 @@ class cl_contcearquivo {
        return false;
      }
      if($c11_sequencial == "" || $c11_sequencial == null ){
-       $result = db_query("select nextval('contcearquivo_c11_sequencial_seq')"); 
+       $result = db_query("select nextval('contcearquivo_c11_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: contcearquivo_c11_sequencial_seq do campo: c11_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: contcearquivo_c11_sequencial_seq do campo: c11_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->c11_sequencial = pg_result($result,0,0); 
+       $this->c11_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from contcearquivo_c11_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $c11_sequencial)){
@@ -211,10 +211,10 @@ class cl_contcearquivo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->c11_sequencial = $c11_sequencial; 
+         $this->c11_sequencial = $c11_sequencial;
        }
      }
-     if(($this->c11_sequencial == null) || ($this->c11_sequencial == "") ){ 
+     if(($this->c11_sequencial == null) || ($this->c11_sequencial == "") ){
        $this->erro_sql = " Campo c11_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -223,29 +223,29 @@ class cl_contcearquivo {
        return false;
      }
      $sql = "insert into contcearquivo(
-                                       c11_sequencial 
-                                      ,c11_concadtce 
-                                      ,c11_instit 
-                                      ,c11_dataini 
-                                      ,c11_datageracao 
-                                      ,c11_datafim 
-                                      ,c11_codigoremessa 
-                                      ,c11_diapagtofolha 
-                                      ,c11_infleiame 
+                                       c11_sequencial
+                                      ,c11_concadtce
+                                      ,c11_instit
+                                      ,c11_dataini
+                                      ,c11_datageracao
+                                      ,c11_datafim
+                                      ,c11_codigoremessa
+                                      ,c11_diapagtofolha
+                                      ,c11_infleiame
                        )
                 values (
-                                $this->c11_sequencial 
-                               ,$this->c11_concadtce 
-                               ,$this->c11_instit 
-                               ,".($this->c11_dataini == "null" || $this->c11_dataini == ""?"null":"'".$this->c11_dataini."'")." 
-                               ,".($this->c11_datageracao == "null" || $this->c11_datageracao == ""?"null":"'".$this->c11_datageracao."'")." 
-                               ,".($this->c11_datafim == "null" || $this->c11_datafim == ""?"null":"'".$this->c11_datafim."'")." 
-                               ,$this->c11_codigoremessa 
-                               ,$this->c11_diapagtofolha 
-                               ,'$this->c11_infleiame' 
+                                $this->c11_sequencial
+                               ,$this->c11_concadtce
+                               ,$this->c11_instit
+                               ,".($this->c11_dataini == "null" || $this->c11_dataini == ""?"null":"'".$this->c11_dataini."'")."
+                               ,".($this->c11_datageracao == "null" || $this->c11_datageracao == ""?"null":"'".$this->c11_datageracao."'")."
+                               ,".($this->c11_datafim == "null" || $this->c11_datafim == ""?"null":"'".$this->c11_datafim."'")."
+                               ,$this->c11_codigoremessa
+                               ,$this->c11_diapagtofolha
+                               ,'$this->c11_infleiame'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "contcearquivo ($this->c11_sequencial) nao Incluído. Inclusao Abortada.";
@@ -285,16 +285,16 @@ class cl_contcearquivo {
        $resac = db_query("insert into db_acount values($acount,2060,11972,'','".AddSlashes(pg_result($resaco,0,'c11_infleiame'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c11_sequencial=null) { 
+   public function alterar ($c11_sequencial=null) {
       $this->atualizacampos();
      $sql = " update contcearquivo set ";
      $virgula = "";
-     if(trim($this->c11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_sequencial"])){ 
+     if(trim($this->c11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_sequencial"])){
        $sql  .= $virgula." c11_sequencial = $this->c11_sequencial ";
        $virgula = ",";
-       if(trim($this->c11_sequencial) == null ){ 
+       if(trim($this->c11_sequencial) == null ){
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "c11_sequencial";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_contcearquivo {
          return false;
        }
      }
-     if(trim($this->c11_concadtce)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_concadtce"])){ 
+     if(trim($this->c11_concadtce)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_concadtce"])){
        $sql  .= $virgula." c11_concadtce = $this->c11_concadtce ";
        $virgula = ",";
-       if(trim($this->c11_concadtce) == null ){ 
+       if(trim($this->c11_concadtce) == null ){
          $this->erro_sql = " Campo Codigo tribunal de contas nao Informado.";
          $this->erro_campo = "c11_concadtce";
          $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_contcearquivo {
          return false;
        }
      }
-     if(trim($this->c11_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_instit"])){ 
+     if(trim($this->c11_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_instit"])){
        $sql  .= $virgula." c11_instit = $this->c11_instit ";
        $virgula = ",";
-       if(trim($this->c11_instit) == null ){ 
+       if(trim($this->c11_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "c11_instit";
          $this->erro_banco = "";
@@ -330,10 +330,10 @@ class cl_contcearquivo {
          return false;
        }
      }
-     if(trim($this->c11_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c11_dataini_dia"] !="") ){ 
+     if(trim($this->c11_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c11_dataini_dia"] !="") ){
        $sql  .= $virgula." c11_dataini = '$this->c11_dataini' ";
        $virgula = ",";
-       if(trim($this->c11_dataini) == null ){ 
+       if(trim($this->c11_dataini) == null ){
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "c11_dataini_dia";
          $this->erro_banco = "";
@@ -342,11 +342,11 @@ class cl_contcearquivo {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c11_dataini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c11_dataini_dia"])){
          $sql  .= $virgula." c11_dataini = null ";
          $virgula = ",";
-         if(trim($this->c11_dataini) == null ){ 
+         if(trim($this->c11_dataini) == null ){
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "c11_dataini_dia";
            $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_contcearquivo {
          }
        }
      }
-     if(trim($this->c11_datageracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_datageracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c11_datageracao_dia"] !="") ){ 
+     if(trim($this->c11_datageracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_datageracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c11_datageracao_dia"] !="") ){
        $sql  .= $virgula." c11_datageracao = '$this->c11_datageracao' ";
        $virgula = ",";
-       if(trim($this->c11_datageracao) == null ){ 
+       if(trim($this->c11_datageracao) == null ){
          $this->erro_sql = " Campo Data de Geração nao Informado.";
          $this->erro_campo = "c11_datageracao_dia";
          $this->erro_banco = "";
@@ -369,11 +369,11 @@ class cl_contcearquivo {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c11_datageracao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c11_datageracao_dia"])){
          $sql  .= $virgula." c11_datageracao = null ";
          $virgula = ",";
-         if(trim($this->c11_datageracao) == null ){ 
+         if(trim($this->c11_datageracao) == null ){
            $this->erro_sql = " Campo Data de Geração nao Informado.";
            $this->erro_campo = "c11_datageracao_dia";
            $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_contcearquivo {
          }
        }
      }
-     if(trim($this->c11_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c11_datafim_dia"] !="") ){ 
+     if(trim($this->c11_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c11_datafim_dia"] !="") ){
        $sql  .= $virgula." c11_datafim = '$this->c11_datafim' ";
        $virgula = ",";
-       if(trim($this->c11_datafim) == null ){ 
+       if(trim($this->c11_datafim) == null ){
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "c11_datafim_dia";
          $this->erro_banco = "";
@@ -396,11 +396,11 @@ class cl_contcearquivo {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c11_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c11_datafim_dia"])){
          $sql  .= $virgula." c11_datafim = null ";
          $virgula = ",";
-         if(trim($this->c11_datafim) == null ){ 
+         if(trim($this->c11_datafim) == null ){
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "c11_datafim_dia";
            $this->erro_banco = "";
@@ -411,10 +411,10 @@ class cl_contcearquivo {
          }
        }
      }
-     if(trim($this->c11_codigoremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_codigoremessa"])){ 
+     if(trim($this->c11_codigoremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_codigoremessa"])){
        $sql  .= $virgula." c11_codigoremessa = $this->c11_codigoremessa ";
        $virgula = ",";
-       if(trim($this->c11_codigoremessa) == null ){ 
+       if(trim($this->c11_codigoremessa) == null ){
          $this->erro_sql = " Campo Codigo da remessa do lote nao Informado.";
          $this->erro_campo = "c11_codigoremessa";
          $this->erro_banco = "";
@@ -424,10 +424,10 @@ class cl_contcearquivo {
          return false;
        }
      }
-     if(trim($this->c11_diapagtofolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_diapagtofolha"])){ 
+     if(trim($this->c11_diapagtofolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_diapagtofolha"])){
        $sql  .= $virgula." c11_diapagtofolha = $this->c11_diapagtofolha ";
        $virgula = ",";
-       if(trim($this->c11_diapagtofolha) == null ){ 
+       if(trim($this->c11_diapagtofolha) == null ){
          $this->erro_sql = " Campo Dia de pagamento da follha nao Informado.";
          $this->erro_campo = "c11_diapagtofolha";
          $this->erro_banco = "";
@@ -437,7 +437,7 @@ class cl_contcearquivo {
          return false;
        }
      }
-     if(trim($this->c11_infleiame)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_infleiame"])){ 
+     if(trim($this->c11_infleiame)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c11_infleiame"])){
        $sql  .= $virgula." c11_infleiame = '$this->c11_infleiame' ";
        $virgula = ",";
      }
@@ -473,7 +473,7 @@ class cl_contcearquivo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "contcearquivo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c11_sequencial;
@@ -501,14 +501,14 @@ class cl_contcearquivo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c11_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c11_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c11_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -542,7 +542,7 @@ class cl_contcearquivo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "contcearquivo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c11_sequencial;
@@ -570,11 +570,11 @@ class cl_contcearquivo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -596,10 +596,10 @@ class cl_contcearquivo {
       }
      return $result;
    }
-   function sql_query ( $c11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $c11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,15 +616,15 @@ class cl_contcearquivo {
      $sql2 = "";
      if($dbwhere==""){
        if($c11_sequencial!=null ){
-         $sql2 .= " where contcearquivo.c11_sequencial = $c11_sequencial "; 
-       } 
+         $sql2 .= " where contcearquivo.c11_sequencial = $c11_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,10 +633,10 @@ class cl_contcearquivo {
      }
      return $sql;
   }
-   function sql_query_file ( $c11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $c11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,15 +649,15 @@ class cl_contcearquivo {
      $sql2 = "";
      if($dbwhere==""){
        if($c11_sequencial!=null ){
-         $sql2 .= " where contcearquivo.c11_sequencial = $c11_sequencial "; 
-       } 
+         $sql2 .= " where contcearquivo.c11_sequencial = $c11_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

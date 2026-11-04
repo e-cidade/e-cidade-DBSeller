@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("sd21_i_codigo");
        <?=@$Lsd28_i_seq?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_seq',5,$Isd28_i_seq,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd28_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd28_i_procedimento,"js_pesquisasd28_i_procedimento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_procedimento',5,$Isd28_i_procedimento,true,'text',$db_opcao," onchange='js_pesquisasd28_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd09_c_descr',100,$Isd09_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd28_i_nivel?>">
-       <?
+       <?php
        db_ancora(@$Lsd28_i_nivel,"js_pesquisasd28_i_nivel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd28_i_nivel',5,$Isd28_i_nivel,true,'text',$db_opcao," onchange='js_pesquisasd28_i_nivel(false);'")
 ?>
-       <?
+       <?php
 db_input('sd21_i_codigo',10,$Isd21_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procnivel.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

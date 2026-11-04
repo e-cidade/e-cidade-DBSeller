@@ -364,7 +364,7 @@ if ($db_opcao==33) {
 
 </body>
 </html>
-<?
+<?php
 if(isset($numpods) && $numpods==true){
   db_msgbox("Inscrição está sendo utilizada em outra tabela, portanto não poderá ser excluida!");
 }

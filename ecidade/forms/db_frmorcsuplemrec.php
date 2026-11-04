@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,34 +72,34 @@ function valida_dados(){
  <fieldset><legend><b>Receitas</b></legend>
  <table>
    <tr>
-     <td nowrap title="<?=@$To85_codrec?>"> <? db_ancora(@$Lo85_codrec,"js_pesquisao85_codrec();",$op); ?> </td>
-     <td><? db_input('o85_codrec',8,$Io85_codrec,true,'text',$op,""); ?> </td>
+     <td nowrap title="<?=@$To85_codrec?>"> <?php db_ancora(@$Lo85_codrec,"js_pesquisao85_codrec();",$op); ?> </td>
+     <td><?php db_input('o85_codrec',8,$Io85_codrec,true,'text',$op,""); ?> </td>
      <td><input type="submit" name="pesquisa_rec"  value="pesquisar"> </td>
   </tr>
-  <?
+  <?php
    if ($oDadosProjeto->o138_sequencial != "") {
    ?>
    <tr>
-     <td nowrap title="<?=@$To85_codrec?>"> <? db_ancora("<b>Projeção Receita:</b>","js_pesquisa_estimativa(true);",$op); ?> </td>
-     <td><? db_input('o06_sequencial',8,$Io85_codrec,true,'text',3,""); ?> </td>
+     <td nowrap title="<?=@$To85_codrec?>"> <?php db_ancora("<b>Projeção Receita:</b>","js_pesquisa_estimativa(true);",$op); ?> </td>
+     <td><?php db_input('o06_sequencial',8,$Io85_codrec,true,'text',3,""); ?> </td>
   </tr>  
-   <?
+   <?php
    }
    ?>
   <tr>
      <td nowrap >Estrutural : </td>
-     <td><? db_input('o50_estrutreceita',26,"",true,'text',3,"");  ?> </td>
-     <td colspan=1><? db_input('o57_descr',50,"",true,'text',3,"");  ?> </td>     
+     <td><?php db_input('o50_estrutreceita',26,"",true,'text',3,"");  ?> </td>
+     <td colspan=1><?php db_input('o57_descr',50,"",true,'text',3,"");  ?> </td>     
   </tr>	
   <tr>
      <td nowrap> Recurso: </td>
-     <td><? db_input('o70_codigo',8,"",true,'text',3,"");  ?> </td>
-     <td colspan=1><? db_input('o15_descr',50,"",true,'text',3,"");  ?> </td>     
+     <td><?php db_input('o70_codigo',8,"",true,'text',3,"");  ?> </td>
+     <td colspan=1><?php db_input('o15_descr',50,"",true,'text',3,"");  ?> </td>     
   </tr>
   
   <tr>
     <td><b>Valor do Lançamento</b></td>
-    <td><? db_input('o85_valor',10,$Io85_valor,true,'text',1,'','','','text-align:right');  ?> </td>
+    <td><?php db_input('o85_valor',10,$Io85_valor,true,'text',1,'','','','text-align:right');  ?> </td>
 
     <td><input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
                type="button" id="db_opcao" 
@@ -116,14 +116,14 @@ function valida_dados(){
 <td valign=top>
  <fieldset><legend><b>Projeto</b></legend>
  <table width=200px>
-   <tr><td><b>Projeto</b></td><td><? db_input("o39_codproj",6,'',true,'text',3); ?></td></tr>
-   <tr><td><b>Suplementação</b> </td><td><? db_input("o46_codsup",6,'',true,'text',3); ?></td></tr>
+   <tr><td><b>Projeto</b></td><td><?php db_input("o39_codproj",6,'',true,'text',3); ?></td></tr>
+   <tr><td><b>Suplementação</b> </td><td><?php db_input("o46_codsup",6,'',true,'text',3); ?></td></tr>
  </table>
  </fieldset>
 
  <fieldset><legend><b>Saldos</b></legend>
  <table width=200px>
-    <tr><td><b>Total Receitas</b></td><td><? db_input("soma_receitas",10,'',true,'text',3,'','','','text-align:right'); ?></td></tr>
+    <tr><td><b>Total Receitas</b></td><td><?php db_input("soma_receitas",10,'',true,'text',3,'','','','text-align:right'); ?></td></tr>
 
  </table>
  </fieldset>
@@ -135,7 +135,7 @@ function valida_dados(){
 <center>
         
 
-<? 
+<?php 
   $sSqlReceitas = $clorcsuplemrec->sql_query_file(null,null,
                    "o85_codrec,o85_anousu,o85_valor,fc_estruturalreceita(o85_anousu::integer,o85_codrec::integer) as o50_estrutreceita, 1 as tipo",
        null,"o85_codsup =$o46_codsup");

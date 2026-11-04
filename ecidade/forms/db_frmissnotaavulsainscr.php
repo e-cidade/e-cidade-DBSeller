@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("q02_numcgm");
        <?=@$Lq52_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q52_sequencial',10,$Iq52_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq52_issnotaavulsa?>">
-       <?
+       <?php
        db_ancora(@$Lq52_issnotaavulsa,"js_pesquisaq52_issnotaavulsa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q52_issnotaavulsa',10,$Iq52_issnotaavulsa,true,'text',$db_opcao," onchange='js_pesquisaq52_issnotaavulsa(false);'")
 ?>
-       <?
+       <?php
 db_input('q51_numnota',10,$Iq51_numnota,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq52_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq52_inscr,"js_pesquisaq52_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q52_inscr',10,$Iq52_inscr,true,'text',$db_opcao," onchange='js_pesquisaq52_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsainscr.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

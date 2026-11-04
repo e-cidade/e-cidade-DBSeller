@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load('scripts.js');
       db_app::load('estilos.css');
     ?>
@@ -59,7 +59,7 @@
               <strong>Data Inicial:</strong>
             </td>
             <td>
-              <?
+              <?php
                 db_inputdata('datainicial', null, null, null, true, 'text', 1);
               ?>
             </td>
@@ -67,7 +67,7 @@
               <strong>Data Final:</strong>
             </td>
             <td>
-              <?
+              <?php
                 db_inputdata('datafinal', null, null, null, true, 'text', 1);
               ?>
             </td>
@@ -78,7 +78,7 @@
               
             </td>
             <td colspan="2">
-            <?
+            <?php
                 $aStatus = array('0' => 'Todas',
                                  '1' => 'Ativas',
                                  '2' => 'Anuladas',
@@ -92,7 +92,7 @@
               <strong>Origem:</strong>
             </td>
             <td>
-              <?
+              <?php
                 $aOrigens = array(''           => 'Selecione',
                                   'somentecgm' => 'Somente CGM',
                                   'cgm'        => 'CGM Geral',
@@ -107,14 +107,14 @@
               <strong>Exercício:</strong>
             </td>
             <td>
-                          <?
+                          <?php
                 $sSqlDeclaracaoQuitacao = $clDeclaracaoQuitacao->
                                             sql_query_file(null, "DISTINCT ar30_exercicio", "ar30_exercicio", null);
                 $rsDeclaracaoQuitacao   = $clDeclaracaoQuitacao->sql_record($sSqlDeclaracaoQuitacao);
               ?>
               <select name="exercicio" >
                 <option value="">Todas</option>
-                <?
+                <?php
                   for($i = 0; $i < $clDeclaracaoQuitacao->numrows; $i++) {
                   
                     $oDeclaracaoquitacao = db_utils::fieldsMemory($rsDeclaracaoQuitacao, $i);
@@ -129,7 +129,7 @@
               <strong>Tipo:</strong>
             </td>
             <td>
-            <?
+            <?php
                 $aTipo = array(''  => 'Selecione',
                                'A' => 'Analítico',
                                'S' => 'Sintético');
@@ -145,7 +145,7 @@
         </table>
       </fieldset>
     </form>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),

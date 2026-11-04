@@ -60,12 +60,12 @@
       <table class="form-container">
         <tr>
           <td>
-            <?
+            <?php
               db_ancora($Lob04_codobra,"js_pesquisaObra(true);",3);
             ?>
           </td>
           <td>
-            <? 
+            <?php 
               db_input('ob04_codobra',10,$Iob04_codobra,true,'text',3," onchange='js_pesquisaObra(false);'");
               db_input('ob01_nomeobra',40,$Iob01_nomeobra,true,'text',3,'');
             ?>

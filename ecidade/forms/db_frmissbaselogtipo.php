@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clissbaselogtipo->rotulo->label();
        <?=@$Lq103_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('q103_sequencial',10,$Iq103_sequencial,true,'text',3,"")
 			?>
     </td>
@@ -47,7 +47,7 @@ $clissbaselogtipo->rotulo->label();
        <?=@$Lq103_descricao?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('q103_descricao',50,$Iq103_descricao,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -57,7 +57,7 @@ $clissbaselogtipo->rotulo->label();
        <?=@$Lq103_dataini?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_inputdata('q103_dataini',@$q103_dataini_dia,@$q103_dataini_mes,@$q103_dataini_ano,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -67,7 +67,7 @@ $clissbaselogtipo->rotulo->label();
        <?=@$Lq103_datafin?>
     </td>
     <td> 
-			<?
+			<?php
 				db_inputdata('q103_datafin',@$q103_datafin_dia,@$q103_datafin_mes,@$q103_datafin_ano,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -77,7 +77,7 @@ $clissbaselogtipo->rotulo->label();
        <?=@$Lq103_ativo?>
     </td>
     <td> 
-			<?
+			<?php
 				$x = array("f"=>"NAO","t"=>"SIM");
 				db_select('q103_ativo',$x,true,$db_opcao,"");
 			?>
@@ -110,7 +110,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issbaselogtipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

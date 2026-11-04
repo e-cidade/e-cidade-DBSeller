@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clfuncao->rotulo->label();
        <?=@$Lr37_anousu?>
     </td>
     <td> 
-<?
+<?php
 $r37_anousu = db_getsession('DB_anousu');
 db_input('r37_anousu',4,$Ir37_anousu,true,'text',$db_opcao,"")
 ?>
@@ -47,7 +47,7 @@ db_input('r37_anousu',4,$Ir37_anousu,true,'text',$db_opcao,"")
        <?=@$Lr37_mesusu?>
     </td>
     <td> 
-<?
+<?php
 db_input('r37_mesusu',2,$Ir37_mesusu,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('r37_mesusu',2,$Ir37_mesusu,true,'text',$db_opcao,"")
        <?=@$Lr37_funcao?>
     </td>
     <td> 
-<?
+<?php
 db_input('r37_funcao',5,$Ir37_funcao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('r37_funcao',5,$Ir37_funcao,true,'text',$db_opcao,"")
        <?=@$Lr37_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('r37_descr',30,$Ir37_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,7 +77,7 @@ db_input('r37_descr',30,$Ir37_descr,true,'text',$db_opcao,"")
        <?=@$Lr37_vagas?>
     </td>
     <td> 
-<?
+<?php
 db_input('r37_vagas',4,$Ir37_vagas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -87,7 +87,7 @@ db_input('r37_vagas',4,$Ir37_vagas,true,'text',$db_opcao,"")
        <?=@$Lr37_cbo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r37_cbo',5,$Ir37_cbo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('r37_cbo',5,$Ir37_cbo,true,'text',$db_opcao,"")
        <?=@$Lr37_lei?>
     </td>
     <td> 
-<?
+<?php
 db_input('r37_lei',6,$Ir37_lei,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -107,7 +107,7 @@ db_input('r37_lei',6,$Ir37_lei,true,'text',$db_opcao,"")
        <?=@$Lr37_class?>
     </td>
     <td> 
-<?
+<?php
 db_input('r37_class',5,$Ir37_class,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_funcao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

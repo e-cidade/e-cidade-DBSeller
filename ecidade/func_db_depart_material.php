@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -59,7 +59,7 @@ $clorcorgao->rotulo->label("o40_descr");
 <table width="35%" border="0" align="center" cellspacing="0">
 <form name="form1" method="post" action="" >
 
-<?
+<?php
 if (isset($todasinstit) and $todasinstit == 1) {
 ?>
 <tr>
@@ -67,7 +67,7 @@ if (isset($todasinstit) and $todasinstit == 1) {
 <?=$Lcodigo?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 	if (!isset($instituicao)) {
 		$instituicao = db_getsession("DB_instit");
 	}
@@ -76,7 +76,7 @@ if (isset($todasinstit) and $todasinstit == 1) {
 ?>
 </td>
 </tr>
-<?
+<?php
 }
 ?>
 
@@ -85,7 +85,7 @@ if (isset($todasinstit) and $todasinstit == 1) {
 <?//=$Lo40_descr?><b>Orgão:</b>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 $instit=db_getsession("DB_instit");
 $anousu=db_getsession("DB_anousu");
 if (isset($instituicao) && $instituicao != 0) {
@@ -104,7 +104,7 @@ db_selectrecord('orgao',$resultorgao,true,1,"", "", "", "0-Todos", "js_orgao()")
 <?//=$Lo40_descr?><b>Unidade:</b>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 $instit=db_getsession("DB_instit");
 $anousu=db_getsession("DB_anousu");
 if (isset($instituicao) && $instituicao != 0) {
@@ -130,7 +130,7 @@ db_selectrecord('unidade',$resultunidade,true,1,"", "", "", "0-Todos", "js_unida
 <?=$Lcoddepto?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 ?>
 </td>
@@ -140,7 +140,7 @@ db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 <?=$Ldescrdepto?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 db_input("descrdepto",40,$Idescrdepto,true,"text",4,"","chave_descrdepto");
 ?>
 </td>
@@ -160,7 +160,7 @@ db_input("descrdepto",40,$Idescrdepto,true,"text",4,"","chave_descrdepto");
 </tr>
 <tr>
 <td align="center" valign="top">
-<?
+<?php
 
 if (isset($todasinstit) and $todasinstit == 1) {
 

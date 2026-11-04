@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -84,12 +84,12 @@ function js_pesquisa(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -101,30 +101,30 @@ function js_pesquisa(){
   </tr>
      <tr> 
        <td align="right" title="<?=$Tr01_regist?>"> 
-            <?
+            <?php
     			db_ancora($Lr01_regist,'js_pesquisaregistro(true);',2)
     			?>&nbsp;&nbsp;&nbsp;
        </td >
        <td align="left" > 
-            <?
+            <?php
     			db_input("r01_regist",8,$Ir01_regist,true,'text',4,"onchange='js_pesquisaregistro(false);'")
     			?>
-            <?
+            <?php
     			db_input("z01_nome",40,$Iz01_nome,true,'text',3)
     			?>
        </td>
      </tr>
 <!--     <tr> 
        <td align="right" height="25" title="<?=$Tz01_nome?>"> 
-//            <?
+//            <?php
 //    			db_ancora($Lz01_nome,'js_mostranomes(true);',4)
 //    			?>&nbsp;&nbsp;&nbsp;
        </td>
        <td  align="left" height="25"> 
-//            <?
+//            <?php
   //  			db_input("z01_numcgm",6,$Iz01_numcgm,true,'text',4," onchange='js_mostranomes(false);'")
 //    			?>
-//            <?
+//            <?php
     //			db_input("z01_nome",40,$Iz01_nome,true,'text',5)
 //    			?>
        </td>
@@ -145,7 +145,7 @@ function js_pesquisa(){
    </table>
  </form>
 
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -178,7 +178,7 @@ function js_mostraregistro1(chave1,chave2){
 
 </script>
 
-<?
+<?php
 
 $VisualizacaoTodasMatCad = new janela("VisualizacaoTodasMatCad","");
 $VisualizacaoTodasMatCad->posX=1;

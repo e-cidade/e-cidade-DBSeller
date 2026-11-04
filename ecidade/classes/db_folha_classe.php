@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,34 +66,34 @@ class cl_folha {
    var $r38_instit = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r38_regist = int4 = Codigo do Funcionario
+                 r38_regist = int4 = Codigo do funcionário
                  r38_nome = varchar(40) = Nome
                  r38_numcgm = int4 = Numero CGM
                  r38_regime = int4 = Codigo do Regime do Func.
                  r38_lotac = varchar(4) = Lotação
                  r38_vincul = varchar(1) = Vinculo
                  r38_padrao = varchar(10) = Padrão
-                 r38_salari = float8 = Salario do Funcionario
+                 r38_salari = float8 = Salario do funcionário
                  r38_funcao = varchar(30) = Função
                  r38_banco = varchar(3) = Banco
                  r38_agenc = varchar(7) = Agência
                  r38_conta = varchar(15) = Conta Corrente
-                 r38_situac = int4 = Situacao do funcionario
+                 r38_situac = int4 = Situacao do funcionário
                  r38_previd = int4 = Tabela da previdencia
                  r38_liq = float8 = Salario Liquido
-                 r38_prov = float8 = Proventos do funcionario
-                 r38_desc = float8 = Descontos do funcionario
+                 r38_prov = float8 = Proventos do funcionário
+                 r38_desc = float8 = Descontos do funcionário
                  r38_proc = date = Processado
                  r38_instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_folha() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("folha");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if( ($this->erro_status == "0") || ($mostra == true && $this->erro_status != null ) ){
 
         db_msgbox($this->erro_msg);
@@ -104,7 +104,7 @@ class cl_folha {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r38_regist = ($this->r38_regist == ""?@$GLOBALS["HTTP_POST_VARS"]["r38_regist"]:$this->r38_regist);
        $this->r38_nome = ($this->r38_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["r38_nome"]:$this->r38_nome);
@@ -138,7 +138,7 @@ class cl_folha {
      }
    }
    // funcao para inclusao
-   function incluir ($r38_regist,$r38_instit){
+   public function incluir ($r38_regist,$r38_instit=null){
       $this->atualizacampos();
      if($this->r38_nome == null ){
        $this->erro_sql = " Campo Nome nao Informado.";
@@ -180,7 +180,7 @@ class cl_folha {
        return false;
      }
      if($this->r38_prov == null ){
-       $this->erro_sql = " Campo Proventos do funcionario nao Informado.";
+       $this->erro_sql = " Campo Proventos do funcionário nao Informado.";
        $this->erro_campo = "r38_prov";
        $this->erro_banco = "";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -189,7 +189,7 @@ class cl_folha {
        return false;
      }
      if($this->r38_desc == null ){
-       $this->erro_sql = " Campo Descontos do funcionario nao Informado.";
+       $this->erro_sql = " Campo Descontos do funcionário nao Informado.";
        $this->erro_campo = "r38_desc";
        $this->erro_banco = "";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -314,7 +314,7 @@ class cl_folha {
      return true;
    }
    // funcao para alteracao
-   function alterar ($r38_regist=null,$r38_instit=null) {
+   public function alterar ($r38_regist=null,$r38_instit=null) {
       $this->atualizacampos();
      $sql = " update folha set ";
      $virgula = "";
@@ -322,7 +322,7 @@ class cl_folha {
        $sql  .= $virgula." r38_regist = $this->r38_regist ";
        $virgula = ",";
        if(trim($this->r38_regist) == null ){
-         $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
+         $this->erro_sql = " Campo Codigo do funcionário nao Informado.";
          $this->erro_campo = "r38_regist";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -430,7 +430,7 @@ class cl_folha {
        $sql  .= $virgula." r38_prov = $this->r38_prov ";
        $virgula = ",";
        if(trim($this->r38_prov) == null ){
-         $this->erro_sql = " Campo Proventos do funcionario nao Informado.";
+         $this->erro_sql = " Campo Proventos do funcionário nao Informado.";
          $this->erro_campo = "r38_prov";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -443,7 +443,7 @@ class cl_folha {
        $sql  .= $virgula." r38_desc = $this->r38_desc ";
        $virgula = ",";
        if(trim($this->r38_desc) == null ){
-         $this->erro_sql = " Campo Descontos do funcionario nao Informado.";
+         $this->erro_sql = " Campo Descontos do funcionário nao Informado.";
          $this->erro_campo = "r38_desc";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -562,7 +562,7 @@ class cl_folha {
      }
    }
    // funcao para exclusao
-   function excluir ($r38_regist=null,$r38_instit=null,$dbwhere=null) {
+   public function excluir ($r38_regist=null,$r38_instit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r38_regist,$r38_instit));
      }else{
@@ -648,7 +648,7 @@ class cl_folha {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -670,10 +670,10 @@ class cl_folha {
       }
      return $result;
    }
-   function sql_query ( $r38_regist=null,$r38_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $r38_regist=null,$r38_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -704,7 +704,7 @@ class cl_folha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -713,10 +713,10 @@ class cl_folha {
      }
      return $sql;
   }
-   function sql_query_cgm ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_cgm ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -738,7 +738,7 @@ class cl_folha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -747,10 +747,10 @@ class cl_folha {
      }
      return $sql;
   }
-   function sql_query_file ( $r38_regist=null,$r38_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $r38_regist=null,$r38_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -779,7 +779,7 @@ class cl_folha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -788,10 +788,10 @@ class cl_folha {
      }
      return $sql;
   }
-   function sql_query_gerarq ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_gerarq ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -836,7 +836,7 @@ class cl_folha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -845,10 +845,10 @@ class cl_folha {
      }
      return $sql;
   }
-   function sql_query_gerarqbag ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_gerarqbag ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -865,7 +865,7 @@ class cl_folha {
      $sql .= "      inner join rhpessoalmov on rhpessoalmov.rh02_regist = folha.r38_regist";
      $sql .= "                             and rh02_anousu = ".db_anofolha();
      $sql .= "                             and rh02_mesusu = ".db_mesfolha();
-     $sql .= "                             and rh02_instit = ".db_getsession("DB_instit");  
+     $sql .= "                             and rh02_instit = ".db_getsession("DB_instit");
      $sql .= "      inner join rhpessoalmovcontabancaria on rhpessoalmov.rh02_seqpes = rhpessoalmovcontabancaria.rh138_rhpessoalmov ";
      $sql .= "                                          and rhpessoalmov.rh02_instit = rhpessoalmovcontabancaria.rh138_instit";
      $sql .= "      inner join contabancaria on contabancaria.db83_sequencial = rhpessoalmovcontabancaria.rh138_contabancaria";
@@ -881,7 +881,7 @@ class cl_folha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -890,10 +890,10 @@ class cl_folha {
      }
      return $sql;
   }
-   function sql_query_gerarqdae ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere="",$ano, $mes){
+   public function sql_query_gerarqdae ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere="",$ano, $mes){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -931,7 +931,7 @@ class cl_folha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -941,10 +941,10 @@ class cl_folha {
      return $sql;
   }
 
-  function sql_query_gerarqbagRecurso ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_gerarqbagRecurso ( $r38_regist=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = explode("#",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -955,10 +955,10 @@ class cl_folha {
   	}
 
   	$sql .= " from folha ";
-  	$sql .= "      inner join cgm on cgm.z01_numcgm = folha.r38_numcgm ";
-  	$sql .= "      inner join rhlota on r70_codigo = to_number(r38_lotac,'9999') ";
-  	$sql .= "                       and r70_instit = ".db_getsession("DB_instit");
-  	$sql .= "      inner join rhlotavinc   on rhlotavinc.rh25_codigo   = rhlota.r70_codigo";
+  	$sql .= "      inner join cgm       on cgm.z01_numcgm = folha.r38_numcgm ";
+  	$sql .= "      inner join rhlota    on r70_codigo = to_number(r38_lotac,'9999') ";
+  	$sql .= "                           and r70_instit = ".db_getsession("DB_instit");
+  	$sql .= "      left join rhlotavinc on rhlotavinc.rh25_codigo   = rhlota.r70_codigo";
   	$sql2 = "";
   	if($dbwhere==""){
   		if($r38_regist!=null ){
@@ -970,7 +970,7 @@ class cl_folha {
   		$sql .= $sql2;
   		if($ordem != null ){
   			$sql .= " order by ";
-  			$campos_sql = split("#",$ordem);
+  			$campos_sql = explode("#",$ordem);
   			$virgula = "";
   			for($i=0;$i<sizeof($campos_sql);$i++){
   				$sql .= $virgula.$campos_sql[$i];

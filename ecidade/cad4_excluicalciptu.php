@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -143,10 +143,13 @@ if (isset($excluircalculo)) {
   		    $aDadosDebitos['Receita'] = $oDadosDebito->k00_receit;
 
   		    // inserir na iptunumpold
+          $rsSequencialIptuNumpOld = db_query("select nextval('iptunumpold_j130_sequencial_seq') as sequencial");
+          $sequencialIptuNumpOld = db_utils::getCollectionByRecord($rsSequencialIptuNumpOld)[0]->sequencial;
+
   		    $cliptunumpold->j130_anousu = db_getsession("DB_anousu");
   		    $cliptunumpold->j130_matric = $j01_matric;
   		    $cliptunumpold->j130_numpre = $oDadosDebito->k00_numpre;
-  		    $cliptunumpold->incluir();
+  		    $cliptunumpold->incluir($sequencialIptuNumpOld);
 
           if($cliptunumpold->erro_status==0){
             $sqlerro = true;
@@ -249,12 +252,12 @@ function  js_verificacalculo(){
       <table>
           <tr>
             <td nowrap title="<?=$Tz01_nunmcgm?>">
-              <?
+              <?php
                 db_ancora(@$Lj01_matric,'js_mostranomes(true);',4);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input("j01_matric",8,$Ij01_matric,true,'text',4," onchange='js_mostranomes(false);' ");
                 db_input("z01_nome",40,$Iz01_nome,true,'text',3);
               ?>
@@ -265,7 +268,7 @@ function  js_verificacalculo(){
               <?php echo $Lj18_anousu?>
             </td>
             <td>
-              <?
+              <?php
                 $result=db_query("select distinct j18_anousu from cfiptu order by j18_anousu asc");
                 if(pg_numrows($result) > 0){
                   $opcoes = array();
@@ -282,7 +285,7 @@ function  js_verificacalculo(){
     </fieldset>
     <input name="excluircalculo"  type="submit" id="excluircalculo" value="Excluir C&aacute;lculo">
   </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </div>
@@ -311,7 +314,7 @@ function js_preenche1(chave1, chave2) {
 }
 
 </script>
-<?
+<?php
 $func_nome = new janela('func_nome','');
 $func_nome ->posX=1;
 $func_nome ->posY=20;
@@ -333,7 +336,7 @@ if(isset($calcular)){
   func_nome.show();
   func_nome.focus();
 </script>
-<?
+<?php
 }
 if($erro==true){
   echo "<script>alert('$descricaoerro');</script>";

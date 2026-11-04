@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("y77_descricao");
        <?=@$Ly06_vistoriaslote?>
     </td>
     <td> 
-<?
+<?php
 db_input('y06_vistoriaslote',10,$Iy06_vistoriaslote,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -49,7 +49,7 @@ db_input('y06_vistoriaslote',10,$Iy06_vistoriaslote,true,'text',$db_opcao,"")
        <?=@$Ly06_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y06_data',@$y06_data_dia,@$y06_data_mes,@$y06_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -59,37 +59,37 @@ db_inputdata('y06_data',@$y06_data_dia,@$y06_data_mes,@$y06_data_ano,true,'text'
        <?=@$Ly06_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('y06_hora',10,$Iy06_hora,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty06_usuario?>">
-       <?
+       <?php
        db_ancora(@$Ly06_usuario,"js_pesquisay06_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y06_usuario',10,$Iy06_usuario,true,'text',$db_opcao," onchange='js_pesquisay06_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty06_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Ly06_codtipo,"js_pesquisay06_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y06_codtipo',10,$Iy06_codtipo,true,'text',$db_opcao," onchange='js_pesquisay06_codtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('y77_descricao',50,$Iy77_descricao,true,'text',3,'')
        ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_vistoriaslote.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

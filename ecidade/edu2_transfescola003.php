@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -31,11 +31,25 @@ $oDaoTransfEscolaRede = db_utils::getdao('transfescolarede');
 $oDaoTransfEscolaFora = db_utils::getdao('transfescolafora');
 $oDaoMatricula        = db_utils::getdao('matricula');
 
+if ($iEscola == 'TODAS') {
+  $oDaoEscola     = db_utils::getdao('escola');              
+  $sSqlEscola     = $oDaoEscola->sql_query_file("", "ed18_i_codigo,ed18_c_nome", "", "");                                                                      
+  $rsResultEscola = $oDaoEscola->sql_record($sSqlEscola);            
+  $iLinhas        = $oDaoEscola->numrows;
+  $escolas = array(); 
+
+  for ($iCont = 0; $iCont < $iLinhas; $iCont++) {                       
+    $oDadosEscola = db_utils::fieldsmemory($rsResultEscola, $iCont);  
+    $escolas[$iCont] = $oDadosEscola->ed18_i_codigo;                                 
+  }
+  $iEscola = implode(" ,", $escolas);
+}
+
 if ($sTipo == "R") {
 
   $sCamposTp  = " ed47_i_codigo, ed47_v_nome, ed60_d_datamatricula, 'TRANSFERÊNCIA REDE' as tipotransf,";
-  $sCamposTp .= " ed57_i_calendario, ed60_i_codigo as codmatricula  ";
-  $sWhereTp   = " ed57_i_escola = $iEscola AND ed60_d_datamatricula BETWEEN '$dDataInicio' AND '$dDataFinal' ";
+  $sCamposTp .= " ed57_i_calendario, ed60_i_codigo as codmatricula, ed57_c_descr  ";
+  $sWhereTp   = " ed57_i_escola in ($iEscola) AND ed60_d_datamatricula BETWEEN '$dDataInicio' AND '$dDataFinal' ";
   $sWhereTp  .= " AND ed229_c_procedimento = 'MATRICULAR ALUNOS TRANSFERIDOS' ";
   $sOrderTp   = " to_ascii(ed47_v_nome) ";
   $sSql       = $oDaoMatricula->sql_query_tipotransf("", $sCamposTp, $sOrderTp, $sWhereTp);
@@ -46,8 +60,8 @@ if ($sTipo == "R") {
 } else if ($sTipo == "F") {
 
   $sCamposTp  = " ed47_i_codigo,ed47_v_nome, ed60_d_datamatricula, 'TRANSFERÊNCIA FORA' as tipotransf,";
-  $sCamposTp .= " ed57_i_calendario, ed60_i_codigo as codmatricula";
-  $sWhereTp   = " ed57_i_escola = $iEscola AND ed60_d_datamatricula BETWEEN '$dDataInicio' AND '$dDataFinal' ";
+  $sCamposTp .= " ed57_i_calendario, ed60_i_codigo as codmatricula, ed57_c_descr";
+  $sWhereTp   = " ed57_i_escola in ($iEscola) AND ed60_d_datamatricula BETWEEN '$dDataInicio' AND '$dDataFinal' ";
   $sWhereTp  .= " AND ed229_c_procedimento = 'MATRICULAR ALUNO' ";
   $sWhereTp  .= " AND ed229_t_descr like '% ANTERIOR: TRANSFERIDO FORA%'";
   $sOrderTp   = " to_ascii(ed47_v_nome) ";
@@ -59,14 +73,14 @@ if ($sTipo == "R") {
 } else {
 
   $sCamposTp  = " ed47_i_codigo, to_ascii(ed47_v_nome) as ed47_v_nome,ed60_d_datamatricula,";
-  $sCamposTp .= " 'TRANSFERÊNCIA REDE' as tipotransf, ed57_i_calendario, ed60_i_codigo as codmatricula";
-  $sWhereTp   = " ed57_i_escola = $iEscola AND ed60_d_datamatricula BETWEEN '$dDataInicio' AND '$dDataFinal' ";
+  $sCamposTp .= " 'TRANSFERÊNCIA REDE' as tipotransf, ed57_i_calendario, ed60_i_codigo as codmatricula, ed57_c_descr";
+  $sWhereTp   = " ed57_i_escola in ($iEscola) AND ed60_d_datamatricula BETWEEN '$dDataInicio' AND '$dDataFinal' ";
   $sWhereTp  .= " AND ed229_c_procedimento = 'MATRICULAR ALUNOS TRANSFERIDOS' ";
   $sSqlTp     = $oDaoMatricula->sql_query_tipotransf("", $sCamposTp, "", $sWhereTp);
 
   $sCamposTp2  = " ed47_i_codigo, to_ascii(ed47_v_nome) as ed47_v_nome, ed60_d_datamatricula,";
-  $sCamposTp2 .= " 'TRANSFERÊNCIA FORA' as tipotransf, ed57_i_calendario, ed60_i_codigo as codmatricula";
-  $sWhereTp2   = " ed57_i_escola = $iEscola ";
+  $sCamposTp2 .= " 'TRANSFERÊNCIA FORA' as tipotransf, ed57_i_calendario, ed60_i_codigo as codmatricula, ed57_c_descr";
+  $sWhereTp2   = " ed57_i_escola in ($iEscola) ";
   $sWhereTp2  .= " AND ed60_d_datamatricula BETWEEN '$dDataInicio' AND '$dDataFinal' ";
   $sWhereTp2  .= " AND ed229_c_procedimento = 'MATRICULAR ALUNO' ";
   $sWhereTp2  .= " AND ed229_t_descr like '% ANTERIOR: TRANSFERIDO FORA%' ";
@@ -114,11 +128,12 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
     $oPdf->addpage('L');
     $oPdf->setfillcolor(215);
     $oPdf->setfont('arial', 'B', 8);
-    $oPdf->cell(10, 5, "Código", 1, 0, "C", 1);
-    $oPdf->cell(90, 5, "Aluno", 1, 0, "C", 1);
-    $oPdf->cell(120, 5, "Origem", 1, 0, "C", 1);
-    $oPdf->cell(30, 5, "Tipo", 1, 0, "C", 1);
-    $oPdf->cell(30, 5, "Data", 1, 1, "C", 1);
+    $oPdf->cell(15, 5, "Código", 1, 0, "C", 1);
+    $oPdf->cell(70, 5, "Aluno", 1, 0, "C", 1);
+    $oPdf->cell(30, 5, "Turma Destino", 1, 0, "C", 1);
+    $oPdf->cell(15, 5, "Data", 1, 0, "C", 1);
+    $oPdf->cell(35, 5, "Tipo", 1, 0, "C", 1);
+    $oPdf->cell(115, 5, "Código - Escola Origem", 1, 1, "C", 1);
     $lTroca = false;
 
  }
@@ -128,12 +143,12 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
  } else {
    $lCor = false;
  }
-
+ 
  if ($oDadosTpTransf->tipotransf == "TRANSFERÊNCIA REDE") {
 
-   $sCamposTransf  = " escola.ed18_c_nome as nomeescola ";
+   $sCamposTransf  = " escola.ed18_c_nome as nomeescola, ed18_i_codigo ";
    $sWhereTransf   = " ed60_i_aluno = $oDadosTpTransf->ed47_i_codigo ";
-   $sWhereTransf  .= " AND ed102_i_escola = $iEscola AND ed102_i_calendario = $oDadosTpTransf->ed57_i_calendario ";
+   $sWhereTransf  .= " AND ed102_i_escola in ($iEscola) AND ed102_i_calendario = $oDadosTpTransf->ed57_i_calendario ";
    $sSqlTransf     = $oDaoTransfEscolaRede->sql_query_tipotransferido("", $sCamposTransf, "", $sWhereTransf);
    $rsTransf       = $oDaoTransfEscolaRede->sql_record($sSqlTransf);
    $iLinhasTransf  = $oDaoTransfEscolaRede->numrows;
@@ -146,7 +161,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
  } else {
 
-   $sCamposTransf  = " escolaproc.ed82_c_nome as nomeescola ";
+   $sCamposTransf  = " escolaproc.ed82_c_nome as nomeescola, ed82_i_codigo ";
    $sInnerTransf   = " inner join escolaproc on ed82_i_codigo = ed104_i_escoladestino ";
    $sWhereTransf   = " ed104_i_aluno = $oDadosTpTransf->ed47_i_codigo ";
    $sSqlTransf     = $oDaoTransfEscolaFora->sql_query_file("", $sCamposTransf).$sInnerTransf.' where '.$sWhereTransf;
@@ -162,13 +177,19 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
  }
 
+ $codEscola = !empty($oDadosTransf->ed18_i_codigo) ? $oDadosTransf->ed18_i_codigo : $oDadosTransf->ed82_i_codigo;
+ 
  $oPdf->setfillcolor(230);
  $oPdf->setfont('arial', '', 7);
- $oPdf->cell(10, 5, $oDadosTpTransf->ed47_i_codigo, 0, 0, "C", $lCor);
- $oPdf->cell(90, 5, $oDadosTpTransf->ed47_v_nome, 0, 0, "L", $lCor);
- $oPdf->cell(120, 5, $oDadosTransf->nomeescola, 0, 0, "L", $lCor);
- $oPdf->cell(30, 5, $oDadosTpTransf->tipotransf, 0, 0, "L", $lCor);
- $oPdf->cell(30, 5, db_formatar($oDadosTpTransf->ed60_d_datamatricula, 'd'), 0, 1, "C", $lCor);
+ $oPdf->cell(15, 5, $oDadosTpTransf->ed47_i_codigo, 0, 0, "C", $lCor);
+ $oPdf->cell(70, 5, $oDadosTpTransf->ed47_v_nome, 0, 0, "L", $lCor);
+ strlen($oDadosTpTransf->ed57_c_descr) > 21 ? $oPdf->setfont('arial', '', 5) : $oPdf->setfont('arial', '', 7);
+ $oPdf->cell(30, 5, $oDadosTpTransf->ed57_c_descr, 0, 0, "L", $lCor);
+ $oPdf->setfont('arial', '', 7);
+ $oPdf->cell(15, 5, db_formatar($oDadosTpTransf->ed60_d_datamatricula, 'd'), 0, 0, "C", $lCor);
+ $oPdf->cell(35, 5, $oDadosTpTransf->tipotransf, 0, 0, "C", $lCor);
+ $escola = $codEscola. " - " . $oDadosTransf->nomeescola;
+ $oPdf->cell(115, 5, $escola, 0, 1, "E", $lCor);
 }
 $oPdf->setfillcolor(215);
 $oPdf->setfont('arial', 'B', 9);

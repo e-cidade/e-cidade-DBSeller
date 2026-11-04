@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,7 +64,7 @@ function js_emite(){
       <tr>
         <td align="right" ><strong>Nível :</strong></td>
         <td>
-	  <?
+	  <?php
 	     $xy = array('1A'=>'Órgão Até o Nível','1B'=>'Órgão só o Nível','2A'=>'Unidade Até o Nível','2B'=>'Unidade só o Nível','3A'=>'Função Até o Nível','3B'=>'Função só o Nível','4A'=>'Subfunção Até o Nível','4B'=>'Subfunção só o Nível','5A'=>'Programa Até o Nível','5B'=>'Programa só o Nível','6A'=>'Proj/Ativ Até o Nível','6B'=>'Proj/Ativ só o Nível','7A'=>'Elemento Até o Nível','7B'=>'Elemento só o Nível','8A'=>'Recurso Até o Nível','9A'=>'Recurso Até o Nível - Completo','8B'=>'Recurso só o Nível');
 	     db_select('nivel',$xy,true,2,"");
 	     $db_selinstit = db_getsession("DB_instit");
@@ -78,7 +78,7 @@ function js_emite(){
 	</td>
 	
         <td >
-	<?
+	<?php
 	$x = array('N'=>'NÃO','S'=>'SIM');
 	db_select('quebra_orgao',$x,true,2,"");
 	?>
@@ -89,14 +89,14 @@ function js_emite(){
 	</td>
 	
         <td >
-	<?
+	<?php
 	$xx = array('N'=>'NÃO','S'=>'SIM');
 	db_select('quebra_unidade',$xx,true,2,"");
 	?>
 	</td>
       </tr>
       <tr>
-        <?
+        <?php
         $sql = "select o50_subelem from orcparametro where o50_anousu = ".db_getsession("DB_anousu");
         $result1 = db_query($sql);
         $o50_subelem = pg_result($result1,0,0);
@@ -107,24 +107,24 @@ function js_emite(){
           <td align="right"><strong>Listar Sub-elementos:</strong> 
   	  </td>
           <td >
-	  <?
+	  <?php
 	  $xx = array('N'=>'NÃO','S'=>'SIM');
 	  db_select('lista_subeleme',$xx,true,2,"");
 	  ?>
 	  </td>
-        <?
+        <?php
  	}else{
 	?>
           <td align="right"> 
   	  </td>
           <td>
-	  <?
+	  <?php
 	  global $lista_subeleme;
 	  $lista_subeleme = 'N';
 	  db_input("lista_subeleme",15,0,true,'hidden',3);
 	  ?>
           </td>
-	<?
+	<?php
 	}
 	?>
       </tr>
@@ -135,7 +135,7 @@ function js_emite(){
 	</td>
 	
         <td >
-	<?
+	<?php
 	$xx = array('P'=>'PDF','C'=>'CSV');
 	db_select('formato_arq',$xx,true,2,"");
 	?>

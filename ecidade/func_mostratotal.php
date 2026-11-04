@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -43,16 +43,16 @@ if(isset($valores) && trim($valores)!=""){
   $numrows_valores = $clempagemov->numrows;
   if($numrows_valores>0){
     $sair = false;
-  }  
+  }
 }else if(isset($coluna) && trim($coluna)!=""){
-  $arr_valorescoluna = split(",",$coluna);
+  $arr_valorescoluna =explode(",",$coluna);
   $arr_codigtipo = Array();
   $arr_valortipo = Array();
   $arr_indextipo = Array();
   $numrows_valores = 0;
   $sair  = false;
-  for($i=0;$i<sizeof($arr_valorescoluna);$i++){    
-    $arr_quebracoluna = split("-",$arr_valorescoluna[$i]);
+  for($i=0;$i<sizeof($arr_valorescoluna);$i++){
+    $arr_quebracoluna =explode("-",$arr_valorescoluna[$i]);
     $codigtipo = $arr_quebracoluna[0];
     $valortipo = $arr_quebracoluna[1];
     if(!isset($arr_codigtipo[$codigtipo])){
@@ -106,8 +106,8 @@ if(isset($valores) && trim($valores)!=""){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
       <br><br>
       <center>
-      <?
-      if($sair==true){      	 
+      <?php
+      if($sair==true){
         echo "<input type='text' name='focado1' onBlur='parent.db_iframe_mostratotal.hide();' size='1'>";
 	echo "<strong> Registros não encontrados.</strong>";
         echo "<input type='text' name='focado' onBlur='parent.db_iframe_mostratotal.hide();' size='1'>";
@@ -148,7 +148,7 @@ if(isset($valores) && trim($valores)!=""){
 	echo "    <td colspan='1' align='right' bgcolor='#CCCCCC' class='bordas'><b>Valor total</b></td>";
 	echo "    <td colspan='1' align='right' bgcolor='#CCCCCC' class='bordas'><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".db_formatar($valortotal,"f")."</b></td>";
 	echo "  </tr>";
-      }      
+      }
 /*
     <td align="center" valign="top" bgcolor="#CCCCCC" colspan='2'>
       <input type='button' name='fechar' value='Fechar' onclick='parent.db_iframe_mostratotal.hide();'>

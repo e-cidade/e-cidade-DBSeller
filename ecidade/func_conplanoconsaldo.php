@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $clconplanoconsaldo->rotulo->label("c59_debito");
               <?=$Lc59_anoexe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c59_anoexe",4,$Ic59_anoexe,true,"text",4,"","chave_c59_anoexe");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clconplanoconsaldo->rotulo->label("c59_debito");
               <?=$Lc59_codcon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c59_codcon",6,$Ic59_codcon,true,"text",4,"","chave_c59_codcon");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clconplanoconsaldo->rotulo->label("c59_debito");
               <?=$Lc59_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c59_instit",2,$Ic59_instit,true,"text",4,"","chave_c59_instit");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clconplanoconsaldo->rotulo->label("c59_debito");
               <?=$Lc59_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c59_mes",2,$Ic59_mes,true,"text",4,"","chave_c59_mes");
 		       ?>
             </td>
@@ -97,7 +97,7 @@ $clconplanoconsaldo->rotulo->label("c59_debito");
               <?=$Lc59_debito?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c59_debito",8,$Ic59_debito,true,"text",4,"","chave_c59_debito");
 		       ?>
             </td>
@@ -115,7 +115,7 @@ $clconplanoconsaldo->rotulo->label("c59_debito");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplanoconsaldo.php")==true){
@@ -151,12 +151,12 @@ $clconplanoconsaldo->rotulo->label("c59_debito");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

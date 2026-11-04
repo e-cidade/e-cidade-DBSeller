@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -30,26 +30,29 @@ namespace ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\Repository;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa;
-use \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\Model\MarcacaoPontoJustificativa as MarcacaoPontoJustificativaModel;
+use \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\Model\MarcacaoPontoJustificativa
+    as MarcacaoPontoJustificativaModel;
 
 /**
  * Class MarcacaoPontoJustificativa
  * @package ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\Repository
  * @author Fábio Esteves <fabio.esteves@dbseller.com.br>
  */
-class MarcacaoPontoJustificativa {
+class MarcacaoPontoJustificativa
+{
 
   /**
    * @var \cl_pontoeletronicoregistrojustificativa
    */
-  private $oDao;
+    private $oDao;
 
   /**
    * MarcacaoPontoJustificativa constructor.
    */
-  public function __construct() {
-    $this->oDao = new \cl_pontoeletronicoregistrojustificativa();
-  }
+    public function __construct()
+    {
+        $this->oDao = new \cl_pontoeletronicoregistrojustificativa();
+    }
 
   /**
    * @param \Servidor $oServidor
@@ -57,56 +60,58 @@ class MarcacaoPontoJustificativa {
    * @return MarcacaoPontoJustificativaModel[]|null
    * @throws \DBException
    */
-  public function getTodasJustificativasDiaTrabalho(\Servidor $oServidor, \DBDate $oData) {
+    public function getTodasJustificativasDiaTrabalho(\Servidor $oServidor, \DBDate $oData)
+    {
 
-    $aCampos = array('pontoeletronicoregistrojustificativa.*');
-    $aWhere  = array("rh197_data = '{$oData->getDate()}'", "rh197_matricula = {$oServidor->getMatricula()}");
+        $aCampos = array('pontoeletronicoregistrojustificativa.*');
+        $aWhere  = array("rh197_data = '{$oData->getDate()}'", "rh197_matricula = {$oServidor->getMatricula()}");
 
-    $sSql = $this->oDao->sqlJustificativasData($aCampos, '', $aWhere);
-    $rs   = db_query($sSql);
+        $sSql = $this->oDao->sqlJustificativasData($aCampos, '', $aWhere);
+        $rs   = db_query($sSql);
 
-    if(!$rs) {
-      throw new \DBException('Erro ao buscar as justificativas lançadas.');
+        if (!$rs) {
+            throw new \DBException('Erro ao buscar as justificativas lançadas.');
+        }
+
+        if (pg_num_rows($rs) == 0) {
+            return null;
+        }
+
+        return \db_utils::makeCollectionFromRecord($rs, function ($oRetorno) {
+
+            $oMarcacaoPontoJustificativa = new MarcacaoPontoJustificativaModel();
+
+            $oMarcacaoPonto = new MarcacaoPonto();
+            $oMarcacaoPonto->setCodigo($oRetorno->rh199_pontoeletronicoarquivodataregistro);
+
+            $oJustificativa = new Justificativa();
+            $oJustificativa->setCodigo($oRetorno->rh199_pontoeletronicojustificativa);
+
+            $oMarcacaoPontoJustificativa->setCodigo($oRetorno->rh199_sequencial);
+            $oMarcacaoPontoJustificativa->setMarcacaoPonto($oMarcacaoPonto);
+            $oMarcacaoPontoJustificativa->setJustificativa($oJustificativa);
+            $oMarcacaoPontoJustificativa->setTipo($oRetorno->rh199_tipo);
+
+            return $oMarcacaoPontoJustificativa;
+        });
     }
-
-    if(pg_num_rows($rs) == 0) {
-      return null;
-    }
-
-    return \db_utils::makeCollectionFromRecord($rs, function($oRetorno) {
-
-      $oMarcacaoPontoJustificativa = new MarcacaoPontoJustificativaModel();
-
-      $oMarcacaoPonto = new MarcacaoPonto();
-      $oMarcacaoPonto->setCodigo($oRetorno->rh199_pontoeletronicoarquivodataregistro);
-
-      $oJustificativa = new Justificativa();
-      $oJustificativa->setCodigo($oRetorno->rh199_pontoeletronicojustificativa);
-
-      $oMarcacaoPontoJustificativa->setCodigo($oRetorno->rh199_sequencial);
-      $oMarcacaoPontoJustificativa->setMarcacaoPonto($oMarcacaoPonto);
-      $oMarcacaoPontoJustificativa->setJustificativa($oJustificativa);
-      $oMarcacaoPontoJustificativa->setTipo($oRetorno->rh199_tipo);
-
-      return $oMarcacaoPontoJustificativa;
-    });
-  }
 
   /**
    * @param array $aCodigosJustificativas
    * @throws \DBException
    * @throws \ParameterException
    */
-  public function removeColecao($aCodigosJustificativas) {
+    public function removeColecao($aCodigosJustificativas)
+    {
 
-    if(empty($aCodigosJustificativas)) {
-      throw new \ParameterException('Justificativas não informadas.');
+        if (empty($aCodigosJustificativas)) {
+            throw new \ParameterException('Justificativas não informadas.');
+        }
+
+        $this->oDao->excluir(null, 'rh199_sequencial in(' . implode(', ', $aCodigosJustificativas) . ')');
+
+        if ($this->oDao->erro_status == '0') {
+            throw new \DBException($this->oDao->erro_msg);
+        }
     }
-
-    $this->oDao->excluir(null, 'rh199_sequencial in(' . implode(', ', $aCodigosJustificativas) . ')');
-
-    if($this->oDao->erro_status == '0') {
-      throw new \DBException($this->oDao->erro_msg);
-    }
-  }
 }

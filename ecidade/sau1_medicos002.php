@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -87,7 +87,7 @@ if (isset($alterar)) {
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href   = 'sau1_sau_procedmedagendamento001.php?sd04_i_medico=<?=$sd03_i_codigo?>'+
                                             '&z01_nome=<?=$z01_nome?>';
     </script>
-<?
+<?php
   } else {
 ?>
     <script>
@@ -97,7 +97,7 @@ if (isset($alterar)) {
       parent.document.formaba.a5.disabled = true;
       parent.document.formaba.a6.disabled = true;
     </script>
-<?
+<?php
   }
 }
 ?>
@@ -118,7 +118,7 @@ if (isset($alterar)) {
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
       <br>
       <center>
-        <?
+        <?php
         require_once(modification("forms/db_frmmedicos.php"));
         ?>
       </center>
@@ -127,7 +127,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($oDaoMedicos->erro_status == '0') {

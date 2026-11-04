@@ -68,13 +68,13 @@ $clrotulo->label("l03_descr");
       <tr> 
          <td  align="right" nowrap title="<?=$Tl20_codigo?>">
           <b>
-          <?
+          <?php
             db_ancora('Licitação :',"js_pesquisa_liclicita(true);",1);
           ?>
           </b>
          </td>
          <td align="left" nowrap>
-          <?
+          <?php
             db_input("l20_codigo",8,$Il20_codigo,true,"text",1,"onchange='js_pesquisa_liclicita(false);'");
           ?>
          </td>
@@ -84,7 +84,7 @@ $clrotulo->label("l03_descr");
   <input  name="imprime" id="imprimi" type="button" value="Imprimir" onclick="js_emite();" >
 </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $db_botao = true;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
        $clcriaabas->identifica = array("g1"=>"Tiaf","g2"=>"Documenta??o");
        $clcriaabas->title = array("g1"=>"Cadastrar tiaf","g2"=>"Documenta??o");
        $clcriaabas->src = array("g1"=>"fis1_tiafaba003.php","g2"=>"fis1_tiafaba002.php");
@@ -74,7 +74,7 @@ $db_botao = true;
 	</td>
   </tr>
 </table>
-	<?
+	<?php
 		db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	?>
 </body>

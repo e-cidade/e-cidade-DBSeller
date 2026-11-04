@@ -160,6 +160,8 @@ $oRotulo  = new rotulocampo();
     </div>
   </body>
 </html>
+<script language="javascript" type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script type="text/javascript" src="scripts/session.js"></script>
 <script type="text/javascript">
 sUrlRPC = 'edu4_escola.RPC.php';
 
@@ -171,8 +173,8 @@ var oCboPeriodo                 = null;
 var oCboDisciplinas             = null;
 var oCboDisciplinasSelecionadas = null;
 var oDBFormCache                = null;
-const codTurma = ['1441', '1452']; // Lista das turmas multi a e b
-var armazenaEtapa               = {};
+const codTurma = [];
+var armazenaEtapa = {};
 var oDisciplina = new DBViewFormularioEducacao.ListaDisciplinas();
 oDisciplina.show($('listaDisciplinas'));
 
@@ -299,7 +301,6 @@ function js_retornaPesquisarCalendarios(oResponse) {
 	});
 
 	if (oRetorno.aResult.length == 1) {
-
 		oCboCalendario.setValue(oRetorno.aResult[0].ed52_i_codigo);
 		js_pesquisarTurmas();
 	}
@@ -316,6 +317,14 @@ function js_pesquisarTurmas() {
         oDisciplina.clear();
 		return false;
 	}
+    let calendario = document.querySelector('#cboCalendario').value;
+    PHPSession.loadData().then(() => {
+        HttpClient.get(`${PHPSession.requestApi}/educacao/escola/turmasMulti/${calendario}`).then(response => {
+            response.data.map(turma => {
+                codTurma.push(turma.ed57_i_codigo.toString());
+            })
+        });
+    });
 
 	var oParametro         = {};
 	oParametro.exec        = 'buscaTurmasPorCalendarioEscola';
@@ -344,17 +353,16 @@ function js_retornaPesquisarTurmas(oResponse) {
 	oCboPeriodo.addItem("", "Selecione");
   oDisciplina.clear();
   let checkTurma = [];
-  
     oRetorno.aTurmas.forEach(function(oTurma, iSeq) {
-        
+
         let nome = oTurma.sTurma.urlDecode() + ' - ' + oTurma.sEtapa.urlDecode();
         var cod = oTurma.iTurma.toString();
-        
+
         etapa = oTurma.iEtapa;
         nomeEtapa = oTurma.sEtapa.urlDecode()
 
         if(codTurma.includes(cod) && !checkTurma.includes(cod)) {
-          
+
           nome = oTurma.sTurma.urlDecode();
           oCboTurma.addItem(oTurma.iTurma, nome, null, [{nome: 'etapa', valor: oTurma.iEtapa}]);
           checkTurma.push(cod);
@@ -364,20 +372,20 @@ function js_retornaPesquisarTurmas(oResponse) {
           armazenaEtapa[[cod]] = {...armazenaEtapa[[cod]], [oTurma.iEtapa]: nomeEtapa};
           return;
         }
-        
+
         oCboTurma.addItem(oTurma.iTurma, nome, null, [{nome: 'etapa', valor: oTurma.iEtapa}]);
-        
+
     });
-    
+
 	if (oRetorno.aTurmas.length == 1) {
-    
+
 		oCboTurma.setValue(oRetorno.aTurmas[0].iTurma);
 		js_pesquisarPeriodos();
 	}
 }
 
 function js_etapasMulti(){
-  
+
   if (codTurma.includes(oCboTurma.getValue())){
     document.getElementById("etapaMulti").style.display="table-row";
     js_pesquisarPeriodosMulti();
@@ -388,7 +396,7 @@ function js_etapasMulti(){
 
 }
 function js_pesquisarPeriodosMulti() {
-  
+
   let cod = oCboTurma.getValue();
   let etapaArray = armazenaEtapa[cod];
   let listaEtapas = [];
@@ -399,7 +407,7 @@ function js_pesquisarPeriodosMulti() {
   oCboPeriodo.clearItens();
 	oCboPeriodo.addItem("", "Selecione");
   oDisciplina.clear();
-  
+
   for(var key in etapaArray ){
     nome = etapaArray[key];
     oCboEtapaMulti.addItem(cod, nome, null, [{nome: 'etapa', valor: [key]}]);
@@ -411,7 +419,7 @@ function js_pesquisarPeriodosMulti() {
 }
 
 function js_pesquisarPeriodos() {
-  
+
 	if(oCboTurma.getValue() == '') {
 
 		oCboPeriodo.clearItens();
@@ -464,7 +472,7 @@ function js_pesquisarDisciplinas() {
 
     oDisciplina.clear();
     var codigoEt = oCboTurma.getAttributeOptionSelected('etapa');
-    
+
 
     if (codTurma.includes(oCboTurma.getValue())){
       codigoEt = oCboEtapaMulti.getAttributeOptionSelected('etapa');
@@ -473,7 +481,7 @@ function js_pesquisarDisciplinas() {
         codigoEt = listaEtapaMult[0];
       }
     }
-    
+
     oDisciplina.getDisciplinas(oCboTurma.getValue(), codigoEt, false);
 }
 
@@ -560,7 +568,7 @@ $('btnProcessarRelatorio').observe("click", function() {
 	sLocation += "&trocaTurma="+$F('trocaTurma');
 	sLocation += "&iAlunosAtivos="+$F('alunosAtivos');
 	sLocation += "&iExibirRecuperacao="+$F('exibirRecuperacao');
- 
+
 	var jan = window.open(sLocation,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
   jan.moveTo(0,0);
 });

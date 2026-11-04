@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,6 +36,7 @@ $clrotulo->label("db03_docum");
 $clrotulo->label("db03_descr");
 $clrotulo->label("k39_documento");
 $clrotulo->label("k11_tef");
+$clrotulo->label("k11_infisc");
 
 if (@$k11_local == "") {
   $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
@@ -48,7 +49,7 @@ if (@$k11_local == "") {
   $result = db_query($sql) or die($sql);
   if (pg_numrows($result) > 0) {
     db_fieldsmemory($result,0);
-    $palavras = split(" ",$nomeinst);
+    $palavras = explode(" ",$nomeinst);
     $conta=0;
     for ($i=0; $i < sizeof($palavras); $i++) {
       if ($palavras[$i] == "DE") {
@@ -102,7 +103,7 @@ if(@$k11_portaimpcheque == "") {
     <td nowrap title="">
     </td>
     <td>
-<?
+<?php
 db_input('k11_id',5,$Ik11_id,true,'hidden',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +113,7 @@ db_input('k11_id',5,$Ik11_id,true,'hidden',$db_opcao,"")
        <?=@$Lk11_ident1?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_ident1',1,$Ik11_ident1,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +123,7 @@ db_input('k11_ident1',1,$Ik11_ident1,true,'text',$db_opcao,"")
        <?=@$Lk11_ident2?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_ident2',1,$Ik11_ident2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +133,7 @@ db_input('k11_ident2',1,$Ik11_ident2,true,'text',$db_opcao,"")
        <?=@$Lk11_ident3?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_ident3',1,$Ik11_ident3,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -142,7 +143,7 @@ db_input('k11_ident3',1,$Ik11_ident3,true,'text',$db_opcao,"")
        <?=@$Lk11_ipterm?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_ipterm',20,$Ik11_ipterm,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -152,22 +153,22 @@ db_input('k11_ipterm',20,$Ik11_ipterm,true,'text',$db_opcao,"")
        <?=@$Lk11_local?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_local',30,$Ik11_local,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk16_conta?>">
-       <?
+       <?php
        db_ancora(@$Lk16_conta,"js_pesquisak16_conta(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('k16_conta',5,$Ik16_conta,true,'text',$db_opcao," onchange='js_pesquisak16_conta(false);'")
 ?>
-       <?
+       <?php
 db_input('k13_descr',40,$Ik13_descr,true,'text',3,'')
        ?>
     </td>
@@ -177,7 +178,7 @@ db_input('k13_descr',40,$Ik13_descr,true,'text',3,'')
        <?=@$Lk11_aut1?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_aut1',20,$Ik11_aut1,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -187,7 +188,7 @@ db_input('k11_aut1',20,$Ik11_aut1,true,'text',$db_opcao,"")
        <?=@$Lk11_aut2?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_aut2',20,$Ik11_aut2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -197,7 +198,7 @@ db_input('k11_aut2',20,$Ik11_aut2,true,'text',$db_opcao,"")
        <?=@$Lk11_tipautent?>
     </td>
     <td>
-<?
+<?php
 $x = array('1'=>'Autentica e Imprime','2'=>'Autentica e não Imprime','3'=>'Não Autentica e Não Imprime (Somente Empenho)');
 db_select('k11_tipautent',$x,true,$db_opcao,"");
 ?>
@@ -208,36 +209,36 @@ db_select('k11_tipautent',$x,true,$db_opcao,"");
        <?=@$Lk11_tesoureiro?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_tesoureiro',40,$Ik11_tesoureiro,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk11_instit?>">
-       <?
+       <?php
        //db_ancora(@$Lk11_instit,"js_pesquisak11_instit(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 $k11_instit = db_getsession('DB_instit');
 db_input('k11_instit',3,$Ik11_instit,true,'hidden',$db_opcao,"")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'hidden',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk11_tipoimp?>">
-       <?
+       <?php
        	db_ancora($Lk11_tipoimp,"js_consultaImpressora(true)",$db_opcao);
 
        ?>
     </td>
     <td>
-			<?
+			<?php
 				db_input('k11_tipoimp',10,$Ik11_tipoimp,true,'text',$db_opcao,"onChange='js_consultaImpressora(false);'");
 				db_input('tipoimpdescr',40,"",true,'text',3,"");
 			?>
@@ -245,12 +246,12 @@ db_input('nomeinst',80,$Inomeinst,true,'hidden',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk11_tipoimpcheque?>">
-       <?
+       <?php
        	db_ancora($Lk11_tipoimpcheque,"js_consultaImpressoraCheque(true)",$db_opcao);
        ?>
     </td>
     <td>
-			<?
+			<?php
 				db_input('k11_tipoimpcheque',10,$Ik11_tipoimpcheque,true,'text',$db_opcao,"onChange='js_consultaImpressoraCheque(false);'");
 			 	db_input('tipoimpchequedescr',40,"",true,'text',3,"");
       ?>
@@ -261,7 +262,7 @@ db_input('nomeinst',80,$Inomeinst,true,'hidden',3,'')
        <?=@$Lk11_ipimpcheque?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_ipimpcheque',20,$Ik11_ipimpcheque,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -271,7 +272,7 @@ db_input('k11_ipimpcheque',20,$Ik11_ipimpcheque,true,'text',$db_opcao,"")
        <?=@$Lk11_portaimpcheque?>
     </td>
     <td>
-<?
+<?php
 db_input('k11_portaimpcheque',5,$Ik11_portaimpcheque,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -281,7 +282,7 @@ db_input('k11_portaimpcheque',5,$Ik11_portaimpcheque,true,'text',$db_opcao,"")
        <b>Imprime Assinatura nos Cheques:</b>
     </td>
     <td>
-<?
+<?php
 //echo "k11_impassche = $k11_impassche";
 $x = array('2'=>'Não','1'=>'Sim');
 db_select('k11_impassche',$x,true,$db_opcao,"onChange = 'js_mostra(this);'");
@@ -298,7 +299,7 @@ db_select('k11_impassche',$x,true,$db_opcao,"onChange = 'js_mostra(this);'");
        <?=@$Lk11_zeratrocoarrec?>
     </td>
     <td>
-<?
+<?php
 $x = array('1'=>'Zera troco quando autenticar','2'=>'Não zera troco quando autenticar');
 db_select('k11_zeratrocoarrec',$x,true,$db_opcao,"");
 ?>
@@ -310,8 +311,19 @@ db_select('k11_zeratrocoarrec',$x,true,$db_opcao,"");
             <?= @$Lk11_tef ?>
         </td>
         <td>
-            <?
+            <?php
                 db_input('k11_tef',5,$Ik11_tef,true,'checkbox',$db_opcao,"")
+            ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td nowrap title="<?= @$Tk11_infisc ?>">
+            <?= @$Lk11_infisc ?>
+        </td>
+        <td>
+            <?php
+            db_input('k11_infisc',5,$Ik11_infisc,true,'checkbox',$db_opcao,"")
             ?>
         </td>
     </tr>
@@ -319,12 +331,12 @@ db_select('k11_zeratrocoarrec',$x,true,$db_opcao,"");
 
   <tr id='doc' style='visibility:hidden;'>
     <td nowrap >
-       <?
+       <?php
        db_ancora(@$Lk39_documento,"js_pesquisadb03_docum(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 if(isset($k11_impassche) && $k11_impassche==1){
   $sqlchq = "select db03_docum,db03_descr
              from cfautentdocasschq
@@ -341,7 +353,7 @@ db_input('db03_descr',40,$Idb03_descr,true,'text',3,'');
        ?>
     </td>
   </tr>
-  <?
+  <?php
    if(isset($k11_impassche) && $k11_impassche==1){
      echo "<script> document.getElementById('doc').style.visibility = 'visible'; </script>";
    }
@@ -380,7 +392,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cfautent.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

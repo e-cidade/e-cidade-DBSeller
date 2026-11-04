@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: tfd
 //CLASSE DA ENTIDADE fechamentotfdprocedimento
-class cl_fechamentotfdprocedimento { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $tf40_sequencial = 0; 
-   var $tf40_tfd_fechamento = 0; 
-   var $tf40_tfd_pedidotfd = 0; 
-   var $tf40_cgs_und = 0; 
-   var $tf40_sau_procedimento = 0; 
-   var $tf40_faturamentoautomatico = 'f'; 
-   var $tf40_paciente = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_fechamentotfdprocedimento {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $tf40_sequencial = 0;
+   var $tf40_tfd_fechamento = 0;
+   var $tf40_tfd_pedidotfd = 0;
+   var $tf40_cgs_und = 0;
+   var $tf40_sau_procedimento = 0;
+   var $tf40_faturamentoautomatico = 'f';
+   var $tf40_paciente = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 tf40_sequencial = int4 = Código 
-                 tf40_tfd_fechamento = int4 = Fechamento BPA do TFD 
-                 tf40_tfd_pedidotfd = int4 = Pedido TFD 
-                 tf40_cgs_und = int4 = Cgs 
-                 tf40_sau_procedimento = int4 = Procedimento 
-                 tf40_faturamentoautomatico = bool = Faturou Automatico 
-                 tf40_paciente = bool = Se foi paciente 
+                 tf40_sequencial = int4 = Código
+                 tf40_tfd_fechamento = int4 = Fechamento BPA do TFD
+                 tf40_tfd_pedidotfd = int4 = Pedido TFD
+                 tf40_cgs_und = int4 = Cgs
+                 tf40_sau_procedimento = int4 = Procedimento
+                 tf40_faturamentoautomatico = bool = Faturou Automatico
+                 tf40_paciente = bool = Se foi paciente
                  ";
-   //funcao construtor da classe 
-   function cl_fechamentotfdprocedimento() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("fechamentotfdprocedimento"); 
+     $this->rotulo = new rotulo("fechamentotfdprocedimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_fechamentotfdprocedimento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tf40_sequencial = ($this->tf40_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["tf40_sequencial"]:$this->tf40_sequencial);
        $this->tf40_tfd_fechamento = ($this->tf40_tfd_fechamento == ""?@$GLOBALS["HTTP_POST_VARS"]["tf40_tfd_fechamento"]:$this->tf40_tfd_fechamento);
@@ -89,9 +89,9 @@ class cl_fechamentotfdprocedimento {
      }
    }
    // funcao para inclusao
-   function incluir ($tf40_sequencial){ 
+   public function incluir ($tf40_sequencial){
       $this->atualizacampos();
-     if($this->tf40_tfd_fechamento == null ){ 
+     if($this->tf40_tfd_fechamento == null ){
        $this->erro_sql = " Campo Fechamento BPA do TFD não informado.";
        $this->erro_campo = "tf40_tfd_fechamento";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_fechamentotfdprocedimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tf40_tfd_pedidotfd == null ){ 
+     if($this->tf40_tfd_pedidotfd == null ){
        $this->erro_sql = " Campo Pedido TFD não informado.";
        $this->erro_campo = "tf40_tfd_pedidotfd";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_fechamentotfdprocedimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tf40_cgs_und == null ){ 
+     if($this->tf40_cgs_und == null ){
        $this->erro_sql = " Campo Cgs não informado.";
        $this->erro_campo = "tf40_cgs_und";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_fechamentotfdprocedimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tf40_sau_procedimento == null ){ 
+     if($this->tf40_sau_procedimento == null ){
        $this->erro_sql = " Campo Procedimento não informado.";
        $this->erro_campo = "tf40_sau_procedimento";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_fechamentotfdprocedimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tf40_faturamentoautomatico == null ){ 
+     if($this->tf40_faturamentoautomatico == null ){
        $this->erro_sql = " Campo Faturou Automatico não informado.";
        $this->erro_campo = "tf40_faturamentoautomatico";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_fechamentotfdprocedimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tf40_paciente == null ){ 
+     if($this->tf40_paciente == null ){
        $this->erro_sql = " Campo Se foi paciente não informado.";
        $this->erro_campo = "tf40_paciente";
        $this->erro_banco = "";
@@ -146,16 +146,16 @@ class cl_fechamentotfdprocedimento {
        return false;
      }
      if($tf40_sequencial == "" || $tf40_sequencial == null ){
-       $result = db_query("select nextval('fechamentotfdprocedimento_tf40_sequencial_seq')"); 
+       $result = db_query("select nextval('fechamentotfdprocedimento_tf40_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: fechamentotfdprocedimento_tf40_sequencial_seq do campo: tf40_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: fechamentotfdprocedimento_tf40_sequencial_seq do campo: tf40_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->tf40_sequencial = pg_result($result,0,0); 
+       $this->tf40_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from fechamentotfdprocedimento_tf40_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $tf40_sequencial)){
@@ -166,10 +166,10 @@ class cl_fechamentotfdprocedimento {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->tf40_sequencial = $tf40_sequencial; 
+         $this->tf40_sequencial = $tf40_sequencial;
        }
      }
-     if(($this->tf40_sequencial == null) || ($this->tf40_sequencial == "") ){ 
+     if(($this->tf40_sequencial == null) || ($this->tf40_sequencial == "") ){
        $this->erro_sql = " Campo tf40_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,25 +178,25 @@ class cl_fechamentotfdprocedimento {
        return false;
      }
      $sql = "insert into fechamentotfdprocedimento(
-                                       tf40_sequencial 
-                                      ,tf40_tfd_fechamento 
-                                      ,tf40_tfd_pedidotfd 
-                                      ,tf40_cgs_und 
-                                      ,tf40_sau_procedimento 
-                                      ,tf40_faturamentoautomatico 
-                                      ,tf40_paciente 
+                                       tf40_sequencial
+                                      ,tf40_tfd_fechamento
+                                      ,tf40_tfd_pedidotfd
+                                      ,tf40_cgs_und
+                                      ,tf40_sau_procedimento
+                                      ,tf40_faturamentoautomatico
+                                      ,tf40_paciente
                        )
                 values (
-                                $this->tf40_sequencial 
-                               ,$this->tf40_tfd_fechamento 
-                               ,$this->tf40_tfd_pedidotfd 
-                               ,$this->tf40_cgs_und 
-                               ,$this->tf40_sau_procedimento 
-                               ,'$this->tf40_faturamentoautomatico' 
-                               ,'$this->tf40_paciente' 
+                                $this->tf40_sequencial
+                               ,$this->tf40_tfd_fechamento
+                               ,$this->tf40_tfd_pedidotfd
+                               ,$this->tf40_cgs_und
+                               ,$this->tf40_sau_procedimento
+                               ,'$this->tf40_faturamentoautomatico'
+                               ,'$this->tf40_paciente'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Fechamento Procedimento TFD ($this->tf40_sequencial) nao Incluído. Inclusao Abortada.";
@@ -240,16 +240,16 @@ class cl_fechamentotfdprocedimento {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($tf40_sequencial=null) { 
+   public function alterar ($tf40_sequencial=null) {
       $this->atualizacampos();
      $sql = " update fechamentotfdprocedimento set ";
      $virgula = "";
-     if(trim($this->tf40_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sequencial"])){ 
+     if(trim($this->tf40_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sequencial"])){
        $sql  .= $virgula." tf40_sequencial = $this->tf40_sequencial ";
        $virgula = ",";
-       if(trim($this->tf40_sequencial) == null ){ 
+       if(trim($this->tf40_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tf40_sequencial";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_tfd_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_fechamento"])){ 
+     if(trim($this->tf40_tfd_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_fechamento"])){
        $sql  .= $virgula." tf40_tfd_fechamento = $this->tf40_tfd_fechamento ";
        $virgula = ",";
-       if(trim($this->tf40_tfd_fechamento) == null ){ 
+       if(trim($this->tf40_tfd_fechamento) == null ){
          $this->erro_sql = " Campo Fechamento BPA do TFD não informado.";
          $this->erro_campo = "tf40_tfd_fechamento";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_tfd_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_pedidotfd"])){ 
+     if(trim($this->tf40_tfd_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_pedidotfd"])){
        $sql  .= $virgula." tf40_tfd_pedidotfd = $this->tf40_tfd_pedidotfd ";
        $virgula = ",";
-       if(trim($this->tf40_tfd_pedidotfd) == null ){ 
+       if(trim($this->tf40_tfd_pedidotfd) == null ){
          $this->erro_sql = " Campo Pedido TFD não informado.";
          $this->erro_campo = "tf40_tfd_pedidotfd";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_cgs_und)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_cgs_und"])){ 
+     if(trim($this->tf40_cgs_und)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_cgs_und"])){
        $sql  .= $virgula." tf40_cgs_und = $this->tf40_cgs_und ";
        $virgula = ",";
-       if(trim($this->tf40_cgs_und) == null ){ 
+       if(trim($this->tf40_cgs_und) == null ){
          $this->erro_sql = " Campo Cgs não informado.";
          $this->erro_campo = "tf40_cgs_und";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_sau_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sau_procedimento"])){ 
+     if(trim($this->tf40_sau_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sau_procedimento"])){
        $sql  .= $virgula." tf40_sau_procedimento = $this->tf40_sau_procedimento ";
        $virgula = ",";
-       if(trim($this->tf40_sau_procedimento) == null ){ 
+       if(trim($this->tf40_sau_procedimento) == null ){
          $this->erro_sql = " Campo Procedimento não informado.";
          $this->erro_campo = "tf40_sau_procedimento";
          $this->erro_banco = "";
@@ -311,10 +311,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_faturamentoautomatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_faturamentoautomatico"])){ 
+     if(trim($this->tf40_faturamentoautomatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_faturamentoautomatico"])){
        $sql  .= $virgula." tf40_faturamentoautomatico = '$this->tf40_faturamentoautomatico' ";
        $virgula = ",";
-       if(trim($this->tf40_faturamentoautomatico) == null ){ 
+       if(trim($this->tf40_faturamentoautomatico) == null ){
          $this->erro_sql = " Campo Faturou Automatico não informado.";
          $this->erro_campo = "tf40_faturamentoautomatico";
          $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_paciente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_paciente"])){ 
+     if(trim($this->tf40_paciente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_paciente"])){
        $sql  .= $virgula." tf40_paciente = '$this->tf40_paciente' ";
        $virgula = ",";
-       if(trim($this->tf40_paciente) == null ){ 
+       if(trim($this->tf40_paciente) == null ){
          $this->erro_sql = " Campo Se foi paciente não informado.";
          $this->erro_campo = "tf40_paciente";
          $this->erro_banco = "";
@@ -372,7 +372,7 @@ class cl_fechamentotfdprocedimento {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fechamento Procedimento TFD nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->tf40_sequencial;
@@ -400,11 +400,11 @@ class cl_fechamentotfdprocedimento {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($tf40_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($tf40_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -413,7 +413,7 @@ class cl_fechamentotfdprocedimento {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($tf40_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -448,7 +448,7 @@ class cl_fechamentotfdprocedimento {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fechamento Procedimento TFD nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$tf40_sequencial;
@@ -476,11 +476,11 @@ class cl_fechamentotfdprocedimento {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -502,11 +502,11 @@ class cl_fechamentotfdprocedimento {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $tf40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $tf40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -537,15 +537,15 @@ class cl_fechamentotfdprocedimento {
      $sql2 = "";
      if($dbwhere==""){
        if($tf40_sequencial!=null ){
-         $sql2 .= " where fechamentotfdprocedimento.tf40_sequencial = $tf40_sequencial "; 
-       } 
+         $sql2 .= " where fechamentotfdprocedimento.tf40_sequencial = $tf40_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -554,11 +554,11 @@ class cl_fechamentotfdprocedimento {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $tf40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $tf40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,15 +571,15 @@ class cl_fechamentotfdprocedimento {
      $sql2 = "";
      if($dbwhere==""){
        if($tf40_sequencial!=null ){
-         $sql2 .= " where fechamentotfdprocedimento.tf40_sequencial = $tf40_sequencial "; 
-       } 
+         $sql2 .= " where fechamentotfdprocedimento.tf40_sequencial = $tf40_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

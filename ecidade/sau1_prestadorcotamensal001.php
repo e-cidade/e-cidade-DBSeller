@@ -1,4 +1,3 @@
-
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal

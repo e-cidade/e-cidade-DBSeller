@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clinflan->rotulo->label();
        <?=@$Li01_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('i01_codigo',5,$Ii01_codigo,true,'text',$opcaocodigo,"onchange=js_validainflat(this);")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('i01_codigo',5,$Ii01_codigo,true,'text',$opcaocodigo,"onchange=js_valid
        <?=@$Li01_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('i01_descr',40,$Ii01_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',$db_opcao,"")
        <?=@$Li01_pict?>
     </td>
     <td> 
-<?
+<?php
 db_input('i01_pict',12,$Ii01_pict,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('i01_pict',12,$Ii01_pict,true,'text',$db_opcao,"")
        <?=@$Li01_dm?>
     </td>
     <td> 
-	  <?
+	  <?php
 	  //$x = array('0'=>'Diário','1'=>'Mensal','2'=>'Anual');
 	  $x = array('1'=>'Diário','0'=>'Mensal','2'=>'Anual');
 	  db_select('i01_dm',$x,true,$db_opcao,"");
@@ -78,7 +78,7 @@ db_input('i01_pict',12,$Ii01_pict,true,'text',$db_opcao,"")
        <?=@$Li01_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Divide Valor pelo indice da data base e multiplica pelo indice da data atual','2'=>'Aplica índice mês a mês sobre o valor','3'=>'Aplica índice do mês do vencimento sobre o valor','9'=>'Sem correção ( Moeda Corrente Nacional )');
 db_select('i01_tipo',$x,true,$db_opcao,"");
 ?>
@@ -89,7 +89,7 @@ db_select('i01_tipo',$x,true,$db_opcao,"");
        <?=@$Li01_percen?>
     </td>
     <td> 
-<?
+<?php
 db_input('i01_percen',1,$Ii01_percen,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('i01_percen',1,$Ii01_percen,true,'text',$db_opcao,"")
        <?=@$Li01_calc?>
     </td>
     <td> 
-<?
+<?php
 db_input('i01_calc',1,$Ii01_calc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_inflan.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

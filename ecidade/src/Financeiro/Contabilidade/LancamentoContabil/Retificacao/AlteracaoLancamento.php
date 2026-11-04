@@ -59,6 +59,10 @@ class AlteracaoLancamento
             $where[] = "c69_credito = {$parametros->conta_credito}";
         }
 
+        if (!empty($parametros->codigo_empenho)) {
+            $where[] = "c75_numemp = {$parametros->codigo_empenho}";
+        }
+
         $campos = array(
             'c69_codlan as codigo_lancamento',
             'c69_sequen  as sequen',
@@ -70,8 +74,7 @@ class AlteracaoLancamento
             'planocredito.c60_estrut as estrutural_credito',
             'reduzdebito.c61_reduz as reduz_debito',
             'planodebito.c60_descr as descricao_debito',
-            'planodebito.c60_estrut as estrutural_debito'
-
+            'planodebito.c60_estrut as estrutural_debito',
         );
 
         $sqlLancamentos = $daoConlancamval->sql_query_lancamentos(
@@ -79,6 +82,26 @@ class AlteracaoLancamento
             implode(" and ", $where),
             " c69_codlan, c69_sequen"
         );
+        if (!empty($parametros->codigo_empenho) || !empty($parametros->estrutural_receita)
+            || !empty($parametros->elemento_despesa)
+        ) {
+            $campos[] = 'fc_estruturalreceita(' . db_getsession("DB_anousu")
+                . ', orcreceita.o70_codrec) as o50_estrutreceita';
+            if (!empty($parametros->elemento_despesa)) {
+                $where[] = "(conele.o56_elemento = '{$parametros->elemento_despesa}' 
+                    or orcele.o56_elemento = '{$parametros->elemento_despesa}')";
+            }
+    
+            $sqlLancamentos = $daoConlancamval->sql_query_lancamentos_novo(
+                implode(", ", $campos),
+                implode(" and ", $where),
+                " c69_codlan, c69_sequen"
+            );
+            if (!empty($parametros->estrutural_receita)) {
+                $sqlLancamentos = "select * from ({$sqlLancamentos}) as x where o50_estrutreceita = 
+                    '{$parametros->estrutural_receita}'";
+            }
+        }
 
         $rsLancamentos = db_query($sqlLancamentos);
         if (pg_num_rows($rsLancamentos) == 0) {

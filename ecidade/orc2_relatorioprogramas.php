@@ -120,7 +120,7 @@ if ($oGet->iTipo == 4) {
             </label>
           </td>
           <td colspan='5'>
-            <?
+            <?php
             $So05_ppalei = "Lei do PPA";
             db_input('o05_ppalei',10,$Io01_sequencial,true,'text',1," onchange='js_pesquisaPPALei(false);'");
             db_input('o01_descricao',45,$Io01_descricao,true,'text',3,'')
@@ -160,7 +160,7 @@ if ($oGet->iTipo == 4) {
         </tr>
         <tr>
           <td nowrap="nowrap">
-            <?db_ancora('<b>Programa:</b>', 'js_pesquisaPrograma(true);', 1)?>
+            <?php db_ancora('<b>Programa:</b>', 'js_pesquisaPrograma(true);', 1)?>
           </td>
 
           <td nowrap="nowrap" colspan='5'>

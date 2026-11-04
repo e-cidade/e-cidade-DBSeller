@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clsolicita->rotulo->label();
@@ -57,7 +57,7 @@ if (isset($oGet->alterar)) {
                  <b>Código:</b>
               </td>
               <td>
-                <?
+                <?php
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -67,13 +67,13 @@ if (isset($oGet->alterar)) {
                 <b>Data Vigência:</b>
               </td>
               <td>
-                <?
+                <?php
                 $recebedata = db_getsession("DB_datausu");
                 $recebedata = date("Y-m-d",$recebedata);
                 if(isset($pc10_data) && trim($pc10_data) != ""){
                   $recebedata = $pc10_data;
                 }
-                $arr_data = split("-",$recebedata);
+                $arr_data =explode("-",$recebedata);
                 @$pc10_datadia = $arr_data[2];
                 @$pc10_datames = $arr_data[1];
                 @$pc10_dataano = $arr_data[0];
@@ -87,7 +87,7 @@ if (isset($oGet->alterar)) {
                 <b>Resumo:</b>
               </td>
               <td>
-              <?
+              <?php
                @$pc10_resumo = stripslashes($pc10_resumo);
                db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735);
               ?>
@@ -95,12 +95,12 @@ if (isset($oGet->alterar)) {
             </tr>
             <tr>
               <td>
-                 <?
+                 <?php
                  db_ancora("<b>Abertura de Preço:</b>", "js_pesquisaaberturaprecos(true);", $iBloqueia);
                  ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input('pc54_solicita', 8, $Ipc54_solicita, true, 'text', 3, "");
                 ?>
               </td>
@@ -118,7 +118,7 @@ if (isset($oGet->alterar)) {
       <td colspan="2" style="text-align: center;">
         <input type='button' value='Salvar' id='btnSalvar'>
         <input type='button' value='Imprimir' id='btnImprimir'>
-        <?
+        <?php
           if ($lBtnShowBtnConsulta) {
            echo "<input type='button' value='Pesquisar' id='btnConsultar'>";
           }
@@ -173,7 +173,7 @@ function js_salvarEstimativa() {
 
    }
    js_divCarregando("Aguarde, salvando abertura Registro de Preço.","msgBox");
-   
+
    var oParam         = new Object();
    oParam.exec        = "salvarCompilacao";
    oParam.tipo        = 6;
@@ -246,7 +246,7 @@ function js_retornoCompletaPesquisa(oAjax) {
 
     $('pc54_datainicio').value  = oRetorno.datainicio;
     $('pc54_datatermino').value = oRetorno.datatermino;
-    
+
     var resumo = oRetorno.resumo.urlDecode();
     $('pc10_resumo').value = resumo.replace(/&#(\d+);/g, function (m, n) { return String.fromCharCode(n); });
 
@@ -329,7 +329,7 @@ function js_imprimir() {
 }
 $('btnSalvar').observe("click", js_salvarEstimativa);
 $('btnImprimir').observe("click", js_imprimir);
-<?
+<?php
 if ($lBtnShowBtnConsulta) {
 
   echo "\$('btnConsultar').observe('click', js_pesquisar);\n";

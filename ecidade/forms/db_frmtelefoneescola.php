@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Educação
@@ -65,11 +65,11 @@ if(isset($opcao) && $opcao=="alterar"){
 <table align="left">
  <tr>
   <td><?=$Led18_c_email?></td>
-  <td><?db_input('ed18_c_email',50,$Ied18_c_email,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,4,'$GLOBALS[Sed18_c_email]','f','t',event);\"")?></td>
+  <td><?php db_input('ed18_c_email',50,$Ied18_c_email,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,4,'$GLOBALS[Sed18_c_email]','f','t',event);\"")?></td>
  </tr>
  <tr>
   <td><?=$Led18_c_homepage?></td>
-  <td><?db_input('ed18_c_homepage',100,$Ied18_c_homepage,true,'text',$db_opcao,"")?>
+  <td><?php db_input('ed18_c_homepage',100,$Ied18_c_homepage,true,'text',$db_opcao,"")?>
   <input name="alterar1" type="submit" id="db_opcao" value="Alterar" <?=($db_botao==false?"disabled":"")?> onclick="return js_valida();"></td>
  </tr>
 </table>
@@ -82,35 +82,35 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led26_i_codigo?>
   </td>
   <td>
-   <?db_input('ed26_i_codigo',15,$Ied26_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed26_i_codigo',15,$Ied26_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted26_i_escola?>">
-   <?db_ancora(@$Led26_i_escola,"",3);?>
+   <?php db_ancora(@$Led26_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed26_i_escola',15,@$Ied26_i_escola,true,'text',3,'')?>
-   <?db_input('descrdepto',50,@$Idescrdepto,true,'text',3,'')?>
+   <?php db_input('ed26_i_escola',15,@$Ied26_i_escola,true,'text',3,'')?>
+   <?php db_input('descrdepto',50,@$Idescrdepto,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted26_i_tipotelefone?>">
-   <?db_ancora(@$Led26_i_tipotelefone,"js_pesquisaed26_i_tipotelefone(true);",$db_opcao);?>
+   <?php db_ancora(@$Led26_i_tipotelefone,"js_pesquisaed26_i_tipotelefone(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed26_i_tipotelefone',15,$Ied26_i_tipotelefone,true,'text',$db_opcao," onchange='js_pesquisaed26_i_tipotelefone(false);'")?>
-   <?db_input('ed13_c_descr',20,$Ied13_i_codigo,true,'text',3,'')?>
+   <?php db_input('ed26_i_tipotelefone',15,$Ied26_i_tipotelefone,true,'text',$db_opcao," onchange='js_pesquisaed26_i_tipotelefone(false);'")?>
+   <?php db_input('ed13_c_descr',20,$Ied13_i_codigo,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted26_i_ddd?>">
    <?=@$Led26_i_ddd?>
-   <?db_input('ed26_i_ddd',2,$Ied26_i_ddd,true,'text',$db_opcao,"")?>
+   <?php db_input('ed26_i_ddd',2,$Ied26_i_ddd,true,'text',$db_opcao,"")?>
   </td>
   <td nowrap title="<?=@$Ted26_i_numero?>">
    <?=@$Led26_i_numero?>
-   <?db_input('ed26_i_numero',15,$Ied26_i_numero,true,'text',$db_opcao,"")?>
+   <?php db_input('ed26_i_numero',15,$Ied26_i_numero,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -118,7 +118,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led26_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed26_t_obs',2,40,$Ied26_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ed26_t_obs',2,40,$Ied26_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -127,7 +127,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed26_i_codigo"=>@$ed26_i_codigo,"ed26_i_tipotelefone"=>@$ed26_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed26_i_numero"=>@$ed26_i_numero,"ed26_i_ramal"=>@$ed26_i_ramal,"ed26_t_obs"=>@$ed26_t_obs,"ed26_i_ddd"=>@$ed26_i_ddd);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $cltelefoneescola->sql_query("","*","ed26_i_codigo"," ed26_i_escola = $ed26_i_escola");
@@ -177,7 +177,7 @@ function js_mostratipotelefone1(chave1,chave2){
  db_iframe_tipotelefone.hide();
 }
 function js_valida(){
- Vemail = "<?=@$GLOBALS[Sed18_c_email]?>";
+ Vemail = "<?=@$GLOBALS['Sed18_c_email']?>";
  if(jsValidaEmail(document.form1.ed18_c_email.value,Vemail)==false){
   return false;
  }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,13 +70,13 @@ class cl_moblevatamento {
                  j97_calcada = bool = Calçada 
                  ";
    //funcao construtor da classe 
-   function cl_moblevatamento() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("moblevatamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_moblevatamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j97_sequen = ($this->j97_sequen == ""?@$GLOBALS["HTTP_POST_VARS"]["j97_sequen"]:$this->j97_sequen);
        $this->j97_codimporta = ($this->j97_codimporta == ""?@$GLOBALS["HTTP_POST_VARS"]["j97_codimporta"]:$this->j97_codimporta);
@@ -104,7 +104,7 @@ class cl_moblevatamento {
      }
    }
    // funcao para inclusao
-   function incluir ($j97_sequen){ 
+   public function incluir ($j97_sequen){ 
       $this->atualizacampos();
      if($this->j97_codimporta == null ){ 
        $this->erro_sql = " Campo Código Importação nao Informado.";
@@ -293,7 +293,7 @@ class cl_moblevatamento {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j97_sequen=null) { 
+   public function alterar ($j97_sequen=null) { 
       $this->atualizacampos();
      $sql = " update moblevatamento set ";
      $virgula = "";
@@ -505,7 +505,7 @@ class cl_moblevatamento {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j97_sequen=null,$dbwhere=null) { 
+   public function excluir ($j97_sequen=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j97_sequen));
      }else{ 
@@ -577,7 +577,7 @@ class cl_moblevatamento {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

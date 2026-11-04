@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,12 +75,12 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -89,7 +89,7 @@ function js_emite(){
       <tr>
         <td align="right"><strong>Previdência :&nbsp;&nbsp;</strong></td>
         <td align="left">
-         <?
+         <?php
            $x = array("2"=>"FAPS","1"=>"INSS","3"=>"CONSELHEIROS");
            db_select('prev',$x,true,4,"");
          ?>
@@ -99,7 +99,7 @@ function js_emite(){
       <tr>
         <td align="right"><strong>Ponto :&nbsp;&nbsp;</strong></td>
         <td align="left">
-         <?
+         <?php
            $xy = array("s"=>"SALARIO","d"=>"13o. SALARIO");
            db_select('tipo',$xy,true,4,"");
          ?>
@@ -109,7 +109,7 @@ function js_emite(){
       <tr>
         <td align="right"><strong>Emite Funcionários :&nbsp;&nbsp;</strong></td>
         <td align="left">
-         <?
+         <?php
            $x = array("s"=>"SIM","n"=>"NÃO");
            db_select('func',$x,true,4,"");
          ?>
@@ -128,7 +128,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -159,7 +159,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

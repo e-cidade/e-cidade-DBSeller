@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -407,7 +407,7 @@ else if (isset ($chavepesquisa)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <br>
-			<?
+			<?php
 			if (USE_PCASP && db_getsession("DB_anousu") >= 2013) {
 
 			  $sMensagem  = "Esta rotina está desabilitada para o ano de 2013.\\n";
@@ -427,7 +427,7 @@ else if (isset ($chavepesquisa)) {
 </table>
 </body>
 </html>
-<?
+<?php
 
 
 

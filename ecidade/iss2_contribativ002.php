@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -38,7 +38,7 @@ $ativs      = "";
 $atividades = "";
 $where      = "";
 if(isset($chaves) && $chaves != ""){
-  $at = split("#",$chaves);
+  $at =explode("#",$chaves);
   $or = "";
   for($i=0;$i<sizeof($at);$i++){
     $ativs .= $or." q03_ativ = ".$at[$i]." ";
@@ -48,7 +48,7 @@ if(isset($chaves) && $chaves != ""){
 }
 
 if(isset($q02_inscr) && $q02_inscr != ""){
-  $where .= " and issbase.q02_inscr = $q02_inscr ";  
+  $where .= " and issbase.q02_inscr = $q02_inscr ";
 }
 if(isset($j14_codigo) && $j14_codigo != ""){
   $where .= " and issruas.j14_codigo = $j14_codigo ";
@@ -69,14 +69,14 @@ $pdf->Open();
 $pdf->AliasNbPages();
 
 $sql = "
-select  
-issbase.q02_inscr, 
+select
+issbase.q02_inscr,
 issbase.q02_dtbaix,
-cgm.z01_nome,	
+cgm.z01_nome,
 cgm.z01_nomefanta,
-issruas.j14_codigo, 
-j14_nome, 
-q03_ativ, 
+issruas.j14_codigo,
+j14_nome,
+q03_ativ,
 ativid.q03_descr,
 empresa.z01_numero,
 empresa.z01_compl
@@ -90,10 +90,10 @@ inner join empresa     on empresa.q02_inscr  = issbase.q02_inscr
 where 1=1
 $where
 $atividades
-group by 
+group by
 issbase.q02_inscr,
 issbase.q02_dtbaix,
-cgm.z01_nomefanta, 
+cgm.z01_nomefanta,
 cgm.z01_nome,
 issruas.j14_codigo,
 j14_nome,
@@ -107,7 +107,7 @@ issruas.j14_codigo ";
 //die($sql);
 
 $result = db_query($sql) or die($sql);
-//db_criatabela($result);exit;             
+//db_criatabela($result);exit;
 $numlinhas = pg_numrows($result);
 if($numlinhas == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foi encontrado nenhum registro para o filtro selecionado.');
@@ -131,7 +131,7 @@ for($i=0;$i<$numlinhas;$i++){
     $pdf->Cell(75,5,"Nome fantasia",1,0,"C",1);
     $pdf->Cell(80,5,"Endereço",1,0,"C",1);
     $pdf->Cell(40,5,"Complemento",1,1,"C",1);
-    
+
     $pdf->Cell(15,5,"",1,0,"C",1);
     $pdf->Cell(70,5,"Data da baixa",1,0,"L",1);
     $pdf->Cell(75,5,"Atividade(s)",1,0,"L",1);
@@ -142,11 +142,11 @@ for($i=0;$i<$numlinhas;$i++){
   }
   if($inscrant != $q02_inscr){
   	if($primeiravolta == 'f'){
-  		
-//      $sqltotal = "select extract(year from k00_dtoper), 
-//      sum(k00_valor) 
-//      from arreinscr 
-//      inner join arrecad on arrecad.k00_numpre = arreinscr.k00_numpre 
+
+//      $sqltotal = "select extract(year from k00_dtoper),
+//      sum(k00_valor)
+//      from arreinscr
+//      inner join arrecad on arrecad.k00_numpre = arreinscr.k00_numpre
 //      where k00_inscr = $inscrant
 //      group by extract (year from k00_dtoper)";
 //      $rsTotal =  db_query($sqltotal);
@@ -169,18 +169,18 @@ for($i=0;$i<$numlinhas;$i++){
         $pdf->Cell(280,4,"Sem debitos encontrados","0",1,"R",0);
       }
     }
-    		
-		$sqltotal = "select extract(year from k00_dtoper), 
-		sum(k00_valor) 
-		from arreinscr 
-		inner join arrecad on arrecad.k00_numpre = arreinscr.k00_numpre 
+
+		$sqltotal = "select extract(year from k00_dtoper),
+		sum(k00_valor)
+		from arreinscr
+		inner join arrecad on arrecad.k00_numpre = arreinscr.k00_numpre
 		where k00_inscr = $q02_inscr
 		group by extract (year from k00_dtoper)";
 		//die($sqltotal);
 		$rsTotal =  db_query($sqltotal);
 		$toti    =  pg_numrows($rsTotal);
-		$passa = true;	
-		
+		$passa = true;
+
 		if ($debitos == "s" and $toti > 0) {
 			$passa = false;
 		} elseif ($debitos == "d" and $toti == 0) {
@@ -205,7 +205,7 @@ for($i=0;$i<$numlinhas;$i++){
 		}
 		$inscrant = $q02_inscr;
 		$primeiravolta = 'f';
-		
+
   }else{
     $pdf->Cell(15,4,"",0,0,"C",0);
     $pdf->Cell(70,4,"",0,0,"L",0);

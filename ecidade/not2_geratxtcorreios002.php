@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -104,7 +104,7 @@ $rsNotificacao   = $clNotificacao->sql_record($clNotificacao->sql_query_lista_no
 ?>
 <html>
 <head>
-<?
+<?php
   db_app::load('estilos.css');
   db_app::load('scripts.js');
   db_app::load('strings.js');
@@ -112,7 +112,7 @@ $rsNotificacao   = $clNotificacao->sql_record($clNotificacao->sql_query_lista_no
 </head>
 <body>
 <form name="form1" id="form1">
-<?
+<?php
 db_criatermometro("termometro", "Concluido...", "blue", 1);
 flush();
 
@@ -485,7 +485,7 @@ if($rsNotificacao && pg_num_rows($rsNotificacao) > 0) {
 </form>
 </body>
 </html>
-<?
+<?php
 /**
  * Gera Boleto bancario
  * @param integer $iCodigoNotificacao - Codigo da notificação

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("o0i_descricao");
   		</tr>
        <tr>
         <td align="left" colspan="2">
-          <b>Modelo :</b> <? 
+          <b>Modelo :</b> <?php 
                     $sList = array("ldo"=>"LDO",
                                    "loa"=>"LOA"
                                   );
@@ -66,7 +66,7 @@ $clrotulo->label("o0i_descricao");
       <tr>
         <td align="center" style='padding-top:20px;'>
           <input  name="emite" id="emite" type="button" value="Imprimir" onclick="js_emite();">
-           <?
+           <?php
           $o116_periodo = 1;
           db_input('o116_periodo',40,'',true,'hidden',3,'');
          ?>

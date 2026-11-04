@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@
              <?=@$Lrh52_regime?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('rh52_regime',2,$Irh52_regime,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -49,7 +49,7 @@
              <?=@$Lrh52_descr?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('rh52_descr',20,$Irh52_descr,true,'text',$db_opcao,"class='field-size-max'")
             ?>
           </td>
@@ -150,7 +150,7 @@
   function js_preenchepesquisa(chave) {
 
     db_iframe_rhcadregime.hide();
-    <?
+    <?php
       if($db_opcao!=1){
         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }

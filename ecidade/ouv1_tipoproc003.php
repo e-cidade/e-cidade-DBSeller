@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
    <tr>
        <td>
-        <?
+        <?php
           $clcriaabas->identifica = array("tipoprocesso"=>"Tipo de Processo",
                                           "departamento"=>"Departamentos",
                                           "formreclamacao"=>"Formas de Reclamação");
@@ -80,7 +80,7 @@ $clcriaabas = new cl_criaabas;
    <tr>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

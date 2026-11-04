@@ -28,13 +28,13 @@ class cl_cadenderestadosistema {
                  db300_codigo = varchar(50) = Código no sistema externo
                  ";
    //funcao construtor da classe
-   function cl_cadenderestadosistema() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderestadosistema");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_cadenderestadosistema {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db300_sequencial = ($this->db300_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db300_sequencial"]:$this->db300_sequencial);
        $this->db300_db_sistemaexterno = ($this->db300_db_sistemaexterno == ""?@$GLOBALS["HTTP_POST_VARS"]["db300_db_sistemaexterno"]:$this->db300_db_sistemaexterno);
@@ -54,7 +54,7 @@ class cl_cadenderestadosistema {
      }
    }
    // funcao para Inclusão
-   function incluir ($db300_sequencial){
+   public function incluir ($db300_sequencial){
       $this->atualizacampos();
      if($this->db300_db_sistemaexterno == null ){
        $this->erro_sql = " Campo Tipo Sistema não informado.";

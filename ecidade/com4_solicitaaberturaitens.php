@@ -31,14 +31,14 @@
  * @revision $Author: dbricardo.lopes $
  * @version $Revision: 1.16 $
  */
-require(modification("libs/db_stdlib.php"));
-require(modification("std/db_stdClass.php"));
-require(modification("libs/db_utils.php"));
-require(modification("libs/db_app.utils.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("std/db_stdClass.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_app.utils.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc16_codmater");
 $clrotulo->label("pc11_just");
@@ -54,9 +54,10 @@ $aUnidades          = db_utils::getCollectionByRecord($rsUnid);
 $aParametrosCompras = db_stdClass::getParametro("pcparam",array(db_getsession("DB_anousu")));
 $db_opcao           = 1;
 
+$abertura = empty($_SESSION['oSolicita']) ? [] : $_SESSION['oSolicita'];
+$numeroAbertura = !empty($abertura) ? $abertura->getCodigoSolicitacao() : 0;
 
-$selectUnidade = '<select id="pc17_unid" name="pc17_unid" style="width:150px;" onchange="js_usaQuantidade(this);">';
-$selectUnidade .= '<option value=""></option>';
+$selectUnidade = '<select id="pc17_unid" name="pc17_unid" style="width:150px;">';
 foreach ($aUnidades as $unidade) {
   $selectUnidade .= "
     <option value=\"{$unidade->m61_codmatunid}\" usadecimal=\"{$unidade->m61_usadec}\" usaquantidade=\"{$unidade->m61_usaquant}\">
@@ -65,12 +66,11 @@ foreach ($aUnidades as $unidade) {
   ";
 }
 $selectUnidade .= '</select>';
-
 ?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js, AjaxRequest.js");
 db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugin.js");
 ?>
@@ -80,6 +80,7 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
 <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_init()">
+<input type="hidden" id="pc10_numero" value="<?= $numeroAbertura ?: '' ?>">
   <center>
     <table style="width:62%;">
       <tr>
@@ -91,17 +92,17 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
             <table>
               <tr>
                 <td>
-                <?
+                <?php
                  db_ancora(@$Lpc16_codmater, "js_pesquisapc16_codmater(true);", 1);
                 ?>
                 </td>
                 <td nowrap>
-                   <?
+                   <?php
                    $pc17_quant = 1;
                    db_input('pc16_codmater', 8, $Ipc16_codmater, true, 'text', 1, " onchange='js_pesquisapc16_codmater(false);'");
                    db_input('pc01_descrmater', 50, $Ipc01_descrmater, true, 'text', 1, '');
                    echo $selectUnidade;
-                   db_input('pc17_quant', 5, 0, true, 'text', 1, "style='display:none'");
+                   db_input('pc17_quant', 5, 1, true, 'text', 1, "style='display:none'");
                    ?>
                 </td>
               </tr>
@@ -136,6 +137,7 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
       <tr>
         <td colspan="2" style="text-align: center;">
           <input type="button" value="Salvar Itens" id='btnSalvarItens'>
+          <input type='button' id="btnImportar" value='Importar' onclick="js_pesquisar();" />
         </td>
       </tr>
     </table>
@@ -155,7 +157,7 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
                  <?=@$Lpc11_prazo?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_prazo',3,30,$Ipc11_prazo,true,'text',$db_opcao)
                  ?>
                </td>
@@ -165,7 +167,7 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
                  <?=@$Lpc11_pgto?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_pgto',3,30,$Ipc11_pgto, true, 'text', $db_opcao);
                  ?>
                </td>
@@ -175,7 +177,7 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
                  <?=@$Lpc11_resum?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_resum',3,30,$Ipc11_resum,true,'text',$db_opcao)
                  ?>
                </td>
@@ -185,7 +187,7 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
                  <?=@$Lpc11_just?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_just',3,30,$Ipc11_just,true,'text',$db_opcao)
                  ?>
                </td>
@@ -205,18 +207,25 @@ db_app::load("widgets/windowAux.widget.js, widgets/datagrid/plugins/DBHint.plugi
 </html>
 <div id='div1' style='display: none;'></div> <br>
 <script>
-var sUrlRC         = 'com4_solicitacaoCompras.RPC.php';
-var aItensAbertura = new Array();
-function js_init() {
+let sUrlRC = 'com4_solicitacaoCompras.RPC.php';
+let aItensAbertura = [];
 
+const unidade = document.getElementById('pc17_unid');
+unidade.onchange = function () {
+    $('pc17_quant').value = "1";
+    js_usaQuantidade(this);
+}
+
+function js_init() {
   oGridItens              = new DBGrid('gridItens');
   oGridItens.nameInstance = "gridItens";
   oGridItens.setCellAlign(new Array("right","right","left","center", "left","center","center"));
-  oGridItens.setCellWidth(new Array("5%","10%","60%","1%","9%","5%","10%"));
-  oGridItens.setHeader(new Array("Seq","Codigo","Descrição","cod. Unidade","Unidade","Out.Inf.","Ação"));
+  oGridItens.setCellWidth(new Array("5%","10%","40%","15%","9%","5%","15%"));
+  oGridItens.setHeader(new Array("Seq","Código","Descrição","Cod. Unidade","Unidade(Qtd)","Out.Inf.","Ação"));
   oGridItens.aHeaders[3].lDisplayed  = false;
   oGridItens.show($('gridItensSolicitacao'));
   js_makeWindow();
+  js_pesquisarAbertura();
   $('btnSalvarItens').observe("click", js_salvarItens);
   $('btnAddItem').observe("click", js_adicionarItem);
   $('pc17_unid').style.height = $('pc01_descrmater').style.height+"px";
@@ -224,6 +233,39 @@ function js_init() {
   js_parametros();
   $('btnOutrasInf').disabled = true;
   $('btnAddItem').disabled = true;
+  $('pc16_codmater').observe('change', function () {
+      $('pc01_descrmater').value = ''
+  });
+}
+
+function js_pesquisarAbertura() {
+    const abertura = document.getElementById('pc10_numero');
+    if (!abertura.value) {
+        return;
+    }
+
+    js_divCarregando('Aguarde, pesquisando abertura.',"msgBox");
+
+    const requestParams = {};
+    requestParams.exec = "pesquisarAbertura";
+
+    const ajaxParams = {
+        method: "post",
+        parameters:'json=' + JSON.stringify(requestParams),
+        onComplete: function (response) {
+            const dados = JSON.parse(response.responseText);
+
+            if (dados.status === 1) {
+                if (dados.itens) {
+                    js_preencheGrid(dados.itens, dados.tipoSolicitacao);
+                }
+            }
+
+            js_removeObj('msgBox');
+        }
+    };
+
+    new Ajax.Request(sUrlRC, ajaxParams);
 }
 
 function js_pesquisapc16_codmater(mostra) {
@@ -313,20 +355,15 @@ function js_mostrapcmater1(iCodigoMaterial, sDescricaoMaterial, sComplemento) {
  * Adiciona o item a solicitacao
  */
 function js_adicionarItem() {
-
-  if ($F('pc16_codmater') == "") {
-
-    alert('Informe o material!');
-    return false;
-
+  const codigoMaterial = $F('pc16_codmater');
+  if (codigoMaterial === '') {
+    return alert('Informe o material!');
   }
 
   js_divCarregando('Aguarde, adicionando item',"msgBox");
 
-  js_pesquisapc16_codmater(false); // ter certeza de que pegou o código do material.
-
-  var oParam            = new Object();
-  oParam.iCodigoItem    = $F('pc16_codmater');
+  const oParam            = {};
+  oParam.iCodigoItem    = codigoMaterial;
   oParam.sJustificativa = encodeURIComponent(tagString($F('pc11_just')));
   oParam.sResumo        = encodeURIComponent(tagString($F('pc11_resum')));
   oParam.sPrazo         = encodeURIComponent(tagString($F('pc11_prazo')));
@@ -335,7 +372,7 @@ function js_adicionarItem() {
   oParam.nQuantUnidade  = $F('pc17_quant');
   oParam.exec           = "adicionarItemAbertura";
 
-  ajaxParams = {
+  const ajaxParams = {
     method: "post",
     parameters:'json='+Object.toJSON(oParam),
     onComplete: js_retornoadicionarItem
@@ -343,7 +380,7 @@ function js_adicionarItem() {
 
 
 
-  var oAjax          = new Ajax.Request(sUrlRC, ajaxParams);
+  new Ajax.Request(sUrlRC, ajaxParams);
 }
 
 function js_retornoadicionarItem(oAjax) {
@@ -351,7 +388,7 @@ function js_retornoadicionarItem(oAjax) {
   js_removeObj('msgBox');
   var oRetorno = JSON.parse(oAjax.responseText);
 
-  if (oRetorno.status == 1) {
+  if (oRetorno.status === 1) {
     js_preencheGrid(oRetorno.itens, oRetorno.tipoSolicitacao);
     js_limparForm();
     $('btnOutrasInf').disabled = true;
@@ -372,19 +409,18 @@ function js_preencheGrid(aItens, iTipoSolicitacao) {
   const unidadeOptions = $('pc17_unid').options;
 
   for(var i = 0; i < aItens.length; i++) {
-
     with (aItens[i]) {
       var aLinha = new Array();
       aLinha[0]  = i+1;
       aLinha[1]  = codigoitem;
       aLinha[2]  = descricaoitem.urlDecode();
       aLinha[3]  = unidade;
-      aLinha[4]  = unidade_descricao.urlDecode();
+      aLinha[4]  = `${unidade_descricao.urlDecode()}(${quantidadeUnidade})`;
       aLinha[5]  = "<span id='justificativa"+indice+"' style='display:none'>"+justificativa.urlDecode()+"</span>";
       aLinha[5] += "<span id='resumo"+indice+"'        style='display:none'>"+resumo.urlDecode()+"</span>";
       aLinha[5] += "<span id='pgto"+indice+"'          style='display:none'>"+pagamento.urlDecode()+"</span>";
       aLinha[5] += "<span id='prazo"+indice+"'         style='display:none'>"+prazo.urlDecode()+"</span>";
-      aLinha[5] += "<span><a href='#' onclick='js_showInfo("+indice+", "+i+")'><img src='imagens/edittext.png' border='0' ></a>...</span>";
+      aLinha[5] += "<span><a href='#' onclick='js_showInfo("+indice+", "+i+")'><img src='imagens/edittext.png' border='0' ></a></span>";
       aLinha[6]  = '';
       if (iTipoSolicitacao == 3) {
         aLinha[6] = `<input type="button" value="Alterar" onclick="js_alterarLinha(${i})">`;
@@ -413,12 +449,11 @@ function js_preencheGrid(aItens, iTipoSolicitacao) {
 }
 
 function js_salvarItens() {
-
   js_divCarregando('Aguarde, Salvando Itens',"msgBox");
   var oParam         = new Object();
   oParam.exec        = "salvarItensAbertura";
   oParam.codigosItensSolicitacaoAlterados = $('codigosItensSolicitacaoAlterados').value;
-  var oAjax          = new Ajax.Request(
+  new Ajax.Request(
     sUrlRC,
     {
     method: "post",
@@ -432,16 +467,23 @@ function js_salvarItens() {
 function js_retornoSalvarItem(oAjax) {
 
   js_removeObj('msgBox');
-  var oRetorno = JSON.parse(oAjax.responseText);
-  if (oRetorno.status == 1) {
-    alert('Itens Salvos Com sucesso.')
+  let oRetorno = JSON.parse(oAjax.responseText);
+
+  if (oRetorno.status === 1) {
+    alert('Itens salvos com sucesso!');
   } else {
-   alert(oRetorno.message.urlDecode());
+    alert(oRetorno.message.urlDecode());
   }
 }
 oAutoComplete = new dbAutoComplete($('pc01_descrmater'),'com4_pesquisamateriais.RPC.php');
 oAutoComplete.setTxtFieldId(document.getElementById('pc16_codmater'));
 oAutoComplete.show();
+oAutoComplete.setCallBackFunction(function (codigoMaterial, descricaoMaterial) {
+    $('pc01_descrmater').value = descricaoMaterial;
+    $('pc16_codmater').value = codigoMaterial;
+    $('btnOutrasInf').disabled = false;
+    $('btnAddItem').disabled = false;
+})
 
 function js_limparForm() {
 
@@ -451,12 +493,19 @@ function js_limparForm() {
   $('pc11_just').value       = "";
   $('pc11_pgto').value       = "";
   $('pc11_prazo').value      = "";
+  $('pc17_quant').value      = "1";
   $('btnOutrasInf').disabled = true;
   $('btnFecharWindowAux').onclick  =  function() {
       windowAuxiliar.hide();
   }
 
+  const unidade = document.getElementById('pc17_unid');
+  const evento = new Event('change');
+
+  unidade.value = opcparam[0].pc30_unid;
+  unidade.dispatchEvent(evento);
 }
+
 function js_alteraItem() {
   js_divCarregando('Aguarde, Alterando Item',"msgBox");
 
@@ -618,6 +667,7 @@ function js_usaQuantidade(oSelect) {
   }
 
 }
+
 function js_parametros() {
 
   var oParam         = new Object();
@@ -626,7 +676,7 @@ function js_parametros() {
   oParam.aParametros = new Array();
   var oParamCompras  = new Object();
   oParamCompras.sParam = "pcparam";
-  oParamCompras.aKeys = new Array();
+  oParamCompras.aKeys = [<?= db_getsession('DB_instit') ?: ''?>];
   oParam.aParametros.push(oParamCompras);
   var oParamOrcam  = new Object();
   oParamOrcam.sParam = "orcparametro";
@@ -682,15 +732,12 @@ function js_makeWindow() {
 }
 
 function js_showInfo(iIndice, iPosicaoArray) {
-
-  iIndice = iIndice;
   $('pc11_resum').value = $('resumo'+iIndice).innerHTML;
   $('pc11_just').value  = $('justificativa'+iIndice).innerHTML;
   $('pc11_pgto').value  = $('pgto'+iIndice).innerHTML;
   $('pc11_prazo').value = $('prazo'+iIndice).innerHTML;
 
-  var iCodigo = oGridItens.aRows[iPosicaoArray].aCells[1].getValue();
-  // buscaLiberaResumo(iCodigo);
+  let iCodigo = oGridItens.aRows[iPosicaoArray].aCells[1].getValue();
   $('btnFecharWindowAux').onclick  = function () {
 
     $('resumo'+iIndice).innerHTML        = $('pc11_resum').value;
@@ -726,8 +773,22 @@ function js_alterarDados(iIndice) {
                                           onComplete: js_retornoadicionarItem
                                          });
 }
-function js_retornoparametro(oAjax) {
 
+function limparItensTemporarios() {
+    const parametros = {};
+
+    parametros.exec = 'limparItensTemporarios';
+
+    new Ajax.Request(
+        sUrlRC,
+        {
+            method: 'post',
+            parameters:'json=' + JSON.stringify(parametros)
+        }
+    );
+}
+
+function js_retornoparametro(oAjax) {
   var oRetorno = JSON.parse(oAjax.responseText);
   for (var iParam = 0; iParam < oRetorno.itens.length; iParam++) {
 
@@ -735,6 +796,139 @@ function js_retornoparametro(oAjax) {
        eval("o"+name.valueOf()+"=fields");
      }
   }
+
   $('pc17_unid').value = opcparam[0].pc30_unid;
+  $('pc17_unid').dispatchEvent(new Event('change'));
+}
+
+function js_adicionarItemImportar(aItem) {
+    aItem.each(function(oDado) {
+        var oParam            = new Object();
+        oParam.iCodigoItem    = oDado.codigoitem;
+        oParam.sJustificativa = encodeURIComponent(tagString(oDado.justificativa));
+        oParam.sResumo        = encodeURIComponent(tagString(oDado.resumo));
+        oParam.sPrazo         = encodeURIComponent(tagString(oDado.prazo));
+        oParam.sPgto          = encodeURIComponent(tagString(oDado.pagamento));
+        oParam.iUnidade       = oDado.unidade;
+        oParam.nQuantUnidade  = oDado.quantidade;
+        oParam.exec           = "adicionarItemAbertura";
+        new Ajax.Request(
+            sUrlRC,
+            {
+                method: "post",
+                parameters:'json='+Object.toJSON(oParam),
+                asynchronous:false
+            }
+        );
+    });
+}
+
+function js_pesquisar() {
+    js_OpenJanelaIframe('',
+        'db_iframe_registropreco',
+        'func_solicitaregistropreco.php?funcao_js=parent.js_completaPesquisa|pc54_solicita'+
+        '&anuladas=1&trazcomitens=true',
+        'Abertura de Registro de Preço',
+        true,
+        0);
+}
+
+function js_completaPesquisa(iSolicitacao) {
+    let mensagemConfirmacao = `Confirma a importação dos itens da abertura ${iSolicitacao}?`;
+    mensagemConfirmacao += '\nOs itens cadastrados serão sobrescritos!'
+    const confirmacao = confirm(mensagemConfirmacao);
+    if (!confirmacao) {
+        return;
+    }
+
+    db_iframe_registropreco.hide();
+    js_divCarregando('Aguarde, buscando informações...',"msgBox");
+
+    const oParam          = new Object();
+    oParam.exec         = "pesquisarAbertura";
+    oParam.iSolicitacao = iSolicitacao;
+    oParam.ignorarSessao = true;
+    oParam.tipo         = 3;
+
+    new Ajax.Request(
+        sUrlRC,
+        {
+            method: "post",
+            parameters:'json='+Object.toJSON(oParam),
+            onComplete: js_retornoCompletaPesquisa
+        });
+}
+
+function js_retornoCompletaPesquisa(oAjax) {
+    const oRetorno = JSON.parse(oAjax.responseText);
+
+    if (oRetorno.status === 1) {
+        js_preencheGridImportacao(oRetorno.itens, oRetorno.tipoSolicitacao);
+    } else {
+        alert(oRetorno.message.urlDecode());
+    }
+
+    js_removeObj('msgBox');
+}
+
+function js_preencheGridImportacao(aItens, tipoSolicitacao = 1) {
+    aItensAbertura = aItens;
+    oGridItens.clearAll(true);
+
+    aItens.each(function (item, key) {
+            const row = [];
+            row[0]  = key + 1;
+            row[1]  = item.codigoitem;
+            row[2]  = item.descricaoitem.urlDecode();
+            row[3]  = item.unidade;
+            row[4]  = `${item.unidade_descricao.urlDecode()}(${item.quantidadeUnidade})`;
+
+            row[5]  = `<span id="justificativa${item.indice}" style="display:none">${item.justificativa.urlDecode()}`
+            row[5]  += '</span>'
+            row[5] += `<span id="resumo${item.indice}" style="display:none">${item.resumo.urlDecode()}</span>`;
+            row[5] += `<span id="pgto${item.indice}" style="display:none">${item.pagamento.urlDecode()}</span>`;
+            row[5] += `<span id="prazo${item.indice}" style="display:none">${item.prazo.urlDecode()}</span>`;
+            row[5] += `
+                <span>
+                    <a href="#" onclick="js_showInfo(${item.indice}, ${key})">
+                        <img alt="editarTexto" src='imagens/edittext.png' style="border:0" >
+                    </a>
+                </span>`;
+
+            row[6]  = '';
+            if (tipoSolicitacao === 3) {
+                row[6] = `<input
+                    type="button"
+                    value="Alterar"
+                    onclick="js_alterarLinha(${key})"
+                    style="margin-right:5px"
+                >`;
+                row[6] += `<input type="hidden" id="item${key}Unidade" value="${item.unidade}" >`;
+                row[6] += `<input type="hidden" id="item${key}UnidadeQuantidade" value="${item.quantidadeUnidade}" >`;
+                row[6] += `<input
+                    type="hidden"
+                    id="item${key}CodigoItemSolicitacao"
+                    value="${item.codigoItemSolicitacao}"
+                >`;
+
+                if (typeof item.flagAlterado !== 'undefined') {
+                    let itensSolicitacaoAlterados = $('codigosItensSolicitacaoAlterados').value;
+                    $('codigosItensSolicitacaoAlterados').value = itensSolicitacaoAlterados
+                        + (itensSolicitacaoAlterados != ''
+                            ? ',' + codigoItemSolicitacao
+                            : codigoItemSolicitacao
+                        );
+                }
+            }
+
+            row[6] += `<input type="button" value="Excluir" onclick="js_excluirLinha(${item.indice}, ${key})">`;
+
+            oGridItens.addRow(row);
+            oGridItens.aRows[key].aCells[0].sStyle +="background-color:#DED5CB;font-weight:bold;padding:1px";
+    });
+
+    oGridItens.renderRows();
+    limparItensTemporarios();
+    js_adicionarItemImportar(aItens);
 }
 </script>

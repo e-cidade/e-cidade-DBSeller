@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,6 +52,10 @@ $sSqlEscola = $oDaoEscola->sql_query_file(
 $rsResultEscola = $oDaoEscola->sql_record($sSqlEscola);
 $iLinhas = $oDaoEscola->numrows;
 
+$oDaoCalendario = new cl_calendarioescola();
+$sSqlCalendario = $oDaoCalendario->sql_query(null, "distinct ed52_i_ano", "ed52_i_ano desc", null);
+$rsResultCalendario = $oDaoCalendario->sql_record($sSqlCalendario);
+$iCalendarioLinhas = $oDaoCalendario->numrows;
 ?>
 
 <!doctype html>
@@ -74,6 +78,27 @@ $iLinhas = $oDaoEscola->numrows;
         <fieldset style="padding-right: 16px">
             <legend>Quadro de Vagas Geral da Rede</legend>
             <table class="form-container">
+                <tr>
+                    <td>
+                        <label for="ano">
+                            Selecione o ano do calendário:
+                        </label>
+                    </td>
+                    <td>
+                        <select name="ano" id="ano"class="field-size6" style="margin-left: 10px;"
+                            onChange="js_ano(this.value);">
+                            <option value=""> Selecione o ano</option>
+                            <?php for ($iCont = 0; $iCont < $iCalendarioLinhas; $iCont++) {
+                                $oDadosCalendario = db_utils::fieldsMemory($rsResultCalendario, $iCont); ?>
+                                <option value="<?= $oDadosCalendario->ed52_i_ano ?>">
+                                    <?= "$oDadosCalendario->ed52_i_ano" ?>
+                                </option>";
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <label for="escola">
@@ -149,6 +174,8 @@ $iLinhas = $oDaoEscola->numrows;
 <script type="text/javascript">
     const cboCalendario = document.getElementById('select_calendario');
     const cboTipoRelatorio = document.getElementById('tipoRelatorio');
+    const cboEscolaSelecionada = document.getElementById('escola');
+    var ano = '';
 
     function getValoresSelect(select) {
         let resultado = [];
@@ -183,10 +210,17 @@ $iLinhas = $oDaoEscola->numrows;
         }
     }
 
+    function js_ano(anoSelecionado) {
+        ano = anoSelecionado;
+        cboEscolaSelecionada.options[0].selected = true;
+        js_limparCalendario();
+    }
+
     function js_escola(escola) {
         let oParam = {};
         oParam.exec = "PesquisaCalendarioEspecialQuadroDeVagas";
         oParam.escola = escola;
+        oParam.ano = ano;
 
         $('tipoRelatorio').value = 1;
         $('tipoRelatorio').disabled = true;

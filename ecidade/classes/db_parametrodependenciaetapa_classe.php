@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE parametrodependenciaetapa
-class cl_parametrodependenciaetapa { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed296_sequencial = 0; 
-   var $ed296_parametrodependencia = 0; 
-   var $ed296_etapa = 0; 
-   var $ed296_cursoedu = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_parametrodependenciaetapa {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed296_sequencial = 0;
+   var $ed296_parametrodependencia = 0;
+   var $ed296_etapa = 0;
+   var $ed296_cursoedu = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed296_sequencial = int4 = Sequencial 
-                 ed296_parametrodependencia = int4 = Parametro Dependencia 
-                 ed296_etapa = int4 = Etapa 
-                 ed296_cursoedu = int4 = Cursos com Progressão Parcial 
+                 ed296_sequencial = int4 = Sequencial
+                 ed296_parametrodependencia = int4 = Parametro Dependencia
+                 ed296_etapa = int4 = Etapa
+                 ed296_cursoedu = int4 = Cursos com Progressão Parcial
                  ";
-   //funcao construtor da classe 
-   function cl_parametrodependenciaetapa() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("parametrodependenciaetapa"); 
+     $this->rotulo = new rotulo("parametrodependenciaetapa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_parametrodependenciaetapa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed296_sequencial = ($this->ed296_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed296_sequencial"]:$this->ed296_sequencial);
        $this->ed296_parametrodependencia = ($this->ed296_parametrodependencia == ""?@$GLOBALS["HTTP_POST_VARS"]["ed296_parametrodependencia"]:$this->ed296_parametrodependencia);
@@ -80,9 +80,9 @@ class cl_parametrodependenciaetapa {
      }
    }
    // funcao para inclusao
-   function incluir ($ed296_sequencial){ 
+   public function incluir ($ed296_sequencial){
       $this->atualizacampos();
-     if($this->ed296_parametrodependencia == null ){ 
+     if($this->ed296_parametrodependencia == null ){
        $this->erro_sql = " Campo Parametro Dependencia nao Informado.";
        $this->erro_campo = "ed296_parametrodependencia";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_parametrodependenciaetapa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed296_etapa == null ){ 
+     if($this->ed296_etapa == null ){
        $this->erro_sql = " Campo Etapa nao Informado.";
        $this->erro_campo = "ed296_etapa";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_parametrodependenciaetapa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed296_cursoedu == null ){ 
+     if($this->ed296_cursoedu == null ){
        $this->erro_sql = " Campo Cursos com Progressão Parcial nao Informado.";
        $this->erro_campo = "ed296_cursoedu";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_parametrodependenciaetapa {
        return false;
      }
      if($ed296_sequencial == "" || $ed296_sequencial == null ){
-       $result = db_query("select nextval('parametrodependenciaetapa_ed296_sequencial_seq')"); 
+       $result = db_query("select nextval('parametrodependenciaetapa_ed296_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: parametrodependenciaetapa_ed296_sequencial_seq do campo: ed296_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: parametrodependenciaetapa_ed296_sequencial_seq do campo: ed296_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed296_sequencial = pg_result($result,0,0); 
+       $this->ed296_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from parametrodependenciaetapa_ed296_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed296_sequencial)){
@@ -130,10 +130,10 @@ class cl_parametrodependenciaetapa {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed296_sequencial = $ed296_sequencial; 
+         $this->ed296_sequencial = $ed296_sequencial;
        }
      }
-     if(($this->ed296_sequencial == null) || ($this->ed296_sequencial == "") ){ 
+     if(($this->ed296_sequencial == null) || ($this->ed296_sequencial == "") ){
        $this->erro_sql = " Campo ed296_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_parametrodependenciaetapa {
        return false;
      }
      $sql = "insert into parametrodependenciaetapa(
-                                       ed296_sequencial 
-                                      ,ed296_parametrodependencia 
-                                      ,ed296_etapa 
-                                      ,ed296_cursoedu 
+                                       ed296_sequencial
+                                      ,ed296_parametrodependencia
+                                      ,ed296_etapa
+                                      ,ed296_cursoedu
                        )
                 values (
-                                $this->ed296_sequencial 
-                               ,$this->ed296_parametrodependencia 
-                               ,$this->ed296_etapa 
-                               ,$this->ed296_cursoedu 
+                                $this->ed296_sequencial
+                               ,$this->ed296_parametrodependencia
+                               ,$this->ed296_etapa
+                               ,$this->ed296_cursoedu
                       )";
-     $result = db_query($sql);      
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "parametro dependencia etapa ($this->ed296_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_parametrodependenciaetapa {
        $resac = db_query("insert into db_acount values($acount,3276,18525,'','".AddSlashes(pg_result($resaco,0,'ed296_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed296_sequencial=null) { 
+   public function alterar ($ed296_sequencial=null) {
       $this->atualizacampos();
      $sql = " update parametrodependenciaetapa set ";
      $virgula = "";
-     if(trim($this->ed296_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_sequencial"])){ 
+     if(trim($this->ed296_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_sequencial"])){
        $sql  .= $virgula." ed296_sequencial = $this->ed296_sequencial ";
        $virgula = ",";
-       if(trim($this->ed296_sequencial) == null ){ 
+       if(trim($this->ed296_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ed296_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_parametrodependenciaetapa {
          return false;
        }
      }
-     if(trim($this->ed296_parametrodependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_parametrodependencia"])){ 
+     if(trim($this->ed296_parametrodependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_parametrodependencia"])){
        $sql  .= $virgula." ed296_parametrodependencia = $this->ed296_parametrodependencia ";
        $virgula = ",";
-       if(trim($this->ed296_parametrodependencia) == null ){ 
+       if(trim($this->ed296_parametrodependencia) == null ){
          $this->erro_sql = " Campo Parametro Dependencia nao Informado.";
          $this->erro_campo = "ed296_parametrodependencia";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_parametrodependenciaetapa {
          return false;
        }
      }
-     if(trim($this->ed296_etapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_etapa"])){ 
+     if(trim($this->ed296_etapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_etapa"])){
        $sql  .= $virgula." ed296_etapa = $this->ed296_etapa ";
        $virgula = ",";
-       if(trim($this->ed296_etapa) == null ){ 
+       if(trim($this->ed296_etapa) == null ){
          $this->erro_sql = " Campo Etapa nao Informado.";
          $this->erro_campo = "ed296_etapa";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_parametrodependenciaetapa {
          return false;
        }
      }
-     if(trim($this->ed296_cursoedu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_cursoedu"])){ 
+     if(trim($this->ed296_cursoedu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_cursoedu"])){
        $sql  .= $virgula." ed296_cursoedu = $this->ed296_cursoedu ";
        $virgula = ",";
-       if(trim($this->ed296_cursoedu) == null ){ 
+       if(trim($this->ed296_cursoedu) == null ){
          $this->erro_sql = " Campo Cursos com Progressão Parcial nao Informado.";
          $this->erro_campo = "ed296_cursoedu";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_parametrodependenciaetapa {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "parametro dependencia etapa nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed296_sequencial;
@@ -297,14 +297,14 @@ class cl_parametrodependenciaetapa {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed296_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed296_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed296_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_parametrodependenciaetapa {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "parametro dependencia etapa nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed296_sequencial;
@@ -361,11 +361,11 @@ class cl_parametrodependenciaetapa {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,11 +387,11 @@ class cl_parametrodependenciaetapa {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed296_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed296_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,15 +410,15 @@ class cl_parametrodependenciaetapa {
      $sql2 = "";
      if($dbwhere==""){
        if($ed296_sequencial!=null ){
-         $sql2 .= " where parametrodependenciaetapa.ed296_sequencial = $ed296_sequencial "; 
-       } 
+         $sql2 .= " where parametrodependenciaetapa.ed296_sequencial = $ed296_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,11 +427,11 @@ class cl_parametrodependenciaetapa {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed296_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed296_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,15 +444,15 @@ class cl_parametrodependenciaetapa {
      $sql2 = "";
      if($dbwhere==""){
        if($ed296_sequencial!=null ){
-         $sql2 .= " where parametrodependenciaetapa.ed296_sequencial = $ed296_sequencial "; 
-       } 
+         $sql2 .= " where parametrodependenciaetapa.ed296_sequencial = $ed296_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

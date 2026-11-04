@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@ $clnotificabloqueiofornecedor->rotulo->label("pc86_sequencial");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-<?
+<?php
   if (!isset($oGet->notificacao)) {
 ?>
   <tr> 
@@ -62,7 +62,7 @@ $clnotificabloqueiofornecedor->rotulo->label("pc86_sequencial");
               <?=$Lpc86_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		           db_input("pc86_sequencial",10,$Ipc86_sequencial,true,"text",4,"","chave_pc86_sequencial");
 		          ?>
             </td>
@@ -79,12 +79,12 @@ $clnotificabloqueiofornecedor->rotulo->label("pc86_sequencial");
       </form>
     </td>
   </tr>
-<?
+<?php
   }
 ?>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($oGet->pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -172,12 +172,12 @@ $clnotificabloqueiofornecedor->rotulo->label("pc86_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($oGet->pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 
 if (!isset($oGet->notificacao)) {
@@ -185,7 +185,7 @@ if (!isset($oGet->notificacao)) {
 <script>
   js_tabulacaoforms("form2", "chave_pc86_sequencial", true, 1, "chave_pc86_sequencial", true);
 </script>
-<?
+<?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $cl_especmedicos = new cl_especmedico;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 if(isset($Processar)){
  $result = $cl_especmedicos -> sql_record($cl_especmedicos->sql_query($medico,"","sd05_i_codigo,sd05_c_descr"));
  if($cl_especmedicos->numrows>0){

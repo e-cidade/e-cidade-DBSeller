@@ -107,11 +107,23 @@ class FindOrCreateCgsService
         $dados = $this->builder->build($request);
         $cgs = $this->model->salvar($dados);
 
-        $_SESSION['DB_login'] = 'dbseller';
+        $_SESSION['DB_login'] = $this->getUserParameter();
 
         $auditoria = new CgsAuditoriaService($cgs->z01_i_cgsund, null);
         $auditoria->salvar();
 
         return (int)$cgs->z01_i_cgsund;
+    }
+
+    private function getUserParameter()
+    {
+        $dao = new \cl_sau_config();
+        $sql = $dao->sql_query('', 'login');
+        $rs = $dao->sql_record($sql);
+        if ($dao->numrows > 0) {
+            return \db_utils::fieldsMemory($rs, 0)->login;
+        }
+
+        return 'dbseller';
     }
 }

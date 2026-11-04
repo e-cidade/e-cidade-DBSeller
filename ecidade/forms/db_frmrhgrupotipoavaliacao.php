@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrhgrupotipoavaliacao->rotulo->label();
        <?=@$Lh68_sequencial?>
     </td>
     <td> 
-		<?
+		<?php
 		  db_input('h68_sequencial',10,$Ih68_sequencial,true,'text',3,"")
 		?>
     </td>
@@ -52,7 +52,7 @@ $clrhgrupotipoavaliacao->rotulo->label();
        <?=@$Lh68_descricao?>
     </td>
     <td> 
-		<?
+		<?php
 		  db_input('h68_descricao',60,$Ih68_descricao,true,'text',$db_opcao,"")
 		?>
     </td>
@@ -62,7 +62,7 @@ $clrhgrupotipoavaliacao->rotulo->label();
        <?=@$Lh68_tipolancamento?>
     </td>
     <td> 
-			<?
+			<?php
 			$aTipos = array( "1" => "Digitável",
 			                 "2" => "Valor padrão",
 			                 "3" => "Calculado"
@@ -84,7 +84,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhgrupotipoavaliacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

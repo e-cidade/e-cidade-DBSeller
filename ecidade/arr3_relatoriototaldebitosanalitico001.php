@@ -130,8 +130,8 @@ else {
         $rsDebitos       = debitos_matricula($matric, 0, 0, $DB_DATACALC, $DB_anousu, '', 'k00_tipo,k00_numpre,k00_numpar,k00_receit', $sWhere);
 
         $sOrigemConsulta = "Matrícula: " . $matric;
-        
-        $oRotulo->label("j40_refant"); 
+
+        $oRotulo->label("j40_refant");
         $sLabelRefantInscmu = $GLOBALS['RLj40_refant'];
         $oDaoIptuBase        = db_utils::getDao("iptubase");
         $sCamposProprietario = "j34_setor,j34_quadra,j34_lote,tipopri,j39_numero,j39_compl,nomepri,z01_nome,z01_numcgm,z01_cgmpri,j40_refant,pql_localizacao";
@@ -142,7 +142,7 @@ else {
 
             $sOrigemConsulta .= " - SQL: {$oDadosProprietario->j34_setor}/{$oDadosProprietario->j34_quadra}/{$oDadosProprietario->j34_lote} PQL: {$oDadosProprietario->pql_localizacao}";
             $sOrigemConsulta .= " - Logradouro: {$oDadosProprietario->tipopri} {$oDadosProprietario->nomepri}, {$oDadosProprietario->j39_numero} {$oDadosProprietario->j39_compl}";
-            
+
             $iNumcgm         = $oDadosProprietario->z01_cgmpri;
             $sNumeroAnterior = $oDadosProprietario->j40_refant;
         }
@@ -163,7 +163,7 @@ else {
 
         $iNumcgm = $iCGMEnvolvidoRegra;
     }
-    else {        
+    else {
         if (!empty($inscr)) {
             $rsOutrosDebitos = debitos_inscricao($inscr, 0, 0, $DB_DATACALC, $DB_anousu, '', 'k00_tipo,k00_numpre,k00_numpar,k00_receit');
             $rsDebitos = debitos_inscricao($inscr, 0, 0, $DB_DATACALC, $DB_anousu, '', 'k00_tipo,k00_numpre,k00_numpar,k00_receit', $sWhere);
@@ -224,6 +224,15 @@ if(isset($sNumeroAnterior)) {
 $oCgmEnvolvidoRegra = CgmFactory::getInstanceByCgm($iCGMEnvolvidoRegra);
 $oDadosCgm[0]->z01_numcgm = $iCGMEnvolvidoRegra;
 $oDadosCgm[0]->z01_nome = $oCgmEnvolvidoRegra->getNome();
+
+if (!empty($matric)) {
+    $oDaoIptubase = new cl_iptubase();
+    $sSqlTipoEnvolvido = $oDaoIptubase->sql_query_envolvidos_matricula($matric, $iCGMEnvolvidoRegra);
+    $rsTipoEnvolvido = db_query($sSqlTipoEnvolvido);
+    $oTipoEnvolvido = db_utils::getCollectionByRecord($rsTipoEnvolvido)[0];
+
+    $oDadosCgm[0]->z01_nome = $oTipoEnvolvido->nomecomabreviatura;
+}
 /*
  *  As variaveis abaixo são utilizadas para determinar o que cada grupo de tipo de débito irá buscar e que informações deverão conter
  *
@@ -355,7 +364,7 @@ foreach ($oDadosDebitos as $aDados) {
             if ($oDaoDivida->numrows > 0) {
                 $sExercicios = db_utils::fieldsMemory($rsDadosDivida, 0)->exercicios;
 
-                $aDadosProcessado->divida_exercicios = ereg_replace("[{}]", "", $sExercicios);
+                $aDadosProcessado->divida_exercicios = preg_replace("[{}]", "", $sExercicios);
                 $aDadosProcessado->complemento_numpre = " - Exercício: " . $aDadosProcessado->divida_exercicios;
             }
         }
@@ -489,7 +498,7 @@ foreach ($oDadosDebitos as $aDados) {
             $sSqlProcessoForo .= "                               and processoforoinicial.v71_anulado = false                  ";
             $sSqlProcessoForo .= " left join processoforo         on processoforo.v70_sequencial     = processoforoinicial.v71_processoforo ";
             $sSqlProcessoForo .= "                               and processoforo.v70_anulado = false                                       ";
-            
+
             $rsProcessoForo = db_query($sSqlProcessoForo);
 
             $oDadosProcessoForo = array();
@@ -508,7 +517,7 @@ foreach ($oDadosDebitos as $aDados) {
                 /*
                  * Verificamos a situação das custas para o Processo do Foro
                  */
-                if ($oParametrosJuridico->v19_partilha == "t") {
+                if ($oParametrosJuridico->v19_partilha == "t" && !empty($iProcessoForo)) {
                     $sSqlDadosPartilha = " select distinct                                                                   ";
                     $sSqlDadosPartilha .= "        v76_sequencial,                                                            ";
                     $sSqlDadosPartilha .= "        v76_tipolancamento,                                                        ";
@@ -626,7 +635,7 @@ foreach ($oDadosDebitos as $aDados) {
         $aDadosProcessado->divida_exercicios = "";
 
         if (in_array($oDadosArreTipo->k03_tipo, $aCadTipoBuscaDadosDivida) && !empty($sExercicios)) {
-            $aDadosProcessado->divida_exercicios = ereg_replace("[{}]", "", $sExercicios);
+            $aDadosProcessado->divida_exercicios = preg_replace("[{}]", "", $sExercicios);
             $aDadosProcessado->complemento_numpre = " - Exercício: " . $aDadosProcessado->divida_exercicios;
         }
 
@@ -918,11 +927,11 @@ foreach ($aDadosRelatorio as $aDadosOrigem) {
                         || (!empty($aProximoDadosProcessoForo) && (int)$aProximoDadosProcessoForo[0]->processo_foro[0]->inicial === (int)$aDadosNumpre->processo_foro[0]->inicial)
                     ) {
                         $lMostraInicial = false;
-                    } 
-                    
+                    }
+
                     if (!empty($aDadosNumpre->termo)) {
                         $lTermo = false;
-                    }                                    
+                    }
 
                 }
 
@@ -1238,8 +1247,8 @@ function fc_dadosContribuinte(FPDF $oPdf, $oDadosCgm)
     $oPdf->Text(32, 38, $oDadosCgm[0]->complemento);
     $oPdf->Text(5, 42, "Nome:");
     if(isset($oDadosCgm[0]->numeroanterior)) {
-        
-   
+
+
       $oPdf->Text(115, 42, $oDadosCgm[0]->labelrefantinscmu." : ");
     }
     $oPdf->Text(5, 46, "CNPJ/CPF:");
@@ -1254,8 +1263,8 @@ function fc_dadosContribuinte(FPDF $oPdf, $oDadosCgm)
     $oPdf->Text(18, 38, $oDadosCgm[0]->z01_numcgm);
     $oPdf->Text(23, 42, $oDadosCgm[0]->z01_nome);
     if(isset($oDadosCgm[0]->numeroanterior)) {
-        
-   
+
+
         $oPdf->Text(145, 42, $oDadosCgm[0]->numeroanterior);
     }
     $oPdf->Text(23, 46, db_cgccpf($oDadosCgm[0]->z01_cgccpf));
@@ -1339,11 +1348,11 @@ function fc_totalTipo($oPdf, $oDadosTipo)
 function fc_totalNumpre($oPdf, $oDadosNumpre)
 {
     $strExercicioDiver = "";
-    $sSqlExercDiver ="select distinct coalesce(dv05_exerc::varchar,'') as dv05_exerc 
-                        from diversos 
-                  inner join arrecad  on diversos.dv05_numpre = arrecad.k00_numpre 
+    $sSqlExercDiver ="select distinct coalesce(dv05_exerc::varchar,'') as dv05_exerc
+                        from diversos
+                  inner join arrecad  on diversos.dv05_numpre = arrecad.k00_numpre
                   inner join arretipo on arrecad.k00_tipo     = arretipo.k00_tipo
-                       where dv05_numpre = {$oDadosNumpre->numpre} 
+                       where dv05_numpre = {$oDadosNumpre->numpre}
                          and arretipo.k03_tipo = 7 /* diversos */
                              limit 1";
 
@@ -1542,10 +1551,10 @@ function retornaNumprePai($numpreOrigem) {
 }
 
 function retornaParcelamentoAtual($numpreOrigem){
-    $sSql = "SELECT v08_parcel 
-               FROM termoreparc 
-              INNER JOIN termo 
-                 ON v07_parcel = v08_parcel 
+    $sSql = "SELECT v08_parcel
+               FROM termoreparc
+              INNER JOIN termo
+                 ON v07_parcel = v08_parcel
               WHERE v07_numpre = {$numpreOrigem}";
 
     $oDaoTermoReparc = db_utils::getDao("termoreparc");
@@ -1554,11 +1563,11 @@ function retornaParcelamentoAtual($numpreOrigem){
 
     if ($rowsTermoReparc > 0) {
         $oTermo = db_utils::fieldsMemory($rsTermoReparc, 0);
-        
+
         return $oTermo->v08_parcel;
     } else {
-        $sSql = "SELECT v07_parcel 
-	 	           FROM termo 
+        $sSql = "SELECT v07_parcel
+	 	           FROM termo
 		          WHERE v07_numpre = $numpreOrigem";
 
         $rsTermo = $oDaoTermoReparc->sql_record($sSql);

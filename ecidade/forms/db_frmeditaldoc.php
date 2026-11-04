@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("d01_descr");
        <?=@$Ld13_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('d13_sequencial',10,$Id13_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Td13_db_documento?>">
-       <?
+       <?php
        db_ancora(@$Ld13_db_documento,"js_pesquisad13_db_documento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d13_db_documento',8,$Id13_db_documento,true,'text',$db_opcao," onchange='js_pesquisad13_db_documento(false);'")
 ?>
-       <?
+       <?php
 db_input('db03_descr',40,$Idb03_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Td13_edital?>">
-       <?
+       <?php
        db_ancora(@$Ld13_edital,"js_pesquisad13_edital(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d13_edital',4,$Id13_edital,true,'text',$db_opcao," onchange='js_pesquisad13_edital(false);'")
 ?>
-       <?
+       <?php
 db_input('d01_descr',40,$Id01_descr,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_editaldoc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

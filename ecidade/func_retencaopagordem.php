@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clretencaopagordem->rotulo->label("e20_data");
               <?=$Le20_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e20_sequencial",10,$Ie20_sequencial,true,"text",4,"","chave_e20_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clretencaopagordem->rotulo->label("e20_data");
               <?=$Le20_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e20_data",10,$Ie20_data,true,"text",4,"","chave_e20_data");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clretencaopagordem->rotulo->label("e20_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_retencaopagordem.php")==true){
@@ -122,12 +122,12 @@ $clretencaopagordem->rotulo->label("e20_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

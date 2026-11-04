@@ -41,9 +41,9 @@ $clrotulo->label("ed248_i_motivo");
 $sLegenda = "Rematricular Aluno";
 
 if ($db_opcao == 2) {
-  $sLegenda = "Alterar Situação da Matrícula";
+    $sLegenda = "Alterar Situação da Matrícula";
 } else if ($db_opcao == 3) {
-  $sLegenda = "Exclusão de Matrícula";
+    $sLegenda = "Exclusão de Matrícula";
 }
 
 ?>
@@ -52,7 +52,7 @@ if ($db_opcao == 2) {
     <legend>
       <?php
         echo $sLegenda;
-      ?>
+        ?>
     </legend>
     <table class="form-container">
       <tr>
@@ -61,40 +61,40 @@ if ($db_opcao == 2) {
             <legend>Turma</legend>
             <table>
               <tr>
-                <td nowrap title="<?=@$Ted60_i_turma?>">
-                  <?db_ancora( @$Led60_i_turma, "js_pesquisaed60_i_turma();", $db_opcao == 3 ? $db_opcao1 : $db_opcao );?>
+                <td nowrap title="<?php echo @$Ted60_i_turma?>">
+                  <?php db_ancora(@$Led60_i_turma, "js_pesquisaed60_i_turma();", $db_opcao == 3 ? $db_opcao1 : $db_opcao);?>
                 </td>
                 <td>
                 <?php
-                  db_input( 'ed60_i_turma', 15, $Ied60_i_turma,  true, 'text', 3 );
-                  db_input( 'ed57_c_descr', 20, @$Ied57_c_descr, true, 'text', 3 );
+                  db_input('ed60_i_turma', 15, $Ied60_i_turma,  true, 'text', 3);
+                  db_input('ed57_c_descr', 20, @$Ied57_c_descr, true, 'text', 3);
                 ?>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <?=@$Led57_i_calendario?>
+                  <?php echo @$Led57_i_calendario?>
                 </td>
                 <td>
-                  <?db_input( 'ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3 );?>
+                  <?php db_input('ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
-                <td nowrap title="<?=@$Ted31_i_curso?>">
-                  <?=@$Led31_i_curso?>
+                <td nowrap title="<?php echo @$Ted31_i_curso?>">
+                  <?php echo @$Led31_i_curso?>
                 </td>
                 <td>
-                  <?db_input( 'ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3 );?>
+                  <?php db_input('ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3);?>
                 </td>
               </tr>
               <tr id='linhaEtapa'>
                 <td>
-                  <?=@$Led223_i_serie?>
+                  <?php echo @$Led223_i_serie?>
                 </td>
                 <td>
-                  <?db_input( 'nometapa', 30, @$Inometapa, true, 'text', 3 );?>
-                  <?=@$Led57_i_turno?>
-                  <?db_input( 'ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3 );?>
+                  <?php db_input('nometapa', 30, @$Inometapa, true, 'text', 3);?>
+                  <?php echo @$Led57_i_turno?>
+                  <?php db_input('ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3);?>
                 </td>
               </tr>
 
@@ -102,54 +102,54 @@ if ($db_opcao == 2) {
           </fieldset>
         </td>
       </tr>
-      <?if ( isset( $chavepesquisa ) && $db_opcao == 1 ) { ?>
+      <?php if (isset($chavepesquisa) && $db_opcao == 1 ) { ?>
       <tr>
         <td valign="top">
-          <?
+            <?php
             $sCampos  = "ed57_i_base as base, ed57_i_codigo, ed57_i_escola as escola, fc_codetapaturma(ed57_i_codigo) as serie,";
             $sCampos .= "ed57_i_turno as turno, ed57_i_calendario as calendario, ed52_i_ano as anoatual, ";
             $sCampos .= " ed29_i_avalparcial as parametroatual";
-            $sSql     = $clturma->sql_query( "", $sCampos, "", "ed57_i_codigo = {$ed60_i_turma}" );
-            $rs       = $clturma->sql_record( $sSql );
-            db_fieldsmemory( $rs, 0 );
+            $sSql     = $clturma->sql_query("", $sCampos, "", "ed57_i_codigo = {$ed60_i_turma}");
+            $rs       = $clturma->sql_record($sSql);
+            db_fieldsmemory($rs, 0);
 
             $sSqlCal = $clcalendario->sql_query_file(
-                                                      "",
-                                                      "ed52_i_calendant,ed52_i_periodo as periodo",
-                                                      "",
-                                                      "ed52_i_codigo = {$calendario}"
-                                                    );
-            $rsCal   = $clcalendario->sql_record( $sSqlCal );
-            db_fieldsmemory( $rsCal, 0 );
+                "",
+                "ed52_i_calendant,ed52_i_periodo as periodo",
+                "",
+                "ed52_i_codigo = {$calendario}"
+            );
+            $rsCal   = $clcalendario->sql_record($sSqlCal);
+            db_fieldsmemory($rsCal, 0);
 
             $ed52_i_calendant = $ed52_i_calendant == "" ? "0" : $ed52_i_calendant;
 
             if ($ed52_i_calendant != "0") {
 
-            	$sSqlCalend = $clcalendario->sql_query_file(
-            	                                             "",
-            	                                             "ed52_i_ano as anoanterior",
-            	                                             "",
-            	                                             "ed52_i_codigo = {$ed52_i_calendant}"
-                                                         );
-              $rsCalend   = $clcalendario->sql_record( $sSqlCalend );
-              db_fieldsmemory( $rsCalend, 0 );
+                $sSqlCalend = $clcalendario->sql_query_file(
+                    "",
+                    "ed52_i_ano as anoanterior",
+                    "",
+                    "ed52_i_codigo = {$ed52_i_calendant}"
+                );
+                $rsCalend   = $clcalendario->sql_record($sSqlCalend);
+                db_fieldsmemory($rsCalend, 0);
             } else {
-              $anoanterior = 0;
+                $anoanterior = 0;
             }
 
             $sSqlSerieEquiv  = " SELECT ARRAY(SELECT ed234_i_serieequiv FROM serieequiv ";
             $sSqlSerieEquiv .= " WHERE ed234_i_serie in ({$serie})) as seriesequivalentes";
-            $rsSerieEquiv    = db_query( $sSqlSerieEquiv );
-            db_fieldsmemory( $rsSerieEquiv, 0 );
+            $rsSerieEquiv    = db_query($sSqlSerieEquiv);
+            db_fieldsmemory($rsSerieEquiv, 0);
 
-            $seriesequivalentes = str_replace( "{", "", $seriesequivalentes );
-            $seriesequivalentes = str_replace( "}", "", $seriesequivalentes );
+            $seriesequivalentes = str_replace("{", "", $seriesequivalentes);
+            $seriesequivalentes = str_replace("}", "", $seriesequivalentes);
 
-            if ( $seriesequivalentes == "" ) {
-              $seriesequivalentes = "({$serie})";
+            if ($seriesequivalentes == "" ) {
+                $seriesequivalentes = "({$serie})";
             } else {
-              $seriesequivalentes = "({$serie},{$seriesequivalentes})";
+                $seriesequivalentes = "({$serie},{$seriesequivalentes})";
             }
 
             $sCamposAluno  = " DISTINCT            \n";
@@ -159,9 +159,9 @@ if ($db_opcao == 2) {
             $sCamposAluno .= " ed11_c_descr,       \n";
             $sCamposAluno .= " ed10_c_abrev,       \n";
             $sCamposAluno .= " ed29_i_avalparcial, \n";
-         		$sCamposAluno .= " ed79_i_turmaant,    \n";
-         		$sCamposAluno .= " ed79_c_resulant,    \n";
-         		$sCamposAluno .= " ed79_i_serie        \n";
+                 $sCamposAluno .= " ed79_i_turmaant,    \n";
+                 $sCamposAluno .= " ed79_c_resulant,    \n";
+                 $sCamposAluno .= " ed79_i_serie        \n";
 
             $sCondicao     = "     ed56_i_escola = {$escola}                                                         \n";
             $sCondicao    .= " AND ed79_i_serie in {$seriesequivalentes}                                             \n";
@@ -187,60 +187,60 @@ if ($db_opcao == 2) {
             $sCondicao    .= "                    and alunocurso2.ed56_c_situacao = 'MATRICULADO'                    \n";
             $sCondicao    .= "              )                                                                        \n";
 
-            $sSqlAluno    = $claluno->sql_query_matricula( "", $sCamposAluno, "ed47_v_nome", $sCondicao );
-            $rsAluno      = $claluno->sql_record( $sSqlAluno );
+            $sSqlAluno    = $claluno->sql_query_matricula("", $sCamposAluno, "ed47_v_nome", $sCondicao);
+            $rsAluno      = $claluno->sql_record($sSqlAluno);
             $iLinhasAluno = $claluno->numrows;
-          ?>
+            ?>
           <b>Alunos em condição de matrícula:</b><br>
           <select name="alunospossib" id="alunospossib" size="10" onclick="js_desabinc()"
                   style="font-size:9px;width:430px;height:180px" multiple>
-            <?
-               if ($iLinhasAluno > 0) {
+            <?php
+            if ($iLinhasAluno > 0) {
 
-                 for ($i = 0; $i < $iLinhasAluno; $i++) {
+                for ($i = 0; $i < $iLinhasAluno; $i++) {
 
-                   db_fieldsmemory($rsAluno,$i);
-                   $mostra = true;
+                     db_fieldsmemory($rsAluno, $i);
+                     $mostra = true;
 
-                   if ($parametroatual == $ed29_i_avalparcial && $ed29_i_avalparcial == 2) {
+                    if ($parametroatual == $ed29_i_avalparcial && $ed29_i_avalparcial == 2) {
 
-                     $sSqlReg  = " SELECT * ";
-                     $sSqlReg .= "   FROM histmpsdisc";
-                     $sSqlReg .= "        inner join historicomps on ed62_i_codigo = ed65_i_historicomps";
-                     $sSqlReg .= "        inner join historico    on ed61_i_codigo = ed62_i_historico";
-                     $sSqlReg .= "  WHERE ed61_i_aluno          = {$ed47_i_codigo}";
-                     $sSqlReg .= "    AND ed61_i_curso          = {$ed29_i_codigo}";
-                     $sSqlReg .= "    AND ed62_i_serie          = {$ed79_i_serie}";
-                     $sSqlReg .= "    AND ed62_c_resultadofinal = 'P'";
-                     $sSqlReg .= "    AND exists(select * ";
-                     $sSqlReg .= "                 from regencia";
-                     $sSqlReg .= "                where ed59_i_turma      = {$ed60_i_turma}";
-                     $sSqlReg .= "                  and ed59_i_serie      = {$ed79_i_serie}";
-                     $sSqlReg .= "                  and ed59_i_disciplina = ed65_i_disciplina)";
-                   	 $rsReg    = db_query( $sSqlReg );
-                     $iLinhas  = pg_num_rows( $rsReg );
-                     if ( $iLinhas > 0 ) {
-                       $mostra = false;
-                     }
-                   }
+                        $sSqlReg  = " SELECT * ";
+                        $sSqlReg .= "   FROM histmpsdisc";
+                        $sSqlReg .= "        inner join historicomps on ed62_i_codigo = ed65_i_historicomps";
+                        $sSqlReg .= "        inner join historico    on ed61_i_codigo = ed62_i_historico";
+                        $sSqlReg .= "  WHERE ed61_i_aluno          = {$ed47_i_codigo}";
+                        $sSqlReg .= "    AND ed61_i_curso          = {$ed29_i_codigo}";
+                        $sSqlReg .= "    AND ed62_i_serie          = {$ed79_i_serie}";
+                        $sSqlReg .= "    AND ed62_c_resultadofinal = 'P'";
+                        $sSqlReg .= "    AND exists(select * ";
+                        $sSqlReg .= "                 from regencia";
+                        $sSqlReg .= "                where ed59_i_turma      = {$ed60_i_turma}";
+                        $sSqlReg .= "                  and ed59_i_serie      = {$ed79_i_serie}";
+                        $sSqlReg .= "                  and ed59_i_disciplina = ed65_i_disciplina)";
+                        $rsReg    = db_query($sSqlReg);
+                        $iLinhas  = pg_num_rows($rsReg);
+                        if ($iLinhas > 0 ) {
+                            $mostra = false;
+                        }
+                    }
 
-                   if ($ed56_c_situacao == "APROVADO") {
-                     $sitdescr = "APROVADO (PARA {$ed11_c_descr} - {$ed10_c_abrev})";
-                   } else if ($ed56_c_situacao == "APROVADO PARCIAL") {
-                     $sitdescr = "APROVADO PARCIAL (PARA {$ed11_c_descr} - {$ed10_c_abrev})";
-                   } else if ($ed56_c_situacao == "REPETENTE") {
-                     $sitdescr = "REPETENTE (NA {$ed11_c_descr} - {$ed10_c_abrev})";
-                   } else if ($ed56_c_situacao == "MATRICULA TRANCADA") {
-                     $sitdescr = "MATRICULA TRANCADA (NA {$ed11_c_descr} - {$ed10_c_abrev})";
-                   } else {
-                     $sitdescr = "CANDIDATO (NA {$ed11_c_descr} - {$ed10_c_abrev})";
-                   }
+                    if ($ed56_c_situacao == "APROVADO") {
+                        $sitdescr = "APROVADO (PARA {$ed11_c_descr} - {$ed10_c_abrev})";
+                    } else if ($ed56_c_situacao == "APROVADO PARCIAL") {
+                        $sitdescr = "APROVADO PARCIAL (PARA {$ed11_c_descr} - {$ed10_c_abrev})";
+                    } else if ($ed56_c_situacao == "REPETENTE") {
+                        $sitdescr = "REPETENTE (NA {$ed11_c_descr} - {$ed10_c_abrev})";
+                    } else if ($ed56_c_situacao == "MATRICULA TRANCADA") {
+                        $sitdescr = "MATRICULA TRANCADA (NA {$ed11_c_descr} - {$ed10_c_abrev})";
+                    } else {
+                        $sitdescr = "CANDIDATO (NA {$ed11_c_descr} - {$ed10_c_abrev})";
+                    }
 
-                   if ($mostra == true) {
-                     echo "<option value='{$ed47_i_codigo}'> {$ed47_i_codigo} - {$ed47_v_nome} ---> {$sitdescr}</option>\n";
-                   }
-                 }
-               }
+                    if ($mostra == true) {
+                        echo "<option value='{$ed47_i_codigo}'> {$ed47_i_codigo} - {$ed47_v_nome} ---> {$sitdescr}</option>\n";
+                    }
+                }
+            }
             ?>
           </select>
         </td>
@@ -290,7 +290,7 @@ if ($db_opcao == 2) {
           <table>
             <tr>
               <td valign="top">
-                <b>Matricular na turma <?=@$ed57_c_descr?>:</b><br>
+                <b>Matricular na turma <?php echo @$ed57_c_descr?>:</b><br>
                 <select name="alunos[]" id="alunos" size="10" onclick="js_desabexc()"
                      style="font-size:9px;width:430px;height:180px" multiple>
                 </select>
@@ -299,58 +299,60 @@ if ($db_opcao == 2) {
           </table>
         </td>
       </tr>
-      <?}?>
+      <?php }?>
 
-      <?
+      <?php
         if ($db_opcao == 3) {
-          $exclusao = "yes";
-      ?>
+            $exclusao = "yes";
+            ?>
       <tr>
         <td colspan="3">
           <fieldset class="separator">
             <legend>Aluno</legend>
             <table>
               <tr>
-                <td  title="<?=@$Ted60_matricula?>">
-                  <?=@$Led60_matricula?>
+                <td  title="<?php echo @$Ted60_matricula?>">
+                  <?php echo @$Led60_matricula?>
                 </td>
                 <td>
-                  <?db_input( 'ed60_matricula', 15, $Ied60_matricula, true, 'text', 3 );?>
+                  <?php db_input('ed60_matricula', 15, $Ied60_matricula, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
-                <td nowrap title="<?=@$Ted60_i_aluno?>">
-                  <?db_ancora( @$Led60_i_aluno, "js_pesquisaed60_i_alunoexc(true);", $db_opcao1 );?>
+                <td nowrap title="<?php echo @$Ted60_i_aluno?>">
+                  <?php db_ancora(@$Led60_i_aluno, "js_pesquisaed60_i_alunoexc(true);", $db_opcao1);?>
                 </td>
                 <td colspan="2">
                   <?php
-                    db_input( 'ed60_i_aluno', 15, $Ied60_i_aluno, true, 'text', $db_opcao1,
-                              "onchange='js_pesquisaed60_i_alunoexc(false);'" );
-                    db_input( 'ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3 )
-                  ?>
+                    db_input(
+                        'ed60_i_aluno', 15, $Ied60_i_aluno, true, 'text', $db_opcao1,
+                        "onchange='js_pesquisaed60_i_alunoexc(false);'"
+                    );
+                    db_input('ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3)
+                    ?>
                 </td>
               </tr>
               <tr>
                 <td>
-                 <?=@$Led248_i_motivo?>
+                 <?php echo @$Led248_i_motivo?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $sql1    = "SELECT * FROM motivoexclusao order by ed249_c_motivo";
-                    $result1 = db_query( $sql1 );
-                    $linhas1 = pg_num_rows( $result1 );
-                  ?>
+                    $result1 = db_query($sql1);
+                    $linhas1 = pg_num_rows($result1);
+                    ?>
                   <select name="ed248_i_motivo" style="height:16px;font-size:9px;">
                     <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-                    <?
-                      for ($f = 0; $f < $linhas1; $f++) {
+                    <?php
+                    for ($f = 0; $f < $linhas1; $f++) {
                         db_fieldsmemory($result1, $f);
-                    ?>
-                    <option value="<?=$ed249_i_codigo?>" <?=@$ed248_i_motivo == $ed249_i_codigo ? "selected" : ""?>>
-                      <?=$ed249_c_motivo?>
+                        ?>
+                    <option value="<?php echo $ed249_i_codigo?>" <?php echo @$ed248_i_motivo == $ed249_i_codigo ? "selected" : ""?>>
+                        <?php echo $ed249_c_motivo?>
                     </option>
-                    <?
-                      }
+                        <?php
+                    }
                     ?>
                   </select>
                 </td>
@@ -358,18 +360,18 @@ if ($db_opcao == 2) {
               <tr>
                 <td></td>
                 <td>
-                  <?
+                  <?php
                     if ($linhas1 == 0) {
-                      echo " (Cadastros-> Tabelas-> Motivo de Exclusão de Matrículas)";
+                        echo " (Cadastros-> Tabelas-> Motivo de Exclusão de Matrículas)";
                     }
-                  ?>
+                    ?>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
                   <fieldset class="separator">
-                    <legend><?=@$Led248_t_obs?></legend>
-                    <?db_textarea( 'ed248_t_obs', 3, 65, $Ied248_t_obs, true, 'text', 1 );?>
+                    <legend><?php echo @$Led248_t_obs?></legend>
+                    <?php db_textarea('ed248_t_obs', 3, 65, $Ied248_t_obs, true, 'text', 1);?>
                   </fieldset>
                 </td>
               </tr>
@@ -377,46 +379,46 @@ if ($db_opcao == 2) {
           </fieldset>
         </td>
       </tr>
-      <?}?>
+        <?php }?>
 
-      <?
+      <?php
         if ($db_opcao == 2) {
-          $exclusao = "no";
-      ?>
+            $exclusao = "no";
+            ?>
       <tr>
         <td colspan="3">
           <fieldset class="separator">
             <legend>Aluno</legend>
             <table>
               <tr>
-                <td title="<?=@$Ted60_matricula?>">
-                  <?=@$Led60_matricula?>
+                <td title="<?php echo @$Ted60_matricula?>">
+                  <?php echo @$Led60_matricula?>
                 </td>
                 <td>
-                  <?db_input( 'ed60_matricula', 15, $Ied60_matricula, true, 'text', 3 );?>
+                  <?php db_input('ed60_matricula', 15, $Ied60_matricula, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <?=@$Led60_d_datamatricula?>
+                  <?php echo @$Led60_d_datamatricula?>
                 </td>
                 <td>
                   <?php
-                    db_inputdata( 'datamat', @$datamat_dia, @$datamat_mes, @$datamat_ano, true, 'text', 3 );
+                    db_inputdata('datamat', @$datamat_dia, @$datamat_mes, @$datamat_ano, true, 'text', 3);
                     echo @$Led60_d_datasaida;
-                    db_inputdata( 'datasaida', @$datasaida_dia, @$datasaida_mes, @$datasaida_ano, true, 'text', 3 );
-                  ?>
+                    db_inputdata('datasaida', @$datasaida_dia, @$datasaida_mes, @$datasaida_ano, true, 'text', 3);
+                    ?>
                 </td>
               </tr>
               <tr>
-                <td nowrap title="<?=@$Ted60_i_aluno?>">
-                  <?db_ancora( @$Led60_i_aluno, "js_pesquisaed60_i_aluno(true);", $db_opcao );?>
+                <td nowrap title="<?php echo @$Ted60_i_aluno?>">
+                  <?php db_ancora(@$Led60_i_aluno, "js_pesquisaed60_i_aluno(true);", $db_opcao);?>
                 </td>
                 <td>
                   <?php
-                    db_input( 'ed60_i_aluno', 15, $Ied60_i_aluno, true, 'text', $db_opcao, " onchange='js_pesquisaed60_i_aluno(false);'" );
-                    db_input( 'ed47_v_nome',  50, @$Ied47_v_nome, true, 'text', 3 );
-                  ?>
+                    db_input('ed60_i_aluno', 15, $Ied60_i_aluno, true, 'text', $db_opcao, " onchange='js_pesquisaed60_i_aluno(false);'");
+                    db_input('ed47_v_nome',  50, @$Ied47_v_nome, true, 'text', 3);
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -424,23 +426,24 @@ if ($db_opcao == 2) {
                   <b>Situação Atual:</b>
                 </td>
                 <td>
-                  <?db_input( 'ed60_c_situacaoatual', 20, '', true, 'text', 3 );?>
+                  <?php db_input('ed60_c_situacaoatual', 20, '', true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
-                <td nowrap title="<?=@$Ted60_c_situacao?>">
-                  <?=@$Led60_c_situacao?>
+                <td nowrap title="<?php echo @$Ted60_c_situacao?>">
+                  <?php echo @$Led60_c_situacao?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $x = array();
-                    db_select('ed60_c_situacao',
-                              $x,
-                              true,
-                              $db_opcao,
-                              " disabled onchange='js_eliminamov(this.value);js_procuraTurmaCorreta()'"
-                              );
-                  ?>
+                    db_select(
+                        'ed60_c_situacao',
+                        $x,
+                        true,
+                        $db_opcao,
+                        " disabled onchange='js_eliminamov(this.value);js_procuraTurmaCorreta()'"
+                    );
+                    ?>
                 </td>
               </tr>
               <tr>
@@ -453,13 +456,13 @@ if ($db_opcao == 2) {
               </tr>
               <tr id='turmaCorreta' style='display: none'>
                 <td>
-                  <?db_ancora( "<b>Nova Turma:</b>", "js_showTurmaCorreta()", $db_opcao );?>
+                  <?php db_ancora("<b>Nova Turma:</b>", "js_showTurmaCorreta()", $db_opcao);?>
                 </td>
                 <td>
                   <?php
-                    db_input( 'ed57_i_codigo', 15, $Ied57_i_codigo, true, 'text', 1, '', "ed57_novaturma" );
-                    db_input( 'ed57_c_descr',  20, @$Ied57_c_descr, true, 'text', 3, '', 'ed57_nometurma' );
-                  ?>
+                    db_input('ed57_i_codigo', 15, $Ied57_i_codigo, true, 'text', 1, '', "ed57_novaturma");
+                    db_input('ed57_c_descr',  20, @$Ied57_c_descr, true, 'text', 3, '', 'ed57_nometurma');
+                    ?>
                 </td>
                 <td style="display: none;">
                   <input id="sTurno" name="sTurno" type="text" value="" />
@@ -470,65 +473,65 @@ if ($db_opcao == 2) {
                   <b>Importar Aproveitamento:</b>
                 </td>
                 <td>
-                  <?
-                    db_select( "cboImportarAproveitamento", array(0 =>"selecione", 1 => "Sim", 2 => "Não"), true, 1 );
-                  ?>
+                  <?php
+                    db_select("cboImportarAproveitamento", array(0 =>"selecione", 1 => "Sim", 2 => "Não"), true, 1);
+                    ?>
                 </td>
               </tr>
             </table>
           </fieldset>
         </td>
       </tr>
-      <?}?>
+        <?php }?>
 
-      <?if ($db_opcao == 1) {?>
+      <?php if ($db_opcao == 1) {?>
       <tr>
-        <td nowrap title="<?=@$Ted60_d_datamatricula?>" colspan="2">
-          <?php
+        <td nowrap title="<?php echo @$Ted60_d_datamatricula?>" colspan="2">
+            <?php
             echo @$Led60_d_datamatricula;
             db_inputdata(
-                          'ed60_d_datamatricula',
-                          @$ed60_d_datamatricula_dia,
-                          @$ed60_d_datamatricula_mes,
-                          @$ed60_d_datamatricula_ano,
-                          true,
-                          'text',
-                          $db_opcao
-                        );
-          ?>
+                'ed60_d_datamatricula',
+                @$ed60_d_datamatricula_dia,
+                @$ed60_d_datamatricula_mes,
+                @$ed60_d_datamatricula_ano,
+                true,
+                'text',
+                $db_opcao
+            );
+            ?>
         </td>
       </tr>
-      <?}?>
+      <?php }?>
 
-      <?if ($db_opcao == 2) { ?>
+      <?php if ($db_opcao == 2) { ?>
       <tr>
-        <td nowrap title="<?=@$Ted60_d_datamodif?>" style="padding-left: 12px; width: 125px">
-          <?=@$Led60_d_datamodif?>
+        <td nowrap title="<?php echo @$Ted60_d_datamodif?>" style="padding-left: 12px; width: 125px">
+            <?php echo @$Led60_d_datamodif?>
         </td>
         <td>
-          <?db_inputdata(
-                          'ed60_d_datamodif',
-                          @$ed60_d_datamodif_dia,
-                          @$ed60_d_datamodif_mes,
-                          @$ed60_d_datamodif_ano,
-                          true,
-                          'text',
-                          $db_opcao
-                        );
-          ?>
+            <?php db_inputdata(
+                'ed60_d_datamodif',
+                @$ed60_d_datamodif_dia,
+                @$ed60_d_datamodif_mes,
+                @$ed60_d_datamodif_ano,
+                true,
+                'text',
+                $db_opcao
+            );
+            ?>
         </td>
       </tr>
-      <?}?>
+      <?php }?>
 
-      <?
-          if (isset($chavepesquisa)) {
+      <?php
+        if (isset($chavepesquisa)) {
 
             $data      = @$ed60_d_datamatricula_ano."-".@$ed60_d_datamatricula_mes."-".@$ed60_d_datamatricula_dia;
             $datamodif = @$ed60_d_datamodif_ano."-".@$ed60_d_datamodif_mes."-".@$ed60_d_datamodif_dia;
             $inicio    = @$ed52_d_inicio;
             $fim       = @$ed52_d_fim;
 
-          } else {
+        } else {
 
             $data      = @$ed60_d_datamatricula_ano."-".@$ed60_d_datamatricula_mes."-".@$ed60_d_datamatricula_dia;
             $datamodif = @$ed60_d_datamodif_ano."-".@$ed60_d_datamodif_mes."-".@$ed60_d_datamodif_dia;
@@ -536,7 +539,7 @@ if ($db_opcao == 2) {
             $fim       = @$ed60_d_datamatricula_ano."-".@$ed60_d_datamatricula_mes."-".@$ed60_d_datamatricula_dia;
 
         }
-      ?>
+        ?>
       <tr>
         <td>
           <iframe name="verifmatricula" id="verifmatricula" src="" width="0" height="0"
@@ -545,31 +548,31 @@ if ($db_opcao == 2) {
         </td>
       </tr>
     </table>
-    <?
-      if (isset($ed60_i_turma)) {
+    <?php
+    if (isset($ed60_i_turma)) {
 
-        $sSqlTurmaSerieRegimeMat = $clturmaserieregimemat->sql_query( "", "ed220_i_codigo", "", " ed220_i_turma = {$ed60_i_turma}");
+        $sSqlTurmaSerieRegimeMat = $clturmaserieregimemat->sql_query("", "ed220_i_codigo", "", " ed220_i_turma = {$ed60_i_turma}");
         $rsTurmaSerieRegimeMat   = $clturmaserieregimemat->sql_record($sSqlTurmaSerieRegimeMat);
         $iNumEtapas              = $clturmaserieregimemat->numrows;
 
-      } else {
+    } else {
         $iNumEtapas = 0;
-      }
+    }
     ?>
   </fieldset>
   <input name="iTurnosReferencia" type="hidden" value="">
-  <input name="ed57_i_escola" type="hidden" value="<?=@$ed57_i_escola?>">
-  <input name="ed57_i_base" type="hidden" value="<?=@$ed57_i_base?>">
-  <input name="ed57_i_calendario"  id="ed57_i_calendario" type="hidden" value="<?=@$ed57_i_calendario?>">
-  <input name="codetapa" type="hidden" value="<?=@$codetapa?>">
-  <input name="ed57_i_turno" type="hidden" value="<?=@$ed57_i_turno?>">
-  <input name="<?=($db_opcao == 1 ? "incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "alterarnada" : "excluir"))?>"
+  <input name="ed57_i_escola" type="hidden" value="<?php echo @$ed57_i_escola?>">
+  <input name="ed57_i_base" type="hidden" value="<?php echo @$ed57_i_base?>">
+  <input name="ed57_i_calendario"  id="ed57_i_calendario" type="hidden" value="<?php echo @$ed57_i_calendario?>">
+  <input name="codetapa" type="hidden" value="<?php echo @$codetapa?>">
+  <input name="ed57_i_turno" type="hidden" value="<?php echo @$ed57_i_turno?>">
+  <input name="<?php echo ($db_opcao == 1 ? "incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "alterarnada" : "excluir"))?>"
          type="submit" id="db_opcao"
-         value="<?=( $db_opcao == 1 ? "Incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir" ) )?>"
-                <?=( $db_botao == false?"disabled":"")?>
-                <?=( $db_opcao == 1 ? "onclick=\"return js_selecionar('{$data}','{$inicio}','{$fim}',{$iNumEtapas})\"" : "" )?>
-                <?=( $db_opcao == 2 ? "onclick=\"return js_conferemov('{$datamodif}','{$inicio}','{$fim}');\"" : "" )?>
-                <?=( $db_opcao == 3 ? "onclick=\"return js_confirmarExclusao();\"" : "")?>>
+         value="<?php echo ( $db_opcao == 1 ? "Incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir" ) )?>"
+                <?php echo ( !$db_botao ? "disabled" : "")?>
+                <?php echo ( $db_opcao == 1 ? "onclick=\"return js_selecionar('{$data}','{$inicio}','{$fim}',{$iNumEtapas})\"" : "" )?>
+                <?php echo ( $db_opcao == 2 ? "onclick=\"return js_conferemov('{$datamodif}','{$inicio}','{$fim}');\"" : "" )?>
+                <?php echo ( $db_opcao == 3 ? "onclick=\"return js_confirmarExclusao();\"" : "")?>>
   <input name="alterar" type="submit" value="Alterar" style="visibility:hidden;position:absolute;">
   <iframe name="iframe_confere" src="edu1_matricula007.php" width="0" height="0" style="visibility:hidden;position:absolute;">
   </iframe>
@@ -586,7 +589,7 @@ const MENSAGEM_FRMMATRICULA = "educacao.escola.db_frmmatricula.";
 if (oGet.chavepesquisa && oGet.chavepesquisa != "") {
 
   oTurmaTurno = new DBViewFormularioEducacao.TurmaTurnoReferente($('linhaEtapa') , oGet.chavepesquisa);
-  if (<?=$db_opcao?> != 1 ) {
+  if (<?php echo $db_opcao?> != 1 ) {
     oTurmaTurno.escondeLinhasTurnoTurma();
   }
   oTurmaTurno.show();
@@ -607,14 +610,14 @@ function js_pesquisaed60_i_aluno(mostra) {
       js_OpenJanelaIframe(
                            '',
                            'db_iframe_aluno',
-                           'func_matricula.php?excluir=<?=@$exclusao?>'
+                           'func_matricula.php?excluir=<?php echo @$exclusao?>'
                                             +'&turma='+document.form1.ed60_i_turma.value
-    	                                      +'&funcao_js=parent.js_mostraaluno1|ed60_matricula|ed60_i_aluno|ed47_v_nome'
-    	                                                                       +'|ed60_c_situacao|ed60_d_datamatricula'
-    	                                                                       +'|ed60_d_datasaida',
-    	                     'Pesquisa de Alunos',
-    	                     true
-    	                   );
+                                              +'&funcao_js=parent.js_mostraaluno1|ed60_matricula|ed60_i_aluno|ed47_v_nome'
+                                                                               +'|ed60_c_situacao|ed60_d_datamatricula'
+                                                                               +'|ed60_d_datasaida',
+                             'Pesquisa de Alunos',
+                             true
+                           );
     } else {
 
       if (document.form1.ed60_i_aluno.value != '') {
@@ -622,7 +625,7 @@ function js_pesquisaed60_i_aluno(mostra) {
         js_OpenJanelaIframe(
                              '',
                              'db_iframe_aluno',
-                             'func_matricula.php?excluir=<?=@$exclusao?>&turma='+document.form1.ed60_i_turma.value
+                             'func_matricula.php?excluir=<?php echo @$exclusao?>&turma='+document.form1.ed60_i_turma.value
                                               +'&pesquisa_chave='+document.form1.ed60_i_aluno.value
                                               +'&funcao_js=parent.js_mostraaluno',
                              'Pesquisa',
@@ -717,13 +720,13 @@ function js_pesquisaed60_i_alunoexc(mostra) {
       js_OpenJanelaIframe(
                            '',
                            'db_iframe_aluno',
-    	                     'func_matricula.php?excluir=<?=@$exclusao?>'
-    	                                      +'&turma='+document.form1.ed60_i_turma.value
-    	                                      +'&funcao_js=parent.js_mostraalunoexc1|ed60_matricula|ed60_i_aluno'
-    	                                                                          +'|ed47_v_nome|ed60_c_situacao',
-    	                     'Pesquisa de Alunos',
-    	                     true
-    	                   );
+                             'func_matricula.php?excluir=<?php echo @$exclusao?>'
+                                              +'&turma='+document.form1.ed60_i_turma.value
+                                              +'&funcao_js=parent.js_mostraalunoexc1|ed60_matricula|ed60_i_aluno'
+                                                                                  +'|ed47_v_nome|ed60_c_situacao',
+                             'Pesquisa de Alunos',
+                             true
+                           );
     } else {
 
       if (document.form1.ed60_i_aluno.value != '') {
@@ -731,7 +734,7 @@ function js_pesquisaed60_i_alunoexc(mostra) {
         js_OpenJanelaIframe(
                              '',
                              'db_iframe_aluno',
-                             'func_matricula.php?excluir=<?=@$exclusao?>'
+                             'func_matricula.php?excluir=<?php echo @$exclusao?>'
                                               +'&turma='+document.form1.ed60_i_turma.value
                                               +'&pesquisa_chave='+document.form1.ed60_i_aluno.value
                                               +'&funcao_js=parent.js_mostraalunoexc',
@@ -786,17 +789,17 @@ function js_pesquisaed60_i_turma() {
                        'db_iframe_turma',
                        'func_turma.php?funcao_js=parent.js_preenchepesquisaturma|ed57_i_codigo'
                                     +'&turmasprogressao=f',
-		                   'Pesquisa de Turmas',
-		                   true
-		                 );
+                           'Pesquisa de Turmas',
+                           true
+                         );
 }
 
 function js_preenchepesquisaturma(chave) {
 
   db_iframe_turma.hide();
-  <?
-   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
-  ?>
+  <?php
+    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    ?>
 }
 
 function js_situacao(atual) {
@@ -812,27 +815,30 @@ function js_situacao(atual) {
   if (atual == "MATRICULADO") {
     opcoes = new Array("CANCELADO|CANCELADO",
                        "EVADIDO|EVADIDO",
+                       "ABANDONO ESCOLAR|ABANDONO ESCOLAR",
                        "DESISTENTE|DESISTENTE",
                        "FALECIDO|FALECIDO",
                        "MATRICULA TRANCADA|MATRICULA TRANCADA",
                        "MATRICULA INDEFERIDA|MATRICULA INDEFERIDA",
                        "MATRICULA INDEVIDA|MATRICULA INDEVIDA"
                        );
+
   } else if (atual == "CANCELADO") {
-      opcoes = new Array("MATRICULADO|RETORNO","EVADIDO|EVADIDO", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
-  } else if (atual == "EVADIDO") {
+      opcoes = new Array("MATRICULADO|RETORNO","EVADIDO|EVADIDO", "ABANDONO ESCOLAR|ABANDONO ESCOLAR", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
+  } else if (atual == "EVADIDO" || atual == "ABANDONO ESCOLAR") {
       opcoes = new Array("MATRICULADO|RETORNO", "FALECIDO|FALECIDO", "DESISTENTE|DESISTENTE");
   } else if (atual = "DESISTENTE") {
-      opcoes = new Array("MATRICULADO|RETORNO", "FALECIDO|FALECIDO", "EVADIDO|EVADIDO");
+      opcoes = new Array("MATRICULADO|RETORNO", "FALECIDO|FALECIDO", "EVADIDO|EVADIDO", "ABANDONO ESCOLAR|ABANDONO ESCOLAR");
   } else if (atual == "FALECIDO") {
-      opcoes = new Array("MATRICULADO|RETORNO","CANCELADO|CANCELADO","EVADIDO|EVADIDO", "DESISTENTE|DESISTENTE");
+      opcoes = new Array("MATRICULADO|RETORNO","CANCELADO|CANCELADO","EVADIDO|EVADIDO", "ABANDONO ESCOLAR|ABANDONO ESCOLAR", "DESISTENTE|DESISTENTE");
   } else if (atual == "MATRICULA TRANCADA") {
-      opcoes = new Array("MATRICULADO|RETORNO","EVADIDO|EVADIDO", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
+      opcoes = new Array("MATRICULADO|RETORNO","EVADIDO|EVADIDO", "ABANDONO ESCOLAR|ABANDONO ESCOLAR", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
   } else if (atual == "MATRICULA INDEFERIDA") {
-      opcoes = new Array("MATRICULADO|RETORNO","EVADIDO|EVADIDO", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
+      opcoes = new Array("MATRICULADO|RETORNO","EVADIDO|EVADIDO", "ABANDONO ESCOLAR|ABANDONO ESCOLAR", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
   } else if (atual == "MATRICULA INDEVIDA") {
-      opcoes = new Array("CANCELADO|CANCELADO", "EVADIDO|EVADIDO", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
+      opcoes = new Array("CANCELADO|CANCELADO", "EVADIDO|EVADIDO", "ABANDONO ESCOLAR|ABANDONO ESCOLAR", "DESISTENTE|DESISTENTE", "FALECIDO|FALECIDO");
   }
+  opcoes.push('INFREQUENTE|INFREQUENTE');
 
   for (i = 0; i < opcoes.length; i++) {
 
@@ -869,7 +875,7 @@ function js_alunospossib() {
     if (F.alunospossib.options[x].selected == true) {
 
       F.elements['alunos[]'].options[F.elements['alunos[]'].options.length] = new Option(F.alunospossib.options[x].text,
-    	                                                                                F.alunospossib.options[x].value)
+                                                                                        F.alunospossib.options[x].value)
       F.alunospossib.options[x] = null;
       Tam--;
       x--;
@@ -897,7 +903,7 @@ function js_incluirtodos() {
   for (var i = 0; i < Tam; i++) {
 
     F.elements['alunos[]'].options[F.elements['alunos[]'].options.length] = new Option(F.alunospossib.options[0].text,
-    	                                                                               F.alunospossib.options[0].value);
+                                                                                       F.alunospossib.options[0].value);
     F.alunospossib.options[0] = null;
 
   }
@@ -919,7 +925,7 @@ function js_excluir() {
     if (F.options[x].selected == true) {
 
       document.form1.alunospossib.options[document.form1.alunospossib.length] = new Option(F.options[x].text,
-    	                                                                                   F.options[x].value);
+                                                                                           F.options[x].value);
       F.options[x] = null;
       Tam--;
       x--;
@@ -949,7 +955,7 @@ function js_excluirtodos() {
   for (var i = 0; i < Tam; i++) {
 
     document.form1.alunospossib.options[document.form1.alunospossib.length] = new Option(F.options[0].text,
-    	                                                                                 F.options[0].value);
+                                                                                         F.options[0].value);
     F.options[0] = null;
   }
 
@@ -1035,11 +1041,11 @@ function js_selecionar(data,inicio,fim,numetapas) {
                          '',
                          'db_iframe_matric',
                          'edu1_matriculaetapas001.php?turma='+document.form1.ed60_i_turma.value
-    	                                             +'&codalunos='+alunos
-    	                                             +'&datamat='+document.form1.ed60_d_datamatricula.value,
-    	                   'Matrícular Alunos',
-    	                   true
-    	                 );
+                                                     +'&codalunos='+alunos
+                                                     +'&datamat='+document.form1.ed60_d_datamatricula.value,
+                           'Matrícular Alunos',
+                           true
+                         );
     return false;
   }
 
@@ -1109,13 +1115,12 @@ function js_conferemov(data,inicio,fim) {
       document.form1.ed60_d_datamodif.style.backgroundColor = '#99A9AE';
       return false;
     }
-
     datamat    = document.form1.datamat.value;
     datamat    = datamat.substr(6,4) + datamat.substr(3,2) + datamat.substr(0,2);
     datamodif2 = document.form1.ed60_d_datamodif.value;
     datamodif2 = datamodif2.substr(6,4) + datamodif2.substr(3,2) + datamodif2.substr(0,2);
 
-    if (parseInt(datamodif2) < parseInt(datamat)) {
+    if (parseInt(datamodif2) <= parseInt(datamat)) {
 
       alert(_M('educacao.escola.db_frmmatricula.data_modificacao_menor_data_matricula'));
       document.form1.ed60_d_datamodif.focus();
@@ -1161,14 +1166,14 @@ function js_eliminamov(valor) {
   }
 }
 
-<?
-  if ($db_opcao == 1 && isset($chavepesquisa)) {?>
+<?php
+if ($db_opcao == 1 && isset($chavepesquisa)) {?>
 
     if (document.form1.alunospossib.length == 0) {
       document.form1.incluirtodos.disabled = true;
     }
 
-<?}?>
+<?php }?>
 function js_confirmarExclusao() {
 
   var sMensagem  = "A classificação da turma terá sua sequência reiniciada caso a numeração já tenha sido gerada";
@@ -1235,7 +1240,7 @@ $("nometapa").addClassName("field-size4");
 $("ed15_c_nome").style.width = "181px";
 
 if ( $("ed60_d_datamatricula") ) {
-	$("ed60_d_datamatricula").addClassName("field-size2");
+    $("ed60_d_datamatricula").addClassName("field-size2");
 }
 
 <?php

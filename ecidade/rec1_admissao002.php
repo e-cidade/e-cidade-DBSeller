@@ -28,6 +28,7 @@
 use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\RecursosHumanos\ESocial\Transformer\S2205;
+use ECidade\RecursosHumanos\Pessoal\Repository\MenorAprendizRepository;
 
 require modification("libs/db_stdlib.php");
 require modification("libs/db_conecta.php");
@@ -38,9 +39,12 @@ include modification("classes/db_admissao_classe.php");
 include modification("classes/db_rhpessoal_classe.php");
 include modification("classes/db_rhparam_classe.php");
 include modification("dbforms/db_funcoes.php");
-db_postmemory($HTTP_POST_VARS);
-
+include modification("classes/db_rhpesrescisao_classe.php");
 include modification("classes/db_protprocesso_classe.php");
+
+db_postmemory($_POST);
+
+$cl_rhpesrescisao = new cl_rhpesrescisao;
 $clprotprocesso = new cl_protprocesso;
 $cladmissao  = new cl_admissao;
 $clrhparam   = new cl_rhparam;
@@ -51,11 +55,20 @@ $codigoInstituicao = db_getsession('DB_instit');
 $clDadosAdmissionais = new cl_rhadmissaodado;
 $clDeficiente = new cl_rhdeficiente;
 $clEstagioVinculo = new cl_rhestagiovinculo;
+$clVinculoAprendiz = new cl_rhvinculoaprendiz;
 /** Fim do Código para extensão */
 
 $db_opcao = 2;
 $db_botao = false;
 $sqlerro = false;
+
+$iInstituicaoSessao = db_getsession('DB_instit');
+$iAnoSessao         = db_getsession('DB_anousu');
+$iMesSessao         = date('m', db_getsession("DB_datausu"));
+
+$sWhereResc = "rh02_regist = " . $h07_regist . " and rh02_anousu = " . $iAnoSessao . " and rh02_mesusu = " . $iMesSessao . " and rh02_instit = " . $iInstituicaoSessao;
+$rsRhPesRescisao = $cl_rhpesrescisao->sql_Record($cl_rhpesrescisao->sql_query_rescisao_data("", "rh05_recis", null, $sWhereResc));
+$sDataResc = $rsRhPesRescisao == false ? null : (new DateTime(db_utils::fieldsMemory($rsRhPesRescisao, 0)->rh05_recis))->format('d/m/Y');
 
 if(isset($incluir)){
   db_inicio_transacao();
@@ -151,9 +164,34 @@ if(isset($incluir)){
       $clDadosAdmissionais->h25_dtbase = $h25_dtbase;
     }
 
-     if ($h07_tempor == 'f') {
+    $clDadosAdmissionais->h25_tiporeintegracao = null;
+    if (isset($h25_tiporeintegracao) && !empty($h25_tiporeintegracao)) {
+      $clDadosAdmissionais->h25_tiporeintegracao = $h25_tiporeintegracao;
+    }
+
+    $clDadosAdmissionais->h25_dataefetivoretorno = null;
+    if (isset($h25_dataefetivoretorno) && !empty($h25_dataefetivoretorno)) {
+      $clDadosAdmissionais->h25_dataefetivoretorno = $h25_dataefetivoretorno;
+    }
+
+    $clDadosAdmissionais->h25_numeroprocesso = null;
+    if (isset($h25_numeroprocesso) && !empty($h25_numeroprocesso)) {
+      $clDadosAdmissionais->h25_numeroprocesso = $h25_numeroprocesso;
+    }
+
+    $clDadosAdmissionais->h25_leianistia = null;
+    if (isset($h25_leianistia) && !empty($h25_leianistia)) {
+      $clDadosAdmissionais->h25_leianistia = $h25_leianistia;
+    }
+
+    if ($h07_tempor == 'f') {
       $h25_hipleg = null;
       $_POST['h25_hipleg'] = $h25_hipleg;
+      $clDadosAdmissionais->h25_hipleg = $h25_hipleg;
+    }else{
+      if (isset($h25_hipleg) && !empty($h25_hipleg)) {
+        $clDadosAdmissionais->h25_hipleg = $h25_hipleg;
+      }
     }
 
     $clDadosAdmissionais->h25_nrdispositivo = $h25_nrdispositivo;
@@ -171,6 +209,14 @@ if(isset($incluir)){
       $sqlerro=true;
     }
     $erro_msg = $clDadosAdmissionais->erro_msg;
+
+    $clrhpessoal->rh01_regist = $h07_regist;
+    $clrhpessoal->rh01_matriculaanterior = $rh01_matriculaanterior;
+    $clrhpessoal->alterar($h07_regist);
+    if($clrhpessoal->erro_status == 0) {
+      $sqlerro=true;
+    }
+    $erro_msg = $clrhpessoal->erro_msg;
   }
   /** Fim Código para extensão */
 
@@ -245,6 +291,32 @@ if(isset($incluir)){
     $servidorAlteracao->setDataS2206(new DBDate($dataAlteracaoESocial));
     $servidorAlteracao->save();
   }
+
+    $menorAprendizAlteracao = MenorAprendizRepository::findByMatricula($h07_regist);
+    // Caso ja seja menor aprendiz
+    if (!empty($menorAprendiz)) {
+        if (isset($rh312_modalidade) && !empty($rh312_modalidade)) {
+            //Comparamos os dados
+            if (($menorAprendizAlteracao->getModalidade() != $rh312_modalidade)
+                || ($menorAprendizAlteracao->getCnpjDireta() != $rh312_cnpjqualificadora)
+                || ($menorAprendizAlteracao->getCnpjIndireta() != $rh312_cnpjefetivada)
+                || ($menorAprendizAlteracao->getCnpjPratica() != $rh312_pratica)
+            ) {
+                $dataAlteracaoESocial = date('Y-m-d');
+                $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($h07_regist, Tipo::S2206);
+                $servidorAlteracao->setDataS2206(new DBDate($dataAlteracaoESocial));
+                $servidorAlteracao->save();
+            }
+        }
+    } else {
+        // caso esteja virando menor aprendiz
+        if (isset($rh312_modalidade) && !empty($rh312_modalidade)) {
+            $dataAlteracaoESocial = date('Y-m-d');
+            $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($h07_regist, Tipo::S2206);
+            $servidorAlteracao->setDataS2206(new DBDate($dataAlteracaoESocial));
+            $servidorAlteracao->save();
+        }
+    }
 
   if ($linhas > 0){
     $cladmissao->alterar($h07_regist);
@@ -341,11 +413,37 @@ if(isset($incluir)){
       $clDadosAdmissionais->h25_dtbase = $h25_dtbase;
     }
 
-    $clDadosAdmissionais->h25_hipleg = null;
+    $clDadosAdmissionais->h25_tiporeintegracao = null;
+    if (isset($h25_tiporeintegracao) && !empty($h25_tiporeintegracao)) {
+      $clDadosAdmissionais->h25_tiporeintegracao = $h25_tiporeintegracao;
+    }
 
+    $clDadosAdmissionais->h25_dataefetivoretorno = null;
+    if (isset($h25_dataefetivoretorno) && !empty($h25_dataefetivoretorno)) {
+      $clDadosAdmissionais->h25_dataefetivoretorno = $h25_dataefetivoretorno;
+    }
+
+    $clDadosAdmissionais->h25_numeroprocesso = null;
+    if (isset($h25_numeroprocesso) && !empty($h25_numeroprocesso) && $clDadosAdmissionais->h25_tiporeintegracao == "1") {
+      $clDadosAdmissionais->h25_numeroprocesso = $h25_numeroprocesso;
+    }
+    
+    $clDadosAdmissionais->h25_leianistia = null;
+    if (isset($h25_leianistia) && !empty($h25_leianistia) && $clDadosAdmissionais->h25_tiporeintegracao == "2") {
+      $clDadosAdmissionais->h25_leianistia = $h25_leianistia;
+    }
+    
+    $numeroProcesso = $clDadosAdmissionais->h25_numeroprocesso ? $clDadosAdmissionais->h25_numeroprocesso : null;
+    $anistia = $clDadosAdmissionais->h25_leianistia ? $clDadosAdmissionais->h25_leianistia : null;
+    
     if ($h07_tempor == 'f') {
       $h25_hipleg = null;
       $_POST['h25_hipleg'] = $h25_hipleg;
+      $clDadosAdmissionais->h25_hipleg = $h25_hipleg;
+    }else{
+      if (isset($h25_hipleg) && !empty($h25_hipleg)) {
+        $clDadosAdmissionais->h25_hipleg = $h25_hipleg;
+      }
     }
 
 
@@ -356,6 +454,7 @@ if(isset($incluir)){
     if ($clDadosAdmissionais->numrows > 0) {
       db_fieldsmemory($resultDadosAdmissionais, 0);
       $clDadosAdmissionais->alterar($h25_sequencial);
+      alteraRhAdmissao($h25_sequencial, $numeroProcesso, $anistia);
     } else {
         $clDadosAdmissionais->incluir(null);
     }
@@ -448,6 +547,13 @@ if(isset($incluir)){
     $erro_msg = $clEstagioVinculo->erro_msg;
 
   }
+  $clrhpessoal->rh01_regist = $h07_regist;
+  $clrhpessoal->rh01_matriculaanterior = $rh01_matriculaanterior;
+  $clrhpessoal->alterar($h07_regist);
+  if($clrhpessoal->erro_status == 0) {
+      $sqlerro=true;
+  }
+  $erro_msg = $clrhpessoal->erro_msg;
   /** Fim Código para extensão */
    db_fim_transacao($sqlerro);
 
@@ -587,6 +693,19 @@ else if(isset($h07_regist) && trim($h07_regist) != ""){
     $rh260_cpfsupervisor = '';
   }
 
+    /**
+     * Preenche dados Caso Servidor seja Menor Aprendiz
+     */
+
+    $sqlMenorAprendiz = $clVinculoAprendiz->sql_query(null, '*', null, "rh312_matricula=$h07_regist");
+    $rsMenorAprendiz = $clVinculoAprendiz->sql_record($sqlMenorAprendiz);
+
+    if ($clVinculoAprendiz->numrows > 0) {
+        db_fieldsmemory($rsMenorAprendiz, 0);
+    }
+
+
+
   $result_funcao = $clrhpessoal->sql_record($clrhpessoal->sql_query_cargo($h07_regist, " *, rh37_descr as rh37_descr2 "));
 
   if($clrhpessoal->numrows > 0){
@@ -716,6 +835,35 @@ function validaAlterarEstagiarioS2306($seqpes = null,
   return $alteraS2306;
 }
 
+  function alteraRhAdmissao($h25_sequencial, $numeroProcesso, $Anistia){
+    $sSql = "UPDATE rhadmissaodado 
+    SET h25_numeroprocesso = '$numeroProcesso', h25_leianistia = '$Anistia' 
+    WHERE h25_sequencial = $h25_sequencial";
+    db_query($sSql);
+  }
+
+    if (isset($incluir) || isset($alterar)) {
+        $menorAprendiz = MenorAprendizRepository::findByMatricula($h07_regist);
+        if (isset($rh312_modalidade) && !empty($rh312_modalidade)) {
+            //inclui ou altera
+            $repositorio = new MenorAprendizRepository();
+            if (!$menorAprendiz) {
+                $menorAprendiz = $repositorio::menorAprendiz(); 
+            }
+            $menorAprendiz->setModalidade($rh312_modalidade);
+            $menorAprendiz->setCodigoInstituicao($codigoInstituicao);
+            $menorAprendiz->setMatricula($h07_regist);
+            $menorAprendiz->setCnpjDireta($rh312_cnpjqualificadora);
+            $menorAprendiz->setCnpjIndireta($rh312_cnpjefetivada);
+            $menorAprendiz->setCnpjPratica($rh312_pratica);
+            $repositorio->save($menorAprendiz);
+        } else {
+            if (!empty($menorAprendiz)) {
+                $repositorio = new MenorAprendizRepository();
+                $repositorio->delete($menorAprendiz);
+            }
+        }
+    }
 ?>
 <html>
 <head>
@@ -756,14 +904,12 @@ function validaAlterarEstagiarioS2306($seqpes = null,
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
-	include modification("forms/db_frmadmissao.php");
-	?>
+                <?php include modification("forms/db_frmadmissao.php");?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 
 /** Código para extensão */
 

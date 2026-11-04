@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -161,26 +161,26 @@ function js_mostravalores(){
 <table border="0" align="left" >
   <tr>
      <td nowrap title="<?=@$Te82_codord?>" align='right'>
-       <? db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
+       <?php db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
      </td>
      <td nowrap> 
-       <? db_input('e82_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
-       <? db_ancora("<b>até:</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
+       <?php db_input('e82_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
+       <?php db_ancora("<b>até:</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
      </td>
      <td nowrap>
-       <? db_input('e82_codord2',8,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
+       <?php db_input('e82_codord2',8,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
      </td>
   </tr>   
   <tr>
      <td align="right" nowrap title="<?=$Te60_numemp?>">
-      <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+      <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
       </td>
      <td nowrap> 
       <input name="e60_codemp" id='e60_codemp' title='<?=$Te60_codemp?>' size="10" type='text'  onKeyPress="return js_mascara(event);" >
     <b>Recursos:</b></td>
      <td >
 
-     <?
+     <?php
        if(!isset($recursos)){
          $recursos = "proprios";
        }
@@ -194,13 +194,13 @@ function js_mostravalores(){
       <b>Data Inicial</b>
     </td>
     <td nowrap>
-      <?
+      <?php
        db_inputdata("dataordeminicial",null,null,null,true,"text", 1);
       ?>
       <b>Data Final:</b>
       </td>
       <td nowrap>
-      <?
+      <?php
        db_inputdata("dataordemfinal",null,null,null,true,"text", 1);
       ?>
     </td>
@@ -208,7 +208,7 @@ function js_mostravalores(){
       <b>Banco:</b>
     </td>
     <td>
-      <?
+      <?php
 
         $oDaoCadBan = db_utils::getDao('cadban');
         $rsBancos   = $oDaoCadBan->sql_record($oDaoCadBan->sql_query(null,"distinct k15_codbco,z01_nome","k15_codbco"));
@@ -224,12 +224,12 @@ function js_mostravalores(){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tz01_numcgm?>" align='right'>
-    <?
+    <?php
 	db_ancora("<b>Credor:</b>","js_pesquisaz01_numcgm(true);",$db_opcao);
 	?>        
 	</td>
 	<td  colspan='4'> 
-	<?
+	<?php
 	 db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'");
 	 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 	?>
@@ -243,7 +243,7 @@ function js_mostravalores(){
     <td align='right' nowrap><b>Conta pagadora padrão:</b></td>
     <td colspan=3>
 
-     <?
+     <?php
       $result05  = $clempagetipo->sql_record($clempagetipo->sql_query(null,"e83_codtipo as codtipo,e83_descr","e83_descr"));
       $numrows05 = $clempagetipo->numrows;
       $arr['0']="Nenhum";

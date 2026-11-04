@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,13 +25,13 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification ("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_iptubase_classe.php"));
-include(modification("classes/db_iptubaixa_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification ("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_iptubase_classe.php"));
+require_once(modification("classes/db_iptubaixa_classe.php"));
 $cliptubase  = new cl_iptubase;
 $cliptubaixa = new cl_iptubaixa;
 $cliptuant   = new cl_iptuant;
@@ -40,9 +40,9 @@ $verilote          = false;
 $verimatricula     = false;
 $j18_utidadosdiver = false;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str($_SERVER['QUERY_STRING'], $queryString);
 
 if(isset($testaentra)&& $testaentra=="true"){
   $result = $cliptubase->sql_record($cliptubase->sql_query($j01_matric,"z01_nome",""));
@@ -80,7 +80,7 @@ if (isset($j01_matric)) {
 <script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
-  <?
+  <?php
   if(isset($j01_matric)){
     $alterando=true;
   }else{
@@ -600,6 +600,15 @@ function js_pripromi(){
                </tr>
              </table>
            </td>
+           <td>
+              <table border="0" class="bordas" id="historicoproprietarios" cellpadding="3" cellspacing="0" width="12%">
+               <tr>
+                 <td id="link_historicoproprietarios" nowrap>
+                   <input <?=($alterando==false?"disabled":"")?> readonly type="text" value="Histórico Proprietários" size="11" maxlength="11"  class="nomes"  name="historicoproprietarios" title="Documentos historicoproprietarios" onClick="mo_camada('historicoproprietarios',true,'Iframe12');">
+                 </td>
+               </tr>
+             </table>
+           </td>
 
            <?php endif ?>
 
@@ -622,7 +631,7 @@ function js_pripromi(){
     </td>
     <td>
      <div class="tabela" id="Iframe2" style="position:absolute; left:0px; top:47px; z-index:99; visibility: <?=($alterando==false?"hidden":"visible")?>;">
-       <iframe id="Iframe2_iframe" id="iptubase" frameborder="0" name="iframe_iptubase"  src="cad1_iptubasealt.php?alterando=true&j01_matric=<?=$j01_matric?>&j01_tipoimovel=<?=$j01_tipoimovel?>" scrolling="no" height=100% width="100%"></iframe>
+       <iframe id="Iframe2_iframe" id="iptubase" frameborder="0" name="iframe_iptubase"  src="cad1_iptubasealt.php?alterando=true&j01_matric=<?=$j01_matric?>&j01_tipoimovel=<?=isset($j01_tipoimovel) ? $j01_tipoimovel : $tipoImovel?>&z01_nome=<?=$z01_nome?>&testaentra=<?=$testaentra?>&entrar=<?=isset($entrar) ? $entrar : 'Entrar'?>" scrolling="no" height=100% width="100%"></iframe>
      </div>
 
      <div class="tabela" id="Iframe3" style="position:absolute; left:0px; top:47px; z-index:99; visibility: <?=($alterando==false?"hidden":"visible")?>;">
@@ -660,6 +669,11 @@ function js_pripromi(){
  <div class="tabela" id="Iframe11" style="position:absolute; left:0px; top:47px;  z-index:99; visibility: hidden;">
  <iframe name="iframe_anexo"  frameborder="0"  class="bordasi"  leftmargin="0" topmargin="0"  src="cad4_iptuarquivo001.php?alterando=true&j01_matric=<?=$j01_matric?>&z01_nome=<?=$z01_nome?>"  scrolling="no" height="100%" width="100%"></iframe>
 </div>
+
+<div class="tabela" id="Iframe12" style="position:absolute; left:0px; top:47px;  z-index:99; visibility: hidden;">
+ <iframe name="iframe_historicoproprietarios"  frameborder="0"  class="bordasi"  leftmargin="0" topmargin="0"  src="cad4_historicoproprietarios002.php?alterando=true&j01_matric=<?=$j01_matric?>&z01_nome=<?=$z01_nome?>"  scrolling="no" height="100%" width="100%"></iframe>
+</div>
+
 <div class="tabela" id="Iframe1" style="position:absolute; left:0px; top:47px; z-index:99; visibility: visible;">
   <iframe name="iframe_lote" frameborder="0"  src="cad1_lotealt.php?alterando=true&j01_matric=<?=$j01_matric?>&tipoImovel=<?=$tipoImovel?>" height="100%" scrolling="no"   width="100%"></iframe>
 </div>
@@ -689,5 +703,9 @@ function js_pripromi(){
 <?php
 if($matriculaBaixada == 'true'){
   echo "<script> js_consultabaixa(".$j01_matric."); </script>";
+}
+
+if (isset($_POST['navegamatricula']) && $_POST['navegamatricula'] == '1') {
+  echo "<script> mo_camada('matricula',true,'Iframe2'); </script>";
 }
 ?>

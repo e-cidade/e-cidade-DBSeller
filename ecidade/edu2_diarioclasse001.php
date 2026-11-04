@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -51,7 +51,7 @@ $clprocavaliacao = new cl_procavaliacao;
 </head>
 <SCRIPT LANGUAGE="JavaScript">
   team = new Array(
-    <?
+    <?php
    # Seleciona todos os calendários
    $sql = " SELECT ed52_i_codigo,ed52_c_descr ";
    $sql .= "  FROM calendario ";
@@ -157,7 +157,7 @@ $clprocavaliacao = new cl_procavaliacao;
       }
 
       document.form1.procurar.disabled = true;
-      <?if (isset($turma)) { ?>
+      <?php if (isset($turma)) { ?>
 
       qtd = document.form1.alunosdiario.length;
       for (i = 0; i < qtd; i++) {
@@ -198,7 +198,7 @@ $clprocavaliacao = new cl_procavaliacao;
         if (itemArray[i][1] != null){
           selectCtrl.options[j].value = itemArray[i][1];
         }
-        <?if (isset($turma)) { ?>
+        <?php if (isset($turma)) { ?>
         if (<?=trim($turma) ?> == itemArray[i][1]) {
           indice = i;
         }
@@ -206,7 +206,7 @@ $clprocavaliacao = new cl_procavaliacao;
         j++;
       }
 
-      <?if (isset($turma)) { ?>
+      <?php if (isset($turma)) { ?>
       selectCtrl.options[indice].selected = true;
       document.form1.procurar.disabled = false;
       <?} else { ?>
@@ -231,7 +231,7 @@ $clprocavaliacao = new cl_procavaliacao;
           <label>Selecione o Calendário:</label><br>
           <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" >
             <option></option>
-            <?
+            <?php
             #Seleciona todos os grupos para setar os valores no combo
             $sql = " SELECT ed52_i_codigo,ed52_c_descr ";
             $sql .= "  FROM calendario ";
@@ -247,7 +247,7 @@ $clprocavaliacao = new cl_procavaliacao;
               $desc_curso = $row["ed52_c_descr"];
               ?>
               <option value="<?=$cod_curso; ?>" <?=$cod_curso == @$calendario ? "selected" : "" ?>><?=$desc_curso; ?></option>
-            <?
+            <?php
             }
             #Popula o segundo combo de acordo com a escolha no primeiro
             ?>
@@ -267,7 +267,7 @@ $clprocavaliacao = new cl_procavaliacao;
     </table>
   </td>
 </tr>
-<?if (isset($turma)) {
+<?php if (isset($turma)) {
 
   $oTurma          = TurmaRepository::getTurmaByCodigoTurmaSerieRegimeMat( $turma );
   $lEnsinoInfantil = $oTurma->getTurno()->isIntegral() ? true : false;
@@ -287,7 +287,7 @@ $clprocavaliacao = new cl_procavaliacao;
         <option value='2'>MODELO 2</option>
         <option value='3'>MODELO 3</option>
         <option value='4'>MODELO 4</option>
-        <?if ($ed57_i_tipoturma == 2 || $ed57_i_tipoturma == 3) { ?>
+        <?php if ($ed57_i_tipoturma == 2 || $ed57_i_tipoturma == 3) { ?>
           <option value='5'>MODELO 5</option>
         <?} ?>
       </select>
@@ -348,7 +348,7 @@ $clprocavaliacao = new cl_procavaliacao;
   <tbody id="div_regencia">
   <tr>
     <td valign="top">
-      <?
+      <?php
       $sql = " SELECT ed59_i_codigo,ed232_c_descr,ed59_i_ordenacao ";
       $sql .= "  FROM regencia ";
       $sql .= "       inner join disciplina          on ed12_i_codigo       = ed59_i_disciplina ";
@@ -368,7 +368,7 @@ $clprocavaliacao = new cl_procavaliacao;
         <legend>Disciplinas:</legend>
         <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()"
                 style="font-size:9px;width:330px;height:155px" multiple>
-          <?
+          <?php
           for ($i = 0; $i < $linhas; $i++) {
             db_fieldsmemory($result, $i);
             echo "<option value='$ed59_i_codigo'>$ed232_c_descr</option>\n";
@@ -440,7 +440,7 @@ $clprocavaliacao = new cl_procavaliacao;
   <tr>
     <td colspan="3">
       <label>Período de Avaliação:</label>
-      <?
+      <?php
       $sSqlTurma = $clturma->sql_query_turmaserie("", "ed220_i_procedimento", "", " ed220_i_codigo = {$turma}");
       $result_t  = $clturma->sql_record( $sSqlTurma );
       db_fieldsmemory($result_t, 0);
@@ -455,7 +455,7 @@ $clprocavaliacao = new cl_procavaliacao;
       $result_d          = $clprocavaliacao->sql_record( $sSqlProcAvaliacao );
       ?>
       <select name="periodo" id="periodo" >
-        <?
+        <?php
         for ($y = 0; $y < $clprocavaliacao->numrows; $y++) {
 
           db_fieldsmemory($result_d, $y);
@@ -474,7 +474,7 @@ $clprocavaliacao = new cl_procavaliacao;
             &nbsp;&nbsp;
             <b>Quantidade de Colunas (Presenças):</b>
             <select id="qtdecolunas" name="qtdecolunas">
-              <?
+              <?php
               for ($y = 30; $y <= 70; $y++) {
                 echo "<option value='$y'>$y</option>";
               }
@@ -529,7 +529,7 @@ $clprocavaliacao = new cl_procavaliacao;
               MODELO 4 -> Uma disciplina por página (Logotipo prefeitura e total de faltas)
             </td>
           </tr>
-          <?if ($ed57_i_tipoturma == 2 || $ed57_i_tipoturma == 3) { ?>
+          <?php if ($ed57_i_tipoturma == 2 || $ed57_i_tipoturma == 3) { ?>
             <tr>
               <td>
                 MODELO 5 -> Turma <?=$arr_tipo[$ed57_i_tipoturma] ?> (Página de Presenças com alunos de todas as etapas)
@@ -550,7 +550,7 @@ $clprocavaliacao = new cl_procavaliacao;
 </table>
 </fieldset>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
+<?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
           db_getsession("DB_instit"));
 ?>
 </body>
@@ -707,7 +707,7 @@ function js_botao(valor) {
     document.form1.procurar.disabled = true;
   }
 
-  <?if (isset($turma)) { ?>
+  <?php if (isset($turma)) { ?>
   qtd = document.form1.alunosdiario.length;
   for (i = 0; i < qtd; i++) {
     document.form1.alunosdiario.options[0] = null;
@@ -954,7 +954,7 @@ function js_modelo(valor) {
   }
 
 }
-<?if (!isset($turma) && pg_num_rows($sql_result) > 0) { ?>
+<?php if (!isset($turma) && pg_num_rows($sql_result) > 0) { ?>
 
 fillSelectFromArray2(document.form1.subgrupo,team[0]);
 document.form1.grupo.options[1].selected = true;

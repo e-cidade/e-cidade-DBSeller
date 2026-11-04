@@ -19,6 +19,8 @@ class CartaoSus extends Model
     protected $table = 'ambulatorial.cgs_cartaosus';
     protected $primaryKey = 's115_i_codigo';
     public $timestamps = false;
+    const TIPO_CARTAO_SUS = 'D';
+    const ENTRADA_CARTAO_SUS = 1;
 
     public function paciente()
     {

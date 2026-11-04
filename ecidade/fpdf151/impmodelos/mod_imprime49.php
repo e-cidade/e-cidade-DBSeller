@@ -1,4 +1,4 @@
-<?
+<?php
 ##Modelo de nota Fiscal 
 $confNumRows = pg_num_rows($this->rsConfig);
 for ($j = 0;$j < $confNumRows;$j++){

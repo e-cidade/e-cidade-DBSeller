@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,7 +62,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lrh70_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh70_estrutural",10,$Irh70_estrutural,true,"text",4,"","chave_rh70_estrutural");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lrh70_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh70_descr",60,$Irh70_descr,true,"text",4,"","chave_rh70_descr");
 		       ?>
             </td>
@@ -90,7 +90,7 @@ $clrotulo->label("rh70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 
       $where = " sd27_c_situacao = 'A' ";
       if( isset($chave_sd04_i_unidade) && (int)$chave_sd04_i_unidade != 0){
@@ -153,12 +153,12 @@ $clrotulo->label("rh70_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

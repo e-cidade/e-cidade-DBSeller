@@ -74,12 +74,14 @@ $integracao = \ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo::EFD_REINF;
                             <option value="R-2010">R-2010</option>
                             <option value="R-2020">R-2020</option>
                             <option value="R-2055">R-2055</option>
+                            <option value="R-4010">R-4010</option>
+                            <option value="R-4020">R-4020</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="dataInicio">Período:</label>
+                        <label for="dataInicio">Data do envio:</label>
                     </td>
                     <td>
                         <input type="date" name="dataInicio" id="dataInicio"> à <input type="date" name="dataFinal" id="dataFinal">
@@ -210,6 +212,8 @@ $integracao = \ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo::EFD_REINF;
                         periodo = eventoJson.ideEstabPrest.perApur;
                         break;
                     case 'R-2055':
+                    case 'R-4010':
+                    case 'R-4020':
                         periodo = eventoJson.perApur;
                         break;
                 }

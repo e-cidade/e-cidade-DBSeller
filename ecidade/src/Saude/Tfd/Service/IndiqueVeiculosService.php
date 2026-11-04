@@ -92,6 +92,7 @@ class IndiqueVeiculosService
         $where[] = "({$whereOr})";
         $where[] = "'{$parametros->data}' BETWEEN tf18_d_datasaida and tf18_d_dataretorno";
         $where[] = "'{$parametros->hora}'::time BETWEEN tf18_c_horasaida::time and tf18_c_horaretorno::time";
+        $where[] = "not exists (select 1 from cancelamentoviagem where tf41_veiculodestino = tf18_i_codigo)";
         $where = implode(' AND ', $where);
         $sql = $dao->sql_query_file('', '1', '', $where);
         $dao->sql_record($sql);

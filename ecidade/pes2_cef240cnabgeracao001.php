@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -47,7 +47,7 @@ if(isset($emite2)){
   db_fim_transacao($sqlerro);
 }else if(isset($rh34_codarq)){
   $result = $clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
-  if($clrharqbanco->numrows > 0){ 
+  if($clrharqbanco->numrows > 0){
     db_fieldsmemory($result,0);
     $rh34_sequencial += 1;
   }
@@ -131,7 +131,7 @@ function js_controlarodape(mostra){
     (window.CurrentWindow || parent.CurrentWindow).bstatus.document.getElementById('st').innerHTML = document.form1.rodape.value;
   }
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -152,7 +152,7 @@ function js_controlarodape(mostra){
   <tr>
     <td><b>Data da Geração:</b></td>
     <td>
-      <?
+      <?php
       if((!isset($datagera_dia) || (isset($datagera_dia) && trim($datagera_dia) == "")) && (!isset($datagera_mes) || (isset($datagera_mes) && trim($datagera_mes) == "")) && (!isset($datagera_ano) || (isset($datagera_ano) && trim($datagera_ano) == ""))){
         $datagera_dia=date('d',db_getsession('DB_datausu'));
         $datagera_mes=date('m',db_getsession('DB_datausu'));
@@ -165,7 +165,7 @@ function js_controlarodape(mostra){
   <tr>
     <td><b>Data do Depósito:</b></td>
     <td>
-      <?
+      <?php
       if((!isset($datadeposit_dia) || (isset($datadeposit_dia) && trim($datadeposit_dia) == "")) && (!isset($datadeposit_mes) || (isset($datadeposit_mes) && trim($datadeposit_mes) == "")) && (!isset($datadeposit_ano) || (isset($datadeposit_ano) && trim($datadeposit_ano) == ""))){
         $datadeposit_dia = "";
         $datadeposit_mes = "";
@@ -175,27 +175,27 @@ function js_controlarodape(mostra){
       ?>
     </td>
   </tr>
-  <tr> 
+  <tr>
     <td align="left" nowrap title="<?=@$Trh34_codarq?>">
-      <?db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
+      <?php db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
     </td>
     <td align="left" nowrap colspan="3">
-      <?db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
-      <?db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
-      <?db_input("rodape",40,0,true,"hidden",3);?>
+      <?php db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
+      <?php db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
+      <?php db_input("rodape",40,0,true,"hidden",3);?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_codban?>">
-      <?
+      <?php
       db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",1);
       ?>
     </td>
-    <td colspan="3"> 
-      <?
+    <td colspan="3">
+      <?php
       db_input('rh34_codban',6,$Irh34_codban,true,'text',1," onchange='js_pesquisarh34_codban(false);'")
       ?>
-      <?
+      <?php
       db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
       ?>
     </td>
@@ -204,16 +204,16 @@ function js_controlarodape(mostra){
     <td nowrap title="<?=@$Trh34_agencia?>">
       <?=@$Lrh34_agencia?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_agencia',5,$Irh34_agencia,true,'text',1,"")
       ?>
     </td>
     <td nowrap title="<?=@$Trh34_dvagencia?>" align="right">
       <?=@$Lrh34_dvagencia?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_dvagencia',2,$Irh34_dvagencia,true,'text',1,"")
       ?>
     </td>
@@ -222,16 +222,16 @@ function js_controlarodape(mostra){
     <td nowrap title="<?=@$Trh34_conta?>">
       <?=@$Lrh34_conta?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_conta',15,$Irh34_conta,true,'text',1,"")
       ?>
     </td>
     <td nowrap title="<?=@$Trh34_dvconta?>" align="right">
       <?=@$Lrh34_dvconta?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_dvconta',2,$Irh34_dvconta,true,'text',1,"")
       ?>
     </td>
@@ -240,8 +240,8 @@ function js_controlarodape(mostra){
     <td nowrap title="<?=@$Trh34_convenio?>">
       <?=@$Lrh34_convenio?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_convenio',15,$Irh34_convenio,true,'text',1,"")
       ?>
     </td>
@@ -249,7 +249,7 @@ function js_controlarodape(mostra){
       <strong>Layout:</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_layout = Array(
                           "9"=>"CNAB240"
                          );
@@ -261,8 +261,8 @@ function js_controlarodape(mostra){
     <td nowrap title="<?=@$Trh34_sequencial?>">
       <?=@$Lrh34_sequencial?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',1,"")
       ?>
     </td>
@@ -270,7 +270,7 @@ function js_controlarodape(mostra){
       <strong>Ambiente :</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_ambientecliente = Array(
                           "P"=>"Produção",
                           "T"=>"Teste",
@@ -284,7 +284,7 @@ function js_controlarodape(mostra){
       <strong>Tipo de arquivo:</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_tiparq = Array(
 			                    "0"=>"0 - Todos",
 			                    "1"=>"1 - Pensão judicial"
@@ -299,18 +299,18 @@ function js_controlarodape(mostra){
     </td>
     <td>
       <?php
-      
+
       $arr_qfolha = Array(
                           "1"=>"Salário",
 	                        "2"=>"Complementar",
                           "3"=>"13º. Salário",
                           "4"=>"Rescisão"
                          );
-      
+
       if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
-        $arr_qfolha["5"] = "Suplementar"; 
+        $arr_qfolha["5"] = "Suplementar";
       }
-      
+
       db_select("qfolha", $arr_qfolha, true, 1);
       ?>
     </td>
@@ -320,13 +320,13 @@ function js_controlarodape(mostra){
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td colspan="4" align = "center"> 
+    <td colspan="4" align = "center">
       <input name="emite2" id="emite2" type="submit" value="Processar" onclick="return js_valores();" >
     </td>
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -413,7 +413,7 @@ js_habilita(document.form1.tiparq.value);
 
 </script>
 
-<?
+<?php
   if (isset($emite2)) {
 
     if ($clrharqbanco->erro_status=="0") {

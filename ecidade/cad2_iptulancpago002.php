@@ -159,8 +159,8 @@ $sqlemdia = "
     k02_descr as descricao1,
     sum(case when coalesce(j21_valor,0)=0 then 0 else 1 end)+0 as qtd_calculada,
     sum(emdia)+0 as qtd_emdia,
-    sum(divida)+0 as qtd_divida,
-    sum(dividaemdia)+0 as qtd_dividaemdia,
+    sum(divida)+ sum(administrativa)+0 as qtd_divida,
+    sum(dividaemdia)+ sum(dividaemdia_administrativa) + 0 as qtd_dividaemdia,
     sum(cancelado)+0 as qtd_cancelado,
     sum(semorigem)+0 as qtd_semorigem
   from (
@@ -228,6 +228,69 @@ $sqlemdia .= "
     end as divida,
     case
       when (
+      select
+        1
+      from
+        (
+        select
+          (
+          select
+            count(*)
+          from
+            diverimportaold
+					where
+						dv13_numpre = j20_numpre
+						and dv13_receita = j21_receit ) as sum_diverimportaold,
+          (
+          select
+            count(*)
+          from
+            arrecant
+          where
+            arrecant.k00_numpre = j20_numpre
+            and arrecant.k00_receit = j21_receit ) as sum_arrecant) as x
+      where
+        sum_diverimportaold > 0
+        and sum_arrecant = 0
+        ) is null
+      and sum(coalesce(j21_valor, 0)) > 0 then 0
+      else 1
+    end as administrativa,
+		case
+			when (
+			select
+				1
+			from
+				(
+				select
+					sum ( case
+						when arrecad.k00_numpre is not null then 1
+						else 0
+					end ) as sum_arrecad,
+					sum ( case
+						when arrepaga.k00_numpre is not null then 1
+						else 0
+					end ) as sum_arrepaga
+				from
+					diverimportaold
+				inner join diversos on
+					dv13_diversos = dv05_coddiver
+				left join arrepaga on
+					dv05_numpre = arrepaga.k00_numpre
+				left join arrecad on
+					dv05_numpre = arrecad.k00_numpre
+				where
+					dv13_numpre = j20_numpre
+					and dv13_receita = j21_receit ) as x
+			where
+				sum_arrecad = 0
+				and sum_arrepaga > 0 
+				) is null
+			and sum(coalesce(j21_valor, 0)) > 0 then 0
+			else 1
+		end as dividaemdia_administrativa,
+    case
+      when (
         select 1 from (
 					select sum ( case when arrecad.k00_numpre  is not null then 1 else 0 end ) as sum_arrecad,
 								 sum ( case when arrepaga.k00_numpre is not null then 1 else 0 end ) as sum_arrepaga
@@ -265,11 +328,12 @@ $sqlemdia .= "
       when (
         select 1 from (
 					select ( select count(*) from arrecad  where arrecad.k00_numpre   = j20_numpre and arrecad.k00_receit   = j21_receit ) as sum_arrecad,
+                 ( select count(*) from arreold where arreold.k00_numpre  = j20_numpre and arreold.k00_receit  = j21_receit ) as sum_arreold,
 								 ( select count(*) from arrecant where arrecant.k00_numpre  = j20_numpre and arrecant.k00_receit  = j21_receit ) as sum_arrecant,
 								 ( select count(*) from arrepaga where arrepaga.k00_numpre  = j20_numpre and arrepaga.k00_receit  = j21_receit ) as sum_arrepaga,
 								 ( select count(*) from divold   where divold.k10_numpre    = j20_numpre and divold.k10_receita   = j21_receit ) as sum_divold
 					) as x
-				where sum_arrecad = 0 and sum_arrepaga = 0 and sum_arrecant = 0 and sum_divold = 0
+				where sum_arrecad = 0 and sum_arreold = 0 and sum_arrepaga = 0 and sum_arrecant = 0 and sum_divold = 0
 			)
 			is null and sum(coalesce(j21_valor, 0)) > 0
       then 0
@@ -315,7 +379,7 @@ group by
 order by
   j21_receit;
 ";
-
+//die($sqlemdia);
 $resultemdia = db_query($sqlemdia) or die($sqlemdia);
 $linhasemdia = pg_num_rows($resultemdia);
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clfiscalproc->rotulo->label("y29_descr");
               <?=$Ly29_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y29_codtipo",20,$Iy29_codtipo,true,"text",4,"","chave_y29_codtipo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfiscalproc->rotulo->label("y29_descr");
               <?=$Ly29_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y29_descr",50,$Iy29_descr,true,"text",4,"","chave_y29_descr");
 	       ?>
             </td>
@@ -82,7 +82,7 @@ $clfiscalproc->rotulo->label("y29_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $depto=db_getsession("DB_coddepto"); 
       $w="y29_tipoproced='N' and y29_coddepto=$depto ";
            
@@ -121,12 +121,12 @@ $clfiscalproc->rotulo->label("y29_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

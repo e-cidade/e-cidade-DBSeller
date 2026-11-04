@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ function js_pesquisa_log(codimp,matric){
 </table>
 <center>
 <br><br>
-<?
+<?php
 $sql = "select * from moblevantamento where j97_codimporta = $codimp ";
 $jsfuncao='js_pesquisa_log|j97_codimporta|j97_matric';
 db_lovrot($sql,15,'()','',$jsfuncao);

@@ -25,8 +25,9 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Financeiro\Orcamento\Service\AcompanhamentoDesembolsoReceitaService;
+use ECidade\Enum\Financeiro\Orcamento\EsferaOrcamentariaEnum;
 use ECidade\Financeiro\Orcamento\Model\Receita;
+use ECidade\Financeiro\Orcamento\Service\AcompanhamentoDesembolsoReceitaService;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -42,6 +43,8 @@ require_once(modification("classes/db_orcfontesdes_classe.php"));
 require_once(modification("classes/db_concarpeculiar_classe.php"));
 
 db_postmemory($_POST);
+$nameBotao = 'incluir';
+$labelBotao = 'Incluir';
 
 $clconplanoorcamentoanalitica = new cl_conplanoorcamentoanalitica;
 $clorcreceita = new cl_orcreceita;
@@ -60,90 +63,96 @@ try {
     if (isset($incluir)) {
         if (empty($unidadeOrcamentaria)) {
             throw new Exception("A Unidade Orçamentária deve informada.");
-        } else {
-            $sSqlConsulta = $clorcfontes->sql_query_file(
-                null,
-                null,
-                "o57_codfon as o70_codfon",
-                '',
-                "o57_fonte='" . str_replace(".", "", $o50_estrutreceita) . "' and o57_anousu = {$iAnoUsu}"
-            );
-            $result = $clorcfontes->sql_record($sSqlConsulta);
-            if ($clorcfontes->numrows == 0) {
-                throw new Exception("Verifique o código da fonte no exercício {$iAnoUsu}!");
-            }
+        }
 
-            db_fieldsmemory($result, 0);
+        $esferaOrcamentaria = isset($o70_esferaorcamentaria) ? $o70_esferaorcamentaria : null;
+        if (empty($esferaOrcamentaria) || !EsferaOrcamentariaEnum::isValid((int) $esferaOrcamentaria)) {
+            throw new Exception("Esfera Orçamentária inválida ou não iformada.");
+        }
 
-            /**
-             * Verificamos se existe a receita cadastrada no sistema no ano.
-             */
-            $sWhere = "o70_anousu = {$iAnoUsu}";
-            $sWhere .= " and o70_codfon = {$o70_codfon}";
-            $sWhere .= " and o70_concarpeculiar = '{$o70_concarpeculiar}'";
-            $sSqlReceitaJaLancada = $clorcreceita->sql_query_file(null, null, "*", "o70_instit", $sWhere);
-            $rsReceitaJaLancada = $clorcfontes->sql_record($sSqlReceitaJaLancada);
+        $sSqlConsulta = $clorcfontes->sql_query_file(
+            null,
+            null,
+            "o57_codfon as o70_codfon",
+            '',
+            "o57_fonte='" . str_replace(".", "", $o50_estrutreceita) . "' and o57_anousu = {$iAnoUsu}"
+        );
+        $result = $clorcfontes->sql_record($sSqlConsulta);
+        if ($clorcfontes->numrows == 0) {
+            throw new Exception("Verifique o código da fonte no exercício {$iAnoUsu}!");
+        }
 
-            if ($clorcfontes->numrows > 0) {
-                $oDadosReceita = db_utils::fieldsMemory($rsReceitaJaLancada, 0);
-                $oInstituicao = new Instituicao($oDadosReceita->o70_instit);
-                throw new Exception(sprintf(
-                    "Receita %s já cadastrada para o ano de %s na instituição %s",
-                    $o50_estrutreceita,
-                    $iAnoUsu,
-                    $oInstituicao->getDescricao()
-                ));
-            }
+        db_fieldsmemory($result, 0);
 
-            $unidade = substr($unidadeOrcamentaria, 2, strlen($unidadeOrcamentaria) - 1);
-            $orgao = substr($unidadeOrcamentaria, 0, 2);
-            $clorcreceita->o70_codfon = $o70_codfon;
-            $clorcreceita->o70_instit = db_getsession("DB_instit");
-            $clorcreceita->o70_concarpeculiar = $o70_concarpeculiar;
-            $clorcreceita->o70_orcunidade = $unidade;
-            $clorcreceita->o70_orcorgao = $orgao;
-            $clorcreceita->o70_esferaorcamentaria = $o70_esferaorcamentaria;
-            $clorcreceita->incluir($o70_anousu, $o70_codrec);
+        /**
+         * Verificamos se existe a receita cadastrada no sistema no ano.
+         */
+        $sWhere = "o70_anousu = {$iAnoUsu}";
+        $sWhere .= " and o70_codfon = {$o70_codfon}";
+        $sWhere .= " and o70_concarpeculiar = '{$o70_concarpeculiar}'";
+        $sSqlReceitaJaLancada = $clorcreceita->sql_query_file(null, null, "*", "o70_instit", $sWhere);
+        $rsReceitaJaLancada = $clorcfontes->sql_record($sSqlReceitaJaLancada);
 
-            if ($clorcreceita->erro_status == 0) {
-                throw new Exception($clorcreceita->erro_msg);
-            }
+        if ($clorcfontes->numrows > 0) {
+            $oDadosReceita = db_utils::fieldsMemory($rsReceitaJaLancada, 0);
+            $oInstituicao = new Instituicao($oDadosReceita->o70_instit);
+            throw new Exception(sprintf(
+                "Receita %s já cadastrada para o ano de %s na instituição %s",
+                $o50_estrutreceita,
+                $iAnoUsu,
+                $oInstituicao->getDescricao()
+            ));
+        }
 
-            // Faz update no recurso da conta conforme previsao
-            $sql = $clconplanoorcamentoanalitica->sql_query_file(
-                null,
-                null,
-                "c61_reduz,c61_anousu",
-                "c61_codcon",
-                "c61_codcon=$o70_codfon and c61_instit=" . db_getsession("DB_instit")
-            );
-            $rs_conplanoreduz = $clconplanoorcamentoanalitica->sql_record($sql);
-            $rows = $clconplanoorcamentoanalitica->numrows;
-            if ($rows > 0) {
-                for ($x = 0; $x < $rows; $x++) {
-                    db_fieldsmemory($rs_conplanoreduz, $x);
-                    $clconplanoorcamentoanalitica->c61_instit = db_getsession("DB_instit");
-                    $clconplanoorcamentoanalitica->c61_codigo = $o70_codigo;
-                    $clconplanoorcamentoanalitica->c61_anousu = $c61_anousu;
-                    $clconplanoorcamentoanalitica->c61_reduz = $c61_reduz;
-                    $clconplanoorcamentoanalitica->alterar($c61_reduz, $c61_anousu);
-                    if ($clconplanoorcamentoanalitica->erro_status == 0) {
-                        throw new Exception($clconplanoorcamentoanalitica->erro_msg);
-                    }
+        $unidade = substr($unidadeOrcamentaria, 2, strlen($unidadeOrcamentaria) - 1);
+        $orgao = substr($unidadeOrcamentaria, 0, 2);
+        $clorcreceita->o70_codfon = $o70_codfon;
+        $clorcreceita->o70_instit = db_getsession("DB_instit");
+        $clorcreceita->o70_concarpeculiar = $o70_concarpeculiar;
+        $clorcreceita->o70_orcunidade = $unidade;
+        $clorcreceita->o70_orcorgao = $orgao;
+        $clorcreceita->o70_esferaorcamentaria = $o70_esferaorcamentaria;
+        $clorcreceita->incluir($o70_anousu, $o70_codrec);
+
+        if ($clorcreceita->erro_status == 0) {
+            throw new Exception($clorcreceita->erro_msg);
+        }
+
+        // Faz update no recurso da conta conforme previsao
+        $sql = $clconplanoorcamentoanalitica->sql_query_file(
+            null,
+            null,
+            "c61_reduz,c61_anousu",
+            "c61_codcon",
+            "c61_codcon=$o70_codfon and c61_instit=" . db_getsession("DB_instit")
+        );
+        $rs_conplanoreduz = $clconplanoorcamentoanalitica->sql_record($sql);
+        $rows = $clconplanoorcamentoanalitica->numrows;
+        if ($rows > 0) {
+            for ($x = 0; $x < $rows; $x++) {
+                db_fieldsmemory($rs_conplanoreduz, $x);
+                $clconplanoorcamentoanalitica->c61_instit = db_getsession("DB_instit");
+                $clconplanoorcamentoanalitica->c61_codigo = $o70_codigo;
+                $clconplanoorcamentoanalitica->c61_anousu = $c61_anousu;
+                $clconplanoorcamentoanalitica->c61_reduz = $c61_reduz;
+                $clconplanoorcamentoanalitica->alterar($c61_reduz, $c61_anousu);
+                if ($clconplanoorcamentoanalitica->erro_status == 0) {
+                    throw new Exception($clconplanoorcamentoanalitica->erro_msg);
                 }
             }
-
-            $receita = new Receita();
-            $receita->setAno($clorcreceita->o70_anousu)
-                ->setReduzido($clorcreceita->o70_codrec)
-                ->setValor($clorcreceita->o70_valor);
-
-            $service = new AcompanhamentoDesembolsoReceitaService();
-            $service->criar($receita);
-
-            db_fim_transacao();
-            $errox_msg = $clorcreceita->erro_msg;
         }
+
+        $receita = new Receita();
+        $receita->setAno($clorcreceita->o70_anousu)
+            ->setReduzido($clorcreceita->o70_codrec)
+            ->setValor($clorcreceita->o70_valor);
+
+        $service = new AcompanhamentoDesembolsoReceitaService();
+        $service->criar($receita);
+
+        db_fim_transacao();
+        $errox_msg = $clorcreceita->erro_msg;
+
     }
 } catch (Exception $e) {
     $sqlerro = true;
@@ -156,16 +165,16 @@ try {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container">
     <?php
-    include(modification("forms/db_frmorcreceita.php"));
+    include_once(modification("forms/db_frmorcreceita.php"));
     ?>
 </div>
 <?php

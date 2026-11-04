@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -92,7 +92,7 @@ if ($aborta<>1)
   <tr>
   <td nowrap><strong>Release a ser atualizada:</strong></td>
 
-<?
+<?php
   if (trim($verifica)=='')
      {
       print"<td> Release $release_nova não disponível no momento!</td>";
@@ -108,7 +108,7 @@ if ($aborta<>1)
       <td align='center' colspan='2'>";
 ?>   
     <input name="processa"  type="button"  value='Atualizar release' onclick= "js_processa();" >
-<? print"
+<?php print"
       </td>
       </tr>";
      }
@@ -130,6 +130,6 @@ obj = document.form1;
   }
 
 </script>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

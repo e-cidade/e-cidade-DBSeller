@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,7 +67,7 @@ if(isset($atualizar)){
       <?=@$Led08_i_codigo?>
      </td>
      <td>
-      <?db_input('ed08_i_codigo',10,$Ied08_i_codigo,true,'text',3,"")?>
+      <?php db_input('ed08_i_codigo',10,$Ied08_i_codigo,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -75,7 +75,7 @@ if(isset($atualizar)){
       <?=@$Led08_c_descr?>
      </td>
      <td>
-      <?db_input('ed08_c_descr',10,$Ied08_c_descr,true,'text',$db_opcao,"")?>
+      <?php db_input('ed08_c_descr',10,$Ied08_c_descr,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -92,7 +92,7 @@ if(isset($atualizar)){
      <td>
       <b>Ordenar Períodos:</b><br>
       <select name="campos[]" id="campos" size="4" style="width:125px" multiple>
-      <?
+      <?php
        $sql = "SELECT ed08_i_codigo,ed08_c_descr from periodoaula order by ed08_i_sequencia";
        $query = db_query($sql);
        $linhas = pg_num_rows($query);
@@ -121,7 +121,7 @@ if(isset($atualizar)){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("ed08_i_codigo"=>@$ed08_i_codigo,"ed08_c_descr"=>@$ed08_c_descr,"ed08_i_sequencia"=>@$ed08_i_sequencia);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clperiodoaula->sql_query(@$ed08_i_codigo,"*","ed08_i_sequencia");

@@ -96,16 +96,16 @@ function js_limpa(){
   <table border='0' align='left'>
 
     <tr>
-      <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
+      <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?php db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
       <td align="left" nowrap>
-        <? db_input("m51_codordem",10 ,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");?>
+        <?php db_input("m51_codordem",10 ,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");?>
       </td>
     </tr>
 
     <tr>
-      <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
+      <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?php db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
       <td align="left" nowrap>
-        <? db_input("m51_numcgm", 10,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
+        <?php db_input("m51_numcgm", 10,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
            db_input("z01_nome",40,"$Iz01_nome",true,"text",3);
         ?>
       </td>
@@ -114,20 +114,20 @@ function js_limpa(){
 
     <tr>
   	  <td nowrap title="<?=@$Te60_codemp?>">
-  	     <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
+  	     <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
   	  </td>
   	  <td>
-  	     <? db_input('e60_codemp',10,$Ie60_codemp,true,'text',4,"")  ?>
+  	     <?php db_input('e60_codemp',10,$Ie60_codemp,true,'text',4,"")  ?>
   	  </td>
     </tr>
 
 
     <tr>
   	  <td nowrap title="<?=@$Te60_numemp?>">
-  	   <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
+  	   <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
   	  </td>
   	  <td>
-  	   <? db_input('m52_numemp',10,$Ie60_numemp,true,'text',4," onchange='js_pesquisae60_numemp(false);'")  ?>
+  	   <?php db_input('m52_numemp',10,$Ie60_numemp,true,'text',4," onchange='js_pesquisae60_numemp(false);'")  ?>
   	  </td>
     </tr>
 
@@ -154,7 +154,7 @@ function js_limpa(){
 
 
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisae60_numcgm(mostra){

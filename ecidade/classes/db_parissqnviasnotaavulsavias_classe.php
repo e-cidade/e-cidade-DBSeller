@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: issqn
 //CLASSE DA ENTIDADE parissqnviasnotaavulsavias
-class cl_parissqnviasnotaavulsavias { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q67_sequencial = 0; 
-   var $q67_via = 0; 
-   var $q67_descr = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_parissqnviasnotaavulsavias {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q67_sequencial = 0;
+   var $q67_via = 0;
+   var $q67_descr = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q67_sequencial = int4 = Código Sequencial 
-                 q67_via = int4 = Via 
-                 q67_descr = varchar(50) = Descrição da Via 
+                 q67_sequencial = int4 = Código Sequencial
+                 q67_via = int4 = Via
+                 q67_descr = varchar(50) = Descrição da Via
                  ";
-   //funcao construtor da classe 
-   function cl_parissqnviasnotaavulsavias() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("parissqnviasnotaavulsavias"); 
+     $this->rotulo = new rotulo("parissqnviasnotaavulsavias");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_parissqnviasnotaavulsavias {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q67_sequencial = ($this->q67_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q67_sequencial"]:$this->q67_sequencial);
        $this->q67_via = ($this->q67_via == ""?@$GLOBALS["HTTP_POST_VARS"]["q67_via"]:$this->q67_via);
@@ -77,9 +77,9 @@ class cl_parissqnviasnotaavulsavias {
      }
    }
    // funcao para inclusao
-   function incluir ($q67_sequencial){ 
+   public function incluir ($q67_sequencial){
       $this->atualizacampos();
-     if($this->q67_via == null ){ 
+     if($this->q67_via == null ){
        $this->erro_sql = " Campo Via nao Informado.";
        $this->erro_campo = "q67_via";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_parissqnviasnotaavulsavias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q67_descr == null ){ 
+     if($this->q67_descr == null ){
        $this->erro_sql = " Campo Descrição da Via nao Informado.";
        $this->erro_campo = "q67_descr";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_parissqnviasnotaavulsavias {
        return false;
      }
      if($q67_sequencial == "" || $q67_sequencial == null ){
-       $result = db_query("select nextval('parissqnviasnotaavulsavias_q67_sequencial_seq')"); 
+       $result = db_query("select nextval('parissqnviasnotaavulsavias_q67_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: parissqnviasnotaavulsavias_q67_sequencial_seq do campo: q67_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: parissqnviasnotaavulsavias_q67_sequencial_seq do campo: q67_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q67_sequencial = pg_result($result,0,0); 
+       $this->q67_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from parissqnviasnotaavulsavias_q67_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q67_sequencial)){
@@ -118,10 +118,10 @@ class cl_parissqnviasnotaavulsavias {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q67_sequencial = $q67_sequencial; 
+         $this->q67_sequencial = $q67_sequencial;
        }
      }
-     if(($this->q67_sequencial == null) || ($this->q67_sequencial == "") ){ 
+     if(($this->q67_sequencial == null) || ($this->q67_sequencial == "") ){
        $this->erro_sql = " Campo q67_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_parissqnviasnotaavulsavias {
        return false;
      }
      $sql = "insert into parissqnviasnotaavulsavias(
-                                       q67_sequencial 
-                                      ,q67_via 
-                                      ,q67_descr 
+                                       q67_sequencial
+                                      ,q67_via
+                                      ,q67_descr
                        )
                 values (
-                                $this->q67_sequencial 
-                               ,$this->q67_via 
-                               ,'$this->q67_descr' 
+                                $this->q67_sequencial
+                               ,$this->q67_via
+                               ,'$this->q67_descr'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Configuracao das   vias da nota   avulsa ($this->q67_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_parissqnviasnotaavulsavias {
        $resac = db_query("insert into db_acount values($acount,1835,10633,'','".AddSlashes(pg_result($resaco,0,'q67_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q67_sequencial=null) { 
+   public function alterar ($q67_sequencial=null) {
       $this->atualizacampos();
      $sql = " update parissqnviasnotaavulsavias set ";
      $virgula = "";
-     if(trim($this->q67_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q67_sequencial"])){ 
+     if(trim($this->q67_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q67_sequencial"])){
        $sql  .= $virgula." q67_sequencial = $this->q67_sequencial ";
        $virgula = ",";
-       if(trim($this->q67_sequencial) == null ){ 
+       if(trim($this->q67_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "q67_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_parissqnviasnotaavulsavias {
          return false;
        }
      }
-     if(trim($this->q67_via)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q67_via"])){ 
+     if(trim($this->q67_via)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q67_via"])){
        $sql  .= $virgula." q67_via = $this->q67_via ";
        $virgula = ",";
-       if(trim($this->q67_via) == null ){ 
+       if(trim($this->q67_via) == null ){
          $this->erro_sql = " Campo Via nao Informado.";
          $this->erro_campo = "q67_via";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_parissqnviasnotaavulsavias {
          return false;
        }
      }
-     if(trim($this->q67_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q67_descr"])){ 
+     if(trim($this->q67_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q67_descr"])){
        $sql  .= $virgula." q67_descr = '$this->q67_descr' ";
        $virgula = ",";
-       if(trim($this->q67_descr) == null ){ 
+       if(trim($this->q67_descr) == null ){
          $this->erro_sql = " Campo Descrição da Via nao Informado.";
          $this->erro_campo = "q67_descr";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_parissqnviasnotaavulsavias {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuracao das   vias da nota   avulsa nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q67_sequencial;
@@ -267,14 +267,14 @@ class cl_parissqnviasnotaavulsavias {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q67_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q67_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q67_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_parissqnviasnotaavulsavias {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuracao das   vias da nota   avulsa nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q67_sequencial;
@@ -330,11 +330,11 @@ class cl_parissqnviasnotaavulsavias {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_parissqnviasnotaavulsavias {
       }
      return $result;
    }
-   function sql_query ( $q67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,15 +372,15 @@ class cl_parissqnviasnotaavulsavias {
      $sql2 = "";
      if($dbwhere==""){
        if($q67_sequencial!=null ){
-         $sql2 .= " where parissqnviasnotaavulsavias.q67_sequencial = $q67_sequencial "; 
-       } 
+         $sql2 .= " where parissqnviasnotaavulsavias.q67_sequencial = $q67_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,10 +389,10 @@ class cl_parissqnviasnotaavulsavias {
      }
      return $sql;
   }
-   function sql_query_file ( $q67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q67_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_parissqnviasnotaavulsavias {
      $sql2 = "";
      if($dbwhere==""){
        if($q67_sequencial!=null ){
-         $sql2 .= " where parissqnviasnotaavulsavias.q67_sequencial = $q67_sequencial "; 
-       } 
+         $sql2 .= " where parissqnviasnotaavulsavias.q67_sequencial = $q67_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

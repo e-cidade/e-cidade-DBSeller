@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clatendtipo->rotulo->label("sd14_c_descr");
               <?=$Lsd14_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd14_i_codigo",5,$Isd14_i_codigo,true,"text",4,"","chave_sd14_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clatendtipo->rotulo->label("sd14_c_descr");
               <?=$Lsd14_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd14_c_descr",50,$Isd14_c_descr,true,"text",4,"","chave_sd14_c_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clatendtipo->rotulo->label("sd14_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendtipo.php")==true){
@@ -122,12 +122,12 @@ $clatendtipo->rotulo->label("sd14_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

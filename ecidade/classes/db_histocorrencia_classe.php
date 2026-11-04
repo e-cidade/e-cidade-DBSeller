@@ -1,81 +1,81 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Arrecadacao
 //CLASSE DA ENTIDADE histocorrencia
-class cl_histocorrencia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ar23_sequencial = 0; 
-   var $ar23_id_usuario = 0; 
-   var $ar23_instit = 0; 
-   var $ar23_modulo = 0; 
-   var $ar23_id_itensmenu = 0; 
-   var $ar23_data_dia = null; 
-   var $ar23_data_mes = null; 
-   var $ar23_data_ano = null; 
-   var $ar23_data = null; 
-   var $ar23_hora = null; 
-   var $ar23_tipo = 0; 
-   var $ar23_descricao = null; 
-   var $ar23_ocorrencia = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_histocorrencia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ar23_sequencial = 0;
+   var $ar23_id_usuario = 0;
+   var $ar23_instit = 0;
+   var $ar23_modulo = 0;
+   var $ar23_id_itensmenu = 0;
+   var $ar23_data_dia = null;
+   var $ar23_data_mes = null;
+   var $ar23_data_ano = null;
+   var $ar23_data = null;
+   var $ar23_hora = null;
+   var $ar23_tipo = 0;
+   var $ar23_descricao = null;
+   var $ar23_ocorrencia = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ar23_sequencial = int4 = Código Histórico 
-                 ar23_id_usuario = int4 = Cod. Usuário 
-                 ar23_instit = int4 = Cod. Instituição 
-                 ar23_modulo = int4 = Codigo do Módulo 
-                 ar23_id_itensmenu = int4 = Código do ítem 
-                 ar23_data = date = Data 
-                 ar23_hora = varchar(5) = Hora 
-                 ar23_tipo = int4 = Tipo Registro 
-                 ar23_descricao = varchar(100) = Descrição da Ocorrência 
-                 ar23_ocorrencia = text = Ocorrência 
+                 ar23_sequencial = int4 = Código Histórico
+                 ar23_id_usuario = int4 = Cod. Usuário
+                 ar23_instit = int4 = Cod. Instituição
+                 ar23_modulo = int4 = Codigo do Módulo
+                 ar23_id_itensmenu = int4 = Código do ítem
+                 ar23_data = date = Data
+                 ar23_hora = varchar(5) = Hora
+                 ar23_tipo = int4 = Tipo Registro
+                 ar23_descricao = varchar(100) = Descrição da Ocorrência
+                 ar23_ocorrencia = text = Ocorrência
                  ";
-   //funcao construtor da classe 
-   function cl_histocorrencia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("histocorrencia"); 
+     $this->rotulo = new rotulo("histocorrencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_histocorrencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ar23_sequencial = ($this->ar23_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar23_sequencial"]:$this->ar23_sequencial);
        $this->ar23_id_usuario = ($this->ar23_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["ar23_id_usuario"]:$this->ar23_id_usuario);
@@ -108,9 +108,9 @@ class cl_histocorrencia {
      }
    }
    // funcao para inclusao
-   function incluir ($ar23_sequencial){ 
+   public function incluir ($ar23_sequencial){
       $this->atualizacampos();
-     if($this->ar23_id_usuario == null ){ 
+     if($this->ar23_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "ar23_id_usuario";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_instit == null ){ 
+     if($this->ar23_instit == null ){
        $this->erro_sql = " Campo Cod. Instituição nao Informado.";
        $this->erro_campo = "ar23_instit";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_modulo == null ){ 
+     if($this->ar23_modulo == null ){
        $this->erro_sql = " Campo Codigo do Módulo nao Informado.";
        $this->erro_campo = "ar23_modulo";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_id_itensmenu == null ){ 
+     if($this->ar23_id_itensmenu == null ){
        $this->erro_sql = " Campo Código do ítem nao Informado.";
        $this->erro_campo = "ar23_id_itensmenu";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_data == null ){ 
+     if($this->ar23_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "ar23_data_dia";
        $this->erro_banco = "";
@@ -155,7 +155,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_hora == null ){ 
+     if($this->ar23_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "ar23_hora";
        $this->erro_banco = "";
@@ -164,7 +164,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_tipo == null ){ 
+     if($this->ar23_tipo == null ){
        $this->erro_sql = " Campo Tipo Registro nao Informado.";
        $this->erro_campo = "ar23_tipo";
        $this->erro_banco = "";
@@ -173,7 +173,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_descricao == null ){ 
+     if($this->ar23_descricao == null ){
        $this->erro_sql = " Campo Descrição da Ocorrência nao Informado.";
        $this->erro_campo = "ar23_descricao";
        $this->erro_banco = "";
@@ -182,7 +182,7 @@ class cl_histocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ar23_ocorrencia == null ){ 
+     if($this->ar23_ocorrencia == null ){
        $this->erro_sql = " Campo Ocorrência nao Informado.";
        $this->erro_campo = "ar23_ocorrencia";
        $this->erro_banco = "";
@@ -192,16 +192,16 @@ class cl_histocorrencia {
        return false;
      }
      if($ar23_sequencial == "" || $ar23_sequencial == null ){
-       $result = db_query("select nextval('histocorrencia_ar23_sequencial_seq')"); 
+       $result = db_query("select nextval('histocorrencia_ar23_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: histocorrencia_ar23_sequencial_seq do campo: ar23_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: histocorrencia_ar23_sequencial_seq do campo: ar23_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ar23_sequencial = pg_result($result,0,0); 
+       $this->ar23_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from histocorrencia_ar23_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ar23_sequencial)){
@@ -212,10 +212,10 @@ class cl_histocorrencia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ar23_sequencial = $ar23_sequencial; 
+         $this->ar23_sequencial = $ar23_sequencial;
        }
      }
-     if(($this->ar23_sequencial == null) || ($this->ar23_sequencial == "") ){ 
+     if(($this->ar23_sequencial == null) || ($this->ar23_sequencial == "") ){
        $this->erro_sql = " Campo ar23_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -224,31 +224,31 @@ class cl_histocorrencia {
        return false;
      }
      $sql = "insert into histocorrencia(
-                                       ar23_sequencial 
-                                      ,ar23_id_usuario 
-                                      ,ar23_instit 
-                                      ,ar23_modulo 
-                                      ,ar23_id_itensmenu 
-                                      ,ar23_data 
-                                      ,ar23_hora 
-                                      ,ar23_tipo 
-                                      ,ar23_descricao 
-                                      ,ar23_ocorrencia 
+                                       ar23_sequencial
+                                      ,ar23_id_usuario
+                                      ,ar23_instit
+                                      ,ar23_modulo
+                                      ,ar23_id_itensmenu
+                                      ,ar23_data
+                                      ,ar23_hora
+                                      ,ar23_tipo
+                                      ,ar23_descricao
+                                      ,ar23_ocorrencia
                        )
                 values (
-                                $this->ar23_sequencial 
-                               ,$this->ar23_id_usuario 
-                               ,$this->ar23_instit 
-                               ,$this->ar23_modulo 
-                               ,$this->ar23_id_itensmenu 
-                               ,".($this->ar23_data == "null" || $this->ar23_data == ""?"null":"'".$this->ar23_data."'")." 
-                               ,'$this->ar23_hora' 
-                               ,$this->ar23_tipo 
-                               ,'$this->ar23_descricao' 
-                               ,'$this->ar23_ocorrencia' 
+                                $this->ar23_sequencial
+                               ,$this->ar23_id_usuario
+                               ,$this->ar23_instit
+                               ,$this->ar23_modulo
+                               ,$this->ar23_id_itensmenu
+                               ,".($this->ar23_data == "null" || $this->ar23_data == ""?"null":"'".$this->ar23_data."'")."
+                               ,'$this->ar23_hora'
+                               ,$this->ar23_tipo
+                               ,'$this->ar23_descricao'
+                               ,'$this->ar23_ocorrencia'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "histocorrencia ($this->ar23_sequencial) nao Incluído. Inclusao Abortada.";
@@ -289,16 +289,16 @@ class cl_histocorrencia {
        $resac = db_query("insert into db_acount values($acount,2651,15092,'','".AddSlashes(pg_result($resaco,0,'ar23_ocorrencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ar23_sequencial=null) { 
+   public function alterar ($ar23_sequencial=null) {
       $this->atualizacampos();
      $sql = " update histocorrencia set ";
      $virgula = "";
-     if(trim($this->ar23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_sequencial"])){ 
+     if(trim($this->ar23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_sequencial"])){
        $sql  .= $virgula." ar23_sequencial = $this->ar23_sequencial ";
        $virgula = ",";
-       if(trim($this->ar23_sequencial) == null ){ 
+       if(trim($this->ar23_sequencial) == null ){
          $this->erro_sql = " Campo Código Histórico nao Informado.";
          $this->erro_campo = "ar23_sequencial";
          $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_id_usuario"])){ 
+     if(trim($this->ar23_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_id_usuario"])){
        $sql  .= $virgula." ar23_id_usuario = $this->ar23_id_usuario ";
        $virgula = ",";
-       if(trim($this->ar23_id_usuario) == null ){ 
+       if(trim($this->ar23_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "ar23_id_usuario";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_instit"])){ 
+     if(trim($this->ar23_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_instit"])){
        $sql  .= $virgula." ar23_instit = $this->ar23_instit ";
        $virgula = ",";
-       if(trim($this->ar23_instit) == null ){ 
+       if(trim($this->ar23_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "ar23_instit";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_modulo"])){ 
+     if(trim($this->ar23_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_modulo"])){
        $sql  .= $virgula." ar23_modulo = $this->ar23_modulo ";
        $virgula = ",";
-       if(trim($this->ar23_modulo) == null ){ 
+       if(trim($this->ar23_modulo) == null ){
          $this->erro_sql = " Campo Codigo do Módulo nao Informado.";
          $this->erro_campo = "ar23_modulo";
          $this->erro_banco = "";
@@ -347,10 +347,10 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_id_itensmenu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_id_itensmenu"])){ 
+     if(trim($this->ar23_id_itensmenu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_id_itensmenu"])){
        $sql  .= $virgula." ar23_id_itensmenu = $this->ar23_id_itensmenu ";
        $virgula = ",";
-       if(trim($this->ar23_id_itensmenu) == null ){ 
+       if(trim($this->ar23_id_itensmenu) == null ){
          $this->erro_sql = " Campo Código do ítem nao Informado.";
          $this->erro_campo = "ar23_id_itensmenu";
          $this->erro_banco = "";
@@ -360,10 +360,10 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ar23_data_dia"] !="") ){ 
+     if(trim($this->ar23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ar23_data_dia"] !="") ){
        $sql  .= $virgula." ar23_data = '$this->ar23_data' ";
        $virgula = ",";
-       if(trim($this->ar23_data) == null ){ 
+       if(trim($this->ar23_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "ar23_data_dia";
          $this->erro_banco = "";
@@ -372,11 +372,11 @@ class cl_histocorrencia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ar23_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ar23_data_dia"])){
          $sql  .= $virgula." ar23_data = null ";
          $virgula = ",";
-         if(trim($this->ar23_data) == null ){ 
+         if(trim($this->ar23_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "ar23_data_dia";
            $this->erro_banco = "";
@@ -387,10 +387,10 @@ class cl_histocorrencia {
          }
        }
      }
-     if(trim($this->ar23_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_hora"])){ 
+     if(trim($this->ar23_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_hora"])){
        $sql  .= $virgula." ar23_hora = '$this->ar23_hora' ";
        $virgula = ",";
-       if(trim($this->ar23_hora) == null ){ 
+       if(trim($this->ar23_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "ar23_hora";
          $this->erro_banco = "";
@@ -400,10 +400,10 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_tipo"])){ 
+     if(trim($this->ar23_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_tipo"])){
        $sql  .= $virgula." ar23_tipo = $this->ar23_tipo ";
        $virgula = ",";
-       if(trim($this->ar23_tipo) == null ){ 
+       if(trim($this->ar23_tipo) == null ){
          $this->erro_sql = " Campo Tipo Registro nao Informado.";
          $this->erro_campo = "ar23_tipo";
          $this->erro_banco = "";
@@ -413,10 +413,10 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_descricao"])){ 
+     if(trim($this->ar23_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_descricao"])){
        $sql  .= $virgula." ar23_descricao = '$this->ar23_descricao' ";
        $virgula = ",";
-       if(trim($this->ar23_descricao) == null ){ 
+       if(trim($this->ar23_descricao) == null ){
          $this->erro_sql = " Campo Descrição da Ocorrência nao Informado.";
          $this->erro_campo = "ar23_descricao";
          $this->erro_banco = "";
@@ -426,7 +426,7 @@ class cl_histocorrencia {
          return false;
        }
      }
-     if(trim($this->ar23_ocorrencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_ocorrencia"])){ 
+     if(trim($this->ar23_ocorrencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar23_ocorrencia"])){
        $sql  .= $virgula." ar23_ocorrencia = '$this->ar23_ocorrencia' ";
        $virgula = ",";
      }
@@ -464,7 +464,7 @@ class cl_histocorrencia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "histocorrencia nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ar23_sequencial;
@@ -492,14 +492,14 @@ class cl_histocorrencia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ar23_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ar23_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ar23_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -534,7 +534,7 @@ class cl_histocorrencia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "histocorrencia nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ar23_sequencial;
@@ -562,11 +562,11 @@ class cl_histocorrencia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -588,11 +588,11 @@ class cl_histocorrencia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ar23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ar23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,15 +610,15 @@ class cl_histocorrencia {
      $sql2 = "";
      if($dbwhere==""){
        if($ar23_sequencial!=null ){
-         $sql2 .= " where histocorrencia.ar23_sequencial = $ar23_sequencial "; 
-       } 
+         $sql2 .= " where histocorrencia.ar23_sequencial = $ar23_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -627,11 +627,11 @@ class cl_histocorrencia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ar23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ar23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -644,15 +644,15 @@ class cl_histocorrencia {
      $sql2 = "";
      if($dbwhere==""){
        if($ar23_sequencial!=null ){
-         $sql2 .= " where histocorrencia.ar23_sequencial = $ar23_sequencial "; 
-       } 
+         $sql2 .= " where histocorrencia.ar23_sequencial = $ar23_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

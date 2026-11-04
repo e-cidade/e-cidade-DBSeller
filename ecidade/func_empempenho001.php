@@ -30,6 +30,7 @@ use App\Domain\Patrimonial\Protocolo\Factories\DocumentoAndamentoFactory;
 use App\Domain\Patrimonial\Protocolo\Model\AtividadeExecucao;
 use App\Domain\Patrimonial\Protocolo\Model\DocumentoAndamento;
 use App\Domain\Patrimonial\Protocolo\Repository\DocumentosMovimentacaoRepository;
+use ECidade\Financeiro\Orcamento\Recurso\Origem;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification('libs/db_utils.php'));
@@ -97,7 +98,7 @@ if (isset($e60_numemp) and $e60_numemp != "") {
 
     if ($clempempenho->numrows > 0) {
         db_fieldsmemory($res, 0, true);
-        if (!empty($outros_dados) ) {
+        if (!empty($outros_dados)) {
             $outrosDados = json_decode($outros_dados);
         }
         $rsNotLiq = $clempempenhonl->sql_record($clempempenhonl->sql_query_file(null, "*", null, "e68_numemp={$e60_numemp}"));
@@ -271,8 +272,13 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                  * Consulta na tabela empresto, para ver se possui registro do numero de empenho no ano corrente
                  * se tiver, exibe a iformação de restos a pagar
                  */
-                $sSqlEmpresto = $clempresto->sql_query("", "", "*", "",
-                    "e91_numemp = {$e60_numemp} AND e91_anousu = {$iAnousu}");
+                $sSqlEmpresto = $clempresto->sql_query(
+                    "",
+                    "",
+                    "*",
+                    "",
+                    "e91_numemp = {$e60_numemp} AND e91_anousu = {$iAnousu}"
+                );
                 $rsEmpresto = $clempresto->sql_record($sSqlEmpresto);
                 if ($clempresto->numrows > 0) {
                     db_fieldsmemory($rsEmpresto, 0);
@@ -295,8 +301,8 @@ if (isset($e60_numemp) and $e60_numemp != "") {
 
                 <?php //-----------  dotacão
                 if (isset($e60_coddot) and ($e60_coddot != "")) {
-
-                    $sql = $clorcdotacao->sql_query($e60_anousu,
+                    $sql = $clorcdotacao->sql_query(
+                        $e60_anousu,
                         $e60_coddot,
                         "o56_elemento,o56_descr,
                                            fc_estruturaldotacao(o58_anousu,o58_coddot) as o58_estrutdespesa, o15_descr"
@@ -307,11 +313,11 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                     }
                 }
                 ?>
-                <td nowrap="nowrap" align="left" title="<?= $Te60_coddot ?>">
+                <td nowrap="nowrap"  title="<?= $Te60_coddot ?>">
                     <?php
                     db_ancora($Le60_coddot, "pesquisa_dot();", 1); ?>
                 </td>
-                <td nowrap="nowrap" colspan='1' align="right" width='15' class='valores'>
+                <td nowrap="nowrap" style="width: 90px; text-align: right;" class='valores'>
                     <?php
                     echo $e60_coddot;
                     ?>
@@ -330,17 +336,24 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                 <td nowrap="nowrap" align="left" title="<?= $To15_descr ?>">
                     <b>Recurso:</b>
                 </td>
-                <td nowrap="nowrap" colspan='1' align="right" width='15' class='valores'>
+                <td nowrap="nowrap"  style="width: 90px; text-align: right;" class='valores'>
                     <?php
-                    $recurso = $o15_codigo;
+                    $origemRecurso = Origem::getEmpenho($e60_numemp, db_getsession('DB_anousu'));
 
-                    $instanciaRecurso = RecursoRepository::getRecursoPorCodigo($o15_codigo);
-                    $recurso = $instanciaRecurso->getFonteDeRecurso();
-                    echo $recurso;
+                    $fonteRecurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::with('recurso')
+                        ->where('exercicio', db_getsession('DB_anousu'))
+                        ->where('orctiporec_id', $origemRecurso->o15_codigo)
+                        ->first();
+
+                    echo sprintf(
+                        '%s - %s',
+                        $fonteRecurso->gestao,
+                        str_pad($fonteRecurso->recurso->o15_complemento, 4, '0', STR_PAD_LEFT)
+                    );
                     ?>
                 <td nowrap="nowrap" colspan=2 class='valores' align="left">
                     <?php
-                    echo $o15_descr;
+                    echo $fonteRecurso->descricao;
                     ?>
                 </td>
             </tr>
@@ -352,21 +365,20 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                 <td nowrap="nowrap" class='valores' colspan="3">
                     <?php echo $sProcessoAdministrativo; ?>
                 </td>
-                <td class="bold">Complemento:</td>
-                <td nowrap="nowrap" colspan='1' align="right" width='15' class='valores'>
+                <td class="bold">Subrecurso:</td>
+                <td nowrap="nowrap"  style="width: 90px; text-align: right;" class='valores'>
                     <?php
-                    $complemento = \ECidade\Financeiro\Orcamento\Recurso\Origem::getEmpenho($e60_numemp, db_getsession('DB_anousu'));
-                    if (!empty($complemento)) {
-                        echo "{$complemento->o200_sequencial}";
-                    }
+
+                    echo sprintf(
+                        '%s - %s',
+                        $fonteRecurso->recurso->o15_recurso,
+                        str_pad($fonteRecurso->recurso->o15_complemento, 4, '0', STR_PAD_LEFT)
+                    );
+
                     ?>
                 </td>
                 <td nowrap="nowrap" colspan=2 class='valores' align="left">
-                    <?php
-                    if (!empty($complemento)) {
-                        echo "{$complemento->o200_descricao}";
-                    }
-                    ?>
+                    <?php echo $fonteRecurso->recurso->o15_descr; ?>
                 </td>
 
                 <?php
@@ -387,7 +399,6 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                         echo "</td>";
                         echo "</tr>";
                     }
-
                 }
                 ?>
             </tr>
@@ -401,7 +412,7 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                 <td>
                     <b>Desdobramento:</b>
                 </td>
-                <td width="15" class='valores' style='text-align:right'>
+                <td class='valores' style='text-align:right'>
                     <?php
                     $e64_codele = ' ';
                     $o56_descr = ' ';
@@ -452,7 +463,7 @@ if (isset($e60_numemp) and $e60_numemp != "") {
             </tr>
             <tr>
                 <td align="left" nowrap title="<?= $Te61_autori ?>">
-                    <? db_ancora($Le61_autori, "pesquisa_autori();", 1); ?></td>
+                    <?php db_ancora($Le61_autori, "pesquisa_autori();", 1); ?></td>
                 <td align="left" nowrap class='valores' colspan="3">
                     <?=$e61_autori;?>
                 </td>
@@ -472,7 +483,8 @@ if (isset($e60_numemp) and $e60_numemp != "") {
 
                 $sql1 = $clempautitem->sql_query_lic(
                     null,
-                    null, "distinct l20_codigo,l20_dtpublic,l20_numero,l03_codcom,l03_descr, l20_anousu",
+                    null,
+                    "distinct l20_codigo,l20_dtpublic,l20_numero,l03_codcom,l03_descr, l20_anousu",
                     null,
                     "e55_autori = " . @$e61_autori
                 );
@@ -480,11 +492,10 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                 // por enquanto desativamos e vamos buscar sempre o e60_numerol, pois esse campo
                 // não é uma FK e pode ter licitacao de outros orgãos.
                 if ($clempautitem->numrows > 0 && 1 == 2) {
-
-                db_fieldsmemory($result_licita, 0);
-                $numerolic = $l20_numero . "/" . $l20_anousu;
-                db_input("l20_codigo", 10, "", true, "hidden", 3);
-                ?>
+                    db_fieldsmemory($result_licita, 0);
+                    $numerolic = $l20_numero . "/" . $l20_anousu;
+                    db_input("l20_codigo", 10, "", true, "hidden", 3);
+                    ?>
                 <td align="left" nowrap><b>
                     <?= @$Le60_codcom ?></b>
                 </td>
@@ -502,9 +513,9 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                     <?=$numerolic;?>
                 </td>
             </tr>
-            <?php
-            } else {
-                ?>
+                    <?php
+                } else {
+                    ?>
                 <td align="left" nowrap>
                     <b><?= $Le60_codcom ?> </b>
                 </td>
@@ -518,27 +529,26 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                     <?=$e60_numerol;?>
                 </td>
                 </tr>
-                <?php
-            }
+                    <?php
+                }
 
-            $sListaCredor = " Empenho não classificado";
-            $sJustificativa = null;
+                $sListaCredor = " Empenho não classificado";
+                $sJustificativa = null;
 
-            $sCamposListaCredor = " cc30_codigo, cc30_descricao, cc31_justificativa ";
-            $sWhereListaCredor = " cc31_empempenho = {$e60_numemp} ";
+                $sCamposListaCredor = " cc30_codigo, cc30_descricao, cc31_justificativa ";
+                $sWhereListaCredor = " cc31_empempenho = {$e60_numemp} ";
 
-            $oDaoListaCredor = new cl_classificacaocredoresempenho();
-            $sSqlListaCredor = $oDaoListaCredor->sql_query(null, $sCamposListaCredor, null, $sWhereListaCredor);
-            $rsListaCredor = $oDaoListaCredor->sql_record($sSqlListaCredor);
+                $oDaoListaCredor = new cl_classificacaocredoresempenho();
+                $sSqlListaCredor = $oDaoListaCredor->sql_query(null, $sCamposListaCredor, null, $sWhereListaCredor);
+                $rsListaCredor = $oDaoListaCredor->sql_record($sSqlListaCredor);
 
-            if ($rsListaCredor != false && $oDaoListaCredor->numrows > 0) {
+                if ($rsListaCredor != false && $oDaoListaCredor->numrows > 0) {
+                    $oListaCredor = db_utils::fieldsMemory($rsListaCredor, 0);
+                    $sListaCredor = "{$oListaCredor->cc30_codigo} - {$oListaCredor->cc30_descricao}";
+                    $sJustificativa = $oListaCredor->cc31_justificativa;
+                }
 
-                $oListaCredor = db_utils::fieldsMemory($rsListaCredor, 0);
-                $sListaCredor = "{$oListaCredor->cc30_codigo} - {$oListaCredor->cc30_descricao}";
-                $sJustificativa = $oListaCredor->cc31_justificativa;
-            }
-
-            ?>
+                ?>
             <tr>
                 <td align="left" nowrap title="<?= $Tcc31_classificacaocredores ?>">
                     <b><?= $Lcc31_classificacaocredores ?></b>
@@ -547,8 +557,36 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                     <?= $sListaCredor ?>
                 </td>
                 <td align="left" nowrap>
+                    <b>Base Legal de contratação:</b>
                 </td>
-                <td colspan='3'>
+                <td colspan='3' class='valores' >
+                    <?php
+                    $baseLegal = '';
+
+                    $sql = "
+                    SELECT descricao
+                      FROM plugins.padrsacordovinculo
+                      JOIN plugins.padrsbaselegalcontratacaoacordo
+                            ON padrsbaselegalcontratacaoacordo.sequencial = padrsacordovinculo.baselegalcontratacao
+                    WHERE acordo = (
+                        SELECT coalesce(e100_acordo, ac54_acordo)
+                          FROM empempenho
+                          LEFT JOIN empempenhocontrato ON empempenhocontrato.e100_numemp = empempenho.e60_numemp
+                          LEFT JOIN acordoempempenho ON acordoempempenho.ac54_empempenho = empempenho.e60_numemp
+                          WHERE e60_numemp = {$e60_numemp}
+                          limit 1
+                        )
+                    LIMIT 1
+                    ";
+                    $rs = db_query($sql);
+                    if ($rs && pg_num_rows($rs) > 0) {
+                        $baseLegal = pg_fetch_result($rs, 0, 'descricao');
+                    }
+                    if (in_array($pc50_pctipocompratribunal, [63,64,65,66])) {
+                        $baseLegal = 'Lei 14.133/21';
+                    }
+                    echo $baseLegal;
+                    ?>
                 </td>
             </tr>
 
@@ -577,7 +615,6 @@ if (isset($e60_numemp) and $e60_numemp != "") {
             <?php
 
             if (!empty($empenho_folha)) {
-
                 ?>
                 <tr>
                     <td align="left" nowrap>
@@ -607,13 +644,19 @@ if (isset($e60_numemp) and $e60_numemp != "") {
         <?php
         $oTabDetalhes = new verticalTab("detalhesemp", 300);
         $oTabDetalhes->add("resmovim", "Resumo da Movimentação", "func_empempenho002.php?e60_numemp={$e60_numemp}");
-        $oTabDetalhes->add("itensempNovo", "Itens do Empenho",
-            "emp2_consultaitensempenho001.php?e60_numemp={$e60_numemp}&e55_autori={$e61_autori}");
+        $oTabDetalhes->add(
+            "itensempNovo",
+            "Itens do Empenho",
+            "emp2_consultaitensempenho001.php?e60_numemp={$e60_numemp}&e55_autori={$e61_autori}"
+        );
         $oTabDetalhes->add("lancamemp", "Lançamentos Contábeis", "func_conlancam002.php?chavepesquisa={$e60_numemp}");
         $oTabDetalhes->add("notasemp", "Notas de Liquidação", "func_empnota001.php?e60_numemp={$e60_numemp}");
         $oTabDetalhes->add("opsemp", "Pagamentos", "func_pagordem002.php?e60_numemp={$e60_numemp}");
-        $oTabDetalhes->add("ordensemp", "Ordens de Compra",
-            "func_consultamatordememp001.php?m52_numemp={$e60_numemp}&funcao_js=js_mostraordem|m51_codordem");
+        $oTabDetalhes->add(
+            "ordensemp",
+            "Ordens de Compra",
+            "func_consultamatordememp001.php?m52_numemp={$e60_numemp}&funcao_js=js_mostraordem|m51_codordem"
+        );
         $lDetalhesAut = true;
         if ($e61_autori == '') {
             $lDetalhesAut = false;
@@ -717,7 +760,10 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                 $active = $linha['active'] == 't' ? ' class="active"' : '';
                 $status = $linha['p114_status'];
                 ?>
-                <li<?=$active?> title="<?=$title?>"><?=$icons[$status]?><?=$status?></li>
+                <li <?=$active?> title="<?=$title?>" onclick="js_consultaProcesso()">
+                    <?=$icons[$status]?><?=$status?>
+                </li>
+
                 <?php
             }
             ?>
@@ -760,4 +806,11 @@ if (isset($e60_numemp) and $e60_numemp != "") {
             input = document.querySelector('input[value="Fechar"]');
         input.onclick = parent[query] ? parent[query].hide.bind(parent[query]) : input.onclick;
     })();
+
+    function js_consultaProcesso() {
+        var iCodProc = <?=$processo->p58_codproc?>;
+        var sUrl = 'pro3_consultaprocesso003.php?p58_codproc='+ iCodProc;
+
+        js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe', sUrl, 'Pesquisa de Processos', true);
+    }
 </script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -75,7 +75,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
   <tr><br>
     <td align="center">
       <strong>Opções:</strong>
-      <?
+      <?php
         $aTipos = array("t" => "Com os tipos de débitos abaixo",
                         "f" => "Sem os tipos de débitos abaixo");
         db_select("tipos", $aTipos, true, $db_opcao);
@@ -84,7 +84,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
   </tr>
   <tr>
     <td>
-      <?
+      <?php
         $aux1 = new cl_arquivo_auxiliar;
         $aux1->cabecalho      = "<strong>Tipos de Débitos</strong>";
         $aux1->codigo         = "k00_tipo";
@@ -166,7 +166,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
       <legend>
         <strong>Ordem: </strong>
       </legend>
-      <?
+      <?php
         $aOrdem = array("matric"  => "Matrícula",
                         "nome"    => "Nome",
                         "tipodeb" => "Tipo de Débito");
@@ -179,7 +179,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
       <legend>
         <strong>Tipo: </strong>
       </legend>
-      <?
+      <?php
         $aResumido = array("f" => "Completo",
                            "t" => "Resumido");
         db_select("resumido", $aResumido, true, $db_opcao);
@@ -191,7 +191,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
       <legend>
         <strong>Modo:</strong>
       </legend>
-      <?
+      <?php
         $aOrder = array("asc"  => "Ascendente",
                         "desc" => "Descendente");
         db_select("order", $aOrder, true, $db_opcao);
@@ -203,7 +203,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
       <legend>
         <strong>Débitos:</strong>
       </legend>
-      <?
+      <?php
         $aDebito = array("td"  => "Todos os Débitos",
                          "dv"  => "Somente Débitos Vencidos",
                          "nv"  => "Somente Débitos Não Vencidos",

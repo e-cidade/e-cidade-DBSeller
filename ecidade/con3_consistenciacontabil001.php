@@ -36,13 +36,28 @@ require_once(modification("dbforms/db_funcoes.php"));
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+        <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/widgets/dbcomboBox.widget.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBViewInstituicao.widget.js"></script>
+        <link href="estilos.css" rel="stylesheet" type="text/css">
+        <link href="estilos/windowAux.css" rel="stylesheet" type="text/css">
+        <link href="estilos/DBFormularios.css" rel="stylesheet" type="text/css">
+        <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
+
+
 <?php
-  db_app::load("scripts.js, strings.js, prototype.js, estilos.css, windowAux.css");
-  db_app::load("widgets/dbcomboBox.widget.js, widgets/DBViewInstituicao.widget.js, datagrid.widget.js");
   db_app::load("widgets/datagrid/plugins/DBHint.plugin.js, windowAux.widget.js");
   db_app::load("widgets/DBDownload.widget.js");
-?>
+  ?>
+
+
+
 </head>
 
 <body style="margin-top: 30px; background-color: #CCCCCC;">
@@ -72,10 +87,10 @@ require_once(modification("dbforms/db_funcoes.php"));
   </p>
 
 </center>
-
 <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-?>
+  ?>
+</body>
 
 <script type="application/javascript">
 
@@ -183,9 +198,9 @@ require_once(modification("dbforms/db_funcoes.php"));
       alert(_M(URL_MENSAGEM+"instituicao_nao_selecionada"));
       return false;
     }
+    js_divCarregando("Aguarde, processando conferência...", "msgBox");
 
     oBotaoProcessar.disable = true;
-    js_divCarregando("Aguarde, processando conferência...", "msgBox");
     var iCodigoRelatorio = oComboBoxConferencia.getValue();
     var iCodigoPeriodo   = oComboBoxPeriodo.getValue();
     var aInstituicoes    = oViewInstituicao.getInstituicoesSelecionadas(true);
@@ -197,7 +212,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
     new Ajax.Request(sCaminhoRPC,
                     {method: 'post',
-                      asynchronous: false,
+
                       parameters: 'json='+Object.toJSON(oParametro),
                       onComplete: montarJanela});
   }
@@ -210,7 +225,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     oBotaoProcessar.disable = false;
     js_removeObj("msgBox");
     var oRetorno = JSON.parse(oAjax.responseText);
-    console.log(oRetorno);
+
     if (oRetorno.erro) {
         alert(oRetorno.message.urlDecode());
         return;
@@ -318,5 +333,5 @@ require_once(modification("dbforms/db_funcoes.php"));
 
   getRelatoriosConferencia();
 </script>
-</body>
+
 </html>

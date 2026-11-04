@@ -34,10 +34,12 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorOperadoraSaudeDependenteR
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorOperadoraSaudeRepository;
 use Exception;
 use Ponto;
+use RubricaRepository;
 use stdClass;
 
 /**
  * Class ServidorOperadoraSaudeDependenteService
+ *
  * @package ECidade\RecursosHumanos\Pessoal\Service
  */
 class ServidorOperadoraSaudeDependenteService
@@ -56,7 +58,7 @@ class ServidorOperadoraSaudeDependenteService
     }
 
     /**
-     * @param stdClass $parametros
+     * @param  stdClass $parametros
      * @throws Exception
      */
     public function excluir(stdClass $parametros)
@@ -68,11 +70,11 @@ class ServidorOperadoraSaudeDependenteService
         $dependente = ServidorOperadoraSaudeDependenteRepository::find($parametros->sequencial);
 
         $this->repositorio->delete($dependente);
-        $this->atualizarValorDesconto($dependente->getServidorOperadoraSaude());
+            $this->removerRubricaPonto($dependente->getServidorOperadoraSaude(), $dependente->getRubrica());
     }
 
     /**
-     * @param $parametros
+     * @param  $parametros
      * @return ServidorOperadoraSaudeDependente
      * @throws Exception
      */
@@ -97,14 +99,23 @@ class ServidorOperadoraSaudeDependenteService
             throw new Exception("O dependente não possui vínculo com o servidor.");
         }
 
-        $repositorio = $this->repositorio->scopeDependente($dependente)->scopeServidorOperadoraSaude($servidorOperadoraSaude);
+        $repositorio = $this->repositorio
+            ->scopeDependente($dependente)
+            ->scopeServidorOperadoraSaude($servidorOperadoraSaude);
 
         if ($parametros->sequencial) {
             $repositorio->scopeSequencial($parametros->sequencial, '!=');
         }
 
         if ($repositorio->count()) {
-            throw new Exception("Já existe um vínculo do dependente com o plano de saúde {$servidorOperadoraSaude->getOperadoraSaude()->getNome()}.");
+            $nome = $servidorOperadoraSaude->getOperadoraSaude()->getCgm()->getNome();
+            throw new Exception("Já existe um vínculo do dependente com o plano de saúde {$nome}.");
+        }
+
+        $rubricaDependente = RubricaRepository::getInstanciaByCodigo($parametros->rubricaDependente);
+
+        if ($repositorio->scopeRubrica($rubricaDependente)->count()) {
+            throw new Exception("Já existe a rubrica {$rubricaDependente->getCodigo()}.");
         }
 
         $servidorOperadoraSaudeDependente = new ServidorOperadoraSaudeDependente();
@@ -113,27 +124,47 @@ class ServidorOperadoraSaudeDependenteService
         $servidorOperadoraSaudeDependente->setValor($parametros->valor);
         $servidorOperadoraSaudeDependente->setServidorOperadoraSaude($servidorOperadoraSaude);
         $servidorOperadoraSaudeDependente->setTipo($parametros->tipoDependente);
+        $servidorOperadoraSaudeDependente->setRubrica($rubricaDependente);
         $servidorOperadoraSaudeDependente = $this->repositorio->save($servidorOperadoraSaudeDependente);
 
-        $this->atualizarValorDesconto($servidorOperadoraSaude);
+        $servidorOperadoraSaude->setServidorOperadoraSaudeDependente($servidorOperadoraSaudeDependente);
+
+        $servidor = $servidorOperadoraSaude->getServidor();
+        $pontoService = new PontoService();
+        $valor = $parametros->valor;
+        if ($valor > 0) {
+            $pontoService->adicionarRubrica($servidor, $rubricaDependente, Ponto::FIXO, $valor, 1);
+            $pontoService->adicionarRubrica($servidor, $rubricaDependente, Ponto::SALARIO, $valor, 1);
+        }
 
         return $servidorOperadoraSaudeDependente;
     }
 
     /**
-     * @param ServidorOperadoraSaude $servidorOperadoraSaude
+     * @param  ServidorOperadoraSaude $servidorOperadoraSaude
+     * @param  Rubrica                $rubrica
      * @throws Exception
      */
-    private function atualizarValorDesconto(ServidorOperadoraSaude $servidorOperadoraSaude)
+    private function atualizarValorDesconto(ServidorOperadoraSaude $servidorOperadoraSaude, $rubrica)
     {
         $servidorService = new ServidorOperadoraSaudeService();
-        $valor = $servidorService->calcularTotalDesconto($servidorOperadoraSaude);
+        $valor = $servidorService->calcularTotalDesconto($servidorOperadoraSaude, $rubrica->getCodigo());
 
         $servidor = $servidorOperadoraSaude->getServidor();
-        $rubrica = $servidorOperadoraSaude->getRubrica();
 
         $pontoService = new PontoService();
-        $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::FIXO, $valor, 1);
-        $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::SALARIO, $valor, 1);
+        if ($valor > 0) {
+            $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::FIXO, $valor, 1);
+                $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::SALARIO, $valor, 1);
+        }
+    }
+
+    private function removerRubricaPonto(ServidorOperadoraSaude $servidorOperadoraSaude, $rubrica)
+    {
+        $servidor = $servidorOperadoraSaude->getServidor();
+
+        $pontoService = new PontoService();
+        $pontoService->removerRubrica($servidor, $rubrica, Ponto::FIXO);
+        $pontoService->removerRubrica($servidor, $rubrica, Ponto::SALARIO);
     }
 }

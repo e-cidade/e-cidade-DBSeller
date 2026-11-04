@@ -25,235 +25,247 @@
  *
  * Resultados de um atributo
  * Class ResultadoExameAtributo
+ * Representa a tabela lab_resultadoitem
+ *
  */
-class ResultadoExameAtributo {
+class ResultadoExameAtributo
+{
 
-  const FONTE_MSG = "saude.laboratorio.ResultadoExameAtributo.";
+    const FONTE_MSG = "saude.laboratorio.ResultadoExameAtributo.";
 
-  protected $oAtributo;
+    protected $oAtributo;
 
-  protected $iCodigo;
+    protected $iCodigo;
 
-  protected $sValor;
+    protected $sValor;
 
-  protected $nValorPercentual;
-
-  /**
-   * faixa de referencia NUmerica Utilizada
-   * @var AtributoValorReferenciaNumerico
-   */
-  protected $oFaixaUtilizada = null;
-
-  /**
-   * Titulação do atributo do exame
-   * @var string
-   */
-  protected $sTitulacao;
-
-  /**
-   * instancia o valor do Resultado
-   * @param null $iCodigo
-   */
-  public function __construct($iCodigo = null) {
-    $this->iCodigo  = $iCodigo;
-  }
-
-  /**
-   * @return null
-   */
-  public function getCodigo() {
-    return $this->iCodigo;
-  }
-
-  /**
-   * @param AtributoExame $oAtributo
-   */
-  public function setAtributo(AtributoExame $oAtributo) {
-    $this->oAtributo = $oAtributo;
-  }
-
-  /**
-   * @return AtributoExame
-   */
-  public function getAtributo() {
-    return $this->oAtributo;
-  }
-
-  /**
-   * @param mixed $sValor
-   */
-  public function setValorAbsoluto($sValor) {
-    $this->sValor = $sValor;
-  }
-
-  /**
-   * Retorna o valor Absoluto
-   * @return mixed
-   */
-  public function getValorAbsoluto() {
-    return $this->sValor;
-  }
-
-
-  /**
-   * Define o valor percentual
-   * @return mixed
-   */
-  public function setValorPercentual($nValorPercentual) {
-    $this->nValorPercentual = $nValorPercentual;
-  }
-
-  /**
-   * Retorna o valor percentual calculado
-   * @return mixed
-   */
-  public function getValorPercentual() {
-    return $this->nValorPercentual;
-  }
-
-  /**
-   * define a faixa Utilizada como referência
-   *
-   * @param AtributoValorReferenciaNumerico $oReferencia
-   */
-  public function setFaixaUtilizada(AtributoValorReferenciaNumerico $oReferencia) {
-    $this->oFaixaUtilizada  = $oReferencia;
-  }
-
-
-  /**
-   * Retorna a faixa Utilizada
-   * @return AtributoValorReferenciaNumerico
-   */
-  public function getFaixaUtilizada() {
-    return $this->oFaixaUtilizada;
-  }
-
-  /**
-   * Salva os dados do Atributo
-   *
-   * @param null $iCodigoResultado
-   * @throws BusinessException
-   */
-  public function salvar($iCodigoResultado = null) {
-
-    $oDaoResultadoItem = new cl_lab_resultadoitem();
+    protected $nValorPercentual;
 
     /**
-     * Quando já temos o atributo do exame salvo, podemos alterar apenas a titulação
+     * faixa de referencia NUmerica Utilizada
+     * @var AtributoValorReferenciaNumerico
      */
-    if ( !empty($this->iCodigo) ) {
+    protected $oFaixaUtilizada = null;
 
-      $oDaoResultadoItem->la39_i_codigo  = $this->iCodigo;
-      $oDaoResultadoItem->la39_titulacao = $this->sTitulacao;
-      $oDaoResultadoItem->alterar($this->iCodigo);
-    }
-
-    // Inclui o atributo do exame
-    if (empty($this->iCodigo)) {
-
-      $oDaoResultadoItem                   = new cl_lab_resultadoitem();
-      $oDaoResultadoItem->la39_i_atributo  = $this->getAtributo()->getCodigo();
-      $oDaoResultadoItem->la39_i_resultado = $iCodigoResultado;
-      $oDaoResultadoItem->la39_titulacao   = $this->sTitulacao;
-      $oDaoResultadoItem->incluir(null);
-
-      $this->iCodigo = $oDaoResultadoItem->la39_i_codigo;
-    }
-
-    if ($oDaoResultadoItem->erro_status == 0) {
-      throw new BusinessException( _M( self::FONTE_MSG . "erro_salvar_resultado") );
-    }
-
-    switch ($this->getAtributo()->getTipoReferencia()) {
-
-      case AtributoExame::REFERENCIA_NUMERICA:
-
-        $this->salvarResultadoNumerico();
-        break;
-
-      case AtributoExame::REFERENCIA_SELECIONAVEL:
-
-        $this->salvarResultadoAlfaNumerico(true);
-        break;
-
-      case AtributoExame::REFERENCIA_FIXA:
-
-        $this->salvarResultadoAlfaNumerico(false);
-        break;
-    }
-  }
-
-  /**
-   * Persiste os dados de resultado alfa numerico
-   * @throws BusinessException
-   */
-  protected  function salvarResultadoNumerico() {
-
-    $oDaoResultadoItemNumerico = new cl_lab_resultadonum();
     /**
-     * Deletamos os resultados lancados
+     * Titulação do atributo do exame
+     * @var string
      */
-    $oDaoResultadoItemNumerico->excluir(null, "la41_i_result = {$this->iCodigo}");
-    if ($oDaoResultadoItemNumerico->erro_status == 0) {
-      throw new BusinessException("Erro ao salvar resultados numericos do atributo para o exame");
-    }
-    if($this->getValorAbsoluto() != ''){
-      $oDaoResultadoItemNumerico->la41_f_valor         = "{$this->getValorAbsoluto()}";
-    }
-    if($this->getValorPercentual() != ''){
-      $oDaoResultadoItemNumerico->la41_valorpercentual         = "{$this->getValorPercentual()}";
-    }
-    $oDaoResultadoItemNumerico->la41_i_result        = $this->iCodigo;
-    if (!empty($this->oFaixaUtilizada)) {
-      $oDaoResultadoItemNumerico->la41_faixaescolhida = $this->getFaixaUtilizada()->getCodigo();
-    }
-    $oDaoResultadoItemNumerico->incluir(null);
-    if ($oDaoResultadoItemNumerico->erro_status == 0) {
-      throw new BusinessException("Erro ao salvar resultados numericos do atributo para o exame".$oDaoResultadoItemNumerico->erro_msg);
-    }
-  }
+    protected $sTitulacao;
 
-  /**
-   * Persiste os resultados alfa numericos
-   * @param $lSelecionavel
-   * @throws BusinessException
-   */
-  protected function salvarResultadoAlfaNumerico($lSelecionavel) {
-
-    $oDaoResultadoItemAlfa = new cl_lab_resultadoalfa();
-    $oDaoResultadoItemAlfa->excluir(null, "la40_i_result = {$this->iCodigo}");
-    if ($oDaoResultadoItemAlfa->erro_status == 0) {
-      throw new BusinessException("Erro ao salvar resultados alfanumericos do atributo para o exame");
+    /**
+     * instancia o valor do Resultado
+     * @param null $iCodigo
+     */
+    public function __construct($iCodigo = null)
+    {
+        $this->iCodigo = $iCodigo;
     }
 
-    $oDaoResultadoItemAlfa->la40_i_result = $this->iCodigo;
-    if ($lSelecionavel) {
-      $oDaoResultadoItemAlfa->la40_i_valorrefsel = $this->getValorAbsoluto();
-    } else {
-      $oDaoResultadoItemAlfa->la40_c_valor= $this->getValorAbsoluto();
+    /**
+     * @return null
+     */
+    public function getCodigo()
+    {
+        return $this->iCodigo;
     }
-    $oDaoResultadoItemAlfa->incluir(null);
-    if ($oDaoResultadoItemAlfa->erro_status == 0) {
-      throw new BusinessException("Erro ao salvar resultados alfanumericos do atributo para o exame");
+
+    /**
+     * @param AtributoExame $oAtributo
+     */
+    public function setAtributo(AtributoExame $oAtributo)
+    {
+        $this->oAtributo = $oAtributo;
     }
-  }
 
-  /**
-   * Informa uma titulação do atributo do exame
-   * @param string $sTitulacao
-   */
-  public function setTitulacao($sTitulacao) {
+    /**
+     * @return AtributoExame
+     */
+    public function getAtributo()
+    {
+        return $this->oAtributo;
+    }
 
-    $this->sTitulacao = $sTitulacao;
-  }
+    /**
+     * @param mixed $sValor
+     */
+    public function setValorAbsoluto($sValor)
+    {
+        $this->sValor = $sValor;
+    }
 
-  /**
-   * retorna a titulação do atributo do exame
-   * @return string
-   */
-  public function getTitulacao() {
+    /**
+     * Retorna o valor Absoluto
+     * @return mixed
+     */
+    public function getValorAbsoluto()
+    {
+        return $this->sValor;
+    }
 
-    return $this->sTitulacao;
-  }
+
+    /**
+     * Define o valor percentual
+     * @return mixed
+     */
+    public function setValorPercentual($nValorPercentual)
+    {
+        $this->nValorPercentual = $nValorPercentual;
+    }
+
+    /**
+     * Retorna o valor percentual calculado
+     * @return mixed
+     */
+    public function getValorPercentual()
+    {
+        return $this->nValorPercentual;
+    }
+
+    /**
+     * define a faixa Utilizada como referência
+     *
+     * @param AtributoValorReferenciaNumerico $oReferencia
+     */
+    public function setFaixaUtilizada(AtributoValorReferenciaNumerico $oReferencia)
+    {
+        $this->oFaixaUtilizada = $oReferencia;
+    }
+
+
+    /**
+     * Retorna a faixa Utilizada
+     * @return AtributoValorReferenciaNumerico
+     */
+    public function getFaixaUtilizada()
+    {
+        return $this->oFaixaUtilizada;
+    }
+
+    /**
+     * Salva os dados do Atributo
+     *
+     * @param null $iCodigoResultado
+     * @throws BusinessException
+     */
+    public function salvar($iCodigoResultado = null)
+    {
+        $oDaoResultadoItem = new cl_lab_resultadoitem();
+
+        /**
+         * Quando já temos o atributo do exame salvo, podemos alterar apenas a titulação
+         */
+        if (!empty($this->iCodigo)) {
+            $oDaoResultadoItem->la39_i_codigo = $this->iCodigo;
+            $oDaoResultadoItem->la39_titulacao = $this->sTitulacao;
+            $oDaoResultadoItem->alterar($this->iCodigo);
+        }
+
+        // Inclui o atributo do exame
+        if (empty($this->iCodigo)) {
+            $oDaoResultadoItem = new cl_lab_resultadoitem();
+            $oDaoResultadoItem->la39_i_atributo = $this->getAtributo()->getCodigo();
+            $oDaoResultadoItem->la39_i_resultado = $iCodigoResultado;
+            $oDaoResultadoItem->la39_titulacao = $this->sTitulacao;
+            $oDaoResultadoItem->incluir(null);
+
+            $this->iCodigo = $oDaoResultadoItem->la39_i_codigo;
+        }
+
+        if ($oDaoResultadoItem->erro_status == 0) {
+            throw new BusinessException(_M(self::FONTE_MSG . "erro_salvar_resultado"));
+        }
+
+        switch ($this->getAtributo()->getTipoReferencia()) {
+            case AtributoExame::REFERENCIA_NUMERICA:
+
+                $this->salvarResultadoNumerico();
+                break;
+
+            case AtributoExame::REFERENCIA_SELECIONAVEL:
+
+                $this->salvarResultadoAlfaNumerico(true);
+                break;
+
+            case AtributoExame::REFERENCIA_FIXA:
+
+                $this->salvarResultadoAlfaNumerico(false);
+                break;
+        }
+    }
+
+    /**
+     * Persiste os dados de resultado alfa numerico
+     * @throws BusinessException
+     */
+    protected function salvarResultadoNumerico()
+    {
+        $oDaoResultadoItemNumerico = new cl_lab_resultadonum();
+        /**
+         * Deletamos os resultados lancados
+         */
+        $oDaoResultadoItemNumerico->excluir(null, "la41_i_result = {$this->iCodigo}");
+        if ($oDaoResultadoItemNumerico->erro_status == 0) {
+            throw new BusinessException("Erro ao salvar resultados numericos do atributo para o exame");
+        }
+        if ($this->getValorAbsoluto() != '') {
+            $oDaoResultadoItemNumerico->la41_f_valor = "{$this->getValorAbsoluto()}";
+        }
+        if ($this->getValorPercentual() != '') {
+            $oDaoResultadoItemNumerico->la41_valorpercentual = "{$this->getValorPercentual()}";
+        }
+        $oDaoResultadoItemNumerico->la41_i_result = $this->iCodigo;
+        if (!empty($this->oFaixaUtilizada)) {
+            $oDaoResultadoItemNumerico->la41_faixaescolhida = $this->getFaixaUtilizada()->getCodigo();
+        }
+        $oDaoResultadoItemNumerico->incluir(null);
+        if ($oDaoResultadoItemNumerico->erro_status == 0) {
+            throw new BusinessException(
+                "Erro ao salvar resultados numericos do atributo para o exame" . $oDaoResultadoItemNumerico->erro_msg
+            );
+        }
+    }
+
+    /**
+     * Persiste os resultados alfa numericos
+     * @param $lSelecionavel
+     * @throws BusinessException
+     */
+    protected function salvarResultadoAlfaNumerico($lSelecionavel)
+    {
+        $oDaoResultadoItemAlfa = new cl_lab_resultadoalfa();
+        $oDaoResultadoItemAlfa->excluir(null, "la40_i_result = {$this->iCodigo}");
+        if ($oDaoResultadoItemAlfa->erro_status == 0) {
+            throw new BusinessException("Erro ao salvar resultados alfanumericos do atributo para o exame");
+        }
+
+        $oDaoResultadoItemAlfa->la40_i_result = $this->iCodigo;
+        if ($lSelecionavel) {
+            $oDaoResultadoItemAlfa->la40_i_valorrefsel = $this->getValorAbsoluto();
+        } else {
+            $oDaoResultadoItemAlfa->la40_c_valor = $this->getValorAbsoluto();
+        }
+        $oDaoResultadoItemAlfa->incluir(null);
+        if ($oDaoResultadoItemAlfa->erro_status == 0) {
+            throw new BusinessException("Erro ao salvar resultados alfanumericos do atributo para o exame");
+        }
+    }
+
+    /**
+     * Informa uma titulação do atributo do exame
+     * @param string $sTitulacao
+     */
+    public function setTitulacao($sTitulacao)
+    {
+        $this->sTitulacao = $sTitulacao;
+    }
+
+    /**
+     * retorna a titulação do atributo do exame
+     * @return string
+     */
+    public function getTitulacao()
+    {
+        return $this->sTitulacao;
+    }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ function js_emite(){
           <?=@$LDBtxt34?>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td> 
-          <?
+          <?php
             db_input('DBtxt34',3,$IDBtxt34,true,'text',2);
           ?>
         </td>
@@ -82,7 +82,7 @@ function js_emite(){
   <input name="processar" type="button" id="processar" value="Processar" onClick="js_emite();">
 </form>
 
-      <?
+      <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -109,7 +109,7 @@ function js_mostratermo1(chave1){
      db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

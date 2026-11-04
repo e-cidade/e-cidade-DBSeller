@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhautonomolanc->rotulo->label("rh89_numcgm");
               <?=$Lrh89_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh89_sequencial",10,$Irh89_sequencial,true,"text",4,"","chave_rh89_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhautonomolanc->rotulo->label("rh89_numcgm");
               <?=$Lrh89_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh89_numcgm",10,$Irh89_numcgm,true,"text",4,"","chave_rh89_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhautonomolanc->rotulo->label("rh89_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhautonomolanc.php")==true){
@@ -122,12 +122,12 @@ $clrhautonomolanc->rotulo->label("rh89_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

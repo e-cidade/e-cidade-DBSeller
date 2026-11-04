@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,30 +55,30 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tx20_codconsumo?>">
-       <?
+       <?php
        db_ancora(@$Lx20_codconsumo,"js_pesquisax20_codconsumo(true);", 3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x20_codconsumo',5,$Ix20_codconsumo,true,'text', 3," onchange='js_pesquisax20_codconsumo(false);'")
 ?>
-       <?
+       <?php
 db_input('x19_descr',40,$Ix19_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx20_codconsumotipo?>">
-       <?
+       <?php
        db_ancora(@$Lx20_codconsumotipo,"js_pesquisax20_codconsumotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x20_codconsumotipo',5,$Ix20_codconsumotipo,true,'text',$db_opcao," onchange='js_pesquisax20_codconsumotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('x25_descr',40,$Ix25_descr,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('x25_descr',40,$Ix25_descr,true,'text',3,'')
        <?=@$Lx20_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('x20_valor',15,$Ix20_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('x20_valor',15,$Ix20_valor,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("x20_codconsumo"=>@$x20_codconsumo, "x20_codconsumotipo"=>@$x20_codconsumotipo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguaconsumorec->sql_query(@$x20_codconsumo);

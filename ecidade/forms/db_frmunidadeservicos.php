@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,25 +42,25 @@ $clrotulo->label("sd87_c_nome");
        <?=@$Ls126_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('s126_i_codigo',10,$Is126_i_codigo,true,'text',3,"")
 ?>
-<?
+<?php
 db_input('s126_i_unidade',10,$Is126_i_unidade,true,'hidden',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts126_i_servico?>">
-       <?
+       <?php
        db_ancora(@$Ls126_i_servico,"js_pesquisas126_i_servico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('s126_i_servico',10,$Is126_i_servico,true,'text',$db_opcao," onchange='js_pesquisas126_i_servico(false);'")
 ?>
-       <?
+       <?php
 db_input('sd87_c_nome',80,$Isd87_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('sd87_c_nome',80,$Isd87_c_nome,true,'text',3,'')
        <?=@$Ls126_d_ativado?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('s126_d_ativado',@$s126_d_ativado_dia,@$s126_d_ativado_mes,@$s126_d_ativado_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_inputdata('s126_d_ativado',@$s126_d_ativado_dia,@$s126_d_ativado_mes,@$s126_d
        <?=@$Ls126_d_desativado?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('s126_d_desativado',@$s126_d_desativado_dia,@$s126_d_desativado_mes,@$s126_d_desativado_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,12 +90,12 @@ db_inputdata('s126_d_desativado',@$s126_d_desativado_dia,@$s126_d_desativado_mes
   </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 if( $db_opcao!=1){
 	?>
 	<input name="cancelar" type="submit" value="Cancelar" >
 	
-	<?
+	<?php
 }
 ?>
 </form>
@@ -103,7 +103,7 @@ if( $db_opcao!=1){
 <table>
   <tr>
     <td>
-      <?
+      <?php
       $chavepri = array ("s126_i_codigo" => @$s126_i_codigo );
       $cliframe_alterar_excluir->chavepri = $chavepri;
       @$cliframe_alterar_excluir->sql = $clunidadeservicos->sql_query ( "", "*", "s126_i_codigo", "s126_i_unidade = " . ( int )$chavepesquisa );
@@ -158,7 +158,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_unidadeservicos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -25,17 +25,19 @@ class GuiaTransFerenciaService
     public $alunos;
     public $obs;
     public $bolsa;
+    public $isDeclaracao;
     /**
      * GuiaTransFerenciaService constructor.
      * @param $tipoTransferencia
      * @param $alunos
      */
-    public function __construct($tipoTransferencia, $alunos, $obs, $bolsa)
+    public function __construct($tipoTransferencia, $alunos, $obs, $bolsa, $isDeclaracao)
     {
         $this->tipoTransferencia = $tipoTransferencia;
         $this->alunos = $alunos;
         $this->obs = $obs;
         $this->bolsa = $bolsa;
+        $this->isDeclaracao = $isDeclaracao;
     }
 
     public function buscaDadosImpressao()
@@ -59,7 +61,7 @@ class GuiaTransFerenciaService
             $campos .= "   where ed57_i_codigo = ed60_i_turma) as descr_ensino_anterior,";
             $campos .= " calendario.ed52_i_codigo, escoladestino.ed18_c_nome as escola_destino, ";
             $campos .= " escoladestino.ed18_i_codigo as codigo_escola_destino ";
-    
+
             $sql = $cltransfescolarede->sql_query(
                 "",
                 $campos,
@@ -92,6 +94,7 @@ class GuiaTransFerenciaService
         while ($alunos =pg_fetch_object($result)) {
             $dados['alunos'][] = $alunos;
         }
+        $dados['isDeclaracao'] = $this->isDeclaracao;
         return $dados;
     }
 
@@ -113,15 +116,18 @@ class GuiaTransFerenciaService
                 $dia_transf = substr($aluno->data_transf, 8, 2);
                 $mes_transf = substr($aluno->data_transf, 5, 2);
                 $ano_transf = substr($aluno->data_transf, 0, 4);
-            
-                $oParagrafo = new libdocumento(5010);
+
+                $oParagrafo = $this->isDeclaracao ?
+                    new libdocumento(5027) :
+                    new libdocumento(5010);
+
                 $oParagrafo->nome_aluno = trim($aluno->ed47_v_nome);
                 $oParagrafo->municipio_naturalidade = trim($aluno->ed47_i_censomunicnat);
                 $oParagrafo->estado_naturalidade = $aluno->ed47_i_censoufnat;
                 $oParagrafo->dia_nascimento = $dia_nasc;
                 $oParagrafo->mes_nascimento = db_mes($mes_nasc, 1);
                 $oParagrafo->ano_nascimento = $ano_nasc;
-            
+
                 if ($this->tipoTransferencia == "TF") {
                     $sEtapa =  trim($aluno->matricula[0]->descr_serie);
                     $sEnsino = sprintf(
@@ -173,7 +179,7 @@ class GuiaTransFerenciaService
                 $oParagrafo->etapa = $sEtapa;
                 $oParagrafo->ensino = $sEnsino;
                 $oParagrafo->ano_matricula = isset($aluno->ed52_i_ano) ? $aluno->ed52_i_ano : "";
-             
+
                 $paragrafo = $oParagrafo->getDocParagrafos();
                 $aluno->atestado = $paragrafo[1]->oParag->db02_texto;
                 $sEscolaDestino = $aluno->escola_destino;
@@ -185,7 +191,7 @@ class GuiaTransFerenciaService
 
                 $bolsa = "";
                 if ($this->bolsa == 2) {
-                    $bolsa = $aluno->ed47_c_bolsafamilia == "S" ? "Auxílio Brasil Ativo" : "";
+                    $bolsa = $aluno->ed47_c_bolsafamilia == "S" ? "Bolsa Família Ativo" : "";
                 }
 
                 if (empty($this->obs) &&

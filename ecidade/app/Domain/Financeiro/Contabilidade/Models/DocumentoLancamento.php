@@ -24,6 +24,6 @@ class DocumentoLancamento extends Model
 
     public function lancamento()
     {
-        return $this->belongsTo(LancamentosContabeis::class, 'c71_codlan', 'c70_codlan');
+        return $this->belongsTo(Lancamento::class, 'c71_codlan', 'c70_codlan');
     }
 }

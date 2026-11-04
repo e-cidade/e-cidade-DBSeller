@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,16 +74,16 @@
                       <tr align="center"> 
                         <td nowrap title="<?=@$Tv50_inicial?>" >&nbsp;
 			<br>
-			 <?	
+			 <?php 
 			   db_ancora(@$Lv50_inicial,"js_pesquisainicial(true,false);",4)
 			 ?>
-			<?
+			<?php
 			   db_input('v50_inicial',8,$Iv50_inicial,true,'text',4,"onchange='js_pesquisainicial(false,false);'")
 			?>
-			 <?
+			 <?php
 			   db_ancora("<b>até</b>","js_pesquisainicial(true,true);",4)
 			 ?>
-			<?
+			<?php
 			   db_input('v50_inicial',8,$Iv50_inicial,true,'text',4,"onchange='js_pesquisainicial(false,false);'","v50_inicial_fim")
 			?>
             </td>
@@ -92,7 +92,7 @@
                       </tr>
                       <tr>
                          <td ><b>Tamanho</b>
-                         <?
+                         <?php
                          $x = array("1"=>"8cm x 6,5cm");
                          db_select('tamanho',$x,true,4,"");
                         ?>
@@ -114,7 +114,7 @@
       </table></td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -149,7 +149,7 @@ function js_mostratermofim(chave1){
      db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

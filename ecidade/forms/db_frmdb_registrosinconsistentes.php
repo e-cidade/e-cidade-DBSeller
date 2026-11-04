@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("nomearq");
        <?=@$Ldb136_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db136_sequencial',10,$Idb136_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -48,37 +48,37 @@ db_input('db136_sequencial',10,$Idb136_sequencial,true,'text',$db_opcao,"")
        <?=@$Ldb136_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('db136_data',@$db136_data_dia,@$db136_data_mes,@$db136_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb136_usuario?>">
-       <?
+       <?php
        db_ancora(@$Ldb136_usuario,"js_pesquisadb136_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db136_usuario',10,$Idb136_usuario,true,'text',$db_opcao," onchange='js_pesquisadb136_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb136_tabela?>">
-       <?
+       <?php
        db_ancora(@$Ldb136_tabela,"js_pesquisadb136_tabela(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db136_tabela',10,$Idb136_tabela,true,'text',$db_opcao," onchange='js_pesquisadb136_tabela(false);'")
 ?>
-       <?
+       <?php
 db_input('nomearq',40,$Inomearq,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('nomearq',40,$Inomearq,true,'text',3,'')
        <?=@$Ldb136_processado?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('db136_processado',$x,true,$db_opcao,"");
 ?>
@@ -148,7 +148,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_registrosinconsistentes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

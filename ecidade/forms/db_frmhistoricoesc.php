@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -28,7 +28,7 @@
 <script>
 parent.disciplina.location.href = "edu1_historicodisciplina.php?ed65_i_historicomps=0";
 </script>
-<?
+<?php
 //MODULO: educação
 if ($ed61_i_aluno != "") {
 
@@ -61,16 +61,16 @@ $clrotulo->label("ed29_i_codigo");
    <?=@$Led61_i_codigo?>
   </td>
   <td>
-   <?db_input('ed61_i_codigo', 20, $Ied61_i_codigo, true, 'text', 3, "")?>
+   <?php db_input('ed61_i_codigo', 20, $Ied61_i_codigo, true, 'text', 3, "")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted61_i_curso?>">
-   <?db_ancora(@$Led61_i_curso, "js_pesquisaed61_i_curso(true);", $db_opcao1);?>
+   <?php db_ancora(@$Led61_i_curso, "js_pesquisaed61_i_curso(true);", $db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed61_i_curso', 15, $Ied61_i_curso, true, 'text', $db_opcao1, " onchange='js_pesquisaed61_i_curso(false);'")?>
-   <?db_input('ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3, '')?>
+   <?php db_input('ed61_i_curso', 15, $Ied61_i_curso, true, 'text', $db_opcao1, " onchange='js_pesquisaed61_i_curso(false);'")?>
+   <?php db_input('ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
@@ -78,25 +78,25 @@ $clrotulo->label("ed29_i_codigo");
    <b>Situação:</b>
   </td>
   <td>
-   <?db_input('situacao', 15, @$situacao, true, 'text', 3, "")?>
+   <?php db_input('situacao', 15, @$situacao, true, 'text', 3, "")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted61_i_aluno?>">
-   <?db_ancora(@$Led61_i_aluno, "js_pesquisaed61_i_aluno(true);", 3);?>
+   <?php db_ancora(@$Led61_i_aluno, "js_pesquisaed61_i_aluno(true);", 3);?>
   </td>
   <td>
-   <?db_input('ed61_i_aluno', 15, $Ied61_i_aluno, true, 'text', 3, " onchange='js_pesquisaed61_i_aluno(false);'")?>
-   <?db_input('ed47_v_nome', 40, @$Ied47_v_nome, true, 'text', 3, '')?>
+   <?php db_input('ed61_i_aluno', 15, $Ied61_i_aluno, true, 'text', 3, " onchange='js_pesquisaed61_i_aluno(false);'")?>
+   <?php db_input('ed47_v_nome', 40, @$Ied47_v_nome, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted61_i_escola?>">
-   <?db_ancora(@$Led61_i_escola, "js_pesquisaed61_i_escola(true);", $db_opcao2);?>
+   <?php db_ancora(@$Led61_i_escola, "js_pesquisaed61_i_escola(true);", $db_opcao2);?>
   </td>
   <td>
-   <?db_input('ed61_i_escola', 15, $Ied61_i_escola, true, 'text', $db_opcao2, " onchange='js_pesquisaed61_i_escola(false);'")?>
-   <?db_input('ed18_c_nome', 40, @$Ied18_c_nome, true, 'text', 3, '')?>
+   <?php db_input('ed61_i_escola', 15, $Ied61_i_escola, true, 'text', $db_opcao2, " onchange='js_pesquisaed61_i_escola(false);'")?>
+   <?php db_input('ed18_c_nome', 40, @$Ied18_c_nome, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
@@ -112,24 +112,24 @@ $clrotulo->label("ed29_i_codigo");
    <b>Ano Conc.:</b>
   </td>
   <td>
-   <?db_input('ed61_i_anoconc', 4, $Ied61_i_anoconc, true, 'text', 1, "")?>
+   <?php db_input('ed61_i_anoconc', 4, $Ied61_i_anoconc, true, 'text', 1, "")?>
    <?=@$Led61_i_periodoconc?>
-   <?db_input('ed61_i_periodoconc', 4, $Ied61_i_periodoconc, true, 'text', 1, "")?>
+   <?php db_input('ed61_i_periodoconc', 4, $Ied61_i_periodoconc, true, 'text', 1, "")?>
   </td>
  </tr>
 </table>
 <input type="hidden" name="ed61_i_aluno1" value="<?=$ed61_i_aluno?>">
 <input type="hidden" name="ed47_v_nome1" value="<?=$ed47_v_nome?>">
 </center>
-<?if ($db_opcao == 1) {?>
+<?php if ($db_opcao == 1) {?>
     <input name="incluir" type="submit" id="btnIncluir" value="Incluir" <?=($db_botao==false?"disabled":"")?> >
-<?} else {?>
+<?php } else {?>
     <input name="alterar" type="submit" id="btnAlterar" value="Alterar" <?=($db_botao==false?"disabled":"")?> >
     <input name="excluir" type="submit" id="btnExcluir" value="Excluir" <?=($db_botao==false?"disabled":"")?> >
     <input name="novo" type="button" id="btnNovo" value="Novo"
            onclick="location.href='edu1_historico001.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>'"
             <?=($db_opcao==1||$db_opcao==3||$db_botao==false?"disabled":"")?>>
-<?}?>
+<?php }?>
 </form>
 <script>
 function js_pesquisaed61_i_escola(mostra) {

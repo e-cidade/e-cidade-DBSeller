@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,37 +41,37 @@ $clrotulo->label("ed47_v_nome");
        <?=@$Led227_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('ed227_i_codigo',10,$Ied227_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted227_i_alunopassagem?>">
-       <?
+       <?php
        db_ancora(@$Led227_i_alunopassagem,"js_pesquisaed227_i_alunopassagem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed227_i_alunopassagem',10,$Ied227_i_alunopassagem,true,'text',3," onchange='js_pesquisaed227_i_alunopassagem(false);'")
 ?>
-       <?
+       <?php
 db_input('ed47_v_nome',40,$Ied47_v_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted227_i_valorpassagem?>">
-       <?
+       <?php
        db_ancora(@$Led227_i_valorpassagem,"js_pesquisaed227_i_valorpassagem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed227_i_valorpassagem',10,$Ied227_i_valorpassagem,true,'text',3," onchange='js_pesquisaed227_i_valorpassagem(false);'")
 ?>
-       <?
+       <?php
 db_input('ed230_f_valor',40,$Ied230_f_valor,true,'text',3,'')
        ?>
     </td>
@@ -81,7 +81,7 @@ db_input('ed230_f_valor',40,$Ied230_f_valor,true,'text',3,'')
        <?=@$Led227_i_qtde?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed227_i_qtde',10,$Ied227_i_qtde,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -91,7 +91,7 @@ db_input('ed227_i_qtde',10,$Ied227_i_qtde,true,'text',$db_opcao,"")
        <?=@$Led227_d_datainicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed227_d_datainicio',@$ed227_d_datainicio_dia,@$ed227_d_datainicio_mes,@$ed227_d_datainicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -101,7 +101,7 @@ db_inputdata('ed227_d_datainicio',@$ed227_d_datainicio_dia,@$ed227_d_datainicio_
        <?=@$Led227_d_datafim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed227_d_datafim',@$ed227_d_datafim_dia,@$ed227_d_datafim_mes,@$ed227_d_datafim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ db_inputdata('ed227_d_datafim',@$ed227_d_datafim_dia,@$ed227_d_datafim_mes,@$ed2
        <?=@$Led227_d_datacad?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed227_d_datacad',@$ed227_d_datacad_dia,@$ed227_d_datacad_mes,@$ed227_d_datacad_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_alunopassagemqtd.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

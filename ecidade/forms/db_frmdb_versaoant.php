@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("db30_codversao");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tdb31_codver?>">
-       <?
+       <?php
        db_ancora(@$Ldb31_codver,"js_pesquisadb31_codver(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db31_codver',6,$Idb31_codver,true,'text',$db_opcao," onchange='js_pesquisadb31_codver(false);'")
 ?>
-       <?
+       <?php
 db_input('db30_codversao',6,$Idb30_codversao,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('db30_codversao',6,$Idb30_codversao,true,'text',3,'')
        <?=@$Ldb31_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('db31_data',@$db31_data_dia,@$db31_data_mes,@$db31_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_versaoant.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_tarefa_arquivos {
                  at80_arquivos = varchar(100) = Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_tarefa_arquivos() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefa_arquivos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_tarefa_arquivos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->at80_seqarquivo = ($this->at80_seqarquivo == ""?@$GLOBALS["HTTP_POST_VARS"]["at80_seqarquivo"]:$this->at80_seqarquivo);
        $this->at80_tarefa = ($this->at80_tarefa == ""?@$GLOBALS["HTTP_POST_VARS"]["at80_tarefa"]:$this->at80_tarefa);
@@ -77,7 +77,7 @@ class cl_tarefa_arquivos {
      }
    }
    // funcao para inclusao
-   function incluir ($at80_seqarquivo){ 
+   public function incluir ($at80_seqarquivo){ 
       $this->atualizacampos();
      if($this->at80_tarefa == null ){ 
        $this->erro_sql = " Campo Codigo da Tarefa nao Informado.";
@@ -176,7 +176,7 @@ class cl_tarefa_arquivos {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($at80_seqarquivo=null) { 
+   public function alterar ($at80_seqarquivo=null) { 
       $this->atualizacampos();
      $sql = " update tarefa_arquivos set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_tarefa_arquivos {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($at80_seqarquivo=null,$dbwhere=null) { 
+   public function excluir ($at80_seqarquivo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($at80_seqarquivo));
      }else{ 
@@ -334,7 +334,7 @@ class cl_tarefa_arquivos {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -69,13 +69,13 @@ class cl_cornump {
                  k12_numnov = int4 = Numpre Novo
                  ";
    //funcao construtor da classe
-   function cl_cornump() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cornump");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_cornump {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k12_id = ($this->k12_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_id"]:$this->k12_id);
        if($this->k12_data == ""){
@@ -113,7 +113,7 @@ class cl_cornump {
      }
    }
    // funcao para inclusao
-   function incluir ($k12_id,$k12_data,$k12_autent,$k12_numpre,$k12_numpar,$k12_receit){
+   public function incluir ($k12_id,$k12_data,$k12_autent,$k12_numpre,$k12_numpar,$k12_receit){
       $this->atualizacampos();
      if($this->k12_numtot == null ){
        $this->erro_sql = " Campo Numero Total nao Informado.";
@@ -272,7 +272,7 @@ class cl_cornump {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null) {
+   public function alterar ($k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null) {
       $this->atualizacampos();
      $sql = " update cornump set ";
      $virgula = "";
@@ -500,7 +500,7 @@ class cl_cornump {
      }
    }
    // funcao para exclusao
-   function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$dbwhere=null) {
+   public function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k12_id,$k12_data,$k12_autent,$k12_numpre,$k12_numpar,$k12_receit));
      }else{
@@ -605,7 +605,7 @@ class cl_cornump {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -628,10 +628,10 @@ class cl_cornump {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -698,7 +698,7 @@ class cl_cornump {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -708,10 +708,10 @@ class cl_cornump {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -772,7 +772,7 @@ class cl_cornump {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -782,10 +782,10 @@ class cl_cornump {
      return $sql;
   }
 
-  function sql_query_plano_conta ($k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_plano_conta ($k12_id=null,$k12_data=null,$k12_autent=null,$k12_numpre=null,$k12_numpar=null,$k12_receit=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = explode("#",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -857,7 +857,7 @@ class cl_cornump {
   $sql .= $sql2;
   if($ordem != null ){
   $sql .= " order by ";
-  $campos_sql = split("#",$ordem);
+  $campos_sql = explode("#",$ordem);
   $virgula = "";
   for($i=0;$i<sizeof($campos_sql);$i++){
   $sql .= $virgula.$campos_sql[$i];

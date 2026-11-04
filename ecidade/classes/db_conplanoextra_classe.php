@@ -55,14 +55,14 @@ class cl_conplanoextra {
                  c33_tipo = char(1) = Tipo
                  c33_codcla = int4 = Classificação
                  ";
-   //funcao construtor da classe
-   function cl_conplanoextra() {
+   //funcao construtor da classe 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoextra");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro
-   function erro($mostra,$retorna) {
+   //funcao erro 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_conplanoextra {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c33_anousu = ($this->c33_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c33_anousu"]:$this->c33_anousu);
        $this->c33_instit = ($this->c33_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["c33_instit"]:$this->c33_instit);
@@ -85,7 +85,7 @@ class cl_conplanoextra {
      }
    }
    // funcao para inclusao
-   function incluir ($c33_anousu,$c33_instit,$c33_reduz){
+   public function incluir ($c33_anousu,$c33_instit,$c33_reduz){ 
       $this->atualizacampos();
      if($this->c33_tipo == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
@@ -174,7 +174,7 @@ class cl_conplanoextra {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c33_anousu=null,$c33_instit=null,$c33_reduz=null) {
+   public function alterar ($c33_anousu=null,$c33_instit=null,$c33_reduz=null) { 
       $this->atualizacampos();
      $sql = " update conplanoextra set ";
      $virgula = "";
@@ -284,11 +284,11 @@ class cl_conplanoextra {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       }
-     }
-   }
-   // funcao para exclusao
-   function excluir ($c33_anousu=null,$c33_instit=null,$c33_reduz=null,$dbwhere=null) {
+       } 
+     } 
+   } 
+   // funcao para exclusao 
+   public function excluir ($c33_anousu=null,$c33_instit=null,$c33_reduz=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c33_anousu,$c33_instit,$c33_reduz));
      }else{
@@ -349,11 +349,11 @@ class cl_conplanoextra {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       }
-     }
-   }
-   // funcao do recordset
-   function sql_record($sql) {
+       } 
+     } 
+   } 
+   // funcao do recordset 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -57,14 +57,12 @@ db_postmemory($HTTP_POST_VARS);
 
 $instit = db_getsession("DB_instit");
 if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
-
-  db_msgbox(_M('tributario.notificacoes.cai4_lista003.problema_indices_debitos'));
-  $db_botao = false;
-  $db_opcao = 3;
+    db_msgbox(_M('tributario.notificacoes.cai4_lista003.problema_indices_debitos'));
+    $db_botao = false;
+    $db_opcao = 3;
 } else {
-
-  $db_botao = true;
-  $db_opcao = 1;
+    $db_botao = true;
+    $db_opcao = 1;
 }
 ?>
 <html>
@@ -72,11 +70,23 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
+    <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
+    <script rel="script" type="text/javascript" src="assets/jquery/jquery-3.5.1.min.js"></script>
     <?php
       db_app::load("scripts.js, strings.js, numbers.js, prototype.js, estilos.css");
       db_app::load("widgets/DBToogle.widget.js, widgets/DBLancador.widget.js");
     ?>
     <script type="text/javascript">
+    var Pdatapagamentospagos = false;
+    var Pdatacda = false;
+
+    const url = '<?= ECIDADE_REQUEST_PATH ?>'+'v4/api/tributario/notificacoes/lista';
+    const routers = {
+      'verifica': url + '/verificapacelamento',
+      'vertificaAll': url + '/verificatodosparcelamentos',
+      'verificatipocda': url + '/verificatipocda',
+      'verificatodoscda': url + '/verificatodoscda',
+    };
 
     function js_fimprocessamento() {
 
@@ -131,6 +141,65 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         if(SI <= (F.length - 1)) {
           F.options[SI].selected = true;
         }
+
+        const tipos = [];
+        const nodes = selector => [...document.querySelectorAll(selector)];
+
+        const results = {
+          pojs: nodes('#campos option').map(o => tipos.push(o.value))
+        }
+
+        if(Pdatapagamentospagos){
+          const data = {
+            k00_tipo: tipos
+          };
+          const dado = new FormData;
+          for (index in data) {
+            dado.append(index, data[index]);
+          }
+          HttpClient.post(routers.vertificaAll, {
+            body: dado,
+            reportProgress : true
+          })
+          .then((res) => {
+            if (res.hasOwnProperty('data')) {
+              if (res.error) {
+                alert(res.message);
+                return
+              }
+              if(!res.data.parcelamento){
+                $('datapagamentospagos').hide();
+                Pdatapagamentospagos = false;
+              }
+            }
+          });
+        }
+
+        if(Pdatacda){
+          const data = {
+            k00_tipo: tipos
+          };
+          const dado = new FormData;
+          for (index in data) {
+            dado.append(index, data[index]);
+          }
+          HttpClient.post(routers.verificatodoscda, {
+            body: dado,
+            reportProgress : true
+          })
+          .then((res) => {
+            if (res.hasOwnProperty('data')) {
+              if (res.error) {
+                alert(res.message);
+                return
+              }
+              if(!res.data.parcelamento){
+                $('datacda').hide();
+                Pdatacda = false;
+              }
+            }
+          });
+        }
       }
     }
 
@@ -140,6 +209,58 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
       var texto = document.form1.k00_descr.value;
       var valor = document.form1.k00_tipo.value;
+
+      if(!Pdatapagamentospagos){
+        const data = {
+          k00_tipo: valor
+        };
+        const dado = new FormData;
+        for (index in data) {
+          dado.append(index, data[index]);
+        }
+        HttpClient.post(routers.verifica, {
+          body: dado,
+          reportProgress : true
+        })
+        .then((res) => {
+          if (res.hasOwnProperty('data')) {
+            if (res.error) {
+              alert(res.message);
+              return
+            }
+            if(res.data.parcelamento){
+              $('datapagamentospagos').show();
+              Pdatapagamentospagos = true;
+            }
+          }
+        });
+      }
+
+      if(!Pdatacda){
+        const data = {
+          k00_tipo: valor
+        };
+        const dado = new FormData;
+        for (index in data) {
+          dado.append(index, data[index]);
+        }
+        HttpClient.post(routers.verificatipocda, {
+          body: dado,
+          reportProgress : true
+        })
+        .then((res) => {
+          if (res.hasOwnProperty('data')) {
+            if (res.error) {
+              alert(res.message);
+              return
+            }
+            if(res.data.parcelamento){
+              $('datacda').show();
+              Pdatacda = true;
+            }
+          }
+        });
+      }
 
       if(texto != "" && valor != "") {
 
@@ -329,12 +450,12 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
         if(lExisteFiltro) {
 
-    	  if($F('k60_tipo') != 'M') {
+          if($F('k60_tipo') != 'M') {
 
-    		  alert(_M('tributario.notificacoes.cai4_lista003.filtro_utilizados_caso_diferente_matricula'));
-    		  document.form1.k60_tipo.focus();
-    		  return false;
-    	  }
+              alert(_M('tributario.notificacoes.cai4_lista003.filtro_utilizados_caso_diferente_matricula'));
+              document.form1.k60_tipo.focus();
+              return false;
+          }
       }
 
       js_OpenJanelaIframe('','db_iframe_lista002','cai4_lista002.php'+qry,'Processando Lista ...',true);
@@ -365,6 +486,13 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
       qry  = '?sDescricaoLista='+$F('k60_descr');
       qry += '&dDataDebitos='+$F('data');
+      if(Pdatapagamentospagos){
+        qry += '&dtDebitospagamentoapos='+$F('dtDebitospagamentoapos');
+      }
+      if(Pdatacda){
+        qry += '&dtcdaini='+$F('dtcdaini');
+        qry += '&dtcdafim='+$F('dtcdafim');
+      }
       qry += '&iQtdListar='+$F('numerolista22');
       qry += '&nValorIni='+$F('DBtxt10');
       qry += '&nValorFim='+$F('DBtxt11');
@@ -462,8 +590,8 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       <td nowrap colspan="3">
                         <?php
                         $xopcao = $db_opcao;
-                        if($db_opcao == 1) {
-                          $xopcao = 3;
+                        if ($db_opcao == 1) {
+                            $xopcao = 3;
                         }
                         db_input('k60_descr', 10, $Ik60_descr, true, 'text', $db_opcao, "");
                         ?>
@@ -476,25 +604,24 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                       <td>
                         <?php
-                        $sql    = "select k115_data as k22_data";
-                        $sql   .= "  from datadebitos";
-                        $sql   .= " where k115_instit = ".db_getsession("DB_instit");
-                        $sql   .= " order by k115_data desc limit 1";
-                        $result = db_query($sql);
+                        $aDatas    = array();
+                        $iNroDatas = 0;
 
-                        $data_ano = '';
-                        $data_mes = '';
-                        $data_dia = '';
+                        $sSqlDataDebitos  = "select k115_data ";
+                        $sSqlDataDebitos .= "from datadebitos ";
+                        $sSqlDataDebitos .= "where k115_completa is true and k115_instit = ".db_getsession("DB_instit");
+                        $sSqlDataDebitos .= "order by k115_data desc ";
 
-                        if (pg_numrows($result) > 0) {
+                        $rsDataDebitos    = db_query($sSqlDataDebitos);
+                        $iNroDatas        = pg_num_rows($rsDataDebitos);
 
-                          db_fieldsmemory($result, 0);
-                          $data_ano = substr($k22_data, 0, 4);
-                          $data_mes = substr($k22_data, 5, 2);
-                          $data_dia = substr($k22_data, 8, 2);
+                        $aDatas[''] = 'SELECIONE';
+                        for ($iInd=0; $iInd < $iNroDatas; $iInd++) {
+                            $oDataDebitos = db_utils::fieldsMemory($rsDataDebitos, $iInd);
+                            $aDatas[$oDataDebitos->k115_data] = db_formatar($oDataDebitos->k115_data, 'd');
                         }
 
-                        db_inputdata('data', $data_dia, $data_mes, $data_ano, true, 'text', $db_opcao)
+                        db_select("data", $aDatas, true, 1, "onChange=''");
                         ?>
                       </td>
                       <td nowrap title="Quantidade de contribuintes a ser listado, ou zero para todos">
@@ -531,7 +658,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                           "I" => "Inscrição",
                           "A" => "Auto de Infração",
                         );
-                        db_select('k60_tipo',$x,true,$db_opcao,"onchange='js_montaFiltro();'");
+                        db_select('k60_tipo', $x, true, $db_opcao, "onchange='js_montaFiltro();'");
                         ?>
                       </td>
                     </tr>
@@ -564,8 +691,8 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       <td>
                         <?php
                         $data1_ano = substr(date('Y'), 0, 4);
-                        $data1_mes = substr(date('m'),0,2);
-                        $data1_dia =  substr(date('d'),0,2);
+                        $data1_mes = substr(date('m'), 0, 2);
+                        $data1_dia =  substr(date('d'), 0, 2);
 
                         db_inputdata('data1', $data1_dia, $data1_mes, $data1_ano, true, 'text', $db_opcao);
 
@@ -656,7 +783,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                       <td>
                         <?php
-                       db_input('parcini', 10, "Parcela inicial", true, 'text', $db_opcao);
+                        db_input('parcini', 10, "Parcela inicial", true, 'text', $db_opcao);
                         ?>
                       </td>
                       <td>
@@ -699,9 +826,9 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                       <td class="field-size2">
                           <?php
-                          $x = array ("1" => "Não consistir", "2" => "Apenas válidos", "3" => "Inválidos");
-                          db_select('consistirEndereco', $x, true, $db_opcao, "");
-                          ?>
+                            $x = array ("1" => "Não consistir", "2" => "Apenas válidos", "3" => "Inválidos");
+                            db_select('consistirEndereco', $x, true, $db_opcao, "");
+                            ?>
                       </td>
                      </tr>
                       <tr>
@@ -710,9 +837,9 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                           </td>
                           <td class="field-size2">
                               <?php
-                              $x = array ("1" => "Não", "2" => "Sim");
-                              db_select('incluirDebitosAjuizados', $x, true, $db_opcao, "");
-                              ?>
+                                $x = array ("1" => "Não", "2" => "Sim");
+                                db_select('incluirDebitosAjuizados', $x, true, $db_opcao, "");
+                                ?>
                           </td>
                       </tr>
                     <tr>
@@ -733,6 +860,32 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       <td nowrap colspan="2">
                         <?php
                         db_inputdata('dtDesconsiderarDebitos', "", "", "", true, 'text', $db_opcao, "");
+                        ?>
+                      </td>
+                    </tr>
+                    <tr id="datapagamentospagos" style="display: none;">
+                      <td>
+                        <label for="dtDebitospagamentoapos">Desconsiderar Débitos com pagamentos após:</label>
+                      </td>
+                      <td nowrap colspan="2">
+                        <?php
+                        db_inputdata('dtDebitospagamentoapos', "", "", "", true, 'text', $db_opcao, "");
+                        ?>
+                      </td>
+                    </tr>
+                    <tr id="datacda" style="display: none;">
+                      <td nowrap title="Data da emissão da CDA de">
+                        <label for="dtcdaini">Data da emissão da CDA de:</label>
+                      </td>
+                      <td>
+                        <?php
+                        db_inputdata('dtcdaini', "", "", "", true, 'text', $db_opcao, "");
+                        ?>
+                      </td>
+                      <td>
+                        <label for="dtcdafim"> à </label>
+                        <?php
+                        db_inputdata('dtcdafim', "", "", "", true, 'text', $db_opcao, "");
                         ?>
                       </td>
                     </tr>
@@ -759,14 +912,22 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                     </tr>
                     <tr>
-                      <td nowrap title="<?php echo$Tk00_tipo?>">
+                      <td nowrap title="<?php echo $Tk00_tipo?>">
                         <?php
                         db_ancora($Lk00_tipo, "js_pesquisak00_tipo(true);", $db_opcao);
                         ?>
                       </td>
                       <td colspan="2">
                         <?php
-                        db_input('k00_tipo', 8, $Ik00_tipo, true, 'text', $db_opcao, " onchange='js_pesquisak00_tipo(false);'");
+                        db_input(
+                            'k00_tipo',
+                            8,
+                            $Ik00_tipo,
+                            true,
+                            'text',
+                            $db_opcao,
+                            " onchange='js_pesquisak00_tipo(false);'"
+                        );
                         db_input('k00_descr', 25, $Ik00_descr, true, 'text', 3, '');
                         ?>
                         <input name="lanca" type="button" value="Lançar" >
@@ -777,28 +938,33 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       <td>
                         <select name="campos[]" id="campos" size="7" multiple>
                           <?php
-                          if (isset ($chavepesquisa)) {
-
-                            $resulta = $clarretipo->sql_record($clarretipo->sql_query($chavepesquisa, "", "k00_tipo,k00_descr", ""));
-                            if ($clarretipo->numrows != 0) {
-
-                              $numrows = $clarretipo->numrows;
-                              for ($i = 0; $i < $numrows; $i ++) {
-
-                                db_fieldsmemory($resulta, $i);
-                                echo "<option value=\"$k00_tipo \">$k00_descr</option>";
-                              }
+                            if (isset($chavepesquisa)) {
+                                $resulta = $clarretipo->sql_record($clarretipo->sql_query(
+                                    $chavepesquisa,
+                                    "",
+                                    "k00_tipo,k00_descr",
+                                    ""
+                                ));
+                                if ($clarretipo->numrows != 0) {
+                                    $numrows = $clarretipo->numrows;
+                                    for ($i = 0; $i < $numrows; $i ++) {
+                                        db_fieldsmemory($resulta, $i);
+                                        echo "<option value=\"$k00_tipo \">$k00_descr</option>";
+                                    }
+                                }
                             }
-                          }
-                          ?>
+                            ?>
                         </select>
                       </td>
                       <td align="left" valign="middle" width="20%">
-                        <img style="cursor:hand" onClick="js_sobe();return false;" src="skins/img.php?file=Controles/seta_up.png" />
+                        <img style="cursor:hand" onClick="js_sobe();return false;"
+                             src="skins/img.php?file=Controles/seta_up.png" />
                          <br/><br/>
-                        <img style="cursor:hand" onClick="js_desce()" src="skins/img.php?file=Controles/seta_down.png" />
+                        <img style="cursor:hand" onClick="js_desce()"
+                             src="skins/img.php?file=Controles/seta_down.png" />
                          <br/><br/>
-                        <img style="cursor:hand" onClick="js_excluir()" src="skins/img.php?file=Controles/bt_excluir.png" />
+                        <img style="cursor:hand" onClick="js_excluir()"
+                             src="skins/img.php?file=Controles/bt_excluir.png" />
                       </td>
                     </tr>
                   </table>
@@ -829,75 +995,81 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
           </table>
         </fieldset>
-        <input name="db_opcao" type="button" id="db_opcao" value="Incluir" onClick="<?=$funcao_js_verifica?>" <?=($db_botao ? '' : 'disabled')?>>
+        <input name="db_opcao" type="button" id="db_opcao" value="Incluir"
+               onClick="<?=$funcao_js_verifica?>" <?=($db_botao ? '' : 'disabled')?>>
       </form>
     </div>
   </body>
 </html>
 <script type="text/javascript">
 
-new DBToogle('filtrosGerais', true);
-new DBToogle('fieldTiposDebitos', true);
-new DBToogle('fieldProcedencia', false);
-new DBToogle('fieldReceita', false);
+    new DBToogle('filtrosGerais', true);
+    new DBToogle('fieldTiposDebitos', true);
+    new DBToogle('fieldProcedencia', false);
+    new DBToogle('fieldReceita', false);
 
-var fVerificaTiposDebitos = function() {
+    var fVerificaTiposDebitos = function() {
 
-  var aTiposDebitos = [];
+        var aTiposDebitos = [];
 
-  if($('campos').options.length > 0) {
+        if($('campos').options.length > 0) {
 
-    for(var i = 0; i < $('campos').options.length; i++) {
-      aTiposDebitos.push($('campos').options[i].value);
-    }
-  }
-
-  var sTiposDebitos = 'sTiposDebitos=' + aTiposDebitos.join(',');
-  oLancadorProcedencia.setParametrosPesquisa('func_procedencia.php', ['sequencial','descricao','tipo_procedencia'], sTiposDebitos);
-};
-
-var fVerificaReceitas = function() {
-
-    var aReceitas = [];
-
-    if($('campos').options.length > 0) {
-
-        for(var i = 0; i < $('campos').options.length; i++) {
-            aReceitas.push($('campos').options[i].value);
+            for(var i = 0; i < $('campos').options.length; i++) {
+                aTiposDebitos.push($('campos').options[i].value);
+            }
         }
-    }
 
-    var sReceitas = 'sReceitas=' + aReceitas.join(',');
-    oLancadorReceita.setParametrosPesquisa('func_tabrec.php', ['k02_codigo','k02_descr'], sReceitas);
-};
+        var sTiposDebitos = 'sTiposDebitos=' + aTiposDebitos.join(',');
+        oLancadorProcedencia.setParametrosPesquisa(
+            'func_procedencia.php',
+            ['sequencial',
+                'descricao',
+                'tipo_procedencia'],
+            sTiposDebitos);
+    };
 
-var oLancadorProcedenciaRetornoPesquisaDigitacaoOriginal;
-var oLancadorProcedenciaRetornoPesquisaLookUp;
+    var fVerificaReceitas = function() {
+
+        var aReceitas = [];
+
+        if($('campos').options.length > 0) {
+
+            for(var i = 0; i < $('campos').options.length; i++) {
+                aReceitas.push($('campos').options[i].value);
+            }
+        }
+
+        var sReceitas = 'sReceitas=' + aReceitas.join(',');
+        oLancadorReceita.setParametrosPesquisa('func_tabrec.php', ['k02_codigo','k02_descr'], sReceitas);
+    };
+
+    var oLancadorProcedenciaRetornoPesquisaDigitacaoOriginal;
+    var oLancadorProcedenciaRetornoPesquisaLookUp;
 
 
-var oLancadorProcedencia = new DBLancador('oLancadorProcedencia');
+    var oLancadorProcedencia = new DBLancador('oLancadorProcedencia');
 
     oLancadorProcedenciaRetornoPesquisaDigitacaoOriginal = oLancadorProcedencia.retornoPesquisaDigitacao;
     oLancadorProcedencia.retornoPesquisaDigitacao = function () {
 
-      var sequencial, tipo_procedencia;
-      sequencial         = arguments[0];
-      tipo_procedencia   = arguments[2];
+        var sequencial, tipo_procedencia;
+        sequencial         = arguments[0];
+        tipo_procedencia   = arguments[2];
 
-      oLancadorProcedenciaRetornoPesquisaDigitacaoOriginal.apply(this, arguments);
-      this.oElementos.oInputCodigo.value = sequencial +'-'+ tipo_procedencia;
+        oLancadorProcedenciaRetornoPesquisaDigitacaoOriginal.apply(this, arguments);
+        this.oElementos.oInputCodigo.value = sequencial +'-'+ tipo_procedencia;
 
     }.bind(oLancadorProcedencia);
 
     oLancadorProcedenciaRetornoPesquisaLookUp = oLancadorProcedencia.retornoPesquisaLookUp;
     oLancadorProcedencia.retornoPesquisaLookUp = function () {
 
-      var sequencial, tipo_procedencia;
-      sequencial         = arguments[0];
-      tipo_procedencia   = arguments[2];
+        var sequencial, tipo_procedencia;
+        sequencial         = arguments[0];
+        tipo_procedencia   = arguments[2];
 
-      oLancadorProcedenciaRetornoPesquisaLookUp.apply(this, arguments);
-      this.oElementos.oInputCodigo.value = sequencial +'-'+ tipo_procedencia;
+        oLancadorProcedenciaRetornoPesquisaLookUp.apply(this, arguments);
+        this.oElementos.oInputCodigo.value = sequencial +'-'+ tipo_procedencia;
 
     }.bind(oLancadorProcedencia);
 
@@ -908,124 +1080,126 @@ var oLancadorProcedencia = new DBLancador('oLancadorProcedencia');
     oLancadorProcedencia.setCallbackAncora(fVerificaTiposDebitos);
     oLancadorProcedencia.show($('procedencia'));
 
-var oLancadorReceitaRetornoPesquisaDigitacaoOriginal;
-var oLancadorReceitaRetornoPesquisaLookUp;
+    var oLancadorReceitaRetornoPesquisaDigitacaoOriginal;
+    var oLancadorReceitaRetornoPesquisaLookUp;
 
-var oLancadorReceita = new DBLancador('oLancadorReceita');
+    var oLancadorReceita = new DBLancador('oLancadorReceita');
 
-oLancadorReceitaRetornoPesquisaDigitacaoOriginal = oLancadorReceita.retornoPesquisaDigitacao;
-oLancadorReceita.retornoPesquisaDigitacao = function () {
+    oLancadorReceitaRetornoPesquisaDigitacaoOriginal = oLancadorReceita.retornoPesquisaDigitacao;
+    oLancadorReceita.retornoPesquisaDigitacao = function () {
 
-    var descricao;
-    descricao = arguments[0];
-    oLancadorReceitaRetornoPesquisaDigitacaoOriginal.apply(this, arguments);
-    this.oElementos.InputDescricao.value = descricao;
+        var descricao;
+        descricao = arguments[0];
+        oLancadorReceitaRetornoPesquisaDigitacaoOriginal.apply(this, arguments);
+        this.oElementos.InputDescricao.value = descricao;
 
-}.bind(oLancadorReceita);
+    }.bind(oLancadorReceita);
 
-oLancadorReceitaRetornoPesquisaLookUp = oLancadorReceita.retornoPesquisaLookUp;
-oLancadorReceita.retornoPesquisaLookUp = function () {
+    oLancadorReceitaRetornoPesquisaLookUp = oLancadorReceita.retornoPesquisaLookUp;
+    oLancadorReceita.retornoPesquisaLookUp = function () {
 
-    var codigo;
-    codigo         = arguments[0];
+        var codigo;
+        codigo = arguments[0];
 
-    oLancadorReceitaRetornoPesquisaLookUp.apply(this, arguments);
-    this.oElementos.oInputCodigo.value = codigo;
+        oLancadorReceitaRetornoPesquisaLookUp.apply(this, arguments);
+        this.oElementos.oInputCodigo.value = codigo;
 
-}.bind(oLancadorReceita);
+    }.bind(oLancadorReceita);
 
-oLancadorReceita.setNomeInstancia('oLancadorReceita');
-oLancadorReceita.setLabelAncora('Receita: ');
-oLancadorReceita.setTituloJanela('Pesquisar Receita');
-oLancadorReceita.setGridHeight(100);
-oLancadorReceita.setCallbackAncora(fVerificaReceitas);
-oLancadorReceita.show($('receita'));
+    oLancadorReceita.setNomeInstancia('oLancadorReceita');
+    oLancadorReceita.setLabelAncora('Receita: ');
+    oLancadorReceita.setTituloJanela('Pesquisar Receita');
+    oLancadorReceita.setGridHeight(100);
+    oLancadorReceita.setCallbackAncora(fVerificaReceitas);
+    oLancadorReceita.show($('receita'));
 
 
 
-function js_pesquisak00_tipo(mostra) {
+    function js_pesquisak00_tipo(mostra) {
 
-  document.form1.lanca.onclick = "";
+        document.form1.lanca.onclick = "";
 
-  var sFrame        = 'db_iframe_arretipo';
-  var sTitulo       = 'Pesquisar Tipo de Débito';
-  var aProcedencias = [];
-  var sProcedencias = '&sProcedencias=' + aProcedencias.join(',');
+        var sFrame        = 'db_iframe_arretipo';
+        var sTitulo       = 'Pesquisar Tipo de Débito';
+        var aProcedencias = [];
+        var sProcedencias = '&sProcedencias=' + aProcedencias.join(',');
 
-  if(mostra == true) {
+        if(mostra === true) {
 
-    js_OpenJanelaIframe(
-      '',
-      sFrame,
-      'func_arretipo.php?funcao_js=parent.js_mostraarretipo1|k00_tipo|k00_descr' + sProcedencias,
-      sTitulo,
-      mostra
-    );
-  } else {
+            js_OpenJanelaIframe(
+                '',
+                sFrame,
+                'func_arretipo.php?funcao_js=parent.js_mostraarretipo1|k00_tipo|k00_descr' + sProcedencias,
+                sTitulo,
+                mostra
+            );
+        } else {
 
-    js_OpenJanelaIframe(
-      '',
-      sFrame,
-      'func_arretipo.php?pesquisa_chave='+document.form1.k00_tipo.value+'&funcao_js=parent.js_mostraarretipo' + sProcedencias,
-      sTitulo,
-      mostra
-    );
-  }
-}
+            js_OpenJanelaIframe(
+                '',
+                sFrame,
+                'func_arretipo.php?pesquisa_chave='+document.form1.k00_tipo.value+
+                '&funcao_js=parent.js_mostraarretipo' + sProcedencias,
+                sTitulo,
+                mostra
+            );
+        }
+    }
 
-function js_mostraarretipo(chave, erro) {
+    function js_mostraarretipo(chave, erro) {
 
-  document.form1.k00_descr.value = chave;
+        document.form1.k00_descr.value = chave;
 
-  if(erro == true) {
+        if(erro == true) {
 
-    document.form1.k00_tipo.focus();
-    document.form1.k00_tipo.value = '';
-  } else {
-    document.form1.lanca.onclick = js_insSelect;
-  }
-}
+            document.form1.k00_tipo.focus();
+            document.form1.k00_tipo.value = '';
+        } else {
+            document.form1.lanca.onclick = js_insSelect;
+        }
+    }
 
-function js_mostraarretipo1(chave1,chave2) {
+    function js_mostraarretipo1(chave1,chave2) {
 
-  document.form1.k00_tipo.value  = chave1;
-  document.form1.k00_descr.value = chave2;
-  db_iframe_arretipo.hide();
-  document.form1.lanca.onclick  = js_insSelect;
-}
+        document.form1.k00_tipo.value  = chave1;
+        document.form1.k00_descr.value = chave2;
+        db_iframe_arretipo.hide();
+        document.form1.lanca.onclick  = js_insSelect;
+    }
 
-function js_pesquisa(){
+    function js_pesquisa(){
 
-  db_iframe.mostraMsg();
-  db_iframe.show();
-  db_iframe.focus();
-}
+        db_iframe.mostraMsg();
+        db_iframe.show();
+        db_iframe.focus();
+    }
 
-function js_preenchepesquisa(chave){
+    function js_preenchepesquisa(chave){
 
-  db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
-}
+        db_iframe.hide();
+        location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+    }
 
-function js_montaFiltro(){
+    function js_montaFiltro(){
 
-  var sTipo   = $F('k60_tipo');
+        var sTipo   = $F('k60_tipo');
 
-  parent.document.formaba.filtros.disabled = false;
-  parent.iframe_filtros.location.href      = "cai4_listafiltros003.php?iFiltro="+sTipo+" ";
-}
+        parent.document.formaba.filtros.disabled = false;
+        parent.iframe_filtros.location.href      = "cai4_listafiltros003.php?iFiltro="+sTipo+" ";
+    }
 
-$('k60_descr').addClassName('field-size-max');
-$('data').addClassName('field-size2');
-$('massa').addClassName('field-size2');
-$('data1').addClassName('field-size2');
-$('DBtxt10').addClassName('field-size2');
-$('DBtxt11').addClassName('field-size2');
-$('notiftipo').addClassName('field-size2');
-$('numerolista22').addClassName('field-size-max');
-$('k00_tipo').addClassName('field-size2');
+    $('k60_descr').addClassName('field-size-max');
+    $('data').addClassName('field-size2');
+    $('massa').addClassName('field-size2');
+    $('data1').addClassName('field-size2');
+    $('DBtxt10').addClassName('field-size2');
+    $('DBtxt11').addClassName('field-size2');
+    $('notiftipo').addClassName('field-size2');
+    $('numerolista22').addClassName('field-size-max');
+    $('k00_tipo').addClassName('field-size2');
 
-$('k00_descr').setStyle({'width': '362px'});
-$('considerar').setStyle({'width': '94px'});
-$('massa').setStyle({'width': '84px'});
+    $('k00_descr').setStyle({'width': '362px'});
+    $('considerar').setStyle({'width': '94px'});
+    $('massa').setStyle({'width': '84px'});
+
 </script>

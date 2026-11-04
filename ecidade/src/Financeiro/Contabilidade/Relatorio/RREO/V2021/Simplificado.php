@@ -4,14 +4,12 @@ namespace ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2021;
 
 use AnexoRREOFactory;
 use AnexoXVIIIResumido;
+use App\Domain\Financeiro\Contabilidade\Factories\AnexoDozeFactory;
+use App\Domain\Financeiro\Contabilidade\Factories\AnexoOitoFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoQuatroFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoSeisFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoTresFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoUmFactory;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoOitoService;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoQuatroService;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTresInRsService;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTresMdfService;
 use ECidade\Financeiro\Contabilidade\Calculo\ReceitaCorrenteLiquida;
 use ECidade\Financeiro\Contabilidade\Relatorio\RREO\Factory\AnexoI as FactoryAnexoI;
 use ECidade\Financeiro\Contabilidade\Relatorio\RREO\Factory\AnexoIII as AnexoIIIFactory;
@@ -461,13 +459,13 @@ class Simplificado extends AnexoXVIIIResumido
     public function getDespesasComManutencaoDesenvolvimentoEnsinoNovo()
     {
         $filtros = [
-            'codigo_relatorio' => 245,
+            'codigo_relatorio' => AnexoOitoFactory::getCodigoRelatorio($this->iAnoUsu),
             'periodo' => $this->oPeriodo->getCodigo(),
             'DB_anousu' => $this->iAnoUsu,
             'DB_instit' => db_getsession('DB_instit')
         ];
 
-        $service = new AnexoOitoService($filtros);
+        $service = AnexoOitoFactory::getService($this->iAnoUsu, $filtros);
         return $service->processaLinhasSimplificado();
     }
 
@@ -569,6 +567,26 @@ class Simplificado extends AnexoXVIIIResumido
         $this->aLinhasConsistencia[55]->aplicado_ate_bimestre = $dadosSimplificado->nPercentualDespesasSaudeComImpostos;
 
         return array($this->aLinhasConsistencia[55]);
+    }
+
+    public function getDespesasAcoesServicosPublicosSaudeNovo()
+    {
+        $filtros = [
+            'codigo_relatorio' => AnexoDozeFactory::getCodigoRelatorio($this->iAnoUsu),
+            'periodo' => $this->oPeriodo->getCodigo(),
+            'DB_anousu' => $this->iAnoUsu,
+            'DB_instit' => db_getsession('DB_instit'),
+        ];
+        $service = AnexoDozeFactory::getService($this->iAnoUsu, $filtros);
+        $dadosSimplificado = $service->simplificado();
+
+        $dadosSimplificado->valor_apurado_ate_bimestre = $dadosSimplificado->valor_apuracao;
+        $dadosSimplificado->minimo_aplicar_exercicio = $dadosSimplificado->percentual_minimo;
+        $dadosSimplificado->aplicado_ate_bimestre = $dadosSimplificado->percentual_aplicado;
+        $dadosSimplificado->totalizar = false;
+        $dadosSimplificado->nivel = 1;
+
+        return [$dadosSimplificado];
     }
 
     /**

@@ -36,6 +36,7 @@ class cl_regencia
     public $ed59_procedimento = 0;
     public $ed59_areaconhecimento = null;
     public $ed59_tipobase = null;
+    public $ed59_unidade_curricular = null;
    // cria propriedade com as variaveis do arquivo
     public $campos = "
                  ed59_i_codigo = int8 = Código
@@ -55,6 +56,7 @@ class cl_regencia
                  ed59_procedimento = int8 = Código do Procedimento
                  ed59_areaconhecimento = int4 = Área de Conhecimento
                  ed59_tipobase = int4 = Tipo de Base
+                 ed59_unidade_curricular = int4 = Unidade Curricular
                  ";
 
     public function __construct()
@@ -100,6 +102,7 @@ class cl_regencia
        $this->ed59_procedimento = ($this->ed59_procedimento == ""?@$GLOBALS["HTTP_POST_VARS"]["ed59_procedimento"]:$this->ed59_procedimento);
        $this->ed59_areaconhecimento = ($this->ed59_areaconhecimento == ""?@$GLOBALS["HTTP_POST_VARS"]["ed59_areaconhecimento"]:$this->ed59_areaconhecimento);
        $this->ed59_tipobase = ($this->ed59_tipobase == ""?@$GLOBALS["HTTP_POST_VARS"]["ed59_tipobase"]:$this->ed59_tipobase);
+        $this->ed59_unidade_curricular = ($this->ed59_unidade_curricular == ""?@$GLOBALS["HTTP_POST_VARS"]["ed59_unidade_curricular"]:$this->ed59_unidade_curricular);
      }else{
        $this->ed59_i_codigo = ($this->ed59_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed59_i_codigo"]:$this->ed59_i_codigo);
      }
@@ -258,6 +261,7 @@ class cl_regencia
                                       ,ed59_procedimento
                                       ,ed59_areaconhecimento
                                       ,ed59_tipobase
+                                      ,ed59_unidade_curricular
                        )
                 values (
                                 $this->ed59_i_codigo
@@ -277,6 +281,7 @@ class cl_regencia
                                ,$this->ed59_procedimento
                                ,$this->ed59_areaconhecimento
                                ,".($this->ed59_tipobase == "null" || $this->ed59_tipobase == ""?"null":"'".$this->ed59_tipobase."'")."
+                               ,".($this->ed59_unidade_curricular == "null" || $this->ed59_unidade_curricular == ""?"null":"'".$this->ed59_unidade_curricular."'")."
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -517,6 +522,10 @@ class cl_regencia
      if(trim($this->ed59_tipobase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed59_tipobase"])){
          $sql .= $virgula. " ed59_tipobase = {$this->ed59_tipobase} ";
      }
+
+    if(trim($this->ed59_unidade_curricular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed59_unidade_curricular"])){
+        $sql .= $virgula. " ed59_unidade_curricular = {$this->ed59_unidade_curricular} ";
+    }
      $sql .= " where ";
      if($ed59_i_codigo!=null){
        $sql .= " ed59_i_codigo = $this->ed59_i_codigo";
@@ -571,7 +580,6 @@ class cl_regencia
          }
        }
      }
-
      $result = db_query($sql);
      if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());

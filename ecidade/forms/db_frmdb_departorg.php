@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("descrdepto");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tdb01_coddepto?>">
-       <?
+       <?php
        db_ancora(@$Ldb01_coddepto,"js_pesquisadb01_coddepto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db01_coddepto',0,$Idb01_coddepto,true,'text',$db_opcao," onchange='js_pesquisadb01_coddepto(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        <?=@$Ldb01_anousu?>
     </td>
     <td> 
-<?
+<?php
 $db01_anousu = db_getsession('DB_anousu');
 db_input('db01_anousu',4,$Idb01_anousu,true,'text',$db_opcao,"")
 ?>
@@ -64,7 +64,7 @@ db_input('db01_anousu',4,$Idb01_anousu,true,'text',$db_opcao,"")
        <?=@$Ldb01_orgao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db01_orgao',2,$Idb01_orgao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('db01_orgao',2,$Idb01_orgao,true,'text',$db_opcao,"")
        <?=@$Ldb01_unidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('db01_unidade',2,$Idb01_unidade,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_db_departorg.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

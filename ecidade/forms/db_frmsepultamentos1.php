@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -158,7 +158,7 @@ $clrotulo->label("cm07_d_vencimento");
   <tr>
     <td nowrap title="Renovante">
       <?php
-        db_ancora("<strong>Declarante:</strong>", "js_pesquisacm01_i_declarante(true);", $db_opcao);
+        db_ancora("<strong>Declarante:</strong>", "js_pesquisacm01_i_declarante(true);", 3);
       ?>
     </td>
     <td>
@@ -166,7 +166,7 @@ $clrotulo->label("cm07_d_vencimento");
         if (!isset($nome_declarante)) {
           $nome_declarante = '';
         }
-        db_input('cm01_i_declarante', 10, $Icm01_i_declarante, true, 'text', $db_opcao, " onchange='js_pesquisacm01_i_declarante(false);'");
+        db_input('cm01_i_declarante', 10, $Icm01_i_declarante, true, 'text', '3', " onchange='js_pesquisacm01_i_declarante(false);'");
         db_input('nome_declarante', 38, $nome_declarante, true, 'text', 3, '');
       ?>
     </td>
@@ -208,10 +208,11 @@ $clrotulo->label("cm07_d_vencimento");
   </table>
  </fieldset>
  <center>
-<?php if(!isset($sepultamento)) { ?>
-<input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick='return validar()' >
-<?php } ?>
-</center>
+  <?php if(!isset($sepultamento)) { ?>
+    <input name="z01_cgccpf" type="hidden" id="z01_cgccpf" value="" />
+    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick='return validar()' >
+  <?php } ?>
+ </center>
 </form>
 <script type="text/javascript">
 
@@ -255,9 +256,21 @@ function validar() {
       throw new Error("Campo Declarante é de preenchimento obrigatório.");
     }
 
+    if(!validaCpfPessoaFisica(document.getElementById('z01_cgccpf').value)){
+      throw new Error('Declarante deve ser pessoa física.');
+    }
+
   } catch(erro) {
 
     alert(erro.message);
+    return false;
+  }
+
+  return true;
+}
+
+function validaCpfPessoaFisica(cpf) {
+  if (cpf && cpf.toString().trim().length !== 11) {
     return false;
   }
 
@@ -426,24 +439,24 @@ function js_mostracausa1(chave1, chave2) {
 function js_pesquisacm01_i_declarante(mostra) {
 
   if(mostra == true) {
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a2', 'func_nome', 'func_cgmtipo.php?funcao_js=parent.js_mostradeclarante1|z01_numcgm|z01_nome&tipo=fisico', 'Pesquisa', true);
+    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a2', 'func_nome', 'func_cgmtipo.php?funcao_js=parent.js_mostradeclarante1|z01_numcgm|z01_nome|z01_cgccpf&tipo=fisico', 'Pesquisa', true);
   } else {
     if(document.form1.cm01_i_declarante.value != '') {
-      js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a2', 'func_nome', 'func_cgmtipo.php?pesquisa_chave='+document.form1.cm01_i_declarante.value+'&funcao_js=parent.js_mostradeclarante&tipo=fisico', 'Pesquisa', false);
+      js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a2', 'func_nome', 'func_cgm.php?cgccpf=true&familia=true&pesquisa_chave='+document.form1.cm01_i_declarante.value+'&funcao_js=parent.js_mostradeclarante&tipo=fisico', 'Pesquisa', false);
     } else {
       document.form1.nome_declarante.value = '';
     }
   }
 }
 
-function js_mostradeclarante(erro, chave) {
-
+function js_mostradeclarante(erro, chave1, chave2, chave3, chave4) {
   if(document.form1.cm01_i_declarante.value == <?php echo isset($cm01_i_codigo) ? $cm01_i_codigo : 'null'; ?>) {
     alert('Aviso!\n\nCgm informado para o declarante é o mesmo para o Sepultamento!');
     erro = true;
   }
 
-  document.form1.nome_declarante.value = chave;
+  document.form1.nome_declarante.value = chave1;
+  document.getElementById('z01_cgccpf').value = chave4;
 
   if(erro == true) {
 
@@ -453,7 +466,7 @@ function js_mostradeclarante(erro, chave) {
   }
 }
 
-function js_mostradeclarante1(chave1, chave2) {
+function js_mostradeclarante1(chave1, chave2, chave3) {
 
   if(chave1 == <?php echo isset($cm01_i_codigo) ? $cm01_i_codigo : 'null'; ?> ) {
     alert('Aviso!\n\nCgm informado para o declarante é o mesmo para o Sepultamento!');
@@ -462,6 +475,7 @@ function js_mostradeclarante1(chave1, chave2) {
 
   document.form1.cm01_i_declarante.value = chave1;
   document.form1.nome_declarante.value   = chave2;
+  document.getElementById('z01_cgccpf').value = chave3;
 
   func_nome.hide();
 }
@@ -476,7 +490,7 @@ function js_preenchepesquisa(chave) {
 
   <?php
     if($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

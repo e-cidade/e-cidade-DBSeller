@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -127,13 +127,13 @@ function js_marca(obj){
       </tr>    
       <tr>
           <td>
-          <?
+          <?php
             db_ancora("<b>Contribuinte:</b>","js_pesquisaNome({$oTermo->cgmcontr});",1);
           ?>
           </td>
           <td class='texto'><?=$oTermo->nomecontr?></td>
           <td align='right'>
-          <?
+          <?php
            db_ancora("<b>Responsável :</b>","js_pesquisaNome({$oTermo->z01_numcgm});",1);
           ?>
           </td>
@@ -160,7 +160,13 @@ function js_marca(obj){
            <a class='dados'        onclick='js_marca(this);this.blur()' href='div3_consultaParcParcelas.php?parcelamento=<?=$oGet->parcelamento;?>'  target='dados'><b> Parcelas   </b></a>
            <a class='dados'        onclick='js_marca(this);this.blur()' href='div3_consultaParcExercicios.php?parcelamento=<?=$oGet->parcelamento;?>'target='dados'><b> Exercícios </b></a> 
            <a class='dados'        onclick='js_marca(this);this.blur()' href='div3_consultaParcEnvolvidos.php?parcelamento=<?=$oGet->parcelamento;?>'target='dados'><b> Envolvidos </b></a> 
-         </td>
+           <?php if ($oTermo->v07_situacao == 1) { ?>
+           <a class='dados'        onclick='js_marca(this);this.blur()' href='div2_termoparc_002.php?parcel=<?=$oGet->parcelamento;?>'target='dados'><b> Visualizar Termo </b></a> 
+           <?php } 
+                 if ($oTermo->v07_situacao == 2) { ?>
+           <a class='dados'        onclick='js_marca(this);this.blur()' href='arr3_extratoanulacaoparcelamento002.php?iTermo=<?=$oGet->parcelamento;?>'target='dados'><b> Extrato Anulação de Parcelamento </b></a> 
+           <?php } ?>
+          </td>
          <td valign='top' height='100%' style='border:1px inset white'>
            <iframe height='300' name='dados' frameborder='0' width='100%' src='div3_consultaParcOrigem.php?parcelamento=<?=$oGet->parcelamento;?>' style='background-color:#CCCCCC'>
            </iframe>

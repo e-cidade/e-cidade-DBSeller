@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -55,52 +55,52 @@ if(isset($acumula)&&!empty($acumula)){
   $rsListaInscr = $cllistainscr->sql_record($cllistainscr->sql_query("","","*","","p12_codigo = $matriz[$m]"));
   db_inicio_transacao();
   $sqlerro = false;
-  
+
   for ($y = 0; $y < $cllistainscr->numrows; $y++) {
      $oLista = db_utils::fieldsMemory($rsListaInscr,$y);
-     
+
      $sqlVerificaEscrito  = "  select *                                   ";
      $sqlVerificaEscrito .= "    from escrito                             ";
      $sqlVerificaEscrito .= "   where q10_numcgm = {$oLista->p11_numcgm}  ";
-     $sqlVerificaEscrito .= "     and q10_inscr  = {$oLista->p12_inscr}   "; 
-    
+     $sqlVerificaEscrito .= "     and q10_inscr  = {$oLista->p12_inscr}   ";
+
      $rsVerificaEscrito = db_query($sqlVerificaEscrito);
      $iVerificaEscrito  = pg_numrows($rsVerificaEscrito);
-        
+
 	 if (isset($oLista->p12_tipolanc) && $oLista->p12_tipolanc == 1) {
         $sqlEscrito  = "  select q10_inscr                         ";
         $sqlEscrito .= "    from escrito                           ";
         $sqlEscrito .= "   where q10_inscr = {$oLista->p12_inscr}  ";
-                                            
+
         $rsEscrito = db_query($sqlEscrito);
         $iEscrito  = pg_numrows($rsEscrito);
-        
+
         if ($iEscrito > 0) {
            $sqlVerificaNull  = "  select q10_inscr,                        ";
-           $sqlVerificaNull .= "         q10_numcgm,                       "; 
-           $sqlVerificaNull .= "         q10_sequencial                    ";  
-           $sqlVerificaNull .= "    from escrito                           "; 
-           $sqlVerificaNull .= "   where q10_inscr  = {$oLista->p12_inscr} "; 
+           $sqlVerificaNull .= "         q10_numcgm,                       ";
+           $sqlVerificaNull .= "         q10_sequencial                    ";
+           $sqlVerificaNull .= "    from escrito                           ";
+           $sqlVerificaNull .= "   where q10_inscr  = {$oLista->p12_inscr} ";
            $sqlVerificaNull .= "     and q10_dtfim is null                 ";
-                                               
+
            $rsVerificaNull = db_query($sqlVerificaNull);
            $iVerificaNull  = pg_numrows($rsVerificaNull);
 
            if ($iVerificaNull > 0) {
            	 $oVerifNullEscrito = db_utils::fieldsMemory($rsVerificaNull,0);
 
-              if ($sqlerro == false) { 
+              if ($sqlerro == false) {
 			     $clescrito->q10_inscr      = $oVerifNullEscrito->q10_inscr;
-				 $clescrito->q10_numcgm     = $oVerifNullEscrito->q10_numcgm;	
+				 $clescrito->q10_numcgm     = $oVerifNullEscrito->q10_numcgm;
 		         $clescrito->q10_dtfim      = $sData;
 		         $clescrito->q10_sequencial = $oVerifNullEscrito->q10_sequencial;
 		         $clescrito->alterar($oVerifNullEscrito->q10_sequencial);
 
 		         if ($clescrito->erro_status == 0) {
 		            $sqlerro=true;
-		            $erro_msg = $clescrito->erro_msg;           
-		         }        
-			  }        	
+		            $erro_msg = $clescrito->erro_msg;
+		         }
+			  }
            }
 
                 if ($sqlerro == false) {
@@ -109,65 +109,65 @@ if(isset($acumula)&&!empty($acumula)){
 	              $clescrito->q10_dtini  = $sData;
 	              $clescrito->q10_dtfim  = null;
 	              $clescrito->incluir(null);
-	
+
 	            if ($clescrito->erro_status == 0) {
 	              $sqlerro=true;
-	              $erro_msg = $clescrito->erro_msg;           
-	            }            
+	              $erro_msg = $clescrito->erro_msg;
+	            }
 	          }
-           
-        } else {      	        	
+
+        } else {
         	if ($sqlerro == false) {
 	    	   $clescrito->q10_inscr  = $oLista->p12_inscr;
 		       $clescrito->q10_numcgm = $oLista->p11_numcgm;
 	           $clescrito->q10_dtini  = $sData;
 	           $clescrito->q10_dtfim  = null;
 	           $clescrito->incluir(null);
-	
+
 	          if ($clescrito->erro_status == 0) {
 	              $sqlerro=true;
-	              $erro_msg = $clescrito->erro_msg;           
-	          }            
+	              $erro_msg = $clescrito->erro_msg;
+	          }
 	        }
-        }	  
-       
+        }
+
 	 } else if ( isset($oLista->p12_tipolanc) && $oLista->p12_tipolanc == 2 ) {
         if ($iVerificaEscrito > 0) {
 		   $oVerEscrito = db_utils::fieldsMemory($rsVerificaEscrito,0);
-		   	  
-		   	  if ( $oVerEscrito->q10_dtfim == "") {		   	  	
-				   if ($sqlerro == false) { 
+
+		   	  if ( $oVerEscrito->q10_dtfim == "") {
+				   if ($sqlerro == false) {
 				   	  $clescrito->q10_inscr      = $oLista->p12_inscr;
-				      $clescrito->q10_numcgm     = $oVerEscrito->q10_numcgm;	
+				      $clescrito->q10_numcgm     = $oVerEscrito->q10_numcgm;
 		              $clescrito->q10_dtfim      = $sData;
 		              $clescrito->q10_sequencial = $oVerEscrito->q10_sequencial;
 		              $clescrito->alterar($oVerEscrito->q10_sequencial);
-		        
+
 				        if ($clescrito->erro_status == 0) {
 		                  $sqlerro=true;
-		                  $erro_msg = $clescrito->erro_msg;           
-		                }        
+		                  $erro_msg = $clescrito->erro_msg;
+		                }
 				   }
-		   	  }      
+		   	  }
         }
-        
-	 }	 
-	  
-	  if ($sqlerro == false) {	  	
+
+	 }
+
+	  if ($sqlerro == false) {
 		     $ip11_codigo = $matriz[$m];
 		     $cllistainscrcab->p11_processado = 't';
 		     $cllistainscrcab->p11_codigo     = $ip11_codigo;
 		     $cllistainscrcab->alterar($ip11_codigo);
-		     
+
 		   if ($cllistainscrcab->erro_status == 0) {
 		      $sqlerro=true;
-		      $erro_msg = $cllistainscrcab->erro_msg;           
-		   }   
-	  }	  
+		      $erro_msg = $cllistainscrcab->erro_msg;
+		   }
+	  }
   }
-  
+
   db_fim_transacao($sqlerro);
-  
+
   if ($sqlerro == true) {
   	db_msgbox($erro_msg);
   }
@@ -176,9 +176,9 @@ if(isset($acumula)&&!empty($acumula)){
 
 if ($cllistainscrcab->erro_banco != "") {
   @$cllistainscrcab->erro();
-  
+
 } else {
-	
+
 //busca dados da instituição
 $sqlBuscaDadosInst = " select * from db_config where codigo = ".db_getsession('DB_instit');
 $rsBuscaDadosInst  = db_query($sqlBuscaDadosInst);
@@ -207,10 +207,10 @@ Informamos que as inscrições abaixo foram liberadas para seu Escritório:
 ";
 ///// informar as incrições liberadas
 $rsListaInscr = $cllistainscr->sql_record("select distinct on (p12_inscr) p12_inscr,
-                                                                          z01_nome as nome, 
-                                                                          z01_cgccpf as cnpj 
-                                             from listainscr 
-                                                  inner join empresa on p12_inscr = q02_inscr 
+                                                                          z01_nome as nome,
+                                                                          z01_cgccpf as cnpj
+                                             from listainscr
+                                                  inner join empresa on p12_inscr = q02_inscr
                                             where p12_codigo = {$oLista->p11_codigo} ");
 
 for($y=0;$y<$cllistainscr->numrows;$y++){
@@ -232,7 +232,7 @@ Não responda este e-mail, ele foi gerado automaticamente pelo Servidor.
   $z01_email = pg_result($rsListaInscrCab,0,"z01_email");
   $headers   = "Content-Type:text";
   $oMail = new Smtp();
-  $oMail->Send($z01_email,'Lista Liberada',$mensagem,$headers); 
+  $oMail->Send($z01_email,'Lista Liberada',$mensagem,$headers);
  }
 
 ##### Fim cria mensagem do email
@@ -254,7 +254,7 @@ function js_emite(){
   jan = window.open('iss2_listinscrweb002.php?fechadas='+document.form1.fechadas.value+'&processadas='+document.form1.processadas.value+'&data='+document.form1.data_ano.value+'-'+document.form1.data_mes.value+'-'+document.form1.data_dia.value+'&data1='+document.form1.data1_ano.value+'-'+document.form1.data1_mes.value+'-'+document.form1.data1_dia.value,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -272,7 +272,7 @@ function js_emite(){
       <tr bgcolor="#bababa">
         <td colspan="6" align="center"><b>Listas Aguardando Liberação:</b></td>
       </tr>
-       <?
+       <?php
        //busca listas
        $result = $cllistainscrcab->sql_record($cllistainscrcab->sql_query("","*","","p11_fechado = 't' and p11_processado = 'f'"));
        if($cllistainscrcab->numrows==0){
@@ -290,7 +290,7 @@ function js_emite(){
          <td><b>Nome/Razão Social</b></td>
          <td width="5%">&nbsp;</td>
         </tr>
-        <?
+        <?php
         for($x=0;$x<$cllistainscrcab->numrows;$x++){
          db_fieldsmemory($result,$x);
          if($cor==$cor1)
@@ -306,7 +306,7 @@ function js_emite(){
           <td>&nbsp;<?=$z01_nome?></td>
           <td><input type="button" name="imprimir" value="Imprimir" style="height:18;font-size:10" onclick="js_imprimir('<?=$p11_codigo?>')"></td>
          </tr>
-         <?
+         <?php
         }
        ?>
       <tr>
@@ -314,10 +314,10 @@ function js_emite(){
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_confirma(<?=$cllistainscrcab->numrows?>)" >
         </td>
       </tr>
-     <?}?>
+     <?php }?>
     </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

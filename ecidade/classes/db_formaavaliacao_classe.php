@@ -64,13 +64,13 @@ class cl_formaavaliacao {
                  ed37_i_escola = int8 = Escola
                  ";
    //funcao construtor da classe
-   function cl_formaavaliacao() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("formaavaliacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_formaavaliacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed37_i_codigo = ($this->ed37_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed37_i_codigo"]:$this->ed37_i_codigo);
        $this->ed37_c_descr = ($this->ed37_c_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["ed37_c_descr"]:$this->ed37_c_descr);
@@ -95,7 +95,7 @@ class cl_formaavaliacao {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed37_i_codigo){
+   public function incluir ($ed37_i_codigo){
       $this->atualizacampos();
      if($this->ed37_c_descr == null ){
        $this->erro_sql = " Campo Descrição não informado.";

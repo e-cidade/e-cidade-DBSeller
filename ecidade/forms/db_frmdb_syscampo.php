@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cldb_syscampo->rotulo->label();
        <?=@$Lcodcam?>
     </td>
     <td> 
-<?
+<?php
 db_input('codcam',5,$Icodcam,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('codcam',5,$Icodcam,true,'text',$db_opcao,"")
        <?=@$Lnomecam?>
     </td>
     <td> 
-<?
+<?php
 db_input('nomecam',40,$Inomecam,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('nomecam',40,$Inomecam,true,'text',$db_opcao,"")
        <?=@$Lconteudo?>
     </td>
     <td> 
-<?
+<?php
 db_input('conteudo',40,$Iconteudo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('conteudo',40,$Iconteudo,true,'text',$db_opcao,"")
        <?=@$Ldescricao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('descricao',0,0,$Idescricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_textarea('descricao',0,0,$Idescricao,true,'text',$db_opcao,"")
        <?=@$Lvalorinicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('valorinicial',100,$Ivalorinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('valorinicial',100,$Ivalorinicial,true,'text',$db_opcao,"")
        <?=@$Lrotulo?>
     </td>
     <td> 
-<?
+<?php
 db_input('rotulo',50,$Irotulo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('rotulo',50,$Irotulo,true,'text',$db_opcao,"")
        <?=@$Ltamanho?>
     </td>
     <td> 
-<?
+<?php
 db_input('tamanho',4,$Itamanho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -106,7 +106,7 @@ db_input('tamanho',4,$Itamanho,true,'text',$db_opcao,"")
        <?=@$Lnulo?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('nulo',$x,true,$db_opcao,"");
 ?>
@@ -117,7 +117,7 @@ db_select('nulo',$x,true,$db_opcao,"");
        <?=@$Lmaiusculo?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('maiusculo',$x,true,$db_opcao,"");
 ?>
@@ -128,7 +128,7 @@ db_select('maiusculo',$x,true,$db_opcao,"");
        <?=@$Lautocompl?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('autocompl',$x,true,$db_opcao,"");
 ?>
@@ -139,7 +139,7 @@ db_select('autocompl',$x,true,$db_opcao,"");
        <?=@$Laceitatipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('aceitatipo',2,$Iaceitatipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -149,7 +149,7 @@ db_input('aceitatipo',2,$Iaceitatipo,true,'text',$db_opcao,"")
        <?=@$Ltipoobj?>
     </td>
     <td> 
-<?
+<?php
 db_input('tipoobj',20,$Itipoobj,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -159,7 +159,7 @@ db_input('tipoobj',20,$Itipoobj,true,'text',$db_opcao,"")
        <?=@$Lrotulorel?>
     </td>
     <td> 
-<?
+<?php
 db_input('rotulorel',40,$Irotulorel,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -175,7 +175,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_syscampo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

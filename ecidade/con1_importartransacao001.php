@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -59,7 +59,7 @@ if (isset($oGet->lErro)) {
     <form name="form1" action="con1_importartransacao002.php" method="post" enctype="multipart/form-data" onsubmit="return js_validaFormulario();">
         <fieldset style="margin-top:25px;margin-bottom:10px;width:580px;padding-top:10px;padding-bottom:15px;">
             <legend><strong>Importar Transações:</strong></legend>
-            <?
+            <?php
             db_input("arquivoTransacoes", 50, '', true, "file", 4);
             db_input("instituicoes", 50, '', true, "hidden", 3);
             ?>

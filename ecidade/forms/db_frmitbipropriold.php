@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,29 +46,29 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tit20_guia?>">
-       <?
+       <?php
        db_ancora(@$Lit20_guia,"js_pesquisait20_guia(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it20_guia',10,$Iit20_guia,true,'text',3," onchange='js_pesquisait20_guia(false);'")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit20_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lit20_numcgm,"js_pesquisait20_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it20_numcgm',8,$Iit20_numcgm,true,'text',$db_opcao," onchange='js_pesquisait20_numcgm(false);'");
 @$it20_numcgm_old = @$it20_numcgm;
 db_input('it20_numcgm',8,$Iit20_numcgm,true,'hidden',$db_opcao," onchange='js_pesquisait20_numcgm(false);'","it20_numcgm_old")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -78,7 +78,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lit20_pri?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('it20_pri',$x,true,$db_opcao,"");
 ?>
@@ -91,7 +91,7 @@ db_select('it20_pri',$x,true,$db_opcao,"");
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("it20_guia"=>@$it20_guia,"it20_numcgm"=>@$it20_numcgm);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="it20_guia,it20_numcgm,z01_nome,it20_pri";
@@ -162,7 +162,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbipropriold.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

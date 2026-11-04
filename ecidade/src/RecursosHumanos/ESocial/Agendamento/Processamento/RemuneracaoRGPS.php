@@ -33,11 +33,12 @@ use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Repository\RemuneracaoRGPS as RemuneracaoRGPSRepository;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
-use Instituicao;
-use DBPessoal;
 use stdClass;
 use ParameterException;
 use ParametrosPessoalRepository;
+use InstituicaoRepository;
+use ServidorRepository;
+use Exception;
 
 /**
  * Class RemuneracaoRGPS
@@ -103,6 +104,21 @@ class RemuneracaoRGPS extends ProcessamentoAbstract implements ProcessamentoInte
             throw new ParameterException("Nenhuma matrícula informada. Por Favor selecione as matrículas.");
         }
 
+        if (!empty($this->selecao)) {
+            try {
+                $instituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession("DB_instit"));
+
+                $this->servidores = ServidorRepository::getServidoresBySelecao(
+                    $this->ano,
+                    $this->mes,
+                    $this->selecao,
+                    $instituicao->getCodigo()
+                );
+                $this->servidores = array_values($this->servidores);
+            } catch (Exception $e) {
+                throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
+            }
+        }
 
         $dados = new stdClass();
         $dados->indApuracao = (int) $this->getIndicativoPeriodoApuracao();
@@ -139,7 +155,7 @@ class RemuneracaoRGPS extends ProcessamentoAbstract implements ProcessamentoInte
         $dadosPreenchimentoEmpregador = $formatter->formatar((array) $dados);
         $naoEnviados = $formatter->getCgmsNaoEnviados();
         if (!empty($naoEnviados)) {
-            $this->setInconsitencias($formatter->getCgmsNaoEnviados());
+            $this->setInconsitencias($naoEnviados);
         }
         $validaMd5 = true;
         if ($this->envioForcado) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clgrupotaxatipo->rotulo->label("ar38_descricao");
               <?=$Lar38_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ar38_sequencial",10,$Iar38_sequencial,true,"text",4,"","chave_ar38_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clgrupotaxatipo->rotulo->label("ar38_descricao");
               <?=$Lar38_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ar38_descricao",150,$Iar38_descricao,true,"text",4,"","chave_ar38_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clgrupotaxatipo->rotulo->label("ar38_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_grupotaxatipo.php")==true){
@@ -122,12 +122,12 @@ $clgrupotaxatipo->rotulo->label("ar38_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

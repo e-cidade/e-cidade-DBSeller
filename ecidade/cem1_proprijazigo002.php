@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -65,7 +65,7 @@ define("ARQUIVO_MENSAGEM_JAZIGO002", "tributario.cemiterio.cem1_proprijazigo002.
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-     <?
+     <?php
      include(modification("forms/db_frmproprijazigo.php"));
      ?>
     </center>
@@ -74,7 +74,7 @@ define("ARQUIVO_MENSAGEM_JAZIGO002", "tributario.cemiterio.cem1_proprijazigo002.
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clproprijazigo->erro_status=="0"){
 

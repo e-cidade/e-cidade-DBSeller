@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,165 +24,171 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
-include(modification("libs/db_liborcamento.php"));
-include(modification("classes/db_orcelemento_classe.php"));
+require_once (modification("libs/db_stdlib.php"));
+require_once (modification("libs/db_conecta.php"));
+require_once (modification("libs/db_sessoes.php"));
+require_once (modification("libs/db_usuariosonline.php"));
+require_once (modification("libs/db_liborcamento.php"));
+require_once (modification("libs/db_sql.php"));
 
 // pesquisa a conta mae da receita
 
 $tipo_mesini = 1;
 $tipo_mesfim = 1;
 
-include(modification("fpdf151/pdf.php"));
-include(modification("libs/db_sql.php"));
+db_postmemory($_POST);
 
-//parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
-
-$xinstit = split("-",$db_selinstit);
-$resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
+$xinstit = split("-", $db_selinstit);
+$listaInstituicoes = str_replace('-', ', ', $db_selinstit);
+$resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (". $listaInstituicoes .") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
-  db_fieldsmemory($resultinst,$xins);
-  $descr_inst .= $xvirg.$nomeinstabrev ;
-  $xvirg = ', ';
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
+    db_fieldsmemory($resultinst, $xins);
+    $descr_inst .= $xvirg.$nomeinstabrev ;
+    $xvirg = ', ';
 }
-$nivela = substr($nivel,0,1);
-if($nivela == 1)
-   $tipo = 'ÓRGÃO';
-elseif($nivela == 2)
-   $tipo = 'UNIDADE';
-elseif($nivela == 3)
-   $tipo = 'FUNÇÃO';
-elseif($nivela == 4)
-   $tipo = 'SUBFUNÇÃO';
-elseif($nivela == 5)
-   $tipo = 'PROGRAMA';
-elseif($nivela == 6)
-   $tipo = 'PROJ/ATIV';
-elseif($nivela == 7)
-   $tipo = 'ELEMENTO';
-elseif($nivela == 8)
-   $tipo = 'RECURSO';
+$nivela = substr($nivel, 0, 1);
+if ($nivela == 1) {
+    $tipo = 'ÓRGÃO';
+} elseif ($nivela == 2) {
+    $tipo = 'UNIDADE';
+} elseif ($nivela == 3) {
+    $tipo = 'FUNÇÃO';
+} elseif ($nivela == 4) {
+    $tipo = 'SUBFUNÇÃO';
+} elseif ($nivela == 5) {
+    $tipo = 'PROGRAMA';
+} elseif ($nivela == 6) {
+    $tipo = 'PROJ/ATIV';
+} elseif ($nivela == 7) {
+    $tipo = 'ELEMENTO';
+} elseif ($nivela == 8) {
+    $tipo = 'RECURSO';
+}
 
-$head2 = "TOTAL DO ORCAMENTO";
-$head3 = "POR ".$tipo;
-$head4 = "EXERCICIO: ".db_getsession("DB_anousu");
-$head5 = "INSTITUIÇÕES : ".$descr_inst;
+$anousu = db_getsession("DB_anousu");
 
 $clselorcdotacao = new cl_selorcdotacao();
 $clselorcdotacao->setDados($orgaos);
 // passa os parametros vindos da func_selorcdotacao_abas.php
 $sele_work  = $clselorcdotacao->getDados();
-$sele_work .= ' and w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
-//db_criatabela(pg_exec("select * from t"));
-//$result = db_dotacaosaldo($nivela,1,2,true,$sele_work);
-//db_criatabela($result);exit;
+$sele_work .= ' and w.o58_instit in ('. $listaInstituicoes .') ';
 
-if (substr($nivel,1,1) == 'A'){
-   $nivelb = 2;
-}else{
-   $nivelb = 3;
+if (substr($nivel, 1, 1) == 'A') {
+    $nivelb = 2;
+} else {
+    $nivelb = 3;
 }
 
-//echo $nivela."<br>";
-//echo $sele_work;
+$result = db_dotacaosaldo($nivela, $nivelb, 2, true, $sele_work);
 
-$result = db_dotacaosaldo($nivela,$nivelb, 2, true, $sele_work);
+$pdf = new \ECidade\Pdf\Pdf();
+$pdf->init(false);
+$pdf->addTitulo("TOTAL DO ORCAMENTO");
+$pdf->addTitulo("POR ".$tipo);
+$pdf->addTitulo("EXERCICIO: ". $anousu);
+$pdf->addTitulo("INSTITUIÇÕES : ".$descr_inst);
 
-
-//db_criatabela($result);
-//exit;
-
-
-$pdf = new PDF();
-$pdf->Open();
 $pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
-$pdf->setfont('arial','b',8);
+$pdf->setfont('arial', 'b', 8);
 $troca = 1;
 $alt = 4;
 $total = 0;
 
 $pagina = 1;
-for($i=0;$i<pg_numrows($result);$i++){
 
-  db_fieldsmemory($result,$i);
+$wLinha = 192;
+$wValor = 30;
+$wCodigo = 25;
 
-  if($pdf->gety()>$pdf->h-30 || $pagina ==1){
-    $pagina = 0;
-    $pdf->addpage();
-    $pdf->setfont('arial','b',7);
-    $pdf->cell(40,$alt,"CÓDIGO",0,0,"L",0);
-    if(isParaiba() and $nivel == '8B'){
-        $pdf->setx(32);
-        $pdf->cell(60,$alt,"E S P E C I F I C A Ç Ã O",0,0,"L",0);
-        $pdf->setx(175);
-    } else{
-        $pdf->cell(60,$alt,"E S P E C I F I C A Ç Ã O",0,0,"L",0);
+$tamanhoPorNivel = [
+    '6A' => 40,
+    '7A' => 45,
+    '8A' => 50,
+];
+if (array_key_exists($nivel, $tamanhoPorNivel)) {
+    $wCodigo = $tamanhoPorNivel[$nivel];
+}
+
+$wLinha -= $wValor;
+$wLinha -= $wCodigo;
+
+for ($i = 0; $i < pg_num_rows($result); $i++) {
+    db_fieldsmemory($result, $i);
+
+    $dado = db_utils::fieldsMemory($result, $i);
+
+    if ($pdf->gety()>$pdf->getH()-30 || $pagina ==1) {
+        $pagina = 0;
+        $pdf->addpage();
+        $pdf->setfont('arial', 'b', 7);
+
+        $pdf->cell($wCodigo, $alt, "CÓDIGO", 1, 0, "L", 0);
+        $pdf->cell($wLinha, $alt, "E S P E C I F I C A Ç Ã O", 1, 0, "L", 0);
+        $pdf->cell($wValor, $alt, "VALOR ORÇADO", 1, 1, "R", 0);
     }
-    $pdf->cell(25,$alt,"VALOR ORÇADO",0,1,"R",0);
-    $pdf->cell(0,$alt,'',"T",1,"C",0);
-  }
 
-  $o58_valor = $dot_ini;
+    $o58_valor = $dado->dot_ini;
 
-  $codigo = '';
-  if($o58_orgao != 0){
-    $descr = $o40_descr;
-    $codigo .= db_formatar($o58_orgao,'s','0',2,'e');
-  }
-  if($o58_unidade != 0){
-    $descr = $o41_descr;
-    if (substr($nivel,1,1) == 'A' )
-       $codigo .= '.';
-    $codigo .= db_formatar($o58_unidade,'s','0',2,'e');
-  }
-  if($o58_funcao != 0){
-    $descr = $o52_descr;
-    if (substr($nivel,1,1) == 'A' )
-       $codigo .= '.';
-    $codigo .= db_formatar($o58_funcao,'s','0',2,'e');
-  }
-  if($o58_subfuncao != 0){
-    $descr = $o53_descr;
-    if (substr($nivel,1,1) == 'A' )
-       $codigo .= '.';
-    $codigo .= db_formatar($o58_subfuncao,'s','0',4,'e');
-  }
-  if($o58_programa != 0){
-    $descr = $o54_descr;
-    if (substr($nivel,1,1) == 'A')
-       $codigo .= '.';
-    $codigo .= db_formatar($o58_programa,'s','0',2,'e');
-  }
-  if($o58_projativ != 0){
-    $descr = $o55_descr;
-    if (substr($nivel,1,1) == 'A')
-       $codigo .= '.';
-    $codigo .= db_formatar($o58_projativ,'s','0',4,'e');
-  }
-  if($o58_elemento != 0){
-    $descr = $o56_descr;
-    if (substr($nivel,1,1) == 'A')
-       $codigo .= '.';
-    $codigo .= $o58_elemento;
-  }
-  if($o58_codigo != 0 ){
-    $descr = $o15_descr;
-    if (substr($nivel,1,1) == 'A')
-       $codigo .= '.';
-      $codigo_recurso = $o58_codigo;
-      if (db_getsession("DB_anousu") >= 2019) {
-          $recurso = RecursoRepository::getRecursoPorCodigo($o58_codigo);
-          $codigo_recurso = $recurso->getFonteDeRecurso();
-      }
-
-
-      $codigo .= db_formatar($codigo_recurso,'s','0',4,'e');
-  }
+    $descricao = '';
+    $codigo = '';
+    if ($dado->o58_orgao != 0) {
+        $descricao = $dado->o40_descr;
+        $codigo .= db_formatar($dado->o58_orgao, 's', '0', 2, 'e');
+    }
+    if ($dado->o58_unidade != 0) {
+        $descricao = $dado->o41_descr;
+        if (substr($nivel, 1, 1) == 'A') {
+            $codigo .= '.';
+        }
+        $codigo .= db_formatar($dado->o58_unidade, 's', '0', 2, 'e');
+    }
+    if ($dado->o58_funcao != 0) {
+        $descricao = $dado->o52_descr;
+        if (substr($nivel, 1, 1) == 'A') {
+            $codigo .= '.';
+        }
+        $codigo .= db_formatar($dado->o58_funcao, 's', '0', 2, 'e');
+    }
+    if ($dado->o58_subfuncao != 0) {
+        $descricao = $dado->o53_descr;
+        if (substr($nivel, 1, 1) == 'A') {
+            $codigo .= '.';
+        }
+        $codigo .= db_formatar($dado->o58_subfuncao, 's', '0', 4, 'e');
+    }
+    if ($dado->o58_programa != 0) {
+        $descricao = $dado->o54_descr;
+        if (substr($nivel, 1, 1) == 'A') {
+            $codigo .= '.';
+        }
+        $codigo .= db_formatar($dado->o58_programa, 's', '0', 2, 'e');
+    }
+    if ($dado->o58_projativ != 0) {
+        $descricao = $dado->o55_descr;
+        if (substr($nivel, 1, 1) == 'A') {
+            $codigo .= '.';
+        }
+        $codigo .= db_formatar($dado->o58_projativ, 's', '0', 4, 'e');
+    }
+    if ($dado->o58_elemento != 0) {
+        $descricao = $dado->o56_descr;
+        if (substr($nivel, 1, 1) == 'A') {
+            $codigo .= '.';
+        }
+        $codigo .= $dado->o58_elemento;
+    }
+    if ($dado->o58_codigo != 0) {
+        $descricao = $dado->descricao;
+        if (substr($nivel, 1, 1) == 'A') {
+            $codigo .= '.';
+        }
+        $codigo_recurso = $dado->gestao;
+        $codigo .= db_formatar($codigo_recurso, 's', '0', 4, 'e');
+    }
 
  //$tipo_nivel = 7;
  // 1 = orgao
@@ -193,37 +199,19 @@ for($i=0;$i<pg_numrows($result);$i++){
  // 6 = projeto/atividade
  // 7 = elemento
 
-  $pdf->setfont('arial','',6);
+    $pdf->setfont('arial', '', 6);
 
-//  if($tipo_nivel == 7)
-//     $pdf->cell(22,$alt,db_formatar($codigo,'elemento'),0,0,"L",0);
-//  else
-  $pdf->cell(50,$alt,$codigo,0,0,"L",0);
-    if(isParaiba() and $nivel == '8B'){
-        $pdf->setx(32);
-        $pdf->cell(80, $alt, $descr, 0, 0, "L", 0);
-    }
-    else{
-        $pdf->cell(80, $alt, $descr, 0, 0, "L", 0);
-    }
+    $pdf->cell($wCodigo, $alt, $codigo, 0, 0, "L", 0);
+    $pdf->cell($wLinha, $alt, $descricao, 0, 0, "L", 0);
+    $pdf->cell($wValor, $alt, db_formatar($o58_valor, 'f'), 0, 1, "R", 0);
 
-    if(isParaiba() and $nivel == '8B'){
-        $pdf->setx(175);
-    }
-  $pdf->cell(25,$alt,db_formatar($o58_valor,'f'),0,1,"R",0);
-  $total += $o58_valor;
+    $total += $o58_valor;
 }
-$pdf->setfont('arial','b',7);
+$pdf->setfont('arial', 'b', 7);
 $pdf->ln(3);
-if(isParaiba() and $nivel == '8B'){
-    $pdf->setx(110);
-}
-$pdf->cell(110,$alt,'T O T A L',0,0,"C",0);
-if(isParaiba() and $nivel == '8B'){
-    $pdf->setx(175);
-}
-$pdf->cell(25,$alt,db_formatar($total,'f'),0,1,"R",0);
 
-$pdf->Output();
-//include(modification("fpdf151/geraarquivo.php"));
-db_query("commit");
+$pdf->cell(162, $alt, 'T O T A L', 0, 0, "R", 0);
+$pdf->cell(30, $alt, db_formatar($total, 'f'), 0, 1, "R", 0);
+
+$pdf->Output('I');
+

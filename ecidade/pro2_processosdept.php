@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $cl_depto->rotulo->label();
             <tr>
               <td align="center">
                 <b>Opções:</b>
-                  <?
+                  <?php
                     $aCondicoes = array ('com' => 'Com o CGM selecionado', 'sem' => 'Sem o CGM selecionado');
                     db_select('ver',$aCondicoes, true, 1);
                   ?>
@@ -69,7 +69,7 @@ $cl_depto->rotulo->label();
             </tr>
             <tr>
               <td nowrap width="50%">
-								<?
+								<?php
                   $aux->cabecalho      = "<strong>&nbsp;Selecione&nbsp;</strong>";
                   $aux->codigo         = "coddepto"; //chave de retorno da func
                   $aux->descr          = "descrdepto";   //chave de retorno

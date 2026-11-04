@@ -1,0 +1,45 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class M28121AtualizacaoRecursos extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        DB::unprepared(<<<SQL
+insert into orcamento.fontesiconfi values ('503', 'Apoio financeiro da União em decorrência de estado de calamidade pública', 2, 'Controle dos recursos transferidos pela União a título de apoio financeiro com o objetivo de enfrentar situações de calamidade pública e suas consequências sociais e econômicas, como o apoio financeiro decorrente da Medida Provisória nº 1.222, de 21 de maio de 2024.');
+
+update orcamento.fontesiconfi set
+  descricao = 'Transferências da União Referentes às participações na exploração de Petróleo e Gás Natural destinadas ao FEP - Lei 9.478/1997',
+  finalidade = 'Transferências da União referentes às participações na exploração de petróleo, gás natural e outros hidrocarbonetos fluidos, destinadas ao Fundo Especial - FEP, conforme estabelece o art. 50-F da Lei 9.478/97, exceto os recursos obrigatórios para educação e saúde de que trata a Lei 12.858/2013.'
+where codigo_siconfi = '720';
+
+
+update orcamento.fontesiconfi set
+  descricao = 'Transferências da União Referentes a Cessão Onerosa de Petróleo ? Lei nº 13.885/2019',
+  finalidade = 'Controle dos recursos transferidos pela União, provenientes da cessão onerosa à Petróleo Brasileiro S.A. - PETROBRAS, do exercício das atividades de pesquisa e lavra de petróleo, gás natural e outros hidrocarbonetos fluidos, originários dos leilões dos volumes excedentes ao limite a que se refere o § 2º do art. 1º da Lei nº 12.276, conforme estabelecido na Lei nº 13.885/2019.'
+where codigo_siconfi = '721';
+SQL
+        );
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        DB::unprepared(<<<SQL
+delete from orcamento.fontesiconfi where codigo_siconfi = '503';
+SQL
+        );
+    }
+}

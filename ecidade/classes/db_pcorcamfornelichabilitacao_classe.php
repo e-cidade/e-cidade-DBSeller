@@ -53,13 +53,13 @@ class cl_pcorcamfornelichabilitacao {
                  l17_situacao = int4 = Situação 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamfornelichabilitacao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamfornelichabilitacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_pcorcamfornelichabilitacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l17_sequencial = ($this->l17_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["l17_sequencial"]:$this->l17_sequencial);
        $this->l17_pcorcamfornelic = ($this->l17_pcorcamfornelic == ""?@$GLOBALS["HTTP_POST_VARS"]["l17_pcorcamfornelic"]:$this->l17_pcorcamfornelic);
@@ -78,7 +78,7 @@ class cl_pcorcamfornelichabilitacao {
      }
    }
    // funcao para Inclusão
-   function incluir ($l17_sequencial){ 
+   public function incluir ($l17_sequencial){ 
       $this->atualizacampos();
      if($this->l17_pcorcamfornelic == null ){ 
        $this->erro_sql = " Campo Fornecedor não informado.";

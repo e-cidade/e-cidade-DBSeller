@@ -1,4 +1,11 @@
 <?php
+
+use App\Domain\Patrimonial\Protocolo\Controller\DocumentoAndamentoController;
+use App\Domain\Patrimonial\Protocolo\Controller\Processo\ProcessoController;
+use Illuminate\Support\Facades\Route;
+use App\Domain\Patrimonial\Protocolo\Controller\Processo\ProtocoloDocumentoController;
+use App\Domain\Patrimonial\Protocolo\Controller\Processo\TipoDocumentoController;
+
 Route::prefix('processo')->namespace('Processo')->middleware(["auth:api"])->group(function () {
 
     $routePrefix = 'processo';
@@ -15,6 +22,7 @@ Route::prefix('processo')->namespace('Processo')->middleware(["auth:api"])->grou
     Route::post($routePrefix . '/download', $controller . "@download");
     Route::post($routePrefix . '/documentosPorProcesso', $controller . "@documentosPorProcesso");
     Route::post($routePrefix . '/documentosPorProcAndamInt', $controller . "@documentosPorProcAndamInt");
+    Route::post($routePrefix . '/documentosPorNota/{codigo_nota}', $controller . "@documentosPorNota");
 
     /**
      * Andamento padrao
@@ -47,7 +55,6 @@ Route::prefix('processo')->namespace('Processo')->middleware(["auth:api"])->grou
     $controller = $path . "CamposDinamicosController";
     $routePrefixCampoDinamicos = 'andamento-padrao/campos-dinamicos/{codigo_processo}';
     Route::get($routePrefixCampoDinamicos, $controller . "@getByProcessoDepto");
-
 });
 
 Route::group(["middleware" => ["api", "clientCredential"]], function () {
@@ -55,8 +62,15 @@ Route::group(["middleware" => ["api", "clientCredential"]], function () {
 
     Route::get("cgm-cpf-cnpj", "{$path}CgmController@getCgmByCpfCnpj");
     Route::get("cgm", "{$path}CgmController@getByNumcgm");
+    Route::post("pesquisa-geral-cgm", "{$path}CgmController@getByParams");
+    Route::get("rotulos-pesquisa-geral-cgm", "{$path}CgmController@getRotulosPesquisaCgm");
+    //Route::get("cgm/search", "{$path}CgmController@search");
     Route::get("rua-cep", "{$path}ProtocoloController@getRuaByCep");
     Route::get("rua-cep-municipio", "{$path}ProtocoloController@getRuaByCepMunicipio");
+    Route::get("endereco-localidade-cep", "{$path}CgmController@getLocalidadeCep");
+    Route::post("salvar-cgm", "{$path}CgmController@saveCgm");
+    //Route::post("verifica-permissao-cgm", "{$path}CgmController@verificaPermissaoCgm");
+    Route::get("verifica-cgm", "{$path}CgmController@verificaCgm");
 });
 
 Route::group(["middleware" => ["api", "auth:api"]], function () {
@@ -70,18 +84,60 @@ Route::group(["middleware" => ["api", "auth:api"]], function () {
     Route::post('/atividades-execucao/vincular', $path . "@vincularAtividade");
     Route::post('/atividades-execucao/reordenar-vinculos', $path . "@reordenarVinculos");
 
-    $path = "\App\Domain\Patrimonial\Protocolo\Controller\DocumentoAndamentoController";
-    Route::post('/documentos/usuario', $path . "@index");
-    Route::post('/documentos/conferir', $path . "@conferir");
-    Route::post('/documentos/arquivar', $path . "@arquivar");
-    Route::post('/documentos/conferir-em-lote', $path . "@conferirLote");
-    Route::post('/documentos/devolver', $path . "@devolver");
-    Route::post('/documentos/salvar-documento-assinado', $path . "@salvarDocumentoAssinado");
-    Route::post('/documentos/atualizar-documento-assinado', $path . "@atualizarDocumentoAssinado");
-    Route::post('/documentos/atividades-executadas', $path . "@buscarAtividadesExecutadas");
+
+    Route::post('/documentos/usuario', "\\" . DocumentoAndamentoController::class . "@index");
+    Route::get('/documentos/usuario/total', "\\" . DocumentoAndamentoController::class . "@total");
+    Route::post('/documentos/conferir', "\\" . DocumentoAndamentoController::class . "@conferir");
+    Route::post('/documentos/arquivar', "\\" . DocumentoAndamentoController::class . "@arquivar");
+    Route::post('/documentos/conferir-em-lote', "\\" . DocumentoAndamentoController::class . "@conferirLote");
+    Route::post('/documentos/devolver', "\\" . DocumentoAndamentoController::class . "@devolver");
+    Route::post('/documentos/atribuir-permissao', "\\" . DocumentoAndamentoController::class . "@atribuirPermissao");
+    Route::post('/documentos/remover-permissao', "\\" . DocumentoAndamentoController::class . "@removerPermissao");
+    Route::post(
+        '/documentos/substituir-permissao',
+        "\\" . DocumentoAndamentoController::class . "@substituirPermissao"
+    );
+    Route::get(
+        '/documentos/atividade-em-execucao/usuario/{usuario_id?}',
+        "\\" . DocumentoAndamentoController::class . "@usuarioAtividadesEmExcetuacao"
+    );
+    Route::post(
+        '/documentos/atividades-executadas',
+        "\\" . DocumentoAndamentoController::class . "@buscarAtividadesExecutadas"
+    );
+    Route::get(
+        '/documentos/usuario/orgaos',
+        "\\" . DocumentoAndamentoController::class . "@orgaosDoUsuario"
+    );
+    Route::post("documento/", "\\" . ProtocoloDocumentoController::class . "@store");
 });
 
 Route::group(["middleware" => ["api", "clientCredential"]], function () {
     $path = "\App\Domain\Patrimonial\Protocolo\Controller\DocumentoAndamentoController";
     Route::post('/documentos/buscar-por-identificador', $path . "@buscarPorIdentificador");
 });
+
+Route::prefix('processo')
+    ->namespace('Protocolo\Controller\Processo\\')
+    ->middleware(["api", "auth:api"])
+    ->group(function () {
+        Route::get("rotulos", "ProcessoController@rotulosPesquisa");
+        Route::post("getprocesso", "ProcessoController@getProcesso");
+        Route::post("getMensagem", "ProcessoController@getMensagens");
+        Route::post("sendMensagem", "ProcessoController@sendMensagem");
+        Route::post("criarDespacho", "ProcessoController@criarDespacho");
+        Route::post("vincularDespachoMensagem", "ProcessoController@vincularDespachoMensagem");
+        Route::post("getCgmByCpfCnpj", "ProcessoController@getCgmByCpfCnpj");
+        Route::get("despachos-anteriores/{cod_proc}", "AndamentoProcessoController@despachosAnteriores");
+        Route::get("departamentos-instituicao", "AndamentoProcessoController@buscarDepartamentosByInstituicao");
+        Route::get("usuarios-departamento/{cod_departamento}", "AndamentoProcessoController@buscarUsuariosPorDepartamento");
+        //Route::get("buscarProcessos", "ProcessoController@buscarProcessos");
+        //Route::post("processar", "ProcessoController@processar")->middleware('permissaoMenu');
+        Route::get("verifica-solicitacoes-assinatura/{id_andamento}", "AndamentoProcessoController@verificaSolicitacaoAssinatura");
+        //Route::get("instituicoes", "AndamentoProcessoController@buscarInstituicoes");
+        Route::post("transferir", "AndamentoProcessoController@transferir")->middleware('permissaoMenu:229289');
+        Route::post("arquivar", "ProcessoController@arquivar")->middleware('permissaoMenu:229287');
+        //Route::get("presenteDepartamento/{cod_proc}", "ProcessoController@verificaPresencaDepartamento");
+        Route::get("search", "\\". ProcessoController::class."@pesquisaProcesso");
+    }
+);

@@ -1,7 +1,5 @@
-<?
-set_time_limit(0);
+<?php
 if(!defined('DB_BIBLIOT')){
-   session_cache_limiter('none');
    session_start();
    require(modification("libs/db_stdlib.php"));
    require(modification("libs/db_conecta.php"));
@@ -43,12 +41,12 @@ class pdf2 extends fpdf {
     var $TagStyle; // Style for each tag
     var $Indent;
     var $Space; // Minimum space between words
-    var $PileStyle; 
+    var $PileStyle;
     var $Line2Print; // Line to display
-    var $NextLineBegin; // Buffer between lines 
+    var $NextLineBegin; // Buffer between lines
     var $TagName;
     var $Delta; // Maximum width minus width
-    var $StringLength; 
+    var $StringLength;
     var $LineLength;
     var $wTextLine; // Width minus paddings
     var $nbSpace; // Number of spaces in the line
@@ -70,7 +68,7 @@ class pdf2 extends fpdf {
 //global $ender;
 //$ender = pg_result($dados,0,"ender");
 $sql = "select nomeinst,bairro,cgc,trim(ender)||','||trim(cast(numero as text)) as ender,upper(munic) as munic,uf,telef,email,url,logo, db12_extenso
-		from db_config 
+		from db_config
 		inner join db_uf on db12_uf = uf
 		where codigo = ".db_getsession("DB_instit");
 $result = db_query($sql);
@@ -100,7 +98,7 @@ $this->Ln(10);
 $this->SetLeftMargin($S);
 }
 /*
-    
+
     global $conn;
 	global $result;
 	global $url;
@@ -116,26 +114,26 @@ $this->SetLeftMargin($S);
 	if(strlen($nome) > 42)
 	  $TamFonteNome = 8;
 	else
-	  $TamFonteNome = 9;	
+	  $TamFonteNome = 9;
     $this->SetFont('Arial','BI',$TamFonteNome);
     $this->Text(33,9,$nome);
     $this->SetFont('Arial','I',8);
     $this->Text(33,14,trim(pg_result($dados,0,"ender")));
-    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));	
+    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));
     $this->Text(33,22,trim(pg_result($dados,0,"telef")));
     $this->Text(33,26,trim(pg_result($dados,0,"email")));
 	//parametros
         $Espaco = $this->w - 70 ;
-        $this->SetFont('Arial','',8);	
+        $this->SetFont('Arial','',8);
 	$this->Text($Espaco,6,@$GLOBALS["head1"]);
-	$this->Text($Espaco,9,@$GLOBALS["head2"]);	
-	$this->Text($Espaco,12,@$GLOBALS["head3"]);	
-	$this->Text($Espaco,15,@$GLOBALS["head4"]);	
-	$this->Text($Espaco,18,@$GLOBALS["head5"]);	
-	$this->Text($Espaco,21,@$GLOBALS["head6"]);	
-	$this->Text($Espaco,24,@$GLOBALS["head7"]);	
-	$this->Text($Espaco,27,@$GLOBALS["head8"]);	
-	$this->Text($Espaco,30,@$GLOBALS["head9"]);	
+	$this->Text($Espaco,9,@$GLOBALS["head2"]);
+	$this->Text($Espaco,12,@$GLOBALS["head3"]);
+	$this->Text($Espaco,15,@$GLOBALS["head4"]);
+	$this->Text($Espaco,18,@$GLOBALS["head5"]);
+	$this->Text($Espaco,21,@$GLOBALS["head6"]);
+	$this->Text($Espaco,24,@$GLOBALS["head7"]);
+	$this->Text($Espaco,27,@$GLOBALS["head8"]);
+	$this->Text($Espaco,30,@$GLOBALS["head9"]);
 	//$this->Ln(25);
 	$this->SetY(35);
   }
@@ -147,12 +145,12 @@ $this->SetLeftMargin($S);
   $this->SetLeftMargin(10);
   global $url;
     //Position at 1.5 cm from bottom
-    
+
     $this->SetFont('Arial','',5);
     $this->text(10,289,'Base: '.@$GLOBALS["DB_NBASE"]);
     $this->SetFont('Arial','I',8);
     $this->SetY(-10);
-//    $this->Text(10,292.7,$url);	
+//    $this->Text(10,292.7,$url);
 //    $this->Cell(0,10,'página '.$this->PageNo().' de {nb}',"T",0,'C');
     $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
 	$nome = substr($nome,strrpos($nome,"/")+1);
@@ -171,7 +169,7 @@ $this->SetLeftMargin($S);
         $this->wLine=$w;
         $this->hLine=$h;
         $this->Text=trim($txt);
-        $this->Text=ereg_replace("\n|\r|\t","",$this->Text);
+        $this->Text=preg_replace("\n|\r|\t","",$this->Text);
         $this->border=$border;
         $this->align=$align;
         $this->fill=$fill;
@@ -179,7 +177,7 @@ $this->SetLeftMargin($S);
 
         $this->Xini=$this->GetX();
         $this->href="";
-        $this->PileStyle=array();        
+        $this->PileStyle=array();
         $this->TagHref=array();
         $this->LastLine=false;
 
@@ -222,7 +220,7 @@ $this->SetLeftMargin($S);
 
     function Padding()
     {
-        if(ereg("^.+,",$this->Padding)) {
+        if(preg_match("^.+,",$this->Padding)) {
             $tab=explode(",",$this->Padding);
             $this->lPadding=$tab[0];
             $this->tPadding=$tab[1];
@@ -325,13 +323,13 @@ $this->SetLeftMargin($S);
                     break;
                 else
                 {
-                    if(ereg("B",$style1))
+                    if(preg_match("B",$style1))
                         $style['b']="B";
-                    if(ereg("I",$style1))
+                    if(preg_match("I",$style1))
                         $style['i']="I";
-                    if(ereg("U",$style1))
+                    if(preg_match("U",$style1))
                         $style['u']="U";
-                } 
+                }
             }
             $style=$style['b'].$style['i'].$style['u'];
         }
@@ -367,7 +365,7 @@ $this->SetLeftMargin($S);
                 }
             }
         }
-         
+
         // Result
         $this->TagStyle[$ind]['family']=$family;
         $this->TagStyle[$ind]['style']=$style;
@@ -381,19 +379,19 @@ $this->SetLeftMargin($S);
     {
         $tab=array();
         // Closing tag
-        if(ereg("^(</([^>]+)>).*",$text,$regs)) {
+        if(preg_match("^(</([^>]+)>).*",$text,$regs)) {
             $tab[1]="c";
             $tab[2]=trim($regs[2]);
         }
         // Opening tag
-        else if(ereg("^(<([^>]+)>).*",$text,$regs)) {
-            $regs[2]=ereg_replace("^a","a ",$regs[2]);
+        else if(preg_match("^(<([^>]+)>).*",$text,$regs)) {
+            $regs[2]=preg_replace("^a","a ",$regs[2]);
             $tab[1]="o";
             $tab[2]=trim($regs[2]);
 
             // Presence of attributes
-            if(ereg("(.+) (.+)='(.+)' *",$regs[2])) {
-                $tab1=split(" +",$regs[2]);
+            if(preg_match("(.+) (.+)='(.+)' *",$regs[2])) {
+                $tab1= explode(" +",$regs[2]);
                 $tab[2]=trim($tab1[0]);
                 while(list($i,$couple)=each($tab1))
                 {
@@ -408,12 +406,12 @@ $this->SetLeftMargin($S);
             }
         }
          // Space
-         else if(ereg("^( ).*",$text,$regs)) {
+         else if(preg_match("^( ).*",$text,$regs)) {
             $tab[1]="s";
             $tab[2]=$regs[1];
         }
         // Text
-        else if(ereg("^([^< ]+).*",$text,$regs)) {
+        else if(preg_match("^([^< ]+).*",$text,$regs)) {
             $tab[1]="t";
             $tab[2]=trim($regs[1]);
         }
@@ -521,8 +519,8 @@ $this->SetLeftMargin($S);
             $i=0;
         }
         else {
-            ereg("^(( *(<([^>]+)>)* *)*)(.*)",$this->Text,$regs);
-            $regs[1]=ereg_replace(" ", "", $regs[1]);
+            preg_match("^(( *(<([^>]+)>)* *)*)(.*)",$this->Text,$regs);
+            $regs[1]=preg_replace(" ", "", $regs[1]);
             $this->Text=$regs[1].$regs[5];
             $i=-1;
         }
@@ -628,61 +626,59 @@ $this->SetLeftMargin($S);
 
 
 function db_extenso($valor=0, $maiusculas=false) {
- 
+
     $rt = '';
-    $singular = array("centavo", "real", "mil", "milhão", "bilhão", "trilhão", "quatrilhão"); 
-    $plural = array("centavos", "reais", "mil", "milhões", "bilhões", "trilhões", 
-"quatrilhões"); 
+    $singular = array("centavo", "real", "mil", "milhão", "bilhão", "trilhão", "quatrilhão");
+    $plural = array("centavos", "reais", "mil", "milhões", "bilhões", "trilhões",
+"quatrilhões");
 
-    $c = array("", "cem", "duzentos", "trezentos", "quatrocentos", 
-"quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"); 
-    $d = array("", "dez", "vinte", "trinta", "quarenta", "cinquenta", 
-"sessenta", "setenta", "oitenta", "noventa"); 
-    $d10 = array("dez", "onze", "doze", "treze", "quatorze", "quinze", 
-"dezesseis", "dezesete", "dezoito", "dezenove"); 
-    $u = array("", "um", "dois", "três", "quatro", "cinco", "seis", 
-"sete", "oito", "nove"); 
+    $c = array("", "cem", "duzentos", "trezentos", "quatrocentos",
+"quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos");
+    $d = array("", "dez", "vinte", "trinta", "quarenta", "cinquenta",
+"sessenta", "setenta", "oitenta", "noventa");
+    $d10 = array("dez", "onze", "doze", "treze", "quatorze", "quinze",
+"dezesseis", "dezesete", "dezoito", "dezenove");
+    $u = array("", "um", "dois", "três", "quatro", "cinco", "seis",
+"sete", "oito", "nove");
 
-    $z=0; 
+    $z=0;
 
-    $valor = number_format($valor, 2, ".", "."); 
-    $inteiro = explode(".", $valor); 
-    for($i=0;$i<count($inteiro);$i++) 
-        for($ii=strlen($inteiro[$i]);$ii<3;$ii++) 
-            $inteiro[$i] = "0".$inteiro[$i]; 
+    $valor = number_format($valor, 2, ".", ".");
+    $inteiro = explode(".", $valor);
+    for($i=0;$i<count($inteiro);$i++)
+        for($ii=strlen($inteiro[$i]);$ii<3;$ii++)
+            $inteiro[$i] = "0".$inteiro[$i];
 
-    $fim = count($inteiro) - ($inteiro[count($inteiro)-1] > 0 ? 1 : 2); 
-    for ($i=0;$i<count($inteiro);$i++) { 
-        $valor = $inteiro[$i]; 
-        $rc = (($valor > 100) && ($valor < 200)) ? "cento" : $c[$valor[0]]; 
-        $rd = ($valor[1] < 2) ? "" : $d[$valor[1]]; 
-        $ru = ($valor > 0) ? (($valor[1] == 1) ? $d10[$valor[2]] : $u[$valor[2]]) : ""; 
+    $fim = count($inteiro) - ($inteiro[count($inteiro)-1] > 0 ? 1 : 2);
+    for ($i=0;$i<count($inteiro);$i++) {
+        $valor = $inteiro[$i];
+        $rc = (($valor > 100) && ($valor < 200)) ? "cento" : $c[$valor[0]];
+        $rd = ($valor[1] < 2) ? "" : $d[$valor[1]];
+        $ru = ($valor > 0) ? (($valor[1] == 1) ? $d10[$valor[2]] : $u[$valor[2]]) : "";
 
-        $r = $rc.(($rc && ($rd || $ru)) ? " e " : "").$rd.(($rd && 
-$ru) ? " e " : "").$ru; 
-        $t = count($inteiro)-1-$i; 
-        $r .= $r ? " ".($valor > 1 ? $plural[$t] : $singular[$t]) : ""; 
-        if ($valor == "000")$z++; elseif ($z > 0) $z--; 
-        if (($t==1) && ($z>0) && ($inteiro[0] > 0)) $r .= (($z>1) ? " de " : "").$plural[$t]; 
+        $r = $rc.(($rc && ($rd || $ru)) ? " e " : "").$rd.(($rd &&
+$ru) ? " e " : "").$ru;
+        $t = count($inteiro)-1-$i;
+        $r .= $r ? " ".($valor > 1 ? $plural[$t] : $singular[$t]) : "";
+        if ($valor == "000")$z++; elseif ($z > 0) $z--;
+        if (($t==1) && ($z>0) && ($inteiro[0] > 0)) $r .= (($z>1) ? " de " : "").$plural[$t];
 //        $rt = '';
-        if ($r) $rt = $rt . ((($i > 0) && ($i <= $fim) && 
-($inteiro[0] > 0) && ($z < 1)) ? ( ($i < $fim) ? ", " : " e ") : " ") . $r; 
-    } 
+        if ($r) $rt = $rt . ((($i > 0) && ($i <= $fim) &&
+($inteiro[0] > 0) && ($z < 1)) ? ( ($i < $fim) ? ", " : " e ") : " ") . $r;
+    }
 
-         if(!$maiusculas){ 
-                          return($rt ? $rt : "zero"); 
+         if(!$maiusculas){
+                          return($rt ? $rt : "zero");
          } else { /*
-	                 Trocando o " E " por " e ", fica muito + apresentável! 
+	                 Trocando o " E " por " e ", fica muito + apresentável!
                      Rodrigo Cerqueira, rodrigobc@fte.com.br
                     */
-			  if ($rt) $rt=ereg_replace(" E "," e ",ucwords($rt));
-                          return (($rt) ? ($rt) : "Zero"); 
-         } 
+			  if ($rt) $rt=preg_replace(" E "," e ",ucwords($rt));
+                          return (($rt) ? ($rt) : "Zero");
+         }
 
-} 
+}
 
 
 
 }
-
-?>

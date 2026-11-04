@@ -43,7 +43,7 @@ if (isset($alterar)) {
     db_fim_transacao();
 } elseif (isset($chavepesquisa)) {
     $db_opcao = 2;
-    $result = $clorctiporecconvenio->sql_record($clorctiporecconvenio->sql_query($chavepesquisa));
+    $result = $clorctiporecconvenio->sql_record($clorctiporecconvenio->sql_query_fonterecurso($chavepesquisa));
     db_fieldsmemory($result, 0);
     $db_botao = true;
 }

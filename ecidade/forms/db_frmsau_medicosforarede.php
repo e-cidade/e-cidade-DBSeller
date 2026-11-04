@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $oRotulo->label("rh70_estrutural");
       <?=@$Ls154_i_codigo?>
     </td>
     <td>
-      <?
+      <?php
       db_input('s154_i_codigo', 10, $Is154_i_codigo, true, 'text', 3, "");
       db_input('lBotao', 10, '', true, 'hidden', 3, "");
       ?>
@@ -51,12 +51,12 @@ $oRotulo->label("rh70_estrutural");
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts154_i_medico?>">
-      <?
+      <?php
       db_ancora(@$Ls154_i_medico, "js_pesquisas154_i_medico(true);", 3);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('s154_i_medico', 15, $Is154_i_medico, true, 'text', 3, '');
       ?>
     </td>
@@ -66,7 +66,7 @@ $oRotulo->label("rh70_estrutural");
       <?=@$Ls154_c_nome?>
     </td>
     <td>
-      <?
+      <?php
       if (isset($s154_c_nome)) {
 
         $aOrig = array('á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç');
@@ -83,7 +83,7 @@ $oRotulo->label("rh70_estrutural");
       <?=$Lsd03_i_crm?>
     </td>
     <td>
-      <?
+      <?php
       db_input('sd03_i_crm', 15, $Isd03_i_crm, true, 'text', $db_opcao, '');
       ?>
     </td>
@@ -93,19 +93,19 @@ $oRotulo->label("rh70_estrutural");
       <?=@$Ls154_c_cns?>
     </td>
     <td>
-      <?
+      <?php
       db_input('s154_c_cns', 15, $Is154_c_cns, true, 'text', $db_opcao, "");
       ?>
     </td>
   </tr>
   <tr id="tipo_consulta">
 		<td nowrap title="<?=@$Trh70_sequencial?>">
-				<?
+				<?php
 				db_ancora ( 'CBO:', "js_pesquisasd27_i_rhcbo(true);", 1 );
 				?>
 		</td>
 		<td>
-				<?
+				<?php
 				db_input ( 'rh70_estrutural',5,$Irh70_estrutural,true,'text',$db_opcao,"onChange='js_pesquisasd27_i_rhcbo(false);'");
 				db_input ( 's154_rhcbo',5,null,true,'hidden',3,"");
 				db_input ( 'rh70_descr', 40, @$Irh70_descr, true, 'text', 3 );
@@ -119,15 +119,15 @@ $oRotulo->label("rh70_estrutural");
   value="<?=($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir"))?>"
   <?=($db_botao == false ? "disabled" : "")?>
   <?=($db_opcao != 3 ? 'onclick="return js_validaEnvio();"' : '')?>>
-<?
+<?php
 if (isset($lBotao) && $lBotao == 'true') {
 ?>
   <input name="fechar" type="button" id="fechar" value="Fechar" onclick="parent.db_iframe_cadprof.hide();">
-<?
+<?php
 } else {
 ?>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-<?
+<?php
 }
 ?>
 </form>
@@ -196,7 +196,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_sau_medicosforarede.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

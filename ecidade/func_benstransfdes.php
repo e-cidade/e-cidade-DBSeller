@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clbenstransfdes->rotulo->label("t94_depart");
               <?=$Lt94_codtran?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t94_codtran",10,$It94_codtran,true,"text",4,"","chave_t94_codtran");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clbenstransfdes->rotulo->label("t94_depart");
               <?=$Lt94_depart?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t94_depart",5,$It94_depart,true,"text",4,"","chave_t94_depart");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clbenstransfdes->rotulo->label("t94_depart");
               <?=$Lt94_depart?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t94_depart",5,$It94_depart,true,"text",4,"","chave_t94_depart");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clbenstransfdes->rotulo->label("t94_depart");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benstransfdes.php")==true){
@@ -129,12 +129,12 @@ $clbenstransfdes->rotulo->label("t94_depart");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -129,6 +129,13 @@ class CessaoExercicioFormatter extends Formatter
             ->scopeMatricula($this->servidorAtual->getMatricula())
             ->first();
 
+        $codigoSequencialEndereco = $this->servidorAtual->getCgm()->getEnderecoPrimario();
+        if (!is_numeric($codigoSequencialEndereco)) {
+            $matricula = $this->servidorAtual->getMatricula();
+            $nome = $this->servidorAtual->getCgm()->getNome();
+            throw new \Exception("Nenhum endereço encontrado para o servidor {$matricula}-{$nome}. Favor revisar.");
+        }
+
         $servidorService = new ServidorService($this->servidorAtual, $servidorMovimentacaoModel, $dadoServidor);
         $servidorEntity = $servidorService->buscarDadosServidor();
 
@@ -156,6 +163,9 @@ class CessaoExercicioFormatter extends Formatter
         $dadosPessoaisServidor = $servidorEntity->getDadosTrabalhador();
 
         $dadoServidor->ideVinculo['matricula'] = $dadosVinculo['matricula'];
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $dadoServidor->ideVinculo['matricula'] = $this->servidorAtual->getMatriculaAnterior();
+        }
         $dadoServidor->ideVinculo['cpfTrab'] = $dadosPessoaisServidor['cpfTrab'];
 
         $dadoServidor->infoCessao = [];

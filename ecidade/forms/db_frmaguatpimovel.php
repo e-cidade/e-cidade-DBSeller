@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $claguatpimovel->rotulo->label();
        <?=@$Lx07_codtpimovel?>
     </td>
     <td> 
-<?
+<?php
 db_input('x07_codtpimovel',4,$Ix07_codtpimovel,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('x07_codtpimovel',4,$Ix07_codtpimovel,true,'text',3,"")
        <?=@$Lx07_nometpimovel?>
     </td>
     <td> 
-<?
+<?php
 db_input('x07_nometpimovel',50,$Ix07_nometpimovel,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguatpimovel.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

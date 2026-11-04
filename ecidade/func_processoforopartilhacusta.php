@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
               <?=$Lv77_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v77_sequencial",10,$Iv77_sequencial,true,"text",4,"","chave_v77_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
               <?=$Lv77_processoforopartilha?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v77_processoforopartilha",10,$Iv77_processoforopartilha,true,"text",4,"","chave_v77_processoforopartilha");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_processoforopartilhacusta.php")==true){
@@ -122,12 +122,12 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

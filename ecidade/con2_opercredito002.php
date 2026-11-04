@@ -1,33 +1,33 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 if (!isset($arqinclude)){
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -35,13 +35,13 @@ if (!isset($arqinclude)){
   include(modification("libs/db_liborcamento.php"));
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
-  
+
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
-  
+
 }
 
 include_once(modification("classes/db_conrelinfo_classe.php"));
@@ -50,7 +50,7 @@ include_once(modification("classes/db_conrelvalor_classe.php"));
 $clconrelinfo  = new cl_conrelinfo;
 $clconrelvalor = new cl_conrelvalor;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -81,10 +81,10 @@ $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $period = '';
 if ($periodo=="1Q"){
   $period = '1º QUADRIMESTRE';
-}elseif($periodo=="2Q"){  
-  $period = '2º QUADRIMESTRE'; 
-}elseif($periodo=="3Q"){  
-  $period = '3º QUADRIMESTRE'; 
+}elseif($periodo=="2Q"){
+  $period = '2º QUADRIMESTRE';
+}elseif($periodo=="3Q"){
+  $period = '3º QUADRIMESTRE';
 }elseif($periodo=="1S"){
   $period = '1º SEMESTRE';
 }elseif($periodo=="2S"){
@@ -117,12 +117,12 @@ $dt_ini   = $dt[0];  // data inicial do periodo
 $dt_fim   = $dt[1];  // data final do período
 
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fim);  // mktime -- (mes,dia,ano)
+$dt =explode('-',$dt_fim);  // mktime -- (mes,dia,ano)
 //$dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-364,$dt[0]));
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]-11,"01",$dt[0]));
 $dt_fim_ant = $anousu_ant.'-12-31';
 
-$where     = "  c61_instit in (".str_replace('-',', ',$db_selinstit).")   "; 
+$where     = "  c61_instit in (".str_replace('-',', ',$db_selinstit).")   ";
 $resultado = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fim,false,$where);
 @db_query("drop table work_pl");
 
@@ -135,11 +135,11 @@ for($i=0;$i< pg_numrows($resultado);$i++) {
   if (in_array($estrutural,$parametro[0])){
     $valor1[1] += $saldo_final;
   }
-  
+
   if (in_array($estrutural,$parametro[1])){
     $valor1[2] += $saldo_final;
   }
-  
+
   if (in_array($estrutural,$parametro[2])){
     $valor1[3] += $saldo_final;
   }
@@ -172,10 +172,10 @@ $texto[9] = "LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FEDERAL PARA AS OPERAÇÕES D
 $texto[10] = '';
 
 if (!isset($arqinclude)){
-  
-  $pdf = new PDF(); 
-  $pdf->Open(); 
-  $pdf->AliasNbPages(); 
+
+  $pdf = new PDF();
+  $pdf->Open();
+  $pdf->AliasNbPages();
   $pdf->setfillcolor(235);
   $pdf->setfont('arial','b',7);
   $alt            = 4;
@@ -187,15 +187,15 @@ if (!isset($arqinclude)){
   $pdf->cell(145,$alt,"EMPRÉSTIMOS E FINANCIAMENTOS",'R',0,"C",0);
   $pdf->cell(40,$alt,"OPERAÇÕES REALIZADAS",'',1,"C",0);
   $pdf->cell(145,$alt,"",'RB',0,"R",0);
-  
+
   if ($periodo!="1S"&&$periodo!="2S"){
     $period = "Quadrimestre";
   }else{
     $period = "Semestre";
   }
-  
+
   $pdf->cell(40,$alt,"Até o $period",'B',1,"C",0);
-  
+
   $pdf->setfont('arial','',6);
   $d = 0;
   $pdf->cell(145,$alt,$texto[0],'R',0,"L",0);
@@ -210,7 +210,7 @@ if (!isset($arqinclude)){
       $pdf->cell(40,$alt,db_formatar($saldo_final,'f'),'',1,"R",0);
     }
   }
-  
+
   $pdf->cell(145,$alt,$texto[2],'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($valor1[2], 'f'),'',1,"R",0);
   for($x=0;$x < pg_numrows($resultado);$x++) {
@@ -226,15 +226,15 @@ if (!isset($arqinclude)){
     $pdf->cell(145,$alt,$texto[$x],'TBR',0,"L",0);
     $pdf->cell(40,$alt,db_formatar($valor1[$x],'f'),'TB',1,"R",0);
   }
-  
+
   // assinaturas
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
-  
-  assinaturas(&$pdf,&$classinatura,'GF');
-  
+
+  assinaturas($pdf,$classinatura,'GF');
+
   $pdf->Output();
-  
+
 }
 
 $total_operacoes_credito				= $valor1[4];
@@ -256,11 +256,11 @@ if ($clconrelinfo->numrows > 0){
     if ($clconrelvalor->numrows > 0){
       db_fieldsmemory($res_valor,0);
       if ($c83_codigo == 297){
-        $valor_int_ext = $c83_informacao;  
+        $valor_int_ext = $c83_informacao;
       }
 
       if ($c83_codigo == 298){
-        $valor_antecipacao = $c83_informacao;  
+        $valor_antecipacao = $c83_informacao;
       }
     }
   }

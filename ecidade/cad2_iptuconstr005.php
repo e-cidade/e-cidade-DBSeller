@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
       $cliframe_seleciona->campos  = "j30_codi,j30_descr";
       $cliframe_seleciona->legenda="SETOR";
       $cliframe_seleciona->sql=$clsetor->sql_query(""," * ");

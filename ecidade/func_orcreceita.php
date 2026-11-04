@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -41,6 +41,12 @@ $clorcreceita->rotulo->label("o70_codrec");
 $clorcreceita->rotulo->label("o70_codfon");
 $clorcfontes->rotulo->label("o57_fonte");
 $clorcfontes->rotulo->label("o57_descr");
+
+$estrutural = false;
+
+if (isset($pesquisa_estrutural)) {
+    $estrutural = true;
+}
 
 $where = [];
 if (isset($lReceitaLancada)) {
@@ -105,7 +111,7 @@ $where[] = "o70_instit = " . db_getsession("DB_instit");
         <td align="center" valign="top">
             <?php
 
-            if (!isset($pesquisa_chave)) {
+            if (!isset($pesquisa_chave) && !$estrutural) {
                 if (isset($campos) == false) {
                     if (file_exists("funcoes/db_func_orcreceita.php") == true) {
                         include(modification("funcoes/db_func_orcreceita.php"));
@@ -132,6 +138,9 @@ $where[] = "o70_instit = " . db_getsession("DB_instit");
                     $where[] = "o70_codrec = {$pesquisa_chave}";
                     $where = implode(' and ', $where);
                     $sql = $clorcreceita->sql_query(null, null, "*", null, $where);
+                    if (isset($o50_estrutreceita) && (trim($o50_estrutreceita) != "")) {
+                        $sql = "select * from ({$sql}) as x where o50_estrutreceita  = '{$o50_estrutreceita}'";
+                    }
                     $result = $clorcreceita->sql_record($sql);
                     if ($clorcreceita->numrows != 0) {
                         db_fieldsmemory($result, 0);
@@ -140,7 +149,37 @@ $where[] = "o70_instit = " . db_getsession("DB_instit");
                         echo "<script>" . $funcao_js . "('Chave(" . $pesquisa_chave . ") não Encontrado',true);</script>";
                     }
                 } else {
-                    echo "<script>" . $funcao_js . "('',false);</script>";
+                    if ($estrutural) {
+                        $campos = "
+                            orcreceita.o70_codrec,
+                            fc_estruturalreceita(" . db_getsession("DB_anousu") . ",orcreceita.o70_codrec) as o50_estrutreceita,
+                            o57_descr,
+                            c58_descr as DL_Caracteristica_Peculiar,
+                            o15_recurso,
+                            o15_descr,
+                            orcreceita.o70_valor,
+                            orcreceita.o70_reclan,
+                            nomeinst,
+                            orcreceita.o70_anousu as db_o70_anousu,
+                            o57_fonte as db_o57_fonte,
+                            o57_descr as db_o57_descr
+                        ";
+                        $where = implode(' and ', $where);
+                        $sql = $clorcreceita->sql_query(null, null, $campos, null, $where);
+                        if (isset($o50_estrutreceita) && (trim($o50_estrutreceita) != "")) {
+                            $sql = "select * from ({$sql}) as x where o50_estrutreceita  = '{$o50_estrutreceita}'";
+                        }
+
+                        $result = $clorcreceita->sql_record($sql);
+                        if ($clorcreceita->numrows != 0) {
+                            db_fieldsmemory($result, 0);
+                            echo "<script>" . $funcao_js . "('$o57_descr',false);</script>";
+                        } else {
+                            echo "<script>" . $funcao_js . "('Estrutural (" . $o50_estrutreceita . ") não Encontrado',true);</script>";
+                        }   
+                    } else {
+                        echo "<script>" . $funcao_js . "('',false);</script>";
+                    }
                 }
             }
             ?>
@@ -149,12 +188,12 @@ $where[] = "o70_instit = " . db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
     </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

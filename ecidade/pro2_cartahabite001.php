@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,12 +66,12 @@ $iTipoRelatorio = $oParametros->ob21_tipocartahabite;
       <table class="form-contianer">
         <tr> 
           <td nowrap title="<?=@$Tob09_codhab?>">
-            <?
+            <?php
               db_ancora(@$Lob09_codhab, "js_pesquisaob09_codhab(true);", 4);
             ?>
           </td>
           <td> 
-          <?
+          <?php
             db_input('ob09_codhab', 10, $Iob09_codhab, true, 'text', 4, " onchange='js_pesquisaob09_codhab(false);'");
             db_input('ob01_nomeobra', 40, $Iob01_nomeobra, true, 'text', 3);                                   
           ?>
@@ -81,7 +81,7 @@ $iTipoRelatorio = $oParametros->ob21_tipocartahabite;
     </fieldset>
     <input name="exibir_relatorio" type="button" id="exibir_relatorio" value="Exibir relat&oacute;rio" onClick="js_AbreJanelaRelatorio(<?=$iTipoRelatorio; ?>);"></td>
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

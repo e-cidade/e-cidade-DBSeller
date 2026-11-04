@@ -83,8 +83,6 @@ $parametros = JSON::requestParameters();
         <?php db_menu(); ?>
         <script type='text/javascript'>
             var sUrlRPC = 'eso02_situacaoevento001.RPC.php';
-            var selectEmpregador = document.getElementById('empregador');
-            var selectContribuinte = document.getElementById('contribuinte');
             var dadosGrid;
 
             var iHeight = js_round((window.innerHeight / 2), 0);
@@ -193,6 +191,48 @@ $parametros = JSON::requestParameters();
                 );
             }
 
+            function exibeDados(codigoEnvio) {
+                var dadoJson = null;
+                for (var dado of dadosGrid.dados) {
+                    if (dado.codigoEnvio == codigoEnvio) {
+                        dadoJson = dado;
+                    }
+                }
+
+                var dado =  JSON.parse(dadoJson.dados);
+                delete dado[`inscricao_empregador`];
+                delete dado[`referencia`];
+                var texto = syntaxHighlight(dado);
+                js_divCarregando('Buscando os dados de enviados.', 'msgbox');
+                windowAuxEsocial.setTitle('Dados Processados para envio.');
+                windowAuxEsocial.setContent(texto);
+                js_removeObj('msgbox');
+
+                windowAuxEsocial.show();
+            }
+
+            function syntaxHighlight(json) {
+                if (typeof json != 'string') {
+                    json = JSON.stringify(json, undefined, 2);
+                }
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return '<pre>' + json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                }) + '</pre>';
+            }
+
             function consultaOcorrencias(evento, responsavelPreenchimento, codigo) {
                 var oParam = {};
                 oParam.exec = 'consultaOcorrencias';
@@ -227,6 +267,7 @@ $parametros = JSON::requestParameters();
                 oParam.exec = 'consultaRecibos';
                 oParam.aFiltros = {};
                 oParam.aFiltros.idEvento = evento;
+                oParam.aFiltros.tipoEvento = integracao;
                 oParam.aFiltros.idReferencia = responsavelPreenchimento;
 
                 if (integracao === EFD_REINF) {
@@ -447,7 +488,8 @@ $parametros = JSON::requestParameters();
                 return [
                     '<a href="#" onclick="consultaStatus(\'' + row.evento+'\',\'' + row.responsavelPreenchimento + '\')" title="Consultar" style="margin-right: 10px;"><i class="fas fa-eye"></i></a>',
                     '<a href="#" onclick="consultaOcorrencias(\'' + row.evento+'\',\'' + row.responsavelPreenchimento + '\',\'' + row.codigo + '\')" title="Ocorrências" style="margin-right: 10px; color: red"><i class="fas fa-exclamation-triangle"></i></a>',
-                    '<a href="#" onclick="consultaRecibos(\'' + row.evento+'\',\'' + row.responsavelPreenchimento + '\')" title="Recibo" style="margin-right: 10px; color: green"><i class="fas fa-ticket-alt"></i></a>'
+                    '<a href="#" onclick="consultaRecibos(\'' + row.evento+'\',\'' + row.responsavelPreenchimento + '\')" title="Recibo" style="margin-right: 10px; color: green"><i class="fas fa-ticket-alt"></i></a>',
+                    '<a href="#" onclick="exibeDados(' + row.codigoEnvio + ')" title="Dados Processados" ><i class="fas fa-file-alt" style="color: blue"></i></a>'
                 ].join('');
             }
             window.operateEvents = {
@@ -464,7 +506,6 @@ $parametros = JSON::requestParameters();
 
             $.noConflict();
             jQuery(document).ready(function($) {
-
                 table.bootstrapTable({
                     columns : colunas,
                     uniqueId :"codigo",

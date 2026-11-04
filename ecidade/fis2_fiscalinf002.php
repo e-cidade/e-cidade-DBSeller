@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("libs/db_sql.php"));
@@ -56,7 +56,7 @@ if ($clfiscal->numrows>0){
 $identificacao = (trim($z01_nomecomple) != ''?$z01_nomecomple:$z01_nome);
 $cpf           = $z01_cgccpf;
 $hora          = $y30_hora;
-$arr_data      = split("/",$y30_data);
+$arr_data      =explode("/",$y30_data);
 $dia           = $arr_data[0];
 $mes           = db_mes($arr_data[1]);
 $ano           = $arr_data[2];
@@ -72,7 +72,7 @@ $result_fiscais=$clfiscalusuario->sql_record($clfiscalusuario->sql_query($codfis
 for($w=0;$w<$clfiscalusuario->numrows;$w++){
 	db_fieldsmemory($result_fiscais,$w,true);
 	$fiscal .= $vir.$nome_fiscal;
-	$vir = ", ";	
+	$vir = ", ";
 }
 //---------------------------------------------------------------------------------------
 
@@ -111,7 +111,7 @@ if ($clfiscalocal->numrows>0){
 	$ruacodigo   = $j14_codigo . " - " . $j14_nome;
 	$bairro      = $j13_descr;
 	$complemento = $y12_compl;
-	$numero      = $y12_numero;	
+	$numero      = $y12_numero;
 }
 
 $bql   = "";
@@ -130,7 +130,7 @@ $sqlhead = "select db02_texto
 			    	inner join db_docparag on db03_docum = db04_docum
         			inner join db_tipodoc on db08_codigo  = db03_tipodoc
 		     		inner join db_paragrafo on db04_idparag = db02_idparag
-			 where db03_tipodoc = 1017 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";			 
+			 where db03_tipodoc = 1017 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
 $reshead = db_query($sqlhead);
 
 if ( pg_numrows($reshead) == 0 ) {
@@ -140,9 +140,9 @@ if ( pg_numrows($reshead) == 0 ) {
      db_fieldsmemory( $reshead, 0 , true);
      $head1 = $db02_texto;
 }
-$pdf = new PDF1(); 
+$pdf = new PDF1();
 $pdf->Open();
-$pdf->AliasNbPages(); 
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->Addpage();
 $pdf->setfont('arial','b',8);

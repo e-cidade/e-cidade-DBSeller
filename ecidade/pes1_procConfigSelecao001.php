@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -209,7 +209,7 @@ db_postmemory($HTTP_GET_VARS,0)
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
    
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/dbtextField.widget.js");
       db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js, widgets/dbtextField.widget.js");
       db_app::load("widgets/dbcomboBox.widget.js, estilos.css, grid.style.css");
@@ -227,7 +227,7 @@ db_postmemory($HTTP_GET_VARS,0)
       <tr>
         <td width="100"><b>Tipo de Filtro:</b></td>
         <td colspan="2">
-          <?
+          <?php
             $aTipoFiltros = array("0" => "Selecione um Filtro", "1" => "Intervalo", "2" => "Selecionados");
             db_select("sTipoFiltro", $aTipoFiltros, true, 1, "style='width: 210px'");
           ?>
@@ -238,14 +238,14 @@ db_postmemory($HTTP_GET_VARS,0)
       <!-- MATRICULA POR INTERVALO -->
       <tr id="matriculaIntervalo" style="display:<?=$sDispMatricInter;?>;">
         <td align="center"  width="100">
-          <?
+          <?php
             echo "<b>"; 
             db_ancora("Matrícula", "js_buscaMatricula('ini', true)", 1);
             echo "</b>&nbsp;&nbsp;";
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input("iRegistIni", 10, 1, true, "text", 1, "onchange=\"js_buscaMatricula('ini', false);\"");
             echo "</b>&nbsp;&nbsp;<b>";
             db_ancora("à", "js_buscaMatricula('fim', true)", 1);
@@ -257,7 +257,7 @@ db_postmemory($HTTP_GET_VARS,0)
       <!-- MATRICULA POR SELEÇÃO -->
       <tr id="matriculaSelecionadosTR">
         <table id="matriculaSelecionados" style="display:<?=$sDispMatricSelec;?>;" width="100%">
-          <?
+          <?php
             $oFormRhMatricula->funcao_gera_formulario();
           ?>
         </table>
@@ -268,14 +268,14 @@ db_postmemory($HTTP_GET_VARS,0)
       <tr id="lotacaoIntervalo" style="display:<?=$sDispLotacInter;?>;">
       <!-- LOTAÇÃO POR INTERVALO -->
         <td align="center" width="100">
-          <?
+          <?php
             echo "<b>"; 
             db_ancora("Lotação", "js_buscaLotacao('ini', true)", 1);
             echo "</b>&nbsp;&nbsp;";
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input("iLotacIni", 10, 1, true, "text", 1, "onchange=\"js_buscaLotacao('ini', false);\"");
             echo "</b>&nbsp;&nbsp;<b>";
             db_ancora("à", "js_buscaLotacao('fim', true)", 1);
@@ -287,7 +287,7 @@ db_postmemory($HTTP_GET_VARS,0)
       <!-- LOTAÇÃO POR SELEÇÃO -->
       <tr id="lotacaoSelecionadosTR">
         <table id="lotacaoSelecionados" style="display:<?=$sDispLotacSelec;?>;" width="100%">
-          <?
+          <?php
             $oFormRhLotacao->funcao_gera_formulario();
           ?>
         </table>
@@ -298,14 +298,14 @@ db_postmemory($HTTP_GET_VARS,0)
       <tr id="cargoIntervalo" style="display:<?=$sDispCargoInter;?>;">
       <!-- CARGO POR INTERVALO -->
         <td align="center" width="100">
-          <?
+          <?php
             echo "<b>"; 
             db_ancora("Cargo", "js_buscaCargo('ini', true)", 1);
             echo "</b>&nbsp;&nbsp;";
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input("iCargoIni", 10, 1, true, "text", 1, "onchange=\"js_buscaCargo('ini', false);\"");
             echo "</b>&nbsp;&nbsp;<b>";
             db_ancora("à", "js_buscaCargo('fim', true)", 1);
@@ -317,7 +317,7 @@ db_postmemory($HTTP_GET_VARS,0)
       <!-- CARGO POR SELEÇÃO -->
       <tr id="cargoSelecionadosTR">
         <table id="cargoSelecionados" style="display:<?=$sDispCargoSelec;?>;" width="100%">
-          <?
+          <?php
             $oFormRhCargo->funcao_gera_formulario();
           ?>
         </table>
@@ -736,7 +736,7 @@ db_postmemory($HTTP_GET_VARS,0)
 </script>
 
 
-<?
+<?php
 
 /**
  * PREENCHE DADOS DO COMPONENTE MONTADO COM A CLASSE cl_arquivoauxiliar()

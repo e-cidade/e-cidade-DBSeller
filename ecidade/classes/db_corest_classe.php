@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,13 +64,13 @@ class cl_corest {
                  k12_id_ant = int4 = Terminal da Aut Anterior 
                  ";
    //funcao construtor da classe 
-   function cl_corest() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("corest"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_corest {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k12_id = ($this->k12_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_id"]:$this->k12_id);
        if($this->k12_data == ""){
@@ -108,7 +108,7 @@ class cl_corest {
      }
    }
    // funcao para inclusao
-   function incluir ($k12_id,$k12_data,$k12_autent){ 
+   public function incluir ($k12_id,$k12_data,$k12_autent){ 
       $this->atualizacampos();
      if($this->k12_dtant == null ){ 
        $this->erro_sql = " Campo Data Anterior nao Informado.";
@@ -222,7 +222,7 @@ class cl_corest {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k12_id=null,$k12_data=null,$k12_autent=null) { 
+   public function alterar ($k12_id=null,$k12_data=null,$k12_autent=null) { 
       $this->atualizacampos();
      $sql = " update corest set ";
      $virgula = "";
@@ -398,7 +398,7 @@ class cl_corest {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$dbwhere=null) { 
+   public function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k12_id,$k12_data,$k12_autent));
      }else{ 
@@ -478,7 +478,7 @@ class cl_corest {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

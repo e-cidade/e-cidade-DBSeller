@@ -24,4 +24,14 @@ use Illuminate\Database\Eloquent\Model;
 class Receita extends Model
 {
     protected $table = 'orcamento.orcreceita';
+
+    public function recurso()
+    {
+        return $this->hasOne(Recurso::class, 'o15_codigo', 'o70_codigo');
+    }
+
+    public function fonteRecurso()
+    {
+        return $this->recurso->fonteRecurso($this->o70_anousu);
+    }
 }

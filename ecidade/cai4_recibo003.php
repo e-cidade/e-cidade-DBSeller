@@ -1,4 +1,5 @@
 <?php
+
 /**
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (c) 2016  DBSeller Servicos de Informatica
@@ -36,11 +37,12 @@ require_once(modification("classes/db_iptubase_classe.php"));
 require_once(modification("classes/db_issbase_classe.php"));
 require_once(modification("classes/db_protprocesso_classe.php"));
 require_once(modification("classes/db_db_bancos_classe.php"));
-
+require_once(modification("classes/db_arretipo_classe.php"));
 require_once(modification("model/regraEmissao.model.php"));
 require_once(modification("model/convenio.model.php"));
 require_once(modification("model/recibo.model.php"));
 
+use App\Domain\Tributario\Arrecadacao\Services\ArrecadacaoPixReciboAvulsoService;
 use ECidade\Financeiro\Orcamento\Recurso\Origem;
 use \ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 use ECidade\Tributario\Arrecadacao\Proprietario;
@@ -60,6 +62,7 @@ $nomepriimo = '';
 $instit = db_getsession("DB_instit");
 $oDataDia = DBDate::createFromTimestamp(db_getsession("DB_datausu"));
 $cldb_bancos = new cl_db_bancos;
+$clarretipo = new cl_arretipo;
 
 if (isset($lForcar)) {
     $historico = $k00_histtxt;
@@ -91,6 +94,16 @@ $result = db_query("select k03_reciboprot,k03_reciboprotretencao from numpref wh
 db_fieldsmemory($result, 0);
 
 if (isset($arretipo) and $arretipo != "") {
+    $result_arretipo   = $clarretipo->sql_record($clarretipo->sql_query($arretipo,'k00_emrec'));
+    if (!$result_arretipo) {
+        throw new \Exception("Erro ao buscar os dados do Tipo de débito . ".pg_last_error());
+    }
+    $oResult = \db_utils::fieldsMemory($result_arretipo, 0);
+    if ($oResult->k00_emrec == 'f') {
+        db_query("rollback");
+        echo "<script>alert('Debito bloqueado para Emissão de Recibo Avulso');</script>";
+        throw new \Exception("Debito bloqueado para Emissão de Recibo Avulso");
+    }
     $k03_reciboprot = $arretipo;
 }
 
@@ -98,7 +111,7 @@ $sSqlArretipo = "select to_char(k00_txban,'99.99') as tx_banc, k00_taxaespecific
 $sqlArretipo_tx_banc = db_query($sSqlArretipo);
 
 //cria codigo de barras e linha digitável
-$taxabancaria = pg_result($sqlArretipo_tx_banc, 0, "tx_banc");
+$taxabancaria = pg_fetch_result($sqlArretipo_tx_banc, 0, "tx_banc");
 $taxaExpediente = 0;
 
 if (!isset($lReemissao)) {
@@ -117,16 +130,15 @@ db_query("commit");
 if (!isset($lReemissao)) {
 
     db_query("begin");
-    //
     $dignum = db_sqlformatar($k03_numpre, 8, '0') . "001001";
     $dignum = db_CalculaDV($dignum);
 
-    $rece = split("YY", $codrece);
-    $concarpeculiar = split("YY", $codcpca);
-    $codtaxa = split("YY", $codtaxa);
-    $valor = split("YY", $vlrrece);
-    $recurso = split("YY", $codrecu);
-    $complemento = split("YY", $codcomplemento);
+    $rece = explode("YY", $codrece);
+    $concarpeculiar = explode("YY", $codcpca);
+    $codtaxa = explode("YY", $codtaxa);
+    $valor = explode("YY", $vlrrece);
+    $recurso = explode("YY", $codrecu);
+    $complemento = explode("YY", $codcomplemento);
 
     if ($j01_matric != "") {
         $cliptubase = new cl_iptubase;
@@ -181,7 +193,6 @@ if (!isset($lReemissao)) {
         if ($valor[$i] == 0) {
             db_redireciona("db_erros.php?fechar=true&db_erro=O Recibo Com a Receita " . $rece[$i] . " Com Valor Zerado.");
         }
-
 
         $codigoHistorico = 502;
 
@@ -241,7 +252,7 @@ if (!isset($lReemissao)) {
          * verifica se existe a CP cadastrada para o numpre/numpar/receita.
          * o problema apenas ocorre quando o recibo possui mais de uma taxa com a mesma receita.
          */
-        $oDaoReciboConCarPeculiar = db_utils::getDao("reciboconcarpeculiar");
+        $oDaoReciboConCarPeculiar = new cl_reciboconcarpeculiar;
         $sWhere = " k130_numpre = {$k03_numpre} and k130_numpar = 1 and  k130_receit = {$rece[$iInd]}";
         $sSqlCaracteristicaPeculiar = $oDaoReciboConCarPeculiar->sql_query_file(null, "*", null, $sWhere);
         $rsCaracteriscaPeculiar = $oDaoReciboConCarPeculiar->sql_record($sSqlCaracteristicaPeculiar);
@@ -258,12 +269,20 @@ if (!isset($lReemissao)) {
         }
     }
 
-    $recursoOrigem = RecursoRepository::getRecursoPorCodigoRecursoAndComplemento(
-        $recurso[0],
-        $complemento[0]
-    );
+    $anousu = db_getsession('DB_anousu');
 
-    $idRecurso = $recursoOrigem->getCodigo();
+    $sql = "
+    select o15_codigo
+      from fonterecurso
+      join orctiporec on o15_codigo = orctiporec_id
+     where exercicio = {$anousu}
+       and gestao = '{$recurso[0]}'
+       and o15_complemento = {$complemento[0]}
+    ";
+
+    $dadoFonte = db_utils::fieldsMemory(db_query($sql), 0);
+
+    $idRecurso = $dadoFonte->o15_codigo;
     Origem::setReciboReceita($k03_numpre, $idRecurso, $complemento[0]);
     // grava o recurso do recibo
     $sql = "
@@ -289,7 +308,7 @@ if (!isset($lReemissao)) {
     $sql = "select * from arrenumcgm where k00_numcgm = $z01_numcgm and k00_numpre = $k03_numpre";
     $result = db_query($sql);
 
-    if (pg_numrows($result) == 0) {
+    if (pg_num_rows($result) == 0) {
         $sql = "insert into arrenumcgm (k00_numcgm, k00_numpre) values ($z01_numcgm,$k03_numpre)";
         $result = db_query($sql);
     }
@@ -352,10 +371,10 @@ if (!isset($lReemissao)) {
     $sSqlHistorico = "select * from arrehist where k00_numpre = {$k03_numpre}";
     $rsHistorico = db_query($sSqlHistorico);
     if ($rsHistorico) {
-        $historico .= pg_result($rsHistorico, 0, "k00_histtxt");
+        $historico .= pg_fetch_result($rsHistorico, 0, "k00_histtxt");
     }
 
-    $oDaoArrepaga = db_utils::getDao("arrepaga");
+    $oDaoArrepaga = new cl_arrepaga;
     $sSqlPagamento = $oDaoArrepaga->sql_query_file(null, "k00_numpre", null, "k00_numpre = {$iNumpre}");
     $rsPagamento = $oDaoArrepaga->sql_record($sSqlPagamento);
     if ($oDaoArrepaga->numrows > 0) {
@@ -390,9 +409,16 @@ if (isset($db_datausu)) {
         echo "Data deverá se superior a : " . date('Y-m-d', db_getsession("DB_datausu"));
         exit;
     }
-    if (mktime(0, 0, 0, substr($db_datausu, 5, 2), substr($db_datausu, 8, 2), substr($db_datausu, 0, 4)) <
-      mktime(0, 0, 0, date('m', db_getsession("DB_datausu")), date('d', db_getsession("DB_datausu")),
-        date('Y', db_getsession("DB_datausu")))
+    if (
+        mktime(0, 0, 0, substr($db_datausu, 5, 2), substr($db_datausu, 8, 2), substr($db_datausu, 0, 4)) <
+        mktime(
+            0,
+            0,
+            0,
+            date('m', db_getsession("DB_datausu")),
+            date('d', db_getsession("DB_datausu")),
+            date('Y', db_getsession("DB_datausu"))
+        )
     ) {
         echo "Data não permitida para cálculo. <br><br>";
         echo "Data deverá se superior a : " . date('Y-m-d', db_getsession("DB_datausu"));
@@ -407,7 +433,7 @@ if (isset($db_datausu)) {
  * logica para verificar se o numpre está na empprestarecibo
 * que seria um recibo de prestação de conta.
 */
-$oDaoEmpPrestaRecibo = db_utils::getDao("empprestarecibo");
+$oDaoEmpPrestaRecibo = new cl_empprestarecibo;
 $sSqlEmpPrestaRecibo = $oDaoEmpPrestaRecibo->sql_query_fileRecibo(null, "*", null, "e170_numpre = {$k03_numpre}");
 $rsEmpPrestaRecibo   = $oDaoEmpPrestaRecibo->sql_record($sSqlEmpPrestaRecibo);
 
@@ -470,9 +496,9 @@ $sCampoVencimento = "k00_dtvenc";
 
 //faz um somatorio do valor
 
-$datavencimento = pg_result($DadosPagamento, 0, $sCampoVencimento);
+$datavencimento = pg_fetch_result($DadosPagamento, 0, $sCampoVencimento);
 $total_recibo = 0;
-for ($i = 0; $i < pg_numrows($DadosPagamento); $i++) {
+for ($i = 0; $i < pg_num_rows($DadosPagamento); $i++) {
     db_fieldsmemory($DadosPagamento, $i);
     $total_recibo += $valor;
     $arraycodreceitas[$i] = $k00_receit;
@@ -487,20 +513,18 @@ $taxabancaria = 0;
 $DadosInstit = db_query("select cgc, nomeinst,ender,munic,email,telef,uf,logo,to_char(tx_banc,'9.99') as tx_banc,numbanco from db_config where codigo = " . db_getsession("DB_instit"));
 
 //cria codigo de barras e linha digitável
-//$taxabancaria = pg_result($DadosInstit,0,"tx_banc");
-$taxabancaria += pg_result($sqlArretipo_tx_banc, 0, "tx_banc");
-$src = pg_result($DadosInstit, 0, 'logo');
-$db_nomeinst = pg_result($DadosInstit, 0, 'nomeinst');
-$db_ender = pg_result($DadosInstit, 0, 'ender');
-$db_munic = pg_result($DadosInstit, 0, 'munic');
-$db_uf = pg_result($DadosInstit, 0, 'uf');
-$db_telef = pg_result($DadosInstit, 0, 'telef');
-$db_email = pg_result($DadosInstit, 0, 'email');
-$cgc = pg_result($DadosInstit, 0, 'cgc');
+$taxabancaria += pg_fetch_result($sqlArretipo_tx_banc, 0, "tx_banc");
+$src = pg_fetch_result($DadosInstit, 0, 'logo');
+$db_nomeinst = pg_fetch_result($DadosInstit, 0, 'nomeinst');
+$db_ender = pg_fetch_result($DadosInstit, 0, 'ender');
+$db_munic = pg_fetch_result($DadosInstit, 0, 'munic');
+$db_uf = pg_fetch_result($DadosInstit, 0, 'uf');
+$db_telef = pg_fetch_result($DadosInstit, 0, 'telef');
+$db_email = pg_fetch_result($DadosInstit, 0, 'email');
+$cgc = pg_fetch_result($DadosInstit, 0, 'cgc');
 
 $total_recibo += $taxabancaria;
 $valor_parm = $total_recibo;
-
 
 //seleciona dados de identificacao. Verifica se é inscr ou matric e da o respectivo select
 //essa variavel vem do cai3_gerfinanc002.php, pelo window open, criada por parse_str
@@ -509,7 +533,7 @@ if (!empty($_POST["ver_matric"]) || $matricularecibo > 0) {
     $numero = @$_POST["ver_matric"] + $matricularecibo;
     $tipoidentificacao = "Matricula :";
 
-    $oCgmPro =Proprietario::getProprietarioByMatricula($numero);
+    $oCgmPro = Proprietario::getProprietarioByMatricula($numero);
 
     $prefixCampos = 'cgm';
 
@@ -530,6 +554,7 @@ if (!empty($_POST["ver_matric"]) || $matricularecibo > 0) {
                                proprietario.j39_compl,
                                proprietario.j39_numero,
                                proprietario.j13_descr as bairro_matricula,
+                               proprietario.z01_numcgm as cgm,
                                case
                                  when proprietario.j13_descr is not null and proprietario.j13_descr != ''
                                    then proprietario.j13_descr
@@ -569,9 +594,11 @@ if (!empty($_POST["ver_matric"]) || $matricularecibo > 0) {
                        z01_bairro as j13_descr,
                        '' as z01_numcgm,
                        '' as z01_bairro,
-                       '' as sql
+                       '' as sql,
+                       issbase.q02_numcgm as cgm
                   from empresa
-                 where q02_inscr = $numero";
+                  inner join issbase on empresa.q02_inscr = issbase.q02_inscr
+                 where issbase.q02_inscr = $numero";
         $Identificacao = db_query($sSqlInscr);
         db_fieldsmemory($Identificacao, 0);
 
@@ -602,7 +629,8 @@ if (!empty($_POST["ver_matric"]) || $matricularecibo > 0) {
                      z01_numero as j39_numero,
                      z01_bairro as j13_descr,
                      '' as z01_numcgm,
-                     '' as sql
+                     '' as sql,
+                     z01_numcgm as cgm
                 from cgm
                 where z01_numcgm = $numero ";
             $Identificacao = db_query($sSqlCgm);
@@ -626,7 +654,8 @@ if (!empty($_POST["ver_matric"]) || $matricularecibo > 0) {
                    c.z01_compl as j39_compl,
                    c.z01_numero as j39_numero,
                    c.z01_bairro as j13_descr,
-                   '' as sql
+                   '' as sql,
+                   c.z01_numcgm as cgm
             from recibo r
                  inner join cgm c on c.z01_numcgm = r.k00_numcgm
    		    where r.k00_numpre = " . $k03_numpre . "
@@ -650,14 +679,14 @@ if (isset($tipo_debito)) {
 			group by v01_exerc,v01_numpar
 			order by v01_exerc,v01_numpar";
         $result = db_query($sqlhist);
-        if (pg_numrows($result) != false) {
+        if (pg_num_rows($result) != false) {
             $exercv = "0000";
-            for ($xy = 0; $xy < pg_numrows($result); $xy++) {
-                if ($exercv != pg_result($result, $xy, 0)) {
-                    $exercv = pg_result($result, $xy, 0);
-                    $histparcela .= pg_result($result, $xy, 0) . ":";
+            for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
+                if ($exercv != pg_fetch_result($result, $xy, 0)) {
+                    $exercv = pg_fetch_result($result, $xy, 0);
+                    $histparcela .= pg_fetch_result($result, $xy, 0) . ":";
                 }
-                $histparcela .= pg_result($result, $xy, 1) . "-";
+                $histparcela .= pg_fetch_result($result, $xy, 1) . "-";
             }
         }
     } else {
@@ -670,14 +699,14 @@ if (isset($tipo_debito)) {
 			group by q05_ano,q05_numpar
 			order by q05_ano,q05_numpar";
             $result = db_query($sqlhist);
-            if (pg_numrows($result) != false) {
+            if (pg_num_rows($result) != false) {
                 $exercv = "0000";
-                for ($xy = 0; $xy < pg_numrows($result); $xy++) {
-                    if ($exercv != pg_result($result, $xy, 0)) {
-                        $exercv = pg_result($result, $xy, 0);
-                        $histparcela .= "  " . pg_result($result, $xy, 0) . ": Parc:";
+                for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
+                    if ($exercv != pg_fetch_result($result, $xy, 0)) {
+                        $exercv = pg_fetch_result($result, $xy, 0);
+                        $histparcela .= "  " . pg_fetch_result($result, $xy, 0) . ": Parc:";
                     }
-                    $histparcela .= "-" . pg_result($result, $xy, 1);
+                    $histparcela .= "-" . pg_fetch_result($result, $xy, 1);
                 }
             }
         } else {
@@ -690,13 +719,13 @@ if (isset($tipo_debito)) {
 	        where k99_numpre_n = $k03_numpre
 			order by v07_parcel,k99_numpar";
                 $result = db_query($sqlhist);
-                if (pg_numrows($result) != false) {
-                    for ($xy = 0; $xy < pg_numrows($result); $xy++) {
-                        if (pg_result($result, $xy, 0) != $parcelamento) {
-                            $histparcela .= ' Parc : ' . pg_result($result, $xy, 0) . " - ";
+                if (pg_num_rows($result) != false) {
+                    for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
+                        if (pg_fetch_result($result, $xy, 0) != $parcelamento) {
+                            $histparcela .= ' Parc : ' . pg_fetch_result($result, $xy, 0) . " - ";
                         }
-                        $histparcela .= pg_result($result, $xy, 1) . " ";
-                        $parcelamento = pg_result($result, $xy, 0);
+                        $histparcela .= pg_fetch_result($result, $xy, 1) . " ";
+                        $parcelamento = pg_fetch_result($result, $xy, 0);
                     }
                 }
             } else {
@@ -705,8 +734,8 @@ if (isset($tipo_debito)) {
 	        from db_reciboweb
 	        where k99_numpre_n = $k03_numpre order by k99_numpar";
                 $result = db_query($sqlhist);
-                for ($xy = 0; $xy < pg_numrows($result); $xy++) {
-                    $histparcela .= pg_result($result, $xy, 0) . " ";
+                for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
+                    $histparcela .= pg_fetch_result($result, $xy, 0) . " ";
                 }
             }
         }
@@ -809,6 +838,20 @@ $oIdentificacao = db_utils::fieldsMemory($Identificacao, 0);
 
 //******************************************************************************************************************************************//
 
+$servicePixReciboAvulso = new ArrecadacaoPixReciboAvulsoService();
+$servicePixReciboAvulso->setConvenio($oConvenio);
+$servicePixReciboAvulso->setVencimento(DateTime::createFromFormat('d/m/Y', $datavencimento)->format('Y-m-d'));
+$servicePixReciboAvulso->setTipoDebito($iTipoDebito);
+$servicePixReciboAvulso->setValorRecibo($total_recibo);
+$servicePixReciboAvulso->setNumpreRecibo($k03_numpre);
+$servicePixReciboAvulso->setCgm($cgm);
+$servicePixReciboAvulso->gerarPix();
+$codigoBarrasPix = $servicePixReciboAvulso->getCodigoBarras();
+
+if(isset($codigoBarrasPix)){
+    $codigobarras = $codigoBarrasPix;
+}
+
 $pdf1->prefeitura = $db_nomeinst;
 /**
  * Quando for convênio BDL de qualquer banco, sistema deve listar no boleto de Recibo (92) e Carnê (100)
@@ -830,18 +873,21 @@ $pdf1->emailpref = $db_email;
 $pdf1->cgcpref = $cgc;
 
 /*Campos de identificação do proprietário*/
-$pdf1->nome = trim(pg_result($Identificacao, 0, "z01_numcgm")) . "-" . trim(pg_result($Identificacao, 0, "z01_nome"));
-$pdf1->ender = trim(pg_result($Identificacao, 0, "z01_ender")) . ', ' . pg_result($Identificacao, 0, "z01_numero")
-  . ' ' . trim(pg_result($Identificacao, 0, "z01_compl")) . (strlen(trim(pg_result($Identificacao, 0, "z01_bairro"))) > 0 ? "/" : "")
-  . trim(pg_result($Identificacao, 0, "z01_bairro"));
-$pdf1->munic = trim(pg_result($Identificacao, 0, "z01_munic"));
+
+$numcgm = !empty(trim(pg_fetch_result($Identificacao, 0, "z01_numcgm"))) ? trim(pg_fetch_result($Identificacao, 0, "z01_numcgm")) : $cgm;
+
+$pdf1->nome = $numcgm . " - " . trim(pg_fetch_result($Identificacao, 0, "z01_nome"));
+$pdf1->ender = trim(pg_fetch_result($Identificacao, 0, "z01_ender")) . ', ' . pg_fetch_result($Identificacao, 0, "z01_numero")
+    . ' ' . trim(pg_fetch_result($Identificacao, 0, "z01_compl")) . (strlen(trim(pg_fetch_result($Identificacao, 0, "z01_bairro"))) > 0 ? "/" : "")
+    . trim(pg_fetch_result($Identificacao, 0, "z01_bairro"));
+$pdf1->munic = trim(pg_fetch_result($Identificacao, 0, "z01_munic"));
 $pdf1->bairrocontri = $j13_descr;
 
 if (!empty($oIdentificacao->z01_bairro)) {
     $pdf1->bairrocontri = $oIdentificacao->z01_bairro;
 }
 
-$pdf1->cep = trim(pg_result($Identificacao, 0, "z01_cep"));
+$pdf1->cep = trim(pg_fetch_result($Identificacao, 0, "z01_cep"));
 $pdf1->cgccpf = $cgmcerto != '' ? $cgmcerto : '';
 /*ffm da identificação do proprietario**/
 
@@ -863,11 +909,10 @@ $pdf1->nrinscr1 = ($numprot > 0 ? $numprot : @$numero);
 $pdf1->tipoinscr1 = ($numprot > 0 ? $tipoidentificacao1 : $tipoidentificacao);
 /*fim identificação origem*/
 
-
 $pdf1->datacalc = date('d-m-Y', $DB_DATACALC);
 $pdf1->predatacalc = date('d-m-Y', $DB_DATACALC);
 $pdf1->taxabanc = db_formatar($taxabancaria, 'f');
-$pdf1->linhasdadospagto = pg_numrows($DadosPagamento);
+$pdf1->linhasdadospagto = pg_num_rows($DadosPagamento);
 $pdf1->recorddadospagto = $DadosPagamento;
 $pdf1->receita = 'k00_receit';
 $pdf1->receitared = 'codreduz';
@@ -896,7 +941,7 @@ if (isset($lReemissao) && $lReemissao) {
                                                and corautent.k12_autent = cornump.k12_autent
                                   where k12_numnov = $k03_numpre ";
     $rsCodAutenticador = db_query($sSqlCodAutenticador);
-    $iNumrowsCodAutenticador = pg_numrows($rsCodAutenticador);
+    $iNumrowsCodAutenticador = pg_num_rows($rsCodAutenticador);
     if ($iNumrowsCodAutenticador > 0) {
         db_fieldsmemory($rsCodAutenticador, 0);
     } else {
@@ -904,43 +949,42 @@ if (isset($lReemissao) && $lReemissao) {
     }
 
     /*
-     *
      * Adicionada logica para buscar os dados da autenticação do recibo quando foi utilizado o reprocessamento dos lançamentos de receita para o PCASP
-     *
      */
     if ($k12_codautent == '') {
         include(modification("libs/db_libpostgres.php"));
         if (PostgreSQLUtils::isTableExists("w_bkp_corautent")) {
             $sSqlCodAutenticador = "select k12_codautent from w_bkp_corautent where k12_codautent ilike '%$k03_numpre%$total_recibo%'";
             $rsCodAutenticador = pg_query($sSqlCodAutenticador);
-            $iNumrowsCodAutenticador = pg_numrows($rsCodAutenticador);
+            $iNumrowsCodAutenticador = pg_num_rows($rsCodAutenticador);
             if ($iNumrowsCodAutenticador > 0) {
                 db_fieldsmemory($rsCodAutenticador, 0);
             }
         }
     }
 
-
     $pdf1->k12_codautent = $k12_codautent;
 }
 
-$pdf1->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
+$sql = 'select nome from db_usuarios where login = \'' . db_getsession('DB_login') . '\'';
+$rSql = db_query($sql);
+$pdf1->texto = pg_fetch_all($rSql)[0]['nome'] . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
 
 /**********************************************************************************************************/
-$pdf1->descr3_1 = trim(pg_result($Identificacao, 0, "z01_nome")); // contribuinte
-$pdf1->descr3_2 = trim(pg_result($Identificacao, 0, "z01_ender")) . ', ' . pg_result($Identificacao, 0, "z01_numero")
-  . ' ' . trim(pg_result($Identificacao, 0, "z01_compl"));
-$pdf1->ufcgm = trim(pg_result($Identificacao, 0, "z01_uf"));
-$pdf1->premunic = trim(pg_result($Identificacao, 0, "z01_munic"));    // bairro
+$pdf1->descr3_1 = trim(pg_fetch_result($Identificacao, 0, "z01_nome")); // contribuinte
+$pdf1->descr3_2 = trim(pg_fetch_result($Identificacao, 0, "z01_ender")) . ', ' . pg_fetch_result($Identificacao, 0, "z01_numero")
+    . ' ' . trim(pg_fetch_result($Identificacao, 0, "z01_compl"));
+$pdf1->ufcgm = trim(pg_fetch_result($Identificacao, 0, "z01_uf"));
+$pdf1->premunic = trim(pg_fetch_result($Identificacao, 0, "z01_munic"));    // bairro
 
 
-$pdf1->predescr3_1 = trim(pg_result($Identificacao, 0, "z01_nome")); // contribuinte
-$pdf1->predescr3_2 = trim(pg_result($Identificacao, 0, "z01_ender")) . ', ' . pg_result($Identificacao, 0, "z01_numero")
-  . ' ' . trim(pg_result($Identificacao, 0, "z01_compl"));
+$pdf1->predescr3_1 = trim(pg_fetch_result($Identificacao, 0, "z01_nome")); // contribuinte
+$pdf1->predescr3_2 = trim(pg_fetch_result($Identificacao, 0, "z01_ender")) . ', ' . pg_fetch_result($Identificacao, 0, "z01_numero")
+    . ' ' . trim(pg_fetch_result($Identificacao, 0, "z01_compl"));
 $pdf1->prebairropri = @$z01_bairro;    // municipio
-$pdf1->premunic = trim(pg_result($Identificacao, 0, "z01_munic"));    // bairro
-$pdf1->precep = trim(pg_result($Identificacao, 0, "z01_cep"));
-$pdf1->precgccpf = trim(@pg_result($Identificacao, 0, "z01_cgccpf"));
+$pdf1->premunic = trim(pg_fetch_result($Identificacao, 0, "z01_munic"));    // bairro
+$pdf1->precep = trim(pg_fetch_result($Identificacao, 0, "z01_cep"));
+$pdf1->precgccpf = trim(@pg_fetch_result($Identificacao, 0, "z01_cgccpf"));
 
 $pdf1->titulo5 = "";                 // titulo parcela
 $pdf1->descr5 = "";                 // descr parcela
@@ -957,10 +1001,7 @@ $pdf1->arrayreduzreceitas = $arrayreduzreceitas;
 $pdf1->arraydescrreceitas = $arraydescrreceitas;
 $pdf1->arrayvalreceitas = $arrayvalreceitas;
 
-//$pdf1->descr4_1  = $historico;
 $pdf1->predescr4_2 = $pdf1->historico;
-//$pdf1->predescr4_2  = $k00_descr." ".@$histparcela." ".$historico;
-//$pdf1->descr4_2  = ""; // historico - linha 1
 
 $pdf1->descr16_1 = "";
 $pdf1->descr16_2 = "";
@@ -984,9 +1025,9 @@ $pdf1->predescr6 = $datavencimento;  // Data de Vencimento
 $pdf1->predescr7 = db_formatar(@$valor_parm, 'f');  // qtd de URM ou valor
 $pdf1->predescr9 = db_numpre($k03_numpre, 0) . "000"; //$numpre; // cod. de arrecadação
 /*************************************************************************************/
-$pdf1->descr11_1 = trim(pg_result($Identificacao, 0, "z01_nome"));
-$pdf1->descr11_2 = trim(pg_result($Identificacao, 0, "z01_ender") . ', ' . pg_result($Identificacao, 0, "z01_numero"));
-$pdf1->descr11_3 = trim(pg_result($Identificacao, 0, "z01_munic"));
+$pdf1->descr11_1 = trim(pg_fetch_result($Identificacao, 0, "z01_nome"));
+$pdf1->descr11_2 = trim(pg_fetch_result($Identificacao, 0, "z01_ender") . ', ' . pg_fetch_result($Identificacao, 0, "z01_numero"));
+$pdf1->descr11_3 = trim(pg_fetch_result($Identificacao, 0, "z01_munic"));
 $pdf1->descr12_1 = $historico . "\n \n" . $k00_msgrecibo;
 $pdf1->descr14 = $datavencimento; // vencimento
 $pdf1->descr10 = "1 / 1";
@@ -1030,7 +1071,7 @@ if (!isset($lGerarOutput)) {
             $parametrosTef = str_replace("\\", "", $parametrosTef);
             $oParametros = json_decode($parametrosTef);
             $oParametros->iNumnov = $k03_numpre;
-            $oParametros->sUrlGeraRecibo = $oParametros->sUrlGeraRecibo."&lReemissao=true&iNumpre=".$k03_numpre."&boletoTef=true";
+            $oParametros->sUrlGeraRecibo = $oParametros->sUrlGeraRecibo . "&lReemissao=true&iNumpre=" . $k03_numpre . "&boletoTef=true";
             $oParametros->bReciboAvulso = true;
 
             require_once("cai3_gerfinanc075.php");

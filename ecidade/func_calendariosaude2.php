@@ -1,30 +1,30 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
- 
+
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -36,8 +36,8 @@ parse_str( $_SERVER['QUERY_STRING'] ); // ta com o globals desativado no php -- 
 
 class calendario{
 
-  var $sem;//Array com os dias da semana como índice 
-  var $mes;//Array com os meses do ano 
+  var $sem;//Array com os dias da semana como índice
+  var $mes;//Array com os meses do ano
   var $nome_objeto_data;
   var $shutdown_function = "";
   var $centralagenda="N";
@@ -58,15 +58,15 @@ class calendario{
                      '11'=>'NOVEMBRO',
                      '12'=>'DEZEMBRO'
                     );
-  } 
+  }
 
   function aux($i) {//Complementa a tabela com espaços em branco
 
-    $retval = ""; 
-    for ($k = 0; $k < $i; $k++) { 
-      $retval .= "<td width=\"20\">&nbsp;</td>"; 
-    } 
-    return $retval; 
+    $retval = "";
+    for ($k = 0; $k < $i; $k++) {
+      $retval .= "<td width=\"20\">&nbsp;</td>";
+    }
+    return $retval;
   }
 
   function arr_search( $array, $valor ) {
@@ -160,7 +160,8 @@ class calendario{
 
         if ($this->centralagenda == "S") {
 
-          $str_query            = cl_undmedhorario_ext::sql_calendario2($ano,
+          $daoUndMedHorario = new cl_undmedhorario_ext;
+          $str_query            = $daoUndMedHorario->sql_calendario2($ano,
                                                                         $mes,
                                                                         $s,
                                                                         $str_where,
@@ -302,6 +303,8 @@ class calendario{
 
             $obj_undmedhorario   = db_utils::fieldsMemory($result_undmedhorario,$xHora);
 
+            $obj_undmedhorario->total_agendado = empty($obj_undmedhorario->total_agendado) ? 0 : (int)$obj_undmedhorario->total_agendado;
+
             if ($obj_undmedhorario->sd30_i_codigo != $iHorario) {
 
               $iHorario            = $obj_undmedhorario->sd30_i_codigo;
@@ -314,7 +317,7 @@ class calendario{
                   || (     ( isset( $obj_undmedhorario->sd06_c_horainicio ) && $obj_undmedhorario->sd06_c_horainicio != '')
                         && ($obj_undmedhorario->sd06_i_undmedhorario == '') )
                  ) {
-           
+
                 $str_msg .=  "- Saldo: ";
                 $str_msg .=  ($obj_undmedhorario->sd30_i_fichas+$obj_undmedhorario->sd30_i_reservas - $obj_undmedhorario->total_agendado );
               } else {
@@ -355,9 +358,9 @@ class calendario{
         if ($booMostradiv) {
 
           //*Div
-          $str .= "  <div  onmouseover=js_oculta('parecerr$i',event)  
-                           name='parecerr$i' 
-                           id='parecerr$i' 
+          $str .= "  <div  onmouseover=js_oculta('parecerr$i',event)
+                           name='parecerr$i'
+                           id='parecerr$i'
                            style='position:absolute;visibility:hidden; left: 183px; top: 0px;  ' >
                       <table align='left' height='100%' width='100%' border='1' cellspacing='1' cellpadding='1'>
                        <tr>
@@ -471,9 +474,9 @@ class calendario{
               <td bgcolor='red'><font size=1>Lotado</td>
            </tr>
           </table>";
-    echo $str; 
-  } //fim function 
-} 
+    echo $str;
+  } //fim function
+}
 
 //Inicializa classe
 $clcalendario                   = new calendario;
@@ -548,7 +551,7 @@ if( ( isset($sd27_i_rhcbo) && (int) $sd27_i_rhcbo != 0 ) ||( isset($sd27_i_codig
     echo "Nenhuma informação encontrada";
   }
 } else {
-  echo "Não foi informado Profissional."; 
+  echo "Não foi informado Profissional.";
 }
 ?>
 
@@ -601,9 +604,9 @@ function janela(d,m,a,fechar,saldo) {
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = (m<10?'0'+m:m);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = a;\n";
   echo "parent.js_comparaDatas".$nome_objeto_data."((d<10?'0'+d:d),(m<10?'0'+m:m),a);\n";
-  
+
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').setfocus;\n";
-  
+
   if (isset($shutdown_function) && ($shutdown_function!='none')) {
     echo $shutdown_function."\n";
   }

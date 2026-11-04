@@ -82,7 +82,7 @@ require_once(modification("libs/db_utils.php"));
               </td>
             </tr>
           </table>
-        <?
+        <?php
         exit;
        }
        

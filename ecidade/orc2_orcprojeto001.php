@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -111,14 +111,14 @@ function emite(){
 
   <table  align="center" border="0" >
    <tr>
-      <td width= "100" title="<?=@$To46_codlei?>"><? db_ancora(@$Lo46_codlei,"js_projeto();",$db_opcao);  ?> </td>
-      <td > <? db_input('o46_codlei', 17,$Io46_codlei,true,'text',$db_opcao,"") ?>
+      <td width= "100" title="<?=@$To46_codlei?>"><?php db_ancora(@$Lo46_codlei,"js_projeto();",$db_opcao);  ?> </td>
+      <td > <?php db_input('o46_codlei', 17,$Io46_codlei,true,'text',$db_opcao,"") ?>
     </td>
    </tr>
    <tr>
       <td><b>Modelo </b> </td>
       <td>
-      <?
+      <?php
           $sSql = $clorcparametro->sql_query_file(db_getsession("DB_anousu"),"o50_tipoproj as modelo");
           $rr = $clorcparametro->sql_record($sSql);
 	      if ($clorcparametro->numrows > 0 ){
@@ -138,7 +138,7 @@ function emite(){
    </tr>
 
 
-   <?
+   <?php
    if (isset($o46_codlei) && $o46_codlei!=""){
           /*
            *  seleciona o conteúdo do texto livre dos projetos
@@ -165,7 +165,7 @@ function emite(){
                   </table>
                 </td>
    			  </tr>
-           	  <?
+           	  <?php
            }
      }
    }
@@ -183,6 +183,6 @@ function emite(){
 
 
 
- <? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+ <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>

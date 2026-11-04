@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -38,7 +38,7 @@ $clmatunid->rotulo->label();
              <?=$Lm61_codmatunid?>
           </td>
           <td>
-      <?
+      <?php
       db_input('m61_codmatunid',8,$Im61_codmatunid,true,'text',3,"")
       ?>
           </td>
@@ -48,7 +48,7 @@ $clmatunid->rotulo->label();
              <?=$Lm61_descr?>
           </td>
           <td>
-      <?
+      <?php
       db_input('m61_descr',40,$Im61_descr,true,'text',$db_opcao,"onchange='js_abrev();'")
       ?>
           </td>
@@ -79,7 +79,7 @@ $clmatunid->rotulo->label();
              <?=$Lm61_usadec?>
           </td>
           <td>
-      <?
+      <?php
       if(!isset($m61_usadec)){
         $m61_usadec = 't';
       }
@@ -111,7 +111,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matunid.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -79,14 +79,14 @@ $where = " 1 = 1 ";
 
      if(!(substr($i02_data,4,1) =='-') && !(substr($i02_data,7,1)=='-')) {
 
-		  	 $data = split("/",$i02_data);
+		  	 $data =explode("/",$i02_data);
      	   $i02_data_dia = @$data[0];
   		   $i02_data_mes = @$data[1];
 	  	   $i02_data_ano = @$data[2];
 			   $i02_data     = $i02_data_ano."-".$i02_data_mes."-".$i02_data_dia;
 		 }else if(substr($i02_data,4,1)=='-' && substr($i02_data,7,1)=='-') {
 
-		  	 $data = split("-",$i02_data);
+		  	 $data =explode("-",$i02_data);
 				 $i02_data_dia = @$data[1];
   		   $i02_data_mes = @$data[2];
 	  	   $i02_data_ano = @$data[0];
@@ -140,7 +140,7 @@ $where = " 1 = 1 ";
  <table>
   <tr>
     <td valign="top" align="center">
-    <?
+    <?php
      $rsTipodm = $clinflan->sql_record($clinflan->sql_query_file($i02_codigo," i01_dm "));
 	 if ($clinflan->numrows > 0){
 	     db_fieldsmemory($rsTipodm,0);

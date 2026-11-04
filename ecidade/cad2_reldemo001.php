@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ include(modification("dbforms/db_funcoes.php"));
    <b>Periodo : &nbsp;&nbsp;</b>
    </td>
    <td align="left" width="50%" height="30" colspan=""><font size="3">
-		<?
+		<?php
 		db_inputdata('datai', "", "", "", true, 'text', 1, "");
 		echo " a ";
 		db_inputdata('dataf', "", "", "", true, 'text', 1, "");
@@ -79,7 +79,7 @@ include(modification("dbforms/db_funcoes.php"));
 	   <b> Tipo : &nbsp;&nbsp;</b>
 	   </td>
 			<td align="left" width="50%" height="30" colspan="6"><font size="3">
-				<?
+				<?php
 				$tipo = array ("a"=>"Total e Parcial","t"=>"Demolicao total","p"=>"Demolicao parcial");
 				db_select('tiporel', $tipo, true, 2);
 				?>
@@ -98,7 +98,7 @@ include(modification("dbforms/db_funcoes.php"));
 	</tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

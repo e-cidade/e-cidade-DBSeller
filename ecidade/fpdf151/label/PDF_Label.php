@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////
-// PDF_Label 
+// PDF_Label
 //
 // Class to print labels in Avery or custom formats
 //
@@ -13,7 +13,7 @@
 // 1.0  : Initial release
 // 1.1  : + : Added unit in the constructor
 //        + : Now Positions start @ (1,1).. then the first image @top-left of a page is (1,1)
-//        + : Added in the description of a label : 
+//        + : Added in the description of a label :
 //				font-size	: defaut char size (can be changed by calling Set_Char_Size(xx);
 //				paper-size	: Size of the paper for this sheet (thanx to Al Canton)
 //				metric		: type of unit used in this description
@@ -22,7 +22,7 @@
 //			  Added some labels :
 //				5160, 5161, 5162, 5163,5164 : thanx to Al Canton : acanton@adams-blake.com
 //				8600 						: thanx to Kunal Walia : kunal@u.washington.edu
-//        + : Added 3mm to the position of labels to avoid errors 
+//        + : Added 3mm to the position of labels to avoid errors
 // 1.2  : + : Added Set_Font_Name method
 //        = : Bug of positioning
 //        = : Set_Font_Size modified -> Now, just modify the size of the font
@@ -73,7 +73,7 @@ class PDF_Label extends FPDF {
 
 	// convert units (in to mm, mm to in)
 	// $src and $dest must be 'in' or 'mm'
-	function _Convert_Metric ($value, $src, $dest) {
+	public function _Convert_Metric ($value, $src, $dest) {
 		if ($src != $dest) {
 			$tab['in'] = 39.37008;
 			$tab['mm'] = 1000;
@@ -84,7 +84,7 @@ class PDF_Label extends FPDF {
 	}
 
 	// Give the height for a char size given.
-	function _Get_Height_Chars($pt) {
+	public function _Get_Height_Chars($pt) {
 		// Array matching character sizes and line heights
 		$_Table_Hauteur_Chars = array(6=>2, 7=>2.5, 8=>3, 9=>4, 10=>5, 11=>6, 12=>7, 13=>8, 14=>9, 15=>10);
 		if (in_array($pt, array_keys($_Table_Hauteur_Chars))) {
@@ -94,7 +94,7 @@ class PDF_Label extends FPDF {
 		}
 	}
 
-	function _Set_Format($format) {
+	public function _Set_Format($format) {
 		$this->_Metric 		= $format['metric'];
 		$this->_Avery_Name 	= $format['name'];
 		$this->_Margin_Left	= $this->_Convert_Metric ($format['marginLeft'], $this->_Metric, $this->_Metric_Doc);
@@ -109,7 +109,7 @@ class PDF_Label extends FPDF {
 	}
 
 	// Constructor
-	function PDF_Label ($format, $unit='mm', $posX=1, $posY=1) {
+	public function __construct ($format, $unit='mm', $posX=1, $posY=1) {
 		if (is_array($format)) {
 			// Custom format
 			$Tformat = $format;
@@ -121,8 +121,8 @@ class PDF_Label extends FPDF {
 		parent::__construct('P', $Tformat['metric'], $Tformat['paper-size']);
 		$this->_Set_Format($Tformat);
 		$this->Set_Font_Name('Arial');
-		$this->SetMargins(0,0); 
-		$this->SetAutoPageBreak(false); 
+		$this->SetMargins(0,0);
+		$this->SetAutoPageBreak(false);
 
 		$this->_Metric_Doc = $unit;
 		// Start at the given label position
@@ -136,7 +136,7 @@ class PDF_Label extends FPDF {
 
 	// Sets the character size
 	// This changes the line height too
-	function Set_Font_Size($pt) {
+	public function Set_Font_Size($pt) {
 		if ($pt > 3) {
 			$this->_Char_Size = $pt;
 			$this->_Line_Height = $this->_Get_Height_Chars($pt);
@@ -145,7 +145,7 @@ class PDF_Label extends FPDF {
 	}
 
 	// Method to change font name
-	function Set_Font_Name($fontname) {
+	public function Set_Font_Name($fontname) {
 		if ($fontname != '') {
 			$this->_Font_Name = $fontname;
 			$this->SetFont($this->_Font_Name);
@@ -153,7 +153,7 @@ class PDF_Label extends FPDF {
 	}
 
 	// Print a label
-	function Add_PDF_Label($texte) {
+	public function Add_PDF_Label($texte) {
 		// We are in a new page, then we must add a page
 		if (($this->_COUNTX ==0) and ($this->_COUNTY==0)) {
 			$this->AddPage();

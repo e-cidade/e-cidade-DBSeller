@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,12 +35,12 @@ $clrotulo->label("ob01_nomeobra");
 	<table>
 		<tr>
 			<td nowrap title="<?=@$Tob04_codobra?>">
-			<?
+			<?php
 				db_ancora(@$Lob04_codobra,"js_pesquisaob04_codobra(true);",($db_opcao == 2?3:$db_opcao));
 			?>
 			</td>
 			<td>
-			<? 
+			<?php 
 				db_input('ob04_codobra',10,$Iob04_codobra,true,'text',($db_opcao == 2?3:$db_opcao)," onchange='js_pesquisaob04_codobra(false);'"); 
 			  db_input('ob01_nomeobra',40,$Iob01_nomeobra,true,'text',3,'');      
 			?>
@@ -52,7 +52,7 @@ $clrotulo->label("ob01_nomeobra");
 				<?=@$Lob04_alvara?>
 			</td>
 			<td nowrap>
-				<? 
+				<?php 
 					db_input('ob04_alvara',10,$Iob04_alvara,true,'text',1,"") ;
 					if ($db_opcao==1){
 						echo "(se não preencher, codigo será gerado automaticamente)";
@@ -66,7 +66,7 @@ $clrotulo->label("ob01_nomeobra");
 				<?=@$Lob04_data?>
 			</td>
 			<td>
-				<?
+				<?php
 				if($db_opcao == 1){
 					$ob04_data_dia = date("d",db_getsession("DB_datausu"));
 					$ob04_data_mes = date("m",db_getsession("DB_datausu"));
@@ -264,7 +264,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obrasalvara.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

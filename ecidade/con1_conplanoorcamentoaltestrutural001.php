@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -276,7 +276,7 @@ if (isset($alterar) && trim(@$alterar) != ""){
   <tr> 
     <td height="30" align="right" title="<?=@$Tc60_estrut?>"><?=@$Lc60_estrut?></td>
     <td>
-    <?
+    <?php
       db_input("c60_estrut",15,@$Ic60_estrut,true,"text",4,"","chave_c60_estrut");
       db_input("c60_codcon",15,0,true,"hidden",3);
 
@@ -300,29 +300,29 @@ if (isset($alterar) && trim(@$alterar) != ""){
       }
     ?>
       <input name="pesquisar" type="submit" value="Pesquisar" onClick="return js_valida_dados();" <?=($db_botao==true?"disabled":"")?>>
-    <?
+    <?php
       if (isset($chave_c60_estrut) && trim(@$chave_c60_estrut) != "" && !isset($chave_c60_estrut_alt)){
     ?>
       <input name="novo" type="button" value="Novo" onClick="js_novo();">
-    <?
+    <?php
        }
     ?>
     </td>
   </tr>
-  <?
+  <?php
    if (isset($chave_c60_estrut) && trim(@$chave_c60_estrut) != "" && !isset($chave_c60_estrut_alt)) {
      if ($numrows_contas > 0) {
   ?>
   <tr>
     <td align="right" title="Estrutural a ser modificado"><b>Alterar para:</b></td>
     <td>
-    <?
+    <?php
       db_input("c60_estrut",15,@$Ic60_estrut,true,"text",4,"","chave_c60_estrut_alt");
     ?>
       <input name="alterar" type="submit" value="Alterar" onClick="return js_alterar_estrut('<?=$chave_c60_estrut?>');">
     </td>
   </tr>
-  <?
+  <?php
           }
      } 
 
@@ -332,7 +332,7 @@ if (isset($alterar) && trim(@$alterar) != ""){
     <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td>
-    <?
+    <?php
 
        $campos = "c60_codcon,c61_reduz,c60_anousu,c60_estrut,c60_descr";
        $sql    = $clconplanoOrcamento->sql_query_geral(null,null,$campos,"c60_estrut","c60_anousu = $anousu and 
@@ -355,13 +355,13 @@ if (isset($alterar) && trim(@$alterar) != ""){
       </tr>
     </table></td>
   </tr>
-  <?
+  <?php
     }
   ?>
 </form>  
 </table>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
   if ($sqlerro == false){
@@ -454,22 +454,22 @@ if (isset($alterar) && trim(@$alterar) != ""){
      }
   }
 
-<?
+<?php
   if (isset($chave_c60_estrut) && trim(@$chave_c60_estrut) != "" && !isset($chave_c60_estrut_alt)){
        if ($numrows_contas > 0){
 ?>
   document.form1.chave_c60_estrut.readOnly = true;
-<?
+<?php
        }
 ?>
   document.form1.chave_c60_estrut_alt.select();
   document.form1.chave_c60_estrut_alt.focus();
-<?
+<?php
   } else {
 ?>
   document.form1.chave_c60_estrut.select();
   document.form1.chave_c60_estrut.focus();
-<?
+<?php
   }
 ?>
 </script>

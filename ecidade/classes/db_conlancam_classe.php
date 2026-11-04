@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,48 +33,41 @@ class cl_conlancam
 
     // cria variaveis de erro
 
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $c70_codlan = 0;
-    var $c70_anousu = 0;
-    var $c70_data_dia = null;
-    var $c70_data_mes = null;
-    var $c70_data_ano = null;
-    var $c70_data = null;
-    var $c70_valor = 0;
+    public $c70_codlan = 0;
+    public $c70_anousu = 0;
+    public $c70_data_dia = null;
+    public $c70_data_mes = null;
+    public $c70_data_ano = null;
+    public $c70_data = null;
+    public $c70_valor = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  c70_codlan = int4 = Código Lançamento
                  c70_anousu = int4 = Exercício
                  c70_data = date = Data
                  c70_valor = float8 = Valor do Lançamento
                  ";
 
-    //funcao construtor da classe
-
     public function __construct()
     {
-
-        //classes dos rotulos dos campos
-
         $this->rotulo = new rotulo("conlancam");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename($_SERVER["PHP_SELF"]);
     }
 
-    //funcao erro
-
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
 
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
@@ -85,9 +78,7 @@ class cl_conlancam
         }
     }
 
-    // funcao para atualizar campos
-
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
 
         if ($exclusao == false) {
@@ -107,9 +98,8 @@ class cl_conlancam
         }
     }
 
-    // funcao para inclusao
 
-    function incluir($c70_codlan)
+    public function incluir($c70_codlan)
     {
 
         $this->atualizacampos();
@@ -118,8 +108,11 @@ class cl_conlancam
             $this->erro_campo = "c70_anousu";
             $this->erro_banco = "";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
 
             return false;
@@ -129,8 +122,11 @@ class cl_conlancam
             $this->erro_campo = "c70_data_dia";
             $this->erro_banco = "";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
 
             return false;
@@ -140,8 +136,11 @@ class cl_conlancam
             $this->erro_campo = "c70_valor";
             $this->erro_banco = "";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
 
             return false;
@@ -152,21 +151,27 @@ class cl_conlancam
                 $this->erro_banco = str_replace("\n", "", @pg_last_error());
                 $this->erro_sql = "Verifique o cadastro da sequencia: conlancam_c70_codlan_seq do campo: c70_codlan";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "0";
 
                 return false;
             }
-            $this->c70_codlan = pg_result($result, 0, 0);
+            $this->c70_codlan = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM conlancam_c70_codlan_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $c70_codlan)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $c70_codlan)) {
                 $this->erro_sql = " Campo c70_codlan maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "0";
 
                 return false;
@@ -178,8 +183,11 @@ class cl_conlancam
             $this->erro_sql = " Campo c70_codlan nao declarado.";
             $this->erro_banco = "Chave Primaria zerada.";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
 
             return false;
@@ -196,6 +204,8 @@ class cl_conlancam
                                ," . ($this->c70_data == "null" || $this->c70_data == "" ? "null" : "'" . $this->c70_data . "'") . "
                                ,$this->c70_valor
                       )";
+
+        $this->extrai_c70codlan($sql);
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
@@ -203,13 +213,19 @@ class cl_conlancam
                 $this->erro_sql = "Lançamentos Contábeis ($this->c70_codlan) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Lançamentos Contábeis já Cadastrado";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
             } else {
                 $this->erro_sql = "Lançamentos Contábeis ($this->c70_codlan) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
             }
             $this->erro_status = "0";
             $this->numrows_incluir = 0;
@@ -220,8 +236,11 @@ class cl_conlancam
         $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
         $this->erro_sql .= "Valores : " . $this->c70_codlan;
         $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-        $this->erro_msg .= str_replace('"', "",
-            str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_msg .= str_replace(
+            '"',
+            "",
+            str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+        );
         $this->erro_status = "1";
         $this->numrows_incluir = pg_affected_rows($result);
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -229,21 +248,29 @@ class cl_conlancam
             $resaco = $this->sql_record($this->sql_query_file($this->c70_codlan));
             if (($resaco != false) || ($this->numrows != 0)) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5217,'$this->c70_codlan','I')");
-                $resac = db_query("insert into db_acount values($acount,760,5217,'','" . AddSlashes(pg_result($resaco,
-                        0,
-                        'c70_codlan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,760,5218,'','" . AddSlashes(pg_result($resaco,
-                        0,
-                        'c70_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,760,5219,'','" . AddSlashes(pg_result($resaco,
-                        0,
-                        'c70_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,760,5839,'','" . AddSlashes(pg_result($resaco,
-                        0,
-                        'c70_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,760,5217,'','" . addSlashes(pg_fetch_result(
+                    $resaco,
+                    0,
+                    'c70_codlan'
+                )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,760,5218,'','" . addSlashes(pg_fetch_result(
+                    $resaco,
+                    0,
+                    'c70_anousu'
+                )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,760,5219,'','" . addSlashes(pg_fetch_result(
+                    $resaco,
+                    0,
+                    'c70_data'
+                )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,760,5839,'','" . addSlashes(pg_fetch_result(
+                    $resaco,
+                    0,
+                    'c70_valor'
+                )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
 
@@ -252,7 +279,7 @@ class cl_conlancam
 
     // funcao para alteracao
 
-    function alterar($c70_codlan = null)
+    public function alterar($c70_codlan = null)
     {
 
         $this->atualizacampos();
@@ -266,8 +293,11 @@ class cl_conlancam
                 $this->erro_campo = "c70_codlan";
                 $this->erro_banco = "";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "0";
 
                 return false;
@@ -281,8 +311,11 @@ class cl_conlancam
                 $this->erro_campo = "c70_anousu";
                 $this->erro_banco = "";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "0";
 
                 return false;
@@ -296,8 +329,11 @@ class cl_conlancam
                 $this->erro_campo = "c70_data_dia";
                 $this->erro_banco = "";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "0";
 
                 return false;
@@ -311,8 +347,11 @@ class cl_conlancam
                     $this->erro_campo = "c70_data_dia";
                     $this->erro_banco = "";
                     $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                    $this->erro_msg .= str_replace('"', "",
-                        str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                    $this->erro_msg .= str_replace(
+                        '"',
+                        "",
+                        str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                    );
                     $this->erro_status = "0";
 
                     return false;
@@ -327,8 +366,11 @@ class cl_conlancam
                 $this->erro_campo = "c70_valor";
                 $this->erro_banco = "";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "0";
 
                 return false;
@@ -344,28 +386,36 @@ class cl_conlancam
             if ($this->numrows > 0) {
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,5217,'$this->c70_codlan','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_codlan"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5217,'" . AddSlashes(pg_result($resaco,
-                                $conresaco,
-                                'c70_codlan')) . "','$this->c70_codlan'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,760,5217,'" . addSlashes(pg_fetch_result(
+                            $resaco,
+                            $conresaco,
+                            'c70_codlan'
+                        )) . "','$this->c70_codlan'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_anousu"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5218,'" . AddSlashes(pg_result($resaco,
-                                $conresaco,
-                                'c70_anousu')) . "','$this->c70_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,760,5218,'" . addSlashes(pg_fetch_result(
+                            $resaco,
+                            $conresaco,
+                            'c70_anousu'
+                        )) . "','$this->c70_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_data"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5219,'" . AddSlashes(pg_result($resaco,
-                                $conresaco,
-                                'c70_data')) . "','$this->c70_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,760,5219,'" . addSlashes(pg_fetch_result(
+                            $resaco,
+                            $conresaco,
+                            'c70_data'
+                        )) . "','$this->c70_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_valor"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5839,'" . AddSlashes(pg_result($resaco,
-                                $conresaco,
-                                'c70_valor')) . "','$this->c70_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,760,5839,'" . addSlashes(pg_fetch_result(
+                            $resaco,
+                            $conresaco,
+                            'c70_valor'
+                        )) . "','$this->c70_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                 }
             }
@@ -376,8 +426,11 @@ class cl_conlancam
             $this->erro_sql = "Lançamentos Contábeis nao Alterado. Alteracao Abortada.\\n";
             $this->erro_sql .= "Valores : " . $this->c70_codlan;
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
             $this->numrows_alterar = 0;
 
@@ -388,8 +441,11 @@ class cl_conlancam
                 $this->erro_sql = "Lançamentos Contábeis nao foi Alterado. Alteracao Executada.\\n";
                 $this->erro_sql .= "Valores : " . $this->c70_codlan;
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "1";
                 $this->numrows_alterar = 0;
 
@@ -399,8 +455,11 @@ class cl_conlancam
                 $this->erro_sql = "Alteração efetuada com Sucesso\\n";
                 $this->erro_sql .= "Valores : " . $this->c70_codlan;
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "1";
                 $this->numrows_alterar = pg_affected_rows($result);
 
@@ -411,7 +470,7 @@ class cl_conlancam
 
     // funcao para exclusao
 
-    function excluir($c70_codlan = null, $dbwhere = null)
+    public function excluir($c70_codlan = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -424,21 +483,29 @@ class cl_conlancam
             if (($resaco != false) || ($this->numrows != 0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,5217,'$c70_codlan','E')");
-                    $resac = db_query("insert into db_acount values($acount,760,5217,'','" . AddSlashes(pg_result($resaco,
-                            $iresaco,
-                            'c70_codlan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,760,5218,'','" . AddSlashes(pg_result($resaco,
-                            $iresaco,
-                            'c70_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,760,5219,'','" . AddSlashes(pg_result($resaco,
-                            $iresaco,
-                            'c70_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,760,5839,'','" . AddSlashes(pg_result($resaco,
-                            $iresaco,
-                            'c70_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,760,5217,'','" . addSlashes(pg_fetch_result(
+                        $resaco,
+                        $iresaco,
+                        'c70_codlan'
+                    )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,760,5218,'','" . addSlashes(pg_fetch_result(
+                        $resaco,
+                        $iresaco,
+                        'c70_anousu'
+                    )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,760,5219,'','" . addSlashes(pg_fetch_result(
+                        $resaco,
+                        $iresaco,
+                        'c70_data'
+                    )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,760,5839,'','" . addSlashes(pg_fetch_result(
+                        $resaco,
+                        $iresaco,
+                        'c70_valor'
+                    )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -456,13 +523,16 @@ class cl_conlancam
             $sql2 = $dbwhere;
         }
         $result = db_query($sql . $sql2);
-        if ($result == false) {
+        if (!$result) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             $this->erro_sql = "Lançamentos Contábeis nao Excluído. Exclusão Abortada.\\n";
             $this->erro_sql .= "Valores : " . $c70_codlan;
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
             $this->numrows_excluir = 0;
 
@@ -473,8 +543,11 @@ class cl_conlancam
                 $this->erro_sql = "Lançamentos Contábeis nao Encontrado. Exclusão não Efetuada.\\n";
                 $this->erro_sql .= "Valores : " . $c70_codlan;
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "1";
                 $this->numrows_excluir = 0;
 
@@ -484,8 +557,11 @@ class cl_conlancam
                 $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
                 $this->erro_sql .= "Valores : " . $c70_codlan;
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
                 $this->erro_status = "1";
                 $this->numrows_excluir = pg_affected_rows($result);
 
@@ -496,7 +572,7 @@ class cl_conlancam
 
     // funcao do recordset
 
-    function sql_record($sql)
+    public function sql_record($sql)
     {
 
         $result = db_query($sql);
@@ -505,19 +581,25 @@ class cl_conlancam
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             $this->erro_sql = "Erro ao selecionar os registros.";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:conlancam";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
             $this->erro_status = "0";
 
             return false;
@@ -526,12 +608,12 @@ class cl_conlancam
         return $result;
     }
 
-    function sql_query($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public  function sql_query($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -554,7 +636,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -565,12 +647,12 @@ class cl_conlancam
         return $sql;
     }
 
-    function sql_query_file($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -593,7 +675,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -604,12 +686,12 @@ class cl_conlancam
         return $sql;
     }
 
-    function sql_query_trans($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_trans($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -644,7 +726,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -657,11 +739,11 @@ class cl_conlancam
 
     /**
      *
-     * Retorna os movimentos comtábil para o Arquivo TXT fo Sigfis
+     * Retorna os movimentos contábil para o Arquivo TXT fo Sigfis
      *
      * @return string
      */
-    function sql_movimentoContabilSigfis($iAnoUsu, $iInstit, $dtDataInicial, $dtDataFinal)
+    public function sql_movimentoContabilSigfis($iAnoUsu, $iInstit, $dtDataInicial, $dtDataFinal)
     {
 
         $sSql = "select competencia,                                                                                       ";
@@ -716,12 +798,12 @@ class cl_conlancam
         return $sSql;
     }
 
-    function sql_query_empenho($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_empenho($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -751,7 +833,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -763,12 +845,12 @@ class cl_conlancam
     }
 
 
-    function sql_query_empenho_cgm($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_empenho_cgm($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -795,7 +877,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -807,12 +889,12 @@ class cl_conlancam
     }
 
 
-    function sql_query_lancamento_requisicao_material($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_lancamento_requisicao_material($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -847,7 +929,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -858,12 +940,12 @@ class cl_conlancam
         return $sql;
     }
 
-    function sql_query_lancamento_saida_manual($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_lancamento_saida_manual($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -894,7 +976,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -905,12 +987,12 @@ class cl_conlancam
         return $sql;
     }
 
-    function sql_query_lancamento_estorno_saida_manual($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_lancamento_estorno_saida_manual($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -945,7 +1027,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -956,12 +1038,12 @@ class cl_conlancam
         return $sql;
     }
 
-    function sql_query_reprocessamento($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_reprocessamento($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -975,7 +1057,7 @@ class cl_conlancam
         $sql .= " 	left join conlancamemp              on c75_codlan = c70_codlan    ";
         $sql .= " 	left join conlancamacordo           on c70_codlan = c87_codlan    ";
         $sql .= "   left join conlancaminscricaopassivo on c70_codlan = c37_conlancam ";
-        //$sql .= " 	left join empempenho                on c75_numemp = e60_numemp    ";
+        //$sql .= "     left join empempenho                on c75_numemp = e60_numemp    ";
 
         $sql2 = "";
         if ($dbwhere == "") {
@@ -990,7 +1072,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1002,7 +1084,7 @@ class cl_conlancam
     }
 
 
-    function sql_query_reprocessaMovimentacaoPatrimonial(
+    public function sql_query_reprocessaMovimentacaoPatrimonial(
         $c70_codlan = null,
         $campos = "*",
         $ordem = null,
@@ -1012,7 +1094,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1065,7 +1147,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1076,12 +1158,12 @@ class cl_conlancam
         return $sql;
     }
 
-    function sql_query_reprocessaExtraOrcamentario($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_reprocessaExtraOrcamentario($c70_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1112,7 +1194,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1132,7 +1214,7 @@ class cl_conlancam
      * @param string $dbwhere
      * @return string
      */
-    function sql_query_ValorLancamentoPorDocumentoPeriodo(
+    public function sql_query_ValorLancamentoPorDocumentoPeriodo(
         $c70_codlan = null,
         $campos = "*",
         $ordem = null,
@@ -1141,7 +1223,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1167,7 +1249,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1305,7 +1387,7 @@ class cl_conlancam
     }
 
 
-    function sql_query_reprocessaMovimentacaoBensPatrimonial(
+    public function sql_query_reprocessaMovimentacaoBensPatrimonial(
         $c70_codlan = null,
         $campos = "*",
         $ordem = null,
@@ -1314,7 +1396,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1365,7 +1447,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1490,7 +1572,6 @@ class cl_conlancam
         }
 
         return $sql;
-
     }
 
     /**
@@ -1545,34 +1626,22 @@ class cl_conlancam
                 join empresto on empresto.e91_numemp = recurso_empenho.c75_numemp
                              and empresto.e91_anousu = extract(YEAR from c70_data)
             ), recurso_receita as (
-
-               select o206_recurso as recurso_receita, c70_codlan
-                 from dados_lancamento
-                 join conlancamcorrente on conlancamcorrente.c86_conlancam = dados_lancamento.c70_codlan
-                 join cornump on cornump.k12_id = conlancamcorrente.c86_id
-                             and cornump.k12_data = conlancamcorrente.c86_data
-                             and cornump.k12_autent = conlancamcorrente.c86_autent
-                 join origemcomplementorecurso on origemcomplementorecurso.o206_numero = cornump.k12_numpre
-                                               and origemcomplementorecurso.o206_origem = 300
-              union all
-               select o206_recurso as recurso_receita, c70_codlan
-                 from dados_lancamento
-                 join conlancamcorrente on conlancamcorrente.c86_conlancam = dados_lancamento.c70_codlan
-                 join corplacaixa on corplacaixa.k82_id = conlancamcorrente.c86_id
-                                 and corplacaixa.k82_data = conlancamcorrente.c86_data
-                                 and corplacaixa.k82_autent = conlancamcorrente.c86_autent
-                 join origemcomplementorecurso on origemcomplementorecurso.o206_numero = corplacaixa.k82_seqpla
-                                               and origemcomplementorecurso.o206_origem = 200
-              union all
                select o70_codigo as recurso_receita, c70_codlan
                  from dados_lancamento
-                 join conlancamcorrente on conlancamcorrente.c86_conlancam = dados_lancamento.c70_codlan
                  join conlancamrec on conlancamrec.c74_codlan = dados_lancamento.c70_codlan
                  join orcreceita on orcreceita.o70_codrec = conlancamrec.c74_codrec
                                 and orcreceita.o70_anousu = conlancamrec.c74_anousu
-                 join corcla on corcla.k12_id = conlancamcorrente.c86_id
-                            and corcla.k12_data = conlancamcorrente.c86_data
-                            and corcla.k12_autent = conlancamcorrente.c86_autent
+
+                union
+
+                select c61_codigo as recurso_receita, c70_codlan
+                 from dados_lancamento
+                 join conlancamval on conlancamval.c69_codlan = dados_lancamento.c70_codlan
+                      and conlancamval.c69_ordem = 1
+                 join conplanoreduz on conplanoreduz.c61_reduz = conlancamval.c69_credito
+                      and conplanoreduz.c61_anousu = conlancamval.c69_anousu
+                 where not exists(
+                   select 1 from conlancamrec where conlancamrec.c74_codlan = dados_lancamento.c70_codlan)
             )
             select dados_lancamento.c71_coddoc as documento,
                    dados_lancamento.c70_codlan as lancamento,
@@ -1596,7 +1665,7 @@ class cl_conlancam
 
     /**
      * Retorna os recursos envolvidos no lancamento quando
-     * NÃO ativado o domicilio bancario
+     * Não ativado o domicílio bancario
      *
      * @param $codigoLancamento
      * @return string
@@ -1620,6 +1689,12 @@ class cl_conlancam
              join conlancamrec on conlancamrec.c74_codlan = c70_codlan
              join orcreceita on (o70_anousu, o70_codrec) = (c74_anousu, c74_codrec)
              join orcfontesdes on  (o60_codfon, o60_anousu) = (o70_codfon, o70_anousu)
+        ), recurso_retencao_receita as (
+           select o70_codigo, c70_codlan
+             from dados_lancamento
+             join conlancamrec on conlancamrec.c74_codlan = c70_codlan
+             join orcreceita on (o70_anousu, o70_codrec) = (c74_anousu, c74_codrec)
+             where c71_coddoc in (6000, 6001, 6006, 6007)
         ), recurso_conta_pagadora as (
 
             select c61_codigo, c69_codlan
@@ -1627,11 +1702,11 @@ class cl_conlancam
               left join conlancamrec on conlancamrec.c74_codlan = dados_lancamento.c70_codlan
               join conlancamval on conlancamval.c69_codlan = dados_lancamento.c70_codlan
               join conplanoreduz on c61_anousu = c69_anousu
-                                and c61_reduz = (case
-                                                    when c71_coddoc in (150, 153, 160, 163) then c69_debito
-                                                    when c71_coddoc in (151, 152, 161, 162) then c69_credito
-                                                 end
-                                                )
+                   and c61_reduz = (case
+                                       when c71_coddoc in (150, 153, 160, 163) then c69_debito
+                                       when c71_coddoc in (151, 152, 161, 162) then c69_credito
+                                    end
+                                   )
             where c69_ordem = 1
               and c71_coddoc in (160, 161, 162, 163, 150, 151, 152, 153)
               and c74_codlan is null
@@ -1662,7 +1737,7 @@ class cl_conlancam
         ), recurso_empenho as (
           select o206_recurso, c75_codlan, c75_numemp, e60_coddot, c71_coddoc, c70_data
             from dados_empenho
-            where c53_tipo NOT IN (30, 31)
+            where c53_tipo NOT IN (30, 31, 100)
         ), recurso_apropriacao as (
            select o58_codigo, c75_codlan
              from dados_empenho
@@ -1680,54 +1755,17 @@ class cl_conlancam
           select *
             from recursos_suplementacao
            where not exists( select 1 from conlancamrec where c74_codlan = c70_codlan)
-        ), recurso_receita_suplementacao as (
-          select o58_codigo, c70_codlan
-            from recursos_suplementacao
-            join conlancamrec ON c74_codlan = c70_codlan
         ), resto_a_pagar as (
           select e91_recurso as recurso_resto, c75_codlan
             from recurso_empenho
             join empresto on empresto.e91_numemp = recurso_empenho.c75_numemp
                          and empresto.e91_anousu = extract(YEAR from c70_data)
         ), recurso_receita as (
-           select o206_recurso as recurso_receita, c70_codlan
-             from dados_lancamento
-             join conlancamcorrente on conlancamcorrente.c86_conlancam = dados_lancamento.c70_codlan
-             join cornump on cornump.k12_id = conlancamcorrente.c86_id
-                         and cornump.k12_data = conlancamcorrente.c86_data
-                         and cornump.k12_autent = conlancamcorrente.c86_autent
-             join origemcomplementorecurso on origemcomplementorecurso.o206_numero = cornump.k12_numpre
-                                           and origemcomplementorecurso.o206_origem = 300
-           where not exists (select * from receita_com_desdobramento)
-          union all
-           select o206_recurso as recurso_receita, c70_codlan
-             from dados_lancamento
-             join conlancamcorrente on conlancamcorrente.c86_conlancam = dados_lancamento.c70_codlan
-             join corplacaixa on corplacaixa.k82_id = conlancamcorrente.c86_id
-                             and corplacaixa.k82_data = conlancamcorrente.c86_data
-                             and corplacaixa.k82_autent = conlancamcorrente.c86_autent
-             join origemcomplementorecurso on origemcomplementorecurso.o206_numero = corplacaixa.k82_seqpla
-                                           and origemcomplementorecurso.o206_origem = 200
-            where not exists (select * from receita_com_desdobramento)
-          union all
            select o70_codigo as recurso_receita, c70_codlan
              from dados_lancamento
-             join conlancamcorrente on conlancamcorrente.c86_conlancam = dados_lancamento.c70_codlan
              join conlancamrec on conlancamrec.c74_codlan = dados_lancamento.c70_codlan
              join orcreceita on orcreceita.o70_codrec = conlancamrec.c74_codrec
                             and orcreceita.o70_anousu = conlancamrec.c74_anousu
-             join corcla on corcla.k12_id = conlancamcorrente.c86_id
-                        and corcla.k12_data = conlancamcorrente.c86_data
-                        and corcla.k12_autent = conlancamcorrente.c86_autent
-            where not exists (select * from receita_com_desdobramento)
-           union all
-           select o70_codigo as recurso_receita, c70_codlan
-             from dados_lancamento
-             join conlancamcorrente on conlancamcorrente.c86_conlancam = dados_lancamento.c70_codlan
-             join conlancamrec on conlancamrec.c74_codlan = dados_lancamento.c70_codlan
-             join orcreceita on orcreceita.o70_codrec = conlancamrec.c74_codrec
-                            and orcreceita.o70_anousu = conlancamrec.c74_anousu
-            where exists (select * from receita_com_desdobramento)
         ), abertura_despesa as (
           select o58_codigo as recurso,  c70_codlan
             from dados_lancamento
@@ -1758,8 +1796,8 @@ class cl_conlancam
                recurso_conta_pagadora.c61_codigo as recurso_conta_pagadora,
                recurso_empenho.o206_recurso as recurso_empenho,
                recurso_apropriacao.o58_codigo as recurso_apropriacao,
+               recurso_retencao_receita.o70_codigo as recurso_retencao_receita,
                recurso_despesa_suplementacao.o58_codigo as dotacao_suplementacao,
-               recurso_receita_suplementacao.o58_codigo as receita_suplementacao,
                resto_a_pagar.recurso_resto,
                recurso_receita.recurso_receita,
                abertura_exercicio.recurso as abertura_exercicio
@@ -1768,21 +1806,30 @@ class cl_conlancam
          left join recurso_conta_pagadora on recurso_conta_pagadora.c69_codlan = dados_lancamento.c70_codlan
          left join recurso_apropriacao on recurso_apropriacao.c75_codlan = dados_lancamento.c70_codlan
          left join recurso_despesa_suplementacao on recurso_despesa_suplementacao.c70_codlan = dados_lancamento.c70_codlan
-         left join recurso_receita_suplementacao on recurso_receita_suplementacao.c70_codlan = dados_lancamento.c70_codlan
          left join resto_a_pagar on resto_a_pagar.c75_codlan = dados_lancamento.c70_codlan
          left join recurso_receita on recurso_receita.c70_codlan = dados_lancamento.c70_codlan
          left join abertura_exercicio  on abertura_exercicio.c70_codlan = dados_lancamento.c70_codlan
+         left join recurso_retencao_receita on recurso_retencao_receita.c70_codlan = dados_lancamento.c70_codlan
         ";
 
         return $sql;
     }
 
+    public function extrai_c70codlan($sql)
+    {
+        $pattern = '/values\s*\(([^)]+)\)/i';
+        preg_match($pattern, $sql, $matches);
+        $valuesPart = $matches[1];
+        $pattern = '/\b(\d+)\b/';
+        preg_match($pattern, $valuesPart, $matches);
+        $codigo = $matches[1];
+        $GLOBALS["codlan_c70"] = $codigo;
+    }
 
     public function sql_despesaExtraOrcamentaria($instituicoes, $datainicial, $datafinal, $anousu)
     {
 
-
-       $sql = <<<SQL
+        $sql = <<<SQL
 
         SELECT
         (select c60_descr
@@ -2022,20 +2069,12 @@ class cl_conlancam
 
 SQL;
 
-       return $sql;
-
-
+        return $sql;
     }
 
-    public function sql_receitaExtraOrcamentaria($instituicoes,  $datainicial, $datafinal, $anousu)
+    public function sql_receitaExtraOrcamentaria($instituicoes, $datainicial, $datafinal, $anousu)
     {
-
-
-
         $sql = <<<SQL
-
-
-
 SELECT c71_codlan,
        (select c69_credito from conlancamval where c69_codlan = c71_codlan and c69_ordem = 1) as c69_credito,
        (select c60_descr
@@ -2164,368 +2203,370 @@ ORDER BY c71_data,
 
 SQL;
 
-
-      return $sql;
-
+        return $sql;
     }
 
 
-
-    public function sql_conferenciaPorRecurso(stdClass $filtros)
+    public function sql_conferenciaPorRecurso(stdClass $filtros, $estrutural = '82111')
     {
         $exercicio = $filtros->ano;
-        $exercicioAnterior = $exercicio -1;
 
         $sql = <<<SQL
 
 select * from (
 
-select recurso,
-       ( select o15_descr from orctiporec where o15_recurso = recurso limit 1 ) as o15_descr,
-       saldo_ativo_at_f,
+    select
+           orctiporec.o15_codigo,
+           orctiporec.o15_recurso as subrecurso,
+           orctiporec.o15_complemento,
+           fonterecurso.gestao,
+           fonterecurso.codigo_siconfi,
+           fonterecurso.descricao,
+           saldo_ativo_at_f,
 
-       round(valor_empenho - valor_liquidado ,2) as valor_a_liquidar,
-       round(valor_liquidado - valor_pago ,2) as valor_a_pagar,
-       round(valor_a_liquidar_rp_inicial - valor_anulado_rp_nao_processado - valor_liquidado_rp ,2) as valor_a_liquidar_rp,
-       round(valor_a_pagar_rp_inicial + valor_liquidado_rp - valor_pago_rp - valor_pago_rp_nao - valor_anulado_rp_processado ,2) as valor_a_pagar_rp,
-       round(saldo_ativo_at_f
-             -round(valor_empenho - valor_liquidado ,2)
-             -round(valor_liquidado - valor_pago ,2)
-             -round(valor_a_liquidar_rp_inicial - valor_anulado_rp_nao_processado - valor_liquidado_rp ,2)
-             -round(valor_a_pagar_rp_inicial + valor_liquidado_rp - valor_pago_rp - valor_pago_rp_nao - valor_anulado_rp_processado ,2) ,2) as total,
-       valor_disponibilidade,
-       valor_disponibilidade -
-            ( round(saldo_ativo_at_f
-             -round(valor_empenho - valor_liquidado ,2)
-             -round(valor_liquidado - valor_pago ,2)
-             -round(valor_a_liquidar_rp_inicial - valor_anulado_rp_nao_processado - valor_liquidado_rp ,2)
-             -round(valor_a_pagar_rp_inicial + valor_liquidado_rp - valor_pago_rp - valor_pago_rp_nao - valor_anulado_rp_processado ,2) ,2) ) as diferenca
-from (
-select o15_recurso as recurso,
-       round(sum(case when tipo = 'sp' then valor_empenho else 0 end),2) as saldo_ativo_at_f ,
-       round(sum(case when tipo = 'e' then valor_empenho else 0 end),2) as valor_empenho ,
-       round(sum(case when tipo = 'l' then valor_empenho else 0 end),2) as valor_liquidado,
-       round(sum(case when tipo = 'p' then valor_empenho else 0 end),2) as valor_pago,
-       round(sum(case when tipo = 'rl' then valor_empenho else 0 end),2) as valor_liquidado_rp,
-       round(sum(case when tipo = 'rp' then valor_empenho else 0 end),2) as valor_pago_rp,
-       round(sum(case when tipo = 'rnp' then valor_empenho else 0 end),2) as valor_pago_rp_nao,
-       round(sum(case when tipo = 'rap' then valor_empenho else 0 end),2) as valor_anulado_rp_processado,
-       round(sum(case when tipo = 'ranp' then valor_empenho else 0 end),2) as valor_anulado_rp_nao_processado,
-       round(sum(case when tipo = 'restos_a_liquidar' then valor_empenho else 0 end),2) as valor_a_liquidar_rp_inicial,
-       round(sum(case when tipo = 'restos_a_pagar' then valor_empenho else 0 end),2) as valor_a_pagar_rp_inicial,
-       round(sum(case when tipo = 'disponibilidade' then valor_empenho else 0 end),2) as valor_disponibilidade
-from (
-    select o15_recurso,
-           'sp'::varchar as tipo,
-           round(
-               sum(case when fc_planosaldonovo_array[6] = 'C' then fc_planosaldonovo_array[4]::float8*-1
-               else fc_planosaldonovo_array[4]::float8 end),2) as valor_empenho
-      from (select o15_recurso,
-	               fc_planosaldonovo_array(c61_anousu, c61_reduz, '$filtros->dataInicial',  '$filtros->dataFinal', false)
-	          from conplanoreduz
-	          join conplano on c60_anousu = c61_anousu
-		           and c60_codcon = c61_codcon
-	         inner join orctiporec on o15_codigo = c61_codigo
-	        where c61_anousu = $filtros->ano
-	          and c61_instit in ($filtros->instituicoes)
-	          and c60_identificadorfinanceiro = 'F'
-	          and substr(c60_estrut,1,1) = '1'
-	       ) as x
-       group by 1,2
+           round(valor_empenho - valor_liquidado ,2) as valor_a_liquidar,
+           round(valor_liquidado - valor_pago ,2) as valor_a_pagar,
+           round(valor_a_liquidar_rp_inicial - valor_anulado_rp_nao_processado - valor_liquidado_rp ,2) as valor_a_liquidar_rp,
+           round(valor_a_pagar_rp_inicial + valor_liquidado_rp - valor_pago_rp - valor_pago_rp_nao - valor_anulado_rp_processado ,2) as valor_a_pagar_rp,
+           round(saldo_ativo_at_f
+                 -round(valor_empenho - valor_liquidado ,2)
+                 -round(valor_liquidado - valor_pago ,2)
+                 -round(valor_a_liquidar_rp_inicial - valor_anulado_rp_nao_processado - valor_liquidado_rp ,2)
+                 -round(valor_a_pagar_rp_inicial + valor_liquidado_rp - valor_pago_rp - valor_pago_rp_nao - valor_anulado_rp_processado ,2) ,2) as total,
+           valor_disponibilidade,
+           valor_disponibilidade -
+                ( round(saldo_ativo_at_f
+                 -round(valor_empenho - valor_liquidado ,2)
+                 -round(valor_liquidado - valor_pago ,2)
+                 -round(valor_a_liquidar_rp_inicial - valor_anulado_rp_nao_processado - valor_liquidado_rp ,2)
+                 -round(valor_a_pagar_rp_inicial + valor_liquidado_rp - valor_pago_rp - valor_pago_rp_nao - valor_anulado_rp_processado ,2) ,2) ) as diferenca
+    from (
+        select
+               o15_codigo,
+               round(sum(case when tipo = 'sp' then valor_empenho else 0 end),2) as saldo_ativo_at_f ,
+               round(sum(case when tipo = 'e' then valor_empenho else 0 end),2) as valor_empenho ,
+               round(sum(case when tipo = 'l' then valor_empenho else 0 end),2) as valor_liquidado,
+               round(sum(case when tipo = 'p' then valor_empenho else 0 end),2) as valor_pago,
+               round(sum(case when tipo = 'rl' then valor_empenho else 0 end),2) as valor_liquidado_rp,
+               round(sum(case when tipo = 'rp' then valor_empenho else 0 end),2) as valor_pago_rp,
+               round(sum(case when tipo = 'rnp' then valor_empenho else 0 end),2) as valor_pago_rp_nao,
+               round(sum(case when tipo = 'rap' then valor_empenho else 0 end),2) as valor_anulado_rp_processado,
+               round(sum(case when tipo = 'ranp' then valor_empenho else 0 end),2) as valor_anulado_rp_nao_processado,
+               round(sum(case when tipo = 'restos_a_liquidar' then valor_empenho else 0 end),2) as valor_a_liquidar_rp_inicial,
+               round(sum(case when tipo = 'restos_a_pagar' then valor_empenho else 0 end),2) as valor_a_pagar_rp_inicial,
+               round(sum(case when tipo = 'disponibilidade' then valor_empenho else 0 end),2) as valor_disponibilidade
+        from (
+            select o15_codigo,
+                   'sp'::varchar as tipo,
+                   round(sum(
+                       case when fc_planosaldonovo_array[6] = 'C' then fc_planosaldonovo_array[4]::float8*-1
+                       else fc_planosaldonovo_array[4]::float8 end), 2
+                   ) as valor_empenho
+             from (
+                select o15_codigo,
+                       fc_planosaldonovo_array(c61_anousu, c61_reduz, '$filtros->dataInicial',  '$filtros->dataFinal', false)
+                  from conplanoreduz
+                  join conplano on c60_anousu = c61_anousu
+                       and c60_codcon = c61_codcon
+                 inner join orctiporec on o15_codigo = c61_codigo
+                where c61_anousu = $filtros->ano
+                  and c61_instit in ($filtros->instituicoes)
+                  and c60_identificadorfinanceiro = 'F'
+                  and substr(c60_estrut,1,1) = '1'
+           ) as x
+           group by 1,2
 
-union all
-    select * from (
-        select o15_recurso,
-               'e'::varchar as tipo,
-               (round(case when c53_tipo = 11 then c70_valor * -1 else c70_valor end,2)) as valor_empenho
-        from conlancam
-             join conlancamemp on c75_codlan = c70_codlan
-             join conlancamdoc on c71_codlan = c70_codlan
-             join conhistdoc on c53_coddoc = c71_coddoc
-             join conlancamcomplementorecurso on o201_codlan = c70_codlan
-             join orctiporec on o15_codigo = o201_orctiporec
-             join empempenho on e60_numemp = c75_numemp
-        where c70_data between  '$filtros->dataInicial' and '$filtros->dataFinal'
-          and e60_instit  in ($filtros->instituicoes)
-          and e60_anousu = $filtros->ano
-          and c53_tipo in (10,11)
-         ) as empenhado
+           union all
 
-union all
+           select *
+             from (
+                select o15_codigo,
+                       'e'::varchar as tipo,
+                       (round(case when c53_tipo = 11 then c70_valor * -1 else c70_valor end, 2)) as valor_empenho
+                  from conlancam
+                       join conlancamemp on c75_codlan = c70_codlan
+                       join conlancamdoc on c71_codlan = c70_codlan
+                       join conhistdoc on c53_coddoc = c71_coddoc
+                       join conlancamcomplementorecurso on o201_codlan = c70_codlan
+                       join orctiporec on o15_codigo = o201_orctiporec
+                       join empempenho on e60_numemp = c75_numemp
+                  where c70_data between  '$filtros->dataInicial' and '$filtros->dataFinal'
+                    and e60_instit  in ($filtros->instituicoes)
+                    and e60_anousu = $filtros->ano
+                    and c53_tipo in (10,11)
+           ) as empenhado
 
-    select * from (
-    	select o15_recurso,
-    	       'l'::varchar as tipo,
-               (round(case when c53_tipo = 21 then c70_valor * -1 else c70_valor end,2)) as valor_liquidado
-          from conlancam
-          join conlancamemp on c75_codlan = c70_codlan
-          join conlancamdoc on c71_codlan = c70_codlan
-          join conhistdoc on c53_coddoc = c71_coddoc
-          join conlancamcomplementorecurso on o201_codlan = c70_codlan
-          join orctiporec on o15_codigo = o201_orctiporec
-          join empempenho on e60_numemp = c75_numemp
-         where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-    	  and e60_instit  in ($filtros->instituicoes)
-    	  and e60_anousu = $filtros->ano
-          and c53_tipo in (20,21)
-         ) as liquidado
+          union all
 
-union all
+          select *
+            from (
+               select o15_codigo,
+                      'l'::varchar as tipo,
+                      (round(case when c53_tipo = 21 then c70_valor * -1 else c70_valor end,2)) as valor_liquidado
+                 from conlancam
+                 join conlancamemp on c75_codlan = c70_codlan
+                 join conlancamdoc on c71_codlan = c70_codlan
+                 join conhistdoc on c53_coddoc = c71_coddoc
+                 join conlancamcomplementorecurso on o201_codlan = c70_codlan
+                 join orctiporec on o15_codigo = o201_orctiporec
+                 join empempenho on e60_numemp = c75_numemp
+                where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
+                 and e60_instit  in ($filtros->instituicoes)
+                 and e60_anousu = $filtros->ano
+                 and c53_tipo in (20,21)
+          ) as liquidado
 
-    select * from (
-       select o15_recurso,
-	          'p'::varchar as tipo,
-              (round(case when c53_tipo = 31 then c70_valor * -1 else c70_valor end,2)) as valor_pago
-        from conlancam
-        join conlancamemp on c75_codlan = c70_codlan
-        join conlancamdoc on c71_codlan = c70_codlan
-        join conhistdoc on c53_coddoc = c71_coddoc
-        join conlancamcomplementorecurso on o201_codlan = c70_codlan
-        join orctiporec on o15_codigo = o201_orctiporec
-	    join empempenho on e60_numemp = c75_numemp
-       where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-	     and e60_instit  in ($filtros->instituicoes)
-	     and e60_anousu = $filtros->ano
-         and c53_tipo in (30,31)
-     ) as pago
+          union all
 
-union all
+          select *
+           from (
+              select o15_codigo,
+                     'p'::varchar as tipo,
+                     (round(case when c53_tipo = 31 then c70_valor * -1 else c70_valor end,2)) as valor_pago
+               from conlancam
+               join conlancamemp on c75_codlan = c70_codlan
+               join conlancamdoc on c71_codlan = c70_codlan
+               join conhistdoc on c53_coddoc = c71_coddoc
+               join conlancamcomplementorecurso on o201_codlan = c70_codlan
+               join orctiporec on o15_codigo = o201_orctiporec
+               join empempenho on e60_numemp = c75_numemp
+              where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
+               and e60_instit  in ($filtros->instituicoes)
+               and e60_anousu = $filtros->ano
+               and c53_tipo in (30,31)
+          ) as pago
 
-    select * from (
-        select o15_recurso,
-               'restos_a_liquidar'::varchar as tipo,
-               (e91_vlremp - e91_vlranu - e91_vlrliq) as valor_empenho_rp
-         from empresto
-         join orctiporec on o15_codigo = e91_recurso
-	     join empempenho on e60_numemp = e91_numemp
-        where e91_anousu = $filtros->ano
-          and e60_instit  in ($filtros->instituicoes)
+          union all
 
-) as valor_a_liquidado_rp
+         select *
+           from (
+                select o15_codigo,
+                       'restos_a_liquidar'::varchar as tipo,
+                       (e91_vlremp - e91_vlranu - e91_vlrliq) as valor_empenho_rp
+                 from empresto
+                 join orctiporec on o15_codigo = e91_recurso
+                 join empempenho on e60_numemp = e91_numemp
+                where e91_anousu = $filtros->ano
+                  and e60_instit  in ($filtros->instituicoes)
+        ) as valor_a_liquidado_rp
 
-union all
+        union all
 
-    select * from (
-        select o15_recurso,
-               'restos_a_pagar'::varchar as tipo,
-               ( e91_vlrliq - e91_vlrpag ) as valor_empenho_rp
-         from empresto
-         join orctiporec on o15_codigo = e91_recurso
-	     join empempenho on e60_numemp = e91_numemp
-        where e91_anousu = $filtros->ano
-          and e60_instit  in ($filtros->instituicoes)
-    ) as valor_a_pagar_rp
+        select * from (
+            select o15_codigo,
+                   'restos_a_pagar'::varchar as tipo,
+                   ( e91_vlrliq - e91_vlrpag ) as valor_empenho_rp
+             from empresto
+             join orctiporec on o15_codigo = e91_recurso
+             join empempenho on e60_numemp = e91_numemp
+            where e91_anousu = $filtros->ano
+              and e60_instit  in ($filtros->instituicoes)
+        ) as valor_a_pagar_rp
 
-union all
+        union all
 
-select * from (
-	select o15_recurso,
-	       'rap'::varchar as tipo,
-               (round(case when c53_tipo = 11 then c70_valor else c70_valor end,2)) as valor_liquidado
-        from conlancam
-             join conlancamemp on c75_codlan = c70_codlan
-             join conlancamdoc on c71_codlan = c70_codlan
-             join conhistdoc on c53_coddoc = c71_coddoc
-             join conlancamcomplementorecurso on o201_codlan = c70_codlan
-             join orctiporec on o15_codigo = o201_orctiporec
-	     join empempenho on e60_numemp = c75_numemp
-        where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-	  and e60_instit  in ($filtros->instituicoes)
-	  and e60_anousu < $filtros->ano
-          and c53_coddoc in (31)
+        select * from (
+            select o15_codigo,
+                   'rap'::varchar as tipo,
+                   (round(case when c53_tipo = 11 then c70_valor else c70_valor end,2)) as valor_liquidado
+                from conlancam
+                     join conlancamemp on c75_codlan = c70_codlan
+                     join conlancamdoc on c71_codlan = c70_codlan
+                     join conhistdoc on c53_coddoc = c71_coddoc
+                     join conlancamcomplementorecurso on o201_codlan = c70_codlan
+                     join orctiporec on o15_codigo = o201_orctiporec
+                 join empempenho on e60_numemp = c75_numemp
+                where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
+              and e60_instit  in ($filtros->instituicoes)
+              and e60_anousu < $filtros->ano
+                  and c53_coddoc in (31)
 
-     ) as estorno_rp_processado
+        ) as estorno_rp_processado
 
-union all
+        union all
 
-select * from (
-	select o15_recurso,
-	       'ranp'::varchar as tipo,
-               (round(case when c53_tipo = 11 then c70_valor else c70_valor end,2)) as valor_liquidado
-        from conlancam
-             join conlancamemp on c75_codlan = c70_codlan
-             join conlancamdoc on c71_codlan = c70_codlan
-             join conhistdoc on c53_coddoc = c71_coddoc
-             join conlancamcomplementorecurso on o201_codlan = c70_codlan
-             join orctiporec on o15_codigo = o201_orctiporec
-	     join empempenho on e60_numemp = c75_numemp
-        where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-	  and e60_instit  in ($filtros->instituicoes)
-	  and e60_anousu < $filtros->ano
-          and c53_coddoc in (32)
+        select * from (
+            select o15_codigo,
+                   'ranp'::varchar as tipo,
+                   (round(case when c53_tipo = 11 then c70_valor else c70_valor end,2)) as valor_liquidado
+                from conlancam
+                     join conlancamemp on c75_codlan = c70_codlan
+                     join conlancamdoc on c71_codlan = c70_codlan
+                     join conhistdoc on c53_coddoc = c71_coddoc
+                     join conlancamcomplementorecurso on o201_codlan = c70_codlan
+                     join orctiporec on o15_codigo = o201_orctiporec
+                 join empempenho on e60_numemp = c75_numemp
+                where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
+              and e60_instit  in ($filtros->instituicoes)
+              and e60_anousu < $filtros->ano
+                  and c53_coddoc in (32)
 
-     ) as estorno_rp_nao_processado
+        ) as estorno_rp_nao_processado
 
-union all
+        union all
 
-select * from (
-	select o15_recurso,
-	       'rl'::varchar as tipo,
-               (round(case when c53_tipo = 21 then c70_valor * -1 else c70_valor end,2)) as valor_liquidado
-        from conlancam
-             join conlancamemp on c75_codlan = c70_codlan
-             join conlancamdoc on c71_codlan = c70_codlan
-             join conhistdoc on c53_coddoc = c71_coddoc
-             join conlancamcomplementorecurso on o201_codlan = c70_codlan
-             join orctiporec on o15_codigo = o201_orctiporec
-	     join empempenho on e60_numemp = c75_numemp
-        where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-	  and e60_instit  in ($filtros->instituicoes)
-	  and e60_anousu < $filtros->ano
-          and c53_tipo in (20,21)
+        select * from (
+            select o15_codigo,
+                   'rl'::varchar as tipo,
+                       (round(case when c53_tipo = 21 then c70_valor * -1 else c70_valor end,2)) as valor_liquidado
+                from conlancam
+                     join conlancamemp on c75_codlan = c70_codlan
+                     join conlancamdoc on c71_codlan = c70_codlan
+                     join conhistdoc on c53_coddoc = c71_coddoc
+                     join conlancamcomplementorecurso on o201_codlan = c70_codlan
+                     join orctiporec on o15_codigo = o201_orctiporec
+                 join empempenho on e60_numemp = c75_numemp
+                where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
+              and e60_instit  in ($filtros->instituicoes)
+              and e60_anousu < $filtros->ano
+                  and c53_tipo in (20,21)
+         ) as restos_liquidados
 
-     ) as restos_liquidados
+        union all
 
-union all
+        select * from (
+               select o15_codigo,
+                   'rp'::varchar as tipo,
+                       (round(case when c53_tipo = 31 then c70_valor * -1 else c70_valor end,2)) as valor_pago
+                from conlancam
+                join conlancamemp on c75_codlan = c70_codlan
+                join conlancamdoc on c71_codlan = c70_codlan
+                join conhistdoc on c53_coddoc = c71_coddoc
+                join conlancamcomplementorecurso on o201_codlan = c70_codlan
+                join orctiporec on o15_codigo = o201_orctiporec
+                join empempenho on e60_numemp = c75_numemp
+                where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
+                  and e60_instit in ($filtros->instituicoes)
+                  and e60_anousu < $filtros->ano
+                  and c53_coddoc in (35,6008, 36, 6009)
+        ) as restos_pagos_processados
 
-select * from (
-       select o15_recurso,
-	       'rp'::varchar as tipo,
-               (round(case when c53_tipo = 31 then c70_valor * -1 else c70_valor end,2)) as valor_pago
-        from conlancam
-        join conlancamemp on c75_codlan = c70_codlan
-        join conlancamdoc on c71_codlan = c70_codlan
-        join conhistdoc on c53_coddoc = c71_coddoc
-        join conlancamcomplementorecurso on o201_codlan = c70_codlan
-        join orctiporec on o15_codigo = o201_orctiporec
-	    join empempenho on e60_numemp = c75_numemp
-        where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-	      and e60_instit in ($filtros->instituicoes)
-	      and e60_anousu < $filtros->ano
-          and c53_coddoc in (35,6008, 36, 6009)
+        union all
 
-     ) as restos_pagos_processados
-
-union all
-
-select * from (
-       select o15_recurso,
-	       'rnp'::varchar as tipo,
-               (round(case when c53_tipo = 31 then c70_valor * -1 else c70_valor end,2)) as valor_pago
-        from conlancam
-             join conlancamemp on c75_codlan = c70_codlan
-             join conlancamdoc on c71_codlan = c70_codlan
-             join conhistdoc on c53_coddoc = c71_coddoc
-             join conlancamcomplementorecurso on o201_codlan = c70_codlan
-             join orctiporec on o15_codigo = o201_orctiporec
-	     join empempenho on e60_numemp = c75_numemp
-        where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-	  and e60_instit in ($filtros->instituicoes)
-	  and e60_anousu < $filtros->ano
-          and c53_coddoc in (37,6010, 38, 6011)
-
-     ) as restos_pagos_nao_processados
+        select * from (
+               select o15_codigo,
+                   'rnp'::varchar as tipo,
+                       (round(case when c53_tipo = 31 then c70_valor * -1 else c70_valor end,2)) as valor_pago
+                from conlancam
+                     join conlancamemp on c75_codlan = c70_codlan
+                     join conlancamdoc on c71_codlan = c70_codlan
+                     join conhistdoc on c53_coddoc = c71_coddoc
+                     join conlancamcomplementorecurso on o201_codlan = c70_codlan
+                     join orctiporec on o15_codigo = o201_orctiporec
+                 join empempenho on e60_numemp = c75_numemp
+                where c70_data between '$filtros->dataInicial' and '$filtros->dataFinal'
+              and e60_instit in ($filtros->instituicoes)
+              and e60_anousu < $filtros->ano
+                  and c53_coddoc in (37,6010, 38, 6011)
+         ) as restos_pagos_nao_processados
 
 
-union all
+        union all
 
-select fonte_recurso,
-       'disponibilidade'::varchar as tipo,
-       sum(saldo_anterior)*-1 as saldo
-from (
+        select o15_codigo,
+               'disponibilidade'::varchar as tipo,
+               (saldo_inicial + debito - credito) *-1 as saldo
+          from (
+              select c144_valor::int as o15_codigo,
+                     round(sum(case when c143_natureza = 'C' then c143_saldo *- 1 else c143_saldo end),2) as saldo_inicial,
+                     0 as credito,
+                     0 as debito
+                from contabilidade.conplanoexecontacorrente
+                join contabilidade.conplanoexecontacorrenteatributo on c144_conplanoexecontacorrente = conplanoexecontacorrente.id
+                join contabilidade.conplanoreduz on (c61_reduz, c61_anousu) = (c143_conplanoreduz, c143_exercicio)
+                join contabilidade.conplano on (c60_codcon, c60_anousu) = (c61_codcon, c61_anousu)
+               where c143_conplanosistema = 100
+                 and c143_exercicio = $filtros->ano
+                 and c61_instit in ({$filtros->instituicoes})
+                 and c60_estrut like '{$estrutural}%'
+              group by 1,3,4
 
-SELECT fonte_recurso, saldo_anterior*-1 as saldo_anterior
-from (
-    select replace(
-        case
-            when position('#FR' IN c125_hashcontaatributos) > 0 THEN substring(c125_hashcontaatributos, position('#PO' IN c125_hashcontaatributos) + 4, position('#FR' IN c125_hashcontaatributos) - 12) end, '#FR', '') as fonte_recurso, sum(case when c125_natureza = 'D' then c125_valor * -1 else c125_valor end) as saldo_anterior
-      from conplanoatributosaldo
-     where c125_hashcontaatributos ilike '82111%'
-       and c125_conplanosistema = 1
-       and c125_mesusu = 12
-       and c125_anousu = $exercicioAnterior
-       and (c125_hashcontaatributos like '%'||(select codtrib from db_config where codigo  in ($filtros->instituicoes) )||'#PO%')
-       and c125_tiposaldo = 2 group by 1 order by 1) as x
+              union
 
-union all
+              select fc_recurso_conta_lancamento(c69_codlan, c69_credito, 'C') as o15_codigo,
+                     0 as saldo_inicial,
+                     sum(round(c69_valor, 2)) as credito,
+                     0 as debito
+                from conlancam
+                join conlancamval on c69_codlan = c70_codlan
+                join conplanoreduz on c61_reduz = c69_credito
+                     and c61_anousu = c69_anousu
+                join contabilidade.conplano on (c60_codcon, c60_anousu) = (c61_codcon, c61_anousu)
 
-select recurso,
-       (valor_debito - valor_credito) as saldo_final
+               where c69_anousu = $filtros->ano
+                 and c61_instit in ({$filtros->instituicoes})
+                 and c60_estrut like '{$estrutural}%'
+                 and c70_data <= '$filtros->dataFinal'
+               group by 1,2,4
+              union
 
-from (with lancamentos as ( select c124_sequencial as codigo,
-		                   c124_data as data,
-				   c124_natureza as natureza,
-				   c124_valor as valor,
-				   c124_lancamento as codigo_lancamento,
-				   c71_coddoc as documento,
-			           c123_reduzido as reduzido,
-				   c60_estrut as estrutural,
-				   c60_descr as nome_conta,
-				   c123_valor as valor_atributo,
-				   c121_sigla as sigla_atributo,
-				   c121_sequencial as ordem,
-				   c124_tipo as tipo
-			    from contabilidade.infocomplementarvalor
-			         join contabilidade.conplanoatributolancamentos on c124_sequencial = c123_conplanoatributolancamentos
-				 join contabilidade.conplanoinfocomplementar on c121_sequencial = c123_infocomplementar
-				 join contabilidade.conplanoreduz on c61_reduz = c123_reduzido and {$exercicio} = c61_anousu
-				 join contabilidade.conplano on c61_codcon = c60_codcon and c60_anousu = c61_anousu
-				 left join contabilidade.conlancam on c70_codlan = c124_lancamento
-				 left join contabilidade.conlancamdoc on c71_codlan = c70_codlan
-			    where c124_data between '$filtros->dataInicial' and '$filtros->dataFinal'
-			      and c123_conplanosistema = 1
-			      and c124_tipo <> '1'
-			      and c121_sequencial = 3
-			      and c60_estrut ilike '82111%'
-			      and c61_instit in ($filtros->instituicoes)
-			    order by c124_sequencial,
-			             c71_coddoc,
-				     c124_data,
-				     c123_reduzido,
-				     c121_sequencial,
-				     c124_lancamento, c60_estrut ),
-			   conta_corrente as ( select codigo,
-				                      data,
-						      natureza,
-						      valor,
-						      codigo_lancamento,
-						      reduzido,
-						      estrutural,
-						      nome_conta,
-						      tipo,
-						      valor_atributo as recurso_id
-						from  lancamentos
-						order by codigo,
-						         data,
-							 natureza,
-							 valor,
-							 codigo_lancamento,
-							 reduzido,
-							 estrutural ),
-						totaliza as (
-						    select recurso_id,
-							       round(coalesce(sum( CASE WHEN (DATA < '$filtros->dataInicial' or tipo = '1') AND natureza = 'D' THEN valor * -1 WHEN (DATA < '$filtros->dataInicial' :: date or tipo = '1') AND natureza = 'C' THEN valor END), 0), 2 ) AS saldo_anterior,
-							       round(coalesce(sum( case when DATA >= '$filtros->dataInicial' and natureza = 'D' and tipo = '2' then valor end), 0), 2 ) as valor_debito,
-								   round(coalesce(sum( case when DATA >= '$filtros->dataInicial' and natureza = 'C' and tipo = '2' then valor end), 0), 2 ) as valor_credito
-							  from conta_corrente
-							 where data between '$filtros->dataInicial' and '$filtros->dataFinal'
-						     GROUP by recurso_id
-						     order by recurso_id )
-						select o15_recurso as recurso ,
-						       saldo_anterior ,
-						       valor_debito ,
-						       valor_credito ,
-						       o15_descr as descricao
-						FROM totaliza
-						     JOIN orctiporec ON o15_codigo = recurso_id::int
-						ORDER BY o15_recurso, o15_descr )
-					as tabelao
+              select fc_recurso_conta_lancamento(c69_codlan, c69_debito, 'D') ,
+                     0 as saldo_inicial,
+                     0 as credito,
+                     sum(round(c69_valor, 2)) as debito
+                 from conlancam
+                 join conlancamval on c69_codlan = c70_codlan
+                 join conplanoreduz on c61_reduz = c69_debito
+                      and c61_anousu = c69_anousu
+                 join contabilidade.conplano on (c60_codcon, c60_anousu) = (c61_codcon, c61_anousu)
 
-) as saldo
-group by 1
+                where c69_anousu = $filtros->ano
+                  and c61_instit in ({$filtros->instituicoes})
+                  and c60_estrut like '{$estrutural}%'
+                  and c70_data <= '$filtros->dataFinal'
+                group by 1,2,3
 
+        ) as saldo
+
+    ) as x
+    group by 1
 ) as x
-group by 1
+join orctiporec on orctiporec.o15_codigo = x.o15_codigo
+join fonterecurso on orctiporec_id = x.o15_codigo
+     and exercicio = $filtros->ano
 ) as x
-
-) as x
-order by 1
-
-
+order by gestao, subrecurso, o15_complemento
 SQL;
 
         return $sql;
+    }
 
+
+    public function sql_query_receita_planoreceita($campos = "*",$ordem = null, $where = null,$groupBy =null)
+    {
+        $sql = "         
+                select $campos
+                  from conlancam 
+            inner join conlancamrec                  on c74_codlan = c70_codlan 
+            inner join conlancamdoc                  on c71_codlan = c70_codlan 
+            inner join conhistdoc                    on c53_coddoc = c71_coddoc 
+            inner join orcreceita                    on o70_codrec = c74_codrec 
+                                                    and o70_anousu = c74_anousu 
+            inner join orcfontes                     on o57_codfon = o70_codfon 
+                                                    and o57_anousu = o70_anousu 
+            inner join conplanoorcamento             on c60_codcon = o57_codfon
+                                                    and c60_anousu = o57_anousu 
+            inner join planoreceitaconplanoorcamento on conplanoorcamento_codigo = c60_codigo
+            inner join planoreceita                  on planoreceita.id = planoreceita_id
+                                                    and planoreceita.exercicio = c70_anousu
+                                                    and planoreceita.uniao = 't'            
+            inner join orctiporec                    on o15_codigo = o70_codigo 
+            inner join fonterecurso                  on orctiporec_id = o15_codigo 
+                                                    and fonterecurso.exercicio = c74_anousu 
+        ";
+        
+        if (!empty($where)) {
+            $sql .= " where {$where} ";
+        }
+        if (!empty($ordem)) {
+            $sql .= " order by {$ordem} ";
+        }
+        if (!empty($groupBy)) {
+            $sql .= " group by {$groupBy} ";
+        }
+        return $sql;        
     }
 
 }
+
+

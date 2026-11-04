@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -68,25 +68,41 @@ if ($db_opcao == 1) {
              <?=@$Le60_codemp?>
           </td>
           <td>
-            <?
+            <?php
             db_input('e60_codemp',10,$Ie60_codemp,true,'text',3);
             db_input('e45_numemp',10,$Ie45_numemp,true,'hidden',3);
             ?>
           </td>
         </tr>
         <tr>
-          <td nowrap title="<?php echo $Te45_codmov; ?>">
-            <?php echo $Le45_codmov; ?>
+          <td nowrap title="Ordem de Pagamento">
+            <strong>Ordem de Pagamento: </strong>
           </td>
           <td>
-            <?php db_input('e45_codmov', 10, $Ie45_codmov, true); ?>
+            <?php 
+              db_input('e53_codord',10,"",true,'text',3);
+              db_input('e45_codmov', 10, $Ie45_codmov, true, 'hidden'); 
+            ?>
           </td>
         </tr>
+
+        <tr>
+          <td nowrap title="Valor da Ordem de Pagamento">
+            <strong>Valor da OP: </strong>
+          </td>
+          <td>
+            <?php 
+               db_input('e53_vlrpag',10,"",true,'text',3);
+            ?>
+          </td>
+        </tr>
+
+
         <tr>
           <td nowrap title="<?=@$Te45_tipo?>"><strong>Tipo de Evento: </strong></td>
           <td>
             <?php
-              db_input('e45_tipo',8,$Ie45_tipo,true,'text',3," onchange='js_pesquisae45_tipo(false);'");
+              db_input('e45_tipo', 10,$Ie45_tipo,true,'text',3," onchange='js_pesquisae45_tipo(false);'");
               db_input('e44_descr',40,$Ie44_descr,true,'text',3,'');
             ?>
           </td>
@@ -96,7 +112,7 @@ if ($db_opcao == 1) {
              <?=@$Le45_data?>
           </td>
           <td>
-            <?
+            <?php
             db_inputdata('e45_data',@$e45_data_dia,@$e45_data_mes,@$e45_data_ano,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -132,7 +148,7 @@ if ($db_opcao == 1) {
           <td nowrap title="<?=@$Te45_obs?>" colspan="2">
             <fieldset>
               <legend><b>Observações</b></legend>
-              <?
+              <?php
               db_textarea('e45_obs',5,70,$Ie45_obs,true,'text',$db_opcao,"")
               ?>
             </fieldset>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $borda = 0;
                  <b> Extrato bancário : </b>
               </td>
               <td nowrap> 
-                <?
+                <?php
                   db_input('arquivo',30,'',true,'file',$db_opcao,"onChange='js_enablebotao(this.value);'",'','','');
                 ?>
                 <input name="carregar" type="submit" id="carregar" value="Carregar Extrato" disabled onclick="js_carregaArq($('arquivo').value);" >

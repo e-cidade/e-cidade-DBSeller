@@ -200,18 +200,32 @@ function js_mostralaboratorio( chave, erro ) {
 
     document.form1.la02_i_codigo.focus();
     document.form1.la02_i_codigo.value = '';
+    return;
   }
+  js_apagaSetor();
+  js_limpaCamposTrocaSetor();
 }
 
 function js_mostralaboratorio1( chave1, chave2 ) {
 
   document.form1.la02_i_codigo.value = chave1;
   document.form1.la02_c_descr.value  = chave2;
+  js_apagaSetor();
+  js_limpaCamposTrocaSetor();
   db_iframe_lab_laboratorio.hide();
 }
 
 function js_pesquisala24_i_setor(mostra) {
+
+
   var sUrl  = 'func_lab_setor.php?';
+  if(document.form1.la02_i_codigo.value.length > 0){
+    sUrl += '&laboratorio='+document.form1.la02_i_codigo.value;
+  }
+  if(document.form1.la09_i_exame.value.length > 0){
+    sUrl += '&exames='+document.form1.la09_i_exame.value;
+  }
+
   if ( mostra == true ) {
 
     sUrl += '&funcao_js=parent.js_mostralab_labsetor1|la23_i_codigo|la23_c_descr';
@@ -239,8 +253,8 @@ function js_mostralab_labsetor( chave, erro) {
 
     document.form1.la23_i_codigo.focus();
     document.form1.la23_i_codigo.value = '';
+    return;
   }
-  js_limpaCamposTrocaSetor();
 }
 
 function js_mostralab_labsetor1( chave1, chave2) {
@@ -248,13 +262,19 @@ function js_mostralab_labsetor1( chave1, chave2) {
   document.form1.la23_i_codigo.value = chave1;
   document.form1.la23_c_descr.value  = chave2;
   db_iframe_lab_setor.hide();
-  js_limpaCamposTrocaSetor();
 }
 
 function js_pesquisala09_i_exame(mostra) {
 
-  var sUrl = 'func_lab_setorexame.php';
-
+  var sUrl = 'func_lab_setorexame.php?';
+  
+  if(document.form1.la02_i_codigo.value.length > 0){
+    sUrl += '&la02_i_codigo='+document.form1.la02_i_codigo.value;
+  }
+  if(document.form1.la23_i_codigo.value.length > 0){
+    sUrl += '&la23_i_codigo='+document.form1.la23_i_codigo.value;
+  }
+        
   if( mostra == true ) {
     sUrl += '&funcao_js=parent.js_mostralab_exame1|la08_i_codigo|la08_c_descr|la09_i_codigo';
     js_OpenJanelaIframe('', 'db_iframe_lab_setorexame', sUrl, 'Pesquisa Exames', true );
@@ -294,6 +314,10 @@ function js_mostralab_exame1( chave1, chave2, chave3 ) {
   db_iframe_lab_setorexame.hide();
 }
 
+function js_apagaSetor(){
+  document.form1.la23_i_codigo.value = '';
+  document.form1.la23_c_descr.value  = '';
+}
 
 function js_mandaDados() {
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -78,7 +78,7 @@ if (pg_num_rows($rsTotLInhas) > 0){
 <tr><td>
 <fieldset><legend><b>Serviços</b></legend>
 <table>
-<?
+<?php
 $q62_issnotaavulsa = $get->q51_sequencial;
 db_input('q62_issnotaavulsa',10,$Iq62_issnotaavulsa,true,'hidden',$db_opcao," onchange='js_pesquisaq62_issnotaavulsa(false);'");
 db_input('q62_sequencial',10,$Iq62_sequencial,true,'hidden',$db_opcao,"");
@@ -88,7 +88,7 @@ db_input('q62_sequencial',10,$Iq62_sequencial,true,'hidden',$db_opcao,"");
        <?=@$Lq62_qtd?>
     </td>
     <td> 
-<?
+<?php
 db_input('q62_qtd',10,$Iq62_qtd,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_input('q62_qtd',10,$Iq62_qtd,true,'text',$db_opcao,"")
        <?=@$Lq62_discriminacao?>
     </td>
     <td colspan='3'> 
-<?
+<?php
 db_textarea('q62_discriminacao',2,57,$Iq62_discriminacao,true,'text',$db_opcao,"onkeyup=''");
 
 ?>
@@ -109,7 +109,7 @@ db_textarea('q62_discriminacao',2,57,$Iq62_discriminacao,true,'text',$db_opcao,"
        <?=@$Lq62_vlruni?>
     </td>
     <td> 
-<?
+<?php
 db_input('q62_vlruni',12,$Iq62_vlruni,true,'text',$db_opcao,"onblur='js_calcula()'");
 ?>
     </td>
@@ -117,7 +117,7 @@ db_input('q62_vlruni',12,$Iq62_vlruni,true,'text',$db_opcao,"onblur='js_calcula(
        <?=@$Lq62_vlrtotal?>
     </td>
     <td> 
-<?
+<?php
 db_input('q62_vlrtotal',15,$Iq62_vlrtotal,true,'text',3,"")
 ?>
     </td>
@@ -127,7 +127,7 @@ db_input('q62_vlrtotal',15,$Iq62_vlrtotal,true,'text',3,"")
        <?=@$Lq62_vlrdeducao?>
     </td>
     <td> 
-<?
+<?php
 db_input('q62_vlrdeducao',12,$Iq62_vlrdeducao,true,'text',$db_opcao, "onblur=\"js_calcula();\"")
 ?>
     </td>
@@ -135,7 +135,7 @@ db_input('q62_vlrdeducao',12,$Iq62_vlrdeducao,true,'text',$db_opcao, "onblur=\"j
        <?=@$Lq62_vlrbasecalc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q62_vlrbasecalc',15,$Iq62_vlrbasecalc,true,'text',3,"")
 ?>
     </td>
@@ -145,7 +145,7 @@ db_input('q62_vlrbasecalc',15,$Iq62_vlrbasecalc,true,'text',3,"")
        <?=@$Lq62_aliquota."%"?>
     </td>
     <td> 
-<?
+<?php
 db_input('q62_aliquota',12,$Iq62_aliquota,true,'text',$db_opcao,"onBlur='js_calcula()'")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_input('q62_aliquota',12,$Iq62_aliquota,true,'text',$db_opcao,"onBlur='js_calc
        <?=@$Lq62_vlrissqn?>
     </td>
     <td> 
-<?
+<?php
 db_input('q62_vlrissqn',15,$Iq62_vlrissqn,true,'text',3,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('q62_vlrissqn',15,$Iq62_vlrissqn,true,'text',3,"")
        <?=@$Lq62_obs?>
     </td>
     <td colspan='3'> 
-<?
+<?php
 db_textarea('q62_obs',0,57,$Iq62_obs,true,'text',$db_opcao,"onkeyup='js_controlatextarea(this.name,200);'");
 ?>
     </td>
@@ -177,7 +177,7 @@ db_textarea('q62_obs',0,57,$Iq62_obs,true,'text',$db_opcao,"onkeyup='js_controla
  <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
  <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
   <input name="recibo" type="submit"  onclick='return js_emiteRecibo(<?=$oPar->q60_notaavulsavlrmin;?>)' id="recibo" value="Emitir Recibo" > 
-	 <?
+	 <?php
       $fTotal    = 0;
 			$sql       = "select sum(q62_vlrissqn) as totalissqn,";
       $sql .= "sum(q62_vlruni) as q62_vlrini,";
@@ -201,7 +201,7 @@ db_textarea('q62_obs',0,57,$Iq62_obs,true,'text',$db_opcao,"onkeyup='js_controla
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("q62_sequencial"=>$get->q51_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clissnotaavulsaservico->sql_query_file(null,"*","q62_sequencial"
@@ -374,5 +374,5 @@ function js_controlatextarea(objt,max){
 }
 
 </script>
-<?
+<?php
 ?>

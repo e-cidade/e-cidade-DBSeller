@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_perimp {
                  d51_impres = int4 = codigo da impressora 
                  ";
    //funcao construtor da classe 
-   function cl_perimp() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("perimp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_perimp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d51_usuario = ($this->d51_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["d51_usuario"]:$this->d51_usuario);
        $this->d51_impres = ($this->d51_impres == ""?@$GLOBALS["HTTP_POST_VARS"]["d51_impres"]:$this->d51_impres);
@@ -75,7 +75,7 @@ class cl_perimp {
      }
    }
    // funcao para inclusao
-   function incluir ($d51_usuario,$d51_impres){ 
+   public function incluir ($d51_usuario,$d51_impres){ 
       $this->atualizacampos();
        $this->d51_usuario = $d51_usuario; 
        $this->d51_impres = $d51_impres; 
@@ -140,7 +140,7 @@ class cl_perimp {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($d51_usuario=null,$d51_impres=null) { 
+   public function alterar ($d51_usuario=null,$d51_impres=null) { 
       $this->atualizacampos();
      $sql = " update perimp set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_perimp {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($d51_usuario=null,$d51_impres=null,$dbwhere=null) { 
+   public function excluir ($d51_usuario=null,$d51_impres=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d51_usuario,$d51_impres));
      }else{ 
@@ -293,7 +293,7 @@ class cl_perimp {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

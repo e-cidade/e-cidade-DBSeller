@@ -25,37 +25,37 @@
  *                                licenca/licenca_pt.txt
  */
 
-class cl_aguacortesituacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x43_codsituacao = 0; 
-   var $x43_descr = null; 
-   var $x43_regra = 0; 
+class cl_aguacortesituacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x43_codsituacao = 0;
+   var $x43_descr = null;
+   var $x43_regra = 0;
    var $x43_realizacobranca = '1';
-   // cria propriedade com as variaveis do arquivo 
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x43_codsituacao = int4 = Situação 
-                 x43_descr = varchar(40) = Descrição 
-                 x43_regra = int4 = Regra 
-                 x43_realizacobranca = bool = Realiza Cobrança 
+                 x43_codsituacao = int4 = Situação
+                 x43_descr = varchar(40) = Descrição
+                 x43_regra = int4 = Regra
+                 x43_realizacobranca = bool = Realiza Cobrança
                  ";
-   //funcao construtor da classe 
-   function cl_aguacortesituacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguacortesituacao"); 
+     $this->rotulo = new rotulo("aguacortesituacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -64,7 +64,7 @@ class cl_aguacortesituacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x43_codsituacao = ($this->x43_codsituacao == ""?@$GLOBALS["HTTP_POST_VARS"]["x43_codsituacao"]:$this->x43_codsituacao);
        $this->x43_descr = ($this->x43_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["x43_descr"]:$this->x43_descr);
@@ -75,9 +75,9 @@ class cl_aguacortesituacao {
      }
    }
    // funcao para inclusao
-   function incluir ($x43_codsituacao){ 
+   public function incluir ($x43_codsituacao){
       $this->atualizacampos();
-     if($this->x43_descr == null ){ 
+     if($this->x43_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "x43_descr";
        $this->erro_banco = "";
@@ -86,7 +86,7 @@ class cl_aguacortesituacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x43_regra == null ){ 
+     if($this->x43_regra == null ){
        $this->erro_sql = " Campo Regra nao Informado.";
        $this->erro_campo = "x43_regra";
        $this->erro_banco = "";
@@ -95,20 +95,20 @@ class cl_aguacortesituacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x43_realizacobranca == null ){ 
+     if($this->x43_realizacobranca == null ){
        $this->x43_realizacobranca = "1";
      }
      if($x43_codsituacao == "" || $x43_codsituacao == null ){
-       $result = @db_query("select nextval('aguacorte_x43_codsituacao_seq')"); 
+       $result = @db_query("select nextval('aguacorte_x43_codsituacao_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacorte_x43_codsituacao_seq do campo: x43_codsituacao"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacorte_x43_codsituacao_seq do campo: x43_codsituacao";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->x43_codsituacao = pg_result($result,0,0); 
+       $this->x43_codsituacao = pg_result($result,0,0);
      }else{
        $result = @db_query("select last_value from aguacorte_x43_codsituacao_seq");
        if(($result != false) && (pg_result($result,0,0) < $x43_codsituacao)){
@@ -119,10 +119,10 @@ class cl_aguacortesituacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->x43_codsituacao = $x43_codsituacao; 
+         $this->x43_codsituacao = $x43_codsituacao;
        }
      }
-     if(($this->x43_codsituacao == null) || ($this->x43_codsituacao == "") ){ 
+     if(($this->x43_codsituacao == null) || ($this->x43_codsituacao == "") ){
        $this->erro_sql = " Campo x43_codsituacao nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -131,18 +131,18 @@ class cl_aguacortesituacao {
        return false;
      }
      $result = @db_query("insert into aguacortesituacao(
-                                       x43_codsituacao 
-                                      ,x43_descr 
-                                      ,x43_regra 
-                                      ,x43_realizacobranca 
+                                       x43_codsituacao
+                                      ,x43_descr
+                                      ,x43_regra
+                                      ,x43_realizacobranca
                        )
                 values (
-                                $this->x43_codsituacao 
-                               ,'$this->x43_descr' 
-                               ,$this->x43_regra 
-                               ,'$this->x43_realizacobranca' 
+                                $this->x43_codsituacao
+                               ,'$this->x43_descr'
+                               ,$this->x43_regra
+                               ,'$this->x43_realizacobranca'
                       )");
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Situação do Corte ($this->x43_codsituacao) nao Incluído. Inclusao Abortada.";
@@ -174,19 +174,19 @@ class cl_aguacortesituacao {
        $resac = db_query("insert into db_acount values($acount,1457,22399,'','".pg_result($resaco,0,'x43_realizacobranca')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x43_codsituacao=null) {
+   public function alterar ($x43_codsituacao=null) {
       $this->atualizacampos();
      $sql = " update aguacortesituacao set ";
      $virgula = "";
-     if(trim($this->x43_codsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_codsituacao"])){ 
-        if(trim($this->x43_codsituacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x43_codsituacao"])){ 
-           $this->x43_codsituacao = "0" ; 
-        } 
+     if(trim($this->x43_codsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_codsituacao"])){
+        if(trim($this->x43_codsituacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x43_codsituacao"])){
+           $this->x43_codsituacao = "0" ;
+        }
        $sql  .= $virgula." x43_codsituacao = $this->x43_codsituacao ";
        $virgula = ",";
-       if(trim($this->x43_codsituacao) == null ){ 
+       if(trim($this->x43_codsituacao) == null ){
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "x43_codsituacao";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_aguacortesituacao {
          return false;
        }
      }
-     if(trim($this->x43_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_descr"])){ 
+     if(trim($this->x43_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_descr"])){
        $sql  .= $virgula." x43_descr = '$this->x43_descr' ";
        $virgula = ",";
-       if(trim($this->x43_descr) == null ){ 
+       if(trim($this->x43_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "x43_descr";
          $this->erro_banco = "";
@@ -209,13 +209,13 @@ class cl_aguacortesituacao {
          return false;
        }
      }
-     if(trim($this->x43_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_regra"])){ 
-        if(trim($this->x43_regra)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x43_regra"])){ 
-           $this->x43_regra = "0" ; 
-        } 
+     if(trim($this->x43_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_regra"])){
+        if(trim($this->x43_regra)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x43_regra"])){
+           $this->x43_regra = "0" ;
+        }
        $sql  .= $virgula." x43_regra = $this->x43_regra ";
        $virgula = ",";
-       if(trim($this->x43_regra) == null ){ 
+       if(trim($this->x43_regra) == null ){
          $this->erro_sql = " Campo Regra nao Informado.";
          $this->erro_campo = "x43_regra";
          $this->erro_banco = "";
@@ -225,7 +225,7 @@ class cl_aguacortesituacao {
          return false;
        }
      }
-     if(trim($this->x43_realizacobranca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_realizacobranca"])){ 
+     if(trim($this->x43_realizacobranca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x43_realizacobranca"])){
        $sql  .= $virgula." x43_realizacobranca = '$this->x43_realizacobranca' ";
        $virgula = ",";
      }
@@ -248,7 +248,7 @@ class cl_aguacortesituacao {
      }
 
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Situação do Corte nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x43_codsituacao;
@@ -273,11 +273,11 @@ class cl_aguacortesituacao {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x43_codsituacao=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x43_codsituacao=null) {
      $this->atualizacampos(true);
      $resaco = $this->sql_record($this->sql_query_file($this->x43_codsituacao));
      if(($resaco!=false)||($this->numrows!=0)){
@@ -299,7 +299,7 @@ class cl_aguacortesituacao {
       $sql2 .= " x43_codsituacao = $this->x43_codsituacao ";
 }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Situação do Corte nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$this->x43_codsituacao;
@@ -324,11 +324,11 @@ class cl_aguacortesituacao {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -350,11 +350,11 @@ class cl_aguacortesituacao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $x43_codsituacao=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $x43_codsituacao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -367,15 +367,15 @@ class cl_aguacortesituacao {
      $sql2 = "";
      if($dbwhere==""){
        if($x43_codsituacao!=null ){
-         $sql2 .= " where aguacortesituacao.x43_codsituacao = $x43_codsituacao "; 
-       } 
+         $sql2 .= " where aguacortesituacao.x43_codsituacao = $x43_codsituacao ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,11 +384,11 @@ class cl_aguacortesituacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $x43_codsituacao=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $x43_codsituacao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -401,15 +401,15 @@ class cl_aguacortesituacao {
      $sql2 = "";
      if($dbwhere==""){
        if($x43_codsituacao!=null ){
-         $sql2 .= " where aguacortesituacao.x43_codsituacao = $x43_codsituacao "; 
-       } 
+         $sql2 .= " where aguacortesituacao.x43_codsituacao = $x43_codsituacao ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -38,13 +38,13 @@ $cltaxaservval->rotulo->label();
       <table border="0" align="center">
         <tr>
           <td>
-		        <?
+		        <?php
 		          db_input('cm11_i_codigo',10,$Icm11_i_codigo,true,'text',3,"");
 		          db_input('cm35_sequencial',10,$Icm35_sequencial,true,'hidden',3,"");
 		        ?>
           </td>
           <td>
-            <?
+            <?php
               db_input('cm11_c_descr',40,$Icm11_c_descr,true,'text',3,"");
             ?>
           </td>
@@ -54,7 +54,7 @@ $cltaxaservval->rotulo->label();
 		        <?=@$Lcm35_dataini?>
 		      </td>
 		      <td>
-		        <?
+		        <?php
 		          db_inputdata('cm35_dataini',@$cm35_dataini_dia,@$cm35_dataini_mes,@$cm35_dataini_ano,true,'text',$db_opcao,"")
 		        ?>
 		      </td>
@@ -64,7 +64,7 @@ $cltaxaservval->rotulo->label();
             <?=@$Lcm35_datafin?>
           </td>
           <td>
-            <?
+            <?php
               db_inputdata('cm35_datafin',@$cm35_datafin_dia,@$cm35_datafin_mes,@$cm35_datafin_ano,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -74,7 +74,7 @@ $cltaxaservval->rotulo->label();
             <?=@$Lcm35_valor?>
           </td>
           <td>
-            <?
+            <?php
               db_input('cm35_valor',10,$Icm35_valor,true,'text',$db_opcao,"onkeypress=\"return mascaraValor(event, this);\"")
             ?>
           </td>
@@ -95,7 +95,7 @@ $cltaxaservval->rotulo->label();
       <table>
         <tr>
           <td valign="top"  align="center">
-            <?
+            <?php
 
               $aChavePri = array( "cm35_sequencial" => @$cm35_sequencial,
                                   "cm35_taxaserv"   => @$cm35_taxaserv,

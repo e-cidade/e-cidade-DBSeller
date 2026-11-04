@@ -25,6 +25,10 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Configuracao\Helpers\StorageHelper;
+use App\Domain\Financeiro\Empenho\Services\DocumentoService;
+use App\Domain\Financeiro\Empenho\Services\PrestacaoDiariaService;
+use App\Domain\Patrimonial\Protocolo\Services\EmpenhoDocumentoService;
 use ECidade\Patrimonial\Acordo\RegimeCompetencia\Repository\RegimeCompetencia;
 
 require_once(modification("libs/db_stdlib.php"));
@@ -38,12 +42,10 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_libcontabilidade.php"));
 require_once(modification("libs/db_liborcamento.php"));
-
 require_once(modification("model/configuracao/Instituicao.model.php"));
 require_once(modification("interfaces/ILancamentoAuxiliar.interface.php"));
 require_once(modification("interfaces/IRegraLancamentoContabil.interface.php"));
 require_once(modification("model/contabilidade/planoconta/interface/ISistemaConta.interface.php"));
-
 require_once(modification("model/contabilidade/contacorrente/ContaCorrenteFactory.model.php"));
 require_once(modification("model/contabilidade/contacorrente/ContaCorrenteBase.model.php"));
 require_once(modification("model/financeiro/ContaBancaria.model.php"));
@@ -95,6 +97,8 @@ $dtDataSessao = db_getsession("DB_datausu");
 
 switch ($objJson->method) {
     case "getEmpenhos":
+        define('ELEMENTO_TIPO_DIARIA', 14);
+
         $lValidaNotasEmpenho = false;
         $lEmpenhoRestoAPagar = false;
 
@@ -135,7 +139,7 @@ switch ($objJson->method) {
             }
         }
 
-         $oDaoEmpResto     = new cl_empresto();
+        $oDaoEmpResto     = new cl_empresto();
         $sSqlEmpresto = $oDaoEmpResto->sql_query("", "", "*", "", "e91_numemp = {$objJson->iEmpenho} AND e91_anousu = {$oDataAtual->getAno()}");
         $rsEmpresto   = db_query($sSqlEmpresto);
 
@@ -154,7 +158,12 @@ switch ($objJson->method) {
         $objEmpenho->setEmpenho($objJson->iEmpenho);
 
         $oEmpenhoFinanceiro  = new EmpenhoFinanceiro($objJson->iEmpenho);
-
+        $empenhoDocumentoService = new EmpenhoDocumentoService($oEmpenhoFinanceiro);
+        if (!is_null($empenhoDocumentoService->getDocumentoAndamento())) {
+            $empEletronico = true;
+        }else{
+            $empEletronico = false;
+        }
         $lMostrarCompetencia = false;
         $iCodigoContrato     = $oEmpenhoFinanceiro->getCodigoContrato();
 
@@ -165,14 +174,51 @@ switch ($objJson->method) {
             $lMostrarCompetencia          = !empty($oRegime) && !$oRegime->isDespesaAntecipada();
         }
 
+        $lSuspenderLiquidacao = "f";
+        if ($objJson->operacao == 1) {
+            $suspensaoOrcamentaria = new cl_suspensaoorcamentaria;
+            $lSuspenderLiquidacao = (
+                $suspensaoOrcamentaria->verificaSuspensaoLiquidacaoDotacao(
+                    $oEmpenhoFinanceiro->getDotacao()->getCodigo(),
+                    $oEmpenhoFinanceiro->getAno()
+                )?"t":"f");
+        }
+
+        if (isRioDeJaneiro() && db_getsession("DB_anousu") >= 2024) {
+            $sql = "
+            select 1
+            from empempenho
+            inner join orcdotacao on orcdotacao.o58_anousu = empempenho.e60_anousu
+                and orcdotacao.o58_coddot = empempenho.e60_coddot
+            inner join orcelemento on orcelemento.o56_codele = orcdotacao.o58_codele
+                and orcelemento.o56_anousu = orcdotacao.o58_anousu
+            where empempenho.e60_numemp = {$objJson->iEmpenho}
+                and substr(orcelemento.o56_elemento,6,2) = '".ELEMENTO_TIPO_DIARIA."'";
+        } else {
+            $oDaoEmppresta   = new cl_emppresta;
+            $sWhereEmppresta = "e44_diaria is true and e45_numemp = $objJson->iEmpenho ";
+            $sql = $oDaoEmppresta->sql_query_emp(null, 'e44_diaria', null, $sWhereEmppresta);
+        }
+
+        $rsEmpenhoDaria = db_query($sql);
+        $lEmpenhoDiaria  = false;
+
+        if (!$rsEmpenhoDaria) {
+            throw new Exception('Não foi possível verificar se o empenho é do evento: Diária');
+        }
+
+        $lEmpenhoDiaria = (pg_num_rows($rsEmpenhoDaria) > 0) ? true : false;
+
         if (count($aNotasEmpenho) > 0 && $lValidaNotasEmpenho && !UTILIZA_INCORPORACAO_BEM) {
             $oEmpenho                 = json_decode($objEmpenho->empenho2Json('', $item, $aNotasEmpenho));
             $oGrupoElemento->iGrupo   = "";
             $oGrupoElemento->sGrupo   = "";
             $oEmpenho->oGrupoElemento = $oGrupoElemento;
             $oEmpenho->lPossuiIntegracaoPatrimonial = $lPossuiIntegracaoPatrimonial;
+            $oEmpenho->lSuspenderLiquidacao = $lSuspenderLiquidacao;
             $oEmpenho->contratoPossuiRegimeCompetencia = $lMostrarCompetencia;
             $oEmpenho->lEmpenhoRestoAPagar = $lEmpenhoRestoAPagar;
+            $oEmpenho->eletronico = $empEletronico;
 
             echo $json->encode($oEmpenho);
         } else {
@@ -185,8 +231,8 @@ switch ($objJson->method) {
                 $sDescricao = $oGrupoContaOrcamento->getDescricao();
 
                 /**
-                 * Caso o empennho seja dos grupos abaixo, nao devemos permitir a liquidacao
-                 * do mesmo atraves da rotina de liquidacao sem ordem de compra
+                 * Caso o empenho seja dos grupos abaixo, nao devemos permitir a liquidação
+                 * do mesmo através da rotina de liquidação sem ordem de compra
                  */
                 if ($iGrupo != "") {
                     if (in_array($iGrupo, array(7, 8, 9)) &&  !UTILIZA_INCORPORACAO_BEM) {
@@ -195,8 +241,9 @@ switch ($objJson->method) {
                         $oDataEmissaoEmpenho         = new DBDate($oEmpenhoFinanceiro->getDataEmissao());
 
                         /**
-                         * Se a Depreciação estiver implantada e a data de emissão do empenho é inferior a data de implantação da Depreciação
-                         * devemos permitir liquidar sem ordem de compra, pois não haverá Nota Pendente.
+                         * Se a Depreciação estiver implantada e a data de emissão do empenho é inferior à data de
+                         * implantação da Depreciação devemos permitir liquidar sem ordem de compra, pois não haverá
+                         * Nota Pendente.
                          */
                         if ($oDataImplantacaoDepreciacao && $oDataEmissaoEmpenho->getTimestamp() < $oDataImplantacaoDepreciacao->getTimestamp()) {
                             $oEmpenho->lAnteriorImplantacaoDepreciacao = true;
@@ -206,8 +253,11 @@ switch ($objJson->method) {
                         $oGrupoElemento->sGrupo   = urlencode($sDescricao);
                         $oEmpenho->oGrupoElemento = $oGrupoElemento;
                         $oEmpenho->lPossuiIntegracaoPatrimonial = $lPossuiIntegracaoPatrimonial;
+                        $oEmpenho->lSuspenderLiquidacao = $lSuspenderLiquidacao;
                         $oEmpenho->contratoPossuiRegimeCompetencia = $lMostrarCompetencia;
                         $oEmpenho->lEmpenhoRestoAPagar = $lEmpenhoRestoAPagar;
+                        $oEmpenho->lEmpenhoDiaria = $lEmpenhoDiaria;
+                        $oEmpenho->eletronico = $empEletronico;
 
                         echo $json->encode($oEmpenho);
                     } else {
@@ -217,8 +267,11 @@ switch ($objJson->method) {
                         $oGrupoElemento->sGrupo   = "";
                         $oEmpenho->oGrupoElemento = $oGrupoElemento;
                         $oEmpenho->lPossuiIntegracaoPatrimonial = $lPossuiIntegracaoPatrimonial;
+                        $oEmpenho->lSuspenderLiquidacao = $lSuspenderLiquidacao;
                         $oEmpenho->contratoPossuiRegimeCompetencia = $lMostrarCompetencia;
                         $oEmpenho->lEmpenhoRestoAPagar = $lEmpenhoRestoAPagar;
+                        $oEmpenho->lEmpenhoDiaria = $lEmpenhoDiaria;
+                        $oEmpenho->eletronico = $empEletronico;
 
                         echo $json->encode($oEmpenho);
                     }
@@ -230,8 +283,11 @@ switch ($objJson->method) {
                 $oGrupoElemento->sGrupo   = "";
                 $oEmpenho->oGrupoElemento = $oGrupoElemento;
                 $oEmpenho->lPossuiIntegracaoPatrimonial = $lPossuiIntegracaoPatrimonial;
+                $oEmpenho->lSuspenderLiquidacao = $lSuspenderLiquidacao;
                 $oEmpenho->contratoPossuiRegimeCompetencia = $lMostrarCompetencia;
                 $oEmpenho->lEmpenhoRestoAPagar = $lEmpenhoRestoAPagar;
+                $oEmpenho->lEmpenhoDiaria = $lEmpenhoDiaria;
+                $oEmpenho->eletronico = $empEletronico;
 
                 echo $json->encode($oEmpenho);
             }
@@ -245,6 +301,12 @@ switch ($objJson->method) {
 
         if (!empty($objJson->competencia)) {
             $objEmpenho->setCompetenciaLiquidacao($objJson->competencia);
+        }
+
+        try {
+            $configEstorage = StorageHelper::getStorageConfig();
+        } catch (Exception $exception) {
+            $configEstorage = null;
         }
 
         try {
@@ -284,12 +346,29 @@ switch ($objJson->method) {
                         }
                     }
 
+                    if(!is_null($configEstorage) &&
+                        isset($configEstorage->url) &&
+                        !empty($configEstorage->url)
+                    ){
+                        $empenho = new EmpenhoFinanceiro($objJson->iEmpenho);
+                        $empenhoDocumentoService = new EmpenhoDocumentoService($empenho);
+                        if (!is_null($empenhoDocumentoService->getDocumentoAndamento())) {
+                            $gerar_arquivo = "tmp/ordempagamento_{$oDadosRetorno->e50_codord}_" . time() . ".pdf";
+                            $codordem = $oDadosRetorno->e50_codord;
+                            require_once(modification("emp2_emitenotaliq002.php"));
+                            if (!file_exists($gerar_arquivo)) {
+                                throw new Exception("Erro ao salvar da Ordem de Pagamento PDF.");
+                            }
+                            $arquivo = StorageHelper::uploadArquivo($gerar_arquivo, [], false);
+                            $empenhoDocumentoService->vincularDocumento($arquivo, "Ordem de Pagamento");
+                        }
+                    }
+
                     echo $oRetorno;
                 }
 
                 /**[Extensao OrdenadorDespesa] inclusao_ordenador_1*/
             }
-
 
             if ($objEmpenho->lSqlErro && !empty($objEmpenho->sMsgErro)) {
                 throw new Exception($objEmpenho->sMsgErro);
@@ -305,6 +384,7 @@ switch ($objJson->method) {
         $oDadosNota = new stdClass;
 
         try {
+            db_inicio_transacao();
             if (empty($objJson->iEmpenho)) {
                 throw new ParameterException("O empenho não foi informado.");
             }
@@ -365,9 +445,22 @@ switch ($objJson->method) {
                 true,
                 $objJson->e69_dtnota,
                 $sHistorico,
-                true,
+                false,
                 $objJson->oInfoNota
             );
+
+            if ($objEmpenho->lSqlErro) {
+                throw new Exception($objEmpenho->sMsgErro);
+            }
+
+            $codlan_c70 = (integer) $GLOBALS["codlan_c70"];
+            $documentoService = new DocumentoService();
+            if($documentoService->isEletronico(null, $objJson->iEmpenho)){
+                $documentoService->saveDocumentos($objJson->uploadNota, null, $objJson->iEmpenho,false, $codlan_c70);
+                $hasProcessoEletronico = true;
+            }else{
+                $hasProcessoEletronico = false;
+            }
 
             if ($oRetorno !== false) {
                 //caso procedimento com sucesso  vincula o processo administrativo
@@ -383,7 +476,25 @@ switch ($objJson->method) {
                         if ($oDaoPagordemProcesso->erro_status == 0) {
                             throw new Exception($oDaoPagordemProcesso->erro_msg);
                         }
+                    }
 
+                    if ($hasProcessoEletronico) {
+                        $gerar_arquivo = "tmp/ordempagamento_{$oDadosRetorno->e50_codord}_" . time() . ".pdf";
+                        $codordem = $oDadosRetorno->e50_codord;
+                        require_once(modification("emp2_emitenotaliq002.php"));
+                        if (!file_exists($gerar_arquivo)) {
+                            throw new Exception("Erro ao salvar da Ordem de Pagamento PDF");
+                        }
+                        //$arquivo = StorageHelper::uploadArquivo($gerar_arquivo, [], false);
+                        $idArquivo = StorageHelper::uploadArquivo($gerar_arquivo, [], true);
+                        $empenho = new EmpenhoFinanceiro($objJson->iEmpenho);
+                        $empenhoDocumentoService = new EmpenhoDocumentoService($empenho);
+                        $arquivo = (object)[
+                            "id" => $idArquivo,
+                            "name" => "Ordem Pagamento",
+                            "lancContabilID" => $GLOBALS["codlan_c70"]
+                        ];
+                        $empenhoDocumentoService->vincularDocumento($arquivo, "Ordem de Pagamento");
                     }
 
                     /**[Extensao OrdenadorDespesa] inclusao_ordenador_2*/
@@ -415,9 +526,84 @@ switch ($objJson->method) {
                     }
                 }
 
+                if (isRioDeJaneiro() && $oDadosRetorno->erro != 2 && !empty($objJson->competenciaPessoal)) {
+                    $oDaoEmpcompetencialiquidacao = new cl_empcompetencialiquidacao();
+                    $oDaoEmpcompetencialiquidacao->e164_codord = $oDadosRetorno->e50_codord;
+                    $oDaoEmpcompetencialiquidacao->e164_data   = $objJson->competenciaPessoal;
+                    $oDaoEmpcompetencialiquidacao->incluir(null);
+
+                    if ($oDaoEmpcompetencialiquidacao->erro_status =='0') {
+                        throw new Exception("Erro ao incluir competencia de despesa de pessoal".pg_last_error(). $oDaoEmpcompetencialiquidacao->erro_msg);
+                    }
+                }
+
+                if (isset($objJson->lEmpenhoDiaria) && $objJson->lEmpenhoDiaria == true
+                    && $oDadosRetorno->erro != 2) {
+                    $oDiariaService = new PrestacaoDiariaService;
+                    $oInfoDiaria = $objJson->oInfoDiaria;
+
+                    $oDiariaService->setEmpenho($objJson->iEmpenho);
+                    $oDiariaService->setMovimento($oDadosRetorno->iCodMov);
+                    $oDiariaService->setNota($objJson->e69_nota);
+                    $oDiariaService->setValorTotal($objJson->valorTotal);
+                    $oDiariaService->setIdUsuario(db_getsession("DB_id_usuario"));
+
+                    $oDiariaService->setMatricula($oInfoDiaria->regist);
+                    $oDiariaService->setDiariaSaida($oInfoDiaria->saida);
+                    $oDiariaService->setDiariaRetorno($oInfoDiaria->retorno);
+                    $oDiariaService->setDiariaTipo($oInfoDiaria->tipo);
+
+                    $oDiariaService->setDiariaDestino(db_stdClass::normalizeStringJsonEscapeString($oInfoDiaria->destino));
+                    $oDiariaService->setDiariaDescr(db_stdClass::normalizeStringJsonEscapeString($oInfoDiaria->descr));
+
+                    $qtde = isset($oInfoDiaria->qtde) ? $oInfoDiaria->qtde: 0;
+                    $estadoDest = isset($oInfoDiaria->estadoDestino) ? $oInfoDiaria->estadoDestino : '';
+                    $paisDest = isset($oInfoDiaria->paisDestino) ? $oInfoDiaria->paisDestino : '';
+                    $oDiariaService->setDiariaQtde($qtde);
+                    $oDiariaService->setDiariaEstadoDestino($estadoDest);
+                    $oDiariaService->setDiariaPaisDestino($paisDest);
+
+                    $oDiariaService->save();
+                }
+
+                /**
+                 *  SIGFIS TCE-RJ
+                 */
+                if (isRioDeJaneiro() && $oDadosRetorno->erro != 2) {
+
+                    // Tipo de documento Liquidacao
+                    if (isset($objJson->tipodocliquidacao)) {
+                        $oDaoEmpnotasigfistipodocliq = new cl_empnotasigfistipodocliquidacao;
+                        $oDaoEmpnotasigfistipodocliq->e178_empnota = $oDadosRetorno->iCodNota;
+                        $oDaoEmpnotasigfistipodocliq->e178_sigfistipodocliquidacao = $objJson->tipodocliquidacao;
+
+                        $oDaoEmpnotasigfistipodocliq->incluir(null);
+
+                        if ($oDaoEmpnotasigfistipodocliq->erro_status == 0) {
+                            throw new \BusinessException("[Tipo documento]" . $oDaoEmpnotasigfistipodocliq->erro_msg);
+                        }
+                    }
+
+                    // Atestadores da NF
+                    if (isset($objJson->atestadores)) {
+                        foreach ($objJson->atestadores as $atestador) {
+                            $oDaoEmpnotaatestador = new cl_empnotaatestador;
+                            $oDaoEmpnotaatestador->e169_empnota = $oDadosRetorno->iCodNota;
+                            $oDaoEmpnotaatestador->e169_numcgm = $atestador->sCodigo;
+
+                            $oDaoEmpnotaatestador->incluir(null);
+
+                            if ($oDaoEmpnotaatestador->erro_status == 0) {
+                                throw new \BusinessException("[Atestadores]" . $oDaoEmpnotaatestador->erro_msg);
+                            }
+                        }
+                    }
+                }
+
                 db_fim_transacao();
                 echo $oRetorno;
             } else {
+                db_fim_transacao(true);
                 $retorno = array("erro" => 2, "mensagem" => urlencode($objEmpenho->sMsgErro), "e50_codord" => null);
                 echo $json->encode($retorno);
             }
@@ -453,7 +639,6 @@ switch ($objJson->method) {
         break;
 
     case "getDadosRP":
-
           $sCamposNota = "distinct  e69_codnota,
                           e69_numero,
                           e69_anousu,
@@ -467,19 +652,19 @@ switch ($objJson->method) {
                           e53_vlrpag,
                           m51_tipo,
                           m51_codordem,
-                          CASE
-                              WHEN cgmordem.z01_numcgm IS NOT NULL THEN cgmordem.z01_numcgm
-                              ELSE cgm.z01_numcgm
-                          END AS z01_numcgm,
-                          CASE
-                              WHEN cgmordem.z01_nome IS NOT NULL THEN cgmordem.z01_nome
-                              ELSE cgm.z01_nome
-                          END AS z01_nome,
-                          CASE
-                              WHEN cgmordem.z01_cgccpf IS NOT NULL THEN cgmordem.z01_cgccpf
-                              ELSE cgm.z01_cgccpf
-                          END AS z01_cgccpf,
-                          fc_valorretencaonota(e50_codord) AS vlrretencao
+                          case
+                              WHEN cgmordem.z01_numcgm IS NOT null THEN cgmordem.z01_numcgm
+else cgm.z01_numcgm
+                          END as z01_numcgm,
+                          case
+                              WHEN cgmordem.z01_nome IS NOT null THEN cgmordem.z01_nome
+else cgm.z01_nome
+                          END as z01_nome,
+                          case
+                              WHEN cgmordem.z01_cgccpf IS NOT null THEN cgmordem.z01_cgccpf
+else cgm.z01_cgccpf
+                          END as z01_cgccpf,
+                          fc_valorretencaonota(e50_codord) as vlrretencao
              ";
          $objEmpenho->sCamposNota =  $sCamposNota;
 
@@ -527,19 +712,19 @@ switch ($objJson->method) {
                               e53_vlrpag,
                               m51_tipo,
                               m51_codordem,
-                              CASE
-                                  WHEN cgmordem.z01_numcgm IS NOT NULL THEN cgmordem.z01_numcgm
-                                  ELSE cgm.z01_numcgm
-                              END AS z01_numcgm,
-                              CASE
-                                  WHEN cgmordem.z01_nome IS NOT NULL THEN cgmordem.z01_nome
-                                  ELSE cgm.z01_nome
-                              END AS z01_nome,
-                              CASE
-                                  WHEN cgmordem.z01_cgccpf IS NOT NULL THEN cgmordem.z01_cgccpf
-                                  ELSE cgm.z01_cgccpf
-                              END AS z01_cgccpf,
-                              fc_valorretencaonota(e50_codord) AS vlrretencao
+                              case
+                                  WHEN cgmordem.z01_numcgm IS NOT null THEN cgmordem.z01_numcgm
+else cgm.z01_numcgm
+                              END as z01_numcgm,
+                              case
+                                  WHEN cgmordem.z01_nome IS NOT null THEN cgmordem.z01_nome
+else cgm.z01_nome
+                              END as z01_nome,
+                              case
+                                  WHEN cgmordem.z01_cgccpf IS NOT null THEN cgmordem.z01_cgccpf
+else cgm.z01_cgccpf
+                              END as z01_cgccpf,
+                              fc_valorretencaonota(e50_codord) as vlrretencao
             ";
             $objEmpenho->sCamposNota =  $sCamposNota;
 
@@ -551,7 +736,7 @@ switch ($objJson->method) {
                     $oNota->temRetencao               = false;
                     $oNota->VlrRetencao               = 0;
                     /**
-                     * Pesquisamos se existem algum movimento para essa nota.
+                     * Pesquisamos se existe algum movimento para essa nota.
                      */
                     $sWhereIni  =  "e50_codord = {$oNota->e50_codord} and e97_codforma is not null";
                     $sWhereIni .= " and corempagemov.k12_codmov is null and e81_cancelado is null";
@@ -562,7 +747,7 @@ switch ($objJson->method) {
                         $oNota->temMovimentoConfigurado   = true;
                     }
 
-                    //Verifica se a nota possui retenções lançadas
+                    //Verifica se a nota possui reten??es lan?adas
                     $oRetencao = new retencaoNota($oNota->e69_codnota);
                     if ($oNota->e50_codord != "" && $oRetencao->getValorRetencao($oNota->e50_codord) > 0) {
                         $oNota->temRetencao   = true;
@@ -580,7 +765,6 @@ switch ($objJson->method) {
 
     case "getDadosNotas":
         if ($objEmpenho->getDados($objJson->iEmpenho)) {
-
             $sCamposNota = "distinct
                                 e69_codnota,
                                 e69_numero,
@@ -595,19 +779,19 @@ switch ($objJson->method) {
                                 e53_vlrpag,
                                 m51_tipo,
                                 m51_codordem,
-                                CASE
-                                    WHEN cgmordem.z01_numcgm IS NOT NULL THEN cgmordem.z01_numcgm
-                                    ELSE cgm.z01_numcgm
-                                END AS z01_numcgm,
-                                CASE
-                                    WHEN cgmordem.z01_nome IS NOT NULL THEN cgmordem.z01_nome
-                                    ELSE cgm.z01_nome
-                                END AS z01_nome,
-                                CASE
-                                    WHEN cgmordem.z01_cgccpf IS NOT NULL THEN cgmordem.z01_cgccpf
-                                    ELSE cgm.z01_cgccpf
-                                END AS z01_cgccpf,
-                                fc_valorretencaonota(e50_codord) AS vlrretencao
+                                case
+                                    WHEN cgmordem.z01_numcgm IS NOT null THEN cgmordem.z01_numcgm
+else cgm.z01_numcgm
+                                END as z01_numcgm,
+                                case
+                                    WHEN cgmordem.z01_nome IS NOT null THEN cgmordem.z01_nome
+else cgm.z01_nome
+                                END as z01_nome,
+                                case
+                                    WHEN cgmordem.z01_cgccpf IS NOT null THEN cgmordem.z01_cgccpf
+else cgm.z01_cgccpf
+                                END as z01_cgccpf,
+                                fc_valorretencaonota(e50_codord) as vlrretencao
             ";
             $objEmpenho->sCamposNota = $sCamposNota;
 
@@ -624,7 +808,7 @@ switch ($objJson->method) {
                     }
 
                     /**
-                     * Pesquisamos se existem algum movimento para essa nota.
+                     * Pesquisamos se existe algum movimento para essa nota.
                      */
                     $sWhereIni  =  "e50_codord = {$oNota->e50_codord} and e97_codforma is not null";
                     $sWhereIni .= " and corempagemov.k12_codmov is null and e81_cancelado is null";
@@ -635,7 +819,7 @@ switch ($objJson->method) {
                         $oNota->temMovimentoConfigurado   = true;
                     }
 
-                    //Verifica se a nota possui retenções lançadas
+                    //Verifica se a nota possui reten??es lan?adas
                     $oRetencao = new retencaoNota($oNota->e69_codnota);
                     if ($oNota->e50_codord != "" && $oRetencao->getValorRetencao($oNota->e50_codord) > 0) {
                         $oNota->temRetencao   = true;
@@ -663,7 +847,7 @@ switch ($objJson->method) {
             $oDadosRetorno->sMensagem = "Não foi possível recuperar os itens da nota!";
         } else {
             $oDaoEmpNotaOrd   = new cl_empnotaord();
-            $sWhereEmpNotaOrd = "m72_codnota = {$objJson->iCodNota} AND m51_tipo = 1";
+            $sWhereEmpNotaOrd = "m72_codnota = {$objJson->iCodNota} and m51_tipo = 1";
             $sSqlEmpNotaOrd   = $oDaoEmpNotaOrd->sql_matordem(null, null, '1', null, $sWhereEmpNotaOrd);
             $rsEmpNotaOrd     = db_query($sSqlEmpNotaOrd);
 
@@ -673,15 +857,15 @@ switch ($objJson->method) {
                  * Valida se o empenho possui lançado o doc 210, bloqueando lançamento de desconto
                  */
                 $oDaoConLancamDoc   = new cl_conlancamdoc();
-                $sWhereConLancamDoc = "c75_numemp = {$objJson->iEmpenho} AND c71_coddoc = 210";
+                $sWhereConLancamDoc = "c75_numemp = {$objJson->iEmpenho} and c71_coddoc = 210";
                 $sSqlConLancamDoc   = $oDaoConLancamDoc->sql_queryEmpenhoRP(null, '1', null, $sWhereConLancamDoc);
                 $rsConLancamDoc     = db_query($sSqlConLancamDoc);
 
                 if ($rsConLancamDoc && pg_num_rows($rsConLancamDoc) > 0) {
                     $oDadosRetorno->lPossuiOrdemCompra  = true;
-                    $oDadosRetorno->sMensagem           = "Este empenho possui Ordem de Compra. Não será possível realizar";
-                    $oDadosRetorno->sMensagem          .= " o procedimento, devendo realizar o estorno da liquidação total.";
-                    $oDadosRetorno->sMensagem           = DBString::urlencode_all($oDadosRetorno->sMensagem);
+                    $oDadosRetorno->sMensagem  = "Este empenho possui Ordem de Compra. Não será possível realizar";
+                    $oDadosRetorno->sMensagem .= " o procedimento, devendo realizar o estorno da liquidação total.";
+                    $oDadosRetorno->sMensagem .= DBString::urlencode_all($oDadosRetorno->sMensagem);
                 }
             }
 
@@ -695,8 +879,7 @@ switch ($objJson->method) {
         break;
 
     case "verificaNota":
-
-	        $status = 0;
+            $status = 0;
             $sNota = addslashes(db_stdClass::normalizeStringJsonEscapeString($objJson->sNota));
             $iCgmFornecedor = $objJson->iCgmFornecedor;
             $oDaoEmpNota = new cl_empnota;
@@ -715,14 +898,13 @@ switch ($objJson->method) {
 
             $rsEmpNota = $oDaoEmpNota->sql_record($sSqlEmpNota);
 
-            if ($oDaoEmpNota->numrows > 0) {
-
-                $status = 1;
-                $aEmpenhos = array();
-                foreach (db_utils::getCollectionByRecord($rsEmpNota) as $oEmpNota) {
-                   $aEmpenhos[] =$oEmpNota->numero_empenho;
-                }
+        if ($oDaoEmpNota->numrows > 0) {
+            $status = 1;
+            $aEmpenhos = array();
+            foreach (db_utils::getCollectionByRecord($rsEmpNota) as $oEmpNota) {
+                $aEmpenhos[] =$oEmpNota->numero_empenho;
             }
+        }
             echo $json->encode(array("status" => $status, "sEmpenho" => $aEmpenhos));
 
         break;

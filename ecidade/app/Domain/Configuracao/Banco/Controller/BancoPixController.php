@@ -33,7 +33,7 @@ class BancoPixController extends Controller
             ])->first();
 
             if (!$DBBancosPix) {
-                throw new Exception("Nenhum dado bancÃ¡rio pix foi encontrado");
+                throw new Exception("Nenhum dado bancário pix foi encontrado");
             }
 
             $regras = Modcarnepadraopixasso::where([
@@ -42,8 +42,8 @@ class BancoPixController extends Controller
 
             if ($regras > 0) {
                 throw new Exception(
-                    "Para excluir esses dados bancÃ¡rios serÃ¡ necessÃ¡rio ".
-                    "remover todas as regra de emissÃ£o relacionadas com ele"
+                    "Para excluir esses dados bancários será necessário " .
+                        "remover todas as regra de emissão relacionadas com ele"
                 );
             }
 
@@ -53,26 +53,26 @@ class BancoPixController extends Controller
 
             if ($tipoDebito > 0) {
                 throw new Exception(
-                    "Para excluir esses dados bancÃ¡rios serÃ¡ necessÃ¡rio remover " .
-                    "todas os tipo de dÃ©bitos relacionadas com ele"
+                    "Para excluir esses dados bancários será necessário remover " .
+                        "todas os tipo de dÃ©bitos relacionadas com ele"
                 );
             }
 
             if ($DBBancosPix->arretipopixasso->count() > 0) {
                 throw new Exception(
-                    "Para excluir os dados bancÃ¡rios Pix Ã© necessario remover esse banco " .
-                    "dos tipos de dÃ©tidos e configuraÃ§Ã£o de emissÃ£o com pix"
+                    "Para excluir os dados bancários Pix Ã© necessario remover esse banco " .
+                        "dos tipos de dÃ©tidos e configuração de emissão com pix"
                 );
             }
 
             if ($DBBancosPix->delete()) {
                 return response()->json([
                     "status"  => "Success",
-                    "message" => "Dados bancÃ¡rios Pix excluidos com sucesso"
+                    "message" => "Dados bancários Pix excluidos com sucesso"
                 ]);
             }
 
-            throw new Exception("Ocorreu um erro na tentativa de deletar os dados bancÃ¡rios");
+            throw new Exception("Ocorreu um erro na tentativa de deletar os dados bancários");
         } catch (Exception $e) {
             return response()->json([
                 "status"  => "Error",
@@ -92,10 +92,10 @@ class BancoPixController extends Controller
                 $find_banco = (bool) DBBancos::where([
                     "db90_codban" => $db90_codban
                 ])->count();
- 
+
                 if ($find_banco <= 0) {
                     throw new Exception(
-                        "Nenhum banco com esse cÃ³digo foi encontrado"
+                        "Nenhum banco com esse código foi encontrado"
                     );
                 }
 
@@ -132,11 +132,11 @@ class BancoPixController extends Controller
             if (DBBancosPix::create($data)) {
                 return response()->json([
                     "status"  => "Success",
-                    "message" => "Dados bancÃ¡rios pix salvos com sucesso"
+                    "message" => "Dados bancários pix salvos com sucesso"
                 ]);
             }
 
-            throw new Exception("Ocorreu um falha na tentativa de salvar os dados bancÃ¡rios pix");
+            throw new Exception("Ocorreu um falha na tentativa de salvar os dados bancários pix");
         } catch (Exception $e) {
             return response()->json([
                 "status"  => "Error",
@@ -152,21 +152,33 @@ class BancoPixController extends Controller
 
             if (is_null($bancoPix)) {
                 throw new Exception(
-                    "Nenhuma configuraÃ§Ã£o do banco pix " .
-                    "referente ao d90_codban foi encontrado"
+                    "Nenhuma configuração do banco pix " .
+                        "referente ao d90_codban foi encontrado"
                 );
             }
 
             $data = $this->mountData($request);
 
+            $data['db90_tipo_ambiente'] = trim(strval($data['db90_tipo_ambiente'])) != '' ?
+                $data['db90_tipo_ambiente'] :
+                null;
+
             if ($bancoPix->update($data)) {
                 return response()->json([
-                    "status"  => "Success",
-                    "message" => "Dados bancÃ¡rios pix atualizados com sucesso"
+                    "status"  => mb_convert_encoding(
+                        'Success',
+                        'UTF-8',
+                        'ISO-8859-1'
+                    ),
+                    "message" => mb_convert_encoding(
+                        "Dados bancários pix atualizados com sucesso",
+                        'UTF-8',
+                        'ISO-8859-1'
+                    )
                 ]);
             }
 
-            throw new Exception("Ocorreu um falha na tentativa de atualizar os dados bancÃ¡rios pix");
+            throw new Exception("Ocorreu um falha na tentativa de atualizar os dados bancários pix");
         } catch (Exception $e) {
             return response()->json([
                 "status"  => "Error",
@@ -186,7 +198,7 @@ class BancoPixController extends Controller
                 foreach ($fillables as $campo) {
                     if (!is_null($banco->{$campo}) and
                         strlen(trim($banco->{$campo})) > 0
-                        || in_array($campo, ['db90_cnpj_municipio','db90_cnpj', 'db90_tipo_ambiente'])) {
+                        || in_array($campo, ['db90_cnpj_municipio', 'db90_cnpj', 'db90_tipo_ambiente'])) {
                         continue;
                     }
                     unset($listaBancos[$index]);
@@ -211,7 +223,7 @@ class BancoPixController extends Controller
     }
 
     /**
-     * ValidaÃ§Ã£o dos dados para cadastrar ou atualizar dados bancÃ¡rios pix
+     * Validação dos dados para cadastrar ou atualizar dados bancários pix
      *
      * @param Request $request
      * @param int     $codtipopix Defailt null
@@ -234,9 +246,9 @@ class BancoPixController extends Controller
 
         return response()->json([
             "status"   => "Success",
-            "messagem" => "Os dados sÃ£o validos para " .
-                ((!is_null($d90_codban)) ? "inclusÃ£o" : "atualizaÃ§Ã£o") .
-                " dos dados bancÃ¡rios API PIX."
+            "messagem" => "Os dados são validos para " .
+                ((!is_null($d90_codban)) ? "inclusão" : "atualização") .
+                " dos dados bancários API PIX."
         ]);
     }
 

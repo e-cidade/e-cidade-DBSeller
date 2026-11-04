@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("q02_numcgm");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq35_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq35_inscr,"js_pesquisaq35_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q35_inscr',8,$Iq35_inscr,true,'text',$db_opcao," onchange='js_pesquisaq35_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq35_zona?>">
-       <?
+       <?php
        db_ancora(@$Lq35_zona,"js_pesquisaq35_zona(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q35_zona',15,$Iq35_zona,true,'text',$db_opcao," onchange='js_pesquisaq35_zona(false);'")
 ?>
-       <?
+       <?php
 db_input('j50_descr',40,$Ij50_descr,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isszona.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

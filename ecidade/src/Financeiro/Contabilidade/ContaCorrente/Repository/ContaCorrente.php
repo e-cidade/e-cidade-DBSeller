@@ -26,21 +26,20 @@
  */
 namespace ECidade\Financeiro\Contabilidade\ContaCorrente\Repository;
 
-
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Model\ContaCorrente as ContaCorrenteModel;
 
 /**
  * Class ContaCorrente
  * @package ECidade\Financeiro\Contabilidade\ContaCorrente\Repository
  */
-class ContaCorrente  extends \BaseClassRepository
+class ContaCorrente extends \BaseClassRepository
 {
 
 
     /**
      * @var ContaCorrente
      */
-    protected static  $oInstance;
+    protected static $oInstance;
 
 
     /**
@@ -80,5 +79,4 @@ class ContaCorrente  extends \BaseClassRepository
         $this->aColecao[$dados->c122_sequencial] = $contaCorrente;
         return $contaCorrente;
     }
-
 }

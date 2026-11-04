@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -251,7 +251,7 @@ if(isset($incluir)){
   parent.js_carrega_iframe();
   parent.db_iframe_calculo.hide();
  </script>
- <?
+ <?php
  exit;
 }
 ?>
@@ -279,7 +279,7 @@ if(isset($incluir)){
 </style>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
-<?
+<?php
 $sql0 = "SELECT
 
 
@@ -440,18 +440,18 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
   <td width="15%" class="cabec" align="center">Material</td>
   <td width="15%" class="cabec" align="center">Alimento</td>
   <td width="15%" class="cabec" >&nbsp;</td>
-  <?
+  <?php
   for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
    db_fieldsmemory($result_dia,$x);
    ?>
    <td align="center" class="cabec"><?=db_formatar($data_cabecalho,'d')?></td>
-   <?
+   <?php
   }
   ?>
   <td align="center" class="cabec" width="5%">Total a baixar</td>
   <td align="center" class="cabec" width="5%">Estoque</td>
  </tr>
- <?
+ <?php
  $primeiro = "";
  $sum_ini = 0;
  $sum_subdo = 0;
@@ -486,7 +486,7 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
      </table>
     </td>
     </tr>
-    <?
+    <?php
     if(($estoque <= 0 || $estoque < $sum_total) && $estoque!=$sum_total){
      $msg_erro .= $sep1.pg_result($result_dados,$y-1,'m60_descr');
      $sep1 = " , ";
@@ -515,7 +515,7 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
       <tr bgcolor="#DEB887"><td><b>= Total a baixar</b></td></tr>
      </table>
     </td>
-    <?
+    <?php
     $primeiro = $m60_codmater;
     for($tt=0;$tt<count($array_dias);$tt++){
      ?>
@@ -527,7 +527,7 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
        <tr align="center" bgcolor="#DEB887"><td>0</b></td></tr>
       </table>
      </td>
-     <?
+     <?php
     }
   }
 
@@ -541,7 +541,7 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
              <tr align="center"><td>'.$dl_qtde_substituto.'</td></tr>
              <tr align="center" bgcolor="#DEB887"><td><b>'.$dl_total_baixar.'</b></td></tr>
             </table>';
-  ?><script>document.getElementById("<?=$m60_codmater.$me12_d_data?>").innerHTML = <?=$texto?></script><?
+  ?><script>document.getElementById("<?=$m60_codmater.$me12_d_data?>").innerHTML = <?=$texto?></script><?php
  }
  $estoque = pg_result($result_dados,$y-1,'m70_quant');
  $estoque = $estoque==""?0:$estoque;
@@ -576,9 +576,9 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
 </table>
 <br>
 <input type="button" name="voltar" value="Voltar" onclick="parent.db_iframe_calculo.hide();">
-<?if($lista!="" && pg_num_rows($result_dados)>0){?>
+<?php if($lista!="" && pg_num_rows($result_dados)>0){?>
  <input type="button" name="Incluir" value="Baixar Estoque" onclick="js_incluir('<?=$listaitem?>','<?=$listaquant?>','<?=$lista?>','<?=$msg_erro?>')">
-<?}?>
+<?php } ?>
 </center>
 </body>
 </html>

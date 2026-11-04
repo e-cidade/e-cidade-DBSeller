@@ -4,7 +4,10 @@
 namespace App\Domain\Financeiro\Planejamento\Controllers;
 
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
-use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\Despesa\CalculaProjecaoRequest;
+use App\Domain\Financeiro\Planejamento\Models\DetalhamentoDespesa;
+use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\AtualizaPrevisaoExercicioRequest;
+use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\CalculaProjecaoRequest;
+use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\ValorBaseDespesaRequest;
 use App\Domain\Financeiro\Planejamento\Services\ProjecaoDespesaService;
 use App\Http\Controllers\Controller;
 use Exception;
@@ -16,40 +19,51 @@ use Illuminate\Http\Request;
  */
 class ProjecaoDespesaController extends Controller
 {
-    /**
-     * @param CalculaProjecaoRequest $request
-     * @param ProjecaoDespesaService $service
-     * @throws Exception
-     */
-    public function calcular(CalculaProjecaoRequest $request, ProjecaoDespesaService $service)
+    public function buscar(CalculaProjecaoRequest $request, ProjecaoDespesaService $service)
     {
-        $service->porRequest($request)->calcular();
+        $projecao = $service->porRequest($request)->get();
+        return new DBJsonResponse($projecao, "Dados da projeção");
+    }
+
+    public function recalcular(CalculaProjecaoRequest $request, ProjecaoDespesaService $service)
+    {
+        $service->porRequest($request)
+            ->setFormaRecalculo($request->get('formaRecalculo'))
+            ->recalcular();
+
+        return new DBJsonResponse([], "Recálculo executado sucesso.");
+    }
+
+    public function criarDetalhamentoNovasDotacoes(CalculaProjecaoRequest $request, ProjecaoDespesaService $service)
+    {
+        $service->porRequest($request)
+            ->setFormaRecalculo($request->get('formaRecalculo'))
+            ->criarDetalhamentoNovasDotacoes();
+        return new DBJsonResponse([], "Criado dotações executado sucesso.");
     }
 
     /**
-     * @param CalculaProjecaoRequest $request
+     * @param AtualizaPrevisaoExercicioRequest $request
      * @param ProjecaoDespesaService $service
      * @return DBJsonResponse
      * @throws Exception
      */
-    public function projecao(CalculaProjecaoRequest $request, ProjecaoDespesaService $service)
+    public function previsaoExercicio(AtualizaPrevisaoExercicioRequest $request, ProjecaoDespesaService $service)
     {
-        $projecao = $service->porRequest($request)->getProjecao();
-        return new DBJsonResponse($projecao, "Dados da projeção");
+        $exercicio = (int)$request->get('exercicio');
+        $service->atualizarPrevisao($request->get('id'), $exercicio, $request->get('valor'));
+        return new DBJsonResponse([], "Valor atualizado");
     }
 
     /**
-     * Salva a projeção
-     * Obs, da forma como esta se alterar alguma coisa no front, pode quebrar o back
-     *
-     * @param Request $request
+     * @param ValorBaseDespesaRequest $request
+     * @return DBJsonResponse
      */
-    public function salvarProjecao(Request $request, ProjecaoDespesaService $service)
+    public function atualizarValorBase(ValorBaseDespesaRequest $request)
     {
-        $service->salvarPorResquest($request);
-
-        $projecao = str_replace('\"', '"', $request->get('projecao'));
-
-        $projecao = \JSON::create()->parse($projecao);
+        $estimativa = DetalhamentoDespesa::find($request->get('id'));
+        $estimativa->pl20_valorbase = $request->get('valor');
+        $estimativa->save();
+        return new DBJsonResponse([], "Valor atualizado");
     }
 }

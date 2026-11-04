@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -63,7 +63,6 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
-
 $clissporte       = new cl_issporte;
 $clsocios         = new cl_socios;
 $clprotprocesso   = new cl_protprocesso;
@@ -106,6 +105,10 @@ if ($numrowsParissqn > 0) {
   db_msgbox("Configure os parametro do modulo issqn");
 }
 
+//************************************************************************************************//
+//Busca o parametro na tabela parissqn para gerar risco automaticamente apartir do CNAE
+$selectRiscoAutomatico = db_query("select q60_riscoautomatico from issqn.parissqn;");
+$riscoAutomatico = pg_result($selectRiscoAutomatico,0,0);
 //************************************************************************************************//
 
 $result02=$cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"),"munic,cep"));
@@ -232,6 +235,12 @@ if (isset($incluir)) {
       $clissquant->q30_areapublicidade = $q30_areapublicidade;
       $clissquant->q30_tempofuncionamento = $q30_tempofuncionamento;
       $clissquant->incluir(date("Y",$ano),$clissbase->q02_inscr);
+      //Modificação referente ao redmine 28310
+      //Verifica se parametro de risco automatico esta ativo
+      if($riscoAutomatico != 't'){
+        $salvarHistoricoRisco = db_query("insert into issqn.histriscoinscr (q201_inscr, q201_risco, q201_dtrisco) 
+                                        values ($clissbase->q02_inscr, '{$clissquant->q30_graurisco}', now())");
+      }
         //$clissquant->erro(true,false);
       if ($clissquant->erro_status==0) {
 
@@ -421,10 +430,11 @@ if (isset($incluir)) {
         $erro    = $clcgm->erro_msg;
       }
     }
-
     db_fim_transacao($sqlerro);
   }
+
 }
+
 ?>
 <html>
 <head>
@@ -446,7 +456,7 @@ if (isset($incluir)) {
   </div>
 </body>
 </html>
-<?
+<?php
 if(isset($str_01) && $str_01!="" && !isset($incluir) && empty($q05_matric) && empty($first)){
   if($r==1){
    db_msgbox('CGM já esta sendo usado na inscrição '.$str_01);

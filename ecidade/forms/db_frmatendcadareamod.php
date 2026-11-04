@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ if(isset($db_opcaoal)){
        <?//=@$Lat26_sequencia?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('at26_sequencia',6,$Iat26_sequencia,true,'hidden',3,"")
 			?>
     </td>
@@ -69,30 +69,30 @@ if(isset($db_opcaoal)){
   <tr>
     <td nowrap title="<?=@$Tat26_codarea?>">
         <b>Área:</b>
-       <?
+       <?php
        //db_ancora(@$Lat26_codarea,"js_pesquisaat26_codarea(true);",3);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('at26_codarea',10,$Iat26_codarea,true,'text',3," readonly onchange='js_pesquisaat26_codarea(false);'")
 			?>
-      <?
+      <?php
       db_input('at25_descr',40,$Iat25_descr,true,'text',3,'')
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat26_id_item?>">
-       <?
+       <?php
        db_ancora(@$Lat26_id_item,"js_pesquisaat26_id_item(true);",$db_opcao);
        ?>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('at26_id_item',10,$Iat26_id_item,true,'text',$db_opcao," onchange='js_pesquisaat26_id_item(false);'")
 		?>
-    <?
+    <?php
     db_input('nome_modulo',40,$Inome_modulo,true,'text',3,'')
     ?>
     </td>
@@ -108,7 +108,7 @@ if(isset($db_opcaoal)){
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at26_sequencia"=>@$at26_sequencia);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clatendcadareamod->sql_query(@$at26_sequencia,"*","nome_modulo"," at26_codarea = $at26_codarea");

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcgmendereco->rotulo->label("z07_numcgm");
               <?=$Lz07_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z07_sequencial",10,$Iz07_sequencial,true,"text",4,"","chave_z07_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcgmendereco->rotulo->label("z07_numcgm");
               <?=$Lz07_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z07_numcgm",10,$Iz07_numcgm,true,"text",4,"","chave_z07_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcgmendereco->rotulo->label("z07_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cgmendereco.php")==true){
@@ -122,12 +122,12 @@ $clcgmendereco->rotulo->label("z07_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

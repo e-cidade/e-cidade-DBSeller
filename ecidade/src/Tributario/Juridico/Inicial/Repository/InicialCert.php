@@ -104,8 +104,39 @@ final class InicialCert extends Repository
 
     public function update($iInicial, $iCertidao, Model $inicialCert)
     {
+
         $this->dao->v51_inicial = $inicialCert->getInicial();
         $this->dao->v51_certidao = $inicialCert->getCertidao();
+
+        $sqlTipoDebitoInicialPrimaria = " SELECT v59_numpre,k00_tipo
+                                            FROM inicialnumpre
+                                            INNER JOIN arrecad
+                                                on k00_numpre = v59_numpre
+                                            WHERE v59_inicial = {$this->dao->v51_inicial}
+                                         ";
+        $resultTipoDebitoInicialPrimaria = db_query($sqlTipoDebitoInicialPrimaria);
+        $dadosInicialPrimaria = pg_fetch_all($resultTipoDebitoInicialPrimaria);
+
+        $sqlTipoDebitoInicialSecundaria = " SELECT v59_numpre,k00_tipo
+                                            FROM inicialnumpre
+                                            INNER JOIN arrecad
+                                                on k00_numpre = v59_numpre
+                                            WHERE v59_inicial = {$iInicial}
+                                           ";
+        $resultTipoDebitoInicialSecundaria = db_query($sqlTipoDebitoInicialSecundaria);
+        $dadosInicialSecundaria = pg_fetch_all($resultTipoDebitoInicialSecundaria);
+
+        if (!empty($dadosInicialPrimaria) and !empty($dadosInicialSecundaria)) {
+            if ($dadosInicialPrimaria[0]['k00_tipo'] != $dadosInicialSecundaria[0]['k00_tipo']) {
+                foreach ($dadosInicialSecundaria as $valores) {
+                    db_query("
+                                    UPDATE arrecad
+                                    SET k00_tipo = {$dadosInicialPrimaria[0]['k00_tipo']}
+                                    WHERE k00_numpre IN ({$valores['v59_numpre']})
+                                 ");
+                }
+            }
+        }
 
         $result = $this->dao->alterar($iInicial, $iCertidao);
 

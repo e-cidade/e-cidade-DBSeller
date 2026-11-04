@@ -416,11 +416,13 @@ class cl_fonterecurso
 
     public function sql_query($id = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
-        $sql = "select {$campos}";
-        $sql .= "  from fonterecurso ";
-        $sql .= "      inner join orctiporec  on  orctiporec.o15_codigo = fonterecurso.orctiporec_id";
-        $sql .= "      inner join classificacaofr  on  classificacaofr.id = fonterecurso.classificacaofr_id";
-        $sql .= "      inner join db_estruturavalor  on  db_estruturavalor.db121_sequencial = orctiporec.o15_db_estruturavalor";
+        $sql = "
+        select {$campos}
+          from fonterecurso
+          join orctiporec  on  orctiporec.o15_codigo = fonterecurso.orctiporec_id
+          join classificacaofr  on  classificacaofr.id = fonterecurso.classificacaofr_id
+          join db_estruturavalor  on  db_estruturavalor.db121_sequencial = orctiporec.o15_db_estruturavalor
+        ";
         $sql2 = "";
         if (empty($dbwhere)) {
             if (!empty($id)) {
@@ -440,6 +442,31 @@ class cl_fonterecurso
     {
         $sql = "select {$campos} ";
         $sql .= "  from fonterecurso ";
+        $sql2 = "";
+        if (empty($dbwhere)) {
+            if (!empty($id)) {
+                $sql2 .= " where fonterecurso.id = $id ";
+            }
+        } else if (!empty($dbwhere)) {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if (!empty($ordem)) {
+            $sql .= " order by {$ordem}";
+        }
+        return $sql;
+    }
+
+    public function sqlFonteRecruso($id = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "
+        select {$campos}
+          from fonterecurso
+          join orctiporec  on  orctiporec.o15_codigo = fonterecurso.orctiporec_id
+          join complementofonterecurso on o200_sequencial = o15_complemento
+          join classificacaofr  on  classificacaofr.id = fonterecurso.classificacaofr_id
+          join db_estruturavalor  on  db_estruturavalor.db121_sequencial = orctiporec.o15_db_estruturavalor
+        ";
         $sql2 = "";
         if (empty($dbwhere)) {
             if (!empty($id)) {

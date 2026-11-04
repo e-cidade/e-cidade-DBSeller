@@ -22,22 +22,22 @@ For any suggestions or bug report please contact me : guinux@cosmoplazza.com
 		var $_char_width;
 		var $_bar_width;
 		var $_data;
-		
+
 		function pdfbarcode128( $data, $char_width ) {
 			$this->_bar_width = round($char_width/11, 1);
 			$this->_char_width = $this->_bar_width * 11;
 			$this->_data = $data;
 			$this->barcode128($data);
 		}
-		
+
 		function get_width() {
 			return barcode128::get_width($this->_char_width);
 		}
-	
+
 		function set_pdf_document( &$pdf ) {
 			$this->_pdf = &$pdf;
 		}
-		
+
 		function _draw_line( $x, $y, $nb, $height, $bar ) {
 			if ($bar) {
 				$this->_pdf->SetDrawColor(0, 0, 0);
@@ -49,13 +49,13 @@ For any suggestions or bug report please contact me : guinux@cosmoplazza.com
 			$this->_pdf->SetLineWidth(0.000);
 			$this->_pdf->Rect( $x, $y, $nb*$this->_bar_width, $height, 'FD');
 		}
-	
+
 		function draw_barcode( $x, $y, $bar_height, $print_text = false ) {
 			$start_x = $x;
 			$start_y = $y;
-			
+
 			$this->_compute_pattern();
-			
+
 			// Quiet Zone
 			$this->_pdf->SetLineWidth(0.0000);
 			$this->_pdf->SetDrawColor(255, 255, 255);
@@ -64,7 +64,7 @@ For any suggestions or bug report please contact me : guinux@cosmoplazza.com
 			$x += $this->_bar_width*10;
 
 			foreach($this->_pattern as $pos=>$digit) {
-				$digit = split( ' ', $digit);
+				$digit =explode( ' ', $digit);
 				$bar = true;
 				foreach ($digit as $tmp=>$nb) {
 					$this->_draw_line( $x, $y, $nb, $bar_height, $bar );
@@ -88,5 +88,5 @@ For any suggestions or bug report please contact me : guinux@cosmoplazza.com
 			}
 		}
 	} // End of Class
-	
+
 ?>

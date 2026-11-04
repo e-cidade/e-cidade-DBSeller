@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,35 +52,35 @@ if(isset($db_opcaoal)){
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('sequencial',10,$Isequencial,true,'hidden',3,"")
 ?>
   <tr>
     <td nowrap title="<?=@$Tcodproced?>">
-       <?
+       <?php
        db_ancora(@$Lcodproced,"",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('codproced',10,$Icodproced,true,'text',3)
 ?>
-       <?
+       <?php
 db_input('descrproced',50,$Idescrproced,true,'text',3)
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcodarq?>">
-       <?
+       <?php
        db_ancora(@$Lcodarq,"js_pesquisacodarq(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('codarq',10,$Icodarq,true,'text',$db_opcao," onchange='js_pesquisacodarq(false);'")
 ?>
-       <?
+       <?php
 db_input('nomearq',50,$Inomearq,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('nomearq',50,$Inomearq,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 
          $dbwhere = " db_syscadproced.codproced = ".$codproced;
 	 if(isset($sequencial) && trim($sequencial) != ""){

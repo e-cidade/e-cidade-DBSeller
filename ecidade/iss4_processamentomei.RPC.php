@@ -61,12 +61,26 @@ try {
     $sOrderImporta  = " ano,mes ";
     $sSubSqlImporta = $clMeiImporta->sql_query_reg(null,$sCampoImporta,$sOrderImporta,$sWhereImporta);
                       
-    $sSqlImporta    = " select lpad(mes::text,2,'0'::text)||'/'::text||ano::text as competencia "; 
-    $sSqlImporta   .= "  from  ( {$sSubSqlImporta} ) as x               ";
+    $sSqlImporta    = " select lpad(mes::text,2,'0'::text)||'/'::text||ano::text as competencia, mes, ano "; 
+    $sSqlImporta   .= "  from  ( {$sSubSqlImporta} ) as x                                                 ";
     
     $rsImporta      = $clMeiImporta->sql_record($sSqlImporta);
       
     $aCompetencias  = db_utils::getCollectionByRecord($rsImporta,false,false,true);
+
+	$aCompetencias = array_values(array_filter($aCompetencias, function($competencia) {
+		$anoCompetencia = $competencia->ano;
+		$mesCompetencia = $competencia->mes;
+
+		$oDaoMeiImporta = new cl_meiimporta();
+		$sqlVerificaCompetenciaPossuiRegistros = $oDaoMeiImporta->sql_verificaSeCompetenciaPossuiRegistros($anoCompetencia, $mesCompetencia);
+		$rsVerificaCompetenciaPossuiRegistros = db_query($sqlVerificaCompetenciaPossuiRegistros);
+		$resultadoVerificaCompetenciaPossuiRegistros = db_utils::getCollectionByRecord($rsVerificaCompetenciaPossuiRegistros)[0];
+
+		$competenciaPossuiRegistros = $resultadoVerificaCompetenciaPossuiRegistros->possuiregistros === 't';
+
+		return $competenciaPossuiRegistros;
+	}));
     
     $oRetorno->aCompetencias = $aCompetencias;
 
@@ -86,9 +100,13 @@ try {
 		  	
 	    list($iMes,$iAno) = explode("/",$oParam->sCompetencia);
 	          
-	    $sWhereImporta   = "     extract( year  from q111_data) = {$iAno} ";
-	    $sWhereImporta  .= " and extract( month from q111_data) = {$iMes} ";
-	    $sWhereImporta  .= " and meiprocessareg.q112_sequencial is null   ";
+	    $sWhereImporta   = "     q104_anousu = {$iAno}                  ";
+	    $sWhereImporta  .= " and q104_mesusu = {$iMes}                  ";
+	    $sWhereImporta  .= " and meiprocessareg.q112_sequencial is null ";
+
+		if(property_exists($oParam, 'sCodigoCompetencia') && trim($oParam->sCodigoCompetencia) != '0'){	
+			$sWhereImporta .= " and q101_codigo = '{$oParam->sCodigoCompetencia}'";
+		}
 		      
 	    $oMeiArquivoSessao = new MeiArquivo($sWhereImporta);
 		    
@@ -98,9 +116,7 @@ try {
 	 	throw new Exception("Competência não informada!");
 	}
 	  
-	
  	if ( $oParam->sMethod == "consultaRegistros" ) {
-
 
     $dtDataImpMei = $oMeiArquivoSessao->getDataImpMEI();
     
@@ -118,37 +134,39 @@ try {
     }
     
     foreach ( $aDadosImporta as $oImporta ) {
-    
+
     	if (    $iAnoComp != $oImporta->q104_anousu 
     	     || $iMesComp != $oImporta->q104_mesusu ) {
     	  throw new Exception("Competência ".str_pad($iMesComp,2,'0',STR_PAD_LEFT)."/{$iAnoComp} não importada!");	
     	}
-    	
+
     	if ( $iMesComp == 12 ) {
     		$iMesComp = 1;
     		$iAnoComp++;
     	} else {
         $iMesComp++;
     	}
-      
     }
    
-    $sWhereImporta   = "     extract( year  from q111_data) = {$iAno} ";
-    $sWhereImporta  .= " and extract( month from q111_data) = {$iMes} ";
-    $sWhereImporta  .= " and meiprocessareg.q112_sequencial is null   ";    
-    
-	  $sSqlImporta     = $clMeiImporta->sql_query_reg(null,"*","q111_data",$sWhereImporta);
-	  $rsDadosImporta  = $clMeiImporta->sql_record($sSqlImporta);
-	  $aDadosImporta   = db_utils::getCollectionByRecord($rsDadosImporta,false,false,true); 
-		
-	  $aDadosAgrupados = array();
+
+    $sWhereImporta  = " and meiprocessareg.q112_sequencial is null   ";
+
+	if(property_exists($oParam, 'sCodigoCompetencia') && trim($oParam->sCodigoCompetencia) != '0'){	
+		$sWhereImporta .= " and q101_codigo = '{$oParam->sCodigoCompetencia}'";
+	}
+
+	$sSqlImporta     = $clMeiImporta->sql_query_listaEventosPorCompetencia($iAno, $iMes, $sWhereImporta);
+	$rsDadosImporta  = $clMeiImporta->sql_record($sSqlImporta);
+	$aDadosImporta   = db_utils::getCollectionByRecord($rsDadosImporta,false,false,true); 
+	
+	$aDadosAgrupados = array();
     $aRetornoImporta = array();
     
 	  foreach ( $aDadosImporta as $oDadosImporta ) {
 		
 	    $iCnpj       = $oDadosImporta->q105_cnpj;
 	    $sCodEvento  = $oDadosImporta->q101_codigo;
-		
+
 	    if ( !isset($aDadosAgrupados[$iCnpj]) ) {
 		      
 	      $sCampoNomeMei     = " case                                         ";
@@ -186,25 +204,22 @@ try {
 	      $oEvento->dtData      = $oDadosImporta->q111_data;
 	      $oEvento->iCnpj       = $iCnpj;
        	$oEvento->lVinculaMEI = false;
-	      
-	      $sWhereEventoProc  = "     q105_cnpj = '{$iCnpj}'                          ";
-        $sWhereEventoProc .= " and q112_sequencial is not null                     ";
-			  $sWhereEventoProc .= " and q111_data > '{$oDadosImporta->q111_data}'::date ";
+
+        $sWhereEventoProc = " and q112_sequencial is not null                     ";
+	    $sWhereEventoProc .= " and q111_data > '{$oDadosImporta->q111_data}'::date ";
         
-        $sSqlEventoProc    = $clMeiImporta->sql_query_reg(null,"*",null,$sWhereEventoProc);
+        $sSqlEventoProc    = $clMeiImporta->sql_query_listaEventos($iCnpj, $sWhereEventoProc);
         $rsEventoProc      = $clMeiImporta->sql_record($sSqlEventoProc); 
         $iRowsEventoProc   = $clMeiImporta->numrows;
-        
+
         if ( $iRowsEventoProc > 0 ) {
           $oEvento->lInconsistente = true;
           $oEvento->sMsgSituacao   = urlencode("Registros processados com data superior a do evento informado!");
           $aDadosAgrupados[$iCnpj]['oMei']->lBloqueado = true;          
         } else {
           $oEvento->lInconsistente = false;
-        }	      
+		}		
 
-        if ( !$oEvento->lInconsistente ) {
-        	
 		      try {
 		        $aMsgVerifica   = $oMeiArquivoSessao->validaEventoMEI($sCodEvento,$oDadosImporta->q105_cnpj);
 		        $iCountVerifica = count($aMsgVerifica);
@@ -231,17 +246,87 @@ try {
 		        $oEvento->sMsgSituacao   = urlencode($sMsgSituacao);
 		        $aDadosAgrupados[$iCnpj]['oMei']->lBloqueado = true;
 		      } else {
-		        $oEvento->lInconsistente = false;
-		        $oEvento->sMsgSituacao   = '';
-		      }
-		      
+
+				try{
+					$sSqlEventos   = $clMeiImporta->sql_query_listaEventos($iCnpj);
+					$rsEventos     = $clMeiImporta->sql_record($sSqlEventos);
+					$aDadosEventos = db_utils::getCollectionByRecord($rsEventos);
+					$oDaoCgm       = new cl_cgm();
+					$oDaoIssBase   = new cl_issbase();
+					$oDaoMeiCgm    = new cl_meicgm();
+
+					foreach ($aDadosEventos as $item) {
+						$eventoAtivo         = !((isset($item->q02_dtbaix) && trim($item->q02_dtbaix) != '') || (isset($item->data) && trim($item->data) != ''));
+						$dataItem            = new DateTime($item->data);
+						$dataEventoPrincipal = new DateTime($oEvento->dtData);
+						$eventoDeInscricao   = ((int)trim($oEvento->sCodEvento) == 101 || (int)trim($oEvento->sCodEvento) == 209);
+
+						$mesmoCodigoEvento  = (int)trim($oEvento->sCodEvento) == (int)trim($item->codigoevento);
+						$eventoComDataMaior = $dataEventoPrincipal > $dataItem ;
+
+						if ($mesmoCodigoEvento && $eventoComDataMaior) {
+							$dataItemFormatada = $dataItem->format('d/m/Y');
+							throw new Exception("Outro evento com mesmo codigo na data {$dataItemFormatada}.");
+						}
+
+						$pedidoDeBaixa = (int)trim($oEvento->sCodEvento) == 517;
+						$existeEventoNaoDePedidoDeBaixaNaoProcessado = $eventoAtivo && (int)trim($item->codigoevento) != 517 && trim($item->codigoevento) == '';
+
+						if ($pedidoDeBaixa && $existeEventoNaoDePedidoDeBaixaNaoProcessado) {
+							throw new Exception("Processar demais eventos existentes antes do pedido de baixa.");
+						}
+
+						$alteracaoDeInformacoes = !$eventoDeInscricao && trim($item->codigoevento) != '';
+						$existeEventoDeInscricaoNaoProcessado = $eventoAtivo && (int)trim($item->codigoevento) == 101;
+
+						if ($alteracaoDeInformacoes && $existeEventoDeInscricaoNaoProcessado && !$eventoDeInscricao) {
+							throw new Exception('Inscrever estabelecimento antes.');
+						}
+
+						$iCodCgmEmpresa = '';
+						$sWhereCgm      = " z01_cgccpf = '{$iCnpj}'";
+						$sSqlCgm        = $oDaoCgm->sql_query_file(null,"z01_numcgm",null,$sWhereCgm);
+						$rsCgm          = $oDaoCgm->sql_record($sSqlCgm);
+						$cgmEncontrado  = $oDaoCgm->numrows > 0;
+
+						if (!$cgmEncontrado && !$eventoDeInscricao) {
+							throw new Exception('Inscrever estabelecimento antes.');
+						}
+
+						$iCodCgmEmpresa = db_utils::fieldsMemory($rsCgm,0)->z01_numcgm;
+
+						$sWhereIssBase  = " q02_numcgm = {$iCodCgmEmpresa} and q02_dtbaix is null ";
+						$sSqlIssBase    = $oDaoIssBase->sql_query_file(null,"q02_inscr",null,$sWhereIssBase);
+						$rsIssBase      = $oDaoIssBase->sql_record($sSqlIssBase);				
+						if ( $oDaoIssBase->numrows == 0  && !$eventoDeInscricao) {
+							throw new Exception('Inscrever estabelecimento antes.');
+						}
+
+						$sSqlBuscaMeiCgm  = $oDaoMeiCgm->sql_query_file(null,"*",null,"q115_numcgm = {$iCodCgmEmpresa}");
+						$rsMeiCgm         = $oDaoMeiCgm->sql_record($sSqlBuscaMeiCgm);
+						$meiCgmEncontrado = $oDaoMeiCgm->numrows > 0;
+
+						if (!$meiCgmEncontrado && !$eventoDeInscricao) {
+							throw new Exception('Inscrever estabelecimento antes.');
+						}
+					}
+
+					if(!$oEvento->lInconsistente){
+						$oEvento->lInconsistente = false;
+						$oEvento->sMsgSituacao   = '';
+					}
+					
+
+				} catch (Exception $eException){
+					$oEvento->lInconsistente = true;
+					$oEvento->sMsgSituacao   = $eException->getMessage();
+					$aDadosAgrupados[$iCnpj]['oMei']->lBloqueado = true;
+				}
         } 
-        
 	      $aDadosAgrupados[$iCnpj]['aEventos'][$sCodEvento] = $oEvento ;
-	          
-	    }
-		    
-	  }
+	    
+		}
+	}
 		
 	  
 	  foreach ( $aDadosAgrupados as $iCnpj => $aTipoDados ) {
@@ -287,7 +372,7 @@ try {
   } else if ( $oParam->sMethod == "consultaDetalheInconsistencias" ) {
 
     try {
-      $sTelaDetalhe = $oMeiArquivoSessao->getTelaInconsistenciaMEI($oParam->sCodEvento,$oParam->iCnpj);
+      $sTelaDetalhe = $oMeiArquivoSessao->getTelaInconsistenciaMEI($oParam->sCodEvento,$oParam->iCnpj,$oParam->sMsg);
     } catch (Exception $eException) {
       throw new Exception($eException->getMessage());
     }

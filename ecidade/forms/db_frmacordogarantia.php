@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clacordogarantia->rotulo->label();
        <?=@$Lac11_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ac11_sequencial',10,$Iac11_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('ac11_sequencial',10,$Iac11_sequencial,true,'text',3,"")
        <?=@$Lac11_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('ac11_descricao',40,$Iac11_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ac11_descricao',40,$Iac11_descricao,true,'text',$db_opcao,"")
        <?=@$Lac11_validade?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ac11_validade',@$ac11_validade_dia,@$ac11_validade_mes,@$ac11_validade_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -78,7 +78,7 @@ db_inputdata('ac11_validade',@$ac11_validade_dia,@$ac11_validade_mes,@$ac11_vali
   <table>
   <tr>    
     <td align=center> 
-<?
+<?php
 db_textarea('ac11_obs',4,50,$Iac11_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_textarea('ac11_obs',4,50,$Iac11_obs,true,'text',$db_opcao,"")
   <table>
   <tr>    
     <td align=center> 
-<?
+<?php
 db_textarea('ac11_textopadrao',4,50,$Iac11_textopadrao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -378,7 +378,7 @@ function js_retornoExcluiGarantia(oAjax) {
 
 js_consultaTiposAcordos();
 
-<? if ($db_opcao != 1 && $db_opcao != 11) { ?>
+<?php if ($db_opcao != 1 && $db_opcao != 11) { ?>
       js_pesquisa();
-<? } ?>
+<?php } ?>
 </script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,11 +100,11 @@ function js_isnumber(campo,nome){
 		  <center>
                   <fieldset><Legend><strong>INTERVALO</strong></legend>
 		    <b> Códigos de  </b>
-                  <?
+                  <?php
                     db_input('t52_bem_ini',8,0,true,'text',1,"onchange='js_isnumber(this.value);'","");
                   ?>
 		    <b> a </b>
-                  <?
+                  <?php
                     db_input('t52_bem_fim',8,0,true,'text',1,"onchange='js_isnumber(this.value,this.name);'","");
                   ?>
 	          </fieldset>
@@ -119,7 +119,7 @@ function js_isnumber(campo,nome){
 	    <table>
 	      <tr>
 		<td>
-        <?
+        <?php
         $aux = new cl_arquivo_auxiliar;
         $aux->cabecalho = "<strong>OPÇÃO DE BENS</strong>";
         $aux->codigo = "t52_bem";
@@ -146,7 +146,7 @@ function js_isnumber(campo,nome){
 	<tr>
           <td align="right"> <strong>Opção de Seleção :<strong></td>
           <td align="left">&nbsp;&nbsp;&nbsp;
-            <?
+            <?php
             $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
             db_select('param',$xxx,true,2);
             ?>

@@ -382,7 +382,7 @@ if($chave !=0){
           <tr>
           <td colspan="9" style="font-size:12px" nowrap bgcolor="<?=$cor?>" align="center"><?=$k00_tipo."-".$k00_descr?></td>
           </tr>
-		  <?
+		  <?php
         }
 
 		
@@ -416,7 +416,7 @@ if($chave !=0){
 						  name="chkrec<?=$k00_receit;?>" value="<?=$k00_receit;?>"></td>
 						 <script>document.getElementById('chkrec-<?=(isset($k00_tipo) ? $k00_tipo : 'totalizador');?>-<?=$k00_receit;?>').tipo=<?=$k00_tipo;?>;</script>
              </tr>
-		   <?
+		   <?php
            }
 	    }
         $ttvlrhis+=$tvlrhis;
@@ -452,7 +452,7 @@ if($chave !=0){
 		}else{
 		?>
         <td align="left" colspan="2" style="font-size:12px" nowrap bgcolor="<?=$cor?>">Total Tipo:</td>
-		<?
+		<?php
 		}
 		?>
         <td align="right" class="borda" style="font-size:12px" nowrap bgcolor="<?=$cor?>">     <input type="hidden" id="his<?=$k00_tipo?>" value="<?=$tvlrhis?>">       <?=db_formatar($tvlrhis,'f')?></td>
@@ -464,11 +464,11 @@ if($chave !=0){
 			  </td>
 
         <td align="right" style="font-size:11px" id="coluna$i" nowrap bgcolor="<?=$cor?>"> 
-	        <input style="font-size:11px" type="checkbox" value="<?=$k00_tipo?>" id="check<?=$k00_tipo?>" name="check<?=$k00_tipo?>" <?echo($k00_marcado=="t"?"checked":""); echo " onclick=\"js_somatotal($k00_tipo);js_setMarca(this);\"" ?>>
+	        <input style="font-size:11px" type="checkbox" value="<?=$k00_tipo?>" id="check<?=$k00_tipo?>" name="check<?=$k00_tipo?>" <?php echo($k00_marcado=="t"?"checked":""); echo " onclick=\"js_somatotal($k00_tipo);js_setMarca(this);\"" ?>>
         </td>
 
         </tr>
-		<?
+		<?php
 	  }
 	}
   }else{
@@ -503,7 +503,7 @@ if($erro==false){
 <td align="right" style="font-size:11px" id="coluna" nowrap bgcolor="<?=$cor?>">
 </tr>
 
-<?
+<?php
 }
 ?>
 
@@ -511,7 +511,7 @@ if($erro==false){
     <input type="submit" name="tiposoma" value="<?=(@$tiposoma=="Por Receita"?"Por Tipo":"Por Receita")?>">
     <input type="hidden" name="db_datausu" value="$db_datausu">
     &nbsp;&nbsp; 
-    <input type="button" name="Submit2" value="Relat&oacute;rio Sint&eacute;tico" onclick="js_AbreJanelaRelatorio('arr3_relatoriototaldebitossintetico001.php?db_datausu=<?
+    <input type="button" name="Submit3" value="Relat&oacute;rio Sint&eacute;tico" onclick="js_AbreJanelaRelatorio('arr3_relatoriototaldebitossintetico001.php?db_datausu=<?php
           echo $db_datausu."&";
           if(isset($matric)){
          echo "matric=$matric";
@@ -524,7 +524,7 @@ if($erro==false){
       }
      ?>');">
      &nbsp;&nbsp; 
-    <input type="button" name="Submit32" value="Relat&oacute;rio Sint&eacute;tico(novo)" onClick="js_AbreJanelaRelatorio('arr3_relatoriototaldebitossinteticonovo001.php?db_datausu=<?
+    <input type="button" name="Submit32" value="Relat&oacute;rio Sint&eacute;tico(novo)" onClick="js_AbreJanelaRelatorio('arr3_relatoriototaldebitossinteticonovo001.php?db_datausu=<?php
 	  echo $db_datausu."&";
 	  if(isset($matric)){
          echo "matric=$matric";
@@ -537,7 +537,7 @@ if($erro==false){
       }
 	?>');">	
     &nbsp;&nbsp; 
-    <input type="button" name="Submit32" value="Relat&oacute;rio Anal&iacute;tico" onClick="js_AbreJanelaRelatorio('arr3_relatoriototaldebitosanalitico001.php?db_datausu=<?
+    <input type="button" name="Submit32" value="Relat&oacute;rio Anal&iacute;tico" onClick="js_AbreJanelaRelatorio('arr3_relatoriototaldebitosanalitico001.php?db_datausu=<?php
 	  echo $db_datausu."&";
 	  if(isset($matric)){
          echo "matric=$matric";
@@ -554,7 +554,7 @@ if($erro==false){
 	 	<tr>
      		<td align='center'  colspan=2 >
             <b> Periodo </b>
-            <? 
+            <?php 
 	        db_inputdata('data1','','','',true,'text',1,"onchange='js_limpadtfim()';");   		          
             echo "<b> a</b> ";
             db_inputdata('data2','','','',true,'text',1,"onchange='js_testadt()';");
@@ -564,7 +564,7 @@ if($erro==false){
       	<tr>
      		<td align='center'  colspan=2 >
             <b> Exercicio </b>
-            <? 
+            <?php 
 	        	db_input('exercini',4,@$Iv01_exerc,true,'text',1,"onchange='js_limpaexercfim()';");   		          
             echo "<b> a</b> ";
             db_input('exercfim',4,@$Iv01_exerc,true,'text',1,"onchange='js_testaexerc()';");

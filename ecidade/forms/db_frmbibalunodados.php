@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -42,7 +42,7 @@ $clrotulo->label("j13_codi");
      <tr>
       <td valign="middle" width="20%" align="center">
        <iframe name="frame_imagem" id="frame_imagem" src="edu4_mostraimagem.php" width="110" height="125" frameborder="1" scrolling="no"></iframe>
-       <?
+       <?php
        if((isset($chavepesquisa) || isset($alterar)) && isset($ed47_c_foto)){
         if($ed47_o_oid!=0){
          $arquivo = "tmp/".$ed47_c_foto;
@@ -52,7 +52,7 @@ $clrotulo->label("j13_codi");
          if($db_botao==true){
           ?>
           <br><input type="button" name="excfoto" value="Excluir Foto" onclick="location.href='bib1_alunodados002.php?excluirfoto&chavepesquisa=<?=$chavepesquisa?>'" style="font-size:9px;height:14px;padding:0px;">
-          <?
+          <?php
          }
         }else{
          $arquivo = "imagens/none1.jpeg";
@@ -61,7 +61,7 @@ $clrotulo->label("j13_codi");
         <script>
         frame_imagem.location.href="edu4_mostraimagem.php?imagem_gerada=<?=$arquivo?>";
         </script>
-       <?}?>
+       <?php }?>
       </td>
       <td valign="top">
        <table border="0" cellspacing="1" cellpadding="0" width="100%">
@@ -70,11 +70,11 @@ $clrotulo->label("j13_codi");
           <?=$Led47_i_codigo?>
          </td>
          <td>
-          <?db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3);?>
+          <?php db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3);?>
           <?=@$Led47_c_codigoinep?>
-          <?db_input('ed47_c_codigoinep',12,$Ied47_c_codigoinep,true,'text',$db_opcao,'')?>
+          <?php db_input('ed47_c_codigoinep',12,$Ied47_c_codigoinep,true,'text',$db_opcao,'')?>
           <?=@$Led47_c_nis?>
-          <?db_input('ed47_c_nis',11,$Ied47_c_nis,true,'text',$db_opcao,"")?>
+          <?php db_input('ed47_c_nis',11,$Ied47_c_nis,true,'text',$db_opcao,"")?>
          </td>
         </tr>
         <tr>
@@ -82,7 +82,7 @@ $clrotulo->label("j13_codi");
           <?=@$Led47_v_nome?>
          </td>
          <td>
-          <?db_input('ed47_v_nome',70,$Ied47_v_nome,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,1,'$GLOBALS[Sed47_v_nome]','f','t',event);\"")?>
+          <?php db_input('ed47_v_nome',70,$Ied47_v_nome,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,1,'$GLOBALS[Sed47_v_nome]','f','t',event);\"")?>
          </td>
         </tr>
         <tr>
@@ -90,14 +90,14 @@ $clrotulo->label("j13_codi");
           <?=$Led47_d_nasc?>
          </td>
          <td>
-          <?db_inputdata('ed47_d_nasc',@$ed47_d_nasc_dia,@$ed47_d_nasc_mes,@$ed47_d_nasc_ano,true,'text',$db_opcao);?>
+          <?php db_inputdata('ed47_d_nasc',@$ed47_d_nasc_dia,@$ed47_d_nasc_mes,@$ed47_d_nasc_ano,true,'text',$db_opcao);?>
           <?=$Led47_v_sexo?>
-          <?
+          <?php
           $sex = array(""=>"","M"=>"Masculino","F"=>"Feminino");
           db_select('ed47_v_sexo',$sex,true,$db_opcao);
           ?>
           <?=$Led47_i_estciv?>
-          <?
+          <?php
           $x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
           db_select('ed47_i_estciv',$x,true,$db_opcao);
           ?>
@@ -108,12 +108,12 @@ $clrotulo->label("j13_codi");
           <?=@$Led47_i_filiacao?>
          </td>
          <td>
-          <?
+          <?php
           $fil = array("0"=>"NÃO DECLARADO / IGNORADO","1"=>"PAI E/OU MÃE");
           db_select('ed47_i_filiacao',$fil,true,$db_opcao," onchange='js_filiacao(this.value)'");
           ?>
           <?=@$Led47_c_raca?>
-          <?
+          <?php
           $x = array('NÃO DECLARADA'=>'NÃO DECLARADA','BRANCA'=>'BRANCA','PRETA'=>'PRETA','PARDA'=>'PARDA','AMARELA'=>'AMARELA','INDÍGENA'=>'INDÍGENA');
           db_select('ed47_c_raca',$x,true,$db_opcao,"");
           ?>
@@ -124,7 +124,7 @@ $clrotulo->label("j13_codi");
           <?=@$Led47_v_pai?>
          </td>
          <td>
-          <?db_input('ed47_v_pai',70,$Ied47_v_pai,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,1,'$GLOBALS[Sed47_v_pai]','f','t',event);\"")?>
+          <?php db_input('ed47_v_pai',70,$Ied47_v_pai,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,1,'$GLOBALS[Sed47_v_pai]','f','t',event);\"")?>
          </td>
         </tr>
         <tr>
@@ -132,7 +132,7 @@ $clrotulo->label("j13_codi");
           <?=@$Led47_v_mae?>
          </td>
          <td>
-          <?db_input('ed47_v_mae',70,$Ied47_v_mae,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,1,'$GLOBALS[Sed47_v_mae]','f','t',event);\"")?>
+          <?php db_input('ed47_v_mae',70,$Ied47_v_mae,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,1,'$GLOBALS[Sed47_v_mae]','f','t',event);\"")?>
          </td>
         </tr>
         <tr>
@@ -140,7 +140,7 @@ $clrotulo->label("j13_codi");
           <?=@$Led47_c_nomeresp?>
          </td>
          <td>
-          <?db_input('ed47_c_nomeresp',70,$Ied47_c_nomeresp,true,'text',$db_opcao,"")?>
+          <?php db_input('ed47_c_nomeresp',70,$Ied47_c_nomeresp,true,'text',$db_opcao,"")?>
          </td>
         </tr>
         <tr>
@@ -148,7 +148,7 @@ $clrotulo->label("j13_codi");
           <?=@$Led47_c_emailresp?>
          </td>
          <td>
-          <?db_input('ed47_c_emailresp',40,$Ied47_c_emailresp,true,'text',$db_opcao,"")?>
+          <?php db_input('ed47_c_emailresp',40,$Ied47_c_emailresp,true,'text',$db_opcao,"")?>
          </td>
         </tr>
         <tr>
@@ -173,7 +173,7 @@ $clrotulo->label("j13_codi");
      <tr>
       <td colspan="2">
        <b>Libera Endereço:</b>
-       <?
+       <?php
        $x = array("N"=>"NÃO","S"=>"SIM");
        db_select('liberaendereco',$x,true,$db_opcao," onchange='LiberaEndereco(this.value);'");
        ?>
@@ -181,10 +181,10 @@ $clrotulo->label("j13_codi");
      </tr>
      <tr>
       <td>
-       <?db_ancora(@$Led47_v_ender,"js_ruas();",$db_opcao);?>
+       <?php db_ancora(@$Led47_v_ender,"js_ruas();",$db_opcao);?>
       </td>
       <td>
-       <?db_input('ed47_v_ender',40,$Ied47_v_ender,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed47_v_ender]','f','t',event);\"")?>
+       <?php db_input('ed47_v_ender',40,$Ied47_v_ender,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed47_v_ender]','f','t',event);\"")?>
       </td>
      </tr>
      <tr>
@@ -192,10 +192,10 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_c_numero?>
       </td>
       <td>
-       <?db_input('ed47_c_numero',10,$Ied47_c_numero,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed47_c_numero]','t','t',event);\"")?>
+       <?php db_input('ed47_c_numero',10,$Ied47_c_numero,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed47_c_numero]','t','t',event);\"")?>
        &nbsp;
        <?=@$Led47_v_compl?>
-       <?db_input('ed47_v_compl',20,$Ied47_v_compl,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed47_v_compl]','t','t',event);\"")?>
+       <?php db_input('ed47_v_compl',20,$Ied47_v_compl,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,3,'$GLOBALS[Sed47_v_compl]','t','t',event);\"")?>
       </td>
      </tr>
      <tr>
@@ -203,7 +203,7 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_i_censoufend?>
       </td>
       <td>
-       <?
+       <?php
        $result_uf = $clcensouf->sql_record($clcensouf->sql_query_file("","ed260_i_codigo,ed260_c_nome","ed260_c_nome"));
        db_selectrecord("ed47_i_censoufend",$result_uf,"","","","","","  ","iframe_uf.location.href='edu1_aluno004.php?campo=end&censouf='+this.value",1);
        ?>
@@ -214,7 +214,7 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_i_censomunicend?>
       </td>
       <td>
-       <?
+       <?php
        if(isset($ed47_i_censoufend) && $ed47_i_censoufend!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufend"));
         if($clcensomunic->numrows==0){
@@ -233,11 +233,11 @@ $clrotulo->label("j13_codi");
      </tr>
      <tr>
       <td>
-       <?db_ancora(@$Led47_v_bairro,"js_bairro();",$db_opcao);?>
+       <?php db_ancora(@$Led47_v_bairro,"js_bairro();",$db_opcao);?>
       </td>
       <td>
-       <?db_input('j13_codi',10,$Ij13_codi,true,'text',3);?>
-       <?db_input('ed47_v_bairro',25,$Ied47_v_bairro,true,'text',3);?>
+       <?php db_input('j13_codi',10,$Ij13_codi,true,'text',3);?>
+       <?php db_input('ed47_v_bairro',25,$Ied47_v_bairro,true,'text',3);?>
       </td>
      </tr>
      <tr>
@@ -245,12 +245,12 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_c_zona?>
       </td>
       <td>
-       <?
+       <?php
        $x = array('URBANA'=>'Urbana','RURAL'=>'Rural');
        db_select('ed47_c_zona',$x,true,$db_opcao,"");
        ?>
        <?=@$Led47_v_cep?>
-       <?db_input('ed47_v_cep',8,$Ied47_v_cep,true,'text',$db_opcao);?>
+       <?php db_input('ed47_v_cep',8,$Ied47_v_cep,true,'text',$db_opcao);?>
       </td>
      </tr>
      <tr>
@@ -258,9 +258,9 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_v_telef?>
       </td>
       <td>
-       <?db_input('ed47_v_telef',12,$Ied47_v_telef,true,'text',$db_opcao);?>
+       <?php db_input('ed47_v_telef',12,$Ied47_v_telef,true,'text',$db_opcao);?>
        <?=@$Led47_v_telcel?>
-       <?db_input('ed47_v_telcel',12,$Ied47_v_telcel,true,'text',$db_opcao);?>
+       <?php db_input('ed47_v_telcel',12,$Ied47_v_telcel,true,'text',$db_opcao);?>
       </td>
      </tr>
      <tr>
@@ -268,9 +268,9 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_v_fax?>
       </td>
       <td>
-       <?db_input('ed47_v_fax',12,$Ied47_v_fax,true,'text',$db_opcao);?>
+       <?php db_input('ed47_v_fax',12,$Ied47_v_fax,true,'text',$db_opcao);?>
        <?=@$Led47_v_cxpostal?>
-       <?db_input('ed47_v_cxpostal',10,$Ied47_v_cxpostal,true,'text',$db_opcao);?>
+       <?php db_input('ed47_v_cxpostal',10,$Ied47_v_cxpostal,true,'text',$db_opcao);?>
       </td>
      </tr>
      <tr>
@@ -278,7 +278,7 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_v_email?>
       </td>
       <td>
-       <?db_input('ed47_v_email',30,$Ied47_v_email,true,'text',$db_opcao);?>
+       <?php db_input('ed47_v_email',30,$Ied47_v_email,true,'text',$db_opcao);?>
       </td>
      </tr>
     </table>
@@ -292,7 +292,7 @@ $clrotulo->label("j13_codi");
        <?=$Led47_i_nacion?>
       </td>
       <td>
-       <?
+       <?php
        $x = array("1"=>"Brasileira","2"=>"Brasileira no Exterior ou Naturalizado","3"=>"Estrangeira");
        db_select('ed47_i_nacion',$x,true,$db_opcao," onchange='js_nacionalidade(this.value)'");
        ?>
@@ -303,7 +303,7 @@ $clrotulo->label("j13_codi");
        <?=$Led47_i_pais?>
       </td>
       <td>
-       <?
+       <?php
        if(!isset($ed47_i_pais)){
         $ed47_i_pais = 10;
        }
@@ -322,7 +322,7 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_i_censoufnat?>
       </td>
       <td>
-       <?
+       <?php
        $result_uf = $clcensouf->sql_record($clcensouf->sql_query_file("","ed260_i_codigo,ed260_c_nome","ed260_c_nome"));
        db_selectrecord("ed47_i_censoufnat",$result_uf,"","","","","","  ","iframe_uf.location.href='edu1_aluno004.php?campo=nat&censouf='+this.value",1);
        ?>
@@ -333,7 +333,7 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_i_censomunicnat?>
       </td>
       <td>
-       <?
+       <?php
        if(isset($ed47_i_censoufnat) && $ed47_i_censoufnat!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufnat"));
         if($clcensomunic->numrows==0){
@@ -355,7 +355,7 @@ $clrotulo->label("j13_codi");
        <?=$Led47_i_transpublico?>
       </td>
       <td>
-       <?
+       <?php
        $x = array("0"=>"Não Utiliza","1"=>"Utiliza");
        db_select('ed47_i_transpublico',$x,true,$db_opcao);
        ?>
@@ -366,7 +366,7 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_c_transporte?>
       </td>
       <td>
-       <?
+       <?php
        $x = array(''=>'','1'=>'Estadual','2'=>'Municipal');
        db_select('ed47_c_transporte',$x,true,$db_opcao,"");
        ?>
@@ -375,7 +375,7 @@ $clrotulo->label("j13_codi");
      <tr>
       <td colspan="2">
        <?=$Led47_c_atenddifer?>
-       <?
+       <?php
        $x = array("3"=>"Não Recebe","1"=>"Em Hospital","2"=>"Em Domicílio");
        db_select('ed47_c_atenddifer',$x,true,$db_opcao);
        ?>
@@ -386,11 +386,11 @@ $clrotulo->label("j13_codi");
        <?=@$Led47_c_bolsafamilia?>
       </td>
       <td>
-       <?
+       <?php
        $x = array('N'=>'NÃO','S'=>'SIM');
        db_select('ed47_c_bolsafamilia',$x,true,$db_opcao,"");
        ?>
-       <?db_input('ed47_i_atendespec',10,$Ied47_i_atendespec,true,'hidden',$db_opcao);?>
+       <?php db_input('ed47_i_atendespec',10,$Ied47_i_atendespec,true,'hidden',$db_opcao);?>
       </td>
      </tr>
      <tr>
@@ -398,7 +398,7 @@ $clrotulo->label("j13_codi");
        <?=$Led47_v_profis?>
       </td>
       <td>
-       <?db_input('ed47_v_profis',40,$Ied47_v_profis,true,'text',$db_opcao);?>
+       <?php db_input('ed47_v_profis',40,$Ied47_v_profis,true,'text',$db_opcao);?>
       </td>
      </tr>
     </table>
@@ -411,14 +411,14 @@ $clrotulo->label("j13_codi");
     <table width="100%">
      <tr>
       <td nowrap title="<?=@$Ted76_i_escola?>">
-       <?db_ancora(@$Led76_i_escola,"js_pesquisaed76_i_escola(true);",$db_opcao);?>
-       <?db_input('ed76_i_escola',20,$Ied76_i_escola,true,'text',3," onchange='js_pesquisaed76_i_escola(false);'")?>
-       <?db_input('nomeescola',40,@$Inomeescola,true,'text',3,"")?>
-       <?db_input('ed76_c_tipo',10,@$Ied76_c_tipo,true,'hidden',3,"")?>
-       <?db_input('ed76_i_codigo',20,@$Ied76_i_codigo,true,'hidden',3,"")?>
+       <?php db_ancora(@$Led76_i_escola,"js_pesquisaed76_i_escola(true);",$db_opcao);?>
+       <?php db_input('ed76_i_escola',20,$Ied76_i_escola,true,'text',3," onchange='js_pesquisaed76_i_escola(false);'")?>
+       <?php db_input('nomeescola',40,@$Inomeescola,true,'text',3,"")?>
+       <?php db_input('ed76_c_tipo',10,@$Ied76_c_tipo,true,'hidden',3,"")?>
+       <?php db_input('ed76_i_codigo',20,@$Ied76_i_codigo,true,'hidden',3,"")?>
        <input type="button" name="limpar" value="Limpar" onclick="document.form1.ed76_i_escola.value='';document.form1.nomeescola.value='';document.form1.ed76_c_tipo.value='';">
        <?=@$Led76_d_data?>
-       <?db_inputdata('ed76_d_data',@$ed76_d_data_dia,@$ed76_d_data_mes,@$ed76_d_data_ano,true,'text',$db_opcao);?>
+       <?php db_inputdata('ed76_d_data',@$ed76_d_data_dia,@$ed76_d_data_mes,@$ed76_d_data_ano,true,'text',$db_opcao);?>
       </td>
      </tr>
     </table>
@@ -428,20 +428,20 @@ $clrotulo->label("j13_codi");
  <tr align="center">
   <td height="30">
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick="return js_valida();">
-   <?if(!isset($leitor)){?>
+   <?php if(!isset($leitor)){?>
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
     <input name="novo" type="button" id="novo" value="Novo Registro" onclick="js_novo()" <?=$db_opcao==1?"disabled":""?>>
    <?}else{?>
     <input name="leitor" type="hidden" value="<?=$leitor?>">
     <input type="button" value="Fechar" onclick="js_fechar();">
-   <?}?>
+   <?php }?>
    <input name="ed47_o_oid" type="hidden" id="ed47_o_oid" value="<?=@$ed47_c_foto?>" size="30">
   </td>
   <td align="right">
    <?=@$Led47_d_cadast?>
-   <?db_inputdata('ed47_d_cadast',@$ed47_d_cadast_dia,@$ed47_d_cadast_mes,@$ed47_d_cadast_ano,true,'text',3);?>
+   <?php db_inputdata('ed47_d_cadast',@$ed47_d_cadast_dia,@$ed47_d_cadast_mes,@$ed47_d_cadast_ano,true,'text',3);?>
    <?=@$Led47_d_ultalt?>
-   <?db_inputdata('ed47_d_ultalt',@$ed47_d_ultalt_dia,@$ed47_d_ultalt_mes,@$ed47_d_ultalt_ano,true,'text',3);?>
+   <?php db_inputdata('ed47_d_ultalt',@$ed47_d_ultalt_dia,@$ed47_d_ultalt_mes,@$ed47_d_ultalt_ano,true,'text',3);?>
   </td>
  </tr>
 </table>

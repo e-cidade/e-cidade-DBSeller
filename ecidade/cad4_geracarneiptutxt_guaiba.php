@@ -110,10 +110,10 @@ if(isset($opVenc) && $opVenc == 1){
 if (isset($unica) && $unica != "") {
 
 	$aUnicas =  explode("U",$unica);
-  $vt      = split("U",$unica);
+  $vt      =explode("U",$unica);
   $unicas  = array();
 	foreach ($vt as $i => $v){
-		$check = split("=",$v);
+		$check =explode("=",$v);
 		if (isset($check) && $check != "") {
 			array_push($unicas, $check[0]."-".$check[1]."-".$check[2])."#";
 		}
@@ -141,12 +141,12 @@ $sQuebraLinha = "\r\n";
 </tr>
 <tr>
 <td width="100%"  align="center">
-<? db_criatermometro('termometro','Concluido...','blue',1); ?>
+<?php db_criatermometro('termometro','Concluido...','blue',1); ?>
 </td>
 </tr>
 </table>
 <form name='form1'>
-<?
+<?php
 
 echo "<br>Inicio:".date("H:i:s")."<br>";
 
@@ -627,7 +627,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
               $j40_refant = "....";
             }
 
-            $sqlsub = split('\.', $j40_refant);
+            $sqlsub =explode('.', $j40_refant);
             if ($gerar == "dados") {
               if (sizeof($sqlsub) >= 4) {
                 fputs($clabre_arquivo->arquivo, substr(str_pad($sqlsub[4], 4),0,4));
@@ -1358,7 +1358,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
        			$k03_numprepar = "";
        		}
 
-       	  $numpre = db_numpre($k03_numprepar).str_pad(null,3,"0",STR_PAD_LEFT);
+       	  $numpre = db_numpre($k03_numprepar).str_pad('',3,"0",STR_PAD_LEFT);
        	  if ($gerar == "dados") {
        	  	if ($gerarparcelado == true && $iMaxParc == $unicont) {
        	  	  fputs($clabre_arquivo->arquivo, $numpre);
@@ -1559,7 +1559,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
                     fputs($arqTXTISENTOS,"{$j23_matric} - {$j17_descr}{$sQuebraLinha}");
 //                fputs($clabre_arquivo->arquivo, str_pad("", 40, ' ', STR_PAD_LEFT));
 
-                    fputs($clabre_arquivo->arquivo, str_pad(null, 40));
+                    fputs($clabre_arquivo->arquivo, str_pad('', 40));
                     fputs($clabre_arquivo->arquivo, str_pad(db_formatar(0, 'f', ' ', 10),"0",STR_PAD_LEFT));
 
 //                    fputs($clabre_arquivo->arquivo, str_pad("ISENTO", 18, ' ', STR_PAD_LEFT));
@@ -2060,7 +2060,7 @@ echo "<br>Fim:".date("H:i:s")."<br>";
 </form>
 </body>
 </html>
-<?
+<?php
 
 function db_contador($apelido, $expressao, $contador, $valor) {
   $sQuebraLinha = "\r\n";

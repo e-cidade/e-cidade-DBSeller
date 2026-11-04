@@ -5,6 +5,6 @@
     "medicamentos_salvos": "Medicamento(s) salvo(s) com sucesso",
     "medicamento_removido": "Medicamento removido com sucesso.",
     "resultados_importados": "Resultados importados com sucesso.",
-    "resultados_importados_inconsistencias": "Importação concluída, porém inconsistências foram encontradas. Deseja emitir o relatório?",
+    "resultados_importados_inconsistencias": "Importação concluída, porém inconsistências foram encontradas nos resultados. Deseja emitir o relatório?",
     "resultados_importados_com_excecao": "Resultados importados com sucesso, com exceção dos seguintes exames abaixo que não permitem mais alterações: \n\n[resultadosNaoSalvos]"
 }

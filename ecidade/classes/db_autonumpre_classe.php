@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,13 +50,13 @@ class cl_autonumpre {
                  y17_codauto = int4 = Código do Auto de Infração
                  ";
    //funcao construtor da classe
-   function cl_autonumpre() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autonumpre");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_autonumpre {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y17_numpre = ($this->y17_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["y17_numpre"]:$this->y17_numpre);
        $this->y17_codauto = ($this->y17_codauto == ""?@$GLOBALS["HTTP_POST_VARS"]["y17_codauto"]:$this->y17_codauto);
@@ -73,7 +73,7 @@ class cl_autonumpre {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->y17_numpre == null ){
        $this->erro_sql = " Campo Numpre nao Informado.";
@@ -127,7 +127,7 @@ class cl_autonumpre {
      return true;
    }
    // funcao para alteracao
-   function alterar ( $oid=null ) {
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update autonumpre set ";
      $virgula = "";
@@ -188,7 +188,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao para exclusao
-   function excluir ( $oid=null ,$dbwhere=null) {
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from autonumpre
                     where ";
      $sql2 = "";
@@ -227,7 +227,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -249,10 +249,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="autonumpre.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $oid = null,$campos="autonumpre.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -276,7 +276,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -285,10 +285,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -306,7 +306,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -315,10 +315,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_val ( $oid = null,$campos="autonumpre.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query_val ( $oid = null,$campos="autonumpre.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -343,7 +343,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -359,7 +359,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    * @param  int $iCodigoAuto
    * @return string  Query da busca
    */
-  function sql_query_paga ( $iCodigoAuto ){
+  public function sql_query_paga ( $iCodigoAuto ){
 
     $sSql  = "select y17_numpre as numpre,                                                    ";
     $sSql .= "       case                                                                     ";

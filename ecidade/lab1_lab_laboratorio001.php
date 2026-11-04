@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -108,7 +108,7 @@ if(isset($incluir)){
     <center>
     <fieldset><b><legend><?=converteCodificacao("Laboratório")?></legend></b>
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_laboratorio.php"));
 	?>
     </center>
@@ -123,7 +123,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","la02_i_tipo",true,1,"la02_i_tipo",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($cllab_laboratorio->erro_status=="0"){
     $cllab_laboratorio->erro(true,false);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -28,8 +28,8 @@
 <form name="form1" method="post" action="">
 <center>
 <br>
-<strong>Arquivos do :</strong>
-<? 
+<strong>Arquivos de :</strong>
+<?php 
 // $data1_dia = date("d",db_getsession("DB_datausu"));
 // $data1_mes = date("m",db_getsession("DB_datausu"));
 // $data1_ano = date("Y",db_getsession("DB_datausu"));

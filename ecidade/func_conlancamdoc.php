@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,12 +52,12 @@ $clconlancamdoc->rotulo->label("c71_coddoc");
 	  <!---   
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tc71_codlan?>"><?=$Lc71_codlan?></td>
-            <td width="96%" align="left" nowrap><? db_input("c71_codlan",8,$Ic71_codlan,true,"text",4,"","chave_c71_codlan"); ?></td>
+            <td width="96%" align="left" nowrap><?php db_input("c71_codlan",8,$Ic71_codlan,true,"text",4,"","chave_c71_codlan"); ?></td>
           </tr>
 	  --->
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tc71_coddoc?>"> <?=$Lc71_coddoc?> </td>
-            <td width="96%" align="left" nowrap><? db_input("c71_coddoc",4,$Ic71_coddoc,true,"text",4,"","chave_c71_coddoc"); ?></td>
+            <td width="96%" align="left" nowrap><?php db_input("c71_coddoc",4,$Ic71_coddoc,true,"text",4,"","chave_c71_coddoc"); ?></td>
           </tr>
 
 	  
@@ -74,7 +74,7 @@ $clconlancamdoc->rotulo->label("c71_coddoc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos ="distinct(c53_coddoc),c53_descr,c53_tipo";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -111,12 +111,12 @@ $clconlancamdoc->rotulo->label("c71_coddoc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

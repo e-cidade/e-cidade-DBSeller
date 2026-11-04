@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,12 +55,12 @@ $oRotulo->label('z01_v_nome');
     <table border="0" width="90%">
       <tr>
         <td nowrap="nowrap">
-          <?
+          <?php
           db_ancora($Lfa04_i_cgsund, 'js_pesquisafa04_i_cgsund(true);', 1);
           ?>
         </td>
         <td nowrap="nowrap"> 
-          <?
+          <?php
           db_input('fa04_i_cgsund', 10, $Ifa04_i_cgsund, true, 'text', 1,
                    ' onchange="js_pesquisafa04_i_cgsund(false);"'
                   );
@@ -78,7 +78,7 @@ $oRotulo->label('z01_v_nome');
     <div id='grid_retiradas' style='width: 100%;'></div>
   </fieldset>
 </div>
-<?
+<?php
 db_menu(db_getsession('DB_id_usuario'), db_getsession('DB_modulo'), db_getsession('DB_anousu'), db_getsession('DB_instit'));
 ?>
 

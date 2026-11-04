@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -192,11 +192,11 @@ if(isset($chavepesquisa)){
     <table width="100%" border="0" cellspacing="0" cellpadding="2">
      <tr>
       <td nowrap title="<?=@$Ted112_i_rhpessoal?>">
-       <?db_ancora(@$Led112_i_rhpessoal,"js_pesquisa();",1);?>
+       <?php db_ancora(@$Led112_i_rhpessoal,"js_pesquisa();",1);?>
       </td>
       <td>
-       <?db_input('ed112_i_rhpessoal',10,$Ied112_i_rhpessoal,true,'text',3,"")?>
-       <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+       <?php db_input('ed112_i_rhpessoal',10,$Ied112_i_rhpessoal,true,'text',3,"")?>
+       <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -204,10 +204,10 @@ if(isset($chavepesquisa)){
        <b>Data Admissão:</b>
       </td>
       <td>
-       <?db_inputdata('ed112_d_database',@$ed112_d_database_dia,@$ed112_d_database_mes,@$ed112_d_database_ano,true,'text',3,"")?>
+       <?php db_inputdata('ed112_d_database',@$ed112_d_database_dia,@$ed112_d_database_mes,@$ed112_d_database_ano,true,'text',3,"")?>
        &nbsp;&nbsp;&nbsp;&nbsp;
        <b>Classe Atual:</b>
-       <?db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
+       <?php db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -215,36 +215,36 @@ if(isset($chavepesquisa)){
        <b>Data de Início na Classe:</b>
       </td>
       <td>
-       <?db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
+       <?php db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
        &nbsp;&nbsp;&nbsp;&nbsp;
        <b>Situação:</b>
        <?=@$Led112_c_situacao?>
-       <?
+       <?php
        $x = array(''=>'','A'=>'ABERTA','E'=>'ENCERRADA','I'=>'INTERROMPIDA');
        db_select('ed112_c_situacao',$x,true,3,"");
        ?>
       </td>
      </tr>
-     <?if($ed112_c_situacao=="I"){
+     <?php if($ed112_c_situacao=="I"){
       $result = $clproginterrompe->sql_record($clproginterrompe->sql_query("","*",""," ed123_i_progmatricula = $chavepesquisa"));
       db_fieldsmemory($result,0);
       ?>
       <tr>
        <td><b>Interrompida em:</b></td>
-       <td><?db_inputdata('ed112_d_datafinal',@$ed112_d_datafinal_dia,@$ed112_d_datafinal_mes,@$ed112_d_datafinal_ano,true,'text',3,"")?></td>
+       <td><?php db_inputdata('ed112_d_datafinal',@$ed112_d_datafinal_dia,@$ed112_d_datafinal_mes,@$ed112_d_datafinal_ano,true,'text',3,"")?></td>
       </tr>
       <tr>
        <td><b>Motivo:</b></td>
        <td><?=nl2br($ed123_t_motivo)?></td>
       </tr>
-    <?}elseif($ed112_c_situacao=="E"){?>
+    <?php }elseif($ed112_c_situacao=="E"){?>
       <tr>
        <td><b>Encerrada em:</b></td>
-       <td><?db_inputdata('ed112_d_datafinal',@$ed112_d_datafinal_dia,@$ed112_d_datafinal_mes,@$ed112_d_datafinal_ano,true,'text',3,"")?></td>
+       <td><?php db_inputdata('ed112_d_datafinal',@$ed112_d_datafinal_dia,@$ed112_d_datafinal_mes,@$ed112_d_datafinal_ano,true,'text',3,"")?></td>
       </tr>
-    <?}?>
+    <?php }?>
     </table>
-    <?if(isset($chavepesquisa)){?>
+    <?php if(isset($chavepesquisa)){?>
     <table width="100%" border="1" cellspacing="0" cellpadding="2">
      <tr class="titulo" align="center">
       <td rowspan="2">Ano</td>
@@ -259,7 +259,7 @@ if(isset($chavepesquisa)){
       <td>Pedagógico</td>
       <td>Total</td>
      </tr>
-     <?
+     <?php
      $total_antiguidade = 0;
      $total_convocacao = 0;
      $total_avaladmin = 0;
@@ -272,7 +272,7 @@ if(isset($chavepesquisa)){
       <tr align="center">
        <td class="titulo"><?=$x?></td>
        <td class="aluno1">
-        <?
+        <?php
         $soma_desempenho = 0;
         $result1 = $clprogantig->sql_record($clprogantig->sql_query("","ed113_f_pontuacao",""," ed113_i_progmatricula = $ed112_i_codigo AND ed113_i_ano = $x"));
         if($clprogantig->numrows>0){
@@ -287,7 +287,7 @@ if(isset($chavepesquisa)){
         ?>
        </td>
        <td class="aluno1">
-        <?
+        <?php
         $result3 = $clprogconvocacaores->sql_record($clprogconvocacaores->sql_query("","ed127_i_nconvoca as qtdconvocacao,ed127_i_nparticipa as qtdparticipacao,ed127_i_nfaltajust as qtdft",""," ed127_i_ano = $x AND ed127_i_progmatricula = $ed112_i_codigo"));
         if($clprogconvocacaores->numrows>0){
          db_fieldsmemory($result3,0);
@@ -306,7 +306,7 @@ if(isset($chavepesquisa)){
         ?>
        </td>
        <td class="aluno1">
-        <?
+        <?php
         $result1 = $clopcaoquestao->sql_record($clopcaoquestao->sql_query("","max(ed106_f_pontuacao) as maiorpt","","ed106_c_ativo = 'S'"));
         db_fieldsmemory($result1,0);
         $result2 = $clprogavaladmin->sql_record($clprogavaladmin->sql_query("","count(*) as qtdquestao",""," ed116_i_ano = $x AND ed116_i_progmatricula = $ed112_i_codigo"));
@@ -329,7 +329,7 @@ if(isset($chavepesquisa)){
         ?>
        </td>
        <td class="aluno1">
-        <?
+        <?php
         $result1 = $clopcaoquestao->sql_record($clopcaoquestao->sql_query("","max(ed106_f_pontuacao) as maiorpt","","ed106_c_ativo = 'S'"));
         db_fieldsmemory($result1,0);
         $result2 = $clprogavalpedag->sql_record($clprogavalpedag->sql_query("","count(*) as qtdquestao",""," ed117_i_ano = $x AND ed117_i_progmatricula = $ed112_i_codigo"));
@@ -357,7 +357,7 @@ if(isset($chavepesquisa)){
         <?=number_format($soma_desempenho,2,".",".");?>
        </td>
        <td class="aluno1">
-        <?
+        <?php
         $result3 = $clprogconhec->sql_record($clprogconhec->sql_query("","sum(ed114_f_cargahoraria) as somach",""," ed114_i_ano = $x AND ed114_i_progmatricula = $ed112_i_codigo"));
         db_fieldsmemory($result3,0);
         if($somach==""){
@@ -372,7 +372,7 @@ if(isset($chavepesquisa)){
         <?=number_format($soma_ano,2,".",".");?>
        </td>
       </tr>
-     <?
+     <?php
      }
      $total_conhec = $total_conhec>200?200:$total_conhec;
      $soma_total = $total_antiguidade+$total_desempenho+$total_conhec;
@@ -395,7 +395,7 @@ if(isset($chavepesquisa)){
        <b>Licenças:</b>
       </td>
       <td colspan="2">
-       <?
+       <?php
        $result3 = $clproglicencamatr->sql_record($clproglicencamatr->sql_query("","ed121_c_descr,ed121_i_tempolimite,ed122_d_inicio,ed122_d_final",""," ed122_i_progmatricula = $ed112_i_codigo AND ed122_d_inicio BETWEEN '$ed112_d_datainicio' AND '$ed112_d_dataprevisao' AND ed121_c_suspensao = 'S'"));
        $soma_licenca = 0;
        if($clproglicencamatr->numrows>0){
@@ -426,20 +426,20 @@ if(isset($chavepesquisa)){
        ?>
       </td>
      </tr>
-     <?if($ed112_c_situacao=="A"){?>
+     <?php if($ed112_c_situacao=="A"){?>
      <tr>
       <td>
        <b>Próxima Progressão:</b>
       </td>
       <td>
-       <?db_inputdata('ed112_d_dataprevisao',@$ed112_d_dataprevisao_dia,@$ed112_d_dataprevisao_mes,@$ed112_d_dataprevisao_ano,true,'text',3,"")?>
+       <?php db_inputdata('ed112_d_dataprevisao',@$ed112_d_dataprevisao_dia,@$ed112_d_dataprevisao_mes,@$ed112_d_dataprevisao_ano,true,'text',3,"")?>
       </td>
       <td rowspan="3" valign="top">
-       <?if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral && $ed112_c_situacao=="A"){?>
+       <?php if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral && $ed112_c_situacao=="A"){?>
        <form name="form1" method="post" action="">
        <fieldset style="width:95%;">
         <table align="center" border="0" cellspacing="0" cellpadding="2">
-           <?
+           <?php
            $result = $clprogclasse->sql_record($clprogclasse->sql_query("","max(ed107_i_sequencia) as ultimaclasse","",""));
            db_fieldsmemory($result,0);
            if($ultimaclasse==$ed107_i_sequencia){
@@ -454,7 +454,7 @@ if(isset($chavepesquisa)){
               <input type="button" name="confirmar" value="Encerrar Progressão" onclick="js_encerrar(<?=$ed112_i_codigo?>)">
              </td>
             </tr>
-            <?
+            <?php
            }else{
             $result = $clprogclasse->sql_record($clprogclasse->sql_query("","ed107_i_codigo as prxcod, ed107_c_descr as prxclasse",""," ed107_i_sequencia = ".($ed107_i_sequencia+1).""));
             db_fieldsmemory($result,0);
@@ -469,22 +469,22 @@ if(isset($chavepesquisa)){
               <input type="button" name="confirmar" value="Confirmar Progressão" onclick="js_progredir(<?=$ed112_i_codigo?>,<?=$ed112_i_rhpessoal?>,<?=$prxcod?>)">
              </td>
             </tr>
-            <?
+            <?php
            }
            ?>
         </table>
        </fieldset>
        </form>
-       <?}?>
+       <?php }?>
       </td>
      </tr>
-     <?}?>
+     <?php }?>
      <tr>
       <td nowrap title="<?=@$Ted112_c_classeesp?>">
        <b>Classe Especial:</b>
       </td>
       <td>
-       <?
+       <?php
        $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
        db_select('ed112_c_classeesp',$x,true,3," style='width:80px;height:15px;font-size:10px;padding:0px;'");
        ?>
@@ -495,7 +495,7 @@ if(isset($chavepesquisa)){
        <b>Dedicação Docente:</b>
       </td>
       <td>
-       <?
+       <?php
        $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
        db_select('ed112_c_dedicacao',$x,true,3," style='width:80px;height:15px;font-size:10px;padding:0px;'");
        ?>
@@ -506,7 +506,7 @@ if(isset($chavepesquisa)){
        <b>Difícil Acesso:</b>
       </td>
       <td colspan="2">
-       <?
+       <?php
        $sql1 = "SELECT ed18_i_codigo,ed18_c_nome,ed125_c_descr
                 FROM rechumanoescola
                  inner join escoladifacesso on ed126_i_escola = ed75_i_escola
@@ -534,23 +534,23 @@ if(isset($chavepesquisa)){
      </tr>
      <tr>
       <td colspan="3" align="center">
-       <?
+       <?php
        if(isset($ano_chave)){
         ?>
          <input type="button" name="voltar" value="Voltar para Previsão" onclick="location.href='edu3_progprevisao001.php?ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-        <?
+        <?php
        }
        ?>
       </td>
      </tr>
     </table>
-    <?}?>
+    <?php }?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -559,7 +559,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_progmatricula.hide();
- <?
+ <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  ?>
 }
@@ -574,7 +574,7 @@ function js_progredir(codigo,matricula,classe){
  }
 }
 </script>
-<?
+<?php
 if($db_opcao==22){
  echo "<script>js_pesquisa();</script>";
 }

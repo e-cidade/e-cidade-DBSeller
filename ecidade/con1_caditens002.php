@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ input {
 <tr><td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 <center>
 <form name="form1" method="post">
-<?
+<?php
 if(!isset($HTTP_POST_VARS['mod'])){
   ?>
 	<input name="proced" type="hidden" value="<?=(isset($proced)?$proced:false)?>">
@@ -74,7 +74,7 @@ if(!isset($HTTP_POST_VARS['mod'])){
   <Tr>
   <td> <strong>M&oacute;dulo:</strong><br> 
   <select onDblClick="document.form1.mod.click()" name="modulos" size="18"  >
-  <?
+  <?php
   $result = db_query("select db_modulos.id_item,nome_modulo,descr_modulo 
   from db_modulos 
        inner join db_itensmenu on db_modulos.id_item = db_itensmenu.id_item
@@ -93,7 +93,7 @@ if(!isset($HTTP_POST_VARS['mod'])){
 <input onClick="if(document.form1.modulos.selectedIndex == -1 ) { alert('Selecione um módulo!'); return false; }" name="mod" type="submit" id="selecionar" value="Selecionar"></td>
   </tr>
   </table>
-  <?
+  <?php
 } else if(isset($HTTP_POST_VARS["mod"])) {
   $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$HTTP_POST_VARS["modulos"]);
   $mod = pg_result($result,0,0);
@@ -117,9 +117,9 @@ if(!isset($HTTP_POST_VARS['mod'])){
   <td align="center" style='display:none'><strong>Ambiente:</strong>
   <input name="modulos" type="hidden" value="<?=$HTTP_POST_VARS["modulos"]?>">
   <input name="mod" type="hidden" value="selecionar">
-  <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+  <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
   <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-  <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+  <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
   <label for="caracter"><strong>Caracter</strong></label>
   </td>
   </tr>
@@ -157,7 +157,7 @@ if(!isset($HTTP_POST_VARS['mod'])){
   <table border="1" width="100%" height="100%" cellspacing="0" cellpadding="0">	  
   <tr> 
   <td> 
-  <? 
+  <?php 
   $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);		  		   
   $wid = 15;
   $conta = 0;
@@ -265,7 +265,7 @@ if(!isset($HTTP_POST_VARS['mod'])){
   </table>
   </td></tr>
   </table>
-  <?
+  <?php
 }
 ?>	  
 </form>

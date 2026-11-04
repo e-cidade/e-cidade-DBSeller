@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -51,7 +51,7 @@ if(isset($ordenacao)){
   //parent.js_refresh();
   parent.window.location.reload();
  </script>
-<?}?>
+<?php }?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -73,7 +73,7 @@ if(isset($ordenacao)){
        <tr>
         <td rowspan="0">
          <select multiple="true" name="ordenar[]" id="ordenar" size="10" style="font-size:9px;width:300px"  onclick="js_selectum('ordenar')">
-         <?
+         <?php
          if($linhabranco=="yes"){
           echo "<option value=''></option>";
          }

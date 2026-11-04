@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -86,14 +86,16 @@ if (isset($rubrs) && trim($rubrs) != "") {
 
 if (isset($recrs) && trim($recrs) != "") {
     $sRecursos = explode(',', $recrs);
-    $sWhere1 .= " WHERE o15_recurso in ('" . implode("','", $sRecursos) . "')";
+    $sWhere1 .= " WHERE o15_codigo in ('" . implode("','", $sRecursos) . "')";
 }
 
 $sQuery = "
     select rh73_rubric,
            rh27_descr,
-           o15_recurso as recurso,
-           o15_descr,
+           gestao as recurso,
+           o15_recurso as subrecurso,
+           o15_complemento as complemento,
+           descricao,
            round(sum(rh73_valor),2) as valor
     from (SELECT  rh73_rubric,
                   rh27_descr,
@@ -108,7 +110,9 @@ $sQuery = "
             where $sWhere
         ) as x
     join orctiporec on codigo = o15_codigo
-   $sWhere1 group by rh73_rubric,rh27_descr,o15_recurso,o15_descr order by rh73_rubric,o15_recurso
+    join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$ano}
+   $sWhere1 group by rh73_rubric,rh27_descr,gestao,o15_recurso,descricao,o15_complemento
+  order by rh73_rubric,gestao,o15_recurso,o15_complemento
 ";
 
 $resQuery = db_query($sQuery);
@@ -132,19 +136,19 @@ if ($iNumRows == 0) {
             $dados[$oDado->$sCampoQuebrar]->total = $oDado->valor;
         }
 
-        if (!array_key_exists($oDado->recurso, $aTotalRecurso)) {
-            $aTotalRecurso[$oDado->recurso] = (object)[
+        $hash = sprintf('%s#%s#%s', $oDado->recurso, $oDado->subrecurso, $oDado->complemento);
+        if (!array_key_exists($hash, $aTotalRecurso)) {
+            $aTotalRecurso[$hash] = (object)[
                 "total" => 0,
-                "descricao" => $oDado->o15_descr,
-                "cod" => $oDado->recurso,
+                "descricao" => substr($oDado->descricao, 0, 80),
+                "cod" => "{$oDado->recurso} - {$oDado->subrecurso} - {$oDado->complemento}",
             ];
         }
 
-        $aTotalRecurso[$oDado->recurso]->total += $oDado->valor;
+        $aTotalRecurso[$hash]->total += $oDado->valor;
 
         $sValorCompararQuebra = $oDado->$sCampoQuebrar;
         $total_ger += $oDado->valor;
-
     }
 }
 
@@ -185,7 +189,6 @@ if (isset($ponts) && trim($ponts) != "") {
             $headPontos .= "Complementar";
         }
     }
-
 }
 $head7 = "Pontos: " . $headPontos;
 
@@ -220,18 +223,25 @@ foreach ($dados as $oQuebra) {
             $lEscreverHeader = false;
         }
 
+        $recurso = substr(sprintf(
+            '%s - %s - %s',
+            $oImprime->recurso,
+            $oImprime->subrecurso,
+            $oImprime->descricao,
+            $oImprime->complemento
+        ), 0, 50);
         if ($lLinhaCompleta) {
             $lLinhaCompleta = false;
             $pdf->setfont('arial', '', 8);
             $pdf->cell(15, $alt, $oImprime->rh73_rubric, 0, 0, "C", $cor);
             $pdf->cell(75, $alt, $oImprime->rh27_descr, 0, 0, "L", $cor);
-            $pdf->cell(75, $alt, $oImprime->recurso . " - " . $oImprime->o15_descr, 0, 0, "L", $cor);
+            $pdf->cell(75, $alt, $recurso, 0, 0, "L", $cor);
             $pdf->cell(25, $alt, db_formatar($oImprime->valor, "f"), 0, 1, "R", $cor);
         } else {
             $pdf->setfont('arial', '', 8);
             $pdf->cell(15, $alt, "", 0, 0, "C", $cor);
             $pdf->cell(75, $alt, "", 0, 0, "L", $cor);
-            $pdf->cell(75, $alt, $oImprime->recurso . " - " . $oImprime->o15_descr, 0, 0, "L", $cor);
+            $pdf->cell(75, $alt, $recurso, 0, 0, "L", $cor);
             $pdf->cell(25, $alt, db_formatar($oImprime->valor, "f"), 0, 1, "R", $cor);
         }
     }
@@ -261,7 +271,8 @@ if ($totaliza == 's') {
         if ($pdf->gety() > $pdf->h - 30) {
             $pdf->addpage();
         }
-        $pdf->cell(115, $alt, $oRecurso->cod . " - " . $oRecurso->descricao, 0, 0, "L", $cor, '', '.');
+
+        $pdf->cell(170, $alt, $oRecurso->cod . " - " . $oRecurso->descricao, 0, 0, "L", $cor, '', '.');
         $pdf->cell(20, $alt, db_formatar($oRecurso->total, "f"), 0, 1, "R", $cor);
     }
 }

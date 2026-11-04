@@ -128,6 +128,8 @@ class RelatorioInscricoes extends \GenericPdf
         $this->setfont('arial', '', 9);
 
         $altura = 62;
+        $total  = 0;
+        $num    = 1;
 
         foreach ($this->inscricoesRedesim as $oInscricaoRedesim) {
             $this->setY($altura);
@@ -167,6 +169,14 @@ class RelatorioInscricoes extends \GenericPdf
             );
 
             $altura += $height + 9;
+            $num++;
+            $total++;
+            
+            if ($num >= 9 && $total < count($this->inscricoesRedesim)) {
+                $this->AddPage('L');
+                $altura = 38;
+                $num = -1;
+            }
         }
     }
 }

@@ -272,6 +272,10 @@ try {
                 $oParam->aFiltros->inscricaoEmpregador = $oCgm->getCnpj();
             }
 
+            if ($oParam->aFiltros->tipoEvento == Tipo::ESOCIAL) {
+                $oParam->aFiltros->idEvento = 'S-' . $oParam->aFiltros->idEvento;
+            } 
+            
             if (!empty($oParam->aFiltros->idEvento)) {
                 if ($oParam->aFiltros->idEvento == "1000") {
                     unset($oParam->aFiltros->idReferencia);

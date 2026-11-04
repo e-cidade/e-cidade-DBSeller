@@ -78,13 +78,13 @@ class cl_aguacontrato {
                  x54_emitiroutrosdebitos = bool = Emitir Outros Débitos 
                  ";
 
-   function cl_aguacontrato() {
+   public function __construct() {
 
      $this->rotulo = new rotulo("aguacontrato");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -94,7 +94,7 @@ class cl_aguacontrato {
    }
 
    // funcao para Inclusão
-   function incluir ($x54_sequencial){
+   public function incluir ($x54_sequencial){
 
      if($this->x54_datainicial == null ){
        $this->erro_sql = " Campo Data Inicial não informado.";

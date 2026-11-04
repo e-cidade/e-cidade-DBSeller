@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ if(isset($db_opcaoal)){
        <?//=@$Lj68_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('j68_sequencial',10,$Ij68_sequencial,true,'hidden',3,"");
 db_input('j68_naogeracarne',10,$Ij68_naogeracarne,true,'hidden',3," onchange='js_pesquisaj68_naogeracarne(false);'");
 ?>
@@ -68,15 +68,15 @@ db_input('j68_naogeracarne',10,$Ij68_naogeracarne,true,'hidden',3," onchange='js
 	<!--
   <tr>
     <td nowrap title="<?=@$Tj68_naogeracarne?>">
-       <?
+       <?php
        db_ancora(@$Lj68_naogeracarne,"js_pesquisaj68_naogeracarne(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j68_naogeracarne',10,$Ij68_naogeracarne,true,'text',$db_opcao," onchange='js_pesquisaj68_naogeracarne(false);'")
 ?>
-       <?
+       <?php
 db_input('j66_data',10,$Ij66_data,true,'text',3,'')
        ?>
     </td>
@@ -84,15 +84,15 @@ db_input('j66_data',10,$Ij66_data,true,'text',3,'')
 	-->
   <tr>
     <td nowrap title="<?=@$Tj68_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lj68_numcgm,"js_pesquisaj68_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j68_numcgm',10,$Ij68_numcgm,true,'text',$db_opcao," onchange='js_pesquisaj68_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -107,7 +107,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("j68_sequencial"=>@$j68_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cliptunaogeracarnecgm->sql_query(null,"*",null,"j68_naogeracarne=$j68_naogeracarne");

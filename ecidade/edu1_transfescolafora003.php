@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -210,7 +210,7 @@ if (isset($incluir)) {
    <table border="0" align="left">
     </tr>
      <td colspan="2">
-      <?
+      <?php
         $sCampos                  = " ed104_i_codigo,ed47_i_codigo,ed47_v_nome,ed104_d_data,ed82_c_nome as escoladestino";
         $sWhere                   = " ed104_i_escolaorigem = $iEscola AND ed56_i_escola = $iEscola ";
         $sWhere                  .= " AND ed56_c_situacao = 'TRANSFERIDO FORA' and ed104_c_situacao= 'A'";
@@ -225,7 +225,7 @@ if (isset($incluir)) {
       ?>
       <b>Alunos Transferidos:</b>
       <select name="aluno" style="font-size:9px;" onchange="js_pesquisa(this.value);">
-       <?
+       <?php
        if ($iLinhasTransfFora == 0) {
          echo "<option value=''>Nenhum registro de transferência em aberto.</option>";
        } else {
@@ -246,7 +246,7 @@ if (isset($incluir)) {
       </select>
      </td>
     </tr>
-    <?
+    <?php
       if (isset($aluno)) {
 
       	$sCamposTransfFora        = " transfescolafora.ed104_d_data,transfescolafora.ed104_t_obs,";
@@ -286,7 +286,7 @@ if (isset($incluir)) {
            <b>Escola:</b>
           </td>
           <td>
-           <?db_input('descrescolaorig', 40, $Ied18_c_nome, true, 'text', 3, '')?>
+           <?php db_input('descrescolaorig', 40, $Ied18_c_nome, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -294,13 +294,13 @@ if (isset($incluir)) {
            <b>Matrícula:</b>
           </td>
           <td>
-           <?db_input('codescolaorig', 15, $Ied18_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('codbaseorig', 15, $Ied31_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('codcalendarioorig', 15, $Ied52_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('codturnoorig', 15, $Ied15_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('codserieorig', 15, $Ied11_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('codcursoorig', 15, $Ied29_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('matriculaorig', 15, $Ied60_i_codigo, true, 'text', 3, '')?>
+           <?php db_input('codescolaorig', 15, $Ied18_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('codbaseorig', 15, $Ied31_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('codcalendarioorig', 15, $Ied52_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('codturnoorig', 15, $Ied15_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('codserieorig', 15, $Ied11_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('codcursoorig', 15, $Ied29_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('matriculaorig', 15, $Ied60_i_codigo, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -308,7 +308,7 @@ if (isset($incluir)) {
            <b>Situação:</b>
           </td>
           <td>
-           <?db_input('situacaoorig', 40, $Ied60_c_situacao, true, 'text', 3, '')?>
+           <?php db_input('situacaoorig', 40, $Ied60_c_situacao, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -316,7 +316,7 @@ if (isset($incluir)) {
            <b>Concluida:</b>
           </td>
           <td>
-           <?db_input('conclusaoorig', 40, $Ied60_c_concluida, true, 'text', 3, '')?>
+           <?php db_input('conclusaoorig', 40, $Ied60_c_concluida, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -324,8 +324,8 @@ if (isset($incluir)) {
            <b>Etapa:</b>
           </td>
           <td>
-           <?db_input('codserieorig', 15, $Ied11_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('descrserieorig', 40, $Ied11_c_descr, true, 'text', 3, '')?>
+           <?php db_input('codserieorig', 15, $Ied11_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('descrserieorig', 40, $Ied11_c_descr, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -333,8 +333,8 @@ if (isset($incluir)) {
            <b>Turma:</b>
           </td>
           <td>
-           <?db_input('codturmaorig', 15, $Ied57_i_codigo, true, 'hidden', 3, '')?>
-           <?db_input('descrturmaorig', 40, $Ied57_c_descr, true, 'text', 3, '')?>
+           <?php db_input('codturmaorig', 15, $Ied57_i_codigo, true, 'hidden', 3, '')?>
+           <?php db_input('descrturmaorig', 40, $Ied57_c_descr, true, 'text', 3, '')?>
           </td>
          </tr>
         </table>
@@ -348,7 +348,7 @@ if (isset($incluir)) {
            <b>Escola:</b>
           </td>
           <td>
-           <?db_input('descrescoladest', 40, $Ied18_c_nome, true, 'text', 3, '')?>
+           <?php db_input('descrescoladest', 40, $Ied18_c_nome, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -356,7 +356,7 @@ if (isset($incluir)) {
            <b>Transferido em:</b>
           </td>
           <td>
-           <?db_inputdata('ed104_d_data', @$ed104_d_data_dia,
+           <?php db_inputdata('ed104_d_data', @$ed104_d_data_dia,
                           @$ed104_d_data_mes, @$ed104_d_data_ano, true, 'text', 3, ""
                          )
            ?>
@@ -367,7 +367,7 @@ if (isset($incluir)) {
            <b>Observações:</b>
           </td>
           <td>
-           <?db_textarea('ed104_t_obs', 4, 40, $Ied104_t_obs, true, 'text' , 3, "")?>
+           <?php db_textarea('ed104_t_obs', 4, 40, $Ied104_t_obs, true, 'text' , 3, "")?>
           </td>
          </tr>
         </table>
@@ -376,7 +376,7 @@ if (isset($incluir)) {
     </tr>
     <tr>
      <td colspan="2">
-      <?
+      <?php
       $negado = false;
       $sWhere             = "ed56_i_aluno = ".$codigoaluno;
       $sWhere            .= " AND ed56_i_escola = ".$iEscola."AND ed56_c_situacao = 'TRANSFERIDO FORA'";
@@ -419,14 +419,14 @@ if (isset($incluir)) {
              onclick="return js_confirma();" <?=$negado==true?"disabled":""?>>
      </td>
     </tr>
-    <?}?>
+    <?php }?>
    </table>
    </fieldset>
   </td>
  </tr>
 </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),db_getsession("DB_instit")
          );

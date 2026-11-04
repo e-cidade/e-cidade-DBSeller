@@ -37,9 +37,11 @@ require_once(modification("dbforms/db_funcoes.php"));
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
+    <meta name="ECIDADE_REQUEST_PATH" content="<?= ECIDADE_REQUEST_PATH ?>">
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+    <script src="public/js/app.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -90,7 +92,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                             <option value="1">1 - É obra de construção civil, modalidade empreitada total</option>
                             <option value="2">2 - É obra de construção civil, modalidade empreitada parcial</option>
                         </select>
-                        <input type="text" name="indicativo_obra_cno" id="indicativo_obra_cno" placeholder="CNO">
+                        <input type="text" maxlength="12" name="indicativo_obra_cno" id="indicativo_obra_cno" placeholder="CNO">
                     </td>
                 </tr>
             </table>
@@ -262,9 +264,9 @@ db_menu();
 </html>
 <script>
     /**
-     * RPC (controller) das retencoes
+     * API (controller) das retencoes
      * */
-    const rpc = 'emp4_manutencaoretencoes.RPC.php';
+    const API = 'v4/api/integracoes/efd-reinf/retencao';
 
     /**
      * Variavel de armazenamento dos dados da rentencao
@@ -334,32 +336,39 @@ db_menu();
     /**
      * Consulta os tipos de servico. das notas fiscais
      */
-    function js_getTipoServicoNota() {
+    async function js_getTipoServicoNota() {
         js_divCarregando("Aguarde, recebendo os tipos de serviço", "msgNota");
 
-        let body = JSON.stringify({exec: 'getTipoServicoNota'});
-        let options = {
-            method: 'get',
-            parameters: 'json=' + body,
-            onComplete: js_retornoTipoServicoNota
-        }
+        try {
+            const action = `${API}/tipo-servico-nota`;
+            const res = await axios.get(action);
+            const resData = res.data;
 
-        let request = new Ajax.Request(rpc, options);
+            if (resData.error) {
+                alert(resData.message);
+                return false;
+            }
+
+            js_montaTipoServicoNota(resData.data.tipos);
+
+        } catch (error) {
+            alert(`Erro ao buscar o tipo de servico.`);
+            console.error('An error occurred:', error.message);
+        } finally {
+            js_removeObj('msgNota');
+        }
     }
 
     /**
      * Retorno dos tipos de servico de NF
      * e monta select
      */
-    function js_retornoTipoServicoNota(Ajax) {
-        js_removeObj('msgNota');
-        let response = JSON.parse(Ajax.responseText);
-
-        if (!response.lErro) {
+    function js_montaTipoServicoNota(tipos) {
+        if (tipos) {
             let el = document.querySelector('#referencia_tipo_servico');
             let option = '';
 
-            response.data.forEach(item => {
+            tipos.forEach(item => {
                 option           = document.createElement('option');
                 option.value     = item.e18_sequencial;
                 option.innerHTML = item.e18_descricao;
@@ -394,6 +403,11 @@ db_menu();
 
         if ($F('indicativo_obra_tipo') > 0 && $F('indicativo_obra_cno') == "") {
             alert('O CNO deve ser informado');
+            return false;
+        }
+
+        if($F('indicativo_obra_cno') != "" && $F('indicativo_obra_cno').length < 12){
+            alert('O CNO deve possuir 12 caracteres');
             return false;
         }
 
@@ -470,39 +484,35 @@ db_menu();
     /**
      * Envia formulario
      */
-    function js_sendForm() {
+    async function js_sendForm() {
         if (!js_validateForm()) { return false; }
 
         js_divCarregando("Aguarde, Salvando dados da retenção", "msgRetencao");
 
-        let params = js_mapForm();
-        params.evento = 'r2010';
-        params.nome_prestador = '';
-        let body = JSON.stringify({exec: 'saveRetencao', fields: params});
-        let options = {
-            method: 'post',
-            parameters: 'json=' + body,
-            onComplete: js_retornoForm
+        try {
+            const action  = `${API}/save-retencao`;
+            let params = js_mapForm();
+
+            params.evento = 'r2010';
+            params.nome_prestador = '';
+
+            const response = await axios.post(action, params);
+            const responseData = response.data;
+
+            if (responseData.error) {
+                alert(responseData.message);
+                return false;
+            }
+
+            parent.js_getRetencoes();
+            alert('Os dados da retenção foram salvos com sucesso');
+
+        } catch (error) {
+            alert(`Erro ao salvar Retenção`);
+            console.error('An error occurred:', error.message);
+        } finally {
+            js_removeObj("msgRetencao");
         }
-
-        let request = new Ajax.Request(rpc, options);
-    }
-
-    /**
-     * Retorno da request do formulario
-     */
-    function js_retornoForm(ajax) {
-        js_removeObj("msgRetencao");
-
-        let response = JSON.parse(ajax.responseText);
-
-        if (response.lErro == true) {
-            alert(response.sMessage);
-            return;
-        }
-
-        parent.js_getRetencoes();
-        alert('Os dados da retenção foram salvos com sucesso');
     }
 
     /**
@@ -547,4 +557,20 @@ db_menu();
 
         document.querySelector('#valor_bruto_final').value = valor.toLocaleString('pt-br', {minimumFractionDigits: 2});
     }
+
+    /**
+     * Validar apenas valores numéricos e limite para 12 caracteres no input CNO
+     * */
+    document.addEventListener('DOMContentLoaded', function() {
+        const numericInput = document.getElementById('indicativo_obra_cno');
+
+        // Adiciona um ouvinte de evento de entrada para validar a entrada
+        numericInput.addEventListener('input', function() {
+            const inputValue = numericInput.value;
+            // Usa uma expressão regular para remover caracteres não numéricos
+            const numericValue = inputValue.replace(/[^0-9]/g, '');
+            // Limita o valor ao comprimento máximo
+            numericInput.value = numericValue.substring(0, numericInput.maxLength);
+        });
+    });
 </script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lma01_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                db_input("ma01_i_codigo",10,$Ima01_i_codigo,true,"text",4,"","chave_ma01_i_codigo");
               ?>
             </td>
@@ -66,7 +66,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
               ?>
             </td>
@@ -84,7 +84,7 @@ $clcgm->rotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(isset($campos)==false){
        if(file_exists("funcoes/db_func_marca.php")==true){
         include(modification("funcoes/db_func_marca.php"));

@@ -71,7 +71,7 @@ class SigfisVinculoRecurso {
    * @param integer c$iCodigoRecurso codigo da Recurso do e-cidade (orctiporec.o15_codigo)
    * @return retornaobjeto do vinculo , ou false em caso de nao existir o vinculo.
    */
-  public function getVinculoRecurso($iCodigoRecurso) {
+  public static function getVinculoRecurso($iCodigoRecurso) {
    
     $aRecursos  = self::getInstance()->aListaRecursos;
     $mRetorno = false;

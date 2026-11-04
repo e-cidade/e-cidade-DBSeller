@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -91,26 +91,26 @@ td {
 </head>
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?
+<?php
 if(isset($tipo_cert) && !isset($_POST["procurar"])) {
 ?>
 <br><br>
 <!--form name="form1" method="post" onSubmit="return js_validar()"-->
 <form name="form1" method="post" >
     <table width="36%" border="0" cellspacing="0" cellpadding="0">
-      <tr> 
+      <tr>
         <td width="12%" class="tabs" nowrap><strong>Data Inicial:</strong></td>
-        <td width="88%" class="tabs"> 
-          <?
-		  include(modification("dbforms/db_funcoes.php"));
+        <td width="88%" class="tabs">
+          <?php
+		  include modification("dbforms/db_funcoes.php");
     db_inputdata('datainicial',@$datainicial_dia,@$datainicial_mes,@$datainicial_ano,true,'text',4);
 	  ?>
         </td>
       </tr>
-      <tr> 
+      <tr>
         <td class="tabs" nowrap><strong>Data Final:</strong></td>
-        <td class="tabs"> 
-          <?
+        <td class="tabs">
+          <?php
 					@$datafinal_dia = date('d',db_getsession('DB_datausu') );
 					@$datafinal_mes = date('m',db_getsession('DB_datausu') );
 					@$datafinal_ano = date('Y',db_getsession('DB_datausu') );
@@ -118,18 +118,18 @@ if(isset($tipo_cert) && !isset($_POST["procurar"])) {
 	  ?>
         </td>
       </tr>
-      <tr> 
+      <tr>
         <td class="tabs" nowrap><strong>Receita:</strong></td>
         <td class="tabs"><input type="text" name="receita"></td>
       </tr>
-      <tr> 
+      <tr>
         <td class="tabs" nowrap>&nbsp;</td>
         <td height="30" class="tabs"><input name="procurar" type="submit" id="procurar" value="Procurar"></td>
       </tr>
     </table>
 </form>
 <script>
-   
+
 document.form1.datainicial_dia.focus();
 function js_validar() {
   var F = document.form1;
@@ -142,9 +142,9 @@ function js_validar() {
 }
 
 </script>
-<?
+<?php
 } else {
-  
+
   $tabela = " arrecant ";
  	if(isset($matric)){
     $tabela = "arrematric";
@@ -156,7 +156,7 @@ function js_validar() {
 
  	$sqlc = "select distinct
                   p.k00_numpre,
-	                p.k00_numpar, 
+	                p.k00_numpar,
 					        p.k00_numtot,
 					        p.k00_dtvenc,
 					        p.k00_hist,
@@ -174,13 +174,20 @@ function js_validar() {
 	           from $tabela " . ($tabela == ""?"p":"");
     if ($tabela != "") {
        $sqlc .= " inner join arrecant p on p.k00_numpre = $tabela.k00_numpre ";
+
+    }
+    if (isset($y50_codauto) && $y50_codauto != ""){
+       $sqlc .= "inner join arreauto on $tabela.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+    }
+    if (isset($nl01_codlanc) && $nl01_codlanc != ""){
+       $sqlc .= "inner join arrelanc on $tabela.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
     }
 
        $sqlc .= " inner join arreinstit         on arreinstit.k00_numpre                 = p.k00_numpre
-                           			 		           and arreinstit.k00_instit                 = ".db_getsession('DB_instit')." ";     
-       $sqlc .= " inner join cancdebitosreg     on cancdebitosreg.k21_numpre             = p.k00_numpre 
-                                               and cancdebitosreg.k21_numpar             = p.k00_numpar 
-                                               and cancdebitosreg.k21_receit             = p.k00_receit "; 
+                           			 		           and arreinstit.k00_instit                 = ".db_getsession('DB_instit')." ";
+       $sqlc .= " inner join cancdebitosreg     on cancdebitosreg.k21_numpre             = p.k00_numpre
+                                               and cancdebitosreg.k21_numpar             = p.k00_numpar
+                                               and cancdebitosreg.k21_receit             = p.k00_receit ";
        $sqlc .= " inner join cancdebitosprocreg on cancdebitosprocreg.k24_cancdebitosreg = cancdebitosreg.k21_sequencia ";
        $sqlc .= " inner join cancdebitosproc    on cancdebitosprocreg.k24_codigo         = cancdebitosproc.k23_codigo ";
 
@@ -192,50 +199,50 @@ function js_validar() {
      //	  $sqlc = $sqlc . "   	inner join arreinscr on arreinscr.k00_numpre = p.k00_numpre ";
 	  }
 
-       $sqlc .= "  left outer join arrepaga a on p.k00_numpre = a.k00_numpre 
+       $sqlc .= "  left outer join arrepaga a on p.k00_numpre = a.k00_numpre
                                           and p.k00_numpar    = a.k00_numpar
                                           and p.k00_receit    = a.k00_receit
-                   left join arreprescr    on p.k00_numpre    = arreprescr.k30_numpre  
+                   left join arreprescr    on p.k00_numpre    = arreprescr.k30_numpre
                                           and k30_anulado is false ";
 
     $querystring = "";
     if(isset($numcgm)) {
    	  $querystring = "numcgm=$numcgm";
   	  $sqlc = $sqlc . " inner join tabrec   on p.k00_receit       = k02_codigo
-	            	   	    inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm	  
-			                  inner join histcalc on p.k00_hist         = k01_codigo 
+	            	   	    inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm
+			                  inner join histcalc on p.k00_hist         = k01_codigo
                         where arrenumcgm.k00_numcgm = ".$numcgm;
 	  } else if(isset($matric)) {
    	  $querystring = "matric=$matric";
 	    $sqlc = $sqlc . " inner join tabrec on p.k00_receit         = k02_codigo
 	                     	inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm
-			                	inner join histcalc on p.k00_hist         = k01_codigo 
+			                	inner join histcalc on p.k00_hist         = k01_codigo
 	                      where k00_matric = ".$matric;
 	  } else if(isset($inscr)) {
    	  $querystring = "inscr=$inscr";
 	    $sqlc = $sqlc . " inner join tabrec   on p.k00_receit       = k02_codigo
 	                      inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm
-			   	              inner join histcalc on p.k00_hist         = k01_codigo 
+			   	              inner join histcalc on p.k00_hist         = k01_codigo
 	                      where k00_inscr = ".$inscr;
 	  } else {
       $querystring = "numpre=$numpre";
       $sqlc = $sqlc . " inner join tabrec   on p.k00_receit       = k02_codigo
 			                  inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm
-			   	              inner join histcalc on p.k00_hist         = k01_codigo 
+			   	              inner join histcalc on p.k00_hist         = k01_codigo
                         where p.k00_numpre = ".$numpre;
 	  }
 	$sqlc = $sqlc . " and a.k00_numpre is null and arreprescr.k30_numpre is null ";
-	
+
 	if (!empty($HTTP_POST_VARS["datainicial_dia"]) && !empty($HTTP_POST_VARS["datainicial_mes"]) && !empty($HTTP_POST_VARS["datainicial_ano"])&&!empty($HTTP_POST_VARS["datafinal_dia"]) && !empty($HTTP_POST_VARS["datafinal_mes"]) && !empty($HTTP_POST_VARS["datafinal_ano"])){
-		
+
 	    $datainicial = $HTTP_POST_VARS["datainicial_ano"]."-".$HTTP_POST_VARS["datainicial_mes"]."-".$HTTP_POST_VARS["datainicial_dia"];
    	  $querystring .= "&dataini=$datainicial";
   	  $datafinal = $HTTP_POST_VARS["datafinal_ano"]."-".$HTTP_POST_VARS["datafinal_mes"]."-".$HTTP_POST_VARS["datafinal_dia"];
    	  $querystring .= "&datafim=$datafinal";
    	  $sqlc .= " and cancdebitosproc.k23_data between '$datainicial' and '$datafinal' ";
-   	  
+
 	} else {
-		
+
     	if (!empty($HTTP_POST_VARS["datafinal_dia"]) && !empty($HTTP_POST_VARS["datafinal_mes"]) && !empty($HTTP_POST_VARS["datafinal_ano"])) {
   	        $datafinal = $HTTP_POST_VARS["datafinal_ano"]."-".$HTTP_POST_VARS["datafinal_mes"]."-".$HTTP_POST_VARS["datafinal_dia"];
 		        $querystring .= "&datafim=$datafinal";
@@ -243,29 +250,35 @@ function js_validar() {
 	    } else if(!empty($HTTP_POST_VARS["datainicial_dia"]) && !empty($HTTP_POST_VARS["datainicial_mes"]) && !empty($HTTP_POST_VARS["datainicial_ano"])) {
             $datainicial = $HTTP_POST_VARS["datainicial_ano"]."-".$HTTP_POST_VARS["datainicial_mes"]."-".$HTTP_POST_VARS["datainicial_dia"];
            	$querystring .= "&dataini=$datainicial";
-            $sqlc .= " and cancdebitosproc.k23_data > '$datainicial' ";	
+            $sqlc .= " and cancdebitosproc.k23_data > '$datainicial' ";
 		  }
-		  
+
 	}
 	if(!empty($HTTP_POST_VARS["receita"])){
  	  $querystring .= "&receita=".$HTTP_POST_VARS["receita"];
-	  $sqlc .= " and p.k00_receit = ".$HTTP_POST_VARS["receita"];	  
-	}	
+	  $sqlc .= " and p.k00_receit = ".$HTTP_POST_VARS["receita"];
+	}
+  if (isset($y50_codauto) && $y50_codauto != ""){
+    $querystring .= "&y50_codauto=".$y50_codauto;
+  }
+  if (isset($nl01_codlanc) && $nl01_codlanc != ""){
+    $querystring .= "&nl01_codlanc=".$nl01_codlanc;
+  }
 
     $sqlc .= " order by p.k00_numpre,p.k00_numpar";
     $dados = db_query($sqlc);
-	
+
     $ConfCor1 = "#EFE029";
     $ConfCor2 = "#E4F471";
 	  $numpre_cor = "";
 	  $numpre_par = "";
 	  $qcor= $ConfCor1;
-	
-	
+
+
     if(pg_numrows($dados) > 0) {
 	?>
 	<table width="100%" border="0" cellspacing="0" cellpadding="3">
-    <tr bgcolor="#ffcc66"> 
+    <tr bgcolor="#ffcc66">
       <th width="9%" nowrap>numpre</th>
       <th width="4%" nowrap>par</th>
       <th width="4%" nowrap>tot</th>
@@ -276,7 +289,7 @@ function js_validar() {
       <th width="12%" nowrap>descri&ccedil;&atilde;o</th>
       <th width="9%" nowrap>valor</th>
     </tr>
-	<?
+	<?php
     $totalpago = 0;
     for ($x=0;$x<pg_numrows($dados);$x++) {
 	    db_fieldsmemory($dados,$x);
@@ -284,7 +297,7 @@ function js_validar() {
 		    $numpre_cor = $k00_numpre;
 		    $numpre_par = $k00_numpar;
 	    }
-	    
+
 	    if ($numpre_cor != $k00_numpre || $numpre_par != $k00_numpar ) {
         $numpre_cor = $k00_numpre;
 		    $numpre_par = $k00_numpar;
@@ -292,7 +305,7 @@ function js_validar() {
 		      $qcor = $ConfCor2;
         } else {
         	$qcor = $ConfCor1;
-        }	
+        }
 	    }
 		 $histdesc = "";
 		 $histdesc .= db_formatar($k23_data,"d")." ".$k23_hora." ".$login." ".addslashes($k23_obs);
@@ -301,7 +314,7 @@ function js_validar() {
      $histdesc = str_replace("\'", '\"', $histdesc);
      $histdesc = str_replace("\r", "<br>", $histdesc);
 	  ?>
-    <tr bgcolor="<?=$qcor?>"> 
+    <tr bgcolor="<?=$qcor?>">
       <td><div id="divlabel" width="9%" nowrap align="right" onmouseover='js_mostradiv("<?=$histdesc?>",true, this)' onmouseout="js_mostradiv('',false, this)"> <a href="javascript:parent.document.getElementById('processando').style.visibility = 'visible';history.back()"><?=$k00_numpre?></a></td>
       <td width="4%" nowrap align="right" ><?=$k00_numpar?></td>
       <td width="4%" nowrap align="right"><?=$k00_numtot?></td>
@@ -312,12 +325,12 @@ function js_validar() {
       <td width="12%" align="center" nowrap><?=$k02_drecei?></td>
       <td width="9%" nowrap align="right"><?=db_formatar(($k00_valor*-1),"f")?>&nbsp;</td>
     </tr>
-    <?
+    <?php
     $totalpago += $k00_valor;
   	  }
-	?> 
+	?>
 
-    <tr bgcolor="#ffcc66"> 
+    <tr bgcolor="#ffcc66">
       <th width="31%" align="center" colspan="8" nowrap>Total Pago</th>
       <th width="9%" nowrap><?=db_formatar(($totalpago*-1),'f')?></th>
       <!--
@@ -357,7 +370,7 @@ function js_mostradiv(hist,mostra, object) {
   }else{
     if((window.CurrentWindow || parent.CurrentWindow).corpo.document.getElementById("info")){
      (window.CurrentWindow || parent.CurrentWindow).corpo.document.body.removeChild((window.CurrentWindow || parent.CurrentWindow).corpo.document.getElementById("info"));
-    } 
+    }
   }
 }
 
@@ -366,14 +379,14 @@ function js_imprime(){
   jan.moveTo(0,0);
 }
 </script>
-    <? 
-    } else 
+    <?php
+    } else
 	  $DB_ERRO = "Não existe cancelamentos efetuados para este numpre.";
     ?>
 </center>
 </body>
 </html>
-<?
+<?php
 } //fim do isset($tipo_cert) acima
 if(isset($DB_ERRO)) {
   ?>
@@ -382,6 +395,6 @@ if(isset($DB_ERRO)) {
     parent.document.getElementById('processando').style.visibility = 'visible';
 	history.back();
   </script>
-  <?
+  <?php
 }
 ?>

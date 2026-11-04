@@ -22,7 +22,7 @@ class FuncGenerator {
 	$this->iXFunc = $aXFunc;
     }
 	
-    function E($aXMin,$aXMax,$aSteps=50) {
+    public function E($aXMin,$aXMax,$aSteps=50) {
 	$this->iMin = $aXMin;
 	$this->iMax = $aXMax;
 	$this->iStepSize = ($aXMax-$aXMin)/$aSteps;
@@ -52,7 +52,7 @@ class FuncGenerator {
 //              mathematical and greek symbols.
 //=============================================================================
 class  SymChar {
-    function Get($aSymb,$aCapital=FALSE) {
+    public function Get($aSymb,$aCapital=FALSE) {
         static $iSymbols = array(
     /* Greek */
 	array('alpha','03B1','0391'),
@@ -147,11 +147,11 @@ class DateScaleUtils {
     var $tickPositions=array(),$minTickPositions=array();
     var $iUseWeeks = true;
 
-    function UseWeekFormat($aFlg) {
+    public function UseWeekFormat($aFlg) {
 	$this->iUseWeeks = $aFlg;
     }
 
-    function doYearly($aType,$aMinor=false) {
+    public function doYearly($aType,$aMinor=false) {
 	$i=0; $j=0;
 	$m = $this->startmonth;
 	$y = $this->startyear;
@@ -205,7 +205,7 @@ class DateScaleUtils {
 	}
     }
 
-    function doDaily($aType,$aMinor=false) {
+    public function doDaily($aType,$aMinor=false) {
 	$m = $this->startmonth;
 	$y = $this->startyear;
 	$d = $this->startday;
@@ -251,7 +251,7 @@ class DateScaleUtils {
 	}
     }
 
-    function doWeekly($aType,$aMinor=false) {
+    public function doWeekly($aType,$aMinor=false) {
 	$hpd = 3600*24;
 	$hpw = 3600*24*7;
 	// Find out week number of min date
@@ -297,7 +297,7 @@ class DateScaleUtils {
 	}
     }
 
-    function doMonthly($aType,$aMinor=false) {
+    public function doMonthly($aType,$aMinor=false) {
 	$monthcount=0;
 	$m = $this->startmonth;
 	$y = $this->startyear;
@@ -388,12 +388,12 @@ class DateScaleUtils {
 	return array($this->tickPositions,$this->minTickPositions);
     }
 
-    function GetTicks($aData,$aType=1,$aMinor=false,$aEndPoints=false) {
+    public function GetTicks($aData,$aType=1,$aMinor=false,$aEndPoints=false) {
 	$n = count($aData);
 	return $this->GetTicksFromMinMax($aData[0],$aData[$n-1],$aType,$aMinor,$aEndPoints);
     }
 
-    function GetAutoTicks($aMin,$aMax,$aMaxTicks=10,$aMinor=false) {
+    public function GetAutoTicks($aMin,$aMax,$aMaxTicks=10,$aMinor=false) {
 	$diff = $aMax - $aMin;
 	$spd = 3600*24;
 	$spw = $spd*7;
@@ -436,7 +436,7 @@ class DateScaleUtils {
 	}
     }
 
-    function GetTicksFromMinMax($aMin,$aMax,$aType,$aMinor=false,$aEndPoints=false) {
+    public function GetTicksFromMinMax($aMin,$aMax,$aType,$aMinor=false,$aEndPoints=false) {
 	$this->starthour = date('G',$aMin);
 	$this->startmonth = date('n',$aMin);
 	$this->startday = date('j',$aMin);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -86,7 +86,7 @@ $consulta=true;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmconlancamval.php"));
 	?>
     
@@ -94,7 +94,7 @@ $consulta=true;
   </td>
   <td width="50%" align="left" valign="top"> 
   <!-- inicio estrutural  --->
-  <? //monta conplano, recebe conplano.reduz
+  <?php //monta conplano, recebe conplano.reduz
       //--
        $res_debito=$clconplano->sql_record($clconplano->sql_query_file("","","c60_estrut, c60_descr as debito_descr","","c60_codcon in (select c61_codcon from conplanoreduz where c61_reduz=$c69_debito and c61_anousu=".db_getsession("DB_anousu")." )"));
        db_fieldsmemory($res_debito,0);

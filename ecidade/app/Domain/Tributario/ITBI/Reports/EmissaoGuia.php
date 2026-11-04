@@ -163,6 +163,7 @@ abstract class EmissaoGuia
             $this->setAtributo("codigo_barras", $this->convenio->getCodigoBarra());
             $this->setAtributo("usuarioCodigoLiberado", "");
             $this->setAtributo("usuarioNomeLiberado", "");
+            $this->setAtributo("codigobarras", $this->dados->codigoDeBarrasPix);
 
             if ($this->regraEmissao->isCobranca()) {
                 $this->setAtributo("nosso_numero", $this->convenio->getNossoNumero());
@@ -289,12 +290,19 @@ abstract class EmissaoGuia
         $this->setAtributo("aDadosRuralCaractUtil", $this->dados->aDadosRuralCaractUtil);
         $this->setAtributo("aDadosRuralCaractDist", $this->dados->aDadosRuralCaractDist);
         $this->setAtributo("fracaoIdeal", (isset($this->dados->iFracaoIdeal) ? $this->dados->iFracaoIdeal : ""));
+        $this->setAtributo("it22_numero", $this->dados->oDadosImovel->it22_numero);
+        $this->setAtributo("it22_compl", $this->dados->oDadosImovel->it22_compl);
+        $this->setAtributo("it22_setor", $this->dados->oDadosImovel->it22_setor);
+        $this->setAtributo("informacoesImovel", $this->dados->oInformacoesImovel);
+        $this->setAtributo("it29_setorloc", $this->dados->oItbi->it29_setorloc);
 
         // Observações
         $this->setAtributo("observacaoIncluido", $this->dados->oItbi->it01_obs);
         $this->setAtributo("observacaoLiberado", $this->dados->oItbi->it14_obs);
         $this->setAtributo("adquirintes", $this->dados->sAdquirentesSecundarios);
         $this->setAtributo("transmitentes", $this->dados->sTransmitentesSecundarios);
+        $this->setAtributo("arrayAdquirentes", $this->dados->arrayAdquirentes);
+        $this->setAtributo("arrayTransmitentes", $this->dados->arrayTransmitentes);
 
         // Avaliação
         $sDataLiberacao = date("d/m/Y", strtotime($this->dados->oItbi->it14_dtliber));

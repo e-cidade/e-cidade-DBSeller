@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,7 +77,7 @@ function js_emite(){
       <tr>
         <td align="right"><strong>Exercício :</strong></td>
         <td>
-        <?
+        <?php
           $sqlAno  = " select distinct q01_anousu from isscalc order by q01_anousu desc";
           $rsAno   = db_query($sqlAno);
           $intAno  = pg_numrows($rsAno);
@@ -98,7 +98,7 @@ function js_emite(){
       <tr>
         <td align="right"><strong>Data Pagamento Final :</strong></td>
         <td>
-        <?
+        <?php
          $datausu = date("Y/m/d",db_getsession("DB_datausu"));
          $dataf_ano = substr($datausu,0,4);
          $dataf_mes = substr($datausu,5,2);
@@ -116,12 +116,12 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

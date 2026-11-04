@@ -62,7 +62,7 @@ if (!empty($lVinculado) && $lVinculado === "false") {
               <?=$Lo143_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o143_sequencial",10,$Io143_sequencial,true,"text",4,"","chave_o143_sequencial");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ if (!empty($lVinculado) && $lVinculado === "false") {
               <?=$Lo143_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o143_descricao",50,$Io143_descricao,true,"text",4,"","chave_o143_descricao");
 		       ?>
             </td>
@@ -90,7 +90,7 @@ if (!empty($lVinculado) && $lVinculado === "false") {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-    <?
+    <?php
         if(!isset($pesquisa_chave)){
         
         if(isset($campos)==false){
@@ -132,12 +132,12 @@ if (!empty($lVinculado) && $lVinculado === "false") {
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

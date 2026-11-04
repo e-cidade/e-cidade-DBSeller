@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,12 +69,12 @@ db_postmemory($HTTP_POST_VARS);
         <strong>Ano / Mês :</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -82,12 +82,12 @@ db_postmemory($HTTP_POST_VARS);
       </tr>
       <tr> 
         <td align="right" nowrap title="Seleção:" >
-        <?
+        <?php
 	db_ancora("<b>Seleção:</b>","js_pesquisasel(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php
           db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisasel(false)"');
           db_input('r44_descr',40,$Ir44_selec,true,'text',3,'');
           ?>
@@ -98,7 +98,7 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Ordem:</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $array_ordem = array("n"=>"Numérica","a"=>"Alfabética");
       db_select('ordem',$array_ordem,true,1);
       ?>
@@ -109,7 +109,7 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Opção:</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $xx = array("a"=>"Analitico","s"=>"Sintetico");
       db_select('sinana',$xx,true,1);
       ?>
@@ -119,14 +119,14 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Com Padrão:</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $xxx = array("s"=>"Sim","n"=>"Não");
       db_select('compadrao',$xxx,true,1);
       ?>
     </td>
     <tr>
       <td align="center" colspan="2">
-        <?
+        <?php
         $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_codreg, rh30_codreg||'-'||rh30_descr as rh30_descr", "rh30_descr" , " rh30_instit = ".db_getsession('DB_instit') ));
         db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
         ?>
@@ -140,7 +140,7 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

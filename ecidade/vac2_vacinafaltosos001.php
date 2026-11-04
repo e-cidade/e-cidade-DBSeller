@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $aHoje         = explode("/",$dHoje);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
     db_app::load("scripts.js, grid.style.css, estilos.css"); 
     ?>
@@ -89,13 +89,13 @@ $aHoje         = explode("/",$dHoje);
                              <b>Período:</b>
                            </td>
                            <td nowrap >
-                             <? 
+                             <?php 
                              db_inputdata('dDataIni', @$iDataIni_dia, @$iDataIni_mes, @$iDataIni_ano, 
                                           true, 'text', $db_opcao
                                          );
                              ?>
                              Á
-                             <? 
+                             <?php 
                              db_inputdata('dDataFim', @$iDataFim_dia, @$iDataFim_mes, @$iDataFim_ano, 
                                           true, 'text', $db_opcao
                                          );
@@ -129,19 +129,19 @@ $aHoje         = explode("/",$dHoje);
                            <td>
                              <b>Idade:</b>
                            </td>
-                           <? 
+                           <?php 
                            $iAnoIni = '00';
                            $iMesIni = '00';
                            $iAnoFim = '99';
                            $iMesFim = '00';
                            ?>
                           <td>
-                            <?
+                            <?php
                             db_input('iAnoIni', 4, "", true, 'text', 1, '');
                             ?>
                           </td>
                           <td>
-                            <?
+                            <?php
                             db_input('iMesIni', 2, "", true, 'text', 1, '');
                             ?>
                           </td>
@@ -149,12 +149,12 @@ $aHoje         = explode("/",$dHoje);
                             <b>Á </b>
                           </td>
                           <td>
-                            <?
+                            <?php
                             db_input('iAnoFim', 4, "", true, 'text', 1, '');
                             ?>
                           </td>
                           <td>
-                            <?
+                            <?php
                             db_input('iMesFim', 2, "", true, 'text', 1, '');
                             ?>
                           </td>
@@ -166,7 +166,7 @@ $aHoje         = explode("/",$dHoje);
                       <table>
                         <tr>
                           <td>
-                            <?
+                            <?php
                             $sSql    = $oDaoVacina->sql_query("","vc06_i_codigo,vc06_c_descr");
                             $rsDados = $oDaoVacina->sql_record($sSql);
                             db_multiploselect("vc06_i_codigo",
@@ -217,7 +217,7 @@ $aHoje         = explode("/",$dHoje);
       </table>
     </center>
   </body>
-  <? 
+  <?php 
   db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),

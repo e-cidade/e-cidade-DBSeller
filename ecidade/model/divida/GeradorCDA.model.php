@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -232,7 +232,7 @@ class GeradorCDA
             foreach ($oDocumentoAgrupador->aParagrafos as $oParagrafo) {
 
                 switch (trim(strtolower($oParagrafo->db02_descr))) {
-
+                    
                     case "dados_devedor" :
 
                         $this->drawDevedores($pdf, $oCDA, 'o');
@@ -388,6 +388,10 @@ class GeradorCDA
                         $this->drawDebitosInflator($pdf, $oCDA, $oPardiv, $oParagrafo->db02_texto,
                             $totexe == "t" ? true : false, $reemissao == "t" ? true : false, $tipo);
                         break;
+                    case "movimentacoes_extrajudiciais" :
+
+                        $this->drawMovimentacoes($pdf, $oCDA);
+                        break;
                 }
             }
         }
@@ -489,6 +493,8 @@ class GeradorCDA
         $clcfiptu = new cl_cfiptu;
         $rsCfiptu = $clcfiptu->sql_record($clcfiptu->sql_query_file("", "j18_utilizaloc", "",
             "j18_anousu = " . db_getsession("DB_anousu")));
+        
+        $oCfiptu = new stdClass();
         if ($clcfiptu->numrows > 0) {
             $oCfiptu = db_utils::fieldsMemory($rsCfiptu, 0);
         } else {
@@ -512,8 +518,15 @@ class GeradorCDA
 				$pdf->cell(40, 3, 'MATRÍCULA REG.IMÓVEL: ' . (isset($oOrigem->refanterior) ? $oOrigem->refanterior : ""), 0, 1, "l",
                     0);
 
-                if ($oCfiptu->j18_utilizaloc == 't') {
-
+                if ($oCfiptu->j18_utilizaloc == 't' 
+                        && ((isset($oOrigem->setorloc) 
+                                && trim($oOrigem->setorloc) != '') 
+                        || (isset($oOrigem->descrsetorloc) 
+                                && trim($oOrigem->descrsetorloc) != '' ) 
+                        || (isset($oOrigem->quadraloc) 
+                                && trim($oOrigem->quadraloc) != '') 
+                        || (isset($oOrigem->loteloc) 
+                                && trim($oOrigem->loteloc) != ''))) {
                     $pdf->cell(60, 5,
                         'DADOS DE LOCALIZACAO: SETOR  : ' . (isset($oOrigem->setorloc) ? $oOrigem->setorloc : "") . '-'
                         . (isset($oOrigem->descrsetorloc) ? $oOrigem->descrsetorloc : "") .
@@ -543,7 +556,15 @@ class GeradorCDA
                     $pdf->cell(40, 3, 'MATRÍCULA REG.IMÓVEL: ' . (isset($oOrigem->matricula_ri) ? $oOrigem->matricula_ri : ""), 0, 1, "l",
                     0);
 
-                    if ($oCfiptu->j18_utilizaloc == 't') {
+                    if ($oCfiptu->j18_utilizaloc == 't' 
+                            && ((isset($oOrigem->setorloc) 
+                                    && trim($oOrigem->setorloc) != '') 
+                            || (isset($oOrigem->descrsetorloc) 
+                                    && trim($oOrigem->descrsetorloc) != '' ) 
+                            || (isset($oOrigem->quadraloc) 
+                                    && trim($oOrigem->quadraloc) != '') 
+                            || (isset($oOrigem->loteloc) 
+                                    && trim($oOrigem->loteloc) != ''))) {
                         $pdf->cell(60, 5,
                             'DADOS DE LOCALIZACAO: SETOR  : ' . (isset($oOrigem->setorloc) ? $oOrigem->setorloc : "") . '-'
                             . (isset($oOrigem->descrsetorloc) ? $oOrigem->descrsetorloc : "") .
@@ -998,6 +1019,36 @@ class GeradorCDA
     }
 
     /**
+     * Escreve o quadro de Movimentaçoes Extrajudicias
+     * @param pdf3 $pdf
+     * @param cda $oCertidao
+     */
+    private function drawMovimentacoes(pdf3 $pdf, cda $oCertidao)
+    {
+
+        $ocorrencias = $oCertidao->getOcorrenciasCRA();
+
+        if(count($ocorrencias) > 0 && $ocorrencias != false){
+            $pdf->ln(3);
+            $pdf->setfont('', 'B', 9);
+            $pdf->MultiCell(0, 5, "Movimentações Extrajudiciais", 0, "C", 0);
+
+            $pdf->SetFont('', 'B', 6);
+            $pdf->Cell(30, 5, "Data", 1, 0, "C", 1);
+            $pdf->Cell(160, 5, "Descricão", 1, 1, "C", 1);
+
+            foreach ($ocorrencias as $ocorrencia) {
+                $pdf->SetFont('', 'B', 6);
+                $pdf->Cell(30, 5, $ocorrencia['data_ocorrencia'], 1, 0,
+                    "L", 0);
+                $pdf->Cell(160, 5, $ocorrencia['descricao'], 1, 1,
+                    "L", 0);
+                $pdf->setfont('', 'B', 9);
+            }
+        }
+    }
+
+    /**
      * [drawTotalizacaoDebitos description]
      * @param  pdf3 $pdf [description]
      * @param  cda $oCertidao [description]
@@ -1017,7 +1068,7 @@ class GeradorCDA
         $lReemissao,
         $lComposicao = false,
         $lCorrigido = false,
-        $tipo
+        $tipo = null
     ) {
 
         $nTotalGeral = 0;
@@ -1095,7 +1146,7 @@ class GeradorCDA
         $lTotaliza = false,
         $lReemissao,
         $lCorrigido,
-        $tipo
+        $tipo = null
     ) {
 
         $oCertidao->setComposicao(false);

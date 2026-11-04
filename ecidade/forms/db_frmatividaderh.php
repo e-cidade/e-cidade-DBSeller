@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("dbforms/db_classesgenericas.php"));
+require_once modification("dbforms/db_classesgenericas.php");
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clatividaderh->rotulo->label();
@@ -33,66 +33,66 @@ $oDaoFuncaoAtividade->rotulo->label();
 $db_botao1 = false;
 
 $aFuncoes            = array();
-$sSqlFuncaoAtividade = $oDaoFuncaoAtividade->sql_query_file( null, "ed119_sequencial, ed119_descricao" );
-$rsFuncaoAtividade   = db_query( $sSqlFuncaoAtividade );
+$sSqlFuncaoAtividade = $oDaoFuncaoAtividade->sql_query_file(null, "ed119_sequencial, ed119_descricao");
+$rsFuncaoAtividade   = db_query($sSqlFuncaoAtividade);
 
-if( $rsFuncaoAtividade && pg_num_rows( $rsFuncaoAtividade ) > 0 ) {
+if($rsFuncaoAtividade && pg_num_rows($rsFuncaoAtividade) > 0 ) {
 
-  $iTotalFuncaoAtividade = pg_num_rows( $rsFuncaoAtividade );
-  for( $iContador = 0; $iContador < $iTotalFuncaoAtividade; $iContador++ ) {
+    $iTotalFuncaoAtividade = pg_num_rows($rsFuncaoAtividade);
+    for( $iContador = 0; $iContador < $iTotalFuncaoAtividade; $iContador++ ) {
 
-    $oDadosFuncaoAtividade                                = db_utils::fieldsMemory( $rsFuncaoAtividade, $iContador );
-    $aFuncoes[ $oDadosFuncaoAtividade->ed119_sequencial ] = mb_strtoupper( $oDadosFuncaoAtividade->ed119_descricao );
-  }
+        $oDadosFuncaoAtividade                                = db_utils::fieldsMemory($rsFuncaoAtividade, $iContador);
+        $aFuncoes[ $oDadosFuncaoAtividade->ed119_sequencial ] = mb_strtoupper($oDadosFuncaoAtividade->ed119_descricao);
+    }
 }
 
-if( isset($opcao) && ($opcao == "alterar" || $opcao == "excluir" ) ) {
+if(isset($opcao) && ($opcao == "alterar" || $opcao == "excluir" ) ) {
 
-  if( isset( $ed01_i_funcaoadmin ) && $ed01_i_funcaoadmin == "DIRETOR(A)" ) {
-  	$ed01_i_funcaoadmin = 2;
-  }	else if( isset( $ed01_i_funcaoadmin ) && $ed01_i_funcaoadmin == "SECRETÁRIO(A)" ) {
-  	$ed01_i_funcaoadmin = 3;
-  } else {
-  	$ed01_i_funcaoadmin = 1;
-  }
+    if(isset($ed01_i_funcaoadmin) && $ed01_i_funcaoadmin == "DIRETOR(A)" ) {
+        $ed01_i_funcaoadmin = 2;
+    }    else if(isset($ed01_i_funcaoadmin) && $ed01_i_funcaoadmin == "SECRETÁRIO(A)" ) {
+        $ed01_i_funcaoadmin = 3;
+    } else {
+        $ed01_i_funcaoadmin = 1;
+    }
 
-  if( isset( $ed01_funcaoatividade ) ) {
-    $ed01_funcaoatividade = array_search( $ed01_funcaoatividade, $aFuncoes );
-  }
+    if(isset($ed01_funcaoatividade) ) {
+        $ed01_funcaoatividade = array_search($ed01_funcaoatividade, $aFuncoes);
+    }
 }
 
-if( isset( $opcao ) && $opcao == "alterar" ) {
-
-  $db_opcao  = 2;
-  $db_botao1 = true;
-} else if( isset( $opcao ) && $opcao == "excluir" || isset( $db_opcao ) && $db_opcao == 3 ) {
-
-  $db_botao1 = true;
-  $db_opcao  = 3;
-} else {
-
-  if( isset( $alterar ) ) {
+if(isset($opcao) && $opcao == "alterar" ) {
 
     $db_opcao  = 2;
     $db_botao1 = true;
-  } else {
-    $db_opcao = 1;
-  }
+} else if(isset($opcao) && $opcao == "excluir" || isset($db_opcao) && $db_opcao == 3 ) {
+
+    $db_botao1 = true;
+    $db_opcao  = 3;
+} else {
+
+    if(isset($alterar) ) {
+
+        $db_opcao  = 2;
+        $db_botao1 = true;
+    } else {
+        $db_opcao = 1;
+    }
 }
 ?>
 <form name="form1" method="post" action="">
-  <input id="opcao" type="hidden" value="<?= $db_opcao?>">
+  <input id="opcao" type="hidden" value="<?php echo $db_opcao?>">
   <div class="container">
     <fieldset>
       <legend>Funções/Atividades</legend>
       <table>
         <tr style="display: none;">
-          <td nowrap title="<? echo $Ted01_i_codigo; ?>">
+          <td nowrap title="<?php echo $Ted01_i_codigo; ?>">
             <label for='ed01_i_codigo'> <?php echo$Led01_i_codigo; ?></label>
           </td>
           <td>
             <?php
-              db_input( 'ed01_i_codigo', 10, $Ied01_i_codigo, true, 'text', 3);
+              db_input('ed01_i_codigo', 10, $Ied01_i_codigo, true, 'text', 3);
             ?>
           </td>
         </tr>
@@ -102,7 +102,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-            db_input( 'ed01_c_descr', 50, $Ied01_c_descr, true, 'text', $db_opcao );
+            db_input('ed01_c_descr', 50, $Ied01_c_descr, true, 'text', $db_opcao);
             ?>
           </td>
         </tr>
@@ -113,7 +113,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           <td>
             <?php
               $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
-              db_select( 'ed01_c_regencia', $x, true, $db_opcao );
+              db_select('ed01_c_regencia', $x, true, $db_opcao);
             ?>
           </td>
         </tr>
@@ -123,19 +123,19 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-            db_select( "ed01_funcaoatividade", $aFuncoes, true, $db_opcao );
+            db_select("ed01_funcaoatividade", $aFuncoes, true, $db_opcao);
             ?>
           </td>
         </tr>
-        <tr  style="display: none;"> 
-          <input type="hidden" id="docencia" value="<?=isset($ed01_c_docencia) ?$ed01_c_docencia : "" ?>">
+        <tr  style="display: none;">
+          <input type="hidden" id="docencia" value="<?php echo isset($ed01_c_docencia) ?$ed01_c_docencia : "" ?>">
           <td nowrap title="<?php echo $Ted01_c_docencia; ?>">
             <label for='ed01_c_docencia'><?php echo $Led01_c_docencia; ?></label>
           </td>
           <td>
             <?php
             $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
-            db_select( 'ed01_c_docencia', $x, true, $db_opcao );
+            db_select('ed01_c_docencia', $x, true, $db_opcao);
             ?>
           </td>
         </tr>
@@ -150,7 +150,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
                               "2" => "DIRETOR(A)",
                               "3" => "SECRETÁRIO(A)"
                             );
-            db_select( 'ed01_i_funcaoadmin', $aFuncao, true, $db_opcao, "" );
+            db_select('ed01_i_funcaoadmin', $aFuncao, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -161,7 +161,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           <td>
             <?php
             $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
-            db_select( 'ed01_c_exigeato', $x, true, $db_opcao );
+            db_select('ed01_c_exigeato', $x, true, $db_opcao);
             ?>
           </td>
         </tr>
@@ -172,7 +172,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           <td>
             <?php
             $x = array( 'FUNC' => 'FUNCIONÁRIOS', 'PROF' => 'PROFESSORES' );
-            db_select( 'ed01_c_efetividade', $x, true, $db_opcao );
+            db_select('ed01_c_efetividade', $x, true, $db_opcao);
             ?>
           </td>
         </tr>
@@ -183,7 +183,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           <td>
             <?php
             $x = array( 'f' => 'NÃO', 't' => 'SIM' );
-            db_select( 'ed01_atividadeescolar', $x, true, $db_opcao );
+            db_select('ed01_atividadeescolar', $x, true, $db_opcao);
             ?>
           </td>
         </tr>
@@ -192,7 +192,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
             <label for='ed01_permissao_diario'><b>Permissão do Diário:</b></label>
           </td>
           <td>
-            <input type="hidden" id="permissao_diario" value="<?=isset($ed01_permissao_diario) ? $ed01_permissao_diario : ""?>">
+            <input type="hidden" id="permissao_diario" value="<?php echo isset($ed01_permissao_diario) ? $ed01_permissao_diario : ""?>">
             <select id="ed01_permissao_diario" name="ed01_permissao_diario" style="width: 100%;">
               <option value="0">SEM PERMISSÃO</option>
               <option value="0">PROFESSOR</option>
@@ -214,45 +214,51 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
   <tr>
     <td valign="top">
       <?php
-      $sCampos  = " ed01_i_codigo, ed01_c_descr, ed01_c_regencia, ed01_c_docencia, ed01_c_exigeato, ed01_c_efetividade,";
-      $sCampos .= " case when ed01_i_funcaoadmin = '1' then 'NÃO' ";
-      $sCampos .= "      when ed01_i_funcaoadmin = '2' then 'DIRETOR(A)' ";
-      $sCampos .= "      when ed01_i_funcaoadmin = '3' then 'SECRETÁRIO(A)' ";
-      $sCampos .= "   end as ed01_i_funcaoadmin ";
-      $sCampos .= ", case ";
-      $sCampos .= "       when ed01_funcaoatividade = '0' ";
-      $sCampos .= "            then 'NENHUM' ";
-      $sCampos .= "       when ed01_funcaoatividade = '1' ";
-      $sCampos .= "            then 'DOCENTE' ";
-      $sCampos .= "       when ed01_funcaoatividade = '2' ";
-      $sCampos .= "            then 'AUXILIAR/ASSISTENTE EDUCACIONAL' ";
-      $sCampos .= "       when ed01_funcaoatividade = '3' ";
-      $sCampos .= "            then 'PROFISSIONAL/MONITOR DE ATIVIDADE COMPLEMENTAR' ";
-      $sCampos .= "       when ed01_funcaoatividade = '4' ";
-      $sCampos .= "            then 'TRADUTOR INTÉRPRETE DE LIBRAS' ";
-      $sCampos .= "       when ed01_funcaoatividade = '5' ";
-      $sCampos .= "            then 'DOCENTE TITULAR - COORDENADOR DE TUTORIA(DE MÓDULO OU DISCIPLINA) - EAD' ";
-      $sCampos .= "       when ed01_funcaoatividade = '6' ";
-      $sCampos .= "            then 'DOCENTE TUTOR - (DE MÓDULO OU DISCIPLINA)' ";
-      $sCampos .= "   end as ed01_funcaoatividade , ";
-      $sCampos .= "   ed01_atividadeescolar, ";
-      $sCampos .= " CASE 
+        $sCampos  = " ed01_i_codigo, ed01_c_descr, ed01_c_regencia, ed01_c_docencia, ed01_c_exigeato, ed01_c_efetividade,";
+        $sCampos .= " case when ed01_i_funcaoadmin = '1' then 'NÃO' ";
+        $sCampos .= "      when ed01_i_funcaoadmin = '2' then 'DIRETOR(A)' ";
+        $sCampos .= "      when ed01_i_funcaoadmin = '3' then 'SECRETÁRIO(A)' ";
+        $sCampos .= "   end as ed01_i_funcaoadmin ";
+        $sCampos .= ", case ";
+        $sCampos .= "       when ed01_funcaoatividade = '0' ";
+        $sCampos .= "            then 'NENHUM' ";
+        $sCampos .= "       when ed01_funcaoatividade = '1' ";
+        $sCampos .= "            then 'DOCENTE' ";
+        $sCampos .= "       when ed01_funcaoatividade = '2' ";
+        $sCampos .= "            then 'AUXILIAR/ASSISTENTE EDUCACIONAL' ";
+        $sCampos .= "       when ed01_funcaoatividade = '3' ";
+        $sCampos .= "            then 'PROFISSIONAL/MONITOR DE ATIVIDADE COMPLEMENTAR' ";
+        $sCampos .= "       when ed01_funcaoatividade = '4' ";
+        $sCampos .= "            then 'TRADUTOR INTÉRPRETE DE LIBRAS' ";
+        $sCampos .= "       when ed01_funcaoatividade = '5' ";
+        $sCampos .= "            then 'DOCENTE TITULAR - COORDENADOR DE TUTORIA(DE MÓDULO OU DISCIPLINA) - EAD' ";
+        $sCampos .= "       when ed01_funcaoatividade = '6' ";
+        $sCampos .= "            then 'DOCENTE TUTOR - (DE MÓDULO OU DISCIPLINA)' ";
+        $sCampos .= "       when ed01_funcaoatividade = '7' ";
+        $sCampos .= "            then 'GUIA DE INTÉRPRETE' ";
+        $sCampos .= "       when ed01_funcaoatividade = '8' ";
+        $sCampos .= "            then 'PROFISSIONAL DE APOIO ESCOLAR PARA ALUNOS COM DEFICIÊNCIA (LEI 13.146/2015)' ";
+        $sCampos .= "       when ed01_funcaoatividade = '9' ";
+        $sCampos .= "            then 'INSTRUTOR DE EDUCAÇÃO PROFISSIONAL' ";
+        $sCampos .= "   end as ed01_funcaoatividade , ";
+        $sCampos .= "   ed01_atividadeescolar, ";
+        $sCampos .= " CASE
                       WHEN ed01_permissao_diario = 0 AND ed01_c_docencia = 'S' THEN 'PROFESSOR'
                       WHEN ed01_permissao_diario = 0 AND ed01_c_docencia <> 'S' THEN 'SEM PERMISSÃO'
                       WHEN ed01_permissao_diario = 1 THEN 'TOTAL'
                     END as ed01_permissao_diario";
 
-      $ed01_i_codigo         = '';
-      $ed01_c_descr          = '';
-      $ed01_c_regencia       = '';
-      $ed01_c_docencia       = '';
-      $ed01_c_exigeato       = '';
-      $ed01_c_efetividade    = '';
-      $ed01_i_funcaoadmin    = '';
-      $ed01_funcaoatividade  = '';
-      $ed01_atividadeescolar = '';
-      $ed01_permissao_diario = '';
-      $aChaves  = array(
+        $ed01_i_codigo         = '';
+        $ed01_c_descr          = '';
+        $ed01_c_regencia       = '';
+        $ed01_c_docencia       = '';
+        $ed01_c_exigeato       = '';
+        $ed01_c_efetividade    = '';
+        $ed01_i_funcaoadmin    = '';
+        $ed01_funcaoatividade  = '';
+        $ed01_atividadeescolar = '';
+        $ed01_permissao_diario = '';
+        $aChaves  = array(
                          "ed01_i_codigo"         => $ed01_i_codigo,
                          "ed01_c_descr"          => $ed01_c_descr,
                          "ed01_c_regencia"       => $ed01_c_regencia,
@@ -265,27 +271,27 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
                          "ed01_permissao_diario" => $ed01_permissao_diario
                        );
 
-      $sCamposFrame  = "ed01_i_codigo, ed01_c_descr, ed01_c_regencia, ed01_c_docencia, ed01_c_exigeato";
-   
-      $sCamposFrame .= ", ed01_c_efetividade, ed01_i_funcaoadmin, ed01_funcaoatividade, ed01_atividadeescolar, ed01_permissao_diario";
+        $sCamposFrame  = "ed01_i_codigo, ed01_c_descr, ed01_c_regencia, ed01_c_docencia, ed01_c_exigeato";
 
-      $cliframe_alterar_excluir->chavepri      = $aChaves;
-      $cliframe_alterar_excluir->sql           = $clatividaderh->sql_query( $ed01_i_codigo, $sCampos, "ed01_c_descr" );
-      $cliframe_alterar_excluir->sqldb_frmatividaderh_disabled  = $clatividaderh->sql_query( "", "*", "ed01_c_descr", "ed01_c_atualiz = 'N'" );
-      $cliframe_alterar_excluir->campos        = $sCamposFrame;
-      $cliframe_alterar_excluir->legenda       = "Registros";
-      $cliframe_alterar_excluir->msg_vazio     = "Não foi encontrado nenhum registro.";
-      $cliframe_alterar_excluir->textocabec    = "#DEB887";
-      $cliframe_alterar_excluir->textocorpo    = "#444444";
-      $cliframe_alterar_excluir->fundocabec    = "#444444";
-      $cliframe_alterar_excluir->fundocorpo    = "#eaeaea";
-      $cliframe_alterar_excluir->iframe_height = "200";
-      $cliframe_alterar_excluir->iframe_width  = "100%";
-      $cliframe_alterar_excluir->tamfontecabec = 9;
-      $cliframe_alterar_excluir->tamfontecorpo = 9;
-      $cliframe_alterar_excluir->formulario    = false;
-      $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
-      ?>
+        $sCamposFrame .= ", ed01_c_efetividade, ed01_i_funcaoadmin, ed01_funcaoatividade, ed01_atividadeescolar, ed01_permissao_diario";
+
+        $cliframe_alterar_excluir->chavepri      = $aChaves;
+        $cliframe_alterar_excluir->sql           = $clatividaderh->sql_query($ed01_i_codigo, $sCampos, "ed01_c_descr");
+        $cliframe_alterar_excluir->sqldb_frmatividaderh_disabled  = $clatividaderh->sql_query("", "*", "ed01_c_descr", "ed01_c_atualiz = 'N'");
+        $cliframe_alterar_excluir->campos        = $sCamposFrame;
+        $cliframe_alterar_excluir->legenda       = "Registros";
+        $cliframe_alterar_excluir->msg_vazio     = "Não foi encontrado nenhum registro.";
+        $cliframe_alterar_excluir->textocabec    = "#DEB887";
+        $cliframe_alterar_excluir->textocorpo    = "#444444";
+        $cliframe_alterar_excluir->fundocabec    = "#444444";
+        $cliframe_alterar_excluir->fundocorpo    = "#eaeaea";
+        $cliframe_alterar_excluir->iframe_height = "200";
+        $cliframe_alterar_excluir->iframe_width  = "100%";
+        $cliframe_alterar_excluir->tamfontecabec = 9;
+        $cliframe_alterar_excluir->tamfontecorpo = 9;
+        $cliframe_alterar_excluir->formulario    = false;
+        $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
+        ?>
     </td>
   </tr>
 </table>
@@ -320,8 +326,6 @@ $('ed01_c_regencia').observe('change', function () {
     $('ed01_atividadeescolar').setAttribute('disabled', 'disabled');
   }
 });
-
-
 
 window.addEventListener('load', () => {
     var opcao = document.querySelector('#opcao');

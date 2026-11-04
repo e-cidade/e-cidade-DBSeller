@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -87,10 +87,15 @@ require_once(modification("dbforms/db_funcoes.php"));
                 </tr>
 
                 <tr>
-                    <td><a id='ancoraRecurso' href="#">Fonte de Recurso:</a></td>
                     <td>
-                        <input type="text" name="recurso" id="o15_recurso" class="field-size2">
-                        <input type="text" id="o15_descr" class="field-size8 readonly" readonly>
+                        <a id="ancoraFonteRecurso" href="#">Fonte de Recursos:</a>
+                    </td>
+                    <td>
+                        <input type="text" style="width: 60px;" id="gestao" name="gestao" readonly class="readonly">
+                        <input type="text" style="width: 60px;" id="o15_recurso" name="subrecurso" readonly
+                               class="readonly">
+                        <input type="text" style="width: 360px;" id="descricaoRecurso" lang="descricao" readonly
+                               class="readonly">
                     </td>
                 </tr>
 
@@ -171,7 +176,9 @@ db_menu();
 
     const input = {
         'origem': $('origem'),
-        'recurso': $('o15_recurso'),
+        'fonteGestao': $('gestao'),
+        'subrecurso': $('o15_recurso'),
+        'descricaoRecurso': $('descricaoRecurso'),
         'empenho': $('e60_codemp'),
         'idEmpenho': $('idEmpenho'),
         'receita': $('o70_codrec'),
@@ -255,7 +262,7 @@ db_menu();
 
         if (input.origem.value === 'despesa') {
             if (input.empenho.value === '') {
-                if (input.recurso.value === '') {
+                if (input.subrecurso.value === '') {
                     alert('Recurso é de preenchimento obrigatório.');
                     return false;
                 }
@@ -266,7 +273,7 @@ db_menu();
 
         if (input.origem.value === 'receita') {
             if (input.receita.value === '') {
-                if (input.recurso.value === '') {
+                if (input.subrecurso.value === '') {
                     alert('Recurso é de preenchimento obrigatório.');
                     return false;
                 }
@@ -458,11 +465,22 @@ db_menu();
 
     trocarOrigem();
 
-    const lookupRecurso = new DBLookUp($('ancoraRecurso'), $('o15_recurso'), $('o15_descr'), {
-        "sArquivo": "func_fonterecurso.php",
-        "sObjetoLookUp": "db_iframe_orctiporec",
-        "sLabel": "Pesquisar Recurso"
+    const lookUpRecurso = new DBLookUp($('ancoraFonteRecurso'), input.fonteGestao, input.descricaoRecurso, {
+        'sArquivo': 'func_novosRecursos.php',
+        'sLabel': 'Pesquisar Fonte de Recurso',
+        'sObjetoLookUp': "db_iframe_orctiporec",
+        'aCamposAdicionais': ['o15_recurso']
     });
+
+    lookUpRecurso.setCallBack('onClick', (retorno) => {
+        preencheForm(retorno[0], retorno[1], retorno[2]);
+    });
+
+    const preencheForm = (recurso, descricao, subrecurso ) => {
+        input.fonteGestao.value = recurso;
+        input.descricaoRecurso.value = descricao;
+        input.subrecurso.value = subrecurso;
+    };
 
     btnAplicar.addEventListener('click', () => {
         if (cboAplicarComplementos.value === '') {

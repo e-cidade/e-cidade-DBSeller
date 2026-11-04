@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Vacinas
@@ -42,16 +42,16 @@ $oRotulo->label("m77_dtvalidade");
     <td nowrap title="<?=@$Tvc19_i_codigo?>">
        <?=@$Lvc19_i_codigo?>
     </td>
-    <td> 
-     <?db_input('vc19_i_codigo',10,$Ivc19_i_codigo,true,'text',3,"")?>
+    <td>
+     <?php db_input('vc19_i_codigo',10,$Ivc19_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc19_i_sala?>">
-      <? db_ancora(@$Lvc19_i_sala,"js_pesquisavc19_i_sala(true);",$db_opcao);?>
+      <?php db_ancora(@$Lvc19_i_sala,"js_pesquisavc19_i_sala(true);",$db_opcao);?>
     </td>
-    <td> 
-      <? db_input('vc19_i_sala',10,$Ivc19_i_sala,true,'text',$db_opcao,
+    <td>
+      <?php db_input('vc19_i_sala',10,$Ivc19_i_sala,true,'text',$db_opcao,
                   " onchange='js_pesquisavc19_i_sala(false);'");
          db_input('vc01_c_nome',40,$Ivc01_c_nome,true,'text',3,'');
       ?>
@@ -59,10 +59,10 @@ $oRotulo->label("m77_dtvalidade");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc19_i_vacina?>">
-      <? db_ancora(@$Lvc19_i_vacina,"js_pesquisavc19_i_vacina(true);",$db_opcao);?>
+      <?php db_ancora(@$Lvc19_i_vacina,"js_pesquisavc19_i_vacina(true);",$db_opcao);?>
     </td>
-    <td> 
-    <?
+    <td>
+    <?php
       db_input('vc19_i_vacina',10,$Ivc19_i_vacina,true,'text',$db_opcao,
                 " onchange='js_pesquisavc19_i_vacina(false);'");
       db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'');
@@ -72,40 +72,40 @@ $oRotulo->label("m77_dtvalidade");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc19_i_matetoqueitemlote?>">
-     <?db_ancora(@$Lvc19_i_matetoqueitemlote,"js_pesquisavc19_i_vacinalote(true);",$db_opcao);?>
+     <?php db_ancora(@$Lvc19_i_matetoqueitemlote,"js_pesquisavc19_i_vacinalote(true);",$db_opcao);?>
     </td>
-    <td> 
-     <?db_input('vc19_i_matetoqueitemlote',10,$Ivc19_i_matetoqueitemlote,true,'text', 3, ' style="display: none;"')?>
-     <?db_input('m77_lote', 10,$Im77_lote,true,'text', $db_opcao, 'onchange="js_pesquisavc19_i_vacinalote(false);"')?>
+    <td>
+     <?php db_input('vc19_i_matetoqueitemlote',10,$Ivc19_i_matetoqueitemlote,true,'text', 3, ' style="display: none;"')?>
+     <?php db_input('m77_lote', 10,$Im77_lote,true,'text', $db_opcao, 'onchange="js_pesquisavc19_i_vacinalote(false);"')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=$Tm77_dtvalidade?>">
       <b>Validade:</b>
     </td>
-    <td nowrap> 
-     <?db_input('m77_dtvalidade', 10, $Im77_dtvalidade, true, 'text', 3, '')?>
+    <td nowrap>
+     <?php db_input('m77_dtvalidade', 10, $Im77_dtvalidade, true, 'text', 3, '')?>
       <b>Unidade de Saída:</b>
-     <?db_input('m61_descr', 20, '', true, 'text',3,'')?>
+     <?php db_input('m61_descr', 20, '', true, 'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap colspan="2">
       <fieldset> <legend><b>Quantidade de Doses Disponível</b></legend>
         <b>Quantidade: </b>
-        <?
+        <?php
         db_input('iQuantidade', 4, '', true, 'text', 3, '');
         ?>
         <b> - Aplicadas: </b>
-        <?
+        <?php
         db_input('iAplicadas', 4, '', true, 'text', 3, '');
         ?>
         <b> - Descartadas: </b>
-        <?
+        <?php
         db_input('iDescartadas', 4, '', true, 'text', 3, '');
         ?>
         <b> = Total: </b>
-        <?
+        <?php
         db_input('iTotal', 4, '', true, 'text', 3, '');
         ?>
       </fieldset>
@@ -115,8 +115,8 @@ $oRotulo->label("m77_dtvalidade");
     <td nowrap title="<?=@$Tvc19_n_quant?>">
        <?=@$Lvc19_n_quant?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('vc19_n_quant',10,$Ivc19_n_quant,true,'text',$db_opcao,'');
       ?>
     </td>
@@ -125,18 +125,18 @@ $oRotulo->label("m77_dtvalidade");
     <td nowrap title="<?=$Tvc19_t_obs?>">
        <?=$Lvc19_t_obs?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_textarea('vc19_t_obs', 2, 50,$Ivc19_t_obs, true, 'text', $db_opcao, '');
       ?>
     </td>
   </tr>
   </table>
   </center>
-<input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type  = "submit" 
-       id    = "db_opcao" value = "<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
+<input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type  = "submit"
+       id    = "db_opcao" value = "<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
        <?=($db_botao==false?"disabled":"")?> <?=($db_opcao != 3 ? "onclick=\"return js_validaEnvio();\"" : "")?> >
-<input name  = "cancelar" type  = "button" id = "cancelar" value = "Cancelar" 
+<input name  = "cancelar" type  = "button" id = "cancelar" value = "Cancelar"
        onclick="location.href='vac4_descartar001.php';" <?=(!isset($opcao)?"disabled":"")?>>
 </form>
 </fieldset>
@@ -147,17 +147,17 @@ if (<?=isset($opcao) ? 'true' : 'false'?>) {
 }
 
 function js_ajax(oParam, jsRetorno) {
-  
+
   sUrl = 'vac4_vacinas.RPC.php';
 	var objAjax = new Ajax.Request(
-                         sUrl, 
+                         sUrl,
                          {
                           method: 'post',
                           asynchronous: false,
                           parameters: 'json='+Object.toJSON(oParam),
-                          onComplete: 
+                          onComplete:
                                      function(objAjax) {
-                          				   
+
                                        var evlJS = jsRetorno+'(objAjax);';
                                        return eval(evlJS);
 
@@ -175,28 +175,28 @@ function js_validaEnvio() {
     return false;
 
   }
-  
+
   if ($F('vc19_i_vacinalote') == '' || $F('m77_lote') == '') {
 
     alert('Informe o lote.');
     return false;
 
   }
-  
+
   if ($F('vc19_n_quant') == '') {
 
     alert('Informe a quantidade a ser descartada.');
     return false;
 
   }
-  
+
   if (parseFloat($F('vc19_n_quant')) <= 0.0) {
 
     alert('A quantidade a ser descartada tem que ser um valor válido.');
     return false;
 
   }
-  
+
   if (parseFloat($F('vc19_n_quant')) > parseFloat($F('iTotal'))) {
 
     alert('Quantidade informada deve ser menor que total de doses disponível.');
@@ -204,7 +204,7 @@ function js_validaEnvio() {
     return false;
 
   }
-  
+
   if ($F('vc19_t_obs') == '') {
 
     alert('Informe o motivo do descarte (observação).');
@@ -235,13 +235,13 @@ function js_pesquisavc19_i_vacinalote(mostra) {
 
     } else {
 
-       if ($F('m77_lote') != '') {  
+       if ($F('m77_lote') != '') {
 
           js_OpenJanelaIframe('CurrentWindow.corpo',
                               'db_iframe_vac_vacinalote',
                               'func_vac_vacinalote.php?&funcao_js=parent.js_mostravacinalote|m77_sequencial|m77_lote|'+
                               'm77_dtvalidade|db_m61_descr|vc15_i_lote|dl_total&nao_mostra=true'+
-                              '&chave_m77_lote='+$F('m77_lote')+sChave, 'Pesquisa', 
+                              '&chave_m77_lote='+$F('m77_lote')+sChave, 'Pesquisa',
                               false
                              );
 
@@ -252,7 +252,7 @@ function js_pesquisavc19_i_vacinalote(mostra) {
     }
 
   } else {
-    
+
     alert('Selecione uma vacina!');
     $('vc19_i_vacinalote').value = $('m77_lote').value = '';
 
@@ -266,11 +266,11 @@ function js_mostravacinalote(iCod, sLote, dValidade, sUnidade, iLote, iQuant) {
     dValidade = sUnidade = iLote = iQuant = '';
   }
 
-  $('vc19_i_matetoqueitemlote').value = iCod; 
-  $('m77_lote').value                 = sLote; 
-  $('m77_dtvalidade').value           = js_formataData(dValidade); 
-  $('m61_descr').value                = sUnidade; 
-  $('iQuantidade').value              = iQuant; 
+  $('vc19_i_matetoqueitemlote').value = iCod;
+  $('m77_lote').value                 = sLote;
+  $('m77_dtvalidade').value           = js_formataData(dValidade);
+  $('m61_descr').value                = sUnidade;
+  $('iQuantidade').value              = iQuant;
 
   if (iCod != '') {
 
@@ -293,7 +293,7 @@ function js_mostravacinalote(iCod, sLote, dValidade, sUnidade, iLote, iQuant) {
 function js_retornoDosesUsadasLote(oRetorno) {
 
   oRetorno = JSON.parse(oRetorno.responseText);
- 
+
   if (oRetorno.iStatus == 1) {
 
    $('iAplicadas').value   = oRetorno.iAplicadas;
@@ -311,10 +311,10 @@ function js_retornoDosesUsadasLote(oRetorno) {
 
 function js_limpaLote() {
 
-  $('vc19_i_matetoqueitemlote').value = ''; 
-  $('m77_lote').value                 = ''; 
-  $('m77_dtvalidade').value           = ''; 
-  $('m61_descr').value                = ''; 
+  $('vc19_i_matetoqueitemlote').value = '';
+  $('m77_lote').value                 = '';
+  $('m77_dtvalidade').value           = '';
+  $('m61_descr').value                = '';
   $('iQuantidade').value              = '';
   $('iAplicadas').value               = '';
   $('iDescartadas').value             = '';
@@ -336,7 +336,7 @@ function js_pesquisavc19_i_vacina(mostra) {
                        );
   } else {
 
-     if ($F('vc19_i_vacina') != '') {  
+     if ($F('vc19_i_vacina') != '') {
 
         js_OpenJanelaIframe('CurrentWindow.corpo',
                             'db_iframe_vac_vacina',
@@ -358,27 +358,27 @@ function js_pesquisavc19_i_vacina(mostra) {
 }
 
 function js_mostravac_vacina(chave,erro,vacina) {
-  
-  js_limpaLote();
-  $('vc06_c_descr').value = chave; 
-  if (erro==true) {  
 
-    $('vc19_i_vacina').focus(); 
-    $('vc19_i_vacina').value = ''; 
+  js_limpaLote();
+  $('vc06_c_descr').value = chave;
+  if (erro==true) {
+
+    $('vc19_i_vacina').focus();
+    $('vc19_i_vacina').value = '';
 
   } else {
-	  
+
     $('vc06_i_vacina').value = vacina;
     js_loadIframe();
-    
+
   }
 }
 
 function js_loadIframe() {
-  
+
   sSrc = 'vac4_descartar.iframe.php?vc19_i_vacina='+$('vc19_i_vacina').value;
   this.frame_lotes.location.href = sSrc;
-  
+
 }
 
 function js_mostravac_vacina1(chave1,chave2,vacina) {
@@ -406,7 +406,7 @@ function js_pesquisavc19_i_sala(mostra) {
 	                       );
 	  } else {
 
-	     if ($F('vc19_i_sala') != '') {  
+	     if ($F('vc19_i_sala') != '') {
 
 	        js_OpenJanelaIframe('CurrentWindow.corpo',
 	                            'db_iframe_vac_vacina',
@@ -425,12 +425,12 @@ function js_pesquisavc19_i_sala(mostra) {
 	}
 
 	function js_mostravac_sala(chave,erro) {
-	  
-	  $('vc01_c_nome').value = chave; 
-	  if (erro==true) {  
 
-	    $('vc19_i_sala').focus(); 
-	    $('vc19_i_sala').value = ''; 
+	  $('vc01_c_nome').value = chave;
+	  if (erro==true) {
+
+	    $('vc19_i_sala').focus();
+	    $('vc19_i_sala').value = '';
 
 	  }
 	}
@@ -444,7 +444,7 @@ function js_pesquisavc19_i_sala(mostra) {
 	}
 
 function js_formataData(dData) {
-  
+
   if (dData == undefined || dData.length != 10) {
     return dData;
   }

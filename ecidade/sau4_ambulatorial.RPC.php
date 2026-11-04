@@ -36,8 +36,13 @@ require_once(modification('libs/JSON.php'));
 require_once(modification('dbforms/db_funcoes.php'));
 require_once(modification('std/db_stdClass.php'));
 
-$oJson              = new services_json();
-$oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
+$oJson = new services_json();
+$oParam = null;
+if (array_key_exists('json', $_POST)) {
+    $oParam = $oJson->decode(str_replace("\\","",$_POST["json"]));
+} else {
+    $oParam = JSON::requestParameters();
+}
 $oRetorno           = new stdClass();
 $oRetorno->iStatus  = 1;
 $oRetorno->sMessage = '';
@@ -474,7 +479,7 @@ if ($oParam->exec == 'duplicarCotas') {
 
       $oDaoSauCotas->erro_status = "0";
       $oDaoSauCotas->erro_msg    = "Nenhuma grade de horario para a prestadora ".$oParam->aUps."!";
-      break;
+      return false;
 
     }
   }
@@ -836,7 +841,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
   $oDaoCgsCartaoSus = new cl_cgs_cartaosus();
 
-  $sSql             = $oDaoCgsCartaoSus->sql_query(null, 'z01_i_cgsund, z01_v_nome',
+  $sSql             = $oDaoCgsCartaoSus->sql_query(null, 'cgs_und.z01_i_cgsund, z01_v_nome',
                                                    null, ' s115_c_cartaosus = \''.$oParam->iCns.'\''
                                                   );
   $rsCgsCartaoSus   = $oDaoCgsCartaoSus->sql_record($sSql);
@@ -1129,14 +1134,15 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   $rsCgsCartaoSus     = $oDaoCgsCartaoSus->sql_record($sSql);
 
   $oRetorno->aCartoes = array();
+  
   if ($oDaoCgsCartaoSus->numrows > 0) { // se o paciente tem um cartao sus
 
     for ($iCont = 0; $iCont < $oDaoCgsCartaoSus->numrows; $iCont++) {
 
       $oDadosCgsCartaoSus                           = db_utils::fieldsmemory($rsCgsCartaoSus, $iCont);
-      $oRetorno->aCartoes[$iCont]->s115_c_cartaosus = urlencode($oDadosCgsCartaoSus->s115_c_cartaosus);
-      $oRetorno->aCartoes[$iCont]->s115_c_tipo      = urlencode($oDadosCgsCartaoSus->s115_c_tipo);
-      $oRetorno->aCartoes[$iCont]->s115_i_codigo    = urlencode($oDadosCgsCartaoSus->s115_i_codigo);
+      $oRetorno->aCartoes[$iCont]['s115_c_cartaosus'] = urlencode($oDadosCgsCartaoSus->s115_c_cartaosus);
+      $oRetorno->aCartoes[$iCont]['s115_c_tipo']      = urlencode($oDadosCgsCartaoSus->s115_c_tipo);
+      $oRetorno->aCartoes[$iCont]['s115_i_codigo']    = urlencode($oDadosCgsCartaoSus->s115_i_codigo);
 
     }
 
@@ -1759,7 +1765,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   $rs                         = $oDaoSauMedicamentosReceita->sql_record($sSql);
   if ($oDaoSauMedicamentosReceita->numrows > 0) {
     $oRetorno->aMedicamentos = db_utils::getCollectionByRecord($rs, false, false, true);
-    foreach ($oRetorno->aMedicamentos as $medicamento) { 
+    foreach ($oRetorno->aMedicamentos as $medicamento) {
       $medicamento->s159_n_quant = Material::arredondarQuantidade($medicamento->s159_n_quant);
     }
   } else {
@@ -2514,7 +2520,7 @@ if ($oParam->exec == 'gerarFAATXT') {
 
     $oRetorno->iStatus  = 2;
     $sErro = "não foi possível salvar o arquivo em '$sNomeArquivo'. Verique se o caminho está correto.";
-    $oRetorno->sMessage = urlencode(str_replace('"', '\"', sErro));
+    $oRetorno->sMessage = urlencode(str_replace('"', '\"', $sErro));
     echo $oJson->encode($oRetorno);
     exit;
 
@@ -2592,7 +2598,7 @@ if ($oParam->exec == 'gerarFAATXT') {
 
       $oRetorno->iStatus  = 2;
       $sErro = "Nenhum registro para o relatório.";
-      $oRetorno->sMessage = urlencode(str_replace('"', '\"', sErro));
+      $oRetorno->sMessage = urlencode(str_replace('"', '\"', $sErro));
       echo $oJson->encode($oRetorno);
       exit;
 

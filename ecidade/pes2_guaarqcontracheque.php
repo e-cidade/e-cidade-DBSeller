@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -444,12 +444,12 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $ano = db_anofolha();
            db_input('ano',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes = db_mesfolha();
            db_input('mes',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -465,7 +465,7 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
 	      <b>Linha 1:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem1 = 64;
               db_input('mensagem1',64,0,true,'text',1,"")
               ?>
@@ -476,7 +476,7 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
 	      <b>Linha 2:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem2 = 64;
               db_input('mensagem2',64,0,true,'text',1,"")
               ?>
@@ -487,7 +487,7 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
 	      <b>Linha 3:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem3 = 64;
               db_input('mensagem3',64,0,true,'text',1,"")
               ?>
@@ -498,7 +498,7 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
 	      <b>Linha 4:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem4 = 64;
               db_input('mensagem4',64,0,true,'text',1,"")
               ?>
@@ -509,7 +509,7 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
 	      <b>Linha 5:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem5 = 64;
               db_input('mensagem5',64,0,true,'text',1,"")
               ?>
@@ -534,13 +534,13 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-  <?
+  <?php
   if(isset($gera) || isset($gera1) || isset($gera2)  ){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }

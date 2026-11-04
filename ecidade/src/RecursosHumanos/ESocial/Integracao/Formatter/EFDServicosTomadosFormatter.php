@@ -51,9 +51,9 @@ class EFDServicosTomadosFormatter extends Formatter
         $novosDados = new \stdClass();
         $novosDados->infoProcRetPr = array();
         $novosDados->infoProcRetAd = array();
-        foreach ($dadosFormatado as &$stdLinha) {
-            foreach($stdLinha['infoProcRet'] as $infoProcRet) {
-                if($infoProcRet['tipo'] == 1) {
+        foreach ($dadosFormatado as $stdLinha) {
+            foreach ($stdLinha['infoProcRet'] as $infoProcRet) {
+                if ($infoProcRet['tipo'] == 1) {
                     $infoProcRetPr = new \stdClass();
                     $infoProcRetPr->tpProcRetPrinc = $infoProcRet['tpProcRet'];
                     $infoProcRetPr->nrProcRetPrinc = $infoProcRet['nrProcRet'];
@@ -68,13 +68,12 @@ class EFDServicosTomadosFormatter extends Formatter
                     $infoProcRetAd->codSuspAdic = !empty($infoProcRet['codSusp']) ? $infoProcRet['codSusp'] : null;
                     $novosDados->infoProcRetAd[] = $infoProcRetAd;
                 }
-                
             }
         }
-        if(count($novosDados->infoProcRetPr) == 0) {
+        if (count($novosDados->infoProcRetPr) == 0) {
             unset($novosDados->infoProcRetPr);
         }
-        if(count($novosDados->infoProcRetAd) == 0) {
+        if (count($novosDados->infoProcRetAd) == 0) {
             unset($novosDados->infoProcRetAd);
         }
 

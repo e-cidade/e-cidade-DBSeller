@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbensmater->rotulo->label("t53_ntfisc");
               <?=$Lt53_codbem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t53_codbem",10,$It53_codbem,true,"text",4,"","chave_t53_codbem");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbensmater->rotulo->label("t53_ntfisc");
               <?=$Lt53_ntfisc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t53_ntfisc",50,$It53_ntfisc,true,"text",4,"","chave_t53_ntfisc");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbensmater->rotulo->label("t53_ntfisc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensmater.php")==true){
@@ -118,12 +118,12 @@ $clbensmater->rotulo->label("t53_ntfisc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -117,7 +117,7 @@ function js_help_avanca(){
 <!--
 <tr>
 <td colspan="2">
-   <?
+   <?php
    /*
    $cldb_tipohelp = new cl_db_tipohelp;
    $result_tipo = $cldb_tipohelp->sql_record($cldb_tipohelp->sql_query());
@@ -135,7 +135,7 @@ function js_help_avanca(){
 <tr>
 <td width="20%" valign="top">
 
-<?
+<?php
 /*
 Módulo:
 $nome_modulo = $modulo;

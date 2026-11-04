@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ if(isset($excluir)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
  db_app::load("dbmessageBoard.widget.js, 
  		           scripts.js, 
  		           strings.js, 
@@ -68,14 +68,14 @@ if(isset($excluir)){
 
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1; js_mostraDadosCEF();" >
 <br><br><br>
-	<?
+	<?php
 	  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	  include(modification("forms/db_frmrharqbanco.php"));
   ?>
   
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clrharqbanco->erro_status=="0"){
     $clrharqbanco->erro(true,false);

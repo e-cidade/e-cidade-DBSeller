@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clorcfontes->rotulo->label();
        <?=@$Lo57_codfon?>
     </td>
     <td> 
-<?
+<?php
 db_input('o57_codfon',6,$Io57_codfon,true,'text',3)
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o57_codfon',6,$Io57_codfon,true,'text',3)
        <?=@$Lo57_fonte?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1){
     $db_opcao02=1;
 }else{
@@ -61,7 +61,7 @@ db_input('o57_fonte',22,$Io57_fonte,true,'text',$db_opcao02);
        <?=@$Lo57_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('o57_descr',40,$Io57_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -71,7 +71,7 @@ db_input('o57_descr',40,$Io57_descr,true,'text',$db_opcao,"")
        <?=@$Lo57_finali?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('o57_finali',0,40,$Io57_finali,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcfontes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

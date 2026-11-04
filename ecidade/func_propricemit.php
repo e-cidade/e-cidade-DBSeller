@@ -59,7 +59,7 @@ $clrotulo->label("z01_nome");
                   <?=$Lcm28_i_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?
+                  <?php
                      db_input("cm28_i_codigo",10,$Icm28_i_codigo,true,"text",4,"","chave_cm28_i_codigo");
                      ?>
                 </td>
@@ -69,7 +69,7 @@ $clrotulo->label("z01_nome");
                   <?=$Lcm28_i_proprietario?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?
+                  <?php
                      db_input("cm28_i_proprietario",10,$Icm28_i_proprietario,true,"text",4,"","chave_cm28_i_proprietario");
                      db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
                   ?>
@@ -88,7 +88,7 @@ $clrotulo->label("z01_nome");
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?
+          <?php
           if(!isset($pesquisa_chave)){
             if(isset($campos)==false){
                if(file_exists("funcoes/db_func_propricemit.php")==true){

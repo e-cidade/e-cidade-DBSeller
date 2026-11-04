@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,13 +58,13 @@ class cl_matunid {
                  m61_codigotribunal = varchar(5) = Código do Tribunal 
                  ";
    //funcao construtor da classe 
-   function cl_matunid() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matunid"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_matunid {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m61_codmatunid = ($this->m61_codmatunid == ""?@$GLOBALS["HTTP_POST_VARS"]["m61_codmatunid"]:$this->m61_codmatunid);
        $this->m61_descr = ($this->m61_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["m61_descr"]:$this->m61_descr);
@@ -86,7 +86,7 @@ class cl_matunid {
      }
    }
    // funcao para Inclusão
-   function incluir ($m61_codmatunid){ 
+   public function incluir ($m61_codmatunid){ 
       $this->atualizacampos();
      if($this->m61_descr == null ){ 
        $this->erro_sql = " Campo Descrição da unidade não informado.";

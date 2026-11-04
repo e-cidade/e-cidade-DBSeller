@@ -12,12 +12,4 @@ use Exception;
 class BalanceteReceitaAnteriorService2022 extends BalanceteReceitaAnteriorService
 {
 
-    /**
-     * @return BalanceteReceitaAnteriorBuilder2022
-     * @throws Exception
-     */
-    protected function getBuilder()
-    {
-        return new BalanceteReceitaAnteriorBuilder2022();
-    }
 }

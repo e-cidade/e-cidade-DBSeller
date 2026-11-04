@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -132,7 +132,7 @@ fieldset table td:first-child {
   <tr> 
     <td valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php
         include(modification("forms/db_frmworkflow.php"));
       ?>
     </center>
@@ -141,7 +141,7 @@ fieldset table td:first-child {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($oPost->incluir)) {
   
   db_msgbox($erro_msg);

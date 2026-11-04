@@ -248,7 +248,7 @@ class cl_parreciboitbi {
       }
      return $result;
    }
-   public function sql_query ( $oid = null,$campos="parreciboitbi.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

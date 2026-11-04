@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clgruposelecao->rotulo->label("rh122_descricao");
               <?=$Lrh122_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh122_sequencial",20,$Irh122_sequencial,true,"text",4,"","chave_rh122_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clgruposelecao->rotulo->label("rh122_descricao");
               <?=$Lrh122_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh122_descricao",100,$Irh122_descricao,true,"text",4,"","chave_rh122_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clgruposelecao->rotulo->label("rh122_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_gruposelecao.php")==true){
@@ -122,12 +122,12 @@ $clgruposelecao->rotulo->label("rh122_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

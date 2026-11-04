@@ -1,92 +1,92 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE ajusteir
-class cl_ajusteir { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r61_anousu = 0; 
-   var $r61_mesusu = 0; 
-   var $r61_numcgm = 0; 
-   var $r61_rubric = null; 
-   var $r61_regist = 0; 
-   var $r61_folha = null; 
-   var $r61_base = 0; 
-   var $r61_depend = 0; 
-   var $r61_deduc = 0; 
-   var $r61_didade = 0; 
-   var $r61_dprev = 0; 
-   var $r61_descir = 0; 
-   var $r61_percir = 0; 
-   var $r61_novod = 0; 
-   var $r61_novop = 0; 
-   var $r61_altera = 'f'; 
-   var $r61_ajuste = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_ajusteir {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r61_anousu = 0;
+   var $r61_mesusu = 0;
+   var $r61_numcgm = 0;
+   var $r61_rubric = null;
+   var $r61_regist = 0;
+   var $r61_folha = null;
+   var $r61_base = 0;
+   var $r61_depend = 0;
+   var $r61_deduc = 0;
+   var $r61_didade = 0;
+   var $r61_dprev = 0;
+   var $r61_descir = 0;
+   var $r61_percir = 0;
+   var $r61_novod = 0;
+   var $r61_novop = 0;
+   var $r61_altera = 'f';
+   var $r61_ajuste = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r61_anousu = int4 = Ano do Exercicio 
-                 r61_mesusu = int4 = Mes do Exercicio 
-                 r61_numcgm = int4 = Numero CGM 
-                 r61_rubric = char(4) = Rubrica da base 
-                 r61_regist = int4 = Codigo do Funcionario 
-                 r61_folha = varchar(1) = Tipo de Folha 
-                 r61_base = float8 = valor da base 
-                 r61_depend = float8 = valor deducao dependentes ir 
-                 r61_deduc = float8 = valor de deducoes ir 
-                 r61_didade = float8 = valor deducao p/idade +65 
-                 r61_dprev = float8 = deducao total de previdencia 
-                 r61_descir = float8 = desconto original de ir 
-                 r61_percir = float8 = perc.original do desconto 
-                 r61_novod = float8 = novo valor desconto ir 
-                 r61_novop = float8 = novo percent.desconto de ir 
-                 r61_altera = boolean = informa de deve alterar descon 
-                 r61_ajuste = boolean = informa se e do mesmo numcgm 
+                 r61_anousu = int4 = Ano do Exercicio
+                 r61_mesusu = int4 = Mes do Exercicio
+                 r61_numcgm = int4 = Numero CGM
+                 r61_rubric = char(4) = Rubrica da base
+                 r61_regist = int4 = Codigo do Funcionario
+                 r61_folha = varchar(1) = Tipo de Folha
+                 r61_base = float8 = valor da base
+                 r61_depend = float8 = valor deducao dependentes ir
+                 r61_deduc = float8 = valor de deducoes ir
+                 r61_didade = float8 = valor deducao p/idade +65
+                 r61_dprev = float8 = deducao total de previdencia
+                 r61_descir = float8 = desconto original de ir
+                 r61_percir = float8 = perc.original do desconto
+                 r61_novod = float8 = novo valor desconto ir
+                 r61_novop = float8 = novo percent.desconto de ir
+                 r61_altera = boolean = informa de deve alterar descon
+                 r61_ajuste = boolean = informa se e do mesmo numcgm
                  ";
-   //funcao construtor da classe 
-   function cl_ajusteir() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("ajusteir"); 
+     $this->rotulo = new rotulo("ajusteir");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -95,7 +95,7 @@ class cl_ajusteir {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r61_anousu = ($this->r61_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r61_anousu"]:$this->r61_anousu);
        $this->r61_mesusu = ($this->r61_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r61_mesusu"]:$this->r61_mesusu);
@@ -124,9 +124,9 @@ class cl_ajusteir {
      }
    }
    // funcao para inclusao
-   function incluir ($r61_anousu,$r61_mesusu,$r61_numcgm,$r61_rubric,$r61_regist,$r61_folha){ 
+   public function incluir ($r61_anousu,$r61_mesusu,$r61_numcgm,$r61_rubric,$r61_regist,$r61_folha){
       $this->atualizacampos();
-     if($this->r61_base == null ){ 
+     if($this->r61_base == null ){
        $this->erro_sql = " Campo valor da base nao Informado.";
        $this->erro_campo = "r61_base";
        $this->erro_banco = "";
@@ -135,7 +135,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_depend == null ){ 
+     if($this->r61_depend == null ){
        $this->erro_sql = " Campo valor deducao dependentes ir nao Informado.";
        $this->erro_campo = "r61_depend";
        $this->erro_banco = "";
@@ -144,7 +144,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_deduc == null ){ 
+     if($this->r61_deduc == null ){
        $this->erro_sql = " Campo valor de deducoes ir nao Informado.";
        $this->erro_campo = "r61_deduc";
        $this->erro_banco = "";
@@ -153,7 +153,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_didade == null ){ 
+     if($this->r61_didade == null ){
        $this->erro_sql = " Campo valor deducao p/idade +65 nao Informado.";
        $this->erro_campo = "r61_didade";
        $this->erro_banco = "";
@@ -162,7 +162,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_dprev == null ){ 
+     if($this->r61_dprev == null ){
        $this->erro_sql = " Campo deducao total de previdencia nao Informado.";
        $this->erro_campo = "r61_dprev";
        $this->erro_banco = "";
@@ -171,7 +171,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_descir == null ){ 
+     if($this->r61_descir == null ){
        $this->erro_sql = " Campo desconto original de ir nao Informado.";
        $this->erro_campo = "r61_descir";
        $this->erro_banco = "";
@@ -180,7 +180,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_percir == null ){ 
+     if($this->r61_percir == null ){
        $this->erro_sql = " Campo perc.original do desconto nao Informado.";
        $this->erro_campo = "r61_percir";
        $this->erro_banco = "";
@@ -189,7 +189,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_novod == null ){ 
+     if($this->r61_novod == null ){
        $this->erro_sql = " Campo novo valor desconto ir nao Informado.";
        $this->erro_campo = "r61_novod";
        $this->erro_banco = "";
@@ -198,7 +198,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_novop == null ){ 
+     if($this->r61_novop == null ){
        $this->erro_sql = " Campo novo percent.desconto de ir nao Informado.";
        $this->erro_campo = "r61_novop";
        $this->erro_banco = "";
@@ -207,7 +207,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_altera == null ){ 
+     if($this->r61_altera == null ){
        $this->erro_sql = " Campo informa de deve alterar descon nao Informado.";
        $this->erro_campo = "r61_altera";
        $this->erro_banco = "";
@@ -216,7 +216,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r61_ajuste == null ){ 
+     if($this->r61_ajuste == null ){
        $this->erro_sql = " Campo informa se e do mesmo numcgm nao Informado.";
        $this->erro_campo = "r61_ajuste";
        $this->erro_banco = "";
@@ -225,13 +225,13 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-       $this->r61_anousu = $r61_anousu; 
-       $this->r61_mesusu = $r61_mesusu; 
-       $this->r61_numcgm = $r61_numcgm; 
-       $this->r61_rubric = $r61_rubric; 
-       $this->r61_regist = $r61_regist; 
-       $this->r61_folha = $r61_folha; 
-     if(($this->r61_anousu == null) || ($this->r61_anousu == "") ){ 
+       $this->r61_anousu = $r61_anousu;
+       $this->r61_mesusu = $r61_mesusu;
+       $this->r61_numcgm = $r61_numcgm;
+       $this->r61_rubric = $r61_rubric;
+       $this->r61_regist = $r61_regist;
+       $this->r61_folha = $r61_folha;
+     if(($this->r61_anousu == null) || ($this->r61_anousu == "") ){
        $this->erro_sql = " Campo r61_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -239,7 +239,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r61_mesusu == null) || ($this->r61_mesusu == "") ){ 
+     if(($this->r61_mesusu == null) || ($this->r61_mesusu == "") ){
        $this->erro_sql = " Campo r61_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -247,7 +247,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r61_numcgm == null) || ($this->r61_numcgm == "") ){ 
+     if(($this->r61_numcgm == null) || ($this->r61_numcgm == "") ){
        $this->erro_sql = " Campo r61_numcgm nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -255,7 +255,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r61_rubric == null) || ($this->r61_rubric == "") ){ 
+     if(($this->r61_rubric == null) || ($this->r61_rubric == "") ){
        $this->erro_sql = " Campo r61_rubric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -263,7 +263,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r61_regist == null) || ($this->r61_regist == "") ){ 
+     if(($this->r61_regist == null) || ($this->r61_regist == "") ){
        $this->erro_sql = " Campo r61_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -271,7 +271,7 @@ class cl_ajusteir {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r61_folha == null) || ($this->r61_folha == "") ){ 
+     if(($this->r61_folha == null) || ($this->r61_folha == "") ){
        $this->erro_sql = " Campo r61_folha nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -280,45 +280,45 @@ class cl_ajusteir {
        return false;
      }
      $sql = "insert into ajusteir(
-                                       r61_anousu 
-                                      ,r61_mesusu 
-                                      ,r61_numcgm 
-                                      ,r61_rubric 
-                                      ,r61_regist 
-                                      ,r61_folha 
-                                      ,r61_base 
-                                      ,r61_depend 
-                                      ,r61_deduc 
-                                      ,r61_didade 
-                                      ,r61_dprev 
-                                      ,r61_descir 
-                                      ,r61_percir 
-                                      ,r61_novod 
-                                      ,r61_novop 
-                                      ,r61_altera 
-                                      ,r61_ajuste 
+                                       r61_anousu
+                                      ,r61_mesusu
+                                      ,r61_numcgm
+                                      ,r61_rubric
+                                      ,r61_regist
+                                      ,r61_folha
+                                      ,r61_base
+                                      ,r61_depend
+                                      ,r61_deduc
+                                      ,r61_didade
+                                      ,r61_dprev
+                                      ,r61_descir
+                                      ,r61_percir
+                                      ,r61_novod
+                                      ,r61_novop
+                                      ,r61_altera
+                                      ,r61_ajuste
                        )
                 values (
-                                $this->r61_anousu 
-                               ,$this->r61_mesusu 
-                               ,$this->r61_numcgm 
-                               ,'$this->r61_rubric' 
-                               ,$this->r61_regist 
-                               ,'$this->r61_folha' 
-                               ,$this->r61_base 
-                               ,$this->r61_depend 
-                               ,$this->r61_deduc 
-                               ,$this->r61_didade 
-                               ,$this->r61_dprev 
-                               ,$this->r61_descir 
-                               ,$this->r61_percir 
-                               ,$this->r61_novod 
-                               ,$this->r61_novop 
-                               ,'$this->r61_altera' 
-                               ,'$this->r61_ajuste' 
+                                $this->r61_anousu
+                               ,$this->r61_mesusu
+                               ,$this->r61_numcgm
+                               ,'$this->r61_rubric'
+                               ,$this->r61_regist
+                               ,'$this->r61_folha'
+                               ,$this->r61_base
+                               ,$this->r61_depend
+                               ,$this->r61_deduc
+                               ,$this->r61_didade
+                               ,$this->r61_dprev
+                               ,$this->r61_descir
+                               ,$this->r61_percir
+                               ,$this->r61_novod
+                               ,$this->r61_novop
+                               ,'$this->r61_altera'
+                               ,'$this->r61_ajuste'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "contem as bases de ir de funcionarios com mais de  ($this->r61_anousu."-".$this->r61_mesusu."-".$this->r61_numcgm."-".$this->r61_rubric."-".$this->r61_regist."-".$this->r61_folha) nao Incluído. Inclusao Abortada.";
@@ -371,16 +371,16 @@ class cl_ajusteir {
        $resac = db_query("insert into db_acount values($acount,526,3657,'','".AddSlashes(pg_result($resaco,0,'r61_ajuste'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null) { 
+   public function alterar ($r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null) {
       $this->atualizacampos();
      $sql = " update ajusteir set ";
      $virgula = "";
-     if(trim($this->r61_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_anousu"])){ 
+     if(trim($this->r61_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_anousu"])){
        $sql  .= $virgula." r61_anousu = $this->r61_anousu ";
        $virgula = ",";
-       if(trim($this->r61_anousu) == null ){ 
+       if(trim($this->r61_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "r61_anousu";
          $this->erro_banco = "";
@@ -390,10 +390,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_mesusu"])){ 
+     if(trim($this->r61_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_mesusu"])){
        $sql  .= $virgula." r61_mesusu = $this->r61_mesusu ";
        $virgula = ",";
-       if(trim($this->r61_mesusu) == null ){ 
+       if(trim($this->r61_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r61_mesusu";
          $this->erro_banco = "";
@@ -403,10 +403,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_numcgm"])){ 
+     if(trim($this->r61_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_numcgm"])){
        $sql  .= $virgula." r61_numcgm = $this->r61_numcgm ";
        $virgula = ",";
-       if(trim($this->r61_numcgm) == null ){ 
+       if(trim($this->r61_numcgm) == null ){
          $this->erro_sql = " Campo Numero CGM nao Informado.";
          $this->erro_campo = "r61_numcgm";
          $this->erro_banco = "";
@@ -416,10 +416,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_rubric"])){ 
+     if(trim($this->r61_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_rubric"])){
        $sql  .= $virgula." r61_rubric = '$this->r61_rubric' ";
        $virgula = ",";
-       if(trim($this->r61_rubric) == null ){ 
+       if(trim($this->r61_rubric) == null ){
          $this->erro_sql = " Campo Rubrica da base nao Informado.";
          $this->erro_campo = "r61_rubric";
          $this->erro_banco = "";
@@ -429,10 +429,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_regist"])){ 
+     if(trim($this->r61_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_regist"])){
        $sql  .= $virgula." r61_regist = $this->r61_regist ";
        $virgula = ",";
-       if(trim($this->r61_regist) == null ){ 
+       if(trim($this->r61_regist) == null ){
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "r61_regist";
          $this->erro_banco = "";
@@ -442,10 +442,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_folha"])){ 
+     if(trim($this->r61_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_folha"])){
        $sql  .= $virgula." r61_folha = '$this->r61_folha' ";
        $virgula = ",";
-       if(trim($this->r61_folha) == null ){ 
+       if(trim($this->r61_folha) == null ){
          $this->erro_sql = " Campo Tipo de Folha nao Informado.";
          $this->erro_campo = "r61_folha";
          $this->erro_banco = "";
@@ -455,10 +455,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_base"])){ 
+     if(trim($this->r61_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_base"])){
        $sql  .= $virgula." r61_base = $this->r61_base ";
        $virgula = ",";
-       if(trim($this->r61_base) == null ){ 
+       if(trim($this->r61_base) == null ){
          $this->erro_sql = " Campo valor da base nao Informado.";
          $this->erro_campo = "r61_base";
          $this->erro_banco = "";
@@ -468,10 +468,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_depend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_depend"])){ 
+     if(trim($this->r61_depend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_depend"])){
        $sql  .= $virgula." r61_depend = $this->r61_depend ";
        $virgula = ",";
-       if(trim($this->r61_depend) == null ){ 
+       if(trim($this->r61_depend) == null ){
          $this->erro_sql = " Campo valor deducao dependentes ir nao Informado.";
          $this->erro_campo = "r61_depend";
          $this->erro_banco = "";
@@ -481,10 +481,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_deduc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_deduc"])){ 
+     if(trim($this->r61_deduc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_deduc"])){
        $sql  .= $virgula." r61_deduc = $this->r61_deduc ";
        $virgula = ",";
-       if(trim($this->r61_deduc) == null ){ 
+       if(trim($this->r61_deduc) == null ){
          $this->erro_sql = " Campo valor de deducoes ir nao Informado.";
          $this->erro_campo = "r61_deduc";
          $this->erro_banco = "";
@@ -494,10 +494,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_didade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_didade"])){ 
+     if(trim($this->r61_didade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_didade"])){
        $sql  .= $virgula." r61_didade = $this->r61_didade ";
        $virgula = ",";
-       if(trim($this->r61_didade) == null ){ 
+       if(trim($this->r61_didade) == null ){
          $this->erro_sql = " Campo valor deducao p/idade +65 nao Informado.";
          $this->erro_campo = "r61_didade";
          $this->erro_banco = "";
@@ -507,10 +507,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_dprev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_dprev"])){ 
+     if(trim($this->r61_dprev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_dprev"])){
        $sql  .= $virgula." r61_dprev = $this->r61_dprev ";
        $virgula = ",";
-       if(trim($this->r61_dprev) == null ){ 
+       if(trim($this->r61_dprev) == null ){
          $this->erro_sql = " Campo deducao total de previdencia nao Informado.";
          $this->erro_campo = "r61_dprev";
          $this->erro_banco = "";
@@ -520,10 +520,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_descir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_descir"])){ 
+     if(trim($this->r61_descir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_descir"])){
        $sql  .= $virgula." r61_descir = $this->r61_descir ";
        $virgula = ",";
-       if(trim($this->r61_descir) == null ){ 
+       if(trim($this->r61_descir) == null ){
          $this->erro_sql = " Campo desconto original de ir nao Informado.";
          $this->erro_campo = "r61_descir";
          $this->erro_banco = "";
@@ -533,10 +533,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_percir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_percir"])){ 
+     if(trim($this->r61_percir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_percir"])){
        $sql  .= $virgula." r61_percir = $this->r61_percir ";
        $virgula = ",";
-       if(trim($this->r61_percir) == null ){ 
+       if(trim($this->r61_percir) == null ){
          $this->erro_sql = " Campo perc.original do desconto nao Informado.";
          $this->erro_campo = "r61_percir";
          $this->erro_banco = "";
@@ -546,10 +546,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_novod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_novod"])){ 
+     if(trim($this->r61_novod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_novod"])){
        $sql  .= $virgula." r61_novod = $this->r61_novod ";
        $virgula = ",";
-       if(trim($this->r61_novod) == null ){ 
+       if(trim($this->r61_novod) == null ){
          $this->erro_sql = " Campo novo valor desconto ir nao Informado.";
          $this->erro_campo = "r61_novod";
          $this->erro_banco = "";
@@ -559,10 +559,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_novop)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_novop"])){ 
+     if(trim($this->r61_novop)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_novop"])){
        $sql  .= $virgula." r61_novop = $this->r61_novop ";
        $virgula = ",";
-       if(trim($this->r61_novop) == null ){ 
+       if(trim($this->r61_novop) == null ){
          $this->erro_sql = " Campo novo percent.desconto de ir nao Informado.";
          $this->erro_campo = "r61_novop";
          $this->erro_banco = "";
@@ -572,10 +572,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_altera)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_altera"])){ 
+     if(trim($this->r61_altera)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_altera"])){
        $sql  .= $virgula." r61_altera = '$this->r61_altera' ";
        $virgula = ",";
-       if(trim($this->r61_altera) == null ){ 
+       if(trim($this->r61_altera) == null ){
          $this->erro_sql = " Campo informa de deve alterar descon nao Informado.";
          $this->erro_campo = "r61_altera";
          $this->erro_banco = "";
@@ -585,10 +585,10 @@ class cl_ajusteir {
          return false;
        }
      }
-     if(trim($this->r61_ajuste)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_ajuste"])){ 
+     if(trim($this->r61_ajuste)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r61_ajuste"])){
        $sql  .= $virgula." r61_ajuste = '$this->r61_ajuste' ";
        $virgula = ",";
-       if(trim($this->r61_ajuste) == null ){ 
+       if(trim($this->r61_ajuste) == null ){
          $this->erro_sql = " Campo informa se e do mesmo numcgm nao Informado.";
          $this->erro_campo = "r61_ajuste";
          $this->erro_banco = "";
@@ -666,7 +666,7 @@ class cl_ajusteir {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "contem as bases de ir de funcionarios com mais de  nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r61_anousu."-".$this->r61_mesusu."-".$this->r61_numcgm."-".$this->r61_rubric."-".$this->r61_regist."-".$this->r61_folha;
@@ -694,14 +694,14 @@ class cl_ajusteir {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r61_anousu,$r61_mesusu,$r61_numcgm,$r61_rubric,$r61_regist,$r61_folha));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -778,7 +778,7 @@ class cl_ajusteir {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "contem as bases de ir de funcionarios com mais de  nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r61_anousu."-".$r61_mesusu."-".$r61_numcgm."-".$r61_rubric."-".$r61_regist."-".$r61_folha;
@@ -806,11 +806,11 @@ class cl_ajusteir {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -832,11 +832,11 @@ class cl_ajusteir {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -858,55 +858,55 @@ class cl_ajusteir {
      $sql2 = "";
      if($dbwhere==""){
        if($r61_anousu!=null ){
-         $sql2 .= " where ajusteir.r61_anousu = $r61_anousu "; 
-       } 
+         $sql2 .= " where ajusteir.r61_anousu = $r61_anousu ";
+       }
        if($r61_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_mesusu = $r61_mesusu "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_mesusu = $r61_mesusu ";
+       }
        if($r61_numcgm!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_numcgm = $r61_numcgm "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_numcgm = $r61_numcgm ";
+       }
        if($r61_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_rubric = '$r61_rubric' "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_rubric = '$r61_rubric' ";
+       }
        if($r61_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_regist = $r61_regist "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_regist = $r61_regist ";
+       }
        if($r61_folha!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_folha = '$r61_folha' "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_folha = '$r61_folha' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -915,11 +915,11 @@ class cl_ajusteir {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $r61_anousu=null,$r61_mesusu=null,$r61_numcgm=null,$r61_rubric=null,$r61_regist=null,$r61_folha=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -932,55 +932,55 @@ class cl_ajusteir {
      $sql2 = "";
      if($dbwhere==""){
        if($r61_anousu!=null ){
-         $sql2 .= " where ajusteir.r61_anousu = $r61_anousu "; 
-       } 
+         $sql2 .= " where ajusteir.r61_anousu = $r61_anousu ";
+       }
        if($r61_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_mesusu = $r61_mesusu "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_mesusu = $r61_mesusu ";
+       }
        if($r61_numcgm!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_numcgm = $r61_numcgm "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_numcgm = $r61_numcgm ";
+       }
        if($r61_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_rubric = '$r61_rubric' "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_rubric = '$r61_rubric' ";
+       }
        if($r61_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_regist = $r61_regist "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_regist = $r61_regist ";
+       }
        if($r61_folha!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " ajusteir.r61_folha = '$r61_folha' "; 
-       } 
+         }
+         $sql2 .= " ajusteir.r61_folha = '$r61_folha' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

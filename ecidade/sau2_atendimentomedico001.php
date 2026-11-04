@@ -60,9 +60,9 @@ $ano2 = null;
           <tr>
             <td class="bold field-size1">Período:</td>
             <td>
-              <?db_inputdata('dt_inicial', $dia1, $mes1, $ano1, true, 'text', 1, "")?>
+              <?php db_inputdata('dt_inicial', $dia1, $mes1, $ano1, true, 'text', 1, "")?>
               <span class="bold"> até </span>
-              <?db_inputdata('dt_final', $dia2, $mes2, $ano2, true, 'text', 1, "")?>
+              <?php db_inputdata('dt_final', $dia2, $mes2, $ano2, true, 'text', 1, "")?>
             </td>
           </tr>
           <tr>

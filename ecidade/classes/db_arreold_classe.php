@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -76,13 +76,13 @@ class cl_arreold {
                  k00_tipojm = int4 = tipo de juro e multa
                  ";
     //funcao construtor da classe
-    function cl_arreold() {
+    public function __construct() {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("arreold");
         $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
     //funcao erro
-    function erro($mostra,$retorna) {
+    public function erro($mostra,$retorna) {
         if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
             echo "<script>alert(\"".$this->erro_msg."\");</script>";
             if($retorna==true){
@@ -91,7 +91,7 @@ class cl_arreold {
         }
     }
     // funcao para atualizar campos
-    function atualizacampos($exclusao=false) {
+    public function atualizacampos($exclusao=false) {
         if($exclusao==false){
             $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
             $this->k00_numpar = ($this->k00_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpar"]:$this->k00_numpar);
@@ -123,7 +123,7 @@ class cl_arreold {
         }
     }
     // funcao para inclusao
-    function incluir (){
+    public function incluir (){
         $this->atualizacampos();
         if($this->k00_numpre == null ){
             $this->erro_sql = " Campo Numpre nao Informado.";
@@ -281,7 +281,7 @@ class cl_arreold {
         return true;
     }
     // funcao para alteracao
-    function alterar ( $oid=null ) {
+    public function alterar ( $oid=null ) {
         $this->atualizacampos();
         $sql = " update arreold set ";
         $virgula = "";
@@ -494,7 +494,7 @@ class cl_arreold {
         }
     }
     // funcao para exclusao
-    function excluir ( $oid=null ,$dbwhere=null) {
+    public function excluir ( $oid=null ,$dbwhere=null) {
         $sql = " delete from arreold
                     where ";
         $sql2 = "";
@@ -533,7 +533,7 @@ class cl_arreold {
         }
     }
     // funcao do recordset
-    function sql_record($sql) {
+    public function sql_record($sql) {
         $result = db_query($sql);
         if($result==false){
             $this->numrows    = 0;
@@ -556,10 +556,10 @@ class cl_arreold {
         return $result;
     }
     // funcao do sql
-    function sql_query ( $oid = null,$campos="arreold.oid,*",$ordem=null,$dbwhere=""){
+    public function sql_query ( $oid = null,$campos="arreold.oid,*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -587,7 +587,7 @@ class cl_arreold {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -597,10 +597,10 @@ class cl_arreold {
         return $sql;
     }
     // funcao do sql
-    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -618,7 +618,7 @@ class cl_arreold {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -627,7 +627,7 @@ class cl_arreold {
         }
         return $sql;
     }
-    function excluir_where ( $where=null ) {
+    public function excluir_where ( $where=null ) {
 
         $sql2 = "";
         $this->atualizacampos(true);
@@ -689,7 +689,7 @@ class cl_arreold {
         return $sql;
     }
 
-    function alterar_tipo ( $tipo, $where ) {
+    public function alterar_tipo ( $tipo, $where ) {
         $sql  = " update arreold set k00_tipo = $tipo ";
         $sql .= " where $where ";
 

@@ -43,7 +43,7 @@ $oRotulo->label('ed57_c_descr');
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, strings.js, datagrid.widget.js, prototype.js, arrays.js, dbtextFieldData.widget.js");
       db_app::load("dbcomboBox.widget.js, windowAux.widget.js, dbmessageBoard.widget.js,dbtextField.widget.js");
       db_app::load("estilos.css, grid.style.css");
@@ -76,7 +76,7 @@ $oRotulo->label('ed57_c_descr');
                       <b>Situação</b>
                     </td>
                     <td>
-                      <?
+                      <?php
                         $aSituacao = array("0" => "Todas", "1" => "Vermelho", "2" => "Amarelo");
                         db_select('situacao', $aSituacao, true, 1);
                       ?>

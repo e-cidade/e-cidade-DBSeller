@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_procedsituacao->rotulo->label("at32_descr");
               <?=$Lat32_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at32_codigo",10,$Iat32_codigo,true,"text",4,"","chave_at32_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_procedsituacao->rotulo->label("at32_descr");
               <?=$Lat32_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at32_descr",40,$Iat32_descr,true,"text",4,"","chave_at32_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_procedsituacao->rotulo->label("at32_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_procedsituacao.php")==true){
@@ -122,12 +122,12 @@ $cldb_procedsituacao->rotulo->label("at32_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

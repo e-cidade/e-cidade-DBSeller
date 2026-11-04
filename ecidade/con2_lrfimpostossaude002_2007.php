@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -589,7 +589,7 @@ $n2 = 10;
  // end se incluido em outro arquivo
 if (!isset($arqinclude)){  
 
- $xinstit = split("-", $db_selinstit);
+ $xinstit = explode("-", $db_selinstit);
  $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
  $descr_inst = '';
  $xvirg = '';
@@ -775,7 +775,7 @@ if (!isset($arqinclude)){
  $pdf->cell(20, $alt, db_formatar($desp_p[1]['previni'], 'f'), "L", 0, "R", 0);
  $pdf->cell(20, $alt, db_formatar($desp_p[1]['prevatu'], 'f'), "L", 0, "R", 0);
  $pdf->cell(20, $alt, db_formatar($desp_p[1]['bimestre'], 'f'), "L", 0, "R", 0);
- @ $pdf->cell(20, $alt, db_formatar($$desp_p[1]['bimestre'] * 100 / $total_IV_atebim, 'f'), 'L', 1, "R", 0);
+ @ $pdf->cell(20, $alt, db_formatar(${$desp_p[1]['bimestre']} * 100 / $total_IV_atebim, 'f'), 'L', 1, "R", 0);
  
  // caso a linha abaixo seja zerada,  o manual diz que os valores devem ser pegos do quadro da receita
  // RRO , 4 Ed, pg 278
@@ -973,7 +973,7 @@ if (!isset($arqinclude)){
  $pdf->cell(20, $alt, db_formatar($desp_p[1]['previni'], 'f'), "L", 0, "R", 0);
  $pdf->cell(20, $alt, db_formatar($desp_p[1]['prevatu'], 'f'), "L", 0, "R", 0);
  $pdf->cell(20, $alt, db_formatar($desp_p[1]['bimestre'], 'f'), "L", 0, "R", 0);
- @ $pdf->cell(20, $alt, db_formatar($$desp_p[1]['bimestre'] * 100 / $total_IV_atebim, 'f'), 'L', 1, "R", 0);
+ @ $pdf->cell(20, $alt, db_formatar(${$desp_p[1]['bimestre']} * 100 / $total_IV_atebim, 'f'), 'L', 1, "R", 0);
  
  // caso a linha abaixo seja zerada,  o manual diz que os valores devem ser pegos do quadro da receita
  // RRO , 4 Ed, pg 278
@@ -1039,7 +1039,7 @@ if (!isset($arqinclude)){
  //assinaturas
  $pdf->Ln(15);
  
- assinaturas(&$pdf,&$classinatura,'LRF');
+ assinaturas($pdf,$classinatura,'LRF');
 
  $pdf->Output();
 

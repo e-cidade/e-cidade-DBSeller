@@ -55,7 +55,7 @@ class AgendaSaidaService
                 unset($viagens);
             }
         }
-        
+
         usort($dados, function ($a, $b) {
             return strcmp($a->nome, $b->nome);
         });

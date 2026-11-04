@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ve08_descr");
        <?=@$Lve10_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve10_sequencial',10,$Ive10_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve10_veiccaditensobrigtipobaixa?>">
-       <?
+       <?php
        db_ancora(@$Lve10_veiccaditensobrigtipobaixa,"js_pesquisave10_veiccaditensobrigtipobaixa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve10_veiccaditensobrigtipobaixa',10,$Ive10_veiccaditensobrigtipobaixa,true,'text',$db_opcao," onchange='js_pesquisave10_veiccaditensobrigtipobaixa(false);'")
 ?>
-       <?
+       <?php
 db_input('ve11_descr',40,$Ive11_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve10_veicitensobrig?>">
-       <?
+       <?php
        db_ancora(@$Lve10_veicitensobrig,"js_pesquisave10_veicitensobrig(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve10_veicitensobrig',10,$Ive10_veicitensobrig,true,'text',$db_opcao," onchange='js_pesquisave10_veicitensobrig(false);'")
 ?>
-       <?
+       <?php
 db_input('ve08_descr',40,0,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ve08_descr',40,0,true,'text',3,'')
        <?=@$Lve10_data?>
     </td>
     <td> 
-<?
+<?php
 if ($db_opcao == 1 || $db_opcao == 11){
   $ve10_data_dia = date("d",db_getsession("DB_datausu"));
   $ve10_data_mes = date("m",db_getsession("DB_datausu"));
@@ -95,7 +95,7 @@ db_inputdata('ve10_data',@$ve10_data_dia,@$ve10_data_mes,@$ve10_data_ano,true,'t
        <?=@$Lve10_hora?>
     </td>
     <td> 
-<?
+<?php
 if ($db_opcao == 1 || $db_opcao == 11){
   $ve10_hora = db_hora();
 }
@@ -108,7 +108,7 @@ db_input('ve10_hora',5,$Ive10_hora,true,'text',$db_opcao,"")
        <?=@$Lve10_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ve10_motivo',10,80,$Ive10_motivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -170,7 +170,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veicitensobrigbaixa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -76,7 +76,7 @@ function js_procurar(texto) {
 	<th>Código</th>
 	<th>Descrição</th>
 	</tr>
-	<?
+	<?php
 	if(isset($descricao))			 
 	  $sql = "select codexa,descr from exames where upper(descr) like upper('$descricao%') and codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)";
 	else

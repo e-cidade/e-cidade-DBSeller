@@ -1,0 +1,22 @@
+[
+  {
+    "value": "00",
+    "label": "00 - Não é base de cálculo do PIS/PASEP"
+  },
+  {
+    "value": "11",
+    "label": "11 - Base de cálculo do PIS/PASEP mensal"
+  },
+  {
+    "value": "12",
+    "label": "12 - Base de cálculo do PIS/PASEP 13° salário"
+  },
+  {
+    "value": "91",
+    "label": "91 - Incidência suspensa em decorrência de decisão judicial - PIS/PASEP mensal"
+  },
+  {
+   "value": "92",
+   "label": "92 - Incidência suspensa em decorrência de decisão judicial - PIS/PASEP 13º salário"
+ }
+]

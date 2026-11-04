@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,11 +36,11 @@ $clorientacao->rotulo->label();
         <td nowrap title="<?=@$Tj64_sequencial?>">
            <?=@$Lj64_sequencial?>
         </td>
-        <td><? db_input('j64_sequencial',5,$Ij64_sequencial,true,'text',3,"") ?></td>
+        <td><?php db_input('j64_sequencial',5,$Ij64_sequencial,true,'text',3,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj64_descricao?>"><?=@$Lj64_descricao?></td>
-        <td><? db_input('j64_descricao',40,$Ij64_descricao,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('j64_descricao',40,$Ij64_descricao,true,'text',$db_opcao,"") ?></td>
       </tr>
     </table>
   </fieldset>
@@ -54,7 +54,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orientacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

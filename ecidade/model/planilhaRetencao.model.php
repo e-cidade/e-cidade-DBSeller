@@ -275,7 +275,7 @@ class planilhaRetencao {
     /**
      * Incluimos o débito no arrecad
      */
-    $oDaoArrecad  = db_utils::getDao("arrecad");
+    $oDaoArrecad  = new cl_arrecad;
     $oDaoArrecad->k00_dtoper = $this->getDatausu();
     $oDaoArrecad->k00_dtvenc = $this->getDatausu();
     $oDaoArrecad->k00_hist   = $oConfPlanilhas->w10_hist;

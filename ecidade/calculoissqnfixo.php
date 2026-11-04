@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,13 +81,10 @@ for ($x = 0;$x < pg_numrows($result1);$x++) {
 
   echo "processando inscricao $q07_inscr - $x/" . pg_numrows($result1) . " - $q81_cadcalc\n";
 
-//  if ($q07_inscr != 1675) continue;
-
   db_query("begin");
 
 //  $sql2 = "create table ativs as select distinct q07_inscr, q07_perman, q07_seq, '*'::char(1) as q07_calcula, q07_ativ, q03_descr, q07_datain, q07_datafi, q07_databx, q07_quant, q11_tipcalc from tabativ left outer join tabativtipcalc on q11_inscr = q07_inscr and q11_seq = q07_seq inner join ativtipo on q07_ativ = q80_ativ inner join tipcalc on q80_tipcal = q81_codigo inner join ativid on q07_ativ = q03_ativ inner join cadcalc on q81_cadcalc = q85_codigo where q07_inscr =  $q07_inscr";
   $sql2 = "create temporary table ativs as select distinct q07_inscr, q07_perman, q07_seq, '*'::char(1) as q07_calcula, q07_ativ, q03_descr, q07_datain, q07_datafi, q07_databx, q07_quant, q11_tipcalc from tabativ left outer join tabativtipcalc on q11_inscr = q07_inscr and q11_seq = q07_seq inner join ativtipo on q07_ativ = q80_ativ inner join tipcalc on q80_tipcal = q81_codigo inner join ativid on q07_ativ = q03_ativ inner join cadcalc on q81_cadcalc = q85_codigo where q07_inscr = $q07_inscr and q07_datain <= current_date and (q07_datafi is null or q07_datafi >= current_date) and (q07_databx is null or q07_databx >= current_date)";
-//  echo "<br>" . $sql2 . "<br>";exit;
   $result2 = db_query($sql2);
   if ($result2 == false) {
     echo $sql2 . "\n";
@@ -98,7 +95,8 @@ for ($x = 0;$x < pg_numrows($result1);$x++) {
   $ano=date('Y');
   $instit=1;
 
-  $sql3 = "select fc_issqn($q07_inscr,'".$data."',".$ano.",null,'true','true',".$instit.") as retorno";
+  $idUsuario = db_getsession("DB_id_usuario");
+  $sql3 = "select fc_issqn($idUsuario,$q07_inscr,'".$data."',".$ano.",null,'true','true',".$instit.") as retorno";
 //  echo "<br>" . $sql3 . "<br>";exit;
   $result3=db_query($sql3);  
   if ($result3 == false) {
@@ -119,60 +117,57 @@ for ($x = 0;$x < pg_numrows($result1);$x++) {
     break;
   }
 
-//  if ($x == 3) break;
-
 }
 
 function db_fieldsmemory($recordset,$indice,$formatar="",$mostravar=false){
   $fm_numfields = pg_numfields($recordset);
   for ($i = 0;$i < $fm_numfields;$i++){
     $matriz[$i] = pg_fieldname($recordset,$i);
-    global $$matriz[$i];
     $aux = trim(pg_result($recordset,$indice,$matriz[$i]));
     if(!empty($formatar)) {
       switch(pg_fieldtype($recordset,$i)) {
 	case "float8":
 	case "float4":
 	case "float":
-      $$matriz[$i] = number_format($aux,2,".","");
-      if($mostravar==true) echo $matriz[$i]."->".$$matriz[$i]."<br>";
+      ${$matriz[$i]} = number_format($aux,2,".","");
+      if($mostravar==true) echo $matriz[$i]."->".${$matriz[$i]}."<br>";
 	break;
 	case "date":
 	if($aux!=""){
-	  $data = split("-",$aux);
-	  $$matriz[$i] = $data[2]."/".$data[1]."/".$data[0];
+	  $data = explode("-",$aux);
+	  ${$matriz[$i]} = $data[2]."/".$data[1]."/".$data[0];
 	}else{
-	  $$matriz[$i] = "";
+	  ${$matriz[$i]} = "";
 	}
-      if($mostravar==true) echo $matriz[$i]."->".$$matriz[$i]."<br>";
+      if($mostravar==true) echo $matriz[$i]."->".${$matriz[$i]}."<br>";
 	      break;
 	    default:
-      $$matriz[$i] = $aux;		  		
-      if($mostravar==true) echo $matriz[$i]."->".$$matriz[$i]."<br>";
+      ${$matriz[$i]} = $aux;		  		
+      if($mostravar==true) echo $matriz[$i]."->".${$matriz[$i]}."<br>";
 	      break;
       }
     } else
       switch(pg_fieldtype($recordset,$i)) {
 	    case "date":
-	      $datav = split("-",$aux);
+	      $datav = explode("-",$aux);
       $split_data = $matriz[$i]."_dia";
-      global $$split_data;
+      global ${$split_data};
       $$split_data =  @$datav[2];	
       if($mostravar==true) echo $split_data."->".$$split_data."<br";
       $split_data = $matriz[$i]."_mes";
-      global $$split_data;
+      global ${$split_data};
       $$split_data =  @$datav[1];	
       if($mostravar==true) echo $split_data."->".$$split_data."<br>";
       $split_data = $matriz[$i]."_ano";
-      global $$split_data;
+      global ${$split_data};
       $$split_data =  @$datav[0];	 
       if($mostravar==true) echo $split_data."->".$$split_data."<br>";
-      $$matriz[$i] = $aux;		  		
-      if($mostravar==true) echo $matriz[$i]."->".$$matriz[$i]."<br>";
+      ${$matriz[$i]} = $aux;		  		
+      if($mostravar==true) echo $matriz[$i]."->".${$matriz[$i]}."<br>";
 	      break;
 	    default:
-      $$matriz[$i] = $aux;		  		
-      if($mostravar==true) echo $matriz[$i]."->".$$matriz[$i]."<br>";
+      ${$matriz[$i]} = $aux;		  		
+      if($mostravar==true) echo $matriz[$i]."->".${$matriz[$i]}."<br>";
 	      break;
       }
 

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -54,7 +54,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd48_i_codigo?>
   </td>
   <td>
-   <?db_input('sd48_i_codigo',10,$Isd48_i_codigo,true,'text',3,"")?>
+   <?php db_input('sd48_i_codigo',10,$Isd48_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -62,26 +62,26 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd48_i_unidade?>
   </td>
   <td>
-   <?db_input('sd48_i_unidade',10,$Isd48_i_unidade,true,'text',3,"")?>
-   <?db_input('descrdepto',40,@$Idescrdepto,true,'text',3,"")?>
+   <?php db_input('sd48_i_unidade',10,$Isd48_i_unidade,true,'text',3,"")?>
+   <?php db_input('descrdepto',40,@$Idescrdepto,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tsd48_i_atendprestado?>">
-   <?db_ancora(@$Lsd48_i_atendprestado,"js_pesquisasd48_i_atendprestado(true);",$db_opcao);?>
+   <?php db_ancora(@$Lsd48_i_atendprestado,"js_pesquisasd48_i_atendprestado(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('sd48_i_atendprestado',10,$Isd48_i_atendprestado,true,'text',$db_opcao,"onchange='js_pesquisasd48_i_atendprestado(false);'")?>
-   <?db_input('sd46_v_descricao',60,@$Isd46_v_descricao,true,'text',3,'')?>
+   <?php db_input('sd48_i_atendprestado',10,$Isd48_i_atendprestado,true,'text',$db_opcao,"onchange='js_pesquisasd48_i_atendprestado(false);'")?>
+   <?php db_input('sd46_v_descricao',60,@$Isd46_v_descricao,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tsd48_i_convenio?>">
-   <?db_ancora(@$Lsd48_i_convenio,"js_pesquisasd48_i_convenio(true);",$db_opcao);?>
+   <?php db_ancora(@$Lsd48_i_convenio,"js_pesquisasd48_i_convenio(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('sd48_i_convenio',10,$Isd48_i_convenio,true,'text',$db_opcao," onchange='js_pesquisasd48_i_convenio(false);'")?>
-   <?db_input('sd49_v_descricao',60,@$Isd49_v_descricao,true,'text',3,'')?>
+   <?php db_input('sd48_i_convenio',10,$Isd48_i_convenio,true,'text',$db_opcao," onchange='js_pesquisasd48_i_convenio(false);'")?>
+   <?php db_input('sd49_v_descricao',60,@$Isd49_v_descricao,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -91,7 +91,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $escola = db_getsession("DB_coddepto");
    $chavepri= array("sd48_i_codigo"=>@$sd48_i_codigo,"sd48_i_unidade"=>@$sd48_i_unidade,"descrdepto"=>@$descrdepto,"sd48_i_atendprestado"=>@$sd48_i_atendprestado,"sd46_v_descricao"=>@$sd46_v_descricao,"sd48_i_convenio"=>@$sd48_i_convenio,"sd49_v_descricao"=>@$sd49_v_descricao);
    $cliframe_alterar_excluir->chavepri=$chavepri;

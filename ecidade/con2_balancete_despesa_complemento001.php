@@ -84,6 +84,16 @@ require_once modification("dbforms/db_funcoes.php");
                     </td>
                 </tr>
 
+                <tr id="linhaFiltroRecursos" >
+                    <td>Apresentar :</td>
+                    <td>
+                        <select id="apresentarRecurso" name="apresentarRecurso">
+                            <option selected value="fonteRecurso">Fonte Recurso</option>
+                            <option value="depara">Depara Subrecurso</option>
+                            <option value="siconfi">Código Siconfi</option>
+                        </select>
+                    </td>
+                </tr>
             </table>
             <fieldset class="separator">
                 <legend>Saldo por datas</legend>
@@ -149,7 +159,6 @@ require_once modification("dbforms/db_funcoes.php");
         ctnAbaFiltros.style.display = '';
 
         modelo.addEventListener('change', () => {
-            console.log(modelo.value)
             linhaNivel.style.display = modelo.value === 'sintetico' ? 'table-row' : 'none';
         });
     });
@@ -169,6 +178,7 @@ require_once modification("dbforms/db_funcoes.php");
             }
         }
 
+        formData.append('apresentarRecurso', document.getElementById('apresentarRecurso').value);
         formData.append('instituicoes', JSON.stringify(viewInstituicao.getInstituicoesSelecionadas()));
         formData.append('filtros', JSON.stringify(getFiltros()));
         PHPSession.appendFormData(formData);

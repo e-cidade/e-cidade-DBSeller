@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_levandam {
                  y67_codandam = int8 = Codigo do Andamento Gerado 
                  ";
    //funcao construtor da classe 
-   function cl_levandam() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levandam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_levandam {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y67_codlev = ($this->y67_codlev == ""?@$GLOBALS["HTTP_POST_VARS"]["y67_codlev"]:$this->y67_codlev);
        $this->y67_codandam = ($this->y67_codandam == ""?@$GLOBALS["HTTP_POST_VARS"]["y67_codandam"]:$this->y67_codandam);
@@ -75,7 +75,7 @@ class cl_levandam {
      }
    }
    // funcao para inclusao
-   function incluir ($y67_codlev,$y67_codandam){ 
+   public function incluir ($y67_codlev,$y67_codandam){ 
       $this->atualizacampos();
        $this->y67_codlev = $y67_codlev; 
        $this->y67_codandam = $y67_codandam; 
@@ -140,7 +140,7 @@ class cl_levandam {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y67_codlev=null,$y67_codandam=null) { 
+   public function alterar ($y67_codlev=null,$y67_codandam=null) { 
       $this->atualizacampos();
      $sql = " update levandam set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_levandam {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y67_codlev=null,$y67_codandam=null,$dbwhere=null) { 
+   public function excluir ($y67_codlev=null,$y67_codandam=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y67_codlev,$y67_codandam));
      }else{ 
@@ -293,7 +293,7 @@ class cl_levandam {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

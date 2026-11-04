@@ -26,18 +26,31 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use stdClass;
+
 class ReintegracaoFormatter extends Formatter
 {
+
+     /**
+     * @var Servidor
+     */
+    private $servidorAtual;
+
     /**
      * Realiza a formatação dos dados para envio da API
      *
      * @param array $dados
      * @return array
      */
-    public function formatar($dados)
+    public function formatar($servidores)
     {
-        $dadosFormatado = parent::formatar($dados);
-        return $this->posProcessamento($dadosFormatado);
+        $dadosServidores = [];
+
+        foreach ($servidores as $servidor) {
+            $dadosServidores[] = $this->processamento($servidor);
+        }
+
+        return $dadosServidores;
     }
 
     /**
@@ -46,21 +59,41 @@ class ReintegracaoFormatter extends Formatter
      * @param array $dadosFormatado
      * @return array
      */
-    private function posProcessamento($dadosFormatado)
+    private function processamento($servidor)
     {
-        foreach ($dadosFormatado as $dado) {
-            if ( !empty($dado->infoReintegr->nrProcJud) && $dado->infoReintegr->tpReint <> 1) {
-                unset($dado->infoReintegr->nrProcJud);
-            }
+        $dadoServidor = new stdClass();
 
-            if (!empty($dado->infoReintegr->nrProcJud) && $dado->infoReintegr->tpReint === 1) {
-                unset($dado->infoReintegr->nrLeiAnistia);
-                unset($dado->infoReintegr->dtEfetRetorno);
-                unset($dado->infoReintegr->dtEfeito);
-                unset($dado->infoReintegr->indPagtoJuizo);
-            }
+        $this->servidorAtual = $servidor;
+        $dadoServidor->referencia = $this->servidorAtual->getMatricula();
+        $dadoServidor->inscricao_empregador = $this->getEmpregador()->getCnpj();
+        $dadoServidor->ideVinculo = new stdClass();
+        $dadoServidor->ideVinculo->cpfTrab = $this->servidorAtual->getCgm()->getCpf();
+        $dadoServidor->ideVinculo->matricula = $this->servidorAtual->getMatricula();
+        $this->dadosReintegracaoServidor($dadoServidor);
+        
+        return $dadoServidor;
+    }
+    
+    private function dadosReintegracaoServidor(&$dadoServidor)
+    {
+        
+        $oDadosReintegracao = $this->servidorAtual->getDadosReintegracao();
+
+        $dadoServidor->infoReintegr = new stdClass();
+        
+        $dadoServidor->infoReintegr->tpReint = intval($oDadosReintegracao->h25_tiporeintegracao);
+
+        if (!empty($oDadosReintegracao->h25_numeroprocesso)) {
+            $dadoServidor->infoReintegr->nrProcJud = $oDadosReintegracao->h25_numeroprocesso;
         }
 
-        return $dadosFormatado;
+        if (!empty($oDadosReintegracao->h25_leianistia)) {
+            $dadoServidor->infoReintegr->nrLeiAnistia = $oDadosReintegracao->h25_leianistia;
+        }
+
+        $dadoServidor->infoReintegr->dtEfetRetorno = $oDadosReintegracao->h25_dataefetivoretorno;
+        $dadoServidor->infoReintegr->dtEfeito = $oDadosReintegracao->h25_datareintegracao;
+
+        return $dadoServidor;
     }
 }

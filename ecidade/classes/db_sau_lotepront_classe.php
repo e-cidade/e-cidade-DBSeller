@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_sau_lotepront {
                  sd59_i_prontuario = int4 = FAA
                  ";
    //funcao construtor da classe
-   function cl_sau_lotepront() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_lotepront");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_sau_lotepront {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd59_i_codigo = ($this->sd59_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd59_i_codigo"]:$this->sd59_i_codigo);
        $this->sd59_i_lote = ($this->sd59_i_lote == ""?@$GLOBALS["HTTP_POST_VARS"]["sd59_i_lote"]:$this->sd59_i_lote);
@@ -77,7 +77,7 @@ class cl_sau_lotepront {
      }
    }
    // funcao para inclusao
-   function incluir ($sd59_i_codigo){
+   public function incluir ($sd59_i_codigo){
       $this->atualizacampos();
      if($this->sd59_i_lote == null ){
        $this->erro_sql = " Campo Lote nao Informado.";
@@ -176,7 +176,7 @@ class cl_sau_lotepront {
      return true;
    }
    // funcao para alteracao
-   function alterar ($sd59_i_codigo=null) {
+   public function alterar ($sd59_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update sau_lotepront set ";
      $virgula = "";
@@ -265,7 +265,7 @@ class cl_sau_lotepront {
      }
    }
    // funcao para exclusao
-   function excluir ($sd59_i_codigo=null,$dbwhere=null) {
+   public function excluir ($sd59_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd59_i_codigo));
      }else{
@@ -328,7 +328,7 @@ class cl_sau_lotepront {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -351,10 +351,10 @@ class cl_sau_lotepront {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $sd59_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $sd59_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_sau_lotepront {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,10 +393,10 @@ class cl_sau_lotepront {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $sd59_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $sd59_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_sau_lotepront {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

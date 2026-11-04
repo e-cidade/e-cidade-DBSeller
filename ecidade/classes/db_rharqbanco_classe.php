@@ -1,88 +1,88 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rharqbanco
-class cl_rharqbanco { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh34_instit = 0; 
-   var $rh34_codarq = 0; 
-   var $rh34_descr = null; 
-   var $rh34_codban = null; 
-   var $rh34_agencia = 0; 
-   var $rh34_dvagencia = null; 
-   var $rh34_conta = null; 
-   var $rh34_dvconta = null; 
-   var $rh34_convenio = null; 
-   var $rh34_sequencial = 0; 
-   var $rh34_where = null; 
-   var $rh34_ativo = 'f'; 
-   var $rh34_parametrotransmissaoheader = null; 
-   var $rh34_parametrotransmissaolote = null; 
-   var $rh34_codigocompromisso = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rharqbanco {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh34_instit = 0;
+   var $rh34_codarq = 0;
+   var $rh34_descr = null;
+   var $rh34_codban = null;
+   var $rh34_agencia = 0;
+   var $rh34_dvagencia = null;
+   var $rh34_conta = null;
+   var $rh34_dvconta = null;
+   var $rh34_convenio = null;
+   var $rh34_sequencial = 0;
+   var $rh34_where = null;
+   var $rh34_ativo = 'f';
+   var $rh34_parametrotransmissaoheader = null;
+   var $rh34_parametrotransmissaolote = null;
+   var $rh34_codigocompromisso = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh34_instit = int4 = Cod. Instituição 
-                 rh34_codarq = int4 = Código do Arquivo 
-                 rh34_descr = varchar(40) = Descrição do Cadastro 
-                 rh34_codban = varchar(10) = Código do Banco FEBRABAN 
-                 rh34_agencia = int4 = Agência 
-                 rh34_dvagencia = varchar(2) = Dígito da Agência 
-                 rh34_conta = varchar(15) = Conta Corrente 
-                 rh34_dvconta = varchar(2) = Dígito da Conta 
-                 rh34_convenio = varchar(20) = Número do Convênio 
-                 rh34_sequencial = int4 = Sequencial do Arquivo 
-                 rh34_where = varchar(150) = Condição/Fórmula 
-                 rh34_ativo = bool = Ativo 
-                 rh34_parametrotransmissaoheader = varchar(2) = Parâmetro Transmissão Header do Arquivo 
-                 rh34_parametrotransmissaolote = varchar(2) = Parâmetro Transmissão Header do Lote 
-                 rh34_codigocompromisso = varchar(4) = Código do Compromisso 
+                 rh34_instit = int4 = Cod. Instituição
+                 rh34_codarq = int4 = Código do Arquivo
+                 rh34_descr = varchar(40) = Descrição do Cadastro
+                 rh34_codban = varchar(10) = Código do Banco FEBRABAN
+                 rh34_agencia = int4 = Agência
+                 rh34_dvagencia = varchar(2) = Dígito da Agência
+                 rh34_conta = varchar(15) = Conta Corrente
+                 rh34_dvconta = varchar(2) = Dígito da Conta
+                 rh34_convenio = varchar(20) = Número do Convênio
+                 rh34_sequencial = int4 = Sequencial do Arquivo
+                 rh34_where = varchar(150) = Condição/Fórmula
+                 rh34_ativo = bool = Ativo
+                 rh34_parametrotransmissaoheader = varchar(2) = Parâmetro Transmissão Header do Arquivo
+                 rh34_parametrotransmissaolote = varchar(2) = Parâmetro Transmissão Header do Lote
+                 rh34_codigocompromisso = varchar(4) = Código do Compromisso
                  ";
-   //funcao construtor da classe 
-   function cl_rharqbanco() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rharqbanco"); 
+     $this->rotulo = new rotulo("rharqbanco");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -91,7 +91,7 @@ class cl_rharqbanco {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh34_instit = ($this->rh34_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["rh34_instit"]:$this->rh34_instit);
        $this->rh34_codarq = ($this->rh34_codarq == ""?@$GLOBALS["HTTP_POST_VARS"]["rh34_codarq"]:$this->rh34_codarq);
@@ -114,9 +114,9 @@ class cl_rharqbanco {
      }
    }
    // funcao para inclusao
-   function incluir ($rh34_codarq,$rh34_instit){ 
+   public function incluir ($rh34_codarq,$rh34_instit){
       $this->atualizacampos();
-     if($this->rh34_descr == null ){ 
+     if($this->rh34_descr == null ){
        $this->erro_sql = " Campo Descrição do Cadastro não informado.";
        $this->erro_campo = "rh34_descr";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_codban == null ){ 
+     if($this->rh34_codban == null ){
        $this->erro_sql = " Campo Código do Banco FEBRABAN não informado.";
        $this->erro_campo = "rh34_codban";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_agencia == null ){ 
+     if($this->rh34_agencia == null ){
        $this->erro_sql = " Campo Agência não informado.";
        $this->erro_campo = "rh34_agencia";
        $this->erro_banco = "";
@@ -143,7 +143,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_dvagencia == null ){ 
+     if($this->rh34_dvagencia == null ){
        $this->erro_sql = " Campo Dígito da Agência não informado.";
        $this->erro_campo = "rh34_dvagencia";
        $this->erro_banco = "";
@@ -152,7 +152,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_conta == null ){ 
+     if($this->rh34_conta == null ){
        $this->erro_sql = " Campo Conta Corrente não informado.";
        $this->erro_campo = "rh34_conta";
        $this->erro_banco = "";
@@ -161,7 +161,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_dvconta == null ){ 
+     if($this->rh34_dvconta == null ){
        $this->erro_sql = " Campo Dígito da Conta não informado.";
        $this->erro_campo = "rh34_dvconta";
        $this->erro_banco = "";
@@ -170,7 +170,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_convenio == null ){ 
+     if($this->rh34_convenio == null ){
        $this->erro_sql = " Campo Número do Convênio não informado.";
        $this->erro_campo = "rh34_convenio";
        $this->erro_banco = "";
@@ -179,7 +179,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_sequencial == null ){ 
+     if($this->rh34_sequencial == null ){
        $this->erro_sql = " Campo Sequencial do Arquivo não informado.";
        $this->erro_campo = "rh34_sequencial";
        $this->erro_banco = "";
@@ -188,7 +188,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh34_ativo == null ){ 
+     if($this->rh34_ativo == null ){
        $this->erro_sql = " Campo Ativo não informado.";
        $this->erro_campo = "rh34_ativo";
        $this->erro_banco = "";
@@ -198,16 +198,16 @@ class cl_rharqbanco {
        return false;
      }
      if($rh34_codarq == "" || $rh34_codarq == null ){
-       $result = db_query("select nextval('rharqbanco_codarq_seq')"); 
+       $result = db_query("select nextval('rharqbanco_codarq_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rharqbanco_codarq_seq do campo: rh34_codarq"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rharqbanco_codarq_seq do campo: rh34_codarq";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh34_codarq = pg_result($result,0,0); 
+       $this->rh34_codarq = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rharqbanco_codarq_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh34_codarq)){
@@ -218,10 +218,10 @@ class cl_rharqbanco {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh34_codarq = $rh34_codarq; 
+         $this->rh34_codarq = $rh34_codarq;
        }
      }
-     if(($this->rh34_codarq == null) || ($this->rh34_codarq == "") ){ 
+     if(($this->rh34_codarq == null) || ($this->rh34_codarq == "") ){
        $this->erro_sql = " Campo rh34_codarq nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -229,7 +229,7 @@ class cl_rharqbanco {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh34_instit == null) || ($this->rh34_instit == "") ){ 
+     if(($this->rh34_instit == null) || ($this->rh34_instit == "") ){
        $this->erro_sql = " Campo rh34_instit nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -238,41 +238,41 @@ class cl_rharqbanco {
        return false;
      }
      $sql = "insert into rharqbanco(
-                                       rh34_instit 
-                                      ,rh34_codarq 
-                                      ,rh34_descr 
-                                      ,rh34_codban 
-                                      ,rh34_agencia 
-                                      ,rh34_dvagencia 
-                                      ,rh34_conta 
-                                      ,rh34_dvconta 
-                                      ,rh34_convenio 
-                                      ,rh34_sequencial 
-                                      ,rh34_where 
-                                      ,rh34_ativo 
-                                      ,rh34_parametrotransmissaoheader 
-                                      ,rh34_parametrotransmissaolote 
-                                      ,rh34_codigocompromisso 
+                                       rh34_instit
+                                      ,rh34_codarq
+                                      ,rh34_descr
+                                      ,rh34_codban
+                                      ,rh34_agencia
+                                      ,rh34_dvagencia
+                                      ,rh34_conta
+                                      ,rh34_dvconta
+                                      ,rh34_convenio
+                                      ,rh34_sequencial
+                                      ,rh34_where
+                                      ,rh34_ativo
+                                      ,rh34_parametrotransmissaoheader
+                                      ,rh34_parametrotransmissaolote
+                                      ,rh34_codigocompromisso
                        )
                 values (
-                                $this->rh34_instit 
-                               ,$this->rh34_codarq 
-                               ,'$this->rh34_descr' 
-                               ,'$this->rh34_codban' 
-                               ,$this->rh34_agencia 
-                               ,'$this->rh34_dvagencia' 
-                               ,'$this->rh34_conta' 
-                               ,'$this->rh34_dvconta' 
-                               ,'$this->rh34_convenio' 
-                               ,$this->rh34_sequencial 
-                               ,'$this->rh34_where' 
-                               ,'$this->rh34_ativo' 
-                               ,'$this->rh34_parametrotransmissaoheader' 
-                               ,'$this->rh34_parametrotransmissaolote' 
-                               ,'$this->rh34_codigocompromisso' 
+                                $this->rh34_instit
+                               ,$this->rh34_codarq
+                               ,'$this->rh34_descr'
+                               ,'$this->rh34_codban'
+                               ,$this->rh34_agencia
+                               ,'$this->rh34_dvagencia'
+                               ,'$this->rh34_conta'
+                               ,'$this->rh34_dvconta'
+                               ,'$this->rh34_convenio'
+                               ,$this->rh34_sequencial
+                               ,'$this->rh34_where'
+                               ,'$this->rh34_ativo'
+                               ,'$this->rh34_parametrotransmissaoheader'
+                               ,'$this->rh34_parametrotransmissaolote'
+                               ,'$this->rh34_codigocompromisso'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Arquivos dos bancos ($this->rh34_codarq."-".$this->rh34_instit) nao Incluído. Inclusao Abortada.";
@@ -325,16 +325,16 @@ class cl_rharqbanco {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh34_codarq=null,$rh34_instit=null) { 
+   public function alterar ($rh34_codarq=null,$rh34_instit=null) {
       $this->atualizacampos();
      $sql = " update rharqbanco set ";
      $virgula = "";
-     if(trim($this->rh34_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_instit"])){ 
+     if(trim($this->rh34_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_instit"])){
        $sql  .= $virgula." rh34_instit = $this->rh34_instit ";
        $virgula = ",";
-       if(trim($this->rh34_instit) == null ){ 
+       if(trim($this->rh34_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição não informado.";
          $this->erro_campo = "rh34_instit";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_codarq"])){ 
+     if(trim($this->rh34_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_codarq"])){
        $sql  .= $virgula." rh34_codarq = $this->rh34_codarq ";
        $virgula = ",";
-       if(trim($this->rh34_codarq) == null ){ 
+       if(trim($this->rh34_codarq) == null ){
          $this->erro_sql = " Campo Código do Arquivo não informado.";
          $this->erro_campo = "rh34_codarq";
          $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_descr"])){ 
+     if(trim($this->rh34_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_descr"])){
        $sql  .= $virgula." rh34_descr = '$this->rh34_descr' ";
        $virgula = ",";
-       if(trim($this->rh34_descr) == null ){ 
+       if(trim($this->rh34_descr) == null ){
          $this->erro_sql = " Campo Descrição do Cadastro não informado.";
          $this->erro_campo = "rh34_descr";
          $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_codban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_codban"])){ 
+     if(trim($this->rh34_codban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_codban"])){
        $sql  .= $virgula." rh34_codban = '$this->rh34_codban' ";
        $virgula = ",";
-       if(trim($this->rh34_codban) == null ){ 
+       if(trim($this->rh34_codban) == null ){
          $this->erro_sql = " Campo Código do Banco FEBRABAN não informado.";
          $this->erro_campo = "rh34_codban";
          $this->erro_banco = "";
@@ -383,10 +383,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_agencia"])){ 
+     if(trim($this->rh34_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_agencia"])){
        $sql  .= $virgula." rh34_agencia = $this->rh34_agencia ";
        $virgula = ",";
-       if(trim($this->rh34_agencia) == null ){ 
+       if(trim($this->rh34_agencia) == null ){
          $this->erro_sql = " Campo Agência não informado.";
          $this->erro_campo = "rh34_agencia";
          $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_dvagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_dvagencia"])){ 
+     if(trim($this->rh34_dvagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_dvagencia"])){
        $sql  .= $virgula." rh34_dvagencia = '$this->rh34_dvagencia' ";
        $virgula = ",";
-       if(trim($this->rh34_dvagencia) == null ){ 
+       if(trim($this->rh34_dvagencia) == null ){
          $this->erro_sql = " Campo Dígito da Agência não informado.";
          $this->erro_campo = "rh34_dvagencia";
          $this->erro_banco = "";
@@ -409,10 +409,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_conta"])){ 
+     if(trim($this->rh34_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_conta"])){
        $sql  .= $virgula." rh34_conta = '$this->rh34_conta' ";
        $virgula = ",";
-       if(trim($this->rh34_conta) == null ){ 
+       if(trim($this->rh34_conta) == null ){
          $this->erro_sql = " Campo Conta Corrente não informado.";
          $this->erro_campo = "rh34_conta";
          $this->erro_banco = "";
@@ -422,10 +422,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_dvconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_dvconta"])){ 
+     if(trim($this->rh34_dvconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_dvconta"])){
        $sql  .= $virgula." rh34_dvconta = '$this->rh34_dvconta' ";
        $virgula = ",";
-       if(trim($this->rh34_dvconta) == null ){ 
+       if(trim($this->rh34_dvconta) == null ){
          $this->erro_sql = " Campo Dígito da Conta não informado.";
          $this->erro_campo = "rh34_dvconta";
          $this->erro_banco = "";
@@ -435,10 +435,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_convenio"])){ 
+     if(trim($this->rh34_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_convenio"])){
        $sql  .= $virgula." rh34_convenio = '$this->rh34_convenio' ";
        $virgula = ",";
-       if(trim($this->rh34_convenio) == null ){ 
+       if(trim($this->rh34_convenio) == null ){
          $this->erro_sql = " Campo Número do Convênio não informado.";
          $this->erro_campo = "rh34_convenio";
          $this->erro_banco = "";
@@ -448,10 +448,10 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_sequencial"])){ 
+     if(trim($this->rh34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_sequencial"])){
        $sql  .= $virgula." rh34_sequencial = $this->rh34_sequencial ";
        $virgula = ",";
-       if(trim($this->rh34_sequencial) == null ){ 
+       if(trim($this->rh34_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial do Arquivo não informado.";
          $this->erro_campo = "rh34_sequencial";
          $this->erro_banco = "";
@@ -461,14 +461,14 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_where)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_where"])){ 
+     if(trim($this->rh34_where)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_where"])){
        $sql  .= $virgula." rh34_where = '$this->rh34_where' ";
        $virgula = ",";
      }
-     if(trim($this->rh34_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_ativo"])){ 
+     if(trim($this->rh34_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_ativo"])){
        $sql  .= $virgula." rh34_ativo = '$this->rh34_ativo' ";
        $virgula = ",";
-       if(trim($this->rh34_ativo) == null ){ 
+       if(trim($this->rh34_ativo) == null ){
          $this->erro_sql = " Campo Ativo não informado.";
          $this->erro_campo = "rh34_ativo";
          $this->erro_banco = "";
@@ -478,15 +478,15 @@ class cl_rharqbanco {
          return false;
        }
      }
-     if(trim($this->rh34_parametrotransmissaoheader)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_parametrotransmissaoheader"])){ 
+     if(trim($this->rh34_parametrotransmissaoheader)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_parametrotransmissaoheader"])){
        $sql  .= $virgula." rh34_parametrotransmissaoheader = '$this->rh34_parametrotransmissaoheader' ";
        $virgula = ",";
      }
-     if(trim($this->rh34_parametrotransmissaolote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_parametrotransmissaolote"])){ 
+     if(trim($this->rh34_parametrotransmissaolote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_parametrotransmissaolote"])){
        $sql  .= $virgula." rh34_parametrotransmissaolote = '$this->rh34_parametrotransmissaolote' ";
        $virgula = ",";
      }
-     if(trim($this->rh34_codigocompromisso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_codigocompromisso"])){ 
+     if(trim($this->rh34_codigocompromisso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh34_codigocompromisso"])){
        $sql  .= $virgula." rh34_codigocompromisso = '$this->rh34_codigocompromisso' ";
        $virgula = ",";
      }
@@ -545,7 +545,7 @@ class cl_rharqbanco {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos dos bancos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh34_codarq."-".$this->rh34_instit;
@@ -573,11 +573,11 @@ class cl_rharqbanco {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh34_codarq=null,$rh34_instit=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh34_codarq=null,$rh34_instit=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -586,7 +586,7 @@ class cl_rharqbanco {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($rh34_codarq,$rh34_instit));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -636,7 +636,7 @@ class cl_rharqbanco {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos dos bancos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh34_codarq."-".$rh34_instit;
@@ -664,11 +664,11 @@ class cl_rharqbanco {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -690,11 +690,11 @@ class cl_rharqbanco {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $rh34_codarq=null,$rh34_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $rh34_codarq=null,$rh34_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -711,23 +711,23 @@ class cl_rharqbanco {
      $sql2 = "";
      if($dbwhere==""){
        if($rh34_codarq!=null ){
-         $sql2 .= " where rharqbanco.rh34_codarq = $rh34_codarq "; 
-       } 
+         $sql2 .= " where rharqbanco.rh34_codarq = $rh34_codarq ";
+       }
        if($rh34_instit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rharqbanco.rh34_instit = $rh34_instit "; 
-       } 
+         }
+         $sql2 .= " rharqbanco.rh34_instit = $rh34_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -736,11 +736,11 @@ class cl_rharqbanco {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $rh34_codarq=null,$rh34_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $rh34_codarq=null,$rh34_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -753,23 +753,23 @@ class cl_rharqbanco {
      $sql2 = "";
      if($dbwhere==""){
        if($rh34_codarq!=null ){
-         $sql2 .= " where rharqbanco.rh34_codarq = $rh34_codarq "; 
-       } 
+         $sql2 .= " where rharqbanco.rh34_codarq = $rh34_codarq ";
+       }
        if($rh34_instit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rharqbanco.rh34_instit = $rh34_instit "; 
-       } 
+         }
+         $sql2 .= " rharqbanco.rh34_instit = $rh34_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

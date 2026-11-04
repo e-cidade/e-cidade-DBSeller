@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -70,16 +71,20 @@ if ($oDaoIptubase->numrows == 0) {
 
 $oDadosMatricula = db_utils::fieldsMemory($rsIptubase, 0, null);
 
-$rsAreaTotal = $oDaoIptubase->sql_record($oDaoIptubase->sql_query_area_total($oDadosMatricula->j34_setor,
-  $oDadosMatricula->j34_quadra,
-  $oDadosMatricula->j34_lote));
+$rsAreaTotal = $oDaoIptubase->sql_record($oDaoIptubase->sql_query_area_total(
+    $oDadosMatricula->j34_setor,
+    $oDadosMatricula->j34_quadra,
+    $oDadosMatricula->j34_lote
+));
 $nAreaTotal = db_utils::fieldsMemory($rsAreaTotal, 0)->area_total;
 
 $rsAreaConstruida = $oDaoIptubase->sql_record($oDaoIptubase->sql_query_area_contruida($oDadosMatricula->j01_matric));
 $nAreaConstruida = db_utils::fieldsMemory($rsAreaConstruida, 0)->area_construida;
 
-$rsImobiliaria = $oDaoIptubase->sql_record($oDaoIptubase->sql_query_imobiliaria($oDadosMatricula->j01_matric,
-  'z01_nome'));
+$rsImobiliaria = $oDaoIptubase->sql_record($oDaoIptubase->sql_query_imobiliaria(
+    $oDadosMatricula->j01_matric,
+    'z01_nome'
+));
 
 $lImobiliaria = false;
 if ($oDaoIptubase->numrows > 0) {
@@ -92,22 +97,32 @@ if ($oDaoIptubase->numrows > 0) {
 }
 
 $oDaoCfIptu = db_utils::getDao('cfiptu');
-$rsCfIptu = $oDaoCfIptu->sql_record($oDaoCfIptu->sql_query_file(null, "j18_utilizaloc", "",
-  "j18_anousu = " . db_getsession("DB_anousu")));
+$rsCfIptu = $oDaoCfIptu->sql_record($oDaoCfIptu->sql_query_file(
+    null,
+    "j18_utilizaloc",
+    "",
+    "j18_anousu = " . db_getsession("DB_anousu")
+));
 $lUtilizaLoc = db_utils::fieldsMemory($rsCfIptu, 0)->j18_utilizaloc == 't' ? true : false;
 
 $oDaoPercPosseRural = new cl_percposserural();
-$sqlPercPosseRural = $oDaoPercPosseRural->sql_query_file(null, "j166_percentual", null, "j166_numcgm = $oDadosMatricula->z01_numcgm AND j166_matric = $oDadosMatricula->j01_matric");
+$sqlPercPosseRural = $oDaoPercPosseRural->sql_query_file(
+    null,
+    "j166_percentual",
+    null,
+    "j166_numcgm = $oDadosMatricula->z01_numcgm AND j166_matric = $oDadosMatricula->j01_matric"
+);
 $rsPercPosseRural = db_query($sqlPercPosseRural);
 
 $j166_percentual = null;
 if ($rsPercPosseRural && pg_num_rows($rsPercPosseRural) > 0) {
-  $j166_percentual = db_utils::fieldsMemory($rsPercPosseRural, 0)->j166_percentual;
+    $j166_percentual = db_utils::fieldsMemory($rsPercPosseRural, 0)->j166_percentual;
 }
 
 $sLoteloc = '';
 if ($lUtilizaLoc) {
-    $sLoteloc = $oDadosMatricula->j05_codigoproprio . ' - ' . $oDadosMatricula->j05_descr . '-' . $oDadosMatricula->j06_quadraloc . '/' . $oDadosMatricula->j06_lote;
+    $sLoteloc = $oDadosMatricula->j05_codigoproprio . ' - ' . $oDadosMatricula->j05_descr . '-' .
+                $oDadosMatricula->j06_quadraloc . '/' . $oDadosMatricula->j06_lote;
 }
 
 ?>
@@ -140,55 +155,61 @@ if ($lUtilizaLoc) {
 <fieldset style="height:230px; width:49.3%; float:left;">
   <legend>
     <b>Dados Cadastrais do Imóvel (<?= @$oDadosMatricula->j01_tipoimp ?>) </b>
-      <?
-      if (!empty($oDadosMatricula->j01_baixa)) {
-          echo "<span class='aviso'>
+      <?php
+        if (!empty($oDadosMatricula->j01_baixa)) {
+            echo "<span class='aviso'>
                 <font color='red'><b>Matrícula Baixada</b></font>
               </span>";
-      }
-      ?>
+        }
+        ?>
   </legend>
   <table>
     <tr>
-      <td title="<?= $Tj01_matric ?>" style="width: 120px;"><?= $Lj01_matric ?>
+      <td title="<?php echo $Tj01_matric ?>" style="width: 120px;"><?php echo $Lj01_matric ?>
       </td>
-      <td title="<?= $Tj01_matric ?>" nowrap class='valores'
-          style="width: 300px;"><?= $oDadosMatricula->j01_matric ?>
+      <td title="<?php echo $Tj01_matric ?>" nowrap class='valores'
+          style="width: 300px;"><?php echo $oDadosMatricula->j01_matric ?>
       </td>
       <td style="width: 10px;"></td>
-      <td title="<?= $Tj40_refant ?>" style="width: 110px;"><?= $Lj40_refant ?>
+      <td title="<?php echo $Tj40_refant ?>" style="width: 110px;"><?php echo $Lj40_refant ?>
       </td>
-      <td title="<?= $Tj40_refant ?>" nowrap class='valores'
-          style="width: 300px;"><?= $oDadosMatricula->j40_refant ?>
+      <td title="<?php echo $Tj40_refant ?>" nowrap class='valores'
+          style="width: 300px;"><?php echo $oDadosMatricula->j40_refant ?>
       </td>
     </tr>
     <tr>
-      <td title="<?= $Tz01_nome ?>"><? db_ancora($Lz01_nome,
-            "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_cgmpri')", 2); ?>
+      <td title="<?php echo $Tz01_nome ?>"><?php db_ancora(
+          $Lz01_nome,
+          "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_cgmpri')",
+          2
+      ); ?>
       </td>
-      <td title="<?= $Tz01_nome ?>" nowrap class='valores'><?= $oDadosMatricula->z01_nome ?>
+      <td title="<?php echo $Tz01_nome ?>" nowrap class='valores'><?php echo $oDadosMatricula->z01_nome ?>
       </td>
       <td></td>
-      <td title="Proprietário"><b><? db_ancora('Proprietário',
-                "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_numcgm')", 2); ?>
+      <td title="Proprietário"><b><?php db_ancora(
+          'Proprietário',
+          "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_numcgm')",
+          2
+      ); ?>
         </b>
       </td>
-      <td title="Proprietário" nowrap class='valores'><?= $oDadosMatricula->proprietario ?>
+      <td title="Proprietário" nowrap class='valores'><?php echo $oDadosMatricula->proprietario ?>
       </td>
     </tr>
     <tr>
       <td><b>Posse (%):</b></td>
-      <td title="" nowrap class='valores'><?=$j166_percentual?></td>
+      <td title="" nowrap class='valores'><?php echo $j166_percentual?></td>
       <td></td>
-      <td title="<?= $Tj34_zona ?>"><?= $Lj34_zona ?>
+      <td title="<?php echo $Tj34_zona ?>"><?php echo $Lj34_zona ?>
       </td>
-      <td title="" nowrap class='valores'><?= $oDadosMatricula->j34_zona . " - " . $oDadosMatricula->j50_descr ?>
+      <td title="" nowrap class='valores'><?php echo $oDadosMatricula->j34_zona . " - " . $oDadosMatricula->j50_descr ?>
       </td>
     </tr>
     <tr>
       <td title="">
         <strong>
-            <?
+            <?php
             if ($lImobiliaria) {
                 db_ancora("Imobiliária:", "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_numimob')", 2);
             } else {
@@ -197,74 +218,75 @@ if ($lUtilizaLoc) {
             ?>
         </strong>
       </td>
-      <td title="" nowrap class='valores'><?
-          if ($lImobiliaria) {
-              echo $imobiliaria;
-          } else {
-              echo "Matricula sem Imobiliária vinculada.";
-          }
-          ?>
+      <td title="" nowrap class='valores'><?php
+        if ($lImobiliaria) {
+            echo $imobiliaria;
+        } else {
+            echo "Matricula sem Imobiliária vinculada.";
+        }
+        ?>
       </td>
       <td></td>
-      <td title="<?= $Tj91_codigo ?>"><?= $Lj91_codigo ?>
+      <td title="<?php echo $Tj91_codigo ?>"><?php echo $Lj91_codigo ?>
       </td>
-      <td nowrap class='valores'><?= @$oSetorFiscal->j91_codigo . " - " . @$oSetorFiscal->j90_descr ?>
+      <td nowrap class='valores'><?php echo @$oSetorFiscal->j91_codigo . " - " . @$oSetorFiscal->j90_descr ?>
       </td>
     </tr>
     <tr>
-      <td title="<?= $Tj34_setor ?>"><b>Setor/Quadra/Lote:</b>
+      <td title="<?php echo $Tj34_setor ?>"><b>Setor/Quadra/Lote:</b>
       </td>
       <td nowrap class='valores'>
-          <?
-          echo $oDadosMatricula->j34_setor . ' - ' . $oDadosMatricula->j30_descr . '/' . $oDadosMatricula->j34_quadra . '/' . $oDadosMatricula->j34_lote;
-          ?>
+          <?php
+            echo $oDadosMatricula->j34_setor . ' - ' . $oDadosMatricula->j30_descr . '/' .
+                 $oDadosMatricula->j34_quadra . '/' . $oDadosMatricula->j34_lote;
+            ?>
       </td>
       <td></td>
       <td title="Construído no lote:"><b>Construído no lote:</b>
       </td>
 
-      <td nowrap class='valores'><?= $nAreaConstruida ?> - &Aacute;rea real
-        construida no lote: <?= $oDadosMatricula->j34_totcon ?>
+      <td nowrap class='valores'><?php echo $nAreaConstruida ?> - &Aacute;rea real
+        construida no lote: <?php echo $oDadosMatricula->j34_totcon ?>
       </td>
     </tr>
     <tr>
       <td title="Área do lote"><b>Área do lote:</b>
       </td>
-      <td title="" nowrap class='valores'><?= db_formatar($oDadosMatricula->area_matric, "f"); ?>
-        - Área real do lote: <?= @db_formatar($nAreaTotal, 'f'); ?>
+      <td title="" nowrap class='valores'><?php echo db_formatar($oDadosMatricula->area_matric, "f"); ?>
+        - Área real do lote: <?php echo @db_formatar($nAreaTotal, 'f'); ?>
       </td>
       <td></td>
       <td title=""><b>Loteamento:</b>
       </td>
-      <td title="" nowrap class='valores'><?= @$oDadosMatricula->j34_descr ?>
+      <td title="" nowrap class='valores'><?php echo @$oDadosMatricula->j34_descr ?>
       </td>
     </tr>
     <tr>
       <td title=""><b>Logradouro:<b>
 
       </td>
-      <td title="" nowrap class='valores'><?= @$oDadosMatricula->codpri ?> -
-          <?= @$oDadosMatricula->tipopri ?> . <?= @$oDadosMatricula->nomepri ?>
-        , <?= @$oDadosMatricula->j39_numero ?> <?= (@$oDadosMatricula->j39_compl != "" ? "/" : "") ?>
-          <?= @$oDadosMatricula->j39_compl ?>
+      <td title="" nowrap class='valores'><?php echo @$oDadosMatricula->codpri ?> -
+          <?php echo @$oDadosMatricula->tipopri ?> . <?php echo @$oDadosMatricula->nomepri ?>
+        , <?php echo @$oDadosMatricula->j39_numero ?> <?php echo (@$oDadosMatricula->j39_compl != "" ? "/" : "") ?>
+          <?php echo @$oDadosMatricula->j39_compl ?>
       </td>
       <td></td>
       <td title=""><b>Setor/Quadra/Lote de localização:</b>
       </td>
       <td title="" nowrap class='valores'>
-          <?= $lUtilizaLoc == true ? $sLoteloc : '' ?>
+          <?php echo $lUtilizaLoc == true ? $sLoteloc : '' ?>
       </td>
     </tr>
     <tr>
       <td title="Bairro"><b>Bairro:</b>
       </td>
-      <td title="" nowrap class='valores'><?= @$oDadosMatricula->j13_codi . "-" . @$oDadosMatricula->j13_descr ?>
+      <td title="" nowrap class='valores'><?php echo @$oDadosMatricula->j13_codi . "-" . @$oDadosMatricula->j13_descr ?>
       </td>
       <td style="width: 10px;"></td>
-      <td title="<?= $Tj40_registrocartografico ?>" style="width: 110px;"><?= $Lj40_registrocartografico ?>
+      <td title="<?php echo $Tj40_registrocartografico ?>" style="width: 110px;"><?php echo $Lj40_registrocartografico ?>
       </td>
-      <td title="<?= $Tj40_registrocartografico ?>" nowrap class='valores'
-          style="width: 300px;"><?= $oDadosMatricula->j40_registrocartografico ?>
+      <td title="<?php echo $Tj40_registrocartografico ?>" nowrap class='valores'
+          style="width: 300px;"><?php echo $oDadosMatricula->j40_registrocartografico ?>
       </td>
     </tr>
   </table>
@@ -284,22 +306,22 @@ if ($lUtilizaLoc) {
   <table style="width:100%">
     <tr>
       <td title="Logradouro"><b>Logradouro:</b></td>
-      <td title="" style="width:95%;" nowrap class='valores'><?=@$oDadosEndereco->j43_ender?>, <?=@$oDadosEndereco->j43_numimo?> <?=(@$oDadosEndereco->j43_comple != "" ? "/" : "")?></td>
+      <td title="" style="width:95%;" nowrap class='valores'><?php echo @$oDadosEndereco->j43_ender?>, <?php echo @$oDadosEndereco->j43_numimo?> <?php echo (@$oDadosEndereco->j43_comple != "" ? "/" : "")?></td>
     </tr>
 
     <tr>
       <td title="Bairro"><b>Bairro:</b></td>
-      <td title="" style="width:95%;" nowrap class='valores'><?=@$oDadosEndereco->j43_bairro?></td>
+      <td title="" style="width:95%;" nowrap class='valores'><?php echo @$oDadosEndereco->j43_bairro?></td>
     </tr>
 
     <tr>
       <td title="Município"><b>Município:</b></td>
-      <td title="" style="width:95%;" nowrap class='valores'><?=@$oDadosEndereco->j43_munic?></td>
+      <td title="" style="width:95%;" nowrap class='valores'><?php echo @$oDadosEndereco->j43_munic?></td>
     </tr>
 
     <tr>
       <td title="CEP"><b>CEP:</b></td>
-      <td title="" style="width:95%;" nowrap class='valores'><?=@$oDadosEndereco->j43_cep?></td>
+      <td title="" style="width:95%;" nowrap class='valores'><?php echo @$oDadosEndereco->j43_cep?></td>
     </tr>
   </table>
 </fieldset>
@@ -335,8 +357,8 @@ if ($lUtilizaLoc) {
       </tr>
     </table>
     <input type="hidden" id="exec" name="exec">
-    <input type="hidden" id="j01_matric" name="j01_matric" value="<?=$oDadosMatricula->j01_matric?>">
-    <? db_input('db59_sequencial',10,0,false,'hidden',3,""); ?>
+    <input type="hidden" id="j01_matric" name="j01_matric" value="<?php echo $oDadosMatricula->j01_matric?>">
+    <?php db_input('db59_sequencial', 10, 0, false, 'hidden', 3, ""); ?>
   </form>
 </fieldset>
 
@@ -351,16 +373,18 @@ if ($lUtilizaLoc) {
   function js_Impressao(lParam) {
     if(lParam) {
       var lGeraCalculo = confirm('Imprimir Demonstrativo de Cálculo?')
-      window.open('cad3_conscadastro_impressao.php?tipo=2&geracalculo=' + lGeraCalculo + '&parametro=<?=$oDadosMatricula->j01_matric?>', '', 'location=0,HEIGHT=600,WIDTH=600');
+      window.open('cad3_conscadastro_impressao.php?tipo=2&geracalculo=' + lGeraCalculo +
+                  '&parametro=<?php echo $oDadosMatricula->j01_matric?>', '', 'location=0,HEIGHT=600,WIDTH=600');
     } else {
-      window.open('cad3_conscadastro_impressao.php?tipo=1&parametro=<?=$oDadosMatricula->j01_matric?>', '', 'location=0,HEIGHT=600,WIDTH=600');
+      window.open('cad3_conscadastro_impressao.php?tipo=1&parametro=<?php echo $oDadosMatricula->j01_matric?>',
+                  '', 'location=0,HEIGHT=600,WIDTH=600');
     }
   }
 
   function buscarOutrosPropri() {
     var oParametros = {
       'executa' : 'buscarOutrosPropri',
-      'matricula' : <?=$oDadosMatricula->j01_matric?>
+      'matricula' : <?php echo $oDadosMatricula->j01_matric?>
     },
     formData = createFormData(oParametros);
 
@@ -396,7 +420,7 @@ if ($lUtilizaLoc) {
   function buscarIsencoes() {
     var oParametros = {
         'executa' : 'buscaIsencoes',
-        'matricula' : <?=$oDadosMatricula->j01_matric?>
+        'matricula' : <?php echo $oDadosMatricula->j01_matric?>
       },
       formData = createFormData(oParametros);
 
@@ -511,7 +535,7 @@ if ($lUtilizaLoc) {
     var 
       oParametros = {
         'exec' : 'listar',
-        'j01_matric' : <?=$oDadosMatricula->j01_matric?>
+        'j01_matric' : <?php echo $oDadosMatricula->j01_matric?>
       },
       formData = createFormData(oParametros);
 

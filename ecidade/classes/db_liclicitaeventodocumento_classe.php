@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: licitacao
 //CLASSE DA ENTIDADE liclicitaeventodocumento
 class cl_liclicitaeventodocumento { 
@@ -30,13 +30,13 @@ class cl_liclicitaeventodocumento {
                  l47_tipodocumento = varchar(3) = Tipo de Documento 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitaeventodocumento() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaeventodocumento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_liclicitaeventodocumento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l47_sequencial = ($this->l47_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["l47_sequencial"]:$this->l47_sequencial);
        $this->l47_liclicitaevento = ($this->l47_liclicitaevento == ""?@$GLOBALS["HTTP_POST_VARS"]["l47_liclicitaevento"]:$this->l47_liclicitaevento);
@@ -57,7 +57,7 @@ class cl_liclicitaeventodocumento {
      }
    }
    // funcao para Inclusão
-   function incluir ($l47_sequencial){ 
+   public function incluir ($l47_sequencial){ 
       $this->atualizacampos();
      if($this->l47_liclicitaevento == null ){ 
        $this->erro_sql = " Campo Eventos da Licitação não informado.";

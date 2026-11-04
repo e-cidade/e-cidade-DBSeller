@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clhabitcandidatofichasocioeconomica->rotulo->label("ht11_habitfichasocioeconomi
               <?=$Lht11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ht11_sequencial",10,$Iht11_sequencial,true,"text",4,"","chave_ht11_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clhabitcandidatofichasocioeconomica->rotulo->label("ht11_habitfichasocioeconomi
               <?=$Lht11_habitfichasocioeconomica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ht11_habitfichasocioeconomica",10,$Iht11_habitfichasocioeconomica,true,"text",4,"","chave_ht11_habitfichasocioeconomica");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clhabitcandidatofichasocioeconomica->rotulo->label("ht11_habitfichasocioeconomi
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habitcandidatofichasocioeconomica.php")==true){
@@ -122,12 +122,12 @@ $clhabitcandidatofichasocioeconomica->rotulo->label("ht11_habitfichasocioeconomi
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

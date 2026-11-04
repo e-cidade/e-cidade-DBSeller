@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ if(!isset($r24_mesusu) || (isset($r24_mesusu) && trim($r24_mesusu) == "")){
       <?=@$Lr24_regime?>
     </td>
     <td colspan="2"> 
-      <?
+      <?php
       $r24_progr = "  ";
       $r24_ano = "0";
       $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null,"*"));
@@ -59,12 +59,12 @@ if(!isset($r24_mesusu) || (isset($r24_mesusu) && trim($r24_mesusu) == "")){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr24_padrao?>">
-      <?
+      <?php
       db_ancora($Lr24_padrao,"js_pesquisar24_padrao(true)",($db_opcao == 1?1:3));
       ?>
     </td>
     <td colspan="2"> 
-      <?
+      <?php
       db_input('r24_padrao',10,$Ir24_padrao,true,'text',($db_opcao == 1?1:3),"onchange='js_pesquisar24_padrao(false);'");
       db_input('r02_descr',30,$Ir02_descr,true,'text',3,"");
       ?>
@@ -75,7 +75,7 @@ if(!isset($r24_mesusu) || (isset($r24_mesusu) && trim($r24_mesusu) == "")){
       <?=@$Lr24_descr?>
     </td>
     <td colspan="2"> 
-      <?
+      <?php
       db_input('r24_descr',43,$Ir24_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -85,7 +85,7 @@ if(!isset($r24_mesusu) || (isset($r24_mesusu) && trim($r24_mesusu) == "")){
       <?=@$Lr24_meses?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r24_meses',10,$Ir24_meses,true,'text',$db_opcao,"onchange='js_calculaano(this.value);'");
       ?>
     </td>
@@ -97,7 +97,7 @@ if(!isset($r24_mesusu) || (isset($r24_mesusu) && trim($r24_mesusu) == "")){
       <?=@$Lr24_perc?>
     </td>
     <td colspan="2"> 
-      <?
+      <?php
       db_input('r24_perc',10,$Ir24_perc,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -107,7 +107,7 @@ if(!isset($r24_mesusu) || (isset($r24_mesusu) && trim($r24_mesusu) == "")){
       <?=@$Lr24_valor?>
     </td>
     <td colspan="2"> 
-      <?
+      <?php
       db_input('r24_valor',10,$Ir24_valor,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -193,7 +193,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2,chave3,chave4){
   db_iframe_progress.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&chavepesquisa4='+chave4";
   }

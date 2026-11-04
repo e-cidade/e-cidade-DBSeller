@@ -1,4 +1,5 @@
 <?php
+
 /**
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -35,45 +36,46 @@ global $HTTP_SERVER_VARS;
 global $HTTP_POST_VARS;
 global $HTTP_GET_VARS;
 
-$HTTP_POST_VARS            = array();
-$HTTP_GET_VARS             = array();
+$HTTP_POST_VARS = array();
+$HTTP_GET_VARS  = array();
 
 ini_set("soap.wsdl_cache_enabled", "0");
 
+require_once(modification("bootstrap.php"));
 require_once(modification("libs/db_conn.php"));
 
-$HTTP_SESSION_VARS['DB_id_usuario'       ] = '1';
-$HTTP_SESSION_VARS['DB_login'            ] = 'dbseller';
-$HTTP_SESSION_VARS['DB_administrador'    ] = '1';
-$HTTP_SESSION_VARS['DB_ip'               ] = '127.0.0.1';
-$HTTP_SESSION_VARS['REQUEST_URI'         ] = '';
-$HTTP_SESSION_VARS['DB_configuracao_ok'  ] = '';
-$HTTP_SESSION_VARS['DB_acessado'         ] = '1325613';
-$HTTP_SESSION_VARS['DB_base'             ] = $DB_BASE;
-$HTTP_SESSION_VARS['DB_servidor'         ] = $DB_SERVIDOR;
-$HTTP_SESSION_VARS['DB_porta'            ] = $DB_PORTA;
-$HTTP_SESSION_VARS['DB_user'             ] = $DB_USUARIO;
-$HTTP_SESSION_VARS['DB_senha'            ] = $DB_SENHA;
-$HTTP_SESSION_VARS['DB_uol_hora'         ] = time();
-$HTTP_SESSION_VARS['DB_totalmodulos'     ] = '55';
-$HTTP_SESSION_VARS['DB_use_pcasp'        ] = 'f';
-$HTTP_SESSION_VARS['DB_Area'             ] = '1';
-$HTTP_SESSION_VARS['DB_modulo'           ] = '578';
-$HTTP_SESSION_VARS['DB_nome_modulo'      ] = 'Configurações';
-$HTTP_SESSION_VARS['DB_anousu'           ] =  date('Y', time());
-$HTTP_SESSION_VARS['DB_datausu'          ] = time();//
-$HTTP_SESSION_VARS['DB_coddepto'         ] = '1';
-$HTTP_SESSION_VARS['DB_nomedepto'        ] = 'COINF';
+$HTTP_SESSION_VARS['DB_id_usuario'] = '1';
+$HTTP_SESSION_VARS['DB_login'] = 'dbseller';
+$HTTP_SESSION_VARS['DB_administrador'] = '1';
+$HTTP_SESSION_VARS['DB_ip'] = '127.0.0.1';
+$HTTP_SESSION_VARS['REQUEST_URI'] = '';
+$HTTP_SESSION_VARS['DB_configuracao_ok'] = '';
+$HTTP_SESSION_VARS['DB_acessado'] = '1325613';
+$HTTP_SESSION_VARS['DB_base'] = $DB_BASE;
+$HTTP_SESSION_VARS['DB_servidor'] = $DB_SERVIDOR;
+$HTTP_SESSION_VARS['DB_porta'] = $DB_PORTA;
+$HTTP_SESSION_VARS['DB_user'] = $DB_USUARIO;
+$HTTP_SESSION_VARS['DB_senha'] = $DB_SENHA;
+$HTTP_SESSION_VARS['DB_uol_hora'] = time();
+$HTTP_SESSION_VARS['DB_totalmodulos'] = '55';
+$HTTP_SESSION_VARS['DB_use_pcasp'] = 'f';
+$HTTP_SESSION_VARS['DB_Area'] = '1';
+$HTTP_SESSION_VARS['DB_modulo'] = '578';
+$HTTP_SESSION_VARS['DB_nome_modulo'] = 'Configurações';
+$HTTP_SESSION_VARS['DB_anousu'] =  date('Y', time());
+$HTTP_SESSION_VARS['DB_datausu'] = time(); //
+$HTTP_SESSION_VARS['DB_coddepto'] = '1';
+$HTTP_SESSION_VARS['DB_nomedepto'] = 'COINF';
 $HTTP_SESSION_VARS['DB_itemmenu_acessado'] = '1576';
 $HTTP_SERVER_VARS['SERVER_NAME']           = $DB_SERVIDOR;
 $HTTP_SERVER_VARS['SERVER_ADDR']           = '127.0.0.1';
 $HTTP_SERVER_VARS['SERVER_PORT']           = '80';
-$HTTP_SERVER_VARS['REMOTE_ADDR']           = $_SERVER['REMOTE_ADDR'];//'127.0.0.1';
-$HTTP_SERVER_VARS['DOCUMENT_ROOT']         = '/var/www';
+$HTTP_SERVER_VARS['REMOTE_ADDR']           = $_SERVER['REMOTE_ADDR']; //'127.0.0.1';
+$HTTP_SERVER_VARS['DOCUMENT_ROOT']         = dirname(ECIDADE_PATH);
 $HTTP_SERVER_VARS['SERVER_ADMIN']          = 'webmaster@localhost';
-$HTTP_SERVER_VARS['SCRIPT_FILENAME']       = '/var/www/dbportal_prj/webservices/requisicao.webservice.php';
-$HTTP_SERVER_VARS['SCRIPT_NAME']           = '/var/www/dbportal_prj/webservices/requisicao.webservice.php';
-$HTTP_SERVER_VARS['PHP_SELF']              = 'dbportal_prj/webservices/requisicao.webservice.php';
+$HTTP_SERVER_VARS['SCRIPT_FILENAME']       = ECIDADE_PATH . 'webservices/requisicao.webservice.php';
+$HTTP_SERVER_VARS['SCRIPT_NAME']           = ECIDADE_PATH . 'webservices/requisicao.webservice.php';
+$HTTP_SERVER_VARS['PHP_SELF']              = basename(ECIDADE_PATH) . '/webservices/requisicao.webservice.php';
 $HTTP_SERVER_VARS['REQUEST_URI']           = '';
 $HTTP_SERVER_VARS['HTTP_HOST']             = 'localhost';
 
@@ -86,22 +88,23 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once("libs/db_autoload.php");
 
-$conn           = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA");
-$rsStartSession = pg_query("select fc_startsession()");
+$conx = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA");
+$iInstituicao = 1;
 
-$iInstituicao    = 1;
 /**
  * Define DB_instit para Instituição prefeitura
  * @todo  verificar possibilidade de utilizar via db_conecta
  */
-$sSqlInstituicao = "select codigo from db_config where prefeitura is true";
-if($conn){
+if ($conx != false) {
+    $sSqlInstituicao = "select codigo from db_config where prefeitura is true";
+    $rsStartSession  = pg_query($conx, "select fc_startsession()");
+    $rsInstituicao   = pg_query($conx, $sSqlInstituicao);
 
-  $rsInstituicao   = pg_query($sSqlInstituicao);
-  if($rsInstituicao){
-    $iInstituicao  = pg_fetch_result($rsInstituicao, 0, 'codigo');
-  }
+    if (pg_num_rows($rsInstituicao) > 0) {
+        $iInstituicao = pg_fetch_result($rsInstituicao, 0, 'codigo');
+    }
 }
+
 /**
  *
  */
@@ -113,9 +116,11 @@ $_POST                     = $HTTP_POST_VARS;
 $_GET                      = $HTTP_GET_VARS;
 
 require_once(modification("model/webservices/DBWebService.model.php"));
-
 require_once(modification("libs/db_conecta.php"));
-$oSoapServer = new SoapServer(null,
-                              array('uri' => 'http://localhost/dbportal_prj'));
+
+$oSoapServer = new SoapServer(
+    null,
+    array('uri' => 'http://localhost/' . basename(ECIDADE_PATH))
+);
 $oSoapServer->setClass("DBWebService");
 $oSoapServer->handle();

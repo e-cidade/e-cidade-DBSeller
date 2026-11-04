@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("ob01_nomeobra");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tob06_codobra?>">
-       <?
+       <?php
        db_ancora(@$Lob06_codobra,"js_pesquisaob06_codobra(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob06_codobra',10,$Iob06_codobra,true,'text',$db_opcao," onchange='js_pesquisaob06_codobra(false);'")
 ?>
-       <?
+       <?php
 db_input('ob01_nomeobra',55,$Iob01_nomeobra,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('ob01_nomeobra',55,$Iob01_nomeobra,true,'text',3,'')
        <?=@$Lob06_setor?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob06_setor',4,$Iob06_setor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ob06_setor',4,$Iob06_setor,true,'text',$db_opcao,"")
        <?=@$Lob06_quadra?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob06_quadra',4,$Iob06_quadra,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('ob06_quadra',4,$Iob06_quadra,true,'text',$db_opcao,"")
        <?=@$Lob06_lote?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob06_lote',4,$Iob06_lote,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obraslotei.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

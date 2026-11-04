@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,50 +55,92 @@ require_once(modification("dbforms/db_funcoes.php"));
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 
     <style>
-        fieldset {
-            box-sizing: border-box;
-            padding: 0 20px;
+        label, select {
             display: flex;
-            align-items: center;
-            width: 900px;
-            min-height: 100px;
-            text-align: left;
         }
-        fieldset.label, fieldset.select {
-            margin: 0;
-        } 
     </style>
-
 </head>
-<body>
-
-    <form action="" id="formulario" class="container">
-        <fieldset>
-            <legend>Parâmetros</legend>
-            <label for="" class="bold">Homologação automática:</label>
-            <select name="" id="ac59_automatica" class="form-control">
-                <option value="f">Não</option>
-                <option value="t">Sim</option>
-            </select>
-            <input type="hidden" name="ac59_sequencial" id="ac59_sequencial"/>
-        </fieldset>        
-        <button type="button" class="btn" id="btnSalvar">Salvar</button>
-    </form>
+<body class="body-default">
+    <div class="container">
+        <form action="" id="formulario">
+            <fieldset>
+                <legend>Parâmetros Globais</legend>
+                <table>
+                    <tr>
+                        <td>
+                            <label for="" class="bold">Homologação automática:</label>
+                        </td>
+                        <td>
+                            <select name="" id="ac59_homologacaoauto">
+                                <option value="f">Não</option>
+                                <option value="t">Sim</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="" class="bold">Exibe campo fiscal no cadastro de comissões:</label>
+                        </td>
+                        <td>
+                            <select name="" id="ac59_cadastrocomissoesfiscal">
+                                <option value="f">Não</option>
+                                <option value="t">Sim</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="" class="bold" title="Permite liquidação do empenho com ou sem aviso, ou não permite
+com aviso caso o contrato não encontra-se no portal LICITACON TCE/RS.">
+                                Valida Licitacon:
+                            </label>
+                        </td>
+                        <td>
+                            <select name="" id="ac59_validalicitacon">
+                                <option value="1">Permitir sem avisar</option>
+                                <option value="2">Permitir com aviso</option>
+                                <option value="3">Não permitir com aviso</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="bold" title="Define se a seleção de processos será por instituição ou global.">
+                                Seleciona processo por instituição:
+                            </label>
+                        </td>
+                        <td>
+                            <select name="" id="ac59_permiteporinstit">
+                                <option value="t">Sim</option>
+                                <option value="f">Não</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="hidden" name="ac59_sequencial" id="ac59_sequencial"/>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <input type="button" id="btnSalvar" value="Salvar"/>
+        </form>
+    </div>
 
     <script>
-        const RPC = 'ac4_homologacaoacordo.RPC.php';
+        const RPC = 'ac4_acordoparam.RPC.php';
 
-        const getParametrosConfigurados = async() => {        
-            const formData = new FormData();        
+        const getParametrosConfigurados = async() => {
+            const formData = new FormData();
             formData.append('exec', 'getParametrosConfigurados');
-            
+
             const parametros = {
                 body: formData,
                 reportMessage: `Aguarde, buscando parâmetros configurados.`
             }
 
             const retorno = await HttpClient.post(RPC, parametros);
-            
+
             if(retorno.erro) return;
 
             preencheFormulario(retorno);
@@ -117,14 +159,14 @@ require_once(modification("dbforms/db_funcoes.php"));
                         })
                     } else {
                         campo.value = dados[campo.id];
-                    }                
+                    }
                 }
             });
-        }        
+        }
         const salvarParametros = async () => {
             const elementos = document.getElementById('formulario').elements;
             const formData = new FormData();
-            const ac59_automatica = formulario.ac59_automatica.value == 1 ? 't' : 'f';
+            const ac59_homologacaoauto = formulario.ac59_homologacaoauto.value == 1 ? 't' : 'f';
 
             formData.append('exec', 'salvarParametrosHomologacao');
             Array.from(elementos).map(campo => formData.append(campo.id, campo.value));
@@ -136,19 +178,23 @@ require_once(modification("dbforms/db_funcoes.php"));
 
             const retorno = await HttpClient.post(RPC, parametros);
 
-            if(retorno.erro) alert('Não foi possível salvar no banco de dados.');
-            
-            alert('Parâmetros salvos com sucesso.');
-            
+            if(retorno.erro) {
+                alert(retorno.message.urlDecode());
+            } else {
+                alert('Parâmetros salvos com sucesso.');
+            }
         }
         const configuraEventListeners = () => {
             const btnSalvar = document.getElementById('btnSalvar');
             btnSalvar.addEventListener('click', salvarParametros)
         }
-        
-        const init = () => {
-            getParametrosConfigurados();
+        const modificarValorBotao = () => {
+            document.getElementById('btnSalvar').value = 'Salvar';
+        }
+        const init = async () => {
+            await getParametrosConfigurados();
             configuraEventListeners();
+            modificarValorBotao();
         }
 
         init();

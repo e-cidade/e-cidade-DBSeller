@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -152,12 +152,12 @@ if(isset($oPost->excluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
-		<?
+		<?php
 		  include(modification("forms/db_frmprocjur.php"));
 		?>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->excluir)){
 	
   if($clprocjur->erro_status=="0"){

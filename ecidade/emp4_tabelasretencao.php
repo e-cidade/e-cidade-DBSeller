@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -114,7 +114,7 @@ echo pg_last_error();
         <th class='table_header'>Dedução</th>
         <th class='table_header'>Aliquota</th>
       </tr>  
-               <?
+               <?php
                foreach ($aTabelaIrrf as $oRetencao) {
 
                  echo "<tr>";
@@ -140,7 +140,7 @@ echo pg_last_error();
         <th class='table_header'>Dedução</th>
         <th class='table_header'>Aliquota</th>
       </tr>  
-               <?
+               <?php
                foreach ($aTabelaINSS as $oRetencao) {
 
                  echo "<tr>";

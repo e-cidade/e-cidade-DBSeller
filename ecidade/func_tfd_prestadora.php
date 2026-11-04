@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrotulo->label("z01_nome");
               <?=$Ltf25_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tf25_i_codigo",10,$Itf25_i_codigo,true,"text",4,"","chave_tf25_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_nome",40,@$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         /*if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tfd_prestadora.php")==true){
@@ -125,12 +125,12 @@ $clrotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

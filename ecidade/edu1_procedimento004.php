@@ -96,4 +96,4 @@ if (isset($codigo)) {
   </table>
   </body>
   </html>
-<?}?>
+<?php } ?>

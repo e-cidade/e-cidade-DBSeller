@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ if (isset($excluir)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      ='mer1_mer_infnutricional001.php?me10_i_codigo=<?=$me10_i_codigo?>'+
                                            '&me10_c_descr=<?=$me10_c_descr?>';
   </script>
- <?
+ <?php
  
 }
 ?>
@@ -91,7 +91,7 @@ if (isset($excluir)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Exclusão Item</b></legend>
-	<? include(modification("forms/db_frmmer_item.php"));?>
+	<?php include(modification("forms/db_frmmer_item.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -99,7 +99,7 @@ if (isset($excluir)) {
 </center>
 </body>
 </html>
-<?    
+<?php    
 if (isset($excluir)) {
 	
   if ($clmer_item->erro_status=="0") {

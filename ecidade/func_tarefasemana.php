@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltarefasemana->rotulo->label("at19_descr");
               <?=$Lat19_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at19_sequencial",8,$Iat19_sequencial,true,"text",4,"","chave_at19_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltarefasemana->rotulo->label("at19_descr");
               <?=$Lat19_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at19_descr",40,$Iat19_descr,true,"text",4,"","chave_at19_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltarefasemana->rotulo->label("at19_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefasemana.php")==true){
@@ -122,12 +122,12 @@ $cltarefasemana->rotulo->label("at19_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

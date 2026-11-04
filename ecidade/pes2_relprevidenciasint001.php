@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -93,12 +93,12 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -109,7 +109,7 @@ function js_emite(){
         <strong>Tabela de Previdência :&nbsp;&nbsp;</strong>
         </td>
         <td>
-         <?
+         <?php
 	 $sql = "select distinct (cast(r33_codtab as integer) - 2) as r33_codtab, 
                                                      r33_nome 
            from inssirf 
@@ -126,7 +126,7 @@ function js_emite(){
         <td align="right"><strong>Tipo de Folha :</strong>
         </td>
         <td>
-          <?
+          <?php
           $arr_folha = array("r14"=>"Salário", "r35"=>"13o. Salário","r48"=>"Complementar","r20"=>"Rescisão",);
           db_select('folha',$arr_folha,true,4);
           ?>
@@ -137,7 +137,7 @@ function js_emite(){
     <strong>Vínculo:</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_vinculo = array("T"=>"Todos", "A"=>"Ativos", "I"=>"Inativos","P"=>"Pensionistas","IP"=>"Inativos/Pensionistas");
       db_select('vinculo', $arr_vinculo, true, 4);
       ?>
@@ -147,7 +147,7 @@ function js_emite(){
         <td align="right"><strong>Ordem :</strong>
         </td>
         <td>
-          <?
+          <?php
           $arr_ordem = array("A"=>"Alfabética", "N"=>"Numérica");
           db_select('ordem',$arr_ordem,true,4);
           ?>
@@ -157,7 +157,7 @@ function js_emite(){
         <td align="right"><strong>Imprimir Sem Base :</strong>
         </td>
         <td>
-          <?
+          <?php
           $arr_sembase = array("N"=>"Não", "S"=>"Sim");
           db_select('sembase',$arr_sembase,true,4);
           ?>
@@ -175,7 +175,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

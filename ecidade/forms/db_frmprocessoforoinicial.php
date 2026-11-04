@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,10 +56,10 @@ if (isset($oPost->db_opcaoal)) {
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tv71_inicial?>">
-          <?
+          <?php
             db_ancora('<b>Número Inicial:</b>',"js_pesquisav71_inicial(true);",$db_opcao);
           ?>
-          <?
+          <?php
             db_input('v71_sequencial',10,$Iv71_sequencial,true,'hidden',3);
             db_input('v71_processoforo',10,$Iv71_processoforo,true,'hidden',3);
             db_input('v71_inicial',10,$Iv71_inicial,true,'text',$db_opcao," onchange='js_pesquisav71_inicial(false);'");
@@ -77,7 +77,7 @@ if (isset($oPost->db_opcaoal)) {
   <table class="form-container">
     <tr>
       <td valign="top"  align="center">  
-        <?
+        <?php
           $chavepri= array("v71_sequencial"=>@$v71_sequencial);
           
           $sWhere                  = "v71_processoforo = ".@$v71_processoforo." and v71_anulado is false   ";

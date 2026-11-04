@@ -97,7 +97,7 @@ class HistoricoCalculoAnualRepository extends \BaseClassRepository
         }
 
         krsort($oCalculosAgrupados);
-
+        //dd($oCalculosAgrupados);
         return $oCalculosAgrupados;
     }
 
@@ -120,7 +120,11 @@ class HistoricoCalculoAnualRepository extends \BaseClassRepository
                                      AND x.j157_iptucalclog = iptucalvold.j157_iptucalclog
                                      AND x.j157_codhis = iptucalhconf.j89_codhis)
                             ELSE 0
-                        END AS valorisen
+                        END AS valorisen,
+                        CASE
+                            WHEN j223_gerafinanc THEN 'Sim'
+                            ELSE 'Não'
+                        end as gerafinanc
                   FROM iptucalcold  
                  INNER JOIN iptucalvold ON j223_iptucalclog = j157_iptucalclog
                  INNER JOIN iptucalh ON iptucalh.j17_codhis = j157_codhis
@@ -151,7 +155,11 @@ class HistoricoCalculoAnualRepository extends \BaseClassRepository
                                      AND x.j158_iptucalclog = iptutaxacalvold.j158_iptucalclog
                                      AND x.j158_codhis = iptucalhconf.j89_codhis)
                             ELSE 0
-                        END AS valorisen
+                        END AS valorisen,
+                        CASE
+                            WHEN j223_gerafinanc THEN 'Sim'
+                            ELSE 'Não'
+                        end as gerafinanc
                   FROM iptucalcold  
                  INNER JOIN iptutaxacalvold ON j223_iptucalclog = j158_iptucalclog
                  INNER JOIN iptutaxanumpold ON j158_iptucalclog = j159_iptucalclog

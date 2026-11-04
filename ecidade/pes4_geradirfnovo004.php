@@ -34,11 +34,11 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 db_postmemory($HTTP_POST_VARS);
 global $db_config;
-db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));
+db_selectmax("db_config", "select lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));
 
-if(trim($db_config[0]["cgc"]) == "90940172000138"){
+if (trim($db_config[0]["cgc"]) == "90940172000138") {
      $d08_carnes = "daeb";
-}else{
+} else {
      $d08_carnes = $db_config[0]["d08_carnes"];
 }
 $db_opcao = 1;
@@ -86,7 +86,8 @@ $clrotulo->label("rh50_oid");
       if(document.form1.pref_fun){
         qry += '&pref_fun=' + document.form1.pref_fun.value;
       }
-      js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_geradirf','pes4_geradirf002.php?'+qry,'Gerando Arquivo',true);
+      js_OpenJanelaIframe('CurrentWindow.corpo',
+          'db_iframe_geradirf','pes4_geradirf002.php?'+qry,'Gerando Arquivo',true);
     }
 
     function js_erro(msg){
@@ -133,9 +134,9 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              $aTipoProcessamento = array("1" => "Geral", "2" => "Selecionados");
-              db_select("iTipoProcessamento", $aTipoProcessamento, true, 1, "onchange='return js_tipoProcessamento();' style='width: 100%;'");
-              ?>
+                $aTipoProcessamento = array("1" => "Geral", "2" => "Selecionados");
+                db_select("iTipoProcessamento", $aTipoProcessamento, true, 1, "onchange='return js_tipoProcessamento();' style='width: 100%;'");
+                ?>
             </td>
             <td>
               Somente Valores Acima de <span id="valor_minimo"></span>:
@@ -143,9 +144,9 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              $arr_acima = array("S"=>"Sim","N"=>"Não");
-              db_select('acima6000',$arr_acima,true,4,"");
-              ?>
+                $arr_acima = array("S"=>"Sim","N"=>"Não");
+                db_select('acima6000', $arr_acima, true, 4, "");
+                ?>
             </td>
           </tr>
         </table>
@@ -161,8 +162,8 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_select('ano_base',array(),true,4,'onChange="js_buscaValor()"');
-              ?>
+                db_select('ano_base', array(), true, 4, 'onChange="js_buscaValor()"');
+                ?>
             </td>
           </tr>
           <tr >
@@ -171,9 +172,9 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              $xy = array("O"=>"Original","R"=>"Retificadora");
-              db_select('oriret',$xy,true,4,"");
-              ?>
+                $xy = array("O"=>"Original","R"=>"Retificadora");
+                db_select('oriret', $xy, true, 4, "");
+                ?>
             </td>
           </tr>
           <tr id='recibo'>
@@ -182,8 +183,8 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_input('numerorecibo', 10, 1, true, 'text', 2, '');
-              ?>
+                db_input('numerorecibo', 10, 1, true, 'text', 2, '');
+                ?>
             </td>
           </tr>
         </table>
@@ -198,8 +199,8 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_input('nomeresp',40,'',true,'text',2,'');
-              ?>
+                db_input('nomeresp', 40, '', true, 'text', 2, '');
+                ?>
             </td>
           </tr>
           <tr>
@@ -208,8 +209,8 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_input('cpfresp', 11, '', true, 'text', 2," onBlur='js_verificaCGCCPF(this)' onKeyDown='return js_controla_tecla_enter(this,event);'", null, null, null, 11);
-              ?>
+                db_input('cpfresp', 11, '', true, 'text', 2, " onBlur='js_verificaCGCCPF(this)' onKeyDown='return js_controla_tecla_enter(this,event);'", null, null, null, 11);
+                ?>
             </td>
           </tr>
           <tr>
@@ -218,8 +219,8 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_input('dddresp', 2, 1, true, 'text', 2, '', null, null, null, 2);
-              ?>
+                db_input('dddresp', 2, 1, true, 'text', 2, '', null, null, null, 2);
+                ?>
             </td>
           </tr>
           <tr>
@@ -228,8 +229,8 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_input('foneresp', 10, 1, true, 'text', 2, '', null, null, null, 9);
-              ?>
+                db_input('foneresp', 10, 1, true, 'text', 2, '', null, null, null, 9);
+                ?>
             </td>
           </tr>
           <tr>
@@ -238,8 +239,8 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_input('cpfrespcnpj', 11, '', true, 'text', 2, " onBlur='js_verificaCGCCPF(this)' onKeyDown='return js_controla_tecla_enter(this,event);'", null, null, null, 11);
-              ?>
+                db_input('cpfrespcnpj', 11, '', true, 'text', 2, " onBlur='js_verificaCGCCPF(this)' onKeyDown='return js_controla_tecla_enter(this,event);'", null, null, null, 11);
+                ?>
             </td>
           </tr>
         </table>
@@ -251,45 +252,45 @@ $clrotulo->label("rh50_oid");
         </legend>
         <table class="form-container">
           <tr>
-            <td title="<?=$Trh01_numcgm?>">
+            <td title="<?php echo $Trh01_numcgm?>">
               <?php
-              db_ancora($Lrh01_numcgm,"js_pesquisarh01_numcgm(true);",$db_opcao);
-              ?>
+                db_ancora($Lrh01_numcgm, "js_pesquisarh01_numcgm(true);", $db_opcao);
+                ?>
             </td>
             <td>
               <?php
-              db_input('rh01_numcgm',6,$Irh01_numcgm,true,'text',$db_opcao,"onchange='js_pesquisarh01_numcgm(false);' tabIndex='1'","cgm_saude1");
-              db_input('z01_nome',33,$Iz01_nome,true,'text',3,'',"nome_saude1");
-              ?>
+                db_input('rh01_numcgm', 6, $Irh01_numcgm, true, 'text', $db_opcao, "onchange='js_pesquisarh01_numcgm(false);' tabIndex='1'", "cgm_saude1");
+                db_input('z01_nome', 33, $Iz01_nome, true, 'text', 3, '', "nome_saude1");
+                ?>
             </td>
             <td title="ANS" >
               ANS:
             </td>
             <td>
               <?php
-              db_input('numeroans1',10,'',true,'text',2,'', '', '', '', 6);
-              ?>
+                db_input('numeroans1', 10, '', true, 'text', 2, '', '', '', '', 6);
+                ?>
             </td>
           </tr>
           <tr>
-            <td title="<?=$Trh01_numcgm?>">
+            <td title="<?php echo $Trh01_numcgm?>">
               <?php
-              db_ancora($Lrh01_numcgm,"js_pesquisarh01_numcgm_1(true);",$db_opcao);
-              ?>
+                db_ancora($Lrh01_numcgm, "js_pesquisarh01_numcgm_1(true);", $db_opcao);
+                ?>
             </td>
             <td>
               <?php
-              db_input('rh01_numcgm',6,$Irh01_numcgm,true,'text',$db_opcao,"onchange='js_pesquisarh01_numcgm_1(false);' tabIndex='2'","cgm_saude2");
-              db_input('z01_nome',33,$Iz01_nome,true,'text',3,'',"nome_saude2");
-              ?>
+                db_input('rh01_numcgm', 6, $Irh01_numcgm, true, 'text', $db_opcao, "onchange='js_pesquisarh01_numcgm_1(false);' tabIndex='2'", "cgm_saude2");
+                db_input('z01_nome', 33, $Iz01_nome, true, 'text', 3, '', "nome_saude2");
+                ?>
             </td>
             <td title="ANS">
               ANS:
             </td>
             <td>
               <?php
-              db_input('numeroans2',10,'',true,'text',2,'', '', '', '', 6);
-              ?>
+                db_input('numeroans2', 10, '', true, 'text', 2, '', '', '', '', 6);
+                ?>
             </td>
           </tr>
         </table>
@@ -299,19 +300,18 @@ $clrotulo->label("rh50_oid");
         <legend>Informações Financeiras</legend>
         <table class="form-container">
           <tr>
-            <td title="<?=$Trh01_numcgm?>">
+            <td title="<?php echo $Trh01_numcgm?>">
               Buscar Pagamentos Efetuados na Contabilidade:
             </td>
             <td>
               <?php
-              $arr = array('s' => 'Sim','n'=>'Não');
-              db_select("dadosfinanceiros",$arr,true,$db_opcao,"");
-              ?>
+                $arr = array('s' => 'Sim','n'=>'Não');
+                db_select("dadosfinanceiros", $arr, true, $db_opcao, "");
+                ?>
             </td>
           </tr>
         </table>
       </fieldset>
-
 
       <fieldset>
         <legend>CNPJ</legend>
@@ -323,288 +323,324 @@ $clrotulo->label("rh50_oid");
             <td>
               <?php
 
-		            $instit = db_getsession("DB_instit");
+                $instit = db_getsession("DB_instit");
 
-		            $sSqlUnidades  = "select distinct  o41_cnpj,                                                     ";
-		            $sSqlUnidades .= "       case when o41_cnpj = cgc then nomeinst else o41_descr end as nome_fundo ";
-		            $sSqlUnidades .= "  from orcunidade                                                              ";
-		            $sSqlUnidades .= "       inner join orcorgao  on o41_orgao  = o40_orgao                          ";
-		            $sSqlUnidades .= "                           and o40_anousu = o41_anousu                         ";
-		            $sSqlUnidades .= "       inner join db_config on codigo     = o41_instit                         ";
-		            $sSqlUnidades .= " where o41_instit = {$instit}                                                  ";
-		            $sSqlUnidades .= "   and o41_anousu = ".db_getsession("DB_anousu");
-		            $result = db_query($sSqlUnidades);
+                $sSqlUnidades  = "select distinct  o41_cnpj,                                                     ";
+                $sSqlUnidades .= "       case when o41_cnpj = cgc then nomeinst else o41_descr end as nome_fundo ";
+                $sSqlUnidades .= "  from orcunidade                                                              ";
+                $sSqlUnidades .= "       inner join orcorgao  on o41_orgao  = o40_orgao                          ";
+                $sSqlUnidades .= "                           and o40_anousu = o41_anousu                         ";
+                $sSqlUnidades .= "       inner join db_config on codigo     = o41_instit                         ";
+                $sSqlUnidades .= " where o41_instit = {$instit}                                                  ";
+                $sSqlUnidades .= "   and o41_anousu = ".db_getsession("DB_anousu");
+                $result = db_query($sSqlUnidades);
                 if (!$result) {
-                  db_msgbox("Erro ao buscar as unidades.");
+                    db_msgbox("Erro ao buscar as unidades.");
                 }
-		            db_selectrecord("cnpjpagador", $result, true, $db_opcao, " rel='ignore-css' ", "", "", "", " js_verificaProcessamento(); return js_tipoProcessamento()", "2");
-              ?>
+                    db_selectrecord("cnpjpagador", $result, true, $db_opcao, " rel='ignore-css' ", "", "", "", " js_verificaProcessamento(); return js_tipoProcessamento()", "2");
+                ?>
             </td>
           </tr>
         </table>
       </fieldset>
 
       <input  name="gera" id="gera" type="button" value="Gerar DIRF" onclick="return js_emitirDirf();">
+      <br><br><br>
+      <table>
+          <tr>
+              <td>
+                  <label for="timeini" class="bold">Início da geração: </label>
+              </td>
+              <td>
+                  <input name="timeini" id="timeini" type="text" style="text-align:center;" size="15" disabled>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <label for="timefim" class="bold">Fim da geração: </label>
+              </td>
+              <td>
+                  <input name="timefim" id="timefim" type="text" style="text-align:center;" size="15" disabled>
+              </td>
+          </tr>
+      </table>
   </form>
 
 </body>
 </html>
 <script type="text/javascript">
 
-var sRpc        = 'pes4_rhdirfparametros.RPC.php';
-const MENSAGENS = 'recursoshumanos.pessoal.geradirfnovo.'
-js_carregaAnoBase();
+    var sRpc        = 'pes4_rhdirfparametros.RPC.php';
+    const MENSAGENS = 'recursoshumanos.pessoal.geradirfnovo.'
+    js_carregaAnoBase();
 
-/**
- * CArrega todos os anos cadastrados na tabela rhdifparametros.
- */
-function js_carregaAnoBase() {
+    /**
+     * CArrega todos os anos cadastrados na tabela rhdifparametros.
+     */
+    function js_carregaAnoBase() {
 
-  var oAjax = new Ajax.Request(sRpc, {
-                                method:'post',
-                                parameters:'json={"exec": "getAnos"}',
-                                onComplete: function (oAjax){
+        var oAjax = new Ajax.Request(sRpc, {
+            method:'post',
+            parameters:'json={"exec": "getAnos"}',
+            onComplete: function (oAjax){
 
-                                  var oRetorno = JSON.parse(oAjax.responseText);
+                var oRetorno = JSON.parse(oAjax.responseText);
 
-                                  if (oRetorno.iStatus == 2) {
+                if (oRetorno.iStatus == 2) {
 
-                                    alert(oRetorno.sMessage.urlDecode());
-                                    return false;
-                                  }
+                    alert(oRetorno.sMessage.urlDecode());
+                    return false;
+                }
 
-                                  oRetorno.oDados.each(function(sAno){
+                oRetorno.oDados.each(function(sAno){
 
-                                    var oOption   = document.createElement('option');
-                                    oOption.value = sAno;
-                                    oOption.text  = sAno;
-                                    $('ano_base').appendChild(oOption);
-                                  })
+                    var oOption   = document.createElement('option');
+                    oOption.value = sAno;
+                    oOption.text  = sAno;
+                    $('ano_base').appendChild(oOption);
+                })
 
-                                  js_buscaValor();
-                                }
-                              });
-}
-
-/**
- * Busca os valores a partir do ano base selecionado.
- */
-function js_buscaValor() {
-
-  var iAno = $F('ano_base');
-
-  var oAjax = new Ajax.Request(sRpc, {
-                                method:'post',
-                                parameters:'json={"exec": "getValorAno", "iAno": ' + iAno + '}',
-                                onComplete: function (oAjax){
-
-                                  var oRetorno = JSON.parse(oAjax.responseText);
-                                  $('valor_minimo').innerHTML = oRetorno.iValor;
-                                  $('codigo_arquivo').value   = oRetorno.sCodigoArquivo;
-
-                                  js_verificaProcessamento();
-                                }
-                              });
-}
-
-function js_verificaProcessamento() {
-  var oParam = {
-    exec           : "verificaProcessamento",
-    iAno           : $F('ano_base'),
-    sFontePagadora : $F('cnpjpagador')
-  }
-
-  new Ajax.Request("pes4_processardirf.RPC.php", {
-                                method:'post',
-                                parameters:'json=' + Object.toJSON(oParam),
-                                onComplete: function (oAjax){
-
-                                  var oRetorno = JSON.parse( oAjax.responseText.urlDecode() );
-
-                                  if (oRetorno.iStatus != 2 && oRetorno.lProcessado == false) {
-                                    alert( _M( MENSAGENS + "nao_processado") );
-                                  }
-                                }
-                              });
-}
-
-$('numerorecibo').maxLength = 12;
-
-function js_pesquisarh01_numcgm(mostra){
-  if(mostra==true){
-    js_OpenJanelaIframe('',
-                        'func_nome',
-                        'func_nome.php?testanome=true&funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
-  } else {
-    if (document.form1.cgm_saude1.value != '') {
-
-      js_OpenJanelaIframe('',
-                          'func_nome',
-                          'func_nome.php?testanome=true&pesquisa_chave='+
-                          document.form1.cgm_saude1.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
-    }else{
-      document.form1.nome_saude1.value = '';
+                js_buscaValor();
+            }
+        });
     }
-  }
-}
 
-function js_mostracgm(erro,chave1,chave2) {
+    /**
+     * Busca os valores a partir do ano base selecionado.
+     */
+    function js_buscaValor() {
 
-  document.form1.nome_saude1.value = chave1;
+        var iAno = $F('ano_base');
 
-  if (erro == true) {
-    document.form1.cgm_saude1.focus();
-    document.form1.cgm_saude1.value = '';
-  }
-}
+        var oAjax = new Ajax.Request(sRpc, {
+            method:'post',
+            parameters:'json={"exec": "getValorAno", "iAno": ' + iAno + '}',
+            onComplete: function (oAjax){
 
-function js_mostracgm1(chave1,chave2){
+                var oRetorno = JSON.parse(oAjax.responseText);
+                $('valor_minimo').innerHTML = oRetorno.iValor;
+                $('codigo_arquivo').value   = oRetorno.sCodigoArquivo;
 
-  document.form1.cgm_saude1.value = chave1;
-  document.form1.nome_saude1.value = chave2;
-  func_nome.hide();
-}
-
-function js_pesquisarh01_numcgm_1(mostra){
-  if(mostra==true){
-    js_OpenJanelaIframe('',
-                        'func_nome',
-                        'func_nome.php?testanome=true&funcao_js=parent.js_mostracgm1_1|z01_numcgm|z01_nome','Pesquisa',true);
-  } else {
-    if (document.form1.cgm_saude2.value != '') {
-
-      js_OpenJanelaIframe('',
-                          'func_nome',
-                          'func_nome.php?testanome=true&pesquisa_chave='+
-                          document.form1.cgm_saude2.value+'&funcao_js=parent.js_mostracgm_1','Pesquisa',false);
-    }else{
-      document.form1.nome_saude2.value = '';
+                js_verificaProcessamento();
+            }
+        });
     }
-  }
-}
 
-function js_mostracgm_1(erro,chave1,chave2) {
+    function js_verificaProcessamento() {
+        var oParam = {
+            exec           : "verificaProcessamento",
+            iAno           : $F('ano_base'),
+            sFontePagadora : $F('cnpjpagador')
+        }
 
-  document.form1.nome_saude2.value = chave1;
+        if ($F('cnpjpagador').trim().length < 14) {
+            var sMsg = 'Unidade sem CNPJ cadastrado, verique em Orçamento > Cadastros > Unidades > Alteração';
+            alert(sMsg);
+            return;
+        }
+        new Ajax.Request("pes4_processardirf.RPC.php", {
+            method:'post',
+            parameters:'json=' + Object.toJSON(oParam),
+            onComplete: function (oAjax){
 
-  if (erro == true) {
-    document.form1.cgm_saude2.focus();
-    document.form1.cgm_saude2.value = '';
-  }
-}
+                var oRetorno = JSON.parse( oAjax.responseText.urlDecode() );
 
-function js_mostracgm1_1(chave1,chave2){
+                if (oRetorno.iStatus != 2 && oRetorno.lProcessado == false) {
+                    alert( _M( MENSAGENS + "nao_processado") );
+                }
+            }
+        });
+    }
 
-  document.form1.cgm_saude2.value = chave1;
-  document.form1.nome_saude2.value = chave2;
-  func_nome.hide();
-}
+    $('numerorecibo').maxLength = 12;
 
-function js_tipoProcessamento() {
+    function js_pesquisarh01_numcgm(mostra){
+        if(mostra == true){
+            js_OpenJanelaIframe('',
+                'func_nome',
+                'func_nome.php?testanome=true&funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome',
+                'Pesquisa',true);
+        } else {
+            if (document.form1.cgm_saude1.value != '') {
 
-  var iTipoProcessamento = new Number($('iTipoProcessamento').value);
-  if (iTipoProcessamento == 2) {
+                js_OpenJanelaIframe('',
+                    'func_nome',
+                    'func_nome.php?testanome=true&pesquisa_chave='+
+                    document.form1.cgm_saude1.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
+            }else{
+                document.form1.nome_saude1.value = '';
+            }
+        }
+    }
 
-    parent.document.formaba.geradirf.disabled     = false;
-    parent.document.formaba.selecionados.disabled = false;
-    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_selecionados.js_montaGrid();
-    parent.mo_camada('selecionados');
-  } else {
+    function js_mostracgm(erro,chave1,chave2) {
 
-    parent.document.formaba.geradirf.disabled     = true;
-    parent.document.formaba.selecionados.disabled = true;
-    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_selecionados.js_montaGrid();
-    parent.mo_camada('geradirf');
-  }
-}
+        document.form1.nome_saude1.value = chave1;
 
-function js_emitirDirf() {
+        if (erro == true) {
+            document.form1.cgm_saude1.focus();
+            document.form1.cgm_saude1.value = '';
+        }
+    }
 
-  if ($('ano_base').value == ''){
+    function js_mostracgm1(chave1,chave2){
 
-    alert(_M(MENSAGENS+'ano_base_invalido'));
-    return false;
-  }
+        document.form1.cgm_saude1.value = chave1;
+        document.form1.nome_saude1.value = chave2;
+        func_nome.hide();
+    }
 
-  if ($F('nomeresp').trim().length < 4){
+    function js_pesquisarh01_numcgm_1(mostra){
+        if(mostra == true){
+            js_OpenJanelaIframe('',
+                'func_nome',
+                'func_nome.php?testanome=true&funcao_js=parent.js_mostracgm1_1|z01_numcgm|z01_nome',
+                'Pesquisa',true);
+        } else {
+            if (document.form1.cgm_saude2.value != '') {
 
-    $('nomeresp').value = $F('nomeresp').trim();
-    alert(_M(MENSAGENS+'nome_invalido'));
-    return false;
-  }
+                js_OpenJanelaIframe('',
+                    'func_nome',
+                    'func_nome.php?testanome=true&pesquisa_chave='+
+                    document.form1.cgm_saude2.value+'&funcao_js=parent.js_mostracgm_1','Pesquisa',false);
+            }else{
+                document.form1.nome_saude2.value = '';
+            }
+        }
+    }
 
-  if($F('cpfrespcnpj').length < 11){
+    function js_mostracgm_1(erro,chave1,chave2) {
 
-    alert(_M(MENSAGENS+'cpf_invalido'));
-    return false;
-  }
+        document.form1.nome_saude2.value = chave1;
 
-  if($F('dddresp').length < 2){
+        if (erro == true) {
+            document.form1.cgm_saude2.focus();
+            document.form1.cgm_saude2.value = '';
+        }
+    }
 
-    alert(_M(MENSAGENS+'ddd_invalido'));
-    return false;
-  }
+    function js_mostracgm1_1(chave1,chave2){
 
-  if($F('foneresp').length < 8){
+        document.form1.cgm_saude2.value = chave1;
+        document.form1.nome_saude2.value = chave2;
+        func_nome.hide();
+    }
 
-    alert(_M(MENSAGENS+'fone_invalido'));
-    return false;
-  }
+    function js_tipoProcessamento() {
 
-  if($F('cpfrespcnpj').length < 11){
+        var iTipoProcessamento = new Number($('iTipoProcessamento').value);
+        if (iTipoProcessamento == 2) {
 
-    alert(_M(MENSAGENS+'cpfresponsavel_invalido'));
-    return false;
-  }
+            parent.document.formaba.geradirf.disabled     = false;
+            parent.document.formaba.selecionados.disabled = false;
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_selecionados.js_montaGrid();
+            parent.mo_camada('selecionados');
+        } else {
 
-  var oParam  = new Object();
-  oParam.exec = 'gerarDirf';
-  oParam.iAno                   = $F('ano_base');
-  oParam.iValor                 = $('valor_minimo').textContent.replace(/[^0-9\,]/g, '').replace(',', '.');
-  oParam.sCodigoArquivo         = $F('codigo_arquivo');
-  oParam.TipoDeclaracao         = $F('oriret');
-  oParam.iNumeroRecibo          = $F('numerorecibo');
-  oParam.sNomeResponsavel       = tagString(encodeURIComponent($F('nomeresp')));
-  oParam.sCpfResponsavelCNPJ    = $F('cpfrespcnpj');
-  oParam.sDDDResponsavel        = $F('dddresp');
-  oParam.sFoneResponsavel       = $F('foneresp');
-  oParam.sCpfResponsavel        = $F('cpfresp');
-  oParam.iCcgmSaude             = $F('cgm_saude1');
-  oParam.iNumeroANS             = $F('numeroans1');
-  oParam.iCcgmSaude2            = $F('cgm_saude2');
-  oParam.iNumeroANS2            = $F('numeroans2');
-  oParam.lProcessaEmpenho       = $F('dadosfinanceiros')=='s'?true:false;
-  oParam.sCnpj                  = $F('cnpjpagador');
-  oParam.sAcima6000             = $F('acima6000');
-  oParam.aMatriculaSelecionadas = (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_selecionados.js_retornaMatriculasSelecionados();
+            parent.document.formaba.geradirf.disabled     = true;
+            parent.document.formaba.selecionados.disabled = true;
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_selecionados.js_montaGrid();
+            parent.mo_camada('geradirf');
+        }
+    }
+
+    function js_emitirDirf() {
+
+        if ($('ano_base').value == ''){
+
+            alert(_M(MENSAGENS+'ano_base_invalido'));
+            return false;
+        }
+
+        if ($F('nomeresp').trim().length < 4){
+
+            $('nomeresp').value = $F('nomeresp').trim();
+            alert(_M(MENSAGENS+'nome_invalido'));
+            return false;
+        }
+
+        if($F('cpfrespcnpj').length < 11){
+
+            alert(_M(MENSAGENS+'cpf_invalido'));
+            return false;
+        }
+
+        if($F('dddresp').length < 2){
+
+            alert(_M(MENSAGENS+'ddd_invalido'));
+            return false;
+        }
+
+        if($F('foneresp').length < 8){
+
+            alert(_M(MENSAGENS+'fone_invalido'));
+            return false;
+        }
+
+        if($F('cpfrespcnpj').length < 11){
+
+            alert(_M(MENSAGENS+'cpfresponsavel_invalido'));
+            return false;
+        }
+
+        var oParam  = new Object();
+        oParam.exec = 'gerarDirf';
+        oParam.iAno                   = $F('ano_base');
+        oParam.iValor                 = $('valor_minimo').textContent.replace(/[^0-9\,]/g, '').replace(',', '.');
+        oParam.sCodigoArquivo         = $F('codigo_arquivo');
+        oParam.TipoDeclaracao         = $F('oriret');
+        oParam.iNumeroRecibo          = $F('numerorecibo');
+        oParam.sNomeResponsavel       = tagString(encodeURIComponent($F('nomeresp')));
+        oParam.sCpfResponsavelCNPJ    = $F('cpfrespcnpj');
+        oParam.sDDDResponsavel        = $F('dddresp');
+        oParam.sFoneResponsavel       = $F('foneresp');
+        oParam.sCpfResponsavel        = $F('cpfresp');
+        oParam.iCcgmSaude             = $F('cgm_saude1');
+        oParam.iNumeroANS             = $F('numeroans1');
+        oParam.iCcgmSaude2            = $F('cgm_saude2');
+        oParam.iNumeroANS2            = $F('numeroans2');
+        oParam.lProcessaEmpenho       = $F('dadosfinanceiros')=='s'?true:false;
+        oParam.sCnpj                  = $F('cnpjpagador');
+        oParam.sAcima6000             = $F('acima6000');
+        oParam.iInstituicao           = 1;
+        oParam.aMatriculaSelecionadas = (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_selecionados.js_retornaMatriculasSelecionados();
 
 
-  //Desabilita o botão processar.
-  $('gera').disabled = true;
+        //Desabilita o botão processar.
+        $('gera').disabled = true;
 
-  js_divCarregando('Aguarde, Processando...','div_msg', true);
+        js_mostraTempo('timeini');
+        js_divCarregando('Aguarde, Processando...','div_msg', true);
 
-  var oAjax = new Ajax.Request('pes4_processardirf.RPC.php',
-                               {method:'post',
-                               parameters:'json='+Object.toJSON(oParam),
-                               onComplete:js_retornoEmiteDirf
-                               });
-}
+        var oAjax = new Ajax.Request('pes4_processardirf.RPC.php',
+            {method:'post',
+                parameters:'json='+Object.toJSON(oParam),
+                onComplete:js_retornoEmiteDirf
+            });
+    }
 
-function js_retornoEmiteDirf(oAjax) {
+    function js_retornoEmiteDirf(oAjax) {
 
-  js_removeObj('div_msg');
+        js_removeObj('div_msg');
 
-  //Habilita o botão novamente.
-  $('gera').disabled = false;
+        //Habilita o botão novamente.
+        $('gera').disabled = false;
 
-  var oRetorno = JSON.parse(oAjax.responseText);
-  if (oRetorno.status == 1) {
+        js_mostraTempo('timefim');
 
-   var listagem = "tmp/"+oRetorno.arquivo+"#Download Arquivo TXT";
-       js_montarlista(listagem,"form1");
-  } else {
-   alert('Erro ao gerar Arquivo.');
-  }
-}
+        var oRetorno = JSON.parse(oAjax.responseText);
+        if (oRetorno.status == 1) {
+
+            var listagem = "tmp/"+oRetorno.arquivo+"#Download Arquivo TXT";
+            js_montarlista(listagem,"form1");
+        } else {
+            alert('Erro ao gerar Arquivo.');
+        }
+    }
+
+    function js_mostraTempo(idTempo) {
+        let timeDisplay = document.getElementById(idTempo);
+        let dateString = new Date().toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"});
+        timeDisplay.value = dateString.replace(",", "");
+    }
 </script>

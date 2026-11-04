@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ $iDepto  = db_getsession("DB_coddepto");
       <?=$Lp67_codproc?>
     </td>
     <td align="left" title="<?=$Tp67_codproc?>">
-      <?
+      <?php
         db_input("p67_codproc",10,$Ip67_codproc,true,"text",1,"");
       ?>
     </td> 
@@ -91,7 +91,7 @@ $iDepto  = db_getsession("DB_coddepto");
       <?=$Lp58_requer?>
     </td>
     <td align="left" title="<?=$Tp58_requer?>">
-      <?
+      <?php
         db_input("p58_requer",40,$Ip58_requer,true,"text",1,"");
       ?>
     </td> 
@@ -111,7 +111,7 @@ $iDepto  = db_getsession("DB_coddepto");
       <?=$Lp51_codigo?>
     </td>
     <td align="left" colspan="2" title="<?=$Tp51_codigo?>">
-      <?
+      <?php
         $sSqlTipoProcesso  = $cltipoproc->sql_query(null,"p51_codigo,p51_descr","p51_codigo,p51_descr","p51_tipoprocgrupo = 2");
         $rsTipoProcesso    = $cltipoproc->sql_record($sSqlTipoProcesso);
         db_selectrecord('p51_codigo',$rsTipoProcesso,true,1,"","","","0");
@@ -138,7 +138,7 @@ $iDepto  = db_getsession("DB_coddepto");
 <table border="0" align="center" cellspacing="0" width="80%">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
         $sCampos .= "   distinct p67_codproc,                                                         ";
         $sCampos .= "            ov01_tipoprocesso,                                                   ";
         $sCampos .= "            p51_descr,                                                           ";

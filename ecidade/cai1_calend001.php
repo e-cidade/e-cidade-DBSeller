@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -155,7 +155,7 @@ if(isset($HTTP_POST_VARS["feriado"])) {
       } else
 	    location.href = location.href;
     </script>
-  <?
+  <?php
   } else {
     db_query("insert into calend values('".date("Y-m-d",$data)."')");
 	db_redireciona();

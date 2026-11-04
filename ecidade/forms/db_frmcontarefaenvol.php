@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@ if(isset($db_opcaoal)){
        <?=@$Lat45_tarefa?>
     </td>
     <td> 
-<?
+<?php
 db_input('at45_tarefa',10,$Iat45_tarefa,true,'text',3,"")
 ?>
     </td>
@@ -75,16 +75,16 @@ db_input('at45_tarefa',10,$Iat45_tarefa,true,'text',3,"")
 <!--
   <tr>
     <td nowrap title="<?=@$Tat45_tarefa?>">
-       <?
+       <?php
        db_ancora(@$Lat45_tarefa,"js_pesquisaat45_tarefa(true);",$db_opcao);
        ?>
     </td>
     <td>
 -->     
-<?
+<?php
 db_input('at45_sequencial',10,$Iat45_sequencial,true,'hidden',3,"")
 ?>
-       <?
+       <?php
 //db_input('at40_descr',1,$Iat40_descr,true,'text',3,'')
        ?>
 <!--       
@@ -96,7 +96,7 @@ db_input('at45_sequencial',10,$Iat45_sequencial,true,'hidden',3,"")
        <?=@$Lat45_usuario?>
     </td>
     <td> 
-<?
+<?php
 if(isset($at45_usuario)&&$at45_usuario!="") {
 	$at45_usuant = $at45_usuario;
 	db_input('at45_usuant',10,"",true,'hidden',3,"");
@@ -111,7 +111,7 @@ db_selectrecord('at45_usuario',($cldb_usuarios->sql_record($cldb_usuarios->sql_q
        <?=@$Lat45_perc?>
     </td>
     <td> 
-<?
+<?php
 // db_input('at45_perc',15,$Iat45_perc,true,'text',$db_opcao,"")
   $matriz = array("0"=>"0%",
                   "10"=>"10%", 
@@ -138,7 +138,7 @@ db_selectrecord('at45_usuario',($cldb_usuarios->sql_record($cldb_usuarios->sql_q
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at45_sequencial"=>@$at45_sequencial,"at45_tarefa"=>@$at45_tarefa);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //	 $cliframe_alterar_excluir->sql     = $cltarefaenvol->sql_query_file(null,"*",null,"at45_tarefa=$at45_tarefa");

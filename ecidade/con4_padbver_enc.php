@@ -24,32 +24,49 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\SaldoRecurso;
-use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
+
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Factories\BalanceteVerificacaoFactory;
 use ECidade\Financeiro\Orcamento\Registry\ComplementoRegistry;
+
 class bver_enc
 {
-    public $arq = null;
+    protected $arq = null;
+    protected $header;
 
-    function __construct($header)
+    public function __construct($header)
     {
+        $this->header = $header;
+    }
+
+    public function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst, $subelemento = "")
+    {
+        $anousu = db_getsession("DB_anousu");
+
+        if ($anousu >= 2023) {
+            $instituicoes = InstituicaoRepository::getInstituicaoConsolida(db_getsession('DB_instit'));
+
+            $service = BalanceteVerificacaoFactory::getService($anousu, $instituicoes, $data_ini, $data_fim);
+            $service->setHeader($this->header);
+            $service->comEncerrametno();
+            $service->processa();
+
+            return true;
+        }
 
         umask(74);
         $this->arq = fopen("tmp/BVER_ENC.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, $this->header);
         fputs($this->arq, "\r\n");
-    }
 
-    function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst, $subelemento = "")
-    {
         global $instituicoes, $contador, $nomeinst, $sinal_anterior, $sinal_final;
 
         $oDataInicial = new DBDate($data_ini);
         $oDataFinal = new DBDate($data_fim);
 
         $where = " c61_instit in ($instit)";
+        $anousu = db_getsession("DB_anousu");
         $result = db_planocontassaldo_matriz(
-            db_getsession("DB_anousu"),
+            $anousu,
             $data_ini,
             $data_fim,
             false,
@@ -61,70 +78,59 @@ class bver_enc
 
         $contador = 0;
 
-        $instituicoesParaProcessamento = array();
-        foreach (explode(",", $instit) as $codigoInstituicao) {
-            $instituicoesParaProcessamento[] = InstituicaoRepository::getInstituicaoByCodigo($codigoInstituicao);
-        }
-
-        $array_reduzidos_quebra_linha = array();
-        $array_teste = array();
-        $array_erro = array();
+        $array_reduzidos_quebra_linha = [];
+        $array_teste = [];
+        $array_erro = [];
 
         $iTotalRegistros = pg_num_rows($result);
-        $estruturalProcessado = array();
+        $estruturalProcessado = [];
         for ($x = 0; $x < $iTotalRegistros; $x++) {
             global $instituicoes, $c61_instit, $c61_reduz, $nivel, $estrutural, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final, $c60_descr, $c61_codigo;
             db_fieldsmemory($result, $x);
-            $aLinhaArquivo = array();
-            $aLinhasDisponibilidadeRecurso = array();
-            $oRecurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($c61_codigo);
-            $aEstruturalDisponibilidade = array('82111', '82110', '82100', '82000', '80000');
-            if (in_array(substr($estrutural, 0, 5), $aEstruturalDisponibilidade) && empty($c61_reduz)) {
-                $nSaldoBalancete = $saldo_anterior;
-                $nSaldoImplantadoCredito = 0;
-                if ((substr($estrutural, 0, 5) == '82111' && $saldo_anterior == 0)) {
-                    $nSaldoImplantadoCredito = bal_ver::getValorImplantadoDisponibilidadeRecurso($oDataInicial);
-                }
-                $saldo_anterior = ($nSaldoBalancete + $nSaldoImplantadoCredito);
-                /**
-                 * Validado se o saldo inicial da conta é credora ou devedora para ajustar o calculo do saldo final
-                 */
-                if ($sinal_anterior === 'C') {
-                    $saldo_final = (($saldo_anterior + $saldo_anterior_credito) - $saldo_anterior_debito);
-                    $sinal_final = $saldo_final < 0 ? 'D' : 'C';
-                } else {
-                    $saldo_final = (($saldo_anterior + $saldo_anterior_debito) - $saldo_anterior_credito);
-                    $sinal_final = $saldo_final < 0 ? 'C' : 'D';
+            $aLinhaArquivo = [];
+            $aLinhasDisponibilidadeRecurso = [];
+
+            $recurso = '0000';
+            $codigo_siconfi = '0000';
+            $complemento = '0000';
+
+            if (!empty($c61_codigo)) {
+                $oRecurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($c61_codigo);
+                $recurso = $oRecurso->getRecurso();
+                $codigo_siconfi = substr($oRecurso->getFonteRecurso($anousu)->codigo_siconfi, 1);
+                $co = ComplementoRegistry::get($oRecurso->getComplemento());
+                if ($co->isTribunal()) {
+                    $complemento = str_pad($co->getCodigo(), 4, '0', STR_PAD_LEFT);
                 }
             }
 
+
             if (substr($estrutural, 0, 5) == '82111' && !empty($c61_reduz)) {
-                $instituicaoDaVez = InstituicaoRepository::getInstituicaoByCodigo($c61_instit);
-                if (!in_array($estrutural.$c61_instit, $estruturalProcessado)) {
-                    $oStdDadosVerificacao = db_utils::fieldsMemory($result, $x);
-                    $estruturalProcessado[] = $estrutural.$c61_instit;
-                    $aLinhasDisponibilidadeRecurso = bal_ver::constroiLinhaDisponibilizacaoRecurso(
+                $oStdDadosVerificacao = db_utils::fieldsMemory($result, $x);
+
+                $hash = sprintf('%s#%s', $estrutural, $c61_instit);
+                if (!in_array($hash, $estruturalProcessado)) {
+                    $estruturalProcessado[] = $hash;
+
+                    $aLinhasDisponibilidadeRecurso = bal_ver::constroiLinhDDR(
                         $oStdDadosVerificacao,
                         $oDataInicial,
-                        $oDataFinal,
-                        array($instituicaoDaVez)
+                        $oDataFinal
                     );
-                    if (!$aLinhasDisponibilidadeRecurso) {
-                        $aLinhasDisponibilidadeRecurso = array();
-                    }
-                    unset($oStdDadosVerificacao);
                 }
+
+                unset($oStdDadosVerificacao);
             } else {
                 $aLinhaArquivo[] = formatar($estrutural, 20, 'n');
-                if ($c61_instit == 0 || empty($c61_instit)) {
-                    $aLinhaArquivo[] = "0000";
-                } else {
-                    $codigoTribunal = $instituicoes[$c61_instit];
+                $orgaoUnidade = '0000';
+                if (!empty($c61_instit)) {
+                    $orgaoUnidade = $instituicoes[$c61_instit];
                     if ($instituicoes[$c61_instit] instanceof Instituicao) {
-                        $codigoTribunal = $instituicoes[$c61_instit]->getCodigoTribunal();
+                        $orgaoUnidade = $instituicoes[$c61_instit]->getCodigoTribunal();
                     }
-                    $aLinhaArquivo[] = $codigoTribunal;    // aqui ï¿½ o codtrib, da tabela db_config
                 }
+                $aLinhaArquivo[] = $orgaoUnidade;
+                $valorSaldoAnterior = $saldo_anterior;
 
                 $saldo_anterior = abs($saldo_anterior);
                 if ($sinal_anterior == 'D') {
@@ -163,32 +169,39 @@ class bver_enc
                 $aLinhaArquivo[] = bal_ver::getNaturezaInformacao($estrutural);
                 $aLinhaArquivo[] = bal_ver::getIndicadorSuperavit($estrutural);
 
-                $recurso = '0';
-                if (!empty($c61_reduz)) {
-                    $recurso = $oRecurso->getFonteDeRecurso();
+
+                $recursoVinculado = $c61_reduz == 0 ? '0000' : str_pad($recurso, 4, '0', STR_PAD_LEFT);
+                if ($anousu >= 2023 && $valorSaldoAnterior == 0) {
+                    $recursoVinculado = '0000';
                 }
-                $aLinhaArquivo[] = str_pad($recurso, 4, '0', STR_PAD_LEFT);
+                $aLinhaArquivo[] = $recursoVinculado;
 
-
-                if (db_getsession("DB_anousu") >= 2020) {
-                    $complementoFonteRecurso = '0';
-                    if (!empty($oRecurso) && $recurso != '0000') {
-                        $complemento = ComplementoRegistry::get($oRecurso->getComplemento());
-                        $complementoFonteRecurso = $complemento->isTribunal() ? $complemento->getCodigo() : 0;
+                if ($anousu >= 2020) {
+                    $complementoFonteRecurso = '0000';
+                    // A partir de 2023 a informação deste campo é obrigatória para as contas com Saldo Anterior maior
+                    // que zero. Para as contas com Saldo Anterior igual a zero este campo deve obrigatoriamente ser
+                    // preenchido com sequência de zeros
+                    if ((!empty($oRecurso) && $recursoVinculado != '0000')
+                        && ($anousu >= 2023 && $valorSaldoAnterior != 0)) {
+                        $complementoFonteRecurso = $complemento;
                     }
 
                     $aLinhaArquivo[] = str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
                 }
 
+                if ($anousu == 2022) {
+                    $aLinhaArquivo[] = "00000000"; // 266 a 269 Fonte de Recurso e 270 a 273 CO
+                }
+                if ($anousu >= 2023) {
+                    $aLinhaArquivo[] = str_pad($codigo_siconfi, 4, '0', STR_PAD_LEFT); // 266 a 269 Fonte de Recurso
+                    $aLinhaArquivo[] = $complemento; // 270 a 273 CO
+                }
             }
 
             if (count($aLinhasDisponibilidadeRecurso) > 0) {
                 foreach ($aLinhasDisponibilidadeRecurso as $aLinhaPorRecurso) {
                     $contador++;
                     $line = implode('', $aLinhaPorRecurso);
-                    if (db_getsession("DB_anousu") >= 2022) {
-                        $line .= "00000000";
-                    }
                     fputs($this->arq, $line);
                     fputs($this->arq, "\r\n");
                 }
@@ -196,21 +209,13 @@ class bver_enc
                 if (count($aLinhaArquivo) > 0) {
                     $contador++;
                     $line = implode('', $aLinhaArquivo);
-                    if (db_getsession("DB_anousu") >= 2022) {
-                        $line .= "00000000";
-                    }
                     fputs($this->arq, $line);
                     fputs($this->arq, "\r\n");
                 }
             }
 
             bal_ver::validarEstrutural($array_teste, $x, $estrutural, $c61_reduz, $saldo_anterior, $sinal_anterior);
-
-
         }
-
-
-
 
         $maxnivelanalitico = 0;
         $maxnivelsintetico = 0;

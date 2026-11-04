@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,7 +49,7 @@ db_postmemory($HTTP_POST_VARS);
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 
 
-<?
+<?php
 $sWhereInstituicao = 'instit = ' . db_getsession("DB_instit");
 $res_veicentral = $clveiccadcentral->sql_record($clveiccadcentral->sql_query_central_depart(null,"ve36_sequencial,descrdepto","descrdepto",$sWhereInstituicao));
 ?>
@@ -86,7 +86,7 @@ function js_emite(){
          <b>Central:</b>
         </td>
         <td nowrap>
-	              <?
+	              <?php
                   db_selectrecord("descrdepto",$res_veicentral,true,1,"","","","0");
 	              ?> 
         </td>
@@ -96,7 +96,7 @@ function js_emite(){
          <b>Quebra de página :</b>
         </td>
         <td nowrap>
-	<?
+	<?php
           $y = array("n"=>"Não","s"=>"Sim");
           db_select("quebra",$y,true,2); 
 	?>
@@ -114,7 +114,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

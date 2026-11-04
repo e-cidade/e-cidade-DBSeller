@@ -108,7 +108,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
         $this->buscarDadosByProcesso();
         $this->buscarCgmsByDados();
         if (empty($this->inscricao)) {
-            throw new \BusinessException("Inscrição não encontrada!");
+            throw new \BusinessException("Inscriçãoo não encontrada!");
         } elseif (empty($this->dados)) {
             throw new \BusinessException("Não há dados vinculados ao processo!");
         } elseif (empty($this->cgms)) {
@@ -186,7 +186,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
     private function alterarInscricao()
     {
 
-        Log::info("Inicializando alteração Inscrição");
+        Log::info("Inicializando alteraçãoo Inscrição");
         $data             = date("Y-m-d", \db_getsession('DB_datausu'));
         $ano              = date("Y", \db_getsession('DB_datausu'));
         $clissbase        = new \cl_issbase;
@@ -391,34 +391,42 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
             throw new Exception($clissbairro->erro_msg);
         }
 
+        $matricula = null;
         if (array_key_exists('matricula', $endereco) && !is_null($this->getAtribute($endereco->matricula))) {
             $matricula = $this->getAtribute($endereco->matricula);
 
-            if (is_integer($matricula)) {
-                $rs = db_query(
-                    $cliptuconstr->sql_query(
-                        null,
-                        null,
-                        $campos = "j39_idcons",
-                        null,
-                        " iptuconstr.j39_matric = $matricula and j39_idprinc = 't' "
-                    )
-                );
+            if (is_object($matricula)) {
+                $matricula = $matricula->codigo;
+            }
 
-                if (pg_num_rows($rs) > 0) {
-                    $idconst = \db_utils::fieldsMemory($rs, 0)->j39_idcons;
+            if (!empty($matricula) and is_numeric($matricula)) {
+                $matricula = (int)$matricula;
+                if (is_integer($matricula)) {
+                    $rs = db_query(
+                        $cliptuconstr->sql_query(
+                            null,
+                            null,
+                            $campos = "j39_idcons",
+                            null,
+                            " iptuconstr.j39_matric = $matricula and j39_idprinc = 't' "
+                        )
+                    );
 
-                    if (empty($matricula)) {
-                        throw new \Exception("Matricula não informada");
-                    }
+                    if (pg_num_rows($rs) > 0) {
+                        $idconst = \db_utils::fieldsMemory($rs, 0)->j39_idcons;
 
-                    $clissmatric->q05_inscr  = $clissbase->q02_inscr;
-                    $clissmatric->q05_matric = $matricula;
-                    $clissmatric->q05_idcons = $idconst;
-                    $clissmatric->alterar($clissmatric->q05_inscr, $clissmatric->q05_matric);
+                        if (empty($matricula)) {
+                            throw new \Exception("Matricula não informada");
+                        }
 
-                    if ($clissmatric->erro_status == 0) {
-                        throw new Exception($clissmatric->erro_msg);
+                        $clissmatric->q05_inscr  = $clissbase->q02_inscr;
+                        $clissmatric->q05_matric = $matricula;
+                        $clissmatric->q05_idcons = $idconst;
+                        $clissmatric->alterar($clissmatric->q05_inscr, $clissmatric->q05_matric);
+
+                        if ($clissmatric->erro_status == 0) {
+                            throw new Exception($clissmatric->erro_msg);
+                        }
                     }
                 }
             }

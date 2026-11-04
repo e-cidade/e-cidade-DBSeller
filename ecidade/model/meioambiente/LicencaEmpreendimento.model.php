@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -112,7 +112,7 @@ class LicencaEmpreendimento {
 
     try {
 
-      $oDaoLicencaEmpreendimento = db_utils::getDao("licencaempreendimento");
+      $oDaoLicencaEmpreendimento = new cl_licencaempreendimento;
       $oDaoLicencaEmpreendimento->am13_parecertecnico = $this->oParecerTecnico->getSequencial();
       $oDaoLicencaEmpreendimento->incluir();
 
@@ -124,7 +124,7 @@ class LicencaEmpreendimento {
 
   public function excluir( $iCodigoParecerTecnico ) {
 
-    $oDaoLicencaEmpreendimento = db_utils::getDao("licencaempreendimento");
+    $oDaoLicencaEmpreendimento = new cl_licencaempreendimento;
 
     $sWhere = " am13_parecertecnico = {$iCodigoParecerTecnico} ";
     $oDaoLicencaEmpreendimento->excluir( null, $sWhere );

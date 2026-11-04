@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -179,13 +179,13 @@ if (isset($oGet->p51_codigo)) {
     <?=@$Lp51_codigo?>
     </td>
     <td align="left" width="6%">
-    <?
+    <?php
       db_input('p51_codigo',4,$Ip51_codigo,true,'text',3,"");
       db_input('listadepto',10,'',true,'hidden',3,"");
     ?>
     </td>
     <td align="left">
-    <?
+    <?php
       db_input('p51_descr',50,$Ip51_descr,true,'text',3,"")
     ?>
     </td>

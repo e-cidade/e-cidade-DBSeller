@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Caixa
 //CLASSE DA ENTIDADE conciliaextrato
-class cl_conciliaextrato { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k87_sequencial = 0; 
-   var $k87_conciliaitem = 0; 
-   var $k87_extratolinha = 0; 
-   var $k87_conciliaorigem = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_conciliaextrato {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k87_sequencial = 0;
+   var $k87_conciliaitem = 0;
+   var $k87_extratolinha = 0;
+   var $k87_conciliaorigem = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k87_sequencial = int4 = Codigo sequencial 
-                 k87_conciliaitem = int4 = Item da conciliação 
-                 k87_extratolinha = int8 = Linha do extrato 
-                 k87_conciliaorigem = int4 = Origem 
+                 k87_sequencial = int4 = Codigo sequencial
+                 k87_conciliaitem = int4 = Item da conciliação
+                 k87_extratolinha = int8 = Linha do extrato
+                 k87_conciliaorigem = int4 = Origem
                  ";
-   //funcao construtor da classe 
-   function cl_conciliaextrato() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("conciliaextrato"); 
+     $this->rotulo = new rotulo("conciliaextrato");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_conciliaextrato {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k87_sequencial = ($this->k87_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k87_sequencial"]:$this->k87_sequencial);
        $this->k87_conciliaitem = ($this->k87_conciliaitem == ""?@$GLOBALS["HTTP_POST_VARS"]["k87_conciliaitem"]:$this->k87_conciliaitem);
@@ -80,9 +80,9 @@ class cl_conciliaextrato {
      }
    }
    // funcao para inclusao
-   function incluir ($k87_sequencial){ 
+   public function incluir ($k87_sequencial){
       $this->atualizacampos();
-     if($this->k87_conciliaitem == null ){ 
+     if($this->k87_conciliaitem == null ){
        $this->erro_sql = " Campo Item da conciliação nao Informado.";
        $this->erro_campo = "k87_conciliaitem";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_conciliaextrato {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k87_extratolinha == null ){ 
+     if($this->k87_extratolinha == null ){
        $this->erro_sql = " Campo Linha do extrato nao Informado.";
        $this->erro_campo = "k87_extratolinha";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_conciliaextrato {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k87_conciliaorigem == null ){ 
+     if($this->k87_conciliaorigem == null ){
        $this->erro_sql = " Campo Origem nao Informado.";
        $this->erro_campo = "k87_conciliaorigem";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_conciliaextrato {
        return false;
      }
      if($k87_sequencial == "" || $k87_sequencial == null ){
-       $result = db_query("select nextval('conciliaextrato_k87_sequencial_seq')"); 
+       $result = db_query("select nextval('conciliaextrato_k87_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: conciliaextrato_k87_sequencial_seq do campo: k87_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: conciliaextrato_k87_sequencial_seq do campo: k87_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k87_sequencial = pg_result($result,0,0); 
+       $this->k87_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from conciliaextrato_k87_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k87_sequencial)){
@@ -130,10 +130,10 @@ class cl_conciliaextrato {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k87_sequencial = $k87_sequencial; 
+         $this->k87_sequencial = $k87_sequencial;
        }
      }
-     if(($this->k87_sequencial == null) || ($this->k87_sequencial == "") ){ 
+     if(($this->k87_sequencial == null) || ($this->k87_sequencial == "") ){
        $this->erro_sql = " Campo k87_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_conciliaextrato {
        return false;
      }
      $sql = "insert into conciliaextrato(
-                                       k87_sequencial 
-                                      ,k87_conciliaitem 
-                                      ,k87_extratolinha 
-                                      ,k87_conciliaorigem 
+                                       k87_sequencial
+                                      ,k87_conciliaitem
+                                      ,k87_extratolinha
+                                      ,k87_conciliaorigem
                        )
                 values (
-                                $this->k87_sequencial 
-                               ,$this->k87_conciliaitem 
-                               ,$this->k87_extratolinha 
-                               ,$this->k87_conciliaorigem 
+                                $this->k87_sequencial
+                               ,$this->k87_conciliaitem
+                               ,$this->k87_extratolinha
+                               ,$this->k87_conciliaorigem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ligação do item com extrato ($this->k87_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_conciliaextrato {
        $resac = db_query("insert into db_acount values($acount,1735,10153,'','".AddSlashes(pg_result($resaco,0,'k87_conciliaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k87_sequencial=null) { 
+   public function alterar ($k87_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conciliaextrato set ";
      $virgula = "";
-     if(trim($this->k87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_sequencial"])){ 
+     if(trim($this->k87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_sequencial"])){
        $sql  .= $virgula." k87_sequencial = $this->k87_sequencial ";
        $virgula = ",";
-       if(trim($this->k87_sequencial) == null ){ 
+       if(trim($this->k87_sequencial) == null ){
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "k87_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_conciliaextrato {
          return false;
        }
      }
-     if(trim($this->k87_conciliaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_conciliaitem"])){ 
+     if(trim($this->k87_conciliaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_conciliaitem"])){
        $sql  .= $virgula." k87_conciliaitem = $this->k87_conciliaitem ";
        $virgula = ",";
-       if(trim($this->k87_conciliaitem) == null ){ 
+       if(trim($this->k87_conciliaitem) == null ){
          $this->erro_sql = " Campo Item da conciliação nao Informado.";
          $this->erro_campo = "k87_conciliaitem";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_conciliaextrato {
          return false;
        }
      }
-     if(trim($this->k87_extratolinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_extratolinha"])){ 
+     if(trim($this->k87_extratolinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_extratolinha"])){
        $sql  .= $virgula." k87_extratolinha = $this->k87_extratolinha ";
        $virgula = ",";
-       if(trim($this->k87_extratolinha) == null ){ 
+       if(trim($this->k87_extratolinha) == null ){
          $this->erro_sql = " Campo Linha do extrato nao Informado.";
          $this->erro_campo = "k87_extratolinha";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_conciliaextrato {
          return false;
        }
      }
-     if(trim($this->k87_conciliaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_conciliaorigem"])){ 
+     if(trim($this->k87_conciliaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k87_conciliaorigem"])){
        $sql  .= $virgula." k87_conciliaorigem = $this->k87_conciliaorigem ";
        $virgula = ",";
-       if(trim($this->k87_conciliaorigem) == null ){ 
+       if(trim($this->k87_conciliaorigem) == null ){
          $this->erro_sql = " Campo Origem nao Informado.";
          $this->erro_campo = "k87_conciliaorigem";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_conciliaextrato {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação do item com extrato nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k87_sequencial;
@@ -297,14 +297,14 @@ class cl_conciliaextrato {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k87_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k87_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k87_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_conciliaextrato {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação do item com extrato nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k87_sequencial;
@@ -361,11 +361,11 @@ class cl_conciliaextrato {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,11 +387,11 @@ class cl_conciliaextrato {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,15 +412,15 @@ class cl_conciliaextrato {
      $sql2 = "";
      if($dbwhere==""){
        if($k87_sequencial!=null ){
-         $sql2 .= " where conciliaextrato.k87_sequencial = $k87_sequencial "; 
-       } 
+         $sql2 .= " where conciliaextrato.k87_sequencial = $k87_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,11 +429,11 @@ class cl_conciliaextrato {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,15 +446,15 @@ class cl_conciliaextrato {
      $sql2 = "";
      if($dbwhere==""){
        if($k87_sequencial!=null ){
-         $sql2 .= " where conciliaextrato.k87_sequencial = $k87_sequencial "; 
-       } 
+         $sql2 .= " where conciliaextrato.k87_sequencial = $k87_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

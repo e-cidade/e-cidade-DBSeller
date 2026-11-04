@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -103,7 +103,7 @@ if($clempparametro->numrows > 0){
 		<tr>
 			<td align="left" valign="top" bgcolor="#CCCCCC">
 				<center>
-					<?
+					<?php
 					if($clsolicitem->numrows==0){
 						if(isset($solicita) && trim($solicita)!=""){
 							echo "<strong><BR><BR><BR>Não existem itens para esta solicitação.</strong>\n";

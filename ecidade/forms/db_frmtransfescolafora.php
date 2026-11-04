@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,16 +42,16 @@ $oClRotulo->label("nome");
           <?=@$Led104_i_codigo?>
         </td>
         <td>
-          <? db_input('ed104_i_codigo', 15, $Ied104_i_codigo, true, 'text', 3, "") ?>
+          <?php db_input('ed104_i_codigo', 15, $Ied104_i_codigo, true, 'text', 3, "") ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted104_i_aluno?>">
-          <? db_ancora(@$Led104_i_aluno, "js_pesquisaed104_i_aluno(true);", $db_opcao); ?>
+          <?php db_ancora(@$Led104_i_aluno, "js_pesquisaed104_i_aluno(true);", $db_opcao); ?>
         </td>
         <td>
-          <? db_input('ed104_i_aluno', 15, $Ied104_i_aluno, true, 'text', 3, "") ?>
-          <? db_input('ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3, '') ?>
+          <?php db_input('ed104_i_aluno', 15, $Ied104_i_aluno, true, 'text', 3, "") ?>
+          <?php db_input('ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3, '') ?>
         </td>
       </tr>
       <tr>
@@ -65,7 +65,7 @@ $oClRotulo->label("nome");
                   <b>Matrícula Atual:</b>
                 </td>
                 <td>
-                  <? db_input( 'matricula', 40, @$matricula, true, 'text', 3 ); ?>
+                  <?php db_input( 'matricula', 40, @$matricula, true, 'text', 3 ); ?>
                 </td>
               </tr>
               <tr>
@@ -86,7 +86,7 @@ $oClRotulo->label("nome");
                   <b>Situação Atual:</b>
                 </td>
                 <td>
-                  <? db_input( 'situacao', 20, @$situacao, true, 'text', 3 ); ?>
+                  <?php db_input( 'situacao', 20, @$situacao, true, 'text', 3 ); ?>
                 </td>
               </tr>
               <tr>
@@ -105,11 +105,11 @@ $oClRotulo->label("nome");
                   <b>Calendário Atual:</b>
                 </td>
                 <td>
-                  <? db_input( 'caldescr', 20, @$situacao, true, 'text', 3 ); ?>
+                  <?php db_input( 'caldescr', 20, @$situacao, true, 'text', 3 ); ?>
                   <b>Início:</b>
-                  <? db_input( 'ed52_d_inicio', 10, @$ed52_d_inicio, true, 'text', 3 ); ?>
+                  <?php db_input( 'ed52_d_inicio', 10, @$ed52_d_inicio, true, 'text', 3 ); ?>
                   <b>Final:</b>
-                  <? db_input( 'ed52_d_fim', 10, @$ed52_d_fim, true, 'text', 3 ); ?>
+                  <?php db_input( 'ed52_d_fim', 10, @$ed52_d_fim, true, 'text', 3 ); ?>
                 </td>
               </tr>
             </table>
@@ -118,7 +118,7 @@ $oClRotulo->label("nome");
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted104_i_escolaorigem?>">
-          <? db_ancora(@$Led104_i_escolaorigem, "", 3); ?>
+          <?php db_ancora(@$Led104_i_escolaorigem, "", 3); ?>
         </td>
         <td>
           <?php
@@ -129,20 +129,20 @@ $oClRotulo->label("nome");
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted104_i_escoladestino?>">
-          <? db_ancora( @$Led104_i_escoladestino, "js_pesquisaed104_i_escoladestino(true);", $db_opcao ); ?>
+          <?php db_ancora( @$Led104_i_escoladestino, "js_pesquisaed104_i_escoladestino(true);", $db_opcao ); ?>
         </td>
         <td>
-          <? db_input( 'ed104_i_escoladestino', 15, $Ied104_i_escoladestino, true, 'text',
+          <?php db_input( 'ed104_i_escoladestino', 15, $Ied104_i_escoladestino, true, 'text',
                       $db_opcao, " onchange='js_pesquisaed104_i_escoladestino(false);'" );
           ?>
-          <? db_input( 'ed82_c_nome', 50, @$Ied82_c_nome, true, 'text', 3 ); ?>
+          <?php db_input( 'ed82_c_nome', 50, @$Ied82_c_nome, true, 'text', 3 ); ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted104_t_obs?>" colspan="2">
           <fieldset class="separator">
             <legend><?=@$Led104_t_obs?></legend>
-            <? db_textarea( 'ed104_t_obs', 4, 63, $Ied104_t_obs, true, 'text', $db_opcao ); ?>
+            <?php db_textarea( 'ed104_t_obs', 4, 63, $Ied104_t_obs, true, 'text', $db_opcao ); ?>
           </fieldset>
         </td>
       </tr>
@@ -151,7 +151,7 @@ $oClRotulo->label("nome");
           <?=@$Led104_d_data?>
         </td>
         <td>
-          <? db_inputdata( 'ed104_d_data', @$ed104_d_data_dia, @$ed104_d_data_mes,
+          <?php db_inputdata( 'ed104_d_data', @$ed104_d_data_dia, @$ed104_d_data_mes,
                           @$ed104_d_data_ano, true, 'text', $db_opcao );
           ?>
         </td>
@@ -177,7 +177,7 @@ $oClRotulo->label("nome");
              $obs = db_utils::fieldsmemory($rsResultObs, 0)->ed283_t_mensagem;
            }
         ?>
-        <td nowrap="nowrap" class='bold'>Auxílio Brasil:</td>
+        <td nowrap="nowrap" class='bold'>Bolsa Família:</td>
         <td>
           <?php
             $aOpBolFamilia = array("1" => "NÃO", "2" => "SIM");
@@ -189,8 +189,8 @@ $oClRotulo->label("nome");
           <td nowrap="nowrap" class='bold'>Guia de Transferência:</td>
           <td nowrap="nowrap">
               <select id="modelo" name="modelo">
-                  <option value="1">Página única</option>
-                  <option value="2">Duas vias</option>
+                  <option value="1">Uma via por página</option>
+                  <option value="2">Duas vias por página</option>
               </select>
           </td>
       </tr>

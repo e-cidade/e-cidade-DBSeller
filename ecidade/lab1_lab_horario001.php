@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -288,7 +288,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_horario.php"));
 	?>
     </center>
@@ -301,7 +301,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","la35_i_setorexame",true,1,"la35_i_setorexame",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cllab_horario->erro_status=="0"){
     $cllab_horario->erro(true,false);

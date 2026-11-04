@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -154,7 +154,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat92_sequencial?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_input('at92_sequencial',10,$Iat92_sequencial,true,'text',3,'');
 	                db_input('at92_cliente'   ,10,'',true,'hidden',3,'');
 	              ?>
@@ -165,7 +165,7 @@ if (isset($db_opcaoal)){
 		            <?=@$Lat92_nome?>
 		          </td>        
 		      		<td>
-		      		  <?
+		      		  <?php
 		              db_input('at92_nome',50,$Iat92_nome,true,'text',$db_opcao,'');
 		      		  ?>
 		      		</td>	 
@@ -175,7 +175,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat92_cargo?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_input('at92_cargo',50,$Iat92_cargo,true,'text',$db_opcao,'');
 	              ?>
 	            </td>  
@@ -185,7 +185,7 @@ if (isset($db_opcaoal)){
                 <?=@$Lat92_telefone?>
               </td>        
               <td>
-                <?
+                <?php
                   db_input('at92_telefone',15,$Iat92_telefone,true,'text',$db_opcao,'');
                 ?>
               </td>  
@@ -195,7 +195,7 @@ if (isset($db_opcaoal)){
                 <?=@$Lat92_email?>
               </td>        
               <td>
-                <?
+                <?php
                   db_input('at92_email',50,$Iat92_email,true,'text',$db_opcao,'');
                 ?>
               </td>  
@@ -205,7 +205,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat92_obs?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_textarea('at92_obs',5,50,$Iat92_obs,true,'text',$db_opcao,'');
 	              ?>
 	            </td>  
@@ -225,7 +225,7 @@ if (isset($db_opcaoal)){
 			  <table>
 				  <tr>
 				    <td valign="top"  align="center">  
-					    <?
+					    <?php
 					    
 					      $aChavePri     = array("at92_sequencial"=>@$at92_sequencial);
 					      $sWhereContato = "at92_cliente = {$oGet->at92_cliente} "; 
@@ -248,7 +248,7 @@ if (isset($db_opcaoal)){
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
 
  db_msgbox($sMsgErro);

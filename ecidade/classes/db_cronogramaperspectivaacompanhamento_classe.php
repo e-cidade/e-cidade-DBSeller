@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: orcamento
 //CLASSE DA ENTIDADE cronogramaperspectivaacompanhamento
 class cl_cronogramaperspectivaacompanhamento { 
@@ -28,13 +28,13 @@ class cl_cronogramaperspectivaacompanhamento {
                  o151_mes = int4 = Mês 
                  ";
    //funcao construtor da classe 
-   function cl_cronogramaperspectivaacompanhamento() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cronogramaperspectivaacompanhamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_cronogramaperspectivaacompanhamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o151_sequencial = ($this->o151_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o151_sequencial"]:$this->o151_sequencial);
        $this->o151_cronogramaperspectivaorigem = ($this->o151_cronogramaperspectivaorigem == ""?@$GLOBALS["HTTP_POST_VARS"]["o151_cronogramaperspectivaorigem"]:$this->o151_cronogramaperspectivaorigem);
@@ -54,7 +54,7 @@ class cl_cronogramaperspectivaacompanhamento {
      }
    }
    // funcao para Inclusão
-   function incluir ($o151_sequencial){ 
+   public function incluir ($o151_sequencial){ 
       $this->atualizacampos();
      if($this->o151_cronogramaperspectivaorigem == null ){ 
        $this->erro_sql = " Campo Perspesctiva Origem não informado.";

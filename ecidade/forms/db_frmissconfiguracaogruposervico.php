@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -94,6 +94,15 @@ $sDesabilitaBotao = $db_opcao ? null : 'disabled="true"';
                 <td colspan="2">
                     <?php db_input('q136_deducao', 10, 'q136_deducao', true, 'checkbox', $db_opcao, 'onclick="isdeducao(this)"'); ?>
 <!--                    <input type="checkbox" id="q136_deducao" name="q136_deducao">-->
+                </td>
+            </tr>
+			<tr>
+                <td nowrap title="<?php echo $Tq136_salaoparceiro ?>">
+                    <strong>Salão Parceiro:</strong>
+                </td>
+                <td colspan="2">
+                    <?php db_input('q136_salaoparceiro', 10, 'q136_salaoparceiro', true, 'checkbox', $db_opcao, 'onclick="issalaoparceiro(this)"'); ?>
+<!--                    <input type="checkbox" id="q136_salaoparceiro" name="q136_salaoparceiro">-->
                 </td>
             </tr>
             <tr>
@@ -219,6 +228,16 @@ function isretencao(checkbox) {
     } else {
         checkbox.value = 'f';
         document.form1.q136_retencao = checkbox.value;
+    }
+}
+
+function issalaoparceiro(checkbox) {
+    if (checkbox.checked) {
+        checkbox.value = 't';
+        document.form1.q136_salaoparceiro = checkbox.value;
+    } else {
+        checkbox.value = 'f';
+        document.form1.salaoparceiro = checkbox.value;
     }
 }
 

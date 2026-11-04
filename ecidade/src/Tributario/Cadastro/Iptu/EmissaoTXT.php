@@ -1505,17 +1505,18 @@ class EmissaoTXT
                                 $oReciboUnica->getNumpre()
                             )) {
                                 try {
-                                    $emissaoPix = new ArrecadacaoPixService();
-                                    $emissaoPix->setTipoDebito($tipoDebito);
-                                    $emissaoPix->setVencimento($k00_dtvenc);
-                                    $emissaoPix->geraPixCarne(
-                                        null,
-                                        $oReciboUnica->getNumpre(),
-                                        0,
-                                        $z01_numcgm,
-                                        $utotal,
-                                        $oDadosRecibo->k00_codbar
-                                    );
+                                    //M26664
+                                    //$emissaoPix = new ArrecadacaoPixService();
+                                    //$emissaoPix->setTipoDebito($tipoDebito);
+                                    //$emissaoPix->setVencimento($k00_dtvenc);
+                                    //$emissaoPix->geraPixCarne(
+                                    //    null,
+                                    //    $oReciboUnica->getNumpre(),
+                                    //    0,
+                                    //    $z01_numcgm,
+                                    //    $utotal,
+                                    //    $oDadosRecibo->k00_codbar
+                                    //);
 
                                     $recibobarpix = Recibobarpix::query()
                                                                 ->where("k00_numpre", $oReciboUnica->getNumpre())
@@ -1984,17 +1985,18 @@ class EmissaoTXT
                         $oReciboParcela->getNumpre()
                     )) {
                         try {
-                            $emissaoPix = new ArrecadacaoPixService();
-                            $emissaoPix->setTipoDebito($tipoDebito);
-                            $emissaoPix->setVencimento($k00_dtvenc);
-                            $emissaoPix->geraPixCarne(
-                                null,
-                                $oReciboParcela->getNumpre(),
-                                $iParcela,
-                                $z01_numcgm,
-                                $k00_valor,
-                                $oDadosRecibo->k00_codbar
-                            );
+                            //M26664
+                            //$emissaoPix = new ArrecadacaoPixService();
+                            //$emissaoPix->setTipoDebito($tipoDebito);
+                            //$emissaoPix->setVencimento($k00_dtvenc);
+                            //$emissaoPix->geraPixCarne(
+                            //    null,
+                            //    $oReciboParcela->getNumpre(),
+                            //    $iParcela,
+                            //    $z01_numcgm,
+                            //    $k00_valor,
+                            //    $oDadosRecibo->k00_codbar
+                            //);
 
                             $recibobarpix = Recibobarpix::query()
                                                         ->where("k00_numpre", $oReciboParcela->getNumpre())

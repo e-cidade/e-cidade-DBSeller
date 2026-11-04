@@ -45,16 +45,16 @@ $clrotulo->label("pc63_agencia");
 $dbwhere = "where 1=1 and k12_instit = " . db_getsession("DB_instit");
 $data    = str_replace("/", "-", $lista_data);
 
-$vet_data = split(",", $data);
+$vet_data =explode(",", $data);
 $virgula  = "";
 $data     = "";
 for ($i = 0; $i < sizeof($vet_data); $i++){
-    $datas = split("-",$vet_data[$i]);
+    $datas =explode("-",$vet_data[$i]);
     $data .= $virgula . "'" . trim($datas[2]) . "-" . trim($datas[1]) . "-" . trim($datas[0]) . "'";
     $virgula = ", ";
 }
 
-$vet_estorn = split(",", $lista_estorn);
+$vet_estorn =explode(",", $lista_estorn);
 $virgula = "";
 $estorno = "";
 for ($i=0; $i < sizeof($vet_estorn); $i++){
@@ -65,7 +65,7 @@ for ($i=0; $i < sizeof($vet_estorn); $i++){
 $lista_estorn = $estorno;
 
 if (isset($lista_nfs)&&trim($lista_nfs)!=""){
-     $vet_nfs = split(",",$lista_nfs);
+     $vet_nfs =explode(",",$lista_nfs);
      $virgula = "";
      $notas   = "";
      for($i=0; $i < sizeof($vet_nfs); $i++){
@@ -132,7 +132,7 @@ $sql      = "select distinct
                     end as e96_descr,
                     empageconfgera.e90_codgera,
                     empageconfgera.e90_cancelado
-             from corrente 
+             from corrente
                   inner join coremp         on coremp.k12_id              = corrente.k12_id   and
                                                coremp.k12_data            = corrente.k12_data and
                                                coremp.k12_autent          = corrente.k12_autent
@@ -141,7 +141,7 @@ $sql      = "select distinct
 
                   inner join empempaut      on empempaut.e61_numemp       = coremp.k12_empen
 
-                  inner join cgm cgmempenho on cgmempenho.z01_numcgm      = empempenho.e60_numcgm 
+                  inner join cgm cgmempenho on cgmempenho.z01_numcgm      = empempenho.e60_numcgm
 
                   inner join conplanoreduz  on conplanoreduz.c61_reduz    = corrente.k12_conta and
                                                conplanoreduz.c61_anousu   = ".db_getsession("DB_anousu")."
@@ -170,16 +170,16 @@ $sql      = "select distinct
 
                   left  join corempagemov   on corempagemov.k12_id        = corrente.k12_id   and
                                                corempagemov.k12_data      = corrente.k12_data and
-                                               corempagemov.k12_autent    = corrente.k12_autent 
-                                                                                                     
+                                               corempagemov.k12_autent    = corrente.k12_autent
+
                   left  join empagemov      on empagemov.e81_codmov       = corempagemov.k12_codmov
 
-                  left  join empageconfgera on empageconfgera.e90_codmov  = empagemov.e81_codmov                            
-                  
+                  left  join empageconfgera on empageconfgera.e90_codmov  = empagemov.e81_codmov
+
                   left  join empagemovconta on empagemovconta.e98_codmov  = empagemov.e81_codmov
 
-                  left  join pcfornecon     on pcfornecon.pc63_numcgm     = cgmempenho.z01_numcgm and 
-                                               pcfornecon.pc63_contabanco = empagemovconta.e98_contabanco 
+                  left  join pcfornecon     on pcfornecon.pc63_numcgm     = cgmempenho.z01_numcgm and
+                                               pcfornecon.pc63_contabanco = empagemovconta.e98_contabanco
 
                   left  join empnota        on empnota.e69_numemp         = coremp.k12_empen and
                                                empnota.e69_codnota        = pagordemnota.e71_codnota
@@ -247,60 +247,60 @@ if( pg_num_rows($resultado) == 0 ){
                        end as e96_descr,
                        empageconfgera.e90_codgera,
                        empageconfgera.e90_cancelado
-                from corrente 
+                from corrente
                      inner join coremp         on coremp.k12_id              = corrente.k12_id   and
                                                   coremp.k12_data            = corrente.k12_data and
                                                   coremp.k12_autent          = corrente.k12_autent
-   
+
                      inner join empempenho     on empempenho.e60_numemp      = coremp.k12_empen
-   
+
                      inner join empempaut      on empempaut.e61_numemp       = coremp.k12_empen
-   
-                     inner join cgm cgmempenho           on cgmempenho.z01_numcgm             = empempenho.e60_numcgm 
-   
+
+                     inner join cgm cgmempenho           on cgmempenho.z01_numcgm             = empempenho.e60_numcgm
+
                      inner join conplanoreduz  on conplanoreduz.c61_reduz    = corrente.k12_conta and
                                                   conplanoreduz.c61_anousu   = ".db_getsession("DB_anousu")."
-   
+
                      inner join conplano       on conplano.c60_codcon        = conplanoreduz.c61_codcon and
                                                   conplano.c60_anousu        = conplanoreduz.c61_anousu
-   
+
                      inner join pagordem       on pagordem.e50_numemp        = coremp.k12_empen and
                                                   pagordem.e50_codord        = coremp.k12_codord
-   
+
                      inner join empord         on empord.e82_codord          = coremp.k12_codord
                      left  join pagordemconta  on empord.e82_codord          = pagordemconta.e49_codord
                      left  join cgm cgmpagordem on pagordemconta.e49_numcgm  = cgmpagordem.z01_numcgm
                      left  join empautorizaprocesso on e150_empautoriza      = empempaut.e61_autori
-   
+
                      left  join conplanocontabancaria on conplanocontabancaria.c56_codcon = conplanoreduz.c61_codcon
                                                      and conplanocontabancaria.c56_anousu = conplanoreduz.c61_anousu
                                                      and conplanocontabancaria.c56_reduz  = conplanoreduz.c61_reduz
-   
+
                      left join contabancaria on contabancaria.db83_sequencial = conplanocontabancaria.c56_contabancaria
-   
+
                      left join bancoagencia on bancoagencia.db89_sequencial  = contabancaria.db83_bancoagencia
-   
+
                      left  join pagordemnota   on pagordemnota.e71_codord    = pagordem.e50_codord
-   
+
                      left  join corempagemov   on corempagemov.k12_id        = corrente.k12_id   and
                                                   corempagemov.k12_data      = corrente.k12_data and
-                                                  corempagemov.k12_autent    = corrente.k12_autent 
-                                                                                                        
+                                                  corempagemov.k12_autent    = corrente.k12_autent
+
                      left  join empagemov      on empagemov.e81_codmov       = corempagemov.k12_codmov
-   
-                     left  join empageconfgera on empageconfgera.e90_codmov  = empagemov.e81_codmov                            
-                     
+
+                     left  join empageconfgera on empageconfgera.e90_codmov  = empagemov.e81_codmov
+
                      left  join empagemovconta on empagemovconta.e98_codmov  = empagemov.e81_codmov
-   
-                     left  join pcfornecon     on pcfornecon.pc63_numcgm     = cgmempenho.z01_numcgm and 
-                                                  pcfornecon.pc63_contabanco = empagemovconta.e98_contabanco 
-   
+
+                     left  join pcfornecon     on pcfornecon.pc63_numcgm     = cgmempenho.z01_numcgm and
+                                                  pcfornecon.pc63_contabanco = empagemovconta.e98_contabanco
+
                      left  join empnota        on empnota.e69_numemp         = coremp.k12_empen and
                                                   empnota.e69_codnota        = pagordemnota.e71_codnota
-   
+
                      left  join empagemovforma on empagemovforma.e97_codmov  = empagemov.e81_codmov
-   
-                     left  join empageforma    on empageforma.e96_codigo     = empagemovforma.e97_codforma ".$db_where_deb." 
+
+                     left  join empageforma    on empageforma.e96_codigo     = empagemovforma.e97_codforma ".$db_where_deb."
                 order by cgmempenho.z01_numcgm, corrente.k12_data desc";
 
    $resultado = $clcorrente->sql_record($sql);
@@ -310,7 +310,7 @@ if( pg_num_rows($resultado) == 0 ){
 	$head3 = "DEMONSTRATIVO DE PAGAMENTO A FORNECEDOR";
 	if(isset($periodo)&&trim($periodo)!=""){
 	  $head4 = "Periodo a ser demonstrado de ".$periodo;
-	}  
+	}
 
 	$pdf = new PDF();
 	$pdf->Open();
@@ -404,7 +404,7 @@ if( pg_num_rows($resultado) == 0 ){
        $pdf->cell(10, $alt, "Data: ",                      0, 0, "L", $p);
        $pdf->setfont('arial', '', 8);
        $pdf->cell(25, $alt, db_formatar($k12_data,"d"),   0, 1, "L", $p);
-	     
+
 	     if($numcgmpagordem != null) {
 
 	       $pdf->setfont('arial', 'b', 8);
@@ -456,7 +456,7 @@ if( pg_num_rows($resultado) == 0 ){
 	     }
 
 	     $pdf->cell($tam, $alt, "", 0, 1, "L", $p);
-	     
+
 	     // Busca dados de boletos do movimento
 	     $cl_empagedadosretornodetalhe = new cl_empagedadosretornodetalhe();
 	     $sSql = "select e140_valor,
@@ -464,15 +464,15 @@ if( pg_num_rows($resultado) == 0 ){
                              substr(e140_linhaarquivo, 97, 44) as codbarras
                       from empagedadosretornodetalhe
 		      where e140_codmov = {$e81_codmov}";
-	     
+
 	     $resultadoboletos = $cl_empagedadosretornodetalhe->sql_record($sSql);
 
 	     if($cl_empagedadosretornodetalhe->numrows > 0) {
-	      
+
 	      $pdf->setfont('arial', 'b', 8);
 	      $pdf->cell(100, $alt, "Dados Boleto(s): ",                     0, 1, "L", $p);
 	     }
-	     
+
 	     for($i=0; $i < $cl_empagedadosretornodetalhe->numrows; $i++) {
 
 	       db_fieldsmemory($resultadoboletos,$i);

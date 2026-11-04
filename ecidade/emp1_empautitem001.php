@@ -142,7 +142,6 @@ if (isset ($autori_importa)) {
 					}
 				}
 				//final da rotina
-
 				if ($liberado == true) {
 
 
@@ -167,6 +166,7 @@ if (isset ($autori_importa)) {
 					$sqlerro = true;
 					$clempautitem->erro_status = "0";
 					$clempautitem->erro_msg = "Os itens da autorização $autori_importa possui elementos diferentes dos itens já cadastrados nesta autorização!";
+                    $erro_msg = $clempautitem->erro_msg;
 				}
 			}
 		}
@@ -212,6 +212,7 @@ if (isset ($autori_importa)) {
 		}
 		// $sqlerro=true;
 		db_fim_transacao($sqlerro);
+		echo "<script>parent.js_removeObj('msgbox');</script>";
 	} else {
     if (isset ($alterar)) {
       db_inicio_transacao();
@@ -236,6 +237,7 @@ if (isset ($autori_importa)) {
         $rs = db_query($sSqlValor);
       }
       db_fim_transacao($sqlerro);
+	  echo "<script>parent.js_removeObj('msgbox');</script>";
     } else {
       if (isset ($excluir)) {
         $sqlerro = false;
@@ -252,6 +254,7 @@ if (isset ($autori_importa)) {
         $sSqlValor .= " where e54_autori = {$e55_autori}";
         $rs = db_query($sSqlValor);
         db_fim_transacao($sqlerro);
+		echo "<script>parent.js_removeObj('msgbox');</script>";
       } else {
         if (isset ($opcao) && empty ($consultando)) {
 
@@ -261,9 +264,11 @@ if (isset ($autori_importa)) {
           //echo "<BR><BR>".($clpcmaterele->sql_query(null,null,"pc07_codele,o56_descr","","pc07_codmater=$e55_item and o56_elemento = '$o56_elemento'" ));
           $result_elemento = $clpcmaterele->sql_record($clpcmaterele->sql_query_funcautmater(null, null, "pc07_codele,o56_descr", "", "pc07_codmater=$e55_item and o56_elemento = '$o56_elemento'"));
         }
+		echo "<script>parent.js_removeObj('msgbox');</script>";
       }
     }
   }
+  
 ?>
 	<html>
 	<head>
@@ -278,9 +283,7 @@ if (isset ($autori_importa)) {
 		<tr>
 			<td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 				<center>
-					<?
-
-
+					<?php
 					include(modification("forms/db_frmempautitem.php"));
 					?>
 				</center>
@@ -289,7 +292,7 @@ if (isset ($autori_importa)) {
 	</table>
 	</body>
 	</html>
-<?
+<?php
 
 
 if (isset ($incluir) || isset ($alterar) || isset ($excluir) || isset ($autori_importa)) {

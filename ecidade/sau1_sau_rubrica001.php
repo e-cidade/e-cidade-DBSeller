@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,14 +62,14 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-     <?
+     <?php
      include(modification("forms/db_frmsau_rubrica.php"));
      ?>
     </center>
      </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -77,7 +77,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","sd64_c_rubrica",true,1,"sd64_c_rubrica",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clsau_rubrica->erro_status=="0"){
     $clsau_rubrica->erro(true,false);

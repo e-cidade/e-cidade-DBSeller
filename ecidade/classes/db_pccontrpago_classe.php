@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_pccontrpago {
                  p76_codcontr = int4 = Código do contrato 
                  ";
    //funcao construtor da classe 
-   function cl_pccontrpago() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pccontrpago"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_pccontrpago {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p76_codpago = ($this->p76_codpago == ""?@$GLOBALS["HTTP_POST_VARS"]["p76_codpago"]:$this->p76_codpago);
        $this->p76_codcontr = ($this->p76_codcontr == ""?@$GLOBALS["HTTP_POST_VARS"]["p76_codcontr"]:$this->p76_codcontr);
@@ -74,7 +74,7 @@ class cl_pccontrpago {
      }
    }
    // funcao para inclusao
-   function incluir ($p76_codpago){ 
+   public function incluir ($p76_codpago){ 
       $this->atualizacampos();
      if($this->p76_codcontr == null ){ 
        $this->erro_sql = " Campo Código do contrato nao Informado.";
@@ -161,7 +161,7 @@ class cl_pccontrpago {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($p76_codpago=null) { 
+   public function alterar ($p76_codpago=null) { 
       $this->atualizacampos();
      $sql = " update pccontrpago set ";
      $virgula = "";
@@ -241,7 +241,7 @@ class cl_pccontrpago {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($p76_codpago=null,$dbwhere=null) { 
+   public function excluir ($p76_codpago=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($p76_codpago));
      }else{ 
@@ -303,7 +303,7 @@ class cl_pccontrpago {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

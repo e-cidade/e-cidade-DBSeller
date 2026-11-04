@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -286,7 +286,7 @@ try {
                 if (empty($variaveisDecodificar[0]) || trim($variaveisDecodificar[0]) == "tipo") {
                     continue;
                 }
-                foreach ($variaveisDecodificar as &$value) {
+                foreach ($variaveisDecodificar as $value) {
                     if (db_utils::isUTF8($value)) {
                         $value = utf8_decode($value);
                     }

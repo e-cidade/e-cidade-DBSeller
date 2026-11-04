@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("o15_descr");
        <?=@$Lk29_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k29_sequencial',8,$Ik29_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -48,22 +48,22 @@ db_input('k29_sequencial',8,$Ik29_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk29_slip?>
     </td>
     <td> 
-<?
+<?php
 db_input('k29_slip',5,$Ik29_slip,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk29_recurso?>">
-       <?
+       <?php
        db_ancora(@$Lk29_recurso,"js_pesquisak29_recurso(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k29_recurso',4,$Ik29_recurso,true,'text',$db_opcao," onchange='js_pesquisak29_recurso(false);'")
 ?>
-       <?
+       <?php
 db_input('o15_descr',60,$Io15_descr,true,'text',3,'')
        ?>
     </td>
@@ -73,7 +73,7 @@ db_input('o15_descr',60,$Io15_descr,true,'text',3,'')
        <?=@$Lk29_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('k29_valor',15,$Ik29_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sliprecurso.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

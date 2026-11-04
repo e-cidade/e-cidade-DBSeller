@@ -50,7 +50,7 @@ db_postmemory($_POST);
   <form name="form1" method="post">
     <fieldset style="margin-top: 50px; width: 450px;">
     <legend>Relatório de empenhos por histórico</legend>
-    <table style="" border='0'>
+    <table border='0'>
       <tr>
          <td >
             <b> Período de:</b>

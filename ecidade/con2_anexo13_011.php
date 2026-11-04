@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,7 +49,7 @@ db_postmemory($_POST);
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 
-<?
+<?php
 	$sNovoFonte = "con2_anexo13_002.php";
 ?>
 <script>
@@ -86,7 +86,7 @@ function js_emite(){
       </tr>
       <tr>
         <td align="center" colspan="3">
-	<?
+	<?php
 	db_selinstit('',300,100);
 	?>
 	</td>
@@ -122,7 +122,7 @@ function js_emite(){
              document.form1.mesfin.options[0].selected = true;
            }
           </script>
-              <?
+              <?php
 	      $result1=array("1"=>"Janeiro");
               db_select("mesini",$result1,true,2,'onchange="js_criames(this)"',"","","","");
               ?>

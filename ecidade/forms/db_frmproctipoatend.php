@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,37 +57,37 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lsd20_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd20_i_codigo',10,$Isd20_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd20_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd20_i_procedimento,"js_pesquisasd20_i_procedimento(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd20_i_procedimento',10,$Isd20_i_procedimento,true,'text',3," onchange='js_pesquisasd20_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd09_c_descr',100,$Isd09_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd20_i_tipoatend?>">
-       <?
+       <?php
        db_ancora(@$Lsd20_i_tipoatend,"js_pesquisasd20_i_tipoatend(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd20_i_tipoatend',10,$Isd20_i_tipoatend,true,'text',$db_opcao," onchange='js_pesquisasd20_i_tipoatend(false);'")
 ?>
-       <?
+       <?php
 db_input('sd14_c_descr',50,$Isd14_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('sd14_c_descr',50,$Isd14_c_descr,true,'text',3,'')
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("sd20_i_codigo"=>@$sd20_i_codigo,"sd20_i_procedimento"=>@$sd20_i_procedimento,"sd20_i_tipoatend"=>@$sd20_i_tipoatend,"sd14_c_descr"=>@$sd14_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clproctipoatend->sql_query($sd20_i_codigo,"sd20_i_codigo,sd14_i_codigo,sd20_i_procedimento,sd14_c_descr,sd20_i_tipoatend","sd14_i_codigo","sd20_i_procedimento = $sd20_i_procedimento");
@@ -172,7 +172,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_proctipoatend.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

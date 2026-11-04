@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -74,37 +74,37 @@ if (isset($opcao) && $opcao == "alterar") {
        <?=@$Lg05_sequencial?>
     </td>
     <td colspan=3> 
-       <?
+       <?php
          db_input('g05_sequencial', 10, $Ig05_sequencial, true, 'text', 3);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tg05_gestorgrupoindicador?>">
-       <?
+       <?php
        db_ancora(@$Lg05_gestorgrupoindicador,"js_pesquisag05_gestorgrupoindicador(true);",$db_opcao);
        ?>
     </td>
     <td colspan=3> 
-			<?
+			<?php
 			db_input('g05_gestorgrupoindicador',10,$Ig05_gestorgrupoindicador,true,'text',$db_opcao," onchange='js_pesquisag05_gestorgrupoindicador(false);'")
 			?>
-       <?
+       <?php
       db_input('g03_descricao',40,$Ig03_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tg05_gestorindicador?>">
-       <?
+       <?php
        db_ancora(@$Lg05_gestorindicador,"js_pesquisag05_gestorindicador(true);",$db_opcao);
        ?>
     </td>
     <td colspan=3> 
-			<?
+			<?php
 			db_input('g05_gestorindicador',10,$Ig05_gestorindicador,true,'text',$db_opcao," onchange='js_pesquisag05_gestorindicador(false);'")
 			?>
-       <?
+       <?php
       db_input('g04_descricao',40,$Ig04_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -115,11 +115,11 @@ if (isset($opcao) && $opcao == "alterar") {
        <b>Mês/Ano</b><!--<?=@$Lg05_mes?>-->
     </td>
     <td colspan=3> 
-			<?
+			<?php
 			db_input('g05_mes',3,$Ig05_mes,true,'text',$db_opcao,"")
 			?>
 			/
-			<?
+			<?php
       db_input('g05_ano',3,$Ig05_ano,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -129,7 +129,7 @@ if (isset($opcao) && $opcao == "alterar") {
        <?=@$Lg05_valor?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('g05_valor',15,$Ig05_valor,true,'text',$db_opcao,"")
 			?>                      
     </td>
@@ -137,7 +137,7 @@ if (isset($opcao) && $opcao == "alterar") {
        <?=@$Lg05_meta?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('g05_meta',15,$Ig05_meta,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -147,7 +147,7 @@ if (isset($opcao) && $opcao == "alterar") {
        <?=@$Lg05_datalimite?>
     </td>
     <td> 
-			<?
+			<?php
 			db_inputdata('g05_datalimite',@$g05_datalimite_dia,@$g05_datalimite_mes,@$g05_datalimite_ano,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -164,14 +164,14 @@ if (isset($opcao) && $opcao == "alterar") {
        value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
        <?=($db_botao==false?"disabled":"")?> >
 
-<? if($db_opcao!=1 && $db_opcao!=11) { ?>
+<?php if($db_opcao!=1 && $db_opcao!=11) { ?>
   <input name="incluir_novo" value="Incluir Novo" type="button" <?=($db_botao==false?"disabled":"")?> 
          onclick="window.location.href='ges1_gestorindicadorregistro001.php'">
-<? } ?>
+<?php } ?>
 <table>
   <tr>
     <td valign="top"> 
-    <?
+    <?php
      $chavepri= array("g05_sequencial"=>@$g05_sequencial);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      

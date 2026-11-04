@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -41,7 +41,7 @@ $db_opcao1 = 3;
 $db_botao  = false;
 
 if (isset($chavepesquisa)) {
-  
+
   $db_opcao = 2;
   $campos   = "leitor.bi10_codigo,
                cidadao.ov02_sequencial as codigo,
@@ -49,7 +49,7 @@ if (isset($chavepesquisa)) {
                'CIDADAO' as tipo
               ";
   $result   = $clleitor->sql_record($clleitor->sql_query_leitorcidadao("",$campos,""," bi10_codigo = $chavepesquisa"));
-  
+
   db_fieldsmemory($result,0);
   $db_botao = true;
   ?>
@@ -57,7 +57,7 @@ if (isset($chavepesquisa)) {
     parent.document.formaba.acervo2.disabled = false;
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo2.location.href='bib1_carteira001.php?bi16_leitor=<?=$bi10_codigo?>&z01_nome=<?=$nome?>';
   </script>
-  <?
+  <?php
 }
 ?>
 <html>
@@ -76,7 +76,7 @@ if (isset($chavepesquisa)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Leitor</b></legend>
-    <?require_once(modification("forms/db_frmleitor.php"));?>
+    <?php require_once(modification("forms/db_frmleitor.php"));?>
    </fieldset>
    </center>
   </td>
@@ -84,15 +84,15 @@ if (isset($chavepesquisa)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
-  
+
   if ($clleitor->erro_status == "0") {
-    
+
     $clleitor->erro(true,false);
     $db_botao = true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clleitor->erro_campo != "") {
 
       echo "<script> document.form1.".$clleitor->erro_campo.".style.backgroundColor='#99A9AE';</script>";
@@ -104,7 +104,7 @@ if (isset($alterar)) {
       parent.document.formaba.acervo2.disabled = false;
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo2.location.href='bib1_carteira001.php?bi16_leitor=<?=$bi10_codigo?>&z01_nome=<?=$nome?>';
     </script>
-    <?
+    <?php
     $clleitor->erro(true,false);
   };
 };

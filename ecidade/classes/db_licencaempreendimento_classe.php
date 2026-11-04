@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,13 +52,13 @@ class cl_licencaempreendimento {
                  am13_arquivo = oid = Arquivo
                  ";
    //funcao construtor da classe
-   function cl_licencaempreendimento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licencaempreendimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_licencaempreendimento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am13_sequencial = ($this->am13_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am13_sequencial"]:$this->am13_sequencial);
        $this->am13_parecertecnico = ($this->am13_parecertecnico == ""?@$GLOBALS["HTTP_POST_VARS"]["am13_parecertecnico"]:$this->am13_parecertecnico);
@@ -77,7 +77,7 @@ class cl_licencaempreendimento {
      }
    }
    // funcao para inclusao
-   function incluir ($am13_sequencial=null){
+   public function incluir ($am13_sequencial=null){
       $this->atualizacampos();
      if($this->am13_parecertecnico == null ){
        $this->erro_sql = " Campo Parecer Técnico não informado.";

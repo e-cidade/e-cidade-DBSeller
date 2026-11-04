@@ -24,19 +24,21 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+use ECidade\Pdf\Pdf;
 
-include modification('fpdf151/pdf.php');
-include modification('fpdf151/assinatura.php');
-include modification('libs/db_sql.php');
-include modification('libs/db_liborcamento.php');
-include modification('dbforms/db_funcoes.php');
+require_once(modification('libs/db_stdlib.php'));
+require_once(modification('libs/db_conecta.php'));
+require_once(modification('libs/db_sql.php'));
+require_once(modification('libs/db_liborcamento.php'));
+require_once(modification('dbforms/db_funcoes.php'));
+require_once(modification('fpdf151/assinatura.php'));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER['QUERY_STRING']);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura();
 
-$xinstit = split('-', $db_selinstit);
+$xinstit =explode('-', $db_selinstit);
 $sSql = 'select codigo,nomeinstabrev from db_config where codigo in ('.str_replace('-', ', ', $db_selinstit).') ';
 $resultinst = db_query($sSql);
 $descr_inst = '';
@@ -84,12 +86,12 @@ for ($xins = 0; $xins < pg_numrows($resultinst); ++$xins) {
                                 o58_elemento varchar(255),
                                 o58_codigo int8)');
 
-  $xcampos = split('-', $orgaos);
+  $xcampos =explode('-', $orgaos);
 
   for ($i = 0; $i < sizeof($xcampos); ++$i) {
       $where = '';
       $virgula = '';
-      $xxcampos = split('_', $xcampos[$i]);
+      $xxcampos =explode('_', $xcampos[$i]);
       for ($ii = 0; $ii < sizeof($xxcampos); ++$ii) {
           if ($ii > 0) {
               $where .= $virgula.$xxcampos[$ii];
@@ -160,6 +162,7 @@ if ($tipo_agrupa == 1) {
     $sOrdem = ' o58_orgao, o58_unidade, o41_descr,  o40_descr, ';
 }
 
+$head7 = "";
 $xtipo = 0;
 if ($origem == 'O') {
     $xtipo = 'ORÇAMENTO';
@@ -241,6 +244,7 @@ $sSql = "select o58_funcao,
                 especial,
                 especial_acumulado
            from ({$sSql}) as final
+                left join orctiporec on orctiporec.o15_codigo = final.o58_codigo
           order by {$sOrdem}
                    o58_funcao,
                    o52_descr,
@@ -260,10 +264,17 @@ $sSql = "select o58_funcao,
 $result = db_query($sSql);
 
 $pdf = new PDF();
-$pdf->Open();
+$pdf->init(false);
 $pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial', 'b', 7);
+$pdf->addTitulo($head2, 2);
+$pdf->addTitulo($head3, 3);
+$pdf->addTitulo($head4, 4);
+$pdf->addTitulo($head5, 5);
+$pdf->addTitulo($head6, 6);
+$pdf->addTitulo($head7, 7);
+
 
 $total = 0;
 $troca = 1;
@@ -315,7 +326,7 @@ for ($i = 0; $i < pg_numrows($result); ++$i) {
         }
     }
 
-    if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
+    if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
         $pagina = 0;
         $pdf->addpage();
         $pdf->setfont('arial', 'b', 7);

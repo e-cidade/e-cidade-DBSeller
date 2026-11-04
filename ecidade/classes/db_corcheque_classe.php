@@ -1,84 +1,84 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE corcheque
-class cl_corcheque { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k12_codcorcheque = 0; 
-   var $k12_banco = 0; 
-   var $k12_agencia = null; 
-   var $k12_nominal = 'f'; 
-   var $k12_numero = null; 
-   var $k12_dtcheque_dia = null; 
-   var $k12_dtcheque_mes = null; 
-   var $k12_dtcheque_ano = null; 
-   var $k12_dtcheque = null; 
-   var $k12_vlrcheque = 0; 
-   var $k12_usuario = 0; 
-   var $k12_dtinc_dia = null; 
-   var $k12_dtinc_mes = null; 
-   var $k12_dtinc_ano = null; 
-   var $k12_dtinc = null; 
-   var $k12_horainc = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_corcheque {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k12_codcorcheque = 0;
+   var $k12_banco = 0;
+   var $k12_agencia = null;
+   var $k12_nominal = 'f';
+   var $k12_numero = null;
+   var $k12_dtcheque_dia = null;
+   var $k12_dtcheque_mes = null;
+   var $k12_dtcheque_ano = null;
+   var $k12_dtcheque = null;
+   var $k12_vlrcheque = 0;
+   var $k12_usuario = 0;
+   var $k12_dtinc_dia = null;
+   var $k12_dtinc_mes = null;
+   var $k12_dtinc_ano = null;
+   var $k12_dtinc = null;
+   var $k12_horainc = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k12_codcorcheque = int4 = Código 
-                 k12_banco = int4 = Código do Banco 
-                 k12_agencia = char(5) = Agência 
-                 k12_nominal = bool = Nominal 
-                 k12_numero = varchar(20) = Número do Cheque 
-                 k12_dtcheque = date = Data 
-                 k12_vlrcheque = float4 = Valor 
-                 k12_usuario = int4 = Cod. Usuário 
-                 k12_dtinc = date = Data da inclusão 
-                 k12_horainc = char(5) = Hora da Inclusão 
+                 k12_codcorcheque = int4 = Código
+                 k12_banco = int4 = Código do Banco
+                 k12_agencia = char(5) = Agência
+                 k12_nominal = bool = Nominal
+                 k12_numero = varchar(20) = Número do Cheque
+                 k12_dtcheque = date = Data
+                 k12_vlrcheque = float4 = Valor
+                 k12_usuario = int4 = Cod. Usuário
+                 k12_dtinc = date = Data da inclusão
+                 k12_horainc = char(5) = Hora da Inclusão
                  ";
-   //funcao construtor da classe 
-   function cl_corcheque() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("corcheque"); 
+     $this->rotulo = new rotulo("corcheque");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -87,7 +87,7 @@ class cl_corcheque {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k12_codcorcheque = ($this->k12_codcorcheque == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_codcorcheque"]:$this->k12_codcorcheque);
        $this->k12_banco = ($this->k12_banco == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_banco"]:$this->k12_banco);
@@ -118,9 +118,9 @@ class cl_corcheque {
      }
    }
    // funcao para inclusao
-   function incluir ($k12_codcorcheque){ 
+   public function incluir ($k12_codcorcheque){
       $this->atualizacampos();
-     if($this->k12_banco == null ){ 
+     if($this->k12_banco == null ){
        $this->erro_sql = " Campo Código do Banco nao Informado.";
        $this->erro_campo = "k12_banco";
        $this->erro_banco = "";
@@ -129,7 +129,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_agencia == null ){ 
+     if($this->k12_agencia == null ){
        $this->erro_sql = " Campo Agência nao Informado.";
        $this->erro_campo = "k12_agencia";
        $this->erro_banco = "";
@@ -138,7 +138,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_nominal == null ){ 
+     if($this->k12_nominal == null ){
        $this->erro_sql = " Campo Nominal nao Informado.";
        $this->erro_campo = "k12_nominal";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_numero == null ){ 
+     if($this->k12_numero == null ){
        $this->erro_sql = " Campo Número do Cheque nao Informado.";
        $this->erro_campo = "k12_numero";
        $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_dtcheque == null ){ 
+     if($this->k12_dtcheque == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "k12_dtcheque_dia";
        $this->erro_banco = "";
@@ -165,7 +165,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_vlrcheque == null ){ 
+     if($this->k12_vlrcheque == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "k12_vlrcheque";
        $this->erro_banco = "";
@@ -174,7 +174,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_usuario == null ){ 
+     if($this->k12_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "k12_usuario";
        $this->erro_banco = "";
@@ -183,7 +183,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_dtinc == null ){ 
+     if($this->k12_dtinc == null ){
        $this->erro_sql = " Campo Data da inclusão nao Informado.";
        $this->erro_campo = "k12_dtinc_dia";
        $this->erro_banco = "";
@@ -192,7 +192,7 @@ class cl_corcheque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_horainc == null ){ 
+     if($this->k12_horainc == null ){
        $this->erro_sql = " Campo Hora da Inclusão nao Informado.";
        $this->erro_campo = "k12_horainc";
        $this->erro_banco = "";
@@ -202,16 +202,16 @@ class cl_corcheque {
        return false;
      }
      if($k12_codcorcheque == "" || $k12_codcorcheque == null ){
-       $result = db_query("select nextval('corcheque_k12_codcorcheque_seq')"); 
+       $result = db_query("select nextval('corcheque_k12_codcorcheque_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: corcheque_k12_codcorcheque_seq do campo: k12_codcorcheque"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: corcheque_k12_codcorcheque_seq do campo: k12_codcorcheque";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k12_codcorcheque = pg_result($result,0,0); 
+       $this->k12_codcorcheque = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from corcheque_k12_codcorcheque_seq");
        if(($result != false) && (pg_result($result,0,0) < $k12_codcorcheque)){
@@ -222,10 +222,10 @@ class cl_corcheque {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k12_codcorcheque = $k12_codcorcheque; 
+         $this->k12_codcorcheque = $k12_codcorcheque;
        }
      }
-     if(($this->k12_codcorcheque == null) || ($this->k12_codcorcheque == "") ){ 
+     if(($this->k12_codcorcheque == null) || ($this->k12_codcorcheque == "") ){
        $this->erro_sql = " Campo k12_codcorcheque nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -234,31 +234,31 @@ class cl_corcheque {
        return false;
      }
      $sql = "insert into corcheque(
-                                       k12_codcorcheque 
-                                      ,k12_banco 
-                                      ,k12_agencia 
-                                      ,k12_nominal 
-                                      ,k12_numero 
-                                      ,k12_dtcheque 
-                                      ,k12_vlrcheque 
-                                      ,k12_usuario 
-                                      ,k12_dtinc 
-                                      ,k12_horainc 
+                                       k12_codcorcheque
+                                      ,k12_banco
+                                      ,k12_agencia
+                                      ,k12_nominal
+                                      ,k12_numero
+                                      ,k12_dtcheque
+                                      ,k12_vlrcheque
+                                      ,k12_usuario
+                                      ,k12_dtinc
+                                      ,k12_horainc
                        )
                 values (
-                                $this->k12_codcorcheque 
-                               ,$this->k12_banco 
-                               ,'$this->k12_agencia' 
-                               ,'$this->k12_nominal' 
-                               ,'$this->k12_numero' 
-                               ,".($this->k12_dtcheque == "null" || $this->k12_dtcheque == ""?"null":"'".$this->k12_dtcheque."'")." 
-                               ,$this->k12_vlrcheque 
-                               ,$this->k12_usuario 
-                               ,".($this->k12_dtinc == "null" || $this->k12_dtinc == ""?"null":"'".$this->k12_dtinc."'")." 
-                               ,'$this->k12_horainc' 
+                                $this->k12_codcorcheque
+                               ,$this->k12_banco
+                               ,'$this->k12_agencia'
+                               ,'$this->k12_nominal'
+                               ,'$this->k12_numero'
+                               ,".($this->k12_dtcheque == "null" || $this->k12_dtcheque == ""?"null":"'".$this->k12_dtcheque."'")."
+                               ,$this->k12_vlrcheque
+                               ,$this->k12_usuario
+                               ,".($this->k12_dtinc == "null" || $this->k12_dtinc == ""?"null":"'".$this->k12_dtinc."'")."
+                               ,'$this->k12_horainc'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "corcheque ($this->k12_codcorcheque) nao Incluído. Inclusao Abortada.";
@@ -299,16 +299,16 @@ class cl_corcheque {
        $resac = db_query("insert into db_acount values($acount,1689,9847,'','".AddSlashes(pg_result($resaco,0,'k12_horainc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k12_codcorcheque=null) { 
+   public function alterar ($k12_codcorcheque=null) {
       $this->atualizacampos();
      $sql = " update corcheque set ";
      $virgula = "";
-     if(trim($this->k12_codcorcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_codcorcheque"])){ 
+     if(trim($this->k12_codcorcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_codcorcheque"])){
        $sql  .= $virgula." k12_codcorcheque = $this->k12_codcorcheque ";
        $virgula = ",";
-       if(trim($this->k12_codcorcheque) == null ){ 
+       if(trim($this->k12_codcorcheque) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k12_codcorcheque";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_corcheque {
          return false;
        }
      }
-     if(trim($this->k12_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_banco"])){ 
+     if(trim($this->k12_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_banco"])){
        $sql  .= $virgula." k12_banco = $this->k12_banco ";
        $virgula = ",";
-       if(trim($this->k12_banco) == null ){ 
+       if(trim($this->k12_banco) == null ){
          $this->erro_sql = " Campo Código do Banco nao Informado.";
          $this->erro_campo = "k12_banco";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_corcheque {
          return false;
        }
      }
-     if(trim($this->k12_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_agencia"])){ 
+     if(trim($this->k12_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_agencia"])){
        $sql  .= $virgula." k12_agencia = '$this->k12_agencia' ";
        $virgula = ",";
-       if(trim($this->k12_agencia) == null ){ 
+       if(trim($this->k12_agencia) == null ){
          $this->erro_sql = " Campo Agência nao Informado.";
          $this->erro_campo = "k12_agencia";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_corcheque {
          return false;
        }
      }
-     if(trim($this->k12_nominal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_nominal"])){ 
+     if(trim($this->k12_nominal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_nominal"])){
        $sql  .= $virgula." k12_nominal = '$this->k12_nominal' ";
        $virgula = ",";
-       if(trim($this->k12_nominal) == null ){ 
+       if(trim($this->k12_nominal) == null ){
          $this->erro_sql = " Campo Nominal nao Informado.";
          $this->erro_campo = "k12_nominal";
          $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_corcheque {
          return false;
        }
      }
-     if(trim($this->k12_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_numero"])){ 
+     if(trim($this->k12_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_numero"])){
        $sql  .= $virgula." k12_numero = '$this->k12_numero' ";
        $virgula = ",";
-       if(trim($this->k12_numero) == null ){ 
+       if(trim($this->k12_numero) == null ){
          $this->erro_sql = " Campo Número do Cheque nao Informado.";
          $this->erro_campo = "k12_numero";
          $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_corcheque {
          return false;
        }
      }
-     if(trim($this->k12_dtcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtcheque_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtcheque_dia"] !="") ){ 
+     if(trim($this->k12_dtcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtcheque_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtcheque_dia"] !="") ){
        $sql  .= $virgula." k12_dtcheque = '$this->k12_dtcheque' ";
        $virgula = ",";
-       if(trim($this->k12_dtcheque) == null ){ 
+       if(trim($this->k12_dtcheque) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k12_dtcheque_dia";
          $this->erro_banco = "";
@@ -382,11 +382,11 @@ class cl_corcheque {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtcheque_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtcheque_dia"])){
          $sql  .= $virgula." k12_dtcheque = null ";
          $virgula = ",";
-         if(trim($this->k12_dtcheque) == null ){ 
+         if(trim($this->k12_dtcheque) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k12_dtcheque_dia";
            $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_corcheque {
          }
        }
      }
-     if(trim($this->k12_vlrcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_vlrcheque"])){ 
+     if(trim($this->k12_vlrcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_vlrcheque"])){
        $sql  .= $virgula." k12_vlrcheque = $this->k12_vlrcheque ";
        $virgula = ",";
-       if(trim($this->k12_vlrcheque) == null ){ 
+       if(trim($this->k12_vlrcheque) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "k12_vlrcheque";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_corcheque {
          return false;
        }
      }
-     if(trim($this->k12_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_usuario"])){ 
+     if(trim($this->k12_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_usuario"])){
        $sql  .= $virgula." k12_usuario = $this->k12_usuario ";
        $virgula = ",";
-       if(trim($this->k12_usuario) == null ){ 
+       if(trim($this->k12_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "k12_usuario";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_corcheque {
          return false;
        }
      }
-     if(trim($this->k12_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtinc_dia"] !="") ){ 
+     if(trim($this->k12_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtinc_dia"] !="") ){
        $sql  .= $virgula." k12_dtinc = '$this->k12_dtinc' ";
        $virgula = ",";
-       if(trim($this->k12_dtinc) == null ){ 
+       if(trim($this->k12_dtinc) == null ){
          $this->erro_sql = " Campo Data da inclusão nao Informado.";
          $this->erro_campo = "k12_dtinc_dia";
          $this->erro_banco = "";
@@ -435,11 +435,11 @@ class cl_corcheque {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtinc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtinc_dia"])){
          $sql  .= $virgula." k12_dtinc = null ";
          $virgula = ",";
-         if(trim($this->k12_dtinc) == null ){ 
+         if(trim($this->k12_dtinc) == null ){
            $this->erro_sql = " Campo Data da inclusão nao Informado.";
            $this->erro_campo = "k12_dtinc_dia";
            $this->erro_banco = "";
@@ -450,10 +450,10 @@ class cl_corcheque {
          }
        }
      }
-     if(trim($this->k12_horainc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_horainc"])){ 
+     if(trim($this->k12_horainc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_horainc"])){
        $sql  .= $virgula." k12_horainc = '$this->k12_horainc' ";
        $virgula = ",";
-       if(trim($this->k12_horainc) == null ){ 
+       if(trim($this->k12_horainc) == null ){
          $this->erro_sql = " Campo Hora da Inclusão nao Informado.";
          $this->erro_campo = "k12_horainc";
          $this->erro_banco = "";
@@ -497,7 +497,7 @@ class cl_corcheque {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "corcheque nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k12_codcorcheque;
@@ -525,14 +525,14 @@ class cl_corcheque {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k12_codcorcheque=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k12_codcorcheque=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k12_codcorcheque));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -567,7 +567,7 @@ class cl_corcheque {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "corcheque nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k12_codcorcheque;
@@ -595,11 +595,11 @@ class cl_corcheque {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -621,10 +621,10 @@ class cl_corcheque {
       }
      return $result;
    }
-   function sql_query ( $k12_codcorcheque=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k12_codcorcheque=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -639,15 +639,15 @@ class cl_corcheque {
      $sql2 = "";
      if($dbwhere==""){
        if($k12_codcorcheque!=null ){
-         $sql2 .= " where corcheque.k12_codcorcheque = $k12_codcorcheque "; 
-       } 
+         $sql2 .= " where corcheque.k12_codcorcheque = $k12_codcorcheque ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -656,10 +656,10 @@ class cl_corcheque {
      }
      return $sql;
   }
-   function sql_query_file ( $k12_codcorcheque=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k12_codcorcheque=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -672,15 +672,15 @@ class cl_corcheque {
      $sql2 = "";
      if($dbwhere==""){
        if($k12_codcorcheque!=null ){
-         $sql2 .= " where corcheque.k12_codcorcheque = $k12_codcorcheque "; 
-       } 
+         $sql2 .= " where corcheque.k12_codcorcheque = $k12_codcorcheque ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

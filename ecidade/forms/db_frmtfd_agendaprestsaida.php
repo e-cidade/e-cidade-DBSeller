@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,7 +46,7 @@ $clrotulo->label("tf01_i_rhcbo");
           </td>
           <td>
             <?php
-              $aData = split( "/", strftime("%d/%m/%Y", mktime(0, 0, 0, date("m"), date("d") - 30, date("Y"))));
+              $aData =explode( "/", strftime("%d/%m/%Y", mktime(0, 0, 0, date("m"), date("d") - 30, date("Y"))));
               $dia1  = $aData[0];
               $mes1  = $aData[1];
               $ano1  = $aData[2];
@@ -96,7 +96,7 @@ $clrotulo->label("tf01_i_rhcbo");
         </tr>
         <tr>
           <td title="<?php echo $Ttf01_i_rhcbo?>">
-            <? db_ancora(@$Ltf01_i_rhcbo, "js_pesquisatf01_i_rhcbo(true);", $db_opcao); ?>
+            <?php db_ancora(@$Ltf01_i_rhcbo, "js_pesquisatf01_i_rhcbo(true);", $db_opcao); ?>
           </td>
           <td colspan="5">
             <?php

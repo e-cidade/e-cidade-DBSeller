@@ -1,0 +1,274 @@
+[
+   {
+     "value": "79",
+     "label": "79: Rendimento não tributável-Outras isenções"
+   },
+   {
+     "value": "701",
+     "label": "701: Rendimento não tributável - Parte não tributável do valor de serviço de transporte de passageiros ou cargas"
+   },
+   {
+     "value": "700",
+     "label": "700: Rendimento não tributável - Auxílio moradia"
+   },
+   {
+     "value": "77",
+     "label": "77: Rendimento não tributável-Rendimento de beneficiário com moléstia grave ou acidente em serviço-13º salário"
+   },
+   {
+     "value": "76",
+     "label": "76: Rendimento não tributável-Rendimento de beneficiário com moléstia grave ou acidente em serviço-Remuneração mensal"
+   },
+   {
+     "value": "75",
+     "label": "75: Rendimento não tributável - Abono pecuniário"
+   },
+   {
+     "value": "74",
+     "label": "74: Rendimento não tributável - Indenização e rescisão de contrato, inclusive a título de PDV e acidentes de trabalho"
+   },
+   {
+     "value": "73",
+     "label": "73: Rendimento não tributável - Ajuda de custo"
+   },
+   {
+     "value": "72",
+     "label": "72: Rendimento não tributável - Diárias"
+   },
+   {
+     "value": "71",
+     "label": "71: Rendimento não tributável - Parcela Isenta 65 anos - 13° salário"
+   },
+   {
+     "value": "70",
+     "label": "70: Rendimento não tributável - Parcela Isenta 65 anos - Remuneração mensal"
+   },
+   {
+     "value": "67",
+     "label": "67: Deduções IRRF - Plano privado coletivo de assistência à saúde"
+   },
+   {
+     "value": "66",
+     "label": "66: Deduções IRRF - Fundo de Aposentadoria Programada Individual - FAPI - Férias"
+   },
+   {
+     "value": "65",
+     "label": "65: Deduções IRRF - Fundação de previdência complementar do servidor público - Férias"
+   },
+   {
+     "value": "64",
+     "label": "64: Deduções IRRF - Fundação de Previdência Complementar do Servidor Público - 13° salário "
+   },
+   {
+     "value": "63",
+     "label": "63: Deduções IRRF - Fundação de Previdência Complementar do Servidor Público - Remuneração mensal"
+   },
+   {
+     "value": "62",
+     "label": "62: Deduções IRRF - Fundo de Aposentadoria Programada Individual - FAPI - 13° salário"
+   },
+   {
+     "value": "61",
+     "label": "61: Deduções IRRF - Fundo de Aposentadoria Programada Individual - FAPI - Remuneração Mensal"
+   },
+   {
+     "value": "54",
+     "label": "54: Deduções IRRF - Pensão Alimentícia - PLR"
+   },
+   {
+     "value": "53",
+     "label": "53: Deduções IRRF - Pensão Alimentícia - Férias"
+   },
+   {
+     "value": "52",
+     "label": "52: Deduções IRRF - Pensão Alimentícia - 13° salário"
+   },
+   {
+     "value": "51",
+     "label": "51: Deduções IRRF - Pensão Alimentícia - Remuneração mensal"
+   },
+   {
+     "value": "47",
+     "label": "47: Deduções IRRF - Previdência Privada - 13° salário"
+   },
+   {
+     "value": "46",
+     "label": "46: Deduções IRRF - Previdência Privada - salário mensal"
+   },
+   {
+     "value": "43",
+     "label": "43: Deduções IRRF - PSO - Férias"
+   },
+   {
+     "value": "42",
+     "label": "42: Deduções IRRF - PSO - 13° salário"
+   },
+   {
+     "value": "41",
+     "label": "41: Deduções IRRF - Previdência Social Oficial - PSO - Remuner. mensal"
+   },
+   {
+     "value": "34",
+     "label": "34: Retenções do IRRF efetuadas sobre - PLR"
+   },
+   {
+     "value": "33",
+     "label": "33: Retenções do IRRF efetuadas sobre - Férias"
+   },
+   {
+     "value": "32",
+     "label": "32: Retenções do IRRF efetuadas sobre - 13o Salário "
+   },
+   {
+     "value": "31",
+     "label": "31: Retenções do IRRF efetuadas sobre - Remuneração mensal"
+   },
+   {
+     "value": "14",
+     "label": "14: Rendimentos tributáveis base de IRRF - PLR"
+   },
+   {
+     "value": "13",
+     "label": "13: Rendimentos tributáveis base de IRRF - Férias"
+   },
+   {
+     "value": "12",
+     "label": "12: Rendimentos tributáveis base de IRRF - 13o Salário "
+   },
+   {
+     "value": "11",
+     "label": "11: Rendimentos tributáveis base de IRRF - Remuneração mensal"
+   },
+   {
+     "value": "9",
+     "label": "9: Verba transitada pela folha de pagamento de natureza diversa de rendimento ou retenção/isenção/dedução de IR"
+   },
+   {
+     "value": "9011",
+     "label": "9011: Exigibilidade suspensa - Rendimento tributável (base de cálculo do IR) - Remuneração mensal"
+   },
+   {
+     "value": "9012",
+     "label": "9012: Exigibilidade suspensa - Rendimento tributável (base de cálculo do IR) - 13º salário"
+   },
+   {
+     "value": "9013",
+     "label": "9013: Exigibilidade suspensa - Rendimento tributável (base de cálculo do IR) - Férias"
+   },
+   {
+     "value": "9014",
+     "label": "9014: Exigibilidade suspensa - Rendimento tributável (base de cálculo do IR) - PLR"
+   },
+   {
+     "value": "9031",
+     "label": "9031: Exigibilidade suspensa - Retenção do IRRF: Remuneração mensal"
+   },
+   {
+     "value": "9032",
+     "label": "9032: Exigibilidade suspensa - Retenção do IRRF: 13º salário "
+   },
+   {
+     "value": "9033",
+     "label": "9033: Exigibilidade suspensa - Retenção do IRRF: Férias"
+   },
+   {
+     "value": "9034",
+     "label": "9034: Exigibilidade suspensa - Retenção do IRRF efetuada sobre: PLR"
+   },
+   {
+     "value": "9831",
+     "label": "9831: Exigibilidade suspensa - Retenção do IRRF: Depósito judicial - Remuneração mensal"
+   },
+   {
+     "value": "9832",
+     "label": "9832: Exigibilidade suspensa - Retenção do IRRF: Depósito judicial - 13º salário"
+   },
+   {
+     "value": "9833",
+     "label": "9833: Exigibilidade suspensa - Retenção do IRRF: Depósito judicial - Férias "
+   },
+   {
+     "value": "9834",
+     "label": "9834: Exigibilidade suspensa - Retenção do IRRF: Depósito judicial - PLR "
+   },
+   {
+     "value": "9041",
+     "label": "9041: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Previdência Social Oficial - PSO - Remuneração mensal"
+   },
+   {
+     "value": "9042",
+     "label": "9042: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: PSO - 13º salário "
+   },
+   {
+     "value": "9043",
+     "label": "9043: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: PSO - Férias"
+   },
+   {
+     "value": "9048",
+     "label": "9048: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Previdência privada - Férias"
+   },
+   {
+     "value": "9051",
+     "label": "9051: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Pensão alimentícia - Remuneração mensal"
+   },
+   {
+     "value": "9052",
+     "label": "9052: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Pensão alimentícia - 13º salário"
+   },
+   {
+     "value": "9053",
+     "label": "9053: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Pensão alimentícia - Férias"
+   },
+   {
+     "value": "9054",
+     "label": "9054: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Pensão alimentícia - PLR"
+   },
+   {
+     "value": "9061",
+     "label": "9061: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Fundo de Aposentadoria Programada Individual - FAPI - Remuneração mensal"
+   },
+   {
+     "value": "9062",
+     "label": "9062: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Fundo de Aposentadoria Programada Individual - FAPI - 13º salário"
+   },
+   {
+     "value": "9063",
+     "label": "9063: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Fundação de previdência complementar do servidor público - Remuneração mensal"
+   },
+   {
+     "value": "9064",
+     "label": "9064: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Fundação de previdência complementar do servidor público - 13º salário"
+   },
+   {
+     "value": "9065",
+     "label": "9065: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Fundação de previdência complementar do servidor público - Férias"
+   },
+   {
+     "value": "9066",
+     "label": "9066: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Fundo de Aposentadoria Programada Individual - FAPI - Férias"
+   },
+   {
+     "value": "9067",
+     "label": "9067: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Plano privado coletivo de assistência à saúde"
+   },
+   {
+     "value": "9082",
+     "label": "9082: Compensação judicial do ano-calendário"
+   },
+   {
+     "value": "9083",
+     "label": "9083: Compensação judicial de anos anterires"
+   },
+   {
+     "value": "48",
+     "label": "48: Deduções IRRF - Previdência complementar - Férias"
+   },
+   {
+     "value": "9046",
+     "label": "9046: Exigibilidade suspensa - Dedução da base de cálculo do IRRF: Previdência complementar - Salário mensal"
+   },
+   {
+     "value": "9047",
+     "label": "9047: Exigibilidade suspensa-Dedução da base de cálculo do IRRF-Previdência complementar-13º salário"
+   }
+ ]

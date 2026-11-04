@@ -47,8 +47,8 @@ class cl_orcreservaaut
     public $o83_autori = 0;
     // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 o83_codres = int8 = Código 
-                 o83_autori = int4 = Número da Autorização 
+                 o83_codres = int8 = Código
+                 o83_autori = int4 = Número da Autorização
                  ";
     //funcao construtor da classe
     public function __construct()
@@ -100,12 +100,12 @@ class cl_orcreservaaut
             return false;
         }
         $sql = "insert into orcreservaaut(
-                                       o83_codres 
-                                      ,o83_autori 
+                                       o83_codres
+                                      ,o83_autori
                        )
                 values (
-                                $this->o83_codres 
-                               ,$this->o83_autori 
+                                $this->o83_codres
+                               ,$this->o83_autori
                       )";
         $result = db_query($sql);
         if ($result==false) {
@@ -317,7 +317,7 @@ class cl_orcreservaaut
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -339,7 +339,7 @@ class cl_orcreservaaut
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -352,7 +352,7 @@ class cl_orcreservaaut
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -372,7 +372,7 @@ class cl_orcreservaaut
         $sql .= "                                      and empautoriza.e54_instit          = ".db_getsession("DB_instit");
         $sql .= "      inner join db_usuarios           on db_usuarios.id_usuario          = empautoriza.e54_login";
         $sql .= "      inner join pctipocompra          on pctipocompra.pc50_codcom        = empautoriza.e54_codcom";
-        $sql .= "      inner join empautorizacaoautorizada 
+        $sql .= "      inner join empautorizacaoautorizada
                                                   on empautorizacaoautorizada.empautoriza_id = empautoriza.e54_autori";
         $sql .= "      left  join empempaut             on empautoriza.e54_autori          = empempaut.e61_autori";
         $sql .= "      left  join empempenho            on empempenho.e60_numemp           = empempaut.e61_numemp";
@@ -391,7 +391,7 @@ class cl_orcreservaaut
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_orcreservaaut
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_orcreservaaut
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -436,3 +436,4 @@ class cl_orcreservaaut
         return $sql;
     }
 }
+?>

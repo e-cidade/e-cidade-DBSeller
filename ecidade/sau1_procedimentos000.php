@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ if($db_opcao==1){
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
       $clcriaabas->identifica = array("a1"=>"Cadastro","a2"=>"Serviços","a3"=>"Tipo de Atendimento","a4"=>"Grupo de Atendimento","a5"=>"Faixa Etária","a6"=>"Especialidade");
       $clcriaabas->src = array("a1"=>$arquivo1,"a2"=>$arquivo2,"a3"=>"sau1_proctipoatend001.php","a4"=>"sau1_procgrupoatend001.php","a5"=>"sau1_procfaixaetaria001.php","a6"=>"sau1_procespecialidades001.php");
       $clcriaabas->disabled   =  array("a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true");
@@ -75,7 +75,7 @@ if($db_opcao==1){
   </table>
   <form name="form1">
   </form>
-  <?
+  <?php
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </body>

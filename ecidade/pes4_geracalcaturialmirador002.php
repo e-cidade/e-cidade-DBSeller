@@ -50,7 +50,7 @@ require_once(modification("libs/db_utils.php"));
 <table>
 <tr height=25><td>&nbsp;</td></tr>
 </table>
-<?
+<?php
 if ($_POST) {
 
 	db_criatermometro('termometro','Concluido...','blue',1);
@@ -341,7 +341,7 @@ if ($_POST) {
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <form name='form1' id='form1'></form>
-<?
+<?php
 if ($rsCalculo) {
 
   echo "<script>";

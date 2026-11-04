@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("nome");
        <?=@$Lp80_coddesp?>
     </td>
     <td> 
-<?
+<?php
 db_input('p80_coddesp',8,$Ip80_coddesp,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -48,22 +48,22 @@ db_input('p80_coddesp',8,$Ip80_coddesp,true,'text',$db_opcao,"")
        <?=@$Lp80_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('p80_codigo',0,$Ip80_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp80_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lp80_id_usuario,"js_pesquisap80_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p80_id_usuario',6,$Ip80_id_usuario,true,'text',$db_opcao," onchange='js_pesquisap80_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -73,7 +73,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lp80_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('p80_data',@$p80_data_dia,@$p80_data_mes,@$p80_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('p80_data',@$p80_data_dia,@$p80_data_mes,@$p80_data_ano,true,'text'
        <?=@$Lp80_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('p80_hora',5,$Ip80_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('p80_hora',5,$Ip80_hora,true,'text',$db_opcao,"")
        <?=@$Lp80_despacho?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('p80_despacho',0,0,$Ip80_despacho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procprocessodesp.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

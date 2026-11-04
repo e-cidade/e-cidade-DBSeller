@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -92,19 +92,19 @@ function js_atualiza(){
               <?=$Lj01_matric?>
             </td>
             <td width="66%" align="left" nowrap> 
-              <?
+              <?php
               db_input("j01_matric",8,$Ij01_matric,true,"text",3,"");
 	      ?>
             </td>
           </tr>
           <tr> 
             <td width="34%" align="left" nowrap title="<?=$Tj40_refant?>">
-            <?
+            <?php
 	    echo $Lj40_refant;
 	    ?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j40_refant",20,$Ij40_refant,true,'text',3)
 	    ?>
             </td>
@@ -114,7 +114,7 @@ function js_atualiza(){
             <?=$Lz01_nome?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("z01_nome",40,$Iz01_nome,true,'text',3)
 	    ?>
             </td>
@@ -124,7 +124,7 @@ function js_atualiza(){
             <?=$Lj34_setor?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_setor",4,$Ij34_setor,true,'text',3)
 	    ?>
             </td>
@@ -134,7 +134,7 @@ function js_atualiza(){
             <?=$Lj34_quadra?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_quadra",4,$Ij34_quadra,true,'text',3)
 	    ?>
             </td>
@@ -144,7 +144,7 @@ function js_atualiza(){
             <?=$Lj34_lote?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_lote",4,$Ij34_lote,true,'text',3)
 	    ?>
             </td>
@@ -155,7 +155,7 @@ function js_atualiza(){
             <?=$Lj34_zona?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_zona",4,$Ij34_zona,true,'text',3)
 	    ?>
             </td>
@@ -167,7 +167,7 @@ function js_atualiza(){
             <?=$Ld41_testada?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("d41_testada",15,$Id41_testada,true,'text',3)
 	    ?>
             </td>
@@ -177,7 +177,7 @@ function js_atualiza(){
             <?=$Ld41_eixo?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("d41_eixo",15,$Id41_eixo,true,'text',4)
 	    ?>
             </td>
@@ -187,7 +187,7 @@ function js_atualiza(){
             <?=$Ld41_obs?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("d41_obs",40,$Id41_obs,true,'text',4)
 	    ?>
             </td>

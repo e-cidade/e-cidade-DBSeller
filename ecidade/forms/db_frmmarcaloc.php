@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: marcas
@@ -55,28 +55,28 @@ if(isset($opcao) && $opcao=="alterar"){
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Tma05_i_codigo?>">
-   <?db_ancora(@$Lma05_i_codigo,"",3);?>
+   <?php db_ancora(@$Lma05_i_codigo,"",3);?>
   </td>
   <td>
-   <?db_input('ma05_i_codigo',10,@$ma05_i_codigo,true,'text',3)?>
+   <?php db_input('ma05_i_codigo',10,@$ma05_i_codigo,true,'text',3)?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma05_i_marca?>">
-   <?db_ancora(@$Lma05_i_marca,"",3);?>
+   <?php db_ancora(@$Lma05_i_marca,"",3);?>
   </td>
   <td>
-   <?db_input('ma05_i_marca',10,@$ma05_i_marca,true,'text',3)?>
-   <?db_input('z01_nome',40,@$z01_nome,true,'text',3,'')?>
+   <?php db_input('ma05_i_marca',10,@$ma05_i_marca,true,'text',3)?>
+   <?php db_input('z01_nome',40,@$z01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma05_i_local?>">
-   <?db_ancora(@$Lma05_i_local,"js_pesquisama05_i_local(true);",$db_opcao);?>
+   <?php db_ancora(@$Lma05_i_local,"js_pesquisama05_i_local(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ma05_i_local',10,@$Ima05_i_local,true,'text',$db_opcao," onchange='js_pesquisama05_i_local(false);'")?>
-   <?db_input('ma04_c_descr',40,@$Ima04_c_descr,true,'text',3,'')?>
+   <?php db_input('ma05_i_local',10,@$Ima05_i_local,true,'text',$db_opcao," onchange='js_pesquisama05_i_local(false);'")?>
+   <?php db_input('ma04_c_descr',40,@$Ima04_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -89,7 +89,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("ma05_i_codigo"=>@$ma05_i_codigo,"ma05_i_marca"=>@$ma05_i_marca,"ma05_i_local"=>@$ma05_i_local,"ma04_c_descr"=>@$ma04_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clmarcaloc->sql_query("","marcaloc.ma05_i_codigo,marcaloc.ma05_i_marca,marcaloc.ma05_i_local,localmarca.ma04_i_codigo,localmarca.ma04_c_descr,localmarca.ma04_c_subdistrito","","marcaloc.ma05_i_marca = ".@$ma05_i_marca);

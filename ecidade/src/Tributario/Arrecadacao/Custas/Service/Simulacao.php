@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,58 +48,67 @@ final class Simulacao implements Service
      */
     private $processoForoRepository;
 
-	public function __construct(Termo $termo)
-	{
-		$this->termo = $termo;
-	 	$this->processoForoRepository = ProcessoForo::getInstance();
-	}
+    public function __construct(Termo $termo)
+    {
+        $this->termo = $termo;
+        $this->processoForoRepository = ProcessoForo::getInstance();
+    }
 
-	public function processar()
-	{
-		$termoIniciais = $this->termo->getTermoIniciais();
+    public function processar()
+    {
+        $termoIniciais = $this->termo->getTermoIniciais();
 
-		$iniciais = array();
-		$processos = array();
+        $iniciais = array();
+        $processos = array();
 
-		foreach($termoIniciais as $termoInicial) {
+        foreach ($termoIniciais as $termoInicial) {
+            $inicial = $termoInicial->getInicial();
 
-			$inicial = $termoInicial->getInicial();
+            $processo = $this->processoForoRepository->getByInicial($inicial->getCodigo());
 
-			$processo = $this->processoForoRepository->getByInicial($inicial->getCodigo());
+            if (empty($processo)) {
+                $iniciais[] = $inicial;
+            } else {
+                $processos[] = $processo;
+            }
+        }
 
-			if (empty($processo)) {
-				$iniciais[] = $inicial;
-			} else {
-				$processos[] = $processo;
-			}
-		}
+        $processos = array_unique($processos);
 
-		$processos = array_unique($processos);
+        $partilhas = array();
 
-		$partilhas = array();
+        foreach ($iniciais as $inicial) {
+            $calculoAdministrativaParcelamentoSimulacao = new CalculoAdministrativaParcelamentoSimulacao(
+                $this->termo,
+                $inicial
+            );
 
-		foreach ($iniciais as $inicial) {
+            $partilhas[] = new PartilhaAdministrativaParcelamentoSimulacao(
+                $calculoAdministrativaParcelamentoSimulacao,
+                $inicial,
+                $this->termo
+            );
+        }
 
-			$calculoAdministrativaParcelamentoSimulacao = new CalculoAdministrativaParcelamentoSimulacao($this->termo, $inicial);
-
-			$partilhas[] = new PartilhaAdministrativaParcelamentoSimulacao($calculoAdministrativaParcelamentoSimulacao, $inicial, $this->termo);
-		}
-
-		foreach ($processos as $processo) {
-
+        foreach ($processos as $processo) {
             $calculoJuridicaParcelamentoSimulacao = new CalculoJuridicaParcelamentoSimulacao($this->termo, $processo);
 
             $fixaJuridicaParcelamento = new FixaJuridicaParcelamento($this->termo, $processo);
 
-            $partilhas[] = new PartilhaJuridicaParcelamentoSimulacao($calculoJuridicaParcelamentoSimulacao, $fixaJuridicaParcelamento, $processo, $this->termo);
-		}
+            $partilhas[] = new PartilhaJuridicaParcelamentoSimulacao(
+                $calculoJuridicaParcelamentoSimulacao,
+                $fixaJuridicaParcelamento,
+                $processo,
+                $this->termo
+            );
+        }
 
-		$partilhasTermo = array();
+        $partilhasTermo = array();
 
-		foreach ($partilhas as $partilha) {
-			$partilhasTermo[] = $partilha->processar();
-		}
-        
-		return $partilhasTermo;
-	}
+        foreach ($partilhas as $partilha) {
+            $partilhasTermo[] = $partilha->processar();
+        }
+
+        return $partilhasTermo;
+    }
 }

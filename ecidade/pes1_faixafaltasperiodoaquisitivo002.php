@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -102,7 +102,7 @@ if( isset($oRequest->opcao) ) {
 				      <?=@$Lrh52_regime?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('rh125_sequencial', 10, $iRh125_sequencial,true,'hidden');
 							  db_input('rh52_regime', 10, $Irh52_regime,true,'text', 3, "");
 							  db_input('rh52_descr' , 54, $Irh52_descr ,true,'text', 3, "");
@@ -114,7 +114,7 @@ if( isset($oRequest->opcao) ) {
 				      <?=@$Lrh125_faixainicial?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('rh125_faixainicial', 10, $Irh125_faixainicial,true,'text', $db_opcao, "");
 							?>
 				    </td>
@@ -124,7 +124,7 @@ if( isset($oRequest->opcao) ) {
 				      <?=@$Lrh125_faixafinal?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('rh125_faixafinal', 10, $Irh125_faixafinal,true,'text', $db_opcao, "");
 							?>
 				    </td>
@@ -134,7 +134,7 @@ if( isset($oRequest->opcao) ) {
 				      <?=@$Lrh125_diasdesconto?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('rh125_diasdesconto', 10, $Irh125_diasdesconto,true,'text', $db_opcao, "");
 							?>
 				    </td>
@@ -142,10 +142,10 @@ if( isset($oRequest->opcao) ) {
 			  </table>
       </fieldset>
 
-      <input type="button" id="btnAcao1" class='btnLista' value="Alterar" onClick="js_envia( this.value );" style="<? echo $sShowBotaoAlterar; ?>">
-      <input type="button" id="btnAcao2" class='btnLista' value="Incluir" onClick="js_envia( this.value );" style="<? echo $sShowBotaoIncluir;    ?>">
-      <input type="button" id="btnAcao3" class='btnLista' value="Excluir" onClick="js_envia( this.value );" style="<? echo $sShowBotaoExcluir; ?>">
-      <input type="button" id="btnAcao4" class='btnLista' value="Novo"    onClick="js_redireciona();"       style="<? echo $sShowBotaoNovo; ?>">
+      <input type="button" id="btnAcao1" class='btnLista' value="Alterar" onClick="js_envia( this.value );" style="<?php echo $sShowBotaoAlterar; ?>">
+      <input type="button" id="btnAcao2" class='btnLista' value="Incluir" onClick="js_envia( this.value );" style="<?php echo $sShowBotaoIncluir;    ?>">
+      <input type="button" id="btnAcao3" class='btnLista' value="Excluir" onClick="js_envia( this.value );" style="<?php echo $sShowBotaoExcluir; ?>">
+      <input type="button" id="btnAcao4" class='btnLista' value="Novo"    onClick="js_redireciona();"       style="<?php echo $sShowBotaoNovo; ?>">
 
 			<?php
 			  

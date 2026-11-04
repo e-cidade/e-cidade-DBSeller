@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clfavorecidotaxa->rotulo->label("v87_favorecido");
               <?=$Lv87_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v87_sequencial",10,$Iv87_sequencial,true,"text",4,"","chave_v87_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfavorecidotaxa->rotulo->label("v87_favorecido");
               <?=$Lv87_favorecido?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v87_favorecido",10,$Iv87_favorecido,true,"text",4,"","chave_v87_favorecido");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfavorecidotaxa->rotulo->label("v87_favorecido");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_favorecidotaxa.php")==true){
@@ -122,12 +122,12 @@ $clfavorecidotaxa->rotulo->label("v87_favorecido");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -133,7 +133,7 @@ class HistoricoAlunoRepository {
     $sWhere        = " ed61_i_aluno = {$oAluno->getCodigoAluno()} ";
     $oDaoHistorico = new cl_historico();
 
-    $sCampos  = " ed61_i_codigo, ed61_i_aluno, ";
+    $sCampos  = " ed61_i_codigo, ed61_i_aluno, ed61_i_anoconc, ";
     $sCampos .= " case  ";
     $sCampos .= "      when historicomps.ed62_i_historico is not null ";
     $sCampos .= "        then ed62_i_anoref ";
@@ -161,7 +161,7 @@ class HistoricoAlunoRepository {
     foreach ($aCodigoHistorico as $iHistorico) {
       $aHistoricos[] = HistoricoAlunoRepository::getHistoricoAlunoByCodigo($iHistorico);
     }
-  //  dd($aHistoricos);
+
     return $aHistoricos;
   }
 }

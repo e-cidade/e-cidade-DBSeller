@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -78,13 +78,13 @@ class cl_arrecantpgtoparcial {
                  k00_abatimento = int4 = Abatimento
                  ";
    //funcao construtor da classe
-   function cl_arrecantpgtoparcial() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrecantpgtoparcial");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -93,7 +93,7 @@ class cl_arrecantpgtoparcial {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
        $this->k00_numpar = ($this->k00_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpar"]:$this->k00_numpar);
@@ -126,7 +126,7 @@ class cl_arrecantpgtoparcial {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->k00_numpre == null ){
        $this->erro_sql = " Campo Numpre nao Informado.";
@@ -295,7 +295,7 @@ class cl_arrecantpgtoparcial {
      return true;
    }
    // funcao para alteracao
-   function alterar ( $oid=null ) {
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update arrecantpgtoparcial set ";
      $virgula = "";
@@ -521,7 +521,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao para exclusao
-   function excluir ( $oid=null ,$dbwhere=null) {
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from arrecantpgtoparcial
                     where ";
      $sql2 = "";
@@ -560,7 +560,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -583,10 +583,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      return $result;
    }
    // funcao do sql
-   function sql_query ( $oid = null,$campos="arrecantpgtoparcial.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $oid = null,$campos="arrecantpgtoparcial.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,7 +616,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -626,7 +626,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      return $sql;
   }
 
-   function excluir_arrecantpgtoparcial($iNumpre,$iNumpar=0,$iReceit=0,$lExcluir=true) {
+   public function excluir_arrecantpgtoparcial($iNumpre,$iNumpar=0,$iReceit=0,$lExcluir=true) {
 
       $sSql  = " select *                       ";
       $sSql .= "   from arrecantpgtoparcial     ";
@@ -731,10 +731,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
   }
 
    // funcao do sql
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -752,7 +752,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,5 @@
 <?php
+
 namespace ECidade\V3\Extension;
 
 use \ECidade\V3\Extension\Container;
@@ -7,46 +8,60 @@ use \ECidade\V3\Extension\Logger;
 /**
  * @package extension
  */
-abstract class AbstractManager {
+abstract class AbstractManager
+{
+    /**
+     * @var \ECidade\Extension\Container
+     */
+    protected $container;
 
-  /**
-   * @var \ECidade\Extension\Container
-   */
-  protected $container;
+    /**
+     * @param Container $container
+     */
+    public function __construct(Container $container = null)
+    {
+        if ($container !== null) {
+            return $this->container = $container;
+        }
 
-  /**
-   * @param Container $container
-   */
-  public function __construct(Container $container = null)  {
-  
-    if ($container !== null) {
-      return $this->container = $container;
+        $this->container = new Container();
+
+        $this->container->register('logger', function () {
+            return new Logger();
+        });
+
+        return $this;
     }
 
-    $this->container = new Container();
+    public function setup()
+    {
+    }
 
-    $this->container->register('logger', function() {
-      return new Logger();
-    }); 
-  }
+    public function install($args)
+    {
+    }
 
-  public function setup() {}
-  public function install($args, $user = null) {}
-  public function update() {}
-  public function uninstall($args, $user = null) {}
+    public function update()
+    {
+    }
 
-  /**
-   * @param Logger $logger
-   */
-  public function setLogger(Logger $logger) {
-    $this->container->register('logger', $logger);
-  }
+    public function uninstall($args)
+    {
+    }
 
-  /**
-   * @return Logger
-   */
-  public function getLogger() {
-    return $this->container->get('logger');
-  }
+    /**
+     * @param Logger $logger
+     */
+    public function setLogger(Logger $logger)
+    {
+        $this->container->register('logger', $logger);
+    }
 
+    /**
+     * @return Logger
+     */
+    public function getLogger()
+    {
+        return $this->container->get('logger');
+    }
 }

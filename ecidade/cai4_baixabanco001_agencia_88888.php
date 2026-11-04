@@ -1,4 +1,4 @@
-<?
+<?php
 
 $sqlverresult  = " select arrematric.k00_numpre,                                                  ";
 $sqlverresult .= "        numpremigra.k00_numpar as numpre_migra,                                 ";

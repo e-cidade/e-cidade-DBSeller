@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -26,7 +26,7 @@
  */
 ?>
 <form name="form1" method="post">
-<?
+<?php
 db_input('at82_usucliitem',8,0,true,'hidden',3);
 if(!isset($selecionar)){
 ?>
@@ -41,7 +41,7 @@ if(!isset($selecionar)){
     <tr> 
       <td>
         <strong>M&oacute;dulo:</strong><br> 
-        <?
+        <?php
         $result = $cldb_modulos->sql_record($cldb_modulos->sql_query_usermod(null,"m.id_item||'--'||m.descr_modulo||'||'||nome_modulo,m.nome_modulo as id_item,m.descr_modulo"," lower(m.nome_modulo)"));
         db_selectmultiple("modulos", $result, 18, 1,"", "", "", "", "", 'onDblClick="document.form1.selecionar.click();">');
         ?>
@@ -54,13 +54,13 @@ if(!isset($selecionar)){
       </td>
     </tr>
   </table>
-<?
+<?php
 }else{
 ?>
   <table width="100%" border="0" cellspacing="0" cellpadding="5">
     <tr> 
       <td align="center" nowrap> <strong>Módulo: </strong> 
-        <? 
+        <?php 
         $aux = $modulos[0];
         echo substr(strstr($aux,"||"),2)."<br>";
         echo "<font style=\"font-size:10px\">(".substr($aux,strpos($aux,"--")+2,strpos($aux,"||")-3).")</font>";
@@ -80,7 +80,7 @@ if(!isset($selecionar)){
       </td>
     </tr>
     <tr> 
-    <?
+    <?php
     $wid = 15;
     $conta = 0;
     function submenus($item,$id,$mod) {
@@ -119,7 +119,7 @@ if(!isset($selecionar)){
       <td>
         <table border="0" cellpadding="10" cellspacing="0">
           <tr>
-          <?
+          <?php
           $result = $cldb_itensmenu->sql_record($cldb_itensmenu->sql_query_menus(null,"i.id_item as pai,m.id_item,m.id_item_filho,m.modulo,i.descricao,i.help,i.funcao ","m.menusequencia", " m.modulo = ".db_strpos($modulos[0],"--")." and m.id_item = ".db_strpos($modulos[0],"--")." and i.itemativo = 1"));
           for($i=0; $i<$cldb_itensmenu->numrows; $i++) {
             db_fieldsmemory($result, $i);
@@ -148,7 +148,7 @@ if(!isset($selecionar)){
       </td>
     </tr>
   </table>
-<?
+<?php
 }
 ?>
 </form>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,7 +31,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("nomeinst");
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
 db_input('tipo',10,"",true,'hidden',3,"");
 db_input('codtipo',10,"",true,'hidden',3,"");
 ?>
@@ -42,19 +42,19 @@ db_input('codtipo',10,"",true,'hidden',3,"");
        <?=@$Ld63_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('d63_codigo',10,$Id63_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>   
       <td>
-      <?
+      <?php
        db_ancora($Ld63_banco,' js_bancos(true); ',$db_opcao);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('d63_banco',5,$Id63_banco,true,'text',1,"onchange='js_bancos(false)'");
        db_input('nome_banco',40,"",true,'text',3);
        
@@ -67,7 +67,7 @@ db_input('d63_codigo',10,$Id63_codigo,true,'text',3,"")
        <?=@$Ld63_banco?>
     </td>
     <td> 
-<?
+<?php
 db_input('d63_banco',3,$Id63_banco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -78,7 +78,7 @@ db_input('d63_banco',3,$Id63_banco,true,'text',$db_opcao,"")
        <?=@$Ld63_agencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('d63_agencia',4,$Id63_agencia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -88,7 +88,7 @@ db_input('d63_agencia',4,$Id63_agencia,true,'text',$db_opcao,"")
        <?=@$Ld63_conta?>
     </td>
     <td> 
-<?
+<?php
 db_input('d63_conta',14,$Id63_conta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_input('d63_conta',14,$Id63_conta,true,'text',$db_opcao,"")
        <?=@$Ld63_status?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Pendente','2'=>'Ativo','3'=>'Inativo');
 db_select('d63_status',$x,true,$db_opcao,"");
 ?>
@@ -110,7 +110,7 @@ db_select('d63_status',$x,true,$db_opcao,"");
        <?=@$Ld63_idempresa?>
     </td>
     <td> 
-<?
+<?php
 db_input('d63_idempresa',25,$Id63_idempresa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -160,7 +160,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_debcontapedido.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+sTipo";
   }

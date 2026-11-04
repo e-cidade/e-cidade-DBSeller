@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_parnotificacao {
                  k102_tipoemissao = int4 = Emitir Notificações 
                  ";
    //funcao construtor da classe 
-   function cl_parnotificacao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parnotificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_parnotificacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k102_anousu = ($this->k102_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["k102_anousu"]:$this->k102_anousu);
        $this->k102_docnotpadrao = ($this->k102_docnotpadrao == ""?@$GLOBALS["HTTP_POST_VARS"]["k102_docnotpadrao"]:$this->k102_docnotpadrao);
@@ -80,7 +80,7 @@ class cl_parnotificacao {
      }
    }
    // funcao para inclusao
-   function incluir ($k102_anousu){ 
+   public function incluir ($k102_anousu){ 
       $this->atualizacampos();
      if($this->k102_docnotpadrao == null ){ 
        $this->erro_sql = " Campo Documento Padrão nao Informado.";
@@ -168,7 +168,7 @@ class cl_parnotificacao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k102_anousu=null) { 
+   public function alterar ($k102_anousu=null) { 
       $this->atualizacampos();
      $sql = " update parnotificacao set ";
      $virgula = "";
@@ -278,7 +278,7 @@ class cl_parnotificacao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k102_anousu=null,$dbwhere=null) { 
+   public function excluir ($k102_anousu=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k102_anousu));
      }else{ 
@@ -342,7 +342,7 @@ class cl_parnotificacao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -365,7 +365,7 @@ class cl_parnotificacao {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $k102_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k102_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -403,7 +403,7 @@ class cl_parnotificacao {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $k102_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k102_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

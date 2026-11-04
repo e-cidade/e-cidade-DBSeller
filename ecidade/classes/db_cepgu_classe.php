@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,13 +62,13 @@ class cl_cepgu {
                  cp07_adicional = varchar(72) = Adicional 
                  ";
    //funcao construtor da classe 
-   function cl_cepgu() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cepgu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_cepgu {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cp07_codgu = ($this->cp07_codgu == ""?@$GLOBALS["HTTP_POST_VARS"]["cp07_codgu"]:$this->cp07_codgu);
        $this->cp07_gu = ($this->cp07_gu == ""?@$GLOBALS["HTTP_POST_VARS"]["cp07_gu"]:$this->cp07_gu);
@@ -92,7 +92,7 @@ class cl_cepgu {
      }
    }
    // funcao para inclusao
-   function incluir ($cp07_codgu){ 
+   public function incluir ($cp07_codgu){ 
       $this->atualizacampos();
      if($this->cp07_gu == null ){ 
        $this->erro_sql = " Campo GU nao Informado.";
@@ -228,7 +228,7 @@ class cl_cepgu {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($cp07_codgu=null) { 
+   public function alterar ($cp07_codgu=null) { 
       $this->atualizacampos();
      $sql = " update cepgu set ";
      $virgula = "";
@@ -398,7 +398,7 @@ class cl_cepgu {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($cp07_codgu=null,$dbwhere=null) { 
+   public function excluir ($cp07_codgu=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cp07_codgu));
      }else{ 
@@ -466,7 +466,7 @@ class cl_cepgu {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

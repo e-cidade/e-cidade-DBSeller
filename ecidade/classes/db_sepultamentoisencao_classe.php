@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,13 +73,13 @@ class cl_sepultamentoisencao {
                  cm33_obs = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_sepultamentoisencao() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sepultamentoisencao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_sepultamentoisencao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm33_sequencial = ($this->cm33_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cm33_sequencial"]:$this->cm33_sequencial);
        $this->cm33_processo = ($this->cm33_processo == ""?@$GLOBALS["HTTP_POST_VARS"]["cm33_processo"]:$this->cm33_processo);
@@ -125,7 +125,7 @@ class cl_sepultamentoisencao {
      }
    }
    // funcao para inclusao
-   function incluir ($cm33_sequencial){
+   public function incluir ($cm33_sequencial){
       $this->atualizacampos();
      if($this->cm33_processo == null ){
        $this->erro_sql = " Campo Processo nao Informado.";
@@ -269,7 +269,7 @@ class cl_sepultamentoisencao {
      return true;
    }
    // funcao para alteracao
-   function alterar ($cm33_sequencial=null) {
+   public function alterar ($cm33_sequencial=null) {
       $this->atualizacampos();
      $sql = " update sepultamentoisencao set ";
      $virgula = "";
@@ -445,7 +445,7 @@ class cl_sepultamentoisencao {
      }
    }
    // funcao para exclusao
-   function excluir ($cm33_sequencial=null,$dbwhere=null) {
+   public function excluir ($cm33_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cm33_sequencial));
      }else{
@@ -514,7 +514,7 @@ class cl_sepultamentoisencao {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -537,10 +537,10 @@ class cl_sepultamentoisencao {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $cm33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $cm33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_sepultamentoisencao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,10 +586,10 @@ class cl_sepultamentoisencao {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $cm33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $cm33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,7 +610,7 @@ class cl_sepultamentoisencao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

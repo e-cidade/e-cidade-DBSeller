@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhemissaocheque->rotulo->label("r15_descricao");
               <?=$Lr15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r15_sequencial",10,$Ir15_sequencial,true,"text",4,"","chave_r15_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhemissaocheque->rotulo->label("r15_descricao");
               <?=$Lr15_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r15_descricao",40,$Ir15_descricao,true,"text",4,"","chave_r15_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhemissaocheque->rotulo->label("r15_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhemissaocheque.php")==true){
@@ -122,12 +122,12 @@ $clrhemissaocheque->rotulo->label("r15_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

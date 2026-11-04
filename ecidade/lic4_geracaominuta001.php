@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,29 +98,29 @@ if ( isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '' ) {
             <tr> 
               <td nowrap title="<?=$Tl20_codigo?>">
                 <b>
-                <?
+                <?php
                   db_ancora('Licitação:',"js_pesquisa_liclicita(true);",1);
                 ?>
                 </b> 
               </td>
               <td nowrap>
-                <? 
+                <?php 
                   db_input("l20_codigo", 8, $Il20_codigo, true, "text", 3, "onchange='js_pesquisa_liclicita(false);'");
                 ?>
               </td>
             </tr>
-            <? if ( $lListaModelos ) { ?>
+            <?php if ( $lListaModelos ) { ?>
              <tr>
                <td>
                  <b>Modelos:</b>
                </td>
                <td>
-                 <?
+                 <?php
                     db_selectrecord('documentotemplateminuta',$rsModelos,true,1,'');
                  ?>
                </td>               
              </tr> 
-            <? } ?>
+            <?php } ?>
           </table>
         </fieldset>
       </td>
@@ -132,7 +132,7 @@ if ( isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '' ) {
     </tr>
   </table>
 </form>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

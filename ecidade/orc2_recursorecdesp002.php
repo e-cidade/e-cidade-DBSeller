@@ -24,42 +24,41 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
-require_once(modification("libs/db_liborcamento.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("libs/db_sql.php");
 
 // pesquisa a conta mae da receita
 
 $tipo_mesini = 1;
 $tipo_mesfim = 1;
 
-require_once(modification("fpdf151/pdf.php"));
-require_once(modification("libs/db_sql.php"));
-
 db_postmemory($_POST);
 
 $instit = str_replace('-', ', ', $db_selinstit);
-$xinstit = split("-", $db_selinstit);
+$xinstit = explode("-", $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in ($instit)");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ', ';
 }
-$head2 = "TOTAL DO ORCAMENTO - RECEITA";
-$head3 = "POR RECURSO";
+
 $ano = db_getsession("DB_anousu");
 
 $dataInicio = $ano . "-01-01";
 
-$head4 = "EXERCICIO: " . $ano;
-$head5 = "INSTITUIÇÕES : " . $descr_inst;
 
 $sql = "
 select *,
        receita-despesa as difer
  from (select o15_recurso,
+              gestao,
+              o15_complemento,
               o15_descr,
               sum(case when tipo = 0 then sum else 0 end ) as receita,
               sum(case when tipo = 1 then sum else 0 end ) as despesa
@@ -79,17 +78,24 @@ select *,
                 where o58_anousu = {$ano}
                 group by o58_codigo, tipo
              ) as x
-      inner join orctiporec on o70_codigo = o15_codigo
-      group by o15_recurso,o15_descr
+      join orctiporec on o70_codigo = o15_codigo
+      join fonterecurso on orctiporec_id = o15_codigo
+           and exercicio = {$ano}
+      group by o15_recurso, gestao, o15_complemento, o15_descr
      ) as x
 order by o15_recurso";
 
 $result = db_query($sql);
 
-
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new \ECidade\Pdf\Pdf();
+$pdf->init(false);
 $pdf->AliasNbPages();
+
+$pdf->addTitulo("TOTAL DO ORCAMENTO - RECEITA");
+$pdf->addTitulo("POR RECURSO");
+$pdf->addTitulo("EXERCICIO: " . $ano);
+$pdf->addTitulo("INSTITUIÇÕES : " . $descr_inst);
+
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial', 'b', 8);
@@ -100,15 +106,16 @@ $tota2 = 0;
 $tota3 = 0;
 
 $pagina = 1;
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
 
-    if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
+    if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
         $pagina = 0;
         $pdf->addpage();
         $pdf->setfont('arial', 'b', 7);
 
-        $pdf->cell(20, $alt, "Recurso", 0, 0, "L", 0);
+        $pdf->cell(15, $alt, "Rec. Ant", 0, 0, "L", 0);
+        $pdf->cell(20, $alt, "Gestão - Compl", 0, 0, "L", 0);
         $pdf->cell(80, $alt, "Descrição", 0, 0, "L", 0);
         $pdf->cell(25, $alt, "Receita", 0, 0, "R", 0);
         $pdf->cell(25, $alt, "Despesa", 0, 0, "R", 0);
@@ -117,12 +124,13 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf->setfont('arial', '', 7);
     }
 
-    $pdf->cell(20, $alt, $o15_recurso, 0, 0, "L", 0);
+    $pdf->cell(15, $alt, $o15_recurso, 0, 0, "L", 0);
+    $pdf->cell(20, $alt, "$gestao - $o15_complemento", 0, 0, "L", 0);
     if (strlen($o15_descr) >= 54) {
         $descricaowrap = explode("<br>", wordwrap($o15_descr, 54, "<br>", false));
         $pdf->cell(80, $alt, $descricaowrap[0], 0, 0, "L", 0);
         $pdf->ln();
-        $pdf->setx(30);
+        $pdf->setx(45);
         $pdf->cell(80, $alt, $descricaowrap[1], 0, 0, "L", 0);
     } else {
         $pdf->cell(80, $alt, $o15_descr, 0, 0, "L", 0);
@@ -136,10 +144,10 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
 }
 $pdf->setfont('arial', 'b', 7);
 $pdf->ln(3);
-$pdf->cell(100, $alt, 'T O T A L', 0, 0, "L", 0);
+$pdf->cell(115, $alt, 'T O T A L', 0, 0, "L", 0);
 $pdf->cell(25, $alt, db_formatar($total, 'f'), 0, 0, "R", 0);
 $pdf->cell(25, $alt, db_formatar($tota2, 'f'), 0, 0, "R", 0);
 $pdf->cell(25, $alt, db_formatar($tota3, 'f'), 0, 1, "R", 0);
 
-$pdf->Output();
+$pdf->Output('I');
 

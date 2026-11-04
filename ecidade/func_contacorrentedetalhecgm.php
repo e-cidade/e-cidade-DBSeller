@@ -60,7 +60,7 @@ $campos = "distinct c17_sequencial, cast(cast(c17_contacorrente as varchar) ||' 
               <?=$Lc19_sequencial ?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 db_input("c19_sequencial", 10, $Ic19_sequencial, true, "text", 4, "", "chave_c19_sequencial");
               ?>
             </td>
@@ -70,7 +70,7 @@ $campos = "distinct c17_sequencial, cast(cast(c17_contacorrente as varchar) ||' 
               <b>Código Credor:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 4, "", "chave_z01_numcgm");
               ?>
             </td>
@@ -80,7 +80,7 @@ $campos = "distinct c17_sequencial, cast(cast(c17_contacorrente as varchar) ||' 
               <b>Nome Credor:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 db_input("z01_nome", 50, $Iz01_nome, true, "text", 4, "", "chave_z01_nome");
               ?>
             </td>
@@ -98,7 +98,7 @@ $campos = "distinct c17_sequencial, cast(cast(c17_contacorrente as varchar) ||' 
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
 $aWhere   = array();
 
@@ -163,12 +163,12 @@ if (!isset($pesquisa_chave)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
 ?>
   <script>
   </script>
-  <?
+  <?php
 }
   ?>
 <script>

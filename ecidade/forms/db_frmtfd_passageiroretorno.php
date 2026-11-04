@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: TFD
@@ -38,33 +38,33 @@ $oRotulo->label('tf19_i_cgsund');
     <td nowrap title="<?=@$Ttf31_i_codigo?>">
       <?=@$Ltf31_i_codigo?>
     </td>
-    <td> 
-     <?
+    <td>
+        <?php
      db_input('tf31_i_codigo', 10, $Itf31_i_codigo, true, 'text', 3, '')
      ?>
     </td>
   </tr>
   <tr style="display: none;">
     <td nowrap title="<?=@$Ttf31_i_veiculodestino?>">
-      <?
+        <?php
       db_ancora(@$Ltf31_i_veiculodestino, "js_pesquisatf31_i_veiculodestino(true);", $db_opcao);
       ?>
     </td>
-    <td> 
-      <?
+    <td>
+        <?php
       db_input('tf31_i_veiculodestino', 10, $Itf31_i_veiculodestino, true, 'text', 3, '');
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf31_i_passageiroveiculo?>">
-      <?
+        <?php
       db_ancora(@$Ltf31_i_passageiroveiculo, "js_pesquisatf31_i_passageiroveiculo(true);", $db_opcao);
       ?>
     </td>
-    <td nowrap> 
-      <?
-      db_input('tf19_i_cgsund', 10, $Itf19_i_cgsund, true, 'text', $db_opcao, 
+    <td nowrap>
+        <?php
+      db_input('tf19_i_cgsund', 10, $Itf19_i_cgsund, true, 'text', $db_opcao,
                " onchange='js_pesquisatf31_i_passageiroveiculo(false);'"
               );
       db_input('tf31_i_passageiroveiculo', 10, $Itf31_i_passageiroveiculo, true, 'hidden', 3, '');
@@ -82,7 +82,7 @@ $oRotulo->label('tf19_i_cgsund');
               <b>Total: </b>
             </td>
             <td nowrap>
-              <?
+                <?php
               if (!isset($total)) {
                 $total = 0;
               }
@@ -92,18 +92,18 @@ $oRotulo->label('tf19_i_cgsund');
               <b> - Reservado: </b>
             </td>
             <td nowrap >
-              <?
+                <?php
               if (!isset($reservado)) {
                 $reservado = 0;
               }
               db_input('reservado', 2, "", true, 'text', 3, '');
               ?>
-            </td> 
+            </td>
             <td nowrap>
               <b> - Retorno: </b>
             </td>
             <td nowrap>
-              <?
+                <?php
               if (!isset($retorno)) {
                 $retorno = 0;
               }
@@ -114,13 +114,13 @@ $oRotulo->label('tf19_i_cgsund');
               <b> = Livre: </b>
             </td>
             <td nowrap>
-              <?
+                <?php
               if (!isset($livre)) {
                 $livre = 0;
               }
               db_input('livre', 2, "", true, 'text', 3, '');?>
             </td>
-          </tr>                  
+          </tr>
         </table>
       </fieldset>
     </td>
@@ -128,9 +128,9 @@ $oRotulo->label('tf19_i_cgsund');
 </table>
 </center>
 <br>
-<input name="<?=($db_opcao == 1 ? 'incluir' : ($db_opcao == 2 || $db_opcao == 22 ? 'alterar' : 'excluir'))?>" 
-  type="submit" id="db_opcao" 
-  value="<?=($db_opcao == 1 ? 'Incluir' : ($db_opcao == 2 || $db_opcao == 22 ? 'Alterar' : 'Excluir'))?>" 
+<input name="<?=($db_opcao == 1 ? 'incluir' : ($db_opcao == 2 || $db_opcao == 22 ? 'alterar' : 'excluir'))?>"
+  type="submit" id="db_opcao"
+  value="<?=($db_opcao == 1 ? 'Incluir' : ($db_opcao == 2 || $db_opcao == 22 ? 'Alterar' : 'Excluir'))?>"
   <?=($db_botao == false ? 'disabled' : '')?> <?=($db_opcao == 1 ? 'onclick=js_validaEnvio();' : '')?> >
 <input name="cancelar" type="button" id="cancelar" value="Limpar" onclick="js_cancelar();">
 <input name="fechar" type="button" id="fechar" value="Fechar" onclick="parent.db_iframe_retorno.hide();">
@@ -140,18 +140,18 @@ $oRotulo->label('tf19_i_cgsund');
 <table width="100%">
   <tr>
 	  <td valign="top"><br>
-      <?
+          <?php
 			$aChavepri                = array ('tf31_i_codigo' => @$tf31_i_codigo,
-                                         'tf31_i_passageiroveiculo' => @$tf31_i_passageiroveiculo, 
-                                         'tf31_i_veiculodestino' => @$tf31_i_veiculodestino, 
-                                         'tf19_i_cgsund' => @$tf19_i_cgsund, 
+                                         'tf31_i_passageiroveiculo' => @$tf31_i_passageiroveiculo,
+                                         'tf31_i_veiculodestino' => @$tf31_i_veiculodestino,
+                                         'tf19_i_cgsund' => @$tf19_i_cgsund,
                                          'z01_v_nome' => @$z01_v_nome
                                         );
 			$oIframeAE->chavepri      = $aChavepri;
 
       $sCampos                  = ' tf31_i_codigo, tf31_i_passageiroveiculo, tf31_i_veiculodestino,';
       $sCampos                 .= ' tf19_i_cgsund, z01_v_nome ';
-      
+
 			$oIframeAE->sql           = $oDaoTfdPassageiroRetorno->sql_query2(null, $sCampos, ' tf31_i_codigo desc ',
                                                                         'tf31_i_veiculodestino = '.
                                                                         $tf31_i_veiculodestino.
@@ -179,7 +179,7 @@ $oRotulo->label('tf19_i_cgsund');
 <script>
 
 sUrl = 'tfd4_pedidotfd.RPC.php';
-<?
+<?php
 if ($oParametros->tf11_i_utilizagradehorario == 1) {
   echo 'js_getLotacaoRetorno();';
 }
@@ -188,7 +188,7 @@ if ($oParametros->tf11_i_utilizagradehorario == 1) {
 function js_ajax(oParam, jsRetorno) {
 
 	var objAjax = new Ajax.Request(
-                         sUrl, 
+                         sUrl,
                          {
                           method    : 'post',
                           asynchronous: false,
@@ -204,7 +204,7 @@ function js_ajax(oParam, jsRetorno) {
 
 function js_cancelar() {
 
-  <?
+    <?php
   echo " location.href = '".basename($GLOBALS['HTTP_SERVER_VARS']['PHP_SELF']).
        "?tf31_i_veiculodestino=$tf31_i_veiculodestino'";
   ?>
@@ -213,7 +213,7 @@ function js_cancelar() {
 
 function js_validaEnvio() {
 
-  <?
+    <?php
   /* Se não utiliza grade de horários, não é feita validação de espaço disponível */
   if ($oParametros->tf11_i_utilizagradehorario != 1) {
     echo 'return true;';
@@ -238,7 +238,7 @@ function js_pesquisatf31_i_passageiroveiculo(mostra) {
     js_OpenJanelaIframe('', 'db_iframe_tfd_passageiroveiculo', 'func_tfd_passageiroveiculo.php?'+
                         'funcao_js=parent.js_mostratfd_passageiroveiculo|tf19_i_codigo|z01_v_nome|tf19_i_cgsund'+
                         '&chave_validos=true&chave_fica=true&chave_valida_hora=true&chave_tf19_i_veiculodestino='+
-                        document.form1.tf31_i_veiculodestino.value+'&chave_ja_incluidos=true', 
+                        document.form1.tf31_i_veiculodestino.value+'&chave_ja_incluidos=true',
                         'Pesquisa', true
                        );
 
@@ -250,7 +250,7 @@ function js_pesquisatf31_i_passageiroveiculo(mostra) {
                           'chave_tf19_i_cgsund='+document.form1.tf19_i_cgsund.value+'&chave_valida_hora=true'+
                           '&funcao_js=parent.js_mostratfd_passageiroveiculo|tf19_i_codigo|z01_v_nome|tf19_i_cgsund'+
                           '&nao_mostra=true&chave_validos=true&chave_fica=true&chave_tf19_i_veiculodestino='+
-                          document.form1.tf31_i_veiculodestino.value+'&chave_ja_incluidos=true', 
+                          document.form1.tf31_i_veiculodestino.value+'&chave_ja_incluidos=true',
                           'Pesquisa', false
                          );
 
@@ -290,7 +290,7 @@ function js_retornoGetLotacaoRetorno(oRetorno) {
 
   oRetorno = JSON.parse(oRetorno.responseText);
   if (oRetorno.iStatus == 1) {
-       
+
     document.form1.total.value     = oRetorno.iLotacao;
     document.form1.reservado.value = oRetorno.iReservados;
     document.form1.retorno.value   = oRetorno.iRetorno;

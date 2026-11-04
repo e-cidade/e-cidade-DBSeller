@@ -24,6 +24,9 @@ use ECidade\Lib\Session\DefaultSession;
  * @property string ov01_solicitacao
  * @property string ov01_executado
  * @property Cidadao cidadao
+ * @method numero($numero)
+ * @method ano($ano)
+ * @method instituicao($instituicao)
  */
 class Atendimento extends Model
 {
@@ -335,5 +338,26 @@ class Atendimento extends Model
     public function getExecutado()
     {
         return $this->ov01_executado;
+    }
+
+    public function atendimentoProcessoEletronico()
+    {
+        return $this->hasOne(AtendimentoProcessoEletronico::class, "ov33_ouvidoriaatendimento");
+    }
+
+
+    public function scopeAno($query, $ano)
+    {
+        return $query->where("ov01_anousu", $ano);
+    }
+
+    public function scopeInstituicao($query, $instituicao)
+    {
+        return  $query->where("ov01_instit", $instituicao);
+    }
+
+    public function scopeNumero($query, $numero)
+    {
+        return $query->where("ov01_numero", $numero);
     }
 }

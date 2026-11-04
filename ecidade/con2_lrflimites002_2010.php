@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -79,7 +79,7 @@ $temcamara  = false;
 $temadmind  = false;
 $flag_abrev = false;
 
-$xinstit         = split("-",$db_selinstit);
+$xinstit         =explode("-",$db_selinstit);
 $aListaSelInstit = $xinstit;
 
 $sWhere         = "where codigo in (".str_replace('-',', ',$db_selinstit).")";
@@ -87,9 +87,9 @@ $sSqlResultInst = "select munic, db21_tipoinstit from db_config {$sWhere}";
 $rsResultInst   = db_query($sSqlResultInst);
 
 for ($xins = 0; $xins < pg_numrows($rsResultInst); $xins++) {
-	
+
   db_fieldsmemory($rsResultInst,$xins);
-  
+
   if ($db21_tipoinstit == 1) {
     $temprefa=true;
   } elseif ($db21_tipoinstit == 2) {
@@ -101,12 +101,12 @@ for ($xins = 0; $xins < pg_numrows($rsResultInst); $xins++) {
 
 $oDaoPeriodo    = db_utils::getDao("periodo");
 $iCodigoPeriodo = $periodo;
-$sSqlPeriodo    = $oDaoPeriodo->sql_query($periodo); 
-$sSiglaPeriodo  = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0)->o114_sigla; 
+$sSqlPeriodo    = $oDaoPeriodo->sql_query($periodo);
+$sSiglaPeriodo  = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0)->o114_sigla;
 $dt             = data_periodo($anousu,$sSiglaPeriodo);
 
-$dt_ini = split("-",$dt[0]);
-$dt_fin = split("-",$dt[1]);
+$dt_ini =explode("-",$dt[0]);
+$dt_fin =explode("-",$dt[1]);
 
 $descr_periodo = "PERIODO: ".$dt["texto"];
 $arqinclude = true;
@@ -118,17 +118,17 @@ $dtfin = "";
 
 if ($periodo == 12) {   // primeiro semestre
   $dt_ini = $anousu.'-01-01';
-  $dt_fin = $anousu.'-06-30'; 
+  $dt_fin = $anousu.'-06-30';
   $dt_ini_ant = ($anousu-1).'-05-01';
   $dt_fin_ant = ($anousu-1).'-12-31';
 } elseif ($periodo == 13) {    // segundo semestre
   $dt_ini = $anousu.'-01-01';
-  $dt_fin = $anousu.'-12-31'; 
+  $dt_fin = $anousu.'-12-31';
   $dt_ini_ant = ($anousu-1).'-05-01';
   $dt_fin_ant = ($anousu-1).'-12-31';
 } elseif ($periodo == 14) {   // primeiro quadrimestre
   $dt_ini = $anousu.'-01-01';
-  $dt_fin = $anousu.'-04-30'; 
+  $dt_fin = $anousu.'-04-30';
   $dt_ini_ant = ($anousu-1).'-05-01';
   $dt_fin_ant = ($anousu-1).'-12-31';
 } elseif ($periodo == 15) {   // segundo quadrimestre
@@ -137,18 +137,18 @@ if ($periodo == 12) {   // primeiro semestre
   $dt_ini_ant = ($anousu-1).'-09-01';
   $dt_fin_ant = ($anousu-1).'-12-31';
 } elseif ($periodo == 16) {   // terceiro quadrimestre
-  
+
   $dt_ini = $anousu.'-01-01';
   $dt_fin = $anousu.'-12-31';
   $dt_ini_ant = ($anousu-1).'-01-01';
   $dt_fin_ant = ($anousu-1).'-12-31';
-  
+
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 function validaarquivo($sArquivo,$ano){
-	$iAnousu = $ano;	
+	$iAnousu = $ano;
 	$bControle = true;
 	while ($bControle){
 		if	($iAnousu < 2000) {
@@ -159,27 +159,27 @@ function validaarquivo($sArquivo,$ano){
 			$bControle = false;
 		} else {
 			$iAnousu--;
-		}	
+		}
 	}
 	return $sFile;
 }
 /////////////////////////////////////////////////////////////////////////
 
-// data apresentada na tela 
-$dtd1    = split('-',$dt_ini);
-$dtd2    = split('-',$dt_fin);
+// data apresentada na tela
+$dtd1    =explode('-',$dt_ini);
+$dtd2    =explode('-',$dt_fin);
 
 $textodt = strtoupper(db_mes($dtd1[1]))." A ".strtoupper(db_mes($dtd2[1]))." DE ";
 
 /*
- *Calcula a RCL uma unica vez 
+ *Calcula a RCL uma unica vez
  */
 $sTodasInstit  = '';
 $rsResultInst  = db_query("select codigo, munic, db21_tipoinstit from db_config");
 $numrowsinstit = pg_num_rows($rsResultInst);
 $virgula       = "";
 for ($x = 0; $x < $numrowsinstit; $x ++) {
-	
+
   db_fieldsmemory($rsResultInst, $x);
   $sTodasInstit .= $virgula . $codigo;
   $virgula      = ",";
@@ -189,7 +189,7 @@ duplicaReceitaaCorrenteLiquida(2010, 81);
 $aMesesRCLAnterior = calcula_rcl2($anousu_ant, "{$anousu_ant}-01-01", "{$anousu_ant}-12-31", $sTodasInstit, true, 81);
 $aMesesRCLAtual    = calcula_rcl2($anousu, "{$anousu}-01-01", "{$anousu}-12-31", $sTodasInstit, true, 81);
 if ($pessoal == 'true') {
-  
+
   /*
    * Instância da classe do relatório 89 para cálculos da despesa pessoal.
    */
@@ -197,7 +197,7 @@ if ($pessoal == 'true') {
   $oAnexoIRGF->setInstituicoes(str_replace("-", ",", $db_selinstit));
 
   $oDadosSimplificado = $oAnexoIRGF->getDadosSimplificado();
-  
+
   /**
    * Busca os dados simplificados dos totalizadores do AnexoIRGF.
    */
@@ -212,7 +212,7 @@ if ($pessoal == 'true') {
 }
 
 if ($divida == 'true') {
-  
+
   $periodo  = $iCodigoPeriodo;
   $executar = "con2_lrfdivida002";
   $executar = validaarquivo($executar,$anousu);
@@ -220,7 +220,7 @@ if ($divida == 'true') {
 }
 
 if ($garantias == 'true') {
-  
+
   unset($aTotalizadores);
   $periodo  = $iCodigoPeriodo;
   $executar = "con2_lrfgarantias002";
@@ -229,7 +229,7 @@ if ($garantias == 'true') {
 }
 
 if ($operacoes == 'true') {
-  
+
   $periodo  = $iCodigoPeriodo;
   $executar = "con2_opercredito002";
   $executar = validaarquivo($executar,$anousu);
@@ -242,7 +242,7 @@ if ($operacoes == 'true') {
   $limite_senado_int_ext					=	$aLinhasRelatorio[29]->nobimestre;
   $perc_limite_senado_int_ext			=	$aLinhasRelatorio[29]->atebimestre;
   $limite_senado_antecipacao			=	$aLinhasRelatorio[31]->nobimestre;
-  $perc_limite_senado_antecipacao	=	$aLinhasRelatorio[31]->atebimestre;  
+  $perc_limite_senado_antecipacao	=	$aLinhasRelatorio[31]->atebimestre;
 }
 
 if ($restosapagar == 'true') {
@@ -252,19 +252,19 @@ if ($restosapagar == 'true') {
 	 */
   $oAnexoV   = new AnexoVRGF($iAnoUsu, 108, $iCodigoPeriodo);
   $oAnexoV->setInstituicoes(str_replace("-", ",", $db_selinstit));
-  
+
   $oAnexoVI = new AnexoVIRGF($iAnoUsu, 109, $iCodigoPeriodo);
   $oAnexoVI->setInstituicoes(str_replace("-", ",", $db_selinstit));
   $oAnexoVI->setDadosAnexoV($oAnexoV);
   $oDados = $oAnexoVI->getDadosSimplificado();
-  
+
   $lGeraPDF = false;
-  
+
   //include(modification($executar));
-  
+
   $nTotalInscricaoRpNaoProcessados            = $oDados->restoapagarexericioanterior + $oDados->restoapagarexericio;
   $nSuficienciaAntesInscricaoRpNaoProcessados = $oDados->disponibilidadedecaixa;
-  
+
 }
 if ($temcamara == true && ($temprefa == true || $temadmind == true)){
   $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODERES EXECUTIVO E LEGISLATIVO";
@@ -299,14 +299,14 @@ if ($temcamara == true && $temprefa == false && $temadmind == false){
 
 $where = " o58_instit in (".str_replace('-',', ',$db_selinstit).") ";
 
-$where = "  c61_instit in (".str_replace('-',', ',$db_selinstit).") "; 
+$where = "  c61_instit in (".str_replace('-',', ',$db_selinstit).") ";
 
 $total = 0;
 $alt   = 4;
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 
 $pdf->addpage();
@@ -321,98 +321,98 @@ if ($pessoal == 'true'){
   $pdf->cell(40,$alt,"VALOR",'TBR',0,"C",0);
   $pdf->cell(40,$alt,"% SOBRE A RCL",'TB',1,"C",0);
   $pdf->setfont('arial','',7);
-  
+
   $pdf->cell(110,$alt,"Despesa Total com Pessoal - DTP",'R',0,'L',0);
   $pdf->cell(40,$alt,db_formatar(abs($total_rcl_limites),'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar(abs($total_despesa_pessoal_limites),'f'),0,1,"R",0);
-  
+
   $pdf->cell(110,$alt,"Limite Máximo (incisos I, II e III, art. 20 da LRF) - $limite_maximo%",'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($limite_maximo_valor,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($limite_maximo,'f'),0,1,"R",0);
-  
+
   $pdf->cell(110,$alt,"Limite Prudencial (parágrafo único, art. 22 da LRF) - $limite_prudencial%",'BR',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($limite_prudencial_valor,'f'),'BR',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($limite_prudencial,'f'),'B',1,"R",0);
-  
+
   $pdf->Ln();
-  
+
 }
 
 if ($divida == 'true') {
-  
+
   $pdf->setfont('arial','b',7);
   $pdf->cell(110,$alt,"DÍVIDA CONSOLIDADA",'TBR',0,'C',0);
   $pdf->cell(40,$alt,"VALOR",'TBR',0,"C",0);
   $pdf->cell(40,$alt,"% SOBRE A RCL",'TB',1,"C",0);
   $pdf->setfont('arial','',7);
-  
+
   $pdf->cell(110,$alt,"Dívida Consolidada Líquida",'R',0,'L',0);
   $pdf->cell(40,$alt,db_formatar($nTotalDividaII,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($nPercentualRCL,'f'),0,1,"R",0);
-  
+
   $pdf->cell(110,$alt,"Limite Definido por Resolução do Senado Federal",'RB',0,'L',0);
   $pdf->cell(40,$alt,db_formatar($nLimiteSenadoAnexoII, 'f'),'RB',0,"R",0);
   $pdf->cell(40,$alt,db_formatar(120,'f'),'B',1,"R",0);
-  
+
   $pdf->Ln();
-  
+
 }
 
 if ($garantias == 'true'){
-  
+
   $pdf->setfont('arial','b',7);
   $pdf->cell(110,$alt,"GARANTIAS DE VALORES",'TBR',0,'C',0);
   $pdf->cell(40,$alt,"VALOR",'TBR',0,"C",0);
   $pdf->cell(40,$alt,"% SOBRE A RCL",'TB',1,"C",0);
   $pdf->setfont('arial','',7);
-  
+
   $pdf->cell(110,$alt,"Total das Garantias Concedidas",'R',0,'L',0);
   $pdf->cell(40,$alt,db_formatar($nTotalGarantias,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($nPercentualRCLIII,'f'),0,1,"R",0);
-  
+
   $pdf->cell(110,$alt,"Limite Definido por Resolução do Senado Federal",'RB',0,'L',0);
 
   $pdf->cell(40,$alt,db_formatar($nValorSenadoIII,"f"),'RB',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($perc_limite_senado,"f"),'B',1,"R",0);
-  
+
   $pdf->Ln();
-	
+
 }
 
 if ($operacoes == 'true') {
-  
+
   $pdf->setfont('arial','b',7);
   $pdf->cell(110,$alt,"OPERAÇÕES DE CRÉDITO",'TBR',0,'C',0);
   $pdf->cell(40,$alt,"VALOR",'TBR',0,"C",0);
   $pdf->cell(40,$alt,"% SOBRE A RCL",'TB',1,"C",0);
   $pdf->setfont('arial','',7);
-  
+
   $pdf->cell(110,$alt,"Operações de Crédito Externas e Internas",'R',0,'L',0);
   $pdf->cell(40,$alt,db_formatar($total_operacoes_credito,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($perc_total_operacoes_credito,'f'),0,1,"R",0);
-  
+
   $pdf->cell(110,$alt,"Operações de Crédito por Antecipação de Receita",'R',0,'L',0);
   $pdf->cell(40,$alt,db_formatar($total_antecipacao_receita,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($perc_antecipacao_receita,'f'),0,1,"R",0);
-  
+
   $pdf->cell(110,$alt,"Limite Definido pelo Senado Federal para Operações de Credito Externas e Internas",'R',0,'L',0);
   $pdf->cell(40,$alt,db_formatar($limite_senado_int_ext,"f"),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($perc_limite_senado_int_ext,"f"),0,1,"R",0);
-  
-  
+
+
   $pdf->cell(110,$alt,"Limite Definido pelo Senado Federal para Operações de Credito por Antecipação da Receita",'RB',0,'L',0);
   $pdf->cell(40,$alt,db_formatar($limite_senado_antecipacao,"f"),'RB',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($perc_limite_senado_antecipacao,"f"),'B',1,"R",0);
-  
-  
+
+
 }
 
 if ($restosapagar =="true"){
-  
+
   $pdf->Ln();
   $pdf->setfont('arial','b',7);
-  
-  
+
+
   $pdf->cell(80,$alt,"",                                       'TR',0,'C',0);
   $pdf->cell(60,$alt,"",                                       'TR',0,"C",0);
   $pdf->cell(50,$alt,"DISPONIBILIDADE DE CAIXA",               'T',1,"C",0);
@@ -424,7 +424,7 @@ if ($restosapagar =="true"){
   $pdf->cell(80,$alt,"",                                       'R',0,'C',0);
   $pdf->cell(60,$alt,"RESTOS A PAGAR NÃO",                     'R',0,"C",0);
   $pdf->cell(50,$alt,"INSCRIÇÃO EM",                           '',1,"C",0);
-  
+
   $pdf->cell(80,$alt,"RESTOS A PAGAR",                         'R',0,'C',0);
   $pdf->cell(60,$alt,"PROCESSADOS DO",                         'R',0,"C",0);
   $pdf->cell(50,$alt,"RESTOS A PAGAR NÃO",                     '',1,"C",0);
@@ -435,9 +435,9 @@ if ($restosapagar =="true"){
 
   $pdf->cell(80,$alt,"",                                       'BR',0,'C',0);
   $pdf->cell(60,$alt,"",                                       'BR',0,"C",0);
-  $pdf->cell(50,$alt,"EXERCÍCIO)",                             'B',1,"C",0);  
-  
-  
+  $pdf->cell(50,$alt,"EXERCÍCIO)",                             'B',1,"C",0);
+
+
   $pdf->setfont('arial','',7);
 // Variaveis do relatorio
 
@@ -446,17 +446,17 @@ if ($restosapagar =="true"){
   $pdf->cell(80,$alt,"Valor Total",                                                'RB',0,'L',0);
   $pdf->cell(60,$alt,db_formatar($nTotalInscricaoRpNaoProcessados,'f'),            'RB',0,"R",0);
   $pdf->cell(50,$alt,db_formatar($nSuficienciaAntesInscricaoRpNaoProcessados,'f'), "B",1,"R",0);
-  
+
 }
 $oRelatorio = new relatorioContabil(93, false);
-$oRelatorio->getNotaExplicativa(&$pdf,$iCodigoPeriodo);
+$oRelatorio->getNotaExplicativa($pdf,$iCodigoPeriodo);
 $pdf->Ln(15);
 
 $pdf->setfont('arial','',6);
 
 // assinaturas
 
-assinaturas(&$pdf,&$classinatura,'GF');
+assinaturas($pdf,$classinatura,'GF');
 
 $pdf->Output();
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,13 +58,13 @@ class cl_orcorgao {
                  o40_finali = text = Finalidade 
                  ";
    //funcao construtor da classe 
-   function cl_orcorgao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcorgao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_orcorgao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o40_anousu = ($this->o40_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o40_anousu"]:$this->o40_anousu);
        $this->o40_orgao = ($this->o40_orgao == ""?@$GLOBALS["HTTP_POST_VARS"]["o40_orgao"]:$this->o40_orgao);
@@ -87,7 +87,7 @@ class cl_orcorgao {
      }
    }
    // funcao para inclusao
-   function incluir ($o40_anousu,$o40_orgao){ 
+   public function incluir ($o40_anousu,$o40_orgao){ 
       $this->atualizacampos();
      if($this->o40_codtri == null ){ 
        $this->erro_sql = " Campo Código Tribunal nao Informado.";
@@ -191,7 +191,7 @@ class cl_orcorgao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($o40_anousu=null,$o40_orgao=null) { 
+   public function alterar ($o40_anousu=null,$o40_orgao=null) { 
       $this->atualizacampos();
      $sql = " update orcorgao set ";
      $virgula = "";
@@ -326,7 +326,7 @@ class cl_orcorgao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($o40_anousu=null,$o40_orgao=null,$dbwhere=null) { 
+   public function excluir ($o40_anousu=null,$o40_orgao=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o40_anousu,$o40_orgao));
      }else{ 
@@ -399,7 +399,7 @@ class cl_orcorgao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -422,7 +422,7 @@ class cl_orcorgao {
      return $result;
    }
 
-   function sql_query ( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -465,7 +465,7 @@ class cl_orcorgao {
      return $sql;
   }
 
-   function sql_query_file ( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -506,7 +506,7 @@ class cl_orcorgao {
      }
      return $sql;
   }
-   function sql_query_razao( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_razao( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -550,7 +550,7 @@ class cl_orcorgao {
      }
      return $sql;
   }
-function sql_query_orgao( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){
+public function sql_query_orgao( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -593,7 +593,7 @@ function sql_query_orgao( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=nu
      }
      return $sql;
   }
-   function sql_query_dotacao ( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_dotacao ( $o40_anousu=null,$o40_orgao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

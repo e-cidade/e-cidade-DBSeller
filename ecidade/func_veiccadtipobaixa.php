@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clveiccadtipobaixa->rotulo->label("ve12_descr");
               <?=$Lve12_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve12_sequencial",10,$Ive12_sequencial,true,"text",4,"","chave_ve12_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clveiccadtipobaixa->rotulo->label("ve12_descr");
               <?=$Lve12_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve12_descr",40,$Ive12_descr,true,"text",4,"","chave_ve12_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clveiccadtipobaixa->rotulo->label("ve12_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadtipobaixa.php")==true){
@@ -122,12 +122,12 @@ $clveiccadtipobaixa->rotulo->label("ve12_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

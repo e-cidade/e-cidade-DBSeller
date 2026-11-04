@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/pdf.php"));
@@ -67,8 +67,8 @@ $sqlerro = false;
 
 db_sel_instit();
 
-//die($clrharqbanco->sql_query($rh34_codarq));    
-$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));    
+//die($clrharqbanco->sql_query($rh34_codarq));
+$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
 if($clrharqbanco->numrows>0){
 
   db_fieldsmemory($result_arqbanco,0);
@@ -78,25 +78,25 @@ if($clrharqbanco->numrows>0){
     $atipoinscricao = "2";
     $inscricaoprefa = $cgc;
     $aconveniobanco = $rh34_convenio;
- 
+
     $dvagenciabanco = "0";
     $dvcontadobanco = "0";
     $dvcontaagencia = "0";
- 
+
     $agenciadobanco = $rh34_agencia;
     $dacontadobanco = $rh34_conta;
- 
+
     $dvdacontabanco = "0";
     if(trim($rh34_dvconta) != ""){
       $digitos = strlen($rh34_dvconta);
       $dvdacontabanco = $rh34_dvconta[0];
     }
     $dacontadobanco .= $dvdacontabanco;
- 
+
     if(trim($rh34_dvagencia)!=""){
       $dvagenciabanco = $rh34_dvagencia[0];
     }
- 
+
     if(trim($rh34_dvconta)!=""){
       $dvcontadobanco = $rh34_dvconta[0];
       $digitos        = strlen($rh34_dvconta);
@@ -104,28 +104,28 @@ if($clrharqbanco->numrows>0){
         $dvcontaagencia = $rh34_dvconta[1];
       }
     }
- 
+
     $nomeprefeitura = $nomeinst;
     $descricaobanco = $db90_descr;
- 
+
     if(isset($datagera) && $datagera!=""){
-      $datag = split('-',$datagera);
+      $datag =explode('-',$datagera);
       $datag_dia=$datag[2];
       $datag_mes=$datag[1];
       $datag_ano=$datag[0];
     }
- 
+
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad =explode('-',$datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
     }
- 
+
     $adatadegeracao = $datag_ano."-".$datag_mes."-".$datag_dia;
     $datadedeposito = $datad_ano."-".$datad_mes."-".$datad_dia;
     $paramnome = $datag_mes.$datag_ano."_".date("H").date("i");
- 
+
     $ahoradegeracao = date("H").date("i").date("s");
     $sequenciaarqui = $rh34_sequencial;
     // db_msgbox($sequenciaarqui);
@@ -166,25 +166,25 @@ if($sqlerro == false){
 
     $result  = $clfolha->sql_record($sql);
     $numrows = $clfolha->numrows;
-    
+
   }else{
-  	
+
       $titarquivo = "pensaojudicial";
       $titrelatorio = "PENSÃO JUDICIAL";
     if($qfolha == 1){
-    	
+
       $campovalor = " r52_valor+r52_valfer ";
       $rh34_wherepensa .= " and (r52_valor > 0 or r52_valfer > 0 ) ";
     }else if($qfolha == 2){
-    	
+
       $campovalor = " r52_valcom ";
       $rh34_wherepensa .= " and r52_valcom > 0 ";
     }else if($qfolha == 3){
-    	
+
       $campovalor = " r52_val13 ";
       $rh34_wherepensa .= " and r52_val13 > 0 ";
     }else if($qfolha == 4){
-    	
+
       $campovalor = " r52_valres ";
       $rh34_wherepensa .= " and r52_valres > 0 ";
     }
@@ -206,13 +206,13 @@ if($sqlerro == false){
     $result   = $clpensao->sql_record($sql);
     $numrows  = $clpensao->numrows;
   }
-  
+
   // Coleta os dados da consulta sql e coloca em um vetor
   $oDados  = db_utils::getCollectionByRecord($result);
 
   // echo $sql; exit;
   if($numrows > 0 && $rh34_codban == "041"){
-  	
+
     $nomearquivo_impressao = "/tmp/".$titarquivo.".pdf";
     $nomearquivo = $titarquivo.".txt";
     $cllayouts_bb->nomearq            = "tmp/$nomearquivo";
@@ -272,18 +272,18 @@ if($sqlerro == false){
       db_fieldsmemory($result,$i);
 
       if($entrar == true || $pdf->gety() > $pdf->h - 30){
-      	
+
         $pdf->addpage("L");
         $pdf->setfont('arial','b',8);
         $pdf->cell(20,$alt,$RLrh01_regist,1,0,"C",1);
         if($tiparq < 5){
-        	
+
           $pdf->cell(20,$alt,$RLz01_numcgm,1,0,"C",1);
           $pdf->cell(20,$alt,$RLz01_cgccpf,1,0,"C",1);
           $pdf->cell(65,$alt,$RLz01_nome,1,0,"C",1);
           $pdf->cell(65,$alt,$RLr70_descr,1,0,"C",1);
         }else{
-        	
+
           $pdf->cell(65,$alt,"Pensionista",1,0,"C",1);
           $pdf->cell(65,$alt,"Funcionário",1,0,"C",1);
           $pdf->cell(20,$alt,$RLz01_numcgm,1,0,"C",1);
@@ -298,20 +298,20 @@ if($sqlerro == false){
       }
 
       if($rh34_codban==$rh44_codban){
-      	
+
         $codpgto   = "DEP";
         $soma_dep += $rh104_vlrliquido;
         $tota_dep += $rh104_vlrliquido;
       }else{
-      	
+
         if($rh104_vlrliquido < 5000){
-        	
+
           $codpgto   = "DOC";
           $soma_doc += $rh104_vlrliquido;
           $tota_doc += $rh104_vlrliquido;
-          
+
         }else{
-        	
+
           $codpgto   = "TED";
           $soma_ted += $rh104_vlrliquido;
           $tota_ted += $rh104_vlrliquido;
@@ -323,20 +323,20 @@ if($sqlerro == false){
         $bancoanterior = $rh44_codban;
 
   if($acodigodobanco == '041'){
-  	
+
     $tiposerv = "30";
     $tipopaga = "01";
   }else{
-  	
+
     $tiposerv = "12";
     $tipopaga = "03";
   }
 
   if($seq_header != 0){
-  	
-    $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco; 
+
+    $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco;
     $cllayout_BBBS->BBBStraillerL_004_007 = $seq_header;
-    $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe; 
+    $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe;
     $cllayout_BBBS->BBBStraillerL_024_041 = $valor_header;
     $cllayout_BBBS->geraTRAILLERLote();
     $valor_header = 0;
@@ -367,7 +367,7 @@ if($sqlerro == false){
       if($acodigodobanco == $rh44_codban || $rh104_vlrliquido<5000){
         $compensacao = "010";
       }else{
-      	
+
 			  if($rh104_vlrliquido>=5000){
 			    $compensacao = "018";
 			  }
@@ -409,13 +409,13 @@ if($sqlerro == false){
       $pdf->setfont('arial','',7);
       $pdf->cell(20,$alt,$rh02_regist,1,0,"C",0);
       if($tiparq < 5){
-      	
+
         $pdf->cell(20,$alt,$z01_numcgm,1,0,"C",0);
         $pdf->cell(20,$alt,$z01_cgccpf,1,0,"C",0);
         $pdf->cell(65,$alt,$z01_nome,1,0,"L",0);
         $pdf->cell(65,$alt,$r70_descr,1,0,"L",0);
       }else{
-      	
+
         $pdf->cell(65,$alt,$z01_nome,1,0,"L",0);
         $pdf->cell(65,$alt,$nomefuncionario,1,0,"L",0);
         $pdf->cell(20,$alt,$z01_numcgm,1,0,"C",0);
@@ -434,20 +434,20 @@ if($sqlerro == false){
       $cllayout_BBBS->BSregist_021_023 = $rh44_codban;
       $cllayout_BBBS->BSregist_024_028 = $agenciapagar;
       $cllayout_BBBS->BSregist_030_042 = $contasapagar;
-      $cllayout_BBBS->BSregist_044_073 = $z01_nome; 
+      $cllayout_BBBS->BSregist_044_073 = $z01_nome;
       $cllayout_BBBS->BSregist_074_088 = $rh02_regist;
-      $cllayout_BBBS->BSregist_094_101 = $datadedeposito; 
+      $cllayout_BBBS->BSregist_094_101 = $datadedeposito;
       $cllayout_BBBS->BSregist_120_134 = $rh104_vlrliquido;
       $cllayout_BBBS->BSregist_203_203 = $conf;
       $cllayout_BBBS->BSregist_204_217 = $z01_cgccpf;
       $cllayout_BBBS->geraREGISTROSBS();
-      
+
     }
 
     $registro ++;
-    $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco; 
+    $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco;
     $cllayout_BBBS->BBBStraillerL_004_007 = $seq_header;
-    $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe; 
+    $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe;
     $cllayout_BBBS->BBBStraillerL_024_041 = $valor_header;
     $cllayout_BBBS->geraTRAILLERLote();
 
@@ -459,8 +459,8 @@ if($sqlerro == false){
     $cllayout_BBBS->geraTRAILLERArquivo();
 
     $cllayout_BBBS->gera();
-    
-   
+
+
     $pdf->setfont('arial','b',8);
 
     $pdf->cell(190,$alt,'Total de funcionários',1,0,"C",1);
@@ -473,13 +473,13 @@ if($sqlerro == false){
 
     $pdf->Output($nomearquivo_impressao,false,true);
   }else{
-  	
+
     $sqlerro = true;
     $erro_msg = "Nenhum registro encontrado. Contate o suporte.";
   }
 }
 
- 
+
 db_inicio_transacao();
 $erro = false;
 
@@ -494,20 +494,20 @@ $clrhgeracaofolhaarquivo->rh105_instit         = db_getsession("DB_instit");
 $clrhgeracaofolhaarquivo->incluir("");
 //$oDados
 if($numrows > 0){
-	
+
 	if($clrhgeracaofolhaarquivo->erro_status == "0"){
-		
+
 	  db_msgbox($clrhgeracaofolhaarquivo->erro_msg);
 	  $erro = true;
 	} else {
-		
+
 	  foreach ($oDados as $oLinhas){
-	  	
+
 		  $clrhgeracaofolhaarquivoreg->rh106_rhgeracaofolhareg     = $oLinhas->rh104_sequencial;
 		  $clrhgeracaofolhaarquivoreg->rh106_rhgeracaofolhaarquivo = $clrhgeracaofolhaarquivo->rh105_sequencial;
 		  $clrhgeracaofolhaarquivoreg->incluir("");
 		  if($clrhgeracaofolhaarquivoreg->erro_status == "0"){
-		  	
+
 		    db_msgbox($clrhgeracaofolhaarquivoreg->erro_msg);
 		    $erro = true;
 		    exit;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -126,7 +126,7 @@ if(isset($incluir)){
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_cursobase001.php?escola=<?=$ed18_i_codigo?>&ed18_c_nome=<?=$ed18_c_nome?>';
   </script>
-  <?
+  <?php
  }else{
   $ed18_c_nome = $descrdepto;
   $db_opcao = 1;
@@ -148,7 +148,7 @@ if(isset($incluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Dados da Escola</b></legend>
-    <?include(modification("forms/db_frmescola.php"));?>
+    <?php include(modification("forms/db_frmescola.php"));?>
    </fieldset>
    </center>
   </td>
@@ -156,7 +156,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
  if($clescola->erro_status=="0"){
   $clescola->erro(true,false);
@@ -182,7 +182,7 @@ if(isset($incluir)){
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_cursobase001.php?escola=<?=$ed18_i_codigo?>&ed18_c_nome=<?=$ed18_c_nome?>';
   </script>
-  <?
+  <?php
   $clescola->erro(true,true);
  }
 }

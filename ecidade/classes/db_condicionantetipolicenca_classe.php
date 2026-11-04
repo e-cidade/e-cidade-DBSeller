@@ -52,13 +52,13 @@ class cl_condicionantetipolicenca {
                  am17_tipolicenca = int4 = Código Tipo Licença
                  ";
    //funcao construtor da classe
-   function cl_condicionantetipolicenca() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condicionantetipolicenca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_condicionantetipolicenca {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am17_sequencial = ($this->am17_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am17_sequencial"]:$this->am17_sequencial);
        $this->am17_condicionante = ($this->am17_condicionante == ""?@$GLOBALS["HTTP_POST_VARS"]["am17_condicionante"]:$this->am17_condicionante);
@@ -77,7 +77,7 @@ class cl_condicionantetipolicenca {
      }
    }
    // funcao para Inclusão
-   function incluir ($am17_sequencial){
+   public function incluir ($am17_sequencial){
       $this->atualizacampos();
      if($this->am17_condicionante == null ){
        $this->erro_sql = " Campo Código Condicionante não informado.";

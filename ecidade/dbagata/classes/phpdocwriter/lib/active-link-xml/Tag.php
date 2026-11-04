@@ -61,7 +61,7 @@ class Tag {
 	  *	@param		optional string content
 	  *	@returns	none
 	  */
-	function Tag($name = "", $content = "") {
+	public function __construct($name = "", $content = "") {
 
 		$this->tagStartOpen = "<";
 		$this->tagStartClose = ">";
@@ -88,7 +88,7 @@ class Tag {
 	  *	@param		string attrName
 	  *	@returns	true if attribute exists, false otherwise
 	  */
-	function attributeExists($attrName) {
+	public function attributeExists($attrName) {
 		return array_key_exists($attrName, $this->tagAttributes);
 	}
 
@@ -98,7 +98,7 @@ class Tag {
 	  *	@param		string attrName
 	  *	@returns	string attribute value
 	  */
-	function getTagAttribute($attrName) {
+	public function get__constructAttribute($attrName) {
 		return $this->tagAttributes[$attrName];
 	}
 
@@ -107,7 +107,7 @@ class Tag {
 	  *	@method		getTagContent
 	  *	@returns	string tag content
 	  */
-	function getTagContent() {
+	public function get__constructContent() {
 		return $this->tagContent;
 	}
 
@@ -116,7 +116,7 @@ class Tag {
 	  *	@method		getTagName
 	  *	@returns	string tag name
 	  */
-	function getTagName() {
+	public function get__constructName() {
 		return $this->tagName;
 	}
 
@@ -125,7 +125,7 @@ class Tag {
 	  *	@method		getTagString
 	  *	@returns	string tag string
 	  */
-	function getTagString() {
+	public function get__constructString() {
 		$formatTagBegin = "";
 		$formatTagEnd = "";
 		$formatContent = "";
@@ -144,7 +144,7 @@ class Tag {
 	  *	@method		getTagStringBegin
 	  *	@returns	string beginning of the tag string
 	  */
-	function getTagStringBegin() {
+	public function get__constructStringBegin() {
 		$tagString = "";
 		if($this->tagName != "") {
 			$tagString .= $this->tagStartOpen . $this->tagName;
@@ -164,7 +164,7 @@ class Tag {
 	  *	@method		getTagStringEnd
 	  *	@returns	string close tag if tag is not short-handed, empty string otherwise
 	  */
-	function getTagStringEnd() {
+	public function get__constructStringEnd() {
 		$tagString = "";
 		if($this->tagName != "" && $this->tagContent != "")
 			$tagString .= $this->tagEndOpen . $this->tagName . $this->tagEndClose;
@@ -176,7 +176,7 @@ class Tag {
 	  *	@method		removeAllAttributes
 	  *	@returns	none
 	  */
-	function removeAllAttributes() {
+	public function removeAllAttributes() {
 		$this->tagAttributes = array();
 	}
 
@@ -185,7 +185,7 @@ class Tag {
 	  *	@method		removeAttribute
 	  *	@returns	none
 	  */
-	function removeAttribute($attrName) {
+	public function removeAttribute($attrName) {
 		unset($this->tagAttributes[$attrName]);
 	}
 
@@ -194,7 +194,7 @@ class Tag {
 	  *	@method		resetTag
 	  *	@returns	none
 	  */
-	function resetTag() {
+	public function reset__construct() {
 		$this->setTagName("");
 		$this->setTagContent("");
 		$this->removeAllAttributes();
@@ -207,7 +207,7 @@ class Tag {
 	  *	@param		string attrValue
 	  *	@returns	none
 	  */
-	function setAttribute($attrName, $attrValue) {
+	public function setAttribute($attrName, $attrValue) {
 		$this->tagAttributes[$attrName] = $attrValue;
 	}
 
@@ -217,7 +217,7 @@ class Tag {
 	  *	@param		string content
 	  *	@returns	none
 	  */
-	function setTagContent($content) {
+	public function set__constructContent($content) {
 		$this->tagContent = $content;
 	}
 
@@ -228,7 +228,7 @@ class Tag {
 	  *	@param		optional int tagFormatIndentLevel
 	  *	@returns	none
 	  */
-	function setTagFormat($tagFormat, $tagFormatIndentLevel = 0) {
+	public function set__constructFormat($tagFormat, $tagFormatIndentLevel = 0) {
 		$this->tagFormat = $tagFormat;
 		$this->tagFormatIndentLevel = $tagFormatIndentLevel;
 	}
@@ -239,7 +239,7 @@ class Tag {
 	  *	@param		optional boolean formatEndTag
 	  *	@returns	none
 	  */
-	function setTagFormatEndTag($formatEndTag = true) {
+	public function set__constructFormatEnd__construct($formatEnd__construct = true) {
 		$this->tagFormatEndTag = $formatEndTag;
 	}
 
@@ -249,7 +249,7 @@ class Tag {
 	  *	@param		string tagString
 	  *	@returns	array array of [0]=>index of the beginning of the tag, [1]=>index where tag ended
 	  */
-	function setTagFromString($tagString) {
+	public function set__constructFromString($tagString) {
 		$i = 0;
 		$j = 0;
 		$tagStartOpen = $tagStartClose = $tagNameStart = $tagNameEnd = $tagContentStart = $tagContentEnd = $tagEndOpen = $tagEndClose = 0;
@@ -414,7 +414,7 @@ class Tag {
 	  *	@param		string name
 	  *	@returns	none
 	  */
-	function setTagName($name) {
+	public function set__constructName($name) {
 		$this->tagName = $name;
 	}
 

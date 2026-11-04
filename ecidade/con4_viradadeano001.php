@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Público para Gestão Municipal
  *  Copyright (C) 2009  DBseller Serviços de Informática
@@ -202,16 +202,16 @@ function js_emite(){
   <table  align="center" border="0" width="800" >
     <form name="form1" method="post" action="">
       <tr>
-         <td > <? db_input("itensprocessa", 20, "", "", "hidden", 1)?> </td>
+         <td > <?php db_input("itensprocessa", 20, "", "", "hidden", 1)?> </td>
          <td >&nbsp; </td>
       </tr>
       <tr>
-        <td align='center'><b> Ano origem :<? db_input("anoorigem", 10, "", true, "text", 3)?> </b></td>
-		    <td><b> Ano destino :<? db_input("anodestino", 10, "", true, "text",3)?> </b></td>
+        <td align='center'><b> Ano origem :<?php db_input("anoorigem", 10, "", true, "text", 3)?> </b></td>
+		    <td><b> Ano destino :<?php db_input("anodestino", 10, "", true, "text",3)?> </b></td>
       </tr>
       <tr>
         <td colspan="2">
-          <?
+          <?php
             $cliframe_seleciona->campos        = "c33_sequencial,c33_descricao, area";
             $cliframe_seleciona->legenda       = "Itens";
             $cliframe_seleciona->sql           = $sqlitem;
@@ -234,7 +234,7 @@ function js_emite(){
       </tr>
     </form>
   </table>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,7 +36,6 @@ $clrotulo->label("ed60_d_datamatricula");
 $clrotulo->label("ed47_v_nome");
 $clrotulo->label("ed10_c_descr");
 
-
 ?>
 <form name="form1" method="post" action="">
   <div class="container">
@@ -53,7 +52,7 @@ $clrotulo->label("ed10_c_descr");
         </tr>
         <tr>
           <td nowrap title="<?=$Ted69_i_matricula?>">
-            <?db_ancora( $Led69_i_matricula, "js_pesquisaed69_i_matricula(true);", $db_opcao );?>
+            <?php db_ancora( $Led69_i_matricula, "js_pesquisaed69_i_matricula(true);", $db_opcao );?>
           </td>
           <td>
             <?php
@@ -68,7 +67,15 @@ $clrotulo->label("ed10_c_descr");
             <?=$Led60_d_datamatricula?>
           </td>
           <td>
-            <?db_input( 'datamatricula', 10, '', true, 'text', 3 );?>
+            <?php db_input( 'datamatricula', 10, '', true, 'text', 3 );?>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Observação:</b>
+          </td>
+          <td>
+            <p name="observacaoMatricula" id="observacaoMatricula" type="text"></p>
           </td>
         </tr>
         <tr>
@@ -160,9 +167,11 @@ $clrotulo->label("ed10_c_descr");
     <iframe style="display: none;" id="iframe_trocaturma" name="iframe_trocaturma" src="" width="100%" height="800" frameborder="0"></iframe>
   </div>
 </form>
+
 <script>
 var oTurmaTurno                    = null;
 var sRPCTurmas                     = "edu4_turmas.RPC.php";
+var sRPCProgressaoParcial          = "edu4_progressaoparcial.RPC.php";
 const CAMINHO_MENSAGENS_TROCATURMA = 'educacao.escola.db_frmalunotransfturma.';
 
 function js_pesquisaed69_i_matricula(mostra) {
@@ -211,25 +220,28 @@ function js_pesquisaed69_i_matricula(mostra) {
       document.form1.ed11_c_destino.value      = "";
       document.form1.ed10_c_destino.value      = "";
       document.form1.ed52_c_destino.value      = "";
+      document.getElementById('observacaoMatricula').innerHTML = "";
     }
   }
 }
 
 function js_mostramatricula(chave1, chave2, chave3, chave4, chave5, chave6, chave7, chave8, erro, chave9) {
 
-  document.form1.ed47_v_nome.value        = chave1
+  document.form1.ed47_v_nome.value        = chave1;
   document.form1.ed69_i_turmaorigem.value = chave2;
   document.form1.ed57_c_origem.value      = chave3;
   document.form1.ed11_c_origem.value      = chave4;
   document.form1.ed10_c_origem.value      = chave5;
   document.form1.ed52_c_origem.value      = chave6;
-  document.form1.ed69_i_matricula.value   = chave9
+  document.form1.ed69_i_matricula.value   = chave9;
 
   if ( chave7 != "" ) {
     document.form1.datamatricula.value = chave7.substr(8,2)+"/"+chave7.substr(5,2)+"/"+chave7.substr(0,4);
   } else {
     document.form1.datamatricula.value = '';
   }
+
+  buscarProgressaoParcial();
 
   document.form1.etapaorigem.value         = chave8;
   document.form1.ed69_i_turmadestino.value = "";
@@ -247,6 +259,40 @@ function js_mostramatricula(chave1, chave2, chave3, chave4, chave5, chave6, chav
   }
 }
 
+function buscarProgressaoParcial() {
+
+  var oParametrosProgressao         = new Object();
+    oParametrosProgressao.exec      = "buscaDadosProgressaoAlunoPorMatricula";
+    oParametrosProgressao.iAluno    = $F('ed60_matricula');
+
+  var oAjaxRequestProgressao = new AjaxRequest( sRPCProgressaoParcial, oParametrosProgressao, retornoBuscarProgressaoParcial );
+    oAjaxRequestProgressao.execute();
+}
+
+function retornoBuscarProgressaoParcial(oRetorno, lErro) {
+  document.getElementById('observacaoMatricula').innerHTML = "";
+  if (!empty(oRetorno.aProgressoes)) {
+    aProgressoesParciais = oRetorno.aProgressoes;
+
+    sProgressaoMsg = "";
+    sProgressaoMsg = "O(a) aluno(a) selecionado(a) possui "
+        + oRetorno.aProgressoes.length 
+        + " registros de Progressão Parcial: ";
+
+    aProgressoesParciais.forEach(function(retorno) {
+      sProgressaoMsg += "<br/>";
+      sProgressaoMsg += "Ensino: " + retorno.sDisciplina.urlDecode();
+      sProgressaoMsg += "<br/>";
+      sProgressaoMsg += "Etapa: " + retorno.sEtapa.urlDecode();
+      sProgressaoMsg += "<br/>";
+      sProgressaoMsg += "Situacão: " + retorno.sSituacao.urlDecode();
+      sProgressaoMsg += "<br/>";
+    });
+
+    document.getElementById('observacaoMatricula').innerHTML = sProgressaoMsg;
+  }
+}
+
 function js_mostramatricula1( chave1, chave2, chave3, chave4, chave5, chave6, chave7, chave8, chave9, chave10 ) {
 
   document.form1.ed69_i_matricula.value   = chave1;
@@ -261,6 +307,8 @@ function js_mostramatricula1( chave1, chave2, chave3, chave4, chave5, chave6, ch
   if ( chave8 != "" ) {
     document.form1.datamatricula.value = chave8.substr(8,2)+"/"+chave8.substr(5,2)+"/"+chave8.substr(0,4);
   }
+
+  buscarProgressaoParcial();
 
   document.form1.etapaorigem.value         = chave9;
   document.form1.ed69_i_turmadestino.value = "";
@@ -341,10 +389,7 @@ function compararRegenciasEntreTurmas() {
 function retornoCompararRegenciasEntreTurmas( oRetorno, lErro ) {
 
   if ( oRetorno.lPossuiMesmoProcedimentos == false ) {
-
-
     if ($('iframe_trocaturma')) {
-
       $('iframe_trocaturma').style.display = 'none';
       $('iframe_trocaturma').contentWindow.document.body.innerHTML = '';
     }
@@ -352,17 +397,14 @@ function retornoCompararRegenciasEntreTurmas( oRetorno, lErro ) {
     return;
   }
 
+  if (oRetorno.lPossuiEtapaAnterior == true) {
+    alert( _M( CAMINHO_MENSAGENS_TROCATURMA + 'possui_equivalencia_etapa_anterior'));
+  }
+
   dadosImportacao();
 }
 
 function dadosImportacao() {
-
-  if ( !oTurmaTurno.temTurnoSelecionado() ) {
-
-    document.getElementById('iframe_trocaturma').style.display = 'none';
-    alert( _M( CAMINHO_MENSAGENS_TROCATURMA + 'sem_turno_selecionada' ) );
-    return;
-  }
 
   var sGet  = '';
       sGet += 'matricula='+document.form1.ed69_i_matricula.value
@@ -391,9 +433,14 @@ function dadosImportacao() {
   }
 
   if ( !oTurmaTurno.temVagasDisponiveis() ) {
-
     document.getElementById('iframe_trocaturma').style.display = 'none';
     alert( _M( CAMINHO_MENSAGENS_TROCATURMA + 'turma_sem_vagas' ) );
+    return;
+  }
+
+  if (!oTurmaTurno.temTurnoSelecionado() ) {
+    document.getElementById('iframe_trocaturma').style.display = 'none';
+    alert( _M( CAMINHO_MENSAGENS_TROCATURMA + 'sem_turno_selecionada' ) );
     return;
   }
 
@@ -417,5 +464,6 @@ $("ed57_c_destino").style.width = "340px";
 $("ed11_c_destino").addClassName("field-size2");
 $("ed10_c_destino").style.width = "426px";
 $("ed52_c_destino").addClassName("field-size6");
+$("observacaoMatricula").style.width = "385px";
 
 </script>

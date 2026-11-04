@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrenovacoes->rotulo->label("cm07_i_sepultamento");
               <?=$Lcm07_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cm07_i_codigo",10,$Icm07_i_codigo,true,"text",4,"","chave_cm07_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrenovacoes->rotulo->label("cm07_i_sepultamento");
               <?=$Lcm07_i_sepultamento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cm07_i_sepultamento",10,$Icm07_i_sepultamento,true,"text",4,"","chave_cm07_i_sepultamento");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrenovacoes->rotulo->label("cm07_i_sepultamento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_renovacoes.php")==true){
@@ -118,12 +118,12 @@ $clrenovacoes->rotulo->label("cm07_i_sepultamento");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -66,10 +66,10 @@ if ($oDaoDocumento->erro_status == "0") {
       <table>
         <tr>
           <td style="font-weight: bolder;" nowrap="nowrap">
-            <? db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>
+            <?php db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>
           </td>
           <td nowrap="nowrap">
-            <?
+            <?php
               db_input("pc80_codproc", 10, $Ipc80_codproc, 
                        true, 
                        "text", 
@@ -85,7 +85,7 @@ if ($oDaoDocumento->erro_status == "0") {
             <b>Documento Template:</b>
           </td>
           <td nowrap="nowrap">
-            <?
+            <?php
              db_selectrecord('documentotemplate',$rsDocumentoTemplate,true,1,'');
             ?>
           </td>

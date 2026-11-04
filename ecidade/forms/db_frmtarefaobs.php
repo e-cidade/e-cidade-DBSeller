@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("at42_tarefa");
        <?=@$Lat42_tarefa?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('at42_tarefa',10,$Iat42_tarefa,true,'text',3,"");
     ?>
     </td>
@@ -50,7 +50,7 @@ $clrotulo->label("at42_tarefa");
        <?=@$Lat40_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at40_obs',30,100,"",true,'text',$db_opcao,"")
 ?>
     </td>

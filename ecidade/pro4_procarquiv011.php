@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,11 +70,11 @@ function js_processa(){
 	          <tr>
 	            <td colspan=3 >
 	              <b>De</b> 
-	               <?
+	               <?php
                    db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")
                  ?>
 	              <b>a</b>
-                 <?
+                 <?php
                   db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")
                  ?>
 	            </td>
@@ -93,7 +93,7 @@ function js_processa(){
 </center>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

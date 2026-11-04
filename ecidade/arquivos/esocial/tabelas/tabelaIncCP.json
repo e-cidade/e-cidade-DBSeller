@@ -1,0 +1,102 @@
+[
+   {
+      "value": "00",
+      "label": "Não é base de cálculo"
+   },
+   {
+      "value": "01",
+      "label": "Não é base de cálculo em função de acordos internacionais de previdência social"
+   },
+   {
+      "value": "11",
+      "label": "Mensal. (Salário de Contribuição)"
+   },
+   {
+      "value": "12",
+      "label": "13º Salário. (Salário de Contribuição)"
+   },
+   {
+      "value": "13",
+      "label": "Exclusiva do empregador - mensal. (Salário de Contribuição)"
+   },
+   {
+      "value": "14",
+      "label": "Exclusiva do empregador - 13º Salário. (Salário de Contribuição)"
+   },
+   {
+      "value": "15",
+      "label": "Exclusiva do segurado - mensal. (Salário de Contribuição)"
+   },
+   {
+      "value": "16",
+      "label": "Exclusiva do segurado - 13º Salário. (Salário de Contribuição)"
+   },
+   {
+      "value": "21",
+      "label": "Salário maternidade mensal pago pelo empredador. (Salário de Contribuição)"
+   },
+   {
+      "value": "22",
+      "label": "Salário maternidade - 13º Salário, pago pelo empregador. (Salário de Contribuição)"
+   },
+   {
+      "value": "25",
+      "label": "Salário maternidade mensal pago pelo INSS. (Salário de Contribuição)"
+   },
+   {
+      "value": "26",
+      "label": "Salário maternidade - 13° salário, pago pelo INSS. (Salário de Contribuição)"
+   },
+   {
+      "value": "31",
+      "label": "Contribuição descontada sobre salário - Mensal"
+   },
+   {
+      "value": "32",
+      "label": "Contribuição descontada sobre salário - 13º Salário"
+   },
+   {
+      "value": "34",
+      "label": "Contribuição descontada sobre salário - SEST"
+   },
+   {
+      "value": "35",
+      "label": "Contribuição descontada sobre salário - SENAT"
+   },
+   {
+      "value": "51",
+      "label": "Outros - Salário-família"
+   },
+   {
+      "value": "91",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - Mensal"
+   },
+   {
+      "value": "92",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - 13º Salário"
+   },
+   {
+      "value": "93",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - Salário maternidade"
+   },
+   {
+      "value": "94",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - Salário maternidade 13º salário"
+   },
+   {
+      "value": "95",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - Exclusiva do Empregador - mensal"
+   },
+   {
+      "value": "96",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - Exclusiva do Empregador - 13º Salário"
+   },
+   {
+      "value": "97",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - Exclusiva do Empregador - Salário Maternidade"
+   },
+   {
+      "value": "98",
+      "label": "Suspensão de incidência sobre Salário por decisão judicial - Exclusiva do Empregador - Salário Maternidade 13º Salário"
+   }
+]

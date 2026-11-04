@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -42,11 +42,11 @@ $clorcreservasol = new cl_orcreservasol;
 $clrotulo = new rotulocampo;
 $clrotulo->label("");
 if (isset($processar)){
-  $arr_info = split("#",$chaves);
+  $arr_info =explode("#",$chaves);
   $sqlerro=false;
   db_inicio_transacao();
   for($w=0;$w<count($arr_info);$w++){
-    $solicita = $arr_info[$w]; 
+    $solicita = $arr_info[$w];
     $result = $clsolicita->sql_record($clsolicita->sql_query_reserv($solicita,"distinct o82_codres as codres",null,"pc10_numero = $solicita and o82_codres is not null and pc81_solicitem is null"));
     $numrows = $clsolicita->numrows;
     for ($i=0;$i<$numrows;$i++){
@@ -70,7 +70,7 @@ if (isset($processar)){
 	}
       }
     }
-  }  
+  }
   db_fim_transacao($sqlerro);
 }
 ?>
@@ -89,7 +89,7 @@ function js_emite(){
   jan = window.open('com2_excressol002.php','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc">
@@ -111,15 +111,15 @@ function js_emite(){
 </tr>
   <tr>
     <td colspan=2>
-    <?
+    <?php
            $cliframe_seleciona->campos  = "pc10_numero,pc10_data,pc10_resumo,pc10_depto,descrdepto,pc10_instit,nomeinst,pc10_login,nome";
            $cliframe_seleciona->legenda="Solicitações";
            $cliframe_seleciona->sql=$clsolicita->sql_query_reserv(null,"distinct pc10_numero,pc10_data,pc10_resumo,pc10_depto,descrdepto,pc10_instit,nomeinst,pc10_login,nome",null,"EXTRACT (YEAR FROM pc10_data)= ".db_getsession("DB_anousu")."  and o82_codres is not null and pc81_solicitem is null and (current_date-pc10_data)>=30 and pc10_depto in (select coddepto from db_depusu where id_usuario = ".db_getsession("DB_id_usuario").") ");
            $cliframe_seleciona->iframe_height ="300";
            $cliframe_seleciona->iframe_width ="650";
-           $cliframe_seleciona->iframe_nome ="solicita"; 
+           $cliframe_seleciona->iframe_nome ="solicita";
            $cliframe_seleciona->chaves = "pc10_numero";
-           $cliframe_seleciona->iframe_seleciona(1);    
+           $cliframe_seleciona->iframe_seleciona(1);
     ?>
     </td>
   </tr>
@@ -136,16 +136,16 @@ function js_emite(){
   </table>
   </form>
 </center>
-<? 
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 </script>
-<?
+<?php
 if (isset($processar)){
-  if ($sqlerro==true){    
+  if ($sqlerro==true){
     db_msgbox($erro_msg);
   }else{
     db_msgbox("Processamento concluido com sucesso!!");

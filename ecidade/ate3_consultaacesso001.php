@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -90,7 +90,7 @@ function js_pesquisautilizacao(tipototal,codmod){
 <tr>
 <td><strong>Cliente:</strong></td>
 <td>
-<?
+<?php
 
 $resultcli = $clclientes->sql_record($clclientes->sql_query(null,'*','at01_nomecli', "at01_ativo is true"));
 if(!isset($cliente)){
@@ -131,7 +131,7 @@ db_selectrecord("id_modulo",$resultmod,true,2,"",'','','0','');
     <td colspan='3'>
     <br>
     <strong>Intervalor de Data:</strong>
-    <?
+    <?php
     if(!isset($pesquisar)){
       $dataini_ano = date('Y',db_getsession('DB_datausu'));
       $dataini_mes = date('m',db_getsession('DB_datausu'));
@@ -143,7 +143,7 @@ db_selectrecord("id_modulo",$resultmod,true,2,"",'','','0','');
     db_inputdata("dataini",@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',2);
     ?>
     a
-    <?
+    <?php
     db_inputdata("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',2);
 
     ?>
@@ -161,7 +161,7 @@ db_selectrecord("id_modulo",$resultmod,true,2,"",'','','0','');
 </form>
 <table width='100%' border=1>
 <tr>
-<?
+<?php
 if(isset($pesquisar)){
 
   $sql = "select at99_codcli,
@@ -346,7 +346,7 @@ if(isset($pesquisar)){
 ?>
 </tr>
 </table>
-<?
+<?php
 if(isset($pesquisar)){
   echo "<table>";
   echo "<tr>";

@@ -1,40 +1,40 @@
-<?
+<?php
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE portariaassinatura
-class cl_portariaassinatura { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh136_sequencial = 0; 
-   var $rh136_nome = null; 
-   var $rh136_cargo = null; 
-   var $rh136_amparo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_portariaassinatura {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh136_sequencial = 0;
+   var $rh136_nome = null;
+   var $rh136_cargo = null;
+   var $rh136_amparo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh136_sequencial = int4 = Código 
-                 rh136_nome = varchar(100) = Nome 
-                 rh136_cargo = varchar(200) = Cargo 
-                 rh136_amparo = text = Amparo Legal 
+                 rh136_sequencial = int4 = Código
+                 rh136_nome = varchar(100) = Nome
+                 rh136_cargo = varchar(200) = Cargo
+                 rh136_amparo = text = Amparo Legal
                  ";
-   //funcao construtor da classe 
-   function cl_portariaassinatura() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("portariaassinatura"); 
+     $this->rotulo = new rotulo("portariaassinatura");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_portariaassinatura {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh136_sequencial = ($this->rh136_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh136_sequencial"]:$this->rh136_sequencial);
        $this->rh136_nome = ($this->rh136_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["rh136_nome"]:$this->rh136_nome);
@@ -54,9 +54,9 @@ class cl_portariaassinatura {
      }
    }
    // funcao para inclusao
-   function incluir ($rh136_sequencial){ 
+   public function incluir ($rh136_sequencial){
       $this->atualizacampos();
-     if($this->rh136_nome == null ){ 
+     if($this->rh136_nome == null ){
        $this->erro_sql = " Campo Nome não informado.";
        $this->erro_campo = "rh136_nome";
        $this->erro_banco = "";
@@ -65,7 +65,7 @@ class cl_portariaassinatura {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh136_cargo == null ){ 
+     if($this->rh136_cargo == null ){
        $this->erro_sql = " Campo Cargo não informado.";
        $this->erro_campo = "rh136_cargo";
        $this->erro_banco = "";
@@ -74,7 +74,7 @@ class cl_portariaassinatura {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh136_amparo == null ){ 
+     if($this->rh136_amparo == null ){
        $this->erro_sql = " Campo Amparo Legal não informado.";
        $this->erro_campo = "rh136_amparo";
        $this->erro_banco = "";
@@ -84,16 +84,16 @@ class cl_portariaassinatura {
        return false;
      }
      if($rh136_sequencial == "" || $rh136_sequencial == null ){
-       $result = db_query("select nextval('portariaassinatura_rh136_sequencial_seq')"); 
+       $result = db_query("select nextval('portariaassinatura_rh136_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: portariaassinatura_rh136_sequencial_seq do campo: rh136_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: portariaassinatura_rh136_sequencial_seq do campo: rh136_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh136_sequencial = pg_result($result,0,0); 
+       $this->rh136_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from portariaassinatura_rh136_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh136_sequencial)){
@@ -104,10 +104,10 @@ class cl_portariaassinatura {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh136_sequencial = $rh136_sequencial; 
+         $this->rh136_sequencial = $rh136_sequencial;
        }
      }
-     if(($this->rh136_sequencial == null) || ($this->rh136_sequencial == "") ){ 
+     if(($this->rh136_sequencial == null) || ($this->rh136_sequencial == "") ){
        $this->erro_sql = " Campo rh136_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,19 +116,19 @@ class cl_portariaassinatura {
        return false;
      }
      $sql = "insert into portariaassinatura(
-                                       rh136_sequencial 
-                                      ,rh136_nome 
-                                      ,rh136_cargo 
-                                      ,rh136_amparo 
+                                       rh136_sequencial
+                                      ,rh136_nome
+                                      ,rh136_cargo
+                                      ,rh136_amparo
                        )
                 values (
-                                $this->rh136_sequencial 
-                               ,'$this->rh136_nome' 
-                               ,'$this->rh136_cargo' 
-                               ,'$this->rh136_amparo' 
+                                $this->rh136_sequencial
+                               ,'$this->rh136_nome'
+                               ,'$this->rh136_cargo'
+                               ,'$this->rh136_amparo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Assinaturas Portaria ($this->rh136_sequencial) nao Incluído. Inclusao Abortada.";
@@ -169,16 +169,16 @@ class cl_portariaassinatura {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh136_sequencial=null) { 
+   public function alterar ($rh136_sequencial=null) {
       $this->atualizacampos();
      $sql = " update portariaassinatura set ";
      $virgula = "";
-     if(trim($this->rh136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_sequencial"])){ 
+     if(trim($this->rh136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_sequencial"])){
        $sql  .= $virgula." rh136_sequencial = $this->rh136_sequencial ";
        $virgula = ",";
-       if(trim($this->rh136_sequencial) == null ){ 
+       if(trim($this->rh136_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "rh136_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_portariaassinatura {
          return false;
        }
      }
-     if(trim($this->rh136_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_nome"])){ 
+     if(trim($this->rh136_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_nome"])){
        $sql  .= $virgula." rh136_nome = '$this->rh136_nome' ";
        $virgula = ",";
-       if(trim($this->rh136_nome) == null ){ 
+       if(trim($this->rh136_nome) == null ){
          $this->erro_sql = " Campo Nome não informado.";
          $this->erro_campo = "rh136_nome";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_portariaassinatura {
          return false;
        }
      }
-     if(trim($this->rh136_cargo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_cargo"])){ 
+     if(trim($this->rh136_cargo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_cargo"])){
        $sql  .= $virgula." rh136_cargo = '$this->rh136_cargo' ";
        $virgula = ",";
-       if(trim($this->rh136_cargo) == null ){ 
+       if(trim($this->rh136_cargo) == null ){
          $this->erro_sql = " Campo Cargo não informado.";
          $this->erro_campo = "rh136_cargo";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_portariaassinatura {
          return false;
        }
      }
-     if(trim($this->rh136_amparo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_amparo"])){ 
+     if(trim($this->rh136_amparo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh136_amparo"])){
        $sql  .= $virgula." rh136_amparo = '$this->rh136_amparo' ";
        $virgula = ",";
-       if(trim($this->rh136_amparo) == null ){ 
+       if(trim($this->rh136_amparo) == null ){
          $this->erro_sql = " Campo Amparo Legal não informado.";
          $this->erro_campo = "rh136_amparo";
          $this->erro_banco = "";
@@ -256,7 +256,7 @@ class cl_portariaassinatura {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Assinaturas Portaria nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh136_sequencial;
@@ -284,11 +284,11 @@ class cl_portariaassinatura {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh136_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh136_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -297,7 +297,7 @@ class cl_portariaassinatura {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($rh136_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -329,7 +329,7 @@ class cl_portariaassinatura {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Assinaturas Portaria nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh136_sequencial;
@@ -357,11 +357,11 @@ class cl_portariaassinatura {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -383,11 +383,11 @@ class cl_portariaassinatura {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $rh136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $rh136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,15 +400,15 @@ class cl_portariaassinatura {
      $sql2 = "";
      if($dbwhere==""){
        if($rh136_sequencial!=null ){
-         $sql2 .= " where portariaassinatura.rh136_sequencial = $rh136_sequencial "; 
-       } 
+         $sql2 .= " where portariaassinatura.rh136_sequencial = $rh136_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,11 +417,11 @@ class cl_portariaassinatura {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $rh136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $rh136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,15 +434,15 @@ class cl_portariaassinatura {
      $sql2 = "";
      if($dbwhere==""){
        if($rh136_sequencial!=null ){
-         $sql2 .= " where portariaassinatura.rh136_sequencial = $rh136_sequencial "; 
-       } 
+         $sql2 .= " where portariaassinatura.rh136_sequencial = $rh136_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

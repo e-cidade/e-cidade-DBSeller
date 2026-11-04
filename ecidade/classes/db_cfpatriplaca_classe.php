@@ -56,13 +56,13 @@ class cl_cfpatriplaca {
                  t07_obrigplaca = bool = Obrigar informar placa 
                  ";
    //funcao construtor da classe 
-   function cl_cfpatriplaca() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfpatriplaca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_cfpatriplaca {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t07_instit = ($this->t07_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["t07_instit"]:$this->t07_instit);
        $this->t07_confplaca = ($this->t07_confplaca == ""?@$GLOBALS["HTTP_POST_VARS"]["t07_confplaca"]:$this->t07_confplaca);
@@ -83,7 +83,7 @@ class cl_cfpatriplaca {
      }
    }
    // funcao para inclusao
-   function incluir ($t07_instit){ 
+   public function incluir ($t07_instit){ 
       $this->atualizacampos();
      if($this->t07_confplaca == null ){ 
        $this->erro_sql = " Campo Tipo de configuração da placa nao Informado.";
@@ -177,7 +177,7 @@ class cl_cfpatriplaca {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($t07_instit=null) { 
+   public function alterar ($t07_instit=null) { 
       $this->atualizacampos();
      $sql = " update cfpatriplaca set ";
      $virgula = "";
@@ -293,7 +293,7 @@ class cl_cfpatriplaca {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($t07_instit=null,$dbwhere=null) { 
+   public function excluir ($t07_instit=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t07_instit));
      }else{ 
@@ -358,7 +358,7 @@ class cl_cfpatriplaca {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -380,7 +380,7 @@ class cl_cfpatriplaca {
       }
      return $result;
    }
-   function sql_query ( $t07_instit=null,$campos="*",$ordem=null,$dbwhere="") { 
+   public function sql_query ( $t07_instit=null,$campos="*",$ordem=null,$dbwhere="") { 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -414,7 +414,7 @@ class cl_cfpatriplaca {
      }
      return $sql;
   }
-   function sql_query_file ( $t07_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t07_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -452,7 +452,7 @@ class cl_cfpatriplaca {
    * Seleciona um item e da um lock na linha onde a instituição for igual a da sessão para novos updates 
    * @return string
    */
-  function sql_query_fileLockInLine( $t07_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_fileLockInLine( $t07_instit=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ) {
       

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -127,12 +127,12 @@ function js_invalido(hide,msg){
    <br>
      <tr>   
        <td title="<?=$Tq02_inscr?>">
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
       db_input('z01_nome',40,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -140,12 +140,12 @@ function js_invalido(hide,msg){
      </tr>
      <tr>   
       <td title="<?=$Tz01_numcgm?>">
-      <?
+      <?php
        db_ancora($Lz01_nome,' js_cgm(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -153,12 +153,12 @@ function js_invalido(hide,msg){
      </tr>
      <tr>   
        <td title="<?=$Tz01_cgccpf?>">
-      <?
+      <?php
        db_ancora($Lz01_cgccpf,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"","","white");
       ?>
        </td>
@@ -168,7 +168,7 @@ function js_invalido(hide,msg){
          <b>Mês/Ano inicial:</b>
        </td>
        <td>
-<?       
+<?php       
 $result=array("0"=>"...","1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
 db_select("mes_ini",$result,true,$db_opcao,"","","","","");
 
@@ -187,7 +187,7 @@ db_select("ano_ini",$anos,true,$db_opcao,"","","","","");
          <b>Mês/Ano final:</b>
        </td>
        <td>
-<?       
+<?php       
 $result=array("0"=>"...","1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
 db_select("mes_fim",$result,true,$db_opcao,"","","","","");
 
@@ -212,7 +212,7 @@ db_select("ano_fim",$anos,true,$db_opcao,"","","","","");
   </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -269,7 +269,7 @@ function js_mostracgm1(erro,chave){
   }
 }
 </script>
-<?
+<?php
 if(isset($registro) && $registro=="pago"){
   db_msgbox("Já foram pagos ISSVAR para esta inscrição inscrição..");
 }

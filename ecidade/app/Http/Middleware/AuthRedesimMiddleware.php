@@ -21,8 +21,6 @@ class AuthRedesimMiddleware
      */
     public function handle($request, Closure $next)
     {
-        Log::useDailyFiles(storage_path()."/logs/redesim/autenticacao/log.log");
-
         if (!$request->headers->get("accessKeyId")) {
             Log::warning("[REDESIM Middleware] Header accessKeyId não informado.");
             throw new Exception("Header accessKeyId não informado.");

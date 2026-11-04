@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=$Ldb78_codestrut?>
     </td>
     <td> 
-<?
+<?php
 db_input('db78_codestrut',8,$Idb78_codestrut,true,'text',3);
 db_input('db77_estrut',30,$Idb77_estrut,true,'text',3);
 ?>
@@ -77,7 +77,7 @@ db_input('db77_estrut',30,$Idb77_estrut,true,'text',3);
        <?=@$Ldb78_nivel?>
     </td>
     <td> 
-<?
+<?php
 db_input('db78_nivel',8,$Idb78_nivel,true,'text',3)
 ?>
     </td>
@@ -87,7 +87,7 @@ db_input('db78_nivel',8,$Idb78_nivel,true,'text',3)
        <?=@$Ldb78_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_input('db78_inicio',10,$Idb78_inicio,true,'text',3);
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('db78_inicio',10,$Idb78_inicio,true,'text',3);
        <?=@$Ldb78_tamanho?>
     </td>
     <td> 
-<?
+<?php
 db_input('db78_tamanho',10,$Idb78_tamanho,true,'text',3)
 ?>
     </td>
@@ -107,7 +107,7 @@ db_input('db78_tamanho',10,$Idb78_tamanho,true,'text',3)
        <?=@$Ldb78_descr?>
     </td>
     <td> 
-<?
+<?php
 if(empty($opcao)){
   $db_opcao02=3;
 }else{
@@ -132,7 +132,7 @@ db_input('db78_descr',40,$Idb78_descr,true,'text',$db_opcao02);
  <table>
     <tr>
       <td valign="top"  align='center'>  
-       <?
+       <?php
 	$chavepri= array("db78_codestrut"=>$db78_codestrut,"db78_nivel"=>@$db78_nivel);
 	$cliframe_alterar_excluir->chavepri      =$chavepri;
 	$cliframe_alterar_excluir->sql           = $cldb_estruturanivel->sql_query_file($db78_codestrut,null,"db78_codestrut,db78_nivel,db78_descr,db78_tamanho,db78_inicio","db78_nivel");

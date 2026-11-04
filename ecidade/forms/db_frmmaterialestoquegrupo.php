@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("db121_sequencial");
        <?=@$Lm65_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('m65_sequencial',10,$Im65_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm65_db_estruturavalor?>">
-       <?
+       <?php
        db_ancora(@$Lm65_db_estruturavalor,"js_pesquisam65_db_estruturavalor(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m65_db_estruturavalor',10,$Im65_db_estruturavalor,true,'text',$db_opcao," onchange='js_pesquisam65_db_estruturavalor(false);'")
 ?>
-       <?
+       <?php
 db_input('db121_sequencial',10,$Idb121_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('db121_sequencial',10,$Idb121_sequencial,true,'text',3,'')
        <?=@$Lm65_ativo?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('m65_ativo',$x,true,$db_opcao,"");
 ?>
@@ -103,7 +103,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_materialestoquegrupo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

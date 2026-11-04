@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ if ($tipo_emissao=="txt") {
 
   <br>
   <br>
-  <?
+  <?php
   
   $sQuebraLinha = "\r\n";
   $iCadTipoMod = 7;
@@ -1045,7 +1045,7 @@ if ($tipo_emissao=="pdf") {
   ?>
   </body>
   </html>
-  <?
+  <?php
 } else {
   echo "<br>Fim:".date("H:i:s")."<br>";
 }

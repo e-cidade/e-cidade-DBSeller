@@ -1,73 +1,73 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: licitação
 //CLASSE DA ENTIDADE liclicitemanu
-class cl_liclicitemanu { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $l07_codigo = 0; 
-   var $l07_usuario = 0; 
-   var $l07_data_dia = null; 
-   var $l07_data_mes = null; 
-   var $l07_data_ano = null; 
-   var $l07_data = null; 
-   var $l07_hora = null; 
-   var $l07_motivo = null; 
-   var $l07_liclicitem = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_liclicitemanu {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $l07_codigo = 0;
+   var $l07_usuario = 0;
+   var $l07_data_dia = null;
+   var $l07_data_mes = null;
+   var $l07_data_ano = null;
+   var $l07_data = null;
+   var $l07_hora = null;
+   var $l07_motivo = null;
+   var $l07_liclicitem = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 l07_codigo = int8 = Cód. Sequencial 
-                 l07_usuario = int4 = Usuário 
-                 l07_data = date = Data 
-                 l07_hora = char(5) = Hora 
-                 l07_motivo = text = Motivo 
-                 l07_liclicitem = int8 = Item da licitação 
+                 l07_codigo = int8 = Cód. Sequencial
+                 l07_usuario = int4 = Usuário
+                 l07_data = date = Data
+                 l07_hora = char(5) = Hora
+                 l07_motivo = text = Motivo
+                 l07_liclicitem = int8 = Item da licitação
                  ";
-   //funcao construtor da classe 
-   function cl_liclicitemanu() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("liclicitemanu"); 
+     $this->rotulo = new rotulo("liclicitemanu");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_liclicitemanu {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l07_codigo = ($this->l07_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["l07_codigo"]:$this->l07_codigo);
        $this->l07_usuario = ($this->l07_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["l07_usuario"]:$this->l07_usuario);
@@ -96,9 +96,9 @@ class cl_liclicitemanu {
      }
    }
    // funcao para inclusao
-   function incluir ($l07_codigo){ 
+   public function incluir ($l07_codigo){
       $this->atualizacampos();
-     if($this->l07_usuario == null ){ 
+     if($this->l07_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "l07_usuario";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_liclicitemanu {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l07_data == null ){ 
+     if($this->l07_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "l07_data_dia";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_liclicitemanu {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l07_hora == null ){ 
+     if($this->l07_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "l07_hora";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_liclicitemanu {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l07_motivo == null ){ 
+     if($this->l07_motivo == null ){
        $this->erro_sql = " Campo Motivo nao Informado.";
        $this->erro_campo = "l07_motivo";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_liclicitemanu {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l07_liclicitem == null ){ 
+     if($this->l07_liclicitem == null ){
        $this->erro_sql = " Campo Item da licitação nao Informado.";
        $this->erro_campo = "l07_liclicitem";
        $this->erro_banco = "";
@@ -144,16 +144,16 @@ class cl_liclicitemanu {
        return false;
      }
      if($l07_codigo == "" || $l07_codigo == null ){
-       $result = db_query("select nextval('liclicitemanu_l07_codigo_seq')"); 
+       $result = db_query("select nextval('liclicitemanu_l07_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: liclicitemanu_l07_codigo_seq do campo: l07_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: liclicitemanu_l07_codigo_seq do campo: l07_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->l07_codigo = pg_result($result,0,0); 
+       $this->l07_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from liclicitemanu_l07_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $l07_codigo)){
@@ -164,10 +164,10 @@ class cl_liclicitemanu {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->l07_codigo = $l07_codigo; 
+         $this->l07_codigo = $l07_codigo;
        }
      }
-     if(($this->l07_codigo == null) || ($this->l07_codigo == "") ){ 
+     if(($this->l07_codigo == null) || ($this->l07_codigo == "") ){
        $this->erro_sql = " Campo l07_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,23 +176,23 @@ class cl_liclicitemanu {
        return false;
      }
      $sql = "insert into liclicitemanu(
-                                       l07_codigo 
-                                      ,l07_usuario 
-                                      ,l07_data 
-                                      ,l07_hora 
-                                      ,l07_motivo 
-                                      ,l07_liclicitem 
+                                       l07_codigo
+                                      ,l07_usuario
+                                      ,l07_data
+                                      ,l07_hora
+                                      ,l07_motivo
+                                      ,l07_liclicitem
                        )
                 values (
-                                $this->l07_codigo 
-                               ,$this->l07_usuario 
-                               ,".($this->l07_data == "null" || $this->l07_data == ""?"null":"'".$this->l07_data."'")." 
-                               ,'$this->l07_hora' 
-                               ,'$this->l07_motivo' 
-                               ,$this->l07_liclicitem 
+                                $this->l07_codigo
+                               ,$this->l07_usuario
+                               ,".($this->l07_data == "null" || $this->l07_data == ""?"null":"'".$this->l07_data."'")."
+                               ,'$this->l07_hora'
+                               ,'$this->l07_motivo'
+                               ,$this->l07_liclicitem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Itens de licitação anulada ($this->l07_codigo) nao Incluído. Inclusao Abortada.";
@@ -229,16 +229,16 @@ class cl_liclicitemanu {
        $resac = db_query("insert into db_acount values($acount,1720,10101,'','".AddSlashes(pg_result($resaco,0,'l07_liclicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($l07_codigo=null) { 
+   public function alterar ($l07_codigo=null) {
       $this->atualizacampos();
      $sql = " update liclicitemanu set ";
      $virgula = "";
-     if(trim($this->l07_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_codigo"])){ 
+     if(trim($this->l07_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_codigo"])){
        $sql  .= $virgula." l07_codigo = $this->l07_codigo ";
        $virgula = ",";
-       if(trim($this->l07_codigo) == null ){ 
+       if(trim($this->l07_codigo) == null ){
          $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
          $this->erro_campo = "l07_codigo";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_liclicitemanu {
          return false;
        }
      }
-     if(trim($this->l07_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_usuario"])){ 
+     if(trim($this->l07_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_usuario"])){
        $sql  .= $virgula." l07_usuario = $this->l07_usuario ";
        $virgula = ",";
-       if(trim($this->l07_usuario) == null ){ 
+       if(trim($this->l07_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "l07_usuario";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_liclicitemanu {
          return false;
        }
      }
-     if(trim($this->l07_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l07_data_dia"] !="") ){ 
+     if(trim($this->l07_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l07_data_dia"] !="") ){
        $sql  .= $virgula." l07_data = '$this->l07_data' ";
        $virgula = ",";
-       if(trim($this->l07_data) == null ){ 
+       if(trim($this->l07_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "l07_data_dia";
          $this->erro_banco = "";
@@ -273,11 +273,11 @@ class cl_liclicitemanu {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["l07_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["l07_data_dia"])){
          $sql  .= $virgula." l07_data = null ";
          $virgula = ",";
-         if(trim($this->l07_data) == null ){ 
+         if(trim($this->l07_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "l07_data_dia";
            $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_liclicitemanu {
          }
        }
      }
-     if(trim($this->l07_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_hora"])){ 
+     if(trim($this->l07_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_hora"])){
        $sql  .= $virgula." l07_hora = '$this->l07_hora' ";
        $virgula = ",";
-       if(trim($this->l07_hora) == null ){ 
+       if(trim($this->l07_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "l07_hora";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_liclicitemanu {
          return false;
        }
      }
-     if(trim($this->l07_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_motivo"])){ 
+     if(trim($this->l07_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_motivo"])){
        $sql  .= $virgula." l07_motivo = '$this->l07_motivo' ";
        $virgula = ",";
-       if(trim($this->l07_motivo) == null ){ 
+       if(trim($this->l07_motivo) == null ){
          $this->erro_sql = " Campo Motivo nao Informado.";
          $this->erro_campo = "l07_motivo";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_liclicitemanu {
          return false;
        }
      }
-     if(trim($this->l07_liclicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_liclicitem"])){ 
+     if(trim($this->l07_liclicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l07_liclicitem"])){
        $sql  .= $virgula." l07_liclicitem = $this->l07_liclicitem ";
        $virgula = ",";
-       if(trim($this->l07_liclicitem) == null ){ 
+       if(trim($this->l07_liclicitem) == null ){
          $this->erro_sql = " Campo Item da licitação nao Informado.";
          $this->erro_campo = "l07_liclicitem";
          $this->erro_banco = "";
@@ -353,7 +353,7 @@ class cl_liclicitemanu {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens de licitação anulada nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->l07_codigo;
@@ -381,14 +381,14 @@ class cl_liclicitemanu {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($l07_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($l07_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($l07_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -419,7 +419,7 @@ class cl_liclicitemanu {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens de licitação anulada nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$l07_codigo;
@@ -447,11 +447,11 @@ class cl_liclicitemanu {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -473,10 +473,10 @@ class cl_liclicitemanu {
       }
      return $result;
    }
-   function sql_query ( $l07_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $l07_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,15 +493,15 @@ class cl_liclicitemanu {
      $sql2 = "";
      if($dbwhere==""){
        if($l07_codigo!=null ){
-         $sql2 .= " where liclicitemanu.l07_codigo = $l07_codigo "; 
-       } 
+         $sql2 .= " where liclicitemanu.l07_codigo = $l07_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,10 +510,10 @@ class cl_liclicitemanu {
      }
      return $sql;
   }
-   function sql_query_anu ( $l07_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_anu ( $l07_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -534,15 +534,15 @@ class cl_liclicitemanu {
      $sql2 = "";
      if($dbwhere==""){
        if($l07_codigo!=null ){
-         $sql2 .= " where liclicitemanu.l07_codigo = $l07_codigo "; 
-       } 
+         $sql2 .= " where liclicitemanu.l07_codigo = $l07_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,10 +551,10 @@ class cl_liclicitemanu {
      }
      return $sql;
   }
-   function sql_query_file ( $l07_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $l07_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -567,15 +567,15 @@ class cl_liclicitemanu {
      $sql2 = "";
      if($dbwhere==""){
        if($l07_codigo!=null ){
-         $sql2 .= " where liclicitemanu.l07_codigo = $l07_codigo "; 
-       } 
+         $sql2 .= " where liclicitemanu.l07_codigo = $l07_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

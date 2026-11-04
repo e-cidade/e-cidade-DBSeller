@@ -15,6 +15,9 @@ use \processoProtocolo;
 class InclusaoProcesso
 {
 
+    /**
+     * @throws \Exception
+     */
     public function aprovarProcesso(
         \CgmBase $cgm,
         $sequencialProcessoOuvidoria,
@@ -22,11 +25,14 @@ class InclusaoProcesso
         $nomeRequerente = null
     ) {
         $oProcesso = $this->incluirProcesso($cgm, $codigoTipoProcesso, $nomeRequerente);
-        $this->andamentoProcesso($oProcesso, 'Processo '.$oProcesso->getCodProcesso().' criado');
+        $this->andamentoProcesso($oProcesso, 'Tramite Inicial');
         $this->vincularProcessoAAtendimento($oProcesso, $sequencialProcessoOuvidoria);
         return $oProcesso;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function rejeitarProcesso(
         \CgmBase $cgm,
         $sequencialProcessoOuvidoria,
@@ -35,7 +41,7 @@ class InclusaoProcesso
         $nomeRequerente = null
     ) {
         $oProcesso = $this->incluirProcesso($cgm, $codigoTipoProcesso, $nomeRequerente);
-        $this->andamentoProcesso($oProcesso, 'Processo '.$oProcesso->getCodProcesso().' criado e arquivado.');
+        $this->andamentoProcesso($oProcesso, 'Tramite Inicial');
         $this->vincularProcessoAAtendimento($oProcesso, $sequencialProcessoOuvidoria);
         $this->baixarProcesso($oProcesso, $motivo);
         return $oProcesso;
@@ -53,7 +59,7 @@ class InclusaoProcesso
         $oProcesso->setInterno('false');
         $oProcesso->setPublico('true');
         $oProcesso->setCgm($cgm->getCodigo());
-        $oProcesso->setDespacho('Criado Processo');
+        $oProcesso->setDespacho('');
         $oProcesso->setObservacao('Fluxo Alvará Online');
         $oProcesso->setAnoProcesso(db_getsession("DB_anousu"));
         $oProcesso->setRequerente(substr($nomeRequerente, 0, 79));

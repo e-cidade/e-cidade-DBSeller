@@ -66,7 +66,7 @@ function js_consulta(){
         <strong>Opção de consulta:</strong>
       </td>
       <td>
-        <?
+        <?php
 	$arr_opcao = array("to"=>"Todos", "A"=>"Afastamento", "S"=>"Assentamento");
         db_select("opcao", $arr_opcao, true, 1);
         ?>
@@ -79,7 +79,7 @@ function js_consulta(){
     </tr>
   </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

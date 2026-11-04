@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clprocjurjudicialadvog->rotulo->label();
 	        <?=@$Lv62_usuario?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
     			  db_input('v62_usuario',10,$Iv62_usuario,true,'text',3,"");
     			  db_input('nome',40,"",true,'text',3,"");
 		      ?>
@@ -50,12 +50,12 @@ $clprocjurjudicialadvog->rotulo->label();
 	    </tr>    
 	    <tr>
 	      <td nowrap title="<?=@$Tv62_procjurtipo?>">
-	        <?
+	        <?php
 	          db_ancora(@$Lv62_procjurtipo,"js_pesquisav62_procjurtipo(true);",$db_opcao);
 	        ?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
   		      db_input('v62_sequencial',10,$Iv62_sequencial,true,'hidden',$db_opcao,"");
     			  db_input('v62_procjurtipo',10,$Iv62_procjurtipo,true,'text',$db_opcao," onchange='js_pesquisav62_procjurtipo(false);'");
     			  db_input('v66_descr',40,$Iv66_descr,true,'text',3,'');
@@ -68,7 +68,7 @@ $clprocjurjudicialadvog->rotulo->label();
 	        <?=@$Lv62_descricao?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
   			    db_input('v62_descricao',54,$Iv62_descricao,true,'text',$db_opcao,"");
   		    ?>
 	      </td>
@@ -78,7 +78,7 @@ $clprocjurjudicialadvog->rotulo->label();
 	        <?=@$Lv62_dataini?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
   		      db_inputdata('v62_dataini',@$v62_dataini_dia,@$v62_dataini_mes,@$v62_dataini_ano,true,'text',$db_opcao,"");
   		    ?>
 	      </td>
@@ -88,7 +88,7 @@ $clprocjurjudicialadvog->rotulo->label();
 	        <?=@$Lv62_datafim?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
   			  db_inputdata('v62_datafim',@$v62_datafim_dia,@$v62_datafim_mes,@$v62_datafim_ano,true,'text',$db_opcao,"");
   		    ?>
 	      </td>
@@ -98,7 +98,7 @@ $clprocjurjudicialadvog->rotulo->label();
 	        <?=@$Lv62_situacao?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
   		  	  $x = array('1'=>'Ativa','2'=>'Finalizada');
   			    db_select('v62_situacao',$x,true,$db_opcao,"style='width:110px;'");
   		    ?>
@@ -111,19 +111,19 @@ $clprocjurjudicialadvog->rotulo->label();
 	        <?=@$Lv63_processoforo?>
 	      </td>
 	      <td> 
-		      <?
+		      <?php
 			      db_input('v63_processoforo',10,$Iv63_processoforo,true,'text',$db_opcao,"");
 	        ?>
 	      </td>
 	    </tr>
 	    <tr>
 	      <td nowrap title="<?=@$Tv63_localiza?>">
-	        <?
+	        <?php
 	          db_ancora(@$Lv63_localiza,"js_pesquisav63_localiza(true);",$db_opcao);
 	        ?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
     			  db_input('v63_localiza',10,$Iv63_localiza,true,'text',$db_opcao," onchange='js_pesquisav63_localiza(false);'");
     			  db_input('v54_descr',40,"",true,'text',3,'');
 	        ?>
@@ -131,12 +131,12 @@ $clprocjurjudicialadvog->rotulo->label();
 	    </tr>		  
 	    <tr>
 	      <td nowrap title="<?=@$Tv63_vara?>">
-	        <?
+	        <?php
 	          db_ancora(@$Lv63_vara,"js_pesquisav63_vara(true);",$db_opcao);
 	        ?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
     			  db_input('v63_vara',10,$Iv63_vara,true,'text',$db_opcao," onchange='js_pesquisav63_vara(false);'");
     			  db_input('v53_descr',40,"",true,'text',3,'');
 	        ?>
@@ -146,12 +146,12 @@ $clprocjurjudicialadvog->rotulo->label();
 	  <table id='tableAdministrativo' class="form-container" style='display:none'>		  
 	    <tr>
 	      <td nowrap title="<?=@$Tv64_protprocesso?>">
-	        <?
+	        <?php
 	          db_ancora(@$Lv64_protprocesso,"js_pesquisav64_protprocesso();",$db_opcao);
 	        ?>
 	      </td>
 	      <td> 
-  		    <?
+  		    <?php
   			    db_input('v64_protprocesso',10,$Iv64_protprocesso,true,'text',$db_opcao,"");
 	        ?>
 	      </td>
@@ -162,7 +162,7 @@ $clprocjurjudicialadvog->rotulo->label();
   	  <table class="form-container">		    
   	    <tr>
   	      <td nowrap title="<?=@$Tv62_obs?>" colspan="2">
-  		    <?
+  		    <?php
   		  	  db_textarea('v62_obs',5,51,$Iv62_obs,true,'text',$db_opcao,"");
   		    ?>
   	      </td>
@@ -325,7 +325,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_procjur.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

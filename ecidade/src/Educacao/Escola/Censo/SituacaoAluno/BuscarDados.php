@@ -49,6 +49,7 @@ class BuscarDados
             case 2019:
             case 2020:
             case 2021:
+            case 2022:
                 $oDados = new BuscaDadosEscola2016($this->oCenso, $this->oEscola);
                 return $oDados->getDados();
                 break;
@@ -72,6 +73,7 @@ class BuscarDados
             case 2019:
             case 2020:
             case 2021:
+            case 2022:
                 $oDados = new Dados\BuscaDadosAlunosAntes2016($this->oCenso, $this->oEscola);
                 $aDados = $oDados->getDados();
 
@@ -108,6 +110,7 @@ class BuscarDados
             case 2019:
             case 2020:
             case 2021:
+            case 2022:
                 $oDados = new Dados\BuscaDadosAlunosApos2016($this->oCenso, $this->oEscola, $this->aCodigoAlunoAntes);
                 $aDados = $oDados->getDados();
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -57,7 +57,7 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
          <td ><b>Período de Inscrição :</b></td>
          <td >
-          <?
+          <?php
             db_inputdata('ht15_datalancamentoA','','','',true,'text',1,"");
             echo " à "; 
             db_inputdata('ht15_datalancamentoB','','','',true,'text',1,"");
@@ -67,14 +67,14 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
          <td>
          <b> 
-         <?
+         <?php
               db_ancora('Inscrição',"js_pesquisaInscricao(true);",1);
            // db_selectrecord("ht15_habitsituacaoinscricao","ht13_sequencial, ht13_descricao",true,1);
           ?> 
           </b>
          </td>
          <td> 
-					<?
+					<?php
 					   db_input('ht15_sequencial',6,false,'','text',3," onchange='js_pesquisaInscricao(false);'");
 	           db_input('nome_inscricao',30,'text',3,'');
 	       ?>          
@@ -83,7 +83,7 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
          <td ><b>Ordem :</b></td>
          <td >
-          <?
+          <?php
              $aOrdem = array( 'habitinscricao.ht15_datalancamento' => 'Data de Lançamento da Inscrição',
                               'cgm.z01_nome'                       => 'Nome do Candidato',
                               'habitprograma.ht01_sequencial'      => 'Programa',
@@ -96,7 +96,7 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
          <td ><b>Quebra :</b></td>
          <td >
-          <?
+          <?php
              $aQuebra = array( '1' => 'Nenhum',
                                '2' => 'Data de Lançamento da Inscrição',
                                '3' => 'Nome do candidato',
@@ -110,7 +110,7 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
          <td colspan="2" align="center">
          
-              <?
+              <?php
                  $clProgramas                                = new cl_arquivo_auxiliar();
                  $clProgramas->codigo                        = "ht01_sequencial";
                  $clProgramas->descr                         = "ht01_descricao";
@@ -133,7 +133,7 @@ db_postmemory($HTTP_POST_VARS);
           
       <tr>
          <td colspan="2">
-          <?
+          <?php
                  $clCandidatos                                = new cl_arquivo_auxiliar();
                  $clCandidatos->codigo                        = "ht10_sequencial";
                  $clCandidatos->descr                         = "z01_nome";
@@ -164,7 +164,7 @@ db_postmemory($HTTP_POST_VARS);
   </table>
 </form>   
 </center>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

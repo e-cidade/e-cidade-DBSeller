@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ $clconplanoreduz->rotulo->label("c61_reduz");
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tc61_codcon?>"> <?=$Lc61_codcon?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("c61_codcon",6,$Ic61_codcon,true,"text",4,"","chave_c61_codcon"); ?>
+              <?php db_input("c61_codcon",6,$Ic61_codcon,true,"text",4,"","chave_c61_codcon"); ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tc61_reduz?>"><?=$Lc61_reduz?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("c61_reduz",6,$Ic61_reduz,true,"text",4,"","chave_c61_reduz"); ?>
+              <?php db_input("c61_reduz",6,$Ic61_reduz,true,"text",4,"","chave_c61_reduz"); ?>
             </td>
           </tr>
           <tr> 
@@ -74,7 +74,7 @@ $clconplanoreduz->rotulo->label("c61_reduz");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos = "c61_codcon,c61_reduz,c60_estrut,c60_descr";
       if(!isset($pesquisa_chave)){
              if(isset($chave_c61_codcon) && (trim($chave_c61_codcon)!="") ){
@@ -113,10 +113,10 @@ $clconplanoreduz->rotulo->label("c61_reduz");
 </table>
 </body>
 </html>
-<?  if(!isset($pesquisa_chave)){        ?>
+<?php  if(!isset($pesquisa_chave)){        ?>
         <script>
         </script>
-<?  }       ?>
+<?php  }       ?>
 <script type="text/javascript">
 (function() {
   var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');

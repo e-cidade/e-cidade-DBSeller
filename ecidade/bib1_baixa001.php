@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -88,7 +88,7 @@ if($linhas!=0){
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
   <center>
-   <?
+   <?php
    if(!isset($bi23_codigo)){
     if($bi26_leitorbarra=="S"){
      $ancora = "Lbi23_codbarras";
@@ -109,12 +109,12 @@ if($linhas!=0){
        <table border="0">
         <tr>
          <td nowrap title="<?=@$Tbi23_codbarras?>">
-          <label for="bi23_codbarras"><?db_ancora(@$$ancora,"js_pesquisabi23_codbarras(true);",$db_opcao);?></label>
+          <label for="bi23_codbarras"><?php db_ancora(@$$ancora,"js_pesquisabi23_codbarras(true);",$db_opcao);?></label>
          </td>
          <td>
-          <?db_input('bi23_codigo',10,@$Ibi23_codigo,true,$tipocampo1,$db_opcao,"")?>
-          <?db_input('bi23_codbarras',20,@$Ibi23_codbarras,true,$tipocampo2,$db_opcao," onchange='js_pesquisabi23_codbarras(false);'")?>
-          <?db_input('bi06_titulo',50,@$bi06_titulo,true,'text',3," ")?>
+          <?php db_input('bi23_codigo',10,@$Ibi23_codigo,true,$tipocampo1,$db_opcao,"")?>
+          <?php db_input('bi23_codbarras',20,@$Ibi23_codbarras,true,$tipocampo2,$db_opcao," onchange='js_pesquisabi23_codbarras(false);'")?>
+          <?php db_input('bi06_titulo',50,@$bi06_titulo,true,'text',3," ")?>
           <input name="proximo" type="submit" id="proximo" value="Próximo" <?=@$bi23_codigo!=""?"disabled":""?> onclick="return js_valida();">
          </td>
         </tr>
@@ -129,11 +129,11 @@ if($linhas!=0){
      </tr>
     </table>
     <br>
-    <?
+    <?php
    }else{
-    ?><br><fieldset width="90%"><legend><b>Baixa de Acervo:</b></legend><?
+    ?><br><fieldset width="90%"><legend><b>Baixa de Acervo:</b></legend><?php
      include(modification("forms/db_frmbaixabib.php"));
-    ?></fieldset><?
+    ?></fieldset><?php
    }
    ?>
   </center>
@@ -141,17 +141,17 @@ if($linhas!=0){
  </tr>
 </table>
 <script>
-<?if($bi26_leitorbarra=="S"){?>
+<?php if($bi26_leitorbarra=="S"){?>
  js_tabulacaoforms("form1","bi23_codbarras",true,1,"bi23_codbarras",true);
 <?}else{?>
  js_tabulacaoforms("form1","bi23_codigo",true,1,"bi23_codigo",true);
-<?}?>
+<?php }?>
 
 </script>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
  if($clbaixabib->erro_status=="0"){
   $clbaixabib->erro(true,false);

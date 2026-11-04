@@ -75,14 +75,15 @@ class Registro20Mapper extends Mapper
         "Alternância regular de períodos de estudos
         (proposta pedagógica de formação por alternância: tempo-escola e tempo-comunidade)"
             => "alternanciaRegular",
-        "Eletivas" => "eletivas",
-        "Libras" => "librasUnidadeCurricular",
-        "Língua indígena" => "lingaIndigena",
-        "Língua/Literatura estrangeira - Espanhol" => "linguaEspanhol",
-        "Língua/Literatura estrangeira - Francês" => "linguaFrances",
-        "Língua/Literatura estrangeira - outra" => "linguaOutra",
-        "Projeto de vida" => "projetoVida",
+        "Eletivas Un" => "eletivas",
+        "Libras Un" => "librasUnidadeCurricular",
+        "Língua indígena Un" => "linguaIndigenaUnidade",
+        "Língua/Literatura estrangeira - Espanhol Un" => "linguaEspanhol",
+        "Língua/Literatura estrangeira - Francês Un" => "linguaFrances",
+        "Língua/Literatura estrangeira - outra Un" => "linguaOutra",
+        "Projeto de vida Un" => "projetoVidaUnidade",
         "Trilhas de aprofundamento/aprendizagens" => "trilhaAprofundamento",
+        "Outra(s) unidade(s) curricular(es) obrigatória(s)" => "outrasUnidades",
         "1. Química" => "quimica",
         "2. Física" => "fisica",
         "3. Matemática" => "matematica",
@@ -108,7 +109,10 @@ class Registro20Mapper extends Mapper
         "30. Língua/Literatura Estrangeira - Francês" => "literaturaEstrangeiraFrances",
         "31. Língua Portuguesa como Segunda Língua" => "portuguesComoSegundaLingua",
         "32. Estágio Curricular Supervisionado" => "estagioSupervisionado",
-        "Áreas do conhecimento/componentes curriculares - Projeto de vida" => "projetoVidaUnidade",
-        "99. Outras disciplinas" => "outrasDisciplinas"
+        "33. Projeto de vida" => "projetoVida",
+        "99. Outras disciplinas" => "outrasDisciplinas",
+        "Classe bilíngue de surdos tendo a Libras (Língua Brasileira de Sinais) como língua de instrução, ensino, 
+            comunicação e interação e a língua portuguesa escrita como segunda 
+            língua" => "librasPrimeiraLingua"
     );
 }

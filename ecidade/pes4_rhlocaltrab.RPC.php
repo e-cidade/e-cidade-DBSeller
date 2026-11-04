@@ -243,6 +243,7 @@ try {
                 $clRhLocalTrabAgentesNocivos->rh256_tolerancialimite        = utf8_decode($oAgenteNocivo->rh256_tolerancialimite);        
                 $clRhLocalTrabAgentesNocivos->rh256_medida                  = $oAgenteNocivo->rh256_medida;                  
                 $clRhLocalTrabAgentesNocivos->rh256_tecnicamedicao          = utf8_decode($oAgenteNocivo->rh256_tecnicamedicao);
+                $clRhLocalTrabAgentesNocivos->rh256_processo = $oAgenteNocivo->rh256_processo;
                 $clRhLocalTrabAgentesNocivos->incluir(null);
                 if ($clRhLocalTrabAgentesNocivos->erro_status == 0) 
                 {

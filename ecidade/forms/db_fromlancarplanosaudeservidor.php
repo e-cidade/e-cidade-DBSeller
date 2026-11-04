@@ -1,4 +1,4 @@
-<!--
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
- -->
+?>
 <form name="form-servidor" class="container" id="formServidorOperadoraSaude">
     <input type="hidden" name="sequencial" id="sequencial">
     <fieldset>
@@ -45,7 +45,7 @@
                 </td>
                 <td>
                     <input type="text" id="codigoServidor" name="servidor" lang="rh01_regist"
-                           class="field-size2" data-order="1" data-identificador="servidor"/ >
+                           class="field-size2" data-order="1" data-identificador="servidor"/>
                     <input type="text" id="nomeServidor" name="nomeServidor" lang="z01_nome" title="Nome"
                            class="field-size8" disabled data-order="1"/>
                 </td>

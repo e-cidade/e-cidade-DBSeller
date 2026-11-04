@@ -405,8 +405,7 @@ try {
         $oDaoEspecmedico = new cl_especmedico();
         $sListaCampos    = "sd27_i_codigo as codigo, rh70_sequencial as codigo_especialidade, rh70_estrutural as estrutural, rh70_descr as descricao, sd27_b_principal as principal";
         $sWhereEspecialidades = "sd27_i_undmed = {$oDadosCbos->sd04_i_codigo} AND sd27_c_situacao = 'A'";
-        $sSqlEspecMedico = $oDaoEspecmedico->sql_query_especmedico(null, $sListaCampos, "rh70_descr", $sWhereEspecialidades);
-
+        $sSqlEspecMedico = $oDaoEspecmedico->sql_query_especmedico(null, $sListaCampos, "sd27_b_principal DESC,rh70_descr", $sWhereEspecialidades);
         $rsEspecialidadeMedico = $oDaoEspecmedico->sql_record($sSqlEspecMedico);
 
         if ( $oDaoEspecmedico->numrows > 0) {

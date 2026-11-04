@@ -25,14 +25,14 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_stdlibwebseller.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("classes/db_sec_parametros_classe.php"));
-require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("libs/db_libdicionario.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_stdlibwebseller.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("classes/db_sec_parametros_classe.php");
+require_once modification("dbforms/db_funcoes.php");
+require_once modification("libs/db_libdicionario.php");
 
 db_postmemory($_POST);
 $clsec_parametros = new cl_sec_parametros;
@@ -41,33 +41,31 @@ $db_opcao         = 1;
 $db_botao         = true;
 
 if (isset($incluir)) {
-
-  db_inicio_transacao();
-  $clsec_parametros->incluir($ed290_sequencial);
-  EducacaoSessionManager::registrarDiasManutencaoHistorico($ed290_diasmanutencaohistorico);
-  db_fim_transacao();
-
+    db_inicio_transacao();
+    $clsec_parametros->ed290_permite_alteracao_proc_avaliacao = $_POST['ed290_permite_alteracao_proc_avaliacao'];
+    $clsec_parametros->ed290_habilitarcampostransescolar = $_POST['ed290_habilitarcampostransescolar'];
+    $clsec_parametros->incluir($ed290_sequencial);
+    EducacaoSessionManager::registrarDiasManutencaoHistorico($ed290_diasmanutencaohistorico);
+    db_fim_transacao();
 }
 
 if (isset($alterar)) {
-
-  db_inicio_transacao();
-  $db_opcao = 2;
-  $clsec_parametros->alterar($ed290_sequencial);
-  EducacaoSessionManager::registrarDiasManutencaoHistorico($ed290_diasmanutencaohistorico);
-  db_fim_transacao();
-
+    db_inicio_transacao();
+    $db_opcao = 2;
+    $clsec_parametros->ed290_permite_alteracao_proc_avaliacao = $_POST['ed290_permite_alteracao_proc_avaliacao'];
+    $clsec_parametros->ed290_habilitarcampostransescolar = $_POST['ed290_habilitarcampostransescolar'];
+    $clsec_parametros->alterar($ed290_sequencial);
+    EducacaoSessionManager::registrarDiasManutencaoHistorico($ed290_diasmanutencaohistorico);
+    db_fim_transacao();
 }
 
-$result = $clsec_parametros->sql_record($clsec_parametros->sql_query("","*","",""));
+$result = $clsec_parametros->sql_record($clsec_parametros->sql_query("", "*", "", ""));
 
 if ($clsec_parametros->numrows != 0) {
-
- db_fieldsmemory($result,0);
- $db_opcao = 2;
-
+    db_fieldsmemory($result, 0);
+    $db_opcao = 2;
 } else {
- $db_opcao= 1;
+    $db_opcao= 1;
 }
 
 ?>
@@ -82,10 +80,10 @@ if ($clsec_parametros->numrows != 0) {
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
   <body class='body-default' >
-  	<?php
-    	include(modification("forms/db_frmsec_parametros.php"));
-      db_menu();
-    ?>
+      <?php
+        require modification("forms/db_frmsec_parametros.php");
+        db_menu();
+        ?>
   </body>
 </html>
 <script>
@@ -93,45 +91,31 @@ js_tabulacaoforms("form1", "ed290_importcenso", true, 1, "ed290_importcenso", tr
 </script>
 <?php
 if (isset($incluir)) {
-
-  if ($clsec_parametros->erro_status == "0") {
-
-    $clsec_parametros->erro(true,false);
-    $db_botao = true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-
-    if ($clsec_parametros->erro_campo != "") {
-
-      echo "<script> document.form1.".$clsec_parametros->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clsec_parametros->erro_campo.".focus();</script>";
-
+    if ($clsec_parametros->erro_status == "0") {
+        $clsec_parametros->erro(true, false);
+        $db_botao = true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+        if ($clsec_parametros->erro_campo != "") {
+            echo "<script> document.form1.".$clsec_parametros->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clsec_parametros->erro_campo.".focus();</script>";
+        }
+    } else {
+        $clsec_parametros->erro(true, true);
     }
-
-  } else {
-    $clsec_parametros->erro(true,true);
-  }
 }
 
 if (isset($alterar)) {
-
-  if ($clsec_parametros->erro_status == "0") {
-
-    $clsec_parametros->erro(true,false);
-    $db_botao=true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-
-    if ($clsec_parametros->erro_campo != "") {
-
-      echo "<script> document.form1.".$clsec_parametros->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clsec_parametros->erro_campo.".focus();</script>";
-
-    };
-
-  } else {
-
-    $clsec_parametros->erro(true,false);
-    db_redireciona("sec1_sec_parametros001.php?lMensagem=true");
-
-  }
+    if ($clsec_parametros->erro_status == "0") {
+        $clsec_parametros->erro(true, false);
+        $db_botao=true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+        if ($clsec_parametros->erro_campo != "") {
+            echo "<script> document.form1.".$clsec_parametros->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clsec_parametros->erro_campo.".focus();</script>";
+        };
+    } else {
+        $clsec_parametros->erro(true, false);
+        db_redireciona("sec1_sec_parametros001.php?lMensagem=true");
+    }
 }
 ?>

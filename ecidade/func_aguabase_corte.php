@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $clrotulo->label("j13_descr");
               <?=$Lx01_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		db_input("x01_matric",10,$Ix01_matric,true,"text",4,"","chave_x01_matric");
 	       ?>
             </td>
@@ -73,7 +73,7 @@ $clrotulo->label("j13_descr");
               <?=$Lx01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       //db_input("x01_numcgm",10, $Ix01_numcgm,true,"text",4,"","chave_x01_numcgm");
 		       db_input("z01_nome",40, $Iz01_nome,true,"text",4,"","chave_x01_numcgm");
 		       ?>
@@ -85,7 +85,7 @@ $clrotulo->label("j13_descr");
               <?=$Lx01_codrua?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		//db_input("x01_codrua",10,$Ix01_codrua,true,"text",4,"","chave_x01_codrua");
 		db_input("j14_nome",40, $Ij14_nome,true,"text",4,"","chave_x01_codrua");
 	       ?>
@@ -97,7 +97,7 @@ $clrotulo->label("j13_descr");
               <?=$Lx01_codbairro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		//db_input("x01_codrua",10,$Ix01_codrua,true,"text",4,"","chave_x01_codrua");
 		db_input("j13_descr",40, $Ij13_descr,true,"text",4,"","chave_x01_codbairro");
 	       ?>
@@ -109,7 +109,7 @@ $clrotulo->label("j13_descr");
               <?=$Lx01_quadra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		db_input("x01_quadra",5, $Ix01_quadra,true,"text",4,"","chave_x01_quadra");
 	       ?>
             </td>
@@ -128,7 +128,7 @@ $clrotulo->label("j13_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguabase_corte.php")==true){
@@ -178,12 +178,12 @@ $clrotulo->label("j13_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

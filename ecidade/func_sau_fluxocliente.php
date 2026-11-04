@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clsau_fluxocliente->rotulo->label("sd41_v_descricao");
               <?=$Lsd41_i_cod_cliente?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("sd41_i_cod_cliente",2,$Isd41_i_cod_cliente,true,"text",4,"","chave_sd41_i_cod_cliente");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_fluxocliente->rotulo->label("sd41_v_descricao");
               <?=$Lsd41_v_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("sd41_v_descricao",60,$Isd41_v_descricao,true,"text",4,"","chave_sd41_v_descricao");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_fluxocliente->rotulo->label("sd41_v_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_fluxocliente.php")==true){
@@ -122,12 +122,12 @@ $clsau_fluxocliente->rotulo->label("sd41_v_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

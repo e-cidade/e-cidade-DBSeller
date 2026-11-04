@@ -25,15 +25,40 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_sql.php"));
+require_once  modification("libs/db_stdlib.php");
+require_once  modification("libs/db_conecta.php");
+require_once  modification("libs/db_sessoes.php");
+require_once  modification("libs/db_sql.php");
 
 parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
 
 $clarreprescr = new cl_arreprescr;
 ?>
+<!-- Código para extensão -->
+<?php
+
+if(isset($y50_codauto) && $y50_codauto != ''){
+  $GLOBAL['y50_codauto'] = $y50_codauto;
+}
+
+if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+  $GLOBAL['nl01_codlanc'] = $nl01_codlanc;
+}
+
+if(isset($y50_codauto)){
+  $getAuto = '&y50_codauto=$y50_codauto';
+}else{
+  $getAuto = '';
+}
+
+if(isset($nl01_codlanc)){
+  $getAuto .= '&nl01_codlanc='.$nl01_codlanc;
+}else{
+  $getAuto .= '';
+}
+
+?>
+<!-- Fim código extensão -->
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -58,7 +83,7 @@ function js_imprime() {
 		queryStr = 'tipoorigem=numpre&valororigem='+numpre;
   }
 
-  window.open('cai3_gerfinanc021.php?'+queryStr,'',
+  window.open('cai3_gerfinanc021.php?'+queryStr<?=$getAuto?>,'',
               'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ')
 }
 function js_OpenRelatorio(xxaondeJanela,xxnomeJanela,xxarquivoJanela,xxtituloJanela,xxmostraJanela){
@@ -78,21 +103,42 @@ function js_OpenRelatorio(xxaondeJanela,xxnomeJanela,xxarquivoJanela,xxtituloJan
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <form name='form1'>
 <center>
-<?
+<?php
   $where = "";
   $inner = "";
 
   if ($tipo_filtro=="CGM"){
 		 $numcgm = $cod_filtro;
      $inner = " inner join arrenumcgm on arrenumcgm.k00_numpre = arreprescr.k30_numpre   ";
+     if(isset($y50_codauto) && $y50_codauto != ""){
+        $inner  .= " inner join arreauto on arrenumcgm.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+     }
+     if(isset($nl01_codlanc) && $nl01_codlanc != ""){
+        $inner  .= " inner join arrelanc on arrenumcgm.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+     }
+
      $where = " where arrenumcgm.k00_numcgm = $cod_filtro";
   }else if ($tipo_filtro=="MATRICULA"){
 		 $matric = $cod_filtro;
      $inner = " inner join arrematric on arrematric.k00_numpre = arreprescr.k30_numpre   ";
+     if(isset($y50_codauto) && $y50_codauto != ""){
+        $inner  .= " inner join arreauto on arrematric.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+     }
+     if(isset($nl01_codlanc) && $nl01_codlanc != ""){
+        $inner  .= " inner join arrelanc on arrematric.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+     }
+
      $where = " where arrematric.k00_matric = $cod_filtro";
   }else if ($tipo_filtro=="INSCRICAO"){
 		 $inscr = $cod_filtro;
      $inner = " inner join arreinscr on arreinscr.k00_numpre = arreprescr.k30_numpre   ";
+
+     if(isset($y50_codauto) && $y50_codauto != ""){
+        $inner  .= " inner join arreauto on arreinscr.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+     }
+     if(isset($nl01_codlanc) && $nl01_codlanc != ""){
+        $inner  .= " inner join arrelanc on arreinscr.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+     }
      $where = " where arreinscr.k00_inscr = $cod_filtro";
   }else if ($tipo_filtro=="NUMPRE"){
 		 $numpre = $cod_filtro;
@@ -157,7 +203,7 @@ function js_OpenRelatorio(xxaondeJanela,xxnomeJanela,xxarquivoJanela,xxtituloJan
         ?>
         <td width="9%" nowrap align="center">
          <a OnMouseOut="parent.js_label('false','');"  OnMouseOver="parent.js_label('true','<?=db_jsspecialchars($histdesc)?>');" href="javascript:parent.document.getElementById('processando').style.visibility = 'visible';history.back()"><?=$k30_numpre?></a></td>
-        <?
+        <?php
         echo "   <td width='9%'  nowrap align='right'>  ".db_formatar($k30_dtoper,'d')." </td> ";
         echo "   <td width='4%'  nowrap align='right'>  ".$k30_numpar."                  </td> ";
         echo "   <td width='4%'  nowrap align='right'>  ".$k30_numtot."                  </td> ";

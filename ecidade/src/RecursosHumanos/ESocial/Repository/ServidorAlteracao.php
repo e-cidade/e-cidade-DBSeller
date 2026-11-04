@@ -72,11 +72,10 @@ class ServidorAlteracao extends \BaseClassRepository
         if (!$all) {
             $sql .= $limit;
         }
-
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new DBException("Erro ao buscar informações de datas de alteração da matícula {$matricula}.");
+            throw new DBException("Erro ao buscar informações de datas de alteração da matrícula {$matricula}.");
         }
         $total = pg_numrows($rs);
         $retorno = [];
@@ -138,7 +137,7 @@ class ServidorAlteracao extends \BaseClassRepository
         return $alteracaoServidor;
     }
 
-    private function verificaLayoutAlteracao($layout)
+    private static function verificaLayoutAlteracao($layout)
     {
         if ($layout !== '') {
             if (!self::$layouts[$layout]) {

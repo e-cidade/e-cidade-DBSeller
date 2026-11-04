@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("ed02_i_codigo");
        <?=@$Led09_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed09_i_codigo',10,$Ied09_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted09_i_aluno?>">
-       <?
+       <?php
        db_ancora(@$Led09_i_aluno,"js_pesquisaed09_i_aluno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed09_i_aluno',10,$Ied09_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed09_i_aluno(false);'")
 ?>
-       <?
+       <?php
 db_input('ed07_c_nome',50,$Ied07_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted09_i_escola?>">
-       <?
+       <?php
        db_ancora(@$Led09_i_escola,"js_pesquisaed09_i_escola(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed09_i_escola',10,$Ied09_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed09_i_escola(false);'")
 ?>
-       <?
+       <?php
 db_input('ed02_i_codigo',10,$Ied02_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted09_i_serie?>">
-       <?
+       <?php
        db_ancora(@$Led09_i_serie,"js_pesquisaed09_i_serie(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed09_i_serie',10,$Ied09_i_serie,true,'text',$db_opcao," onchange='js_pesquisaed09_i_serie(false);'")
 ?>
-       <?
+       <?php
 db_input('ed03_c_nome',40,$Ied03_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('ed03_c_nome',40,$Ied03_c_nome,true,'text',3,'')
        <?=@$Led09_d_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed09_d_inicio',@$ed09_d_inicio_dia,@$ed09_d_inicio_mes,@$ed09_d_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_inputdata('ed09_d_inicio',@$ed09_d_inicio_dia,@$ed09_d_inicio_mes,@$ed09_d_in
        <?=@$Led09_c_situacao?>
     </td>
     <td> 
-<?
+<?php
 $x = array('MATRICULADO'=>'MATRICULADO','NOVA MATRÍCULA'=>'NOVA MATRÍCULA');
 db_select('ed09_c_situacao',$x,true,$db_opcao,"");
 ?>
@@ -116,7 +116,7 @@ db_select('ed09_c_situacao',$x,true,$db_opcao,"");
        <?=@$Led09_d_termino?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed09_d_termino',@$ed09_d_termino_dia,@$ed09_d_termino_mes,@$ed09_d_termino_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ db_inputdata('ed09_d_termino',@$ed09_d_termino_dia,@$ed09_d_termino_mes,@$ed09_d
        <?=@$Led09_i_ano?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed09_i_ano',5,$Ied09_i_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -211,7 +211,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matriculas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

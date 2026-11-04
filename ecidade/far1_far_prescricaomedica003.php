@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($excluir)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Exclusão de Prescrição Médica</b></legend>
-	<? include(modification("forms/db_frmfar_prescricaomedica.php"));?>
+	<?php include(modification("forms/db_frmfar_prescricaomedica.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -70,7 +70,7 @@ if(isset($excluir)){
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clfar_prescricaomedica->erro_status=="0"){
     $clfar_prescricaomedica->erro(true,false);

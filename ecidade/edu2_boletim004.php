@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,8 +24,11 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+use ECidade\Pdf\Pdf;
 
-require_once(modification("fpdf151/FpdfMultiCellBorder.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("std/DBDate.php"));
@@ -155,7 +158,6 @@ foreach ($aAlunos as $iMatricula) {
     is_null($oMatricula->getAluno()->getNomeSocial()) ?
     $oMatricula->getAluno()->getNome() : $oMatricula->getAluno()->getNomeSocial();
   $oDadosAluno->iMatricula      = $oMatricula->getCodigo();
-//   $oDadosAluno->sResultadoFinal = "EM ANDAMENTO";
 
   $oDadosAluno->sResultadoFinal = ResultadoFinal($oMatricula->getCodigo(),
                                                  $oMatricula->getAluno()->getCodigoAluno(),
@@ -174,7 +176,7 @@ foreach ($aAlunos as $iMatricula) {
     $oDadosDisciplina->sAbreviatura = $oRegencia->getDisciplina()->getAbreviatura();
     $oDadosDisciplina->sDisciplina  = $oRegencia->getDisciplina()->getNomeDisciplina();
     $oDadosDisciplina->aAvaliacoes  = array();
-    $oDadosDisciplina->iTotalFaltas = '';
+    $oDadosDisciplina->iTotalFaltas = 0;
 
     db_inicio_transacao();
     $oDiarioDeClasse   = $oMatricula->getDiarioDeClasse();
@@ -185,9 +187,6 @@ foreach ($aAlunos as $iMatricula) {
      * Percorremos as avaliações da diciplina buscando os dados da avaliação
      */
     foreach ($oDiarioDisciplina->getAvaliacoes() as $oAvaliacao) {
-
-
-
       $oDadosAvaliacao = new stdClass();
       $iFaltasAbonadas = 0;
       $iFaltasPeriodo  = 0;
@@ -239,19 +238,28 @@ foreach ($aAlunos as $iMatricula) {
 
       $oDadosAvaliacao->oParecer = LancamentoAvaliacaoAluno::getParecer($oMatricula, $oRegencia, $iOrdem);
 
+      if ($oFiltros->lParecerUnico) {
+          $oDadosAvaliacao->aParecer = [];
+          foreach ($oDiarioDeClasse->getDisciplinas() as $oDisciplinaDiario) {
+              $oDadosAvaliacao->aParecer[] = LancamentoAvaliacaoAluno::getParecer($oMatricula, $oDisciplinaDiario->getRegencia(), $iOrdem);
+          }
+      }
+
       $oDadosDisciplina->aAvaliacoes[$iOrdem] = $oDadosAvaliacao;
     }
 
     $oDadosAluno->aDisciplinas[] = $oDadosDisciplina;
 
   }
+
   $aAlunosImpressao[] = $oDadosAluno;
 }
 
-$oPdf = new FpdfMultiCellBorder();
-$oPdf->Open();
+$oPdf = new Pdf();
+$oPdf->init(false);
 $oPdf->AliasNbPages();
-$oPdf->exibeHeader(true);
+$oPdf->exibeHeader(true, \Fpdf\Pdf::HEADER_ESCOLA);
+$oPdf->setExibeBrasao(true);
 $oPdf->setFillColor(220);
 $oPdf->SetAutoPageBreak(true, 10);
 
@@ -262,22 +270,23 @@ $oPdf->SetAutoPageBreak(true, 10);
 $sCurso  = $oFiltros->oTurma->getBaseCurricular()->getCurso()->getCodigo();
 $sCurso .= " - " . $oFiltros->oTurma->getBaseCurricular()->getCurso()->getNome();
 
-$head1 = "BOLETIM POR PARECER DESCRITIVO";
-$head3 = "Curso: {$sCurso}";
-$head4 = "Calendário: " . $oFiltros->oTurma->getCalendario()->getDescricao();
-$head4 = "Etapa: " . $oFiltros->oEtapa->getNome();
-$head5 = "Turma: " . $oFiltros->oTurma->getDescricao();
+$oPdf->addTitulo("BOLETIM POR PARECER DESCRITIVO");
+$oPdf->addTitulo("Aluno: ", "aluno");
+$oPdf->addTitulo("Curso: {$sCurso}");
+$oPdf->addTitulo("Calendário: " . $oFiltros->oTurma->getCalendario()->getDescricao());
+$oPdf->addTitulo("Etapa: " . $oFiltros->oEtapa->getNome());
+$oPdf->addTitulo("Turma: " . $oFiltros->oTurma->getDescricao());
+$oPdf->addTitulo("Matricula: ", "matricula");
 
 foreach ($aAlunosImpressao as $oAluno) {
 
-  $head2 = "Aluno: $oAluno->sNome" ;
-  $head6 = "Matricula: $oAluno->iMatricula";
+  $oPdf->editTitleByKey("aluno", "Aluno: $oAluno->sNome");
+  $oPdf->editTitleByKey("matricula", "Matricula: $oAluno->iMatricula");
 
   $oPdf->AddPage();
   foreach ($oAluno->aDisciplinas as $oDisciplina) {
 
     foreach ($oDisciplina->aAvaliacoes as $oPeriodoAvaliacao) {
-
       $oPdf->SetFont("Arial", "B", 8);
       $oPdf->Cell(192, $oFiltros->iLinha, $oPeriodoAvaliacao->sPeriodo, 1, 1, "C", 1);
       if ($oFiltros->lParecerUnico) {
@@ -311,9 +320,9 @@ foreach ($aAlunosImpressao as $oAluno) {
       $oPdf->ln(2);
     }
   }
-	// Imprime o resultado final da disciplina
-	$oPdf->SetFont("Arial", "B", 8);
-  $oPdf->Cell(192, 4, "ResultadoFinal: {$oAluno->sResultadoFinal}", 1, 1, "L", 1);
+  // Imprime o resultado final da disciplina
+  $oPdf->SetFont("Arial", "B", 8);
+  $oPdf->Cell(192, 4, "Resultado Final: {$oAluno->sResultadoFinal}", 1, 1, "L", 1);
   $oPdf->ln(2);
 
   //Imprime a Observação informada na tela de filtros
@@ -325,77 +334,92 @@ foreach ($aAlunosImpressao as $oAluno) {
 
 /**
  * Imprime os dados do parecer padronizado
- * @param FpdfMultiCellBorder $oPdf
+ * @param Pdf $oPdf
  * @param stdClass $oFiltros
  * @param stdClass $oPeriodoAvaliacao
  */
-function imprimeParecerPadronizado(FpdfMultiCellBorder$oPdf, $oFiltros, $oPeriodoAvaliacao) {
+function imprimeParecerPadronizado(Pdf $oPdf, $oFiltros, $oPeriodoAvaliacao) {
 
-  if (!empty($oPeriodoAvaliacao->oParecer->sParecerPadronizado)) {
+    foreach ($oPeriodoAvaliacao->aParecer as $oParecer) {
+        if (!empty($oParecer->sParecerPadronizado)) {
+            $iLinhasParecerPadronizado = 0;
+            if ($oFiltros->lConcatenaParecerPadrao) {
+                $iLinhasParecerPadronizado = $oPdf->NbLines(192, $oParecer->sParecerPadronizado);
+            } else {
+                $iLinhasParecerPadronizado = count(explode("**", $oParecer->sParecerPadronizado));
+            }
+            $iLinhasParecerPadronizado += 2;  //linhas de header do parecer padronizado
 
-    $iLinhasParecerPadronizado = 0;
-    if ($oFiltros->lConcatenaParecerPadrao) {
-      $iLinhasParecerPadronizado = $oPdf->NbLines(192, $oPeriodoAvaliacao->oParecer->sParecerPadronizado);
-    } else {
-      $iLinhasParecerPadronizado = count(explode("**", $oPeriodoAvaliacao->oParecer->sParecerPadronizado));
+            validaQuebraPagina($oPdf, $oFiltros->iLinha, "", $iLinhasParecerPadronizado);
+
+            $oPdf->SetFont('arial', 'B', 8);
+            $oPdf->cell(192, 4, "Parecer Padronizado:", 1, 1, "C");
+            $oPdf->SetFont('arial', '', 8);
+            if ($oFiltros->lConcatenaParecerPadrao) {
+                $oPdf->MultiCell(192, 4, $oParecer->sParecerPadronizado, 1, "L");
+            } else {
+
+                $oPdf->SetFont('arial', 'B', 8);
+                $oPdf->Cell(192, 4, "Seq - Parecer => Legenda", 1, 1, "L");
+                $oPdf->SetFont('arial', '', 8);
+                $aPareceres = explode("**", $oParecer->sParecerPadronizado);
+
+                foreach ($aPareceres as $sParecer) {
+                    $oPdf->cell(192, 4, trim($sParecer), 1, 1, "L");
+                }
+            }
+        }
     }
-    $iLinhasParecerPadronizado += 2;  //linhas de header do parecer padronizado
-
-    validaQuebraPagina($oPdf, $oFiltros->iLinha, "", $iLinhasParecerPadronizado);
-
-    $oPdf->SetFont('arial', 'B', 8);
-    $oPdf->cell(192, 4, "Parecer Padronizado:", 1, 1, "C");
-    $oPdf->SetFont('arial', '', 8);
-    if ($oFiltros->lConcatenaParecerPadrao) {
-      $oPdf->MultiCell(192, 4, $oPeriodoAvaliacao->oParecer->sParecerPadronizado, 1, "L");
-    } else {
-
-      $oPdf->SetFont('arial', 'B', 8);
-      $oPdf->Cell(192, 4, "Seq - Parecer => Legenda", 1, 1, "L");
-      $oPdf->SetFont('arial', '', 8);
-      $aPareceres = explode("**", $oPeriodoAvaliacao->oParecer->sParecerPadronizado);
-
-      foreach ($aPareceres as $sParecer) {
-        $oPdf->cell(192, 4, trim($sParecer), 1, 1, "L");
-      }
-    }
-  }
 }
 
 
 /**
  * Imprime os dados do parecer
- * @param FpdfMultiCellBorder $oPdf
+ * @param Pdf $oPdf
  * @param stdClass $oFiltros
  * @param stdClass $oPeriodoAvaliacao
  */
-function imprimeParecer(FpdfMultiCellBorder $oPdf, $oFiltros, $oPeriodoAvaliacao) {
+function imprimeParecer(Pdf $oPdf, $oFiltros, $oPeriodoAvaliacao) {
 
-  $iLinhasParecer = 5;
-  validaQuebraPagina($oPdf, $oFiltros->iLinha, $oPeriodoAvaliacao->oParecer->sParecer, $iLinhasParecer);
+    $iLinhasParecer = 5;
+    $sParecerIsEmpty = true;
+    $oPdf->SetFont("Arial", "B", 8);
+    $oPdf->Cell(192, $oFiltros->iLinha, "Parecer", 1, 1, "C");
+    $oPdf->SetFont("Arial", "", 8);
 
-  $oPdf->SetFont("Arial", "B", 8);
-  $oPdf->Cell(192, $oFiltros->iLinha, "Parecer", 1, 1, "C");
-  $oPdf->SetFont("Arial", "", 8);
-
-  if (empty($oPeriodoAvaliacao->oParecer->sParecer)) {
-
-    //Imprime as linhas em branco do parecer
-    for($i = 1; $i <= 4; $i++) {
-      $oPdf->Cell(192, $oFiltros->iLinha, "", 1, 1);
+    foreach ($oPeriodoAvaliacao->aParecer as $oParecer) {
+        validaQuebraPagina($oPdf, $oFiltros->iLinha, $oParecer->sParecer, $iLinhasParecer);
+        if (!empty($oParecer->sParecer)) {
+            $sParecerIsEmpty = false;
+            $oPdf->MultiCell(192, 4, $oParecer->sParecer, 1, "J");
+        }
     }
-  } else {
-    $oPdf->MultiCell(192, 4, $oPeriodoAvaliacao->oParecer->sParecer, 1, "J");
-  }
+
+    /**
+     * Quando é selecionado apenas uma disciplina, o objeto volta diferente
+     * e entra nessa segunda verificação
+     */
+    if ($sParecerIsEmpty && !empty($oPeriodoAvaliacao->oParecer->sParecer)) {
+      validaQuebraPagina($oPdf, $oFiltros->iLinha, $oPeriodoAvaliacao->oParecer->sParecer, $iLinhasParecer);
+      $oPdf->MultiCell(192, 4, $oPeriodoAvaliacao->oParecer->sParecer , 1, "J");
+      $sParecerIsEmpty = false;
+    }
+
+    if ($sParecerIsEmpty) {
+        //Imprime as linhas em branco do parecer
+        for($i = 1; $i <= 4; $i++) {
+            $oPdf->Cell(192, $oFiltros->iLinha, "", 1, 1);
+        }
+    }
 }
 
 /**
  * Imprime as observações lançadas para o aluno no período
- * @param FpdfMultiCellBorder $oPdf
+ * @param Pdf $oPdf
  * @param stdClass $oFiltros
  * @param stdClass $oPeriodoAvaliacao
  */
-function imprimeObservacaoAluno(FpdfMultiCellBorder $oPdf, $oFiltros, $oPeriodoAvaliacao) {
+function imprimeObservacaoAluno(Pdf $oPdf, $oFiltros, $oPeriodoAvaliacao) {
 
   if (!empty($oPeriodoAvaliacao->sObservacao)) {
 
@@ -409,10 +433,10 @@ function imprimeObservacaoAluno(FpdfMultiCellBorder $oPdf, $oFiltros, $oPeriodoA
 
 /**
  *
- * @param FpdfMultiCellBorder $oPdf
+ * @param Pdf $oPdf
  * @param stdClass $oFiltros
  */
-function imprimeObservacaoGeral(FpdfMultiCellBorder $oPdf, $oFiltros) {
+function imprimeObservacaoGeral(Pdf $oPdf, $oFiltros) {
 
   if (!empty($oFiltros->sObservacao)) {
 
@@ -427,27 +451,27 @@ function imprimeObservacaoGeral(FpdfMultiCellBorder $oPdf, $oFiltros) {
 
 /**
  *
- * @param FpdfMultiCellBorder $oPdf
+ * @param Pdf $oPdf
  * @param integer $iAlturaLinha
  * @param string  $sString        se <> '' calcula quantas linhas
  * @param integer $iLinhasString  informado quando string vazia e queremos quebrar página
  */
-function validaQuebraPagina(FpdfMultiCellBorder $oPdf, $iAlturaLinha, $sString, $iLinhasString = 0) {
+function validaQuebraPagina(Pdf $oPdf, $iAlturaLinha, $sString, $iLinhasString = 0) {
 
   if (!empty($sString)) {
     $iLinhasString = 1 + $oPdf->NbLines(192, $sString);
   }
-  if (($iLinhasString * $iAlturaLinha) + $oPdf->GetY() >= $oPdf->h - 10 && $oPdf->GetY() > 230) {
+  if (($iLinhasString * $iAlturaLinha) + $oPdf->GetY() >= $oPdf->getPageHeight() - 10 && $oPdf->GetY() > 230) {
     $oPdf->AddPage();
   }
 }
 
 /**
  * Imprime os campos para assinatura
- * @param FpdfMultiCellBorder $oPdf
+ * @param Pdf $oPdf
  * @param stdClass            $oFiltros
  */
-function imprimeAssinatura(FpdfMultiCellBorder $oPdf, $oFiltros) {
+function imprimeAssinatura(Pdf $oPdf, $oFiltros) {
 
   if ($oFiltros->lAssinatura) {
 

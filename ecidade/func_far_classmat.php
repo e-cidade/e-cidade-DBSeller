@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clfar_class->rotulo->label("fa05_c_descr");
               <?=$Lfa05_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa05_i_codigo",5,$Ifa05_i_codigo,true,"text",4,"","chave_fa05_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfar_class->rotulo->label("fa05_c_descr");
               <?=$Lfa05_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa05_c_descr",20,$Ifa05_c_descr,true,"text",4,"","chave_fa05_c_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfar_class->rotulo->label("fa05_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_class.php")==true){
@@ -122,12 +122,12 @@ $clfar_class->rotulo->label("fa05_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

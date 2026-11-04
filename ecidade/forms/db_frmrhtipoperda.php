@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,7 +49,7 @@ $clrhtipoperda->rotulo->label();
        <?=@$Lh70_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('h70_sequencial',10,$Ih70_sequencial,true,'text',3,"")
 			?>
     </td>
@@ -59,7 +59,7 @@ $clrhtipoperda->rotulo->label();
        <?=@$Lh70_descricao?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('h70_descricao',60,$Ih70_descricao,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -69,7 +69,7 @@ $clrhtipoperda->rotulo->label();
        <?=@$Lh70_dias?>
     </td>
     <td> 
-			<?
+			<?php
 			   db_input('h70_dias',10,$Ih70_dias,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -87,7 +87,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhtipoperda.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

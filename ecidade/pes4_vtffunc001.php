@@ -35,33 +35,36 @@ require_once(modification("classes/db_vtfdias_classe.php"));
 require_once(modification("classes/db_rhpessoal_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
+
 db_postmemory($HTTP_POST_VARS);
-$clcfpess = new cl_cfpess;
-$clvtffunc = new cl_vtffunc;
-$clvtfdias = new cl_vtfdias;
+
+$clcfpess    = new cl_cfpess;
+$clvtffunc   = new cl_vtffunc;
+$clvtfdias   = new cl_vtfdias;
 $clrhpessoal = new cl_rhpessoal;
+
 $db_opcao = 1;
 $db_botao = true;
 
-$r17_anousu = db_anofolha();
-$r17_mesusu = db_mesfolha();
+$r17_anousu = \DBPessoal::getAnoFolha();
+$r17_mesusu = \DBPessoal::getMesFolha();
 
-$result_qualfuncao = $clcfpess->sql_record($clcfpess->sql_query_file(db_anofolha(),db_mesfolha(),db_getsession('DB_instit'),"r11_vtprop, r11_vtfer, r11_vtprop"));
-if($clcfpess->numrows > 0){
+$result_qualfuncao = $clcfpess->sql_record($clcfpess->sql_query_file(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha(), db_getsession('DB_instit'), "r11_vtprop, r11_vtfer, r11_vtprop"));
+if ($clcfpess->numrows > 0) {
   db_fieldsmemory($result_qualfuncao, 0);
 }
 
-if(isset($incluir)){
+if (isset($incluir)) {
   db_inicio_transacao();
   $sqlerro = false;
   // $clvtffunc->r17_quant = "0";
   $clvtffunc->r17_quant = $r17_quant;
-  $clvtffunc->incluir($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere);
-  $erro_msg = $clvtffunc->erro_msg; 
-  if($clvtffunc->erro_status==0){
+  $clvtffunc->incluir($r17_anousu, $r17_mesusu, $r17_regist, $r17_codigo, $r17_difere);
+  $erro_msg = $clvtffunc->erro_msg;
+  if ($clvtffunc->erro_status == 0) {
     $sqlerro = true;
-  }else{
-    if($r17_tipo == "t"){
+  } else {
+    if ($r17_tipo == "t") {
       $clvtfdias->r63_quant  = $r17_quant;
       $clvtfdias->r63_obrig  = "true";
       $clvtfdias->r63_quants = $r17_quant;
@@ -90,7 +93,7 @@ if(isset($incluir)){
     }
   }
   db_fim_transacao($sqlerro);
-}else if(isset($alterar)){
+} else if (isset($alterar)) {
   db_inicio_transacao();
   $sqlerro = false;
   $clvtffunc->r17_anousu = $r17_anousu;
@@ -99,36 +102,36 @@ if(isset($incluir)){
   $clvtffunc->r17_codigo = $r17_codigo;
   $clvtffunc->r17_difere = $r17_difere;
   $clvtffunc->r17_quant = $r17_quant;
-  $clvtffunc->alterar($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere);
-  $erro_msg = $clvtffunc->erro_msg; 
-  if($clvtffunc->erro_status==0){
+  $clvtffunc->alterar($r17_anousu, $r17_mesusu, $r17_regist, $r17_codigo, $r17_difere);
+  $erro_msg = $clvtffunc->erro_msg;
+  if ($clvtffunc->erro_status == 0) {
     $sqlerro = true;
-  }else{
-    $clvtfdias->excluir(null,null,null,null,null,null," r63_anousu = ".$r17_anousu." and r63_mesusu = ".$r17_mesusu." and r63_regist = ".$r17_regist." and r63_vale = '".$r17_codigo."' and r63_difere = '".$r17_difere."'");
-    if($clvtfdias->erro_status==0){
+  } else {
+    $clvtfdias->excluir(null, null, null, null, null, null, " r63_anousu = " . $r17_anousu . " and r63_mesusu = " . $r17_mesusu . " and r63_regist = " . $r17_regist . " and r63_vale = '" . $r17_codigo . "' and r63_difere = '" . $r17_difere . "'");
+    if ($clvtfdias->erro_status == 0) {
       $erro_msg = $clvtfdias->erro_msg;
       $sqlerro = true;
-    }else{
-      if($r17_tipo == "t"){
+    } else {
+      if ($r17_tipo == "t") {
         $clvtfdias->r63_quant  = $r17_quant;
         $clvtfdias->r63_obrig  = "true";
         $clvtfdias->r63_quants = $r17_quant;
-        $clvtfdias->incluir($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere,$r17_anousu."-".$r17_mesusu."-01");
-        if($clvtfdias->erro_status==0){
+        $clvtfdias->incluir($r17_anousu, $r17_mesusu, $r17_regist, $r17_codigo, $r17_difere, $r17_anousu . "-" . $r17_mesusu . "-01");
+        if ($clvtfdias->erro_status == 0) {
           $erro_msg = $clvtfdias->erro_msg;
           $sqlerro = true;
         }
-      }else{
-        for($i=1; $i<=db_dias_mes($r17_anousu,$r17_mesusu);$i++){
-          $datarc = $r17_anousu."-".$r17_mesusu."-".$i;
+      } else {
+        for ($i = 1; $i <= db_dias_mes($r17_anousu, $r17_mesusu); $i++) {
+          $datarc = $r17_anousu . "-" . $r17_mesusu . "-" . $i;
           $diasem = strtolower(db_diasemana($datarc));
-          $obrdia = "o".$diasem;
-          if($$diasem > 0){
+          $obrdia = "o" . $diasem;
+          if ($$diasem > 0) {
             $clvtfdias->r63_quant  = $$diasem;
-            $clvtfdias->r63_obrig  = ($$obrdia=="f"?"false":"true");
+            $clvtfdias->r63_obrig  = ($$obrdia == "f" ? "false" : "true");
             $clvtfdias->r63_quants = $$diasem;
-            $clvtfdias->incluir($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere,$datarc);
-            if($clvtfdias->erro_status==0){
+            $clvtfdias->incluir($r17_anousu, $r17_mesusu, $r17_regist, $r17_codigo, $r17_difere, $datarc);
+            if ($clvtfdias->erro_status == 0) {
               $erro_msg = $clvtfdias->erro_msg;
               $sqlerro = true;
               break;
@@ -139,51 +142,52 @@ if(isset($incluir)){
     }
   }
   db_fim_transacao($sqlerro);
-}else if(isset($excluir)){
-  $clvtfdias->excluir(null,null,null,null,null,null," r63_anousu = ".$r17_anousu." and r63_mesusu = ".$r17_mesusu." and r63_regist = ".$r17_regist." and r63_vale = '".$r17_codigo."' and r63_difere = '".$r17_difere."'");
-  if($clvtfdias->erro_status==0){
+} else if (isset($excluir)) {
+  $clvtfdias->excluir(null, null, null, null, null, null, " r63_anousu = " . $r17_anousu . " and r63_mesusu = " . $r17_mesusu . " and r63_regist = " . $r17_regist . " and r63_vale = '" . $r17_codigo . "' and r63_difere = '" . $r17_difere . "'");
+  if ($clvtfdias->erro_status == 0) {
     $erro_msg = $clvtfdias->erro_msg;
     $sqlerro = true;
-  }else{
-    $clvtffunc->excluir($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere);
-    $erro_msg = $clvtffunc->erro_msg; 
-    if($clvtffunc->erro_status==0){
+  } else {
+    $clvtffunc->excluir($r17_anousu, $r17_mesusu, $r17_regist, $r17_codigo, $r17_difere);
+    $erro_msg = $clvtffunc->erro_msg;
+    if ($clvtffunc->erro_status == 0) {
       $sqlerro = true;
     }
   }
-}else if(isset($r17_regist) && trim($r17_regist) != "" && isset($r17_codigo) && trim($r17_codigo) != "" && isset($r17_difere) && trim($r17_difere) != ""){
-  unset($r16_descr,$r17_tipo,$r17_situac,$r17_quant,$dom,$seg,$ter,$qua,$qui,$sex,$sab,$odom,$oseg,$oter,$oqua,$oqui,$osex,$osab);
-  $result_rhpessoal = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgmmov(null,"rh01_regist as r17_regist, z01_nome,r70_codigo as r17_lotac,r70_descr,r70_estrut,z01_numcgm",""," rh02_anousu = ".db_anofolha()." and rh02_mesusu = ".db_mesfolha()." and rh01_regist = ".$r17_regist));
-  if($clrhpessoal->numrows > 0){
-    db_fieldsmemory($result_rhpessoal,0);
-    $dbwhere = "r17_anousu = ".db_anofolha()." and r17_mesusu = ".db_mesfolha()." and r17_regist = ".$r17_regist;
-    $dbwhere.= " and r17_codigo = '".$r17_codigo."'";
-    $dbwhere.= " and r17_difere = '".$r17_difere."'";
+} else if (isset($r17_regist) && trim($r17_regist) != "" && isset($r17_codigo) && trim($r17_codigo) != "" && isset($r17_difere) && trim($r17_difere) != "") {
+  unset($r16_descr, $r17_tipo, $r17_situac, $r17_quant, $dom, $seg, $ter, $qua, $qui, $sex, $sab, $odom, $oseg, $oter, $oqua, $oqui, $osex, $osab);
+  $result_rhpessoal = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgmmov(null, "rh01_regist as r17_regist, z01_nome,r70_codigo as r17_lotac,r70_descr,r70_estrut,z01_numcgm", "", " rh02_anousu = " . \DBPessoal::getAnoFolha() . " and rh02_mesusu = " . \DBPessoal::getMesFolha() . " and rh01_regist = " . $r17_regist));
+  if ($clrhpessoal->numrows > 0) {
+    db_fieldsmemory($result_rhpessoal, 0);
+    $dbwhere = "r17_anousu = " . \DBPessoal::getAnoFolha() . " and r17_mesusu = " . \DBPessoal::getMesFolha() . " and r17_regist = " . $r17_regist;
+    $dbwhere .= " and r17_codigo = '" . $r17_codigo . "'";
+    $dbwhere .= " and r17_difere = '" . $r17_difere . "'";
     $campo_quantidade = "";
-    if($r11_vtprop == "t"){
-      $campo_quantidade = "quantvale_afas(r17_codigo,r17_regist,r17_anousu,r17_mesusu,0,r17_difere,'".$r11_vtfer."',".db_dias_mes(db_anofolha(),db_mesfolha()).",".db_getsession("DB_instit").") as ";
-    }else{
-      $campo_quantidade = "quantvale(r17_codigo,r17_regist,r17_anousu,r17_mesusu,0,r17_difere,".db_getsession("DB_instit").") as ";
+    if ($r11_vtprop == "t") {
+      $campo_quantidade = "quantvale_afas(r17_codigo,r17_regist,r17_anousu,r17_mesusu,0,r17_difere,'" . $r11_vtfer . "'," . db_dias_mes(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha()) . "," . db_getsession("DB_instit") . ") as ";
+    } else {
+      $campo_quantidade = "quantvale(r17_codigo,r17_regist,r17_anousu,r17_mesusu,0,r17_difere," . db_getsession("DB_instit") . ") as ";
     }
     $sql = $clvtffunc->sql_query(
-                                 null,
-                                 null,
-                                 null,
-                                 null,
-                                 null,
-                                 "r17_anousu,r17_mesusu,r17_codigo,r16_descr,".$campo_quantidade."r17_quant,r17_difere,r17_situac,r17_tipo,r17_regist",
-                                 "r17_codigo",
-                                 $dbwhere
-                                );
+      null,
+      null,
+      null,
+      null,
+      null,
+      "r17_anousu,r17_mesusu,r17_codigo,r16_descr," . $campo_quantidade . "r17_quant,r17_difere,r17_situac,r17_tipo,r17_regist",
+      "r17_codigo",
+      $dbwhere
+    );
+
     $result_vtffunc = $clvtffunc->sql_record($sql);
-    if($clvtffunc->numrows > 0){
+    if ($clvtffunc->numrows > 0) {
       db_fieldsmemory($result_vtffunc, 0);
-      $result_vtfdias = $clvtfdias->sql_record($clvtfdias->sql_query_file(db_anofolha(),db_mesfolha(),$r17_regist,$r17_codigo,$r17_difere,null,"r63_dia, r63_quant, r63_obrig"));
-      for($i=0; $i<$clvtfdias->numrows; $i++){
+      $result_vtfdias = $clvtfdias->sql_record($clvtfdias->sql_query_file(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha(), $r17_regist, $r17_codigo, $r17_difere, null, "r63_dia, r63_quant, r63_obrig"));
+      for ($i = 0; $i < $clvtfdias->numrows; $i++) {
         db_fieldsmemory($result_vtfdias, $i);
-        if($r17_tipo == "f"){
+        if ($r17_tipo == "f") {
           $dia   = strtolower(db_diasemana($r63_dia));
-          $odia  = "o".$dia;
+          $odia  = "o" . $dia;
           $$dia  = $r63_quant;
           $$odia = $r63_obrig;
         }
@@ -192,22 +196,23 @@ if(isset($incluir)){
     $codigo = $r17_codigo;
     $difere = $r17_difere;
   }
-}else if(isset($r17_regist) && trim($r17_regist) != ""){
-  unset($r17_codigo,$r16_descr,$r17_tipo,$r17_situac,$r17_quant,$r17_difere,$dom,$seg,$ter,$qua,$qui,$sex,$sab,$odom,$oseg,$oter,$oqua,$oqui,$osex,$osab);
-  $result_rhpessoal = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgmmov(null,"rh01_regist as r17_regist, z01_nome,r70_codigo as r17_lotac,r70_descr,r70_estrut,z01_numcgm",""," rh02_anousu = ".db_anofolha()." and rh02_mesusu = ".db_mesfolha()." and rh01_regist = ".$r17_regist));
-  if($clrhpessoal->numrows > 0){
-    db_fieldsmemory($result_rhpessoal,0);
+} else if (isset($r17_regist) && trim($r17_regist) != "") {
+  unset($r17_codigo, $r16_descr, $r17_tipo, $r17_situac, $r17_quant, $r17_difere, $dom, $seg, $ter, $qua, $qui, $sex, $sab, $odom, $oseg, $oter, $oqua, $oqui, $osex, $osab);
+  $result_rhpessoal = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgmmov(null, "rh01_regist as r17_regist, z01_nome,r70_codigo as r17_lotac,r70_descr,r70_estrut,z01_numcgm", "", " rh02_anousu = " . \DBPessoal::getAnoFolha() . " and rh02_mesusu = " . \DBPessoal::getMesFolha() . " and rh01_regist = " . $r17_regist));
+  if ($clrhpessoal->numrows > 0) {
+    db_fieldsmemory($result_rhpessoal, 0);
   }
-}else{
-  unset($r17_codigo,$r16_descr,$r17_tipo,$r17_situac,$r17_quant,$r17_difere,$dom,$seg,$ter,$qua,$qui,$sex,$sab,$odom,$oseg,$oter,$oqua,$oqui,$osex,$osab);
+} else {
+  unset($r17_codigo, $r16_descr, $r17_tipo, $r17_situac, $r17_quant, $r17_difere, $dom, $seg, $ter, $qua, $qui, $sex, $sab, $odom, $oseg, $oter, $oqua, $oqui, $osex, $osab);
 }
 ?>
 <html>
+
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 db_app::load('scripts.js, prototype.js, strings.js, datagrid.widget.js, windowAux.widget.js, dbmessageBoard.widget.js, dbtextField.widget.js');
 db_app::load('estilos.css, grid.style.css, DBViewManutencaoLocalTrabalho.classe.js');
 ?>
@@ -225,32 +230,34 @@ db_app::load('estilos.css, grid.style.css, DBViewManutencaoLocalTrabalho.classe.
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php
       include(modification("forms/db_frmvtffunc.php"));
       ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
+
 </html>
 <script>
-if(document.form1.r17_regist && document.form1.r17_regist.readOnly == false && document.form1.r17_regist.value == ""){
-  js_tabulacaoforms("form1","r17_regist",true,1,"r17_regist",true);
-}else{
-  if(document.form1.r17_codigo.readOnly == false){
-    js_tabulacaoforms("form1","r17_codigo",true,1,"r17_codigo",true);
-  }else if(document.form1.r17_tipo && document.form1.r17_tipo.type == "select-one"){
-    js_tabulacaoforms("form1","r17_tipo",true,1,"r17_tipo",true);
-  }else{
-    js_tabulacaoforms("form1","excluir",true,1,"excluir",true);
+  if (document.form1.r17_regist && document.form1.r17_regist.readOnly == false && document.form1.r17_regist.value == "") {
+    js_tabulacaoforms("form1", "r17_regist", true, 1, "r17_regist", true);
+  } else {
+    if (document.form1.r17_codigo.readOnly == false) {
+      js_tabulacaoforms("form1", "r17_codigo", true, 1, "r17_codigo", true);
+    } else if (document.form1.r17_tipo && document.form1.r17_tipo.type == "select-one") {
+      js_tabulacaoforms("form1", "r17_tipo", true, 1, "r17_tipo", true);
+    } else {
+      js_tabulacaoforms("form1", "excluir", true, 1, "excluir", true);
+    }
   }
 }
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   db_msgbox($erro_msg);
   if($sqlerro == true){

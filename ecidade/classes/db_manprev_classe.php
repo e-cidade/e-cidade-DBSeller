@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,13 +73,13 @@ class cl_manprev {
                  t10_garant = date = Garantia (em dias) 
                  ";
    //funcao construtor da classe 
-   function cl_manprev() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("manprev"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_manprev {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t10_bem = ($this->t10_bem == ""?@$GLOBALS["HTTP_POST_VARS"]["t10_bem"]:$this->t10_bem);
        $this->t10_obs = ($this->t10_obs == ""?@$GLOBALS["HTTP_POST_VARS"]["t10_obs"]:$this->t10_obs);
@@ -124,7 +124,7 @@ class cl_manprev {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->t10_bem == null ){ 
        $this->erro_sql = " Campo Codigo do Bem nao Informado.";
@@ -255,7 +255,7 @@ class cl_manprev {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update manprev set ";
      $virgula = "";
@@ -449,7 +449,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from manprev
                     where ";
      $sql2 = "";
@@ -488,7 +488,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

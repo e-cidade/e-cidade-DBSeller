@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -74,7 +74,7 @@ if ($oParam->e30_liberaempenho != 't') {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -93,7 +93,7 @@ if ($oParam->e30_liberaempenho != 't') {
      </tr>
      <tr>
        <td align="left">&nbsp;<b>Estrutural: </b>
-       <?
+       <?php
          db_input('o56_elemento',10,$Io56_elemento,true,'text',$dbopcao,"",""); 
        ?>
          <input  name="pesquisar" id="pesquisar" type="button" value="Pesquisar" onclick='js_pesquisaElementos();' 
@@ -121,7 +121,7 @@ if ($oParam->e30_liberaempenho != 't') {
     <td>&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -136,7 +136,7 @@ if ($oParam->e30_liberaempenho != 't') {
             id='ajudaItem'>
 
 </div>
-<?
+<?php
 if ($bMostrar) {
 ?>
 <script>
@@ -320,6 +320,6 @@ function js_setAjuda(sTexto,lShow) {
   }
 }
 </script>
-<?
+<?php
 }
 ?>

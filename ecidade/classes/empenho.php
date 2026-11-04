@@ -61,7 +61,7 @@ class empenho
 
     public $iNumRowsNotas    = 0;
 
-    private $sCamposNotas     = "";
+    public $sCamposNota     = "";
 
     private $lEncode          = false;
 
@@ -71,7 +71,29 @@ class empenho
 
     public $sMsgErro         = '';
 
+    public $sErroMsg         = '';
+
     private $iCodOrdem;
+
+    public $clempelemento;
+
+    public $clempempenho;
+
+    public $clempempitem;
+
+    public $iPagOrdem = 0;
+
+    public $iNumRowsEmp = 0;
+
+    public $numemp = 0;
+
+    public $dadosEmpenho;
+
+    public $operacao = 0;
+
+    public $iNumRowsItens = 0;
+
+    public $iCodNota = 0;
 
     /**
      * @var string
@@ -114,12 +136,12 @@ class empenho
         $this->datausu       = date("Y-m-d", db_getsession("DB_datausu"));
         $this->anousu        = db_getsession("DB_anousu");
         $this->clempempenho  = new cl_empempenho();
-        $this->sCamposNota   = "e69_codnota,e69_numero,e69_anousu,e50_codord,e60_numemp, e50_anousu,e69_dtnota,e82_codmov,";
-        $this->sCamposNota .= "e70_vlranu,e70_vlrliq,e70_valor,e53_vlrpag,m51_tipo,m51_codordem,";
-        $this->sCamposNota .= "case when cgmordem.z01_numcgm is not null then cgmordem.z01_numcgm else cgm.z01_numcgm end as z01_numcgm,";
-        $this->sCamposNota .= "case when cgmordem.z01_nome is not null then cgmordem.z01_nome else cgm.z01_nome end as z01_nome,";
-        $this->sCamposNota .= "case when cgmordem.z01_cgccpf is not null then cgmordem.z01_cgccpf else cgm.z01_cgccpf end as z01_cgccpf,";
-        $this->sCamposNota .= "fc_valorretencaonota(e50_codord) as vlrretencao";
+        $this->sCamposNota   = "e69_codnota,e69_numero,e69_anousu,e50_codord,e60_numemp, e50_anousu,e69_dtnota,e82_codmov, ";
+        $this->sCamposNota  .= "e70_vlranu,e70_vlrliq,e70_valor,e53_vlrpag,m51_tipo,m51_codordem, ";
+        $this->sCamposNota  .= "case when cgmordem.z01_numcgm is not null then cgmordem.z01_numcgm else cgm.z01_numcgm end as z01_numcgm, ";
+        $this->sCamposNota  .= "case when cgmordem.z01_nome is not null then cgmordem.z01_nome else cgm.z01_nome end as z01_nome, ";
+        $this->sCamposNota  .= "case when cgmordem.z01_cgccpf is not null then cgmordem.z01_cgccpf else cgm.z01_cgccpf end as z01_cgccpf, ";
+        $this->sCamposNota  .= "fc_valorretencaonota(e50_codord) as vlrretencao ";
     }
 
     public function setDadosNota($oDadosNota)
@@ -138,7 +160,7 @@ class empenho
      ** Metodo para set para a variavel recriar saldo
      ** @param boolean $lOpcao - true para recriar
      */
-    function setRecriarSaldo($lOpcao)
+    public function setRecriarSaldo($lOpcao)
     {
 
         if ($lOpcao) {
@@ -148,19 +170,19 @@ class empenho
         }
     }
 
-    function getRecriarSaldo()
+    public function getRecriarSaldo()
     {
 
         return $this->lRecriarReserva;
     }
 
-    function setCredor($iCredor)
+    public function setCredor($iCredor)
     {
 
         $this->iCredor = $iCredor;
     }
 
-    function getCredor()
+    public function getCredor()
     {
 
         if ($this->iCredor != null) {
@@ -188,19 +210,19 @@ class empenho
 
 
 
-    function setEncode($lEncode)
+    public function setEncode($lEncode)
     {
 
         $this->lEncode = $lEncode;
     }
 
-    function getEncode()
+    public function getEncode()
     {
 
         return $this->lEncode;
     }
 
-    function liquidar($numemp = "", $codele = "", $codnota = "", $valor = "", $historico = "", $sHistoricoOrdem = '')
+    public function liquidar($numemp = "", $codele = "", $codnota = "", $valor = "", $historico = "", $sHistoricoOrdem = '')
     {
 
         if ($numemp == "" || $codele == "" || $codnota == "" || $valor == "") {
@@ -215,7 +237,8 @@ class empenho
 
         // busta empenho
         $clempempenho = new cl_empempenho;
-        $res          = $clempempenho->sql_record($clempempenho->sql_query($numemp));
+        $sCampos = "e60_anousu, e60_emiss, e60_numemp, e60_vlrliq ";
+        $res          = $clempempenho->sql_record($clempempenho->sql_query($numemp, $sCampos));
         if ($clempempenho->numrows > 0) {
             $oEmpenho = db_utils::fieldsMemory($res, 0);
         } else {
@@ -253,7 +276,7 @@ class empenho
             return false;
         }
 
-        // busta elemento da empelemento
+        // busca elemento da empelemento
         $clempelemento = new cl_empelemento;
         $res           = $clempelemento->sql_record($clempelemento->sql_query($numemp));
         if ($clempelemento->numrows > 0) {
@@ -309,7 +332,7 @@ class empenho
 
         $sql    = "select fc_verifica_lancamento(" . $numemp . ",'" . date("Y-m-d", db_getsession("DB_datausu")) . "',". $codteste . "," . $valor . ")";
         $result = db_query($sql);
-        $status = pg_result($result, 0, 0);
+        $status = pg_fetch_result($result, 0, 0);
         if (substr($status, 0, 2) > 0) {
             $this->erro_msg    = substr($status, 3);
             $this->erro_status = '0';
@@ -343,6 +366,14 @@ class empenho
         $clempnotaele->e70_codele  = $codele;
         $clempnotaele->e70_valor   = $e70_valor;
         $clempnotaele->e70_vlrliq  = ($e70_vlrliq + $valor);
+
+        if (($clempnotaele->e70_vlrliq - $clempnotaele->e70_vlranu) > $clempnotaele->e70_valor) {
+            $this->erro_msg    = "Valor Liquidado Maior que o valor da nota";
+            $this->erro_status = '0';
+            return false;
+        }
+
+
         $res                       = $clempnotaele->alterar($codnota, $codele);
         if ($clempnotaele->erro_status == 0) {
             $this->erro_status = '0';
@@ -543,18 +574,16 @@ class empenho
             } catch (Exception $e) {
                 $this->erro_status = '0';
                 $this->erro_msg    = $e->getMessage();
-
                 return false;
             }
         }
-
         return true;
     }
 
     /**
      * estorna liquidação
      */
-    function estornaLiq($numemp = "", $codele = "", $codnota = "", $valor = "", $historico = "")
+    public function estornaLiq($numemp = "", $codele = "", $codnota = "", $valor = "", $historico = "")
     {
 
         if ($numemp == "" || $codele == "" || $codnota == "" || $valor == "") {
@@ -734,7 +763,7 @@ class empenho
 
         $sql    = "select fc_verifica_lancamento(" . $numemp . ",'" . date("Y-m-d", db_getsession("DB_datausu")) . "'," . $codteste . "," . $valor . ") as teste";
         $result = db_query($sql);
-        $status = pg_result($result, 0, "teste");
+        $status = pg_fetch_result($result, 0, "teste");
         if (substr($status, 0, 2) > 0) {
             $this->erro_msg    = "Validação (codigo: fc_verifica_lançamento) " . substr($status, 3);
             $this->erro_status = '0';
@@ -1112,6 +1141,28 @@ class empenho
 
         $clpagordemnota = new cl_pagordemnota;
         $res            = $clpagordemnota->sql_record($clpagordemnota->sql_query_file(null, $codnota));
+
+
+        $sqlIncluido = "
+        SELECT *
+        FROM empnota
+        INNER JOIN empnotaele ON e70_codnota = e69_codnota
+        LEFT JOIN pagordemnota ON e70_codnota = e71_codnota
+                              AND e71_anulado IS FALSE
+        LEFT JOIN pagordemele ON e71_codord = e53_codord
+        WHERE e69_numemp = $e60_numemp
+          and e69_codnota = $codnota
+        ORDER BY e69_dtnota
+        ";
+        $rsValida = db_query($sqlIncluido);
+
+        if (pg_num_rows($rsValida) > 1) {
+            $this->erro_status = '0';
+            $this->erro_msg    = "Nota já foi Liquidada.";
+            return false;
+        }
+
+
         // se a OP não existe, lança uma op para a nota
         $clpagordem                 = new cl_pagordem;
         $clpagordem->e50_codord     = "";
@@ -1227,7 +1278,7 @@ class empenho
      *
      */
 
-    function estornaOP($numemp = "", $codele = "", $codnota = "", $valor = "", $retencoes = "", $historico)
+    public function estornaOP($numemp = "", $codele = "", $codnota = "", $valor = "", $retencoes = "", $historico)
     {
 
         if ($numemp == "" || $codele == "" || $codnota == "" || $valor == "") {
@@ -1309,8 +1360,6 @@ class empenho
             $clpagordemele->e53_codord = $oNota->e71_codord;
             $clpagordemele->e53_codele = $codele;
             $clpagordemele->e53_vlranu = "$valor";
-            //$clpagordemele->e53_valor  = '0.00';
-            //$clpagordemele->e53_vlrpag = '0.00';
             $clpagordemele->alterar($clpagordemele->e53_codord, $clpagordemele->e53_codele);
             if ($clpagordemele->erro_status == 0) {
                 $this->erro_status = '0';
@@ -1344,11 +1393,13 @@ class empenho
      * @param integer $iEmpenho
      * @param         string [$sWhere]
      */
-    function getDados($iEmpenho, $sWhere = null)
+    public function getDados($iEmpenho, $sWhere = null)
     {
 
-        $objEmpenho        = new cl_empempenho();
-        $rsEmp             = $objEmpenho->sql_record($objEmpenho->sql_query($iEmpenho, "*", null, $sWhere));
+        $objEmpenho = new cl_empempenho();
+        $sCampos = "e60_numemp, e60_codemp, e60_anousu, e60_coddot, e60_numcgm, e60_resumo, z01_nome, ";
+        $sCampos .= "o58_codigo, o15_descr, e60_vlremp, e60_vlrliq, e60_vlrpag, e60_vlranu, e64_codele, e60_codcom ";
+        $rsEmp = $objEmpenho->sql_record($objEmpenho->sql_query($iEmpenho, "*", null, $sWhere));
         $this->iNumRowsEmp = $objEmpenho->numrows;
         if ($this->iNumRowsEmp > 0) {
             $this->dadosEmpenho = db_utils::fieldsMemory($rsEmp, 0, false, false, $this->getEncode());
@@ -1366,7 +1417,7 @@ class empenho
      * @param string  [sWhere]
      * @param boolean [$lNotaCancelada] traz as nota com nota de liquidacao anulada.
      */
-    function getNotas($iEmpenho, $sWhere = '', $lNotaCancelada = true)
+    public function getNotas($iEmpenho, $sWhere = '', $lNotaCancelada = true)
     {
 
         $objNota = new cl_empnota();
@@ -1400,9 +1451,7 @@ class empenho
         $sSqlNota .= "       left join empnotaord    on  m72_codnota              = e69_codnota";
         $sSqlNota .= "       left join matordem      on  m72_codordem             = m51_codordem";
         $sSqlNota .= "       left join matordemanu   on  m51_codordem             = m53_codordem ";
-       // $sSqlNota .= "                join empagemov on e82_codmov = e81_codmov";
         $sSqlNota .= " where  e69_numemp = {$iEmpenho} {$sWhere}";
-       // $sSqlNota .= "   and e81_cancelado is null ";
 
         $rsNota              = $objNota->sql_record($sSqlNota);
         $this->iNumRowsNotas = $objNota->numrows;
@@ -1457,7 +1506,7 @@ class empenho
      * @param array $aItensPendentesPatrimonio
      * @return string json
      */
-    function empenho2Json($sWhere = '', $itens = 0, $aItensPendentesPatrimonio = array())
+    public function empenho2Json($sWhere = '', $itens = 0, $aItensPendentesPatrimonio = array())
     {
 
         if (!class_exists("services_json")) {
@@ -1485,12 +1534,12 @@ class empenho
             $subelemento = substr($desdobramento->o56_elemento, 7, 2);
         }
 
+
         $outrosDados = null;
         $tiposNotas = [];
 
         $isEmpenhoFolha = $oEmpenhoFinanceiro->isFolhaPagamento();
-        $necessitaCodigoAgrupamento = "";
-
+        $necessitaCodigoAgrupamento = false;
         if (isParaiba()) {
             $oDaoOutrosDados = new cl_empempenhooutrosdados();
             $sWhereDados = "e171_numemp = {$this->numemp}";
@@ -1528,7 +1577,6 @@ class empenho
 
         if ($this->getDados($this->numemp, $sWhere)) {
             $this->getSolicitacoesAnulacoes();
-
             $strJson["status"]          = 1;
             $strJson["e60_numemp"]      = $this->dadosEmpenho->e60_numemp;
             $strJson["e60_codemp"]      = $this->dadosEmpenho->e60_codemp;
@@ -1542,8 +1590,9 @@ class empenho
             $strJson["isEmpenhoFolha"] = $isEmpenhoFolha;
             $strJson["necessitaCodigoAgrupamento"] = $necessitaCodigoAgrupamento;
 
-
-
+            if (isRioDeJaneiro() && substr($desdobramento->o56_elemento, 0, 3) == '331') {
+                $strJson["isDespesaPessoal"] = true;
+            }
 
 //            $strJson["e171_dados"] = $codigoAgrupamento;
             $strJson["outrosDados"] = $outrosDados;
@@ -1588,6 +1637,15 @@ class empenho
                 if ($sImportaResumoOrdemPagamento == "t") {
                     $strJson["e60_resumo"] = $this->dadosEmpenho->e60_resumo;
                 }
+            }
+
+            if (isNiteroi()) {
+               $o200_descricao = str_pad($this->dadosEmpenho->o200_sequencial, 4, 0).
+                ' - ' . $this->dadosEmpenho->o200_descricao;
+
+               $strJson["o200_descricao"]  = trim($o200_descricao);
+               $strJson["descricao"]  = trim($this->dadosEmpenho->descricao);
+               $strJson["gestao"]     = trim($this->dadosEmpenho->gestao);
             }
             $strJson["z01_nome"]   = $this->dadosEmpenho->z01_nome;
             $strJson["o58_codigo"] = $this->dadosEmpenho->o58_codigo;
@@ -1802,7 +1860,7 @@ class empenho
      *
      * @return boolean;
      */
-    function liquidarAjax($iEmpenho, $aNotas, $sHistorico = '')
+    public function liquidarAjax($iEmpenho, $aNotas, $sHistorico = '')
     {
 
         (boolean) $this->lSqlErro = false;
@@ -1877,8 +1935,31 @@ class empenho
                 if (!$this->lSqlErro) {
                     $totalLiquidado += $objNota->e70_valor;
                 }
+
+                $iCodNota = $aNotas[$i];
+
+                $sql = "
+
+                select e71_codnota
+                from pagordem
+                join pagordemnota on (e71_codord) = (e50_codord)
+                where e50_numemp = {$iEmpenho}
+                  and e71_codnota = {$iCodNota}
+                  and e71_anulado is false
+              group by  e71_codnota
+         having count(e71_codnota) > 1
+
+                ";
+
+                $rs = db_query($sql);
+                if (pg_num_rows($rs) > 0) {
+                    $this->lSqlErro = true;
+                    $this->sMsgErro = "Erro ao liquidar, pode ocorrer duplicidade.";
+                }
             }//end for
         }
+
+
 
         db_fim_transacao($this->lSqlErro);
 
@@ -1908,7 +1989,7 @@ class empenho
      *
      * @return boolean;
      */
-    function estornarLiquidacaoAJAX($iEmpenho, $aNotas, $sHistorico = '', $lTransacao = true, $aCompetenciaNotas = array())
+    public function estornarLiquidacaoAJAX($iEmpenho, $aNotas, $sHistorico = '', $lTransacao = true, $aCompetenciaNotas = array())
     {
 
         (boolean) $this->lSqlErro = false;
@@ -1981,6 +2062,14 @@ class empenho
                     $clmatordemanu     = new cl_matordemanu();
                     $clmatordemanul    = new cl_matordemanul();
                     $clmatordemitemanu = new cl_matordemitemanu();
+
+                    /*
+                     * verifica se NL possui valor pago ou retenção apropriada
+                    */
+                    if ($objNota->e53_vlrpag > 0 && isNiteroi()) {
+                        $this->lSqlErro = true;
+                        $this->sMsgErro = "A NL {$objNota->e69_codnota} possui valor pago e/ou retenção apropriada. Favor verificar";
+                    }
                     /*
              vamos verificar se essa nota possui algum item em estoque.
              se possui, nao podemos deixar extornar a liquidacao
@@ -2094,13 +2183,13 @@ class empenho
         return $objJson->encode($retorno);
     }
 
-    function setEmpenho($iEmpenho)
+    public function setEmpenho($iEmpenho)
     {
 
         $this->numemp = $iEmpenho;
     }
 
-    function getEmpenho()
+    public function getEmpenho()
     {
 
         return $this->numemp;
@@ -2111,7 +2200,7 @@ class empenho
      * @return recordset;
      */
 
-    function getItensSaldo()
+    public function getItensSaldo()
     {
 
         $this->clempempitem = new cl_empempitem();
@@ -2150,7 +2239,7 @@ class empenho
      *
      * @return recordset;
      */
-    function gerarOrdemCompra(
+    public function gerarOrdemCompra(
         $iNumNota,
         $nTotal,
         $aItens,
@@ -2440,7 +2529,7 @@ class empenho
 
         if (!$this->lSqlErro) {
             //geramos elemento da nota.
-            $rsEle = $this->clempelemento->sql_record($this->clempelemento->sql_query($this->numemp));
+            $rsEle = $this->clempelemento->sql_record($this->clempelemento->sql_query($this->numemp, null, "e64_codele"));
             if ($this->clempelemento->numrows > 0) {
                 $objEmpElem                     = db_utils::fieldsMemory($rsEle, 0);
                 $this->dadosEmpenho->e64_codele = $objEmpElem->e64_codele;
@@ -2483,14 +2572,6 @@ class empenho
                 $this->sMsgErro = $this->erro_msg;
             }
             //lancando op para a nota
-            if (!$this->lSqlErro) {
-                //        $this->lancaOP($this->numemp, $objEmpElem->e64_codele, $objEmpNota->e69_codnota, $nTotal, null, $sHistorico);
-                //        if ($this->erro_status == "0"){
-                //
-                //          $this->lSqlErro = true;
-                //          $this->sMsgErro = $this->erro_msg;
-                //        }
-            }
         }
         if ($lIniciaTransacao) {
             db_fim_transacao($this->lSqlErro);
@@ -2508,7 +2589,7 @@ class empenho
         return $objJson->encode($retorno);
     }
 
-    function getSolicitacoesAnulacoes()
+    public function getSolicitacoesAnulacoes()
     {
 
         if (!class_exists('cl_empsolicitaanulitem')) {
@@ -2547,7 +2628,7 @@ class empenho
      *
      * @returns   void;
      */
-    function anularEmpenho(
+    public function anularEmpenho(
         $aItens,
         $nValorAnular = 0,
         $sMotivo = null,
@@ -2594,13 +2675,13 @@ class empenho
         $rsEmpElemento  = $clempelemento->sql_record($clempelemento->sql_query(
             $this->numemp,
             null,
-            "e64_vlranu,e64_vlremp,e64_codele"
+            "e64_vlranu,e64_vlremp,e64_codele,o56_elemento"
         ));
         $oElemento      = db_utils::fieldsMemory($rsEmpElemento, 0);
         $nTotalElemento = $oElemento->e64_vlranu + $nValorAnular;
         if (bccomp($nTotalElemento, $oElemento->e64_vlremp) > 0) { // if $tot > $e64_vlremp
             $this->lSqlErro = true;
-            $this->sErroMsg = "Erro[12](Sem saldo no elemento para anular\nNão pode anular o valor digitado para o elemento $elemento do empenho. Verifique!";
+            $this->sErroMsg = "Erro[12](Sem saldo no elemento para anular\nNão pode anular o valor digitado para o elemento {$oElemento->o56_elemento} do empenho. Verifique!";
 
             return false;
         }
@@ -2774,7 +2855,6 @@ class empenho
                                             $clprotprocesso->p58_codproc  = $oSolicProt->pc49_protprocesso;
                                             $clprotprocesso->p58_despacho = "Empenho Anulado!!";
                                             $clprotprocesso->alterar($oSolicProt->pc49_protprocesso);
-                                            //    db_msgbox("protprocesso");
                                             if ($clprotprocesso->erro_status == 0) {
                                                 $this->lSqlErro = true;
                                                 $this->sErroMsg = $clprotprocesso->erro_msg;
@@ -2789,10 +2869,9 @@ class empenho
                                         $clsolordemtransf->pc41_codtran   = $iCodTransf;
                                         $clsolordemtransf->pc41_ordem     = $oDestino->pc47_ordem;
                                         $clsolordemtransf->incluir(null);
-                                        //db_msgbox("solordemtransf");
                                         if ($clsolordemtransf->erro_status == 0) {
-                                            $this->lSsqlErro = true;
-                                            $erro_msg        = $clsolordemtransf->erro_msg;
+                                            $this->lSqlErro = true;
+                                            $this->sErroMsg = $clsolordemtransf->erro_msg;
                                         }
                                     }
                                 }
@@ -3138,7 +3217,7 @@ class empenho
      * @param integer $iTipo define o tipo de rp 1 - Nao Processao 2 processado
      */
 
-    function getDadosRP($iTipo)
+    public function getDadosRP($iTipo)
     {
 
         $this->getDados($this->numemp);
@@ -3219,7 +3298,7 @@ class empenho
         }
     }
 
-    function estornarRP(
+    public function estornarRP(
         $iTipo,
         $aNotas = null,
         $nValorEstornado,
@@ -3292,7 +3371,7 @@ class empenho
             $sqlFcLancamento .= date("Y-m-d", db_getsession("DB_datausu")) . "',";
             $sqlFcLancamento .= "{$iCodDoc},{$nValorEstornado})";
             $rsFcLancamento    = db_query($sqlFcLancamento);
-            $sErroFclancamento = pg_result($rsFcLancamento, 0, 0);
+            $sErroFclancamento = pg_fetch_result($rsFcLancamento, 0, 0);
             if (substr($sErroFclancamento, 0, 2) > 0) {
                 $this->sErroMsg = substr($sErroFclancamento, 3);
                 $this->lSqlErro = true;
@@ -3359,6 +3438,7 @@ class empenho
                     $oEmpNota     = $this->usarDao("empnota", true);
                     $oEmpNotaEle  = $this->usarDao("empnotaele", true);
                     $oEmpNotaItem = $this->usarDao("empnotaitem", true);
+
                     for ($iNotas = 0; $iNotas < count($aNotas); $iNotas++) {
                         $sSqlDadosElementoNota = $oEmpNotaEle->sql_query_file($aNotas[$iNotas]->iCodNota);
                         $rsDadosElementoNota   = $oEmpNotaEle->sql_record($sSqlDadosElementoNota);
@@ -3380,7 +3460,7 @@ class empenho
                         $oEmpNotaEle->alterar($aNotas[$iNotas]->iCodNota);
                         if ($oEmpNotaEle->erro_status == 0) {
                             $this->sErroMsg = "Erro[20]  Não foi possivel Alterar nota\n";
-                            $this->sErroMsg .= "[Técnico] {$oEmpnotaEle->erro_msg}";
+                            $this->sErroMsg .= "[Técnico] {$oEmpNotaEle->erro_msg}";
                             throw new exception($this->sErroMsg);
 
                             return false;
@@ -3456,7 +3536,7 @@ class empenho
                                     $oPagOrdemNota->alterar($oPagOrdemNota->e71_codord, $oPagOrdemNota->e71_codnota);
                                     if ($oPagOrdemNota->erro_status == 0) {
                                         $this->lSqlErro = true;
-                                        $this->sErroMsg = "Pagordemnota:" . $clpagordenota->erro_msg;
+                                        $this->sErroMsg = "Pagordemnota:" . $oPagOrdemNota->erro_msg;
                                         throw new exception($this->sErroMsg);
 
                                         return false;
@@ -3466,6 +3546,8 @@ class empenho
                         }
                     }
                 }
+
+
 
                 /*
          *incluimos Empanulado e (empanuladoitem (somente RP nao proc));
@@ -3509,8 +3591,8 @@ class empenho
                     }
                 }
                 /*
-         * informações do elemento anulado
-         */
+                 * informações do elemento anulado
+                 */
                 $oEmpAnuladoEle             = $this->usarDao("empanuladoele", true);
                 $oEmpAnuladoEle->e95_codanu = $iCodAnu;
                 $oEmpAnuladoEle->e95_codele = $oElemento->e64_codele;
@@ -3525,8 +3607,8 @@ class empenho
                     return false;
                 }
                 /*
-         * Lançamentos contabeis
-         */
+                 * Lançamentos contabeis
+                 */
                 $oLancam = new LancamentoContabil(
                     $iCodDoc,
                     $this->anousu,
@@ -3537,6 +3619,7 @@ class empenho
                 $oLancam->setEmpenho($this->numemp, $this->dadosEmpenho->e60_anousu, $this->dadosEmpenho->e60_codcom);
                 $oLancam->setElemento($oElemento->e64_codele);
                 $oLancam->setComplemento($sMotivo);
+
                 if ($iTipo == 2) {
                     if ($iCodigoNota != "") {
                         $oLancam->setNota($iCodigoNota);
@@ -3546,6 +3629,30 @@ class empenho
                     }
                 }
                 $oLancam->salvar();
+
+                 /**
+                 * verifica se tem acordo para estornar
+                 * doc 903
+                 */
+                $oDataImplantacao = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
+                $oInstituicao     = new Instituicao(db_getsession('DB_instit'));
+                if (ParametroIntegracaoPatrimonial::possuiIntegracaoContrato($oDataImplantacao, $oInstituicao)) {
+                    $oEmpenhoFinanceiro = new EmpenhoFinanceiro($this->dadosEmpenho->e60_numemp);
+
+                    if ($oEmpenhoFinanceiro->getAcordo() != null) {
+                        $oEventoContabil           = new EventoContabil(903, db_getsession("DB_anousu"));
+                        $aLancamentosCadastrados   = $oEventoContabil->getEventoContabilLancamento();
+                        $oLancamentoAuxiliarAcordo = new LancamentoAuxiliarAcordo();
+                        $oLancamentoAuxiliarAcordo->setValorTotal($nValorEstornado);
+                        $oLancamentoAuxiliarAcordo->setAcordo($oEmpenhoFinanceiro->getAcordo());
+                        $oLancamentoAuxiliarAcordo->setEmpenho($oEmpenhoFinanceiro);
+                        $oLancamentoAuxiliarAcordo->setHistorico($aLancamentosCadastrados[0]->getHistorico());
+                        if ($iCodigoNota != "") {
+                            $oLancamentoAuxiliarAcordo->setCodigoNotaLiquidacao($iCodigoNota);
+                        }
+                        $oEventoContabil->executaLancamento($oLancamentoAuxiliarAcordo);
+                    }
+                }
             }
         }
     }
@@ -3559,7 +3666,7 @@ class empenho
      * @returns Object
      */
 
-    function usarDao($sClasse, $rInstance = false)
+    public function usarDao($sClasse, $rInstance = false)
     {
 
         if (!class_exists("cl_{$sClasse}")) {
@@ -3579,7 +3686,7 @@ class empenho
      *
      * @return string
      */
-    function getInfoAgenda($iCodNota)
+    public function getInfoAgenda($iCodNota)
     {
 
         $clpagordemnota = db_utils::getDao("pagordemnota");
@@ -3614,13 +3721,13 @@ class empenho
         }
     }
 
-    function getCodigoMovimento()
+    public function getCodigoMovimento()
     {
 
         return $this->iCodigoMovimento;
     }
 
-    function baixarSaldoPacto($iEmpItem, $iItemPacto, $nQuantidade, $nValor)
+    public function baixarSaldoPacto($iEmpItem, $iItemPacto, $nQuantidade, $nValor)
     {
 
         require_once(modification("model/itempacto.model.php"));
@@ -3659,15 +3766,15 @@ class empenho
         $sCampos .= "               inner join db_depart on ridepto = coddepto limit 1) as origem                        ";
 
         if (isset($oFiltro->codempini) && !empty($oFiltro->codempini)) {
-            $codempIni = split("/", $oFiltro->codempini);
+            $codempIni = explode("/", $oFiltro->codempini);
             if (isset($oFiltro->codempfim) && !empty($oFiltro->codempfim)) {
-                $codempFim = split("/", $oFiltro->codempfim);
+                $codempFim = explode("/", $oFiltro->codempfim);
                 $str       = "  ( ( e60_codemp::integer >= " . $codempIni[0]
                   . " and e60_anousu = {$iAnoUso} )                          ";
                 $str .= " and ( e60_codemp::integer <= " . $codempFim[0]
                   . " and e60_anousu = {$iAnoUso} ) )                      ";
             } else {
-                $codemp = split("/", $oFiltro->codempini);
+                $codemp = explode("/", $oFiltro->codempini);
                 if (count($codemp) > 1) {
                     $str = " e60_codemp = '" . $codemp[0] . "' and e60_anousu = " . $codemp[1] . " ";
                 } else {
@@ -3686,12 +3793,12 @@ class empenho
 
         if (isset($oFiltro->dtemissini) && isset($oFiltro->dtemissfim)) {
             if (!empty($oFiltro->dtemissini)) {
-                $dtDataIni = split("/", $oFiltro->dtemissini);
+                $dtDataIni = explode("/", $oFiltro->dtemissini);
                 $dtDataIni = $dtDataIni[2] . "-" . $dtDataIni[1] . "-" . $dtDataIni[0];
             }
 
             if (!empty($oFiltro->dtemissini)) {
-                $dtDataFim = split("/", $oFiltro->dtemissfim);
+                $dtDataFim = explode("/", $oFiltro->dtemissfim);
                 $dtDataFim = $dtDataFim[2] . "-" . $dtDataFim[1] . "-" . $dtDataFim[0];
             }
 
@@ -3771,7 +3878,7 @@ class empenho
         return $this;
     }
 
-    function getLancamentosContabeis($sWhere = '')
+    public function getLancamentosContabeis($sWhere = '')
     {
 
         if (trim($sWhere) != "") {
@@ -3819,7 +3926,7 @@ class empenho
         return $aLancamentos;
     }
 
-    function alterarDataLancamento($iCodigoLancamento, $dtNovaData)
+    public function alterarDataLancamento($iCodigoLancamento, $dtNovaData)
     {
 
         if (!db_utils::inTransaction()) {
@@ -4125,7 +4232,6 @@ class empenho
                 }
                 $oLancamentoEmpenho = $aLancamentosEmpenho[0];
                 if (db_strtotime($dtValidar) < db_strtotime($oLancamentoEmpenho->data)) {
-
                     //dd($oLancamentoEmpenho, $dtValidar);
                     //throw new Exception("Data do Estorno da liquidação deve ser MAIOR ou IGUAL a data de liquidação.\nOperação cancelada.");
                 }
@@ -4138,7 +4244,6 @@ class empenho
                 if (count($aLancamentosEmpenho) > 0) {
                     $oLancamentoEmpenho = $aLancamentosEmpenho[0];
                     if (db_strtotime($dtValidar) < db_strtotime($oLancamentoEmpenho->data)) {
-
                         //dd($oLancamentoEmpenho, $dtValidar);
                         throw new Exception("Data do estorno da liquidação deve ser MENOR ou IGUAL a data de liquidacao da nota.\nOperação cancelada.");
                     }
@@ -4164,7 +4269,6 @@ class empenho
                     if (count($aLancamentosEmpenho) > 0) {
                         $oLancamentoEmpenho = $aLancamentosEmpenho[0];
                         if (db_strtotime($dtValidar) > db_strtotime($oLancamentoEmpenho->data)) {
-
                             // dd($oLancamentoEmpenho, $dtValidar);
                             // throw new Exception("Data da liquidação deve ser MENOR ou IGUAL a data de pagamento da nota.\nOperação cancelada.");
                         }
@@ -4261,7 +4365,7 @@ class empenho
         }
     }
 
-    function excluirLancamento($iCodigoLancamento)
+    public function excluirLancamento($iCodigoLancamento)
     {
 
         if (!db_utils::inTransaction()) {
@@ -4595,7 +4699,6 @@ class empenho
                 $this->getDados($this->numemp);
                 $oDaoEmpempenho             = new cl_empempenho;
                 $oDaoEmpempenho->e60_numemp = $this->numemp;
-                //$sErroMensagem .=  "Empenho:{$this->dadosEmpenho->e60_vlranu} - {$oDadosLancamento->valor}\n";
                 $oDaoEmpempenho->e60_vlranu = "" . ($this->dadosEmpenho->e60_vlranu - $oDadosLancamento->valor) . "";
                 $oDaoEmpempenho->alterar($this->numemp);
                 if ($oDaoEmpempenho->erro_status == 0) {
@@ -4607,7 +4710,6 @@ class empenho
                 $oDaoEmpElemento             = new cl_empelemento;
                 $oDaoEmpElemento->e64_numemp = $this->numemp;
                 $oDaoEmpElemento->e64_vlranu = "" . ($this->dadosEmpenho->e60_vlranu - $oDadosLancamento->valor) . "";
-                //$sErroMensagem .=  "Elemento:{$this->dadosEmpenho->e60_vlranu} - {$oDadosLancamento->valor}\n";
                 $oDaoEmpElemento->alterar($this->numemp, null);
                 if ($oDaoEmpElemento->erro_status == 0) {
                     $sErroMensagem = "Erro ao alterar valores do empenho.\n";
@@ -4615,7 +4717,6 @@ class empenho
                     throw new Exception($sErroMensagem);
                 }
 
-                //throw new Exception($sErroMensagem);
                 break;
 
             case 20: //Liquidacoes
@@ -4906,6 +5007,18 @@ class empenho
                     if ($oDaoempagemovhistorico->erro_status == 0) {
                         $sErroMensagem = "Erro ao excluir forma de pagamento vinculado ao lançamento.\n[ET]-{$oDaoempagemovhistorico->erro_msg}";
                         throw new Exception($sErroMensagem);
+                    }
+
+                    $where = sprintf(
+                        "(e145_movimento_original = %s or e145_movimento_retencao = %s)",
+                        $oMovimento->e81_codmov,
+                        $oMovimento->e81_codmov
+                    );
+
+                    $daoEmpagemovRetencoes = new cl_empagemovretencoes();
+                    $daoEmpagemovRetencoes->excluir(null, $where);
+                    if ($daoEmpagemovRetencoes->erro_status == 0) {
+                        throw new Exception("Erro ao excluir as retenções. \n{$daoEmpagemovRetencoes->erro_msg}");
                     }
 
                     $oDaoEmpagemov->excluir(null, "e81_codmov = {$oMovimento->e81_codmov}");
@@ -6075,6 +6188,44 @@ class empenho
         }
     }
 
+
+    /**
+     *
+     * criada para buscar o controle a partir do ano do empenho,
+     * ocorreu de um empenho de 2019 se r pago em 2022
+     * funcao buscava somente um ano pra tras do ano do pagamento, no caso
+     * buscava somente em 2021
+     * @param       $iNumeroEmpenho
+     * @param       $iAno
+     * @param array $aDocumentos
+     *
+     * @return bool
+     */
+    public static function possuiLancamentoDeControleAnoEmpenho($iNumeroEmpenho, $iAno = null, array $aDocumentos)
+    {
+
+        $sDocumentos = implode(',', $aDocumentos);
+        $aWhere      = array(
+          "c75_numemp  = {$iNumeroEmpenho}",
+          "c71_coddoc in ({$sDocumentos})"
+        );
+        if (!empty($iAno)) {
+            $aWhere[] = "c70_anousu >= {$iAno}";
+        }
+
+        $sWhere = implode(" and ", $aWhere);
+        $sOrdem = " c70_codlan desc limit 1 ";
+
+        $oDaoConlancam      = new cl_conlancamemp();
+        $sSqlBuscaDocumento = $oDaoConlancam->sql_query_documentos(null, "conhistdoc.*", $sOrdem, $sWhere);
+
+        $rsBuscaDocumento   = $oDaoConlancam->sql_record($sSqlBuscaDocumento);
+        if ($oDaoConlancam->numrows == 0) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @param       $iNumeroEmpenho
      * @param       $iAno
@@ -6084,7 +6235,6 @@ class empenho
      */
     public static function possuiLancamentoDeControle($iNumeroEmpenho, $iAno = null, array $aDocumentos)
     {
-
         $sDocumentos = implode(',', $aDocumentos);
         $aWhere      = array(
           "c75_numemp  = {$iNumeroEmpenho}",
@@ -6115,7 +6265,6 @@ class empenho
      */
     public static function buscaUltimoDocumentoExecutado($iSequencialEmpenho, $iAno)
     {
-
         $aWhere = array(
           "c75_numemp = {$iSequencialEmpenho}", "c70_anousu = {$iAno}"
         );
@@ -6170,15 +6319,14 @@ class empenho
      */
     public static function getLiquidacaoPorControleLiquidacao($documento, $estorno = false)
     {
-
-        $deParaLiquidacao = array(
-            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO           => HistoricoDocumento::LIQUIDACAO_DESPESA_COM_SERVICOS,
-            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP        => HistoricoDocumento::LIQUIDACAO_AQUISICAO_MATERIAL_PERMANENTE,
+        $deParaLiquidacao = [
+            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO => HistoricoDocumento::LIQUIDACAO_DESPESA_COM_SERVICOS,
+            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP => HistoricoDocumento::LIQUIDACAO_AQUISICAO_MATERIAL_PERMANENTE,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MAT_ALMOX => HistoricoDocumento::LIQUIDACAO_DESPESA_MATERIAL_CONSUMO,
-            HistoricoDocumento::REGISTRO_ENTRADA_MATERIAL_VIA_RP      => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO,
-            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP_RP     => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO,
-            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_RP        => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO
-        );
+            HistoricoDocumento::REGISTRO_ENTRADA_MATERIAL_VIA_RP => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO,
+            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP_RP => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO,
+            HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_RP => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO
+        ];
         if ($estorno) {
             $evento = EventoContabilRepository::getEventoContabilByCodigo($documento);
             return $evento->getEventoInverso()->getCodigoDocumento();
@@ -6237,10 +6385,21 @@ class empenho
      */
     public function getDocumentoInclusaoLiquidacao(EmpenhoFinanceiro $oEmpenhoFinanceiro, $codigoNota)
     {
-
         $anoSessao = db_getsession("DB_anousu");
+        $dataAtual = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
+        $instituicao = new Instituicao(db_getsession('DB_instit'));
+
+        $possuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracaoPatrimonio(
+            $dataAtual,
+            $instituicao
+        );
+
         $daoBuscaElemento = new cl_orcelemento();
-        $buscaEstrutural = $daoBuscaElemento->sql_query_file($oEmpenhoFinanceiro->getDesdobramentoEmpenho(), $oEmpenhoFinanceiro->getAno(), "o56_elemento");
+        $buscaEstrutural = $daoBuscaElemento->sql_query_file(
+            $oEmpenhoFinanceiro->getDesdobramentoEmpenho(),
+            $oEmpenhoFinanceiro->getAno(),
+            "o56_elemento"
+        );
         $rsBuscaEstrutural = db_query($buscaEstrutural);
         if (!$rsBuscaEstrutural) {
             throw new Exception("Ocorreu um erro ao consultar o estrutural do desdobramento do empenho.");
@@ -6266,7 +6425,11 @@ class empenho
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MAT_ALMOX,
         );
-        $lPossuiDocumentoControle = self::possuiLancamentoDeControle($oEmpenhoFinanceiro->getNumero(), $anoSessao, $documentosLancamentoControle);
+        $lPossuiDocumentoControle = self::possuiLancamentoDeControle(
+            $oEmpenhoFinanceiro->getNumero(),
+            $anoSessao,
+            $documentosLancamentoControle
+        );
 
         if ($oEmpenhoFinanceiro->isEmpenhoPassivo()) {
             $documento = HistoricoDocumento::LIQUIDACAO_EMPENHO_PASSIVO_SEM_SUP_ORCAMENT;
@@ -6276,8 +6439,26 @@ class empenho
             $documento = HistoricoDocumento::LIQUIDACAO_SUPRIMENTO_FUNDOS;
         }
 
-        $oCodigoGrupoContaOrcamento = GrupoContaOrcamento::getGrupoConta($oEmpenhoFinanceiro->getDesdobramentoEmpenho(), $anoSessao);
-        if ($oCodigoGrupoContaOrcamento && !$lIsPassivo && !$isPrestacaoContas && self::ordemDeCompraManual($codigoNota)) {
+        $oCodigoGrupoContaOrcamento = GrupoContaOrcamento::getGrupoConta(
+            $oEmpenhoFinanceiro->getDesdobramentoEmpenho(),
+            $anoSessao
+        );
+
+        /*
+         * Somente ira considerar a lógica dos grupos da conta orçamentária se:
+         *  - Possuir configuração de grupo para a conta
+         *    Menu: FINANCEIRO > Contabilidade > Cadastros > Plano de Contas Orçamentário > Alteração
+         *  - Se não for um empenho do possivo
+         *  - Se não for prestação de contas
+         *  - Se possuir ordem de compra
+         *  - Se a integração patrimonial estiver ativa
+         *    Menu: FINANCEIRO > Contabilidade > Procedimentos > Parâmetros > Integração Patrimonial
+         */
+        if ($oCodigoGrupoContaOrcamento
+            && !$lIsPassivo
+            && !$isPrestacaoContas
+            && self::ordemDeCompraManual($codigoNota)
+            && $possuiIntegracaoPatrimonial) {
             switch ($oCodigoGrupoContaOrcamento->getCodigo()) {
                 case 7:
                     $documento = HistoricoDocumento::LIQUIDACAO_DESPESA_COM_SERVICOS;
@@ -6336,6 +6517,7 @@ class empenho
         ) {
             $documento = HistoricoDocumento::LIQUIDACAO;
         }
+
         return $documento;
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbensmodeloetiquetapadrao->rotulo->label("t72_descr");
               <?=$Lt72_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 				       db_input("t72_sequencial",10,$It72_sequencial,true,"text",4,"","chave_t72_sequencial");
 				      ?>
             </td>
@@ -64,7 +64,7 @@ $clbensmodeloetiquetapadrao->rotulo->label("t72_descr");
               <?=$Lt72_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 				       db_input("t72_descr",40,$It72_descr,true,"text",4,"","chave_t72_descr");
 				      ?>
             </td>
@@ -82,7 +82,7 @@ $clbensmodeloetiquetapadrao->rotulo->label("t72_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensmodeloetiquetapadrao.php")==true){
@@ -122,12 +122,12 @@ $clbensmodeloetiquetapadrao->rotulo->label("t72_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

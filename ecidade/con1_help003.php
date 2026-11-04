@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -117,7 +117,7 @@ function js_contageral(numero,idobj){
 <table>
 <tr>
 <td valign="top">
-<?
+<?php
   $seleciona_help = true;
   if(isset($cadhelp)){
     $qhelp = 0;
@@ -144,7 +144,7 @@ function js_contageral(numero,idobj){
   }
   ?>
   <table>
-  <?
+  <?php
   $ambiente = 1;		  		   
   $mod = $modulo;
   $wid = 15;
@@ -239,7 +239,7 @@ function js_contageral(numero,idobj){
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($item)){
  echo "<script>
        js_atualiza_help($item);

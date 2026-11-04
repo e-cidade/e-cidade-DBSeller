@@ -181,6 +181,15 @@ $pdf->AliasNbPages();
 $pdf->ln(5);
 $pdf->SetAutoPageBreak(true, 10);
 
+$sLogoInstit         = $oTurma->getEscola()->getLogo();
+$sLogoEscola         = $oTurma->getEscola()->getLogoEscola();
+
+$pdf->Image('imagens/files/'.$sLogoInstit,7,$pdf->GetY(),20);
+
+if(trim($sLogoEscola)!=""){
+    $pdf->Image('imagens/'.$sLogoEscola,100,$pdf->GetY() - 2,20);
+}
+
 if ( strlen($nome) > 42 || strlen($sNomeEscola) > 42 ) {
   $TamFonteNome = 8;
 } else {
@@ -282,10 +291,48 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
     db_redireciona("db_erros.php?fechar=true&db_erro={$oLibDocumento->sMsgErro}");
   }
 
-  $aParagrafo = $oLibDocumento->getDocParagrafos();
-  foreach ($aParagrafo as $oParagrafo ) {
-    eval($oParagrafo->oParag->db02_texto);
-  }
+    $sSqlTelefoneEscola = "select ed26_i_numero
+                           from telefoneescola
+                          where ed26_i_escola = ".db_getsession("DB_coddepto")."
+                          limit 1";
+
+    $rsTelefoneEscola   = db_query($sSqlTelefoneEscola);
+
+    if( pg_num_rows($rsTelefoneEscola) > 0 ){
+        $telefoneescola = db_utils::fieldsMemory($rsTelefoneEscola,0)->ed26_i_numero;
+    } else {
+        $telefoneescola = "";
+    }
+    $pdf->Image('imagens/files/'.$sLogoInstit,7,$pdf->GetY(),20);
+    if(trim($sLogoEscola)!=""){
+        $pdf->Image('imagens/'.$sLogoEscola,107,$pdf->GetY(),20);
+    }
+    $pdf->Text(33,$m0,$nome);
+    $pdf->Text(33,$m1,$sNomeEscola);
+    $pdf->SetFont('Arial','I',8);
+    $pdf->Text(33,$m2,$ruaescola.", ".$numescola." - ".$bairroescola);
+    $pdf->Text(33,$m3,$cidadeescola." - ".$estadoescola);
+    $pdf->Text(33,$m4,$telefoneescola);
+    $comprim = ($pdf->w - $pdf->rMargin - $pdf->lMargin);
+    $pdf->Text(33,$m5,($emailescola!=""?$emailescola." - ":"").$url);
+    $Espaco = $pdf->w - 80 ;
+    $pdf->SetFont('Arial','',7);
+    $pdf->setleftmargin($Espaco);
+    $alturahead;
+    $pdf->setfillcolor(235);
+    $pdf->roundedrect($Espaco - 3,$m8,75,28,2,'DF','123');
+    $pdf->line(10,$m6,$comprim,$m6);
+    $pdf->setfillcolor(255);
+    $pdf->multicell(0,$m7,@$head1,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head2,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head3,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head4,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head5,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head6,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head7,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head8,0,1,"J",0);
+    $pdf->setleftmargin($margemesquerda);
+    $pdf->Ln(5);
 
   $pdf->setleftmargin($margemesquerda);
 

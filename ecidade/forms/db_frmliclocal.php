@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("j13_descr");
        <?=@$Ll26_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('l26_codigo',8,$Il26_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tl26_lograd?>">
-       <?
+       <?php
        db_ancora(@$Ll26_lograd,"js_pesquisal26_lograd(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('l26_lograd',7,$Il26_lograd,true,'text',$db_opcao," onchange='js_pesquisal26_lograd(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Ll26_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('l26_numero',10,$Il26_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,22 +74,22 @@ db_input('l26_numero',10,$Il26_numero,true,'text',$db_opcao,"")
        <?=@$Ll26_compl?>
     </td>
     <td> 
-<?
+<?php
 db_input('l26_compl',20,$Il26_compl,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tl26_bairro?>">
-       <?
+       <?php
        db_ancora(@$Ll26_bairro,"js_pesquisal26_bairro(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('l26_bairro',4,$Il26_bairro,true,'text',$db_opcao," onchange='js_pesquisal26_bairro(false);'")
 ?>
-       <?
+       <?php
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        <?=@$Ll26_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('l26_obs',0,50,$Il26_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_liclocal.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

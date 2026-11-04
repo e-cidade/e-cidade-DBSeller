@@ -53,13 +53,13 @@ class cl_censoregradisc {
                  ed272_ano = int4 = Ano 
                  ";
    //funcao construtor da classe 
-   function cl_censoregradisc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("censoregradisc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_censoregradisc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed272_i_codigo = ($this->ed272_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed272_i_codigo"]:$this->ed272_i_codigo);
        $this->ed272_i_censoetapa = ($this->ed272_i_censoetapa == ""?@$GLOBALS["HTTP_POST_VARS"]["ed272_i_censoetapa"]:$this->ed272_i_censoetapa);
@@ -79,7 +79,7 @@ class cl_censoregradisc {
      }
    }
    // funcao para inclusao
-   function incluir ($ed272_i_codigo){ 
+   public function incluir ($ed272_i_codigo){ 
       $this->atualizacampos();
      if($this->ed272_i_censoetapa == null ){ 
        $this->erro_sql = " Campo Etapa não informado.";

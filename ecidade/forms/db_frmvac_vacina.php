@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $oRotulo->label("vc04_c_descr");
             <?=@$Lvc06_i_codigo?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('vc06_i_codigo', 10, $Ivc06_i_codigo, true, 'text', 3, "");
             db_input('vc06_i_orden', 10, $Ivc06_i_orden, true, 'hidden', 3, "");
             ?>
@@ -53,7 +53,7 @@ $oRotulo->label("vc04_c_descr");
             <b>Material:</b>
           </td>
           <td> 
-            <?
+            <?php
             db_input('vc06_c_descr', 52, $Ivc06_c_descr, true, 'text', $db_opcao, "");
             ?>
           </td>
@@ -63,19 +63,19 @@ $oRotulo->label("vc04_c_descr");
             <?=@$Lvc06_c_codpni?>
           </td>
           <td>
-            <?
+            <?php
             db_input('vc06_c_codpni', 10, $Ivc06_c_codpni, true, 'text', $db_opcao, "");
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tvc06_i_tipovacina?>">
-            <?
+            <?php
             db_ancora(@$Lvc06_i_tipovacina, "js_pesquisavc06_i_tipovacina(true);", $db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('vc06_i_tipovacina', 10, $Ivc06_i_tipovacina, true, 'text', $db_opcao,
                      " onchange='js_pesquisavc06_i_tipovacina(false);'");
             db_input('vc04_c_descr', 40, $Ivc04_c_descr, true, 'text', 3, '');
@@ -87,7 +87,7 @@ $oRotulo->label("vc04_c_descr");
             <?=@$Lvc06_i_basico?>
           </td>
           <td> 
-            <?
+            <?php
               $x = array('1'=>'SIM', '2'=>'NÃO');
               db_select('vc06_i_basico', $x, true, $db_opcao, "");
             ?>
@@ -98,7 +98,7 @@ $oRotulo->label("vc04_c_descr");
             <?=@$Lvc06_i_situacao?>
           </td>
           <td> 
-            <?
+            <?php
             $x = array('1'=>'ATIVA', '2'=>'INATIVA');
             db_select('vc06_i_situacao',$x,true,$db_opcao,"");
             ?>
@@ -107,7 +107,7 @@ $oRotulo->label("vc04_c_descr");
       </table>
     </fieldset>
   </center>
-  <?
+  <?php
   if ($db_opcao == 2) {
   ?>
   <fieldset style="width: 600; margin-bottom: 6px;">
@@ -115,12 +115,12 @@ $oRotulo->label("vc04_c_descr");
     <table>
       <tr>
         <td nowrap title="<?=@$Tvc29_i_vacina?>">
-          <?
+          <?php
           db_ancora(@$Lvc29_i_vacina, "js_pesquisavc29_i_material(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('vc29_i_codigo', 10, $Ivc29_i_codigo, true, 'hidden', 3, '');
           db_input('vc29_i_material', 10, $Ivc29_i_material, true, 'text', $db_opcao,
                    " onchange='js_pesquisavc29_i_material(false);'");
@@ -133,7 +133,7 @@ $oRotulo->label("vc04_c_descr");
           <b>Doses:</b>
         </td>
         <td> 
-          <?
+          <?php
           db_input('vc29_i_dose', 10, $Ivc29_i_dose, true, 'text', $db_opcao, '');
           ?>
         </td>
@@ -148,7 +148,7 @@ $oRotulo->label("vc04_c_descr");
     <div id="GridVacinas" id="GridVacinas">
     </div>
   </fieldset>
-  <? 
+  <?php 
   } 
   ?>
   <input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
@@ -156,11 +156,11 @@ $oRotulo->label("vc04_c_descr");
          value = "<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
          <?=($db_botao==false?"disabled":"")?> >
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-  <?
+  <?php
   if (($db_opcao == 2) || ($db_opcao==22)) {
   ?>
   <input name = "ordenar" type = "button" id = "ordenar" value = "Ordenar" onclick = "js_ordenar();" >
-  <?
+  <?php
   }
   ?>
 </form>
@@ -169,11 +169,11 @@ $oRotulo->label("vc04_c_descr");
 var sRPC         = 'vac4_vacinas.RPC.php';
 var oGridVacinas = new DBGrid('GridVacinas');
 var F = document.form1;
-<?
+<?php
 if ($db_opcao == 2) {
 ?>
   js_init();
-<?
+<?php
 }
 ?>
 function js_init() {
@@ -439,7 +439,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(iChave) {
 
   db_iframe_vac_vacina.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+iChave";
   }

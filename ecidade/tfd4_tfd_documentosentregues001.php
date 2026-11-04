@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -115,7 +115,7 @@ if(isset($confirmar)) {
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
 db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
 db_app::load(" grid.style.css");
 ?>
@@ -129,7 +129,7 @@ db_app::load(" grid.style.css");
     <td height="530" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 98%;'> <legend><b>Indique os Documentos</b></legend>
-     	  <?
+     	  <?php
 	      require_once(modification("forms/db_frmtfd_documentosentregues.php"));
 	      ?>
       </center>
@@ -138,7 +138,7 @@ db_app::load(" grid.style.css");
   </tr>
 </table>
 </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -146,7 +146,7 @@ db_app::load(" grid.style.css");
 <script>
 js_tabulacaoforms("form1","tf22_i_pedidotfd",true,1,"tf22_i_pedidotfd",true);
 </script>
-<?
+<?php
 if(isset($confirmar)) {
 
   if($oDaotfd_documentosentregues->erro_status=="0") {

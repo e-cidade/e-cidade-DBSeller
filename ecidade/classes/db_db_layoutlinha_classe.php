@@ -1,78 +1,78 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_layoutlinha
-class cl_db_layoutlinha { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db51_codigo = 0; 
-   var $db51_layouttxt = 0; 
-   var $db51_descr = null; 
-   var $db51_tipolinha = 0; 
-   var $db51_tamlinha = 0; 
-   var $db51_linhasantes = 0; 
-   var $db51_linhasdepois = 0; 
-   var $db51_obs = null; 
-   var $db51_separador = null; 
-   var $db51_compacta = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_layoutlinha {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db51_codigo = 0;
+   var $db51_layouttxt = 0;
+   var $db51_descr = null;
+   var $db51_tipolinha = 0;
+   var $db51_tamlinha = 0;
+   var $db51_linhasantes = 0;
+   var $db51_linhasdepois = 0;
+   var $db51_obs = null;
+   var $db51_separador = null;
+   var $db51_compacta = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db51_codigo = int4 = Código da linha 
-                 db51_layouttxt = int4 = Código do layout 
-                 db51_descr = varchar(40) = Descrição 
-                 db51_tipolinha = int4 = Tipo de linha 
-                 db51_tamlinha = int4 = Tamanho da linha 
-                 db51_linhasantes = int4 = Quebras antes 
-                 db51_linhasdepois = int4 = Quebras depois 
-                 db51_obs = text = Observações 
-                 db51_separador = varchar(10) = Separador 
-                 db51_compacta = bool = Compacta 
+                 db51_codigo = int4 = Código da linha
+                 db51_layouttxt = int4 = Código do layout
+                 db51_descr = varchar(40) = Descrição
+                 db51_tipolinha = int4 = Tipo de linha
+                 db51_tamlinha = int4 = Tamanho da linha
+                 db51_linhasantes = int4 = Quebras antes
+                 db51_linhasdepois = int4 = Quebras depois
+                 db51_obs = text = Observações
+                 db51_separador = varchar(10) = Separador
+                 db51_compacta = bool = Compacta
                  ";
-   //funcao construtor da classe 
-   function cl_db_layoutlinha() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_layoutlinha"); 
+     $this->rotulo = new rotulo("db_layoutlinha");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_db_layoutlinha {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db51_codigo = ($this->db51_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["db51_codigo"]:$this->db51_codigo);
        $this->db51_layouttxt = ($this->db51_layouttxt == ""?@$GLOBALS["HTTP_POST_VARS"]["db51_layouttxt"]:$this->db51_layouttxt);
@@ -98,9 +98,9 @@ class cl_db_layoutlinha {
      }
    }
    // funcao para inclusao
-   function incluir ($db51_codigo){ 
+   public function incluir ($db51_codigo){
       $this->atualizacampos();
-     if($this->db51_layouttxt == null ){ 
+     if($this->db51_layouttxt == null ){
        $this->erro_sql = " Campo Código do layout nao Informado.";
        $this->erro_campo = "db51_layouttxt";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_db_layoutlinha {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db51_descr == null ){ 
+     if($this->db51_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "db51_descr";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_db_layoutlinha {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db51_tipolinha == null ){ 
+     if($this->db51_tipolinha == null ){
        $this->erro_sql = " Campo Tipo de linha nao Informado.";
        $this->erro_campo = "db51_tipolinha";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_db_layoutlinha {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db51_tamlinha == null ){ 
+     if($this->db51_tamlinha == null ){
        $this->erro_sql = " Campo Tamanho da linha nao Informado.";
        $this->erro_campo = "db51_tamlinha";
        $this->erro_banco = "";
@@ -136,13 +136,13 @@ class cl_db_layoutlinha {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db51_linhasantes == null ){ 
+     if($this->db51_linhasantes == null ){
        $this->db51_linhasantes = "0";
      }
-     if($this->db51_linhasdepois == null ){ 
+     if($this->db51_linhasdepois == null ){
        $this->db51_linhasdepois = "0";
      }
-     if($this->db51_compacta == null ){ 
+     if($this->db51_compacta == null ){
        $this->erro_sql = " Campo Compacta nao Informado.";
        $this->erro_campo = "db51_compacta";
        $this->erro_banco = "";
@@ -152,16 +152,16 @@ class cl_db_layoutlinha {
        return false;
      }
      if($db51_codigo == "" || $db51_codigo == null ){
-       $result = db_query("select nextval('db_layoutlinha_db51_codigo_seq')"); 
+       $result = db_query("select nextval('db_layoutlinha_db51_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_layoutlinha_db51_codigo_seq do campo: db51_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_layoutlinha_db51_codigo_seq do campo: db51_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db51_codigo = pg_result($result,0,0); 
+       $this->db51_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_layoutlinha_db51_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $db51_codigo)){
@@ -172,10 +172,10 @@ class cl_db_layoutlinha {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db51_codigo = $db51_codigo; 
+         $this->db51_codigo = $db51_codigo;
        }
      }
-     if(($this->db51_codigo == null) || ($this->db51_codigo == "") ){ 
+     if(($this->db51_codigo == null) || ($this->db51_codigo == "") ){
        $this->erro_sql = " Campo db51_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,31 +184,31 @@ class cl_db_layoutlinha {
        return false;
      }
      $sql = "insert into db_layoutlinha(
-                                       db51_codigo 
-                                      ,db51_layouttxt 
-                                      ,db51_descr 
-                                      ,db51_tipolinha 
-                                      ,db51_tamlinha 
-                                      ,db51_linhasantes 
-                                      ,db51_linhasdepois 
-                                      ,db51_obs 
-                                      ,db51_separador 
-                                      ,db51_compacta 
+                                       db51_codigo
+                                      ,db51_layouttxt
+                                      ,db51_descr
+                                      ,db51_tipolinha
+                                      ,db51_tamlinha
+                                      ,db51_linhasantes
+                                      ,db51_linhasdepois
+                                      ,db51_obs
+                                      ,db51_separador
+                                      ,db51_compacta
                        )
                 values (
-                                $this->db51_codigo 
-                               ,$this->db51_layouttxt 
-                               ,'$this->db51_descr' 
-                               ,$this->db51_tipolinha 
-                               ,$this->db51_tamlinha 
-                               ,$this->db51_linhasantes 
-                               ,$this->db51_linhasdepois 
-                               ,'$this->db51_obs' 
-                               ,'$this->db51_separador' 
-                               ,'$this->db51_compacta' 
+                                $this->db51_codigo
+                               ,$this->db51_layouttxt
+                               ,'$this->db51_descr'
+                               ,$this->db51_tipolinha
+                               ,$this->db51_tamlinha
+                               ,$this->db51_linhasantes
+                               ,$this->db51_linhasdepois
+                               ,'$this->db51_obs'
+                               ,'$this->db51_separador'
+                               ,'$this->db51_compacta'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de linhas do layout ($this->db51_codigo) nao Incluído. Inclusao Abortada.";
@@ -249,16 +249,16 @@ class cl_db_layoutlinha {
        $resac = db_query("insert into db_acount values($acount,1554,13343,'','".AddSlashes(pg_result($resaco,0,'db51_compacta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db51_codigo=null) { 
+   public function alterar ($db51_codigo=null) {
       $this->atualizacampos();
      $sql = " update db_layoutlinha set ";
      $virgula = "";
-     if(trim($this->db51_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_codigo"])){ 
+     if(trim($this->db51_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_codigo"])){
        $sql  .= $virgula." db51_codigo = $this->db51_codigo ";
        $virgula = ",";
-       if(trim($this->db51_codigo) == null ){ 
+       if(trim($this->db51_codigo) == null ){
          $this->erro_sql = " Campo Código da linha nao Informado.";
          $this->erro_campo = "db51_codigo";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_db_layoutlinha {
          return false;
        }
      }
-     if(trim($this->db51_layouttxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_layouttxt"])){ 
+     if(trim($this->db51_layouttxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_layouttxt"])){
        $sql  .= $virgula." db51_layouttxt = $this->db51_layouttxt ";
        $virgula = ",";
-       if(trim($this->db51_layouttxt) == null ){ 
+       if(trim($this->db51_layouttxt) == null ){
          $this->erro_sql = " Campo Código do layout nao Informado.";
          $this->erro_campo = "db51_layouttxt";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_db_layoutlinha {
          return false;
        }
      }
-     if(trim($this->db51_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_descr"])){ 
+     if(trim($this->db51_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_descr"])){
        $sql  .= $virgula." db51_descr = '$this->db51_descr' ";
        $virgula = ",";
-       if(trim($this->db51_descr) == null ){ 
+       if(trim($this->db51_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "db51_descr";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_db_layoutlinha {
          return false;
        }
      }
-     if(trim($this->db51_tipolinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_tipolinha"])){ 
+     if(trim($this->db51_tipolinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_tipolinha"])){
        $sql  .= $virgula." db51_tipolinha = $this->db51_tipolinha ";
        $virgula = ",";
-       if(trim($this->db51_tipolinha) == null ){ 
+       if(trim($this->db51_tipolinha) == null ){
          $this->erro_sql = " Campo Tipo de linha nao Informado.";
          $this->erro_campo = "db51_tipolinha";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_db_layoutlinha {
          return false;
        }
      }
-     if(trim($this->db51_tamlinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_tamlinha"])){ 
+     if(trim($this->db51_tamlinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_tamlinha"])){
        $sql  .= $virgula." db51_tamlinha = $this->db51_tamlinha ";
        $virgula = ",";
-       if(trim($this->db51_tamlinha) == null ){ 
+       if(trim($this->db51_tamlinha) == null ){
          $this->erro_sql = " Campo Tamanho da linha nao Informado.";
          $this->erro_campo = "db51_tamlinha";
          $this->erro_banco = "";
@@ -320,32 +320,32 @@ class cl_db_layoutlinha {
          return false;
        }
      }
-     if(trim($this->db51_linhasantes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasantes"])){ 
-        if(trim($this->db51_linhasantes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasantes"])){ 
-           $this->db51_linhasantes = "0" ; 
-        } 
+     if(trim($this->db51_linhasantes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasantes"])){
+        if(trim($this->db51_linhasantes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasantes"])){
+           $this->db51_linhasantes = "0" ;
+        }
        $sql  .= $virgula." db51_linhasantes = $this->db51_linhasantes ";
        $virgula = ",";
      }
-     if(trim($this->db51_linhasdepois)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasdepois"])){ 
-        if(trim($this->db51_linhasdepois)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasdepois"])){ 
-           $this->db51_linhasdepois = "0" ; 
-        } 
+     if(trim($this->db51_linhasdepois)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasdepois"])){
+        if(trim($this->db51_linhasdepois)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db51_linhasdepois"])){
+           $this->db51_linhasdepois = "0" ;
+        }
        $sql  .= $virgula." db51_linhasdepois = $this->db51_linhasdepois ";
        $virgula = ",";
      }
-     if(trim($this->db51_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_obs"])){ 
+     if(trim($this->db51_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_obs"])){
        $sql  .= $virgula." db51_obs = '$this->db51_obs' ";
        $virgula = ",";
      }
-     if(trim($this->db51_separador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_separador"])){ 
+     if(trim($this->db51_separador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_separador"])){
        $sql  .= $virgula." db51_separador = '$this->db51_separador' ";
        $virgula = ",";
      }
-     if(trim($this->db51_compacta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_compacta"])){ 
+     if(trim($this->db51_compacta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db51_compacta"])){
        $sql  .= $virgula." db51_compacta = '$this->db51_compacta' ";
        $virgula = ",";
-       if(trim($this->db51_compacta) == null ){ 
+       if(trim($this->db51_compacta) == null ){
          $this->erro_sql = " Campo Compacta nao Informado.";
          $this->erro_campo = "db51_compacta";
          $this->erro_banco = "";
@@ -389,7 +389,7 @@ class cl_db_layoutlinha {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de linhas do layout nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db51_codigo;
@@ -417,14 +417,14 @@ class cl_db_layoutlinha {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db51_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db51_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db51_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -459,7 +459,7 @@ class cl_db_layoutlinha {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de linhas do layout nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db51_codigo;
@@ -487,11 +487,11 @@ class cl_db_layoutlinha {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -513,11 +513,11 @@ class cl_db_layoutlinha {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $db51_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $db51_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,15 +531,15 @@ class cl_db_layoutlinha {
      $sql2 = "";
      if($dbwhere==""){
        if($db51_codigo!=null ){
-         $sql2 .= " where db_layoutlinha.db51_codigo = $db51_codigo "; 
-       } 
+         $sql2 .= " where db_layoutlinha.db51_codigo = $db51_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,11 +548,11 @@ class cl_db_layoutlinha {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $db51_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $db51_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -565,15 +565,15 @@ class cl_db_layoutlinha {
      $sql2 = "";
      if($dbwhere==""){
        if($db51_codigo!=null ){
-         $sql2 .= " where db_layoutlinha.db51_codigo = $db51_codigo "; 
-       } 
+         $sql2 .= " where db_layoutlinha.db51_codigo = $db51_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

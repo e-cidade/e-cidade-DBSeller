@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -96,7 +96,7 @@ $result = $clsepultamento->sql_record($clsepultamento->sql_query($sepultamento,"
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmretiradas.php"));
 	?>
     </center>
@@ -105,7 +105,7 @@ $result = $clsepultamento->sql_record($clsepultamento->sql_query($sepultamento,"
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clretiradas->erro_status=="0"){
    db_msgbox($clretiradas->erro_msg);

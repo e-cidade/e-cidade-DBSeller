@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("p58_codproc");
        <?=@$Lv22_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v22_sequencial',10,$Iv22_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv22_termoanu?>">
-       <?
+       <?php
        db_ancora(@$Lv22_termoanu,"js_pesquisav22_termoanu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v22_termoanu',10,$Iv22_termoanu,true,'text',$db_opcao," onchange='js_pesquisav22_termoanu(false);'")
 ?>
-       <?
+       <?php
 db_input('v09_sequencial',10,$Iv09_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv22_processo?>">
-       <?
+       <?php
        db_ancora(@$Lv22_processo,"js_pesquisav22_processo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v22_processo',10,$Iv22_processo,true,'text',$db_opcao," onchange='js_pesquisav22_processo(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_termoanuproc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

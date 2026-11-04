@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -37,12 +37,13 @@ if($linhas!=0){
 }
 ?>
 
-<?
+<?php
 if(isset($_POST["pesquisar"])){
  db_postmemory($HTTP_POST_VARS);
  if($z01_nome==""){
   db_msgbox("Digite algum termo para consulta!");
-  ?><script>history.back();</script><?
+  ?><script>history.back();</script>
+  <?php
   exit;
  }
  $where = " ( bi15_assunto like '%$z01_nome%' OR bi06_titulo like '%$z01_nome%' ";
@@ -87,7 +88,7 @@ if(isset($_POST["pesquisar"])){
    <td align="center"><b>Código Exemplar</b></td>
    <td><b>Título</b></td>
   </tr>
-  <?
+  <?php
    $cor1 = "#DEB887";
    $cor2 = "#FFE0C1";
    $cor=$cor1;
@@ -130,14 +131,14 @@ if(isset($_POST["pesquisar"])){
       </td>
      </tr>
     </form>
-    <?}?>
+    <?php } ?>
     <table>
-   <?}else{?>
+   <?php } else { ?>
     <tr>
       <td colspan="7" align="center" bgcolor="#f3f3f3">Nenhum registro encontrado para estes termos</td>
     </tr>
     </table>
-   <?}
+   <?php }
   }else{
    echo "<div align='center'><br>Digite os termos, escolha o filtro e clique em pesquisar</div>";
   }

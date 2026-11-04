@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,16 +43,16 @@ $clrotulo->label("o41_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh26_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lrh26_anousu,"js_pesquisarh26_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $rh26_anousu = db_getsession('DB_anousu');
 db_input('rh26_anousu',4,$Irh26_anousu,true,'text',$db_opcao," onchange='js_pesquisarh26_anousu(false);'")
 ?>
-       <?
+       <?php
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
@@ -64,22 +64,22 @@ db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
        <?=@$Lrh26_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh26_codigo',4,$Irh26_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh26_orgao?>">
-       <?
+       <?php
        db_ancora(@$Lrh26_orgao,"js_pesquisarh26_orgao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh26_orgao',2,$Irh26_orgao,true,'text',$db_opcao," onchange='js_pesquisarh26_orgao(false);'")
 ?>
-       <?
+       <?php
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
@@ -88,15 +88,15 @@ db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh26_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lrh26_unidade,"js_pesquisarh26_unidade(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh26_unidade',2,$Irh26_unidade,true,'text',$db_opcao," onchange='js_pesquisarh26_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
 db_input('o41_descr',50,$Io41_descr,true,'text',3,'');
@@ -321,7 +321,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_rhlotaexe.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

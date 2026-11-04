@@ -17,10 +17,7 @@ var HttpClient = /** @class */ (function () {
             js_divCarregando(options.reportMessage, 'loading_message');
         }
 
-        const accessToken = window.localStorage.getItem('access_token');
-        const urlMatch = window.location.href.match(/[^\r\n]+(w\/[0-9]+)+/g);
-
-        const locationUrl = urlMatch !== null ? urlMatch[0] : '';
+        const token = JSON.parse(window.localStorage.getItem('ecidade@user_token'));
 
         let params = {
             method: method,
@@ -29,7 +26,7 @@ var HttpClient = /** @class */ (function () {
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
                 // 'X-Window-Session': locationUrl !== '' ? locationUrl.split('/').reverse()[0] : '',
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${token?.access_token}`
             }
         };
 
@@ -37,9 +34,8 @@ var HttpClient = /** @class */ (function () {
             params.body = options.body;
         }
 
-        if (!url.includes('http') && locationUrl !== '') {
-            url = `${locationUrl}/${url}`;
-        }
+        const isV3 = typeof CurrentWindow !== 'undefined' && typeof CurrentWindow.resolveUrl === 'function';
+        url = isV3 ? CurrentWindow.resolveUrl(url) : url;
 
         return fetch(url, params).then(function (response) {
             if (options.reportProgress === true) {

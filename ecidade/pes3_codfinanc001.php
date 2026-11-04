@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,12 +69,12 @@ $clrotulo->label('DBtxt25');
             <strong>Ano / Mês :&nbsp;&nbsp;</strong>
           </td>
           <td>
-            <?
+            <?php
             $ano = db_anofolha();
             db_input('ano',4,$IDBtxt23,true,'text',2,'')
             ?>
             &nbsp;/&nbsp;
-            <?
+            <?php
             $mes = db_mesfolha();
             db_input('mes',2,$IDBtxt25,true,'text',2,'')
             ?>
@@ -82,15 +82,15 @@ $clrotulo->label('DBtxt25');
         </tr>
         <tr> 
           <td align="right" title="<?=$Trh27_rubric?>"> 
-            <?
+            <?php
             db_ancora(@ $Lrh27_rubric, "js_pesquisarrubric(true);", 1);
     		?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('rh27_rubric', 8, $Irh27_rubric, true, 'text', 1, " onchange='js_pesquisarrubric(false);'")
             ?>
-            <?
+            <?php
             db_input('rh27_descr', 30, $Irh27_descr, true, 'text', 3, '');
             ?>
           </td>
@@ -106,7 +106,7 @@ $clrotulo->label('DBtxt25');
       <input type="button" value="Pesquisar" name="pesquisar" onclick="js_abrejan();">
 </form>
 </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

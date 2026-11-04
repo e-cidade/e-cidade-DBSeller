@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -138,7 +138,7 @@ if(isset($processar)) {
   } catch (Exception $oErro ) {
    db_fim_transacao(true);
    
-   alert("Operação não realizada! \n".$oErro->getMessage());
+   db_msgbox("Operação não realizada! \n".$oErro->getMessage());
   	
   } 
   
@@ -150,7 +150,7 @@ if(isset($processar)) {
 	<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta http-equiv="Expires" CONTENT="0">
-	<?
+	<?php
 	  db_app::load('scripts.js, prototype.js, strings.js, datagrid.widget.js');
 	  db_app::load('estilos.css, grid.style.css');
 	?>
@@ -158,7 +158,7 @@ if(isset($processar)) {
 
 <body bgcolor="#CCCCCC">
 <form name="form1" id="form1" method="post" onsubmit="return js_valida();">
-<?
+<?php
  db_menu(db_getsession('DB_id_usuario'), db_getsession('DB_modulo'), db_getsession('DB_anousu'), db_getsession('DB_instit'))
 ?>
 
@@ -167,7 +167,7 @@ if(isset($processar)) {
   <tr>
     <td title="<?=$Tv07_parcel?>" width="50%" align="right"><?=$Lv07_parcel?></td>
     <td width="50%">
-    <?
+    <?php
       db_input('v07_parcel', 10, $Iv07_parcel, true, 'text', 1)
     ?>
     </td>
@@ -188,7 +188,7 @@ if(isset($processar)) {
   <tr>
     <td title="Total de Parcelas" align="right"><strong>Total de Parcelas</strong></td>
     <td>
-    <?
+    <?php
       db_input('total_parcelas', 10, $Iv07_totpar, true, 'text', 3);
     ?>
     </td>
@@ -197,7 +197,7 @@ if(isset($processar)) {
   <tr>
     <td title="Valor atual da 1ª parcela" align="right"><strong>Valor Atual 1ª Parcela</strong></td>
     <td>
-    <?
+    <?php
       db_input('valor_primeira_parcela', 10, $Iv07_vlrent, true, 'text', 3);
     ?>
     </td>
@@ -206,7 +206,7 @@ if(isset($processar)) {
   <tr>
     <td title="Valor outras parcelas" align="right"><strong>Valor Atual Parcelas</strong></td>
     <td>
-    <?
+    <?php
       db_input('valor_parcelas', 10, $Iv07_vlrpar, true, 'text', 3);
     ?>
     </td>
@@ -215,7 +215,7 @@ if(isset($processar)) {
   <tr>
     <td title="Valor ultima parcela" align="right"><strong>Valor Atual &Uacute;ltima Parcela</strong></td>
     <td>
-    <?
+    <?php
       db_input('valor_ultima_parcela', 10, $Iv07_ultpar, true, 'text', 3);
     ?>
     </td>
@@ -224,7 +224,7 @@ if(isset($processar)) {
   <tr>
     <td title="Valor Total D&iacute;vida" align="right"><strong>Valor Total da D&iacute;vida</strong></td>
     <td>
-    <?
+    <?php
       db_input('valor_total_divida', 10, null, true, 'text', 3);
     ?>
     </td>
@@ -247,7 +247,7 @@ if(isset($processar)) {
   <tr>
     <td title="Valor ultima parcela" align="right"><strong>Valor &Uacute;ltima Parcela</strong></td>
     <td>
-    <?
+    <?php
       db_input('n_valor_ultima_parcela', 10, $Iv07_ultpar, true, 'text', 3);
     ?>
     </td>

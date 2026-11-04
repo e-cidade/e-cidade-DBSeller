@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,11 +65,11 @@ $clcriaabas = new cl_criaabas;
 											<label id='label_data' for='dataInicial'><strong>Data Tarefa:</strong></label>
 										</td>
 										<td>
-											<?
+											<?php
 												db_inputdata('dataInicial','','','', true, 'text', 1);
 											?>
 											até
-											<?
+											<?php
 												db_inputdata('dataFinal','','','', true, 'text', 1);
 											?>
 										</td>
@@ -79,7 +79,7 @@ $clcriaabas = new cl_criaabas;
 											<label id='label_ordenarPor' for='ordenarPor'><strong>Ordenar por:</strong></label>
 										</td>
 										<td>
-											<?
+											<?php
 												$aOrdenar = array('1'=>'Tarefa', '2'=>'Data Cria&ccedil;&atilde;o', '3'=>'Data Atualiza&ccedil;&atilde;o', '4'=>'Tempo Atualização');
 												db_select('ordenarPor', $aOrdenar, true, 1, 'style="width: 200px;"');
 												db_input('desc', '', '', '', 'checkbox', 1, 'onclick = "enviaVal(this.checked)"');
@@ -93,7 +93,7 @@ $clcriaabas = new cl_criaabas;
 											<label id='label_tarefasAutorizadas' for='tarefasAutorizadas'><strong>Tarefas:</strong></label>
 										</td>
 										<td>
-											<?
+											<?php
 												$aTarefas = array('1'=>'Todas', '2'=>'Autorizadas', '3'=>'N&atilde;o Autorizadas');
 												db_select('tarefasAutorizadas', $aTarefas, true, 1, 'style="width: 200px;"');
 											?>												
@@ -104,7 +104,7 @@ $clcriaabas = new cl_criaabas;
 											<label id='label_considerarTarefas' for='considerarTarefas'><strong>Considerar:</strong></label>
 										</td>
 										<td>
-											<?
+											<?php
 												$aConsiderTarefas = array('1'=>'Todas', '2'=>'Conclu&iacute;das', '3'=>'Em Andamento');
 												db_select('considerarTarefas', $aConsiderTarefas, true, 1, 'style="width: 200px;"');
 											?>
@@ -119,7 +119,7 @@ $clcriaabas = new cl_criaabas;
 			</table>
 		</center>		
 		
-	<?
+	<?php
 		db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	?>	
 	</body>

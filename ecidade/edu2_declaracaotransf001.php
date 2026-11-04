@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -91,7 +91,7 @@ if (isset($incluirobs)) {
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Declaração de Transferência</b></legend>
 <table border="0" align="left">
@@ -101,7 +101,7 @@ if (isset($incluirobs)) {
     </tr>
      <td>
       <b>Ano:</b><br>
-      <?
+      <?php
       $sql        = " SELECT DISTINCT extract(year from ed103_d_data) as anotransf ";
       $sql       .= "       FROM transfescolarede ";
       $sql       .= "       WHERE ed103_i_escolaorigem = $escola ";
@@ -109,19 +109,19 @@ if (isset($incluirobs)) {
       $sql       .= "       SELECT DISTINCT extract(year from ed104_d_data) as anotransf ";
       $sql       .= "       FROM transfescolafora ";
       $sql       .= "       WHERE ed104_i_escolaorigem = $escola ";
-      $sql       .= "       ORDER BY anotransf DESC"; 
+      $sql       .= "       ORDER BY anotransf DESC";
       $sql_result = db_query($sql);
       ?>
       <select name="ano" style="font-size:9px;width:200px;height:18px;" onchange="js_limpaalunos();">
        <option></option>
-       <?
+       <?php
        while ($row=pg_fetch_array($sql_result)) {
-        
+
          $anotransf=$row["anotransf"];
-        ?>        
+        ?>
         <option value="<?=$anotransf?>" <?=$anotransf==@$ano?"selected":""?> ><?=$anotransf?></option>
-        <?
-        
+        <?php
+
        }
        ?>
       </select>
@@ -141,13 +141,13 @@ if (isset($incluirobs)) {
    </table>
   </td>
  </tr>
- <?if (isset($ano)) {
-    
+ <?php if (isset($ano)) {
+
   ?>
   <tr>
   <td valign="top">
-   <?
-     if ($tipo == "TR") {           
+   <?php
+     if ($tipo == "TR") {
        $campos = "ed103_i_codigo as codtransf,ed47_i_codigo,ed47_v_nome,ed103_d_data as datatransf";
        $where  = " ed103_i_escolaorigem = $escola AND extract(year from ed103_d_data) = '$ano'";
        $result = $cltransfescolarede->sql_record($cltransfescolarede->sql_query("",
@@ -164,21 +164,21 @@ if (isset($incluirobs)) {
        $sql   .= "        inner join matricula on matricula.ed60_i_codigo = transfescolafora.ed104_i_matricula ";
        $sql   .= "        inner join turma on turma.ed57_i_codigo = matricula.ed60_i_turma ";
        $sql   .= "       WHERE ed104_i_escolaorigem = $escola ";
-       $sql   .= "       AND extract(year from ed104_d_data) = '$ano' ";            
+       $sql   .= "       AND extract(year from ed104_d_data) = '$ano' ";
        $sql   .= "       ORDER BY to_ascii(ed47_v_nome) ";
        $result = db_query($sql);
        $linhas = pg_num_rows($result);
      }
    ?>
    <b>Alunos:</b><br>
-   <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" 
+   <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()"
            style="font-size:9px;width:430px;height:120px" multiple>
-    <?
+    <?php
      for ($i=0; $i<$linhas; $i++) {
-        
+
        db_fieldsmemory($result,$i);
        echo "<option value='$codtransf'>$ed47_i_codigo - $ed47_v_nome ( Transf. em ".db_formatar($datatransf,'d').")</option>\n";
-       
+
     }
     ?>
    </select>
@@ -188,7 +188,7 @@ if (isset($incluirobs)) {
    <table border="0">
     <tr>
      <td>
-      <input name="incluirum" title="Incluir" type="button" value=">" onclick="js_incluir();" 
+      <input name="incluirum" title="Incluir" type="button" value=">" onclick="js_incluir();"
              style="border:1px outset;border-top-color:#f3f3f3;border-left-color:#f3f3f3;background:#cccccc;
                     font-size:12px;font-weight:bold;width:30px;height:15px;padding:0px;" disabled>
      </td>
@@ -196,7 +196,7 @@ if (isset($incluirobs)) {
     <tr><td height="1"></td></tr>
     <tr>
      <td>
-      <input name="incluirtodos" title="Incluir Todos" type="button" value=">>" onclick="js_incluirtodos();" 
+      <input name="incluirtodos" title="Incluir Todos" type="button" value=">>" onclick="js_incluirtodos();"
              style="border:1px outset;border-top-color:#f3f3f3;border-left-color:#f3f3f3;background:#cccccc;
              font-size:12px;font-weight:bold;width:30px;height:15px;padding:0px;" <?=$linhas==0?"disabled":""?>>
      </td>
@@ -210,7 +210,7 @@ if (isset($incluirobs)) {
     <tr><td height="3"></td></tr>
     <tr>
      <td>
-      <input name="excluirum" title="Excluir" type="button" value="<" onclick="js_excluir();" 
+      <input name="excluirum" title="Excluir" type="button" value="<" onclick="js_excluir();"
              style="border:1px outset;border-top-color:#f3f3f3;border-left-color:#f3f3f3;background:#cccccc;
              font-size:12px;font-weight:bold;width:30px;height:15px;padding:0px;" disabled>
      </td>
@@ -218,7 +218,7 @@ if (isset($incluirobs)) {
     <tr><td height="1"></td></tr>
     <tr>
      <td>
-      <input name="excluirtodos" title="Excluir Todos" type="button" value="<<" onclick="js_excluirtodos();" 
+      <input name="excluirtodos" title="Excluir Todos" type="button" value="<<" onclick="js_excluirtodos();"
              style="border:1px outset;border-top-color:#f3f3f3;border-left-color:#f3f3f3;background:#cccccc;
              font-size:12px;font-weight:bold;width:30px;height:15px;padding:0px;" disabled>
      </td>
@@ -227,7 +227,7 @@ if (isset($incluirobs)) {
   </td>
   <td valign="top">
    <b>Alunos para gerar declaração:</b><br>
-   <select name="alunos[]" id="alunos" size="10" onclick="js_desabexc()" 
+   <select name="alunos[]" id="alunos" size="10" onclick="js_desabexc()"
            style="font-size:9px;width:330px;height:120px" multiple>
    </select>
   </td>
@@ -239,7 +239,7 @@ if (isset($incluirobs)) {
   </td>
  </tr>
   <tr>
-     <?
+     <?php
    $resultobs = $clobstransferencia->sql_record($clobstransferencia->sql_query("",
                                                                                "ed283_c_bolsafamilia,ed283_t_mensagem",
                                                                                "",
@@ -247,15 +247,15 @@ if (isset($incluirobs)) {
                                                                               )
                                                );
    if ($clobstransferencia->numrows>0) {
-    
+
      db_fieldsmemory($resultobs,0);
      $obs = $ed283_t_mensagem;
-     
+
    }
    ?>
   <td colspan="3">
-   <b>Auxílio Brasil:</b>
-   <?
+   <b>Bolsa Família:</b>
+   <?php
      $x = array("1"=>"NÃO","2"=>"SIM");
      db_select('ed283_c_bolsafamilia',$x,true,@$db_opcao,"");
    ?>
@@ -264,7 +264,7 @@ if (isset($incluirobs)) {
   <tr>
     <td valign="top" colspan="3">
    <b>Observação Geral:</b><br>
-   <?db_textarea('ed283_t_mensagem', 3, 110, $Ied283_t_mensagem, true, 'text', @$db_opcao, "", "", "", 2000)?><br>
+   <?php db_textarea('ed283_t_mensagem', 3, 110, $Ied283_t_mensagem, true, 'text', @$db_opcao, "", "", "", 2000)?><br>
   </td>
  </tr>
  <tr>
@@ -276,7 +276,7 @@ if (isset($incluirobs)) {
    </fieldset>
   </td>
  </tr>
- <?}?>
+ <?php }?>
 </table>
 </fieldset>
 </center>
@@ -291,27 +291,27 @@ if (isset($incluirobs)) {
 </html>
 <script>
 function js_incluir() {
-    
+
   var Tam = document.form1.alunosdiario.length;
   var F = document.form1;
   for (x=0;x<Tam;x++) {
-      
+
     if (F.alunosdiario.options[x].selected==true) {
-        
+
       F.elements['alunos[]'].options[F.elements['alunos[]'].options.length] = new Option(F.alunosdiario.options[x].text,F.alunosdiario.options[x].value)
       F.alunosdiario.options[x] = null;
       Tam--;
       x--;
-      
+
     }
   }
   if (document.form1.alunosdiario.length>0) {
     document.form1.alunosdiario.options[0].selected = true;
   } else {
-      
+
     document.form1.incluirum.disabled = true;
     document.form1.incluirtodos.disabled = true;
-    
+
   }
   document.form1.pesquisar.disabled = false;
   document.form1.excluirtodos.disabled = false;
@@ -319,14 +319,14 @@ function js_incluir() {
 }
 
 function js_incluirtodos() {
-    
+
   var Tam = document.form1.alunosdiario.length;
   var F = document.form1;
   for (i=0;i<Tam;i++) {
-      
+
     F.elements['alunos[]'].options[F.elements['alunos[]'].options.length] = new Option(F.alunosdiario.options[0].text,F.alunosdiario.options[0].value)
     F.alunosdiario.options[0] = null;
-    
+
  }
  document.form1.incluirum.disabled = true;
  document.form1.incluirtodos.disabled = true;
@@ -336,98 +336,98 @@ function js_incluirtodos() {
 }
 
 function js_excluir() {
-    
+
   var F = document.getElementById("alunos");
   Tam = F.length;
   for(x=0;x<Tam;x++) {
-      
+
     if (F.options[x].selected==true) {
-        
+
       document.form1.alunosdiario.options[document.form1.alunosdiario.length] = new Option(F.options[x].text,F.options[x].value);
       F.options[x] = null;
       Tam--;
       x--;
-      
+
     }
   }
   if (document.form1.alunos.length>0) {
     document.form1.alunos.options[0].selected = true;
   }
   if (F.length == 0) {
-      
+
     document.form1.pesquisar.disabled = true;
     document.form1.excluirum.disabled = true;
     document.form1.excluirtodos.disabled = true;
     document.form1.incluirtodos.disabled = false;
-    
+
   }
   document.form1.alunos.focus();
 }
 
 function js_excluirtodos() {
-    
+
   var Tam = document.form1.alunos.length;
   var F = document.getElementById("alunos");
   for(i=0;i<Tam;i++){
-      
+
     document.form1.alunosdiario.options[document.form1.alunosdiario.length] = new Option(F.options[0].text,F.options[0].value);
     F.options[0] = null;
-    
+
   }
   if (F.length == 0) {
-      
+
     document.form1.pesquisar.disabled = true;
     document.form1.excluirum.disabled = true;
     document.form1.excluirtodos.disabled = true;
     document.form1.incluirtodos.disabled = false;
-    
+
   }
   document.form1.alunosdiario.focus();
 }
 
 function js_desabinc() {
-    
+
   for(i=0;i<document.form1.alunosdiario.length;i++){
-      
+
     if (document.form1.alunosdiario.length>0 && document.form1.alunosdiario.options[i].selected) {
-        
+
       if (document.form1.alunos.length>0) {
         document.form1.alunos.options[0].selected = false;
       }
       document.form1.incluirum.disabled = false;
       document.form1.excluirum.disabled = true;
-      
+
     }
   }
 }
 
 function js_desabexc() {
-    
+
   for (i=0;i<document.form1.alunos.length;i++) {
-      
+
     if (document.form1.alunos.length>0 && document.form1.alunos.options[i].selected) {
-        
+
       if (document.form1.alunosdiario.length>0){
         document.form1.alunosdiario.options[0].selected = false;
       }
       document.form1.incluirum.disabled = true;
       document.form1.excluirum.disabled = false;
-      
+
     }
   }
 }
 
 function js_procurar(ano,tipo) {
-    
+
  if(ano!="" && tipo!=""){
      location.href = "edu2_declaracaotransf001.php?ano="+ano+"&tipo="+tipo;
- } 
+ }
 }
 
 function js_limpaalunos() {
-    
+
   if (document.form1.alunosdiario){
-      
+
     qtd = document.form1.alunosdiario.length;
     for (i = 0; i < qtd; i++) {
       document.form1.alunosdiario.options[0] = null;
@@ -441,26 +441,26 @@ function js_limpaalunos() {
 }
 
 function js_pesquisa(tipo) {
-    
+
   if (tipo == "") {
     alert("Informe o tipo da transferência!");
   } else {
-      
+
     F = document.form1.alunos;
     alunos = "";
     sep = "";
     for(i=0;i<F.length;i++){
-        
+
       alunos += sep+F.options[i].value;
       sep = ",";
-      
+
     }
-    jan = window.open('edu2_declaracaotransf002.php?alunos='+alunos+'&tipo='+tipo+'&diretor='+document.form1.diretor.value+'&obs='+document.form1.ed283_t_mensagem.value+'&bolsafamilia='+document.form1.ed283_c_bolsafamilia.value,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
+    jan = window.open('edu2_guiatransf002.php?isDeclaracao='+ true +'&alunos='+alunos+'&tipo='+tipo+'&diretor='+document.form1.diretor.value+'&obs='+document.form1.ed283_t_mensagem.value+'&bolsafamilia='+document.form1.ed283_c_bolsafamilia.value,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
     jan.moveTo(0,0);
   }
   location.href = "edu2_declaracaotransf001.php?diretor="+document.form1.diretor.value+"&ed283_c_bolsafamilia="+document.form1.ed283_c_bolsafamilia.value+"&ed283_t_mensagem="+document.form1.ed283_t_mensagem.value+"&incluirobs";
 }
-<?if (pg_num_rows($sql_result)>0 && !isset($ano)) {?>
+<?php if (pg_num_rows($sql_result)>0 && !isset($ano)) {?>
     document.form1.ano[1].selected = true;
-<?}?>
+<?php }?>
 </script>

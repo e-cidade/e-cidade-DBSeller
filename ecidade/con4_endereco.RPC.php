@@ -183,6 +183,14 @@ switch ($oParam->exec) {
 
     db_inicio_transacao();
     try {
+      $compl = db_stdClass::normalizeStringJsonEscapeString($oParam->endereco->descricaoComplemento);
+      $valida = Check::VaidacaoDados([
+        [$compl,null,100,['\'','"']]
+      ]);
+
+      if($valida){
+        throw new Exception("usuário: \n\n $valida \n\n");
+      }
 
       $oEndereco = new endereco(null);
 

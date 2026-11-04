@@ -52,13 +52,13 @@ class cl_certidcartoriorecibopaga {
                  v33_numnov = int4 = Numpre do Recibo da Certidão
                  ";
    //funcao construtor da classe
-   function cl_certidcartoriorecibopaga() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidcartoriorecibopaga");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_certidcartoriorecibopaga {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v33_sequencial = ($this->v33_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v33_sequencial"]:$this->v33_sequencial);
        $this->v33_certidcartorio = ($this->v33_certidcartorio == ""?@$GLOBALS["HTTP_POST_VARS"]["v33_certidcartorio"]:$this->v33_certidcartorio);
@@ -77,7 +77,7 @@ class cl_certidcartoriorecibopaga {
      }
    }
    // funcao para Inclusão
-   function incluir ($v33_sequencial){
+   public function incluir ($v33_sequencial){
       $this->atualizacampos();
      if($this->v33_certidcartorio == null ){
        $this->erro_sql = " Campo Código Certidão Cartório não informado.";

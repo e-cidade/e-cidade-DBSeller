@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,7 +64,7 @@ function js_mandadados(){
          <table border="0">
            <tr align="center">
              <td nowrap> 
-              <?
+              <?php
               db_input('listaproc',100,"",true,'hidden',3);
               db_input('codtransfer',10,"",true,'hidden',3);
               db_input('contador',10,"",true,'hidden',3);
@@ -80,7 +80,7 @@ function js_mandadados(){
     </b>
     </td>
     <td nowrap> 
-    <?
+    <?php
     if (isset($codtransfer)&&$codtransfer!="") {
       
       $sSqlTransferencia = $clproctransferint->sql_query_andusu(null, 
@@ -133,14 +133,14 @@ function js_mandadados(){
   <tr>
     <td><b>Data:</b></td>
     <td>
-    <?
+    <?php
     @$p88_data=db_formatar(@$p88_data,'d');
     db_input('p88_data',10,"",true,'text',3)
     ?>
     </td>
     <td><b>Hora:</b></td>
     <td>
-    <?
+    <?php
     db_input('p88_hora',6,"",true,'text',3)
     ?>
     </td>
@@ -148,13 +148,13 @@ function js_mandadados(){
   <tr>
     <td><b>Usuário Atual:</b></td>
     <td>
-    <?
+    <?php
     db_input('usu_atual',30,"",true,'text',3);
     ?>
     </td>
     <td><b>Usuário Destino:</b></td>
     <td>
-    <?
+    <?php
     db_input('usu_destino',30,"",true,'text',3);
     ?>
     </td>
@@ -166,12 +166,12 @@ function js_mandadados(){
   <tr align="center">
     <td colspan=4  nowrap>
     <fieldset><legend><b>Processos da Transferencia</b></legend>
-    <?
+    <?php
     if (isset($codtransfer)&&$codtransfer!=""){
     ?>
       <iframe name="iframe_proctrans" id="proctrans" marginwidth="0" marginheight="0" frameborder="0" 
               src="pro4_canceltransintlist.php?cod=<?=@$codtransfer?>" width="700" height="260"></iframe>
-    <?
+    <?php
     }
     ?>
     </fieldset>

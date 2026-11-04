@@ -2,9 +2,11 @@
 
 namespace App\Domain\Patrimonial\Ouvidoria\Model;
 
-use App\Domain\Patrimonial\Protocolo\Model\Processo\TipoProcesso;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static tipoProcessoCodigo( int $tipoProcesso)
+ */
 class TipoProcessoFormaReclamacao extends Model
 {
 
@@ -15,5 +17,10 @@ class TipoProcessoFormaReclamacao extends Model
     public function formaReclamacao()
     {
         return $this->belongsTo(FormaReclamacao::class, "p43_formareclamacao");
+    }
+
+    public function scopeTipoProcessoCodigo($query, $tipoProcesso)
+    {
+        return $query->where("p43_tipoproc", $tipoProcesso);
     }
 }

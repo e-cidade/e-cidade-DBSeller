@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE diarioalaviacaoalternativa
 class cl_diarioalaviacaoalternativa { 
@@ -26,13 +26,13 @@ class cl_diarioalaviacaoalternativa {
                  ed136_procavalalternativa = int4 = Avaliação Alternativa 
                  ";
    //funcao construtor da classe 
-   function cl_diarioalaviacaoalternativa() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diarioalaviacaoalternativa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_diarioalaviacaoalternativa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed136_sequencial = ($this->ed136_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed136_sequencial"]:$this->ed136_sequencial);
        $this->ed136_diario = ($this->ed136_diario == ""?@$GLOBALS["HTTP_POST_VARS"]["ed136_diario"]:$this->ed136_diario);
@@ -51,7 +51,7 @@ class cl_diarioalaviacaoalternativa {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed136_sequencial){ 
+   public function incluir ($ed136_sequencial){ 
       $this->atualizacampos();
      if($this->ed136_diario == null ){ 
        $this->erro_sql = " Campo Diário não informado.";

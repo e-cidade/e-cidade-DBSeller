@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -49,24 +49,26 @@ final class CalculoJuridica extends Calculo implements Interfaces\Calculo
     {
         $anoVencimento = substr($this->dataVencimento, 0, 4);
 
-        $sql = " select sum(substr(fc_calcula, 15, 13)::numeric(10, 2)) as valor_corrigido, 
-                        sum(substr(fc_calcula, 28, 13)::numeric(10, 2)) as valor_juros,     
-                        sum(substr(fc_calcula, 41, 13)::numeric(10, 2)) as valor_multa,     
-                        sum(substr(fc_calcula, 54, 13)::numeric(10, 2)) as valor_desconto   
-                   from (select k00_numpre,                                                 
-                                fc_calcula(k00_numpre, k00_numpar, k00_receit, '$this->dataVencimento', '$this->dataVencimento', $anoVencimento) 
-                           from arrecad 
-                          where k00_numpre in (select v59_numpre 
-                                                 from inicialnumpre 
-                                                      inner join recibopaga on recibopaga.k00_numpre = inicialnumpre.v59_numpre
-                                                                           and recibopaga.k00_numnov = $this->numnov 
-                                                where v59_inicial in (select v71_inicial 
-                                                                        from processoforoinicial 
-                                                                       where v71_processoforo = {$this->processoForo->getCodigo()})) 
-                          group by k00_numpre, 
-                                   k00_numpar, 
-                                   k00_receit, 
-                                   k00_dtvenc  
+        $sql = " select sum(substr(fc_calcula, 15, 13)::numeric(10, 2)) as valor_corrigido,
+                        sum(substr(fc_calcula, 28, 13)::numeric(10, 2)) as valor_juros,
+                        sum(substr(fc_calcula, 41, 13)::numeric(10, 2)) as valor_multa,
+                        sum(substr(fc_calcula, 54, 13)::numeric(10, 2)) as valor_desconto
+                   from (select k00_numpre,
+                                fc_calcula(k00_numpre, k00_numpar, k00_receit, '$this->dataVencimento',
+                                           '$this->dataVencimento', $anoVencimento)
+                           from arrecad
+                          where k00_numpre in
+                                (select v59_numpre
+                                 from inicialnumpre
+                                      join recibopaga on recibopaga.k00_numpre = inicialnumpre.v59_numpre
+                                                     and recibopaga.k00_numnov = $this->numnov
+                                 where v59_inicial in (select v71_inicial
+                                                       from processoforoinicial
+                                                       where v71_processoforo = {$this->processoForo->getCodigo()}))
+                          group by k00_numpre,
+                                   k00_numpar,
+                                   k00_receit,
+                                   k00_dtvenc
                         ) as calculo ";
 
         $rs = db_query($sql);

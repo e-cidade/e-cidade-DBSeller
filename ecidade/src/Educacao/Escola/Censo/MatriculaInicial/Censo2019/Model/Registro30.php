@@ -56,6 +56,8 @@ class Registro30
     private $paisNacionalidade;
     private $municipioNascimento;
 
+    private $visaoMonocular;
+
     /**
      * Deficiência, transtorno do espectro autista ou altas habilidades/superdotação
      */
@@ -145,6 +147,7 @@ class Registro30
     private $educacaoCampo;
     private $educacaoAmbiental;
     private $educacaoDireitosHumanos;
+    private $educacaoBilingueSurdos;
     private $generoDiversidadeSexual;
     private $direitosCriancaAdolescente;
     private $educacaoEtnicoRaciais;
@@ -172,6 +175,64 @@ class Registro30
     private $tipoPos6 = null;
     private $areaPos6 = null;
     private $anoConclusaoPos6 = null;
+
+    private $educacaoTIC;
+
+    /**
+     * @return mixed
+     */
+    public function getEducacaoTIC()
+    {
+        return $this->educacaoTIC;
+    }
+
+    /**
+     * @param mixed $educacaoTIC
+     * @return Registro30
+     */
+    public function setEducacaoTIC($educacaoTIC)
+    {
+        $this->educacaoTIC = $educacaoTIC;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getEducacaoBilingueSurdos()
+    {
+        return $this->educacaoBilingueSurdos;
+    }
+
+    /**
+     * @param mixed $educacaoBilingueSurdos
+     * @return Registro30
+     */
+    public function setEducacaoBilingueSurdos($educacaoBilingueSurdos)
+    {
+        $this->educacaoBilingueSurdos = $educacaoBilingueSurdos;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisaoMonocular()
+    {
+        return $this->visaoMonocular;
+    }
+
+    /**
+     * @param mixed $visaoMonocular
+     * @return Registro30
+     */
+    public function setVisaoMonocular($visaoMonocular)
+    {
+        $this->visaoMonocular = $visaoMonocular;
+        return $this;
+    }
+
 
     /**
      * @return string
@@ -1724,6 +1785,8 @@ class Registro30
             "educacaoCampo" => $this->getEducacaoCampo(),
             "educacaoAmbiental" => $this->getEducacaoAmbiental(),
             "educacaoDireitosHumanos" => $this->getEducacaoDireitosHumanos(),
+            "educacaoBilingueSurdos" => $this->getEducacaoBilingueSurdos(),
+            "educacaoTIC" => $this->getEducacaoTIC(),
             "generoDiversidadeSexual" => $this->getGeneroDiversidadeSexual(),
             "direitosCriancaAdolescente" => $this->getDireitosCriancaAdolescente(),
             "educacaoEtnicoRaciais" => $this->getEducacaoEtnicoRaciais(),
@@ -1731,6 +1794,7 @@ class Registro30
             "outros" => $this->getOutros(),
             "nenhumCurso" => $this->getNenhumCurso(),
             "email" => $this->getEmail(),
+            "visaoMonocular" => $this->getVisaoMonocular()
         );
     }
 

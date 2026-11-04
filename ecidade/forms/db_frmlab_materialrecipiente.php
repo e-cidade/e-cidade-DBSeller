@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("la15_c_descr");
        <?=@$Lla17_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la17_i_codigo',10,$Ila17_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla17_i_recipiente?>">
-       <?
+       <?php
        db_ancora(@$Lla17_i_recipiente,"js_pesquisala17_i_recipiente(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la17_i_recipiente',10,$Ila17_i_recipiente,true,'text',$db_opcao," onchange='js_pesquisala17_i_recipiente(false);'")
 ?>
-       <?
+       <?php
 db_input('la14_c_descr',50,$Ila14_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla17_i_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lla17_i_unidade,"js_pesquisala17_i_unidade(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la17_i_unidade',10,$Ila17_i_unidade,true,'text',$db_opcao," onchange='js_pesquisala17_i_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('la13_c_descr',50,$Ila13_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla17_i_materialcoleta?>">
-       <?
+       <?php
        db_ancora(@$Lla17_i_materialcoleta,"js_pesquisala17_i_materialcoleta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la17_i_materialcoleta',10,$Ila17_i_materialcoleta,true,'text',$db_opcao," onchange='js_pesquisala17_i_materialcoleta(false);'")
 ?>
-       <?
+       <?php
 db_input('la15_c_descr',50,$Ila15_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('la15_c_descr',50,$Ila15_c_descr,true,'text',3,'')
        <?=@$Lla17_d_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('la17_d_inicio',@$la17_d_inicio_dia,@$la17_d_inicio_mes,@$la17_d_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_inputdata('la17_d_inicio',@$la17_d_inicio_dia,@$la17_d_inicio_mes,@$la17_d_in
        <?=@$Lla17_d_fim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('la17_d_fim',@$la17_d_fim_dia,@$la17_d_fim_mes,@$la17_d_fim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_materialrecipiente.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

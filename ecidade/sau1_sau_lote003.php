@@ -74,6 +74,7 @@ function excluirProntuariosLote($aLista) {
   global $oDaoProntagend;
   global $oDaoProntprofatend;
   global $clsau_lotepront;
+  $oErro = new stdClass();
   $oErro->lError  = false;
   $oErro->sMsg    = "";
   $sWhere         = "";
@@ -346,7 +347,7 @@ if(isset($excluirlote)){
     <tr>
       <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
         <center>
-          <?
+          <?php
           require_once(modification("forms/db_frmsau_lote.php"));
           ?>
         </center>
@@ -355,7 +356,7 @@ if(isset($excluirlote)){
   </table>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir) || isset($excluirlote)) {
 
   if ($clsau_lotepront->erro_status == "0") {

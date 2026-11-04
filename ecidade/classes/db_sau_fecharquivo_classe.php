@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: ambulatorial
@@ -63,13 +63,13 @@ class cl_sau_fecharquivo {
                  sd99_objarquivo = oid = Arquivo
                  ";
    //funcao construtor da classe
-   function cl_sau_fecharquivo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_fecharquivo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_sau_fecharquivo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd99_i_codigo = ($this->sd99_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd99_i_codigo"]:$this->sd99_i_codigo);
        $this->sd99_t_arquivo = ($this->sd99_t_arquivo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd99_t_arquivo"]:$this->sd99_t_arquivo);
@@ -99,7 +99,7 @@ class cl_sau_fecharquivo {
      }
    }
    // funcao para inclusao
-   function incluir ($sd99_i_codigo){
+   public function incluir ($sd99_i_codigo){
       $this->atualizacampos();
      if($this->sd99_t_arquivo == null ){
        $this->erro_sql = " Campo Arquivo nao Informado.";
@@ -234,7 +234,7 @@ class cl_sau_fecharquivo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($sd99_i_codigo=null) {
+   public function alterar ($sd99_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update sau_fecharquivo set ";
      $virgula = "";
@@ -376,7 +376,7 @@ class cl_sau_fecharquivo {
      }
    }
    // funcao para exclusao
-   function excluir ($sd99_i_codigo=null,$dbwhere=null) {
+   public function excluir ($sd99_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd99_i_codigo));
      }else{
@@ -443,7 +443,7 @@ class cl_sau_fecharquivo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -466,10 +466,10 @@ class cl_sau_fecharquivo {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $sd99_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $sd99_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_sau_fecharquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,10 +503,10 @@ class cl_sau_fecharquivo {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $sd99_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $sd99_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_sau_fecharquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,7 +540,7 @@ class cl_sau_fecharquivo {
  * Função que retorna o sql da produção do BPA
  * @param object $dados
  */
-function sql_query_prd_bpa($oDados){
+public function sql_query_prd_bpa($oDados){
 
   $sSql2  = " select distinct";
   $sSql2 .= "    sd02_v_cnes as prd_ups, ";
@@ -668,7 +668,7 @@ function sql_query_prd_bpa($oDados){
  * Função que retorna o sql da produção do BPA
  * @param object $dados
  */
-function sql_query_cbr_bpa($oDados, $sSql) {
+public function sql_query_cbr_bpa($oDados, $sSql) {
 
   $sSql1  = " select ";
   $sSql1 .= "   '#BPA#' as cbc_hdr, ";
@@ -693,9 +693,9 @@ function sql_query_cbr_bpa($oDados, $sSql) {
   * @param string $sWhere
   * @return string
   */
-  function sql_query_programas ($sWhere = null) {
-    
-    
+  public function sql_query_programas ($sWhere = null) {
+
+
     $sSql  = " select ";
     $sSql .= "        distinct                                                            ";
                       /* dados do medico */
@@ -703,7 +703,7 @@ function sql_query_cbr_bpa($oDados, $sSql) {
     $sSql .= "        m.z01_nome                            as nome_medico,               ";
     $sSql .= "        cgmdoc.z02_i_cns                      as cnsmedico,                 ";
     $sSql .= "        rhcbo.rh70_estrutural                 as cbo,                       ";
-    
+
                       /* dados atendimento */
     $sSql .= "        unidades.sd02_i_codigo                as unidade,                   ";
     $sSql .= "        prontproced.sd29_i_codigo             as procedimento_prontuario,   ";
@@ -716,14 +716,14 @@ function sql_query_cbr_bpa($oDados, $sSql) {
     $sSql .= "        '01'::varchar                         as char_atendimento,          ";
     $sSql .= "        1                                     as quantidade,                ";
 //     $sSql .= "        sau_registro.sd84_c_registro          as tipo_registro,             ";
-    
-    
+
+
     $sSql .= "        ( select array_to_string(array_accum( sau_registro.sd84_c_registro), ',') ";
     $sSql .= "            from sau_procregistro                                                 ";
     $sSql .= "           inner join sau_registro  on sau_registro.sd84_i_codigo = sau_procregistro.sd85_i_registro     ";
     $sSql .= "           where sau_procregistro.sd85_i_procedimento = sau_procedimento.sd63_i_codigo) as tipo_registro,";
                       /* dados do paciente */
-    
+
     $sSql .= "        cgs_und.z01_i_cgsund                  as codigo_paciente,           ";
     $sSql .= "        cgs_und.z01_v_nome                    as nome_paciente,             ";
     $sSql .= "        (select s115_c_cartaosus                                            ";
@@ -773,11 +773,11 @@ function sql_query_cbr_bpa($oDados, $sSql) {
     $sSql .= "        left  join prontprocedcid    ON prontprocedcid.s135_i_prontproced = prontproced.sd29_i_codigo   ";
     $sSql .= "        left  join sau_cid           ON sau_cid.sd70_i_codigo = prontprocedcid.s135_i_cid               ";
     $sSql .= "  where prontanulado.sd57_i_prontuario is null                                                          ";
-    
+
     if (!empty($sWhere)) {
       $sSql .= " and {$sWhere} " ;
     }
-    
+
     $sSql .= "  order by codigo_medico, cnsmedico, cnes_unidade, cbo, procedimento, codigo_procedimento, idade_atendimento";
 
     return $sSql;

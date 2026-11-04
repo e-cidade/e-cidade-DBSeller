@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -144,7 +144,7 @@
     foreach ( $aReceitasCorrente as $iInd => $oDados ){
       if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
+        if ($oDados->iEstrutural[2] == 0) {
       	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];
@@ -169,7 +169,7 @@
     foreach ( $aReceitasCapital as $iInd => $oDados ){
       if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
+        if ($oDados->iEstrutural[2] == 0) {
       	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];
@@ -238,7 +238,7 @@
     foreach ( $aDeducoesCorrente as $iInd => $oDados ){
       if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
+        if ($oDados->iEstrutural[2] == 0) {
       	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];
@@ -264,7 +264,7 @@
     foreach ( $aDeducoesCapital as $iInd => $oDados ){
       if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
+        if ($oDados->iEstrutural[2] == 0) {
       	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];

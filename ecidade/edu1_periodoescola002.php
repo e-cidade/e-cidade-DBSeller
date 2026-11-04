@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ if(isset($alterar)){
   $result_seq = $clperiodoaula->sql_record($clperiodoaula->sql_query("","ed08_i_sequencia as seq_atual","","ed08_i_codigo = $ed17_i_periodoaula"));
   db_fieldsmemory($result_seq,0);
   if($ed17_h_inicio_dig>$ed17_h_fim_dig){
-   ?><script>alert("Hora inicial deve ser menor que a final!");</script><?
+   ?><script>alert("Hora inicial deve ser menor que a final!");</script><?php
    $erro_horario = true;
    $db_opcao = 2;
    $db_botao = true;
@@ -61,7 +61,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_pos,$x);
       if($ed17_h_fim_dig > $ed17_h_inicio){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -76,7 +76,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_pos,$x);
       if($ed17_h_inicio_dig < $ed17_h_fim){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -91,7 +91,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_ant,$x);
       if($ed17_h_inicio_dig < $ed17_h_fim){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -105,7 +105,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_pos,$x);
       if($ed17_h_fim_dig > $ed17_h_inicio){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -162,7 +162,7 @@ if(isset($alterar)){
     <br>
     <center>
     <fieldset style="width:90%"><legend><b>Alteração de Períodos da Escola</b></legend>
-        <?
+        <?php
         include(modification("forms/db_frmperiodoescola.php"));
         ?>
     </fieldset>
@@ -170,17 +170,17 @@ if(isset($alterar)){
         </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($erro_horario==true){
  ?><script>
     document.form1.<?=@$campo?>.style.backgroundColor='#99A9AE';
     document.form1.<?=@$campo?>.focus();
-   </script><?
+   </script><?php
 }
 if(isset($alterar)){
   if($clperiodoescola->erro_status=="0"){

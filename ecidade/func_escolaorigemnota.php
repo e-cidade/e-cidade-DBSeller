@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,7 +56,7 @@ if(!isset($opcaoescola)){
       <?=$Led18_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
+      <?php db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
       <select name="opcaoescola" onchange="location.href='?funcao_js=parent.oInstanciaViewOrigemNotaEscopoGlobal.mostraEscolaFora|ed18_i_codigo|ed18_c_nome|ed261_c_nome|ed260_c_sigla|tipoescoladescr|tipoescola&opcaoescola='+this.value">
        <option value="F" <?=@$opcaoescola=="F"?"selected":""?>>Escolas Fora da Rede</option>
        <option value="M" <?=@$opcaoescola=="M"?"selected":""?>>Escolas da Rede</option>
@@ -76,7 +76,7 @@ if(!isset($opcaoescola)){
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $where  = "";
    $where1 = "";
    if(isset($chave_ed18_c_nome) && (trim($chave_ed18_c_nome)!="") ){

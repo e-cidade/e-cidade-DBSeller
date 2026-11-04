@@ -1,33 +1,33 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 if (!isset($arqinclude)) {
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -36,14 +36,14 @@ if (!isset($arqinclude)) {
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_db_config_classe.php"));
-  
+
   $classinatura  = new cl_assinatura;
   $cldb_config   = new cl_db_config;
   $orcparamrel   = new cl_orcparamrel;
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
-  
+
 }
 
 include_once(modification("classes/db_conrelinfo_classe.php"));
@@ -52,7 +52,7 @@ include_once(modification("classes/db_conrelvalor_classe.php"));
 $clconrelinfo  = new cl_conrelinfo;
 $clconrelvalor = new cl_conrelvalor;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $lTem1Quad = false;
 $lTem2Quad = false;
@@ -82,47 +82,47 @@ $dDataFim3Q   = "{$anousu}-12-21";
 $dt_ini_ant   = $anousu_ant."-01-01";
 $dt_fim_ant   = $anousu_ant."-12-31";
 $mes_ini      = "JANEIRO";
-$dt           = split("-",$dt_fim);
+$dt           =explode("-",$dt_fim);
 $mes_fim      = db_mes($dt[1],1);
 $head6        = $mes_ini." A ".$mes_fim." DE ".$anousu;
 //******************************************************************
 $instituicao  = str_replace("-",",",$db_selinstit);
 /*
- * definimos os valores por perido. 
+ * definimos os valores por perido.
  */
 if ($periodo == "1Q"){
-  
+
   $lTem1Quad = true;
   $lTem2Quad = false;
   $lTem3Quad = false;
-  
+
 }else if ($periodo == "2Q"){
-  
+
   $lTem1Quad = true;
   $lTem2Quad = true;
   $lTem3Quad = false;
-  
+
 }else if ($periodo == "3Q"){
-  
+
   $lTem1Quad = true;
   $lTem2Quad = true;
   $lTem3Quad = true;
-  
+
 }else if ($periodo == "1S"){
-  
+
   $lTem1Quad   = true;
   $lTem2Quad   = false;
   $lTem3Quad   = false;
   $dDataFim1Q  = "{$anousu}-06-30";
 }else if ($periodo == "2S"){
-  
+
   $lTem1Quad   = true;
   $lTem2Quad   = true;
   $lTem3Quad   = false;
   $dDataFim1Q  = "{$anousu}-06-30";
   $dDataFim2Q  = "{$anousu}-12-31";
 }
-       
+
 $parametro[0] = '';
 $parametro[1] = $orcparamrel->sql_parametro_instit('7','0',"f",$instituicao,$anousu);
 $parametro[2] = $orcparamrel->sql_parametro_instit('7','1',"f",$instituicao,$anousu);
@@ -154,7 +154,7 @@ $aOrcParametro = array_merge(
   $parametro[14],
   $parametro[15]
 );
-$where  = "  c61_instit in (".str_replace('-',', ',$db_selinstit).") "; 
+$where  = "  c61_instit in (".str_replace('-',', ',$db_selinstit).") ";
 $result_ant = db_planocontassaldo_matriz($anousu_ant,$dt_ini_ant,$dt_fim_ant,false,$where,"","true","true","",$aOrcParametro);
 @db_query("drop table work_pl");
 
@@ -186,9 +186,9 @@ for ($i=0; $i<20;$i++) {
   $valor3[$i] = 0;
 }
 if ($lTem1Quad){
-  
+
   $cont = 1;
-  $p = 0;   
+  $p = 0;
   $result1Q = db_planocontassaldo_matriz($anousu,"{$anousu}-01-01",$dDataFim1Q,false,$where,"","true","false","",$aOrcParametro);
   @db_query("drop table work_pl");
   for ($x=0; $x < 17;$x++) {
@@ -201,11 +201,11 @@ if ($lTem1Quad){
    if ($cont==13){
      $cont = 14;
    }
-  
+
    if ($cont == 1 or $cont == 2 or $cont == 4 or $cont == 5 or $cont == 11 or $cont == 12 or $cont == 14 or $cont == 15) {
-     
+
      for($i=0;$i< pg_numrows($result1Q);$i++) {
-      
+
       db_fieldsmemory($result1Q,$i);
       $instit      = $c61_instit;
       $v_elementos = array($estrutural,$instit);
@@ -222,17 +222,17 @@ if ($lTem1Quad){
            }
         }
       }
-  
+
        if ($flag_contar == true){
          $valor1[$cont] += $saldo_final;
        }
-      } 
+      }
     }
     $cont++;
   }
 }
 if ($lTem2Quad){
-  
+
   $cont = 1;
   $p = 0;
   $result2Q = db_planocontassaldo_matriz($anousu,"{$anousu}-01-01",$dDataFim2Q,false,$where,"","true","false","",$aOrcParametro);
@@ -247,14 +247,14 @@ if ($lTem2Quad){
    if ($cont==13){
      $cont = 14;
    }
-  
+
   if ($cont == 1 or $cont == 2 or $cont == 4 or $cont == 5 or $cont == 11 or $cont == 12 or $cont == 14 or $cont == 15) {
     for($i=0;$i< pg_numrows($result2Q);$i++) {
       db_fieldsmemory($result2Q,$i);
 
       $instit      = $c61_instit;
       $v_elementos = array($estrutural,$instit);
-  
+
       $flag_contar = false;
       if ($instit != 0) {
         if (in_array($v_elementos,$parametro[$cont])) {
@@ -268,17 +268,17 @@ if ($lTem2Quad){
            }
         }
       }
-  
+
       if ($flag_contar == true){
         $valor2[$cont] += $saldo_final;
        }
       }
     }
-    $cont++; 
+    $cont++;
   }
 }
 if ($lTem3Quad){
-  
+
   $cont = 1;
   $p = 0;
   $result3Q = db_planocontassaldo_matriz($anousu,"{$anousu}-01-01",$dDataFim3Q,false,$where,"","true","false","",$aOrcParametro);
@@ -289,18 +289,18 @@ if ($lTem3Quad){
    }
    if ($cont==10){
      $cont = 11;
-   } 
+   }
    if ($cont==13){
      $cont = 14;
    }
-  
+
    if ($cont == 1 or $cont == 2 or $cont == 4 or $cont == 5 or $cont == 11 or $cont == 12 or $cont == 14 or $cont == 15) {
      for($i=0;$i< pg_numrows($result3Q);$i++) {
       db_fieldsmemory($result3Q,$i);
 
       $instit      = $c61_instit;
       $v_elementos = array($estrutural,$instit);
-  
+
       $flag_contar = false;
       if ($instit != 0) {
         if (in_array($v_elementos,$parametro[$cont])) {
@@ -314,13 +314,13 @@ if ($lTem3Quad){
            }
         }
       }
-  
+
       if ($flag_contar == true){
         $valor3[$cont] += $saldo_final;
       }
       }
     }
-    $cont++; 
+    $cont++;
   }
 }
 $cont = 1;
@@ -335,15 +335,15 @@ for ($x=0; $x < 17;$x++) {
   if ($cont==13){
     $cont = 14;
   }
-  
+
   if ($cont == 1 or $cont == 2 or $cont == 4 or $cont == 5 or $cont == 11 or $cont == 12 or $cont == 14 or $cont == 15) {
-  
+
     for($i=0;$i< pg_numrows($result_ant);$i++) {
       db_fieldsmemory($result_ant,$i);
 
       $instit      = $c61_instit;
       $v_elementos = array($estrutural,$instit);
-  
+
       $flag_contar = false;
       if ($instit != 0) {
         if (in_array($v_elementos,$parametro[$cont])) {
@@ -357,15 +357,15 @@ for ($x=0; $x < 17;$x++) {
            }
         }
       }
-  
+
       if ($flag_contar == true){
         $valor_ant[$cont] += $saldo_final;
       }
-    } 
+    }
   }
-  
+
   $cont++;
-  
+
 }
 
 $valor_ant[0] = $valor_ant[1] + $valor_ant[2];
@@ -386,17 +386,17 @@ $valor3[6]    = $valor3[0] + $valor3[3];
 ///////////////////////////////////////////////////////////////////////////////////////////
 //                                 receita corrente liquida.
 //////////////////////////////////////////////////////////////////////////////////////////
-$dt = split("-",$dt_ini);
+$dt =explode("-",$dt_ini);
 $dt_ini_ant = $anousu_ant."-01-01";
 $dt_fim_ant = $anousu_ant."-12-31";
 
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fim);  // mktime -- (mes,dia,ano)
+$dt =explode('-',$dt_fim);  // mktime -- (mes,dia,ano)
 $dt_ini_ant2 = $anousu_ant."-01-01";
-$dt_fim_ant2 = $anousu_ant."-12-31";  
+$dt_fim_ant2 = $anousu_ant."-12-31";
 
-// receita 
-$dt3 = split("-",$dt_ini);
+// receita
+$dt3 =explode("-",$dt_ini);
 $mes = $dt3[1];
 if ($mes == 12){
   $mes  = 11;
@@ -490,10 +490,10 @@ if ($periodo=='1Q' or $periodo == '1S'){
 }
 
 if (!isset($arqinclude)){
-  
-  $pdf = new PDF(); 
-  $pdf->Open(); 
-  $pdf->AliasNbPages(); 
+
+  $pdf = new PDF();
+  $pdf->Open();
+  $pdf->AliasNbPages();
   $pdf->setfillcolor(235);
   $pdf->setfont('arial','b',7);
   $alt = 4;
@@ -502,14 +502,14 @@ if (!isset($arqinclude)){
   $pdf->setfont('arial','b',7);
   $pdf->cell(110,$alt," RGF - ANEXO III (LRF, art. 55, inciso I, alínea \"c\" e art. 40, § 1º)",'B',0,"L",0);
   $pdf->cell(75,$alt,'R$ 1,00','B',1,"R",0);
-  
+
   $pdf->cell(73,$alt,"",'R',0,"C",0);
   $pdf->cell(28,$alt,"SALDO DO",'R',0,"C",0);
   $pdf->cell(84,$alt,"SALDO DO EXERCÍCIO  DE ".db_getsession("DB_anousu"),'B',1,"C",0);
-  
+
   $pdf->cell(73,$alt,"GARANTIAS CONCEDIDAS",'BR',0,"C",0);
   $pdf->cell(28,$alt,"EXERCÍCIO ANTERIOR",'RB',0,"C",0);
-  
+
   if($periodo!="1S"&&$periodo!="2S") {
     $pdf->cell(28,$alt,"Até 1º Quadrimestre",'BR',0,"C",0);
     $pdf->cell(28,$alt,"Até 2º Quadrimestre",'BR',0,"C",0);
@@ -519,22 +519,22 @@ if (!isset($arqinclude)){
     $pdf->cell(42,$alt,"Até 1º Semestre",'BR',0,"C",0);
     $pdf->cell(42,$alt,"Até 2º Semestre",'B',1,"C",0);
   }
-  
+
   $pdf->setfont('arial','',7);
   for ($i=0; $i < 6;$i++) {
     $pdf->cell(73,$alt,$texto[$i],'R',0,"L",0);
     $pdf->cell(28,$alt,db_formatar($valor_ant[$i],'f'),'R',0,"R",0);
-    
+
     if($periodo!="1S"&&$periodo!="2S") {
       $pdf->cell(28,$alt,db_formatar($valor1[$i],'f'),'R',0,"R",0);
       $pdf->cell(28,$alt,db_formatar($valor2[$i],'f'),'R',0,"R",0);
-      $pdf->cell(28,$alt,db_formatar($valor3[$i],'f'),'',1,"R",0); 
+      $pdf->cell(28,$alt,db_formatar($valor3[$i],'f'),'',1,"R",0);
     } else {
       $pdf->cell(42,$alt,db_formatar($valor1[$i],'f'),'R',0,"R",0);
       $pdf->cell(42,$alt,db_formatar($valor2[$i],'f'),'',1,"R",0);
     }
   }
-	
+
   for ($i=6; $i < 10;$i++) {
     if ($i == 9){
       if ($perc_limite_senado > 0){
@@ -546,26 +546,26 @@ if (!isset($arqinclude)){
 
     $pdf->cell(73,$alt,$texto[$i],'TBR',0,"L",0);
     $pdf->cell(28,$alt,db_formatar($valor_ant[$i],'f'),'TBR',0,"R",0);
-    
+
     if($periodo!="1S"&&$periodo!="2S") {
       $pdf->cell(28,$alt,db_formatar($valor1[$i],'f'),'TBR',0,"R",0);
       $pdf->cell(28,$alt,db_formatar($valor2[$i],'f'),'TBR',0,"R",0);
-      $pdf->cell(28,$alt,db_formatar($valor3[$i],'f'),'TB',1,"R",0); 
+      $pdf->cell(28,$alt,db_formatar($valor3[$i],'f'),'TB',1,"R",0);
     } else {
       $pdf->cell(42,$alt,db_formatar($valor1[$i],'f'),'TBR',0,"R",0);
       $pdf->cell(42,$alt,db_formatar($valor2[$i],'f'),'TB',1,"R",0);
     }
   }
-  
+
   $pdf->cell(185,$alt,"",'',1,"C",0);
   $pdf->setfont('arial','b',7);
   $pdf->cell(73,$alt,"",'TR',0,"C",0);
   $pdf->cell(28,$alt,"SALDO DO",'TR',0,"C",0);
   $pdf->cell(84,$alt,"SALDO DO EXERCÍCIO  DE ".db_getsession("DB_anousu"),'TB',1,"C",0);
-  
+
   $pdf->cell(73,$alt,"CONTRAGARANTIAS RECEBIDAS",'BR',0,"C",0);
   $pdf->cell(28,$alt,"EXERCÍCIO ANTERIOR",'RB',0,"C",0);
-  
+
   if($periodo!="1S"&&$periodo!="2S") {
     $pdf->cell(28,$alt,"Até 1º Quadrimestre",'BR',0,"C",0);
     $pdf->cell(28,$alt,"Até 2º Quadrimestre",'BR',0,"C",0);
@@ -575,45 +575,45 @@ if (!isset($arqinclude)){
     $pdf->cell(42,$alt,"Até 1º Semestre",'BR',0,"C",0);
     $pdf->cell(42,$alt,"Até 2º Semestre",'B',1,"C",0);
   }
-  
+
   $pdf->setfont('arial','',7);
   for ($i=10; $i< 16;$i++) {
     $pdf->cell(73,$alt,$texto[$i],'R',0,"L",0);
     $pdf->cell(28,$alt,db_formatar($valor_ant[$i],'f'),'R',0,"R",0);
-    
+
     if($periodo!="1S"&&$periodo!="2S") {
       $pdf->cell(28,$alt,db_formatar($valor1[$i],'f'),'R',0,"R",0);
       $pdf->cell(28,$alt,db_formatar($valor2[$i],'f'),'R',0,"R",0);
-      $pdf->cell(28,$alt,db_formatar($valor3[$i],'f'),'',1,"R",0); 
+      $pdf->cell(28,$alt,db_formatar($valor3[$i],'f'),'',1,"R",0);
     }
     else {
       $pdf->cell(42,$alt,db_formatar($valor1[$i],'f'),'R',0,"R",0);
       $pdf->cell(42,$alt,db_formatar($valor2[$i],'f'),'',1,"R",0);
     }
-  }  
+  }
   $pdf->cell(73,$alt,$texto[$i],'TBR',0,"L",0);
   $pdf->cell(28,$alt,db_formatar($valor_ant[16],'f'),'TBR',0,"R",0);
-  
+
   if($periodo!="1S"&&$periodo!="2S") {
     $pdf->cell(28,$alt,db_formatar($valor1[16],'f'),'TBR',0,"R",0);
     $pdf->cell(28,$alt,db_formatar($valor2[16],'f'),'TBR',0,"R",0);
-    $pdf->cell(28,$alt,db_formatar($valor3[16],'f'),'TB',1,"R",0); 
-  }	
+    $pdf->cell(28,$alt,db_formatar($valor3[16],'f'),'TB',1,"R",0);
+  }
   else {
     $pdf->cell(42,$alt,db_formatar($valor1[16],'f'),'TBR',0,"R",0);
     $pdf->cell(42,$alt,db_formatar($valor2[16],'f'),'TB',1,"R",0);
   }
-  
+
   $pdf->Ln();
-  notasExplicativas(&$pdf, 7, "{$periodo}", 185);
-  
+  notasExplicativas($pdf, 7, "{$periodo}", 185);
+
   // assinaturas
   $pdf->Ln(25);
-  
-  assinaturas(&$pdf,&$classinatura,'GF');
-  
+
+  assinaturas($pdf,$classinatura,'GF');
+
   $pdf->Output();
-  
+
 }
 
 $garantiascondedidas = $valor1[6];

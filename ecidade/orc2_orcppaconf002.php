@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -45,29 +45,29 @@ $sele_work =" 1=1 ";
 if ($clselorcdotacao->orgao!="")
   $sele_work .=" and o23_orgao in  ".$clselorcdotacao->orgao;
 
-if ($clselorcdotacao->unidade!="")  
+if ($clselorcdotacao->unidade!="")
   $sele_work .=" and o23_unidade in  ".$clselorcdotacao->unidade;
 
-if ($clselorcdotacao->funcao!="")  
+if ($clselorcdotacao->funcao!="")
   $sele_work .=" and o23_funcao in  ".$clselorcdotacao->funcao;
 
-if ($clselorcdotacao->subfuncao!="")  
+if ($clselorcdotacao->subfuncao!="")
   $sele_work .=" and o23_subfuncao in  ".$clselorcdotacao->subfuncao;
 
-if ($clselorcdotacao->programa!="")  
+if ($clselorcdotacao->programa!="")
   $sele_work .=" and o23_programa in  ".$clselorcdotacao->programa;
 
-if ($clselorcdotacao->projativ!="")  
+if ($clselorcdotacao->projativ!="")
   $sele_work .=" and o23_acao in  ".$clselorcdotacao->projativ;
 
-if ($clselorcdotacao->elemento!="")  
+if ($clselorcdotacao->elemento!="")
   $sele_work .=" and o25_codele in  ".$clselorcdotacao->elemento;
 
-if ($clselorcdotacao->recurso!="")  
+if ($clselorcdotacao->recurso!="")
   $sele_work .=" and o26_codigo in  ".$clselorcdotacao->recurso;
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -114,7 +114,7 @@ if($tipo_agrupa == 1){
 }
 
 $sql = "
-select 
+select
        o58_orgao,
        o40_descr,
        o58_unidade,
@@ -137,7 +137,7 @@ select
        max(ter) as ter,
        max(qua) as qua
 from
-(select 
+(select
        o23_codppa,
        o23_anoexe,
        o23_orgao as o58_orgao,
@@ -162,7 +162,7 @@ from
        case when o24_exercicio = 2007 then o24_valor else 0 end as seg,
        case when o24_exercicio = 2008 then o24_valor else 0 end as ter,
        case when o24_exercicio = 2009 then o24_valor else 0 end as qua
-from orcppa 
+from orcppa
      inner join orcppaval 	on o23_codppa = o24_codppa
      inner join orcppatiporec 	on o24_codseqppa = o26_codseqppa
      inner join orcppavalele  	on o24_codseqppa = o25_codseqppa
@@ -184,7 +184,7 @@ from orcppa
    where $sele_work
  ) as w
 
- group by 
+ group by
        o58_orgao,
        o40_descr,
        o58_unidade,
@@ -203,7 +203,7 @@ from orcppa
        o58_codigo,
        o15_descr,
        o40_instit
-order by 
+order by
        o58_orgao,
        o40_descr,
        o58_unidade,
@@ -221,7 +221,7 @@ order by
        o58_coddot,
        o58_codigo,
        o15_descr
-       
+
 ";
 
 // echo $sql;
@@ -231,9 +231,9 @@ $result = db_query($sql);
 //db_criatabela($result);exit;
 
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
@@ -265,7 +265,7 @@ $recurso   = 0;
 for($i=0;$i<pg_numrows($result);$i++){
 
   db_fieldsmemory($result,$i);
-  
+
   if($o58_funcao == 0 && $o58_subfuncao == 0 && $o58_programa == 0 && $o58_projativ == 0){
     continue;
   }
@@ -309,7 +309,7 @@ for($i=0;$i<pg_numrows($result);$i++){
        $totquao  = 0;
      }
   }
-		
+
 
 
   if(!empty($qorgao)){
@@ -329,7 +329,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       }
     }
   }
-  
+
   if($pdf->gety()>$pdf->h-30 || $pagina ==1){
     $pagina = 0;
     $pdf->addpage();
@@ -354,7 +354,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     $pdf->cell(18,$alt,"2009",0,0,"R",0);
     $pdf->cell(18,$alt,'TOTAL',0,1,"R",0);
   }
- 
+
   $pdf->setfont('arial','',6);
       if($o58_funcao != $funcao ){
 	$funcao = $o58_funcao;
@@ -362,7 +362,7 @@ for($i=0;$i<pg_numrows($result);$i++){
         $descr = $o52_descr;
         $pdf->cell(25,$alt,db_formatar($o58_funcao,'orgao'),0,0,"L",0);
         $pdf->cell(80,$alt,$descr,0,1,"L",0);
-      } 
+      }
       if($o58_subfuncao != $subfuncao){
 	$subfuncao = $o58_subfuncao;
         $pdf->setfont('arial','',6);
@@ -401,12 +401,12 @@ for($i=0;$i<pg_numrows($result);$i++){
         $totseg   += $seg;
         $totter   += $ter;
         $totqua   += $qua;
-	
+
 	$totprio  += $pri;
         $totsego  += $seg;
         $tottero  += $ter;
         $totquao  += $qua;
-	
+
 	$totpriu  += $pri;
         $totsegu  += $seg;
         $totteru  += $ter;

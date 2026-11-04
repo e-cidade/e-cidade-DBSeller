@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("descrdepto");
       <b>Usuário:</b> 
     </td>
     <td> 
-     <?
+     <?php
        $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
        echo pg_result(pg_exec($sql),0,"nome");  
      ?>
@@ -50,7 +50,7 @@ $clrotulo->label("descrdepto");
       <b>Departamento:</b> 
     </td>
     <td> 
-     <?
+     <?php
        $sql = "select descrdepto from db_depart where coddepto = ".db_getsession("DB_coddepto");
        echo pg_result(pg_exec($sql),0,"descrdepto");  
      ?>
@@ -61,22 +61,22 @@ $clrotulo->label("descrdepto");
        <?=@$Lp61_codandam?>
     </td>
     <td> 
-<?
+<?php
 db_input('p61_codandam',5,$Ip61_codandam,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp61_codproc?>">
-       <?
+       <?php
        db_ancora(@$Lp61_codproc,"js_pesquisap61_codproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p61_codproc',3,$Ip61_codproc,true,'text',$db_opcao," onchange='js_pesquisap61_codproc(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_requer',80,$Ip58_requer,true,'text',3,'')
        ?>
     </td>
@@ -86,7 +86,7 @@ db_input('p58_requer',80,$Ip58_requer,true,'text',3,'')
        <?=@$Lp61_dtandam?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('p61_dtandam',@$p61_dtandam_dia,@$p61_dtandam_mes,@$p61_dtandam_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_inputdata('p61_dtandam',@$p61_dtandam_dia,@$p61_dtandam_mes,@$p61_dtandam_ano
        <?=@$Lp61_despacho?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('p61_despacho',3,25,$Ip61_despacho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -162,7 +162,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -74,8 +74,8 @@ if ($sSiglaPeriodo == '1S' || $sSiglaPeriodo == '2S') {
 } else {
 
   $dados  = data_periodo($anousu,$sSiglaPeriodo);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini =explode("-",$dados[0]);
+  $perfin =explode("-",$dados[1]);
 
   $mesini    = strtoupper(db_mes($perini[1]));
   $mesfin    = strtoupper(db_mes($perfin[1]));
@@ -512,7 +512,7 @@ $descr_inst = '';
 db_fieldsmemory($resultinst, 0);
 $descr_inst = $munic;
 
-$vdt_fin = split("-", $dt_fin);
+$vdt_fin =explode("-", $dt_fin);
 
 $head1 = "MUNICÍPIO DE " . strtoupper($descr_inst);
 $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";

@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE tesintertipo
-class cl_tesintertipo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j92_sequencial = 0; 
-   var $j92_descr = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tesintertipo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j92_sequencial = 0;
+   var $j92_descr = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j92_sequencial = int4 = Codigo 
-                 j92_descr = varchar(40) = Descrição 
+                 j92_sequencial = int4 = Codigo
+                 j92_descr = varchar(40) = Descrição
                  ";
-   //funcao construtor da classe 
-   function cl_tesintertipo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tesintertipo"); 
+     $this->rotulo = new rotulo("tesintertipo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_tesintertipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j92_sequencial = ($this->j92_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j92_sequencial"]:$this->j92_sequencial);
        $this->j92_descr = ($this->j92_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j92_descr"]:$this->j92_descr);
@@ -74,9 +74,9 @@ class cl_tesintertipo {
      }
    }
    // funcao para inclusao
-   function incluir ($j92_sequencial){ 
+   public function incluir ($j92_sequencial){
       $this->atualizacampos();
-     if($this->j92_descr == null ){ 
+     if($this->j92_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "j92_descr";
        $this->erro_banco = "";
@@ -86,16 +86,16 @@ class cl_tesintertipo {
        return false;
      }
      if($j92_sequencial == "" || $j92_sequencial == null ){
-       $result = db_query("select nextval('tesintertipo_j92_sequencial_seq')"); 
+       $result = db_query("select nextval('tesintertipo_j92_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tesintertipo_j92_sequencial_seq do campo: j92_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tesintertipo_j92_sequencial_seq do campo: j92_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j92_sequencial = pg_result($result,0,0); 
+       $this->j92_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tesintertipo_j92_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $j92_sequencial)){
@@ -106,10 +106,10 @@ class cl_tesintertipo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j92_sequencial = $j92_sequencial; 
+         $this->j92_sequencial = $j92_sequencial;
        }
      }
-     if(($this->j92_sequencial == null) || ($this->j92_sequencial == "") ){ 
+     if(($this->j92_sequencial == null) || ($this->j92_sequencial == "") ){
        $this->erro_sql = " Campo j92_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -118,15 +118,15 @@ class cl_tesintertipo {
        return false;
      }
      $sql = "insert into tesintertipo(
-                                       j92_sequencial 
-                                      ,j92_descr 
+                                       j92_sequencial
+                                      ,j92_descr
                        )
                 values (
-                                $this->j92_sequencial 
-                               ,'$this->j92_descr' 
+                                $this->j92_sequencial
+                               ,'$this->j92_descr'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de tipo de testadas internas ($this->j92_sequencial) nao Incluído. Inclusao Abortada.";
@@ -159,16 +159,16 @@ class cl_tesintertipo {
        $resac = db_query("insert into db_acount values($acount,1890,10953,'','".AddSlashes(pg_result($resaco,0,'j92_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j92_sequencial=null) { 
+   public function alterar ($j92_sequencial=null) {
       $this->atualizacampos();
      $sql = " update tesintertipo set ";
      $virgula = "";
-     if(trim($this->j92_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j92_sequencial"])){ 
+     if(trim($this->j92_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j92_sequencial"])){
        $sql  .= $virgula." j92_sequencial = $this->j92_sequencial ";
        $virgula = ",";
-       if(trim($this->j92_sequencial) == null ){ 
+       if(trim($this->j92_sequencial) == null ){
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "j92_sequencial";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_tesintertipo {
          return false;
        }
      }
-     if(trim($this->j92_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j92_descr"])){ 
+     if(trim($this->j92_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j92_descr"])){
        $sql  .= $virgula." j92_descr = '$this->j92_descr' ";
        $virgula = ",";
-       if(trim($this->j92_descr) == null ){ 
+       if(trim($this->j92_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "j92_descr";
          $this->erro_banco = "";
@@ -209,7 +209,7 @@ class cl_tesintertipo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de tipo de testadas internas nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j92_sequencial;
@@ -237,14 +237,14 @@ class cl_tesintertipo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j92_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j92_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j92_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -271,7 +271,7 @@ class cl_tesintertipo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de tipo de testadas internas nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j92_sequencial;
@@ -299,11 +299,11 @@ class cl_tesintertipo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -325,10 +325,10 @@ class cl_tesintertipo {
       }
      return $result;
    }
-   function sql_query ( $j92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -341,15 +341,15 @@ class cl_tesintertipo {
      $sql2 = "";
      if($dbwhere==""){
        if($j92_sequencial!=null ){
-         $sql2 .= " where tesintertipo.j92_sequencial = $j92_sequencial "; 
-       } 
+         $sql2 .= " where tesintertipo.j92_sequencial = $j92_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -358,10 +358,10 @@ class cl_tesintertipo {
      }
      return $sql;
   }
-   function sql_query_file ( $j92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -374,15 +374,15 @@ class cl_tesintertipo {
      $sql2 = "";
      if($dbwhere==""){
        if($j92_sequencial!=null ){
-         $sql2 .= " where tesintertipo.j92_sequencial = $j92_sequencial "; 
-       } 
+         $sql2 .= " where tesintertipo.j92_sequencial = $j92_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

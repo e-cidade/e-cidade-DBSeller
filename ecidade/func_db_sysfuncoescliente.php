@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_sysfuncoescliente->rotulo->label("db41_cliente");
               <?=$Ldb41_sysfuncoescliente?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db41_sysfuncoescliente",10,$Idb41_sysfuncoescliente,true,"text",4,"","chave_db41_sysfuncoescliente");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_sysfuncoescliente->rotulo->label("db41_cliente");
               <?=$Ldb41_cliente?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db41_cliente",4,$Idb41_cliente,true,"text",4,"","chave_db41_cliente");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_sysfuncoescliente->rotulo->label("db41_cliente");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_sysfuncoescliente.php")==true){
@@ -122,12 +122,12 @@ $cldb_sysfuncoescliente->rotulo->label("db41_cliente");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

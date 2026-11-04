@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,19 +52,19 @@ $clrotulo->label("x01_numero");
        <?=@$Lx41_codcortemat?>
     </td>
     <td> 
-<?
+<?php
 db_input('x41_codcortemat',5,$Ix41_codcortemat,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx41_matric?>">
-       <?
+       <?php
        db_ancora(@$Lx41_matric,"js_pesquisax41_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x41_matric',10,$Ix41_matric,true,'text',$db_opcao," onchange='js_pesquisax41_matric(false);'")
 ?>
     </td>
@@ -75,10 +75,10 @@ db_input('x41_matric',10,$Ix41_matric,true,'text',$db_opcao," onchange='js_pesqu
        <?=@$Lx01_codrua?>
     </td>
     <td> 
-<?
+<?php
 db_input('x01_codrua',10,$Ix01_codrua,true,'text',3," onchange='js_pesquisax01_codrua(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
@@ -89,10 +89,10 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lx01_codbairro?>
     </td>
     <td> 
-<?
+<?php
 db_input('x01_codbairro',10,$Ix01_codbairro,true,'text',3," onchange='js_pesquisax01_codbairro(false);'")
 ?>
-       <?
+       <?php
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        <?=@$Lx01_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('x01_numero',10,$Ix01_numero,true,'text',3,'')
 ?>
     </td>
@@ -111,15 +111,15 @@ db_input('x01_numero',10,$Ix01_numero,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tx41_codcorte?>">
-       <?
+       <?php
        db_ancora(@$Lx41_codcorte,"js_pesquisax41_codcorte(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x41_codcorte',10,$Ix41_codcorte,true,'text',$db_opcao," onchange='js_pesquisax41_codcorte(false);'")
 ?>
-       <?
+       <?php
 db_input('x40_dtinc',10,$Ix40_dtinc,true,'text',3,'')
        ?>
     </td>
@@ -129,7 +129,7 @@ db_input('x40_dtinc',10,$Ix40_dtinc,true,'text',3,'')
        <?=@$Lx41_dtprazo?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x41_dtprazo',@$x41_dtprazo_dia,@$x41_dtprazo_mes,@$x41_dtprazo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -203,7 +203,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguacortemat.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

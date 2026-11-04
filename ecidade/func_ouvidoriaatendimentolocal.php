@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clouvidoriaatendimentolocal->rotulo->label("ov24_ouvidoriacadlocal");
               <?=$Lov24_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov24_sequencial",10,$Iov24_sequencial,true,"text",4,"","chave_ov24_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clouvidoriaatendimentolocal->rotulo->label("ov24_ouvidoriacadlocal");
               <?=$Lov24_ouvidoriacadlocal?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov24_ouvidoriacadlocal",10,$Iov24_ouvidoriacadlocal,true,"text",4,"","chave_ov24_ouvidoriacadlocal");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clouvidoriaatendimentolocal->rotulo->label("ov24_ouvidoriacadlocal");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ouvidoriaatendimentolocal.php")==true){
@@ -122,12 +122,12 @@ $clouvidoriaatendimentolocal->rotulo->label("ov24_ouvidoriacadlocal");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

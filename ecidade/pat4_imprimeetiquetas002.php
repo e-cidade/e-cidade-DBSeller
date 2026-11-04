@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -39,8 +39,8 @@ $erro_msg = "";
 
 //VERIFICA AUTENTICADORA
 $sSqlAutenticadora  = "select k11_ipimpcheque as ip,k11_portaimpcheque as porta ";
-$sSqlAutenticadora .= "  from cfautent "; 
-$sSqlAutenticadora .= "       inner join db_impressora on db64_sequencial =  k11_tipoimp"; 
+$sSqlAutenticadora .= "  from cfautent ";
+$sSqlAutenticadora .= "       inner join db_impressora on db64_sequencial =  k11_tipoimp";
 $sSqlAutenticadora .= "       inner join db_tipoimpressora on db65_sequencial = db64_db_tipoimpressora ";
 $sSqlAutenticadora .= " where db65_sequencial = 3 and k11_ipterm = '" . db_getsession("DB_ip") . "'";
 //echo $sSqlAutenticadora;
@@ -52,7 +52,7 @@ if(pg_num_rows($rsSqlAutenticadora)>0){
 	db_msgbox("Cadastre o ip " . db_getsession("DB_ip") . " como um caixa.");
   die();
 }
- 
+
 $sIp    = $oAutenticadora->ip;
 $sPorta = $oAutenticadora->porta;
 
@@ -89,52 +89,52 @@ $oImpressao->setIp($sIp);
 	bgcolor="#CCCCCC" style="padding-top: 20px;">
 	<tr>
 		<td>
-			<?
+			<?php
 			db_criatermometro('termometro','Concluído','blue',1);
 			echo "<br><br>";
 			$oGet 				= db_utils::postMemory($_GET);
-      
-			
+
+
 			$sqlInstit = "select nomeinstabrev as nomeabrev,uf from db_config where codigo = ".db_getsession("DB_instit");
 			$rsqlInstit = db_query($sqlInstit);
 			if(pg_num_rows($rsqlInstit) > 0){
 				$oInstit = db_utils::fieldsMemory($rsqlInstit,0);
 			}
-			
+
 			$sWhere = "";
-			
-			if(isset($oGet->t52_bem) && trim($oGet->t52_bem) !=""){ 
+
+			if(isset($oGet->t52_bem) && trim($oGet->t52_bem) !=""){
 				$sWhere = " where t52_bem = ".$oGet->t52_bem;
 			}else{
 				$erro_msg = "usuário:\\n\\n Falha ao imprimir etiqueta do bem !\\n\\n";
 			}
       if($erro_msg == ""){
-			
-				$sSqlBens  = "select t52_bem,t64_descr "; 
+
+				$sSqlBens  = "select t52_bem,t64_descr ";
 				$sSqlBens .= "  from bens ";
 				$sSqlBens .= "       inner join clabens ";
 				$sSqlBens .= "    on clabens.t64_codcla = bens.t52_codcla ";
 				$sSqlBens .= $sWhere;
 				//die ($sSqlBens);
 				$rsBens = $clBens->sql_record($sSqlBens);
-	
+
 				if($clBens->erro_status == "0"){
-					
+
 					$erro_msg = "usuário:\\n\\nNenhum bem encontrado para o intervalo informado !\\n\\n";
-					
+
 				}else{
-					
+
 					$iNumRows = pg_num_rows($rsBens);
 					for ( $i = 0; $i < $iNumRows; $i++  ) {
-							
+
 					  db_atutermometro($i, $iNumRows, 'termometro', 1, "Imprimindo etiquetas");
 	          $oBem = db_utils::fieldsMemory($rsBens,$i);
-	
+
 	          $sNomeAbrev   = db_removeAcentuacao($oInstit->nomeabrev." - ".$oInstit->uf);
 	          $sT64Descr    = db_removeAcentuacao(substr($oBem->t64_descr,0,23));
 	          $sPatrimonio  = str_pad('PATRIMONIO : '.$oBem->t52_bem,23," ",STR_PAD_BOTH);
-	                  
-	         
+
+
 	          $oImpressao->addComando('N');
 	          $oImpressao->addComando('A480,5,0,3,1,1,N,"'.str_pad($sNomeAbrev,23,' ',STR_PAD_BOTH).'"');
 	          $oImpressao->addComando('A480,30,0,3,1,1,N,"'.str_pad($sT64Descr,23,' ',STR_PAD_BOTH).'"');
@@ -143,10 +143,10 @@ $oImpressao->setIp($sIp);
 	          $oImpressao->addComando('P1');
 	          $oImpressao->rodarComandos("\n");
 	          $oImpressao->resetComandos();
-	                           
-					}  
-				  
-				} 
+
+					}
+
+				}
       }
 			?>
 		</td>
@@ -160,39 +160,39 @@ $oImpressao->setIp($sIp);
 </form>
 </body>
 </html>
-<? 
+<?php
   if($erro_msg != ""){
-  	
+
   	db_msgbox($erro_msg);
-  	
+
   }
-  
+
 //  function db_removeAcentuacao($sRemover){
 //
 //  	$var = $sRemover;
-//		
-//		$var = ereg_replace("[ÁÀÂÃ]","A",$var);
-//		
-//		$var = ereg_replace("[áàâãª]","a",$var);
-//		
-//		$var = ereg_replace("[ÉÈÊ]","E",$var);
-//		
-//		$var = ereg_replace("[éèê]","e",$var);
-//		
-//		$var = ereg_replace("[ÓÒÔÕ]","O",$var);
-//		
-//		$var = ereg_replace("[óòôõº]","o",$var);
-//		
-//		$var = ereg_replace("[ÚÙÛ]","U",$var);
-//		
-//		$var = ereg_replace("[úùû]","u",$var);
-//		
+//
+//		$var = preg_replace("[ÁÀÂÃ]","A",$var);
+//
+//		$var = preg_replace("[áàâãª]","a",$var);
+//
+//		$var = preg_replace("[ÉÈÊ]","E",$var);
+//
+//		$var = preg_replace("[éèê]","e",$var);
+//
+//		$var = preg_replace("[ÓÒÔÕ]","O",$var);
+//
+//		$var = preg_replace("[óòôõº]","o",$var);
+//
+//		$var = preg_replace("[ÚÙÛ]","U",$var);
+//
+//		$var = preg_replace("[úùû]","u",$var);
+//
 //		$var = str_replace("Ç","C",$var);
-//		
+//
 //		$var = str_replace("ç","c",$var);
-//		
-//		return $var;	
-//		  
+//
+//		return $var;
+//
 //  }
-  
+
 ?>

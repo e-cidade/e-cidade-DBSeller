@@ -25,89 +25,95 @@
  *                                licenca/licenca_pt.txt
  */
 
+//MODULO: Ambulatorial
+//CLASSE DA ENTIDADE sau_config
 class cl_sau_config
 {
-   // cria variaveis de erro 
-    public $rotulo = null; 
-    public $query_sql = null; 
-    public $numrows = 0; 
-    public $numrows_incluir = 0; 
-    public $numrows_alterar = 0; 
-    public $numrows_excluir = 0; 
-    public $erro_status = null; 
-    public $erro_sql = null; 
-    public $erro_banco = null;  
-    public $erro_msg = null;  
-    public $erro_campo = null;  
-    public $pagina_retorno = null; 
+   // cria variaveis de erro
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     /* Variáveis do Arquivo */
-    public $s103_c_lancafaa = null; 
-    public $s103_v_msgagenda = null; 
-    public $s103_c_agendaproc = null; 
-    public $s103_c_emitircomprovante = null; 
-    public $s103_i_departamentos = 0; 
-    public $s103_c_emitirfaa = null; 
-    public $s103_c_cancelafa = null; 
-    public $s103_i_modalidade = 0; 
-    public $s103_c_sgdb = null; 
-    public $s103_c_ip = null; 
-    public $s103_i_porta = 0; 
-    public $s103_c_senha = null; 
-    public $s103_c_usuario = null; 
-    public $s103_c_apareceragenda = null; 
-    public $s103_c_idadeproc = null; 
-    public $s103_c_servicoproc = null; 
-    public $s103_c_ipauto = 'f'; 
-    public $s103_c_agendaprog = null; 
-    public $s103_i_validaagenda = 0; 
-    public $s103_i_revisacgs = 0; 
-    public $s103_i_tipodb = 0; 
-    public $s103_i_datahorafaa = 0; 
-    public $s103_i_modelofaa = 0; 
-    public $s103_c_bpasecrdestino = null; 
-    public $s103_c_bpasigla = null; 
-    public $s103_c_bpaibge = null; 
-    public $s103_i_todacomp = 0; 
-    public $s103_procsemcbo = null; 
-    public $s103_obrigarcns = 'f'; 
-    public $s103_validamicroarea = 'f'; 
+    public $s103_c_lancafaa = null;
+    public $s103_v_msgagenda = null;
+    public $s103_c_agendaproc = null;
+    public $s103_c_emitircomprovante = null;
+    public $s103_i_departamentos = 0;
+    public $s103_c_emitirfaa = null;
+    public $s103_c_cancelafa = null;
+    public $s103_i_modalidade = 0;
+    public $s103_c_sgdb = null;
+    public $s103_c_ip = null;
+    public $s103_i_porta = 0;
+    public $s103_c_senha = null;
+    public $s103_c_usuario = null;
+    public $s103_c_apareceragenda = null;
+    public $s103_c_idadeproc = null;
+    public $s103_c_servicoproc = null;
+    public $s103_c_ipauto = 'f';
+    public $s103_c_agendaprog = null;
+    public $s103_i_validaagenda = 0;
+    public $s103_i_revisacgs = 0;
+    public $s103_i_tipodb = 0;
+    public $s103_i_datahorafaa = 0;
+    public $s103_i_modelofaa = 0;
+    public $s103_c_bpasecrdestino = null;
+    public $s103_c_bpasigla = null;
+    public $s103_c_bpaibge = null;
+    public $s103_i_todacomp = 0;
+    public $s103_procsemcbo = null;
+    public $s103_obrigarcns = 'f';
+    public $s103_validamicroarea = 'f';
+    public $s103_usuarioapi = 0;
+    public $s103_obrigarcid = 'f'; 
    // cria propriedade com as variaveis do arquivo 
     public $campos = "
-                 s103_c_lancafaa = char(1) = Lançamento FAA 
-                 s103_v_msgagenda = varchar(200) = Mensagem Agenda 
-                 s103_c_agendaproc = char(1) = Procedimento Agenda 
-                 s103_c_emitircomprovante = char(1) = Emitir Comprovante 
-                 s103_i_departamentos = int4 = Controle UPS 
-                 s103_c_emitirfaa = char(1) = Gerar FA Automática 
-                 s103_c_cancelafa = char(1) = Cancelar FA anteriores 
-                 s103_i_modalidade = int8 = Modalidade 
-                 s103_c_sgdb = char(150) = Nome do Banco 
-                 s103_c_ip = char(15) = IP 
-                 s103_i_porta = int4 = Porta 
-                 s103_c_senha = char(150) = Senha 
-                 s103_c_usuario = char(150) = Usuario 
-                 s103_c_apareceragenda = char(1) = Aparecer FAAs geradas 
-                 s103_c_idadeproc = char(1) = Valida Idade do Procedimento 
-                 s103_c_servicoproc = char(1) = Valida Serviço do Procedimento 
-                 s103_c_ipauto = bool = IP Automatico 
-                 s103_c_agendaprog = char(1) = Ação Programática na Agenda 
-                 s103_i_validaagenda = int4 = Verificar de outras agendas(dias) 
-                 s103_i_revisacgs = int4 = Revisar cadastro do CGS(dias) 
-                 s103_i_tipodb = int4 = Tipo de Banco 
-                 s103_i_datahorafaa = int4 = Data e hora na FAA 
-                 s103_i_modelofaa = int4 = Modelo FA 
-                 s103_c_bpasecrdestino = char(50) = Secretaria Destino 
-                 s103_c_bpasigla = char(5) = Sigla 
-                 s103_c_bpaibge = char(30) = Codigo do IBGE 
-                 s103_i_todacomp = int4 = Apresentar Todas Competências 
-                 s103_procsemcbo = char(1) = Exibir Procedimentos sem CBO 
-                 s103_obrigarcns = bool = Obrigar Informar CNS 
-                 s103_validamicroarea = bool = Valida Cadastro Paciente Micro Area 
+                 s103_c_lancafaa = char(1) = Lançamento FAA
+                 s103_v_msgagenda = varchar(200) = Mensagem Agenda
+                 s103_c_agendaproc = char(1) = Procedimento Agenda
+                 s103_c_emitircomprovante = char(1) = Emitir Comprovante
+                 s103_i_departamentos = int4 = Controle UPS
+                 s103_c_emitirfaa = char(1) = Gerar FA Automática
+                 s103_c_cancelafa = char(1) = Cancelar FA anteriores
+                 s103_i_modalidade = int8 = Modalidade
+                 s103_c_sgdb = char(150) = Nome do Banco
+                 s103_c_ip = char(15) = IP
+                 s103_i_porta = int4 = Porta
+                 s103_c_senha = char(150) = Senha
+                 s103_c_usuario = char(150) = Usuario
+                 s103_c_apareceragenda = char(1) = Aparecer FAAs geradas
+                 s103_c_idadeproc = char(1) = Valida Idade do Procedimento
+                 s103_c_servicoproc = char(1) = Valida Serviço do Procedimento
+                 s103_c_ipauto = bool = IP Automatico
+                 s103_c_agendaprog = char(1) = Ação Programática na Agenda
+                 s103_i_validaagenda = int4 = Verificar de outras agendas(dias)
+                 s103_i_revisacgs = int4 = Revisar cadastro do CGS(dias)
+                 s103_i_tipodb = int4 = Tipo de Banco
+                 s103_i_datahorafaa = int4 = Data e hora na FAA
+                 s103_i_modelofaa = int4 = Modelo FA
+                 s103_c_bpasecrdestino = char(50) = Secretaria Destino
+                 s103_c_bpasigla = char(5) = Sigla
+                 s103_c_bpaibge = char(30) = Codigo do IBGE
+                 s103_i_todacomp = int4 = Apresentar Todas Competências
+                 s103_procsemcbo = char(1) = Exibir Procedimentos sem CBO
+                 s103_obrigarcns = bool = Obrigar Informar CNS
+                 s103_validamicroarea = bool = Valida Cadastro Paciente Micro Area
+                 s103_usuarioapi = int4 = Usuário da API
+                 s103_obrigarcid = bool = Preenchimento Obrigatório CID 
                  ";
 
     public function __construct()
     {
-        $this->rotulo = new rotulo("sau_config"); 
+        $this->rotulo = new rotulo("sau_config");
         $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
@@ -154,6 +160,8 @@ class cl_sau_config
        $this->s103_procsemcbo = ($this->s103_procsemcbo == ""?@$GLOBALS["HTTP_POST_VARS"]["s103_procsemcbo"]:$this->s103_procsemcbo);
        $this->s103_obrigarcns = ($this->s103_obrigarcns == "f"?@$GLOBALS["HTTP_POST_VARS"]["s103_obrigarcns"]:$this->s103_obrigarcns);
        $this->s103_validamicroarea = ($this->s103_validamicroarea == "f"?@$GLOBALS["HTTP_POST_VARS"]["s103_validamicroarea"]:$this->s103_validamicroarea);
+       $this->s103_usuarioapi = ($this->s103_usuarioapi == ""?@$GLOBALS["HTTP_POST_VARS"]["s103_usuarioapi"]:$this->s103_usuarioapi);
+       $this->s103_obrigarcid = ($this->s103_obrigarcid == "f"?@$GLOBALS["HTTP_POST_VARS"]["s103_obrigarcid"]:$this->s103_obrigarcid);
      }else{
      }
    }
@@ -161,10 +169,10 @@ class cl_sau_config
     public function incluir()
     {
       $this->atualizacampos();
-     if($this->s103_c_emitircomprovante == null ){ 
+     if($this->s103_c_emitircomprovante == null ){
        $this->s103_c_emitircomprovante = "S";
      }
-     if($this->s103_i_departamentos == null ){ 
+     if($this->s103_i_departamentos == null ){
        $this->erro_sql = " Campo Controle UPS não informado.";
        $this->erro_campo = "s103_i_departamentos";
        $this->erro_banco = "";
@@ -173,7 +181,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_c_emitirfaa == null ){ 
+     if($this->s103_c_emitirfaa == null ){
        $this->erro_sql = " Campo Gerar FA Automática não informado.";
        $this->erro_campo = "s103_c_emitirfaa";
        $this->erro_banco = "";
@@ -182,7 +190,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_c_cancelafa == null ){ 
+     if($this->s103_c_cancelafa == null ){
        $this->erro_sql = " Campo Cancelar FA anteriores não informado.";
        $this->erro_campo = "s103_c_cancelafa";
        $this->erro_banco = "";
@@ -191,16 +199,16 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_i_modalidade == null ){ 
+     if($this->s103_i_modalidade == null ){
        $this->s103_i_modalidade = "0";
      }
-     if($this->s103_i_porta == null ){ 
+     if($this->s103_i_porta == null ){
        $this->s103_i_porta = "3050";
      }
-     if($this->s103_c_usuario == null ){ 
+     if($this->s103_c_usuario == null ){
        $this->s103_c_usuario = "SYSDBA";
      }
-     if($this->s103_c_apareceragenda == null ){ 
+     if($this->s103_c_apareceragenda == null ){
        $this->erro_sql = " Campo Aparecer FAAs geradas não informado.";
        $this->erro_campo = "s103_c_apareceragenda";
        $this->erro_banco = "";
@@ -209,7 +217,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_c_idadeproc == null ){ 
+     if($this->s103_c_idadeproc == null ){
        $this->erro_sql = " Campo Valida Idade do Procedimento não informado.";
        $this->erro_campo = "s103_c_idadeproc";
        $this->erro_banco = "";
@@ -218,7 +226,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_c_servicoproc == null ){ 
+     if($this->s103_c_servicoproc == null ){
        $this->erro_sql = " Campo Valida Serviço do Procedimento não informado.";
        $this->erro_campo = "s103_c_servicoproc";
        $this->erro_banco = "";
@@ -227,22 +235,22 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_c_ipauto == null ){ 
+     if($this->s103_c_ipauto == null ){
        $this->s103_c_ipauto = "f";
      }
-     if($this->s103_c_agendaprog == null ){ 
+     if($this->s103_c_agendaprog == null ){
        $this->s103_c_agendaprog = "N";
      }
-     if($this->s103_i_validaagenda == null ){ 
+     if($this->s103_i_validaagenda == null ){
        $this->s103_i_validaagenda = "0";
      }
-     if($this->s103_i_revisacgs == null ){ 
+     if($this->s103_i_revisacgs == null ){
        $this->s103_i_revisacgs = "0";
      }
-     if($this->s103_i_tipodb == null ){ 
+     if($this->s103_i_tipodb == null ){
        $this->s103_i_tipodb = "0";
      }
-     if($this->s103_i_datahorafaa == null ){ 
+     if($this->s103_i_datahorafaa == null ){
        $this->erro_sql = " Campo Data e hora na FAA não informado.";
        $this->erro_campo = "s103_i_datahorafaa";
        $this->erro_banco = "";
@@ -251,7 +259,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_i_modelofaa == null ){ 
+     if($this->s103_i_modelofaa == null ){
        $this->erro_sql = " Campo Modelo FA não informado.";
        $this->erro_campo = "s103_i_modelofaa";
        $this->erro_banco = "";
@@ -260,7 +268,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_i_todacomp == null ){ 
+     if($this->s103_i_todacomp == null ){
        $this->erro_sql = " Campo Apresentar Todas Competências não informado.";
        $this->erro_campo = "s103_i_todacomp";
        $this->erro_banco = "";
@@ -269,7 +277,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_obrigarcns == null ){ 
+     if($this->s103_obrigarcns == null ){
        $this->erro_sql = " Campo Obrigar Informar CNS não informado.";
        $this->erro_campo = "s103_obrigarcns";
        $this->erro_banco = "";
@@ -278,7 +286,7 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
-     if($this->s103_validamicroarea == null ){ 
+     if($this->s103_validamicroarea == null ){
        $this->erro_sql = " Campo Valida Cadastro Paciente Micro Area não informado.";
        $this->erro_campo = "s103_validamicroarea";
        $this->erro_banco = "";
@@ -287,24 +295,42 @@ class cl_sau_config
        $this->erro_status = "0";
        return false;
      }
+     if($this->s103_usuarioapi == null ){
+       $this->erro_sql = " Campo Usuário da API não informado.";
+       $this->erro_campo = "s103_usuarioapi";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->s103_obrigarcid == null ){ 
+       $this->erro_sql = " Campo Preenchimento Obrigatório CID não informado.";
+       $this->erro_campo = "s103_obrigarcid";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
      $sql = "insert into sau_config(
-                                       s103_c_lancafaa 
-                                      ,s103_v_msgagenda 
-                                      ,s103_c_agendaproc 
-                                      ,s103_c_emitircomprovante 
-                                      ,s103_i_departamentos 
-                                      ,s103_c_emitirfaa 
-                                      ,s103_c_cancelafa 
-                                      ,s103_i_modalidade 
-                                      ,s103_c_sgdb 
-                                      ,s103_c_ip 
-                                      ,s103_i_porta 
-                                      ,s103_c_senha 
-                                      ,s103_c_usuario 
-                                      ,s103_c_apareceragenda 
-                                      ,s103_c_idadeproc 
-                                      ,s103_c_servicoproc 
-                                      ,s103_c_ipauto 
+                                       s103_c_lancafaa
+                                      ,s103_v_msgagenda
+                                      ,s103_c_agendaproc
+                                      ,s103_c_emitircomprovante
+                                      ,s103_i_departamentos
+                                      ,s103_c_emitirfaa
+                                      ,s103_c_cancelafa
+                                      ,s103_i_modalidade
+                                      ,s103_c_sgdb
+                                      ,s103_c_ip
+                                      ,s103_i_porta
+                                      ,s103_c_senha
+                                      ,s103_c_usuario
+                                      ,s103_c_apareceragenda
+                                      ,s103_c_idadeproc
+                                      ,s103_c_servicoproc
+                                      ,s103_c_ipauto
                                       ,s103_c_agendaprog 
                                       ,s103_i_validaagenda 
                                       ,s103_i_revisacgs 
@@ -318,41 +344,45 @@ class cl_sau_config
                                       ,s103_procsemcbo 
                                       ,s103_obrigarcns 
                                       ,s103_validamicroarea 
+                                      ,s103_usuarioapi 
+                                      ,s103_obrigarcid 
                        )
                 values (
-                                '$this->s103_c_lancafaa' 
-                               ,'$this->s103_v_msgagenda' 
-                               ,'$this->s103_c_agendaproc' 
-                               ,'$this->s103_c_emitircomprovante' 
-                               ,$this->s103_i_departamentos 
-                               ,'$this->s103_c_emitirfaa' 
-                               ,'$this->s103_c_cancelafa' 
-                               ,$this->s103_i_modalidade 
-                               ,'$this->s103_c_sgdb' 
-                               ,'$this->s103_c_ip' 
-                               ,$this->s103_i_porta 
-                               ,'$this->s103_c_senha' 
-                               ,'$this->s103_c_usuario' 
-                               ,'$this->s103_c_apareceragenda' 
-                               ,'$this->s103_c_idadeproc' 
-                               ,'$this->s103_c_servicoproc' 
-                               ,'$this->s103_c_ipauto' 
-                               ,'$this->s103_c_agendaprog' 
-                               ,$this->s103_i_validaagenda 
-                               ,$this->s103_i_revisacgs 
-                               ,$this->s103_i_tipodb 
-                               ,$this->s103_i_datahorafaa 
-                               ,$this->s103_i_modelofaa 
-                               ,'$this->s103_c_bpasecrdestino' 
-                               ,'$this->s103_c_bpasigla' 
-                               ,'$this->s103_c_bpaibge' 
-                               ,$this->s103_i_todacomp 
-                               ,'$this->s103_procsemcbo' 
+                                '$this->s103_c_lancafaa'
+                               ,'$this->s103_v_msgagenda'
+                               ,'$this->s103_c_agendaproc'
+                               ,'$this->s103_c_emitircomprovante'
+                               ,$this->s103_i_departamentos
+                               ,'$this->s103_c_emitirfaa'
+                               ,'$this->s103_c_cancelafa'
+                               ,$this->s103_i_modalidade
+                               ,'$this->s103_c_sgdb'
+                               ,'$this->s103_c_ip'
+                               ,$this->s103_i_porta
+                               ,'$this->s103_c_senha'
+                               ,'$this->s103_c_usuario'
+                               ,'$this->s103_c_apareceragenda'
+                               ,'$this->s103_c_idadeproc'
+                               ,'$this->s103_c_servicoproc'
+                               ,'$this->s103_c_ipauto'
+                               ,'$this->s103_c_agendaprog'
+                               ,$this->s103_i_validaagenda
+                               ,$this->s103_i_revisacgs
+                               ,$this->s103_i_tipodb
+                               ,$this->s103_i_datahorafaa
+                               ,$this->s103_i_modelofaa
+                               ,'$this->s103_c_bpasecrdestino'
+                               ,'$this->s103_c_bpasigla'
+                               ,'$this->s103_c_bpaibge'
+                               ,$this->s103_i_todacomp
+                               ,'$this->s103_procsemcbo'
                                ,'$this->s103_obrigarcns' 
                                ,'$this->s103_validamicroarea' 
+                               ,$this->s103_usuarioapi 
+                               ,'$this->s103_obrigarcid' 
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Configuração parâmetros () não Incluído. Inclusão Abortada.";
@@ -380,33 +410,33 @@ class cl_sau_config
 
      }
      return true;
-   } 
+   }
 
     public function alterar( $oid=null )
     {
       $this->atualizacampos();
      $sql = " update sau_config set ";
      $virgula = "";
-     if(trim($this->s103_c_lancafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_lancafaa"])){ 
+     if(trim($this->s103_c_lancafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_lancafaa"])){
        $sql  .= $virgula." s103_c_lancafaa = '$this->s103_c_lancafaa' ";
        $virgula = ",";
      }
-     if(trim($this->s103_v_msgagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_v_msgagenda"])){ 
+     if(trim($this->s103_v_msgagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_v_msgagenda"])){
        $sql  .= $virgula." s103_v_msgagenda = '$this->s103_v_msgagenda' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_agendaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaproc"])){ 
+     if(trim($this->s103_c_agendaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaproc"])){
        $sql  .= $virgula." s103_c_agendaproc = '$this->s103_c_agendaproc' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_emitircomprovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitircomprovante"])){ 
+     if(trim($this->s103_c_emitircomprovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitircomprovante"])){
        $sql  .= $virgula." s103_c_emitircomprovante = '$this->s103_c_emitircomprovante' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_departamentos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_departamentos"])){ 
+     if(trim($this->s103_i_departamentos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_departamentos"])){
        $sql  .= $virgula." s103_i_departamentos = $this->s103_i_departamentos ";
        $virgula = ",";
-       if(trim($this->s103_i_departamentos) == null ){ 
+       if(trim($this->s103_i_departamentos) == null ){
          $this->erro_sql = " Campo Controle UPS não informado.";
          $this->erro_campo = "s103_i_departamentos";
          $this->erro_banco = "";
@@ -416,10 +446,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_emitirfaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitirfaa"])){ 
+     if(trim($this->s103_c_emitirfaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitirfaa"])){
        $sql  .= $virgula." s103_c_emitirfaa = '$this->s103_c_emitirfaa' ";
        $virgula = ",";
-       if(trim($this->s103_c_emitirfaa) == null ){ 
+       if(trim($this->s103_c_emitirfaa) == null ){
          $this->erro_sql = " Campo Gerar FA Automática não informado.";
          $this->erro_campo = "s103_c_emitirfaa";
          $this->erro_banco = "";
@@ -429,10 +459,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_cancelafa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_cancelafa"])){ 
+     if(trim($this->s103_c_cancelafa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_cancelafa"])){
        $sql  .= $virgula." s103_c_cancelafa = '$this->s103_c_cancelafa' ";
        $virgula = ",";
-       if(trim($this->s103_c_cancelafa) == null ){ 
+       if(trim($this->s103_c_cancelafa) == null ){
          $this->erro_sql = " Campo Cancelar FA anteriores não informado.";
          $this->erro_campo = "s103_c_cancelafa";
          $this->erro_banco = "";
@@ -442,40 +472,40 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_i_modalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){ 
-        if(trim($this->s103_i_modalidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){ 
-           $this->s103_i_modalidade = "0" ; 
-        } 
+     if(trim($this->s103_i_modalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){
+        if(trim($this->s103_i_modalidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){
+           $this->s103_i_modalidade = "0" ;
+        }
        $sql  .= $virgula." s103_i_modalidade = $this->s103_i_modalidade ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_sgdb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_sgdb"])){ 
+     if(trim($this->s103_c_sgdb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_sgdb"])){
        $sql  .= $virgula." s103_c_sgdb = '$this->s103_c_sgdb' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ip"])){ 
+     if(trim($this->s103_c_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ip"])){
        $sql  .= $virgula." s103_c_ip = '$this->s103_c_ip' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_porta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){ 
-        if(trim($this->s103_i_porta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){ 
-           $this->s103_i_porta = "0" ; 
-        } 
+     if(trim($this->s103_i_porta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){
+        if(trim($this->s103_i_porta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){
+           $this->s103_i_porta = "0" ;
+        }
        $sql  .= $virgula." s103_i_porta = $this->s103_i_porta ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_senha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_senha"])){ 
+     if(trim($this->s103_c_senha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_senha"])){
        $sql  .= $virgula." s103_c_senha = '$this->s103_c_senha' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_usuario"])){ 
+     if(trim($this->s103_c_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_usuario"])){
        $sql  .= $virgula." s103_c_usuario = '$this->s103_c_usuario' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_apareceragenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_apareceragenda"])){ 
+     if(trim($this->s103_c_apareceragenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_apareceragenda"])){
        $sql  .= $virgula." s103_c_apareceragenda = '$this->s103_c_apareceragenda' ";
        $virgula = ",";
-       if(trim($this->s103_c_apareceragenda) == null ){ 
+       if(trim($this->s103_c_apareceragenda) == null ){
          $this->erro_sql = " Campo Aparecer FAAs geradas não informado.";
          $this->erro_campo = "s103_c_apareceragenda";
          $this->erro_banco = "";
@@ -485,10 +515,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_idadeproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_idadeproc"])){ 
+     if(trim($this->s103_c_idadeproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_idadeproc"])){
        $sql  .= $virgula." s103_c_idadeproc = '$this->s103_c_idadeproc' ";
        $virgula = ",";
-       if(trim($this->s103_c_idadeproc) == null ){ 
+       if(trim($this->s103_c_idadeproc) == null ){
          $this->erro_sql = " Campo Valida Idade do Procedimento não informado.";
          $this->erro_campo = "s103_c_idadeproc";
          $this->erro_banco = "";
@@ -498,10 +528,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_servicoproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_servicoproc"])){ 
+     if(trim($this->s103_c_servicoproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_servicoproc"])){
        $sql  .= $virgula." s103_c_servicoproc = '$this->s103_c_servicoproc' ";
        $virgula = ",";
-       if(trim($this->s103_c_servicoproc) == null ){ 
+       if(trim($this->s103_c_servicoproc) == null ){
          $this->erro_sql = " Campo Valida Serviço do Procedimento não informado.";
          $this->erro_campo = "s103_c_servicoproc";
          $this->erro_banco = "";
@@ -511,39 +541,39 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_ipauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ipauto"])){ 
+     if(trim($this->s103_c_ipauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ipauto"])){
        $sql  .= $virgula." s103_c_ipauto = '$this->s103_c_ipauto' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_agendaprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaprog"])){ 
+     if(trim($this->s103_c_agendaprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaprog"])){
        $sql  .= $virgula." s103_c_agendaprog = '$this->s103_c_agendaprog' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_validaagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){ 
-        if(trim($this->s103_i_validaagenda)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){ 
-           $this->s103_i_validaagenda = "0" ; 
-        } 
+     if(trim($this->s103_i_validaagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){
+        if(trim($this->s103_i_validaagenda)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){
+           $this->s103_i_validaagenda = "0" ;
+        }
        $sql  .= $virgula." s103_i_validaagenda = $this->s103_i_validaagenda ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_revisacgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){ 
-        if(trim($this->s103_i_revisacgs)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){ 
-           $this->s103_i_revisacgs = "0" ; 
-        } 
+     if(trim($this->s103_i_revisacgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){
+        if(trim($this->s103_i_revisacgs)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){
+           $this->s103_i_revisacgs = "0" ;
+        }
        $sql  .= $virgula." s103_i_revisacgs = $this->s103_i_revisacgs ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_tipodb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){ 
-        if(trim($this->s103_i_tipodb)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){ 
-           $this->s103_i_tipodb = "0" ; 
-        } 
+     if(trim($this->s103_i_tipodb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){
+        if(trim($this->s103_i_tipodb)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){
+           $this->s103_i_tipodb = "0" ;
+        }
        $sql  .= $virgula." s103_i_tipodb = $this->s103_i_tipodb ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_datahorafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_datahorafaa"])){ 
+     if(trim($this->s103_i_datahorafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_datahorafaa"])){
        $sql  .= $virgula." s103_i_datahorafaa = $this->s103_i_datahorafaa ";
        $virgula = ",";
-       if(trim($this->s103_i_datahorafaa) == null ){ 
+       if(trim($this->s103_i_datahorafaa) == null ){
          $this->erro_sql = " Campo Data e hora na FAA não informado.";
          $this->erro_campo = "s103_i_datahorafaa";
          $this->erro_banco = "";
@@ -553,10 +583,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_i_modelofaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modelofaa"])){ 
+     if(trim($this->s103_i_modelofaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modelofaa"])){
        $sql  .= $virgula." s103_i_modelofaa = $this->s103_i_modelofaa ";
        $virgula = ",";
-       if(trim($this->s103_i_modelofaa) == null ){ 
+       if(trim($this->s103_i_modelofaa) == null ){
          $this->erro_sql = " Campo Modelo FA não informado.";
          $this->erro_campo = "s103_i_modelofaa";
          $this->erro_banco = "";
@@ -566,22 +596,22 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_bpasecrdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasecrdestino"])){ 
+     if(trim($this->s103_c_bpasecrdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasecrdestino"])){
        $sql  .= $virgula." s103_c_bpasecrdestino = '$this->s103_c_bpasecrdestino' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_bpasigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasigla"])){ 
+     if(trim($this->s103_c_bpasigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasigla"])){
        $sql  .= $virgula." s103_c_bpasigla = '$this->s103_c_bpasigla' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_bpaibge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpaibge"])){ 
+     if(trim($this->s103_c_bpaibge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpaibge"])){
        $sql  .= $virgula." s103_c_bpaibge = '$this->s103_c_bpaibge' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_todacomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_todacomp"])){ 
+     if(trim($this->s103_i_todacomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_todacomp"])){
        $sql  .= $virgula." s103_i_todacomp = $this->s103_i_todacomp ";
        $virgula = ",";
-       if(trim($this->s103_i_todacomp) == null ){ 
+       if(trim($this->s103_i_todacomp) == null ){
          $this->erro_sql = " Campo Apresentar Todas Competências não informado.";
          $this->erro_campo = "s103_i_todacomp";
          $this->erro_banco = "";
@@ -591,7 +621,7 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_procsemcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_procsemcbo"])){ 
+     if(trim($this->s103_procsemcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_procsemcbo"])){
        $sql  .= $virgula." s103_procsemcbo = '$this->s103_procsemcbo' ";
        $virgula = ",";
        if(trim($this->s103_procsemcbo) == null ){
@@ -604,10 +634,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_obrigarcns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_obrigarcns"])){ 
+     if(trim($this->s103_obrigarcns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_obrigarcns"])){
        $sql  .= $virgula." s103_obrigarcns = '$this->s103_obrigarcns' ";
        $virgula = ",";
-       if(trim($this->s103_obrigarcns) == null ){ 
+       if(trim($this->s103_obrigarcns) == null ){
          $this->erro_sql = " Campo Obrigar Informar CNS não informado.";
          $this->erro_campo = "s103_obrigarcns";
          $this->erro_banco = "";
@@ -617,10 +647,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_validamicroarea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_validamicroarea"])){ 
+     if(trim($this->s103_validamicroarea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_validamicroarea"])){
        $sql  .= $virgula." s103_validamicroarea = '$this->s103_validamicroarea' ";
        $virgula = ",";
-       if(trim($this->s103_validamicroarea) == null ){ 
+       if(trim($this->s103_validamicroarea) == null ){
          $this->erro_sql = " Campo Valida Cadastro Paciente Micro Area não informado.";
          $this->erro_campo = "s103_validamicroarea";
          $this->erro_banco = "";
@@ -630,8 +660,25 @@ class cl_sau_config
          return false;
        }
      }
+     if(trim($this->s103_usuarioapi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_usuarioapi"])){
+       $sql  .= $virgula." s103_usuarioapi = $this->s103_usuarioapi ";
+       $virgula = ",";
+       if(trim($this->s103_usuarioapi) == null ){
+         $this->erro_sql = " Campo Usuário da API não informado.";
+         $this->erro_campo = "s103_usuarioapi";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->s103_obrigarcid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_obrigarcid"])){ 
+       $sql  .= $virgula." s103_obrigarcid = '$this->s103_obrigarcid' ";
+       $virgula = ",";
+     }
     $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuração parâmetros não Alterado. Alteração Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -656,9 +703,9 @@ class cl_sau_config
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
+       }
+     }
+   }
 
     public function excluir( $oid=null , $dbwhere = null)
     {
@@ -671,7 +718,7 @@ class cl_sau_config
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuração parâmetros não Excluído. Exclusão Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -696,9 +743,9 @@ class cl_sau_config
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
+       }
+     }
+   }
 
     public function sql_record($sql)
     {
@@ -724,11 +771,12 @@ class cl_sau_config
      return $result;
    }
 
-    public function sql_query($oid = null, $campos = "sau_config.oid,*", $ordem = null, $dbwhere = "") { 
+    public function sql_query($oid = null, $campos = "sau_config.oid,*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from sau_config ";
-     $sql .= "      left  join sau_modalidade  on  sau_modalidade.sd82_i_codigo = sau_config.s103_i_modalidade";
+        $sql .= "      left  join sau_modalidade  on  sau_modalidade.sd82_i_codigo = sau_config.s103_i_modalidade";
+     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = sau_config.s103_usuarioapi";
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($oid)) {
@@ -770,7 +818,7 @@ class cl_sau_config
 
 	  if ($campos != "*") {
 
-		  $campos_sql = split ( "#", $campos );
+		  $campos_sql = explode ( "#", $campos );
 		  $virgula    = "";
 
 		  for($i = 0; $i < sizeof ( $campos_sql ); $i ++) {
@@ -805,7 +853,7 @@ class cl_sau_config
 	  if ($ordem != null) {
 
 		  $sSqlSauConfig .= " order by ";
-		  $campos_sql     = split ( "#", $ordem );
+		  $campos_sql     = explode ( "#", $ordem );
 		  $virgula        = "";
 
 		  for ($i = 0; $i < sizeof ( $campos_sql ); $i ++) {

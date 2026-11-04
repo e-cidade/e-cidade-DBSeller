@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("fa29_i_codigo");
        <?=@$Lfa30_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa30_i_codigo',10,$Ifa30_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('fa30_i_codigo',10,$Ifa30_i_codigo,true,'text',3,"")
        <?=@$Lfa30_c_concentracao?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa30_c_concentracao',50,$Ifa30_c_concentracao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -65,7 +65,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_concentracao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

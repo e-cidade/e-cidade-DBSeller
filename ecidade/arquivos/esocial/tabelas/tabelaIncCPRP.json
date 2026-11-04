@@ -1,0 +1,30 @@
+[
+  {
+    "value": "00",
+    "label": "00 - Não é base de cálculo de contribuições devidas ao RPPS/regime militar"
+  },
+  {
+    "value": "11",
+    "label": "11 - Base de cálculo de contribuições devidas ao RPPS/regime militar"
+  },
+  {
+    "value": "12",
+    "label": "12 - Base de cálculo de contribuições devidas ao RPPS/regime militar - 13º salário"
+  },
+  {
+    "value": "31",
+    "label": "31 - Contribuição descontada do segurado e beneficiário"
+  },
+  {
+    "value": "32",
+    "label": "32 - Contribuição descontada do segurado e beneficiário - 13º salário"
+  },
+  {
+    "value": "91",
+    "label": "91 - Suspensão de incidência em decorrência de decisão judicial"
+  },
+  {
+   "value": "92",
+   "label": "92 - Suspensão de incidência em decorrência de decisão judicial - 13º salário"
+ }
+]

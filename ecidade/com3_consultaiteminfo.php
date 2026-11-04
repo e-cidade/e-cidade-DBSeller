@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,7 +83,7 @@ $clrotulo->label("");
     <br>
     </td>
   </tr>
-<?
+<?php
 db_input("mostra",10,"",true,"hidden",3);
 db_input("pc01_codmater",10,"",true,"hidden",3);
 if (!isset($filtroquery)){

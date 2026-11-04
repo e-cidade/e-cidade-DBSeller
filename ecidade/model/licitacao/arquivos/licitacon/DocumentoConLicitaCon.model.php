@@ -25,89 +25,96 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Patrimonial\Contratos\Services\AcordoLicitacaoCompartilhadaService;
 use \ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\Geral as Regra;
 use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\Contrato as RegraContrato;
 
-class DocumentoConLicitaCon extends ArquivoLicitaCon {
+class DocumentoConLicitaCon extends ArquivoLicitaCon
+{
 
-  const CODIGO_LAYOUT = 250;
-  const NOME_ARQUIVO  = "DOCUMENTO_CON";
+    const CODIGO_LAYOUT = 250;
+    const NOME_ARQUIVO  = "DOCUMENTO_CON";
 
-  public function __construct(CabecalhoLicitaCon $oCabecalho) {
+    public function __construct(CabecalhoLicitaCon $oCabecalho)
+    {
 
-    parent::__construct($oCabecalho, new Regra($oCabecalho->getDataGeracao()));
-    $this->sNomeArquivo  = self::NOME_ARQUIVO;
-    $this->iCodigoLayout = self::CODIGO_LAYOUT;
-  }
+        parent::__construct($oCabecalho, new Regra($oCabecalho->getDataGeracao()));
+        $this->sNomeArquivo  = self::NOME_ARQUIVO;
+        $this->iCodigoLayout = self::CODIGO_LAYOUT;
+    }
 
   /**
    * @return bool|resource
    * @throws DBException
    */
-  public function getDocumentos() {
+    public function getDocumentos()
+    {
 
-    $sCampos = " distinct " . implode(', ', array(
-      'ac16_sequencial      as sequencial',
-      'ac16_numero          as nr_contrato',
-      'ac16_anousu          as ano_contrato',
-      'ac16_tipoinstrumento as tp_instrumento',
-      'ac55_sequencial      as sq_evento',
-      'ac57_tipodocumento   as cd_tipo_documento',
-      'ac40_nomearquivo     as nome_arquivo',
-      'ac40_arquivo         as codigo_arquivo',
-      "ac55_tipoevento      as evento"
-    ));
+        $sCampos = " distinct " . implode(', ', array(
+        'ac16_sequencial      as sequencial',
+        'ac16_numero          as nr_contrato',
+        'ac16_anousu          as ano_contrato',
+        'ac16_tipoinstrumento as tp_instrumento',
+        'ac55_sequencial      as sq_evento',
+        'ac57_tipodocumento   as cd_tipo_documento',
+        'ac40_nomearquivo     as nome_arquivo',
+        'ac40_arquivo         as codigo_arquivo',
+        "ac55_tipoevento      as evento"
+        ));
 
-    $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate(DBDate::DATA_EN);
-    $sWhere   = " (ac58_acordo is null or ac58_data >= '{$sDataAtual}') and ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()} and (ac55_tipoevento <> 12 or (ac55_tipoevento = 12 and ac56_acordoevento is not null))";
-    $sOrderBy = "sequencial asc";
-    $oDaoAcordoDocumento = new cl_acordodocumento();
-    $sSqlDocumentos      = $oDaoAcordoDocumento->sql_query_documentos_eventos($sCampos, $sWhere, $sOrderBy);
-    $rsDocumentos        = db_query($sSqlDocumentos);
+        $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate(DBDate::DATA_EN);
+        $sWhere   = " (ac58_acordo is null or ac58_data >= '{$sDataAtual}') and ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()} and (ac55_tipoevento <> 12 or (ac55_tipoevento = 12 and ac56_acordoevento is not null))";
+        $sOrderBy = "sequencial asc";
+        $oDaoAcordoDocumento = new cl_acordodocumento();
+        $sSqlDocumentos      = $oDaoAcordoDocumento->sql_query_documentos_eventos($sCampos, $sWhere, $sOrderBy);
+        $rsDocumentos        = db_query($sSqlDocumentos);
 
-    if (!$rsDocumentos) {
-      throw new DBException("Não foi possível encontrar os documentos para a geração do arquivo ". self::NOME_ARQUIVO);
+        if (!$rsDocumentos) {
+            throw new DBException("Não foi possível encontrar os documentos para a geração do arquivo ". self::NOME_ARQUIVO);
+        }
+
+        return $rsDocumentos;
     }
-
-    return $rsDocumentos;
-  }
 
   /**
    * @return array
    */
-  public function getDados() {
+    public function getDados()
+    {
 
-    $rsDocumentos      = $this->getDocumentos();
-    $iTotalDocumentos  = pg_num_rows($rsDocumentos);
-    $aTiposDocumento   = LicitaConTipoDocumentoAcordo::getSiglas();
-    $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
+        $rsDocumentos      = $this->getDocumentos();
+        $iTotalDocumentos  = pg_num_rows($rsDocumentos);
+        $aTiposDocumento   = LicitaConTipoDocumentoAcordo::getSiglas();
+        $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 
-    $aDocumentos = array();
-    for ($iIndice = 0; $iIndice < $iTotalDocumentos; $iIndice++) {
+        $aDocumentos = array();
+        for ($iIndice = 0; $iIndice < $iTotalDocumentos; $iIndice++) {
+            $oDocumento    = db_utils::fieldsMemory($rsDocumentos, $iIndice);
+            $oRegraContrato = new RegraContrato($this->oCabecalho->getDataGeracao());
+            $oLicitacao    = $oRegraContrato->getDadosDaLicitacaoDoContrato($oDocumento->sequencial);
+            $oStdDocumento = new stdClass;
 
-      $oDocumento    = db_utils::fieldsMemory($rsDocumentos, $iIndice);
-			$oRegraContrato = new RegraContrato($this->oCabecalho->getDataGeracao());
-      $oLicitacao    = $oRegraContrato->getDadosDaLicitacaoDoContrato($oDocumento->sequencial);
-      $oStdDocumento = new stdClass;
+            $sCaminhoArquivo = $this->sNomeArquivo . "\\" . preg_replace("/((?![\w\\.!@#$%*()_+= ,<>?\/^~-]).)/", "", $oDocumento->nome_arquivo);
+            $sCaminhoArquivo = File::cutName($sCaminhoArquivo, $this->oRegra->getTamanhoNomeArquivo());
 
-      $sCaminhoArquivo = $this->sNomeArquivo . "\\" . preg_replace("/((?![\w\\.!@#$%*()_+= ,<>?\/^~-]).)/", "", $oDocumento->nome_arquivo);
-			$sCaminhoArquivo = File::cutName($sCaminhoArquivo, $this->oRegra->getTamanhoNomeArquivo());
+            $service = new AcordoLicitacaoCompartilhadaService();
+            $dados = $service->buscarDados($oDocumento->sequencial);
+            $modalidade = $service->getModalidade($dados->ac63_modalidade)->getSiglaTipoCompraTribunal();
 
-      $oStdDocumento->NR_LICITACAO           = $oLicitacao->numero;
-      $oStdDocumento->ANO_LICITACAO          = $oLicitacao->ano;
-      $oStdDocumento->CD_TIPO_MODALIDADE     = $oLicitacao->tipo;
-      $oStdDocumento->NR_CONTRATO            = $oDocumento->nr_contrato;
-      $oStdDocumento->ANO_CONTRATO           = $oDocumento->ano_contrato;
-      $oStdDocumento->TP_INSTRUMENTO         = $aTiposInstrumento[$oDocumento->tp_instrumento];
-      $oStdDocumento->SQ_EVENTO              = $oDocumento->evento == TipoEventoAcordo::EVENTO_DOCUMENTOS ? '' : $oDocumento->sq_evento;
-      $oStdDocumento->CD_TIPO_DOCUMENTO      = $aTiposDocumento[$oDocumento->cd_tipo_documento];
-      $oStdDocumento->NOME_ARQUIVO_DOCUMENTO = $sCaminhoArquivo;
+            $oStdDocumento->NR_LICITACAO           = $dados->ac63_sequencial == "" ? $oLicitacao->numero : $dados->ac63_numero;
+            $oStdDocumento->ANO_LICITACAO          = $dados->ac63_sequencial == "" ? $oLicitacao->ano : $dados->ac63_ano;
+            $oStdDocumento->CD_TIPO_MODALIDADE     = $dados->ac63_sequencial == "" ? $oLicitacao->tipo : $modalidade;
+            $oStdDocumento->NR_CONTRATO            = $oDocumento->nr_contrato;
+            $oStdDocumento->ANO_CONTRATO           = $oDocumento->ano_contrato;
+            $oStdDocumento->TP_INSTRUMENTO         = $aTiposInstrumento[$oDocumento->tp_instrumento];
+            $oStdDocumento->SQ_EVENTO              = $oDocumento->evento == TipoEventoAcordo::EVENTO_DOCUMENTOS ? '' : $oDocumento->sq_evento;
+            $oStdDocumento->CD_TIPO_DOCUMENTO      = $aTiposDocumento[$oDocumento->cd_tipo_documento];
+            $oStdDocumento->NOME_ARQUIVO_DOCUMENTO = $sCaminhoArquivo;
 
-      $aDocumentos[] = $oStdDocumento;
-      $this->aAnexos[$oDocumento->codigo_arquivo] = $sCaminhoArquivo;
+            $aDocumentos[] = $oStdDocumento;
+            $this->aAnexos[$oDocumento->codigo_arquivo] = $sCaminhoArquivo;
+        }
+
+        return $aDocumentos;
     }
-
-    return $aDocumentos;
-  }
-
 }

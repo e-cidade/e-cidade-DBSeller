@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ $db_opcao   = 1;
 <table style="padding-top: 15px;">
   <tr> 
     <td> 
-     <?
+     <?php
        $clcriaabas->identifica = array( "workflow"     => "Workflow",
                                         "workflowativ" => "Atividades");
         
@@ -66,7 +66,7 @@ $db_opcao   = 1;
 </table>
 <form name="form1">
 </form>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

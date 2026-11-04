@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -230,7 +230,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-<?
+<?php
 $libera=false;
 
 if(isset($o27_codleippa) && empty($testado)){	
@@ -247,7 +247,7 @@ $clrotulo->label("o27_codleippa");
 ?>
 <form name='form1'>
   <table border='0'>
-  <?
+  <?php
     if(isset($msg)){
       echo $msg;
      }
@@ -257,7 +257,7 @@ $clrotulo->label("o27_codleippa");
        <?=$Lo27_codleippa?>
     </td>
     <td> 
-<?
+<?php
   $result=$clorcppalei->sql_record($clorcppalei->sql_query_file(null,"o21_codleippa,o21_descr||' '||o21_anoini||'-'||o21_anofim","o21_codleippa desc"));
   $numrows = $clorcppalei->numrows;
   db_selectrecord("o27_codleippa",$result,true,1,"","","","0","js_reload()");
@@ -296,7 +296,7 @@ function js_mostracod1(chave1){
 
   
 </script>
-<?
+<?php
 }	
 ?>
     </center>
@@ -305,7 +305,7 @@ function js_mostracod1(chave1){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
     db_msgbox($erro_msg);
     if($clorcpparec->erro_campo!=""){

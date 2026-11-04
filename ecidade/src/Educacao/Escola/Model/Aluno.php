@@ -1766,4 +1766,9 @@ class Aluno
     {
         $this->recursoNecessarioAvaliacaoInep = $recursos;
     }
+
+    public function getNecessidadesEspeciais()
+    {
+        return $this->necessidadeEspecial;
+    }
 }

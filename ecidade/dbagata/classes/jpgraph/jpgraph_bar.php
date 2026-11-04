@@ -52,7 +52,7 @@ class BarPlot extends Plot {
 // PUBLIC METHODS	
 	
     // Set a drop shadow for the bar (or rather an "up-right" shadow)
-    function SetShadow($color="black",$hsize=3,$vsize=3,$show=true) {
+    public function SetShadow($color="black",$hsize=3,$vsize=3,$show=true) {
 	$this->bar_shadow=$show;
 	$this->bar_shadow_color=$color;
 	$this->bar_shadow_vsize=$vsize;
@@ -63,13 +63,13 @@ class BarPlot extends Plot {
     }
 		
     // DEPRECATED use SetYBase instead
-    function SetYMin($aYStartValue) {
+    public function SetYMin($aYStartValue) {
 	//die("JpGraph Error: Deprecated function SetYMin. Use SetYBase() instead.");    	
 	$this->ybase=$aYStartValue;
     }
 
     // Specify the base value for the bars
-    function SetYBase($aYStartValue) {
+    public function SetYBase($aYStartValue) {
 	$this->ybase=$aYStartValue;
     }
 	
@@ -150,14 +150,14 @@ class BarPlot extends Plot {
 	*/
     }
 
-    function Min() {
+    public function Min() {
 	$m = parent::Min();
 	if( $m[1] >= $this->ybase )
 	    $m[1] = $this->ybase;
 	return $m;	
     }
 
-    function Max() {
+    public function Max() {
 	$m = parent::Max();
 	if( $m[1] <= $this->ybase )
 	    $m[1] = $this->ybase;
@@ -165,7 +165,7 @@ class BarPlot extends Plot {
     }	
 	
     // Specify width as fractions of the major stepo size
-    function SetWidth($aWidth) {
+    public function SetWidth($aWidth) {
 	if( $aWidth > 1 ) {
 	    // Interpret this as absolute width
 	    $this->abswidth=$aWidth;
@@ -176,33 +176,33 @@ class BarPlot extends Plot {
 	
     // Specify width in absolute pixels. If specified this
     // overrides SetWidth()
-    function SetAbsWidth($aWidth) {
+    public function SetAbsWidth($aWidth) {
 	$this->abswidth=$aWidth;
     }
 		
-    function SetAlign($aAlign) {
+    public function SetAlign($aAlign) {
 	$this->align=$aAlign;
     }
 	
-    function SetNoFill() {
+    public function SetNoFill() {
 	$this->grad = false;
 	$this->fill_color=false;
 	$this->fill=false;
     }
 		
-    function SetFillColor($aColor) {
+    public function SetFillColor($aColor) {
 	$this->fill = true ;
 	$this->fill_color = $aColor;
     }
 	
-    function SetFillGradient($aFromColor,$aToColor=null,$aStyle=null) {
+    public function SetFillGradient($aFromColor,$aToColor=null,$aStyle=null) {
 	$this->grad = true;
 	$this->grad_fromcolor = $aFromColor;
 	$this->grad_tocolor   = $aToColor;
 	$this->grad_style     = $aStyle;
     }
 	
-    function SetValuePos($aPos) {
+    public function SetValuePos($aPos) {
 	$this->valuepos = $aPos;
     }
 
@@ -593,7 +593,7 @@ class GroupBarPlot extends BarPlot {
     var $numpoints;
 //---------------
 // CONSTRUCTOR
-    function GroupBarPlot($plots) {
+    public function GroupBarPlot($plots) {
 	$this->width=0.5;
 	$this->plots = $plots;
 	$this->nbrplots = count($plots);
@@ -621,7 +621,7 @@ class GroupBarPlot extends BarPlot {
 	}
     }
 	
-    function Min() {
+    public function Min() {
 	list($xmin,$ymin) = $this->plots[0]->Min();
 	$n = count($this->plots);
 	for($i=0; $i < $n; ++$i) {
@@ -632,7 +632,7 @@ class GroupBarPlot extends BarPlot {
 	return array($xmin,$ymin);		
     }
 	
-    function Max() {
+    public function Max() {
 	list($xmax,$ymax) = $this->plots[0]->Max();
 	$n = count($this->plots);
 	for($i=0; $i < $n; ++$i) {
@@ -643,7 +643,7 @@ class GroupBarPlot extends BarPlot {
 	return array($xmax,$ymax);
     }
 	
-    function GetCSIMareas() {
+    public function GetCSIMareas() {
 	$n = count($this->plots);
 	$csimareas='';
 	for($i=0; $i < $n; ++$i) {
@@ -682,7 +682,7 @@ class AccBarPlot extends BarPlot {
     var $plots=null,$nbrplots=0,$numpoints=0;
 //---------------
 // CONSTRUCTOR
-    function AccBarPlot($plots) {
+    public function AccBarPlot($plots) {
 	$this->plots = $plots;
 	$this->nbrplots = count($plots);
 	if( $this->nbrplots < 1 ) {
@@ -710,7 +710,7 @@ class AccBarPlot extends BarPlot {
 	}
     }
 
-    function Max() {
+    public function Max() {
 	list($xmax) = $this->plots[0]->Max();
 	$nmax=0;
 	for($i=0; $i < count($this->plots); ++$i) {
@@ -748,7 +748,7 @@ class AccBarPlot extends BarPlot {
 	return array($xmax,$ymax);
     }
 
-    function Min() {
+    public function Min() {
 	$nmax=0;
 	list($xmin,$ysetmin) = $this->plots[0]->Min();
 	for($i=0; $i < count($this->plots); ++$i) {

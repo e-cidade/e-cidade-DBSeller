@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clbenscomissaousu->rotulo->label("t61_id_usuario");
               <?=$Lt61_codcom?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t61_codcom",10,$It61_codcom,true,"text",4,"","chave_t61_codcom");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clbenscomissaousu->rotulo->label("t61_id_usuario");
               <?=$Lt61_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t61_id_usuario",5,$It61_id_usuario,true,"text",4,"","chave_t61_id_usuario");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clbenscomissaousu->rotulo->label("t61_id_usuario");
               <?=$Lt61_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t61_id_usuario",5,$It61_id_usuario,true,"text",4,"","chave_t61_id_usuario");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clbenscomissaousu->rotulo->label("t61_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benscomissaousu.php")==true){
@@ -129,12 +129,12 @@ $clbenscomissaousu->rotulo->label("t61_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

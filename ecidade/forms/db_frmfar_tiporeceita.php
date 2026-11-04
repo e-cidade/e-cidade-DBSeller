@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,7 +36,7 @@ $clfar_tiporeceita->rotulo->label();
        <?=@$Lfa03_i_codigo?>
     </td>
     <td>
-<?
+        <?php
 db_input('fa03_i_codigo',10,$Ifa03_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('fa03_i_codigo',10,$Ifa03_i_codigo,true,'text',3,"")
        <?=@$Lfa03_c_descr?>
     </td>
     <td>
-<?
+        <?php
 db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
        <?=@$Lfa03_c_profissional?>
     </td>
     <td>
-    <?
+        <?php
       $x = array("N"=>"NAO","S"=>"SIM");
       db_select('fa03_c_profissional',$x,true,$db_opcao,"");
       ?>
@@ -67,7 +67,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
        <?=@$Lfa03_c_posologia?>
     </td>
     <td>
-<?
+        <?php
       $x = array("N"=>"NAO","S"=>"SIM");
       db_select('fa03_c_posologia',$x,true,$db_opcao,"");
       ?>
@@ -78,7 +78,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
        <?=@$Lfa03_c_requisitante?>
     </td>
     <td>
-<?
+        <?php
       $x = array("N"=>"NAO","S"=>"SIM");
       db_select('fa03_c_requisitante',$x,true,$db_opcao,"");
       ?>
@@ -89,7 +89,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
        <?=@$Lfa03_c_numeroreceita?>
     </td>
     <td>
-<?
+        <?php
       $x = array("N"=>"NAO","S"=>"SIM");
       db_select('fa03_c_numeroreceita',$x,true,$db_opcao,"");
       ?>
@@ -100,7 +100,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
        <?=@$Lfa03_c_quant?>
     </td>
     <td>
-      <?
+        <?php
       $x = array("N"=>"NAO","S"=>"SIM");
       db_select('fa03_c_quant',$x,true,$db_opcao,"");
       ?>
@@ -111,13 +111,13 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
       <?=$Lfa03_data_prescricao?>
     </td>
     <td style="display: flex; column-gap: 20px;">
-      <?
+        <?php
       $aX = array('f'=>"NÃO", 't'=>'SIM');
       db_select('fa03_data_prescricao', $aX, true, $db_opcao, "onchange='js_verificaprescricao();'");
       ?>
       <div id="diasPrescricaoDiv" style="display: none;">
           <label title="<?=$Tfa03_dias_prescricao?>" for="fa03_dias_prescricao"><?=$Lfa03_dias_prescricao?></label>
-          <?
+          <?php
             db_input('fa03_dias_prescricao',5,$Ifa03_dias_prescricao,true,'text',$db_opcao," ")
           ?>
       </div>
@@ -128,7 +128,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
       <?=$Lfa03_numero_notificacao?>
     </td>
     <td style="display: flex; column-gap: 20px;">
-      <?
+        <?php
       $aX = array('f'=>"NÃO", 't'=>'SIM');
       db_select('fa03_numero_notificacao', $aX, true, $db_opcao, "onchange='js_verificaprescricao();'");
       ?>
@@ -139,7 +139,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
       <?=@$Lfa03_i_ativa?>
     </td>
     <td>
-      <?
+        <?php
       $aX = array('1'=>"SIM", '2'=>'NÃO');
       db_select('fa03_i_ativa', $aX, true, $db_opcao, '');
       ?>
@@ -147,15 +147,15 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
   </tr>
    <tr>
     <td nowrap title="<?=@$Tfa03_i_prescricaomedica?>">
-       <?
+        <?php
        db_ancora(@$Lfa03_i_prescricaomedica,"js_pesquisafa03_i_prescricaomedica(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+        <?php
 db_input('fa03_i_prescricaomedica',10,@$Ifa03_i_prescricaomedica,true,'text',$db_opcao," onchange='js_pesquisafa03_i_prescricaomedica(false);'")
 ?>
-       <?
+        <?php
 db_input('fa20_c_prescricao',40,@$Ifa20_c_prescricao,true,'text',3,'')
        ?>
     </td>
@@ -202,7 +202,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_tiporeceita.hide();
-  <?
+    <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

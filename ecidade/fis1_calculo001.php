@@ -179,7 +179,7 @@ if ( isset($calcular) ) {
       </td>
     </tr>
     <tr>
-      <td align="center"><input name="calcular" type="submit" value="Calcular" <? if($disable == true){ echo "disabled"; } ?> >
+      <td align="center"><input name="calcular" type="submit" value="Calcular" <?php if($disable == true){ echo "disabled"; } ?> >
       </td>
       </tr>
   </table>
@@ -189,7 +189,7 @@ if ( isset($calcular) ) {
 </center>
 </body>
 </html>
-<?
+<?php
 if(@$disabilita == true){
   echo "<script>document.form1.calcular.disabled = true</script>";
 }

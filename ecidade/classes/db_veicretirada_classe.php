@@ -78,7 +78,7 @@ class cl_veicretirada
                  ";
 
     //funcao construtor da classe
-    function cl_veicretirada()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veicretirada");
@@ -86,7 +86,7 @@ class cl_veicretirada
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -97,7 +97,7 @@ class cl_veicretirada
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ve60_codigo = ($this->ve60_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ve60_codigo"] : $this->ve60_codigo);
@@ -132,7 +132,7 @@ class cl_veicretirada
     }
 
     // funcao para Inclusão
-    function incluir($ve60_codigo)
+    public function incluir($ve60_codigo)
     {
         $this->atualizacampos();
         if ($this->ve60_veiculo == null) {
@@ -929,7 +929,7 @@ class cl_veicretirada
         return $sql;
     }
 
-    function sql_query_devol($ve60_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_devol($ve60_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -984,7 +984,7 @@ class cl_veicretirada
         return $sql;
     }
 
-    function sql_query_info($ve60_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_info($ve60_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

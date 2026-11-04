@@ -536,7 +536,7 @@ class ppaDespesa {
       $oLinhaQuadro->lDesdobra         = false;
       $oLinhaQuadro->aBaseCalculo      = array();
       $oLinhaQuadro->aCodigoEstimativa = array();
-      for ($iAno = $iAnoBaseInicio; $iAno < $oPpaLei->o01_anoinicio; $iAno++) {
+      for ($iAno = $iAnoBaseInicio; $iAno <= $oPpaLei->o01_anoinicio; $iAno++) {
 
         $oLinhaQuadro->aBaseCalculo["{$iAno}"] = 0;
 
@@ -889,7 +889,7 @@ class ppaDespesa {
 
       case 8:
 
-        $sSql   .= "   and codigo_siconfi   = '{$oLinhaQuadro->o19_coddot}'";
+        $sSql   .= "   and gestao   = '{$oLinhaQuadro->o19_coddot}'";
         break;
 
     }
@@ -1084,8 +1084,8 @@ class ppaDespesa {
 
       case 8:
 
-        $oFields->sCampos = "fontesiconfi.codigo_siconfi as o19_coddot, fontesiconfi.descricao as c60_estrut";
-        $oFields->sOrder  = "fontesiconfi.codigo_siconfi,fontesiconfi.descricao";
+          $oFields->sCampos = "gestao as o19_coddot, fonterecurso.descricao as c60_estrut";
+          $oFields->sOrder  = "gestao,fonterecurso.descricao";
         break;
 
     }

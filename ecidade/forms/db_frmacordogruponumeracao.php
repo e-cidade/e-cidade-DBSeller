@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -86,7 +86,6 @@ if (isset($db_opcaoal)) {
                 </td>
                 <td>
                     <?php
-                    $ac03_anousu = db_getsession('DB_anousu');
                     db_input('ac03_anousu',10,$Iac03_anousu,true,'text',$db_opcao,"")
                     ?>
                 </td>

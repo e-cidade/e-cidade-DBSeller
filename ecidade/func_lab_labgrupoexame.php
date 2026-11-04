@@ -88,12 +88,18 @@ $la03_i_departamento = $departamento;
         echo '</div>';
     } else {
         if ($pesquisa_chave != null && $pesquisa_chave != "") {
-            $result = $cllab_grupo->sql_record($cllab_grupo->sql_query($pesquisa_chave));
-            if($cllab_grupo->numrows!=0){
+            $campos = "la66_codigo,la66_descricao,la67_codigo";
+            $where = " la66_codigo = $pesquisa_chave";
+            if($whereLaboratorio){
+                $where .= " and ".$whereLaboratorio;
+            }
+            $sql =  $cllab_labgrupoexame->sql_query("",$campos,"la66_codigo",$where);
+            $result = db_query($sql);
+            if(pg_num_rows($result)!=0){
                 db_fieldsmemory($result,0);
                 echo "<script>".$funcao_js."('$la66_codigo','$la66_descricao', '$la67_codigo');</script>";
             } else {
-                echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+                echo "<script>".$funcao_js."(false,'CÓDIGO DE GRUPO INEXISTENTE');</script>";
             }
         } else {
             echo "<script>{$funcao_js}('', false);</script>";

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $exercicio
  * @property $uniao
  * @property $conta
+ * @property $natureza
  * @property $nome
  * @property $funcao
  * @property $sintetica
@@ -29,6 +30,26 @@ class PlanoReceita extends Model
 {
     protected $table = 'contabilidade.planoreceita';
 
+    protected $casts = [
+        'exercicio' => 'integer',
+        'uniao' => 'boolean',
+        'conta' => 'string',
+        'nome' => 'string',
+        'funcao' => 'string',
+        'sintetica' => 'boolean',
+        'classe' => 'integer',
+        'categoria' => 'integer',
+        'origem' => 'integer',
+        'especie' => 'integer',
+        'desdobramento1' => 'string',
+        'desdobramento2' => 'string',
+        'desdobramento3' => 'string',
+        'tipo' => 'integer',
+        'desdobramento4' => 'string',
+        'desdobramento5' => 'string',
+        'desdobramento6' => 'string',
+    ];
+
     public function toArray()
     {
         $estrutural = new EstruturalPadraoReceita($this->conta, $this->classe);
@@ -47,5 +68,13 @@ class PlanoReceita extends Model
             'planoreceita_id',
             'conplanoorcamento_codigo'
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getNaturezaAttribute()
+    {
+        return $this->conta;
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $oRotuloCampo->label( "ed232_c_descr" );
       </tr>
       <tr> 
         <td align="center" valign="top"> 
-          <?
+          <?php
           
             $aWhere     = array();
             $sWhere     = "";

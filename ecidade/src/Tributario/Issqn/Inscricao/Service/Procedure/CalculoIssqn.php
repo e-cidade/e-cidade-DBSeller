@@ -25,7 +25,9 @@ class CalculoIssqn extends Procedure
         /**
          * @todo implementar todos os tipos (TODOS, ISSQN e ALVARÁ)
          */
-        $sql = "SELECT fc_issqn({$empresa->getInscricao()},
+        $idUsuario = db_getsession("DB_id_usuario");
+        $sql = "SELECT fc_issqn({$idUsuario},
+                                {$empresa->getInscricao()},
                                 '{$dataCalculo->format('Y-m-d')}',
                                 {$ano},
                                 null,

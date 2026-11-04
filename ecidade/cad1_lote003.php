@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,7 +68,6 @@ $cltestadanumero = new cl_testadanumero;
 $cltesinterlote = new cl_tesinterlote;
 $cltesinter = new cl_tesinter;
 
-//die($clcfiptu->sql_query_file(db_getsession('DB_anousu'),'j18_utilizasetfisc',"",""));
 $rsResultmostra = ($clcfiptu->sql_record($clcfiptu->sql_query_file(db_getsession('DB_anousu'), '*', "", "")));
 if ($clcfiptu->numrows > 0) {
 	db_fieldsmemory($rsResultmostra, 0);
@@ -193,14 +192,13 @@ if (isset ($excluir)) {
 			if ($numrowst > 0) {
 				db_msgbox(" Impossível excluir. Existe matrícula cadastrada para este lote. ");
 				$erro_msg = $cllote->erro_msg;
-				break;
+				return false;
 			} else {
 				$erro_msg = $cllote->erro_msg;
 				$sqlerro = true;
 			}
 		}
 	}
-	//exit;
 	db_fim_transacao();
 
 } else
@@ -250,7 +248,7 @@ if (isset ($excluir)) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
 function js_load_lote(){
-  <?
+  <?php
 
 
 if (!isset ($chavepesquisa)) {
@@ -273,7 +271,7 @@ if (!isset ($chavepesquisa)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 
 
 include(modification("forms/db_frmlote.php"));
@@ -282,19 +280,17 @@ include(modification("forms/db_frmlote.php"));
 	</td>
   </tr>
 </table>
-<?
+<?php
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
-
+<?php
 
 if ($cllote->erro_status == "0") {
 	$cllote->erro(true, false);
 } else {
 	$cllote->erro(true, true);
 };
-?>

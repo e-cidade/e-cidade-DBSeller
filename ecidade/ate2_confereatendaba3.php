@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 <table width="95%" border="0" cellpadding="0" cellspacing="0"
 	bgcolor="#CCCCCC" align="center">
-	<? db_input('mod',40,"",true,'hidden',3,''); ?>
+	<?php db_input('mod',40,"",true,'hidden',3,''); ?>
 	<tr>
 		<td height="30">&nbsp;</td>
 	</tr>
@@ -71,7 +71,7 @@ db_postmemory($HTTP_POST_VARS);
 	</tr>
 	<tr>
 		<td align="center">
-		<?
+		<?php
 		//Procedimento
 		if (@$mod !=""){
 		$sqlproced= "select codproced,descrproced 

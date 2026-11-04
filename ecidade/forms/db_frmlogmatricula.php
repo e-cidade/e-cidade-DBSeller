@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("ed47_i_codigo");
        <?=@$Led248_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed248_i_codigo',20,$Ied248_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted248_i_usuario?>">
-       <?
+       <?php
        db_ancora(@$Led248_i_usuario,"js_pesquisaed248_i_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed248_i_usuario',20,$Ied248_i_usuario,true,'text',$db_opcao," onchange='js_pesquisaed248_i_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted248_i_motivo?>">
-       <?
+       <?php
        db_ancora(@$Led248_i_motivo,"js_pesquisaed248_i_motivo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed248_i_motivo',20,$Ied248_i_motivo,true,'text',$db_opcao," onchange='js_pesquisaed248_i_motivo(false);'")
 ?>
-       <?
+       <?php
 db_input('ed249_i_codigo',20,$Ied249_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted248_i_aluno?>">
-       <?
+       <?php
        db_ancora(@$Led248_i_aluno,"js_pesquisaed248_i_aluno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed248_i_aluno',20,$Ied248_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed248_i_aluno(false);'")
 ?>
-       <?
+       <?php
 db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3,'')
        <?=@$Led248_t_origem?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed248_t_origem',0,0,$Ied248_t_origem,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_textarea('ed248_t_origem',0,0,$Ied248_t_origem,true,'text',$db_opcao,"")
        <?=@$Led248_t_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed248_t_obs',0,0,$Ied248_t_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -115,7 +115,7 @@ db_textarea('ed248_t_obs',0,0,$Ied248_t_obs,true,'text',$db_opcao,"")
        <?=@$Led248_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed248_d_data',@$ed248_d_data_dia,@$ed248_d_data_mes,@$ed248_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -125,7 +125,7 @@ db_inputdata('ed248_d_data',@$ed248_d_data_dia,@$ed248_d_data_mes,@$ed248_d_data
        <?=@$Led248_c_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed248_c_hora',5,$Ied248_c_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -210,7 +210,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_logmatricula.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

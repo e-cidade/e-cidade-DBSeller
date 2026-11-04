@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE averbaregimovel
-class cl_averbaregimovel { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j78_averbacao = 0; 
-   var $j78_matric = null; 
-   var $j78_protocolo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_averbaregimovel {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j78_averbacao = 0;
+   var $j78_matric = null;
+   var $j78_protocolo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j78_averbacao = int4 = Código Averbação 
-                 j78_matric = char(20) = Matrícula Reg. Imóvel 
-                 j78_protocolo = char(20) = Protocolo Reg. Imóvel 
+                 j78_averbacao = int4 = Código Averbação
+                 j78_matric = char(20) = Matrícula Reg. Imóvel
+                 j78_protocolo = char(20) = Protocolo Reg. Imóvel
                  ";
-   //funcao construtor da classe 
-   function cl_averbaregimovel() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("averbaregimovel"); 
+     $this->rotulo = new rotulo("averbaregimovel");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_averbaregimovel {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j78_averbacao = ($this->j78_averbacao == ""?@$GLOBALS["HTTP_POST_VARS"]["j78_averbacao"]:$this->j78_averbacao);
        $this->j78_matric = ($this->j78_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j78_matric"]:$this->j78_matric);
@@ -77,9 +77,9 @@ class cl_averbaregimovel {
      }
    }
    // funcao para inclusao
-   function incluir ($j78_averbacao){ 
+   public function incluir ($j78_averbacao){
       $this->atualizacampos();
-     if($this->j78_matric == null ){ 
+     if($this->j78_matric == null ){
        $this->erro_sql = " Campo Matrícula Reg. Imóvel nao Informado.";
        $this->erro_campo = "j78_matric";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_averbaregimovel {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j78_protocolo == null ){ 
+     if($this->j78_protocolo == null ){
        $this->erro_sql = " Campo Protocolo Reg. Imóvel nao Informado.";
        $this->erro_campo = "j78_protocolo";
        $this->erro_banco = "";
@@ -97,8 +97,8 @@ class cl_averbaregimovel {
        $this->erro_status = "0";
        return false;
      }
-       $this->j78_averbacao = $j78_averbacao; 
-     if(($this->j78_averbacao == null) || ($this->j78_averbacao == "") ){ 
+       $this->j78_averbacao = $j78_averbacao;
+     if(($this->j78_averbacao == null) || ($this->j78_averbacao == "") ){
        $this->erro_sql = " Campo j78_averbacao nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -107,17 +107,17 @@ class cl_averbaregimovel {
        return false;
      }
      $sql = "insert into averbaregimovel(
-                                       j78_averbacao 
-                                      ,j78_matric 
-                                      ,j78_protocolo 
+                                       j78_averbacao
+                                      ,j78_matric
+                                      ,j78_protocolo
                        )
                 values (
-                                $this->j78_averbacao 
-                               ,'$this->j78_matric' 
-                               ,'$this->j78_protocolo' 
+                                $this->j78_averbacao
+                               ,'$this->j78_matric'
+                               ,'$this->j78_protocolo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "averbaregimovel ($this->j78_averbacao) nao Incluído. Inclusao Abortada.";
@@ -151,16 +151,16 @@ class cl_averbaregimovel {
        $resac = db_query("insert into db_acount values($acount,1652,9607,'','".AddSlashes(pg_result($resaco,0,'j78_protocolo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j78_averbacao=null) { 
+   public function alterar ($j78_averbacao=null) {
       $this->atualizacampos();
      $sql = " update averbaregimovel set ";
      $virgula = "";
-     if(trim($this->j78_averbacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_averbacao"])){ 
+     if(trim($this->j78_averbacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_averbacao"])){
        $sql  .= $virgula." j78_averbacao = $this->j78_averbacao ";
        $virgula = ",";
-       if(trim($this->j78_averbacao) == null ){ 
+       if(trim($this->j78_averbacao) == null ){
          $this->erro_sql = " Campo Código Averbação nao Informado.";
          $this->erro_campo = "j78_averbacao";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_averbaregimovel {
          return false;
        }
      }
-     if(trim($this->j78_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_matric"])){ 
+     if(trim($this->j78_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_matric"])){
        $sql  .= $virgula." j78_matric = '$this->j78_matric' ";
        $virgula = ",";
-       if(trim($this->j78_matric) == null ){ 
+       if(trim($this->j78_matric) == null ){
          $this->erro_sql = " Campo Matrícula Reg. Imóvel nao Informado.";
          $this->erro_campo = "j78_matric";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_averbaregimovel {
          return false;
        }
      }
-     if(trim($this->j78_protocolo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_protocolo"])){ 
+     if(trim($this->j78_protocolo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_protocolo"])){
        $sql  .= $virgula." j78_protocolo = '$this->j78_protocolo' ";
        $virgula = ",";
-       if(trim($this->j78_protocolo) == null ){ 
+       if(trim($this->j78_protocolo) == null ){
          $this->erro_sql = " Campo Protocolo Reg. Imóvel nao Informado.";
          $this->erro_campo = "j78_protocolo";
          $this->erro_banco = "";
@@ -216,7 +216,7 @@ class cl_averbaregimovel {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "averbaregimovel nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j78_averbacao;
@@ -244,14 +244,14 @@ class cl_averbaregimovel {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j78_averbacao=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j78_averbacao=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j78_averbacao));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -279,7 +279,7 @@ class cl_averbaregimovel {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "averbaregimovel nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j78_averbacao;
@@ -307,11 +307,11 @@ class cl_averbaregimovel {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -333,10 +333,10 @@ class cl_averbaregimovel {
       }
      return $result;
    }
-   function sql_query ( $j78_averbacao=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j78_averbacao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -351,15 +351,15 @@ class cl_averbaregimovel {
      $sql2 = "";
      if($dbwhere==""){
        if($j78_averbacao!=null ){
-         $sql2 .= " where averbaregimovel.j78_averbacao = $j78_averbacao "; 
-       } 
+         $sql2 .= " where averbaregimovel.j78_averbacao = $j78_averbacao ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -368,10 +368,10 @@ class cl_averbaregimovel {
      }
      return $sql;
   }
-   function sql_query_file ( $j78_averbacao=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j78_averbacao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,15 +384,15 @@ class cl_averbaregimovel {
      $sql2 = "";
      if($dbwhere==""){
        if($j78_averbacao!=null ){
-         $sql2 .= " where averbaregimovel.j78_averbacao = $j78_averbacao "; 
-       } 
+         $sql2 .= " where averbaregimovel.j78_averbacao = $j78_averbacao ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

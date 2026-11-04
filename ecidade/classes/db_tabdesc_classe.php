@@ -1,86 +1,86 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE tabdesc
-class cl_tabdesc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $codsubrec = 0; 
-   var $k07_codigo = 0; 
-   var $k07_descr = null; 
-   var $k07_valorf = 0; 
-   var $k07_valorv = 0; 
-   var $k07_quamin = 0; 
-   var $k07_percde = 0; 
-   var $k07_data_dia = null; 
-   var $k07_data_mes = null; 
-   var $k07_data_ano = null; 
-   var $k07_data = null; 
-   var $k07_codinf = null; 
-   var $k07_dtval_dia = null; 
-   var $k07_dtval_mes = null; 
-   var $k07_dtval_ano = null; 
-   var $k07_dtval = null; 
-   var $k07_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tabdesc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $codsubrec = 0;
+   var $k07_codigo = 0;
+   var $k07_descr = null;
+   var $k07_valorf = 0;
+   var $k07_valorv = 0;
+   var $k07_quamin = 0;
+   var $k07_percde = 0;
+   var $k07_data_dia = null;
+   var $k07_data_mes = null;
+   var $k07_data_ano = null;
+   var $k07_data = null;
+   var $k07_codinf = null;
+   var $k07_dtval_dia = null;
+   var $k07_dtval_mes = null;
+   var $k07_dtval_ano = null;
+   var $k07_dtval = null;
+   var $k07_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 codsubrec = int4 = Código das Subreceitas 
-                 k07_codigo = int4 = Código da receita 
-                 k07_descr = varchar(60) = Descrição da subreceita 
-                 k07_valorf = float8 = Valor Fixo 
-                 k07_valorv = float8 = Valor Variável 
-                 k07_quamin = float8 = Quantidade Mínima 
-                 k07_percde = float8 = Percentual de Desconto 
-                 k07_data = date = Data de criação 
-                 k07_codinf = varchar(5) = Inflator para correção dos valores 
-                 k07_dtval = date = Data de Validade 
-                 k07_instit = int4 = Cód. Instituição 
+                 codsubrec = int4 = Código das Subreceitas
+                 k07_codigo = int4 = Código da receita
+                 k07_descr = varchar(60) = Descrição da subreceita
+                 k07_valorf = float8 = Valor Fixo
+                 k07_valorv = float8 = Valor Variável
+                 k07_quamin = float8 = Quantidade Mínima
+                 k07_percde = float8 = Percentual de Desconto
+                 k07_data = date = Data de criação
+                 k07_codinf = varchar(5) = Inflator para correção dos valores
+                 k07_dtval = date = Data de Validade
+                 k07_instit = int4 = Cód. Instituição
                  ";
-   //funcao construtor da classe 
-   function cl_tabdesc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tabdesc"); 
+     $this->rotulo = new rotulo("tabdesc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +89,7 @@ class cl_tabdesc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codsubrec = ($this->codsubrec == ""?@$GLOBALS["HTTP_POST_VARS"]["codsubrec"]:$this->codsubrec);
        $this->k07_codigo = ($this->k07_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["k07_codigo"]:$this->k07_codigo);
@@ -121,9 +121,9 @@ class cl_tabdesc {
      }
    }
    // funcao para inclusao
-   function incluir ($codsubrec){ 
+   public function incluir ($codsubrec){
       $this->atualizacampos();
-     if($this->k07_codigo == null ){ 
+     if($this->k07_codigo == null ){
        $this->erro_sql = " Campo Código da receita nao Informado.";
        $this->erro_campo = "k07_codigo";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_descr == null ){ 
+     if($this->k07_descr == null ){
        $this->erro_sql = " Campo Descrição da subreceita nao Informado.";
        $this->erro_campo = "k07_descr";
        $this->erro_banco = "";
@@ -141,7 +141,7 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_valorf == null ){ 
+     if($this->k07_valorf == null ){
        $this->erro_sql = " Campo Valor Fixo nao Informado.";
        $this->erro_campo = "k07_valorf";
        $this->erro_banco = "";
@@ -150,7 +150,7 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_valorv == null ){ 
+     if($this->k07_valorv == null ){
        $this->erro_sql = " Campo Valor Variável nao Informado.";
        $this->erro_campo = "k07_valorv";
        $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_quamin == null ){ 
+     if($this->k07_quamin == null ){
        $this->erro_sql = " Campo Quantidade Mínima nao Informado.";
        $this->erro_campo = "k07_quamin";
        $this->erro_banco = "";
@@ -168,7 +168,7 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_percde == null ){ 
+     if($this->k07_percde == null ){
        $this->erro_sql = " Campo Percentual de Desconto nao Informado.";
        $this->erro_campo = "k07_percde";
        $this->erro_banco = "";
@@ -177,7 +177,7 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_data == null ){ 
+     if($this->k07_data == null ){
        $this->erro_sql = " Campo Data de criação nao Informado.";
        $this->erro_campo = "k07_data_dia";
        $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_codinf == null ){ 
+     if($this->k07_codinf == null ){
        $this->erro_sql = " Campo Inflator para correção dos valores nao Informado.";
        $this->erro_campo = "k07_codinf";
        $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_tabdesc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k07_dtval == null ){ 
+     if($this->k07_dtval == null ){
        $this->k07_dtval = "null";
      }
-     if($this->k07_instit == null ){ 
+     if($this->k07_instit == null ){
        $this->erro_sql = " Campo Cód. Instituição nao Informado.";
        $this->erro_campo = "k07_instit";
        $this->erro_banco = "";
@@ -208,16 +208,16 @@ class cl_tabdesc {
        return false;
      }
      if($codsubrec == "" || $codsubrec == null ){
-       $result = db_query("select nextval('tabdesc_codsubrec_seq')"); 
+       $result = db_query("select nextval('tabdesc_codsubrec_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tabdesc_codsubrec_seq do campo: codsubrec"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tabdesc_codsubrec_seq do campo: codsubrec";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->codsubrec = pg_result($result,0,0); 
+       $this->codsubrec = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tabdesc_codsubrec_seq");
        if(($result != false) && (pg_result($result,0,0) < $codsubrec)){
@@ -228,10 +228,10 @@ class cl_tabdesc {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->codsubrec = $codsubrec; 
+         $this->codsubrec = $codsubrec;
        }
      }
-     if(($this->codsubrec == null) || ($this->codsubrec == "") ){ 
+     if(($this->codsubrec == null) || ($this->codsubrec == "") ){
        $this->erro_sql = " Campo codsubrec nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -240,33 +240,33 @@ class cl_tabdesc {
        return false;
      }
      $sql = "insert into tabdesc(
-                                       codsubrec 
-                                      ,k07_codigo 
-                                      ,k07_descr 
-                                      ,k07_valorf 
-                                      ,k07_valorv 
-                                      ,k07_quamin 
-                                      ,k07_percde 
-                                      ,k07_data 
-                                      ,k07_codinf 
-                                      ,k07_dtval 
-                                      ,k07_instit 
+                                       codsubrec
+                                      ,k07_codigo
+                                      ,k07_descr
+                                      ,k07_valorf
+                                      ,k07_valorv
+                                      ,k07_quamin
+                                      ,k07_percde
+                                      ,k07_data
+                                      ,k07_codinf
+                                      ,k07_dtval
+                                      ,k07_instit
                        )
                 values (
-                                $this->codsubrec 
-                               ,$this->k07_codigo 
-                               ,'$this->k07_descr' 
-                               ,$this->k07_valorf 
-                               ,$this->k07_valorv 
-                               ,$this->k07_quamin 
-                               ,$this->k07_percde 
-                               ,".($this->k07_data == "null" || $this->k07_data == ""?"null":"'".$this->k07_data."'")." 
-                               ,'$this->k07_codinf' 
-                               ,".($this->k07_dtval == "null" || $this->k07_dtval == ""?"null":"'".$this->k07_dtval."'")." 
-                               ,$this->k07_instit 
+                                $this->codsubrec
+                               ,$this->k07_codigo
+                               ,'$this->k07_descr'
+                               ,$this->k07_valorf
+                               ,$this->k07_valorv
+                               ,$this->k07_quamin
+                               ,$this->k07_percde
+                               ,".($this->k07_data == "null" || $this->k07_data == ""?"null":"'".$this->k07_data."'")."
+                               ,'$this->k07_codinf'
+                               ,".($this->k07_dtval == "null" || $this->k07_dtval == ""?"null":"'".$this->k07_dtval."'")."
+                               ,$this->k07_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->codsubrec) nao Incluído. Inclusao Abortada.";
@@ -308,16 +308,16 @@ class cl_tabdesc {
        $resac = db_query("insert into db_acount values($acount,79,10668,'','".AddSlashes(pg_result($resaco,0,'k07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($codsubrec=null) { 
+   public function alterar ($codsubrec=null) {
       $this->atualizacampos();
      $sql = " update tabdesc set ";
      $virgula = "";
-     if(trim($this->codsubrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codsubrec"])){ 
+     if(trim($this->codsubrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codsubrec"])){
        $sql  .= $virgula." codsubrec = $this->codsubrec ";
        $virgula = ",";
-       if(trim($this->codsubrec) == null ){ 
+       if(trim($this->codsubrec) == null ){
          $this->erro_sql = " Campo Código das Subreceitas nao Informado.";
          $this->erro_campo = "codsubrec";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_codigo"])){ 
+     if(trim($this->k07_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_codigo"])){
        $sql  .= $virgula." k07_codigo = $this->k07_codigo ";
        $virgula = ",";
-       if(trim($this->k07_codigo) == null ){ 
+       if(trim($this->k07_codigo) == null ){
          $this->erro_sql = " Campo Código da receita nao Informado.";
          $this->erro_campo = "k07_codigo";
          $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_descr"])){ 
+     if(trim($this->k07_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_descr"])){
        $sql  .= $virgula." k07_descr = '$this->k07_descr' ";
        $virgula = ",";
-       if(trim($this->k07_descr) == null ){ 
+       if(trim($this->k07_descr) == null ){
          $this->erro_sql = " Campo Descrição da subreceita nao Informado.";
          $this->erro_campo = "k07_descr";
          $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_valorf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_valorf"])){ 
+     if(trim($this->k07_valorf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_valorf"])){
        $sql  .= $virgula." k07_valorf = $this->k07_valorf ";
        $virgula = ",";
-       if(trim($this->k07_valorf) == null ){ 
+       if(trim($this->k07_valorf) == null ){
          $this->erro_sql = " Campo Valor Fixo nao Informado.";
          $this->erro_campo = "k07_valorf";
          $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_valorv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_valorv"])){ 
+     if(trim($this->k07_valorv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_valorv"])){
        $sql  .= $virgula." k07_valorv = $this->k07_valorv ";
        $virgula = ",";
-       if(trim($this->k07_valorv) == null ){ 
+       if(trim($this->k07_valorv) == null ){
          $this->erro_sql = " Campo Valor Variável nao Informado.";
          $this->erro_campo = "k07_valorv";
          $this->erro_banco = "";
@@ -379,10 +379,10 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_quamin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_quamin"])){ 
+     if(trim($this->k07_quamin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_quamin"])){
        $sql  .= $virgula." k07_quamin = $this->k07_quamin ";
        $virgula = ",";
-       if(trim($this->k07_quamin) == null ){ 
+       if(trim($this->k07_quamin) == null ){
          $this->erro_sql = " Campo Quantidade Mínima nao Informado.";
          $this->erro_campo = "k07_quamin";
          $this->erro_banco = "";
@@ -392,10 +392,10 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_percde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_percde"])){ 
+     if(trim($this->k07_percde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_percde"])){
        $sql  .= $virgula." k07_percde = $this->k07_percde ";
        $virgula = ",";
-       if(trim($this->k07_percde) == null ){ 
+       if(trim($this->k07_percde) == null ){
          $this->erro_sql = " Campo Percentual de Desconto nao Informado.";
          $this->erro_campo = "k07_percde";
          $this->erro_banco = "";
@@ -405,10 +405,10 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k07_data_dia"] !="") ){ 
+     if(trim($this->k07_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k07_data_dia"] !="") ){
        $sql  .= $virgula." k07_data = '$this->k07_data' ";
        $virgula = ",";
-       if(trim($this->k07_data) == null ){ 
+       if(trim($this->k07_data) == null ){
          $this->erro_sql = " Campo Data de criação nao Informado.";
          $this->erro_campo = "k07_data_dia";
          $this->erro_banco = "";
@@ -417,11 +417,11 @@ class cl_tabdesc {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k07_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k07_data_dia"])){
          $sql  .= $virgula." k07_data = null ";
          $virgula = ",";
-         if(trim($this->k07_data) == null ){ 
+         if(trim($this->k07_data) == null ){
            $this->erro_sql = " Campo Data de criação nao Informado.";
            $this->erro_campo = "k07_data_dia";
            $this->erro_banco = "";
@@ -432,10 +432,10 @@ class cl_tabdesc {
          }
        }
      }
-     if(trim($this->k07_codinf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_codinf"])){ 
+     if(trim($this->k07_codinf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_codinf"])){
        $sql  .= $virgula." k07_codinf = '$this->k07_codinf' ";
        $virgula = ",";
-       if(trim($this->k07_codinf) == null ){ 
+       if(trim($this->k07_codinf) == null ){
          $this->erro_sql = " Campo Inflator para correção dos valores nao Informado.";
          $this->erro_campo = "k07_codinf";
          $this->erro_banco = "";
@@ -445,19 +445,19 @@ class cl_tabdesc {
          return false;
        }
      }
-     if(trim($this->k07_dtval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_dtval_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k07_dtval_dia"] !="") ){ 
+     if(trim($this->k07_dtval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_dtval_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k07_dtval_dia"] !="") ){
        $sql  .= $virgula." k07_dtval = '$this->k07_dtval' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k07_dtval_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k07_dtval_dia"])){
          $sql  .= $virgula." k07_dtval = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->k07_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_instit"])){ 
+     if(trim($this->k07_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k07_instit"])){
        $sql  .= $virgula." k07_instit = $this->k07_instit ";
        $virgula = ",";
-       if(trim($this->k07_instit) == null ){ 
+       if(trim($this->k07_instit) == null ){
          $this->erro_sql = " Campo Cód. Instituição nao Informado.";
          $this->erro_campo = "k07_instit";
          $this->erro_banco = "";
@@ -503,7 +503,7 @@ class cl_tabdesc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->codsubrec;
@@ -531,14 +531,14 @@ class cl_tabdesc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($codsubrec=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($codsubrec=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codsubrec));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -574,7 +574,7 @@ class cl_tabdesc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$codsubrec;
@@ -602,11 +602,11 @@ class cl_tabdesc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -628,10 +628,10 @@ class cl_tabdesc {
       }
      return $result;
    }
-   function sql_query ( $codsubrec=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $codsubrec=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,15 +649,15 @@ class cl_tabdesc {
      $sql2 = "";
      if($dbwhere==""){
        if($codsubrec!=null ){
-         $sql2 .= " where tabdesc.codsubrec = $codsubrec "; 
-       } 
+         $sql2 .= " where tabdesc.codsubrec = $codsubrec ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -666,10 +666,10 @@ class cl_tabdesc {
      }
      return $sql;
   }
-   function sql_query_file ( $codsubrec=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $codsubrec=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -682,15 +682,15 @@ class cl_tabdesc {
      $sql2 = "";
      if($dbwhere==""){
        if($codsubrec!=null ){
-         $sql2 .= " where tabdesc.codsubrec = $codsubrec "; 
-       } 
+         $sql2 .= " where tabdesc.codsubrec = $codsubrec ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

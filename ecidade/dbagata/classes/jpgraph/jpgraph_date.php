@@ -71,7 +71,7 @@ class DateScale extends LinearScale {
 // argument. 
 //------------------------------------------------------------------------------------------
 
-    function AdjDate($aTime,$aRound=0,$aYearType=false,$aMonthType=false,$aDayType=false) {
+    public function AdjDate($aTime,$aRound=0,$aYearType=false,$aMonthType=false,$aDayType=false) {
 	$y = (int)date('Y',$aTime); $m = (int)date('m',$aTime); $d = (int)date('d',$aTime);
 	$h=0;$i=0;$s=0;
 	if( $aYearType !== false ) {
@@ -128,7 +128,7 @@ class DateScale extends LinearScale {
 // Wrapper for AdjDate that will round a timestamp to an even date rounding
 // it downwards.
 //------------------------------------------------------------------------------------------
-    function AdjStartDate($aTime,$aYearType=false,$aMonthType=false,$aDayType=false) {
+    public function AdjStartDate($aTime,$aYearType=false,$aMonthType=false,$aDayType=false) {
 	return $this->AdjDate($aTime,0,$aYearType,$aMonthType,$aDayType);
     }
 
@@ -136,7 +136,7 @@ class DateScale extends LinearScale {
 // Wrapper for AdjDate that will round a timestamp to an even date rounding
 // it upwards
 //------------------------------------------------------------------------------------------
-    function AdjEndDate($aTime,$aYearType=false,$aMonthType=false,$aDayType=false) {
+    public function AdjEndDate($aTime,$aYearType=false,$aMonthType=false,$aDayType=false) {
 	return $this->AdjDate($aTime,1,$aYearType,$aMonthType,$aDayType);
     }
 
@@ -146,7 +146,7 @@ class DateScale extends LinearScale {
 // argument. 
 //------------------------------------------------------------------------------------------
 
-    function AdjTime($aTime,$aRound=0,$aHourType=false,$aMinType=false,$aSecType=false) {
+    public function AdjTime($aTime,$aRound=0,$aHourType=false,$aMinType=false,$aSecType=false) {
 	$y = (int)date('Y',$aTime); $m = (int)date('m',$aTime); $d = (int)date('d',$aTime);
 	$h = (int)date('H',$aTime); $i = (int)date('i',$aTime); $s = (int)date('s',$aTime);
 	if( $aHourType !== false ) {
@@ -210,7 +210,7 @@ class DateScale extends LinearScale {
 // it downwards.
 // Example: AdjStartTime(mktime(18,27,13,2,22,2005),false,2) => 18:20
 //------------------------------------------------------------------------------------------
-    function AdjStartTime($aTime,$aHourType=false,$aMinType=false,$aSecType=false) {
+    public function AdjStartTime($aTime,$aHourType=false,$aMinType=false,$aSecType=false) {
 	return $this->AdjTime($aTime,0,$aHourType,$aMinType,$aSecType);
     }
 
@@ -219,7 +219,7 @@ class DateScale extends LinearScale {
 // it upwards
 // Example: AdjEndTime(mktime(18,27,13,2,22,2005),false,2) => 18:30
 //------------------------------------------------------------------------------------------
-    function AdjEndTime($aTime,$aHourType=false,$aMinType=false,$aSecType=false) {
+    public function AdjEndTime($aTime,$aHourType=false,$aMinType=false,$aSecType=false) {
 	return $this->AdjTime($aTime,1,$aHourType,$aMinType,$aSecType);
     }
 
@@ -228,7 +228,7 @@ class DateScale extends LinearScale {
 // Autoscale a date axis given start and end time
 // Returns an array ($start,$end,$major,$minor,$format)
 //------------------------------------------------------------------------------------------
-    function DoDateAutoScale($aStartTime,$aEndTime,$aDensity=0,$aAdjust=true) {
+    public function DoDateAutoScale($aStartTime,$aEndTime,$aDensity=0,$aAdjust=true) {
 	// Format of array
 	// array ( Decision point,  array( array( Major-scale-step-array ),  
 	//			    array( Minor-scale-step-array ), 
@@ -374,17 +374,17 @@ class DateScale extends LinearScale {
     }
 
     // Overrides the automatic determined date format. Must be a valid date() format string
-    function SetDateFormat($aFormat) {
+    public function SetDateFormat($aFormat) {
 	$this->date_format = $aFormat;
 	$this->ticks->SetLabelDateFormat($this->date_format);
     }
 
-    function AdjustForDST($aFlg=true) {
+    public function AdjustForDST($aFlg=true) {
 	$this->ticks->AdjustForDST($aFlg);
     }
 
 
-    function SetDateAlign($aStartAlign,$aEndAlign=false) {
+    public function SetDateAlign($aStartAlign,$aEndAlign=false) {
 	if( $aEndAlign === false ) {
 	    $aEndAlign=$aStartAlign;
 	}
@@ -392,7 +392,7 @@ class DateScale extends LinearScale {
 	$this->iEndAlign = $aEndAlign;
     }
 
-    function SetTimeAlign($aStartAlign,$aEndAlign=false) {
+    public function SetTimeAlign($aStartAlign,$aEndAlign=false) {
 	if( $aEndAlign === false ) {
 	    $aEndAlign=$aStartAlign;
 	}

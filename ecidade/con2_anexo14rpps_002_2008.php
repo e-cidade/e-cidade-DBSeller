@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -1333,12 +1333,12 @@ $pdf->ln(3);
 
 
 //$periodo = db_retorna_periodo($mes,"B");
-notasExplicativas(&$pdf,56,($mes>9?$mes:"0".$mes),190);
+notasExplicativas($pdf,56,($mes>9?$mes:"0".$mes),190);
 
 $pdf->ln(15);
 
 // assinaturas
-assinaturas(&$pdf,&$classinatura,'BG');
+assinaturas($pdf,$classinatura,'BG');
 
 function anexo14_retorna_saldo($saldo, $sinal, $grupo) {
   if ($grupo == "A" and $sinal == "C") {

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -67,7 +67,7 @@ $escola              = db_getsession("DB_coddepto");
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td align="left" valign="top" bgcolor="#CCCCCC">   
+  <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <form name="form1" method="post" action="">
@@ -76,27 +76,27 @@ $escola              = db_getsession("DB_coddepto");
      <tr>
       <td>
        <table>
-        <tr>  
+        <tr>
          <td>
-           <b>Tipo de lançamento:</b>          
+           <b>Tipo de lançamento:</b>
           <select name="lancamento" id="lancamento" onChange="js_lancamento(this.value);"
                  style="height:18px;font-size:10px;">
            <option value=""></option>
            <option value="A">Por Aluno</option>
-           <option value="T">Por Turma</option>                
+           <option value="T">Por Turma</option>
           </select>
          </td>
          <td>
           <b>Cardápio:</b>
-           <?          
+           <?php
            $hoje = date("Y-m-d",db_getsession("DB_datausu"));
            $result_tipocardapio = $clmer_tipocardapio->sql_record(
                                    $clmer_tipocardapio->sql_query("",
                                                                   "me27_i_codigo,me27_c_nome,me27_f_versao,me27_i_id",
                                                                   "me27_i_id,me27_f_versao desc",
-                                                                  "((me27_d_inicio is not null 
+                                                                  "((me27_d_inicio is not null
                                                                      and me27_d_fim is null
-                                                                     and me27_d_inicio <= '$hoje') 
+                                                                     and me27_d_inicio <= '$hoje')
                                                                      or (me27_d_fim is not null and '$hoje'
                                                                      between me27_d_inicio and me27_d_fim))
                                                                    AND exists(select * from mer_cardapioescola
@@ -107,13 +107,13 @@ $escola              = db_getsession("DB_coddepto");
          <select name="cardapio" id="cardapio"   onChange="js_cardapio(this.value);"
                   style="height:18px;font-size:10px;">
            <option value="0"></option>
-           <?for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
-        
+           <?php for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
+
              db_fieldsmemory($result_tipocardapio,$t);
              ?>
              <option value="<?=$me27_i_codigo?>"><?=$me27_c_nome?> - Versão: <?=$me27_f_versao?></option>
-      
-           <?}?>
+
+           <?php }?>
           </select>
          </td>
         </tr>
@@ -147,9 +147,9 @@ $escola              = db_getsession("DB_coddepto");
      <tr>
       <td>
        <b>Data Inicial:</b>
-       <?db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1,"")?>
+       <?php db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1,"")?>
        <b>Data Final:</b>
-       <?db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1,"")?>
+       <?php db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1,"")?>
       </td>
      </tr>
      <tr>
@@ -166,7 +166,7 @@ $escola              = db_getsession("DB_coddepto");
  </tr>
 </table>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -208,34 +208,34 @@ function js_cardapio(cardapio) {
                                     onComplete: js_retornoPesquisaRefeicao
                                   }
                                );
-  
+
 }
 
 function js_retornoPesquisaRefeicao(oAjax) {
-	
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   sHtml = '';
   if (oRetorno.length==0) {
     sHtml += '<option value="">Nenhuma refeição consumida para o cardápio e/ou escola selecionados!</option>';
   } else {
-      
+
     sHtml += '<option value=""></option>';
     for (var i = 0;i < oRetorno.length; i++) {
-        
+
       with (oRetorno[i]) {
-          
+
         sHtml += '<option value="'+me12_i_codigo.urlDecode()+'">'+me12_d_data.urlDecode()+' - '+me03_c_tipo.urlDecode()+
                                  ' - '+me01_c_nome.urlDecode()+' - Versão: '+me01_f_versao.urlDecode()+'</option>';
-         
+
       }
-      
+
     }
-    
-  }  
+
+  }
   $('select_refeicao').innerHTML = sHtml;
   $('select_refeicao').disabled  = false;
-  
+
 }
 function js_refeicao(refeicao) {
 
@@ -254,64 +254,64 @@ function js_refeicao(refeicao) {
                                     onComplete: js_retornoPesquisaTurma
                                   }
                                );
-	  
+
 }
 
 function js_retornoPesquisaTurma(oAjax) {
-    
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   sHtml = '';
   if(oRetorno.length==0){
     sHtml += '  <option value="">Nenhuma turma vinculada ao cardápio selecionado!</option>';
   }else{
-	      
+
     for (var i = 0;i < oRetorno.length; i++) {
-	        
+
       with (oRetorno[i]) {
-	          
+
         sHtml += '  <option value="'+ed57_i_codigo+'">'+ed57_c_descr.urlDecode()+' - '+ed11_c_descr.urlDecode()+'</option>';
-	        
+
       }
-	            
+
     }
-	    
+
   }
   $('select_turma').innerHTML = sHtml;
   $('select_turma').disabled = false;
-	  
+
 }
 
 
 function js_processar() {
-	
+
   if ($('lancamento').value=="") {
-	  
+
     alert("informe o Tipo de Lançamento!");
     return false;
-    
-  }  
+
+  }
   if ($('select_refeicao').value!="" && $('data_ini').value!="" && $('data_ini').value!="") {
 
 	alert("Não preencher datas quando alguma refeição estiver selecionada!");
 	return false;
 
   }
-  if ($('select_refeicao').value=="") {  
+  if ($('select_refeicao').value=="") {
 
     if ($('data_ini').value=="") {
-      
+
       alert("informe a Data Inicial!");
       return false;
-	    
+
     }
     if ($('data_fim').value=="") {
-      
+
       alert("informe a Data Final!");
       return false;
-	        
+
     }
-    
+
   }
   turma = "";
   sep = "";
@@ -319,12 +319,12 @@ function js_processar() {
   for (i=0;i<tam;i++) {
 
 	if (document.form1.select_turma[i].selected==true) {
-		
+
 	  turma += sep+document.form1.select_turma[i].value;
 	  sep = ",";
 
-	}  
-	
+	}
+
   }
   data_ini   = $('data_ini').value.substr(6,4)+"-"+$('data_ini').value.substr(3,2)+"-"+$('data_ini').value.substr(0,2);
   if ($('data_fim').value!=""){
@@ -339,6 +339,6 @@ function js_processar() {
   }
   jan = window.open(str,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
   jan.moveTo(0,0);
-  
+
 }
 </script>

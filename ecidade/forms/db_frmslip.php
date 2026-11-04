@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -115,14 +115,14 @@ function js_atualiza2(qual){
             <td align="left">
               <strong>Código do Slip:</strong>  </td>
             <td>
-             <?  db_input("k17_codigo", 10, $Ik17_codigo, true, 'text', 3, "", "numslip");  ?>
+             <?php  db_input("k17_codigo", 10, $Ik17_codigo, true, 'text', 3, "", "numslip");  ?>
             </td>
           </tr>
           <tr>
             <td align="left"><strong>
-            <? db_ancora('Conta a Debitar (Receber): ',"js_pesquisac01_reduz(true);",2);   ?></strong></td>
+            <?php db_ancora('Conta a Debitar (Receber): ',"js_pesquisac01_reduz(true);",2);   ?></strong></td>
             <td nowrap>
-            <? db_selectrecord("debito", $result_conta_debitar,
+            <?php db_selectrecord("debito", $result_conta_debitar,
                                true,
                                (isset($read_only) && trim($read_only) != "" ? 3 : 1),
                                 "",
@@ -132,9 +132,9 @@ function js_atualiza2(qual){
              </td>
           </tr>
           <tr id="tr_cacp_1" style="display: none;" title="C. Peculiar / C.Aplicação - Débito">
-            <td><b><? db_ancora("C.Peculiar / C. Aplicação (Receber)", "js_abrePesquisaDebito(true);", 1); ?></b></td>
+            <td><b><?php db_ancora("C.Peculiar / C. Aplicação (Receber)", "js_abrePesquisaDebito(true);", 1); ?></b></td>
             <td>
-              <?
+              <?php
                 db_input("k17_caracteristicapeculiardebito", 10, $Ic58_sequencial, true, "text", 1, "onchange='js_abrePesquisaDebito(false);'");
                 db_input("k17_caracteristicapeculiardebitodesc", 40, $Ic58_descr, true, "text", 3);
               ?>
@@ -142,10 +142,10 @@ function js_atualiza2(qual){
           </tr>
           <tr>
             <td align="left"><strong>
-              <? db_ancora('Conta a Creditar (Pagar): ',"js_pesquisac01_reduz1(true);",2); ?></strong>
+              <?php db_ancora('Conta a Creditar (Pagar): ',"js_pesquisac01_reduz1(true);",2); ?></strong>
             </td>
             <td nowrap>
-              <? db_selectrecord("credito",
+              <?php db_selectrecord("credito",
                                  $result_conta_creditar,
                                  true,
                                  (isset($read_only) && trim($read_only) != "" ? 3 : 1),
@@ -153,9 +153,9 @@ function js_atualiza2(qual){
             </td>
           </tr>
           <tr id="tr_cacp_2" style="display: none;" title="C. Peculiar / C.Aplicação - Crédito">
-            <td><b><? db_ancora("C.Peculiar / C. Aplicação (Pagar)", "js_abrePesquisaCredito(true);", 1); ?></b></td>
+            <td><b><?php db_ancora("C.Peculiar / C. Aplicação (Pagar)", "js_abrePesquisaCredito(true);", 1); ?></b></td>
             <td>
-              <?
+              <?php
                 db_input("k17_caracteristicapeculiarcredito", 10, $Ic58_sequencial, true, "text", 1, "onchange='js_abrePesquisaCredito(false);'");
                 db_input("k17_caracteristicapeculiarcreditodesc", 40, $Ic58_descr, true, "text", 3);
               ?>
@@ -176,10 +176,10 @@ function js_atualiza2(qual){
 
           <tr>
             <td align="left">
-              <? db_ancora(@$Lk17_hist,"js_pesquisac50_codhist(true);",2);  ?>
+              <?php db_ancora(@$Lk17_hist,"js_pesquisac50_codhist(true);",2);  ?>
             </td>
             <td>
-            <?
+            <?php
               db_input('k17_hist',10,$Ik17_hist,true,'text',1," onchange='js_pesquisac50_codhist(false);'");
               db_input('c50_descr',40,$Ic50_descr,true,'text',3);
             ?>
@@ -187,12 +187,12 @@ function js_atualiza2(qual){
           </tr>
           <tr>
             <td align="left">
-              <?
+              <?php
                 db_ancora("<b>CGM do Favorecido:</b>","js_pesquisaz01_numcgm(true);",2);
               ?>
             </td>
             <td>
-               <?
+               <?php
                 db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',1," onchange='js_pesquisaz01_numcgm(false);'");
                 db_input('z01_nome',40,$Iz01_nome,true,'text',3);
                ?>
@@ -203,7 +203,7 @@ function js_atualiza2(qual){
                 <b>Tipo do Pagamento:</b>
             </td>
             <td>
-               <?
+               <?php
                  db_select("k17_tipopagamento",
                            getValoresPadroesCampo("k17_tipopagamento"),
                            true,
@@ -229,7 +229,7 @@ function js_atualiza2(qual){
           <tr>
             <td align="left" valign="top"><strong>Observações:</strong></td>
             <td align="left" valign="top">
-              <?
+              <?php
                     if((!isset($texto) || (isset($texto) && trim($texto) == "")) && isset($k17_texto) && trim($k17_texto) != ""){
                           $texto = $k17_texto;
                    }
@@ -279,7 +279,7 @@ function js_atualiza2(qual){
 </tr>
 </table>
 
-<?
+<?php
 if ($desabilitabotao == false) {
 
   echo "<input type='button'  id='btnemitir' name='confirma' value='Emitir' onclick='js_gravar()'>";
@@ -638,7 +638,7 @@ function js_retornoisExtra(oResponse) {
   if (lExtra == true) {
 
     $('tiposdepagamento').style.display = '';
-    <?
+    <?php
      if ($db_opcao == 1) {
       echo "js_getPagamentosEmAberto();\n";
     }
@@ -705,7 +705,7 @@ function js_retornoisSaldoContaRecurso(oResponse) {
 
 				    if (!confirm(sMensagem)) {
 
-				      <?
+				      <?php
 				        if ($db_opcao == 1) {
 				         	echo "window.document.location.href='cai1_slip001.php';";
 				        } else if ($db_opcao == 2) {
@@ -732,7 +732,7 @@ function js_retornoisSaldoContaRecurso(oResponse) {
 
         alert(sMensagem);
 
-        <?
+        <?php
           if ($db_opcao == 1) {
             echo "window.document.location.href='cai1_slip001.php';";
           } else if ($db_opcao == 2) {
@@ -1320,7 +1320,7 @@ $('k17_tipopagamento').style.width  = "100%";
 
 js_pesquisaRecursoConta();
 //$('e151_codigo_credito').change();
-<?
+<?php
 if ($db_opcao == 2) {
 
    echo "isExtra();\n";

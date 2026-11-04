@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE pontofr
-class cl_pontofr { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r19_anousu = 0; 
-   var $r19_mesusu = 0; 
-   var $r19_regist = 0; 
-   var $r19_rubric = null; 
-   var $r19_valor = 0; 
-   var $r19_quant = 0; 
-   var $r19_lotac = null; 
-   var $r19_tpp = null; 
-   var $r19_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pontofr {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r19_anousu = 0;
+   var $r19_mesusu = 0;
+   var $r19_regist = 0;
+   var $r19_rubric = null;
+   var $r19_valor = 0;
+   var $r19_quant = 0;
+   var $r19_lotac = null;
+   var $r19_tpp = null;
+   var $r19_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r19_anousu = int4 = Ano do Exercicio 
-                 r19_mesusu = int4 = Mes do Exercicio 
-                 r19_regist = int4 = Matrícula 
-                 r19_rubric = char(     4) = Codigo da Rubrica 
-                 r19_valor = float8 = Valor do Ponto 
-                 r19_quant = float8 = Quantidade 
-                 r19_lotac = char(4) = Lotação 
-                 r19_tpp = char(1) = (P)rop, (V)enc e (S)aldo 
-                 r19_instit = int4 = codigo da instituicao 
+                 r19_anousu = int4 = Ano do Exercicio
+                 r19_mesusu = int4 = Mes do Exercicio
+                 r19_regist = int4 = Matrícula
+                 r19_rubric = char(     4) = Codigo da Rubrica
+                 r19_valor = float8 = Valor do Ponto
+                 r19_quant = float8 = Quantidade
+                 r19_lotac = char(4) = Lotação
+                 r19_tpp = char(1) = (P)rop, (V)enc e (S)aldo
+                 r19_instit = int4 = codigo da instituicao
                  ";
-   //funcao construtor da classe 
-   function cl_pontofr() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pontofr"); 
+     $this->rotulo = new rotulo("pontofr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_pontofr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r19_anousu = ($this->r19_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r19_anousu"]:$this->r19_anousu);
        $this->r19_mesusu = ($this->r19_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r19_mesusu"]:$this->r19_mesusu);
@@ -102,7 +102,7 @@ class cl_pontofr {
     function incluir($r19_anousu, $r19_mesusu, $r19_regist, $r19_rubric, $r19_tpp = '')
     {
       $this->atualizacampos();
-     if($this->r19_valor == null ){ 
+     if($this->r19_valor == null ){
        $this->erro_sql = " Campo Valor do Ponto nao Informado.";
        $this->erro_campo = "r19_valor";
        $this->erro_banco = "";
@@ -111,7 +111,7 @@ class cl_pontofr {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r19_quant == null ){ 
+     if($this->r19_quant == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "r19_quant";
        $this->erro_banco = "";
@@ -120,7 +120,7 @@ class cl_pontofr {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r19_lotac == null ){ 
+     if($this->r19_lotac == null ){
        $this->erro_sql = " Campo Lotação nao Informado.";
        $this->erro_campo = "r19_lotac";
        $this->erro_banco = "";
@@ -129,7 +129,7 @@ class cl_pontofr {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r19_instit == null ){ 
+     if($this->r19_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao nao Informado.";
        $this->erro_campo = "r19_instit";
        $this->erro_banco = "";
@@ -138,12 +138,12 @@ class cl_pontofr {
        $this->erro_status = "0";
        return false;
      }
-       $this->r19_anousu = $r19_anousu; 
-       $this->r19_mesusu = $r19_mesusu; 
-       $this->r19_regist = $r19_regist; 
-       $this->r19_rubric = $r19_rubric; 
-       $this->r19_tpp = $r19_tpp; 
-     if(($this->r19_anousu == null) || ($this->r19_anousu == "") ){ 
+       $this->r19_anousu = $r19_anousu;
+       $this->r19_mesusu = $r19_mesusu;
+       $this->r19_regist = $r19_regist;
+       $this->r19_rubric = $r19_rubric;
+       $this->r19_tpp = $r19_tpp;
+     if(($this->r19_anousu == null) || ($this->r19_anousu == "") ){
        $this->erro_sql = " Campo r19_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -151,7 +151,7 @@ class cl_pontofr {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r19_mesusu == null) || ($this->r19_mesusu == "") ){ 
+     if(($this->r19_mesusu == null) || ($this->r19_mesusu == "") ){
        $this->erro_sql = " Campo r19_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -159,7 +159,7 @@ class cl_pontofr {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r19_regist == null) || ($this->r19_regist == "") ){ 
+     if(($this->r19_regist == null) || ($this->r19_regist == "") ){
        $this->erro_sql = " Campo r19_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -167,7 +167,7 @@ class cl_pontofr {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r19_rubric == null) || ($this->r19_rubric == "") ){ 
+     if(($this->r19_rubric == null) || ($this->r19_rubric == "") ){
        $this->erro_sql = " Campo r19_rubric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,29 +184,29 @@ class cl_pontofr {
        return false;
      }
      $sql = "insert into pontofr(
-                                       r19_anousu 
-                                      ,r19_mesusu 
-                                      ,r19_regist 
-                                      ,r19_rubric 
-                                      ,r19_valor 
-                                      ,r19_quant 
-                                      ,r19_lotac 
-                                      ,r19_tpp 
-                                      ,r19_instit 
+                                       r19_anousu
+                                      ,r19_mesusu
+                                      ,r19_regist
+                                      ,r19_rubric
+                                      ,r19_valor
+                                      ,r19_quant
+                                      ,r19_lotac
+                                      ,r19_tpp
+                                      ,r19_instit
                        )
                 values (
-                                $this->r19_anousu 
-                               ,$this->r19_mesusu 
-                               ,$this->r19_regist 
-                               ,'$this->r19_rubric' 
-                               ,$this->r19_valor 
-                               ,$this->r19_quant 
-                               ,'$this->r19_lotac' 
-                               ,'$this->r19_tpp' 
-                               ,$this->r19_instit 
+                                $this->r19_anousu
+                               ,$this->r19_mesusu
+                               ,$this->r19_regist
+                               ,'$this->r19_rubric'
+                               ,$this->r19_valor
+                               ,$this->r19_quant
+                               ,'$this->r19_lotac'
+                               ,'$this->r19_tpp'
+                               ,$this->r19_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ponto de Rescisao ($this->r19_anousu."-".$this->r19_mesusu."-".$this->r19_regist."-".$this->r19_rubric."-".$this->r19_tpp) nao Incluído. Inclusao Abortada.";
@@ -250,16 +250,16 @@ class cl_pontofr {
        $resac = db_query("insert into db_acount values($acount,578,7465,'','".AddSlashes(pg_result($resaco,0,'r19_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null, $where="") { 
+   public function alterar ($r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null, $where="") {
       $this->atualizacampos();
      $sql = " update pontofr set ";
      $virgula = "";
-     if(trim($this->r19_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_anousu"])){ 
+     if(trim($this->r19_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_anousu"])){
        $sql  .= $virgula." r19_anousu = $this->r19_anousu ";
        $virgula = ",";
-       if(trim($this->r19_anousu) == null ){ 
+       if(trim($this->r19_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "r19_anousu";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_mesusu"])){ 
+     if(trim($this->r19_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_mesusu"])){
        $sql  .= $virgula." r19_mesusu = $this->r19_mesusu ";
        $virgula = ",";
-       if(trim($this->r19_mesusu) == null ){ 
+       if(trim($this->r19_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r19_mesusu";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_regist"])){ 
+     if(trim($this->r19_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_regist"])){
        $sql  .= $virgula." r19_regist = $this->r19_regist ";
        $virgula = ",";
-       if(trim($this->r19_regist) == null ){ 
+       if(trim($this->r19_regist) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "r19_regist";
          $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_rubric"])){ 
+     if(trim($this->r19_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_rubric"])){
        $sql  .= $virgula." r19_rubric = '$this->r19_rubric' ";
        $virgula = ",";
-       if(trim($this->r19_rubric) == null ){ 
+       if(trim($this->r19_rubric) == null ){
          $this->erro_sql = " Campo Codigo da Rubrica nao Informado.";
          $this->erro_campo = "r19_rubric";
          $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_valor"])){ 
+     if(trim($this->r19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_valor"])){
        $sql  .= $virgula." r19_valor = $this->r19_valor ";
        $virgula = ",";
-       if(trim($this->r19_valor) == null ){ 
+       if(trim($this->r19_valor) == null ){
          $this->erro_sql = " Campo Valor do Ponto nao Informado.";
          $this->erro_campo = "r19_valor";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_quant"])){ 
+     if(trim($this->r19_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_quant"])){
        $sql  .= $virgula." r19_quant = $this->r19_quant ";
        $virgula = ",";
-       if(trim($this->r19_quant) == null ){ 
+       if(trim($this->r19_quant) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "r19_quant";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_lotac"])){ 
+     if(trim($this->r19_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_lotac"])){
        $sql  .= $virgula." r19_lotac = '$this->r19_lotac' ";
        $virgula = ",";
-       if(trim($this->r19_lotac) == null ){ 
+       if(trim($this->r19_lotac) == null ){
          $this->erro_sql = " Campo Lotação nao Informado.";
          $this->erro_campo = "r19_lotac";
          $this->erro_banco = "";
@@ -347,10 +347,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_tpp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_tpp"])){ 
+     if(trim($this->r19_tpp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_tpp"])){
        $sql  .= $virgula." r19_tpp = '$this->r19_tpp' ";
        $virgula = ",";
-       if(trim($this->r19_tpp) == null ){ 
+       if(trim($this->r19_tpp) == null ){
          $this->erro_sql = " Campo (P)rop, (V)enc e (S)aldo nao Informado.";
          $this->erro_campo = "r19_tpp";
          $this->erro_banco = "";
@@ -360,10 +360,10 @@ class cl_pontofr {
          return false;
        }
      }
-     if(trim($this->r19_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_instit"])){ 
+     if(trim($this->r19_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r19_instit"])){
        $sql  .= $virgula." r19_instit = $this->r19_instit ";
        $virgula = ",";
-       if(trim($this->r19_instit) == null ){ 
+       if(trim($this->r19_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "r19_instit";
          $this->erro_banco = "";
@@ -427,7 +427,7 @@ class cl_pontofr {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ponto de Rescisao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r19_anousu."-".$this->r19_mesusu."-".$this->r19_regist."-".$this->r19_rubric."-".$this->r19_tpp;
@@ -455,14 +455,14 @@ class cl_pontofr {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r19_anousu,$r19_mesusu,$r19_regist,$r19_rubric,$r19_tpp));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -524,7 +524,7 @@ class cl_pontofr {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ponto de Rescisao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r19_anousu."-".$r19_mesusu."-".$r19_regist."-".$r19_rubric."-".$r19_tpp;
@@ -552,11 +552,11 @@ class cl_pontofr {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -578,10 +578,10 @@ class cl_pontofr {
       }
      return $result;
    }
-   function sql_query ( $r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -592,190 +592,44 @@ class cl_pontofr {
      }
      $sql .= " from pontofr ";
      $sql .= "      inner join db_config  on  db_config.codigo = pontofr.r19_instit";
-     $sql .= "      inner join lotacao  on  lotacao.r13_anousu = pontofr.r19_anousu 
-		                                   and  lotacao.r13_mesusu = pontofr.r19_mesusu 
+     $sql .= "      inner join lotacao  on  lotacao.r13_anousu = pontofr.r19_anousu
+		                                   and  lotacao.r13_mesusu = pontofr.r19_mesusu
 																			 and  lotacao.r13_codigo = pontofr.r19_lotac
 																			 and  lotacao.r13_instit = pontofr.r19_instit ";
-     $sql .= "      inner join pessoal  on  pessoal.r01_anousu = pontofr.r19_anousu 
-		                                   and  pessoal.r01_mesusu = pontofr.r19_mesusu 
+     $sql .= "      inner join pessoal  on  pessoal.r01_anousu = pontofr.r19_anousu
+		                                   and  pessoal.r01_mesusu = pontofr.r19_mesusu
 																			 and  pessoal.r01_regist = pontofr.r19_regist
 																			 and  pessoal.r01_instit = pontofr.r19_instit ";
-     $sql .= "      inner join rubricas  on rubricas.r06_anousu = pontofr.r19_anousu 
-		                                    and rubricas.r06_mesusu = pontofr.r19_mesusu 
+     $sql .= "      inner join rubricas  on rubricas.r06_anousu = pontofr.r19_anousu
+		                                    and rubricas.r06_mesusu = pontofr.r19_mesusu
 																				and  rubricas.r06_codigo = pontofr.r19_rubric
 																				and  rubricas.r06_instit = pontofr.r19_instit ";
      $sql .= "      inner join cgm  as d on   d.z01_numcgm = pessoal.r01_numcgm";
      $sql .= "      inner join db_config  on  db_config.codigo = pessoal.r01_instit";
-     $sql .= "      inner join funcao  as d on d.r37_anousu = pessoal.r01_anousu 
-		                                       and d.r37_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join funcao  as d on d.r37_anousu = pessoal.r01_anousu
+		                                       and d.r37_mesusu = pessoal.r01_mesusu
 																					 and d.r37_funcao = pessoal.r01_funcao
 																					 and d.r37_instit = pessoal.r01_instit ";
-     $sql .= "      inner join inssirf  as d on d.r33_anousu = pessoal.r01_anousu 
-		                                        and d.r33_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join inssirf  as d on d.r33_anousu = pessoal.r01_anousu
+		                                        and d.r33_mesusu = pessoal.r01_mesusu
 																						and d.r33_codtab = pessoal.r01_tbprev
 																						and d.r33_instit = pessoal.r01_instit";
-     $sql .= "      inner join cargo  as d on d.r65_anousu = pessoal.r01_anousu 
-		                                      and d.r65_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join cargo  as d on d.r65_anousu = pessoal.r01_anousu
+		                                      and d.r65_mesusu = pessoal.r01_mesusu
 																					and d.r65_cargo = pessoal.r01_cargo";
      $sql2 = "";
      if($dbwhere==""){
        if($r19_anousu!=null ){
-         $sql2 .= " where pontofr.r19_anousu = $r19_anousu "; 
-       } 
+         $sql2 .= " where pontofr.r19_anousu = $r19_anousu ";
+       }
        if($r19_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_mesusu = $r19_mesusu "; 
-       } 
-       if($r19_regist!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_regist = $r19_regist "; 
-       } 
-       if($r19_rubric!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_rubric = '$r19_rubric' "; 
-       } 
-       if($r19_tpp!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_tpp = '$r19_tpp' "; 
-       } 
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
+         }
+         $sql2 .= " pontofr.r19_mesusu = $r19_mesusu ";
        }
-     }
-     return $sql;
-  }
-   function sql_query_file ( $r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$campos="*",$ordem=null,$dbwhere=""){ 
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = split("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from pontofr ";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($r19_anousu!=null ){
-         $sql2 .= " where pontofr.r19_anousu = $r19_anousu "; 
-       } 
-       if($r19_mesusu!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_mesusu = $r19_mesusu "; 
-       } 
-       if($r19_regist!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_regist = $r19_regist "; 
-       } 
-       if($r19_rubric!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_rubric = '$r19_rubric' "; 
-       } 
-       if($r19_tpp!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_tpp = '$r19_tpp' "; 
-       } 
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-   function sql_query_seleciona ( $r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = split("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-
-     $sql .= " from pontofr ";
-     $sql .= "      inner join rhpessoal    on  rhpessoal.rh01_regist       = pontofr.r19_regist       ";
-     $sql .= "      inner join rhpessoalmov on  rhpessoal.rh01_regist       = rhpessoalmov.rh02_regist ";
-     $sql .= "                             and  pontofr.r19_anousu          = rhpessoalmov.rh02_anousu ";
-     $sql .= "                             and  pontofr.r19_mesusu          = rhpessoalmov.rh02_mesusu ";
-     $sql .= "                             and  pontofr.r19_instit          = rhpessoalmov.rh02_instit ";
-     $sql .= "      inner join rhfuncao     on  rhpessoalmov.rh02_funcao    = rhfuncao.rh37_funcao     ";
-     $sql .= "                             and  rhpessoalmov.rh02_instit    = rhfuncao.rh37_instit     ";
-     $sql .= "      inner join rhregime     on  rhpessoalmov.rh02_codreg    = rhregime.rh30_codreg     ";
-     $sql .= "                             and  rhpessoalmov.rh02_instit    = rhregime.rh30_instit     ";
-     $sql .= "      inner join rhrubricas   on  rhrubricas.rh27_rubric      = pontofr.r19_rubric       ";
-		 $sql .= "                             and  rhrubricas.rh27_instit      = pontofr.r19_instit       ";
-     $sql .= "      inner join rhlota       on  rhlota.r70_codigo::char(12) = pontofr.r19_lotac        ";
-		 $sql .= "                             and  rhlota.r70_instit           = pontofr.r19_instit       ";
-     $sql .= "      inner join cgm          on  cgm.z01_numcgm              = rhpessoal.rh01_numcgm    ";
-
-     $sql2 = "";
-     if($dbwhere==""){     	
-       if($r19_anousu!=null ){
-         $sql2 .= " where pontofr.r19_anousu = $r19_anousu "; 
-       } 
-       if($r19_mesusu!=null ){
-         if($sql2!=""){
-            $sql2 .= " and ";
-         }else{
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " pontofr.r19_mesusu = $r19_mesusu "; 
-       } 
        if($r19_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
@@ -806,7 +660,153 @@ class cl_pontofr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }
+     return $sql;
+  }
+   public function sql_query_file ( $r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$campos="*",$ordem=null,$dbwhere=""){
+     $sql = "select ";
+     if($campos != "*" ){
+       $campos_sql = explode("#",$campos);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }else{
+       $sql .= $campos;
+     }
+     $sql .= " from pontofr ";
+     $sql2 = "";
+     if($dbwhere==""){
+       if($r19_anousu!=null ){
+         $sql2 .= " where pontofr.r19_anousu = $r19_anousu ";
+       }
+       if($r19_mesusu!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_mesusu = $r19_mesusu ";
+       }
+       if($r19_regist!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_regist = $r19_regist ";
+       }
+       if($r19_rubric!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_rubric = '$r19_rubric' ";
+       }
+       if($r19_tpp!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_tpp = '$r19_tpp' ";
+       }
+     }else if($dbwhere != ""){
+       $sql2 = " where $dbwhere";
+     }
+     $sql .= $sql2;
+     if($ordem != null ){
+       $sql .= " order by ";
+       $campos_sql = explode("#",$ordem);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }
+     return $sql;
+  }
+   public function sql_query_seleciona ( $r19_anousu=null,$r19_mesusu=null,$r19_regist=null,$r19_rubric=null,$r19_tpp=null,$campos="*",$ordem=null,$dbwhere=""){
+     $sql = "select ";
+     if($campos != "*" ){
+       $campos_sql = explode("#",$campos);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }else{
+       $sql .= $campos;
+     }
+
+     $sql .= " from pontofr ";
+     $sql .= "      inner join rhpessoal    on  rhpessoal.rh01_regist       = pontofr.r19_regist       ";
+     $sql .= "      inner join rhpessoalmov on  rhpessoal.rh01_regist       = rhpessoalmov.rh02_regist ";
+     $sql .= "                             and  pontofr.r19_anousu          = rhpessoalmov.rh02_anousu ";
+     $sql .= "                             and  pontofr.r19_mesusu          = rhpessoalmov.rh02_mesusu ";
+     $sql .= "                             and  pontofr.r19_instit          = rhpessoalmov.rh02_instit ";
+     $sql .= "      inner join rhfuncao     on  rhpessoalmov.rh02_funcao    = rhfuncao.rh37_funcao     ";
+     $sql .= "                             and  rhpessoalmov.rh02_instit    = rhfuncao.rh37_instit     ";
+     $sql .= "      inner join rhregime     on  rhpessoalmov.rh02_codreg    = rhregime.rh30_codreg     ";
+     $sql .= "                             and  rhpessoalmov.rh02_instit    = rhregime.rh30_instit     ";
+     $sql .= "      inner join rhrubricas   on  rhrubricas.rh27_rubric      = pontofr.r19_rubric       ";
+		 $sql .= "                             and  rhrubricas.rh27_instit      = pontofr.r19_instit       ";
+     $sql .= "      inner join rhlota       on  rhlota.r70_codigo::char(12) = pontofr.r19_lotac        ";
+		 $sql .= "                             and  rhlota.r70_instit           = pontofr.r19_instit       ";
+     $sql .= "      inner join cgm          on  cgm.z01_numcgm              = rhpessoal.rh01_numcgm    ";
+
+     $sql2 = "";
+     if($dbwhere==""){
+       if($r19_anousu!=null ){
+         $sql2 .= " where pontofr.r19_anousu = $r19_anousu ";
+       }
+       if($r19_mesusu!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_mesusu = $r19_mesusu ";
+       }
+       if($r19_regist!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_regist = $r19_regist ";
+       }
+       if($r19_rubric!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_rubric = '$r19_rubric' ";
+       }
+       if($r19_tpp!=null ){
+         if($sql2!=""){
+            $sql2 .= " and ";
+         }else{
+            $sql2 .= " where ";
+         }
+         $sql2 .= " pontofr.r19_tpp = '$r19_tpp' ";
+       }
+     }else if($dbwhere != ""){
+       $sql2 = " where $dbwhere";
+     }
+     $sql .= $sql2;
+     if($ordem != null ){
+       $sql .= " order by ";
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

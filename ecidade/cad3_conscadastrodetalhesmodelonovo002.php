@@ -85,6 +85,15 @@ $sSqlConsulta = " select iptubase.j01_fracao,                                   
 $sSqlConsulta .= "        iptubase.j01_areaprivativa,                                                                                                          ";
 $sSqlConsulta .= "        lote.j34_areapreservada,                                                                                                                ";
 $sSqlConsulta .= "        lote.j34_areal,                                                                                                                         ";
+$sSqlConsulta .= "        lote.j34_areaprivativa,                                                                                                                         ";
+$sSqlConsulta .= "        lote.j34_areausocomum,                                                                                                                         ";
+$sSqlConsulta .= "        case 
+	   		                    when lote.j34_zonadesurb is not null then 
+                                lote.j34_zonadesurb::varchar || ' - ' || 
+                                zonasdesenvolvimento.j225_sigla || ' - ' || 
+                                macrozonas.j224_localizacao
+	   		                    else null
+	                      end as zona_desenvolvimento,                                                                                                                          ";
 $sSqlConsulta .= "        round(((round((select rnfracao                                                                                                          ";
 $sSqlConsulta .= "                         from fc_iptu_fracionalote(iptubase.j01_matric, {$iAnoUsu}, true, false)), 10) * lote.j34_area)/100), 10) as area_lote, ";
 $sSqlConsulta .= "        loteloteam.j34_loteam,                                                                                                                  ";
@@ -124,7 +133,13 @@ $sSqlConsulta .= "        loteloc.j06_setorloc,                                 
 $sSqlConsulta .= "        loteloc.j06_quadraloc,                                                                                                                  ";
 $sSqlConsulta .= "        loteloc.j06_lote,                                                                                                                       ";
 $sSqlConsulta .= "        setorfiscal.j90_codigo,                                                                                                                 ";
-$sSqlConsulta .= "        setorfiscal.j90_descr                                                                                                                   ";
+$sSqlConsulta .= "        setorfiscal.j90_descr,                                                                                                                  ";
+$sSqlConsulta .= "        case                                                                                                                                    ";
+$sSqlConsulta .= "          when iptuconstr.j39_matric is null then (select r.j29_cep from cadastro.ruascep r where r.j29_codigo = proprietario.j14_codigo limit 1)       ";
+$sSqlConsulta .= "          when iptuconstr.j39_matric is not null then (select r.j29_cep from cadastro.ruascep r where r.j29_codigo = iptuconstr.j39_codigo      ";
+$sSqlConsulta .= "          and r.j29_inicio <= iptuconstr.j39_numero                                                                                                       ";
+$sSqlConsulta .= "          and r.j29_final >= iptuconstr.j39_numero limit 1)                                                                                                        ";
+$sSqlConsulta .= "        end as j29_cep                                                                                                                          ";
 $sSqlConsulta .= "   from proprietario                                                                                                                            ";
 $sSqlConsulta .= "        inner  join  lote               on lote.j34_idbql                 = proprietario.j01_idbql                                              ";
 $sSqlConsulta .= "        left   join  loteloteam         on loteloteam.j34_idbql           = lote.j34_idbql                                                      ";
@@ -147,6 +162,9 @@ $sSqlConsulta .= "        left   join  loteloc            on loteloc.j06_idbql  
 $sSqlConsulta .= "        left   join  setorloc           on setorloc.j05_codigo            = loteloc.j06_setorloc                                                ";
 $sSqlConsulta .= "        left   join  lotesetorfiscal    on lotesetorfiscal.j91_idbql      = lote.j34_idbql                                                      ";
 $sSqlConsulta .= "        left   join  setorfiscal        on setorfiscal.j90_codigo         = lotesetorfiscal.j91_codigo                                          ";
+$sSqlConsulta .= "        left   join  iptuconstr         on iptuconstr.j39_matric          = proprietario.j01_matric and j39_idprinc = true                      ";
+$sSqlConsulta .= "        left   join  zonasdesenvolvimento on zonasdesenvolvimento.j225_sequencial = lote.j34_zonadesurb                                         ";
+$sSqlConsulta .= "        left   join  macrozonas         on macrozonas.j224_sequencial     = zonasdesenvolvimento.j224_sequencial                                ";
 $sSqlConsulta .= "  where proprietario.j01_matric = {$oGet->matricula} limit 1                                                                                    ";
 
 $rsSqlConsulta = db_query($sSqlConsulta);
@@ -214,7 +232,10 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
         $oDadosImovel->sRuaTipoDescr = $oDados->j88_descricao;
         $oDadosImovel->sNumero = $oDados->j39_numero;
         $oDadosImovel->sCompl = $oDados->j39_compl;
-
+        $oDadosImovel->sCepLogradouro = $oDados->j29_cep;
+        $oDadosImovel->j34_areaprivativa = $oDados->j34_areaprivativa;
+        $oDadosImovel->j34_areausocomum = $oDados->j34_areausocomum;
+        $oDadosImovel->zona_desenvolvimento = $oDados->zona_desenvolvimento;
         $nAreaLote = '0';
         if (!empty($oDados->area_lote)) {
             $nAreaLote = $oDados->area_lote;
@@ -440,30 +461,49 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
         }
     }
 
+    $sSqlOutrosProprietarios = "   select *,                                                                                                   ";
+    $sSqlOutrosProprietarios .= "  ROUND(COALESCE(j42_fracaoproprietario, 0), 4) as fracao,                                                    ";
+    $sSqlOutrosProprietarios .= "  COALESCE(j42_arealoteproprietario, 0) as area                                                               ";
+    $sSqlOutrosProprietarios .= "     from propri                                                                                              ";
+    $sSqlOutrosProprietarios .= "          inner join cgm          on cgm.z01_numcgm          = propri.j42_numcgm                              ";
+    $sSqlOutrosProprietarios .= "          inner join tipoproprietario ON tipoproprietario.j163_tipoproprietario = propri.j42_tipoproprietario ";
+    $sSqlOutrosProprietarios .= "    where propri.j42_matric = {$oDados->j01_matric}                                                           ";
+    $rsSqlOutrosProprietarios = db_query($sSqlOutrosProprietarios);
+    $iNumRowsOutrosProprietarios = pg_num_rows($rsSqlOutrosProprietarios);
+
+    $existeOutroProprietario = $iNumRowsOutrosProprietarios == 1;
+    $existemOutrosProprietarios = $iNumRowsOutrosProprietarios > 1;
+    $sulfixoOutroProprietario = $existeOutroProprietario ? ' E OUTRO' : ($existemOutrosProprietarios ? ' E OUTROS' : '');
+
     /**
      * Proprietarios
      */
     if (isset($oGet->proprietarios)) {
 
-        $sSqlDadosProprietario = "  select cgm.z01_numcgm   as numcgm,                                      ";
-        $sSqlDadosProprietario .= "         cgm.z01_nome     as nome,                                        ";
-        $sSqlDadosProprietario .= "         cgm.z01_cgccpf   as cgccpf,                                      ";
-        $sSqlDadosProprietario .= "         cgm.z01_ender    as ender,                                       ";
-        $sSqlDadosProprietario .= "         cgm.z01_numero   as numero,                                      ";
-        $sSqlDadosProprietario .= "         cgm.z01_compl    as compl,                                       ";
-        $sSqlDadosProprietario .= "         cgm.z01_bairro   as bairro,                                      ";
-        $sSqlDadosProprietario .= "         cgm.z01_munic    as munic,                                       ";
-        $sSqlDadosProprietario .= "         cgm.z01_uf       as uf,                                          ";
-        $sSqlDadosProprietario .= "         cgm.z01_cep      as cep,                                         ";
-        $sSqlDadosProprietario .= "         cgm.z01_cxpostal as cxpostal,                                    ";
-        $sSqlDadosProprietario .= "         cgm.z01_telef    as telef,                                       ";
-        $sSqlDadosProprietario .= "         cgm.z01_telcel   as telcel,                                      ";
-        $sSqlDadosProprietario .= "         cgm.z01_fax      as fax,                                         ";
-        $sSqlDadosProprietario .= "         cgm.z01_email    as email                                        ";
-        $sSqlDadosProprietario .= "    from proprietario                                                     ";
-        $sSqlDadosProprietario .= "         inner join cgm on cgm.z01_numcgm = proprietario.z01_numcgm       ";
-        $sSqlDadosProprietario .= "         inner join iptubase on proprietario.j01_matric = iptubase.j01_matric       ";
-        $sSqlDadosProprietario .= "   where proprietario.j01_matric = {$oDados->j01_matric}                  ";
+        $sSqlDadosProprietario = "  select cgm.z01_numcgm                             as numcgm,                                                  ";
+        $sSqlDadosProprietario .= "         cgm.z01_nome                              as nome,                                                    ";
+        $sSqlDadosProprietario .= "         cgm.z01_cgccpf                            as cgccpf,                                                  ";
+        $sSqlDadosProprietario .= "         cgm.z01_ender                             as ender,                                                   ";
+        $sSqlDadosProprietario .= "         cgm.z01_numero                            as numero,                                                  ";
+        $sSqlDadosProprietario .= "         cgm.z01_compl                             as compl,                                                   ";
+        $sSqlDadosProprietario .= "         cgm.z01_bairro                            as bairro,                                                  ";
+        $sSqlDadosProprietario .= "         cgm.z01_munic                             as munic,                                                   ";
+        $sSqlDadosProprietario .= "         cgm.z01_uf                                as uf,                                                      ";
+        $sSqlDadosProprietario .= "         cgm.z01_cep                               as cep,                                                     ";
+        $sSqlDadosProprietario .= "         cgm.z01_cxpostal                          as cxpostal,                                                ";
+        $sSqlDadosProprietario .= "         cgm.z01_telef                             as telef,                                                   ";
+        $sSqlDadosProprietario .= "         cgm.z01_telcel                            as telcel,                                                  ";
+        $sSqlDadosProprietario .= "         cgm.z01_fax                               as fax,                                                     ";
+        $sSqlDadosProprietario .= "         cgm.z01_email                             as email,                                                   ";
+        $sSqlDadosProprietario .= "         ROUND(iptubase.j01_fracaoproprietario, 4) as fracao,                                                  ";
+        $sSqlDadosProprietario .= "         lote.j34_area                             as area,                                                    ";
+        $sSqlDadosProprietario .= "         tipoproprietario.j163_descricao           as tipo_proprietario                                        ";
+        $sSqlDadosProprietario .= "    from proprietario                                                                                          ";
+        $sSqlDadosProprietario .= "         inner join cgm on cgm.z01_numcgm = proprietario.z01_numcgm                                            ";
+        $sSqlDadosProprietario .= "         inner join iptubase on proprietario.j01_matric = iptubase.j01_matric                                  ";
+        $sSqlDadosProprietario .= "         inner join lote on lote.j34_idbql = iptubase.j01_idbql                                                ";
+        $sSqlDadosProprietario .= "         inner join tipoproprietario ON tipoproprietario.j163_tipoproprietario = iptubase.j01_tipoproprietario ";
+        $sSqlDadosProprietario .= "   where proprietario.j01_matric = {$oDados->j01_matric}                                                       ";
         $rsSqlDadosProprietario = db_query($sSqlDadosProprietario);
         $iNumRowsDadosProprietario = pg_num_rows($rsSqlDadosProprietario);
 
@@ -476,7 +516,8 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosProprietario = new stdClass();
                 $oDadosProprietario->iCgm = $oDadoProprietario->numcgm;
                 $oDadosProprietario->sTipo = 'Principal';
-                $oDadosProprietario->sNome = $oDadoProprietario->nome;
+                $oDadosProprietario->sTipoProprietario = $oDadoProprietario->tipo_proprietario;
+                $oDadosProprietario->sNome = $oDadoProprietario->nome . $sulfixoOutroProprietario;
                 $oDadosProprietario->iCgcCpf = $oDadoProprietario->cgccpf;
                 $oDadosProprietario->sLogradouro = $oDadoProprietario->ender;
                 $oDadosProprietario->iNumero = $oDadoProprietario->numero;
@@ -490,6 +531,8 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosProprietario->iCelular = $oDadoProprietario->telcel;
                 $oDadosProprietario->iFax = $oDadoProprietario->fax;
                 $oDadosProprietario->sEmail = $oDadoProprietario->email;
+                $oDadosProprietario->fFracao = $oDadoProprietario-> fracao;
+                $oDadosProprietario->fArea = ((float)$oDadoProprietario->fracao / 100) * (float)$oDadoProprietario->area;
 
                 $aDadosProprietario['oDadosProprietario'] = $oDadosProprietario;
             }
@@ -500,14 +543,6 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
      * Outros Proprietarios
      */
     if (isset($oGet->outrosproprietarios)) {
-
-        $sSqlOutrosProprietarios = "   select *                                                                       ";
-        $sSqlOutrosProprietarios .= "     from propri                                                                  ";
-        $sSqlOutrosProprietarios .= "          inner join cgm          on cgm.z01_numcgm          = propri.j42_numcgm  ";
-        $sSqlOutrosProprietarios .= "    where propri.j42_matric = {$oDados->j01_matric}                               ";
-        $rsSqlOutrosProprietarios = db_query($sSqlOutrosProprietarios);
-        $iNumRowsOutrosProprietarios = pg_num_rows($rsSqlOutrosProprietarios);
-
         if ($iNumRowsOutrosProprietarios > 0) {
 
             for ($xIndOutrosProprietarios = 0; $xIndOutrosProprietarios < $iNumRowsOutrosProprietarios; $xIndOutrosProprietarios++) {
@@ -517,6 +552,7 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosOutrosProprietarios = new stdClass();
                 $oDadosOutrosProprietarios->iCgm = $oDadoOutrosProprietarios->z01_numcgm;
                 $oDadosOutrosProprietarios->sTipo = 'Outro Proprietário';
+                $oDadosOutrosProprietarios->sTipoProprietario = $oDadoOutrosProprietarios->j163_descricao;
                 $oDadosOutrosProprietarios->sNome = $oDadoOutrosProprietarios->z01_nome;
                 $oDadosOutrosProprietarios->iCgcCpf = $oDadoOutrosProprietarios->z01_cgccpf;
                 $oDadosOutrosProprietarios->sLogradouro = $oDadoOutrosProprietarios->z01_ender;
@@ -531,6 +567,8 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosOutrosProprietarios->iCelular = $oDadoOutrosProprietarios->z01_telcel;
                 $oDadosOutrosProprietarios->iFax = $oDadoOutrosProprietarios->z01_fax;
                 $oDadosOutrosProprietarios->sEmail = $oDadoOutrosProprietarios->z01_email;
+                $oDadosOutrosProprietarios->fFracao = $oDadoOutrosProprietarios->fracao;
+                $oDadosOutrosProprietarios->fArea = $oDadoOutrosProprietarios->area;
 
                 $aDadosOutrosProprietarios[$oDadoOutrosProprietarios->z01_numcgm]['oDadosOutrosProprietarios'] = $oDadosOutrosProprietarios;
             }
@@ -542,11 +580,13 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
      */
     if (isset($oGet->promitentes)) {
 
-        $sSqlPromitentes = "    select *                                                                    ";
-        $sSqlPromitentes .= "      from promitente                                                           ";
-        $sSqlPromitentes .= "           inner join cgm on cgm.z01_numcgm = promitente.j41_numcgm             ";
-        $sSqlPromitentes .= "     where j41_matric = {$oDados->j01_matric}                                   ";
-        $sSqlPromitentes .= "       and promitente.j41_tipopro is true                                       ";
+        $sSqlPromitentes = "    select *                                                                                                ";
+        $sSqlPromitentes .= "      from promitente                                                                                      ";
+        $sSqlPromitentes .= "           inner join cgm on cgm.z01_numcgm = promitente.j41_numcgm                                        ";
+        $sSqlPromitentes .= "           inner join tipopromitente ON promitente.j41_promitipo = tipopromitente.j164_promitipo           ";
+        $sSqlPromitentes .= "               or tipopromitente.j164_tipopromitente = promitente.j41_tipopromitente                       ";
+        $sSqlPromitentes .= "     where j41_matric = {$oDados->j01_matric}                                                              ";
+        $sSqlPromitentes .= "       and promitente.j41_tipopro is true                                                                  ";
         $rsSqlPromitentes = db_query($sSqlPromitentes);
         $iNumRowsPromitentes = pg_num_rows($rsSqlPromitentes);
 
@@ -559,6 +599,7 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosPromitentes = new stdClass();
                 $oDadosPromitentes->iCgm = $oDadoPromitentes->z01_numcgm;
                 $oDadosPromitentes->sTipo = 'Promitente';
+                $oDadosPromitentes->sTipoPromitente = $oDadoPromitentes->j164_descricao;
                 $oDadosPromitentes->sNome = $oDadoPromitentes->z01_nome;
                 $oDadosPromitentes->iCgcCpf = $oDadoPromitentes->z01_cgccpf;
                 $oDadosPromitentes->sContato = $oDadoPromitentes->z01_contato;
@@ -585,11 +626,13 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
      */
     if (isset($oGet->outrospromitentes)) {
 
-        $sSqlOutrosPromitentes = "    select *                                                              ";
-        $sSqlOutrosPromitentes .= "      from promitente                                                     ";
-        $sSqlOutrosPromitentes .= "           inner join cgm on cgm.z01_numcgm = promitente.j41_numcgm       ";
-        $sSqlOutrosPromitentes .= "     where j41_matric = {$oDados->j01_matric}                             ";
-        $sSqlOutrosPromitentes .= "       and promitente.j41_tipopro is false                                ";
+        $sSqlOutrosPromitentes = "    select *                                                                                                 ";
+        $sSqlOutrosPromitentes .= "      from promitente                                                                                       ";
+        $sSqlOutrosPromitentes .= "           inner join cgm on cgm.z01_numcgm = promitente.j41_numcgm                                         ";
+        $sSqlOutrosPromitentes .= "           inner join tipopromitente ON promitente.j41_promitipo = tipopromitente.j164_promitipo            ";
+        $sSqlOutrosPromitentes .= "             or promitente.j41_promitipo = tipopromitente.j164_promitipo                                    ";
+        $sSqlOutrosPromitentes .= "     where j41_matric = {$oDados->j01_matric}                                                               ";
+        $sSqlOutrosPromitentes .= "       and promitente.j41_tipopro is false                                                                  ";
         $rsSqlOutrosPromitentes = db_query($sSqlOutrosPromitentes);
         $iNumRowsOutrosPromitentes = pg_num_rows($rsSqlOutrosPromitentes);
 
@@ -602,6 +645,7 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosOutrosPromitentes = new stdClass();
                 $oDadosOutrosPromitentes->iCgm = $oDadoOutrosPromitentes->z01_numcgm;
                 $oDadosOutrosPromitentes->sTipo = 'Outro Promitente';
+                $oDadosOutrosPromitentes->sTipoPromitente = $oDadoOutrosPromitentes->j164_descricao;
                 $oDadosOutrosPromitentes->sNome = $oDadoOutrosPromitentes->z01_nome;
                 $oDadosOutrosPromitentes->iCgcCpf = $oDadoOutrosPromitentes->z01_cgccpf;
                 $oDadosOutrosPromitentes->sContato = $oDadoOutrosPromitentes->z01_contato;
@@ -1203,14 +1247,16 @@ if (isset($oGet->dadosimovel)) {
             $pdf->setfont('arial', 'B', $iFontBic);
             $pdf->cell(25, $iAlt, 'Cód. Log.', 0, 0, "L", 0);
             $pdf->cell(25, $iAlt, 'Tipo', 0, 0, "L", 0);
-            $pdf->cell(100, $iAlt, 'Logradouro', 0, 0, "L", 0);
+            $pdf->cell(85, $iAlt, 'Logradouro', 0, 0, "L", 0);
+            $pdf->cell(15, $iAlt, 'CEP', 0, 0, "L", 0);
             $pdf->cell(20, $iAlt, 'Número', 0, 0, "L", 0);
             $pdf->cell(20, $iAlt, 'Complemento', 0, 1, "L", 0);
 
             $pdf->setfont('arial', '', $iFontBic);
             $pdf->cell(25, $iAlt, $oDadoImovel->iCodLogradouro, 0, 0, "L", 0);
             $pdf->cell(25, $iAlt, $oDadoImovel->sRuaTipoDescr, 0, 0, "L", 0);
-            $pdf->cell(100, $iAlt, $oDadoImovel->sLogradouroDescr, 0, 0, "L", 0);
+            $pdf->cell(85, $iAlt, $oDadoImovel->sLogradouroDescr, 0, 0, "L", 0);
+            $pdf->cell(15, $iAlt, $oDadoImovel->sCepLogradouro, 0, 0, "L", 0);
             $pdf->cell(20, $iAlt, $oDadoImovel->sNumero, 0, 0, "L", 0);
             $pdf->cell(20, $iAlt, $oDadoImovel->sCompl, 0, 1, "L", 0);
 
@@ -1236,7 +1282,7 @@ if (isset($oGet->dadosimovel)) {
             $pdf->cell(40, $iAlt, 'Área Medida', 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, 'Área Preservada', 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, $RLj01_areaprivativa, 0, 1, "L", 0);
-            
+
 
             $pdf->setfont('arial', '', $iFontBic);
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaLote, 'f')), 0, 0, "L", 0);
@@ -1244,7 +1290,7 @@ if (isset($oGet->dadosimovel)) {
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaMedida, 'f')), 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaPreservada, 'f')), 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaPrivativa, 'f')), 0, 1, "L", 0);
-            
+
 
             //$pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
 
@@ -1260,6 +1306,17 @@ if (isset($oGet->dadosimovel)) {
             $pdf->cell(40, $iAlt, $oDadoImovel->sZonaFiscal, 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, $oDadoImovel->sSetorFiscal, 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, $oDadoImovel->sCondominio, 0, 1, "L", 0);
+
+            $pdf->setfont('arial', 'B', $iFontBic);
+
+            $pdf->cell(40, $iAlt, 'Área uso Comum', 0, 0, "L", 0);
+            $pdf->cell(40, $iAlt, 'Área Privativa do Lote', 0, 0, "L", 0);
+            $pdf->cell(40, $iAlt, 'Zona Desenv. Urbano', 0, 1, "L", 0);
+
+            $pdf->setfont('arial', '', $iFontBic);
+            $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->j34_areausocomum, 'f')), 0, 0, "L", 0);
+            $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->j34_areaprivativa, 'f')), 0, 0, "L", 0);
+            $pdf->cell(40, $iAlt, $oDadoImovel->zona_desenvolvimento, 0, 1, "L", 0);
         }
     } else {
         $pdf->cell(193, $iAlt, 'Nenhum dado do imóvel encontrado.', 0, 1, "L", 0);
@@ -1327,16 +1384,21 @@ if (isset($oGet->caracteristicaslote)) {
 
             }
         }
+        // INICIO - Adicionado pois quando ele criava a segunda coluna, o espaçamento quebrava
+        if($iTotalCaracteristicaLote > 5){
+            $iResto = 10 - $iTotalCaracteristicaLote;
+            for($i = 1; $i <= $iResto; $i++){
+                $pdf->SetX(110);
+                $pdf->cell(50, $iAlt, "",0,1,"L",0);
+            }
+        }
+        // FIM
         if ($iTotalCaracteristicaLote > 10) {
             $pdf->cell(20, $iAlt, "O lote possui caracteristicas não exibidas.", 0, 1, "L", 0);
         }
     } else {
         $pdf->cell(193, $iAlt, 'Nenhuma característica do lote encontrada.', 0, 1, "L", 0);
     }
-
-    //$pdf->cell(193, $iAlt, ''                                                                       ,0,1,"L",0);
-    //$pdf->cell(193, $iAlt, ''                                                                     ,'B',1,"L",0);
-    //$pdf->cell(193, $iAlt, ''                                                                       ,0,1,"L",0);
 }
 
 /**
@@ -1492,9 +1554,6 @@ if (isset($oGet->caracteristicasface)) {
     if (isset($iAltura)) {
         $pdf->SetY($iAltura);
     }
-
-    //$pdf->cell(193, 1, ''                                                                         ,'B',1,"L",0);
-    //$pdf->cell(193, $iAlt, ''                                                                       ,0,1,"L",0);
 }
 
 /**
@@ -1502,23 +1561,30 @@ if (isset($oGet->caracteristicasface)) {
  */
 if (isset($oGet->proprietarios)) {
 
-    imprimirCabecalhoFixo($pdf, $iAlt, true, 'Proprietário');
+    imprimirCabecalhoFixo($pdf, $iAlt, true, 'Proprietários');
 
     if (count($aDadosProprietario) > 0) {
 
-        foreach ($aDadosProprietario as $oDadoPropri) {
+        if (isset($oGet->outrosproprietarios) && count($aDadosOutrosProprietarios) > 0) {
+            $aDadosOutrosProprietarios = array_map(function($item){
+                return $item['oDadosOutrosProprietarios'];
+            },$aDadosOutrosProprietarios);
 
+            $aDadosProprietario = array_merge( $aDadosProprietario, $aDadosOutrosProprietarios);
+        }
+
+
+        foreach ($aDadosProprietario as $oDadoPropri) {
+            $pdf->ln(2);
             if ($lImprimeDadosSigilosos) {
                 $pdf->setfont('arial', 'B', $iFontDados);
-                $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                //$pdf->cell(8, $iAlt, 'Tipo'                                                                ,0,0,"L",0);
+                $pdf->cell(16, $iAlt, 'CGM', 0, 0, "L", 0);
                 $pdf->cell(80, $iAlt, 'Nome', 0, 0, "L", 0);
-                $pdf->cell(61, $iAlt, 'CPF/CNPJ', 0, 0, "L", 0);
-                $pdf->cell(27, $iAlt, 'Tipo Proprietário', 0, 1, "L", 0);
-
+                $pdf->cell(50, $iAlt, 'CPF/CNPJ', 0, 0, "L", 0);
+                $pdf->cell(38, $iAlt, 'Tipo Proprietário', 0, 0, "L", 0);
+                $pdf->cell(25, $iAlt, 'Principal', 0, 1, "L", 0);
                 $pdf->setfont('arial', '', $iFontBic);
-                $pdf->cell(12, $iAlt, $oDadoPropri->iCgm, 0, 0, "L", 0);
-                //$pdf->cell(8, $iAlt, $oDadoPropri->sTipo                                                   ,0,0,"L",0);
+                $pdf->cell(16, $iAlt, $oDadoPropri->iCgm, 0, 0, "L", 0);
                 $pdf->cell(80, $iAlt, substr($oDadoPropri->sNome, 0, 40), 0, 0, "L", 0);
 
                 $sCgcCpf = '';
@@ -1528,11 +1594,10 @@ if (isset($oGet->proprietarios)) {
                     $sCgcCpf = db_formatar($oDadoPropri->iCgcCpf, 'cnpj');
                 }
 
-                $pdf->cell(61, $iAlt, $sCgcCpf, 0, 0, "L", 0);
+                $pdf->cell(50, $iAlt, $sCgcCpf, 0, 0, "L", 0);
 
-                $pdf->cell(27, $iAlt, $oDadoPropri->sTipo, 0, 1, "L", 0);
-
-		//$pdf->cell(193, 1, '', 0, 1, "L", 0);
+                $pdf->cell(38, $iAlt, $oDadoPropri->sTipoProprietario, 0, 0, "L", 0);
+                $pdf->cell(25, $iAlt, ($oDadoPropri->sTipo && $oDadoPropri->sTipo == 'Principal') ? 'SIM' : 'NÃO', 0, 1, "L", 0);
 
                 $pdf->setfont('arial', 'B', $iFontDados);
                 $pdf->cell(60, $iAlt, 'Logradouro', 0, 0, "L", 0);
@@ -1546,8 +1611,6 @@ if (isset($oGet->proprietarios)) {
                 $pdf->cell(60, $iAlt, substr($oDadoPropri->sComplemento, 0, 40), 0, 0, "L", 0);
                 $pdf->cell(40, $iAlt, $oDadoPropri->iCaixaPostal, 0, 1, "L", 0);
 
-                //$pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
-
                 $pdf->setfont('arial', 'B', $iFontDados);
                 $pdf->cell(60, $iAlt, 'Bairro', 0, 0, "L", 0);
                 $pdf->cell(60, $iAlt, 'Cidade', 0, 0, "L", 0);
@@ -1560,8 +1623,6 @@ if (isset($oGet->proprietarios)) {
                 $pdf->cell(40, $iAlt, $oDadoPropri->sUf, 0, 0, "L", 0);
                 $pdf->cell(40, $iAlt, $oDadoPropri->sCep, 0, 1, "L", 0);
 
-                //$pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
-
                 $pdf->setfont('arial', 'B', $iFontDados);
                 $pdf->cell(60, $iAlt, 'Telefone', 0, 0, "L", 0);
                 $pdf->cell(60, $iAlt, 'Celular', 0, 0, "L", 0);
@@ -1573,131 +1634,33 @@ if (isset($oGet->proprietarios)) {
                 $pdf->cell(60, $iAlt, $oDadoPropri->iCelular, 0, 0, "L", 0);
                 $pdf->cell(20, $iAlt, $oDadoPropri->iFax, 0, 0, "L", 0);
                 $pdf->cell(60, $iAlt, $oDadoPropri->sEmail, 0, 1, "L", 0);
+
+                $pdf->setfont('arial', 'B', $iFontDados);
+                $pdf->cell(60, $iAlt, 'Fação', 0, 0, "L", 0);
+                $pdf->cell(25, $iAlt, 'Área', 0, 0, "L", 0);
+                $pdf->cell(60, $iAlt, '', 0, 0, "L", 0);
+                $pdf->cell(40, $iAlt, '', 0, 1, "L", 0);
+
+                $pdf->setfont('arial', '', $iFontBic);
+                $pdf->cell(60, $iAlt, $oDadoPropri->fFracao . '%', 0, 0, "L", 0);
+                $pdf->cell(25, $iAlt, $oDadoPropri->fArea . 'm²', 0, 0, "L", 0);
+                $pdf->cell(60, $iAlt, '', 0, 0, "L", 0);
+                $pdf->cell(40, $iAlt, '', 0, 1, "L", 0);
             } else {
                 $pdf->setfont('arial', 'B', $iFontDados);
-                $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                //$pdf->cell(8, $iAlt, 'Tipo', 0, 0, "L", 0);
+                $pdf->cell(16, $iAlt, 'CGM', 0, 0, "L", 0);
                 $pdf->cell(80, $iAlt, 'Nome', 0, 0, "L", 0);
                 $pdf->cell(27, $iAlt, 'Tipo Proprietário', 0, 1, "L", 0);
 
                 $pdf->setfont('arial', '', $iFontBic);
-                $pdf->cell(12, $iAlt, $oDadoPropri->iCgm, 0, 0, "L", 0);
-                //$pdf->cell(8, $iAlt, $oDadoPropri->sTipo, 0, 0, "L", 0);
+                $pdf->cell(16, $iAlt, $oDadoPropri->iCgm, 0, 0, "L", 0);
                 $pdf->cell(80, $iAlt, substr($oDadoPropri->sNome, 0, 40), 0, 0, "L", 0);
                 $pdf->cell(27, $iAlt, $oDadoPropri->sTipo, 0, 1, "L", 0);
             }
-
         }
     } else {
         $pdf->cell(193, $iAlt, 'Nenhum proprietário encontrado.', 0, 1, "L", 0);
     }
-
-    //$pdf->cell(193, 1, ''                                                                         ,'B',1,"L",0);
-    //$pdf->cell(193, $iAlt, ''                                                                       ,0,1,"L",0);
-}
-
-/**
- * Imprime Outros Proprietarios
- */
-if (isset($oGet->outrosproprietarios)) {
-
-    if (count($aDadosOutrosProprietarios) > 0) {
-
-        imprimirCabecalhoFixo($pdf, $iAlt, true, 'Outros Proprietários');
-
-        foreach ($aDadosOutrosProprietarios as $aOutrosPropri) {
-
-            foreach ($aOutrosPropri as $oOutrosPropri) {
-
-                if ($lImprimeDadosSigilosos) {
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, 'Tipo', 0, 0, "L", 0);
-                    $pdf->cell(80, $iAlt, 'Nome', 0, 0, "L", 0);
-                    $pdf->cell(61, $iAlt, 'CPF/CNPJ', 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, 'Tipo Proprietário', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(12, $iAlt, $oOutrosPropri->iCgm, 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, $oOutrosPropri->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(80, $iAlt, substr($oOutrosPropri->sNome, 0, 30), 0, 0, "L", 0);
-
-                    $sCgcCpf = '';
-                    if (strlen($oOutrosPropri->iCgcCpf) == 11) {
-                        $sCgcCpf = db_formatar($oOutrosPropri->iCgcCpf, 'cpf');
-                    } else if (strlen($oOutrosPropri->iCgcCpf) == 14) {
-                        $sCgcCpf = db_formatar($oOutrosPropri->iCgcCpf, 'cnpj');
-                    }
-
-                    $pdf->cell(61, $iAlt, $sCgcCpf, 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, $oOutrosPropri->sTipo, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(60, $iAlt, 'Logradouro', 0, 0, "L", 0);
-                    $pdf->cell(25, $iAlt, 'Número', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'Complemento', 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPropri->sLogradouro, 0, 40), 0, 0, "L", 0);
-                    $pdf->cell(25, $iAlt, $oOutrosPropri->iNumero, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPropri->sComplemento, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, $oOutrosPropri->iCaixaPostal, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(60, $iAlt, 'Bairro', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'Cidade', 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, 'UF', 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, 'CEP', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, $oOutrosPropri->sBairro, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, $oOutrosPropri->sCidade, 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, $oOutrosPropri->sUf, 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, $oOutrosPropri->sCep, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(60, $iAlt, 'Telefone', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'Celular', 0, 0, "L", 0);
-                    $pdf->cell(20, $iAlt, 'Fax', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'E-mail', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, $oOutrosPropri->iTelefone, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, $oOutrosPropri->iCelular, 0, 0, "L", 0);
-                    $pdf->cell(20, $iAlt, $oOutrosPropri->iFax, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, $oOutrosPropri->sEmail, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, $iAlt, ''                                                                 ,0,1,"L",0);
-                } else {
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, 'Tipo', 0, 0, "L", 0);
-                    $pdf->cell(80, $iAlt, 'Nome', 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, 'Tipo Proprietário', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(12, $iAlt, $oOutrosPropri->iCgm, 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, $oOutrosPropri->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(80, $iAlt, substr($oOutrosPropri->sNome, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, $oOutrosPropri->sTipo, 0, 1, "L", 0);
-                }
-            }
-        }
-    } else if (count($aDadosOutrosProprietarios) == 0 && $lImprimeNulo) {
-
-        imprimirCabecalhoFixo($pdf, $iAlt, true, 'Outros Proprietários');
-        $pdf->cell(193, $iAlt, 'Nenhum outro proprietário encontrado.', 0, 1, "L", 0);
-        //$pdf->cell(193, $iAlt, ''                                                                     ,'T',1,"L",0);
-    }
-
 }
 
 /**
@@ -1709,25 +1672,26 @@ if (isset($oGet->promitentes)) {
 
         imprimirCabecalhoFixo($pdf, $iAlt, true, 'Promitentes');
 
-        // dd($aDadosPromitentes);
+        if ((isset($oGet->outrospromitentes)) && count($aDadosOutrosPromitentes) > 0) {
+            $aDadosPromitentes = array_merge( $aDadosPromitentes, $aDadosOutrosPromitentes);
+        }
 
         foreach ($aDadosPromitentes as $aPromitentes) {
 
             foreach ($aPromitentes as $oPromitentes) {
 
                 if ($lImprimeDadosSigilosos) {
-
+                $pdf->ln(2);
                 $pdf->setfont('arial', 'B', $iFontDados);
                     $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, 'Tipo', 0, 0, "L", 0);
                     $pdf->cell(57, $iAlt, 'Nome', 0, 0, "L", 0);
                     $pdf->cell(34, $iAlt, 'CPF/CNPJ', 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, 'Contato', 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, 'Tipo Promitente', 0, 1, "L", 0);
+                    $pdf->cell(44, $iAlt, 'Contato', 0, 0, "L", 0);
+                    $pdf->cell(35, $iAlt, 'Tipo Promitente', 0, 0, "L", 0);
+                    $pdf->cell(27, $iAlt, 'Principal', 0, 1, "L", 0);
 
                 $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oPromitentes->iCgm, 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, $oPromitentes->sTipo, 0, 0, "L", 0);
                     $pdf->cell(57, $iAlt, substr($oPromitentes->sNome, 0, 30), 0, 0, "L", 0);
 
                 $sCgcCpf = '';
@@ -1737,11 +1701,11 @@ if (isset($oGet->promitentes)) {
                     $sCgcCpf = db_formatar($oPromitentes->iCgcCpf, 'cnpj');
                 }
 
-                    $pdf->cell(34, $iAlt, $sCgcCpf, 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, substr($oPromitentes->sContato, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, substr($oPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
+                $pdf->cell(34, $iAlt, $sCgcCpf, 0, 0, "L", 0);
+                $pdf->cell(44, $iAlt, substr($oPromitentes->sContato, 0, 30), 0, 0, "L", 0);
 
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
+                $pdf->cell(35, $iAlt, $oPromitentes->sTipoPromitente, 0, 0, "L", 0);
+                $pdf->cell(27, $iAlt, ($oPromitentes->sTipo && $oPromitentes->sTipo == 'Promitente') ? 'SIM' : 'NÃO', 0, 1, "L", 0);
 
                 $pdf->setfont('arial', 'B', $iFontDados);
                 $pdf->cell(60, $iAlt, 'Logradouro', 0, 0, "L", 0);
@@ -1755,8 +1719,6 @@ if (isset($oGet->promitentes)) {
                 $pdf->cell(60, $iAlt, substr($oPromitentes->sComplemento, 0, 30), 0, 0, "L", 0);
                 $pdf->cell(40, $iAlt, $oPromitentes->iCaixaPostal, 0, 1, "L", 0);
 
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
                 $pdf->setfont('arial', 'B', $iFontDados);
                 $pdf->cell(60, $iAlt, 'Bairro', 0, 0, "L", 0);
                 $pdf->cell(60, $iAlt, 'Cidade', 0, 0, "L", 0);
@@ -1769,8 +1731,6 @@ if (isset($oGet->promitentes)) {
                 $pdf->cell(40, $iAlt, $oPromitentes->sUf, 0, 0, "L", 0);
                 $pdf->cell(40, $iAlt, $oPromitentes->sCep, 0, 1, "L", 0);
 
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
                 $pdf->setfont('arial', 'B', $iFontDados);
                 $pdf->cell(60, $iAlt, 'Telefone', 0, 0, "L", 0);
                 $pdf->cell(60, $iAlt, 'Celular', 0, 0, "L", 0);
@@ -1782,139 +1742,24 @@ if (isset($oGet->promitentes)) {
                 $pdf->cell(60, $iAlt, $oPromitentes->iCelular, 0, 0, "L", 0);
                 $pdf->cell(20, $iAlt, $oPromitentes->iFax, 0, 0, "L", 0);
                 $pdf->cell(60, $iAlt, $oPromitentes->sEmail, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, $iAlt, ''                                                                 ,0,1,"L",0);
                 } else {
 
                     $pdf->setfont('arial', 'B', $iFontDados);
                     $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, 'Tipo', 0, 0, "L", 0);
                     $pdf->cell(57, $iAlt, 'Nome', 0, 0, "L", 0);
                     $pdf->cell(27, $iAlt, 'Tipo Promitente', 0, 1, "L", 0);
 
                     $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oPromitentes->iCgm, 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, $oPromitentes->sTipo, 0, 0, "L", 0);
                     $pdf->cell(57, $iAlt, substr($oPromitentes->sNome, 0, 30), 0, 0, "L", 0);
                     $pdf->cell(27, $iAlt, substr($oPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
                 }
-
             }
         }
     } else if (count($aDadosPromitentes) == 0 && $lImprimeNulo) {
 
         imprimirCabecalhoFixo($pdf, $iAlt, true, 'Promitentes');
         $pdf->cell(193, $iAlt, 'Nenhum promitente encontrado.', 0, 1, "L", 0);
-        //$pdf->cell(193, $iAlt, ''                                                                     ,'T',1,"L",0);
-    }
-
-}
-
-/**
- * Imprime Outros Promitentes
- */
-if (isset($oGet->outrospromitentes)) {
-
-    if (count($aDadosOutrosPromitentes) > 0) {
-
-        imprimirCabecalhoFixo($pdf, $iAlt, true, 'Outros Promitentes');
-        foreach ($aDadosOutrosPromitentes as $aOutrosPromitentes) {
-
-            foreach ($aOutrosPromitentes as $oOutrosPromitentes) {
-
-                if ($lImprimeDadosSigilosos) {
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, 'Tipo', 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, 'Nome', 0, 0, "L", 0);
-                    $pdf->cell(34, $iAlt, 'CPF/CNPJ', 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, 'Contato', 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, 'Tipo Promitente', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(12, $iAlt, $oOutrosPromitentes->iCgm, 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, $oOutrosPromitentes->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, substr($oOutrosPromitentes->sNome, 0, 30), 0, 0, "L", 0);
-
-                    $sCgcCpf = '';
-                    if (strlen($oOutrosPromitentes->iCgcCpf) == 11) {
-                        $sCgcCpf = db_formatar($oOutrosPromitentes->iCgcCpf, 'cpf');
-                    } else if (strlen($oOutrosPromitentes->iCgcCpf) == 14) {
-                        $sCgcCpf = db_formatar($oOutrosPromitentes->iCgcCpf, 'cnpj');
-                    }
-
-                    $pdf->cell(34, $iAlt, $sCgcCpf, 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, substr($oOutrosPromitentes->sContato, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, substr($oOutrosPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
-
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(60, $iAlt, 'Logradouro', 0, 0, "L", 0);
-                    $pdf->cell(25, $iAlt, 'Número', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'Complemento', 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPromitentes->sLogradouro, 0, 40), 0, 0, "L", 0);
-                    $pdf->cell(25, $iAlt, $oOutrosPromitentes->iNumero, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPromitentes->sComplemento, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, $oOutrosPromitentes->iCaixaPostal, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(60, $iAlt, 'Bairro', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'Cidade', 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, 'UF', 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, 'CEP', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, $oOutrosPromitentes->sBairro, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, $oOutrosPromitentes->sCidade, 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, $oOutrosPromitentes->sUf, 0, 0, "L", 0);
-                    $pdf->cell(40, $iAlt, $oOutrosPromitentes->sCep, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(60, $iAlt, 'Telefone', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'Celular', 0, 0, "L", 0);
-                    $pdf->cell(20, $iAlt, 'Fax', 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, 'E-mail', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, $oOutrosPromitentes->iTelefone, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, $oOutrosPromitentes->iCelular, 0, 0, "L", 0);
-                    $pdf->cell(20, $iAlt, $oOutrosPromitentes->iFax, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, $oOutrosPromitentes->sEmail, 0, 1, "L", 0);
-
-                    //$pdf->cell(193, $iAlt, ''                                                                 ,0,1,"L",0);
-
-                } else {
-
-                    $pdf->setfont('arial', 'B', $iFontDados);
-                    $pdf->cell(12, $iAlt, 'CGM', 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, 'Tipo', 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, 'Nome', 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, 'Tipo Promitente', 0, 1, "L", 0);
-
-                    $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(12, $iAlt, $oOutrosPromitentes->iCgm, 0, 0, "L", 0);
-                    //$pdf->cell(8, $iAlt, $oOutrosPromitentes->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, substr($oOutrosPromitentes->sNome, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, substr($oOutrosPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
-
-                }
-
-            }
-        }
-    } else if (count($aDadosOutrosPromitentes) == 0 && $lImprimeNulo) {
-
-        imprimirCabecalhoFixo($pdf, $iAlt, true, 'Outros Promitentes');
-        $pdf->cell(193, $iAlt, 'Nenhum outro promitente encontrado.', 0, 1, "L", 0);
-        //$pdf->cell(193, $iAlt, ''                                                                     ,'T',1,"L",0);
     }
 
 }
@@ -2199,7 +2044,15 @@ if (isset($oGet->edificacoes)) {
                         $pdf->cell(20, $iAlt, $oCaractEdificacao->iCodigo, 0, 0, "L", 0);
                         $pdf->cell(173, $iAlt, $oCaractEdificacao->sDescricao, 0, 1, "L", 0);
                     }
-
+                    // INICIO - Adicionado pois quando ele criava a segunda coluna, o espaçamento quebrava
+                    if($iTotalCaracteristicaEdificacao > 5){
+                        $iResto = 10 - $iTotalCaracteristicaEdificacao;
+                        for($i = 1; $i <= $iResto; $i++){
+                            $pdf->SetX(110);
+                            $pdf->cell(50, $iAlt, "",0,1,"L",0);
+                        }
+                    }
+                    // FIM
                 }
 
                 if ($iTotalCaracteristicaEdificacao > 10) {
@@ -2258,6 +2111,43 @@ if (isset($oGet->dadosregistroimoveis)) {
 
 }
 
+if(isset($oGet->ocorrencias)){
+    $iInstituicaoSessao = db_getsession('DB_instit');
+    $ocorrencias = pg_fetch_all(db_query("select hm.ar25_sequencial,
+                                          TO_CHAR(h.ar23_data, 'DD/MM/YYYY') || ' ' || h.ar23_hora AS data_hora,
+                                          case
+                                          when SUBSTR(h.ar23_ocorrencia, LENGTH(h.ar23_ocorrencia) - 1, 1) = '-'
+                                          then SUBSTR(h.ar23_ocorrencia, -1, LENGTH(h.ar23_ocorrencia) - 1)||';'
+                                          else h.ar23_ocorrencia ||';'
+                                          end as ar23_ocorrencia
+                                          from arrecadacao.histocorrenciamatric hm
+                                          inner join arrecadacao.histocorrencia h
+                                          on h.ar23_sequencial = hm.ar25_histocorrencia
+                                          where hm.ar25_matric = {$oDados->j01_matric}
+                                          and h.ar23_tipo = 2
+                                          and h.ar23_instit = {$iInstituicaoSessao}
+                                          order by data_hora desc;"
+                                        ));
+    if(!empty($ocorrencias)){
+        imprimirCabecalhoFixo($pdf, $iAlt, true, 'Ocorrências');
+        $pdf->setfont('arial', 'B', $iFontDados);
+        $pdf->cell(22, $iAlt, 'Data', 0, 0, "L", 0);
+        $pdf->cell(160, $iAlt, 'Ocorrência', 0, 1, "L", 0);
+        $pdf->SetFont('Arial', '', 7);
+
+        foreach ($ocorrencias as $ocorr) {
+            // $pdf->setX(5);
+            $pdf->Cell(22, $iAlt, $ocorr['data_hora'] .' -', 0, 0, "L", 0);
+            $pdf->MultiCell(170, $iAlt, $ocorr['ar23_ocorrencia'], 0, "L", 0);
+
+
+        }
+    } else {
+
+        imprimirCabecalhoFixo($pdf, $iAlt, true, 'Ocorrências Manuais');
+        $pdf->cell(193, $iAlt, 'Nenhuma Ocorrência encontrada.', 0, 1, "L", 0);
+    }
+}
 /**
  * Isenções
  */

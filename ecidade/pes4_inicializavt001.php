@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ if(isset($processar)){
 <table width="60%" border="0" cellspacing="4" cellpadding="0">
   <tr><td colspan="2">&nbsp;</td></tr>
   <form name="form1" method="post">
-    <?
+    <?php
     if(!isset($opcao_gml)){
       $opcao_gml = "m";
     }
@@ -137,7 +137,7 @@ if(isset($processar)){
   </form>
 </table>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -183,7 +183,7 @@ if(document.form1.selregist){
 }
 </script>
 </html>
-<?
+<?php
 if(isset($processar)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

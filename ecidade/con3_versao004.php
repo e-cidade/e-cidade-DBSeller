@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -41,7 +41,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 if(isset($grava_leitura)){
 
   $sql = "select db35_codver ,db30_codver,fc_versao(db30_codversao, db30_codrelease) as versaolido
-          from db_versao 
+          from db_versao
                left join db_versaolidousuario on db30_codver = db35_codver  and db35_id_usuario = ".db_getsession("DB_id_usuario")."
           where db35_codver is null
           order by db30_codver
@@ -51,7 +51,7 @@ if(isset($grava_leitura)){
 
     $sql = "insert into db_versaolidousuario
             select nextval('db_versaolidousuario_db35_sequencial_seq'),db30_codver,".db_getsession("DB_id_usuario").",current_date
-            from db_versao 
+            from db_versao
                  left join db_versaolidousuario on db30_codver = db35_codver  and db35_id_usuario = ".db_getsession("DB_id_usuario")."
             where db35_codver is null
             order by db30_codver
@@ -104,11 +104,11 @@ function js_muda_consulta(execucao){
 <table width="100%" height="100%" border="1">
 <tr>
   <td height="5%" width="40%" valign="top" align='center'>
-  <?
+  <?php
   if(  isset($registra_atualizacao) ){
     $versao_inicial = $versao_lida;
   }
-  
+
     echo "Módulo:";
     global $nome_modulo;
     $nome_modulo = @$id_item;
@@ -119,42 +119,42 @@ function js_muda_consulta(execucao){
 
   if( ! isset($registra_atualizacao) ){
 
-    $sql_modulo = "select * from ( select modulo,nome_modulo 
-            from db_versaousu 
-                 inner join db_menu on db32_id_item = db_menu.id_item 
+    $sql_modulo = "select * from ( select modulo,nome_modulo
+            from db_versaousu
+                 inner join db_menu on db32_id_item = db_menu.id_item
                  inner join db_modulos on modulo = db_modulos.id_item
-            where db32_codver >= $versao_inicial 
-            union 
-            select modulo,nome_modulo 
-            from db_versaousu 
-                 inner join db_menu on db32_id_item = id_item_filho 
+            where db32_codver >= $versao_inicial
+            union
+            select modulo,nome_modulo
+            from db_versaousu
+                 inner join db_menu on db32_id_item = id_item_filho
                  inner join db_modulos on modulo = db_modulos.id_item
-            where db32_codver >= $versao_inicial 
+            where db32_codver >= $versao_inicial
             order by nome_modulo
             ) as x
             ";
 
     }else{
-    
+
     $sql_modulo = "
-       select distinct modulo,nome_modulo 
-       from (select modulo,nome_modulo 
-            from db_versaousu 
+       select distinct modulo,nome_modulo
+       from (select modulo,nome_modulo
+            from db_versaousu
                  inner join db_menu on db32_id_item = db_menu.id_item_filho
-                 inner join db_modulos on modulo = db_modulos.id_item 
+                 inner join db_modulos on modulo = db_modulos.id_item
                  inner join db_permherda h on h.id_usuario = ".db_getsession("DB_id_usuario")."
                  inner join db_usuarios u on u.id_usuario = h.id_perfil and u.usuarioativo = '1'
-                 inner join db_permissao p on db_modulos.id_item = p.id_modulo and  p.id_usuario = u.id_usuario 
-    
+                 inner join db_permissao p on db_modulos.id_item = p.id_modulo and  p.id_usuario = u.id_usuario
+
             where db32_codver >= $versao_lida
 
-            union 
+            union
 
-            select modulo,nome_modulo 
-            from db_versaousu 
-                 inner join db_menu on db32_id_item = id_item_filho 
+            select modulo,nome_modulo
+            from db_versaousu
+                 inner join db_menu on db32_id_item = id_item_filho
                  inner join db_modulos on modulo = db_modulos.id_item ";
-    if ( db_getsession("DB_administrador") != 1 ){           
+    if ( db_getsession("DB_administrador") != 1 ){
       $sql_modulo .= " inner join db_permissao p on db_modulos.id_item = p.id_modulo and  p.id_usuario = ".db_getsession("DB_id_usuario");
     }
     $sql_modulo .= "
@@ -162,8 +162,8 @@ function js_muda_consulta(execucao){
             order by nome_modulo
             ) as x
             ";
-    
-    
+
+
     }
 
     $result_modulo = $cldb_modulos->sql_record($sql.$sql_modulo);
@@ -198,9 +198,9 @@ function js_muda_consulta(execucao){
 
   }
 
-  /* 
+  /*
   $result = $cldb_versao->sql_record($cldb_versao->sql_query_file(null," db30_codver,'2.'||db30_codversao||'.'||db30_codrelease ",' db30_codver desc'," db30_codver < $versao_inicial"));
-  echo "Versoes Anteriores: ";   
+  echo "Versoes Anteriores: ";
   db_selectrecord('versoes_anteriores',$result,true,2,'','','','',"location.href='con3_versao004.php?id_item='+document.form1.nome_modulo.value+'&tipo_consulta='+document.form1.tipo_consulta.value",1);
   */
 ?>
@@ -211,7 +211,7 @@ function js_muda_consulta(execucao){
 <table>
 <tr>
 <td width="20%" valign="top">
-<?
+<?php
 
 $sql = "select * from ($sql_modulo) as x ";
 
@@ -227,16 +227,16 @@ $numrows = pg_numrows($res);
 if( $numrows > 0 ) {
 
   for($i=0;$i<$numrows;$i++){
-        
+
     db_fieldsmemory($res,$i);
-    
+
     if($tipo_consulta == 'M'){
-    
+
       $espacos = $modulo;
 
       $matriz_item = array();
       $matriz_item_seleciona = array();
-      
+
       $sSqldbVersao  = "  select distinct db30_codversao, db30_codrelease,db32_id_item                            ";
       $sSqldbVersao .= "    from db_versao                                                                        ";
       $sSqldbVersao .= "         left outer join db_versaocpd on db_versao.db30_codver = db_versaocpd.db33_codver ";
@@ -255,7 +255,7 @@ if( $numrows > 0 ) {
       $sSqldbVersao .= "                        where db35_codver = db_versao.db30_codver                         ";
       $sSqldbVersao .= "                          and db35_id_usuario = ".db_getsession("DB_id_usuario").")       ";
       $sSqldbVersao .= "   order by db30_codversao, db30_codrelease                                               ";
-      
+
       $result = $cldb_versao->sql_record($sSqldbVersao);
 
       if( $cldb_versao->numrows > 0 ) {
@@ -268,19 +268,19 @@ if( $numrows > 0 ) {
         $matriz_item_seleciona = array();
 
         monta_menu($modulo,$modulo,$espacos,$lista);
-        
+
         // lista as descricoes
-        
+
         $itens_listados = array();
         for($x=0;$x<count($matriz_item_seleciona);$x++){
           $contador = 0;
-          $impmat = split("-",$matriz_item_seleciona[$x]);
+          $impmat =explode("-",$matriz_item_seleciona[$x]);
           for($imp=0;$imp<count($impmat);$imp++){
             $contador += 1;
             if( ! isset($itens_listados[$impmat[$imp]])){
-              
+
               $itens_listados[$impmat[$imp]] = $impmat[$imp] ;
-              $sql = "select descricao 
+              $sql = "select descricao
                       from db_itensmenu
                       where id_item = ".$impmat[$imp];
               $resi = db_query($sql);
@@ -289,7 +289,7 @@ if( $numrows > 0 ) {
               for($xx=1;$xx<$contador*2;$xx++){
                 echo "&nbsp ";
               }
-     
+
               echo "<strong>$descr</strong><br>";
               $sql = "select distinct db30_codversao,db30_codrelease,trim(db32_obs) as db32_obs
                       from db_versaousu
@@ -298,20 +298,20 @@ if( $numrows > 0 ) {
                         and db32_id_item = ".$impmat[$imp];
               $resi = db_query($sql);
               for($o=0;$o<pg_numrows($resi);$o++){
-                
+
                 db_fieldsmemory($resi,$o);
-     
+
                 for($xx=1;$xx<($contador+1)*2;$xx++){
                   echo "&nbsp ";
                 }
-              
+
                 echo "<strong>2.".$db30_codversao.".".$db30_codrelease."</strong>";
                 echo "&nbsp $db32_obs<br>";
 
               }
 
             }
-          }    
+          }
         }
 
         echo "<br><br>";
@@ -321,7 +321,7 @@ if( $numrows > 0 ) {
       }
 
     }else{
-      
+
       $sql = "select distinct  i.codproced,descrproced
               from ( select id_item,modulo from (
                      select id_item,modulo
@@ -329,11 +329,11 @@ if( $numrows > 0 ) {
                      union
                      select id_item_filho,modulo
                      from db_menu
-                     ) as x where id_item in ( 
-                                             select distinct db32_id_item 
+                     ) as x where id_item in (
+                                             select distinct db32_id_item
                                              from db_versaousu
                                              where db32_codver >= $versao_inicial
-                                             ) 
+                                             )
 
                    ) as x
                         inner join db_syscadproceditem i on i.id_item = x.id_item
@@ -345,7 +345,7 @@ if( $numrows > 0 ) {
       $result = db_query($sql);
 
       if(pg_numrows($result)>0){
-        
+
         echo "<strong>$nome_modulo</strong><br>";
 
         for($m=0;$m<pg_numrows($result);$m++){
@@ -357,11 +357,11 @@ if( $numrows > 0 ) {
                        inner join db_syscadproceditem i on i.id_item = db32_id_item
                        inner join db_syscadproced c on c.codproced = i.codproced
                   where db32_codver >= $versao_inicial and c.codproced = $codproced
-                  and db32_id_item in 
+                  and db32_id_item in
                   (
                     select id_item
                     from db_menu
-                    where modulo = $modulo 
+                    where modulo = $modulo
                     union
                     select id_item_filho
                     from db_menu
@@ -395,7 +395,7 @@ if( $numrows > 0 ) {
 </table>
 
 </form>
-<?
+<?php
 if ( isset($registra_atualizacao) ){
 ?>
 <form name='form2' method='post'>
@@ -410,7 +410,7 @@ function js_confirma_leitura(){
 <input name='confirme' value='Confirme Leitura' type='button' onclick='js_confirma_leitura()'>
 </td></tr></table>
 </form>
-<?
+<?php
 }
 ?>
 </body>

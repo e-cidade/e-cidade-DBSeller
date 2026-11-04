@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,7 +42,7 @@ $clrotulo->label("o74_descricao");
       <td>
         <fieldset>
           <legend>
-            <b>Dados da Abertura</b>
+            <b>Dados da Estimativa</b>
           </legend>
           <table>
             <tr>
@@ -50,7 +50,7 @@ $clrotulo->label("o74_descricao");
                  <b>Código da Estimativa:</b>
               </td>
               <td>
-                <?
+                <?php
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -60,13 +60,13 @@ $clrotulo->label("o74_descricao");
                 <b>Data:</b>
               </td>
               <td>
-                <?
+                <?php
                 $recebedata = db_getsession("DB_datausu");
                 $recebedata = date("Y-m-d",$recebedata);
                 if(isset($pc10_data) && trim($pc10_data) != ""){
                   $recebedata = $pc10_data;
                 }
-                $arr_data = split("-",$recebedata);
+                $arr_data =explode("-",$recebedata);
                 @$pc10_datadia = $arr_data[2];
                 @$pc10_datames = $arr_data[1];
                 @$pc10_dataano = $arr_data[0];
@@ -78,7 +78,7 @@ $clrotulo->label("o74_descricao");
                 <b>Resumo:</b>
               </td>
               <td>
-              <?
+              <?php
                @$pc10_resumo = stripslashes($pc10_resumo);
                db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735);
               ?>
@@ -86,12 +86,12 @@ $clrotulo->label("o74_descricao");
             </tr>
             <tr>
               <td>
-                 <?
+                 <?php
                  db_ancora("<b>Abertura de Preço:</b>", "js_pesquisaaberturaprecos(true);", $iBloqueia);
                  ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input('pc54_solicita', 8, $Ipc54_solicita, true, 'text', 3, "");
                 ?>
               </td>
@@ -104,7 +104,7 @@ $clrotulo->label("o74_descricao");
       <td colspan="2" style="text-align: center;">
         <input type='button' value='Salvar' id='btnSalvar'>
         <input type='button' value='Imprimir' id='btnImprimir'>
-        <?
+        <?php
           if ($lBtnShowBtnConsulta) {
            echo "<input type='button' value='Pesquisar' id='btnConsultar'>";
           }
@@ -179,7 +179,7 @@ function js_pesquisar() {
                       'db_iframe_solicita',
                       'func_solicitaestimativa.php?funcao_js=parent.js_completaPesquisa|pc10_numero&departamento=true'+
                       '&anuladas=1&comcompilacao=1&formacontrole=1',
-                      'Estimativas de Registro de Preço',
+                      'Estimativa de Registro de Preço',
                       true,
                       0);
 }
@@ -274,8 +274,6 @@ function js_retornoEstimativaDepartamento(oAjax) {
   }
 }
 
-
-
 function js_imprimir() {
 
   if ($F('pc10_numero') == "") {
@@ -291,9 +289,10 @@ function js_imprimir() {
 }
 $('btnSalvar').observe("click", js_salvarEstimativa);
 $('btnImprimir').observe("click", js_imprimir);
-<?
-if ($lBtnShowBtnConsulta) {
 
+<?php
+if ($lBtnShowBtnConsulta) {
+  echo "js_pesquisar();\n";
   echo "\$('btnConsultar').observe('click', js_pesquisar);\n";
   echo "parent.iframe_itens.location.href='com4_solicitaestimativaitens.php'";
 

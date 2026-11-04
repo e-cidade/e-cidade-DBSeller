@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,22 +55,27 @@ final class CalculoAdministrativaParcelamentoRecibo extends CalculoColecao imple
         $numpre = $this->termo->getNumpre();
 
         $sql = " select generate_series(1, termo.v07_totpar) as numpar,
-                        sum(fc_corre(arreold.k00_receit, arreold.k00_dtoper, k00_valor, '$dataVencimento', $anoVencimento, arreold.k00_dtvenc)) +                        
-                        sum(round((fc_corre(arreold.k00_receit, arreold.k00_dtoper, k00_valor, '$dataVencimento', $anoVencimento, arreold.k00_dtvenc)) * 
-                            fc_juros(arreold.k00_receit, arreold.k00_dtvenc, '$dataVencimento', arreold.k00_dtoper, false,$anoVencimento)::numeric(20, 10) ,2) ) +      
-                        sum(round((fc_corre(arreold.k00_receit, arreold.k00_dtoper, k00_valor, '$dataVencimento', $anoVencimento, arreold.k00_dtvenc)) * 
-                            fc_multa(arreold.k00_receit, arreold.k00_dtvenc, '$dataVencimento', arreold.k00_dtoper, $anoVencimento)::numeric(20, 10), 2)) as valor 
-                   from termo 
-                        inner join termoini on termoini.parcel = termo.v07_parcel 
-                        inner join inicialcert on inicialcert.v51_inicial = termoini.inicial 
-                        inner join certdiv on certdiv.v14_certid = inicialcert.v51_certidao 
-                        inner join divida on divida.v01_coddiv = certdiv.v14_coddiv 
-                        inner join arreold on arreold.k00_numpre = divida.v01_numpre 
-                                          and arreold.k00_numpar = divida.v01_numpar 
-                        inner join arreoldcalc on arreoldcalc.k00_numpre = arreold.k00_numpre 
-                                              and arreoldcalc.k00_numpar = arreold.k00_numpar 
-                                              and arreoldcalc.k00_receit = arreold.k00_receit 
-                  where termo.v07_numpre = $numpre 
+                        sum(fc_corre(arreold.k00_receit, arreold.k00_dtoper, k00_valor,
+                            '$dataVencimento', $anoVencimento, arreold.k00_dtvenc)) +
+                        sum(round((fc_corre(arreold.k00_receit, arreold.k00_dtoper, k00_valor,
+                            '$dataVencimento', $anoVencimento, arreold.k00_dtvenc)) *
+                            fc_juros(arreold.k00_receit, arreold.k00_dtvenc, '$dataVencimento',
+                                     arreold.k00_dtoper, false,$anoVencimento)::numeric(20, 10) ,2) ) +
+                        sum(round((fc_corre(arreold.k00_receit, arreold.k00_dtoper, k00_valor, '$dataVencimento',
+                                            $anoVencimento, arreold.k00_dtvenc)) *
+                            fc_multa(arreold.k00_receit, arreold.k00_dtvenc, '$dataVencimento', arreold.k00_dtoper,
+                                     $anoVencimento)::numeric(20, 10), 2)) as valor
+                   from termo
+                        inner join termoini on termoini.parcel = termo.v07_parcel
+                        inner join inicialcert on inicialcert.v51_inicial = termoini.inicial
+                        inner join certdiv on certdiv.v14_certid = inicialcert.v51_certidao
+                        inner join divida on divida.v01_coddiv = certdiv.v14_coddiv
+                        inner join arreold on arreold.k00_numpre = divida.v01_numpre
+                                          and arreold.k00_numpar = divida.v01_numpar
+                        inner join arreoldcalc on arreoldcalc.k00_numpre = arreold.k00_numpre
+                                              and arreoldcalc.k00_numpar = arreold.k00_numpar
+                                              and arreoldcalc.k00_receit = arreold.k00_receit
+                  where termo.v07_numpre = $numpre
                     and termoini.inicial = $inicial
                   group by numpar
                   order by 1 asc ";

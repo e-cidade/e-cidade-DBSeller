@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -88,7 +88,7 @@ function js_limpa() {
         <table>
           <tr>
             <td align="center" colspan="2">
-              <?
+              <?php
                 db_selinstit('parent.js_limpa', 300);
               ?>
             </td>
@@ -96,7 +96,7 @@ function js_limpa() {
           <tr>
             <td><b>Nível:</b></td>
             <td>
-              <?
+              <?php
                 $aNivel = array('1A' => 'Órgão Até o Nível',
                                 '2A' => 'Unidade Até o Nível',
                                 '3A' => 'Função Até o Nível',

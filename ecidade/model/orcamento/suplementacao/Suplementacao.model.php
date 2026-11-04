@@ -55,12 +55,10 @@ class Suplementacao
     {
         $this->iCodigo = $iSuplementacao;
         if (!empty($this->iCodigo)) {
-
             $oDaoSuplementacao = db_utils::getDao("orcsuplem");
             $sSqlSuplementacao = $oDaoSuplementacao->sql_query_sup($this->iCodigo);
             $rsSuplementacao = $oDaoSuplementacao->sql_record($sSqlSuplementacao);
             if ($oDaoSuplementacao->numrows == 1) {
-
                 $oDadosSuplementacao = db_utils::fieldsMemory($rsSuplementacao, 0);
                 $this->iTipo = $oDadosSuplementacao->o48_tiposup;
                 $this->dtProcessamento = $oDadosSuplementacao->o49_data;
@@ -149,8 +147,7 @@ class Suplementacao
         $sSqlTotalSuplementacao .= "  from orcsuplemdespesappa ";
         $sSqlTotalSuplementacao .= " where o136_orcsuplem={$this->iCodigo} and o136_valor > 0";
 
-        if ( $this->getTipo() == 1050 ) {
-
+        if ($this->getTipo() == 1050) {
             $sSqlTotalSuplementacao .= "
                union all
                      SELECT sum(o85_valor) as soma_suplem
@@ -234,11 +231,15 @@ class Suplementacao
         $iAnoIntegracao = db_getsession("DB_anousu");
         $oDaoDotacoesPPA = db_utils::getDao("orcsuplemdespesappa");
         $sWhere = " o136_orcsuplem = {$this->iCodigo} ";
-        $sSqlDotacoesPPA = $oDaoDotacoesPPA->sql_query_dotacaoppa(null,
+        $sSqlDotacoesPPA = $oDaoDotacoesPPA->sql_query_dotacaoppa(
+            null,
             "o136_sequencial,
-                                                               o136_valor,
-                                                               ppadotacao.*,
-                                                               o07_sequencial", null, $sWhere);
+             o136_valor,
+             ppadotacao.*,
+             o07_sequencial",
+            null,
+            $sWhere
+        );
         $rsDotacoes = $oDaoDotacoesPPA->sql_record($sSqlDotacoesPPA);
         $aDotacoesPPA = db_utils::getCollectionByRecord($rsDotacoes);
         foreach ($aDotacoesPPA as $oDotacaoPPA) {
@@ -298,7 +299,8 @@ class Suplementacao
                 $sWhere .= " and o58_codele            = {$oDotacaoPPA->o08_elemento}";
                 $sWhere .= " and o58_codigo            = {$oDotacaoPPA->o08_recurso}";
                 $sWhere .= " and o58_localizadorgastos = {$oDotacaoPPA->o08_localizadorgastos}";
-                $sSqlDotacao = $oDaoOrcDotacao->sql_query_file(null,
+                $sSqlDotacao = $oDaoOrcDotacao->sql_query_file(
+                    null,
                     null,
                     "*",
                     null,
@@ -306,10 +308,8 @@ class Suplementacao
                 );
                 $rsDotacoes = $oDaoOrcDotacao->sql_record($sSqlDotacao);
                 if ($oDaoOrcDotacao->numrows == 1) {
-
                     $oDespesaOrcamentaria = db_utils::fieldsMemory($rsDotacoes, 0);
                     $oDaoOrcDotacao->o58_coddot = $oDespesaOrcamentaria->o58_coddot;
-
                 } else {
 
                     /**
@@ -320,18 +320,15 @@ class Suplementacao
                         = "update orcparametro set o50_coddot = o50_coddot + 1 where o50_anousu = {$iAnoIntegracao}";
                     $rsCodDot = db_query($sSqlCodDot);
                     if (!$rsCodDot) {
-
                         $sErroMsg
                             = "Erro ao gerar número da dotação. Verifique o cadastro dos paramêtros do orçamento para {$iAnoIntegracao}.\n";
                         $sErroMsg .= "Solicite Suporte\nErro Número 1\n{$oDaoOrcParametro->erro_msg}";
                         throw new Exception($sErroMsg, 1);
-
                     }
 
                     $sSqlNumeroDotacao = $oDaoOrcParametro->sql_query_file($iAnoIntegracao, 'o50_coddot as o58_coddot');
                     $rsNumeroDotacao = $oDaoOrcParametro->sql_record($sSqlNumeroDotacao);
                     $oDaoOrcDotacao->o58_coddot = db_utils::fieldsMemory($rsNumeroDotacao, 0)->o58_coddot;
-
                 }
                 $iCodigoDotacao = $oDaoOrcDotacao->o58_coddot;
                 $oDaoOrcDotacao->o58_anousu = $iAnoIntegracao;
@@ -350,7 +347,6 @@ class Suplementacao
                 $oDaoOrcDotacao->o58_instit = $oDotacaoPPA->o08_instit;
                 $oDaoOrcDotacao->incluir($iAnoIntegracao, $oDaoOrcDotacao->o58_coddot);
                 if ($oDaoOrcDotacao->erro_status == 0) {
-
                     $sErroMsg = "Erro ao Incluir nova Dotação ({$oDaoOrcDotacao->o58_coddot}).\n";
                     $iNumeroErro = 13;
                     if (strpos(strtolower(pg_last_error()), "orcdotacao_oufspae_in") != 0) {
@@ -359,7 +355,6 @@ class Suplementacao
                     $sErroMsg .= $oDaoOrcDotacao->erro_msg . "\n";
                     $sErroMsg .= "Solicite Suporte\nErro Número {$iNumeroErro}";
                     throw new Exception($sErroMsg, $iNumeroErro);
-
                 }
                 /**
                  * Vinculamos a despesa incluida ao ppa
@@ -371,12 +366,10 @@ class Suplementacao
                 $oDaoPPAIntegracaoDespesa->o121_ppaestimativadespesa = $oDotacaoPPA->o07_sequencial;
                 $oDaoPPAIntegracaoDespesa->incluir(null);
                 if ($oDaoPPAIntegracaoDespesa->erro_status == 0) {
-
                     $sErroMsg = "Erro ao Incluir integração da Despesa com o ppa.\n";
                     $sErroMsg .= $oDaoPPAIntegracaoDespesa->erro_msg;
                     $sErroMsg .= "Solicite Suporte\nErro Número 14";
                     throw new Exception($sErroMsg, 14);
-
                 }
 
                 /**
@@ -406,23 +399,27 @@ class Suplementacao
         $oDaoReceitasPPA = db_utils::getDao("orcsuplemreceitappa");
         $sWhere = " o137_orcsuplem = {$this->iCodigo} ";
         $sWhere .= " and c61_instit = " . db_getsession("DB_instit");
-        $sSqlReceitasPPA = $oDaoReceitasPPA->sql_query_receitappa(null,
+        $sSqlReceitasPPA = $oDaoReceitasPPA->sql_query_receitappa(
+            null,
             "o137_sequencial,
-                                                               o137_valor,
-                                                               c61_codigo,
-                                                               ppaestimativareceita.*,
-                                                               o06_sequencial", null, $sWhere);
+             o137_valor,
+             c61_codigo,
+             ppaestimativareceita.*,
+             o06_sequencial",
+            null,
+            $sWhere
+        );
         $rsReceitas = $oDaoReceitasPPA->sql_record($sSqlReceitasPPA);
         $aReceitasPPA = db_utils::getCollectionByRecord($rsReceitas);
         $oDaoOrcReceita = db_utils::getDao("orcreceita");
         foreach ($aReceitasPPA as $oReceitaPPA) {
-
             $iReceita = null;
             $sWhere = "     o70_anousu = " . db_getsession("DB_anousu");
             $sWhere .= " and o70_instit = " . db_getsession("DB_instit");
             $sWhere .= " and o70_codfon = {$oReceitaPPA->o06_codrec}";
             $sWhere .= " and o70_concarpeculiar = {$oReceitaPPA->o06_concarpeculiar}";
-            $sSqlReceita = $oDaoOrcReceita->sql_query_file(null,
+            $sSqlReceita = $oDaoOrcReceita->sql_query_file(
+                null,
                 null,
                 "*",
                 null,
@@ -451,7 +448,8 @@ class Suplementacao
                 $sWhere .= " and o70_instit = " . db_getsession("DB_instit");
                 $sWhere .= " and o70_codfon = {$oReceitaPPA->o06_codrec}";
                 $sWhere .= " and o70_concarpeculiar = '{$oReceitaPPA->o06_concarpeculiar}'";
-                $sSqlReceita = $oDaoOrcReceita->sql_query_file(null,
+                $sSqlReceita = $oDaoOrcReceita->sql_query_file(
+                    null,
                     null,
                     "*",
                     null,
@@ -459,10 +457,8 @@ class Suplementacao
                 );
                 $rsReceita = $oDaoOrcReceita->sql_record($sSqlReceita);
                 if ($oDaoOrcReceita->numrows == 1) {
-
                     $oReceitaOrcamentaria = db_utils::fieldsMemory($rsReceita, 0);
                     $iReceita = $oReceitaOrcamentaria->o70_codrec;
-
                 }
                 /**
                  * Incluimos a receita
@@ -478,12 +474,10 @@ class Suplementacao
                 $oDaoOrcReceita->o70_valor = "0";
                 $oDaoOrcReceita->incluir($iAnoIntegracao, $iReceita);
                 if ($oDaoOrcReceita->erro_status == 0) {
-
                     $sErroMsg = "Erro ao Incluir nova Receita.\n";
                     $sErroMsg .= $oDaoOrcReceita->erro_banco;
                     $sErroMsg .= "Solicite Suporte\nErro Número 11";
                     throw new Exception($sErroMsg, 11);
-
                 }
                 $iReceita = $oDaoOrcReceita->o70_codrec;
                 /**
@@ -496,12 +490,10 @@ class Suplementacao
                 $oDaoPPAIntegracaoReceita->o122_ppaestimativareceita = $oReceitaPPA->o06_sequencial;
                 $oDaoPPAIntegracaoReceita->incluir(null);
                 if ($oDaoPPAIntegracaoReceita->erro_status == 0) {
-
                     $sErroMsg = "Erro ao Incluir integração da Receita com o ppa.\n";
                     $sErroMsg .= $oDaoPPAIntegracaoReceita->erro_msg;
                     $sErroMsg .= "Solicite Suporte\nErro Número 12";
                     throw new Exception($sErroMsg, 12);
-
                 }
             }
             /**
@@ -543,7 +535,6 @@ class Suplementacao
             throw new Exception("Erro ao validar dotações/receitas da suplementação!");
         }
         if (pg_num_rows($rsValidaSuplementacao) > 0) {
-
             $sRetorno = db_utils::fieldsMemory($rsValidaSuplementacao, 0)->retorno;
             if (substr($sRetorno, 0, 1) != '1') {
                 throw new Exception($sRetorno);
@@ -593,18 +584,7 @@ class Suplementacao
         $sSqlLancamentos .= " inner join orcsuplem on o46_codsup = codsup ";
         $sSqlLancamentos .= " inner join orcsuplemtipo on o46_tiposup =o48_tiposup ";
 
-
-
-
-
-
-        //$sSqlLancamentos = " select * from ($sSqlLancamentos) as ss where tipo = 'rec'";
-
-
         $rsVerificaLancamentos = db_query($sSqlLancamentos);
-
-        //db_criatabela($rsVerificaLancamentos);
-
         if (pg_num_rows($rsVerificaLancamentos) == 0) {
             throw new Exception("Erro ao consultar dados para iniciar lançamentos contábeis.");
         }
@@ -614,47 +594,44 @@ class Suplementacao
          * iniciamos os lancamentos contábeis;
          */
 
-
         foreach ($aLancamentos as $oLancamentoSuplementacao) {
-
-
-            $iCodigoDocumento = 0;
+            ;
             $oTransacao = new cl_translan;
 
-            //dump("sda", $oLancamentoSuplementacao);
             if ($oLancamentoSuplementacao->tipo == 'rec') {
-
-
                 $sSqlValidaDotacao = "select o70_instit ";
                 $sSqlValidaDotacao .= "   from orcreceita ";
                 $sSqlValidaDotacao .= "  where o70_anousu = " . db_getsession("DB_anousu");
                 $sSqlValidaDotacao .= "    and o70_codrec = {$oLancamentoSuplementacao->dot}";
                 $rsDotacao = db_query($sSqlValidaDotacao);
+
                 if (pg_num_rows($rsDotacao) > 0) {
                     $oDotacao = db_utils::fieldsMemory($rsDotacao, 0);
                 } else {
                     throw new Exception("Dotacao {$oLancamentoSuplementacao->dot} não encontrada no orçamento.");
                 }
 
-                $oTransacao->db_trans_suplem(db_getsession("DB_anousu"),
+                $oTransacao->db_trans_suplem(
+                    db_getsession("DB_anousu"),
                     $oLancamentoSuplementacao->o48_tiposup,
                     true,
                     false,
-                    $oDotacao->o58_instit);
+                    $oDotacao->o70_instit
+                );
                 $iCodigoDocumento = $oTransacao->coddoc;
 
                 if ($oLancamentoSuplementacao->o48_tiposup == 1050) {
-
-                    $oTransacao->db_trans_suplem(db_getsession("DB_anousu"),
-                    $oLancamentoSuplementacao->o48_tiposup,
-                    false,
-                    false,
-                    $oDotacao->o58_instit);
+                    $oTransacao->db_trans_suplem(
+                        db_getsession("DB_anousu"),
+                        $oLancamentoSuplementacao->o48_tiposup,
+                        false,
+                        false,
+                        $oDotacao->o70_instit
+                    );
                     $iCodigoDocumento = $oTransacao->coddoc;
                 }
 
                 //dd("DOC: $iCodigoDocumento" ,$oTransacao );
-
             } else {
                 /**
                  * valida a dotação no orçamento
@@ -679,7 +656,6 @@ class Suplementacao
                  * dotação)
                  */
                 if ($oDotacao->o58_valor == 0) {
-
                     $sSqlOutrasSuplementacoes = "select 1 ";
                     $sSqlOutrasSuplementacoes .= "  from orcsuplemval ";
                     $sSqlOutrasSuplementacoes .= "  left join orcsuplemlan on o47_codsup = o49_codsup ";
@@ -692,15 +668,15 @@ class Suplementacao
                     }
                 }
                 if ($oLancamentoSuplementacao->tipo == "s") { //suplementacao
-
-                    $oTransacao->db_trans_suplem(db_getsession("DB_anousu"),
+                    $oTransacao->db_trans_suplem(
+                        db_getsession("DB_anousu"),
                         $oLancamentoSuplementacao->o48_tiposup,
                         false,
                         $lSuplementacaoEspecial,
-                        $oDotacao->o58_instit);
+                        $oDotacao->o58_instit
+                    );
 
                     if (!empty($oLancamentoSuplementacao->linhapacto)) {
-
                         $movimentacaoPlano = db_query("
                             insert into linhapactosaldomovimentacao
                                  values (
@@ -715,28 +691,26 @@ class Suplementacao
                             throw new Exception("Ocorreu um erro ao executar a movimentação para a linha de pacto.");
                         }
                     }
-
-
                 } else { // reducao ou receita
-                    $oTransacao->db_trans_suplem(db_getsession("DB_anousu"),
+                    $oTransacao->db_trans_suplem(
+                        db_getsession("DB_anousu"),
                         $oLancamentoSuplementacao->o48_tiposup,
                         true,
                         $lSuplementacaoEspecial,
-                        $oDotacao->o58_instit);
+                        $oDotacao->o58_instit
+                    );
                 }
                 $iCodigoDocumento = $oTransacao->coddoc;
             }
 
-           // dump("DOCUMENTO: " . $iCodigoDocumento);
-
-            $oLancamento = new lancamentoContabil($iCodigoDocumento,
+            $oLancamento = new lancamentoContabil(
+                $iCodigoDocumento,
                 db_getsession("DB_anousu"),
                 $dtData,
                 $oLancamentoSuplementacao->valor
             );
             $oLancamento->setCodigoSuplementacao($this->iCodigo);
             if ($oLancamentoSuplementacao->tipo == 'rec') {
-
                 $oLancamento->setReceita($oLancamentoSuplementacao->dot);
             } else {
                 $oLancamento->setDotacao($oLancamentoSuplementacao->dot);
@@ -745,23 +719,16 @@ class Suplementacao
             $oLancamento->salvar();
             db_putsession('DB_instit', $instituicaoOriginal);
 
-
-
-            //dump($oLancamentoSuplementacao);
-            //dump($oLancamento);
-
             /**
              * Validamos o saldo final da dotação.
              */
             if ($oLancamentoSuplementacao->tipo != "rec") {
-
                 $iAnoUsu = db_getsession("DB_anousu");
                 $oDotacao = new Dotacao($oLancamentoSuplementacao->dot, $iAnoUsu);
                 $dtini = $iAnoUsu . '-01-01';
                 $dtfim = $iAnoUsu . '-12-31';
 
                 if ($oDotacao->getSaldoAtual() < 0) {
-
                     $sMessage = "Suplementação não Processada.\n";
                     $sMessage .= "Dotação {$oLancamentoSuplementacao->dot} ficará com saldo negativo!";
                     throw new Exception($sMessage);
@@ -770,5 +737,3 @@ class Suplementacao
         }
     }
 }
-
-?>

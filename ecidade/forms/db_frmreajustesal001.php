@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,12 +69,12 @@ $clrotulo->label("rh02_salari");
           <td align='left'   nowrap width="30%"><?=$oLotacao->r70_descr; ?> </td>
           <td align='right'  nowrap width="5%" ><?=db_formatar($oServidor->getSalario(),"f")?></td>
           <td align='center' nowrap width="10%">
-            <?
+            <?php
             db_input('rh02_salari',10, $Irh02_salari, true, 'text', 1, " movimentacao='$iMovimentacao' class='digitacao valor'", "valor_{$iMovimentacao}");
             ?>
           </td>
           <td align='center' nowrap width="10%">
-            <?
+            <?php
             db_input('rh02_salari',10, $Irh02_salari, true, 'text', 1, "movimentacao='$iMovimentacao' class='digitacao percentual'", "perce_{$iMovimentacao}");
             ?>
           </td>
@@ -96,13 +96,13 @@ $clrotulo->label("rh02_salari");
             <td></td>
             <td align='right'><strong>Valor padrão:</strong></td>
             <td align='left'>
-              <?
+              <?php
               db_input('rh02_salari',10, $Irh02_salari, true, 'text', 1, " movimentacao='GERAL' class='digitacao valor'", 'valor');
               ?>
             </td>
             <td align='right'><strong>Percentual padrão:</strong></td>
             <td align='left'>
-              <?
+              <?php
               db_input('rh02_salari',10, $Irh02_salari, true, 'text', 1, " movimentacao='GERAL' class='digitacao percentual'", 'perce');
               ?>
             </td>

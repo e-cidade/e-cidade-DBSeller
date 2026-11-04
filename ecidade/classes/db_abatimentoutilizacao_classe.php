@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE abatimentoutilizacao
 class cl_abatimentoutilizacao { 
@@ -39,13 +39,13 @@ class cl_abatimentoutilizacao {
                  k157_observacao = text =  
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoutilizacao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoutilizacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -54,7 +54,7 @@ class cl_abatimentoutilizacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k157_sequencial = ($this->k157_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k157_sequencial"]:$this->k157_sequencial);
        $this->k157_tipoutilizacao = ($this->k157_tipoutilizacao == ""?@$GLOBALS["HTTP_POST_VARS"]["k157_tipoutilizacao"]:$this->k157_tipoutilizacao);
@@ -76,7 +76,7 @@ class cl_abatimentoutilizacao {
      }
    }
    // funcao para Inclusão
-   function incluir ($k157_sequencial){ 
+   public function incluir ($k157_sequencial){ 
       $this->atualizacampos();
      if($this->k157_tipoutilizacao == null ){ 
        $this->erro_sql = " Campo Tipo de utilização não informado.";

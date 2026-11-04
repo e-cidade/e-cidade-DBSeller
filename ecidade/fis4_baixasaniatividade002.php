@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -56,23 +56,23 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
 	$sqlerro = false;
   if(isset($chaves) && $chaves != ""){
     db_inicio_transacao();
-    $chaves = split("#",$chaves);
+    $chaves =explode("#",$chaves);
     $db_opcao = 2;
     $HTTP_POST_VARS["y83_dtfim_dia"] = "";
     $HTTP_POST_VARS["y83_dtfim_mes"] = "";
     $HTTP_POST_VARS["y83_dtfim_ano"] = "";
-    
+
     $HTTP_POST_VARS["y83_databx_dia"] = "";
     $HTTP_POST_VARS["y83_databx_mes"] = "";
     $HTTP_POST_VARS["y83_databx_ano"] = "";
-    
+
     for($i=0;$i<sizeof($chaves);$i++){
       $seq = str_replace("-","",strstr($chaves[$i],"-"));
       $clsaniatividade->y83_dtfim = "";
       $clsaniatividade->y83_databx = "";
       $clsaniatividade->y83_seq = $seq;
       $clsaniatividade->alterar($y83_codsani,$seq);
-			
+
       $clsanibaixaproc->excluir($y83_codsani,$seq);
       if ($clsanibaixaproc->erro_status==0){
       	$sqlerro==true;
@@ -93,7 +93,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
         $clsanitario->y80_codsani=$y83_codsani;
         $clsanitario->alterar($y83_codsani);
       }
-    }    
+    }
     $clsaniatividade->erro(true,false);
     db_fim_transacao($sqlerro);
     db_redireciona("fis4_baixasaniatividade002.php?y83_codsani=$y83_codsani");
@@ -107,7 +107,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
     $db_botao = true;
   }
 }
-    
+
 ?>
 <html>
   <head>
@@ -131,7 +131,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
                   db_ancora(@$Ly83_codsani,"js_pesquisay83_codsani(true);",1);
                 ?>
               </td>
-              <td> 
+              <td>
                 <?php
                   db_input('y83_codsani',10,$Iy83_codsani,true,'text',1," onchange='js_pesquisay83_codsani(false);'");
                   db_input('z01_nome',35,$Iz01_nome,true,'text',3,'');
@@ -154,11 +154,11 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
                     $cliframe_seleciona->iframe_width ="700";
                     $cliframe_seleciona->iframe_nome ="atividades";
                     $cliframe_seleciona->chaves ="y83_codsani,y83_seq";
-                    $cliframe_seleciona->iframe_seleciona(@$db_opcao);    
-                  }  
+                    $cliframe_seleciona->iframe_seleciona(@$db_opcao);
+                  }
                 ?>
               </td>
-            </tr>  
+            </tr>
           </table>
         </fieldset>
 
@@ -185,9 +185,9 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
 
       function js_mostrasanitario(chave,erro){
         document.form1.z01_nome.value = erro;
-        if(erro==true){ 
-          document.form1.y83_codsani.focus(); 
-          document.form1.y83_codsani.value = ''; 
+        if(erro==true){
+          document.form1.y83_codsani.focus();
+          document.form1.y83_codsani.value = '';
         }
         document.form1.submit();
       }

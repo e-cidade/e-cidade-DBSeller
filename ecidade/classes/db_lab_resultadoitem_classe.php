@@ -53,13 +53,13 @@ class cl_lab_resultadoitem {
                  la39_titulacao = text = Titulação
                  ";
    //funcao construtor da classe
-   function cl_lab_resultadoitem() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_resultadoitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_lab_resultadoitem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la39_i_codigo = ($this->la39_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la39_i_codigo"]:$this->la39_i_codigo);
        $this->la39_i_atributo = ($this->la39_i_atributo == ""?@$GLOBALS["HTTP_POST_VARS"]["la39_i_atributo"]:$this->la39_i_atributo);
@@ -79,7 +79,7 @@ class cl_lab_resultadoitem {
      }
    }
    // funcao para Inclusão
-   function incluir ($la39_i_codigo){
+   public function incluir ($la39_i_codigo){
       $this->atualizacampos();
      if($this->la39_i_atributo == null ){
        $this->erro_sql = " Campo Atributo não informado.";
@@ -430,12 +430,13 @@ class cl_lab_resultadoitem {
      return $sql;
   }
 
-  function sql_query_resultado_valores ( $la39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_resultado_valores ( $la39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql  = "select {$campos} ";
     $sql .= " from lab_resultadoitem ";
     $sql .= "      left join lab_resultadonum  on la41_i_result = la39_i_codigo";
     $sql .= "      left join lab_resultadoalfa on la40_i_result = la39_i_codigo";
+    $sql .= "      left join lab_valorreferenciasel on la28_i_codigo = la40_i_valorrefsel";
     $sql2 = "";
     if($dbwhere==""){
       if($la39_i_codigo!=null ){
@@ -447,7 +448,7 @@ class cl_lab_resultadoitem {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

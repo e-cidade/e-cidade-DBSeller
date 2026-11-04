@@ -101,7 +101,7 @@ $geraform->onchpad = true;
               Tipo:
             </td>
             <td>
-              <?
+              <?php
               $arr_tipo = array("v" => "Valor", "q" => "Quantidade");
               db_select("tipo", $arr_tipo, true, 1, "");
               ?>
@@ -115,7 +115,7 @@ $geraform->onchpad = true;
           </tr>
           <tr>
             <td nowrap colspan="2">
-              <?
+              <?php
               db_input("folhaselecion", 3, 0, true, 'hidden', 3);
               $arr_pontosgerfs_inicial = array();
               $arr_pontosgerfs_final   = array();
@@ -149,7 +149,7 @@ $geraform->onchpad = true;
       </fieldset>
       <input name="incluir" type="button" id="db_opcao" onclick="js_enviardados();" value="Gerar">
     </form>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>

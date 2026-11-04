@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,7 +42,7 @@ $get="origem=N";
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $data=date("d-m-Y",db_getsession("DB_datausu"));
-$data=split('-',$data);
+$data= explode('-',$data);
 $dia=$data[0];
 $mes=$data[1];
 $ano=$data[2];
@@ -59,22 +59,22 @@ $ano=$data[2];
        <?=@$Lq33_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('q33_codigo',7,$Iq33_codigo,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq33_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq33_inscr,"js_pesquisaq33_inscr(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('q33_inscr',10,$Iq33_inscr,true,'text',$db_opcao," onchange='js_pesquisaq33_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -83,25 +83,25 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 
  <tr>
   <td nowrap title="<?=@$Tq36_processo?>">
-<? db_ancora(@$Lq36_processo,"js_pesquisaq36_processo(true);",$db_opcao);?>
+<?php db_ancora(@$Lq36_processo,"js_pesquisaq36_processo(true);",$db_opcao);?>
    </td>
    <td>
-<? db_input('q36_processo',10,$Iq36_processo,true,'text',$db_opcao," onchange='js_pesquisaq36_processo(false);'")?>
-<? db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')?>
+<?php db_input('q36_processo',10,$Iq36_processo,true,'text',$db_opcao," onchange='js_pesquisaq36_processo(false);'")?>
+<?php db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')?>
    </td>
 </tr>
 
 <tr>
     <td nowrap title="<?=@$Tq37_notifica?>">
-    <?
+    <?php
      db_ancora(@$Lq37_notifica,"js_pesquisaq37_notifica(true);",$db_opcao);
     ?>
     </td>
     <td>
-    <?
+    <?php
     db_input('q37_notifica',10,$Iq37_notifica,true,'text',$db_opcao," onchange='js_pesquisaq37_notifica(false);'")
     ?>
-    <?
+    <?php
     db_input('y30_nome',40,$Iy30_nome,true,'text',3,'')
     ?>
     </td>
@@ -114,11 +114,11 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
     </td>
     <td>
 
-<?
+<?php
 $x = array('e'=>'Estimado','a'=>'Arbitrado');
 db_select('q33_tiporeg',$x,true,$db_opcao,"");
 ?>
-<?
+<?php
 if (isset($q33_hora)&& $q33_hora!=''){
 
 }else{
@@ -138,13 +138,13 @@ if (isset($q33_data)&& $q33_data!=''){
 
 <?=@$Lq33_hora?>
 
-<?
+<?php
 db_input('q33_hora',5,@$Iq33_hora,true,'text',3);
 ?>
 
 
 <?=@$Lq33_data?>
-<?
+<?php
 db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text',3);
 ?>
 
@@ -158,21 +158,21 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
    <?=@$Lq33_obs?>
    </td>
    <td>
-   <? db_textarea('q33_obs',8,47,$Iq33_obs,true,'text',$db_opcao,"") ?>
+   <?php db_textarea('q33_obs',8,47,$Iq33_obs,true,'text',$db_opcao,"") ?>
    </td>
    </tr>
 
 	<tr>
 	    <td nowrap title="<?=@$Ty100_sequencial?>">
-	       <?
+	       <?php
 	       db_ancora(@$Ly100_sequencial,"js_pesquisaprocfiscal(true);",$db_opcao);
 	       ?>
 	    </td>
 	    <td>
-	<?
+	<?php
 	db_input('procfiscal',10,$Iy100_sequencial,true,'text',$db_opcao," onchange='js_pesquisaprocfiscal(false);'")
 	?>
-	       <?
+	       <?php
 	db_input('nome',40,$Iz01_nome,true,'text',3,'')
 	       ?>
 	    </td>
@@ -189,7 +189,7 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
     </fieldset>
    </td>
   </tr>
-<?
+<?php
   if($db_opcao==3 || $db_opcao==2){//so entra quando tiver alterando ou excluindo o varfix
     $clvarfixval->rotulo->label();
 ?>
@@ -202,7 +202,7 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
 	        <?=@$Lq34_numpar?>
 	    </td>
 	    <td>
-          <?
+          <?php
 		  if(empty($q34_mes)){
      		 $q34_numpar = date("m",db_getsession('DB_datausu'));
 	      }
@@ -216,7 +216,7 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
 	       <?=@$Lq34_mes?>
 	    </td>
 	    <td>
-		<?
+		<?php
 		if(empty($q34_mes)){
 		 $q34_mes=date("m",db_getsession('DB_datausu'));
 		}
@@ -228,7 +228,7 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
 	       <?=@$Lq34_ano?>
 	    </td>
 	    <td>
-		<?
+		<?php
 		$anos=array();
 		$anoatual=date("Y",db_getsession("DB_datausu"));
 		for($i=$anoatual; $i>($anoatual-10); $i--){
@@ -243,7 +243,7 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
 	       <?=@$Lq34_dtval?>
 	    </td>
 	    <td>
-	<?
+	<?php
 	if(empty($q34_dtval_dia)){
 	    $q34_dtval_dia=$dia;
 	    $q34_dtval_mes=$mes;
@@ -258,24 +258,24 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
 	       <?=@$Lq34_valor?>
 	    </td>
 	    <td>
-	<?
+	<?php
 	db_input('q34_valor',10,$Iq34_valor,true,'text',$db_opcao04,"")
 	?>
 	    </td>
 	    <td nowrap title="<?=@$Tq34_inflat?>">
-	       <?
+	       <?php
                 db_ancora(@$Lq34_inflat,"js_pesquisainflat(true);",$db_opcao04);
 		?>
 	    </td>
 	    <td colspan='3'>
-	<?
+	<?php
              db_input('q34_inflat',10,$Iq34_inflat,true,'text',$db_opcao04,"onchange='js_pesquisainflat(false)'")
 	?>
-       <?
+       <?php
              db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        ?>
 	    </td>
-       <?
+       <?php
        ?>
           </tr>
 	  <tr>
@@ -283,11 +283,11 @@ db_inputdata('q33_data',@$q33_data_dia,@$q33_data_mes,@$q33_data_ano,true,'text'
               <input name="<?=($db_opcao02==1?"inc":($db_opcao02==2||$db_opcao02==22?"alt":"exc"))?>" type="submit" id="db_opcao" value="<?=($db_opcao02==1?"Incluir":($db_opcao02==2||$db_opcao02==22?"Alterar":"Excluir"))?>" <?=($db_botao02==false?"disabled":"")?> >
               <input name="todos" type="button" value="Lançar para todos meses" onclick="js_todosmeses();" >
               <input name="todosmeses" type="hidden" value="" onclick="" >
-<?
+<?php
 if(isset($opcao)){
 ?>
 <input name="novo" type="button" value="Novo" onclick="js_novo();" >
-<?
+<?php
 }
 ?>
 	    </td>
@@ -298,7 +298,7 @@ if(isset($opcao)){
   </tr>
   <tr>
     <td valign="top" >
-     <?
+     <?php
       $cliframe_alterar_excluir->sql = $clvarfixval->sql_query_file(null,"q34_numpar, q34_codigo,q34_mes,q34_ano,q34_valor,q34_inflat,q34_dtval","q34_mes"," q34_codigo = $q33_codigo");
       $chavepri = array("q34_codigo"=>$q33_codigo,"q34_mes"=>@$q34_mes,"q34_ano"=>@$q34_ano);
       $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -310,7 +310,7 @@ if(isset($opcao)){
      ?>
      </td>
     </tr>
-<?
+<?php
     }
 ?>
   </table>
@@ -493,7 +493,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_varfix.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

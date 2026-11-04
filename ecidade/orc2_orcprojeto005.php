@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -219,7 +219,7 @@ if ($projeto_tipo == "1") {
 $pdf->setX(20);
 $pdf->setFont('', 'B');
 $pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero."/".substr($o39_data, 6, 4) : '') . strtoupper(" de " . substr($o39_data, 0, 2) . " de " . db_mes(substr($o39_data, 3, 2)) . " de " . substr($o39_data, 6, 4)), 0, 1, "C", '1');
-$pdf->setFont();
+$pdf->setFont('');
 $pdf->Ln(7);
 
 /*
@@ -263,7 +263,7 @@ if (pg_num_rows($res_retif) > 0) {
 $pdf->setX(120);
 $pdf->setFont('', 'B');
 $pdf->multicell(70, 4, $txt, '0', 'J', '0', 20);
-$pdf->setFont();
+$pdf->setFont('');
 
 $pdf->Ln(7);
 
@@ -468,7 +468,7 @@ if ($auxiliar->numrows > 0) {
             $pdf->setFont('', 'B');
             $pdf->Cell(50, 4, 'Total da Unidade Orçamentária: '. db_formatar($totalUnidadeOrc, 'f'), 0, 0, "R", '0');
             $pdf->Ln();
-            $pdf->setFont();
+            $pdf->setFont('');
         }
 
         $listaAuxArt1[$o41_descr] += $o47_valor;
@@ -484,7 +484,7 @@ if ($auxiliar->numrows > 0) {
         $pdf->Cell(150, 4, db_formatar($o58_orgao, 'orgao') . "." .
             str_pad(db_formatar($o58_unidade, 'orgao'), 3, "0", STR_PAD_LEFT)
             . " -  $o41_descr", 0, 1, "L", '0');
-        $pdf->setFont();
+        $pdf->setFont('');
         $pdf->setX(20);
         $pdf->Cell(150, 4, "$o58_funcao  $o58_subfuncao  $o58_programa  $o58_projativ - $o55_descr", 0, 1, "L", '0');
         $pdf->setX(20);
@@ -499,7 +499,7 @@ if ($auxiliar->numrows > 0) {
             $pdf->setX(140);
             $pdf->setFont('', 'B');
             $pdf->Cell(50, 4, 'Total da Unidade Orçamentária: '. db_formatar($listaAuxArt1[$o41_descr], 'f'), 0, 0, "R", '0');
-            $pdf->setFont();
+            $pdf->setFont('');
             $pdf->Ln();
 
 
@@ -513,7 +513,7 @@ if ($auxiliar->numrows > 0) {
     $pdf->setX(160);
     $pdf->setFont('', 'B');
     $pdf->Cell(30, 4, "Total de Suplementações: ".db_formatar($total, 'f'), "T", 1, "R", '0');
-    $pdf->setFont();
+    $pdf->setFont('');
     $pdf->setX(20);
     $totalSuplementacao = $total;
 }
@@ -626,7 +626,7 @@ if ($auxiliar->numrows > 0) {
                 $auxTotalArt3++;
                 $pdf->Cell(50, 4, 'Total da Unidade Orçamentária: '. db_formatar($totalUnidadeOrc*-1, 'f'), 0, 0, "R", '0');
                 $pdf->Ln();
-                $pdf->setFont();
+                $pdf->setFont('');
 
             }
 
@@ -644,7 +644,7 @@ if ($auxiliar->numrows > 0) {
             $pdf->Cell(150, 4, db_formatar($o58_orgao, 'orgao') . "." .
                 str_pad(db_formatar($o58_unidade, 'orgao'), 3, "0", STR_PAD_LEFT)
                 . " -  $o41_descr", 0, 1, "L", '0');
-            $pdf->setFont();
+            $pdf->setFont('');
             $pdf->setX(20);
             $pdf->Cell(150, 4, "$o58_funcao  $o58_subfuncao  $o58_programa  $o58_projativ - $o55_descr", 0, 1, "L", '0');
             $pdf->setX(20);
@@ -659,7 +659,7 @@ if ($auxiliar->numrows > 0) {
                 $pdf->setFont('', 'B');
                 $pdf->setX(140);
                 $pdf->Cell(50, 4, 'Total da Unidade Orçamentária: '. db_formatar($listaAuxArt2[$o41_descr]*-1, 'f'), 0, 0, "R", '0');
-                $pdf->setFont();
+                $pdf->setFont('');
                 $pdf->Ln();
             }
 
@@ -729,7 +729,7 @@ if ($tem_reduz == 1) {
     $pdf->Cell(130, 4, '', 0, 0, "L", '0');
     $pdf->Cell(50, 4, "Total de Anulações: ". db_formatar($total, 'f'), "T", 1, "R", '0');
     $pdf->setX(20);
-    $pdf->setFont();
+    $pdf->setFont('');
     if($total < $totalSuplementacao){
         $totalOutrasFontes = $totalSuplementacao - $total;
         $pdf->setFont('', 'B');
@@ -740,7 +740,7 @@ if ($tem_reduz == 1) {
         $pdf->ln();
         $pdf->setX(131);
         $pdf->Cell(60, 4, "Total Geral: ". db_formatar($totalSuplementacao, 'f'), "T", 1, "R", '0');
-        $pdf->setFont();
+        $pdf->setFont('');
     }
 }
 ////////////////////////////////////////////////
@@ -810,7 +810,7 @@ function pegarComplemento($codigo){
                     inner join complementofonterecurso
                             on o200_sequencial = o15_complemento where o15_codigo = $codigo;";
     $rsComplemento = db_query($sqlComplemento);
-    $oComplemento = db_utils::fieldsMemory($rsComplemento);
+    $oComplemento = db_utils::fieldsMemory($rsComplemento,0);
     $o15_complemento = str_pad($oComplemento->o15_complemento, 4, "0", STR_PAD_LEFT);
     return $o15_complemento;
 }

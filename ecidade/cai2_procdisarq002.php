@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -41,11 +41,11 @@ $clarrecad       = new cl_arrecad;
 $cldisbancodiver = new cl_disbancodiver;
 db_postmemory($HTTP_POST_VARS);
 
-$sql="select x33_dtvenc as datavenc from aguaconfvenc where x33_exerc = ".db_getsession("DB_anousu")." and x33_parcela = $parcela"; 
+$sql="select x33_dtvenc as datavenc from aguaconfvenc where x33_exerc = ".db_getsession("DB_anousu")." and x33_parcela = $parcela";
 $result = db_query($sql);
 db_fieldsmemory($result, 0);
 
-$data = split("-",$datavenc);
+$data =explode("-",$datavenc);
 $dia = $data[2];
 $historico = base64_decode($historico);
 //echo " codret = $codret <br> data  = $datavenc <br> dia = $dia";
@@ -53,8 +53,8 @@ $sqlerro = false;
 echo "<br>";
 
 ?>
-<link href="estilos.css" rel="stylesheet" type="text/css"> 
-<?
+<link href="estilos.css" rel="stylesheet" type="text/css">
+<?php
 
 
 db_criatermometro('termometro', 'Concluido...', 'blue', 1);
@@ -63,19 +63,19 @@ $linhadesprocess = 0;
 //$procedencia     = 52;
 $instit          = db_getsession("DB_instit");
 $sqldiferenca = "
-	select disbanco.idret, 
-	       disbanco.k00_numpre, 
-	       disbanco.k00_numpar, 
-	       disbanco.dtpago, 
-	       disbanco.vlrpago, 
-	       disbanco.vlrcalc, 
-	       round(disbanco.vlrcalc - disbanco.vlrpago, 2) as diferenca 
-	from disbanco 
-	      inner join disarq on disarq.codret = disbanco.codret 
-	where disbanco.codret = $codret 
+	select disbanco.idret,
+	       disbanco.k00_numpre,
+	       disbanco.k00_numpar,
+	       disbanco.dtpago,
+	       disbanco.vlrpago,
+	       disbanco.vlrcalc,
+	       round(disbanco.vlrcalc - disbanco.vlrpago, 2) as diferenca
+	from disbanco
+	      inner join disarq on disarq.codret = disbanco.codret
+	where disbanco.codret = $codret
 	  and cast(round(disbanco.vlrcalc - disbanco.vlrpago, 2) as numeric) > cast(0 as numeric)
-	  and disbanco.classi is true 
-	  and disarq.autent   is false  
+	  and disbanco.classi is true
+	  and disarq.autent   is false
     and disbanco.instit = $instit";
 $resultdiferenca = db_query($sqldiferenca);
 $linhasdiferenca = pg_num_rows($resultdiferenca);
@@ -129,12 +129,12 @@ if($linhasdiferenca >0){
             $sqlerro=true;
           }
         }
-         
+
         $cldisbancodiver->excluir($k44_sequencial);
         if($cldisbancodiver->erro_status=='0'){
            $sqlerro=true;
         }
-        
+
         $cldiversos->excluir($dv05_coddiver);
         if($cldiversos->erro_status=='0'){
           $sqlerro=true;
@@ -148,7 +148,7 @@ if($linhasdiferenca >0){
         //echo "<br> não processou ";
         $incluidiversos = false;
       }
-       
+
     }else{
       // só incluir o diversos
       //echo "<br> incluir somente diversos ";
@@ -222,18 +222,18 @@ if($linhasdiferenca >0){
 
       //verificar se é de matricula ou inscrição
       $sqlmatric = "
-			select arrematric.k00_matric 
+			select arrematric.k00_matric
 			from recibo
 			inner join arrematric on arrematric.k00_numpre = recibo.k00_numnov
 			where recibo.k00_numnov = $k00_numpre
 			union
-			select arrematric.k00_matric 
+			select arrematric.k00_matric
 			from recibopaga
 			inner join arrematric on arrematric.k00_numpre = recibopaga.k00_numpre
 			where recibopaga.k00_numnov = $k00_numpre
-			union 
-			select arrematric.k00_matric 
-			from arrecant 
+			union
+			select arrematric.k00_matric
+			from arrecant
 			inner join arrematric on arrematric.k00_numpre = arrecant.k00_numpre
 			where arrecant.k00_numpre = $k00_numpre";
       $resultmatric = db_query($sqlmatric);
@@ -255,18 +255,18 @@ if($linhasdiferenca >0){
       // verifica se é de inscricao
 
       $sqlinscr = "
-select arreinscr.k00_inscr 
+select arreinscr.k00_inscr
 from recibo
 inner join arreinscr on arreinscr.k00_numpre = recibo.k00_numnov
 where recibo.k00_numnov = $k00_numpre
 union
-select arreinscr.k00_inscr 
+select arreinscr.k00_inscr
 from recibopaga
 inner join arreinscr on arreinscr.k00_numpre = recibopaga.k00_numpre
 where recibopaga.k00_numnov = $k00_numpre
-union 
-select arreinscr.k00_inscr 
-from arrecant 
+union
+select arreinscr.k00_inscr
+from arrecant
 inner join arreinscr on arreinscr.k00_numpre = arrecant.k00_numpre
 where arrecant.k00_numpre = $k00_numpre";
       $resultinscr = db_query($sqlinscr);
@@ -330,8 +330,8 @@ where arrecant.k00_numpre = $k00_numpre";
   }elseif($botao == "desprocessa" and $sqlerro== false){
     db_msgbox("Arquivo desprocessado com sucesso.");
   }
- 
-  
+
+
 
 }else{
   db_msgbox("Não existe diferenças a serem processadas.");

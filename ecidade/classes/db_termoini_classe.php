@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -72,7 +72,7 @@ class cl_termoini
                  ";
 
     //funcao construtor da classe
-    function cl_termoini()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("termoini");
@@ -80,7 +80,7 @@ class cl_termoini
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -91,7 +91,7 @@ class cl_termoini
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->inicial = ($this->inicial == "" ? @$GLOBALS["HTTP_POST_VARS"]["inicial"] : $this->inicial);
@@ -113,7 +113,7 @@ class cl_termoini
     }
 
     // funcao para inclusao
-    function incluir($parcel, $inicial)
+    public function incluir($parcel, $inicial)
     {
         $this->atualizacampos();
         if ($this->numpreant == null) {
@@ -327,7 +327,7 @@ class cl_termoini
     }
 
     // funcao para alteracao
-    function alterar($parcel = null, $inicial = null)
+    public function alterar($parcel = null, $inicial = null)
     {
         $this->atualizacampos();
         $sql = " UPDATE termoini SET ";
@@ -614,7 +614,7 @@ class cl_termoini
     }
 
     // funcao para exclusao
-    function excluir($parcel = null, $inicial = null, $dbwhere = null)
+    public function excluir($parcel = null, $inicial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($parcel, $inicial));
@@ -722,7 +722,7 @@ class cl_termoini
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -748,7 +748,7 @@ class cl_termoini
         return $result;
     }
 
-    function sql_query($parcel = null, $inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($parcel = null, $inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -795,7 +795,7 @@ class cl_termoini
         return $sql;
     }
 
-    function sql_query_file($parcel = null, $inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($parcel = null, $inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

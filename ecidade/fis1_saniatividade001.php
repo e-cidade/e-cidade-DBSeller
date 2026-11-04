@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -124,7 +124,7 @@ $db_opcao = 1;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
         //$db_opcao = 1;
 	include(modification("forms/db_frmsaniatividade.php"));
 	?>
@@ -134,7 +134,7 @@ $db_opcao = 1;
 </table>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Incluir"){
   if($clsaniatividade->erro_status=="0"){
     echo "<script>parent.iframe_saniatividade.location.href='fis1_saniatividade001.php?y83_codsani=".$clsaniatividade->y83_codsani."&opcao=Incluir';\n</script>";

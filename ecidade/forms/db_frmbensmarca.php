@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clbensmarca->rotulo->label();
 	       <?//=@$Lt65_sequencial?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				db_input('t65_sequencial',10,$It65_sequencial,true,'hidden',$db_opcao,"")
 				?>
 	    </td>
@@ -52,7 +52,7 @@ $clbensmarca->rotulo->label();
 	       <?=@$Lt65_descricao?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				db_input('t65_descricao',50,$It65_descricao,true,'text',$db_opcao,"")
 				?>
 	    </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bensmarca.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -120,7 +120,7 @@ if(isset($oPost->incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 
 if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 	
@@ -156,19 +156,19 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		    <?=$Ldb68_cfautent?>
 		  </td>
           <td>
-            <?
+            <?php
 		      db_input('db68_cfautent',10,"",true,'text',3,'');
 		    ?>
           </td>
         </tr>
   		<tr>
 		  <td nowrap title="<?=@$Tdb68_modeloimpressao?>">
-		    <?
+		    <?php
 			  db_ancora($Ldb68_modeloimpressao,"js_consultaModelo(true)",$db_opcao);		    
 		    ?>
 		  </td>
 		  <td> 
-		    <?
+		    <?php
 		      db_input('db68_sequencial',10,"",true,'hidden',3,'');
 		      db_input('db68_modeloimpressao',10,$Idb68_modeloimpressao,true,'text',$db_opcao," onchange='js_consultaModelo(false)'");
 		      db_input('db66_descricao',40,"",true,'text',3,'');
@@ -185,7 +185,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
  	  <table>
 		<tr>
 		  <td valign="top"  align="center">  
-		    <?
+		    <?php
 			  $aChavePri = array( "db68_sequencial"    	 => @$db68_sequencial,
 			  					 				  "db68_cfautent" 		   => @$db68_cfautent,
 			  					 				  "db68_modeloimpressao" => @$db68_modeloimpressao);
@@ -208,7 +208,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
   </table>   
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
     db_msgbox($sErroMsg);
     if($clcfautentmodeloimpressao->erro_campo!=""){

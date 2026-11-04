@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2013  DBselller Servicos de Informatica
@@ -85,7 +85,7 @@ if ( count($aTipos) == 0 ) {
           <?=@$Ldv09_procdiver?>
         </td>
         <td>
-          <?
+          <?php
             db_input('dv09_procdiver',6,$Idv09_procdiver,true,'text',3,"")
           ?>
         </td>
@@ -95,7 +95,7 @@ if ( count($aTipos) == 0 ) {
            <?=@$Ldv09_descra?>
         </td>
         <td>
-          <?
+          <?php
             db_input('dv09_descra',40,$Idv09_descra,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -105,19 +105,19 @@ if ( count($aTipos) == 0 ) {
           <?=@$Ldv09_descr?>
         </td>
         <td>
-          <?
+          <?php
             db_input('dv09_descr',40,$Idv09_descr,true,'text',$db_opcao,"")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tdv09_receit?>">
-           <?
+           <?php
              db_ancora(@$Ldv09_receit,"js_pesquisadv09_receit(true);",$db_opcao);
            ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('dv09_receit',6 , $Idv09_receit, true, 'text', $db_opcao, " onchange='js_pesquisadv09_receit(false);'");
             db_input('k02_descr'  ,32, $Ik02_descr  , true, 'text', 3        , '')
           ?>
@@ -125,12 +125,12 @@ if ( count($aTipos) == 0 ) {
       </tr>
       <tr>
         <td nowrap title="<?=@$Tdv09_hist?>">
-           <?
+           <?php
            db_ancora(@$Ldv09_hist,"js_pesquisadv09_hist(true);",$db_opcao);
            ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('dv09_hist',6 , $Idv09_hist, true, 'text', $db_opcao, " onchange='js_pesquisadv09_hist(false);'");
             db_input('k01_descr',32, $Ik01_descr, true, 'text', 3        , '')
           ?>
@@ -138,12 +138,12 @@ if ( count($aTipos) == 0 ) {
       </tr>
       <tr>
         <td nowrap title="<?=@$Tdv09_proced?>">
-          <?
+          <?php
             db_ancora(@$Ldv09_proced,"js_pesquisadv09_proced(true);",$db_opcao);
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('dv09_proced', 6 , $Idv09_proced, true, 'text', $db_opcao, " onchange='js_pesquisadv09_proced(false);'");
             db_input('v03_descr'  , 32, $Iv03_descr  , true, 'text', 3        , '')
           ?>
@@ -151,24 +151,24 @@ if ( count($aTipos) == 0 ) {
       </tr>
       <tr>
         <td nowrap title="<?=@$Tdv09_tipo?>">
-          <?
+          <?php
             db_ancora(@$Ldv09_tipo,"js_pesquisadv09_tipo(true);",3);
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_select('dv09_tipo',$aTipos,true,$db_opcao);
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tdv09_dtlimite?>">
-          <?
+          <?php
             echo @$Ldv09_dtlimite;
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_inputdata('dv09_dtlimite',@$dv09_dtlimite_dia,@$dv09_dtlimite_mes,@$dv09_dtlimite_ano, true,'text',$db_opcao);
           ?>
         </td>
@@ -178,7 +178,7 @@ if ( count($aTipos) == 0 ) {
           <?=@$Ldv09_cobranca?>
         </td>
         <td>
-            <?
+            <?php
             $x = array("f"=>"NAO","t"=>"SIM");
             db_select('dv09_cobranca',$x,true,$db_opcao,"");
             ?>
@@ -195,11 +195,11 @@ if ( count($aTipos) == 0 ) {
 function js_pesquisadv09_receit(mostra){
 
   if ( mostra == true ) {
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_procdiver','db_iframe_tabrec','func_tabrec_todas.php?funcao_js=parent.js_mostratabrec1|k02_codigo|k02_descr','Pesquisa',true,'0');
+    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_procdiver','db_iframe_tabrec','func_tabrec_todas.php?funcao_js=parent.js_mostratabrec1|k02_codigo|k02_descr&k02_tabrectipo=1','Pesquisa',true,'0');
   } else {
 
      if ( document.form1.dv09_receit.value != '' ) {
-        js_OpenJanelaIframe('CurrentWindow.corpo.iframe_procdiver','db_iframe_tabrec','func_tabrec_todas.php?pesquisa_chave='+document.form1.dv09_receit.value+'&funcao_js=parent.js_mostratabrec','Pesquisa',false,'0','1','775','390');
+        js_OpenJanelaIframe('CurrentWindow.corpo.iframe_procdiver','db_iframe_tabrec','func_tabrec_todas.php?pesquisa_chave='+document.form1.dv09_receit.value+'&funcao_js=parent.js_mostratabrec&k02_tabrectipo=1','Pesquisa',false,'0','1','775','390');
      }else{
        document.form1.k02_descr.value = '';
      }
@@ -327,7 +327,7 @@ function js_pesquisa() {
 function js_preenchepesquisa( chave ) {
 
   db_iframe_procdiver.hide();
-  <?
+  <?php
   if( $db_opcao != 1 ) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chave_mostratodas=true&chavepesquisa='+chave";
   }

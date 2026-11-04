@@ -238,14 +238,14 @@ if (isset ( $incluir )) {
       <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"><br>
           <br><br>
-          <?
+          <?php
             include(modification("forms/db_frmsau_fechamento.php"));
           ?>
         </td>
       </tr>
     </table>
     </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
         db_getsession("DB_instit"));
 ?>
@@ -254,7 +254,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 <script>
   js_tabulacaoforms("form1", "sd97_i_compmes", true, 1, "sd97_i_compmes", true);
 </script>
-<?
+<?php
   if (isset ($incluir) || isset ($alterar)) {
 
     if ($oDaoSauFechamento->erro_status == "0") {

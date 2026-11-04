@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("k96_descr");
        <?=@$Lk87_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k87_sequencial',10,$Ik87_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk87_conciliaitem?>">
-       <?
+       <?php
        db_ancora(@$Lk87_conciliaitem,"js_pesquisak87_conciliaitem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k87_conciliaitem',10,$Ik87_conciliaitem,true,'text',$db_opcao," onchange='js_pesquisak87_conciliaitem(false);'")
 ?>
-       <?
+       <?php
 db_input('k83_hora',5,$Ik83_hora,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk87_extratolinha?>">
-       <?
+       <?php
        db_ancora(@$Lk87_extratolinha,"js_pesquisak87_extratolinha(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k87_extratolinha',10,$Ik87_extratolinha,true,'text',$db_opcao," onchange='js_pesquisak87_extratolinha(false);'")
 ?>
-       <?
+       <?php
 db_input('k86_extrato',10,$Ik86_extrato,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk87_conciliaorigem?>">
-       <?
+       <?php
        db_ancora(@$Lk87_conciliaorigem,"js_pesquisak87_conciliaorigem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k87_conciliaorigem',8,$Ik87_conciliaorigem,true,'text',$db_opcao," onchange='js_pesquisak87_conciliaorigem(false);'")
 ?>
-       <?
+       <?php
 db_input('k96_descr',40,$Ik96_descr,true,'text',3,'')
        ?>
     </td>
@@ -170,7 +170,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conciliaextrato.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

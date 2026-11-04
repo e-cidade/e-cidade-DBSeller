@@ -41,7 +41,7 @@
   $indice_C = 0;
 
   for ($i=0;$i<sizeof($lista);$i++){
-    $item = split("#",$lista[$i]);
+    $item =explode("#",$lista[$i]);
 	$primeiraLetra = $item[0];
     if ($primeiraLetra == "L"){
       $codigos_L[$indice_L] = $item[1];

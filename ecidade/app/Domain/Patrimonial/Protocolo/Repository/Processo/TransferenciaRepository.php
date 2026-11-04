@@ -46,10 +46,11 @@ final class TransferenciaRepository extends BaseRepository implements Repository
         Transferencia $model
     ) {
 
+        $usuarioRecebimento  =  $model->getUsuarioRecebimento();
         $this->dao->p62_dttran      = $model->getData();
         $this->dao->p62_id_usuario  = $model->getUsuario();
         $this->dao->p62_coddepto    = $model->getDepartamento();
-        $this->dao->p62_id_usorec   = 0;
+        $this->dao->p62_id_usorec   = !empty($usuarioRecebimento) ? $usuarioRecebimento : 0;
         $this->dao->p62_coddeptorec = $model->getDepartamentoRecebimento();
         $this->dao->p62_hora        = $model->getHora();
 

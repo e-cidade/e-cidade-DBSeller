@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,12 +100,12 @@ legend {
 							              <b>De:</b>
 							            </td>
 							            <td> 
-							            <?
+							            <?php
 						                db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"");
 						              ?>
 						              &nbsp;&nbsp;&nbsp;&nbsp;
 							            <b>Até:</b> 
-						              <?
+						              <?php
 						                db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");
 						              ?>
 										      </td>
@@ -118,7 +118,7 @@ legend {
 				                <tr>
 				                  <td><b>Tipo:</b> </td>
 				                  <td>
-				                  <?
+				                  <?php
 				                    $aTipos = array ('n' => 'Somente os em andamento',
 				                                     'a' => 'Somente os arquivados',
 				                                     't' => 'Todos');
@@ -134,7 +134,7 @@ legend {
 					              <tr>
 					                <td><b>Ordem:</b></td>
 					                <td>
-					                <?
+					                <?php
 					                  $aOrdem = array (1 => 'Processos',
 					                                   2 => 'Tipo de Processo',
 					                                   3 => 'Data / Hora',
@@ -149,7 +149,7 @@ legend {
 					             <tr>
 					               <td><b>Mostrar:</b></td>
 					               <td>
-					               <?
+					               <?php
 					                 // Array com valores do select
 					                 $aTitulares = array (1 => 'Requerente', 2 => 'Titular');
 					                 db_select ('cboTitularProcesso', $aTitulares, true, 1);
@@ -159,7 +159,7 @@ legend {
 					             <tr>
 					                <td><b>Observação:</b></td>
                           <td>
-                          <?
+                          <?php
                             $aObs = array (1 => 'Sim',
                                            2 => 'Não'
                                           );

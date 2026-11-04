@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ $clrotulo->label("j32_descr");
            <?=$Lj14_nome?>
          </td>    
          <td title="<?=$Tj14_nome?>" colspan="4">
-           <?
+           <?php
             db_input('j14_codigo',5,$Ij14_codigo,true,'text',3);
             db_input('j14_nome',50,$Ij14_nome,true,'text',3);
            ?>
@@ -77,7 +77,7 @@ $clrotulo->label("j32_descr");
            <?=$Lj32_grupo?>
           </td>  
           <td title="<?=$Tj32_grupo?>">
-           <?
+           <?php
              $result05=$clcargrup->sql_record($clcargrup->sql_query_file("","j32_descr","","j32_grupo=$j32_grupo"));
              db_fieldsmemory($result05,0);
              db_input('j32_grupo',5,$Ij32_grupo,true,'text',3);

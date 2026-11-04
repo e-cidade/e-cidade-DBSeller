@@ -185,7 +185,7 @@ $clcalendario->cria(date("d",db_getsession("DB_datausu")),date("$mes_solicitado"
 ?>
 <script>
 function janela(d,m,a){
-  <?
+  <?php
   echo "parent.document.getElementById('".$nome_objeto_data."').value     = (d<10?'0'+d:d)+'/'+(m<10?'0'+m:m)+'/'+a;\n";
   echo "parent.iframe_data_".str_replace(".", "", $nome_objeto_data).".hide();\n";
   echo "parent.DBTextFieldData.getInstance('{$nome_instancia}').fShutdown();";
@@ -197,7 +197,7 @@ function janela(d,m,a){
   ?>
 }
 function janela_zera(){
-  <?
+  <?php
   echo "parent.document.getElementById('".$nome_objeto_data."').value     = '';\n";
   echo "parent.iframe_data_".str_replace(".", "", $nome_objeto_data).".hide();\n";
   echo "parent.DBTextFieldData.getInstance('{$nome_instancia}').fShutdown();";

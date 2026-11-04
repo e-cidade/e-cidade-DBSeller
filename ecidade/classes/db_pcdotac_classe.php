@@ -27,15 +27,15 @@ class cl_pcdotac
     public $pc13_planoorcamentariolinhapacto = null;
     // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 pc13_sequencial = int4 = Código Sequencial 
-                 pc13_anousu = int4 = Ano 
-                 pc13_coddot = int4 = Dotacao orcamentaria 
-                 pc13_codigo = int8 = Código sequencial do registro 
-                 pc13_depto = int4 = Departamento 
-                 pc13_quant = float8 = quantidade solicitada 
-                 pc13_valor = float8 = Valor 
-                 pc13_codele = int4 = Código Elemento 
-                 pc13_planoorcamentariolinhapacto = int4 = Linha de Pacto 
+                 pc13_sequencial = int4 = Código Sequencial
+                 pc13_anousu = int4 = Ano
+                 pc13_coddot = int4 = Dotacao orcamentaria
+                 pc13_codigo = int8 = Código sequencial do registro
+                 pc13_depto = int4 = Departamento
+                 pc13_quant = float8 = quantidade solicitada
+                 pc13_valor = float8 = Valor
+                 pc13_codele = int4 = Código Elemento
+                 pc13_planoorcamentariolinhapacto = int4 = Linha de Pacto
                  ";
 
     public function __construct()
@@ -183,26 +183,26 @@ class cl_pcdotac
             return false;
         }
         $sql = "insert into pcdotac(
-                                       pc13_sequencial 
-                                      ,pc13_anousu 
-                                      ,pc13_coddot 
-                                      ,pc13_codigo 
-                                      ,pc13_depto 
-                                      ,pc13_quant 
-                                      ,pc13_valor 
-                                      ,pc13_codele 
-                                      ,pc13_planoorcamentariolinhapacto 
+                                       pc13_sequencial
+                                      ,pc13_anousu
+                                      ,pc13_coddot
+                                      ,pc13_codigo
+                                      ,pc13_depto
+                                      ,pc13_quant
+                                      ,pc13_valor
+                                      ,pc13_codele
+                                      ,pc13_planoorcamentariolinhapacto
                        )
                 values (
-                                $this->pc13_sequencial 
-                               ,$this->pc13_anousu 
-                               ,$this->pc13_coddot 
-                               ,$this->pc13_codigo 
-                               ,$this->pc13_depto 
-                               ,$this->pc13_quant 
-                               ,$this->pc13_valor 
-                               ,$this->pc13_codele 
-                               ,$this->pc13_planoorcamentariolinhapacto 
+                                $this->pc13_sequencial
+                               ,$this->pc13_anousu
+                               ,$this->pc13_coddot
+                               ,$this->pc13_codigo
+                               ,$this->pc13_depto
+                               ,$this->pc13_quant
+                               ,$this->pc13_valor
+                               ,$this->pc13_codele
+                               ,$this->pc13_planoorcamentariolinhapacto
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -637,7 +637,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -764,7 +764,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -846,7 +846,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -892,7 +892,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -951,7 +951,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1011,7 +1011,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1031,7 +1031,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1072,7 +1072,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1092,7 +1092,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1151,7 +1151,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

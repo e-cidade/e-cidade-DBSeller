@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ if(!isset($ve29_tipo)){
        <?=@$Lve29_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve29_codigo',10,$Ive29_codigo,true,'text',3,"")
 ?>
     </td>
@@ -54,50 +54,50 @@ db_input('ve29_codigo',10,$Ive29_codigo,true,'text',3,"")
        <?=@$Lve29_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Interno','2'=>'Externo');
 db_select('ve29_tipo',$x,true,$db_opcao,"onchange='document.form1.submit()'");
 ?>
     </td>
   </tr>
-<?
+<?php
 if(isset($ve29_tipo)&&$ve29_tipo==1){
 ?>
 <tr>
     <td nowrap title="<?=@$Tve35_depart?>">
-       <?
+       <?php
        db_ancora(@$Lve35_depart,"js_pesquisave35_depart(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve35_depart',5,$Ive35_depart,true,'text',$db_opcao," onchange='js_pesquisave35_depart(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>  
-<?
+<?php
 }else if(isset($ve29_tipo)&&$ve29_tipo==2){
 ?>
   <tr>
     <td nowrap title="<?=@$Tve34_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lve34_numcgm,"js_pesquisave34_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve34_numcgm',10,$Ive34_numcgm,true,'text',$db_opcao," onchange='js_pesquisave34_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   
-<?
+<?php
 }
 ?>
   </table>
@@ -157,7 +157,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veiccadposto.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

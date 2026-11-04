@@ -65,7 +65,7 @@ $sSqlAcordo  = " select distinct
         <div style="display: table; float:left; margin-left:10%;">
           <fieldset>
             <legend><b>Contratos do Processo de Compras</b></legend>
-          <?
+          <?php
           
           
            db_lovrot($sSqlAcordo, 15, "()", "", "js_mostraContrato|ac16_sequencial");

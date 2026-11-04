@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ $clrotulo->label('r18_numcheque');
                 <b>Descrição:</b>
               </td>
               <td>
-                <?
+                <?php
                    db_input("descrGera",40,$Ir15_descricao,true,"text",1);
                 ?>
               </td>             
@@ -81,7 +81,7 @@ $clrotulo->label('r18_numcheque');
                 <b>Cheque Inicial:</b>
               </td>
               <td>
-                <?
+                <?php
                    db_input("chequeInicial",10,$Ir18_numcheque,true,"text",1);
                 ?>
               </td>             
@@ -91,14 +91,14 @@ $clrotulo->label('r18_numcheque');
                 <b>Tipo:</b>
               </td>
               <td>
-                <?
+                <?php
                    $aTipo = array("f"=>"Funcionários",
                                   "p"=>"Pensão Alimentícia");
                    db_select("tipoGera",$aTipo,true,1,"onChange='document.form1.submit();'");
                 ?>
               </td>             
             </tr>					
-					  <?
+					  <?php
 						  if(!isset($oPost->tipo)){
 						    $tipo = "t";
 						  } else {
@@ -206,7 +206,7 @@ $clrotulo->label('r18_numcheque');
   </tr>
 </table>  
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

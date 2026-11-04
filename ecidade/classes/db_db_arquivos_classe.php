@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_arquivos
-class cl_db_arquivos { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $codfilho = 0; 
-   var $arqfilho = null; 
-   var $descfilho = null; 
-   var $id_versao = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_arquivos {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $codfilho = 0;
+   var $arqfilho = null;
+   var $descfilho = null;
+   var $id_versao = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 codfilho = int4 = Código Arquivo 
-                 arqfilho = varchar(100) = Arquivo 
-                 descfilho = text = Descrição 
-                 id_versao = varchar(10) = Versão do Programa 
+                 codfilho = int4 = Código Arquivo
+                 arqfilho = varchar(100) = Arquivo
+                 descfilho = text = Descrição
+                 id_versao = varchar(10) = Versão do Programa
                  ";
-   //funcao construtor da classe 
-   function cl_db_arquivos() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_arquivos"); 
+     $this->rotulo = new rotulo("db_arquivos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_arquivos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codfilho = ($this->codfilho == ""?@$GLOBALS["HTTP_POST_VARS"]["codfilho"]:$this->codfilho);
        $this->arqfilho = ($this->arqfilho == ""?@$GLOBALS["HTTP_POST_VARS"]["arqfilho"]:$this->arqfilho);
@@ -80,9 +80,9 @@ class cl_db_arquivos {
      }
    }
    // funcao para inclusao
-   function incluir ($codfilho){ 
+   public function incluir ($codfilho){
       $this->atualizacampos();
-     if($this->arqfilho == null ){ 
+     if($this->arqfilho == null ){
        $this->erro_sql = " Campo Arquivo nao Informado.";
        $this->erro_campo = "arqfilho";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_db_arquivos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->descfilho == null ){ 
+     if($this->descfilho == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "descfilho";
        $this->erro_banco = "";
@@ -100,20 +100,20 @@ class cl_db_arquivos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->id_versao == null ){ 
+     if($this->id_versao == null ){
        $this->id_versao = "0";
      }
      if($codfilho == "" || $codfilho == null ){
-       $result = db_query("select nextval('db_arquivos_codfilho_seq')"); 
+       $result = db_query("select nextval('db_arquivos_codfilho_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_arquivos_codfilho_seq do campo: codfilho"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_arquivos_codfilho_seq do campo: codfilho";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->codfilho = pg_result($result,0,0); 
+       $this->codfilho = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_arquivos_codfilho_seq");
        if(($result != false) && (pg_result($result,0,0) < $codfilho)){
@@ -124,10 +124,10 @@ class cl_db_arquivos {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->codfilho = $codfilho; 
+         $this->codfilho = $codfilho;
        }
      }
-     if(($this->codfilho == null) || ($this->codfilho == "") ){ 
+     if(($this->codfilho == null) || ($this->codfilho == "") ){
        $this->erro_sql = " Campo codfilho nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -136,19 +136,19 @@ class cl_db_arquivos {
        return false;
      }
      $sql = "insert into db_arquivos (
-                                       codfilho 
-                                      ,arqfilho 
-                                      ,descfilho 
-                                      ,id_versao 
+                                       codfilho
+                                      ,arqfilho
+                                      ,descfilho
+                                      ,id_versao
                        )
                 values (
-                                $this->codfilho 
-                               ,'$this->arqfilho' 
-                               ,'$this->descfilho' 
-                               ,'$this->id_versao' 
+                                $this->codfilho
+                               ,'$this->arqfilho'
+                               ,'$this->descfilho'
+                               ,'$this->id_versao'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Arquivos do Sistema ($this->codfilho) nao Incluído. Inclusao Abortada.";
@@ -183,16 +183,16 @@ class cl_db_arquivos {
        $resac = db_query("insert into db_acount values($acount,657,5048,'','".AddSlashes(pg_result($resaco,0,'id_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($codfilho=null) { 
+   public function alterar ($codfilho=null) {
       $this->atualizacampos();
      $sql = " update db_arquivos set ";
      $virgula = "";
-     if(trim($this->codfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codfilho"])){ 
+     if(trim($this->codfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codfilho"])){
        $sql  .= $virgula." codfilho = $this->codfilho ";
        $virgula = ",";
-       if(trim($this->codfilho) == null ){ 
+       if(trim($this->codfilho) == null ){
          $this->erro_sql = " Campo Código Arquivo nao Informado.";
          $this->erro_campo = "codfilho";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_db_arquivos {
          return false;
        }
      }
-     if(trim($this->arqfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arqfilho"])){ 
+     if(trim($this->arqfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arqfilho"])){
        $sql  .= $virgula." arqfilho = '$this->arqfilho' ";
        $virgula = ",";
-       if(trim($this->arqfilho) == null ){ 
+       if(trim($this->arqfilho) == null ){
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "arqfilho";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_db_arquivos {
          return false;
        }
      }
-     if(trim($this->descfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descfilho"])){ 
+     if(trim($this->descfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descfilho"])){
        $sql  .= $virgula." descfilho = '$this->descfilho' ";
        $virgula = ",";
-       if(trim($this->descfilho) == null ){ 
+       if(trim($this->descfilho) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "descfilho";
          $this->erro_banco = "";
@@ -228,7 +228,7 @@ class cl_db_arquivos {
          return false;
        }
      }
-     if(trim($this->id_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_versao"])){ 
+     if(trim($this->id_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_versao"])){
        $sql  .= $virgula." id_versao = '$this->id_versao' ";
        $virgula = ",";
      }
@@ -254,7 +254,7 @@ class cl_db_arquivos {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos do Sistema nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->codfilho;
@@ -282,14 +282,14 @@ class cl_db_arquivos {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($codfilho=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($codfilho=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codfilho));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -318,7 +318,7 @@ class cl_db_arquivos {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos do Sistema nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$codfilho;
@@ -346,11 +346,11 @@ class cl_db_arquivos {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -372,11 +372,11 @@ class cl_db_arquivos {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $codfilho=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $codfilho=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,15 +389,15 @@ class cl_db_arquivos {
      $sql2 = "";
      if($dbwhere==""){
        if($codfilho!=null ){
-         $sql2 .= " where db_arquivos.codfilho = $codfilho "; 
-       } 
+         $sql2 .= " where db_arquivos.codfilho = $codfilho ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,11 +406,11 @@ class cl_db_arquivos {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $codfilho=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $codfilho=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,15 +423,15 @@ class cl_db_arquivos {
      $sql2 = "";
      if($dbwhere==""){
        if($codfilho!=null ){
-         $sql2 .= " where db_arquivos.codfilho = $codfilho "; 
-       } 
+         $sql2 .= " where db_arquivos.codfilho = $codfilho ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

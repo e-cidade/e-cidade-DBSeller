@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -108,30 +108,30 @@ a.nome:hover {
       <td><table width="100%">
   <tr>
     <td nowrap title="<?=@$Tat01_codcli?>">
-       <?
+       <?php
        db_ancora(@$Lat01_codcli,"js_pesquisaat02_codcli(true);",'1');
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at02_codcli',4,"",true,'text','1',"onchange='js_pesquisaat02_codcli(false);'")
 ?>
-<?
+<?php
 db_input('at01_nomecli',40,"",true,'text',3,'')
 ?>
     </td>
   </tr>
   <tr>
     <td> 
-<?
+<?php
 db_ancora($Lnome,"js_pesquisausuario(true);","1")
 ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at03_id_usuario',4,"",true,'text','1',"onchange='js_pesquisausuario(false);'")
 ?>
-<?
+<?php
 db_input('nome',40,"",true,'text',3,'')
 ?>
     </td>
@@ -141,7 +141,7 @@ db_input('nome',40,"",true,'text',3,'')
        <?=$Lat02_dataini?>
     </td>
     <td> 
-<?
+<?php
 //2005-11-23
 // dataini = document.form1.at02_dataini_ano.value+'-'+document.form1.at02_dataini_mes.value+'-'+document.form1.at02_dataini_dia.value
 db_inputdata('at02_dataini',@$at02_dataini_dia,@$at02_dataini_mes,@$at02_dataini_ano,true,'text','1',"")
@@ -153,7 +153,7 @@ db_inputdata('at02_dataini',@$at02_dataini_dia,@$at02_dataini_mes,@$at02_dataini
        <?=$Lat02_datafim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at02_datafim',@$at02_datafim_dia,@$at02_datafim_mes,@$at02_datafim_ano,true,'text','1',"")
 ?>
     </td>
@@ -224,12 +224,12 @@ function js_mostrausuario(chave,erro){
 }
 </script>
 </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

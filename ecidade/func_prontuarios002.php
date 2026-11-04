@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -51,19 +51,19 @@ $usuario=db_getsession("DB_id_usuario");
 $todos="";
 
  $sql1 = "select z01_nome as profissional,db_usuacgm.id_usuario as sd24_i_codigo,z01_numcgm,sd03_i_codigo
-                  from cgm 
+                  from cgm
                   inner join db_usuacgm on cgmlogin= z01_numcgm
                   inner join db_usuarios on db_usuarios.id_usuario= db_usuacgm.id_usuario
-                  inner join medicos on medicos.sd03_i_cgm= cgm.z01_numcgm	
+                  inner join medicos on medicos.sd03_i_cgm= cgm.z01_numcgm
                   inner join unidademedicos on unidademedicos.sd04_i_medico= medicos.sd03_i_codigo
-                  inner join unidades on unidades.sd02_i_codigo= unidademedicos.sd04_i_unidade		               
-                  where sd02_i_codigo = $unidade and db_usuacgm.id_usuario= $usuario                                
+                  inner join unidades on unidades.sd02_i_codigo= unidademedicos.sd04_i_unidade
+                  where sd02_i_codigo = $unidade and db_usuacgm.id_usuario= $usuario
                   ";
  $query1 = db_query($sql1) or die(pg_errormessage());
  $linhas1 = pg_num_rows($query1);
 if($linhas1>0){
 db_fieldsmemory($query1,0);
-} 
+}
 ?>
 <html>
 <head>
@@ -73,16 +73,16 @@ db_fieldsmemory($query1,0);
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td height="63" align="center" valign="top">
         <table width="35%" border="0" align="center" cellspacing="0">
           <form name="form2" method="post" action="" >
-          <tr> 
+          <tr>
             <td width="4%" align="right" nowrap title="<?=$Tsd24_i_codigo?>">
               <?=$Lsd24_i_codigo?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
+            <td width="96%" align="left" nowrap>
+              <?php db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
             </td>
           </tr>
           <tr>
@@ -90,39 +90,39 @@ db_fieldsmemory($query1,0);
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap colspan="2">
-              <?db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
+              <?php db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
             </td>
           </tr>
          <tr>
            <td nowrap title="<?=@$Tsd03_i_codigo?>" align="right" >
-            <?db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao);?>
+            <?php db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao);?>
            </td>
           <td align="left">
-           <?db_input('sd03_i_codigo',10,@$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false);'")?>
+           <?php db_input('sd03_i_codigo',10,@$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false);'")?>
           </td>
            <td>
-           <?db_input('profissional',60,@$profissional,true,'text',3,'')?>
+           <?php db_input('profissional',60,@$profissional,true,'text',3,'')?>
           </td>
          </tr>
         <tr>
-         <td nowrap title="<?=@$Tsd04_i_cbo?>" align="right">         
-           <?db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao);?>
+         <td nowrap title="<?=@$Tsd04_i_cbo?>" align="right">
+           <?php db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao);?>
          </td>
          <td align="left">
-           <?db_input('sd24_i_profissional',10,@$Isd24_i_profissional,true,'hidden',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
+           <?php db_input('sd24_i_profissional',10,@$Isd24_i_profissional,true,'hidden',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
            db_input('rh70_sequencial',10,@$Irh70_sequencial,true,'hidden',$db_opcao,"");
            db_input('rh70_estrutural',10,@$Irh70_estrutural,true,'text',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
            ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('rh70_descr',60,@$Irh70_descr,true,'text',3,'');
           ?>
          </td>
         </tr>
-          <tr> 
-            <td colspan="3" align="center"> 
-              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
+          <tr>
+            <td colspan="3" align="center">
+              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
               <input name="limpar" type="reset" id="limpar" value="Limpar" >
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_prontuarios.hide();">
               <input name="todos" type="submit" id="todos" value="Todos" onClick="document.form2.todos2.value='ok'">
@@ -133,9 +133,9 @@ db_fieldsmemory($query1,0);
         </table>
       </td>
   </tr>
-  <tr> 
-    <td align="center" valign="top"> 
-    <?
+  <tr>
+    <td align="center" valign="top">
+    <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_prontuarios.php")==true){
@@ -145,8 +145,8 @@ db_fieldsmemory($query1,0);
            }
         }
         $repassa = array();
-        
-        
+
+
         if(isset($todos2) && $todos2!=""){
           $sql = "select distinct sd24_i_codigo,sd24_i_numcgs,
                                   z01_v_nome,
@@ -185,32 +185,32 @@ db_fieldsmemory($query1,0);
           //db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
        }else{
            if(isset($sd03_i_codigo) && (trim($sd03_i_codigo)!="") && (@$chave_sd24_i_codigo=="") && (@$chave_z01_v_nome=="")){
-             $sql = $clprontprofatend->sql_query_ext(null, " sd24_i_codigo,z01_v_nome,sd24_i_numcgs,rh70_estrutural, rh70_descr ", 
+             $sql = $clprontprofatend->sql_query_ext(null, " sd24_i_codigo,z01_v_nome,sd24_i_numcgs,rh70_estrutural, rh70_descr ",
                                                           null, "medicos.sd03_i_codigo = $sd03_i_codigo  ");
            }else if(isset($sd04_i_cbo) && (trim($sd04_i_cbo)!="")){
              $sql = "select sd24_i_codigo,z01_nome,z01_v_nome,sd24_i_numcgs,rh70_estrutural
-                     from prontproced 
-                     inner join prontuarios on sd24_i_codigo = sd29_i_prontuario 
+                     from prontproced
+                     inner join prontuarios on sd24_i_codigo = sd29_i_prontuario
                      left join especmedico on especmedico.sd27_i_codigo = prontproced.sd29_i_profissional
                      left join unidademedicos on unidademedicos.sd04_i_codigo = especmedico.sd27_i_undmed
-                     left join unidades on unidades.sd02_i_codigo = unidademedicos.sd04_i_unidade	
+                     left join unidades on unidades.sd02_i_codigo = unidademedicos.sd04_i_unidade
                      left join medicos on medicos.sd03_i_codigo = unidademedicos.sd04_i_medico
-                     left join cgm on cgm.z01_numcgm = medicos.sd03_i_cgm	
+                     left join cgm on cgm.z01_numcgm = medicos.sd03_i_cgm
                      left join rhcbo on rhcbo.rh70_sequencial =  especmedico.sd27_i_rhcbo
                      inner join cgs_und on cgs_und.z01_i_cgsund= prontuarios.sd24_i_numcgs
                      left join db_usuacgm on cgmlogin = medicos.sd03_i_cgm
-    		         left join db_usuarios on db_usuarios.id_usuario = db_usuacgm.id_usuario	
+    		         left join db_usuarios on db_usuarios.id_usuario = db_usuacgm.id_usuario
                      left join db_depart on db_depart.coddepto = unidades.sd02_i_codigo
                       where medicos.sd29_i_profissional = sd24_i_profissional
                       order by  sd04_i_unidade, rh70_estrutural";
              $repassa = array("sd04_i_cbo"=>$sd04_i_cbo);
            }else if(isset($chave_z01_v_nome) && (trim($chave_z01_v_nome)!="") ){
                  $sql = $clprontuarios->sql_query("",$campos,"cgs_und.z01_v_nome, sd24_i_codigo","cgs_und.z01_v_nome like '$chave_z01_v_nome%' ");
-                 $repassa = array("chave_z01_v_nome"=>$chave_z01_v_nome);                 
+                 $repassa = array("chave_z01_v_nome"=>$chave_z01_v_nome);
            }else if(isset($chave_sd24_i_codigo) && (trim($chave_sd24_i_codigo)!="") ){
                  $sql = $clprontuarios->sql_query($chave_sd24_i_codigo,$campos,"sd24_i_codigo");
            }
-        } 
+        }
         //$repassa = array();
         //if(isset($chave_sd24_i_codigo)){
         //  $repassa = array("chave_sd24_i_codigo"=>$chave_sd24_i_codigo,"chave_sd24_i_codigo"=>$chave_sd24_i_codigo);
@@ -272,7 +272,7 @@ function js_pesquisasd04_i_cbo(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_especmedico','func_especmedico.php?funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|rh70_sequencial&chave_sd04_i_unidade='+<?=$unidade?>+'&chave_sd04_i_medico='+document.form2.sd03_i_codigo.value,'Pesquisa',true);
   }else{
-     if(document.form2.rh70_estrutural.value != ''){ 
+     if(document.form2.rh70_estrutural.value != ''){
         js_OpenJanelaIframe('','db_iframe_especmedico','func_especmedico.php?chave_rh70_estrutural='+document.form2.rh70_estrutural.value+'&funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|rh70_estrutural&chave_sd04_i_unidade='+<?=$unidade?>+'&chave_sd04_i_medico='+document.form2.sd03_i_codigo.value,'Pesquisa',false);
         document.form2.rh70_estrutural.value = '';
         document.form2.rh70_descr.value = '';
@@ -287,8 +287,8 @@ function js_mostrarhcbo(erro,chave1, chave2, chave3,chave4){
   document.form2.sd24_i_profissional.value = chave3;
   document.form2.rh70_sequencial.value = chave4;
   if(erro==true){
-    document.form2.rh70_estrutural.focus(); 
-    document.form2.rh70_estrutural.value = ''; 
+    document.form2.rh70_estrutural.focus();
+    document.form2.rh70_estrutural.value = '';
   }
 }
 function js_mostrarhcbo1(chave1,chave2,chave3,chave4){
@@ -299,9 +299,9 @@ function js_mostrarhcbo1(chave1,chave2,chave3,chave4){
   db_iframe_especmedico.hide();
 
   if(chave2=''){
-    document.form2.rh70_estrutural.focus(); 
-    document.form2.rh70_estrutural.value = ''; 
-  }  
+    document.form2.rh70_estrutural.focus();
+    document.form2.rh70_estrutural.value = '';
+  }
 }
 </script>
 <script type="text/javascript">

@@ -1,4 +1,5 @@
 <?php
+
 namespace ECidade\Console\Command\Modification;
 
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +20,6 @@ class UpdateFileTest extends Command
             ->setHelp('Test a update modifications file');
 
         $this->addArgument('file', InputArgument::REQUIRED, 'file path');
-        $this->addArgument('user', InputArgument::OPTIONAL, 'Modification username');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -27,33 +27,30 @@ class UpdateFileTest extends Command
         ini_set('memory_limit', '-1');
 
         $file = realpath($input->getArgument('file'));
-        $user = $input->getArgument('user') ?: null;
 
         $manager = new Manager();
         $logger = $manager->getLogger();
         $logger->setVerbosity(Logger::DEBUG);
-        $logger->addHandler(function($output, $level) {
+        $logger->addHandler(function ($output, $level) {
 
-            switch($level) {
+            switch ($level) {
+                case Logger::DEBUG:
+                    $output = Color::set($output, 'light_gray');
+                    break;
 
-            case Logger::DEBUG:
-                $output = Color::set($output, 'light_gray');
-                break;
+                case Logger::WARNING:
+                    $output = Color::set($output, 'brown');
+                    break;
 
-            case Logger::WARNING:
-                $output = Color::set($output, 'brown');
-                break;
-
-            case Logger::ERROR:
-                $output = Color::set($output, 'red');
-                break;
-
+                case Logger::ERROR:
+                    $output = Color::set($output, 'red');
+                    break;
             }
 
             return $output;
         });
 
-        $result = $manager->updateFileTest($file, $user);
+        $result = $manager->updateFileTest($file);
 
         if (!$result) {
             throw new \Exception('Arquivo não pode ser atualizado.');
@@ -65,13 +62,13 @@ class UpdateFileTest extends Command
         $group = posix_getgrgid($processUser['uid']);
         if ($group['name'] != 'www-data') {
             echo Color::set(
-                "\n\nUsuário atual não está no grupo www-data\n".
-                " - Apos rodar comando atualize as permissões para o grupo www-data\n".
+                "\n\nUsuário atual não está no grupo www-data\n" .
+                " - Apos rodar comando atualize as permissões para o grupo www-data\n" .
                 " - Ou execute o commando com 'sudo -H -u www-data COMMAND\n",
                 'brown'
             );
         }
 
-        echo "\n memory: " . round((memory_get_peak_usage(true)/1024)/1024, 2) . "mb\n\n";
+        echo "\n memory: " . round((memory_get_peak_usage(true) / 1024) / 1024, 2) . "mb\n\n";
     }
 }

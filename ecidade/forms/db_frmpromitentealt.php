@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
+ $daoIptubase = new cl_iptubase();
 ?>
 <script>
 function js_verizero(){
@@ -37,18 +39,51 @@ function js_verizero(){
   return true;
 }
 function js_trocaid(valor){
-  <?
+  <?php
   if(isset($j41_matric) && $j41_matric!=""){
   ?>
     location.href="cad1_promitentealt.php?j41_matric=<?php echo $j41_matric?>&j41_numcgm="+valor;
-  <?
+  <?php
   }else{
   ?>
     location.href="cad1_promitentealt.php?j41_matric="+document.form1.j41_matric.value+"&j41_numcgm="+valor;
-  <?
+  <?php
   }
   ?>
 }
+
+/**
+ * Gambiarra: A matricula nao estava sendo recarregada com a pagina, o que impossibilita de pegar o valor dela por php,
+ * por isso foi criado essa funcao, para o javascript dar reload na pagina quando tiver o valor.
+ */
+async function js_recarregaPaginaComMatricula(){
+  const matriculaComValor = <?=(isset($j41_matric) && trim($j41_matric) != '') ? $j41_matric : "''" ?>
+
+  if(matriculaComValor){
+    return;
+  }
+
+  while(true){
+    await new Promise((resolve) => {
+      const inputMatricula = document.getElementById('j41_matric');
+
+      if(inputMatricula){
+        const valorMatricula = inputMatricula.value;
+        
+        if(valorMatricula && valorMatricula !== ''){ 
+          location.href="cad1_promitentealt.php?j41_matric=" + valorMatricula;
+          return;
+        }
+      }
+
+      setTimeout(() => {
+        resolve('');
+      }, 500)
+    })
+  }
+}
+
+js_recarregaPaginaComMatricula();
 </script>
 
 <fieldset>
@@ -60,23 +95,27 @@ function js_trocaid(valor){
       <?php echo $Lj41_matric?>
     </td>
     <td>
-<?
-db_input('j41_matric',10,$Ij41_matric,true,'text',3,"");
-db_input("z01_nome",78,$Ij01_numcgm,true,"text",3,"","z01_nomematri");
-?>
-        </td>
-      </tr>
+        <?php
+          db_input('j41_matric',10,$Ij41_matric,true,'text',3,"");
+          db_input("z01_nome",78,$Ij01_numcgm,true,"text",3,"","z01_nomematri");
+        ?>
+    </td>
+  </tr>
       <tr>
         <td nowrap title="<?php echo $Tj41_numcgm?>">
-<?
-db_ancora($Lj41_numcgm,' js_cgm(true); ',$db_opcao==2?"3":"1");
-?>
+
+          <?php
+            db_ancora($Lj41_numcgm,' js_cgm(true); ',$db_opcao==2?"3":"1");
+          ?>
+
         </td>
         <td>
-<?
-db_input('j41_numcgm',10,$Ij41_numcgm,true,'text',$db_opcao==2?"3":"1","onchange='js_cgm(false)'");
-db_input('z01_nome',78,$Iz01_nome,true,'text',3,"");
-?>
+
+          <?php
+            db_input('j41_numcgm',10,$Ij41_numcgm,true,'text',$db_opcao==2?"3":"1","onchange='js_cgm(false)'");
+            db_input('z01_nome',78,$Iz01_nome,true,'text',3,"");
+          ?>
+
         </td>
       </tr>
       <tr>
@@ -84,19 +123,35 @@ db_input('z01_nome',78,$Iz01_nome,true,'text',3,"");
           <?php echo $Lj41_promitipo?>
         </td>
         <td>
-<?
 
-$x = array("C"=>"Com contrato","S"=>"Sem contrato");
-db_select('j41_promitipo',$x,true,$db_opcao,"");
-?>
-       </td>
+          <?php
+            $x = array("C"=>"Com contrato","S"=>"Sem contrato");
+
+            $sSqlTipoPromitentes = $daoIptubase->sql_query_tipos_promitentes($j41_matric);
+            $resultTipoPromitentes = db_query($sSqlTipoPromitentes);
+            $tipoPromitentes = db_utils::getCollectionByRecord($resultTipoPromitentes);
+
+            $descricaoTipoPromitentes = array_map(function($item){
+              return $item->j164_descricao;
+            },$tipoPromitentes);
+
+            $abreviaturaTipoPromitentes = array_map(function($item){
+              return $item->j164_tipopromitente;
+            },$tipoPromitentes);
+
+            $tipoPromitentes = array_combine($abreviaturaTipoPromitentes, $descricaoTipoPromitentes);
+
+            db_select('j164_tipopromitente',$tipoPromitentes,true,$db_opcao,"");
+          ?>
+
+      </td>
      </tr>
      <tr>
        <td nowrap title="<?php echo $Tj41_tipopro?>">
          <?php echo $Lj41_tipopro?>
        </td>
        <td>
-        <?
+        <?php
         if ($outros == true) {
           $xs = array("f"=>"Secundário","t"=>"Principal");
         }else{
@@ -106,77 +161,104 @@ db_select('j41_promitipo',$x,true,$db_opcao,"");
         ?>
         </td>
       </tr>
-      <TR><TD colspan="2" align="center">
-      <?
-        $cgmpromi="";
-        if($outros==true){
-
-          $result = $clpromitente->sql_record($clpromitente->sql_query($j41_matric,"","promitente.*#cgm.z01_nome", "j41_tipopro desc"));
-          $num    = $clpromitente->numrows;
-          echo "<select name='lista' onchange='js_trocaid(this.value)' size='".($num>10?10:($num)+1)."'>";
-          $xx="";
-          for($i=0; $i < $num; $i++){
-
-            db_fieldsmemory($result,$i);
-
-            $iNumcgm = null;
-            if(isset($numcgm)){
-              $iNumcgm = $numcgm;
-            }
-
-            if($j41_numcgm != $iNumcgm || isset($incluir) || isset($alterar) || isset($excluir)){
-
-              if($j41_tipopro == 't'){
-                $z01_nome .= " *";
-              }
-              echo "<option  value='".$j41_numcgm."'>$z01_nome</option>";
-            }
-          $cgmpromi .= $xx . $j41_numcgm;
-          $xx = "#";
-        }
-
-        if(!isset($recol)){
-          echo "</select>";
-          echo "<script>";
-          echo "  function js_prime(){";
-          echo "    document.form1.j41_tipopro.options[0].selected=true;";
-          echo "  }";
-          echo "  js_prime();";
-          echo "</script>";
-        }
-        }
-      ?>
-      </TD></TR>
       <tr><td><input name="cgmpromi" type="hidden" value="<?php echo $cgmpromi?>"> </td></tr>
+      <tr><td><input name="cgmexclusao" id="cgmexclusao" type="hidden" value="<?php echo $cgmexclusao?>"> </td></tr>
   </table>
+  </fieldset>
 
-</fieldset>
+  <br />
+  
+  <input name="incluir" type="submit" id="incluir" value="Incluir" <?php echo ($db_opcao!=1?"disabled":"")?> onclick="return js_verizero()" >
+  <input name="alterar" type="submit" id="alterar" value="Alterar" <?php echo ($db_opcao==1?"disabled":"")?> onclick="return js_verizero()" >
+  
+  <br />
+  
+  <fieldset>
+    <legend>Promitentes adicionados</legend>
+    <table class="form-container" border="1">
+        <thead>
+        <tr style="background-color: #e1e1e1">
+            <th class="text-center">Numcgm</th>
+            <th class="text-left">Promitente</th>
+            <th class="text-left">Tipo do Promitente</th>
+            <th class="text-left">Principal</th>
+            <th class="text-center">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+            <?php
+              if (!empty($j41_matric) || $j41_matric != null) { 
+                $result = $clpromitente->sql_record($clpromitente->sql_query($j41_matric,"","promitente.*#tipopromitente.*#cgm.z01_nome#cgm.z01_numcgm", "j41_tipopro desc"));
 
-<br />
-
-<input name="incluir" type="submit" id="incluir" value="Incluir" <?php echo ($db_opcao!=1?"disabled":"")?> onclick="return js_verizero()" >
-<input name="alterar" type="submit" id="alterar" value="Alterar" <?php echo ($db_opcao==1?"disabled":"")?> onclick="return js_verizero()" >
-<input name="excluir" type="submit" id="excluir" value="Excluir" <?php echo ($db_opcao==1?"disabled":"")?> <?php echo ($db_op02==3?"disabled":"")?> >
+                for($i=0; $i < $clpromitente->numrows; $i++){
+                  db_fieldsmemory($result,$i);
+            ?>
+            <tr class="cores">
+                <td class="numcgmpromitente text-center field-size2"><?=$j41_numcgm?></td>
+                <td class="text-left field-size8"><?=$z01_nome?></td>
+                <td class="descricaopromitente text-left"><?=$j164_descricao?></td>
+                <td class="text-left"><?=($j41_tipopro == 't') ? 'SIM' : 'NÃO'?></td>
+                <td class="text-center">
+                    <input id="numcgm" name="numcgm" type="hidden" value="<?=$j41_numcgm?>">
+                    <input type="button" href="#" title="Alterar proprietário."
+                           onclick="js_trocaid(<?= $j41_numcgm ?>)" value="A"> |
+                    <input name="excluir" type="submit" id="excluir" value="E" onclick="return js_confirmaExclusao('<?= $z01_numcgm ?>');" >
+            </tr>
+            <?php } } ?>
+        </tbody>
+    </table>
+  </fieldset>
 
 
 <script>
-function js_cgm(mostra){
-  if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_promitente','func_nome','func_nome.php?funcao_js=parent.js_mostra1|0|1&testanome=true','Pesquisa',true,0);
-  }else{
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_promitente','func_nome','func_nome.php?pesquisa_chave='+document.form1.j41_numcgm.value+'&funcao_js=parent.js_mostra','Pesquisa',false,0);
-  }
+function js_confirmaExclusao(numcgm) {
+  document.getElementById('cgmexclusao').value = numcgm;
+  return window.confirm('Deseja remover esse promitente?');
 }
-function js_mostra1(chave1,chave2){
-  document.form1.j41_numcgm.value = chave1;
-  document.form1.z01_nome.value = chave2;
-  func_nome.hide();
+
+function js_cgm(mostra) {
+	if (mostra == true) {
+		js_OpenJanelaIframe('CurrentWindow.corpo.iframe_promitente', 'func_nome', 'func_nome.php?testanome=true&funcao_js=parent.js_mostranumcgm1|z01_numcgm|z01_nome', 'Pesquisa', true);
+	} else {
+		if (document.form1.j41_numcgm.value != '') {
+		js_OpenJanelaIframe('CurrentWindow.corpo.iframe_promitente', 'func_nome', 'func_nome.php?testanome=true&pesquisa_chave=' + document.form1.j41_numcgm.value + '&funcao_js=parent.js_mostranumcgm', 'Pesquisa', false);
+		} else {
+		document.form1.z01_nome.value = "";
+		}
+	}
 }
-function js_mostra(erro,chave){
-  document.form1.z01_nome.value = chave;
-  if(erro==true){
-    document.form1.j41_numcgm.focus();
-    document.form1.j41_numcgm.value="";
-  }
+
+function js_mostranumcgm(erro, chave) {
+	document.form1.z01_nome.value = chave;
+	if (erro == true) {
+		document.form1.j41_numcgm.value = '';
+		document.form1.j41_numcgm.focus();
+	}
 }
+
+function js_mostranumcgm1(chave1, chave2) {
+	document.form1.j41_numcgm.value = chave1;
+	document.form1.z01_nome.value = chave2;
+	func_nome.hide();
+}
+
+function selecionaTipoPromitente(){
+  const inputCgm = document.getElementById('j41_numcgm');
+  const numcgmpromitentes = document.querySelectorAll('.numcgmpromitente');
+  const selectTipoProprietaro = document.getElementById('j164_tipopromitente');
+
+  numcgmpromitentes.forEach(item => {
+      const numCgm = item.innerText
+      const tipopromitente = item.parentElement.querySelector('.descricaopromitente').innerText
+      if(Number(numCgm) === Number(inputCgm.value)){
+          selectTipoProprietaro.childNodes.forEach(option => {
+              if(option.innerText === tipopromitente){
+                  option.selected = "true";
+              }
+          })
+      }
+  })
+}
+
+selecionaTipoPromitente();
 </script>

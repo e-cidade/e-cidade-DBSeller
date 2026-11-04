@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
        <?=@$Lk20_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('k20_codigo',10,$Ik20_codigo,true,'text',3,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ db_input('k20_codigo',10,$Ik20_codigo,true,'text',3,"")
        <?=@$Lk20_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('k20_hora',5,$Ik20_hora,true,'text',3,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ db_input('k20_hora',5,$Ik20_hora,true,'text',3,"")
        <?=@$Lk20_data?>
     </td>
     <td> 
-<? db_inputdata('k20_data',@$k20_data_dia,@$k20_data_mes,@$k20_data_ano,true,'text',3,"")?>
+<?php db_inputdata('k20_data',@$k20_data_dia,@$k20_data_mes,@$k20_data_ano,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -80,7 +80,7 @@ db_input('k20_hora',5,$Ik20_hora,true,'text',3,"")
        <?=@$Lk20_usuario?>
     </td>
     <td> 
-     <? 
+     <?php 
       db_input('k20_usuario',10,$Ik20_usuario,true,'text',3,""); 
       db_input('nome',40,$Inome,true,'text',3,"");
      ?>
@@ -88,17 +88,17 @@ db_input('k20_hora',5,$Ik20_hora,true,'text',3,"")
   </tr>
   <tr>
 	<td><strong>Tipo:</strong></td>
-	<td><? db_input('cancdebitostipo',10,"",true,'text',3,"")?></td>
+	<td><?php db_input('cancdebitostipo',10,"",true,'text',3,"")?></td>
   </tr>
-  <? if(isset($k20_cancdebitostipo) and $k20_cancdebitostipo == 2 ) { ?>
+  <?php if(isset($k20_cancdebitostipo) and $k20_cancdebitostipo == 2 ) { ?>
   <tr>
 	<td><strong>Caracteristica Peculiar:</strong></td>
-	<td><? db_input('tipo',10,"",true,'text',3,"");
+	<td><?php db_input('tipo',10,"",true,'text',3,"");
 	       db_input('caracteristica',40,"",true,'text',3,"");
 	    ?>
 	</td>
   </tr>
-  <? } ?>
+  <?php } ?>
   
   
   
@@ -110,7 +110,7 @@ db_input('k20_hora',5,$Ik20_hora,true,'text',3,"")
 <table>
  <tr>
   <td >
-	<?
+	<?php
 	    if(isset($chavepesquisa) && $chavepesquisa != ""){
   				$sql  = " select distinct ";
 				  $sql .= "        k21_sequencia, ";
@@ -164,6 +164,6 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cancdebitos.hide();
-  <? echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;"; ?>
+  <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;"; ?>
 }
 </script>

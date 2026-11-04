@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -50,9 +50,9 @@ $oDaoCurso        = new cl_curso;
 
 /**
  * Alterado forma de buscar as etapas que podem ter progressão parcial definidas.
- * Agora buscamos as etapas de alunos que já estão em progressão na escola, para depois buscar as turmas contemplam 
+ * Agora buscamos as etapas de alunos que já estão em progressão na escola, para depois buscar as turmas contemplam
  * as etapas retornadas.
- * Só são vistas as progressões que ainda não estão concluída. 
+ * Só são vistas as progressões que ainda não estão concluída.
  */
 $sCamposEtapaProgressao = " array_to_string(array_accum(distinct ed114_serie), ',') as lista_etapas";
 $sWhereEtapaProgressao  = "     ed114_situacaoeducacao  = " . ProgressaoParcialAluno::ATIVA;
@@ -63,7 +63,7 @@ $sSqlEtapas             = $oDaoProgressaoParcial->sql_query_file(null, $sCamposE
 $rsEtapasEmProgressao   = db_query( $sSqlEtapas );
 
 if ( !$rsEtapasEmProgressao ) {
-  
+
   $sMsgErro  = "Erro ao buscar etapas de alunos em progressão. ";
   $sMsgErro .= pg_last_error($rsEtapasEmProgressao);
   db_redireciona("db_erros.php?fechar=true&db_erro={$sMsgErro}");
@@ -71,28 +71,28 @@ if ( !$rsEtapasEmProgressao ) {
 
 $sDiscParam = 0;
 if ( pg_num_rows( $rsEtapasEmProgressao ) > 0 ) {
-  
+
   $lEsc         = true;
   $sListaEtapas = db_utils::fieldsMemory($rsEtapasEmProgressao, 0)->lista_etapas;
-  
+
   if ( !empty($sListaEtapas) ) {
-    $sDiscParam = $sListaEtapas; 
+    $sDiscParam = $sListaEtapas;
   }
 }
 
 /**
  * Busca as etapas equivalentes das etapas que possuem aluno em progressão, para incrementar a busca
  */
-$sSqlEquivalentes  = "SELECT ARRAY(SELECT ed234_i_serieequiv "; 
+$sSqlEquivalentes  = "SELECT ARRAY(SELECT ed234_i_serieequiv ";
 $sSqlEquivalentes .= "               FROM serieequiv  ";
 $sSqlEquivalentes .= "              WHERE ed234_i_serie in ({$sDiscParam})) as seriesequivalentes";
 $rsEquivalentes    = db_query( $sSqlEquivalentes );
- 
+
 db_fieldsmemory( $rsEquivalentes, 0 );
- 
+
 $seriesequivalentes = str_replace( "{", "", $seriesequivalentes );
 $seriesequivalentes = str_replace( "}", "", $seriesequivalentes );
- 
+
 if ( $seriesequivalentes != "" ) {
   $sDiscParam .= ", {$seriesequivalentes}";
 }
@@ -121,15 +121,15 @@ $clrotulo->label("ed220_i_procedimento");
               <tr>
                 <td width="4%" nowrap title="<?=$Ted57_i_codigo?>">
                   <?=$Led57_i_codigo?>
-                  <?db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
+                  <?php db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
                 </td>
                 <td width="4%" nowrap title="<?=$Ted57_c_descr?>">
                   <?=$Led57_c_descr?>
-                  <?db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
+                  <?php db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
                 </td>
                 <td width="4%" nowrap title="<?=$Ted31_i_curso?>">
                   <?=$Led31_i_curso?>
-                  <?
+                  <?php
                     $sCamposCurso = " ed29_i_codigo,ed29_c_descr ";
                     $sSqlCurso    = $oDaoCurso->sql_query_file("", $sCamposCurso, "ed29_c_descr");
                     $rsCurso      = $oDaoCurso->sql_record($sSqlCurso);
@@ -140,7 +140,7 @@ $clrotulo->label("ed220_i_procedimento");
               <tr>
                 <td width="4%" nowrap title="<?=$Ted57_i_turno?>">
                   <?=$Led57_i_turno?>
-                  <?
+                  <?php
                     $sCamposTurno = " ed15_i_codigo,ed15_c_nome,ed15_i_sequencia ";
                     $sWhereTurno  = " periodoescola.ed17_i_escola = ".$iEscola;
                     $sSqlTurno    = " SELECT ".$sCamposTurno;
@@ -165,7 +165,7 @@ $clrotulo->label("ed220_i_procedimento");
                 </td>
                 <td width="4%" nowrap title="<?=$Ted57_i_calendario?>">
                   <?=$Led57_i_calendario?>
-                  <?
+                  <?php
                     $sCamposCalendario = " ed52_i_codigo,ed52_c_descr ";
                     $sWhereCalendario  = " ed52_c_passivo = 'N' AND ed38_i_escola = ".$iEscola;
                     $sSqlCalendario    = $oDaoCalendario->sql_query_calescola("", $sCamposCalendario, "ed52_i_ano DESC", $sWhereCalendario);
@@ -185,7 +185,7 @@ $clrotulo->label("ed220_i_procedimento");
                 </td>
                 <td width="4%" nowrap title="<?=$Ted220_i_procedimento?>">
                   <?=$Led220_i_procedimento?>
-                  <?
+                  <?php
                     $sCamposProcedimento = " ed40_i_codigo,ed40_c_descr ";
                     $sWhereProcedimento  = " ed86_i_escola = ".$iEscola." GROUP BY ed40_i_codigo,ed40_c_descr ";
                     $sSqlProcedimento    = $oDaoProcedimento->sql_query_procturma("",
@@ -221,7 +221,7 @@ $clrotulo->label("ed220_i_procedimento");
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?
+          <?php
             if (!isset($pesquisa_chave)) {
 
               $sCampos  = " distinct turma.ed57_i_codigo, ";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clhabitprogramalote->rotulo->label("ht05_habitprograma");
               <?=$Lht05_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ht05_sequencial",10,$Iht05_sequencial,true,"text",4,"","chave_ht05_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clhabitprogramalote->rotulo->label("ht05_habitprograma");
               <?=$Lht05_habitprograma?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ht05_habitprograma",10,$Iht05_habitprograma,true,"text",4,"","chave_ht05_habitprograma");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clhabitprogramalote->rotulo->label("ht05_habitprograma");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habitprogramalote.php")==true){
@@ -122,12 +122,12 @@ $clhabitprogramalote->rotulo->label("ht05_habitprograma");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

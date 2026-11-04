@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,7 +52,7 @@ $pdf->setfont('arial','b',8);
 $result_infoauto=$clauto->sql_record($clauto->sql_query_infoautos($codauto));
 if ($clauto->numrows>0){
   db_fieldsmemory($result_infoauto,0);
-  $data=split('-',$data);
+  $data= explode('-',$data);
   $dia=$data[2];
   $mes=$data[1];
   $ano=$data[0];

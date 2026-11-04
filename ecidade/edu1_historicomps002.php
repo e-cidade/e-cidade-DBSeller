@@ -214,7 +214,7 @@ if (isset($alterar) && !$lErro) {
       location.href               = "edu1_histmpsdisc002.php?ed65_i_historicomps=<?=$ed62_i_codigo?>";
       parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-   <?
+   <?php
   }
 }
 
@@ -232,7 +232,7 @@ if ( isset($excluir) || $lConfirmouExclusao ) {
                                    "&ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
   }
 }
 

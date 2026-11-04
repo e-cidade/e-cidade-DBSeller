@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $claguasitagua->rotulo->label();
        <?=@$Lx08_codsitagua?>
     </td>
     <td> 
-<?
+<?php
 db_input('x08_codsitagua',4,$Ix08_codsitagua,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('x08_codsitagua',4,$Ix08_codsitagua,true,'text',3,"")
        <?=@$Lx08_nomesituacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('x08_nomesituacao',30,$Ix08_nomesituacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguasitagua.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ $claguaisencaotipo->rotulo->label("x29_descr");
               <label for="chave_x29_codisencaotipo">Código:</label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("x29_codisencaotipo",5,$Ix29_codisencaotipo,true,"text",4,"","chave_x29_codisencaotipo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claguaisencaotipo->rotulo->label("x29_descr");
               <label for="chave_x29_descr">Descrição:</label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("x29_descr",40,$Ix29_descr,true,"text",4,"","chave_x29_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claguaisencaotipo->rotulo->label("x29_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguaisencaotipo.php")==true){
@@ -118,12 +118,12 @@ $claguaisencaotipo->rotulo->label("x29_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

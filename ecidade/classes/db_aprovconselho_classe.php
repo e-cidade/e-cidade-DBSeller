@@ -64,13 +64,13 @@ class cl_aprovconselho {
                  ed253_avaliacaoconselho = varchar(10) = Avaliação do Conselho 
                  ";
    //funcao construtor da classe
-   function cl_aprovconselho() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aprovconselho");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_aprovconselho {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed253_i_codigo = ($this->ed253_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed253_i_codigo"]:$this->ed253_i_codigo);
        $this->ed253_i_diario = ($this->ed253_i_diario == ""?@$GLOBALS["HTTP_POST_VARS"]["ed253_i_diario"]:$this->ed253_i_diario);
@@ -95,7 +95,7 @@ class cl_aprovconselho {
      }
    }
    // funcao para inclusao
-   function incluir ($ed253_i_codigo){
+   public function incluir ($ed253_i_codigo){
       $this->atualizacampos();
      if($this->ed253_i_diario == null ){
        $this->erro_sql = " Campo Diário nao Informado.";
@@ -251,7 +251,7 @@ class cl_aprovconselho {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed253_i_codigo=null) {
+   public function alterar ($ed253_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update aprovconselho set ";
      $virgula = "";
@@ -422,7 +422,7 @@ class cl_aprovconselho {
      }
    }
    // funcao para exclusao
-   function excluir ($ed253_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed253_i_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -500,7 +500,7 @@ class cl_aprovconselho {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -523,7 +523,7 @@ class cl_aprovconselho {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed253_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed253_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -575,7 +575,7 @@ class cl_aprovconselho {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed253_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed253_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

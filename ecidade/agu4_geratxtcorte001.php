@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $oPost = db_utils::postMemory($_POST);
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" content="0">
-	<?
+	<?php
     db_app::load('scripts.js, estilos.css');
   ?>
 		
@@ -78,19 +78,19 @@ $oPost = db_utils::postMemory($_POST);
   <legend><strong>Arquivo TXT para impressão de etiquetas</strong></legend>
   
 	<form name="form1" action="" method="POST">
-	<? 
+	<?php 
 	  db_menu(db_getsession('DB_id_usuario'), db_getsession('DB_modulo'), db_getsession('DB_anousu'), db_getsession('DB_instit'));
 	?>
 	
 	<table align="center">
 	 <tr>
 	   <td nowrap title="<?=$Tx40_codcorte?>">
-        <?  
+        <?php  
           db_ancora($Lx40_codcorte, 'js_pesquisax40_codcorte(true)', 1 , true)
         ?>
 	   </td>
 	   <td>
-        <?
+        <?php
           db_input('x40_codcorte', 10, $Ix40_codcorte, true, 'text', 1, ' onchange="js_pesquisax40_codcorte(false)"')
         ?>
 	   </td>
@@ -101,7 +101,7 @@ $oPost = db_utils::postMemory($_POST);
         <?=$Lx40_dtinc?>
      </td>
      <td>
-        <?
+        <?php
           db_input('x40_dtinc', 10, $Ix40_dtinc, true, 3);
         ?>
      </td>
@@ -112,7 +112,7 @@ $oPost = db_utils::postMemory($_POST);
         <strong>Delimitador</strong>
      </td>
      <td>
-        <?
+        <?php
           $delimitador = ';';
           db_input('delimitador', 10, $Ix40_delimitador, false)
         ?>
@@ -132,7 +132,7 @@ $oPost = db_utils::postMemory($_POST);
 </html>
 
 
-<?
+<?php
 if(isset($gerar)) {
   
   $sSql  = "select j01_matric, z01_nome, codpri, tipopri, nomepri, j39_numero, substr(x01_orientacao,1,1) as x01_orientacao, j39_compl "; 

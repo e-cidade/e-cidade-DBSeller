@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -366,7 +366,7 @@ if (isset($oPost->incluir)) {
         if (count($aListaCaracUtil) > 1) {
           foreach ( $aListaCaracUtil as $aChave ) {
 
-            $aListaDadosCaracUtil = split("X", $aChave);
+            $aListaDadosCaracUtil =explode("X", $aChave);
 
             // $aListaDadosCaracUtil[0] -- Código da Característica
             // $aListaDadosCaracUtil[1] -- Valor  da Característica
@@ -516,7 +516,7 @@ if (isset($oPost->incluir)) {
 
     foreach ( $aListaFormaPag as $aChave ) {
 
-      $aListaValorFormaPag = split("X", $aChave);
+      $aListaValorFormaPag =explode("X", $aChave);
 
       // $aListaValorFormaPag[0]  -- Código da Forma de Pagamento da Transação
       // $aListaValorFormaPag[1]  -- Valor  da Forma de Pagamento da Transação
@@ -703,7 +703,7 @@ $bGuiaRetificativa = true;
 <table align="center" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-   <?
+   <?php
 //     include(modification("forms/db_frmitbiretificacaodadosimovel.php"));
        /*
         Foi comentado o form deste fonte e adicionado o form da inclusão de ITBI pois os dois deveriam ter a mesma lógica,
@@ -718,7 +718,7 @@ $bGuiaRetificativa = true;
 </html>
 <script>
 </script>
-<?
+<?php
 if (isset($oGet->pri) && $oGet->tipo != "rural" && ! isset($oPost->incluir)) {
 
   $aDebitosMatric = $cliptubase->consultaDebitosMatricula($oPost->j01_matric);

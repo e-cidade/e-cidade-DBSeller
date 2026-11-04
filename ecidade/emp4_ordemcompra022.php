@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ db_postmemory($HTTP_POST_VARS);
         <td colspan=2 align="center" nowrap title="Ordem Alfabética/Numérica" >
         <strong>Emitir por:&nbsp;&nbsp;</strong>
         
-	    <? 
+	    <?php 
 	    $tipo_ordem = array("E"=>"Empenho","F"=>"Fornecedor");
 	    db_select("emitir",$tipo_ordem,true,2); ?>
       </td>
@@ -83,7 +83,7 @@ db_postmemory($HTTP_POST_VARS);
       </tr>
     </form>
    </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

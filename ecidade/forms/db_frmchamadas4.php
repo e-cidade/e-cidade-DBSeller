@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo = new rotulocampo;
     <b>Disciplina:</b> <?=$nomedisciplina?>
    </td>
   </tr>
-  <?
+  <?php
   $result = $clchamadas->sql_record($clchamadas->sql_query("","*",""," ed22_i_disciplina = $disciplina "));
   $linhas = $clchamadas->numrows;
   if($linhas==0){
@@ -51,7 +51,7 @@ $clrotulo = new rotulocampo;
     parent.document.formaba.a2.disabled=true;
     parent.mo_camada('a1');
    </script>
-   <?
+   <?php
    exit;
   }
   $sql = "select * from chamadas
@@ -70,17 +70,17 @@ $clrotulo = new rotulocampo;
    <td width="5%" align="center"><b>Presente</b></td>
    <td align="center" width="40%"><b>Observações</b></td>
   </tr>
-  <?
+  <?php
   for($x=0;$x < $clmatriculas->numrows; $x++){
   db_fieldsmemory($result,$x);
   ?>
   <tr>
-   <td align="center" bgcolor="#eaeaea"><?=str_pad($ed09_i_codigo,7,0,str_pad_left)?></td>
+   <td align="center" bgcolor="#eaeaea"><?=str_pad($ed09_i_codigo,7,0,STR_PAD_LEFT)?></td>
    <td>&nbsp;<?=$z01_nome?></td>
-   <td align="center" bgcolor="#eaeaea"><?if($ed22_c_presenca=="S"){echo "SIM";}else{echo "NÃO";}?></td>
+   <td align="center" bgcolor="#eaeaea"><?php if($ed22_c_presenca=="S"){echo "SIM";}else{echo "NÃO";}?></td>
    <td align="center">&nbsp;<?=$ed22_c_descr?></td>
   </tr>
-  <?
+  <?php
   }
   ?>
   </table><br>

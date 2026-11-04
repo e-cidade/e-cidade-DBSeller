@@ -193,7 +193,7 @@ if (isset($oGet->usuario)) {
 
                                             <tr>
                                                 <td>
-                                                    <b>Fonte de Recurso:</b>
+                                                    <b>Subrecurso:</b>
                                                 </td>
                                                 <td>
                                                     <select id='cboOperadorFonteRecurso'>

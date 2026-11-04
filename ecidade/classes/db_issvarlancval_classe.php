@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,13 +81,13 @@ class cl_issvarlancval {
                  q50_idusuario = int4 = Usuário log 
                  ";
    //funcao construtor da classe 
-   function cl_issvarlancval() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issvarlancval"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -96,7 +96,7 @@ class cl_issvarlancval {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q50_seq = ($this->q50_seq == ""?@$GLOBALS["HTTP_POST_VARS"]["q50_seq"]:$this->q50_seq);
        $this->q50_codigo = ($this->q50_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["q50_codigo"]:$this->q50_codigo);
@@ -126,7 +126,7 @@ class cl_issvarlancval {
      }
    }
    // funcao para inclusao
-   function incluir ($q50_seq){ 
+   public function incluir ($q50_seq){ 
       $this->atualizacampos();
      if($this->q50_codigo == null ){ 
        $this->erro_sql = " Campo Código da arrecadacao de issqn nao Informado.";
@@ -366,7 +366,7 @@ class cl_issvarlancval {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($q50_seq=null) { 
+   public function alterar ($q50_seq=null) { 
       $this->atualizacampos();
      $sql = " update issvarlancval set ";
      $virgula = "";
@@ -655,7 +655,7 @@ class cl_issvarlancval {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($q50_seq=null,$dbwhere=null) { 
+   public function excluir ($q50_seq=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q50_seq));
      }else{ 
@@ -731,7 +731,7 @@ class cl_issvarlancval {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

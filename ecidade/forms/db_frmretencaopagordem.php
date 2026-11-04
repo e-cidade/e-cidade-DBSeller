@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("e50_numemp");
        <?=@$Le20_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('e20_sequencial',10,$Ie20_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te20_pagordem?>">
-       <?
+       <?php
        db_ancora(@$Le20_pagordem,"js_pesquisae20_pagordem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e20_pagordem',10,$Ie20_pagordem,true,'text',$db_opcao," onchange='js_pesquisae20_pagordem(false);'")
 ?>
-       <?
+       <?php
 db_input('e50_numemp',10,$Ie50_numemp,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('e50_numemp',10,$Ie50_numemp,true,'text',3,'')
        <?=@$Le20_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('e20_data',@$e20_data_dia,@$e20_data_mes,@$e20_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_retencaopagordem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

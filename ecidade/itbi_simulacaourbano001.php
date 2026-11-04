@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -438,7 +438,7 @@ if (Isset($it21_numcgm)) {
                                         <strong>Valor Total:</strong>
                                     </td>
                                     <td colspan="1">
-                                        <?
+                                        <?php
                                             db_input('it01_valortransacao',20,$Iit01_valortransacao,true,'text',$db_opcao,"onkeyup='js_validaValores(this)'");
                                         ?>
                                     </td>
@@ -500,7 +500,7 @@ if (Isset($it21_numcgm)) {
                                     <b>Valor do Imposto R$:</b>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('imposto_avalia',15,"",true,'text',3,"");
                                         ?>
                                 </td>
@@ -508,7 +508,7 @@ if (Isset($it21_numcgm)) {
                                     <b>Valor das Taxas R$:</b>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('taxas_avalia',15,"",true,'text',3,"");
                                         ?>
                                 </td>
@@ -516,7 +516,7 @@ if (Isset($it21_numcgm)) {
                                     <b>Valor Total R$:</b>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('total_avalia',15,"",true,'text',3,"");
                                         ?>
                                 </td>

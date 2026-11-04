@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -38,7 +38,7 @@ $classinatura = new cl_assinatura;
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 db_postmemory($HTTP_SERVER_VARS);
 $orcparamrel = new cl_orcparamrel;
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -47,10 +47,10 @@ $flag_abrev = false;
 for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     if (strlen(trim($nomeinstabrev)) > 0){
-         $descr_inst .= $xvirg.$nomeinstabrev; 
+         $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
-         $descr_inst .= $xvirg.$nomeinst; 
+         $descr_inst .= $xvirg.$nomeinst;
     }
 
     $xvirg = ', ';
@@ -70,17 +70,17 @@ $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $period = '';
 if ($bimestre == 1){
   $period = '1º QUADRIMESTRE';
-}elseif($bimestre == 2){  
-  $period = '2º QUADRIMESTRE'; 
-}elseif($bimestre == 3){  
-  $period = '3º QUADRIMESTRE'; 
-}  
+}elseif($bimestre == 2){
+  $period = '2º QUADRIMESTRE';
+}elseif($bimestre == 3){
+  $period = '3º QUADRIMESTRE';
+}
 $head6 = "PERIODO : $period DE ".$anousu;
 //******************************************************************
 
 if ($bimestre == 1) {
   $dataini = $anousu.'-01-01';
-  $datafin = $anousu.'-04-30'; 
+  $datafin = $anousu.'-04-30';
 }elseif ($bimestre == 2){
   $dataini = $anousu.'-01-01';
   $datafin = $anousu.'-08-31';
@@ -105,9 +105,9 @@ $xvirg      = '';
 for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     $instit .= $xvirg.$codigo; // salva insituição
-    $xvirg   = ', ';		  
+    $xvirg   = ', ';
 }
-$where       = " c61_instit in (".$instit.") "; 
+$where       = " c61_instit in (".$instit.") ";
 $result_rpps = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dataini,$datafin,false,$where);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //db_criatabela($result_rpps);exit;
@@ -265,19 +265,19 @@ if ($valore["7"] > $valord["6"]) {
   $dif = $valore["7"] - $valord["6"];
   $valore["8"] = 0;
   $valord["7"] = $dif;
-}else{ 
+}else{
   $dif = $valord["6"] - $valore["7"];
   $valore["8"] = $dif;
   $valord["7"] = 0;
-}  
+}
 $valore["9"] = $valore["7"] + $valore["8"];
 $valord["8"] = $valord["6"] + $valord["7"];
 
 if ($valore["7"] > $valord["6"]) {
   $valore["8"] = " - ";
-}else{ 
+}else{
   $valord["7"] = " - ";
-}  
+}
 
 $valore["11"] = $valord["7"] - $valore["10"];
 
@@ -291,11 +291,11 @@ if ($valore["12"] > $valord["12"]) {
   $dif = $valore["12"] - $valord["12"];
   $valore["19"] = 0;
   $valord["18"] = $dif;
-}else{ 
+}else{
   $dif = $valord["12"] - $valore["12"];
   $valore["19"] = $dif;
   $valord["18"] = 0;
-}  
+}
 
 $valore["20"] = $valore["19"] + $valore["12"];
 $valord["19"] = $valord["18"] + $valord["12"];
@@ -320,7 +320,7 @@ $cont = 0;
 for($i=0;$i< pg_numrows($result1);$i++) {
  db_fieldsmemory($result1,$i);
  if (in_array($estrutural,$parametroe[4])){
-  $texto4[$cont]= $c60_descr; 
+  $texto4[$cont]= $c60_descr;
   $valor4[$cont]= $saldo_anterior;
   $cont++;
  }
@@ -330,7 +330,7 @@ $cont = 0;
 for($i=0;$i< pg_numrows($result1);$i++) {
  db_fieldsmemory($result1,$i);
  if (in_array($estrutural,$parametroe[11])){
-  $texto11[$cont]= $c60_descr; 
+  $texto11[$cont]= $c60_descr;
   $valor11[$cont]= $saldo_anterior;
   $cont++;
  }
@@ -340,7 +340,7 @@ $cont = 0;
 for($i=0;$i< pg_numrows($result1);$i++) {
  db_fieldsmemory($result1,$i);
  if (in_array($estrutural,$parametrod[3])){
-  $texto17[$cont]= $c60_descr; 
+  $texto17[$cont]= $c60_descr;
   $valor17[$cont]= $saldo_anterior;
   $cont++;
  }
@@ -350,7 +350,7 @@ $cont = 0;
 for($i=0;$i< pg_numrows($result1);$i++) {
  db_fieldsmemory($result1,$i);
  if (in_array($estrutural,$parametrod[8])){
-  $texto22[$cont]= $c60_descr; 
+  $texto22[$cont]= $c60_descr;
   $valor22[$cont]= $saldo_anterior;
   $cont++;
  }
@@ -367,9 +367,9 @@ if (count($texto11) > count($texto22)) {
   $for2 = count($texto22);
 }
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
 $pdf->addpage();
@@ -398,9 +398,9 @@ for($i=0;$i<7;$i++){
     $pdf->cell(32,$alt,'','',1,"R",0);
   }else{
     $pdf->cell(32,$alt,db_formatar($valord[$i],'f'),'',1,"R",0);
-  }  
+  }
 }
-// Lista 
+// Lista
 for($i=0;$i< $for1;$i++) {
  if (isset($texto4[$i])){
   $pdf->cell(60,$alt,'    '.substr($texto4[$i],0,35),'R',0,"L",0);
@@ -523,19 +523,19 @@ if ($valore["7"] > $valord["6"]) {
   $dif = $valore["7"] - $valord["6"];
   $valore["8"] = 0;
   $valord["7"] = $dif;
-}else{ 
+}else{
   $dif = $valord["6"] - $valore["7"];
   $valore["8"] = $dif;
   $valord["7"] = 0;
-}  
+}
 $valore["9"] = $valore["7"] + $valore["8"];
 $valord["8"] = $valord["6"] + $valord["7"];
 
 if ($valore["7"] > $valord["6"]) {
   $valore["8"] = " - ";
-}else{ 
+}else{
   $valord["7"] = " - ";
-}  
+}
 
 $valore["11"] = $valord["7"] - $valore["10"];
 
@@ -549,11 +549,11 @@ if ($valore["12"] > $valord["12"]) {
   $dif = $valore["12"] - $valord["12"];
   $valore["19"] = 0;
   $valord["18"] = $dif;
-}else{ 
+}else{
   $dif = $valord["12"] - $valore["12"];
   $valore["19"] = $dif;
   $valord["18"] = 0;
-}  
+}
 
 $valore["20"] = $valore["19"] + $valore["12"];
 $valord["19"] = $valord["18"] + $valord["12"];
@@ -574,10 +574,10 @@ for($i=0;$i< pg_numrows($result_rpps);$i++) {
  db_fieldsmemory($result_rpps,$i);
  if (in_array($estrutural,$parametroe[4])){
     //  if($c61_instit==$instit) {
-          $texto4[$cont]= $c60_descr; 
+          $texto4[$cont]= $c60_descr;
           $valor4[$cont]= $saldo_anterior;
           $cont++;
-    //  } 
+    //  }
  }
 }
 $cont = 0;
@@ -585,7 +585,7 @@ for($i=0;$i< pg_numrows($result_rpps);$i++) {
  db_fieldsmemory($result_rpps,$i);
  if (in_array($estrutural,$parametroe[11])){
     //  if($c61_instit==$instit) {
-          $texto11[$cont]= $c60_descr; 
+          $texto11[$cont]= $c60_descr;
           $valor11[$cont]= $saldo_anterior;
           $cont++;
     //  }
@@ -596,7 +596,7 @@ for($i=0;$i< pg_numrows($result_rpps);$i++) {
  db_fieldsmemory($result_rpps,$i);
  if (in_array($estrutural,$parametrod[3])){
     //  if($c61_instit==$instit) {
-          $texto17[$cont]= $c60_descr; 
+          $texto17[$cont]= $c60_descr;
           $valor17[$cont]= $saldo_anterior;
           $cont++;
     //  }
@@ -607,7 +607,7 @@ for($i=0;$i< pg_numrows($result_rpps);$i++) {
  db_fieldsmemory($result_rpps,$i);
  if (in_array($estrutural,$parametrod[8])){
     //  if($c61_instit==$instit) {
-          $texto22[$cont]= $c60_descr; 
+          $texto22[$cont]= $c60_descr;
           $valor22[$cont]= $saldo_anterior;
           $cont++;
     //  }
@@ -640,14 +640,14 @@ for($i=12;$i<19;$i++){
    $pdf->cell(30,$alt,'','',0,"R",0);
   }else{
    $pdf->cell(30,$alt,db_formatar($valore[$i],'f'),'R',0,"R",0);
-  } 
+  }
   $pdf->cell(63,$alt,$textod[$i],'R',0,"L",0);
   if ($textod[$i] == ''){;
     $pdf->cell(30,$alt,'','',1,"R",0);
   }else{
     $pdf->cell(32,$alt,db_formatar($valord[$i],'f'),'',1,"R",0);
-  }  
-}  
+  }
+}
 for($i=0;$i< $for2;$i++) {
  if (isset($texto11[$i])){
   $pdf->cell(60,$alt,'    '.substr($texto11[$i],0,35),'R',0,"L",0);
@@ -691,10 +691,10 @@ $ds1 = $valore["8"] + $valore["10"]+ $valore["19"] + $valore["21"];
 $ds2 = $valord["7"] + $valord["18"];
 if ($ds1 > $ds2) {
   $valordd = $ds1 - $ds2;
-  $valorss = 0; 
+  $valorss = 0;
 }else{
   $valorss = $ds2 - $ds1;
-  $valordd = 0; 
+  $valordd = 0;
 }
 
 $pdf->cell(60,$alt,'DÉFICIT','TBR',0,"L",0);
@@ -708,8 +708,9 @@ $pdf->cell(190,$alt,'Fonte: Contabilidade',"",1,"L",0);
 $pdf->setfont('arial','',5);
 $pdf->ln(20);
 
-assinaturas(&$pdf,&$classinatura,'GF');
+assinaturas($pdf,&$classinatura,'GF');
 
 $pdf->Output();
 
 ?>
+*/

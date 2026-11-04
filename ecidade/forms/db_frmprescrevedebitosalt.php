@@ -1,81 +1,81 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clprescricao->rotulo->label();
 $clarreprescr->rotulo->label();
 ?>
 <form name="form1" method="post" action="" >
-  <? 
-    if(isset($processar) && $processar != ''){ 
+  <?php
+    if(isset($processar) && $processar != ''){
       echo " <table><tr><td> </td></td></tr></table>";
       if(isset($geral) && $geral == 't'){
         echo "<tr><td>";
         db_criatermometro('termometro1','Concluido...','blue',1,'Aguarde Verificando lista de débitos...');
-        echo "</td></tr>";      
+        echo "</td></tr>";
       }
       echo "<tr><td>";
       db_criatermometro('termometro','Concluido...','blue',1,'Prescrevendo débitos...');
-      echo "</td></tr>";  
-			
+      echo "</td></tr>";
+
     }else{ ?>
-  <tr> 
+  <tr>
     <td width="" height="" align="center" valign="top">
 	    <center>
         <table width="" border="0" align="center" cellspacing="0">
-          <tr> 
+          <tr>
             <td width="" align="left" nowrap title="">
                <strong> Valores de : </strong>
             </td>
             <td width="" align="left" nowrap title="">
-              <?   
-                db_input('vlrmin',10,'',true,'text',$db_opcao,"");                
+              <?php
+                db_input('vlrmin',10,'',true,'text',$db_opcao,"");
                 echo "&nbsp;&nbsp; <strong> até  </strong> &nbsp;&nbsp;";
-                db_input('vlrmax',10,'',true,'text',$db_opcao,"");                
+                db_input('vlrmax',10,'',true,'text',$db_opcao,"");
               ?>
             </td>
           </tr>
           <tr>
             <td><?=@$Lk31_obs?></td>
-            <td><? db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></td>
+            <td><?php db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></td>
           </tr>
        </table>
-       <table> 
-          <tr> 
+       <table>
+          <tr>
             <td colspan=2>
             <fieldset>
             <Legend align="left"><b> Exercícios : </b></Legend>
             <table border="0">
             <tr>
             <td width="" align="left" nowrap title="">
-            <? 
+            <?php
                $sql = "select distinct v01_exerc from divida
-                        inner join arrecad a on divida.v01_numpre = a.k00_numpre 
+                        inner join arrecad a on divida.v01_numpre = a.k00_numpre
                                             and divida.v01_numpar = a.k00_numpar
-                        $inner 
+                        $inner
                         left  join certdiv       on certdiv.v14_coddiv       = divida.v01_coddiv
                         left  join inicialnumpre on inicialnumpre.v59_numpre = divida.v01_numpre
                         left  join inicial				on inicial.v50_inicial		 = inicialnumpre.v59_inicial
@@ -93,18 +93,18 @@ $clarreprescr->rotulo->label();
 													and divida.v01_instit = ".db_getsession('DB_instit')."
                        $where order by v01_exerc";
 
-               
-               
+
+
                $result  = $cldivida->sql_record($sql);
                $numrows = $cldivida->numrows;
                $exe     = array();
-               
+
                //echo $sql;
-               
+
                for($i = 0; $i < $numrows; $i++) {
 
                   db_fieldsmemory($result,$i);
-                  echo "<input type='checkbox' name='xcheck".$i."'value='".$v01_exerc."' onclick='js_clickedcheck();' ><strong>".$v01_exerc."</strong>"; 
+                  echo "<input type='checkbox' name='xcheck".$i."'value='".$v01_exerc."' onclick='js_clickedcheck();' ><strong>".$v01_exerc."</strong>";
                }
             ?>
             </td>
@@ -115,16 +115,16 @@ $clarreprescr->rotulo->label();
             <tr>
                <td> <input name="filtrar" type="button" id="filtrar" value=" Filtrar com os dados selecionados "  onclick="return js_filtraframe();"> </td>
             </tr>
-       </table> 
+       </table>
 
 
 
        <table width="70%" border="0" align="center" cellspacing="0">
           <tr>
           <td colspan = 2>
-          <? 
+          <?php
              // monta o iframeseleciona
-             
+
              $sql = " select * from (
 		                 select  y.v01_exerc,
                       y.k00_numpre,
@@ -179,9 +179,9 @@ $clarreprescr->rotulo->label();
 																			    or inicial.v50_situacao = 2
 																			   )
 																		 and certdiv.v14_coddiv is null
-                                         $wheresel 
-                                         $whereexerc 
-                                   order by divida.v01_exerc,a.k00_numpre,a.k00_numpar) as a ) as y $whereval 
+                                         $wheresel
+                                         $whereexerc
+                                   order by divida.v01_exerc,a.k00_numpre,a.k00_numpar) as a ) as y $whereval
               group by  y.v01_exerc, y.k00_numpre, y.k00_numpar, y.v03_descr  order by v01_exerc, k00_numpre,  k00_numpar ) as  z ";
 
              $cliframe_seleciona->sql           = $sql;
@@ -199,30 +199,30 @@ $clarreprescr->rotulo->label();
 
              //$cliframe_seleciona->dbscript = "onClick='parent.js_mandadados();'";
              //$cliframe_seleciona->js_marcador = 'parent.js_mandadados();';
-             
+
              $cliframe_seleciona->dbscript      = "";
              $cliframe_seleciona->js_marcador   = '';
              $cliframe_seleciona->iframe_seleciona($db_opcao);
-          
+
           ?>
           </td>
           </tr>
-          <tr> 
-            <td colspan="2" align="center"> 
-              <input name="processar" type="submit" id="processar" value="Processar" onclick="return js_filtra()"> 
+          <tr>
+            <td colspan="2" align="center">
+              <input name="processar" type="submit" id="processar" value="Processar" onclick="return js_filtra()">
 
-              <input name="ex"      type="hidden" id="ex"     value=""> 
-              <input name="numcgm"  type="hidden" id="numcgm" value="<?=@$numcgm?>"> 
-              <input name="matric"  type="hidden" id="matric" value="<?=@$matric?>"> 
-              <input name="inscr"   type="hidden" id="inscr"  value="<?=@$inscr?>"> 
-             
+              <input name="ex"      type="hidden" id="ex"     value="">
+              <input name="numcgm"  type="hidden" id="numcgm" value="<?=@$numcgm?>">
+              <input name="matric"  type="hidden" id="matric" value="<?=@$matric?>">
+              <input name="inscr"   type="hidden" id="inscr"  value="<?=@$inscr?>">
+
               </td>
           </tr>
         </table>
       </center>
       </td>
  </tr>
- <?}?>
+ <?php }?>
 </form>
 <script>
 function js_clickedcheck(){
@@ -249,7 +249,7 @@ function js_isChecked(){
 }
 
 function js_filtraframe(){
-   document.form1.submit(); 
+   document.form1.submit();
 }
 
 function js_filtra(){
@@ -257,7 +257,7 @@ function js_filtra(){
     js_gera_chaves();
     return true;
   }else{
-    alert('Selecione os debitos a serem prescritos para continuar !');    
+    alert('Selecione os debitos a serem prescritos para continuar !');
     return false;
   }
 

@@ -13,3 +13,23 @@ Route::prefix('unidaderesponsavel')
         Route::post('/save', 'UnidadeResponsavelController@save');
         Route::post('/delete', 'UnidadeResponsavelController@delete');
 });
+
+Route::prefix('retencao')
+    ->group(function () {
+        Route::get('/get-retencoes', 'ManutencaoRetencaoController@getRetencoes');
+        Route::post('/save-retencao', 'ManutencaoRetencaoController@saveRetencao');
+        Route::get('/tipo-servico-nota', 'ManutencaoRetencaoController@getTipoServicoNota');
+        Route::get('/composicao-base-calculo', 'ComposicaoBaseCalculoController@index');
+});
+
+Route::prefix('r4099responsavel')
+    ->group(function () {
+        Route::get('/get', 'ReabFechDadosRespController@get');
+        Route::get('/get-contribuinte', 'ReabFechDadosRespController@getContribuinte');
+        Route::post('/save', 'ReabFechDadosRespController@save');
+});
+
+
+Route::prefix('events')->group(function () {
+    Route::get('checkPeriodIsClosed', 'EventsController@checkPeriodIsClosed');
+});

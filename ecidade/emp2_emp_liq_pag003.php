@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -121,7 +121,7 @@ function js_imprime(){
 <table border=0>
   <tr>
     <td>
-    	<?
+    	<?php
 			db_selinstit('parent.js_limpa', 300, 100);
 	    ?>
    </td>
@@ -139,7 +139,7 @@ function js_imprime(){
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Credores</strong>";
                  $aux->codigo = "e60_numcgm"; //chave de retorno da func
@@ -169,7 +169,7 @@ function js_imprime(){
          <tr>
           <td nowrap align="left" colspan=3>
                <b> Período </b>
-               <?
+               <?php
 	          $dia="01";
 		  $mes="01";
 		  $ano= db_getsession("DB_anousu");
@@ -185,7 +185,7 @@ function js_imprime(){
        <tr>
          <td colspan=3>
              <b> Tipo de Compra: </b>
-	       <?
+	       <?php
 	          $res = $clpctipocompra->sql_record(
 		      $clpctipocompra->sql_query_file(null,"pc50_codcom,pc50_descr","pc50_descr"));
 	          db_selectrecord("tipocompra",$res,true,1,'','','','0');   ?>

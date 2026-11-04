@@ -1,71 +1,71 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_versaocpd
-class cl_db_versaocpd { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db33_codcpd = 0; 
-   var $db33_codver = 0; 
-   var $db33_obs = null; 
-   var $db33_obscpd = null; 
-   var $db33_data_dia = null; 
-   var $db33_data_mes = null; 
-   var $db33_data_ano = null; 
-   var $db33_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_versaocpd {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db33_codcpd = 0;
+   var $db33_codver = 0;
+   var $db33_obs = null;
+   var $db33_obscpd = null;
+   var $db33_data_dia = null;
+   var $db33_data_mes = null;
+   var $db33_data_ano = null;
+   var $db33_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db33_codcpd = int4 = Código da Observação 
-                 db33_codver = int4 = Código da Versão 
-                 db33_obs = text = Observações da Release 
-                 db33_obscpd = text = Observações para o CPD 
-                 db33_data = date = Data da Inclusão 
+                 db33_codcpd = int4 = Código da Observação
+                 db33_codver = int4 = Código da Versão
+                 db33_obs = text = Observações da Release
+                 db33_obscpd = text = Observações para o CPD
+                 db33_data = date = Data da Inclusão
                  ";
-   //funcao construtor da classe 
-   function cl_db_versaocpd() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_versaocpd"); 
+     $this->rotulo = new rotulo("db_versaocpd");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_db_versaocpd {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db33_codcpd = ($this->db33_codcpd == ""?@$GLOBALS["HTTP_POST_VARS"]["db33_codcpd"]:$this->db33_codcpd);
        $this->db33_codver = ($this->db33_codver == ""?@$GLOBALS["HTTP_POST_VARS"]["db33_codver"]:$this->db33_codver);
@@ -93,9 +93,9 @@ class cl_db_versaocpd {
      }
    }
    // funcao para inclusao
-   function incluir ($db33_codcpd){ 
+   public function incluir ($db33_codcpd){
       $this->atualizacampos();
-     if($this->db33_codver == null ){ 
+     if($this->db33_codver == null ){
        $this->erro_sql = " Campo Código da Versão nao Informado.";
        $this->erro_campo = "db33_codver";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_db_versaocpd {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db33_obs == null ){ 
+     if($this->db33_obs == null ){
        $this->erro_sql = " Campo Observações da Release nao Informado.";
        $this->erro_campo = "db33_obs";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_db_versaocpd {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db33_obscpd == null ){ 
+     if($this->db33_obscpd == null ){
        $this->erro_sql = " Campo Observações para o CPD nao Informado.";
        $this->erro_campo = "db33_obscpd";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_db_versaocpd {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db33_data == null ){ 
+     if($this->db33_data == null ){
        $this->erro_sql = " Campo Data da Inclusão nao Informado.";
        $this->erro_campo = "db33_data_dia";
        $this->erro_banco = "";
@@ -132,16 +132,16 @@ class cl_db_versaocpd {
        return false;
      }
      if($db33_codcpd == "" || $db33_codcpd == null ){
-       $result = db_query("select nextval('db_versaocpd_db33_codcpd_seq')"); 
+       $result = db_query("select nextval('db_versaocpd_db33_codcpd_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_versaocpd_db33_codcpd_seq do campo: db33_codcpd"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_versaocpd_db33_codcpd_seq do campo: db33_codcpd";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db33_codcpd = pg_result($result,0,0); 
+       $this->db33_codcpd = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_versaocpd_db33_codcpd_seq");
        if(($result != false) && (pg_result($result,0,0) < $db33_codcpd)){
@@ -152,10 +152,10 @@ class cl_db_versaocpd {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db33_codcpd = $db33_codcpd; 
+         $this->db33_codcpd = $db33_codcpd;
        }
      }
-     if(($this->db33_codcpd == null) || ($this->db33_codcpd == "") ){ 
+     if(($this->db33_codcpd == null) || ($this->db33_codcpd == "") ){
        $this->erro_sql = " Campo db33_codcpd nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,21 +164,21 @@ class cl_db_versaocpd {
        return false;
      }
      $sql = "insert into db_versaocpd(
-                                       db33_codcpd 
-                                      ,db33_codver 
-                                      ,db33_obs 
-                                      ,db33_obscpd 
-                                      ,db33_data 
+                                       db33_codcpd
+                                      ,db33_codver
+                                      ,db33_obs
+                                      ,db33_obscpd
+                                      ,db33_data
                        )
                 values (
-                                $this->db33_codcpd 
-                               ,$this->db33_codver 
-                               ,'$this->db33_obs' 
-                               ,'$this->db33_obscpd' 
-                               ,".($this->db33_data == "null" || $this->db33_data == ""?"null":"'".$this->db33_data."'")." 
+                                $this->db33_codcpd
+                               ,$this->db33_codver
+                               ,'$this->db33_obs'
+                               ,'$this->db33_obscpd'
+                               ,".($this->db33_data == "null" || $this->db33_data == ""?"null":"'".$this->db33_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Versão Para o CPD ($this->db33_codcpd) nao Incluído. Inclusao Abortada.";
@@ -214,16 +214,16 @@ class cl_db_versaocpd {
        $resac = db_query("insert into db_acount values($acount,941,5883,'','".AddSlashes(pg_result($resaco,0,'db33_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db33_codcpd=null) { 
+   public function alterar ($db33_codcpd=null) {
       $this->atualizacampos();
      $sql = " update db_versaocpd set ";
      $virgula = "";
-     if(trim($this->db33_codcpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_codcpd"])){ 
+     if(trim($this->db33_codcpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_codcpd"])){
        $sql  .= $virgula." db33_codcpd = $this->db33_codcpd ";
        $virgula = ",";
-       if(trim($this->db33_codcpd) == null ){ 
+       if(trim($this->db33_codcpd) == null ){
          $this->erro_sql = " Campo Código da Observação nao Informado.";
          $this->erro_campo = "db33_codcpd";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_db_versaocpd {
          return false;
        }
      }
-     if(trim($this->db33_codver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_codver"])){ 
+     if(trim($this->db33_codver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_codver"])){
        $sql  .= $virgula." db33_codver = $this->db33_codver ";
        $virgula = ",";
-       if(trim($this->db33_codver) == null ){ 
+       if(trim($this->db33_codver) == null ){
          $this->erro_sql = " Campo Código da Versão nao Informado.";
          $this->erro_campo = "db33_codver";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_db_versaocpd {
          return false;
        }
      }
-     if(trim($this->db33_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_obs"])){ 
+     if(trim($this->db33_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_obs"])){
        $sql  .= $virgula." db33_obs = '$this->db33_obs' ";
        $virgula = ",";
-       if(trim($this->db33_obs) == null ){ 
+       if(trim($this->db33_obs) == null ){
          $this->erro_sql = " Campo Observações da Release nao Informado.";
          $this->erro_campo = "db33_obs";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_db_versaocpd {
          return false;
        }
      }
-     if(trim($this->db33_obscpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_obscpd"])){ 
+     if(trim($this->db33_obscpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_obscpd"])){
        $sql  .= $virgula." db33_obscpd = '$this->db33_obscpd' ";
        $virgula = ",";
-       if(trim($this->db33_obscpd) == null ){ 
+       if(trim($this->db33_obscpd) == null ){
          $this->erro_sql = " Campo Observações para o CPD nao Informado.";
          $this->erro_campo = "db33_obscpd";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_db_versaocpd {
          return false;
        }
      }
-     if(trim($this->db33_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db33_data_dia"] !="") ){ 
+     if(trim($this->db33_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db33_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db33_data_dia"] !="") ){
        $sql  .= $virgula." db33_data = '$this->db33_data' ";
        $virgula = ",";
-       if(trim($this->db33_data) == null ){ 
+       if(trim($this->db33_data) == null ){
          $this->erro_sql = " Campo Data da Inclusão nao Informado.";
          $this->erro_campo = "db33_data_dia";
          $this->erro_banco = "";
@@ -284,11 +284,11 @@ class cl_db_versaocpd {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["db33_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["db33_data_dia"])){
          $sql  .= $virgula." db33_data = null ";
          $virgula = ",";
-         if(trim($this->db33_data) == null ){ 
+         if(trim($this->db33_data) == null ){
            $this->erro_sql = " Campo Data da Inclusão nao Informado.";
            $this->erro_campo = "db33_data_dia";
            $this->erro_banco = "";
@@ -323,7 +323,7 @@ class cl_db_versaocpd {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Versão Para o CPD nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db33_codcpd;
@@ -351,14 +351,14 @@ class cl_db_versaocpd {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db33_codcpd=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db33_codcpd=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db33_codcpd));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -388,7 +388,7 @@ class cl_db_versaocpd {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Versão Para o CPD nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db33_codcpd;
@@ -416,11 +416,11 @@ class cl_db_versaocpd {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -442,10 +442,10 @@ class cl_db_versaocpd {
       }
      return $result;
    }
-   function sql_query ( $db33_codcpd=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db33_codcpd=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,15 +459,15 @@ class cl_db_versaocpd {
      $sql2 = "";
      if($dbwhere==""){
        if($db33_codcpd!=null ){
-         $sql2 .= " where db_versaocpd.db33_codcpd = $db33_codcpd "; 
-       } 
+         $sql2 .= " where db_versaocpd.db33_codcpd = $db33_codcpd ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,10 +476,10 @@ class cl_db_versaocpd {
      }
      return $sql;
   }
-   function sql_query_file ( $db33_codcpd=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db33_codcpd=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,15 +492,15 @@ class cl_db_versaocpd {
      $sql2 = "";
      if($dbwhere==""){
        if($db33_codcpd!=null ){
-         $sql2 .= " where db_versaocpd.db33_codcpd = $db33_codcpd "; 
-       } 
+         $sql2 .= " where db_versaocpd.db33_codcpd = $db33_codcpd ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

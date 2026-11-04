@@ -89,7 +89,7 @@ function js_emite(){
       
         <tr>
           <td align="left" nowrap title="<?=$Tpc10_numero?>"> 
-            <? db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?>
+            <?php db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?>
           </td>
           <td  align="left" nowrap title="<?=$Tl20_codigo?>">
             <b>
@@ -103,7 +103,7 @@ function js_emite(){
         <tr>
           <td align="left" nowrap><b>Separador Colunas :</b></td>
           <td align="left" nowrap>
-            <?
+            <?php
               if(!isset($separador)) {
                 $separador = ";";
               }
@@ -115,7 +115,7 @@ function js_emite(){
         <tr>
           <td align="left" nowrap><b>Delimitador de Campos :</b></td>
           <td align="left" nowrap>
-            <?
+            <?php
               $aDelimitador = array("1" => "Aspas Duplas",
                                     "2" => "Aspas Simples");
               db_select('delimitador', $aDelimitador, true, 1, "");
@@ -126,7 +126,7 @@ function js_emite(){
         <tr style="display: none;">
           <td align="left" nowrap><b>Layout:</b></td>
           <td align="left" nowrap>
-            <?
+            <?php
               $aLayout= array("1" => "Layout 1",
                                     "2" => "Layout 2 (sem seq item)");
               db_select('layout', $aLayout, true, 1, "");
@@ -145,7 +145,7 @@ function js_emite(){
 </center>
 </body>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

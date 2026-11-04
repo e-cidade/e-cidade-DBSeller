@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ if (isset($alterar)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Alteração Unidade de Saída</b></legend>
-	<? 	include(modification("forms/db_frmmer_itemunisaida.php"));?>
+	<?php 	include(modification("forms/db_frmmer_itemunisaida.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -74,7 +74,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 	
   if ($clmer_itemunisaida->erro_status=="0") {

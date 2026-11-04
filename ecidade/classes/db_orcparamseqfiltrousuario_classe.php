@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE orcparamseqfiltrousuario
 class cl_orcparamseqfiltrousuario {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $o72_sequencial = 0;
-   var $o72_idusuario = 0;
-   var $o72_orcparamrel = 0;
-   var $o72_filtro = null;
+   public $o72_sequencial = 0;
+   public $o72_idusuario = 0;
+   public $o72_orcparamrel = 0;
+   public $o72_filtro = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  o72_sequencial = int4 = Código Sequencial
                  o72_idusuario = int4 = Código do Usuário
                  o72_orcparamrel = int4 = Codigo do Relatorio
                  o72_filtro = text = Filtro
                  ";
    //funcao construtor da classe
-   function cl_orcparamseqfiltrousuario() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcparamseqfiltrousuario");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_orcparamseqfiltrousuario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o72_sequencial = ($this->o72_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o72_sequencial"]:$this->o72_sequencial);
        $this->o72_idusuario = ($this->o72_idusuario == ""?@$GLOBALS["HTTP_POST_VARS"]["o72_idusuario"]:$this->o72_idusuario);
@@ -80,7 +80,7 @@ class cl_orcparamseqfiltrousuario {
      }
    }
    // funcao para inclusao
-   function incluir ($o72_sequencial){
+   public function incluir ($o72_sequencial){
       $this->atualizacampos();
      if($this->o72_idusuario == null ){
        $this->erro_sql = " Campo Código do Usuário nao Informado.";
@@ -182,7 +182,7 @@ class cl_orcparamseqfiltrousuario {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o72_sequencial=null) {
+   public function alterar ($o72_sequencial=null) {
       $this->atualizacampos();
      $sql = " update orcparamseqfiltrousuario set ";
      $virgula = "";
@@ -283,7 +283,7 @@ class cl_orcparamseqfiltrousuario {
      }
    }
    // funcao para exclusao
-   function excluir ($o72_sequencial=null,$dbwhere=null) {
+   public function excluir ($o72_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o72_sequencial));
      }else{
@@ -347,7 +347,7 @@ class cl_orcparamseqfiltrousuario {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -370,7 +370,7 @@ class cl_orcparamseqfiltrousuario {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $o72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -407,7 +407,7 @@ class cl_orcparamseqfiltrousuario {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $o72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

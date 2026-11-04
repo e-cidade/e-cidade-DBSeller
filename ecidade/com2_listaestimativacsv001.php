@@ -1,28 +1,28 @@
-<?PHP
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -52,30 +52,38 @@ $db_opcao = 1;
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name='form1'>
-<center>
-	<div style='width: 400px; margin-top:50px;'>
-		<fieldset>
-			<legend><strong>Gerar Lista CSV de Estimativas</strong></legend>
-		    <table>
-					<tr>
-				    <td nowrap title="Código da Abertura." style="width: 80">
-				      <strong>
-				        <? db_ancora("Abertura de Registro de Preço:", "js_pesquisaAbertura(true);", 1); ?>
-				      </strong>
-				    </td>
-				    <td  style="width: 100%">
-				      <?
-				        db_input('iAbertura', 10, "", true, 'text', 3);
-				      ?>
-				    </td>
-				  </tr>
-		    </table>
-		</fieldset>
-		<input name='pesquisar' type='button' value='Gerar Arquivo' onclick='js_gerarCSV();' style="margin-top:10px;">
-	</div>
-</center>
+    <div class="container ">
+        <div style='width: 400px;'>
+            <fieldset>
+                <legend><strong>Gerar Lista CSV de Estimativas</strong></legend>
+                <table class="form-container">
+                        <tr>
+                        <td nowrap title="Código da Abertura." style="width: 80">
+                          <strong>
+                            <?php db_ancora("Abertura de Registro de Preço:", "js_pesquisaAbertura(true);", 1); ?>
+                          </strong>
+                        </td>
+                        <td  style="width: 100%">
+                          <?php
+                            db_input('iAbertura', 10, "", true, 'text', 3);
+                          ?>
+                        </td>
+                      </tr>
+                    <tr>
+                        <td>
+                            <label for="exibirResumoItens">Exibir resumo do Item</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="exibirResumoItens">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <input name='pesquisar' type='button' value='Gerar Arquivo' onclick='js_gerarCSV();' style="margin-top:10px;">
+        </div>
+    </div>
 </form>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>
@@ -87,6 +95,7 @@ var sUrlRPC = "com4_solicitacaoComprasRegistroPreco.RPC.php";
 
 function js_gerarCSV(){
 
+    const exibirResumoItens = document.getElementById('exibirResumoItens');
 	var iAbertura = $F('iAbertura');
 
 	if (iAbertura == '') {
@@ -99,6 +108,10 @@ function js_gerarCSV(){
 	var msgDiv               = "Gerando CSV \n Aguarde ...";
 	oParametros.exec         = 'gerarestimativaCSV';
 	oParametros.iAbertura  = iAbertura;
+
+    if (exibirResumoItens.checked) {
+	    oParametros.exibeResumoItens = true;
+    }
 
 	js_divCarregando(msgDiv,'msgBox');
 

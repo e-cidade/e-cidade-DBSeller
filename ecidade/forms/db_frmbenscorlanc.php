@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("ac08_descricao");
        <?=@$Lt62_codcor?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('t62_codcor',10,$It62_codcor,true,'text',3,"")
       ?>
     </td>
@@ -51,19 +51,19 @@ $clrotulo->label("ac08_descricao");
        <?=@$Lt62_data?>
     </td>
     <td> 
-      <?
+      <?php
       db_inputdata('t62_data',@$t62_data_dia,@$t62_data_mes,@$t62_data_ano,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt62_codcom?>">
-       <?
+       <?php
        db_ancora(@$Lt62_codcom,"js_pesquisat62_codcom(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('t62_codcom',10,$It62_codcom,true,'text',$db_opcao," onchange='js_pesquisat62_codcom(false);'");
         db_input('ac08_descricao',50,$Iac08_descricao,true,'text',3,'');
        ?>
@@ -73,7 +73,7 @@ $clrotulo->label("ac08_descricao");
     <td colspan="2">
       <fieldset>
         <legend><b>Observações</b></legend> 
-        <?
+        <?php
         db_textarea('t62_obs',5,80,$It62_obs,true,'text',$db_opcao,"")
         ?>
       </fieldset>
@@ -115,7 +115,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benscorlanc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
 	 $clcriaabas->identifica = array("db_sysfuncoes"=>" Dados da Função ","db_sysfuncoesparam"=>"Parametros da Função"); 
 	 $clcriaabas->src = array("db_sysfuncoes"=>"con1_db_sysfuncoes005.php");
 	 $clcriaabas->disabled   =  array("db_sysfuncoesparam"=>"true"); 
@@ -68,7 +68,7 @@ $db_opcao = 1;
   </table>
   <form name="form1">
   </form>
-      <? 
+      <?php 
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>

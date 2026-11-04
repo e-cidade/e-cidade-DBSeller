@@ -64,7 +64,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php
     $clcriaabas->identifica = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas");
     $clcriaabas->title      = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas");
     $clcriaabas->src  = array("relatorio"=> "orc2_convenioIRF1C001.php",
@@ -76,7 +76,7 @@ db_postmemory($HTTP_POST_VARS);
   </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

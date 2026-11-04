@@ -33,15 +33,13 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-/* alteração para entrega continua */
-
 ?>
 <html>
   <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js, prototype.js, strings.js, arrays.js, dbcomboBox.widget.js, DBFormCache.js, DBFormSelectCache.js");
     db_app::load("estilos.css");
     db_app::load("DBLancador.widget.js, DBAncora.widget.js, dbtextField.widget.js, DBToogle.widget.js");
@@ -57,9 +55,9 @@ require_once(modification("dbforms/db_funcoes.php"));
             <tr>
               <td nowrap="nowrap" class='bold'>Período dos Pedidos:</td>
               <td nowrap="nowrap">
-                <?db_inputdata('dtInicio', '', '', '', true, 'text', 1, "onchange ='js_validaData();'", "", "", "parent.js_validaData()")?>
+                <?php db_inputdata('dtInicio', '', '', '', true, 'text', 1, "onchange ='js_validaData();'", "", "", "parent.js_validaData()")?>
                 <label class='bold field-size1' >até:</label>
-                <?db_inputdata('dtFim', '', '', '', true, 'text', 1, "onchange ='js_validaData();'", "", "", "parent.js_validaData()")?>
+                <?php db_inputdata('dtFim', '', '', '', true, 'text', 1, "onchange ='js_validaData();'", "", "", "parent.js_validaData()")?>
               </td>
             <tr>
             <tr>
@@ -75,7 +73,7 @@ require_once(modification("dbforms/db_funcoes.php"));
       </form>
     </div>
   </body>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clrhfundamentacaolegal->rotulo->label("rh137_numero");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lrh137_sequencial?></label></td>
-          <td><? db_input("rh137_sequencial",11,$Irh137_sequencial,true,"text",4,"","chave_rh137_sequencial"); ?></td>
+          <td><?php db_input("rh137_sequencial",11,$Irh137_sequencial,true,"text",4,"","chave_rh137_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lrh137_numero?></label></td>
-          <td><? db_input("rh137_numero",11,$Irh137_numero,true,"text",4,"","chave_rh137_numero");?></td>
+          <td><?php db_input("rh137_numero",11,$Irh137_numero,true,"text",4,"","chave_rh137_numero");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clrhfundamentacaolegal->rotulo->label("rh137_numero");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.Jandb_iframe_fundamentacao.remove();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhfundamentacaolegal.php")==true){
@@ -87,12 +87,12 @@ $clrhfundamentacaolegal->rotulo->label("rh137_numero");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

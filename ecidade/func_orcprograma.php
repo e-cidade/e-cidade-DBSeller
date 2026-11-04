@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,15 +27,15 @@
 
 use ECidade\Enum\Financeiro\Orcamento\TipologiaProgramaEnum;
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_orcprograma_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_orcprograma_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"]);
 
 $clorcprograma = new cl_orcprograma;
 $clorcprograma->rotulo->label();
@@ -67,7 +67,6 @@ if (isset($programasGestao)) {
     $sWhereAdicional .= " and o54_tipoprograma in ($tipos) ";
 }
 
-
 ?>
 <html>
 <head>
@@ -86,7 +85,7 @@ if (isset($programasGestao)) {
                             <?= $Lo54_programa ?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php
                             db_input("o54_programa", 4, $Io54_programa, true, "text", 4, "", "chave_o54_programa");
                             ?>
                         </td>
@@ -96,7 +95,7 @@ if (isset($programasGestao)) {
                             <?= $Lo54_descr ?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php
                             db_input("o54_descr", 40, $Io54_descr, true, "text", 4, "", "chave_o54_descr");
                             ?>
                         </td>
@@ -134,7 +133,6 @@ when o54_tipoprograma in (0) then 'Revise a tipologia do programa'
 ";
 
             if (!isset($pesquisa_chave)) {
-
                 if (isset($chave_o54_programa)) {
                     if (!DBNumber::isInteger($chave_o54_programa)) {
                         $chave_o54_programa = '';
@@ -186,7 +184,7 @@ when o54_tipoprograma in (0) then 'Revise a tipologia do programa'
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -203,7 +201,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

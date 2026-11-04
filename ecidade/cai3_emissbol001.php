@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -82,7 +82,7 @@ function js_relatorio1() {
             <tr>
               <td height="25" nowrap title="<?=$Tk11_id?>"><?=$Lk11_id?></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-                <?
+                <?php
 				$clcfautent = new cl_cfautent;
 				$result = $clcfautent->sql_record($clcfautent->sql_query("","k11_id#k11_local","k11_local"));
 				db_selectrecord("k11_id",$result,true,2,"","","","0");
@@ -94,7 +94,7 @@ function js_relatorio1() {
             <tr>
               <td height="25" nowrap title="<?=$Tk13_conta?>"><?=$Lk13_conta?></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-                <?
+                <?php
 				$clsaltes = new cl_saltes;
 				$result = $clsaltes->sql_record($clsaltes->sql_query("","saltes.k13_conta#k13_descr","k13_descr"));
 				db_selectrecord("k13_conta",$result,true,2,"","","","0");
@@ -117,7 +117,7 @@ function js_relatorio1() {
 	</td>
   </tr>
 </table>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

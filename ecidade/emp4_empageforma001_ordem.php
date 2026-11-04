@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -368,7 +368,7 @@ if (isset($oGet->lOk)) {
                 <small><b><?=$RLe80_codage?></b></small>
               </th>
             </tr>
-            <?
+            <?php
             $nords =  '';
             $nvirg ='';
             $arr_forma = Array();
@@ -602,7 +602,7 @@ if (isset($oGet->lOk)) {
               <tr>
                 <td class='linhagrid' align='right'><input value="<?=$e50_codord?>" name="CHECK_<?=$e50_codord?>" type='checkbox'></td>
                 <td class='linhagrid' align='right' title="<?=($RLe60_codemp)?> - Data de emissão:<?=$e60_emiss?>">
-                  <?
+                  <?php
                   $codigoempenho = 'e60_numemp_'.$e50_codord;
                   $$codigoempenho = $e60_numemp;
                   db_input('e60_numemp_'.$e50_codord,5,$Ie60_numemp,true,'hidden',3);
@@ -620,7 +620,7 @@ if (isset($oGet->lOk)) {
                   <small><strong><span style="color:red;"><?=($conferido)?></span></strong></small>
                   <small><?=$z01_nome?></small>
                 </td>
-                <?
+                <?php
                 $cpfcgc = "cpfcgc_$e50_codord";
                 $$cpfcgc = $z01_cgccpf;
                 if(sizeof($arr_contas)>2){
@@ -642,7 +642,7 @@ if (isset($oGet->lOk)) {
                 }
                 ?>
                 <td class='linhagrid' nowrap title='Forma de pagamento'><small>
-                    <?
+                    <?php
                     echo "
                   <script>
                   function js_vercpfcgc$e50_codord(campo,valor,cgccpf){
@@ -683,14 +683,14 @@ if (isset($oGet->lOk)) {
                 </td>
                 <td class='linhagrid' title='Valor a pagar' align='right'><?=db_input("valor_$e50_codord",10,$Ie53_valor,true,'text',$db_opcao,"onChange='js_confere(this);'")?></td>
                 <td class='linhagrid' align='center' title='<?=($RLe80_codage)?>'>
-                  <?
+                  <?php
                   $codigodaagenda = 'e80_codage_'.$e50_codord;
                   $$codigodaagenda = $e80_codage;
                   db_input('e80_codage_'.$e50_codord,4,$Ie80_codage,true,'text',3);
                   ?>
                 </td>
               </tr>
-              <?
+              <?php
               $iNumRows++;
             }
             echo "<script>parent.document.getElementById('totalregistros').innerHTML = {$iNumRows};</script>";

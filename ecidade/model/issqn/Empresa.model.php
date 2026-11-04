@@ -169,7 +169,7 @@ class Empresa
      * @param integer $iIncricaoMunicipal
      * @throws DBException
      */
-    public function __construct($iIncricaoMunicipal = null)
+    public function __construct($iIncricaoMunicipal = null, $cgm = null)
     {
 
         if (!empty($iIncricaoMunicipal)) {
@@ -204,6 +204,45 @@ class Empresa
             $this->sComplemento = $dadosEmpresa->z01_compl;
             $this->iNumero = (int)$dadosEmpresa->z01_numero;
             $this->sBairro = $dadosEmpresa->z01_bairro;
+        }
+
+        if (!empty($cgm) && empty($iIncricaoMunicipal)) {
+
+            $oDaoIssBase = new cl_issbase();
+            $sSql = $oDaoIssBase->sql_query_file(null,"*",null,"q02_numcgm = {$cgm}");
+            $rsDadosIss = $oDaoIssBase->sql_record($sSql);
+            
+            $rsDadosEmpresa = db_query("select * from empresa where q02_numcgm = {$cgm}");
+
+            if (pg_num_rows($rsDadosIss) > 0) {
+                $dadosIss = db_utils::fieldsMemory($rsDadosIss, 0);
+                $this->iInscricao = $dadosIss->q02_inscr;
+                $this->oCgmEmpresa = CgmFactory::getInstanceByCgm($dadosIss->q02_numcgm);
+                $this->oDataInicioAtividades = new DBDate($dadosIss->q02_dtinic);
+                $this->lAtiva = empty($dadosIss->q02_dtbaix);
+            }else{
+                $this->iInscricao = '';
+                $this->oCgmEmpresa = CgmFactory::getInstanceByCgm($cgm);
+                $this->lAtiva = false;
+            }
+
+            if (pg_num_rows($rsDadosIss) > 0) {
+                $dadosEmpresa = db_utils::fieldsMemory($rsDadosEmpresa, 0);
+                $this->oDebitos = new Debitos($this->getInscricao());
+                $this->logradouro = $dadosEmpresa->z01_ender;
+                $this->sComplemento = $dadosEmpresa->z01_compl;
+                $this->iNumero = (int)$dadosEmpresa->z01_numero;
+                $this->sBairro = $dadosEmpresa->z01_bairro;
+            }else{
+                $this->oDebitos = new Debitos();
+                $rsDadosEmpresa = db_query("select * from cgm where z01_numcgm = $cgm");
+                $dadosEmpresa = db_utils::fieldsMemory($rsDadosEmpresa, 0);
+                $this->oDataInicioAtividades = new DBDate($dadosEmpresa->z01_cadast);
+                $this->logradouro = $dadosEmpresa->z01_ender;
+                $this->sComplemento = $dadosEmpresa->z01_compl;
+                $this->iNumero = (int)$dadosEmpresa->z01_numero;
+                $this->sBairro = $dadosEmpresa->z01_bairro;
+            }
         }
     }
 

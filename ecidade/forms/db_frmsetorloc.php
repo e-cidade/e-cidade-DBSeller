@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,15 +34,15 @@ $clsetorloc->rotulo->label();
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Tj05_codigo?>"><?=@$Lj05_codigo?></td>
-        <td><? db_input('j05_codigo',6,$Ij05_codigo,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('j05_codigo',6,$Ij05_codigo,true,'text',$db_opcao,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj05_descr?>"><?=@$Lj05_descr?></td>
-        <td><? db_input('j05_descr',40,$Ij05_descr,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('j05_descr',40,$Ij05_descr,true,'text',$db_opcao,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj05_codigoproprio?>"><?=@$Lj05_codigoproprio?></td>
-        <td><? db_input('j05_codigoproprio',10,$Ij05_codigoproprio,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('j05_codigoproprio',10,$Ij05_codigoproprio,true,'text',$db_opcao,"") ?></td>
       </tr>
     </table>
   </fieldset>
@@ -55,7 +55,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_setorloc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

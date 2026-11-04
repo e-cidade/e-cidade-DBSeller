@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label("l03_descr");
               <?=$Ll20_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l20_codigo",10,$Il20_codigo,true,"text",4,"","chave_l20_codigo");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clrotulo->label("l03_descr");
               <?=$Ll20_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l20_numero",10,$Il20_numero,true,"text",4,"","chave_l20_numero");
 		       ?>
             </td>
@@ -78,7 +78,7 @@ $clrotulo->label("l03_descr");
               <?=$Ll03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l03_descr",60,$Il03_descr,true,"text",4,"","chave_l03_descr");
 		       ?>
             </td>
@@ -96,7 +96,7 @@ $clrotulo->label("l03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
         	$campos = "distinct liclicita.l20_codigo,liclicita.l20_codtipocom,pctipocompra.pc50_descr,liclicita.l20_numero,liclicita.l20_id_usucria,liclicita.l20_datacria,liclicita.l20_horacria,liclicita.l20_dataaber,liclicita.l20_dtpublic,liclicita.l20_horaaber,liclicita.l20_local,liclicita.l20_objeto";
@@ -136,12 +136,12 @@ $clrotulo->label("l03_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

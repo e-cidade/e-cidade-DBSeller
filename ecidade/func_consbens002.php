@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label("t80_contato");//observação
   <tr> 
     <td  align="center" valign="top" bgcolor="#CCCCCC"> 
  <table border='1' cellspacing="0" cellpadding="0" align ="center" >   
- <?
+ <?php
               
       $result = $clapolitem->sql_record($clapolitem->sql_query(null,null,"*",null," t82_codbem=$t82_codbem and t81_venc >='".date("Y-m-d",db_getsession("DB_datausu"))."'"));
       $numrows = $clapolitem->numrows;

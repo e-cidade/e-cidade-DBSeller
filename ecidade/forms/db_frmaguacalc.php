@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,22 +44,22 @@ if($db_opcao==1){
 	<tr>
 		<td nowrap title="<?=@$Tx22_codcalc?>"><?=@$Lx22_codcalc?></td>
 		<td>
-		<?
+		<?php
 		  db_input('x22_codcalc',10,$Ix22_codcalc,true,'text',3,"")
 		?>
 		</td>
 	</tr>
 	<tr>
 		<td nowrap title="<?=@$Tx22_codconsumo?>">
-		<?
+		<?php
 		  db_ancora(@$Lx22_codconsumo,"js_pesquisax22_codconsumo(true);",$db_opcao);
 		?>
 		</td>
 		<td>
-		<?
+		<?php
 		  db_input('x22_codconsumo',10,$Ix22_codconsumo,true,'text',$db_opcao," onchange='js_pesquisax22_codconsumo(false);'")
 		?> 
-		<?
+		<?php
 		  db_input('x19_descr',50,$Ix19_descr,true,'text',3,'')
 		?>
 		</td>
@@ -67,7 +67,7 @@ if($db_opcao==1){
 	<tr>
 		<td nowrap title="<?=@$Tx22_exerc?>"><?=@$Lx22_exerc?></td>
 		<td>
-		<?
+		<?php
 		  db_input('x22_exerc',10,$Ix22_exerc,true,'text',$db_opcao,"")
 		?>
 		</td>
@@ -75,22 +75,22 @@ if($db_opcao==1){
 	<tr>
 		<td nowrap title="<?=@$Tx22_mes?>"><?=@$Lx22_mes?></td>
 		<td>
-		<?
+		<?php
 		  db_input('x22_mes',10,$Ix22_mes,true,'text',$db_opcao,"")
 		?>
 		</td>
 	</tr>
 	<tr>
 		<td nowrap title="<?=@$Tx22_matric?>">
-		<?
+		<?php
 		  db_ancora(@$Lx22_matric,"js_pesquisax22_matric(true);",$db_opcao);
 		?>
 		</td>
 		<td>
-		<?
+		<?php
 		  db_input('x22_matric',10,$Ix22_matric,true,'text',$db_opcao," onchange='js_pesquisax22_matric(false);'")
 		?> 
-		<?
+		<?php
 		  db_input('x01_numcgm',50,$Ix01_numcgm,true,'text',3,'')
 		?>
 		</td>
@@ -98,7 +98,7 @@ if($db_opcao==1){
 	<tr>
 		<td nowrap title="<?=@$Tx22_area?>"><?=@$Lx22_area?></td>
 		<td>
-		<?
+		<?php
 		  db_input('x22_area',10,$Ix22_area,true,'text',$db_opcao,"")
 		?>
 		</td>
@@ -106,7 +106,7 @@ if($db_opcao==1){
 	<tr>
 		<td nowrap title="<?=@$Tx22_numpre?>"><?=@$Lx22_numpre?></td>
 		<td>
-		<?
+		<?php
 		  db_input('x22_numpre',10,$Ix22_numpre,true,'text',$db_opcao,"")
 		?>
 		</td>
@@ -114,13 +114,13 @@ if($db_opcao==1){
 	<!-- <tr>
 		<td nowrap title="<?=@$Tx22_manual?>"><?=@$Lx22_manual?></td>
 		<td>
-		<?
+		<?php
 		  db_textarea('x22_manual',0,0,$Ix22_manual,true,'text',$db_opcao,"")
 		?>
 		</td>
 	</tr>
   -->
-  <?
+  <?php
     $x22_tipo = 1;
     db_input('x22_tipo', 10, $Ix22_tipo, true, 'hidden', $db_opcao, ''); 
     
@@ -195,7 +195,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguacalc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

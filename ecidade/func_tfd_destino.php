@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $oDaotfd_destino->rotulo->label("tf03_c_descr");
               <?=$Ltf03_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tf03_i_codigo",10,$Itf03_i_codigo,true,"text",4,"","chave_tf03_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $oDaotfd_destino->rotulo->label("tf03_c_descr");
               <?=$Ltf03_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tf03_c_descr",40,$Itf03_c_descr,true,"text",4,"","chave_tf03_c_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $oDaotfd_destino->rotulo->label("tf03_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sSepVal = '';
       $sValidade = '';
       if(isset($chave_validade)) {
@@ -155,12 +155,12 @@ $oDaotfd_destino->rotulo->label("tf03_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -44,149 +44,137 @@ use ECidade\RecursosHumanos\Pessoal\Arquivos\Dirf\Ano2018\Dirf as Dirf2018;
 use ECidade\RecursosHumanos\Pessoal\Factory\DirfFactory;
 
 $oJson    = new services_json();
-$oParam   = $oJson->decode((str_replace("\\","",$_POST["json"])));
+$oParam   = $oJson->decode((str_replace("\\", "", $_POST["json"])));
 $oRetorno = new stdClass();
 $oRetorno->status           = 1;
 $oRetorno->message          = 1;
 $oRetorno->itens            = array();
 $oRetorno->aListaMatriculas = array();
 
-switch($oParam->exec) {
+switch ($oParam->exec) {
+    case "processarDirf":
+        $subpes = $oParam->iAno.'/'.DBPessoal::getMesFolha();
+        $subini = $oParam->iAno."/01";
 
-  case "processarDirf":
-      
-    $subpes = $oParam->iAno.'/'.db_mesfolha();
-    $subini = $oParam->iAno."/01";
+        try {
+            db_inicio_transacao();
 
-    try {
+            if (isset($oParam->lDebug) && $oParam->lDebug) {
+                $db_debug         = $oParam->lDebug;
+                $oRetorno->lDebug = true;
+            }
 
-      db_inicio_transacao();
+            $oDirf = new Dirf2017($oParam->iAno, $oParam->sCnpj);
 
-      if(isset($oParam->lDebug) && $oParam->lDebug) {
-        $db_debug         = $oParam->lDebug;
-        $oRetorno->lDebug = true;
-      }
+            $oDirf->setDesdobramentos($oParam->aDesdobramentos);
+            $oDirf->processar($oParam->lProcessaEmpenho);
 
-      $oDirf = new Dirf2017($oParam->iAno, $oParam->sCnpj);
+            file_put_contents("tmp/LogDirf.txt", LogDirf::getLog(LogDirf::STR));
+            $oRetorno->aArquivosInconsistentes = array();
 
-      $oDirf->setDesdobramentos($oParam->aDesdobramentos);
-      $oDirf->processar($oParam->lProcessaEmpenho);
+            if ($oDirf->hasInconsistencias()) {
+                $aArquivosInconsistentes = $oDirf->geraArquivoInconsistencias();
+                foreach ($aArquivosInconsistentes as $sArquivoInconsistente) {
+                    $oRetorno->aArquivosInconsistentes[] = urlencode($sArquivoInconsistente);
+                }
+            }
 
-      file_put_contents("tmp/LogDirf.txt", LogDirf::getLog(LogDirf::STR) );
-      $oRetorno->aArquivosInconsistentes = array();
-
-      if ($oDirf->hasInconsistencias()) {
-
-        $aArquivosInconsistentes = $oDirf->geraArquivoInconsistencias();
-        foreach ($aArquivosInconsistentes as $sArquivoInconsistente) {
-
-          $oRetorno->aArquivosInconsistentes[] = urlencode($sArquivoInconsistente);
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->status  = 2;
+            $oRetorno->message = urlencode($eErro->getMessage());
         }
-      }
 
-      db_fim_transacao(false);
+        break;
 
-    } catch (Exception $eErro) {
+    case 'gerarDirf':
+        ini_set("memory_limit", -1);
 
-      db_fim_transacao(true);
-      $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($eErro->getMessage());
-    }
+        $oParam->sNomeResponsavel = db_stdClass::db_stripTagsJson($oParam->sNomeResponsavel);
 
-  break;
+        $iValor = db_formatar((int) $oParam->iValor, 'p');
 
-  case 'gerarDirf':
+        $oDirf = DirfFactory::create($oParam->iAno, $oParam->sCnpj);
 
-    $oParam->sNomeResponsavel = db_stdClass::db_stripTagsJson($oParam->sNomeResponsavel);
+        $oDirf->setValorLimite($iValor);
+        $oDirf->setCodigoArquivo($oParam->sCodigoArquivo);
 
-    $iValor = db_formatar((int) $oParam->iValor,'p');
+        $oDirf->setMatriculas($oParam->aMatriculaSelecionadas);
+        $oRetorno->arquivo = $oDirf->gerarArquivo($oParam, $oParam->lProcessaEmpenho);
 
-    $oDirf = DirfFactory::create($oParam->iAno, $oParam->sCnpj);
+        break;
 
-    $oDirf->setValorLimite($iValor);
-    $oDirf->setCodigoArquivo($oParam->sCodigoArquivo);
+    case "getUnidadesCnpjInvalido":
+        $oRetorno->unidades = Dirf::retornarUnidadesCnpjInvalido();
 
-    $oDirf->setMatriculas($oParam->aMatriculaSelecionadas);
-    $oRetorno->arquivo = $oDirf->gerarArquivo($oParam, $oParam->lProcessaEmpenho);
+        break;
 
-  break;
+    case "getMatriculasDirf":
+        $iValor = db_formatar((int) $oParam->iValor, 'p');
 
-  case "getUnidadesCnpjInvalido":
+        $oDirf = new Dirf($oParam->iAno, $oParam->sCnpj);
+        $oDirf->setValorLimite($iValor);
 
-    $oRetorno->unidades = Dirf::retornarUnidadesCnpjInvalido();
+        $oRetorno->aListaMatriculas = $oDirf->retornaMatriculasDirf($oParam->lProcessaEmpenho, $oParam->sAcima);
 
-  break;
+        break;
 
-  case "getMatriculasDirf":
+    case "verificaProcessamento":
+        $oRetorno->lProcessado = false;
 
-    $iValor = db_formatar((int) $oParam->iValor,'p');
+        if (!empty($oParam->iAno) && !empty($oParam->sFontePagadora)) {
+            $oDaoRhDirfGeracao = new cl_rhdirfgeracao;
 
-    $oDirf = new Dirf($oParam->iAno, $oParam->sCnpj);
-    $oDirf->setValorLimite($iValor);
+            $sSql = $oDaoRhDirfGeracao->sql_query_file(
+                null,
+                "*",
+                null,
+                " rh95_ano = {$oParam->iAno} and rh95_fontepagadora = '{$oParam->sFontePagadora}'"
+            );
+            $rsRhDirfGeracao = db_query($sSql);
 
-    $oRetorno->aListaMatriculas = $oDirf->retornaMatriculasDirf($oParam->lProcessaEmpenho, $oParam->sAcima);
+            if ($rsRhDirfGeracao && pg_num_rows($rsRhDirfGeracao) > 0) {
+                  $oRetorno->lProcessado = true;
+            }
+        }
 
-  break;
+        break;
 
-  case "verificaProcessamento":
-    $oRetorno->lProcessado = false;
+    case 'validarBasesRRA':
+        $oRetorno->avisarfaltabases = false;
+        $oCompetenciaAtual   = DBPessoal::getCompetenciaFolha();
+        $oParametros         = ParametrosPessoalRepository::getParametros($oCompetenciaAtual);
+        $aBases             = array();
+        if (!$oParametros->getBaseRraParcelaIsenta()) {
+            $aBases[] = " - Parcela isenta do RRA";
+        }
 
-    if (!empty($oParam->iAno) && !empty($oParam->sFontePagadora)) {
+        if (!$oParametros->getBaseRraRendimentosTributaveis()) {
+            $aBases[] = " - Rendimentos tributáveis do RRA";
+        }
 
-      $oDaoRhDirfGeracao = db_utils::getDao("rhdirfgeracao");
+        if (!$oParametros->getBaseRraPrevidenciaSocial()) {
+            $aBases[] = " - Previdência Social do RRA";
+        }
 
-      $sSql = $oDaoRhDirfGeracao->sql_query_file( null,
-                                                  "*",
-                                                  null,
-                                                  " rh95_ano = {$oParam->iAno} and rh95_fontepagadora = '{$oParam->sFontePagadora}'" );
-      $rsRhDirfGeracao = db_query($sSql);
+        if (!$oParametros->getBaseRraPensaoAlimenticia()) {
+            $aBases[] = " - Pensão Alimentícia do RRA";
+        }
+        if (!$oParametros->getBaseRraIrrf()) {
+            $aBases[] = " - Imposto Retido RRA";
+        }
 
-      if ($rsRhDirfGeracao && pg_num_rows($rsRhDirfGeracao) > 0) {
-        $oRetorno->lProcessado = true;
-      }
-    }
+        if (count($aBases) > 0) {
+            $sMensagem  = "As Bases abaixo não foram configuradas. Seus valores não serão computados na DIRF.\n";
+            $sMensagem .= implode(",\n", $aBases);
+            $sMensagem .= "\nPara configura-las, acessar a rotina Procedimentos > Manutenção de Parâmetros > Bases Especiais.\n";
+            $sMensagem .= "Deseja continuar o processamento da Dirf?";
 
-  break;
-
-  case 'validarBasesRRA' :
-
-
-    $oRetorno->avisarfaltabases = false;
-    $oCompetenciaAtual   = DBPessoal::getCompetenciaFolha();
-    $oParametros         = ParametrosPessoalRepository::getParametros($oCompetenciaAtual);
-    $aBases             = array();
-    if (!$oParametros->getBaseRraParcelaIsenta()) {
-      $aBases[] = " - Parcela isenta do RRA";
-    }
-
-    if (!$oParametros->getBaseRraRendimentosTributaveis()) {
-      $aBases[] = " - Rendimentos tributáveis do RRA";
-    }
-
-    if (!$oParametros->getBaseRraPrevidenciaSocial()) {
-      $aBases[] = " - Previdência Social do RRA";
-    }
-
-    if (!$oParametros->getBaseRraPensaoAlimenticia()) {
-      $aBases[] = " - Pensão Alimentícia do RRA";
-    }
-    if (!$oParametros->getBaseRraIrrf()) {
-      $aBases[] = " - Imposto Retido RRA";
-    }
-
-    if (count($aBases) > 0) {
-
-      $sMensagem  = "As Bases abaixo não foram configuradas. Seus valores não serão computados na DIRF.\n";
-      $sMensagem .= implode(",\n", $aBases);
-      $sMensagem .= "\nPara configura-las, acessar a rotina Procedimentos > Manutenção de Parâmetros > Bases Especiais.\n";
-      $sMensagem .= "Deseja continuar o processamento da Dirf?";
-
-      $oRetorno->avisarfaltabases = true;
-      $oRetorno->message          = urlencode($sMensagem);
-
-    }
-    break;
-
+            $oRetorno->avisarfaltabases = true;
+            $oRetorno->message          = urlencode($sMensagem);
+        }
+        break;
 }
 
 echo $oJson->encode($oRetorno);

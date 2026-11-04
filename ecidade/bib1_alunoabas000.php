@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ function NomeAluno($aluno){
 <table valign="top" marginwidth="0" width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php
    $clcriaabas->identifica = array("a1"=>"Dados Pessoais","a2"=>"Documentos");
    $clcriaabas->sizecampo  = array("a1"=>"15","a2"=>"10");
    $clcriaabas->src        = array("a1"=>"bib1_alunodados002.php?leitor&chavepesquisa=$chavepesquisa","a2"=>"");

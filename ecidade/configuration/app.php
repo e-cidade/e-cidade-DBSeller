@@ -120,9 +120,10 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
-
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
+//     Criado arquivo em logging.php conforme especificação laravel 5.6 upgrade
+//    'log' => env('APP_LOG', 'single'),
+//
+//    'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
     /*
     |--------------------------------------------------------------------------
@@ -173,20 +174,20 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         // App\Providers\QueryLoggerProvider::class,
         App\Providers\QueueServiceProvider::class,
-
+        App\Providers\CustomValidationProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        //Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Domain Service Providers...
          */
         App\Domain\Patrimonial\Providers\PatrimonialServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
     ],
 
     /*

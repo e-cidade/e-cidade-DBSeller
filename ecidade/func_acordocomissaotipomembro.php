@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clacordocomissaotipomembro->rotulo->label("ac42_descricao");
               <?=$Lac42_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ac42_sequencial",10,$Iac42_sequencial,true,"text",4,"","chave_ac42_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clacordocomissaotipomembro->rotulo->label("ac42_descricao");
               <?=$Lac42_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ac42_descricao",100,$Iac42_descricao,true,"text",4,"","chave_ac42_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clacordocomissaotipomembro->rotulo->label("ac42_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_acordocomissaotipomembro.php")==true){
@@ -122,12 +122,12 @@ $clacordocomissaotipomembro->rotulo->label("ac42_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

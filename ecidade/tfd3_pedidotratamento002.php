@@ -90,7 +90,7 @@ var o
  * Monta a grid coms os dados dos Tratamentos do Pedido TFD
  * @type {DBGrid}
  */
-var aDadosTratamentos = <? echo $aJsonTratamentos?>;
+var aDadosTratamentos = <?php echo $aJsonTratamentos?>;
 var oGridTratamentos  = new DBGrid( 'oGridTratamentos' );
 
 var aHeaders    = [ 'Tipo', 'Código', 'Tratamento' ];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -57,7 +57,7 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
          <td align="right"><b>Data Arquivo :</b></td>
          <td >
-          <?
+          <?php
             $sDataArquio = explode("/",date("d/m/Y",db_getsession('DB_datausu')));
             $iDiaArquivo = $sDataArquio[0];
             $iMesArquivo = $sDataArquio[1];
@@ -69,7 +69,7 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
          <td align="right"><b>Intervalo Geração :</b></td>
          <td >
-          <?
+          <?php
             db_inputdata('datai',@$datai_dia,@$datai_mes,@$datai_ano,true,'text',1,"");
             echo " à "; 
             db_inputdata('dataf',@$dataf_dia,@$dataf_mes,@$dataf_ano,true,'text',1,"");
@@ -82,7 +82,7 @@ db_postmemory($HTTP_POST_VARS);
             <b>Código Empresa :</b>
          </td>
          <td> 
-							<?
+							<?php
 							   //db_input('ht15_sequencial',6,false,'','text',3," onchange='js_pesquisaInscricao(false);'");
 			           db_input('cod_empresa', 10, '', '', 'text', 1, '');
 			       ?>          
@@ -93,13 +93,13 @@ db_postmemory($HTTP_POST_VARS);
             <b>Código Município :</b>
          </td>
          <td> 
-              <?
+              <?php
                  db_input('cod_municipio', 10, '', '', 'text', 1, '');
              ?>          
          </td>
       </tr>      
 
-          <?
+          <?php
              $oTipoResumo = new cl_formulario_rel_pes;
 					   
              $oTipoResumo->usaregi = true;
@@ -124,7 +124,7 @@ db_postmemory($HTTP_POST_VARS);
 </form>   
 
 </center>   
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>
 <script>

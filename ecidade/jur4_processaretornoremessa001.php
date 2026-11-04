@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -80,69 +80,69 @@ db_app::load("strings.js");
 if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
 
 	try {
-	
+
 		/*
 	   * Verificamos se o arquivo de remessa já teve arquivo de retorno processado
 	   */
 	  $oCertidArqRetorno->sql_record($oCertidArqRetorno->sql_query_file(null,"v84_sequencial", null, " v84_certidarqremessa = {$oPost->iArqRemessa}"));
 	  if ($oCertidArqRetorno->numrows > 0) {
 	    throw new Exception(_M('tributario.juridico.jur4_processaretornoremessa001.arquivo_processado'));
-	  } 
-	
+	  }
+
 	  $sNomeArq           = $oFile->arquivo['name'];
 	  $dDataArquivo       = implode("-", array_reverse(explode("/",trim($oPost->v84_dtarquivo))));
 	  $dDataProcessamento = date("Y-m-d",db_getsession('DB_datausu'));
-		
-	  $oDBLayoutReader = new DBLayoutReader(97,$oFile->arquivo['tmp_name'],true,true,true);   
+
+	  $oDBLayoutReader = new DBLayoutReader(97,$oFile->arquivo['tmp_name'],true,true,true);
 	  $aLinhasArquivo  = $oDBLayoutReader->getLines();
-	
+
 	  foreach ( $aLinhasArquivo as $iIndLinha => $oLinha ) {
-			
+
 		  $aRegistros    = new stdClass();
-		  
+
 			$sNomeLinha  = $oLinha->getNomeLinha();
 		  if ($sNomeLinha == 'fixo_1') {
-	      
+
 	      $iDtCitacaoDia = substr($oLinha->data_citacao,0,2);
         $iDtCitacaoMes = substr($oLinha->data_citacao,2,2);
         $iDtCitacaoAno = substr($oLinha->data_citacao,4,4);
         $dData_citacao =  $iDtCitacaoAno . "-" . $iDtCitacaoMes . "-" . $iDtCitacaoDia;
-	      
+
 	    }
-	    		
+
 			if ($sNomeLinha == 'fixo_2') {
-				
+
 				$iDtDistribuicaoDia = substr($oLinha->data_distribuicao,0,2);
         $iDtDistribuicaoMes = substr($oLinha->data_distribuicao,2,2);
         $iDtDistribuicaoAno = substr($oLinha->data_distribuicao,4,4);
         $dDataDistribuicao  =  $iDtDistribuicaoAno . "-" . $iDtDistribuicaoMes . "-" . $iDtDistribuicaoDia;
-				
-				$aRegistros->v71_data         = $dData_citacao;  
+
+				$aRegistros->v71_data         = $dData_citacao;
 				$aRegistros->v70_codforo      = $oLinha->numero_processo_tj;
 				$aRegistros->v70_vara         = $oLinha->vara;
 				$aRegistros->v70_data         = $dDataDistribuicao;
 				$aRegistros->v70_valorinicial = str_replace(",",".",$oLinha->valor_total_causa);
 				$aRegistros->v70_cartorio     = $oLinha->cartorio;
 	      $aRegistros->v70_observacao   = $oLinha->mensagem;
-	      			
+
 				$aCodigoProcesso              = explode('/', $oLinha->codigo_processo);
 	      $aRegistros->v71_inicial      = $aCodigoProcesso[0];
-	
+
 				$aDados[] = $aRegistros;
 			}
-			
+
 		}
-		 
+
     db_inicio_transacao();
 		foreach ($aDados as $oDados) {
-			
+
 			/**
 			 * Verificamos se o numero do processo existe cadastrado
 			 */
 			$sSqlProcessoForo = $oProcessoForo->sql_query_file(null, "v70_sequencial,v70_codforo", "v70_sequencial", " trim(v70_codforo) = '{$oDados->v70_codforo}' ");
 			$rsProcessoForo   = $oProcessoForo->sql_record($sSqlProcessoForo);
 			if ($oProcessoForo->numrows == 0) {
-				
+
 				// proximo sequencial da processoforo
 	      $oProcessoForo->v70_codforo             = $oDados->v70_codforo;
 	      $oProcessoForo->v70_processoforomov     = "null";
@@ -158,18 +158,18 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
 	      if ($oProcessoForo->erro_status=="0"){
 	        throw new Exception($oProcessoForo->erro_msg);
 	      }
-	      
+
 			}	else {
-				
+
 				$oProcessoForo->v70_sequencial   = db_utils::fieldsMemory($rsProcessoForo,0)->v70_sequencial;
 				$oProcessoForo->v70_valorinicial = "(v70_valorinicial+$oDados->v70_valorinicial)";
 				$oProcessoForo->alterar($oProcessoForo->v70_sequencial);
 			  if ($oProcessoForo->erro_status=="0"){
           throw new Exception($oProcessoForo->erro_msg);
         }
-				
+
 			}
-			
+
 	    $oProcessoForoInicial->v71_id_usuario   = db_getsession("DB_id_usuario");
 	    $oProcessoForoInicial->v71_inicial      = $oDados->v71_inicial;
 		  $oProcessoForoInicial->v71_processoforo = $oProcessoForo->v70_sequencial;
@@ -179,9 +179,9 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
 		  if ($oProcessoForoInicial->erro_status=="0"){
 		    throw new Exception($oProcessoForoInicial->erro_msg);
 		  }
-		
+
 		}
-		
+
 	  // Dados para incluir  na certidarqretorno o arquivo processado
 	  $oCertidArqRetorno->v84_certidarqremessa = $oPost->iArqRemessa;
 	  $oCertidArqRetorno->v84_nomearq          = $sNomeArq;
@@ -194,7 +194,7 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
 
 	  db_msgbox(_M('tributario.juridico.jur4_processaretornoremessa001.retorno_processado_sucesso'));
 	  db_fim_transacao(false);
-	        
+
 	} catch ( Exception $eException ) {
 	  db_msgbox($eException->getMessage());
 		db_fim_transacao(true);
@@ -220,10 +220,10 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
       <table class="form-container">
         <tr>
           <td title="<?=@$Tk60_codigo?>" >
-            <?db_ancora("Arquivo de Remessa:", "js_pesquisaremessa(true);", 4);?>
+            <?php db_ancora("Arquivo de Remessa:", "js_pesquisaremessa(true);", 4);?>
           </td>
           <td>
-            <?
+            <?php
               db_input("iArqRemessa",  4, $Ik60_codigo, true, "text", 3, "onchange='js_pesquisaremessa(false);'");
               db_input("v83_nomearq",  38, $Ik60_descr,  true, "text", 3, "");
             ?>
@@ -234,15 +234,15 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
             Arquivo de Retorno:
           </td>
           <td>
-           <? db_input("arquivo",  40, null,  true, "file", 3, "onchange='js_habilita();'"); ?>
+           <?php db_input("arquivo",  40, null,  true, "file", 3, "onchange='js_habilita();'"); ?>
           </td>
-        </tr>        
+        </tr>
       </table>
-    </fieldset> 
+    </fieldset>
     <input type="submit" id="sArqRetorno"  value="Procesar" >
-    <? db_input("v84_dtarquivo",  10, "",  true, "hidden", 3, "");?>
+    <?php db_input("v84_dtarquivo",  10, "",  true, "hidden", 3, "");?>
   </form>
-<? 
+<?php
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

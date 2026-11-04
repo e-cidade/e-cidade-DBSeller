@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -123,7 +123,7 @@ function js_marca(obj){
 <tr><td width='20%' valign='top' height='100%' rowspan='2'>
   <a class='selecionados' onclick='js_marca(this);this.blur()' href='iss3_issnotaavusatomador.php?q51_sequencial=<?=$get->q51_sequencial;?>' target='dados'><b>Tomador</b></a>
   <a class='dados' onclick='js_marca(this);this.blur()' href='iss3_issnotaavusaservicosprestados.php?q51_sequencial=<?=$get->q51_sequencial;?>' target='dados'><b>Serviços Prestados</b></a>
-  <?
+  <?php
    if ($oNota->q52_numpre != null){
     echo "<a class='dados' onclick='js_marca(this);this.blur()'
              href='iss3_issnotaavulsasituacao.php?q51_sequencial=".$get->q51_sequencial."'

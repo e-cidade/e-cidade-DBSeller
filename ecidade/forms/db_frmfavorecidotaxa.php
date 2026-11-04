@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("v86_contabancaria");
        <?=@$Lv87_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v87_sequencial',10,$Iv87_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv87_favorecido?>">
-       <?
+       <?php
        db_ancora(@$Lv87_favorecido,"js_pesquisav87_favorecido(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v87_favorecido',10,$Iv87_favorecido,true,'text',$db_opcao," onchange='js_pesquisav87_favorecido(false);'")
 ?>
-       <?
+       <?php
 db_input('v86_contabancaria',10,$Iv86_contabancaria,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv87_taxa?>">
-       <?
+       <?php
        db_ancora(@$Lv87_taxa,"js_pesquisav87_taxa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v87_taxa',10,$Iv87_taxa,true,'text',$db_opcao," onchange='js_pesquisav87_taxa(false);'")
 ?>
-       <?
+       <?php
 db_input('ar36_sequencial',10,$Iar36_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_favorecidotaxa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

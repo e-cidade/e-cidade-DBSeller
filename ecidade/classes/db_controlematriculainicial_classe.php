@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE controlematriculainicial
 class cl_controlematriculainicial { 
@@ -28,13 +28,13 @@ class cl_controlematriculainicial {
                  ed135_quantidadedias = int4 = Quantidade de Dias 
                  ";
    //funcao construtor da classe 
-   function cl_controlematriculainicial() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("controlematriculainicial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_controlematriculainicial {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed135_sequencial = ($this->ed135_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed135_sequencial"]:$this->ed135_sequencial);
        $this->ed135_anoinicial = ($this->ed135_anoinicial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed135_anoinicial"]:$this->ed135_anoinicial);
@@ -54,7 +54,7 @@ class cl_controlematriculainicial {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed135_sequencial){ 
+   public function incluir ($ed135_sequencial){ 
       $this->atualizacampos();
      if($this->ed135_anoinicial == null ){ 
        $this->erro_sql = " Campo Ano Inicial não informado.";

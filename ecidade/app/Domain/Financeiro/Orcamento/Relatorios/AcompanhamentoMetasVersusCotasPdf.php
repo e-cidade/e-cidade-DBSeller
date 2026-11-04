@@ -28,4 +28,9 @@ class AcompanhamentoMetasVersusCotasPdf extends MetasVersusCotasPdf
 
         $this->wValores = $this->wValor + $this->wPercentual;
     }
+
+    protected function getTituloPlano()
+    {
+        return '';
+    }
 }

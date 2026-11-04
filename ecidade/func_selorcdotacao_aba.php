@@ -25,33 +25,33 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_utils.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("libs/db_liborcamento.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_orcdotacao_classe.php"));
-include(modification("classes/db_orctiporec_classe.php"));
-include(modification("classes/db_orcelemento_classe.php"));
-include(modification("classes/db_db_config_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("libs/db_liborcamento.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 
 $cldb_config = new cl_db_config;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_SERVER);
 
-$clempresto = new cl_empresto();
+$clorcdotacao   = new cl_orcdotacao;
+$clorcelemento = new cl_orcelemento;
+$clorctiporec  = new cl_orctiporec;
+$clempresto  = new cl_empresto();
 
 $anosFiltro = [];
+$anouso = db_getsession("DB_anousu");
 if (isset($restos) && $restos == 'true') {
     $sqlRAP = $clempresto->sql_query_empenho(
         null,
         null,
         "distinct(empempenho.e60_anousu)",
         '1',
-        'e91_anousu = ' . db_getsession("DB_anousu")
+        'e91_anousu = ' . $anouso
     );
     $resultRAP = db_query($sqlRAP);
 
@@ -59,7 +59,7 @@ if (isset($restos) && $restos == 'true') {
         $anosFiltro[] = $ano['e60_anousu'];
     }
 }
-$anosFiltro[] = db_getsession("DB_anousu");
+$anosFiltro[] = $anouso;
 
 // recebe a variavel db_input_retorno com o nome do objeto que será atualizado com os dados selecionados
 // se for prefeitura, traz todas as informações, caso contrario traz informações da instituição
@@ -75,13 +75,13 @@ if (isset($instit) && trim(@$instit)=="") {
         }
     }
 
-     $array_instit = array();
+     $array_instit = [];
      $sep = '';
      $instit = '';
     if ($usa_instit == true) {
          $instit= db_getsession("DB_instit");
         // recebeu instituição
-         $array_instit = split(',', $instit);
+         $array_instit =explode(',', $instit);
     } else {
        // todas instituições
         $rr = $cldb_config->sql_record($cldb_config->sql_query_file(null, "codigo"));
@@ -97,7 +97,7 @@ if (isset($instit) && trim(@$instit)=="") {
 
 $instit = str_replace("-", ",", @$instit);
 $instit = (!isset($instit)||trim($instit)=='')?'NULL':$instit;
-$array_instit = split(',', $instit);
+$array_instit =explode(',', $instit);
 $sel_orgaos = " o58_instit in ($instit) ";
 
 $porgao   = "";
@@ -108,11 +108,13 @@ $pprograma   = "";
 $pprojativ   = "";
 $pelemento   = "";
 $precurso    = "";
+$plocalizadorgastos = "";
+
 $ploaespecificacao = "";
 // caso seja informado dotação na tela, o sistema pesquisa a dotação
 if (isset($codigo_dot) && $codigo_dot!="") {
-    $res = db_dotacaosaldo(8, 2, 3, true, "o58_coddot=$codigo_dot", db_getsession("DB_anousu"), db_getsession("DB_anousu").'-01-01', db_getsession("DB_anousu").'-01-01');
-    if (pg_numrows($res)>0) {
+    $res = db_dotacaosaldo(8, 2, 3, true, "o58_coddot=$codigo_dot", $anouso, $anouso .'-01-01', $anouso .'-01-01');
+    if (pg_num_rows($res)>0) {
         db_fieldsmemory($res, 0);
         $porgao   = $o58_orgao;
         $punidade = $o58_unidade;
@@ -121,7 +123,8 @@ if (isset($codigo_dot) && $codigo_dot!="") {
         $pprograma  = $o58_programa;
         $pprojativ  = $o58_projativ;
         $pelemento  = $o58_elemento;
-        $precurso   = $o58_codigo;
+        $precurso   = $gestao;
+        $plocalizadorgastos = $o58_localizadorgastos;
     }
 }
 
@@ -136,691 +139,1252 @@ $clpermusuario_dotacao =  new cl_permusuario_dotacao(
     $instit
 );
 
-$orgaos_liberados = array();
+$orgaos_liberados = [];
 
 if ($clpermusuario_dotacao->sql!="") {
-       $result = db_query($clpermusuario_dotacao->orgaos);
-      // db_criatabela($result);
-    if (pg_numrows($result)>0) {
-        for ($x=0; $x < pg_numrows($result); $x++) {
+    $result = db_query($clpermusuario_dotacao->orgaos);
+    if (pg_num_rows($result)>0) {
+        for ($x=0; $x < pg_num_rows($result); $x++) {
               db_fieldsmemory($result, $x);
               $orgaos_liberados[$o40_orgao]=$o40_orgao;
         }
     }
 }
-//print_r($orgaos_liberados);
 
-?>
-<html>
+?> <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="estilos.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/classes/DBViewFiltroRecursos.classe.js"></script>
-<script type="text/javascript">
-  var desdobramentos = [];
-
-  function setDesdobramento(event) {
-    var target = event.target;
-    var valor = target.value;
-    var index = desdobramentos.indexOf(valor);
-
-    if (target.checked && index < 0) {
-      desdobramentos.push(parseInt(valor));
-    } else {
-      desdobramentos.splice(index, 1);
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/classes/DBViewFiltroRecursos.classe.js">
+    </script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
+    <style>
+    table.tableOpcoesFiltros {
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #EEE;
+        border: 1px solid threedshadow;
+        padding: 15;
     }
-  }
 
-  /**
- * Atualiza a pagina com base na intituição
- * @param  {Array} aInsituicao
- * @param  {boolean} lDesdobrar
- */
-function atualizarPaginaParametros(aInstituicoes, lDesdobramento, lRestosAPagar) {
-  var sInstituicoes = aInstituicoes.join('-');
-
-  if (sInstituicoes != document.form1.db_selinstit.value) {
-    var query = "instit=" + sInstituicoes + "&db_selinstit=" + sInstituicoes;
-
-      if (lDesdobramento) {
-
-          query += "&desdobramento=true";
-          document.form1.desdobramento.value = "true";
-      }
-      if (lRestosAPagar) {
-          query += "&restos=true";
-      }
-
-    document.form1.db_selinstit.value = sInstituicoes;
-    location.href = "func_selorcdotacao_aba.php?" + query;
-  }
-}
-
-function js_atualizar_instit(){
-  obj = parent.iframe_g1.document.form1.db_selinstit;
-
-  if (obj.value != document.form1.db_selinstit.value){
-       var query = "instit="+obj.value+"&db_selinstit="+obj.value;
-
-       if (parent.iframe_g1.document.form1.desdobramento){
-         query += "&desdobramento=true";
-         document.form1.desdobramento.value = "true";
-       }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const restos = urlParams.get('restos');
-        query += `&restos=${restos}`;
-
-       document.form1.db_selinstit.value = obj.value;
-       location.href='func_selorcdotacao_aba.php?'+query;
-  }
-}
-
-function js_atualiza_instit(){
-  ob = document.forminstit.elements;
-  lista='';
-  virgula='';
-  for(i=0;i< ob.length;i++){
-    if(ob[i].type=='checkbox'){
-      if(ob[i].checked==true){
-        subname = ob[i].name.substr(7,ob[i].name.length);
-        lista = subname+virgula+lista;
-    virgula=',';
-      }
+    .divFiltro {
+        position: absolute;
+        visibility: hidden;
+        width: 100%;
     }
-  }
-  location.href='func_selorcdotacao_aba.php?instit='+lista;
-//  alert(lista);
-}
-function js_marca_todos(tipoacao){
-  if(document.getElementById('div_orgao').style.visibility == 'visible'){
-    objetos = document.formorgao.elements;
-    camada  = 'orgao';
-  }
-  if(document.getElementById('div_unidade').style.visibility == 'visible'){
-    objetos = document.formunidade.elements;
-     camada  = 'unidade';
-  }
-  if(document.getElementById('div_funcao').style.visibility == 'visible'){
-    objetos = document.formfuncao.elements;
-      camada  = 'funcao';
-  }
-  if(document.getElementById('div_subfuncao').style.visibility == 'visible'){
-    objetos = document.formsubfuncao.elements;
-     camada  = 'subfuncao';
-  }
-  if(document.getElementById('div_programa').style.visibility == 'visible'){
-    objetos = document.formprograma.elements;
-     camada  = 'programa';
-  }
-  if(document.getElementById('div_projativ').style.visibility == 'visible'){
-    objetos = document.formprojativ.elements;
-     camada  = 'projativ';
-  }
-  if(document.getElementById('div_elemento').style.visibility == 'visible'){
-    objetos = document.formele.elements;
-     camada  = 'elemento';
-  }
-  if(document.getElementById('div_desdobramento').style.visibility == 'visible'){
-    objetos = document.formdes.elements;
-     camada  = 'desdobramento';
-  }
-  if(document.getElementById('div_recurso').style.visibility == 'visible'){
-    objetos = document.formrecurso.elements;
-    camada  = 'recurso';
-  }
-  /*
-  if(document.getElementById('div_instit').style.visibility == 'visible'){
-    objetos = document.forminstit.elements;
-    camada  = 'instit';
-  }*/
 
-
-  js_troca(objetos,tipoacao);
-
-  //for(i=0;i<objetos.length;i++){
-  //  js_atualiza_variavel_retorno(camada,objetos[i]);
-  //}
-
-}
-function js_marca_geral(tipoacao){
-
-  objetos = document.formorgao.elements;
-  js_troca(objetos,tipoacao);
-  objetos = document.formunidade.elements;
-  js_troca(objetos,tipoacao);
-  objetos = document.formfuncao.elements;
-  js_troca(objetos,tipoacao);
-  objetos = document.formsubfuncao.elements;
-  js_troca(objetos,tipoacao);
-  objetos = document.formprograma.elements;
-  js_troca(objetos,tipoacao);
-  objetos = document.formprojativ.elements;
-  js_troca(objetos,tipoacao);
-  objetos = document.formele.elements;
-  js_troca(objetos,tipoacao);
-    objetos = document.formdes.elements;
-  js_troca(objetos,tipoacao);
-  objetos = document.formrecurso.elements;
-  js_troca(objetos,tipoacao);
-  // objetos = document.forminstit.elements;
-  // js_troca(objetos,tipoacao);
-
-}
-
-function js_troca(objetos,tipoacao){
-  for(i=0;i<objetos.length;i++){
-    if ( objetos[i].disabled == false ){
-      objetos[i].checked = tipoacao;
+    table.tableRegistros {
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid threedshadow;
+        background-color: #EEE;
+        border-spacing: 0;
+        min-width: 850px;
     }
-  }
 
-}
-
-function js_marca_orgaos(tipo){
-  if(tipo=='orgao')
-    document.getElementById('div_orgao').style.visibility = document.getElementById('div_orgao').style.visibility='visible';
-  else
-    document.getElementById('div_orgao').style.visibility = document.getElementById('div_orgao').style.visibility='hidden';
-  if(tipo=='unidade')
-     document.getElementById('div_unidade').style.visibility = document.getElementById('div_unidade').style.visibility='visible';
-  else
-     document.getElementById('div_unidade').style.visibility = document.getElementById('div_unidade').style.visibility='hidden';
-  if(tipo=='funcao')
-     document.getElementById('div_funcao').style.visibility = document.getElementById('div_funcao').style.visibility='visible';
-  else
-     document.getElementById('div_funcao').style.visibility = document.getElementById('div_funcao').style.visibility='hidden';
-  if(tipo=='subfuncao')
-    document.getElementById('div_subfuncao').style.visibility = document.getElementById('div_subfuncao').style.visibility='visible';
-  else
-    document.getElementById('div_subfuncao').style.visibility = document.getElementById('div_subfuncao').style.visibility='hidden';
-  if(tipo=='programa')
-    document.getElementById('div_programa').style.visibility = document.getElementById('div_programa').style.visibility='visible';
-  else
-    document.getElementById('div_programa').style.visibility = document.getElementById('div_programa').style.visibility='hidden';
-  if(tipo=='projativ')
-    document.getElementById('div_projativ').style.visibility = document.getElementById('div_projativ').style.visibility='visible';
-  else
-    document.getElementById('div_projativ').style.visibility = document.getElementById('div_projativ').style.visibility='hidden';
-  if(tipo=='elemento')
-    document.getElementById('div_elemento').style.visibility = document.getElementById('div_elemento').style.visibility='visible';
-  else
-    document.getElementById('div_elemento').style.visibility = document.getElementById('div_elemento').style.visibility='hidden';
-  if(tipo=='desdobramento')
-    document.getElementById('div_desdobramento').style.visibility = document.getElementById('div_desdobramento').style.visibility='visible';
-  else
-    document.getElementById('div_desdobramento').style.visibility = document.getElementById('div_desdobramento').style.visibility='hidden';
-
-  if(tipo=='recurso')
-    document.getElementById('div_recurso').style.visibility = document.getElementById('div_recurso').style.visibility='visible';
-  else
-    document.getElementById('div_recurso').style.visibility = document.getElementById('div_recurso').style.visibility='hidden';
-  if(tipo=='instit')
-    document.getElementById('div_instit').style.visibility = document.getElementById('div_instit').style.visibility='visible';
-  else
-    document.getElementById('div_instit').style.visibility = document.getElementById('div_instit').style.visibility='hidden';
-
-
-
-}
-function js_despesas(desp,valor){
-  elementodesp = document.formele.elements;
-  for(i=0;i<elementodesp.length;i++){
-    if(elementodesp[i].name.substr(0,3)==desp){
-      if(valor){
-        elementodesp[i].checked = true;
-      }else{
-        elementodesp[i].checked = false;
-      }
+    table.tableRegistros tr:hover {
+        background: #D7E4EA !important;
     }
-  }
-}
 
-function js_atualiza_variavel_retorno(div_camada,objeto){
-  if(objeto.checked == true ){
-    document.form1.db_input_retorno.value = document.form1.db_input_retorno.value + div_camada + '_' + objeto.value + '-';
-  }else{
-    var retira = document.form1.db_input_retorno.value.split('-');
-    document.form1.db_input_retorno.value = null ;
-    for(i=0;i<retira.length;i++){
-      if( retira[i] != div_camada + '_' + objeto.value ){
-    if(retira[i]!='')
-          document.form1.db_input_retorno.value = document.form1.db_input_retorno.value + retira[i] + '-';
-      }
+    table.tableRegistros th {
+        background-color: #CCC;
+        height: 30px;
     }
-  }
-}
 
-function js_retorno(div_camada){
+    table.tableRegistro td {
+        height: 30px;
+    }
 
- obj = div_cama.elements;
- for(i=0;i<sizeof(obj);i++){
-   if(obj[i].checked == true){
-      document.form1.db_input_retorno.value = document.form1.db_input_retorno.value + div_camada + '_' + obj[i].value + '-'
-   }
- }
-}
+    .tdCheck {
+        width: 20px;
+        text-align: center;
+        border-bottom: 1px solid threedshadow;
+    }
 
-function js_atualiza_variavel_retorno(objeto){
+    .tdId {
+        width: 35px;
+        text-align: center;
+        border-bottom: 1px solid threedshadow;
+    }
 
-    var camada = ['instit', 'orgao', 'unidade', 'funcao', 'subfuncao', 'programa', 'projativ', 'ele', 'des', 'recurso'];
-    selecionados = '';
-    for (var i=0;i<camada.length;i++){
+    .tdId2 {
+        width: 140px;
+        text-align: center;
+        border-bottom: 1px solid threedshadow;
+    }
 
-      if (camada[i] == 'recurso' && filtroPorFonteUniao) {
+    .tdDescricao {
+        min-width: 250px;
+        text-align: "left";
+        font-weight: bold;
+        border-bottom: 1px solid threedshadow;
+    }
 
-          if (filtroRecursos.getListaRecursos() != '') {
+    .tdCheckAgrupador {
+        width: 20px;
+        text-align: center;
+        border-left: 1px solid threedshadow;
+        border-bottom: 1px solid threedshadow;
+        background-color: #FFF;
+    }
 
-              var recursos = filtroRecursos.getListaRecursos().replace(',', '-recurso_');
-              selecionados = selecionados + camada[i] + '_' + recursos;
-          }
-          continue;
-      }
-
-      var qcamada = eval('document.form'+camada[i]+'.elements');
-      for (var ii=0;ii<qcamada.length;ii++){
-         if (qcamada[ii].checked==true)
-           selecionados = selecionados + camada[i] + '_' + qcamada[ii].value + '-';
-      }
-  }
-  if(selecionados != ''){
-   return selecionados;
-  }else{
-    return 'geral';
-  }
-}
-
-</script>
-
-
+    .tdDescricaoAgrupador {
+        min-width: 250px;
+        text-align: "left";
+        font-weight: bold;
+        border-bottom: 1px solid threedshadow;
+        background-color: #FFF;
+    }
+    </style>
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table border="1"  align="center" cellspacing="1" bgcolor="#CCCCCC">
- <tr>
-    <td valign="middle">
-      <form name="form1" method="post">
-       <?php
-          db_input("db_selinstit", 10, 0, true, "hidden", 3);
 
-        if (isset($desdobramento) && $desdobramento == true) {
-            db_input("desdobramento", 10, 0, true, "hidden", 3);
-        }
-        ?>
-
-       <input id="marca" type="button" value="Marca Todos" onclick="js_marca_todos(true);return false" >
-       <input id="desmarca" type="button" value="Desmarca Todos" onclick="js_marca_todos(false);return false" > &nbsp&nbsp&nbsp&nbsp&nbsp
-       <input id="geralmarca" type="button" value="Marca Geral" onclick="js_marca_geral(true);return false" >
-       <input id="geraldesmarca" type="button" value="Desmarca Geral" onclick="js_marca_geral(false);return false" >&nbsp&nbsp&nbsp&nbsp&nbsp
-        <!--  <input id="instituicao" type="button" value="Instituições" onclick="js_marca_orgaos('instit');return false" > -->
-       <b>Dotação:</b>
-          <input type=text name=codigo_dot size=8 value="">
-      <input type=submit name=pesquisa_dot value=Seleciona>
-      </form>
-    </td>
-
-  </tr>
- <tr>
-    <td colspan="3" valign="middle">
-      <input id="orgaos" type="button" value="Orgãos" onclick="js_marca_orgaos('orgao');return false" >
-      <input id="unidade" type="button" value="Unidade" onclick="js_marca_orgaos('unidade');return false" >
-      <input id="funcao" type="button" value="Função" onclick="js_marca_orgaos('funcao');return false" >
-      <input id="subfuncao" type="button" value="Sub-Função" onclick="js_marca_orgaos('subfuncao');return false" >
-      <input id="programa" type="button" value="Programa" onclick="js_marca_orgaos('programa');return false" >
-      <input id="prjativ" type="button" value="Proj/Atividade" onclick="js_marca_orgaos('projativ');return false" >
-      <input id="elemento" type="button" value="Elemento" onclick="js_marca_orgaos('elemento');return false" >
-      <?php  if (isset($desdobramento) && $desdobramento==true) {  ?>
-                 <!-- não exibe opção de desdobramento -->
-                 <input id="desdobramento" type="button" value="Desdobramento" onclick="js_marca_orgaos('desdobramento');return false" >
-      <?php  }  ?>
-      <input id="recurso" type="button" value="Recurso" onclick="js_marca_orgaos('recurso');return false" >
-    </td>
-  </tr>
-
-  <?php
-    $clorcdotacao   = new cl_orcdotacao;
-    $clorcelemento = new cl_orcelemento;
-    $clorctiporec  = new cl_orctiporec;
-    ?>
-  </table>
-  <table>
-  <tr>
-  <td align='center'>
-
-  <form name="formorgao" action="post">
-  <div id='div_orgao' style='position:absolute; visibility:hidden;width:100%;margin-top: 10px;'>
-   <table border=1 cellspacing=0>
-     <?php
-     $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct on (o58_orgao) o58_orgao,orcorgao.o40_descr","o58_orgao, o58_anousu DESC"," $sel_orgaos "));
-     for($i=0;$i<$clorcdotacao->numrows;$i++){
-       db_fieldsmemory($result,$i);
-
-            if (isset($orgaos_liberados[$o58_orgao]) || (isset($restos) && $restos == 'true')) {
-            ?>
-            <tr>
-            <td align='right'><input type='checkbox' name='orgao_<?=$o58_orgao?>' value='<?=$o58_orgao?>'<?=($porgao==$o58_orgao?"checked":"") ?> checked ></td>
-            <td align='right'><?=$o58_orgao?></td>
-            <td align='left' ><strong><?=$o40_descr?></strong></td>
-            <tr>
+<body>
+    <div class="div-container">
+        <form name="form1" method="post">
             <?php
-            } else {
+            db_input("db_selinstit", 10, 0, true, "hidden", 3);
+            if (isset($desdobramento) && $desdobramento == true) {
+                db_input("desdobramento", 10, 0, true, "hidden", 3);
+            }
             ?>
-            <tr>
-            <td align='right'><input type='checkbox' name='orgao_<?=$o58_orgao?>' value='<?=$o58_orgao?>'<?=($porgao==$o58_orgao?"checked":"") ?> disabled ></td>
-            <td align='right'><?=$o58_orgao?></td>
-            <td align='left' ><strong><?=$o40_descr?> </strong><font color=blue >(Sem Permissão)</font></td>
-            <tr>
-            <?php
-            }
-        }
-        ?>
-   </table>
-  </div>
-  </form>
-  <form name="formunidade" action="post">
-  <div id='div_unidade' style='position:absolute; visibility:hidden;width:100%'>
-   <table border=1 cellspacing=0 >
-    <?php
-    $sql = $clorcdotacao->sql_query(null, null, " distinct on (o58_orgao,o58_unidade) o58_orgao,orcorgao.o40_descr,o58_unidade,orcunidade.o41_descr", "o58_orgao,o58_unidade,o58_anousu DESC", " o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos ");
-    $result = $clorcdotacao->sql_record($sql);
+            <table class="tableOpcoesFiltros">
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="button"
+                                   id="geralmarca"
+                                   value="Marcar Geral"
+                                   onclick="js_marca_geral();">
+                        </td>
+                        <td style="text-align:right;">
+                            <?php db_ancora("Dotação", "pesquisaDotacao();", 1); ?>
+                            <input type='text'
+                                   id='codigo_dot'
+                                   name='codigo_dot'
+                                   value='<?=(isset($codigo_dot)?$codigo_dot:"")?>''
+                                   size='8'>
+                            <input type='submit' id='pesquisa_dot' name='pesquisa_dot' value='Seleciona'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="tdOpcaoFiltros">
+                            <input type="button"
+                                   id="orgaos"
+                                   value="Orgãos"
+                                   onclick="js_marca_orgaos('orgao');return false">
 
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        ?>
-       <tr>
-       <td > <input type='checkbox' name='unidade_<?=$o58_orgao?>_<?=$o58_unidade?>' value='<?=$o58_orgao?>_<?=$o58_unidade?>' <?=($punidade==$o58_unidade?"checked":"") ?> ></td>
-       <td  align='right'> <?=$o58_orgao?> </td>
-       <td align='left' ><strong><?=$o40_descr?></strong></td>
-       <td  align='right'> <?=$o58_unidade?> </td>
-       <td align='left' ><strong><?=$o41_descr?></strong></td>
-       <tr>
-        <?php
-    }
-    ?>
-   </table>
-  </div>
-  </form>
-  <form name="formfuncao" action="post">
-  <div id='div_funcao' style='position:absolute; visibility:hidden;width:100%' >
-   <table border=1 cellspacing=0 >
-    <?php
-     $sQuery  = " o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos ";
-     $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null, null, " distinct o58_funcao,orcfuncao.o52_descr", "o58_funcao", $sQuery));
+                            <input type="button"
+                                   id="unidade"
+                                   value="Unidade"
+                                   onclick="js_marca_orgaos('unidade');return false">
 
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        ?>
-       <tr>
-       <td > <input type='checkbox' name='funcao_<?=$o58_funcao?>' value='<?=$o58_funcao?>' <?=($pfuncao==$o58_funcao?"checked":"") ?> ></td>
-       <td  align='right'> <?=$o58_funcao?> </td>
-       <td align='left' ><strong><?=$o52_descr?></strong></td>
-       <tr>
-        <?php
-    }
-    ?>
-   </table>
-  </div>
-  </form>
-  <form name="formsubfuncao" action="post">
-  <div id='div_subfuncao' style='position:absolute; visibility:hidden;width:100%' >
-   <table border=1 cellspacing=0 >
-    <?php
-    $sql = $clorcdotacao->sql_query(null, null, " distinct o58_subfuncao,orcsubfuncao.o53_descr", "o58_subfuncao", " o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos ");
-    $result = $clorcdotacao->sql_record($sql);
+                            <input type="button"
+                                   id="funcao"
+                                   value="Função"
+                                   onclick="js_marca_orgaos('funcao');return false">
 
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        ?>
-       <tr>
-       <td > <input type='checkbox' name='subfuncao_<?=$o58_subfuncao?>' value='<?=$o58_subfuncao?>' <?=($psubfuncao==$o58_subfuncao?"checked":"")  ?> ></td>
-       <td  align='right'> <?=$o58_subfuncao?> </td>
-       <td align='left' ><strong><?=$o53_descr?></strong></td>
-       <tr>
-        <?php
-    }
-    ?>
-   </table>
-  </div>
-  </form>
-  <form name="formprograma" action="post">
-  <div id='div_programa' style='position:absolute; visibility:hidden;width: 100%' >
-   <table border=1 cellspacing=0 >
-    <?php
-    $sql = $clorcdotacao->sql_query(null, null, " distinct on (o58_programa) o58_programa,orcprograma.o54_descr", "o58_programa, o58_anousu DESC", " o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos ");
-    $result = $clorcdotacao->sql_record($sql);
+                            <input type="button"
+                                   id="subfuncao"
+                                   value="Sub-Função"
+                                   onclick="js_marca_orgaos('subfuncao');return false">
 
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        ?>
-       <tr>
-       <td > <input type='checkbox' name='programa_<?=$o58_programa?>' value='<?=$o58_programa?>' <?=($pprograma==$o58_programa?"checked":"")?>   ></td>
-       <td  align='right'> <?=$o58_programa?> </td>
-       <td align='left' ><strong><?=$o54_descr?></strong></td>
-       <tr>
-        <?php
-    }
-    ?>
-   </table>
-  </div>
-  </form>
-  <form name="formprojativ" action="post">
-  <div id='div_projativ' style='position:absolute; visibility:hidden;width: 100%' >
-   <table border=1 cellspacing=0 >
-    <?php
-    $sql = $clorcdotacao->sql_query(null, null, " distinct on (o58_projativ) o58_projativ,orcprojativ.o55_descr", "o58_projativ,o58_anousu DESC", " o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos ");
-    $result = $clorcdotacao->sql_record($sql);
+                            <input type="button"
+                                   id="programa"
+                                   value="Programa"
+                                   onclick="js_marca_orgaos('programa');return false">
 
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        ?>
-       <tr>
-       <td > <input type='checkbox' name='projativ_<?=$o58_projativ?>' value='<?=$o58_projativ?>' <?=($pprojativ==$o58_projativ?"checked":"")?>></td>
-       <td  align='right'> <?=$o58_projativ?> </td>
-       <td align='left' ><strong><?=$o55_descr?></strong></td>
-       <tr>
-        <?php
-    }
-    ?>
-   </table>
-  </div>
-  </form>
-  <form name="formele" action="post">
-  <div id='div_elemento' style='position:absolute; visibility:hidden; width: 100%' >
-   <table border=1 cellspacing=0 >
-    <?php
-     $ind = 0;
+                            <input type="button"
+                                   id="prjativ"
+                                   value="Proj/Atividade"
+                                   onclick="js_marca_orgaos('projativ');return false">
 
-    $sql = $clorcdotacao->sql_query(
-        null,
-        null,
-        " distinct on (o56_elemento) o56_elemento, o56_codele,orcelemento.o56_descr",
-        "o56_elemento, o58_anousu DESC",
-        " o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos "
-    );
-    $result = $clorcdotacao->sql_record($sql);
+                            <input type="button"
+                                   id="elemento"
+                                   value="Elemento"
+                                   onclick="js_marca_orgaos('elemento');return false">
+                            <?php
+                            if (isset($desdobramento) && $desdobramento==true) {
+                                 echo "<input type='button'
+                                              id='desdobramento'
+                                              value='Desdobramento'
+                                              onclick='js_marca_orgaos(\"desdobramento\");return false'>";
+                            }
+                            ?>
+                            <input type="button"
+                                   id="recurso"
+                                   value="Recurso"
+                                   onclick="js_marca_orgaos('recurso');return false">
 
-     $tipodesp = array() ;
-     $tipod = "";
-     // db_criatabela($result);
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        $ele = substr($o56_elemento, 0, 3);
-        $tipodd = " o56_elemento = '$ele'";
-        if (array_search($ele, $tipodesp)==0) {
-            $srec = $clorcelemento->sql_record($clorcelemento->sql_query_file(null, null, 'o56_descr', null, " o56_anousu = ".db_getsession("DB_anousu")." and  o56_elemento = '".$ele."0000000000' order by o56_elemento limit 1 "));
-            if ($clorcelemento->numrows!=0) {
-                db_fieldsmemory($srec, 0);
-                $tipodesp["$ele"] = substr($o56_descr, 0, 20);
-            }
-        }
-        $tipod = " and ";
-    }
+                            <input type="button"
+                                   id="localizadorgastos"
+                                   value="Localizador de Gastos"
+                                   onclick="js_marca_orgaos('localizadorgastos');return false">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
 
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        ?>
-       <tr>
-       <td><input type='checkbox' name='<?=$o56_elemento?>_elemento_<?=$o56_codele?>' value='<?=$o56_codele?>' <?=($pelemento==$o56_elemento?"checked":"")?>></td>
-       <td  align='left'>(<?=$o56_codele?>) <?=$o56_elemento?> </td>
-       <td align='left' ><strong><?=$o56_descr?></strong></td>
-        <?php
-        if ($ind<sizeof($tipodesp)) {
-             echo "<td align='left' ><input name='' type='checkbox' onclick='js_despesas(\"".substr(key($tipodesp), 0, 3)."\",this.checked)' value='0' >".$tipodesp[key($tipodesp)]."</td>";
-             $ind ++;
-             next($tipodesp);
-        } else {
-            echo "<td align='left' >&nbsp</td>";
-        }
-        ?>
-
-       <tr>
-        <?php
-    }
-    ?>
-   </table>
-  </div>
-  </form>
-
-      <form name="formdes" action="post">
-          <div id='div_desdobramento' style='position:absolute; visibility:hidden;width:100%;'>
-              <table border="1" cellspacing="0">
-                  <?php
-                    $result = $clorcelemento->sql_record(
-                        $clorcelemento->sql_query_exercicio(
-                            db_getsession("DB_anousu"),
-                            $array_instit,
+        <div id='divOrgao' class='divFiltro'>
+            <table class='tableRegistros'>
+                <thead>
+                    <tr>
+                        <th colspan="3">Orgãos </th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: right">
+                            <input type="button"
+                                   id="marcarOrgaos"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formorgao" action="post">
+                    <?php
+                    $result = $clorcdotacao->sql_record(
+                        $clorcdotacao->sql_query(
                             null,
-                            ' distinct on (o56_codele) o56_codele, o56_elemento, o56_descr',
-                            "o56_codele,o56_elemento,o56_anousu DESC",
-                            "o56_anousu in (" . implode(', ', $anosFiltro) . ")"
+                            null,
+                            " distinct on(o58_orgao) o58_orgao,orcorgao.o40_descr",
+                            "o58_orgao, o58_anousu DESC",
+                            " $sel_orgaos "
                         )
                     );
-
-                    for ($i = 0; $i < $clorcelemento->numrows; $i++) {
+                    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
                         db_fieldsmemory($result, $i);
-                        ?>
-                  <tr>
-                      <td style="padding: 5px;">
-                          <input title="<?php echo $o56_descr; ?>" type="checkbox"
-                                 name="desdobramento_<?php echo $o56_codele; ?>" value="<?php echo $o56_codele; ?>"
-                                 onchange="setDesdobramento(event)">
-                      </td>
-                      <td align="right" style="padding: 5px;"><?php echo $o56_elemento; ?></td>
-                      <td align="left" style="padding: 5px;">
-                          <strong><?php echo $o56_descr; ?></strong>
-                      </td>
-                  <tr>
-                        <?php
+                             $checked = ($porgao==$o58_orgao?"checked":"");
+
+                        $disabled = "disabled";
+                        $permissao = "<font color=blue>(Sem Permissão)</font>";
+                        if (isset($orgaos_liberados[$o58_orgao]) || (isset($restos) && $restos == 'true')) {
+                            $disabled = "";
+                            $permissao = "";
+                        }
+                         $linhaHtml = "<tr>
+                                        <td class ='tdCheck'>
+                                          <input type='checkbox'
+                                                 name='orgao_{$o58_orgao}'
+                                                 value='{$o58_orgao}'
+                                                 onclick='marcarLinha(this)'
+                                                 {$checked}
+                                                 {$disabled}>
+                                        </td>
+                                        <td class ='tdId'>
+                                        {$o58_orgao}</td>
+                                        <td class ='tdDescricao'>
+                                          {$o40_descr}
+                                          {$permissao}
+                                        </td>
+                                      </tr>";
+                        echo $linhaHtml;
                     }
                     ?>
-              </table>
-          </div>
-      </form>
+                    </form>
+                </tbody>
+            </table>
+        </div>
 
-  <form name="formrecurso" action="post">
-  <div id='div_recurso' style='position:absolute; visibility:hidden;height: 90%; width: 100%' >
-   <table border=1 cellspacing=0 >
-       <?php
-       $dbwhere = " o15_datalimite is null or o15_datalimite > '".date('Y-m-d', db_getsession('DB_datausu'))."'";
+        <div id="divUnidade" class='divFiltro'>
+            <table class='tableRegistros'>
+                <thead>
+                    <tr>
+                        <th colspan="5">Unidades</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5" style="text-align: right">
+                            <input type="button"
+                                   id="marcarUnidades"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formunidade" action="post">
+                    <?php
+                      $sql = $clorcdotacao->sql_query(
+                          null,
+                          null,
+                          " distinct on (orcdotacao.o58_orgao,orcdotacao.o58_unidade)
+                          orcdotacao.o58_orgao,
+                          orcorgao.o40_descr,
+                          orcdotacao.o58_unidade,
+                          orcunidade.o41_descr",
+                          "orcdotacao.o58_orgao,orcdotacao.o58_unidade,orcdotacao.o58_anousu DESC",
+                          " orcdotacao.o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos "
+                      );
+                      $result = $clorcdotacao->sql_record($sql);
+                      for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                          db_fieldsmemory($result, $i);
 
-       $sQuery  = " $dbwhere ";
-       $campos = "
-         distinct orctiporec.o15_codigo ,
-         orctiporec.o15_complemento,
-         orctiporec.o15_recurso,
-         orctiporec.o15_descr,
-         complementofonterecurso.o200_descricao
-     ";
+                          $checked = ($punidade==$o58_unidade?"checked":"");
 
-       $sSql = $clorctiporec->sql_query_fonte_recurso(null, $campos, " o15_recurso, o15_codigo ", $sQuery);
-       /* Itens de menu que não devem demonstrar/ filtrar complemento da fonte de recurso */
-           $aItensMenuSemComplemento = ['3229','3378','4760','5108','7757','8793', '4203', '3260', '4227'];
+                          $linhaHtml = "<tr>
+                                            <td class='tdCheck'>
+                                                <input type='checkbox'
+                                                       name='unidade_{$o58_orgao}_{$o58_unidade}'
+                                                       value='{$o58_orgao}_{$o58_unidade}'
+                                                       {$checked}
+                                                       onclick='marcarLinha(this)'>
+                                            </td>
+                                            <td class='tdId'>{$o58_orgao}</td>
+                                            <td class='tdDescricao'>{$o40_descr}</td>
+                                            <td class='tdId'>{$o58_unidade}</td>
+                                            <td class='tdDescricao'>{$o41_descr}</td>
+                                        <tr>";
+                          echo $linhaHtml;
+                      }
+                        ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
 
-       if (in_array(db_getsession("DB_itemmenu_acessado"), $aItensMenuSemComplemento)) {
-           $campos = "
-             orctiporec.o15_recurso,
-             orctiporec.o15_descr,
-             array_to_string(array_accum(distinct o15_codigo), ',') as o15_codigo
-           ";
-           $groupBy = " group by o15_recurso, o15_descr";
-           $sSql = $clorctiporec->sql_query_file(
-    null,
-               $campos,
-               " o15_recurso ",
-               $sQuery . $groupBy
-           );
-       }
+        <div id="divFuncao" class='divFiltro'>
+            <table class="tableRegistros">
+                <thead>
+                <tr>
+                    <th colspan="3">Função</th>
+                </tr>
+                <tr>
+                    <th colspan="3" style="text-align: right">
+                        <input type="button"
+                               id="marcarFuncoes"
+                               value="Marcar Todos"
+                               onclick="js_marca_todos(this);">
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <form name="formfuncao" action="post">
+                    <?php
+                        $sQuery  = " o58_anousu in (" . implode(', ', $anosFiltro) . ") and $sel_orgaos ";
+                        $result = $clorcdotacao->sql_record(
+                            $clorcdotacao->sql_query(
+                                null,
+                                null,
+                                " distinct o58_funcao,orcfuncao.o52_descr",
+                                "o58_funcao",
+                                $sQuery
+                            )
+                        );
 
-       $result  = db_query($sSql);
+                        for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                            db_fieldsmemory($result, $i);
 
-       $linhas = pg_num_rows($result);
-       for ($i = 0; $i < $linhas; $i++) {
-           db_fieldsmemory($result, $i);
+                            $checked = ($pfuncao==$o58_funcao?"checked":"");
 
-           $sDescricaoEspecificacao = !isset($o200_descricao) ? $o15_descr : $o15_descr. ' | '. $o200_descricao;
-           ?>
-           <tr>
-               <td><input type='checkbox' name='recurso_<?=$o15_recurso?>' value='<?=$o15_codigo?>'></td>
-               <td align='right'> <?=$o15_recurso?> </td>
-               <td align='left' ><strong><?=$sDescricaoEspecificacao?></strong></td>
-           </tr>
-           <?php
-       }
-       ?>
-   </table>
-  </div>
-  </form>
+                            $linhaHtml = "<tr>
+                                              <td class='tdCheck'>
+                                                  <input type='checkbox'
+                                                         name='funcao_{$o58_funcao}'
+                                                         value='{$o58_funcao}'
+                                                         {$checked}
+                                                         onclick='marcarLinha(this)'>
+                                              </td>
+                                              <td class='tdId'> {$o58_funcao} </td>
+                                          <td class='tdDescricao'>{$o52_descr}</td>
+                                          <tr>";
+                            echo $linhaHtml;
+                        }
+                        ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
 
-  <form name="forminstit" action="post">
-  <div id='div_instit' style='position:absolute; visibility:hidden' >
-   <table border=1 cellspacing=0 align="center">
-    <?php
-     $result = $clorcdotacao->sql_record("select codigo, nomeinst,prefeitura from db_config order by codigo");
-     $todas=false;
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        if ($prefeitura=='t' && $codigo == db_getsession("DB_instit")) {
-            $todas = true;
+        <div id='divSubFuncao' class='divFiltro'>
+            <table class="tableRegistros">
+                <thead>
+                    <tr>
+                        <th colspan="3">Sub-Função</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: right">
+                            <input type="button"
+                                   id="marcarSubFuncoes"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formsubfuncao" action="post">
+                    <?php
+                        $sql = $clorcdotacao->sql_query(
+                            null,
+                            null,
+                            " distinct o58_subfuncao,orcsubfuncao.o53_descr",
+                            "o58_subfuncao",
+                            " o58_anousu in(" . implode(', ', $anosFiltro) . ") and $sel_orgaos "
+                        );
+                        $result = $clorcdotacao->sql_record($sql);
+                        for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                            db_fieldsmemory($result, $i);
+
+                            $checked = ($psubfuncao==$o58_subfuncao?"checked":"");
+
+                            $linhaHtml = "<tr>
+                                              <td class='tdCheck'>
+                                                <input type='checkbox'
+                                                       name='subfuncao_{$o58_subfuncao}'
+                                                       value='{$o58_subfuncao}'
+                                                      {$checked}
+                                                      onclick='marcarLinha(this)'>
+                                              </td>
+                                              <td class='tdId'>{$o58_subfuncao}</td>
+                                              <td class='tdDescricao'>{$o53_descr}</td>
+                                          <tr>";
+                            echo $linhaHtml;
+                        }
+                        ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='divPrograma' class='divFiltro'>
+            <table class="tableRegistros">
+                <thaed>
+                    <tr>
+                        <th colspan="3">Programa</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: right">
+                            <input type="button"
+                                   id="marcarProgramas"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                       </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formprograma" action="post">
+                    <?php
+                    $sql = $clorcdotacao->sql_query(
+                        null,
+                        null,
+                        " distinct on(o58_programa) o58_programa,orcprograma.o54_descr",
+                        "o58_programa, o58_anousu DESC",
+                        " o58_anousu in(" . implode(', ', $anosFiltro) . ") and $sel_orgaos "
+                    );
+                    $result = $clorcdotacao->sql_record($sql);
+                    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                        db_fieldsmemory($result, $i);
+                        $checked = ($pprograma==$o58_programa?"checked":"");
+
+                        $linhaHtml = "<tr>
+                                        <td class='tdCheck'>
+                                            <input type='checkbox'
+                                                   name='programa_{$o58_programa}'
+                                                   value='{$o58_programa}'
+                                                   {$checked}
+                                                   onclick='marcarLinha(this)'>
+                                        </td>
+                                        <td class='tdId'> {$o58_programa}</td>
+                                        <td class='tdDescricao'>{$o54_descr}</td>
+                                      <tr>";
+                        echo $linhaHtml;
+                    }
+                    ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='divProjAtiv' class='divFiltro'>
+            <table class="tableRegistros">
+                <thead>
+                    <tr>
+                        <th colspan="3">Projeto/Atividade</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: right">
+                            <input type="button"
+                                   id="marcarProjAtiv"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formprojativ" action="post">
+                    <?php
+                    $sql = $clorcdotacao->sql_query(
+                        null,
+                        null,
+                        " distinct on(o58_projativ) o58_projativ,orcprojativ.o55_descr",
+                        "o58_projativ,o58_anousu DESC",
+                        " o58_anousu in(" . implode(', ', $anosFiltro) . ") and $sel_orgaos "
+                    );
+                    $result = $clorcdotacao->sql_record($sql);
+                    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                        db_fieldsmemory($result, $i);
+
+                        $checked = ($pprojativ==$o58_projativ?"checked":"");
+                        $linhaHtml = "<tr>
+                                         <td class='tdCheck'>
+                                             <input type='checkbox'
+                                                    name='projativ_{$o58_projativ}'
+                                                    value='{$o58_projativ}'
+                                                    {$checked}
+                                                    onclick='marcarLinha(this)'>
+                                         </td>
+                                         <td class='tdId'> {$o58_projativ} </td>
+                                         <td class='tdDescricao'>{$o55_descr}</td>
+                                      <tr>";
+
+                        echo $linhaHtml;
+                    }
+                    ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='divElemento' class='divFiltro'>
+            <table class="tableRegistros">
+                <tr>
+                    <th colspan="5">Elemento</th>
+                </tr>
+                <tr>
+                    <th colspan="5" style="text-align: right">
+                        <input type="button"
+                               id="marcarElementos"
+                               value="Marcar Todos"
+                               onclick="js_marca_todos(this);">
+                    </th>
+                </tr>
+                <tbody>
+                    <form name="formele" action="post">
+                    <?php
+                        $ind = 0;
+                        $sql = $clorcdotacao->sql_query(
+                            null,
+                            null,
+                            " distinct on(o56_elemento) o56_elemento, o56_codele,orcelemento.o56_descr",
+                            "o56_elemento, o58_anousu DESC",
+                            " o58_anousu in(" . implode(', ', $anosFiltro) . ") and $sel_orgaos "
+                        );
+                        $result = $clorcdotacao->sql_record($sql);
+                        $tipodesp = array() ;
+                        $tipod = "";
+
+                        for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                            db_fieldsmemory($result, $i);
+
+                            $ele = substr($o56_elemento, 0, 3);
+                            $tipodd = " o56_elemento = '$ele'";
+                            if (array_search($ele, $tipodesp)==0) {
+                                $srec = $clorcelemento->sql_record(
+                                    $clorcelemento->sql_query_file(
+                                        null,
+                                        null,
+                                        'o56_descr',
+                                        null,
+                                        " o56_anousu = {$anouso}
+                                          and  o56_elemento = '{$ele}0000000000'
+                                        order by o56_elemento limit 1 "
+                                    )
+                                );
+
+                                if ($clorcelemento->numrows!=0) {
+                                    db_fieldsmemory($srec, 0);
+                                    $tipodesp["$ele"] = substr($o56_descr, 0, 20);
+                                }
+                            }
+                            $tipod = " and ";
+                        }
+
+                        for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                            db_fieldsmemory($result, $i);
+
+                            $checked = ($pelemento==$o56_elemento?"checked":"");
+
+                            $linhaHtml = "<tr>
+                                            <td class='tdCheck'>
+                                               <input type='checkbox'
+                                                      name='{$o56_elemento}_elemento_{$o56_codele}'
+                                                      value='{$o56_codele}'
+                                                      {$checked}
+                                                      onclick='marcarLinha(this)'>
+                                            </td>
+                                            <td class='tdId2'>({$o56_codele}) {$o56_elemento} </td>
+                                            <td class='tdDescricao'>{$o56_descr}</td>";
+
+                            if ($ind<sizeof($tipodesp)) {
+                                $linhaHtml .= "<td class='tdCheckAgrupador'>
+                                                <input type='checkbox'
+                                                       name='tipoDespesas_".substr(key($tipodesp), 0, 3)."'
+                                                       onclick='js_despesas(\"".substr(key($tipodesp), 0, 3)."\",this.checked);'
+                                                       value='0' >
+                                               </td>
+                                               <td class='tdDescricaoAgrupador'> {$tipodesp[key($tipodesp)]}</td>";
+                                $ind ++;
+                                next($tipodesp);
+                            }
+                            $linhaHtml .= "<tr>";
+                            echo $linhaHtml;
+                        }
+                        ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='divDesdobramento' class='divFiltro'>
+            <table class="tableRegistros">
+                <thead>
+                    <tr>
+                        <th colspan="3">Desdobramentos</th>
+                    </tr>
+                    <tr colspan="3" style="text-align: right">
+                        <th>
+                            <input type="button"
+                                   id="marcarDesdobramentos"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formdes" action="post">
+                    <?php
+                        $result = $clorcelemento->sql_record(
+                            $clorcelemento->sql_query_exercicio(
+                                $anouso,
+                                $array_instit,
+                                null,
+                                ' distinct on (o56_codele) o56_codele, o56_elemento, o56_descr',
+                                "o56_codele,o56_elemento,o56_anousu DESC",
+                                "o56_anousu in(" . implode(', ', $anosFiltro) . ")"
+                            )
+                        );
+
+                        for ($i = 0; $i < $clorcelemento->numrows; $i++) {
+                            db_fieldsmemory($result, $i);
+
+                            $linhaHtml = "<tr>
+                                            <td class='tdCheck'>
+                                                  <input type='checkbox'
+                                                         title='{$o56_descr}'
+                                                         name='desdobramento_{$o56_codele}'
+                                                         value='{$o56_codele}'
+                                                         onchange='setDesdobramento(event)'
+                                                         onclick='marcarLinha(this)'>
+                                            </td>
+                                            <td class='tdId2'>{$o56_elemento}</td>
+                                            <td class='tdDescricao'>{$o56_descr}</td>
+                                          <tr>";
+                            echo $linhaHtml;
+                        }
+                        ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='divRecurso' class="divFiltro">
+            <table class="tableRegistros">
+                <thead>
+                    <tr>
+                        <th colspan="6">Recursos</th>
+                        <th colspan="2"
+                            rowspan="3"
+                            style='vertical-align: middle; border-left: 1px solid ThreeDLightShadow;'>
+                            Classificação
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="6" style="text-align: right">
+                            <input type="button"
+                                   id="marcarRecursos"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Recurso</th>
+                        <th>Gestão</th>
+                        <th>Siconfi</th>
+                        <th>Nome</th>
+                        <th>Complemento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formrecurso" action="post">
+                    <?php
+                        $dataUsuario = date('Y-m-d', db_getsession('DB_datausu'));
+
+                        $campos = "
+                        distinct
+                        orctiporec.o15_codigo ,
+                        orctiporec.o15_complemento,
+                        orctiporec.o15_recurso,
+                        fonterecurso.gestao,
+                        fonterecurso.codigo_siconfi,
+                        fonterecurso.descricao,
+                        complementofonterecurso.o200_descricao,
+                        fonterecurso.classificacaofr_id,
+                        o15_datalimite,
+                        case when o15_datalimite < '{$dataUsuario}' then true else false end as inativo
+                        ";
+
+                        $sSql = $clorctiporec->sqlNovaFonteRecurso(
+                            null,
+                            $campos,
+                            " o15_datalimite desc, o15_recurso, o15_complemento, gestao ",
+                            " exercicio = {$anouso} "
+                        );
+                        $result = db_query($sSql);
+                        $linhas = pg_num_rows($result);
+
+                        $sqlClassificacao = "SELECT * FROM classificacaofr where id > 1";
+                        $rsClassificacao = db_query($sqlClassificacao);
+                        $classificacoes = db_utils::getCollectionByRecord($rsClassificacao);
+
+                        for ($i = 0; $i < $linhas; $i++) {
+                            $recurso = db_utils::fieldsMemory($result, $i);
+                            $complemento = "$recurso->o15_complemento - $recurso->o200_descricao";
+
+                            $checked = ($precurso==$recurso->gestao)?"checked":"";
+                            $inativo = ($recurso->inativo == "t"?" <font color='red'>(INATIVO)</font> ":"");
+                            ?>
+                            <tr>
+                                <td>
+                                    <input type='checkbox'
+                                           class="recursos"
+                                           name='recurso_<?=$recurso->o15_recurso?>'
+                                           classificacao="<?=$recurso->classificacaofr_id?>"
+                                           value='<?=$recurso->o15_codigo?>'
+                                           <?=$checked?>
+                                           onclick="marcarLinha(this)">
+                                </td>
+                                <td class="tdId"> <?=$recurso->o15_recurso?> </td>
+                                <td class="tdId"> <?=$recurso->gestao?> </td>
+                                <td class="tdId"> <?=$recurso->codigo_siconfi?> </td>
+                                <td class='tdDescricao'> <?=$recurso->descricao.$inativo?>
+                                </td>
+                                <td class='tdDescricao'><?=$complemento?></td>
+                                    <?php
+                                    if (!empty($classificacoes[$i])) {
+                                        ?>
+                                <td class="tdCheckAgrupador">
+                                    <input type='checkbox'
+                                           name='classificacao_<?=$classificacoes[$i]->id?>'
+                                           value='<?=$classificacoes[$i]->id?>'
+                                           onclick="js_despesasRecursos(<?=$classificacoes[$i]->id?>, this.checked);">
+                                </td>
+                                <td class='tdDescricaoAgrupador'><?=$classificacoes[$i]->descricao?></td>
+                                        <?php
+                                    } else {
+                                        ?>
+                                <td></td>
+                                <td></td>
+                                        <?php
+                                    }
+                                    ?>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='divLocalizadorGastos' class='divFiltro'>
+            <table class="tableRegistros">
+                <thead>
+                    <tr>
+                        <th colspan="3">Localizador de Gastos</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: right">
+                            <input type="button"
+                                   id="marcarLocalizadorGastos"
+                                   value="Marcar Todos"
+                                   onclick="js_marca_todos(this);">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="formlocalizadorgastos" action="post">
+
+                    <?php
+                    $sQuery  = " orcdotacao.o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos";
+                    $result  = $clorcdotacao->sql_record(
+                        $clorcdotacao->sql_query(
+                            null,
+                            null,
+                            " distinct orcdotacao.o58_localizadorgastos,ppasubtitulolocalizadorgasto.o11_descricao",
+                            "orcdotacao.o58_localizadorgastos",
+                            $sQuery
+                        )
+                    );
+                    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                        db_fieldsmemory($result, $i);
+
+                        $checked = ($plocalizadorgastos==$o58_localizadorgastos?"checked":"");
+
+                        $linhaHtml = "<tr>
+                                        <td class='tdCheck'>
+                                            <input type='checkbox'
+                                                   name='localizadorgastos_{$o58_localizadorgastos}'
+                                                   value='{$o58_localizadorgastos}'
+                                                   {$checked}
+                                                   onclick='marcarLinha(this)'>
+                                         </td>
+                                         <td class='tdId'>{$o58_localizadorgastos}</td>
+                                         <td class='tdDescricao'>{$o11_descricao}</td>
+                                      <tr>";
+                        echo $linhaHtml;
+                    }
+                    ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='divInstituicao' class='divFiltro'>
+            <table class="tableRegistros">
+                <thead>
+                    <tr>
+                        <th colspan="3">Instituições</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form name="forminstit" action="post">
+                    <?php
+                    $sql = "select codigo,
+                                   nomeinst,
+                                   prefeitura
+                              from db_config
+                             order by codigo";
+                    $result = $clorcdotacao->sql_record($sql);
+                    $todas=false;
+
+                    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                        db_fieldsmemory($result, $i);
+                        if ($prefeitura=='t' && $codigo == db_getsession("DB_instit")) {
+                            $todas = true;
+                        }
+                    }
+
+                    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
+                        db_fieldsmemory($result, $i);
+
+                        if ($todas == true || ( $todas == false and $codigo == db_getsession("DB_instit") )) {
+                            $checked = "";
+                            $style = "";
+                            if (in_array($codigo, $array_instit)) {
+                                $checked = "checked";
+                                $style = "style=\"background:#D7E4EA\"";
+                            }
+
+                            $linhaHtml = "<tr {$style} >
+                                              <td class='tdCheck'>
+                                                <input type='checkbox'
+                                                       name='instit_{$codigo}'
+                                                       value='{$codigo}'
+                                                       {$checked}
+                                                       onchange='js_atualiza_instit();'>
+                                              </td>
+                                              <td class='tdId'>{$codigo}</td>
+                                              <td class='tdDescricao'>{$nomeinst}</td>
+                                          <tr>";
+                            echo $linhaHtml;
+                        }
+                    }
+                    ?>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+    var desdobramentos = [];
+
+    function setDesdobramento(event) {
+        var target = event.target;
+        var valor = target.value;
+        var index = desdobramentos.indexOf(valor);
+        if (target.checked && index < 0) {
+            desdobramentos.push(parseInt(valor));
+        } else {
+            desdobramentos.splice(index, 1);
         }
     }
-    for ($i=0; $i<$clorcdotacao->numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        if ($todas == true || ( $todas == false and $codigo == db_getsession("DB_instit") )) {
-            ?>
-     <tr>
-     <td><input type='checkbox' name='instit_<?=$codigo ?>' value='<?=$codigo?>'
-            <?php if (in_array($codigo, $array_instit)) {
-                echo "checked";
+
+    function pesquisaDotacao() {
+        js_OpenJanelaIframe(
+            'this',
+            'db_iframe_orcdotacao',
+            'func_permorcdotacao.php?funcao_js=parent.retornoPesquisaDotacao|o58_coddot',
+            'Pesquisa',
+            true,
+            0
+        );
+    }
+
+    function retornoPesquisaDotacao(dotacao) {
+        $('codigo_dot').value = dotacao;
+        $('pesquisa_dot').click();
+        db_iframe_orcdotacao.hide();
+    }
+
+    /**
+     * Atualiza a pagina com base na intituição
+     * @param  {Array} aInsituicao
+     * @param  {boolean} lDesdobrar
+     */
+    function atualizarPaginaParametros(aInstituicoes, lDesdobramento, lRestosAPagar) {
+        var sInstituicoes = aInstituicoes.join(' -');
+        if (sInstituicoes != document.form1.db_selinstit.value) {
+            var query = "instit=" + sInstituicoes + "&db_selinstit=" + sInstituicoes;
+            if (lDesdobramento) {
+                query += "&desdobramento=true";
+                document.form1.desdobramento.value = "true";
             }
-            ?>
-           onchange="js_atualiza_instit(); ";></td>
-     <td align='right'><?=$codigo?> </td>
-     <td align='left' ><strong><?=$nomeinst?></strong></td>
-     <tr>
-            <?php
+            if (lRestosAPagar) {
+                query += "&restos=true";
+            }
+            document.form1.db_selinstit.value = sInstituicoes;
+            location.href = "func_selorcdotacao_aba.php?" + query;
         }
     }
-    ?>
-   </table>
-  </div>
-  </form>
-  </td>
-  </tr>
-  </table>
-</table>
-</body>
-</html>
-<script type="text/javascript">
-//filtroPorFonteUniao = <?=FONTE_RECURSO_UNIAO ? 'true' : 'false';?>;
-filtroPorFonteUniao = false;
-if (filtroPorFonteUniao) {
-    filtroRecursos = new DBViewFiltroRecursos( false );
-    $('div_recurso').innerHTML = filtroRecursos.getConteudoFiltro();
-}
 
-(function() {
-  var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');
-  input.onclick = parent[query] ? parent[query].hide.bind(parent[query]) : input.onclick;
-})();
-</script>
+    function js_atualizar_instit() {
+        var obj = parent.iframe_g1.document.form1.db_selinstit;
+        if (obj.value !=
+            document.form1.db_selinstit.value) {
+            var query = "instit=" + obj.value + "&db_selinstit=" +
+                obj.value;
+            if (parent.iframe_g1.document.form1.desdobramento) {
+                query += "&desdobramento=true";
+                document.form1.desdobramento.value = "true";
+            }
+            const urlParams = new
+            URLSearchParams(window.location.search);
+            const restos = urlParams.get('restos');
+            query
+                += `&restos=${restos}`;
+            document.form1.db_selinstit.value = obj.value;
+            location.href = 'func_selorcdotacao_aba.php?' + query;
+        }
+    }
+
+    function js_atualiza_instit() {
+        var ob = document.forminstit.elements;
+        var lista = '';
+        var virgula = '';
+        for (var i = 0; i < ob.length; i++) {
+            if (ob[i].type == 'checkbox') {
+                if (ob[i].checked == true) {
+                    subname = ob[i].name.substr(7, ob[i].name.length);
+                    lista = subname + virgula + lista;
+                    virgula = ',';
+                }
+            }
+        }
+        location.href = 'func_selorcdotacao_aba.php?instit=' + lista;
+    }
+
+    function js_marca_todos(elemento) {
+
+        if (elemento.value == "Marcar Todos") {
+            elemento.value = "Desmarcar Todos";
+            tipoacao = true;
+        } else {
+            tipoacao = false;
+            elemento.value = "Marcar Todos";
+        }
+
+        if (document.getElementById('divOrgao').style.visibility == 'visible') {
+            objetos = document.formorgao.elements;
+            camada = 'orgao';
+        }
+        if (document.getElementById('divUnidade').style.visibility == 'visible') {
+            objetos = document.formunidade.elements;
+            camada = 'unidade';
+        }
+        if (document.getElementById('divFuncao').style.visibility == 'visible') {
+            objetos = document.formfuncao.elements;
+            camada = 'funcao';
+        }
+        if (document.getElementById('divSubFuncao').style.visibility == 'visible') {
+            objetos = document.formsubfuncao.elements;
+            camada = 'subfuncao';
+        }
+        if (document.getElementById('divPrograma').style.visibility == 'visible') {
+            objetos = document.formprograma.elements;
+            camada = 'programa';
+        }
+        if (document.getElementById('divProjAtiv').style.visibility == 'visible') {
+            objetos = document.formprojativ.elements;
+            camada = 'projativ';
+        }
+        if (document.getElementById('divElemento').style.visibility == 'visible') {
+            objetos = document.formele.elements;
+            camada = 'elemento';
+        }
+        if (document.getElementById('divDesdobramento').style.visibility == 'visible') {
+            objetos = document.formdes.elements;
+            camada = 'desdobramento';
+        }
+        if (document.getElementById('divRecurso').style.visibility == 'visible') {
+            objetos = document.formrecurso.elements;
+            camada = 'recurso';
+        }
+        if (document.getElementById('divLocalizadorGastos').style.visibility == 'visible') {
+            objetos = document.formlocalizadorgastos.elements;
+            camada = 'localizadorgastos';
+        }
+        js_troca(objetos, tipoacao);
+    }
+
+    function js_marca_geral() {
+        var value = 'Desmarcar Todos';
+
+        if ($F('geralmarca') == "Marcar Geral") {
+            tipoacao = true;
+            $('geralmarca').value = 'Desmarcar Geral';
+        } else {
+            tipoacao = false;
+            $('geralmarca').value = 'Marcar Geral';
+            value = 'Marcar Todos';
+        }
+
+        $('marcarOrgaos').value = value;
+        $('marcarUnidades').value = value;
+        $('marcarFuncoes').value = value;
+        $('marcarSubFuncoes').value = value;
+        $('marcarProgramas').value = value;
+        $('marcarProjAtiv').value = value;
+        $('marcarElementos').value = value;
+        $('marcarDesdobramentos').value = value;
+        $('marcarRecursos').value = value;
+        $('marcarLocalizadorGastos').value = value;
+
+        js_troca(document.formorgao.elements, tipoacao);
+        js_troca(document.formunidade.elements, tipoacao);
+        js_troca(document.formfuncao.elements, tipoacao);
+        js_troca(document.formsubfuncao.elements, tipoacao);
+        js_troca(document.formprograma.elements, tipoacao);
+        js_troca(document.formprojativ.elements, tipoacao);
+        js_troca(document.formele.elements, tipoacao);
+        js_troca(document.formdes.elements, tipoacao);
+        js_troca(document.formrecurso.elements, tipoacao);
+        js_troca(document.formlocalizadorgastos.elements, tipoacao);
+    }
+
+    function js_troca(objetos, tipoacao) {
+        for (var i = 0; i < objetos.length; i++) {
+            if (objetos[i].disabled == false) {
+                objetos[i].checked = tipoacao;
+                marcarLinha(objetos[i]);
+            }
+        }
+    }
+
+    function js_marca_orgaos(tipo) {
+        if (tipo == 'orgao') {
+            document.getElementById('divOrgao').style.visibility =
+                document.getElementById('divOrgao').style.visibility = 'visible';
+        } else {
+            document.getElementById('divOrgao').style.visibility =
+                document.getElementById('divOrgao').style.visibility = 'hidden';
+        }
+        if (tipo == 'unidade') {
+            document.getElementById('divUnidade').style.visibility =
+                document.getElementById('divUnidade').style.visibility = 'visible';
+        } else {
+            document.getElementById('divUnidade').style.visibility =
+                document.getElementById('divUnidade').style.visibility = 'hidden';
+        }
+        if (tipo == 'funcao') {
+            document.getElementById('divFuncao').style.visibility =
+                document.getElementById('divFuncao').style.visibility = 'visible';
+        } else {
+            document.getElementById('divFuncao').style.visibility =
+                document.getElementById('divFuncao').style.visibility = 'hidden';
+        }
+        if (tipo == 'subfuncao') {
+            document.getElementById('divSubFuncao').style.visibility =
+                document.getElementById('divSubFuncao').style.visibility = 'visible';
+        } else {
+            document.getElementById('divSubFuncao').style.visibility =
+                document.getElementById('divSubFuncao').style.visibility = 'hidden';
+        }
+        if (tipo == 'programa') {
+            document.getElementById('divPrograma').style.visibility =
+                document.getElementById('divPrograma').style.visibility = 'visible';
+        } else {
+            document.getElementById('divPrograma').style.visibility =
+                document.getElementById('divPrograma').style.visibility = 'hidden';
+        }
+        if (tipo == 'projativ') {
+            document.getElementById('divProjAtiv').style.visibility =
+                document.getElementById('divProjAtiv').style.visibility = 'visible';
+        } else {
+            document.getElementById('divProjAtiv').style.visibility =
+                document.getElementById('divProjAtiv').style.visibility = 'hidden';
+        }
+        if (tipo == 'elemento') {
+            document.getElementById('divElemento').style.visibility =
+                document.getElementById('divElemento').style.visibility = 'visible';
+        } else {
+            document.getElementById('divElemento').style.visibility =
+                document.getElementById('divElemento').style.visibility = 'hidden';
+        }
+        if (tipo == 'desdobramento') {
+            document.getElementById('divDesdobramento').style.visibility =
+                document.getElementById('divDesdobramento').style.visibility = 'visible';
+        } else {
+            document.getElementById('divDesdobramento').style.visibility =
+                document.getElementById('divDesdobramento').style.visibility = 'hidden';
+        }
+        if (tipo == 'recurso') {
+            document.getElementById('divRecurso').style.visibility =
+                document.getElementById('divRecurso').style.visibility = 'visible';
+        } else {
+            document.getElementById('divRecurso').style.visibility =
+                document.getElementById('divRecurso').style.visibility = 'hidden';
+        }
+        if (tipo == 'instit') {
+            document.getElementById('divInstituicao').style.visibility =
+                document.getElementById('divInstituicao').style.visibility = 'visible';
+        } else {
+            document.getElementById('divInstituicao').style.visibility =
+                document.getElementById('divInstituicao').style.visibility = 'hidden';
+        }
+        if (tipo == "localizadorgastos") {
+            document.getElementById('divLocalizadorGastos').style.visibility =
+                document.getElementById('divLocalizadorGastos').style.visibility = 'visible';
+        } else {
+            document.getElementById('divLocalizadorGastos').style.visibility =
+                document.getElementById('divLocalizadorGastos').style.visibility = 'hidden';
+        }
+    }
+
+    function js_despesas(desp, valor) {
+        let elementodesp = document.formele.elements;
+        for (var i = 0; i < elementodesp.length; i++) {
+            if (elementodesp[i].name.substr(0, 3) == desp) {
+                if (valor) {
+                    elementodesp[i].checked = true;
+                    elementodesp[i].parentNode.parentNode.style.background = '#D7E4EA';
+                } else {
+                    elementodesp[i].checked = false;
+                    elementodesp[i].parentNode.parentNode.style.background = '#EEE';
+                }
+            }
+        }
+    }
+
+    function js_despesasRecursos(valor, checked) {
+        let elementos = document.formrecurso.elements;
+        for (let elemento of elementos) {
+            if (elemento.getAttribute('classificacao') == valor) {
+                elemento.checked = false;
+                elemento.parentNode.parentNode.style.background = '#EEE';
+                if (checked) {
+                    elemento.checked = true;
+                    elemento.parentNode.parentNode.style.background = '#D7E4EA';
+                }
+            }
+        }
+    }
+
+    function js_atualiza_variavel_retorno(div_camada, objeto) {
+        if (objeto.checked == true) {
+            document.form1.db_input_retorno.value = document.form1.db_input_retorno.value
+                                                    + div_camada + '_' + objeto.value + '-';
+        } else {
+            var retira = document.form1.db_input_retorno.value.split('-');
+            document.form1.db_input_retorno.value = null;
+            for (var i = 0; i < retira.length; i++) {
+                if (retira[i] != div_camada + '_' + objeto.value) {
+                    if (retira[i] != '') {
+                        document.form1.db_input_retorno.value = document.form1.db_input_retorno.value + retira[i] + '-';
+                    }
+                }
+            }
+        }
+    }
+
+    function js_retorno(div_camada) {
+        var obj = div_cama.elements;
+        for (var i = 0; i < sizeof(obj); i++) {
+            if (obj[i].checked == true) {
+                document.form1.db_input_retorno.value = document.form1.db_input_retorno.value
+                + div_camada + '_' + obj[i].value + '-'
+            }
+        }
+    }
+
+    function js_atualiza_variavel_retorno(objeto) {
+        var camada = [
+                'instit', 'orgao', 'unidade', 'funcao', 'subfuncao', 'programa', 'projativ', 'ele', 'des',
+                'recurso', 'localizadorgastos'
+            ];
+        var selecionados = '';
+        for (var i = 0; i < camada.length; i++) {
+            if (camada[i] == 'recurso' && filtroPorFonteUniao) {
+                if (filtroRecursos.getListaRecursos() != '') {
+                    var recursos = filtroRecursos.getListaRecursos().replace(',', '-recurso_');
+                    selecionados = selecionados + camada[i] + '_' + recursos;
+                }
+                continue;
+            }
+            if (camada[i] == 'recurso') {
+                let elementos = document.formrecurso.elements;
+                for (let elemento of elementos) {
+                    if (elemento.checked) {
+                      selecionados = selecionados + camada[i] + '_' + elemento.value + '-';
+                    }
+                }
+            } else {
+                var qcamada = eval('document.form' + camada[i] + '.elements');
+                for (var ii = 0; ii < qcamada.length; ii++) {
+                    if (qcamada[ii].checked == true) {
+                        selecionados = selecionados + camada[i] + '_' + qcamada[ii].value + '-';
+                    }
+                }
+            }
+        }
+        if (selecionados != '') {
+            return selecionados;
+        } else {
+            return 'geral';
+        }
+    }
+
+    function marcarLinha(item) {
+        if (item.checked == true) {
+            item.parentNode.parentNode.style.background = '#D7E4EA';
+        } else {
+            item.parentNode.parentNode.style.background = '#EEEEEE';
+        }
+    }
+
+    var filtroPorFonteUniao = false;
+    if (filtroPorFonteUniao) {
+        filtroRecursos = new DBViewFiltroRecursos(false);
+        $('divRecurso').innerHTML = filtroRecursos.getConteudoFiltro();
+    }(function() {
+        var query = frameElement.getAttribute('name').replace('IF', ''),
+            input = document.querySelector('input[value="Fechar"]');
+            input.onclick = parent[query] ?
+            parent[query].hide.bind(parent[query]) : input.onclick;
+    })();
+    </script>
+</body>
+
+</html>

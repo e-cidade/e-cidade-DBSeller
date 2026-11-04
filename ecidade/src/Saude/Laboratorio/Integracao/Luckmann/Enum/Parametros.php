@@ -35,9 +35,14 @@ class Parametros
 {
     const PEDIDOS = 1;
     const RESULTADOS = 2;
+    const PEDIDOS_INIFINITY = 3;
+    const RESULTADOS_INIFINITY = 4;
 
     const JSON_PEDIDOS = 'src/Saude/Laboratorio/Integracao/Luckmann/Resource/pedidos.json';
     const JSON_RESULTADOS = 'src/Saude/Laboratorio/Integracao/Luckmann/Resource/resultado.json';
 
     const JSON_CONFIGURACOES = 'config/saude/laboratorio/integracao/luckmann/config.json';
+    const JSON_CONFIGURACOES_INFINITY = 'config/saude/laboratorio/integracao/infinity/configInfinity.json';
+
+    const CAMINHO_BACKUP_PEDIDO_INFINITY = 'backupPedidosInfinity';
 }

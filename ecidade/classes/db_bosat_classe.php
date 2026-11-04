@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_bosat {
                  bo03_codsat = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_bosat() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bosat"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_bosat {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bo03_codbo = ($this->bo03_codbo == ""?@$GLOBALS["HTTP_POST_VARS"]["bo03_codbo"]:$this->bo03_codbo);
        $this->bo03_codsat = ($this->bo03_codsat == ""?@$GLOBALS["HTTP_POST_VARS"]["bo03_codsat"]:$this->bo03_codsat);
@@ -74,7 +74,7 @@ class cl_bosat {
      }
    }
    // funcao para inclusao
-   function incluir ($bo03_codbo){ 
+   public function incluir ($bo03_codbo){ 
       $this->atualizacampos();
      if($this->bo03_codsat == null ){ 
        $this->erro_sql = " Campo Codigo nao Informado.";
@@ -138,7 +138,7 @@ class cl_bosat {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($bo03_codbo=null) { 
+   public function alterar ($bo03_codbo=null) { 
       $this->atualizacampos();
      $sql = " update bosat set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_bosat {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($bo03_codbo=null,$dbwhere=null) { 
+   public function excluir ($bo03_codbo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($bo03_codbo));
      }else{ 
@@ -280,7 +280,7 @@ class cl_bosat {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

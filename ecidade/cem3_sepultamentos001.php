@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -78,16 +78,16 @@ $clrotulo->label("cm04_c_descr");
 </head>
 <body class="body-default abas">
   <div class="container">
-        <?if(!isset($cm01_i_codigo)){?>
+        <?php if(!isset($cm01_i_codigo)){?>
             <form name="form1" method="post" action="">
              <table border="0">
               <tr>
                <td nowrap title="<?=@$Tcm01_i_codigo?>">
-            <?db_ancora(@$Lcm01_i_codigo,"js_pesquisacm01_i_codigo(true);",$db_opcao);?>
+            <?php db_ancora(@$Lcm01_i_codigo,"js_pesquisacm01_i_codigo(true);",$db_opcao);?>
                </td>
                <td>
-            <?db_input('sepultamento',10,$Icm01_i_codigo,true,'text',$db_opcao," onchange='js_pesquisacm01_i_codigo(false);'")?>
-            <?db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
+            <?php db_input('sepultamento',10,$Icm01_i_codigo,true,'text',$db_opcao," onchange='js_pesquisacm01_i_codigo(false);'")?>
+            <?php db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
                </td>
               </tr>
              </table>
@@ -139,7 +139,7 @@ function js_valida(){
   document.form1.submit();
  }
 }
-<? if($clsepultamentos->numrows != 0){ ?>
+<?php if($clsepultamentos->numrows != 0){ ?>
 
   parent.document.formaba.a2.disabled = false;
   parent.document.formaba.a3.disabled = false;
@@ -147,7 +147,7 @@ function js_valida(){
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href   = 'cem3_sepultamentos002.php?sepultamento=<?=$cm01_i_codigo?>';
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href   = 'cem3_sepultamentos003.php?sepultamento=<?=$cm01_i_codigo?>';
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href   = 'cem3_sepultamentos004.php?sepultamento=<?=$cm01_i_codigo?>';
-<?}?>
+<?php }?>
 </script>
 </body>
 </html>

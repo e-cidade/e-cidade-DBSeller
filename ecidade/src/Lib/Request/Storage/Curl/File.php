@@ -132,6 +132,7 @@ class File
     {
         $this->options[CURLOPT_RETURNTRANSFER] = true;
         $this->options[CURLOPT_CUSTOMREQUEST] = $this->tipoRequisicao;
+        $this->options[CURLOPT_SSL_VERIFYPEER] = !$this->autenticacao->isDisableSSLverification();
 
         $url  = $this->autenticacao->url();
         $url .= empty($this->route) ? self::ROUTE : $this->route;
@@ -139,7 +140,7 @@ class File
         if (!empty($this->codigoArquivo)) {
             $url .= $this->codigoArquivo;
         }
-        
+
         $this->options[CURLOPT_URL] = $url;
 
         if (!empty($this->headers)) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clvistretornocalc->rotulo->label();
        <?=@$Ly04_codmsg?>
     </td>
     <td> 
-<?
+<?php
 db_input('y04_codmsg',10,$Iy04_codmsg,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('y04_codmsg',10,$Iy04_codmsg,true,'text',$db_opcao,"")
        <?=@$Ly04_msgretorno?>
     </td>
     <td> 
-<?
+<?php
 db_input('y04_msgretorno',150,$Iy04_msgretorno,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_vistretornocalc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -190,9 +190,9 @@ class DBDate
     {
         if (strpos($sData, "/")) {
             list($dia, $mes, $ano) = explode("/", $sData);
-        } else if (strpos($sData, "T")) {
+        } elseif (strpos($sData, "T")) {
             list($ano, $mes, $dia) = explode("-", Date('Y-m-d', strtotime($sData)));
-        } else if (strpos($sData, "-")) {
+        } elseif (strpos($sData, "-")) {
             list($ano, $mes, $dia) = explode("-", $sData);
         } else {
             $sMsgErro = "Data com formato inválido. {$sData} \n";
@@ -282,7 +282,7 @@ class DBDate
      *
      * @see getIntervaloEntreDatas
      */
-    public static function calculaIntervaloEntreDatas(DBDate $oDt1, DBDate $oDt2, $sIntervalo)
+    public static function calculaIntervaloEntreDatas(DBDate $oDt1, DBDate $oDt2, $sIntervalo = null)
     {
         $nIntervalo = 1;
         switch ($sIntervalo) {
@@ -578,7 +578,7 @@ class DBDate
             $aDataFormatada[] = $oDiferenca->d . $sDias;
         }
 
-        $sRetorno = implode($aDataFormatada, ', ');
+        $sRetorno = implode(', ', $aDataFormatada);
 
         if (strrpos($sRetorno, ',') !== false) {
             $sRetorno = substr_replace($sRetorno, ' e', strrpos($sRetorno, ','), 1);
@@ -687,6 +687,14 @@ class DBDate
         return self::$aMesesAbreviatura[(int)$iMes];
     }
 
+    /**
+     * @return array|string[]
+     */
+    public static function getMesesAbreviado()
+    {
+        return self::$aMesesAbreviatura;
+    }
+
     public static function getDiasSemana($diaSemana)
     {
         if (!empty(self::$aDiasSemana[$diaSemana])) {
@@ -772,5 +780,18 @@ class DBDate
     public static function getInstance($data)
     {
         return new DBDate($data);
+    }
+
+    public static function converterDataParaTexto($data)
+    {
+        // Separando a data em dia, mês e ano
+        $partesData = explode('-', $data);
+        $dia = $partesData[2];
+        $mes = $partesData[1];
+        $ano = $partesData[0];
+        // Construindo o texto da data
+        $textoData = $dia . ' de ' . self::$aMesesExtenso[(int)$mes] . ' de ' . $ano;
+
+        return $textoData;
     }
 }

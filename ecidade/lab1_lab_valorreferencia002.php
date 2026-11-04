@@ -208,7 +208,7 @@ if (isset($alterar)) {
     <body class='body_default' >
 
    <div class='container'>
-  	<?
+  	<?php
       $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"] = 'lab1_lab_valorreferencia002.php';
     	require_once(modification("forms/db_frmlab_valorreferencia.php"));
   	?>

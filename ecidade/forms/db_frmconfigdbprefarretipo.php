@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,39 +73,39 @@ if(isset($db_opcaoal)){
 		       <?=@$Lw17_sequencial?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_input('w17_sequencial',10,$Iw17_sequencial,true,'text',3,"")
 					?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tw17_arretipo?>">
-		       <?
+		       <?php
 		       db_ancora(@$Lw17_arretipo,"js_pesquisaw17_arretipo(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_input('w17_arretipo',10,$Iw17_arretipo,true,'text',$db_opcao," onchange='js_pesquisaw17_arretipo(false);'")
 					?>
-					<?
+					<?php
 					db_input('k00_descr',50,$Ik00_descr,true,'text',3,'')
 					?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tw17_instit?>">
-		       <?
+		       <?php
 		       echo $Lw17_instit;
 		       //db_ancora(@$Lw17_instit,"js_pesquisaw17_instit(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					$w17_instit = db_getsession('DB_instit');
 					db_input('w17_instit',10,$Iw17_instit,true,'text',3," onchange='js_pesquisaw17_instit(false);'")
 					?>
-		       <?
+		       <?php
 					db_input('nomeinst',50,$Inomeinst,true,'text',3,'')
 		       ?>
 		    </td>
@@ -115,7 +115,7 @@ if(isset($db_opcaoal)){
 		       <?=@$Lw17_dtini?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_inputdata('w17_dtini',@$w17_dtini_dia,@$w17_dtini_mes,@$w17_dtini_ano,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -125,7 +125,7 @@ if(isset($db_opcaoal)){
 		       <?=@$Lw17_dtfim?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_inputdata('w17_dtfim',@$w17_dtfim_dia,@$w17_dtfim_mes,@$w17_dtfim_ano,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -144,7 +144,7 @@ if(isset($db_opcaoal)){
 	<table>
   	  <tr>
 	    <td valign="top"  align="center">  
-	      <?
+	      <?php
 	                    
 		 	$chavepri= array("w17_sequencial"=>@$w17_sequencial);
 		 	$cliframe_alterar_excluir->chavepri=$chavepri;
@@ -213,7 +213,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_configdbprefarretipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

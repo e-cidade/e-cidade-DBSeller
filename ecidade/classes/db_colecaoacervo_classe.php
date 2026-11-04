@@ -27,40 +27,40 @@
 
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE colecaoacervo
-class cl_colecaoacervo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $bi29_sequencial = 0; 
-   var $bi29_nome = null; 
-   var $bi29_abreviatura = null; 
+class cl_colecaoacervo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $bi29_sequencial = 0;
+   var $bi29_nome = null;
+   var $bi29_abreviatura = null;
    var $bi29_quantidade = null;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 bi29_sequencial = int4 = Sequencial 
-                 bi29_nome = varchar(70) = Nome 
-                 bi29_abreviatura = varchar(5) = Abreviatura 
-                 bi29_quantidade = int4 = Quantidade de Itens 
+                 bi29_sequencial = int4 = Sequencial
+                 bi29_nome = varchar(70) = Nome
+                 bi29_abreviatura = varchar(5) = Abreviatura
+                 bi29_quantidade = int4 = Quantidade de Itens
                  ";
-   //funcao construtor da classe 
-   function cl_colecaoacervo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("colecaoacervo"); 
+     $this->rotulo = new rotulo("colecaoacervo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_colecaoacervo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi29_sequencial = ($this->bi29_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["bi29_sequencial"]:$this->bi29_sequencial);
        $this->bi29_nome = ($this->bi29_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["bi29_nome"]:$this->bi29_nome);
@@ -80,9 +80,9 @@ class cl_colecaoacervo {
      }
    }
    // funcao para inclusao
-   function incluir ($bi29_sequencial){ 
+   public function incluir ($bi29_sequencial){
       $this->atualizacampos();
-     if($this->bi29_nome == null ){ 
+     if($this->bi29_nome == null ){
        $this->erro_sql = " Campo Nome não Informado.";
        $this->erro_campo = "bi29_nome";
        $this->erro_banco = "";
@@ -103,16 +103,16 @@ class cl_colecaoacervo {
      }
 
      if($bi29_sequencial == "" || $bi29_sequencial == null ){
-       $result = db_query("select nextval('colecaoacervo_bi29_sequencial_seq')"); 
+       $result = db_query("select nextval('colecaoacervo_bi29_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: colecaoacervo_bi29_sequencial_seq do campo: bi29_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: colecaoacervo_bi29_sequencial_seq do campo: bi29_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->bi29_sequencial = pg_result($result,0,0); 
+       $this->bi29_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from colecaoacervo_bi29_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $bi29_sequencial)){
@@ -123,10 +123,10 @@ class cl_colecaoacervo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->bi29_sequencial = $bi29_sequencial; 
+         $this->bi29_sequencial = $bi29_sequencial;
        }
      }
-     if(($this->bi29_sequencial == null) || ($this->bi29_sequencial == "") ){ 
+     if(($this->bi29_sequencial == null) || ($this->bi29_sequencial == "") ){
        $this->erro_sql = " Campo bi29_sequencial não declarado.";
        $this->erro_banco = "Chave Primária zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -135,19 +135,19 @@ class cl_colecaoacervo {
        return false;
      }
      $sql = "insert into colecaoacervo(
-                                       bi29_sequencial 
-                                      ,bi29_nome 
-                                      ,bi29_abreviatura 
-                                      ,bi29_quantidade 
+                                       bi29_sequencial
+                                      ,bi29_nome
+                                      ,bi29_abreviatura
+                                      ,bi29_quantidade
                        )
                 values (
-                                $this->bi29_sequencial 
-                               ,'$this->bi29_nome' 
-                               ,'$this->bi29_abreviatura' 
-                               ,$this->bi29_quantidade 
+                                $this->bi29_sequencial
+                               ,'$this->bi29_nome'
+                               ,'$this->bi29_abreviatura'
+                               ,$this->bi29_quantidade
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Coleção de Acervo ($this->bi29_sequencial) não Incluído. Inclusão Abortada.";
@@ -188,16 +188,16 @@ class cl_colecaoacervo {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($bi29_sequencial=null) { 
+   public function alterar ($bi29_sequencial=null) {
       $this->atualizacampos();
      $sql = " update colecaoacervo set ";
      $virgula = "";
-     if(trim($this->bi29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_sequencial"])){ 
+     if(trim($this->bi29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_sequencial"])){
        $sql  .= $virgula." bi29_sequencial = $this->bi29_sequencial ";
        $virgula = ",";
-       if(trim($this->bi29_sequencial) == null ){ 
+       if(trim($this->bi29_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não Informado.";
          $this->erro_campo = "bi29_sequencial";
          $this->erro_banco = "";
@@ -207,10 +207,10 @@ class cl_colecaoacervo {
          return false;
        }
      }
-     if(trim($this->bi29_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_nome"])){ 
+     if(trim($this->bi29_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_nome"])){
        $sql  .= $virgula." bi29_nome = '$this->bi29_nome' ";
        $virgula = ",";
-       if(trim($this->bi29_nome) == null ){ 
+       if(trim($this->bi29_nome) == null ){
          $this->erro_sql = " Campo Nome não Informado.";
          $this->erro_campo = "bi29_nome";
          $this->erro_banco = "";
@@ -235,7 +235,7 @@ class cl_colecaoacervo {
          }
      }
 
-     if(trim($this->bi29_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_abreviatura"])){ 
+     if(trim($this->bi29_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_abreviatura"])){
        $sql  .= $virgula." bi29_abreviatura = '$this->bi29_abreviatura' ";
        $virgula = ",";
      }
@@ -268,7 +268,7 @@ class cl_colecaoacervo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Coleção de Acervo não Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->bi29_sequencial;
@@ -296,11 +296,11 @@ class cl_colecaoacervo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($bi29_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($bi29_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -309,7 +309,7 @@ class cl_colecaoacervo {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($bi29_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -341,7 +341,7 @@ class cl_colecaoacervo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Coleção de Acervo não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$bi29_sequencial;
@@ -369,11 +369,11 @@ class cl_colecaoacervo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -395,11 +395,11 @@ class cl_colecaoacervo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $bi29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $bi29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,15 +412,15 @@ class cl_colecaoacervo {
      $sql2 = "";
      if($dbwhere==""){
        if($bi29_sequencial!=null ){
-         $sql2 .= " where colecaoacervo.bi29_sequencial = $bi29_sequencial "; 
-       } 
+         $sql2 .= " where colecaoacervo.bi29_sequencial = $bi29_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,11 +429,11 @@ class cl_colecaoacervo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $bi29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $bi29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,15 +446,15 @@ class cl_colecaoacervo {
      $sql2 = "";
      if($dbwhere==""){
        if($bi29_sequencial!=null ){
-         $sql2 .= " where colecaoacervo.bi29_sequencial = $bi29_sequencial "; 
-       } 
+         $sql2 .= " where colecaoacervo.bi29_sequencial = $bi29_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

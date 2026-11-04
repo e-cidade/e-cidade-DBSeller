@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("sanitario"=>"Sanitário", "observacoes"=>"Observa&ccedil;&otilde;es","saniatividade"=>"Atividades","resptecnico"=>"Responsável Técnico","calculo"=>"Cálculo");//nome do iframe e o label    
        $clcriaabas->title      = array("sanitario"=>"Manutenção de Alvará Sanitário","observacoes"=>"Observa&ccedil;&otilde;es", "saniatividade"=>"Manutenção de atividades do sanitário","resptecnico"=>"Responsável Técnico","calculo"=>"Cálculo");//nome do iframe e o label    
        $clcriaabas->src = array("sanitario"=>"fis1_sanitario005.php","observacoes"=>"fis1_sanitario006.php","saniatividade"=>"fis1_saniatividade001.php","resptecnico"=>"fis1_resptecnico001.php","calculo"=>"fis1_sanicalc001.php");//nome do iframe e o label    
@@ -66,12 +66,12 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 echo "<script>document.formaba.resptecnico.size=20;</script>"; 
 if(isset($db_opcao) && $db_opcao==2){
   echo "

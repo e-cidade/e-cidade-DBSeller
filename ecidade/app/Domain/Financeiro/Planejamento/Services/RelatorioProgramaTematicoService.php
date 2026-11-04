@@ -27,20 +27,14 @@
 
 namespace App\Domain\Financeiro\Planejamento\Services;
 
-use App\Domain\Financeiro\Orcamento\Models\Funcao;
-use App\Domain\Financeiro\Orcamento\Models\Subtitulo;
-use App\Domain\Financeiro\Planejamento\Models\AreaResultado;
 use App\Domain\Financeiro\Planejamento\Models\Comissao;
 use App\Domain\Financeiro\Planejamento\Models\IndicadorProgramaEstrategico;
 use App\Domain\Financeiro\Planejamento\Models\Iniciativa;
-use App\Domain\Financeiro\Planejamento\Models\MetasIniciativa;
 use App\Domain\Financeiro\Planejamento\Models\MetasObjetivo;
-use App\Domain\Financeiro\Planejamento\Models\ObjetivoEstrategico;
 use App\Domain\Financeiro\Planejamento\Models\ObjetivoProgramaEstrategico;
 use App\Domain\Financeiro\Planejamento\Models\OrgaoPrograma;
 use App\Domain\Financeiro\Planejamento\Models\Planejamento;
 use App\Domain\Financeiro\Planejamento\Models\ProgramaEstrategico;
-use App\Domain\Financeiro\Planejamento\Models\Valor;
 use App\Domain\Financeiro\Planejamento\Relatorios\ProgramasTematicosPdf;
 use ECidade\Financeiro\Teste;
 use Exception;
@@ -123,6 +117,7 @@ class RelatorioProgramaTematicoService
         }
         $this->organizaDados();
     }
+
     /**
      * @return array
      */
@@ -148,7 +143,7 @@ class RelatorioProgramaTematicoService
     {
         $this->dados['planejamento'] = $this->planejamento->toArray();
         $this->dados['planejamento']['exercicios'] = $this->planejamento->execiciosPlanejamento();
-        $this->dados['planejamento']['missao'] =  $this->planejamento->pl2_missao;
+        $this->dados['planejamento']['missao'] = $this->planejamento->pl2_missao;
         $this->dados['planejamento']['visao'] = $this->planejamento->pl2_visao;
         $this->dados['planejamento']['valores'] = $this->planejamento->pl2_valores;
     }

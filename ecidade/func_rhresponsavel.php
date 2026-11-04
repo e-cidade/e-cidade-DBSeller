@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrhresponsavel->rotulo->label("rh107_nome");
               <?=$Lrh107_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("rh107_sequencial",10,$Irh107_sequencial,true,"text",4,"","chave_rh107_sequencial");
 		          ?>
             </td>
@@ -66,7 +66,7 @@ $clrhresponsavel->rotulo->label("rh107_nome");
               <?=$Lrh107_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                 db_input("rh107_nome",40,$Irh107_nome,true,"text",4,"","chave_rh107_nome");
               ?>
             </td>
@@ -84,7 +84,7 @@ $clrhresponsavel->rotulo->label("rh107_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhresponsavel.php")==true){
@@ -124,12 +124,12 @@ $clrhresponsavel->rotulo->label("rh107_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

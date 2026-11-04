@@ -1,8 +1,5 @@
 <?php
-set_time_limit(0);
 if(!defined('DB_BIBLIOT')){
-
-   session_cache_limiter('none');
    if(!isset($_SESSION)){
      session_start();
    }
@@ -45,32 +42,33 @@ class pdf3 extends fpdf {
 
  // ################################# Initialization
 
-    var $wLine; // Maximum width of the line
-    var $hLine; // Height of the line
-    var $Text; // Text to display
-    var $border;
-    var $align; // Justification of the text
-    var $fill;
-    var $Padding;
-    var $lPadding;
-    var $tPadding;
-    var $bPadding;
-    var $rPadding;
-    var $TagStyle; // Style for each tag
-    var $Indent;
-    var $Space; // Minimum space between words
-    var $PileStyle;
-    var $Line2Print; // Line to display
-    var $NextLineBegin; // Buffer between lines
-    var $TagName;
-    var $Delta; // Maximum width minus width
-    var $StringLength;
-    var $LineLength;
-    var $wTextLine; // Width minus paddings
-    var $nbSpace; // Number of spaces in the line
-    var $Xini; // Initial position
-    var $href; // Current URL
-    var $TagHref; // URL for a cell
+    public $wLine; // Maximum width of the line
+    public $hLine; // Height of the line
+    public $Text; // Text to display
+    public $border;
+    public $align; // Justification of the text
+    public $fill;
+    public $Padding;
+    public $lPadding;
+    public $tPadding;
+    public $bPadding;
+    public $rPadding;
+    public $TagStyle; // Style for each tag
+    public $Indent;
+    public $Space; // Minimum space between words
+    public $PileStyle;
+    public $Line2Print; // Line to display
+    public $NextLineBegin; // Buffer between lines
+    public $TagName;
+    public $Delta; // Maximum width minus width
+    public $StringLength;
+    public $LineLength;
+    public $wTextLine; // Width minus paddings
+    public $nbSpace; // Number of spaces in the line
+    public $Xini; // Initial position
+    public $href; // Current URL
+    public $TagHref; // URL for a cell
+    public $variavelControle;
 
     // ################################# Public Functions
 
@@ -78,7 +76,7 @@ class pdf3 extends fpdf {
 
 
 //Page header
-  function Header() {
+  public function Header() {
 //$dados = @db_query("select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = ".@$GLOBALS["DB_instit"]);
 //$url = @pg_result($dados,0,"url");
 //global $nomeinst;
@@ -108,7 +106,7 @@ $this->SetLeftMargin(10);
 $Letra = 'Times';
 $posini = 20;
 //$this->Image("imagens/files/logo_boleto.png",$posini,8,24);
-$this->Image('imagens/files/'.$logo,$posini,8,24);
+$this->Image('imagens/files/'.$logo,$posini,8,15);
 $this->Ln(5);
 $this->SetFont($Letra,'',10);
 $this->MultiCell(0,4,$db12_extenso,0,"C",0);
@@ -119,14 +117,26 @@ $this->MultiCell(0,4,@$GLOBALS["head1"],0,"C",0);
 $this->SetLeftMargin($S);
 $this->Ln(1);
 }
+
+/**
+ * Função para a adição de um parágrafo extra no footer da pagina
+ */
+public function setVariavelControle($variavel) {
+    $this->variavelControle = $variavel;
+}
 //Page footer
-  function Footer() {
+  public function Footer() {
   $S = $this->lMargin;
   $this->SetLeftMargin(10);
   global $url;
     //Position at 1.5 cm from bottom
 
     $this->SetFont('Arial','',5);
+
+    if(isset($this->variavelControle)){
+        $this->text(10,286,$this->variavelControle);
+    }
+
     $this->text(10,289,'Base: '.@$GLOBALS["DB_NBASE"]);
     $this->SetFont('Arial','I',6);
     $this->SetY(-10);
@@ -148,12 +158,12 @@ $this->Ln(1);
   }
 
 
- function WriteTag($w,$h,$txt,$border=0,$align="J",$fill=0,$padding=0)
+ public function WriteTag($w,$h,$txt,$border=0,$align="J",$fill=0,$padding=0)
     {
         $this->wLine=$w;
         $this->hLine=$h;
         $this->Text=trim($txt);
-        $this->Text=ereg_replace("\n|\r|\t","",$this->Text);
+        $this->Text=preg_replace("\n|\r|\t","",$this->Text);
         $this->border=$border;
         $this->align=$align;
         $this->fill=$fill;
@@ -180,7 +190,7 @@ $this->Ln(1);
     }
 
 
-    function SetStyle($tag,$family,$style,$size,$color,$indent=-1)
+    public function SetStyle($tag,$family,$style,$size,$color,$indent=-1)
     {
          $tag=trim($tag);
          $this->TagStyle[$tag]['family']=trim($family);
@@ -193,7 +203,7 @@ $this->Ln(1);
 
     // ############################ Private Functions
 
-    function SetSpace() // Minimal space between words
+    public function SetSpace() // Minimal space between words
     {
         $tag=$this->Parser($this->Text);
         $this->FindStyle($tag[2],0);
@@ -202,9 +212,9 @@ $this->Ln(1);
     }
 
 
-    function Padding()
+    public function Padding()
     {
-        if(ereg("^.+,",$this->Padding)) {
+        if(preg_match("^.+,",$this->Padding)) {
             $tab=explode(",",$this->Padding);
             $this->lPadding=$tab[0];
             $this->tPadding=$tab[1];
@@ -229,7 +239,7 @@ $this->Ln(1);
     }
 
 
-    function LineLength()
+    public function LineLength()
     {
         if($this->wLine==0)
             $this->wLine=$this->fw - $this->Xini - $this->rMargin;
@@ -238,7 +248,7 @@ $this->Ln(1);
     }
 
 
-    function BorderTop()
+    public function BorderTop()
     {
         $border=0;
         if($this->border==1)
@@ -249,7 +259,7 @@ $this->Ln(1);
     }
 
 
-    function BorderBottom()
+    public function BorderBottom()
     {
         $border=0;
         if($this->border==1)
@@ -258,7 +268,7 @@ $this->Ln(1);
     }
 
 
-    function DoStyle($tag) // Applies a style
+    public function DoStyle($tag) // Applies a style
     {
         $tag=trim($tag);
         $this->SetFont($this->TagStyle[$tag]['family'],
@@ -273,7 +283,7 @@ $this->Ln(1);
     }
 
 
-    function FindStyle($tag,$ind) // Inheritance from parent elements
+    public function FindStyle($tag,$ind) // Inheritance from parent elements
     {
         $tag=trim($tag);
 
@@ -307,11 +317,11 @@ $this->Ln(1);
                     break;
                 else
                 {
-                    if(ereg("B",$style1))
+                    if(preg_match("B",$style1))
                         $style['b']="B";
-                    if(ereg("I",$style1))
+                    if(preg_match("I",$style1))
                         $style['i']="I";
-                    if(ereg("U",$style1))
+                    if(preg_match("U",$style1))
                         $style['u']="U";
                 }
             }
@@ -359,23 +369,23 @@ $this->Ln(1);
     }
 
 
-    function Parser($text)
+    public function Parser($text)
     {
         $tab=array();
         // Closing tag
-        if(ereg("^(</([^>]+)>).*",$text,$regs)) {
+        if(preg_match("^(</([^>]+)>).*",$text,$regs)) {
             $tab[1]="c";
             $tab[2]=trim($regs[2]);
         }
         // Opening tag
-        else if(ereg("^(<([^>]+)>).*",$text,$regs)) {
-            $regs[2]=ereg_replace("^a","a ",$regs[2]);
+        else if(preg_match("^(<([^>]+)>).*",$text,$regs)) {
+            $regs[2]=preg_replace("^a","a ",$regs[2]);
             $tab[1]="o";
             $tab[2]=trim($regs[2]);
 
             // Presence of attributes
-            if(ereg("(.+) (.+)='(.+)' *",$regs[2])) {
-                $tab1=split(" +",$regs[2]);
+            if(preg_match("(.+) (.+)='(.+)' *",$regs[2])) {
+                $tab1= explode(" +",$regs[2]);
                 $tab[2]=trim($tab1[0]);
                 while(list($i,$couple)=each($tab1))
                 {
@@ -390,12 +400,12 @@ $this->Ln(1);
             }
         }
          // Space
-         else if(ereg("^( ).*",$text,$regs)) {
+         else if(preg_match("^( ).*",$text,$regs)) {
             $tab[1]="s";
             $tab[2]=$regs[1];
         }
         // Text
-        else if(ereg("^([^< ]+).*",$text,$regs)) {
+        else if(preg_match("^([^< ]+).*",$text,$regs)) {
             $tab[1]="t";
             $tab[2]=trim($regs[1]);
         }
@@ -409,7 +419,7 @@ $this->Ln(1);
     }
 
 
-    function MakeLine() // Makes a line
+    public function MakeLine() // Makes a line
     {
         $this->Text.=" ";
         $this->LineLength=array();
@@ -489,7 +499,7 @@ $this->Ln(1);
     }
 
 
-    function BeginLine()
+    public function BeginLine()
     {
         $this->Line2Print=array();
         $this->StringLength=array();
@@ -503,8 +513,8 @@ $this->Ln(1);
             $i=0;
         }
         else {
-            ereg("^(( *(<([^>]+)>)* *)*)(.*)",$this->Text,$regs);
-            $regs[1]=ereg_replace(" ", "", $regs[1]);
+            preg_match("^(( *(<([^>]+)>)* *)*)(.*)",$this->Text,$regs);
+            $regs[1]=preg_replace(" ", "", $regs[1]);
             $this->Text=$regs[1].$regs[5];
             $i=-1;
         }
@@ -513,7 +523,7 @@ $this->Ln(1);
     }
 
 
-    function EndLine()
+    public function EndLine()
     {
         if(end($this->Line2Print)!="" && $this->LastLine==false) {
             $this->NextLineBegin['text']=array_pop($this->Line2Print);
@@ -534,7 +544,7 @@ $this->Ln(1);
     }
 
 
-    function PrintLine()
+    public function PrintLine()
     {
         $border=0;
         if($this->border==1)
@@ -568,7 +578,7 @@ $this->Ln(1);
     }
 
 
-    function LineAlign()
+    public function LineAlign()
     {
         $space=$this->Space;
         if($this->align=="J") {
@@ -588,7 +598,7 @@ $this->Ln(1);
     }
 
 
-    function LineBreak()
+    public function LineBreak()
     {
         $x=$this->Xini;
         $y=$this->GetY()+$this->hLine;
@@ -596,7 +606,7 @@ $this->Ln(1);
     }
 
 
-    function EndParagraph() // Interline between paragraphs
+    public function EndParagraph() // Interline between paragraphs
     {
         $border=0;
         if($this->border==1)
@@ -609,7 +619,7 @@ $this->Ln(1);
 
 
 
-function db_extenso($valor=0, $maiusculas=false) {
+public function db_extenso($valor=0, $maiusculas=false) {
 
     $rt = '';
     $singular = array("centavo", "real", "mil", "milhão", "bilhão", "trilhão", "quatrilhão");
@@ -657,7 +667,7 @@ $ru) ? " e " : "").$ru;
 	                 Trocando o " E " por " e ", fica muito + apresentável!
                      Rodrigo Cerqueira, rodrigobc@fte.com.br
                     */
-			  if ($rt) $rt=ereg_replace(" E "," e ",ucwords($rt));
+			  if ($rt) $rt=preg_replace(" E "," e ",ucwords($rt));
                           return (($rt) ? ($rt) : "Zero");
          }
 
@@ -666,5 +676,3 @@ $ru) ? " e " : "").$ru;
 
 
 }
-//|XX|//
-?>

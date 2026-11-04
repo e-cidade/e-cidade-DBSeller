@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,12 +92,12 @@ function js_consulta2(y50_codauto){
 	<tr>   
 	  <br><br>
 	  <td title="<?=@$Ty50_codauto?>" >
-	  <?
+	  <?php
 	   db_ancora(@$Ly50_codauto,' js_inscr(true); ',1);
 	  ?>
 	  </td>    
 	  <td title="<?=@$Ty50_codauto?>" colspan="4">
-	  <?
+	  <?php
 	   db_input('y50_codauto',5,@$Iy50_codauto,true,'text',1,"onchange='js_inscr(false)'");
 	   db_input('z01_nome',50,0,true,'text',3);
 	  ?>
@@ -109,7 +109,7 @@ function js_consulta2(y50_codauto){
 	  </td>
 	
 	<td title="<?=@$Ty50_numbloco?>" colspan="4">
-	  <?
+	  <?php
 	   db_input('y50_numbloco',10,0,true,'text',1);
 	  ?>
 	  </td>
@@ -124,7 +124,7 @@ function js_consulta2(y50_codauto){
        </center>
        </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

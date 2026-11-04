@@ -30,6 +30,7 @@ namespace ECidade\Saude\Laboratorio\Integracao\Luckmann\Service;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Model\Parametros as ParametrosModel;
 use Exception;
 use JSON;
+use stdClass;
 
 /**
  * Class Parametros
@@ -44,16 +45,28 @@ class Parametros
     private $json;
 
     /**
+     * @var object
+     * Arquivo de configuracao json para integração Infinity
+     */
+    private $jsonConfigInfinity;
+
+    /**
      * @var string
      */
     private $caminhoArquivo;
 
     /**
+     * @var string
+     */
+    private $caminhoArquivoInfinity;
+
+    /**
      * Parametros constructor.
-     * @param $caminhoArquivo
+     * @param string $caminhoArquivo
+     * @param string|null $caminhoArquivoInfinity
      * @throws Exception
      */
-    public function __construct($caminhoArquivo)
+    public function __construct($caminhoArquivo, $caminhoArquivoInfinity = null)
     {
         if (empty($caminhoArquivo)) {
             throw new Exception('Caminho do arquivo de configuração não informado.');
@@ -65,6 +78,15 @@ class Parametros
 
         $this->caminhoArquivo = $caminhoArquivo;
         $this->json = JSON::create()->parse(file_get_contents($caminhoArquivo));
+
+        if ($caminhoArquivoInfinity) {
+            if (!file_exists($caminhoArquivoInfinity)) {
+                $this->criarArquivo($caminhoArquivoInfinity);
+            }
+
+            $this->caminhoArquivoInfinity = $caminhoArquivoInfinity;
+            $this->jsonConfigInfinity = JSON::create()->parse(file_get_contents($caminhoArquivoInfinity));
+        }
     }
 
     /**
@@ -72,7 +94,7 @@ class Parametros
      */
     private function criarArquivo($caminhoArquivo)
     {
-        $configuracao = new \stdClass();
+        $configuracao = new stdClass();
         $configuracao->pasta_arquivo_pedidos = '';
         $configuracao->pasta_arquivo_resultados = '';
 
@@ -88,6 +110,11 @@ class Parametros
         $parametrosModel->setPastaPedidos($this->json->pasta_arquivo_pedidos);
         $parametrosModel->setPastaResultados($this->json->pasta_arquivo_resultados);
 
+        if ($this->jsonConfigInfinity) {
+            $parametrosModel->setPastaPedidosInfinity($this->jsonConfigInfinity->pasta_arquivo_pedidos);
+            $parametrosModel->setPastaResultadosInfinity($this->jsonConfigInfinity->pasta_arquivo_resultados);
+        }
+
         return $parametrosModel;
     }
 
@@ -99,6 +126,17 @@ class Parametros
         $this->json->pasta_arquivo_pedidos = $parametrosModel->getPastaPedidos();
         $this->json->pasta_arquivo_resultados = $parametrosModel->getPastaResultados();
 
-        file_put_contents($this->caminhoArquivo, \JSON::create()->stringify($this->json));
+        file_put_contents($this->caminhoArquivo, JSON::create()->stringify($this->json));
+    }
+
+    /**
+     * @param ParametrosModel $parametrosModel
+     */
+    public function salvarJsonInfinity(ParametrosModel $parametrosModel)
+    {
+        $this->jsonConfigInfinity->pasta_arquivo_pedidos = $parametrosModel->getPastaPedidosInfinity();
+        $this->jsonConfigInfinity->pasta_arquivo_resultados = $parametrosModel->getPastaResultadosInfinity();
+
+        file_put_contents($this->caminhoArquivoInfinity, JSON::create()->stringify($this->jsonConfigInfinity));
     }
 }

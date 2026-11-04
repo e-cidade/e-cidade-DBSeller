@@ -120,6 +120,10 @@ class licitacao
     private $oDataAbertura;
     private $sHoraAbertura;
 
+    /**
+     * @var integer
+     */
+    private $iComissao;
 
     /**
      * @param integer $iCodLicitacao Código da Licitação
@@ -138,6 +142,7 @@ class licitacao
 
                 $oDadoLicitacao            = db_utils::fieldsMemory($rsBuscaLicitacao, 0);
                 $this->iNumeroEdital       = $oDadoLicitacao->l20_numero;
+                $this->iComissao           = $oDadoLicitacao->l20_liccomissao;
                 $this->iCodigoSituacao     = $oDadoLicitacao->l20_licsituacao;
                 $this->sObjeto             = $oDadoLicitacao->l20_objeto;
                 $this->sProcesso           = $oDadoLicitacao->l20_procadmin;
@@ -844,6 +849,7 @@ class licitacao
         $sCampos .= "pc23_vlrun as valorunitariofornecedor,";
         $sCampos .= "pc23_quant as quantfornecedor,";
         $sCampos .= "z01_numcgm as codigofornecedor,";
+        $sCampos .= "pc10_solicitacaotipo as tiposolicitacao,";
         $sCampos .= "z01_nome as fornecedor,";
         $sCampos .= "m61_descr,";
         $sCampos .= "m61_usaquant,";
@@ -868,7 +874,6 @@ class licitacao
             )";
 
         $sSqlPcOrcamJulg = $oDaoPcOrcamJulg->sql_query_gerautlic(null, null, $sCampos, $sOrder, $sWhere);
-
         $rsPcOrcamJulg = $oDaoPcOrcamJulg->sql_record($sSqlPcOrcamJulg);
         $iRowPcOrcamJulg = $oDaoPcOrcamJulg->numrows;
 
@@ -990,7 +995,9 @@ class licitacao
 
                 $oDados->autorizacaogeradas = $this->getAutorizacoes(
                     $oDados->codigoitemprocesso,
-                    $oDados->codigodotacao
+                    $oDados->codigodotacao,
+                    null,
+                    $oDados->tiposolicitacao
                 );
                 $oDados->valorunitariofornecedor = number_format(
                     $oDados->valorunitariofornecedor,
@@ -1013,7 +1020,7 @@ class licitacao
      * @param integer $iOrcTipoRec
      * TODO retornar objeto da autorização
      */
-    public function getAutorizacoes($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null)
+    public function getAutorizacoes($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null, $tipoSolicitacao = null)
     {
         if (empty($iCodigoItemProcesso)) {
             throw new Exception("Código do item do processo não informado!");
@@ -1034,7 +1041,11 @@ class licitacao
         $sCampos = "distinct e55_autori as autorizacao                 ";
         $sWhere = "          e73_pcprocitem = {$iCodigoItemProcesso} ";
         $sWhere .= "      and e56_coddot     = {$iCodigoDotacao}      ";
-        $sWhere .= "      and e54_anulad is null                      ";
+
+        if ($tipoSolicitacao !== '5') {
+            $sWhere .= " AND e54_anulad IS NULL ";
+        }
+
         $sWhere .= "      {$sWhereContrapartida}                      ";
         $oDaoEmpAutItem = db_utils::getDao("empautitem");
         $sSqlAutorizacao = $oDaoEmpAutItem->sql_query_itemdot(null, null, $sCampos, null, $sWhere);
@@ -1047,6 +1058,32 @@ class licitacao
         }
 
         return $aAutorizacoes;
+    }
+
+    public function getComissao()
+    {
+        $comissao = new cl_liccomissao();
+        $sqlComissao = $comissao->sql_query($this->iComissao);
+        $resultadoComissao = $comissao->sql_record($sqlComissao);
+        $dadosComissao = db_utils::fieldsMemory($resultadoComissao, 0);
+
+        if (empty($dadosComissao)) {
+            return false;
+        }
+
+        $comissaoCgm = new cl_liccomissaocgm();
+        $sqlComissaoCgm = $comissaoCgm->sql_query(
+            null,
+            '*',
+            null,
+            "l31_liccomissao = {$dadosComissao->l30_codigo}"
+        );
+        $resultadoComissaoCgm = $comissaoCgm->sql_record($sqlComissaoCgm);
+        $dadosComissaoCgm = db_utils::getCollectionByRecord($resultadoComissaoCgm);
+
+        $dados = $dadosComissao;
+        $dados->participantes = $dadosComissaoCgm;
+        return $dados;
     }
 
     /**
@@ -1084,14 +1121,22 @@ class licitacao
                 $nValorTotal += (float)str_replace(',', '.', $oItem->valortotal);
                 /**
                  * verificamos se exite reserva de saldo para a solicitacao;
-                 * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e a solictacao
+                 * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e solictacao
                  */
-                $aReservas = itemSolicitacao::getReservasSaldoDotacao($oItem->pcdotac);
+                $aReservas = itemSolicitacao::getReservasSaldoDotacao($oItem->pcdotac, $oItem->solicitem);
                 $nNovoValorReserva = (float)str_replace(',', '.', $oItem->valortotal);
 
-
                 $iUnidade = db_getsession("DB_coddepto");
-                $numrows = pg_numrows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
+                $numrows = pg_num_rows(
+                    db_query(
+                        "
+                            select coddepto from db_depart
+                            where
+                                descrdepto like '%SEDUC%'
+                                and coddepto = {$iUnidade};
+                        "
+                    )
+                );
                 $iInstit = db_getsession("DB_instit");
                 $clpcparam  = new cl_pcparam();
                 $rspcparam  = $clpcparam->sql_record($clpcparam->sql_query_file($iInstit, "pc30_bloqueiaautemp"));
@@ -1129,17 +1174,7 @@ class licitacao
                  */
                 $oSaldo = $this->getValoresParciais($oItem->codigoprocesso, $oDados->dotacao, $oDados->contrapartida);
 
-
-
-                /*
-                Nao sera necessario criar orcreservasol nesse momento , pois ao
-                autorizar o empenho AutorizacaoEmpenho.model , ele cria a orcreserva e orcreservaaut
-                caso criasse aqui tambem teria que excluir no AutorizacaoEmpenho.model
-
-                deixando aqui sistema cria 2 reservas se tiver saldo, ocasionava de ter reservas 'perdidas'
-                sendo necesario a exclusao via acertos
-
-                if ($nNovoValorReserva > 0 && ($oSaldo->nValorAutorizacao > 0 && $oSaldo->nValorAutorizacao + $oItem->valortotal < $oSaldo->nValorItemJulgado)) {
+                if ($nNovoValorReserva > 0 && $oSaldo->nValorAutorizacao + $oItem->valortotal < $oSaldo->nValorItemJulgado) {
                     $oDaoOrcReserva->o80_anousu = db_getsession("DB_anousu");
                     $oDaoOrcReserva->o80_coddot = $oDados->dotacao;
                     $oDaoOrcReserva->o80_dtfim = db_getsession("DB_anousu") . "-12-31";
@@ -1156,19 +1191,16 @@ class licitacao
                     }
 
                     $oDaoOrcReservaSol->o82_codres = $oDaoOrcReserva->o80_codres;
-                    $oDaoOrcReservaSol->o82_pcdotac = $oDados->pcdotac;
-                    $oDaoOrcReservaSol->o82_solicitem = $oDados->codigoitemsolicitacao;
+                    $oDaoOrcReservaSol->o82_pcdotac = $oItem->pcdotac;
+                    $oDaoOrcReservaSol->o82_solicitem = $oItem->solicitem;
                     $oDaoOrcReservaSol->incluir(null);
+
                     if ($oDaoOrcReservaSol->erro_status == 0) {
                         $sMsgErro = "Não foi possivel gerar reserva para a dotação: {$oDados->dotacao}.\n";
                         $sMsgErro .= $oDaoOrcReservaSol->erro_msg;
                         throw new Exception($sMsgErro);
                     }
                 }
-                */
-
-
-
             }
             /**
              * Salvamos a Autorizacao;
@@ -1235,7 +1267,8 @@ class licitacao
             }
 
             /**
-             * Buscar o código do processo da tabela solicitaprotprocesso e incluir na empautorizaprotprocesso caso tenha
+             * Buscar o código do processo da tabela solicitaprotprocesso e
+             * incluir na empautorizaprotprocesso caso tenha
              */
             $oDaoSolicitem = new cl_solicitem;
             $sCodigosItens = implode(",", $aItemSolcitem);
@@ -1259,8 +1292,12 @@ class licitacao
                 $oDaoEmpAutorizaProcesso->e150_numeroprocesso = $sProcessoAdministrativo;
                 $oDaoEmpAutorizaProcesso->incluir(null);
                 if ($oDaoEmpAutorizaProcesso->erro_status == 0) {
-                    $sMensagemProcessoAdministrativo = "Ocorreu um erro para incluir o número do processo administrativo ";
-                    $sMensagemProcessoAdministrativo .= "na autorização de empenho.\n\n{$oDaoEmpAutorizaProcesso->erro_msg}";
+                    $sMensagemProcessoAdministrativo = "
+                        Ocorreu um erro para incluir o número do processo administrativo
+                    ";
+                    $sMensagemProcessoAdministrativo .= "
+                        na autorização de empenho.\n\n{$oDaoEmpAutorizaProcesso->erro_msg}
+                    ";
                     throw new Exception($sMensagemProcessoAdministrativo);
                 }
             }
@@ -1418,6 +1455,10 @@ class licitacao
         return count($this->getFornecedor()) > 0;
     }
 
+    public function hasOrcamento() {
+        return !empty($this->getCodigoOrcamento());
+    }
+
     /**
      * Retorna um array de fornecedores.
      */
@@ -1442,7 +1483,6 @@ class licitacao
         }
         return $this->aFornecedores;
     }
-
 
     /**
      * funcao para verifica saldo disponivel num determinada modalidade de licitação
@@ -1708,8 +1748,7 @@ class licitacao
                 $this->hasFornecedor()
                 || EventoLicitacao::possuiFaseEvento(
                     $this,
-                    EventoLicitacao::FASE_HABILITACAO_PROPOSTAS,
-                    6
+                    EventoLicitacao::FASE_HABILITACAO_PROPOSTAS
                 )
             ) {
                 $this->iFaseLicitacon = EventoLicitacao::FASE_HABILITACAO_PROPOSTAS;
@@ -1884,6 +1923,11 @@ class licitacao
         $licitacaoAtributosDinamicos = new LicitacaoAtributosDinamicos;
         $licitacaoAtributosDinamicos->setCodigoLicitacao($this->getCodigo());
         return $licitacaoAtributosDinamicos->getAtributo($atributo);
+    }
+
+    public function getSubcontratacao()
+    {
+        return $this->obterAtributoDinamico('permitesubcontratacao');
     }
 
     public function obterNivelJulgamento()

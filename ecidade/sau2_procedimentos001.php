@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -62,18 +62,18 @@ $clrotulo->label("sd29_i_procedimento");
        <b> Período:</b>
      </td>
      <td>
-       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+         <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
         A
-       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+         <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
      </tr>
      <tr>
       <td nowrap align="right" >
-       <?db_ancora("<b>Procedimento:</b>","js_pesquisa_procedimento(true);",1)?>
+          <?php db_ancora("<b>Procedimento:</b>","js_pesquisa_procedimento(true);",1)?>
       </td>
       <td>
-       <?db_input('sd63_c_procedimento',11,"",true,'text',1," onchange='js_pesquisa_procedimento(false);'")?>
-       <?db_input('sd63_c_nome',70,"",true,'text',3,'')?>
+          <?php db_input('sd63_c_procedimento',11,"",true,'text',1," onchange='js_pesquisa_procedimento(false);'")?>
+          <?php db_input('sd63_c_nome',70,"",true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -90,7 +90,7 @@ $clrotulo->label("sd29_i_procedimento");
      <tr>
      <td colspan="2">
      <table border="1" cellpadding="0" cellspacing="0" width="100%">
-     <?
+         <?php
       $result = $clunidades->sql_record($clunidades->sql_query());
       if($clunidades->numrows > 0){
      ?>
@@ -98,7 +98,7 @@ $clrotulo->label("sd29_i_procedimento");
         <td bgcolor="#D0D0D0" width="30"><input type="button" value="M" name="marca" title="Marcar/Desmarcar" onclick="marcar(<?=$clunidades->numrows?>, this)"></td>
         <td colspan="5"><b>Selecione as Unidades</b></td>
        </tr>
-      <?$bg = "#E8E8E8";
+          <?php $bg = "#E8E8E8";
         echo "<tr bgcolor='#b0b0b0'>";
         for($u=0; $u< $clunidades->numrows; $u++){
          db_fieldsmemory($result,$u);
@@ -133,7 +133,7 @@ $clrotulo->label("sd29_i_procedimento");
   </td>
  </tr>
 </table>
-    <?
+<?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>
@@ -203,7 +203,7 @@ function valida(tudo,documento){
        query += sep+document.form1.unidade[i].value;
        sep = "X";
        count += 1;
-      }    
+      }
     }
     if(obj.group.value==1){
         n='2';

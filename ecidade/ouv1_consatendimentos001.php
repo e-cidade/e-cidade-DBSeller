@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ require_once(modification("classes/db_db_depart_classe.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load ( 'strings.js,scripts.js,datagrid.widget.js,prototype.js' );
 db_app::load ( 'estilos.css,grid.style.css' );
 ?>
@@ -63,7 +63,7 @@ db_app::load ( 'estilos.css,grid.style.css' );
                     <tr>
                       <td align="left"><b>Data de criação:</b></td>
                       <td align="left">
-                        <?
+                        <?php
                         db_inputdata('dt_inicio', '', '', '', true, 'text', 1);
                         echo "&nbsp;à&nbsp;";
                         db_inputdata('dt_fim', '', '', '', true, 'text', 1);
@@ -72,12 +72,12 @@ db_app::load ( 'estilos.css,grid.style.css' );
                     </tr>
                     <tr>
                       <td>
-                        <?
+                        <?php
                         db_ancora('<b>Tipo de Processo</b>', ' js_pesquisaTipoProcesso(true); ', '');
                         ?>
                       </td>
                       <td>
-                        <?
+                        <?php
                         db_input('p58_codigo', 5, 1, true, 'text', 1, ' onchange="js_pesquisaTipoProcesso(false); " ');
                         db_input('p51_descr', 50, 0, true, 'text', 3, '');
                         ?>
@@ -85,12 +85,12 @@ db_app::load ( 'estilos.css,grid.style.css' );
                     </tr>
                     <tr>
                       <td>
-                        <?
+                        <?php
                         db_ancora('<b>Número do Atendimento:</b>', ' js_pesquisaNumeroAtendimento(true); ', '');
                         ?>
                       </td>
                       <td>
-                        <?
+                        <?php
                         db_input('ov01_numero', 5, "", true, 'text', 1, ' onchange="js_pesquisaNumeroAtendimento(false); "');
                         db_input('ov01_solicitacao', 50, 0, true, 'text', 3, '');
                         ?>
@@ -98,12 +98,12 @@ db_app::load ( 'estilos.css,grid.style.css' );
                     </tr>
                     <tr>
                       <td>
-                        <?
+                        <?php
                         db_ancora('<b>Número do Processo:</b>', ' js_pesquisaNumeroProcesso(true); ', '');
                         ?>
                       </td>
                       <td>
-                        <?
+                        <?php
                         db_input('ov09_protprocesso', 5, 1, true, 'text', 1, ' onchange="js_pesquisaNumeroProcesso(false); "');
                         db_input('ov09_ouvidoriaatendimento', 50, 0, true, 'text', 3, '');
                         ?>
@@ -134,7 +134,7 @@ db_app::load ( 'estilos.css,grid.style.css' );
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 ?>
 </body>

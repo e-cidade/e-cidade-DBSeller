@@ -1,9 +1,10 @@
 <?php
 
-
 namespace ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Servicies;
 
 use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Builders\v2020\BalanceteRubricaAnteriorBuilder2020;
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Builders\v2022\BalanceteRubricaAnteriorBuilder2022;
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Builders\v2023\BalanceteRubricaAnteriorBuilder2023;
 use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Layouts\LayoutPad;
 use Exception;
 use Instituicao;
@@ -29,10 +30,9 @@ class BalanceteRubricaAnteriorService extends PadService
     }
 
     /**
-     * @return LayoutPad[]
-     * @throws Exception
+     * @return string
      */
-    protected function getDados()
+    protected function getSql()
     {
         $ano = $this->ano;
 
@@ -55,6 +55,7 @@ class BalanceteRubricaAnteriorService extends PadService
                  o56_elemento,
                  o15_recurso,
                  complemento,
+                 codigo_siconfi,
                  round( sum((bi1_empenhado - bi1_extorno_empenho)   ) , 2) as bi1_empenhado,
                  round( sum((bi1_liquidado - bi1_extorno_liquidacao)) , 2) as bi1_liquidado,
                  round( sum((bi1_pagamento - bi1_extorno_pagamento) ) , 2) as bi1_pagamento,
@@ -82,12 +83,13 @@ class BalanceteRubricaAnteriorService extends PadService
 	     	     o58_projativ,
 	     		 o58_codele,
 	     		 o56_elemento,
+	     		 codigo_siconfi,
 	     		 o15_recurso,
                  case
-                    when o200_sequencial is not null and o200_tribunal is true
+                    when o200_sequencial is not null
+                         and o200_sequencial in (3110, 3120, 3140, 3150, 3160, 1111, 1121, 2111, 2121, 0)
                         then o200_sequencial
-                    when o200_sequencial is null or o200_tribunal is false
-                        then 0
+                    else 0
                  end as complemento,
 
 	     	     coalesce(sum(case when {$primeiroBi} and c53_tipo = 10 then c70_valor end), 0) as bi1_empenhado,
@@ -95,8 +97,8 @@ class BalanceteRubricaAnteriorService extends PadService
 	     	     coalesce(sum(case when {$primeiroBi} and c53_tipo = 20 then c70_valor end), 0) as bi1_liquidado,
 	     	     coalesce(sum(case when {$primeiroBi} and c53_tipo = 21 then c70_valor end), 0)
 	     	         as bi1_extorno_liquidacao,
-	     	     coalesce(sum(case when {$primeiroBi} and c71_coddoc = 5 then c70_valor end), 0) as bi1_pagamento,
-	     	     coalesce(sum(case when {$primeiroBi} and c71_coddoc = 6 then c70_valor end), 0)
+	     	     coalesce(sum(case when {$primeiroBi} and c53_tipo = 30 then c70_valor end), 0) as bi1_pagamento,
+	     	     coalesce(sum(case when {$primeiroBi} and c53_tipo = 31 then c70_valor end), 0)
 	     	         as bi1_extorno_pagamento,
 
                  coalesce(sum(case when {$segundoBi} and c53_tipo = 10 then c70_valor end), 0) as bi2_empenhado,
@@ -104,8 +106,8 @@ class BalanceteRubricaAnteriorService extends PadService
                  coalesce(sum(case when {$segundoBi} and c53_tipo = 20 then c70_valor end), 0) as bi2_liquidado,
                  coalesce(sum(case when {$segundoBi} and c53_tipo = 21 then c70_valor end), 0)
                      as bi2_extorno_liquidacao,
-                 coalesce(sum(case when {$segundoBi} and c71_coddoc = 5 then c70_valor end), 0) as bi2_pagamento,
-                 coalesce(sum(case when {$segundoBi} and c71_coddoc = 6 then c70_valor end), 0)
+                 coalesce(sum(case when {$segundoBi} and c53_tipo = 30 then c70_valor end), 0) as bi2_pagamento,
+                 coalesce(sum(case when {$segundoBi} and c53_tipo = 31 then c70_valor end), 0)
                      as bi2_extorno_pagamento,
 
                  coalesce(sum(case when {$terceiroBi} and c53_tipo = 10 then c70_valor end), 0) as bi3_empenhado,
@@ -113,30 +115,30 @@ class BalanceteRubricaAnteriorService extends PadService
                  coalesce(sum(case when {$terceiroBi} and c53_tipo = 20 then c70_valor end), 0) as bi3_liquidado,
                  coalesce(sum(case when {$terceiroBi} and c53_tipo = 21 then c70_valor end), 0)
                      as bi3_extorno_liquidacao,
-                 coalesce(sum(case when {$terceiroBi} and c71_coddoc = 5 then c70_valor end), 0) as bi3_pagamento,
-                 coalesce(sum(case when {$terceiroBi} and c71_coddoc = 6 then c70_valor end), 0)
+                 coalesce(sum(case when {$terceiroBi} and c53_tipo = 30 then c70_valor end), 0) as bi3_pagamento,
+                 coalesce(sum(case when {$terceiroBi} and c53_tipo = 31 then c70_valor end), 0)
                      as bi3_extorno_pagamento,
 
                  coalesce(sum(case when {$quartoBi} and c53_tipo = 10 then c70_valor end), 0) as bi4_empenhado,
                  coalesce(sum(case when {$quartoBi} and c53_tipo = 11 then c70_valor end), 0) as bi4_extorno_empenho,
                  coalesce(sum(case when {$quartoBi} and c53_tipo = 20 then c70_valor end), 0) as bi4_liquidado,
                  coalesce(sum(case when {$quartoBi} and c53_tipo = 21 then c70_valor end), 0) as bi4_extorno_liquidacao,
-                 coalesce(sum(case when {$quartoBi} and c71_coddoc = 5 then c70_valor end), 0) as bi4_pagamento,
-                 coalesce(sum(case when {$quartoBi} and c71_coddoc = 6 then c70_valor end), 0) as bi4_extorno_pagamento,
+                 coalesce(sum(case when {$quartoBi} and c53_tipo = 30 then c70_valor end), 0) as bi4_pagamento,
+                 coalesce(sum(case when {$quartoBi} and c53_tipo = 31 then c70_valor end), 0) as bi4_extorno_pagamento,
 
                  coalesce(sum(case when {$quintoBi} and c53_tipo = 10 then c70_valor end), 0) as bi5_empenhado,
                  coalesce(sum(case when {$quintoBi} and c53_tipo = 11 then c70_valor end), 0) as bi5_extorno_empenho,
                  coalesce(sum(case when {$quintoBi} and c53_tipo = 20 then c70_valor end), 0) as bi5_liquidado,
                  coalesce(sum(case when {$quintoBi} and c53_tipo = 21 then c70_valor end), 0) as bi5_extorno_liquidacao,
-                 coalesce(sum(case when {$quintoBi} and c71_coddoc = 5 then c70_valor end), 0) as bi5_pagamento,
-                 coalesce(sum(case when {$quintoBi} and c71_coddoc = 6 then c70_valor end), 0) as bi5_extorno_pagamento,
+                 coalesce(sum(case when {$quintoBi} and c53_tipo = 30 then c70_valor end), 0) as bi5_pagamento,
+                 coalesce(sum(case when {$quintoBi} and c53_tipo = 31 then c70_valor end), 0) as bi5_extorno_pagamento,
 
                  coalesce(sum(case when {$sextoBi} and c53_tipo = 10 then c70_valor end), 0) as bi6_empenhado,
                  coalesce(sum(case when {$sextoBi} and c53_tipo = 11 then c70_valor end), 0) as bi6_extorno_empenho,
                  coalesce(sum(case when {$sextoBi} and c53_tipo = 20 then c70_valor end), 0) as bi6_liquidado,
                  coalesce(sum(case when {$sextoBi} and c53_tipo = 21 then c70_valor end), 0) as bi6_extorno_liquidacao,
-                 coalesce(sum(case when {$sextoBi} and c71_coddoc = 5 then c70_valor end), 0) as bi6_pagamento,
-                 coalesce(sum(case when {$sextoBi} and c71_coddoc = 6 then c70_valor end), 0) as bi6_extorno_pagamento
+                 coalesce(sum(case when {$sextoBi} and c53_tipo = 30 then c70_valor end), 0) as bi6_pagamento,
+                 coalesce(sum(case when {$sextoBi} and c53_tipo = 31 then c70_valor end), 0) as bi6_extorno_pagamento
             from orcdotacao
            inner join conlancamdot on o58_anousu = c73_anousu
                   and o58_coddot = c73_coddot
@@ -146,11 +148,12 @@ class BalanceteRubricaAnteriorService extends PadService
            inner join conlancamele on c67_codlan = c73_codlan
            inner join conlancamcomplementorecurso on o201_codlan = c70_codlan
            left  join complementofonterecurso on o200_sequencial = o201_complemento
-
            inner join orcelemento on o58_anousu = o56_anousu
                   and o56_codele = c67_codele
            inner join conlancamemp on c75_codlan = c70_codlan
            inner join orctiporec on o58_codigo = o15_codigo
+           inner join fonterecurso on fonterecurso.orctiporec_id = o15_codigo
+                  and fonterecurso.exercicio = o58_anousu
            where {$where}
 	      group by o58_orgao,
                    o58_unidade,
@@ -161,7 +164,8 @@ class BalanceteRubricaAnteriorService extends PadService
                    o58_codele,
                    o56_elemento,
                    o200_sequencial,
-                   o15_recurso
+                   o15_recurso,
+                   codigo_siconfi
           ) as x
           group by o58_orgao ,
          o58_unidade,
@@ -171,10 +175,21 @@ class BalanceteRubricaAnteriorService extends PadService
          o58_projativ,
          o58_codele,
          o56_elemento,
+         codigo_siconfi,
          o15_recurso,
          complemento
           order by o56_elemento
         ";
+        return $sql;
+    }
+
+    /**
+     * @return LayoutPad[]
+     * @throws Exception
+     */
+    protected function getDados()
+    {
+        $sql = $this->getSql();
 
         //echo "$sql"; die();
         $rs = db_query($sql);
@@ -184,12 +199,13 @@ class BalanceteRubricaAnteriorService extends PadService
 
         while ($state = pg_fetch_array($rs)) {
             $builder = $this->getBuilder();
+            $state['exercicio'] = $this->ano;
             yield $builder->addDados($state)->build();
         }
     }
 
     /**
-     * @return BalanceteRubricaAnteriorBuilder2020
+     * @return BalanceteRubricaAnteriorBuilder2020|BalanceteRubricaAnteriorBuilder2022
      * @throws Exception
      */
     protected function getBuilder()
@@ -199,6 +215,10 @@ class BalanceteRubricaAnteriorService extends PadService
             case 2020:
             case 2021:
                 return new BalanceteRubricaAnteriorBuilder2020();
+            case 2022:
+                return new BalanceteRubricaAnteriorBuilder2022();
+            case 2023:
+                return new BalanceteRubricaAnteriorBuilder2023();
             default:
                 throw new Exception("Layout {$this->fileName} não foi implementado para o ano {$ano}.");
         }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,14 +44,14 @@ if (isset($m60_descr) && $m60_descr != ""){
        <?=@$Lm60_descr?>
     </td>
     <td> 
-     <?
+     <?php
       db_input('m60_descr', 40, @$Im60_descr, true, 'text', $op, '');
       db_input('m60_codmater', 40, "", true, 'hidden', 3, '');
       db_input('me36_i_alimento', 40, "", true, 'hidden', 3, '');
      ?>
     </td>
   </tr>
-  <?if (isset($m60_descr)&&$m60_descr != "") {?>
+  <?php if (isset($m60_descr)&&$m60_descr != "") {?>
   
   <tr>
     <td colspan=2  align="center">
@@ -75,7 +75,7 @@ if (isset($m60_descr) && $m60_descr != ""){
     </td>
      
   </tr>
-    <?
+    <?php
     }
     ?>
   </table>

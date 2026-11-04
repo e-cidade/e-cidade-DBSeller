@@ -68,8 +68,7 @@ switch ($db_opcao) {
 
 }
 $sDisplay = 'none';
-if ($tipo == 'M') {
-  
+if (!empty($tipo) && $tipo == 'M') {
   $sDisplay = '';
   $s113_c_hora = '00:00';
 }
@@ -162,10 +161,9 @@ if ($tipo == 'M') {
             <label for="hora"><b>Hora:</b></label>
           </td>
           <td>
-            
-            <input type="text" id="hora" name="hora" value="<?=$s113_c_hora;?>" autocomplete="off">
+            <input type="text" id="hora" name="hora" value="<?=(!empty($s113_c_hora) ? $s113_c_hora : '' );?>" autocomplete="off">
           </td>
-        </tr> 
+        </tr>
 	</table>
 </fieldset>
 <input name="<?=$sName?>" type="submit" <?=$sDisabled?> id='incluirAgendamento'
@@ -331,7 +329,7 @@ function js_mostracgs1( chave1, chave2, chave3, chave4, chave5 ) {
 	if( chave3 != ""  ) {
 
     $('incluirAgendamento').disabled = false;
-    
+
     if (chave1 == '') {
       document.form3.z01_i_cgsund.value     = '';
       document.form3.z01_v_nome.value       = chave2;

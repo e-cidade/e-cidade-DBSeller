@@ -5,19 +5,19 @@
     <table class="form-container">
         <tr>
             <td>
-            <?
+            <?php
                 db_input('v50_inicial',10,$Iv50_inicial,true,'hidden',$db_opcao);
             ?>
             </td>
         </tr>
         <tr>
             <td title="<?=@$Tv50_advog?>">
-            <?
+            <?php
                 db_ancora($Lv50_advog,' js_advog(true); ',$db_opcao);
             ?>
             </td>
             <td>
-            <?
+            <?php
                 db_input('v50_advog',6,$Iv50_advog,true,'text',$db_opcao,"onchange='js_advog(false)'");
                 db_input('z01_nome',40,$Iz01_nome,true,'text',3,"","z01_nomeadvog");
             ?>
@@ -26,12 +26,12 @@
 
         <tr>
             <td nowrap title="<?=@$Tk60_codigo?>" >
-                <?
+                <?php
                     db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao)
                 ?>
             </td>
             <td>
-                <?
+                <?php
                     db_input('k60_codigo',10,$Ik60_codigo,true,'text',$db_opcao,"onchange='js_pesquisalista(false);'");
                     db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
                 ?>

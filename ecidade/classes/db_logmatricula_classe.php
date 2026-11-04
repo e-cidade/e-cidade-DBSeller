@@ -67,13 +67,13 @@ class cl_logmatricula {
                  ed248_c_tipo = char(1) = Tipo de Movimento 
                  ";
    //funcao construtor da classe
-   function cl_logmatricula() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("logmatricula");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_logmatricula {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed248_i_codigo = ($this->ed248_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed248_i_codigo"]:$this->ed248_i_codigo);
        $this->ed248_i_usuario = ($this->ed248_i_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["ed248_i_usuario"]:$this->ed248_i_usuario);
@@ -105,7 +105,7 @@ class cl_logmatricula {
      }
    }
    // funcao para inclusao
-   function incluir ($ed248_i_codigo){
+   public function incluir ($ed248_i_codigo){
       $this->atualizacampos();
      if($this->ed248_i_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
@@ -261,7 +261,7 @@ class cl_logmatricula {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed248_i_codigo=null) {
+   public function alterar ($ed248_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update logmatricula set ";
      $virgula = "";
@@ -445,7 +445,7 @@ class cl_logmatricula {
      }
    }
    // funcao para exclusao
-   function excluir ($ed248_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed248_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed248_i_codigo));
      }else{
@@ -514,7 +514,7 @@ class cl_logmatricula {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -537,7 +537,7 @@ class cl_logmatricula {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed248_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed248_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -575,7 +575,7 @@ class cl_logmatricula {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed248_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed248_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

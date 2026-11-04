@@ -500,9 +500,15 @@ try {
             if (empty($parametros->codigoPermissao)) {
                 throw new Exception('Informe o Código da Permissão');
             }
+            $tipoProcesso = \App\Domain\Patrimonial\Protocolo\Model\TipoProcesso::find($parametros->codigoTipoProcesso);
 
             $daoPermissaoAtividade = new cl_db_permemp_atividadesexecucao();
-            $sql = $daoPermissaoAtividade->sql_query_file(null, 'db69_atividadesexecucao', null, " db69_codperm = {$parametros->codigoPermissao} and db69_tipoprocesso = {$parametros->codigoTipoProcesso}");
+            $sql = $daoPermissaoAtividade->sql_query_file(
+                null,
+                'db69_atividadesexecucao',
+                null,
+                " db69_codperm = {$parametros->codigoPermissao} and db69_tipoprocesso = {$parametros->codigoTipoProcesso}"
+            );
             $rs = db_query($sql);
 
             if (!$rs) {

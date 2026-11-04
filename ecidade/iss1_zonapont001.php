@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -166,7 +166,7 @@ if(isset($oPost->botao)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('scripts.js');
   db_app::load('estilos.css');
 ?>
@@ -179,12 +179,12 @@ if(isset($oPost->botao)) {
   <table align="center">
   <tr>
     <td>
-    <?
+    <?php
       db_ancora($Lq26_zona, 'js_pesquisaZona(true)', 1);
      ?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q26_zona', 10, $Iq26_zona, true, 'text', $db_opcao, 'onchange="js_pesquisaZona(false)"');
       db_input('j50_descr', 40, $Ij50_descr, true, 'text', 3);
     ?>
@@ -196,7 +196,7 @@ if(isset($oPost->botao)) {
     <?=$Lq26_pontuacao ?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q26_pontuacao', 10, $Iq26_pontuacao, true, 'text', 1);
     ?>
     </td>
@@ -204,7 +204,7 @@ if(isset($oPost->botao)) {
   
   </table>
   
-  <?
+  <?php
     if($db_opcao == 1) {
       echo "<input type='submit' name='botao' id='botao' value='Incluir'>";
     } else {
@@ -220,7 +220,7 @@ if(isset($oPost->botao)) {
   
 </fieldset>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>
@@ -258,7 +258,7 @@ function js_novoRegistro() {
 </script>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->botao)) {
   db_msgbox($clZonapont->erro_msg);
   db_redireciona('iss1_zonapont001.php');

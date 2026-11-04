@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,10 +49,10 @@ var lLiberaInput = false;
 
             <table border="0">
               <tr>
-                <td title="<?=$Tq07_inscr?>"><?
+                <td title="<?=$Tq07_inscr?>"><?php
                 db_ancora($Lq07_inscr,' js_inscr(true); ',1);
                 ?></td>
-                <td title="<?=$Tq07_inscr?>" colspan="4"><?
+                <td title="<?=$Tq07_inscr?>" colspan="4"><?php
                 db_input('q07_inscr',5,$Iq07_inscr,true,'text',1,"onchange='js_inscr(false)'");
                 db_input('mostra',5,"",true,'hidden',3);
                 isset($q07_inscr)?$inscricao=$q07_inscr:"";
@@ -60,7 +60,7 @@ var lLiberaInput = false;
                 db_input('z01_nome',50,0,true,'text',3);
                 ?></td>
               </tr>
-              <?
+              <?php
               if (isset($oParfiscal->y32_calcvistanosanteriores) && $oParfiscal->y32_calcvistanosanteriores == 't'){
                 $sStyle = "";
               }else{
@@ -70,7 +70,7 @@ var lLiberaInput = false;
               <tr id='anoscalculo' <?=$sStyle?>>
                 <td height="25" title="" align="right"><b>Anos de Cálculo : </b></td>
                 <td height="25">
-                <?
+                <?php
                   $rsAnosCalculo = $oDaoConfigIssqn->sql_record($oDaoConfigIssqn->sql_query_file(null,"q04_anousu","q04_anousu desc"," q04_anousu <= ".db_getsession('DB_anousu')));
                   $aAnos = array();
                   for ($i=0; $i < $oDaoConfigIssqn->numrows; $i++) {
@@ -105,7 +105,7 @@ var lLiberaInput = false;
         ?>
         <tr>
           <td align="center" colspan="2">
-            <?
+            <?php
               $cliframe_seleciona->campos  = "q07_inscr,q07_seq,q88_inscr,q03_descr,q07_datain,q07_datafi,q07_databx,q07_perman,q07_quant,q11_tipcalc, q81_descr";
               $cliframe_seleciona->legenda="ATIVIDADES EM FUNCIONAMENTO";
               $cliframe_seleciona->sql=$oDaoTabAtiv->sql_query_atividade_inscr($q07_inscr,"*","q07_seq","q07_inscr = $q07_inscr and q07_datain <= '" . date("Y-m-d", db_getsession("DB_datausu")) . "' and (q07_datafi is null or q07_datafi >= '" . date("Y-m-d", db_getsession("DB_datausu")) . "') and (q07_databx is null or q07_databx >= '" . date("Y-m-d", db_getsession("DB_datausu")) . "')");

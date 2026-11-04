@@ -156,6 +156,6 @@ class ObjetivoProgramaEstrategico extends Model
             "planejamento.iniciativaobjetivosprogramaestrategico",
             "pl16_objetivosprogramaestrategico",
             "pl16_iniciativaprojativ"
-        );
+        )->orderBy('pl12_orcprojativ');
     }
 }

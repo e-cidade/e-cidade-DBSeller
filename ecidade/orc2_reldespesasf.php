@@ -26,6 +26,8 @@
  */
 
 require_once(modification("libs/db_liborcamento.php"));
+require_once(modification("fpdf151/pdf.php"));
+require_once(modification("libs/db_sql.php"));
 
 $tipo_mesini = 1;
 $tipo_mesfim = 1;
@@ -49,9 +51,6 @@ $tipo_nivel = 6;
 
 $qorgao = 0;
 $qunidade = 0;
-
-require_once(modification("fpdf151/pdf.php"));
-require_once(modification("libs/db_sql.php"));
 
 db_postmemory($HTTP_POST_VARS);
 
@@ -81,7 +80,7 @@ $head3 = "EXERCÍCIO: " . db_getsession("DB_anousu");
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in $instits");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinst;
     $xvirg = ', ';
@@ -165,8 +164,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
     $pagina = 1;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
-
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
 
         if ($xorgao . $xunidade != $o58_orgao . $o58_unidade && $quebra_unidade == 'S' && $pagina != 1 && $totunidaanter != 0) {
@@ -210,7 +208,6 @@ if (substr($nivel, 1, 1) == 'A') {
             $totunidaemp = 0;
             $totunidaliq = 0;
             $totunidapag = 0;
-
         }
 
         if ($xorgao != $o58_orgao && $quebra_orgao == 'S') {
@@ -265,9 +262,8 @@ if (substr($nivel, 1, 1) == 'A') {
             $totorgtotprev = 0;
             $totorgorgaoatual = 0;
             $totorgdiferenca = 0;
-
         }
-        if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
+        if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
             $pagina = 0;
             $qualou = $o58_orgao . $o58_unidade;
             $pdf->addpage("L");
@@ -283,7 +279,6 @@ if (substr($nivel, 1, 1) == 'A') {
                 $pdf->cell(25, $alt, "RESERVADO", 0, 0, "R", 0);
                 $pdf->cell(25, $alt, "SALDO ATUAL", 0, 1, "R", 0);
             } else {
-
                 $pdf->cell(30, $alt, "", 0, 0, "R", 0);
                 $pdf->cell(100, $alt, "----------------------------------------------P R E V I S Ã O-----------------------------------------------", 0, 1, "L", 0);
                 $pdf->cell(30, $alt, "LIQ. " . strtoupper(db_mes($data_fin_mes)), 0, 0, "L", 0);
@@ -454,7 +449,6 @@ if (substr($nivel, 1, 1) == 'A') {
                     $pdf->cell(25, $alt, '', 0, 1, "R", 0);
                 }
                 $pdf->setfont('arial', '', 7);
-
             }
         }
         if ("$o58_orgao.$o58_unidade.$o58_funcao.$o58_subfuncao.$o58_programa.$o58_projativ.$o58_elemento" != "$xelemento" && $o58_elemento != 0) {
@@ -481,13 +475,17 @@ if (substr($nivel, 1, 1) == 'A') {
         if ($o58_codigo > 0) {
             $descr = $o56_descr;
 
-            $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($o58_codigo);
-            $fonte = $recurso->getFonteDeRecurso();
+            $recurso = wordwrap(descricaoCompletaRecurso($o58_codigo, $anousu, 2), 50, "\n");
+            $parts = explode("\n", $recurso);
+
+            if (count($parts) > 1) {
+                $recurso = $parts[0] . '...';
+            }
 
             $pdf->cell(20, $alt, $o58_elemento, 0, 0, "L", 0);
             $pdf->cell(80, $alt, $descr, 0, 0, "L", 0);
-            $pdf->cell(10, $alt, $fonte, 0, 0, "L", 0);
-            $pdf->cell(50, $alt, $o15_descr, 0, 0, "L", 0);
+            $pdf->cell(60, $alt, $recurso, 0, 0, "L", 0);
+
             $pdf->cell(15, $alt, $o58_coddot . "-" . db_CalculaDV($o58_coddot), 0, 0, "R", 0);
 
             if ($completo == false) {
@@ -505,7 +503,6 @@ if (substr($nivel, 1, 1) == 'A') {
                 $totunidaanter += $atual;
                 $totunidareser += $reservado;
                 $totunidaatual += $atual_menos_reservado;
-
             } else {
                 $pdf->cell(25, $alt, '', 0, 1, "R", 0);
 
@@ -537,26 +534,22 @@ if (substr($nivel, 1, 1) == 'A') {
                 $totunitotprev += $totprev;
                 $totuniorgaoatual += $atual_menos_reservado;
                 $totunidiferenca += $diferenca;
-
             }
 
             if ($lista_subeleme == 'S') {
-
                 $sql = "select *
 		from orcelemento
 		where substr(o56_elemento,1,7) = '" . str_replace('.', '', substr($o58_elemento, 0, 7)) . "' and
 		      substr(o56_elemento,8,5) != '00000' and o56_anousu = " . db_getsession("DB_anousu") . " and
 		      o56_orcado is true";
                 $res = db_query($sql);
-                for ($ne = 0; $ne < pg_numrows($res); $ne++) {
+                for ($ne = 0; $ne < pg_num_rows($res); $ne++) {
                     db_fieldsmemory($res, $ne);
                     $pdf->cell(20, $alt, $o56_elemento, 0, 0, "L", 0);
                     $pdf->cell(80, $alt, $o56_descr, 0, 0, "L", 0);
                     $pdf->cell(125, $alt, $o56_finali, 0, 1, "L", 0);
                 }
-
             }
-
         }
     }
     if ($quebra_unidade == 'S') {
@@ -600,9 +593,7 @@ if (substr($nivel, 1, 1) == 'A') {
         $pdf->cell(25, $alt, db_formatar($totorgorgaoatual, 'f'), 1, 0, "R", 0);
         $pdf->cell(25, $alt, db_formatar($totorgdiferenca, 'f'), 1, 1, "R", 0);
     }
-
 } else {
-
     $nivela = substr($nivel, 0, 1);
 
     $anousu = db_getsession("DB_anousu");
@@ -639,32 +630,39 @@ if (substr($nivel, 1, 1) == 'A') {
     $totunidaatual = 0;
     $pagina = 1;
 
-    for ($k = 0; $k < pg_numrows($result); $k++) {
-
+    for ($k = 0; $k < pg_num_rows($result); $k++) {
         db_fieldsmemory($result, $k);
-        if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
+        if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
             $pagina = 0;
             $qualou = $o58_orgao . $o58_unidade;
             $pdf->addpage("L");
             $pdf->setfont('arial', 'b', 7);
             $pdf->ln(2);
             $pdf->cell(25, $alt, "DOTAÇÃO", 0, 0, "L", 0);
-            if ($nivela == 1)
+            if ($nivela == 1) {
                 $pdf->cell(100, $alt, "ÓRGÃO", 0, 0, "L", 0);
-            if ($nivela == 2)
+            }
+            if ($nivela == 2) {
                 $pdf->cell(100, $alt, "UNIDADE", 0, 0, "L", 0);
-            if ($nivela == 3)
+            }
+            if ($nivela == 3) {
                 $pdf->cell(100, $alt, "FUNÇÃO", 0, 0, "L", 0);
-            if ($nivela == 4)
+            }
+            if ($nivela == 4) {
                 $pdf->cell(100, $alt, "SUBFUNÇÃO", 0, 0, "L", 0);
-            if ($nivela == 5)
+            }
+            if ($nivela == 5) {
                 $pdf->cell(100, $alt, "PROGRAMA", 0, 0, "L", 0);
-            if ($nivela == 6)
+            }
+            if ($nivela == 6) {
                 $pdf->cell(100, $alt, "PROJ/ATIV", 0, 0, "L", 0);
-            if ($nivela == 7)
+            }
+            if ($nivela == 7) {
                 $pdf->cell(100, $alt, "ELEMENTO", 0, 0, "L", 0);
-            if ($nivela == 8)
+            }
+            if ($nivela == 8) {
                 $pdf->cell(100, $alt, "RECURSO", 0, 0, "L", 0);
+            }
             $pdf->cell(50, $alt, "", 0, 0, "R", 0);
             $pdf->cell(25, $alt, "SALDO INICIAL", 0, 0, "C", 0);
             $pdf->cell(25, $alt, "SALDO ANTERIOR", 0, 0, "C", 0);
@@ -798,10 +796,8 @@ if (substr($nivel, 1, 1) == 'A') {
             $totunidaatual += $atual_menos_reservado;
         }
         if ($nivela == 8) {
-            $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($o58_codigo);
-            $fonte = $recurso->getFonteDeRecurso();
-            $pdf->cell(25, $alt, $fonte, 0, 0, "L", 0);
-            $pdf->cell(60, $alt, $o15_descr, 0, 0, "L", 0);
+            $recurso = descricaoCompletaRecurso($o58_codigo, $anousu, 2);
+            $pdf->cell(85, $alt, $recurso, 0, 0, "L", 0);
             $pdf->cell(90, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);

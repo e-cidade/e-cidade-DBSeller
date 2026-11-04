@@ -53,7 +53,7 @@ $claguatipocontrato->rotulo->label("x39_sequencial");
           <td>
             <label for="chave_x39_sequencial" class="bold"><?=$Lx39_sequencial?></label>
           </td>
-          <td><? db_input("x39_sequencial",10,$Ix39_sequencial,true,"text",4,"","chave_x39_sequencial"); ?></td>
+          <td><?php db_input("x39_sequencial",10,$Ix39_sequencial,true,"text",4,"","chave_x39_sequencial"); ?></td>
         </tr>
       </table>
     </fieldset>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-        <?
+        <?php
         $oRotulo = new rotulocampo;
         $oRotulo->label('z01_nome');
         $oRotulo->label('s162_i_prontuario');
@@ -73,7 +73,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=@$Ls162_i_prontuario?>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       db_input('s162_i_prontuario',10,$Is162_i_prontuario,true,'text',3,'');
                       ?>
                     </td>
@@ -83,7 +83,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=$Lz01_i_cgsund?>
                     </td>
                     <td nowrap> 
-                      <?
+                      <?php
                       db_input('z01_i_cgsund', 10, $Iz01_i_cgsund, true, 'text', 3, '');
                       db_input('z01_v_nome', 50, $Iz01_v_nome, true, 'text', 3, '');
                       ?>

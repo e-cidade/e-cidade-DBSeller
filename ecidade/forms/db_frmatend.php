@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $clrotulo->label("at08_modulo");
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?
+<?php
 if(!isset($horaini)) {
 	$horaini = db_hora();
 }
@@ -72,7 +72,7 @@ db_input("codatend",10,"",true,"hidden",3);
 <td colspan=4 align=center>
  
   <select name="usuorigem[]" multiple size="7">
-<?
+<?php
 $rs_atend = $clatendimento->sql_record($clatendimento->sql_query_inc(null,"at10_usuario","at02_codatend desc","at02_codatend = $codatend"));
 if($clatendimento->numrows>0) {
 	db_fieldsmemory($rs_atend,0);
@@ -111,7 +111,7 @@ for ($z = 0; $z < $numlinha; $z ++) {
        <?=@$Lat02_solicitado?>
     </td>
     <td align=center> 
-<?
+<?php
 db_textarea('at05_solicitado', 10, 50, $Iat05_solicitado, true, 'text', $db_opcao, "")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_textarea('at05_solicitado', 10, 50, $Iat05_solicitado, true, 'text', $db_opca
        <?=@$Lat05_feito?>
     </td>
     <td align=center> 
-<?
+<?php
 db_textarea('at05_feito', 10, 50, $Iat05_feito, true, 'text', $db_opcao, "")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_textarea('at05_feito', 10, 50, $Iat05_feito, true, 'text', $db_opcao, "")
        <?=@$Lat05_perc?>
     </td>
     <td> 
-<?
+<?php
 //db_input('at05_perc',10,$Iat05_perc,true,'text',$db_opcao,"")
   $matriz = array("0"=>"0%",
                   "10"=>"10%", 
@@ -151,7 +151,7 @@ db_textarea('at05_feito', 10, 50, $Iat05_feito, true, 'text', $db_opcao, "")
   <td align=center>
   <b>Modulo: Verificado</b></td>
         <td align=center><select name="modulo">
-<?
+<?php
 echo $at08_modulo;
 $sqlmod = "select id_item, nome_modulo from db_modulos order by nome_modulo";
 echo "<option value=''>Selecione o modulo</option>";
@@ -186,7 +186,7 @@ for ($a = 0; $a < $numlinha; $a ++) {
   <tr>
     <td nowrap title="<?=@$Tat41_proced?>"><b>Procedimento:</b></td>
     <td> 
-<?
+<?php
 if (isset($at41_proced) and $at41_proced == 0) {
 	unset($at41_proced);
 }
@@ -205,7 +205,7 @@ db_selectrecord('at41_proced',($cldb_proced->sql_record($cldb_proced->sql_query(
        <?=@$Lat05_data?>
     </td>
     <td align=center> 
-<?
+<?php
 if ($db_opcao == 1) {
 //	$at05_data_dia = date("d", db_getsession("DB_datausu"));
 //	$at05_data_mes = date("m", db_getsession("DB_datausu"));
@@ -232,7 +232,7 @@ function js_pesquisa(){
   document.form1.opcao.value=<?=$opcao?>;	
 }
 function js_preenchepesquisa(chave){
-  <?
+  <?php
   if($db_opcao!=1||$db_opcao!=2) {
 	  echo " db_iframe_atend.hide();";
 	  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&opcao=".$opcao."'";

@@ -39,7 +39,7 @@ $oDaoTurma->rotulo->label();
 $oDaoAluno->rotulo->label();
 
 if (isset($oGet->pesquisaTurma)) {
-  
+
   $sCampos  = " ed57_i_codigo, ed57_c_descr, ed52_c_descr, ed29_c_descr, ed15_c_nome, ed52_d_inicio, ed52_d_fim, ";
   $sCampos .= " fc_nomeetapaturma(ed57_i_codigo) as nometapa, fc_codetapaturma(ed57_i_codigo) as codetapa";
   $sWhere   = "ed57_i_codigo = {$oGet->pesquisaTurma}";
@@ -69,13 +69,13 @@ if (isset($oGet->pesquisaTurma)) {
     <form>
       <fieldset>
 
-        <legend>Alterar Turno Matricula Ed. Infantil</legend>        
+        <legend>Alterar Turno Matricula Ed. Infantil</legend>
         <fieldset class='separator'>
           <legend>Turma</legend>
           <table class="form-container">
             <tr>
               <td nowrap="nowrap" class="field-size3" title="<?=$Ted57_i_codigo?>">
-                <?db_ancora( "Turma:", "js_pesquisaTurma();", 1);?>
+                <?php db_ancora( "Turma:", "js_pesquisaTurma();", 1);?>
               </td>
               <td nowrap="nowrap">
               <?php
@@ -89,7 +89,7 @@ if (isset($oGet->pesquisaTurma)) {
                 <?=$Led57_i_calendario?>
               </td>
               <td nowrap="nowrap">
-                <?
+                <?php
                   db_input( 'ed52_c_descr',  60, '', true, 'text', 3 );
                   db_input( 'ed52_d_inicio', 60, '', true, 'hidden', 3 );
                   db_input( 'ed52_d_fim',    60, '', true, 'hidden', 3 );
@@ -101,7 +101,7 @@ if (isset($oGet->pesquisaTurma)) {
                 <?=$Led31_i_curso?>
               </td>
               <td nowrap="nowrap">
-                <?db_input( 'ed29_c_descr', 60, '', true, 'text', 3 );?>
+                <?php db_input( 'ed29_c_descr', 60, '', true, 'text', 3 );?>
               </td>
             </tr>
             <tr id='linhaEtapa'>
@@ -109,12 +109,12 @@ if (isset($oGet->pesquisaTurma)) {
                 <?=$Led223_i_serie?>
               </td>
               <td nowrap="nowrap">
-                <?db_input( 'nometapa', 30, '', true, 'text', 3 );?>
+                <?php db_input( 'nometapa', 30, '', true, 'text', 3 );?>
                 <?=$Led57_i_turno?>
-                <?db_input( 'ed15_c_nome', 20, '', true, 'text', 3 );?>
+                <?php db_input( 'ed15_c_nome', 20, '', true, 'text', 3 );?>
               </td>
             </tr>
-          </table>  
+          </table>
         </fieldset>
 
 
@@ -124,7 +124,7 @@ if (isset($oGet->pesquisaTurma)) {
           <table class="form-container">
             <tr>
               <td nowrap="nowrap" class="field-size3" title="<?=$Ted60_i_aluno?>">
-                <?db_ancora( "Aluno:", "js_pesquisaAluno(true);", 1 );?>
+                <?php db_ancora( "Aluno:", "js_pesquisaAluno(true);", 1 );?>
               </td>
               <td nowrap="nowrap" colspan="3">
                 <?php
@@ -133,7 +133,7 @@ if (isset($oGet->pesquisaTurma)) {
                 ?>
               </td>
             </tr>
-              
+
               <tr>
                 <td nowrap="nowrap">
                   <?=$Led60_d_datamatricula?>
@@ -142,38 +142,38 @@ if (isset($oGet->pesquisaTurma)) {
                   <?php
                     db_inputdata( 'ed60_d_datamatricula', '', '', '', true, 'text', 3 );
                   ?>
-                </td> 
+                </td>
               </tr>
               <tr id='linhaDadosMatricula'>
                 <td nowrap="nowrap" title="<?=$Ted60_matricula?>">
                   <?=$Led60_matricula?>
                 </td>
                 <td nowrap="nowrap">
-                  <?db_input( 'ed60_matricula', 10, $Ied60_matricula, true, 'text', 3 );?>
+                  <?php db_input( 'ed60_matricula', 10, $Ied60_matricula, true, 'text', 3 );?>
                 </td>
                 <td nowrap="nowrap" title="<?=$Ted60_c_situacao?>">
                   <b>Situação:</b>
                 </td>
                 <td  nowrap="nowrap">
-                  <?db_input( 'ed60_c_situacao', 35, '', true, 'text', 3 );?>
+                  <?php db_input( 'ed60_c_situacao', 35, '', true, 'text', 3 );?>
                 </td>
               </tr >
 
               <!--
                 Aqui sera colocado via javascript os dados para seleção do turno de referencia do aluno.
               -->
-              
+
               <tr>
                 <td>Data de modificação:</td>
                 <td colspan="3">
-                  <?db_inputdata( 'dataModificacao', '', '', '', true, 'text', 1 );?>
+                  <?php db_inputdata( 'dataModificacao', '', '', '', true, 'text', 1 );?>
                 </td>
               </tr>
             </table>
         </fieldset>
       </fieldset>
       <input type="button" value='Salvar' name='salvar' id='salvarAlteracaoTurno'>
-    </form>     
+    </form>
   </div>
   <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
@@ -204,8 +204,8 @@ if (oGet.pesquisaTurma && oGet.pesquisaTurma != "") {
   $('dataModificacao_ano').value = '<?=$sDataSistemaAno;?>';
 
 }
-  
-  
+
+
 function js_pesquisaTurma() {
 
   var sUrl  = 'func_turmainfantilturnointegral.php?funcao_js=parent.js_preencheDadosTurma|ed57_i_codigo';
@@ -248,7 +248,7 @@ function js_pesquisaAluno(lMostra) {
   } else {
     js_limpaDadosMatricula();
   }
-  
+
 }
 
 /**
@@ -263,11 +263,11 @@ function js_pesquisaAluno(lMostra) {
 function js_mostraAluno () {
 
   db_iframe_aluno.hide();
-  
+
   if ( typeof arguments[5] == 'boolean' && arguments[5]) {
 
     js_limpaDadosMatricula();
-    $('ed47_v_nome').value = arguments[0];    
+    $('ed47_v_nome').value = arguments[0];
     return;
   }
 
@@ -275,7 +275,7 @@ function js_mostraAluno () {
   $('ed60_matricula').value       = arguments[1];
   $('ed60_c_situacao').value      = arguments[2];
   $('ed60_d_datamatricula').value = js_formatar(arguments[3], 'd');
-  
+
   if ( typeof arguments[5] != 'boolean') {
     $('ed60_i_aluno').value = arguments[5];
   }
@@ -284,7 +284,7 @@ function js_mostraAluno () {
 }
 
 function js_limpaDadosMatricula () {
-  
+
   $('ed60_i_aluno').value         = '';
   $('ed47_v_nome').value          = '';
   $('ed60_matricula').value       = '';
@@ -295,11 +295,11 @@ function js_limpaDadosMatricula () {
 }
 
 function js_buscaTurnoVinculado () {
-  
+
   var oParametros = {};
   oParametros.exec = 'getTurnoVinculado';
   oParametros.iAluno = $F('ed60_i_aluno');
-  
+
   var oRequest = {};
   oRequest.method       = 'post';
   oRequest.asynchronous = false;
@@ -307,13 +307,13 @@ function js_buscaTurnoVinculado () {
   oRequest.onComplete   = js_retornoTurnoVinculado;
 
   js_divCarregando( _M( MSG_AVISO + "aguarde_buscando_turno_vinculado"), "msgBoxA" );
-  
+
   new Ajax.Request('edu4_matricula.RPC.php', oRequest);
 
 }
 
 /**
- * Este array contém os turnos onde o aluno originalmente esta matriculado, 
+ * Este array contém os turnos onde o aluno originalmente esta matriculado,
  * é usado para validar o controle das vagas da turma
  */
 var aTurnoAlunoVinculo = [];
@@ -341,7 +341,7 @@ function js_retornoTurnoVinculado( oAjax ) {
   $$('.TurmaTurnoReferente').each( function(oElement) {
     oElement.checked = false;
   });
-  
+
   oRetorno.aTurnos.each( function (oTurno) {
 
     aTurnoAlunoVinculo.push(oTurno.ed336_turnoreferente);
@@ -351,7 +351,7 @@ function js_retornoTurnoVinculado( oAjax ) {
 
 
 function validaSalvar (argument) {
-  
+
   if ( $F('ed60_i_aluno') == '' ) {
 
     alert( _M(MSG_AVISO+"erro_informe_um_aluno") );
@@ -360,7 +360,7 @@ function validaSalvar (argument) {
 
   var dtCalendarioInicio = js_formatar($F('ed52_d_inicio'), 'd');
   var dtCalendarioFim    = js_formatar($F('ed52_d_fim'), 'd');
-  var dataModificacao    = $F('dataModificacao_ano')+'-'+$F('dataModificacao_mes')+'-'+$F('dataModificacao_dia'); 
+  var dataModificacao    = $F('dataModificacao_ano')+'-'+$F('dataModificacao_mes')+'-'+$F('dataModificacao_dia');
 
   if ( !js_validaIntervaloData(dataModificacao, $F('ed52_d_inicio'), $F('ed52_d_fim')) ) {
 
@@ -371,18 +371,18 @@ function validaSalvar (argument) {
 }
 
 $('salvarAlteracaoTurno').observe('click', function() {
-  
+
   if ( !validaSalvar() ) {
     return;
   };
-  
+
   /**
    * Buscando os valores dos turnos de referência selecionados, validando se tem vagas
    */
   var aTurnoReferenteSelecionado = [];
   var lErro                      = false;
   $$('.TurmaTurnoReferente:checked').each( function(oElement) {
- 
+
     if ( !aTurnoAlunoVinculo.in_array(oElement.value) ) {
 
       if ( parseInt($F('disponiveis'+oElement.value)) <= 0) {
@@ -413,7 +413,7 @@ $('salvarAlteracaoTurno').observe('click', function() {
   oParametros.iAluno               = $F('ed60_i_aluno');
   oParametros.iTurma               = $F('ed57_i_codigo');
   oParametros.aTurmaTurnoReferente = aTurnoReferenteSelecionado;
-  
+
   var oRequest = {};
   oRequest.method       = 'post';
   oRequest.asynchronous = false;
@@ -421,12 +421,12 @@ $('salvarAlteracaoTurno').observe('click', function() {
   oRequest.onComplete   = js_retornoSalvar;
 
   js_divCarregando( _M( MSG_AVISO + "aguarde_salvando_alteracao_turno"), "msgBoxB" );
-  
+
   new Ajax.Request('edu4_matricula.RPC.php', oRequest);
 });
 
 function js_retornoSalvar ( oAjax ) {
-  
+
   js_removeObj('msgBoxB');
   var oRetorno = JSON.parse(oAjax.responseText);
 

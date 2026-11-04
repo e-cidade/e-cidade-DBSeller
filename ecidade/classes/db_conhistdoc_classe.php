@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -47,18 +47,18 @@ class cl_conhistdoc {
   var $c53_tipo = 0;
   // cria propriedade com as variaveis do arquivo
   var $campos = "
-                 c53_coddoc = int4 = Código do documento 
-                 c53_descr = varchar(50) = Descrição 
-                 c53_tipo = int4 = Tipo de Lançamento 
+                 c53_coddoc = int4 = Código do documento
+                 c53_descr = varchar(50) = Descrição
+                 c53_tipo = int4 = Tipo de Lançamento
                  ";
   //funcao construtor da classe
-  function cl_conhistdoc() {
+  public function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("conhistdoc");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra,$retorna) {
+  public function erro($mostra,$retorna) {
     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
       echo "<script>alert(\"".$this->erro_msg."\");</script>";
       if($retorna==true){
@@ -67,7 +67,7 @@ class cl_conhistdoc {
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao=false) {
+  public function atualizacampos($exclusao=false) {
     if($exclusao==false){
       $this->c53_coddoc = ($this->c53_coddoc == ""?@$GLOBALS["HTTP_POST_VARS"]["c53_coddoc"]:$this->c53_coddoc);
       $this->c53_descr = ($this->c53_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["c53_descr"]:$this->c53_descr);
@@ -77,7 +77,7 @@ class cl_conhistdoc {
     }
   }
   // funcao para inclusao
-  function incluir ($c53_coddoc){
+  public function incluir ($c53_coddoc){
     $this->atualizacampos();
     if($this->c53_descr == null ){
       $this->erro_sql = " Campo Descrição nao Informado.";
@@ -107,14 +107,14 @@ class cl_conhistdoc {
       return false;
     }
     $sql = "insert into conhistdoc(
-                                       c53_coddoc 
-                                      ,c53_descr 
-                                      ,c53_tipo 
+                                       c53_coddoc
+                                      ,c53_descr
+                                      ,c53_tipo
                        )
                 values (
-                                $this->c53_coddoc 
-                               ,'$this->c53_descr' 
-                               ,$this->c53_tipo 
+                                $this->c53_coddoc
+                               ,'$this->c53_descr'
+                               ,$this->c53_tipo
                       )";
     $result = db_query($sql);
     if($result==false){
@@ -153,7 +153,7 @@ class cl_conhistdoc {
     return true;
   }
   // funcao para alteracao
-  function alterar ($c53_coddoc=null) {
+  public function alterar ($c53_coddoc=null) {
     $this->atualizacampos();
     $sql = " update conhistdoc set ";
     $virgula = "";
@@ -248,7 +248,7 @@ class cl_conhistdoc {
     }
   }
   // funcao para exclusao
-  function excluir ($c53_coddoc=null,$dbwhere=null) {
+  public function excluir ($c53_coddoc=null,$dbwhere=null) {
     if($dbwhere==null || $dbwhere==""){
       $resaco = $this->sql_record($this->sql_query_file($c53_coddoc));
     }else{
@@ -311,7 +311,7 @@ class cl_conhistdoc {
     }
   }
   // funcao do recordset
-  function sql_record($sql) {
+  public function sql_record($sql) {
     $result = db_query($sql);
     if($result==false){
       $this->numrows    = 0;
@@ -333,10 +333,10 @@ class cl_conhistdoc {
     }
     return $result;
   }
-  function sql_query ( $c53_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query ( $c53_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ class cl_conhistdoc {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -366,10 +366,10 @@ class cl_conhistdoc {
     }
     return $sql;
   }
-  function sql_query_file ( $c53_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $c53_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_conhistdoc {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -400,10 +400,10 @@ class cl_conhistdoc {
     return $sql;
   }
 
-  function sql_query_documentos ( $c45_seqtrans=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_documentos ( $c45_seqtrans=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_conhistdoc {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

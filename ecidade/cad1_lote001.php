@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -77,33 +77,33 @@ $db_opcao = 1;
 $db_botao = true;
 $replote=false;
 if(isset($incluir) || isset($alterar)){
-  $mesmo=false; 
-  
+  $mesmo=false;
+
   $result = @$cllote->sql_record($cllote->sql_query("","j34_idbql as tidbql","","j34_setor= '$j34_setor' and j34_quadra='$j34_quadra' and j34_lote=$j34_lote" ));
   $numrows=$cllote->numrows;
   if($result!=false && $numrows!=0){
     if(isset($alterar)){
       for($xi=0; $xi<$numrows; $xi++){
         db_fieldsmemory($result,$xi);
-        if($j34_idbql==$tidbql){ 
-          $mesmo=true;  
+        if($j34_idbql==$tidbql){
+          $mesmo=true;
           break;
         }
-      }  
-    }  
+      }
+    }
     if($mesmo==false){
-      $replote=true; 
+      $replote=true;
       if(isset($incluir)){
         unset($incluir);
         $repete="incluir";
         $db_opcao = 1;
       }else{
         unset($alterar);
-        $repete="alterar"; 
+        $repete="alterar";
         $db_opcao = 2;
-      }  
-    }  
-  }  
+      }
+    }
+  }
 }
 if(isset($outrolote)&& $outrolote!=""){
  $$outrolote="ok";
@@ -118,26 +118,26 @@ if($replote==true){
   $j34_lote = str_pad($j34_lote, 4, "0", STR_PAD_LEFT);
   $cllote->j34_lote = $j34_lote;
  $cllote->incluir(null);
-   
+
  if($cllote->erro_status == 0){
 	 			db_msgbox("LOTE : ".$cllote->erro_msg);
 	 			$trans_erro = true;
 }else{
-   
-   
-   $j34_idbql=$cllote->j34_idbql;   
+
+
+   $j34_idbql=$cllote->j34_idbql;
 //   die("select * from face where j37_face = $cartestpri");
    $resultado=db_query("select * from face where j37_face = $cartestpri");
-   $j37_codigo=pg_result($resultado,0,3);  
+   $j37_codigo=pg_result($resultado,0,3);
    $cltestpri->j49_face=$cartestpri;
    $cltestpri->j49_codigo=$j37_codigo;
    $cltestpri->incluir($cllote->j34_idbql,$cartestpri);
-       
+
    if($cltestpri->erro_status=="0"){
      db_msgbox("TESTPRI : ".$cltestpri->erro_msg);
      $trans_erro=true;
-   }  
-   
+   }
+
    if($j34_loteam!=""){
       $result = $clloteam->sql_record($clloteam->sql_query($j34_loteam,"j34_loteam"));
       $numrows=$clloteam->numrows;
@@ -148,20 +148,20 @@ if($replote==true){
          if($clloteloteam->erro_status=="0"){
            db_msgbox("LOTELOTEAM : ".$clloteloteam->erro_msg);
            $trans_erro=true;
-        }  
+        }
       }
-  } 
+  }
 
   /*============ TESTADAS INTERNAS ============== */
 /*
- // COMENTADO POR Karina ATE A CONCLUSAO PARA TAREFA 10400  
-       // descomentar para conclusao da tarefa das testadas internas 
- 
-	 $matriztesinter = split("X", $testadainter);
+ // COMENTADO POR Karina ATE A CONCLUSAO PARA TAREFA 10400
+       // descomentar para conclusao da tarefa das testadas internas
+
+	 $matriztesinter =explode("X", $testadainter);
 	 foreach ($matriztesinter as $valor) {
-	 	$dadosTestadaInterna = split("-", $valor);
+	 	$dadosTestadaInterna =explode("-", $valor);
 	 	$idbqlInterLote = $dadosTestadaInterna[0];
-	 	$j39_idbql      = $cllote->j34_idbql; 
+	 	$j39_idbql      = $cllote->j34_idbql;
 	 	$j39_orientacao = $dadosTestadaInterna[1];
 	 	$j39_testad     = $dadosTestadaInterna[2];
      $j39_testle     = $dadosTestadaInterna[3];
@@ -176,13 +176,13 @@ if($replote==true){
 	 			$trans_erro = true;
 	 		}
 	 		if (isset($idbqlInterLote) && $idbqlInterLote <> 0){
-	 			$cltesinterlote->j69_tesinter = $cltesinter->j39_sequencial; 
+	 			$cltesinterlote->j69_tesinter = $cltesinter->j39_sequencial;
 	 			$cltesinterlote->j69_idbql    = $idbqlInterLote;
 	 			$cltesinterlote->incluir($cltesinter->j39_sequencial);
 	 			if($cltesinterlote->erro_status == 0){
 	 			  db_msgbox("TESINTERLOTE :".$cltesinterlote->erro_msg);
 	 			  $trans_erro = true;
-	 				
+
 	 			}
 	 		}
 	 	}
@@ -196,18 +196,18 @@ if($replote==true){
   for ($i = 0; $i < sizeof($matriztesta); $i++) {
 	$dados = $matriztesta[$i];
 	$matrizdados = explode("||", $dados);
-    
-     $j37_face=$matrizdados[0];   
-     $j14_codigo=$matrizdados[1];   
-     $j36_testad=$matrizdados[2];   
+
+     $j37_face=$matrizdados[0];
+     $j14_codigo=$matrizdados[1];
+     $j36_testad=$matrizdados[2];
      $j36_testle=$matrizdados[3];
-     
-//==============================================================     
+
+//==============================================================
      $j15_numero = $matrizdados[4];
      $j15_compl  = $matrizdados[5];
-//==============================================================    
-          
-     if($j36_testad!="0" ||  $j36_testle!="0"){ 
+//==============================================================
+
+     if($j36_testad!="0" ||  $j36_testle!="0"){
        $cltestada->j36_idbql= $cllote->j34_idbql;
        $cltestada->j36_face=$j37_face;
        $cltestada->j36_codigo=$j14_codigo;
@@ -217,13 +217,13 @@ if($replote==true){
        if($cltestada->erro_status=="0"){
          $trans_erro=true;
          db_msgbox("TESTADA : ".$cltestada->erro_msg);
-            	
-       }  
-     }  
-     
+
+       }
+     }
+
 //================================================================================================
      if(isset($numerotestada) && $numerotestada=='t'){
-		 if((isset($j15_numero) && $j15_numero != "") || (isset($j15_compl) && $j15_compl != "")){	 	
+		 if((isset($j15_numero) && $j15_numero != "") || (isset($j15_compl) && $j15_compl != "")){
 	       $cltestadanumero->j15_idbql  = $cllote->j34_idbql;
 	       $cltestadanumero->j15_face   = $j37_face;
 	       $cltestadanumero->j15_compl  = $j15_compl;
@@ -233,16 +233,16 @@ if($replote==true){
 	       if($cltestadanumero->erro_status=="0"){
               $trans_erro=true;
               db_msgbox("TESTADANUMERO : ".$cltestadanumero->erro_msg);
-            	
-           }      
+
+           }
 	     }
      }
-//================================================================================================   
+//================================================================================================
    }
-   
+
    $j34_idbql=$cllote->j34_idbql;
    $clcarlote->j35_idbql=$j34_idbql;
-   $matriz= split("X",$caracteristica);
+   $matriz=explode("X",$caracteristica);
    for($i=0;$i<sizeof($matriz);$i++){
      $j35_caract = $matriz[$i];
      if($j35_caract!=""){
@@ -251,26 +251,26 @@ if($replote==true){
          db_msgbox("CARLOTE : ".$clcarlote->erro_msg);
          $trans_erro=true;
 	     break;
-       }  
-     }  
+       }
+     }
    }
-  
+
    if($j54_codigo!=""&&$j54_distan!=""&&$j54_ponto!=""){
-     $cllotedist->j54_idbql = $cllote->j34_idbql; 
-     $cllotedist->j54_codigo = $j54_codigo; 
-     $cllotedist->j54_distan = $j54_distan; 
+     $cllotedist->j54_idbql = $cllote->j34_idbql;
+     $cllotedist->j54_codigo = $j54_codigo;
+     $cllotedist->j54_distan = $j54_distan;
      //$cllotedist->j54_orientacao = $j54_orientacao;
 	 $cllotedist->j54_ponto = $j54_ponto;
      $cllotedist->incluir($j34_idbql);
      if($cllotedist->erro_status=="0"){
        $trans_erro=true;
        db_msgbox("LOTEDIST : ".$cllotedist->erro_msg);
-     }  
+     }
    }
    //  INCLUSAO  NA TABELA LOTESETORFISCAL
    if(isset($j91_codigo) && $j91_codigo!=""){
-     $cllotesetorfiscal->j91_idbql = $cllote->j34_idbql; 
-     $cllotesetorfiscal->j91_codigo = $j91_codigo; 
+     $cllotesetorfiscal->j91_idbql = $cllote->j34_idbql;
+     $cllotesetorfiscal->j91_codigo = $j91_codigo;
      $cllotesetorfiscal->incluir();
      if($cllotesetorfiscal->erro_status=="0"){
        $trans_erro=true;
@@ -278,7 +278,7 @@ if($replote==true){
      }
    }
  }
- 
+
  db_fim_transacao($trans_erro);
  //============================================
  //INCLUSAO LOTELOC
@@ -303,7 +303,7 @@ if($replote==true){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="document.form1.j34_setor.focus();" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -311,9 +311,9 @@ if($replote==true){
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="center" bgcolor="#CCCCCC"> 
-    <center> 
+  <tr>
+    <td height="430" align="left" valign="center" bgcolor="#CCCCCC">
+    <center>
     <table  border="0"  >
     <tr>
       <td align="center"><b>
@@ -329,48 +329,48 @@ if($replote==true){
     </tr>
     <tr>
       <td>
-      <?
+      <?php
       $ano = db_getsession("DB_anousu");
       $modulo= db_getsession("DB_modulo");
       $mostra =  db_permissaomenu($ano, $modulo, 1721);
-     // echo "ano = $ano modulo = $modulo mostra = $mostra"; 
+     // echo "ano = $ano modulo = $modulo mostra = $mostra";
       if($mostra==true){
         echo "<br>CLICK AQUI PARA ACESSAR DIRETO ";
         echo "<input name='acessar' type='button' value='Acessar' onClick='js_chama();' >";
       }
       ?>
-         
-         
-         
+
+
+
       </td>
     </tr>
     </table>
-    
+
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 /*
 if($replote==true){
- 
+
  echo "<script>";
- if($repete=="incluir"){        
+ if($repete=="incluir"){
    echo "var confirma=confirm('Este Lote j? foi cadastrado! Deseja cadastrar outro?');";
  }else{
    echo "var confirma=confirm('Este Lote j? foi cadastrado! Deseja continuar a altera??o?');";
-   
- }   
+
+ }
  echo "if(confirma){\n
          document.form1.outrolote.value='$repete'; \n
          document.form1.submit(); \n
        }\n
-      ";  	  
+      ";
   echo "</script>";
        exit;
 

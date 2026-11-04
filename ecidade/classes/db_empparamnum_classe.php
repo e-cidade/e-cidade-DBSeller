@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: empenho
 //CLASSE DA ENTIDADE empparamnum
-class cl_empparamnum { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e29_anousu = 0; 
-   var $e29_instit = 0; 
-   var $e29_codemp = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_empparamnum {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e29_anousu = 0;
+   var $e29_instit = 0;
+   var $e29_codemp = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e29_anousu = int4 = Exercício 
-                 e29_instit = int4 = Código da Instituição 
-                 e29_codemp = int8 = Empenho 
+                 e29_anousu = int4 = Exercício
+                 e29_instit = int4 = Código da Instituição
+                 e29_codemp = int8 = Empenho
                  ";
-   //funcao construtor da classe 
-   function cl_empparamnum() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("empparamnum"); 
+     $this->rotulo = new rotulo("empparamnum");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_empparamnum {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e29_anousu = ($this->e29_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["e29_anousu"]:$this->e29_anousu);
        $this->e29_instit = ($this->e29_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["e29_instit"]:$this->e29_instit);
@@ -78,9 +78,9 @@ class cl_empparamnum {
      }
    }
    // funcao para inclusao
-   function incluir ($e29_anousu,$e29_instit){ 
+   public function incluir ($e29_anousu,$e29_instit){
       $this->atualizacampos();
-     if($this->e29_codemp == null ){ 
+     if($this->e29_codemp == null ){
        $this->erro_sql = " Campo Empenho nao Informado.";
        $this->erro_campo = "e29_codemp";
        $this->erro_banco = "";
@@ -89,9 +89,9 @@ class cl_empparamnum {
        $this->erro_status = "0";
        return false;
      }
-       $this->e29_anousu = $e29_anousu; 
-       $this->e29_instit = $e29_instit; 
-     if(($this->e29_anousu == null) || ($this->e29_anousu == "") ){ 
+       $this->e29_anousu = $e29_anousu;
+       $this->e29_instit = $e29_instit;
+     if(($this->e29_anousu == null) || ($this->e29_anousu == "") ){
        $this->erro_sql = " Campo e29_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -99,7 +99,7 @@ class cl_empparamnum {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->e29_instit == null) || ($this->e29_instit == "") ){ 
+     if(($this->e29_instit == null) || ($this->e29_instit == "") ){
        $this->erro_sql = " Campo e29_instit nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -108,17 +108,17 @@ class cl_empparamnum {
        return false;
      }
      $sql = "insert into empparamnum(
-                                       e29_anousu 
-                                      ,e29_instit 
-                                      ,e29_codemp 
+                                       e29_anousu
+                                      ,e29_instit
+                                      ,e29_codemp
                        )
                 values (
-                                $this->e29_anousu 
-                               ,$this->e29_instit 
-                               ,$this->e29_codemp 
+                                $this->e29_anousu
+                               ,$this->e29_instit
+                               ,$this->e29_codemp
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Número do empenho ($this->e29_anousu."-".$this->e29_instit) nao Incluído. Inclusao Abortada.";
@@ -153,16 +153,16 @@ class cl_empparamnum {
        $resac = db_query("insert into db_acount values($acount,1203,7261,'','".AddSlashes(pg_result($resaco,0,'e29_codemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e29_anousu=null,$e29_instit=null) { 
+   public function alterar ($e29_anousu=null,$e29_instit=null) {
       $this->atualizacampos();
      $sql = " update empparamnum set ";
      $virgula = "";
-     if(trim($this->e29_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e29_anousu"])){ 
+     if(trim($this->e29_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e29_anousu"])){
        $sql  .= $virgula." e29_anousu = $this->e29_anousu ";
        $virgula = ",";
-       if(trim($this->e29_anousu) == null ){ 
+       if(trim($this->e29_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "e29_anousu";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_empparamnum {
          return false;
        }
      }
-     if(trim($this->e29_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e29_instit"])){ 
+     if(trim($this->e29_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e29_instit"])){
        $sql  .= $virgula." e29_instit = $this->e29_instit ";
        $virgula = ",";
-       if(trim($this->e29_instit) == null ){ 
+       if(trim($this->e29_instit) == null ){
          $this->erro_sql = " Campo Código da Instituição nao Informado.";
          $this->erro_campo = "e29_instit";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_empparamnum {
          return false;
        }
      }
-     if(trim($this->e29_codemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e29_codemp"])){ 
+     if(trim($this->e29_codemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e29_codemp"])){
        $sql  .= $virgula." e29_codemp = $this->e29_codemp ";
        $virgula = ",";
-       if(trim($this->e29_codemp) == null ){ 
+       if(trim($this->e29_codemp) == null ){
          $this->erro_sql = " Campo Empenho nao Informado.";
          $this->erro_campo = "e29_codemp";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_empparamnum {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Número do empenho nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e29_anousu."-".$this->e29_instit;
@@ -250,14 +250,14 @@ class cl_empparamnum {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e29_anousu=null,$e29_instit=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e29_anousu=null,$e29_instit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e29_anousu,$e29_instit));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -292,7 +292,7 @@ class cl_empparamnum {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Número do empenho nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e29_anousu."-".$e29_instit;
@@ -320,11 +320,11 @@ class cl_empparamnum {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -346,10 +346,10 @@ class cl_empparamnum {
       }
      return $result;
    }
-   function sql_query ( $e29_anousu=null,$e29_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $e29_anousu=null,$e29_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -363,23 +363,23 @@ class cl_empparamnum {
      $sql2 = "";
      if($dbwhere==""){
        if($e29_anousu!=null ){
-         $sql2 .= " where empparamnum.e29_anousu = $e29_anousu "; 
-       } 
+         $sql2 .= " where empparamnum.e29_anousu = $e29_anousu ";
+       }
        if($e29_instit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " empparamnum.e29_instit = $e29_instit "; 
-       } 
+         }
+         $sql2 .= " empparamnum.e29_instit = $e29_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,10 +388,10 @@ class cl_empparamnum {
      }
      return $sql;
   }
-   function sql_query_file ( $e29_anousu=null,$e29_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $e29_anousu=null,$e29_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,23 +404,23 @@ class cl_empparamnum {
      $sql2 = "";
      if($dbwhere==""){
        if($e29_anousu!=null ){
-         $sql2 .= " where empparamnum.e29_anousu = $e29_anousu "; 
-       } 
+         $sql2 .= " where empparamnum.e29_anousu = $e29_anousu ";
+       }
        if($e29_instit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " empparamnum.e29_instit = $e29_instit "; 
-       } 
+         }
+         $sql2 .= " empparamnum.e29_instit = $e29_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -80,7 +80,7 @@ db_app::load("webseller.js");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -89,30 +89,30 @@ db_app::load("webseller.js");
 </table>
 <br><br>
 <center>
-<?if ($oDaoVacSala->numrows == 0) {
+    <?php if ($oDaoVacSala->numrows == 0) {
 
     echo"<br><br><center><strong><b> Departamento não tem sala de vacinação cadastradas! </b></strong></center></center></center>";
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     exit;
 
   } else {
-  	
+
     $oSala          = db_utils::fieldsmemory($rsSala, 0);
     $vc01_i_unidade = $oSala->vc01_i_unidade;
     $descrdepto     = $oSala->descrdepto;
-    
+
   }?>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
     <center>
-      <?include(modification("forms/db_frmvac_integrapni.php"));?>
+        <?php include(modification("forms/db_frmvac_integrapni.php"));?>
     </center>
     </td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -120,10 +120,10 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1", "vc20_d_dataini", true, 1, "vc20_d_dataini", true);
 </script>
-<?
+<?php
 if (isset($confirma)) {
 
-  
+
 	$oDaoUnidades         = db_utils::getdao('unidades');
   $oDaoVacboletim       = db_utils::getdao('vac_boletim');
   $oDaoVacArquivopni    = db_utils::getdao('vac_arquivopni');
@@ -147,7 +147,7 @@ if (isset($confirma)) {
   	$sM = 'b';
   }
   $sAA                  = substr($ano,2,2);
-  $sArquivo             = "/tmp/$sT$sL$sUF$sX.$sM$sAA";  
+  $sArquivo             = ECIDADE_PATH . "/tmp/$sT$sL$sUF$sX.$sM$sAA";
   $oBanco = new db_dbf_class($sArquivo);
   $oBanco->addColuna('cod_UB','C',7);
   $oBanco->addColuna('Mes_Vac','N',2);
@@ -170,29 +170,29 @@ if (isset($confirma)) {
   $rsSala = $oDaoVacSala->sql_record($sSql);
   $oDaoVacAplicalote->erro_staus = null;
   if ($oDaoVacSala->numrows == 0) {
-  	
+
     $oDaoVacAplicalote->erro_msg = "Nenhuma sala de vacinação cadastrada na unidade!";
     $oDaoVacAplicalote->erro_staus = "0";
-    
+
   }
-  
+
   //verificar se tem campanha de vacinação
-  $sWhere     = " '$dIni' between vc11_d_inicio and vc11_d_fim "; 
+  $sWhere     = " '$dIni' between vc11_d_inicio and vc11_d_fim ";
   $sWhere     = " or '$dFim' between vc11_d_inicio and vc11_d_fim ";
   $sSql       = $oDaoVacCampanha->sql_query("","*","",$sWhere);
   $rsCampanha = $oDaoVacCampanha->sql_query($sSql);
   if (($oDaoVacCampanha->numrows > 0 && $estrategia == 1) || ($oDaoVacCampanha->numrows == 0 && $estrategia == 2)) {
-    
+
     if ($estrategia == 1) {
       $sStr = "Existe";
     } else {
-      $sStr = "Nenhuma"; 
+      $sStr = "Nenhuma";
     }
     $oDaoVacAplicalote->erro_msg = "$sStr campanha de vacinação no mes selecionado!";
     $oDaoVacAplicalote->erro_staus = "0";
-    
+
   }
-  
+
   if ($oDaoVacAplicalote->erro_staus != "0") {
     $iRegistro = 0;
     for ($iUnid = 0; $iUnid<$oDaoVacSala->numrows;$iUnid++){
@@ -235,7 +235,7 @@ if (isset($confirma)) {
           $sInnerJoin    .= " inner join cgs_und on cgs_und.z01_i_cgsund = b.vc16_i_cgs ";
           $sSubSql        = " select lpad(coalesce(sum(b.vc16_n_quant),0),7,'0') from ";
           $sSubSql       .= " vac_aplicalote as a $sInnerJoin where $sWhere";
-        
+
         } else {
 
           $aDatas[$iY][0] = 0;
@@ -264,7 +264,7 @@ if (isset($confirma)) {
         $iTam      = count($aDatas);
         for ($iInd = 1; $iInd <= $iTam; $iInd++) {
           if ($aDatas[$iInd][0] != 0) {
-        
+
             $sWhere      = " b.vc16_i_dosevacina=$oRegistro->vc16_i_dosevacina ";
             $sWhere     .= " and cgs_und.z01_d_nasc between '".$aDatas[$iInd][0]."' and '".$aDatas[$iInd][1]."' ";
             $sWhere     .= " and b.vc16_d_dataaplicada between '".$dIni."' and '".$dFim."' ";
@@ -283,7 +283,7 @@ if (isset($confirma)) {
               }
 
             }
-          
+
           }
         }
         db_atutermometro ($iX, $iVacinas, 'termometro' );
@@ -312,15 +312,15 @@ if (isset($confirma)) {
       $oDaoVacArquivopni->erro_msg   = "Nenhuma vacina aplicada o periodo!";
       $oDaoVacArquivopni->erro_status = "0";
 
-    } 
-  }  
+    }
+  }
   if ($oDaoVacArquivopni->erro_status != "0") {
-  	
+
   	$aDados = Array('HEAD9.9','0','R','A',0,0,0,0,0,0,0,0,0,0);
     $oBanco->addRegistro($aDados);
   	$oBanco->criar($dHoje);
     db_inicio_transacao ();
-    
+
     $oDaoVacArquivopni->vc27_d_data     = $dHoje;
     $oDaoVacArquivopni->vc27_c_hora     = date("H:i");
     $oDaoVacArquivopni->vc27_c_nome     = $sArquivo;
@@ -336,7 +336,7 @@ if (isset($confirma)) {
         $oDaoVacArquivopnireg->vc28_i_aplicalote = $aAplicaLote[$iInd];
         $oDaoVacArquivopnireg->incluir(null);
         if($oDaoVacArquivopnireg->erro_status == "0"){
-        	
+
           $oDaoVacArquivopni->erro_status = "0";
           $oDaoVacArquivopni->erro_msg    = $oDaoVacArquivopnireg->erro_msg;
 
@@ -345,7 +345,7 @@ if (isset($confirma)) {
     }
     db_fim_transacao ($oDaoVacArquivopni->erro_status == "0");
   }
-  
+
   //Depois de concluida a rotina
   if ($oDaoVacArquivopni->erro_status == "0") {
     $oDaoVacArquivopni->erro(true,false);
@@ -357,7 +357,7 @@ if (isset($confirma)) {
         listagem = '<?=$sArquivo?>#Download arquivo DBF (PNI)|';
         js_montarlista(listagem,'form1');
       </script>
-    <?
+      <?php
     db_redireciona("vac4_integrapni001.php");
 
   }

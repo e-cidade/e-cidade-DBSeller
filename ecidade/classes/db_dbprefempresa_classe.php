@@ -1,81 +1,81 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: prefeitura
 //CLASSE DA ENTIDADE dbprefempresa
-class cl_dbprefempresa { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q55_sequencial = 0; 
-   var $q55_dbprefcgm = 0; 
-   var $q55_usuario = 0; 
-   var $q55_tipo = 0; 
-   var $q55_dtinc_dia = null; 
-   var $q55_dtinc_mes = null; 
-   var $q55_dtinc_ano = null; 
-   var $q55_dtinc = null; 
-   var $q55_area = 0; 
-   var $q55_funcionarios = 0; 
-   var $q55_inscant = null; 
-   var $q55_matric = 0; 
-   var $q55_recbrutaano = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_dbprefempresa {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q55_sequencial = 0;
+   var $q55_dbprefcgm = 0;
+   var $q55_usuario = 0;
+   var $q55_tipo = 0;
+   var $q55_dtinc_dia = null;
+   var $q55_dtinc_mes = null;
+   var $q55_dtinc_ano = null;
+   var $q55_dtinc = null;
+   var $q55_area = 0;
+   var $q55_funcionarios = 0;
+   var $q55_inscant = null;
+   var $q55_matric = 0;
+   var $q55_recbrutaano = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q55_sequencial = int4 = Código sequencial 
-                 q55_dbprefcgm = int4 = CGM 
-                 q55_usuario = int4 = Usuário 
-                 q55_tipo = int4 = Tipo 
-                 q55_dtinc = date = Data de inclusão 
-                 q55_area = float8 = Área 
-                 q55_funcionarios = float8 = Quant. funcionarios 
-                 q55_inscant = varchar(50) = Inscrição anterior 
-                 q55_matric = int4 = Inscrição Municipal do Imóvel 
-                 q55_recbrutaano = float8 = Receita Bruta Anual 
+                 q55_sequencial = int4 = Código sequencial
+                 q55_dbprefcgm = int4 = CGM
+                 q55_usuario = int4 = Usuário
+                 q55_tipo = int4 = Tipo
+                 q55_dtinc = date = Data de inclusão
+                 q55_area = float8 = Área
+                 q55_funcionarios = float8 = Quant. funcionarios
+                 q55_inscant = varchar(50) = Inscrição anterior
+                 q55_matric = int4 = Inscrição Municipal do Imóvel
+                 q55_recbrutaano = float8 = Receita Bruta Anual
                  ";
-   //funcao construtor da classe 
-   function cl_dbprefempresa() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("dbprefempresa"); 
+     $this->rotulo = new rotulo("dbprefempresa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_dbprefempresa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q55_sequencial = ($this->q55_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q55_sequencial"]:$this->q55_sequencial);
        $this->q55_dbprefcgm = ($this->q55_dbprefcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["q55_dbprefcgm"]:$this->q55_dbprefcgm);
@@ -108,9 +108,9 @@ class cl_dbprefempresa {
      }
    }
    // funcao para inclusao
-   function incluir ($q55_sequencial){ 
+   public function incluir ($q55_sequencial){
       $this->atualizacampos();
-     if($this->q55_dbprefcgm == null ){ 
+     if($this->q55_dbprefcgm == null ){
        $this->erro_sql = " Campo CGM nao Informado.";
        $this->erro_campo = "q55_dbprefcgm";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_dbprefempresa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q55_usuario == null ){ 
+     if($this->q55_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "q55_usuario";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_dbprefempresa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q55_tipo == null ){ 
+     if($this->q55_tipo == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
        $this->erro_campo = "q55_tipo";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_dbprefempresa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q55_dtinc == null ){ 
+     if($this->q55_dtinc == null ){
        $this->erro_sql = " Campo Data de inclusão nao Informado.";
        $this->erro_campo = "q55_dtinc_dia";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_dbprefempresa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q55_area == null ){ 
+     if($this->q55_area == null ){
        $this->erro_sql = " Campo Área nao Informado.";
        $this->erro_campo = "q55_area";
        $this->erro_banco = "";
@@ -155,7 +155,7 @@ class cl_dbprefempresa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q55_funcionarios == null ){ 
+     if($this->q55_funcionarios == null ){
        $this->erro_sql = " Campo Quant. funcionarios nao Informado.";
        $this->erro_campo = "q55_funcionarios";
        $this->erro_banco = "";
@@ -164,23 +164,23 @@ class cl_dbprefempresa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q55_matric == null ){ 
+     if($this->q55_matric == null ){
        $this->q55_matric = "0";
      }
-     if($this->q55_recbrutaano == null ){ 
+     if($this->q55_recbrutaano == null ){
        $this->q55_recbrutaano = "0";
      }
      if($q55_sequencial == "" || $q55_sequencial == null ){
-       $result = db_query("select nextval('dbprefempresa_q55_sequencial_seq')"); 
+       $result = db_query("select nextval('dbprefempresa_q55_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: dbprefempresa_q55_sequencial_seq do campo: q55_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: dbprefempresa_q55_sequencial_seq do campo: q55_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q55_sequencial = pg_result($result,0,0); 
+       $this->q55_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from dbprefempresa_q55_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q55_sequencial)){
@@ -191,10 +191,10 @@ class cl_dbprefempresa {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q55_sequencial = $q55_sequencial; 
+         $this->q55_sequencial = $q55_sequencial;
        }
      }
-     if(($this->q55_sequencial == null) || ($this->q55_sequencial == "") ){ 
+     if(($this->q55_sequencial == null) || ($this->q55_sequencial == "") ){
        $this->erro_sql = " Campo q55_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -203,31 +203,31 @@ class cl_dbprefempresa {
        return false;
      }
      $sql = "insert into dbprefempresa(
-                                       q55_sequencial 
-                                      ,q55_dbprefcgm 
-                                      ,q55_usuario 
-                                      ,q55_tipo 
-                                      ,q55_dtinc 
-                                      ,q55_area 
-                                      ,q55_funcionarios 
-                                      ,q55_inscant 
-                                      ,q55_matric 
-                                      ,q55_recbrutaano 
+                                       q55_sequencial
+                                      ,q55_dbprefcgm
+                                      ,q55_usuario
+                                      ,q55_tipo
+                                      ,q55_dtinc
+                                      ,q55_area
+                                      ,q55_funcionarios
+                                      ,q55_inscant
+                                      ,q55_matric
+                                      ,q55_recbrutaano
                        )
                 values (
-                                $this->q55_sequencial 
-                               ,$this->q55_dbprefcgm 
-                               ,$this->q55_usuario 
-                               ,$this->q55_tipo 
-                               ,".($this->q55_dtinc == "null" || $this->q55_dtinc == ""?"null":"'".$this->q55_dtinc."'")." 
-                               ,$this->q55_area 
-                               ,$this->q55_funcionarios 
-                               ,'$this->q55_inscant' 
-                               ,$this->q55_matric 
-                               ,$this->q55_recbrutaano 
+                                $this->q55_sequencial
+                               ,$this->q55_dbprefcgm
+                               ,$this->q55_usuario
+                               ,$this->q55_tipo
+                               ,".($this->q55_dtinc == "null" || $this->q55_dtinc == ""?"null":"'".$this->q55_dtinc."'")."
+                               ,$this->q55_area
+                               ,$this->q55_funcionarios
+                               ,'$this->q55_inscant'
+                               ,$this->q55_matric
+                               ,$this->q55_recbrutaano
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "dbprefempresa ($this->q55_sequencial) nao Incluído. Inclusao Abortada.";
@@ -268,16 +268,16 @@ class cl_dbprefempresa {
        $resac = db_query("insert into db_acount values($acount,1761,10547,'','".AddSlashes(pg_result($resaco,0,'q55_recbrutaano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q55_sequencial=null) { 
+   public function alterar ($q55_sequencial=null) {
       $this->atualizacampos();
      $sql = " update dbprefempresa set ";
      $virgula = "";
-     if(trim($this->q55_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_sequencial"])){ 
+     if(trim($this->q55_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_sequencial"])){
        $sql  .= $virgula." q55_sequencial = $this->q55_sequencial ";
        $virgula = ",";
-       if(trim($this->q55_sequencial) == null ){ 
+       if(trim($this->q55_sequencial) == null ){
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "q55_sequencial";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_dbprefempresa {
          return false;
        }
      }
-     if(trim($this->q55_dbprefcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_dbprefcgm"])){ 
+     if(trim($this->q55_dbprefcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_dbprefcgm"])){
        $sql  .= $virgula." q55_dbprefcgm = $this->q55_dbprefcgm ";
        $virgula = ",";
-       if(trim($this->q55_dbprefcgm) == null ){ 
+       if(trim($this->q55_dbprefcgm) == null ){
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "q55_dbprefcgm";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_dbprefempresa {
          return false;
        }
      }
-     if(trim($this->q55_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_usuario"])){ 
+     if(trim($this->q55_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_usuario"])){
        $sql  .= $virgula." q55_usuario = $this->q55_usuario ";
        $virgula = ",";
-       if(trim($this->q55_usuario) == null ){ 
+       if(trim($this->q55_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "q55_usuario";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_dbprefempresa {
          return false;
        }
      }
-     if(trim($this->q55_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_tipo"])){ 
+     if(trim($this->q55_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_tipo"])){
        $sql  .= $virgula." q55_tipo = $this->q55_tipo ";
        $virgula = ",";
-       if(trim($this->q55_tipo) == null ){ 
+       if(trim($this->q55_tipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "q55_tipo";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_dbprefempresa {
          return false;
        }
      }
-     if(trim($this->q55_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q55_dtinc_dia"] !="") ){ 
+     if(trim($this->q55_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q55_dtinc_dia"] !="") ){
        $sql  .= $virgula." q55_dtinc = '$this->q55_dtinc' ";
        $virgula = ",";
-       if(trim($this->q55_dtinc) == null ){ 
+       if(trim($this->q55_dtinc) == null ){
          $this->erro_sql = " Campo Data de inclusão nao Informado.";
          $this->erro_campo = "q55_dtinc_dia";
          $this->erro_banco = "";
@@ -338,11 +338,11 @@ class cl_dbprefempresa {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["q55_dtinc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["q55_dtinc_dia"])){
          $sql  .= $virgula." q55_dtinc = null ";
          $virgula = ",";
-         if(trim($this->q55_dtinc) == null ){ 
+         if(trim($this->q55_dtinc) == null ){
            $this->erro_sql = " Campo Data de inclusão nao Informado.";
            $this->erro_campo = "q55_dtinc_dia";
            $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_dbprefempresa {
          }
        }
      }
-     if(trim($this->q55_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_area"])){ 
+     if(trim($this->q55_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_area"])){
        $sql  .= $virgula." q55_area = $this->q55_area ";
        $virgula = ",";
-       if(trim($this->q55_area) == null ){ 
+       if(trim($this->q55_area) == null ){
          $this->erro_sql = " Campo Área nao Informado.";
          $this->erro_campo = "q55_area";
          $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_dbprefempresa {
          return false;
        }
      }
-     if(trim($this->q55_funcionarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_funcionarios"])){ 
+     if(trim($this->q55_funcionarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_funcionarios"])){
        $sql  .= $virgula." q55_funcionarios = $this->q55_funcionarios ";
        $virgula = ",";
-       if(trim($this->q55_funcionarios) == null ){ 
+       if(trim($this->q55_funcionarios) == null ){
          $this->erro_sql = " Campo Quant. funcionarios nao Informado.";
          $this->erro_campo = "q55_funcionarios";
          $this->erro_banco = "";
@@ -379,21 +379,21 @@ class cl_dbprefempresa {
          return false;
        }
      }
-     if(trim($this->q55_inscant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_inscant"])){ 
+     if(trim($this->q55_inscant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_inscant"])){
        $sql  .= $virgula." q55_inscant = '$this->q55_inscant' ";
        $virgula = ",";
      }
-     if(trim($this->q55_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_matric"])){ 
-        if(trim($this->q55_matric)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q55_matric"])){ 
-           $this->q55_matric = "0" ; 
-        } 
+     if(trim($this->q55_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_matric"])){
+        if(trim($this->q55_matric)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q55_matric"])){
+           $this->q55_matric = "0" ;
+        }
        $sql  .= $virgula." q55_matric = $this->q55_matric ";
        $virgula = ",";
      }
-     if(trim($this->q55_recbrutaano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_recbrutaano"])){ 
-        if(trim($this->q55_recbrutaano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q55_recbrutaano"])){ 
-           $this->q55_recbrutaano = "0" ; 
-        } 
+     if(trim($this->q55_recbrutaano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q55_recbrutaano"])){
+        if(trim($this->q55_recbrutaano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q55_recbrutaano"])){
+           $this->q55_recbrutaano = "0" ;
+        }
        $sql  .= $virgula." q55_recbrutaano = $this->q55_recbrutaano ";
        $virgula = ",";
      }
@@ -431,7 +431,7 @@ class cl_dbprefempresa {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "dbprefempresa nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q55_sequencial;
@@ -459,14 +459,14 @@ class cl_dbprefempresa {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q55_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q55_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q55_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -501,7 +501,7 @@ class cl_dbprefempresa {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "dbprefempresa nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q55_sequencial;
@@ -529,11 +529,11 @@ class cl_dbprefempresa {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -555,10 +555,10 @@ class cl_dbprefempresa {
       }
      return $result;
    }
-   function sql_query ( $q55_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q55_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,15 +574,15 @@ class cl_dbprefempresa {
      $sql2 = "";
      if($dbwhere==""){
        if($q55_sequencial!=null ){
-         $sql2 .= " where dbprefempresa.q55_sequencial = $q55_sequencial "; 
-       } 
+         $sql2 .= " where dbprefempresa.q55_sequencial = $q55_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -591,10 +591,10 @@ class cl_dbprefempresa {
      }
      return $sql;
   }
-   function sql_query_file ( $q55_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q55_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -607,15 +607,15 @@ class cl_dbprefempresa {
      $sql2 = "";
      if($dbwhere==""){
        if($q55_sequencial!=null ){
-         $sql2 .= " where dbprefempresa.q55_sequencial = $q55_sequencial "; 
-       } 
+         $sql2 .= " where dbprefempresa.q55_sequencial = $q55_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

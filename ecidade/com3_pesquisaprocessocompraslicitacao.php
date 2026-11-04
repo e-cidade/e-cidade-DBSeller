@@ -60,7 +60,7 @@ $sSqlProcessoCompras = $oDaoPcProc->sql_query_dados_licitacao($oGet->iProcesso,
         <div style="display: table;">
           <fieldset>
             <legend><b>Licitações do Processo de Compras</b></legend>
-          <?
+          <?php
            db_lovrot($sSqlProcessoCompras, 15);
           ?>
           </fieldset>

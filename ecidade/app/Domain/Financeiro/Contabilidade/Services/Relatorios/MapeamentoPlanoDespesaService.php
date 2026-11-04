@@ -19,6 +19,11 @@ class MapeamentoPlanoDespesaService
      */
     private $service;
 
+    public function __construct()
+    {
+        $this->service = new ManutencaoPlanoOrcamentarioDespesaService();
+    }
+
     /**
      * @param array $filtros
      * @return void
@@ -33,7 +38,6 @@ class MapeamentoPlanoDespesaService
      */
     public function emitir()
     {
-        $this->service = new ManutencaoPlanoOrcamentarioDespesaService();
         $this->processar();
         $relatorio = new MapeamentoPlanoContasCsv();
         $relatorio->setExercicio($this->filtros['exercicio']);
@@ -46,6 +50,7 @@ class MapeamentoPlanoDespesaService
     private function processar()
     {
         $contas = $this->getContas();
+
         foreach ($contas as $conta) {
             if ($this->filtros['tipoPlano'] === PlanoContas::PLANO_UNIAO) {
                 $contasVinculadas = $conta->planoUniaoDespesa;
@@ -54,7 +59,7 @@ class MapeamentoPlanoDespesaService
             }
 
             if ($contasVinculadas->count() === 0) {
-                if ($this->service->temMovimentacao($this->getBalancete(), $conta)) {
+                if ($this->service->temMovimentacao($this->getEstruturaisComMovimento(), $conta)) {
                     $this->contasSemVinculoComMovimentacao[] = $conta;
                 } else {
                     $this->contasSemVinculo[] = $conta;
@@ -80,12 +85,24 @@ class MapeamentoPlanoDespesaService
         ];
     }
 
-    protected function getBalancete()
+    protected function getEstruturaisComMovimento()
     {
         if (empty($this->balancete)) {
-            $this->balancete = $this->service->executaBalanceteDespesa($this->filtros['exercicio']);
+            $this->balancete = $this->service->estruturaisComMovimento($this->filtros['exercicio']);
         }
 
         return $this->balancete;
+    }
+
+    public function getContasSemVinculoComMovimentacao()
+    {
+        if (empty($this->contasSemVinculoComMovimentacao) &&
+            empty($this->contasSemVinculo) &&
+            empty($this->contasComVinculo)
+        ) {
+            $this->service = new ManutencaoPlanoOrcamentarioDespesaService();
+            $this->processar();
+        }
+        return $this->contasSemVinculoComMovimentacao;
     }
 }

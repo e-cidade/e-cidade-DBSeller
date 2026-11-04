@@ -24,6 +24,14 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+require_once(modification("libs/JSON.php"));
+require_once(modification("libs/db_liborcamento.php"));
+require_once(modification("classes/empenho.php"));
+require_once(modification("classes/db_pagordemnota_classe.php"));
+require_once(modification("classes/db_pagordem_classe.php"));
+require_once(modification("classes/db_pagordemele_classe.php"));
+require_once(modification("classes/lancamentoContabil.model.php"));
+require_once(modification("model/retencaoNota.model.php"));
 
 use ECidade\Financeiro\Orcamento\Repository\RecursoRepository as RecursoRepository;
 
@@ -195,7 +203,6 @@ class empenhoFolha
         $sSqlDadosEmpenho .= "       inner join rhpessoalmov          on rh73_seqpes     = rh02_seqpes  ";
         $sSqlDadosEmpenho .= "                                        and rh73_instit     = rh02_instit ";
         $sSqlDadosEmpenho .= "   where rh72_sequencial  = {$iEmpenhoFolha}  ";
-        //$sSqlDadosEmpenho  .= "     and rh72_tipoempenho = {$iTipo}";
         $sSqlDadosEmpenho .= "     and rh73_tiporubrica = 1";
         $sSqlDadosEmpenho .= "   group by rh72_sequencial,  ";
         $sSqlDadosEmpenho .= "            rh72_coddot,  ";
@@ -268,7 +275,7 @@ class empenhoFolha
         /**
          * Verificamos se existe Reserva de Saldo para esse empenho
          */
-        $oDaoReservaSaldo = db_utils::getDao("orcreservarhempenhofolha");
+        $oDaoReservaSaldo = new cl_orcreservarhempenhofolha;
         $sSqlReservaSaldo = $oDaoReservaSaldo->sql_query_file(
             null,
             "o120_orcreserva",
@@ -285,10 +292,10 @@ class empenhoFolha
         /**
          * Verificamos se o empenho da folha já foi empenhado
          */
-        $oDaoEmpenhoFolhaEmpenho = db_utils::getDao("rhempenhofolhaempenho");
+        $oDaoEmpenhoFolhaEmpenho = new cl_rhempenhofolhaempenho;
         $sSqlEmpenho = $oDaoEmpenhoFolhaEmpenho->sql_query_file(
             null,
-            "*",
+            "rh76_numemp",
             null,
             "rh76_rhempenhofolha = {$this->empenhofolha} "
         );
@@ -407,12 +414,12 @@ class empenhoFolha
             throw new BusinessException($sMessage);
         }
 
-        if (!$this->temreservasaldo) {
+        if (!$this->temreservasaldo && $this->valorempenho > 0) {
 
             /**
              * Incluimos na tabela orcreserva caso ainda exista saldo na dotação
              */
-            require_once(modification("libs/db_liborcamento.php"));
+            
             $rsDotacaoSaldo = db_dotacaosaldo(
                 8,
                 2,
@@ -423,7 +430,7 @@ class empenhoFolha
             );
             $oDotacaoSaldo = db_utils::fieldsMemory($rsDotacaoSaldo, 0);
             if ($oDotacaoSaldo->atual_menos_reservado - $this->valorempenho >= 0) {
-                $oDaoReservaSaldo = db_utils::getDao("orcreserva");
+                $oDaoReservaSaldo = new cl_orcreserva;
                 $oDaoReservaSaldo->o80_anousu = db_getsession("DB_anousu");
                 $oDaoReservaSaldo->o80_coddot = $this->dotacao;
                 $oDaoReservaSaldo->o80_dtfim = date('Y', db_getsession('DB_datausu')) . "-12-31";
@@ -467,8 +474,8 @@ class empenhoFolha
         }
 
         //buscamos as reservas geradas para o empenho
-        $oDaoOrcReservaRhEmpenhoFolha = db_utils::getDao("orcreservarhempenhofolha");
-        $oDaoOrcReserva = db_utils::getDao("orcreserva");
+        $oDaoOrcReservaRhEmpenhoFolha = new cl_orcreservarhempenhofolha;
+        $oDaoOrcReserva = new cl_orcreserva;
 
         $sSqlReservasGeradas = $oDaoOrcReservaRhEmpenhoFolha->sql_query_file(null, "*", null, " o120_rhempenhofolha = {$this->empenhofolha}");
         $rsReservasGeradas = $oDaoOrcReservaRhEmpenhoFolha->sql_record($sSqlReservasGeradas);
@@ -548,8 +555,6 @@ class empenhoFolha
      */
     function gerarEmpenho($iNumCgm)
     {
-
-
         /**
          * Validamos o valor do empenho,.
          * caso o valor das retencoes seje maior que o valor do emepnho, cancelamos o procedimento
@@ -557,7 +562,6 @@ class empenhoFolha
         if ($this->getValorRetencao() > $this->valorempenho) {
             $sMessage = "Não foi possível lançar empenho da folha ({$this->empenhofolha}).\n";
             $sMessage .= "Valor da retenção maior que o valor do Empenho.\nContate Suporte.";
-
             throw new BusinessException($sMessage);
         }
 
@@ -572,8 +576,8 @@ class empenhoFolha
             /**
              * Cancela o saldo da Reserva para o empenho da folha
              */
-            $oDaoReserva = db_utils::getDao("orcreserva");
-            $oDaoReservaSaldoEmpenho = db_utils::getDao("orcreservarhempenhofolha");
+            $oDaoReserva = new cl_orcreserva;
+            $oDaoReservaSaldoEmpenho = new cl_orcreservarhempenhofolha;
             $sWhere = "o120_rhempenhofolha = {$this->empenhofolha}";
             $sSqlDadosReserva = $oDaoReservaSaldoEmpenho->sql_query_file(null, "o120_orcreserva", null, $sWhere);
             $rsDadosEmpenho = $oDaoReservaSaldoEmpenho->sql_record($sSqlDadosReserva);
@@ -632,13 +636,12 @@ class empenhoFolha
             /**
              * Incluimos o item da autorização
              */
-            $oDaorhItemElemento = db_utils::getDao("rhelementoemppcmater");
+            $oDaorhItemElemento = new cl_rhelementoemppcmater;
             $sSqlItem = $oDaorhItemElemento->sql_query(
                 null,
                 "pc01_codmater",
                 null,
-                "rh38_codele     = {$this->elemento}
-                                                            and rh38_anousu = {$this->ano}"
+                "rh38_codele = {$this->elemento} and rh38_anousu = {$this->ano}"
             );
             $rsItem = $oDaorhItemElemento->sql_record($sSqlItem);
             if ($oDaorhItemElemento->numrows == 0) {
@@ -650,7 +653,7 @@ class empenhoFolha
             /**
              * Incluimos o item na empautitem
              */
-            $oDaoAutorizacaoItem = db_utils::getDao("empautitem");
+            $oDaoAutorizacaoItem = new cl_empautitem;
             $oDaoAutorizacaoItem->e55_autori = $oDaoEmpAutoriza->e54_autori;
             $oDaoAutorizacaoItem->e55_item = $iItemEmpenho;
             $oDaoAutorizacaoItem->e55_sequen = 1;
@@ -670,7 +673,7 @@ class empenhoFolha
              * Incluimos a dotacao para a autorizacao
              * cancelamos a reserva de saldo para o empenho da folha e incluimos a reserva para a autorizacao
              */
-            $oDaoAutorizaDotacao = db_utils::getDao("empautidot");
+            $oDaoAutorizaDotacao = new cl_empautidot;
             $oDaoAutorizaDotacao->e56_anousu = $this->ano;
             $oDaoAutorizaDotacao->e56_autori = $oDaoEmpAutoriza->e54_autori;
             $oDaoAutorizaDotacao->e56_coddot = $this->dotacao;
@@ -695,14 +698,14 @@ class empenhoFolha
                 $recurso->getCodigo(),
                 $complemento
             );
-            $oDaoReservaSaldoEmpenho = db_utils::getDao("orcreservarhempenhofolha");
+            $oDaoReservaSaldoEmpenho = new cl_orcreservarhempenhofolha;
             $oDaoReservaSaldoEmpenho->excluir(null, "o120_orcreserva = {$this->reservasaldo}");
             if ($oDaoReservaSaldoEmpenho->erro_status == 0) {
                 $sErroMsg = "Não foi possivel gerar Autorização de empenho para empenho da folha ({$this->empenhofolha})\n";
                 $sErroMsg .= "Impossível cancelar saldo do empenho da folha";
                 throw new DBException($sErroMsg);
             }
-            $oDaoReservaAut = db_utils::getDao("orcreservaaut");
+            $oDaoReservaAut = new cl_orcreservaaut;
             $oDaoReservaAut->o83_autori = $oDaoEmpAutoriza->e54_autori;
             $oDaoReservaAut->incluir($this->reservasaldo);
             if ($oDaoReservaAut->erro_status == 0) {
@@ -735,13 +738,13 @@ class empenhoFolha
              * Cancelammos a reserva de saldo da autorizacao
              */
             $oDaoReservaAut->excluir(null, "o83_codres = {$this->reservasaldo}");
-            $oDaoReserva = db_utils::getDao("orcreserva");
+            $oDaoReserva = new cl_orcreserva;
             $oDaoReserva->excluir($this->reservasaldo);
             /**
              * Pesquisamos o proximo numero de empenho
              */
 
-            $oDaoEmpParamNum = db_utils::getDao("empparamnum");
+            $oDaoEmpParamNum = new cl_empparamnum;
             $SqlNumeroEmpenho = $oDaoEmpParamNum->sql_query_file(
                 $this->ano,
                 db_getsession("DB_instit"),
@@ -752,7 +755,7 @@ class empenhoFolha
              * Pesquisamos na emparametro pelo número do empenho
              */
             if ($oDaoEmpParamNum->numrows == 0) {
-                $oDaoEmpParam = db_utils::getDao("empparametro");
+                $oDaoEmpParam = new cl_empparametro;
                 $sSqlEmpParam = $oDaoEmpParam->sql_query_file($this->ano, "(e30_codemp+1) as e60_codemp,e30_notaliquidacao");
                 $rsEmpParam = $oDaoEmpParam->sql_record($sSqlEmpParam);
                 if ($oDaoEmpParam->numrows > 0) {
@@ -783,7 +786,7 @@ class empenhoFolha
 
             $rsDotacao = db_dotacaosaldo(8, 2, 2, "true", "o58_coddot={$this->dotacao}", db_getsession("DB_anousu"));
             $oSaldoDotacao = db_utils::fieldsmemory($rsDotacao, 0);
-            $oDaoEmpenho = db_utils::getDao("empempenho");
+            $oDaoEmpenho = new cl_empempenho;
             if (empty($oSaldoDotacao->dot_ini)) {
                 $oSaldoDotacao->dot_ini = 1;
             }
@@ -829,7 +832,7 @@ class empenhoFolha
             /**
              * Incluimos o elemento do empenho
              */
-            $oDaoEmpElemento = db_utils::getDao("empelemento");
+            $oDaoEmpElemento = new cl_empelemento;
             $oDaoEmpElemento->e64_codele = $this->elemento;
             $oDaoEmpElemento->e64_numemp = $oDaoEmpenho->e60_numemp;
             $oDaoEmpElemento->e64_vlremp = $oDaoEmpenho->e60_vlremp;
@@ -846,7 +849,7 @@ class empenhoFolha
             /**
              * incluimos o item do empenho
              */
-            $oDaoEmpempItem = db_utils::getDao("empempitem");
+            $oDaoEmpempItem = new cl_empempitem;
             $oDaoEmpempItem->e62_numemp = $oDaoEmpenho->e60_numemp;
             $oDaoEmpempItem->e62_item = $oDaoAutorizacaoItem->e55_item;
             $oDaoEmpempItem->e62_sequen = $oDaoAutorizacaoItem->e55_sequen;
@@ -865,7 +868,7 @@ class empenhoFolha
             /**
              * Incluimos a ligacao do empenho com a autorizacao
              */
-            $oDaoEmpAut = db_utils::getDao("empempaut");
+            $oDaoEmpAut = new cl_empempaut;
             $oDaoEmpAut->e61_numemp = $oDaoEmpenho->e60_numemp;
             $oDaoEmpAut->e61_autori = $oDaoEmpAutoriza->e54_autori;
             $oDaoEmpAut->incluir($oDaoEmpenho->e60_numemp);
@@ -878,7 +881,7 @@ class empenhoFolha
             /**
              * Vinculamos o empenho gerado ao empenho da folha
              */
-            $oDaoRHempenhoFolha = db_utils::getDao("rhempenhofolhaempenho");
+            $oDaoRHempenhoFolha = new cl_rhempenhofolhaempenho;
             $oDaoRHempenhoFolha->rh76_numemp = $oDaoEmpenho->e60_numemp;
             $oDaoRHempenhoFolha->rh76_rhempenhofolha = $this->empenhofolha;
             $oDaoRHempenhoFolha->incluir(null);
@@ -888,7 +891,7 @@ class empenhoFolha
                 throw new DBException($sErroMsg);
             }
 
-            $oDaoEmpenhoNl = db_utils::getDao("empempenhonl");
+            $oDaoEmpenhoNl = new cl_empempenhonl;
             $oDaoEmpenhoNl->e68_numemp = $oDaoEmpenho->e60_numemp;
             $oDaoEmpenhoNl->e68_data = date("Y-m-d", db_getsession("DB_datausu"));
             $oDaoEmpenhoNl->incluir(null);
@@ -931,7 +934,7 @@ class empenhoFolha
             /**
              * Efetuados o lancamento de empenho
              */
-            require_once(modification("classes/lancamentoContabil.model.php"));
+            
             $oLancamentoContabil = new lancamentoContabil(
                 $iCodigoDocumento,
                 $this->ano,
@@ -950,7 +953,7 @@ class empenhoFolha
              * 3 passo :
              * Liquidamos o empenho
              */
-            require_once(modification("classes/empenho.php"));
+           
             $oEmpenho = new empenho();
 
             $oEmpenho->setEmpenho($oDaoEmpenho->e60_numemp);
@@ -960,9 +963,7 @@ class empenhoFolha
             $oItemNota->vlrtot = $this->valorempenho;
             $oItemNota->vlruni = $this->valorempenho;
             $aItens[] = $oItemNota;
-            require_once(modification("classes/db_pagordemnota_classe.php"));
-            require_once(modification("classes/db_pagordem_classe.php"));
-            require_once(modification("classes/db_pagordemele_classe.php"));
+
             $oRetorno = $oEmpenho->gerarOrdemCompra(
                 's/n',
                 $this->valorempenho,
@@ -972,7 +973,6 @@ class empenhoFolha
                 $oDaoEmpenho->e60_resumo,
                 false
             );
-            require_once(modification("libs/JSON.php"));
             $oJson = new Services_JSON();
             $oRetornoLiquidacao = $oJson->decode($oRetorno);
             if ($oRetornoLiquidacao->erro == 2) {
@@ -987,7 +987,7 @@ class empenhoFolha
              * true  : serão geradas as retenções para o empenho
              * false : serão geradas as retenções em forma de planilha em outra rotina
              */
-            $oDaoCfpess = db_utils::getDao("cfpess");
+            $oDaoCfpess = new cl_cfpess;
             $sSqlParam = $oDaoCfpess->sql_query_file(
                 $this->anoFolha,
                 $this->mes,
@@ -998,7 +998,7 @@ class empenhoFolha
             $lGeraRetencao = db_utils::fieldsMemory($rsParam, 0)->r11_geraretencaoempenho;
             if ($lGeraRetencao == 't') {
                 $aRetencoes = $this->getRetencoes();
-                require_once(modification("model/retencaoNota.model.php"));
+                
                 $oRetencaoNota = new retencaoNota($oRetornoLiquidacao->iCodNota);
                 $oRetencaoNota->setINotaLiquidacao($oRetornoLiquidacao->e50_codord);
                 $oRetencaoNota->setCodigoMovimento($oRetornoLiquidacao->iCodMov);
@@ -1011,6 +1011,7 @@ class empenhoFolha
                     $oRetencao->nValorNota = $this->valorempenho;
                     $oRetencao->nValorbase = $this->valorempenho;
                     $oRetencao->nAliquota = 1;
+                    $oRetencao->codigoOrdem = $oRetornoLiquidacao->e50_codord;
                     $oRetencao->aMovimentos = array();
                     try {
                         $oRetencaoNota->addRetencao($oRetencao);
@@ -1024,7 +1025,7 @@ class empenhoFolha
             }
 
             if (!empty($this->ordemauxiliar)) {
-                $oDaoOrdemAuxiliar = db_utils::getDao("empagenotasordem");
+                $oDaoOrdemAuxiliar = new cl_empagenotasordem;
                 $oDaoOrdemAuxiliar->e43_autorizado = "true";
                 $oDaoOrdemAuxiliar->e43_empagemov = $oRetornoLiquidacao->iCodMov;
                 $oDaoOrdemAuxiliar->e43_ordempagamento = $this->ordemauxiliar;
@@ -1073,7 +1074,6 @@ class empenhoFolha
          * ou mesmo anulado esse empenho;
          */
         if ($this->temempenho) {
-            require_once(modification("classes/empenho.php"));
             $oEmpenho = new empenho();
             $oEmpenho->setEmpenho($this->numeroempenho);
             $oEmpenho->getDados($this->numeroempenho);
@@ -1082,33 +1082,59 @@ class empenhoFolha
              * caso já estiver com algum valor pago, nao poderemos estornar o empenho
              */
             if ($oEmpenho->dadosEmpenho->e60_vlrpag > 0) {
-                $sMsg = "Empenho da Folha ({$this->empenhofolha}), empenho ({$this->numeroempenho}) já possui valor pago ";
+                $sMsg = "1 - Empenho da Folha ({$this->empenhofolha}), empenho ({$this->numeroempenho}) já possui valor pago ";
                 throw new BusinessException($sMsg);
             }
             /**
              * Verificamos se o empenho possui algum valor Anulado
              */
             if ($oEmpenho->dadosEmpenho->e60_vlranu > 0) {
-                $sMsg = "Empenho da Folha ({$this->empenhofolha}), empenho ({$this->numeroempenho}) já possui valor anulado ";
+                $sMsg = "2 - Empenho da Folha ({$this->empenhofolha}), empenho ({$this->numeroempenho}) já possui valor anulado ";
                 throw new BusinessException($sMsg);
             }
             /**
              * Verificamos se o empenho teve algum valor de liquidacao estornado
              */
             if ($oEmpenho->dadosEmpenho->e60_vlrliq != $this->valorempenho) {
-                $sMsg = "Empenho da Folha ({$this->empenhofolha}), empenho ({$this->numeroempenho}) teve sua liquidacao estornada";
+                $sMsg = "3 - Empenho da Folha ({$this->empenhofolha}), empenho ({$this->numeroempenho}) teve sua liquidacao estornada";
                 throw new BusinessException($sMsg);
             }
 
             /**
              * Estornamos a liquidacão do Empenho
              */
+            $oEmpenho->sCamposNota = "
+              distinct
+              e69_codnota,
+              e69_numero,
+              e69_anousu,
+              e50_codord,
+              e60_numemp,
+              e50_anousu,
+              e69_dtnota,
+              e70_vlranu,
+              e70_vlrliq,
+              e70_valor,
+              e53_vlrpag,
+              m51_tipo,
+              m51_codordem,
+              case
+                when cgmordem.z01_numcgm is not null
+                  then cgmordem.z01_numcgm else cgm.z01_numcgm
+               end as z01_numcgm,
+               case
+                 when cgmordem.z01_nome is not null
+                   then cgmordem.z01_nome else cgm.z01_nome
+               end as z01_nome,
+               case
+                 when cgmordem.z01_cgccpf is not null
+                   then cgmordem.z01_cgccpf else cgm.z01_cgccpf
+               end as z01_cgccpf,
+               fc_valorretencaonota(e50_codord) as vlrretencao
+            ";
             $rsNotas = $oEmpenho->getNotas($this->numeroempenho);
             $aNotas = db_utils::getCollectionByRecord($rsNotas);
-            require_once(modification("libs/JSON.php"));
-            require_once(modification("classes/db_pagordemnota_classe.php"));
-            require_once(modification("classes/db_pagordem_classe.php"));
-            require_once(modification("classes/db_pagordemele_classe.php"));
+
             $oJson = new Services_JSON();
             foreach ($aNotas as $oNota) {
                 $sRetorno = $oEmpenho->estornarLiquidacaoAJAX($this->numeroempenho, array($oNota->e69_codnota), null, false);
@@ -1159,7 +1185,7 @@ class empenhoFolha
     function getInfoEmpenho()
     {
 
-        $oDaoRhempenhoRubricas = db_utils::getDao("rhempenhofolharubrica");
+        $oDaoRhempenhoRubricas = new cl_rhempenhofolharubrica;
         $sCampos = "z01_nome, ";
         $sCampos .= "rh72_sequencial, ";
         $sCampos .= "rh73_seqpes, ";
@@ -1240,8 +1266,8 @@ class empenhoFolha
     function alterarDados($iOrgao, $iUnidade, $iProjAtiv, $iElemento, $iRecurso, $iDotacao, $iCaract, $iSeqPes = '', $iPrograma = '', $iFuncao = '', $iSubFuncao = '', $iTabPrev = '')
     {
 
-        $oDaoRhEmpenhoFolha = db_utils::getDao("rhempenhofolha");
-        $oDaoRHempenhoFolhaReserva = db_utils::getDao("orcreservarhempenhofolha");
+        $oDaoRhEmpenhoFolha = new cl_rhempenhofolha;
+        $oDaoRHempenhoFolhaReserva = new cl_orcreservarhempenhofolha;
 
         $sWhere = " rh72_sequencial <> {$this->empenhofolha}";
         $sWhere .= " and rh72_orgao          = {$iOrgao}";
@@ -1313,7 +1339,7 @@ class empenhoFolha
             /**
              * Consultamos todos as rubricas do empenho antigo, e mudamos para o novo empenho
              */
-            $oDaoRhEmpenhoFolhaRubricas = db_utils::getDao("rhempenhofolharhemprubrica");
+            $oDaoRhEmpenhoFolhaRubricas = new cl_rhempenhofolharhemprubrica;
             $sSqlEmpenhosRubrica = $oDaoRhEmpenhoFolhaRubricas->sql_query(
                 null,
                 "rh73_rubric,rhempenhofolharhemprubrica.*",
@@ -1380,7 +1406,7 @@ class empenhoFolha
     function alterarDadosRubricas($iSeqPes, $iOrgao, $iUnidade, $iProjAtiv, $iElemento, $iRecurso, $iDotacao, $iCaract, $iPrograma = '', $iFuncao = '', $iSubFuncao = '')
     {
 
-        $oDaoRhEmpenhoFolha = db_utils::getDao("rhempenhofolha");
+        $oDaoRhEmpenhoFolha = new cl_rhempenhofolha;
 
         $sWhere = " rh72_orgao              = {$iOrgao}";
         $sWhere .= " and rh72_unidade        = {$iUnidade}";
@@ -1408,17 +1434,16 @@ class empenhoFolha
         $sWhere .= " and rh72_coddot         = {$iDotacao}";
         $sWhere .= " and rh72_concarpeculiar = '{$iCaract}'";
 
-        $sSqlEmpenho = $oDaoRhEmpenhoFolha->sql_query_file(null, "*", null, $sWhere);
+        $sSqlEmpenho = $oDaoRhEmpenhoFolha->sql_query_file(null, "rh72_sequencial", null, $sWhere);
         $rsEmpenho = $oDaoRhEmpenhoFolha->sql_record($sSqlEmpenho);
         if ($oDaoRhEmpenhoFolha->numrows == 1) {
             $oEmpenhoAdicionar = db_utils::fieldsMemory($rsEmpenho, 0);
-            $oDaoRhEmpenhoFolhaRubricas = db_utils::getDao("rhempenhofolharhemprubrica");
+            $oDaoRhEmpenhoFolhaRubricas = new cl_rhempenhofolharhemprubrica;
             $sSqlEmpenhosRubrica = $oDaoRhEmpenhoFolhaRubricas->sql_query(
                 null,
                 "rh73_rubric,rh73_valor,rhempenhofolharhemprubrica.*",
                 null,
-                "rh81_rhempenhofolha = {$this->empenhofolha}
-                                                                           and rh73_seqpes      = {$iSeqPes}"
+                "rh81_rhempenhofolha = {$this->empenhofolha} and rh73_seqpes = {$iSeqPes}"
             );
 
             $rsEmpenhoRubricas = $oDaoRhEmpenhoFolhaRubricas->sql_record($sSqlEmpenhosRubrica);
@@ -1458,7 +1483,7 @@ class empenhoFolha
             $oDaoRhEmpenhoFolha->rh72_projativ = $iProjAtiv;
             $oDaoRhEmpenhoFolha->rh72_programa = $iPrograma;
             $oDaoRhEmpenhoFolha->rh72_funcao = $iFuncao;
-            $oDaoRhEmpenhoFolha->rh72_sunfuncao = $iSubFuncao;
+            $oDaoRhEmpenhoFolha->rh72_subfuncao = $iSubFuncao;
             $oDaoRhEmpenhoFolha->rh72_codele = $iElemento;
             $oDaoRhEmpenhoFolha->rh72_recurso = $iRecurso;
             $oDaoRhEmpenhoFolha->rh72_coddot = $iDotacao;
@@ -1471,13 +1496,12 @@ class empenhoFolha
                 throw new DBException("Não foi possível modificar Empenho\nErro:\n{$oDaoRhEmpenhoFolha->erro_msg}");
             }
 
-            $oDaoRhEmpenhoFolhaRubricas = db_utils::getDao("rhempenhofolharhemprubrica");
+            $oDaoRhEmpenhoFolhaRubricas = new cl_rhempenhofolharhemprubrica;
             $sSqlEmpenhosRubrica = $oDaoRhEmpenhoFolhaRubricas->sql_query(
                 null,
                 "rh73_rubric,rh73_valor,rhempenhofolharhemprubrica.*",
                 null,
-                "rh81_rhempenhofolha = {$this->empenhofolha}
-                                                                           and rh73_seqpes      = {$iSeqPes}"
+                "rh81_rhempenhofolha = {$this->empenhofolha} and rh73_seqpes = {$iSeqPes}"
             );
 
             $rsEmpenhoRubricas = $oDaoRhEmpenhoFolhaRubricas->sql_record($sSqlEmpenhosRubrica);

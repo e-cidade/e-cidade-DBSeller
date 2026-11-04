@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ $pri = true;
   $pdf->cell(17,4,$sd24_i_usuario,1,0,"C",0);
   $pdf->cell(90,4,$nome,1,0,"C",0);
   $pdf->cell(35,4,$count,1,0,"C",0);
-  $pdf->cell(15,4,str_pad(number_format(($count*100)/$total,2,',',''),6,0,str_pad_left),1,0,"C",0);
+  $pdf->cell(15,4,str_pad(number_format(($count*100)/$total,2,',',''),6,0,STR_PAD_LEFT),1,0,"C",0);
 }
 $pdf->Output();
 ?>

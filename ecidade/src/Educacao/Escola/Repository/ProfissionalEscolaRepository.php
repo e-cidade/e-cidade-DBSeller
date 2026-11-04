@@ -55,6 +55,7 @@ class ProfissionalEscolaRepository extends Repository
 
         $dao = new cl_rechumano();
         $sql = $dao->sqlProfissionaisEscola(null, $escola->getCodigo(), $where, $this->scopes);
+
         $rs = db_query($sql);
         if (!$rs) {
             throw new Exception("Erro ao buscar os profissionais da escola.");
@@ -139,13 +140,15 @@ class ProfissionalEscolaRepository extends Repository
               select 1
                 from rechumanoativ
                 join atividaderh on atividaderh.ed01_i_codigo = rechumanoativ.ed22_i_atividade
+                join funcaoatividade on atividaderh.ed01_funcaoatividade = funcaoatividade.ed119_sequencial
                where rechumanoativ.ed22_i_rechumanoescola = origem_profissinal.ed75_i_codigo
                 and (   ed01_funcaoatividade in (2, 3, 4)
                      or ed01_i_funcaoadmin = 2
                      or (ed01_funcaoatividade in (1, 5, 6) and ed01_c_regencia = 'S')
                     )
                 and ed22_datainicio <= '{$data->getDate()}'
-                and (ed22_datafim is null or ed22_datafim >= '{$data->getDate()}')
+                and (ed22_datafim is null or ed22_datafim >= '{$data->getDate()}'
+               )  and (funcaoatividade.ed119_docente is true or funcaoatividade.ed119_sequencial = 2)
             )
         ";
     }
@@ -189,6 +192,27 @@ class ProfissionalEscolaRepository extends Repository
     }
 
     /**
+     * @return null|ProfissionalEscola
+     * @throws Exception
+     */
+    public function first()
+    {
+        $registros = $this->get();
+
+        return empty($registros) ? null : array_shift($registros);
+    }
+
+    /**
+     * @param $codigoEscola
+     * @return ProfissionalEscolaRepository
+     */
+    public function scopeEscola($codigoEscola)
+    {
+        $this->scopes['escola'] = "ed75_i_escola = {$codigoEscola}";
+        return $this;
+    }
+
+    /**
      * @return ProfissionalEscola[]|null
      * @throws Exception
      */
@@ -217,7 +241,7 @@ class ProfissionalEscolaRepository extends Repository
      * @param $codigoCgm
      * @return $this
      */
-    private function scopeCgm($codigoCgm)
+    public function scopeCgm($codigoCgm)
     {
         $this->scopes['cgm'] = "rhpessoal.rh01_numcgm = {$codigoCgm} or rechumanocgm.ed285_i_cgm = {$codigoCgm}";
         return $this;
@@ -227,9 +251,18 @@ class ProfissionalEscolaRepository extends Repository
      * @param int $cpf
      * @return ProfissionalEscolaRepository
      */
-    private function scopeCpf($cpf)
+    public function scopeCpf($cpf)
     {
         $this->scopes['cpf'] = "rh_cgm.z01_cgccpf = '{$cpf}' or rec_cgm.z01_cgccpf = '{$cpf}'";
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function scopeAtivo()
+    {
+        $this->scopes['isAtivo'] = "ed75_i_saidaescola is null or ed75_i_saidaescola > CURRENT_DATE";
         return $this;
     }
 }

@@ -40,14 +40,14 @@ class EFDServicosPrestados extends Formatter
     {
         $this->unsetEmpty($dadosFormatado);
 
-        foreach ($dadosFormatado as &$dados) {
+        foreach ($dadosFormatado as $dados) {
             // Transforma o grupo da nota em um array
             $notaFiscal = $dados['ideEstabPrest']['ideTomador']['nfs'];
             unset($dados['ideEstabPrest']['ideTomador']['nfs']);
             $dados['ideEstabPrest']['ideTomador']['nfs'][] = $notaFiscal;
 
             if (isset($dados['ideEstabPrest']['ideTomador']['infoProcRetPr'])) {
-                foreach ($dados['ideEstabPrest']['ideTomador']['infoProcRetPr'] as &$info) {
+                foreach ($dados['ideEstabPrest']['ideTomador']['infoProcRetPr'] as $info) {
                     if (!isset($info['valorPrinc'])) {
                         $info['valorPrinc'] = 0;
                     }

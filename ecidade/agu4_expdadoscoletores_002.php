@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -132,7 +132,7 @@ function js_voltar() {
 </table>
 
 <form name="form1">
-<?
+<?php
 db_menu($iDBUsuario, $iDBModulo, $iDBAnoUsu, $iDBInstituicao);
 
 if ($oPost->geraDadosArquivos == "t") {
@@ -410,7 +410,7 @@ echo "</tr></table>";
 </body>
 </html>
 
-<?
+<?php
 function montaTelaTempo() {
   
   echo "<table align=\"center\" width=\"300\"><tr>";

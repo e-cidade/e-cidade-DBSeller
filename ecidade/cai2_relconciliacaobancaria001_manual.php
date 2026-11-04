@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2014  DBSeller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -154,6 +154,12 @@ function js_pesquisaContas() {
     oObject.concilia   = oUrl.concilia;
   }
 
+ // if (oUrl.dia && oUrl.dia != "") {
+ //   oObject.dia = oUrl.dia;
+ // }
+  
+  
+  //js_divCarregando('Buscando Contas ...','msgBox');
   var objAjax   = new Ajax.Request (sRpc,{
                                          method:'post',
                                          parameters:'json='+Object.toJSON(oObject), 
@@ -199,6 +205,8 @@ function js_pesquisaDatas() {
   oObject.dia   = 'true';
   oObject.conta  = $F("cboContas");
 
+  
+//js_divCarregando('Buscando datas disponiveis ...','msgBox');
   var objAjax   = new Ajax.Request (sRpc,{
                                          method:'post',
                                          parameters:'json='+Object.toJSON(oObject), 
@@ -218,6 +226,10 @@ function js_retornoDatas(oJson) {
 
     var sDataUser        = oData.dia+"/"+oData.mes+"/"+oData.ano;
 
+    //if (typeof(oUrl.concilia) == 'undefined' && typeof(oUrl.dia) == 'undefined') {
+    //  sDataUser        = js_getUltimoDiaMes(oData.mes, oData.ano)+"/"+oData.mes+"/"+oData.ano;
+   // }
+    
     sDataConciliacao = oData.ano+"-"+oData.mes+"-"+oData.dia;
     oCboDatas.addItem(sDataConciliacao, sDataUser);
   });
@@ -261,6 +273,7 @@ function js_getUltimoDiaMes(iMes, iAno) {
   }else{
     var fev = 28;
   } 
+  //                  01  02 03 04 05 06 07 08 09 10 11 12 
   var dia = new Array(31,fev,31,30,31,30,31,31,30,31,30,31);
   return dia[iMes - 1];
 }

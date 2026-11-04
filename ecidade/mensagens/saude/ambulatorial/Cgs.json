@@ -9,7 +9,7 @@
   ,"erro_salvar_cgs"         : "Erro ao salvar os dados do CGS:\n[sErro]"
   ,"erro_salvar_cartao_sus"  : "Erro ao salvar o cartão SUS do CGS:\n[sErro]"
   ,"erro_validar_cartao"     : "Erro ao validar se o cartão SUS já encontra-se cadastrado:\n[sErro]"
-  ,"cartao_existente"        : "Não foi permitido salvar o CGS. Cartão SUS já encontra-se vinculado a outro CGS."
+  ,"cartao_existente"        : "Cartão SUS já encontra-se vinculado a outro CGS."
   ,"erro_excluir_endereco"   : "Erro ao excluir o vínculo do endereço do CGS:\n[sErro]"
   ,"erro_incluir_endereco"   : "Erro ao incluir o vínculo do endereço do CGS:\n[sErro]"
   ,"erro_incluir_etnia"      : "Erro ao incluir a etnia do CGS:\n[sErro]"

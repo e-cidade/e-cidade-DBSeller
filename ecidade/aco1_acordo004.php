@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -36,26 +36,25 @@ require_once(modification("classes/db_acordoacordogarantia_classe.php"));
 require_once(modification("classes/db_acordoacordopenalidade_classe.php"));
 require_once(modification("classes/db_acordoitem_classe.php"));
 $clacordo = new cl_acordo;
-  /*
-$clacordoacordogarantia = new cl_acordoacordogarantia;
-$clacordoacordopenalidade = new cl_acordoacordopenalidade;
-$clacordoitem = new cl_acordoitem;
-  */
-db_postmemory($HTTP_POST_VARS);
-   $db_opcao = 1;
+
+db_postmemory($_POST);
+
+$db_opcao = 1;
 $db_botao = true;
-if(isset($incluir)){
-  $sqlerro=false;
-  db_inicio_transacao();
-  $clacordo->incluir($ac16_sequencial);
-  if($clacordo->erro_status==0){
-    $sqlerro=true;
-  }
-  $erro_msg = $clacordo->erro_msg;
-  db_fim_transacao($sqlerro);
+
+if (isset($incluir)) {
+    $sqlerro=false;
+    db_inicio_transacao();
+
+    $clacordo->incluir($ac16_sequencial);
+    if ($clacordo->erro_status==0) {
+        $sqlerro=true;
+    }
+    $erro_msg = $clacordo->erro_msg;
+    db_fim_transacao($sqlerro);
     $ac16_sequencial= $clacordo->ac16_sequencial;
-   $db_opcao = 1;
-   $db_botao = true;
+    $db_opcao = 1;
+    $db_botao = true;
 }
 unset($_SESSION["dadosSelecaoAcordo"]);
 ?>
@@ -64,33 +63,34 @@ unset($_SESSION["dadosSelecaoAcordo"]);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js, datagrid.widget.js, windowAux.widget.js");
 db_app::load("dbmessageBoard.widget.js, prototype.js, contratos.classe.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
 <script language="JavaScript" type="text/javascript" src="scripts/classes/contratos.classe.js"></script>
 <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-	<?
-	include(modification("forms/db_frmacordo.php"));
-	?>
+<body>
+    <?php
+    include(modification("forms/db_frmacordo.php"));
+    ?>
 </body>
 </html>
-<?
-if(isset($incluir)){
-  if($sqlerro==true){
-    db_msgbox($erro_msg);
-    if($clacordo->erro_campo!=""){
-      echo "<script> document.form1.".$clacordo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clacordo->erro_campo.".focus();</script>";
-    };
-  }else{
-   db_msgbox($erro_msg);
-   db_redireciona("aco1_acordo005.php?liberaaba=true&chavepesquisa=$ac16_sequencial");
-  }
+<?php
+if (isset($incluir)) {
+    if ($sqlerro==true) {
+        db_msgbox($erro_msg);
+        if ($clacordo->erro_campo!="") {
+            echo "<script> document.form1.".$clacordo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clacordo->erro_campo.".focus();</script>";
+        };
+    } else {
+        db_msgbox($erro_msg);
+        db_redireciona("aco1_acordo005.php?liberaaba=true&chavepesquisa=$ac16_sequencial");
+    }
 }
 ?>

@@ -1,70 +1,48 @@
 <?php
-/*
- *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br
- *                         e-cidade@dbseller.com.br
- *
- *  Este programa e software livre; voce pode redistribui-lo e/ou
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
- *  publicada pela Free Software Foundation; tanto a versao 2 da
- *  Licenca como (a seu criterio) qualquer versao mais nova.
- *
- *  Este programa e distribuido na expectativa de ser util, mas SEM
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
- *  detalhes.
- *
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
- *  junto com este programa; se nao, escreva para a Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- *  02111-1307, USA.
- *
- *  Copia da licenca no diretorio licenca/licenca_en.txt
- *                                licenca/licenca_pt.txt
- */
-//MODULO: laboratorio
-//CLASSE DA ENTIDADE lab_exame
-class cl_lab_exame {
-  
+
+class cl_lab_exame
+{
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
-   // cria variaveis do arquivo
-   var $la08_i_codigo = 0;
-   var $la08_c_sigla = null;
-   var $la08_c_descr = null;
-   var $la08_i_idademax = 0;
-   var $la08_i_idademin = 0;
-   var $la08_i_sexo = 0;
-   var $la08_d_inicio_dia = null;
-   var $la08_d_inicio_mes = null;
-   var $la08_d_inicio_ano = null;
-   var $la08_d_inicio = null;
-   var $la08_d_fim_dia = null;
-   var $la08_d_fim_mes = null;
-   var $la08_d_fim_ano = null;
-   var $la08_d_fim = null;
-   var $la08_i_dias = 0;
-   var $la08_t_interferencia = null;
-   var $la08_i_gerar = 0;
-   var $la08_i_undidadeini = 0;
-   var $la08_i_undidadefim = 0;
-   var $la08_i_ativo = 0;
-   var $la08_observacao = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
+    /* Variáveis do Arquivo */
+    public $la08_i_codigo = 0;
+    public $la08_c_sigla = null;
+    public $la08_c_descr = null;
+    public $la08_i_idademax = 0;
+    public $la08_i_idademin = 0;
+    public $la08_i_sexo = 0;
+    public $la08_d_inicio_dia = null;
+    public $la08_d_inicio_mes = null;
+    public $la08_d_inicio_ano = null;
+    public $la08_d_inicio = null;
+    public $la08_d_fim_dia = null;
+    public $la08_d_fim_mes = null;
+    public $la08_d_fim_ano = null;
+    public $la08_d_fim = null;
+    public $la08_i_dias = 0;
+    public $la08_t_interferencia = null;
+    public $la08_i_gerar = 0;
+    public $la08_i_undidadeini = 0;
+    public $la08_i_undidadefim = 0;
+    public $la08_i_ativo = 0;
+    public $la08_observacao = null;
+    public $la08_obriga_volumeamostra = 'f';
+    public $la08_obriga_altura = 'f';
+    public $la08_obriga_peso = 'f';
+    public $la08_exibehistoricoresultados = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+    public $campos = "
                  la08_i_codigo = int4 = Código
                  la08_c_sigla = char(5) = Sigla
                  la08_c_descr = char(50) = Descrição
@@ -80,24 +58,30 @@ class cl_lab_exame {
                  la08_i_undidadefim = int4 = Unidade
                  la08_i_ativo = int4 = Situação
                  la08_observacao = text = Observação
+                 la08_obriga_volumeamostra = bool = Volume Amostra
+                 la08_obriga_altura = bool = Altura
+                 la08_obriga_peso = bool = Peso
+                 la08_exibehistoricoresultados = bool = Exibir histórico dos resultados
                  ";
-   //funcao construtor da classe
-   function cl_lab_exame() {
-     //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lab_exame");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
-   }
-   //funcao erro
-   function erro($mostra,$retorna) {
+
+    public function __construct()
+    {
+        $this->rotulo = new rotulo("lab_exame");
+        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+    }
+
+    public function erro($mostra, $retorna)
+    {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\");</script>";
+        echo "<script>alert(\"".$this->erro_msg."\")</script>";
         if($retorna==true){
            echo "<script>location.href='".$this->pagina_retorno."'</script>";
         }
      }
    }
-   // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+
+    public function atualizacampos($exclusao = false)
+    {
      if($exclusao==false){
        $this->la08_i_codigo = ($this->la08_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la08_i_codigo"]:$this->la08_i_codigo);
        $this->la08_c_sigla = ($this->la08_c_sigla == ""?@$GLOBALS["HTTP_POST_VARS"]["la08_c_sigla"]:$this->la08_c_sigla);
@@ -128,12 +112,29 @@ class cl_lab_exame {
        $this->la08_i_undidadefim = ($this->la08_i_undidadefim == ""?@$GLOBALS["HTTP_POST_VARS"]["la08_i_undidadefim"]:$this->la08_i_undidadefim);
        $this->la08_i_ativo = ($this->la08_i_ativo == ""?@$GLOBALS["HTTP_POST_VARS"]["la08_i_ativo"]:$this->la08_i_ativo);
        $this->la08_observacao = ($this->la08_observacao == ""?@$GLOBALS["HTTP_POST_VARS"]["la08_observacao"]:$this->la08_observacao);
+
+       $this->la08_obriga_volumeamostra = ($this->la08_obriga_volumeamostra == "f"
+           ? (@$GLOBALS["HTTP_POST_VARS"]["la08_obriga_volumeamostra"] === null ? 'f' : @$GLOBALS["HTTP_POST_VARS"]["la08_obriga_volumeamostra"])
+           :$this->la08_obriga_volumeamostra);
+
+       $this->la08_obriga_altura = ($this->la08_obriga_altura == "f"
+           ? (@$GLOBALS["HTTP_POST_VARS"]["la08_obriga_altura"] === null ? 'f' : @$GLOBALS["HTTP_POST_VARS"]["la08_obriga_altura"])
+           :$this->la08_obriga_altura);
+
+       $this->la08_obriga_peso = ($this->la08_obriga_peso == "f"
+           ? (@$GLOBALS["HTTP_POST_VARS"]["la08_obriga_peso"] === null ? 'f' : @$GLOBALS["HTTP_POST_VARS"]["la08_obriga_peso"])
+           :$this->la08_obriga_peso);
+
+         $this->la08_exibehistoricoresultados = ($this->la08_exibehistoricoresultados == "f"
+             ? (@$GLOBALS["HTTP_POST_VARS"]["la08_exibehistoricoresultados"] === null ? 'f' : @$GLOBALS["HTTP_POST_VARS"]["la08_exibehistoricoresultados"])
+             :$this->la08_exibehistoricoresultados);
      }else{
        $this->la08_i_codigo = ($this->la08_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la08_i_codigo"]:$this->la08_i_codigo);
      }
    }
-   // funcao para Inclusão
-   function incluir ($la08_i_codigo){
+
+    public function incluir($la08_i_codigo)
+    {
       $this->atualizacampos();
      if($this->la08_c_sigla == null ){
        $this->erro_sql = " Campo Sigla não informado.";
@@ -231,6 +232,18 @@ class cl_lab_exame {
        $this->erro_status = "0";
        return false;
      }
+     if($this->la08_obriga_volumeamostra == null ){
+       $this->la08_obriga_volumeamostra = "f";
+     }
+     if($this->la08_obriga_altura == null ){
+       $this->la08_obriga_altura = "f";
+     }
+     if($this->la08_obriga_peso == null ){
+       $this->la08_obriga_peso = "f";
+     }
+     if($this->la08_exibehistoricoresultados == null ){
+         $this->la08_exibehistoricoresultados == "f";
+     }
      if($la08_i_codigo == "" || $la08_i_codigo == null ){
        $result = db_query("select nextval('lab_exame_la08_i_codigo_seq')");
        if($result==false){
@@ -279,6 +292,10 @@ class cl_lab_exame {
                                       ,la08_i_undidadefim
                                       ,la08_i_ativo
                                       ,la08_observacao
+                                      ,la08_obriga_volumeamostra
+                                      ,la08_obriga_altura
+                                      ,la08_obriga_peso
+                                      ,la08_exibehistoricoresultados
                        )
                 values (
                                 $this->la08_i_codigo
@@ -296,6 +313,10 @@ class cl_lab_exame {
                                ,$this->la08_i_undidadefim
                                ,$this->la08_i_ativo
                                ,'$this->la08_observacao'
+                               ,'$this->la08_obriga_volumeamostra'
+                               ,'$this->la08_obriga_altura'
+                               ,'$this->la08_obriga_peso'
+                               ,'$this->la08_exibehistoricoresultados'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -315,7 +336,7 @@ class cl_lab_exame {
        return false;
      }
      $this->erro_banco = "";
-     $this->erro_sql = "Inclusão efetuada com Sucesso\\n";
+     $this->erro_sql = "Inclusão efetuada com sucesso.\\n";
          $this->erro_sql .= "Valores : ".$this->la08_i_codigo;
      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -347,12 +368,17 @@ class cl_lab_exame {
          $resac = db_query("insert into db_acount values($acount,2758,16081,'','".AddSlashes(pg_result($resaco,0,'la08_i_undidadefim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2758,17967,'','".AddSlashes(pg_result($resaco,0,'la08_i_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2758,21617,'','".AddSlashes(pg_result($resaco,0,'la08_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2758,1015471,'','".AddSlashes(pg_result($resaco,0,'la08_obriga_volumeamostra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2758,1015470,'','".AddSlashes(pg_result($resaco,0,'la08_obriga_altura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2758,1015469,'','".AddSlashes(pg_result($resaco,0,'la08_obriga_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2758,1015624,'','".AddSlashes(pg_result($resaco,0,'la08_exibehistoricoresultados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
    }
-   // funcao para alteracao
-   public function alterar ($la08_i_codigo=null) {
+
+    public function alterar($la08_i_codigo=null)
+    {
       $this->atualizacampos();
      $sql = " update lab_exame set ";
      $virgula = "";
@@ -525,6 +551,31 @@ class cl_lab_exame {
        $sql  .= $virgula." la08_observacao = '$this->la08_observacao' ";
        $virgula = ",";
      }
+     if(trim($this->la08_obriga_volumeamostra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la08_obriga_volumeamostra"])){
+       $sql  .= $virgula." la08_obriga_volumeamostra = '$this->la08_obriga_volumeamostra' ";
+       $virgula = ",";
+     }
+     if(trim($this->la08_obriga_altura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la08_obriga_altura"])){
+       $sql  .= $virgula." la08_obriga_altura = '$this->la08_obriga_altura' ";
+       $virgula = ",";
+     }
+     if(trim($this->la08_obriga_peso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la08_obriga_peso"])){
+       $sql  .= $virgula." la08_obriga_peso = '$this->la08_obriga_peso' ";
+       $virgula = ",";
+     }
+     if(trim($this->la08_exibehistoricoresultados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la08_exibehistoricoresultados"])){
+       $sql  .= $virgula." la08_exibehistoricoresultados = '$this->la08_exibehistoricoresultados' ";
+       $virgula = ",";
+       if(trim($this->la08_exibehistoricoresultados) == null ){
+         $this->erro_sql = " Campo Exibir histórico dos resultados não informado.";
+         $this->erro_campo = "la08_exibehistoricoresultados";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
      $sql .= " where ";
      if($la08_i_codigo!=null){
        $sql .= " la08_i_codigo = $this->la08_i_codigo";
@@ -572,6 +623,14 @@ class cl_lab_exame {
              $resac = db_query("insert into db_acount values($acount,2758,17967,'".AddSlashes(pg_result($resaco,$conresaco,'la08_i_ativo'))."','$this->la08_i_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["la08_observacao"]) || $this->la08_observacao != "")
              $resac = db_query("insert into db_acount values($acount,2758,21617,'".AddSlashes(pg_result($resaco,$conresaco,'la08_observacao'))."','$this->la08_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["la08_obriga_volumeamostra"]) || $this->la08_obriga_volumeamostra != "")
+             $resac = db_query("insert into db_acount values($acount,2758,1015471,'".AddSlashes(pg_result($resaco,$conresaco,'la08_obriga_volumeamostra'))."','$this->la08_obriga_volumeamostra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["la08_obriga_altura"]) || $this->la08_obriga_altura != "")
+             $resac = db_query("insert into db_acount values($acount,2758,1015470,'".AddSlashes(pg_result($resaco,$conresaco,'la08_obriga_altura'))."','$this->la08_obriga_altura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["la08_obriga_peso"]) || $this->la08_obriga_peso != "")
+             $resac = db_query("insert into db_acount values($acount,2758,1015469,'".AddSlashes(pg_result($resaco,$conresaco,'la08_obriga_peso'))."','$this->la08_obriga_peso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["la08_exibehistoricoresultados"]) || $this->la08_exibehistoricoresultados != "")
+             $resac = db_query("insert into db_acount values($acount,2758,1015624,'".AddSlashes(pg_result($resaco,$conresaco,'la08_exibehistoricoresultados'))."','$this->la08_exibehistoricoresultados',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -597,7 +656,7 @@ class cl_lab_exame {
          return true;
        } else {
          $this->erro_banco = "";
-         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
+         $this->erro_sql = "Alteração efetuada com sucesso.\\n";
          $this->erro_sql .= "Valores : ".$this->la08_i_codigo;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -607,9 +666,9 @@ class cl_lab_exame {
        }
      }
    }
-   // funcao para exclusao
-   public function excluir ($la08_i_codigo=null,$dbwhere=null) {
 
+    public function excluir($la08_i_codigo=null, $dbwhere = null)
+    {
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
        && ($lSessaoDesativarAccount === false))) {
@@ -643,6 +702,10 @@ class cl_lab_exame {
            $resac  = db_query("insert into db_acount values($acount,2758,16081,'','".AddSlashes(pg_result($resaco,$iresaco,'la08_i_undidadefim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2758,17967,'','".AddSlashes(pg_result($resaco,$iresaco,'la08_i_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2758,21617,'','".AddSlashes(pg_result($resaco,$iresaco,'la08_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2758,1015471,'','".AddSlashes(pg_result($resaco,$iresaco,'la08_obriga_volumeamostra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2758,1015470,'','".AddSlashes(pg_result($resaco,$iresaco,'la08_obriga_altura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2758,1015469,'','".AddSlashes(pg_result($resaco,$iresaco,'la08_obriga_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2758,1015624,'','".AddSlashes(pg_result($resaco,$iresaco,'la08_exibehistoricoresultados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -681,7 +744,7 @@ class cl_lab_exame {
          return true;
        } else {
          $this->erro_banco = "";
-         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
+         $this->erro_sql = "Exclusão efetuada com sucesso.\\n";
          $this->erro_sql .= "Valores : ".$la08_i_codigo;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -691,8 +754,9 @@ class cl_lab_exame {
        }
      }
    }
-   // funcao do recordset
-   public function sql_record($sql) {
+
+    public function sql_record($sql)
+    {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -714,8 +778,8 @@ class cl_lab_exame {
       }
      return $result;
    }
-   // funcao do sql
-   public function sql_query ($la08_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
+
+    public function sql_query($la08_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from lab_exame ";
@@ -733,8 +797,8 @@ class cl_lab_exame {
      }
      return $sql;
   }
-   // funcao do sql
-   public function sql_query_file ($la08_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
+    public function sql_query_file($la08_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
      $sql .= "  from lab_exame ";
@@ -754,7 +818,7 @@ class cl_lab_exame {
   }
 
    function sql_query_procedimento ($la08_i_codigo=null, $campos="*", $ordem=null, $dbwhere="") {
-     $sql = "select distinct ";
+     $sql = "select ";
      if($campos != "*" ){
        $campos_sql = split("#",$campos);
        $virgula = "";
@@ -765,24 +829,20 @@ class cl_lab_exame {
      }else{
        $sql .= $campos;
      }
-     $sql .= " from lab_exame";
-     $sql .= "  INNER JOIN lab_exameproced
-     ON la08_i_codigo = la53_i_exame ";
-     $sql .= "  INNER JOIN sau_procedimento
-     ON la53_i_procedimento = sd63_i_codigo ";
-     $sql .= "  INNER JOIN lab_setorexame
-     ON la53_i_exame = la09_i_exame";
-     $sql .= "  INNER JOIN lab_labsetor
-     ON lab_setorexame.la09_i_labsetor = lab_labsetor.la24_i_codigo";
+     $sql .= " from lab_exame ";
+     $sql .= "  inner join lab_exameproced on la08_i_codigo = la53_i_exame ";
+     $sql .= "  inner join sau_procedimento on la53_i_procedimento = sd63_i_codigo ";
+     $sql .= "  INNER JOIN lab_setorexame ON la53_i_exame = la09_i_exame";
+     $sql .= "  INNER JOIN lab_labsetor ON lab_setorexame.la09_i_labsetor = lab_labsetor.la24_i_codigo";
      $sql2 = "";
      if($dbwhere==""){
        if($la08_i_codigo!=null ){
-         $sql2 .= " where lab_exame.la08_i_codigo = $la08_i_codigo";
-        }
-      }else if($dbwhere != ""){
-        $sql2 = " where $dbwhere";
-      }
-      $sql .= $sql2;
+         $sql2 .= " where lab_exame.la08_i_codigo = $la08_i_codigo ";
+       }
+     }else if($dbwhere != ""){
+       $sql2 = " where $dbwhere";
+     }
+     $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
        $campos_sql = split("#",$ordem);
@@ -794,46 +854,47 @@ class cl_lab_exame {
      }
      return $sql;
   }
-  function sql_query_exame_atributo($la08_i_codigo=null, $campos="*", $ordem=null, $dbwhere="")  {
 
-    $sql  = "select {$campos}";
-    $sql .= "  from lab_exame ";
-    $sql .= "       left join lab_exameatributo ON lab_exameatributo.la42_i_exame =  lab_exame.la08_i_codigo";
-    $sql2 = "";
-    if (empty($dbwhere)) {
+   public function sql_query_exame_atributo($la08_i_codigo=null, $campos="*", $ordem=null, $dbwhere="")
+   {
+        $sql  = "select {$campos}";
+        $sql .= "  from lab_exame ";
+        $sql .= "       left join lab_exameatributo ON lab_exameatributo.la42_i_exame =  lab_exame.la08_i_codigo";
+        $sql2 = "";
+        if (empty($dbwhere)) {
 
-      if (!empty($la08_i_codigo)) {
-        $sql2 .= " where lab_exame.la08_i_codigo = $la08_i_codigo ";
-      }
-    } else if (!empty($dbwhere)) {
-      $sql2 = " where $dbwhere";
+            if (!empty($la08_i_codigo)) {
+                $sql2 .= " where lab_exame.la08_i_codigo = $la08_i_codigo ";
+            }
+        } else if (!empty($dbwhere)) {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if (!empty($ordem)) {
+            $sql .= " order by {$ordem}";
+        }
+        return $sql;
     }
-    $sql .= $sql2;
-    if (!empty($ordem)) {
-      $sql .= " order by {$ordem}";
+
+    public function sql_query_exame_laboratorio($la08_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql  = "select {$campos} ";
+        $sql .= "  from lab_exame ";
+        $sql .= "  join lab_setorexame  on lab_setorexame.la09_i_exame   = lab_exame.la08_i_codigo";
+        $sql .= "  join lab_labsetor    on lab_labsetor.la24_i_codigo    = lab_setorexame.la09_i_labsetor ";
+        $sql .= "  join lab_laboratorio on lab_laboratorio.la02_i_codigo = lab_labsetor.la24_i_laboratorio";
+
+        if (empty($dbwhere)) {
+            if (!empty($la08_i_codigo)){
+                $sql2 .= " where lab_exame.la08_i_codigo = $la08_i_codigo ";
+            }
+        } else if (!empty($dbwhere)) {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if (!empty($ordem)) {
+            $sql .= " order by {$ordem}";
+        }
+        return $sql;
     }
-    return $sql;
-  }
-
-  function sql_query_exame_laboratorio($la08_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
-  {
-    $sql  = "select {$campos} ";
-    $sql .= "  from lab_exame ";
-    $sql .= "  join lab_setorexame  on lab_setorexame.la09_i_exame   = lab_exame.la08_i_codigo";
-    $sql .= "  join lab_labsetor    on lab_labsetor.la24_i_codigo    = lab_setorexame.la09_i_labsetor ";
-    $sql .= "  join lab_laboratorio on lab_laboratorio.la02_i_codigo = lab_labsetor.la24_i_laboratorio";
-
-    if (empty($dbwhere)) {
-       if (!empty($la08_i_codigo)){
-         $sql2 .= " where lab_exame.la08_i_codigo = $la08_i_codigo ";
-       }
-     } else if (!empty($dbwhere)) {
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if (!empty($ordem)) {
-       $sql .= " order by {$ordem}";
-     }
-     return $sql;
-  }
 }

@@ -72,22 +72,15 @@ class OperadoraSaudeService
             throw new Exception('O campo "Operadora" é obrigatório.');
         }
 
-        if (isset($parametros->ans) === false || $parametros->ans === false || trim($parametros->ans) === '') {
-            throw new Exception('O campo "ANS" é obrigatório.');
-        }
-
         if (isset($parametros->ativo) === false || $parametros->ativo === '') {
             throw new Exception('O campo "Situação" é obrigatório.');
-        }
-
-        if (strlen($parametros->ans) < 6) {
-            throw new Exception('O campo "ANS" deve ter pelo menos 6 números.');
         }
 
         $operadoraSaude = new OperadoraSaude();
         $operadoraSaude->setCgm(CgmRepository::getByCodigo($parametros->cgm));
         $operadoraSaude->setAns($parametros->ans);
         $operadoraSaude->setAtivo($parametros->ativo);
+        $operadoraSaude->setCodigoInstituicao(db_getsession('DB_instit'));
 
         if (isset($parametros->sequencial) && $parametros->sequencial) {
             $operadoraSaude->setSequencial($parametros->sequencial);

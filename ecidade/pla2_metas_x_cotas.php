@@ -182,6 +182,8 @@ require_once modification("dbforms/db_funcoes.php");
             for (let anoInicial = plano.pl2_ano_inicial; anoInicial <= plano.pl2_ano_final; anoInicial++) {
                 cboExercicio.add(new Option(anoInicial, anoInicial));
             }
+            let data = `${plano.pl2_ano_inicial}-01-01`;
+            buscarRecursos(plano.pl2_ano_inicial, data);
         });
 
         const montaColunas = () => {
@@ -191,6 +193,33 @@ require_once modification("dbforms/db_funcoes.php");
                 align: 'center',
                 valign: 'middle',
             },
+                {
+                    title: 'Recurso',
+                    field: 'o15_recurso',
+                    halign: 'center',
+                    valign: 'middle',
+                    align: 'left',
+                    width: '100',
+                    sortable: true
+                },
+                {
+                    title: 'Siconfi',
+                    field: 'codigo_siconfi',
+                    halign: 'center',
+                    valign: 'middle',
+                    align: 'left',
+                    width: '100',
+                    sortable: true
+                },
+                {
+                    title: 'Gestão',
+                    field: 'gestao',
+                    halign: 'center',
+                    valign: 'middle',
+                    align: 'left',
+                    width: '100',
+                    sortable: true
+                },
                 {
                     title: 'Recurso',
                     field: 'descricao_recurso',
@@ -211,14 +240,14 @@ require_once modification("dbforms/db_funcoes.php");
         };
 
         const adicionaRecurso = (recurso) => {
-            let index = recursosSelecionados.findIndex(obj => obj.o15_codigo == recurso.o15_codigo);
+            let index = recursosSelecionados.findIndex(obj => obj.id == recurso.id);
             if (index < 0) {
                 recursosSelecionados.push(recurso);
             }
         };
 
         const removeRecurso = (recurso) => {
-            let index = recursosSelecionados.findIndex(obj => obj.o15_codigo == recurso.o15_codigo);
+            let index = recursosSelecionados.findIndex(obj => obj.id == recurso.id);
             if (index >= 0) {
                 recursosSelecionados.splice(index, 1)
             }
@@ -261,24 +290,20 @@ require_once modification("dbforms/db_funcoes.php");
             }
         })
 
-        const buscarRecursos = () => {
+        const buscarRecursos = (exercicio, dataFinal) => {
 
-            let data = new Date();
-            let month = data.getUTCMonth() + 1;
-            let dataFinal = `${data.getUTCFullYear()}-${month}-${data.getUTCDate()}`;
-            HttpClient.get(`${PHPSession.requestApi}/${routs.recursos}/${dataFinal}`).then(response => {
+            HttpClient.get(`${PHPSession.requestApi}/${routs.recursos}/${exercicio}/${dataFinal}`).then(response => {
 
                 let dados = response.data.map((recurso) => {
-                    recurso.descricao_recurso = `${recurso.o15_recurso} - ${recurso.o15_descr}`;
-                    recurso.descricao_complemento = `${recurso.complemento.codigo} - ${recurso.complemento.descricao}`;
+                    recurso.descricao_recurso = recurso.descricao;
+                    recurso.descricao_complemento = `${recurso.o15_complemento} - ${recurso.o200_descricao}`;
                     recurso.check = false
                     return recurso;
                 });
+
                 table.bootstrapTable('load', dados);
             });
         };
-
-        buscarRecursos();
 
         const valida = () => {
             try {

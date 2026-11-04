@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,10 +87,10 @@ $clrotulo->label("e50_codord");
           <table>
       	    <tr>
         		  <td nowrap title="<?=@$Te50_codord?>" align='right'>
-		            <? db_ancora("<b>Nota de Liquidação:</b>","js_pesquisae50_codord(true);",$db_opcao);  ?>
+		            <?php db_ancora("<b>Nota de Liquidação:</b>","js_pesquisae50_codord(true);",$db_opcao);  ?>
       	 	   </td>
 		         <td> 
-		           <?
+		           <?php
                db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")
                ?>
 		         </td>
@@ -109,7 +109,7 @@ $clrotulo->label("e50_codord");
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -180,7 +180,7 @@ function js_mostrapagordem1(chave1,chave2){
   db_iframe_pagordem.hide();
 }
 </script>
-<?
+<?php
 if(isset($erro_msg)){
   db_msgbox($erro_msg);
   if(isset($e60_numemp)){

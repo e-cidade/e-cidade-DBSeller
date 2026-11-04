@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -95,7 +95,7 @@ $oDaoRotulo->label( "z01_nome" );
     </form>
   </div>
   <div class="container">
-    <?
+    <?php
     $iEscola = db_getsession("DB_coddepto");
 
     $sCampos = "rechumano.ed20_i_codigo,

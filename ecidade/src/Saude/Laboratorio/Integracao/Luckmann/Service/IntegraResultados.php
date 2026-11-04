@@ -61,7 +61,7 @@ class IntegraResultados extends Integra
         }
 
         if (empty($saida)) {
-            throw new Exception('Nenhum arquivo a ser importado.');
+            return false;
         }
 
         return $saida;

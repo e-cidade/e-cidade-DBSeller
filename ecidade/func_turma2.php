@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -71,15 +71,15 @@ $escola = db_getsession("DB_coddepto");
     <tr>
      <td width="4%" nowrap title="<?=$Ted57_i_codigo?>">
       <?=$Led57_i_codigo?>
-      <?db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
+      <?php db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
      </td>
      <td width="4%" nowrap title="<?=$Ted57_c_descr?>">
       <?=$Led57_c_descr?>
-      <?db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
+      <?php db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
      </td>
      <td width="4%" nowrap title="<?=$Ted31_i_curso?>">
       <?=$Led31_i_curso?>
-      <?
+      <?php
       $result_cur = $clcurso->sql_record($clcurso->sql_query_file("","ed29_i_codigo,ed29_c_descr","ed29_c_descr"));
       db_selectrecord("ed31_i_curso",$result_cur,"","","","chave_ed31_i_curso","","  ","",1);
       ?>
@@ -87,7 +87,7 @@ $escola = db_getsession("DB_coddepto");
      <td width="4%" nowrap title="<?=$Ted57_i_sala?>">
       <!--
       <?=$Led57_i_sala?>
-      <?
+      <?php
       $result_sala = $clsala->sql_record($clsala->sql_query_file("","ed16_i_codigo,ed16_c_descr","ed16_c_descr"," ed16_i_escola = $escola"));
       if($clsala->numrows==0){
        $x = array(''=>'NENHUM REGISTRO');
@@ -102,7 +102,7 @@ $escola = db_getsession("DB_coddepto");
     <tr>
      <td width="4%" nowrap title="<?=$Ted57_i_turno?>">
       <?=$Led57_i_turno?>
-      <?
+      <?php
       $sql_tur = "SELECT ed15_i_codigo,ed15_c_nome
                   FROM turno
                    inner join periodoescola on periodoescola.ed17_i_turno = turno.ed15_i_codigo
@@ -120,7 +120,7 @@ $escola = db_getsession("DB_coddepto");
      </td>
      <td width="4%" nowrap title="<?=$Ted57_i_calendario?>">
       <?=$Led57_i_calendario?>
-      <?
+      <?php
       $result_cal = $clcalendario->sql_record($clcalendario->sql_query_calescola("","ed52_i_codigo,ed52_c_descr","ed52_i_ano desc"," ed38_i_escola = $escola"));
       if($clcalendario->numrows==0){
        $x = array(''=>'NENHUM REGISTRO');
@@ -132,7 +132,7 @@ $escola = db_getsession("DB_coddepto");
      </td>
      <td width="4%" nowrap title="<?=$Ted220_i_procedimento?>">
       <?=$Led220_i_procedimento?>
-      <?
+      <?php
       $result_proc = $clprocedimento->sql_record($clprocedimento->sql_query_procturma("","ed40_i_codigo,ed40_c_descr","ed40_c_descr"," ed86_i_escola = $escola GROUP BY ed40_i_codigo,ed40_c_descr"));
       if($clprocedimento->numrows==0){
        $x = array(''=>'NENHUM REGISTRO');
@@ -156,7 +156,7 @@ $escola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_turma.php")==true){

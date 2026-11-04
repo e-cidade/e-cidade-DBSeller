@@ -75,7 +75,13 @@ $this->objpdf->cell(33,7,"Ano Inicial:",$borda,0,"L",0);
 $this->objpdf->setfont('Arial','',10);
 $this->objpdf->cell(20,7,$this->isenanoini,$borda,1,"L",0);
 
-$linha  += 35;
+$this->objpdf->cell(30,7,"",$borda,0,"L",0);
+$this->objpdf->setfont('Arial','B',10);
+$this->objpdf->cell(33,7,"Ano Final:",$borda,0,"L",0);
+$this->objpdf->setfont('Arial','',10);
+$this->objpdf->cell(20,7,$this->isenanofim,$borda,1,"L",0);
+
+$linha  += 40;
 
 $this->objpdf->sety($linha+50);
 $this->objpdf->setx($coluna);
@@ -104,11 +110,15 @@ $this->objpdf->sety($alturatotal-60);
 
 $this->objpdf->cell(115,7,"",$borda,0,"L",0);
 $this->objpdf->cell(40,7, "{$this->munic}, {$this->data_extenso}.",$borda,1,"L",0);
-if (isset($this->isenassinatura2) && $this->isenassinatura2 != ""){
-  
-  eval($this->isenassinatura2);  
-} else {
-  
-	$this->objpdf->cell(90,7,"",0,1,"C",0);
+
+try{ 
+  if (isset($this->isenassinatura2) && $this->isenassinatura2 != ""){
+    eval($this->isenassinatura2);
+  } else {
+    $this->objpdf->cell(90,7,"",0,1,"C",0);
+  }
+} catch(Exception $error){
+  $this->objpdf->cell(90,7,"",0,1,"C",0);
 }
+
 $this->objpdf->setxy(14,@$y+$linha-@$y+5);

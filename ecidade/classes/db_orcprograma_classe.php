@@ -68,13 +68,13 @@ class cl_orcprograma {
                  o54_estrategiaimp = text = Estratégia de Implementação do Programa
                  ";
    //funcao construtor da classe
-   function cl_orcprograma() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprograma");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_orcprograma {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o54_anousu = ($this->o54_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o54_anousu"]:$this->o54_anousu);
        $this->o54_programa = ($this->o54_programa == ""?@$GLOBALS["HTTP_POST_VARS"]["o54_programa"]:$this->o54_programa);
@@ -102,7 +102,7 @@ class cl_orcprograma {
      }
    }
    // funcao para inclusao
-   function incluir ($o54_anousu,$o54_programa){
+   public function incluir ($o54_anousu,$o54_programa){
       $this->atualizacampos();
      if($this->o54_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -221,7 +221,7 @@ class cl_orcprograma {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o54_anousu=null,$o54_programa=null) {
+   public function alterar ($o54_anousu=null,$o54_programa=null) {
       $this->atualizacampos();
      $sql = " update orcprograma set ";
      $virgula = "";
@@ -386,7 +386,7 @@ class cl_orcprograma {
      }
    }
    // funcao para exclusao
-   function excluir ($o54_anousu=null,$o54_programa=null,$dbwhere=null) {
+   public function excluir ($o54_anousu=null,$o54_programa=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o54_anousu,$o54_programa));
      }else{
@@ -464,7 +464,7 @@ class cl_orcprograma {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -487,7 +487,7 @@ class cl_orcprograma {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $o54_anousu=null,$o54_programa=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o54_anousu=null,$o54_programa=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -529,7 +529,7 @@ class cl_orcprograma {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $o54_anousu=null,$o54_programa=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o54_anousu=null,$o54_programa=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -571,7 +571,7 @@ class cl_orcprograma {
      return $sql;
   }
 
-  function sql_query_buscaprogramasigfis ( $o54_anousu=null,$o54_programa=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_buscaprogramasigfis ( $o54_anousu=null,$o54_programa=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -627,7 +627,7 @@ class cl_orcprograma {
    * @param String $sGroupBy
    * @return string
    */
-  function sql_query_programaOrcamento($campos="*", $campos2=null, $ordem=null, $dbwhere="", $sGroupBy="*" ) {
+  public function sql_query_programaOrcamento($campos="*", $campos2=null, $ordem=null, $dbwhere="", $sGroupBy="*" ) {
     $sql = "select ";
     if($campos != "*" ) {
 

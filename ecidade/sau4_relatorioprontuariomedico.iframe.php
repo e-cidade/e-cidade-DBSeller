@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -46,14 +46,14 @@ require_once(modification('dbforms/db_funcoes.php'));
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <br><br>
 <center>
-<fieldset style="width: 40%;"><legend><b>Período para Gerar o Prontuário Eletrônico</b></legend>
+<fieldset style="width: 40%;"><legend><b>Período para Gerar o Prontuário Paciente</b></legend>
   <table border="0">
     <tr>
       <td nowrap title="<?=@$Ts115_c_cartaosus?>">
          <b>Data de Início:</b>
       </td>
       <td>
-        <?
+          <?php
         db_input('iFaa', 5, '', true, 'hidden', 3, '');
         db_input('iCgs', 5, '', true, 'hidden', 3, '');
         db_inputdata('dIni', @$dIni_dia, @$dIni_mes, @$dIni_ano, true, 'text', 1);
@@ -65,7 +65,7 @@ require_once(modification('dbforms/db_funcoes.php'));
          <b>Data de Fim:</b>
       </td>
       <td>
-        <?
+          <?php
         $dDataFim = date('d/m/Y', db_getsession('DB_datausu'));
         $aDataFim = explode('/', $dDataFim);
         $dFim_dia = $aDataFim[0];
@@ -89,7 +89,7 @@ require_once(modification('dbforms/db_funcoes.php'));
 
 $('dIni').style.backgroundColor = 'rgb(230, 228, 241)';
 
-<?
+<?php
 if (isset($iFaa) && !isset($iCgs)) {
   echo 'js_getCgsFaa();';
 }
@@ -177,7 +177,7 @@ function js_mandaDados() {
 
   sGet = 'dIni='+$F('dIni')+'&dFim='+$F('dFim')+'&cgs='+$F('iCgs');
 
-  oJan = window.open('sau4_prontuariomedico004.php?'+sGet, '', 'width='+(screen.availWidth - 5)+
+  oJan = window.open('sau4_prontuariomedico003.php?'+sGet, '', 'width='+(screen.availWidth - 5)+
                      ',height='+(screen.availHeight - 40)+',scrollbars=1,location=0 '
                     );
   oJan.moveTo(0, 0);

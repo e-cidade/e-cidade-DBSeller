@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -222,7 +222,7 @@ if(isset($anul) && trim($anul)!=""){
 
 <script>
 function js_abre(){
-  <?
+  <?php
     echo '
       erro=0;
       resp=0;
@@ -275,7 +275,7 @@ function js_abre(){
   <legend><strong>Gerar autorização de Empenho</strong></legend>
   
 <table border='0'>
-  <?
+  <?php
 
 
   
@@ -289,7 +289,7 @@ function js_abre(){
   }
   ?>
   <tr> 
-  <?
+  <?php
 
   $texthidden = "hidden";
   if((!isset($pc80_codproc) || (isset($pc80_codproc) && trim($pc80_codproc)=="")) && (!isset($pc10_numero) || (isset($pc10_numero) && trim($pc10_numero)==""))){
@@ -304,7 +304,7 @@ function js_abre(){
       <?=$Le54_destin?>
     </td>
     <td>
-      <?
+      <?php
          db_input("e54_destin",40,$Ie54_destin,true,"text",1, "", "", "", "", 30); 
       ?>
     </td>
@@ -314,7 +314,7 @@ function js_abre(){
        <?=@$Lpc12_tipo?>
     </td>
     <td> 
-    <?
+    <?php
     $parampesquisa = true;
     if(isset($tipodecompra)){
       $e54_codcom = $tipodecompra;
@@ -335,7 +335,7 @@ function js_abre(){
        <?=@$Le54_tipol?>
     </td>
     <td> 
-<?
+<?php
 if(isset($tipodecompra) || isset($e54_codcom)){
   if(isset($e54_codcom) && empty($tipodecompra)){
     $tipodecompra=$e54_codcom;
@@ -358,7 +358,7 @@ if(isset($tipodecompra) || isset($e54_codcom)){
 }  
 ?>
        <?=@$Le54_numerl?>
-<?
+<?php
 db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
 ?>
     </td>
@@ -369,13 +369,13 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
       <?=$Le54_codtipo?>
     </td>
     <td>
-      <?
+      <?php
         $result=$clemptipo->sql_record($clemptipo->sql_query_file(null,"e41_codtipo,e41_descr"));
         db_selectrecord("e54_codtipo",$result,true,1);
       ?>
       </td>
   </tr>
-<?
+<?php
 $db_opcao=1;
 ?>
   
@@ -384,7 +384,7 @@ $db_opcao=1;
        <?=@$Le54_praent?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_praent',30,$Ie54_praent,true,'text',$db_opcao, "", "", "", "", 30);
 ?>
     </td>
@@ -394,7 +394,7 @@ db_input('e54_praent',30,$Ie54_praent,true,'text',$db_opcao, "", "", "", "", 30)
        <?=@$Le54_entpar?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_entpar',30,$Ie54_entpar,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -404,7 +404,7 @@ db_input('e54_entpar',30,$Ie54_entpar,true,'text',$db_opcao,"")
        <?=@$Le54_conpag?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_conpag',30,$Ie54_conpag,true,'text',$db_opcao, "", "", "", "", 30);
 ?>
     </td>
@@ -414,7 +414,7 @@ db_input('e54_conpag',30,$Ie54_conpag,true,'text',$db_opcao, "", "", "", "", 30)
        <?=@$Le54_codout?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_codout',30,$Ie54_codout,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -424,7 +424,7 @@ db_input('e54_codout',30,$Ie54_codout,true,'text',$db_opcao,"")
        <?=@$Le54_contat?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_contat',20,$Ie54_contat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -434,14 +434,14 @@ db_input('e54_contat',20,$Ie54_contat,true,'text',$db_opcao,"")
        <?=@$Le54_telef?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_telef',20,$Ie54_telef,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
 
 
-<?
+<?php
 
 if (isset($pc10_numero)&&($pc10_numero!="")){       
 
@@ -460,7 +460,7 @@ if($verifica==0){
    <?=@$Lpc10_resumo?>
    </td>
    <td>
-   <?
+   <?php
      @$pc10_resumo = stripslashes($pc10_resumo);
      db_textarea('pc10_resumo',7,80,$Ipc10_resumo,true,'text',2,"");
                                                                        
@@ -487,7 +487,7 @@ if ($verifica>0)
      <?=@$Lpc10_resumo?>
         </td>
         <td>
-     <?
+     <?php
      @$pc10_resumo = stripslashes($pc10_resumo);
      db_textarea('pc10_resumo',7,80,$Ipc10_resumo,true,'text',2,"");
           }
@@ -502,18 +502,18 @@ if ($verifica>0)
 </td>
 </tr>
                           
-  <?
+  <?php
   }
   ?>
 
-<?
+<?php
     
      db_input("pc80_codproc",8,$Ipc80_codproc,true,"$texthidden",4,"onchange='js_pesquisa_pcproc(false);'"); 
 	   db_input('sol',6,0,true,'hidden',3);
 
 ?>
     
-    <?
+    <?php
     if($texthidden=="text"){
       echo "<tr>";
       echo "  <td align='left' nowrap title='$Tpc10_numero'>";db_ancora(@$Lpc10_numero,"js_pesquisa_solicita(true);",1);echo "</td>";
@@ -531,7 +531,7 @@ if ($verifica>0)
 <input name="lancar" type="button" onclick='js_abre();'  value="Enviar dados" <?=($db_botao==false?"disabled":"")?>>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_reload(valor) {
   /*

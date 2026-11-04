@@ -27,6 +27,9 @@
 
 namespace ECidade\Saude\Laboratorio\Repository;
 
+use cl_lab_laboratorio;
+use db_utils;
+use DomainException;
 use ECidade\Saude\Laboratorio\Model\Laboratorio;
 use Exception;
 use UsuarioSistema;
@@ -44,7 +47,7 @@ class LaboratorioRepository
 
     /**
      * LaboratorioRepository constructor.
-     * @param $dao \cl_lab_laboratorio
+     * @param $dao cl_lab_laboratorio
      */
     public function __construct($dao)
     {
@@ -93,5 +96,36 @@ class LaboratorioRepository
         }
 
         return pg_fetch_row($rs)[0];
+    }
+
+    /**
+     * @param $campos
+     * @param $where
+     * @return array
+     */
+    public function verificaLaboratorioInterfaceadoPorDepartamento($campos = '*', $where = '')
+    {
+        $retorno = [];
+        try {
+            $sql = $this->dao->sql_query_laboratorio(null, $campos, null, $where);
+            $rsSql = db_query($sql);
+
+            if (!$rsSql || pg_num_rows($rsSql) == 0) {
+                throw new DomainException('
+                Erro ao verificar se o departamento está vinculado a um laboratório que realiza interfaceamento!
+                ');
+            }
+
+            $retorno['interfaceado'] = (db_utils::fieldsMemory($rsSql, 0)->la02_interfaceado === 't');
+            $retorno['erro'] = false;
+            $retorno['mensagem'] = '';
+
+            return $retorno;
+        } catch (Exception $exception) {
+            $retorno['mensagem'] = urlencode($exception->getMessage());
+            $retorno['erro'] = true;
+
+            return $retorno;
+        }
     }
 }

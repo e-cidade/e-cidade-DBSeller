@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js, strings.js");
   db_app::load("estilos.css");
 ?>
@@ -56,7 +56,7 @@
         <tr>
           <td nowrap="nowrap"><b>Período:</b></td>
           <td>
-            <?
+            <?php
               db_inputdata('dtInicial', '','','', true, 'text', 1);
               echo "&nbsp;&nbsp;à&nbsp;&nbsp;";
               db_inputdata('dtFinal', '','','', true, 'text', 1);
@@ -66,7 +66,7 @@
         <tr>
           <td><b>Tipo de Local:</b></td>
           <td>
-            <?
+            <?php
               $aTipoLocal = array("t"=>"Todos",
                                   "g"=>"Geral",
                                   "e"=>"Endereço",

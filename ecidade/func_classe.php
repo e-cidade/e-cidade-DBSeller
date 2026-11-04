@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clclasse->rotulo->label("q12_descr");
               <?=$Lq12_classe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q12_classe",4,$Iq12_classe,true,"text",4,"","chave_q12_classe");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clclasse->rotulo->label("q12_descr");
               <?=$Lq12_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q12_descr",40,$Iq12_descr,true,"text",4,"","chave_q12_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clclasse->rotulo->label("q12_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_classe.php")==true){
@@ -122,12 +122,12 @@ $clclasse->rotulo->label("q12_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

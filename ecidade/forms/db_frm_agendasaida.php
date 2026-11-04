@@ -456,6 +456,14 @@ function js_atualizaDadosPedido(oDadosPedido) {
   $('iCodigoMotorista').value = oPedido.iMotorista;
   $('sNomeMotorista').value   = oPedido.sMotorista.urlDecode();
 
+    if (oPedido.cancelado === 'true') {
+        $('dtRetorno').value        = '';
+        $('horaRetorno').value      = '';
+        $('sPlacaVeiculo').value    = '';
+        $('iCodigoMotorista').value = '';
+        $('sNomeMotorista').value   = '';
+    }
+
   js_buscaAcompanhantes();
 
   $('tipoSaida').value = oPedido.iTipoSaida;

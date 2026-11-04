@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -95,35 +95,35 @@ if (isset ($valores) && isset ($incluir)) {
 		 $historico = $m51_obs;
 	} else {
 	   	$historico = "Sem historico";
-	}		
-		
+	}
+
 	/*
 	/// matriz de reteções
     $m_retencoes = array();
     if (strpos($retencoes,"|") || strpos($retencoes,";")   ){
-      $m_lista = explode("|",$retencoes);  
+      $m_lista = explode("|",$retencoes);
       for ($x=0;$x < sizeof($m_lista);$x++){
          $v = explode(";",$m_lista[$x]);
          $m_retencoes[$v[0]] = $v["1"];
-      }  
-    }  
+      }
+    }
     ///
 	*/
 	db_inicio_transacao();
-	
-	
 
-	$dados = split("quant_", "$valores"); //  [empenho|sequencial| iNA|quantidade ]	
-	$valordoitem = split("valor_", "$val"); // [NA|empenho|sequencial|valor_digitado] 
+
+
+	$dados =explode("quant_", "$valores"); //  [empenho|sequencial| iNA|quantidade ]
+	$valordoitem =explode("valor_", "$val"); // [NA|empenho|sequencial|valor_digitado]
 
 	for ($i = 1; $i < sizeof($dados); $i ++) {
 		if ($sqlerro == false) {
-			$numero = split("_", $dados[$i]);
+			$numero =explode("_", $dados[$i]);
 			$numemp = $numero[0];
 			$sequen = $numero[1];
 			$quanti = $numero[3];
 
-			$vlsoitem = split("_", $valordoitem[$i]);
+			$vlsoitem =explode("_", $valordoitem[$i]);
 			$vl_soma_item = $vlsoitem[3];
 			$vl_soma_item = str_replace(",", ".", "$vl_soma_item");
 			//  $valor_total+=$vl_soma_item;
@@ -138,7 +138,7 @@ if (isset ($valores) && isset ($incluir)) {
 	}
 	$m51_data = "$m51_data_ano-$m51_data_mes-$m51_data_dia";
 
-	////// fim notas 
+	////// fim notas
 	$clmatordem->m51_data = $m51_data;
 	$clmatordem->m51_depto = $coddepto;
 	$clmatordem->m51_numcgm = $e60_numcgm;
@@ -156,7 +156,7 @@ if (isset ($valores) && isset ($incluir)) {
 		$data_nota = date("Y-m-d", db_getsession("DB_datausu"));
 	}
 	$clempnota->e69_codnota = null;
-	$clempnota->e69_numero = $e69_numero; //  character varying(20) 
+	$clempnota->e69_numero = $e69_numero; //  character varying(20)
 	$clempnota->e69_numemp = $numemp; // integer                default 0
 	$clempnota->e69_id_usuario = db_getsession("DB_id_usuario");
 	$clempnota->e69_dtnota = $data_nota; //| date                  |
@@ -166,7 +166,7 @@ if (isset ($valores) && isset ($incluir)) {
 		$sqlerro = true;
 		db_msgbox($clempnota->erro_msg);
 	}
-	// empnotaele		
+	// empnotaele
 	$clempnotaele->e70_codnota = $clempnota->e69_codnota;
 	$clempnotaele->e70_codele = $e62_codele;
 	$clempnotaele->e70_valor = $vl_soma_item;
@@ -184,7 +184,7 @@ if (isset ($valores) && isset ($incluir)) {
 		$sqlerro = true;
 		db_msgbox($clempnotaord->erro_msg);
 	}
-	////// fim notas 	
+	////// fim notas
 
 	if ($sqlerro == false) {
 		if (isset ($manda_mail) && $manda_mail != "") {
@@ -200,11 +200,11 @@ if (isset ($valores) && isset ($incluir)) {
 
 	for ($i = 1; $i < sizeof($dados); $i ++) {
 		if ($sqlerro == false) {
-			$numero = split("_", $dados[$i]);
+			$numero =explode("_", $dados[$i]);
 			$numemp = $numero[0];
 			$sequen = $numero[1];
 			$quanti = $numero[3];
-			$vlsoitem = split("_", $valordoitem[$i]);
+			$vlsoitem =explode("_", $valordoitem[$i]);
 			$vl_soma_item = $vlsoitem[3];
 			$vl_soma_item = str_replace(",", ".", "$vl_soma_item");
 
@@ -267,7 +267,7 @@ if (isset ($valores) && isset ($incluir)) {
 			db_msgbox($clpagordemnota->erro_msg);
 		}
 	}
-    
+
     /*
 	if ($sqlerro == false) {
 		foreach ($m_retencoes as $key => $value) {
@@ -306,9 +306,9 @@ if (isset ($valores) && isset ($incluir)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-    <?
+    <?php
 
 
 
@@ -317,7 +317,7 @@ include(modification("forms/db_frmmatordemcgm_liquida.php"));
     </td>
   </tr>
 </table>
-<?
+<?php
 
 
 
@@ -334,21 +334,21 @@ if (isset ($incluir)) {
 				           if(confirm('Deseja imprimir a ordem de compra?')){
 				             jan = window.open('emp2_ordemcompra002.php?cods=".$clmatordem->m51_codordem."','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
 				             jan.moveTo(0,0);
-					      } 
+					      }
 				         </script>
 				";
 		if (isset ($manda_mail) && $manda_mail != "") {
-			
-			$headers  = "Content-Type:text/html;";  	  	
+
+			$headers  = "Content-Type:text/html;";
 		  $objteste = new libdocumento(1750);
 		  $corpo    = $objteste->emiteDocHTML();
   	  $mail     = mail($z01_email,"Ordem de Compra Nº $codigo","$corpo",$headers);
 			if ($mail==true){
-				db_msgbox("E-mail enviado com sucesso!!");  		
+				db_msgbox("E-mail enviado com sucesso!!");
 			}else{
 				db_msgbox("Erro ao enviar e-mail!!E-mail não foi enviado!!");
 			}
-			
+
 		}
 		echo "<script>
 					       //   location.href='emp1_ordemcompra001.php?vLiquida=true';

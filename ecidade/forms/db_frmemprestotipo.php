@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clemprestotipo->rotulo->label();
        <?=@$Le90_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('e90_codigo',10,$Ie90_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('e90_codigo',10,$Ie90_codigo,true,'text',$db_opcao,"")
        <?=@$Le90_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('e90_descr',70,$Ie90_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('e90_descr',70,$Ie90_descr,true,'text',$db_opcao,"")
        <?=@$Le90_estrut?>
     </td>
     <td> 
-<?
+<?php
 db_input('e90_estrut',20,$Ie90_estrut,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_emprestotipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

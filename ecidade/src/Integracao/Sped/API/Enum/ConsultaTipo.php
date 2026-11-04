@@ -13,31 +13,47 @@ final class ConsultaTipo
     const ES_RETORNO_IRRF_CONTRIBUINTE = 'S5012';
     const ES_RETORNO_FGTS_CONSOLIDADAS = 'S5013';
 
-    const EFD_RETORNO_TRIBUTO_POR_EVENTO = 'R5001';
-    const EFD_RETORNO_TRIBUTO_POR_PERIODO = 'R5011';
+    const EFD_RETORNO_CONTRI_PREV = 'R9001';
+    const EFD_RETORNO_CONTRI_PREV_CONSOLIDADO = 'R9011';
+
+    const EFD_RETORNO_FONTE  = 'R9005';
+    const EFD_RETORNO_FONTE_CONSOLIDADO = 'R9015';
 
     public static function tipos($tipo = null, $integracao = null)
     {
         $tiposESocial = array(
-            self::ES_RETORNO_CONTRIBUICOES_SOCIAIS_TRABALHADOR => 'S-5001 - Informações das contribuições sociais por trabalhador',
+            self::ES_RETORNO_CONTRIBUICOES_SOCIAIS_TRABALHADOR => 'S-5001 - Informações das contribuições
+            sociais por trabalhador',
+
             self::ES_RETORNO_IMPOSTO_RENDA_FONTE => 'S-5002 - Imposto de Renda Retido na Fonte',
             self::ES_RETORNO_FGTS_TRABALHADOR => 'S-5003 - Informações do FGTS por Trabalhador',
-            self::ES_RETORNO_CONTRIBUICOES_SOCIAIS_CONTRIBUINTE => 'S-5011 - Informações das contribuições sociais consolidadas por contribuinte',
+
+            self::ES_RETORNO_CONTRIBUICOES_SOCIAIS_CONTRIBUINTE => 'S-5011 - Informações das contribuições
+            sociais consolidadas por contribuinte',
+
             self::ES_RETORNO_IRRF_CONTRIBUINTE => 'S-5012 - Informações do IRRF consolidadas por contribuinte',
             self::ES_RETORNO_FGTS_CONSOLIDADAS => 'S-5013 - Informações do FGTS consolidadas por contribuinte'
         );
+
         $tiposEFD = array(
-            self::EFD_RETORNO_TRIBUTO_POR_EVENTO => 'R-5001 - Informações de bases e tributos por evento',
-            self::EFD_RETORNO_TRIBUTO_POR_PERIODO => 'R-5011 - Informações de bases e tributos consolidadas por período de apuração'
+            self::EFD_RETORNO_CONTRI_PREV => 'R-9001 - Bases e tributos - contribuição previdenciária',
+            self::EFD_RETORNO_CONTRI_PREV_CONSOLIDADO => 'R-9011 - Consolidação de bases
+            e tributos - Contrib. previdenciária',
+
+            self::EFD_RETORNO_FONTE => 'R-9005 - Bases e tributos - retenções na fonte',
+            self::EFD_RETORNO_FONTE_CONSOLIDADO => 'R-9015 - Consolidação das retenções na fonte'
         );
+
         $tipos = array();
+
         if (!empty($integracao)) {
             if ($integracao == Tipo::EFD_REINF) {
                 $tipos = $tiposEFD;
-            } else if ($integracao == Tipo::ESOCIAL) {
+            } elseif ($integracao == Tipo::ESOCIAL) {
                 $tipos = $tiposESocial;
             }
         }
+
         if (count($tipos) == 0) {
             $tipos = array_merge($tiposESocial, $tiposEFD);
         }
@@ -61,10 +77,14 @@ final class ConsultaTipo
             case 'S-5012':
             case 'S-5013':
                 return 'S-1295, S-1299';
-            case 'R-5011':
+            case 'R-9011':
                 return 'R-2099';
-            case 'R-5001':
+            case 'R-9001':
                 return 'R-2010, R-2020, R-2030, R-2040, R-2050, R-2060, R-3010';
+            case 'R-9005':
+                return 'R-4010, R-4020, R-4040';
+            case 'R-9015':
+                return 'R-4099';
             default:
                 return false;
         }

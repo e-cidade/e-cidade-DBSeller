@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE classificacaocredorestipocompra
 class cl_classificacaocredorestipocompra { 
@@ -26,13 +26,13 @@ class cl_classificacaocredorestipocompra {
                  cc34_pctipocompra = int4 = Tipo de Compra 
                  ";
    //funcao construtor da classe 
-   function cl_classificacaocredorestipocompra() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaocredorestipocompra"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_classificacaocredorestipocompra {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cc34_sequencial = ($this->cc34_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cc34_sequencial"]:$this->cc34_sequencial);
        $this->cc34_classificacaocredores = ($this->cc34_classificacaocredores == ""?@$GLOBALS["HTTP_POST_VARS"]["cc34_classificacaocredores"]:$this->cc34_classificacaocredores);
@@ -51,7 +51,7 @@ class cl_classificacaocredorestipocompra {
      }
    }
    // funcao para Inclusão
-   function incluir ($cc34_sequencial){ 
+   public function incluir ($cc34_sequencial){ 
       $this->atualizacampos();
      if($this->cc34_classificacaocredores == null ){ 
        $this->erro_sql = " Campo Classificação de Credores não informado.";

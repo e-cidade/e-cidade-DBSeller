@@ -35,6 +35,8 @@ use stdClass;
 use InstituicaoRepository;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
 use ECidade\V3\Extension\Registry;
+use ECidade\RecursosHumanos\ESocial\DadosESocial;
+use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 /**
  * Class ESocialRubricasRepository
@@ -84,30 +86,57 @@ class ESocialRubricasRepository
 
         if (pg_num_rows($rs) === 0) {
             $retorno->sequencial = null;
-            $retorno->codIncCP = null;
-            $retorno->codIncIRRF = null;
-            $retorno->codIncFGTS = null;
             $retorno->natureza = null;
             $retorno->dataInicial = null;
             $retorno->dataFinal = null;
-            $retorno->codTetoRemun = null;
-            $retorno->codIncCPRP = null;
             $retorno->subgrupotce = null;
+
+            $retorno->incCPRP = null;
+            $retorno->incIRRF = null;
+            $retorno->incFGTS = null;
+            $retorno->incCPRP = null;
+            $retorno->incPisPasep = null;
+            $retorno->tetoremun = null;
+
+            $retorno->tpProc = null;
+            $retorno->nrProcProcessoCP = null;
+            $retorno->extDecisao = null;
+            $retorno->codSuspProcessoCP = null;
+            $retorno->nrProcIRRF = null;
+            $retorno->codSuspIRRF = null;
+            $retorno->nrProcFGTS = null;
+            $retorno->nrProcPisPasep = null;
+            $retorno->codSuspPisPasep = null;
+
             return $retorno;
         }
 
         $resultado = pg_fetch_object($rs);
 
         $retorno->sequencial = $resultado->eso26_sequencial;
-        $retorno->codIncCP = $resultado->eso26_avaliacaoperguntaopcaocodinccp;
-        $retorno->codIncIRRF = $resultado->eso26_avaliacaoperguntaopcaocodincirrf;
-        $retorno->codIncFGTS = $resultado->eso26_avaliacaoperguntaopcaocodincfgts;
-        $retorno->codIncCPRP = $resultado->eso26_avaliacaoperguntaopcaocodinccprp;
-        $retorno->codTetoRemun = $resultado->eso26_avaliacaoperguntaopcaocodtetoremun;
         $retorno->natureza = $resultado->eso26_natureza;
         $retorno->dataInicial = $resultado->eso26_datainicial;
         $retorno->dataFinal = $resultado->eso26_datafinal;
         $retorno->subgrupotce = $resultado->eso26_subgrupotce;
+
+        $retorno->incCP     = $resultado->eso26_codinccp;
+        $retorno->incIRRF   = $resultado->eso26_codincirrf;
+        $retorno->incFGTS   = $resultado->eso26_codincfgts;
+        $retorno->incCPRP   = $resultado->eso26_codinccprp;
+        $retorno->incPisPasep = $resultado->eso26_codincpispasep;
+        $retorno->tetoRemun = $resultado->eso26_tetoremun;
+
+        $retorno->tpProc = $resultado->eso26_tpproc;
+        $retorno->nrProcProcessoCP = $resultado->eso26_nrprocprocessocp;
+        $retorno->extDecisao = $resultado->eso26_extdecisao;
+        $retorno->codSuspProcessoCP = $resultado->eso26_codsuspprocessocp;
+        $retorno->nrProcIRRF = $resultado->eso26_nrprocirrf;
+        $retorno->codSuspIRRF = $resultado->eso26_codsuspirrf;
+        $retorno->nrProcFGTS = $resultado->eso26_nrprocfgts;
+        $retorno->nrProcPisPasep = $resultado->eso26_nrprocpispasep;
+        $retorno->codSuspPisPasep = $resultado->eso26_codsusppispasep;
+
+
         return $retorno;
     }
 
@@ -119,18 +148,32 @@ class ESocialRubricasRepository
     public function persist(stdClass $rubrica)
     {
         $this->validate($rubrica);
+        if (empty($rubrica->incPisPasep)) {
+            $rubrica->incPisPasep = $this->validaTributacaoPisPasep($rubrica->cgm);
+        }
+
         $this->dao->eso26_sequencial = $rubrica->sequencial;
         $this->dao->eso26_rubrica = $rubrica->rubrica;
         $this->dao->eso26_instituicao = $rubrica->instituicao;
-        $this->dao->eso26_avaliacaoperguntaopcaocodinccp = $rubrica->codIncCP;
-        $this->dao->eso26_avaliacaoperguntaopcaocodincirrf = $rubrica->codIncIRRF;
-        $this->dao->eso26_avaliacaoperguntaopcaocodincfgts = $rubrica->codIncFGTS;
-        $this->dao->eso26_avaliacaoperguntaopcaocodinccprp = $rubrica->codIncCPRP;
-        $this->dao->eso26_avaliacaoperguntaopcaocodtetoremun = $rubrica->codTetoRemun;
         $this->dao->eso26_natureza = $rubrica->natureza;
         $this->dao->eso26_datainicial = $rubrica->dataInicial;
         $this->dao->eso26_datafinal = $rubrica->dataFinal;
         $this->dao->eso26_subgrupotce = $rubrica->subgrupotce;
+        $this->dao->eso26_codinccp   = $rubrica->incCP;
+        $this->dao->eso26_codincirrf = $rubrica->incIRRF;
+        $this->dao->eso26_codincfgts = $rubrica->incFGTS;
+        $this->dao->eso26_codinccprp = $rubrica->incCPRP;
+        $this->dao->eso26_codincpispasep = $rubrica->incPisPasep;
+        $this->dao->eso26_tetoremun  = $rubrica->tetoRemun;
+        $this->dao->eso26_tpproc = $rubrica->tpProc;
+        $this->dao->eso26_nrprocprocessocp = $rubrica->nrProcProcessoCP;
+        $this->dao->eso26_extdecisao = $rubrica->extDecisao;
+        $this->dao->eso26_codsuspprocessocp = $rubrica->codSuspProcessoCP;
+        $this->dao->eso26_nrprocirrf = $rubrica->nrProcIRRF;
+        $this->dao->eso26_codsuspirrf = $rubrica->codSuspIRRF;
+        $this->dao->eso26_nrprocfgts = $rubrica->nrProcFGTS;
+        $this->dao->eso26_nrprocpispasep = $rubrica->nrProcPisPasep;
+        $this->dao->eso26_codsusppispasep = $rubrica->codSuspPisPasep;
 
         if (empty($this->dao->eso26_sequencial)) {
             $this->dao->incluir($this->dao->eso26_sequencial);
@@ -176,18 +219,18 @@ class ESocialRubricasRepository
         $isPB = isParaiba();
 
         if (!$isPB) {
-            if (empty($rubrica->codIncCP)) {
+            if (empty($rubrica->incCP) && !isset($rubrica->incCP)) {
                 throw new Exception('Incidência de Contrib. Previdenciária não informada.');
             }
-    
-            if (empty($rubrica->codIncIRRF)) {
+
+            if (empty($rubrica->incIRRF) && !isset($rubrica->incIRRF)) {
                 throw new Exception("Incidência de IRRF não informada.");
             }
-    
-            if (empty($rubrica->codIncFGTS)) {
+
+            if (empty($rubrica->incFGTS) && !isset($rubrica->incFGTS)) {
                 throw new Exception("Incidência de FGTS não informada.");
             }
-    
+
             if (empty($rubrica->natureza)) {
                 throw new Exception("Natureza da rubrica não informada.");
             }
@@ -227,5 +270,42 @@ class ESocialRubricasRepository
             }
         }
         return $rubricasValidas;
+    }
+
+
+    public function rubricaUnica($params)
+    {
+
+        $sql = "select eso26_sequencial from esocial.esocialrubricas where eso26_rubrica
+            = '{$params->rubrica}' and eso26_instituicao = {$params->instituicao}";
+
+        $result = db_query($sql);
+
+        if (pg_num_rows($result)!=0) {
+            throw new Exception("Rubrica já cadastrada no sistema, operação não permitida.");
+        }
+
+        return true;
+    }
+
+    private function validaTributacaoPisPasep($cgmEmpregador)
+    {
+        $dadosESocial = new DadosESocial();
+        $dadosESocial->setCgmEmpregador($cgmEmpregador);
+        $dadosEmpregador = $dadosESocial->getPorTipo(Tipo::EMPREGADOR);
+
+        $valor = '';
+        foreach ($dadosEmpregador as $dadoEmpregador) {
+            if ($dadoEmpregador->responsavel == $cgmEmpregador) {
+                if ($dadoEmpregador
+                    ->respostas['infoCadastro']
+                    ->perguntas['indTribFolhaPisPasep']
+                    ->resposta->resposta == 'S') {
+                    $valor = '00';
+                }
+                break;
+            }
+        }
+        return $valor;
     }
 }

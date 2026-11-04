@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -56,25 +56,25 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_i_codigo?>
   </td>
   <td>
-   <?db_input('ed50_i_codigo',10,$Ied50_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed50_i_codigo',10,$Ied50_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted50_i_aluno?>">
-   <?db_ancora(@$Led50_i_aluno,"",3);?>
+   <?php db_ancora(@$Led50_i_aluno,"",3);?>
   </td>
   <td>
-   <?db_input('ed50_i_aluno',10,$Ied50_i_aluno,true,'text',3,"")?>
-   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('ed50_i_aluno',10,$Ied50_i_aluno,true,'text',3,"")?>
+   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted50_i_tipotelefone?>">
-   <?db_ancora(@$Led50_i_tipotelefone,"js_pesquisaed50_i_tipotelefone(true);",$db_opcao);?>
+   <?php db_ancora(@$Led50_i_tipotelefone,"js_pesquisaed50_i_tipotelefone(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed50_i_tipotelefone',10,$Ied50_i_tipotelefone,true,'text',$db_opcao," onchange='js_pesquisaed50_i_tipotelefone(false);'")?>
-   <?db_input('ed13_c_descr',40,@$Ied13_c_descr,true,'text',3,'')?>
+   <?php db_input('ed50_i_tipotelefone',10,$Ied50_i_tipotelefone,true,'text',$db_opcao," onchange='js_pesquisaed50_i_tipotelefone(false);'")?>
+   <?php db_input('ed13_c_descr',40,@$Ied13_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -82,7 +82,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_i_numero?>
   </td>
   <td>
-   <?db_input('ed50_i_numero',15,$Ied50_i_numero,true,'text',$db_opcao,"")?>
+   <?php db_input('ed50_i_numero',15,$Ied50_i_numero,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -90,7 +90,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_i_ramal?>
   </td>
   <td>
-   <?db_input('ed50_i_ramal',10,$Ied50_i_ramal,true,'text',$db_opcao,"")?>
+   <?php db_input('ed50_i_ramal',10,$Ied50_i_ramal,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -98,7 +98,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed50_t_obs',2,50,$Ied50_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ed50_t_obs',2,50,$Ied50_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -108,7 +108,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("ed50_i_codigo"=>@$ed50_i_codigo,"ed50_i_aluno"=>@$ed50_i_aluno,"z01_nome"=>@$z01_nome,"ed50_i_tipotelefone"=>@$ed50_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed50_i_numero"=>@$ed50_i_numero,"ed50_i_ramal"=>@$ed50_i_ramal,"ed50_t_obs"=>@$ed50_t_obs);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltelefonealuno->sql_query("","*","","ed50_i_aluno = $ed50_i_aluno");

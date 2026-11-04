@@ -43,36 +43,41 @@ class Dumper extends Csv
     public function dumpToFile($content, $file = null)
     {
         if (is_null($file)) {
-            $file = time() . '.csv';
+            $file = 'tmp/' . time() . '.csv';
         }
 
-        file_put_contents($file, $this->dump($content));
-
-        return $file;
+        return $this->write(function () use ($content) {
+            return $content;
+        }, $file);
     }
 
     /**
-     * Realiza o dump do conteudo informado em uma string csv
-     *
-     * @param array $content
+     * @param \Closure $closure
+     * @param string $file
      * @return string
      */
-    public function dump($content)
+    public function write(\Closure $closure, $file)
     {
-        $handle = fopen('php://memory', 'rb+');
+        $stream = fopen($file, 'w');
 
-        foreach ($content as $line) {
+        foreach ($closure() as $line) {
+            if (is_object($line)) {
+                $line = (array)$line;
+            }
             if (!is_array($line)) {
                 $line = array($line);
             }
-            fputcsv($handle, $line, $this->delimiter, $this->enclosure);
+
+            if ($this->enclosure) {
+                fputcsv($stream, $line, $this->delimiter, $this->enclosure);
+            } else {
+                fputs($stream, implode($this->delimiter, $line) . "\n");
+            }
         }
 
-        rewind($handle);
-        $output = stream_get_contents($handle);
-        fclose($handle);
+        fclose($stream);
 
-        return $output;
+        return $file;
     }
 
     /**

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,7 +52,7 @@ if( empty($dataini) ){
 }
 
 if( empty($datafim) ){
-  $datafim = "2100-01-01"; 
+  $datafim = "2100-01-01";
 }
 
 if( empty($anoexerc) ){
@@ -71,8 +71,8 @@ $instit = db_getsession('DB_instit');
 $dataInicial = implode('-', array_reverse(explode('/', $dataini)));
 $dataFinal = implode('-', array_reverse(explode('/', $datafim)));
 
-if (!isset($certid) || empty($certid)) { 
- 
+if (!isset($certid) || empty($certid)) {
+
   $sql = "select distinct v01_numpre
   from  divida
   left  join cgm       on v01_numcgm = z01_numcgm
@@ -89,14 +89,14 @@ if (!isset($certid) || empty($certid)) {
   $numeroDiv = pg_num_rows($rsDivida);
 
   if ($numeroDiv > 0) {
-    for ($iNumero = 0; $iNumero < $numeroDiv; $iNumero++) {       
-        $numpre = db_utils::fieldsMemory($rsDivida, $iNumero)->v01_numpre;   
+    for ($iNumero = 0; $iNumero < $numeroDiv; $iNumero++) {
+        $numpre = db_utils::fieldsMemory($rsDivida, $iNumero)->v01_numpre;
 
         $sqlDiv = "select v01_coddiv, v01_vlrhis, v01_dtvenc, v01_dtinsc, v01_dtoper, v01_instit, v03_receit
             from divida
             inner join proced on
             v03_codigo = v01_proced
-            where v01_numpre = $numpre";
+            where v01_numpre = $numpre and v01_coddiv not in (select v93_coddiv from termoinscrreg)";
 
         $rsDiv = db_query($sqlDiv);
         $registrosDiv = pg_num_rows($rsDiv);
@@ -115,11 +115,11 @@ if (!isset($certid) || empty($certid)) {
           $rsUsuario = db_query($sqlUsuario);
           $usuario = db_utils::fieldsMemory($rsUsuario, 0)->usuario;
 
-          TermoInscricaoService::salvar($numpre, $CodDivs, $CodDivs->v03_receit, $CodDivs->v01_dtinsc, $usuario, $CodDivs->v01_instit);                        
-      }       
+          TermoInscricaoService::salvar($numpre, $CodDivs, $CodDivs->v03_receit, $CodDivs->v01_dtinsc, $usuario, $CodDivs->v01_instit);
+      }
     }
   }
-}      
+}
 
 /**
  * Gerar termo
@@ -135,7 +135,7 @@ try{
     return $oGeradorTermo->escreverArquivo($sNomeArquivo);
 
   }else{
-    
+
     $oGeradorTermo->gerar($certid, $certid1, $proced, $dataInicial, $dataFinal, $anoexerc, $origemtipo, $origem, $totexe, $reemissao);
     $oGeradorTermo->exibirArquivo();
   }

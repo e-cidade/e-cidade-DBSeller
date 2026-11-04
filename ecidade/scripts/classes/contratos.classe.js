@@ -120,13 +120,13 @@ contrato = function () {
     for (var i = 0; i < oDados.itens.length; i++) {
 
 	     with (oDados.itens[0]) {
-
 	       var aLinha = new Array();
+           var objeto = oDados.itens[i].objeto.urlDecode();
 	       aLinha[0]  = oDados.itens[i].licitacao;
 		   aLinha[1]  = oDados.itens[i].tipo_compra.urlDecode().toUpperCase();
 	       aLinha[2]  = oDados.itens[i].numero;
 		   aLinha[3]  = oDados.itens[i].ano;
-	       aLinha[4]  = oDados.itens[i].objeto.substring(0, 125).urlDecode();
+	       aLinha[4]  = objeto.substring(0, 500);
 	       aLinha[5]  = oDados.itens[i].numero_exercicio;
 	       aLinha[6]  = js_formatar(oDados.itens[i].data, 'd');
 
@@ -212,6 +212,7 @@ contrato = function () {
 	  var oParam         = new Object();
 	  oParam.exec        = 'getNumeroContrato';
 	  oParam.iGrupo      = $F('ac16_acordogrupo');
+      oParam.iAno        = $F('ac16_anousu');
 	  var oAjax   = new Ajax.Request(
 	                         sURL,
 	                         {
@@ -256,6 +257,8 @@ contrato = function () {
 		var iQtdRenovacao             = $F('ac16_qtdrenovacao');
 		var iUnidRenovacao            = $F('ac16_tipounidtempo');
 		var sProcesso                 = encodeURIComponent($F('ac16_numeroprocesso'));
+        var lProcsis                  = $F('lprocsis');
+        var iProtProcesso             = $F('ac62_protprocesso');
 		var lEmergencial              = $F('ac26_emergencial') == 'f' ? false : true;
 		var lPeriodoComercial         = $F('ac16_periodocomercial');
 		var iCategoriaAcordo          = $F('ac50_sequencial');
@@ -263,9 +266,22 @@ contrato = function () {
 		var iQtdPeriodoVigencia       = $F('ac16_qtdperiodo');
 		var iClassificacao            = $F('ac16_acordoclassificacao');
 		var nValorContrato            = $F('ac16_valor');
+		var iAno                      = $F('ac16_anousu');
 		var iTipoInstrumento          = $F('ac16_tipoinstrumento');
+        var licitacaoCompartilhada    = $F('licitacaoCompartilhada');
+        var codigoCgm                 = $F('z01_numcgm');
+        var descricacaoCgm            = $F('z01_nome');
+        var modalidadeCodigo          = $F('modalidadeCodigo');
+        var numeroLicitacao           = $F('numeroLicitacao');
+        var anoLicitacao              = $F('anoLicitacao');
 		var lDependeOrdemInicio       = $F('ac16_dependeordeminicio') == 't' ? true : false;
 		var iBaseLegalConstratacao      = null;
+        if (me.parametro_exibe_fiscal) {
+            var iGestor = $F('z01_numcgm_gestor');
+            var sGestorNome = $F('z01_nome_gestor');
+        }
+        const NAO_SE_APLICA = '0';
+
 		if (document.getElementById("acordobaselegalcontratacao")) {
 			iBaseLegalConstratacao   = $F('acordobaselegalcontratacao');
 
@@ -307,12 +323,20 @@ contrato = function () {
 			$('ac16_deptoresponsavel').focus();
 			return false;
 		}
-		if (iComissao == "") {
+
+		if (iComissao == "" && me.parametro_exibe_fiscal != true) {
 
 			alert('Informe a comissão de vistoria do acordo.');
 			$('ac16_acordocomissão').focus();
 			return false;
 		}
+
+        if (me.parametro_exibe_fiscal) {
+            if (aFiscalItem.length == 0) {
+                alert('Informe o fiscal do acordo.');
+                return false;
+            }
+        }
 
 		if (sLei == "") {
 
@@ -322,12 +346,39 @@ contrato = function () {
 
 		}
 
+        if (licitacaoCompartilhada !== NAO_SE_APLICA && codigoCgm === '' && descricacaoCgm === '') {
+            alert('Por favor, preencha o cgm da licitação compartilhada.');
+            return false;
+        }
+
+        if (licitacaoCompartilhada !== NAO_SE_APLICA && numeroLicitacao === "") {
+            alert("Preencha o número da Licitação.");
+            return false;
+        }
+
+        if (licitacaoCompartilhada !== NAO_SE_APLICA && anoLicitacao === "") {
+            alert("Preencha o ano da Licitação");
+            return false;
+        }
+
 		if (sProcesso == "") {
 
 		alert('Informe o Número do Processo.');
 		$('ac16_numeroprocesso').focus();
 		return false;
 		}
+
+        if (iCategoriaAcordo == "" || iCategoriaAcordo == 0) {
+
+            alert('Informe a categoria do Contrato.');
+            $('ac50_sequencial').focus();
+            return false;
+        }
+
+        if (iTipoInstrumento == 0) {
+            alert('Informe o Tipo de Instrumento.');
+            return false;
+        }
 
 		if (dtInicio == "") {
 
@@ -349,14 +400,6 @@ contrato = function () {
 			$('ac16_datafim').focus();
 			return false;
 		}
-
-		if (iCategoriaAcordo == "" || iCategoriaAcordo == 0) {
-
-		alert('Informe a categoria do Contrato.');
-		$('ac50_sequencial').focus();
-		return false;
-		}
-
 
 		if (sObjeto == "") {
 
@@ -400,6 +443,8 @@ contrato = function () {
 		oParam.contrato.iUnidRenovacao            = iUnidRenovacao;
 		oParam.contrato.lEmergencial              = lEmergencial;
 		oParam.contrato.sProcesso                 = sProcesso;
+        oParam.contrato.lProcsis                  = lProcsis;
+        oParam.contrato.iProtProcesso             = iProtProcesso;
 		oParam.contrato.lPeriodoComercial         = lPeriodoComercial;
 		oParam.contrato.iCategoriaAcordo          = iCategoriaAcordo;
 		oParam.contrato.iTipoUnidadeTempoVigencia = iTipoUnidadeTempoVigencia;
@@ -408,19 +453,31 @@ contrato = function () {
 		oParam.contrato.nValorContrato            = nValorContrato;
 		oParam.contrato.iTipoInstrumento          = iTipoInstrumento;
 		oParam.contrato.lDependeOrdemInicio       = lDependeOrdemInicio;
+		oParam.contrato.iAno                      = iAno;
+        oParam.contrato.aFiscalItem               = aFiscalItem;
+        oParam.contrato.licitacaoCompartilhada    = licitacaoCompartilhada;
+        oParam.contrato.codigoCgm                 = codigoCgm;
+        oParam.contrato.descricacaoCgm            = descricacaoCgm;
+        oParam.contrato.modalidade                = modalidadeCodigo;
+        oParam.contrato.numeroLicitacao           = numeroLicitacao;
+        oParam.contrato.anoLicitacao              = anoLicitacao;
+        oParam.contrato.iGestor                   = iGestor  ? iGestor  : false;
+        oParam.contrato.sGestorNome               = sGestorNome ? sGestorNome : false;
 		if (iBaseLegalConstratacao !== null) {
 			oParam.contrato.iBaseLegalConstratacao = iBaseLegalConstratacao;
 		}
-		js_divCarregando('Aguarde, salvando dados do contrato','msgbox');
-		var oAjax   = new Ajax.Request(
-								sURL,
-								{
-								method    : 'post',
-								parameters: 'json=' + Object.toJSON(oParam),
-								onComplete: me.retornoSaveContrato
-								}
-								);
-	}
+
+        js_divCarregando('Aguarde, salvando dados do contrato', 'msgbox');
+        var oAjax = new Ajax.Request(
+            sURL,
+            {
+                method: 'post',
+                parameters: 'json=' + Object.toJSON(oParam),
+                onComplete: me.retornoSaveContrato,
+                asyncrounous: true
+            }
+        );
+    }
 
   	this.bloqueiaCampos = function() {
 
@@ -432,9 +489,11 @@ contrato = function () {
 		$("ac16_datafim").disabled                 = true;
 		$("ac16_deptoresponsavel").disabled        = true;
 		$("ac16_acordocomissao").disabled          = true;
+        if ($("z01_cgccpf") !== null) {
+            $("z01_cgccpf").disabled                   = true;
+        }
 		$("ac16_datainicio").style.backgroundColor = "#DEB887";
 		$("ac16_datafim").style.backgroundColor    = "#DEB887";
-
 
 
 		//Desabilita o botao "D" do calendario
@@ -490,7 +549,6 @@ contrato = function () {
 		parent.CurrentWindow.corpo.iframe_acordopenalidade.location.href   = 'aco1_acordoacordopenalidade001.php?ac13_acordo='+oRetorno.iCodigoContrato;
 		parent.document.formaba.acordodocumento.disabled  = false;
 		parent.CurrentWindow.corpo.iframe_acordodocumento.location.href    = 'aco1_acordodocumento001.php?ac40_acordo='+oRetorno.iCodigoContrato;
-
 		me.homologarContrato(oRetorno.iCodigoContrato);
 		return true;
 
@@ -507,7 +565,7 @@ contrato = function () {
 	this.homologarContrato = async function(ac16_sequencial) {
 
 		const getParametrosHomologacaoAutomatica = async() => {
-			const RPC = 'ac4_homologacaoacordo.RPC.php';
+			const RPC = 'ac4_acordoparam.RPC.php';
             const formData = new FormData();
             formData.append('exec', 'getParametrosConfigurados');
 
@@ -530,7 +588,7 @@ contrato = function () {
 		}
 
 		const retorno = await getParametrosHomologacaoAutomatica();
-		if(retorno.ac59_automatica) {
+		if(retorno.ac59_homologacaoauto === 't') {
 			js_divCarregando('Aguarde incluindo homologação...','msgBoxHomologacaoContrato');
 
 			const sUrl = 'con4_contratosmovimento.RPC.php';
@@ -603,7 +661,26 @@ contrato = function () {
 			if (oRetorno.contrato.iOrigem == 6 || oRetorno.contrato.iOrigem == '6') {
 				$('pesquisarEmpenhos').style.display = 'inLine';
 			}
-
+            $('licitacaoCompartilhada').disabled = true;
+            $('licitacaoCgm').hidden = true;
+            $('trNumero').hidden = true;
+            $('trModalidade').hidden = true;
+            if ($('ac16_origem').value !== '2') {
+                $('licitacaoCompartilhada').disabled = false;
+            }
+            if (oRetorno.contrato.licitacaoCompartilhada !== null) {
+                if (oRetorno.contrato.licitacaoCompartilhada !== '0') {
+                    $('licitacaoCgm').hidden = false;
+                    $('trNumero').hidden = false;
+                    $('trModalidade').hidden = false;
+                    $('anoLicitacao').value = oRetorno.contrato.anoLicitacao;
+                    $('numeroLicitacao').value = oRetorno.contrato.numeroLicitacao;
+                    $('z01_numcgm').value = oRetorno.contrato.codigoCgm;
+                    $('z01_numcgm').dispatchEvent(new Event('change'));
+                    $('modalidadeCodigo').value = oRetorno.contrato.modalidade;
+                    $('licitacaoCompartilhada').value = oRetorno.contrato.licitacaoCompartilhada;
+                }
+            }
 			$('ac16_acordogrupo').value           = oRetorno.contrato.iGrupo;
 			$('ac16_numero').value                = oRetorno.contrato.iNumero;
 			$('ac16_contratado').value            = oRetorno.contrato.iContratado;

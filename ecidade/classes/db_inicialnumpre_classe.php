@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: juridico
@@ -47,12 +47,12 @@ class cl_inicialnumpre
     var $v59_numpre = 0;
     // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v59_inicial = int4 = Inicial Numero 
-                 v59_numpre = int4 = Numpre 
+                 v59_inicial = int4 = Inicial Numero
+                 v59_numpre = int4 = Numpre
                  ";
 
     //funcao construtor da classe
-    function cl_inicialnumpre()
+    public function __construct()
     {
      //classes dos rotulos dos campos
         $this->rotulo = new rotulo("inicialnumpre");
@@ -60,7 +60,7 @@ class cl_inicialnumpre
    }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
@@ -70,7 +70,7 @@ class cl_inicialnumpre
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v59_inicial = ($this->v59_inicial == ""?@$GLOBALS["HTTP_POST_VARS"]["v59_inicial"]:$this->v59_inicial);
        $this->v59_numpre = ($this->v59_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["v59_numpre"]:$this->v59_numpre);
@@ -80,7 +80,7 @@ class cl_inicialnumpre
      }
    }
    // funcao para inclusao
-    function incluir()
+    public function incluir()
     {
        $this->atualizacampos();
         //$this->v59_inicial = $v59_inicial;
@@ -102,12 +102,12 @@ class cl_inicialnumpre
        return false;
      }
      $sql = "insert into inicialnumpre(
-                                       v59_inicial 
-                                      ,v59_numpre 
+                                       v59_inicial
+                                      ,v59_numpre
                        )
                 values (
-                                $this->v59_inicial 
-                               ,$this->v59_numpre 
+                                $this->v59_inicial
+                               ,$this->v59_numpre
                       )";
      $result = db_query($sql);
 
@@ -204,7 +204,7 @@ class cl_inicialnumpre
     }
 
     // funcao para exclusao
-    function excluir($oid = null, $dbwhere = null)
+    public function excluir($oid = null, $dbwhere = null)
     {
      if($dbwhere==null || $dbwhere==""){
 //       $resaco = $this->sql_record($this->sql_query_file($v59_inicial,$v59_numpre));
@@ -275,7 +275,7 @@ class cl_inicialnumpre
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
      $result = db_query($sql);
      if($result==false){
@@ -299,11 +299,11 @@ class cl_inicialnumpre
      return $result;
    }
 
-    function sql_query($oid = null, $campos = "inicialnumpre.oid,*", $ordem = null, $dbwhere = "")
+    public function sql_query($oid = null, $campos = "inicialnumpre.oid,*", $ordem = null, $dbwhere = "")
     {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -328,7 +328,7 @@ class cl_inicialnumpre
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -338,11 +338,11 @@ class cl_inicialnumpre
      return $sql;
   }
 
-    function sql_query_file($oid = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($oid = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -360,7 +360,7 @@ class cl_inicialnumpre
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

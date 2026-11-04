@@ -60,63 +60,6 @@
            hassequence="f" > 
             
     </field> 
-    <field codigo="1009989" 
-           campo_api='' 
-           name="eso26_avaliacaoperguntaopcaocodinccp" 
-           conteudo="int4" 
-           description="codIncCP" 
-           inivalue="0" 
-           label="codIncCP" 
-           size="10" 
-           null="t" 
-           uppercase="f" 
-           autocompl="f" 
-           aceitatipo="1" 
-           tipoobj="text" 
-           labelrel="codIncCP" 
-           reference="" 
-           ispk="f" 
-           hassequence="f" > 
-            
-    </field> 
-    <field codigo="1009991" 
-           campo_api='' 
-           name="eso26_avaliacaoperguntaopcaocodincirrf" 
-           conteudo="int4" 
-           description="codIncIRRF" 
-           inivalue="0" 
-           label="codIncIRRF" 
-           size="10" 
-           null="t" 
-           uppercase="f" 
-           autocompl="f" 
-           aceitatipo="1" 
-           tipoobj="text" 
-           labelrel="codIncIRRF" 
-           reference="" 
-           ispk="f" 
-           hassequence="f" > 
-            
-    </field> 
-    <field codigo="1009992" 
-           campo_api='' 
-           name="eso26_avaliacaoperguntaopcaocodincfgts" 
-           conteudo="int4" 
-           description="codIncFGTS" 
-           inivalue="0" 
-           label="codIncFGTS" 
-           size="10" 
-           null="t" 
-           uppercase="f" 
-           autocompl="f" 
-           aceitatipo="1" 
-           tipoobj="text" 
-           labelrel="codIncFGTS" 
-           reference="" 
-           ispk="f" 
-           hassequence="f" > 
-            
-    </field> 
     <field codigo="1009994" 
            campo_api='' 
            name="eso26_natureza" 
@@ -174,44 +117,6 @@
            hassequence="f" > 
             
     </field> 
-    <field codigo="1013457" 
-           campo_api='' 
-           name="eso26_avaliacaoperguntaopcaocodtetoremun" 
-           conteudo="varchar(20)" 
-           description="Informa se a rubrica pertence ao teto remuneratório específico (art. 37, XI, da CF/1988)." 
-           inivalue="" 
-           label="Teto remuneratório específico" 
-           size="20" 
-           null="t" 
-           uppercase="t" 
-           autocompl="f" 
-           aceitatipo="0" 
-           tipoobj="text" 
-           labelrel="Teto remuneratório específico" 
-           reference="" 
-           ispk="f" 
-           hassequence="f" > 
-            
-    </field> 
-    <field codigo="1013454" 
-           campo_api='' 
-           name="eso26_avaliacaoperguntaopcaocodinccprp" 
-           conteudo="int4" 
-           description="Campo de incidência de RPPS/Regime Militar" 
-           inivalue="0" 
-           label="Incidência RPPS/Regime Militar" 
-           size="10" 
-           null="f" 
-           uppercase="f" 
-           autocompl="f" 
-           aceitatipo="1" 
-           tipoobj="text" 
-           labelrel="Incidência RPPS/Regime Militar" 
-           reference="" 
-           ispk="f" 
-           hassequence="f" > 
-            
-    </field> 
     <field codigo="1014222" 
            campo_api='' 
            name="eso26_subgrupotce" 
@@ -231,6 +136,101 @@
            hassequence="f" > 
             
     </field> 
+    <field codigo="1014722" 
+           campo_api='' 
+           name="eso26_codinccp" 
+           conteudo="varchar(3)" 
+           description="Incidência de Contrib. Previdenciária" 
+           inivalue="" 
+           label="Incidência de Contrib. Previdenciária" 
+           size="3" 
+           null="f" 
+           uppercase="t" 
+           autocompl="f" 
+           aceitatipo="0" 
+           tipoobj="text" 
+           labelrel="Incidência de Contrib. Previdenciária" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="1014723" 
+           campo_api='' 
+           name="eso26_codincirrf" 
+           conteudo="varchar(5)" 
+           description="Incidência de IRRF" 
+           inivalue="" 
+           label="Incidência de IRRF" 
+           size="5" 
+           null="f" 
+           uppercase="t" 
+           autocompl="f" 
+           aceitatipo="0" 
+           tipoobj="text" 
+           labelrel="Incidência de IRRF" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="1014724" 
+           campo_api='' 
+           name="eso26_codincfgts" 
+           conteudo="varchar(3)" 
+           description="Incidência de FGTS" 
+           inivalue="" 
+           label="Incidência de FGTS" 
+           size="3" 
+           null="f" 
+           uppercase="t" 
+           autocompl="f" 
+           aceitatipo="0" 
+           tipoobj="text" 
+           labelrel="Incidência de FGTS" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="1014727" 
+           campo_api='' 
+           name="eso26_codinccprp" 
+           conteudo="varchar(3)" 
+           description="Código de incidência da rubrica para as contribuições do Regime Próprio de Previdência Social - RPPS/regime militar." 
+           inivalue="" 
+           label="Incidência rubrica RPPS/regime militar" 
+           size="3" 
+           null="t" 
+           uppercase="t" 
+           autocompl="f" 
+           aceitatipo="0" 
+           tipoobj="text" 
+           labelrel="Incidência rubrica RPPS/regime militar" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="1014729" 
+           campo_api='' 
+           name="eso26_tetoremun" 
+           conteudo="char(1)" 
+           description="Informar se a rubrica compõe o teto remuneratório específico (art. 37, XI, da CF/1988)." 
+           inivalue="" 
+           label="Rubrica teto remuneratório específico" 
+           size="1" 
+           null="t" 
+           uppercase="t" 
+           autocompl="f" 
+           aceitatipo="0" 
+           tipoobj="text" 
+           labelrel="Rubrica teto remuneratório específico" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
   </fields>
   <primarykey>
     <fieldpk name="eso26_sequencial"></fieldpk> 
@@ -240,10 +240,10 @@
       <fieldfk name="eso26_rubrica" reference="rh27_rubric" /> 
       <fieldfk name="eso26_instituicao" reference="rh27_instit" /> 
     </foreignkey>
-        <foreignkey reference="avaliacaoperguntaopcao" inner='f'>
-            <fieldfk name="eso26_avaliacaoperguntaopcaocodinccp" reference="db104_sequencial"/>
-            <fieldfk name="eso26_avaliacaoperguntaopcaocodincirrf" reference="db104_sequencial"/>
-            <fieldfk name="eso26_avaliacaoperguntaopcaocodincfgts" reference="db104_sequencial"/>
-        </foreignkey>
+    <foreignkey reference="esocialrubricas" inner='f'>
+      <fieldfk name="eso26_avaliacaoperguntaopcaocodinccp" reference="eso26_sequencial" /> 
+      <fieldfk name="eso26_avaliacaoperguntaopcaocodincirrf" reference="" /> 
+      <fieldfk name="eso26_avaliacaoperguntaopcaocodincfgts" reference="" /> 
+    </foreignkey>
   </foreignkeys>
 </table>

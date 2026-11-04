@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -120,7 +120,7 @@ function js_verimatri(valor){
        <?=@$Lj18_anousu?>
     </td>
     <td> 
-<?
+<?php
 db_input('j18_anousu',4,$Ij18_anousu,true,'text',3,"","exercicio")
 ?>
     </td>
@@ -130,7 +130,7 @@ db_input('j18_anousu',4,$Ij18_anousu,true,'text',3,"","exercicio")
        <?=@$Lj18_vlrref?>
     </td>
     <td> 
-<?
+<?php
 db_input('j18_vlrref',15,$Ij18_vlrref,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -140,7 +140,7 @@ db_input('j18_vlrref',15,$Ij18_vlrref,true,'text',$db_opcao,"")
        <?=@$Lj18_dtoper?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j18_dtoper',@$j18_dtoper_dia,@$j18_dtoper_mes,@$j18_dtoper_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -150,7 +150,7 @@ db_inputdata('j18_dtoper',@$j18_dtoper_dia,@$j18_dtoper_mes,@$j18_dtoper_ano,tru
        <?=@$Lj18_rterri?>
     </td>
     <td> 
-<?
+<?php
 db_input('j18_rterri',4,$Ij18_rterri,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -160,7 +160,7 @@ db_input('j18_rterri',4,$Ij18_rterri,true,'text',$db_opcao,"")
        <?=@$Lj18_rpredi?>
     </td>
     <td> 
-<?
+<?php
 db_input('j18_rpredi',4,$Ij18_rpredi,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -170,7 +170,7 @@ db_input('j18_rpredi',4,$Ij18_rpredi,true,'text',$db_opcao,"")
        <?=@$Lj18_vencim?>
     </td>
     <td> 
-<?
+<?php
 db_input('j18_vencim',4,$Ij18_vencim,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -185,7 +185,7 @@ db_input('j18_vencim',4,$Ij18_vencim,true,'text',$db_opcao,"")
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -212,7 +212,7 @@ function js_pesquisaj44_matric(mostra){
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

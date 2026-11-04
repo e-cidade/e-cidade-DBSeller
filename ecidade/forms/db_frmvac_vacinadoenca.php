@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Vacinas
@@ -39,8 +39,8 @@ $clrotulo->label("sd70_c_nome");
     <td nowrap title="<?=@$Tvc10_i_codigo?>">
        <?=@$Lvc10_i_codigo?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_input('vc10_i_codigo',10,$Ivc10_i_codigo,true,'text',3,"")
       ?>
     </td>
@@ -49,17 +49,17 @@ $clrotulo->label("sd70_c_nome");
     <td nowrap title="<?=@$Tvc10_i_vacina?>">
        <?=$Lvc10_i_vacina?>
     </td>
-    <td> 
-     <?db_input('vc10_i_vacina',10,$Ivc10_i_vacina,true,'text',3,"")?>
-     <?db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
+    <td>
+     <?php db_input('vc10_i_vacina',10,$Ivc10_i_vacina,true,'text',3,"")?>
+     <?php db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc10_i_cid?>">
-     <?db_ancora(@$Lvc10_i_cid,"js_pesquisavc10_i_cid(true);",$db_opcao);?>
+     <?php db_ancora(@$Lvc10_i_cid,"js_pesquisavc10_i_cid(true);",$db_opcao);?>
     </td>
-    <td> 
-    <?
+    <td>
+    <?php
       db_input('vc10_i_cid',10,$Ivc10_i_cid,true,'text',$db_opcao,
                 " onchange='js_pesquisavc10_i_cid(false);'");
       db_input('sd70_c_nome',40,$Isd70_c_nome,true,'text',3,'');
@@ -68,7 +68,7 @@ $clrotulo->label("sd70_c_nome");
   </tr>
   </table>
   </center>
-<input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
+<input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
        type  = "submit"
        id    = "db_opcao"
        value = "<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
@@ -83,7 +83,7 @@ $clrotulo->label("sd70_c_nome");
 </form>
 <br>
 
-<?
+<?php
   $chavepri                                = array("vc10_i_codigo"=>@$vc10_i_codigo);
   $cliframe_alterar_excluir->chavepri      = $chavepri;
   if (isset($vc10_i_vacina) && $vc10_i_vacina != "") {
@@ -104,7 +104,7 @@ $clrotulo->label("sd70_c_nome");
   $cliframe_alterar_excluir->iframe_height = "130";
   $cliframe_alterar_excluir->opcoes        = 1;
   $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
-?> 
+?>
 
 
 <script>
@@ -120,7 +120,7 @@ function js_pesquisavc10_i_cid(mostra) {
                        );
 
   } else {
-     if (document.form2.vc10_i_cid.value != '') {  
+     if (document.form2.vc10_i_cid.value != '') {
 
        js_OpenJanelaIframe('',
                            'db_iframe_sau_cid',
@@ -131,18 +131,18 @@ function js_pesquisavc10_i_cid(mostra) {
                           );
 
      } else {
-       document.form2.sd70_c_nome.value = ''; 
+       document.form2.sd70_c_nome.value = '';
      }
   }
 }
 
 function js_mostrasau_cid(chave,erro) {
 
-  document.form2.sd70_c_nome.value = chave; 
-  if (erro==true) {  
+  document.form2.sd70_c_nome.value = chave;
+  if (erro==true) {
 
-    document.form2.vc10_i_cid.focus(); 
-    document.form2.vc10_i_cid.value = ''; 
+    document.form2.vc10_i_cid.focus();
+    document.form2.vc10_i_cid.value = '';
 
   }
 }
@@ -169,7 +169,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_vacinadoenca.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

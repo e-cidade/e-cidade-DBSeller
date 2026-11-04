@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -62,13 +62,13 @@ $clcgm->rotulo->label('z01_numcgm');
     <tr>
      <td>
       De:
-      <?db_inputdata('data_ini',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
+      <?php db_inputdata('data_ini',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
       Até:
-      <?db_inputdata('data_fim',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
+      <?php db_inputdata('data_fim',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
      </td>
      <td>
       &nbsp;&nbsp;&nbsp;
-      <?
+      <?php
       $tipo = array("Todas"=>"Todas","Por Marca"=>"Por Marca","Por CGM"=>"Por CGM");
       db_select("escolha",$tipo,true,2,"onchange=\"js_opcao(this.value)\"");
       ?>
@@ -76,14 +76,14 @@ $clcgm->rotulo->label('z01_numcgm');
     </tr>
      <td colspan="2" align="center">
       <span name="marcas" id="marcas" style="visibility:hidden">
-       <?db_ancora(@$Lma02_i_marca,"js_pesquisama02_i_marca(true);",1);?>
-       <?db_input('ma02_i_marca',10,'',true,'text',1," onchange='js_pesquisama02_i_marca(false);'")?>
-       <?db_input('z01_nome1',40,'',true,'text',3,'')?>
+       <?php db_ancora(@$Lma02_i_marca,"js_pesquisama02_i_marca(true);",1);?>
+       <?php db_input('ma02_i_marca',10,'',true,'text',1," onchange='js_pesquisama02_i_marca(false);'")?>
+       <?php db_input('z01_nome1',40,'',true,'text',3,'')?>
       </span><br>
       <span name="prop" id="prop" style="visibility:hidden">
-       <?db_ancora(@$Lz01_numcgm,"js_pesquisama01_i_cgm(true);",1);?>
-       <?db_input('z01_numcgm',10,'',true,'text',1," onchange='js_pesquisama01_i_cgm(false);'")?>
-       <?db_input('z01_nome',40,'',true,'text',3,'')?>
+       <?php db_ancora(@$Lz01_numcgm,"js_pesquisama01_i_cgm(true);",1);?>
+       <?php db_input('z01_numcgm',10,'',true,'text',1," onchange='js_pesquisama01_i_cgm(false);'")?>
+       <?php db_input('z01_nome',40,'',true,'text',3,'')?>
       </span>
      </td>
     </tr>
@@ -200,6 +200,6 @@ function js_opcao(valor){
  }
 }
 </script>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -78,38 +78,38 @@
                <?=@$Led328_sequencial?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ed328_sequencial', 10, $Ied328_sequencial, true, 'text', 3, "");
               ?>
             </td>
           </tr>
           <tr style="display: none">
             <td nowrap title="<?=@$Ted328_escola?>">
-              <?
+              <?php
                 db_ancora(@$Led328_escola, "js_pesquisaed328_escola(true);", $db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ed328_escola', 10, $Ied328_escola, true, 'text', $db_opcao, " onchange='js_pesquisaed328_escola(false);'");
               ?>
-              <?
+              <?php
                 db_input('ed18_i_codigo', 40, $Ied18_i_codigo, true, 'text', 3, '');
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Ted328_db_estrutura?>">
-              <?
+              <?php
                 db_ancora(@$Led328_db_estrutura, "js_pesquisaed328_db_estrutura(true);", $db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ed328_db_estrutura', 10, $Ied328_db_estrutura, true, 'text', $db_opcao,
                          " onchange='js_pesquisaed328_db_estrutura(false);'")
               ?>
-              <?
+              <?php
                 db_input('db77_descr', 40, $Idb77_descr, true, 'text', 3, '');
                 db_input('ed328_sequencial', 40, $Idb77_descr, true, 'hidden', 3, '');
               ?>
@@ -120,7 +120,7 @@
               <?=@$Led328_ativo?>
             </td>
             <td>
-              <?
+              <?php
                 $aAtivo = array("f"=>"NAO", "t"=>"SIM");
                 db_select('ed328_ativo', $aAtivo, true, $db_opcao, "");
               ?>
@@ -131,7 +131,7 @@
               <?=@$Led328_arredondafrequencia?>
             </td>
             <td>
-              <?
+              <?php
                 $aArredonda = array("f"=>"NAO", "t"=>"SIM");
                 db_select('ed328_arredondafrequencia', $aArredonda, true, $db_opcao, " onchange='js_verificaArredondar();'");
               ?>
@@ -139,12 +139,12 @@
           </tr>
           <tr id="ctnRegraArredondamento" style="display: none">
             <td nowrap title="<?=@$Ted316_sequencial?>">
-              <?
+              <?php
                 db_ancora(@$Led316_sequencial, "js_pesquisaed316_regraarredondamento(true);", $db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ed316_sequencial', 10, $Ied316_sequencial, true, 'text',$db_opcao,
                          " onchange='js_pesquisaed316_regraarredondamento(false);'");
                 db_input('ed316_descricao', 40, $Ied316_descricao, true, 'text', 3, "");
@@ -156,7 +156,7 @@
               <?=@$Led328_ano?>
             </td>
             <td>
-              <?
+              <?php
                 $db_opcaoano = $db_opcao;
                 if ($db_opcao == 2) {
                   $db_opcaoano = 33;
@@ -169,7 +169,7 @@
             <td nowrap title="<?=@$Ted328_observacao?>" colspan="2">
               <fieldset>
                 <legend><b><?=@$Led328_observacao?></b></legend>
-                <?
+                <?php
                   db_textarea('ed328_observacao', 5, 74, $Ied328_observacao, true, 'text', $db_opcao, "");
                 ?>
               </fieldset>
@@ -327,7 +327,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_avaliacaoestruturafrequencia.hide();
-  <?
+  <?php
     if ($db_opcao != 1) {
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
@@ -346,7 +346,7 @@ function js_pesquisaregraarredondamento() {
 function js_preenchepesquisaregraarredondamento(chave) {
 
 	db_iframe_regraarredondamento.hide();
-  <?
+  <?php
     if ($db_opcao != 1) {
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

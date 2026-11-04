@@ -20,19 +20,19 @@
 class CanvasGraph extends Graph {
 //---------------
 // CONSTRUCTOR
-    function CanvasGraph($aWidth=300,$aHeight=200,$aCachedName="",$timeout=0,$inline=1) {
+    public function CanvasGraph($aWidth=300,$aHeight=200,$aCachedName="",$timeout=0,$inline=1) {
 	$this->Graph($aWidth,$aHeight,$aCachedName,$timeout,$inline);
     }
 
 //---------------
 // PUBLIC METHODS	
 
-    function InitFrame() {
+    public function InitFrame() {
 	$this->StrokePlotArea();
     }
 
     // Method description
-    function Stroke($aStrokeFileName="") {
+    public function Stroke($aStrokeFileName="") {
 	if( $this->texts != null ) {
 	    for($i=0; $i < count($this->texts); ++$i) {
 		$this->texts[$i]->Stroke($this->img);

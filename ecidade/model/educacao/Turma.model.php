@@ -152,6 +152,11 @@ class Turma
     const TURNO_TARDE = 2;
     const TURNO_NOITE = 3;
 
+    const TIPO_TURMA_NORMAL = 1;
+    const TIPO_TURMA_EJA= 2;
+    const TIPO_TURMA_MULTIETAPA = 3;
+    const TIPO_TURMA_CORRECAO_FLUXO = 7;
+
     /**
      * Tipo da Turma
      * @var integer
@@ -232,15 +237,18 @@ class Turma
             if (pg_num_rows($rsTurma) > 0) {
 
                 $oTurma = db_utils::fieldsMemory($rsTurma, 0);
+      
 
                 $this->iCodigo = $oTurma->ed57_i_codigo;
                 $this->sDescricao = $oTurma->ed57_c_descr;
                 $this->iBaseCurricular = $oTurma->ed57_i_base;
                 $this->mObservacao = $oTurma->ed57_t_obs;
                 $this->iTipoCalculoAulas = Turma::CH_PERIODO;
+
                 if (trim($oTurma->ed57_c_medfreq) == 'DIAS LETIVOS') {
                     $this->iTipoCalculoAulas = Turma::CH_DIA_LETIVO;
                 }
+
                 $this->oEscola = EscolaRepository::getEscolaByCodigo($oTurma->ed57_i_escola);
                 $this->oCalendario = CalendarioRepository::getCalendarioByCodigo($oTurma->ed57_i_calendario);
                 $this->oBase = BaseCurricularRepository::getBaseCurricularByCodigo($oTurma->ed57_i_base);
@@ -468,17 +476,17 @@ class Turma
             $sSqlDisciplina = $oDaoDisciplina->sqlRegencias(null, $sCampos, $sOrder, $sWhere);
 
             $rsDisciplina = db_query($sSqlDisciplina);
-
+            
             if (!is_resource($rsDisciplina)) {
-
+                
                 $oErro = new stdClass();
                 $oErro->sErro = pg_last_error();
-
+                
                 throw new DBException(_M(URL_MENSAGEM_TURMA . 'erro_buscar_regencias', $oErro));
             }
-
+            
             $iTotalLinhas = pg_num_rows($rsDisciplina);
-
+            
             for ($i = 0; $i < $iTotalLinhas; $i++) {
 
                 $oDadosDisciplina = db_utils::fieldsMemory($rsDisciplina, $i);
@@ -552,7 +560,7 @@ class Turma
      */
     public function getDisciplinasPorEtapa(Etapa $oEtapa)
     {
-        
+
         $aDisciplinas = $this->getDisciplinas();
         $aDisciplinasEtapa = [];
         foreach ($aDisciplinas as $oDisciplina) {
@@ -565,7 +573,7 @@ class Turma
 
         /**
      * Retorna as disciplinas de uma determinada etapa
-     
+
      * @return Regencia[] Retorna todas as regências da turma
      */
     public function getDisciplinasPorEtapas($oEtapa)
@@ -655,7 +663,6 @@ class Turma
      */
     public function getVagas($iTurnoReferente = null)
     {
-
         if (count($this->aNumeroVagas) == 0) {
 
             $sCamposTurmaTurnoReferente = "ed336_vagas, ed336_turnoreferente";

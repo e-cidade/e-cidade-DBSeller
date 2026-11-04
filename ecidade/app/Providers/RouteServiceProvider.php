@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
+/**
+ *
+ */
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -33,17 +36,28 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+        $this->mapUserAuthRoutes();
         $this->mapApiRoutes();
         $this->mapWebRoutes();
         $this->mapSIMRoutes();
         $this->mapConfiguracaoRoutes();
     }
 
+    protected function mapUserAuthRoutes()
+    {
+        Route::prefix('v4')->group(function () {
+            Route::post('login', 'App\Domain\Configuracao\Usuario\Controller\LoginController@authenticate');
+            Route::post('unblock', 'App\Domain\Configuracao\Usuario\Controller\LoginController@unblock');
+            Route::put('kill', 'App\Domain\Configuracao\Usuario\Controller\LoginController@kill');
+            Route::put('logout', 'App\Domain\Configuracao\Usuario\Controller\LoginController@logout')
+                ->middleware(['api', 'auth:api']);
+        });
+    }
+
     /**
      * Define the "web" routes for the application.
      *
      * These routes all receive session state, CSRF protection, etc.
-     *
      * @return void
      */
     protected function mapWebRoutes()

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("k67_descricao");
        <?=@$Lk66_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k66_sequencial',10,$Ik66_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -46,15 +46,15 @@ db_input('k66_sequencial',10,$Ik66_sequencial,true,'text',3,"")
 
   <tr>
     <td nowrap title="<?=@$Tk66_codbco?>">
-		   <?
+		   <?php
        db_ancora(@$Lk66_codbco,"js_pesquisak66_codbco(true);",$db_opcao);
 			 ?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('k66_codbco',10,$Ik66_codbco,true,'text',$db_opcao," onchange='js_pesquisak66_codbco(false);'")
     ?>
-    <?
+    <?php
       db_input('nomebco',50,'',true,'text',3,"")
     ?>
     </td>
@@ -62,15 +62,15 @@ db_input('k66_sequencial',10,$Ik66_sequencial,true,'text',3,"")
 
   <tr>
     <td nowrap title="<?=@$Tk66_bancoshistmovcategoria?>">
-       <?
+       <?php
        db_ancora(@$Lk66_bancoshistmovcategoria,"js_pesquisak66_bancoshistmovcategoria(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k66_bancoshistmovcategoria',10,$Ik66_bancoshistmovcategoria,true,'text',$db_opcao," onchange='js_pesquisak66_bancoshistmovcategoria(false);'")
 ?>
-       <?
+       <?php
 db_input('k67_descricao',50,$Ik67_descricao,true,'text',3,'')
        ?>
     </td>
@@ -80,7 +80,7 @@ db_input('k67_descricao',50,$Ik67_descricao,true,'text',3,'')
        <?=@$Lk66_historico?>
     </td>
     <td> 
-<?
+<?php
 db_input('k66_historico',10,$Ik66_historico,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,7 +90,7 @@ db_input('k66_historico',10,$Ik66_historico,true,'text',$db_opcao,"")
        <?=@$Lk66_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('k66_descricao',50,$Ik66_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -100,7 +100,7 @@ db_input('k66_descricao',50,$Ik66_descricao,true,'text',$db_opcao,"")
        <?=@$Lk66_vigencia?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k66_vigencia',@$k66_vigencia_dia,@$k66_vigencia_mes,@$k66_vigencia_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ db_inputdata('k66_vigencia',@$k66_vigencia_dia,@$k66_vigencia_mes,@$k66_vigencia
        <?=@$Lk66_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('k66_sigla',3,$Ik66_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -180,7 +180,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bancoshistmov.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

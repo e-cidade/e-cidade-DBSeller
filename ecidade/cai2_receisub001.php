@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ function js_emite(){
                 <strong>Ordenado por :&nbsp;&nbsp;</strong>
               </td>
                <td>
-	              <? 
+	              <?php 
 	                $tipo_ordenado = array("r"=>"Receita","t"=>"Taxa");
 	                db_select("ordenado",$tipo_ordenado,true,2); 
 					      ?>
@@ -115,7 +115,7 @@ function js_emite(){
     	</td></tr></table>
     </center>
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -146,7 +146,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

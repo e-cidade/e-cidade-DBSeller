@@ -161,7 +161,7 @@ $where = ["o55_anousu = {$ano}"];
                     $result = db_query($sSql);
 
                     if (pg_num_rows($result) > 0) {
-                        $dados = db_utils::fieldsMemory($result);
+                        $dados = db_utils::fieldsMemory($result,0);
                         echo "<script>" . $funcao_js . "('$dados->o55_descr',false, '$dados->db_ano', '$dados->db_produto');</script>";
                     } else {
                         echo "<script>" . $funcao_js . "('Chave(" . $pesquisa_chave . ") não Encontrado',true);</script>";
@@ -176,7 +176,7 @@ $where = ["o55_anousu = {$ano}"];
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -193,7 +193,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

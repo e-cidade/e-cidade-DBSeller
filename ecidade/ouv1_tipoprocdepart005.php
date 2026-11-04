@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js, strings.js");
   db_app::load("estilos.css");
 ?>
@@ -55,7 +55,7 @@
         <tr>
           <td align="center">
             <b>Opções;</b>
-            <?
+            <?php
               $aOpcaoLocais = array(0 => "Com os locais selecionados", 1 => "Sem os locais selecionados");
               db_select("iOpcaoLocal", $aOpcaoLocais, true, 1);
             ?>
@@ -63,7 +63,7 @@
         </tr>
         <tr>
           <td nowrap width="50%">
-            <?
+            <?php
               $oAuxLocal                              = new cl_arquivo_auxiliar();
               $oAuxLocal->cabecalho                   = "<strong>Locais Selecionados</strong>";
               $oAuxLocal->codigo                      = "ov25_sequencial";

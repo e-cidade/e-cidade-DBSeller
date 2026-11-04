@@ -618,9 +618,8 @@ DBViewLancamentoAtributoDinamico = function () {
       if(oItemValidacaoAtributo.id == oAtributo.iCodigoAtributo) {
         
         for (oValidacao of oItemValidacaoAtributo.aValidacoes) {
-          
-          switch (oValidacao.sTipo) {
             
+          switch (oValidacao.sTipo) {
             case "REQUIRED":
               if(typeof oAtributo.sValor == 'undefined' || oAtributo.sValor == null || oAtributo.sValor.trim() == '') {
 

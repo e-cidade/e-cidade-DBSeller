@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("cc01_estrutural");
           <?=@$Lcc01_sequencial?>
          </td>
          <td>
-           <?
+           <?php
 			db_input('cc01_sequencial',10,$Icc01_sequencial,true,'text',"3","")
 		   ?>
          </td>
@@ -48,7 +48,7 @@ $clrotulo->label("cc01_estrutural");
          <td nowrap>
          </td>
          <td>
-         <?
+         <?php
 
 		   $sWhere  = "cc09_anousu = ".db_getsession("DB_anousu");
 		   $sWhere .= " and "; 
@@ -89,7 +89,7 @@ $clrotulo->label("cc01_estrutural");
           <b> Analítica: </b>
         </td>
         <td>
-         <?
+         <?php
 
         if ( ($db_opcao == 22 or $db_opcao == 2) && ( isset($db_opcao) ) && isset($cc01_sequencial) ) {
         	
@@ -134,7 +134,7 @@ $clrotulo->label("cc01_estrutural");
          <b>Departamento: </b>
        </td>
        <td>
-          <?
+          <?php
             // retorna data da sessao formatada   
 	 		$dateSession      = date("Y-m-d",db_getsession('DB_datausu'));
 	 		$sSqlDepartamento = $cldb_depart->sql_query_file(null,"coddepto, descrdepto", null, "limite <= '$dateSession' or limite is null");
@@ -150,7 +150,7 @@ $clrotulo->label("cc01_estrutural");
          <b>Ident. da conta:</b>
        </td>
        <td>
-          <?
+          <?php
               
               /*
                * verifica se existe alguma descrição de conta associada a tabela custoplanotipoconta
@@ -194,7 +194,7 @@ $clrotulo->label("cc01_estrutural");
          <?=@$Lcc01_descricao?>
        </td>
        <td>
-         <?
+         <?php
            db_input('cc01_descricao',50,$Icc01_descricao,true,'text',$db_opcao,"")
          ?>
        </td>
@@ -204,7 +204,7 @@ $clrotulo->label("cc01_estrutural");
          <?=@$Lcc01_obs?>
        </td>
        <td>
-         <?
+         <?php
            db_textarea('cc01_obs',5,48,$Icc01_obs,true,'text',$db_opcao,"");
          ?>
        </td>
@@ -215,7 +215,7 @@ $clrotulo->label("cc01_estrutural");
      <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
         <?=($db_botao==false?"disabled":"")?>
         ><input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-        <?
+        <?php
         if ($db_opcao != 1) { 
           echo '<input name="novo" type="button" id="novo" value="novo" onclick="parent.location.href=\'cus1_planocustoaba001.php\'">';
         }
@@ -256,7 +256,7 @@ $clrotulo->label("cc01_estrutural");
 
         function js_preenchepesquisa(chave){
           db_iframe_custoplano.hide();
-          <?
+          <?php
           if($db_opcao!=1){
             echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
           }

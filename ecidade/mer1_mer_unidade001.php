@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,13 +57,13 @@ if (isset($incluir)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Inclusão de Unidades</b></legend>
-	<? include(modification("forms/db_frmmer_unidade.php"));?>
+	<?php include(modification("forms/db_frmmer_unidade.php"));?>
 	</fieldset>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -75,7 +75,7 @@ db_menu(db_getsession("DB_id_usuario"),
 <script>
 js_tabulacaoforms("form1","me15_c_descr",true,1,"me15_c_descr",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 	
   if ($clmer_unidade->erro_status=="0") {

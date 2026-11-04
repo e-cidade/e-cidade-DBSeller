@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,12 +95,12 @@ function js_emite(){
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tk60_codigo?>" >
-          <?
+          <?php
 	        db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao)
           ?>
         </td>
         <td>
-          <?
+          <?php
 	        db_input('k60_codigo',10,$Ik60_codigo,true,'text',$db_opcao,"onchange='js_pesquisalista(false);'");
             db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
           ?>
@@ -111,7 +111,7 @@ function js_emite(){
           Ordem:
         </td>
         <td>
-          <?
+          <?php
             $xx = array("v"=>"Valor", "a"=>"Alfabética","n"=>"Numérica");
             db_select('ordem',$xx,true,$db_opcao,"");
           ?>
@@ -122,7 +122,7 @@ function js_emite(){
           Agrupar por nome: 
         </td>
         <td>
-          <?
+          <?php
             $xx = array("n"=>"Nao", "s"=>"Sim");
             db_select('agrupar',$xx,true,$db_opcao,"");
           ?>
@@ -133,7 +133,7 @@ function js_emite(){
           Emitir com valor : 
         </td>
         <td>
-          <?
+          <?php
             $arraycomvalor = array("s"=>"Sim", "n"=>"Não");
             db_select('comvalor',$arraycomvalor,true,$db_opcao,"");
           ?>
@@ -144,7 +144,7 @@ function js_emite(){
           Tipo de Geracao:
         </td>
         <td>
-          <?
+          <?php
             $xx = array("p"=>"PDF", "t"=>"TXT");
             db_select('tipo',$xx,true,$db_opcao," onchange='js_filtro();' ");
           ?>
@@ -155,7 +155,7 @@ function js_emite(){
           Informações Adicionais:
         </td>
         <td>
-          <?
+          <?php
             $sn = array("s"=>"Sim", "n"=>"Não");
             db_select('filtro',$sn,true,$db_opcao,"");
           ?>
@@ -168,7 +168,7 @@ function js_emite(){
 </form>
   
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -211,7 +211,7 @@ function js_filtro(){
 	}
 }
 </script>
-<?
+<?php
   $func_iframe = new janela('db_iframe','');
   $func_iframe->posX=1;
   $func_iframe->posY=20;

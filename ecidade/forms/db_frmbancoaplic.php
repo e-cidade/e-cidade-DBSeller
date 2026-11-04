@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("k02_codigo");
        <?=@$Lk90_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_id',10,$Ik90_id,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk90_conta?>">
-       <?
+       <?php
        db_ancora(@$Lk90_conta,"js_pesquisak90_conta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_conta',10,$Ik90_conta,true,'text',$db_opcao," onchange='js_pesquisak90_conta(false);'");
 ?>
-<?
+<?php
 db_input('k13_descr',40,$Ik13_descr,true,'text',3,"");
 
 ?>
 
   <tr>
     <td nowrap title="<?=@$Tk02_codigo?>">   
-<?
+<?php
     db_ancora(@$Lk02_codigo,"js_pesquisatabrec(true);",$db_opcao);
 ?>
     </td>
     <td> 
-<?
+<?php
     db_input('k02_codigo',10,$Ik02_codigo,true,'text',$db_opcao," onchange='js_pesquisatabrec(false);'");
 ?>
-<?
+<?php
 db_input('k02_drecei',40,$Ik02_drecei,true,'text',3);
 /*
 coalesce é função para retornar 0 qdo for null
@@ -94,7 +94,7 @@ if(isset($k90_conta)){
        <?=@$Lk90_data?>
     </td>
     <td> 
-<?
+<?php
 if(!isset($k90_data)){  // fazer data - 1dia
   $k90_data_dia = date("d",db_getsession("DB_datausu"));
   $k90_data_mes = date("m",db_getsession("DB_datausu"));
@@ -111,7 +111,7 @@ db_inputdata('k90_data',@$k90_data_dia,@$k90_data_mes,@$k90_data_ano,true,'text'
        <b> <?='Saldo anterior:'?> </b>
     </td>
     <td>
-<?
+<?php
 db_input('sldantcp',17,'',true,'text',$db_opcao,"");
 ?>
     </td>
@@ -122,7 +122,7 @@ db_input('sldantcp',17,'',true,'text',$db_opcao,"");
        <?=@$Lk90_cpvlraplic?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_cpvlraplic',17,$Ik90_cpvlraplic,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ db_input('k90_cpvlraplic',17,$Ik90_cpvlraplic,true,'text',$db_opcao,"")
        <?=@$Lk90_cpvlrresg?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_cpvlrresg',17,$Ik90_cpvlrresg,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -142,7 +142,7 @@ db_input('k90_cpvlrresg',17,$Ik90_cpvlrresg,true,'text',$db_opcao,"")
        <?=@$Lk90_cpsldaplic?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_cpsldaplic',17,$Ik90_cpsldaplic,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -156,7 +156,7 @@ db_input('k90_cpsldaplic',17,$Ik90_cpsldaplic,true,'text',$db_opcao,"")
        <?=@$Lk90_pfsldaplicant?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_pfsldaplicant',17,$Ik90_pfsldaplicant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -166,7 +166,7 @@ db_input('k90_pfsldaplicant',17,$Ik90_pfsldaplicant,true,'text',$db_opcao,"")
        <?=@$Lk90_pfvlraplic?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_pfvlraplic',17,$Ik90_pfvlraplic,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -176,7 +176,7 @@ db_input('k90_pfvlraplic',17,$Ik90_pfvlraplic,true,'text',$db_opcao,"")
        <?=@$Lk90_pfvlrresg?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_pfvlrresg',17,$Ik90_pfvlrresg,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -186,7 +186,7 @@ db_input('k90_pfvlrresg',17,$Ik90_pfvlrresg,true,'text',$db_opcao,"")
        <?=@$Lk90_pfsldaplicf?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_pfsldaplicf',17,$Ik90_pfsldaplicf,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -198,7 +198,7 @@ db_input('k90_pfsldaplicf',17,$Ik90_pfsldaplicf,true,'text',$db_opcao,"")
      <b> <?='Juros do dia:'?> </b>
     </td>
     <td>
-<?
+<?php
 db_input('vlrjuros',17,'',true,'text',$db_opcao,"")
 ?>
     </td>
@@ -209,7 +209,7 @@ db_input('vlrjuros',17,'',true,'text',$db_opcao,"")
        <?=@$Lk90_vlrdisp?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_vlrdisp',17,$Ik90_vlrdisp,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -219,7 +219,7 @@ db_input('k90_vlrdisp',17,$Ik90_vlrdisp,true,'text',$db_opcao,"")
        <?=@$Lk90_sldtot?>
     </td>
     <td> 
-<?
+<?php
 db_input('k90_sldtot',17,$Ik90_sldtot,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -280,7 +280,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bancoaplic.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

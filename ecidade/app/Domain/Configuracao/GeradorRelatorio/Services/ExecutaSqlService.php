@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Domain\Configuracao\GeradorRelatorio\Services;
+
+use Illuminate\Support\Facades\DB;
+
+class ExecutaSqlService
+{
+    /**
+     * @throws \Exception
+     */
+    public function execute($sql, array $bindings = [])
+    {
+        if (\DBSqlValidador::sqlAlteraDadosOuEstrutura($sql)) {
+            throw new \Exception('Operação não permita. SQL possui comandos não permitidos!', 406);
+        }
+
+        return DB::select($sql, $bindings);
+    }
+}

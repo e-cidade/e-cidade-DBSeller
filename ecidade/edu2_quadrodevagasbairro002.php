@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,11 +25,14 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/pdfwebseller.php"));
-require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("libs/db_utils.php"));
+ require_once(modification("libs/db_stdlib.php"));
+ require_once(modification("std/db_stdClass.php"));
+ require_once(modification("libs/db_conecta.php"));
+ require_once(modification("libs/db_sessoes.php"));
+ require_once(modification("dbforms/db_funcoes.php"));
+ require_once(modification("libs/db_utils.php"));
 
-$oCalendario = CalendarioRepository::getCalendarioByCodigo($iCalendario[0]);
+$oCalendario = CalendarioRepository::getCalendarioByCodigo($iCalendario);
 
 if (!isset($iEscola)) {
     $iEscola = 0;
@@ -40,27 +43,17 @@ $aEtapas = array(0);
 $aEscola = array($oEscola);
 $aCalendario = array($oCalendario);
 
-$oEscola = EscolaRepository::getEscolaByCodigo($iEscola);
-
 $calendarios = explode(",", $iCalendario);
 
-if (!isset($calendario)) {
-    $calendario = "";
+if (!isset($iCalendario)) {
+    $iCalendario = "";
 }
 
-for ($def = 0, $defMax = count($calendarios); $def < $defMax; $def++) {
-    if ($def > 0) {
-        $calendario .= "','";
-    }
-    if ($calendarios[$def] != 999999) {
-        $calendario .= $calendarios[$def];
-    }
-}
-$calendarios = str_replace("999999','", "", $calendario);
+$calendarios = str_replace("999999','", "", $iCalendario);
 $bairros = str_replace("999999,", "", $iBairros);
 $sCampos = " Distinct ed18_i_codigo,ed52_i_codigo,ed18_codigoreferencia,ed18_c_nome";
 $sWhere = "  ed57_i_escola IN (SELECT ed18_i_codigo FROM escola WHERE ed18_i_bairro IN ($bairros))";
-$sWhere .= " AND ed52_c_descr  IN ('$calendarios') ";
+$sWhere .= " AND ed52_i_codigo  IN ($calendarios) ";
 $sWhere .= " AND ed11_i_codigo IN ($iEtapas) ";
 $sOrder = " ed18_codigoreferencia";
 
@@ -86,7 +79,7 @@ if ($rs && pg_num_rows($rs) > 0) {
 $aEtapas = array();
 $sCampos = " distinct ed11_i_codigo";
 $sWhere = "    ed57_i_escola IN (SELECT ed18_i_codigo FROM escola WHERE ed18_i_bairro IN ($bairros))";
-$sWhere .= " AND ed52_c_descr IN ('$calendarios') ";
+$sWhere .= " AND ed52_i_codigo IN ($calendarios) ";
 $sWhere .= " AND ed11_i_codigo IN ($iEtapas) ";
 
 $oDaoTurma = new cl_turma();
@@ -119,12 +112,13 @@ $cBairros = explode(",", $bairros);
 $numBairrosSel = count($cBairros);
 
 $sqlBairrosTotal = "SELECT count(distinct(ed18_i_bairro))
-			   FROM escola
+			               FROM escola
                      INNER JOIN bairro ON ed18_i_bairro = j13_codi
                      INNER JOIN turma ON ed57_i_escola = ed18_i_codigo
                      INNER JOIN calendario ON  ed57_i_calendario = ed52_i_codigo
                           WHERE ed52_i_ano = " . db_getsession("DB_anousu") . "
                             AND j13_codi NOT IN (0)";
+
 $numBairrosTotal = pg_result(db_query($sqlBairrosTotal), 0);
 if (($numBairrosTotal) == $numBairrosSel) {
     $nBairros = "TODOS";

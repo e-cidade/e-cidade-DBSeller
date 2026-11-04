@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,7 +53,7 @@ $oDaoPrescricaolista= new cl_prescricaolista;
 
 //db_postmemory($HTTP_SERVER_VARS,2);
 //db_postmemory($HTTP_POST_VARS,2);
-//exit; 
+//exit;
 //arreprescr k30_anulado is false
 //prescricao and prescricao.k31_situacao = 1
 
@@ -116,30 +116,30 @@ if($prescrnoti=="n"){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0"
 	marginheight="0">
 <table width="100%" height="" border="0" align="center" cellspacing="0"	bgcolor="#CCCCCC">
-	<? include(modification("forms/db_frmprescrevedebitosalt.php")); ?>
+	<?php include(modification("forms/db_frmprescrevedebitosalt.php")); ?>
 </table>
-	<?
+	<?php
 	// se clicou em processar
 	$datadeb="";
 	if(isset($processar) && $processar != ''){
-	  
+
 	  if(isset($geral) && $geral == 't'){
-	    
+
 	    if(isset($lista) && $lista != ''){
-	      
+
 	      // verificar arretipo e lista
 	      $sqllista = "select * from listatipos
-					inner join arretipo on k00_tipo = k62_tipodeb 
-					where k62_lista = $lista and k03_tipo <> 5"; 
+					inner join arretipo on k00_tipo = k62_tipodeb
+					where k62_lista = $lista and k03_tipo <> 5";
 	      $resultlista =  db_query($sqllista);
 	      $linhaslista = pg_num_rows($resultlista);
 
 	      $sqlVerificaLista = " select	distinct
-									                    listadeb.k61_codigo, 
-									                    listadeb.k61_numpre, 
-									                    listadeb.k61_numpar, 
-									                    certter.v14_parcel, 
-									                    termo.v07_parcel, 
+									                    listadeb.k61_codigo,
+									                    listadeb.k61_numpre,
+									                    listadeb.k61_numpar,
+									                    certter.v14_parcel,
+									                    termo.v07_parcel,
 									                    notidebitos.k53_numpre,
                                       certdiv.v14_certid,
                                       arrecad.k00_tipo,
@@ -156,7 +156,7 @@ if($prescrnoti=="n"){
                                and listadeb.k61_numpar      = divida.v01_numpar
 															 and divida.v01_instit        = ".db_getsession('DB_instit')."
       left  join certdiv        on certdiv.v14_coddiv       = divida.v01_coddiv
-      inner join arrecad        on listadeb.k61_numpre      = arrecad.k00_numpre 
+      inner join arrecad        on listadeb.k61_numpre      = arrecad.k00_numpre
                                and listadeb.k61_numpar      = arrecad.k00_numpar
       inner join arretipo       on arretipo.k00_tipo        = arrecad.k00_tipo
     --  left  join arrenumcgm     on arrenumcgm.k00_numpre  = arrecad.k00_numpre
@@ -168,7 +168,7 @@ if($prescrnoti=="n"){
       left  join certter        on certter.v14_parcel       = termo.v07_parcel
       left  join notidebitos    on notidebitos.k53_numpre   = listadeb.k61_numpre
                                and notidebitos.k53_numpar   = listadeb.k61_numpar
-      where k61_codigo = $lista 
+      where k61_codigo = $lista
 			";
 			//die($sqlVerificaLista);
 	      /*
@@ -180,7 +180,7 @@ if($prescrnoti=="n"){
 	      //die($sqlVerificaLista);
 
 	      // Aqui tu verifica as inconsistencias...
-	      //... and k03_tipo <> 5 
+	      //... and k03_tipo <> 5
 
 	      //die($sqlVerificaLista);
 
@@ -199,7 +199,7 @@ if($prescrnoti=="n"){
 		         <script>
 		           if(confirm('Deseja emitir relatório com os débitos da lista que não podem ser prescritos?')){
 		             js_OpenJanelaIframe('','db_iframe_relatorio','cai4_prescrevedebitosgeral002.php?lista=$lista','',false);
-			       } 
+			       }
 		         </script>
                 ";
 	          // gerar PDF
@@ -226,7 +226,7 @@ if($prescrnoti=="n"){
 	                exit;
 
 	              }else if(isset($k53_numpre) && $k53_numpre != '' ){
-	                
+
 	                if (isset($prescrnoti)&&$prescrnoti=="n"){
 	                  $chaves1 .= $sustenido1.$k61_numpre.'-'.$k61_numpar;
 	                  $sustenido1 = 'XVX';
@@ -260,28 +260,28 @@ if($prescrnoti=="n"){
 		if(isset($chaves1)){
 			db_putsession('chaves1', $chaves1);
 		}
-	
+
 	  $sqlerro = false;
-	  
+
 	  if ($chaves==""){
 	    db_msgbox("Processamendo concluido!!Nenhum registro prescrito!!");
 	    if (isset($prescrnoti)&&$prescrnoti=="n"&&$chaves1!=""){
-        
+
 				echo "
 		      <script>
 		      jan = window.open('div2_debnoti.php?lista=$lista&datadeb=$datadeb','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
 		      </script>
      	 ";
-				
-			
+
+
 	    }
 	    echo "<script>js_volta();</script>";
 	    exit;
 
 	  }
-	  
+
 	  db_inicio_transacao();
-	  
+
     $clprescricao->k31_instit  = db_getsession("DB_instit");
 	  $clprescricao->k31_hora    = db_hora();
 	  $clprescricao->k31_data    = date("Y-m-d",db_getsession("DB_datausu"));
@@ -289,25 +289,25 @@ if($prescrnoti=="n"){
     $clprescricao->k31_obs     = " ".@$k31_obs;
     $clprescricao->k31_situacao= 1;
 	  $clprescricao->incluir( null );
-	  
+
 	  if( $clprescricao->erro_status == 0){
 	    $sqlerro = true;
 	    $erromsg = "prescricao - ".$clprescricao->erro_msg;
 	  }
-	  
+
 	  if ( isset($lista) && trim($lista) != '' ) {
-	    
+
       $oDaoPrescricaolista->k122_lista      = $lista;
-      $oDaoPrescricaolista->k122_prescricao = $clprescricao->k31_codigo; 
+      $oDaoPrescricaolista->k122_prescricao = $clprescricao->k31_codigo;
   	  $oDaoPrescricaolista->incluir( null );
-  	  
+
       if( $oDaoPrescricaolista->erro_status == 0){
         $sqlerro = true;
         $erromsg = "prescricaolista - ".$oDaoPrescricaolista->erro_msg;
       }
 	  }
-	  
-	  $numpres = split('#',$chaves);
+
+	  $numpres =explode('#',$chaves);
 	  $numrows = count($numpres);
 	  $i = 0;
 
@@ -319,7 +319,7 @@ if($prescrnoti=="n"){
 
 	      $i++;
 
-	      list ($k00_numpre,$k00_numpar) = split('-',$nv);
+	      list ($k00_numpre,$k00_numpar) =explode('-',$nv);
 
 	      if ($sqlerro == false) {
 	        $result_deb = debitos_numpre($k00_numpre,0,null,db_getsession("DB_datausu"),db_getsession("DB_anousu"),$k00_numpar);
@@ -438,7 +438,7 @@ function js_mostraruas(mostra){
     db_iframe.show();
     db_iframe.focus();
   }else{
-    db_iframe.jan.location.href = 'func_ruas.php?pesquisa_chave='+document.form2.j14_codigo.value+'&funcao_js=parent.js_preencheruas';	
+    db_iframe.jan.location.href = 'func_ruas.php?pesquisa_chave='+document.form2.j14_codigo.value+'&funcao_js=parent.js_preencheruas';
   }
 }
 function js_preencheruas(chave,chave1){

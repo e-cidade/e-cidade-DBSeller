@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("fa29_i_codigo");
        <?=@$Lfa33_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa33_i_codigo',10,$Ifa33_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa33_i_medanvisa?>">
-       <?
+       <?php
        db_ancora(@$Lfa33_i_medanvisa,"js_pesquisafa33_i_medanvisa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa33_i_medanvisa',10,$Ifa33_i_medanvisa,true,'text',$db_opcao," onchange='js_pesquisafa33_i_medanvisa(false);'")
 ?>
-       <?
+       <?php
 db_input('fa14_c_medanvisa',40,@$Ifa14_c_medanvisa,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa33_i_formafarmaceutica?>">
-       <?
+       <?php
        db_ancora(@$Lfa33_i_formafarmaceutica,"js_pesquisafa33_i_formafarmaceutica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa33_i_formafarmaceutica',10,$Ifa33_i_formafarmaceutica,true,'text',$db_opcao," onchange='js_pesquisafa33_i_formafarmaceutica(false);'")
 ?>
-       <?
+       <?php
 db_input('fa29_c_forma',40,@$Ifa29_c_forma,true,'text',3,'')
        ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_formafarmaceuticamed.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

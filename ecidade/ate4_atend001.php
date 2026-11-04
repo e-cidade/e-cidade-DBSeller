@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -209,7 +209,7 @@ function js_submit(){
 <br><br>
   <table  align="center">
     <form name="form1" method="post" action="">
-    <?
+    <?php
     $result_clientes = $clclientes->sql_record($clclientes->sql_query_file(null,"at01_codcli,at01_nomecli","at01_nomecli"," at01_ativo is true"));
    	db_input("at02_codatend",10,$Iat02_codatend,true,"hidden",3);
    	db_input("at11_origematend",10,$Iat11_origematend,true,"hidden",3);
@@ -219,7 +219,7 @@ function js_submit(){
       <tr>
       <td ><b>Cliente:</b></td>
          <td >
-         <?
+         <?php
 //         db_selectrecord("cliente",$result_clientes,true,1,"onblur='js_submit();'");
 	       db_selectrecord("cliente",$result_clientes,true,1,"");
          ?>
@@ -227,7 +227,7 @@ function js_submit(){
 
       </tr>
 
-      <?
+      <?php
       if (!isset($cliente)||$cliente==""){
            if($clclientes->numrows>0){
            		db_fieldsmemory($result_clientes,0);
@@ -238,27 +238,27 @@ function js_submit(){
       	echo "<script>document.form1.cliente.value=$cliente</script>";
       ?>
       <tr>
-    	<td  align="left" nowrap><b><?db_ancora('Usuário:',"js_pesquisa_usuario(true);",1);?></b></td>
+    	<td  align="left" nowrap><b><?php db_ancora('Usuário:',"js_pesquisa_usuario(true);",1);?></b></td>
     	<td align="left" nowrap>
-      	<?
+      	<?php
       	db_input("usuario",10,$Iat10_usuario,true,"text",4,"onchange='js_pesquisa_usuario(false);'");
       	db_input("nome",40,$Inome,true,"text",3);
         ?>
         </td>
   	  </tr>
       <tr>
-    	<td  align="left" nowrap><b><?db_ancora('Técnico:',"js_pesquisa_tecnico(true);",1);?></b></td>
+    	<td  align="left" nowrap><b><?php db_ancora('Técnico:',"js_pesquisa_tecnico(true);",1);?></b></td>
     	<td align="left" nowrap>
-      	<?
+      	<?php
       	db_input("tecnico",10,"",true,"text",4,"onchange='js_pesquisa_tecnico(false);'");
       	db_input("nome_tecnico",40,"",true,"text",3);
         ?>
         </td>
   	  </tr>
       <tr>
-    	<td  align="left" nowrap><b><?db_ancora('Módulo:',"js_pesquisa_modulo(true);",1);?></b></td>
+    	<td  align="left" nowrap><b><?php db_ancora('Módulo:',"js_pesquisa_modulo(true);",1);?></b></td>
     	<td align="left" nowrap>
-      	<?
+      	<?php
       	db_input("at08_modulo",10,"",true,"text",4,"onchange='js_pesquisa_modulo(false);'");
       	db_input("nome_modulo",40,"",true,"text",3);
         ?>
@@ -269,7 +269,7 @@ function js_submit(){
     	   <?=$Lat04_codtipo?>
     	</td>
 		<td>
-		<?
+		<?php
 		  $result = $cltipoatend->sql_record($cltipoatend->sql_query(null,"*",null,"at04_codtipo >= 100"));
 		  db_selectrecord("at04_codtipo",$result,false,1);
 		?>
@@ -286,7 +286,7 @@ function js_submit(){
     	   <?=$Lat16_situacao?>
     	</td>
 		<td>
-		<?
+		<?php
 		  $result = $clatendimentocadsituacao->sql_record($clatendimentocadsituacao->sql_query(null,"*",null,""));
 		  db_selectrecord("at16_situacao",$result,false,1);
 		?>
@@ -303,7 +303,7 @@ function js_submit(){
     	   <?=$Lat02_observacao?>
     	</td>
 		<td>
-		<?
+		<?php
 		  db_textarea('at02_observacao', 10, 50, $Iat02_observacao, true, 'text', 1, "");
 		?>
 		</td>
@@ -312,7 +312,7 @@ function js_submit(){
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-      <?
+      <?php
       }
       ?>
       <tr>
@@ -325,27 +325,27 @@ function js_submit(){
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-      <?
+      <?php
       if (isset($certo)&&$certo==true){
 	  ?>
       	<tr>
         	<td colspan=2 align=center>
-            <h1>Atendimento Nº <?=$clatendimento->at02_codatend?><? if(isset($at11_origematend)&&$at11_origematend!="") { echo "  Atend. Inicial Nº ".$at11_origematend; } if(isset($at05_seq)&&$at05_seq!="") { echo "  Andamento Nº ".$at05_seq; } if(isset($at40_sequencial)&&$at40_sequencial!="") { echo "  Tarefa Nº ".$at40_sequencial; } ?></h1>
+            <h1>Atendimento Nº <?=$clatendimento->at02_codatend?><?php if(isset($at11_origematend)&&$at11_origematend!="") { echo "  Atend. Inicial Nº ".$at11_origematend; } if(isset($at05_seq)&&$at05_seq!="") { echo "  Andamento Nº ".$at05_seq; } if(isset($at40_sequencial)&&$at40_sequencial!="") { echo "  Tarefa Nº ".$at40_sequencial; } ?></h1>
           	</td>
       	</tr>
-	   <?
+	   <?php
         $codatend=$clatendimento->at02_codatend;
        ?>
        <tr>
          <td align = center><input type='button' name='reset' value='Voltar' onclick="location.href='ate4_atend001.php';" >&nbsp;</td>
          <td align = center><input type='button' name='processa' value='Incluir Andamento' onclick="location.href='ate4_atend002.php?chavepesquisa=<?=$codatend?>';" >&nbsp;</td>
       </tr>
-       <?
+       <?php
       }
       ?>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

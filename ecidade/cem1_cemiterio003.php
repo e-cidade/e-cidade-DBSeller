@@ -147,12 +147,12 @@ if(isset($excluir)){
       ?>
   </div>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clcemiterio->erro_status=="0"){
     $clcemiterio->erro(true,false);

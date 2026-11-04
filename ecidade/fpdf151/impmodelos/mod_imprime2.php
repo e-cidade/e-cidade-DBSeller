@@ -1,4 +1,6 @@
-<?
+<?php
+
+use App\Domain\Tributario\Arrecadacao\Repositories\RecibobarpixRepository;
 
 //// RECIBO
 $this->objpdf->AliasNbPages();
@@ -16,7 +18,6 @@ for ($i = 0;$i < 2;$i++){
   $this->objpdf->setfillcolor(245);
   $this->objpdf->roundedrect($xcol-2,$xlin-18,206,144.5,2,'DF','1234');
   $this->objpdf->setfillcolor(255,255,255);
-  //    $this->objpdf->roundedrect(10,07,190,183,2,'DF','1234');
   $this->objpdf->Setfont('Arial','B',11);
   $this->objpdf->text(150,$xlin-13,'RECIBO VÁLIDO ATÉ: ');
   $this->objpdf->text(159,$xlin-8,$this->dtvenc);
@@ -32,14 +33,28 @@ for ($i = 0;$i < 2;$i++){
   $this->objpdf->Image('imagens/files/'.$this->logo,15,$xlin-17,12);
   $this->objpdf->Setfont('Arial','B',9);
   $this->objpdf->text(40,$xlin-15,$this->prefeitura);
-  $this->objpdf->Setfont('Arial','',9);  
-  $this->objpdf->text(40,$xlin-11,$this->enderpref);
+  $this->objpdf->Setfont('Arial','',9);
+
+  $endereco = trim($this->enderpref);
+
+  if(isset($this->numeropref) && !empty($this->numeropref)){
+    $endereco .= ", " . $this->numeropref;
+  }
+
+  if(isset($this->db_compl) && !empty($this->db_compl)){
+    $endereco .= ", " . $this->db_compl;
+  }
+
+  if(isset($this->db_bairro) && !empty($this->db_bairro)){
+    $endereco .= " /" . $this->db_bairro;
+  }
+
+  $this->objpdf->text(40,$xlin-11,$endereco);
   $this->objpdf->text(40,$xlin-8,$this->municpref);
   $this->objpdf->text(40,$xlin-5,$this->telefpref);
   $this->objpdf->text($xcol+60,$xlin-5,"CNPJ: ");
   $this->objpdf->text($xcol+70,$xlin-5,db_formatar($this->cgcpref,'cnpj')); 
   $this->objpdf->text(40,$xlin-2,$this->emailpref);
-  //    $this->objpdf->setfillcolor(245);
   
   $this->objpdf->Roundedrect($xcol,$xlin+2,$xcol+119,20,2,'DF','1234');
   $this->objpdf->Setfont('Arial','',6);
@@ -124,13 +139,32 @@ for ($i = 0;$i < 2;$i++){
        $this->totalrec  += pg_result($this->recorddadospagto,$ii,$this->valor);
     }
   }
-  $this->objpdf->Roundedrect($xcol,$xlin+71,176,30,2,'DF','1234');
-  $this->objpdf->SetY($xlin+72);
-  $this->objpdf->SetX($xcol+3);
- 
-  $this->objpdf->Setfont('Arial','',5);
-  $this->objpdf->multicell(150,2,'HISTÓRICO :   '.$this->historico);
-  $this->objpdf->SetX($xcol+3);
+
+  $pixRepository = new RecibobarpixRepository();
+  $pix = $pixRepository->getByCodBar($this->codigobarras);
+
+  if ($pix) {
+      $imagemPng = "tmp/pix_arrecadacao_{$this->numpre}" . time() . ".png";
+      $url = $pix->k00_qrcode;
+      \PHPQRCode\QRcode::png($url, $imagemPng, 'L', 4, 2);
+      $this->objpdf->rect(151, $yy + 47.5, 29, 29, 'D');
+      $this->objpdf->Image($imagemPng, 151, $yy + 47.5, 29);
+
+      $this->objpdf->Roundedrect($xcol,$xlin+71,146,30,2,'DF','1234');
+      $this->objpdf->SetY($xlin+72);
+      $this->objpdf->SetX($xcol+3);
+      $this->objpdf->Setfont('Arial','',6);
+      $this->objpdf->multicell(140,2,'HISTÓRICO :   '. substr($this->historico, 0, 1599));
+      $this->objpdf->SetX($xcol+3);
+  } else {
+    $this->objpdf->Roundedrect($xcol,$xlin+71,176,30,2,'DF','1234');
+    $this->objpdf->SetY($xlin+72);
+    $this->objpdf->SetX($xcol+3);
+    $this->objpdf->Setfont('Arial','',6);
+    $this->objpdf->multicell(170,2,'HISTÓRICO :   '. substr($this->historico, 0, 1947));
+    $this->objpdf->SetX($xcol+3);
+  }
+
   //dados do desconto
 
   $this->objpdf->Roundedrect(181,$xlin+71,25,9,2,'DF','1234');
@@ -169,7 +203,6 @@ for ($i = 0;$i < 2;$i++){
   $this->objpdf->setxy(181,$xlin+92);
   $this->objpdf->cell(25,9,$totalacres,0,0,"R");
 
-
   $this->objpdf->setx(15);
  
    ///Totais
@@ -198,7 +231,6 @@ for ($i = 0;$i < 2;$i++){
   $this->objpdf->setfillcolor(0,0,0);
   $this->objpdf->SetFont('Arial','',4);
   $this->objpdf->TextWithDirection(1.5,$xlin+60,$this->texto,'U'); // texto no canhoto do carne
-  //    $this->objpdf->TextWithDirection(1.5,$xlin+60,$this->texto . ' - ' . ($i == 1?'2ª VIA - CONTRIBUINTE':'1ª VIA - PREFEITURA'),'U'); // texto no canhoto do carne
   $this->objpdf->setfont('Arial','',11);
   $this->objpdf->text(10,$xlin+108,@$this->linhadigitavel);
   
@@ -209,10 +241,7 @@ for ($i = 0;$i < 2;$i++){
   
 }
 
-
-
-if ($this->loteamento == true) {
-  
+if ($this->loteamento == true) { 
   
   $sqlrecibo =  "
   select 
@@ -375,7 +404,6 @@ if ($this->loteamento == true) {
       $this->objpdf->cell(22,$alt,"VLR LANCADO",0,0,"R",0);
       $this->objpdf->cell(18,$alt,"VLR MULTA",0,0,"R",0);
       $this->objpdf->cell(18,$alt,"VLR JUROS",0,0,"R",0);
-      //      $this->objpdf->cell(15,$alt,"DESC VLR",0,0,"R",0);
       $this->objpdf->cell(22,$alt,"VLR DESCONTO",0,0,"R",0);
       $this->objpdf->cell(22,$alt,"VLR A PAGAR",0,0,"R",0);
       $this->objpdf->Ln();
@@ -404,8 +432,7 @@ if ($this->loteamento == true) {
     $totvlrdesconto += $vlrdesconto;
     $totapagar      += ($vlrtotal - $vlrdesconto);
     
-    $this->objpdf->ln();
-    
+    $this->objpdf->ln();    
   }
   
   $this->objpdf->cell(88, 5, "TOTAL DE MATRICULAS: " . pg_numrows($resultrecibo) , 0, 0, 'L');
@@ -416,6 +443,5 @@ if ($this->loteamento == true) {
   $this->objpdf->cell(22, 5, db_formatar($totapagar, "f", ' ', 20) , 0, 0, 'R');
   
 }
-
 
 ?>

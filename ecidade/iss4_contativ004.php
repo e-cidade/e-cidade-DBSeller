@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -119,7 +119,7 @@ input {
 	    <th class="borda" align="center" style="font-size:12px" nowrap>Classe</th>
             <th class="borda" align="left" style="font-size:12px" nowrap>Descrição</th>
         </tr>
-	  <?
+	  <?php
 	    $cor = '#E4F471';
         for($i = 0;$i < $numrows;$i++) {
               db_fieldsmemory($result,$i);
@@ -137,7 +137,7 @@ input {
             <td height="20px" class="borda" style="font-size:11px" align="center" nowrap><?=$q12_classe?></td>
 	    <td height="20px" class="borda" style="font-size:11px" align="left" nowrap><?=$q12_descr?></td>
           </tr>
-	  <?
+	  <?php
        }
 	  ?>
         </table>   

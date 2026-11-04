@@ -24,15 +24,21 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-include_once(modification('libs/db_stdlib.php'));
-include_once(modification('libs/db_utils.php'));
-include_once(modification('libs/db_conecta.php'));
-include_once(modification('libs/db_sessoes.php'));
-include_once(modification('libs/db_usuariosonline.php'));
-include_once(modification('libs/db_liborcamento.php'));
-include_once(modification('libs/db_libcontabilidade.php'));
-include_once(modification('dbforms/db_funcoes.php'));
-include_once(modification('model/relatorioContabil.model.php'));
+require_once(modification('libs/db_stdlib.php'));
+require_once(modification('libs/db_utils.php'));
+require_once(modification('libs/db_conecta.php'));
+require_once(modification('libs/db_sessoes.php'));
+require_once(modification('libs/db_usuariosonline.php'));
+require_once(modification('libs/db_liborcamento.php'));
+require_once(modification('libs/db_libcontabilidade.php'));
+require_once(modification('dbforms/db_funcoes.php'));
+require_once(modification('model/relatorioContabil.model.php'));
+
+$app = require_once ECIDADE_PATH . 'bootstrap/app.php';
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
 
 use ECidade\Financeiro\Contabilidade\Relatorio\RREO\Factory\AnexoXIII as FactoryAnexo;
 use ECidade\Financeiro\Contabilidade\Relatorio\RREO\Factory\Layout\AnexoXIII as FactoryLayout;

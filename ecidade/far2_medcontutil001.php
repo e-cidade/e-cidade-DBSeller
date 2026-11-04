@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,12 +62,12 @@ $oRotulo->label("fa06_i_matersaude");
     <table width='100%' border="0" >
        <tr> 
          <td align="right">
-           <?
+           <?php
            db_ancora(@$Lfa06_i_matersaude, "js_pesquisafa01_i_medicamento(true);", '');
            ?>
          </td>
          <td>
-           <?
+           <?php
            db_input('fa01_i_codigo', 10, @$Ifa01_i_codigo, true, 'text', 1,
                     " onchange='js_pesquisafa01_i_medicamento(false);'"
                    );
@@ -93,7 +93,7 @@ $oRotulo->label("fa06_i_matersaude");
            <b>Idade:</b>
          </td>
          <td>
-           <?
+           <?php
            db_input('idade_inicio', 3, "", true, 'text', 1);
            echo' <b>Até</b> ';
            db_input('idade_fim', 3, "", true, 'text', 1);
@@ -105,7 +105,7 @@ $oRotulo->label("fa06_i_matersaude");
            <b>Dispensação:</b>
          </td>
          <td>
-           <?
+           <?php
            $aDisp = array("1" => "PENDENTE", "2" => "NÃO CONSTA");
            db_select('iDispensacao', $aDisp, true, ""); 
            ?>
@@ -116,7 +116,7 @@ $oRotulo->label("fa06_i_matersaude");
            <b>Tratamento sem movimentação:</b>
          </td>
          <td>
-           <?
+           <?php
            $aX = array('1' => 'Apresentar junto com os outros', '2' => 'Não apresente os pacientes', 
                        '3' => 'Apresentar somente os sem movimentação'
                       );
@@ -130,7 +130,7 @@ $oRotulo->label("fa06_i_matersaude");
   <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_mandadados();" >
  </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
         db_getsession("DB_anousu"), db_getsession("DB_instit")
        );

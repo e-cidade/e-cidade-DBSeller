@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ if(isset($chavepesquisa)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmlevvalorpgtos.php"));
 	?>
     </center>
@@ -68,7 +68,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cllevvalorpgtos->erro_status=="0"){
     $cllevvalorpgtos->erro(true,false);

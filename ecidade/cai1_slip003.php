@@ -155,8 +155,11 @@ try {
 
     $recursoSlip = null;
     if (FONTE_RECURSO_UNIAO) {
-
-        $sqlRecursoSlip = "select * from sliprecursocontas inner join orctiporec on o15_codigo = k181_recursocredito where k181_slip in ( {$numslip} )";
+        $exercicio = db_getsession('DB_anousu');
+        $sqlRecursoSlip = "select * from sliprecursocontas
+                                inner join orctiporec on o15_codigo = k181_recursocredito
+                                inner join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$exercicio}
+                                where k181_slip in ( {$numslip} )";
         $rsRecursoSlip = db_query($sqlRecursoSlip);
         if (pg_num_rows($rsRecursoSlip) > 0) {
             $recursoSlip = db_utils::fieldsMemory($rsRecursoSlip, 0);

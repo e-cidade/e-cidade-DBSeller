@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -55,8 +55,8 @@ db_postmemory($HTTP_POST_VARS);
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
 function js_emite(){
-  if (document.form1.e60_numcgm.value!=''){
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?pesquisa_chave='+document.form1.e60_numcgm.value+'&funcao_js=parent.js_mostracgmtesta','Pesquisa',false);
+  if (document.form1.e60_numcgm.value != '' && document.form1.e60_codemp.value === '') {
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empconsulta002','emp1_empconsulta002.php?z01_numcgm='+document.form1.e60_numcgm.value+'&funcao_js=parent.preencheEmpenho|e60_numemp|e60_codemp','Pesquisa',true);
   }else if(document.form1.e60_codemp.value!=''){
     codemp = document.form1.e60_codemp.value ;
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empconsulta002','emp1_empconsulta002.php?e60_codemp='+codemp+'&funcao_js=parent.js_mostracodemp|e60_numemp','Pesquisa',true);
@@ -69,15 +69,23 @@ function js_mostracgmtesta(erro,chave){
     document.form1.e60_numcgm.focus();
     document.form1.e60_numcgm.value ='';
   }else{
-    <? if (isset($vLiquida) && ($vLiquida==true))
+    <?php if (isset($vLiquida) && ($vLiquida==true))
          echo "location.href='emp1_ordemcompra_liquida002.php?vLiquida=true&e60_numcgm='+document.form1.e60_numcgm.value;";
        else
          echo "location.href='emp4_ordemCompra002.php?e60_numcgm='+document.form1.e60_numcgm.value;";
     ?>
   }
 }
+function preencheEmpenho(numeroEmpenho, seqEmpenho) {
+    document.form1.e60_codemp.value = seqEmpenho;
+    document.form1.e60_numemp.value = numeroEmpenho;
+    document.form1.e60_numcgm.value = '';
+    document.form1.z01_nome.value = '';
+    db_iframe_empconsulta002.hide();
+}
+
 function js_mostracodemp(chave){
-   <? if (isset($vLiquida) && ($vLiquida==true))
+   <?php if (isset($vLiquida) && ($vLiquida==true))
         echo "location.href='emp1_ordemcompra_liquida002.php?vLiquida=true&e60_numemp='+chave;";
       else
         echo "document.form1.e60_codemp.value = '';";
@@ -91,7 +99,7 @@ function js_mostraempempenhotesta(chave,erro){
     document.form1.e60_numemp.value = '';
     document.form1.e60_numemp.focus();
   }else{
-    <? if (isset($vLiquida) && ($vLiquida==true))
+    <?php if (isset($vLiquida) && ($vLiquida==true))
          echo "location.href='emp1_ordemcompra_liquida002.php?vLiquida=true&e60_numemp='+document.form1.e60_numemp.value;";
        else
          echo "location.href='emp4_ordemCompra002.php?e60_numemp='+document.form1.e60_numemp.value;";
@@ -100,7 +108,7 @@ function js_mostraempempenhotesta(chave,erro){
 }
 
 function js_limpa(){
-   <? if (isset($vLiquida) && ($vLiquida==true))
+   <?php if (isset($vLiquida) && ($vLiquida==true))
         echo "location.href='con4_ordemcompra001.php';";
       else
         echo "location.href='emp4_ordemCompra001.php';";
@@ -126,7 +134,7 @@ function js_limpa(){
   <fieldset><legend><b>Empenho/CGM</b></legend>
   <table>
 
- <? if (isset($vLiquida) && $vLiquida==true){ ?>
+ <?php if (isset($vLiquida) && $vLiquida==true){ ?>
 
   <tr>
     <td align="left" nowrap colspan=2><b><font size=+1>Ordem de Compra/Liquidação</font></b></td>
@@ -134,30 +142,30 @@ function js_limpa(){
 
 
 
- <?  }  ?>
+ <?php  }  ?>
   <tr>
-    <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?php db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
+      <?php db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
          db_input("z01_nome",40,"$Iz01_nome",true,"text",3);
         ?></td>
   </tr>
 
   <tr>
 	<td nowrap title="<?=@$Te60_codemp?>">
-	   <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
+	   <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
 	</td>
 	<td>
-	   <? db_input('e60_codemp',15,$Ie60_codemp,true,'text',1,"onchange=js_pesquisae60_codemp(false);")  ?>
+	   <?php db_input('e60_codemp',15,$Ie60_codemp,true,'text',1) ?>
 	</td>
       </tr>
 
       <tr>
 	<td nowrap title="<?=@$Te60_numemp?>">
-	   <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
+	   <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
 	</td>
 	<td>
-	   <? db_input('e60_numemp',15,$Ie60_numemp,true,'text',1," onchange='js_pesquisae60_numemp(false);'")  ?>
+	   <?php db_input('e60_numemp',15,$Ie60_numemp,true,'text',1," onchange='js_pesquisae60_numemp(false);'")  ?>
 	</td>
       </tr>
   </table>
@@ -173,7 +181,7 @@ function js_limpa(){
 
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisae60_numcgm(mostra){
@@ -228,7 +236,7 @@ function js_pesquisae60_codemp(mostra){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_empempenho.php?anul=false&funcao_js=parent.js_mostraempempenho1|e60_codemp|e60_numemp','Pesquisa',true);
   }else{
      if(document.form1.e60_codemp.value != ''){
-        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_empempenho.php?anul=false&pesquisa_chave='+document.form1.e60_codemp.value+'&funcao_js=parent.js_mostraempempenho3','Pesquisa',false);
+        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_empempenho.php?lPesquisaPorCodigoEmpenho=true&anul=false&pesquisa_chave='+document.form1.e60_codemp.value+'&funcao_js=parent.js_mostraempempenho3','Pesquisa',false);
      }else{
        document.form1.e60_codemp.value = '';
      }

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -29,7 +29,6 @@
  * Classe que realiza o
  */
 class DBMenu {
-
   /**
    * Módulo atual a ser gerado o menu
    * @var integer
@@ -203,7 +202,7 @@ class DBMenu {
     $iModulo      = (empty($iModulo)      ? '(\d+)' : $iModulo      );
     $iAno         = (empty($iAno)         ? '(\d+)' : $iAno         );
 
-    $sPattern = "/{$iAno}_{$iModulo}_{$iInstituicao}_{$iIdUsuario}_(\w+|\W+)/";
+    $sPattern = "/({$iAno}_{$iModulo}_{$iInstituicao}_{$iIdUsuario}_(.+))|({$iAno}_{$iInstituicao}_{$iIdUsuario}_(.+))/";
 
     DBCache::remove( DBCache::scanCache("menus/", $sPattern) );
   }
@@ -468,10 +467,6 @@ class DBMenu {
 
     $this->sHtmlMenu .= "<li onmouseover=\"Menu_mouseOver(this, event)\">\n";
     $this->sHtmlMenu .= "<a href=\"javascript:;\"onclick=\"require_once('scripts/classes/configuracao/DBViewReleaseNote.classe.js'); DBViewReleaseNote.build(); \">Notas da Versão</a>\n";
-    $this->sHtmlMenu .= "</li>\n";
-
-    $this->sHtmlMenu .= "<li onmouseover=\"Menu_mouseOver(this, event)\">\n";
-    $this->sHtmlMenu .= "<a href=\"javascript:;\"onclick=\"require_once('scripts/classes/configuracao/TutorialRepository.classe.js'); TutorialRepository.build(); \">Tutoriais</a>\n";
     $this->sHtmlMenu .= "</li>\n";
 
     $this->sHtmlMenu .= "</ul>\n";

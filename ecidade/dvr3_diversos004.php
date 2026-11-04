@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,9 @@ $clcgm = new cl_cgm;
 $clcgm->rotulo->label("z01_numcgm");
 $clcgm->rotulo->label("z01_nome");
 ?>
+
 <html>
+
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -59,47 +61,21 @@ $clcgm->rotulo->label("z01_nome");
 <script language="JavaScript" type="text/javascript" src="scripts/widgets/DatagridCollection.widget.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-/*
-td {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-}
-input {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-        height: 17px;
-        border: 1px solid #999999;
-}
-*/
-</style>
 </head>
+
 <body bgcolor=#CCCCCC>
-<script>
-function js_testacamp(){
-  var matri = document.form1.j01_matric.value;
-  var inscr = document.form1.q02_inscr.value;
-  var numcgm = document.form1.z_numcgm.value;
-  if(matri=="" && inscr=="" && numcgm==""){
-    alert(_M("tributario.diversos.dvr3_diversos004.informe_campos"));   
-    return false;  
-  }
-  
-  return true;  
-}   
-</script>
 <form class="container" name="form1" method="post" action="dvr3_diversos005.php?pri=true" enctype="multipart/form-data" onSubmit="return js_verifica_campos_digitados();" >
   <fieldset>
     <legend>Procedimentos - Diversos</legend>
     <table class="form-container">
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lz01_nome,' js_cgm(true); ',1);
           ?>
          </td>
          <td> 
-          <?
+          <?php
             db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'","z_numcgm");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
           ?>
@@ -107,12 +83,12 @@ function js_testacamp(){
       </tr>
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lj01_matric,' js_matri(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
           ?>
@@ -120,12 +96,12 @@ function js_testacamp(){
       </tr>
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lq02_inscr,' js_inscr(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
           ?>
@@ -152,10 +128,9 @@ function js_testacamp(){
   <input type="submit" name="pesquisar" value="Pesquisar" onclick="return js_testacamp();" >
   <input type="button" name="importar" value="Importar Lista" onclick="js_verificaPlanilha();" disabled='true'>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
-
 <br>
 <fieldset id="fieldsetDadosValidos" style="width:15%;float:left;margin-left:33.2%;display:none">
   <legend>Dados Validos</legend>
@@ -168,7 +143,23 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 
 </body>
 </html>
+
 <script>
+function js_testacamp(){
+  var matri = document.form1.j01_matric.value;
+  var inscr = document.form1.q02_inscr.value;
+  var numcgm = document.form1.z_numcgm.value;
+  if(matri == "" && inscr == "" && numcgm == ""){
+    alert(_M("tributario.diversos.dvr3_diversos004.informe_campos"));   
+    return false;  
+  }
+  if(!validarInclusaoEmLote()){
+    return false;  
+  }
+  return true;  
+
+} 
+
 function js_verificaPlanilha() {
   const selectImportarPlanilha = document.getElementById('selectImportarPlanilha').value;
 
@@ -337,8 +328,6 @@ function js_montaGridPLanilha() {
               oGridDadosInvalidosCollection.add(oDadosInvalidos);
 
             }
-
-console.log(arrayEnvioInvalidos);
           }
         );
 
@@ -367,11 +356,13 @@ function js_matri(mostra){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe3','func_iptubase.php?pesquisa_chave='+matri+'&funcao_js=parent.js_mostramatri1','Pesquisa',false);
   }
 }
+
 function js_mostramatri(chave1,chave2){
   document.form1.j01_matric.value = chave1;
   document.form1.z01_nomematri.value = chave2;
   db_iframe3.hide();
 }
+
 function js_mostramatri1(chave,erro){
   document.form1.z01_nomematri.value = chave; 
   if(erro==true){ 
@@ -379,7 +370,6 @@ function js_mostramatri1(chave,erro){
     document.form1.j01_matric.value = ''; 
   }
 }
-
 
 function js_inscr(mostra){
   var inscr=document.form1.q02_inscr.value;
@@ -389,11 +379,13 @@ function js_inscr(mostra){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe','func_issbase.php?pesquisa_chave='+inscr+'&funcao_js=parent.js_mostrainscr1','Pesquisa',false);
   }
 }
+
 function js_mostrainscr(chave1,chave2){
   document.form1.q02_inscr.value = chave1;
   document.form1.z01_nomeinscr.value = chave2;
   db_iframe.hide();
 }
+
 function js_mostrainscr1(chave,erro){
   document.form1.z01_nomeinscr.value = chave; 
   if(erro==true){ 
@@ -401,7 +393,6 @@ function js_mostrainscr1(chave,erro){
     document.form1.q02_inscr.value = ''; 
   }
 }
-
 
 function js_cgm(mostra){
   var cgm=document.form1.z_numcgm.value;
@@ -424,8 +415,32 @@ function js_mostracgm1(erro,chave){
   }
 }
 
+function validarInclusaoEmLote(){
+  const inclusaoLote = document.getElementById('selectImportarPlanilha').value;
+  const arquivo = document.getElementById('importarplanilha').value;
+  const inclusaoSemArquivo = inclusaoLote != "" && arquivo == "";
+  const arquivoSemInclusao = arquivo != "" && inclusaoLote == "";
+
+  if(inclusaoSemArquivo){
+    alert("Informe um arquivo.");   
+    return false
+  }
+  if(arquivoSemInclusao){
+    alert("Selecione um tipo de inclusão.");   
+    return false
+  }
+    return true
+}
+
+$("z_numcgm").addClassName("field-size2");
+$("z01_nomecgm").addClassName("field-size7");
+$("j01_matric").addClassName("field-size2");
+$("z01_nomematri").addClassName("field-size7");
+$("q02_inscr").addClassName("field-size2");
+$("z01_nomeinscr").addClassName("field-size7");
 </script>
-<?
+
+<?php
 if(isset($dado) && $dado=="inscr"){
   db_msgbox(_M("tributario.diversos.dvr3_diversos004.inscricao_invalida"));
 }  
@@ -435,25 +450,4 @@ if(isset($dado) && $dado=="matric"){
 if(isset($dado) && $dado=="numcgm"){
   db_msgbox(_M("tributario.diversos.dvr3_diversos004.numcgm_invalido"));
 }  
-/*
-$func_iframe = new janela('db_iframe','');
-$func_iframe->posX=1;
-$func_iframe->posY=20;
-$func_iframe->largura=780;
-$func_iframe->altura=430;
-$func_iframe->titulo='Pesquisa';
-$func_iframe->iniciarVisivel = false;
-$func_iframe->mostrar();
-*/
-
 ?>
-<script>
-
-$("z_numcgm").addClassName("field-size2");
-$("z01_nomecgm").addClassName("field-size7");
-$("j01_matric").addClassName("field-size2");
-$("z01_nomematri").addClassName("field-size7");
-$("q02_inscr").addClassName("field-size2");
-$("z01_nomeinscr").addClassName("field-size7");
-
-</script>

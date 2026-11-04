@@ -40,8 +40,8 @@ $dDataFimDia = '31';
 $dDataFimMes = '12';
 $dDataFimAno = date('Y');
 
-$bCalendario = "SELECT distinct(ed52_c_descr) as nomecal 
-                  FROM calendario 
+$bCalendario = "SELECT distinct(ed52_c_descr) as nomecal
+                  FROM calendario
                  WHERE ed52_i_ano = ".db_getsession("DB_anousu")."
               ORDER BY ed52_c_descr";
 $sCalendario = db_query($bCalendario);
@@ -74,9 +74,9 @@ $nCalendario = pg_num_rows($sCalendario);
                 <b>Período:</b>
               </td>
               <td>
-                <?db_inputdata('dtInicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
+                <?php db_inputdata('dtInicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
                 <b>até</b>
-                <?db_inputdata('dtFim', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
+                <?php db_inputdata('dtFim', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
               </td>
             </tr>
          <tr>

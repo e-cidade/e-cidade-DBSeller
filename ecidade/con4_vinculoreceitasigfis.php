@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -41,7 +41,7 @@ $oRotulo->label("o57_descr");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbmessageBoard.widget.js, datagrid.widget.js, widgets/dbautocomplete.widget.js");
       db_app::load("estilos.css,grid.style.css");
@@ -60,7 +60,7 @@ $oRotulo->label("o57_descr");
                 <b>Receita SigFis:</b>
               </td>
               <td>
-                 <?
+                 <?php
                   db_input('codigoreceitatce', 10, $Io57_fonte, true, "text", 3);
                   db_input('descricaoreceitatce',  40, $Io57_descr, true, "text", 1);
                 ?>
@@ -68,11 +68,11 @@ $oRotulo->label("o57_descr");
             </tr> 
             <tr>
               <td>
-                <b><?
+                <b><?php
                 db_ancora($Lo57_codfon, 'js_pesquisa_receita(true);', 1)?></b>
               </td>
               <td>
-                 <?
+                 <?php
                   db_input('o57_codfon', 10, $Io57_codfon, true, "text", 1);
                   db_input('o57_descr',  40, $Io57_descr, true, "text", 3);
                 ?>
@@ -87,7 +87,7 @@ $oRotulo->label("o57_descr");
     </center>
   </body>
 </html>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>    
 <script>

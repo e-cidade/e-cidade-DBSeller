@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_cepmunic->rotulo->label("db10_munic");
               <?=$Ldb10_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db10_codigo",10,$Idb10_codigo,true,"text",4,"","chave_db10_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_cepmunic->rotulo->label("db10_munic");
               <?=$Ldb10_munic?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db10_munic",60,$Idb10_munic,true,"text",4,"","chave_db10_munic");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_cepmunic->rotulo->label("db10_munic");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_cepmunic.php")==true){
@@ -118,12 +118,12 @@ $cldb_cepmunic->rotulo->label("db10_munic");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

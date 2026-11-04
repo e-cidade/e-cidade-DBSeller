@@ -88,7 +88,7 @@ if (isset($incluir)) {
 
         if ($ed99_c_situacao == "AMPARADO") {
           $ed99_c_resultadofinal = "A";
-        } elseif ( $ed99_c_situacao == "CONCLUÍDO" || $ed99_c_situacao == "RECLASSIFICADO" ) {
+        } elseif (in_array($ed99_c_situacao, ["CONCLUÍDO", "RECLASSIFICADO", "AVANÇO"])) {
           $ed99_c_resultadofinal = $ed99_c_resultadofinal;
         } else {
           $ed99_c_resultadofinal = "R";
@@ -121,7 +121,7 @@ if (isset($incluir)) {
     <td align="left" valign="top" bgcolor="#CCCCCC">
      <center>
       <fieldset style="width:95%;"><legend><b>Etapa cursada fora da Rede Municipal</b></legend>
-       <?include(modification("forms/db_frmhistoricompsfora.php"));?>
+       <?php include(modification("forms/db_frmhistoricompsfora.php"));?>
       </fieldset>
      </center>
     </td>
@@ -155,6 +155,6 @@ if (isset($incluir) && $erro == false) {
      location.href               = "edu1_histmpsdiscfora001.php?ed100_i_historicompsfora=<?=$oDaoHistoricoMpsFora->ed99_i_codigo?>&ed99_c_situacao="+document.getElementById('ed99_c_situacao').value;
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
   }
 }

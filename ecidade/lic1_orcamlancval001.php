@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -87,7 +87,6 @@ if (isset($alterar) || isset($incluir)) {
         $arrqtdorcada = explode("qtdeOrcada_",$qtdadesOrcadas);
 
     } else {
-
         $sqlerro=true;
         $erro_msg = "Usuário: \\n\\nQuantidades do orçamento não informadas. \\nAltere antes de continuar. \\n\\nAdministrador: ";
 
@@ -231,12 +230,23 @@ if (isset($alterar) || isset($incluir)) {
                     $oDaoRegistroValor->excluir(null, "pc56_orcamforne = {$pc21_orcamforne} and pc56_orcamitem = {$orcamitem}");
                 }
             }
+            $habilitado = '';
 
-            if (isset($incluir) && $sqlerro == false && $orcamval != 0) {
+            if (empty($orcamval) && $oDadosLicitacao->l20_tipo === "1") {
+                continue;
+            }
 
+            if ($orcamval !== "0" && $oDadosLicitacao->l20_tipo === "1") {
+                $habilitado = true;
+            } elseif (intval($orcamval) >= 0 && $oDadosLicitacao->l20_tipo === "2" && $orcamval !== '') {
+                $habilitado = true;
+            } else {
+                $habilitado = false;
+            }
+
+            if (isset($incluir) && $sqlerro === false && $habilitado === true) {
                 $pc23_valor = $orcamval;
-                if (trim($validmin)!= '' ) {
-
+                if (trim($validmin) !== '' ) {
                     $arr_d    = explode("-",$validmin);
                     $validmin = $arr_d[2]."-".$arr_d[1]."-".$arr_d[0];
                     if (trim($validmin) == "--" || trim($validmin) == '') {
@@ -273,6 +283,7 @@ if (isset($alterar) || isset($incluir)) {
 
                 $clpcorcamval->incluir($pc21_orcamforne,$orcamitem);
                 $erro_msg = $clpcorcamval->erro_msg;
+
                 if ($clpcorcamval->erro_status==0) {
 
                     $sqlerro=true;
@@ -332,7 +343,7 @@ if (isset($alterar) || isset($incluir)) {
         <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
         <link href="estilos.css" rel="stylesheet" type="text/css">
     </head>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
     <!--<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >-->
@@ -355,7 +366,6 @@ if (isset($alterar) || isset($incluir)) {
                             }
                         }
                         if ($iFormaControleRegistroPreco == 2) {
-
                             db_redireciona("lic4_orcamentolicitacaoregistropreco001.php?iLicitacao={$l20_codigo}&pc20_codorc={$pc20_codorc}");
                             exit;
                         }
@@ -368,7 +378,7 @@ if (isset($alterar) || isset($incluir)) {
     </div>
     </body>
     </html>
-<?
+<?php
 if (isset($achou)&&$achou==true){
     db_msgbox('Licitacao tem itens sem lote.\nFavor definir lote para estes itens.');
     echo "<script>

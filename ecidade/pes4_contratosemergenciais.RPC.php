@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -31,7 +31,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("libs/JSON.php"));  
+require_once(modification("libs/JSON.php"));
 
 $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
@@ -44,10 +44,10 @@ define('MENSAGEM', 'recursoshumanos.pessoal.pes4_contratosemergenciaisRPC.');
 try {
 
   db_inicio_transacao();
-  
+
   switch ($oParam->exec) {
     /**
-     * Busca as Renovações de contrato emergenciais que o servidor 
+     * Busca as Renovações de contrato emergenciais que o servidor
      * informado no parametro iMatricula possui.
      */
     case "buscarRenovacoesContratosEmergenciais":
@@ -88,10 +88,10 @@ try {
       }
 
       $oRetorno->aRenovacoes = $aRenovacoes;
-          
+
     break;
 
-    case "alterarRenovacaoContratoEmergencial": 
+    case "alterarRenovacaoContratoEmergencial":
 
       if (empty($oParam->iRenovacao)) {
         $oRetorno->erro     = true;
@@ -109,10 +109,10 @@ try {
       }
 
       /**
-       * Verifica se a competencia atual é maior que o vencimento da última renovação, 
+       * Verifica se a competencia atual é maior que o vencimento da última renovação,
        * se for não é permitido alterar.
        */
-      $aDataAtual = split('-', $oParam->sDataFimAtual);
+      $aDataAtual =explode('-', $oParam->sDataFimAtual);
       $iAnoAtual  = $aDataAtual[0];
       $iMesAtual  = $aDataAtual[1];
 
@@ -125,10 +125,10 @@ try {
       }
 
       /**
-       * Validamos se a nova data não é menor que a 
+       * Validamos se a nova data não é menor que a
        * competencia atual, se fgor não é permitido alterar
        */
-      $aDataNova = split('-', $oParam->sDataFimNova);
+      $aDataNova =explode('-', $oParam->sDataFimNova);
       $iAnoNova  = $aDataNova[0];
       $iMesNova  = $aDataNova[1];
 
@@ -137,8 +137,8 @@ try {
       if ($oCompetenciaAtual->comparar($oCompetenciaNovaRenovacao, DBCompetencia::COMPARACAO_MAIOR)) {
         $oRetorno->erro     = true;
         throw new  BusinessException(_M(MENSAGEM . 'alteracao_nao_permitida_nova_data_maior'));
-      }      
-      
+      }
+
       /**
        * Efetua a renocação do contrato emergencial.
        */
@@ -156,7 +156,7 @@ try {
 
     break;
 
-    case "incluirRenovacaoContratoEmergencial": 
+    case "incluirRenovacaoContratoEmergencial":
 
       if (empty($oParam->sDataUltimaRenovacao)) {
         $oRetorno->erro     = true;
@@ -179,15 +179,15 @@ try {
       }
 
       /**
-       * Verifica se a competencia atual é maior que o vencimento da última renovação, 
+       * Verifica se a competencia atual é maior que o vencimento da última renovação,
        * se for não é permitido incluir.
        */
-      $aDataUltimaRenovacao = split('-', $oParam->sDataUltimaRenovacao);
+      $aDataUltimaRenovacao =explode('-', $oParam->sDataUltimaRenovacao);
       $iAnoUltimaRenovacao  = $aDataUltimaRenovacao[0];
       $iMesUltimaRenovacao  = $aDataUltimaRenovacao[1];
       $oUltimaRenovacao     = new DBCompetencia($iAnoUltimaRenovacao, $iMesUltimaRenovacao);
 
-      $aDataNovaRenovacao = split('-', $oParam->sDataFim);
+      $aDataNovaRenovacao =explode('-', $oParam->sDataFim);
       $iAnoNovaRenovacao  = $aDataNovaRenovacao[0];
       $iMesNovaRenovacao  = $aDataNovaRenovacao[1];
       $oNovaRenovacao     = new DBCompetencia($iAnoNovaRenovacao, $iMesNovaRenovacao);
@@ -198,10 +198,10 @@ try {
       }
 
       /**
-       * Validamos se a nova data não é menor que a 
+       * Validamos se a nova data não é menor que a
        * competencia atual, se fgor não é permitido incluir
        */
-      $aDataNova = split('-', $oParam->sDataFim);
+      $aDataNova =explode('-', $oParam->sDataFim);
       $iAnoNova  = $aDataNova[0];
       $iMesNova  = $aDataNova[1];
 
@@ -211,8 +211,8 @@ try {
       if ($oCompetenciaAtual->comparar($oCompetenciaNovaRenovacao, DBCompetencia::COMPARACAO_MAIOR)) {
         $oRetorno->erro     = true;
         throw new  BusinessException(_M(MENSAGEM . 'alteracao_nao_permitida_nova_data_maior'));
-      }      
-      
+      }
+
       $oDaoContratoEmergencialRenovacao = new cl_rhcontratoemergencialrenovacao();
       $oDaoContratoEmergencialRenovacao->rh164_sequencial          = null;
       $oDaoContratoEmergencialRenovacao->rh164_contratoemergencial = $oParam->iContrato;
@@ -229,7 +229,7 @@ try {
       $oRetorno->sMessage = urlencode(_M(MENSAGEM . 'inclusao_sucesso'));
 
     break;
-    case "excluirRenovacaoContratoEmergencial": 
+    case "excluirRenovacaoContratoEmergencial":
 
       if (empty($oParam->iRenovacao)) {
         $oRetorno->erro     = true;
@@ -242,10 +242,10 @@ try {
       }
 
       /**
-       * Verifica se a competencia atual é maior que o vencimento da última renovação, 
+       * Verifica se a competencia atual é maior que o vencimento da última renovação,
        * se for não é permitido excluir.
        */
-      $aDataAtual = split('-', $oParam->sDataFimAtual);
+      $aDataAtual =explode('-', $oParam->sDataFimAtual);
       $iAnoAtual  = $aDataAtual[0];
       $iMesAtual  = $aDataAtual[1];
 
@@ -269,11 +269,11 @@ try {
 
     break;
   }
-  
+
   db_fim_transacao(false);
 
 } catch (Exception $eErro){
-  
+
   db_fim_transacao(true);
   $oRetorno->iStatus  = 2;
   $oRetorno->sMessage = urlencode($eErro->getMessage());

@@ -34,4 +34,16 @@ class TurmaTurnoReferente extends Model
             }
         )->count();
     }
+
+    public function turnoReferente()
+    {
+        return $this
+            ->belongsTo(TurnoReferente::class, 'ed336_turnoreferente', 'ed231_i_referencia');
+    }
+
+    public function turma()
+    {
+        return $this
+            ->belongsTo(Turma::class, 'ed336_turma', 'ed57_i_codigo');
+    }
 }

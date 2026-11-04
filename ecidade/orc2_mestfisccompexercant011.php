@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,15 +73,15 @@ $db_opcao = 1;
 						<table>
 	             <tr>
               <td nowrap title="<?=@$To05_ppalei?>">
-                <?
+                <?php
                 db_ancora("<b>Lei do PPA</b>","js_pesquisao05_ppalei(true);",$db_opcao);
                 ?>
               </td>
               <td nowrap> 
-                <?
+                <?php
                 db_input('o05_ppalei',10,$Io01_sequencial,true,'text',$db_opcao," onchange='js_pesquisao05_ppalei(false);'")
                 ?>
-                <?
+                <?php
                 db_input('o01_descricao',40,$Io01_descricao,true,'text',3,'');
                 db_input('codrel',40,'',true,'hidden',3,'');
                 $o116_periodo = 1;
@@ -99,12 +99,12 @@ $db_opcao = 1;
             </tr>						
 						  <tr>
 						    <td align="center" colspan="2">
-						       <? db_selinstit('',300,100); ?>
+						       <?php db_selinstit('',300,100); ?>
 						    </td>
 						  </tr>
 			       <tr>
 			        <td align="left" colspan="2">
-			          <b>Modelo :</b> <? 
+			          <b>Modelo :</b> <?php 
 			                    $sList = array("ldo"=>"LDO",
 			                                   "loa"=>"LOA"
 			                                  );

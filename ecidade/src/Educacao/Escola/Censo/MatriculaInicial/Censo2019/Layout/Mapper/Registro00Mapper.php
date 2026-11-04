@@ -62,7 +62,6 @@ class Registro00Mapper extends Mapper
         "Sistema S (Sesi, Senai, Sesc, outros)" => "mantenedoraSistemaS",
         "Organização da Sociedade Civil de Interesse Público (Oscip)" => "mantenedoraOscip",
         "Categoria da escola privada" => "categoriaEscolaPrivada",
-
         "Secretaria estadual" => "secretariaEstadual",
         "Secretaria Municipal" => "secretariaMunicipal",
         "Não possui parceria ou convênio" => "naoPossuiConvenio",
@@ -74,88 +73,96 @@ class Registro00Mapper extends Mapper
         "Termo de cooperação técnica e financeira" => "termoCooperacaoTecnica",
         "Contrato de consórcio público/Convênio de cooperação" => "coonvenioCooperacao",
 
-        "Atividade complementar" => "atividadeComplementar",
-        "Atendimento educacional especializado" => "atividadeEducacional",
-        "Ensino Regular - Creche - Parcial" => "crecheParcial",
-        "Ensino Regular - Creche - Integral" => "crecheIntegral",
-        "Ensino Regular - Pré-escola - Parcial" => "preEscolaParcial",
-        "Ensino Regular - Pré-escola - Integral" => "preEscolaIntegral",
-        "Ensino Regular - Ensino Fundamental - Anos Iniciais - Parcial" => "FundamentalInicialParcial",
-        "Ensino Regular - Ensino Fundamental - Anos Iniciais - Integral" => "FundamentalInicialIntegral",
-        "Ensino Regular - Ensino Fundamental - Anos Finais - Parcial" => "FundamentalFinalParcial",
-        "Ensino Regular - Ensino Fundamental - Anos Finais - Integral" => "FundamentalFinalIntegral",
+        "Termo de colaboração - (Lei nº 13.019/2014)" => "termoColaboracaoMunicipal",
+        "Termo de fomento - (Lei nº 13.019/2014)" => "termoFormentoMunicipal",
+        "Acordo de cooperação - (Lei nº 13.019/2014)" => "acordoCooperacaoMunicipal",
+        "Contrato de prestação de serviço municipal" => "contratoPrestacaoServicoMunicipal",
+        "Termo de cooperação técnica e financeira municipaç" => "termoCooperacaoTecnicaMunicipal",
+        "Contrato de consórcio público/Convênio de cooperação municipal " => "coonvenioCooperacaoMunicipal",
 
-        "Ensino Regular - Ensino Médio - Parcial" => "medioParcial",
-        "Ensino Regular - Ensino Médio - Integral" => "medioIntegral",
-        "Educação Especial - Classe especial - Parcial" => "especialParcial",
-        "Educação Especial - Classe especial - Integral" => "especialIntegral",
-        "Educação de Jovens e Adultos (EJA) - Ensino fundamental" => "ejaFundamental",
-        "Educação de Jovens e Adultos (EJA) - Ensino médio" => "ejaMedio",
+//    "Atividade complementar" => "atividadeComplementar",
+//    "Atendimento educacional especializado" => "atividadeEducacional",
+//    "Ensino Regular - Creche - Parcial" => "crecheParcial",
+//    "Ensino Regular - Creche - Integral" => "crecheIntegral",
+//    "Ensino Regular - Pré-escola - Parcial" => "preEscolaParcial",
+//    "Ensino Regular - Pré-escola - Integral" => "preEscolaIntegral",
+//    "Ensino Regular - Ensino Fundamental - Anos Iniciais - Parcial" => "FundamentalInicialParcial",
+//    "Ensino Regular - Ensino Fundamental - Anos Iniciais - Integral" => "FundamentalInicialIntegral",
+//    "Ensino Regular - Ensino Fundamental - Anos Finais - Parcial" => "FundamentalFinalParcial",
+//    "Ensino Regular - Ensino Fundamental - Anos Finais - Integral" => "FundamentalFinalIntegral",
+//
+//    "Ensino Regular - Ensino Médio - Parcial" => "medioParcial",
+//    "Ensino Regular - Ensino Médio - Integral" => "medioIntegral",
+//    "Educação Especial - Classe especial - Parcial" => "especialParcial",
+//    "Educação Especial - Classe especial - Integral" => "especialIntegral",
+//    "Educação de Jovens e Adultos (EJA) - Ensino fundamental" => "ejaFundamental",
+//    "Educação de Jovens e Adultos (EJA) - Ensino médio" => "ejaMedio",
+//
+//    "Educação Profissional - Qualificação profissional - Integrada à educação de jovens e " .
+//    "adultos no ensino fundamental - Parcial" => "ProfissionalQualificacaoEnsinoFundamentalParcial",
+//    "Educação Profissional - Qualificação profissional - Integrada à educação de jovens e " .
+//    "adultos no ensino fundamental - Integral" => "ProfissionalQualificacaoEnsinoFundamentalIntegral",
+//
+//    "Educação Profissional - Qualificação profissional técnica - Integrada à educação de jovens e " .
+//    "adultos de nível médio - Parcial" => "ProfissionalQualificacaoNivelMedioParcial",
+//    "Educação Profissional - Qualificação profissional técnica - Integrada à educação de jovens e " .
+//    "adultos de nível médio - Integral" => "ProfissionalQualificacaoNivelMedioIntegral",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante à educação de jovens e " .
+//    "adultos de nível médio - Parcial" => "ProfissionalQualificacaoConcomitanteNivelMedioParcial",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante à educação de jovens e" .
+//    "adultos de nível médio - Integral" => "ProfissionalQualificacaoConcomitanteNivelMedioIntegral",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar à educação de " .
+//    "jovens e adultos de nível médio - Parcial" => "ProfissionalQualificacaoIntercomplementarNivelMedioParcial",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar à educação de " .
+//    "jovens e adultos de nível médio - Integral" => "ProfissionalQualificacaoIntercomplementarNivelMedioIntegral",
+//
+//    "Educação Profissional - Qualificação profissional técnica - Integrada ao ensino médio - Parcial" =>
+//    "ProfissionalQualificacaoEnsinoMedioParcial",
+//    "Educação Profissional - Qualificação profissional técnica - Integrada ao ensino médio - Integral" =>
+//    "ProfissionalQualificacaoEnsinoIntegral",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante ao ensino médio - Parcial" =>
+//    "ProfissionalQualificacaoConcomitanteEnsinoMedioParcial",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante ao ensino médio - Integral" =>
+//    "ProfissionalQualificacaoConcomitanteEnsinoMedioIntegral",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar ao ensino médio " .
+//    "- Parcial" => "ProfissionalQualificacaoIntercomplementarEnsinoMedioParcial",
+//    "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar ao ensino médio " .
+//    "- Integral" => "ProfissionalQualificacaoIntercomplementarEnsinoMedioIntegral",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Integrada ao ensino médio - Parcial" =>
+//    "ProfissionalProfissionalEnsinoMedioParcial",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Integrada ao ensino médio - Integral" =>
+//     "ProfissionalProfissionalEnsinoIntegral",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante ao ensino médio - Parcial"
+//    => "ProfissionalProfissionalConcomitanteEnsinoMedioParcial",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante ao ensino médio - Integral"
+//     => "ProfissionalProfissionalConcomitanteEnsinoMedioIntegral",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar ao " .
+//    "ensino médio - Parcial" => "ProfissionalProfissionalIntercomplementarEnsinoMedioParcial",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar ao " .
+//    "ensino médio - Integral" => "ProfissionalProfissionalIntercomplementarEnsinoMedioIntegral",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Subsequente ao ensino médio" =>
+//    "ProfissionalProfissionalSubsequente",
+//
+//    "Educação Profissional - Educação profissional técnica de nível médio - Integrada à educação de jovens e " .
+//    "adultos de nível médio - Parcial" => "ProfissionalProfissionalNivelMedioParcial",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Integrada à educação de jovens e " .
+//    "adultos de nível médio - Integral" => "ProfissionalProfissionalNivelMedioIntegral",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante à educação de jovens e " .
+//    "adultos de nível médio - Parcial" => "ProfissionalProfissionalConcomitanteNivelMedioParcial",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante à educação de jovens e " .
+//    "adultos de nível médio - Integral" => "ProfissionalProfissionalConcomitanteNivelMedioIntegral",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar à " .
+//    "educação de jovens e adultos de nível médio - Parcial"
+//    => "ProfissionalProfissionalIntercomplementarNivelMedioParcial",
+//    "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar à " .
+//    "educação de jovens e adultos de nível médio - Integral"
+//    => "ProfissionalProfissionalIntercomplementarNivelMedioIntegral",
 
-        "Educação Profissional - Qualificação profissional - Integrada à educação de jovens e " .
-        "adultos no ensino fundamental - Parcial" => "ProfissionalQualificacaoEnsinoFundamentalParcial",
-        "Educação Profissional - Qualificação profissional - Integrada à educação de jovens e " .
-        "adultos no ensino fundamental - Integral" => "ProfissionalQualificacaoEnsinoFundamentalIntegral",
-
-        "Educação Profissional - Qualificação profissional técnica - Integrada à educação de jovens e " .
-        "adultos de nível médio - Parcial" => "ProfissionalQualificacaoNivelMedioParcial",
-        "Educação Profissional - Qualificação profissional técnica - Integrada à educação de jovens e " .
-        "adultos de nível médio - Integral" => "ProfissionalQualificacaoNivelMedioIntegral",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante à educação de jovens e " .
-        "adultos de nível médio - Parcial" => "ProfissionalQualificacaoConcomitanteNivelMedioParcial",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante à educação de jovens e" .
-        "adultos de nível médio - Integral" => "ProfissionalQualificacaoConcomitanteNivelMedioIntegral",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar à educação de " .
-        "jovens e adultos de nível médio - Parcial" => "ProfissionalQualificacaoIntercomplementarNivelMedioParcial",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar à educação de " .
-        "jovens e adultos de nível médio - Integral" => "ProfissionalQualificacaoIntercomplementarNivelMedioIntegral",
-
-        "Educação Profissional - Qualificação profissional técnica - Integrada ao ensino médio - Parcial" =>
-        "ProfissionalQualificacaoEnsinoMedioParcial",
-        "Educação Profissional - Qualificação profissional técnica - Integrada ao ensino médio - Integral" =>
-        "ProfissionalQualificacaoEnsinoIntegral",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante ao ensino médio - Parcial" =>
-        "ProfissionalQualificacaoConcomitanteEnsinoMedioParcial",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante ao ensino médio - Integral" =>
-        "ProfissionalQualificacaoConcomitanteEnsinoMedioIntegral",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar ao ensino médio " .
-        "- Parcial" => "ProfissionalQualificacaoIntercomplementarEnsinoMedioParcial",
-        "Educação Profissional - Qualificação profissional técnica - Concomitante intercomplementar ao ensino médio " .
-        "- Integral" => "ProfissionalQualificacaoIntercomplementarEnsinoMedioIntegral",
-        "Educação Profissional - Educação profissional técnica de nível médio - Integrada ao ensino médio - Parcial" =>
-        "ProfissionalProfissionalEnsinoMedioParcial",
-        "Educação Profissional - Educação profissional técnica de nível médio - Integrada ao ensino médio - Integral" =>
-         "ProfissionalProfissionalEnsinoIntegral",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante ao ensino médio - Parcial"
-        => "ProfissionalProfissionalConcomitanteEnsinoMedioParcial",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante ao ensino médio - Integral"
-         => "ProfissionalProfissionalConcomitanteEnsinoMedioIntegral",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar ao " .
-        "ensino médio - Parcial" => "ProfissionalProfissionalIntercomplementarEnsinoMedioParcial",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar ao " .
-        "ensino médio - Integral" => "ProfissionalProfissionalIntercomplementarEnsinoMedioIntegral",
-        "Educação Profissional - Educação profissional técnica de nível médio - Subsequente ao ensino médio" =>
-        "ProfissionalProfissionalSubsequente",
-
-        "Educação Profissional - Educação profissional técnica de nível médio - Integrada à educação de jovens e " .
-        "adultos de nível médio - Parcial" => "ProfissionalProfissionalNivelMedioParcial",
-        "Educação Profissional - Educação profissional técnica de nível médio - Integrada à educação de jovens e " .
-        "adultos de nível médio - Integral" => "ProfissionalProfissionalNivelMedioIntegral",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante à educação de jovens e " .
-        "adultos de nível médio - Parcial" => "ProfissionalProfissionalConcomitanteNivelMedioParcial",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante à educação de jovens e " .
-        "adultos de nível médio - Integral" => "ProfissionalProfissionalConcomitanteNivelMedioIntegral",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar à " .
-        "educação de jovens e adultos de nível médio - Parcial"
-        => "ProfissionalProfissionalIntercomplementarNivelMedioParcial",
-        "Educação Profissional - Educação profissional técnica de nível médio - Concomitante intercomplementar à " .
-        "educação de jovens e adultos de nível médio - Integral"
-        => "ProfissionalProfissionalIntercomplementarNivelMedioIntegral",
 
         "CNPJ da mantenedora principal da escola privada" => "cnpjMantenedoraPrincipal",
         "Número do CNPJ da escola privada" => "cnpjEscolaPrivada",
-        "Regulamentação/autorização no conselho ou órgão municipal, estadual ou federal de educação" =>
-        "regulamentacao",
+        "Regulamentação/autorização no conselho ou órgão municipal,
+        estadual ou federal de educação" => "regulamentacao",
         "Federal" => "esferaFederal",
         "Estadual" => "esferaEstadual",
         "Municipal" => "esferaMunicipal",

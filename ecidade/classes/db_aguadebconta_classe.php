@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_aguadebconta {
                  x05_conta = int4 = Conta 
                  ";
    //funcao construtor da classe 
-   function cl_aguadebconta() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguadebconta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_aguadebconta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x05_matric = ($this->x05_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["x05_matric"]:$this->x05_matric);
        $this->x05_conta = ($this->x05_conta == ""?@$GLOBALS["HTTP_POST_VARS"]["x05_conta"]:$this->x05_conta);
@@ -74,7 +74,7 @@ class cl_aguadebconta {
      }
    }
    // funcao para inclusao
-   function incluir ($x05_matric){ 
+   public function incluir ($x05_matric){ 
       $this->atualizacampos();
      if($this->x05_conta == null ){ 
        $this->erro_sql = " Campo Conta nao Informado.";
@@ -138,7 +138,7 @@ class cl_aguadebconta {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($x05_matric=null) { 
+   public function alterar ($x05_matric=null) { 
       $this->atualizacampos();
      $sql = " update aguadebconta set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_aguadebconta {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($x05_matric=null,$dbwhere=null) { 
+   public function excluir ($x05_matric=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x05_matric));
      }else{ 
@@ -280,7 +280,7 @@ class cl_aguadebconta {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

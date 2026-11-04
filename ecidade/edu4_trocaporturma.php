@@ -420,6 +420,7 @@ db_menu(
                         nome: matricula.aluno.ed47_v_nome
                     });
                 });
+                collectionAlunos.sort('ASC', ['nome', 'codigo']);
 
                 gridAlunos.reload();
             });

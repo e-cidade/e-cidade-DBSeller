@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -101,7 +101,7 @@ if (isset($oGet->c12_contcearquivo)) {
   <table align="center" border='0' width='50%' cellspacing='0' style='padding:0px' style='empty-cells:show'>
       <tr>
         <td colspan='2'>
-        <?db_input('c12_contcearquivo',10,null,true,'hidden',1);?>
+        <?php db_input('c12_contcearquivo',10,null,true,'hidden',1);?>
           <fieldset>
             <legend>
               <b>Arquivos de Informações Digitais</b>

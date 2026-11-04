@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clsaltes->rotulo->label("k13_descr");
               <?=$Lk13_conta?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	      db_input("k13_conta",5,$Ik13_conta,true,"text",4,"","chave_k13_conta");
 	      ?>
             </td>
@@ -66,24 +66,24 @@ $clsaltes->rotulo->label("k13_descr");
               <?=$Lk13_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	      db_input("k13_descr",40,$Ik13_descr,true,"text",4,"","chave_k13_descr");
 	      ?>
             </td>
           </tr>
-        <?
+        <?php
            if(isset($c61_codigo) && trim($c61_codigo) != 1) {
         ?>
           <tr>
             <td width="4%" align="right" nowrap title="Disponibilizar Recursos Livres"><b>Disponibilizar Recursos Livres:</b></td>
             <td width="96%" align="left" nowrap> 
-            <?
+            <?php
                $x = array("N"=>"NÃO","S"=>"SIM");
                db_select("disp_rec",$x,true,4,"");
             ?>
             </td>
           </tr>
-        <?
+        <?php
            }
         ?>
           <tr> 
@@ -99,7 +99,7 @@ $clsaltes->rotulo->label("k13_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere="";
       if(isset($c61_codigo) && trim($c61_codigo) != "") {
           $dbwhere = " and c61_codigo = $c61_codigo ";
@@ -148,12 +148,12 @@ $clsaltes->rotulo->label("k13_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

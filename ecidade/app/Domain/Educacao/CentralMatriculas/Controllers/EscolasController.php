@@ -10,19 +10,25 @@ use Exception;
 
 class EscolasController extends Controller
 {
+    protected $service;
+    public function __construct(EscolasService $service)
+    {
+        $this->service = $service;
+    }
     /**
      * @param EscolasDisponiveisRequest $escolasDisponiveisRequest
      * @return DBJsonResponse
      * @throws Exception
      */
-    public function disponiveisPreMatricula(EscolasDisponiveisRequest $escolasDisponiveisRequest)
+    public function disponiveisPreMatricula($fase, $etapa)
     {
-        $etapa = $escolasDisponiveisRequest->get("etapa");
-        $fase = $escolasDisponiveisRequest->get("fase");
-
-        $escolasService = new EscolasService();
-        $escolas = $escolasService->buscarEscolasDisponiveis($etapa, $fase);
+        $escolas = $this->service->buscarEscolasDisponiveis($etapa, $fase);
 
         return new DBJsonResponse($escolas->toArray());
+    }
+
+    public function escolasBairro()
+    {
+        return new DBJsonResponse($this->service->getEscolasPorBairro());
     }
 }

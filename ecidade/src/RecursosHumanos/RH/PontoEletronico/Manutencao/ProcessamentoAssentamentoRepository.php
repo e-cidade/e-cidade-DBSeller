@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -272,6 +272,7 @@ class ProcessamentoAssentamentoRepository
                     $oAssentamento->setServidor($oServidor);
                     $oAssentamento->setTipoAssentamento($oTipoAssentamento->getSequencial());
                     $oAssentamento->setDataConcessao($oPeriodo->getDataFim());
+                    $oAssentamento->setDataTermino($oPeriodo->getDataFim());
                     $oAssentamento->setDataLancamento(new DBDate(date('Y-m-d')));
                     $oAssentamento->setHora($sHoras);
 

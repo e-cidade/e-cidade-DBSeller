@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("fpdf151/scpdf.php"));
@@ -67,7 +67,7 @@ function getValoresOrcamentoItens($iOrcamento, $iOrcamItem, $iCgm) {
   $oDaoPcorcamForne = db_utils::getDao("pcorcamforne");
 
   $aWhere[] = "pc21_codorc = {$iOrcamento}";
-  
+
   if (!empty($iOrcamItem)) {
     $aWhere[] = "pc23_orcamitem = {$iOrcamItem}";
   }
@@ -77,7 +77,7 @@ function getValoresOrcamentoItens($iOrcamento, $iOrcamItem, $iCgm) {
 
   $sSql = $oDaoPcorcamForne->sql_query_fornec( null, "*", null, $sWhere);
   $rsValores = $oDaoPcorcamForne->sql_record($sSql);
-  
+
   $oDados = new stdClass();
   if ($oDaoPcorcamForne->numrows > 0) {
 
@@ -96,7 +96,7 @@ $fornecedores = "";
 $vir = "";
 
 if(isset($forne) && $forne != "branco"){
-  $arr_forne = split("forn_",$forne);
+  $arr_forne =explode("forn_",$forne);
   for($i=1;$i<sizeof($arr_forne);$i++){
     $fornecedores .= $vir.$arr_forne[$i];
     $vir = ",";
@@ -161,7 +161,7 @@ $sqlparag = "select db02_texto
        		  inner join db_tipodoc on db08_codigo  = db03_tipodoc
 	     	  inner join db_paragrafo on db04_idparag = db02_idparag
 	     where db03_tipodoc = 1202 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
-			 
+
 $resparag = @db_query($sqlparag);
 
 if (@pg_numrows($resparag) > 0){
@@ -176,7 +176,7 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   } else {
     db_fieldsmemory($result_pcorcamforne,$i);
   }
-  
+
   if (!$flagProcessoCompras) {
     // É orçamento de solicitação
     $campos = '
@@ -196,10 +196,10 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
       pc01_validademinima,
       pc22_orcamitem
     ';
-  
-    $where = "pc22_codorc = {$pc20_codorc}"; 
+
+    $where = "pc22_codorc = {$pc20_codorc}";
     $where .= isset($z01_numcgm) ? " AND pc21_numcgm = {$z01_numcgm}" : "";
-    
+
     $result_itens = $clpcorcamitemsol->sql_record(
       $clpcorcamitemsol->sql_query_pcmater(
         null, null, $campos, "pc11_seq", $where
@@ -215,7 +215,7 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   }
 
   db_fieldsmemory($result_itens, 0);
- 
+
   $result_solicita = $clsolicita->sql_record($clsolicita->sql_query_solicita($pc10_numero," pc10_numero,pc10_data,pc10_resumo,pc12_vlrap,descrdepto,coddepto,fonedepto,ramaldepto,emaildepto,faxdepto,nomeresponsavel,pc50_descr"));
 
 
@@ -232,7 +232,7 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   $pdf1->labtitulo  = "Solicitação";
   $pdf1->labtipo    = "Tipo";
 
-  $pdf1->logo				= $logo; 
+  $pdf1->logo				= $logo;
 	$pdf1->prefeitura = $nomeinst;
   $pdf1->enderpref  = trim($ender).",".$numero;
   $pdf1->municpref  = $munic;
@@ -257,7 +257,7 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   if(isset($imprimirbranco)){
   	$numrows_pcorcamforne = 1;
 	  $z01_nome = "";
-	  $z01_numcgm = ""; 
+	  $z01_numcgm = "";
 	  $z01_cgccpf = "";
 	  $z01_ender = "";
 	  $z01_compl = "";
@@ -267,12 +267,12 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
 	  $z01_contato = "";
 	  $z01_cep = "";
       $z01_telef = "";
-    
+
     $pdf1->imprimirbranco = $imprimirbranco;
   }
 
   $pdf1->nome       = $z01_nome;
-  $pdf1->numcgm     = $z01_numcgm; 
+  $pdf1->numcgm     = $z01_numcgm;
   $pdf1->cnpj       = $z01_cgccpf;
   $pdf1->ender      = $z01_ender;
   $pdf1->compl      = $z01_compl;
@@ -289,10 +289,10 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   $pdf1->ramaldepto = $ramaldepto;
   $pdf1->faxdepto = $faxdepto;
   $pdf1->emaildepto = $emaildepto;
-  $pdf1->Sdata  = $pc10_data;  
-  
+  $pdf1->Sdata  = $pc10_data;
+
   $pdf1->Svalor = $pc12_vlrap;
-  $pdf1->Stipcom= $pc50_descr; 
+  $pdf1->Stipcom= $pc50_descr;
   $pdf1->Sresumo= $pc10_resumo;
   $pdf1->recorddositens = $result_itens;
   $pdf1->linhasdositens = pg_num_rows($result_itens);
@@ -308,7 +308,7 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   $pdf1->squantunid     = 'pc17_quant';
   $pdf1->susaquant      = 'm61_usaquant';
   $pdf1->Dvalidademin   = 'pc01_validademinima';
-  
+
 
   $pdf1->imprime();
 }

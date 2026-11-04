@@ -372,6 +372,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 montaSelect(selectEtapa, turma.etapas)
             }
         });
+        buscarConteudoDesenvolido()
     });
 
     selectEtapa.addEventListener('change', (event) => {
@@ -386,7 +387,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 });
             }
         });
-
+        buscarConteudoDesenvolido()
     });
 
     selectRegencia.addEventListener('change', (event) => {
@@ -414,7 +415,6 @@ require_once(modification("dbforms/db_funcoes.php"));
                     selectTurno.add(new Option(turma.turno.descricao, turma.turno.codigo));
                     selectTurno.value = turma.turno.codigo;
                     selectTurno.setAttribute('disabled', 'disabled');
-                    
                     selectTurnoReferencia.options.length = 0;
                     const turnosReferencia = [];
                     turma.turnosReferentes.map((referencia)=> {
@@ -427,7 +427,6 @@ require_once(modification("dbforms/db_funcoes.php"));
                         selectTurno.add(new Option('Selecione', ''));
                     }
 
-                    
                     turnosReferencia.map((referencia)=> {
                         selectTurnoReferencia.add(new Option(referencia.descricao, referencia.codigo));
                     })
@@ -447,6 +446,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 linhaDisciplinaBNCC.style.display = "table-row";
             }
         });
+        buscarConteudoDesenvolido()
     });
 
     selectTurnoReferencia.addEventListener('change', () => {
@@ -532,7 +532,6 @@ require_once(modification("dbforms/db_funcoes.php"));
     })();
 
     btnSalvarConteudo.addEventListener('click', () => {
-        
         if (!validaFormulario()) {
             return;
         }
@@ -741,7 +740,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             if (response.erro) {
                 return;
             }
-            limpar(false, false, false);
+            limpar(false, false, false, false);
         });
     });
 

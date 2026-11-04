@@ -21,7 +21,7 @@ class ProfissionalEquipe extends Model
     protected $primaryKey = 'psf2_id';
 
     public $casts = [
-        'psf2_data_ativacao' => 'DateTime',
-        'psf2_data_desativacao' => 'DateTime'
+        'psf2_data_ativacao' => 'datetime',
+        'psf2_data_desativacao' => 'datetime'
     ];
 }

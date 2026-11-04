@@ -36,6 +36,7 @@ class VacinasRelatorioCSV extends Dumper
                 $dado->matricula?:'--',
                 $dado->numcgm,
                 $dado->nome,
+                $dado->nomesocial,
                 $dado->vacina?:'Profissional sem registro de vacinas',
                 $dado->ed181_data,
                 $dado->dose
@@ -54,6 +55,7 @@ class VacinasRelatorioCSV extends Dumper
             'Matrícula',
             'CGM',
             'Nome',
+            'Nome Social',
             'Vacina',
             'Data da Vacinação',
             'Dose'

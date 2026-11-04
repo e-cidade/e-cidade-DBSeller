@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,7 @@ $clrotulo = new rotulocampo;
         <input name="conta"  type="hidden" id="conta"  value="<?=$conta?>"></td>
       <td width="15%">Numpre:</td>
       <td width="30%">
-        <?
+        <?php
         $k00_numpre = $opcao!=5?$k00_numpre:0;
         db_input('k00_numpre', 15, $Ik00_numpre, true, 'text', 1, "");
         ?>
@@ -51,7 +51,7 @@ $clrotulo = new rotulocampo;
       <td><input name="k15_codage" type="text" id="k15_codage" <?=($opcao==5?"readonly":"")?> value="<?=($opcao!=5?$k15_codage:$codage)?>" size="6" maxlength="5"></td>
       <td>Numpar:</td>
       <td>
-        <?
+        <?php
         $k00_numpar = $opcao!=5?$k00_numpar:0;
         db_input('k00_numpar', 15, $Ik00_numpar, true, 'text', 1, "");
         ?>
@@ -66,7 +66,7 @@ $clrotulo = new rotulocampo;
     <tr>
       <td>Data do Arquivo:</td>
       <td colspan="2">
-        <?
+        <?php
           if ($opcao == 5) {
 
             $diaarq = $dia;
@@ -87,7 +87,7 @@ $clrotulo = new rotulocampo;
     <tr>
       <td>Data do Pagamento:</td>
       <td colspan="2">
-        <?
+        <?php
         if ($opcao == 5 ) {
 
           $diapago = $dia;
@@ -108,14 +108,14 @@ $clrotulo = new rotulocampo;
     <tr>
       <td>Valor Pago:</td>
       <td>
-        <?
+        <?php
         $vlrpago = $opcao!=5?$vlrpago:0;
         db_input('vlrpago', 15, $Ivlrpago, true, 'text', 1, "onchange='js_valor_pago();'");
         ?>
        </td>
       <td>Acréscimos:</td>
       <td>
-        <?
+        <?php
         $vlracres = $opcao!=5?$vlracres:0;
         db_input('vlracres', 15, $Ivlracres, true, 'text', 1, "")
         ?>
@@ -124,14 +124,14 @@ $clrotulo = new rotulocampo;
     <tr>
       <td>Valor Juros:</td>
       <td>
-        <?
+        <?php
         $vlrjuros = $opcao!=5?$vlrjuros:0;
         db_input('vlrjuros', 15, $Ivlrjuros, true, 'text', 1, "")
         ?>
       </td>
       <td>Desconto:</td>
       <td>
-        <?
+        <?php
         $vlrdesco = $opcao!=5?$vlrdesco:0;
         db_input('vlrdesco', 15, $Ivlrdesco, true, 'text', 1, "")
         ?>
@@ -140,14 +140,14 @@ $clrotulo = new rotulocampo;
     <tr>
       <td>Valor Multa:</td>
       <td>
-        <?
+        <?php
         $vlrmulta = $opcao!=5?$vlrmulta:0;
         db_input('vlrmulta', 15, $Ivlrmulta, true, 'text', 1, "")
         ?>
       </td>
       <td>Total Pago:</td>
       <td>
-        <?
+        <?php
         $vlrtot = $opcao!=5?$vlrtot:0;
         db_input('vlrtot', 15, $Ivlrtot, true, 'text', 1, "")
         ?>
@@ -165,7 +165,7 @@ $clrotulo = new rotulocampo;
       <strong>Classi:&nbsp;&nbsp;</strong>
       </td>
       <td>
-        <?
+        <?php
         if ($opcao!=5) {
 
           if ($classi == 'f') {
@@ -192,20 +192,20 @@ $clrotulo = new rotulocampo;
       </td>
     </tr>
 
-      <?
+      <?php
       if ($opcao != 5 ) {
         ?>
         <td colspan="2" align="right"><input name="confirma" type="submit" id="confirma" value="Confirma">
-        <?
+        <?php
         if ($podeexcluir == 't' ) {
           ?>
           <td align="left"><input name="exclui" type="submit" id="exclui" value="Excluir">
-          <?
+          <?php
         }
       } else {
         ?>
         <td colspan="2" align="right"><input name="inclui" type="submit" id="inclui" value="Inclui">
-        <?
+        <?php
       }
       ?>
 

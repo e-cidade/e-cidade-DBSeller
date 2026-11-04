@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ if(isset($db_opcaoal)){
        <?=@$Lseqproitem?>
     </td>
     <td> 
-<?
+<?php
 if ( $db_opcao == 1 ){
 	$seqproitem = null;
 }
@@ -67,27 +67,27 @@ db_input('seqproitem',6,$Iseqproitem,true,'text',3,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcodproced?>">
-       <?
+       <?php
        db_ancora(@$Lcodproced,"js_pesquisacodproced(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tid_item?>">
-       <?
+       <?php
        db_ancora("Selecione os Itens","js_pesquisaid_item(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_item',5,$Iid_item,true,'hidden',$db_opcao," onchange='js_pesquisaid_item(false);'");
 ?>
 <input name="itens" value="" type="hidden">
-       <?
+       <?php
 db_input('descricao',40,$Idescricao,true,'hidden',3,'')
        ?>
     </td>
@@ -102,7 +102,7 @@ db_input('descricao',40,$Idescricao,true,'hidden',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
     if( isset ($codproced)){
 	 $chavepri= array("seqproitem"=>@$seqproitem,"codproced"=>@$codproced);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;

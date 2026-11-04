@@ -32,6 +32,11 @@ abstract class BalanceteDespesa extends Pdf
      * @var string
      */
     private $assinaturaContador;
+    /**
+     * Valores válidos
+     * @var string
+     */
+    private $apresentarRecurso;
 
     public function headers($periodo, $instituicoes)
     {
@@ -70,6 +75,11 @@ abstract class BalanceteDespesa extends Pdf
             'pdf' => $filename,
             'pdfLinkExterno' => ECIDADE_REQUEST_PATH . $filename
         ];
+    }
+
+    public function setApresentarRecurso($tipo)
+    {
+        $this->apresentarRecurso = $tipo;
     }
 
     /**
@@ -127,7 +137,9 @@ abstract class BalanceteDespesa extends Pdf
         foreach ($recursos as $recurso) {
             $fill = !$fill;
             $this->quebraPagina();
-            $this->Cell(20, 8, $recurso->recurso, '', 0, 'L', $fill);
+
+            $fonte = $this->apresentacaoRecurso($recurso);
+            $this->Cell(20, 8, $fonte, '', 0, 'L', $fill);
             $this->Cell(20, 8, "{$recurso->complemento}", '', 0, 'L', $fill);
             $valores = $recurso->valores;
             $this->Cell($this->wValor, $this->hLinha, formataValorMonetario($valores->empenhado), 0, 0, 'R', $fill);
@@ -253,5 +265,18 @@ abstract class BalanceteDespesa extends Pdf
         $this->MultiCell($w, $this->hLinha, $this->assinaturaPrefeito, 0, 'C');
         $this->SetXY(10 + $w, $y);
         $this->MultiCell($w, $this->hLinha, $this->assinaturaContador, 0, 'C');
+    }
+
+    private function apresentacaoRecurso($recurso)
+    {
+        switch ($this->apresentarRecurso) {
+            case 'fonteRecurso':
+            default:
+                return $recurso->recurso;
+            case 'depara':
+                return sprintf('%s - %s', $recurso->recurso, $recurso->subrecurso);
+            case 'siconfi':
+                return $recurso->siconfi;
+        }
     }
 }

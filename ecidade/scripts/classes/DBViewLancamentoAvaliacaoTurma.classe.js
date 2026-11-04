@@ -724,6 +724,7 @@ DBViewLancamentoAvaliacaoTurma.prototype.buscaAlunos = function () {
   oParametro.exec            = 'getAlunosAvaliacaoRegencia';
   oParametro.iEtapa          = this.oDadosTurmaSelecionada.iEtapa;
   oParametro.iTurma          = this.oDadosTurmaSelecionada.iTurma;
+  oParametro.iMaiorPermissao = this.oDadosTurmaSelecionada.iMaiorPermissao;
   oParametro.iRegencia       = $F('disciplina');
 
   var oSelf = this;

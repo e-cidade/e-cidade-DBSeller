@@ -93,10 +93,10 @@ require_once modification("dbforms/db_funcoes.php");
 <body class="body-default">
 <div class="alert alert-primary text-left" role="alert">
     Essa rotina realiza o vínculo das contas do PCASP com as contas do e-cidade.<br>
-    - O <kbd><i class="fas fa-cogs"></i> Vínculo Automático</kbd> procura as contas compatíveis no e-cidade e cria os
-    vínculos de forma automática. <br>
-    - Você pode mapear manualmente outras contas, selecionado a "Conta PCASP Governo" e clicando em <kbd>Adicionar
-        <i class="fa fa-plus"></i></kbd>
+    - Para mapear as contas, selecione a "Conta PCASP Governo" e clique em <kbd>Adicionar
+        <i class="fa fa-plus"></i></kbd> para selecionar as contas do e-Cidade.<br>
+    - <kbd><i class="fas fa-print"></i></kbd> imprime as contas: não mapeadas com movimentação,
+    não mapeadas sem movimentação e as contas mapeadas.
 </div>
 <div class="container">
     <table class="form-container" >
@@ -107,12 +107,6 @@ require_once modification("dbforms/db_funcoes.php");
                     <option value="uniao">União / Federação</option>
                     <option value="UF">Estadual / Regional</option>
                 </select>
-            </td>
-            <td>
-                <button type="button" id="btnVincularGeral" name="btnVincularGeral" class="btn btn-light">
-                    <i class="fas fa-cogs"></i>
-                    Vínculo Automático
-                </button>
             </td>
         </tr>
         <tr>
@@ -195,8 +189,6 @@ require_once modification("dbforms/db_funcoes.php");
     const inputDescricaoConta = document.getElementById('descricaoConta');
     const btnClean = document.getElementById('btnClean');
     const btnVincular = document.getElementById('btnVincular');
-    const btnVincularGeral = document.getElementById('btnVincularGeral');
-    const btnImprimir = document.getElementById('btnImprimir');
 
     const fade = document.getElementById('fade');
     const close = document.getElementById('close');
@@ -450,19 +442,6 @@ require_once modification("dbforms/db_funcoes.php");
             }
 
             btnClean.dispatchEvent(new Event('click'));
-        });
-    });
-
-    btnVincularGeral.addEventListener('click', () => {
-        const formData = new FormData();
-        formData.append('exercicio', PHPSession.getValueSession('DB_anousu'));
-        formData.append('tipoPlano', cboTipoPlano.value);
-        formData.append('apenasAnaliticas', 1);
-        HttpClient.post(`${PHPSession.requestApi}/${routs.vincularGeral}`, {body: formData}).then(response => {
-            alert(response.message);
-            if (response.error) {
-                return;
-            }
         });
     });
 

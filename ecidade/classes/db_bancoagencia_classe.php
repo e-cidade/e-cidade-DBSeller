@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_bancoagencia {
                  db89_digito = varchar(2) = Digito 
                  ";
    //funcao construtor da classe
-   function cl_bancoagencia() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancoagencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_bancoagencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db89_sequencial = ($this->db89_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db89_sequencial"]:$this->db89_sequencial);
        $this->db89_db_bancos = ($this->db89_db_bancos == ""?@$GLOBALS["HTTP_POST_VARS"]["db89_db_bancos"]:$this->db89_db_bancos);
@@ -80,7 +80,7 @@ class cl_bancoagencia {
      }
    }
    // funcao para inclusao
-   function incluir ($db89_sequencial){
+   public function incluir ($db89_sequencial){
       $this->atualizacampos();
      if($this->db89_db_bancos == null ){
        $this->erro_sql = " Campo Banco nao Informado.";
@@ -185,7 +185,7 @@ class cl_bancoagencia {
      return true;
    }
    // funcao para alteracao
-   function alterar ($db89_sequencial=null) {
+   public function alterar ($db89_sequencial=null) {
       $this->atualizacampos();
      $sql = " update bancoagencia set ";
      $virgula = "";
@@ -295,7 +295,7 @@ class cl_bancoagencia {
      }
    }
    // funcao para exclusao
-   function excluir ($db89_sequencial=null,$dbwhere=null) {
+   public function excluir ($db89_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db89_sequencial));
      }else{
@@ -359,7 +359,7 @@ class cl_bancoagencia {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -382,7 +382,7 @@ class cl_bancoagencia {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $db89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $db89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -417,7 +417,7 @@ class cl_bancoagencia {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $db89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $db89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -451,7 +451,7 @@ class cl_bancoagencia {
      return $sql;
   }
 
-  function sql_query_endereco ( $db89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_endereco ( $db89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);

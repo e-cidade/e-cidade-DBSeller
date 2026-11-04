@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,6 +36,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 $clmatmater = new cl_matmater;
 $clmatmater->rotulo->label("m60_codmater");
 $clmatmater->rotulo->label("m60_descr");
+$clmatparam = new cl_matparam;
 ?>
 <html>
 <head>
@@ -54,7 +55,7 @@ $clmatmater->rotulo->label("m60_descr");
               <?=$Lm60_codmater?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");
 		       ?>
             </td>
@@ -84,6 +85,14 @@ $clmatmater->rotulo->label("m60_descr");
     <td align="center" valign="top">
       <?php
       $where_deptoestoque = " and m71_quant > m71_quantatend ";
+
+      $rsMatparam = $clmatparam->sql_record($clmatparam->sql_query(null, "m90_reqsemest"));
+      db_fieldsmemory($rsMatparam, 0);
+
+      if ($m90_reqsemest == 'f') {
+          $where_deptoestoque = " and m71_quant >= m71_quantatend ";
+      }
+
       if(isset($codigododepartamento)){
 	$where_deptoestoque .= " and m70_coddepto=$codigododepartamento";
       }

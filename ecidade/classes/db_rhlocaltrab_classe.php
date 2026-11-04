@@ -686,7 +686,7 @@ class cl_rhlocaltrab
   * @param null $where
   * @return string
   */
-  public function sql_query_servidor($campos = "*", $where = null)
+  public function sql_query_servidor($campos = "*", $where = null, $order = null)
   {
       $sql  = " select {$campos} ";
       $sql .= " from rhlocaltrab ";
@@ -695,7 +695,9 @@ class cl_rhlocaltrab
       if (!empty($where)) {
           $sql .= " where {$where} ";
       }
- 
+      if (!empty($order)) {
+        $sql .= " order by {$order} ";
+      }
       return $sql;
   }
 

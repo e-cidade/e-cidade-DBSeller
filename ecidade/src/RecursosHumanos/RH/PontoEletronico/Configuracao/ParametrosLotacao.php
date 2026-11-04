@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,80 +27,103 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao;
 
-class ParametrosLotacao {
+class ParametrosLotacao
+{
 
-  private $iCodigoSequencial;
-  private $iTolerancia;
-  private $sHoraExtra50;
-  private $sHoraExtra75;
-  private $sHoraExtra100;
-  private $iCodigoLotacao;
-  private $oSupervisor;
+    private $iCodigoSequencial;
+    private $iTolerancia;
+    private $sHoraExtra50;
+    private $sHoraExtra75;
+    private $sHoraExtra100;
+    private $iCodigoLotacao;
+    private $oSupervisor;
 
-  function __construct ($iCodigoSequencial = null, $iTolerancia = null, $sHoraExtra50 = null, $sHoraExtra75 = null, $sHoraExtra100 = null, $iCodigoLotacao = null, $oSupervisor = null) {
+    public function __construct(
+        $iCodigoSequencial = null,
+        $iTolerancia = null,
+        $sHoraExtra50 = null,
+        $sHoraExtra75 = null,
+        $sHoraExtra100 = null,
+        $iCodigoLotacao = null,
+        $oSupervisor = null
+    ) {
 
-    $this->iCodigoSequencial = $iCodigoSequencial;
-    $this->iTolerancia       = $iTolerancia;
-    $this->sHoraExtra50      = $sHoraExtra50;
-    $this->sHoraExtra75      = $sHoraExtra75;
-    $this->sHoraExtra100     = $sHoraExtra100;
-    $this->iCodigoLotacao    = $iCodigoLotacao;
-    $this->oSupervisor       = $oSupervisor;
-  }
+        $this->iCodigoSequencial = $iCodigoSequencial;
+        $this->iTolerancia       = $iTolerancia;
+        $this->sHoraExtra50      = $sHoraExtra50;
+        $this->sHoraExtra75      = $sHoraExtra75;
+        $this->sHoraExtra100     = $sHoraExtra100;
+        $this->iCodigoLotacao    = $iCodigoLotacao;
+        $this->oSupervisor       = $oSupervisor;
+    }
 
-  public function setCodigo($iCodigoSequencial) {
-    $this->iCodigoSequencial = $iCodigoSequencial;
-  }
+    public function setCodigo($iCodigoSequencial)
+    {
+        $this->iCodigoSequencial = $iCodigoSequencial;
+    }
 
-  public function getCodigo() {
-    return $this->iCodigoSequencial;
-  }
+    public function getCodigo()
+    {
+        return $this->iCodigoSequencial;
+    }
 
-  public function setTolerancia($iTolerancia) {
-    $this->iTolerancia = $iTolerancia;
-  }
+    public function setTolerancia($iTolerancia)
+    {
+        $this->iTolerancia = $iTolerancia;
+    }
 
-  public function getTolerancia() {
-    return $this->iTolerancia;
-  }
+    public function getTolerancia()
+    {
+        return $this->iTolerancia;
+    }
 
-  public function setHoraExtra50($sHoraExtra50) {
-    $this->sHoraExtra50 = $sHoraExtra50;
-  }
+    public function setHoraExtra50($sHoraExtra50)
+    {
+        $this->sHoraExtra50 = $sHoraExtra50;
+    }
 
-  public function getHoraExtra50() {
-    return $this->sHoraExtra50;
-  }
+    public function getHoraExtra50()
+    {
+        return $this->sHoraExtra50;
+    }
 
-  public function setHoraExtra75($sHoraExtra75) {
-    $this->sHoraExtra75 = $sHoraExtra75;
-  }
+    public function setHoraExtra75($sHoraExtra75)
+    {
+        $this->sHoraExtra75 = $sHoraExtra75;
+    }
 
-  public function getHoraExtra75() {
-    return $this->sHoraExtra75;
-  }
+    public function getHoraExtra75()
+    {
+        return $this->sHoraExtra75;
+    }
 
-  public function setHoraExtra100($sHoraExtra100) {
-    $this->sHoraExtra100 = $sHoraExtra100;
-  }
+    public function setHoraExtra100($sHoraExtra100)
+    {
+        $this->sHoraExtra100 = $sHoraExtra100;
+    }
 
-  public function getHoraExtra100() {
-    return $this->sHoraExtra100;
-  }
+    public function getHoraExtra100()
+    {
+        return $this->sHoraExtra100;
+    }
 
-  public function setCodigoLotacao($iCodigoLotacao) {
-    $this->iCodigoLotacao = $iCodigoLotacao;
-  }
+    public function setCodigoLotacao($iCodigoLotacao)
+    {
+        $this->iCodigoLotacao = $iCodigoLotacao;
+    }
 
-  public function getCodigoLotacao() {
-    return $this->iCodigoLotacao;
-  }
+    public function getCodigoLotacao()
+    {
+        return $this->iCodigoLotacao;
+    }
 
-  public function setSupervisor($oSupervisor) {
-    $this->oSupervisor = $oSupervisor;
-  }
+    public function setSupervisor($oSupervisor)
+    {
+        $this->oSupervisor = $oSupervisor;
+    }
 
-  public function getSupervisor() {
-    return $this->oSupervisor;    
-  }
+    public function getSupervisor()
+    {
+        return $this->oSupervisor;
+    }
 }

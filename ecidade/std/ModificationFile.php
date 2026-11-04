@@ -139,14 +139,14 @@ class ModificationFile {
         case 'bottom':
 
           $this->content = $this->content . $add;
-          continue;
+          continue 2;
         break;
 
         // inicio do arquivo
         case 'top':
 
           $this->content = $add . $this->content;
-          continue;
+          continue 2;
         break;
       }
 

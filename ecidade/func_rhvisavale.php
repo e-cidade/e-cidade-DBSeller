@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhvisavale->rotulo->label("rh47_contrato");
               <?=$Lrh47_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh47_instit",2,$Irh47_instit,true,"text",4,"","chave_rh47_instit");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhvisavale->rotulo->label("rh47_contrato");
               <?=$Lrh47_contrato?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh47_contrato",11,$Irh47_contrato,true,"text",4,"","chave_rh47_contrato");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhvisavale->rotulo->label("rh47_contrato");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = "";
       if(isset($instit)){
       	$dbwhere = " and rh47_instit = ".db_getsession("DB_instit");
@@ -123,12 +123,12 @@ $clrhvisavale->rotulo->label("rh47_contrato");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

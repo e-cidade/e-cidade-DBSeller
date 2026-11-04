@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ if(isset($HTTP_POST_VARS["criar"])) {
   ////////
   
 $corpo = "
-<?
+<?php
 require(modification(\"libs/db_stdlib.php\"));
 require(modification(\"libs/db_conecta.php\"));
 parse_str(base64_decode(\$HTTP_SERVER_VARS['QUERY_STRING']));
@@ -145,7 +145,7 @@ $corpo .= "
 <table width=\"790\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <tr> 
     <td height=\"430\" align=\"left\" valign=\"top\" bgcolor=\"#CCCCCC\"> <center>
-	<?
+	<?php
       if(isset(\$HTTP_POST_VARS[\"procurar\"]) || isset(\$HTTP_POST_VARS[\"priNoMe\"]) || isset(\$HTTP_POST_VARS[\"antNoMe\"]) || isset(\$HTTP_POST_VARS[\"proxNoMe\"]) || isset(\$HTTP_POST_VARS[\"ultNoMe\"])) {
         \$sql = \"SELECT ".$campos[0][0]." as db_codigo,*
               FROM $tabela
@@ -169,20 +169,20 @@ $corpo .= "
 	  $corpo .= "
             <tr>
               <td height=\"25\" id=\"at4\" class=\"mod1\" nowrap>&nbsp;</td>
-              <td height=\"25\" id=\"at5\" class=\"mod1\" nowrap> <input name=\"incluir\" accesskey=\"i\" type=\"submit\" id=\"incluir\" value=\"Incluir\" <? echo isset(\$retorno)?\"disabled\":\"\" ?>> 
-                &nbsp; <input name=\"alterar\" accesskey=\"a\" type=\"submit\" id=\"alterar\" value=\"Alterar\" <? echo !isset(\$retorno)?\"disabled\":\"\" ?>> 
-                &nbsp; <input name=\"excluir\" accesskey=\"e\" type=\"submit\" id=\"excluir\" value=\"Excluir\" onClick=\"return confirm('Quer realmente excluir este registro?')\" <? echo !isset(\$retorno)?\"disabled\":\"\" ?>> 
+              <td height=\"25\" id=\"at5\" class=\"mod1\" nowrap> <input name=\"incluir\" accesskey=\"i\" type=\"submit\" id=\"incluir\" value=\"Incluir\" <?php echo isset(\$retorno)?\"disabled\":\"\" ?>> 
+                &nbsp; <input name=\"alterar\" accesskey=\"a\" type=\"submit\" id=\"alterar\" value=\"Alterar\" <?php echo !isset(\$retorno)?\"disabled\":\"\" ?>> 
+                &nbsp; <input name=\"excluir\" accesskey=\"e\" type=\"submit\" id=\"excluir\" value=\"Excluir\" onClick=\"return confirm('Quer realmente excluir este registro?')\" <?php echo !isset(\$retorno)?\"disabled\":\"\" ?>> 
                 &nbsp; <input name=\"procurar\" accesskey=\"p\" type=\"submit\" id=\"procurar\" value=\"Procurar\"></td>
             </tr>
           </table>
         </form>
-		<?
+		<?php
 		}
 		?>
       </center></td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession(\"DB_id_usuario\"),db_getsession(\"DB_modulo\"),db_getsession(\"DB_anousu\"),db_getsession(\"DB_instit\"));
 ?>
 </body>
@@ -326,7 +326,7 @@ function js_inserir() {
           </table>
         </form>
       </center>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
     </td>

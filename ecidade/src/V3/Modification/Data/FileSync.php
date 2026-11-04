@@ -47,25 +47,12 @@ class FileSync extends Storage
      * Mantem arquivo de cache atualizado
      *
      * @param string $path
-     * @param string $user
      * @return \ECidade\V3\Modification\Data\File | false
      */
-    public static function update($path, $user = null)
+    public static function update($path)
     {
-        // verifica cache por usuario
-        $fileData = new File($path, $user);
+        $fileData = new File($path);
         $fileSync = new static($fileData);
-
-        // nao existe cache por usuario, busca global
-        // @FIXME - remover validacao "!$fileData->exists()"
-        // validacao por compatibilidade
-        // caches ja instalados nao tem arquivo de sincronizacao criado
-        if (!$fileSync->exists() && !$fileData->exists()) {
-
-            $user = null;
-            $fileData = new File($path);
-            $fileSync = new static($fileData);
-        }
 
         // arquivo nao tem modificação
         // @FIXME - remover validacao "!$fileData->exists()"
@@ -78,7 +65,6 @@ class FileSync extends Storage
         // arquivo sync atualizado
         // - retorna cache atualizado ou false, caso nao exista
         if ($fileSync->updated()) {
-
             // cache nao existe
             // acontece quando modificacao foi abortada
             // ou deu erro em todas as operacoes da modificacao
@@ -96,7 +82,6 @@ class FileSync extends Storage
 
         // verifica se tem configurado arquivo para log
         if ($config->has('app.modifications.log.path')) {
-
             $logger = $manager->getLogger();
             $logger->setFile($config->get('app.modifications.log.path'));
             $logger->setVerbosity($config->get('app.log.verbosity', Logger::QUIET));
@@ -104,13 +89,7 @@ class FileSync extends Storage
         }
 
         // atualiza arquivo
-        $manager->updateFile($path, $user);
-
-        // arquivo com modificacao de usuario nao gerou cache
-        // verifica se gerou o global
-        if (!$fileData->exists() && !empty($user)) {
-            $fileData = new File($path);
-        }
+        $manager->updateFile($path);
 
         // arquivo nao gerou cache
         // ocorreu algum erro no parse

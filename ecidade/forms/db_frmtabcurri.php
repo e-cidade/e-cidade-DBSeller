@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("h02_descr");
        <?=@$Lh01_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('h01_codigo',5,$Ih01_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th01_cgmentid?>">
-       <?
+       <?php
        db_ancora(@$Lh01_cgmentid,"js_pesquisah01_cgmentid(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h01_cgmentid',6,$Ih01_cgmentid,true,'text',$db_opcao," onchange='js_pesquisah01_cgmentid(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lh01_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h01_descr',80,$Ih01_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,22 +74,22 @@ db_input('h01_descr',80,$Ih01_descr,true,'text',$db_opcao,"")
        <?=@$Lh01_detalh?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h01_detalh',5,80,$Ih01_detalh,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th01_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Lh01_codtipo,"js_pesquisah01_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h01_codtipo',5,$Ih01_codtipo,true,'text',$db_opcao," onchange='js_pesquisah01_codtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('h02_descr',60,$Ih02_descr,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('h02_descr',60,$Ih02_descr,true,'text',3,'')
        <?=@$Lh01_cargahor?>
     </td>
     <td> 
-<?
+<?php
 db_input('h01_cargahor',10,$Ih01_cargahor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tabcurri.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

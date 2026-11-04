@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed43_i_codigo");
        <?=@$Led73_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed73_i_codigo',10,$Ied73_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted73_i_diario?>">
-       <?
+       <?php
        db_ancora(@$Led73_i_diario,"js_pesquisaed73_i_diario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed73_i_diario',10,$Ied73_i_diario,true,'text',$db_opcao," onchange='js_pesquisaed73_i_diario(false);'")
 ?>
-       <?
+       <?php
 db_input('ed95_i_codigo',10,$Ied95_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted73_i_procresultado?>">
-       <?
+       <?php
        db_ancora(@$Led73_i_procresultado,"js_pesquisaed73_i_procresultado(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed73_i_procresultado',10,$Ied73_i_procresultado,true,'text',$db_opcao," onchange='js_pesquisaed73_i_procresultado(false);'")
 ?>
-       <?
+       <?php
 db_input('ed43_i_codigo',10,$Ied43_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed43_i_codigo',10,$Ied43_i_codigo,true,'text',3,'')
        <?=@$Led73_i_valornota?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed73_i_valornota',10,$Ied73_i_valornota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('ed73_i_valornota',10,$Ied73_i_valornota,true,'text',$db_opcao,"")
        <?=@$Led73_c_valorconceito?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed73_c_valorconceito',2,$Ied73_c_valorconceito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('ed73_c_valorconceito',2,$Ied73_c_valorconceito,true,'text',$db_opcao,"
        <?=@$Led73_t_parecer?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed73_t_parecer',0,0,$Ied73_t_parecer,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_textarea('ed73_t_parecer',0,0,$Ied73_t_parecer,true,'text',$db_opcao,"")
        <?=@$Led73_c_aprovmin?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed73_c_aprovmin',1,$Ied73_c_aprovmin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -171,7 +171,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_diarioresultado.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

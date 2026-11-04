@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clliclicitem->rotulo->label("l21_codigo");
               <?=$Ll21_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l21_codigo",10,$Il21_codigo,true,"text",4,"","chave_l21_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clliclicitem->rotulo->label("l21_codigo");
               <?=$Ll21_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l21_codigo",10,$Il21_codigo,true,"text",4,"","chave_l21_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clliclicitem->rotulo->label("l21_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_liclicitem.php")==true){
@@ -118,12 +118,12 @@ $clliclicitem->rotulo->label("l21_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -159,6 +159,57 @@
       return null;
     }
 
+      /**
+       * Retorna a regencia
+       * @param Turma      $oTurma
+       * @param Etapa      $oEtapa
+       *
+       * @return array
+       */
+      public static function getCodigoRegenciaByTurmaAndEtapa(Turma $oTurma, Etapa $oEtapa) {
+
+          $sWhere       = " ed59_i_turma = {$oTurma->getCodigo()} and ed59_i_serie = {$oEtapa->getCodigo()}";
+          $oDaoRegencia = new cl_regencia();
+          $sSqlRegencia = $oDaoRegencia->sql_query_file(null, "ed59_i_codigo", null, $sWhere);
+          $rsRegencia   = $oDaoRegencia->sql_record($sSqlRegencia);
+
+          if ($oDaoRegencia->numrows > 0) {
+              $aRegencias = array();
+              $iLinhas    = pg_num_rows($rsRegencia);
+              for ($i=0; $i < $iLinhas; $i++) {
+                  $aRegencias[] = db_utils::fieldsMemory($rsRegencia, $i);
+              }
+              return $aRegencias;
+          }
+
+          return null;
+      }
+
+      /**
+       * Retorna a regencia
+       * @param Turma      $oTurma
+       * @param Etapa      $oEtapa
+       *
+       * @return array
+       */
+      public static function getRegenciaByTurmaAndEtapa(Turma $oTurma, Etapa $oEtapa) {
+
+          $sWhere       = " ed59_i_turma = {$oTurma->getCodigo()} and ed59_i_serie = {$oEtapa->getCodigo()}";
+          $oDaoRegencia = new cl_regencia();
+          $sSqlRegencia = $oDaoRegencia->sql_query_file(null, "ed59_i_codigo", null, $sWhere);
+          $rsRegencia   = $oDaoRegencia->sql_record($sSqlRegencia);
+
+          if ($oDaoRegencia->numrows > 0) {
+              $aRegencias = array();
+              $iLinhas    = pg_num_rows($rsRegencia);
+              for ($i=0; $i < $iLinhas; $i++) {
+                  $aRegencias[] = RegenciaRepository::getRegenciaByCodigo( db_utils::fieldsMemory($rsRegencia, $i)->ed59_i_codigo );
+              }
+              return $aRegencias;
+          }
+
+          return null;
+      }
 
     /**
      * Remove todas regencias da memoria

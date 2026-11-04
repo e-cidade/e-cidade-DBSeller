@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,13 +58,13 @@ class cl_conceito {
                  ed39_c_nome = char(30) = Nome
                  ";
    //funcao construtor da classe
-   function cl_conceito() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conceito");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_conceito {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed39_i_codigo = ($this->ed39_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed39_i_codigo"]:$this->ed39_i_codigo);
        $this->ed39_i_formaavaliacao = ($this->ed39_i_formaavaliacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed39_i_formaavaliacao"]:$this->ed39_i_formaavaliacao);
@@ -86,7 +86,7 @@ class cl_conceito {
      }
    }
    // funcao para inclusao
-   function incluir ($ed39_i_codigo){
+   public function incluir ($ed39_i_codigo){
       $this->atualizacampos();
      if($this->ed39_i_formaavaliacao == null ){
        $this->erro_sql = " Campo Forma de Avaliação nao Informado.";
@@ -221,7 +221,7 @@ class cl_conceito {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed39_i_codigo=null) {
+   public function alterar ($ed39_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update conceito set ";
      $virgula = "";
@@ -361,7 +361,7 @@ class cl_conceito {
      }
    }
    // funcao para exclusao
-   function excluir ($ed39_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed39_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed39_i_codigo));
      }else{
@@ -427,7 +427,7 @@ class cl_conceito {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -450,7 +450,7 @@ class cl_conceito {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -486,7 +486,7 @@ class cl_conceito {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -520,7 +520,7 @@ class cl_conceito {
      return $sql;
   }
 
-  function sql_conceito ( $ed39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_conceito ( $ed39_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql  = "select {$campos} ";
     $sql .= " from conceito ";

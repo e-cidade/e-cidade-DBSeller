@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -58,7 +58,7 @@ $clbasemps->rotulo->label("ed11_c_descr");
                 <b>Serie</b>
               </td>
               <td width="96%" align="left" nowrap>
-                <?db_input( "ed34_i_serie", 10, @$Ied34_i_serie, true, "text", 4, "", "chave_ed34_i_serie" );?>
+                <?php db_input( "ed34_i_serie", 10, @$Ied34_i_serie, true, "text", 4, "", "chave_ed34_i_serie" );?>
               </td>
             </tr>
             <tr>
@@ -66,7 +66,7 @@ $clbasemps->rotulo->label("ed11_c_descr");
                 <b>Descricao</b>
               </td>
               <td width="96%" align="left" nowrap>
-                <?db_input( "ed11_c_descr", 30, @$Ied11_c_descr, true, "text", 4, "", "chave_ed11_c_descr" );?>
+                <?php db_input( "ed11_c_descr", 30, @$Ied11_c_descr, true, "text", 4, "", "chave_ed11_c_descr" );?>
               </td>
             </tr>
             <tr>
@@ -82,55 +82,55 @@ $clbasemps->rotulo->label("ed11_c_descr");
     </tr>
     <tr>
       <td align="center" valign="top">
-       <?
+       <?php
        $sql    = "SELECT ARRAY(SELECT ed234_i_serieequiv FROM serieequiv WHERE ed234_i_serie in ({$serie})) as seriesequivalentes";
        $result = db_query( $sql );
-       
+
        db_fieldsmemory( $result, 0 );
-       
+
        $seriesequivalentes = str_replace( "{", "", $seriesequivalentes );
        $seriesequivalentes = str_replace( "}", "", $seriesequivalentes );
-       
+
        if ( $seriesequivalentes == "" ) {
          $seriesequivalentes = "0";
        }
-       
+
        $where1 = " ed34_i_base = {$base} AND ed34_i_serie in ({$serie}, {$seriesequivalentes})";
-       
+
        if ( !isset( $pesquisa_chave ) ) {
-      
+
          if ( isset( $campos ) == false ) {
-      
+
            if ( file_exists( "funcoes/db_func_serieatest.php" ) == true ) {
              include(modification("funcoes/db_func_serieatest.php"));
            } else {
              $campos = "basemps.*";
            }
          }
-         
+
          if ( isset( $chave_ed34_i_codigo ) && ( trim( $chave_ed34_i_codigo ) != "" ) ) {
-      
+
            $ssWhere  = "     ed34_i_codigo = {$chave_ed34_i_codigo} AND ed34_i_base = {$base}";
            $ssWhere .= " AND ed34_i_serie in ({$serie}, {$seriesequivalentes})";
            $sql      = $clbasemps->sql_query( "", " distinct ".$campos, "", $ssWhere );
          } else if( isset( $chave_ed11_c_descr ) && ( trim( $chave_ed11_c_descr ) != "" ) ) {
-      
+
            $ssWhere  = "     ed11_c_descr like '{$chave_ed11_c_descr}%' AND ed34_i_base = {$base}";
            $ssWhere .= " AND ed34_i_serie in ({$serie}, {$seriesequivalentes})";
            $sql     = $clbasemps->sql_query( "", " distinct ".$campos, "", $ssWhere );
          } else {
            $sql = $clbasemps->sql_query( "", " distinct ".$campos, "", $where1 );
          }
-         
+
          db_lovrot( $sql, 15, "()", "", $funcao_js );
        } else {
-      
+
          if ( $pesquisa_chave != null && $pesquisa_chave != "" ) {
-      
+
            $result = $clbasemps->sql_record( $clbsemps->sql_query( "", "*", "", " ed34_i_codigo = {$pesquisa_chave}" ) );
-           
+
            if ( $clbasemps->numrows != 0 ) {
-      
+
              db_fieldsmemory( $result, 0 );
              echo "<script>".$funcao_js."('$ed11_c_descr',false);</script>";
            } else {

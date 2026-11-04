@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ try {
       $vir           = "";
       $lTemPermissao = false;
 
-      $iItem = split("_",$oParametros->lista);
+      $iItem =explode("_",$oParametros->lista);
       for ($i = 0; $i < sizeof($iItem); $i++) {
 
       	$sNomeUsuario            = '';

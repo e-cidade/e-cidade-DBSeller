@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("o56_elemento");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Te53_codord?>">
-       <?
+       <?php
        db_ancora(@$Le53_codord,"js_pesquisae53_codord(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e53_codord',6,$Ie53_codord,true,'text',$db_opcao," onchange='js_pesquisae53_codord(false);'")
 ?>
-       <?
+       <?php
 db_input('e50_numemp',8,$Ie50_numemp,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te53_codele?>">
-       <?
+       <?php
        db_ancora(@$Le53_codele,"js_pesquisae53_codele(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e53_codele',6,$Ie53_codele,true,'text',$db_opcao," onchange='js_pesquisae53_codele(false);'")
 ?>
-       <?
+       <?php
 db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        <?=@$Le53_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('e53_valor',15,$Ie53_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_input('e53_valor',15,$Ie53_valor,true,'text',$db_opcao,"")
        <?=@$Le53_vlranu?>
     </td>
     <td> 
-<?
+<?php
 db_input('e53_vlranu',15,$Ie53_vlranu,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('e53_vlranu',15,$Ie53_vlranu,true,'text',$db_opcao,"")
        <?=@$Le53_vlrpag?>
     </td>
     <td> 
-<?
+<?php
 db_input('e53_vlrpag',15,$Ie53_vlrpag,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_pagordemele.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

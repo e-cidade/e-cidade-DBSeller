@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -284,7 +284,7 @@ if (isset ( $alterar )) {
 	?>
 </body>
 </html>
-<?
+<?php
 
 if (isset ( $alterar )) {
   if ($clbensplaca->erro_status == "0") {

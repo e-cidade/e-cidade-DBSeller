@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("p61_codandam");
   <tr>
     <td nowrap title="<?=@$Tp86_codtrans?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lp86_codtrans,"js_pesquisap86_codtrans(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p86_codtrans',10,$Ip86_codtrans,true,'text',$db_opcao," onchange='js_pesquisap86_codtrans(false);'")
 ?>
-       <?
+       <?php
 db_input('p88_codigo',10,$Ip88_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp86_codandam?>">
-       <?
+       <?php
        db_ancora(@$Lp86_codandam,"js_pesquisap86_codandam(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p86_codandam',10,$Ip86_codandam,true,'text',$db_opcao," onchange='js_pesquisap86_codandam(false);'")
 ?>
-       <?
+       <?php
 db_input('p61_codandam',0,$Ip61_codandam,true,'text',3,'')
        ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procandamintand.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

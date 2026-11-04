@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -60,12 +60,14 @@ db_postmemory($HTTP_POST_VARS);
     $filtro = " o70_anousu = " . db_getsession("DB_anousu") . " and o70_instit = " . db_getsession("DB_instit");
     $filtro .= " and o15_datalimite is null or o15_datalimite > '" . date('Y-m-d', db_getsession('DB_datausu')) . "'";
     $sql = "
-    select fc_estruturalreceita(o70_anousu,o70_codrec) as dl_estrutural,o57_descr,o70_codrec,o15_recurso,
-           o15_descr,(o15_complemento ||' - '|| o200_descricao)::varchar as complemento
+    select fc_estruturalreceita(o70_anousu,o70_codrec) as dl_estrutural, o57_descr, o70_codrec, gestao, o15_recurso,
+           descricao,(o15_complemento ||' - '|| o200_descricao)::varchar as complemento
      from orcreceita d
-          inner join orcfontes e on e.o57_codfon = d.o70_codfon and o57_anousu = o70_anousu
-          inner join orctiporec r on r.o15_codigo = d.o70_codigo
-          inner join complementofonterecurso on o200_sequencial = o15_complemento";
+      join orcfontes e on e.o57_codfon = d.o70_codfon and o57_anousu = o70_anousu
+      join orctiporec r on r.o15_codigo = d.o70_codigo
+      join fonterecurso on fonterecurso.orctiporec_id = r.o15_codigo
+        and fonterecurso.exercicio = o70_anousu
+      join complementofonterecurso on o200_sequencial = o15_complemento";
     if (!empty($filtro)) {
         $sql .= " where ";
         $sql .= $filtro . " order by dl_estrutural";

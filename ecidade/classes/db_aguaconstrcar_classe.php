@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: agua
 //CLASSE DA ENTIDADE aguaconstrcar
-class cl_aguaconstrcar { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x12_codconstr = 0; 
-   var $x12_codigo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_aguaconstrcar {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x12_codconstr = 0;
+   var $x12_codigo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x12_codconstr = int4 = Construção 
-                 x12_codigo = int8 = Caracteristica 
+                 x12_codconstr = int4 = Construção
+                 x12_codigo = int8 = Caracteristica
                  ";
-   //funcao construtor da classe 
-   function cl_aguaconstrcar() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguaconstrcar"); 
+     $this->rotulo = new rotulo("aguaconstrcar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_aguaconstrcar {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x12_codconstr = ($this->x12_codconstr == ""?@$GLOBALS["HTTP_POST_VARS"]["x12_codconstr"]:$this->x12_codconstr);
        $this->x12_codigo = ($this->x12_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["x12_codigo"]:$this->x12_codigo);
@@ -75,11 +75,11 @@ class cl_aguaconstrcar {
      }
    }
    // funcao para inclusao
-   function incluir ($x12_codigo,$x12_codconstr){ 
+   public function incluir ($x12_codigo,$x12_codconstr){
       $this->atualizacampos();
-       $this->x12_codigo = $x12_codigo; 
-       $this->x12_codconstr = $x12_codconstr; 
-     if(($this->x12_codigo == null) || ($this->x12_codigo == "") ){ 
+       $this->x12_codigo = $x12_codigo;
+       $this->x12_codconstr = $x12_codconstr;
+     if(($this->x12_codigo == null) || ($this->x12_codigo == "") ){
        $this->erro_sql = " Campo x12_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -87,7 +87,7 @@ class cl_aguaconstrcar {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->x12_codconstr == null) || ($this->x12_codconstr == "") ){ 
+     if(($this->x12_codconstr == null) || ($this->x12_codconstr == "") ){
        $this->erro_sql = " Campo x12_codconstr nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -96,15 +96,15 @@ class cl_aguaconstrcar {
        return false;
      }
      $sql = "insert into aguaconstrcar(
-                                       x12_codconstr 
-                                      ,x12_codigo 
+                                       x12_codconstr
+                                      ,x12_codigo
                        )
                 values (
-                                $this->x12_codconstr 
-                               ,$this->x12_codigo 
+                                $this->x12_codconstr
+                               ,$this->x12_codigo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "aguaconstrcar ($this->x12_codigo."-".$this->x12_codconstr) nao Incluído. Inclusao Abortada.";
@@ -138,16 +138,16 @@ class cl_aguaconstrcar {
        $resac = db_query("insert into db_acount values($acount,1429,8426,'','".AddSlashes(pg_result($resaco,0,'x12_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x12_codigo=null,$x12_codconstr=null) { 
+   public function alterar ($x12_codigo=null,$x12_codconstr=null) {
       $this->atualizacampos();
      $sql = " update aguaconstrcar set ";
      $virgula = "";
-     if(trim($this->x12_codconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x12_codconstr"])){ 
+     if(trim($this->x12_codconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x12_codconstr"])){
        $sql  .= $virgula." x12_codconstr = $this->x12_codconstr ";
        $virgula = ",";
-       if(trim($this->x12_codconstr) == null ){ 
+       if(trim($this->x12_codconstr) == null ){
          $this->erro_sql = " Campo Construção nao Informado.";
          $this->erro_campo = "x12_codconstr";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_aguaconstrcar {
          return false;
        }
      }
-     if(trim($this->x12_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x12_codigo"])){ 
+     if(trim($this->x12_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x12_codigo"])){
        $sql  .= $virgula." x12_codigo = $this->x12_codigo ";
        $virgula = ",";
-       if(trim($this->x12_codigo) == null ){ 
+       if(trim($this->x12_codigo) == null ){
          $this->erro_sql = " Campo Caracteristica nao Informado.";
          $this->erro_campo = "x12_codigo";
          $this->erro_banco = "";
@@ -192,7 +192,7 @@ class cl_aguaconstrcar {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguaconstrcar nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x12_codigo."-".$this->x12_codconstr;
@@ -220,14 +220,14 @@ class cl_aguaconstrcar {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x12_codigo=null,$x12_codconstr=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x12_codigo=null,$x12_codconstr=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x12_codigo,$x12_codconstr));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -261,7 +261,7 @@ class cl_aguaconstrcar {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguaconstrcar nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$x12_codigo."-".$x12_codconstr;
@@ -289,11 +289,11 @@ class cl_aguaconstrcar {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -315,10 +315,10 @@ class cl_aguaconstrcar {
       }
      return $result;
    }
-   function sql_query ( $x12_codigo=null,$x12_codconstr=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $x12_codigo=null,$x12_codconstr=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -335,23 +335,23 @@ class cl_aguaconstrcar {
      $sql2 = "";
      if($dbwhere==""){
        if($x12_codigo!=null ){
-         $sql2 .= " where aguaconstrcar.x12_codigo = $x12_codigo "; 
-       } 
+         $sql2 .= " where aguaconstrcar.x12_codigo = $x12_codigo ";
+       }
        if($x12_codconstr!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " aguaconstrcar.x12_codconstr = $x12_codconstr "; 
-       } 
+         }
+         $sql2 .= " aguaconstrcar.x12_codconstr = $x12_codconstr ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -360,10 +360,10 @@ class cl_aguaconstrcar {
      }
      return $sql;
   }
-   function sql_query_file ( $x12_codigo=null,$x12_codconstr=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $x12_codigo=null,$x12_codconstr=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -376,23 +376,23 @@ class cl_aguaconstrcar {
      $sql2 = "";
      if($dbwhere==""){
        if($x12_codigo!=null ){
-         $sql2 .= " where aguaconstrcar.x12_codigo = $x12_codigo "; 
-       } 
+         $sql2 .= " where aguaconstrcar.x12_codigo = $x12_codigo ";
+       }
        if($x12_codconstr!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " aguaconstrcar.x12_codconstr = $x12_codconstr "; 
-       } 
+         }
+         $sql2 .= " aguaconstrcar.x12_codconstr = $x12_codconstr ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

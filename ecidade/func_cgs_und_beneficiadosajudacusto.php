@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -58,14 +58,14 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
    <table width="100%" border="0" align="center" cellspacing="0">
     <tr>
      <td>
-      <b>CGS:</b>&nbsp;&nbsp; <?db_input('z01_i_cgsund',6,$Iz01_i_cgsund,true,'text',4,"","chave_z01_i_cgsund");?>
-      <b>Nasc:</b> <?db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',4,"",'chave_z01_d_nasc');?>
-      <b>Identidade:</b>&nbsp;&nbsp; <?db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',1,"","chave_z01_v_ident");?><br>
+      <b>CGS:</b>&nbsp;&nbsp; <?php db_input('z01_i_cgsund',6,$Iz01_i_cgsund,true,'text',4,"","chave_z01_i_cgsund");?>
+      <b>Nasc:</b> <?php db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',4,"",'chave_z01_d_nasc');?>
+      <b>Identidade:</b>&nbsp;&nbsp; <?php db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',1,"","chave_z01_v_ident");?><br>
      </td>
     </tr>
     <tr>
      <td>
-      <b>Nome:</b> <?db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',4,"onblur='js_nome(this)'",'chave_z01_v_nome');?>
+      <b>Nome:</b> <?php db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',4,"onblur='js_nome(this)'",'chave_z01_v_nome');?>
      </td>
     </tr>
     <tr>
@@ -81,13 +81,13 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
  </tr>
  <tr>
  	<td align="center" valign="top">
-	<?
+	<?php
 	if(!isset($pesquisa_chave)){
 
-    $campos = 
-      " z01_i_cgsund, 
+    $campos =
+      " z01_i_cgsund,
         z01_v_nome,
-        z01_d_nasc,   
+        z01_d_nasc,
         z01_v_sexo,
         z01_v_ender,
         z01_i_numero,
@@ -132,7 +132,7 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
 
 	  } else {
 
-		  $sql = $oDaocgs_und->sql_query_cgs_beneficiadosajudacusto(null, $campos, 'z01_v_nome', 
+		  $sql = $oDaocgs_und->sql_query_cgs_beneficiadosajudacusto(null, $campos, 'z01_v_nome',
                                                                 " tf01_i_codigo = $chave_tf01_i_codigo and ".
                                                                 $sPacientesAnulados);
   	}
@@ -140,7 +140,7 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
 		$repassa = array();
 		if(isset($chave_z01_i_cgsund)) {
 
-			$repassa = array('chave_z01_i_cgsund'=>@$chave_z01_i_cgsund, 
+			$repassa = array('chave_z01_i_cgsund'=>@$chave_z01_i_cgsund,
 							         'chave_z01_v_nome'=>@$chave_z01_v_nome,
 							         'chave_z01_v_ident'=>@$chave_z01_v_ident);
 
@@ -149,16 +149,16 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
 		db_lovrot( $sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 
 	} else {
-		
+
 		if($pesquisa_chave != null && $pesquisa_chave != '') {
-      
+
 			$sWhere = " z01_i_cgsund = $pesquisa_chave ";
 			if (isset($chave_tf01_i_codigo) && !empty($chave_tf01_i_codigo)) {
 				$sWhere .= " and tf01_i_codigo = {$chave_tf01_i_codigo}";
 			}
-      $sql = $oDaocgs_und->sql_query_cgs_beneficiadosajudacusto(null, 
-      		                                                      '*', 
-      		                                                      null, 
+      $sql = $oDaocgs_und->sql_query_cgs_beneficiadosajudacusto(null,
+      		                                                      '*',
+      		                                                      null,
                                                                 $sWhere);
       $rs = $oDaocgs_und->sql_record($sql);
 
@@ -198,7 +198,7 @@ function js_fechar( campoFoco ){
 
 	}
 	parent.db_iframe_cgs_und_beneficiadosajudacusto.hide();
-} 
+}
 
 function js_limpar(){
 	document.form2.chave_z01_v_nome.value="";

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -55,19 +55,19 @@ $sqlerro = false;
 
 db_sel_instit(db_getsession("DB_instit"));
 
-$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));    
+$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
 if($clrharqbanco->numrows>0){
   db_fieldsmemory($result_arqbanco,0);
 
   if(isset($datagera) && $datagera!=""){
-    $datag = split('-',$datagera);
+    $datag =explode('-',$datagera);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($datadeposit) && $datadeposit!=""){
-    $datad = split('-',$datadeposit);
+    $datad =explode('-',$datadeposit);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];
@@ -115,7 +115,7 @@ if($clrharqbanco->numrows>0){
   $agencialote   = $rh34_agencia;
   $contaheader = $rh34_conta;
   $contalote   = $rh34_conta;
-  $datageracao = $datagera; 
+  $datageracao = $datagera;
   $sequencialarq = $rh34_sequencial;
   $descrarquivo = "FOLHA PAGAMENTO"; // Campo somente do layout 3
 
@@ -131,10 +131,10 @@ if($sqlerro == false){
 
   if(!isset($rh34_where) || (isset($rh34_where) && trim($rh34_where) == "")){
     $rh34_wherefolha = "";
-    $rh34_wherepensa = ""; 
+    $rh34_wherepensa = "";
   }else{
     $rh34_wherefolha = $rh34_where." and ";
-    $rh34_wherepensa = $rh34_where." and "; 
+    $rh34_wherepensa = $rh34_where." and ";
   }
 
   $rh34_wherefolha.= " r38_banco = '$rh34_codban' ";
@@ -144,11 +144,11 @@ if($sqlerro == false){
   $titarquivo   = "pagtofuncionarios";
 
 
-  $conveniobanco = trim($rh34_convenio); 
+  $conveniobanco = trim($rh34_convenio);
 
   if($sqlerro == false){
     if($tiparq == 0){
-    
+
     $rh34_wherefolha .= 'and r38_liq > 0';
 
     $sql = $clfolha->sql_query_gerarqbag(null,"folha.*,cgm.*,
@@ -156,12 +156,12 @@ if($sqlerro == false){
                                            "",
                                            " $rh34_wherefolha order by r38_regist");
 //     echo "<br><br> $sql ";exit;
-//     
+//
 
 
     $result  =  $clfolha->sql_record($sql);
     $numrows =  $clfolha->numrows;
-  
+
   }else{
       $titrelatorio = "PENSÃO JUDICIAL ";
     if($qfolha == 1){
@@ -181,7 +181,7 @@ if($sqlerro == false){
     $sql = $clpensao->sql_query_gerarqbag(null,null,null,null,"$campovalor as r38_liq, length(trim(r52_codage)||trim(r52_dvagencia)) as qtddigitosagencia,
                                                r52_numcgm as r38_regist,
                                                r52_codbco as r38_banco,
-                                               case when trim(translate(r52_conta,'0','')) = '' then '02' 
+                                               case when trim(translate(r52_conta,'0','')) = '' then '02'
                                                 else '01' end as tipo_pagamento,
 	                                        trim(r52_conta)||trim(coalesce(r52_dvconta,'')) as r38_conta,
 	                                       trim(r52_codage)||trim(coalesce(r52_dvagencia,'')) as r38_agenc,
@@ -205,7 +205,7 @@ if($sqlerro == false){
       if(!is_writable("/tmp/")){
         $sqlerro= true;
         $erro_msg = 'Sem permissão de gravar o arquivo. Contate suporte.';
-      }  
+      }
 
       ///// INICIA IMPRESSÃO DO RELATÓRIO
       $pdf = new PDF();
@@ -250,13 +250,13 @@ if($sqlerro == false){
 
         if($entrar == true){
           $db_layouttxt = new db_layouttxt($layoutimprime,$nomearquivotxt);
-          db_setaPropriedadesLayoutTxt(&$db_layouttxt,1);
+          db_setaPropriedadesLayoutTxt($db_layouttxt,1);
 	      }
         $sequencialreg       = $i + 1;
 
         if($entrar == true || $pdf->gety() > $pdf->h - 30){
           $pdf->addpage();
-   
+
 
           $pdf->setfont('arial','b',8);
           $pdf->cell(15,$alt,$RLrh01_regist,1,0,"C",1);
@@ -299,7 +299,7 @@ if($sqlerro == false){
         if($layoutimprime != 18){
           $sequencialreg = "      ";
         }
-        db_setaPropriedadesLayoutTxt(&$db_layouttxt,3);
+        db_setaPropriedadesLayoutTxt($db_layouttxt,3);
       }
 
       $sequencialbb120 ++;
@@ -316,7 +316,7 @@ if($sqlerro == false){
       $quanttrailler  = $quantidadefuncionarios + 2;
       $sequencialreg += 1;
 
-      db_setaPropriedadesLayoutTxt(&$db_layouttxt,5);
+      db_setaPropriedadesLayoutTxt($db_layouttxt,5);
 
       //////////////////////////////////
       $pdf->Output($nomearquivopdf,false,true);

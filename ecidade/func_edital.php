@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cledital->rotulo->label("d01_descr");
               <?=$Ld01_codedi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d01_codedi",4,$Id01_codedi,true,"text",4,"","chave_d01_codedi");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cledital->rotulo->label("d01_descr");
               <?=$Ld01_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d01_descr",4,$Id01_descr,true,"text",4,"","chave_d01_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cledital->rotulo->label("d01_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_edital.php")==true){
@@ -120,12 +120,12 @@ $cledital->rotulo->label("d01_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

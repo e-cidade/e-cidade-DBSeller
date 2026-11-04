@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $clouvidoriaatendimentoretornoender = new cl_ouvidoriaatendimentoretornoender;
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
         
        $sCampos = "ov12_endereco,ov12_numero,ov12_compl,ov12_munic,ov12_bairro,ov12_uf,ov12_cep";
        $sWhere  = "ov12_ouvidoriaantendimento = {$oGet->iCodAtendimento}";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ if(isset($db_opcaoal)){
 <legend><strong>Cadastro de Responsáveis</strong></legend>
 
 <table border="0" align=center>
-	<?
+	<?php
 	db_input('q84_sequencial',10,$Iq84_sequencial,true,'hidden',3,"")
 	?>
   
@@ -70,7 +70,7 @@ if(isset($db_opcaoal)){
        <?=@$Lq84_cadescrito?>
     </td>
 	  <td> 
-			<?
+			<?php
 			db_input('q84_cadescrito',10,$Iq84_cadescrito,true,'text',3,"")
 			?>
 	  </td>
@@ -78,12 +78,12 @@ if(isset($db_opcaoal)){
   
   <tr>
     <td nowrap title="<?=@$Tq84_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lq84_numcgm,"js_pesquisaq84_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('q84_numcgm',10,$Iq84_numcgm,true,'text',$db_opcao," onchange='js_pesquisaq84_numcgm(false);'");
 			db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
 	    ?>
@@ -106,7 +106,7 @@ if(isset($db_opcaoal)){
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?    
+    <?php    
 	 $chavepri= array("q84_cadescrito"=>@$q84_cadescrito);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql = $clcadescritoresp->sql_query_mod(null, '*',null,"q84_cadescrito = $q84_cadescrito");	 

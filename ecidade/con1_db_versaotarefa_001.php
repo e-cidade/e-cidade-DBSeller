@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ function js_mostratarefa(codigo){
   </tr>
   <tr> 
     <td height="100%" align="center" valign="top" bgcolor="#CCCCCC"> 
-    <?
+    <?php
     if( !isset($pesquisa_tarefas) || $pesquisa_tarefas=='Tarefas'  ){
       if(!isset($filtro_query)){
         $sql = $cldb_versaotarefa->sql_query( null,'db29_seqvertar,db29_tarefa,at40_descr',null," db29_codver = $db29_codver ");

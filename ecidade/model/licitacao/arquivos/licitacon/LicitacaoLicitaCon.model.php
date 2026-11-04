@@ -205,12 +205,12 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
                 && in_array($tipoLicitacao, array('MPR', 'TPR', 'MOP'))
             )
             && !(
-                in_array($modalidade, array('PCP', 'PCE'))
-                && in_array($tipoLicitacao, array('MPR', 'TPR'))
+                in_array($modalidade, array('PCP', 'PCE', 'PRP', 'PRE', 'PDE'))
+                && $tipoLicitacao == 'MPR'
             )
             && !(
-                in_array($modalidade, array('CCP', 'CPE', 'PRP', 'PRE', 'PDE'))
-                && $tipoLicitacao == 'MPR'
+                in_array($modalidade, array('CCP', 'CCE'))
+                && in_array($tipoLicitacao, array('MPR', 'TPR'))
             )
         ) {
             $orcamentoSigiloso = '';

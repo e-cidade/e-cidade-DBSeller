@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ if(isset($salvar) && $salvar == "Salvar"){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-<?
+<?php
 //MODULO: fiscal
 $clrotulo = new rotulocampo;
 $clrotulo->label("y30_dtvenc");
@@ -72,7 +72,7 @@ $clrotulo->label("y30_dtvenc");
        <?=@$Ly30_dtvenc?>
     </td>
     <td>
-<?
+<?php
 /*
 $result = $clfiscaltipo->sql_record($clfiscaltipo->sql_query("","","y29_dias","y31_codnoti limit 1"," fiscaltipo.y31_codnoti = $y30_codnoti"));
 if($clfiscaltipo->numrows > 0){
@@ -104,7 +104,7 @@ db_inputdata('y30_dtvenc',@$y30_dtvenc_dia,@$y30_dtvenc_mes,@$y30_dtvenc_ano,tru
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($salvar) && $salvar == "Salvar"){
   if($clfiscal->erro_status=="0"){
     $clfiscal->erro(true,false);

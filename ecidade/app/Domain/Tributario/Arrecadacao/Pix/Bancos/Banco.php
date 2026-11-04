@@ -20,6 +20,16 @@ abstract class Banco
 
     protected $parcela;
 
+    protected $chavePix;
+
+    protected $cnpj_municipio = false;
+
+    protected $cnpj;
+
+    protected $senha;
+
+    protected $usuario;
+
     protected $codigoBarras;
 
     public function getConvenio()
@@ -27,7 +37,7 @@ abstract class Banco
         return $this->convenio;
     }
 
-    public function setConvenio($convenio)
+    public function setConvenio(convenio $convenio)
     {
         $this->convenio = $convenio;
     }
@@ -44,7 +54,7 @@ abstract class Banco
 
     public function getValor()
     {
-        return $this->valor;
+        return round($this->valor, 2);
     }
 
     public function setValor($valor)
@@ -82,6 +92,17 @@ abstract class Banco
         $this->parcela = $parcela;
     }
 
+    public function getChavePix()
+    {
+        return $this->chavePix;
+    }
+
+    public function setChavePix($chavePix)
+    {
+        $this->chavePix = $chavePix;
+    }
+
+
     /**
      * @return mixed
      */
@@ -98,5 +119,44 @@ abstract class Banco
     {
         $this->codigoBarras = $codigoBarras;
         return $this;
+    }
+    public function getSenha()
+    {
+        return $this->senha;
+    }
+
+    public function setSenha($senha)
+    {
+        $this->senha = $senha;
+    }
+
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+    }
+
+    public function getCnpjMunicipio()
+    {
+        return $this->cnpj_municipio;
+    }
+
+    public function setCnpjMunicipio($cnpj_municipio)
+    {
+        $this->cnpj_municipio = $cnpj_municipio;
+    }
+
+    public function getCnpj()
+    {
+        return $this->cnpj;
+    }
+
+    public function setCnpj($cnpj)
+    {
+        $this->cnpj = $cnpj;
     }
 }

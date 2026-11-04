@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ input {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td>
-<?
+<?php
 $cldb_itensmenu = new cl_db_itensmenu;
 $result = $cldb_itensmenu->sql_record($cldb_itensmenu->sql_query($idmodulo,'descricao,help'));
 db_fieldsmemory($result,0);

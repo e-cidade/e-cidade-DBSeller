@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("k02_corr");
       <?=@$Lk04_sequencial?>
     </td>
     <td>    
-      <?
+      <?php
       db_input('k04_sequencial',6,$Ik04_sequencial,true,'text',3,"");
       ?>
     </td>
@@ -51,22 +51,22 @@ $clrotulo->label("k02_corr");
       <?=@$Lk04_receit?>
     </td>
     <td nowrap>
-      <?
+      <?php
       db_input('k04_receit',6,$Ik04_receit,true,'text',3,"");
       ?>
-      <?
+      <?php
       db_input('k02_descr',20,$Lk02_descr,true,'text',3);
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk04_codjm?>" align="left">
-      <?
+      <?php
       db_ancora(@$Lk04_codjm,"js_pesquisak04_codjm(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('k04_codjm',4,$Ik04_codjm,true,'text',$db_opcao,"onchange='js_pesquisak04_codjm(false)'");
        db_input('k02_corr',40,$Ik02_corr,true,'text',3,"");
       ?>
@@ -77,7 +77,7 @@ $clrotulo->label("k02_corr");
       <?=$Lk04_dtini?>
     </td>
     <td>     
-      <?
+      <?php
       db_inputdata('k04_dtini',@$k04_dtini_dia,@$k04_dtini_mes,@$k04_dtini_ano,true,'text',$db_opcao);
       ?>
     </td>
@@ -87,24 +87,24 @@ $clrotulo->label("k02_corr");
       <?=$Lk04_dtfim?>
     </td>
     <td>     
-      <?
+      <?php
       db_inputdata('k04_dtfim',@$k04_dtfim_dia,@$k04_dtfim_mes,@$k04_dtfim_ano,true,'text',$db_opcao);
       ?>
     </td>
   </tr>
 </table>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 if($db_opcao != 1){
 ?>
 <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='cai1_receitaregrasjm001.php?k04_receit=<?=$k04_receit?>'">
-<?
+<?php
 }
 ?>
 <table>
   <tr>
     <td valign="top"  align="center">  
-      <?
+      <?php
       $dbwhere = " k04_receit = ".$k04_receit;
       if(isset($k04_sequencial) && trim($k04_sequencial) != ""){
 	$dbwhere .= " and k04_sequencial <> ".$k04_sequencial;

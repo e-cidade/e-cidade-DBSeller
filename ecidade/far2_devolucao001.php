@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/scpdf.php"));
@@ -35,7 +35,7 @@ require_once(modification('libs/db_utils.php'));
 $oDaoFarDev       = db_utils::getdao("far_devolucao");//$clfar_devolucao    = new cl_far_devolucao;
 $oDaoFarDevMed    = db_utils::getdao("far_devolucaomed");//$clfar_devolucaomed = new cl_far_devolucaomed;
 $oDaoDbDepart     = db_utils::getdao("db_depart"); //$cldb_depart        = new cl_db_depart;
-/*Variaveis e suas descriçoes 
+/*Variaveis e suas descriçoes
 *$iCodDev -> codigo da devolucao;
 *
 */
@@ -58,7 +58,7 @@ $iLinhasDev  = $oDaoFarDev->numrows;
 
 if ($iLinhasDev == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado ! ");
-} 
+}
 
 $oPdf = new scpdf();
 $oPdf->Open();
@@ -73,8 +73,8 @@ $iLinhasDev  = 1;
 
 for ($iContador = 0; $iContador < $iLinhasDev; $iContador++) {
 
-  $oDaoDevo             = db_utils::fieldsmemory($rsDevolv,$iContador);  
-  $oPdf1->logo	        = $oDaoPref->logo; 
+  $oDaoDevo             = db_utils::fieldsmemory($rsDevolv,$iContador);
+  $oPdf1->logo	        = $oDaoPref->logo;
   $oPdf1->prefeitura    = $oDaoPref->nomeinst;
   $oPdf1->enderpref     = $oDaoPref->ender;
   $oPdf1->municpref     = $oDaoPref->munic;
@@ -101,19 +101,19 @@ for ($iContador = 0; $iContador < $iLinhasDev; $iContador++) {
   $oPdf1->rquantdeitens = "fa06_f_quant";
   $oPdf1->rquantatend   = "fa23_i_quantidade";
   $oPdf1->robsdositens  = "fa23_c_motivo";
-  
+
   $iLinhasItens         = $oDaoFarDevMed->numrows;
-  
+
   $oPdf1->recorddositens = $rsItens;
   $oPdf1->linhasdositens = $iLinhasItens;
 
   $oPdf1->imprime();
 //  die($DaoDevoMed->fa22_i_codigo);
   $oPdf1->Snumero_ant = "fa22_i_codigo";
-  
+
 }
 if(isset($argv[1])){
-  $oPdf1->objpdf->Output("/tmp/teste.pdf");
+  $oPdf1->objpdf->Output(ECIDADE_PATH . "/tmp/teste.pdf");
 }else{
   $oPdf1->objpdf->Output();
 }

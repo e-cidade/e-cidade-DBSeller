@@ -61,6 +61,8 @@ $parametros = JSON::requestParameters();
         <script type="text/javascript" src="assets/bootstrap-table/bootstrap-table.min.js"></script>
         <script type="text/javascript" src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>
         <script type="text/javascript" src="assets/bootstrap-table/bootstrap-table-export.min.js"></script>
+        <script src="scripts/classes/DBViewFormularioFolha/CompetenciaFolha.js" rel="script" type="text/javascript"></script>
+
     </head>
     <style type="text/css">
         #gridgridOcorrencias td, #gridgridStatus td {
@@ -82,6 +84,10 @@ $parametros = JSON::requestParameters();
                         <td>
                             <select id="empregador" name="empregador" class="field-size-max"></select>
                         </td>
+                    </tr>
+                    <tr id="competenciaTr">
+                        <td id="labelCompetencia"></td>
+                        <td id="formularioCompetencia"></td>
                     </tr>
                 </table>
             </fieldset>
@@ -105,6 +111,9 @@ $parametros = JSON::requestParameters();
             const selectEmpregador = document.getElementById('empregador');
             const urlParams = new URLSearchParams(window.location.search);
             const integracao = urlParams.has('integracao') ? urlParams.get('integracao') : '2';
+            const competenciaTr = document.getElementById('competenciaTr');
+            const labelCompetencia = document.getElementById('labelCompetencia');
+            const formularioCompetencia = document.getElementById('formularioCompetencia');
             var table = $('#data-table');
             var colunas = [
                 {
@@ -198,11 +207,23 @@ $parametros = JSON::requestParameters();
             }
 
             function imprimeRelatorio() {
+                var ano = formularioCompetencia.querySelector("#ano").value;
+                var mes = formularioCompetencia.querySelector("#mes").value;
+                if (ano == '') {
+                    alert ('É necessário preencher o ano da competência.');
+                    return false;
+                }
+                if (mes == '') {
+                    alert ('É necessário preencher o mês da competência.');
+                    return false;
+                }
                 const params = {
                     'exec': 'imprimirRelatorio',
                     'filtros': {
                         'tipoFormulario' : 2,
-                        'inscricaoEmpregador' : selectEmpregador.value
+                        'inscricaoEmpregador' : selectEmpregador.value,
+                        'ano' : ano,
+                        'mes' : mes
                     }
                 };
 
@@ -218,6 +239,10 @@ $parametros = JSON::requestParameters();
                     }
                 ).setMessage("Buscando os dados para imprimir o relatório..").execute();
             }
+
+            var dbViewFormularioFolha = new DBViewFormularioFolha.CompetenciaFolha(false);
+            dbViewFormularioFolha.renderizaLabel(labelCompetencia);
+            dbViewFormularioFolha.renderizaFormulario(formularioCompetencia);
         </script>
     </body>
 </html>

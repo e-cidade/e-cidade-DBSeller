@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -114,8 +114,8 @@ db_postmemory($_GET);
     $sub_sql   .= "  WHERE ed57_i_calendario = $cod_curso ";
     $sub_sql   .= "    AND ed57_i_escola     = $escola ";
     $sub_sql   .= "    AND ed221_c_origem    = 'S' ";
-    $sub_sql   .= "    AND ed11_i_codigo IN (5,8,13,17,24,28,32,35,40,44,51) ";
     $sub_sql   .= "  ORDER BY ed57_c_descr,ed11_c_descr ";
+
     $sub_result = db_query($sub_sql);
     $num_sub    = pg_num_rows($sub_result);
 
@@ -181,7 +181,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     document.form1.subgrupo.disabled = false;
   }
   document.form1.procurar.disabled = true;
- <?if (isset($turma)) {?>
+ <?php if (isset($turma)) {?>
      qtd = document.form1.alunosdiario.length;
      for (i = 0; i < qtd; i++) {
        document.form1.alunosdiario.options[0] = null;
@@ -190,7 +190,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
      for (i = 0; i < qtd; i++) {
        document.form1.alunos.options[0] = null;
      }
- <?}?>
+ <?php } ?>
 }
 function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem) {
 
@@ -215,19 +215,19 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       if (itemArray[i][1] != null) {
         selectCtrl.options[j].value = itemArray[i][1];
       }
-    <?if (isset($turma)) {?>
+    <?php if (isset($turma)) {?>
         if (<?=trim($turma)?> == itemArray[i][1]) {
           indice = i;
         }
-    <?}?>
+    <?php } ?>
       j++;
   }
-  <?if (isset($turma)) {?>
+  <?php if (isset($turma)) {?>
       selectCtrl.options[indice].selected = true;
       document.form1.procurar.disabled    = false;
-  <?} else {?>
+  <?php } else {?>
       selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php } ?>
     document.form1.subgrupo.disabled = false;
   }
 }
@@ -665,7 +665,7 @@ function js_botao(valor) {
 }
 
 function js_procurar(calendario,turma) {
-  
+
     location.href = "edu2_cerconclusao001.php?calendario="+calendario+"&turma="+turma;
 
 }

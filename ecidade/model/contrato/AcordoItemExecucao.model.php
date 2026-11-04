@@ -77,6 +77,12 @@ class AcordoItemExecucao {
   private $sProcesso;
 
   /**
+   * Observacao
+   * @var string
+   */
+  private $sObservacao;
+
+  /**
    * @return int
    */
   public function getCodigo() {
@@ -189,6 +195,20 @@ class AcordoItemExecucao {
   }
 
   /**
+   * @return string
+   */
+  public function getObservacao() {
+  	return $this->sObservacao;
+  }
+  
+  /**
+   * @param string $Observacao
+   */
+  public function setObservacao($sObservacao) {
+  	$this->sObservacao = $sObservacao;
+  }
+
+  /**
    * Persiste os dados da execucção
    */
   public function salvar() {
@@ -201,7 +221,7 @@ class AcordoItemExecucao {
     $oDaoItemExecucao->ac29_tipo           = 2;
     $oDaoItemExecucao->ac29_numeroprocesso = $this->getProcesso();
     $oDaoItemExecucao->ac29_notafiscal     = $this->getNotaFiscal();
-    $oDaoItemExecucao->ac29_observacao     = '';
+    $oDaoItemExecucao->ac29_observacao     = $this->getObservacao();
     $oDaoItemExecucao->ac29_sequencial     = $this->getCodigo();
     $oDaoItemExecucao->ac29_datainicial    = $this->getDataInicial()->getDate();
     $oDaoItemExecucao->ac29_datafinal      = $this->getDataFinal()->getDate();

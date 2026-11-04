@@ -105,7 +105,8 @@ $this->objpdf->Setfont('Arial', 'B', 8);
 $this->objpdf->text($xcol +2, $xlin +18, 'Departamento');
 $this->objpdf->text($xcol +109, $xlin +18, 'Tipo');
 $this->objpdf->text($xcol +2, $xlin +22, 'Data');
-$this->objpdf->text($xcol +109, $xlin +22, 'Val. Aprox.');
+$this->objpdf->text($xcol +45, $xlin +22, 'Val. Aprox.');
+$this->objpdf->text($xcol +109, $xlin +22, 'P.A.');
 
 // Imprime dados da solicitação
 $this->objpdf->text($xcol +23, $xlin +18, ':  '.$this->Sdepart);
@@ -117,7 +118,8 @@ if (isset ($this->Svalor) && trim($this->Svalor) != "") {
 }
 $this->objpdf->text($xcol +125, $xlin +18, ':  '.$this->Stipcom);
 $this->objpdf->text($xcol +23, $xlin +22, ':  '.$this->Sdata);
-$this->objpdf->text($xcol +125, $xlin +22, ':  R$ '.$this->Svalor);
+$this->objpdf->text($xcol +60, $xlin +22, ':  R$ '.$this->Svalor);
+$this->objpdf->text($xcol +125, $xlin +22, ': '. $this->processo_administrativo);
 
 $this->objpdf->text($xcol +2, $xlin +27, 'Resumo');
 $this->objpdf->setxy($xcol +22, $xlin +24);
@@ -260,7 +262,7 @@ $this->objpdf->sety($xlin +28);
 $this->objpdf->Setfont('Arial', 'B', 8);
 $this->objpdf->text($xcol +2, $xlin + $getdoy +4, 'ITEM');
 $this->objpdf->text($xcol +14, $xlin + $getdoy +4, 'QUANTIDADES');
-$this->objpdf->text($xcol +46, $xlin + $getdoy +4, 'UNIDADE');
+$this->objpdf->text($xcol +50, $xlin + $getdoy +4, 'REF');
 $this->objpdf->text($xcol +105, $xlin + $getdoy +4, 'MATERIAL OU SERVIÇO');
 // $this->objpdf->text($xcol +145, $xlin + $getdoy +4, 'VALOR UNITÁRIO');
 $this->objpdf->text($xcol +176, $xlin + $getdoy +4, 'VALOR TOTAL');
@@ -288,17 +290,17 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
         // verifica se é medicamento
         $classe_pcmater = new cl_pcmater();
         $sSqlMedicamento = $classe_pcmater->sql_query_grupo($codigo_material);
-  
+
         $codgrupo = pg_fetch_assoc( @db_query($sSqlMedicamento) )['pc03_codgrupo'];
 
         if ($codgrupo == 11) {
           $this->casadec = $this->casadec_medicamentos;
         } else {
           $this->casadec = $this->casadec_original;
-        }  
+        }
 
       }
-      
+
     if ($i == 1 && strlen($resumOriginal) > 5000 && $primeiroLaco) {
         $i = 0;
         $primeiroLaco = false;

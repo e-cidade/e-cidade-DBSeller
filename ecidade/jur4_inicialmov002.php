@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -91,12 +91,12 @@ $oRotulo->label("v56_obs");
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tv56_codsit?>">
-        <?
+        <?php
           db_ancora(@$Lv56_codsit,"js_pesquisaSituacao(true);", 1);
         ?>
         </td>
         <td>
-        <?
+        <?php
           db_input('v56_codsit', 10, $Iv56_codsit, true, 'text', 1, " onchange='js_pesquisaSituacao(false);'");
           db_input('v52_descr' , 38, $Iv52_descr,  true, 'text', 3, '')
         ?>
@@ -106,7 +106,7 @@ $oRotulo->label("v56_obs");
         <td colspan="2"> 
         <fieldset class="separator">
           <legend>Observações</legend>
-        	<?
+        	<?php
             db_textarea('v56_obs', 3, 80, $Iv56_obs, true, 'text', 1); 
           ?>
         </fieldset>
@@ -117,7 +117,7 @@ $oRotulo->label("v56_obs");
   
     <input type="button" name="salvar" id="salvar" value="Salvar" onclick="js_processar()"/>
     <input type="button" name="voltar" id="voltar" value="Voltar" onclick="js_voltar()"/>
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
   ?>
 </form>

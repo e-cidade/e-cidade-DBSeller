@@ -3,6 +3,7 @@
 namespace App\Domain\Financeiro\Contabilidade\Factories;
 
 use App\Domain\Financeiro\Contabilidade\Contracts\AnexosFactoryInterface;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoUm\AnexoUm2023Service;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoUm\AnexoUmService;
 
 class AnexoUmFactory extends AnexosFactory implements AnexosFactoryInterface
@@ -23,8 +24,10 @@ class AnexoUmFactory extends AnexosFactory implements AnexosFactoryInterface
     {
         switch ($exercicio) {
             case 2022:
-            default:
                 return 268;
+            case 2023:
+            default:
+                return 269;
         }
     }
 
@@ -35,6 +38,13 @@ class AnexoUmFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     public static function getService($exercicio, $filtros)
     {
-        return new AnexoUmService($filtros);
+        switch ($exercicio) {
+            case 2022:
+                return new AnexoUmService($filtros);
+            case 2023:
+            case 2024:
+            default:
+                return new AnexoUm2023Service($filtros);
+        }
     }
 }

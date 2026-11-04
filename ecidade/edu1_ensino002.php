@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,7 +44,6 @@ if (isset($alterar)) {
     $db_opcao = 2;
     db_inicio_transacao();
     $oDaoEnsino->ed10_mediacaodidaticopedagogica = $ed130_codigo;
-    $oDaoEnsino->ed10_censocursoprofiss = $ed247_i_codigo;
     $oDaoEnsino->ed10_tipo = $ed10_tipo;
     $oDaoEnsino->alterar($ed10_i_codigo);
     db_fim_transacao();
@@ -62,7 +61,7 @@ if (isset($alterar)) {
         parent.document.formaba.a2.disabled = false;
         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'edu1_disciplina001.php?ed12_i_ensino=<?=$ed10_i_codigo?>';
     </script>
-    <?
+    <?php
 }
 
 $sAcao = 'Alteração';

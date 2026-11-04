@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,7 +50,7 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
 $clempresto   = new cl_empresto;
 if (!isset($arqinclude)) { // se este arquivo no esta incluido por outro
 
-  $xinstit    = split("-",$db_selinstit);
+  $xinstit    =explode("-",$db_selinstit);
   $rsMunic    = db_query("select munic, uf, codigo,nomeinst,nomeinstabrev from db_config where prefeitura is true");
   $oMunic     = db_utils::fieldsMemory($rsMunic,0);
   $descr_inst = '';
@@ -87,7 +87,7 @@ if (!isset($arqinclude)) { // se este arquivo no esta incluido por outro
   $head4  = "DEMONSTRATIVO DOS RESTOS A PAGAR POR PODER E ÓRGÃO";
   $head5  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
   $txt    = strtoupper(db_mes('01'));
-  $dt     = split("-",$dt_fin);
+  $dt     =explode("-",$dt_fin);
   $txt   .= " A ".strtoupper(db_mes($dt[1]));
   $txt   .= "  / ".$anousu;
   switch($bimestre){

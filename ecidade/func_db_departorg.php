@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_departorg->rotulo->label("db01_coddepto");
               <?=$Ldb01_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db01_coddepto",0,$Idb01_coddepto,true,"text",1,"","chave_db01_coddepto");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $cldb_departorg->rotulo->label("db01_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = "";
       if (isset($orgaos) && $orgaos != "") {
         
@@ -157,12 +157,12 @@ $cldb_departorg->rotulo->label("db01_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

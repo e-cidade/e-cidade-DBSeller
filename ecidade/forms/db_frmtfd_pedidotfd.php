@@ -63,13 +63,13 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
             <?=@$Ltf01_i_codigo?>
           </td>
           <td>
-            <?
+              <?php
             db_input('tf01_i_codigo', 10, $Itf01_i_codigo, true, 'text', 3, "");
             ?>
           </td>
           <td nowrap title="<?=@$Ttf01_d_datapedido?>" align="right" style="padding-right: 7px;">
             <label><?=@$Ltf01_d_datapedido?></label>
-            <?
+              <?php
             if (!isset($tf01_d_datapedido)) {
               $tf01_d_datapedido = date('d/m/Y', db_getsession('DB_datausu'));
             }
@@ -88,12 +88,12 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
         </tr>
         <tr>
           <td nowrap title="<?=@$Ttf01_i_cgsund?>">
-            <?
+              <?php
             echo $Ltf01_i_cgsund;
             ?>
           </td>
           <td colspan="3">
-            <?
+              <?php
             db_input('tf01_i_cgsund', 10, $Itf01_i_cgsund, true, 'text', 3, '');
             db_input('z01_v_nome', 58, $Iz01_v_nome, true, 'text', 3, '');
 
@@ -111,25 +111,25 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
             <?=@$Lz01_v_cgccpf?>&nbsp;
           </td>
           <td nowrap>
-            <?
+              <?php
             db_input('z01_v_cgccpf', 10, @$Iz01_v_cgccpf, true, 'text', 3, '');
             ?>
           </td>
           <td nowrap align="right" style="padding-right: 7px;">
             <label style="margin-right: 25px;"><?=@$Lz01_v_ident?></label>
-            <?
+              <?php
             db_input('z01_v_ident', 10, $Iz01_v_ident, true, 'text', 3, '');
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Ttf01_i_rhcbo?>">
-            <?
+              <?php
             db_ancora(@$Ltf01_i_rhcbo, "js_pesquisatf01_i_rhcbo(true);", $db_opcao);
             ?>
           </td>
           <td colspan="2">
-            <?
+              <?php
             db_input('rh70_estrutural', 10, $Irh70_estrutural, true, 'text', $db_opcao,
                      " onchange='js_pesquisatf01_i_rhcbo(false);'"
                     );
@@ -143,7 +143,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
            <b>Complemento: </b>
          </td>
          <td nowrap colspan="2">
-           <?db_input('tf01_complespec', 72, $Itf01_complespec, true, 'text', $db_opcao, '');?>
+             <?php db_input('tf01_complespec', 72, $Itf01_complespec, true, 'text', $db_opcao, '');?>
          </td>
        </tr>
       </table>
@@ -158,7 +158,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
                <?=@$Ltf01_i_tipotratamento?>
              </td>
              <td style="padding-bottom: 8px;">
-               <?
+                 <?php
                $aX                   = array();
                $sSql                 = $oDaoTfdTipoTratamento->sql_query_file(null, '* ');
                $rsTfd_tipotratamento = $oDaoTfdTipoTratamento->sql_record($sSql);
@@ -183,12 +183,12 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
           </tr>
           <tr>
             <td nowrap title="<?=@$Ttf23_i_procedimento?>">
-              <?
+                <?php
               db_ancora($Ltf23_i_procedimento, "js_pesquisatf23_i_procedimento(true);", $iDbOpcaoRegulado);
               ?>
             </td>
             <td nowrap colspan="2">
-              <?
+                <?php
               db_input('sd63_c_procedimento', 10, '', true, 'text', $iDbOpcaoRegulado,
                        " onchange='js_pesquisatf23_i_procedimento(false);'"
                       );
@@ -220,12 +220,12 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
         <table border="0">
           <tr>
             <td nowrap title="<?=$Ttf01_i_profissionalsolic?>">
-              <?
+                <?php
               db_ancora($Ltf01_i_profissionalsolic, 'js_pesquisatf01_i_profissionalsolic(true);', $db_opcao);
               ?>
             </td>
             <td colspan="4" nowrap>
-              <?
+                <?php
               db_input('tf01_i_profissionalsolic', 10, $Itf01_i_profissionalsolic, true, 'hidden',$db_opcao,
                        ' onchange="js_pesquisatf01_i_profissionalsolic(false);"'
                       );
@@ -234,7 +234,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
               ?>
                 <input type="button" id="cadProf" title="Cadastro de Profissionais Fora da Rede"
                   name="cadProf" value="Cadastro de Profissionais" onclick="js_abreCadProf();">
-              <?
+                  <?php
               }
               ?>
             </td>
@@ -245,7 +245,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
               CBO Solicitante:
             </td>
             <td colspan="4" nowrap="nowrap">
-              <?db_input('iCboSolicitanteSelecionado', 72, "iCboSolicitanteSelecionado", true, 'hidden', 3, '');?>
+                <?php db_input('iCboSolicitanteSelecionado', 72, "iCboSolicitanteSelecionado", true, 'hidden', 3, '');?>
               <select id='cboSolicitante' name='tf01_rhcbosolicitante' class="field-size-max">
               </select>
             </td>
@@ -256,7 +256,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
               <?=@$Ltf01_d_datapreferencia?>
             </td>
             <td nowrap>
-              <?
+                <?php
               if (isset($tf01_d_datapreferencia) && !empty($tf01_d_datapreferencia)) {
 
                 $dTmp = explode('/', $tf01_d_datapreferencia);
@@ -289,7 +289,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
             </td>
             <td nowrap title="<?=@$Ttf01_i_emergencia?>" colspan="2" align="left">
               <label style="margin-right: 33px;"><?=@$Ltf01_i_emergencia?></label>
-              <?
+                <?php
               $aX = array('2'=>'NÃO', '1'=>'SIM');
               db_select('tf01_i_emergencia', $aX, true, $db_opcao);
               ?>
@@ -304,7 +304,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
               <?=@$Ltf01_i_tipotransporte;?>
             </td>
             <td>
-              <?
+                <?php
               $aX = array();
               $sSql = $oDaoTfdTipoTransporte->sql_query_file(null, '* ');
               $rsTfd_tipotransporte = $oDaoTfdTipoTransporte->sql_record($sSql);
@@ -319,7 +319,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
             </td>
             <td nowrap title="<?=@$Ttf01_c_passagemplaca?>" colspan="2">
               <?=@$Ltf01_c_passagemplaca?>
-              <?
+              <?php
               db_input('tf01_c_passagemplaca', 10, $Itf01_c_passagemplaca, true, 'text', $db_opcao, '')
               ?>
             </td>
@@ -333,7 +333,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
               <?=$Ltf01_t_obs?>
             </td>
             <td nowrap colspan="4">
-              <?
+                <?php
               db_textarea('tf01_t_obs', 2, 61, $Itf01_t_obs, true, 'text', $db_opcao, '');
               ?>
             </td>
@@ -346,7 +346,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
 <table style="padding-top: 6px; padding-bottom: 0px; margin: 0;">
   <tr>
     <td align="center">
-      <?
+        <?php
       if (isset($chavepesquisa)) {
 
         $sNome1   = 'alterar';

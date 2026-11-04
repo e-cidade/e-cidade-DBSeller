@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -126,7 +126,7 @@ if(isset($orcamento) && trim($orcamento)!=""){
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC" width="100%">
     <center>
-    <?
+    <?php
     if($numrows_pcorcamitem==0){
       echo "<strong>Não existem itens para realizar troca neste orçamento.</strong>\n";
     }else{

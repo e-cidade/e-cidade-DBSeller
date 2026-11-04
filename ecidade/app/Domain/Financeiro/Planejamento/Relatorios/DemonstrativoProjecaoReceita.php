@@ -57,6 +57,7 @@ class DemonstrativoProjecaoReceita extends Pdf
     {
         $this->calculaColunas();
         $this->headers($this->titulo);
+        $this->headerOrigemEmentario();
         $this->capa($this->titulo);
         $this->imprimeDados();
 
@@ -180,7 +181,12 @@ class DemonstrativoProjecaoReceita extends Pdf
             $this->SetFont('Arial', 'B', 6);
         }
         $this->cellAdapt(6, 20, 5, $receita->fonte, 1, 0, 'C');
-        $this->cellAdapt(6, 61, 5, $receita->descricao, 1, 0, 'L');
+
+        $content = $receita->descricao;
+        if ($this->getFonteSizeByWidthCell(61, 6, $content) < 5) {
+            $content = substr($content, 0, 63) . '...';
+        }
+        $this->cellAdapt(6, 61, 5, $content, 1, 0, 'L');
         $this->Cell(15, 5, "{$receita->recurso} - {$receita->complemento}", 1, 0, 'C');
 
         foreach ($exerciciosAnteriores as $exercicio) {

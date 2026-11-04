@@ -151,7 +151,7 @@ if (isset($oPost->btncadastrar)) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, strings.js, datagrid.widget.js, prototype.js, arrays.js, dbtextFieldData.widget.js");
       db_app::load("dbcomboBox.widget.js, windowAux.widget.js, dbmessageBoard.widget.js,dbtextField.widget.js");
       db_app::load("estilos.css, grid.style.css");
@@ -172,7 +172,7 @@ if (isset($oPost->btncadastrar)) {
                   <b>Data:</b>
                </td>
                <td>
-                 <?
+                 <?php
                    db_inputdata("data","", "", "", true, "text", 1);
                  ?>
                </td>
@@ -182,7 +182,7 @@ if (isset($oPost->btncadastrar)) {
                   <b>Hora:</b>
                </td>
                <td>
-                 <?
+                 <?php
                    db_input("hora", 5, 0, true, "text", 1);
                  ?>
                </td>
@@ -192,7 +192,7 @@ if (isset($oPost->btncadastrar)) {
                   <b>Entrada/Saída</b>
                </td>
                <td>
-                 <?
+                 <?php
                    db_select("entrada", array("t" => "Entrada", "f" => "Saída"), true, 1);
                  ?>
                </td>
@@ -202,7 +202,7 @@ if (isset($oPost->btncadastrar)) {
                   <b>Alunos sem Leitura:</b>
                </td>
                <td>
-                 <?
+                 <?php
                    db_input("alunos", 25, 0, true, "text", 1);
                  ?>
                </td>

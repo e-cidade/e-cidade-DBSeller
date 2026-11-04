@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -80,12 +80,12 @@ function js_emite(){
 						<table>
 							<tr>
 								<td align="right" nowrap title="<?=@$Tj34_loteam?>" >
-									<?
+									<?php
 										db_ancora(@$Lj34_loteam,"js_pesquisaloteam(true);",4)
 									?>
 								</td>
 								<td align="left">&nbsp;&nbsp;&nbsp;
-									<?
+									<?php
 										db_input('j34_loteam',12,$Ij34_loteam,true,'text',4,"onchange='js_pesquisaloteam(false);'");
 										db_input('j34_descr',40,$Ij34_descr,true,'text',3,'');
 									?>
@@ -96,7 +96,7 @@ function js_emite(){
 									<strong>Listar Valor:</strong>
 								</td>
 								<td align="left">&nbsp;&nbsp;&nbsp;
-									<?
+									<?php
 										$xx = array("s"=>"Sim","n"=>"Não");
 										db_select('selEmiteValor',$xx,true,4,"style ='width:92px;'");
 									?>
@@ -107,7 +107,7 @@ function js_emite(){
 									<strong>Ordem:</strong>
 								</td>
 								<td align="left">&nbsp;&nbsp;&nbsp;
-									<?
+									<?php
 										$xx = array("a"=>"Alfabética","n"=>"Numérica");
 										db_select('ordem',$xx,true,4,"");
 									?>
@@ -125,7 +125,7 @@ function js_emite(){
   
 	</form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -163,7 +163,7 @@ function js_mostraloteam1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

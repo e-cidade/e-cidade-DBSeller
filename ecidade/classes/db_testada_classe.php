@@ -58,13 +58,13 @@ class cl_testada {
                  j36_orientacao = int4 = Orientação
                  ";
    //funcao construtor da classe
-   function cl_testada() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("testada");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_testada {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j36_idbql = ($this->j36_idbql == ""?@$GLOBALS["HTTP_POST_VARS"]["j36_idbql"]:$this->j36_idbql);
        $this->j36_face = ($this->j36_face == ""?@$GLOBALS["HTTP_POST_VARS"]["j36_face"]:$this->j36_face);
@@ -87,7 +87,7 @@ class cl_testada {
      }
    }
    // funcao para inclusao
-   function incluir ($j36_idbql,$j36_face){
+   public function incluir ($j36_idbql,$j36_face){
       $this->atualizacampos();
      if($this->j36_codigo == null ){
        $this->erro_sql = " Campo Rua nao Informado.";
@@ -182,7 +182,7 @@ class cl_testada {
      return true;
    }
    // funcao para alteracao
-   function alterar ($j36_idbql=null,$j36_face=null) {
+   public function alterar ($j36_idbql=null,$j36_face=null) {
       $this->atualizacampos();
      $sql = " update testada set ";
      $virgula = "";
@@ -327,7 +327,7 @@ class cl_testada {
      }
    }
    // funcao para exclusao
-   function excluir ($j36_idbql=null,$j36_face=null,$dbwhere=null) {
+   public function excluir ($j36_idbql=null,$j36_face=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j36_idbql,$j36_face));
      }else{
@@ -400,7 +400,7 @@ class cl_testada {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -423,7 +423,7 @@ class cl_testada {
      return $result;
    }
 
-   function sql_query ( $j36_idbql=null,$j36_face=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $j36_idbql=null,$j36_face=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -468,7 +468,7 @@ class cl_testada {
      }
      return $sql;
   }
-   function sql_query_file ( $j36_idbql=null,$j36_face=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $j36_idbql=null,$j36_face=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -516,7 +516,7 @@ class cl_testada {
    * @param  string $sCampos
    * @return string
    */
-  function sql_query_ruasObras($sWhere, $sCampos = "*") {
+  public function sql_query_ruasObras($sWhere, $sCampos = "*") {
 
   	$sSqlRuasObras  = " select {$sCampos}                                                       ";
   	$sSqlRuasObras .= "   from testada                                                          ";

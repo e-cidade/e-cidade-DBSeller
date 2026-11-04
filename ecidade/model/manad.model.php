@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
  
@@ -46,16 +46,32 @@ class manad {
 	$sSqlK050 .= "       (select cgc       ";
 	$sSqlK050 .= "          from db_config ";
 	$sSqlK050 .= "         where codigo =  {$iInstit} ) as cnpj_cei, ";
-	$sSqlK050 .= "       '01011900'                     as dt_inc_alt,     ";
+	$sSqlK050 .= "       to_char(rh01_admiss, 'DDMMYYYY')    as dt_inc_alt,     ";
 	$sSqlK050 .= "       rhpessoal.rh01_regist    as cod_reg_trab,   ";
 	$sSqlK050 .= "       cgm.z01_cgccpf           as cpf,            ";
 	$sSqlK050 .= "       rhpesdoc.rh16_pis        as nit,            ";
 	$sSqlK050 .= "       ( select tpcontra.h13_tpcont 
                             from tpcontra 
-                                 inner join  rhpessoalmov on rhpessoalmov.rh02_tpcont = tpcontra.h13_codigo
+                          inner join  rhpessoalmov 
+                            on rhpessoalmov.rh02_tpcont = tpcontra.h13_codigo 
                            where rhpessoalmov.rh02_regist = rhpessoal.rh01_regist 
-                           order by rhpessoalmov.rh02_anousu desc,
+                           and (rhpessoalmov.rh02_anousu >= {$iAnoUsuIni}
+                           and rhpessoalmov.rh02_mesusu >= {$iMesUsuIni})
+                           and (rhpessoalmov.rh02_anousu <= {$iAnoUsuFim}
+                           and rhpessoalmov.rh02_mesusu <= {$iMesUsuFim})
+			   order by rhpessoalmov.rh02_anousu desc,
                                     rhpessoalmov.rh02_mesusu desc limit 1 ) as cod_categ, ";
+$sSqlK050 .= "       ( select rhregime.rh30_vinculomanad 
+                         from rhregime
+                        inner join rhpessoalmov 
+                           on rhpessoalmov.rh02_codreg = rhregime.rh30_codreg
+                        where rhpessoalmov.rh02_regist = rhpessoal.rh01_regist 
+                          and (rhpessoalmov.rh02_anousu >= {$iAnoUsuIni}
+                          and rhpessoalmov.rh02_mesusu >= {$iMesUsuIni})
+                          and (rhpessoalmov.rh02_anousu <= {$iAnoUsuFim}
+                          and rhpessoalmov.rh02_mesusu <= {$iMesUsuFim})
+                        order by rhpessoalmov.rh02_anousu desc,
+                                 rhpessoalmov.rh02_mesusu desc limit 1 )  as ind_vinc, ";                                  
 
 	$sSqlK050 .= "       cgm.z01_nome             as nome_trab,      ";
 	$sSqlK050 .= "       to_char(rh01_nasc,'ddmmYYYY')   as dt_nasc,        ";
@@ -65,11 +81,14 @@ class manad {
 	$sSqlK050 .= "       to_char((select rhpesrescisao.rh05_recis
                                    from rhpesrescisao 
                                         inner join rhpessoalmov on rhpessoalmov.rh02_seqpes = rhpesrescisao.rh05_seqpes
-                                  where rhpessoalmov.rh02_regist = rhpessoal.rh01_regist
+				  where rhpessoalmov.rh02_regist = rhpessoal.rh01_regist
+                           and (rhpessoalmov.rh02_anousu >= {$iAnoUsuIni}
+                           and rhpessoalmov.rh02_mesusu >= {$iMesUsuIni})
+                           and (rhpessoalmov.rh02_anousu <= {$iAnoUsuFim}
+                           and rhpessoalmov.rh02_mesusu <= {$iMesUsuFim})
                                   order by rhpessoalmov.rh02_anousu desc,
                                            rhpessoalmov.rh02_mesusu desc limit 1 ),'ddmmYYYY') as dt_demissao,    ";
 
-	$sSqlK050 .= "       null                      as ind_vinc,       ";
 	$sSqlK050 .= "       null                      as tipo_ato_nom,   ";
 	$sSqlK050 .= "       null                      as nm_ato_nom,     ";
 	$sSqlK050 .= "       null                      as dt_ato_nom      ";
@@ -82,6 +101,30 @@ class manad {
 	$sSqlK050 .= "   and (rhpessoalmov.rh02_anousu <= {$iAnoUsuFim}";
     $sSqlK050 .= "   and rhpessoalmov.rh02_mesusu   <= {$iMesUsuFim})) ";
 	$sSqlK050 .= "   and rhpessoalmov.rh02_instit = {$iInstit} ";
+  $sSqlK050 .= "   and (exists (select 1 
+                                 from gerfsal
+                                where r14_anousu = rh02_anousu
+                                  and r14_mesusu = rh02_mesusu
+                                  and r14_regist = rh02_regist
+                                  and r14_instit = rh02_instit)";
+  $sSqlK050 .= "   or exists (select 1 
+                                  from gerfcom
+                                 where r48_anousu = rh02_anousu
+                                   and r48_mesusu = rh02_mesusu
+                                   and r48_regist = rh02_regist
+                                   and r48_instit = rh02_instit)";
+  $sSqlK050 .= "   or exists (select 1 
+                                   from gerfs13
+                                  where r35_anousu = rh02_anousu
+                                    and r35_mesusu = rh02_mesusu
+                                    and r35_regist = rh02_regist
+                                    and r35_instit = rh02_instit)";
+  $sSqlK050 .= "   or exists (select 1 
+                                   from gerfres
+                                  where r20_anousu = rh02_anousu
+                                    and r20_mesusu = rh02_mesusu
+                                    and r20_regist = rh02_regist
+                                    and r20_instit = rh02_instit))";
 
      $tabelaPrevidencia = implode(', ', $tabelas);
      if ( !empty($tabelaPrevidencia ) ){
@@ -355,7 +398,7 @@ class manad {
                            cod_ocorr,
                            desc_cargo	";
 		
-    //die($sSqlK250);
+  //  die($sSqlK250);
 		
 	  return $sSqlK250;
   }
@@ -564,71 +607,71 @@ class manad {
     $sSqlK300 .= "    and cast( gerfcom.r48_anousu||lpad(gerfcom.r48_mesusu,2,'0') as integer)
                           between cast('$sData1' as integer) and cast('$sData2' as integer)";
                                   
-	$sSqlK300 .= " union ";
-	$sSqlK300 .= " select 'K300'                                        as reg, ";
-	$sSqlK300 .= "        (select cgc from db_config where codigo =  {$iInstit}) as cnpj, ";
-	$sSqlK300 .= "        6                                             as ind_fl, ";
-	$sSqlK300 .= "        r20_lotac                                     as cod_ltc, ";
-	$sSqlK300 .= "        r20_regist                                    as cod_reg_trab, ";
-	$sSqlK300 .= "        lpad(r20_mesusu,2,'0')||r20_anousu            as dt_comp, ";
-	$sSqlK300 .= "        r20_rubric                                    as cod_rubr, ";
-	$sSqlK300 .= "        replace(cast(cast(round(r20_valor,2) as numeric) as text),'.',',') as vlr_rubr, ";
-	$sSqlK300 .= "        case  ";
-	$sSqlK300 .= "          when r20_pd = 1 then 'P' ";
-	$sSqlK300 .= "          else 'D' ";
-	$sSqlK300 .= "        end as ind_rubr, ";
-	$sSqlK300 .= "        case  ";
-    $sSqlK300 .= " WHEN rh05_causa = 20 and r59_regime = 3 and r20_rubric between '2000' and '3999' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 20 and r59_regime = 3 and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 20 and r59_regime = 3 and r20_rubric = 'R931' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'S' and r59_regime in (1, 2) and (r20_rubric between '2000' and '3999' or r20_rubric = 'R931') THEN 3 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'S' and r59_regime in (1, 2) and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'S' and r59_regime = 3 and r20_rubric between '4000' and '5999' THEN 2 ";
+	  $sSqlK300 .= " union ";
+    $sSqlK300 .= " select 'K300'                                        as reg, ";
+	  $sSqlK300 .= "        (select cgc from db_config where codigo =  {$iInstit}) as cnpj, ";
+	  $sSqlK300 .= "        6                                             as ind_fl, ";
+	  $sSqlK300 .= "        r20_lotac                                     as cod_ltc, ";
+	  $sSqlK300 .= "        r20_regist                                    as cod_reg_trab, ";
+	  $sSqlK300 .= "        lpad(r20_mesusu,2,'0')||r20_anousu            as dt_comp, ";
+	  $sSqlK300 .= "        r20_rubric                                    as cod_rubr, ";
+	  $sSqlK300 .= "        replace(cast(cast(round(r20_valor,2) as numeric) as text),'.',',') as vlr_rubr, ";
+	  $sSqlK300 .= "        case  ";
+	  $sSqlK300 .= "          when r20_pd = 1 then 'P' ";
+	  $sSqlK300 .= "          else 'D' ";
+	  $sSqlK300 .= "        end as ind_rubr, ";
+	  $sSqlK300 .= "        case  ";
+    $sSqlK300 .= " WHEN rh05_causa = 20 and rh30_regime = 3 and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 20 and rh30_regime = 3 and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 20 and rh30_regime = 3 and r20_rubric = 'R931' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime in (1, 2) and (r20_rubric between '2000' and '3999' or r20_rubric = 'R931') THEN 3 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime in (1, 2) and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime = 3 and r20_rubric between '4000' and '5999' THEN 2 ";
     $sSqlK300 .= " WHEN rh05_causa = 21 and (r20_rubric between '2000' and '3999' or r20_rubric = 'R931') THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'N' and r59_regime in (1, 2) and r20_rubric between '2000' and '3999' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'S' and r59_regime  = 3 and r20_rubric between '2000' and '3999' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'N' and r59_regime = 1 and r20_rubric = 'R931' THEN 3 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'N' and r59_regime = 2 and r20_rubric = 'R931' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_menos1 = 'S' and r59_regime  = 3 and r20_rubric = 'R931' THEN 3 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_menos1 = 'N' and r59_regime in (2, 3) and r20_rubric between '2000' and '3999' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_regime in (2, 3) and r20_rubric = 'R931' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_regime in (2, 3) and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_menos1 = 'N' and r59_regime in (2, 3) and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_menos1 = 'S' and r59_regime  = 2 and r20_rubric between '2000' and '3999' THEN 3 ";
-    $sSqlK300 .= " WHEN rh05_causa = 70 and r59_regime = 1 and (r20_rubric between '2000' and '3999') THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) > 365 and rh30_regime in (1, 2) and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime  = 3 and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) > 365 and rh30_regime = 1 and r20_rubric = 'R931' THEN 3 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) > 365 and rh30_regime = 2 and r20_rubric = 'R931' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime  = 3 and r20_rubric = 'R931' THEN 3 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and (rh05_recis - rh01_admiss) > 365 and rh30_regime in (2, 3) and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and rh30_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and rh30_regime in (2, 3) and r20_rubric = 'R931' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and rh30_regime in (2, 3) and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and (rh05_recis - rh01_admiss) > 365 and rh30_regime in (2, 3) and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime  = 2 and r20_rubric between '2000' and '3999' THEN 3 ";
+    $sSqlK300 .= " WHEN rh05_causa = 70 and rh30_regime = 1 and (r20_rubric between '2000' and '3999') THEN 1 ";
     $sSqlK300 .= " WHEN rh05_causa = 70 and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 71 and r59_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 71 and r59_regime = 2 and r20_rubric = 'R931' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 71 and r59_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 72 and r59_menos1 = 'S' and r59_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 72 and r59_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 71 and rh30_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 71 and rh30_regime = 2 and r20_rubric = 'R931' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 71 and rh30_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 72 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 72 and rh30_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
     if ( $iCodigoCliente == 50 ){
 	   $sSqlK300 .= " when r20_rubric = '0228' then 1 ";
     }
-	$sSqlK300 .= "          when b1.r09_base is not null then 1 ";
-	$sSqlK300 .= "          else 3 ";
-	$sSqlK300 .= "        end as ind_base_irrf, ";
-	$sSqlK300 .= "        case  ";
-    $sSqlK300 .= " WHEN rh05_causa = 20 and r59_regime = 3 and r20_rubric between '2000' and '3999' THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 20 and r59_regime = 3 and r20_rubric between '4000' and '5999' THEN 8 ";
+	  $sSqlK300 .= "          when b1.r09_base is not null then 1 ";
+	  $sSqlK300 .= "          else 3 ";
+	  $sSqlK300 .= "        end as ind_base_irrf, ";
+	  $sSqlK300 .= "        case  ";
+    $sSqlK300 .= " WHEN rh05_causa = 20 and rh30_regime = 3 and r20_rubric between '2000' and '3999' THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 20 and rh30_regime = 3 and r20_rubric between '4000' and '5999' THEN 8 ";
     $sSqlK300 .= " WHEN rh05_causa = 20 and r20_rubric = 'R931' THEN 8 ";
     $sSqlK300 .= " WHEN rh05_causa = 21 and r20_rubric between '2000' and '3999' THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_regime in (1, 2) and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 21 and r59_regime = 3 and r20_rubric between '4000' and '5999' THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and rh30_regime in (1, 2) and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 21 and rh30_regime = 3 and r20_rubric between '4000' and '5999' THEN 8 ";
     $sSqlK300 .= " WHEN rh05_causa = 21 and r20_rubric = 'R931' THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_menos1 = 'N' and r59_regime = 3 and r20_rubric between '2000' and '3999' THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and (rh05_recis - rh01_admiss) > 365 and rh30_regime = 3 and r20_rubric between '2000' and '3999' THEN 8 ";
     $sSqlK300 .= " WHEN rh05_causa = 60 and r20_rubric = 'R931' THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_regime = 3 and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 60 and r59_menos1 = 'S' and r59_regime = 2 and r20_rubric between '2000' and '3999' THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and rh30_regime = 3 and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 60 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime = 2 and r20_rubric between '2000' and '3999' THEN 8 ";
     $sSqlK300 .= " WHEN rh05_causa = 70 and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 70 and r59_regime = 1 and (r20_rubric between '2000' and '3999' or r20_rubric = 'R931') THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 71 and r59_regime = 2 and r20_rubric between '2000' and '3999' THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 71 and r59_regime = 2 and r20_rubric = 'R931' THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 71 and r59_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
-    $sSqlK300 .= " WHEN rh05_causa = 72 and r59_menos1 = 'S' and r59_regime = 2 and r20_rubric between '2000' and '3999' THEN 8 ";
-    $sSqlK300 .= " WHEN rh05_causa = 72 and r59_menos1 = 'N' and r59_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
-    $sSqlK300 .= " WHEN rh05_causa = 72 and r59_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 70 and rh30_regime = 1 and (r20_rubric between '2000' and '3999' or r20_rubric = 'R931') THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 71 and rh30_regime = 2 and r20_rubric between '2000' and '3999' THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 71 and rh30_regime = 2 and r20_rubric = 'R931' THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 71 and rh30_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
+    $sSqlK300 .= " WHEN rh05_causa = 72 and (rh05_recis - rh01_admiss) <= 365 and rh30_regime = 2 and r20_rubric between '2000' and '3999' THEN 8 ";
+    $sSqlK300 .= " WHEN rh05_causa = 72 and (rh05_recis - rh01_admiss) > 365 and rh30_regime = 2 and r20_rubric between '2000' and '3999' THEN 1 ";
+    $sSqlK300 .= " WHEN rh05_causa = 72 and rh30_regime = 2 and r20_rubric between '4000' and '5999' THEN 2 ";
     $sSqlK300 .= " WHEN rh05_causa = 11 and (trim(rh05_caub) = '' or rh05_caub is null or rh05_caub = '01') and ";
     $sSqlK300 .= "     (r20_rubric between '2000' and '3999' or r20_rubric = 'R931') THEN 8 ";
     $sSqlK300 .= " when rh02_codreg in (5,14) then 8 "; 
@@ -653,11 +696,11 @@ class manad {
     $sSqlK300 .= "        inner join rhregime     on rh30_instit = rh02_instit ";
     $sSqlK300 .= "                               and rh02_codreg = rh30_codreg ";
     $sSqlK300 .= "        INNER JOIN rhpesrescisao ON rhpessoalmov.rh02_seqpes = rhpesrescisao.rh05_seqpes ";
-    $sSqlK300 .= "                                AND extract(year from rh05_recis) = rhpessoalmov.rh02_anousu";
-    $sSqlK300 .= "        inner join rescisao      on rh02_anousu = r59_anousu and rh02_mesusu = r59_mesusu ";
-    $sSqlK300 .= "                                and r59_regime = rh30_regime and r59_causa = rh05_causa ";
-    $sSqlK300 .= "                                and r59_caub = rh05_caub ";
-    $sSqlK300 .= "                                AND r59_menos1 = ( select case when (rh05_recis - rh01_admiss) > 365 then 'N' else 'S' end ) ";
+    // $sSqlK300 .= "                                AND extract(year from rh05_recis) = rhpessoalmov.rh02_anousu";
+    // $sSqlK300 .= "        inner join rescisao      on rh02_anousu = r59_anousu and rh02_mesusu = r59_mesusu ";
+    // $sSqlK300 .= "                                and r59_regime = rh30_regime and r59_causa = rh05_causa ";
+    // $sSqlK300 .= "                                and r59_caub = rh05_caub ";
+    // $sSqlK300 .= "                                AND r59_menos1 = ( select case when (rh05_recis - rh01_admiss) > 365 then 'N' else 'S' end ) ";
 	$sSqlK300 .= "        left  join basesr as b1 on b1.r09_anousu  = r20_anousu ";
 	$sSqlK300 .= "                               and b1.r09_mesusu = r20_mesusu ";
 	$sSqlK300 .= "                               and b1.r09_instit = r20_instit ";
@@ -751,13 +794,13 @@ class manad {
   function getSql0100($iInstit){
     
     $sSql0001  = " select '0100' as reg, ";
-    $sSql0001 .= "        'PAULO RICARDO DA SILVA'   as emp_tec, ";
+    $sSql0001 .= "        'PAULO RICARDO SILVA'  as emp_tec, ";
     $sSql0001 .= "        'DIRETOR'                  as cargo,   ";
     $sSql0001 .= "        to_char(dtcont,'ddmmYYYY') as dt_ini_serv_inf, ";
     $sSql0001 .= "        null                       as dt_fim_serv_inf, ";
     $sSql0001 .= "        '05238851000190'           as cnpj,  ";
     $sSql0001 .= "        null                       as cpf,   ";
-    $sSql0001 .= "        '32122637'                 as fone,  ";
+    $sSql0001 .= "        '35120020'                 as fone,  ";
     $sSql0001 .= "        null                       as fax,   ";
     $sSql0001 .= "        'paulo@dbseller.com.br'    as email ";
     $sSql0001 .= "   from db_config ";
@@ -790,7 +833,7 @@ class manad {
      */ 
     $sSqlEmpenho  = " select e60_numemp, ";
     $sSqlEmpenho .= "        e60_anousu, ";
-    $sSqlEmpenho .= "        e60_anousu::text||trim(e60_codemp)::integer as nm_emp, ";
+    $sSqlEmpenho .= "        (e60_anousu::text||trim(e60_codemp))::integer as nm_emp, ";
     $sSqlEmpenho .= "        o58_orgao as cod_org, ";
     $sSqlEmpenho .= "        o58_unidade as cod_un_orc, ";
     $sSqlEmpenho .= "        o58_funcao as cod_fun, ";
@@ -815,6 +858,7 @@ class manad {
     $sSqlEmpenho .= "   from empempenho  ";
     $sSqlEmpenho .= "        inner join conlancamemp on c75_numemp = e60_numemp ";
     $sSqlEmpenho .= "        inner join conlancamdoc on c71_codlan = c75_codlan ";
+    $sSqlEmpenho .= "        inner join conhistdoc   on c71_coddoc = c53_coddoc";
     $sSqlEmpenho .= "        inner join conlancam    on c70_codlan = c75_codlan ";
     $sSqlEmpenho .= "        inner join cgm          on z01_numcgm = e60_numcgm ";
     $sSqlEmpenho .= "        inner join orcdotacao   on o58_coddot = e60_coddot ";
@@ -825,16 +869,19 @@ class manad {
     $sSqlEmpenho .= "  where c75_data >= '{$sDataInicial}' "; 
     $sSqlEmpenho .= "    and c75_data <='{$sDataFinal}' ";  
     $sSqlEmpenho .= "    and e60_emiss <='{$sDataFinal}'";
-    $sSqlEmpenho .= "    and c71_coddoc in (1,2,31,32) ";
+    // $sSqlEmpenho .= "    and c71_coddoc in (1,2,31,32) ";
+    $sSqlEmpenho .= "    and c53_tipo in (10,11) ";
+
     $sSqlEmpenho .= "    and e60_instit in ({$sListaInstit}) ";
           
    /**
     * Empenhos RP:
     */
     $sSqlEmpenho .= " union all ";
-    $sSqlEmpenho .= " select distinct (e91_numemp) , ";
+    $sSqlEmpenho .= " select distinct on (e91_numemp)  ";
+    $sSqlEmpenho .= "        e91_numemp, ";
     $sSqlEmpenho .= "        e60_anousu, ";
-    $sSqlEmpenho .= "        e60_anousu::text||trim(e60_codemp)::integer as e60_codemp, ";
+    $sSqlEmpenho .= "        (e60_anousu::text||trim(e60_codemp))::integer as e60_codemp, ";
     $sSqlEmpenho .= "        o58_orgao, ";
     $sSqlEmpenho .= "        o58_unidade, ";
     $sSqlEmpenho .= "        o58_funcao, ";
@@ -870,7 +917,7 @@ class manad {
     $sSqlEmpenho .= "  union all ";
     $sSqlEmpenho .= " select e60_numemp, ";
     $sSqlEmpenho .= "        e60_anousu, ";
-    $sSqlEmpenho .= "        e60_anousu::text ||trim(e60_codemp)::integer as e60_codemp, ";
+    $sSqlEmpenho .= "        (e60_anousu::text ||trim(e60_codemp))::integer as e60_codemp, ";
     $sSqlEmpenho .= "        o58_orgao, ";
     $sSqlEmpenho .= "        o58_unidade, ";
     $sSqlEmpenho .= "        o58_funcao, ";
@@ -904,7 +951,8 @@ class manad {
     $sSqlEmpenho .= "        inner join orctiporec   on o58_codigo = o15_codigo";
     $sSqlEmpenho .= "  where e91_anousu = {$iAno}";
     $sSqlEmpenho .= "    and c75_data <= '{$sDataFinal}'";
-    $sSqlEmpenho .= "    and c71_coddoc in (1,2,31,32) ";
+    // $sSqlEmpenho .= "    and c71_coddoc in (1,2,31,32) ";
+    $sSqlEmpenho .= "    and c53_tipo in (10,11) ";
     $sSqlEmpenho .= "    and e91_rpcorreto is true";
     $sSqlEmpenho .= "    and e60_instit in ({$sListaInstit})";
     $sSqlEmpenho .= "  order by 5, 6,7,8,9,10,11,12,13";
@@ -928,7 +976,7 @@ class manad {
     $sListaInstit = db_getsession("DB_instit");
      
     $sSqlLiquidacoes  = " select e60_anousu as ano, ";
-    $sSqlLiquidacoes .= "        e60_anousu||trim(e60_codemp)::integer as nm_emp, ";
+    $sSqlLiquidacoes .= "        (e60_anousu||trim(e60_codemp))::integer as nm_emp, ";
     $sSqlLiquidacoes .= "        to_char(c75_data,'ddmmYYYY') as dt_liquid,";
     $sSqlLiquidacoes .= "        round(c70_valor,2)::float8 as vl_liquid,";
     $sSqlLiquidacoes .= "        case when c53_tipo = 20 "; 
@@ -952,7 +1000,7 @@ class manad {
     $sSqlLiquidacoes .= " union all ";     
     
     $sSqlLiquidacoes .= " select e60_anousu as ano, ";
-    $sSqlLiquidacoes .= "        e60_anousu||trim(e60_codemp)::integer as e60_codemp, ";
+    $sSqlLiquidacoes .= "       (e60_anousu||trim(e60_codemp))::integer as e60_codemp, ";
     $sSqlLiquidacoes .= "        to_char(c75_data,'ddmmYYYY') as dt_liquid,";
     $sSqlLiquidacoes .= "        round(c70_valor,2)::float8 as vl_liquid,";
     $sSqlLiquidacoes .= "        case when c53_tipo = 20 "; 
@@ -987,7 +1035,7 @@ class manad {
     $sListaInstit = db_getsession("DB_instit");
     $sWhere          =  " and e60_instit in ({$sListaInstit})";
     $sSqlPagamentos  = "select e60_anousu as ano, ";
-    $sSqlPagamentos .= "       e60_anousu||trim(e60_codemp)::integer as nm_emp, ";
+    $sSqlPagamentos .= "       (e60_anousu||trim(e60_codemp))::integer as nm_emp, ";
     $sSqlPagamentos .= "       c75_codlan as nm_pgto, ";
     $sSqlPagamentos .= "       to_char(c75_data, 'ddmmYYYY') as dt_pgto, ";
     $sSqlPagamentos .= "       round(c70_valor,2) as vl_pgto, ";
@@ -1021,7 +1069,7 @@ class manad {
     $sSqlPagamentos .= " union all ";
     
     $sSqlPagamentos  .= "select e60_anousu as ano, ";
-    $sSqlPagamentos .= "       e60_anousu||trim(e60_codemp)::integer as nm_emp, ";
+    $sSqlPagamentos .= "       (e60_anousu||trim(e60_codemp))::integer as nm_emp, ";
     $sSqlPagamentos .= "       c75_codlan as nm_pgto, ";
     $sSqlPagamentos .= "       to_char(c75_data, 'ddmmYYYY') as dt_pgto, ";
     $sSqlPagamentos .= "       round(c70_valor,2) as vl_pgto, ";
@@ -1110,11 +1158,7 @@ class manad {
     $sSqlBalancete  = " select case  when {$iAno} <= 2007 then ";
     $sSqlBalancete .= "         substr(o57_fonte,2,14) "; 
     $sSqlBalancete .= "       else  ";
-    $sSqlBalancete .= "         case  when fc_conplano_grupo({$iAno}, substr(o57_fonte,1,1) || '%', 9000 ) is false then "; 
-    $sSqlBalancete .= "           substr(o57_fonte, 2, 14) "; 
-    $sSqlBalancete .= "         else  ";
     $sSqlBalancete .= "          substr(o57_fonte,1,15) "; 
-    $sSqlBalancete .= "         end  ";
     $sSqlBalancete .= "       end as o57_fonte, ";
     $sSqlBalancete .= "       max(o57_descr) as o57_descr, ";
     $sSqlBalancete .= "       round(sum(saldo_inicial),2) as saldo_inicial, ";

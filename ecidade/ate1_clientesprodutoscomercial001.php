@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -154,7 +154,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat91_sequencial?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_input('at91_sequencial',10,$Iat91_sequencial,true,'text',3,'');
 	                db_input('at91_cliente'   ,10,'',true,'hidden',3,'');
 	              ?>
@@ -165,7 +165,7 @@ if (isset($db_opcaoal)){
 		            <?=@$Lat91_nome?>
 		          </td>        
 		      		<td>
-		      		  <?
+		      		  <?php
 		              db_input('at91_nome',50,$Iat91_nome,true,'text',$db_opcao,'');
 		      		  ?>
 		      		</td>	 
@@ -175,7 +175,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat91_fornecedor?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_input('at91_fornecedor',50,$Iat91_fornecedor,true,'text',$db_opcao,'');
 	              ?>
 	            </td>  
@@ -185,7 +185,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat91_datavenccontrato?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_inputdata('at91_datavenccontrato',@$at91_datavenccontrato_dia,@$at91_datavenccontrato_mes,@$at91_datavenccontrato_ano,true,'text',$db_opcao,'');
 	              ?>
 	            </td>  
@@ -195,7 +195,7 @@ if (isset($db_opcaoal)){
 	              <?=@$Lat91_obs?>
 	            </td>        
 	            <td>
-	              <?
+	              <?php
 	                db_textarea('at91_obs',5,50,$Iat91_obs,true,'text',$db_opcao,'');
 	              ?>
 	            </td>  
@@ -215,7 +215,7 @@ if (isset($db_opcaoal)){
 			  <table>
 				  <tr>
 				    <td valign="top"  align="center">  
-					    <?
+					    <?php
 					    
 					      $aChavePri     = array("at91_sequencial"=>@$at91_sequencial);
 					      $sWhereProduto = "at91_cliente = {$oGet->at91_cliente} "; 
@@ -238,7 +238,7 @@ if (isset($db_opcaoal)){
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
 
  db_msgbox($sMsgErro);

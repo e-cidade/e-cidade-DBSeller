@@ -91,7 +91,7 @@ $sSqlProcessoCompras = $oDaoPcProc->sql_query_proc_solicita(null,
         <div style="display: table;">
           <fieldset>
             <legend><b>Processos de Compras</b></legend>
-          <?
+          <?php
            db_lovrot($sSqlProcessoCompras, 15, "()", "", "js_abrePesquisaProcesso|pc80_codproc");
           ?>
           </fieldset>

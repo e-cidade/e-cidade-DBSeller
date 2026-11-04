@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: caixa
 //CLASSE DA ENTIDADE infracaotransito
 class cl_infracaotransito { 
@@ -28,13 +28,13 @@ class cl_infracaotransito {
                  i05_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_infracaotransito() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("infracaotransito"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_infracaotransito {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->i05_sequencial = ($this->i05_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["i05_sequencial"]:$this->i05_sequencial);
        $this->i05_codigo = ($this->i05_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["i05_codigo"]:$this->i05_codigo);
@@ -54,7 +54,7 @@ class cl_infracaotransito {
      }
    }
    // funcao para Inclusão
-   function incluir ($i05_sequencial){ 
+   public function incluir ($i05_sequencial){ 
       $this->atualizacampos();
      if($this->i05_codigo == null ){ 
        $this->erro_sql = " Campo Código da Infração não informado.";

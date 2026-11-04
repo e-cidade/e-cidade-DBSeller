@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -120,7 +120,7 @@ function js_emite(anousu) {
          <table  align="center">
             <tr>
               <td align="center" colspan="3">
-                <? db_selinstit('', 300, 100); ?>
+                <?php db_selinstit('', 300, 100); ?>
               </td>
             </tr>
             <tr>
@@ -128,7 +128,7 @@ function js_emite(anousu) {
                 <strong>Período:</strong>
               </td>
               <td>
-	              <?
+	              <?php
 	                $aMes = array("0"  => "Selecione",
  	                              "1"  => "Janeiro",
 	                              "2"  => "Fevereiro",
@@ -151,7 +151,7 @@ function js_emite(anousu) {
 	              <strong>Previsão da Receita:</strong>
 	            </td>
 	            <td>
-	              <?
+	              <?php
 	                $aTipoPrevisao = array("1" => "Inicial",
 	                                       "2" => "Atualizada");
 	                db_select("tipoprevisao", $aTipoPrevisao, true, 2);
@@ -163,7 +163,7 @@ function js_emite(anousu) {
 	              <strong>Fixação da Despesa:</strong>
 	            </td>
 	            <td>
-	              <?
+	              <?php
 	                $aTipoFixacao = array("1" => "Inicial",
 	                                      "2" => "Atualizada");
 	                db_select("tipofixacao", $aTipoFixacao, true, 2);

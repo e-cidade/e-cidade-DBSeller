@@ -95,17 +95,22 @@ class MapeamentoPlanoReceitaService
         return $this->balancete;
     }
 
+    /**
+     * Processa o balancete do e-cidade para comparar as contas que possuem mapeamento.
+     * @return array
+     */
     private function processaBalanceteReceita()
     {
         $exercicio = $this->filtros['exercicio'];
         $filtros = [
             "dataInicio" => sprintf('01/01/%s', $exercicio),
             "dataFinal" => sprintf('31/12/%s', $exercicio),
-            "nivel_agrupar" => 0,
-            "apenasComMovimentacao" => 0
+            "nivelAgrupar" => 0,
+            "apenasComMovimentacao" => 1,
+            "ementario" => 'ecidade'
         ];
 
-        $service = new BalanceteReceitaService();
+        $service = new BalanceteReceitaComplementoService();
         $service->setFiltrosRequest($filtros);
 
         $service->setInstituicoes(DBConfig::select(['codigo', 'nomeinst'])->get());
@@ -128,5 +133,16 @@ class MapeamentoPlanoReceitaService
         }
 
         return false;
+    }
+
+    public function getContasSemVinculoComMovimentacao()
+    {
+        if (empty($this->contasSemVinculoComMovimentacao) &&
+            empty($this->contasSemVinculo) &&
+            empty($this->contasComVinculo)
+        ) {
+            $this->processar();
+        }
+        return $this->contasSemVinculoComMovimentacao;
     }
 }

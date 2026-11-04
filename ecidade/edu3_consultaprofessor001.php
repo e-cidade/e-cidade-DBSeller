@@ -85,6 +85,13 @@ $clrotulo->label("ed18_i_escola");
               db_input("sNomeProfessor",50,$Iz01_nome,true,"text",1,"onFocus=\"nextfield='pesquisar2'\"");
             ?>
           </td>
+          <tr>
+          <td class='bold' nowrap='nowrap'>Nome Social:</td>
+          <td nowrap='nowrap'>
+            <?php
+              db_input("sNomeProfessorSocial",50,$Iz04_nomesocial,true,"text",1,"onFocus=\"nextfield='pesquisar2'\"");
+            ?>
+          </td>
         </tr>
         <tr>
           <td class='bold' nowrap="nowrap" >Escola:</td>
@@ -134,12 +141,13 @@ $clrotulo->label("ed18_i_escola");
 
     var oEscolaSelecionada = oEscola.getSelecionados();
 
-    var oParametro            = new Object();
-    oParametro.exec           = 'getProfessorEscola';
-    oParametro.iEscola        = oEscolaSelecionada.codigo_escola;
-    oParametro.iMatricula     = $F('iMatricula');
-    oParametro.iCgm           = $F('iCgm');
-    oParametro.sNomeProfessor = encodeURIComponent(tagString($F('sNomeProfessor')));
+    var oParametro                  = new Object();
+    oParametro.exec                 = 'getProfessorEscola';
+    oParametro.iEscola              = oEscolaSelecionada.codigo_escola;
+    oParametro.iMatricula           = $F('iMatricula');
+    oParametro.iCgm                 = $F('iCgm');
+    oParametro.sNomeProfessor       = encodeURIComponent(tagString($F('sNomeProfessor')));
+    oParametro.sNomeProfessorSocial = encodeURIComponent(tagString($F('sNomeProfessorSocial')));
 
     js_divCarregando("Aguarde, pesquisando professores.", "msgBox");
 
@@ -162,6 +170,9 @@ $clrotulo->label("ed18_i_escola");
 
       var oLinkNome = new Element('a', { 'href':'#'}).update(oProfessor.z01_nome.urlDecode());
       oLinkNome.setAttribute('onclick', 'js_abreConsultaProfessor('+oProfessor.z01_numcgm+');');
+
+      var oLinkNomeSocial = new Element('a', { 'href':'#'}).update(oProfessor.z04_nomesocial.urlDecode());
+      oLinkNomeSocial.setAttribute('onclick', 'js_abreConsultaProfessor('+oProfessor.z01_numcgm+');');
 
       var oLinkCgm = new Element('a', { 'href':'#'}).update(oProfessor.z01_numcgm);
       oLinkCgm.setAttribute('onclick', 'js_JanelaAutomatica("cgm", '+oProfessor.z01_numcgm+');');

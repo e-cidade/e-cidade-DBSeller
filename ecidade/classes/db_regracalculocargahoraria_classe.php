@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE regracalculocargahoraria
 class cl_regracalculocargahoraria { 
@@ -28,13 +28,13 @@ class cl_regracalculocargahoraria {
                  ed127_escola = int4 = Escola 
                  ";
    //funcao construtor da classe 
-   function cl_regracalculocargahoraria() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regracalculocargahoraria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_regracalculocargahoraria {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed127_codigo = ($this->ed127_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed127_codigo"]:$this->ed127_codigo);
        $this->ed127_ano = ($this->ed127_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["ed127_ano"]:$this->ed127_ano);
@@ -54,7 +54,7 @@ class cl_regracalculocargahoraria {
      }
    }
    // funcao para inclusao
-   function incluir ($ed127_codigo){ 
+   public function incluir ($ed127_codigo){ 
       $this->atualizacampos();
      if($this->ed127_ano == null ){ 
        $this->erro_sql = " Campo Ano não informado.";

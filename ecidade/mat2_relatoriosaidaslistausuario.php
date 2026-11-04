@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,7 +63,7 @@ $aux = new cl_arquivo_auxiliar;
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  $aux->cabecalho = "<strong>Usuário</strong>";
                  $aux->codigo = "id_usuario"; //chave de retorno da func
                  $aux->descr  = "nome";       //chave de retorno

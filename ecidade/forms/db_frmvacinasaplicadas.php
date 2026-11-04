@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,45 +37,45 @@ $clrotulo->label("sd07_c_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tsd08_c_vacina?>">
-       <?
+       <?php
        db_ancora(@$Lsd08_c_vacina,"js_pesquisasd08_c_vacina(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd08_c_vacina',10,$Isd08_c_vacina,true,'text',$db_opcao," onchange='js_pesquisasd08_c_vacina(false);'")
 ?>
-       <?
+       <?php
 db_input('sd07_c_nome',40,$Isd07_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd08_i_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lsd08_i_unidade,"js_pesquisasd08_i_unidade(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd08_i_unidade',10,$Isd08_i_unidade,true,'text',$db_opcao," onchange='js_pesquisasd08_i_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('sd02_c_nome',40,$Isd02_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd08_i_cgm?>">
-       <?
+       <?php
        db_ancora(@$Lsd08_i_cgm,"js_pesquisasd08_i_cgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd08_i_cgm',10,$Isd08_i_cgm,true,'text',$db_opcao," onchange='js_pesquisasd08_i_cgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -85,7 +85,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lsd08_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd08_d_data',@$sd08_d_data_dia,@$sd08_d_data_mes,@$sd08_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('sd08_d_data',@$sd08_d_data_dia,@$sd08_d_data_mes,@$sd08_d_data_ano
   </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?if($db_opcao==1){echo "disabled";}?>>
+<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?php if($db_opcao==1){echo "disabled";}?>>
 </form>
 <script>
 function js_pesquisasd08_i_cgm(mostra){
@@ -170,7 +170,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_vacinasaplicadas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

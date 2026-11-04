@@ -27,17 +27,10 @@ if (!function_exists('addCaracter')){
 
 		return implode ("$sQuebra",$aRetorno);
 	}
-
 }
 
 $seq_item = 1;
 $pagina = 1;
-
-$origem = \ECidade\Financeiro\Orcamento\Recurso\Origem::getAutorizacao($this->numaut);
-$complemento = '';
-if (!empty($origem)) {
-    $complemento = "{$origem->o200_sequencial} - {$origem->o200_descricao}";
-}
 
 $destino = "";
 if (!empty($this->destino)) {
@@ -50,7 +43,6 @@ if (!empty($this->numero_licitacao)) {
 }
 
 if (strtoupper(trim($this->municpref)) == 'GUAIBA') {
-
   $this->objpdf->AliasNbPages();
   $this->objpdf->AddPage();
   $this->objpdf->settopmargin(1);
@@ -78,8 +70,6 @@ if (strtoupper(trim($this->municpref)) == 'GUAIBA') {
   }
 
   if (isset($this->iPlanoPacto) && $this->iPlanoPacto != "") {
-
-
     $this->objpdf->text(130,$xlin-2,'PLANO');
     $this->objpdf->text(180,$xlin-2,': '.substr($this->iPlanoPacto."-".$this->SdescrPacto,0,40));
   }
@@ -147,7 +137,7 @@ if (strtoupper(trim($this->municpref)) == 'GUAIBA') {
   $this->objpdf->text($xcol + 122, $xlin + 29,   ' :  ' . $this->recurso . ' - ' . $this->descr_recurso);
   $this->objpdf->text($xcol + 188, $xlin + 29,   ' :  ' . $this->coddot . '-' . db_CalculaDV($this->coddot));
   //  $this->objpdf->text($xcol + 122, $xlin + 32,   ' :  ' . stripslashes($this->destino));
-  $this->objpdf->text($xcol + 126, $xlin + 32,   ' :  ' . $complemento);
+  $this->objpdf->text($xcol + 126, $xlin + 32,   ' :  ' . $this->complemento);
 
   $this->objpdf->text($xcol + 138, $xlin + 34.5, ' :  ' . $this->cod_concarpeculiar . " - " . $this->descr_concarpeculiar);
 
@@ -267,7 +257,6 @@ if (strtoupper(trim($this->municpref)) == 'GUAIBA') {
       }
 
       $this->objpdf->Row(array (
-
             db_formatar($seq_item, "s", "0", (strlen($seq_item) + 1), "e", 0),
             pg_result($this->recorddositens, $ii, $this->item),
             pg_result($this->recorddositens, $ii, $this->quantitem),
@@ -298,7 +287,7 @@ if (strtoupper(trim($this->municpref)) == 'GUAIBA') {
 
     $this->objpdf->Setfont('Arial', '', 7);
 
-    if(count(split("\n", $obsitem)) <= 3 &&  strlen($obsitem) > 2000){ //Texto em bloco
+    if(count(explode("\n", $obsitem)) <= 3 &&  strlen($obsitem) > 2000){ //Texto em bloco
     	$obsitem = addCaracter($obsitem, "\n", 86);
     }
 
@@ -620,7 +609,7 @@ if (strtoupper(trim($this->municpref)) == 'GUAIBA') {
   $this->objpdf->text($xcol + 188, $xlin + 29, ' :  ' . $this->coddot . '-' . db_CalculaDV($this->coddot));
 
 //  $this->objpdf->text($xcol + 122, $xlin + 32, ' :  ' . stripslashes($this->destino));
-  $this->objpdf->text($xcol + 126, $xlin + 32, ' :  ' . $complemento);
+  $this->objpdf->text($xcol + 126, $xlin + 32, ' :  ' . $this->complemento);
 
   $this->objpdf->text($xcol + 138, $xlin + 34.5, ' :  ' . $this->cod_concarpeculiar . " - " . $this->descr_concarpeculiar);
 
@@ -778,7 +767,7 @@ if (strtoupper(trim($this->municpref)) == 'GUAIBA') {
 
     $this->objpdf->Setfont('Arial', '', 7);
 
-    if(count(split("\n", $obsitem)) <= 3 && strlen($obsitem) > 2000){ //Texto em bloco
+    if(count(explode("\n", $obsitem)) <= 3 && strlen($obsitem) > 2000){ //Texto em bloco
     	$obsitem = addCaracter($obsitem, "\n", 86);
     }
 

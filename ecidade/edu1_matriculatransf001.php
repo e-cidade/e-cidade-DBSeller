@@ -332,7 +332,7 @@ if (isset($chavepesquisa)) {
                             dia<?= @$dias > 1 ? "(s)" : "" ?>.</b></font>
                       </td>
                     </tr>
-                      <?
+                      <?php
                   }
                   ?>
               </table>
@@ -431,7 +431,7 @@ if (isset($chavepesquisa)) {
     function js_preenchepesquisa(chave) {
 
       db_iframe_transfescolarede.hide();
-        <?
+        <?php
         echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         ?>
     }
@@ -551,7 +551,7 @@ if (isset($chavepesquisa)) {
       return true;
     }
   </script>
-<? if ($clmatricula->numrows > 0) { ?>
+<?php if ($clmatricula->numrows > 0) { ?>
   <script>
 
     js_mostraTurnosTurma();
@@ -567,4 +567,4 @@ if (isset($chavepesquisa)) {
     document.getElementById("iframe_trocaturma").style.visibility = "visible";
 
   </script>
-<? } ?>
+<?php } ?>

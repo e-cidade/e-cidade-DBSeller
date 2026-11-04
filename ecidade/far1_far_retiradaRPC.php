@@ -125,6 +125,13 @@ try {
             $objRetorno->fa10_i_margem = $oContinuado->fa10_i_margem;
             $objRetorno->fa10_i_quantidade = $oContinuado->fa10_i_quantidade;
 
+            $validadeContinuado = '';
+            if ($oContinuado->fa10_d_datafim !== '') {
+                $dFim = explode("-", $oContinuado->fa10_d_datafim);
+                $validadeContinuado = $dFim[2] . '/' . $dFim[1] . '/' . $dFim[0];
+            }
+            $objRetorno->fa10_d_datafim = $validadeContinuado;
+
             $infoContinuado = MedicamentoContinuadoService::getInfoContinuado(
                 $objParam->fa04_i_cgsund,
                 $objParam->fa06_i_matersaude,
@@ -175,8 +182,12 @@ from (
            AND m70_coddepto = {$departamento}
          group by m70_codigo) as x) as m70_quant";
 
-        $sSubPontoPedido = '(select m64_pontopedido from matmaterestoque where ';
-        $sSubPontoPedido .= "m64_matmater = $fa01_i_codmater limit 1) as m64_pontopedido";
+        $sSubPontoPedido = "
+            (select m64_pontopedido from matmaterestoque
+             inner join db_almox on m91_codigo = m64_almox
+             where m64_matmater = {$fa01_i_codmater} and m91_depto = {$departamento} limit 1) as m64_pontopedido
+        ";
+
         $sSql = $clmatestoque->sql_query(
             null,
             " $sSubQuantidadeSaldo , $sSubPontoPedido",
@@ -338,7 +349,7 @@ from (
                     $oMaterialEstoque = new materialEstoque($m60_codmater);
                     $oItensMaterial = $oMaterialEstoque->ratearLotes($saldo_atual, null, $departamento);
                     if (count($oItensMaterial) > 0) {
-                        $oItemMaterial  = $oItensMaterial[0];
+                        $oItemMaterial = $oItensMaterial[0];
 
                         $objRetorno->itens[$x]->lote = $oItemMaterial->m71_codlanc;
                         $objRetorno->itens[$x]->label_lote = $oItemMaterial->m77_lote;
@@ -353,8 +364,12 @@ from (
                     $objRetorno->message = $e->getMessage();
                 }
 
-                $sSubPontoPedido = '(select m64_pontopedido from matmaterestoque where ';
-                $sSubPontoPedido .= "m64_matmater = $m60_codmater limit 1) as m64_pontopedido";
+                $sSubPontoPedido = "
+                    (select m64_pontopedido from matmaterestoque
+                    inner join db_almox on m91_codigo = m64_almox
+                    where m64_matmater = {$m60_codmater} and m91_depto = {$departamento} limit 1) as m64_pontopedido
+                ";
+
                 $sWhere = "m70_codmatmater=$m60_codmater and m70_coddepto = $departamento";
 
                 $camposSaldo = 'round(coalesce((m70_quant)::numeric, 5), 0) as saldo';
@@ -407,6 +422,17 @@ from (
 
         db_inicio_transacao();
 
+        if (isset($objParam->nomeSocial)) {
+            $clcgs_und = new cl_cgs_und;
+            $clcgs_und->z01_i_cgsund = $cgs;
+            $clcgs_und->z01_nome_social = $objParam->nomeSocial;
+            $clcgs_und->alterar($cgs);
+            if ($clcgs_und->erro_status == '0') {
+                $sqlerro = "S";
+                $erro_msg = $clcgs_und->erro_msg;
+            }
+        }
+
         //Carregadno dados do grid
         $remedio = array();
         $nome = array();
@@ -421,12 +447,12 @@ from (
             $aItemMed = explode("_|_", $objParam->aMedicamentos[$iX]);
             $remedio[] = $aItemMed[1];
             $nome[] = $aItemMed[2];
-            $quant[] = $aItemMed[11];
-            $posologia[] = $aItemMed[12];
+            $quant[] = $aItemMed[12];
+            $posologia[] = $aItemMed[13];
 
             if ($objParam->iTiporetirada == 1) {
-                $lote[] = $aItemMed[13];
-                $validade[] = $aItemMed[9];
+                $lote[] = $aItemMed[14];
+                $validade[] = $aItemMed[10];
             }
 
 
@@ -437,20 +463,20 @@ from (
 
                 if ($clfar_controle->numrows == 0) {
                     $clfar_controle->fa11_i_cgsund = $cgs;
-                    if ($aItemMed[12] == '') {
-                        $aItemMed[12] = '.';
+                    if ($aItemMed[13] == '') {
+                        $aItemMed[13] = '.';
                     }
 
-                    $clfar_controle->fa11_t_obs = $aItemMed[12];
+                    $clfar_controle->fa11_t_obs = $aItemMed[13];
                     $clfar_controle->incluir(null);
 
                     if ($clfar_controle->erro_status != "0") {
                         $iCodContro = $clfar_controle->fa11_i_codigo;
                     } else {
                         $objRetorno->status = 2;
-                        db_fim_transacao(true);
                         $objRetorno->message = urlencode($clfar_controle->erro_msg);
                         echo $objJson->encode($objRetorno);
+                        $sqlerro = "S";
                         exit;
                     }
                 } else {
@@ -464,7 +490,7 @@ from (
                 $clfar_controlemed->fa10_i_margem = $aItemMed[5];
                 $clfar_controlemed->fa10_i_medicamento = $aItemMed[1];
                 $clfar_controlemed->fa10_i_prazo = $aItemMed[4];
-                $clfar_controlemed->fa10_i_programa = $aItemMed[17];
+                $clfar_controlemed->fa10_i_programa = $aItemMed[18];
                 $clfar_controlemed->fa10_i_quantidade = $aItemMed[6];
                 $clfar_controlemed->incluir(null);
 
@@ -558,6 +584,7 @@ from (
                     $sqlerro = "S";
                     $erro_msg = $clfar_requisitantecgs->erro_msg;
                 } else {
+                    $clcgs_und = new cl_cgs_und;
                     $clcgs_und->z01_i_cgsund = $objParam->requi_cgs;
                     $clcgs_und->z01_v_nome = $objParam->requi_nome;
                     $clcgs_und->z01_v_ender = $objParam->requi_ender;
@@ -771,22 +798,63 @@ from (
 // Obtém o cartão sus a partir de um CGS
     if ($objParam->exec == 'getCgsCns') {
         $oDaocgs_cartaosus = new cl_cgs_cartaosus();
+        $where = " s115_i_cgs = $objParam->cgs ";
+
+        if (!empty($objParam->iCns)) {
+            $where = " s115_c_cartaosus = '$objParam->iCns' ";
+        }
 
         $sSql = $oDaocgs_cartaosus->sql_query(
             null,
-            'z01_i_cgsund, z01_v_nome',
+            'cgs_und.z01_i_cgsund, z01_v_nome, z01_v_cgccpf, s115_i_codigo, z01_nome_social, z01_b_inativo',
             null,
-            ' s115_c_cartaosus = \'' . $objParam->iCns . '\''
+            $where
         );
         $rsCgs_cartaosus = $oDaocgs_cartaosus->sql_record($sSql);
 
         if ($oDaocgs_cartaosus->numrows > 0) { // se encontrou o cgs
             $oDadosCgs_cartaosus = db_utils::fieldsmemory($rsCgs_cartaosus, 0);
             $objRetorno->z01_i_cgsund = $oDadosCgs_cartaosus->z01_i_cgsund;
+            $objRetorno->z01_v_cgccpf = $oDadosCgs_cartaosus->z01_v_cgccpf;
             $objRetorno->z01_v_nome = urlencode($oDadosCgs_cartaosus->z01_v_nome);
+            $objRetorno->s115_i_codigo = $oDadosCgs_cartaosus->s115_i_codigo;
+            $objRetorno->z01_nome_social = urlencode($oDadosCgs_cartaosus->z01_nome_social);
+            $objRetorno->z01_b_inativo = $oDadosCgs_cartaosus->z01_b_inativo === 't';
+        } else {
+            $objRetorno->z01_i_cgsund = '';
+            $objRetorno->z01_v_cgccpf = '';
+            $objRetorno->z01_v_nome = '';
+            $objRetorno->s115_i_codigo = '';
+            $objRetorno->z01_nome_social = '';
+        }
+    }
+
+    // Obtém o dados do cgs a partir de um CPF
+    if ($objParam->exec == 'getCgsCpf') {
+        $dao = new cl_cgs_cartaosus();
+
+        $sql = $dao->sql_query(
+            null,
+            'cgs_und.z01_i_cgsund, z01_v_nome, s115_c_cartaosus, s115_i_codigo, z01_nome_social, z01_b_inativo',
+            null,
+            ' z01_v_cgccpf = \'' . $objParam->cpf . '\''
+        );
+        $rsSql = $dao->sql_record($sql);
+
+        if ($dao->numrows > 0) {
+            $oDadosCgs_cartaosus = db_utils::fieldsmemory($rsSql, 0);
+            $objRetorno->z01_i_cgsund = $oDadosCgs_cartaosus->z01_i_cgsund;
+            $objRetorno->z01_v_nome = urlencode($oDadosCgs_cartaosus->z01_v_nome);
+            $objRetorno->s115_c_cartaosus = $oDadosCgs_cartaosus->s115_c_cartaosus;
+            $objRetorno->s115_i_codigo = $oDadosCgs_cartaosus->s115_i_codigo;
+            $objRetorno->z01_nome_social = urlencode($oDadosCgs_cartaosus->z01_nome_social);
+            $objRetorno->z01_b_inativo = $oDadosCgs_cartaosus->z01_b_inativo === 't';
         } else {
             $objRetorno->z01_i_cgsund = '';
             $objRetorno->z01_v_nome = '';
+            $objRetorno->s115_c_cartaosus = '';
+            $objRetorno->s115_i_codigo = '';
+            $objRetorno->z01_nome_social = '';
         }
     }
 } catch (Exception $e) {

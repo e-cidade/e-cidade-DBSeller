@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ function js_anda(codigo){
 <body  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc" onload="">
 <center>
 <form name="form1" method="post" action="com3_conssolic002.php">
-<?
+<?php
 if(isset($solicitacao)){
 	$result_and = $clsolicitemprot->sql_record($clsolicitemprot->sql_query_and(null," distinct pc11_codigo,pc01_codmater,pc01_descrmater",null,"pc11_numero=$numero"));
     if ($clsolicitemprot->numrows>0){

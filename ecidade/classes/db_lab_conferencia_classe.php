@@ -1,79 +1,79 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE lab_conferencia
-class cl_lab_conferencia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $la47_i_codigo = 0; 
-   var $la47_i_requiitem = 0; 
-   var $la47_i_login = 0; 
-   var $la47_d_data_dia = null; 
-   var $la47_d_data_mes = null; 
-   var $la47_d_data_ano = null; 
-   var $la47_d_data = null; 
-   var $la47_c_hora = null; 
-   var $la47_i_resultado = 0; 
-   var $la47_t_observacao = null; 
-   var $la47_i_procedimento = 0; 
-   var $la47_i_cid = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_lab_conferencia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $la47_i_codigo = 0;
+   var $la47_i_requiitem = 0;
+   var $la47_i_login = 0;
+   var $la47_d_data_dia = null;
+   var $la47_d_data_mes = null;
+   var $la47_d_data_ano = null;
+   var $la47_d_data = null;
+   var $la47_c_hora = null;
+   var $la47_i_resultado = 0;
+   var $la47_t_observacao = null;
+   var $la47_i_procedimento = 0;
+   var $la47_i_cid = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 la47_i_codigo = int4 = Código 
-                 la47_i_requiitem = int4 = Exame 
-                 la47_i_login = int4 = Usuário 
-                 la47_d_data = date = Data 
-                 la47_c_hora = char(5) = Hora 
-                 la47_i_resultado = int4 = Resultado 
-                 la47_t_observacao = text = Observação 
-                 la47_i_procedimento = int8 = Procedimento 
-                 la47_i_cid = int8 = CID 
+                 la47_i_codigo = int4 = Código
+                 la47_i_requiitem = int4 = Exame
+                 la47_i_login = int4 = Usuário
+                 la47_d_data = date = Data
+                 la47_c_hora = char(5) = Hora
+                 la47_i_resultado = int4 = Resultado
+                 la47_t_observacao = text = Observação
+                 la47_i_procedimento = int8 = Procedimento
+                 la47_i_cid = int8 = CID
                  ";
-   //funcao construtor da classe 
-   function cl_lab_conferencia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lab_conferencia"); 
+     $this->rotulo = new rotulo("lab_conferencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_lab_conferencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la47_i_codigo = ($this->la47_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la47_i_codigo"]:$this->la47_i_codigo);
        $this->la47_i_requiitem = ($this->la47_i_requiitem == ""?@$GLOBALS["HTTP_POST_VARS"]["la47_i_requiitem"]:$this->la47_i_requiitem);
@@ -105,9 +105,9 @@ class cl_lab_conferencia {
      }
    }
    // funcao para inclusao
-   function incluir ($la47_i_codigo){ 
+   public function incluir ($la47_i_codigo){
       $this->atualizacampos();
-     if($this->la47_i_requiitem == null ){ 
+     if($this->la47_i_requiitem == null ){
        $this->erro_sql = " Campo Exame nao Informado.";
        $this->erro_campo = "la47_i_requiitem";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_lab_conferencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la47_i_login == null ){ 
+     if($this->la47_i_login == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "la47_i_login";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_lab_conferencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la47_d_data == null ){ 
+     if($this->la47_d_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "la47_d_data_dia";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_lab_conferencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la47_c_hora == null ){ 
+     if($this->la47_c_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "la47_c_hora";
        $this->erro_banco = "";
@@ -143,7 +143,7 @@ class cl_lab_conferencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la47_i_resultado == null ){ 
+     if($this->la47_i_resultado == null ){
        $this->erro_sql = " Campo Resultado nao Informado.";
        $this->erro_campo = "la47_i_resultado";
        $this->erro_banco = "";
@@ -152,7 +152,7 @@ class cl_lab_conferencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la47_i_procedimento == null ){ 
+     if($this->la47_i_procedimento == null ){
        $this->erro_sql = " Campo Procedimento nao Informado.";
        $this->erro_campo = "la47_i_procedimento";
        $this->erro_banco = "";
@@ -161,20 +161,20 @@ class cl_lab_conferencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la47_i_cid == null ){ 
+     if($this->la47_i_cid == null ){
        $this->la47_i_cid = "null";
      }
      if($la47_i_codigo == "" || $la47_i_codigo == null ){
-       $result = db_query("select nextval('lab_conferencia_la47_i_codigo_seq')"); 
+       $result = db_query("select nextval('lab_conferencia_la47_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_conferencia_la47_i_codigo_seq do campo: la47_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_conferencia_la47_i_codigo_seq do campo: la47_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->la47_i_codigo = pg_result($result,0,0); 
+       $this->la47_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_conferencia_la47_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $la47_i_codigo)){
@@ -185,10 +185,10 @@ class cl_lab_conferencia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->la47_i_codigo = $la47_i_codigo; 
+         $this->la47_i_codigo = $la47_i_codigo;
        }
      }
-     if(($this->la47_i_codigo == null) || ($this->la47_i_codigo == "") ){ 
+     if(($this->la47_i_codigo == null) || ($this->la47_i_codigo == "") ){
        $this->erro_sql = " Campo la47_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -197,29 +197,29 @@ class cl_lab_conferencia {
        return false;
      }
      $sql = "insert into lab_conferencia(
-                                       la47_i_codigo 
-                                      ,la47_i_requiitem 
-                                      ,la47_i_login 
-                                      ,la47_d_data 
-                                      ,la47_c_hora 
-                                      ,la47_i_resultado 
-                                      ,la47_t_observacao 
-                                      ,la47_i_procedimento 
-                                      ,la47_i_cid 
+                                       la47_i_codigo
+                                      ,la47_i_requiitem
+                                      ,la47_i_login
+                                      ,la47_d_data
+                                      ,la47_c_hora
+                                      ,la47_i_resultado
+                                      ,la47_t_observacao
+                                      ,la47_i_procedimento
+                                      ,la47_i_cid
                        )
                 values (
-                                $this->la47_i_codigo 
-                               ,$this->la47_i_requiitem 
-                               ,$this->la47_i_login 
-                               ,".($this->la47_d_data == "null" || $this->la47_d_data == ""?"null":"'".$this->la47_d_data."'")." 
-                               ,'$this->la47_c_hora' 
-                               ,$this->la47_i_resultado 
-                               ,'$this->la47_t_observacao' 
-                               ,$this->la47_i_procedimento 
-                               ,$this->la47_i_cid 
+                                $this->la47_i_codigo
+                               ,$this->la47_i_requiitem
+                               ,$this->la47_i_login
+                               ,".($this->la47_d_data == "null" || $this->la47_d_data == ""?"null":"'".$this->la47_d_data."'")."
+                               ,'$this->la47_c_hora'
+                               ,$this->la47_i_resultado
+                               ,'$this->la47_t_observacao'
+                               ,$this->la47_i_procedimento
+                               ,$this->la47_i_cid
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Conferência ($this->la47_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -259,16 +259,16 @@ class cl_lab_conferencia {
        $resac = db_query("insert into db_acount values($acount,2890,16765,'','".AddSlashes(pg_result($resaco,0,'la47_i_cid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($la47_i_codigo=null) { 
+   public function alterar ($la47_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update lab_conferencia set ";
      $virgula = "";
-     if(trim($this->la47_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_codigo"])){ 
+     if(trim($this->la47_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_codigo"])){
        $sql  .= $virgula." la47_i_codigo = $this->la47_i_codigo ";
        $virgula = ",";
-       if(trim($this->la47_i_codigo) == null ){ 
+       if(trim($this->la47_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la47_i_codigo";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_lab_conferencia {
          return false;
        }
      }
-     if(trim($this->la47_i_requiitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_requiitem"])){ 
+     if(trim($this->la47_i_requiitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_requiitem"])){
        $sql  .= $virgula." la47_i_requiitem = $this->la47_i_requiitem ";
        $virgula = ",";
-       if(trim($this->la47_i_requiitem) == null ){ 
+       if(trim($this->la47_i_requiitem) == null ){
          $this->erro_sql = " Campo Exame nao Informado.";
          $this->erro_campo = "la47_i_requiitem";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_lab_conferencia {
          return false;
        }
      }
-     if(trim($this->la47_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_login"])){ 
+     if(trim($this->la47_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_login"])){
        $sql  .= $virgula." la47_i_login = $this->la47_i_login ";
        $virgula = ",";
-       if(trim($this->la47_i_login) == null ){ 
+       if(trim($this->la47_i_login) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "la47_i_login";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_lab_conferencia {
          return false;
        }
      }
-     if(trim($this->la47_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la47_d_data_dia"] !="") ){ 
+     if(trim($this->la47_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la47_d_data_dia"] !="") ){
        $sql  .= $virgula." la47_d_data = '$this->la47_d_data' ";
        $virgula = ",";
-       if(trim($this->la47_d_data) == null ){ 
+       if(trim($this->la47_d_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "la47_d_data_dia";
          $this->erro_banco = "";
@@ -316,11 +316,11 @@ class cl_lab_conferencia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["la47_d_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["la47_d_data_dia"])){
          $sql  .= $virgula." la47_d_data = null ";
          $virgula = ",";
-         if(trim($this->la47_d_data) == null ){ 
+         if(trim($this->la47_d_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "la47_d_data_dia";
            $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_lab_conferencia {
          }
        }
      }
-     if(trim($this->la47_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_c_hora"])){ 
+     if(trim($this->la47_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_c_hora"])){
        $sql  .= $virgula." la47_c_hora = '$this->la47_c_hora' ";
        $virgula = ",";
-       if(trim($this->la47_c_hora) == null ){ 
+       if(trim($this->la47_c_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "la47_c_hora";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_lab_conferencia {
          return false;
        }
      }
-     if(trim($this->la47_i_resultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_resultado"])){ 
+     if(trim($this->la47_i_resultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_resultado"])){
        $sql  .= $virgula." la47_i_resultado = $this->la47_i_resultado ";
        $virgula = ",";
-       if(trim($this->la47_i_resultado) == null ){ 
+       if(trim($this->la47_i_resultado) == null ){
          $this->erro_sql = " Campo Resultado nao Informado.";
          $this->erro_campo = "la47_i_resultado";
          $this->erro_banco = "";
@@ -357,14 +357,14 @@ class cl_lab_conferencia {
          return false;
        }
      }
-     if(trim($this->la47_t_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_t_observacao"])){ 
+     if(trim($this->la47_t_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_t_observacao"])){
        $sql  .= $virgula." la47_t_observacao = '$this->la47_t_observacao' ";
        $virgula = ",";
      }
-     if(trim($this->la47_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_procedimento"])){ 
+     if(trim($this->la47_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_procedimento"])){
        $sql  .= $virgula." la47_i_procedimento = $this->la47_i_procedimento ";
        $virgula = ",";
-       if(trim($this->la47_i_procedimento) == null ){ 
+       if(trim($this->la47_i_procedimento) == null ){
          $this->erro_sql = " Campo Procedimento nao Informado.";
          $this->erro_campo = "la47_i_procedimento";
          $this->erro_banco = "";
@@ -374,10 +374,10 @@ class cl_lab_conferencia {
          return false;
        }
      }
-     if(trim($this->la47_i_cid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_cid"])){ 
-        if(trim($this->la47_i_cid)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la47_i_cid"])){ 
-           $this->la47_i_cid = "null" ; 
-        } 
+     if(trim($this->la47_i_cid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la47_i_cid"])){
+        if(trim($this->la47_i_cid)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la47_i_cid"])){
+           $this->la47_i_cid = "null" ;
+        }
        $sql  .= $virgula." la47_i_cid = $this->la47_i_cid ";
        $virgula = ",";
      }
@@ -413,7 +413,7 @@ class cl_lab_conferencia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Conferência nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->la47_i_codigo;
@@ -441,14 +441,14 @@ class cl_lab_conferencia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($la47_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($la47_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($la47_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -482,7 +482,7 @@ class cl_lab_conferencia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Conferência nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$la47_i_codigo;
@@ -510,11 +510,11 @@ class cl_lab_conferencia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -536,11 +536,11 @@ class cl_lab_conferencia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $la47_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $la47_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -562,15 +562,15 @@ class cl_lab_conferencia {
      $sql2 = "";
      if($dbwhere==""){
        if($la47_i_codigo!=null ){
-         $sql2 .= " where lab_conferencia.la47_i_codigo = $la47_i_codigo "; 
-       } 
+         $sql2 .= " where lab_conferencia.la47_i_codigo = $la47_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,11 +579,11 @@ class cl_lab_conferencia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $la47_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $la47_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -596,15 +596,15 @@ class cl_lab_conferencia {
      $sql2 = "";
      if($dbwhere==""){
        if($la47_i_codigo!=null ){
-         $sql2 .= " where lab_conferencia.la47_i_codigo = $la47_i_codigo "; 
-       } 
+         $sql2 .= " where lab_conferencia.la47_i_codigo = $la47_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,10 +614,10 @@ class cl_lab_conferencia {
      return $sql;
   }
 
-  function sql_query_exames_conferidos ( $la47_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_exames_conferidos ( $la47_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -646,7 +646,7 @@ class cl_lab_conferencia {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ar15_nome");
        <?=@$Lar12_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar12_sequencial',10,$Iar12_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tar12_cadconveniomodalidade?>">
-       <?
+       <?php
        db_ancora(@$Lar12_cadconveniomodalidade,"js_pesquisaar12_cadconveniomodalidade(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar12_cadconveniomodalidade',10,$Iar12_cadconveniomodalidade,true,'text',$db_opcao," onchange='js_pesquisaar12_cadconveniomodalidade(false);'")
 ?>
-       <?
+       <?php
 db_input('ar15_nome',50,$Iar15_nome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ar15_nome',50,$Iar15_nome,true,'text',3,'')
        <?=@$Lar12_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar12_nome',50,$Iar12_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('ar12_nome',50,$Iar12_nome,true,'text',$db_opcao,"")
        <?=@$Lar12_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar12_sigla',3,$Iar12_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadtipoconvenio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

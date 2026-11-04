@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,14 +33,14 @@ $cliptutabelasconfig->rotulo->label();
 $cliptutabelasconfigcampocorrecao->rotulo->label();
 ?>
 <form name="form1" method="post" action="">
-  <?
+  <?php
     db_input('j122_sequencial',10,$Ij122_sequencial,true,'hidden',3,"");
     db_input('listacampos',10,'',true,'hidden',3,"");
   ?>
   <table border="0" cellspacing="0" cellpadding="0" align="center">
     <tr> 
       <td valign="top">
-	      <?	        
+	      <?php         
 	        $sSqlSyscampo  = " select *                                                                    ";
 	        $sSqlSyscampo .= "   from db_sysarqcamp                                                        ";
 	        $sSqlSyscampo .= "        inner join db_syscampo on db_syscampo.codcam = db_sysarqcamp.codcam  "; 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,10 +56,52 @@ $oDaoOrdem         = new cl_empagenotasordem;
 if ($oDaoOrdemAuxiliar->numrows == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum pagamento autorizado para a Agenda {$oGet->iAgenda}");
 }
+
+/**
+ * retencoes apropriadas
+ */
+function getRetencoesApropriadas($pagOrdem){
+
+    $dao = new cl_retencaoreceitas;
+    $where = "    e20_pagordem = {$pagOrdem}
+              AND e27_principal IS TRUE
+              AND e23_recolhido IS TRUE
+              group by e23_ativo";
+
+    $campos = "
+      case
+        when  e23_ativo is TRUE then coalesce(round(sum(e23_valorretencao), 2), 0)
+      end as valor_apropriado,
+      case
+        when  e23_ativo is FALSE then coalesce(round(sum(e23_valorretencao), 2), 0)
+      end as valor_estornado ";
+
+    $sql = $dao->sql_query_consulta(null, $campos, null, $where);
+
+    $valorRetencao = 0;
+    $valorEstornado = 0;
+    $rs = $dao->sql_record($sql);
+
+    if ($dao->numrows > 0) {
+
+        for ($i = 0; $i < $dao->numrows; $i++ ) {
+
+            $oRetencao =  db_utils::fieldsMemory($rs, $i);
+            $valorRetencao += $oRetencao->valor_apropriado;
+            $valorEstornado +=  $oRetencao->valor_estornado;
+        }
+    }
+
+    $oDados = new stdClass();
+    $oDados->valor_apropriado = $valorRetencao;
+    $oDados->valorEstornado = $valorEstornado;
+
+    return $oDados;
+}
+
 $oPdf  = new PDF("L","mm","A4");
 $oPdf->Open();
 $oPdf->SetAutoPageBreak(0,1);
-
 
 $head2     = "ORDEM AUXILIAR DE PAGAMENTO";
 if ($oDaoOrdemAuxiliar->numrows > 0) {
@@ -108,6 +150,8 @@ if ($oDaoOrdemAuxiliar->numrows > 0) {
                                        "e60_codemp||'/'||e60_anousu as e60_codemp,
                                        $sCampoValorAutenticado
                                        e69_numero,
+                                       e50_codord,
+                                       e81_valor,
                                        e83_conta,
                                        e83_descr,
                                        e50_codord,
@@ -143,6 +187,7 @@ if ($oDaoOrdemAuxiliar->numrows > 0) {
     }
 
     $rsOrdem = $oDaoOrdem->sql_record($sSqlOrdem);
+
     $sFonte  = "arial";
     if ($oDaoOrdem->numrows > 0) {
 
@@ -195,6 +240,14 @@ if ($oDaoOrdemAuxiliar->numrows > 0) {
           $oMovimento->e50_data   = $oMovimento->k17_data;
 
         }
+        $oRetencao = getRetencoesApropriadas($oMovimento->e50_codord);
+        $retencaoApropriada = $oRetencao->valorRetencao;
+        $retencaoEstornada = $oRetencao->valorEstornado;
+
+        $vlrAut = $oMovimento->e81_valor;
+
+        $vlrLiq = $oMovimento->e53_valor - $oMovimento->vlrretencao - $retencaoApropriada;
+
         $oPdf->cell(15, 4,$oMovimento->e50_codord  , 0,0,"R", $iPreencher);
         $oPdf->cell(20, 4,$oMovimento->e60_codemp, 0, 0, "C", $iPreencher);
         $oPdf->cell(20, 4,$oMovimento->e69_numero, 0,0,"C",$iPreencher);
@@ -203,14 +256,14 @@ if ($oDaoOrdemAuxiliar->numrows > 0) {
         $oPdf->cell(55, 4,substr($oMovimento->z01_nome,0,35)  , 0,0,"L",$iPreencher);
         $oPdf->cell(23, 4,db_formatar($oMovimento->e50_data,"d")   , 0, 0, "C", $iPreencher);
         $oPdf->cell(15, 4,$oMovimento->e96_descr , 0, 0, "C", $iPreencher);
-        $oPdf->cell(18, 4,db_formatar($oMovimento->e43_valor,"f"), 0,0,"R",$iPreencher);
+        $oPdf->cell(18, 4,db_formatar($oMovimento->e53_valor,"f"), 0,0,"R",$iPreencher);
         $oPdf->cell(18, 4,db_formatar($oMovimento->vlrretencao,"f"),0,0,"R",$iPreencher);
-        $oPdf->cell(18, 4,db_formatar($oMovimento->e43_valor-$oMovimento->vlrretencao,"f"),0,0,"R",$iPreencher);
-        $oPdf->cell(18, 4,db_formatar($oMovimento->e53_valor,"f"), 0,1,"R",$iPreencher);
+        $oPdf->cell(18, 4,db_formatar($vlrLiq,"f"),0,0,"R",$iPreencher);
+        $oPdf->cell(18, 4,db_formatar($vlrAut,"f"), 0,1,"R",$iPreencher);
 
-        $nValorAutorizado += $oMovimento->e53_valor;
-        $nValorLiquido    += $oMovimento->e43_valor - $oMovimento->vlrretencao;
-        $nValorBruto      += $oMovimento->e43_valor;
+        $nValorBruto      += $oMovimento->e53_valor;
+        $nValorLiquido    += $vlrLiq;
+        $nValorAutorizado += $vlrAut;
         $nValorRetido     += $oMovimento->vlrretencao;
         $j++;
       }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ if(isset($db_opcaoal)){
 		      <?=@$Lht05_sequencial?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					  db_input('ht05_sequencial',10,$Iht05_sequencial,true,'text',3,"");
             db_input('ht05_habitprograma',10,'',true,'hidden',3);
 					?>
@@ -66,12 +66,12 @@ if(isset($db_opcaoal)){
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tht05_idbql?>">
-		      <?
+		      <?php
 		        db_ancora(@$Lht05_idbql,"js_pesquisaht05_idbql(true);",$db_opcao);
 		      ?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 		  			db_input('ht05_idbql',10,$Iht05_idbql,true,'text',$db_opcao," onchange='js_pesquisaht05_idbql(false);'");
 			  		db_input('j34_setor',40,$Ij34_setor,true,'text',3,'');
 		      ?>
@@ -88,7 +88,7 @@ if(isset($db_opcaoal)){
 	<table>
 	  <tr>
 	    <td valign="top"  align="center">  
-		    <?
+		    <?php
 					$chavepri= array("ht05_sequencial"=>@$ht05_sequencial);
 					
 					$sSqlLote = $clhabitprogramalote->sql_query(null,"*",null,"ht05_habitprograma = ".@$ht05_habitprograma);

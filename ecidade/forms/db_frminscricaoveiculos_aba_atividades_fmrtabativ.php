@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,7 +53,7 @@ $clrotulo->label("q07_horafim");
                     <?=$Lq07_seq?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('q07_seq',10,$Iq07_seq,true,'text',3);
                     ?>
                 </td>
@@ -63,10 +63,10 @@ $clrotulo->label("q07_horafim");
                     <?=$Lq07_inscr?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('q07_inscr',10,$Iq07_inscr,true,'text',3);
                     ?>
-                    <?
+                    <?php
                         // $z01_nome = stripslashes($descricaoInscricaoCGM);
                         db_input('z01_nome',50,$Iz01_nome,true,'text',3);
                     ?>
@@ -75,16 +75,16 @@ $clrotulo->label("q07_horafim");
             <tr>
                 <td nowrap title="<?=@$Tq07_ativ?>">
                     <b>
-                       <?
+                       <?php
                             db_ancora(@$Lq07_ativ,"js_pesquisaq07_ativ(true);",$db_opcao);
                        ?>
                     </b>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('q07_ativ',10,$Iq07_ativ,true,'text',$db_opcao," onchange='js_pesquisaq07_ativ(false);'")
                     ?>
-                    <?
+                    <?php
                         db_input('q03_descr',50,$Iq03_descr,true,'text',3,'')
                     ?>
                 </td>
@@ -94,7 +94,7 @@ $clrotulo->label("q07_horafim");
                     <b>Atividade principal:</b>
                 </td>
                 <td>
-                    <?
+                    <?php
                         if (isset($princ) && $princ=="t" && $db_opcao==2) {
                             $db_opcao_02=3;
                             $npods=false;
@@ -111,7 +111,7 @@ $clrotulo->label("q07_horafim");
                     <?=@$Lq07_quant?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         if(empty($q07_quant)){
                           $q07_quant=1;
                         }
@@ -124,7 +124,7 @@ $clrotulo->label("q07_horafim");
                     <?=@$Lq07_perman?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         $xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
                         db_select('q07_perman',$xe,true,$db_opcao,"onchange='js_testadata(this.value);'");
                     ?>
@@ -135,7 +135,7 @@ $clrotulo->label("q07_horafim");
                     <?=@$Lq07_datain?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         if(empty($q07_datain_dia)){
 
                           $q07_datain_dia = date("d",db_getsession("DB_datausu"));
@@ -151,17 +151,17 @@ $clrotulo->label("q07_horafim");
                     <?=@$Lq07_datafi?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_inputdata('q07_datafi',@$q07_datafi_dia,@$q07_datafi_mes,@$q07_datafi_ano,true,'text',$db_opcao,"");
                     ?>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <?
+                    <?php
                         db_input('q11_tipcalc',10,$Iq07_inscr,true,'hidden',$db_opcao,'onchange="js_tipcalc(false);"');
                     ?>
-                    <?
+                    <?php
                         db_input('q81_descr',50,$Iz01_nome,true,'hidden',3,"","","#E6E4F1");
                     ?>
                 </td>
@@ -171,7 +171,7 @@ $clrotulo->label("q07_horafim");
                    <?=@$Lq07_horaini?>
                 </td>
                 <td colspan="2">
-                    <?
+                    <?php
                         db_input('q07_horaini',5,$Iq07_horaini,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name)';");
                     ?>
                 </td>
@@ -182,7 +182,7 @@ $clrotulo->label("q07_horafim");
                     <?=@$Lq07_horafim?>
                 </td>
                 <td colspan="2">
-                    <?
+                    <?php
                         db_input('q07_horafim',5,$Iq07_horafim,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name)';");
                     ?>
                 </td>

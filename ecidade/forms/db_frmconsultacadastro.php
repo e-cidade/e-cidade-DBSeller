@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("j06_setorloc");
 $clrotulo->label("j06_quadraloc");  
 $clrotulo->label("j06_lote");
 ?>
-<? 
+<?php 
 	db_app::load('scripts.js, prototype.js, strings.js, dbcomboBox.widget.js, estilos.css');
 ?>
 <script>
@@ -261,11 +261,11 @@ function js_comTeclaEnter(evt) {
 					<tr>
 					
 						<td nowrap title="<?=@$Tj01_matric?>" width="240">
-						<?
+						<?php
 						  db_ancora($Lj01_matric, 'js_pesquisaMatricula(true)', 1);
 						?>
 						</td>
-						<td nowrap><?
+						<td nowrap><?php
 						db_input('j01_matric',10,$Ij01_matric,true,'text',1,"onBlur='js_ValidaCamposText(this,1);' onkeypress='js_comTeclaEnter(event)'")
 						?>
 					
@@ -273,7 +273,7 @@ function js_comTeclaEnter(evt) {
 					<tr>
 						
 						<td nowrap title="<?=@$Tz01_nome?>"><?=@$Lz01_nome?></td>
-						<td nowrap><?
+						<td nowrap><?php
 						db_input('z01_nome',63,$Iz01_nome,true,'text',1,"")
 						?>
 					
@@ -282,7 +282,7 @@ function js_comTeclaEnter(evt) {
 					<tr title="Nome da imobiliaria">
 						
 						<td nowrap><strong>Imobili&aacute;ria :</strong></td>
-						<td nowrap><?
+						<td nowrap><?php
 						db_input('imobiliaria',63,$Iz01_nome,true,'text',1,"onkeypress='js_comTeclaEnter(event)' onKeyUp=\"js_ValidaCampos(this,3,'Imobiliaria','f','t',event);\" ","imobiliaria")
 						?>
 					
@@ -291,11 +291,11 @@ function js_comTeclaEnter(evt) {
 						
 						<td nowrap><?=str_replace(":","",$Lj34_setor)."/".str_replace(":","",$Lj34_quadra)."/".$Lj34_lote?>
 						</td>
-						<td nowrap><?
+						<td nowrap><?php
 						db_input('j34_setor',5,$Ij34_setor,true,'text',1, "onkeypress='js_comTeclaEnter(event)'")
-						?>/ <?
+						?>/ <?php
 						db_input('j34_quadra',5,$Ij34_quadra,true,'text',1, "onkeypress='js_comTeclaEnter(event)'")
-						?>/ <?
+						?>/ <?php
 						db_input('j34_lote',5,$Ij34_lote,true,'text',1, "onkeypress='js_comTeclaEnter(event)'")
 						?></td>
 					</tr>
@@ -303,7 +303,7 @@ function js_comTeclaEnter(evt) {
 					<tr>
           	<td width="34%" nowrap title="<?=$Tj06_setorloc?>"><?=$Lj06_setorloc?></td>
           	<td>
-          	<?
+          	<?php
            		db_selectrecord('j05_codigoproprio', $rsSetorLoc, true, 4, '', 'j05_codigoproprio', '', 'todos', 'js_carregaQuadra(this.value)');
           	?>
           	</td>
@@ -326,23 +326,23 @@ function js_comTeclaEnter(evt) {
 					<tr>
 						
 						<td nowrap title="<?=@$Tj14_codigo?>"><?=@$Lj14_codigo?></td>
-						<td nowrap><? db_input('j14_codigo',10,$Ij14_codigo,true,'text',1,"onkeypress='js_comTeclaEnter(event)' onBlur='js_ValidaCamposText(this,1)'"); ?></td>
+						<td nowrap><?php db_input('j14_codigo',10,$Ij14_codigo,true,'text',1,"onkeypress='js_comTeclaEnter(event)' onBlur='js_ValidaCamposText(this,1)'"); ?></td>
 					</tr>
 					<tr>
 						
 						<td nowrap title="<?=@$Tj14_nome?>"><?=@$Lj14_nome?></td>
-						<td nowrap><? db_input('j14_nome',63,$Ij14_nome,true,'text',1, "onkeypress='js_comTeclaEnter(event)'");?></td>
+						<td nowrap><?php db_input('j14_nome',63,$Ij14_nome,true,'text',1, "onkeypress='js_comTeclaEnter(event)'");?></td>
 					</tr>
 					<tr>
 						
 						<td nowrap title="<?=@$Tj13_codi?>"><?=@$Lj13_codi?></td>
-						<td nowrap><? db_input('j13_codi',10,$Ij13_codi,true,'text',1,"onkeypress='js_comTeclaEnter(event)' onBlur='js_ValidaCamposText(this,1)'"); ?>
+						<td nowrap><?php db_input('j13_codi',10,$Ij13_codi,true,'text',1,"onkeypress='js_comTeclaEnter(event)' onBlur='js_ValidaCamposText(this,1)'"); ?>
 						</td>
 					</tr>
 					<tr>
 						
 						<td nowrap title="<?=@$Tj13_descr?>"><?=@$Lj13_descr?></td>
-						<td nowrap><?
+						<td nowrap><?php
 						db_input('j13_descr',63,$Ij13_descr,true,'text',1, "onkeypress='js_comTeclaEnter(event)'");
 						?></td>
 					</tr>
@@ -363,17 +363,17 @@ function js_comTeclaEnter(evt) {
 					<tr>
 						<td nowrap title="<?=@$Tj04_matricregimo?>"><?=@$Lj04_matricregimo?>
 						</td>
-						<td><?
+						<td><?php
 						db_input('j04_matricregimo',10,$Ij04_matricregimo,true,'text',$db_opcao,"onkeypress='js_comTeclaEnter(event)'")
 						?></td>
 					</tr>
 					<tr>
-						<td nowrap title="<?=@$Tj04_setorregimovel?>" width="240"><?
+						<td nowrap title="<?=@$Tj04_setorregimovel?>" width="240"><?php
 						db_ancora(@$Lj04_setorregimovel,"js_pesquisaj04_setorregimovel(true);",$db_opcao, "onkeypress='js_comTeclaEnter(event)'");
 						?></td>
-						<td><?
+						<td><?php
 						db_input('j04_setorregimovel',10,$Ij04_setorregimovel,true,'text',$db_opcao," onkeypress='js_comTeclaEnter(event)' onchange='js_pesquisaj04_setorregimovel(false);'")
-						?> <?
+						?> <?php
 						db_input('j69_descr',50,$Ij69_descr,true,'text',3,"onkeypress='js_comTeclaEnter(event)'")
 						?></td>
 					</tr>
@@ -381,13 +381,13 @@ function js_comTeclaEnter(evt) {
 					<tr>
 						<td nowrap title="<?=@$Tj04_quadraregimo?>"><?=@$Lj04_quadraregimo?>
 						</td>
-						<td><?
+						<td><?php
 						db_input('j04_quadraregimo',10,$Ij04_quadraregimo,true,'text',$db_opcao,"onkeypress='js_comTeclaEnter(event)'")
 						?></td>
 					</tr>
 					<tr>
 						<td nowrap title="<?=@$Tj04_loteregimo?>"><?=@$Lj04_loteregimo?></td>
-						<td><?
+						<td><?php
 						db_input('j04_loteregimo',10,$Ij04_loteregimo,true,'text',$db_opcao,"onkeypress='js_comTeclaEnter(event)'")
 						?></td>
 					</tr>

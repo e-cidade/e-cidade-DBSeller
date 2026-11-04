@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -80,13 +80,13 @@ class cl_sau_procedimento {
                  sd63_i_mescomp = int4 = Mes
                  ";
    //funcao construtor da classe
-   function cl_sau_procedimento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_procedimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -95,7 +95,7 @@ class cl_sau_procedimento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd63_i_codigo = ($this->sd63_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd63_i_codigo"]:$this->sd63_i_codigo);
        $this->sd63_c_procedimento = ($this->sd63_c_procedimento == ""?@$GLOBALS["HTTP_POST_VARS"]["sd63_c_procedimento"]:$this->sd63_c_procedimento);
@@ -119,7 +119,7 @@ class cl_sau_procedimento {
      }
    }
    // funcao para inclusao
-   function incluir ($sd63_i_codigo){
+   public function incluir ($sd63_i_codigo){
       $this->atualizacampos();
      if($this->sd63_c_procedimento == null ){
        $this->erro_sql = " Campo Procedimento nao Informado.";
@@ -380,7 +380,7 @@ class cl_sau_procedimento {
      return true;
    }
    // funcao para alteracao
-   function alterar ($sd63_i_codigo=null) {
+   public function alterar ($sd63_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update sau_procedimento set ";
      $virgula = "";
@@ -679,7 +679,7 @@ class cl_sau_procedimento {
      }
    }
    // funcao para exclusao
-   function excluir ($sd63_i_codigo=null,$dbwhere=null) {
+   public function excluir ($sd63_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd63_i_codigo));
      }else{
@@ -756,7 +756,7 @@ class cl_sau_procedimento {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -779,10 +779,10 @@ class cl_sau_procedimento {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $sd63_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $sd63_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -806,7 +806,7 @@ class cl_sau_procedimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -816,10 +816,10 @@ class cl_sau_procedimento {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $sd63_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $sd63_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -840,7 +840,7 @@ class cl_sau_procedimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

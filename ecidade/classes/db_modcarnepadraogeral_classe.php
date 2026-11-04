@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE modcarnepadraogeral
-class cl_modcarnepadraogeral { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k48_sequencial = 0; 
-   var $k48_instit = 0; 
-   var $k48_cadmodcarne = 0; 
-   var $k48_cadtipomod = 0; 
-   var $k48_dataini_dia = null; 
-   var $k48_dataini_mes = null; 
-   var $k48_dataini_ano = null; 
-   var $k48_dataini = null; 
-   var $k48_datafim_dia = null; 
-   var $k48_datafim_mes = null; 
-   var $k48_datafim_ano = null; 
-   var $k48_datafim = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_modcarnepadraogeral {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k48_sequencial = 0;
+   var $k48_instit = 0;
+   var $k48_cadmodcarne = 0;
+   var $k48_cadtipomod = 0;
+   var $k48_dataini_dia = null;
+   var $k48_dataini_mes = null;
+   var $k48_dataini_ano = null;
+   var $k48_dataini = null;
+   var $k48_datafim_dia = null;
+   var $k48_datafim_mes = null;
+   var $k48_datafim_ano = null;
+   var $k48_datafim = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k48_sequencial = int4 = Codigo do modelo padrão da instituição 
-                 k48_instit = int4 = codigo da instituicao 
-                 k48_cadmodcarne = int4 = Codigo do modelo 
-                 k48_cadtipomod = int4 = Codigo do tipo de modelo 
-                 k48_dataini = date = Data inicial 
-                 k48_datafim = date = Data final 
+                 k48_sequencial = int4 = Codigo do modelo padrão da instituição
+                 k48_instit = int4 = codigo da instituicao
+                 k48_cadmodcarne = int4 = Codigo do modelo
+                 k48_cadtipomod = int4 = Codigo do tipo de modelo
+                 k48_dataini = date = Data inicial
+                 k48_datafim = date = Data final
                  ";
-   //funcao construtor da classe 
-   function cl_modcarnepadraogeral() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("modcarnepadraogeral"); 
+     $this->rotulo = new rotulo("modcarnepadraogeral");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_modcarnepadraogeral {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k48_sequencial = ($this->k48_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k48_sequencial"]:$this->k48_sequencial);
        $this->k48_instit = ($this->k48_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["k48_instit"]:$this->k48_instit);
@@ -106,9 +106,9 @@ class cl_modcarnepadraogeral {
      }
    }
    // funcao para inclusao
-   function incluir ($k48_sequencial){ 
+   public function incluir ($k48_sequencial){
       $this->atualizacampos();
-     if($this->k48_instit == null ){ 
+     if($this->k48_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao nao Informado.";
        $this->erro_campo = "k48_instit";
        $this->erro_banco = "";
@@ -117,7 +117,7 @@ class cl_modcarnepadraogeral {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k48_cadmodcarne == null ){ 
+     if($this->k48_cadmodcarne == null ){
        $this->erro_sql = " Campo Codigo do modelo nao Informado.";
        $this->erro_campo = "k48_cadmodcarne";
        $this->erro_banco = "";
@@ -126,7 +126,7 @@ class cl_modcarnepadraogeral {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k48_cadtipomod == null ){ 
+     if($this->k48_cadtipomod == null ){
        $this->erro_sql = " Campo Codigo do tipo de modelo nao Informado.";
        $this->erro_campo = "k48_cadtipomod";
        $this->erro_banco = "";
@@ -135,7 +135,7 @@ class cl_modcarnepadraogeral {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k48_dataini == null ){ 
+     if($this->k48_dataini == null ){
        $this->erro_sql = " Campo Data inicial nao Informado.";
        $this->erro_campo = "k48_dataini_dia";
        $this->erro_banco = "";
@@ -144,7 +144,7 @@ class cl_modcarnepadraogeral {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k48_datafim == null ){ 
+     if($this->k48_datafim == null ){
        $this->erro_sql = " Campo Data final nao Informado.";
        $this->erro_campo = "k48_datafim_dia";
        $this->erro_banco = "";
@@ -154,16 +154,16 @@ class cl_modcarnepadraogeral {
        return false;
      }
      if($k48_sequencial == "" || $k48_sequencial == null ){
-       $result = @db_query("select nextval('modcarnepadraogeral_k48_sequencial_seq')"); 
+       $result = @db_query("select nextval('modcarnepadraogeral_k48_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: modcarnepadraogeral_k48_sequencial_seq do campo: k48_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: modcarnepadraogeral_k48_sequencial_seq do campo: k48_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k48_sequencial = pg_result($result,0,0); 
+       $this->k48_sequencial = pg_result($result,0,0);
      }else{
        $result = @db_query("select last_value from modcarnepadraogeral_k48_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k48_sequencial)){
@@ -174,10 +174,10 @@ class cl_modcarnepadraogeral {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k48_sequencial = $k48_sequencial; 
+         $this->k48_sequencial = $k48_sequencial;
        }
      }
-     if(($this->k48_sequencial == null) || ($this->k48_sequencial == "") ){ 
+     if(($this->k48_sequencial == null) || ($this->k48_sequencial == "") ){
        $this->erro_sql = " Campo k48_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -186,23 +186,23 @@ class cl_modcarnepadraogeral {
        return false;
      }
      $sql = "insert into modcarnepadraogeral(
-                                       k48_sequencial 
-                                      ,k48_instit 
-                                      ,k48_cadmodcarne 
-                                      ,k48_cadtipomod 
-                                      ,k48_dataini 
-                                      ,k48_datafim 
+                                       k48_sequencial
+                                      ,k48_instit
+                                      ,k48_cadmodcarne
+                                      ,k48_cadtipomod
+                                      ,k48_dataini
+                                      ,k48_datafim
                        )
                 values (
-                                $this->k48_sequencial 
-                               ,$this->k48_instit 
-                               ,$this->k48_cadmodcarne 
-                               ,$this->k48_cadtipomod 
-                               ,".($this->k48_dataini == "null" || $this->k48_dataini == ""?"null":"'".$this->k48_dataini."'")." 
-                               ,".($this->k48_datafim == "null" || $this->k48_datafim == ""?"null":"'".$this->k48_datafim."'")." 
+                                $this->k48_sequencial
+                               ,$this->k48_instit
+                               ,$this->k48_cadmodcarne
+                               ,$this->k48_cadtipomod
+                               ,".($this->k48_dataini == "null" || $this->k48_dataini == ""?"null":"'".$this->k48_dataini."'")."
+                               ,".($this->k48_datafim == "null" || $this->k48_datafim == ""?"null":"'".$this->k48_datafim."'")."
                       )";
-     $result = @db_query($sql); 
-     if($result==false){ 
+     $result = @db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Modelo padrão para a instituição ($this->k48_sequencial) nao Incluído. Inclusao Abortada.";
@@ -238,16 +238,16 @@ class cl_modcarnepadraogeral {
        $resac = db_query("insert into db_acount values($acount,1516,8886,'','".AddSlashes(pg_result($resaco,0,'k48_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k48_sequencial=null) { 
+   public function alterar ($k48_sequencial=null) {
       $this->atualizacampos();
      $sql = " update modcarnepadraogeral set ";
      $virgula = "";
-     if(trim($this->k48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_sequencial"])){ 
+     if(trim($this->k48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_sequencial"])){
        $sql  .= $virgula." k48_sequencial = $this->k48_sequencial ";
        $virgula = ",";
-       if(trim($this->k48_sequencial) == null ){ 
+       if(trim($this->k48_sequencial) == null ){
          $this->erro_sql = " Campo Codigo do modelo padrão da instituição nao Informado.";
          $this->erro_campo = "k48_sequencial";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_modcarnepadraogeral {
          return false;
        }
      }
-     if(trim($this->k48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_instit"])){ 
+     if(trim($this->k48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_instit"])){
        $sql  .= $virgula." k48_instit = $this->k48_instit ";
        $virgula = ",";
-       if(trim($this->k48_instit) == null ){ 
+       if(trim($this->k48_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "k48_instit";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_modcarnepadraogeral {
          return false;
        }
      }
-     if(trim($this->k48_cadmodcarne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadmodcarne"])){ 
+     if(trim($this->k48_cadmodcarne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadmodcarne"])){
        $sql  .= $virgula." k48_cadmodcarne = $this->k48_cadmodcarne ";
        $virgula = ",";
-       if(trim($this->k48_cadmodcarne) == null ){ 
+       if(trim($this->k48_cadmodcarne) == null ){
          $this->erro_sql = " Campo Codigo do modelo nao Informado.";
          $this->erro_campo = "k48_cadmodcarne";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_modcarnepadraogeral {
          return false;
        }
      }
-     if(trim($this->k48_cadtipomod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadtipomod"])){ 
+     if(trim($this->k48_cadtipomod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadtipomod"])){
        $sql  .= $virgula." k48_cadtipomod = $this->k48_cadtipomod ";
        $virgula = ",";
-       if(trim($this->k48_cadtipomod) == null ){ 
+       if(trim($this->k48_cadtipomod) == null ){
          $this->erro_sql = " Campo Codigo do tipo de modelo nao Informado.";
          $this->erro_campo = "k48_cadtipomod";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_modcarnepadraogeral {
          return false;
        }
      }
-     if(trim($this->k48_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"] !="") ){ 
+     if(trim($this->k48_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"] !="") ){
        $sql  .= $virgula." k48_dataini = '$this->k48_dataini' ";
        $virgula = ",";
-       if(trim($this->k48_dataini) == null ){ 
+       if(trim($this->k48_dataini) == null ){
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "k48_dataini_dia";
          $this->erro_banco = "";
@@ -308,11 +308,11 @@ class cl_modcarnepadraogeral {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"])){
          $sql  .= $virgula." k48_dataini = null ";
          $virgula = ",";
-         if(trim($this->k48_dataini) == null ){ 
+         if(trim($this->k48_dataini) == null ){
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "k48_dataini_dia";
            $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_modcarnepadraogeral {
          }
        }
      }
-     if(trim($this->k48_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"] !="") ){ 
+     if(trim($this->k48_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"] !="") ){
        $sql  .= $virgula." k48_datafim = '$this->k48_datafim' ";
        $virgula = ",";
-       if(trim($this->k48_datafim) == null ){ 
+       if(trim($this->k48_datafim) == null ){
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "k48_datafim_dia";
          $this->erro_banco = "";
@@ -335,11 +335,11 @@ class cl_modcarnepadraogeral {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"])){
          $sql  .= $virgula." k48_datafim = null ";
          $virgula = ",";
-         if(trim($this->k48_datafim) == null ){ 
+         if(trim($this->k48_datafim) == null ){
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "k48_datafim_dia";
            $this->erro_banco = "";
@@ -375,7 +375,7 @@ class cl_modcarnepadraogeral {
        }
      }
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Modelo padrão para a instituição nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k48_sequencial;
@@ -403,14 +403,14 @@ class cl_modcarnepadraogeral {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k48_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k48_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k48_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -440,7 +440,7 @@ class cl_modcarnepadraogeral {
        $sql2 = $dbwhere;
      }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Modelo padrão para a instituição nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k48_sequencial;
@@ -468,11 +468,11 @@ class cl_modcarnepadraogeral {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -494,11 +494,11 @@ class cl_modcarnepadraogeral {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,15 +515,15 @@ class cl_modcarnepadraogeral {
      $sql2 = "";
      if($dbwhere==""){
        if($k48_sequencial!=null ){
-         $sql2 .= " where modcarnepadraogeral.k48_sequencial = $k48_sequencial "; 
-       } 
+         $sql2 .= " where modcarnepadraogeral.k48_sequencial = $k48_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,11 +532,11 @@ class cl_modcarnepadraogeral {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -549,15 +549,15 @@ class cl_modcarnepadraogeral {
      $sql2 = "";
      if($dbwhere==""){
        if($k48_sequencial!=null ){
-         $sql2 .= " where modcarnepadraogeral.k48_sequencial = $k48_sequencial "; 
-       } 
+         $sql2 .= " where modcarnepadraogeral.k48_sequencial = $k48_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

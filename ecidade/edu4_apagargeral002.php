@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -53,181 +53,171 @@ $cllogmatricula              = new cl_logmatricula;
 $oDaoAlunoCidadao            = new cl_alunocidadao();
 $oDaoAlunoCidadaoContato     = new cl_alunocidadaocontato();
 $oDaoAlunoCidadaoResponsavel = new cl_alunocidadaoresponsavel();
+$oDaoAlunoCensoTipoTransporte = new cl_alunocensotipotransporte();
 
 $db_opcao = 1;
 $db_botao = true;
 
 if ( isset( $excluir ) ) {
-  
+
   if ( isset( $alunos ) ) {
-    
+
     $erroexc = false;
     db_inicio_transacao();
-    
+
     $codalunos = explode(",",$alunos);
-    
+
     for ( $x = 0; $x < count( $codalunos ); $x++) {
-      
+
       $clalunopossib->excluir(""," ed79_i_alunocurso in (select ed56_i_codigo from alunocurso where ed56_i_aluno = $codalunos[$x])");
       if ( $clalunopossib->erro_status == "0") {
-        
         $erroexc = true;
         $msgerro = $clalunopossib->erro_msg;
-        break; 	
+        break;
       }
-        
+
       $clalunocurso->excluir(""," ed56_i_aluno = $codalunos[$x]");
       if ( $clalunocurso->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $clalunocurso->erro_msg;    
-        break; 	
+        $msgerro = $clalunocurso->erro_msg;
+        break;
       }
-        
+
       $cltransfescolarede->excluir(""," ed103_i_atestvaga in (select ed102_i_codigo from atestvaga where ed102_i_aluno = $codalunos[$x])");
       if ( $cltransfescolarede->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $cltransfescolarede->erro_msg;    
-        break; 	
+        $msgerro = $cltransfescolarede->erro_msg;
+        break;
       }
-        
+
       $clatestvaga->excluir(""," ed102_i_aluno = $codalunos[$x]");
       if ( $clatestvaga->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $clatestvaga->erro_msg;    
-        break; 	
+        $msgerro = $clatestvaga->erro_msg;
+        break;
       }
-        
+
       $cltransfescolafora->excluir(""," ed104_i_aluno = $codalunos[$x]");
       if ( $cltransfescolafora->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $cltransfescolafora->erro_msg;    
-        break; 	
+        $msgerro = $cltransfescolafora->erro_msg;
+        break;
       }
-        
+
       $cltrocaserie->excluir(""," ed101_i_aluno = $codalunos[$x]");
       if ( $cltrocaserie->erro_status == "0") {
-        
         $erroexc = true;
         $msgerro = $cltrocaserie->erro_msg;
-        break; 	
+        break;
       }
-        
+
       $cllogmatricula->excluir(""," ed248_i_aluno = $codalunos[$x]");
       if ( $cllogmatricula->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $cllogmatricula->erro_msg;    
-        break; 	
+        $msgerro = $cllogmatricula->erro_msg;
+        break;
       }
-        
+
       $clalunobairro->excluir(""," ed225_i_aluno = $codalunos[$x]");
       if ( $clalunobairro->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $clalunobairro->erro_msg;    
-        break; 	
+        $msgerro = $clalunobairro->erro_msg;
+        break;
       }
-      
+
       $clalunonecessidade->excluir(""," ed214_i_aluno = $codalunos[$x]");
       if ( $clalunonecessidade->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $clalunonecessidade->erro_msg;    
-        break; 	
+        $msgerro = $clalunonecessidade->erro_msg;
+        break;
       }
-      
+
       $cltelefonealuno->excluir(""," ed50_i_aluno = $codalunos[$x]");
       if ( $cltelefonealuno->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $cltelefonealuno->erro_msg;    
-        break; 	
+        $msgerro = $cltelefonealuno->erro_msg;
+        break;
       }
-      
+
       $clalunoprimat->excluir(""," ed76_i_aluno = $codalunos[$x]");
       if ( $clalunoprimat->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $clalunoprimat->erro_msg;    
-        break; 	
+        $msgerro = $clalunoprimat->erro_msg;
+        break;
       }
-      
+
       $cldocaluno->excluir(""," ed49_i_aluno = $codalunos[$x]");
       if ( $cldocaluno->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $cldocaluno->erro_msg;    
-        break; 	
+        $msgerro = $cldocaluno->erro_msg;
+        break;
       }
-      
+
       $result5 = db_query("select ed275_i_codigo as codigoalt from alunoalt where ed275_i_aluno = $codalunos[$x]");
       $linhas5 = pg_num_rows($result5);
-      
+
       for ( $t = 0; $t < $linhas5; $t++) {
-      	
+
         db_fieldsmemory($result5,$t);
         $clalunoaltcampos->excluir(""," ed276_i_alunoalt = $codigoalt");
         if ( $clalunoaltcampos->erro_status == "0") {
-          
           $erroexc = true;
           $msgerro = $clalunoaltcampos->erro_msg;
-          break; 	
+          break;
         }
-        
+
         $clalunoaltconf->excluir(""," ed277_i_alunoalt = $codigoalt");
         if ( $clalunoaltconf->erro_status == "0") {
-          
           $erroexc = true;
-          $msgerro = $clalunoaltconf->erro_msg;     
-          break; 	
+          $msgerro = $clalunoaltconf->erro_msg;
+          break;
         }
       }
-      
+
       $clalunoalt->excluir(""," ed275_i_aluno = $codalunos[$x]");
       if ( $clalunoalt->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $clalunoalt->erro_msg;    
-        break; 	
+        $msgerro = $clalunoalt->erro_msg;
+        break;
       }
-      
+
       $oDaoAlunoCidadao->excluir( null, "ed330_aluno = {$codalunos[$x]}" );
       if ( $oDaoAlunoCidadao->erro_status == "0") {
-      
         $erroexc = true;
         $msgerro = $oDaoAlunoCidadao->erro_msg;
         break;
       }
-      
+
       $oDaoAlunoCidadaoContato->excluir( null, "ed332_aluno = {$codalunos[$x]}" );
       if ( $oDaoAlunoCidadaoContato->erro_status == "0") {
-      
         $erroexc = true;
         $msgerro = $oDaoAlunoCidadaoContato->erro_msg;
         break;
       }
-      
+
       $oDaoAlunoCidadaoResponsavel->excluir( null, "ed331_aluno = {$codalunos[$x]}" );
       if ( $oDaoAlunoCidadaoResponsavel->erro_status == "0") {
-      
         $erroexc = true;
         $msgerro = $oDaoAlunoCidadaoResponsavel->erro_msg;
         break;
       }
-      
+        $oDaoAlunoCensoTipoTransporte->excluir(null, "ed311_aluno = {$codalunos[$x]}");
+        if ( $oDaoAlunoCensoTipoTransporte->erro_status == "0") {
+            $erroexc = true;
+            $msgerro = $oDaoAlunoCensoTipoTransporte->erro_msg;
+            break;
+        }
+
       $claluno->excluir($codalunos[$x]);
       if ( $claluno->erro_status == "0") {
-        
         $erroexc = true;
-        $msgerro = $claluno->erro_msg;    
-        break; 	
+        $msgerro = $claluno->erro_msg;
+        break;
       }
+
+
     }
-    
+
     $evento = "EXCLUSÃO GERAL DE ALUNOS";
     $descricao = "Código(s) excluídos(s): $alunos";
     $cllogexcgeral->ed256_i_usuario = db_getsession("DB_id_usuario");
@@ -239,19 +229,18 @@ if ( isset( $excluir ) ) {
     $cllogexcgeral->incluir(null);
     if($cllogexcgeral->erro_status=="0"){
      $erroexc = true;
-     $msgerro = $cllogexcgeral->erro_msg;   
-    }    
+     $msgerro = $cllogexcgeral->erro_msg;
+    }
     db_fim_transacao();
     if($erroexc==true){
-     db_msgbox("ERRO NA EXCLUSÃO: ".$msgerro);	
+     db_msgbox("ERRO NA EXCLUSÃO: ".$msgerro);
     }else{
-     db_msgbox("Exclusão efetuada com sucesso!");  	
+     db_msgbox("Exclusão efetuada com sucesso!");
     }
     db_redireciona("edu4_apagargeral002.php");
     exit;
   }
 }
-
 ?>
 <html>
 <head>
@@ -276,14 +265,14 @@ if ( isset( $excluir ) ) {
   <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:95%"><legend><b>Exclusão Geral de Alunos</b></legend>
-    <?if(!isset($pesquisar)){?>
+    <?php if(!isset($pesquisar)){?>
      <input type="button" value="Buscar Alunos" name="pesquisar" onclick="location.href='edu4_apagargeral002.php?pesquisar'">
-    <?}else{?>
+    <?php }else{?>
       <table border="0" cellspacing="0" width="100%">
 	<tr>
 	<td>
 	  <b>Alunos sem movimentação no sistema:</b><br>
-	  <?
+	  <?php
 	  $sql_aluno = "SELECT DISTINCT ed47_i_codigo,to_ascii(ed47_v_nome) as ed47_v_nome
 			FROM aluno
 			left join historico        on ed47_i_codigo = ed61_i_aluno
@@ -304,16 +293,16 @@ if ( isset( $excluir ) ) {
 	  }else{
 	  ?>
 	  <select name="aluno" id="aluno" size="20" style="width:400px;font-size:9px;" multiple>
-	    <?
+	    <?php
 	    for($x=0;$x<$linhas_aluno;$x++){
 	    db_fieldsmemory($result_aluno,$x);
 	    ?>
 	    <option value="<?=$ed47_i_codigo?>"><?=$ed47_i_codigo?> - <?=$ed47_v_nome?></option>
-	    <?
+	    <?php
 	    }
 	    ?>
 	  </select>
-	  <?
+	  <?php
 	  }
 	  ?>
 	</td>
@@ -332,7 +321,7 @@ if ( isset( $excluir ) ) {
 	</td>
 	</tr>
       </table>
-    <?}?>
+    <?php }?>
    </fieldset>
   </td>
  </tr>
@@ -345,7 +334,7 @@ if ( isset( $excluir ) ) {
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

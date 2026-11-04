@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\V3\Extension\Exceptions\ResponseException;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("dbforms/db_funcoes.php"));
@@ -41,7 +43,7 @@ $clrotulo->label('z01_nome');
 $clnumpref = new cl_numpref();
 $resnumpref = $clnumpref->sql_record($clnumpref->sql_query_file(db_getsession("DB_anousu"), db_getsession('DB_instit'), "k03_certissvar"));
 if ($resnumpref == false || $clnumpref->numrows == 0) {
-  db_msgbox("Tabela de parâmetro (numpref) não configurada! Verifique com administrador");
+  throw new ResponseException("Tabela de parâmetro (numpref) não configurada! Verifique com administrador");
   db_redireciona("corpo.php");
   exit();
 } else {
@@ -90,12 +92,12 @@ $q02_inscr  = "";
         <table border="0">
           <tr>
             <td align="left" valign="top" bgcolor="#CCCCCC">
-        		 <?
+        		 <?php
                 db_ancora($Lz01_nome, 'js_mostranomes(true);', 4);
              ?>
           	</td>
           	<td>
-            <?
+            <?php
                 db_input("z01_numcgm", 10, $Iz01_numcgm, true, 'text', 4, "onfocus=\"apagaInputs()\" onchange='js_mostranomes(false);'");
                 db_input("z01_nome", 40, $Iz01_nome, true, 'text', 3, " readonly = \"readonly\"");
             ?>
@@ -104,17 +106,17 @@ $q02_inscr  = "";
 
          	<tr>
           	<td title="<?=$Tj01_matric?>">
-            <?
+            <?php
               db_ancora($Lj01_matric, "js_mostramatricula(true,'$j18_nomefunc');", 2);
             ?>
           	</td>
           	<td>
-            <?
+            <?php
               db_input("j01_matric", 10, $Ij01_matric, true, 'text', 1, "onfocus=\"apagaInputs()\"  onchange=\"js_mostramatricula(false,'$j18_nomefunc')\"");
             ?>
           	</td>
           </tr>
-          <?
+          <?php
             $cssInscricao = "";
             if ($db21_usasisagua == true) {
               $cssInscricao = "visibility: hidden;";
@@ -122,12 +124,12 @@ $q02_inscr  = "";
           ?>
           <tr>
             <td>
-            <?
+            <?php
               db_ancora($Lq02_inscr,' js_inscr(true); ',1, "$cssInscricao");
             ?>
             </td>
             <td>
-            <?
+            <?php
               db_input('q02_inscr', 10, $Iq02_inscr,true,'text',1," onfocus=\"apagaInputs()\" onchange='js_inscr(false)'", "", "", $cssInscricao);
             ?>
             </td>
@@ -248,14 +250,6 @@ function js_inscr(mostra){
 }
 function js_mostra(chave1,chave2,baixa){
 
-	if (baixa != ""){
-
-		document.form1.q02_inscr.value = "";
-    document.form1.z01_nome.value  = "";
-    db_iframe.hide();
-    alert("Inscrição já  Baixada");
-  }else{
-
 	  if(chave2 != false) {
 
       document.form1.q02_inscr.value = chave1;
@@ -268,7 +262,6 @@ function js_mostra(chave1,chave2,baixa){
       db_iframe.hide();
       document.form1.avancar.disabled = false;
     }
-  }
 
   if(document.form1.q02_inscr.value == '') {
 

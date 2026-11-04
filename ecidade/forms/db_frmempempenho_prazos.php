@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("nome");
        <?=@$Le54_autori?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_autori',6,$Ie54_autori,true,'text',3)
 ?>
     </td>
@@ -49,7 +49,7 @@ db_input('e54_autori',6,$Ie54_autori,true,'text',3)
        <?=@$Le54_numsol?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_numsol',8,$Ie54_numsol,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -59,7 +59,7 @@ db_input('e54_numsol',8,$Ie54_numsol,true,'text',$db_opcao,"")
        <?=@$Le54_praent?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_praent',30,$Ie54_praent,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -69,7 +69,7 @@ db_input('e54_praent',30,$Ie54_praent,true,'text',$db_opcao,"")
        <?=@$Le54_entpar?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_entpar',30,$Ie54_entpar,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_input('e54_entpar',30,$Ie54_entpar,true,'text',$db_opcao,"")
        <?=@$Le54_conpag?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_conpag',30,$Ie54_conpag,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('e54_conpag',30,$Ie54_conpag,true,'text',$db_opcao,"")
        <?=@$Le54_codout?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_codout',30,$Ie54_codout,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('e54_codout',30,$Ie54_codout,true,'text',$db_opcao,"")
        <?=@$Le54_contat?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_contat',20,$Ie54_contat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('e54_contat',20,$Ie54_contat,true,'text',$db_opcao,"")
        <?=@$Le54_telef?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_telef',20,$Ie54_telef,true,'text',$db_opcao,"")
 ?>
     </td>

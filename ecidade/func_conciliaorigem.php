@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clconciliaorigem->rotulo->label("k96_descr");
               <?=$Lk96_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k96_sequencial",8,$Ik96_sequencial,true,"text",4,"","chave_k96_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconciliaorigem->rotulo->label("k96_descr");
               <?=$Lk96_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k96_descr",40,$Ik96_descr,true,"text",4,"","chave_k96_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconciliaorigem->rotulo->label("k96_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conciliaorigem.php")==true){
@@ -122,12 +122,12 @@ $clconciliaorigem->rotulo->label("k96_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

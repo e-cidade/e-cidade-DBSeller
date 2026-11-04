@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -160,7 +160,7 @@ function js_mostraNota(numNota){
 </head>
 <body bgcolor=#cccccc leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <center>
-<?
+<?php
 
 db_lovrot($sSqlInfo,15,"()","",'js_mostraNota|q51_sequencial');
 ?>

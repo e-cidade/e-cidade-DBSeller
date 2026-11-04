@@ -3,7 +3,7 @@
 namespace App\Domain\Financeiro\Contabilidade\Repositories;
 
 use App\Domain\Core\Base\Repository\BaseRepository;
-use App\Domain\Financeiro\Contabilidade\Models\LancamentosContabeis;
+use App\Domain\Financeiro\Contabilidade\Models\Lancamento;
 use Illuminate\Support\Facades\DB;
 
 use App\Domain\Financeiro\Contabilidade\Models\MovimentacaoAuditoria;
@@ -15,8 +15,8 @@ use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
  */
 class LancamentosContabeisRepository extends BaseRepository
 {
-    protected $modelClass = LancamentosContabeis::class;
-    
+    protected $modelClass = Lancamento::class;
+
     /**
      * @var integer
      */
@@ -38,7 +38,7 @@ class LancamentosContabeisRepository extends BaseRepository
         $this->mes = $params['mes'];
         $this->ano = $params['anousu'];
         $this->dataFinal = CompetenciaHelper::getFormatada($this->ano, $this->mes)->dataFinal;
-        
+
         return DB::select($this->getIndiceEducacaoMde());
     }
 
@@ -47,7 +47,7 @@ class LancamentosContabeisRepository extends BaseRepository
         return "
             select 'total_das_receitas_com_impostos_e_transferencias' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamrec on c74_codlan = c70_codlan
@@ -71,7 +71,7 @@ class LancamentosContabeisRepository extends BaseRepository
 
             select 'despesas_empenhadas_com_recursos_do_fundeb' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 11 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 11 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamemp on c75_codlan = c70_codlan
@@ -91,7 +91,7 @@ class LancamentosContabeisRepository extends BaseRepository
 
             select 'despesas_liquidadas_com_recursos_do_fundeb' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 21 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 21 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamemp on c75_codlan = c70_codlan
@@ -111,7 +111,7 @@ class LancamentosContabeisRepository extends BaseRepository
 
             select 'despesas_empenhadas_com_recursos_de_impostos' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 11 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 11 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamemp on c75_codlan = c70_codlan
@@ -132,7 +132,7 @@ class LancamentosContabeisRepository extends BaseRepository
 
             select 'despesas_liquidadas_com_recursos_de_impostos' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 21 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 21 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamemp on c75_codlan = c70_codlan
@@ -153,7 +153,7 @@ class LancamentosContabeisRepository extends BaseRepository
 
             select 'total_das_transferencias_recebidas_do_fundeb' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamrec on c74_codlan = c70_codlan
@@ -172,7 +172,7 @@ class LancamentosContabeisRepository extends BaseRepository
 
             select 'total_das_deducoes_do_fundeb' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamrec on c74_codlan = c70_codlan
@@ -191,7 +191,7 @@ class LancamentosContabeisRepository extends BaseRepository
 
             select 'total_da_receita_de_complementacao_da_uniao' as titulo,
                 extract(month from c70_data) as mes_competencia,
-                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1 
+                sum(case when c53_tipo = 101 then round(c70_valor,2)*-1
                 else round(c70_valor,2) end) as valor_ate_o_periodo
             from conlancam
                 join conlancamrec on c74_codlan = c70_codlan

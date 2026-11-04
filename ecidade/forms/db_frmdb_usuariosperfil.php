@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,19 +40,19 @@ $cldb_usuarios->rotulo->label();
   <tr>
     <td nowrap><b>Cod. Perfil:</b></td>
     <td> 
-<?
+<?php
 db_input('id_usuario',10,0,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>   
       <td nowrap><b>
-      <?
+      <?php
          db_ancora("Nome do Perfil:","js_cgmlogin(true)",$db_opcao);
       ?></b>
       </td>
       <td> 
-      <?
+      <?php
        db_input('nome',20,@$Inome,true,'text',$db_opcao,"");
       ?>
        </td>
@@ -60,7 +60,7 @@ db_input('id_usuario',10,0,true,'text',3,"")
   <tr>   
       <td nowrap align="right"><b>Login:</b></td>
       <td> 
-      <?
+      <?php
        db_input('login',20,@$Ilogin,true,'text',$db_opcao);
       ?>
        </td>
@@ -68,7 +68,7 @@ db_input('id_usuario',10,0,true,'text',3,"")
   <tr>
     <td nowrap align="right" title="<?=@$Tcodigo?>"><b>Instituicao:</b></td> 
     <td nowrap>
-    <?
+    <?php
        $res_instit = $cldb_config->sql_record($cldb_config->sql_query_file(null,"codigo,substr(nomeinst,1,40)"));
        if(isset($id_usuario) && $id_usuario != ""){
           $record_select = db_query("select id_instit from db_userinst where id_usuario = $id_usuario");
@@ -105,7 +105,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_usuarios.hide();  
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

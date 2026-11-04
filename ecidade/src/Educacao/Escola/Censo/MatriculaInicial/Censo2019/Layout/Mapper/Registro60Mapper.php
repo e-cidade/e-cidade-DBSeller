@@ -38,6 +38,7 @@ class Registro60Mapper extends Mapper
         "Composição itinerário formativo integrado - Formação técnica e profissional"
             => "formacaoTecnicaProfissionalIntegrado",
         "Tipo do curso do itinerário de formação técnica e profissional" => "cursoFormacaoTecnicaProfissionalIntegrado",
+        "Código do curso técnico" => "codigoCursoTecnico",
         "Itinerário concomitante intercomplementar à matrícula de formação geral básica"
             => "itenarioConcomitanteIntegrado",
         "Desenvolvimento de funções cognitivas" => "desenvolvimentoFuncoesCognitivas",

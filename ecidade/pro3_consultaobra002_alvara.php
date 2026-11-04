@@ -136,7 +136,7 @@ if($oDaoObrasAlvara->numrows > 0){
 </fieldset>
 
 
-<?
+<?php
 
 /**
  * Se não existir habite-se

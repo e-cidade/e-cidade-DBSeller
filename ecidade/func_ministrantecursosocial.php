@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,12 +56,12 @@ $oRotuloCampo->label("z01_nome");
           <tr title="Pesquise um cidadão">  
             <td align="right" nowrap="nowrap" class="bold" >Cidadão:</td>
             <td nowrap="nowrap"> 
-              <?
+              <?php
 		            db_input("as19_ministrante", 10, $Ias19_ministrante, true, "text", 4, "", "chave_as19_ministrante");
 		          ?>
             </td>
             <td nowrap="nowrap"> 
-              <?
+              <?php
 		            db_input("z01_nome", 30, $Iz01_nome, true, "text", 4, "", "chave_z01_nome");
 		          ?>
             </td>
@@ -80,7 +80,7 @@ $oRotuloCampo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-    <?
+    <?php
       $campos = "distinct cursosocial.as19_ministrante, cgm.z01_nome";
       $sOrder = "z01_nome";
       if (!isset($pesquisa_chave)) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcgmfisico->rotulo->label("z04_numcgm");
               <?=$Lz04_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z04_sequencial",10,$Iz04_sequencial,true,"text",4,"","chave_z04_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcgmfisico->rotulo->label("z04_numcgm");
               <?=$Lz04_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z04_numcgm",10,$Iz04_numcgm,true,"text",4,"","chave_z04_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcgmfisico->rotulo->label("z04_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cgmfisico.php")==true){
@@ -122,12 +122,12 @@ $clcgmfisico->rotulo->label("z04_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

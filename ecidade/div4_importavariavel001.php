@@ -1,31 +1,32 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 use ECidade\Tributario\Divida\Service\TermoInscricaoService;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -77,96 +78,141 @@ $db_opcao       = 1;
 $db_botao       = true;
 
 if (isset($lancar)) {
-  
+
   if ((int)$oPost->lProcessoSistema == 1) {
-  
+
     $lProcessoSistema = (int)$oPost->lProcessoSistema;
     $iProcesso        = $oPost->v01_processo;
     $sTitular         = "";
     $dDataProcesso    = "";
   } else {
-  
+
     $lProcessoSistema = (int)$oPost->lProcessoSistema;
     $iProcesso        = $oPost->v01_processoExterno;
     $sTitular         = $oPost->v01_titular;
     $dDataProcesso    = implode("-", array_reverse(explode("/", $oPost->v01_dtprocesso)));
-  }  
-  
+  }
+
   $sqlerro = false;
   db_inicio_transacao();
   $dataini = date("Y-m-d", db_getsession('DB_datausu') );
   $horaini = date("H:i");
-  
+
   if (isset($inscricao) && $inscricao != "") {
-       
-    $result = $clissbase->sql_record($clissbase->sql_query_file($inscricao, "q02_numcgm")); 
+
+    $result = $clissbase->sql_record($clissbase->sql_query_file($inscricao, "q02_numcgm"));
     db_fieldsmemory($result,0);
     $numcgm = $q02_numcgm;
-    
+
   } else if (isset($z01_numcgm) && $z01_numcgm != "") {
     $numcgm = $z01_numcgm;
-    
+
   }
-  
+
   $data				= date("Y-m-d",db_getsession("DB_datausu"));
-  $matriz01	  = split('#',$chaves);  
-  
+  $matriz01	  = explode('#',$chaves);
+
   $jateminscr = "";
-  
+
+
+    /**
+     * Busca o ultimo livro e folha do exercicio
+     */
+    $anoSessao = date('Y', db_getsession("DB_datausu"));
+    $sqlLivroFolha = "
+      select v01_livro,
+             v01_folha,
+             count(*) as total_registros
+        FROM divida
+       WHERE v01_livro = (SELECT max(v01_livro)
+                            FROM divida
+                           WHERE extract(YEAR FROM v01_dtinclusao) = {$anoSessao}
+                           and v01_livro < 998 )
+      group by v01_livro, v01_folha
+      having v01_folha = max(v01_folha)
+      order by 2 desc
+      limit 1
+    ";
+
+    $buscaLivroExercicio = db_query($sqlLivroFolha);
+    if (!$buscaLivroExercicio) {
+        db_erro("Erro ao buscar livro e folha do exercicio");
+    }
+
+    $criaNovoLivro = false;
+    if (pg_num_rows($buscaLivroExercicio) == 0) {
+        $criaNovoLivro = true;
+    } else {
+        $livroExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_livro;
+        $criaNovoLivro = empty($livroExercicio);
+        unset($livroExercicio);
+    }
+
+    if ($criaNovoLivro) {
+      $novoLivro = db_query($cldivida->sql_query_file(null, "coalesce(max(v01_livro), 0) + 1 as v01_livro"));
+      $livroExercicio = \db_utils::fieldsMemory($novoLivro, 0)->v01_livro;
+      $folhaExercicio = 1;
+      $totalRegistrosPorFolha = 0;
+    } else {
+        $livroExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_livro;
+        $folhaExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_folha;
+        $totalRegistrosPorFolha = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->total_registros;
+    }
+
 	for ($q = 0; $q < count($matriz01); $q++ ) {
-    
-		$arr_dad = split('-',$matriz01[$q]);  
-    
+
+		$arr_dad = explode('-',$matriz01[$q]);
+
 		$numpre     = $arr_dad[0];
     $numpar     = $arr_dad[1];
     $ano        = $arr_dad[2];
     $q05_codigo = $arr_dad[3];
     $mes        = $arr_dad[4];
-    
+
     $numpre_novo = $clnumpref->sql_numpre();
-    
-		if (($inscricao == "") || ($jateminscr == "1")) {   
-      
+
+		if (($inscricao == "") || ($jateminscr == "1")) {
+
       $sqlinscr  = " select arreinscr.*																																		 ";
 			$sqlinscr .= "	 from arreinscr																																			 ";
 			$sqlinscr .= "			  inner join arreinstit on arreinstit.k00_numpre = arreinscr.k00_numpre					 ";
-			$sqlinscr .= "														 and arreinstit.k00_instit = ".db_getsession('DB_instit').""; 
-			$sqlinscr .= "  where arreinscr.k00_numpre = {$numpre}																							 "; 
-      
+			$sqlinscr .= "														 and arreinstit.k00_instit = ".db_getsession('DB_instit')."";
+			$sqlinscr .= "  where arreinscr.k00_numpre = {$numpre}																							 ";
+
 			$resultinscr = db_query($sqlinscr);
       $linhasinscr = pg_num_rows($resultinscr);
-      
+
 			if ($linhasinscr > 0) {
-			  
+
         db_fieldsmemory($resultinscr,0);
         $inscricao  = $k00_inscr;
         $jateminscr = "1";
       }
-    
+
 		}
 
     $result_lev = $clissvarlev->sql_record($clissvarlev->sql_query($q05_codigo));
-    
+
 		if ($clissvarlev->numrows>0){
-		  
+
 			db_fieldsmemory($result_lev, 0);
       $result_parfiscal = $clparfiscal->sql_record($clparfiscal->sql_query_file());
       db_fieldsmemory($result_parfiscal, 0);
-      
+
 			if ($y60_espontaneo == 'f'){
         $procedencia = $y32_proced;
       }else{
         $procedencia = $y32_procedexp;
-      }	
+      }
     } else {
-      
-      $result001 = $clcissqn->sql_record($clcissqn->sql_query_file(db_getsession("DB_anousu"),"q04_proced")); 
+
+      $result001 = $clcissqn->sql_record($clcissqn->sql_query_file(db_getsession("DB_anousu"),"q04_proced"));
       db_fieldsmemory($result001, 0);
       $procedencia = @$q04_proced;
     }
-    
-    $result01 = $clarrecad->sql_record($clarrecad->sql_query_info(null,"distinct arretipo.k03_tipo, 
-                                                                        arrecad.k00_valor, 
+
+    $result01 = $clarrecad->sql_record($clarrecad->sql_query_info(null,"distinct arretipo.k03_tipo,
+                                                                        arrecad.k00_valor,
                                                                         arrecad.k00_dtvenc,
                                                                         arrecad.k00_dtoper",
                                                                        null,
@@ -174,42 +220,49 @@ if (isset($lancar)) {
                                                                     and arrecad.k00_numpar = {$numpar}
                                                                     and arreinstit.k00_instit = ".db_getsession('DB_instit') ));
     db_fieldsmemory($result01, 0);
-    
+
     $result01 = $clissvar->sql_record($clissvar->sql_query_file(null, "*", "", "q05_numpre = {$numpre} and q05_numpar = {$numpar}"));
     db_fieldsmemory($result01, 0);
-    
+
     if ($k00_valor == 0) {
-      
+
       if ($q05_vlrinf > 0) {
         $k00_valor = $q05_vlrinf;
       }
     }
-    
+
     if ($k00_valor <= 0) {
       continue;
-    }  
+    }
 
     $cldivimporta->v02_usuario = db_getsession('DB_id_usuario');
     $cldivimporta->v02_instit  = db_getsession('DB_instit');
     $cldivimporta->v02_data		 = $dataini;
     $cldivimporta->v02_hora		 = $horaini;
-    $cldivimporta->v02_tipo		 = 1;  
+    $cldivimporta->v02_tipo		 = 1;
     $cldivimporta->v02_datafim = $dataini;
     $cldivimporta->v02_horafim = $horaini;
     $cldivimporta->incluir(null);
     if ($cldivimporta->erro_status == 0) {
-      
+
       db_msgbox($cldivimporta->erro_msg);
       $sqlerro = true;
     }
-    
+
     //----INCLUSÃO DIVIDA--------------------------------------------------------------
     if ($sqlerro == false) {
-      		
+
       $v01_obs = $cldivida->resumo_importacao($numpre, $k03_tipo);
-      
+
 //       $iExercicioDivida = $cldivida->getExercicioDivida($numpre, $k03_tipo, $ano);
-   
+
+        // Controla quantidade de registros por folha
+        $totalRegistrosPorFolha++;
+        if ($totalRegistrosPorFolha > 30) {
+            $totalRegistrosPorFolha = 1;
+            $folhaExercicio++;
+        }
+
       $cldivida->v01_instit     =  db_getsession('DB_instit');
       $cldivida->v01_dtinclusao =  date('Y-m-d',db_getsession('DB_datausu'));
       $cldivida->v01_numcgm     =  $numcgm;
@@ -222,34 +275,34 @@ if (isset($lancar)) {
       $cldivida->v01_vlrhis     =  $k00_valor;
       $cldivida->v01_proced     =  $procedencia;
       $cldivida->v01_obs        =  "Importação de issqn variável. Competência: $ano/$mes - ".$v01_obs;
-      $cldivida->v01_livro      =  "";
-      $cldivida->v01_folha      =  "";
+      $cldivida->v01_livro      =  $livroExercicio;
+      $cldivida->v01_folha      =  $folhaExercicio;
       $cldivida->v01_dtvenc     =  $k00_dtvenc;
-      // $arr    = split("-", $k00_dtvenc);
+      // $arr    = explode("-", $k00_dtvenc);
       // $dtoper = "{$arr[0]}-{$arr[1]}-01";
       $cldivida->v01_dtoper  = $k00_dtoper;
       $cldivida->v01_valor   = $k00_valor;
-      
+
       if ($lProcessoSistema == 0) {
-        
+
         $cldivida->v01_processo   = $iProcesso;
         $cldivida->v01_titular    = $sTitular;
         $cldivida->v01_dtprocesso = $dDataProcesso;
       }
-      
+
       $cldivida->incluir(null);
-      
+
       $erro_msg = $cldivida->erro_msg."--- Inclusão Divida";
-      
+
       if ($cldivida->erro_status == 0) {
-        
+
         $sqlerro = true;
         break;
       }
       $v01_coddiv = $cldivida->v01_coddiv;
-      
+
       if ($lProcessoSistema == 1 && $iProcesso != null) {
-        
+
         $oDaoDividaprotprocesso->v88_divida       = $v01_coddiv;
         $oDaoDividaprotprocesso->v88_protprocesso = $iProcesso;
         $oDaoDividaprotprocesso->incluir(null);
@@ -259,29 +312,60 @@ if (isset($lancar)) {
           $sqlerro = true;
         }
       }
-      
-      
+
+
     }
     //----FINAL DIVIDA-----------------------------------------------------------------
-    
+
     //------- INCLUSÃO NO DIVIMPORTAREG -----------------------------------------------
     $cldivimportareg->v04_divimporta = $cldivimporta->v02_divimporta;
     $cldivimportareg->v04_coddiv     = $cldivida->v01_coddiv;
     $cldivimportareg->incluir();
-    
+
     if ($cldivimportareg->erro_status == 0) {
 
       $sqlerro = true;
       $erro_msg = $cldivimportareg->erro_msg;
       break;
-    }     
-    //-------INCLUSÃO NO ARRECAD------------------------------------------------------- 
-    
+    }
+
+    //-------INCLUSÃO DIVOLD ----------------------------------------------------------
+
+		if ($sqlerro == false) {
+
+		  $sSqlresult_arrecad_ant = $clarrecad->sql_query_file_instit(null,"arrecad.k00_numpre as numpre_ant,
+		                                                                    k00_numpar as numpar_ant,k00_receit as receit_ant",
+		                                                             null,
+		                                                             "    arrecad.k00_numpre = {$numpre}
+		                                                              and k00_numpar = {$numpar}");
+		  $result_arrecad_ant     = $clarrecad->sql_record($sSqlresult_arrecad_ant);
+
+      for ($w = 0; $w < $clarrecad->numrows; $w++) {
+
+        db_fieldsmemory($result_arrecad_ant, $w);
+        $cldivold->k10_coddiv  = $v01_coddiv;
+        $cldivold->k10_numpre  = $numpre_ant;
+        $cldivold->k10_numpar  = $numpar_ant;
+        $cldivold->k10_receita = $receit_ant;
+        $cldivold->incluir(null);
+        if ($cldivold->erro_status == 0) {
+
+          $sqlerro  = true;
+          $erro_msg = $cldivold->erro_msg."--- Inclusão DIVOLD";
+          break;
+        }
+      }
+    }
+
+		//-------FIM DIVOLD----------------------------------------------------------------
+
+    //-------INCLUSÃO NO ARRECAD-------------------------------------------------------
+
     $result01 = $clproced->sql_record($clproced->sql_query_file($procedencia,"v03_receit,k00_hist"));
-    
+
     db_fieldsmemory($result01,0);
     if ($sqlerro == false){
-      
+
       $clarrecad->k00_receit = $v03_receit;
       $clarrecad->k00_hist   = $k00_hist;
       $clarrecad->k00_numpre = $numpre_novo;
@@ -297,27 +381,27 @@ if (isset($lancar)) {
       $clarrecad->incluir();
       $erro_msg = $clarrecad->erro_msg."--- Inclusão Arrecad";
       if ($clarrecad->erro_status == 0) {
-        
+
         $sqlerro = true;
         break;
       }
     }
-    //-------FINAL NO ARRECAD---------------------------------------------------------- 
-    
-    
+    //-------FINAL NO ARRECAD----------------------------------------------------------
+
+
     //-------INICIO EM ARREINSCR-------------------------------------------------------
-    
+
 		if ($sqlerro == false) {
-		   
-      if (isset($inscricao) && $inscricao != "") { 
-        
+
+      if (isset($inscricao) && $inscricao != "") {
+
         $clarreinscr->k00_numpre = $numpre_novo;
         $clarreinscr->k00_inscr  = $inscricao;
         $clarreinscr->k00_perc   = 100;
         $clarreinscr->incluir($numpre_novo,$inscricao);
         $erro_msg = $clarreinscr->erro_msg."--- Inclusão Arreinscr";
         if ($clarreinscr->erro_status == '0') {
-          
+
           $sqlerro = true;
           break;
         }
@@ -326,86 +410,56 @@ if (isset($lancar)) {
 
         if ($sqlerro == false) {
 
-          $dataInsc = date("Y-m-d",db_getsession('DB_datausu'));					
+          $dataInsc = date("Y-m-d",db_getsession('DB_datausu'));
           $usuario = db_getsession('DB_id_usuario');
           $instit = db_getsession('DB_instit');
           TermoInscricaoService::salvar($numpre_novo, $cldivida, $v03_receit, $dataInsc, $usuario, $instit);
         }
-      }  
+      }
     }
-    
-		//-------INICIO EM ARREINSCR------------------------------------------------------- 
-    
+
+		//-------INICIO EM ARREINSCR-------------------------------------------------------
+
 		if ($sqlerro == false) {
-		  
-      $clissvardiv->q19_coddiv = $v01_coddiv; 
-      $clissvardiv->q19_issvar = $q05_codigo; 
+
+      $clissvardiv->q19_coddiv = $v01_coddiv;
+      $clissvardiv->q19_issvar = $q05_codigo;
       $clissvardiv->incluir($v01_coddiv,$q05_codigo);
       $erro_msg = $clissvardiv->erro_msg."--- Inclusão issvardiv";
-      
+
       if ($clissvardiv->erro_status == '0') {
-        
+
         $sqlerro = true;
         break;
       }
     }
-    
-		//-------FINAL EM ARREINSCR-------------------------------------------------------- 
-    
-		//-------INCLUSÃO DIVOLD ----------------------------------------------------------
-    
-		if ($sqlerro == false) {
-      
-		  $sSqlresult_arrecad_ant = $clarrecad->sql_query_file_instit(null,"arrecad.k00_numpre as numpre_ant,
-		                                                                    k00_numpar as numpar_ant,k00_receit as receit_ant",
-		                                                             null,
-		                                                             "    arrecad.k00_numpre = {$numpre} 
-		                                                              and k00_numpar = {$numpar}");
-		  $result_arrecad_ant     = $clarrecad->sql_record($sSqlresult_arrecad_ant);
-      
-      for ($w = 0; $w < $clarrecad->numrows; $w++) {
-        
-        db_fieldsmemory($result_arrecad_ant, $w);	
-        $cldivold->k10_coddiv  = $v01_coddiv;
-        $cldivold->k10_numpre  = $numpre_ant;
-        $cldivold->k10_numpar  = $numpar_ant;
-        $cldivold->k10_receita = $receit_ant;
-        $cldivold->incluir(null);
-        if ($cldivold->erro_status == 0) {	
-              
-          $sqlerro  = true;
-          $erro_msg = $cldivold->erro_msg."--- Inclusão DIVOLD";
-          break;
-        }
-      }
-    }
-    
-		//-------FIM DIVOLD----------------------------------------------------------------
-    
-    //-------INICIO EXLCUSÃO DO ARRECAD------------------------------------------------ 
-    
+
+		//-------FINAL EM ARREINSCR--------------------------------------------------------
+
+    //-------INICIO EXLCUSÃO DO ARRECAD------------------------------------------------
+
 		if ($sqlerro==false){
-      
-			$clarrecad->excluir_arrecad($numpre,$numpar);  	
+
+			$clarrecad->excluir_arrecad($numpre,$numpar);
       $erro_msg = $clarrecad->erro_msg."--- Exclusão arrecad";
 			if($clarrecad->erro_status == '0'){
         $sqlerro = true;
         break;
       }
     }
-    
-		//-------FINAL EXLCUSÃO DO ARRECAD------------------------------------------------- 
- 
+
+		//-------FINAL EXLCUSÃO DO ARRECAD-------------------------------------------------
+
   }
   if ($sqlerro == true) {
-    db_msgbox('O processo não foi efetuado... Contate suporte!');    
+    db_msgbox('O processo não foi efetuado... Contate suporte!');
   } else {
-    $erro_msg = "Importação efetuada com sucesso ";
+    $erro_msg = "Importaãão efetuada com sucesso ";
   }
-  
+
   $datafim = date("Y-m-d");
   $horafim = date("H:i");
-  
+
   $cldivimporta->v02_divimporta = $cldivimporta->v02_divimporta;
   $cldivimporta->v02_datafim    = $datafim;
   $cldivimporta->v02_horafim    = $horafim;
@@ -428,16 +482,16 @@ if (isset($lancar)) {
 </head>
 <body bgcolor=#CCCCCC>
 
-				<?
-					include(modification("forms/db_frmimportavariavel.php"));
+				<?php
+					include modification("forms/db_frmimportavariavel.php");
 				?>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($lancar)){
   db_msgbox($erro_msg);
 }

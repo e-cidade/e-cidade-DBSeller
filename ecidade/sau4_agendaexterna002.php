@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -147,14 +147,14 @@ if( isset($incluir) ){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmsau_agendameiotransporte.php"));
         ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
 	if( isset($s124_d_saida) && isset($s121_i_veiculo) ){
@@ -166,7 +166,7 @@ if( isset($incluir) ){
 </body>
 </html>
 
-<?
+<?php
 if(isset($incluir) || isset($alterar) ){
 	if( ( isset($incluir) && $clsau_agendatransporte->numrows_incluir==0)  || (isset($alterar) && $clsau_agendatransporte->numrows_alterar==0) ){
 		$clsau_agendatransporte->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
      
      $clcriaabas->identifica = array("registro" => "Estimativa","itens"=>"Itens");//nome do iframe e o label    
      $clcriaabas->src        = array("registro" => "com4_estimativaregistro011.php?alterar=true");    
@@ -89,7 +89,7 @@
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 if (!$lTemParametroRegistro){
       
@@ -112,7 +112,7 @@ js_clearSession = function() {
   return true;
 }
 </script>
-<?
+<?php
 if($erro == true){
   db_msgbox("Parâmetros do compras não configurados");
 }

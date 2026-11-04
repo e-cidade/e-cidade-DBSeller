@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -42,7 +42,7 @@ $db_botao              = false;
 $db_opcao              = 33;
 $naopode  = false;
 if (isset($excluir)) {
-	
+
   $db_opcao     = 3;
   $result_verif = $clmer_cardapiodia->sql_record(
                                                  $clmer_cardapiodia->sql_query("",
@@ -52,26 +52,26 @@ if (isset($excluir)) {
                                                                               )
                                                 );
   if ($clmer_cardapiodia->numrows>0) {
-  	
-    $clmer_tipocardapio->erro_msg    = "Cardápio $me27_c_nome não pode ser excluído, "; 
+
+    $clmer_tipocardapio->erro_msg    = "Cardápio $me27_c_nome não pode ser excluído, ";
     $clmer_tipocardapio->erro_msg   .= " pois já está vinculado a algum cardápio semanal!";
     $clmer_tipocardapio->erro_status = "0";
-    
+
   } else {
-  	 
+
     db_inicio_transacao();
     $clmer_tpcardapioturma->excluir(""," me28_i_tipo = $me27_i_codigo");
     $clmer_tipocardapio->excluir($me27_i_codigo);
     db_fim_transacao();
-    
+
  }
 } elseif (isset($chavepesquisa)) {
-	
+
   $db_opcao = 3;
   $result   = $clmer_tipocardapio->sql_record($clmer_tipocardapio->sql_query($chavepesquisa));
   db_fieldsmemory($result,0);
   $db_botao = true;
-  
+
 }
 ?>
 <html>
@@ -89,7 +89,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão Cardápio</b></legend>
-    <?include(modification("forms/db_frmmer_tipocardapio.php"));?>
+    <?php include(modification("forms/db_frmmer_tipocardapio.php"));?>
    </fildsset>
    </center>
   </td>
@@ -97,14 +97,14 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
-	
+
   if ($clmer_tipocardapio->erro_status=="0") {
     $clmer_tipocardapio->erro(true,false);
   } else {
     $clmer_tipocardapio->erro(true,true);
- } 
+ }
 }
 if ($db_opcao==33) {
   echo "<script>document.form1.pesquisar.click();</script>";

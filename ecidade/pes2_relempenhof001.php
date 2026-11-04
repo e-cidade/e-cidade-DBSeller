@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-        <?
+        <?php
           $sqlanomes = "select max(cast(r11_anousu as text)||lpad(cast(r11_mesusu as text),2,'0')) from cfpess";
           $resultanomes = db_query($sqlanomes);
           db_fieldsmemory($resultanomes,0);
@@ -90,7 +90,7 @@ function js_emite(){
           db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
         ?>
           &nbsp;/&nbsp;
-        <?
+        <?php
           $DBtxt25 = substr($max,4,2);
           db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
         ?>
@@ -101,7 +101,7 @@ function js_emite(){
         <?=$LDBtxt27?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt27',4,$IDBtxt27,true,'text',2,'')
           ?>
 	</td>
@@ -111,7 +111,7 @@ function js_emite(){
         <?=$LDBtxt28?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt28',4,$IDBtxt28,true,'text',2,'')
           ?>
 	</td>
@@ -158,7 +158,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -189,7 +189,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

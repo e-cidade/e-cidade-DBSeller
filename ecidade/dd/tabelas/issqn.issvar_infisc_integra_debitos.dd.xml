@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="yes" ?>
+<table codigo='1011157' name='issqn.issvar_infisc_integra_debitos' description="Tabela que salva vinculo de débitos criados a partir do processamento de estrutura de integra débitos da integração com a INFISC" prefix="q196" label="Issvar Infisc Integra Debitos" type="0">
+  <fields>
+    <field codigo="1015521" 
+           campo_api='' 
+           name="q196_sequencial" 
+           conteudo="int8" 
+           description="Sequencial da tabela issvar_infisc_integra_debitos" 
+           inivalue="0" 
+           label="Sequencial da tabela issvar_infisc_integra_debitos" 
+           size="11" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Sequencial da tabela issvar_infisc_integ" 
+           reference="" 
+           ispk="t" 
+           hassequence="t" > 
+           
+      <sequence name='issqn.issvar_infisc_integra_debitos_q196_sequencial_seq' />
+     
+    </field> 
+    <field codigo="1015522" 
+           campo_api='' 
+           name="q196_issvar" 
+           conteudo="int8" 
+           description="Sequencial da tabela issvar" 
+           inivalue="0" 
+           label="Sequencial da tabela issvar" 
+           size="11" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Sequencial da tabela issvar" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="1015523" 
+           campo_api='' 
+           name="q196_integra_debitos" 
+           conteudo="int8" 
+           description="Sequencial da tabela integra_debitos" 
+           inivalue="0" 
+           label="Sequencial da tabela integra_debitos" 
+           size="11" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Sequencial da tabela integra_debitos" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+  </fields>
+  <primarykey>
+    <fieldpk name="q196_sequencial"></fieldpk> 
+  </primarykey>
+  <foreignkeys>
+  </foreignkeys>
+</table>

@@ -52,13 +52,13 @@ class cl_solicitavinculo {
                  pc53_solicitafilho = int4 = Código da solicitação vinculada
                  ";
    //funcao construtor da classe
-   function cl_solicitavinculo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitavinculo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_solicitavinculo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc53_sequencial = ($this->pc53_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pc53_sequencial"]:$this->pc53_sequencial);
        $this->pc53_solicitapai = ($this->pc53_solicitapai == ""?@$GLOBALS["HTTP_POST_VARS"]["pc53_solicitapai"]:$this->pc53_solicitapai);
@@ -77,7 +77,7 @@ class cl_solicitavinculo {
      }
    }
    // funcao para inclusao
-   function incluir ($pc53_sequencial){
+   public function incluir ($pc53_sequencial){
       $this->atualizacampos();
      if($this->pc53_solicitapai == null ){
        $this->erro_sql = " Campo Código da solicitação principal nao Informado.";
@@ -176,7 +176,7 @@ class cl_solicitavinculo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($pc53_sequencial=null) {
+   public function alterar ($pc53_sequencial=null) {
       $this->atualizacampos();
      $sql = " update solicitavinculo set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_solicitavinculo {
      }
    }
    // funcao para exclusao
-   function excluir ($pc53_sequencial=null,$dbwhere=null) {
+   public function excluir ($pc53_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc53_sequencial));
      }else{
@@ -334,7 +334,7 @@ class cl_solicitavinculo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -357,7 +357,7 @@ class cl_solicitavinculo {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $pc53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $pc53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -386,7 +386,7 @@ class cl_solicitavinculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_solicitavinculo {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $pc53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $pc53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -420,7 +420,7 @@ class cl_solicitavinculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,10 +430,10 @@ class cl_solicitavinculo {
      return $sql;
   }
 
-  function sql_query_filhas ( $pc53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_filhas ( $pc53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_solicitavinculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,10 +473,10 @@ class cl_solicitavinculo {
   /*
    *
    */
-  function sql_query_aberturaestimativa( $pc11_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_aberturaestimativa( $pc11_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_solicitavinculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,10 +515,10 @@ class cl_solicitavinculo {
    /*
    *
    */
-  function sql_query_abertura( $pc11_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_abertura( $pc11_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -541,7 +541,7 @@ class cl_solicitavinculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -64,7 +64,7 @@ $sSqlProcessoCompras = $oDaoPcProc->sql_query_dados_item(null,
         <div style="display: table;">
           <fieldset>
             <legend><b>Itens do Processos de Compras</b></legend>
-          <?
+          <?php
            db_lovrot($sSqlProcessoCompras, 15);
           ?>
           </fieldset>

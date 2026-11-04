@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,25 +25,20 @@
  *                                licenca/licenca_pt.txt 
  */
 
-	require(modification("libs/db_stdlib.php"));
-	@require(modification("libs/db_conecta.php"));
-	include(modification("libs/db_sessoes.php"));
-	include(modification("libs/db_usuariosonline.php"));
-	include(modification("dbforms/db_funcoes.php"));
-	//require(modification("classes/db_matparam_classe.php"));
-	require(modification("libs/db_utils.php"));
+	require_once(modification("libs/db_stdlib.php"));
+	require_once(modification("libs/db_conecta.php"));
+	require_once(modification("libs/db_sessoes.php"));
+	require_once(modification("libs/db_usuariosonline.php"));
+	require_once(modification("dbforms/db_funcoes.php"));
+	require_once(modification("libs/db_utils.php"));
 
-	//$clmatparam = new cl_matparam();
-	
 	$clrotulo   = new rotulocampo();
 	$db_opcao   = 1;
 	
 	$clrotulo->label("s110_i_codigo");
 	$clrotulo->label("z01_nome");
-	$clrotulo->label("s108_i_codigo");
-	$clrotulo->label("s108_c_exame");
-	$clrotulo->label("s108_i_grupoexame");
-	$clrotulo->label("s130_c_descricao");
+	$clrotulo->label("sd63_c_procedimento");
+	$clrotulo->label("sd63_c_nome");
 	$tobserva = 18;
 	?>
 	<html>
@@ -66,16 +61,13 @@ function js_abre(){
 	 perfim = document.form1.perfim.value;
 
 	 var query='';
-   query += "&classificacao="+obj.classificacao.value;
    query += "&perini="+perini;
    query += "&perfim="+perfim;
    query += "&protocolados="+obj.protocolados.value;
    query += "&prestadora="+obj.s110_i_codigo.value;
-   query += "&grupo="+obj.s108_i_grupoexame.value;
-   query += "&exame="+obj.s108_i_codigo.value;
+   query += "&exame="+obj.sd63_c_procedimento.value;
    query += "&producao="+obj.producao.value;
-   //query += "&departamento=<?//=db_getsession("DB_coddepto")?>";
-   //alert (query);
+
    var jan = window.open('sau2_ag_exames002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
    jan.moveTo(0,0);
 }
@@ -90,24 +82,13 @@ function js_abre(){
     <fieldset style="width:600px; top:50px">
     <legend><b>Relatório de Exames</b></legend>
 
-      <table>
-      <tr>
-      	<td><b>Classificações:</b></td>
-      	<td>
-      	<? 
-      		$aClass = array("1"=>"Por Prestadora / Grupo / Exames / Paciente",
-      										 "2"=>"Por Prestadora / Exames / Pacientes",
-      										 "3"=>"Por Grupo / Prestadora / Exames / Paciente");
-      		db_select('classificacao',$aClass,false,1);
-      	?>
-      	</td>
-      </tr>      
+      <table>   
 	    <tr>
 			  <td>
           <b> Período: </b>
 				</td>
 				<td>
-          <? 
+          <?php 
 	          db_inputdata('perini','','','',true,'text',1,"");
 						echo " Até: ";   		          
 	          db_inputdata('perfim','','','',true,'text',1,"");   		          
@@ -117,7 +98,7 @@ function js_abre(){
 			<tr>
 				<td><b>Protocolados:</b></td>
 				<td>
-				<? 
+				<?php 
       		$aProtocolados = array(	"1"=>"SIM",
       										 				"2"=>"NÂO",
       													);
@@ -127,52 +108,39 @@ function js_abre(){
 			</tr>
       	<tr>
 				<td>
-		    <?
+		    <?php
 		       db_ancora('<b>Prestadoras:</b>',"js_pesquisa_prestadoras(true);",$db_opcao);
 		    ?>
 		    </td>
 		    <td nowrap> 
-		     <?
+		     <?php
 		      db_input('s110_i_codigo',10,$Is110_i_codigo,true,'text',$db_opcao," onchange='js_pesquisa_prestadoras(false);'")
 		     ?>
-		     <?
+		     <?php
 		      db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')
 		     ?>
 		    </td>
 			</tr>
 			<tr>
 				<td>
-		    <?
+		    <?php
 		       db_ancora('<b>Exames:</b>',"js_pesquisa_exames(true);",$db_opcao);
 		    ?>
 		    </td>
 		    <td nowrap> 
-		     <?
-		      db_input('s108_i_codigo',10,$Is108_i_codigo,true,'text',$db_opcao," onchange='js_pesquisa_exames(false);'")
+		     <?php
+		      db_input('sd63_c_procedimento',10,$Isd63_c_procedimento,true,'text',$db_opcao," onchange='js_pesquisa_exames(false);'")
 		     ?>
-		     <?
-		      db_input('s108_c_exame',40,@$Is108_c_exame,true,'text',3,'')
+		     <?php
+		      db_input('sd63_c_nome',40,@$Isd63_c_procedimento,true,'text',3,'')
 		     ?>
 		    </td>
 			</tr>
 				
-				 <tr>
-    <td nowrap title="<?=@$Ts108_i_grupoexame?>">
-       <? db_ancora('<b>Grupo:</b>',"js_pesquisa_s108_i_grupoexame(true)",$db_opcao)?>
-    </td>
-    <td> 
-			<?
-        db_input('s108_i_grupoexame',10,$Is108_i_grupoexame,true,'text',$db_opcao," onchange='js_pesquisa_s108_i_grupoexame(false);' onFocus=\"nextfield='db_opcao'\" ");
-      ?>
-      <?
-        db_input('s130_c_descricao',40,$Is130_c_descricao,true,'text',3,'');
-      ?>
-    </td>
-  </tr>
-				<tr>
+			<tr>
 				<td><b>Por Produção:</b></td>
 				<td>
-				<? 
+				<?php 
       		$aProducao = array("1"=>"Nao",
       						   "2"=>"Sim",
       									);
@@ -192,7 +160,7 @@ function js_abre(){
     </form>
 
    </center>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>
@@ -223,53 +191,40 @@ function js_mostraprestadores1(chave1,chave2){
 }
 function js_pesquisa_exames(mostra){
   if(mostra==true){
-    js_OpenJanelaIframe('','db_iframe_sau_exames','func_sau_exames.php?funcao_js=parent.js_mostra_exames1|s108_i_codigo|s108_c_exame','Pesquisa',true);
+    js_OpenJanelaIframe(
+      '',
+      'db_iframe_sau_procedimento',
+      'func_sau_procedimento.php?funcao_js=parent.js_mostra_exames1|sd63_c_procedimento|sd63_c_nome|sd63_c_procedimento'
+        + '&lProcedimentosAgendamento&lProcedimentosVinculadosPrestadora', 
+      'Pesquisa',
+      true
+    );
   }else{
-     if(document.form1.s108_i_codigo.value != ''){ 
-        js_OpenJanelaIframe('','db_iframe_sau_exames','func_sau_exames.php?pesquisa_chave='+document.form1.s108_i_codigo.value+'&funcao_js=parent.js_mostra_exames','Pesquisa',false);
+     if(document.form1.sd63_c_procedimento.value != ''){ 
+        js_OpenJanelaIframe('',
+          'db_iframe_sau_procedimento',
+          'func_sau_procedimento.php?pesquisa_chave=' + document.form1.sd63_c_procedimento.value
+                                                + '&funcao_js=parent.mostraProcedimentos&lProcedimentosAgendamento'
+                                                + '&lProcedimentosVinculadosPrestadora',
+          'Pesquisa',
+          false
+        );
      }else{
-       document.form1.s108_i_codigo.value = ''; 
+       document.form1.sd63_c_nome.value = ''; 
      }
   }
 }
 function js_mostra_exames(chave,erro){
-  document.form1.s108_c_exame.value = chave; 
+  document.form1.sd63_c_nome.value = chave; 
   if(erro=='true'){ 
-    document.form1.s108_i_codigo.focus(); 
-    document.form1.s108_i_codigo.value = ''; 
+    document.form1.sd63_c_procedimento.focus(); 
+    document.form1.sd63_c_procedimento.value = ''; 
   }
 }
 function js_mostra_exames1(chave1,chave2){
-  document.form1.s108_i_codigo.value = chave1;
-  document.form1.s108_c_exame.value = chave2;
-  db_iframe_sau_exames.hide();
-}
-function js_pesquisa_s108_i_grupoexame(mostra){
-  if(mostra==true){
-    js_OpenJanelaIframe('','db_iframe_sau_grupoexames','func_sau_grupoexames.php?funcao_js=parent.js_mostragrupoexame1|s130_i_codigo|s130_c_descricao','Pesquisa',true);
-  }else{
-     if(document.form1.s108_i_grupoexame.value != ''){ 
-        //js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgs_und','func_cgs_und.php?pesquisa_chave='+document.form2.z01_i_cgsund.value+'&funcao_js=parent.IFdb_iframe_agendamento.js_mostracgs','Pesquisa',false);
-        js_OpenJanelaIframe('','db_iframe_sau_grupoexames','func_sau_grupoexames.php?pesquisa_chave='+document.form1.s108_i_grupoexame.value+'&funcao_js=parent.js_mostragrupoexame','Pesquisa',false);
-     }else{
-       document.form1.s130_i_codigo.value = '';
-     }
-  }
+  document.form1.sd63_c_procedimento.value = chave1;
+  document.form1.sd63_c_nome.value = chave2;
+  db_iframe_sau_procedimento.hide();
 }
 
-function js_mostragrupoexame(chave,erro){
-  document.form1.s130_c_descricao.value = chave; 
-  if(erro=='true'){ 
-    document.form1.s108_i_grupoexame.focus(); 
-    document.form1.s108_i_grupoexame.value = ''; 
-  }
-  
-}
-
-function js_mostragrupoexame1(chave2,chave1){
-
-    document.form1.s108_i_grupoexame.value = chave2;
-    document.form1.s130_c_descricao.value = chave1;
-    db_iframe_sau_grupoexames.hide();
-}
 </script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -105,7 +105,7 @@ function js_verifica() {
             </td>
             <td>&nbsp;</td>
             <td> 
-              <?
+              <?php
 			
 			db_inputdata('DBtxt15','','','',true,'text',2)
 			?>
@@ -117,7 +117,7 @@ function js_verifica() {
             </td>
             <td>&nbsp;</td>
             <td> 
-              <?
+              <?php
   			  db_input('DBtxt16',8,$IDBtxt16,true,'text',2);
 			?>
             </td>
@@ -128,7 +128,7 @@ function js_verifica() {
             </td>
             <td>&nbsp;</td>
             <td> 
-              <?
+              <?php
   			  db_input('DBtxt17',8,$IDBtxt17,true,'text',2);
 			?>
             </td>
@@ -139,20 +139,20 @@ function js_verifica() {
             </td>
             <td>&nbsp;</td>
             <td> 
-              <?
+              <?php
   			  db_input('DBtxt18',8,$IDBtxt18,true,'text',2);
 			?>
             </td>
           </tr>
           <tr> 
             <td height="31" align="right">
-              <?
+              <?php
             db_ancora(@$Lprocdiver,"js_pesquisaprocdiver(true);",4)
             ?>
             </td>
             <td>&nbsp;</td>
             <td>
-              <?
+              <?php
               db_input('procdiver',4,$Iprocdiver,true,'text',4,"onchange='js_pesquisaprocdiver(false);'")
 	        ?>
             </td>
@@ -171,7 +171,7 @@ function js_verifica() {
       <p>&nbsp;</p></td>
   </tr>
 </table>
-      <?
+      <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -198,7 +198,7 @@ function js_mostratermo1(chave1){
      db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

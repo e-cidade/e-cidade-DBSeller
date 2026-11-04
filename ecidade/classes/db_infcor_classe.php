@@ -1,84 +1,84 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: inflatores
 //CLASSE DA ENTIDADE infcor
-class cl_infcor { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $i04_codigo = 0; 
-   var $i04_seq = 0; 
-   var $i04_obs = null; 
-   var $i04_dtoper_dia = null; 
-   var $i04_dtoper_mes = null; 
-   var $i04_dtoper_ano = null; 
-   var $i04_dtoper = null; 
-   var $i04_dtvenc_dia = null; 
-   var $i04_dtvenc_mes = null; 
-   var $i04_dtvenc_ano = null; 
-   var $i04_dtvenc = null; 
-   var $i04_valor = 0; 
-   var $i04_receit = 0; 
-   var $i04_correcao = 0; 
-   var $i04_juros = 0; 
-   var $i04_multa = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_infcor {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $i04_codigo = 0;
+   var $i04_seq = 0;
+   var $i04_obs = null;
+   var $i04_dtoper_dia = null;
+   var $i04_dtoper_mes = null;
+   var $i04_dtoper_ano = null;
+   var $i04_dtoper = null;
+   var $i04_dtvenc_dia = null;
+   var $i04_dtvenc_mes = null;
+   var $i04_dtvenc_ano = null;
+   var $i04_dtvenc = null;
+   var $i04_valor = 0;
+   var $i04_receit = 0;
+   var $i04_correcao = 0;
+   var $i04_juros = 0;
+   var $i04_multa = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 i04_codigo = int8 = Código 
-                 i04_seq = int8 = Sequencia de Cadastro 
-                 i04_obs = text = Observação 
-                 i04_dtoper = date = Data Valor 
-                 i04_dtvenc = date = Data Vencimento 
-                 i04_valor = float8 = Valor 
-                 i04_receit = int8 = Receita 
-                 i04_correcao = float8 = Valor da correção 
-                 i04_juros = float8 = Juros 
-                 i04_multa = float8 = Multa 
+                 i04_codigo = int8 = Código
+                 i04_seq = int8 = Sequencia de Cadastro
+                 i04_obs = text = Observação
+                 i04_dtoper = date = Data Valor
+                 i04_dtvenc = date = Data Vencimento
+                 i04_valor = float8 = Valor
+                 i04_receit = int8 = Receita
+                 i04_correcao = float8 = Valor da correção
+                 i04_juros = float8 = Juros
+                 i04_multa = float8 = Multa
                  ";
-   //funcao construtor da classe 
-   function cl_infcor() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("infcor"); 
+     $this->rotulo = new rotulo("infcor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -87,7 +87,7 @@ class cl_infcor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->i04_codigo = ($this->i04_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["i04_codigo"]:$this->i04_codigo);
        $this->i04_seq = ($this->i04_seq == ""?@$GLOBALS["HTTP_POST_VARS"]["i04_seq"]:$this->i04_seq);
@@ -119,9 +119,9 @@ class cl_infcor {
      }
    }
    // funcao para inclusao
-   function incluir ($i04_codigo,$i04_seq){ 
+   public function incluir ($i04_codigo,$i04_seq){
       $this->atualizacampos();
-     if($this->i04_dtoper == null ){ 
+     if($this->i04_dtoper == null ){
        $this->erro_sql = " Campo Data Valor nao Informado.";
        $this->erro_campo = "i04_dtoper_dia";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->i04_dtvenc == null ){ 
+     if($this->i04_dtvenc == null ){
        $this->erro_sql = " Campo Data Vencimento nao Informado.";
        $this->erro_campo = "i04_dtvenc_dia";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->i04_valor == null ){ 
+     if($this->i04_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "i04_valor";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->i04_receit == null ){ 
+     if($this->i04_receit == null ){
        $this->erro_sql = " Campo Receita nao Informado.";
        $this->erro_campo = "i04_receit";
        $this->erro_banco = "";
@@ -157,7 +157,7 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->i04_correcao == null ){ 
+     if($this->i04_correcao == null ){
        $this->erro_sql = " Campo Valor da correção nao Informado.";
        $this->erro_campo = "i04_correcao";
        $this->erro_banco = "";
@@ -166,7 +166,7 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->i04_juros == null ){ 
+     if($this->i04_juros == null ){
        $this->erro_sql = " Campo Juros nao Informado.";
        $this->erro_campo = "i04_juros";
        $this->erro_banco = "";
@@ -175,7 +175,7 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->i04_multa == null ){ 
+     if($this->i04_multa == null ){
        $this->erro_sql = " Campo Multa nao Informado.";
        $this->erro_campo = "i04_multa";
        $this->erro_banco = "";
@@ -184,9 +184,9 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-       $this->i04_codigo = $i04_codigo; 
-       $this->i04_seq = $i04_seq; 
-     if(($this->i04_codigo == null) || ($this->i04_codigo == "") ){ 
+       $this->i04_codigo = $i04_codigo;
+       $this->i04_seq = $i04_seq;
+     if(($this->i04_codigo == null) || ($this->i04_codigo == "") ){
        $this->erro_sql = " Campo i04_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_infcor {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->i04_seq == null) || ($this->i04_seq == "") ){ 
+     if(($this->i04_seq == null) || ($this->i04_seq == "") ){
        $this->erro_sql = " Campo i04_seq nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -203,31 +203,31 @@ class cl_infcor {
        return false;
      }
      $sql = "insert into infcor(
-                                       i04_codigo 
-                                      ,i04_seq 
-                                      ,i04_obs 
-                                      ,i04_dtoper 
-                                      ,i04_dtvenc 
-                                      ,i04_valor 
-                                      ,i04_receit 
-                                      ,i04_correcao 
-                                      ,i04_juros 
-                                      ,i04_multa 
+                                       i04_codigo
+                                      ,i04_seq
+                                      ,i04_obs
+                                      ,i04_dtoper
+                                      ,i04_dtvenc
+                                      ,i04_valor
+                                      ,i04_receit
+                                      ,i04_correcao
+                                      ,i04_juros
+                                      ,i04_multa
                        )
                 values (
-                                $this->i04_codigo 
-                               ,$this->i04_seq 
-                               ,'$this->i04_obs' 
-                               ,".($this->i04_dtoper == "null" || $this->i04_dtoper == ""?"null":"'".$this->i04_dtoper."'")." 
-                               ,".($this->i04_dtvenc == "null" || $this->i04_dtvenc == ""?"null":"'".$this->i04_dtvenc."'")." 
-                               ,$this->i04_valor 
-                               ,$this->i04_receit 
-                               ,$this->i04_correcao 
-                               ,$this->i04_juros 
-                               ,$this->i04_multa 
+                                $this->i04_codigo
+                               ,$this->i04_seq
+                               ,'$this->i04_obs'
+                               ,".($this->i04_dtoper == "null" || $this->i04_dtoper == ""?"null":"'".$this->i04_dtoper."'")."
+                               ,".($this->i04_dtvenc == "null" || $this->i04_dtvenc == ""?"null":"'".$this->i04_dtvenc."'")."
+                               ,$this->i04_valor
+                               ,$this->i04_receit
+                               ,$this->i04_correcao
+                               ,$this->i04_juros
+                               ,$this->i04_multa
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Valores da Planilha de Atualização ($this->i04_codigo."-".$this->i04_seq) nao Incluído. Inclusao Abortada.";
@@ -269,16 +269,16 @@ class cl_infcor {
        $resac = db_query("insert into db_acount values($acount,392,4848,'','".AddSlashes(pg_result($resaco,0,'i04_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($i04_codigo=null,$i04_seq=null) { 
+   public function alterar ($i04_codigo=null,$i04_seq=null) {
       $this->atualizacampos();
      $sql = " update infcor set ";
      $virgula = "";
-     if(trim($this->i04_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_codigo"])){ 
+     if(trim($this->i04_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_codigo"])){
        $sql  .= $virgula." i04_codigo = $this->i04_codigo ";
        $virgula = ",";
-       if(trim($this->i04_codigo) == null ){ 
+       if(trim($this->i04_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "i04_codigo";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_infcor {
          return false;
        }
      }
-     if(trim($this->i04_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_seq"])){ 
+     if(trim($this->i04_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_seq"])){
        $sql  .= $virgula." i04_seq = $this->i04_seq ";
        $virgula = ",";
-       if(trim($this->i04_seq) == null ){ 
+       if(trim($this->i04_seq) == null ){
          $this->erro_sql = " Campo Sequencia de Cadastro nao Informado.";
          $this->erro_campo = "i04_seq";
          $this->erro_banco = "";
@@ -301,14 +301,14 @@ class cl_infcor {
          return false;
        }
      }
-     if(trim($this->i04_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_obs"])){ 
+     if(trim($this->i04_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_obs"])){
        $sql  .= $virgula." i04_obs = '$this->i04_obs' ";
        $virgula = ",";
      }
-     if(trim($this->i04_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["i04_dtoper_dia"] !="") ){ 
+     if(trim($this->i04_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["i04_dtoper_dia"] !="") ){
        $sql  .= $virgula." i04_dtoper = '$this->i04_dtoper' ";
        $virgula = ",";
-       if(trim($this->i04_dtoper) == null ){ 
+       if(trim($this->i04_dtoper) == null ){
          $this->erro_sql = " Campo Data Valor nao Informado.";
          $this->erro_campo = "i04_dtoper_dia";
          $this->erro_banco = "";
@@ -317,11 +317,11 @@ class cl_infcor {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["i04_dtoper_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["i04_dtoper_dia"])){
          $sql  .= $virgula." i04_dtoper = null ";
          $virgula = ",";
-         if(trim($this->i04_dtoper) == null ){ 
+         if(trim($this->i04_dtoper) == null ){
            $this->erro_sql = " Campo Data Valor nao Informado.";
            $this->erro_campo = "i04_dtoper_dia";
            $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_infcor {
          }
        }
      }
-     if(trim($this->i04_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["i04_dtvenc_dia"] !="") ){ 
+     if(trim($this->i04_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["i04_dtvenc_dia"] !="") ){
        $sql  .= $virgula." i04_dtvenc = '$this->i04_dtvenc' ";
        $virgula = ",";
-       if(trim($this->i04_dtvenc) == null ){ 
+       if(trim($this->i04_dtvenc) == null ){
          $this->erro_sql = " Campo Data Vencimento nao Informado.";
          $this->erro_campo = "i04_dtvenc_dia";
          $this->erro_banco = "";
@@ -344,11 +344,11 @@ class cl_infcor {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["i04_dtvenc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["i04_dtvenc_dia"])){
          $sql  .= $virgula." i04_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->i04_dtvenc) == null ){ 
+         if(trim($this->i04_dtvenc) == null ){
            $this->erro_sql = " Campo Data Vencimento nao Informado.";
            $this->erro_campo = "i04_dtvenc_dia";
            $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_infcor {
          }
        }
      }
-     if(trim($this->i04_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_valor"])){ 
+     if(trim($this->i04_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_valor"])){
        $sql  .= $virgula." i04_valor = $this->i04_valor ";
        $virgula = ",";
-       if(trim($this->i04_valor) == null ){ 
+       if(trim($this->i04_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "i04_valor";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_infcor {
          return false;
        }
      }
-     if(trim($this->i04_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_receit"])){ 
+     if(trim($this->i04_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_receit"])){
        $sql  .= $virgula." i04_receit = $this->i04_receit ";
        $virgula = ",";
-       if(trim($this->i04_receit) == null ){ 
+       if(trim($this->i04_receit) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "i04_receit";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_infcor {
          return false;
        }
      }
-     if(trim($this->i04_correcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_correcao"])){ 
+     if(trim($this->i04_correcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_correcao"])){
        $sql  .= $virgula." i04_correcao = $this->i04_correcao ";
        $virgula = ",";
-       if(trim($this->i04_correcao) == null ){ 
+       if(trim($this->i04_correcao) == null ){
          $this->erro_sql = " Campo Valor da correção nao Informado.";
          $this->erro_campo = "i04_correcao";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_infcor {
          return false;
        }
      }
-     if(trim($this->i04_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_juros"])){ 
+     if(trim($this->i04_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_juros"])){
        $sql  .= $virgula." i04_juros = $this->i04_juros ";
        $virgula = ",";
-       if(trim($this->i04_juros) == null ){ 
+       if(trim($this->i04_juros) == null ){
          $this->erro_sql = " Campo Juros nao Informado.";
          $this->erro_campo = "i04_juros";
          $this->erro_banco = "";
@@ -411,10 +411,10 @@ class cl_infcor {
          return false;
        }
      }
-     if(trim($this->i04_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_multa"])){ 
+     if(trim($this->i04_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i04_multa"])){
        $sql  .= $virgula." i04_multa = $this->i04_multa ";
        $virgula = ",";
-       if(trim($this->i04_multa) == null ){ 
+       if(trim($this->i04_multa) == null ){
          $this->erro_sql = " Campo Multa nao Informado.";
          $this->erro_campo = "i04_multa";
          $this->erro_banco = "";
@@ -462,7 +462,7 @@ class cl_infcor {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores da Planilha de Atualização nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->i04_codigo."-".$this->i04_seq;
@@ -490,14 +490,14 @@ class cl_infcor {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($i04_codigo=null,$i04_seq=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($i04_codigo=null,$i04_seq=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($i04_codigo,$i04_seq));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -539,7 +539,7 @@ class cl_infcor {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores da Planilha de Atualização nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$i04_codigo."-".$i04_seq;
@@ -567,11 +567,11 @@ class cl_infcor {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -593,10 +593,10 @@ class cl_infcor {
       }
      return $result;
    }
-   function sql_query ( $i04_codigo=null,$i04_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $i04_codigo=null,$i04_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,23 +614,23 @@ class cl_infcor {
      $sql2 = "";
      if($dbwhere==""){
        if($i04_codigo!=null ){
-         $sql2 .= " where infcor.i04_codigo = $i04_codigo "; 
-       } 
+         $sql2 .= " where infcor.i04_codigo = $i04_codigo ";
+       }
        if($i04_seq!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " infcor.i04_seq = $i04_seq "; 
-       } 
+         }
+         $sql2 .= " infcor.i04_seq = $i04_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -639,10 +639,10 @@ class cl_infcor {
      }
      return $sql;
   }
-   function sql_query_file ( $i04_codigo=null,$i04_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $i04_codigo=null,$i04_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -655,23 +655,23 @@ class cl_infcor {
      $sql2 = "";
      if($dbwhere==""){
        if($i04_codigo!=null ){
-         $sql2 .= " where infcor.i04_codigo = $i04_codigo "; 
-       } 
+         $sql2 .= " where infcor.i04_codigo = $i04_codigo ";
+       }
        if($i04_seq!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " infcor.i04_seq = $i04_seq "; 
-       } 
+         }
+         $sql2 .= " infcor.i04_seq = $i04_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

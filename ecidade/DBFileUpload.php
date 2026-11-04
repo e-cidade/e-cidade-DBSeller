@@ -62,6 +62,9 @@ try {
   if (isset($_FILES[$sInputFile])) {
 
     $sNomeArquivo       = $_FILES[$sInputFile]["name"];
+    $sExtensao          = pathinfo( $sNomeArquivo, PATHINFO_EXTENSION );
+    $sNomeArquivo       = \DBString::removerCaracteresEspeciais(\DBString::removerAcentuacao($_FILES[$sInputFile]["name"]));
+    $sNomeArquivo = substr($sNomeArquivo, 0, -strlen($sExtensao)) . '.' . $sExtensao;
     $sArquivoTemporario = $_FILES[$sInputFile]["tmp_name"];
     $iCodigoErro        = $_FILES[$sInputFile]['error'];
     $sExtensao          = pathinfo( $sNomeArquivo, PATHINFO_EXTENSION );
@@ -160,10 +163,10 @@ function viewRetornoHTML($sInputFile, $lSubmitFormulario, $sErro, $sCaminhoArqui
       <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
       <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
     </head>
-      <body>    
+      <body>
         <form name="formUploadFile" id="formUploadFile" method="post" action="" enctype="multipart/form-data">
           <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $oGet->sizeLimit; ?>" />
-        </form>    
+        </form>
       </body>
     </html>
     <script type="text/javascript">
@@ -182,17 +185,17 @@ function viewRetornoHTML($sInputFile, $lSubmitFormulario, $sErro, $sCaminhoArqui
         'file'      : sNomeArquivo,
         'error'     : sErro,
         'extension' : sExtensao
-      }; 
+      };
 
       if (lSubmitFormulario && sErro == '') {
-        
-        var file = parent.$(sInputFile).cloneNode(true);    
+
+        var file = parent.$(sInputFile).cloneNode(true);
         $('formUploadFile').appendChild(file);
-        $('formUploadFile').submit(); 
+        $('formUploadFile').submit();
         return;
-      }  
-      
-      return parent.DBFileUpload.getInstance(iIdComponente).processCallBack(oParametros); 
+      }
+
+      return parent.DBFileUpload.getInstance(iIdComponente).processCallBack(oParametros);
     })();
     </script>
 HTML;

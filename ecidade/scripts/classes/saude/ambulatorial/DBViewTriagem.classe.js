@@ -329,6 +329,13 @@ DBViewTriagem.prototype.montaEstruturaHTML = function( oSelf ) {
   oSelf.oInputCartaoSUS.setAttribute( 'maxLength', '15' );
 
   /**
+   * Parágrafo que armazenará a idade completa do paciente
+   */
+  oSelf.paragrafoIdadeCompleta = document.createElement('p');
+  oSelf.paragrafoIdadeCompleta.setAttribute( 'id', 'paragrafoIdadeCompleta' );
+  oSelf.paragrafoIdadeCompleta.style.cssText = 'display: inline; padding-left: 110px;';
+
+  /**
    * Vínculos dos elementos da linha do cartão do SUS
    */
   oSelf.oTabelaPrincipal.appendChild( oSelf.oLinhaCartaoSUS );
@@ -338,6 +345,7 @@ DBViewTriagem.prototype.montaEstruturaHTML = function( oSelf ) {
 
   oSelf.oColunaCartaoSUSLabel.appendChild( oSelf.oLabelCartaoSUS );
   oSelf.oColunaCartaoSUSCodigo.appendChild( oSelf.oInputCartaoSUS );
+  oSelf.oColunaCartaoSUSCodigo.appendChild( oSelf.paragrafoIdadeCompleta );
 
 
   /* ******************************************
@@ -1962,7 +1970,13 @@ DBViewTriagem.prototype.eventosElementos = function( oSelf ) {
     js_ValidaCampos( input, 4, "Altura", false, false, "event" );
 
     let valor = input.value;
-    if (valor.length == tamanho && !valor.includes('.')) {
+    let tecla = event.key;
+
+    if (isNaN(tecla)) {
+        return;
+    }
+
+    if (valor.length + 1 == tamanho && !valor.includes('.') && tecla !== '.') {
       valor = valor.split('');
       valor.splice(tamanho - 1, 0, '.');
       string = valor.join('');
@@ -1972,25 +1986,32 @@ DBViewTriagem.prototype.eventosElementos = function( oSelf ) {
   }
 
   /**
-   * Valida se o valor digitado para cintura é válido
+   * Aplica casas decimais no campo de cintura
    */
-  oSelf.oInputCintura.onkeyup = function() {
+  oSelf.oInputCintura.onkeydown = function() {
     validaInput(oSelf.oInputCintura, 4);
   };
 
   /**
-   * Valida se o valor digitado para altura é válido
+   * Aplica casas decimais no campo de altura
    */
-  oSelf.oInputAltura.onkeyup = function() {
+  oSelf.oInputAltura.onkeydown = function() {
     validaInput(oSelf.oInputAltura, 4);
   };
 
   /**
-   * Valida se o valor digitado para perímetro cefálico é válido
+   * Aplica casas decimais no campo de perímetro cefálico
    */
-  oSelf.oInputPerimetroCefalico.onkeyup = function() {
+  oSelf.oInputPerimetroCefalico.onkeydown = function() {
     validaInput(oSelf.oInputPerimetroCefalico, 3);
   };
+
+    /**
+     * Aplica casas decimais no campo de peso
+     */
+    oSelf.oInputPeso.onkeydown = function() {
+        validaInput(oSelf.oInputPeso, 4);
+    };
 
   /**
    * Valida se o valor digitado para frequência respiratória é válido
@@ -2077,7 +2098,7 @@ DBViewTriagem.prototype.instanciaLookUps = function() {
   /**
    * Instancia a lookup de pesquisa do profissional
    */
-  var fCallbackProfissional   = function() { oSelf.buscaDadosProfissional( $F('oInputProfissionalCodigo') ); };
+  var fCallbackProfissional   = function() { oSelf.buscaDadosProfissional( $F('oInputProfissionalCodigo') ); oSelf.criaSituacaoEmAtendimento(); };
   var sQueryString            = '&prof_ativo=1&chave_sd06_i_unidade=' + $F('oInputUnidadeCodigo');
       sQueryString           += '&campo_sd04_i_codigo=true';
   var oParametrosProfissional = { 'sArquivo' : 'func_medicos.php', 'sQueryString' : sQueryString };
@@ -2468,6 +2489,7 @@ DBViewTriagem.prototype.retornoBuscaTriagemValida = function( oResponse, oSelf )
   $('oInputCGSCodigo').dispatchEvent(new Event('change'));
   oSelf.sSexo = oRetorno.sSexo;
   oSelf.oSelectGestante.setAttribute( 'disabled', 'disabled' );
+  this.existeCgsUnd();
 
   if( oSelf.sSexo == 'F' ) {
 
@@ -3034,28 +3056,14 @@ DBViewTriagem.prototype.validaDadosTriagem = function() {
     return false;
   }
 
-  var aPeso = $F('oInputPeso').split('.');
-  if( aPeso.length == 2 ) {
-
-    if( aPeso[1].length > 3 ) {
-
-    alert( _M( MENSAGENS_DBVIEWTRIAGEM + 'peso_acima_casas_decimais' ) );
-    return false;
-    }
-  }
-
-  if( $F('oInputPeso') > 999.999 ) {
-
-    alert( _M( MENSAGENS_DBVIEWTRIAGEM + 'peso_menor' ) );
-    $('oInputPeso').focus();
+  if($F('oInputPeso') !== "" && ($F('oInputPeso') > 500.00 || $F('oInputPeso') < 0.500)) {
+    alert(`Peso em <b>kg</b>. Deve ter o valor entre 0.500 e 500.000`);
     return false;
   }
 
-  if( $F('oInputAltura') > 250 ) {
-
-    alert( _M( MENSAGENS_DBVIEWTRIAGEM + 'altura_maior' ) );
-    $('oInputAltura').focus();
-    return false;
+  if($F('oInputAltura') !== '' && ($F('oInputAltura') > 250.0 || $F('oInputAltura') < 20.0)) {
+      alert(`Altura em <b>cm</b>. Deve ter o valor entre 20.0 e 250.0`);
+      return false;
   }
 
   if( empty( $F('oInputProfissionalCodigo') ) ) {
@@ -3241,6 +3249,7 @@ DBViewTriagem.prototype.retornoConsultaFaa = function ( iFaa, iCgs ) {
   db_iframe_triagem.hide();
   oSelf.buscaCGS();
   oSelf.buscaUltimaObservacaoDaMovimentacao();
+  oSelf.criaSituacaoEmAtendimento();
   delete oInstancia;
 };
 
@@ -3554,3 +3563,58 @@ DBViewTriagem.prototype.show = function( oElemento ) {
 
   validaCgs.cadastroMicroarea(inputCgs, this.divAlert);
 };
+
+/**
+ * Verifica se existe o código CGS para chamar a função que preenche a idade completa do paciente
+ */
+DBViewTriagem.prototype.existeCgsUnd = function() {
+  let oSelf = this;
+  let cgsUnd = document.getElementById('oInputCGSCodigo').value;
+
+  if (cgsUnd !== '') {
+    let diretrizes    = {'sExecucao': 'buscarDadosCgs','iCgs': cgsUnd};
+
+    let oDadosRequisicao              = {};
+    oDadosRequisicao.method       = 'post';
+    oDadosRequisicao.parameters   = 'json=' + Object.toJSON( diretrizes );
+    oDadosRequisicao.asynchronous = false;
+    oDadosRequisicao.onComplete   = function( oResponse ) {
+      oSelf.retornaIdadePaciente( oResponse );
+    };
+
+    new Ajax.Request( 'sau4_cgs.RPC.php', oDadosRequisicao );
+  }
+};
+
+/**
+ * Preenche a idade completa do paciente
+ */
+DBViewTriagem.prototype.retornaIdadePaciente = function(oRetorno)  {
+  let resposta = JSON.parse( oRetorno.responseText );
+  let idadeCompleta = resposta.oCgs.sIdadeCompleta.urlDecode();
+  $('paragrafoIdadeCompleta').innerHTML  = `Idade: <span style="color: red;">${idadeCompleta}</span>`;
+};
+
+/**
+ * Busca a última movimentação lançada e cria o registro com a situação de 'Em Atendimento'
+ */
+DBViewTriagem.prototype.criaSituacaoEmAtendimento = function() {
+    let oSelf = this;
+    let medico = document.getElementById('oInputProfissionalCodigo');
+    let oParametros             = {};
+    oParametros.sExecucao   = "criaSituacaoEmAtendimento";
+    oParametros.iProntuario = this.iProntuario;
+    oParametros.iTelaOrigem = DBViewEncaminhamento.TRIAGEM;
+    oParametros.medicoAtendendo = medico.value;
+
+    let oDadosRequisicao            = {};
+    oDadosRequisicao.method     = 'post';
+    oDadosRequisicao.parameters = 'json=' + Object.toJSON( oParametros );
+    oDadosRequisicao.asynchronous = false;
+    oDadosRequisicao.onComplete = function( oResponse ) {
+        oSelf.retornoBuscaUltimaObservacaoDaMovimentacao( oResponse, oSelf );
+    };
+
+    new Ajax.Request( this.sRpcFichaAtendimento, oDadosRequisicao );
+};
+

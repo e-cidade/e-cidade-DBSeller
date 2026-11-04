@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,11 +63,11 @@ if(!isset($chave_r07_mesusu) || (isset($chave_r07_mesusu) && trim($chave_r07_mes
               <strong>Ano / Mês :&nbsp;&nbsp;</strong>
             </td>
             <td>
-              <?
+              <?php
               db_input('r07_anousu',4,$Ir07_anousu,true,'text',2,'',"chave_r07_anousu")
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php
               db_input('r07_mesusu',2,$Ir07_mesusu,true,'text',2,'',"chave_r07_mesusu")
               ?>
             </td>
@@ -77,7 +77,7 @@ if(!isset($chave_r07_mesusu) || (isset($chave_r07_mesusu) && trim($chave_r07_mes
               <?=$Lr07_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r07_codigo",4,$Ir07_codigo,true,"text",4,"","chave_r07_codigo");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ if(!isset($chave_r07_mesusu) || (isset($chave_r07_mesusu) && trim($chave_r07_mes
               <?=$Lr07_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r07_descr",30,$Ir07_descr,true,"text",4,"","chave_r07_descr");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ if(!isset($chave_r07_mesusu) || (isset($chave_r07_mesusu) && trim($chave_r07_mes
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = "";
       if(isset($instit)){
       //	$dbwhere = " and r07_instit = $instit ";
@@ -146,12 +146,12 @@ if(!isset($chave_r07_mesusu) || (isset($chave_r07_mesusu) && trim($chave_r07_mes
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

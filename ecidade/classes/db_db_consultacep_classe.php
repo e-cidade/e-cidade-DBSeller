@@ -51,13 +51,13 @@ class cl_db_consultacep {
 	                 db10_uf = int8 = UF
 	                 ";
 	//funcao construtor da classe
-	function cl_db_consultacep() {
+	public function __construct() {
 		//classes dos rotulos dos campos
 		$this->rotulo = new rotulo("db_consultacep");
 		$this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
 	}
 	//funcao erro
-	function erro($mostra, $retorna) {
+	public function erro($mostra, $retorna) {
 		if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
 			echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
 			if ($retorna == true) {
@@ -66,11 +66,11 @@ class cl_db_consultacep {
 		}
 	}
 	// funcao para atualizar campos
-	function atualizacampos($exclusao = false) {
+	public function atualizacampos($exclusao = false) {
 		$this->cep = $this->db10_cep;
 	}
 	//funcao recordset
-	function sql_record($sql) {
+	public function sql_record($sql) {
 		$result = @ db_query($sql);
 		if ($result == false) {
 			$this->numrows = 0;
@@ -93,13 +93,13 @@ class cl_db_consultacep {
 		return $result;
 	}
 	///pega o cep e faz a mao
-	function buscacep($cep = "", $munic = "", $log = "", $numero = "", $funcao_js = "", $domunic = "") {
+	public function buscacep($cep = "", $munic = "", $log = "", $numero = "", $funcao_js = "", $domunic = "") {
 		if ($domunic != "") {
 			$result = $this->sql_record('select * from db_config where codigo = ' . db_getsession("DB_instit"));
 			db_fieldsmemory($result, 0);
 			$sql = ("select j29_cep as cep,j14_nome as endereco,'' as bairro,j14_codigo as codigorua from ruascep inner join ruas on j14_codigo = j29_codigo where j29_cep = '$cep'");
 			$result = $this->sql_record($sql);
-			$campos = split("\|", $funcao_js);
+			$campos = explode("|", $funcao_js);
 			if ($this->numrows > 0) {
 				db_fieldsmemory($result, 0);
 				echo "<script>" . $campos[0] . "('" . $GLOBALS['cep'] . "','" . $GLOBALS['endereco'] . "','" . $GLOBALS['munic'] . "','" . $GLOBALS['uf'] . "','" . $GLOBALS['bairro'] . "','" . $GLOBALS['codigorua'] . "')</script>";
@@ -121,7 +121,7 @@ class cl_db_consultacep {
 			/*  $camposql = "db10_cep as cep,'' as endereco,db10_munic as municipio, db12_uf as estado";
 			  $sql = $this->sql_query($cep,$camposql,""," inner join db_uf on db10_uf = db12_codigo where db10_cep = '$cep' ");
 			  $result = $this->sql_record($sql);
-			  $campos = split("\|",$funcao_js);*/
+			  $campos = explode("|",$funcao_js);*/
 			$sql = "select case when ceplogradouros.cp06_cep is null then ceplocalidades.cp05_cepinicial
 				                     else ceplogradouros.cp06_cep
 						end as cep,
@@ -358,10 +358,10 @@ class cl_db_consultacep {
 		}
 	}
 	// funcao do sql
-	function sql_query($cep, $campos = "*", $ordem = null, $dbwhere = "") {
+	public function sql_query($cep, $campos = "*", $ordem = null, $dbwhere = "") {
 		$sql = "select ";
 		if ($campos != "*") {
-			$campos_sql = split("#", $campos);
+			$campos_sql = explode("#", $campos);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i++) {
 				$sql .= $virgula . $campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_db_consultacep {
 		$sql .= $sql2;
 		if ($ordem != null) {
 			$sql .= " order by ";
-			$campos_sql = split("#", $ordem);
+			$campos_sql = explode("#", $ordem);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i++) {
 				$sql .= $virgula . $campos_sql[$i];

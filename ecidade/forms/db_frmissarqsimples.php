@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clissarqsimples->rotulo->label();
        <?=@$Lq17_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_sequencial',8,$Iq17_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -54,7 +54,7 @@ db_input('q17_sequencial',8,$Iq17_sequencial,true,'text',3,"")
        <?=@$Lq17_instit?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_instit',10,$Iq17_instit,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_input('q17_instit',10,$Iq17_instit,true,'text',$db_opcao,"")
        <?=@$Lq17_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q17_data',@$q17_data_dia,@$q17_data_mes,@$q17_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_inputdata('q17_data',@$q17_data_dia,@$q17_data_mes,@$q17_data_ano,true,'text'
        <?=@$Lq17_nroremessa?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_nroremessa',6,$Iq17_nroremessa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('q17_nroremessa',6,$Iq17_nroremessa,true,'text',$db_opcao,"")
        <?=@$Lq17_versao?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_versao',2,$Iq17_versao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('q17_versao',2,$Iq17_versao,true,'text',$db_opcao,"")
        <?=@$Lq17_qtdreg?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_qtdreg',10,$Iq17_qtdreg,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_input('q17_qtdreg',10,$Iq17_qtdreg,true,'text',$db_opcao,"")
        <?=@$Lq17_vlrtot?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_vlrtot',15,$Iq17_vlrtot,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('q17_vlrtot',15,$Iq17_vlrtot,true,'text',$db_opcao,"")
        <?=@$Lq17_codbco?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_codbco',3,$Iq17_codbco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -124,7 +124,7 @@ db_input('q17_codbco',3,$Iq17_codbco,true,'text',$db_opcao,"")
        <?=@$Lq17_oidarq?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_oidarq',1,$Iq17_oidarq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -134,7 +134,7 @@ db_input('q17_oidarq',1,$Iq17_oidarq,true,'text',$db_opcao,"")
        <?=@$Lq17_nomearq?>
     </td>
     <td> 
-<?
+<?php
 db_input('q17_nomearq',100,$Iq17_nomearq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -150,7 +150,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issarqsimples.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

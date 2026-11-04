@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@
 	  <td>&nbsp;<?=$RLq21_nota?></td>
 	  <td>&nbsp;<?=$RLq21_serie?></td>
 	</tr>  
-<?
+<?php
       //  $result00=$clissplanit->sql_record($clissplanit->sql_query_file("","issplanit.* ","q21_nota","q21_planilha  = $q21_planilha and  q21_status = 1 "));
       // die($clissplanit->sql_query_file("","issplanit.*","q21_nota","q21_planilha  = $q21_planilha and  q21_status = 1 "));
         $sql1 = "select issplanit.*,q31_inscr 
@@ -103,7 +103,7 @@
 	  <td>&nbsp;<?=$q21_nota?></td>
 	  <td>&nbsp;<?=$q21_serie?></td>
 	</tr>  
-<?
+<?php
 	}
 ?>
 	  

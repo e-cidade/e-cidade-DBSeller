@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -83,14 +83,14 @@ if (isset($enviar)) {
 </head>
 <body class="body-default">
  <div class="container">
- <?
+ <?php
   if ($clcaracter->numrows != 0) {
     ?>
     <form name="form1" method="post" action="">
     <fieldset>
     <legend>Caracteristicas</legend>
     <table width="22%"  cellspacing="0">
-    <?
+    <?php
     $clcarface = new cl_carface;
     $clcarlote = new cl_carlote;
     $grupo     = 0;
@@ -138,7 +138,7 @@ if (isset($enviar)) {
           ?>
             </select>
             </td></tr><tr>
-          <?
+          <?php
         }
         $grupo = $j31_grupo;
         if ($coluna == 0) {
@@ -146,7 +146,7 @@ if (isset($enviar)) {
           ?>
             </tr>
             <tr>
-          <?
+          <?php
         } else {
           $coluna = 0;
         }
@@ -154,7 +154,7 @@ if (isset($enviar)) {
         <td nowrap align="Left"><label for="<?='G'.$j31_codigo?>"><?=str_pad($j32_grupo."-".$j32_descr,20)?></label></td>
         <td nowrap align="left">
         <select id="<?='G'.$j31_codigo?>"  name="<?='G'.$j31_grupo?>">
-        <?
+        <?php
 
         // Verifica Caracteristica padrao se nao foi selecionada uma previamente
         if (is_null($cheque)) {
@@ -176,12 +176,12 @@ if (isset($enviar)) {
         $xgrupo = $j31_grupo;
         ?>
         <option value="0" >Nenhuma...</option>
-        <?
+        <?php
       }
 
       ?>
       <option value="<?=$j31_codigo?>" <?=$cheque?>><?=str_pad($j31_codigo."-".trim($j31_descr),20)?> </option>
-      <?
+      <?php
     }
     ?>
     </table>
@@ -189,7 +189,7 @@ if (isset($enviar)) {
     <input type="submit" name="enviar" value="Enviar" >
     <input type="button" name="Fechar" value="Fechar" onClick="parent.<?=$db_iframe?>.hide();" >
     </form>
-    <?
+    <?php
   }
 ?>
   </div>

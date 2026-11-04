@@ -25,6 +25,9 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Tributario\Issqn\Simples\Service\ProcessaArquivoSimplesService;
+use ECidade\Tributario\Issqn\Simples\Service\ValidaArquivoSimplesService;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
@@ -54,28 +57,22 @@ try {
      * para verificar as inconsistencias no arquivo antes do processamento
      */
     case "preProcessamento":
-
-    	$oDaoIssArqSimples         = db_utils::getDao("issarqsimples");
-    	$aErros                    = $oDaoIssArqSimples->validaArquivo($oParam->iIssArquivo);
-
-      $oRetorno->aErros          = $aErros;
-      $oRetorno->iInconsistencia = 1;
-
-    	rsort($aErros);
-      db_putsession("aInconsistenciaSimples", $aErros);
+        $service = new ValidaArquivoSimplesService($oParam->iIssArquivo);
+        $service->execute();
+        $oRetorno->aErros = $service->getErros();
+        $oRetorno->iInconsistencia = 1;
+    	rsort($oRetorno->aErros);
+        db_putsession("aInconsistenciaSimples", $oRetorno->aErros);
     break;
 
     case "processar":
-
     	$iRegistro = $oParam->iRegistro;
-    	$sArquivo  = $oParam->sArquivo ;
-    	$iBanco    = $oParam->iBanco   ;
-    	$iAgencia  = $oParam->iAgencia ;
-    	$iConta    = $oParam->iConta   ;
-
-    	$oDaoIssArqSimples = db_utils::getDao("issarqsimples");
-
-    	$lProcessamento    = $oDaoIssArqSimples->processaArquivo($iRegistro, $sArquivo, $iBanco, $iAgencia, $iConta);
+    	$sArquivo  = $oParam->sArquivo;
+    	$iBanco    = $oParam->iBanco;
+    	$iAgencia  = $oParam->iAgencia;
+    	$iConta    = $oParam->iConta;
+        $service = new ProcessaArquivoSimplesService($iRegistro, $sArquivo, $iBanco, $iAgencia, $iConta);
+        $service->execute();
     break;
     /**
      * case para buscar outras inscrições do CNPJ

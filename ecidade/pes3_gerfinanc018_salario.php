@@ -255,7 +255,15 @@ $aFolhaPagamento['B'] = db_utils::getCollectionByRecord($rsRegistroFinanceiro);
       text-align: right;
       padding-right: 5px;
     }
+    .observacao-rubrica{
+      color:red;
+      font-weight: bold;
+      font-size: 14px;
+    }
   </style>
+  <?php
+    db_app::load('DBHint.widget.js, prototype.js');
+  ?>
 </head>
 <body>
   <form action="" method="post" name="form1">
@@ -282,8 +290,19 @@ $aFolhaPagamento['B'] = db_utils::getCollectionByRecord($rsRegistroFinanceiro);
           $nTotalProventos = 0;
           $nTotalDescontos = 0;
           ?>
-          <?php foreach ($aRegistroFinanceiro as $oRegistroFinanceiro) { ?>
-            <tr>
+          <?php foreach ($aRegistroFinanceiro as $oRegistroFinanceiro) { 
+              $dados = (object) [
+                'matricula'  => $matricula,
+                'rubrica'    => $oRegistroFinanceiro->rubrica,
+                'anousu'     => $ano,
+                'mesusu'     => $mes,
+                'instit'     => $iInstituicao,
+                'tabela'     => $arquivo
+              ];
+
+              $dadosObservacao = $serviceObservacaoRubrica->getObservacaoRubricaServidor($dados);
+            ?>
+            <tr id="linha-rubrica-<?=$oRegistroFinanceiro->rubrica?>">
               <td>1</td>
               <td>
                 <?php if ($oRegistroFinanceiro->formula === 't') { ?>
@@ -294,7 +313,7 @@ $aFolhaPagamento['B'] = db_utils::getCollectionByRecord($rsRegistroFinanceiro);
                 <?php } ?>
                 <a href="#" id="<?= $oRegistroFinanceiro->rubrica ?>"><?= $oRegistroFinanceiro->rubrica ?></a>
               </td>
-              <td><?= $oRegistroFinanceiro->descricao ?></td>
+              <td><?= $oRegistroFinanceiro->descricao . ($dadosObservacao->observacao ? '<span class="observacao-rubrica"> *</span>' : '') ?></td>
               <td><?= db_formatar($oRegistroFinanceiro->quantidade, 'f') ?></td>
               <td><?= db_formatar($oRegistroFinanceiro->provento, 'f') ?></td>
               <td><?= db_formatar($oRegistroFinanceiro->desconto, 'f') ?></td>
@@ -304,6 +323,19 @@ $aFolhaPagamento['B'] = db_utils::getCollectionByRecord($rsRegistroFinanceiro);
             <?php
             $nTotalProventos += $oRegistroFinanceiro->provento;
             $nTotalDescontos += $oRegistroFinanceiro->desconto;
+            if ($dadosObservacao->observacao) {
+              $rubrica = $oRegistroFinanceiro->rubrica;
+              echo "
+                <script>
+      
+                  var oHintRubrica{$rubrica} = new DBHint('oHintRubrica{$rubrica}');
+                  oHintRubrica{$rubrica}.setText('".preg_replace( "/\r|\n/", "</br>",$dadosObservacao->observacao)."');
+                  oHintRubrica{$rubrica}.setShowEvents(new Array('onmouseover'));
+                  oHintRubrica{$rubrica}.setHideEvents(new Array('onmouseout'));
+                  oHintRubrica{$rubrica}.make(document.getElementById('linha-rubrica-$rubrica'));
+                </script>
+              ";
+            }
             ?>
           <?php } ?>
 

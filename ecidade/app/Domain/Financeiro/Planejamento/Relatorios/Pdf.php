@@ -93,11 +93,7 @@ abstract class Pdf extends \ECidade\Pdf\Pdf
     {
         $this->addTitulo($titulo);
 
-        $subTitulo = sprintf(
-            '%s - %s',
-            $this->planejamento['pl2_titulo'],
-            $this->periodo
-        );
+        $subTitulo = $this->planejamento['pl2_titulo'];
         $this->addTitulo($subTitulo);
     }
 
@@ -199,5 +195,55 @@ abstract class Pdf extends \ECidade\Pdf\Pdf
             default:
                 return 'PLANO PLURIANUAL';
         }
+    }
+
+    protected function headerOrigemEmentario()
+    {
+        $origemEmentario = 'Ementário do e-Cidade';
+        if ($this->dados['ementario'] === 'uniao') {
+            $origemEmentario = 'Ementário da união/federação';
+        }
+        if ($this->dados['ementario'] === 'estadual') {
+            $origemEmentario = 'Ementário estadual/regional';
+        }
+        $this->addTitulo($origemEmentario);
+    }
+
+    /**
+     * adiciona negrito na fonte
+     */
+    public function bold()
+    {
+        $this->SetFont('', 'B');
+    }
+
+    /**
+     * tira o negrito da fonte
+     */
+    public function regular()
+    {
+        $this->SetFont('', '');
+    }
+
+    protected function imprimeAssinaturas()
+    {
+        if (!empty($this->dados['instituicaoEmissora'])) {
+            $this->ln(30);
+            assinaturasFinanceiro($this, $this->dados['instituicaoEmissora'], 'BG');
+        }
+    }
+
+    /**
+     * Retorna a altura da linha de acordo com o numero de linhas, valores impressos e a altura da linha que por
+     * default é 4
+     *
+     * @param $numerLinhas
+     * @param int $alturaLinha
+     * @return mixed
+     */
+    protected function calculaAlturaLinha($numerLinhas, $alturaLinha = 4)
+    {
+        $alturaDescricao = $numerLinhas * $alturaLinha;
+        return max([$alturaDescricao, $this->alturaTotalValores]);
     }
 }

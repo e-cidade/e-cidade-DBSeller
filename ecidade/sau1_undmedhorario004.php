@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ if(isset($excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmundmedhorario2.php"));
         ?>
     </center>
@@ -84,7 +84,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","sd30_i_undmed",true,1,"sd30_i_undmed",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clundmedhorario->erro_status=="0"){
     $clundmedhorario->erro(true,false);

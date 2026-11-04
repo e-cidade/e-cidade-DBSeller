@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: ISSQN
 //CLASSE DA ENTIDADE meiprocessareg
-class cl_meiprocessareg { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q112_sequencial = 0; 
-   var $q112_meiprocessa = 0; 
-   var $q112_meiimportameireg = 0; 
-   var $q112_tipoprocessa = 0; 
-   var $q112_motivo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_meiprocessareg {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q112_sequencial = 0;
+   var $q112_meiprocessa = 0;
+   var $q112_meiimportameireg = 0;
+   var $q112_tipoprocessa = 0;
+   var $q112_motivo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q112_sequencial = int4 = Sequencial 
-                 q112_meiprocessa = int4 = Código de Processamento do MEI 
-                 q112_meiimportameireg = int4 = Registro de Importação do MEI 
-                 q112_tipoprocessa = int4 = Tipo de Processamento MEI 
-                 q112_motivo = text = Motivo de Descarte do Registro 
+                 q112_sequencial = int4 = Sequencial
+                 q112_meiprocessa = int4 = Código de Processamento do MEI
+                 q112_meiimportameireg = int4 = Registro de Importação do MEI
+                 q112_tipoprocessa = int4 = Tipo de Processamento MEI
+                 q112_motivo = text = Motivo de Descarte do Registro
                  ";
-   //funcao construtor da classe 
-   function cl_meiprocessareg() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("meiprocessareg"); 
+     $this->rotulo = new rotulo("meiprocessareg");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_meiprocessareg {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q112_sequencial = ($this->q112_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q112_sequencial"]:$this->q112_sequencial);
        $this->q112_meiprocessa = ($this->q112_meiprocessa == ""?@$GLOBALS["HTTP_POST_VARS"]["q112_meiprocessa"]:$this->q112_meiprocessa);
@@ -83,9 +83,9 @@ class cl_meiprocessareg {
      }
    }
    // funcao para inclusao
-   function incluir ($q112_sequencial){ 
+   public function incluir ($q112_sequencial){
       $this->atualizacampos();
-     if($this->q112_meiprocessa == null ){ 
+     if($this->q112_meiprocessa == null ){
        $this->erro_sql = " Campo Código de Processamento do MEI nao Informado.";
        $this->erro_campo = "q112_meiprocessa";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_meiprocessareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q112_meiimportameireg == null ){ 
+     if($this->q112_meiimportameireg == null ){
        $this->erro_sql = " Campo Registro de Importação do MEI nao Informado.";
        $this->erro_campo = "q112_meiimportameireg";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_meiprocessareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q112_tipoprocessa == null ){ 
+     if($this->q112_tipoprocessa == null ){
        $this->erro_sql = " Campo Tipo de Processamento MEI nao Informado.";
        $this->erro_campo = "q112_tipoprocessa";
        $this->erro_banco = "";
@@ -113,16 +113,16 @@ class cl_meiprocessareg {
        return false;
      }
      if($q112_sequencial == "" || $q112_sequencial == null ){
-       $result = db_query("select nextval('meiprocessareg_q112_sequencial_seq')"); 
+       $result = db_query("select nextval('meiprocessareg_q112_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: meiprocessareg_q112_sequencial_seq do campo: q112_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: meiprocessareg_q112_sequencial_seq do campo: q112_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q112_sequencial = pg_result($result,0,0); 
+       $this->q112_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from meiprocessareg_q112_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q112_sequencial)){
@@ -133,10 +133,10 @@ class cl_meiprocessareg {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q112_sequencial = $q112_sequencial; 
+         $this->q112_sequencial = $q112_sequencial;
        }
      }
-     if(($this->q112_sequencial == null) || ($this->q112_sequencial == "") ){ 
+     if(($this->q112_sequencial == null) || ($this->q112_sequencial == "") ){
        $this->erro_sql = " Campo q112_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -145,21 +145,21 @@ class cl_meiprocessareg {
        return false;
      }
      $sql = "insert into meiprocessareg(
-                                       q112_sequencial 
-                                      ,q112_meiprocessa 
-                                      ,q112_meiimportameireg 
-                                      ,q112_tipoprocessa 
-                                      ,q112_motivo 
+                                       q112_sequencial
+                                      ,q112_meiprocessa
+                                      ,q112_meiimportameireg
+                                      ,q112_tipoprocessa
+                                      ,q112_motivo
                        )
                 values (
-                                $this->q112_sequencial 
-                               ,$this->q112_meiprocessa 
-                               ,$this->q112_meiimportameireg 
-                               ,$this->q112_tipoprocessa 
-                               ,'$this->q112_motivo' 
+                                $this->q112_sequencial
+                               ,$this->q112_meiprocessa
+                               ,$this->q112_meiimportameireg
+                               ,$this->q112_tipoprocessa
+                               ,'$this->q112_motivo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registro de Processamento do MEI ($this->q112_sequencial) nao Incluído. Inclusao Abortada.";
@@ -195,16 +195,16 @@ class cl_meiprocessareg {
        $resac = db_query("insert into db_acount values($acount,2924,16639,'','".AddSlashes(pg_result($resaco,0,'q112_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q112_sequencial=null) { 
+   public function alterar ($q112_sequencial=null) {
       $this->atualizacampos();
      $sql = " update meiprocessareg set ";
      $virgula = "";
-     if(trim($this->q112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_sequencial"])){ 
+     if(trim($this->q112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_sequencial"])){
        $sql  .= $virgula." q112_sequencial = $this->q112_sequencial ";
        $virgula = ",";
-       if(trim($this->q112_sequencial) == null ){ 
+       if(trim($this->q112_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "q112_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_meiprocessareg {
          return false;
        }
      }
-     if(trim($this->q112_meiprocessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_meiprocessa"])){ 
+     if(trim($this->q112_meiprocessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_meiprocessa"])){
        $sql  .= $virgula." q112_meiprocessa = $this->q112_meiprocessa ";
        $virgula = ",";
-       if(trim($this->q112_meiprocessa) == null ){ 
+       if(trim($this->q112_meiprocessa) == null ){
          $this->erro_sql = " Campo Código de Processamento do MEI nao Informado.";
          $this->erro_campo = "q112_meiprocessa";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_meiprocessareg {
          return false;
        }
      }
-     if(trim($this->q112_meiimportameireg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_meiimportameireg"])){ 
+     if(trim($this->q112_meiimportameireg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_meiimportameireg"])){
        $sql  .= $virgula." q112_meiimportameireg = $this->q112_meiimportameireg ";
        $virgula = ",";
-       if(trim($this->q112_meiimportameireg) == null ){ 
+       if(trim($this->q112_meiimportameireg) == null ){
          $this->erro_sql = " Campo Registro de Importação do MEI nao Informado.";
          $this->erro_campo = "q112_meiimportameireg";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_meiprocessareg {
          return false;
        }
      }
-     if(trim($this->q112_tipoprocessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_tipoprocessa"])){ 
+     if(trim($this->q112_tipoprocessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_tipoprocessa"])){
        $sql  .= $virgula." q112_tipoprocessa = $this->q112_tipoprocessa ";
        $virgula = ",";
-       if(trim($this->q112_tipoprocessa) == null ){ 
+       if(trim($this->q112_tipoprocessa) == null ){
          $this->erro_sql = " Campo Tipo de Processamento MEI nao Informado.";
          $this->erro_campo = "q112_tipoprocessa";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_meiprocessareg {
          return false;
        }
      }
-     if(trim($this->q112_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_motivo"])){ 
+     if(trim($this->q112_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q112_motivo"])){
        $sql  .= $virgula." q112_motivo = '$this->q112_motivo' ";
        $virgula = ",";
      }
@@ -281,7 +281,7 @@ class cl_meiprocessareg {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registro de Processamento do MEI nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q112_sequencial;
@@ -309,14 +309,14 @@ class cl_meiprocessareg {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q112_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q112_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q112_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -346,7 +346,7 @@ class cl_meiprocessareg {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registro de Processamento do MEI nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q112_sequencial;
@@ -374,11 +374,11 @@ class cl_meiprocessareg {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -400,11 +400,11 @@ class cl_meiprocessareg {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $q112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $q112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,15 +425,15 @@ class cl_meiprocessareg {
      $sql2 = "";
      if($dbwhere==""){
        if($q112_sequencial!=null ){
-         $sql2 .= " where meiprocessareg.q112_sequencial = $q112_sequencial "; 
-       } 
+         $sql2 .= " where meiprocessareg.q112_sequencial = $q112_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,11 +442,11 @@ class cl_meiprocessareg {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $q112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $q112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,15 +459,15 @@ class cl_meiprocessareg {
      $sql2 = "";
      if($dbwhere==""){
        if($q112_sequencial!=null ){
-         $sql2 .= " where meiprocessareg.q112_sequencial = $q112_sequencial "; 
-       } 
+         $sql2 .= " where meiprocessareg.q112_sequencial = $q112_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

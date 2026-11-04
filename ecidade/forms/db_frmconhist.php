@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clconhist->rotulo->label();
        <?=@$Lc50_codhist?>
     </td>
     <td> 
-<?
+<?php
 db_input('c50_codhist',4,$Ic50_codhist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('c50_codhist',4,$Ic50_codhist,true,'text',$db_opcao,"")
        <?=@$Lc50_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('c50_descr',40,$Ic50_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('c50_descr',40,$Ic50_descr,true,'text',$db_opcao,"")
        <?=@$Lc50_compl?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('c50_compl',$x,true,$db_opcao,"");
 ?>
@@ -73,7 +73,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conhist.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

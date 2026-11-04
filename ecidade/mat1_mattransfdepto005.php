@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ if(isset($chavepesquisa)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmmattransfdepto.php"));
 	?>
     </center>
@@ -80,7 +80,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($chavepesquisa)){
   if($clmatestoqueinimei->numrows>0){
    echo "

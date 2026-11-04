@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,7 +81,7 @@ if(isset($atualizar)){
        <?=@$Lcm23_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm23_i_codigo',10,$Icm23_i_codigo,true,'text',3,"")
 
 ?>
@@ -92,7 +92,7 @@ db_input('cm23_i_codigo',10,$Icm23_i_codigo,true,'text',3,"")
        <?=@$Lcm23_i_lotecemit?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',$db_opcao,"")
        <?=@$Lcm23_c_situacao?>
     </td>
     <td> 
-<?
+<?php
 $x = array('D'=>'Disponível','O'=>'Ocupado');
 db_select('cm23_c_situacao',$x,true,$db_opcao,"disabled");
 ?>
@@ -115,7 +115,7 @@ db_select('cm23_c_situacao',$x,true,$db_opcao,"disabled");
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("cm23_i_quadracemit"=>@$cm23_i_quadracemit,"cm23_i_lotecemit"=>@$cm23_i_lotecemit,"cm23_i_codigo"=>@$cm23_i_codigo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $sSql = $cllotecemit->sql_query(null,
@@ -178,7 +178,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lotecemit.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -47,28 +47,28 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led101_i_codigo?>
   </td>
   <td>
-   <?db_input('ed101_i_codigo',15,$Ied101_i_codigo,true,'text',3,"")?>
-   <?db_input('iMatricula',10,'',true,'hidden',3,'')?>
+   <?php db_input('ed101_i_codigo',15,$Ied101_i_codigo,true,'text',3,"")?>
+   <?php db_input('iMatricula',10,'',true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted101_i_aluno?>">
-   <?db_ancora(@$Led101_i_aluno,"js_pesquisaed101_i_aluno(true);",$db_opcao);?>
+   <?php db_ancora(@$Led101_i_aluno,"js_pesquisaed101_i_aluno(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed101_i_aluno',15,$Ied101_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed101_i_aluno(false);'")?>
-   <?db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_input('ed101_i_aluno',15,$Ied101_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed101_i_aluno(false);'")?>
+   <?php db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted101_i_turmaorig?>">
-   <?db_ancora(@$Led101_i_turmaorig,"",3);?>
+   <?php db_ancora(@$Led101_i_turmaorig,"",3);?>
   </td>
   <td>
-   <?db_input('ed101_i_turmaorig',15,@$Ied101_i_turmaorig,true,'text',3,"")?>
-   <?db_input('ed57_c_descrorig',30,@$Ied57_c_descrorig,true,'text',3,'')?>
-   <?db_input('ed11_c_origem',30,@$Ied11_c_origem,true,'text',3,'')?>
-   <?db_input('ed11_i_codorigem',30,@$Ied11_i_codorigem,true,'hidden',3,'')?>
+   <?php db_input('ed101_i_turmaorig',15,@$Ied101_i_turmaorig,true,'text',3,"")?>
+   <?php db_input('ed57_c_descrorig',30,@$Ied57_c_descrorig,true,'text',3,'')?>
+   <?php db_input('ed11_c_origem',30,@$Ied11_c_origem,true,'text',3,'')?>
+   <?php db_input('ed11_i_codorigem',30,@$Ied11_i_codorigem,true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
@@ -76,20 +76,20 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led60_d_datamatricula?>
   </td>
   <td>
-   <?db_input('ed60_d_datamatricula',10,@$Ied60_d_datamatricula,true,'text',3,'')?>
-   <?db_input('ed52_d_inicio',10,@$Ied52_d_inicio,true,'hidden',3,'')?>
-   <?db_input('ed52_d_fim',10,@$Ied52_d_fim,true,'hidden',3,'')?>
+   <?php db_input('ed60_d_datamatricula',10,@$Ied60_d_datamatricula,true,'text',3,'')?>
+   <?php db_input('ed52_d_inicio',10,@$Ied52_d_inicio,true,'hidden',3,'')?>
+   <?php db_input('ed52_d_fim',10,@$Ied52_d_fim,true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted101_i_turmadest?>">
-   <?db_ancora(@$Led101_i_turmadest,"js_pesquisaed101_i_turmadest(true);",$db_opcao);?>
+   <?php db_ancora(@$Led101_i_turmadest,"js_pesquisaed101_i_turmadest(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed101_i_turmadest',15,@$Ied101_i_turmadest,true,'text',3,'')?>
-   <?db_input('ed57_c_descrdest',30,@$Ied57_c_descrdest,true,'text',3,'')?>
-   <?db_input('ed11_c_destino',30,@$Ied11_c_destino,true,'text',3,'')?>
-   <?db_input('ed11_i_coddestino',30,@$Ied11_i_coddestino,true,'hidden',3,'')?>
+   <?php db_input('ed101_i_turmadest',15,@$Ied101_i_turmadest,true,'text',3,'')?>
+   <?php db_input('ed57_c_descrdest',30,@$Ied57_c_descrdest,true,'text',3,'')?>
+   <?php db_input('ed11_c_destino',30,@$Ied11_c_destino,true,'text',3,'')?>
+   <?php db_input('ed11_i_coddestino',30,@$Ied11_i_coddestino,true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
@@ -97,7 +97,7 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led101_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed101_t_obs',4,70,@$Ied101_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ed101_t_obs',4,70,@$Ied101_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -105,7 +105,7 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led101_d_data?>
   </td>
   <td>
-   <?db_inputdata('ed101_d_data',@$ed101_d_data_dia,@$ed101_d_data_mes,@$ed101_d_data_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('ed101_d_data',@$ed101_d_data_dia,@$ed101_d_data_mes,@$ed101_d_data_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -277,7 +277,7 @@ function js_mostraturma1(chave1,chave2,chave3,chave4) {
   document.form1.ed11_i_coddestino.value = chave3;
   document.form1.ed11_c_destino.value    = chave4;
   db_iframe_turma.hide();
-  
+
   var sGet = '';
   sGet    += 'matricula='+document.form1.iMatricula.value;
   sGet    += '&turmaorigem='+document.form1.ed101_i_turmaorig.value+'&turmadestino=';

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lq02_inscr?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_inscr',4,$Iq02_inscr,true,'text',$db_opcao,"")
 ?>
     <td>
   <tr>
   <tr>
     <td nowrap title="<?=@$Tq02_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lq02_numcgm,"js_pesquisaq02_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_numcgm',4,$Iq02_numcgm,true,'text',$db_opcao," onchange='js_pesquisaq02_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     <td>
@@ -63,7 +63,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lq02_memo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('q02_memo',0,0,$Iq02_memo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -73,7 +73,7 @@ db_textarea('q02_memo',0,0,$Iq02_memo,true,'text',$db_opcao,"")
        <?=@$Lq02_tiplic?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_tiplic',2,$Iq02_tiplic,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -83,7 +83,7 @@ db_input('q02_tiplic',2,$Iq02_tiplic,true,'text',$db_opcao,"")
        <?=@$Lq02_fanta?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_fanta',40,$Iq02_fanta,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -93,7 +93,7 @@ db_input('q02_fanta',40,$Iq02_fanta,true,'text',$db_opcao,"")
        <?=@$Lq02_regjuc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_regjuc',14,$Iq02_regjuc,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -103,7 +103,7 @@ db_input('q02_regjuc',14,$Iq02_regjuc,true,'text',$db_opcao,"")
        <?=@$Lq02_inscmu?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_inscmu',14,$Iq02_inscmu,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -113,7 +113,7 @@ db_input('q02_inscmu',14,$Iq02_inscmu,true,'text',$db_opcao,"")
        <?=@$Lq02_obs?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_obs',70,$Iq02_obs,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -123,7 +123,7 @@ db_input('q02_obs',70,$Iq02_obs,true,'text',$db_opcao,"")
        <?=@$Lq02_dtcada?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q02_dtcada',@$q02_dtcada_dia,@$q02_dtcada_mes,@$q02_dtcada_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -133,7 +133,7 @@ db_inputdata('q02_dtcada',@$q02_dtcada_dia,@$q02_dtcada_mes,@$q02_dtcada_ano,tru
        <?=@$Lq02_dtinic?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q02_dtinic',@$q02_dtinic_dia,@$q02_dtinic_mes,@$q02_dtinic_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -143,7 +143,7 @@ db_inputdata('q02_dtinic',@$q02_dtinic_dia,@$q02_dtinic_mes,@$q02_dtinic_ano,tru
        <?=@$Lq02_dtbaix?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q02_dtbaix',@$q02_dtbaix_dia,@$q02_dtbaix_mes,@$q02_dtbaix_ano,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -153,7 +153,7 @@ db_inputdata('q02_dtbaix',@$q02_dtbaix_dia,@$q02_dtbaix_mes,@$q02_dtbaix_ano,tru
        <?=@$Lq02_capit?>
     </td>
     <td> 
-<?
+<?php
 db_input('q02_capit',15,$Iq02_capit,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -197,7 +197,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

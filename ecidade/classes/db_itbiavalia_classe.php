@@ -1,86 +1,86 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: itbi
 //CLASSE DA ENTIDADE itbiavalia
-class cl_itbiavalia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $it14_guia = 0; 
-   var $it14_dtvenc_dia = null; 
-   var $it14_dtvenc_mes = null; 
-   var $it14_dtvenc_ano = null; 
-   var $it14_dtvenc = null; 
-   var $it14_dtliber_dia = null; 
-   var $it14_dtliber_mes = null; 
-   var $it14_dtliber_ano = null; 
-   var $it14_dtliber = null; 
-   var $it14_obs = null; 
-   var $it14_valoraval = 0; 
-   var $it14_valorpaga = 0; 
-   var $it14_valoravalter = 0; 
-   var $it14_valoravalconstr = 0; 
-   var $it14_id_usuario = 0; 
-   var $it14_hora = null; 
-   var $it14_desc = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_itbiavalia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $it14_guia = 0;
+   var $it14_dtvenc_dia = null;
+   var $it14_dtvenc_mes = null;
+   var $it14_dtvenc_ano = null;
+   var $it14_dtvenc = null;
+   var $it14_dtliber_dia = null;
+   var $it14_dtliber_mes = null;
+   var $it14_dtliber_ano = null;
+   var $it14_dtliber = null;
+   var $it14_obs = null;
+   var $it14_valoraval = 0;
+   var $it14_valorpaga = 0;
+   var $it14_valoravalter = 0;
+   var $it14_valoravalconstr = 0;
+   var $it14_id_usuario = 0;
+   var $it14_hora = null;
+   var $it14_desc = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 it14_guia = int8 = Código da ITBI 
-                 it14_dtvenc = date = Data de Vencimento 
-                 it14_dtliber = date = Data da liberação 
-                 it14_obs = text = Observações 
-                 it14_valoraval = float8 = Valor Total a Vista 
-                 it14_valorpaga = float8 = Valor a Pagar 
-                 it14_valoravalter = float8 = Valor a Vista do Terreno 
-                 it14_valoravalconstr = float8 = Valor a Vista da Construção 
-                 it14_id_usuario = int4 = Cod. Usuário 
-                 it14_hora = varchar(5) = Hora da liberação 
-                 it14_desc = float8 = Desconto 
+                 it14_guia = int8 = Código da ITBI
+                 it14_dtvenc = date = Data de Vencimento
+                 it14_dtliber = date = Data da liberação
+                 it14_obs = text = Observações
+                 it14_valoraval = float8 = Valor Total a Vista
+                 it14_valorpaga = float8 = Valor a Pagar
+                 it14_valoravalter = float8 = Valor a Vista do Terreno
+                 it14_valoravalconstr = float8 = Valor a Vista da Construção
+                 it14_id_usuario = int4 = Cod. Usuário
+                 it14_hora = varchar(5) = Hora da liberação
+                 it14_desc = float8 = Desconto
                  ";
-   //funcao construtor da classe 
-   function cl_itbiavalia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("itbiavalia"); 
+     $this->rotulo = new rotulo("itbiavalia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +89,7 @@ class cl_itbiavalia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->it14_guia = ($this->it14_guia == ""?@$GLOBALS["HTTP_POST_VARS"]["it14_guia"]:$this->it14_guia);
        if($this->it14_dtvenc == ""){
@@ -121,9 +121,9 @@ class cl_itbiavalia {
      }
    }
    // funcao para inclusao
-   function incluir ($it14_guia){ 
+   public function incluir ($it14_guia){
       $this->atualizacampos();
-     if($this->it14_dtvenc == null ){ 
+     if($this->it14_dtvenc == null ){
        $this->erro_sql = " Campo Data de Vencimento nao Informado.";
        $this->erro_campo = "it14_dtvenc_dia";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_dtliber == null ){ 
+     if($this->it14_dtliber == null ){
        $this->erro_sql = " Campo Data da liberação nao Informado.";
        $this->erro_campo = "it14_dtliber_dia";
        $this->erro_banco = "";
@@ -141,7 +141,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_valoraval == null ){ 
+     if($this->it14_valoraval == null ){
        $this->erro_sql = " Campo Valor Total a Vista nao Informado.";
        $this->erro_campo = "it14_valoraval";
        $this->erro_banco = "";
@@ -150,7 +150,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_valorpaga == null ){ 
+     if($this->it14_valorpaga == null ){
        $this->erro_sql = " Campo Valor a Pagar nao Informado.";
        $this->erro_campo = "it14_valorpaga";
        $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_valoravalter == null ){ 
+     if($this->it14_valoravalter == null ){
        $this->erro_sql = " Campo Valor a Vista do Terreno nao Informado.";
        $this->erro_campo = "it14_valoravalter";
        $this->erro_banco = "";
@@ -168,7 +168,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_valoravalconstr == null ){ 
+     if($this->it14_valoravalconstr == null ){
        $this->erro_sql = " Campo Valor a Vista da Construção nao Informado.";
        $this->erro_campo = "it14_valoravalconstr";
        $this->erro_banco = "";
@@ -177,7 +177,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_id_usuario == null ){ 
+     if($this->it14_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "it14_id_usuario";
        $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_hora == null ){ 
+     if($this->it14_hora == null ){
        $this->erro_sql = " Campo Hora da liberação nao Informado.";
        $this->erro_campo = "it14_hora";
        $this->erro_banco = "";
@@ -195,7 +195,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it14_desc == null ){ 
+     if($this->it14_desc == null ){
        $this->erro_sql = " Campo Desconto nao Informado.";
        $this->erro_campo = "it14_desc";
        $this->erro_banco = "";
@@ -204,8 +204,8 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-       $this->it14_guia = $it14_guia; 
-     if(($this->it14_guia == null) || ($this->it14_guia == "") ){ 
+       $this->it14_guia = $it14_guia;
+     if(($this->it14_guia == null) || ($this->it14_guia == "") ){
        $this->erro_sql = " Campo it14_guia nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -214,33 +214,33 @@ class cl_itbiavalia {
        return false;
      }
      $sql = "insert into itbiavalia(
-                                       it14_guia 
-                                      ,it14_dtvenc 
-                                      ,it14_dtliber 
-                                      ,it14_obs 
-                                      ,it14_valoraval 
-                                      ,it14_valorpaga 
-                                      ,it14_valoravalter 
-                                      ,it14_valoravalconstr 
-                                      ,it14_id_usuario 
-                                      ,it14_hora 
-                                      ,it14_desc 
+                                       it14_guia
+                                      ,it14_dtvenc
+                                      ,it14_dtliber
+                                      ,it14_obs
+                                      ,it14_valoraval
+                                      ,it14_valorpaga
+                                      ,it14_valoravalter
+                                      ,it14_valoravalconstr
+                                      ,it14_id_usuario
+                                      ,it14_hora
+                                      ,it14_desc
                        )
                 values (
-                                $this->it14_guia 
-                               ,".($this->it14_dtvenc == "null" || $this->it14_dtvenc == ""?"null":"'".$this->it14_dtvenc."'")." 
-                               ,".($this->it14_dtliber == "null" || $this->it14_dtliber == ""?"null":"'".$this->it14_dtliber."'")." 
-                               ,'$this->it14_obs' 
-                               ,$this->it14_valoraval 
-                               ,$this->it14_valorpaga 
-                               ,$this->it14_valoravalter 
-                               ,$this->it14_valoravalconstr 
-                               ,$this->it14_id_usuario 
-                               ,'$this->it14_hora' 
-                               ,$this->it14_desc 
+                                $this->it14_guia
+                               ,".($this->it14_dtvenc == "null" || $this->it14_dtvenc == ""?"null":"'".$this->it14_dtvenc."'")."
+                               ,".($this->it14_dtliber == "null" || $this->it14_dtliber == ""?"null":"'".$this->it14_dtliber."'")."
+                               ,'$this->it14_obs'
+                               ,$this->it14_valoraval
+                               ,$this->it14_valorpaga
+                               ,$this->it14_valoravalter
+                               ,$this->it14_valoravalconstr
+                               ,$this->it14_id_usuario
+                               ,'$this->it14_hora'
+                               ,$this->it14_desc
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "tabela de avaliação do ITBI ($this->it14_guia) nao Incluído. Inclusao Abortada.";
@@ -282,16 +282,16 @@ class cl_itbiavalia {
        $resac = db_query("insert into db_acount values($acount,868,5539,'','".AddSlashes(pg_result($resaco,0,'it14_desc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($it14_guia=null) { 
+   public function alterar ($it14_guia=null) {
       $this->atualizacampos();
      $sql = " update itbiavalia set ";
      $virgula = "";
-     if(trim($this->it14_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_guia"])){ 
+     if(trim($this->it14_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_guia"])){
        $sql  .= $virgula." it14_guia = $this->it14_guia ";
        $virgula = ",";
-       if(trim($this->it14_guia) == null ){ 
+       if(trim($this->it14_guia) == null ){
          $this->erro_sql = " Campo Código da ITBI nao Informado.";
          $this->erro_campo = "it14_guia";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"] !="") ){ 
+     if(trim($this->it14_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"] !="") ){
        $sql  .= $virgula." it14_dtvenc = '$this->it14_dtvenc' ";
        $virgula = ",";
-       if(trim($this->it14_dtvenc) == null ){ 
+       if(trim($this->it14_dtvenc) == null ){
          $this->erro_sql = " Campo Data de Vencimento nao Informado.";
          $this->erro_campo = "it14_dtvenc_dia";
          $this->erro_banco = "";
@@ -313,11 +313,11 @@ class cl_itbiavalia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"])){
          $sql  .= $virgula." it14_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->it14_dtvenc) == null ){ 
+         if(trim($this->it14_dtvenc) == null ){
            $this->erro_sql = " Campo Data de Vencimento nao Informado.";
            $this->erro_campo = "it14_dtvenc_dia";
            $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_itbiavalia {
          }
        }
      }
-     if(trim($this->it14_dtliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"] !="") ){ 
+     if(trim($this->it14_dtliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"] !="") ){
        $sql  .= $virgula." it14_dtliber = '$this->it14_dtliber' ";
        $virgula = ",";
-       if(trim($this->it14_dtliber) == null ){ 
+       if(trim($this->it14_dtliber) == null ){
          $this->erro_sql = " Campo Data da liberação nao Informado.";
          $this->erro_campo = "it14_dtliber_dia";
          $this->erro_banco = "";
@@ -340,11 +340,11 @@ class cl_itbiavalia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"])){
          $sql  .= $virgula." it14_dtliber = null ";
          $virgula = ",";
-         if(trim($this->it14_dtliber) == null ){ 
+         if(trim($this->it14_dtliber) == null ){
            $this->erro_sql = " Campo Data da liberação nao Informado.";
            $this->erro_campo = "it14_dtliber_dia";
            $this->erro_banco = "";
@@ -355,14 +355,14 @@ class cl_itbiavalia {
          }
        }
      }
-     if(trim($this->it14_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_obs"])){ 
+     if(trim($this->it14_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_obs"])){
        $sql  .= $virgula." it14_obs = '$this->it14_obs' ";
        $virgula = ",";
      }
-     if(trim($this->it14_valoraval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoraval"])){ 
+     if(trim($this->it14_valoraval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoraval"])){
        $sql  .= $virgula." it14_valoraval = $this->it14_valoraval ";
        $virgula = ",";
-       if(trim($this->it14_valoraval) == null ){ 
+       if(trim($this->it14_valoraval) == null ){
          $this->erro_sql = " Campo Valor Total a Vista nao Informado.";
          $this->erro_campo = "it14_valoraval";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_valorpaga)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valorpaga"])){ 
+     if(trim($this->it14_valorpaga)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valorpaga"])){
        $sql  .= $virgula." it14_valorpaga = $this->it14_valorpaga ";
        $virgula = ",";
-       if(trim($this->it14_valorpaga) == null ){ 
+       if(trim($this->it14_valorpaga) == null ){
          $this->erro_sql = " Campo Valor a Pagar nao Informado.";
          $this->erro_campo = "it14_valorpaga";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_valoravalter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalter"])){ 
+     if(trim($this->it14_valoravalter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalter"])){
        $sql  .= $virgula." it14_valoravalter = $this->it14_valoravalter ";
        $virgula = ",";
-       if(trim($this->it14_valoravalter) == null ){ 
+       if(trim($this->it14_valoravalter) == null ){
          $this->erro_sql = " Campo Valor a Vista do Terreno nao Informado.";
          $this->erro_campo = "it14_valoravalter";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_valoravalconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalconstr"])){ 
+     if(trim($this->it14_valoravalconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalconstr"])){
        $sql  .= $virgula." it14_valoravalconstr = $this->it14_valoravalconstr ";
        $virgula = ",";
-       if(trim($this->it14_valoravalconstr) == null ){ 
+       if(trim($this->it14_valoravalconstr) == null ){
          $this->erro_sql = " Campo Valor a Vista da Construção nao Informado.";
          $this->erro_campo = "it14_valoravalconstr";
          $this->erro_banco = "";
@@ -411,10 +411,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_id_usuario"])){ 
+     if(trim($this->it14_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_id_usuario"])){
        $sql  .= $virgula." it14_id_usuario = $this->it14_id_usuario ";
        $virgula = ",";
-       if(trim($this->it14_id_usuario) == null ){ 
+       if(trim($this->it14_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "it14_id_usuario";
          $this->erro_banco = "";
@@ -424,10 +424,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_hora"])){ 
+     if(trim($this->it14_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_hora"])){
        $sql  .= $virgula." it14_hora = '$this->it14_hora' ";
        $virgula = ",";
-       if(trim($this->it14_hora) == null ){ 
+       if(trim($this->it14_hora) == null ){
          $this->erro_sql = " Campo Hora da liberação nao Informado.";
          $this->erro_campo = "it14_hora";
          $this->erro_banco = "";
@@ -437,10 +437,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_desc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_desc"])){ 
+     if(trim($this->it14_desc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_desc"])){
        $sql  .= $virgula." it14_desc = $this->it14_desc ";
        $virgula = ",";
-       if(trim($this->it14_desc) == null ){ 
+       if(trim($this->it14_desc) == null ){
          $this->erro_sql = " Campo Desconto nao Informado.";
          $this->erro_campo = "it14_desc";
          $this->erro_banco = "";
@@ -486,7 +486,7 @@ class cl_itbiavalia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tabela de avaliação do ITBI nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->it14_guia;
@@ -514,14 +514,14 @@ class cl_itbiavalia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($it14_guia=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($it14_guia=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($it14_guia));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -557,7 +557,7 @@ class cl_itbiavalia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tabela de avaliação do ITBI nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$it14_guia;
@@ -585,11 +585,11 @@ class cl_itbiavalia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -611,11 +611,11 @@ class cl_itbiavalia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -632,15 +632,15 @@ class cl_itbiavalia {
      $sql2 = "";
      if($dbwhere==""){
        if($it14_guia!=null ){
-         $sql2 .= " where itbiavalia.it14_guia = $it14_guia "; 
-       } 
+         $sql2 .= " where itbiavalia.it14_guia = $it14_guia ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,11 +649,11 @@ class cl_itbiavalia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -666,15 +666,15 @@ class cl_itbiavalia {
      $sql2 = "";
      if($dbwhere==""){
        if($it14_guia!=null ){
-         $sql2 .= " where itbiavalia.it14_guia = $it14_guia "; 
-       } 
+         $sql2 .= " where itbiavalia.it14_guia = $it14_guia ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -683,8 +683,8 @@ class cl_itbiavalia {
      }
      return $sql;
   }
-  
-   function sql_query_pag( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+   public function sql_query_pag( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -702,12 +702,12 @@ class cl_itbiavalia {
      $sql .= "      inner join itbitransacao  		   on  itbitransacao.it04_codigo			 = itbitransacaoformapag.it25_itbitransacao			  	    ";
      $sql .= "      inner join itbiformapagamento	   on  itbiformapagamento.it27_sequencial	 = itbitransacaoformapag.it25_itbiformapagamento      		";
 	 $sql .= "      inner join itbitipoformapag 	   on  itbitipoformapag.it28_sequencial		 = itbiformapagamento.it27_itbitipoformapag					";
-     
+
      $sql2 = "";
      if($dbwhere==""){
        if($it14_guia!=null ){
-         $sql2 .= " where itbiavalia.it14_guia = $it14_guia "; 
-       } 
+         $sql2 .= " where itbiavalia.it14_guia = $it14_guia ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -722,7 +722,7 @@ class cl_itbiavalia {
        }
      }
      return $sql;
-  }  
-  
+  }
+
 }
 ?>

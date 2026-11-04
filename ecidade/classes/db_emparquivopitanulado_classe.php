@@ -1,73 +1,73 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Empenho
 //CLASSE DA ENTIDADE emparquivopitanulado
-class cl_emparquivopitanulado { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e16_sequencial = 0; 
-   var $e16_idusuario = 0; 
-   var $e16_emparquivopit = 0; 
-   var $e16_dtanulacao_dia = null; 
-   var $e16_dtanulacao_mes = null; 
-   var $e16_dtanulacao_ano = null; 
-   var $e16_dtanulacao = null; 
-   var $e16_horaanulacao = null; 
-   var $e16_motivo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_emparquivopitanulado {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e16_sequencial = 0;
+   var $e16_idusuario = 0;
+   var $e16_emparquivopit = 0;
+   var $e16_dtanulacao_dia = null;
+   var $e16_dtanulacao_mes = null;
+   var $e16_dtanulacao_ano = null;
+   var $e16_dtanulacao = null;
+   var $e16_horaanulacao = null;
+   var $e16_motivo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e16_sequencial = int4 = Código Sequencial 
-                 e16_idusuario = int4 = Código do Usuário 
-                 e16_emparquivopit = int4 = Código do Arquivo 
-                 e16_dtanulacao = date = data da Anulação 
-                 e16_horaanulacao = char(5) = Hora 
-                 e16_motivo = text = Motivo 
+                 e16_sequencial = int4 = Código Sequencial
+                 e16_idusuario = int4 = Código do Usuário
+                 e16_emparquivopit = int4 = Código do Arquivo
+                 e16_dtanulacao = date = data da Anulação
+                 e16_horaanulacao = char(5) = Hora
+                 e16_motivo = text = Motivo
                  ";
-   //funcao construtor da classe 
-   function cl_emparquivopitanulado() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("emparquivopitanulado"); 
+     $this->rotulo = new rotulo("emparquivopitanulado");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_emparquivopitanulado {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e16_sequencial = ($this->e16_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e16_sequencial"]:$this->e16_sequencial);
        $this->e16_idusuario = ($this->e16_idusuario == ""?@$GLOBALS["HTTP_POST_VARS"]["e16_idusuario"]:$this->e16_idusuario);
@@ -96,9 +96,9 @@ class cl_emparquivopitanulado {
      }
    }
    // funcao para inclusao
-   function incluir ($e16_sequencial){ 
+   public function incluir ($e16_sequencial){
       $this->atualizacampos();
-     if($this->e16_idusuario == null ){ 
+     if($this->e16_idusuario == null ){
        $this->erro_sql = " Campo Código do Usuário nao Informado.";
        $this->erro_campo = "e16_idusuario";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_emparquivopitanulado {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e16_emparquivopit == null ){ 
+     if($this->e16_emparquivopit == null ){
        $this->erro_sql = " Campo Código do Arquivo nao Informado.";
        $this->erro_campo = "e16_emparquivopit";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_emparquivopitanulado {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e16_dtanulacao == null ){ 
+     if($this->e16_dtanulacao == null ){
        $this->erro_sql = " Campo data da Anulação nao Informado.";
        $this->erro_campo = "e16_dtanulacao_dia";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_emparquivopitanulado {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e16_horaanulacao == null ){ 
+     if($this->e16_horaanulacao == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "e16_horaanulacao";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_emparquivopitanulado {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e16_motivo == null ){ 
+     if($this->e16_motivo == null ){
        $this->erro_sql = " Campo Motivo nao Informado.";
        $this->erro_campo = "e16_motivo";
        $this->erro_banco = "";
@@ -144,16 +144,16 @@ class cl_emparquivopitanulado {
        return false;
      }
      if($e16_sequencial == "" || $e16_sequencial == null ){
-       $result = db_query("select nextval('emparquivopitanulado_e16_sequencial_seq')"); 
+       $result = db_query("select nextval('emparquivopitanulado_e16_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: emparquivopitanulado_e16_sequencial_seq do campo: e16_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: emparquivopitanulado_e16_sequencial_seq do campo: e16_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->e16_sequencial = pg_result($result,0,0); 
+       $this->e16_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from emparquivopitanulado_e16_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $e16_sequencial)){
@@ -164,10 +164,10 @@ class cl_emparquivopitanulado {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->e16_sequencial = $e16_sequencial; 
+         $this->e16_sequencial = $e16_sequencial;
        }
      }
-     if(($this->e16_sequencial == null) || ($this->e16_sequencial == "") ){ 
+     if(($this->e16_sequencial == null) || ($this->e16_sequencial == "") ){
        $this->erro_sql = " Campo e16_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,24 +176,24 @@ class cl_emparquivopitanulado {
        return false;
      }
      $sql = "insert into emparquivopitanulado(
-                                       e16_sequencial 
-                                      ,e16_idusuario 
-                                      ,e16_emparquivopit 
-                                      ,e16_dtanulacao 
-                                      ,e16_horaanulacao 
-                                      ,e16_motivo 
+                                       e16_sequencial
+                                      ,e16_idusuario
+                                      ,e16_emparquivopit
+                                      ,e16_dtanulacao
+                                      ,e16_horaanulacao
+                                      ,e16_motivo
                        )
                 values (
-                                $this->e16_sequencial 
-                               ,$this->e16_idusuario 
-                               ,$this->e16_emparquivopit 
-                               ,".($this->e16_dtanulacao == "null" || $this->e16_dtanulacao == ""?"null":"'".$this->e16_dtanulacao."'")." 
-                               ,'$this->e16_horaanulacao' 
-                               ,'$this->e16_motivo' 
+                                $this->e16_sequencial
+                               ,$this->e16_idusuario
+                               ,$this->e16_emparquivopit
+                               ,".($this->e16_dtanulacao == "null" || $this->e16_dtanulacao == ""?"null":"'".$this->e16_dtanulacao."'")."
+                               ,'$this->e16_horaanulacao'
+                               ,'$this->e16_motivo'
                       )";
-                      
-     $result = db_query($sql); 
-     if($result==false){ 
+
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Arquivos do pit anulados ($this->e16_sequencial) nao Incluído. Inclusao Abortada.";
@@ -230,16 +230,16 @@ class cl_emparquivopitanulado {
        $resac = db_query("insert into db_acount values($acount,2581,14678,'','".AddSlashes(pg_result($resaco,0,'e16_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e16_sequencial=null) { 
+   public function alterar ($e16_sequencial=null) {
       $this->atualizacampos();
      $sql = " update emparquivopitanulado set ";
      $virgula = "";
-     if(trim($this->e16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_sequencial"])){ 
+     if(trim($this->e16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_sequencial"])){
        $sql  .= $virgula." e16_sequencial = $this->e16_sequencial ";
        $virgula = ",";
-       if(trim($this->e16_sequencial) == null ){ 
+       if(trim($this->e16_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "e16_sequencial";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_idusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_idusuario"])){ 
+     if(trim($this->e16_idusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_idusuario"])){
        $sql  .= $virgula." e16_idusuario = $this->e16_idusuario ";
        $virgula = ",";
-       if(trim($this->e16_idusuario) == null ){ 
+       if(trim($this->e16_idusuario) == null ){
          $this->erro_sql = " Campo Código do Usuário nao Informado.";
          $this->erro_campo = "e16_idusuario";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_emparquivopit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_emparquivopit"])){ 
+     if(trim($this->e16_emparquivopit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_emparquivopit"])){
        $sql  .= $virgula." e16_emparquivopit = $this->e16_emparquivopit ";
        $virgula = ",";
-       if(trim($this->e16_emparquivopit) == null ){ 
+       if(trim($this->e16_emparquivopit) == null ){
          $this->erro_sql = " Campo Código do Arquivo nao Informado.";
          $this->erro_campo = "e16_emparquivopit";
          $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_dtanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"] !="") ){ 
+     if(trim($this->e16_dtanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"] !="") ){
        $sql  .= $virgula." e16_dtanulacao = '$this->e16_dtanulacao' ";
        $virgula = ",";
-       if(trim($this->e16_dtanulacao) == null ){ 
+       if(trim($this->e16_dtanulacao) == null ){
          $this->erro_sql = " Campo data da Anulação nao Informado.";
          $this->erro_campo = "e16_dtanulacao_dia";
          $this->erro_banco = "";
@@ -287,11 +287,11 @@ class cl_emparquivopitanulado {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"])){
          $sql  .= $virgula." e16_dtanulacao = null ";
          $virgula = ",";
-         if(trim($this->e16_dtanulacao) == null ){ 
+         if(trim($this->e16_dtanulacao) == null ){
            $this->erro_sql = " Campo data da Anulação nao Informado.";
            $this->erro_campo = "e16_dtanulacao_dia";
            $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_emparquivopitanulado {
          }
        }
      }
-     if(trim($this->e16_horaanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_horaanulacao"])){ 
+     if(trim($this->e16_horaanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_horaanulacao"])){
        $sql  .= $virgula." e16_horaanulacao = '$this->e16_horaanulacao' ";
        $virgula = ",";
-       if(trim($this->e16_horaanulacao) == null ){ 
+       if(trim($this->e16_horaanulacao) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "e16_horaanulacao";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_motivo"])){ 
+     if(trim($this->e16_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_motivo"])){
        $sql  .= $virgula." e16_motivo = '$this->e16_motivo' ";
        $virgula = ",";
-       if(trim($this->e16_motivo) == null ){ 
+       if(trim($this->e16_motivo) == null ){
          $this->erro_sql = " Campo Motivo nao Informado.";
          $this->erro_campo = "e16_motivo";
          $this->erro_banco = "";
@@ -354,7 +354,7 @@ class cl_emparquivopitanulado {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos do pit anulados nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e16_sequencial;
@@ -382,14 +382,14 @@ class cl_emparquivopitanulado {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e16_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e16_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e16_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -420,7 +420,7 @@ class cl_emparquivopitanulado {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos do pit anulados nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e16_sequencial;
@@ -448,11 +448,11 @@ class cl_emparquivopitanulado {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -474,11 +474,11 @@ class cl_emparquivopitanulado {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $e16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $e16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -494,15 +494,15 @@ class cl_emparquivopitanulado {
      $sql2 = "";
      if($dbwhere==""){
        if($e16_sequencial!=null ){
-         $sql2 .= " where emparquivopitanulado.e16_sequencial = $e16_sequencial "; 
-       } 
+         $sql2 .= " where emparquivopitanulado.e16_sequencial = $e16_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,11 +511,11 @@ class cl_emparquivopitanulado {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $e16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $e16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -528,15 +528,15 @@ class cl_emparquivopitanulado {
      $sql2 = "";
      if($dbwhere==""){
        if($e16_sequencial!=null ){
-         $sql2 .= " where emparquivopitanulado.e16_sequencial = $e16_sequencial "; 
-       } 
+         $sql2 .= " where emparquivopitanulado.e16_sequencial = $e16_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

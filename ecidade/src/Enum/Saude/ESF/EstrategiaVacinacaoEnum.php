@@ -10,9 +10,17 @@ class EstrategiaVacinacaoEnum extends Enum
     const ESPECIAL = 2;
     const BLOQUEIO = 3;
     const INTENSIFICACAO = 4;
-    const CAMPANHA = 5;
-    const SOROTERAPIA = 6;
-    const MULTIVACINACAO = 7;
+    const CAMPANHA_INDISCRIMINADA = 5;
+    const CAMPANHA_SELETIVA = 6;
+    const SOROTERAPIA = 7;
+    const SERVICO_PRIVADO = 8;
+    const MONITORAMENTO_RAPIDO_DE_COBERTURA_VACINAL = 9;
+    const MULTIVACINACAO = 10;
+    const PESQUISA = 11;
+    const PRE_EXPOSICAO = 12;
+    const POS_EXPOSICAO = 13;
+    const REEXPOSICAO = 14;
+
 
     public function name()
     {
@@ -21,9 +29,16 @@ class EstrategiaVacinacaoEnum extends Enum
             self::ESPECIAL => 'Especial',
             self::BLOQUEIO => 'Bloqueio',
             self::INTENSIFICACAO => 'Intensificação',
-            self::CAMPANHA => 'Campanha',
+            self::CAMPANHA_INDISCRIMINADA => 'Campanha indiscriminada',
+            self::CAMPANHA_SELETIVA => 'Campanha seletiva',
             self::SOROTERAPIA => 'Soroterapia',
-            self::MULTIVACINACAO => 'Multivacinação'
+            self::SERVICO_PRIVADO => 'Serviço privado',
+            self::MONITORAMENTO_RAPIDO_DE_COBERTURA_VACINAL => 'Monitoramento rápido de cobertura vacinal',
+            self::MULTIVACINACAO => 'Multivacinação',
+            self::PESQUISA => 'Pesquisa',
+            self::PRE_EXPOSICAO => 'Pré-exposição',
+            self::POS_EXPOSICAO => 'Pós-exposição',
+            self::REEXPOSICAO => 'Reexposição'
         ];
 
         if (empty($data[$this->getValue()])) {

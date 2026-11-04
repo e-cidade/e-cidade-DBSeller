@@ -175,14 +175,15 @@ class PdfToImage
     /**
      * @param $directory
      * @param string $prefix
-     * @return array|string[]
+     * @return Collection
+     * @throws ImagickException
      */
     public function saveAllPagesAsImages($directory, $prefix = '')
     {
         $numberOfPages = $this->getNumberOfPages();
 
         if ($numberOfPages === 0) {
-            return [];
+            return Collection::make([]);
         }
 
         $files = array_map(function ($pageNumber) use ($directory, $prefix) {
@@ -192,10 +193,13 @@ class PdfToImage
 
             $this->saveImage($destination);
 
-            return $destination;
+            return [
+                'pageNumber' => $pageNumber,
+                'path' => $destination
+            ];
         }, range(1, $numberOfPages));
 
-        return Collection::make($files)->sortByDesc();
+        return Collection::make($files)->sortByDesc('pageNumber');
     }
 
     /**

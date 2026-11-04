@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014 DBSeller Servicos de Informatica
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -56,15 +56,15 @@ if(isset($db_opcaoal)){
 <table border="0" >
   <tr>
     <td nowrap title="<?=@$Tk180_cadtipoparc?>">
-       <?
+       <?php
        db_ancora(@$Lk180_cadtipoparc,"js_pesquisak180_cadtipoparc(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('k180_cadtipoparc',10,$Ik180_cadtipoparc,true,'text',3," onchange='js_pesquisak180_cadtipoparc(false);'")
 ?>
-       <?
+       <?php
 
        if (isset($k180_cadtipoparc)&&$k180_cadtipoparc!=""){
         $Result_Descr=$clcadtipoparc->sql_record($clcadtipoparc->sql_query_file($k180_cadtipoparc,"k40_descr","k40_descr"));
@@ -78,15 +78,15 @@ db_input('k40_descr',50,$Ik40_descr,true,'text',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk180_estorc?>">
-       <?
+       <?php
        db_ancora(@$Lk180_estorc,"js_pesquisak180_estorc(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('k180_estorc',13,$Ik180_estorc,true,'text',3," onchange='js_pesquisak180_estorc(false);'")
 ?>
-       <?
+       <?php
 db_input('c60_descr',50,$Ic60_descr,true,'text',3,'')
        ?>
     </td>
@@ -101,7 +101,7 @@ db_input('c60_descr',50,$Ic60_descr,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">
-    <?
+    <?php
      $chavepri= array("k180_cadtipoparc"=>@$k180_cadtipoparc,"k180_estorc"=>@$k180_estorc);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      $cliframe_alterar_excluir->sql     = $clcadtipoparcrec->sql_query($k180_cadtipoparc);

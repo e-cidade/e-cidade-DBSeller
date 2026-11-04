@@ -33,7 +33,7 @@ class Anexo9 extends Base implements In22
         $dados = $this->processarDados();
 
         $totalValorPago = 0;
-        foreach ($dados as &$dado) {
+        foreach ($dados as $dado) {
             $totalValorPago += $dado->valorpago;
             $dado->valorpago = $this->formataValor($dado->valorpago);
         }

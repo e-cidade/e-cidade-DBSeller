@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,30 +55,30 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tprocdiver?>">
-       <?
+       <?php
        db_ancora(@$Lprocdiver,"js_pesquisaprocdiver(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('procdiver',6,$Iprocdiver,true,'text',3," onchange='js_pesquisaprocdiver(false);'")
 ?>
-       <?
+       <?php
 //db_input('dv09_descr',40,$Idv09_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Treceita?>">
-       <?
+       <?php
        db_ancora(@$Lreceita,"js_pesquisareceita(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('receita',6,$Ireceita,true,'text',$db_opcao," onchange='js_pesquisareceita(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',32,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -93,7 +93,7 @@ db_input('k02_descr',32,$Ik02_descr,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("procdiver"=>@$procdiver,"receita"=>@$receita);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //	 echo $clrecparprocdiver->sql_query_file($procdiver);

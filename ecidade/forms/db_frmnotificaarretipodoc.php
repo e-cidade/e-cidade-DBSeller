@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("k00_descr");
        <?=@$Lk101_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k101_sequencial',10,$Ik101_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk101_db_documento?>">
-       <?
+       <?php
        db_ancora(@$Lk101_db_documento,"js_pesquisak101_db_documento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k101_db_documento',10,$Ik101_db_documento,true,'text',$db_opcao," onchange='js_pesquisak101_db_documento(false);'")
 ?>
-       <?
+       <?php
 db_input('db03_descr',40,$Idb03_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk101_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lk101_tipo,"js_pesquisak101_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k101_tipo',10,$Ik101_tipo,true,'text',$db_opcao," onchange='js_pesquisak101_tipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_notificaarretipodoc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

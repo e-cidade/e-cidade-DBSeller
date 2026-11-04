@@ -1,88 +1,88 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE prontproced
-class cl_tmp_prontproced { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd29_i_codigo = 0; 
-   var $sd29_i_prontuario = 0; 
-   var $sd29_i_procedimento = 0; 
-   var $sd29_d_data_dia = null; 
-   var $sd29_d_data_mes = null; 
-   var $sd29_d_data_ano = null; 
-   var $sd29_d_data = null; 
-   var $sd29_c_hora = null; 
-   var $sd29_t_tratamento = null; 
-   var $sd29_i_usuario = 0; 
-   var $sd29_d_cadastro_dia = null; 
-   var $sd29_d_cadastro_mes = null; 
-   var $sd29_d_cadastro_ano = null; 
-   var $sd29_d_cadastro = null; 
-   var $sd29_c_cadastro = null; 
-   var $sd29_i_profissional = 0; 
+class cl_tmp_prontproced {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd29_i_codigo = 0;
+   var $sd29_i_prontuario = 0;
+   var $sd29_i_procedimento = 0;
+   var $sd29_d_data_dia = null;
+   var $sd29_d_data_mes = null;
+   var $sd29_d_data_ano = null;
+   var $sd29_d_data = null;
+   var $sd29_c_hora = null;
+   var $sd29_t_tratamento = null;
+   var $sd29_i_usuario = 0;
+   var $sd29_d_cadastro_dia = null;
+   var $sd29_d_cadastro_mes = null;
+   var $sd29_d_cadastro_ano = null;
+   var $sd29_d_cadastro = null;
+   var $sd29_c_cadastro = null;
+   var $sd29_i_profissional = 0;
    var $sd29_t_diagnostico = null;
    // tabela temporaria
-   var $tmp_prontproced = null; 
-   // cria propriedade com as variaveis do arquivo 
+   var $tmp_prontproced = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd29_i_codigo = int4 = Código 
-                 sd29_i_prontuario = int4 = Prontuario 
-                 sd29_i_procedimento = int4 = Procedimento 
-                 sd29_d_data = date = Data 
-                 sd29_c_hora = char(5) = Hora 
-                 sd29_t_tratamento = text = Tratamento 
-                 sd29_i_usuario = int4 = Cod. Usuário 
-                 sd29_d_cadastro = date = Data Cadastro 
-                 sd29_c_cadastro = varchar(20) = Hora Cadastro 
-                 sd29_i_profissional = int4 = Profissional / CBO 
-                 sd29_t_diagnostico = text = Diagnóstico 
+                 sd29_i_codigo = int4 = Código
+                 sd29_i_prontuario = int4 = Prontuario
+                 sd29_i_procedimento = int4 = Procedimento
+                 sd29_d_data = date = Data
+                 sd29_c_hora = char(5) = Hora
+                 sd29_t_tratamento = text = Tratamento
+                 sd29_i_usuario = int4 = Cod. Usuário
+                 sd29_d_cadastro = date = Data Cadastro
+                 sd29_c_cadastro = varchar(20) = Hora Cadastro
+                 sd29_i_profissional = int4 = Profissional / CBO
+                 sd29_t_diagnostico = text = Diagnóstico
                  ";
-   //funcao construtor da classe 
-   function cl_tmp_prontproced() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("prontproced"); 
+     $this->rotulo = new rotulo("prontproced");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -91,7 +91,7 @@ class cl_tmp_prontproced {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd29_i_codigo = ($this->sd29_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd29_i_codigo"]:$this->sd29_i_codigo);
        $this->sd29_i_prontuario = ($this->sd29_i_prontuario == ""?@$GLOBALS["HTTP_POST_VARS"]["sd29_i_prontuario"]:$this->sd29_i_prontuario);
@@ -123,9 +123,9 @@ class cl_tmp_prontproced {
      }
    }
    // funcao para inclusao
-   function incluir ($sd29_i_codigo){ 
+   public function incluir ($sd29_i_codigo){
       $this->atualizacampos();
-     if($this->sd29_i_prontuario == null ){ 
+     if($this->sd29_i_prontuario == null ){
        $this->erro_sql = " Campo Prontuario nao Informado.";
        $this->erro_campo = "sd29_i_prontuario";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_tmp_prontproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd29_i_procedimento == null ){ 
+     if($this->sd29_i_procedimento == null ){
        $this->erro_sql = " Campo Procedimento nao Informado.";
        $this->erro_campo = "sd29_i_procedimento";
        $this->erro_banco = "";
@@ -143,7 +143,7 @@ class cl_tmp_prontproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd29_d_data == null ){ 
+     if($this->sd29_d_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "sd29_d_data_dia";
        $this->erro_banco = "";
@@ -152,7 +152,7 @@ class cl_tmp_prontproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd29_c_hora == null ){ 
+     if($this->sd29_c_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "sd29_c_hora";
        $this->erro_banco = "";
@@ -161,7 +161,7 @@ class cl_tmp_prontproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd29_i_usuario == null ){ 
+     if($this->sd29_i_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "sd29_i_usuario";
        $this->erro_banco = "";
@@ -170,13 +170,13 @@ class cl_tmp_prontproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd29_d_cadastro == null ){ 
+     if($this->sd29_d_cadastro == null ){
        $this->sd29_d_cadastro = "now()";
      }
-     if($this->sd29_c_cadastro == null ){ 
+     if($this->sd29_c_cadastro == null ){
        $this->sd29_c_cadastro = "current_time";
      }
-     if($this->sd29_i_profissional == null ){ 
+     if($this->sd29_i_profissional == null ){
        $this->erro_sql = " Campo Profissional / CBO nao Informado.";
        $this->erro_campo = "sd29_i_profissional";
        $this->erro_banco = "";
@@ -186,16 +186,16 @@ class cl_tmp_prontproced {
        return false;
      }
      if($sd29_i_codigo == "" || $sd29_i_codigo == null ){
-       $result = db_query("select nextval('prontproced_sd29_i_codigo_seq')"); 
+       $result = db_query("select nextval('prontproced_sd29_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: prontproced_sd29_i_codigo_seq do campo: sd29_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: prontproced_sd29_i_codigo_seq do campo: sd29_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->sd29_i_codigo = pg_result($result,0,0); 
+       $this->sd29_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from prontproced_sd29_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $sd29_i_codigo)){
@@ -206,10 +206,10 @@ class cl_tmp_prontproced {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->sd29_i_codigo = $sd29_i_codigo; 
+         $this->sd29_i_codigo = $sd29_i_codigo;
        }
      }
-     if(($this->sd29_i_codigo == null) || ($this->sd29_i_codigo == "") ){ 
+     if(($this->sd29_i_codigo == null) || ($this->sd29_i_codigo == "") ){
        $this->erro_sql = " Campo sd29_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -218,33 +218,33 @@ class cl_tmp_prontproced {
        return false;
      }
      $sql = "insert into ".$this->tmp_prontproced."(
-                                       sd29_i_codigo 
-                                      ,sd29_i_prontuario 
-                                      ,sd29_i_procedimento 
-                                      ,sd29_d_data 
-                                      ,sd29_c_hora 
-                                      ,sd29_t_tratamento 
-                                      ,sd29_i_usuario 
-                                      ,sd29_d_cadastro 
-                                      ,sd29_c_cadastro 
-                                      ,sd29_i_profissional 
-                                      ,sd29_t_diagnostico 
+                                       sd29_i_codigo
+                                      ,sd29_i_prontuario
+                                      ,sd29_i_procedimento
+                                      ,sd29_d_data
+                                      ,sd29_c_hora
+                                      ,sd29_t_tratamento
+                                      ,sd29_i_usuario
+                                      ,sd29_d_cadastro
+                                      ,sd29_c_cadastro
+                                      ,sd29_i_profissional
+                                      ,sd29_t_diagnostico
                        )
                 values (
-                                $this->sd29_i_codigo 
-                               ,$this->sd29_i_prontuario 
-                               ,$this->sd29_i_procedimento 
-                               ,".($this->sd29_d_data == "null" || $this->sd29_d_data == ""?"null":"'".$this->sd29_d_data."'")." 
-                               ,'$this->sd29_c_hora' 
-                               ,'$this->sd29_t_tratamento' 
-                               ,$this->sd29_i_usuario 
-                               ,".($this->sd29_d_cadastro == "null" || $this->sd29_d_cadastro == ""?"null":"'".$this->sd29_d_cadastro."'")." 
-                               ,'$this->sd29_c_cadastro' 
-                               ,$this->sd29_i_profissional 
-                               ,'$this->sd29_t_diagnostico' 
+                                $this->sd29_i_codigo
+                               ,$this->sd29_i_prontuario
+                               ,$this->sd29_i_procedimento
+                               ,".($this->sd29_d_data == "null" || $this->sd29_d_data == ""?"null":"'".$this->sd29_d_data."'")."
+                               ,'$this->sd29_c_hora'
+                               ,'$this->sd29_t_tratamento'
+                               ,$this->sd29_i_usuario
+                               ,".($this->sd29_d_cadastro == "null" || $this->sd29_d_cadastro == ""?"null":"'".$this->sd29_d_cadastro."'")."
+                               ,'$this->sd29_c_cadastro'
+                               ,$this->sd29_i_profissional
+                               ,'$this->sd29_t_diagnostico'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Procedimentos do Prontuario ($this->sd29_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -286,16 +286,16 @@ class cl_tmp_prontproced {
        $resac = db_query("insert into db_acount values($acount,1006042,11883,'','".AddSlashes(pg_result($resaco,0,'sd29_t_diagnostico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd29_i_codigo=null) { 
+   public function alterar ($sd29_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update ".$this->tmp_prontproced." set ";
      $virgula = "";
-     if(trim($this->sd29_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_codigo"])){ 
+     if(trim($this->sd29_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_codigo"])){
        $sql  .= $virgula." sd29_i_codigo = $this->sd29_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd29_i_codigo) == null ){ 
+       if(trim($this->sd29_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd29_i_codigo";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_tmp_prontproced {
          return false;
        }
      }
-     if(trim($this->sd29_i_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_prontuario"])){ 
+     if(trim($this->sd29_i_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_prontuario"])){
        $sql  .= $virgula." sd29_i_prontuario = $this->sd29_i_prontuario ";
        $virgula = ",";
-       if(trim($this->sd29_i_prontuario) == null ){ 
+       if(trim($this->sd29_i_prontuario) == null ){
          $this->erro_sql = " Campo Prontuario nao Informado.";
          $this->erro_campo = "sd29_i_prontuario";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_tmp_prontproced {
          return false;
        }
      }
-     if(trim($this->sd29_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_procedimento"])){ 
+     if(trim($this->sd29_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_procedimento"])){
        $sql  .= $virgula." sd29_i_procedimento = $this->sd29_i_procedimento ";
        $virgula = ",";
-       if(trim($this->sd29_i_procedimento) == null ){ 
+       if(trim($this->sd29_i_procedimento) == null ){
          $this->erro_sql = " Campo Procedimento nao Informado.";
          $this->erro_campo = "sd29_i_procedimento";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_tmp_prontproced {
          return false;
        }
      }
-     if(trim($this->sd29_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd29_d_data_dia"] !="") ){ 
+     if(trim($this->sd29_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd29_d_data_dia"] !="") ){
        $sql  .= $virgula." sd29_d_data = '$this->sd29_d_data' ";
        $virgula = ",";
-       if(trim($this->sd29_d_data) == null ){ 
+       if(trim($this->sd29_d_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "sd29_d_data_dia";
          $this->erro_banco = "";
@@ -343,11 +343,11 @@ class cl_tmp_prontproced {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_data_dia"])){
          $sql  .= $virgula." sd29_d_data = null ";
          $virgula = ",";
-         if(trim($this->sd29_d_data) == null ){ 
+         if(trim($this->sd29_d_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "sd29_d_data_dia";
            $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_tmp_prontproced {
          }
        }
      }
-     if(trim($this->sd29_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_c_hora"])){ 
+     if(trim($this->sd29_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_c_hora"])){
        $sql  .= $virgula." sd29_c_hora = '$this->sd29_c_hora' ";
        $virgula = ",";
-       if(trim($this->sd29_c_hora) == null ){ 
+       if(trim($this->sd29_c_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "sd29_c_hora";
          $this->erro_banco = "";
@@ -371,14 +371,14 @@ class cl_tmp_prontproced {
          return false;
        }
      }
-     if(trim($this->sd29_t_tratamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_t_tratamento"])){ 
+     if(trim($this->sd29_t_tratamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_t_tratamento"])){
        $sql  .= $virgula." sd29_t_tratamento = '$this->sd29_t_tratamento' ";
        $virgula = ",";
      }
-     if(trim($this->sd29_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_usuario"])){ 
+     if(trim($this->sd29_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_usuario"])){
        $sql  .= $virgula." sd29_i_usuario = $this->sd29_i_usuario ";
        $virgula = ",";
-       if(trim($this->sd29_i_usuario) == null ){ 
+       if(trim($this->sd29_i_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "sd29_i_usuario";
          $this->erro_banco = "";
@@ -388,23 +388,23 @@ class cl_tmp_prontproced {
          return false;
        }
      }
-     if(trim($this->sd29_d_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_cadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd29_d_cadastro_dia"] !="") ){ 
+     if(trim($this->sd29_d_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_cadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd29_d_cadastro_dia"] !="") ){
        $sql  .= $virgula." sd29_d_cadastro = '$this->sd29_d_cadastro' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_cadastro_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd29_d_cadastro_dia"])){
          $sql  .= $virgula." sd29_d_cadastro = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->sd29_c_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_c_cadastro"])){ 
+     if(trim($this->sd29_c_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_c_cadastro"])){
        $sql  .= $virgula." sd29_c_cadastro = '$this->sd29_c_cadastro' ";
        $virgula = ",";
      }
-     if(trim($this->sd29_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_profissional"])){ 
+     if(trim($this->sd29_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_i_profissional"])){
        $sql  .= $virgula." sd29_i_profissional = $this->sd29_i_profissional ";
        $virgula = ",";
-       if(trim($this->sd29_i_profissional) == null ){ 
+       if(trim($this->sd29_i_profissional) == null ){
          $this->erro_sql = " Campo Profissional / CBO nao Informado.";
          $this->erro_campo = "sd29_i_profissional";
          $this->erro_banco = "";
@@ -414,7 +414,7 @@ class cl_tmp_prontproced {
          return false;
        }
      }
-     if(trim($this->sd29_t_diagnostico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_t_diagnostico"])){ 
+     if(trim($this->sd29_t_diagnostico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd29_t_diagnostico"])){
        $sql  .= $virgula." sd29_t_diagnostico = '$this->sd29_t_diagnostico' ";
        $virgula = ",";
      }
@@ -454,7 +454,7 @@ class cl_tmp_prontproced {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Procedimentos do Prontuario nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd29_i_codigo;
@@ -482,14 +482,14 @@ class cl_tmp_prontproced {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd29_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd29_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd29_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -525,7 +525,7 @@ class cl_tmp_prontproced {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Procedimentos do Prontuario nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd29_i_codigo;
@@ -553,11 +553,11 @@ class cl_tmp_prontproced {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -579,10 +579,10 @@ class cl_tmp_prontproced {
       }
      return $result;
    }
-   function sql_query ( $sd29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,15 +614,15 @@ class cl_tmp_prontproced {
      $sql2 = "";
      if($dbwhere==""){
        if($sd29_i_codigo!=null ){
-         $sql2 .= " where ".$this->tmp_prontproced.".sd29_i_codigo = $sd29_i_codigo "; 
-       } 
+         $sql2 .= " where ".$this->tmp_prontproced.".sd29_i_codigo = $sd29_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -631,10 +631,10 @@ class cl_tmp_prontproced {
      }
      return $sql;
   }
-   function sql_query_file ( $sd29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,15 +647,15 @@ class cl_tmp_prontproced {
      $sql2 = "";
      if($dbwhere==""){
        if($sd29_i_codigo!=null ){
-         $sql2 .= " where ".$this->tmp_prontproced.".sd29_i_codigo = $sd29_i_codigo "; 
-       } 
+         $sql2 .= " where ".$this->tmp_prontproced.".sd29_i_codigo = $sd29_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

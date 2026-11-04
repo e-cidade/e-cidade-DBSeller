@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,7 +66,7 @@ $sLabelMsg = "Anexo V - Demonstrativo do  Resultado Nominal";
 
       obj     = document.form1;
       var periodo = obj.o116_periodo.value;
-      fonte="<? $fonte ?>";
+      fonte="<?php $fonte ?>";
       jan = window.open('<?=$fonte?>?periodo='+periodo,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
       jan.moveTo(0,0);
     }
@@ -92,7 +92,7 @@ $sLabelMsg = "Anexo V - Demonstrativo do  Resultado Nominal";
 
             <tr>
               <td colspan=2 nowrap><b>Período :</b>
-                <?
+                <?php
                 $aPeriodos = $oRelatorio->getPeriodos();
                 $aListaPeriodos = array();
                 $aListaPeriodos[0] = "Selecione";

@@ -78,7 +78,7 @@ class OdoGraph extends Graph {
     }
 
     // Add a new Odometer to the graph
-    function Add($aObject) {
+    public function Add($aObject) {
 	if( is_array($aObject) ) {
 	    for($i=0; $i<count($aObject); ++$i)
 		$this->iObj[] = $aObject[$i];
@@ -87,7 +87,7 @@ class OdoGraph extends Graph {
 	    $this->iObj[] = $aObject;
     }
 
-    function Stroke($aStrokeFileName="") {
+    public function Stroke($aStrokeFileName="") {
 	if( $this->img->img == NULL ) {
 	    // If the user didn't specify an image size no
 	    // image will yet have been created so we need
@@ -166,7 +166,7 @@ class OdoNeedle extends LineProperty {
     var $iLineWeight=1;
     var $iShadowColor="gray:0.7",$iShadow=false, $idxShadow=4, $idyShadow=4;
 
-    function OdoNeedle() {
+    public function OdoNeedle() {
 	$this->iArrowSize = array(
 	    3,5, 3,8, 3,15,    // SS, SM, SL
 	    4,7, 4,12, 5,20,    // MS, MM, ML
@@ -178,19 +178,19 @@ class OdoNeedle extends LineProperty {
 
     }
 
-    function Set($aVal) {
+    public function Set($aVal) {
 	$this->iVal = $aVal;
     }
 
-    function SetLineWeight($aWeight) {
+    public function SetLineWeight($aWeight) {
 	$this->iLineWeight = $aWeight;
     }
 
-    function SetFillColor($aColor) {
+    public function SetFillColor($aColor) {
 	$this->iFillColor = $aColor;
     }
 
-    function SetLength($aLen) {
+    public function SetLength($aLen) {
 	$this->iLength = $aLen;
     }
     
@@ -210,7 +210,7 @@ class OdoNeedle extends LineProperty {
 	$this->idyShadow = $aDy;
     }
 
-    function Stroke($img,$aOdometer) {
+    public function Stroke($img,$aOdometer) {
 	if( !$this->iShow ) return; 
 
 	$a = $aOdometer->scale->Translate($this->iVal);
@@ -323,48 +323,48 @@ class OdoScale {
     var $iFormatStr = "%d";
     var $iLabelPosition=0.8; 
 
-    function OdoScale($aStartAngle,$aEndAngle) {
+    public function __construct($aStartAngle,$aEndAngle) {
 	$this->label = new Text();
 	$this->iStartAngle = $aStartAngle * M_PI/180;
 	$this->iEndAngle = $aEndAngle * M_PI/180;
     }
 
-    function SetAngle($aStart,$aEnd) {
+    public function SetAngle($aStart,$aEnd) {
 	$this->iStartAngle = $aStart * M_PI/180;
 	$this->iEndAngle = $aEnd * M_PI/180;
     }
 
-    function SetLabelFormat($aFormat) {
+    public function SetLabelFormat($aFormat) {
 	$this->iFormatStr = $aFormat;
     }
 
-    function SetTickWeight($aWeight) {
+    public function SetTickWeight($aWeight) {
 	$this->iTickWeight = $aWeight;
     }
 
-    function SetTickColor($aColor) {
+    public function SetTickColor($aColor) {
 	$this->iColor = $aColor;
     }
 
-    function SetTickLength($aLength) {
+    public function SetTickLength($aLength) {
 	$this->iTickLength = $aLength;
     }
 
-    function Set($aMin,$aMax) {
+    public function Set($aMin,$aMax) {
 	$this->iMin = $aMin;
 	$this->iMax = $aMax;
     }
 
-    function SetTicks($aMinTick,$aLabelInterval=1) {
+    public function SetTicks($aMinTick,$aLabelInterval=1) {
 	$this->iLabelInterval = $aLabelInterval;
 	$this->iMinTick = $aMinTick;
     }
 
-    function SetLabelPos($aPos) {
+    public function SetLabelPos($aPos) {
 	$this->iLabelPostion = $aPos;
     }
 
-    function Translate($aVal) {
+    public function Translate($aVal) {
 	if( $aVal > $this->iMax || $aVal < $this->iMin )
 	    JpGraphError::Raise("<b>JpGraph Error:</b> Value for odometer is outside specified scale.");
 	$a = $this->iStartAngle + 
@@ -373,7 +373,7 @@ class OdoScale {
 	return $a < 0 ?  $a + 2*M_PI : $a ;
     }
 
-    function Show($aShow=true) {
+    public function Show($aShow=true) {
 	$this->iShow = $aShow;
     }
 
@@ -424,7 +424,7 @@ class OdoScale {
 
 class OdometerLabel extends Text {
     var $iVPos=0.2;
-    function SetVPos($aPos) {
+    public function SetVPos($aPos) {
 	$this->iVPos = $aPos;
     }
 }
@@ -449,7 +449,7 @@ class Odometer {
     var $iMargin=5;
     var $caption,$iCaptionMargin=0;
 
-    function Odometer($aStyle=ODO_HALF) {
+    public function __construct($aStyle=ODO_HALF) {
 	// Set default position
 	$this->xc = 0.5;
 	if( $aStyle == ODO_FULL ) {
@@ -478,11 +478,11 @@ class Odometer {
 	$this->caption->SetFont(FF_FONT2,FS_NORMAL);
     }
 
-    function SetMargin($aMargin) {
+    public function SetMargin($aMargin) {
 	$this->iMargin = $aMargin;
     }
 
-    function SetBase($aShowBase,$aWidth=0.1,$aColor1="navy",$aColor2="steelblue",$aColor3="white") {
+    public function SetBase($aShowBase,$aWidth=0.1,$aColor1="navy",$aColor2="steelblue",$aColor3="white") {
 	$this->iBase = $aShowBase;
 	$this->iBaseColor1 = $aColor1;
 	$this->iBaseColor2 = $aColor2;
@@ -492,15 +492,15 @@ class Odometer {
 
     // Dummy method to make odometers have the same signature as the
     // layout classes since odometer is "leaf" classes in the hierarchy
-    function LayoutSize() {
+    public function LayoutSize() {
 	return 1;
     }
 
-    function SetCenterAreaWidth($aWidth) {
+    public function SetCenterAreaWidth($aWidth) {
 	$this->iCenterAreaWidth = $aWidth;
     }
 
-    function SetPos($aXc,$aYc) {
+    public function SetPos($aXc,$aYc) {
 	$this->xc = $aXc;
 	$this->yc = $aYc;
     }
@@ -508,19 +508,19 @@ class Odometer {
     // Set size. A value in the range 0 to 1 is interpretated as 
     // fraction of min(width,heigth) while a value > 1 is interpretated
     // as absolute size
-    function SetSize($aRadius) {
+    public function SetSize($aRadius) {
 	$this->iRadius = $aRadius;
     }
 
-    function AddIndication($aStart,$aEnd,$aColor) {
+    public function AddIndication($aStart,$aEnd,$aColor) {
 	$this->iInd[$this->iIndIdx++] = array($aStart,$aEnd,$aColor);
     }
 
-    function SetColor($aColor) {
+    public function SetColor($aColor) {
 	$this->iFillColor = $aColor;
     }
 
-    function SetBorder($aColor,$aWidth=1) {
+    public function SetBorder($aColor,$aWidth=1) {
 	$this->iColor = $aColor;
 	$this->iBorderWidth = $aWidth;
     }
@@ -538,7 +538,7 @@ class Odometer {
     }
 
     // Stroke the outline of the odometer
-    function StrokeFascia($img) {
+    public function StrokeFascia($img) {
 	$r = $this->iRadius;
 
 	// If the border width > 1 we have no choice but to
@@ -585,7 +585,7 @@ class Odometer {
 	}
     }
 
-    function Stroke($graph) {
+    public function Stroke($graph) {
 	$img = $graph->img;
 	// Adjust center position if it's specified as fraction of plot height/width
 	$adj = 0; //$graph->doshadow ? $graph->shadow_width : 0;
@@ -661,17 +661,17 @@ class Odometer {
 class LayoutVert {
     var $iObj;
 
-    function LayoutVert($aObjArr) {
+    public function __construct($aObjArr) {
 	if( !is_array($aObjArr) )
 	    $aObjArr = array($aObjArr);
 	$this->iObj = $aObjArr;
     }
 
-    function LayoutSize() {
+    public function LayoutSize() {
 	return count($this->iObj);
     }
 
-    function Stroke($graph) {
+    public function Stroke($graph) {
 	$img = $graph->img;
 	$n = count($this->iObj);
 
@@ -705,17 +705,17 @@ class LayoutVert {
 class LayoutHor {
     var $iObj;
 
-    function LayoutHor($aObjArr) {
+    public function __construct($aObjArr) {
 	if( !is_array($aObjArr) )
 	    $aObjArr = array($aObjArr);
 	$this->iObj = $aObjArr;
     }
 
-    function LayoutSize() {
+    public function LayoutSize() {
 	return count($this->iObj);
     }
 
-    function Stroke($graph) {
+    public function Stroke($graph) {
 	$img = $graph->img;
 	$n = count($this->iObj);
 

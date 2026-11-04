@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/pdf.php"));
@@ -861,7 +861,7 @@ $sele_work   = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-$xinstit    = split("-",$db_selinstit);
+$xinstit    =explode("-",$db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 
@@ -870,11 +870,11 @@ $head3 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head4 = "BALANÇO ORÇAMENTÁRIO";
 $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $txt   = strtoupper(db_mes('01'));
-$dt    = split("-",$dt_fin);
+$dt    =explode("-",$dt_fin);
 $txt  .= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";
-$dt    = split("-",$dt_ini);
+$dt    =explode("-",$dt_ini);
 $txt  .= strtoupper(db_mes($dt[1]))."-";
-$dt    = split("-",$dt_fin);
+$dt    =explode("-",$dt_fin);
 $txt  .= strtoupper(db_mes($dt[1]));
 $head6 = "$txt";
 ////////////////////////// ///////////////////
@@ -898,7 +898,7 @@ $pdf->setfont('arial','',6);
 $pdf->cell(170,$alt,"RREO - Anexo I (LRF, Art. 52, inciso I, alíneas \"a\" e \"b\" do inciso II e §1º)",'0',0,"L",0);
 $pdf->cell(20,$alt,"R$ 1,00",'0',1,"R",0);
 
-imprime_cabec_rec($alt,&$pdf);
+imprime_cabec_rec($alt,$pdf);
 
 //--------------------------------
 $pos_rec_intra = $pdf->getY();
@@ -951,7 +951,7 @@ $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
 
-atualizaTotaisReceita($m_impostos["parametros"] ,&$m_impostos_intra, $result_rec);
+atualizaTotaisReceita($m_impostos["parametros"], $m_impostos_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_impostos_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_impostos_intra["atualizada"];
@@ -995,7 +995,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_taxas["parametros"] ,&$m_taxas_intra, $result_rec);
+atualizaTotaisReceita($m_taxas["parametros"], $m_taxas_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_taxas_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_taxas_intra["atualizada"];
@@ -1039,7 +1039,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_melhorias["parametros"] ,&$m_melhorias_intra, $result_rec);
+atualizaTotaisReceita($m_melhorias["parametros"], $m_melhorias_intra, $result_rec);
 
 $rec_cor_II_inicial_intra    += $m_melhorias_intra["inicial"];
 $rec_cor_II_atualizada_intra += $m_melhorias_intra["atualizada"];
@@ -1112,7 +1112,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_sociais["parametros"] ,&$m_sociais_intra, $result_rec);
+atualizaTotaisReceita($m_sociais["parametros"], $m_sociais_intra, $result_rec);
 
 $rec_cor_II_inicial_intra      += $m_sociais_intra["inicial"];
 $rec_cor_II_atualizada_intra   += $m_sociais_intra["atualizada"];
@@ -1160,7 +1160,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_economicas["parametros"] ,&$m_economicas_intra, $result_rec);
+atualizaTotaisReceita($m_economicas["parametros"], $m_economicas_intra, $result_rec);
 
 $rec_cor_II_inicial_intra      += $m_economicas_intra["inicial"];
 $rec_cor_II_atualizada_intra   += $m_economicas_intra["atualizada"];
@@ -1204,7 +1204,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_iluminacao_publica["parametros"] ,&$m_iluminacao_publica_intra, $result_rec);
+atualizaTotaisReceita($m_iluminacao_publica["parametros"], $m_iluminacao_publica_intra, $result_rec);
 
 $rec_cor_II_inicial_intra      += $m_iluminacao_publica_intra["inicial"];
 $rec_cor_II_atualizada_intra   += $m_iluminacao_publica_intra["atualizada"];
@@ -1279,7 +1279,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_imobiliarias["parametros"] ,&$m_imobiliarias_intra, $result_rec);
+atualizaTotaisReceita($m_imobiliarias["parametros"], $m_imobiliarias_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_imobiliarias_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_imobiliarias_intra["atualizada"];
@@ -1324,7 +1324,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_valmobiliarias["parametros"] ,&$m_valmobiliarias_intra, $result_rec);
+atualizaTotaisReceita($m_valmobiliarias["parametros"], $m_valmobiliarias_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_valmobiliarias_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_valmobiliarias_intra["atualizada"];
@@ -1371,7 +1371,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_permissoes["parametros"] ,&$m_permissoes_intra, $result_rec);
+atualizaTotaisReceita($m_permissoes["parametros"], $m_permissoes_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_permissoes_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_permissoes_intra["atualizada"];
@@ -1414,7 +1414,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_comp_financeiras["parametros"] ,&$m_comp_financeiras_intra, $result_rec);
+atualizaTotaisReceita($m_comp_financeiras["parametros"], $m_comp_financeiras_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_comp_financeiras_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_comp_financeiras_intra["atualizada"];
@@ -1458,7 +1458,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_receita_decorrente_direito["parametros"] ,&$m_receita_decorrente_direito_intra, $result_rec);
+atualizaTotaisReceita($m_receita_decorrente_direito["parametros"], $m_receita_decorrente_direito_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_receita_decorrente_direito_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_receita_decorrente_direito_intra["atualizada"];
@@ -1504,7 +1504,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_receita_cessao_direitos["parametros"] ,&$m_receita_cessao_direitos_intra, $result_rec);
+atualizaTotaisReceita($m_receita_cessao_direitos["parametros"], $m_receita_cessao_direitos_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_receita_cessao_direitos_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_receita_cessao_direitos_intra["atualizada"];
@@ -1549,7 +1549,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_patrimoniais["parametros"] ,&$m_patrimoniais_intra, $result_rec);
+atualizaTotaisReceita($m_patrimoniais["parametros"], $m_patrimoniais_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_patrimoniais_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_patrimoniais_intra["atualizada"];
@@ -1626,7 +1626,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_vegetal["parametros"] ,&$m_vegetal_intra, $result_rec);
+atualizaTotaisReceita($m_vegetal["parametros"], $m_vegetal_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_vegetal_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_vegetal_intra["atualizada"];
@@ -1669,7 +1669,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_animal["parametros"] ,&$m_animal_intra, $result_rec);
+atualizaTotaisReceita($m_animal["parametros"], $m_animal_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_animal_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_animal_intra["atualizada"];
@@ -1714,7 +1714,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_agropecuarias["parametros"] ,&$m_agropecuarias_intra, $result_rec);
+atualizaTotaisReceita($m_agropecuarias["parametros"], $m_agropecuarias_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_agropecuarias_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_agropecuarias_intra["atualizada"];
@@ -1789,7 +1789,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_industria_extrativa_mineral["parametros"] ,&$m_industria_extrativa_mineral_intra, $result_rec);
+atualizaTotaisReceita($m_industria_extrativa_mineral["parametros"], $m_industria_extrativa_mineral_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_industria_extrativa_mineral_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_industria_extrativa_mineral_intra["atualizada"];
@@ -1833,7 +1833,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transformacao["parametros"] ,&$m_transformacao_intra, $result_rec);
+atualizaTotaisReceita($m_transformacao["parametros"], $m_transformacao_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_transformacao_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_transformacao_intra["atualizada"];
@@ -1879,7 +1879,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_construcao["parametros"] ,&$m_construcao_intra, $result_rec);
+atualizaTotaisReceita($m_construcao["parametros"], $m_construcao_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_construcao_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_construcao_intra["atualizada"];
@@ -1923,7 +1923,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_industriais["parametros"] ,&$m_industriais_intra, $result_rec);
+atualizaTotaisReceita($m_industriais["parametros"], $m_industriais_intra, $result_rec);
 
 $rec_cor_II_inicial_intra     += $m_industriais_intra["inicial"];
 $rec_cor_II_atualizada_intra  += $m_industriais_intra["atualizada"];
@@ -1998,7 +1998,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_servicos["parametros"] ,&$m_servicos_intra, $result_rec);
+atualizaTotaisReceita($m_servicos["parametros"], $m_servicos_intra, $result_rec);
 
 $rec_cor_II_inicial_intra    += $m_servicos_intra["inicial"];
 $rec_cor_II_atualizada_intra += $m_servicos_intra["atualizada"];
@@ -2049,7 +2049,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_intergovernamental["parametros"] ,&$m_intergovernamental_intra, $result_rec);
+atualizaTotaisReceita($m_intergovernamental["parametros"], $m_intergovernamental_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_intergovernamental_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_intergovernamental_intra["atualizada"];
@@ -2094,7 +2094,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_privadas["parametros"] ,&$m_privadas_intra, $result_rec);
+atualizaTotaisReceita($m_privadas["parametros"], $m_privadas_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_privadas_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_privadas_intra["atualizada"];
@@ -2137,7 +2137,7 @@ $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
 
-atualizaTotaisReceita($m_transf_exterior["parametros"] ,&$m_transf_exterior_intra, $result_rec);
+atualizaTotaisReceita($m_transf_exterior["parametros"], $m_transf_exterior_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_transf_exterior_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_transf_exterior_intra["atualizada"];
@@ -2182,7 +2182,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_pessoas["parametros"] ,&$m_transf_pessoas_intra, $result_rec);
+atualizaTotaisReceita($m_transf_pessoas["parametros"], $m_transf_pessoas_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_transf_pessoas_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_transf_pessoas_intra["atualizada"];
@@ -2225,7 +2225,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_convenios["parametros"] ,&$m_transf_convenios_intra, $result_rec);
+atualizaTotaisReceita($m_transf_convenios["parametros"], $m_transf_convenios_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_transf_convenios_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_transf_convenios_intra["atualizada"];
@@ -2270,7 +2270,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_fome["parametros"] ,&$m_transf_fome_intra, $result_rec);
+atualizaTotaisReceita($m_transf_fome["parametros"], $m_transf_fome_intra, $result_rec);
 
 $oLinha = $m_transf_fome["parametros"]->getValoresSomadosColunas($instituicao, $anousu);
 foreach ($oLinha as $oColunas){
@@ -2361,7 +2361,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_multas["parametros"] ,&$m_multas_intra, $result_rec);
+atualizaTotaisReceita($m_multas["parametros"], $m_multas_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_multas_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_multas_intra["atualizada"];
@@ -2407,7 +2407,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_indenizacao["parametros"] ,&$m_indenizacao_intra, $result_rec);
+atualizaTotaisReceita($m_indenizacao["parametros"], $m_indenizacao_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_indenizacao_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_indenizacao_intra["atualizada"];
@@ -2451,7 +2451,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_divida_ativa["parametros"] ,&$m_divida_ativa_intra, $result_rec);
+atualizaTotaisReceita($m_divida_ativa["parametros"], $m_divida_ativa_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_divida_ativa_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_divida_ativa_intra["atualizada"];
@@ -2500,7 +2500,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_receita_decorrente_aportes["parametros"] ,&$m_receita_decorrente_aportes_intra, $result_rec);
+atualizaTotaisReceita($m_receita_decorrente_aportes["parametros"], $m_receita_decorrente_aportes_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_receita_decorrente_aportes_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_receita_decorrente_aportes_intra["atualizada"];
@@ -2561,7 +2561,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_correntes_diversas["parametros"] ,&$m_correntes_diversas_intra, $result_rec);
+atualizaTotaisReceita($m_correntes_diversas["parametros"], $m_correntes_diversas_intra, $result_rec);
 
 $rec_cor_II_inicial_intra           += $m_correntes_diversas_intra["inicial"];
 $rec_cor_II_atualizada_intra        += $m_correntes_diversas_intra["atualizada"];
@@ -2672,7 +2672,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_oper_internas["parametros"] ,&$m_oper_internas_intra, $result_rec);
+atualizaTotaisReceita($m_oper_internas["parametros"], $m_oper_internas_intra, $result_rec);
 
 $rec_cap_II_inicial_intra              += $m_oper_internas_intra["inicial"];
 $rec_cap_II_atualizada_intra           += $m_oper_internas_intra["atualizada"];
@@ -2720,7 +2720,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_oper_externas["parametros"] ,&$m_oper_externas_intra, $result_rec);
+atualizaTotaisReceita($m_oper_externas["parametros"], $m_oper_externas_intra, $result_rec);
 
 $rec_cap_II_inicial_intra              += $m_oper_externas_intra["inicial"];
 $rec_cap_II_atualizada_intra           += $m_oper_externas_intra["atualizada"];
@@ -2793,7 +2793,7 @@ $tot_atualizada = 0;
 $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
-atualizaTotaisReceita($m_bens_moveis["parametros"] ,&$m_bens_moveis_intra, $result_rec);
+atualizaTotaisReceita($m_bens_moveis["parametros"], $m_bens_moveis_intra, $result_rec);
 
 $rec_cap_II_inicial_intra               += $m_bens_moveis_intra["inicial"];
 $rec_cap_II_atualizada_intra            += $m_bens_moveis_intra["atualizada"];
@@ -2837,7 +2837,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_bens_imoveis["parametros"] ,&$m_bens_imoveis_intra, $result_rec);
+atualizaTotaisReceita($m_bens_imoveis["parametros"], $m_bens_imoveis_intra, $result_rec);
 
 $rec_cap_II_inicial_intra               += $m_bens_imoveis_intra["inicial"];
 $rec_cap_II_atualizada_intra            += $m_bens_imoveis_intra["atualizada"];
@@ -2893,7 +2893,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_emprestimos["parametros"] ,&$m_emprestimos_intra, $result_rec);
+atualizaTotaisReceita($m_emprestimos["parametros"], $m_emprestimos_intra, $result_rec);
 
 $rec_cap_II_inicial_intra               += $m_emprestimos_intra["inicial"];
 $rec_cap_II_atualizada_intra            += $m_emprestimos_intra["atualizada"];
@@ -2959,7 +2959,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_capital_intergovernamentais["parametros"] ,&$m_transf_capital_intergovernamentais_intra, $result_rec);
+atualizaTotaisReceita($m_transf_capital_intergovernamentais["parametros"], $m_transf_capital_intergovernamentais_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_transf_capital_intergovernamentais_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_transf_capital_intergovernamentais_intra["atualizada"];
@@ -3003,7 +3003,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_capital_privadas["parametros"] ,&$m_transf_capital_privadas_intra, $result_rec);
+atualizaTotaisReceita($m_transf_capital_privadas["parametros"], $m_transf_capital_privadas_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_transf_capital_privadas_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_transf_capital_privadas_intra["atualizada"];
@@ -3047,7 +3047,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_capital_exterior["parametros"] ,&$m_transf_capital_exterior_intra, $result_rec);
+atualizaTotaisReceita($m_transf_capital_exterior["parametros"], $m_transf_capital_exterior_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_transf_capital_exterior_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_transf_capital_exterior_intra["atualizada"];
@@ -3091,7 +3091,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_capital_pessoas["parametros"] ,&$m_transf_capital_pessoas_intra, $result_rec);
+atualizaTotaisReceita($m_transf_capital_pessoas["parametros"], $m_transf_capital_pessoas_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_transf_capital_pessoas_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_transf_capital_pessoas_intra["atualizada"];
@@ -3136,7 +3136,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_capital_outras["parametros"] ,&$m_transf_capital_outras_intra, $result_rec);
+atualizaTotaisReceita($m_transf_capital_outras["parametros"], $m_transf_capital_outras_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_transf_capital_outras_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_transf_capital_outras_intra["atualizada"];
@@ -3180,7 +3180,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_capital_convenios["parametros"] ,&$m_transf_capital_convenios_intra, $result_rec);
+atualizaTotaisReceita($m_transf_capital_convenios["parametros"], $m_transf_capital_convenios_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_transf_capital_convenios_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_transf_capital_convenios_intra["atualizada"];
@@ -3225,7 +3225,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_transf_capital_fome["parametros"] ,&$m_transf_capital_fome_intra, $result_rec);
+atualizaTotaisReceita($m_transf_capital_fome["parametros"], $m_transf_capital_fome_intra, $result_rec);
 
 $oLinha = $m_transf_capital_fome["parametros"]->getValoresSomadosColunas($instituicao, $anousu);
 foreach ($oLinha as $oColunas){
@@ -3311,7 +3311,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_outras_social["parametros"] ,&$m_outras_social_intra, $result_rec);
+atualizaTotaisReceita($m_outras_social["parametros"], $m_outras_social_intra, $result_rec);
 
 $oLinha = $m_outras_social["parametros"]->getValoresSomadosColunas($instituicao, $anousu);
 foreach ($oLinha as $oColunas){
@@ -3365,7 +3365,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_outras_disponibilidades["parametros"] ,&$m_outras_disponibilidades_intra, $result_rec);
+atualizaTotaisReceita($m_outras_disponibilidades["parametros"], $m_outras_disponibilidades_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_outras_disponibilidades_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_outras_disponibilidades_intra["atualizada"];
@@ -3410,7 +3410,7 @@ $tot_nobim      = 0;
 $tot_atebim     = 0;
 $tot_realizar   = 0;
 
-atualizaTotaisReceita($m_outras_diversas["parametros"] ,&$m_outras_diversas_intra, $result_rec);
+atualizaTotaisReceita($m_outras_diversas["parametros"], $m_outras_diversas_intra, $result_rec);
 
 $rec_cap_II_inicial_intra           += $m_outras_diversas_intra["inicial"];
 $rec_cap_II_atualizada_intra        += $m_outras_diversas_intra["atualizada"];
@@ -3497,7 +3497,7 @@ $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","T",1,"R",0
 $pdf->AddPage();
 $pdf->cell(190,$alt,'Continuação '.($pdf->pageNo()-1)."/{nb}","B",1,"R",0);
 
-imprime_cabec_rec($alt,&$pdf);
+imprime_cabec_rec($alt,$pdf);
 
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas de Capital Diversas",'R',0,"L",0);
@@ -5527,7 +5527,7 @@ $pdf->cell(60,$alt,"Continua na página 2",'0',1,"L",0);
     $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
-    imprime_cabec_rec($alt,&$pdf);
+    imprime_cabec_rec($alt,$pdf);
   }
 
 $pos_refi = $pdf->getY();
@@ -5990,7 +5990,7 @@ $pdf->cell(20,$alt,'-'                                            ,'B' ,1,"C",0)
 
 $pdf->Ln(2);
 
-imprime_cabec_desp($alt,&$pdf, $bimestre);
+imprime_cabec_desp($alt,$pdf, $bimestre);
 
 /*
  * #quadrodespesa#
@@ -6696,7 +6696,7 @@ foreach ($oLinha as $oColunas){
   $tot_liq_atebim += $oColunas->colunas[6]->o117_valor;
 
   if ($bimestre == 6) {
-    
+
     if (isset($oColunas->colunas[7]->o117_valor)) {
       $tot_inscritos_rp += $oColunas->colunas[7]->o117_valor;
     }
@@ -6985,7 +6985,7 @@ foreach ($oLinha as $oColunas){
   @$tot_liq_atebim += $oColunas->colunas[6]->o117_valor;
 
   if ($bimestre == 6) {
-    
+
     if (isset($oColunas->colunas[7]->o117_valor)) {
       $tot_inscritos_rp += $oColunas->colunas[7]->o117_valor;
     }

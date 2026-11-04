@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -155,7 +155,7 @@ a.nome:hover {
             </tr>
           </table>
         </form>
-  <?    
+  <?php    
 	//Executa um SELECT e pagina na tela
 
   $sql="select j01_matric as Matricula, z01_nome as Proprietário,j34_setor as Setor, j34_quadra as Quadra, j34_lote as Lote         from iptubase 		     inner join  cgm  on j01_numcgm = z01_numcgm		     inner join  lote on j34_idbql = j01_idbql";
@@ -167,7 +167,7 @@ a.nome:hover {
   </center>
 </td></tr>
 </table>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

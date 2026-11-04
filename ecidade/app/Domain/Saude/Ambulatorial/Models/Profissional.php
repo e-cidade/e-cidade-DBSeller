@@ -24,8 +24,8 @@ class Profissional extends Model
     public $timestamps = false;
 
     public $casts = [
-        'sd03_d_folgaini' => 'DateTime',
-        'sd03_d_folgafim' => 'DateTime',
+        'sd03_d_folgaini' => 'datetime',
+        'sd03_d_folgafim' => 'datetime',
     ];
 
     public function cgm()

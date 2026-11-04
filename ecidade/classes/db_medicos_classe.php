@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,13 +66,13 @@ class cl_medicos {
                  sd03_i_tipo = int4 = Tipo
                  ";
    //funcao construtor da classe
-   function cl_medicos() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("medicos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_medicos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd03_i_codigo = ($this->sd03_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd03_i_codigo"]:$this->sd03_i_codigo);
        $this->sd03_i_crm = ($this->sd03_i_crm == ""?@$GLOBALS["HTTP_POST_VARS"]["sd03_i_crm"]:$this->sd03_i_crm);
@@ -109,7 +109,7 @@ class cl_medicos {
      }
    }
    // funcao para inclusao
-   function incluir ($sd03_i_codigo){
+   public function incluir ($sd03_i_codigo){
       $this->atualizacampos();
      if($this->sd03_i_crm == null ){
        $this->sd03_i_crm = "null";
@@ -226,7 +226,7 @@ class cl_medicos {
      return true;
    }
    // funcao para alteracao
-   function alterar ($sd03_i_codigo=null) {
+   public function alterar ($sd03_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update medicos set ";
      $virgula = "";
@@ -355,7 +355,7 @@ class cl_medicos {
      }
    }
    // funcao para exclusao
-   function excluir ($sd03_i_codigo=null,$dbwhere=null) {
+   public function excluir ($sd03_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd03_i_codigo));
      }else{
@@ -422,7 +422,7 @@ class cl_medicos {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -445,10 +445,10 @@ class cl_medicos {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_medicos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -483,10 +483,10 @@ class cl_medicos {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,7 +510,7 @@ class cl_medicos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,10 +519,10 @@ class cl_medicos {
      }
      return $sql;
   }
-   function sql_query_cgm ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_cgm ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_medicos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -553,10 +553,10 @@ class cl_medicos {
      }
      return $sql;
   }
-   function sql_query_ativo ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_ativo ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -582,7 +582,7 @@ class cl_medicos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -593,10 +593,10 @@ class cl_medicos {
   }
 
    // funcao do sql
-   function sql_query_cgm_fora_rede ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_cgm_fora_rede ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -623,7 +623,7 @@ class cl_medicos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,10 +633,10 @@ class cl_medicos {
      return $sql;
   }
 
-  function sql_query_info_profissional ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_info_profissional ( $sd03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -660,7 +660,7 @@ class cl_medicos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -670,9 +670,9 @@ class cl_medicos {
      return $sql;
   }
 
-  function sql_query_unidade_cbo_medico ( $sOrder = null, $sWhere = null) {
+  public function sql_query_unidade_cbo_medico ( $sOrder = null, $sWhere = null) {
 
-    $sSql  = "select * "; 
+    $sSql  = "select * ";
     $sSql .= "  from ( select sd03_i_crm            as crm,  ";
     $sSql .= "                medicos.sd03_i_codigo as codigo_medico,";
     $sSql .= "                medico.z01_nome       as nome,";
@@ -719,7 +719,7 @@ class cl_medicos {
    * @param string $sWhere
    * @return string
    */
-  function sql_query_medicos ( $sOrder = null, $sWhere = null) {
+  public function sql_query_medicos ( $sOrder = null, $sWhere = null) {
 
     $sSql  = "select * ";
     $sSql .= "  from ( select sd03_i_crm            as crm,  ";
@@ -760,11 +760,11 @@ class cl_medicos {
    * @param  string $ordem         [description]
    * @param  string $dbwhere       [description]
    */
-  function sql_query_profissional_saude( $sd03_i_codigo=null, $campos="*", $ordem=null, $dbwhere="" ) {
+  public function sql_query_profissional_saude( $sd03_i_codigo=null, $campos="*", $ordem=null, $dbwhere="" ) {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -792,7 +792,7 @@ class cl_medicos {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -810,11 +810,11 @@ class cl_medicos {
    * @param  string $ordem         [description]
    * @param  string $dbwhere       [description]
    */
-  function sql_query_profissional_saude_especialidade ( $sd03_i_codigo=null, $campos="*", $ordem=null, $dbwhere="" ) {
+  public function sql_query_profissional_saude_especialidade ( $sd03_i_codigo=null, $campos="*", $ordem=null, $dbwhere="" ) {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -841,7 +841,7 @@ class cl_medicos {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

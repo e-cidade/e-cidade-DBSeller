@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ $iGrupo		= 2; //2 proque esta na ouvidoria se protocolo = 1;
 	<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta http-equiv="Expires" CONTENT="0">
-	<? 
+	<?php 
 		db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
 		db_app::load('estilos.css,grid.style.css');
 	?>
@@ -353,7 +353,7 @@ function js_limpar(){
 					<tr>
 						<td align="left"><b>Data de Criação:</b></td>
 						<td align="left">
-						<? 
+						<?php 
 							db_inputdata('dt_inicio','','','',true,'text',1);
 							echo "&nbsp;à&nbsp;";
 							db_inputdata('dt_fim','','','',true,'text',1);
@@ -362,12 +362,12 @@ function js_limpar(){
 					</tr>
 					<tr>
 						<td  align="right">
-		      	<?
+		      	<?php
 		      		db_ancora('<b>Cidadao:</b>',"js_pesquisaov02_sequencial(true);","");
 		       	?>
 		    		</td>
 						<td> 
-						<?
+						<?php
 							$ov02_sequencial	= null;
 							$ov02_nome			 	= '';
 							db_input('ov02_sequencial',3,1,true,'text',1," onchange='js_pesquisaov02_sequencial(false);'");
@@ -399,7 +399,7 @@ function js_limpar(){
 		</td>
 	</tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

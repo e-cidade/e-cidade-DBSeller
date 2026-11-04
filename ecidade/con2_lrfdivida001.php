@@ -90,7 +90,7 @@ $sFonteParametros = "con4_parametrosrelatorioslegais001.php?c83_codrel={$codrel}
     <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
-                <?
+                <?php
                 if ($anousu <= 2007) {
 
                     $clcriaabas->identifica = array(

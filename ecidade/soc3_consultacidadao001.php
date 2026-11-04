@@ -53,7 +53,7 @@ $oRotuloCampos->label("as02_nis");
       <table>
         <tr>
           <td nowrap="nowrap" style="font-weight: bold;">
-            <? db_ancora("Cidadão: ","js_pesquisaCidadao(true, false);",1);?>
+            <?php db_ancora("Cidadão: ","js_pesquisaCidadao(true, false);",1);?>
           <td nowrap="nowrap">
             <?php
               db_input("codigoCidadao", 10, '', true, "text", 1, "onchange='js_pesquisaCidadao(false, false);'");

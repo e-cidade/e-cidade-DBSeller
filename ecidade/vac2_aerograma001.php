@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,7 +50,7 @@ $rsResult      = $clvac_sala->sql_record($sSql);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
 db_app::load("scripts.js, grid.style.css");
 ?>
@@ -58,7 +58,7 @@ db_app::load("scripts.js, grid.style.css");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br>
-<?if ($clvac_sala->numrows == 0) {
+<?php if ($clvac_sala->numrows == 0) {
     echo"<br><br><center><strong><b> Departamento não é um sala de vacinação! </b></strong></center>";
     exit;
   }?>
@@ -74,7 +74,7 @@ db_app::load("scripts.js, grid.style.css");
   </table>
  </center>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

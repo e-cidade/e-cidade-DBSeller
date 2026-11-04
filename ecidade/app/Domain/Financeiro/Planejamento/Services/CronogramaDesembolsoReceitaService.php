@@ -107,12 +107,25 @@ class CronogramaDesembolsoReceitaService extends CronogramaDesembolsoService
     public function criarCronogramaDesembolso(EstimativaReceita $estimativa)
     {
         $estimativa->getValores()->map(function (Valor $valor) use ($estimativa) {
-            $cronograma = new CronogramaDesembolsoReceita();
-            $cronograma->estimativa()->associate($estimativa);
-            $this->salvar($cronograma, $valor->pl10_valor, $valor->pl10_ano);
+            $this->criarCronogramaExercicio($estimativa, $valor->pl10_valor, $valor->pl10_ano);
         });
 
         return $estimativa;
+    }
+
+    /**
+     * Cria a projeção de cada exercício
+     *
+     * @param EstimativaReceita $estimativa
+     * @param $valor
+     * @param $exercicio
+     * @return void
+     */
+    public function criarCronogramaExercicio(EstimativaReceita $estimativa, $valor, $exercicio)
+    {
+        $cronograma = new CronogramaDesembolsoReceita();
+        $cronograma->estimativa()->associate($estimativa);
+        $this->salvar($cronograma, $valor, $exercicio);
     }
 
     public function getPorRequest(CronogramaRequest $request)
@@ -156,7 +169,7 @@ class CronogramaDesembolsoReceitaService extends CronogramaDesembolsoService
                orcunidade.o41_descr AS descricao_unidade,
                concarpeculiar.c58_descr AS caracteristica_peculiar,
                db_config.nomeinst AS nome_instituicao,
-               orctiporec.o15_recurso AS fonte_recurso,
+               fonterecurso.gestao AS fonte_recurso,
                orctiporec.o15_descr AS recurso,
                orctiporec.o15_complemento AS codigo_complemento,
                o200_descricao AS complemento,
@@ -180,6 +193,8 @@ class CronogramaDesembolsoReceitaService extends CronogramaDesembolsoService
         JOIN configuracoes.db_config ON db_config.codigo = estimativareceita.instituicao_id
         JOIN orcamento.orcfontes ON (o57_codfon, o57_anousu) = (orcfontes_id, anoorcamento)
         JOIN orcamento.orctiporec ON orctiporec.o15_codigo = estimativareceita.recurso_id
+        JOIN orcamento.fonterecurso ON fonterecurso.orctiporec_id = orctiporec.o15_codigo
+             and fonterecurso.exercicio = anoorcamento
         JOIN complementofonterecurso ON complementofonterecurso.o200_sequencial = orctiporec.o15_complemento
         JOIN contabilidade.conplanoorcamento ON (c60_codcon, c60_anousu) = (orcfontes_id, anoorcamento)
         join planejamento.valores

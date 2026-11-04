@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clmural->rotulo->label("ed20_c_assunto");
               <?=$Led20_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed20_i_codigo",5,$Ied20_i_codigo,true,"text",4,"","chave_ed20_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $clmural->rotulo->label("ed20_c_assunto");
               <?=$Led20_c_assunto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed20_c_assunto",50,$Ied20_c_assunto,true,"text",4,"","chave_ed20_c_assunto");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $clmural->rotulo->label("ed20_c_assunto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_mural.php")==true){
@@ -120,12 +120,12 @@ $clmural->rotulo->label("ed20_c_assunto");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

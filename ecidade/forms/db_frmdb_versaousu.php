@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ if(isset($db_opcaoal)){
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('db32_codusu',6,$Idb32_codusu,true,'hidden',3,"")
 ?>
   <tr>
@@ -65,25 +65,25 @@ db_input('db32_codusu',6,$Idb32_codusu,true,'hidden',3,"")
        <?=@$Ldb30_codversao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db30_codversao',6,$Idb30_codversao,true,'text',3)
 ?>/
-       <?
+       <?php
 db_input('db30_codrelease',6,$Idb30_codrelease,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb32_id_item?>">
-       <?
+       <?php
        db_ancora(@$Ldb32_id_item,"js_pesquisadb32_id_item(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db32_id_item',5,$Idb32_id_item,true,'text',$db_opcao," onchange='js_pesquisadb32_id_item(false);'")
 ?>
-       <?
+       <?php
 //       echo @$descricao.' descricao  ';
 db_input('descricao',40,$Idescricao,true,'text',3,'')
        ?>
@@ -94,7 +94,7 @@ db_input('descricao',40,$Idescricao,true,'text',3,'')
        <?=@$Ldb32_obsdb?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db32_obsdb',5,70,$Idb32_obsdb,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_textarea('db32_obsdb',5,70,$Idb32_obsdb,true,'text',$db_opcao,"")
        <?=@$Ldb32_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db32_obs',5,70,$Idb32_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_textarea('db32_obs',5,70,$Idb32_obs,true,'text',$db_opcao,"")
        <?=@$Ldb32_data?>
     </td>
     <td> 
-<?
+<?php
 if(!isset($db32_data_dia)){
    $db32_data_dia     = date('d',db_getsession("DB_datausu") );
    $db32_data_mes  = date('m',db_getsession("DB_datausu") );
@@ -135,7 +135,7 @@ db_inputdata('db32_data',@$db32_data_dia,@$db32_data_mes,@$db32_data_ano,true,'t
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 //echo $cldb_versaousu->sql_query(null,"*","","db32_codver=$db30_codver");
 	 $chavepri= array("db32_codusu"=>@$db32_codusu);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;

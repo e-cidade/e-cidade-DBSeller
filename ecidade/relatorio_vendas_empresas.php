@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ if(!isset($munic)){
 <body>
 <p><font size="2" face="Arial, Helvetica, sans-serif"><a href="relatorios.php?munic=<?=$munic?>">Retornar 
   aos Relat&oacute;rios</a></font></p>
-<?
+<?php
 if(!isset($emite)){
 ?>
 <form name="form1" method="post" action="">
@@ -128,7 +128,7 @@ if(!isset($emite)){
     </tr>
   </table>
 </form>
-<?
+<?php
 exit;
 }
 
@@ -138,7 +138,7 @@ if($tipoapresenta == 'relatorio'){
 
 <p><font size="2" face="Arial, Helvetica, sans-serif"></font></p>
 <p> 
-  <?
+  <?php
 $sql="select * from (select guiabc.cgcte, 
              razao,
 			 fatur,
@@ -161,7 +161,7 @@ if($numerolista != 0)
   $sql = $sql . " limit $numerolista ";
 ?>
 <font size='2'> 
-<table style="size:'1' font:'Arial, Helvetica, sans-serif'" width="100%" border="1" cellspacing="0">
+<table style="size:'1'; font:'Arial, Helvetica, sans-serif'" width="100%" border="1" cellspacing="0">
   <tr> 
     <td class='tabcolscab' width="11%" height="23">Inscri&ccedil;&atilde;o</td>
     <td nowrap class='tabcolsnome' width="25%">Nome</td>
@@ -174,7 +174,7 @@ if($numerolista != 0)
     <td class='tabcolscab'  align="right" width="10%">Entradas</td>
     <td class='tabcolscab' align="right"  width="10%">Total</td>
   </tr>
-<?
+<?php
 $result = db_query($sql);
 if(pg_numrows($result)!=0){
   $tfatur = 0;
@@ -201,7 +201,7 @@ if(pg_numrows($result)!=0){
     <td class='tabcols'  align="right"><?=number_format($ref011,2,",",".")?>&nbsp;</td>
     <td class='tabcols'  align="right"><?=number_format($ref012,2,",",".")?>&nbsp;</td>
   </tr>
-<?
+<?php
 
    $tfatur += $fatur;
    $tcatego+= $catego;
@@ -225,13 +225,13 @@ if(pg_numrows($result)!=0){
     <td class='tabcolsrod'  align="right"><?=number_format($tref011,2,",",".")?>&nbsp;</td>
     <td class='tabcolsrod'  align="right"><?=number_format($tref012,2,",",".")?>&nbsp;</td>
   </tr>
-  <?
+  <?php
 }
 
 echo "Total de Empresas:".pg_numrows($result);
 ?>
 </table>
-<?
+<?php
 }else{
 // grafico
 

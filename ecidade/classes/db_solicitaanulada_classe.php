@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: compras
 //CLASSE DA ENTIDADE solicitaanulada
 class cl_solicitaanulada { 
@@ -37,13 +37,13 @@ class cl_solicitaanulada {
                  pc67_processoadministrativo = varchar(20) = Processo Administrativo 
                  ";
    //funcao construtor da classe 
-   function cl_solicitaanulada() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitaanulada"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -52,7 +52,7 @@ class cl_solicitaanulada {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc67_sequencial = ($this->pc67_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pc67_sequencial"]:$this->pc67_sequencial);
        $this->pc67_usuario = ($this->pc67_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["pc67_usuario"]:$this->pc67_usuario);
@@ -73,7 +73,7 @@ class cl_solicitaanulada {
      }
    }
    // funcao para inclusao
-   function incluir ($pc67_sequencial){ 
+   public function incluir ($pc67_sequencial){ 
       $this->atualizacampos();
      if($this->pc67_usuario == null ){ 
        $this->erro_sql = " Campo Usuário não informado.";

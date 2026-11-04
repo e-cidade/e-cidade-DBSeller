@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,7 +54,7 @@ $numeropg = isset($numeropg)?$numeropg:0;
 
 db_sel_instit(null, "db21_usasisagua");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING']);
 
 $exercicio = db_getsession("DB_anousu");
 $borda        = 1;
@@ -158,7 +158,7 @@ class PDF_RODAPE extends pdf3 {
     $this->text(10,289,'Base: '.@$GLOBALS["DB_NBASE"]);
     $this->SetFont('Arial','I',6);
     $this->SetY(-10);
-    $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
+    $nome = @$_SERVER["PHP_SELF"];
     $nome = substr($nome,strrpos($nome,"/")+1);
     $result_nomeusu = db_query("select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario"));
 
@@ -189,7 +189,7 @@ if (!defined('DB_BIBLIOT')) {
   $pdf->AliasNbPages(); // gera alias para as paginas
 }
 
-$pdf->SetAutoPageBreak('on', 10);
+$pdf->SetAutoPageBreak(true, 30);
 
 $lTemInicial = false;
 
@@ -245,7 +245,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
   $sNomeMatricula = "";
   $aListaProcedencia = array();
-
+  $arrayInscr = array();
   foreach ($aOrigemInicial as $oOrigemInicial) {
       if (trim($oOrigemInicial->certdiv) != "") {
 
@@ -349,6 +349,15 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
               $aListaProcedencia[] = $oDadosInicial->v03_dcomp;
           }
       }
+      if($inscr1 != 0 && $inscr1 != '' ){
+        if(!in_array($inscr1 , $arrayInscr)){
+          array_push($arrayInscr, $inscr1);
+        }
+      }else if ($inscr2 != 0 && $inscr2 != ''){
+        if(!in_array($inscr2 , $arrayInscr)){
+          array_push($arrayInscr, $inscr2);
+        }
+      }
   }
 
   $sqlPagoCancelado  = " select a.k00_numpre as inicial_paga,                              ";
@@ -380,7 +389,6 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   }
 
   $xinicial = $v50_inicial;
-
   $oLibDocumento->Exercicio    = "Exercício(s) de ".implode(", ",$aListaExercicio);
   $oLibDocumento->Procedencias = "Procedência(s) ".ucfirst(strtolower(implode(", ",$aListaProcedencia)));
 
@@ -548,7 +556,24 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       $v = '';
 
       for ($jk = 0;$jk < pg_numrows($result);$jk++) {
-        $ximovel .= $v.trim(pg_result($result, $jk, "j14_tipo")) . ' ' . trim(pg_result($result,$jk , "j14_nome")) . ', ' . trim(pg_result($result, $jk, "j39_numero")) . ' setor/quadra/lote ' . trim(pg_result($result, $jk, "j34_setor")) . "/" . trim(pg_result($result, $jk, "j34_quadra")) . "/" . trim(pg_result($result, $jk, "j34_lote")) . ( $oCfiptu->j18_utilizaloc == 't'? ' - dados de localização: ' . trim(pg_result($result, $jk, "j06_setorloc")) . '-' . trim(pg_result($result, $jk, "j05_descr")) . '/' . trim(pg_result($result, $jk, "j06_quadraloc")) . '/' . trim(pg_result($result, $jk, "j06_lote")) :"") . ', em ' . $munic . '/' . $uf . ' (matrícula municipal n' . chr(176) . ' ' . trim(pg_result($result,$jk,"j01_matric")) . ')';
+
+        $tipo = trim(pg_result($result, $jk, "j14_tipo"));
+        $nomepri = trim(pg_result($result,$jk , "nomepri")) != '' ? (' ' . trim(pg_result($result,$jk , "nomepri"))) : '';
+        $numero = trim(pg_result($result, $jk, "j39_numero"));
+        $setor = trim(pg_result($result, $jk, "j34_setor"));
+        $quadra = trim(pg_result($result, $jk, "j34_quadra")) != '' ? ("/" . trim(pg_result($result, $jk, "j34_quadra"))) : '';
+        $lote1 = trim(pg_result($result, $jk, "j34_lote")) != '' ? ("/" . trim(pg_result($result, $jk, "j34_lote"))) : '';
+        $descricaoTexto = trim($setor . $quadra .$lote1) != '' ? ' setor/quadra/lote ' : '';
+        $setorLocalizacao = trim(pg_result($result, $jk, "j06_setorloc"));
+        $descricao = trim(pg_result($result, $jk, "j05_descr")) != '' ? '-' .trim(pg_result($result, $jk, "j05_descr")) : '';
+        $quadraLoc = trim(pg_result($result, $jk, "j06_quadraloc")) != '' ? '/' . trim(pg_result($result, $jk, "j06_quadraloc")) : '';
+        $lote2 = trim(pg_result($result, $jk, "j06_lote")) != '' ? '/' . trim(pg_result($result, $jk, "j06_lote")) : '';
+        $descricaoTextoLocalizacao = trim($descricao . $quadraLoc . $lote2) != '' ? ' - dados de localização: ' : '';
+        $matricula = trim(pg_result($result,$jk,"j01_matric")) != '' ? ' (matrícula municipal n' . chr(176) . ' ' . trim(pg_result($result,$jk,"j01_matric")) . ')' : '';
+        $municipio = trim($munic) != '' ? ', em ' . $munic : '';
+        $unidadefederal = trim($uf) ? '/' . $uf : '';
+
+        $ximovel .= $v. $tipo . $nomepri . ', ' . $numero . $descricaoTexto . $setor . $quadra . $lote1 . ( $oCfiptu->j18_utilizaloc == 't'? $descricaoTextoLocalizacao . $setorLocalizacao . $descricao . $quadraLoc . $lote2 :"") . $municipio . $unidadefederal . $matricula;
         $v = ", ";
       }
 
@@ -587,7 +612,21 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
         }
         $aCgmEnvolvidos[] = $oEnvolvidos->rinumcgm;
 
-        $rsDadosEnvol = $clcgm->sql_record($clcgm->sql_query_file($oEnvolvidos->rinumcgm));
+        $sSqlDadosEnvolvido =  " select                                                                                              ";
+        $sSqlDadosEnvolvido .= "     distinct cgm.*,                                                                                 ";
+        $sSqlDadosEnvolvido .= "     UPPER(coalesce(                                                                                 ";
+        $sSqlDadosEnvolvido .= "         tipopromitente.j164_descricao,                                                              ";
+        $sSqlDadosEnvolvido .= "         tipoproprietario.j163_descricao                                                             ";
+        $sSqlDadosEnvolvido .= "     )) as tipo                                                                                      ";
+        $sSqlDadosEnvolvido .= " from                                                                                                ";
+        $sSqlDadosEnvolvido .= "     cgm                                                                                             ";
+        $sSqlDadosEnvolvido .= "     left join promitente on promitente.j41_numcgm = cgm.z01_numcgm                                  ";
+        $sSqlDadosEnvolvido .= "     left join tipopromitente ON tipopromitente.j164_tipopromitente = promitente.j41_tipopromitente  ";
+        $sSqlDadosEnvolvido .= "     left join proprietario on proprietario.z01_numcgm = cgm.z01_numcgm                              ";
+        $sSqlDadosEnvolvido .= "     left join tipoproprietario on tipoproprietario.j163_abreviatura = proprietario.j163_abreviatura ";
+        $sSqlDadosEnvolvido .= " where cgm.z01_numcgm = {$oEnvolvidos->rinumcgm}                                                     ";
+
+        $rsDadosEnvol = $clcgm->sql_record($sSqlDadosEnvolvido);
 
         if ($clcgm->numrows > 0) {
 
@@ -617,11 +656,28 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
             }
           }
 
-          $xender	.=  $sExpFalecido . trim($oDadosEnvol->z01_nome) . $sNacionalidade . ($oDadosEnvol->z01_cgccpf!=''?", {$sCgcCpf}":"");
-          $xender	.= " ENDEREÇO: ".$oDadosEnvol->z01_ender.', N°'.$oDadosEnvol->z01_numero.''.($oDadosEnvol->z01_bairro!=""?", BAIRRO: {$oDadosEnvol->z01_bairro}":"").', '.$oDadosEnvol->z01_munic.'-'.$oDadosEnvol->z01_uf.''.($oDadosEnvol->z01_cep !=""?", CEP: {$oDadosEnvol->z01_cep}":"").''.($oDadosEnvol->z01_cxpostal!=""?", CAIXA POSTAL: {$oDadosEnvol->z01_cxpostal}":"").",";
-          $xender	.= " TELEFONE: ".($oDadosEnvol->z01_telef!=''?$oDadosEnvol->z01_telef:$sNaoPossui) . ", CELULAR: ".($oDadosEnvol->z01_telcel!=''?$oDadosEnvol->z01_telcel:$sNaoPossui) . ",";
-          $xender	.= " EMAIL:    ".($oDadosEnvol->z01_email!=''?$oDadosEnvol->z01_email:$sNaoPossui) .". \n";
-          
+
+          $sqlNomeETipoEnvolvido = $cliptubase->sql_query_envolvidos_matricula($xmatric, $oEnvolvidos->rinumcgm);
+          $rsNomeETipoEnvolvido  = db_query($sqlNomeETipoEnvolvido);
+          $nomeETipoEnvolvido = db_utils::getCollectionByRecord($rsNomeETipoEnvolvido);
+
+          $nomeEnvolvido = isset($nomeETipoEnvolvido) && count($nomeETipoEnvolvido) > 0 ? $nomeETipoEnvolvido[0]->nome : trim($oDadosEnvol->z01_nome);
+          $cgccpfEnvolvido = $oDadosEnvol->z01_cgccpf && trim($oDadosEnvol->z01_cgccpf) != '' ? ", {$sCgcCpf}":"";
+          $numeroEnvolvido = $oDadosEnvol->z01_numero && trim($oDadosEnvol->z01_numero) ? ', N°'.$oDadosEnvol->z01_numero : '';
+          $bairroEnvolvido = $oDadosEnvol->z01_bairro && trim($oDadosEnvol->z01_bairro) != "" ? ", BAIRRO: {$oDadosEnvol->z01_bairro}" : "";
+          $municipioEnvolvido = $oDadosEnvol->z01_munic && trim($oDadosEnvol->z01_munic) ? ', '.$oDadosEnvol->z01_munic : '';
+          $ufEnvolvido = $oDadosEnvol->z01_uf && trim($oDadosEnvol->z01_uf) ? '-'.$oDadosEnvol->z01_uf : '';
+          $cepEnvolvido = $oDadosEnvol->z01_cep && trim($oDadosEnvol->z01_cep) != "" ? ", CEP: {$oDadosEnvol->z01_cep}" : "";
+          $caixaPostalEnvolvido = $oDadosEnvol->z01_cxpostal && trim($oDadosEnvol->z01_cxpostal) != "" ? ", CAIXA POSTAL: {$oDadosEnvol->z01_cxpostal}" : "";
+          $telefoneEnvolvido = $oDadosEnvol->z01_telef && trim($oDadosEnvol->z01_telef) != '' ? ", TELEFONE: ". $oDadosEnvol->z01_telef : '';
+          $celularEnvolvido = $oDadosEnvol->z01_telcel && trim($oDadosEnvol->z01_telcel) != '' ? ", CELULAR: ". $oDadosEnvol->z01_telcel : '';
+          $emailEnvolvido = $oDadosEnvol->z01_email != '' ? ", EMAIL: ". $oDadosEnvol->z01_email : '';
+
+          $xender .= $i > 0 ? ', ' : '';
+          $xender	.=  $sExpFalecido . $nomeEnvolvido . $sNacionalidade . $cgccpfEnvolvido;
+          $xender	.= " ENDEREÇO: ".$oDadosEnvol->z01_ender . $numeroEnvolvido . '' . $bairroEnvolvido . $municipioEnvolvido . $ufEnvolvido .''. $cepEnvolvido .''. $caixaPostalEnvolvido;
+          $xender	.= $telefoneEnvolvido . $celularEnvolvido;
+          $xender	.= $emailEnvolvido;
         }
       }
     }
@@ -655,22 +711,33 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
         }
 
         if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
-          $sCgcCpf = "CNPJ: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cnpj').",";
+          $sCgcCpf = ", CNPJ: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cnpj');
         } else {
-          $sCgcCpf = "CPF: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cpf').",";
+          $sCgcCpf = ", CPF: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cpf');
         }
 
+        $numeroEnvolvido = $oDadosEnvol->z01_numero && trim($oDadosEnvol->z01_numero) ? ', N°'.$oDadosEnvol->z01_numero : '';
+        $bairroEnvolvido = $oDadosEnvol->z01_bairro && trim($oDadosEnvol->z01_bairro) != "" ? ", BAIRRO: {$oDadosEnvol->z01_bairro}" : "";
+        $municipioEnvolvido = $oDadosEnvol->z01_munic && trim($oDadosEnvol->z01_munic) ? ', '.$oDadosEnvol->z01_munic : '';
+        $ufEnvolvido = $oDadosEnvol->z01_uf && trim($oDadosEnvol->z01_uf) ? '-'.$oDadosEnvol->z01_uf : '';
+        $cepEnvolvido = $oDadosEnvol->z01_cep && trim($oDadosEnvol->z01_cep) != "" ? ", CEP: {$oDadosEnvol->z01_cep}" : "";
+        $caixaPostalEnvolvido = $oDadosEnvol->z01_cxpostal && trim($oDadosEnvol->z01_cxpostal) != "" ? ", CAIXA POSTAL: {$oDadosEnvol->z01_cxpostal}" : "";
+        $telefoneEnvolvido = $oDadosEnvol->z01_telef && trim($oDadosEnvol->z01_telef) != '' ? ", TELEFONE: ". $oDadosEnvol->z01_telef : '';
+        $celularEnvolvido = $oDadosEnvol->z01_telcel && trim($oDadosEnvol->z01_telcel) != '' ? ", CELULAR: ". $oDadosEnvol->z01_telcel : '';
+        $emailEnvolvido = $oDadosEnvol->z01_email != '' ? ", EMAIL: ". $oDadosEnvol->z01_email : '';
+
         if ($oEnvolvidos->ritipoenvol == "4") {
-          $xender  = $sExpFalecido.trim($oDadosEnvol->z01_nome).",  " .$sCgcCpf.' sito o endereço: '.$oDadosEnvol->z01_ender.', N° '.$oDadosEnvol->z01_numero.''.($oDadosEnvol->z01_bairro != "" ? ", BAIRRO:{$oDadosEnvol->z01_bairro}" : "").', '.$oDadosEnvol->z01_munic.'-'.$oDadosEnvol->z01_uf.''.($oDadosEnvol->z01_cep != "" ? ", CEP:{$oDadosEnvol->z01_cep}" : "").''.($oDadosEnvol->z01_cxpostal != "" ? ", CAIXA POSTAL:{$oDadosEnvol->z01_cxpostal}" : ""). ", ";
+          $xender  = $sExpFalecido.trim($oDadosEnvol->z01_nome).",  " .$sCgcCpf.' sito o endereço: '.$oDadosEnvol->z01_ender. $numeroEnvolvido .''. $bairroEnvolvido . $municipioEnvolvido . $ufEnvolvido .''. $cepEnvolvido .''. $caixaPostalEnvolvido;
         } else {
 
           $xender .= $sTextoSocios;
-          $xender .= "\n-  ".$sExpFalecido.trim($oDadosEnvol->z01_nome).", " .$sCgcCpf."\n";
-          $xender .= "ENDEREÇO: ".$oDadosEnvol->z01_ender.', N°: '.$oDadosEnvol->z01_numero.''.($oDadosEnvol->z01_bairro != "" ? ", BAIRRO: {$oDadosEnvol->z01_bairro}" : "").', '.$oDadosEnvol->z01_munic.'-'.$oDadosEnvol->z01_uf.''.($oDadosEnvol->z01_cep != "" ? ", CEP:{$oDadosEnvol->z01_cep}" : "").''.($oDadosEnvol->z01_cxpostal != "" ? ", CAIXA POSTAL:{$oDadosEnvol->z01_cxpostal}" : "") . ", ";
+          $xender .= "\n-  ".$sExpFalecido.trim($oDadosEnvol->z01_nome).", " .$sCgcCpf;
+          $xender .= ", ENDEREÇO: ".$oDadosEnvol->z01_ender. $numeroEnvolvido .''. $bairroEnvolvido . $municipioEnvolvido . $ufEnvolvido .''. $cepEnvolvido .''. $caixaPostalEnvolvido;
           $sTextoSocios = "";
         }
-        $xender	.= "TELEFONE: ".($oDadosEnvol->z01_telef!=''?$oDadosEnvol->z01_telef:$sNaoPossui) . ", CELULAR: ".($oDadosEnvol->z01_telcel!=''?$oDadosEnvol->z01_telcel:$sNaoPossui) . ", ";
-        $xender	.= "EMAIL:    ".($oDadosEnvol->z01_email!=''?$oDadosEnvol->z01_email:$sNaoPossui) .". \n";
+        $xender	.= $telefoneEnvolvido . $celularEnvolvido;
+        $xender	.= $emailEnvolvido;
+        $xender .= '. ';
 
       }
     }
@@ -682,6 +749,32 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
     $sql = "select munic, uf, numero as numeroinst from db_config where codigo = " . db_getsession("DB_instit");
     $result = db_query($sql);
     db_fieldsmemory($result, 0);
+    $arrematric = db_query("select distinct k00_matric
+            from inicialnumpre
+            inner join arrematric on k00_numpre = v59_numpre
+            where v59_inicial  = $inicialproc");
+            db_fieldsmemory($arrematric, 0);
+
+    $where = '';
+
+    if ($oParJuridico->v19_envolinicialiptu > 0 && !empty($k00_matric)) {
+      $sSqlEnvolvidos = "select  * from fc_busca_envolvidos({$lPrincipal},{$oParJuridico->v19_envolinicialiptu},'M',{$k00_matric})";
+      $rsEnvolvidos   = db_query($sSqlEnvolvidos) or die($sSqlEnvolvidos);
+
+      $iLinhasEnvol   = pg_num_rows($rsEnvolvidos);
+      if($iLinhasEnvol == 1){
+          $where .= " and z01_numcgm = ".pg_fetch_all($rsEnvolvidos)[0]['rinumcgm'];
+      }else if ($iLinhasEnvol > 1){
+        $where .= ' and z01_numcgm in (';
+        for ($i=0; $i < $iLinhasEnvol; $i++) { 
+            if($i == $iLinhasEnvol-1){
+              $where .= pg_fetch_all($rsEnvolvidos)[$i]['rinumcgm'].')';
+            }else{
+              $where .= pg_fetch_all($rsEnvolvidos)[$i]['rinumcgm'].', ';
+            }
+        }
+      }
+    }
 
     if ($certdiv > 0) {
       $sSql  = " select distinct cgm.*																	   ";
@@ -698,6 +791,9 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       $sSql .= "			  inner join cgm					on z01_numcgm = k00_numcgm ";
       $sSql .= "  where v14_certid = $certter															 ";
     }
+    if($where != ''){
+      $sSql .= $where;
+    }
 
     $rsDadosEnvol = db_query($sSql);
 
@@ -711,9 +807,9 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       }
 
       if (strlen($z01_cgccpf) > 11) {
-        $sCgcCpf = "CNPJ: ".db_formatar($z01_cgccpf, 'cnpj').",";
+        $sCgcCpf = "CNPJ: ".db_formatar($z01_cgccpf, 'cnpj');
       } else {
-        $sCgcCpf = "CPF: ".db_formatar($z01_cgccpf, 'cpf').",";
+        $sCgcCpf = "CPF: ".db_formatar($z01_cgccpf, 'cpf');
       }
 
       if( $z01_nacion == 1 ){
@@ -724,17 +820,24 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
         $sNacionalidade = " ";
       }
 
-      $xender .= " CGM: " . $z01_numcgm . " - " . $sExpFalecido . trim($z01_nome) . (strlen(trim($z01_cgccpf)) == 11 ? $sNacionalidade : "") . ($z01_cgccpf != '' ? ", {$sCgcCpf}" : "");
-      $xender .= " ENDEREÇO: " . $z01_ender . ($z01_numero > 0 ? ', N°' . $z01_numero : '') . '' . ($z01_bairro != "" ? ", BAIRRO: $z01_bairro" : "") . ', ' . $z01_munic . '-' . $z01_uf . '' . ($z01_cep != "" ? ", CEP: $z01_cep" : "") . '' . ($z01_cxpostal != "" ? ", CAIXA POSTAL: $z01_cxpostal" : "") . ",";
-      $xender	.= " TELEFONE: ".($oDadosEnvol->z01_telef!=''?$oDadosEnvol->z01_telef:$sNaoPossui) . ", CELULAR: ".($oDadosEnvol->z01_telcel!=''?$oDadosEnvol->z01_telcel:$sNaoPossui) . ",";
-      $xender	.= " EMAIL:    ".($oDadosEnvol->z01_email!=''?$oDadosEnvol->z01_email:$sNaoPossui) .". \n";
+      $cgccpfEnvolvido = (strlen(trim($z01_cgccpf)) == 11 ? $sNacionalidade : "") . ($z01_cgccpf != '' ? ", {$sCgcCpf}" : "");
+      $bairroEnvolvido = $z01_bairro && trim($z01_bairro) != "" ? ", BAIRRO: $z01_bairro" : "";
+      $municipioEnvolvido = $z01_munic && trim($z01_munic) != '' ? ', ' . $z01_munic : '';
+      $ufEnvolvido =  $z01_uf && trim($z01_uf) != '' ? '-' . $z01_uf : '';
+      $cepEnvolvido = $z01_cep && trim($z01_cep) != "" ? ", CEP: $z01_cep" : "";
+      $caixaPostalEnvolvido = $z01_cxpostal && trim($z01_cxpostal) != "" ? ", CAIXA POSTAL: $z01_cxpostal" : "";
+ 
+      $xender .= $sExpFalecido . trim($z01_nome) . $cgccpfEnvolvido;
+      $xender .= ", ENDEREÇO: " . $z01_ender . ($z01_numero > 0 ? ', N°' . $z01_numero : '') . '' . $bairroEnvolvido . $municipioEnvolvido . $ufEnvolvido. '' . $cepEnvolvido . '' . $caixaPostalEnvolvido;
+      $xender	.= ", TELEFONE: ".($oDadosEnvol->z01_telef!=''?$oDadosEnvol->z01_telef:$sNaoPossui) . ", CELULAR: ".($oDadosEnvol->z01_telcel!=''?$oDadosEnvol->z01_telcel:$sNaoPossui);
+      $xender	.= ", EMAIL:    ".($oDadosEnvol->z01_email!=''?$oDadosEnvol->z01_email:$sNaoPossui) .". ";
     }
 
     $inscricao_matricula_cgm = "CGM: $z01_numcgm";
-
   }
 
   $pdf->AddPage(); // adiciona uma pagina
+  $pdf->setVariavelControle('Controle Administrativo nº ' . $inicialproc);
   $pdf->SetTextColor(0, 0, 0);
   $pdf->SetFillColor(220);
   $yy = $pdf->h - 11;
@@ -744,6 +847,16 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   $Valor 		= db_formatar($ValorTotal, 'f');
   $Valorext = db_extenso($ValorTotal);
 
+  $inscr = '';
+
+  foreach ($arrayInscr as $key => $value) {
+    if($key == 0){
+      $inscr.= $value;
+    }else{
+      $inscr.= ', '.$value;
+    }
+  }
+  
   $oLibDocumento->cgc           = $cgc;
   $oLibDocumento->uf            = $uf;
   $oLibDocumento->munic 				= $munic;
@@ -752,7 +865,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   $oLibDocumento->Valor					= trim($Valor);
   $oLibDocumento->Valorext			= trim($Valorext);
   $oLibDocumento->Certidao			= $Certidao;
-  $oLibDocumento->xinscr			  = $xinscr;
+  $oLibDocumento->xinscr			  = $inscr;
   $oLibDocumento->ximovel			  = $ximovel;
   $oLibDocumento->xmatric       = $xmatric;
   $oLibDocumento->processoforo  = $oOrigemInicial->v70_codforo;
@@ -811,7 +924,6 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       $pdf->SetX(35);
     }
 
-
     if($oParag->oParag->db02_descr == "inicial_p2"){
       if ($v04_peticaoinicial == 2) {
         $pdf->SetX(25);
@@ -846,10 +958,6 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
     }
 
   }
-
-  $pdf->SetFont('Arial', '', 5);
-  $pdf->Text(10, $yy, 'Controle Administrativo nº ' . $xinicial);
-
 }
 
 if ($lTemInicial){

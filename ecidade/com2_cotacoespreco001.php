@@ -90,7 +90,7 @@ db_app::load("estilos.css, grid.style.css");
                </tr>
                <tr>
                   <td nowrap title="<?=@$Tz01_numcgm?>">
-                    <?
+                    <?php
                       db_ancora(@$Lz01_nome, "js_pesquisa_cgm(true);",1);
                     ?>
                   </td>
@@ -101,7 +101,7 @@ db_app::load("estilos.css, grid.style.css");
                </tr>
                <tr>
                   <td nowrap title="<?=@$Tpc01_descrmater?>">
-                    <?
+                    <?php
                       db_ancora(@$Lpc01_descrmater, "js_pesquisapc16_codmater(true);",1);
                     ?>
                   </td>
@@ -284,6 +284,6 @@ init();
 
 $('btnProcessar').observe("click", js_abreOrcamentos);
 </script>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

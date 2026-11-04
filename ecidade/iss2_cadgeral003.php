@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,7 +77,7 @@ function js_emite(){
 								<strong>Agrupar:</strong>
 							</td>
 							<td>
-								<?
+								<?php
 									$aAgrupa = array("n"=>"Nenhuma","a"=>"Atividade Principal","b"=>"Bairro","c"=>"Classe");
 									db_select("selAgrupa",$aAgrupa,true,2);
 								?>
@@ -89,7 +89,7 @@ function js_emite(){
 								<strong>Inscrições :</strong>
 							</td>
 							<td>
-								<? 
+								<?php 
 									$tipo_ordem = array("t"=>"Todos","c"=>"Não Baixados" ,"b"=>"Baixados");
 									db_select("baix",$tipo_ordem,true,2,"style='width:145px;'"); 
 								?>
@@ -101,7 +101,7 @@ function js_emite(){
 								<strong>Ordenar :</strong>
 							</td>
 							<td>
-								<? 
+								<?php 
 									$aOrdem = array("i"=>"Inscrição","c"=>"CGM","n"=>"Nome","a"=>"Atividade Principal","l"=>"Classe","b"=>"Bairro");
 									db_select("selOrdem",$aOrdem,true,2,"style='width:145px;'"); 
 								?>
@@ -130,7 +130,7 @@ function js_emite(){
 				<table align="center">
 					<tr >
 						<td colspan=2 >
-							<?
+							<?php
 								$auxAtiv->cabecalho = "<strong>Fornecedores</strong>";
 								$auxAtiv->codigo = "q03_ativ"; //chave de retorno da func
 								$auxAtiv->descr  = "q03_descr";   //chave de retorno
@@ -174,7 +174,7 @@ function js_emite(){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

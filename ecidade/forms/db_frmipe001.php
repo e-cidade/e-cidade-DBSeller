@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,12 +38,12 @@ $clrotulo->label("r36_mesusu");
       <b>Ano / Mês:</b>
     </td>
     <td> 
-      <?
+      <?php
       $r36_anousu = db_anofolha('DB_anousu');
       db_input('r36_anousu',4,$Ir36_anousu,true,'text',1)
       ?>
       &nbsp;&nbsp;<b>/</b>&nbsp;&nbsp;
-      <?
+      <?php
       $r36_mesusu = db_mesfolha('DB_mesusu');
       db_input('r36_mesusu',4,$Ir36_mesusu,true,'text',1)
       ?>
@@ -52,7 +52,7 @@ $clrotulo->label("r36_mesusu");
   <tr>
     <td align='right'><?=$Lr11_codipe?></td>
     <td align='left'>
-      <?
+      <?php
       $codipe = $r11_codipe;
       db_input('r11_codipe', 10, $Ir11_codipe, true, 'text', 1,"","codipe");
       ?>
@@ -61,7 +61,7 @@ $clrotulo->label("r36_mesusu");
   <tr>
     <td align='right'><b>Identificador:</b></td>
     <td align='left'>
-      <?
+      <?php
       $identificador = 1;
       $arr_identificador = Array('1'=>'Manutenção','3'=>'Inclusão');
       db_select("identificador",$arr_identificador,true,1);
@@ -71,7 +71,7 @@ $clrotulo->label("r36_mesusu");
   <tr>
     <td align='right'><b>Unifica I.P.E:</b></td>
     <td align='left'>
-      <?
+      <?php
       $arr_unifica  = Array('f'=>'Não', 't'=>'Sim');
       db_select("unifica_ipe",$arr_unifica,true,1);
       ?>

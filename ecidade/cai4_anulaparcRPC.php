@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -26,14 +26,15 @@
  */
 
 use ECidade\Tributario\Divida\Termo\Repository\Termo as TermoRepository;
+use App\Domain\Tributario\Juridico\Services\InicialDoForo\ParcelamentoCustasProcessoService;
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_utils.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/JSON.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/JSON.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 
 $post = JSON::requestParameters();
 $parametros = JSON::create()->parse($post->json);
@@ -76,20 +77,15 @@ try {
             $retorno->iStatus = "1";
             $retorno->sMensagem = "";
 
-            $sSqlFormaCorrecao = " select k03_separajurmulparc ";
-            $sSqlFormaCorrecao .= "   from numpref              ";
-            $sSqlFormaCorrecao .= "  where k03_instit = " . db_getsession("DB_instit");
-            $sSqlFormaCorrecao .= "    and k03_anousu = " . db_getsession("DB_anousu");
-            $iFormaCorrecao = db_utils::fieldsMemory(db_query($sSqlFormaCorrecao), 0)->k03_separajurmulparc;
-
-            $sSqlTermo = "select v07_parcel,                                                           ";
+            $sSqlTermo = "select v07_parcel,                                                            ";
             $sSqlTermo .= "       v07_numpre,                                                           ";
             $sSqlTermo .= "       v07_dtlanc,                                                           ";
             $sSqlTermo .= "       v07_totpar,                                                           ";
             $sSqlTermo .= "       (select count(distinct k00_numpar)                                    ";
             $sSqlTermo .= "          from arrepaga                                                      ";
             $sSqlTermo .= "         where k00_numpre = v07_numpre ) as qtd_parcelas_pagas,              ";
-            $sSqlTermo .= "       k40_tipoanulacao                                                      ";
+            $sSqlTermo .= "       k40_tipoanulacao,                                                     ";
+            $sSqlTermo .= "       k40_codigo                                                            ";
             $sSqlTermo .= "  from termo                                                                 ";
             $sSqlTermo .= "       inner join cadtipoparc on cadtipoparc.k40_codigo = termo.v07_desconto ";
             $sSqlTermo .= " where termo.v07_parcel = {$parcel}";
@@ -100,6 +96,15 @@ try {
             }
 
             $oTermo = db_utils::fieldsMemory($rsTermo,0);
+
+            $oDaoCadTipoParc         = new cl_cadtipoparc();
+            $codigoRegraParcelamento = $oTermo->k40_codigo;
+            $sSqlRegraParcelamento   = $oDaoCadTipoParc->sql_query_file(null, 'k40_separajuremul', null, "k40_codigo = $codigoRegraParcelamento");
+            $rsRegraParcelamento     = db_query($sSqlRegraParcelamento);
+            $regraParcelamento       = db_utils::getCollectionByRecord($rsRegraParcelamento)[0];
+        
+            $iFormaCorrecao = $regraParcelamento->k40_separajuremul == 't';
+
             $sQueryGeraSimulacao  = "select fc_parc_gera_simulacao_anulacao($parcel) as simulaanula ";
             $rsGeraSimulacao      = db_query($sQueryGeraSimulacao);
             if (pg_num_rows($rsGeraSimulacao) == 0 ) {
@@ -380,13 +385,12 @@ try {
                 }
             }
 
-
             /**
              *
              * Buscamos o desconto dado após o lançamento do débito
              *
              */
-            if($iFormaCorrecao == 1){
+            if($iFormaCorrecao){
                 $sFormaCalculoDesconto = " (round( {$oTotal->valor_total_juros_origem} * descjur / 100,2)) + (round( {$oTotal->valor_total_multa_origem} * descmul / 100,2)) + (round( ({$oTotal->valor_total_corrigido_origem} - {$oTotal->valor_total_historico_origem}) * descvlr / 100,2)) as vlrdesconto ";
             } else {
                 $sFormaCalculoDesconto = " (round( {$oTotal->valor_total_juros_origem} * descjur / 100,2)) + (round( {$oTotal->valor_total_multa_origem} * descmul / 100,2)) as vlrdesconto ";
@@ -435,6 +439,16 @@ try {
             $processo = "null";
         }else {
                 $processo = $parametros->processo;
+        }
+
+        if (db_utils::ativaParcelamentoCustas()) {
+            // coloca custas e honorarios do arrecad para o arreold
+            $parcelamentoCustas = new ParcelamentoCustasProcessoService();
+            $parcelamentoCustas->inserirTaxasArreold($parametros->parcel);
+            
+            // vincula o estado atual do parcelamento de custas ao parcelamento que esta sendo anulado,
+            // desse modo a liberacao do parcelamento de custas manual devera ser refeita para um proximo parcelamento
+            $parcelamentoCustas->vincularParcelamento($parametros->parcel);
         }
 
             $termoRepository = TermoRepository::getInstance();

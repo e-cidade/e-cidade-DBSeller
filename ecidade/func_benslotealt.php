@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -55,7 +55,7 @@ $clrotulo->label("t42_descr");
               <?=$Lt43_codlote?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("t43_codlote",8,$It43_codlote,true,"text",4,"","chave_t43_codlote");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrotulo->label("t42_descr");
               <?=$Lt42_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("t42_descr",40,$It42_descr,true,"text",4,"","chave_t42_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrotulo->label("t42_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benslote.php")==true){
@@ -127,12 +127,12 @@ $clrotulo->label("t42_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

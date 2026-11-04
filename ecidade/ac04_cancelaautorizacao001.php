@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@ $clrotulo->label("ac16_resumoobjeto");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js, datagrid.widget.js, windowAux.widget.js,dbautocomplete.widget.js");
 db_app::load("dbmessageBoard.widget.js, prototype.js, dbtextField.widget.js, dbcomboBox.widget.js");
 db_app::load("estilos.css, grid.style.css");
@@ -77,7 +77,7 @@ db_app::load("estilos.css, grid.style.css");
   <br>
   <br>
   <center>
-    <table style='' border='0'>
+    <table border='0'>
       <tr>
         <td width="100%">
         <fieldset>
@@ -85,7 +85,7 @@ db_app::load("estilos.css, grid.style.css");
           <table width="100%">
               <tr>
                 <td>
-                  <?
+                  <?php
                    db_ancora($Lac16_sequencial, "js_pesquisaac16_sequencial(true);", 1);
                  ?>
                 </td>
@@ -294,6 +294,6 @@ function js_retornoAnularAutorizacoes(oResponse) {
 }
 js_main()
 </script>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

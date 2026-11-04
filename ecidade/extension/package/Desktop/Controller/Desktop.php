@@ -2,8 +2,6 @@
 
 namespace ECidade\Package\Desktop\Controller;
 
-use App\Domain\Configuracao\Usuario\Models\Usuario;
-use App\Domain\Patrimonial\Protocolo\Repository\DocumentosAndamentoRepository;
 use ECidade\Package\Desktop\Model\Menu as ModelMenu;
 use ECidade\Package\Desktop\Model\Window as ModelWindow;
 use \ECidade\V3\Extension\Controller;
@@ -12,6 +10,7 @@ use \ECidade\V3\Extension\Registry;
 use \ECidade\V3\Datasource\Database;
 use \ECidade\V3\Modification\Data\Modification as ModificationDataModification;
 use \ECidade\V3\Extension\Manager as ExtensionManager;
+use InstituicaoRepository;
 
 class Desktop extends Controller
 {
@@ -36,7 +35,27 @@ class Desktop extends Controller
         // Destroe sessoes ja criadas
         Session::destroyAll();
 
-        $this->view->document->setTitle('DBSeller Informática Ltda - e-cidade - 3.0');
+        /**
+         * Conecta no banco
+         */
+        Database::init();
+
+        $usuarioSistema = $this->getUsuarioSistema();
+        $this->view->usuarioSistema = $usuarioSistema;
+
+        $sTitle = "DBSeller Informática Ltda - e-cidade - ".$this->version();
+
+        try {
+            $this->view->instituicaoUsuario = $this->getInstituicaoUsuario($usuarioSistema);
+            $instituicao = InstituicaoRepository::getInstituicaoByCodigo(
+                $this->view->instituicaoUsuario
+            )->getDescricao();
+            $sTitle .= " - ".utf8_encode($instituicao);
+        } catch (\Exception $exception) {
+            $this->view->instituicaoUsuario = null;
+        }
+
+        $this->view->document->setTitle($sTitle);
         $this->view->document->setCharset($this->response->getCharset());
 
         $styles = array(
@@ -65,16 +84,23 @@ class Desktop extends Controller
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/vendors/window/window.js",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/desktop.js",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/menu.js",
+            ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/topbar.js",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/bootstrap.js",
+            ECIDADE_REQUEST_PATH . 'public/js/app.js?id='. uniqid(), // força o browser a não guardar cache
+            ECIDADE_REQUEST_PATH . 'public/extension/package/desktop/views/desktop/index.js?id='. uniqid(),
         );
 
         foreach ($styles as $href) {
-            $this->view->document->addLink($href, array('type' => 'text/css', 'rel' => 'stylesheet', 'media' => 'screen'));
+            $this->view->document->addLink(
+                $href,
+                array('type' => 'text/css', 'rel' => 'stylesheet', 'media' => 'screen')
+            );
         }
 
         // favicon
         $this->view->document->addLink(
-            ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . 'assets/img/favicon.png', array('type' => 'image/png', 'rel' => 'icon')
+            ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . 'assets/img/favicon.png',
+            array('type' => 'image/png', 'rel' => 'icon')
         );
 
         foreach ($scripts as $src) {
@@ -84,49 +110,22 @@ class Desktop extends Controller
         // dispara o evento do desktop
         Registry::get('app.eventManager')->trigger('extension.desktop.bootstrap', $this, array($this));
 
-        /**
-         * Conecta no banco
-         */
-        Database::init();
-
-        $usuarioSistema = $this->getUsuarioSistema();
-        $this->view->usuarioSistema = $usuarioSistema;
         $this->view->caminhoFoto = "imagens/none1.jpeg";
 
         try {
-
-            $cgm =  $usuarioSistema->getCGM();
+            $cgm = $usuarioSistema->getCGM();
             $oidFoto = $cgm ? $cgm->getFotoPrincipal() : null;
 
             if ($oidFoto) {
                 $this->view->caminhoFoto = $this->getCaminhoFotoUsuario($oidFoto);
             }
-
         } catch (\Exception $error) {
             $this->view->caminhoFoto = "imagens/none1.jpeg";
-        }
-
-        try {
-
-            $modificationDesktopData = ModificationDataModification::restore('dbportal-v3-desktop');
-            $isDBSeller = $this->request->session()->get('DB_login') == 'dbseller';
-            $isDBug = $this->request->session()->get('DB_DEBUG', false);
-            $this->view->showFallbackButton = ($modificationDesktopData->isUserType() && !$isDBSeller) || $isDBug;
-        } catch (\Exception $error) {
-            $this->view->showFallbackButton = false;
         }
 
         $this->view->version = $this->version();
 
         $this->view->permissaoDocumentoAndamento = null;
-        try {
-            $documentosAndamento = $this->getQuantidadeDocumentos($usuarioSistema);
-            $this->view->countDocumentos = count($documentosAndamento);
-            $this->view->instituicaoUsuario = $this->getInstituicaoUsuario($usuarioSistema);
-        } catch (\Exception $exception) {
-            $this->view->countDocumentos = 0;
-            $this->view->instituicaoUsuario = null;
-        }
 
         $this->render();
     }
@@ -149,7 +148,6 @@ class Desktop extends Controller
         Database::init();
 
         if (file_exists(ECIDADE_PATH . 'libs/db_acessa.php')) {
-
             require_once(modification(ECIDADE_PATH . 'libs/db_stdlib.php'));
             require(modification(ECIDADE_PATH . 'libs/db_acessa.php'));
         }
@@ -183,23 +181,6 @@ class Desktop extends Controller
     }
 
     /**
-     * @return string
-     */
-    public function fallback()
-    {
-        $login = $this->request->session()->get('DB_login');
-
-        if (empty($login)) {
-            throw new \Exception('Usuário não informado para retornar versão.');
-        }
-
-        $manager = new ExtensionManager();
-        $manager->uninstall('Desktop', $login);
-
-        return $login;
-    }
-
-    /**
      * @param integer $instit
      * @return array
      */
@@ -225,24 +206,11 @@ class Desktop extends Controller
             $bases[] = pg_fetch_result($result, $index, 'datname');
         }
 
-        return (object) array(
+        return (object)array(
             'atual' => $this->request->session()->get('DB_NBASE'),
             'acesso' => $acesso,
             'bases' => $bases
         );
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function getQuantidadeDocumentos($usuarioSistema)
-    {
-        require_once(modification(ECIDADE_PATH . 'libs/db_autoload.php'));
-        require(modification(ECIDADE_PATH . 'libs/db_acessa.php'));
-        require_once(modification(ECIDADE_PATH . 'libs/db_conecta.php'));
-        $usuario = Usuario::find($usuarioSistema->getIdUsuario());
-        $documentosAndamentoRepository = new DocumentosAndamentoRepository();
-        return $documentosAndamentoRepository->buscarDocumentosPorUsuario($usuario);
     }
 
     /**

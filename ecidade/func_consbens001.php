@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -124,7 +124,7 @@ if((isset($t52_bem) && trim($t52_bem)!="")||(isset($t52_ident) && trim($t52_iden
 $result_estrutural = $clcfpatri->sql_record($clcfpatri->sql_query(null,"db77_estrut"));
 if($clcfpatri->numrows>0){
   db_fieldsmemory($result_estrutural,0);
-  $arr_estrut = split("\.","$db77_estrut");
+  $arr_estrut = explode(".","$db77_estrut");
   $arr_detonaestrut = array();
   $var = array();
   $val = array();
@@ -137,12 +137,12 @@ if($clcfpatri->numrows>0){
   $pos = 0;
   for($i=0;$i<sizeof($arr_detonaestrut);$i++){
     $var[$i] = "cla$i";
-    $$var[$i]= substr($t64_class,$pos,$arr_detonaestrut[$i]);
-    $variavel .= $$var[$i];
+    ${$var[$i]}= substr($t64_class,$pos,$arr_detonaestrut[$i]);
+    $variavel .= ${$var[$i]};
     $pesqestrut = str_pad($variavel,$numcar,'0',STR_PAD_RIGHT);
 
     $val[$i] = "t64_class$i";
-    $$val[$i] = $pesqestrut;
+    ${$val[$i]} = $pesqestrut;
     $pos += $arr_detonaestrut[$i];
   }
 }
@@ -190,24 +190,24 @@ if($clcfpatri->numrows>0){
 	    <?=($t64_class)?>&nbsp;&nbsp;(<?=($t64_descr)?>)
 	  </td>
 	  <td colspan="3">
-	  <?
+	  <?php
 	    echo "
             <table>";
             $variavel = "";
             if(isset($arr_detonaestrut)){
               for($i=0;$i<sizeof($arr_detonaestrut);$i++){
-                $result_clabens = $clclabens->sql_record($clclabens->sql_query_file(null,"t64_descr as t64_class$i","","t64_class = '".$$val[$i]."'"));
+                $result_clabens = $clclabens->sql_record($clclabens->sql_query_file(null,"t64_descr as t64_class$i","","t64_class = '".${$val[$i]}."'"));
                 if($clclabens->numrows > 0){
                   db_fieldsmemory($result_clabens,0);
                 }else{
-                  $$val[$i] = "Classificação não encontrada.";
+                  ${$val[$i]} = "Classificação não encontrada.";
                 }
                 echo "
                 <tr>
-                  <td align='left'>".$variavel.$$var[$i]."</td>
-                  <td>".$$val[$i]."</td>
+                  <td align='left'>".$variavel.${$var[$i]}."</td>
+                  <td>".${$val[$i]}."</td>
                 </tr>";
-                    $variavel .= $$var[$i];
+                    $variavel .= ${$var[$i]};
               }
             }
             echo "
@@ -215,7 +215,7 @@ if($clcfpatri->numrows>0){
 	  ?>
 	  </td>
 	</tr>
-	<? 
+	<?php 
 	$resPesqOrgaoUnidade = $cldepartorg->sql_record($cldepartorg->sql_query_orgunid($t52_depart,db_getsession('DB_anousu'),'o40_orgao,o40_descr,o41_unidade,o41_descr'));
 	if($cldepartorg->numrows>0){
 		db_fieldsmemory($resPesqOrgaoUnidade,0);
@@ -251,7 +251,7 @@ if($clcfpatri->numrows>0){
 	  <td align="center"><?=($t52_numcgm)?></td>
 	  <td colspan="4"><?=($z01_nome)?></td>
 	</tr>
-	<?
+	<?php
 		//die($clbenscedente->sql_query(null,"cgm.z01_numcgm as z01_numcgm_convenio,cgm.z01_nome as z01_nome_convenio",null,"t09_bem = $t52_bem"));
 		$rs_convenio = $clbenscedente->sql_record($clbenscedente->sql_query(null,"cgm.z01_numcgm as z01_numcgm_convenio,cgm.z01_nome as z01_nome_convenio",null,"t09_bem = $t52_bem"));
 		$z01_nome_convenio 		= "&nbsp;";
@@ -266,7 +266,7 @@ if($clcfpatri->numrows>0){
 	  <td colspan="4"><?=($z01_nome_convenio)?></td>
 	</tr>
 	
-		<?
+		<?php
 		   if (strlen(trim($t52_ident)) > 0){
 		        if ($t07_confplaca == 4){
 		             $t52_ident = db_formatar($t52_ident,"s","0",$t07_digseqplaca,"e",0);
@@ -282,7 +282,7 @@ if($clcfpatri->numrows>0){
 	  <td align="center"><?=(strlen(trim($t52_ident)) > 0?$t52_ident:"NÃO INFORMADA")?></td>
 	</tr>
 
-<?
+<?php
 if($bem_situac == "M"){
 ?>
 	<tr>
@@ -296,7 +296,7 @@ if($bem_situac == "M"){
 	</tr>
 	<tr>
 	  <td><strong>Empenho:</strong></td>
-	  <td colspan="5"><? echo $sEmpenho;  //=($t53_empen==""?"&nbsp;":$t53_empen)?></td>
+	  <td colspan="5"><?php echo $sEmpenho;  //=($t53_empen==""?"&nbsp;":$t53_empen)?></td>
 	</tr>
 	<tr>
 	  <td><strong>Ordem compra:</strong></td>
@@ -306,7 +306,7 @@ if($bem_situac == "M"){
 	  <td><strong>Garantia:</strong></td>
 	  <td colspan="5"><?=$t53_garant==""?"&nbsp":(db_formatar($t53_garant,"d"))?></td>
 	</tr>
-<?
+<?php
 }else if($bem_situac == "I"){
 ?>
 	<tr>
@@ -322,7 +322,7 @@ if($bem_situac == "M"){
 	  <td><strong>OBS:</strong></td>
 	  <td colspan="5"><?=($t54_obs==""?"&nbsp;":substr($t54_obs,0,100))?></td>
 	</tr>
-<?
+<?php
 }else{
   $placaidentificacao = "Não";
   $sQueryPlaca  = " select t73_sequencial "; 
@@ -353,7 +353,7 @@ if($bem_situac == "M"){
     <td colspan="2" align="center">&nbsp;</td>
   </tr>
   
-<?
+<?php
 }
 
 if ($opcao_obs == "S"){
@@ -363,7 +363,7 @@ if ($opcao_obs == "S"){
     <td width="200" colspan="1" align="left" title="Características adicionais do bem"><b>Características adicionais do bem:</b></td>
     <td colspan="5" align="center" title=""><?=$t52_obs?></td> 
   </tr>
-<?
+<?php
      }
 }
 
@@ -373,11 +373,11 @@ if (trim(@$t55_obs) != ""){
 	   <td colspan="1" align="left"><?=$Lt55_obs?></td>
 	   <td colspan="5" align="left">&nbsp;&nbsp;<?=($t55_obs)?></td>	
         </tr>
-<?
+<?php
 }
 ?>  
       </table>
-<?
+<?php
 if($item_apolice == "S"){
 ?>
       <table align="center" width="90%">
@@ -387,7 +387,7 @@ if($item_apolice == "S"){
           </td>
         </tr>
       </table>
-<?
+<?php
 }else{
 ?> 
       <table width="90%">
@@ -398,7 +398,7 @@ if($item_apolice == "S"){
           </td>
         </tr>
       </table>
-<?
+<?php
 }
 ?> 
       <table width="100%" border='1' cellspacing="0" cellpadding="0" align ="center" >   
@@ -413,7 +413,7 @@ if($item_apolice == "S"){
 	  <td nowrap bgcolor='#CDCDFF' align='center' title='Histórico do bem'                            ><b>Histórico               </b></td>
 	  <td nowrap bgcolor='#CDCDFF' align='center' title='Situação atual do bem'                       ><b>Situação do bem         </b></td>
 	</tr>
-      <?
+      <?php
         $cor1='#97B5E6';
 	$cor2='#E796A4';
         if(isset($t52_bem) && trim($t52_bem) != ''){	 
@@ -473,7 +473,7 @@ if($item_apolice == "S"){
 
       <!-- MOSTRA TRANSFERÊNCIAS PENDENTES DO BEM -->
       <table width="100%" border='1' cellspacing="0" cellpadding="0" align ="center" >   
-<?
+<?php
 
     if (isset($t52_bem)&&trim($t52_bem)!=""){
          $cor1='#97B5E6';
@@ -496,26 +496,26 @@ if($item_apolice == "S"){
       	  <td nowrap bgcolor='#CDCDFF' align='center' title='Histórico do bem'                        ><b>Histórico           </b></td>
       	  <td nowrap bgcolor='#CDCDFF' align='center' title='Situação atual do bem'                   ><b>Situação do bem     </b></td>
         </tr>
-<?
+<?php
               for($i=0; $i < $numrows; $i++){
                    db_fieldsmemory($result_bens,$i);
 ?>
         <tr> 
-          <td align="center" nowrap bgcolor="<?=$cor?>"><? echo db_formatar($t93_data,"d") ?></td>
+          <td align="center" nowrap bgcolor="<?=$cor?>"><?php echo db_formatar($t93_data,"d") ?></td>
           <td align="left"   nowrap bgcolor="<?=$cor?>">TRANSFERÊNCIA PENDENTE</td>
           <td align="left"   nowrap bgcolor="<?=$cor?>"><?=$depto_transf?></td>
           <td align="left"   nowrap bgcolor="<?=$cor?>"><?=$div_transf?></td>
           <td align="left"   nowrap bgcolor="<?=$cor?>">TRANSFERÊNCIA PENDENTE... CÓD. <?=$t93_codtran?></td>
           <td align="left"   nowrap bgcolor="<?=$cor?>"><?=$t70_descr?></td>
         </tr>
-<?
+<?php
               }
          } else {
 ?>
 	      <tr>
 		      <td colspan='6' nowrap bgcolor=\"$cor1\" align='center'><b> Não existem transferências pendentes para este bem </b></td>
 		    </tr>
-<?
+<?php
          }
      }
 ?>
@@ -532,7 +532,7 @@ if($item_apolice == "S"){
 	  	<td nowrap bgcolor='#CDCDFF' align='center' title="<?=$RLt41_placaseq?>"><b><?=$RLt41_placaseq?></b></td>
 	  	<td nowrap bgcolor='#CDCDFF' align='center' title="<?=$RLt41_obs?>"><b><?=$RLt41_obs?></b></td>	  	
 	</tr>
-<?
+<?php
 $cor1='#97B5E6';
 $cor2='#E796A4';
 if(isset($t52_bem) && trim($t52_bem) != ''){	 

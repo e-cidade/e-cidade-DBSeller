@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clrotulo->label("nome");
             <?=@$Lla05_i_codigo?>
          </td>
          <td>
-          <?          
+          <?php          
           db_input('la05_i_codigo',10,$Ila05_i_codigo,true,'text',3,"");
           ?>
          </td>
@@ -57,7 +57,7 @@ $clrotulo->label("nome");
                       <tr>
                         <td nowrap align="right" title="<?=@$Tla05_d_inicio?>">
                            <?=@$Lla05_d_inicio?>
-                         <?
+                         <?php
                           if(isset($la05_d_inicio)&&($la05_d_inicio!="")){
                                        $vet=explode("/",$la05_d_inicio);
                                        $la05_d_inicio_dia=$vet[0];
@@ -71,7 +71,7 @@ $clrotulo->label("nome");
                       <tr>
                       <td nowrap align="right" title="<?=@$Tla05_d_fim?>">
                        <?=@$Lla05_d_fim?>
-                       <?
+                       <?php
                          if(isset($la05_d_fim)&&($la05_d_fim!="")){
                                        $vet=explode("/",$la05_d_fim);
                                        $la05_d_fim_dia=$vet[0];
@@ -91,30 +91,30 @@ $clrotulo->label("nome");
        </tr>
   <tr>
     <td nowrap title="<?=@$Tla05_i_laboratorio?>">
-       <?
+       <?php
        db_ancora(@$Lla05_i_laboratorio,"js_pesquisala05_i_laboratorio(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la05_i_laboratorio',10,$Ila05_i_laboratorio,true,'text',3," onchange='js_pesquisala05_i_laboratorio(false);'")
 ?>
-       <?
+       <?php
 db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla05_i_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lla05_i_usuario,"js_pesquisala05_i_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la05_i_usuario',10,$Ila05_i_usuario,true,'text',$db_opcao," onchange=\"js_pesquisala05_i_usuario(false);\"")
 ?>
-       <?
+       <?php
 db_input('nome',50,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -127,7 +127,7 @@ db_input('nome',50,$Inome,true,'text',3,'')
 <table width="100%">
   <tr>
     <td valign="top"><br>
-  <?
+  <?php
     $chavepri = array ("la05_i_codigo" => @$la05_i_codigo, "la02_c_descr"=>@$la02_c_descr, "la05_i_laboratorio" => @$la05_i_laboratorio, "la05_i_usuario" => @$la05_usuario, "la05_d_inicio" => @$la05_d_inicio, "la05_d_fim" => @$la05_d_fim,"nome"=>@$nome);
     $cliframe_alterar_excluir->chavepri = $chavepri;
    @$cliframe_alterar_excluir->sql = $cllab_labusuario->sql_query ("","*",""," la05_i_laboratorio = $la05_i_laboratorio");
@@ -215,7 +215,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_labusuario.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

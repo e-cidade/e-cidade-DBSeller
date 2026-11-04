@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,39 +65,39 @@ if ($db_opcao == 1) {
 <table border="0">
   <tr>
     <td>
-    <?
+    <?php
     db_input('c11_sequencial',10,$Ic11_sequencial,true,'hidden',3,"")
     ?>
     </td>
   </tr>
   <tr height="21">
     <td nowrap title="<?=@$Tc11_concadtce?>">
-       <?
+       <?php
        db_ancora(@$Lc11_concadtce,"js_pesquisac11_concadtce(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('c11_concadtce',10,$Ic11_concadtce,true,'text',$db_opcao," onchange='js_pesquisac11_concadtce(false);'")
 ?>
-       <?
+       <?php
 db_input('c10_nome',52,$Ic10_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr height="21">
     <td nowrap title="<?=@$Tc11_instit?>">
-       <?
+       <?php
        db_ancora(@$Lc11_instit,"js_pesquisac11_instit(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 
 
 db_input('c11_instit',10,$Ic11_instit,true,'text',3," onchange='js_pesquisac11_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',52,$Inomeinst,true,'text',3,'')
        ?>
     </td>
@@ -108,7 +108,7 @@ db_input('nomeinst',52,$Inomeinst,true,'text',3,'')
        <?=@$Lc11_datageracao?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('c11_datageracao',@$c11_datageracao_dia,@$c11_datageracao_mes,@$c11_datageracao_ano,true,'text',3,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_inputdata('c11_datageracao',@$c11_datageracao_dia,@$c11_datageracao_mes,@$c11
        <?=@$Lc11_dataini?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('c11_dataini',@$c11_dataini_dia,@$c11_dataini_mes,@$c11_dataini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_inputdata('c11_dataini',@$c11_dataini_dia,@$c11_dataini_mes,@$c11_dataini_ano
        <?=@$Lc11_datafim?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('c11_datafim',@$c11_datafim_dia,@$c11_datafim_mes,@$c11_datafim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -139,7 +139,7 @@ db_inputdata('c11_datafim',@$c11_datafim_dia,@$c11_datafim_mes,@$c11_datafim_ano
        <?=@$Lc11_diapagtofolha?>
     </td>
     <td>
-<?
+<?php
 db_input('c11_diapagtofolha',10,$Ic11_diapagtofolha,true,'text',$db_opcao,'')
 ?>
     </td>
@@ -149,7 +149,7 @@ db_input('c11_diapagtofolha',10,$Ic11_diapagtofolha,true,'text',$db_opcao,'')
        <?=@$Lc11_codigoremessa?>
     </td>
     <td>
-    <?
+    <?php
       db_input('c11_codigoremessa',10,$Ic11_codigoremessa,true,'text',$db_opcao,'')
     ?>
     </td>
@@ -162,7 +162,7 @@ db_input('c11_diapagtofolha',10,$Ic11_diapagtofolha,true,'text',$db_opcao,'')
   <table>
   <tr>
     <td>
-    <?
+    <?php
       db_textarea('c11_infleiame',10,83,$Ic11_infleiame,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -178,7 +178,7 @@ db_input('c11_diapagtofolha',10,$Ic11_diapagtofolha,true,'text',$db_opcao,'')
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick = "return js_valida();" >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?
+<?php
   if ( $db_opcao==1 ) {
     echo "<input name='importar' type='button' id='importar' value='Importar' onclick='js_importar();' >";
   }
@@ -351,7 +351,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_contcearquivo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clconaberturaexe->rotulo->label("c91_anousudestino");
               <?=$Lc91_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c91_sequencial",5,$Ic91_sequencial,true,"text",4,"","chave_c91_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconaberturaexe->rotulo->label("c91_anousudestino");
               <?=$Lc91_anousudestino?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c91_anousudestino",5,$Ic91_anousudestino,true,"text",4,"","chave_c91_anousudestino");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconaberturaexe->rotulo->label("c91_anousudestino");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 			$wh  = " and c91_situacao <> 3 and c91_instit = ".db_getsession("DB_instit");
 			$wh2 = " c91_situacao <> 3 and c91_instit     = ".db_getsession("DB_instit");
 			
@@ -152,12 +152,12 @@ $clconaberturaexe->rotulo->label("c91_anousudestino");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

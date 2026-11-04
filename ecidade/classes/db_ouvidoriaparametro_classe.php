@@ -54,13 +54,13 @@ class cl_ouvidoriaparametro {
                  ov06_db_documentotemplate = int4 = Documento Template
                  ";
    //funcao construtor da classe
-   function cl_ouvidoriaparametro() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriaparametro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_ouvidoriaparametro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ov06_instit = ($this->ov06_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["ov06_instit"]:$this->ov06_instit);
        $this->ov06_anousu = ($this->ov06_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["ov06_anousu"]:$this->ov06_anousu);
@@ -81,7 +81,7 @@ class cl_ouvidoriaparametro {
      }
    }
    // funcao para inclusao
-   function incluir ($ov06_instit,$ov06_anousu){
+   public function incluir ($ov06_instit,$ov06_anousu){
       $this->atualizacampos();
      if($this->ov06_tiponumprocesso == null ){
        $this->erro_sql = " Campo Numeração do atendimento de ouvidoria nao Informado.";
@@ -164,7 +164,7 @@ class cl_ouvidoriaparametro {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ov06_instit=null,$ov06_anousu=null) {
+   public function alterar ($ov06_instit=null,$ov06_anousu=null) {
       $this->atualizacampos();
      $sql = " update ouvidoriaparametro set ";
      $virgula = "";
@@ -272,7 +272,7 @@ class cl_ouvidoriaparametro {
      }
    }
    // funcao para exclusao
-   function excluir ($ov06_instit=null,$ov06_anousu=null,$dbwhere=null) {
+   public function excluir ($ov06_instit=null,$ov06_anousu=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ov06_instit,$ov06_anousu));
      }else{
@@ -343,7 +343,7 @@ class cl_ouvidoriaparametro {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -366,7 +366,7 @@ class cl_ouvidoriaparametro {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ov06_instit=null,$ov06_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ov06_instit=null,$ov06_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -411,7 +411,7 @@ class cl_ouvidoriaparametro {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ov06_instit=null,$ov06_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ov06_instit=null,$ov06_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

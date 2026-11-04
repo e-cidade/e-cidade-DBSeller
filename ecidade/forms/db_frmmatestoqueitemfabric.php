@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("m76_numcgm");
        <?=@$Lm78_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('m78_sequencial',10,$Im78_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm78_matestoqueitem?>">
-       <?
+       <?php
        db_ancora(@$Lm78_matestoqueitem,"js_pesquisam78_matestoqueitem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m78_matestoqueitem',10,$Im78_matestoqueitem,true,'text',$db_opcao," onchange='js_pesquisam78_matestoqueitem(false);'")
 ?>
-       <?
+       <?php
 db_input('m71_codmatestoque',10,$Im71_codmatestoque,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm78_matfabricante?>">
-       <?
+       <?php
        db_ancora(@$Lm78_matfabricante,"js_pesquisam78_matfabricante(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m78_matfabricante',10,$Im78_matfabricante,true,'text',$db_opcao," onchange='js_pesquisam78_matfabricante(false);'")
 ?>
-       <?
+       <?php
 db_input('m76_numcgm',10,$Im76_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matestoqueitemfabric.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

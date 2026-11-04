@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -524,17 +524,19 @@ abstract class RelatorioProfessorEscola {
     switch ($iTipoServidor) {
       case 1:
 
-        $sSqlNomeProfessor .= " select rh01_regist as codigo, z01_nome ";
+        $sSqlNomeProfessor .= " select rh01_regist as codigo, z01_nome, z04_nomesocial ";
         $sSqlNomeProfessor .= "   from rechumanopessoal ";
         $sSqlNomeProfessor .= "  inner join rhpessoal on rhpessoal.rh01_regist = rechumanopessoal.ed284_i_rhpessoal ";
         $sSqlNomeProfessor .= "  inner join cgm       on cgm.z01_numcgm        = rhpessoal.rh01_numcgm ";
+        $sSqlNomeProfessor .= "  left join cgmfisico on cgmfisico.z04_numcgm   = rhpessoal.rh01_numcgm ";
         $sSqlNomeProfessor .= "  where ed284_i_rechumano = {$iRecHumano} ";
 
         break;
       case 2:
-        $sSqlNomeProfessor .= " select z01_numcgm as codigo,  z01_nome ";
+        $sSqlNomeProfessor .= " select z01_numcgm as codigo,  z01_nome, z04_nomesocial ";
         $sSqlNomeProfessor .= "   from rechumanocgm ";
         $sSqlNomeProfessor .= "  inner join cgm on cgm.z01_numcgm = rechumanocgm.ed285_i_cgm ";
+        $sSqlNomeProfessor .= "  left join cgmfisico on cgmfisico.z04_numcgm   = cgm.z01_numcgm ";
         $sSqlNomeProfessor .= "  where ed285_i_rechumano = $iRecHumano ";
         break;
 
@@ -553,6 +555,9 @@ abstract class RelatorioProfessorEscola {
     }
 
     $oDadosProfessor = db_utils::fieldsMemory( $rsNomeProfessor, 0 );
+    if (trim($oDadosProfessor->z04_nomesocial) != '') {
+      return "{$oDadosProfessor->codigo} - " . $oDadosProfessor->z01_nome . "/ Nome Social:" . $oDadosProfessor->z04_nomesocial;
+    }
     return "{$oDadosProfessor->codigo} - {$oDadosProfessor->z01_nome}";
 
   }

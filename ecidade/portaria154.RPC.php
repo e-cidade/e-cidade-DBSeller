@@ -48,16 +48,19 @@ try {
     switch ($oParam->exec) {
     case 'getExercicioMatriculas':
         if (empty($oParam->matricula)) {
-            throw new BussinesException("Matrícula não informada.");   
+            throw new BusinessException("Matrícula não informada.");   
         }
 
         $oRetorno = buscaInformacoes($oParam);
-        $sql      = <<<SQL
+        //inserirExercioeMesNaoExistentesEmServidorRelatorioArquivoGenerico($oParam->matricula);
+
+        $sql = <<<SQL
             select
                 rh217_mesusu as mes,
                 rh217_anousu as exercicio,
                 rh217_informacao as valor,
-                'slag' as addres
+                'slag' as addres,
+                1 as editado
             from
                 servidorrelatorioarquivogenerico
             where
@@ -68,33 +71,90 @@ try {
                 r14_mesusu as mes,
                 r14_anousu as exercicio,
                 round(r14_valor, 2)::varchar as valor,
-                'gerfsal' as addres
+                'gerfsal' as addres,
+                coalesce(
+                    (
+                        select 
+                            1 
+                        from 
+                            servidorrelatorioarquivogenerico 
+                        where 
+                            rh217_regist = r14_regist
+                            and rh217_arquivorelatorio = 'portaria154AnexoII'
+                            and rh217_mesusu = r14_mesusu
+                            and rh217_anousu = r14_anousu limit 1
+                    ),
+                0) as editado
             from
                 gerfsal
-            where
-                r14_rubric = 'R992'
-                and r14_regist = {$oParam->matricula}
+            where r14_regist = {$oParam->matricula}
+                union all
+            select
+                r48_mesusu as mes,
+                r48_anousu as exercicio,
+                round(r48_valor, 2)::varchar as valor,
+                'gerfcom' as addres,
+                coalesce(
+                    (
+                        select 
+                            1 
+                        from 
+                            servidorrelatorioarquivogenerico 
+                        where 
+                            rh217_regist = r48_regist
+                            and rh217_arquivorelatorio = 'portaria154AnexoII'
+                            and rh217_mesusu = r48_mesusu
+                            and rh217_anousu = r48_anousu limit 1
+                    ),
+                0) as editado
+            from
+                gerfcom
+            where r48_regist = {$oParam->matricula}
             union all
             select
                 r35_mesusu as mes,
                 r35_anousu as exercicio,
                 round(r35_valor, 2)::varchar as valor,
-                'gerfs13' as addres
+                'gerfs13' as addres,
+                coalesce(
+                    (
+                        select 
+                            1 
+                        from 
+                            servidorrelatorioarquivogenerico 
+                        where 
+                            rh217_regist = r35_regist
+                            and rh217_arquivorelatorio = 'portaria154AnexoII'
+                            and rh217_mesusu = r35_mesusu
+                            and rh217_anousu = r35_anousu limit 1
+                    ),
+                0) as editado
             from
                 gerfs13
-            where
-                r35_rubric = 'R992'
-                and r35_regist = {$oParam->matricula}
-            order by exercicio asc, mes asc;     
+            where r35_regist = {$oParam->matricula}
+            order by exercicio asc, mes asc, addres asc;
 SQL;
-
         $rs = db_query($sql);
 
         $oRetorno->possuiDados = false;
         if (!$rs) {
             throw new DBException("Erro ao buscar informacoes na base de dados para a matrícula " . $oParam->matricula . ".");                
-        }       
-
+        }           
+        $mesesDefault = [
+            1 => 0,
+            2 => 0,
+            3 => 0,
+            4 => 0,
+            5 => 0,
+            6 => 0,
+            7 => 0,
+            8 => 0,
+            9 => 0,
+            10 => 0,
+            11 => 0,
+            12 => 0,
+            13 => 0
+        ];
         if (pg_num_rows($rs) > 0) {
             $oRetorno->possuiDados = true;
             $aExercicioAnterior    = array();
@@ -110,22 +170,25 @@ SQL;
                 if (empty($aExercicioAnterior[$dado->exercicio])) {
                     $aExercicioAnterior[$dado->exercicio] = array();
                     $aExercicioAnterior[$dado->exercicio]['exercicio'] = $dado->exercicio;
-                    $aExercicioAnterior[$dado->exercicio]['mes'] = array();
+                    $aExercicioAnterior[$dado->exercicio]['mes'] = $mesesDefault;
                 }
-                
-                $aExercicioAnterior[$dado->exercicio]['mes'][$dado->mes] = $dado->valor;
-                if ($dado->addres == 'gerfs13') {
-                    $dado->mes = 13; 
+                if ($dado->editado) {
+                    if ($dado->addres == 'slag') {
+                        $aExercicioAnterior[$dado->exercicio]['mes'][$dado->mes] = $dado->valor;
+                    }
+                } else {
+                    if ($dado->addres != 'slag') {
+                        $aExercicioAnterior[$dado->exercicio]['mes'][$dado->mes] += $dado->valor;
+                    }
                 }
-
             } 
 
-            $oRetorno->dados = inserirDecimoEmExerciciosZerados($aExercicioAnterior);
+            $oRetorno->dados = inserirDecimoEmExerciciosZerados($aExercicioAnterior);          
         }
         break;
     case 'salvarExercicios':
         if (empty($oParam->matricula)) {
-            throw new BusinnesException("Matrícula não informada.");
+            throw new BusinessException("Matrícula não informada.");
         }
 
         if (empty($oParam->dados) || sizeof($oParam->dados) == 0) {
@@ -211,7 +274,7 @@ function buscaInformacoes($oParam) {
 function inserirDecimoEmExerciciosZerados($exercicios){
     foreach($exercicios as $key => $exercicio){
         if(empty($exercicio["mes"][13])){
-            $exercicio["mes"][13] = "0,00";
+            $exercicio["mes"][13] = 0;
         }
 
         $exercicios[$key] = $exercicio;
@@ -219,4 +282,102 @@ function inserirDecimoEmExerciciosZerados($exercicios){
     }
     
     return $exercicios;
+}
+
+function inserirExercioeMesNaoExistentesEmServidorRelatorioArquivoGenerico($matricula){
+    
+    $oServidor = \ServidorRepository::getServidoresByMatriculas(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha(), array($matricula));
+    $oServidor = $oServidor[$matricula];
+    $anoAdmissao = date('Y', $oServidor->getDataAdmissao()->getTimestamp());
+    $mesAdmissao = date('m', $oServidor->getDataAdmissao()->getTimestamp()); 
+    
+    $anoDemissao = null;
+    $mesDemissao = null;
+
+    if (!empty($oServidor->getDataRescisao())){
+        $anoDemissao = date('Y', $oServidor->getDataRescisao()->getTimestamp());
+        $mesDemissao = date('m', $oServidor->getDataRescisao()->getTimestamp());
+
+    }
+
+
+    $anoAtual = !empty($anoDemissao) ? $anoDemissao:\DBPessoal::getAnoFolha();
+    
+     
+    foreach(range($anoAdmissao,$anoAtual) as $ano) {
+               
+        $meses = periodoDeMeses($ano,$anoAdmissao,$mesAdmissao,$anoAtual,$mesDemissao);        
+        
+        foreach ($meses as $mes){
+               
+            if(!existeInformacaoEmServidorRelatorioArquivoGenerico($matricula, $ano, $mes)){
+                inserirEmServidorRelatorioArquivoGenerico($matricula, $ano, $mes);
+
+            }
+
+        }
+        
+    }
+
+}
+
+function inserirEmServidorRelatorioArquivoGenerico($matricula, $ano, $mes) {
+
+    $daoServidorRelatorioArquivoGenerico = new \cl_servidorrelatorioarquivogenerico();
+
+    $daoServidorRelatorioArquivoGenerico->rh217_regist = $matricula;
+    $daoServidorRelatorioArquivoGenerico->rh217_anousu = $ano;
+    $daoServidorRelatorioArquivoGenerico->rh217_mesusu = $mes;
+    $daoServidorRelatorioArquivoGenerico->rh217_arquivorelatorio = 'portaria154AnexoII';
+    $daoServidorRelatorioArquivoGenerico->rh217_informacao = '0,00';
+    $daoServidorRelatorioArquivoGenerico->incluir();
+
+}
+
+function periodoDeMeses($ano,$anoAdmissao,$mesAdmissao,$anoAtual,$mesDemissao = null){
+    
+    $meses = array();
+
+    switch ($ano) {
+        case $anoAdmissao:
+            $meses = range($mesAdmissao,12);
+        break;
+        case $anoAtual:
+            $mesFolha = !empty($mesDemissao) ? $mesDemissao: \DBPessoal::getMesFolha();
+            if ($anoAtual == $anoAdmissao){
+                $meses = range($mesAdmissao,$mesFolha);
+            }else{
+                $meses = range(1,$mesFolha);
+            }
+        break;
+        default:
+            $meses = range(1,12);
+        break;
+    }
+
+    return $meses;
+}
+
+function existeInformacaoEmServidorRelatorioArquivoGenerico($matricula, $ano, $mes){
+
+        $sql = "select 
+                    * 
+                from 
+                    servidorrelatorioarquivogenerico 
+                where 
+                    rh217_regist = {$matricula} 
+                    and rh217_anousu = {$ano} 
+                    and rh217_mesusu = {$mes}";
+        
+        $result = db_query($sql);
+
+        if (pg_num_rows($result) > 0) {
+
+            return true;
+
+        }
+                
+
+    return false;
+
 }

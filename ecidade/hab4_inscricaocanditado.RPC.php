@@ -111,7 +111,7 @@ try {
     case "getHabitacaoProgramasGrupo":
       
       
-      $oDaoProgramas = db_utils::getDao("habitprograma");
+      $oDaoProgramas = new cl_habitprograma;
       $sSqlProrama   = $oDaoProgramas->sql_query_file(null,
                                                       "*", 
                                                       'ht01_descricao',
@@ -196,7 +196,7 @@ try {
        */
       $aFamiliares = $oCandidato->getCgm()->getFamiliares();
       
-      foreach ($aFamiliares as &$oFamiliar) {
+      foreach ($aFamiliares as $oFamiliar) {
         
         $oFamiliar->sNome  = urlencode($oFamiliar->sNome);
         $oFamiliar->sTipo  = urlencode($oFamiliar->sTipo);

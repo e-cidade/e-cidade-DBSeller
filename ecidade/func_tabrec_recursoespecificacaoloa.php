@@ -49,7 +49,7 @@ $clrotulo->label("c61_reduz");
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body >
 <table height="100%" border="0" align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr>
         <td height="63" align="center" valign="top">
@@ -132,7 +132,7 @@ $clrotulo->label("c61_reduz");
                     db_fieldsmemory($result, 0);
 
                     $recurso = $db_id_recurso;
-                    echo "<script>" . $funcao_js . "($k02_codigo,'$k02_drecei','$recurso','$k02_estorc',false,'$k02_tipo', '$o15_recurso');</script>";
+                    echo "<script>" . $funcao_js . "($k02_codigo,'$k02_drecei','$recurso','$k02_estorc',false,'$k02_tipo', '$o15_recurso', '$gestao');</script>";
                 } else {
                     echo "<script>" . $funcao_js . "(null,'Chave(" . $pesquisa_chave . ") não Encontrado','','',true, '', '');</script>";
                 }

@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE workflowativandpadrao
-class cl_workflowativandpadrao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db115_sequencial = 0; 
-   var $db115_workflowativ = 0; 
-   var $db115_codigo = 0; 
-   var $db115_ordem = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_workflowativandpadrao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db115_sequencial = 0;
+   var $db115_workflowativ = 0;
+   var $db115_codigo = 0;
+   var $db115_ordem = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db115_sequencial = int4 = Código Sequencial 
-                 db115_workflowativ = int4 = Código Work Flow Atividade 
-                 db115_codigo = int4 = Código Andamento Padrão 
-                 db115_ordem = int4 = Ordem Andamento Padrão 
+                 db115_sequencial = int4 = Código Sequencial
+                 db115_workflowativ = int4 = Código Work Flow Atividade
+                 db115_codigo = int4 = Código Andamento Padrão
+                 db115_ordem = int4 = Ordem Andamento Padrão
                  ";
-   //funcao construtor da classe 
-   function cl_workflowativandpadrao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("workflowativandpadrao"); 
+     $this->rotulo = new rotulo("workflowativandpadrao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_workflowativandpadrao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db115_sequencial = ($this->db115_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db115_sequencial"]:$this->db115_sequencial);
        $this->db115_workflowativ = ($this->db115_workflowativ == ""?@$GLOBALS["HTTP_POST_VARS"]["db115_workflowativ"]:$this->db115_workflowativ);
@@ -80,9 +80,9 @@ class cl_workflowativandpadrao {
      }
    }
    // funcao para inclusao
-   function incluir ($db115_sequencial){ 
+   public function incluir ($db115_sequencial){
       $this->atualizacampos();
-     if($this->db115_workflowativ == null ){ 
+     if($this->db115_workflowativ == null ){
        $this->erro_sql = " Campo Código Work Flow Atividade nao Informado.";
        $this->erro_campo = "db115_workflowativ";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_workflowativandpadrao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db115_codigo == null ){ 
+     if($this->db115_codigo == null ){
        $this->erro_sql = " Campo Código Andamento Padrão nao Informado.";
        $this->erro_campo = "db115_codigo";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_workflowativandpadrao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db115_ordem == null ){ 
+     if($this->db115_ordem == null ){
        $this->erro_sql = " Campo Ordem Andamento Padrão nao Informado.";
        $this->erro_campo = "db115_ordem";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_workflowativandpadrao {
        return false;
      }
      if($db115_sequencial == "" || $db115_sequencial == null ){
-       $result = db_query("select nextval('workflowativandpadrao_db115_sequencial_seq')"); 
+       $result = db_query("select nextval('workflowativandpadrao_db115_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: workflowativandpadrao_db115_sequencial_seq do campo: db115_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: workflowativandpadrao_db115_sequencial_seq do campo: db115_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db115_sequencial = pg_result($result,0,0); 
+       $this->db115_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from workflowativandpadrao_db115_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $db115_sequencial)){
@@ -130,10 +130,10 @@ class cl_workflowativandpadrao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db115_sequencial = $db115_sequencial; 
+         $this->db115_sequencial = $db115_sequencial;
        }
      }
-     if(($this->db115_sequencial == null) || ($this->db115_sequencial == "") ){ 
+     if(($this->db115_sequencial == null) || ($this->db115_sequencial == "") ){
        $this->erro_sql = " Campo db115_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_workflowativandpadrao {
        return false;
      }
      $sql = "insert into workflowativandpadrao(
-                                       db115_sequencial 
-                                      ,db115_workflowativ 
-                                      ,db115_codigo 
-                                      ,db115_ordem 
+                                       db115_sequencial
+                                      ,db115_workflowativ
+                                      ,db115_codigo
+                                      ,db115_ordem
                        )
                 values (
-                                $this->db115_sequencial 
-                               ,$this->db115_workflowativ 
-                               ,$this->db115_codigo 
-                               ,$this->db115_ordem 
+                                $this->db115_sequencial
+                               ,$this->db115_workflowativ
+                               ,$this->db115_codigo
+                               ,$this->db115_ordem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "workflowativandpadrao ($this->db115_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_workflowativandpadrao {
        $resac = db_query("insert into db_acount values($acount,3159,17893,'','".AddSlashes(pg_result($resaco,0,'db115_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db115_sequencial=null) { 
+   public function alterar ($db115_sequencial=null) {
       $this->atualizacampos();
      $sql = " update workflowativandpadrao set ";
      $virgula = "";
-     if(trim($this->db115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_sequencial"])){ 
+     if(trim($this->db115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_sequencial"])){
        $sql  .= $virgula." db115_sequencial = $this->db115_sequencial ";
        $virgula = ",";
-       if(trim($this->db115_sequencial) == null ){ 
+       if(trim($this->db115_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "db115_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_workflowativandpadrao {
          return false;
        }
      }
-     if(trim($this->db115_workflowativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_workflowativ"])){ 
+     if(trim($this->db115_workflowativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_workflowativ"])){
        $sql  .= $virgula." db115_workflowativ = $this->db115_workflowativ ";
        $virgula = ",";
-       if(trim($this->db115_workflowativ) == null ){ 
+       if(trim($this->db115_workflowativ) == null ){
          $this->erro_sql = " Campo Código Work Flow Atividade nao Informado.";
          $this->erro_campo = "db115_workflowativ";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_workflowativandpadrao {
          return false;
        }
      }
-     if(trim($this->db115_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_codigo"])){ 
+     if(trim($this->db115_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_codigo"])){
        $sql  .= $virgula." db115_codigo = $this->db115_codigo ";
        $virgula = ",";
-       if(trim($this->db115_codigo) == null ){ 
+       if(trim($this->db115_codigo) == null ){
          $this->erro_sql = " Campo Código Andamento Padrão nao Informado.";
          $this->erro_campo = "db115_codigo";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_workflowativandpadrao {
          return false;
        }
      }
-     if(trim($this->db115_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_ordem"])){ 
+     if(trim($this->db115_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db115_ordem"])){
        $sql  .= $virgula." db115_ordem = $this->db115_ordem ";
        $virgula = ",";
-       if(trim($this->db115_ordem) == null ){ 
+       if(trim($this->db115_ordem) == null ){
          $this->erro_sql = " Campo Ordem Andamento Padrão nao Informado.";
          $this->erro_campo = "db115_ordem";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_workflowativandpadrao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "workflowativandpadrao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db115_sequencial;
@@ -297,14 +297,14 @@ class cl_workflowativandpadrao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db115_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db115_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db115_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_workflowativandpadrao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "workflowativandpadrao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db115_sequencial;
@@ -361,11 +361,11 @@ class cl_workflowativandpadrao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,11 +387,11 @@ class cl_workflowativandpadrao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $db115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $db115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,15 +409,15 @@ class cl_workflowativandpadrao {
      $sql2 = "";
      if($dbwhere==""){
        if($db115_sequencial!=null ){
-         $sql2 .= " where workflowativandpadrao.db115_sequencial = $db115_sequencial "; 
-       } 
+         $sql2 .= " where workflowativandpadrao.db115_sequencial = $db115_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,11 +426,11 @@ class cl_workflowativandpadrao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $db115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $db115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,15 +443,15 @@ class cl_workflowativandpadrao {
      $sql2 = "";
      if($dbwhere==""){
        if($db115_sequencial!=null ){
-         $sql2 .= " where workflowativandpadrao.db115_sequencial = $db115_sequencial "; 
-       } 
+         $sql2 .= " where workflowativandpadrao.db115_sequencial = $db115_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

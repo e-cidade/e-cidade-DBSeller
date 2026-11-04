@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="yes" ?>
+<table codigo='1010542' name='cadastro.tipoproprietariopromitente' description="Tabela que relaciona as tabelas tipoproprietario e tipopromiente" prefix="j165" label="tipoproprietariopromitente" type="0">
+  <fields>
+    <field codigo="1011146" 
+           campo_api='' 
+           name="j165_tipoproprietariopromitente" 
+           conteudo="int4" 
+           description="Sequencial da tabela tipoproprietariopromitente" 
+           inivalue="0" 
+           label="Sequencial" 
+           size="10" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Sequencial" 
+           reference="" 
+           ispk="t" 
+           hassequence="t" > 
+           
+      <sequence name='cadastro.tipoproprietariopromitente_j165_tipoproprietariopromitente_seq' />
+     
+    </field> 
+    <field codigo="1011147" 
+           campo_api='' 
+           name="j165_tipoproprietario" 
+           conteudo="int4" 
+           description="Sequencial da tabela tipoproprietario" 
+           inivalue="0" 
+           label="Sequencial tipoproprietario" 
+           size="10" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Sequencial tipoproprietario" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="1011148" 
+           campo_api='' 
+           name="j165_tipopromitente" 
+           conteudo="int4" 
+           description="Sequencial da tabela tipopromitente" 
+           inivalue="0" 
+           label="Sequencial tipopromitente" 
+           size="10" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Sequencial tipopromitente" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+  </fields>
+  <primarykey>
+    <fieldpk name="j165_tipoproprietariopromitente"></fieldpk> 
+  </primarykey>
+  <foreignkeys>
+  </foreignkeys>
+</table>

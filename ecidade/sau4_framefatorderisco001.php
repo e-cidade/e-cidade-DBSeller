@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if( isset($chavepesquisacgs) && (int)$chavepesquisacgs != 0){
 			<tr>
 				<td>
 					<select name="cgsfatorderisco" id="cgsfatorderisco" size="10" onclick="js_desabexc()"     style="font-size:9px;width:400px;height:120px" multiple disable>
-					<?
+					<?php
 					$result_cgsfatorderisco = db_query( $clcgsfatorderisco->sql_query(null,"*","s105_v_descricao","s106_i_cgs = $chavepesquisacgs") );
 					if( pg_numrows($result_cgsfatorderisco) > 0 ){
 						for($i=0; $i < pg_numrows($result_cgsfatorderisco); $i++ ){
@@ -76,6 +76,6 @@ if( isset($chavepesquisacgs) && (int)$chavepesquisacgs != 0){
 				
 			</tr>
 		</table>
-	<?
+	<?php
 }
 ?>

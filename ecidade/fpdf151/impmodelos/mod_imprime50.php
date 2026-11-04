@@ -1,4 +1,4 @@
-<?
+<?php
 
   $cldb_config = new cl_db_config;
 
@@ -22,7 +22,7 @@
 
 	$this->objpdf->SetFont('Arial','',$fonte);
 	$this->objpdf->Text($coluna + 60,$linha+9,$this->nrinscr); // inscricao
-        
+
   if ($this->processo > 0) {
 	  $this->objpdf->Text($coluna + 135,$linha+9,$this->processo); // processo
   }
@@ -85,7 +85,7 @@
 //========================= ATIVIDADE PRINCIPAL ========================================================================================
       $this->objpdf->sety($linha);
       $pos = $linha;
-      $alt = 10; 
+      $alt = 10;
 //	  $this->objpdf->roundedrect($coluna-2,$linha-1,187,20,2,'1234');
 	  $this->objpdf->SetFont('Arial','B',12);
   	  $this->objpdf->Ln(2);
@@ -149,9 +149,9 @@
   	  $linha += 16;
       $yyy = $this->objpdf->gety();
 	  $obs='';
-	  $this->objpdf->roundedrect($coluna-2,$pos+1,187,$alt+4,2,'1234');	  
-	  
-//========================= ATIVIDADE SECUNDARIAS ========================================================================================	  
+	  $this->objpdf->roundedrect($coluna-2,$pos+1,187,$alt+4,2,'1234');
+
+//========================= ATIVIDADE SECUNDARIAS ========================================================================================
 		$this->objpdf->setx(15);
 	    $yyy = $this->objpdf->gety();
         $linha = $this->objpdf->gety() + 5;
@@ -162,7 +162,7 @@
 //========================================================================================================================================================================
 	    if ($num_outras >0) {
            $x=$x+4;
-	       reset($this->outrasativs); 
+	       reset($this->outrasativs);
 	       $this->objpdf->Ln(4);
 	       $this->objpdf->setx(15);
 	       $yyy = $this->objpdf->gety() + 7;
@@ -170,14 +170,14 @@
 	       $this->objpdf->Cell(135,5,"ATIVIDADE" . ($num_outras > 1?"S":"") . " SECUNDÁRIA" . ($num_outras > 1?"S":"") . ":",0,0,"L",0);
 	       if ($this->impdatas == 't'){
 	         $this->objpdf->Cell(24,5,"INICIO",0,0,"C",0);
-	         $atv_perman = "t";   
+	         $atv_perman = "t";
 	         for($i=0; $i<$num_outras; $i++){
 	            $perman = $this->outrasativs[$i]["atv_perman"];
 	            if($perman=="f"){
 	              $atv_perman = "f";
 	            }
 	          }
-	         
+
 	       	 if($atv_perman == 'f'){
 	       	    $this->objpdf->Cell(24,5,"FINAL",0,1,"C",0);
 	       	 }else{
@@ -224,14 +224,14 @@
 				         $this->objpdf->Cell(40,4,"e outras ...",0,1,"L",0);
 		             $imprime_linha = 'f';
 		           }
-		         
-		       
+
+
 		       if($imprime_linha=='t'){
 	           $yyy = $this->objpdf->gety();
 				     $chave=key($this->outrasativs);
 				     $this->objpdf->SetFont('Arial','',11);
 				     $this->objpdf->setx(15);
-				     
+
 				     if ($this->impcodativ == 't'){
 					     $codativ=$this->outrasativs[$i]["codativ"];
 					     $this->objpdf->Cell(15,4,$codativ,0,0,"C",0);
@@ -240,7 +240,7 @@
 				     }
 				     $descr=$this->outrasativs[$i]["descr"];
 				     $this->objpdf->Cell(120,4,$descr,0,$quebradescr,"L",0);
-				     
+
 				     if ($this->impdatas == 't'){
 					     $datain=$this->outrasativs[$i]["datain"];
 					     $this->objpdf->Cell(24,4,db_formatar($datain,'d'),0,0,"C",0);
@@ -256,8 +256,8 @@
 			       		$this->objpdf->Cell(24,5,"",0,1,"C",0);
 				     }
 		     }
-	       
-		     
+
+
 		     if ($this->impobsativ == 't'){
 		       $linhasec = $linhasec +1;
 		       if($linhasec<6){
@@ -266,12 +266,12 @@
 				        $obs = $this->q03_atmemo[$descr];
 				        $this->objpdf->Cell(15,4,"",0,0,"C",0);
 				        $this->objpdf->Cell(164,4,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,$quebraobs,"L",0);
-				        
-				     }else{ 
+
+				     }else{
 				        $this->objpdf->setx(15);
 				     	  $this->objpdf->Cell(15,4,"",0,0,"C",0);
 				        $this->objpdf->Cell(164,4,"OBS: Sem observação ...",0,$quebraobs,"L",0);
-				     	  
+
 				     }
 		       }
 		     }
@@ -279,13 +279,13 @@
 		       $x=$x+2;
 			     next($this->outrasativs);
 		       $yyyatual = $this->objpdf->gety();
-			     if  ($yyyatual >= 200){ 
+			     if  ($yyyatual >= 200){
 			         break;
-			     }  
-		   
+			     }
+
 		   }
-		   
-//=====================================================================================================================================================	   
+
+//=====================================================================================================================================================
     $this->objpdf->roundedrect($coluna-2,$y,187,35,2,'1234'); // descricao da atividade secundaria
  	}
     $x=64;
@@ -305,29 +305,29 @@
 	  }
 	}
     $data= date("Y-m-d",db_getsession("DB_datausu"));
-    $dataex = split("-",$data);
+    $dataex = explode("-",$data);
     $dia= $dataex[2];
     $mes= $dataex[1];
     $ano= $dataex[0];
     $this->objpdf->ln(15);
     $this->objpdf->SetFont('Arial','B',14);
     $this->objpdf->cell(0,8,$this->municpref . ", ".$dia." DE ".strtoupper(db_mes( $mes))." DE ".$ano . ".",0,1,"R",0); // data
-		
+
 //  global $db02_texto;
 	  $this->objpdf->setfont('arial','',9);
-		
+
   //  $this->objpdf->SetXY($coluna,264);
-	
-/******************************************** ASSINATURAS ************************************************************************************/	
+
+/******************************************** ASSINATURAS ************************************************************************************/
 //select * from where tipodoc = 1010 and db02_descr = 'ASSINATURAS_CODIGOPHP';
 //se achou da eval no texto, senao faz como atualmente...
 $sqlass = "
 			select *
-			from db_documento 
+			from db_documento
 			inner join db_docparag on db03_docum = db04_docum
 			inner join db_tipodoc on db08_codigo  = db03_tipodoc
-			inner join db_paragrafo on db04_idparag = db02_idparag 
-			where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")." 
+			inner join db_paragrafo on db04_idparag = db02_idparag
+			where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")."
 			and db02_descr = 'ASSINATURAS_CODIGOPHP'
 			";
 			//die($sqlass);
@@ -341,15 +341,15 @@ if ($linhasass>0){
 // QUANDO NÃO TIVER "ASSINATURAS_CODIGOPHP" CADASTRADAS NA DB_DOCUMENTOS pegar o modo antigo.
 //  for pegando as assinaturas do alvara
 		$sqlparag = "select *
-					from db_documento 
+					from db_documento
 					inner join db_docparag on db03_docum = db04_docum
 					inner join db_tipodoc on db08_codigo  = db03_tipodoc
-					inner join db_paragrafo on db04_idparag = db02_idparag 
-					where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")." 
-					  and db02_descr ilike 'assinatura_%' 
+					inner join db_paragrafo on db04_idparag = db02_idparag
+					where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")."
+					  and db02_descr ilike 'assinatura_%'
 					order by db04_ordem ";
 		$resparag = db_query($sqlparag);
-		
+
 //		db_criatabela($resparag);exit;
 //		die($sqlparag);
 
@@ -358,7 +358,7 @@ if ($linhasass>0){
 			exit;
 		}
 		$numrows = pg_numrows($resparag);
-		
+
 		$linha  = $this->objpdf->getY()+10;
 		$colpri = $coluna;
 		global $db02_texto;
@@ -375,7 +375,7 @@ if ($linhasass>0){
 				   $linha += 10;
 				}
 		}
-}	
+}
 $this->objpdf->SetAutoPageBreak('on',0);
-		
+
 ?>

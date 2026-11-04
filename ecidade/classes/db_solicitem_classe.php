@@ -70,7 +70,7 @@ class cl_solicitem
                  ";
 
     //funcao construtor da classe
-    function cl_solicitem()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("solicitem");
@@ -78,7 +78,7 @@ class cl_solicitem
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -89,7 +89,7 @@ class cl_solicitem
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->pc11_codigo = ($this->pc11_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["pc11_codigo"] : $this->pc11_codigo);
@@ -109,7 +109,7 @@ class cl_solicitem
     }
 
     // funcao para inclusao
-    function incluir($pc11_codigo)
+    public function incluir($pc11_codigo)
     {
         $this->atualizacampos();
         if ($this->pc11_numero == null) {
@@ -279,7 +279,7 @@ class cl_solicitem
     }
 
     // funcao para alteracao
-    function alterar($pc11_codigo = null)
+    public function alterar($pc11_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update solicitem set ";
@@ -488,7 +488,7 @@ class cl_solicitem
     }
 
     // funcao para exclusao
-    function excluir($pc11_codigo = null, $dbwhere = null)
+    public function excluir($pc11_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($pc11_codigo));
@@ -588,7 +588,7 @@ class cl_solicitem
         }
     }
 
-    function reordenarItens($pc11_numero = "") {
+    public function reordenarItens($pc11_numero = "") {
 
         // Verifica se a chamada possui filhos
         $sql = " select pc53_solicitafilho from solicitavinculo where pc53_solicitapai = $pc11_numero order by pc53_solicitafilho ";
@@ -652,7 +652,7 @@ class cl_solicitem
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -679,7 +679,7 @@ class cl_solicitem
     }
 
     // funcao do sql
-    function sql_query($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -720,7 +720,7 @@ class cl_solicitem
     }
 
     // funcao do sql
-    function sql_query_file($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -758,7 +758,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_itens_alterados_abertura_possuem_estimativa($pc11_numero, $codigosItensSolicitacao)
+    public function sql_query_itens_alterados_abertura_possuem_estimativa($pc11_numero, $codigosItensSolicitacao)
     {
         $sql = "
             SELECT
@@ -779,7 +779,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_pcmater_dotacao($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pcmater_dotacao($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -833,7 +833,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_pcmater($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pcmater($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -883,7 +883,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_serv($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_serv($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -924,7 +924,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_rel($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_rel($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -976,7 +976,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_relmod2($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_relmod2($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1034,7 +1034,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_prot($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_prot($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1083,7 +1083,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_protandam($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_protandam($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1137,7 +1137,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_solunid($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_solunid($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1181,7 +1181,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_valsuplemorcam($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_valsuplemorcam($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1249,7 +1249,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_valsuplem($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_valsuplem($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1300,7 +1300,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_mat($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_mat($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1339,7 +1339,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_dot($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $having = "")
+    public function sql_query_dot($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $having = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1381,7 +1381,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_ancoradotorc($pc13_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_ancoradotorc($pc13_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1420,7 +1420,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sql_query_vinculo($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_vinculo($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1521,7 +1521,48 @@ class cl_solicitem
         return $sSql;
     }
 
+    public function sql_query_manutencao_veic($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
 
+        $sql .= "  from solicitem ";
+        $sql .= "  join solicita on solicita.pc10_numero = solicitem.pc11_numero ";
+        $sql .= "  join solicitemveic on solicitemveic.pc14_solicitem = solicitem.pc11_codigo ";
+        $sql .= "  join solicitemunid on solicitemunid.pc17_codigo = solicitem.pc11_codigo ";
+        $sql .= "  join matunid on matunid.m61_codmatunid = solicitemunid.pc17_unid ";
+        $sql .= "  join solicitempcmater on pc16_solicitem = pc11_codigo ";
+        $sql .= "  join pcmater on pc01_codmater = pc16_codmater ";
+        $sql2 = "";
+
+        if ($dbwhere == "") {
+            if ($pc11_codigo != null) {
+                $sql2 .= " where solicitem.pc11_codigo = $pc11_codigo ";
+            }
+        } else if ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
     /* Retorna uma string sql com os dados  da compilação, suas estimativas e Registros de precos realizados
    * @return string sql
   */
@@ -1614,6 +1655,7 @@ class cl_solicitem
         $sSql .= "        inner join empempenho                on e61_numemp                     = e60_numemp";
         $sSql .= "        inner join empempitem                on e60_numemp                     = e62_numemp";
         $sSql .= "                                            and e62_sequen                     = e55_sequen";
+        $sSql .= "        left join solicitaanulada            on pc67_solicita                  = pc10_numero";
         $sSqlWhere = '';
         if ($dbwhere == "") {
             if ($pc11_codigo != null) {
@@ -1639,6 +1681,68 @@ class cl_solicitem
         return $sSql;
     }
 
+    public function sql_query_compilacao_estimativa_empenhado_anulado(
+        $pc11_codigo = null,
+        $campos = "*",
+        $ordem = null,
+        $dbwhere = ""
+    ) {
+
+        $sSql = "select ";
+        if ($campos != "*") {
+
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+
+                $sSql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+
+            $sSql .= $campos;
+        }
+        $sSql .= "  from solicitem registropreco";
+        $sSql .= "        inner join solicita on registropreco.pc11_numero                    = pc10_numero ";
+        $sSql .= "        inner join solicitemvinculo vinccomp on registropreco.pc11_codigo   = vinccomp.pc55_solicitemfilho";
+        $sSql .= "        inner join solicitem comp            on comp.pc11_codigo            = vinccomp.pc55_solicitempai";
+        $sSql .= "        inner join solicitemvinculo vincest  on comp.pc11_codigo            = vincest.pc55_solicitemfilho";
+        $sSql .= "        inner join solicitem itemestimativa  on vincest.pc55_solicitempai   = itemestimativa.pc11_codigo";
+        $sSql .= "        inner join pcprocitem                on registropreco.pc11_codigo      = pc81_solicitem ";
+        $sSql .= "        inner join empautitempcprocitem      on pc81_codprocitem               = e73_pcprocitem";
+        $sSql .= "        inner join empautitem                on e73_sequen                     = e55_sequen";
+        $sSql .= "                                            and e73_autori                     = e55_autori";
+        $sSql .= "        inner join empautoriza               on e55_autori                     = e54_autori";
+        $sSql .= "        inner join empempaut                 on e61_autori                     = e54_autori";
+        $sSql .= "        inner join empempenho                on e61_numemp                     = e60_numemp";
+        $sSql .= "        inner join empempitem                on e60_numemp                     = e62_numemp";
+        $sSql .= "                                            and e62_sequen                     = e55_sequen";
+        $sSql .= "        join empanuladoitem                  on empanuladoitem.e37_empempitem  = empempitem.e62_sequencial";
+        $sSql .= "        left join solicitaanulada            on pc67_solicita                  = pc10_numero";
+        $sSqlWhere = '';
+        if ($dbwhere == "") {
+            if ($pc11_codigo != null) {
+                $sSqlWhere .= " where comp.pc11_codigo = {$pc11_codigo} ";
+            }
+        } else {
+            if ($dbwhere != "") {
+                $sSqlWhere .= " where $dbwhere";
+            }
+        }
+        $sSql .= $sSqlWhere;
+        if ($ordem != null) {
+
+            $sSql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+
+                $sSql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sSql;
+    }
 
     public function sql_query_solicitaprotprocesso($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
@@ -1730,7 +1834,7 @@ class cl_solicitem
     }
 
 
-    function sql_query_solicitacao_orcamento($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_solicitacao_orcamento($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1794,7 +1898,7 @@ class cl_solicitem
     }
 
 
-    function sql_query_itens_solicitacao($pc91_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_itens_solicitacao($pc91_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1834,7 +1938,7 @@ class cl_solicitem
     }
 
 
-    function sql_query_relmod3($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_relmod3($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1904,7 +2008,7 @@ class cl_solicitem
     }
 
 
-    function sql_query_desdobramento($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_desdobramento($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -2008,7 +2112,7 @@ class cl_solicitem
      * query para retornar itens do julgamento
      */
 
-    function sql_query_JulgamentoOrcamento($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_JulgamentoOrcamento($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -2111,7 +2215,7 @@ class cl_solicitem
     * metodo que retorna se um determinado item ja possui autorização
     * utilizado para alterar dotações
     */
-    function sql_query_item_licitacao($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_item_licitacao($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -2152,7 +2256,7 @@ class cl_solicitem
         return $sql;
     }
 
-    function sqlItensComValorLancado($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sqlItensComValorLancado($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
@@ -2226,6 +2330,37 @@ class cl_solicitem
 
         if (!empty($ordem)) {
             $sql .= " order by $ordem";
+        }
+
+        return $sql;
+    }
+
+    public function sql_query_quantidade_solicitada_anulada($pc11_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = " SELECT {$campos} ";
+        $sql .= " FROM solicitemvinculo ";
+        $sql .= " JOIN solicitem ON pc55_solicitemfilho = pc11_codigo ";
+        $sql .= " JOIN solicita ON pc11_numero = pc10_numero ";
+        $sql .= " LEFT JOIN solicitaanulada ON pc10_numero = pc67_solicita ";
+        $sql .= " JOIN pcprocitem ON solicitem.pc11_codigo = pc81_solicitem ";
+        $sql .= " JOIN empautitempcprocitem ON pc81_codprocitem = e73_pcprocitem ";
+        $sql .= " JOIN empautitem ON e73_sequen = e55_sequen AND e73_autori = e55_autori ";
+        $sql .= " JOIN empautoriza ON e55_autori = e54_autori ";
+        $sql .= " JOIN empempaut ON e61_autori = e54_autori ";
+        $sql .= " JOIN empempenho ON e61_numemp = e60_numemp ";
+        $sql .= " JOIN empempitem ON e60_numemp = e62_numemp AND e62_sequen = e55_sequen ";
+        $sql .= " JOIN empanuladoitem ON empanuladoitem.e37_empempitem = empempitem.e62_sequencial";
+
+        if (!is_null($pc11_codigo)) {
+            $sql .= " WHERE pc55_solicitempai = $pc11_codigo ";
+        } else {
+            if (!empty($dbwhere)) {
+                $sql .= " WHERE $dbwhere ";
+            }
+        }
+
+        if (!empty($ordem)) {
+            $sql .= " ORDER BY $ordem";
         }
 
         return $sql;

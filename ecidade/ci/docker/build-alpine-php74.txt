@@ -1,0 +1,1 @@
+docker build --rm -t ci:php74 alpine-php74

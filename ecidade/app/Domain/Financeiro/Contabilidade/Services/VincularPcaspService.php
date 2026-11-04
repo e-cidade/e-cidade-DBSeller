@@ -215,4 +215,43 @@ class VincularPcaspService
             ->whereIn('c120_conplano', $codCons)
             ->delete();
     }
+
+    public function importarVinculo(array $filtros)
+    {
+        $copy = $filtros;
+        $copy['exercicio'] = $filtros['exercicio'] - 1;
+
+        $this->getContasPadrao($filtros)
+            ->each(function (Pcasp $pcasp) use ($copy) {
+                $copy['conta'] = $pcasp->conta;
+                $pcaspAnterior = $this->getContasPadrao($copy)->shift();
+                // quando a conta do pcasp é nova não vai ter no ano anterior
+                if (is_null($pcaspAnterior)) {
+                    return;
+                }
+
+                // não tem conta mapeada no exercicio anterior
+                $contasAnoAnterior = $pcaspAnterior->contasEcidade;
+                if ($contasAnoAnterior->isEmpty()) {
+                    return;
+                }
+
+                $codCons = $contasAnoAnterior->map(function ($contaOrcamentaria) {
+                    return $contaOrcamentaria->c60_codcon;
+                })->toArray();
+
+                $contasEcidade = Conplano::select('c60_codigo')
+                    ->where('c60_anousu', $pcasp->exercicio)
+                    ->whereIn('c60_codcon', $codCons)
+                    ->get();
+
+                if (!$contasEcidade->isEmpty()) {
+                    $idContasEcidade = $contasEcidade->map(function ($conta) {
+                        return $conta->c60_codigo;
+                    })->toArray();
+
+                    $this->vincularContas($pcasp, $idContasEcidade);
+                }
+            });
+    }
 }

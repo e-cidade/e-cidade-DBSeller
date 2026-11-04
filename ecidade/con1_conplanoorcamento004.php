@@ -48,20 +48,20 @@ $oGet = db_utils::postMemory($_GET);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js");
     db_app::load("prototype.js");
     db_app::load("strings.js, grid.style.css, datagrid.widget.js");
     ?>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="margin-top:25px;">
+<body style="margin-top:25px;">
 
 <form id='form1' name='form1'>
     <div class="container">
         <fieldset style="width: 600px">
             <legend><b>Reduzidos</b></legend>
-            <table width="100%">
+            <table class="form-container">
                 <tr>
                     <td><b>Código Conta:</b></td>
                     <td>
@@ -139,7 +139,7 @@ $oGet = db_utils::postMemory($_GET);
     oGridReduzido.sName = 'oGridReduzido';
     oGridReduzido.setCellAlign = (new Array("center", "center", "center", "left", "left", "center"));
     aHeaders = new Array("Código Conta", "Reduzido", "Instituição", "Recurso", "Ação", "Instit", "Recurso");
-    oGridReduzido.aWidths = new Array(10, 10, 30, 30, 5);
+    oGridReduzido.aWidths = ["10%", "10%", " 25%", "25%", "20%", "10%"];
     oGridReduzido.setHeader(aHeaders);
     oGridReduzido.aHeaders[5].lDisplayed = false;
     oGridReduzido.aHeaders[6].lDisplayed = false;
@@ -171,15 +171,16 @@ $oGet = db_utils::postMemory($_GET);
         if (oRetorno.aContasReduzidas.length > 0) {
             oRetorno.aContasReduzidas.each(function (oReduz, iLinha) {
 
+                let linha4 = `<input type="button" id="btnReduzAlt_${iLinha}" value="A" title="Alterar Registro"
+                    onclick="js_alterarReduzido(${iLinha});">&nbsp; <input type="button" id="btnReduzExc_${iLinha}"
+                    value="E" title="Excluir Registro" onclick="js_excluirReduzido(${oReduz.c61_reduz}, ${oReduz.codigo})">
+                `;
                 var aLinha = new Array();
                 aLinha[0] = oReduz.c61_codcon;
                 aLinha[1] = oReduz.c61_reduz;
                 aLinha[2] = oReduz.codigo + " - " + oReduz.nomeinst;
-                aLinha[3] = oReduz.o15_recurso + " - " + oReduz.o15_descr.urlDecode() + ' - ' + oReduz.o200_descricao.urlDecode();
-                aLinha[4] = '<input type="button" id="btnReduzAlt_' + iLinha + '"';
-                aLinha[4] += '       value="A" title="Alterar Registro" onclick="js_alterarReduzido(' + iLinha + ');">&nbsp;';
-                aLinha[4] += '<input type="button" id="btnReduzExc_' + iLinha + '" value="E"';
-                aLinha[4] += '       title="Excluir Registro" onclick="js_excluirReduzido(' + oReduz.c61_reduz + ', ' + oReduz.codigo + ')">';
+                aLinha[3] = oReduz.gestao + " - " + oReduz.descricao.urlDecode() + ' - ' + oReduz.o200_descricao.urlDecode();
+                aLinha[4] = linha4;
                 aLinha[5] = oReduz.codigo; //instituicao
                 aLinha[6] = oReduz.o15_codigo; //recurso
 
@@ -300,6 +301,8 @@ $oGet = db_utils::postMemory($_GET);
 
         var iReduzido = oRetorno.iReduzido;
 
+        parent.iframe_grupos.js_carregaGrupos();
+
         /**
          * verificamos se existe vinculo de regras o estrutural do reduzido
          * se existir perguntamos se o usuario deseja criar a regra
@@ -407,12 +410,13 @@ $oGet = db_utils::postMemory($_GET);
             return
         }
 
-        let param = 'fonteRecurso='+ $('o15_recurso').value;
+        let param = 'gestao='+ $('o15_recurso').value;
         pesquisaRecurso(param);
     }
 
     const pesquisaRecurso = (parametroAdicional) => {
-        var sUrl = 'func_fonterecursocomplemento.php?funcao_js=parent.js_preencheRecurso|db_codigo|o15_recurso|o15_descr|o200_descricao';
+        let sUrl = 'func_novosRecursos.php?funcao_js=parent.js_preencheRecurso|o15_codigo|gestao|descricao|o200_descricao';
+
         if (parametroAdicional) {
             sUrl += `&${parametroAdicional}`;
         }

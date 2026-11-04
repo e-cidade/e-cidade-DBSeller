@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("j34_setor");
   <tr>
     <td nowrap title="<?=@$Tj69_tesinter?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lj69_tesinter,"js_pesquisaj69_tesinter(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j69_tesinter',10,$Ij69_tesinter,true,'text',$db_opcao," onchange='js_pesquisaj69_tesinter(false);'")
 ?>
-       <?
+       <?php
 db_input('j39_idbql',4,$Ij39_idbql,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj69_idbql?>">
-       <?
+       <?php
        db_ancora(@$Lj69_idbql,"js_pesquisaj69_idbql(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j69_idbql',6,$Ij69_idbql,true,'text',$db_opcao," onchange='js_pesquisaj69_idbql(false);'")
 ?>
-       <?
+       <?php
 db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tesinterlote.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

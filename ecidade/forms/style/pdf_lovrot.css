@@ -1,0 +1,73 @@
+#ancoraLevantamento {
+    font-size: 8px!important;
+    margin-bottom: 0px;
+    font-weight: bold;
+    margin-right: 1em;
+}
+
+body {
+    font-family: sans-serif;
+    width: 100%;
+}
+
+.table {
+    width: 100%;
+    font-size: 12px;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+.table thead tr th {
+    color: black;
+    background: #eee;
+    border: 1 solid #777;
+}
+
+.table tbody tr td {
+    border: 1 solid #777;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table {
+    width: 100%;
+}
+
+.table-primary {
+    color: #fff;
+    background: #2d5676;
+    font-weight: bold;
+    padding: 0.5em 0.2em;
+}
+
+td, th {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.table-debito { 
+    margin-bottom: 0px!important;
+}
+
+.im-d-none {
+    display: none!important;
+}
+
+.im-d-block {
+    display: block!important;
+}
+
+.im-text-center{ 
+    text-align: center!important;
+}
+
+.im-text-left {
+    text-align: left!important;
+}
+
+@page {
+    margin-footer: 20px;
+	footer: html_myFooter;
+}

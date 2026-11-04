@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,7 +44,7 @@ $clliclicitemlote->rotulo->label();
 $erro_msg = "";
 
 if (isset($excluir)&&trim($excluir)!=""){
-     $vetor_lotes = split(",",$l04_descricao);
+     $vetor_lotes =explode(",",$l04_descricao);
      $sqlerro     = false;
 
 
@@ -75,7 +75,7 @@ if (isset($excluir)&&trim($excluir)!=""){
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <center>
-<?
+<?php
 if (isset($licitacao)&&trim($licitacao)!=""){
    $sql_marca     = "";
    $campos        = "l04_descricao";
@@ -95,11 +95,11 @@ if (isset($licitacao)&&trim($licitacao)!=""){
    $cliframe_seleciona_lote->js_marcador   = "";
    $cliframe_seleciona_lote->dbscript      = "";
    $cliframe_seleciona_lote->iframe_seleciona(1);
-?>    
+?>
 <form name="form2" method="post" action="lic1_liclicitemlote003.php">
 <table border="0" cellspacing="2" cellpadding="0" align="center">
 <tr><td colspan="2">&nbsp;</td></tr>
-<?
+<?php
    db_input("licitacao", 10,"",true,"hidden",3);
    db_input("l04_descricao",500,"",true,"hidden",3);
 ?>
@@ -114,13 +114,13 @@ if (isset($licitacao)&&trim($licitacao)!=""){
    function js_confirma_dados(){
        var contador    = 0;
        var lista_itens = "";
-       var separador   = ""; 
+       var separador   = "";
        var tam         = excluir_lote.document.form1.elements.length;
 
        for(i = 0; i < tam; i++){
             if (excluir_lote.document.form1.elements[i].type == "checkbox"){
                  if (excluir_lote.document.form1.elements[i].checked == true ){
-                      lista_itens += separador+excluir_lote.document.form1.elements[i].value;   
+                      lista_itens += separador+excluir_lote.document.form1.elements[i].value;
                       separador    = ", ";
                       contador++;
                  }
@@ -133,7 +133,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
        } else {
             document.form2.l04_descricao.value = lista_itens;
        }
-  
+
        if (confirm("Confirma exclusão dos lotes "+lista_itens+" ?") == true){
             document.form2.submit();
             return true;
@@ -143,7 +143,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
    }
 
    function js_fechar(){
-       parent.db_iframe_loteexcluir.hide();     
+       parent.db_iframe_loteexcluir.hide();
        parent.itens_lote.location.href = 'lic1_liclicitemlote011.php?licitacao=<?=$licitacao?>';
    }
 </script>
@@ -151,21 +151,21 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 </form>
 </body>
 </html>
-<?
+<?php
 }
 
 if ($numrows == 0&&trim(@$excluir)==""){
       $erro_msg = "Nenhum lote cadastrado ou foram excluídos desta licitação.";
       echo "<script>
                document.form2.excluir.disabled = true;
-            </script>";          
+            </script>";
 }
 
 if ($numrows == 0&&trim(@$excluir)!=""){
       $erro_msg = "Todos os lotes desta licitação foram excluídos.";
       echo "<script>
                document.form2.excluir.disabled = true;
-            </script>";          
+            </script>";
 }
 
 if (isset($erro_msg)&&trim($erro_msg)!="") {

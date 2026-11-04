@@ -32,6 +32,7 @@ class DefaultSession extends Session
     const DB_BASE = 'DB_base';
     const DB_NBASE = 'DB_NBASE';
     const DB_ITEMMENU_ACESSADO = 'DB_itemmenu_acessado';
+    const DB_PROCESSAMENTO_AUTOMATICO = 'DB_processamento_automatico';
 
     /**
      * @var DefaultSession
@@ -138,7 +139,7 @@ class DefaultSession extends Session
     private function addDefaultIp()
     {
         if (!$this->has(self::DB_IP)) {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "";
 
             if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
                 $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -192,7 +193,7 @@ class DefaultSession extends Session
     /**
      * Função que recebe uma Request do laravel e seta os valores enviados na sessao
      *
-     * @param Request $request
+     * @param array $request
      * @return $this|Session
      * @throws Exception
      */

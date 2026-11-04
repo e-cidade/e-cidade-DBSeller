@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $db_botao             = true;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -90,18 +90,18 @@ fieldset table td:first-child {
 			    <table border="0" align="center" width="400px">
 			      <tr>
 			        <td nowrap title="<?=@$Tj121_sequencial?>">
-			          <?
+			          <?php
 			            db_ancora("<b>Tabela Cálculo:</b>", "js_pesquisaj121_sequencial(true);", $db_opcao);
 			          ?>
 			        </td>
 			        <td> 
-			          <?
+			          <?php
 			            db_input('j121_sequencial', 10, $Ij121_sequencial, true, 
 			                     'text', $db_opcao, " onchange='js_pesquisaj121_sequencial(false);'");
 			          ?>
 			        </td>
 			        <td> 
-			          <?
+			          <?php
 			            db_input('nomearq', 40, $Inomearq, true, 'text', 3);
 			            db_input('j121_codarq', 10, $Ij121_codarq, true, 'hidden', 3);
 			          ?>
@@ -123,7 +123,7 @@ fieldset table td:first-child {
     </td>
   </tr>
 </table>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

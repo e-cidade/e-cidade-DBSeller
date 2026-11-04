@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE zonasvalor
-class cl_zonasvalor { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j51_zona = 0; 
-   var $j51_anousu = 0; 
-   var $j51_valorm2t = 0; 
-   var $j51_valorm2c = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_zonasvalor {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j51_zona = 0;
+   var $j51_anousu = 0;
+   var $j51_valorm2t = 0;
+   var $j51_valorm2c = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j51_zona = int8 = Zona Fiscal 
-                 j51_anousu = int8 = Exercício 
-                 j51_valorm2t = float8 = Valor Terreno (m²) 
-                 j51_valorm2c = float8 = Valor Construção (m²) 
+                 j51_zona = int8 = Zona Fiscal
+                 j51_anousu = int8 = Exercício
+                 j51_valorm2t = float8 = Valor Terreno (m²)
+                 j51_valorm2c = float8 = Valor Construção (m²)
                  ";
-   //funcao construtor da classe 
-   function cl_zonasvalor() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("zonasvalor"); 
+     $this->rotulo = new rotulo("zonasvalor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_zonasvalor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j51_zona = ($this->j51_zona == ""?@$GLOBALS["HTTP_POST_VARS"]["j51_zona"]:$this->j51_zona);
        $this->j51_anousu = ($this->j51_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["j51_anousu"]:$this->j51_anousu);
@@ -81,9 +81,9 @@ class cl_zonasvalor {
      }
    }
    // funcao para inclusao
-   function incluir ($j51_zona,$j51_anousu){ 
+   public function incluir ($j51_zona,$j51_anousu){
       $this->atualizacampos();
-     if($this->j51_valorm2t == null ){ 
+     if($this->j51_valorm2t == null ){
        $this->erro_sql = " Campo Valor Terreno (m²) nao Informado.";
        $this->erro_campo = "j51_valorm2t";
        $this->erro_banco = "";
@@ -92,7 +92,7 @@ class cl_zonasvalor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j51_valorm2c == null ){ 
+     if($this->j51_valorm2c == null ){
        $this->erro_sql = " Campo Valor Construção (m²) nao Informado.";
        $this->erro_campo = "j51_valorm2c";
        $this->erro_banco = "";
@@ -101,9 +101,9 @@ class cl_zonasvalor {
        $this->erro_status = "0";
        return false;
      }
-       $this->j51_zona = $j51_zona; 
-       $this->j51_anousu = $j51_anousu; 
-     if(($this->j51_zona == null) || ($this->j51_zona == "") ){ 
+       $this->j51_zona = $j51_zona;
+       $this->j51_anousu = $j51_anousu;
+     if(($this->j51_zona == null) || ($this->j51_zona == "") ){
        $this->erro_sql = " Campo j51_zona nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_zonasvalor {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->j51_anousu == null) || ($this->j51_anousu == "") ){ 
+     if(($this->j51_anousu == null) || ($this->j51_anousu == "") ){
        $this->erro_sql = " Campo j51_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_zonasvalor {
        return false;
      }
      $sql = "insert into zonasvalor(
-                                       j51_zona 
-                                      ,j51_anousu 
-                                      ,j51_valorm2t 
-                                      ,j51_valorm2c 
+                                       j51_zona
+                                      ,j51_anousu
+                                      ,j51_valorm2t
+                                      ,j51_valorm2c
                        )
                 values (
-                                $this->j51_zona 
-                               ,$this->j51_anousu 
-                               ,$this->j51_valorm2t 
-                               ,$this->j51_valorm2c 
+                                $this->j51_zona
+                               ,$this->j51_anousu
+                               ,$this->j51_valorm2t
+                               ,$this->j51_valorm2c
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Valores por zona fiscal ($this->j51_zona."-".$this->j51_anousu) nao Incluído. Inclusao Abortada.";
@@ -168,16 +168,16 @@ class cl_zonasvalor {
        $resac = db_query("insert into db_acount values($acount,897,6018,'','".AddSlashes(pg_result($resaco,0,'j51_valorm2c'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j51_zona=null,$j51_anousu=null) { 
+   public function alterar ($j51_zona=null,$j51_anousu=null) {
       $this->atualizacampos();
      $sql = " update zonasvalor set ";
      $virgula = "";
-     if(trim($this->j51_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_zona"])){ 
+     if(trim($this->j51_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_zona"])){
        $sql  .= $virgula." j51_zona = $this->j51_zona ";
        $virgula = ",";
-       if(trim($this->j51_zona) == null ){ 
+       if(trim($this->j51_zona) == null ){
          $this->erro_sql = " Campo Zona Fiscal nao Informado.";
          $this->erro_campo = "j51_zona";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_zonasvalor {
          return false;
        }
      }
-     if(trim($this->j51_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_anousu"])){ 
+     if(trim($this->j51_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_anousu"])){
        $sql  .= $virgula." j51_anousu = $this->j51_anousu ";
        $virgula = ",";
-       if(trim($this->j51_anousu) == null ){ 
+       if(trim($this->j51_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "j51_anousu";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_zonasvalor {
          return false;
        }
      }
-     if(trim($this->j51_valorm2t)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2t"])){ 
+     if(trim($this->j51_valorm2t)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2t"])){
        $sql  .= $virgula." j51_valorm2t = $this->j51_valorm2t ";
        $virgula = ",";
-       if(trim($this->j51_valorm2t) == null ){ 
+       if(trim($this->j51_valorm2t) == null ){
          $this->erro_sql = " Campo Valor Terreno (m²) nao Informado.";
          $this->erro_campo = "j51_valorm2t";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_zonasvalor {
          return false;
        }
      }
-     if(trim($this->j51_valorm2c)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2c"])){ 
+     if(trim($this->j51_valorm2c)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2c"])){
        $sql  .= $virgula." j51_valorm2c = $this->j51_valorm2c ";
        $virgula = ",";
-       if(trim($this->j51_valorm2c) == null ){ 
+       if(trim($this->j51_valorm2c) == null ){
          $this->erro_sql = " Campo Valor Construção (m²) nao Informado.";
          $this->erro_campo = "j51_valorm2c";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_zonasvalor {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores por zona fiscal nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j51_zona."-".$this->j51_anousu;
@@ -280,14 +280,14 @@ class cl_zonasvalor {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j51_zona=null,$j51_anousu=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j51_zona=null,$j51_anousu=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j51_zona,$j51_anousu));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_zonasvalor {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores por zona fiscal nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j51_zona."-".$j51_anousu;
@@ -351,11 +351,11 @@ class cl_zonasvalor {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,10 +377,10 @@ class cl_zonasvalor {
       }
      return $result;
    }
-   function sql_query ( $j51_zona=null,$j51_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j51_zona=null,$j51_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,23 +394,23 @@ class cl_zonasvalor {
      $sql2 = "";
      if($dbwhere==""){
        if($j51_zona!=null ){
-         $sql2 .= " where zonasvalor.j51_zona = $j51_zona "; 
-       } 
+         $sql2 .= " where zonasvalor.j51_zona = $j51_zona ";
+       }
        if($j51_anousu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " zonasvalor.j51_anousu = $j51_anousu "; 
-       } 
+         }
+         $sql2 .= " zonasvalor.j51_anousu = $j51_anousu ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,10 +419,10 @@ class cl_zonasvalor {
      }
      return $sql;
   }
-   function sql_query_file ( $j51_zona=null,$j51_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j51_zona=null,$j51_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,23 +435,23 @@ class cl_zonasvalor {
      $sql2 = "";
      if($dbwhere==""){
        if($j51_zona!=null ){
-         $sql2 .= " where zonasvalor.j51_zona = $j51_zona "; 
-       } 
+         $sql2 .= " where zonasvalor.j51_zona = $j51_zona ";
+       }
        if($j51_anousu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " zonasvalor.j51_anousu = $j51_anousu "; 
-       } 
+         }
+         $sql2 .= " zonasvalor.j51_anousu = $j51_anousu ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,77 +1,77 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE curric
-class cl_curric { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $h03_seq = 0; 
-   var $h03_numcgm = 0; 
-   var $h03_data_dia = null; 
-   var $h03_data_mes = null; 
-   var $h03_data_ano = null; 
-   var $h03_data = null; 
-   var $h03_codigo = 0; 
-   var $h03_descr = null; 
-   var $h03_detalh = null; 
-   var $h03_tipopartic = 0; 
-   var $h03_cargahoraria = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_curric {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $h03_seq = 0;
+   var $h03_numcgm = 0;
+   var $h03_data_dia = null;
+   var $h03_data_mes = null;
+   var $h03_data_ano = null;
+   var $h03_data = null;
+   var $h03_codigo = 0;
+   var $h03_descr = null;
+   var $h03_detalh = null;
+   var $h03_tipopartic = 0;
+   var $h03_cargahoraria = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 h03_seq = int4 = Sequencia do Evento 
-                 h03_numcgm = int4 = Funcionario 
-                 h03_data = date = Data do Evento 
-                 h03_codigo = int4 = Codigo 
-                 h03_descr = varchar(40) = Descrição 
-                 h03_detalh = text = Observacao do Evento 
-                 h03_tipopartic = int4 = Evento 
-                 h03_cargahoraria = numeric(10) = Carga horária do curso 
+                 h03_seq = int4 = Sequencia do Evento
+                 h03_numcgm = int4 = Funcionario
+                 h03_data = date = Data do Evento
+                 h03_codigo = int4 = Codigo
+                 h03_descr = varchar(40) = Descrição
+                 h03_detalh = text = Observacao do Evento
+                 h03_tipopartic = int4 = Evento
+                 h03_cargahoraria = numeric(10) = Carga horária do curso
                  ";
-   //funcao construtor da classe 
-   function cl_curric() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("curric"); 
+     $this->rotulo = new rotulo("curric");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_curric {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h03_seq = ($this->h03_seq == ""?@$GLOBALS["HTTP_POST_VARS"]["h03_seq"]:$this->h03_seq);
        $this->h03_numcgm = ($this->h03_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["h03_numcgm"]:$this->h03_numcgm);
@@ -102,9 +102,9 @@ class cl_curric {
      }
    }
    // funcao para inclusao
-   function incluir ($h03_seq){ 
+   public function incluir ($h03_seq){
       $this->atualizacampos();
-     if($this->h03_numcgm == null ){ 
+     if($this->h03_numcgm == null ){
        $this->erro_sql = " Campo Funcionario nao Informado.";
        $this->erro_campo = "h03_numcgm";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_curric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h03_data == null ){ 
+     if($this->h03_data == null ){
        $this->erro_sql = " Campo Data do Evento nao Informado.";
        $this->erro_campo = "h03_data_dia";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_curric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h03_codigo == null ){ 
+     if($this->h03_codigo == null ){
        $this->erro_sql = " Campo Codigo nao Informado.";
        $this->erro_campo = "h03_codigo";
        $this->erro_banco = "";
@@ -131,7 +131,7 @@ class cl_curric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h03_descr == null ){ 
+     if($this->h03_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "h03_descr";
        $this->erro_banco = "";
@@ -140,7 +140,7 @@ class cl_curric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h03_detalh == null ){ 
+     if($this->h03_detalh == null ){
        $this->erro_sql = " Campo Observacao do Evento nao Informado.";
        $this->erro_campo = "h03_detalh";
        $this->erro_banco = "";
@@ -149,7 +149,7 @@ class cl_curric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h03_tipopartic == null ){ 
+     if($this->h03_tipopartic == null ){
        $this->erro_sql = " Campo Evento nao Informado.";
        $this->erro_campo = "h03_tipopartic";
        $this->erro_banco = "";
@@ -158,7 +158,7 @@ class cl_curric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h03_cargahoraria == null ){ 
+     if($this->h03_cargahoraria == null ){
        $this->erro_sql = " Campo Carga horária do curso nao Informado.";
        $this->erro_campo = "h03_cargahoraria";
        $this->erro_banco = "";
@@ -168,16 +168,16 @@ class cl_curric {
        return false;
      }
      if($h03_seq == "" || $h03_seq == null ){
-       $result = db_query("select nextval('curric_h03_seq_seq')"); 
+       $result = db_query("select nextval('curric_h03_seq_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: curric_h03_seq_seq do campo: h03_seq"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: curric_h03_seq_seq do campo: h03_seq";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->h03_seq = pg_result($result,0,0); 
+       $this->h03_seq = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from curric_h03_seq_seq");
        if(($result != false) && (pg_result($result,0,0) < $h03_seq)){
@@ -188,10 +188,10 @@ class cl_curric {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->h03_seq = $h03_seq; 
+         $this->h03_seq = $h03_seq;
        }
      }
-     if(($this->h03_seq == null) || ($this->h03_seq == "") ){ 
+     if(($this->h03_seq == null) || ($this->h03_seq == "") ){
        $this->erro_sql = " Campo h03_seq nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -200,27 +200,27 @@ class cl_curric {
        return false;
      }
      $sql = "insert into curric(
-                                       h03_seq 
-                                      ,h03_numcgm 
-                                      ,h03_data 
-                                      ,h03_codigo 
-                                      ,h03_descr 
-                                      ,h03_detalh 
-                                      ,h03_tipopartic 
-                                      ,h03_cargahoraria 
+                                       h03_seq
+                                      ,h03_numcgm
+                                      ,h03_data
+                                      ,h03_codigo
+                                      ,h03_descr
+                                      ,h03_detalh
+                                      ,h03_tipopartic
+                                      ,h03_cargahoraria
                        )
                 values (
-                                $this->h03_seq 
-                               ,$this->h03_numcgm 
-                               ,".($this->h03_data == "null" || $this->h03_data == ""?"null":"'".$this->h03_data."'")." 
-                               ,$this->h03_codigo 
-                               ,'$this->h03_descr' 
-                               ,'$this->h03_detalh' 
-                               ,$this->h03_tipopartic 
-                               ,$this->h03_cargahoraria 
+                                $this->h03_seq
+                               ,$this->h03_numcgm
+                               ,".($this->h03_data == "null" || $this->h03_data == ""?"null":"'".$this->h03_data."'")."
+                               ,$this->h03_codigo
+                               ,'$this->h03_descr'
+                               ,'$this->h03_detalh'
+                               ,$this->h03_tipopartic
+                               ,$this->h03_cargahoraria
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Contem as informacoes curriculares do   funcionari ($this->h03_seq) nao Incluído. Inclusao Abortada.";
@@ -259,16 +259,16 @@ class cl_curric {
        $resac = db_query("insert into db_acount values($acount,543,18737,'','".AddSlashes(pg_result($resaco,0,'h03_cargahoraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($h03_seq=null) { 
+   public function alterar ($h03_seq=null) {
       $this->atualizacampos();
      $sql = " update curric set ";
      $virgula = "";
-     if(trim($this->h03_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_seq"])){ 
+     if(trim($this->h03_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_seq"])){
        $sql  .= $virgula." h03_seq = $this->h03_seq ";
        $virgula = ",";
-       if(trim($this->h03_seq) == null ){ 
+       if(trim($this->h03_seq) == null ){
          $this->erro_sql = " Campo Sequencia do Evento nao Informado.";
          $this->erro_campo = "h03_seq";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_curric {
          return false;
        }
      }
-     if(trim($this->h03_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_numcgm"])){ 
+     if(trim($this->h03_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_numcgm"])){
        $sql  .= $virgula." h03_numcgm = $this->h03_numcgm ";
        $virgula = ",";
-       if(trim($this->h03_numcgm) == null ){ 
+       if(trim($this->h03_numcgm) == null ){
          $this->erro_sql = " Campo Funcionario nao Informado.";
          $this->erro_campo = "h03_numcgm";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_curric {
          return false;
        }
      }
-     if(trim($this->h03_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h03_data_dia"] !="") ){ 
+     if(trim($this->h03_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h03_data_dia"] !="") ){
        $sql  .= $virgula." h03_data = '$this->h03_data' ";
        $virgula = ",";
-       if(trim($this->h03_data) == null ){ 
+       if(trim($this->h03_data) == null ){
          $this->erro_sql = " Campo Data do Evento nao Informado.";
          $this->erro_campo = "h03_data_dia";
          $this->erro_banco = "";
@@ -303,11 +303,11 @@ class cl_curric {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h03_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h03_data_dia"])){
          $sql  .= $virgula." h03_data = null ";
          $virgula = ",";
-         if(trim($this->h03_data) == null ){ 
+         if(trim($this->h03_data) == null ){
            $this->erro_sql = " Campo Data do Evento nao Informado.";
            $this->erro_campo = "h03_data_dia";
            $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_curric {
          }
        }
      }
-     if(trim($this->h03_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_codigo"])){ 
+     if(trim($this->h03_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_codigo"])){
        $sql  .= $virgula." h03_codigo = $this->h03_codigo ";
        $virgula = ",";
-       if(trim($this->h03_codigo) == null ){ 
+       if(trim($this->h03_codigo) == null ){
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "h03_codigo";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_curric {
          return false;
        }
      }
-     if(trim($this->h03_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_descr"])){ 
+     if(trim($this->h03_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_descr"])){
        $sql  .= $virgula." h03_descr = '$this->h03_descr' ";
        $virgula = ",";
-       if(trim($this->h03_descr) == null ){ 
+       if(trim($this->h03_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "h03_descr";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_curric {
          return false;
        }
      }
-     if(trim($this->h03_detalh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_detalh"])){ 
+     if(trim($this->h03_detalh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_detalh"])){
        $sql  .= $virgula." h03_detalh = '$this->h03_detalh' ";
        $virgula = ",";
-       if(trim($this->h03_detalh) == null ){ 
+       if(trim($this->h03_detalh) == null ){
          $this->erro_sql = " Campo Observacao do Evento nao Informado.";
          $this->erro_campo = "h03_detalh";
          $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_curric {
          return false;
        }
      }
-     if(trim($this->h03_tipopartic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_tipopartic"])){ 
+     if(trim($this->h03_tipopartic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_tipopartic"])){
        $sql  .= $virgula." h03_tipopartic = $this->h03_tipopartic ";
        $virgula = ",";
-       if(trim($this->h03_tipopartic) == null ){ 
+       if(trim($this->h03_tipopartic) == null ){
          $this->erro_sql = " Campo Evento nao Informado.";
          $this->erro_campo = "h03_tipopartic";
          $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_curric {
          return false;
        }
      }
-     if(trim($this->h03_cargahoraria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_cargahoraria"])){ 
+     if(trim($this->h03_cargahoraria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h03_cargahoraria"])){
        $sql  .= $virgula." h03_cargahoraria = $this->h03_cargahoraria ";
        $virgula = ",";
-       if(trim($this->h03_cargahoraria) == null ){ 
+       if(trim($this->h03_cargahoraria) == null ){
          $this->erro_sql = " Campo Carga horária do curso nao Informado.";
          $this->erro_campo = "h03_cargahoraria";
          $this->erro_banco = "";
@@ -413,7 +413,7 @@ class cl_curric {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contem as informacoes curriculares do   funcionari nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->h03_seq;
@@ -441,14 +441,14 @@ class cl_curric {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($h03_seq=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($h03_seq=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h03_seq));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -481,7 +481,7 @@ class cl_curric {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contem as informacoes curriculares do   funcionari nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$h03_seq;
@@ -509,11 +509,11 @@ class cl_curric {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -535,11 +535,11 @@ class cl_curric {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $h03_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $h03_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -555,15 +555,15 @@ class cl_curric {
      $sql2 = "";
      if($dbwhere==""){
        if($h03_seq!=null ){
-         $sql2 .= " where curric.h03_seq = $h03_seq "; 
-       } 
+         $sql2 .= " where curric.h03_seq = $h03_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,11 +572,11 @@ class cl_curric {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $h03_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $h03_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,15 +589,15 @@ class cl_curric {
      $sql2 = "";
      if($dbwhere==""){
        if($h03_seq!=null ){
-         $sql2 .= " where curric.h03_seq = $h03_seq "; 
-       } 
+         $sql2 .= " where curric.h03_seq = $h03_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -606,15 +606,15 @@ class cl_curric {
      }
      return $sql;
   }
-  
-  
+
+
 /*
  * criado metodo externo para correção dos join
- */  
-   function sql_query_curric ( $h03_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+ */
+   public function sql_query_curric ( $h03_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -631,15 +631,15 @@ class cl_curric {
      $sql2 = "";
      if($dbwhere==""){
        if($h03_seq!=null ){
-         $sql2 .= " where curric.h03_seq = $h03_seq "; 
-       } 
+         $sql2 .= " where curric.h03_seq = $h03_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,10 +647,10 @@ class cl_curric {
        }
      }
      return $sql;
-  }  
-  
-   function sql_query_cursos ($iCodigoPromocao) {
-     
+  }
+
+   public function sql_query_cursos ($iCodigoPromocao) {
+
      $sSql  = " select h72_sequencial,                                                                  ";
      $sSql .= "        h03_seq,                                                                         ";
      $sSql .= "        h03_descr,                                                                       ";
@@ -669,9 +669,9 @@ class cl_curric {
      $sSql .= "        left  join rhpromocaocursosavaliacao     on h75_rhpromocaocurso = h74_sequencial ";
      $sSql .= "  where h72_sequencial = {$iCodigoPromocao}                                              ";
      $sSql .= "    and h03_data >= h72_dtinicial                                                        ";
-    
+
      return $sSql;
-      
+
    }
 }
 ?>

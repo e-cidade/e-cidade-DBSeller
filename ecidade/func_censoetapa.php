@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,15 +50,15 @@ $clcensoetapa->rotulo->label("ed266_c_descr");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Led266_i_codigo?></label></td>
-          <td><? db_input("ed266_i_codigo",10,$Ied266_i_codigo,true,"text",4,"","chave_ed266_i_codigo"); ?></td>
+          <td><?php db_input("ed266_i_codigo",10,$Ied266_i_codigo,true,"text",4,"","chave_ed266_i_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Led266_ano?></label></td>
-          <td><? db_input("ed266_ano",10,$Ied266_ano,true,"text",4,"","chave_ed266_ano"); ?></td>
+          <td><?php db_input("ed266_ano",10,$Ied266_ano,true,"text",4,"","chave_ed266_ano"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Led266_c_descr?></label></td>
-          <td><? db_input("ed266_c_descr",40,$Ied266_c_descr,true,"text",4,"","chave_ed266_c_descr");?></td>
+          <td><?php db_input("ed266_c_descr",40,$Ied266_c_descr,true,"text",4,"","chave_ed266_c_descr");?></td>
         </tr>
       </table>
     </fieldset>

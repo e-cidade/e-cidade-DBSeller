@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clitbidadosimovel->rotulo->label("it22_itbi");
               <?=$Lit22_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it22_sequencial",10,$Iit22_sequencial,true,"text",4,"","chave_it22_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clitbidadosimovel->rotulo->label("it22_itbi");
               <?=$Lit22_itbi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it22_itbi",10,$Iit22_itbi,true,"text",4,"","chave_it22_itbi");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clitbidadosimovel->rotulo->label("it22_itbi");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbidadosimovel.php")==true){
@@ -122,12 +122,12 @@ $clitbidadosimovel->rotulo->label("it22_itbi");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

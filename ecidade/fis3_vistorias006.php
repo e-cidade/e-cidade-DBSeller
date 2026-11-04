@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ if(isset($y70_codvist) && $y70_codvist != ""){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvistorias.php"));
 	echo "<script>document.form1.db_opcao.type='hidden'</script>"; 
 	echo "<script>document.form1.pesquisar.type='hidden'</script>"; 

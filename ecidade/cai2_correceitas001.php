@@ -25,13 +25,13 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_classesgenericas.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_orctiporec_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_classesgenericas.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_orctiporec_classe.php"));
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt10');
@@ -47,20 +47,21 @@ db_postmemory($_POST);
 ?>
 
 <html>
+
 <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript"  type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <script>
         function js_verifica() {
             var anoi = new Number(document.form1.datai_ano.value);
             var anof = new Number(document.form1.dataf_ano.value);
             if (anoi.valueOf() > anof.valueOf()) {
-                alert('Intervalo de data invalido. Velirique !.');
+                alert('Intervalo de data inválido. Velirique !.');
                 return false;
             }
             return true;
@@ -77,10 +78,27 @@ db_postmemory($_POST);
                 vir = ",";
             }
 
-            recurso = "";
-            if (document.form1.o15_recurso.value != '') {
-                recurso = document.form1.o15_recurso.value;
+            let recursos = collectionRecurso.build();
+            let sRecurso = "";
+            let sSubRecurso = "";
+            let sSiconfi = "";
+            if (recursos.length > 0) {
+
+                sRecurso = recursos.map((recurso) => {
+                    return recurso.codigo
+                }).join(',');
+
+                sSubRecurso = recursos.map((recurso) => {
+                    return recurso.recurso
+                }).join(',');
+
+                sSiconfi = recursos.map((recurso) => {
+                    return recurso.siconfi
+                }).join(',');
             }
+
+
+
 
             qry = "estrut=" + document.form1.estrut.value;
             qry += "&sinana=" + document.form1.sinana.value;
@@ -90,7 +108,9 @@ db_postmemory($_POST);
             qry += "&datai=" + document.form1.datai_ano.value + '-' + document.form1.datai_mes.value + '-' + document.form1.datai_dia.value;
             qry += "&dataf=" + document.form1.dataf_ano.value + '-' + document.form1.dataf_mes.value + '-' + document.form1.dataf_dia.value;
             qry += "&tipo=" + document.form1.tipo.value;
-            qry += "&recurso=" + recurso;
+            qry += "&recurso=" + sRecurso;
+            qry += "&subrecurso=" + sSubRecurso;
+            qry += "&codigo_siconfi=" + sSiconfi;
 
             jan = window.open('cai2_correceitas002.php?' + qry, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0 ');
             jan.moveTo(0, 0);
@@ -98,129 +118,129 @@ db_postmemory($_POST);
     </script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
 
-<form class="container" name="form1" method="post" action="" onsubmit="return js_verifica();">
-    <fieldset>
-        <legend>Receitas Por Período - Tesouraria</legend>
-        <table>
-            <tr>
-                <td align="rigth">
-                    <strong>Data Inicial :</strong>
-                </td>
-                <td align="left">
-                    <?php
-                    db_inputdata('datai', '01', '01', db_getsession("DB_anousu"), true, 'text', 4);
+    <form class="container" name="form1" method="post" action="" onsubmit="return js_verifica();">
+        <fieldset>
+            <legend>Receitas Por Período - Tesouraria</legend>
+            <table class="form-container">
+                <tr>
+                    <td>
+                        <strong>Data Inicial :</strong>
+                    </td>
+                    <td>
+                        <?php
+                        db_inputdata('datai', '01', '01', db_getsession("DB_anousu"), true, 'text', 4);
 
-                    echo "<strong>Data Final :</strong>";
-                    $datausu = date("Y/m/d", db_getsession("DB_datausu"));
-                    $dataf_ano = substr($datausu, 0, 4);
-                    $dataf_mes = substr($datausu, 5, 2);
-                    $dataf_dia = substr($datausu, 8, 2);
+                        echo "<strong>Data Final :</strong>";
+                        $datausu = date("Y/m/d", db_getsession("DB_datausu"));
+                        $dataf_ano = substr($datausu, 0, 4);
+                        $dataf_mes = substr($datausu, 5, 2);
+                        $dataf_dia = substr($datausu, 8, 2);
 
-                    db_inputdata('dataf', $dataf_dia, $dataf_mes, $dataf_ano, true, 'text', 4);
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td ><strong>Estrutural da Receita:</strong>
-                </td>
-                <td>
-                    <?php
-                    db_input('estrut', 15, 0, true, 'text', 2, "");
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Tipo de Receita:</strong>
-                </td>
-                <td>
-                    <select name="tipo" onchange="js_valor();">
-                        <option value='T'>Todas</option>
-                        <option value='O'>Orçamentarias</option>
-                        <option value='E'>Extra-Orçamentarias</option>
-                </td>
-            </tr>
-            <tr>
-                <td ><strong>Desdobrar Receita:</strong>
-                </td>
-                <td>
-                    <select name="desdobrar" onchange="js_valor();">
-                        <option value='N'>Não</option>
-                        <option value='S'>Sim</option>
-                </td>
-            </tr>
-            <tr>
-                <td ><strong>Ordem:</strong>
-                </td>
-                <td>
-                    <select name="ordem">
-                        <option value='r'>Código Receita</option>
-                        <option value='e'>Estrutural</option>
-                        <option value='a'>Alfabética Descrição Receita</option>
-                        <option value='d'>Reduzido Orçamento</option>
-                        <option value='c'>Reduzido Conta</option>
-                </td>
-            </tr>
-            <tr>
-                <td ><strong>Tipo:</strong>
-                </td>
-                <td>
-                    <select name="sinana">
-                        <option value='S1'>Sintético/Receita</option>
-                        <option value='S2'>Sintético/Estrutural</option>
-                        <option value='A'>Analítico</option>
-                        <option value='S3'>Sintético/Conta</option>
-                </td>
-            </tr>
-            <tr>
-                <td><a id='ancoraRecurso' href="#">Recurso:</a></td>
-                <td>
-                    <input type="text" name="recurso" id="o15_recurso" class="field-size2">
-                    <input type="text" id="o15_descr" class="field-size8 readonly" readonly>
-                </td>
-            </tr>
+                        db_inputdata('dataf', $dataf_dia, $dataf_mes, $dataf_ano, true, 'text', 4);
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Estrutural da Receita:</strong>
+                    </td>
+                    <td>
+                        <?php
+                        db_input('estrut', 15, 0, true, 'text', 2, "");
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Tipo de Receita:</strong>
+                    </td>
+                    <td>
+                        <select name="tipo" onchange="js_valor();">
+                            <option value='T'>Todas</option>
+                            <option value='O'>Orçamentarias</option>
+                            <option value='E'>Extra-Orçamentarias</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Desdobrar Receita:</strong>
+                    </td>
+                    <td>
+                        <select name="desdobrar" onchange="js_valor();">
+                            <option value='N'>Não</option>
+                            <option value='S'>Sim</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Ordem:</strong>
+                    </td>
+                    <td>
+                        <select name="ordem">
+                            <option value='r'>Código Receita</option>
+                            <option value='e'>Estrutural</option>
+                            <option value='a'>Alfabética Descrição Receita</option>
+                            <option value='d'>Reduzido Orçamento</option>
+                            <option value='c'>Reduzido Conta</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Tipo:</strong>
+                    </td>
+                    <td>
+                        <select name="sinana">
+                            <option value='S1'>Sintético/Receita</option>
+                            <option value='S2'>Sintético/Estrutural</option>
+                            <option value='A'>Analítico</option>
+                            <option value='S3'>Sintético/Conta</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <fieldset id="containerRecursos">
+                            <legend>Recursos</legend>
+                            <?php require_once modification('forms/db_frmfiltrorecursos.php') ?>
+                        </fieldset>
+                    </td>
+                </tr>
 
-            <tr>
-                <td colspan="2" align="center">
-                    <?php
-                    $aux = new cl_arquivo_auxiliar;
-                    $aux->cabecalho = "<strong>RECEITAS</strong>";
-                    $aux->codigo = "k02_codigo";
-                    $aux->descr = "k02_drecei";
-                    $aux->nomeobjeto = 'receita';
-                    $aux->funcao_js = 'js_mostra';
-                    $aux->funcao_js_hide = 'js_mostra1';
-                    $aux->sql_exec = "";
-                    $aux->func_arquivo = "func_tabrec_todas.php";
-                    $aux->nomeiframe = "db_iframe";
-                    $aux->localjan = "";
-                    $aux->db_opcao = 2;
-                    $aux->tipo = 2;
-                    $aux->top = 0;
-                    $aux->linhas = 6;
-                    $aux->vwhidth = 400;
-                    $aux->funcao_gera_formulario();
-                    ?>
-                </td>
-            </tr>
-        </table>
-    </fieldset>
-    <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();">
-</form>
+            </table>
+            <div class="subcontainer">
+                <?php
+                $aux = new cl_arquivo_auxiliar;
+                $aux->cabecalho = "<strong>RECEITAS</strong>";
+                $aux->codigo = "k02_codigo";
+                $aux->descr = "k02_drecei";
+                $aux->nomeobjeto = 'receita';
+                $aux->funcao_js = 'js_mostra';
+                $aux->funcao_js_hide = 'js_mostra1';
+                $aux->sql_exec = "";
+                $aux->func_arquivo = "func_tabrec_todas.php";
+                $aux->nomeiframe = "db_iframe";
+                $aux->localjan = "";
+                $aux->db_opcao = 2;
+                $aux->tipo = 2;
+                $aux->top = 0;
+                $aux->linhas = 6;
+                $aux->vwidth = 635;
+                $aux->funcao_gera_formulario();
+                ?>
+            </div>
+        </fieldset>
+        <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();">
+    </form>
 
-<?php
-db_menu();
-?>
+    <?php
+    db_menu();
+    ?>
 </body>
+
 </html>
 <script>
 
-    const lookupRecurso = new DBLookUp($('ancoraRecurso'), $('o15_recurso'), $('o15_descr'), {
-        "sArquivo": "func_fonterecurso.php",
-        "sObjetoLookUp": "db_iframe_orctiporec",
-        "sLabel": "Pesquisar Recurso"
-    });
 
     function js_pesquisatabrec(mostra) {
         if (mostra == true) {
@@ -247,6 +267,8 @@ db_menu();
         document.form1.k02_drecei.value = chave2;
         db_iframe.hide();
     }
+
+
 </script>
 
 <?php

@@ -25,12 +25,14 @@
  *                                licenca/licenca_pt.txt
  */
 
+
 use ECidade\Core\Helpers\HourHelper;
 use ECidade\RecursosHumanos\Pessoal\Model\ControleRubricasCalculoParametros;
 use ECidade\RecursosHumanos\Pessoal\Repository\ControleRubricasMatriculasRepository;
 use ECidade\RecursosHumanos\Pessoal\Repository\ControleRubricasParametrosRepository;
 use ECidade\RecursosHumanos\Pessoal\Repository\ControleRubricasParametrosRubricasRepository;
 use ECidade\RecursosHumanos\Pessoal\Service\ControleRubricasCalculoService;
+use App\Domain\RecursosHumanos\Pessoal\Services\Rubrica\ObservacaoRubricaService;
 
 /**
  * @deprecated 2014-11-14 v2.3.32(e-cidade)
@@ -179,6 +181,7 @@ class pontoFolha
             throw new Exception("Inclusão abortada, dados não informados!");
         }
 
+        $service = new ObservacaoRubricaService();
         $oDaoPontoFx = db_utils::getDao("pontofx");
         $oDaoPontoFs = db_utils::getDao("pontofs");
         $oDaoPontoFa = db_utils::getDao("pontofa");
@@ -368,8 +371,22 @@ class pontoFolha
                     throw new Exception($oDaoPontoCom->erro_msg);
                 }
             }
-        }
 
+            try {
+                $dados = (object) [
+                    'matricula'  => $oDadosPonto->r90_regist,
+                    'rubrica'    => $oDadosPonto->r90_rubric,
+                    'anousu'     => $oDadosPonto->r90_anousu,
+                    'mesusu'     => $oDadosPonto->r90_mesusu,
+                    'observacao' => $oDadosPonto->observacao,
+                    'instit'     => db_getsession('DB_instit'),
+                    'ponto'      => $sTipoPonto
+                ];
+                $service->saveFromLegacy($dados);
+            } catch (Exception $erro) {
+                throw new Exception($erro->getMessage());
+            }
+        }
     }
 
 
@@ -410,7 +427,7 @@ class pontoFolha
         $oDaoPontoFr = db_utils::getDao("pontofr");
         $oDaoPontoF13 = db_utils::getDao("pontof13");
         $oDaoPontoCom = db_utils::getDao("pontocom");
-
+        $service    = new ObservacaoRubricaService();
 
         try {
             $aObjPonto = $this->validaCamposObj($aObjDadosPonto);
@@ -637,8 +654,22 @@ class pontoFolha
                     throw new Exception($oDaoPontoCom->erro_msg);
                 }
             }
-        }
 
+            try {
+                $dados = (object) [
+                    'matricula'  => $oDadosPonto->r90_regist,
+                    'rubrica'    => $oDadosPonto->r90_rubric,
+                    'anousu'     => $oDadosPonto->r90_anousu,
+                    'mesusu'     => $oDadosPonto->r90_mesusu,
+                    'observacao' => $oDadosPonto->observacao,
+                    'instit'     => db_getsession('DB_instit'),
+                    'ponto'      => $sTipoPonto
+                ];
+                $service->saveFromLegacy($dados);
+            } catch (Exception $erro) {
+                throw new Exception($erro->getMessage());
+            }
+        }
     }
 
 
@@ -781,6 +812,22 @@ class pontoFolha
                     throw new Exception($oDaoPontoCom->erro_msg);
                 }
             }
+
+            try {
+                $dados = (object) [
+                    'matricula'  => $oDadosPonto->r90_regist,
+                    'rubrica'    => $oDadosPonto->r90_rubric,
+                    'anousu'     => $oDadosPonto->r90_anousu,
+                    'mesusu'     => $oDadosPonto->r90_mesusu,
+                    'instit'     => db_getsession('DB_instit'),
+                    'ponto'      => $sTipoPonto
+                ];
+        
+                $service = new ObservacaoRubricaService();
+                $service->deleteFromLegacy($dados);
+            } catch (Exception $erro) {
+                throw new Exception($erro->getMessage());
+            }
         }
     }
 
@@ -821,6 +868,8 @@ class pontoFolha
         $oDaoPontoF13 = db_utils::getDao("pontof13");
         $oDaoPontoCom = db_utils::getDao("pontocom");
 
+        $service = new ObservacaoRubricaService();
+    
         $aListaRubricas = array();
 
         if ($sTipoPonto == "fx") {
@@ -891,6 +940,21 @@ class pontoFolha
 
                     $oRubrica = db_utils::fieldsMemory($rsPonto, $iInd);
 
+
+                    $dados = (object) [
+                        'matricula'  => $oRubrica->r90_regist,
+                        'rubrica'    => $oRubrica->r90_rubric,
+                        'anousu'     => $oRubrica->r90_anousu,
+                        'mesusu'     => $oRubrica->r90_mesusu,
+                        'instit'     => db_getsession('DB_instit'),
+                        'ponto'      => $sTipoPonto
+                      ];
+
+                    $oRubrica->observacao = '';
+                    $dadosObservacao = $service->getObservacaoRubricaServidor($dados);
+                    if ($dadosObservacao->observacao) {
+                        $oRubrica->observacao = urlencode($dadosObservacao->observacao);
+                    }
 //      		$oRetornoRubrica = new stdClass();
 //      		$oRetornoRubrica->iAnoUsu      = $oRubrica->ano;
 //      		$oRetornoRubrica->iMesUsu      = $oRubrica->mes;
@@ -1094,7 +1158,7 @@ class pontoFolha
                             throw new Exception("Repasse abortado, Data de Admissão não informada!");
                         }
 
-                        list($iAnoAdm, $iMesAdm, $iDiaAdm) = split("-", $dtDataAdmissao);
+                        list($iAnoAdm, $iMesAdm, $iDiaAdm) =explode("-", $dtDataAdmissao);
                         --$iDiaAdm;
 
                         if ($iMesAdm == db_mesfolha() && $iAnoAdm == db_anofolha()) {

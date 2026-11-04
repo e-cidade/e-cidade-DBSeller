@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,37 +65,37 @@ if(isset($db_opcaoal)){
        <?=@$Lcc10_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc10_sequencial',10,$Icc10_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc10_pcmater?>">
-       <?
+       <?php
        db_ancora(@$Lcc10_pcmater,"js_pesquisacc10_pcmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc10_pcmater',10,$Icc10_pcmater,true,'text',$db_opcao," onchange='js_pesquisacc10_pcmater(false);'")
 ?>
-       <?
+       <?php
 db_input('pc01_descrmater',60,$Ipc01_descrmater,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr style='display: none;'>
     <td nowrap title="<?=@$Tcc10_custocriteriorateio?>">
-       <?
+       <?php
        db_ancora(@$Lcc10_custocriteriorateio,"js_pesquisacc10_custocriteriorateio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc10_custocriteriorateio',10,$Icc10_custocriteriorateio,true,'text',$db_opcao," onchange='js_pesquisacc10_custocriteriorateio(false);'")
 ?>
-       <?
+       <?php
 db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
        ?>
     </td>
@@ -113,7 +113,7 @@ db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("cc10_custocriteriorateio"=>@$cc10_custocriteriorateio);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcustocriteriopcmater->sql_query_file(null,

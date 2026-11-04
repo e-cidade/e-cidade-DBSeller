@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -229,7 +229,7 @@ if ($cllab_requiitem->numrows==0) {
                     'width='+(screen.availWidth-5)+
                     ',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   </script>
-  <?
+  <?php
 }
 
 function escreverLinhaSintetica(FPDF $oPdf, $sFonte, $oLinha) {

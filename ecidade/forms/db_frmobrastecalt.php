@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,27 +42,27 @@ $clrotulo->label("ob15_numcgm");
        <?=@$Lob01_codobra?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob15_numcgm',10,$Iob15_numcgm,true,'hidden',3,"","ob15_numcgm_old");
 db_input('ob15_numcgm',10,$Iob15_numcgm,true,'hidden',3,"");
 db_input('ob01_codobra',10,$Iob01_codobra,true,'text',3,"");
 ?>
-<?
+<?php
 db_input('ob01_nomeobra',55,$Iob01_nomeobra,true,'text',3,"")
 ?>
     </td>
 		</tr>
   <tr>
     <td nowrap title="<?=@$Tob01_tecnico?>">
-       <?
+       <?php
        db_ancora(@$Lob01_tecnico,"js_pesquisaob01_tecnico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
-<?
+<?php
 db_input('ob15_crea',10,$Iob15_crea,true,'text',3,"")
 ?>
     </td>

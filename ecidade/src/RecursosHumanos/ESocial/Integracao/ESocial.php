@@ -78,6 +78,16 @@ class ESocial
     }
 
     /**
+     * pega os dados a ser enviados
+     *
+     * @return null|\stdClass
+     */
+    public function getDados()
+    {
+        return $this->dados;
+    }
+
+    /**
      * Realiza a requisição enviando os dados para API
      *
      * @param string $method
@@ -124,7 +134,8 @@ class ESocial
         if (empty($dadosAPI['esocial']['url']) ||
             empty($dadosAPI['esocial']['login']) ||
             empty($dadosAPI['esocial']['password'])) {
-            throw new ESocialContextException("Entre em contato com o administrador do sistema para configurar acesso ao eSocial.");
+            $msg = "Entre em contato com o administrador do sistema para configurar acesso ao eSocial.";
+            throw new ESocialContextException($msg);
         }
         return true;
     }
@@ -141,7 +152,7 @@ class ESocial
 
         try {
             $this->httpRequest->send('/auth/login', 'POST', array(
-                'body' => \json_encode((object) $dadosAPI['esocial'])
+            'body' => \json_encode((object) $dadosAPI['esocial'])
             ));
         } catch (\Exception $e) {
             throw new ESocialContextException("Erro ao conectar na API do eSocial.");
@@ -155,5 +166,53 @@ class ESocial
         }
 
         return $result->access_token;
+    }
+
+    public function setRecurso($recurso)
+    {
+        $this->recurso = $recurso;
+    }
+
+    public function sendEvent()
+    {
+        return $this->request();
+    }
+
+    public function updateEvento($idFila, $situacao, $clearMD5 = false)
+    {
+        $dao = new \cl_esocialenvio();
+        $dao->rh213_situacao = $situacao;
+        $dao->rh213_sequencial = $idFila;
+
+        // altera md5 do evento para pode ser enviado
+        if ($clearMD5) {
+            $dao->rh213_md5 = 'invalid';
+        }
+        $dao->alterar($idFila);
+
+        if ($dao->erro_status == 0) {
+            throw new \Exception("Não foi possível alterar situação da fila.");
+        }
+    }
+
+    public function updateEventStatus($idFila, $status, $message)
+    {
+        $oDaoEsocialEnvioStatus = new \cl_esocialenviostatus();
+
+        $oDaoEsocialEnvioStatus->excluir(null, "rh214_esocialenvio = {$idFila}");
+
+        if ($oDaoEsocialEnvioStatus->erro_status == 0) {
+            throw new \Exception("Não foi possível atualizar o status do evento.");
+        }
+
+        $oDaoEsocialEnvioStatus->rh214_esocialenvio = $idFila;
+        $oDaoEsocialEnvioStatus->rh214_descricao = pg_escape_string($message);
+        $oDaoEsocialEnvioStatus->rh214_situacao = $status ? 'true' : 'false';
+
+        $oDaoEsocialEnvioStatus->incluir(null);
+
+        if ($oDaoEsocialEnvioStatus->erro_status == 0) {
+            throw new \Exception("Não foi possível incluir o status do evento.");
+        }
     }
 }

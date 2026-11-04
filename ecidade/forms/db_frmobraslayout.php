@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,28 +34,28 @@ $clrotulo->label("ob09_habite");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 
 db_input('ob14_seq',10,$Iob14_seq,true,'hidden',$db_opcao,"")
 ?>
   <tr>
     <td nowrap title="<?=@$Tob14_codobra?>">
-       <?
+       <?php
        db_ancora(@$Lob14_codobra,"js_pesquisaob14_codobra(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob14_codobra',10,$Iob14_codobra,true,'text',3," onchange='js_pesquisaob14_codobra(false);'")
 ?>
-       <?
+       <?php
 db_input('ob01_nomeobra',55,$Iob01_nomeobra,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td>
-<?
+<?php
 $ob14_data_dia = date("d",db_getsession("DB_datausu"));
 $ob14_data_mes = date("m",db_getsession("DB_datausu"));
 $ob14_data_ano = date("Y",db_getsession("DB_datausu"));
@@ -119,7 +119,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obraslayout.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

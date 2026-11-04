@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -95,7 +95,7 @@ if(isset($excluir)){
     <center>
     <br><br>
     <fieldset><legend><b> Laboratorio </b><legend>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_laboratorio.php"));
 	?>
     </fieldset>
@@ -106,7 +106,7 @@ if(isset($excluir)){
 <center>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($cllab_laboratorio->erro_status=="0"){
     $cllab_laboratorio->erro(true,false);

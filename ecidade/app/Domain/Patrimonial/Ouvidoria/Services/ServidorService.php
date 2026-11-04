@@ -213,7 +213,7 @@ class ServidorService
             ->join('pessoal.rhdirfgeracao', 'rh95_ano', '=', 'rh02_anousu')
             ->where('rh02_regist', '=', $matricula)
             ->distinct('rh02_anousu')
-            ->orderBy('rh02_anousu', ' desc')
+            ->orderBy('rh02_anousu', 'desc')
             ->pluck('rh02_anousu');
     }
 

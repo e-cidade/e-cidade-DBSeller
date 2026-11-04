@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -93,7 +93,7 @@ if(isset($oPost->excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmitbitransacao.php"));
 	?>
     </center>
@@ -102,7 +102,7 @@ if(isset($oPost->excluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->excluir)){
 	
   if( $lSqlErro ){

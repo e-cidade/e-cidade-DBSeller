@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_issbasecaracteristica {
                  q138_inscr = int4 = Inscrição Municipal
                  ";
    //funcao construtor da classe
-   function cl_issbasecaracteristica() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issbasecaracteristica");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_issbasecaracteristica {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q138_sequencial = ($this->q138_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q138_sequencial"]:$this->q138_sequencial);
        $this->q138_caracteristica = ($this->q138_caracteristica == ""?@$GLOBALS["HTTP_POST_VARS"]["q138_caracteristica"]:$this->q138_caracteristica);
@@ -77,7 +77,7 @@ class cl_issbasecaracteristica {
      }
    }
    // funcao para inclusao
-   function incluir ($q138_sequencial){
+   public function incluir ($q138_sequencial){
       $this->atualizacampos();
      if($this->q138_caracteristica == null ){
        $this->erro_sql = " Campo Código Característica nao Informado.";
@@ -181,7 +181,7 @@ class cl_issbasecaracteristica {
      return true;
    }
    // funcao para alteracao
-   function alterar ($q138_sequencial=null) {
+   public function alterar ($q138_sequencial=null) {
       $this->atualizacampos();
      $sql = " update issbasecaracteristica set ";
      $virgula = "";
@@ -282,7 +282,7 @@ class cl_issbasecaracteristica {
      }
    }
    // funcao para exclusao
-   function excluir ($q138_sequencial=null,$dbwhere=null) {
+   public function excluir ($q138_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (isset($lSessaoDesativarAccount) && $lSessaoDesativarAccount === false) {
@@ -353,7 +353,7 @@ class cl_issbasecaracteristica {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -376,10 +376,10 @@ class cl_issbasecaracteristica {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $q138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $q138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,7 +404,7 @@ class cl_issbasecaracteristica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,10 +414,10 @@ class cl_issbasecaracteristica {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $q138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $q138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_issbasecaracteristica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,7 +454,7 @@ class cl_issbasecaracteristica {
    * @param  integer $iCodigoCaracteristica codigo da caracteristica
    * @return string                         sql query da consulta
    */
-  function sql_query_valida_caracteristica($iCodigoInscricao, $iCodigoCaracteristica) {
+  public function sql_query_valida_caracteristica($iCodigoInscricao, $iCodigoCaracteristica) {
 
     $sSql  = "select * from issbasecaracteristica where     ";
     $sSql .= "q138_inscr = {$iCodigoInscricao} and          ";

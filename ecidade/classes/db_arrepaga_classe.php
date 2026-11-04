@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -79,13 +79,13 @@ class cl_arrepaga {
                  k00_dtpaga = date = Data do pagamento
                  ";
    //funcao construtor da classe
-   function cl_arrepaga() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrepaga");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -94,7 +94,7 @@ class cl_arrepaga {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numcgm = ($this->k00_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numcgm"]:$this->k00_numcgm);
        if($this->k00_dtoper == ""){
@@ -133,7 +133,7 @@ class cl_arrepaga {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->k00_numcgm == null ){
        $this->erro_sql = " Campo cgm nao Informado.";
@@ -297,7 +297,7 @@ class cl_arrepaga {
      return true;
    }
    // funcao para alteracao
-   function alterar ( $oid=null , $sWhere=null) {
+   public function alterar ( $oid=null , $sWhere=null) {
       $this->atualizacampos();
      $sql = " update arrepaga set ";
      $virgula = "";
@@ -538,7 +538,7 @@ class cl_arrepaga {
      }
    }
    // funcao para exclusao
-   function excluir ( $oid=null ,$dbwhere=null) {
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from arrepaga
                     where ";
      $sql2 = "";
@@ -577,7 +577,7 @@ class cl_arrepaga {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -599,7 +599,7 @@ class cl_arrepaga {
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="arrepaga.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $oid = null,$campos="arrepaga.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -632,7 +632,7 @@ class cl_arrepaga {
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -663,7 +663,7 @@ class cl_arrepaga {
      return $sql;
   }
 
-  function sql_queryDescontoConcedidoPorRegra ($dDataInicial, $dDataFinal, $aTipo = null) {
+  public function sql_queryDescontoConcedidoPorRegra ($dDataInicial, $dDataFinal, $aTipo = null) {
 
     $iInstituicao         = db_getsession('DB_instit');
     $iAnoUsu              = db_getsession('DB_anousu');
@@ -1040,7 +1040,7 @@ class cl_arrepaga {
 
   }
 
-  function sql_queryDescontoConcedidoPorRegraAgrupado($dDataInicial, $dDataFinal) {
+  public function sql_queryDescontoConcedidoPorRegraAgrupado($dDataInicial, $dDataFinal) {
 
     $sSqlDescontos  = "select receitorcamentoestrutural as receita_orcamento,                                   ";
     $sSqlDescontos .= "       receit           as receita_tesouraria,                                           ";
@@ -1067,7 +1067,7 @@ class cl_arrepaga {
 
   }
 
-  function sql_queryPagamentosPorPeriodo($dDataInicial, $dDataFinal) {
+  public function sql_queryPagamentosPorPeriodo($dDataInicial, $dDataFinal) {
 
     $iInstituicao = db_getsession('DB_instit');
     $iAnoUsu      = db_getsession('DB_anousu');

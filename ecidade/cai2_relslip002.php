@@ -47,34 +47,27 @@ $clrotulo->label('z01_nome');
 $sDbInstit = str_replace('-', ', ', $db_selinstit);
 $iAnoUsu = db_getsession("DB_anousu");
 
-$sWhere = "";
-$where1 = "";
-$sAnd = "";
+$where = [];
 $info = "";
 
 $lSlipsFolha = (!empty($folha) && $folha == 't');
 
 if (isset($db_selinstit) && $db_selinstit != "") {
-    $sWhere .= "{$sAnd} k17_instit in ({$sDbInstit}) ";
-    $sAnd = " and ";
+    $where[] = " k17_instit in ({$sDbInstit}) ";
 }
 
 if (($data != "--") && ($data1 != "--")) {
-    $sWhere .= "{$sAnd} k17_data  between '$data' and '$data1'  ";
-    $sAnd = " and ";
-} else if ($data != "--") {
-    $sWhere .= "{$sAnd} k17_data >= '$data'  ";
-    $sAnd = " and ";
-} else if ($data1 != "--") {
-    $sWhere .= "{$sAnd} k17_data <= '$data1'   ";
-    $sAnd = " and ";
+    $where[] = " k17_data  between '$data' and '$data1'  ";
+} elseif ($data != "--") {
+    $where[] = " k17_data >= '$data'  ";
+} elseif ($data1 != "--") {
+    $where[] = " k17_data <= '$data1'   ";
 }
 
 if ($situac == "A") {
-    $where1 = "";
     $info = "SITUAÇÂO: Todas ";
 } else {
-    $where1 = "{$sAnd} k17_situacao = $situac ";
+    $where[] = " k17_situacao = $situac ";
     switch ($situac) {
         case 1:
             $tipo = " Não Autenticadas";
@@ -93,47 +86,45 @@ if ($situac == "A") {
 }
 
 if (trim($codigos) != "") {
-    $sWhere .= "{$sAnd} k17_numcgm ";
+    $whereCgm = " k17_numcgm ";
     if ($parametro == "N") {
-        $sWhere .= " not ";
+        $whereCgm .= " not ";
     }
-    $sWhere .= " in ($codigos) ";
-    $sAnd = " and ";
+    $whereCgm .= " in ($codigos) ";
+    $where[] = $whereCgm;
 }
-$whereslip = "";
 
 if (isset($slip1) && trim($slip1) != "") {
-    $whereslip = " slip.k17_codigo >= $slip1 ";
+    $where[] = " slip.k17_codigo >= $slip1 ";
 }
 
 if (isset($slip2) && trim($slip2) != "") {
-    if (trim($whereslip) != "") {
-        $whereslip = " slip.k17_codigo between $slip1 and $slip2 ";
-    } else {
-        $whereslip = " slip.k17_codigo <= $slip2 ";
-    }
+    $where[] = " slip.k17_codigo <= $slip2 ";
 }
 
 if (isset($recurso) && $recurso != '0') {
-    $idsRecurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorFonteRecurso($recurso);
+    $idsRecurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorSubrecurso($recurso);
     $ids = implode(', ', $idsRecurso);
 
-    $whereslip .= " (r1.c61_codigo in ($ids) or r2.c61_codigo in ($ids)) ";
+    $where[] = " (r1.c61_codigo in ($ids) or r2.c61_codigo in ($ids)) ";
     $head4 = "RECURSO : $recurso";
-
 }
 if (isset($hist) && $hist != '') {
-    $whereslip .= " slip.k17_hist = {$hist}";
+    $where[] = " slip.k17_hist = {$hist}";
 }
 
-if (!empty($whereslip)) {
-    $sWhere .= $sAnd . $whereslip;
+if (isset($contadebito) && !empty($contadebito)) {
+    $where[] = " slip.k17_debito = {$contadebito} ";
+}
+
+if (isset($contacredito) && !empty($contacredito)) {
+    $where[] = " slip.k17_credito = {$contacredito} ";
 }
 
 $sDescrInst = '';
 $sVirg = '';
 $bFlagAbrev = false;
-$sSqlInstit = "select codigo,nomeinst,nomeinstabrev from db_config where codigo in ({$sDbInstit}) ";
+$sSqlInstit = "select codigo,nomeinst,nomeinstabrev from db_config where codigo in({$sDbInstit}) ";
 $resInst = db_query($sSqlInstit);
 $iInstit = pg_num_rows($resInst);
 
@@ -159,13 +150,12 @@ if ($bFlagAbrev == false) {
 
 $sCampoProcesso = '';
 if (isset($k145_numeroprocesso) && !empty($k145_numeroprocesso)) {
-
     $sCampoProcesso = ' , k145_numeroprocesso as sprocesso ';
-    $sWhere .= " and k145_numeroprocesso = '{$k145_numeroprocesso}'";
+    $where[] = " k145_numeroprocesso = '{$k145_numeroprocesso}'";
 }
 
 if ($lSlipsFolha) {
-    $sWhere .= " and rh82_sequencial is not null ";
+    $where[] = " rh82_sequencial is not null ";
 }
 
 $head3 = "CADASTRO DE SLIP ";
@@ -173,6 +163,8 @@ $head3 = "CADASTRO DE SLIP ";
 $head4 = $info;
 $head5 = "ORDEM: Numérica";
 $head6 = "INSTITUIÇÃO: " . $sDescrInst;
+
+$where = implode(" and ", $where);
 
 $sql = "
     select slip.k17_codigo {$sCampoProcesso},
@@ -186,7 +178,7 @@ $sql = "
                when k17_situacao = 1 then 'Não Autenticado'
                when k17_situacao = 2 then 'Autenticado'
                when k17_situacao = 3 then 'Estornado'
-           	   when k17_situacao = 4 then 'Cancelado'
+               when k17_situacao = 4 then 'Cancelado'
            end) as k17_situacao,
            k17_hist,
            k17_texto,
@@ -203,16 +195,12 @@ $sql = "
      left  join cgm on cgm.z01_numcgm = slipnum.k17_numcgm
      left join slipprocesso on slip.k17_codigo = k145_slip
      left join rhslipfolhaslip on rhslipfolhaslip.rh82_slip = slip.k17_codigo
-     where {$sWhere} {$where1}
+     where {$where}
      order by slip.k17_codigo
-";
-
+    ";
 $result = db_query($sql);
-
-
-if (pg_numrows($result) == 0) {
+if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
-
 }
 
 $pdf = new PDF();
@@ -226,11 +214,10 @@ $alt = 4;
 $total = 0;
 $total_valor = 0;
 
-for ($x = 0; $x < pg_numrows($result); $x++) {
+for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result, $x);
 
     if (isset($sprocesso) && !empty($sprocesso)) {
-
         $head7 = "PROCESSO ADMINISTRATIVO: {$sprocesso}";
     }
 
@@ -259,7 +246,9 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
 
     if ($prenc == 0) {
         $prenc = 1;
-    } else $prenc = 0;
+    } else {
+        $prenc = 0;
+    }
 
     $pdf->setfont('arial', '', 7);
     $pdf->cell(20, $alt, $k17_codigo, 0, 0, "C", $prenc);
@@ -275,7 +264,6 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
     $pdf->multicell(200, $alt, $k17_texto, 0, "L", $prenc);
     $total++;
     $total_valor += $k17_valor;
-
 }
 
 $pdf->setfont('arial', 'b', 8);

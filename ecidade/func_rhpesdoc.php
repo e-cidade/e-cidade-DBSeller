@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrhpesdoc->rotulo->label("rh16_titele");
               <?=$Lrh16_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh16_regist",6,$Irh16_regist,true,"text",4,"","chave_rh16_regist");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhpesdoc->rotulo->label("rh16_titele");
               <?=$Lrh16_titele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh16_titele",11,$Irh16_titele,true,"text",4,"","chave_rh16_titele");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhpesdoc->rotulo->label("rh16_titele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpesdoc.php")==true){
@@ -118,12 +118,12 @@ $clrhpesdoc->rotulo->label("rh16_titele");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

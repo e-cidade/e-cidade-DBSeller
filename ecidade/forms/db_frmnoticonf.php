@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("k50_procede");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tk54_notifica?>">
-       <?
+       <?php
        db_ancora(@$Lk54_notifica,"js_pesquisak54_notifica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k54_notifica',8,$Ik54_notifica,true,'text',$db_opcao," onchange='js_pesquisak54_notifica(false);'")
 ?>
-       <?
+       <?php
 db_input('k50_procede',8,$Ik50_procede,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('k50_procede',8,$Ik50_procede,true,'text',3,'')
        <?=@$Lk54_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k54_data',@$k54_data_dia,@$k54_data_mes,@$k54_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_inputdata('k54_data',@$k54_data_dia,@$k54_data_mes,@$k54_data_ano,true,'text'
        <?=@$Lk54_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('k54_hora',5,$Ik54_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('k54_hora',5,$Ik54_hora,true,'text',$db_opcao,"")
        <?=@$Lk54_assinante?>
     </td>
     <td> 
-<?
+<?php
 db_input('k54_assinante',60,$Ik54_assinante,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('k54_assinante',60,$Ik54_assinante,true,'text',$db_opcao,"")
        <?=@$Lk54_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k54_obs',0,0,$Ik54_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -127,7 +127,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

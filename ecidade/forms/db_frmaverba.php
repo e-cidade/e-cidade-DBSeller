@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lj55_codave?>
     </td>
     <td> 
-<?
+<?php
 db_input('j55_codave',4,$Ij55_codave,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj55_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj55_matric,"js_pesquisaj55_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j55_matric',4,$Ij55_matric,true,'text',$db_opcao," onchange='js_pesquisaj55_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',40,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('j01_numcgm',40,$Ij01_numcgm,true,'text',3,'')
        <?=@$Lj55_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j55_data',@$j55_data_dia,@$j55_data_mes,@$j55_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_inputdata('j55_data',@$j55_data_dia,@$j55_data_mes,@$j55_data_ano,true,'text'
        <?=@$Lj55_regimo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j55_regimo',20,$Ij55_regimo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,22 +84,22 @@ db_input('j55_regimo',20,$Ij55_regimo,true,'text',$db_opcao,"")
        <?=@$Lj55_cidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('j55_cidade',20,$Ij55_cidade,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj55_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lj55_numcgm,"js_pesquisaj55_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j55_numcgm',6,$Ij55_numcgm,true,'text',$db_opcao," onchange='js_pesquisaj55_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -165,7 +165,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

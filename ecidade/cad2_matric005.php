@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,7 @@ $cllote->rotulo->label();
 $clrotulo->label("z01_nome");
 if(isset($j37_quadra) && $j37_quadra != "") {
 
-  $quadra = split(",",$j37_quadra);
+  $quadra =explode(",",$j37_quadra);
   $vir = "";
   $qua = "";
   for($i=0;$i<count($quadra);$i++) {
@@ -52,7 +52,7 @@ if(isset($j37_quadra) && $j37_quadra != "") {
 
 if(isset($j34_setor) && $j34_setor != "") {
 
-  $setor = split(",",$j34_setor);
+  $setor =explode(",",$j34_setor);
   $vir = "";
   $set = "";
   for($i=0;$i<count($setor);$i++) {

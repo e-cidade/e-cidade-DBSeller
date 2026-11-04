@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,6 +26,7 @@
  */
 
 namespace ECidade\Financeiro\Orcamento;
+
 /**
  * Dados da Esfera Orcamentária
  * Class EsferaOrcamentaria
@@ -44,9 +45,9 @@ class EsferaOrcamentaria
         return self::$itens;
     }
 
-    public static function getById( $id )
+    public static function getById($id)
     {
-        if ( ! array_key_exists($id, self::$itens)) {
+        if (!array_key_exists($id, self::$itens)) {
             return false;
         }
         return self::$itens[$id];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -158,7 +158,8 @@ function js_init() {
   gridNotas.setCellAlign(new Array("right",
                                     "center",
                                     "left",
-                                    "Right",
+                                    "center",
+                                    "center",
                                     "left",
                                     "left",
                                     "left",
@@ -168,7 +169,7 @@ function js_init() {
                                     "right",
                                     "left",
                                     "left"));
-  gridNotas.setHeader(new Array("Mov.", "Cod. Cheque", "Empenho", "Recurso", "Ordem", "Conta Pagadora", "Nome",
+  gridNotas.setHeader(new Array("Mov.", "Cod. Cheque", "Empenho", "Recurso", "Subrecurso", "Ordem", "Conta Pagadora", "Nome",
                                 "data Pag",
                                 "Valor nota",
                                 "Retenção",
@@ -247,31 +248,31 @@ function js_retornoGetNotas(oAjax) {
          aLinha[1]   = e91_codcheque;
          aLinha[2]   = "<a onclick='js_JanelaAutomatica(\"empempenho\","+e60_numemp+");return false;' href='#'>";
          aLinha[2]  += e60_codemp+"/"+e60_anousu+"</a>";
-         aLinha[3]    = o15_recurso,
-         aLinha[4]   = e50_codord ;
-         aLinha[5]   = e83_conta+"<span> - "+e83_descr.urlDecode().substring(0,15)+"</span>";
-         aLinha[6]   = z01_nome.urlDecode().substring(0,30);
-         aLinha[7]   = js_formatar(e50_data,'d');
-         aLinha[8]   = js_formatar(e81_valor ,"f");
-         aLinha[9]   = js_formatar(valorretencao,"f");
-         aLinha[10]  = js_formatar(nValor,"f");
-         aLinha[11]  = "<div style='overflow:hidden;width:50px'>";
-         aLinha[11] += "<span><a href='#' onclick='js_showHistorico("+e81_codmov+")'><img src='imagens/edittext.png' border='0' ></a></span>";
-         aLinha[11] += "<span id='historico"+e81_codmov+"' onmouseover='js_setAjuda(this.innerHTML,true)' ";
-         aLinha[11] += "      onmouseout='js_setAjuda(\"\",false)'></span>...";
-         aLinha[11] += "<span style='display:none' id='validarretencao"+e81_codmov+"'>"+validaretencao+"</span></div>";
-         aLinha[12]  = e91_cheque;
+         aLinha[3]    = gestao,
+         aLinha[4]    = o15_recurso,
+         aLinha[5]   = e50_codord ;
+         aLinha[6]   = e83_conta+"<span> - "+e83_descr.urlDecode().substring(0,15)+"</span>";
+         aLinha[7]   = z01_nome.urlDecode().substring(0,30);
+         aLinha[8]   = js_formatar(e50_data,'d');
+         aLinha[9]   = js_formatar(e81_valor ,"f");
+         aLinha[10]   = js_formatar(valorretencao,"f");
+         aLinha[11]  = js_formatar(nValor,"f");
+         aLinha[12]  = "<div style='overflow:hidden;width:50px'>";
+         aLinha[12] += "<span><a href='#' onclick='js_showHistorico("+e81_codmov+")'><img src='imagens/edittext.png' border='0' ></a></span>";
+         aLinha[12] += "<span id='historico"+e81_codmov+"' onmouseover='js_setAjuda(this.innerHTML,true)' ";
+         aLinha[12] += "      onmouseout='js_setAjuda(\"\",false)'></span>...";
+         aLinha[12] += "<span style='display:none' id='validarretencao"+e81_codmov+"'>"+validaretencao+"</span></div>";
+         aLinha[13]  = e91_cheque;
          gridNotas.addRow(aLinha, false, lDisabled);
-         gridNotas.aRows[iRowAtiva].aCells[7].sEvents  = "onmouseover='js_setAjuda(\""+z01_nome.urlDecode()+"\",true)'";
+         gridNotas.aRows[iRowAtiva].aCells[8].sEvents  = "onmouseover='js_setAjuda(\""+z01_nome.urlDecode()+"\",true)'";
+         gridNotas.aRows[iRowAtiva].aCells[8].sEvents += "onmouseOut='js_setAjuda(null,false)'";
+         gridNotas.aRows[iRowAtiva].aCells[7].sEvents  = "onmouseover='js_setAjuda(\""+e83_conta+"<span> - "+e83_descr.urlDecode()+"</span>\",true)'";
          gridNotas.aRows[iRowAtiva].aCells[7].sEvents += "onmouseOut='js_setAjuda(null,false)'";
-         gridNotas.aRows[iRowAtiva].aCells[6].sEvents  = "onmouseover='js_setAjuda(\""+e83_conta+"<span> - "+e83_descr.urlDecode()+"</span>\",true)'";
-         gridNotas.aRows[iRowAtiva].aCells[6].sEvents += "onmouseOut='js_setAjuda(null,false)'";
          gridNotas.aRows[iRowAtiva].sValue  = e81_valor;
          if (e81_valor == 0) {
            gridNotas.aRows[iRowAtiva].setClassName("soRetencao");
          }
          iRowAtiva++;
-
       }
     }
     gridNotas.renderRows();
@@ -388,13 +389,13 @@ function js_pagarEmpenhos() {
     var oMovimento           = new Object();
     oMovimento.iCodMov       = aMovimentos[i].aCells[0].getValue();
     oMovimento.sHistorico    = encodeURIComponent($('historico'+oMovimento.iCodMov).innerHTML);
-    oMovimento.iNotaLiq      = aMovimentos[i].aCells[5].getValue();
+    oMovimento.iNotaLiq      = aMovimentos[i].aCells[6].getValue();
     var lRetencaoMesAnterior = $('validarretencao'+oMovimento.iCodMov).innerHTML;
 
-    if (js_strToFloat(aMovimentos[i].aCells[9].getValue()) == 0 ) {
+    if (js_strToFloat(aMovimentos[i].aCells[10].getValue()) == 0 ) {
       oMovimento.nValorPagar = 0;
     } else {
-     oMovimento.nValorPagar  = js_strToFloat(aMovimentos[i].aCells[11].getValue()).valueOf();
+     oMovimento.nValorPagar  = js_strToFloat(aMovimentos[i].aCells[12].getValue()).valueOf();
     }
 
     if (lRetencaoMesAnterior == "true") {
@@ -406,9 +407,9 @@ function js_pagarEmpenhos() {
 
     }
 
-    oMovimento.iConta       = aMovimentos[i].aCells[6].getValue();
+    oMovimento.iConta       = aMovimentos[i].aCells[7].getValue();
     oMovimento.iCodCheque   = aMovimentos[i].aCells[2].getValue().trim();
-    oMovimento.iCheque      = new Number(aMovimentos[i].aCells[13].getValue()).valueOf();
+    oMovimento.iCheque      = new Number(aMovimentos[i].aCells[14].getValue()).valueOf();
     oRequisicao.aMovimentos.push(oMovimento);
 
   }

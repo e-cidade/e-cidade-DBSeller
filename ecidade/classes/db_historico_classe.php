@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,13 +60,13 @@ class cl_historico {
                  ed61_i_periodoconc = int4 = Período Conclusão
                  ";
    //funcao construtor da classe
-   function cl_historico() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("historico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_historico {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed61_i_codigo = ($this->ed61_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed61_i_codigo"]:$this->ed61_i_codigo);
        $this->ed61_i_escola = ($this->ed61_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed61_i_escola"]:$this->ed61_i_escola);
@@ -89,7 +89,7 @@ class cl_historico {
      }
    }
    // funcao para inclusao
-   function incluir ($ed61_i_codigo){
+   public function incluir ($ed61_i_codigo){
       $this->atualizacampos();
      if($this->ed61_i_escola == null ){
        $this->erro_sql = " Campo Escola nao Informado.";
@@ -215,7 +215,7 @@ class cl_historico {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed61_i_codigo=null) {
+   public function alterar ($ed61_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update historico set ";
      $virgula = "";
@@ -349,7 +349,7 @@ class cl_historico {
      }
    }
    // funcao para exclusao
-   function excluir ($ed61_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed61_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed61_i_codigo));
      }else{
@@ -416,7 +416,7 @@ class cl_historico {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -438,7 +438,7 @@ class cl_historico {
       }
      return $result;
    }
-   function sql_query ( $ed61_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed61_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -478,7 +478,7 @@ class cl_historico {
      }
      return $sql;
   }
-   function sql_query_bol ( $ed61_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_bol ( $ed61_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -522,7 +522,7 @@ class cl_historico {
      }
      return $sql;
   }
-   function sql_query_file ( $ed61_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed61_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -1033,7 +1033,7 @@ function sql_query_etapas_historico($iCodigo, $sCampos, $sOrdem = null, $sDbWher
    * @param  String  $sOrdem
    * @return String
    */
-  function sql_query_etapasHistoricoPorAluno($iCodigoAluno, $sCamposSemSigla = null, $sOrdem = null) {
+  public function sql_query_etapasHistoricoPorAluno($iCodigoAluno, $sCamposSemSigla = null, $sOrdem = null) {
 
     if ( empty($sCamposSemSigla) ) {
       $sCamposSemSigla = "*";

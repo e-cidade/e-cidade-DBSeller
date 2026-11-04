@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ class SigfisArquivoReceitaArrecadada extends SigfisArquivoBase implements iPadAr
 
         $iInstituicaoSessao = db_getsession('DB_instit');
 
-        $clConLanCamRec   = db_utils::getDao('conlancamrec');
+        $clConLanCamRec   = new cl_conlancamrec;
 
         $sCampos          = "conlancam.c70_valor, extract(month from c70_data) as mes, orcfontes.o57_fonte, c74_codlan, ";
         $sCampos         .= "orcfontes.o57_codfon, ";
@@ -72,6 +72,9 @@ class SigfisArquivoReceitaArrecadada extends SigfisArquivoBase implements iPadAr
         $sCampos         .= "                             when 416 then 1 ";
         $sCampos         .= "                             when 417 then 2 ";
         $sCampos         .= "                             when 117 then 1 ";
+        $sCampos         .= "                             when 6000 then 1 ";
+        $sCampos         .= "                             when 6001 then 2 ";
+        
         $sCampos       .= "                 when 118 then 2 ";
         $sCampos         .= "                             else 0 end as codigo_documento ";
         $sOrder           = "conlancamrec.c74_codlan";
@@ -109,16 +112,16 @@ class SigfisArquivoReceitaArrecadada extends SigfisArquivoBase implements iPadAr
                   codigo_documento 
             order by {$clausulaWhen}";
 
-        $rsConLanCamRec   = $clConLanCamRec->sql_record($sSqlConLanCamRec);
+        $rsConLanCamRec   = db_query($sSqlConLanCamRec);
 
         $this->addLog("=====Arquivo: ".$this->getNomeArquivo()." Erros:\n");
-        if ($clConLanCamRec->numrows > 0) {
+        if (pg_num_rows($rsConLanCamRec) > 0) {
 
             if (empty($this->sCodigoTribunal)) {
                 throw new Exception("O código do tribunal deve ser informado para geração do arquivo");
             }
 
-            for ($i = 0; $i < $clConLanCamRec->numrows; $i++) {
+            for ($i = 0; $i <pg_num_rows($rsConLanCamRec); $i++) {
 
                 $oDadosQuery = db_utils::fieldsMemory($rsConLanCamRec, $i);
                 $oDados      = new stdClass();

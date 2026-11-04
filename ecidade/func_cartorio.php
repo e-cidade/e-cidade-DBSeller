@@ -51,7 +51,7 @@ $clcartorio->rotulo->label("v82_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for='v82_sequencial'><?=$Lv82_sequencial?></label></td>
-          <td><? db_input("v82_sequencial",10,$Iv82_sequencial,true,"text",4,"","chave_v82_sequencial"); ?></td>
+          <td><?php db_input("v82_sequencial",10,$Iv82_sequencial,true,"text",4,"","chave_v82_sequencial"); ?></td>
         </tr>
       </table>
     </fieldset>
@@ -59,7 +59,7 @@ $clcartorio->rotulo->label("v82_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_cartorio.hide();">
   </form>
-      <?
+      <?php
 
       $sWhere = "v82_extrajudicial = false";
 
@@ -111,12 +111,12 @@ $clcartorio->rotulo->label("v82_sequencial");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

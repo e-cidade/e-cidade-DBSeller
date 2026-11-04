@@ -156,7 +156,7 @@ if (isset($incluir)) {
             <fieldset style="margin-top: 50px;">
               <legend><b>Cadastro Hidrometros - Inclusão</b></legend>
               <center>
-                <?
+                <?php
                   include(modification("forms/db_frmaguahidromatric.php"));
                 ?>
               </center>

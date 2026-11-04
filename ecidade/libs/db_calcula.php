@@ -118,7 +118,7 @@ class Crypt_HCEMD5 {
      *
      * @access public
      */
-	function Crypt_HCEMD5($key, $rand = null) {
+	public function __construct($key, $rand = null) {
         $this->key = $key;
         
         if (!isset($rand)) {
@@ -137,7 +137,7 @@ class Crypt_HCEMD5 {
      * @return string The encrypted binary data.
      * @access public
      */
-    function encrypt($data)
+    public function encrypt($data)
     {
 	    $data = unpack('C*', $data);
         $ans = array();
@@ -171,7 +171,7 @@ class Crypt_HCEMD5 {
      * @return string The decrypted binary data.
      * @access public
      */
-    function decrypt($data)
+    public function decrypt($data)
     {
 	    $data = unpack('C*', $data);
         $ans = array();
@@ -204,7 +204,7 @@ class Crypt_HCEMD5 {
      * @return string The encrypted mime-encoded data.
      * @access public
      */
-    function encodeMime($data)
+    public function encodeMime($data)
     {
         return base64_encode($this->encrypt($data));
     }
@@ -216,7 +216,7 @@ class Crypt_HCEMD5 {
      * @return string The decrypted mime-decoded data.
      * @access public
      */
-    function decodeMime($data)
+    public function decodeMime($data)
     {
         return $this->decrypt(base64_decode($data));
     }
@@ -231,7 +231,7 @@ class Crypt_HCEMD5 {
      * @param string The encrypted mime-encoded data, in the format: randkey#encrypted_data.
      * @access public
      */
-    function encodeMimeSelfRand($data) {
+    public function encodeMimeSelfRand($data) {
 		return base64_encode($this->rand) . 'Qw3j0iA' . $this->encodeMime($data);
     }
     
@@ -244,7 +244,7 @@ class Crypt_HCEMD5 {
      * @return string The decrypted, mime-decoded data.
      * @access public
      */
-    function decodeMimeSelfRand($data)
+    public function decodeMimeSelfRand($data)
     {
         if (strpos($data, 'Qw3j0iA') === false) {
             return false;
@@ -272,7 +272,7 @@ class Crypt_HCEMD5 {
      * @return string The md5 mhash of the string.
      * @access private
      */
-    function binmd5($string)
+    public function binmd5($string)
     {
         if (extension_loaded('mhash')) {
             return mhash(MHASH_MD5, $string);
@@ -288,7 +288,7 @@ class Crypt_HCEMD5 {
      * @return string The binary packed representation of the array.
      * @access private
      */
-    function array2pack($array)
+    public function array2pack($array)
     {
         $pack = array();
         foreach ($array as $val) {
@@ -304,7 +304,7 @@ class Crypt_HCEMD5 {
      * @param string The new key.
      * @access private
      */
-	function newKey($round)
+	public function newKey($round)
     {
         $digest = $this->binmd5($this->key . $round);
         return unpack('C*', $digest);

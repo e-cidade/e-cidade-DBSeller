@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,7 +60,7 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
               <?=$Lo41_orgao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("o41_orgao",2,$Io41_orgao,true,"text",4,"","chave_o41_orgao");
 		       ?>
             </td>
@@ -70,7 +70,7 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
               <?=$Lo41_unidade?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("o41_unidade",2,$Io41_unidade,true,"text",4,"","chave_o41_unidade");
 		       ?>
             </td>
@@ -80,7 +80,7 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
               <?=$Lo41_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("o41_descr",50,$Io41_descr,true,"text",4,"","chave_o41_descr");
 		       ?>
             </td>
@@ -98,7 +98,7 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $wh1 = '';
       $wh = '';
       if (isset($orgao)) {
@@ -209,12 +209,12 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

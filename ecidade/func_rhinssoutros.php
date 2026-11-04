@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrhinssoutros->rotulo->label("rh51_basefo");
               <?=$Lrh51_seqpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh51_seqpes",6,$Irh51_seqpes,true,"text",4,"","chave_rh51_seqpes");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhinssoutros->rotulo->label("rh51_basefo");
               <?=$Lrh51_basefo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh51_basefo",15,$Irh51_basefo,true,"text",4,"","chave_rh51_basefo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhinssoutros->rotulo->label("rh51_basefo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhinssoutros.php")==true){
@@ -122,12 +122,12 @@ $clrhinssoutros->rotulo->label("rh51_basefo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

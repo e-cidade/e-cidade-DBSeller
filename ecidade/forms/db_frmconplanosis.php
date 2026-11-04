@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,12 +36,12 @@ $clconplanosis->rotulo->label();
        <?=@$Lc64_codpla?>
     </td>
     <td> 
-<?
+<?php
 db_input('c64_codpla',6,$Ic64_codpla,true,'text',3)
 ?>
     </td>
   </tr>
-<?  
+<?php  
        if($db_opcao!=1){
          $clestrutura_sistema->db_opcao =3;
        } 
@@ -54,7 +54,7 @@ db_input('c64_codpla',6,$Ic64_codpla,true,'text',3)
        <?=@$Lc64_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('c64_descr',60,$Ic64_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conplanosis.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

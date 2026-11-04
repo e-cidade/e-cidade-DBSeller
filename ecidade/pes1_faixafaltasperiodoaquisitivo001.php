@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,15 +65,15 @@ $db_opcao = 1;
 				      <table class='form-container'>
 							  <tr>
 							    <td nowrap title="<?=@$Trh125_rhcadregime?>">
-							       <?
+							       <?php
 							       db_ancora(@$Lrh125_rhcadregime,"js_pesquisarh125_rhcadregime(true);",$db_opcao);
 							       ?>
 							    </td>
 							    <td>
-										 <?
+										 <?php
 										 db_input('rh125_rhcadregime',10,$Irh125_rhcadregime,true,'text',$db_opcao," onchange='js_pesquisarh125_rhcadregime(false);'",'','',"class='field-size2'");
 										 ?>
-							       <?
+							       <?php
 							       db_input('rh52_regime',1,$Irh52_regime,true,'text',3, "class='field-size9'");
 							       ?>
 							    </td>
@@ -146,7 +146,7 @@ $db_opcao = 1;
 			
 			function js_preenchepesquisa(chave){
 			  db_iframe_rhcadregimefaltasperiodoaquisitivo.hide();
-			  <?
+			  <?php
 			  if($db_opcao!=1){
 			    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 			  }

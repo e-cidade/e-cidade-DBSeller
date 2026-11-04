@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,82 +43,82 @@ $clrotulo->label("sd68_c_nome");
        <?=@$Lsd67_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd67_i_codigo',5,$Isd67_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd67_i_procrestricao?>">
-       <?
+       <?php
        db_ancora(@$Lsd67_i_procrestricao,"js_pesquisasd67_i_procrestricao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd67_i_procrestricao',5,$Isd67_i_procrestricao,true,'text',$db_opcao," onchange='js_pesquisasd67_i_procrestricao(false);'")
 ?>
-       <?
+       <?php
 db_input('sd63_c_nomerestricao',60,@$sd63_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd67_i_procprincipal?>">
-       <?
+       <?php
        db_ancora(@$Lsd67_i_procprincipal,"js_pesquisasd67_i_procprincipal(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd67_i_procprincipal',5,$Isd67_i_procprincipal,true,'text',$db_opcao," onchange='js_pesquisasd67_i_procprincipal(false);'")
 ?>
-       <?
+       <?php
 db_input('sd63_c_nomeprincipal',60,$Isd63_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd67_i_regprincipal?>">
-       <?
+       <?php
        db_ancora(@$Lsd67_i_regprincipal,"js_pesquisasd67_i_regprincipal(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd67_i_regprincipal',5,$Isd67_i_regprincipal,true,'text',$db_opcao," onchange='js_pesquisasd67_i_regprincipal(false);'")
 ?>
-       <?
+       <?php
 db_input('sd84_c_nomeprincipal',60,$Isd84_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd67_i_proccompativel?>">
-       <?
+       <?php
        db_ancora(@$Lsd67_i_proccompativel,"js_pesquisasd67_i_proccompativel(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd67_i_proccompativel',5,$Isd67_i_proccompativel,true,'text',$db_opcao," onchange='js_pesquisasd67_i_proccompativel(false);'")
 ?>
-       <?
+       <?php
 db_input('sd63_c_nomecompativel',60,$Isd63_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd67_i_regcompativel?>">
-       <?
+       <?php
        db_ancora(@$Lsd67_i_regcompativel,"js_pesquisasd67_i_regcompativel(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd67_i_regcompativel',5,$Isd67_i_regcompativel,true,'text',$db_opcao," onchange='js_pesquisasd67_i_regcompativel(false);'")
 ?>
-       <?
+       <?php
 db_input('sd84_c_nomeregcomp',60,$Isd84_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -128,7 +128,7 @@ db_input('sd84_c_nomeregcomp',60,$Isd84_c_nome,true,'text',3,'')
        <?=@$Lsd67_i_compatibilidade?>
     </td>
     <td>
-       <?
+       <?php
        include(modification("classes/db_sau_tipocompatibilidade_classe.php"));
        $clsau_tipocompatibilidade = new cl_sau_tipocompatibilidade;
        $result = $clsau_tipocompatibilidade->sql_record($clsau_tipocompatibilidade->sql_query("","*"));
@@ -141,7 +141,7 @@ db_input('sd84_c_nomeregcomp',60,$Isd84_c_nome,true,'text',3,'')
        <?=@$Lsd67_i_anocomp?><?=@$Lsd67_i_mescomp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd67_i_anocomp',4,$Isd67_i_anocomp,true,'text',$db_opcao,""); echo "/";
 db_input('sd67_i_mescomp',2,$Isd67_i_mescomp,true,'text',$db_opcao,"");
 ?>
@@ -284,7 +284,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_execaocompatibilidade.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

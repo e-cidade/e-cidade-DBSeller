@@ -1,4 +1,4 @@
-<?
+<?php
 $campos = "obras.ob01_codobra,	
 					 obras.ob01_nomeobra,
  				   obras.ob01_tiporesp,

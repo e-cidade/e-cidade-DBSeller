@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -14,7 +14,7 @@ $j01_matric = $parametro;
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <form id='formDownload'>
-        <? db_input('j01_matric',10,0,false,'hidden',3,""); ?>
+        <?php db_input('j01_matric', 10, 0, false, 'hidden', 3, ""); ?>
         <input type="hidden" id='exec' name='exec'>
         <input type="hidden" id='db59_sequencial' name='db59_sequencial' >
         <fieldset>

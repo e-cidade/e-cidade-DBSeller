@@ -114,4 +114,12 @@ class TipoHoraTrabalhoRepository {
     return true;
   }
 
+  public static function listaTipoHoraTrabalho() {
+    $oDaoTipoHoraTrabalho = new cl_tipohoratrabalho();
+    $campos = "ed128_descricao as descricao_hora, ed128_codigo as codigo_hora";
+    $sSqlTipoHoraTrabalho = $oDaoTipoHoraTrabalho->sql_query(null, $campos, null, '');
+    $rsTipoHoraTrabalho   = db_query($sSqlTipoHoraTrabalho);
+    return $rsTipoHoraTrabalho;
+  }
+
 }

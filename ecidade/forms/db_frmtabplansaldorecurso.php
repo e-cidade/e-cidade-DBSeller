@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,31 +48,31 @@ $clrotulo->label("k02_anousu");
                <?=@$Lk111_sequencial?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('k111_sequencial',10,$Ik111_sequencial,true,'text', 3,"")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tk111_tabplan?>">
-               <?
+               <?php
                db_ancora(@$Lk111_tabplan,"js_pesquisak111_tabplan(true);",3);
                ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('k111_tabplan',10,$Ik111_tabplan,true,'text',3," onchange='js_pesquisak111_tabplan(false);'")
                ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tk111_recurso?>">
-               <?
+               <?php
                db_ancora(@$Lk111_recurso,"js_pesquisak111_recurso(true);",$db_opcao);
                ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('k111_recurso',10,$Ik111_recurso,true,'text',$db_opcao," onchange='js_pesquisak111_recurso(false);'");
               db_input('o15_descr',20,$Io15_descr,true,'text',3,'');
                ?>
@@ -83,7 +83,7 @@ $clrotulo->label("k02_anousu");
                <?=@$Lk111_dataimplantacao?>
             </td>
             <td> 
-              <?
+              <?php
               db_inputdata('k111_dataimplantacao',@$k111_dataimplantacao_dia,
                            @$k111_dataimplantacao_mes,@$k111_dataimplantacao_ano,true,'text',$db_opcao,"")
               ?>
@@ -94,7 +94,7 @@ $clrotulo->label("k02_anousu");
                <?=@$Lk111_creditoinicial?>
             </td>
             <td> 
-            <?
+            <?php
             db_input('k111_creditoinicial',10,$Ik111_creditoinicial,true,'text',$db_opcao,"")
             ?>
             </td>
@@ -104,7 +104,7 @@ $clrotulo->label("k02_anousu");
                <?=@$Lk111_debitoinicial?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('k111_debitoinicial',10,$Ik111_debitoinicial,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -114,7 +114,7 @@ $clrotulo->label("k02_anousu");
                <?=@$Lk111_dataatualizacao?>
             </td>
             <td> 
-            <?
+            <?php
             db_inputdata('k111_dataatualizacao',@$k111_dataatualizacao_dia,
                                                @$k111_dataatualizacao_mes,@$k111_dataatualizacao_ano,true,'text',3);
             ?>
@@ -125,7 +125,7 @@ $clrotulo->label("k02_anousu");
                <?=@$Lk111_creditoatualizado?>
             </td>
             <td> 
-            <?
+            <?php
             db_input('k111_creditoatualizado',10,$Ik111_creditoatualizado,true,'text', 3,"")
             ?>
             </td>
@@ -135,7 +135,7 @@ $clrotulo->label("k02_anousu");
                <?=@$Lk111_debitoatualizado?>
             </td>
             <td> 
-            <?
+            <?php
             db_input('k111_debitoatualizado',10,$Ik111_debitoatualizado,true,'text', 3,"")
             ?>
             </td>
@@ -146,18 +146,18 @@ $clrotulo->label("k02_anousu");
     </tr>
   </table>  
   <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-  <?
+  <?php
   if($db_opcao != 1){
   ?>
   <input name="novo" type="button" id="novo" value="Novo"
          onclick="location.href='cai4_tabplansaldos001.php?k111_tabplan=<?=$k111_tabplan?>'">
-  <?
+  <?php
   }
   ?>
   <table>
     <tr>
       <td valign="top"  align="center">  
-        <?
+        <?php
         include(modification("dbforms/db_classesgenericas.php"));
         $cliframe_alterar_excluir = new cl_iframe_alterar_excluir; 
         $dbwhere = " k111_tabplan = ".$k111_tabplan;
@@ -304,7 +304,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tabplansaldorecurso.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

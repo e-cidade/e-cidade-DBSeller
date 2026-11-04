@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,10 +40,10 @@ $clrotulo->label("o15_codigo");
 $clrotulo->label("o15_descr");
 $clrotulo->label("e60_coddot");
 $clorcdotacao->rotulo->label();
-if (empty ($e60_numemp)) {
-  $db_opcao_inf = 3;
+if (empty($e60_numemp)) {
+    $db_opcao_inf = 3;
 } else {
-  $db_opcao_inf = $db_opcao;
+    $db_opcao_inf = $db_opcao;
 }
 ?>
 
@@ -58,51 +58,61 @@ if (empty ($e60_numemp)) {
                 <table>
                   <tr>
                     <td nowrap title="<?=@$Te60_numemp?>">
-                      <?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho',\$F('e60_numemp'))",1)?>
+                      <?=db_ancora($Le60_numemp, "js_JanelaAutomatica('empempenho',\$F('e60_numemp'))", 1)?>
                     </td>
                     <td style='text-align:left' colspan='4'>
-                      <?
-                      db_input('e60_numemp', 10, $Ie60_numemp, true, 'text', 3);
-                      echo $Le60_codemp;
-                      db_input('e60_codemp', 10, $Ie60_codemp, true, 'text', 3);
-                      ?>
+                      <?php
+                        db_input('e60_numemp', 10, $Ie60_numemp, true, 'text', 3);
+                        echo $Le60_codemp;
+                        db_input('e60_codemp', 10, $Ie60_codemp, true, 'text', 3);
+                        ?>
                     </td>
                   </tr>
                   <tr>
                     <td nowrap title="<?=@$Tz01_nome?>">
-                      <?=db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm',\$F('e60_numcgm'))",1)?>
+                      <?=db_ancora($Lz01_nome, "js_JanelaAutomatica('cgm',\$F('e60_numcgm'))", 1)?>
                     </td>
                     <td colspan=3>
-                      <?
-                      db_input('e60_numcgm', 10, $Ie60_numcgm, true, 'text', 3);
-                      db_input('z01_nome', 43, $Iz01_nome, true, 'text', 3, '');
-                      ?>
+                      <?php
+                        db_input('e60_numcgm', 10, $Ie60_numcgm, true, 'text', 3);
+                        db_input('z01_nome', 43, $Iz01_nome, true, 'text', 3, '');
+                        ?>
                     </td>
                   </tr>
                   <tr>
-                    <td><?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao',\$F('e60_coddot'),'".@$e60_anousu."')",1)?></td>
-                    <td><? db_input('e60_coddot', 10, $Ie60_coddot, true, 'text', 3);
-                      db_ancora($Lo15_codigo,"",3);
+                    <td><?=db_ancora($Le60_coddot, "js_JanelaAutomatica('orcdotacao',\$F('e60_coddot'),'".@$e60_anousu."')", 1)?></td>
+                    <td><?php db_input('e60_coddot', 10, $Ie60_coddot, true, 'text', 3);
+                      db_ancora($Lo15_codigo, "", 3);
                       db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3); db_input('o15_descr', 24, $Io15_descr, true, 'text', 3)?></td>
                   </tr>
                   <tr>
-                    <td><b>Motivo:</b></td>
-                    <td nowrap colspan='3'><textarea name='motivo' rows='1' cols='55'  id='motivo' ></textarea></td>
+                    <td id="labelMotivo"><b>Motivo:</b></td>
+                    <td nowrap colspan='3'><textarea name='motivo' rows='1' cols='55'  id='motivo' ></textarea>
+                      <div id="linhaAviso" style="display: none;">
+                        <div style="color:red;"><b>Atenção</b>: O "Motivo" informado será encaminhado 
+                        ao TCE<br> como justificativa. A quantidade máxima de caracteres do <br>"Motivo" é 4.000.
+                        </div>
+                        <b>N de caracteres:</b>&nbsp;<span id="qtdChar"></span>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <td>
                       <b>Tipo:</b>
                     </td>
                     <td colspan='3' nowrap>
-                      <?
-                      $oEmpAnuladoTipo  = new cl_empanuladotipo;
-                      $rsEmpAnuladoTipo = $oEmpAnuladoTipo->sql_record(
-                        $oEmpAnuladoTipo->sql_query(null,"*",
-                          "e38_sequencial")
-                      );
-                      $e94_empanuladotipo = 2;
-                      db_selectrecord("e94_empanuladotipo",$rsEmpAnuladoTipo,true,1);
-                      ?>
+                      <?php
+                        $oEmpAnuladoTipo  = new cl_empanuladotipo;
+                        $rsEmpAnuladoTipo = $oEmpAnuladoTipo->sql_record(
+                            $oEmpAnuladoTipo->sql_query(
+                                null,
+                                "*",
+                                "e38_sequencial"
+                            )
+                        );
+                        $e94_empanuladotipo = 2;
+                        db_selectrecord("e94_empanuladotipo", $rsEmpAnuladoTipo, true, 1);
+                        ?>
                     </td>
                   </tr>
                   <!--[Extensao OrdenadorDespesa] inclusao_ordenador-->
@@ -121,12 +131,12 @@ if (empty ($e60_numemp)) {
                   <td>
                     <fieldset><legend><b>Saldos</b></legend>
                       <table style="width:200px" >
-                        <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><? db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                        <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><? db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                        <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><? db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                        <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><? db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><?php db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '', '', '', 'text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><?php db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '', '', '', 'text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><?php db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '', '', '', 'text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><?php db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '', '', '', 'text-align:right')?></td></tr>
                         <tr><td colspan='2' class='table_header'>Saldo a Anular </td></tr>
-                        <tr><td nowrap><b>Saldo:</></td><td align=right><? db_input('saldo_dis', 12,'', true, 'text', 3, '','','','text-align:right')?></td></tr>
+                        <tr><td nowrap><b>Saldo:</></td><td align=right><?php db_input('saldo_dis', 12, '', true, 'text', 3, '', '', '', 'text-align:right')?></td></tr>
                         <tr>
                       </table>
                     </fieldset>
@@ -147,7 +157,7 @@ if (empty ($e60_numemp)) {
                 <tr>
                   <td>
                     <fieldset><legend><b>Itens do Empenho</b></legend>
-                      <table style='border:2px inset white;backgorund-color:white;' width='100%' cellspacing='0'>
+                      <table style='border:2px inset white;background-color:white;' width='100%' cellspacing='0'>
 
                         <thead>
                         <tr>
@@ -187,7 +197,7 @@ if (empty ($e60_numemp)) {
                 <tr>
                   <td>
                     <fieldset><legend><b>Solicitacao de Anulação</b></legend>
-                      <table style='border:2px inset white;backgorund-color:white;' width='100%' cellspacing='0'>
+                      <table style='border:2px inset white;background-color:white;' width='100%' cellspacing='0'>
                         <thead>
                         <tr>
                           <th class='table_header'>&nbsp;</th>
@@ -209,6 +219,8 @@ if (empty ($e60_numemp)) {
         </table>
 </form>
 <script>
+  const isRJ = '<?php echo isRioDeJaneiro() ?>';
+
   function js_pesquisa(){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_empempenho.php?funcao_js=parent.js_preenchepesquisa|e60_numemp','Pesquisa',true);
     //js_consultaEmpenho(38118);
@@ -342,7 +354,7 @@ if (empty ($e60_numemp)) {
         saida += "<td class='linhagrid' style='text-align:right'>"+obj.data[i].e62_sequen+"</td>";
         saida += "<td class='linhagrid' style='text-align:left'>"+descrmater+"</td>";
         saida += "<td class='linhagrid' id='vlruni"+obj.data[i].e62_sequen+"' style='text-align:right'>"+js_formatar(obj.data[i].e62_vlrun, 'f')+"</td>";
-        saida += "<td class='linhagrid' id='saldo"+obj.data[i].e62_sequen+"'  style='text-align:right'>"+obj.data[i].saldo+"</td>";
+        saida += "<td class='linhagrid' id='saldo"+obj.data[i].e62_sequen+"'  style='text-align:right'>"+js_formatar(obj.data[i].saldo, 'f')+"</td>";
         saida += "<td class='linhagrid' id='saldovlr"+obj.data[i].e62_sequen+"' style='text-align:right'>"+js_formatar(obj.data[i].e62_vlrtot, 'f')+"</td>";
         saida += "<td class='linhagrid' style='text-align:center;width:10%'>";
 
@@ -549,6 +561,11 @@ if (empty ($e60_numemp)) {
     var sV            = '';
     if (confirm('Confirma a anulação do empenho?')){
 
+      if ($F('motivo').trim().length > 4000 && isRJ) {
+        alert('O limite máximo de caracteres do Motivo da anulação é 4.000.');
+        return false;
+      }
+
       if ($F('motivo').trim() == '') {
 
         alert('Motivo da anulação não informado');
@@ -720,4 +737,16 @@ if (empty ($e60_numemp)) {
       }
   }
   //js_pesquisa();
+  function js_verificaCaracteresMotivo() {
+    const quantidadeChar = document.getElementById('motivo').value.trim().length;
+    document.getElementById('qtdChar').innerText = quantidadeChar;
+  }
+
+  if (isRJ) {
+    js_verificaCaracteresMotivo();
+    $('linhaAviso').style.display = 'table-row';
+    document.getElementById('motivo').addEventListener('keyup', js_verificaCaracteresMotivo); 
+    $('labelMotivo').style.verticalAlign = 'top';
+  }
+
 </script>

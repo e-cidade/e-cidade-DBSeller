@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("db77_descr");
        <?=@$Lcc09_anousu?>
     </td>
     <td> 
-		<?
+		<?php
           $cc09_anousu = db_getsession('DB_anousu');
     	  db_input('cc09_anousu',10,$Icc09_anousu,true,'text',"3","")
 		?>
@@ -52,26 +52,26 @@ $clrotulo->label("db77_descr");
        <?=@$Lcc09_instit?>
     </td>
     <td> 
-       <?
+       <?php
          db_input('cc09_instit',10,$Icc09_instit,true,'text',3,"")
        ?>
-       <?
+       <?php
          db_input('nomeinst',50,$Inomeinst,true,'text',3,'')
        ?>
     </td>
     </tr>
     <tr>
     <td nowrap title="<?=@$Tcc09_mascaracustoplano?>">
-       <?
+       <?php
          db_ancora(@$Lcc09_mascaracustoplano,"js_pesquisacc09_mascaracustoplano(true);",$db_opcao);
        ?>
     </td>
     <td> 
-       <?
+       <?php
          db_input('cc09_mascaracustoplano',10,$Icc09_mascaracustoplano,true,'text',$db_opcao,
          " onchange='js_pesquisacc09_mascaracustoplano(false);'")
        ?>
-       <?
+       <?php
          db_input('db77_descr',50,$Idb77_descr,true,'text',3,'')
        ?>
     </td>
@@ -81,7 +81,7 @@ $clrotulo->label("db77_descr");
       <?=$Lcc09_tipocontrole?>
     </td>
     <td>
-      <?
+      <?php
        db_select("cc09_tipocontrole", getValoresPadroesCampo("cc09_tipocontrole"),true,1);
       ?>
     </td>
@@ -162,7 +162,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_parcustos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

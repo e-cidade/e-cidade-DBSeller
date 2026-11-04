@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clautorec->rotulo->label("y57_descr");
               <?=$Ly57_codauto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y57_codauto",10,$Iy57_codauto,true,"text",4,"","chave_y57_codauto");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clautorec->rotulo->label("y57_descr");
               <?=$Ly57_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y57_receit",4,$Iy57_receit,true,"text",4,"","chave_y57_receit");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clautorec->rotulo->label("y57_descr");
               <?=$Ly57_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y57_descr",50,$Iy57_descr,true,"text",4,"","chave_y57_descr");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clautorec->rotulo->label("y57_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autorec.php")==true){
@@ -129,12 +129,12 @@ $clautorec->rotulo->label("y57_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

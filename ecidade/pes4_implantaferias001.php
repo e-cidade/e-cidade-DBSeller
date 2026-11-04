@@ -209,7 +209,7 @@ if(isset($enviar) || isset($alterar)){
     $db_opcao = 3;
     $dbopcao  = true;
   }
-  $arr_perai = split("/",$r30_perai);
+  $arr_perai =explode("/",$r30_perai);
   $r30_perai = $arr_perai[2]."-".$arr_perai[1]."-".$arr_perai[0];
   $result_dados_ferias = $clcadferia->sql_record($clcadferia->sql_query_pesquisa(null," cadferia.*, rh05_recis, z01_nome, z01_numcgm ",""," r30_anousu = ".$r30_anousu." and r30_mesusu = ".$r30_mesusu." and r30_regist = ".$r30_regist." and r30_perai = '".$r30_perai."'"));
   if($clcadferia->numrows > 0){

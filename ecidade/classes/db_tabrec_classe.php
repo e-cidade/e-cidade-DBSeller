@@ -71,7 +71,7 @@ class cl_tabrec
                  ";
 
     //funcao construtor da classe
-    function cl_tabrec()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("tabrec");
@@ -79,7 +79,7 @@ class cl_tabrec
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -90,7 +90,7 @@ class cl_tabrec
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->k02_codigo = ($this->k02_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["k02_codigo"] : $this->k02_codigo);
@@ -116,7 +116,7 @@ class cl_tabrec
     }
 
     // funcao para inclusao
-    function incluir($k02_codigo)
+    public function incluir($k02_codigo)
     {
         $this->atualizacampos();
         if ($this->k02_tipo == null) {
@@ -298,7 +298,7 @@ class cl_tabrec
     }
 
     // funcao para alteracao
-    function alterar($k02_codigo = null)
+    public function alterar($k02_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update tabrec set ";
@@ -517,7 +517,7 @@ class cl_tabrec
     }
 
     // funcao para exclusao
-    function excluir($k02_codigo = null, $dbwhere = null)
+    public function excluir($k02_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($k02_codigo));
@@ -612,7 +612,7 @@ class cl_tabrec
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -638,17 +638,17 @@ class cl_tabrec
         return $result;
     }
 
-    function atualiza_sequencia()
+    public function atualiza_sequencia()
     {
         $sql = "select nextval('tabrec_k02_codigo_seq') as k02_codigo";
         return $sql;
     }
 
-    function sql_query($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -674,7 +674,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -684,11 +684,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_cadastrar($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_cadastrar($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -733,7 +733,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -743,11 +743,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_file($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -770,7 +770,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -782,11 +782,11 @@ class cl_tabrec
 
 
 
-    function sql_query_instComplementoFonteRecurso($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_instComplementoFonteRecurso($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -807,7 +807,8 @@ class cl_tabrec
                                 o70_codrec,
                                 0 as c61_reduz,
                                 o15_codigo as db_id_recurso,
-                                o15_recurso  ";
+                                o15_recurso,
+                                gestao ";
         $sql .= "        from tabrec ";
         $sql .= "             inner join taborc on tabrec.k02_codigo = taborc.k02_codigo
                                                and taborc.k02_anousu = " . db_getsession("DB_anousu");
@@ -815,6 +816,8 @@ class cl_tabrec
                                                    and orcreceita.o70_anousu = " . db_getsession("DB_anousu") .
                                                  " and orcreceita.o70_instit = " . db_getsession("DB_instit");
         $sql .= "             inner join orctiporec on  o70_codigo = o15_codigo ";
+        $sql .= "             inner join fonterecurso on  orctiporec_id = o15_codigo ";
+        $sql .= "                        and exercicio = o70_anousu ";
         if (USE_PCASP) {
 
             $sql .= "  inner join conplanoorcamento on orcreceita.o70_anousu = conplanoorcamento.c60_anousu ";
@@ -837,7 +840,8 @@ class cl_tabrec
                                 0,
                                 c61_reduz,
                                 o15_codigo ,
-                                o15_recurso ";
+                                o15_recurso,
+                                gestao";
         $sql .= "        from tabrec ";
         $sql .= "             inner join tabplan on tabrec.k02_codigo = tabplan.k02_codigo
                                                 and tabplan.k02_anousu = " . db_getsession("DB_anousu");
@@ -847,6 +851,8 @@ class cl_tabrec
         $sql .= "             inner join conplano on conplanoreduz.c61_anousu = conplano.c60_anousu
                                                  and conplanoreduz.c61_codcon = conplano.c60_codcon ";
         $sql .= "             inner join orctiporec on  c61_codigo = o15_codigo ";
+        $sql .= "             inner join fonterecurso on  orctiporec_id = o15_codigo ";
+        $sql .= "                        and exercicio = c61_anousu ";
         $sql .= "        where k02_anousu = " . db_getsession("DB_anousu");
         $sql .= "      ) as tabrec";
         $sql2 = "";
@@ -864,7 +870,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -887,11 +893,11 @@ class cl_tabrec
 
 
 
-    function sql_query_inst($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_inst($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -935,7 +941,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -946,11 +952,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_inst_cadastrar($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_inst_cadastrar($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -984,7 +990,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -995,11 +1001,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_inst_depto($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $lRelatorio = null)
+    public function sql_query_inst_depto($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $lRelatorio = null)
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1050,7 +1056,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1061,12 +1067,12 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_inst_taxa($k07_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_inst_taxa($k07_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         // k07_codigo = codigo da receita da subtaxa
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1117,7 +1123,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1128,11 +1134,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_semorcplan($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_semorcplan($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1166,7 +1172,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1179,11 +1185,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_recjur_recmul($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_recjur_recmul($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1209,7 +1215,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1219,11 +1225,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_concarpeculiar($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_concarpeculiar($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1250,7 +1256,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1260,11 +1266,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_receita_extra_orcamentaria($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_receita_extra_orcamentaria($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1291,7 +1297,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1301,11 +1307,11 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_verificaGrupoReceita($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_verificaGrupoReceita($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1343,7 +1349,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1353,12 +1359,12 @@ class cl_tabrec
         return $sql;
     }
 
-    function sql_query_devolucaoAdiantamento($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_devolucaoAdiantamento($k02_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1401,7 +1407,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1418,7 +1424,7 @@ class cl_tabrec
      * @param  integer $iCodigoReceita Código da receita
      * @return string
      */
-    function sql_query_validaReceitaVencida($iAnousu, $iCodigoReceita)
+    public function sql_query_validaReceitaVencida($iAnousu, $iCodigoReceita)
     {
 
         $sSql = " select *                                     ";
@@ -1439,7 +1445,7 @@ class cl_tabrec
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1490,7 +1496,7 @@ class cl_tabrec
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1550,7 +1556,9 @@ class cl_tabrec
                        tabrec.*,
                        o70_codrec,
                        0 as c61_reduz,
-                       o15_recurso as dl_Recurso,
+                       o15_codigo as db_id_recurso,
+                       gestao,
+                       o15_recurso ,
                        case
                          when k79_arretipo is not null
                            then k79_arretipo
@@ -1567,7 +1575,8 @@ class cl_tabrec
                                 and orcreceita.o70_anousu = {$ano}
                                 and orcreceita.o70_instit = {$instituicao}
                  join orctiporec on orctiporec.o15_codigo = orcreceita.o70_codigo
-
+                 join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                      and fonterecurso.exercicio = taborc.k02_anousu
                  left join tabrecdepto on tabrecdepto.k98_receit = tabrec.k02_codigo
                  left join tabrecarretipo on k79_receit = tabrec.k02_codigo
                 where k02_anousu = {$ano}
@@ -1581,7 +1590,9 @@ class cl_tabrec
                        tabrec.*,
                        0 as o70_codrec,
                        c61_reduz,
-                       o15_recurso as dl_Recurso,
+                       o15_codigo as db_id_recurso,
+                       gestao,
+                       o15_recurso,
                        case
                          when k79_arretipo is not null
                            then k79_arretipo
@@ -1598,6 +1609,8 @@ class cl_tabrec
                               and conplanoreduz.c61_reduz = tabplan.k02_reduz
                               and conplanoreduz.c61_instit = {$instituicao}
                    join orctiporec on orctiporec.o15_codigo = conplanoreduz.c61_codigo
+                   join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                      and fonterecurso.exercicio = tabplan.k02_anousu
                    left join tabrecdepto    on tabrecdepto.k98_receit    = tabrec.k02_codigo
                    left join tabrecarretipo on k79_receit                = tabrec.k02_codigo
                    where k02_anousu = {$ano}

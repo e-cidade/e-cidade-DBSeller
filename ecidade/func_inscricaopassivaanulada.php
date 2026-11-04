@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clinscricaopassivaanulada->rotulo->label("c39_sequencial");
               <?=$Lc39_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c39_sequencial",10,$Ic39_sequencial,true,"text",4,"","chave_c39_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clinscricaopassivaanulada->rotulo->label("c39_sequencial");
               <?=$Lc39_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c39_sequencial",10,$Ic39_sequencial,true,"text",4,"","chave_c39_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clinscricaopassivaanulada->rotulo->label("c39_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_inscricaopassivaanulada.php")==true){
@@ -122,12 +122,12 @@ $clinscricaopassivaanulada->rotulo->label("c39_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

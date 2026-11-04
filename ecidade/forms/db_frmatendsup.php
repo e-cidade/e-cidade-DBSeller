@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 //MODULO: atendimento
 
@@ -56,19 +56,19 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $disabled = "disabled";
 
 if(isset($opcao) && $opcao == "alterar"){
-        
+
 		if(isset($modulo) && $modulo>=0){
 			$moduloalt = $modulo;
 		}
-	
+
 		$db_opcao = 1;
 		$campos= "at34_sequencial,at05_solicitado,at05_feito,at05_perc, at22_modulo as modulo,at05_data, codproced , at22_sequencial,at29_sequencial,at34_tarefacadmotivo as motivo";
     // verificar porque na alteracao de um item da erro de variavel indefinida: $at05_codatend
-		$result = $clatendimento ->sql_record($clatendimento ->sql_query_sup("",$campos,"","at02_codatend = $at05_codatend and at05_seq = $at05_seq")); 
+		$result = $clatendimento ->sql_record($clatendimento ->sql_query_sup("",$campos,"","at02_codatend = $at05_codatend and at05_seq = $at05_seq"));
 	    //die($clatendimento ->sql_query_sup("",$campos,"","at02_codatend = $at05_codatend and at05_seq = $at05_seq"));
 	   	db_fieldsmemory($result,0);
 
-	
+
 	   	$db_botao = true;
 	 	if (isset($moduloalt)&&$moduloalt>0 &&$moduloalt!=$modulo&&$trocamodulo=='t'){
 	  		$modulo = $moduloalt;
@@ -80,20 +80,20 @@ if(isset($opcao) && $opcao == "alterar"){
 				document.form1.modulo.value=$modulo;
 		   	</script>";*/
 	   	}
-	
 
-}else 
+
+}else
 if(isset($opcao) && $opcao == "excluir"){
-  	
+
   	$db_opcao = 3;
   	//$result = $clatendimento ->sql_record($clatendimento ->sql_query_sup("",$campos,"","at02_codatend = $at05_codatend and at05_seq = $at05_seq"));
-  	$result = $clatendimento ->sql_record($clatendimento ->sql_query_sup("","*","","at02_codatend = $at05_codatend and at05_seq = $at05_seq")); 
+  	$result = $clatendimento ->sql_record($clatendimento ->sql_query_sup("","*","","at02_codatend = $at05_codatend and at05_seq = $at05_seq"));
   //	die($clatendimento ->sql_query_sup("","*","","at02_codatend = $at05_codatend and at05_seq = $at05_seq"));
    	db_fieldsmemory($result,0);
    	$db_botao = true;
 }
 if((isset($incluir)) || (isset($alterar)) || (isset($excluir))){
-	$disabled = "";	
+	$disabled = "";
 }
 
 //Remove os slashes
@@ -105,21 +105,21 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 <form name="form1" method="post" action="">
 	<center>
 	<table width="95%" border="0">
-	<?
+	<?php
 	?>
 	<input name="hora_inicial" type = "hidden" value=<?=(!isset($hora_inicial)?date("H:i"):$hora_inicial)?> >
-	<?
+	<?php
 	$trocamodulo= "f";
 	db_input("trocamodulo",10,"",false,"hidden",3);
-	
+
 	if(isset($at34_sequencial)){
 		db_input("at34_sequencial",10,"",false,"hidden",3);
 	}
-	
+
 	if(isset($at22_sequencial)){
 		db_input("at22_sequencial",10,"",false,"hidden",3);
 	}
-	
+
 	if(isset($at29_sequencial)){
 		db_input("at29_sequencial",10,"",false,"hidden",3);
 	}
@@ -139,21 +139,21 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 	}
 	db_input("codatend",10,"",true,"hidden",3);
 
-	
+
 	if(@$codatend != null) {
 	    $clatendimento = new cl_atendimento;
 		$result        = $clatendimento->sql_record($clatendimento->sql_query_sup(null,"at06_horalanc,at06_datalanc,at02_codatend,at01_codcli,at01_codver,at01_nomecli,at04_codtipo,at04_descr,id_usuario,nome,at10_usuario,at10_nome,at02_observacao","at02_codatend desc","at02_codatend = $codatend"));
 		//die($clatendimento->sql_query_sup(null,"at06_horalanc,at06_datalanc,at02_codatend,at01_codcli,at01_nomecli,at04_codtipo,at04_descr,id_usuario,nome,at10_usuario,at10_nome","at02_codatend desc","at02_codatend = $codatend"));
 		$linhasatend = $clatendimento->numrows;
-		
+
 		if($linhasatend > 0) {
 			db_fieldsmemory($result,0);
 
       if ($at02_observacao != "" and !isset($item_menu) ) {
         $at05_feito .= "\nCONTEUDO DO ATENDIMENTO:\n\n" . $at02_observacao;
       }
-			
-			?>	
+
+			?>
 			<tr>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
@@ -165,8 +165,8 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
    		  	<tr>
 				<td align=left><b>Cliente:&nbsp;&nbsp;<?=$at01_codcli?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$at01_nomecli?></b></td>
 				<td rowspan=4 >
-					
-					<?
+
+					<?php
 						global $at01_codcli;
                      	db_input("at01_codcli",20,"",true,"hidden",3);
 
@@ -176,9 +176,9 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 					if(isset($opcao) && $opcao == "alterar"){
 						//echo" é alterar";
 						$sqlusu = "
-								select distinct at10_codcli, at10_nome, at10_usuario,at21_usuario as usu, 
+								select distinct at10_codcli, at10_nome, at10_usuario,at21_usuario as usu,
 								case when substr(rh01_nasc,6,5)::varchar = '".date("m-d",db_getsession("DB_datausu"))."'::varchar then 'Aniversário' else  '' end as aniver,
-								('".date("Y-m-d",db_getsession("DB_datausu"))."'::date - rh01_nasc)/365 as anos								
+								('".date("Y-m-d",db_getsession("DB_datausu"))."'::date - rh01_nasc)/365 as anos
 								from db_usuclientes
 								left join acesso_clientes_dados on at10_codcli = cliente and at10_usuario = id_usuario
 								left join atenditemusu on  at21_usuario = at10_usuario
@@ -190,21 +190,21 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 					}else{
 						//echo"não é alterar";
 						$sqlusu = "
-								select distinct at10_codcli, at10_nome, at10_usuario,at20_usuario as usu , 
+								select distinct at10_codcli, at10_nome, at10_usuario,at20_usuario as usu ,
 								case when substr(rh01_nasc,6,5)::varchar = '".date("m-d",db_getsession("DB_datausu"))."'::varchar then 'Aniversário' else  '' end as aniver,
 								('".date("Y-m-d",db_getsession("DB_datausu"))."'::date - rh01_nasc)/365 as anos
 								from db_usuclientes
 								left join atendimentousu on at20_usuario = at10_usuario  and at20_codatend = $codatend
 								left join acesso_clientes_dados on at10_codcli = cliente and at10_usuario = id_usuario
 								where at10_codcli = $clientes order by at10_nome
-						"; 
+						";
 						//echo"<br>$sqlusu<br>";
-					}	
-					$rs_atend = $clatendimento->sql_record($sqlusu);	
+					}
+					$rs_atend = $clatendimento->sql_record($sqlusu);
 					$linhas =pg_num_rows($rs_atend);
-					?>   
+					?>
 					<select name="usuorigem[]" multiple size="5">
-					<?
+					<?php
 					$at10_usuario_ori = "";
 					$at10_nome_ori    = "";
 					for ($z = 0; $z < $linhas; $z ++) {
@@ -222,16 +222,16 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 							$selected = "";
 						}
 						echo "<option value=$at10_usuario $selected>$at10_nome</option>";
-						
+
 					}
 					?>
 					</select>
-					
+
 				</td>
 			</tr>
-			<tr>	    
+			<tr>
 				<td align=left><b>Solicitado pelo usuário:&nbsp;&nbsp;<?=$at10_usuario_ori?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=strtoupper($at10_nome_ori) ?></b></td>
-			</tr>	  	  
+			</tr>
    		  	<tr>
        			<td align=left><b>Tipo de atendimento:&nbsp;&nbsp;<?=$at04_codtipo?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$at04_descr?></b></td>
 			</tr>
@@ -239,42 +239,42 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 	   		  	<td align=left><b>Data: <?=db_formatar($at06_datalanc,"d")?> &nbsp&nbsp Hora: <?=$at06_horalanc?></b></td>
 			</tr>
 			<tr>
-			<?
+			<?php
 			$resultversao = $cldb_versao->sql_record($cldb_versao->sql_query_file(null,"db30_codver,fc_versao(db30_codversao, db30_codrelease) as versao_cliente",' db30_codver'," db30_codver = $at01_codver"));
-            db_fieldsmemory($resultversao,0);			
+            db_fieldsmemory($resultversao,0);
 			?>
 	   		  	<td align=left><b>Versão no Cliente: <?=$versao_cliente?> </b></td>
 			</tr>
-			
-   		    <?
-   		    
-			  
+
+   		    <?php
+
+
 		}
 	}
 
 ?>
 		<tr>
 			<td>
-			<?
+			<?php
 			global $Mversao;
 			$Mversao= "";
 			?>
 				<input name="pesquisa_item" type="button" value="Selecione o Menu" onclick = "js_pesquisa_menus(<?=$clientes?>,<?=$at01_codver?>,<?=$at10_usuario_ori?>);" >
-	            
-	            <?
+
+	            <?php
 	            db_input("item_menu",10,"",true,"text",3);
 	            db_input("descr_menu",60,"",true,"text",3);
 	            ?>
 			<br><strong>Versão Atual Sistema:</strong>
-			<?
+			<?php
 			$resultversao = $cldb_versao->sql_record($cldb_versao->sql_query_file(null,"db30_codver,fc_versao(db30_codversao, db30_codrelease) as versao",'db30_codver desc limit 1'));
 			db_selectrecord('at67_codver',$resultversao,true,$db_opcao,"","","","");
-			
+
 			?>
-			
+
 			</td>
 			<td>
-			
+
 			</td>
 		</tr>
 		<tr align=center>
@@ -286,46 +286,46 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		    </td>
 		</tr>
 		<tr>
-		
-		    <td align=center> 
-				<?db_textarea('at05_solicitado',8, 50,0, true, 'text', $db_opcao, "") ?>
+
+		    <td align=center>
+				<?php db_textarea('at05_solicitado',8, 50,0, true, 'text', $db_opcao, "") ?>
 		    </td>
-		    <td align=center> 
-				<?db_textarea('at05_feito', 8, 50,0, true, 'text', $db_opcao, "") ?>
+		    <td align=center>
+				<?php db_textarea('at05_feito', 8, 50,0, true, 'text', $db_opcao, "") ?>
 			</td>
 		</tr>
 		<tr>
 		    <td nowrap title="<?=@$Tat05_perc?>" align="left">
 		      	<?=@$Lat05_perc?>
-		       	<?
+		       	<?php
 				$matriz = array("0"=>"0%",
-			                  "10"=>"10%", 
+			                  "10"=>"10%",
 			                  "20"=>"20%",
 			                  "30"=>"30%",
 			                  "40"=>"40%",
-			                  "50"=>"50%", 
+			                  "50"=>"50%",
 			                  "60"=>"60%",
 			                  "70"=>"70%",
 			                  "80"=>"80%",
 			                  "90"=>"90%",
-			                  "100"=>"100%");             
-		  		db_select("at05_perc", $matriz,true,$db_opcao); 
+			                  "100"=>"100%");
+		  		db_select("at05_perc", $matriz,true,$db_opcao);
 				?>
 		  		<b> Prioridade:</b>
-		  		<?
+		  		<?php
 		  		 $x = array("1"=>"Baixa",
-             				"2"=>"Média", 
+             				"2"=>"Média",
             				"3"=>"Alta"
-	   						); 	
-            				db_select("at05_prioridade", $x,true,$db_opcao); 
+	   						);
+            				db_select("at05_prioridade", $x,true,$db_opcao);
 		  		?>
-	
-				
+
+
 		    </td>
 		    <td>
 		    	<b>
 		    	Motivo:
-		    	<?
+		    	<?php
 				$resultmot = $cl_tarefacadmotivo->sql_record("select  at54_sequencial,at54_descr from tarefacadmotivo where at54_tipo = 1 order by at54_descr");
 				if( pg_numrows($resultmot) > 0){
 				  db_selectrecord('motivo',$resultmot,true,2,"","","","0-Nenhum");
@@ -335,7 +335,7 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		    </td>
 		    <!--
 		    <td align="left" nowrap title="<?=@$Tat41_proced?>"><b>Procedimento:</b>
-			<?
+			<?php
 				if (isset($at41_proced) and $at41_proced == 0) {
 					unset($at41_proced);
 				}
@@ -347,75 +347,75 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		<tr align=center>
 		  	<td align="left">
 		  		<b>Modulo Verificado:</b>
-		  		
-		  		
-		        <?
+
+
+		        <?php
 		        $sqlmod = "select codmod,nomemod from db_sysmodulo where ativo = 't' order by nomemod";
 		        //$sqlmod = "select id_item, nome_modulo from db_modulos order by nome_modulo";
 		        $result_modulo = db_query($sqlmod);
 		        db_selectrecord('modulo',$result_modulo,true,$db_opcao,"","","","0-Nenhum","js_verifica();");
-		        
+
 		        ?>
-		        
-		    </td> 
+
+		    </td>
 		    <td align="left" nowrap title="<?=@$Tat05_data?>">
 		       	<?=@$Lat05_data?>
-				<?db_inputdata('at05_data', @ $at05_data_dia, @ $at05_data_mes, @ $at05_data_ano, true, 'text', $db_opcao, "") ?>
-		    </td>       
+				<?php db_inputdata('at05_data', @ $at05_data_dia, @ $at05_data_mes, @ $at05_data_ano, true, 'text', $db_opcao, "") ?>
+		    </td>
 		</tr>
-		<?
+		<?php
 
 		if (isset ($incluir) && $incluir != "") {
 			$modulo=0;
 		}
-		
+
 		if (isset($modulo) && $modulo > 0 ) {
 			$sqlprocedmod="
 				select codproced,descrproced , nomemod
-				from db_syscadproced 
-				inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod 
+				from db_syscadproced
+				inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod
 				where db_syscadproced.codmod = $modulo
-				order by descrproced"; 
+				order by descrproced";
 				$result_syscadproced = $cl_db_syscadproced->sql_record($sqlprocedmod);
 				//$result_syscadproced = $cl_db_syscadproced->sql_record($cl_db_syscadproced -> sql_query ( null,"codproced,descrproced || ' - ' || nome_modulo","descrproced","codmod=$modulo"));
 		}else if ( isset($item_menu) && $item_menu > 0 ) {
 			$sqlprocedmod="
-			    
+
 				select 0 as codproced,'Nenhuma' as descrproced, '' as nomemod
-                
-                union 
-                
+
+                union
+
                 select * from (
 				select distinct p.codproced,descrproced , nomemod
 				from db_syscadproced p
-       				 inner join db_syscadproceditem i on i.codproced = p.codproced 
-				     inner join db_sysmodulo on db_sysmodulo.codmod= p.codmod 
+       				 inner join db_syscadproceditem i on i.codproced = p.codproced
+				     inner join db_sysmodulo on db_sysmodulo.codmod= p.codmod
 				where i.id_item = $item_menu
 				order by descrproced
-				) as 
+				) as
 				";
-				$result_syscadproced = $cl_db_syscadproced->sql_record($sqlprocedmod);		
+				$result_syscadproced = $cl_db_syscadproced->sql_record($sqlprocedmod);
 		}else{
 			$sqlproced="
 				select 0 as codproced,'Nenhuma' as descrproced, '' as nomemod
-                
-                union 
-                select * from ( 
+
+                union
+                select * from (
 				select codproced,descrproced , nomemod
-				from db_syscadproced 
-				inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod 
+				from db_syscadproced
+				inner join db_sysmodulo on db_sysmodulo.codmod=db_syscadproced.codmod
 				order by descrproced
 				) as x";
 			$result_syscadproced = $cl_db_syscadproced->sql_record($sqlproced);
 			//$result_syscadproced = $cl_db_syscadproced->sql_record($cl_db_syscadproced -> sql_query ( null,"codproced,descrproced || ' - ' || nome_modulo","descrproced",""));
 		}
 		?>
-		
+
 		<tr>
 			<td colspan="2">
 				<b>
 		    	Procedimento:
-		    	<?
+		    	<?php
 		    	if( $result_syscadproced==null || pg_numrows($result_syscadproced) == 0 ){
 				  $result_syscadproced = db_query("select 0 as codproced,'Nenhuma' as descrproced");
 		    	}
@@ -428,36 +428,36 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		<tr>
 			<td colspan="2">
 				<b>Tarefa:</b>
-				<?
+				<?php
 				if (@$codproced >0){
 					$sqltarefa = "
 							select * from (
 							select * from (
 							select at40_sequencial,
-							case when length(at40_descr) > 50 
-								then substr(at40_descr,1,50)||'...' ||' - '|| at40_progresso ||'%' 
+							case when length(at40_descr) > 50
+								then substr(at40_descr,1,50)||'...' ||' - '|| at40_progresso ||'%'
 								else at40_descr ||' - '|| at40_progresso ||'%'
-							end || ' - ' || at36_data || '/' || at36_hora as at40_descr 
-							from tarefa 
+							end || ' - ' || at36_data || '/' || at36_hora as at40_descr
+							from tarefa
               left join tarefa_lanc on at40_sequencial = at36_tarefa and at36_tipo = 'I'
-							inner join tarefasyscadproced on at40_sequencial= at37_tarefa 
-							inner join tarefaclientes on at70_tarefa = at40_sequencial 
-							where at70_cliente = $at01_codcli 
+							inner join tarefasyscadproced on at40_sequencial= at37_tarefa
+							inner join tarefaclientes on at70_tarefa = at40_sequencial
+							where at70_cliente = $at01_codcli
 									and at40_progresso <> 100
 									and at37_syscadproced = $codproced
 									order by at40_sequencial desc) as aaa
-							union 
+							union
               select * from (
 							select at40_sequencial,
-							case when length(at40_descr) > 50 
-								then substr(at40_descr,1,50)||'...' ||' - '|| at40_progresso ||'%' 
+							case when length(at40_descr) > 50
+								then substr(at40_descr,1,50)||'...' ||' - '|| at40_progresso ||'%'
 								else at40_descr ||' - '|| at40_progresso ||'%'
-							end || ' - ' || at36_data || '/' || at36_hora as at40_descr 
-							from tarefa 
+							end || ' - ' || at36_data || '/' || at36_hora as at40_descr
+							from tarefa
               left join tarefa_lanc on at40_sequencial = at36_tarefa and at36_tipo = 'I'
-							inner join tarefasyscadproced on at40_sequencial= at37_tarefa 
-							inner join tarefaclientes on at70_tarefa = at40_sequencial 
-							where at70_cliente = $at01_codcli 
+							inner join tarefasyscadproced on at40_sequencial= at37_tarefa
+							inner join tarefaclientes on at70_tarefa = at40_sequencial
+							where at70_cliente = $at01_codcli
 									and at40_progresso = 100
 									and at37_syscadproced = $codproced
 							order by at40_sequencial desc
@@ -471,25 +471,25 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 					  db_selectrecord('at40_sequencial',$resulttarefa,true,$db_opcao,"","","","0-Nenhum","js_disablebotao(this.value);");
 				?>
 				<input name="pesquisar" type="button" value="Consultar tarefa" onclick = "js_pesquisa_tarefa(document.form1.at40_sequencial.value);" disabled>
-				<?
+				<?php
 				    }else{
 					  $resulttarefa = db_query("select 0 as at40_sequencial,'Nenhuma' as at40_descr");
-				    
+
 					  db_selectrecord('at40_sequencial',$resulttarefa,true,$db_opcao,"","","","0-Nenhum","js_disablebotao(this.value);");
-				    
+
 				    }
 				}else{
 					  $resulttarefa = db_query("select 0 as at40_sequencial,'Nenhuma'as at40_descr");
-				    
+
 					  db_selectrecord('at40_sequencial',$resulttarefa,true,$db_opcao,"","","","","js_disablebotao(this.value);");
-				    
+
 				}
 				?>
 			</td>
       <tr>
       <td colspan="2">
       <strong>Atividade/Projeto:</strong>
-  <?
+  <?php
   db_selectrecord('at64_sequencial',$cldb_projetosativcli->sql_record($cldb_projetosativcli->sql_query(null,"at64_sequencial,trim(nomemod)||'-'||substr(at64_descricao,1,50) as at64_descricao","at64_sequencial",null)),true,$db_opcao,"","","","0");
   ?>
       </td>
@@ -497,21 +497,21 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		</tr>
 		<tr align=left >
 		    <td align=center nowrap colspan=2>
-		    	<? 
+		    	<?php
 		    	if ($opcao=="incluir"){?>
-		    		<input name="<?=$opcao?>" type="submit"  value="Incluir" onclick="js_limpa();" <?=($db_botao==false?"disabled":"") ?> >	
-		    	<?
+		    		<input name="<?=$opcao?>" type="submit"  value="Incluir" onclick="js_limpa();" <?=($db_botao==false?"disabled":"") ?> >
+		    	<?php
 				}elseif($opcao=="alterar"){?>
 		    		<input name="<?=$opcao?>" type="submit"  value="Alterar" <?=($db_botao==false?"disabled":"") ?> >
-		    	<?
+		    	<?php
 		    	}else{?>
 		    		<input name="<?=$opcao?>" type="submit"  value="Excluir" <?=($db_botao==false?"disabled":"") ?> >
-		    	<?
+		    	<?php
 		    	}
-		    	
+
 		    	?>
-		    	<input name="fechar" type="submit"  value="Fechar atendimento" <?=$disabled?> > 
-		  		
+		    	<input name="fechar" type="submit"  value="Fechar atendimento" <?=$disabled?> >
+
 			</td>
 		</tr>
 		<tr>
@@ -522,18 +522,18 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		    <td colspan=2>
 
 
-   <?
-   $sql="select * from atenditem 
-inner join atendimento on atendimento.at02_codatend = atenditem.at05_codatend 
-inner join clientes on clientes.at01_codcli = atendimento.at02_codcli 
-inner join tipoatend on tipoatend.at04_codtipo = atendimento.at02_codtipo 
+   <?php
+   $sql="select * from atenditem
+inner join atendimento on atendimento.at02_codatend = atenditem.at05_codatend
+inner join clientes on clientes.at01_codcli = atendimento.at02_codcli
+inner join tipoatend on tipoatend.at04_codtipo = atendimento.at02_codtipo
 left join atenditemtarefa on  at18_atenditem = at05_seq
-where atenditem.at05_codatend = ".@$at02_codatend 
+where atenditem.at05_codatend = ".@$at02_codatend
 ;
   // echo "<br>$sql<br>";
-  
+
   // $clatenditem->sql_query(null,"*","","at05_codatend = $at02_codatend");
-  
+
     $chavepri= array("at05_seq"=>@$at05_seq,"at05_codatend"=>@$at05_codatend);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="at05_seq,at05_codatend,at05_solicitado,at05_feito,at18_tarefa,at05_horaini,at05_horafim";
@@ -546,13 +546,13 @@ where atenditem.at05_codatend = ".@$at02_codatend
     $cliframe_alterar_excluir->fundocorpo ="#ccddcc";
     $cliframe_alterar_excluir->iframe_height ="120";
     $cliframe_alterar_excluir->iframe_width ="100%";
-    $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);    
-   ?> 
-  			
-	
+    $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
+   ?>
+
+
 		    </td>
 		</tr>
-	
+
 	</table>
 	</center>
 </form>
@@ -562,15 +562,15 @@ function js_disablebotao(val){
      document.form1.pesquisar.disabled=true;
    }else{
      document.form1.pesquisar.disabled=false;
-   } 
+   }
 }
 
 function js_pesquisa(){
 	js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_atend','func_atendimentoinc.php?opcao=<?=$opcao?>&funcao_js=parent.js_preenchepesquisa|at02_codatend','Pesquisa',true);
-  	document.form1.opcao.value=<?=$opcao?>;	
+  	document.form1.opcao.value=<?=$opcao?>;
 }
 function js_preenchepesquisa(chave){
-  	<?
+  	<?php
   	if($db_opcao!=1||$db_opcao!=2) {
 		echo " db_iframe_atend.hide();";
 	  	echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&opcao=".$opcao."'";
@@ -580,10 +580,10 @@ function js_preenchepesquisa(chave){
 function js_verifica(){
 	document.form1.trocamodulo.value='t';
 	document.form1.submit();
-	
+
 }
 function js_limpa(){
-	
+
 }
 
 function js_pesquisa_tarefa (tarefa){

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/pdf.php"));
@@ -143,16 +143,16 @@ function getLancamentosContaCorrenteDetalhe($iNumcgm, $dtInicial, $dtFinal, $iFi
   if (isset($iNumcgm) && !empty($iNumcgm)) {
     $sSqlLancamentos .= "    and c19_numcgm = {$iNumcgm} ";
   }
-  
+
   if (isset($iCodOrgao) && !empty($iCodOrgao)) {
     $sSqlLancamentos .= "    and c19_orcorgaoanousu = {$iAnousu} ";
     $sSqlLancamentos .= "    and c19_orcorgaoorgao = {$iCodOrgao} ";
   }
-  
+
   if (isset($iCodUnidade) && !empty($iCodUnidade)) {
     $sSqlLancamentos .= "    and c19_orcunidadeunidade = {$iCodUnidade} ";
   }
-  
+
   $sSqlLancamentos .= "  order by c69_codlan, c53_coddoc " ;
 
   $rsLancamentos    = db_query($sSqlLancamentos);
@@ -160,11 +160,11 @@ function getLancamentosContaCorrenteDetalhe($iNumcgm, $dtInicial, $dtFinal, $iFi
 
   return $aLancamento;
 }
- 
+
 function getSaldosIniciais ($dtInicial, $dtFinal, $iContaCorrente, $iReduzido, $iNumcgm, $iOrgao, $iUnidade) {
 
   $aDataInicial = explode('-', $dtInicial);
-  $iDataInicial = mktime(null, null, null,$aDataInicial[1]  ,$aDataInicial[2]  , $aDataInicial[0], null);
+  $iDataInicial = mktime(null, null, null, $aDataInicial[1], $aDataInicial[2], $aDataInicial[0]);
   $dDataInicial = date('Y-m-d', $iDataInicial);
 
   $sCampos = " sum(case when c28_tipo = 'D'
@@ -183,15 +183,15 @@ function getSaldosIniciais ($dtInicial, $dtFinal, $iContaCorrente, $iReduzido, $
   if (isset($iNumcgm) && !empty($iNumcgm)) {
     $sWhere .= " and c19_numcgm = {$iNumcgm} ";
   }
-  
+
   if (isset($iOrgao) && !empty($iOrgao)) {
     $sWhere .= " and c19_orcunidadeorgao   = {$iOrgao} ";
   }
-  
+
   if (isset($iUnidade) && !empty($iUnidade)) {
     $sWhere .= " and c19_orcunidadeunidade = {$iUnidade} ";
   }
-  
+
   $sSql  = " select {$sCampos} ";
   $sSql .= "   from contacorrentedetalhe ";
   $sSql .= "        left join contacorrentedetalheconlancamval on contacorrentedetalhe.c19_sequencial               = contacorrentedetalheconlancamval.c28_contacorrentedetalhe ";
@@ -251,9 +251,9 @@ function buscaDadosImplantacao( $iReduzido, $iNumcgm, $iOrgao, $iUnidade) {
     $oStdDetalhe->credito += $oDetalhe->credito;
     $oStdDetalhe->debito  += $oDetalhe->debito;
   }
-  
+
   return $oStdDetalhe;
-  
+
 }
 
 
@@ -355,14 +355,14 @@ foreach ($aContacorrenteDetalhe as $oIndiceDados => $oValorDados) {
   imprimirCabecalho($oPdf, $iAlturalinha, true);
 
   // aqui percorremos os varios lançamentos do filtro selecionado por contas e numcgm
-  $aLancamentos = getLancamentosContaCorrenteDetalhe($oValorDados->z01_numcgm, 
-  		                                               $dtInicial, 
-  		                                               $dtFinal, 
+  $aLancamentos = getLancamentosContaCorrenteDetalhe($oValorDados->z01_numcgm,
+  		                                               $dtInicial,
+  		                                               $dtFinal,
   		                                               $oValorDados->c19_contacorrente,
-                                                     $oValorDados->c19_instit, 
-  		                                               $oValorDados->c19_reduz, 
+                                                     $oValorDados->c19_instit,
+  		                                               $oValorDados->c19_reduz,
   		                                               $oValorDados->c19_orcorgaoorgao,
-                                                     $oValorDados->c19_orcunidadeunidade, 
+                                                     $oValorDados->c19_orcunidadeunidade,
   		                                               $oValorDados->c19_orcorgaoanousu);
 
   $nTotalMovDebito  = "0.00";

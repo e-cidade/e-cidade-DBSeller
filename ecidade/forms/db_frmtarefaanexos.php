@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,22 +63,22 @@ if(isset($db_opcaoal)){
        <?//=@$Lat25_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at25_sequencial',10,$Iat25_sequencial,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat25_tarefa?>">
-       <?
+       <?php
        db_ancora(@$Lat25_tarefa,"js_pesquisaat25_tarefa(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at25_tarefa',10,$Iat25_tarefa,true,'text',3," onchange='js_pesquisaat25_tarefa(false);'")
 ?>
-       <?
+       <?php
 //db_input('at40_descr',1,$Iat40_descr,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('at25_tarefa',10,$Iat25_tarefa,true,'text',3," onchange='js_pesquisaat2
        <?=@$Lat25_anexo?>
     </td>
     <td> 
-<?
+<?php
 
    	  db_input("anexoarq",30,0,true,"file",1);
 ?>
@@ -99,7 +99,7 @@ db_input('at25_tarefa',10,$Iat25_tarefa,true,'text',3," onchange='js_pesquisaat2
        <?=@$Lat25_obs?>
     </td>
     <td> 
-<?
+<?php
 
    	  db_textarea("at25_obs",0,50,$Iat25_obs,true,"text",1);
 ?>
@@ -116,7 +116,7 @@ db_input('at25_tarefa',10,$Iat25_tarefa,true,'text',3," onchange='js_pesquisaat2
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at25_sequencial"=>@$at25_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefaanexos->sql_query_file(null,"*",null,"at25_tarefa=$at25_tarefa");
@@ -128,7 +128,7 @@ db_input('at25_tarefa',10,$Iat25_tarefa,true,'text',3," onchange='js_pesquisaat2
     ?>
     </td>
    </tr>
-   <?
+   <?php
    if(@$vis==1){
    	echo"
    	<tr>

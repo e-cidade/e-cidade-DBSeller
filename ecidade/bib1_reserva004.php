@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -41,65 +41,69 @@ $db_opcao = 1;
 $db_botao = true;
 $depto = db_getsession("DB_coddepto");
 $result = $clbiblioteca->sql_record($clbiblioteca->sql_query("","bi17_codigo",""," bi17_coddepto = $depto"));
+
 if($clbiblioteca->numrows!=0){
  db_fieldsmemory($result,0);
 }
+
 function somadata($dias,$ano,$mes,$dia){
- //$dia = date("d");
- //$mes = date("m");
- //$ano = date("Y");
- $i = $dias;
- for($i = 0;$i<$dias;$i++){
-  if ($mes == 01 || $mes == 03 || $mes == 05 || $mes == 07 || $mes == 8 || $mes == 10 || $mes == 12){
-   if($mes == 12 && $dia == 31){
-    $mes = 01;
-    $ano++;
-    $dia = 00;
-   }
-   if($dia == 31 && $mes != 12){
-    $mes++;
-    $dia = 00;
-   }
-  }//FECHA IF GERAL
-  if($mes == 04 || $mes == 06 || $mes == 09 || $mes == 11){
-   if($dia == 30){
-    $dia =  00;
-    $mes++;
-   }
-  }//FECHA IF GERAL
-  if($mes == 02){
-   if($ano % 4 == 0){//ANO BISSEXTO
-    if($dia == 29){
-     $dia = 00;
-    }
-   }else{
-    if($dia == 28){
-     $dia = 00;
-    }
-   }
-  }//FECHA IF DO MÊS 2
-  $dia++;
- }//FECHA O FOR()
- if($dia==1){$dia="01";}
- if($dia==2){$dia="02";}
- if($dia==3){$dia="03";}
- if($dia==4){$dia="04";}
- if($dia==5){$dia="05";}
- if($dia==6){$dia="06";}
- if($dia==7){$dia="07";}
- if($dia==8){$dia="08";}
- if($dia==9){$dia="09";}
- if($mes==1){$mes="01";}
- if($mes==2){$mes="02";}
- if($mes==3){$mes="03";}
- if($mes==4){$mes="04";}
- if($mes==5){$mes="05";}
- if($mes==6){$mes="06";}
- if($mes==7){$mes="07";}
- if($mes==8){$mes="08";}
- if($mes==9){$mes="09";}
- $data_volta = $ano."-".$mes."-".$dia;
- return $data_volta;
+   $i = $dias;
+   for($i = 0;$i<$dias;$i++){
+      if($mes == 1 || $mes == 3 || $mes == 5 || $mes == 7 || $mes == 8 || $mes == 10 || $mes == 12){
+         if($mes == 12 && $dia == 31){
+           $mes = 01;
+           $ano++;
+           $dia = 00;
+         }
+
+         if($dia == 31 && $mes != 12){
+           $mes++;
+           $dia = 00;
+         }
+      }//FECHA IF GERAL
+
+      if($mes == 4 || $mes == 6 || $mes == 9 || $mes == 11){
+        if($dia == 30){
+          $dia = 00;
+          $mes++;
+        }
+      }//FECHA IF GERAL
+
+      if($mes == 2){
+        if($ano % 4 == 0){//ANO BISSEXTO
+          if($dia == 29){
+            $dia = 00;
+          }
+        }else{
+          if($dia == 28){
+            $dia = 00;
+          }
+        }
+      }//FECHA IF DO MÊS 2
+      $dia++;
+   }//FECHA O FOR()
+
+   if($dia==1){$dia="01";}
+   if($dia==2){$dia="02";}
+   if($dia==3){$dia="03";}
+   if($dia==4){$dia="04";}
+   if($dia==5){$dia="05";}
+   if($dia==6){$dia="06";}
+   if($dia==7){$dia="07";}
+   if($dia==8){$dia="08";}
+   if($dia==9){$dia="09";}
+   if($mes==1){$mes="01";}
+   if($mes==2){$mes="02";}
+   if($mes==3){$mes="03";}
+   if($mes==4){$mes="04";}
+   if($mes==5){$mes="05";}
+   if($mes==6){$mes="06";}
+   if($mes==7){$mes="07";}
+   if($mes==8){$mes="08";}
+   if($mes==9){$mes="09";}
+
+   $data_volta = $ano."-".$mes."-".$dia;
+   return $data_volta;
 }
 ?>
 <html>
@@ -125,7 +129,7 @@ function somadata($dias,$ano,$mes,$dia){
    <br>
    <center>
    <fieldset style="width:92%"><legend><b>Acervos devolvidos recentemente que estão reservados:</b></legend>
-    <?
+    <?php
     $campos = "case
                 when aluno.ed47_i_codigo is not null
                  then aluno.ed47_v_nome
@@ -156,7 +160,7 @@ function somadata($dias,$ano,$mes,$dia){
        <td><b>Hora</b></td>
        <td></td>
       </tr>
-     <?
+     <?php
      for($y=0;$y<$clreserva->numrows;$y++){
       db_fieldsmemory($result,$y);
       $sql1 = "SELECT bi23_codigo
@@ -201,9 +205,10 @@ function somadata($dias,$ano,$mes,$dia){
         <input type="button" name="emprestimo" value="Empréstimo" onclick="location.href='bib1_emprestimo001.php?leitor=<?=$leitor?>&nomeleitor=<?=$nomeleitor?>&lista=<?=$lista?>&dev=<?=$devolucao?>&reserva=<?=$codreserva?>'">
        </td>
       </tr>
-      <?
+      <?php
      }
-     ?></table><?
+     ?></table>
+     <?php
     }else{
      echo "Nenhuma reserva para os acervos devolvidos recentemente.";
     }
@@ -213,6 +218,6 @@ function somadata($dias,$ano,$mes,$dia){
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

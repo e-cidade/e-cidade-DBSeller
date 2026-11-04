@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Merenda
 //CLASSE DA ENTIDADE mer_cardapio
-class cl_mer_cardapio { 
-   // cria variaveis de erro 
-   var $rotulo          = null; 
-   var $query_sql       = null; 
-   var $numrows         = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status     = null; 
-   var $erro_sql        = null; 
-   var $erro_banco      = null;  
-   var $erro_msg        = null;  
-   var $erro_campo      = null;  
-   var $pagina_retorno  = null; 
-   // cria variaveis do arquivo 
-   var $me01_i_codigo        = 0; 
-   var $me01_c_nome        = null; 
-   var $me01_i_percapita        = 0; 
-   var $me01_f_versao        = 0; 
-   var $me01_i_id        = 0; 
-   var $me01_i_tipocardapio        = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_mer_cardapio {
+   // cria variaveis de erro
+   var $rotulo          = null;
+   var $query_sql       = null;
+   var $numrows         = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status     = null;
+   var $erro_sql        = null;
+   var $erro_banco      = null;
+   var $erro_msg        = null;
+   var $erro_campo      = null;
+   var $pagina_retorno  = null;
+   // cria variaveis do arquivo
+   var $me01_i_codigo        = 0;
+   var $me01_c_nome        = null;
+   var $me01_i_percapita        = 0;
+   var $me01_f_versao        = 0;
+   var $me01_i_id        = 0;
+   var $me01_i_tipocardapio        = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 me01_i_codigo = int4 = Código 
-                 me01_c_nome = char(50) = Nome da Refeição 
-                 me01_i_percapita = int4 = Alunos Atendidos 
-                 me01_f_versao = float4 = Versão 
-                 me01_i_id = int4 = Numero ID 
-                 me01_i_tipocardapio = int4 = Tipo de Cardápio 
+                 me01_i_codigo = int4 = Código
+                 me01_c_nome = char(50) = Nome da Refeição
+                 me01_i_percapita = int4 = Alunos Atendidos
+                 me01_f_versao = float4 = Versão
+                 me01_i_id = int4 = Numero ID
+                 me01_i_tipocardapio = int4 = Tipo de Cardápio
                  ";
-   //funcao construtor da classe 
-   function cl_mer_cardapio() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("mer_cardapio"); 
+     $this->rotulo = new rotulo("mer_cardapio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_mer_cardapio {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->me01_i_codigo = ($this->me01_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["me01_i_codigo"]:$this->me01_i_codigo);
        $this->me01_c_nome = ($this->me01_c_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["me01_c_nome"]:$this->me01_c_nome);
@@ -86,9 +86,9 @@ class cl_mer_cardapio {
      }
    }
    // funcao para inclusao
-   function incluir ($me01_i_codigo){ 
+   public function incluir ($me01_i_codigo){
       $this->atualizacampos();
-     if($this->me01_c_nome == null ){ 
+     if($this->me01_c_nome == null ){
        $this->erro_sql = " Campo Nome da Refeição nao Informado.";
        $this->erro_campo = "me01_c_nome";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_mer_cardapio {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me01_i_percapita == null ){ 
+     if($this->me01_i_percapita == null ){
        $this->erro_sql = " Campo Alunos Atendidos nao Informado.";
        $this->erro_campo = "me01_i_percapita";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_mer_cardapio {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me01_f_versao == null ){ 
+     if($this->me01_f_versao == null ){
        $this->erro_sql = " Campo Versão nao Informado.";
        $this->erro_campo = "me01_f_versao";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_mer_cardapio {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me01_i_id == null ){ 
+     if($this->me01_i_id == null ){
        $this->erro_sql = " Campo Numero ID nao Informado.";
        $this->erro_campo = "me01_i_id";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_mer_cardapio {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me01_i_tipocardapio == null ){ 
+     if($this->me01_i_tipocardapio == null ){
        $this->erro_sql = " Campo Tipo de Cardápio nao Informado.";
        $this->erro_campo = "me01_i_tipocardapio";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_mer_cardapio {
        return false;
      }
      if($me01_i_codigo == "" || $me01_i_codigo == null ){
-       $result = db_query("select nextval('mercardapio_me01_codigo_seq')"); 
+       $result = db_query("select nextval('mercardapio_me01_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: mercardapio_me01_codigo_seq do campo: me01_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: mercardapio_me01_codigo_seq do campo: me01_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->me01_i_codigo = pg_result($result,0,0); 
+       $this->me01_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from mercardapio_me01_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $me01_i_codigo)){
@@ -154,10 +154,10 @@ class cl_mer_cardapio {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->me01_i_codigo = $me01_i_codigo; 
+         $this->me01_i_codigo = $me01_i_codigo;
        }
      }
-     if(($this->me01_i_codigo == null) || ($this->me01_i_codigo == "") ){ 
+     if(($this->me01_i_codigo == null) || ($this->me01_i_codigo == "") ){
        $this->erro_sql = " Campo me01_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_mer_cardapio {
        return false;
      }
      $sql = "insert into mer_cardapio(
-                                       me01_i_codigo 
-                                      ,me01_c_nome 
-                                      ,me01_i_percapita 
-                                      ,me01_f_versao 
-                                      ,me01_i_id 
-                                      ,me01_i_tipocardapio 
+                                       me01_i_codigo
+                                      ,me01_c_nome
+                                      ,me01_i_percapita
+                                      ,me01_f_versao
+                                      ,me01_i_id
+                                      ,me01_i_tipocardapio
                        )
                 values (
-                                $this->me01_i_codigo 
-                               ,'$this->me01_c_nome' 
-                               ,$this->me01_i_percapita 
-                               ,$this->me01_f_versao 
-                               ,$this->me01_i_id 
-                               ,$this->me01_i_tipocardapio 
+                                $this->me01_i_codigo
+                               ,'$this->me01_c_nome'
+                               ,$this->me01_i_percapita
+                               ,$this->me01_f_versao
+                               ,$this->me01_i_id
+                               ,$this->me01_i_tipocardapio
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "mer_cardapio ($this->me01_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_mer_cardapio {
        $resac = db_query("insert into db_acount values($acount,2235,17103,'','".AddSlashes(pg_result($resaco,0,'me01_i_tipocardapio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($me01_i_codigo=null) { 
+   public function alterar ($me01_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update mer_cardapio set ";
      $virgula = "";
-     if(trim($this->me01_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_codigo"])){ 
+     if(trim($this->me01_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_codigo"])){
        $sql  .= $virgula." me01_i_codigo = $this->me01_i_codigo ";
        $virgula = ",";
-       if(trim($this->me01_i_codigo) == null ){ 
+       if(trim($this->me01_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "me01_i_codigo";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_mer_cardapio {
          return false;
        }
      }
-     if(trim($this->me01_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_c_nome"])){ 
+     if(trim($this->me01_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_c_nome"])){
        $sql  .= $virgula." me01_c_nome = '$this->me01_c_nome' ";
        $virgula = ",";
-       if(trim($this->me01_c_nome) == null ){ 
+       if(trim($this->me01_c_nome) == null ){
          $this->erro_sql = " Campo Nome da Refeição nao Informado.";
          $this->erro_campo = "me01_c_nome";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_mer_cardapio {
          return false;
        }
      }
-     if(trim($this->me01_i_percapita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_percapita"])){ 
+     if(trim($this->me01_i_percapita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_percapita"])){
        $sql  .= $virgula." me01_i_percapita = $this->me01_i_percapita ";
        $virgula = ",";
-       if(trim($this->me01_i_percapita) == null ){ 
+       if(trim($this->me01_i_percapita) == null ){
          $this->erro_sql = " Campo Alunos Atendidos nao Informado.";
          $this->erro_campo = "me01_i_percapita";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_mer_cardapio {
          return false;
        }
      }
-     if(trim($this->me01_f_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_f_versao"])){ 
+     if(trim($this->me01_f_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_f_versao"])){
        $sql  .= $virgula." me01_f_versao = $this->me01_f_versao ";
        $virgula = ",";
-       if(trim($this->me01_f_versao) == null ){ 
+       if(trim($this->me01_f_versao) == null ){
          $this->erro_sql = " Campo Versão nao Informado.";
          $this->erro_campo = "me01_f_versao";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_mer_cardapio {
          return false;
        }
      }
-     if(trim($this->me01_i_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_id"])){ 
+     if(trim($this->me01_i_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_id"])){
        $sql  .= $virgula." me01_i_id = $this->me01_i_id ";
        $virgula = ",";
-       if(trim($this->me01_i_id) == null ){ 
+       if(trim($this->me01_i_id) == null ){
          $this->erro_sql = " Campo Numero ID nao Informado.";
          $this->erro_campo = "me01_i_id";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_mer_cardapio {
          return false;
        }
      }
-     if(trim($this->me01_i_tipocardapio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_tipocardapio"])){ 
+     if(trim($this->me01_i_tipocardapio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me01_i_tipocardapio"])){
        $sql  .= $virgula." me01_i_tipocardapio = $this->me01_i_tipocardapio ";
        $virgula = ",";
-       if(trim($this->me01_i_tipocardapio) == null ){ 
+       if(trim($this->me01_i_tipocardapio) == null ){
          $this->erro_sql = " Campo Tipo de Cardápio nao Informado.";
          $this->erro_campo = "me01_i_tipocardapio";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_mer_cardapio {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "mer_cardapio nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->me01_i_codigo;
@@ -357,14 +357,14 @@ class cl_mer_cardapio {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($me01_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($me01_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($me01_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -395,7 +395,7 @@ class cl_mer_cardapio {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "mer_cardapio nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$me01_i_codigo;
@@ -423,11 +423,11 @@ class cl_mer_cardapio {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -449,11 +449,11 @@ class cl_mer_cardapio {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $me01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $me01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,15 +467,15 @@ class cl_mer_cardapio {
      $sql2 = "";
      if($dbwhere==""){
        if($me01_i_codigo!=null ){
-         $sql2 .= " where mer_cardapio.me01_i_codigo = $me01_i_codigo "; 
-       } 
+         $sql2 .= " where mer_cardapio.me01_i_codigo = $me01_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,11 +484,11 @@ class cl_mer_cardapio {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $me01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $me01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -501,15 +501,15 @@ class cl_mer_cardapio {
      $sql2 = "";
      if($dbwhere==""){
        if($me01_i_codigo!=null ){
-         $sql2 .= " where mer_cardapio.me01_i_codigo = $me01_i_codigo "; 
-       } 
+         $sql2 .= " where mer_cardapio.me01_i_codigo = $me01_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

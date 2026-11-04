@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -167,7 +167,7 @@ function js_padrao(val){
           <td class='bordas02' align='center'><small><b><?=$RLe83_codtipo?></b></small></td>
           <td class='bordas02' align='center' ><small><b><?=$RLz01_nome?></b></small></td>
 	</tr>
-        <?
+        <?php
 	   $nords =  '';
 	   $nvirg ='';
 	  for($i=0; $i<$numrows; $i++){
@@ -232,13 +232,13 @@ function js_padrao(val){
           <td class='bordas' align='right'><small > <?=$k17_data?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_valor?></small></td>
           <td class='bordas' align='right'><small>
-	  <?
+	  <?php
 	  db_input("e83_codtipo_$k17_codigo","2","",true,"hidden",3);
 	  db_input("descr_$k17_codigo","30","",true,"text",3);
 	  ?></small></td>
           <td class='bordas' align='left' nowrap><small >&nbsp; <?=$z01_nome?></small></td>
 	</tr>
-        <?
+        <?php
 	  }
 	?>
       </table>

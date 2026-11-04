@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,15 +25,15 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_pcforne_classe.php"));
-include(modification("classes/db_pcfornecon_classe.php"));
-include(modification("classes/db_pcfornemov_classe.php"));
-include(modification("classes/db_pcfornecert_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_pcforne_classe.php"));
+require_once(modification("classes/db_pcfornecon_classe.php"));
+require_once(modification("classes/db_pcfornemov_classe.php"));
+require_once(modification("classes/db_pcfornecert_classe.php"));
 require_once(modification("classes/db_tipoempresa_classe.php"));
 require_once(modification("classes/db_cgmtipoempresa_classe.php"));
 
@@ -62,9 +62,7 @@ if (isset($alterar)) {
         $cl_cgmtipoempresa->z03_sequencial = $z03_sequencial;
         $cl_cgmtipoempresa->z03_tipoempresa = $z03_tipoempresa;
         $cl_cgmtipoempresa->alterar($z03_sequencial);
-
     } else {
-
         $cl_cgmtipoempresa->z03_sequencial = null;
         $cl_cgmtipoempresa->z03_tipoempresa = $z03_tipoempresa;
         $cl_cgmtipoempresa->z03_numcgm = $pc60_numcgm;
@@ -87,7 +85,12 @@ if (isset($alterar)) {
     $result = $clpcforne->sql_record($clpcforne->sql_query($chavepesquisa));
     db_fieldsmemory($result, 0);
 
-    $result = $cl_cgmtipoempresa->sql_record($cl_cgmtipoempresa->sql_query(null,'*',null,"z03_numcgm = $chavepesquisa"));
+    $result = $cl_cgmtipoempresa->sql_record($cl_cgmtipoempresa->sql_query(
+        null,
+        '*',
+        null,
+        "z03_numcgm = $chavepesquisa"
+    ));
     db_fieldsmemory($result, 0);
 }
 ?>
@@ -102,28 +105,28 @@ if (isset($alterar)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br />
     <center>
-    	<?
-    	 include(modification("forms/db_frmpcforne.php"));
-    	?>
+        <?php
+         include(modification("forms/db_frmpcforne.php"));
+        ?>
     </center>
 
 </body>
 </html>
 <?php
 $pc60_numcgm = isset($pc60_numcgm) ? $pc60_numcgm : '';
-if(isset($alterar)){
-  if($sqlerro==true){
-    db_msgbox($erro_msg);
-    if($clpcforne->erro_campo!=""){
-      echo "<script> document.form1.".$clpcforne->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clpcforne->erro_campo.".focus();</script>";
-    };
-  }else{
-   db_msgbox($erro_msg);
-  }
+if (isset($alterar)) {
+    if ($sqlerro) {
+        db_msgbox($erro_msg);
+        if ($clpcforne->erro_campo!="") {
+            echo "<script> document.form1.".$clpcforne->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clpcforne->erro_campo.".focus();</script>";
+        };
+    } else {
+        db_msgbox($erro_msg);
+    }
 }
-if(isset($chavepesquisa)){
- echo "
+if (isset($chavepesquisa)) {
+    echo "
   <script>
       function js_db_libera(){
 
@@ -143,24 +146,24 @@ if(isset($chavepesquisa)){
       */
      $lPermissaoCompras    = db_permissaomenu(db_getsession("DB_anousu"), 39, 5002) === "true";
      $lPermissaoTesouraria = db_permissaomenu(db_getsession("DB_anousu"), 28, 5002) === "true";
-     if ($lPermissaoCompras || $lPermissaoTesouraria) {
-     	echo "parent.document.formaba.pcfornecon.disabled=false;
+    if ($lPermissaoCompras || $lPermissaoTesouraria) {
+        echo "parent.document.formaba.pcfornecon.disabled=false;
          	 (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_pcfornecon.location.href='com1_pcfornecon001.php?pc63_numcgm=".$pc60_numcgm."';
          	";
-     	if(isset($liberaaba)){
-        	echo "  parent.mo_camada('pcfornecon');";
-     	}
-     }else{
-     	if(isset($liberaaba)){
-        	echo "  parent.mo_camada('pcfornemov');";
-     	}
-     }
- echo"}\n
+        if (isset($liberaaba)) {
+            echo "  parent.mo_camada('pcfornecon');";
+        }
+    } else {
+        if (isset($liberaaba)) {
+            echo "  parent.mo_camada('pcfornemov');";
+        }
+    }
+    echo"}\n
     js_db_libera();
   </script>\n
  ";
 }
- if($db_opcao==22||$db_opcao==33){
+if ($db_opcao==22||$db_opcao==33) {
     echo "<script>document.form1.pesquisar.click();</script>";
- }
+}
 ?>

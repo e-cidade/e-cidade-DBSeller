@@ -46,12 +46,11 @@ class AnexosRclFactory
     {
         switch ($exercicio) {
             case 2022:
-                return self::getDadosViewOutrosAnexos($exercicio);
             default:
-                throw new Exception('Relatório não encontrado.');
+                return self::getDadosViewOutrosAnexos($exercicio);
         }
     }
-    
+
     /**
      * getDadosViewOutrosAnexos
      *

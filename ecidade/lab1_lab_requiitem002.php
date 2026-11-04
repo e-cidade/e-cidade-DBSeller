@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ if(isset($alterar)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <fieldset style='width: 75%;'> <legend><b>Requiitem</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_requiitem.php"));
 	?>
 	</fieldset>
@@ -81,12 +81,12 @@ if(isset($alterar)){
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($cllab_requiitem->erro_status=="0"){
     $cllab_requiitem->erro(true,false);

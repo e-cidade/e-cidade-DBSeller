@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clretencaonatureza->rotulo->label("e30_codigo");
               <?=$Le30_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e30_sequencial",10,$Ie30_sequencial,true,"text",4,"","chave_e30_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clretencaonatureza->rotulo->label("e30_codigo");
               <?=$Le30_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e30_codigo",20,$Ie30_codigo,true,"text",4,"","chave_e30_codigo");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clretencaonatureza->rotulo->label("e30_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sKeyField = "e30_sequencial"; //campo chave usado quanto consultas diretamente.
       if (isset($oGet->keyfield)) {
       	$sKeyField = $oGet->keyfield;
@@ -128,12 +128,12 @@ $clretencaonatureza->rotulo->label("e30_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

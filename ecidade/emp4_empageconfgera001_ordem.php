@@ -138,7 +138,7 @@ $sqlSlips  = $clempageslip->sql_query_txtbanco(null,"e98_contabanco,
                                                      db83_identificador,
                                                      false as validaretencao,
                                                      0 as vlrretencao,
-                                                     2 as tipo","","{$dbwhere}");
+                                                     2 as tipo","","{$dbwhere} and k17_situacao <> 4");
 
 // echo "$sql<br><br><br><br";
 // db_criatabela(db_query($sql));exit;

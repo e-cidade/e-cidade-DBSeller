@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -60,37 +60,37 @@ $clrotulo->label("sd03_c_nome");
     <table>
      <tr>
       <td>
-      Período </td><td><?db_inputdata('data1',@$data1_dia,@$data1_mes,@$data1_ano,true,'text',$db_opcao,"")?> A <?db_inputdata('data2',@$data2_dia,@$data2_mes,@$data2_ano,true,'text',$db_opcao,"")?>
+      Período </td><td><?php db_inputdata('data1',@$data1_dia,@$data1_mes,@$data1_ano,true,'text',$db_opcao,"")?> A <?php db_inputdata('data2',@$data2_dia,@$data2_mes,@$data2_ano,true,'text',$db_opcao,"")?>
       </td>
      </tr>
 <!--     <tr>
-      <td>Faixa de Idade </td><td><?db_input('id1',3,$id1,true,'text',$db_opcao,'')?> A <?db_input('id2',3,$id2,true,'text',$db_opcao,'')?></td>
+      <td>Faixa de Idade </td><td><?php db_input('id1',3,$id1,true,'text',$db_opcao,'')?> A <?php db_input('id2',3,$id2,true,'text',$db_opcao,'')?></td>
      </tr>-->
      <tr><td>Buscar por</td><td>
      <select name="tp" onchange="submit()">
       <option value=0 >Selecione</option>
-      <option value=1 <?if($tp == 1){ echo "selected"; }?> >Cid</option>
-      <option value=2 <?if($tp == 2){ echo "selected"; }?> >Bairro</option>
+      <option value=1 <?php if($tp == 1){ echo "selected"; }?> >Cid</option>
+      <option value=2 <?php if($tp == 2){ echo "selected"; }?> >Bairro</option>
      </select>
      </td></tr>
-     <?if($tp == 1){?>
+     <?php if($tp == 1){?>
      <tr><td nowrap>
-       <?db_ancora('Cid',"js_pesquisa_cid();",$db_opcao);?>
+       <?php db_ancora('Cid',"js_pesquisa_cid();",$db_opcao);?>
       </td>
       <td>
-       <?db_input('extra',10,$extra,true,'text',3,"")?>
-       <?db_input('descr',40,"",true,'text',3,'')?>
+       <?php db_input('extra',10,$extra,true,'text',3,"")?>
+       <?php db_input('descr',40,"",true,'text',3,'')?>
       </td>
      </tr>
-     <?}elseif($tp == 2){?>
+     <?php }elseif($tp == 2){?>
      <tr><td>
-      <?db_ancora('Bairro',"js_pesquisa_bairro();",$db_opcao);?>
+      <?php db_ancora('Bairro',"js_pesquisa_bairro();",$db_opcao);?>
      </td>
      <td>
-      <?db_input('bairro',40,"",true,'text',3,'')?>
+      <?php db_input('bairro',40,"",true,'text',3,'')?>
      </td>
      </tr>
-     <?}?>
+     <?php }?>
      <tr>
       <td colspan='6' align='center' >
        <input name='Processar' type='button' value='Processar' onclick="EnviaForm()">
@@ -108,7 +108,7 @@ $clrotulo->label("sd03_c_nome");
       document.form1.descr.value = chave2;
       db_iframe_cids.hide();
     }
-    
+
     function js_pesquisa_bairro(){
      js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cids','func_bairro.php?funcao_js=parent.js_mostrabairro|j13_codi|j13_descr','Pesquisa',true);
     }
@@ -130,19 +130,19 @@ $clrotulo->label("sd03_c_nome");
        obj.id1.focus();
        return false;
       } */
-      <?if($tp == 1){?>
+      <?php if($tp == 1){?>
       if(obj.extra.value == ""){
        alert("Preencha o Cid");
        return false;
       }
-      <?}elseif($tp == 2){?>
+      <?php }elseif($tp == 2){?>
       if(obj.bairro.value == ""){
        alert("Preencha o Bairro");
        return false;
       }
-      <?}?>
+      <?php }?>
       else{
-       query = <?if($tp == 1){?>"extra="+obj.extra.value+<?}elseif($tp == 2){?>"bairro="+obj.bairro.value+<?}?>"&data1="+obj.data1_ano.value+"X"+obj.data1_mes.value+"X"+obj.data1_dia.value+"&data2="+obj.data2_ano.value+"X"+obj.data2_mes.value+"X"+obj.data2_dia.value;//+"&id1="+obj.id1.value+"&id2="+obj.id2.value;
+       query = <?php if($tp == 1){?>"extra="+obj.extra.value+<?php }elseif($tp == 2){?>"bairro="+obj.bairro.value+<?php }?>"&data1="+obj.data1_ano.value+"X"+obj.data1_mes.value+"X"+obj.data1_dia.value+"&data2="+obj.data2_ano.value+"X"+obj.data2_mes.value+"X"+obj.data2_dia.value;//+"&id1="+obj.id1.value+"&id2="+obj.id2.value;
        }
        jan = window.open('sau2_grafsaude002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
        jan.moveTo(0,0);
@@ -155,7 +155,7 @@ $clrotulo->label("sd03_c_nome");
   </td>
  </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

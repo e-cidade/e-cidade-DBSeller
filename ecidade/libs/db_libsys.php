@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -112,7 +112,7 @@ class cl_dbagata {
   var $api;
   var $arquivo = "";
 
-  function cl_dbagata($_relatorio='') {
+  public function __construct ($_relatorio='') {
     $this->api = new \AgataAPI;
     $this->api->setLanguage('pt'); //'en', 'pt', 'es', 'de', 'fr', 'it', 'se'
 

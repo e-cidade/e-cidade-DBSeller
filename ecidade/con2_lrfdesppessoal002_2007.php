@@ -1,33 +1,33 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 if (!isset($arqinclude)){
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -38,18 +38,18 @@ if (!isset($arqinclude)){
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_conrelinfo_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
-  
+
   $classinatura = new cl_assinatura;
   $clempresto   = new cl_empresto;
   $cldb_config  = new cl_db_config;
   $orcparamrel = new cl_orcparamrel;
   $clconrelinfo = new cl_conrelinfo;
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
-  
+
   $anousu  = db_getsession("DB_anousu");
-  
+
 }
 
 $tipo_emissao='periodo';
@@ -62,14 +62,14 @@ $textodt = $dt['texto'];
 // calcula periodo do exercicio anterior para fechar os 12 meses
 $anousu_ant  = db_getsession("DB_anousu")-1;
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+$dt =explode('-',$dt_fin);  // mktime -- (mes,dia,ano)
 //$dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-365,$dt[0]));
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]-11,"01",$dt[0]));
 $dt_fin_ant = $anousu_ant.'-12-31';
 
 ////////////////////////////////////////////////////////////////////
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev,db21_tipoinstit from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -101,14 +101,14 @@ for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
 $imprimirrps=false;
 
 if (!isset($arqinclude)){
-  
+
   if ($periodo == "6B" or $periodo == "3Q" or $periodo == "2S") {
     $imprimirrps=true;
     $tamanho=30;
   } else {
     $tamanho=60;
   }
-  
+
 }
 
 if ($flag_abrev == false){
@@ -122,14 +122,14 @@ $head3 = "RELATÓRIO DE GESTÃO FISCAL";
 $head4 = "DEMONSTRATIVO DA DESPESA COM PESSOAL";
 $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
-$dt1 = split('-',$dt_ini);
-$dt2 = split('-',$dt_fin); 
+$dt1 =explode('-',$dt_ini);
+$dt2 =explode('-',$dt_fin);
 if ($tipo_emissao=='periodo'){
   $textodt = strtoupper(db_mes($dt1[1]))." A ".strtoupper(db_mes($dt2[1]))." DE ";
   $head6   = $textodt.db_getsession("DB_anousu");
 }else{
   $head6 = 'PERÍODO :'.$dt1[2].'/'.$dt1[1].'/'.$dt1[0].' à '.$dt2[2].'/'.$dt2[1].'/'.$dt2[0];
-}  
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -157,9 +157,9 @@ if ($clconrelinfo->numrows > 0 ){
     } else if ($c83_codigo ==292){
       $inativos_pensionistas = $c83_informacao;
     }
-    
+
   }
-  
+
 }
 
 if ($temprefa==true and	$temcamara==true) {
@@ -184,7 +184,7 @@ $instituicao = str_replace("-",",",$db_selinstit);
 $m_despesa[7]["estrut"]        = $orcparamrel->sql_parametro("4",7,"f",$instituicao,$anousu);
 $m_despesa[7]["nivel"]         = $orcparamrel->sql_nivel("4",7,$anousu);
 $m_despesa[7]["nivelexclusao"] = $orcparamrel->sql_nivelexclusao("4",7,"f",$instituicao,$anousu);
-$m_despesa[7]["funcao"]        = $orcparamrel->sql_funcao("4",7,"f",$instituicao,$anousu);  
+$m_despesa[7]["funcao"]        = $orcparamrel->sql_funcao("4",7,"f",$instituicao,$anousu);
 $m_despesa[7]["subfunc"]       = $orcparamrel->sql_subfunc("4",7,"f",$instituicao,$anousu);
 $m_despesa[7]["recurso"]       = $orcparamrel->sql_recurso("4",7,"f",$instituicao,$anousu);
 
@@ -206,7 +206,7 @@ for ($x = 0; $x < pg_numrows($result_despesa); $x++){
   $v_funcao     = $o58_funcao;
   $v_subfuncao  = $o58_subfuncao;
   $v_recurso    = $o58_codigo;
-    
+
   if (in_array($v_estrutural, $m_despesa[7]["estrut"])) {
     if (count($m_despesa[7]["funcao"])      == 0 || in_array($v_funcao, $m_despesa[7]["funcao"])) {
       if (count($m_despesa[7]["subfunc"])   == 0 || in_array($v_subfuncao, $m_despesa[7]["subfunc"])) {
@@ -248,8 +248,8 @@ $m_p[8]['1e'] = $orcparamrel->sql_parametro('4','8','t',$instituicao,db_getsessi
 
 // zera a coluna de valores
 for ($x=1;$x<=8;$x++){
-  $m_p[$x][2]=0; 
-  $m_p[$x][3]=0; 
+  $m_p[$x][2]=0;
+  $m_p[$x][3]=0;
 }
 $aOrcParametro = array_merge(
   $m_p[1][1],
@@ -284,21 +284,21 @@ for($x=0;$x< pg_numrows($result_bal);$x++) {
       } else {
         //        echo "<br><br> zerando ".$mp_[$aa][2];
         $m_p[$aa][2] = $saldo_anterior_debito-$saldo_anterior_credito;
-      }  
+      }
     }// end if
     //## exclusao de parametros
     if (in_array($estrutural,$m_p[$aa]['1e'])){
-      
+
       if (isset($m_p[$aa][2])){
         $m_p[$aa][2]-= $saldo_anterior_credito-$saldo_anterior_debito;
       } else {
 //        echo "<br><br> zerando ".$mp_[$aa][2];
         $m_p[$aa][2] = ($saldo_anterior_credito-$saldo_anterior_debito)*-1;
-      }  
+      }
     }// end if
-    
+
   }// endfor
-  
+
 }
 
 // echo "<br> ".$m_p[1][2];
@@ -312,7 +312,7 @@ for($x=0;$x< pg_numrows($result_bal_ant);$x++) {
         $m_p[$aa][2]+= $saldo_anterior_debito-$saldo_anterior_credito;
       } else {
         $m_p[$aa][2] = $saldo_anterior_debito-$saldo_anterior_credito;
-      }  
+      }
     }// end if
     //## exclusao de parametros
     if (isset($mp[$aa]['1e']) && in_array($estrutural,$m_p[$aa]['1e'])){
@@ -320,17 +320,17 @@ for($x=0;$x< pg_numrows($result_bal_ant);$x++) {
         $m_p[$aa][2]-= $saldo_anterior_credito-$saldo_anterior_debito;
       } else {
         $m_p[$aa][2] = ($saldo_anterior_credito-$saldo_anterior_debito)*-1;
-      }  
+      }
     }
-    
+
   }
-  
+
 }
 
 for ($aa=1;$aa<=8;$aa++) {
-  
+
   for ($aaa=0;$aaa<sizeof($m_p[$aa][1]);$aaa++) {
-    
+
     $pontoz=14;
     for ($tz=13; $tz >= 0; $tz--) {
       if (substr($m_p[$aa][1][$aaa],$tz,1) > 0) {
@@ -338,18 +338,18 @@ for ($aa=1;$aa<=8;$aa++) {
         break;
       }
     }
-    
+
     $sql = "
-    select 
+    select
     o56_codele,
     o56_elemento,
     o56_descr,
-    sum( case when c71_coddoc = 1 then round(c70_valor,2) else 0 end ) as emp, 
-    sum( case when c71_coddoc = 2 then round(c70_valor,2) else 0 end ) as anu_emp, 
-    sum( case when c71_coddoc = 3 then round(c70_valor,2) else 0 end ) as liq, 
-    sum( case when c71_coddoc = 4 then round(c70_valor,2) else 0 end ) as anu_liq, 
-    sum( case when c71_coddoc = 5 then round(c70_valor,2) else 0 end ) as pag, 
-    sum( case when c71_coddoc = 6 then round(c70_valor,2) else 0 end ) as anu_pag 
+    sum( case when c71_coddoc = 1 then round(c70_valor,2) else 0 end ) as emp,
+    sum( case when c71_coddoc = 2 then round(c70_valor,2) else 0 end ) as anu_emp,
+    sum( case when c71_coddoc = 3 then round(c70_valor,2) else 0 end ) as liq,
+    sum( case when c71_coddoc = 4 then round(c70_valor,2) else 0 end ) as anu_liq,
+    sum( case when c71_coddoc = 5 then round(c70_valor,2) else 0 end ) as pag,
+    sum( case when c71_coddoc = 6 then round(c70_valor,2) else 0 end ) as anu_pag
     from conlancamele
     inner join orcelemento  on c67_codele = o56_codele and o56_anousu = $anousu
     inner join conlancam    on c70_codlan = c67_codlan
@@ -359,18 +359,18 @@ for ($aa=1;$aa<=8;$aa++) {
     and c70_data between '$dt_ini' and '$dt_fin'
     group by o56_codele,o56_elemento,o56_descr";
     $result_ele = db_query($sql) or die($sql);
-    
+
     //		echo "sql - $aa - $aaa - $sql<br>";
-    
+
     if (pg_numrows($result_ele) > 0) {
       for ($ele=0; $ele < pg_numrows($result_ele); $ele++) {
         db_fieldsmemory($result_ele, $ele);
         $m_p[$aa][3] += $emp - $anu_emp - $liq + $anu_liq;
       }
     }
-    
+
   }
-  
+
 }
 
 // exclusão de parametros
@@ -386,7 +386,7 @@ for ($xinstit=0; $xinstit < $cldb_config->numrows; $xinstit++) {
 }
 
 //--------- // ------------- // ------------- // ---------------
-// receita 
+// receita
 $cl_res = new cl_receita_saldo_mes;
 $cl_res->anousu= $anousu_ant;
 $cl_res->dtini = $dt_ini_ant;
@@ -437,8 +437,8 @@ $param[18] = $orcparamrel->sql_parametro('5','18', 'f', str_replace('-', ', ', $
 
 //  quando existir ano anterior processa
 if ($dt_ini_ant != $dt_fin_ant) {
-  
-  for ($p=1;$p<=18;$p++){  
+
+  for ($p=1;$p<=18;$p++){
     // 18 é a quantidade de parametros ou linhas existentes nos parametros
     for ($i=0;$i<pg_numrows($result_rec_ant);$i++){
       db_fieldsmemory($result_rec_ant,$i);
@@ -452,8 +452,8 @@ if ($dt_ini_ant != $dt_fin_ant) {
 					} else {
 						$tx[12][2] -= $janeiro+$fevereiro+$marco+$abril+$maio+$junho+$julho+$agosto+$setembro+$outubro+$novembro+$dezembro;
 					}
-        }	
-      }	 
+        }
+      }
     }
   }
 }
@@ -487,7 +487,7 @@ for ($p=1;$p<=18;$p++) {
   for ($i=0;$i<pg_numrows($result_rec);$i++){
     db_fieldsmemory($result_rec,$i);
     $estrutural = $o57_fonte;
-    if (in_array($estrutural,$param[$p])){       
+    if (in_array($estrutural,$param[$p])){
       if ($p <=15){
         $tx[12][2] += $janeiro+$fevereiro+$marco+$abril+$maio+$junho+$julho+$agosto+$setembro+$outubro+$novembro+$dezembro;
       } else {
@@ -496,8 +496,8 @@ for ($p=1;$p<=18;$p++) {
 				} else {
 					$tx[12][2] -= $janeiro+$fevereiro+$marco+$abril+$maio+$junho+$julho+$agosto+$setembro+$outubro+$novembro+$dezembro;
 				}
-      }	
-    } 
+      }
+    }
   }
 }
 
@@ -528,7 +528,7 @@ $tx[19][1] = "b) Despesas empenhadas mas não liquidadas, inscritas em Restos a P
 
 // carrega valores
 
-// adiciona valor das variaveis indicada pelo usuario 
+// adiciona valor das variaveis indicada pelo usuario
 $m_p[1][2] = $m_p[1][2] + $pessoal_ativo_adicional;
 $m_p[2][2] = $m_p[2][2] + $pessoal_inativo_adicional;
 $m_p[8][2] = $m_p[8][2] + $repasses_adicional;
@@ -592,54 +592,54 @@ $tx[15][2] = (($tx[12][2] + $tx[12][3]) * $limite_prudencial)/100;
 //die("$periodo - 1: " . $tx[11][2] . " - 2: " . $tx[13][2]);
 
 if (!isset($arqinclude)) {
-  
-  $pdf = new PDF(); 
-  $pdf->Open(); 
-  $pdf->AliasNbPages(); 
+
+  $pdf = new PDF();
+  $pdf->Open();
+  $pdf->AliasNbPages();
   $pdf->setfillcolor(235);
   $pdf->setfont('arial','b',7);
   $alt = 4;
   $pagina = 1;
-  
+
   $pdf->addpage();
   $pdf->setfont('arial','b',7);
   $pdf->cell(135,$alt,'RGF ANEXO I (LRF, art. 55, inciso I, alínea "a")','B',0,"L",0);
   $pdf->cell(60,$alt,'R$ 1,00','B',1,"R",0);
-  
+
   $pdf->cell(135,$alt,"",'R',0,"C",0);
   $pdf->cell(60,$alt,"DESPESAS EXECUTADAS",'',1,"C",0);
-  
+
   $pdf->cell(135,$alt,"",'R',0,"C",0);
   $pdf->cell(60,$alt,"(Últimos 12 meses)",'LB',1,"C",0);
-  
+
   $pdf->cell(135,$alt,"DESPESA COM PESSOAL",'R',0,"C",0);
   $pdf->cell($tamanho,$alt,"",'',0,"C",0);
   if ($imprimirrps == true) {
     $pdf->cell(30,$alt,"INSCRITAS EM",'L',0,"C",0);
   }
   $pdf->ln();
-  
+
   $pdf->cell(135,$alt,"",'R',0,"C",0);
   $pdf->cell($tamanho,$alt,"LIQUIDADAS",'',0,"C",0);
   if ($imprimirrps == true) {
     $pdf->cell(30,$alt,"RESTOS A PAGAR",'L',0,"C",0);
   }
   $pdf->ln();
-  
+
   if ($imprimirrps == true) {
     $pdf->cell(135,$alt,"",'R',0,"C",0);
     $pdf->cell(30,$alt,"",'',0,"C",0);
     $pdf->cell(30,$alt,"NAO",'L',0,"C",0);
     $pdf->ln();
   }
-  
+
   if ($imprimirrps == true) {
     $pdf->cell(135,$alt,"",'R',0,"C",0);
     $pdf->cell(30,$alt,"",'',0,"C",0);
     $pdf->cell(30,$alt,"PROCESSADOS",'L',0,"C",0);
     $pdf->ln();
   }
-  
+
   $pdf->cell(135,$alt,"",'RB',0,"R",0);
   if ($imprimirrps == true) {
     $pdf->cell(30,$alt,"",'RB',0,"C",0);
@@ -648,12 +648,12 @@ if (!isset($arqinclude)) {
     $pdf->cell($tamanho,$alt,"",'B',0,"C",0);
   }
   $pdf->ln();
-  
+
   $pdf->setfont('arial','',7);
-  
+
   for($i=0;$i<=8;$i++) {
     $pdf->cell(135,$alt,$tx[$i][1],'R',0,"L",0);
-    
+
     if (isset($tx[$i][2])){
       $pdf->cell($tamanho,$alt,db_formatar($tx[$i][2],'f'),'',0,"R",0);
     }else{
@@ -664,7 +664,7 @@ if (!isset($arqinclude)) {
     }
     $pdf->ln();
   }
-  
+
   if (1==2) {
     $i = 9;
     $pdf->cell(135,$alt,$tx[$i][1],'TR',0,"L",0);
@@ -681,32 +681,32 @@ if (!isset($arqinclude)) {
       $pdf->cell(30,$alt,db_formatar(0,'f'),'B',1,"R",0);
     }
   }
-  
+
   for($i=11;$i<=15;$i++) {
     $pdf->cell(135,$alt,$tx[$i][1],'TBR',0,"L",0);
-    
+
     if (isset($tx[$i][2])){
 //      echo "1) ".$i." => ".db_formatar($tx[$i][2],"f")."<br>";
       $pdf->cell($tamanho,$alt,db_formatar($tx[$i][2],'f'),'TB',0,"R",0);
     }else{
       $pdf->cell($tamanho,$alt,db_formatar(0,'f'),'TB',0,"R",0);
     }
-   
+
     $valorimprimir=db_formatar($tx[$i][3],'f');
 //    echo $i." => ".$valorimprimir."<br>";
-    
+
     if ($i>11) {
       $valorimprimir="";
     }
-    
+
     if ($imprimirrps == true) {
       $pdf->cell(30,$alt,$valorimprimir,($i==11?'LBT':($i==15?'LB':'L')),0,"R",0);
     }
-    
+
     $pdf->ln();
-    
+
   }
-  
+
   $pdf->cell(195,$alt,"Fonte: Contabilidade",'',1,"L",0);
   $pdf->cell(195,$alt,"Nota: Durante o exercício, somente as despesas liquidadas são consideradas executadas.",'',1,"L",0);
   $pdf->cell(195,$alt,"No encerramento do exercício, as despesas não liquidadas inscritas em restos a pagar não processados são",'',1,"L",0);
@@ -714,17 +714,17 @@ if (!isset($arqinclude)) {
   $pdf->cell(195,$alt,"     a) Despesas liquidadas, consideradas aquelas em que houve a entrega do material ou serviço, nos termos do art. 63 da Lei 4.320/64;",'',1,"L",0);
   $pdf->cell(195,$alt,"     b) Despesas empenhadas mas não liquidadas, inscritas em Restos a Pagar não processados, consideradas",'',1,"L",0);
   $pdf->cell(195,$alt,"          liquidadas no encerramento do exercício, por força do art.35, inciso II da Lei 4.320/64.",'',1,"L",0);
-  
+
   $pdf->Ln(5);
-  
+
   // assinaturas
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
-  
-  assinaturas(&$pdf,&$classinatura,'GF');
-  
+
+  assinaturas($pdf,$classinatura,'GF');
+
   $pdf->Output();
-  
+
 }
 
 $total_despesa_pessoal_limites = $tx[11][2];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clselecaopontorubricas->rotulo->label("r73_selecaoponto");
               <?=$Lr73_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r73_sequencial",10,$Ir73_sequencial,true,"text",4,"","chave_r73_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clselecaopontorubricas->rotulo->label("r73_selecaoponto");
               <?=$Lr73_selecaoponto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r73_selecaoponto",10,$Ir73_selecaoponto,true,"text",4,"","chave_r73_selecaoponto");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clselecaopontorubricas->rotulo->label("r73_selecaoponto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_selecaopontorubricas.php")==true){
@@ -122,12 +122,12 @@ $clselecaopontorubricas->rotulo->label("r73_selecaoponto");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

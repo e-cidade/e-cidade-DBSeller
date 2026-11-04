@@ -123,7 +123,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmatendcadareamod.php"));
 	?>
     </center>
@@ -132,7 +132,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
     if($clatendcadareamod->erro_campo!=""){

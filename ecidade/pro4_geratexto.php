@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -104,7 +104,7 @@ if (isset($db_opcao)) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 <table width="100%" cellspacing=0 border=1 cellpadding=0 align="center">
-<?
+<?php
 if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o texto a ser trabalhado
 ?>
 <form action="" name="form1" method="POST">
@@ -119,7 +119,7 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
   <tr>
     <td>&nbsp;Institui&ccedil;&atilde;o:&nbsp;
 	<select name="instituicao" onchange="js_AlteraInstituicao()">
-<?
+<?php
 	$sql = "
 		select codigo, nomeinst
 		from db_config
@@ -134,7 +134,7 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
  }
 ?>
 		<option value="<?=@pg_result($result,$i,"codigo")?>" <?=$selected?"selected":""?> >&nbsp;<?=@pg_result($result,$i,"nomeinst")?>&nbsp;</option>
-<?
+<?php
 	}
 ?>
 	</select>
@@ -157,35 +157,35 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
   </tr>
   <tr>
     <td align="center">&nbsp;
-<?
+<?php
 if($habilita_alteracao){
 ?>
 	<input type="submit" name="alterar" value="Alterar" >&nbsp;
-<?
+<?php
 }else if(!$habilita_alteracao){
 ?>
 	<input type="submit" name="incluir" value="Incluir" >&nbsp;
-<?
+<?php
 }
 ?>
 	</td>
   </tr>
   </form>
- <?
+ <?php
  }else{ // se caiu aqui é porque o menu que chama esta pagina nao contem o parametro db_opcao
  ?>
   <tr>
     <td align="center"><B>&nbsp;Esta p&aacute;gina deve ser chamada atrav&eacute;s de um menu v&aacute;lido.</B>
 	</td>
   </tr>
-<?
+<?php
 }
 ?>
 </table>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

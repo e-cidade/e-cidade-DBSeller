@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -134,7 +134,7 @@ function js_redireciona(chave){
       <?=$Led47_i_codigo?>
      </td>
      <td nowrap>
-      <?db_input("ed47_i_codigo",10,@$Ied47_i_codigo,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
+      <?php db_input("ed47_i_codigo",10,@$Ied47_i_codigo,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
      </td>
     </tr>
     <tr>
@@ -142,7 +142,7 @@ function js_redireciona(chave){
       <?=$Led47_v_nome?>
      </td>
      <td nowrap>
-      <?db_input("ed47_v_nome",50,@$ed47_v_nome,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
+      <?php db_input("ed47_v_nome",50,@$ed47_v_nome,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
      </td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ function js_redireciona(chave){
       <?=$Led47_v_mae?>
      </td>
      <td nowrap>
-      <?db_input("ed47_v_mae",50,@$ed47_v_mae,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
+      <?php db_input("ed47_v_mae",50,@$ed47_v_mae,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
      </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ function js_redireciona(chave){
       <?=$Led47_v_pai?>
      </td>
      <td nowrap>
-      <?db_input("ed47_v_pai",50,@$ed47_v_pai,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
+      <?php db_input("ed47_v_pai",50,@$ed47_v_pai,true,"text",1,"onFocus=\"nextfield='pesquisar'\"");?>
      </td>
     </tr>
    </table>
@@ -170,7 +170,7 @@ function js_redireciona(chave){
       <?=$Led56_i_escola?>
      </td>
      <td>
-      <?
+      <?php
       $sWhere = '';
       if ($bloqueiaConsultaTodasEscolas) {
           $sWhere = "ed18_i_codigo = {$escola} ";
@@ -182,21 +182,21 @@ function js_redireciona(chave){
       }else{
        ?>
        <select name="ed56_i_escola" id="ed56_i_escola" onchange="js_escola(this.value);" style="width:300px;">
-       <?
+       <?php
         if (!$bloqueiaConsultaTodasEscolas) {
             ?>
            <option value=""></option>
-        <?}?>
-        <?
+        <?php }?>
+        <?php
         for($x=0;$x<$clalunocurso->numrows;$x++){
          db_fieldsmemory($result_escola,$x);
          ?>
          <option value="<?=$ed18_i_codigo?>" <?=@$codescola==$ed18_i_codigo?"selected":""?>><?=$ed18_c_nome?></option>
-         <?
+         <?php
         }
         ?>
        </select>
-       <?
+       <?php
       }
       ?>
      </td>
@@ -206,7 +206,7 @@ function js_redireciona(chave){
       <?=$Led56_c_situacao?>
      </td>
      <td>
-      <?
+      <?php
       $codescola       = isset($codescola)?(empty($codescola)?0:$codescola):0;
       $disabled        = $codescola!=0?"":"disabled";
       $result_situacao = $clalunocurso->sql_record($clalunocurso->sql_query("","DISTINCT ed56_c_situacao as sit","ed56_c_situacao"," ed56_i_escola = $codescola"));
@@ -217,16 +217,16 @@ function js_redireciona(chave){
        ?>
        <select name="ed56_c_situacao" id="ed56_c_situacao" <?=$disabled?> style='width:300px;'>
         <option value=""></option>
-        <?
+        <?php
         for($x=0;$x<$clalunocurso->numrows;$x++){
          db_fieldsmemory($result_situacao,$x);
          ?>
          <option value="<?=$sit?>" <?=@$sit==@$ed56_c_situacao?"selected":""?>><?=$sit?></option>
-         <?
+         <?php
         }
         ?>
        </select>
-       <?
+       <?php
       }
       ?>
      </td>
@@ -236,7 +236,7 @@ function js_redireciona(chave){
       <?=$Led31_i_curso?>
      </td>
      <td>
-      <?
+      <?php
       $codescola    = isset($codescola)?(empty($codescola)?0:$codescola):0;
       $result_curso = $clcursoescola->sql_record($clcursoescola->sql_query("","DISTINCT ed29_i_codigo,ed29_c_descr"," ed29_c_descr"," ed71_i_escola = $codescola"));
       if($clcursoescola->numrows==0){
@@ -246,16 +246,16 @@ function js_redireciona(chave){
        ?>
        <select name="ed31_i_curso" id="ed31_i_curso" onchange="js_curso(this.value,document.form1.ed56_i_escola.value);" style="width:300px;" <?=$disabled?>>
         <option value=""></option>
-        <?
+        <?php
         for($x=0;$x<$clcursoescola->numrows;$x++){
          db_fieldsmemory($result_curso,$x);
          ?>
          <option value="<?=$ed29_i_codigo?>" <?=@$codcurso==$ed29_i_codigo?"selected":""?>><?=$ed29_c_descr?></option>
-         <?
+         <?php
         }
         ?>
        </select>
-       <?
+       <?php
       }
       ?>
      </td>
@@ -265,7 +265,7 @@ function js_redireciona(chave){
       <?=$Led223_i_serie?>
      </td>
      <td>
-      <?
+      <?php
       $codcurso     = isset($codcurso)?(empty($codcurso)?0:$codcurso):0;
       $codescola    = isset($codescola)?(empty($codescola)?0:$codescola):0;
       $disabled1 = $codcurso!=0?"":"disabled";
@@ -277,16 +277,16 @@ function js_redireciona(chave){
        ?>
        <select name="ed223_i_serie" id="ed223_i_serie" <?=$disabled1?> style='width:300px;'>
         <option value=""></option>
-        <?
+        <?php
         for($x=0;$x<$clalunopossib->numrows;$x++){
          db_fieldsmemory($result_serie,$x);
          ?>
          <option value="<?=$ed11_i_codigo?>" <?=@$ed223_i_serie==$ed11_i_codigo?"selected":""?>><?=$ed11_c_descr?></option>
-         <?
+         <?php
         }
         ?>
        </select>
-       <?
+       <?php
       }
       ?>
      </td>
@@ -307,7 +307,7 @@ function js_redireciona(chave){
 <table width="100%">
  <tr>
   <td valign="top" align="center" >
-   <?
+   <?php
    if(isset($pesquisar)){
     ?>
     <fieldset style="width:95%;"><legend><b>Filtros</b></legend>
@@ -321,7 +321,7 @@ function js_redireciona(chave){
       </tr>
      </table>
     </fieldset>
-    <fieldset style="width:95%"><legend><b>Selecione o aluno</b></legend><?
+    <fieldset style="width:95%"><legend><b>Selecione o aluno</b></legend><?php
     $sql = "SELECT *
             FROM (
                   SELECT distinct on (aluno.ed47_i_codigo) aluno.ed47_i_codigo,
@@ -389,7 +389,7 @@ function js_redireciona(chave){
     }
     $sql .= "  ) as x ORDER BY to_ascii(ed47_v_nome)";  // <- To ascii ADD
     db_lovrot(@$sql,5,"()","","js_redireciona|ed47_i_codigo","","NoMe",$repassa,false);
-    ?></fieldset><?
+    ?></fieldset><?php
    }
    ?>
   </td>
@@ -434,10 +434,10 @@ function js_pesquisar(){
  situacao = document.getElementById("ed56_c_situacao").value;
  location.href = "edu2_fichaaluno001.php?pesquisar&codcurso="+curso+"&codescola="+escola+"&ed47_i_codigo="+codigo+"&ed47_v_nome="+nome+"&ed47_v_pai="+pai+"&ed47_v_mae="+mae+"&ed56_i_escola="+escola+"&ed223_i_serie="+serie+"&ed56_c_situacao="+situacao+"&ed31_i_curso="+curso;
 }
-<?
+<?php
 if(isset($loc)){
- ?>document.getElementById("pesquisar").click();<?
+ ?>document.getElementById("pesquisar").click();<?php
 }
 ?>
 </script>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -68,13 +68,13 @@ class cl_progress {
                  r24_valor = float8 = Valor
                  ";
    //funcao construtor da classe
-   function cl_progress() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("progress");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_progress {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r24_instit = ($this->r24_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["r24_instit"]:$this->r24_instit);
        $this->r24_anousu = ($this->r24_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r24_anousu"]:$this->r24_anousu);
@@ -107,7 +107,7 @@ class cl_progress {
      }
    }
    // funcao para inclusao
-   function incluir ($r24_anousu,$r24_mesusu,$r24_regime,$r24_padrao,$r24_meses,$r24_instit){
+   public function incluir ($r24_anousu,$r24_mesusu,$r24_regime,$r24_padrao,$r24_meses,$r24_instit){
       $this->atualizacampos();
      if($this->r24_progr == null ){
        $this->erro_sql = " Campo Código da Progressão nao Informado.";
@@ -275,7 +275,7 @@ class cl_progress {
      return true;
    }
    // funcao para alteracao
-   function alterar ($r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null) {
+   public function alterar ($r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null) {
       $this->atualizacampos();
      $sql = " update progress set ";
      $virgula = "";
@@ -512,7 +512,7 @@ class cl_progress {
      }
    }
    // funcao para exclusao
-   function excluir ($r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null,$dbwhere=null) {
+   public function excluir ($r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r24_anousu,$r24_mesusu,$r24_regime,$r24_padrao,$r24_meses,$r24_instit));
      }else{
@@ -618,7 +618,7 @@ class cl_progress {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -640,13 +640,13 @@ class cl_progress {
       }
      return $result;
    }
-   function atualiza_incluir (){
+   public function atualiza_incluir (){
   	 $this->incluir($this->r24_anousu,$this->r24_mesusu,$this->r24_regime,$this->r24_padrao,$this->r24_meses);
    }
-   function sql_query ( $r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -709,7 +709,7 @@ class cl_progress {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -718,10 +718,10 @@ class cl_progress {
      }
      return $sql;
   }
-   function sql_query_file ( $r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$r24_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -782,7 +782,7 @@ class cl_progress {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -791,7 +791,7 @@ class cl_progress {
      }
      return $sql;
   }
-   function sql_query_padrao ( $r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_padrao ( $r24_anousu=null,$r24_mesusu=null,$r24_regime=null,$r24_padrao=null,$r24_meses=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -852,7 +852,7 @@ class cl_progress {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

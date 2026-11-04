@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_calfolha {
                  r51_regist = int4 = Codigo do Funcionario 
                  ";
    //funcao construtor da classe 
-   function cl_calfolha() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("calfolha"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_calfolha {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r51_anousu = ($this->r51_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r51_anousu"]:$this->r51_anousu);
        $this->r51_mesusu = ($this->r51_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r51_mesusu"]:$this->r51_mesusu);
@@ -79,7 +79,7 @@ class cl_calfolha {
      }
    }
    // funcao para inclusao
-   function incluir ($r51_anousu,$r51_mesusu,$r51_regist){ 
+   public function incluir ($r51_anousu,$r51_mesusu,$r51_regist){ 
       $this->atualizacampos();
        $this->r51_anousu = $r51_anousu; 
        $this->r51_mesusu = $r51_mesusu; 
@@ -157,7 +157,7 @@ class cl_calfolha {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r51_anousu=null,$r51_mesusu=null,$r51_regist=null) { 
+   public function alterar ($r51_anousu=null,$r51_mesusu=null,$r51_regist=null) { 
       $this->atualizacampos();
      $sql = " update calfolha set ";
      $virgula = "";
@@ -260,7 +260,7 @@ class cl_calfolha {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r51_anousu=null,$r51_mesusu=null,$r51_regist=null,$dbwhere=null) { 
+   public function excluir ($r51_anousu=null,$r51_mesusu=null,$r51_regist=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r51_anousu,$r51_mesusu,$r51_regist));
      }else{ 
@@ -337,7 +337,7 @@ class cl_calfolha {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

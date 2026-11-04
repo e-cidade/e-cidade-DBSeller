@@ -1,80 +1,80 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: dividaativa
 //CLASSE DA ENTIDADE divimporta
-class cl_divimporta { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $v02_divimporta = 0; 
-   var $v02_usuario = 0; 
-   var $v02_data_dia = null; 
-   var $v02_data_mes = null; 
-   var $v02_data_ano = null; 
-   var $v02_data = null; 
-   var $v02_hora = null; 
-   var $v02_horafim = null; 
-   var $v02_datafim_dia = null; 
-   var $v02_datafim_mes = null; 
-   var $v02_datafim_ano = null; 
-   var $v02_datafim = null; 
-   var $v02_tipo = 0; 
-   var $v02_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_divimporta {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $v02_divimporta = 0;
+   var $v02_usuario = 0;
+   var $v02_data_dia = null;
+   var $v02_data_mes = null;
+   var $v02_data_ano = null;
+   var $v02_data = null;
+   var $v02_hora = null;
+   var $v02_horafim = null;
+   var $v02_datafim_dia = null;
+   var $v02_datafim_mes = null;
+   var $v02_datafim_ano = null;
+   var $v02_datafim = null;
+   var $v02_tipo = 0;
+   var $v02_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v02_divimporta = int4 = Código da importação 
-                 v02_usuario = int4 = Cod. Usuário 
-                 v02_data = date = Data da importação 
-                 v02_hora = varchar(10) = Hora da importação 
-                 v02_horafim = varchar(10) = Hora final 
-                 v02_datafim = date = Data final 
-                 v02_tipo = int4 = Tipo 
-                 v02_instit = int4 = Cod. Instituição 
+                 v02_divimporta = int4 = Código da importação
+                 v02_usuario = int4 = Cod. Usuário
+                 v02_data = date = Data da importação
+                 v02_hora = varchar(10) = Hora da importação
+                 v02_horafim = varchar(10) = Hora final
+                 v02_datafim = date = Data final
+                 v02_tipo = int4 = Tipo
+                 v02_instit = int4 = Cod. Instituição
                  ";
-   //funcao construtor da classe 
-   function cl_divimporta() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("divimporta"); 
+     $this->rotulo = new rotulo("divimporta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_divimporta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v02_divimporta = ($this->v02_divimporta == ""?@$GLOBALS["HTTP_POST_VARS"]["v02_divimporta"]:$this->v02_divimporta);
        $this->v02_usuario = ($this->v02_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["v02_usuario"]:$this->v02_usuario);
@@ -112,9 +112,9 @@ class cl_divimporta {
      }
    }
    // funcao para inclusao
-   function incluir ($v02_divimporta){ 
+   public function incluir ($v02_divimporta){
       $this->atualizacampos();
-     if($this->v02_usuario == null ){ 
+     if($this->v02_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "v02_usuario";
        $this->erro_banco = "";
@@ -123,7 +123,7 @@ class cl_divimporta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v02_data == null ){ 
+     if($this->v02_data == null ){
        $this->erro_sql = " Campo Data da importação nao Informado.";
        $this->erro_campo = "v02_data_dia";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_divimporta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v02_hora == null ){ 
+     if($this->v02_hora == null ){
        $this->erro_sql = " Campo Hora da importação nao Informado.";
        $this->erro_campo = "v02_hora";
        $this->erro_banco = "";
@@ -141,7 +141,7 @@ class cl_divimporta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v02_horafim == null ){ 
+     if($this->v02_horafim == null ){
        $this->erro_sql = " Campo Hora final nao Informado.";
        $this->erro_campo = "v02_horafim";
        $this->erro_banco = "";
@@ -150,7 +150,7 @@ class cl_divimporta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v02_datafim == null ){ 
+     if($this->v02_datafim == null ){
        $this->erro_sql = " Campo Data final nao Informado.";
        $this->erro_campo = "v02_datafim_dia";
        $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_divimporta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v02_tipo == null ){ 
+     if($this->v02_tipo == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
        $this->erro_campo = "v02_tipo";
        $this->erro_banco = "";
@@ -168,7 +168,7 @@ class cl_divimporta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v02_instit == null ){ 
+     if($this->v02_instit == null ){
        $this->erro_sql = " Campo Cod. Instituição nao Informado.";
        $this->erro_campo = "v02_instit";
        $this->erro_banco = "";
@@ -178,16 +178,16 @@ class cl_divimporta {
        return false;
      }
      if($v02_divimporta == "" || $v02_divimporta == null ){
-       $result = db_query("select nextval('divimporta_v02_divimporta_seq')"); 
+       $result = db_query("select nextval('divimporta_v02_divimporta_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: divimporta_v02_divimporta_seq do campo: v02_divimporta"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: divimporta_v02_divimporta_seq do campo: v02_divimporta";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->v02_divimporta = pg_result($result,0,0); 
+       $this->v02_divimporta = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from divimporta_v02_divimporta_seq");
        if(($result != false) && (pg_result($result,0,0) < $v02_divimporta)){
@@ -198,10 +198,10 @@ class cl_divimporta {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->v02_divimporta = $v02_divimporta; 
+         $this->v02_divimporta = $v02_divimporta;
        }
      }
-     if(($this->v02_divimporta == null) || ($this->v02_divimporta == "") ){ 
+     if(($this->v02_divimporta == null) || ($this->v02_divimporta == "") ){
        $this->erro_sql = " Campo v02_divimporta nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -210,27 +210,27 @@ class cl_divimporta {
        return false;
      }
      $sql = "insert into divimporta(
-                                       v02_divimporta 
-                                      ,v02_usuario 
-                                      ,v02_data 
-                                      ,v02_hora 
-                                      ,v02_horafim 
-                                      ,v02_datafim 
-                                      ,v02_tipo 
-                                      ,v02_instit 
+                                       v02_divimporta
+                                      ,v02_usuario
+                                      ,v02_data
+                                      ,v02_hora
+                                      ,v02_horafim
+                                      ,v02_datafim
+                                      ,v02_tipo
+                                      ,v02_instit
                        )
                 values (
-                                $this->v02_divimporta 
-                               ,$this->v02_usuario 
-                               ,".($this->v02_data == "null" || $this->v02_data == ""?"null":"'".$this->v02_data."'")." 
-                               ,'$this->v02_hora' 
-                               ,'$this->v02_horafim' 
-                               ,".($this->v02_datafim == "null" || $this->v02_datafim == ""?"null":"'".$this->v02_datafim."'")." 
-                               ,$this->v02_tipo 
-                               ,$this->v02_instit 
+                                $this->v02_divimporta
+                               ,$this->v02_usuario
+                               ,".($this->v02_data == "null" || $this->v02_data == ""?"null":"'".$this->v02_data."'")."
+                               ,'$this->v02_hora'
+                               ,'$this->v02_horafim'
+                               ,".($this->v02_datafim == "null" || $this->v02_datafim == ""?"null":"'".$this->v02_datafim."'")."
+                               ,$this->v02_tipo
+                               ,$this->v02_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lote da importação ($this->v02_divimporta) nao Incluído. Inclusao Abortada.";
@@ -269,16 +269,16 @@ class cl_divimporta {
        $resac = db_query("insert into db_acount values($acount,1387,10574,'','".AddSlashes(pg_result($resaco,0,'v02_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($v02_divimporta=null) { 
+   public function alterar ($v02_divimporta=null) {
       $this->atualizacampos();
      $sql = " update divimporta set ";
      $virgula = "";
-     if(trim($this->v02_divimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_divimporta"])){ 
+     if(trim($this->v02_divimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_divimporta"])){
        $sql  .= $virgula." v02_divimporta = $this->v02_divimporta ";
        $virgula = ",";
-       if(trim($this->v02_divimporta) == null ){ 
+       if(trim($this->v02_divimporta) == null ){
          $this->erro_sql = " Campo Código da importação nao Informado.";
          $this->erro_campo = "v02_divimporta";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_divimporta {
          return false;
        }
      }
-     if(trim($this->v02_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_usuario"])){ 
+     if(trim($this->v02_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_usuario"])){
        $sql  .= $virgula." v02_usuario = $this->v02_usuario ";
        $virgula = ",";
-       if(trim($this->v02_usuario) == null ){ 
+       if(trim($this->v02_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "v02_usuario";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_divimporta {
          return false;
        }
      }
-     if(trim($this->v02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v02_data_dia"] !="") ){ 
+     if(trim($this->v02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v02_data_dia"] !="") ){
        $sql  .= $virgula." v02_data = '$this->v02_data' ";
        $virgula = ",";
-       if(trim($this->v02_data) == null ){ 
+       if(trim($this->v02_data) == null ){
          $this->erro_sql = " Campo Data da importação nao Informado.";
          $this->erro_campo = "v02_data_dia";
          $this->erro_banco = "";
@@ -313,11 +313,11 @@ class cl_divimporta {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["v02_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["v02_data_dia"])){
          $sql  .= $virgula." v02_data = null ";
          $virgula = ",";
-         if(trim($this->v02_data) == null ){ 
+         if(trim($this->v02_data) == null ){
            $this->erro_sql = " Campo Data da importação nao Informado.";
            $this->erro_campo = "v02_data_dia";
            $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_divimporta {
          }
        }
      }
-     if(trim($this->v02_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_hora"])){ 
+     if(trim($this->v02_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_hora"])){
        $sql  .= $virgula." v02_hora = '$this->v02_hora' ";
        $virgula = ",";
-       if(trim($this->v02_hora) == null ){ 
+       if(trim($this->v02_hora) == null ){
          $this->erro_sql = " Campo Hora da importação nao Informado.";
          $this->erro_campo = "v02_hora";
          $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_divimporta {
          return false;
        }
      }
-     if(trim($this->v02_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_horafim"])){ 
+     if(trim($this->v02_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_horafim"])){
        $sql  .= $virgula." v02_horafim = '$this->v02_horafim' ";
        $virgula = ",";
-       if(trim($this->v02_horafim) == null ){ 
+       if(trim($this->v02_horafim) == null ){
          $this->erro_sql = " Campo Hora final nao Informado.";
          $this->erro_campo = "v02_horafim";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_divimporta {
          return false;
        }
      }
-     if(trim($this->v02_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v02_datafim_dia"] !="") ){ 
+     if(trim($this->v02_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v02_datafim_dia"] !="") ){
        $sql  .= $virgula." v02_datafim = '$this->v02_datafim' ";
        $virgula = ",";
-       if(trim($this->v02_datafim) == null ){ 
+       if(trim($this->v02_datafim) == null ){
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "v02_datafim_dia";
          $this->erro_banco = "";
@@ -366,11 +366,11 @@ class cl_divimporta {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["v02_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["v02_datafim_dia"])){
          $sql  .= $virgula." v02_datafim = null ";
          $virgula = ",";
-         if(trim($this->v02_datafim) == null ){ 
+         if(trim($this->v02_datafim) == null ){
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "v02_datafim_dia";
            $this->erro_banco = "";
@@ -381,10 +381,10 @@ class cl_divimporta {
          }
        }
      }
-     if(trim($this->v02_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_tipo"])){ 
+     if(trim($this->v02_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_tipo"])){
        $sql  .= $virgula." v02_tipo = $this->v02_tipo ";
        $virgula = ",";
-       if(trim($this->v02_tipo) == null ){ 
+       if(trim($this->v02_tipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "v02_tipo";
          $this->erro_banco = "";
@@ -394,10 +394,10 @@ class cl_divimporta {
          return false;
        }
      }
-     if(trim($this->v02_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_instit"])){ 
+     if(trim($this->v02_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v02_instit"])){
        $sql  .= $virgula." v02_instit = $this->v02_instit ";
        $virgula = ",";
-       if(trim($this->v02_instit) == null ){ 
+       if(trim($this->v02_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "v02_instit";
          $this->erro_banco = "";
@@ -437,7 +437,7 @@ class cl_divimporta {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lote da importação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->v02_divimporta;
@@ -465,14 +465,14 @@ class cl_divimporta {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($v02_divimporta=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($v02_divimporta=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v02_divimporta));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -505,7 +505,7 @@ class cl_divimporta {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lote da importação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$v02_divimporta;
@@ -533,11 +533,11 @@ class cl_divimporta {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -559,10 +559,10 @@ class cl_divimporta {
       }
      return $result;
    }
-   function sql_query ( $v02_divimporta=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $v02_divimporta=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,15 +577,15 @@ class cl_divimporta {
      $sql2 = "";
      if($dbwhere==""){
        if($v02_divimporta!=null ){
-         $sql2 .= " where divimporta.v02_divimporta = $v02_divimporta "; 
-       } 
+         $sql2 .= " where divimporta.v02_divimporta = $v02_divimporta ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -594,10 +594,10 @@ class cl_divimporta {
      }
      return $sql;
   }
-   function sql_query_file ( $v02_divimporta=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $v02_divimporta=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,15 +610,15 @@ class cl_divimporta {
      $sql2 = "";
      if($dbwhere==""){
        if($v02_divimporta!=null ){
-         $sql2 .= " where divimporta.v02_divimporta = $v02_divimporta "; 
-       } 
+         $sql2 .= " where divimporta.v02_divimporta = $v02_divimporta ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -627,7 +627,7 @@ class cl_divimporta {
      }
      return $sql;
   }
-   function __toString() {
+   public function __toString() {
      return "Object";
    }
 }

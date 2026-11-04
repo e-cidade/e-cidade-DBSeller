@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: transporteescolar
 //CLASSE DA ENTIDADE itinerariologradouro
-class cl_itinerariologradouro { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $tre10_sequencial = 0; 
-   var $tre10_linhatransporteitinerario = 0; 
-   var $tre10_cadenderbairrocadenderrua = 0; 
-   var $tre10_ordem = 0; 
-   // cria propriedade com as variaveis do arquivo 
-   var $campos = "
-                 tre10_sequencial = int4 = Sequencial 
-                 tre10_linhatransporteitinerario = int4 = Sequencial 
-                 tre10_cadenderbairrocadenderrua = int4 = Sequencial 
-                 tre10_ordem = int4 = Ordem 
+class cl_itinerariologradouro {
+   // cria variaveis de erro
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
+   // cria variaveis do arquivo
+   public $tre10_sequencial = 0;
+   public $tre10_linhatransporteitinerario = 0;
+   public $tre10_cadenderbairrocadenderrua = 0;
+   public $tre10_ordem = 0;
+   // cria propriedade com as variaveis do arquivo
+   public $campos = "
+                 tre10_sequencial = int4 = Sequencial
+                 tre10_linhatransporteitinerario = int4 = Sequencial
+                 tre10_cadenderbairrocadenderrua = int4 = Sequencial
+                 tre10_ordem = int4 = Ordem
                  ";
-   //funcao construtor da classe 
-   function cl_itinerariologradouro() { 
+   //funcao construtor da classe
+    public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("itinerariologradouro"); 
+     $this->rotulo = new rotulo("itinerariologradouro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_itinerariologradouro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tre10_sequencial = ($this->tre10_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["tre10_sequencial"]:$this->tre10_sequencial);
        $this->tre10_linhatransporteitinerario = ($this->tre10_linhatransporteitinerario == ""?@$GLOBALS["HTTP_POST_VARS"]["tre10_linhatransporteitinerario"]:$this->tre10_linhatransporteitinerario);
@@ -80,9 +80,9 @@ class cl_itinerariologradouro {
      }
    }
    // funcao para inclusao
-   function incluir ($tre10_sequencial){ 
+   public function incluir ($tre10_sequencial){
       $this->atualizacampos();
-     if($this->tre10_linhatransporteitinerario == null ){ 
+     if($this->tre10_linhatransporteitinerario == null ){
        $this->erro_sql = " Campo Sequencial nao Informado.";
        $this->erro_campo = "tre10_linhatransporteitinerario";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_itinerariologradouro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tre10_cadenderbairrocadenderrua == null ){ 
+     if($this->tre10_cadenderbairrocadenderrua == null ){
        $this->erro_sql = " Campo Sequencial nao Informado.";
        $this->erro_campo = "tre10_cadenderbairrocadenderrua";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_itinerariologradouro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tre10_ordem == null ){ 
+     if($this->tre10_ordem == null ){
        $this->erro_sql = " Campo Ordem nao Informado.";
        $this->erro_campo = "tre10_ordem";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_itinerariologradouro {
        return false;
      }
      if($tre10_sequencial == "" || $tre10_sequencial == null ){
-       $result = db_query("select nextval('itinerariologradouro_tre10_sequencial_seq')"); 
+       $result = db_query("select nextval('itinerariologradouro_tre10_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: itinerariologradouro_tre10_sequencial_seq do campo: tre10_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: itinerariologradouro_tre10_sequencial_seq do campo: tre10_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->tre10_sequencial = pg_result($result,0,0); 
+       $this->tre10_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from itinerariologradouro_tre10_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $tre10_sequencial)){
@@ -130,10 +130,10 @@ class cl_itinerariologradouro {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->tre10_sequencial = $tre10_sequencial; 
+         $this->tre10_sequencial = $tre10_sequencial;
        }
      }
-     if(($this->tre10_sequencial == null) || ($this->tre10_sequencial == "") ){ 
+     if(($this->tre10_sequencial == null) || ($this->tre10_sequencial == "") ){
        $this->erro_sql = " Campo tre10_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_itinerariologradouro {
        return false;
      }
      $sql = "insert into itinerariologradouro(
-                                       tre10_sequencial 
-                                      ,tre10_linhatransporteitinerario 
-                                      ,tre10_cadenderbairrocadenderrua 
-                                      ,tre10_ordem 
+                                       tre10_sequencial
+                                      ,tre10_linhatransporteitinerario
+                                      ,tre10_cadenderbairrocadenderrua
+                                      ,tre10_ordem
                        )
                 values (
-                                $this->tre10_sequencial 
-                               ,$this->tre10_linhatransporteitinerario 
-                               ,$this->tre10_cadenderbairrocadenderrua 
-                               ,$this->tre10_ordem 
+                                $this->tre10_sequencial
+                               ,$this->tre10_linhatransporteitinerario
+                               ,$this->tre10_cadenderbairrocadenderrua
+                               ,$this->tre10_ordem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Itinerário Logradouro ($this->tre10_sequencial) nao Incluído. Inclusao Abortada.";
@@ -195,16 +195,16 @@ class cl_itinerariologradouro {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($tre10_sequencial=null) { 
+   public function alterar ($tre10_sequencial=null) {
       $this->atualizacampos();
      $sql = " update itinerariologradouro set ";
      $virgula = "";
-     if(trim($this->tre10_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_sequencial"])){ 
+     if(trim($this->tre10_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_sequencial"])){
        $sql  .= $virgula." tre10_sequencial = $this->tre10_sequencial ";
        $virgula = ",";
-       if(trim($this->tre10_sequencial) == null ){ 
+       if(trim($this->tre10_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre10_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_itinerariologradouro {
          return false;
        }
      }
-     if(trim($this->tre10_linhatransporteitinerario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_linhatransporteitinerario"])){ 
+     if(trim($this->tre10_linhatransporteitinerario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_linhatransporteitinerario"])){
        $sql  .= $virgula." tre10_linhatransporteitinerario = $this->tre10_linhatransporteitinerario ";
        $virgula = ",";
-       if(trim($this->tre10_linhatransporteitinerario) == null ){ 
+       if(trim($this->tre10_linhatransporteitinerario) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre10_linhatransporteitinerario";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_itinerariologradouro {
          return false;
        }
      }
-     if(trim($this->tre10_cadenderbairrocadenderrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_cadenderbairrocadenderrua"])){ 
+     if(trim($this->tre10_cadenderbairrocadenderrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_cadenderbairrocadenderrua"])){
        $sql  .= $virgula." tre10_cadenderbairrocadenderrua = $this->tre10_cadenderbairrocadenderrua ";
        $virgula = ",";
-       if(trim($this->tre10_cadenderbairrocadenderrua) == null ){ 
+       if(trim($this->tre10_cadenderbairrocadenderrua) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre10_cadenderbairrocadenderrua";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_itinerariologradouro {
          return false;
        }
      }
-     if(trim($this->tre10_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_ordem"])){ 
+     if(trim($this->tre10_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre10_ordem"])){
        $sql  .= $virgula." tre10_ordem = $this->tre10_ordem ";
        $virgula = ",";
-       if(trim($this->tre10_ordem) == null ){ 
+       if(trim($this->tre10_ordem) == null ){
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "tre10_ordem";
          $this->erro_banco = "";
@@ -282,7 +282,7 @@ class cl_itinerariologradouro {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itinerário Logradouro nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->tre10_sequencial;
@@ -310,11 +310,11 @@ class cl_itinerariologradouro {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($tre10_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($tre10_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -323,7 +323,7 @@ class cl_itinerariologradouro {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($tre10_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -355,7 +355,7 @@ class cl_itinerariologradouro {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itinerário Logradouro nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$tre10_sequencial;
@@ -383,11 +383,11 @@ class cl_itinerariologradouro {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -409,11 +409,11 @@ class cl_itinerariologradouro {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $tre10_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $tre10_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,15 +431,15 @@ class cl_itinerariologradouro {
      $sql2 = "";
      if($dbwhere==""){
        if($tre10_sequencial!=null ){
-         $sql2 .= " where itinerariologradouro.tre10_sequencial = $tre10_sequencial "; 
-       } 
+         $sql2 .= " where itinerariologradouro.tre10_sequencial = $tre10_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,11 +448,11 @@ class cl_itinerariologradouro {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $tre10_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $tre10_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,15 +465,15 @@ class cl_itinerariologradouro {
      $sql2 = "";
      if($dbwhere==""){
        if($tre10_sequencial!=null ){
-         $sql2 .= " where itinerariologradouro.tre10_sequencial = $tre10_sequencial "; 
-       } 
+         $sql2 .= " where itinerariologradouro.tre10_sequencial = $tre10_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -39,7 +39,7 @@ $cllevvalor->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("y60_contato");
 $data = date("d-m-Y",db_getsession("DB_datausu"));
-$data = split('-',$data);
+$data =explode('-',$data);
 $dia  = $data[0];
 $mes  = $data[1];
 $ano  = $data[2];
@@ -128,7 +128,7 @@ $ano  = $data[2];
 </script>
 <form name="form1" method="post" action="fis1_levvalor001.php">
 <center>
-  <table id="tab2" border="1" style="position:absolute; z-index:1; top:; left:10; border: 1px none #000000; background-color: #CCCCCC; background-color:#999999; font-weight:bold;">
+  <table id="tab2" border="1" style="position:absolute; z-index:1; left:10; border: 1px none #000000; background-color: #CCCCCC; background-color:#999999; font-weight:bold;">
   </table>
 <table border="0">
   <tr>
@@ -141,14 +141,14 @@ $ano  = $data[2];
        <?=@$Ly63_sequencia?>
     </td>
     <td>
-<?
+<?php
 db_input('valores',60,0,true,'hidden',3);
 db_input('notas',60,0,true,'hidden',3);
 db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
 ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('y63_codlev',4,$Iy63_codlev,true,'hidden',3)
       ?>
     </td>
@@ -158,11 +158,11 @@ db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
        <?=@$Ly63_ano?>
     </td>
     <td>
-      <?
+      <?php
       $result=$cllevanta->sql_record($cllevanta->sql_query_file($y63_codlev,"y60_dtini,y60_dtfim"));
       db_fieldsmemory($result,0);
-      $arr_ini = split("-",$y60_dtini);
-      $arr_fim = split("-",$y60_dtfim);
+      $arr_ini =explode("-",$y60_dtini);
+      $arr_fim =explode("-",$y60_dtfim);
       $ini = $arr_ini[0];
       $fim = $arr_fim[0];
 
@@ -310,11 +310,11 @@ db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
     <td align="center">
     <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
-  <?
+  <?php
   if(isset($opcao)){
   ?>
   <input name="novo" type="button" value="Novo" onclick="js_novo();" >
-  <?
+  <?php
   }
   ?>
     </td>
@@ -449,7 +449,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_levvalor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

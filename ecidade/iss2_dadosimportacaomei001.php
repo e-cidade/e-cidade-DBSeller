@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $clRotulo->label('q104_anousu');
 		              </b>
 		            </td>
 		            <td>
-		              <?
+		              <?php
 		                 db_input('q104_mesusu',2,$Iq104_mesusu,true,'text',1,'');
 		                 echo "/";
 		                 db_input('q104_anousu',4,$Iq104_anousu,true,'text',1,'');
@@ -75,7 +75,7 @@ $clRotulo->label('q104_anousu');
                   </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $aTipoReg = array( 1=>"Todos Registros",
 								                       2=>"Apenas Registros com Inconsistênca",
 								                       3=>"Apenas Registros sem Inconsistênca" );
@@ -91,7 +91,7 @@ $clRotulo->label('q104_anousu');
                   </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $aSituacao = array( 1=>"Todos Registros",
 		                                    2=>"Apenas Registros Processados",
 		                                    3=>"Apenas Registros Descartados" );
@@ -107,7 +107,7 @@ $clRotulo->label('q104_anousu');
                   </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $aPosicaoAtual = array( 1=>"Todos Registros",
 				                                    2=>"Apenas Registros Pendentes para Processamento",
 				                                    3=>"Apenas Registros Processados" );
@@ -127,7 +127,7 @@ $clRotulo->label('q104_anousu');
       </tr>
     </form>
   </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

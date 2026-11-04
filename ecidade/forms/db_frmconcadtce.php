@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("db12_uf");
        
     </td>
     <td> 
-<?
+<?php
 db_input('c10_sequencial',10,$Ic10_sequencial,true,'hidden',3,"")
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('c10_sequencial',10,$Ic10_sequencial,true,'hidden',3,"")
        <?=@$Lc10_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('c10_nome',60,$Ic10_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -58,22 +58,22 @@ db_input('c10_nome',60,$Ic10_nome,true,'text',$db_opcao,"")
        <?=@$Lc10_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('c10_sigla',10,$Ic10_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc10_db_uf?>">
-       <?
+       <?php
        db_ancora(@$Lc10_db_uf,"js_pesquisac10_db_uf(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c10_db_uf',10,$Ic10_db_uf,true,'text',$db_opcao," onchange='js_pesquisac10_db_uf(false);'")
 ?>
-       <?
+       <?php
 db_input('db12_uf',10,$Idb12_uf,true,'text',3,'')
        ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_concadtce.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

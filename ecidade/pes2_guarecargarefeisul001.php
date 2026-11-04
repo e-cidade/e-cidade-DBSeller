@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -148,12 +148,12 @@ if (isset($gera)){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $ano = db_anofolha();
            db_input('ano',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes = db_mesfolha();
            db_input('mes',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -164,7 +164,7 @@ if (isset($gera)){
         <strong>Maior Valor :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            if(!isset($maior) || $maior == 0){
              $maior = 0;
            }
@@ -177,7 +177,7 @@ if (isset($gera)){
         <strong>Menor Valor :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            if(!isset($menor) || $menor == 0){
              $menor = 0;
            }
@@ -189,7 +189,7 @@ if (isset($gera)){
         <td align="right" ><strong>TOTALIZACAO :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             $arr_totais = array("t"=>"Tudo","s"=>"Somente Totais");
             db_select('totais',$arr_totais ,true,4,"");
 	        ?>
@@ -209,7 +209,7 @@ if (isset($gera)){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -224,7 +224,7 @@ function js_emite(){
   jan = window.open('pes2_guarecargarefeisul002.php?'+qry,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }
-  <?
+  <?php
   if(isset($gera)){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }

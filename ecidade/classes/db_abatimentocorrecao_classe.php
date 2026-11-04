@@ -1,42 +1,42 @@
-<?
+<?php
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE abatimentocorrecao
-class cl_abatimentocorrecao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k167_sequencial = 0; 
-   var $k167_valorantigo = 0; 
-   var $k167_valorcorrigido = 0; 
-   var $k167_data_dia = null; 
-   var $k167_data_mes = null; 
-   var $k167_data_ano = null; 
-   var $k167_data = null; 
-   var $k167_abatimento = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_abatimentocorrecao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k167_sequencial = 0;
+   var $k167_valorantigo = 0;
+   var $k167_valorcorrigido = 0;
+   var $k167_data_dia = null;
+   var $k167_data_mes = null;
+   var $k167_data_ano = null;
+   var $k167_data = null;
+   var $k167_abatimento = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k167_sequencial = int4 = Sequencial 
-                 k167_valorantigo = float8 = Valor Antigo 
-                 k167_valorcorrigido = float8 = Valor Corrigido 
-                 k167_data = date = Data da Correção 
-                 k167_abatimento = int4 = Código do Abatimento 
+                 k167_sequencial = int4 = Sequencial
+                 k167_valorantigo = float8 = Valor Antigo
+                 k167_valorcorrigido = float8 = Valor Corrigido
+                 k167_data = date = Data da Correção
+                 k167_abatimento = int4 = Código do Abatimento
                  ";
-   //funcao construtor da classe 
-   function cl_abatimentocorrecao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("abatimentocorrecao"); 
+     $this->rotulo = new rotulo("abatimentocorrecao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_abatimentocorrecao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k167_sequencial = ($this->k167_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k167_sequencial"]:$this->k167_sequencial);
        $this->k167_valorantigo = ($this->k167_valorantigo == ""?@$GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"]:$this->k167_valorantigo);
@@ -64,9 +64,9 @@ class cl_abatimentocorrecao {
      }
    }
    // funcao para inclusao
-   function incluir ($k167_sequencial){ 
+   public function incluir ($k167_sequencial){
       $this->atualizacampos();
-     if($this->k167_valorantigo == null ){ 
+     if($this->k167_valorantigo == null ){
        $this->erro_sql = " Campo Valor Antigo nao Informado.";
        $this->erro_campo = "k167_valorantigo";
        $this->erro_banco = "";
@@ -75,7 +75,7 @@ class cl_abatimentocorrecao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k167_valorcorrigido == null ){ 
+     if($this->k167_valorcorrigido == null ){
        $this->erro_sql = " Campo Valor Corrigido nao Informado.";
        $this->erro_campo = "k167_valorcorrigido";
        $this->erro_banco = "";
@@ -84,7 +84,7 @@ class cl_abatimentocorrecao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k167_data == null ){ 
+     if($this->k167_data == null ){
        $this->erro_sql = " Campo Data da Correção nao Informado.";
        $this->erro_campo = "k167_data_dia";
        $this->erro_banco = "";
@@ -93,7 +93,7 @@ class cl_abatimentocorrecao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k167_abatimento == null ){ 
+     if($this->k167_abatimento == null ){
        $this->erro_sql = " Campo Código do Abatimento nao Informado.";
        $this->erro_campo = "k167_abatimento";
        $this->erro_banco = "";
@@ -103,16 +103,16 @@ class cl_abatimentocorrecao {
        return false;
      }
      if($k167_sequencial == "" || $k167_sequencial == null ){
-       $result = @db_query("select nextval('abatimentocorrecao_k167_sequencial_seq')"); 
+       $result = @db_query("select nextval('abatimentocorrecao_k167_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: abatimentocorrecao_k167_sequencial_seq do campo: k167_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: abatimentocorrecao_k167_sequencial_seq do campo: k167_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k167_sequencial = pg_result($result,0,0); 
+       $this->k167_sequencial = pg_result($result,0,0);
      }else{
        $result = @db_query("select last_value from abatimentocorrecao_k167_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k167_sequencial)){
@@ -123,10 +123,10 @@ class cl_abatimentocorrecao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k167_sequencial = $k167_sequencial; 
+         $this->k167_sequencial = $k167_sequencial;
        }
      }
-     if(($this->k167_sequencial == null) || ($this->k167_sequencial == "") ){ 
+     if(($this->k167_sequencial == null) || ($this->k167_sequencial == "") ){
        $this->erro_sql = " Campo k167_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -135,20 +135,20 @@ class cl_abatimentocorrecao {
        return false;
      }
      $result = @db_query("insert into abatimentocorrecao(
-                                       k167_sequencial 
-                                      ,k167_valorantigo 
-                                      ,k167_valorcorrigido 
-                                      ,k167_data 
-                                      ,k167_abatimento 
+                                       k167_sequencial
+                                      ,k167_valorantigo
+                                      ,k167_valorcorrigido
+                                      ,k167_data
+                                      ,k167_abatimento
                        )
                 values (
-                                $this->k167_sequencial 
-                               ,$this->k167_valorantigo 
-                               ,$this->k167_valorcorrigido 
-                               ,".($this->k167_data == "null" || $this->k167_data == ""?"null":"'".$this->k167_data."'")." 
-                               ,$this->k167_abatimento 
+                                $this->k167_sequencial
+                               ,$this->k167_valorantigo
+                               ,$this->k167_valorcorrigido
+                               ,".($this->k167_data == "null" || $this->k167_data == ""?"null":"'".$this->k167_data."'")."
+                               ,$this->k167_abatimento
                       )");
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Abatimento Correção ($this->k167_sequencial) nao Incluído. Inclusao Abortada.";
@@ -181,19 +181,19 @@ class cl_abatimentocorrecao {
        $resac = db_query("insert into db_acount values($acount,3949,21932,'','".pg_result($resaco,0,'k167_abatimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k167_sequencial=null) { 
+   public function alterar ($k167_sequencial=null) {
       $this->atualizacampos();
      $sql = " update abatimentocorrecao set ";
      $virgula = "";
-     if(trim($this->k167_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){ 
-        if(trim($this->k167_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){ 
-           $this->k167_sequencial = "0" ; 
-        } 
+     if(trim($this->k167_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){
+        if(trim($this->k167_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){
+           $this->k167_sequencial = "0" ;
+        }
        $sql  .= $virgula." k167_sequencial = $this->k167_sequencial ";
        $virgula = ",";
-       if(trim($this->k167_sequencial) == null ){ 
+       if(trim($this->k167_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k167_sequencial";
          $this->erro_banco = "";
@@ -203,13 +203,13 @@ class cl_abatimentocorrecao {
          return false;
        }
      }
-     if(trim($this->k167_valorantigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){ 
-        if(trim($this->k167_valorantigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){ 
-           $this->k167_valorantigo = "0" ; 
-        } 
+     if(trim($this->k167_valorantigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){
+        if(trim($this->k167_valorantigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){
+           $this->k167_valorantigo = "0" ;
+        }
        $sql  .= $virgula." k167_valorantigo = $this->k167_valorantigo ";
        $virgula = ",";
-       if(trim($this->k167_valorantigo) == null ){ 
+       if(trim($this->k167_valorantigo) == null ){
          $this->erro_sql = " Campo Valor Antigo nao Informado.";
          $this->erro_campo = "k167_valorantigo";
          $this->erro_banco = "";
@@ -219,13 +219,13 @@ class cl_abatimentocorrecao {
          return false;
        }
      }
-     if(trim($this->k167_valorcorrigido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){ 
-        if(trim($this->k167_valorcorrigido)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){ 
-           $this->k167_valorcorrigido = "0" ; 
-        } 
+     if(trim($this->k167_valorcorrigido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){
+        if(trim($this->k167_valorcorrigido)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){
+           $this->k167_valorcorrigido = "0" ;
+        }
        $sql  .= $virgula." k167_valorcorrigido = $this->k167_valorcorrigido ";
        $virgula = ",";
-       if(trim($this->k167_valorcorrigido) == null ){ 
+       if(trim($this->k167_valorcorrigido) == null ){
          $this->erro_sql = " Campo Valor Corrigido nao Informado.";
          $this->erro_campo = "k167_valorcorrigido";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_abatimentocorrecao {
          return false;
        }
      }
-     if(trim($this->k167_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"] !="") ){ 
+     if(trim($this->k167_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"] !="") ){
        $sql  .= $virgula." k167_data = '$this->k167_data' ";
        $virgula = ",";
-       if(trim($this->k167_data) == null ){ 
+       if(trim($this->k167_data) == null ){
          $this->erro_sql = " Campo Data da Correção nao Informado.";
          $this->erro_campo = "k167_data_dia";
          $this->erro_banco = "";
@@ -247,11 +247,11 @@ class cl_abatimentocorrecao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"])){
          $sql  .= $virgula." k167_data = null ";
          $virgula = ",";
-         if(trim($this->k167_data) == null ){ 
+         if(trim($this->k167_data) == null ){
            $this->erro_sql = " Campo Data da Correção nao Informado.";
            $this->erro_campo = "k167_data_dia";
            $this->erro_banco = "";
@@ -262,13 +262,13 @@ class cl_abatimentocorrecao {
          }
        }
      }
-     if(trim($this->k167_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){ 
-        if(trim($this->k167_abatimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){ 
-           $this->k167_abatimento = "0" ; 
-        } 
+     if(trim($this->k167_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){
+        if(trim($this->k167_abatimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){
+           $this->k167_abatimento = "0" ;
+        }
        $sql  .= $virgula." k167_abatimento = $this->k167_abatimento ";
        $virgula = ",";
-       if(trim($this->k167_abatimento) == null ){ 
+       if(trim($this->k167_abatimento) == null ){
          $this->erro_sql = " Campo Código do Abatimento nao Informado.";
          $this->erro_campo = "k167_abatimento";
          $this->erro_banco = "";
@@ -296,7 +296,7 @@ class cl_abatimentocorrecao {
          $resac = db_query("insert into db_acount values($acount,3949,21932,'".pg_result($resaco,0,'k167_abatimento')."','$this->k167_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Abatimento Correção nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k167_sequencial;
@@ -321,11 +321,11 @@ class cl_abatimentocorrecao {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k167_sequencial=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k167_sequencial=null) {
      $this->atualizacampos(true);
      $resaco = $this->sql_record($this->sql_query_file($this->k167_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
@@ -348,7 +348,7 @@ class cl_abatimentocorrecao {
       $sql2 .= " k167_sequencial = $this->k167_sequencial ";
 }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Abatimento Correção nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$this->k167_sequencial;
@@ -373,11 +373,11 @@ class cl_abatimentocorrecao {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -399,11 +399,11 @@ class cl_abatimentocorrecao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,15 +421,15 @@ class cl_abatimentocorrecao {
      $sql2 = "";
      if($dbwhere==""){
        if($k167_sequencial!=null ){
-         $sql2 .= " where abatimentocorrecao.k167_sequencial = $k167_sequencial "; 
-       } 
+         $sql2 .= " where abatimentocorrecao.k167_sequencial = $k167_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,11 +438,11 @@ class cl_abatimentocorrecao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,15 +455,15 @@ class cl_abatimentocorrecao {
      $sql2 = "";
      if($dbwhere==""){
        if($k167_sequencial!=null ){
-         $sql2 .= " where abatimentocorrecao.k167_sequencial = $k167_sequencial "; 
-       } 
+         $sql2 .= " where abatimentocorrecao.k167_sequencial = $k167_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ elseif(isset($chavepesquisa)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmunidadeservicos.php"));
 	?>
     </center>
@@ -99,7 +99,7 @@ elseif(isset($chavepesquisa)){
 <script>
 js_tabulacaoforms("form1","s126_i_unidade",true,1,"s126_i_unidade",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($cancelar) || isset($alterar) || isset($excluir)){
   if($clunidadeservicos->erro_status=="0"){
     $clunidadeservicos->erro(true,false);

@@ -581,7 +581,7 @@ return true;
     <td height="100%" width=100%>    <br><br>
 
       <div  id="Iframe1" style="position:absolute;left:0px; top:47px; z-index:99; visibility: visible;">
-       <?
+       <?php
        $query_xx = "?";
        if(isset($idlote)){
          $query_xx.="j34_idbql=$idlote&novolote=true&";

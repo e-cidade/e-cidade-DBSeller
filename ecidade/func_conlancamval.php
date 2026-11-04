@@ -62,13 +62,13 @@ $anousu = db_getsession("DB_anousu");
               <?=$Lc69_codlan?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?  db_input("c69_codlan",10,$Ic69_codlan,true,"text",4,"","chave_c69_codlan");  ?>
+              <?php  db_input("c69_codlan",10,$Ic69_codlan,true,"text",4,"","chave_c69_codlan");  ?>
             </td>
             <td width="4%" align="right" nowrap title="<?=$Tc69_sequen?>">
               <?=$Lc69_sequen?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?  db_input("c69_sequen",10,$Ic69_sequen,true,"text",4,"","chave_c69_sequen");  ?>
+              <?php  db_input("c69_sequen",10,$Ic69_sequen,true,"text",4,"","chave_c69_sequen");  ?>
             </td>
           </tr>
 
@@ -77,11 +77,11 @@ $anousu = db_getsession("DB_anousu");
               <?=$Lc69_codhist?>
             </td>
             <td width="96%" align="left" nowrap>
-            <?  db_input("c69_codhist",10,$Ic69_codhist,true,"text",4,"","chave_c69_codhist"); ?>
+            <?php  db_input("c69_codhist",10,$Ic69_codhist,true,"text",4,"","chave_c69_codhist"); ?>
             </td>
         <td align="right" nowrap ><?=$Lc78_chave?></td>
         <td align=left nowrap>
-          <? db_input("c78_chave",20,"",true,1,"");  ?>
+          <?php db_input("c78_chave",20,"",true,1,"");  ?>
         </td>
      </tr>
      <tr>
@@ -91,9 +91,9 @@ $anousu = db_getsession("DB_anousu");
 	 </b>
        </td>
        <td nowrap colspan="4" align="left" >
-          <? db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
+          <?php db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
           à
-	  <? db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
+	  <?php db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
 
       </td>
      </tr>
@@ -231,12 +231,12 @@ $anousu = db_getsession("DB_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

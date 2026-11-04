@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,12 +75,12 @@ function js_reemite() {
     <table class="form-contianer">
       <tr>
         <td nowrap title="<?=@$Tt96_codtran?>">
-          <?
+          <?php
             db_ancora(@$Lt96_codtran,"js_pesquisat96_codtran(true);",1);
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('t96_codtran',8,$It96_codtran,true,'text',1," onchange='js_pesquisat96_codtran(false);'");
             db_input('nome',40,$Inome,true,'text',3,'','nome_transf');
           ?>
@@ -91,7 +91,7 @@ function js_reemite() {
   <input name="pesquisa" type="button" onclick='js_reemite();'  value="Gerar Relatório">
 </form>
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 </body>
 </html>
@@ -99,10 +99,10 @@ function js_reemite() {
 <script>
 function js_pesquisat96_codtran(mostra){
   if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_benstransf','func_benstransf001.php?funcao_js=parent.js_mostrabenstransf1|t93_codtran|nome&rel=true','Pesquisa',true);
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_benstransf','func_benstransf001.php?funcao_js=parent.js_mostrabenstransf1|t93_codtran|nome&rel=ignorar_confirmacao&ignorar_departamento=true','Pesquisa',true);
   }else{
     if(document.form1.t96_codtran.value != ''){ 
-      js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_benstransf','func_benstransf001.php?pesquisa_chave='+document.form1.t96_codtran.value+'&funcao_js=parent.js_mostrabenstransf&rel=true','Pesquisa',false);
+      js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_benstransf','func_benstransf001.php?pesquisa_chave='+document.form1.t96_codtran.value+'&funcao_js=parent.js_mostrabenstransf&rel=ignorar_confirmacao&ignorar_departamento=true','Pesquisa',false);
     }else{
       document.form1.nome_transf.value = ''; 
     }

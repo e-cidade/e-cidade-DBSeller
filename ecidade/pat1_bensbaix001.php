@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -124,7 +124,7 @@ fieldset>
        <?=@$Lt55_codbem?>
     </td>
     <td> 
-<?
+<?php
 db_input('t55_codbem',8,$It55_codbem,true,'text',3,"");
 ?>
     </td>
@@ -134,22 +134,22 @@ db_input('t55_codbem',8,$It55_codbem,true,'text',3,"");
        <?=@$Lt55_baixa?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t55_baixa',@$t55_baixa_dia,@$t55_baixa_mes,@$t55_baixa_ano,true,'text',$db_opcao,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt55_motivo?>">
-<?
+<?php
 db_ancora(@$Lt55_motivo,"js_pesquisat55_motivo(true)",$db_opcao);
 ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t55_motivo',8,$It55_motivo,true,'text',$db_opcao,"onchange = 'js_pesquisat55_motivo(false)'");
 ?>
-<?
+<?php
 db_input('t51_descr',40,$It51_descr,true,'text',3,"js_pesquisat55_motivo(false)");
 ?>
     </td>
@@ -157,7 +157,7 @@ db_input('t51_descr',40,$It51_descr,true,'text',3,"js_pesquisat55_motivo(false)"
   <tr>
      <td nowrap title="<?=$Tt55_obs?>"><?=$Lt55_obs?></td>
      <td nowrap>
-     <?
+     <?php
         db_textarea("t55_obs",5,80,$It55_obs,true,"text",$db_opcao);
      ?>
      </td>
@@ -180,7 +180,7 @@ db_input('t51_descr',40,$It51_descr,true,'text',3,"js_pesquisat55_motivo(false)"
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir) || isset($incluir)){
   db_msgbox($erro_msg);
   if($clbensbaix->erro_campo!=""){
@@ -203,7 +203,7 @@ fieldset>
        <?=@$Lt55_codbem?>
     </td>
     <td> 
-<?
+<?php
 db_input('t55_codbem',8,$It55_codbem,true,'text',3,"");
 ?>
     </td>
@@ -213,22 +213,22 @@ db_input('t55_codbem',8,$It55_codbem,true,'text',3,"");
        <?=@$Lt55_baixa?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t55_baixa',@$t55_baixa_dia,@$t55_baixa_mes,@$t55_baixa_ano,true,'text',$db_opcao,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt55_motivo?>">
-<?
+<?php
 db_ancora(@$Lt55_motivo,"js_pesquisat55_motivo(true)",$db_opcao);
 ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t55_motivo',8,$It55_motivo,true,'text',$db_opcao,"onchange = 'js_pesquisat55_motivo(false)'");
 ?>
-<?
+<?php
 db_input('t51_descr',40,$It51_descr,true,'text',3,"js_pesquisat55_motivo(false)");
 ?>
     </td>
@@ -236,7 +236,7 @@ db_input('t51_descr',40,$It51_descr,true,'text',3,"js_pesquisat55_motivo(false)"
   <tr>
      <td nowrap title="<?=$Tt55_obs?>"><?=$Lt55_obs?></td>
      <td nowrap>
-     <?
+     <?php
         db_textarea("t55_obs",5,80,$It55_obs,true,"text",$db_opcao);
      ?>
      </td>

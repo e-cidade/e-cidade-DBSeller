@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -154,7 +154,7 @@ $clrotulocampo->label("q02_inscr");
 <body bgcolor=#CCCCCC onLoad="a=1" >
 
 
-<?
+<?php
 	$listaFuncNome = new janela("listaFuncNome","");
 	$listaFuncNome->posX=1;
 	$listaFuncNome->posY=20;
@@ -225,18 +225,18 @@ $clrotulocampo->label("q02_inscr");
 			<tr>
 				<td title="<?=$Tz01_nome?>"><?=$Lz01_nome?>
 				</td>
-				<td><?
+				<td><?php
 				db_input("z01_nome",40,$Iz01_nome,true,"text",4)
 				?>
 				</td>
 			</tr>
 			<tr>
 				<td title="<?=$Tj01_matric?>">
-				<?
+				<?php
 					db_ancora($Lj01_matric, 'js_pesquisaMatricula(true)', 1);
 			  ?>
 				</td>
-				<td><?
+				<td><?php
 				db_input("j01_matric",10,$Ij01_matric,true,"text",4)
 				?>
 				</td>
@@ -244,7 +244,7 @@ $clrotulocampo->label("q02_inscr");
 			<tr>
 				<td title="<?=$Tq02_inscr?>"><?=$Lq02_inscr?>
 				</td>
-				<td><?
+				<td><?php
 				db_input("q02_inscr",10,$Iq02_inscr,true,"text",4)
 				?>
 				</td>
@@ -252,7 +252,7 @@ $clrotulocampo->label("q02_inscr");
 			<tr>
 				<td title="<?=$Tv01_coddiv?>"><?=$Lv01_coddiv?>
 				</td>
-				<td><?
+				<td><?php
 				db_input("v01_coddiv",10,$Iv01_coddiv,true,"text",4)
 				?>
 				</td>
@@ -260,7 +260,7 @@ $clrotulocampo->label("q02_inscr");
 			<tr>
 				<td title="<?=$Tv13_certid?>"><?=$Lv13_certid?>
 				</td>
-				<td><?
+				<td><?php
 				db_input("v13_certid",10,$Iv13_certid,true,"text",4)
 				?>
 				</td>
@@ -268,7 +268,7 @@ $clrotulocampo->label("q02_inscr");
 			<tr>
 				<td title="<?=$Tv07_parcel?>"><?=$Lv07_parcel?>
 				</td>
-				<td><?
+				<td><?php
 				db_input("v07_parcel",10,$Iv07_parcel,true,"text",4)
 				?>
 				</td>
@@ -276,7 +276,7 @@ $clrotulocampo->label("q02_inscr");
 			<tr>
 				<td title="<?=$Tinicial?>"><?=$Linicial?>
 				</td>
-				<td><?
+				<td><?php
 				db_input("inicial",10,$Iinicial,true,"text",4)
 				?>
 				</td>
@@ -285,7 +285,7 @@ $clrotulocampo->label("q02_inscr");
       </fieldset>
       <input type="button" name="pesquisar" value="Pesquisar" id="pesquisar" onclick="return js_pesquisar()">
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>

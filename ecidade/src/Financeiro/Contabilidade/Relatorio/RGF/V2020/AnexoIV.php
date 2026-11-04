@@ -226,4 +226,10 @@ class AnexoIV extends AnexoIV2018
 
         return AnexoTresFactory::getService($this->getAno(), $filtros);
     }
+    
+    public function getLinhasProcessadas()
+    {
+        $this->processar();
+        return $this->aLinhasConsistencia;
+    }
 }

@@ -295,7 +295,7 @@ class AjustePrevidencia
 
         global $tipo_arquivo;
         global $previden, $inssirf, $Iinssirf, $previden_, $campos_pessoal, $opcao_geral, $db21_codcli, $subpes, $perc_inss, $opcao_tipo;
-        global $$arquivo, $cfpess, $pessoal, $db_debug;
+        global ${$arquivo}, $cfpess, $pessoal, $db_debug;
         global $anousu, $mesusu, $DB_instit, $F023, $F019;
 
         $aMatriculas = array();

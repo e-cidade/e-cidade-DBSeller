@@ -189,7 +189,7 @@ class PontoSalario extends Model
             'r10_rubric' => $this->r10_rubric
         ])->first();
 
-        if (empty($pontoSalario)) {
+        if (empty($pontoSalario) || isset($options['forceInsert'])) {
             return $daoPontoSalario->incluir(
                 $this->r10_anousu,
                 $this->r10_mesusu,

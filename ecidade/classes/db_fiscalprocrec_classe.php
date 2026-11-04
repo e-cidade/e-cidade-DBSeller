@@ -58,13 +58,13 @@ class cl_fiscalprocrec {
                  y45_percentual = bool = Percentual
                  ";
    //funcao construtor da classe
-   function cl_fiscalprocrec() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalprocrec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_fiscalprocrec {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y45_codtipo = ($this->y45_codtipo == ""?@$GLOBALS["HTTP_POST_VARS"]["y45_codtipo"]:$this->y45_codtipo);
        $this->y45_receit = ($this->y45_receit == ""?@$GLOBALS["HTTP_POST_VARS"]["y45_receit"]:$this->y45_receit);
@@ -87,7 +87,7 @@ class cl_fiscalprocrec {
      }
    }
    // funcao para inclusao
-   function incluir ($y45_codtipo,$y45_receit){
+   public function incluir ($y45_codtipo,$y45_receit){
       $this->atualizacampos();
      if($this->y45_valor == null ){
        $this->erro_sql = " Campo Valor padrão para a receita não informado.";
@@ -523,10 +523,10 @@ class cl_fiscalprocrec {
      return $sql;
   }
 
-   function sql_query_fiscaltipo ( $y45_codtipo=null,$y45_receit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_fiscaltipo ( $y45_codtipo=null,$y45_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_fiscalprocrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -570,10 +570,10 @@ class cl_fiscalprocrec {
      }
      return $sql;
   }
-   function sql_query_autotipo ( $y45_codtipo=null,$y45_receit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_autotipo ( $y45_codtipo=null,$y45_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -608,7 +608,7 @@ class cl_fiscalprocrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

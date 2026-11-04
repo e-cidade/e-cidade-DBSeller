@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -106,7 +106,7 @@ function pesquisa_emp(qchave){
 <center>
       
 <table border='1' cellspacing="0" cellpadding="0">   
-<?
+<?php
 
 
 $where = "";

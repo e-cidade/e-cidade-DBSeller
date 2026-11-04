@@ -124,7 +124,7 @@ switch ($oParam->exec) {
           $aPropriedadesLinha = $oArquivo->getProperties();
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
-            $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
+            $sValor = isset($oArquivo->{$aPropriedade[4]})?urlencode($oArquivo->{$aPropriedade[4]}):'';
             $oEscola->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]),
                                                                 $sValor,
                                                                 urlencode($aPropriedade[7])
@@ -141,7 +141,7 @@ switch ($oParam->exec) {
           $oRetorno->arquivo->aTurmas[]             = $oTurma;
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
-            $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
+            $sValor = isset($oArquivo->{$aPropriedade[4]})?urlencode($oArquivo->{$aPropriedade[4]}):'';
             $oTurma->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]),
                                                                $sValor,
                                                                urlencode($aPropriedade[7]));
@@ -175,11 +175,12 @@ switch ($oParam->exec) {
           $aPropriedadesLinha = $oArquivo->getProperties();
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
-            $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
-            $oDocente->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]),
-                                                                 $sValor,
-                                                                 urlencode($aPropriedade[7])
-                                                                );
+            $sValor = isset($oArquivo->{$aPropriedade[4]})?urlencode($oArquivo->{$aPropriedade[4]}):'';
+            $oDocente->dados[$oArquivo->tipo_registro][] = [
+                urlencode($aPropriedade[6]),
+                $sValor,
+                urlencode($aPropriedade[7])
+            ];
           }
         }
 
@@ -221,7 +222,7 @@ switch ($oParam->exec) {
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
             $aPropriedade[7] = str_replace(array("\n", "\r"), array("<br>", ""), $aPropriedade[7]);
-            $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
+            $sValor = isset($oArquivo->{$aPropriedade[4]})?urlencode($oArquivo->{$aPropriedade[4]}):'';
 
             $oAluno->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]), $sValor, urlencode($aPropriedade[7]));
           }

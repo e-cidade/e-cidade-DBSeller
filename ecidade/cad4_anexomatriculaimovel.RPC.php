@@ -39,36 +39,32 @@ $retorno = new stdClass();
 $retorno->status = 1;
 $retorno->mensagem = '';
 
-try{
-
+try {
     db_inicio_transacao();
 
-    switch ($parametros->exec){
-
+    switch ($parametros->exec) {
         case "salvar":
-
-            if(empty($parametros->j151_descricao)){
+            if (empty($parametros->j151_descricao)) {
                 throw new BusinessException("Campo Descrição é de preenchimento obrigatório");
-            }                
+            }
 
-
-            if(empty($parametros->db59_sequencial)){
-
-                if(empty($parametros->j01_matric)){
+            if (empty($parametros->db59_sequencial)) {
+                if (empty($parametros->j01_matric)) {
                     throw new BusinessException("Campo Matrícula é de preenchimento obrigatório.");
                 }
 
-
                 $data = file_get_contents($parametros->filePath);
-                $escaped = bin2hex( $data );                
+                $escaped = bin2hex($data);
                 $daoArquivoCdn = new cl_arquivocdn();
                 $sequencial = $daoArquivoCdn->getNextVal();
                 $nomeArquivo = "arquivo_imovel_{$sequencial}.{$parametros->extension}";
 
-                $rsInsert = db_query("INSERT INTO configuracoes.arquivocdn(db59_nome, db59_bucket, db59_arquivobin) values ('{$nomeArquivo}', 'tributario-iptu', decode('$escaped', 'hex'));");
+                $sInsert = "INSERT INTO configuracoes.arquivocdn(db59_nome, db59_bucket, db59_arquivobin) ";
+                $sInsert .= "      values ('{$nomeArquivo}', 'tributario-iptu', decode('{$escaped}', 'hex'));";
+                $rsInsert = db_query($sInsert);
 
-                if (! $rsInsert) {                    
-                    throw new DBException("Erro ao salvar arquivo");                    
+                if (!$rsInsert) {
+                    throw new DBException("Erro ao salvar arquivo");
                 }
 
                 $daoArquivoCdnIptuBase = new cl_arquivocdniptubase();
@@ -77,16 +73,13 @@ try{
                 $daoArquivoCdnIptuBase->j151_descricao = pg_escape_string($parametros->j151_descricao);
                 $daoArquivoCdnIptuBase->incluir();
 
-                if($daoArquivoCdnIptuBase->erro_status == 0){
-                    die('aqui');
+                if ($daoArquivoCdnIptuBase->erro_status == 0) {
                     throw new DBException("Ocorreu um erro ao salvar arquivo");
                 }
 
                 unlink($parametros->filePath);
-
             } else {
-
-                if(empty($parametros->j01_matric)){
+                if (empty($parametros->j01_matric)) {
                     throw new BusinessException("Campo Matrícula é de preenchimento obrigatório.");
                 }
 
@@ -94,8 +87,8 @@ try{
                 $sql = $daoArquivoCdnIptuBase->sql_query_file($parametros->db59_sequencial, $parametros->j01_matric);
                 $rs = db_query($sql);
 
-                if(!$rs || pg_num_rows($rs) == 0){
-                    throw new Exception("Documento não encontrado");                    
+                if (!$rs || pg_num_rows($rs) == 0) {
+                    throw new Exception("Documento não encontrado");
                 }
 
                 $dados = db_utils::fieldsMemory($rs, 0);
@@ -105,30 +98,35 @@ try{
                 $daoArquivoCdnIptuBase->j151_descricao = $parametros->j151_descricao;
                 $daoArquivoCdnIptuBase->alterar();
 
-                if($daoArquivoCdnIptuBase->erro_status == 0){
+                if ($daoArquivoCdnIptuBase->erro_status == 0) {
                     throw new DBException("Ocorreu um erro ao salvar o anexo.");
-                }                
-
+                }
             }
 
             $retorno->mensagem = "Anexo salvo com sucesso!";
             break;
 
         case 'listar':
-
-            if(empty($parametros->j01_matric)){
+            if (empty($parametros->j01_matric)) {
                 throw new BusinessException("Campo matrícula obrigatório!");
             }
 
             $daoArquivoCdnIptuBase = new cl_arquivocdniptubase();
-            $sql = $daoArquivoCdnIptuBase->query(array(), "db59_sequencial, j151_descricao", "j151_iptubase = {$parametros->j01_matric}", null, 'db59_sequencial asc', 1);
+            $sql = $daoArquivoCdnIptuBase->query(
+                array(),
+                "db59_sequencial, j151_descricao",
+                "j151_iptubase = {$parametros->j01_matric}",
+                null,
+                'db59_sequencial asc',
+                1
+            );
             $rs = db_query($sql);
             $arquivos = array();
 
             while ($arquivo = pg_fetch_array($rs)) {
                 $aux = array();
                 $aux['db59_sequencial'] = $arquivo['db59_sequencial'];
-                $aux['j151_descricao'] = $arquivo['j151_descricao'];                
+                $aux['j151_descricao'] = $arquivo['j151_descricao'];
                 $arquivos[] = $aux;
             }
 
@@ -137,39 +135,43 @@ try{
             break;
 
         case 'excluir':
-            
-            if(empty($parametros->db59_sequencial)){
+            if (empty($parametros->db59_sequencial)) {
                 throw new BusinessException("Campo sequencial é obrigatório!");
             }
 
-            if(empty($parametros->j01_matric)){
+            if (empty($parametros->j01_matric)) {
                 throw new BusinessException("Campo matrícula obrigatório!");
             }
 
-            $sql = "DELETE FROM cadastro.arquivocdniptubase WHERE j151_arquivocdn = $parametros->db59_sequencial and j151_iptubase = $parametros->j01_matric;";
+            $sql = "DELETE FROM cadastro.arquivocdniptubase WHERE j151_arquivocdn = {$parametros->db59_sequencial} ";
+            $sql .= "and j151_iptubase = $parametros->j01_matric";
             $rs = db_query($sql);
             
-            if($rs == false){
+            if (!$rs) {
                 throw new DBException("Ocorreu um erro a excluir anexo.");
-            } 
+            }
 
-            $sql = "DELETE FROM configuracoes.arquivocdn WHERE db59_sequencial = $parametros->db59_sequencial;";
+            $sql = "DELETE FROM configuracoes.arquivocdn WHERE db59_sequencial = {$parametros->db59_sequencial}";
             $rs = db_query($sql);
 
-            if($rs == false){
+            if (!$rs) {
                 throw new DBException("Ocorreu um erro a excluir anexo.");
-            } 
+            }
 
             $retorno->mensagem = "Anexo excluido com sucesso!";
 
             break;
 
-        case 'download': 
-            if(empty($parametros->db59_sequencial)){
+        case 'download':
+            if (empty($parametros->db59_sequencial)) {
                 throw new BusinessException("Campo sequencial é obrigatório!");
             }
 
-            $sql = "SELECT db59_nome, db59_arquivobin FROM cadastro.arquivocdniptubase inner join arquivocdn on db59_sequencial = j151_arquivocdn WHERE j151_arquivocdn = $parametros->db59_sequencial and j151_iptubase = $parametros->j01_matric;";            
+            $sql = "SELECT db59_nome, db59_arquivobin ";
+            $sql .= "FROM cadastro.arquivocdniptubase ";
+            $sql .= "     join arquivocdn on db59_sequencial = j151_arquivocdn ";
+            $sql .= "WHERE j151_arquivocdn = {$parametros->db59_sequencial} ";
+            $sql .= "  and j151_iptubase = {$parametros->j01_matric}";
             $rs = db_query($sql);
             $arquivo = pg_fetch_array($rs);
 
@@ -184,7 +186,7 @@ try{
             header("Pragma: public");
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Cache-Control: private",false);
+            header("Cache-Control: private", false);
             header("Content-Type: $ctype");
             header("Content-Disposition: attachment; filename=\"".basename($nomeArquivo)."\";");
             header("Content-Transfer-Encoding: binary");
@@ -194,28 +196,28 @@ try{
 
             unlink($nomeArquivo);
             
-            exit;
-
             break;
 
         case 'multipledownload':
-
-            if(!isset($parametros->sequencialdownload) || empty($parametros->sequencialdownload)){
+            if (!isset($parametros->sequencialdownload) || empty($parametros->sequencialdownload)) {
                 throw new BusinessException('Nenhum arquivo selecionado!');
-            }  
+            }
 
             $oArquivoCompactado = new ZipArchive();
-            $arrArquivosToDelete = Array();
+            $arrArquivosToDelete = array();
             $nomeZip = "tmp/ArquivoMatricula.zip";
-            $open = $oArquivoCompactado->open($nomeZip, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);            
+            $open = $oArquivoCompactado->open($nomeZip, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
             
             if ($open !== true) {
                 throw new Exception("Erro ao gerar arquivo compactado.");
             }
 
             foreach ($parametros->sequencialdownload as $sequencialdownload) {
-
-                $sql = "SELECT db59_nome, db59_arquivobin FROM cadastro.arquivocdniptubase inner join arquivocdn on db59_sequencial = j151_arquivocdn WHERE j151_arquivocdn = $sequencialdownload and j151_iptubase = $parametros->j01_matric;";            
+                $sql = "SELECT db59_nome, db59_arquivobin ";
+                $sql .= "FROM cadastro.arquivocdniptubase ";
+                $sql .= "     join arquivocdn on db59_sequencial = j151_arquivocdn ";
+                $sql .= "WHERE j151_arquivocdn = {$sequencialdownload} ";
+                $sql .= "  and j151_iptubase = {$parametros->j01_matric}";
                 $rs = db_query($sql);
                 $arquivo = pg_fetch_array($rs);
 
@@ -228,7 +230,7 @@ try{
                 fclose($file_w);
 
                 if (!$oArquivoCompactado->addFile($nomeArquivo, substr($nomeArquivo, 3))) {
-                    throw new Exception("Erro ao compactar arquivo {$sArquivo}.");
+                    throw new Exception("Erro ao compactar arquivo {$nomeArquivo}.");
                 }
                 
                 $arrArquivosToDelete[] = $nomeArquivo;
@@ -239,7 +241,7 @@ try{
             header("Pragma: public");
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Cache-Control: private",false);
+            header("Cache-Control: private", false);
             header("Content-Type: $ctype");
             header("Content-Disposition: attachment; filename=\"".basename($nomeZip)."\";");
             header("Content-Transfer-Encoding: binary");
@@ -247,21 +249,18 @@ try{
             set_time_limit(0);
             @readfile($nomeZip);
 
-            foreach($arrArquivosToDelete as $nomeArquivo){
+            foreach ($arrArquivosToDelete as $nomeArquivo) {
                 unlink($nomeArquivo);
             }
             unlink($nomeZip);
-            exit;
+            break;
 
         default:
             throw new Exception("Opção inválida!");
-            
     }
 
     db_fim_transacao(false);
-
-} catch (Exception $erro){
-
+} catch (Exception $erro) {
     db_fim_transacao(true);
     $retorno->status = 2;
     $retorno->mensagem = $erro->getMessage();

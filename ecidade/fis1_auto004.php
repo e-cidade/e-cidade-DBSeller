@@ -64,12 +64,12 @@ $clfiscal->rotulo->label("y30_codnoti");
    <table border="0">
      <tr>
       <td>
-      <?
+      <?php
        db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
       ?>
        </td>
        <td>
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',50,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -77,12 +77,12 @@ $clfiscal->rotulo->label("y30_codnoti");
      </tr>
      <tr>
        <td>
-      <?
+      <?php
        db_ancora($Lj01_matric,' js_matri(true); ',1);
       ?>
        </td>
        <td>
-      <?
+      <?php
        db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
       db_input('z01_nome',50,0,true,'text',3,"","z01_nomematri");
       ?>
@@ -91,12 +91,12 @@ $clfiscal->rotulo->label("y30_codnoti");
 
      <tr>
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td>
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
       db_input('z01_nome',50,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -104,12 +104,12 @@ $clfiscal->rotulo->label("y30_codnoti");
      </tr>
     <tr>
       <td nowrap title="<?=@$Ty80_codsani?>">
-         <?
+         <?php
          db_ancora(@$Ly80_codsani,"js_sanitario(true);",1);
          ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('y80_codsani',5,$Iy80_codsani,true,'text',1,"onchange='js_sanitario(false)'");
         db_input('z01_nome',50,0,true,'text',3,"","z01_nomesani");
         ?>
@@ -117,12 +117,12 @@ $clfiscal->rotulo->label("y30_codnoti");
     </tr>
     <tr>
       <td nowrap title="<?=@$Ty30_codnoti?>">
-         <?
+         <?php
          db_ancora(@$Ly30_codnoti,"js_noti(true);",1);
          ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('y30_codnoti',5,$Iy30_codnoti,true,'text',$db_opcao,"onchange='js_noti(false)'");
         db_input('z01_nome',50,0,true,'text',3,"","z01_nomenoti");
         ?>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -181,7 +181,7 @@ if ( isset($z01_b_descnomemae) && $z01_b_descnomemae == 't' ) {
             <?=@$Lz01_v_ident?>
           </td>
           <td>
-            <?db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',$db_opcao);?>
+            <?php db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',$db_opcao);?>
           </td>
         </tr>
         <tr>
@@ -373,7 +373,7 @@ if ( isset($z01_b_descnomemae) && $z01_b_descnomemae == 't' ) {
             <?php db_ancora(@$Lz01_v_ender,"js_ruas();",$db_opcao);?>
           </td>
           <td>
-           <?db_input('z01_v_ender',52,$Iz01_v_ender,true,'text',$db_opcao);?>
+           <?php db_input('z01_v_ender',52,$Iz01_v_ender,true,'text',$db_opcao);?>
           </td>
         </tr>
         <tr>

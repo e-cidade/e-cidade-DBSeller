@@ -29,7 +29,7 @@ class ComprasPublicasItem
         $atributosLicitacao    = new LicitacaoAtributosDinamicos();
         $atributosLicitacao->setCodigoLicitacao($oLicitacao->getCodigo());
         $this->casasdecimais   = $atributosLicitacao->getAtributo('casas_decimais') == null
-        ? 2
+        ? 4
         : $atributosLicitacao->getAtributo('casas_decimais');
     }
 
@@ -119,7 +119,8 @@ class ComprasPublicasItem
             $item->siglaUnidade       = pg_escape_string(utf8_encode($oDadosItem->unid));
             $item->valorReferencia    = number_format($this->valorReferencia(
                 $oDadosItem->pc81_codprocitem,
-                $oDadosItem->l20_usaregistropreco
+                $oDadosItem->l20_usaregistropreco,
+                $oDadosItem->pc11_vlrun
             ), $this->casasdecimais, '.', '');
 
             $item->quantidadeTotal    = floatval($oDadosItem->pc11_quant + $oDadosItem->quantcota);
@@ -227,7 +228,7 @@ class ComprasPublicasItem
         return $this->itens;
     }
 
-    public function valorReferencia($itemProcessoCompra, $utilizaRegistroPreco = false)
+    public function valorReferencia($itemProcessoCompra, $utilizaRegistroPreco = false, $valorUnitario = null)
     {
 
         if ($itemProcessoCompra == null) {
@@ -242,8 +243,8 @@ class ComprasPublicasItem
 
         $tipoJulgamento = db_utils::fieldsMemory($rsPcparam, 0)->pc30_tipojulgamentoorcamento;
         if ($tipoJulgamento == 2) {
-            $sqlValoreReferencia = "select round(sum(pc23_vlrun)/
-                                           count(pc23_orcamforne), 2) as valormediaorcada
+            $sqlValoreReferencia = "select sum(pc23_vlrun)/
+                                           count(pc23_orcamforne) as valormediaorcada
                                       from pcorcamitemproc
                                      inner join pcorcamitem
                                         on pcorcamitem.pc22_orcamitem = pcorcamitemproc.pc31_orcamitem
@@ -257,20 +258,20 @@ class ComprasPublicasItem
                                      where pc31_pcprocitem = {$itemProcessoCompra}";
 
             $rsValorReferencia  = db_query($sqlValoreReferencia);
-            if (!$rsValorReferencia || pg_numrows($rsValorReferencia) == 0) {
+            if ((!$rsValorReferencia || pg_numrows($rsValorReferencia) == 0) && !$valorUnitario) {
                 throw new Exception("Não foi possível buscar o valor de referência.
                                      Verifique se existe orçamento para o processo de compra!");
             }
 
             $valorReferencia = db_utils::fieldsMemory($rsValorReferencia, 0);
-            if ($valorReferencia->valormediaorcada == 0) {
+            if ($valorReferencia->valormediaorcada == 0 && $valorUnitario == 0) {
                 throw new Exception("A licitação requer um orçamento.
                                      Verifique se existe orçamento para o processo de compras da licitação");
             }
-            if ($valorReferencia->valormediaorcada <= 0) {
+            if ($valorReferencia->valormediaorcada <= 0 && $valorUnitario <= 0) {
                 throw new Exception("Valor de referência deve ser maior que zero");
             }
-            return floatval($valorReferencia->valormediaorcada);
+            return floatval($valorReferencia->valormediaorcada) ?: $valorUnitario;
         }
 
         $sqlValoreReferencia = "select pc23_vlrun as valormenorpreco
@@ -288,16 +289,16 @@ class ComprasPublicasItem
                                  where pc31_pcprocitem = {$itemProcessoCompra}";
 
         $rsValorReferencia  = db_query($sqlValoreReferencia);
-        if (!$rsValorReferencia || pg_numrows($rsValorReferencia) == 0) {
+        if ((!$rsValorReferencia || pg_numrows($rsValorReferencia) == 0) && !$valorUnitario) {
             throw new Exception("A licitação requer um orçamento.
                                  Verifique se existe orçamento para o processo de compra!");
         }
 
         $valorReferencia = db_utils::fieldsMemory($rsValorReferencia, 0);
-        if ($valorReferencia->valormenorpreco <= 0) {
+        if ($valorReferencia->valormenorpreco <= 0 && $valorUnitario <= 0) {
             throw new Exception("Valor de referência deve ser maior zero");
         }
 
-        return $valorReferencia->valormenorpreco;
+        return $valorReferencia->valormenorpreco ?: $valorUnitario;
     }
 }

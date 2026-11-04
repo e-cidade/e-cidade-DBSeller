@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,17 +79,17 @@ if (isset($excluir)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <div class="container">
-    <?
+    <?php
     include(modification("forms/db_frmdb_bancos.php"));
     ?>
 </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
     db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
     if ($cldb_bancos->erro_status == "0") {
         $cldb_bancos->erro(true, false);

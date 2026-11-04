@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -84,11 +84,11 @@ db_postmemory($HTTP_POST_VARS);
       <tr>
         <td>
           <b> 
-            <? db_ancora('Material :',"js_pesquisaMaterial(true);",1); ?> 
+            <?php db_ancora('Material :',"js_pesquisaMaterial(true);",1); ?> 
           </b>
         </td>
         <td>
-          <?
+          <?php
              db_input('m60_codmater',6,false,'','text',3," onchange='js_pesquisaMaterial(false);'");
              db_input('m60_descr',45,'text',3,'');
          ?>             
@@ -100,7 +100,7 @@ db_postmemory($HTTP_POST_VARS);
           <b> Data do Reajuste : </b>
         </td>
         <td>
-           <? db_inputdata('m85_data','','','',true,'text',1,""); ?>
+           <?php db_inputdata('m85_data','','','',true,'text',1,""); ?>
         </td>        
       </tr>
       
@@ -109,7 +109,7 @@ db_postmemory($HTTP_POST_VARS);
            <b> Preço Médio Atual :</b>
         </td>
         <td>
-           <? db_input('precomedioatual',15,'text',3,''); ?>
+           <?php db_input('precomedioatual',15,'text',3,''); ?>
         </td>        
       </tr>
     
@@ -118,7 +118,7 @@ db_postmemory($HTTP_POST_VARS);
            <b> Novo Preço Médio : </b>
         </td>
         <td>
-          <?  db_input('m85_precomedio',15,false,'','text',3,"onKeyUp='return js_verValor(this.id);'"); ?>
+          <?php  db_input('m85_precomedio',15,false,'','text',3,"onKeyUp='return js_verValor(this.id);'"); ?>
         </td>        
       </tr>      
   
@@ -148,7 +148,7 @@ db_postmemory($HTTP_POST_VARS);
 
 
 </center>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

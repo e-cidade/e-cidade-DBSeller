@@ -356,6 +356,10 @@ Window.prototype = {
     // Not an url content, change div to iframe
     if (this.options.url)
       this.content.src = null;
+
+    url = url.replace('%3F', '?');
+    url = url.replace('%3D', '=');
+
     this.options.url = url;
     var content= "<iframe frameborder='0' name='" + this.getId() + "_content'  id='" + this.getId() + "_content' width='" + this.width + "' height='" + this.height + "'> </iframe>";
     $(this.getId() +"_table_content").innerHTML = content;
@@ -366,7 +370,12 @@ Window.prototype = {
   },
 
   getURL: function() {
-  	return this.options.url ? this.options.url : null;
+    let url = this.options.url
+
+    url = url.replace('%3F', '?')
+    url = url.replace('%3D', '=')
+
+  	return url ? url : null;
   },
 
   injectLoadindBehaviorOnIframe : function() {
@@ -407,8 +416,14 @@ Window.prototype = {
   },
 
   refresh: function() {
-    if (this.options.url)
-	    $(this.element.getAttribute('id') + '_content').src = this.options.url;
+    if (this.options.url) {
+      let url = this.options.url
+
+      url = url.replace('%3F', '?');
+      url = url.replace('%3D', '=');
+
+	    $(this.element.getAttribute('id') + '_content').src = url;
+    }
   },
 
   // Stores position/size in a cookie, by default named with window id
@@ -458,6 +473,15 @@ Window.prototype = {
     // Reset location to apply constraint
     if (this.useTop && this.useLeft)
       this.setLocation(parseFloat(this.element.style.top), parseFloat(this.element.style.left));
+  },
+
+  resolveUrl: function (url) {
+      if (url.startsWith('http')) {
+          return url;
+      }
+
+      const urlMatch = this.getURL().match(/[^\r\n]+(w\/[0-9]+)+/g);
+      return urlMatch !== null ? `${urlMatch[0]}/${url}` : url;
   },
 
   // initDrag event
@@ -773,18 +797,21 @@ Window.prototype = {
     var dropdownToggle = jQuery('<div />', toggleOptions);
     dropdownToggle.addClass('dropdown-toggle');
 
-    var dropdownMenu = jQuery('<ul />', {
+    var dropdownMenu = jQuery('<div />', {
       'class': 'dropdown-menu'
     });
+
+    var dropdownList = jQuery('<ul />');
 
     jQuery.each(buttonList, function() {
 
       var anchor = jQuery('<a>', this);
       var item = jQuery('<li>');
       item.append(anchor);
-      dropdownMenu.append(item);
+      dropdownList.append(item);
     })
 
+    dropdownMenu.append(dropdownList)
     buttonDropdown.append(dropdownToggle)
     buttonDropdown.append(dropdownMenu)
 
@@ -802,10 +829,16 @@ Window.prototype = {
     win.className = "dialog";
 
     var content;
-    if (this.options.url)
-      content= "<iframe frameborder=\"0\" name=\"" + id + "_content\"  id=\"" + id + "_content\" src=\"" + this.options.url + "\"> </iframe>";
-    else
+
+    let url = this.options.url
+    
+    if (url) {
+      url = url.replace('%3F', '?')
+      url = url.replace('%3D', '=')
+      content= "<iframe frameborder=\"0\" name=\"" + id + "_content\"  id=\"" + id + "_content\" src=\"" + url + "\"> </iframe>";
+    } else {
       content ="<div id=\"" + id + "_content\" class=\"" +className + "_content\"> </div>";
+    }
 
     var seAttributes = this.options.resizable ? "class='" + className + "_sizer' id='" + id + "_sizer'" : "class='"  + className + "_se'";
 
@@ -954,6 +987,9 @@ Window.prototype = {
       if (!this.currentDrag || this.currentDrag == this.element) {
 
         var content = $(this.element.id + '_content');
+          if (!content) {
+              return;
+          }
         content.setStyle({height: height  + 'px'});
         content.setStyle({width: width  + 'px'});
 

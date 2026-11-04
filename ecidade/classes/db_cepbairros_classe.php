@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE cepbairros
-class cl_cepbairros { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $cp01_codlocalidade = 0; 
-   var $cp01_bairro = null; 
-   var $cp01_sigla = null; 
-   var $cp01_codbairro = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cepbairros {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $cp01_codlocalidade = 0;
+   var $cp01_bairro = null;
+   var $cp01_sigla = null;
+   var $cp01_codbairro = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 cp01_codlocalidade = int8 = Codigo da Localidade 
-                 cp01_bairro = varchar(72) = Nome do bairro 
-                 cp01_sigla = varchar(2) = Sigla 
-                 cp01_codbairro = int8 = Codigo do Bairro 
+                 cp01_codlocalidade = int8 = Codigo da Localidade
+                 cp01_bairro = varchar(72) = Nome do bairro
+                 cp01_sigla = varchar(2) = Sigla
+                 cp01_codbairro = int8 = Codigo do Bairro
                  ";
-   //funcao construtor da classe 
-   function cl_cepbairros() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cepbairros"); 
+     $this->rotulo = new rotulo("cepbairros");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cepbairros {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cp01_codlocalidade = ($this->cp01_codlocalidade == ""?@$GLOBALS["HTTP_POST_VARS"]["cp01_codlocalidade"]:$this->cp01_codlocalidade);
        $this->cp01_bairro = ($this->cp01_bairro == ""?@$GLOBALS["HTTP_POST_VARS"]["cp01_bairro"]:$this->cp01_bairro);
@@ -80,9 +80,9 @@ class cl_cepbairros {
      }
    }
    // funcao para inclusao
-   function incluir ($cp01_codbairro){ 
+   public function incluir ($cp01_codbairro){
       $this->atualizacampos();
-     if($this->cp01_codlocalidade == null ){ 
+     if($this->cp01_codlocalidade == null ){
        $this->erro_sql = " Campo Codigo da Localidade nao Informado.";
        $this->erro_campo = "cp01_codlocalidade";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_cepbairros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp01_bairro == null ){ 
+     if($this->cp01_bairro == null ){
        $this->erro_sql = " Campo Nome do bairro nao Informado.";
        $this->erro_campo = "cp01_bairro";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_cepbairros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp01_sigla == null ){ 
+     if($this->cp01_sigla == null ){
        $this->erro_sql = " Campo Sigla nao Informado.";
        $this->erro_campo = "cp01_sigla";
        $this->erro_banco = "";
@@ -109,8 +109,8 @@ class cl_cepbairros {
        $this->erro_status = "0";
        return false;
      }
-       $this->cp01_codbairro = $cp01_codbairro; 
-     if(($this->cp01_codbairro == null) || ($this->cp01_codbairro == "") ){ 
+       $this->cp01_codbairro = $cp01_codbairro;
+     if(($this->cp01_codbairro == null) || ($this->cp01_codbairro == "") ){
        $this->erro_sql = " Campo cp01_codbairro nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -119,19 +119,19 @@ class cl_cepbairros {
        return false;
      }
      $sql = "insert into cepbairros(
-                                       cp01_codlocalidade 
-                                      ,cp01_bairro 
-                                      ,cp01_sigla 
-                                      ,cp01_codbairro 
+                                       cp01_codlocalidade
+                                      ,cp01_bairro
+                                      ,cp01_sigla
+                                      ,cp01_codbairro
                        )
                 values (
-                                $this->cp01_codlocalidade 
-                               ,'$this->cp01_bairro' 
-                               ,'$this->cp01_sigla' 
-                               ,$this->cp01_codbairro 
+                                $this->cp01_codlocalidade
+                               ,'$this->cp01_bairro'
+                               ,'$this->cp01_sigla'
+                               ,$this->cp01_codbairro
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de Bairros ($this->cp01_codbairro) nao Incluído. Inclusao Abortada.";
@@ -166,16 +166,16 @@ class cl_cepbairros {
        $resac = db_query("insert into db_acount values($acount,1192,7173,'','".AddSlashes(pg_result($resaco,0,'cp01_codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($cp01_codbairro=null) { 
+   public function alterar ($cp01_codbairro=null) {
       $this->atualizacampos();
      $sql = " update cepbairros set ";
      $virgula = "";
-     if(trim($this->cp01_codlocalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_codlocalidade"])){ 
+     if(trim($this->cp01_codlocalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_codlocalidade"])){
        $sql  .= $virgula." cp01_codlocalidade = $this->cp01_codlocalidade ";
        $virgula = ",";
-       if(trim($this->cp01_codlocalidade) == null ){ 
+       if(trim($this->cp01_codlocalidade) == null ){
          $this->erro_sql = " Campo Codigo da Localidade nao Informado.";
          $this->erro_campo = "cp01_codlocalidade";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_cepbairros {
          return false;
        }
      }
-     if(trim($this->cp01_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_bairro"])){ 
+     if(trim($this->cp01_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_bairro"])){
        $sql  .= $virgula." cp01_bairro = '$this->cp01_bairro' ";
        $virgula = ",";
-       if(trim($this->cp01_bairro) == null ){ 
+       if(trim($this->cp01_bairro) == null ){
          $this->erro_sql = " Campo Nome do bairro nao Informado.";
          $this->erro_campo = "cp01_bairro";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_cepbairros {
          return false;
        }
      }
-     if(trim($this->cp01_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_sigla"])){ 
+     if(trim($this->cp01_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_sigla"])){
        $sql  .= $virgula." cp01_sigla = '$this->cp01_sigla' ";
        $virgula = ",";
-       if(trim($this->cp01_sigla) == null ){ 
+       if(trim($this->cp01_sigla) == null ){
          $this->erro_sql = " Campo Sigla nao Informado.";
          $this->erro_campo = "cp01_sigla";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_cepbairros {
          return false;
        }
      }
-     if(trim($this->cp01_codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_codbairro"])){ 
+     if(trim($this->cp01_codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp01_codbairro"])){
        $sql  .= $virgula." cp01_codbairro = $this->cp01_codbairro ";
        $virgula = ",";
-       if(trim($this->cp01_codbairro) == null ){ 
+       if(trim($this->cp01_codbairro) == null ){
          $this->erro_sql = " Campo Codigo do Bairro nao Informado.";
          $this->erro_campo = "cp01_codbairro";
          $this->erro_banco = "";
@@ -246,7 +246,7 @@ class cl_cepbairros {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de Bairros nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->cp01_codbairro;
@@ -274,14 +274,14 @@ class cl_cepbairros {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($cp01_codbairro=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($cp01_codbairro=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cp01_codbairro));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -310,7 +310,7 @@ class cl_cepbairros {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de Bairros nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$cp01_codbairro;
@@ -338,11 +338,11 @@ class cl_cepbairros {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -364,10 +364,10 @@ class cl_cepbairros {
       }
      return $result;
    }
-   function sql_query ( $cp01_codbairro=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $cp01_codbairro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,15 +381,15 @@ class cl_cepbairros {
      $sql2 = "";
      if($dbwhere==""){
        if($cp01_codbairro!=null ){
-         $sql2 .= " where cepbairros.cp01_codbairro = $cp01_codbairro "; 
-       } 
+         $sql2 .= " where cepbairros.cp01_codbairro = $cp01_codbairro ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,10 +398,10 @@ class cl_cepbairros {
      }
      return $sql;
   }
-   function sql_query_file ( $cp01_codbairro=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $cp01_codbairro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,15 +414,15 @@ class cl_cepbairros {
      $sql2 = "";
      if($dbwhere==""){
        if($cp01_codbairro!=null ){
-         $sql2 .= " where cepbairros.cp01_codbairro = $cp01_codbairro "; 
-       } 
+         $sql2 .= " where cepbairros.cp01_codbairro = $cp01_codbairro ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

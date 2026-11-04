@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -127,19 +127,19 @@ td {
 	<tr align="top">
 	<td width="43%" height="30" colspan="6" bordercolor="#FFFFCC"><div align="center"><font size="2">
 	<strong>Período de : </strong>
-	<?
+	<?php
 	$datai_ano = date('Y');
 	$datai_mes = '01';
 	$datai_dia = '01';
 	db_inputdata('datai',$datai_dia,$datai_mes,$datai_ano,true,'text',4);
 	?>
 	<strong>Até : </strong>
-	<?
+	<?php
 	$dataf_ano = date('Y');
 	$dataf_mes = date('m');
 	$dataf_dia = date('d');
 	db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4);
-	?>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<?
+	?>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<?php
          $x = array("c"=>"Competência","p"=>"Pagamento");
          db_select('tipo',$x,'text',2);
          $y = array("m"=>"Valores por mes","t"=>"Somente totais");
@@ -152,7 +152,7 @@ td {
 	    <th class="borda" align="center" style="font-size:12px" nowrap>Classe</th>
             <th class="borda" align="left" style="font-size:12px" nowrap>Descrição</th>
           </tr>
-	  <?
+	  <?php
 	    $cor = '#E4F471';
             for($i = 0;$i < $numrows;$i++) {
               db_fieldsmemory($result,$i);
@@ -170,7 +170,7 @@ td {
             <td height="20px" class="borda" style="font-size:11px" align="center" nowrap><?=$q12_classe?></td>
 	    <td height="20px" class="borda" style="font-size:11px" align="left" nowrap><?=$q12_descr?></td>
           </tr>
-	  <?
+	  <?php
           }
 	  ?>
         </table>   

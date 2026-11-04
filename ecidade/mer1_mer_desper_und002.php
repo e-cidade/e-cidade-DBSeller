@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -37,61 +37,61 @@ $clmer_desper_und = new cl_mer_desper_und;
 $db_opcao         = 22;
 $db_botao         = false;
 if (isset($excluir)) {
-	
+
   $aux      = $me23_i_desperdicio;
   db_inicio_transacao();
   $db_opcao = 3;
   $clmer_desper_und->excluir($me23_i_codigo);
   db_fim_transacao();
-  
+
 }
 if (isset($alterar)) {
-	
+
   $aux      = $me23_i_desperdicio;
   db_inicio_transacao();
   $db_opcao = 2;
   $clmer_desper_und->alterar($me23_i_codigo);
   db_fim_transacao();
-  
+
 } else {
-	
+
   if (isset($opcao)) {
-  	
+
     if ($opcao == "alterar") {
-    	
+
       $db_opcao = 2;
-      $result1=$clmer_desper_und->sql_record($clmer_desper_und->sql_query("","*","","me23_i_codigo=".$me23_i_codigo)); 
+      $result1=$clmer_desper_und->sql_record($clmer_desper_und->sql_query("","*","","me23_i_codigo=".$me23_i_codigo));
       if ($clmer_desper_und->numrows>0) {
-      	
-        db_fieldsmemory($result1,0);   
+
+        db_fieldsmemory($result1,0);
         $sql    = $clmer_desper_und->sql_query(null,'*',null,"me23_i_codigo=$me23_i_codigo");
         $result = db_query($sql);
         $linhas = pg_num_rows($result);
         if ($linhas>0) {
           db_fieldsmemory($result,0);
         }
-             
+
       }
     } else if ($opcao=="excluir" || isset($db_opcao) && $db_opcao==3) {
       $db_opcao = 3;
       } else {
-      	
+
         if (isset($alterar)) {
           $db_opcao = 2;
         }
-        
+
       }
    } else {
-   	
+
 	 if (isset($chavepesquisa)) {
-	 	
+
        $db_opcao = 2;
        $result   = $clmer_desper_und->sql_record($clmer_desper_und->sql_query($chavepesquisa));
        db_fieldsmemory($result,0);
        $db_botao = true;
-       
+
      }
-   }       
+   }
 }
 
 ?>
@@ -106,10 +106,10 @@ if (isset($alterar)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
 <table border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td align="left" valign="top" bgcolor="#CCCCCC">
     <fieldset style="width:95%"><legend><b>Alteração de Desperdício</b></legend>
-	<? include(modification("forms/db_frmmer_desper_und.php"));?>
+	<?php include(modification("forms/db_frmmer_desper_und.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -117,36 +117,36 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
-	
+
   if ($clmer_desper_und->erro_status=="0") {
-  	
+
     $clmer_desper_und->erro(true,false);
     $db_botao = true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
     if ($clmer_desper_und->erro_campo!="") {
-    	
+
       echo "<script> document.form1.".$clmer_desper_und->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_desper_und->erro_campo.".focus();</script>";
-      
+
     }
   } else {
-  	
+
     $clmer_desper_und->erro(true,false);
     echo "<script>location.href='mer1_mer_desper_und002.php?me23_i_desperdicio".$aux."'</script>";
-    
+
   }
 }
 if (isset($excluir)) {
-	
+
   if ($clmer_desper_und->erro_status=="0") {
     $clmer_desper_und->erro(true,false);
   } else {
-  	
+
     $clmer_desper_und->erro(true,false);
     echo "<script>location.href='mer1_mer_desper_und002.php?me23_i_desperdicio".$aux."'</script>";
-    
+
   }
 }
 if ($db_opcao==22) {

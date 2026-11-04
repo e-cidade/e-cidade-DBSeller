@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -58,9 +58,9 @@ class InicialPartilhaCustas extends \BaseClassRepository
 
         $oDaoCustas->v36_taxa = $oCustas->getCodigoTaxa();
         $oDaoCustas->v36_inicialpartilha = $oCustas->getCodigoInicialPartilha();
-        
+
         $oInicialPartilha = $oCustas->getInicialPartilha();
-        
+
         if (!empty($oInicialPartilha)) {
             $oDaoCustas->v36_inicialpartilha = $oInicialPartilha->getCodigo();
         }
@@ -144,7 +144,9 @@ class InicialPartilhaCustas extends \BaseClassRepository
         $lResult = $oDao->excluir($oCustas->getCodigo());
 
         if (!$lResult) {
-            throw new DBException("Erro ao apagar a custas da taxa {$oCustas->getCodigoTaxa()} da partilha {$oCustas->getCodigoInicialPartilha()}");
+            $sMsg = "Erro ao apagar a custas da taxa {$oCustas->getCodigoTaxa()} ";
+            $sMsg .= "da partilha {$oCustas->getCodigoInicialPartilha()}";
+            throw new DBException($sMsg);
         }
 
         return true;
@@ -187,7 +189,8 @@ class InicialPartilhaCustas extends \BaseClassRepository
         $rsResult = db_query($sSql);
 
         if (!$rsResult) {
-            throw new DBException("Ocorreu um erro ao buscar as Custas {$iCodigoCusta} da Partilha {$iCodigoPartilha}.");
+            $sMsg = "Ocorreu um erro ao buscar as Custas {$iCodigoCusta} da Partilha {$iCodigoPartilha}.";
+            throw new DBException($sMsg);
         }
 
         return $this->make(pg_fetch_object($rsResult, 0));

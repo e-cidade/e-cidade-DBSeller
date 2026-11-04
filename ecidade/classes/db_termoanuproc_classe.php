@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: dividaativa
 //CLASSE DA ENTIDADE termoanuproc
-class cl_termoanuproc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $v22_sequencial = 0; 
-   var $v22_termoanu = 0; 
-   var $v22_processo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_termoanuproc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $v22_sequencial = 0;
+   var $v22_termoanu = 0;
+   var $v22_processo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v22_sequencial = int4 = Código sequencial 
-                 v22_termoanu = int4 = Anulação 
-                 v22_processo = int4 = Código do processo 
+                 v22_sequencial = int4 = Código sequencial
+                 v22_termoanu = int4 = Anulação
+                 v22_processo = int4 = Código do processo
                  ";
-   //funcao construtor da classe 
-   function cl_termoanuproc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("termoanuproc"); 
+     $this->rotulo = new rotulo("termoanuproc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_termoanuproc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v22_sequencial = ($this->v22_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v22_sequencial"]:$this->v22_sequencial);
        $this->v22_termoanu = ($this->v22_termoanu == ""?@$GLOBALS["HTTP_POST_VARS"]["v22_termoanu"]:$this->v22_termoanu);
@@ -77,9 +77,9 @@ class cl_termoanuproc {
      }
    }
    // funcao para inclusao
-   function incluir ($v22_sequencial){ 
+   public function incluir ($v22_sequencial){
       $this->atualizacampos();
-     if($this->v22_termoanu == null ){ 
+     if($this->v22_termoanu == null ){
        $this->erro_sql = " Campo Anulação nao Informado.";
        $this->erro_campo = "v22_termoanu";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_termoanuproc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v22_processo == null ){ 
+     if($this->v22_processo == null ){
        $this->erro_sql = " Campo Código do processo nao Informado.";
        $this->erro_campo = "v22_processo";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_termoanuproc {
        return false;
      }
      if($v22_sequencial == "" || $v22_sequencial == null ){
-       $result = db_query("select nextval('termoanuproc_v22_sequencial_seq')"); 
+       $result = db_query("select nextval('termoanuproc_v22_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: termoanuproc_v22_sequencial_seq do campo: v22_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: termoanuproc_v22_sequencial_seq do campo: v22_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->v22_sequencial = pg_result($result,0,0); 
+       $this->v22_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from termoanuproc_v22_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $v22_sequencial)){
@@ -118,10 +118,10 @@ class cl_termoanuproc {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->v22_sequencial = $v22_sequencial; 
+         $this->v22_sequencial = $v22_sequencial;
        }
      }
-     if(($this->v22_sequencial == null) || ($this->v22_sequencial == "") ){ 
+     if(($this->v22_sequencial == null) || ($this->v22_sequencial == "") ){
        $this->erro_sql = " Campo v22_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_termoanuproc {
        return false;
      }
      $sql = "insert into termoanuproc(
-                                       v22_sequencial 
-                                      ,v22_termoanu 
-                                      ,v22_processo 
+                                       v22_sequencial
+                                      ,v22_termoanu
+                                      ,v22_processo
                        )
                 values (
-                                $this->v22_sequencial 
-                               ,$this->v22_termoanu 
-                               ,$this->v22_processo 
+                                $this->v22_sequencial
+                               ,$this->v22_termoanu
+                               ,$this->v22_processo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "termoanuproc ($this->v22_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_termoanuproc {
        $resac = db_query("insert into db_acount values($acount,1699,9926,'','".AddSlashes(pg_result($resaco,0,'v22_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($v22_sequencial=null) { 
+   public function alterar ($v22_sequencial=null) {
       $this->atualizacampos();
      $sql = " update termoanuproc set ";
      $virgula = "";
-     if(trim($this->v22_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v22_sequencial"])){ 
+     if(trim($this->v22_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v22_sequencial"])){
        $sql  .= $virgula." v22_sequencial = $this->v22_sequencial ";
        $virgula = ",";
-       if(trim($this->v22_sequencial) == null ){ 
+       if(trim($this->v22_sequencial) == null ){
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "v22_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_termoanuproc {
          return false;
        }
      }
-     if(trim($this->v22_termoanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v22_termoanu"])){ 
+     if(trim($this->v22_termoanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v22_termoanu"])){
        $sql  .= $virgula." v22_termoanu = $this->v22_termoanu ";
        $virgula = ",";
-       if(trim($this->v22_termoanu) == null ){ 
+       if(trim($this->v22_termoanu) == null ){
          $this->erro_sql = " Campo Anulação nao Informado.";
          $this->erro_campo = "v22_termoanu";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_termoanuproc {
          return false;
        }
      }
-     if(trim($this->v22_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v22_processo"])){ 
+     if(trim($this->v22_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v22_processo"])){
        $sql  .= $virgula." v22_processo = $this->v22_processo ";
        $virgula = ",";
-       if(trim($this->v22_processo) == null ){ 
+       if(trim($this->v22_processo) == null ){
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "v22_processo";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_termoanuproc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "termoanuproc nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->v22_sequencial;
@@ -267,14 +267,14 @@ class cl_termoanuproc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($v22_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($v22_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v22_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_termoanuproc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "termoanuproc nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$v22_sequencial;
@@ -330,11 +330,11 @@ class cl_termoanuproc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_termoanuproc {
       }
      return $result;
    }
-   function sql_query ( $v22_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $v22_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,15 +380,15 @@ class cl_termoanuproc {
      $sql2 = "";
      if($dbwhere==""){
        if($v22_sequencial!=null ){
-         $sql2 .= " where termoanuproc.v22_sequencial = $v22_sequencial "; 
-       } 
+         $sql2 .= " where termoanuproc.v22_sequencial = $v22_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,10 +397,10 @@ class cl_termoanuproc {
      }
      return $sql;
   }
-   function sql_query_file ( $v22_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $v22_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,15 +413,15 @@ class cl_termoanuproc {
      $sql2 = "";
      if($dbwhere==""){
        if($v22_sequencial!=null ){
-         $sql2 .= " where termoanuproc.v22_sequencial = $v22_sequencial "; 
-       } 
+         $sql2 .= " where termoanuproc.v22_sequencial = $v22_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

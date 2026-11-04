@@ -25,24 +25,25 @@
  *                                licenca/licenca_pt.txt
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING']);
 
-require modification("libs/db_stdlib.php");
-require modification("libs/db_conecta.php");
-include modification("libs/db_sessoes.php");
-include modification("libs/db_utils.php");
-include modification("libs/db_usuariosonline.php");
-require modification("libs/db_sql.php");
-require modification("classes/db_termo_classe.php");
-require modification("classes/db_cgm_classe.php");
-require modification("classes/db_protprocesso_classe.php");
-include modification("dbforms/db_funcoes.php");
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("libs/db_sql.php");
+require_once modification("classes/db_termo_classe.php");
+require_once modification("classes/db_cgm_classe.php");
+require_once modification("classes/db_protprocesso_classe.php");
+require_once modification("dbforms/db_funcoes.php");
 require_once modification("classes/db_parcvalor_classe.php");
 require_once modification("model/CgmFactory.model.php");
 require_once modification('model/CgmFisico.model.php');
 require_once modification('model/CgmJuridico.model.php');
 require_once modification("classes/db_numpref_classe.php");
 
+use App\Domain\Tributario\Juridico\Services\InicialDoForo\ParcelamentoCustasProcessoService;
 use ECidade\Tributario\Arrecadacao\Model\HonorarioParcelamento;
 use ECidade\Tributario\Arrecadacao\Repository\HonorarioParcelamentoRepository;
 use ECidade\Tributario\Divida\Termo\Repository\Termo as TermoRepository;
@@ -52,7 +53,7 @@ use ECidade\Tributario\Juridico\ProcessoForo\Repository\ProcessoForo as Processo
 use \ECidade\Tributario\Arrecadacao\Custas\Service;
 use \ECidade\Tributario\Arrecadacao\Repository\ParcValor as ParcValorRepository;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $nomeArquivo = '';
 $oPost = db_utils::postMemory($_POST);
@@ -66,9 +67,10 @@ $clprotprocesso = new cl_protprocesso;
 $clrotulo = new rotulocampo;
 $clnumpref = new cl_numpref;
 
-$rs = $clnumpref->sql_record($clnumpref->sql_query(db_getsession("DB_anousu"), db_getsession("DB_instit"), 'k03_filtrarreceita'));
-$filtrarReceita = \db_utils::fieldsMemory($rs, 0)->k03_filtrarreceita;
-$filtrarReceita = $filtrarReceita == "t"?true:false;
+$rs = $clnumpref->sql_record($clnumpref->sql_query(db_getsession("DB_anousu"), db_getsession("DB_instit"), 'k03_filtrarreceita, k03_processoparcelamento'));
+$parametrosTributario = \db_utils::fieldsMemory($rs, 0);
+
+$filtrarReceita = $parametrosTributario->k03_filtrarreceita == "t"?true:false;
 $iCodProc = 'null';
 
 if (isset($envia) || isset($oPost->btnSimularParcelamento) or @$mostra == 1) {
@@ -89,6 +91,9 @@ $lInicial = true;
 if (!isset($inicial)) {
     $lInicial = false;
 }
+
+//verifica se k03_processoparcelamento (processo obrigatorio para parcelamentos) esta habilidato
+$processoObrigatorioParcelamento = $parametrosTributario->k03_processoparcelamento == "t"?true:false;
 
 // Faz utilização da model responsavel pela captura e processamento da requisição de debitos da CGF
 $oGetalFinanceiraDebitos = new GeralFinanceiraDebitosRequest();
@@ -117,23 +122,26 @@ if ($tipo_debito == 13) {
                 );
             }
 
-
             $sNumparVenc = substr(
                 $numpreVenc->sNumpres,
                 strpos($numpreVenc->sNumpres, 'P') + 1,
                 strpos($numpreVenc->sNumpres, 'R') - strpos($numpreVenc->sNumpres, 'P') - 1
             );
 
-            $sReceitVenc = substr(
-                $numpreVenc->sNumpres,
-                strpos($numpreVenc->sNumpres, 'R') + 1
-            );
-
             $sSqlVenc = "SELECT k00_dtvenc as dt_venc
-                         FROM arrecad
-                        WHERE k00_numpre = {$sNumpreVenc}
-                          AND k00_numpar = {$sNumparVenc}
-                          AND k00_receit = {$sReceitVenc}";
+                FROM arrecad
+                WHERE k00_numpre = {$sNumpreVenc}
+                    AND k00_numpar = {$sNumparVenc}";
+
+            if (preg_match_all('/(?<=R)\d+/', $numpreVenc->sNumpres, $sReceitVenc)) {
+                $sReceitVenc = array_unique($sReceitVenc[0]);
+                
+                sort($sReceitVenc);
+
+                if (count($sReceitVenc) > 0 and $sReceitVenc[0] != 0) {
+                    $sSqlVenc .= "AND k00_receit in (" . implode(',', $sReceitVenc) . ")";
+                }
+            }
 
             $rsVenc = db_query($sSqlVenc) or die($sSqlVenc);
 
@@ -266,7 +274,7 @@ $tipodeb = explode('X', $tipo);
 
 $tipodeb = array_unique($tipodeb);
 
-for ($tb = 0; $tb < count($tipodeb); $tb++) {
+foreach (array_keys($tipodeb) as $tb) {
     if ($tipodeb[$tb] != "") {
 
         foreach ($aNumpreNumparVenc as $oDebito) {
@@ -513,6 +521,10 @@ $whereReceita = " not exists (select k180_estorc
     }
 }
 
+if (isParaiba() and empty($whereReceita)){
+    $whereReceita = "1 = 1";
+}
+
 $sqlcadtipoparc = "	select k40_codigo, k40_descr, k40_aplicacao, k40_ordem, tipovlr,k40_permvalcadparc,k40_permdataparc
 					from cadtipoparc
 					inner join tipoparc on k40_codigo = cadtipoparc
@@ -533,10 +545,6 @@ $sqlcadtipoparc = "	select k40_codigo, k40_descr, k40_aplicacao, k40_ordem, tipo
                                 $whereReceita
                           )";
 $sqlcadtipoparc .= " order by k40_ordem ";
-
-// echo($sqlcadtipoparc);
-// echo $whereReceita;
-// dd($tipo_debito, $whereReceita);
 
 $resultcadtipoparc = db_query($sqlcadtipoparc) or die($sqlcadtipoparc);
 
@@ -623,16 +631,11 @@ if (($k03_tipo == 5 || $k03_tipo == 6 || $k03_tipo == 13 || $k03_tipo == 16 || $
              */
             } else {
                 $numpre = substr($registro[1], 1);
-
-                //$sqlprocura = "select * from NUMPRES_CALC where k00_numpre = $numpre and k00_numpar = 0";
             }
             $aNumpres[] = $numpre;
         }
         $aNumpres = array_unique($aNumpres);
-        //echo "<pre>";
-        //echo var_dump($aNumpres);
-        //echo "</pre>";
-        //exit();
+
         foreach ($aNumpres as $value) {
             $sSqlQtdPar = "select count(v07_desconto) as qtd from fc_origemparcelamento($value) as o inner join termo on riparcel = v07_parcel where v07_desconto = $k40_cadtipoparc";
             $rsSqlQtdPar = db_query($sSqlQtdPar);
@@ -758,10 +761,6 @@ if ($entra == false) {
 
     for ($parcelas = 0; $parcelas < pg_numrows($resulttipoparc); $parcelas++) {
         db_fieldsmemory($resulttipoparc, $parcelas, true);
-        if ($desconto == 0 and 1 == 2) {
-            $descmul = 0;
-            $descjur = 0;
-        }
         $tiposparc .= $tipoparc . "=" . $maxparc . "=" . $descmul . "=" . $descjur . "=" . (int) $k42_minentrada . "=" . $k40_forma . "=" . $descvlr . "=" . $vlrmin . "=" . $tipovlr . "=" . $minparc . "=" . ($parcelas == (pg_numrows($resulttipoparc) - 1) ? "" : "-");
     }
 
@@ -845,13 +844,13 @@ for ($x = 0; $x < sizeof($novamatrizval); $x++) {
 db_putsession("conteudoparc", $conteudofinal);
 
 ?>
-
+<script language="JavaScript" src="scripts/scripts.js"></script>
 <script>
 
 parent.document.form1.japarcelou.value = "1";
 parent.document.form1.numpresaparcelar.value = parent.document.form1.numpresaparcelar.value + '<?=@$numpre1;?>' + ',';
 parent.document.form1.numparaparcelar.value = parent.document.form1.numparaparcelar.value + '<?=@$numpar1;?>' + ',';
-
+js_removeObj('msgBox');
 </script>
 
 <?php
@@ -1035,24 +1034,16 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
             $totregistros = 0;
         }
 
-//        die("numrows: " . pg_numrows($resulttipoparc) . " - todasmarc: $k40_todasmarc - totalregpassados: $totalregistrospassados - totregistros: $totregistros - passar: $passar");
-
         if (pg_numrows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados != $totregistros : false) or $passar == false) {
             $desconto = 0;
         } else {
             $desconto = $k40_codigo;
         }
 
-        //echo "<br>numrows: " . pg_numrows($resulttipoparc) . " - todasmarc: $k40_todasmarc - totregpas: $totalregistrospassados - totreg: $totregistros - passar: $passar - desconto: $desconto<br>";
-
         $tiposparc = "";
 
         for ($parcelas = 0; $parcelas < pg_numrows($resulttipoparc); $parcelas++) {
             db_fieldsmemory($resulttipoparc, $parcelas, true);
-            if ($desconto == 0 and 1 == 2) {
-                $descmul = 0;
-                $descjur = 0;
-            }
             $tiposparc .= $tipoparc . "=" . $maxparc . "=" . $descmul . "=" . $descjur . "=" . (int) $k42_minentrada . "=" . $k40_forma . "=" . $descvlr . "=" . $vlrmin . "=" . $tipovlr . "=" . $minparc . "=" . ($parcelas == (pg_numrows($resulttipoparc) - 1) ? "" : "-");
         }
 
@@ -1104,7 +1095,7 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
             $k00_total = round((0 + $k00_vlrcor + $k00_juros + $k00_multa - $k00_desconto), 2);
 
             if (pg_numrows($resultportipo) == 0) {
-//                db_msgbox("Tipo de Debito = ".$k03_tipodebito);
+
                 $sql = "insert into totalportipo values ($k03_tipodebito, $desconto, ";
                 $sql .= "$k00_vlrhis, ";
                 $sql .= "$k00_vlrcor, ";
@@ -1174,10 +1165,10 @@ if (isset($oGet->inicial)) {
 
 $sProcessos = "";
 
-if (empty($oGet->inicial) && !empty($cgm->z01_numcgm)) {
+$aIniciais = array();
+$aProcessos = array();
 
-    $aIniciais = array();
-    $aProcessos = array();
+if (empty($oGet->inicial) && !empty($cgm->z01_numcgm)) {
 
     foreach ($aNumpres as $iNumpreInicial) {
 
@@ -1233,9 +1224,10 @@ if (empty($oGet->inicial) && !empty($cgm->z01_numcgm)) {
 
 }
 
-//
+$aNumeroParcelasHonorarios = array();
 $honorarios = array();
 $maiorNumeroParcelasHonorarios = 1;
+$sProcessosRelacionados = $sProcessos;
 
 if (!empty($sProcessos)) {
     $processosForoParcelamento = explode(',', $sProcessos);
@@ -1269,7 +1261,7 @@ if (!empty($sProcessos)) {
             $honorario = $honorarioParcelamentoRepository->getByProcessoForo($processoForoModel);
         }
 
-        if ($honorario !== null) {
+        if ($honorario !== null && $honorario->getTaxas() !== null) {
             foreach ($honorario->getTaxas() as $taxa) {
                 if (!$taxa->isAplicaHonorario()) {
                     continue;
@@ -1281,6 +1273,8 @@ if (!empty($sProcessos)) {
             if ($honorario->getNumeroParcelas() > $maiorNumeroParcelasHonorarios) {
                 $maiorNumeroParcelasHonorarios = $honorario->getNumeroParcelas();
             }
+
+            $aNumeroParcelasHonorarios[$processoForoModel->getCodigoForo()] = $maiorNumeroParcelasHonorarios;
         }
     }
 } elseif (!empty($sIniciais)) {
@@ -1295,6 +1289,8 @@ if (!empty($sProcessos)) {
 
         if ($processoForoModel !== null && $processoForoModel->getAnulado() == 'f') {
             $honorario = $honorarioRepository->getByProcessoForo($processoForoModel);
+            
+            $sProcessosRelacionados .= "," . $processoForoModel->getCodigo();
         }
 
         if ($processoForoModel === null) {
@@ -1335,7 +1331,7 @@ if (!empty($sProcessos)) {
 
         }
 
-        if ($honorario !== null) {
+        if ($honorario !== null && $honorario->getTaxas() !== null) {
             foreach ($honorario->getTaxas() as $taxa) {
                 if (!$taxa->isAplicaHonorario()) {
                     continue;
@@ -1347,59 +1343,107 @@ if (!empty($sProcessos)) {
             if ($honorario->getNumeroParcelas() > $maiorNumeroParcelasHonorarios) {
                 $maiorNumeroParcelasHonorarios = $honorario->getNumeroParcelas();
             }
+
+            if (isset($processoForoModel) && !empty($processoForoModel) && db_utils::ativaParcelamentoCustas()){
+                $aNumeroParcelasHonorarios[$processoForoModel->getCodigoForo()] = $maiorNumeroParcelasHonorarios;
+            }
         }
     }
 
 }
 
-$liberaHonorario = false;
-$percentualTaxa = 0;
 
-foreach ($honorarios as $honorario) {
-
-    foreach ($honorario->getTaxas() as $taxa) {
-
-        if (!$taxa->isAplicaHonorario()) {
-            continue;
-        }
-
-        $liberaHonorario = true;
-
-        if ($honorario->getProcessoForo() !== null) {
-            $label = "Processo {$honorario->getProcessoForo()->getCodigoForo()}: ";
-        } else {
-            $label = "Inicial {$honorario->getInicial()->getCodigo()}: ";
-        }
-
-        $label .= "{$taxa->getPercentual()}%";
-        $label .= " / {$honorario->getNumeroParcelas()} Parcela(s)";
-
-        $labelHonorario[] = $label;
-    }
-}
 /**
- * Verificar a necessidade se somente existir inicial, ver como buscar o percentual da taxa
+ * Busca valores de custas adicionais (honorarios e taxas) para
+ * acrescentar junto ao valor total e valor das parcelas
  */
-/*
-if (empty($labelHonorario) ){
-foreach ($honorarios as $honorario) {
+$tiposParc                 = $tiposparc;
+$valoresPortipo            = $valoresportipo;
+$parcelamentoCustasService = ParcelamentoCustasProcessoService::getInstance();
+$percentualTaxa            = 0;
+$totalCustasAdicionais     = 0;
+$honorariosAdicionais      = 0;
+$taxasAdicionais           = 0;
+$valorAdicional            = 0;
+$liberaHonorario           = false;
+$possuiCustasAdicionais    = false;
+$custasParceladas          = [];
+$custasAdicionais          = [];
+$labelHonorario            = [];
 
-$liberaHonorario = true;
+try {
+if (isset($k03_tipo) && (int)$k03_tipo === 18 && db_utils::ativaParcelamentoCustas()) {
 
-if ($honorario->getProcessoForo() !== null) {
-$label = "Processo {$honorario->getProcessoForo()->getCodigoForo()}: ";
+    $parcelamentoCustasService->setCustasPartilhas(explode(',',$sIniciais), $tipo_debito, $k03_tipo);
+    
+    $totalHonorariosAdicionais = $parcelamentoCustasService->getTotalHonorariosPartilhaParcelado() 
+    + $parcelamentoCustasService->getTotalHonorariosPartilhaNaoParcelado();
+    
+    
+    foreach ($parcelamentoCustasService->getCustasHonorariosPartilhas() as $custa) {
+        if ($custa->codigoforo !== null) {
+        $label = "Processo {$custa->codigoforo}: ";
+    }
+    
+    if (array_key_exists($custa->codigoforo, $aNumeroParcelasHonorarios)){
+        $label .= "{$custa->taxa->getPercentual()}%";
+        $label .= " / {$aNumeroParcelasHonorarios[$custa->codigoforo]} Parcela(s)";
+        
+            if ($custa->taxa->getPercentual()) {
+                $liberaHonorario  = true;
+                $labelHonorario[] = $label;
+            }
+        }
+    }
+    
+    if ($totalHonorariosAdicionais > 0) {
+        $custasAdicionais[] = "Honorários: $totalHonorariosAdicionais";
+    }
+    
+    $totalTaxasAdicionais = $parcelamentoCustasService->getTotalTaxasPartilhaParcelado() 
+    + $parcelamentoCustasService->getTotalTaxasPartilhaNaoParcelado();
+    
+    if ($totalTaxasAdicionais > 0) {
+        $custasAdicionais[] = "Taxas: $totalTaxasAdicionais";
+    }
+    
+    $totalCustasAdicionais = $totalHonorariosAdicionais + $totalTaxasAdicionais;
+    $possuiCustasAdicionais = $totalCustasAdicionais > 0;
 } else {
-$label = "Inicial {$honorario->getInicial()->getCodigo()}: ";
+    $liberaHonorario = false;
+    $percentualTaxa = 0;
+    
+    foreach ($honorarios as $honorario) {
+    
+        if ($honorario !== null && $honorario->getTaxas() !== null) {
+        
+            foreach ($honorario->getTaxas() as $taxa) {
+                
+                if (!$taxa->isAplicaHonorario()) {
+                    continue;
+                }
+                
+                $liberaHonorario = true;
+                
+                if ($honorario->getProcessoForo() !== null) {
+                    $label = "Processo {$honorario->getProcessoForo()->getCodigoForo()}: ";
+                } else {
+                    $label = "Inicial {$honorario->getInicial()->getCodigo()}: ";
+                }
+                $label .= "{$taxa->getPercentual()}%";
+                $label .= " / {$honorario->getNumeroParcelas()} Parcela(s)";
+                    
+                $labelHonorario[] = $label;
+            }
+        }
+    }    
 }
 
-$label .= "10%";
-$label .= " / {$honorario->getNumeroParcelas()} Parcela(s)";
+} catch(Exception $error) {}
 
-$labelHonorario[] = $label;
+$tiposparc      = $tiposParc;
+$valoresportipo = $valoresPortipo;
 
-}
-}
- */
 #####################################################################################
 
 if (isset($envia) || isset($oPost->btnSimularParcelamento) or (@$mostra == 1)) {
@@ -1455,9 +1499,26 @@ if (isset($envia) || isset($oPost->btnSimularParcelamento) or (@$mostra == 1)) {
             $parc = explode(":", $retorno);
             $parc = explode("-", $parc[1]);
 
-            $parcelamentoCustasService = new Service\Parcelamento($parc[0]);
+            if(db_utils::ativaParcelamentoCustas()) {
+                $serviceParcelamentoCustas = new Service\Parcelamento($parc[0]);
+                $serviceParcelamentoCustas->processar();
 
-            $parcelamentoCustasService->processar();
+                ParcelamentoCustasProcessoService::getInstance()->inserirTaxasArrecad(
+                    $parcelamentoCustasService->getCustasPartilhas(),
+                    (int)$v07_numcgm,
+                    (int)$_POST['parc'] + 1,
+                    (int)trim($parc[0])
+                );
+
+                ParcelamentoCustasProcessoService::getInstance()->gravarCustasParceladas(
+                    $parcelamentoCustasService->getCustasPartilhas(),
+                    (int)trim($parc[0])
+                );
+
+                ParcelamentoCustasProcessoService::getInstance()->deletarPartilhaCustas(
+                    (int)trim($parc[0])
+                );
+            }
 
             if (ParcValorRepository::isTermoRefisa($parc[0])) {
                 ParcValorRepository::adicionaParcelas($parc[0], $arrayDados);
@@ -1468,7 +1529,11 @@ if (isset($envia) || isset($oPost->btnSimularParcelamento) or (@$mostra == 1)) {
 
             if (!empty($oPost->btnSimularParcelamento)) {
 
-                include modification('cai3_simulacaoparcelamento002.php');
+                if(db_utils::ativaParcelamentoCustas()){
+                    require_once(modification('cai3_simulacaoparcelamento002.php'));
+                } else {
+                    require_once(modification('cai3_simulacaoparcelamento003.php'));
+                }
                 db_query("rollback");
 
                 echo "<a href='tmp/{$nomeArquivo}' target='_blank'><b>{$nomeArquivo}</b></a>";
@@ -1518,8 +1583,8 @@ $clrotulo->label("p58_codproc");
 <head>
     <title>Documento sem t&iacute;tulo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <script language="JavaScript" src="scripts/scripts.js"></script>
     <script language="JavaScript" src="scripts/prototype.js"></script>
+    <script language="JavaScript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
@@ -1605,13 +1670,17 @@ db_input('z01_nome', 35, $Iz01_nome, true, 'text', 3, '')
 
 if ($k40_permvalparc == 'f') {
     ?>
-                                    <input type="text" name="parcval" size="10" readonly
+                                    <input type="text" name="parcvalcomdesconto" size="10" readonly
+                                           style="background-color:#DEB887">
+                                    <input type="hidden" name="parcval" size="10" readonly
                                            style="background-color:#DEB887">
                                     <?php
 
 } else {
     ?>
-                                    <input type="text" name="parcval" size="10"
+                                    <input type="text" name="parcvalcomdesconto" size="10"
+                                           onBlur="js_troca_valores_parc(this.value)">
+                                    <input type="hidden" name="parcval" size="10"
                                            onBlur="js_troca_valores_parc(this.value)">
                                     <?php
 
@@ -1631,11 +1700,13 @@ if (isset($inicial)) {
                                 <strong>Entrada:</strong>
                             </td>
                             <td nowrap>
-                                <input type="text" name="ent" size="10" onBlur="js_troca_valores(this.value)">
+                                <input type="text" name="entcomdesconto" size="10" onBlur="js_troca_valores(this.value)">
+                                <input type="hidden" name="ent" size="10" onBlur="js_troca_valores(this.value)">
                                 <strong>Última parcela:</strong>
                             </td>
                             <td>
-                                <input type="text" name="parcult" size="10" readonly style="background-color:#DEB887">
+                                <input type="text" name="parcultcomdesconto" size="10" readonly style="background-color:#DEB887">
+                                <input type="hidden" name="parcult" size="10" readonly style="background-color:#DEB887">
                             </td>
                         </tr>
                         <tr>
@@ -1756,34 +1827,69 @@ db_select('arredondamento', $matarredonda, true, 2,
                         </td>
                 <?php }?>
 
+                <?php 
+                    if ($possuiCustasAdicionais) {?>
+                        <td align="left" valign="top">
+                          <fieldset>
+                            <legend>Custas</legend>
+                            <?php foreach ($custasAdicionais as $custaAdicional): ?>
+                                <span><strong><?=$custaAdicional;?></strong></span><br/>
+                            <?php endforeach;?>
+                          </fieldset>
+                        </td>
+                <?php }?>
+
                 <td align="left" valign="top">
-                    <table border="0">
-                        <tr>
-                            <td nowrap title="<?=@$Tp58_codproc;?>">
-                                <?php
-
-db_ancora(@$Lp58_codproc, "js_pesquisap58_codproc(true);", 1);
-?>
-                            </td>
-                            <td>
-                                <?php
-
-db_input('p58_codproc', 6, $Ip58_codproc, true, 'hidden', 1,
-    " onchange='js_pesquisap58_codproc(false);'");
-db_input('p58_requer', 30, $Ip58_requer, true, 'text', 3, '')
-;?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="top"><b>Observações:</b></td>
-                            <td>
-                                <?php
-
-db_textarea("v07_hist", 5, 27, "", false, "text", 3, "js_v();", "", "", "128");
-?>
+                    <table>
+                        <tr id="linhaProcessoSistemaInterno">
+                            <td colspan="2">
+                                <div>
+                                    <fieldset>
+                                        <legend><strong>Dados do Processo</strong></legend>
+                                        <table align="center">
+                                            <tr>
+                                                <td title="<?= @$Tp58_numero ?>">
+                                                    <?php
+                                                    db_ancora($Lp58_numero, 'js_pesquisaProcesso(true)', 1)
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    db_input('p58_numero', 10, '', true, 'text', $db_opcao, "onchange='js_pesquisaProcesso(false)'", '', '', '', 20);
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td title="Ano">Ano</td>
+                                                <td>
+                                                    <input type="number" id="anoSessao" name="anoSessao" value="<?=$anoSessao?>" style="width: 82px;" onchange='js_pesquisaProcesso(false)'>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <?php
+                                                    db_input('z01_nome', 20, isset($Iz01_nome) ? $Iz01_nome : '', true, 'text', 3, "", 'z01_nomeprocesso');
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top"><b>Observações:</b></td>
+                                                <td>
+                                                    <?php
+                                                        db_textarea("v07_hist", 5, 27, "", false, "text", 3, "js_v();", "", "", "128");
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <input type="hidden" id='p58_codproc' name='p58_codproc' value=''>
+                                            <input type="hidden" id='numeroProcessoConcatenado' name='numeroProcessoConcatenado' value=''>
+                                        </table>
+                                    </fieldset>
+                                </div>
                             </td>
                         </tr>
                     </table>
+
                 </td>
                 <td valign="top">
                     <iframe name='parcelas'
@@ -1805,6 +1911,49 @@ if ($lValidaReparcelamento) {
 
 ?>
         <script>
+            const numeroProcesso = document.getElementById('p58_numero');
+            const numeroProcessoConcatenado = document.getElementById("numeroProcessoConcatenado");
+            const nomeProcesso = document.getElementById('z01_nomeprocesso');
+            const codigoProcesso = document.getElementById('p58_codproc');
+
+            function js_pesquisaProcesso(mostra) {
+                numeroProcesso.value = numeroProcesso.value.split('/')[0];
+                numeroProcessoConcatenado.value = numeroProcesso.value + '/' + anoSessao.value;
+                if (mostra == true) {
+                    js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?funcao_js=parent.js_mostraProcesso|p58_codproc|z01_nome|p58_numero', 'Pesquisa', true, '0');
+                } else {
+                    if (numeroProcesso.value != '') {
+                        js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?pesquisa_chave=' + numeroProcessoConcatenado.value + '&funcao_js=parent.js_mostraProcessoHide&sCampoPesquisa=p58_codproc', 'Pesquisa', false, '0');
+                    } else {
+                        nomeProcesso.value = '';
+                        codigoProcesso.value = '';
+                    }
+                }
+            }
+
+            function js_mostraProcessoHide(chave, chave1, erro) {
+                codigoProcesso.value = chave;
+                nomeProcesso.value = chave1;
+                if (erro == true) {
+                    numeroProcesso.focus();
+                    numeroProcesso.value = '';
+                    codigoProcesso.value = '';
+                }
+            }
+
+            function js_mostraProcesso(chave1, chave2, chave3) {
+                codigoProcesso.value = chave1;
+                nomeProcesso.value = chave2;
+                numeroProcesso.value = chave3.split('/')[0]
+                db_iframe_nomes.hide();
+            }
+
+            function js_processaCertidao() {
+                numeroProcesso.value = p58_codproc.value
+                botaoProcessar.type = 'submit'
+                botaoProcessar.click();
+            }
+
 			function js_verifica(k03_tipo) {
 				f = document.form1;
 				alerta = '';
@@ -1821,30 +1970,33 @@ if ($lValidaReparcelamento) {
 
 					alert('A primeira data de vencimento não deve ser maior ou igual a segunda.');
 					return false;
+                    js_removeObj('msgBox');
 				}
 
 				if (f.permitediverso.value == 't') {
 					alert('Para parcelar diverso com outro tipo de débito deve ser importado para divida.');
 					return false;
+                    js_removeObj('msgBox');
 				}
 				if (f.permiteInicial.value == 't') {
 					alert('Não é possível parcelar INICIAL DO FORO ou PARCELAMENTO DO FORO com outro tipo de débito.');
 					return false;
+                    js_removeObj('msgBox');
 				}
 
-                if(!validarSimulacaoParcelamento()){
+                if(!validarSimulacaoParcelamento()) {
                     return false;
+                    js_removeObj('msgBox');
                 }
-				/*--------------------------------------------------------------------------------------------------------------------
-                  Comentado o alerta quando os dados do processo ou das observações não foram preenchidos
-                  if (f.p58_requer.value == '' && f.v07_hist.value == '') {
-                    alerta += " - Processo ou Observações\n";
-                  }
-                ---------------------------------------------------------------------------------------------------------------------*/
 
-//  if (f.v07_hist.value == '') {
-//    alerta += " - Observações\n";
-//
+                <?php
+                if ($processoObrigatorioParcelamento){
+                    echo "if (!validaProcessoSelecionado()) {
+                            js_removeObj('msgBox');
+                            return false;
+                          }";
+                }
+                ?>
 
 				if (f.parc.value == "") {
 					alerta += " - Parcelas\n"
@@ -1855,9 +2007,11 @@ if ($lValidaReparcelamento) {
 				if (f.v07_numcgm.value == "") {
 					alerta += " - Responsável\n"
 				}
+
 				if (alerta != "") {
 					alert('verifique o(s) campo(s)\n' + alerta);
 					return false;
+                    js_removeObj('msgBox');
 				} else {
 					if (k03_tipo == 6 || k03_tipo == 13) {
 						if (confirm('Tem certeza de que deseja efetuar um reparcelamento?') == false) {
@@ -1870,6 +2024,14 @@ if ($lValidaReparcelamento) {
 				}
 				return false;
 			}
+
+            function validaProcessoSelecionado() {
+                if(codigoProcesso.value.trim() === '') {
+                    alert("Selecione um processo.");
+                    return false;
+                }
+                return true
+            }
 
 			function validarSimulacaoParcelamento() {
 				f = document.form1;
@@ -1894,6 +2056,7 @@ if ($lValidaReparcelamento) {
 					alert("Informe o CGM Responsável.");
 					return false;
 				}
+                js_divCarregando('Aguarde processando parcelamento...', 'msgBox');
 				return true;
 			}
 
@@ -1907,20 +2070,25 @@ if ($lValidaReparcelamento) {
 					valor = parcelas.document.getElementById('vt').innerHTML;
 					total = valor / obj.value
 					document.form1.parcval.value = total.toFixed(2);
+                    document.form1.parcvalcomdesconto.value = total.toFixed(2);
 					if (isNaN(parcelas.document.getElementById('val' + obj.value))) {
 						parcelas.document.getElementById('val' + obj.value).checked = true;
 						parcelas.document.getElementById('val' + obj.value).focus();
 					}
 					document.form1.ent.value = total.toFixed(2);
+                    document.form1.entcomdesconto.value = total.toFixed(2);
 				}
 			}
 
 			var x = 0;
 			var y = 0;
 
-			function js_valparc(id, vlrmin) {
+			function js_valparc(id, vlrmin, possuiDesconto, percentualDesconto) {
 
-				valTotalParc = new Number(document.form1.valortotal.value);
+                const custasAdicionais = Number("<?php echo $totalCustasAdicionais;?>");
+                const custasAdicionaisParcela = Number(custasAdicionais / id).toFixed(2);
+
+				valTotalParc = document.form1.valortotal.value;
 
 				if (parcelas.document.getElementById('vt').innerHTML != document.form1.valortotal.value) {
 					js_troca_valores('0');
@@ -2012,10 +2180,10 @@ if ($lValidaReparcelamento) {
 						val_desc_mul = val_desc_mul.toFixed(2);
 
 						valdesconto += valdescontocorrecao + val_desc_jur + val_desc_mul;
-						valtotal += valcorr + (valjuros + valmulta) - valdesconto;
+						valtotal += valcorr + (valjuros + valmulta) - valdesconto + custasAdicionais;
 
 					} else {
-						valtotal += valcorr + valjuros + valmulta;
+						valtotal += valcorr + valjuros + valmulta + custasAdicionais;
 					}
 					valtotcorr = valtotcorr + valcorr;
 					valtotjuros = valtotjuros + valjuros;
@@ -2050,6 +2218,7 @@ if ($lValidaReparcelamento) {
 				valentrada = Math.round(id);
 
 				document.form1.ent.disabled = false;
+                document.form1.entcomdesconto.disabled = false;
 
 				if (document.form1.parc.value >= 1) {
 
@@ -2093,7 +2262,17 @@ if ($lValidaReparcelamento) {
 				} else {
 					valentrada = valtotal;
 					document.form1.parcult.value = 0;
+                    document.form1.parcultcomdesconto.value = 0;
 					document.form1.parcval.value = 0;
+                    document.form1.parcvalcomdesconto.value = 0;
+				}
+
+                valortotalcomdesconto = new Number(parcelas.document.getElementById('vtcomdesconto').innerHTML);
+				valorentradaminima = valortotalcomdesconto * entradaminima / 100;
+				valorentradaminima = valorentradaminima.toFixed(2);
+
+                if (valentrada < valorentradaminima) {
+					valentrada = valorentradaminima;
 				}
 
 				nPercentualEntrada = new Number(entradaminima);
@@ -2101,7 +2280,7 @@ if ($lValidaReparcelamento) {
 				entradaminima = valtotal * entradaminima / 100;
 				entradaminima = entradaminima.toFixed(2);
 
-				if ((valentrada < entradaminima) || (nPercentualEntrada > 0)) {
+				if ((valentrada < entradaminima)) {
 					valentrada = entradaminima;
 				}
 
@@ -2115,6 +2294,7 @@ if ($lValidaReparcelamento) {
 				}
 
 				document.form1.ent.value = valentrada;
+                document.form1.entcomdesconto.value = (valentrada * percentualDesconto).toFixed(2);
 
 				if (document.form1.parc.value >= 1) {
 
@@ -2127,34 +2307,54 @@ if ($lValidaReparcelamento) {
 						} else {
 							x = (valtotcorr - document.form1.ent.value) / (document.form1.parc.value - 1);
 						}
-						document.form1.parcval.value = x.toFixed(2);
+						document.form1.parcval.value = (x + custasAdicionaisParcela).toFixed(2);
+                        document.form1.parcvalcomdesconto.value = ((x + custasAdicionaisParcela) * percentualDesconto).toFixed(2);
 						x = document.form1.parc.value * document.form1.parcval.value;
-						//    x = valtotal - eval(x +'+'+ document.form1.ent.value)
 
 						document.form1.parcult.value = (valtotjuros + valtotmulta).toFixed(2);
+                        document.form1.parcultcomdesconto.value = ((valtotjuros + valtotmulta) * percentualDesconto).toFixed(2);
 
-						if(!!parcelas.document.getElementById('vtcomdesconto')){
+						if(!!parcelas.document.getElementById('vtcomdesconto')){                            
                             parcelas.document.getElementById('vtcomdesconto').innerHTML = valtotalsemdesconto;
+
+                            const valorTotalSemDesconto = parcelas.document.getElementById('vt').innerHTML;
+                            if (Number(valtotalsemdesconto) > Number(valorTotalSemDesconto)) {
+                                parcelas.document.getElementById('vtcomdesconto').innerHTML = valorTotalSemDesconto;
+                            }
                         }
 
 					} else {
+                        valtotal = parcelas.document.getElementById('valorparcelamentocomdesconto').innerHTML;
+                        document.form1.ent.value = (valtotal / (Number(document.form1.parc.value) + 1)).toFixed(2);
+
+                        if (Number(document.form1.ent.value) < Number(entradaminima)){
+                            document.form1.ent.value = entradaminima;
+                        }
 
 						x = (valtotal - document.form1.ent.value) / document.form1.parc.value;
 						document.form1.parcval.value = x.toFixed(2);
+                        document.form1.parcvalcomdesconto.value = document.form1.parcval.value;
 						x = document.form1.parc.value * document.form1.parcval.value;
 
 						x = valtotal - eval(x + '+' + document.form1.ent.value)
 						document.form1.parcult.value = eval(document.form1.parcval.value + '+' + x).toFixed(2);
+                        document.form1.parcultcomdesconto.value = document.form1.parcult.value;
 
 						if(!!parcelas.document.getElementById('vtcomdesconto')){
                             parcelas.document.getElementById('vtcomdesconto').innerHTML = valtotal;
+                            
+                            const valorTotalSemDesconto = Number(parcelas.document.getElementById('vt').innerHTML);
+                            if (Number(valtotal) > Number(valorTotalSemDesconto)) {
+                                parcelas.document.getElementById('vtcomdesconto').innerHTML = valorTotalSemDesconto;
+                            }
                         }
 
-
-					}
-
+                        document.form1.parcval.value = (Number(document.form1.parcval.value) + custasAdicionaisParcela).toFixed(2);
+                        document.form1.parcult.value = (Number(document.form1.parcult.value) + custasAdicionaisParcela).toFixed(2);
+                        document.form1.entcomdesconto.value = document.form1.ent.value
+                    }
 				}
-				document.form1.vlrmin.value = vlrmin;
+				document.form1.vlrmin.value = (vlrmin).toFixed(2);
                 <?php
 
 if ($lBtnParcelar == true) {
@@ -2172,15 +2372,19 @@ if ($lBtnParcelar == true) {
 
         <?php }?>
 
-
+                js_troca_valores(document.form1.entcomdesconto.value, false);
 			}
 
-			function js_troca_valores(entrada) {
+			function js_troca_valores(entrada, desmarcaSelecaoParcelas = true) {
+
+                const custasAdicionais = Number("<?php echo $totalCustasAdicionais;?>");
 
 				if (document.form1.parc.value == 0) {
 					alert('Campo entrada nao pode ser alterado no caso de uma única parcela!');
 					document.form1.ent.value = '';
 					document.form1.ent.focus();
+                    document.form1.entcomdesconto.value = '';
+                    document.form1.entcomdesconto.focus();
 					document.form1.envia.disabled = true;
 					return false;
 				}
@@ -2189,12 +2393,16 @@ if ($lBtnParcelar == true) {
 					alert('Campo entrada deve ser preenchido somente com números');
 					document.form1.ent.value = '';
 					document.form1.ent.focus();
+                    document.form1.entcomdesconto.value = '';
+                    document.form1.entcomdesconto.focus();
 					document.form1.envia.disabled = true;
 					return false;
 				} else if (entrada <= 0) {
 					alert('Entrada deve ser maior que 0');
 					document.form1.ent.value = '';
 					document.form1.ent.focus();
+                    document.form1.entcomdesconto.value = '';
+                    document.form1.entcomdesconto.focus();
 					document.form1.envia.disabled = true;
 					return false;
 				} else {
@@ -2253,6 +2461,7 @@ if ($lBtnParcelar == true) {
 						entrada = new String(entrada)
 						entrada = entrada.replace(',', '.');
 						document.form1.ent.value = entrada;
+                        document.form1.entcomdesconto.value = (entrada).toFixed(2);
 					}
 
 					var valoresportipo = document.form1.valoresportipo.value.split("=");
@@ -2272,9 +2481,10 @@ if ($lBtnParcelar == true) {
 
 						if (cadtipoparc > 0) {
 							valdesconto += (valjuros * descontojur / 100) + (valmulta * descontomul / 100);
-							valtotal += valcorr + (valjuros + valmulta) - valdesconto;
+							valtotal += valcorr + (valjuros + valmulta) - valdesconto + custasAdicionais;
+                            
 						} else {
-							valtotal += valcorr + valjuros + valmulta;
+							valtotal += valcorr + valjuros + valmulta + custasAdicionais;
 						}
 
 					}
@@ -2294,15 +2504,19 @@ if ($lBtnParcelar == true) {
 						valcadaparcela = (Math.round(((valortotal - valentrada) / (quantparcelas - 1)) * 100)) / 100;
 
 						document.form1.parcval.value = valcadaparcela;
+                        document.form1.parcvalcomdesconto.value = valcadaparcela.toFixed(2);
 
 						valorsomenteparcelas = document.form1.parcval.value * (quantparcelas - 2);
 
 						valorultima = valorultima.toFixed(2);
 
 						document.form1.parcult.value = valorultima;
+                        document.form1.parcultcomdesconto.value = valorultima;
 
 					} else {
-
+                        /**
+                         * alteracao de valores escondidos
+                         */
 						quantparcelas = new Number(document.form1.parc.value);
 						valorparcela = new Number(document.form1.parcval.value);
 						valorultima = new Number(document.form1.parcult.value);
@@ -2324,6 +2538,7 @@ if ($lBtnParcelar == true) {
 						}
 
 						document.form1.parcval.value = valcadaparcela;
+                        document.form1.parcvalcomdesconto.value = valcadaparcela.toFixed(2);
 
 						valorsomenteparcelas = document.form1.parcval.value * (quantparcelas - 1);
 
@@ -2331,15 +2546,61 @@ if ($lBtnParcelar == true) {
 						valorultima = valorultima.toFixed(2);
 
 						document.form1.parcult.value = valorultima;
+                        document.form1.parcultcomdesconto.value = valorultima;
 
+                        /**
+                         * alteracao de valores que usuario visualiza
+                         */
+                        quantparcelas = new Number(document.form1.parc.value);
+						valorultimaComDesconto = new Number(document.form1.parcultcomdesconto.value);
+						valentradaComDesconto = new Number(document.form1.entcomdesconto.value);
+
+                        valortotalComDesconto = new Number(parcelas.document.getElementById('valorparcelamentocomdesconto').innerHTML);
+
+						valcadaparcela = (Math.round(((valortotalComDesconto - valentradaComDesconto) / quantparcelas) * 100)) / 100;
+
+                        document.form1.parcvalcomdesconto.value = valcadaparcela;
+
+						valorsomenteparcelas = document.form1.parcvalcomdesconto.value * (quantparcelas - 1);
+
+						valorultimaComDesconto = valortotalComDesconto - valorsomenteparcelas - valentradaComDesconto;
+						valorultimaComDesconto = valorultimaComDesconto.toFixed(2);
+
+                        document.form1.parcultcomdesconto.value = valorultimaComDesconto;
+
+                        /**
+                         * calculo realizado caso entrada tenha sido alterada
+                         */
+                        const quantidadeParcelas = Number(quantparcelas);
+                        const valorParcelaComDesconto = Number(valcadaparcela);
+                        const valorUltimaParcelaComDesconto = Number(valorultimaComDesconto);
+                        const valorEntradaComDesconto = Number(valentradaComDesconto);
+
+                        const valorTotalComDesconto = ((quantidadeParcelas - 1) * valorParcelaComDesconto) + valorUltimaParcelaComDesconto + valorEntradaComDesconto;
+
+                        const percentualParcela = ((valorParcelaComDesconto * 100) / valorTotalComDesconto) / 100;
+                        const percentualUltimaParcela = ((valorUltimaParcelaComDesconto * 100) / valorTotalComDesconto) / 100;
+                        const percentualEntrada = ((valorEntradaComDesconto * 100) / valorTotalComDesconto) / 100;
+
+                        valortotal = (valorparcela * (quantparcelas - 1)) + valorultima;
+                        if(aplicacao != '2'){
+						  valortotal = new Number(parcelas.document.getElementById('vtcomdesconto').innerHTML);
+                        }else{
+						  valortotal = new Number(parcelas.document.getElementById('vt').innerHTML);
+                        }
+
+                        document.form1.parcval.value = (valortotal * percentualParcela).toFixed(2);
+                        document.form1.parcult.value = (valortotal * percentualUltimaParcela).toFixed(2);
+                        document.form1.ent.value = (valortotal * percentualEntrada).toFixed(2);
 					}
 
 					document.form1.dia.focus();
 
-					for (i = 2; i < 500; i++) {
-						parcelas.document.getElementById('val' + i).checked = false;
-					}
-
+                    if (desmarcaSelecaoParcelas) {
+                        for (i = 2; i < 500; i++) {
+                            parcelas.document.getElementById('val' + i).checked = false;
+                        }
+                    }
 				}
 
 			}
@@ -2350,6 +2611,7 @@ if ($lBtnParcelar == true) {
 
 					alert('campo valor da parcela deve ser preenchido somente com números');
 					document.form1.parcval.value = '';
+                    document.form1.parcvalcomdesconto.value = '';
 					document.form1.parcval.focus();
 					return false;
 
@@ -2357,6 +2619,7 @@ if ($lBtnParcelar == true) {
 
 					alert('Valor da parcela deve ser maior que 0');
 					document.form1.parcval.value = '';
+                    document.form1.parcvalcomdesconto.value = '';
 					document.form1.parcval.focus();
 					return false;
 				} else {
@@ -2381,6 +2644,7 @@ if ($lBtnParcelar == true) {
 						return false;
 					} else {
 						document.form1.parcult.value = ultimaparcela;
+                        document.form1.parcultcomdesconto.value = ultimaparcela.toFixed(2);
 					}
 
 				}
@@ -2468,7 +2732,11 @@ if ($lBtnParcelar == true) {
 			    document.form1.ent.readOnly = true;
 			    document.form1.ent.style.backgroundColor = "#DEB887";
 			    document.form1.ent.value = entrada;
+                document.form1.entcomdesconto.readOnly = true;
+			    document.form1.entcomdesconto.style.backgroundColor = "#DEB887";
+			    document.form1.entcomdesconto.value = entrada.toFixed(2);
 			    document.form1.parcult.value = ultparc;
+                document.form1.parcultcomdesconto.value = ultparc.toFixed(2);
 			    document.form1.datpri.readOnly = true;
 			    document.form1.datpri.style.backgroundColor = "#DEB887";
 			    document.form1.datpri.value = privenc;

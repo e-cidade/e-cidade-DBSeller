@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ $oRotulo->label("sd63_c_nome");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js");
     db_app::load("prototype.js");
     db_app::load("webseller.js");
@@ -90,7 +90,7 @@ $oRotulo->label("sd63_c_nome");
                                 <b>Data Inicial:</b>
                               </td>
                               <td  nowrap>
-                                <?
+                                <?php
                                 if (isset($data1)) {
 
                                   $aData = explode('/', $data1);
@@ -106,7 +106,7 @@ $oRotulo->label("sd63_c_nome");
                                 <b>Data Final:</b>
                               </td>
                               <td  nowrap>
-                                <?
+                                <?php
                                 if (isset($data2)) {
 
                                   $aData = explode('/', $data2);
@@ -122,7 +122,7 @@ $oRotulo->label("sd63_c_nome");
                                 <b>Agrupar:</b>
                               </td>
                               <td  nowrap>
-                                <?
+                                <?php
                                 $aX = array('1'=>'UPS', '2'=>'SEM AGRUPAMENTO');
                                 db_select('agrupar', $aX, true, 1, "");
                                 ?>
@@ -158,12 +158,12 @@ $oRotulo->label("sd63_c_nome");
                             <tr>
                               <!-- GRUPO -->
                               <td nowrap title="<?=@$Tsd60_c_grupo?>" style="width: 24%;">
-							                  <?
+							                  <?php
 							                  db_ancora(@$Lsd60_c_grupo, "js_pesquisaGrupo();", 1);
 							                  ?>
 							                </td>
 							                <td nowrap>
-							                  <?
+							                  <?php
                                 $aX = array("0"=>"");
                                 db_select("sd60_i_codigo", $aX, $Isd60_i_codigo, 1,
                                           "onchange='js_preencherSubgrupos();' style='width: 500px;'"
@@ -174,12 +174,12 @@ $oRotulo->label("sd63_c_nome");
                             <tr>
                               <!-- SUB-GRUPO -->
                               <td nowrap title="<?=@$Tsd61_c_subgrupo?>">
-							                  <?
+							                  <?php
 							                  db_ancora(@$Lsd61_c_subgrupo, "js_pesquisaSubGrupo();", 1);
 							                  ?>
 							                </td>
 							                <td nowrap>
-							                  <?
+							                  <?php
                                 $aX = array("0"=>"");
                                 db_select("sd61_i_codigo", $aX, $Isd61_i_codigo, 1,
                                           "onchange='js_preencherFormaOrganizacao();'  style='width: 500px;'"
@@ -190,12 +190,12 @@ $oRotulo->label("sd63_c_nome");
                             <tr>
                               <!-- FORMA ORGANIZACAO -->
                               <td nowrap title="<?=@$Tsd62_c_formaorganizacao?>">
-							                  <?
+							                  <?php
 							                  db_ancora(@$Lsd62_c_formaorganizacao, "js_pesquisaFormaOrganizacao();", 1);
 							                  ?>
 							                </td>
 							                <td>
-							                  <?
+							                  <?php
                                 $aX = array("0"=>"");
                                 db_select("sd62_i_codigo", $aX, $Isd62_i_codigo, 1, " style='width: 500px;' ");
                                 ?>
@@ -213,12 +213,12 @@ $oRotulo->label("sd63_c_nome");
                           <table>
                             <tr>
                               <td nowrap title="<?=@$Tsd63_c_procedimento?>" style="width: 24%;">
-							                  <?
+							                  <?php
 							                  db_ancora ( @$Lsd63_c_procedimento, "js_pesquisaProcedimento(true);", 1);
 							                  ?>
 							                </td>
 							                <td>
-							                  <?
+							                  <?php
 							                  db_input('sd63_i_codigo', 10, $Isd63_i_codigo, true, 'hidden', $db_opcao, '');
 							                  db_input('sd63_c_procedimento', 10, $Isd63_c_procedimento, true, 'text', 1,
 							                           " onchange='js_pesquisaProcedimento(false);' "
@@ -226,7 +226,7 @@ $oRotulo->label("sd63_c_nome");
 							                  ?>
 							                </td>
 							                <td>
-							                  <?
+							                  <?php
 							                  db_input('sd63_c_nome', 58, $Isd63_c_nome, true, 'text', 3, '');
 							                  ?>
                               </td>
@@ -250,7 +250,7 @@ $oRotulo->label("sd63_c_nome");
                     </tr>
                     <tr>
                       <td style="padding-top: 8px;">
-                        <?
+                        <?php
 							          db_input('sProcedimentos', 58, @$IsProcedimentos, true, 'hidden', 3, '');
 							          db_input('sEstrutura', 58, @$IsEstrutura, true, 'hidden', 3, '');
 							          db_input('sUnidades', 58, @$IsUnidades, true, 'hidden', 3, '');
@@ -268,7 +268,7 @@ $oRotulo->label("sd63_c_nome");
         </tr>
       </table>
     </center>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),
             db_getsession("DB_modulo"),
             db_getsession("DB_anousu"),

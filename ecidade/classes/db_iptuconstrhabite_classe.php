@@ -1,89 +1,89 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptuconstrhabite
-class cl_iptuconstrhabite { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j131_sequencial = 0; 
-   var $j131_idcons = 0; 
-   var $j131_matric = 0; 
-   var $j131_usuario = 0; 
-   var $j131_codprot = null; 
-   var $j131_dtprot_dia = null; 
-   var $j131_dtprot_mes = null; 
-   var $j131_dtprot_ano = null; 
-   var $j131_dtprot = null; 
-   var $j131_cadhab = null; 
-   var $j131_dthabite_dia = null; 
-   var $j131_dthabite_mes = null; 
-   var $j131_dthabite_ano = null; 
-   var $j131_dthabite = null; 
-   var $j131_data_dia = null; 
-   var $j131_data_mes = null; 
-   var $j131_data_ano = null; 
-   var $j131_data = null; 
-   var $j131_hora = null; 
-   var $j131_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_iptuconstrhabite {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j131_sequencial = 0;
+   var $j131_idcons = 0;
+   var $j131_matric = 0;
+   var $j131_usuario = 0;
+   var $j131_codprot = null;
+   var $j131_dtprot_dia = null;
+   var $j131_dtprot_mes = null;
+   var $j131_dtprot_ano = null;
+   var $j131_dtprot = null;
+   var $j131_cadhab = null;
+   var $j131_dthabite_dia = null;
+   var $j131_dthabite_mes = null;
+   var $j131_dthabite_ano = null;
+   var $j131_dthabite = null;
+   var $j131_data_dia = null;
+   var $j131_data_mes = null;
+   var $j131_data_ano = null;
+   var $j131_data = null;
+   var $j131_hora = null;
+   var $j131_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j131_sequencial = int4 = Sequencial 
-                 j131_idcons = int4 = Construção 
-                 j131_matric = int4 = Matricula 
-                 j131_usuario = int4 = Usuário 
-                 j131_codprot = varchar(20) = Processo de Protocolo 
-                 j131_dtprot = date = Data do Processo de Protocolo 
-                 j131_cadhab = varchar(20) = Habite-se 
-                 j131_dthabite = date = Data do Habite-se 
-                 j131_data = date = Data 
-                 j131_hora = varchar(5) = Hora 
-                 j131_obs = text = Observações 
+                 j131_sequencial = int4 = Sequencial
+                 j131_idcons = int4 = Construção
+                 j131_matric = int4 = Matricula
+                 j131_usuario = int4 = Usuário
+                 j131_codprot = varchar(20) = Processo de Protocolo
+                 j131_dtprot = date = Data do Processo de Protocolo
+                 j131_cadhab = varchar(20) = Habite-se
+                 j131_dthabite = date = Data do Habite-se
+                 j131_data = date = Data
+                 j131_hora = varchar(5) = Hora
+                 j131_obs = text = Observações
                  ";
-   //funcao construtor da classe 
-   function cl_iptuconstrhabite() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("iptuconstrhabite"); 
+     $this->rotulo = new rotulo("iptuconstrhabite");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -92,7 +92,7 @@ class cl_iptuconstrhabite {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j131_sequencial = ($this->j131_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j131_sequencial"]:$this->j131_sequencial);
        $this->j131_idcons = ($this->j131_idcons == ""?@$GLOBALS["HTTP_POST_VARS"]["j131_idcons"]:$this->j131_idcons);
@@ -131,9 +131,9 @@ class cl_iptuconstrhabite {
      }
    }
    // funcao para inclusao
-   function incluir ($j131_sequencial){ 
+   public function incluir ($j131_sequencial){
       $this->atualizacampos();
-     if($this->j131_idcons == null ){ 
+     if($this->j131_idcons == null ){
        $this->erro_sql = " Campo Construção nao Informado.";
        $this->erro_campo = "j131_idcons";
        $this->erro_banco = "";
@@ -142,7 +142,7 @@ class cl_iptuconstrhabite {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j131_matric == null ){ 
+     if($this->j131_matric == null ){
        $this->erro_sql = " Campo Matricula nao Informado.";
        $this->erro_campo = "j131_matric";
        $this->erro_banco = "";
@@ -151,7 +151,7 @@ class cl_iptuconstrhabite {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j131_usuario == null ){ 
+     if($this->j131_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "j131_usuario";
        $this->erro_banco = "";
@@ -160,7 +160,7 @@ class cl_iptuconstrhabite {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j131_dtprot == null ){ 
+     if($this->j131_dtprot == null ){
        $this->erro_sql = " Campo Data do Processo de Protocolo nao Informado.";
        $this->erro_campo = "j131_dtprot_dia";
        $this->erro_banco = "";
@@ -169,10 +169,10 @@ class cl_iptuconstrhabite {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j131_cadhab == null ){ 
+     if($this->j131_cadhab == null ){
        $this->j131_cadhab = "0";
      }
-     if($this->j131_dthabite == null ){ 
+     if($this->j131_dthabite == null ){
        $this->erro_sql = " Campo Data do Habite-se nao Informado.";
        $this->erro_campo = "j131_dthabite_dia";
        $this->erro_banco = "";
@@ -181,7 +181,7 @@ class cl_iptuconstrhabite {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j131_data == null ){ 
+     if($this->j131_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "j131_data_dia";
        $this->erro_banco = "";
@@ -190,7 +190,7 @@ class cl_iptuconstrhabite {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j131_hora == null ){ 
+     if($this->j131_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "j131_hora";
        $this->erro_banco = "";
@@ -200,16 +200,16 @@ class cl_iptuconstrhabite {
        return false;
      }
      if($j131_sequencial == "" || $j131_sequencial == null ){
-       $result = db_query("select nextval('iptuconstrhabite_j131_sequencial_seq')"); 
+       $result = db_query("select nextval('iptuconstrhabite_j131_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: iptuconstrhabite_j131_sequencial_seq do campo: j131_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: iptuconstrhabite_j131_sequencial_seq do campo: j131_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j131_sequencial = pg_result($result,0,0); 
+       $this->j131_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from iptuconstrhabite_j131_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $j131_sequencial)){
@@ -220,10 +220,10 @@ class cl_iptuconstrhabite {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j131_sequencial = $j131_sequencial; 
+         $this->j131_sequencial = $j131_sequencial;
        }
      }
-     if(($this->j131_sequencial == null) || ($this->j131_sequencial == "") ){ 
+     if(($this->j131_sequencial == null) || ($this->j131_sequencial == "") ){
        $this->erro_sql = " Campo j131_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -232,33 +232,33 @@ class cl_iptuconstrhabite {
        return false;
      }
      $sql = "insert into iptuconstrhabite(
-                                       j131_sequencial 
-                                      ,j131_idcons 
-                                      ,j131_matric 
-                                      ,j131_usuario 
-                                      ,j131_codprot 
-                                      ,j131_dtprot 
-                                      ,j131_cadhab 
-                                      ,j131_dthabite 
-                                      ,j131_data 
-                                      ,j131_hora 
-                                      ,j131_obs 
+                                       j131_sequencial
+                                      ,j131_idcons
+                                      ,j131_matric
+                                      ,j131_usuario
+                                      ,j131_codprot
+                                      ,j131_dtprot
+                                      ,j131_cadhab
+                                      ,j131_dthabite
+                                      ,j131_data
+                                      ,j131_hora
+                                      ,j131_obs
                        )
                 values (
-                                $this->j131_sequencial 
-                               ,$this->j131_idcons 
-                               ,$this->j131_matric 
-                               ,$this->j131_usuario 
-                               ,'$this->j131_codprot' 
-                               ,".($this->j131_dtprot == "null" || $this->j131_dtprot == ""?"null":"'".$this->j131_dtprot."'")." 
-                               ,'$this->j131_cadhab' 
-                               ,".($this->j131_dthabite == "null" || $this->j131_dthabite == ""?"null":"'".$this->j131_dthabite."'")." 
-                               ,".($this->j131_data == "null" || $this->j131_data == ""?"null":"'".$this->j131_data."'")." 
-                               ,'$this->j131_hora' 
-                               ,'$this->j131_obs' 
+                                $this->j131_sequencial
+                               ,$this->j131_idcons
+                               ,$this->j131_matric
+                               ,$this->j131_usuario
+                               ,'$this->j131_codprot'
+                               ,".($this->j131_dtprot == "null" || $this->j131_dtprot == ""?"null":"'".$this->j131_dtprot."'")."
+                               ,'$this->j131_cadhab'
+                               ,".($this->j131_dthabite == "null" || $this->j131_dthabite == ""?"null":"'".$this->j131_dthabite."'")."
+                               ,".($this->j131_data == "null" || $this->j131_data == ""?"null":"'".$this->j131_data."'")."
+                               ,'$this->j131_hora'
+                               ,'$this->j131_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Habite-se das construções ($this->j131_sequencial) nao Incluído. Inclusao Abortada.";
@@ -300,16 +300,16 @@ class cl_iptuconstrhabite {
        $resac = db_query("insert into db_acount values($acount,3261,18542,'','".AddSlashes(pg_result($resaco,0,'j131_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j131_sequencial=null) { 
+   public function alterar ($j131_sequencial=null) {
       $this->atualizacampos();
      $sql = " update iptuconstrhabite set ";
      $virgula = "";
-     if(trim($this->j131_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_sequencial"])){ 
+     if(trim($this->j131_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_sequencial"])){
        $sql  .= $virgula." j131_sequencial = $this->j131_sequencial ";
        $virgula = ",";
-       if(trim($this->j131_sequencial) == null ){ 
+       if(trim($this->j131_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j131_sequencial";
          $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_iptuconstrhabite {
          return false;
        }
      }
-     if(trim($this->j131_idcons)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_idcons"])){ 
+     if(trim($this->j131_idcons)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_idcons"])){
        $sql  .= $virgula." j131_idcons = $this->j131_idcons ";
        $virgula = ",";
-       if(trim($this->j131_idcons) == null ){ 
+       if(trim($this->j131_idcons) == null ){
          $this->erro_sql = " Campo Construção nao Informado.";
          $this->erro_campo = "j131_idcons";
          $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_iptuconstrhabite {
          return false;
        }
      }
-     if(trim($this->j131_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_matric"])){ 
+     if(trim($this->j131_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_matric"])){
        $sql  .= $virgula." j131_matric = $this->j131_matric ";
        $virgula = ",";
-       if(trim($this->j131_matric) == null ){ 
+       if(trim($this->j131_matric) == null ){
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "j131_matric";
          $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_iptuconstrhabite {
          return false;
        }
      }
-     if(trim($this->j131_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_usuario"])){ 
+     if(trim($this->j131_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_usuario"])){
        $sql  .= $virgula." j131_usuario = $this->j131_usuario ";
        $virgula = ",";
-       if(trim($this->j131_usuario) == null ){ 
+       if(trim($this->j131_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "j131_usuario";
          $this->erro_banco = "";
@@ -358,14 +358,14 @@ class cl_iptuconstrhabite {
          return false;
        }
      }
-     if(trim($this->j131_codprot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_codprot"])){ 
+     if(trim($this->j131_codprot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_codprot"])){
        $sql  .= $virgula." j131_codprot = '$this->j131_codprot' ";
        $virgula = ",";
      }
-     if(trim($this->j131_dtprot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_dtprot_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j131_dtprot_dia"] !="") ){ 
+     if(trim($this->j131_dtprot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_dtprot_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j131_dtprot_dia"] !="") ){
        $sql  .= $virgula." j131_dtprot = '$this->j131_dtprot' ";
        $virgula = ",";
-       if(trim($this->j131_dtprot) == null ){ 
+       if(trim($this->j131_dtprot) == null ){
          $this->erro_sql = " Campo Data do Processo de Protocolo nao Informado.";
          $this->erro_campo = "j131_dtprot_dia";
          $this->erro_banco = "";
@@ -374,11 +374,11 @@ class cl_iptuconstrhabite {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j131_dtprot_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j131_dtprot_dia"])){
          $sql  .= $virgula." j131_dtprot = null ";
          $virgula = ",";
-         if(trim($this->j131_dtprot) == null ){ 
+         if(trim($this->j131_dtprot) == null ){
            $this->erro_sql = " Campo Data do Processo de Protocolo nao Informado.";
            $this->erro_campo = "j131_dtprot_dia";
            $this->erro_banco = "";
@@ -389,14 +389,14 @@ class cl_iptuconstrhabite {
          }
        }
      }
-     if(trim($this->j131_cadhab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_cadhab"])){ 
+     if(trim($this->j131_cadhab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_cadhab"])){
        $sql  .= $virgula." j131_cadhab = '$this->j131_cadhab' ";
        $virgula = ",";
      }
-     if(trim($this->j131_dthabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_dthabite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j131_dthabite_dia"] !="") ){ 
+     if(trim($this->j131_dthabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_dthabite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j131_dthabite_dia"] !="") ){
        $sql  .= $virgula." j131_dthabite = '$this->j131_dthabite' ";
        $virgula = ",";
-       if(trim($this->j131_dthabite) == null ){ 
+       if(trim($this->j131_dthabite) == null ){
          $this->erro_sql = " Campo Data do Habite-se nao Informado.";
          $this->erro_campo = "j131_dthabite_dia";
          $this->erro_banco = "";
@@ -405,11 +405,11 @@ class cl_iptuconstrhabite {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j131_dthabite_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j131_dthabite_dia"])){
          $sql  .= $virgula." j131_dthabite = null ";
          $virgula = ",";
-         if(trim($this->j131_dthabite) == null ){ 
+         if(trim($this->j131_dthabite) == null ){
            $this->erro_sql = " Campo Data do Habite-se nao Informado.";
            $this->erro_campo = "j131_dthabite_dia";
            $this->erro_banco = "";
@@ -420,10 +420,10 @@ class cl_iptuconstrhabite {
          }
        }
      }
-     if(trim($this->j131_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j131_data_dia"] !="") ){ 
+     if(trim($this->j131_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j131_data_dia"] !="") ){
        $sql  .= $virgula." j131_data = '$this->j131_data' ";
        $virgula = ",";
-       if(trim($this->j131_data) == null ){ 
+       if(trim($this->j131_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "j131_data_dia";
          $this->erro_banco = "";
@@ -432,11 +432,11 @@ class cl_iptuconstrhabite {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j131_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j131_data_dia"])){
          $sql  .= $virgula." j131_data = null ";
          $virgula = ",";
-         if(trim($this->j131_data) == null ){ 
+         if(trim($this->j131_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "j131_data_dia";
            $this->erro_banco = "";
@@ -447,10 +447,10 @@ class cl_iptuconstrhabite {
          }
        }
      }
-     if(trim($this->j131_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_hora"])){ 
+     if(trim($this->j131_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_hora"])){
        $sql  .= $virgula." j131_hora = '$this->j131_hora' ";
        $virgula = ",";
-       if(trim($this->j131_hora) == null ){ 
+       if(trim($this->j131_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "j131_hora";
          $this->erro_banco = "";
@@ -460,7 +460,7 @@ class cl_iptuconstrhabite {
          return false;
        }
      }
-     if(trim($this->j131_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_obs"])){ 
+     if(trim($this->j131_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j131_obs"])){
        $sql  .= $virgula." j131_obs = '$this->j131_obs' ";
        $virgula = ",";
      }
@@ -500,7 +500,7 @@ class cl_iptuconstrhabite {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Habite-se das construções nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j131_sequencial;
@@ -528,14 +528,14 @@ class cl_iptuconstrhabite {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j131_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j131_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j131_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -571,7 +571,7 @@ class cl_iptuconstrhabite {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Habite-se das construções nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j131_sequencial;
@@ -599,11 +599,11 @@ class cl_iptuconstrhabite {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -625,11 +625,11 @@ class cl_iptuconstrhabite {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $j131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $j131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -645,15 +645,15 @@ class cl_iptuconstrhabite {
      $sql2 = "";
      if($dbwhere==""){
        if($j131_sequencial!=null ){
-         $sql2 .= " where iptuconstrhabite.j131_sequencial = $j131_sequencial "; 
-       } 
+         $sql2 .= " where iptuconstrhabite.j131_sequencial = $j131_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -662,11 +662,11 @@ class cl_iptuconstrhabite {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $j131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $j131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -679,15 +679,15 @@ class cl_iptuconstrhabite {
      $sql2 = "";
      if($dbwhere==""){
        if($j131_sequencial!=null ){
-         $sql2 .= " where iptuconstrhabite.j131_sequencial = $j131_sequencial "; 
-       } 
+         $sql2 .= " where iptuconstrhabite.j131_sequencial = $j131_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -696,11 +696,11 @@ class cl_iptuconstrhabite {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_dados ( $j131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_dados ( $j131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -710,25 +710,25 @@ class cl_iptuconstrhabite {
        $sql .= $campos;
      }
      $sql .= " from iptuconstrhabite ";
-     $sql .= "      inner join iptuconstr   on iptuconstr.j39_matric    = iptuconstrhabite.j131_matric  "; 
+     $sql .= "      inner join iptuconstr   on iptuconstr.j39_matric    = iptuconstrhabite.j131_matric  ";
      $sql .= "                             and iptuconstr.j39_idcons    = iptuconstrhabite.j131_idcons  ";
      $sql .= "      inner join ruas         on ruas.j14_codigo          = iptuconstr.j39_codigo         ";
      $sql .= "      inner join iptubase     on iptubase.j01_matric      = iptuconstr.j39_matric         ";
-     $sql .= "      inner join db_usuarios  on db_usuarios.id_usuario   = iptuconstrhabite.j131_usuario ";     
+     $sql .= "      inner join db_usuarios  on db_usuarios.id_usuario   = iptuconstrhabite.j131_usuario ";
      $sql .= "      left join protprocesso  on trim(protprocesso.p58_codproc::text) = trim(iptuconstrhabite.j131_codprot::text) ";
-     $sql .= "      left join obrashabite   on trim(obrashabite.ob09_codhab::text)  = trim(iptuconstrhabite.j131_cadhab::text)  ";     
+     $sql .= "      left join obrashabite   on trim(obrashabite.ob09_codhab::text)  = trim(iptuconstrhabite.j131_cadhab::text)  ";
      $sql2 = "";
      if($dbwhere==""){
        if($j131_sequencial!=null ){
-         $sql2 .= " where iptuconstrhabite.j131_sequencial = $j131_sequencial "; 
-       } 
+         $sql2 .= " where iptuconstrhabite.j131_sequencial = $j131_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

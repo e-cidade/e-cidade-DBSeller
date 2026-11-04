@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,25 +25,16 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once modification('fpdf151/pdf.php');
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
 require_once modification('libs/db_stdlib.php');
 require_once modification('libs/db_liborcamento.php');
 require_once modification('libs/db_utils.php');
-require_once modification('classes/db_empempenho_classe.php');
-require_once modification('classes/db_cgm_classe.php');
-require_once modification('classes/db_orctiporec_classe.php');
-require_once modification('classes/db_orcdotacao_classe.php');
-require_once modification('classes/db_orcorgao_classe.php');
-require_once modification('classes/db_empemphist_classe.php');
-require_once modification('classes/db_emphist_classe.php');
-require_once modification('classes/db_orcelemento_classe.php');
-require_once modification('classes/db_conlancamemp_classe.php');
-require_once modification('classes/db_conlancamdoc_classe.php');
-require_once modification('classes/db_empempitem_classe.php');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_GET);
-//db_postmemory($HTTP_SERVER_VARS,2);exit;
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
 $clselorcdotacao = new cl_selorcdotacao();
@@ -185,10 +176,6 @@ if ($ordem == 'e') {
     $head7 = 'ORDEM : DESDOBRAMENTO, TIPO:'.$tipocompra_descr;
 }
 
-$head1 = 'RELATÓRIO DE EMPENHOS';
-$head3 = $xxtipo;
-$head5 = 'PERÍODO : '.db_formatar($dataini, 'd').' A '.db_formatar($datafin, 'd');
-
 if ($rp == 'n') {
     $xtipo .= ' and e60_numemp not in (select e91_numemp from empresto where e91_anousu = '.db_getsession('DB_anousu').')
              and c53_coddoc not in(31,32,33,34,35,36,37,38,1007) ';
@@ -207,7 +194,21 @@ if (!empty($oPost->recursos_selecionados)) {
     $where_recursos = " and  orctiporec.o15_codigo in ({$oPost->recursos_selecionados}) ";
 }
 
+if (isValenca()) {
+    $campo_processo = 'e150_numeroprocesso,';
+    $joins_valenca = "
+        inner join empempaut on e61_numemp = empempenho.e60_numemp
+        inner join empautoriza on e61_autori = empautoriza.e54_autori
+        inner join empautorizaprocesso on e54_autori = empautorizaprocesso.e150_empautoriza";
+    $group_by_processo = 'e150_numeroprocesso,';
+} else {
+    $campo_processo = '';
+    $joins_valenca = '';
+    $group_by_processo = ''; 
+}
+
 $sqlperiodo = '  select empempenho.e60_numemp::integer as e60_numemp,                                             ';
+$sqlperiodo .= "         {$campo_processo}                                                                           ";
 $sqlperiodo .= ' 	       e60_resumo,                                                                               ';
 $sqlperiodo .= ' 	       e60_destin,                                                                               ';
 $sqlperiodo .= ' 	       e60_codemp,                                                                               ';
@@ -247,6 +248,7 @@ $sqlperiodo .= ' 	       c72_complem,                                           
 $sqlperiodo .= " 	       {$sCampos}                                                                                ";
 $sqlperiodo .= ' 	       e91_numemp                                                                                ';
 $sqlperiodo .= '    from empempenho                                                                                  ';
+$sqlperiodo .= "  {$joins_valenca}                                                                                   ";
 $sqlperiodo .= '   inner join conlancamemp 	on c75_numemp                 = empempenho.e60_numemp                    ';
 $sqlperiodo .= '   inner join conlancam		  on c70_codlan                 = c75_codlan                             ';
 $sqlperiodo .= '    left join conlancamnota		  on c66_codlan             = c70_codlan                             ';
@@ -288,6 +290,7 @@ $sqlperiodo .= "    and $sele_work                                              
 $sqlperiodo .= "    $where_recursos                                                                                ";
 $sqlperiodo .= "    $instits                                                                                       ";
 $sqlperiodo .= '  group by e60_numemp,                                                                             ';
+$sqlperiodo .= "           {$group_by_processo}                                         ";
 $sqlperiodo .= '           e60_resumo,                                                                             ';
 $sqlperiodo .= '           e60_destin,                                                                             ';
 $sqlperiodo .= '           e60_codemp,                                                                             ';
@@ -325,7 +328,6 @@ $sqlperiodo .= '           e91_numemp                                           
 $sqlperiodo .= "     order by $xordem                                                                              ";
 
 //echo $sqlperiodo ; die();
-
 $res = $clempempenho->sql_record($sqlperiodo);
 $rows = $clempempenho->numrows;
 if ($rows == 0) {
@@ -339,19 +341,23 @@ $resultinst = db_query('select codigo,
                          where codigo in ('.str_replace('-', ', ', $db_selinstit).') ');
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); ++$xins) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); ++$xins) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg.$nomeinst;
     $xvirg = ', ';
 }
-$head3 = 'INSTITUIÇÕES :  '.$descr_inst;
 
-//$head3 = "Relatório de Empenhos";
 
-$pdf = new PDF(); // abre a classe
-$pdf->Open(); // abre o relatorio
+$pdf = new \ECidade\Pdf\Pdf(); // abre a classe
+$pdf->init(false); // abre o relatorio
+$pdf->addTitulo('RELATÓRIO DE EMPENHOS');
+$pdf->addTitulo('');
+$pdf->addTitulo('INSTITUIÇÕES :  '.$descr_inst);
+$pdf->addTitulo('PERÍODO : '.db_formatar($dataini, 'd').' A '.db_formatar($datafin, 'd'));
+$pdf->addTitulo('');
+$pdf->addTitulo($head7);
+
 $pdf->AliasNbPages(); // gera alias para as paginas
-//$pdf->AddPage(); // adiciona uma pagina
 $pdf->SetTextColor(0, 0, 0);
 $pdf->SetFillColor(235);
 $tam = '04';
@@ -377,17 +383,24 @@ $total_desdobramento = array();
 for ($x = 0; $x < $rows; ++$x) {
     db_fieldsmemory($res, $x);
     // testa novapagina
-    if (($pdf->gety() > $pdf->h - 40) || $x == 0) {
+    if (($pdf->gety() > $pdf->getH() - 40) || $x == 0) {
         $troca = 0;
         $pdf->addpage();
         $pdf->SetFont('Arial', 'B', 7);
 
+        $larguraVariavel = 0;
+        if(isValenca()){
+            $larguraVariavel = 5;
+            $pdf->Cell(3*$larguraVariavel, $tam, 'PA', 1, 0, 'C', 1);
+        }
+
+
         $pdf->Cell(15, $tam, 'EMP', 1, 0, 'C', 1);
         $pdf->Cell(15, $tam, 'DT.EMP.', 1, 0, 'C', 1);
-        $pdf->Cell(55, $tam, 'DOTAÇÃO', 1, 0, 'C', 1);
+        $pdf->Cell(60, $tam, 'DOTAÇÃO', 1, 0, 'C', 1);
         $pdf->Cell(15, $tam, 'DT.MOV.', 1, 0, 'C', 1);
-        $pdf->Cell(45, $tam, 'VALOR', 1, 0, 'C', 1);
-        $pdf->Cell(45, $tam, 'TOTAL/PARCIAL', 1, 1, 'C', 1);
+        $pdf->Cell(40, $tam, 'VALOR', 1, 0, 'C', 1);
+        $pdf->Cell(45-(3*$larguraVariavel), $tam, 'TOTAL/PARCIAL', 1, 1, 'C', 1);
         $pdf->cell(20, $tam, 'CREDOR ', 1, 0, 'C', 1);
         $pdf->cell(85, $tam, 'NOME', 1, 0, 'C', 1);
         $pdf->Cell(85, $tam, 'TIP0', 1, 1, 'C', 1);
@@ -415,15 +428,19 @@ for ($x = 0; $x < $rows; ++$x) {
         $pre = 0;
     }
     $pdf->SetFont('Arial', '', 7);
+    if(isValenca()){
+        $larguraVariavel = 5;
+        $pdf->Cell(3*$larguraVariavel, $tam, $e150_numeroprocesso, 0, 0, 'C', $pre);
+    }
     $pdf->Cell(15, $tam, $e60_codemp, 0, 0, 'C', $pre);
     $pdf->Cell(15, $tam, db_formatar($e60_emiss, 'd'), 0, 0, 'C', $pre);
-    $pdf->Cell(55, $tam, $dl_estrutural, 0, 0, 'L', $pre);
+    $pdf->Cell(60, $tam, $dl_estrutural, 0, 0, 'L', $pre);
     $pdf->Cell(15, $tam, db_formatar($c70_data, 'd'), 0, 0, 'C', $pre);
-    $pdf->Cell(45, $tam, db_formatar($c70_valor, 'f'), 0, 0, 'C', $pre);
+    $pdf->Cell(40, $tam, db_formatar($c70_valor, 'f'), 0, 0, 'C', $pre);
     if ($c53_tipo == 20 || $c53_tipo == 21) {
-        $pdf->Cell(45, $tam, ((($e60_vlremp - $e60_vlranu) == $c70_valor) ? 'TOTAL' : 'PARCIAL'), 0, 1, 'C', $pre);
+        $pdf->Cell(45-(3*$larguraVariavel), $tam, ((($e60_vlremp - $e60_vlranu) == $c70_valor) ? 'TOTAL' : 'PARCIAL'), 0, 1, 'C', $pre);
     } else {
-        $pdf->Cell(45, $tam, '', 0, 1, 'C', $pre);
+        $pdf->Cell(45-(3*$larguraVariavel), $tam, '', 0, 1, 'C', $pre);
     }
 
     if ($ordem == 's') {
@@ -467,6 +484,10 @@ for ($x = 0; $x < $rows; ++$x) {
         }
     }
     $pdf->cell(0, 1, '', 'B', 1, 'C', 0);
+
+    if (!array_key_exists($desdobramento, $total_desdobramento)) {
+        $total_desdobramento[$desdobramento] = 0;
+    }
     if ($c53_tipo == 10 || $c53_tipo == 11) {
         if ($c53_tipo == 10) {
             $total_emp += $c70_valor;

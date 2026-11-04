@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification('libs/db_stdlib.php'));
@@ -46,6 +46,7 @@ $clproctransferint = new cl_proctransferint;
 $clproctransferintand = new cl_proctransferintand;
 $clproctransferintusu = new cl_proctransferintusu;
 $clprotprocesso = new cl_protprocesso;
+$clprocessosapensados = new cl_processosapensados();
 
 $clproctransferint->rotulo->label();
 $clprotprocesso->rotulo->label();
@@ -92,7 +93,7 @@ if (isset($incluir)) {
         for ($i = 0; $i < $ta; $i++) {
             $chave = key($vt);
             if (substr($chave, 0, 5) == "CHECK") {
-                $dados = split("_", $chave);
+                $dados =explode("_", $chave);
                 $result1 = $clprotprocesso->sql_record($clprotprocesso->sql_query_file($dados[1],
                     'p58_codandam, p58_codproc'));
                 db_fieldsmemory($result1, 0);
@@ -105,9 +106,27 @@ if (isset($incluir)) {
                 }
                 if (isset($p89_usuario) && $p89_usuario && $p89_usuario != db_getsession('DB_id_usuario') && isset($p58_codproc) && $p58_codproc) {
                     /**
-                     * Linha comentada, pois o mensageria ainda não suporta fazer o recebimento de trâmites internos
+                     * Linha comentada, pois o mensageria ainda nï¿½o suporta fazer o recebimento de trï¿½mites internos
                      */
 //                    MensageriaProcesso::enviar($p58_codproc);
+
+                    $sSqlProcessosApensados = $clprocessosapensados->sql_query_file(null, '*', null, "p30_procprincipal = {$dados[1]}");
+                    $rsProcessosApensados = $clprocessosapensados->sql_record($sSqlProcessosApensados);
+
+                    for ($iProcessoApensado = 0; $iProcessoApensado < $clprocessosapensados->numrows; $iProcessoApensado++) {
+                        $oProcessoApensado = db_utils::fieldsmemory($rsProcessosApensados, $iProcessoApensado);
+                        $sSqlProtProcesso = $clprotprocesso->sql_query_file($oProcessoApensado->p30_procapensado);
+                        $rsProtProcesso = $clprotprocesso->sql_record($sSqlProtProcesso);
+                        $oProtProcesso = db_utils::fieldsmemory($rsProtProcesso, 0);
+                        $clproctransferintand->p87_codtransferint = $codigo;
+                        $clproctransferintand->p87_codandam = $oProtProcesso->p58_codandam;
+                        $clproctransferintand->incluir();
+                        $erro_msg = $clproctransferintand->erro_msg;
+
+                        if ($clproctransferintand->erro_status == 0) {
+                            $sqlerro = true;
+                        }
+                    }
                 }
             }
             $proximo = next($vt);
@@ -163,7 +182,7 @@ if (isset($incluir)) {
                             <tr>
                                 <td nowrap title="<?= @$Tp88_despacho ?>" align='left' colspan=2>
                                     <?= @$Lp88_despacho ?>
-                                    <?
+                                    <?php
                                     db_textarea('p88_despacho', 0, 80, $Ip88_despacho, true, 'text', 1, "")
                                     ?>
                                 </td>
@@ -173,10 +192,10 @@ if (isset($incluir)) {
                                     <?= @$Lp89_usuario; ?>
                                 </td>
                                 <td>
-                                    <?
-                                    $sqlusu = "SELECT 
+                                    <?php
+                                    $sqlusu = "SELECT
                      U.id_usuario,nome
-	      FROM db_usuarios U 
+	      FROM db_usuarios U
 	             INNER JOIN db_depusu D ON U.id_usuario  = D.id_usuario
    	      WHERE  D.coddepto = " . db_getsession("DB_coddepto") . "
 	      ORDER BY nome ";
@@ -197,8 +216,8 @@ if (isset($incluir)) {
                                     <?= @$Lp88_publico ?>
                                 </td>
                                 <td>
-                                    <?
-                                    $x = array("t" => "Sim", "f" => "Não");
+                                    <?php
+                                    $x = array("t" => "Sim", "f" => "Nï¿½o");
                                     db_select('p88_publico', $x, true, 1, "");
 
                                     ?>
@@ -216,16 +235,16 @@ if (isset($incluir)) {
             <td colspan=2 align='center'>
                 <table>
                     <tr>
-                        <td class='cabec' title='Inverte marcação' align='center'>
-                            <a title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'>M</a></td>
-                        <td class='cabec' align='center'>Número de Controle</td>
-                        <td class='cabec' align='center'>Número do Processo</td>
-                        <td class='cabec' align='center'><b>Situação</b></td>
+                        <td class='cabec' title='Inverte marcaï¿½ï¿½o' align='center'>
+                            <a title='Inverte Marcaï¿½ï¿½o' href='' onclick='return js_marca(this);return false;'>M</a></td>
+                        <td class='cabec' align='center'>Nï¿½mero de Controle</td>
+                        <td class='cabec' align='center'>Nï¿½mero do Processo</td>
+                        <td class='cabec' align='center'><b>Situaï¿½ï¿½o</b></td>
                         <td class='cabec' align='center'>Data do Processo</td>
                         <td class='cabec' align='center'>Hora</td>
-                        <td class='cabec' align='center'>Nome/Razão Social</td>
+                        <td class='cabec' align='center'>Nome/Razï¿½o Social</td>
                     </tr>
-                    <?
+                    <?php
                     $sql  = "SELECT * ";
                     $sql .= "  FROM ( ";
                     $sql .= "        SELECT p58_codproc, ";
@@ -263,8 +282,8 @@ if (isset($incluir)) {
                         }
                         db_fieldsmemory($result, $i);
                         $passou = true;
-                        $sql_proc = "select  p63_codproc,p63_codtran 
-	                      from proctransferproc 
+                        $sql_proc = "select  p63_codproc,p63_codtran
+	                      from proctransferproc
                        where p63_codproc = $p58_codproc";
 
                         $result_proc = db_query($sql_proc);
@@ -304,10 +323,10 @@ if (isset($incluir)) {
                                         if ($numrows_usu != 0) {
                                             echo "
               		   <tr>
-              		      <td  class='corpo' title='Inverte a marcação' align='center'><input type='checkbox' name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
+              		      <td  class='corpo' title='Inverte a marcaï¿½ï¿½o' align='center'><input type='checkbox' name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
               		      <td  class='corpo'  align='center' title='$Tp58_codproc'><label style=\"cursor: hand\"><small>$p58_codproc</small></label></td>
               		      <td  class='corpo'  align='center' title='$Tp58_numero'><label style=\"cursor: hand\"><small>$p58_numero</small></label></td>
-              		      <td  class='corpo'  align='center' title='Situação'><label style=\"cursor: hand\"><small>Liberado</small></label></td>
+              		      <td  class='corpo'  align='center' title='Situaï¿½ï¿½o'><label style=\"cursor: hand\"><small>Liberado</small></label></td>
               		      <td  class='corpo'  align='center' title='$Tp58_dtproc'><label style=\"cursor: hand\"><small>" . db_formatar($p58_dtproc,
                                                     'd') . "</small></label></td>
               		      <td  class='corpo'  align='center' title='$Tp58_hora'><label style=\"cursor: hand\"><small>$p58_hora</small></label></td>
@@ -316,10 +335,10 @@ if (isset($incluir)) {
                                         } else {
                                             echo "
               		   <tr>
-              		      <td  class='corpo' title='Inverte a marcação' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
+              		      <td  class='corpo' title='Inverte a marcaï¿½ï¿½o' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
               		      <td  class='corpo'  align='center' title='$Tp58_codproc'><label style=\"cursor: hand\"><small>$p58_codproc</small></label></td>
               		      <td  class='corpo'  align='center' title='$Tp58_numero'><label style=\"cursor: hand\"><small>$p58_numero</small></label></td>
-              		      <td  class='corpo'  align='center' title='Situção'><label style=\"cursor: hand\"><small>Processo com outro usuário</small></label></td>
+              		      <td  class='corpo'  align='center' title='Situï¿½ï¿½o'><label style=\"cursor: hand\"><small>Processo com outro usuï¿½rio</small></label></td>
               		      <td  class='corpo'  align='center' title='$Tp58_dtproc'><label style=\"cursor: hand\"><small>" . db_formatar($p58_dtproc,
                                                     'd') . "</small></label></td>
               		      <td  class='corpo'  align='center' title='$Tp58_hora'><label style=\"cursor: hand\"><small>$p58_hora</small></label></td>
@@ -333,10 +352,10 @@ if (isset($incluir)) {
                                         db_fieldsmemory($result_usudes, 0);
                                         echo "
             		   <tr>
-             		      <td  class='corpo' title='Inverte a marcação' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
+             		      <td  class='corpo' title='Inverte a marcaï¿½ï¿½o' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
              		      <td  class='corpo'  align='center' title='$Tp58_codproc'><label style=\"cursor: hand\"><small>$p58_codproc</small></label></td>
              		      <td  class='corpo'  align='center' title='$Tp58_numero'><label style=\"cursor: hand\"><small>$p58_numero</small></label></td>
-             		      <td  class='corpo'  align='center' title='Situação'><label style=\"cursor: hand\"><small>Em Transferência p/ $nome</small></label></td>
+             		      <td  class='corpo'  align='center' title='Situaï¿½ï¿½o'><label style=\"cursor: hand\"><small>Em Transferï¿½ncia p/ $nome</small></label></td>
              		      <td  class='corpo'  align='center' title='$Tp58_dtproc'><label style=\"cursor: hand\"><small>" . db_formatar($p58_dtproc,
                                                 'd') . "</small></label></td>
              		      <td  class='corpo'  align='center' title='$Tp58_hora'><label style=\"cursor: hand\"><small>$p58_hora</small></label></td>
@@ -355,10 +374,10 @@ if (isset($incluir)) {
                                         db_fieldsmemory($result_usudes, 0);
                                         echo "
 	       <tr>
-		  <td  class='corpo' title='Inverte a marcação' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
+		  <td  class='corpo' title='Inverte a marcaï¿½ï¿½o' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
 		  <td  class='corpo'  align='center' title='$Tp58_codproc'><label style=\"cursor: hand\"><small>$p58_codproc</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_numero'><label style=\"cursor: hand\"><small>$p58_numero</small></label></td>
-		  <td  class='corpo'  align='center' title='Situação'><label style=\"cursor: hand\"><small>Em Transferência p/ $nome </small></label></td>
+		  <td  class='corpo'  align='center' title='Situaï¿½ï¿½o'><label style=\"cursor: hand\"><small>Em Transferï¿½ncia p/ $nome </small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_dtproc'><label style=\"cursor: hand\"><small>" . db_formatar($p58_dtproc,
                                                 'd') . "</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_hora'><label style=\"cursor: hand\"><small>$p58_hora</small></label></td>
@@ -367,10 +386,10 @@ if (isset($incluir)) {
                                     } else {
                                         echo "
 	       <tr>
-		  <td  class='corpo' title='Inverte a marcação' align='center'><input type='checkbox' name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
+		  <td  class='corpo' title='Inverte a marcaï¿½ï¿½o' align='center'><input type='checkbox' name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
 		  <td  class='corpo'  align='center' title='$Tp58_codproc'><label style=\"cursor: hand\"><small>$p58_codproc</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_numero'><label style=\"cursor: hand\"><small>$p58_numero</small></label></td>
-		  <td  class='corpo'  align='center' title='Situação'><label style=\"cursor: hand\"><small>Liberado</small></label></td>
+		  <td  class='corpo'  align='center' title='Situaï¿½ï¿½o'><label style=\"cursor: hand\"><small>Liberado</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_dtproc'><label style=\"cursor: hand\"><small>" . db_formatar($p58_dtproc,
                                                 'd') . "</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_hora'><label style=\"cursor: hand\"><small>$p58_hora</small></label></td>
@@ -390,10 +409,10 @@ if (isset($incluir)) {
                                     db_fieldsmemory($result_usudes, 0);
                                     echo "
 	       <tr>
-		  <td  class='corpo' title='Inverte a marcação' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
+		  <td  class='corpo' title='Inverte a marcaï¿½ï¿½o' align='center'><input type='checkbox' disabled  name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
 		  <td  class='corpo'  align='center' title='$Tp58_codproc'><label style=\"cursor: hand\"><small>$p58_codproc</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_numero'><label style=\"cursor: hand\"><small>$p58_numero</small></label></td>
-		  <td  class='corpo'  align='center' title='Situação'><label style=\"cursor: hand\"><small>Em Transferência p/ $nome</small></label></td>
+		  <td  class='corpo'  align='center' title='Situaï¿½ï¿½o'><label style=\"cursor: hand\"><small>Em Transferï¿½ncia p/ $nome</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_dtproc'><label style=\"cursor: hand\"><small>" . db_formatar($p58_dtproc,
                                             'd') . "</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_hora'><label style=\"cursor: hand\"><small>$p58_hora</small></label></td>
@@ -402,10 +421,10 @@ if (isset($incluir)) {
                                 } else {
                                     echo "
 	       <tr>
-		  <td  class='corpo' title='Inverte a marcação' align='center'><input type='checkbox' name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
+		  <td  class='corpo' title='Inverte a marcaï¿½ï¿½o' align='center'><input type='checkbox' name='CHECK_$p58_codproc' id='CHECK_" . $p58_codproc . "'></td>
 		  <td  class='corpo'  align='center' title='$Tp58_codproc'><label style=\"cursor: hand\"><small>$p58_codproc</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_numero'><label style=\"cursor: hand\"><small>$p58_numero</small></label></td>
-		  <td  class='corpo'  align='center' title='Situação'><label style=\"cursor: hand\"><small>Liberado</small></label></td>
+		  <td  class='corpo'  align='center' title='Situaï¿½ï¿½o'><label style=\"cursor: hand\"><small>Liberado</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_dtproc'><label style=\"cursor: hand\"><small>" . db_formatar($p58_dtproc,
                                             'd') . "</small></label></td>
 		  <td  class='corpo'  align='center' title='$Tp58_hora'><label style=\"cursor: hand\"><small>$p58_hora</small></label></td>
@@ -425,7 +444,7 @@ if (isset($incluir)) {
                 </table>
     </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
+<?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
     db_getsession("DB_instit")); ?>
 <script>
     function js_pesquisa_usuario(mostra) {

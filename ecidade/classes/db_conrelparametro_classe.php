@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conrelparametro
-class cl_conrelparametro { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c18_parametro = null; 
-   var $c18_valor = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_conrelparametro {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c18_parametro = null;
+   var $c18_valor = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c18_parametro = char(10) = parametro 
-                 c18_valor = char(20) = valor do parametro 
+                 c18_parametro = char(10) = parametro
+                 c18_valor = char(20) = valor do parametro
                  ";
-   //funcao construtor da classe 
-   function cl_conrelparametro() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("conrelparametro"); 
+     $this->rotulo = new rotulo("conrelparametro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_conrelparametro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c18_parametro = ($this->c18_parametro == ""?@$GLOBALS["HTTP_POST_VARS"]["c18_parametro"]:$this->c18_parametro);
        $this->c18_valor = ($this->c18_valor == ""?@$GLOBALS["HTTP_POST_VARS"]["c18_valor"]:$this->c18_valor);
@@ -74,9 +74,9 @@ class cl_conrelparametro {
      }
    }
    // funcao para inclusao
-   function incluir ($c18_parametro){ 
+   public function incluir ($c18_parametro){
       $this->atualizacampos();
-     if($this->c18_valor == null ){ 
+     if($this->c18_valor == null ){
        $this->erro_sql = " Campo valor do parametro nao Informado.";
        $this->erro_campo = "c18_valor";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_conrelparametro {
        $this->erro_status = "0";
        return false;
      }
-       $this->c18_parametro = $c18_parametro; 
-     if(($this->c18_parametro == null) || ($this->c18_parametro == "") ){ 
+       $this->c18_parametro = $c18_parametro;
+     if(($this->c18_parametro == null) || ($this->c18_parametro == "") ){
        $this->erro_sql = " Campo c18_parametro nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_conrelparametro {
        return false;
      }
      $sql = "insert into conrelparametro(
-                                       c18_parametro 
-                                      ,c18_valor 
+                                       c18_parametro
+                                      ,c18_valor
                        )
                 values (
-                                '$this->c18_parametro' 
-                               ,'$this->c18_valor' 
+                                '$this->c18_parametro'
+                               ,'$this->c18_valor'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "c18 ($this->c18_parametro) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_conrelparametro {
        $resac = db_query("insert into db_acount values($acount,1123,6845,'','".AddSlashes(pg_result($resaco,0,'c18_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c18_parametro=null) { 
+   public function alterar ($c18_parametro=null) {
       $this->atualizacampos();
      $sql = " update conrelparametro set ";
      $virgula = "";
-     if(trim($this->c18_parametro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c18_parametro"])){ 
+     if(trim($this->c18_parametro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c18_parametro"])){
        $sql  .= $virgula." c18_parametro = '$this->c18_parametro' ";
        $virgula = ",";
-       if(trim($this->c18_parametro) == null ){ 
+       if(trim($this->c18_parametro) == null ){
          $this->erro_sql = " Campo parametro nao Informado.";
          $this->erro_campo = "c18_parametro";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_conrelparametro {
          return false;
        }
      }
-     if(trim($this->c18_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c18_valor"])){ 
+     if(trim($this->c18_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c18_valor"])){
        $sql  .= $virgula." c18_valor = '$this->c18_valor' ";
        $virgula = ",";
-       if(trim($this->c18_valor) == null ){ 
+       if(trim($this->c18_valor) == null ){
          $this->erro_sql = " Campo valor do parametro nao Informado.";
          $this->erro_campo = "c18_valor";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_conrelparametro {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "c18 nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c18_parametro;
@@ -214,14 +214,14 @@ class cl_conrelparametro {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c18_parametro=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c18_parametro=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c18_parametro));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_conrelparametro {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "c18 nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c18_parametro;
@@ -276,11 +276,11 @@ class cl_conrelparametro {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_conrelparametro {
       }
      return $result;
    }
-   function sql_query ( $c18_parametro=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $c18_parametro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -318,15 +318,15 @@ class cl_conrelparametro {
      $sql2 = "";
      if($dbwhere==""){
        if($c18_parametro!=null ){
-         $sql2 .= " where conrelparametro.c18_parametro = '$c18_parametro' "; 
-       } 
+         $sql2 .= " where conrelparametro.c18_parametro = '$c18_parametro' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -335,10 +335,10 @@ class cl_conrelparametro {
      }
      return $sql;
   }
-   function sql_query_file ( $c18_parametro=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $c18_parametro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -351,15 +351,15 @@ class cl_conrelparametro {
      $sql2 = "";
      if($dbwhere==""){
        if($c18_parametro!=null ){
-         $sql2 .= " where conrelparametro.c18_parametro = '$c18_parametro' "; 
-       } 
+         $sql2 .= " where conrelparametro.c18_parametro = '$c18_parametro' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

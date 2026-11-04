@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,15 +37,15 @@ $clrotulo->label("q33_codigo");
   <tr>
     <td nowrap title="<?=@$Tq34_codigo?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lq34_codigo,"js_pesquisaq34_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q34_codigo',8,$Iq34_codigo,true,'text',$db_opcao," onchange='js_pesquisaq34_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('q33_codigo',8,$Iq33_codigo,true,'text',3,'')
        ?>
     </td>
@@ -55,7 +55,7 @@ db_input('q33_codigo',8,$Iq33_codigo,true,'text',3,'')
        <?=@$Lq34_numpar?>
     </td>
     <td> 
-<?
+<?php
 db_input('q34_numpar',10,$Iq34_numpar,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -65,7 +65,7 @@ db_input('q34_numpar',10,$Iq34_numpar,true,'text',$db_opcao,"")
        <?=@$Lq34_mes?>
     </td>
     <td> 
-<?
+<?php
 db_input('q34_mes',6,$Iq34_mes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,7 +75,7 @@ db_input('q34_mes',6,$Iq34_mes,true,'text',$db_opcao,"")
        <?=@$Lq34_ano?>
     </td>
     <td> 
-<?
+<?php
 db_input('q34_ano',4,$Iq34_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -85,22 +85,22 @@ db_input('q34_ano',4,$Iq34_ano,true,'text',$db_opcao,"")
        <?=@$Lq34_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('q34_valor',15,$Iq34_valor,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq34_inflat?>">
-       <?
+       <?php
        db_ancora(@$Lq34_inflat,"js_pesquisaq34_inflat(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q34_inflat',5,$Iq34_inflat,true,'text',$db_opcao," onchange='js_pesquisaq34_inflat(false);'")
 ?>
-       <?
+       <?php
 db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        ?>
     </td>
@@ -110,7 +110,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        <?=@$Lq34_dtval?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q34_dtval',@$q34_dtval_dia,@$q34_dtval_mes,@$q34_dtval_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -172,7 +172,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_varfixval.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

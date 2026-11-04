@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("k96_descr");
        <?=@$Lk89_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k89_sequencial',10,$Ik89_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk89_concilia?>">
-       <?
+       <?php
        db_ancora(@$Lk89_concilia,"js_pesquisak89_concilia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k89_concilia',10,$Ik89_concilia,true,'text',$db_opcao," onchange='js_pesquisak89_concilia(false);'")
 ?>
-       <?
+       <?php
 db_input('k68_data',10,$Ik68_data,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('k68_data',10,$Ik68_data,true,'text',3,'')
        <?=@$Lk89_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('k89_id',5,$Ik89_id,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('k89_id',5,$Ik89_id,true,'text',$db_opcao,"")
        <?=@$Lk89_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k89_data',@$k89_data_dia,@$k89_data_mes,@$k89_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,22 +84,22 @@ db_inputdata('k89_data',@$k89_data_dia,@$k89_data_mes,@$k89_data_ano,true,'text'
        <?=@$Lk89_autent?>
     </td>
     <td> 
-<?
+<?php
 db_input('k89_autent',5,$Ik89_autent,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk89_conciliaorigem?>">
-       <?
+       <?php
        db_ancora(@$Lk89_conciliaorigem,"js_pesquisak89_conciliaorigem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k89_conciliaorigem',8,$Ik89_conciliaorigem,true,'text',$db_opcao," onchange='js_pesquisak89_conciliaorigem(false);'")
 ?>
-       <?
+       <?php
 db_input('k96_descr',40,$Ik96_descr,true,'text',3,'')
        ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conciliapendcorrente.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

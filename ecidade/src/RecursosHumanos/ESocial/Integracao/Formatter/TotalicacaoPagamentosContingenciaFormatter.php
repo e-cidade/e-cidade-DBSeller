@@ -46,7 +46,7 @@ class TotalicacaoPagamentosContingenciaFormatter extends Formatter
 
     private function posProcessamento(array $dadosFormatado, array $dados)
     {
-        foreach ($dadosFormatado as &$dadoFormatado) {
+        foreach ($dadosFormatado as $dadoFormatado) {
             $this->unsetEmpty($dadoFormatado);
             foreach ($dados as $dado) {
                 if ($dadoFormatado->referencia == $dado->responsavel) {
@@ -54,8 +54,6 @@ class TotalicacaoPagamentosContingenciaFormatter extends Formatter
                     $dadoFormatado->perApur = $dado->dadosPreenchimento->periodo_apuracao;
                 }
             }
-
-
         }
 
         return $dadosFormatado;

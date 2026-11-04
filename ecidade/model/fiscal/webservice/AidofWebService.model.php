@@ -214,4 +214,20 @@ class AidofWebService extends Aidof {
     return true;
   }
 
+   /**
+   * Define a data de recebimento do talao de notas do contribuiente
+   */
+  public function LiberarAidofQuantidade($iIdRequisicao,$iQuantidadeLiberada,$sObservacao = '') {
+
+
+        $oModelRequisicaoAidof = new RequisicaoAidof($iIdRequisicao);
+        $oModelRequisicaoAidof->setQuantidadeLiberada($iQuantidadeLiberada);
+        $oModelRequisicaoAidof->setObservacao($sObservacao);
+
+        $oRetorno = $oModelRequisicaoAidof->gerarAidof();
+
+  }
+
+
+
 }

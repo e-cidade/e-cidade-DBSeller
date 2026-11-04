@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Acordos
 //CLASSE DA ENTIDADE acordogrupodocumento
-class cl_acordogrupodocumento { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ac06_sequencial = 0; 
-   var $ac06_acordogrupo = 0; 
-   var $ac06_tipodocumento = 0; 
-   var $ac06_documentotemplate = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_acordogrupodocumento {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ac06_sequencial = 0;
+   var $ac06_acordogrupo = 0;
+   var $ac06_tipodocumento = 0;
+   var $ac06_documentotemplate = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ac06_sequencial = int4 = Sequencial 
-                 ac06_acordogrupo = int4 = Acordo Grupo 
-                 ac06_tipodocumento = int4 = Tipo de Documento 
-                 ac06_documentotemplate = int4 = Documento Template 
+                 ac06_sequencial = int4 = Sequencial
+                 ac06_acordogrupo = int4 = Acordo Grupo
+                 ac06_tipodocumento = int4 = Tipo de Documento
+                 ac06_documentotemplate = int4 = Documento Template
                  ";
-   //funcao construtor da classe 
-   function cl_acordogrupodocumento() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("acordogrupodocumento"); 
+     $this->rotulo = new rotulo("acordogrupodocumento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_acordogrupodocumento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ac06_sequencial = ($this->ac06_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac06_sequencial"]:$this->ac06_sequencial);
        $this->ac06_acordogrupo = ($this->ac06_acordogrupo == ""?@$GLOBALS["HTTP_POST_VARS"]["ac06_acordogrupo"]:$this->ac06_acordogrupo);
@@ -80,9 +80,9 @@ class cl_acordogrupodocumento {
      }
    }
    // funcao para inclusao
-   function incluir ($ac06_sequencial){ 
+   public function incluir ($ac06_sequencial){
       $this->atualizacampos();
-     if($this->ac06_acordogrupo == null ){ 
+     if($this->ac06_acordogrupo == null ){
        $this->erro_sql = " Campo Acordo Grupo nao Informado.";
        $this->erro_campo = "ac06_acordogrupo";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_acordogrupodocumento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac06_tipodocumento == null ){ 
+     if($this->ac06_tipodocumento == null ){
        $this->erro_sql = " Campo Tipo de Documento nao Informado.";
        $this->erro_campo = "ac06_tipodocumento";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_acordogrupodocumento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac06_documentotemplate == null ){ 
+     if($this->ac06_documentotemplate == null ){
        $this->erro_sql = " Campo Documento Template nao Informado.";
        $this->erro_campo = "ac06_documentotemplate";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_acordogrupodocumento {
        return false;
      }
      if($ac06_sequencial == "" || $ac06_sequencial == null ){
-       $result = db_query("select nextval('acordogrupodocumento_ac06_sequencial_seq')"); 
+       $result = db_query("select nextval('acordogrupodocumento_ac06_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: acordogrupodocumento_ac06_sequencial_seq do campo: ac06_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: acordogrupodocumento_ac06_sequencial_seq do campo: ac06_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ac06_sequencial = pg_result($result,0,0); 
+       $this->ac06_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from acordogrupodocumento_ac06_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ac06_sequencial)){
@@ -130,10 +130,10 @@ class cl_acordogrupodocumento {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ac06_sequencial = $ac06_sequencial; 
+         $this->ac06_sequencial = $ac06_sequencial;
        }
      }
-     if(($this->ac06_sequencial == null) || ($this->ac06_sequencial == "") ){ 
+     if(($this->ac06_sequencial == null) || ($this->ac06_sequencial == "") ){
        $this->erro_sql = " Campo ac06_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_acordogrupodocumento {
        return false;
      }
      $sql = "insert into acordogrupodocumento(
-                                       ac06_sequencial 
-                                      ,ac06_acordogrupo 
-                                      ,ac06_tipodocumento 
-                                      ,ac06_documentotemplate 
+                                       ac06_sequencial
+                                      ,ac06_acordogrupo
+                                      ,ac06_tipodocumento
+                                      ,ac06_documentotemplate
                        )
                 values (
-                                $this->ac06_sequencial 
-                               ,$this->ac06_acordogrupo 
-                               ,$this->ac06_tipodocumento 
-                               ,$this->ac06_documentotemplate 
+                                $this->ac06_sequencial
+                               ,$this->ac06_acordogrupo
+                               ,$this->ac06_tipodocumento
+                               ,$this->ac06_documentotemplate
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Acordo Grupo Documento ($this->ac06_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_acordogrupodocumento {
        $resac = db_query("insert into db_acount values($acount,2825,16107,'','".AddSlashes(pg_result($resaco,0,'ac06_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ac06_sequencial=null) { 
+   public function alterar ($ac06_sequencial=null) {
       $this->atualizacampos();
      $sql = " update acordogrupodocumento set ";
      $virgula = "";
-     if(trim($this->ac06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_sequencial"])){ 
+     if(trim($this->ac06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_sequencial"])){
        $sql  .= $virgula." ac06_sequencial = $this->ac06_sequencial ";
        $virgula = ",";
-       if(trim($this->ac06_sequencial) == null ){ 
+       if(trim($this->ac06_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ac06_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_acordogrupodocumento {
          return false;
        }
      }
-     if(trim($this->ac06_acordogrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_acordogrupo"])){ 
+     if(trim($this->ac06_acordogrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_acordogrupo"])){
        $sql  .= $virgula." ac06_acordogrupo = $this->ac06_acordogrupo ";
        $virgula = ",";
-       if(trim($this->ac06_acordogrupo) == null ){ 
+       if(trim($this->ac06_acordogrupo) == null ){
          $this->erro_sql = " Campo Acordo Grupo nao Informado.";
          $this->erro_campo = "ac06_acordogrupo";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_acordogrupodocumento {
          return false;
        }
      }
-     if(trim($this->ac06_tipodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_tipodocumento"])){ 
+     if(trim($this->ac06_tipodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_tipodocumento"])){
        $sql  .= $virgula." ac06_tipodocumento = $this->ac06_tipodocumento ";
        $virgula = ",";
-       if(trim($this->ac06_tipodocumento) == null ){ 
+       if(trim($this->ac06_tipodocumento) == null ){
          $this->erro_sql = " Campo Tipo de Documento nao Informado.";
          $this->erro_campo = "ac06_tipodocumento";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_acordogrupodocumento {
          return false;
        }
      }
-     if(trim($this->ac06_documentotemplate)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_documentotemplate"])){ 
+     if(trim($this->ac06_documentotemplate)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac06_documentotemplate"])){
        $sql  .= $virgula." ac06_documentotemplate = $this->ac06_documentotemplate ";
        $virgula = ",";
-       if(trim($this->ac06_documentotemplate) == null ){ 
+       if(trim($this->ac06_documentotemplate) == null ){
          $this->erro_sql = " Campo Documento Template nao Informado.";
          $this->erro_campo = "ac06_documentotemplate";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_acordogrupodocumento {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Acordo Grupo Documento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ac06_sequencial;
@@ -297,14 +297,14 @@ class cl_acordogrupodocumento {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ac06_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ac06_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ac06_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_acordogrupodocumento {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Acordo Grupo Documento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ac06_sequencial;
@@ -361,11 +361,11 @@ class cl_acordogrupodocumento {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,11 +387,11 @@ class cl_acordogrupodocumento {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ac06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ac06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,15 +410,15 @@ class cl_acordogrupodocumento {
      $sql2 = "";
      if($dbwhere==""){
        if($ac06_sequencial!=null ){
-         $sql2 .= " where acordogrupodocumento.ac06_sequencial = $ac06_sequencial "; 
-       } 
+         $sql2 .= " where acordogrupodocumento.ac06_sequencial = $ac06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,11 +427,11 @@ class cl_acordogrupodocumento {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ac06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ac06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,15 +444,15 @@ class cl_acordogrupodocumento {
      $sql2 = "";
      if($dbwhere==""){
        if($ac06_sequencial!=null ){
-         $sql2 .= " where acordogrupodocumento.ac06_sequencial = $ac06_sequencial "; 
-       } 
+         $sql2 .= " where acordogrupodocumento.ac06_sequencial = $ac06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

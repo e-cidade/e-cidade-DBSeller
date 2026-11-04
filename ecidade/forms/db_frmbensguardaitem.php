@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -71,13 +71,13 @@ $iddepart = db_getsession("DB_coddepto");
   <table border="0">
     <tr>
       <td nowrap title="<?=@$Tt22_bensguarda ?>">
-        <?
+        <?php
           db_input('t22_codigo', 10, $It22_codigo, true, 'hidden', 3, "");
           db_ancora(@$Lt22_bensguarda, "js_pesquisat22_bensguarda(true);", 3);
         ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('t22_bensguarda', 10, $It22_bensguarda, true, 'text', 3, " onchange='js_pesquisat22_bensguarda(false);'");
           db_input('t21_codigo', 10, $It21_codigo, true, 'hidden', 3, '')
         ?>
@@ -85,12 +85,12 @@ $iddepart = db_getsession("DB_coddepto");
     </tr>
     <tr>
       <td nowrap title="<?=@$Tt22_bem ?>">
-        <?
+        <?php
           db_ancora(@$Lt22_bem, "js_pesquisat22_bem(true);", $db_opcao);
         ?>
       </td>
       <td nowrap > 
-        <?
+        <?php
           db_input('t22_bem', 10, $It22_bem, true, 'text', $db_opcao, " onchange='js_pesquisat22_bem(false);'");
           db_input('t52_descr', 40, $It52_descr, true, 'text', 3, '')
         ?>
@@ -101,7 +101,7 @@ $iddepart = db_getsession("DB_coddepto");
          <?=@$Lt22_dtini ?>
       </td>
       <td> 
-        <?
+        <?php
           db_inputdata('t22_dtini', @$t22_dtini_dia, @$t22_dtini_mes, @$t22_dtini_ano, true, 'text', $db_opcao, "")
         ?>
       </td>
@@ -111,7 +111,7 @@ $iddepart = db_getsession("DB_coddepto");
         <?=@$Lt22_dtfim ?>
       </td>
       <td> 
-        <?
+        <?php
           db_inputdata('t22_dtfim', @$t22_dtfim_dia, @$t22_dtfim_mes, @$t22_dtfim_ano, true, 'text', $db_opcao, "")
         ?>
       </td>
@@ -121,7 +121,7 @@ $iddepart = db_getsession("DB_coddepto");
            <?=@$Lt22_obs ?>
         </td>
         <td> 
-          <?
+          <?php
           db_textarea('t22_obs', 0, 50, $It22_obs, true, 'text', $db_opcao, "")
           ?>
         </td>
@@ -129,12 +129,12 @@ $iddepart = db_getsession("DB_coddepto");
       <!--
       <tr>
         <td nowrap title="<?=@$Tt22_usuario ?>">
-           <?
+           <?php
            db_ancora(@$Lt22_usuario, "js_pesquisat22_usuario(true);", $db_opcao);
            ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t22_usuario', 10, $It22_usuario, true, 'text', $db_opcao, " onchange='js_pesquisat22_usuario(false);'");
     
             db_input('nome', 40, $Inome, true, 'text', 3, '');
@@ -156,7 +156,7 @@ $iddepart = db_getsession("DB_coddepto");
   <table>
    <tr>
      <td valign="top"  align="center">  
-     <?
+     <?php
      $chavepri = array("t22_codigo" => @$t22_codigo);
      $cliframe_alterar_excluir->chavepri = $chavepri;
      $cliframe_alterar_excluir->sql = $clbensguardaitem->sql_query(null, "*", null, "t22_bensguarda=$t22_bensguarda");

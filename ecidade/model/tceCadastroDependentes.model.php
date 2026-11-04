@@ -134,8 +134,8 @@ class tceCadastroDependentes extends tceEstruturaBasica
                     when rh31_tipoparentesco in ('02') then '03' --companheiro
                     when rh31_tipoparentesco in ('') then '04' -- enteado
                     when rh31_tipoparentesco in ('11') then '05' -- filho invalido
-                    when (rh31_tipoparentesco in ('09') and dp01_sexo = 'F') then '06' -- mae
-                    when (rh31_tipoparentesco in ('09') and dp01_sexo = 'M') then '07' -- pai
+                    when ((rh31_tipoparentesco in ('09') and dp01_sexo = 'F') OR (rh31_gparen = 'M')) then '06' -- mae
+                    when ((rh31_tipoparentesco in ('09') and dp01_sexo = 'M') OR (rh31_gparen = 'P')) then '07' -- pai
                     when rh31_tipoparentesco in ('10') then '08' -- menor sob guarda
                     when rh31_tipoparentesco in ('06','07') then '09' -- tutelado
                     else '99' -- outros

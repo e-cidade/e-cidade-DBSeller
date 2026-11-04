@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "acordoparalisacaoacordomovimentacao.ac48_sequencial,acordoparalisacaoacordomovimentacao.ac48_acordoparalisacao,acordoparalisacaoacordomovimentacao.ac48_acordomovimentacao";
 ?>

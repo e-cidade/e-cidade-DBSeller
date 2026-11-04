@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -63,32 +63,32 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
         if($clcontlotv->erro_status=="0"){
 	  $clcontlotv->erro(true,false);
           $sqlerro=true;
-        } 	
+        }
         $clcontlot->d05_contri=$d02_contri;
         $clcontlot->excluir($d02_contri);
         if($clcontlot->erro_status=="0"){
 	  $clcontlot->erro(true,false);
           $sqlerro=true;
-        } 	
-      }	
-  
+        }
+      }
+
   $cleditalrua->d02_idlog=db_getsession("DB_id_usuario");
   $cleditalrua->d02_data= date("Y-m-d",db_getsession("DB_datausu"));
   $cleditalrua->alterar($d02_contri);
   if($cleditalrua->erro_status=="0"){
     $sqlerro=true;
-  } 	
+  }
   $cleditalserv->d04_contri=$d02_contri;
   $cleditalserv->excluir($d02_contri);
   if($cleditalserv->erro_status=="0"){
       $sqlerro=true;
-   } 	
+   }
 
-  $matriz= split("XX",$dados);
+  $matriz=explode("XX",$dados);
   $tam=sizeof($matriz);
   for($i=0; $i<$tam; $i++){
     if($matriz[$i]!=""){
-      $dad = split("-",$matriz[$i]);
+      $dad =explode("-",$matriz[$i]);
       $cleditalserv->d04_contri  = $d02_contri;
       $cleditalserv->d04_tipos   = $dad[0];
       $cleditalserv->d04_quant   = $dad[1];
@@ -101,11 +101,11 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 
       if($cleditalserv->erro_status=="0"){
     	  $sqlerro=true;
-      } 	
+      }
 
-    } 
+    }
 
-  }  
+  }
   db_fim_transacao($sqlerro);
   //se $mexe for igual a false, significa que que ele ja existe em contlot com o mesmo edital
     if($mexe==true && isset($d40_codigo)){
@@ -130,24 +130,24 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
           $redital=$cleditalserv->sql_record($cleditalserv->sql_query_file($d02_contri));
           $numrows=$cleditalserv->numrows;
           if($numrows==0){
-             db_msgbox("Não foi cadastrado editaserv");  
+             db_msgbox("Não foi cadastrado editaserv");
              $sqlerro=true;
              break;
           }
           $result06=$cleditalrua->sql_record($cleditalrua->sql_query_file($d02_contri,"d02_profun"));
           db_fieldsmemory($result06,0);
-	  
+
 	  //rotina que pega o desconto do edital
           $result09 = $cledital->sql_record($cledital->sql_query_file($d02_codedi,"d01_perc"));
 	  db_fieldsmemory($result09,0);
 
           for($j=0; $j<$numrows; $j++){
-            db_fieldsmemory($redital,$j); 
+            db_fieldsmemory($redital,$j);
 
 
             if (1==2) {
 							if($d04_vlrcal != $d04_vlrval){
-								 /*	      
+								 /*
 								 valor calculado = vlrval - d01_perc%
 								 valor calculado = 26 - 33.33% = 17.34
 								 valor calculado = valor calculado * d02_profun * testada
@@ -158,7 +158,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 								 valorizacao pelo valor para valorizacao = 996.7165 + 30000 = 30996.7165
 								 */
 								 $valor_normal = $d04_vlrval - (($d04_vlrval*$d01_perc)/100) ;
-								 $valor_contri = ($valor_normal * ($d41_testada+$d41_eixo)*$d02_profun)*$d04_mult;	       
+								 $valor_contri = ($valor_normal * ($d41_testada+$d41_eixo)*$d02_profun)*$d04_mult;
 							}else{
 								 /*
 								 valor normal    = vlrcal - d01_perc%
@@ -166,11 +166,11 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 
 								 valor normal    = valor normal * d02_profun * testada
 								 valor normal    = 16.67 * 5 * 13 = 1083.55
-								 */              
+								 */
 								 $valor_normal = $d04_vlrcal - (($d04_vlrcal*$d01_perc)/100) ;
-								 
+
 								 $valor_contri = ($valor_normal * ($d41_testada+$d41_eixo) * $d02_profun);
-							} 
+							}
 						} else {
 								if ($d04_forma == 1) {
 									 $valor_normal = $d04_vlrcal - (($d04_vlrcal*$d01_perc)/100) ;
@@ -184,7 +184,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 								}
 						}
 	          $valor_contri = number_format($valor_contri,"2",".","");
-	    
+
             $clcontlotv->d06_contri=$d02_contri;
             $clcontlotv->d06_idbql=$j01_idbql;
             $clcontlotv->d06_tipos=$d04_tipos;
@@ -196,7 +196,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
               $sqlerro = true;
               break;
             }
-  	  }  
+  	  }
         }
       }
       $results=$cleditalruaproj->sql_record($cleditalruaproj->sql_query($d02_contri,"","d11_codproj"));
@@ -206,7 +206,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
         if($cleditalruaproj->erro_status=='0'){
            $sqlerro = true;
         }
-      } 
+      }
       if(isset($d40_codigo)){
         $cleditalruaproj->d11_contri=$d02_contri;
         $cleditalruaproj->d11_codproj= $d40_codigo;
@@ -216,24 +216,24 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
          }
       }
       db_fim_transacao($sqlerro);
-    }  
+    }
 }else if(isset($chavepesquisa) && !isset($numedital)){
    $db_opcao = 2;
-   $result = $cleditalrua->sql_record($cleditalrua->sql_query($chavepesquisa)); 
+   $result = $cleditalrua->sql_record($cleditalrua->sql_query($chavepesquisa));
    db_fieldsmemory($result,0);
 
-   $result = $cleditalserv->sql_record($cleditalserv->sql_query($d02_contri,"","d04_tipos,d04_quant,d04_vlrcal,d04_vlrval,d04_mult,d04_forma,d03_descr,d04_vlrobra")); 
+   $result = $cleditalserv->sql_record($cleditalserv->sql_query($d02_contri,"","d04_tipos,d04_quant,d04_vlrcal,d04_vlrval,d04_mult,d04_forma,d03_descr,d04_vlrobra"));
    $numi= $cleditalserv->numrows;
    $dados="";
   for($x=0;$x<$numi;$x++){
     db_fieldsmemory($result,$x);
     $dados .= $d04_tipos."-".$d04_quant."-".$d04_vlrcal."-".$d03_descr."-".$d04_vlrval."-".$d04_mult."-".$d04_forma."-".$d04_vlrobra."XX";
   }
-  $result05 = $cleditalruaproj->sql_record($cleditalruaproj->sql_query($chavepesquisa)); 
-  if($cleditalruaproj->numrows>0){  
+  $result05 = $cleditalruaproj->sql_record($cleditalruaproj->sql_query($chavepesquisa));
+  if($cleditalruaproj->numrows>0){
     db_fieldsmemory($result05,0);
   }
-							      
+
  $numedital=$d02_codedi;
 
  $clcontlot->sql_record($clcontlot->sql_query($d02_contri,"","d05_contri"));
@@ -243,10 +243,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
    $naopod="nao";
  }else{
    $db_botao = true;
- }  
+ }
 }else if(isset($numedital)){
    $db_opcao = 2;
-   $result = $cleditalserv->sql_record($cleditalserv->sql_query($d02_contri,"","d04_tipos,d04_quant,d04_vlrcal,d04_vlrval,d04_mult,d04_forma,d03_descr,d04_vlrobra")); 
+   $result = $cleditalserv->sql_record($cleditalserv->sql_query($d02_contri,"","d04_tipos,d04_quant,d04_vlrcal,d04_vlrval,d04_mult,d04_forma,d03_descr,d04_vlrobra"));
    $numi= $cleditalserv->numrows;
    $dados="";
   for($x=0;$x<$numi;$x++){
@@ -266,7 +266,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -274,22 +274,22 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmeditalruaalt.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($cleditalrua->erro_status=="0"){
   $cleditalrua->erro(true,false);
   $db_botao=true;

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -47,15 +47,15 @@ include(modification("libs/db_usuariosonline.php"));
      $codger = pg_result($result,0,0);
      $codger = $codger==""?"1":$codger;
       db_query("insert into db_gerador values($codger,'$nome','$titulo','$finalidade','$sql',$limite,'$visualizacao','$intercalar1','$intercalar2',$pcabecaltura,$pcorpaltura)");
-  }  
+  }
 
- 
+
  $HTTP_SERVER_VARS['SCRIPT_FILENAME'];
  $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
- $nomeok=ereg_replace(" ","",$nome);
+ $nomeok=preg_replace(" ","",$nome);
  $arquivo = ($root."/"."gerador/".$nomeok."002.php");
  $fd = fopen($arquivo,"w");
- fputs($fd,'<? '."\n");
+ fputs($fd,'<?php '."\n");
  fputs($fd,'  include(modification("fpdf151/pdfger.php"));'."\n");
  fputs($fd,'  // variaveis de cabeçalho;'."\n");
  fputs($fd,'  db_postmemory($HTTP_SERVER_VARS);'."\n");
@@ -86,7 +86,7 @@ include(modification("libs/db_usuariosonline.php"));
  fputs($fd,' // monta cabecalho do relatório'."\n");
  fputs($fd,' $pdf->setY(40);'."\n");
  fputs($fd,' $pdf->setX(5);'."\n");
- fputs($fd,' $clrotulolov = new rotulolov;'."\n");  
+ fputs($fd,' $clrotulolov = new rotulolov;'."\n");
  fputs($fd,' $fm_numfields = pg_numfields($resultsql);'."\n");
  fputs($fd,' $tamanho = array();'."\n");
  fputs($fd,' if($visualizacao=="L"){'."\n");
@@ -95,25 +95,25 @@ include(modification("libs/db_usuariosonline.php"));
  fputs($fd,'       $maxlargura=185;'."\n");
  fputs($fd,' }'."\n");
  fputs($fd,' $nova="";'."\n");
-  
+
   $resultsql = db_query(str_replace('\\','',$sql));
   for ($i = 0;$i < $fm_numfields;$i++){
     $v="cabecfonte_".$i;
     fputs($fd,' $cabecfonte_'.$i.'="'.$$v.'";'."\n");
     $cabecfonte=$$v;
-  
+
     $v="cabeccortexto_".$i;
     fputs($fd,' $cabeccortexto_'.$i.'="'.$$v.'";'."\n");
-    $cabeccortexto=$$v;    
+    $cabeccortexto=$$v;
 
     $v="cabectamanho_".$i;
     fputs($fd,' $cabectamanho_'.$i.'="'.$$v.'";'."\n");
-    $cabectamanho=$$v;   
-    
+    $cabectamanho=$$v;
+
     $v="cabecn_".$i;
     fputs($fd,' $cabecn_'.$i.'="'.@$$v.'";'."\n");
     $cabecn=@$$v;
-   
+
     $v="cabeci_".$i;
     fputs($fd,' $cabeci_'.$i.'="'.@$$v.'";'."\n");
     $cabeci=@$$v;
@@ -124,19 +124,19 @@ include(modification("libs/db_usuariosonline.php"));
 
     $v="cabeccortexto_".$i;
     fputs($fd,' $cabeccortexto_'.$i.'="'.$$v.'";'."\n");
-    $cabeccortexto=$$v; 
-       
+    $cabeccortexto=$$v;
+
     $v="cabeccorborda_".$i;
     fputs($fd,' $cabeccorborda_'.$i.'="'.$$v.'";'."\n");
-    $cabeccorborda=$$v;    
+    $cabeccorborda=$$v;
 
     $v="cabeccorfundo_".$i;
     fputs($fd,' $cabeccorfundo_'.$i.'="'.$$v.'";'."\n");
-    $cabeccorfundo=$$v;    
+    $cabeccorfundo=$$v;
 
     $v="cabecaltura_".$i;
     fputs($fd,' $cabecaltura_'.$i.'="'.$$v.'";'."\n");
-    $cabecaltura=$$v;    
+    $cabecaltura=$$v;
 
     $v="cabeclargura_".$i;
     fputs($fd,' $cabeclargura_'.$i.'="'.$$v.'";'."\n");
@@ -146,19 +146,19 @@ include(modification("libs/db_usuariosonline.php"));
 
     $v="corpfonte_".$i;
     fputs($fd,' $corpfonte_'.$i.'="'.$$v.'";'."\n");
-    $corpfonte=$$v;    
+    $corpfonte=$$v;
 
     $v="corpopcao_".$i;
     fputs($fd,' $corpopcao_'.$i.'="'.$$v.'";'."\n");
     $corpopcao=$$v;
- 
+
     $v="corpcortexto_".$i;
     fputs($fd,' $corpcortexto_'.$i.'="'.$$v.'";'."\n");
-    $corpcortexto=$$v; 
-     
+    $corpcortexto=$$v;
+
     $v="corptamanho_".$i;
     fputs($fd,' $corptamanho_'.$i.'="'.$$v.'";'."\n");
-    $corptamanho=$$v;      
+    $corptamanho=$$v;
 
     $v="corpn_".$i;
     fputs($fd,' $corpn_'.$i.'="'.@$$v.'";'."\n");
@@ -171,14 +171,14 @@ include(modification("libs/db_usuariosonline.php"));
     $v="corps_".$i;
     fputs($fd,' $corps_'.$i.'="'.@$$v.'";'."\n");
     $corps=@$$v;
-    
+
     $v="corpcorborda_".$i;
     fputs($fd,' $corpcorborda_'.$i.'="'.$$v.'";'."\n");
     $corpcorborda=$$v;
-    
+
     $v="corpcorfundo_".$i;
     fputs($fd,' $corpcorfundo_'.$i.'="'.$$v.'";'."\n");
-    $corpcorfundo=$$v;    
+    $corpcorfundo=$$v;
 
     $v="corpaltura_".$i;
     fputs($fd,' $corpaltura_'.$i.'="'.$$v.'";'."\n");
@@ -187,17 +187,17 @@ include(modification("libs/db_usuariosonline.php"));
     $v="corplargura_".$i;
     fputs($fd,' $corplargura_'.$i.'="'.$$v.'";'."\n");
     $corplargura=$$v;
-    
+
     $coluna = pg_fieldname($resultsql,$i);
 
     if(@$libera==true){
       //db_query("update  db_gerpref set coluna ='$coluna',cabecfonte='$cabecfonte', cabectamanho=$cabectamanho, cabecn='$cabecn', cabeci='$cabeci', cabecs='$cabecs',cabeccortexto='$cabeccortexto', cabeccorborda='$cabeccorborda', cabeccorfundo='$cabeccorfundo', cabecaltura=$cabecaltura, cabeclargura='$cabeclargura', corpfonte='$corpfonte',corpopcao='$corpopcao',corptamanho=$corptamanho, corpn='$corpn', corpi='$corpi',corps='$corps', corpcortexto='$corpcortexto', corpcorborda='$corpcorborda', corpcorfundo='$corpcorfundo', corpaltura='$corpaltura', corplargura='$corplargura' where codger=$codigo");
-      if($i==0){   
+      if($i==0){
         db_query("delete from db_gerpref where codger=$codigo");
       }
       db_query("insert into db_gerpref values ($codigo,'$coluna','$cabecfonte',$cabectamanho,'$cabecn','$cabeci','$cabecs','$cabeccortexto','$cabeccorborda','$cabeccorfundo',$cabecaltura,$cabeclargura,'$corpfonte','$corpopcao',$corptamanho,'$corpn','$corpi','$corps','$corpcortexto','$corpcorborda','$corpcorfundo',$corpaltura,$corplargura)");
-       
-    }else{	
+
+    }else{
       db_query("insert into db_gerpref values ($codger,'$coluna','$cabecfonte',$cabectamanho,'$cabecn','$cabeci','$cabecs','$cabeccortexto','$cabeccorborda','$cabeccorfundo',$cabecaltura,$cabeclargura,'$corpfonte','$corpopcao',$corptamanho,'$corpn','$corpi','$corps','$corpcortexto','$corpcorborda','$corpcorfundo',$corpaltura,$corplargura)");
     }
  }
@@ -208,25 +208,25 @@ include(modification("libs/db_usuariosonline.php"));
  fputs($fd,'   $it="cabeci_".$i;'."\n");
  fputs($fd,'   $s="cabecs_".$i;'."\n");
  fputs($fd,'   $pdf->SetFont($$cabecfonte,@$$s.@$$n.@$$it ,$$cabectamanho);'."\n");
-   
+
  fputs($fd,'   $cabeccortexto="cabeccortexto_".$i;'."\n");
- fputs($fd,'   $cor=split("#", $$cabeccortexto);'."\n");
+ fputs($fd,'   $cor= explode("#", $$cabeccortexto);'."\n");
  fputs($fd,'   $pdf->SetTextColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'   $cabeccorborda="cabeccorborda_".$i;'."\n");
- fputs($fd,'   $cor=split("#", $$cabeccorborda);'."\n");
+ fputs($fd,'   $cor= explode("#", $$cabeccorborda);'."\n");
  fputs($fd,'   $pdf->SetDrawColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'   $cabeccorfundo="cabeccorfundo_".$i;'."\n");
- fputs($fd,'   $cor=split("#", $$cabeccorfundo);'."\n");
+ fputs($fd,'   $cor= explode("#", $$cabeccorfundo);'."\n");
  fputs($fd,'   $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
 
 
 
  fputs($fd,'   $clrotulolov->label(pg_fieldname($resultsql,$i));'."\n");
- fputs($fd,'   $cabecaltura="cabecaltura_".$i;'."\n");     
- fputs($fd,'   $cabeclargura="cabeclargura_".$i;'."\n");     
- fputs($fd,'   $x=$pdf->getx();'."\n"); 
+ fputs($fd,'   $cabecaltura="cabecaltura_".$i;'."\n");
+ fputs($fd,'   $cabeclargura="cabeclargura_".$i;'."\n");
+ fputs($fd,'   $x=$pdf->getx();'."\n");
  fputs($fd,'   if($$cabeclargura+$x > $maxlargura){'."\n");
- fputs($fd,'     $pdf->ln($$cabecaltura);//não funciona '."\n");  
+ fputs($fd,'     $pdf->ln($$cabecaltura);//não funciona '."\n");
  fputs($fd,'     $pdf->setX(5);'."\n");
  fputs($fd,'   }'."\n");
  fputs($fd,'   $pdf->Cell($$cabeclargura,$$cabecaltura,$clrotulolov->titulo,"LRBT",($i==($fm_numfields-1)?1:0),"",1);'."\n");
@@ -249,39 +249,39 @@ include(modification("libs/db_usuariosonline.php"));
  fputs($fd,'     $it="corpi_".$c;'."\n");
  fputs($fd,'     $s="corps_".$c;'."\n");
  fputs($fd,'     $pdf->SetFont($$corpfonte,$$s.$$n.$$it ,$$corptamanho);'."\n");
- 
+
  fputs($fd,'   $corpcortexto="corpcortexto_".$c;'."\n");
- fputs($fd,'   $cor=split("#", $$corpcortexto);'."\n");
+ fputs($fd,'   $cor= explode("#", $$corpcortexto);'."\n");
  fputs($fd,'   $pdf->SetTextColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
 
  fputs($fd,'   $corpcorborda="corpcorborda_".$c;'."\n");
- fputs($fd,'   $cor=split("#", $$corpcorborda);'."\n");
+ fputs($fd,'   $cor= explode("#", $$corpcorborda);'."\n");
  fputs($fd,'   $pdf->SetDrawColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
 
  fputs($fd,'   //cores que irão intercalar'."\n");
  fputs($fd,'   $corpcorfundo="corpcorfundo_".$c;'."\n");
  fputs($fd,'   if($$corpcorfundo =="255#255#255"){'."\n");
  fputs($fd,'     if($xi % 2!=0){'."\n");
- fputs($fd,'      $cor=split("#","'.$intercalar1.'");'."\n");
+ fputs($fd,'      $cor= explode("#","'.$intercalar1.'");'."\n");
  fputs($fd,'      $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'     }else{'."\n");
- fputs($fd,'      $cor=split("#","'.$intercalar2.'");'."\n");
+ fputs($fd,'      $cor= explode("#","'.$intercalar2.'");'."\n");
  fputs($fd,'      $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'     }'."\n");
  fputs($fd,'   }else{'."\n");
  fputs($fd,'         $corpcorfundo="corpcorfundo_".$c;'."\n");
- fputs($fd,'         $cor=split("#",$$corpcorfundo);'."\n");
+ fputs($fd,'         $cor= explode("#",$$corpcorfundo);'."\n");
  fputs($fd,'         $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'   }'."\n");
 
 
 
 
- fputs($fd,'     $corpaltura="corpaltura_".$c;'."\n");     
- fputs($fd,'     $corplargura="corplargura_".$c;'."\n");     
- fputs($fd,'     $x=$pdf->getx();'."\n"); 
+ fputs($fd,'     $corpaltura="corpaltura_".$c;'."\n");
+ fputs($fd,'     $corplargura="corplargura_".$c;'."\n");
+ fputs($fd,'     $x=$pdf->getx();'."\n");
  fputs($fd,'     if($$corplargura+$x > $maxlargura) {'."\n");
- fputs($fd,'      $pdf->ln($$corpaltura);'."\n");   
+ fputs($fd,'      $pdf->ln($$corpaltura);'."\n");
  fputs($fd,'      $pdf->setX(5);'."\n");
  fputs($fd,'     }'."\n");
 
@@ -314,15 +314,15 @@ include(modification("libs/db_usuariosonline.php"));
  fputs($fd,'       $it="cabeci_".$cabec;'."\n");
  fputs($fd,'       $s="cabecs_".$cabec;'."\n");
  fputs($fd,'       $pdf->SetFont($$cabecfonte,$$s.$$n.$$it ,$$cabectamanho);'."\n");
- 
+
  fputs($fd,'       $cabeccortexto="cabeccortexto_".$cabec;'."\n");
- fputs($fd,'       $cor=split("#", $$cabeccortexto);'."\n");
+ fputs($fd,'       $cor= explode("#", $$cabeccortexto);'."\n");
  fputs($fd,'       $pdf->SetTextColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'       $cabeccorborda="cabeccorborda_".$cabec;'."\n");
- fputs($fd,'       $cor=split("#", $$cabeccorborda);'."\n");
+ fputs($fd,'       $cor= explode("#", $$cabeccorborda);'."\n");
  fputs($fd,'       $pdf->SetDrawColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'       $cabeccorfundo="cabeccorfundo_".$cabec;'."\n");
- fputs($fd,'       $cor=split("#", $$cabeccorfundo);'."\n");
+ fputs($fd,'       $cor= explode("#", $$cabeccorfundo);'."\n");
  fputs($fd,'       $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);'."\n");
  fputs($fd,'       $clrotulolov->label(pg_fieldname($resultsql,$cabec));'."\n");
  fputs($fd,'       $cabecaltura="cabecaltura_".$cabec;     '."\n");
@@ -466,16 +466,16 @@ include(modification("libs/db_usuariosonline.php"));
  fputs($fd,'   <td height="35"><b>Finalidade:</b></td>'."\n");
  fputs($fd,'   <td><input type="text" name="finalidade" value="'.$finalidade.'"></td>'."\n");
  fputs($fd,' <tr> '."\n");
- fputs($fd,'   <td height="35"><b>Pagina:</b></td> '."\n"); 
+ fputs($fd,'   <td height="35"><b>Pagina:</b></td> '."\n");
  fputs($fd,'   <td><select  name="visualizacao">'."\n");
-                if($visualizacao=="P"){    
+                if($visualizacao=="P"){
  fputs($fd,'      <option value="P" selected >Retrato</option>'."\n");
  fputs($fd,'      <option value="L" >Paisagem</option>'."\n");
-                } 
-                if($visualizacao=="L"){    
+                }
+                if($visualizacao=="L"){
  fputs($fd,'      <option value="P">Retrato</option>'."\n");
  fputs($fd,'      <option value="L" selected>Paisagem</option>'."\n");
-                } 
+                }
  fputs($fd,'   </td> '."\n");
  fputs($fd,' </tr> '."\n");
  fputs($fd,'   <td nowrap ><b>Limite de linhas:</b></td>'."\n");

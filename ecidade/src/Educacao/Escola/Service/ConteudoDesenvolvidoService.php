@@ -36,7 +36,9 @@ class ConteudoDesenvolvidoService
      */
     public function buscarConteudo(Regencia $regencia, DateTime $data, $turno)
     {
-        return $this->repository->scopeRegencia($regencia)->scopeData($data)->scopeTurno($turno)->first();
+        $usuario = $_SESSION['DB_id_usuario'];
+        return $this->repository->scopeRegencia($regencia)->scopeData($data)->scopeTurno($turno)
+            ->scopeUsuario($usuario)->first();
     }
 
     /**

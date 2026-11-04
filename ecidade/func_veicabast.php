@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
               <?=$Lve70_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve70_codigo",10,$Ive70_codigo,true,"text",4,"","chave_ve70_codigo");
 		       ?>
             </td>
@@ -89,7 +89,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = " ve70_ativo = 1 ";
       
       if (isset($chave_ve37_sequencial) && trim($chave_ve37_sequencial) != "" && $chave_ve37_sequencial != "0"){
@@ -143,12 +143,12 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

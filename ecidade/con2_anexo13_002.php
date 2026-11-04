@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -69,7 +69,7 @@ $m_vinculados = $orcparamrel->sql_parametro_instit('11','9',"f",$instituicao,db_
 $somador_receita = 0;
 $somador_despesa = 0;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -119,7 +119,7 @@ $db_filtro = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       $m_caixa                    ,
       $m_bancos_e_correspondentes ,
       $m_exatores   ,
-      $m_vinculados 
+      $m_vinculados
       );
 
     $result_balancete = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dataini,$datafin,false,$where,'','true','false','',$aOrcParametro);
@@ -347,7 +347,7 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
         for ($i = 0; $i < pg_numrows($rsOutros); $i++) {
 
           db_fieldsmemory($rsOutros,$i);
-          
+
           $estrutural  = $estrutural;
           $instit      = $c61_instit;
           $v_elementos = array($estrutural,$instit);
@@ -1102,11 +1102,11 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 
 		$pdf->Ln(2);
 		$pdf->setfont('arial','',5);
-		notasExplicativas(&$pdf,$iCodRel,"2S",190);    
+		notasExplicativas($pdf,$iCodRel,"2S",190);
 
     $pdf->Ln(25);
-    $pdf->setfont('arial','',8);    
-    assinaturas(&$pdf,&$classinatura,'BG');
+    $pdf->setfont('arial','',8);
+    assinaturas($pdf,$classinatura,'BG');
 
     //include(modification("fpdf151/geraarquivo.php"));
 

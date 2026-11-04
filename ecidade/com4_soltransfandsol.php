@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,19 +81,19 @@ function js_tipo(){
 <table border="0" cellspacing="1" cellpadding="0" height='10%'>
 
   <tr>
-     <td><b><?
+     <td><b><?php
      if (isset($tipo)&&$tipo=="P"){
      	?>
      	<select name="tipo" Onchange='js_tipo();' ><option value='P'>Processo de Compra</option>\n<option value='S'>Solicitação</option>\n</select>:</b></td>
-     	<?     
+     	<?php     
      }else{
      ?>    
      <select name="tipo" Onchange='js_tipo();' ><option value='S'>Solicitação</option>\n<option value='P'>Processo de Compra</option>\n</select>:</b></td>
-     <?
+     <?php
      }
      ?>
     <td>    
-    <?  if (isset($tipo)&&$tipo=="P"){    	
+    <?php  if (isset($tipo)&&$tipo=="P"){    	
     	$result_solicita=$clsolicita->sql_record($clsolicita->sql_query_andsol("distinct pc81_codproc","where p64_codtran is not null and y.pc47_pctipoandam = 1 or y.pc47_pctipoandam = 7 or y.pc47_pctipoandam = 3 or y.pc47_pctipoandam = 5 or y.pc47_pctipoandam = 4 and pc81_codproc is not null and y.pc43_depto=".db_getsession("DB_coddepto")." order by 1 desc"));
     	    
     if (isset($codsol)&&$codsol!=""){
@@ -118,7 +118,7 @@ function js_tipo(){
 	    //  
     ?>
     </td>
-    <?
+    <?php
     if (isset($codsol)&&$codsol!=""){      
       $result_pcproc=$clpcproc->sql_record($clpcproc->sql_query($codsol));
       if ($clpcproc->numrows>0){      
@@ -161,7 +161,7 @@ function js_tipo(){
 	    //  
     ?>
     </td>
-    <?
+    <?php
     if (isset($codsol)&&$codsol!=""){
       $result_solicita=$clsolicita->sql_record($clsolicita->sql_query($codsol));
       db_fieldsmemory($result_solicita,0);
@@ -177,7 +177,7 @@ function js_tipo(){
       <strong>Usuário:</strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('nome',41,$Inome,true,'text',3);
     ?>
     </td>
@@ -188,7 +188,7 @@ function js_tipo(){
       <strong>Data: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('data_dia',2,0,true,'text',3);
       db_input('data_mes',2,0,true,'text',3);
       db_input('data_ano',4,0,true,'text',3);
@@ -198,7 +198,7 @@ function js_tipo(){
       <strong>Departamento: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('descrdepto',41,$Idescrdepto,true,'text',3);
     ?>
     </td>
@@ -208,7 +208,7 @@ function js_tipo(){
       <strong>Resumo: </strong>
     </td>
     <td colspan="3" nowrap>
-    <?
+    <?php
       db_textarea('resumo',2,73,$Ipc10_resumo,true,'text',3,"")     
     ?>
     </td>

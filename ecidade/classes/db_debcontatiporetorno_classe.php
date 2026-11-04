@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_debcontatiporetorno {
                  d61_descr = varchar(80) = Descricao do tipo de retorno 
                  ";
    //funcao construtor da classe 
-   function cl_debcontatiporetorno() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontatiporetorno"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_debcontatiporetorno {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d61_codigo = ($this->d61_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["d61_codigo"]:$this->d61_codigo);
        $this->d61_descr = ($this->d61_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["d61_descr"]:$this->d61_descr);
@@ -74,7 +74,7 @@ class cl_debcontatiporetorno {
      }
    }
    // funcao para inclusao
-   function incluir ($d61_codigo){ 
+   public function incluir ($d61_codigo){ 
       $this->atualizacampos();
      if($this->d61_descr == null ){ 
        $this->erro_sql = " Campo Descricao do tipo de retorno nao Informado.";
@@ -138,7 +138,7 @@ class cl_debcontatiporetorno {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($d61_codigo=null) { 
+   public function alterar ($d61_codigo=null) { 
       $this->atualizacampos();
      $sql = " update debcontatiporetorno set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_debcontatiporetorno {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($d61_codigo=null,$dbwhere=null) { 
+   public function excluir ($d61_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d61_codigo));
      }else{ 
@@ -280,7 +280,7 @@ class cl_debcontatiporetorno {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,17 +47,17 @@ $clrotulo->label("k00_descr");
 				<tr>
 					<td nowrap title="<?=@$Tv04_docum?>">
 						<b>
-							<?
+							<?php
 								db_ancora("Documento","js_pesquisav04_docum(true);",$db_opcao);
                 db_input('v04_instit',10,$Iv04_instit,true,'hidden',3,"");
 							?>
 						</b>
 					</td>
 					<td>
-						<?
+						<?php
 							db_input('v04_docum',10,$Iv04_docum,true,'text',$db_opcao," onchange='js_pesquisav04_docum(false);'");
 						?>
-						<?
+						<?php
 							db_input('db03_descr',40,$Idb03_descr,true,'text',3,'');
 						?>
 					</td>
@@ -67,22 +67,22 @@ $clrotulo->label("k00_descr");
 						<?=@$Lv04_histjuros?>
 					</td>
 					<td>
-						<?
+						<?php
 							db_input('v04_histjuros',10,$Iv04_histjuros,true,'text',$db_opcao,"");
 						?>
 					</td>
 				</tr>
         <tr>
 					<td nowrap title="<?=@$Tk00_hist?>">
-						<?
+						<?php
 							db_ancora(@$Lk00_hist,"js_pesquisak00_hist(true);",$db_opcao);
 						?>
 					</td>
 					<td>
-						<?
+						<?php
 							db_input('k00_hist',10,$Ik00_hist,true,'text',$db_opcao," onchange='js_pesquisak00_hist(false);'");
 						?>
-						<?
+						<?php
 							db_input('k01_descr',40,$Ik01_descr,true,'text',3,'');
 						?>
 					</td>
@@ -90,16 +90,16 @@ $clrotulo->label("k00_descr");
 				<tr>
 					<td nowrap title="<?=@$Tv04_tipoinicial?>">
 						<b>
-						  <?
+						  <?php
 							  db_ancora("Tipo Inicial","js_pesquisav04_tipoinicial(true);",$db_opcao);
 						  ?>
 						</b>
 					</td>
 					<td>
-						<?
+						<?php
 							db_input('v04_tipoinicial',10,$Iv04_tipoinicial,true,'text',$db_opcao," onchange='js_pesquisav04_tipoinicial(false);'");
 						?>
-						<?
+						<?php
 							db_input('descrtipoinicial',40,$descrtipoinicial,true,'text',3,'');
 						?>
 					</td>
@@ -107,16 +107,16 @@ $clrotulo->label("k00_descr");
 				<tr>
 					<td nowrap title="<?=@$Tv04_tipocertidao?>">
 						<b>
-							<?
+							<?php
 								db_ancora("Tipo Certidão","js_pesquisav04_tipocertidao(true);",$db_opcao);
 							?>
 						</b>
 					</td>
 					<td>
-						<?
+						<?php
 							db_input('v04_tipocertidao',10,$Iv04_tipocertidao,true,'text',$db_opcao," onchange='js_pesquisav04_tipocertidao(false);'");
 						?>
-						<?
+						<?php
 							db_input('descrtipocertidao',40,$descrtipocertidao,true,'text',3,'');
 						?>
 					</td>
@@ -126,7 +126,7 @@ $clrotulo->label("k00_descr");
 						<?=@$Lv04_peticaoinicial?>
 					</td>
 					<td>
-						<?
+						<?php
 							$x = array('1'=>'Modelo original','2'=>'Modelo com margem esquerda menor e espaçamentos gerais menores e espaço para juiz despachar em cima');
 							db_select('v04_peticaoinicial',$x,true,$db_opcao,"style='width:170'");
 						?>
@@ -137,7 +137,7 @@ $clrotulo->label("k00_descr");
 						<?=@$Lv04_envolcdaiptu?>
 					</td>
 					<td>
-						<?
+						<?php
 							$x = array('0'=>'Todos','1'=>'Somente Proprietários','2'=>'Somente Promitentes');
 							db_select('v04_envolcdaiptu',$x,true,$db_opcao,"style='width:170'");
 						?>
@@ -148,7 +148,7 @@ $clrotulo->label("k00_descr");
 						<?=@$Lv04_envolcdaiss?>
 					</td>
 					<td>
-						<?
+						<?php
 							$x = array('0'=>'Não Vincular Sócios','1'=>'Vincular Sócios');
 							db_select('v04_envolcdaiss',$x,true,$db_opcao,"style='width:170'");
 						?>
@@ -159,7 +159,7 @@ $clrotulo->label("k00_descr");
 						<?=@$Lv04_ordemendcda?>
 					</td>
 					<td>
-						<?
+						<?php
 							$aOrdemCda = array('1'=>'Origem','2'=>'CGM');
 							db_select('v04_ordemendcda',$aOrdemCda,true,$db_opcao,"style='width:80px;'");
 						?>
@@ -170,7 +170,7 @@ $clrotulo->label("k00_descr");
 						<?=@$Lv04_envolprinciptu?>
 					</td>
 					<td>
-						<?
+						<?php
 							$aEnvolPrincIptu = array("f"=>"NAO","t"=>"SIM");
 							db_select('v04_envolprinciptu',$aEnvolPrincIptu,true,$db_opcao,"style='width:80px;'");
 						?>
@@ -181,7 +181,7 @@ $clrotulo->label("k00_descr");
 						<?=@$Lv04_imphistcda?>
 					</td>
 					<td>
-						<?
+						<?php
 							$aImpHistCda = array("f"=>"NAO","t"=>"SIM");
 							db_select('v04_imphistcda',$aImpHistCda,true,$db_opcao,"style='width:80px;'");
 						?>
@@ -192,7 +192,7 @@ $clrotulo->label("k00_descr");
             <?=@$Lv04_implivrofolha?>
           </td>
           <td>
-            <?
+            <?php
               $aImplivrofolha = array("f"=>"NAO","t"=>"SIM");
               db_select('v04_implivrofolha',$aImplivrofolha,true,$db_opcao,"style='width:80px;'");
             ?>
@@ -203,7 +203,7 @@ $clrotulo->label("k00_descr");
             <?=@$Lv04_confexpfalec?>
           </td>
           <td>
-            <?
+            <?php
               $aConfExpFalec = array("1"=>"Somente CDA",
                                      "2"=>"Somente Inicial",
                                      "3"=>"Em Ambas");
@@ -216,7 +216,7 @@ $clrotulo->label("k00_descr");
             <?=@$Lv04_expfalecimentocda?>
           </td>
           <td>
-            <?
+            <?php
               db_input('v04_expfalecimentocda',50,$Iv04_expfalecimentocda,true,'text',$db_opcao,'');
             ?>
           </td>
@@ -226,7 +226,7 @@ $clrotulo->label("k00_descr");
             <?=@$Lv04_formgeracda?>
           </td>
           <td>
-            <?
+            <?php
               $x = array('1'=>'Normal',
                          '2'=>'Individualizar por Origem/ Ano/ Procedência');
               db_select('v04_formgeracda',$x,true,$db_opcao,"style='width:370'");
@@ -388,7 +388,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pardiv.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

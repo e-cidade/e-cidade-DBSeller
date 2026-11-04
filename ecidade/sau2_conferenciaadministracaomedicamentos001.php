@@ -42,6 +42,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLancador.widget.js"></script>
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
+<?php validaDepartamentoLogado('unidade') ?>
 <body class="body-default">
   <div class="container">
     <form name="formConferencia" action="#">
@@ -67,12 +68,12 @@ require_once(modification("dbforms/db_funcoes.php"));
           </tr>
         </table>
       </fieldset>
-      <input id="imprimir" type="button" value="Imprimir" disabled="disabled" />
+      <input id="imprimir" type="button" value="Imprimir"/>
     </form>
   </div>
 </body>
 <?php
-db_menu( db_getsession( "DB_id_usuario" ), db_getsession( "DB_modulo" ), db_getsession( "DB_anousu" ), db_getsession( "DB_instit" ) );
+db_menu();
 ?>
 <script>
 const MENSAGENS_SAU2_CONFERENCIAMEDICAMENTOS = 'saude.ambulatorial.sau2_conferenciaadministracaomedicamentos001.';
@@ -89,28 +90,6 @@ $('imprimir').onclick = function() {
   imprimirRelatorio();
 };
 
-/**
- * Verifica se a unidade é uma UPS
- */
-function validaDepartamentoUPS() {
-
-  var oParametros           = {};
-      oParametros.sExecucao = 'verificarCompetencia';
-
-  var oAjaxRequest = new AjaxRequest( "far4_exportacaohorus.RPC.php", oParametros, retornoValidaDepartamentoUPS );
-      oAjaxRequest.setMessage( _M( MENSAGENS_SAU2_CONFERENCIAMEDICAMENTOS + "validando_unidade" )  );
-      oAjaxRequest.execute();
-}
-
-function retornoValidaDepartamentoUPS( oRetorno, lErro ) {
-
-  if( lErro ) {
-    alert( oRetorno.sMensagem.urlDecode() );
-  } else {
-    $('imprimir').removeAttribute( "disabled" );
-  }
-}
-
 function imprimirRelatorio() {
 
   if( empty( $F('periodoInicial') ) ) {
@@ -125,7 +104,7 @@ function imprimirRelatorio() {
     return false;
   }
 
-  if( !empty( $F('periodoInicial') ) && !empty( $F('periodoFinal') ) 
+  if( !empty( $F('periodoInicial') ) && !empty( $F('periodoFinal') )
       && js_comparadata($F('periodoInicial'), $F('periodoFinal'), '>') ) {
 
     alert( _M( MENSAGENS_SAU2_CONFERENCIAMEDICAMENTOS + 'periodo_inicial_maior_final' ) );
@@ -149,5 +128,4 @@ function imprimirRelatorio() {
   oJanela.moveTo(0,0);
 }
 
-validaDepartamentoUPS();
 </script>

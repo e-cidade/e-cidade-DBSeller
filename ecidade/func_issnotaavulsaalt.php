@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
               <?=$Lq51_numnota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q51_numnota",10,$Iq51_numnota,true,"text",4,"","chave_q51_numnota");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
               <?=$Lq02_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q02_inscr",10,$Iq02_inscr,true,"text",4,"","chave_q02_inscr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       (string)$where  = null;
       (string)$and    = " and ";
       if (isset($filtrabaixa)  && $filtrabaixa != null){
@@ -145,12 +145,12 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

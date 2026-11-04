@@ -1,73 +1,73 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhsefipcancela
-class cl_rhsefipcancela { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh91_sequencial = 0; 
-   var $rh91_rhsefip = 0; 
-   var $rh91_id_usuario = 0; 
-   var $rh91_data_dia = null; 
-   var $rh91_data_mes = null; 
-   var $rh91_data_ano = null; 
-   var $rh91_data = null; 
-   var $rh91_hora = null; 
-   var $rh91_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhsefipcancela {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh91_sequencial = 0;
+   var $rh91_rhsefip = 0;
+   var $rh91_id_usuario = 0;
+   var $rh91_data_dia = null;
+   var $rh91_data_mes = null;
+   var $rh91_data_ano = null;
+   var $rh91_data = null;
+   var $rh91_hora = null;
+   var $rh91_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh91_sequencial = int4 = Sequencial 
-                 rh91_rhsefip = int4 = Geração da SEFIP 
-                 rh91_id_usuario = int4 = Usuário 
-                 rh91_data = date = Data Cancelamento 
-                 rh91_hora = char(5) = Hora Cancelamento 
-                 rh91_obs = text = Observação 
+                 rh91_sequencial = int4 = Sequencial
+                 rh91_rhsefip = int4 = Geração da SEFIP
+                 rh91_id_usuario = int4 = Usuário
+                 rh91_data = date = Data Cancelamento
+                 rh91_hora = char(5) = Hora Cancelamento
+                 rh91_obs = text = Observação
                  ";
-   //funcao construtor da classe 
-   function cl_rhsefipcancela() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhsefipcancela"); 
+     $this->rotulo = new rotulo("rhsefipcancela");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_rhsefipcancela {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh91_sequencial = ($this->rh91_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh91_sequencial"]:$this->rh91_sequencial);
        $this->rh91_rhsefip = ($this->rh91_rhsefip == ""?@$GLOBALS["HTTP_POST_VARS"]["rh91_rhsefip"]:$this->rh91_rhsefip);
@@ -96,9 +96,9 @@ class cl_rhsefipcancela {
      }
    }
    // funcao para inclusao
-   function incluir ($rh91_sequencial){ 
+   public function incluir ($rh91_sequencial){
       $this->atualizacampos();
-     if($this->rh91_rhsefip == null ){ 
+     if($this->rh91_rhsefip == null ){
        $this->erro_sql = " Campo Geração da SEFIP nao Informado.";
        $this->erro_campo = "rh91_rhsefip";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_rhsefipcancela {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh91_id_usuario == null ){ 
+     if($this->rh91_id_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "rh91_id_usuario";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_rhsefipcancela {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh91_data == null ){ 
+     if($this->rh91_data == null ){
        $this->erro_sql = " Campo Data Cancelamento nao Informado.";
        $this->erro_campo = "rh91_data_dia";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_rhsefipcancela {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh91_hora == null ){ 
+     if($this->rh91_hora == null ){
        $this->erro_sql = " Campo Hora Cancelamento nao Informado.";
        $this->erro_campo = "rh91_hora";
        $this->erro_banco = "";
@@ -135,16 +135,16 @@ class cl_rhsefipcancela {
        return false;
      }
      if($rh91_sequencial == "" || $rh91_sequencial == null ){
-       $result = db_query("select nextval('rhsefipcancela_rh91_sequencial_seq')"); 
+       $result = db_query("select nextval('rhsefipcancela_rh91_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhsefipcancela_rh91_sequencial_seq do campo: rh91_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhsefipcancela_rh91_sequencial_seq do campo: rh91_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh91_sequencial = pg_result($result,0,0); 
+       $this->rh91_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhsefipcancela_rh91_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh91_sequencial)){
@@ -155,10 +155,10 @@ class cl_rhsefipcancela {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh91_sequencial = $rh91_sequencial; 
+         $this->rh91_sequencial = $rh91_sequencial;
        }
      }
-     if(($this->rh91_sequencial == null) || ($this->rh91_sequencial == "") ){ 
+     if(($this->rh91_sequencial == null) || ($this->rh91_sequencial == "") ){
        $this->erro_sql = " Campo rh91_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -167,23 +167,23 @@ class cl_rhsefipcancela {
        return false;
      }
      $sql = "insert into rhsefipcancela(
-                                       rh91_sequencial 
-                                      ,rh91_rhsefip 
-                                      ,rh91_id_usuario 
-                                      ,rh91_data 
-                                      ,rh91_hora 
-                                      ,rh91_obs 
+                                       rh91_sequencial
+                                      ,rh91_rhsefip
+                                      ,rh91_id_usuario
+                                      ,rh91_data
+                                      ,rh91_hora
+                                      ,rh91_obs
                        )
                 values (
-                                $this->rh91_sequencial 
-                               ,$this->rh91_rhsefip 
-                               ,$this->rh91_id_usuario 
-                               ,".($this->rh91_data == "null" || $this->rh91_data == ""?"null":"'".$this->rh91_data."'")." 
-                               ,'$this->rh91_hora' 
-                               ,'$this->rh91_obs' 
+                                $this->rh91_sequencial
+                               ,$this->rh91_rhsefip
+                               ,$this->rh91_id_usuario
+                               ,".($this->rh91_data == "null" || $this->rh91_data == ""?"null":"'".$this->rh91_data."'")."
+                               ,'$this->rh91_hora'
+                               ,'$this->rh91_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cancelamento da Geração do SEFIP ($this->rh91_sequencial) nao Incluído. Inclusao Abortada.";
@@ -220,16 +220,16 @@ class cl_rhsefipcancela {
        $resac = db_query("insert into db_acount values($acount,3099,17553,'','".AddSlashes(pg_result($resaco,0,'rh91_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh91_sequencial=null) { 
+   public function alterar ($rh91_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhsefipcancela set ";
      $virgula = "";
-     if(trim($this->rh91_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_sequencial"])){ 
+     if(trim($this->rh91_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_sequencial"])){
        $sql  .= $virgula." rh91_sequencial = $this->rh91_sequencial ";
        $virgula = ",";
-       if(trim($this->rh91_sequencial) == null ){ 
+       if(trim($this->rh91_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "rh91_sequencial";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_rhsefipcancela {
          return false;
        }
      }
-     if(trim($this->rh91_rhsefip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_rhsefip"])){ 
+     if(trim($this->rh91_rhsefip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_rhsefip"])){
        $sql  .= $virgula." rh91_rhsefip = $this->rh91_rhsefip ";
        $virgula = ",";
-       if(trim($this->rh91_rhsefip) == null ){ 
+       if(trim($this->rh91_rhsefip) == null ){
          $this->erro_sql = " Campo Geração da SEFIP nao Informado.";
          $this->erro_campo = "rh91_rhsefip";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_rhsefipcancela {
          return false;
        }
      }
-     if(trim($this->rh91_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_id_usuario"])){ 
+     if(trim($this->rh91_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_id_usuario"])){
        $sql  .= $virgula." rh91_id_usuario = $this->rh91_id_usuario ";
        $virgula = ",";
-       if(trim($this->rh91_id_usuario) == null ){ 
+       if(trim($this->rh91_id_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "rh91_id_usuario";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_rhsefipcancela {
          return false;
        }
      }
-     if(trim($this->rh91_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh91_data_dia"] !="") ){ 
+     if(trim($this->rh91_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh91_data_dia"] !="") ){
        $sql  .= $virgula." rh91_data = '$this->rh91_data' ";
        $virgula = ",";
-       if(trim($this->rh91_data) == null ){ 
+       if(trim($this->rh91_data) == null ){
          $this->erro_sql = " Campo Data Cancelamento nao Informado.";
          $this->erro_campo = "rh91_data_dia";
          $this->erro_banco = "";
@@ -277,11 +277,11 @@ class cl_rhsefipcancela {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["rh91_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["rh91_data_dia"])){
          $sql  .= $virgula." rh91_data = null ";
          $virgula = ",";
-         if(trim($this->rh91_data) == null ){ 
+         if(trim($this->rh91_data) == null ){
            $this->erro_sql = " Campo Data Cancelamento nao Informado.";
            $this->erro_campo = "rh91_data_dia";
            $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_rhsefipcancela {
          }
        }
      }
-     if(trim($this->rh91_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_hora"])){ 
+     if(trim($this->rh91_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_hora"])){
        $sql  .= $virgula." rh91_hora = '$this->rh91_hora' ";
        $virgula = ",";
-       if(trim($this->rh91_hora) == null ){ 
+       if(trim($this->rh91_hora) == null ){
          $this->erro_sql = " Campo Hora Cancelamento nao Informado.";
          $this->erro_campo = "rh91_hora";
          $this->erro_banco = "";
@@ -305,7 +305,7 @@ class cl_rhsefipcancela {
          return false;
        }
      }
-     if(trim($this->rh91_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_obs"])){ 
+     if(trim($this->rh91_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh91_obs"])){
        $sql  .= $virgula." rh91_obs = '$this->rh91_obs' ";
        $virgula = ",";
      }
@@ -335,7 +335,7 @@ class cl_rhsefipcancela {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cancelamento da Geração do SEFIP nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh91_sequencial;
@@ -363,14 +363,14 @@ class cl_rhsefipcancela {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh91_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh91_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh91_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -401,7 +401,7 @@ class cl_rhsefipcancela {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cancelamento da Geração do SEFIP nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh91_sequencial;
@@ -429,11 +429,11 @@ class cl_rhsefipcancela {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -455,11 +455,11 @@ class cl_rhsefipcancela {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $rh91_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $rh91_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,15 +476,15 @@ class cl_rhsefipcancela {
      $sql2 = "";
      if($dbwhere==""){
        if($rh91_sequencial!=null ){
-         $sql2 .= " where rhsefipcancela.rh91_sequencial = $rh91_sequencial "; 
-       } 
+         $sql2 .= " where rhsefipcancela.rh91_sequencial = $rh91_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,11 +493,11 @@ class cl_rhsefipcancela {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $rh91_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $rh91_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,15 +510,15 @@ class cl_rhsefipcancela {
      $sql2 = "";
      if($dbwhere==""){
        if($rh91_sequencial!=null ){
-         $sql2 .= " where rhsefipcancela.rh91_sequencial = $rh91_sequencial "; 
-       } 
+         $sql2 .= " where rhsefipcancela.rh91_sequencial = $rh91_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

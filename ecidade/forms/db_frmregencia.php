@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -113,32 +113,32 @@ if (isset($opcao) && $opcao == "alterar") {
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
- <?db_input('ed59_i_codigo',15,$Ied59_i_codigo,true,'hidden',3,"")?>
+ <?php db_input('ed59_i_codigo',15,$Ied59_i_codigo,true,'hidden',3,"")?>
  <tr>
   <td nowrap title="<?=@$Ted59_i_turma?>">
-   <?db_ancora(@$Led59_i_turma,"",3);?>
+   <?php db_ancora(@$Led59_i_turma,"",3);?>
   </td>
   <td colspan="2">
-   <?db_input('ed59_i_turma',15,$Ied59_i_turma,true,'text',3,"")?>
-   <?db_input('ed57_c_descr',20,@$Ied57_c_descr,true,'text',3,'')?>
+   <?php db_input('ed59_i_turma',15,$Ied59_i_turma,true,'text',3,"")?>
+   <?php db_input('ed57_c_descr',20,@$Ied57_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted59_i_serie?>">
-   <?db_ancora(@$Led59_i_serie,"",3);?>
+   <?php db_ancora(@$Led59_i_serie,"",3);?>
   </td>
   <td colspan="2">
-   <?db_input('ed59_i_serie',15,$Ied59_i_serie,true,'text',3,"")?>
-   <?db_input('ed11_c_descr',20,@$Ied11_c_descr,true,'text',3,'')?>
+   <?php db_input('ed59_i_serie',15,$Ied59_i_serie,true,'text',3,"")?>
+   <?php db_input('ed11_c_descr',20,@$Ied11_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted59_i_disciplina?>">
-   <?db_ancora(@$Led59_i_disciplina,"js_pesquisaed59_i_disciplina(true);",$db_opcao);?>
+   <?php db_ancora(@$Led59_i_disciplina,"js_pesquisaed59_i_disciplina(true);",$db_opcao);?>
   </td>
   <td colspan="2">
-   <?db_input('ed59_i_disciplina',15,$Ied59_i_disciplina,true,'text',3," onchange='js_pesquisaed59_i_disciplina(false);'")?>
-   <?db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
+   <?php db_input('ed59_i_disciplina',15,$Ied59_i_disciplina,true,'text',3," onchange='js_pesquisaed59_i_disciplina(false);'")?>
+   <?php db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -146,12 +146,12 @@ if (isset($opcao) && $opcao == "alterar") {
    <?=@$Led59_i_qtdperiodo?>
   </td>
   <td width="125">
-   <?db_input('ed59_i_qtdperiodo',10,$Ied59_i_qtdperiodo,true,'text',$db_opcao,"")?>
+   <?php db_input('ed59_i_qtdperiodo',10,$Ied59_i_qtdperiodo,true,'text',$db_opcao,"")?>
    &nbsp;&nbsp;&nbsp;
   </td>
   <td align="left">
    <?=@$Led59_c_condicao?>
-   <?
+   <?php
    $x = array('OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL');
    db_select('ed59_c_condicao',$x,true,$db_opcao,"onchange='js_lancarHistorico(this.value)'");
    ?>
@@ -162,7 +162,7 @@ if (isset($opcao) && $opcao == "alterar") {
    <?=@$Led59_c_freqglob?>
   </td>
   <td>
-   <?
+   <?php
    if($frequencia=="I"){
     $x = array('I'=>'INDIVIDUAL');
    }elseif($frequencia=="G" && $glob==true){
@@ -204,15 +204,15 @@ if (isset($opcao) && $opcao == "alterar") {
        onclick="return js_validaDocente()"
        <?=($db_opcao!=1?"disabled":"")?>>
 <input id='ordenarDisciplinas' name="ordenar" type="button" value="Ordenar Disciplinas" onclick="js_ordena();">
-<?
+<?php
 if(isset($opcao) && $opcao=="alterar" && $glob==true && $frequencia =="G"){
-?><script>document.form1.ed59_c_condicao.disabled = true;</script><?
+?><script>document.form1.ed59_c_condicao.disabled = true;</script><?php
 }
 ?>
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $campos ="distinct ed59_i_codigo,
              ed59_i_disciplina,
              ed232_c_descr,
@@ -266,7 +266,7 @@ if(isset($opcao) && $opcao=="alterar" && $glob==true && $frequencia =="G"){
  </tr>
  <tr>
   <td valign="top">
-  <?
+  <?php
    $cliframe_alterar_excluir->chavepri      = $chavepri;
    $sWhereOpcionais                         = " ed59_i_turma = $ed59_i_turma AND ed59_i_serie = $ed59_i_serie AND ed59_c_condicao = 'OP'";
    $cliframe_alterar_excluir->sql           = $clregencia->sql_query_censo("", $campos, "ed59_i_ordenacao", $sWhereOpcionais);
@@ -311,18 +311,18 @@ if (iTipoTurma == 6) {
 
 function js_pesquisaed59_i_disciplina(mostra){
  if(mostra==true){
-  <?if($frequencia=="I"){?>
+  <?php if($frequencia=="I"){?>
    js_OpenJanelaIframe('','db_iframe_disciplina','func_disciplinaregencia.php?codensino=<?=@$codensino?>&disciplinas=<?=@$disc_cad?>&funcao_js=parent.js_mostradisciplina1|ed12_i_codigo|ed232_c_descr','Pesquisa de Disciplinas da Base Curricular',true);
   <?}else{?>
    js_OpenJanelaIframe('','db_iframe_disciplina','func_disciplinaregencia2.php?codensino=<?=@$codensino?>&disciplinas=<?=@$disc_cad?>&funcao_js=parent.js_mostradisciplina1|ed12_i_codigo|ed232_c_descr','Pesquisa de Disciplinas da Base Curricular',true);
-  <?}?>
+  <?php }?>
  }else{
   if(document.form1.ed59_i_disciplina.value != ''){
-   <?if($frequencia=="I"){?>
+   <?php if($frequencia=="I"){?>
     js_OpenJanelaIframe('','db_iframe_disciplina','func_disciplinaregencia.php?codensino=<?=@$codensino?>&disciplinas=<?=@$disc_cad?>&pesquisa_chave='+document.form1.ed59_i_disciplina.value+'&funcao_js=parent.js_mostradisciplina','Pesquisa',false);
    <?}else{?>
     js_OpenJanelaIframe('','db_iframe_disciplina','func_disciplinaregencia2.php?codensino=<?=@$codensino?>&disciplinas=<?=@$disc_cad?>&pesquisa_chave='+document.form1.ed59_i_disciplina.value+'&funcao_js=parent.js_mostradisciplina','Pesquisa',false);
-   <?}?>
+   <?php }?>
   }else{
    document.form1.ed232_c_descr.value = '';
   }

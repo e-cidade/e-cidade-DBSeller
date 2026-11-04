@@ -51,6 +51,7 @@ class cl_contabancaria
     public $db83_tipoconta = 0; 
     public $db83_contaplano = 'f'; 
     public $db83_contaunica = 'f'; 
+    public $db83_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
     public $campos = "
                  db83_sequencial = int4 = Sequencial 
@@ -63,6 +64,7 @@ class cl_contabancaria
                  db83_tipoconta = int4 = Tipo de Conta 
                  db83_contaplano = bool = Conta plano 
                  db83_contaunica = bool = Conta única 
+                 db83_instit = int4 = Código da Instituição 
                  ";
 
     public function __construct()
@@ -74,7 +76,7 @@ class cl_contabancaria
     public function erro($mostra, $retorna)
     {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\");</script>";
+        echo "<script>alert(\"".$this->erro_msg."\")</script>";
         if($retorna==true){
            echo "<script>location.href='".$this->pagina_retorno."'</script>";
         }
@@ -94,6 +96,7 @@ class cl_contabancaria
        $this->db83_tipoconta = ($this->db83_tipoconta == ""?@$GLOBALS["HTTP_POST_VARS"]["db83_tipoconta"]:$this->db83_tipoconta);
        $this->db83_contaplano = ($this->db83_contaplano == "f"?@$GLOBALS["HTTP_POST_VARS"]["db83_contaplano"]:$this->db83_contaplano);
        $this->db83_contaunica = ($this->db83_contaunica == "f"?@$GLOBALS["HTTP_POST_VARS"]["db83_contaunica"]:$this->db83_contaunica);
+       $this->db83_instit = ($this->db83_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["db83_instit"]:$this->db83_instit);
      }else{
        $this->db83_sequencial = ($this->db83_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db83_sequencial"]:$this->db83_sequencial);
      }
@@ -168,6 +171,9 @@ class cl_contabancaria
        $this->erro_status = "0";
        return false;
      }
+     if ($this->db83_instit == '' || !isset($GLOBALS["HTTP_POST_VARS"]["db83_instit"])) {
+       $this->db83_instit = 'NULL';
+     }
      if($db83_sequencial == "" || $db83_sequencial == null ){
        $result = db_query("select nextval('contabancaria_db83_sequencial_seq')"); 
        if($result==false){
@@ -211,6 +217,7 @@ class cl_contabancaria
                                       ,db83_tipoconta 
                                       ,db83_contaplano 
                                       ,db83_contaunica 
+                                      ,db83_instit 
                        )
                 values (
                                 $this->db83_sequencial 
@@ -223,6 +230,7 @@ class cl_contabancaria
                                ,$this->db83_tipoconta 
                                ,'$this->db83_contaplano' 
                                ,'$this->db83_contaunica' 
+                               ,$this->db83_instit 
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -269,6 +277,7 @@ class cl_contabancaria
          $resac = db_query("insert into db_acount values($acount,2740,15643,'','".AddSlashes(pg_result($resaco,0,'db83_tipoconta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2740,18251,'','".AddSlashes(pg_result($resaco,0,'db83_contaplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2740,1014461,'','".AddSlashes(pg_result($resaco,0,'db83_contaunica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2740,1010010,'','".AddSlashes(pg_result($resaco,0,'db83_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -394,6 +403,13 @@ class cl_contabancaria
          return false;
        }
      }
+     if(trim($this->db83_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db83_instit"])){ 
+        if(trim($this->db83_instit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db83_instit"])){ 
+           $this->db83_instit = "0" ; 
+        } 
+       $sql  .= $virgula." db83_instit = $this->db83_instit ";
+       $virgula = ",";
+     }
      $sql .= " where ";
      if($db83_sequencial!=null){
        $sql .= " db83_sequencial = $this->db83_sequencial";
@@ -431,6 +447,8 @@ class cl_contabancaria
              $resac = db_query("insert into db_acount values($acount,2740,18251,'".AddSlashes(pg_result($resaco,$conresaco,'db83_contaplano'))."','$this->db83_contaplano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db83_contaunica"]) || $this->db83_contaunica != "")
              $resac = db_query("insert into db_acount values($acount,2740,1014461,'".AddSlashes(pg_result($resaco,$conresaco,'db83_contaunica'))."','$this->db83_contaunica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["db83_instit"]) || $this->db83_instit != "")
+             $resac = db_query("insert into db_acount values($acount,2740,1010010,'".AddSlashes(pg_result($resaco,$conresaco,'db83_instit'))."','$this->db83_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -497,6 +515,7 @@ class cl_contabancaria
            $resac  = db_query("insert into db_acount values($acount,2740,15643,'','".AddSlashes(pg_result($resaco,$iresaco,'db83_tipoconta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2740,18251,'','".AddSlashes(pg_result($resaco,$iresaco,'db83_contaplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2740,1014461,'','".AddSlashes(pg_result($resaco,$iresaco,'db83_contaunica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2740,1010010,'','".AddSlashes(pg_result($resaco,$iresaco,'db83_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -613,7 +632,7 @@ class cl_contabancaria
    function sql_query_concilia( $db83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -623,27 +642,26 @@ class cl_contabancaria
        $sql .= $campos;
      }
      $sql .= " from contabancaria ";
-     $sql .= "      inner join bancoagencia           on bancoagencia.db89_sequencial = contabancaria.db83_bancoagencia ";
-     $sql .= "      inner join db_bancos              on db_bancos.db90_codban        = bancoagencia.db89_db_bancos     ";
-     $sql .= "      inner join concilia               on concilia.k68_contabancaria   = contabancaria.db83_sequencial   ";
+     $sql .= "      inner join bancoagencia  on bancoagencia.db89_sequencial = contabancaria.db83_bancoagencia ";
+     $sql .= "      inner join db_bancos     on db_bancos.db90_codban        = bancoagencia.db89_db_bancos     ";
+     $sql .= "      inner join concilia      on concilia.k68_contabancaria   = contabancaria.db83_sequencial   ";
      $sql .= "      left  join conplanocontabancaria  on c56_contabancaria            = db83_sequencial";
      $sql .= "      left  join conplanoreduz          on c61_reduz                    = c56_reduz ";
      $sql .= "                                       and c61_anousu                   = c56_anousu ";
      $sql .= "      left  join conplano               on c60_codcon                   = c61_codcon ";
      $sql .= "                                       and c60_anousu                   = c61_anousu ";
-
      $sql2 = "";
      if($dbwhere==""){
        if($db83_sequencial!=null ){
-         $sql2 .= " where contabancaria.db83_sequencial = $db83_sequencial ";
-       }
+         $sql2 .= " where contabancaria.db83_sequencial = $db83_sequencial "; 
+       } 
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -653,7 +671,7 @@ class cl_contabancaria
      return $sql;
   }
 
-  function sql_query_planocontas ( $db83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_planocontas ( $db83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select {$campos}";
     $iAnoSessao = db_getsession("DB_anousu");
@@ -707,8 +725,6 @@ class cl_contabancaria
     if (!empty($sOrder)) {
       $sql .= " order by {$sOrder} ";
     }
-
-
-    return $sql;
+     return $sql;
   }
 }

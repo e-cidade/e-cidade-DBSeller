@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -91,14 +91,14 @@ function js_emite(){
 			<b><?=@$RLx21_exerc?>&nbsp;/&nbsp;<?=@$RLx21_mes?>:</b>  
 		</td>
 		<td nowrap> 
-		<?
+		<?php
 			if(!isset($x21_exerc) || (isset($x21_exerc) && trim($x21_exerc) == "")){
 				$x21_exerc = db_getsession("DB_anousu");
 			}
 			db_input('x21_exerc',4,$Ix21_exerc,true,'text',$db_opcao==1?1:3,"");
 		?>
 		<b>&nbsp;/&nbsp;</b>  
-		<?
+		<?php
 			if(!isset($x21_mes) || (isset($x21_mes) && trim($x21_mes) == "")){
 				$x21_mes = date("m",db_getsession("DB_datausu"));
 			}
@@ -121,7 +121,7 @@ function js_emite(){
 	<tr>
 		<td align="right"><strong>Tipo de Emiss&atilde;o:</strong></td>
 		<td>
-		<?
+		<?php
 			$aTipoArquivo	=	array('1'=>'Relat&oacute;rio PDF', '2'=>'Arquivo CSV');
 			db_select('tipoArquivo', $aTipoArquivo, true, 1, 'style="width: 200px;"')
 		?>
@@ -131,7 +131,7 @@ function js_emite(){
       <td align="right"><strong>Filtro:</strong>
       </td>
       <td>
-      <?
+      <?php
          $x = array('1'=>'Todos os Logradouros', '2'=>'Somente logradouros não exportados para o coletor.');
          db_select("filtro", $x, true, 1);
       ?>
@@ -142,7 +142,7 @@ function js_emite(){
 	<table align="center">
 	<tr>
 		<td>
-		<?
+		<?php
 			// $aux = new cl_arquivo_auxiliar;
 			$aux->cabecalho 				= "<strong>Rotas</strong>";
 			$aux->codigo 						= "x06_codrota"; //chave de retorno da func
@@ -171,7 +171,7 @@ function js_emite(){
 	</tr>
 </form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

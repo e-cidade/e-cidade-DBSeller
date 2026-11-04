@@ -84,8 +84,8 @@ class Periodo
             $self->setQuantidadePorAno($state['o114_qdtporano']);
         }
 
-        if (array_key_exists('o114_mesinicial', $state)) {
-            $self->setDiaFinal($state['o114_diainicial']);
+        if (array_key_exists('o114_diainicial', $state)) {
+            $self->setDiaInicial($state['o114_diainicial']);
         }
 
         if (array_key_exists('o114_mesinicial', $state)) {
@@ -140,7 +140,7 @@ class Periodo
             'sequencial' => $this->getSequencial(),
             'descricao' => $this->getDescricao(),
             'quantidadePorAno' => $this->getQuantidadePorAno(),
-            'diaInicial' => $this->getDiaFinal(),
+            'diaInicial' => $this->getDiaInicial(),
             'mesInicial' => $this->getMesInicial(),
             'diaFinal' => $this->getDiaFinal(),
             'mesFinal' => $this->getMesFinal(),

@@ -33,7 +33,6 @@ use App\Domain\Financeiro\Orcamento\Models\Funcao;
 use App\Domain\Financeiro\Orcamento\Models\PpaSubtituloLocalizadorGasto;
 use App\Domain\Financeiro\Orcamento\Models\Recurso;
 use App\Domain\Financeiro\Orcamento\Models\Subfuncao;
-use App\Domain\Financeiro\Planejamento\Models\CronogramaDesembolsoDespesa;
 use App\Domain\Financeiro\Planejamento\Models\DetalhamentoDespesa;
 use App\Domain\Financeiro\Planejamento\Models\Iniciativa;
 use App\Domain\Financeiro\Planejamento\Models\Valor;
@@ -86,7 +85,7 @@ class DetalhamentoDespesaService
         }
 
         if (!is_null($detalhamento->existsDetalhamento($dados)->first())) {
-            throw new Exception("Já exsite um detalhamento com o conjunto de informações.", 403);
+            throw new Exception("Já existe um detalhamento com o conjunto de informações.", 403);
         }
 
         $detalhamento->pl20_anoorcamento = $dados->pl20_anoorcamento;
@@ -115,7 +114,6 @@ class DetalhamentoDespesaService
             )
         );
 
-
         $this->criaCronogramaDesembolso($detalhamento);
 
         $detalhamento->cronogramaDesembolso;
@@ -131,7 +129,8 @@ class DetalhamentoDespesaService
         return DetalhamentoDespesa::when(!empty($filtros['pl20_iniciativaprojativ']), function ($query) use ($filtros) {
             $query->where('pl20_iniciativaprojativ', '=', $filtros['pl20_iniciativaprojativ']);
         })
-            ->orderBy('pl20_orcelemento', 'pl20_codigo')
+            ->orderBy('pl20_orcelemento')
+            ->orderBy('pl20_codigo')
             ->with('funcao')
             ->with('subfuncao')
             ->with('recurso')

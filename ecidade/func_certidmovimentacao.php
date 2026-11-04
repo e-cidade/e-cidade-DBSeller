@@ -52,11 +52,11 @@ $clcertidmovimentacao->rotulo->label("v32_certidcartorio");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lv32_sequencial?></label></td>
-          <td><? db_input("v32_sequencial",10,$Iv32_sequencial,true,"text",4,"","chave_v32_sequencial"); ?></td>
+          <td><?php db_input("v32_sequencial",10,$Iv32_sequencial,true,"text",4,"","chave_v32_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lv32_certidcartorio?></label></td>
-          <td><? db_input("v32_certidcartorio",10,$Iv32_certidcartorio,true,"text",4,"","chave_v32_certidcartorio");?></td>
+          <td><?php db_input("v32_certidcartorio",10,$Iv32_certidcartorio,true,"text",4,"","chave_v32_certidcartorio");?></td>
         </tr>
       </table>
     </fieldset>
@@ -64,7 +64,7 @@ $clcertidmovimentacao->rotulo->label("v32_certidcartorio");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_certidmovimentacao.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_certidmovimentacao.php")==true){

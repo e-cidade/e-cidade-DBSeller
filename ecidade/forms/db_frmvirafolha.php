@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -28,7 +28,7 @@
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 ?>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <!--
@@ -53,11 +53,11 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
       <strong>Período atual&nbsp;&nbsp;</strong>
     </td>
     <td>
-    <?
+    <?php
     db_inputdata("dataii",$diaii,$mesii,$anoii,true,'text',3);
     ?>
     <b>a</b>
-    <?
+    <?php
     db_inputdata("dataif",$diaif,$mesii,$anoii,true,'text',3);
     ?>
     </td>
@@ -77,11 +77,11 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
       <strong><?=($db_opcao == 1?"Novo período":"Período retorno")?>&nbsp;&nbsp;</strong>
     </td>
     <td>
-    <?
+    <?php
     db_inputdata("datafi",$diafi,$mesfi,$anofi,true,'text',3);
     ?>
     <b>a</b>
-    <?
+    <?php
     db_inputdata("dataff",$diaff,$mesfi,$anofi,true,'text',3);
     ?>
     </td>

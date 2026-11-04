@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_cgmerradolog {
                  z12_log = text = Log do que foi feito durante o processamento 
                  ";
    //funcao construtor da classe 
-   function cl_cgmerradolog() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmerradolog"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_cgmerradolog {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->z12_codigo = ($this->z12_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["z12_codigo"]:$this->z12_codigo);
        $this->z12_numcgm = ($this->z12_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["z12_numcgm"]:$this->z12_numcgm);
@@ -78,7 +78,7 @@ class cl_cgmerradolog {
      }
    }
    // funcao para inclusao
-   function incluir ($z12_codigo,$z12_numcgm){ 
+   public function incluir ($z12_codigo,$z12_numcgm){ 
       $this->atualizacampos();
        $this->z12_codigo = $z12_codigo; 
        $this->z12_numcgm = $z12_numcgm; 
@@ -146,7 +146,7 @@ class cl_cgmerradolog {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($z12_codigo=null,$z12_numcgm=null) { 
+   public function alterar ($z12_codigo=null,$z12_numcgm=null) { 
       $this->atualizacampos();
      $sql = " update cgmerradolog set ";
      $virgula = "";
@@ -236,7 +236,7 @@ class cl_cgmerradolog {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($z12_codigo=null,$z12_numcgm=null,$dbwhere=null) { 
+   public function excluir ($z12_codigo=null,$z12_numcgm=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($z12_codigo,$z12_numcgm));
      }else{ 
@@ -306,7 +306,7 @@ class cl_cgmerradolog {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

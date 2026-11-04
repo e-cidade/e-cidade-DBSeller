@@ -11,7 +11,7 @@
 class HandDigits {
     var $chars = array();
     var $iHeight=30, $iWidth=30;
-    function HandDigits() {
+    public function __construct() {
 
 //==========================================================
 // lj-small.jpg
@@ -552,11 +552,11 @@ class AntiSpam {
 	$this->iDD = new HandDigits();	
     }
 
-    function Set($aData) {
+    public function Set($aData) {
 	$this->iData = $aData;
     }
 
-    function Rand($aLen) {
+    public function Rand($aLen) {
 	$d='';
 	for($i=0; $i < $aLen; ++$i) {
 	    if( rand(0,9) < 6 ) {
@@ -575,7 +575,7 @@ class AntiSpam {
 	return $d;
     }
 
-    function Stroke($aStrokeFileName="") {
+    public function Stroke($aStrokeFileName="") {
 
 	$n=strlen($this->iData);
 	if( $n==0 ) {

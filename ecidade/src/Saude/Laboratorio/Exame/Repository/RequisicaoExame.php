@@ -27,9 +27,12 @@
 
 namespace ECidade\Saude\Laboratorio\Exame\Repository;
 
+use cl_lab_requisicao;
 use cl_lab_resultado;
 use db_utils;
 use DBDate;
+use ECidade\Saude\Laboratorio\Repository\RequisicaoLaboratorialRepository;
+use ECidade\Saude\Laboratorio\Service\RequisicaoLaboratorialService;
 use Exception;
 use RequisicaoExame as RequisicaoExameModel;
 
@@ -49,16 +52,23 @@ class RequisicaoExame extends \BaseClassRepository
      */
     private $condicoesWhere = array();
 
+    private $listaExames = array();
+
     /**
-     * @return RequisicaoExameModel[]
+     * @return RequisicaoExameModel[]|\stdClass[]
      * @throws Exception
      */
-    public function getRequisicoesExameComResultado()
+    public function getRequisicoesExameComResultado($apenasIds = false)
     {
         $dao = new cl_lab_resultado();
 
         $where = !empty($this->condicoesWhere) ? implode(' AND ', $this->condicoesWhere) : '';
-        $sql = $dao->sql_query_exames(null, 'la21_i_codigo', null, $where);
+
+        if (!empty($this->listaExames)) {
+            $where .= ' and la09_i_exame in ('.implode(', ', $this->listaExames).')';
+        }
+
+        $sql = $dao->sql_query_exames(null, 'la22_i_codigo, la21_i_codigo', null, $where);
         $rs = db_query($sql);
 
         if (!$rs) {
@@ -69,6 +79,10 @@ class RequisicaoExame extends \BaseClassRepository
 
         if (pg_num_rows($rs) === 0) {
             throw new Exception('Nenhuma requisição de exame encontrada.');
+        }
+
+        if ($apenasIds) {
+            return db_utils::getCollectionByRecord($rs);
         }
 
         for ($contador = 0; $contador < $totalRequisicoes; $contador++) {
@@ -134,7 +148,7 @@ class RequisicaoExame extends \BaseClassRepository
     public function setExame($codigoExame)
     {
         $this->validaParametroInteiro($codigoExame);
-        $this->condicoesWhere[] = "la09_i_exame = {$codigoExame}";
+        $this->listaExames[] = $codigoExame;
     }
 
     /**
@@ -151,8 +165,8 @@ class RequisicaoExame extends \BaseClassRepository
     }
 
     /**
-     * @param DBDate $dataInicio
-     * @param DBDate $dataFim
+     * @param  DBDate  $dataInicio
+     * @param  DBDate  $dataFim
      * @throws Exception
      */
     public function setPeriodo(DBDate $dataInicio, DBDate $dataFim)
@@ -164,5 +178,22 @@ class RequisicaoExame extends \BaseClassRepository
         }
 
         $this->condicoesWhere[] = "la52_d_data between '{$dataInicio->getDate()}' and '{$dataFim->getDate()}'";
+    }
+
+    /**
+     * Recupera os exames vínculados a um grupo de liberação.
+     * @param  int  $grupoLiberacaoId
+     * @return void
+     * @throws Exception
+     */
+    public function setExamesByGrupoLiberacao($grupoLiberacaoId)
+    {
+        $exames = (new RequisicaoLaboratorialService(new RequisicaoLaboratorialRepository(new cl_lab_requisicao())))
+            ->getExamesByGrupoLiberacao($grupoLiberacaoId);
+
+        foreach ($exames as $exame) {
+            $this->validaParametroInteiro($exame->la08_i_codigo);
+            $this->listaExames[] = $exame->la08_i_codigo;
+        }
     }
 }

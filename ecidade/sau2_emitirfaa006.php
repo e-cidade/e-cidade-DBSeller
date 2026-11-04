@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ db_postmemory($HTTP_POST_VARS);
   <center>
     <big>Pré-Visualização da Impressão</big>
   </center> 
-<?
+<?php
 
 $dHoje      = date("Y-m-d",db_getsession("DB_datausu"));
 $iInstitui  = db_getsession("DB_instit");

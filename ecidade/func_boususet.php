@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clboususet->rotulo->label("bo06_coddepto");
               <?=$Lbo06_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bo06_id_usuario",10,$Ibo06_id_usuario,true,"text",4,"","chave_bo06_id_usuario");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clboususet->rotulo->label("bo06_coddepto");
               <?=$Lbo06_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bo06_coddepto",5,$Ibo06_coddepto,true,"text",4,"","chave_bo06_coddepto");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clboususet->rotulo->label("bo06_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_boususet.php")==true){
@@ -118,12 +118,12 @@ $clboususet->rotulo->label("bo06_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

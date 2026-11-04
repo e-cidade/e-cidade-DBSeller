@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -162,6 +162,7 @@ if (isset($alterar)) {
   }
 
   $clturmaac->ed268_programamaiseducacao = $ed268_programamaiseducacao;
+  $clturmaac->ed268_is_bilingue = $ed268_is_bilingue;
   $clturmaac->ed268_c_aee                = $ed268_c_aee;
   $clturmaac->ed268_i_numvagas           = $ed268_i_numvagas;
   $clturmaac->ed268_c_descr              = trim($ed268_c_descr);
@@ -181,7 +182,7 @@ if (isset($alterar)) {
   $db_botao = true;
   ?>
   <script>
-   <?if ($ed268_i_tipoatend == 4) {?>
+   <?php if ($ed268_i_tipoatend == 4) {?>
        parent.document.formaba.a2.disabled    = false;
        parent.document.formaba.a2.style.color = "black";
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      = 'edu1_turmaacativ001.php?ed267_i_turmaac=<?=$ed268_i_codigo?>'+
@@ -190,7 +191,7 @@ if (isset($alterar)) {
        parent.document.formaba.a5.disabled    = false;
        parent.document.formaba.a5.style.color = "black";
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href      = 'edu1_turmaachorarioprofissional001.php?ed270_i_turmaac=<?=$ed268_i_codigo?>&ed268_i_tipoatend=<?=$ed268_i_tipoatend?> ';
-   <?}?>
+   <?php } ?>
   parent.document.formaba.a4.disabled    = false;
   parent.document.formaba.a4.style.color = "black";
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href      = 'edu1_turmaacmatricula001.php?ed269_i_turmaac=<?=$ed268_i_codigo?>'+
@@ -200,7 +201,7 @@ if (isset($alterar)) {
   parent.document.formaba.a5.style.color = "black";
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href      = 'edu1_turmaachorarioprofissional001.php?ed270_i_turmaac=<?=$ed268_i_codigo?>&ed268_i_tipoatend=<?=$ed268_i_tipoatend?>';
  </script>
- <?
+ <?php
 }
 ?>
 <html>
@@ -221,7 +222,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Turma com Atividade Complementar / AEE</b></legend>
-    <?include(modification("forms/db_frmturmaac.php"));?>
+    <?php include(modification("forms/db_frmturmaac.php"));?>
    </fieldset>
    </center>
   </td>
@@ -232,7 +233,7 @@ if (isset($alterar)) {
 <script>
 js_tabulacaoforms("form1","ed268_c_descr",true,1,"ed268_c_descr",true);
 </script>
-<?
+<?php
 if (isset($alterar)) {
   if ($clturmaac->erro_status == "0") {
     $clturmaac->erro(true,false);
@@ -247,7 +248,7 @@ if (isset($alterar)) {
     $ultimo = $clturmaac->ed268_i_codigo;
   ?>
   <script>
-   <?if ($ed268_i_tipoatend == 4) {?>
+   <?php if ($ed268_i_tipoatend == 4) {?>
        parent.document.formaba.a2.disabled    = false;
        parent.document.formaba.a2.style.color = "black";
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      = 'edu1_turmaacativ001.php?ed267_i_turmaac=<?=$ed268_i_codigo?>'+
@@ -256,7 +257,7 @@ if (isset($alterar)) {
        parent.document.formaba.a5.style.color = "black";
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href      = 'edu1_turmaachorario001.php?ed222_i_turmaac=<?=$ed268_i_codigo?>'+
                                                 '&ed268_c_descr=<?=$ed268_c_descr?>';
-   <?}?>
+   <?php } ?>
     parent.document.formaba.a4.disabled    = false;
     parent.document.formaba.a4.style.color = "black";
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href      = 'edu1_turmaacmatricula001.php?ed269_i_turmaac=<?=$ed268_i_codigo?>'+
@@ -269,13 +270,13 @@ if (isset($alterar)) {
                                              '&ed268_c_descr=<?=$ed268_c_descr?>&ed268_i_turno=<?=$ed268_i_turno?>'+
                                              '&codcalendario=<?=$ed268_i_calendario?>';
    </script>
-   <?
+   <?php
   };?>
  <script>
    parent.location.href = "edu1_turmaacabas002.php?chavepesquisa=<?=$ultimo?>&tipoatendimento=<?=$ed268_i_tipoatend?>";
  </script>
-<?};
-
+<?php }; ?>
+<?php
 if ($db_opcao == 22) {
   echo "<script>document.form1.pesquisar.click();</script>";
 }

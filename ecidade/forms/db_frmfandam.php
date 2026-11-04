@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,14 +42,14 @@ $clrotulo->label("nome");
        <?=@$Ly39_codandam?>
     </td>
     <td> 
-<?
+<?php
 db_input('y39_codandam',20,$Iy39_codandam,true,'text',3,"");
 db_input('y70_codvist',20,$Iy70_codvist,true,'hidden',3,"");
 db_input('y30_codnoti',20,$Iy30_codnoti,true,'hidden',3,"");
 db_input('y50_codauto',20,$Iy50_codauto,true,'hidden',3,"");
 ?>
        <?=@$Ly39_data?>
-<?
+<?php
 if($db_opcao == 1){
   $y39_data_dia = date("d",db_getsession("DB_datausu"));
   $y39_data_mes = date("m",db_getsession("DB_datausu"));
@@ -61,15 +61,15 @@ db_inputdata('y39_data',@$y39_data_dia,@$y39_data_mes,@$y39_data_ano,true,'text'
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty39_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Ly39_codtipo,"js_pesquisay39_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y39_codtipo',10,$Iy39_codtipo,true,'text',$db_opcao," onchange='js_pesquisay39_codtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('y41_descr',50,$Iy41_descr,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('y41_descr',50,$Iy41_descr,true,'text',3,'')
        <?=@$Ly39_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y39_obs',3,50,$Iy39_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -88,11 +88,11 @@ db_textarea('y39_obs',3,50,$Iy39_obs,true,'text',$db_opcao,"")
     <td nowrap title="<?=@$Ty39_id_usuario?>">
     </td>
     <td> 
-<?
+<?php
 db_input('y39_id_usuario',5,$Iy39_id_usuario,true,'hidden',$db_opcao,"");
 echo "<script>document.form1.y39_id_usuario.value = '".db_getsession("DB_id_usuario")."'</script>";
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'hidden',3,'')
        ?>
     </td>
@@ -102,7 +102,7 @@ db_input('nome',20,$Inome,true,'hidden',3,'')
        <?=@$Ly39_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('y39_hora',5,$Iy39_hora,true,'text',$db_opcao,"");
 if($db_opcao == 1){
   echo "<script>document.form1.y39_hora.value = '".db_hora()."'</script>";
@@ -113,11 +113,11 @@ if($db_opcao == 1){
   </table>
   </center>
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 if($db_opcao != 3 && $db_opcao != 33){
 ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?
+<?php
 }
 ?>
 </form>
@@ -165,7 +165,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_fandam.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22 && !isset($pesqandam) && !isset($auto)){
       echo " location.href = 'fis3_fandam002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3 && !isset($pesqandam)){

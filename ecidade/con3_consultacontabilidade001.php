@@ -68,17 +68,17 @@ $dta = date("Y",db_getsession("DB_datausu"));
                 <table>
 
                     <tr>
-                        <td nowrap><? db_ancora("Código do Lançamento:",'js_pesquisaLancamento();',1); ?> </td>
-                        <td><?  db_input("c70_codlan",10,"",true,'text',1);   ?> </td>
+                        <td nowrap><?php db_ancora("Código do Lançamento:",'js_pesquisaLancamento();',1); ?> </td>
+                        <td><?php  db_input("c70_codlan",10,"",true,'text',1);   ?> </td>
                     </tr>
 
                     <!-- Documento //conhistdoc -->
                     <tr>
                         <td nowrap="nowrap" id="tdDocumento">
-                            <b><? db_ancora($Lc45_coddoc, "js_pesquisaDocumento(true);", 1);?></b>
+                            <b><?php db_ancora($Lc45_coddoc, "js_pesquisaDocumento(true);", 1);?></b>
                         </td>
                         <td nowrap="nowrap" colspan="3">
-                            <?
+                            <?php
                             db_input('c45_coddoc', 10, $Ic45_coddoc, true, 'text', 1, "onchange='js_pesquisaDocumento(false);'");
                             db_input('c53_descr', 40, $Ic53_descr, true, 'text',3);
                             ?>
@@ -89,7 +89,7 @@ $dta = date("Y",db_getsession("DB_datausu"));
                             <b>Data Inicial:</b>
                         </td>
                         <td nowrap="nowrap">
-                            <?
+                            <?php
                             db_inputdata("dataInicio", "$dtd", "$dtm", "$dta", true, "text", 2, null, null, null, "parent.js_validaCamposLiberaBotao();");
                             ?>
                         </td>
@@ -97,7 +97,7 @@ $dta = date("Y",db_getsession("DB_datausu"));
                             <b>Data Final:</b>
                         </td>
                         <td nowrap="nowrap">
-                            <?
+                            <?php
                             db_inputdata("dataFim", "$dtd", "$dtm", "$dta", true,"text", 2, null, null, null, "parent.js_validaCamposLiberaBotao();");
                             ?>
                         </td>
@@ -107,7 +107,7 @@ $dta = date("Y",db_getsession("DB_datausu"));
                             <b>Valor:</b>
                         </td>
                         <td nowrap="nowrap">
-                            <?
+                            <?php
                             db_input('valorInicio', 10, "", true, 'text', 1, "onkeypress='return js_mask(event, \"0-9|.\");'");
                             ?>
                         </td>
@@ -115,7 +115,7 @@ $dta = date("Y",db_getsession("DB_datausu"));
                             <b>Até:</b>
                         </td>
                         <td nowrap="nowrap">
-                            <?
+                            <?php
                             db_input('valorFim', 10, "", true, 'text', 1, "onkeypress='return js_mask(event, \"0-9|.\");'");
                             ?>
                         </td>
@@ -126,7 +126,7 @@ $dta = date("Y",db_getsession("DB_datausu"));
         </form>
     </div>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 </body>
 </html>

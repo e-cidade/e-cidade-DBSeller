@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,12 +25,21 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Tributario\Arrecadacao\Enums\TipoCampoOrdenacaoCgfEnum;
+use ECidade\Tributario\Arrecadacao\Enums\TipoOrdenacaoCgfEnum;
+use ECidade\Tributario\Arrecadacao\Service\MontaOrdenacaoCgf;
 
 require_once(modification("ext/php/adodb-time.inc.php"));
 require_once(modification("libs/db_utils.php"));
 
 set_time_limit(0);
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+if(isset($y50_codauto) && $y50_codauto != ''){
+  $GLOBAL['y50_codauto'] = $y50_codauto;
+}
+if(isset($nl01_codlanc) && $nl01_codlanc != ''){
+  $GLOBAL['nl01_codlanc'] = $nl01_codlanc;
+}
 //die($HTTP_SERVER_VARS['QUERY_STRING']);
 
 //print_r($_GET);
@@ -74,6 +83,21 @@ if((isset($HTTP_POST_VARS["numpre_unica"]) && $HTTP_POST_VARS["numpre_unica"] !=
 
   db_postmemory($HTTP_POST_VARS);
   db_postmemory($HTTP_GET_VARS);
+  
+  $ordenacaoCgf = new MontaOrdenacaoCgf();
+  $ordenacaoCgf->setGrupoDebito($k03_tipo);
+  
+  $ordenacaoCgf->addCampo("k00_numpre", TipoOrdenacaoCgfEnum::NUMPRE, TipoCampoOrdenacaoCgfEnum::NUMERO);
+  $ordenacaoCgf->addCampo("k00_numpar", TipoOrdenacaoCgfEnum::NUMPAR, TipoCampoOrdenacaoCgfEnum::NUMERO);
+  $ordenacaoCgf->addCampo("k00_dtvenc", TipoOrdenacaoCgfEnum::DATA_VENCIMENTO, TipoCampoOrdenacaoCgfEnum::DATA);
+  $ordenacaoCgf->addCampo("k00_dtoper", TipoOrdenacaoCgfEnum::DATA_OPERACAO, TipoCampoOrdenacaoCgfEnum::DATA);
+  $ordenacaoCgf->addCampo("k00_receit", TipoOrdenacaoCgfEnum::RECEITA, TipoCampoOrdenacaoCgfEnum::NUMERO);
+  
+  if(isset($numcgm) && !empty($numcgm)) {
+    $ordenacaoCgf->addCampo("k00_origem", TipoOrdenacaoCgfEnum::ORIGEM, TipoCampoOrdenacaoCgfEnum::NUMERO);
+  }
+
+  $totalizaordem = $ordenacaoCgf->montaSqlOrderBy();
 
   db_sel_instit(null, "db21_usasisagua, db21_regracgmiptu, db21_regracgmiss");
   $db21_usasisagua = isset($db21_usasisagua) && $db21_usasisagua == 't';
@@ -122,9 +146,9 @@ if((isset($HTTP_POST_VARS["numpre_unica"]) && $HTTP_POST_VARS["numpre_unica"] !=
       // Removido inicio de trasacao com db query
       db_inicio_transacao();
       for($i = 0;$i < $tam;$i++) {
-        $mat = split("P",$numpres[$i]);
+        $mat = explode("P",$numpres[$i]);
         $numpre = $mat[0];
-        $numpar = split("R", $mat[1]);
+        $numpar = explode("R", $mat[1]);
         $numpar = $numpar[0];
         $valores[$i] = $valores[$i] + 0;
 
@@ -176,6 +200,19 @@ if((isset($HTTP_POST_VARS["numpre_unica"]) && $HTTP_POST_VARS["numpre_unica"] !=
 
 
   ?>
+<?php
+if(isset($y50_codauto)){
+  $getAuto = '&y50_codauto='.$y50_codauto;
+}else{
+  $getAuto = '';
+}
+if(isset($nl01_codlanc)){
+  $getAuto .= '&nl01_codlanc='.$nl01_codlanc;
+}else{
+  $getAuto .= '';
+}
+
+?>
 <html>
 <head>
 <title>Documento sem t&iacute;tulo</title>
@@ -638,13 +675,9 @@ if((isset($HTTP_POST_VARS["numpre_unica"]) && $HTTP_POST_VARS["numpre_unica"] !=
       parent.document.getElementById("btparc").disabled = true;
       parent.document.getElementById("btcarne").disabled = true;
     }
-
-
   }
 
   function js_marca() {
-
-
     parent.document.getElementById('btmarcavencidas').value = "Marcar Vencidas";
     parent.$('marcarvencidas').value  = false;
     $('marcarvencidas').value         = false;
@@ -839,7 +872,7 @@ if((isset($HTTP_POST_VARS["numpre_unica"]) && $HTTP_POST_VARS["numpre_unica"] !=
   //-->
 
   function js_desconto(chave){
-    location.href="cai3_gerfinanc012.php?k00_numpre="+chave;
+      location.href="cai3_gerfinanc012.php?k00_numpre="+chave+'<?=$getAuto?>';
   }
 
   </script>
@@ -847,7 +880,7 @@ if((isset($HTTP_POST_VARS["numpre_unica"]) && $HTTP_POST_VARS["numpre_unica"] !=
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
 	onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'; js_desabilitaBotoes(); js_disabilitarFormEmissao();">
-<center><?
+<center><?php
 //verifica se clicou no link da matricula
 if(isset($inscricao) && !empty($inscricao)) {
   $inscr = $inscricao;
@@ -876,21 +909,21 @@ if(isset($tipo)) {
 
     if(isset($numcgm)) {
 
-      if(($result = debitos_numcgm_var($numcgm,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",true))) {
+      if(($result = debitos_numcgm_var($numcgm,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",true, null,$totalizaordem))) {
         echo "<script> numcgm = '$numcgm'; </script>\n";
       } else {
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
       }
     } else if(isset($inscr)) {
 
-      if(($result = debitos_inscricao_var($inscr,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),true))) {
+      if(($result = debitos_inscricao_var($inscr,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),true, null,$totalizaordem))) {
         echo "<script> inscr = '$inscr'; </script>\n";
       } else {
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
       }
     } else if(isset($numpre)) {
 
-      if(($result = debitos_numpre_var($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),true))) {
+      if(($result = debitos_numpre_var($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),true, null,$totalizaordem))) {
         echo "<script> numpre = '$numpre'; </script>\n";
       }
     } else {
@@ -898,26 +931,26 @@ if(isset($tipo)) {
     }
   } elseif($tipo== $w10_tipo) {
     if(isset($numcgm) && !empty($numcgm)) {
-      if(($result = debitos_numcgm($numcgm,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","",true ))){
+      if(($result = debitos_numcgm($numcgm,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"",true ))){
         echo "<script> numcgm = '$numcgm'; </script>\n ";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
 			}
     } else if(isset($matric) && !empty($matric)) {
-      if(($result = debitos_matricula($matric,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","",true))){
+      if(($result = debitos_matricula($matric,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"",true))){
         echo "<script> matric = '$matric'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
 			}
     } else if(isset($inscr) && !empty($inscr)) {
 
-      if(($result = debitos_inscricao_retido($inscr,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","",true))){
+      if(($result = debitos_inscricao_retido($inscr,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"",true))){
         echo "<script> inscr = '$inscr'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
 			}
     } else if(isset($numpre) && !empty($numpre)) {
-      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","","",true))){
+      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"","",true))){
       echo "<script> numpre = '$numpre'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
@@ -928,7 +961,7 @@ if(isset($tipo)) {
         db_fieldsmemory($result_parcel,0);
       }
 
-      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","","",true))){
+      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"","",true))){
         echo "<script> numpre = '$numpre'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
@@ -938,26 +971,26 @@ if(isset($tipo)) {
 
   }else{
   	if(isset($numcgm) && !empty($numcgm)) {
-      if(($result = debitos_numcgm($numcgm,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","",true ))){
+      if(($result = debitos_numcgm($numcgm,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"",true ))){
         echo "<script> numcgm = '$numcgm'; </script>\n ";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
 			}
     } else if(isset($matric) && !empty($matric)) {
-      if(($result = debitos_matricula($matric,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","",true))){
+      if(($result = debitos_matricula($matric,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"",true))){
         echo "<script> matric = '$matric'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
 			}
     } else if(isset($inscr) && !empty($inscr)) {
 
-      if(($result = debitos_inscricao($inscr,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","",true))){
+      if(($result = debitos_inscricao($inscr,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"",true))){
         echo "<script> inscr = '$inscr'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
 			}
     } else if(isset($numpre) && !empty($numpre)) {
-      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","",""," and y.k00_hist <> 918",true))){
+      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,""," and y.k00_hist <> 918",true))){
       echo "<script> numpre = '$numpre'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
@@ -968,7 +1001,7 @@ if(isset($tipo)) {
         db_fieldsmemory($result_parcel,0);
       }
 
-      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"","","","",true))){
+      if(($result = debitos_numpre($numpre,0,$tipo,$DB_DATACALC,db_getsession("DB_anousu"),"",$totalizaordem,"","",true))){
         echo "<script> numpre = '$numpre'; </script>\n";
 			}else{
         db_redireciona("cai3_gerfinanc007.php?erro1=1");
@@ -1010,6 +1043,12 @@ if(isset($tipo)) {
   echo "<tr bgcolor=\"#FFCC66\">\n";
   echo "<th title=\"Outras Informações\" class=\"borda\" style=\"font-size:12px\" nowrap>O</th>\n";
   echo "<th title=\"Notificações\" class=\"borda\" style=\"font-size:12px\" nowrap>N</th>\n";
+
+  if(isset($numcgm) && $numcgm != ''){
+    if($k03_tipo== 7 or $k03_tipo == 3 or $k03_tipo == 1 or $k03_tipo == 2){
+      echo "<th title=\"Origem do Débito\" class=\"borda\" style=\"font-size:12px\" nowrap>Origem</th>\n";
+    }
+  }
   echo "<th title=\"Código de Arrecadação\" class=\"borda\" style=\"font-size:12px\" nowrap>Numpre</th>\n";
   echo "<th title=\"Parcela\" class=\"borda\" style=\"font-size:12px\" nowrap>P</th>\n";
   echo "<th title=\"Total de Parcela\" class=\"borda\" style=\"font-size:12px\" nowrap>T</th>\n";
@@ -1031,6 +1070,7 @@ if(isset($tipo)) {
 
   echo "<th title=\"Data de Lançamento\" class=\"borda\" style=\"font-size:12px\" nowrap>Dt. oper.</th>\n";
   echo "<th title=\"Data de Vencimento\" class=\"borda\" style=\"font-size:12px\" nowrap>Dt. Venc.</th>\n";
+  echo "<th title=\"Data de Vencimento\" class=\"borda\" style=\"font-size:12px\" nowrap>Nº Peça</th>\n";
   echo "<th title=\"Histórico do Lançamento\" class=\"borda\" style=\"font-size:12px\" nowrap>Histórico</th>\n";
 
   //Verifica se agrupado por numpre, cria link pra passar pro nivel 2, mostrando todos os numpres
@@ -1045,7 +1085,7 @@ if(isset($tipo)) {
   }
 
   if(@$agnum == 't') {
-    echo "<th title=\"Lista por parcela\" class=\"borda\" style=\"font-size:12px\" nowrap><a href=\"cai3_gerfinanc002.php?".$arg."&tipo=$tipo&verificaagrupar=1&agnump=f&agpar=t&emrec=".$emrec."&db_datausu=".adodb_date("Y-m-d",$DB_DATACALC)."&inscr=".@$inscr."&matric=".@$matric."&k03_tipo=".@$k03_tipo."&perfil_procuradoria=".@$perfil_procuradoria."&numpre=".@$numpre."&numcgm=".@$numcgm."\">Rec</a></th>\n";
+    echo "<th title=\"Lista por parcela\" class=\"borda\" style=\"font-size:12px\" nowrap><a href=\"cai3_gerfinanc002.php?".$arg."&tipo=$tipo&verificaagrupar=1&agnump=f&agpar=t&emrec=".$emrec."&db_datausu=".adodb_date("Y-m-d",$DB_DATACALC)."&inscr=".@$inscr."&matric=".@$matric."&k03_tipo=".@$k03_tipo."&perfil_procuradoria=".@$perfil_procuradoria."&numpre=".@$numpre."&numcgm=".@$numcgm.$getAuto."\">Rec</a></th>\n";
   } else {
     echo "<th title=\"Receita\" class=\"borda\" style=\"font-size:12px\" nowrap>Rec</th>\n";
   }
@@ -1202,7 +1242,9 @@ if(isset($tipo)) {
 
         $datacalc = date('Y-m-d', $DB_DATACALC);
 
-      $sql_resultunica = "select *,
+      $sql_resultunica = "select
+          'M-'||(select k00_matric from caixa.arrematric where k00_numpre = unica.k00_numpre limit 1) as k00_origem,
+          *,
           substr(fc_calcula,2,13)::float8 as uvlrhis,
           substr(fc_calcula,15,13)::float8 as uvlrcor,
           substr(fc_calcula,28,13)::float8 as uvlrjuros,
@@ -1244,6 +1286,11 @@ if(isset($tipo)) {
           echo "<tr bgcolor=\"$corunica\">\n";
           echo "  <td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
           echo "  <td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
+          if(isset($numcgm) && $numcgm != ''){
+            if($k03_tipo== 7 or $k03_tipo == 3 or $k03_tipo == 1 or $k03_tipo == 2){
+              echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$k00_origem."</td>\n";
+            }
+          }
           echo "  <td class=\"borda\" style=\"font-size:13px;font-family:ubuntu;padding:7px;\" align=\"right\" nowrap title=\"".$histdesc."\">".$k00_numpre;
           echo "    <input type=\"hidden\" name=\"np_unica_".($iContadorUnica)."\" value=\"".$k00_numpre."\"> ";
           echo "  </td>\n";
@@ -1265,7 +1312,7 @@ if(isset($tipo)) {
           echo "    <input type=\"hidden\" name=\"dt_unica_".($iContadorUnica)."\"  value=\"".implode('-',array_reverse(explode('/',$dtvencunic)))."\"> ";
           echo "    <input type=\"hidden\" name=\"unica_np_dt".($iContadorUnica)."\" value=\"".$k00_numpre."_".implode('-',array_reverse(explode('/',$dtvencunic)))."\"> ";
           echo "  </td> \n";
-          echo "  <td colspan=\"3\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
+          echo "  <td colspan=\"4\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
           echo "  <td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrhis,"f")."</td>\n";
           echo "  <td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrcor,"f")."</td>\n";
           echo "  <td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrjuros,"f")."</td>\n";
@@ -1294,17 +1341,21 @@ if(isset($tipo)) {
       }
 
       echo "<label for=\"CHECK$i\"><tr style=\"cursor: hand\" bgcolor=\"".(@$cor = (@$cor=="#E4F471"?"#EFE029":"#E4F471"))."\">\n";
-      echo "<td title=\"Informações Adicionais\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc005.php?".base64_encode($tipo."#".$REGISTRO[$i]["k00_numpre"]."#"."0")."','','width=600,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
+      echo "<td title=\"Informações Adicionais\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc005.php?".base64_encode($tipo."#".$REGISTRO[$i]["k00_numpre"]."#"."0".$getAuto)."','','width=600,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
         MI</a></td>\n";
       if($temnoti){
-        echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc061.php?chave1=numpre&chave=".$REGISTRO[$i]["k00_numpre"]."','','width=700,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
+        echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc061.php?chave1=numpre&chave=".$REGISTRO[$i]["k00_numpre"].$getAuto."','','width=700,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
           N</a></td>\n";
       }else{
         echo "<td title=\"Sem Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap >&nbsp</td>\n";
 
       }
-
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".$REGISTRO[$i]["k00_numpre"])."'\" type=\"button\" value=\"".$REGISTRO[$i]["k00_numpre"]."\"></td>\n";
+      if(isset($numcgm) && $numcgm != ''){
+        if($k03_tipo== 7 or $k03_tipo == 3 or $k03_tipo == 1 or $k03_tipo == 2){
+          echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$REGISTRO[$i]["k00_origem"]."</td>\n";
+        }
+      }
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".$REGISTRO[$i]["k00_numpre"]).$getAuto."'\" type=\"button\" value=\"".$REGISTRO[$i]["k00_numpre"]."\"></td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>
         <input type=\"hidden\" id=\"parc$i\" value=\"0#".$REGISTRO[$i]["k00_numtot"]."#".$REGISTRO[$i]["k00_numpre"]."\"> </td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$REGISTRO[$i]["k00_numtot"]."</td>\n";
@@ -1328,9 +1379,23 @@ if(isset($tipo)) {
         echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"\" value=\"\">".@$dv05_coddiver."&nbsp;</td>\n";
       }
       echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtoper==""?"":"bgcolor=$corDtoper")." nowrap>".adodb_date("d-m-Y",$dtoper)."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".adodb_date("d-m-Y",$dtvenc)."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".adodb_date("d-m-Y",$dtvenc)."  <input type=\"hidden\" name=\"anovenc\" value=\"".substr(adodb_date("d-m-Y",$dtvenc),6,4)."-".$i."\"></td>\n";
+      $sPeca = "";
+
+      if(!empty($REGISTRO[$i]["auto"])){
+        $sPeca = "AI - {$REGISTRO[$i]["auto"]}";
+        $sPeca2 = $REGISTRO[$i]["auto"];
+        $sUrl = "fis3_fis_consautoinf003.php?codauto={$sPeca2}";
+      }
+      if(!empty($REGISTRO[$i]["codlanc"])){
+        $sPeca = "NL - {$REGISTRO[$i]["codlanc"]}";
+        $sPeca2 = $REGISTRO[$i]["codlanc"];
+        $sUrl = "fis3_fis_conslancamento003.php?codlanc={$sPeca2}";
+      }
+
+      echo "<td class=\"borda\" style=\"font-size:11px; cursor:pointer;\" nowrap><a href=\"#\" onclick=\"js_AutoeNotif('$sUrl');\">{$sPeca}</a></td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k01_descr"])==""?"&nbsp":$REGISTRO[$i]["k01_descr"])."</td>\n";
-      echo "<td title=\"Lista por parcela\" class=\"borda\" style=\"font-size:11px\" nowrap><a href=\"cai3_gerfinanc002.php?numpre=".$REGISTRO[$i]["k00_numpre"]."&tipo=$tipo&verificaagrupar=1&agnump=f&agpar=t&emrec=".$emrec."&db_datausu=".adodb_date("Y-m-d",$DB_DATACALC)."&inscr=".@$inscr."&matric=".@$matric."&k03_tipo=".@$k03_tipo."&perfil_procuradoria=".@$perfil_procuradoria."&numcgm=".@$numcgm."\">AP</a></td>\n";
+      echo "<td title=\"Lista por parcela\" class=\"borda\" style=\"font-size:11px\" nowrap><a href=\"cai3_gerfinanc002.php?numpre=".$REGISTRO[$i]["k00_numpre"]."&tipo=$tipo&verificaagrupar=1&agnump=f&agpar=t&emrec=".$emrec."&db_datausu=".adodb_date("Y-m-d",$DB_DATACALC)."&inscr=".@$inscr."&matric=".@$matric."&k03_tipo=".@$k03_tipo."&perfil_procuradoria=".@$perfil_procuradoria."&numcgm=".@$numcgm.$getAuto."\">AP</a></td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k02_descr"])==""?"&nbsp":$REGISTRO[$i]["k02_descr"])."</td>\n";
 
       echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valor$i\" value=\"".$valor."\">".db_formatar($valor,"f")."</td>\n";
@@ -1510,6 +1575,11 @@ if(isset($tipo)) {
               echo "<tr bgcolor=\"$corunica\">\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
+              if(isset($numcgm) && $numcgm != '' ){
+                if($k03_tipo== 7 or $k03_tipo == 3 or $k03_tipo == 1 or $k03_tipo == 2){
+                  echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$REGISTRO[$i]["k00_origem"]."</td>\n";
+                }
+              }
               echo "<td class=\"borda\" style=\"font-size:13px;font-family:ubuntu;padding:7px;\" nowrap title=\"".$histdesc."\">".$k00_numpre;
               echo "   <input type=\"hidden\" name=\"np_unica_".($iContadorUnica)."\" value=\"".$k00_numpre."\"> ";
           	  echo "  </td>\n";
@@ -1531,7 +1601,7 @@ if(isset($tipo)) {
               echo "    <input type=\"hidden\" name=\"dt_unica_".($iContadorUnica)."\"  value=\"".implode('-',array_reverse(explode('/',$dtvencunic)))."\"> ";
               echo "    <input type=\"hidden\" name=\"unica_np_dt".($iContadorUnica)."\" value=\"".$k00_numpre."_".implode('-',array_reverse(explode('/',$dtvencunic)))."\"> ";
               echo "  </td> \n";
-              echo "<td colspan=\"3\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
+              echo "<td colspan=\"4\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrhis,"f")."</td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrcor,"f")."</td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrjuros,"f")."</td>\n";
@@ -1567,11 +1637,11 @@ if(isset($tipo)) {
 
 
         echo "<label for=\"CHECK$ContadorUnico\"><tr style=\"cursor: hand\" bgcolor=\"".($cor = (@$cor==$ConfCor2?$ConfCor1:$ConfCor2))."\">\n";
-        echo "<td title=\"Informações Adicionais\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc005.php?".base64_encode($tipo."#".$REGISTRO[$i]["k00_numpre"]."#".$REGISTRO[$i]["k00_numpar"])."','','width=600,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
+        echo "<td title=\"Informações Adicionais\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc005.php?".base64_encode($tipo."#".$REGISTRO[$i]["k00_numpre"]."#".$REGISTRO[$i]["k00_numpar"].$getAuto)."','','width=600,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
           MI</a></td>\n";
 
         if($temnoti){
-          echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc061.php?chave1=numpre&chave=".$REGISTRO[$i]["k00_numpre"]."&chave2=".$REGISTRO[$i]["k00_numpar"]."','','width=700,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
+          echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc061.php?chave1=numpre&chave=".$REGISTRO[$i]["k00_numpre"]."&chave2=".$REGISTRO[$i]["k00_numpar"].$getAuto."','','width=700,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
             N</a></td>\n";
         }else{
           echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap >
@@ -1579,7 +1649,13 @@ if(isset($tipo)) {
 
         }
 
-        echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".$elementos_numpres[$x])."'\" type=\"button\" value=\"".$elementos_numpres[$x]."\"></td>\n";
+        if(isset($numcgm) && $numcgm != '' ){
+          if($k03_tipo== 7 or $k03_tipo == 3 or $k03_tipo == 1 or $k03_tipo == 2){
+            echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$REGISTRO[$i]["k00_origem"]."</td>\n";
+          }
+        }
+
+        echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".$elementos_numpres[$x]).$getAuto."'\" type=\"button\" value=\"".$elementos_numpres[$x]."\"></td>\n";
         echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input type=\"hidden\" id=\"parc$i\" value=\"".$elementos_parcelas[$i]."#".$REGISTRO[$i]["k00_numtot"]."#".$elementos_numpres[$x]."\">".$elementos_parcelas[$i]."</td>\n";
         echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$REGISTRO[$i]["k00_numtot"]."</td>\n";
 
@@ -1615,9 +1691,23 @@ if(isset($tipo)) {
           $corDtvenc = '#99CCFF';
         }
         echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtoper==""?"":"bgcolor=$corDtoper")." nowrap>".adodb_date("d-m-Y",$dtoper)."</td>\n";
-        echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".adodb_date("d-m-Y",$dtvenc)."</td>\n";
+        echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".adodb_date("d-m-Y",$dtvenc)." <input type=\"hidden\" name=\"anovenc\" value=\"".substr(adodb_date("d-m-Y",$dtvenc),6,4)."-".$ContadorUnico."\"></td>\n";
+
+        $sPeca = "";
+
+        if(!empty($REGISTRO[$i]["auto"])){
+          $sPeca = "AI - {$REGISTRO[$i]["auto"]}";
+          $sPeca2 = $REGISTRO[$i]["auto"];
+          $sUrl = "fis3_fis_consautoinf003.php?codauto={$sPeca2}";
+        }
+        if(!empty($REGISTRO[$i]["codlanc"])){
+          $sPeca = "NL - {$REGISTRO[$i]["codlanc"]}";
+          $sPeca2 = $REGISTRO[$i]["codlanc"];
+          $sUrl = "fis3_fis_conslancamento003.php?codlanc={$sPeca2}";
+        }
+        echo "<td class=\"borda\" style=\"font-size:11px; cursor:pointer;\" nowrap><a href=\"#\" onclick=\"js_AutoeNotif('$sUrl');\">{$sPeca}</a></td>\n";
         echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k01_descr"])==""?"&nbsp":$REGISTRO[$i]["k01_descr"])."</td>\n";
-        echo "<td title=\"Lista por receita\" class=\"borda\" style=\"font-size:11px\" nowrap><a href=\"cai3_gerfinanc002.php?".$arg."&tipo=$tipo&agnump=f&agpar=f&emrec=".$emrec."&db_datausu=".adodb_date("Y-m-d",$DB_DATACALC)."&numcgm=".@$numcgm."&inscr=".@$inscr."&matric=".@$matric."&k03_tipo=".@$k03_tipo."&perfil_procuradoria=".@$perfil_procuradoria."&numpre=".@$numpre."\">DE</a></td>\n";
+        echo "<td title=\"Lista por receita\" class=\"borda\" style=\"font-size:11px\" nowrap><a href=\"cai3_gerfinanc002.php?".$arg."&tipo=$tipo&agnump=f&agpar=f&emrec=".$emrec."&db_datausu=".adodb_date("Y-m-d",$DB_DATACALC)."&numcgm=".@$numcgm."&inscr=".@$inscr."&matric=".@$matric."&k03_tipo=".@$k03_tipo."&perfil_procuradoria=".@$perfil_procuradoria."&numpre=".@$numpre.$getAuto."\">DE</a></td>\n";
         echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k02_descr"])==""?"&nbsp":$REGISTRO[$i]["k02_descr"])."</td>\n";
 
         echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valor$ContadorUnico\" value=\"".$valor."\">".db_formatar($valor,"f")."</td>\n";
@@ -1784,6 +1874,7 @@ if(isset($tipo)) {
           $listaunica = false;
           $resultunica = db_query(
           "select *,
+              'M-'||(select k00_matric from caixa.arrematric where k00_numpre = unica.k00_numpre limit 1) as k00_origem,
               substr(fc_calcula,2,13)::float8 as uvlrhis,
               substr(fc_calcula,15,13)::float8 as uvlrcor,
               substr(fc_calcula,28,13)::float8 as uvlrjuros,
@@ -1824,6 +1915,11 @@ if(isset($tipo)) {
               echo "<tr bgcolor=\"$corunica\">\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
+              if(isset($numcgm) && $numcgm != '' ){
+                if($k03_tipo== 7 or $k03_tipo == 3 or $k03_tipo == 1 or $k03_tipo == 2){
+                  echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$k00_origem."</td>\n";
+                }
+              }
               echo "<td class=\"borda\" style=\"font-size:13px;font-family:ubuntu;padding:7px;\" nowrap title=\"".$histdesc."\">".$k00_numpre;
               echo "   <input type=\"hidden\" name=\"np_unica_".($iContadorUnica)."\" value=\"".$k00_numpre."\"> ";
           	  echo "  </td>\n";
@@ -1845,7 +1941,7 @@ if(isset($tipo)) {
               echo "    <input type=\"hidden\" name=\"dt_unica_".($iContadorUnica)."\"  value=\"".implode('-',array_reverse(explode('/',$dtvencunic)))."\"> ";
               echo "    <input type=\"hidden\" name=\"unica_np_dt".($iContadorUnica)."\" value=\"".$k00_numpre."_".implode('-',array_reverse(explode('/',$dtvencunic)))."\"> ";
               echo "  </td> \n";
-              echo "<td colspan=\"3\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
+              echo "<td colspan=\"4\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrhis,"f")."</td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrcor,"f")."</td>\n";
               echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".db_formatar($uvlrjuros,"f")."</td>\n";
@@ -1874,18 +1970,23 @@ if(isset($tipo)) {
       }
 
       echo "<label for=\"CHECK$i\"><tr style=\"cursor: hand\" bgcolor=\"".$cor."\">\n";
-      echo "<td title=\"Informações Adicionais\" class=\"borda\" style=\"font-size:11px; cursos:hand\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc005.php?".base64_encode($tipo."#".pg_result($result,$i,"k00_numpre")."#".pg_result($result,$i,"k00_numpar"))."','','width=600,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
+      echo "<td title=\"Informações Adicionais\" class=\"borda\" style=\"font-size:11px; cursos:hand\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc005.php?".base64_encode($tipo."#".pg_result($result,$i,"k00_numpre")."#".pg_result($result,$i,"k00_numpar").$getAuto)."','','width=600,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
           MI</a></td>\n";
 
       if($temnoti){
-        echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc061.php?chave1=numpre&chave=".pg_result($result,$i,"k00_numpre")."&chave2=".pg_result($result,$i,"k00_numpar")."','','width=700,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
+        echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap onclick=\"parent.js_mostradetalhes('cai3_gerfinanc061.php?chave1=numpre&chave=".pg_result($result,$i,"k00_numpre")."&chave2=".pg_result($result,$i,"k00_numpar").$getAuto."','','width=700,height=500,scrollbars=1')\"><a href=\"\" onclick=\"return false;\">
             N</a></td>\n";
       }else{
         echo "<td title=\"Notificações Informadas\" class=\"borda\" style=\"font-size:11px\" nowrap >
             &nbsp</td>\n";
       }
 
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".pg_result($result,$i,"k00_numpre"))."'\" type=\"button\" value=\"".pg_result($result,$i,"k00_numpre")."\"></td>\n";
+      if(isset($numcgm) && $numcgm != '' ){
+        if($k03_tipo== 7 or $k03_tipo == 3 or $k03_tipo == 1 or $k03_tipo == 2){
+          echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".pg_fetch_result($result,$i,"k00_origem")."</td>\n";
+        }
+      }
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".pg_result($result,$i,"k00_numpre")).$getAuto."'\" type=\"button\" value=\"".pg_result($result,$i,"k00_numpre")."\"></td>\n";
 
       //      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".pg_result($result,$i,"k00_numpre")."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k00_numpar"))==""?"&nbsp":pg_result($result,$i,"k00_numpar"))."</td>\n";
@@ -1945,7 +2046,20 @@ if(isset($tipo)) {
       }
 
       echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtoper==""?"":"bgcolor=$corDtoper")." nowrap>".adodb_date("d-m-Y",$dtoper)."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".adodb_date("d-m-Y",$dtvenc)."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".adodb_date("d-m-Y",$dtvenc)."<input type=\"hidden\" name=\"anovenc\" value=\"".substr(adodb_date("d-m-Y",$dtvenc),6,4)."-".$i."\"></td>\n";
+
+      if(!empty(pg_result($result,$i,"auto"))){
+        $sPeca = "AI - ".pg_result($result,$i,"auto");
+        $sPeca2 = pg_result($result,$i,"auto");
+        $sUrl = "fis3_fis_consautoinf003.php?codauto={$sPeca2}";
+      }
+      if(!empty(pg_result($result,$i,"codlanc"))){
+        $sPeca = "NL - ".pg_result($result,$i,"codlanc");
+        $sPeca2 = pg_result($result,$i,"codlanc");
+        $sUrl = "fis3_fis_conslancamento003.php?codlanc={$sPeca2}";
+      }
+
+      echo "<td class=\"borda\" style=\"font-size:11px; cursor:pointer;\" nowrap><a href=\"#\" onclick=\"js_AutoeNotif('$sUrl');\">{$sPeca}</a></td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k01_descr"))==""?"&nbsp":pg_result($result,$i,"k01_descr"))."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k00_receit"))==""?"&nbsp":pg_result($result,$i,"k00_receit"))."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k02_descr"))==""?"&nbsp":pg_result($result,$i,"k02_descr"))."</td>\n";
@@ -1998,10 +2112,12 @@ if(isset($tipo)) {
         js_soma(1);
         </script>\n";
 }
-?></center>
-</body>
-</html>
+?>
+
+
+</center>
 <script>
+
       /*
       parent.document.getElementById('valor').innerText = '&nbsp;';
       parent.document.getElementById('valorcorr').innerText = '&nbsp;';
@@ -2017,8 +2133,17 @@ if(isset($tipo)) {
         parent.document.getElementById('enviar').value = 'Agrupar';
         parent.document.getElementById('enviar').disabled = false;
       }
-      </script>
-<?
+      function js_AutoeNotif(url){
+        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_AutoNotif',url,'Consulta Peça Fiscal');
+      }
+
+</script>
+
+</body>
+</html>
+
+
+<?php
 }
 echo "<script>
           parent.document.js_parc = parent.js_parc_copia;

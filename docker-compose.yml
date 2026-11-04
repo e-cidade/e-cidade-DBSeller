@@ -1,8 +1,9 @@
 services:
-  ecidade_php56:
+  ecidade_php74:
+    image: ecidade-php74:latest
     build:
-      context: ./docker/php56-apache
-    container_name: ecidade_php56
+      context: ./docker/php74-apache
+    container_name: ecidade_php74
     ports:
      - "8080:80"
     environment:
@@ -31,7 +32,7 @@ services:
     networks:
       - ecidade
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ecidade" ]
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5

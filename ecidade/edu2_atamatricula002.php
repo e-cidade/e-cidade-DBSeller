@@ -38,6 +38,7 @@ $oDataBase         = new DBDate($oGet->dtBase);
 $oCalendario       = null;
 $aEnsinosRelatorio = array();
 $aDadosRelatorio   = array();
+$aDataRelatorio = isset($oGet->dtRelatorio) ? $oGet->dtRelatorio : null;
 
 try {
 
@@ -482,7 +483,7 @@ $oPdf->ln(10);
 
 $oPdf->SetFont('Arial', 'B', 8);
 $sMunicipio     = $oEscola->getDepartamento()->getInstituicao()->getMunicipio();
-$oDataImpressao = new DBDate(date('Y-m-d'));
+$oDataImpressao = is_null($aDataRelatorio) ? new DBDate(date('Y-m-d')): new DBDate($aDataRelatorio);
 $sDataExtenso   = strtolower($oDataImpressao->dataPorExtenso());
 $oPdf->Cell( 200, 4, "$sMunicipio, {$sDataExtenso}." , 0, 1 ) ;
 $oPdf->ln(20);

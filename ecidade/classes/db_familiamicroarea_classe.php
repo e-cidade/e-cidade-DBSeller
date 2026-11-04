@@ -54,7 +54,7 @@ class cl_familiamicroarea
                  ";
 
     //funcao construtor da classe
-    function cl_familiamicroarea()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("familiamicroarea");
@@ -62,7 +62,7 @@ class cl_familiamicroarea
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -73,7 +73,7 @@ class cl_familiamicroarea
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->sd35_i_codigo = ($this->sd35_i_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["sd35_i_codigo"] : $this->sd35_i_codigo);
@@ -85,7 +85,7 @@ class cl_familiamicroarea
     }
 
     // funcao para inclusao
-    function incluir($sd35_i_codigo)
+    public function incluir($sd35_i_codigo)
     {
         $this->atualizacampos();
         if ($this->sd35_i_familia == null) {
@@ -204,7 +204,7 @@ class cl_familiamicroarea
     }
 
     // funcao para alteracao
-    function alterar($sd35_i_codigo = null)
+    public function alterar($sd35_i_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update familiamicroarea set ";
@@ -322,7 +322,7 @@ class cl_familiamicroarea
     }
 
     // funcao para exclusao
-    function excluir($sd35_i_codigo = null, $dbwhere = null)
+    public function excluir($sd35_i_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($sd35_i_codigo));
@@ -399,7 +399,7 @@ class cl_familiamicroarea
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -428,7 +428,7 @@ class cl_familiamicroarea
         return $result;
     }
 
-    function sql_query($sd35_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($sd35_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -468,7 +468,7 @@ class cl_familiamicroarea
         return $sql;
     }
 
-    function sql_query_cgs($z01_i_cgsund = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_cgs($z01_i_cgsund = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -509,7 +509,7 @@ class cl_familiamicroarea
         return $sql;
     }
 
-    function sql_query_file($sd35_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($sd35_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

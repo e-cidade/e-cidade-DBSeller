@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("v70_codforo");
 
 ?>
 <form class="container" name="form1" method="post" action="">
-	<?
+	<?php
 	  db_input('v75_sequencial',10,$Iv75_sequencial,true,'hidden',3);
     db_input('v85_sequencial',10,$Iv85_sequencial,true,'hidden',3);
   ?>
@@ -50,7 +50,7 @@ $clrotulo->label("v70_codforo");
 	         <?=@$Lv70_sequencial?>
 	      </td>
 	      <td> 
-					<?
+					<?php
 						db_input('v70_sequencial',10,$Iv70_sequencial,true,'text',3);
 					?>
 	      </td>
@@ -60,7 +60,7 @@ $clrotulo->label("v70_codforo");
            <?=@$Lv70_codforo?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v70_codforo',10,$Iv70_codforo,true,'text',$db_opcao);
             if (isset($v70_codforo)) {
               $v85_processoforo = $v70_codforo;
@@ -71,12 +71,12 @@ $clrotulo->label("v70_codforo");
       </tr>
 	    <tr>
 	      <td nowrap title="<?=@$Tv70_vara?>">
-	         <?
+	         <?php
 	          db_ancora(@$Lv70_vara,"js_pesquisav70_vara(true);",$db_opcao);
 	         ?>
 	      </td>
 	      <td> 
-					 <?
+					 <?php
 						db_input('v70_vara',10,$Iv70_vara,true,'text',$db_opcao," onchange='js_pesquisav70_vara(false);'");
 						db_input('v53_descr',40,$Iv53_descr,true,'text',3,'');
 	         ?>
@@ -87,7 +87,7 @@ $clrotulo->label("v70_codforo");
            <?=@$Lv70_valorinicial?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v70_valorinicial',10,$Iv70_valorinicial,true,'text',$db_opcao);
           ?>
         </td>
@@ -97,7 +97,7 @@ $clrotulo->label("v70_codforo");
            <?=@$Lv70_data?>
         </td>
         <td> 
-          <?
+          <?php
           
             if( $db_opcao == 1){
               $v70_data_dia = date("d");
@@ -111,12 +111,12 @@ $clrotulo->label("v70_codforo");
       </tr>
       <tr>
         <td nowrap title="<?=@$Tv75_numcgm?>">
-           <?
+           <?php
             db_ancora(@$Lv75_numcgm,"js_pesquisav75_numcgm(true);",$db_opcao);
            ?>
         </td>
         <td> 
-           <?
+           <?php
             $v75_numcgm_ant = @$v75_numcgm;
             db_input('v75_numcgm',10,$Iv75_numcgm,true,'text',$db_opcao," onchange='js_pesquisav75_numcgm(false);'");
             db_input('v75_numcgm_ant',10,"",true,'hidden',$db_opcao);
@@ -127,12 +127,12 @@ $clrotulo->label("v70_codforo");
       </tr>
       <tr>
         <td>
-           <?
+           <?php
             db_ancora("Cartório","js_pesquisaCartorio(true);",$db_opcao);
            ?>
         </td>
         <td> 
-           <?
+           <?php
             db_input('v82_sequencial',10,'',true,'text',$db_opcao," onchange='js_pesquisaCartorio(false);'");
             db_input('v82_descricao',40,'',true,'text',3,'');
            ?>
@@ -142,7 +142,7 @@ $clrotulo->label("v70_codforo");
         <td colspan="2"> 
           <fieldset class="separator">
             <legend>
-              <?
+              <?php
                 if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
                   echo $Lv70_observacao;
                 } else {
@@ -151,7 +151,7 @@ $clrotulo->label("v70_codforo");
                 }
               ?>
             </legend>
-            <?
+            <?php
               db_textarea('v70_observacao', 5, 60, $Iv70_observacao, true, 'text', 1, '', '', '', 500);
             ?>
           </fieldset>
@@ -300,7 +300,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_processoforo.hide();
-  <?
+  <?php
 	  if ($db_opcao != 1) {
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpcorcamforne->rotulo->label("pc21_codorc");
               <?=$Lpc21_orcamforne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc21_orcamforne",10,$Ipc21_orcamforne,true,"text",4,"","chave_pc21_orcamforne");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpcorcamforne->rotulo->label("pc21_codorc");
               <?=$Lpc21_codorc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc21_codorc",10,$Ipc21_codorc,true,"text",4,"","chave_pc21_codorc");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpcorcamforne->rotulo->label("pc21_codorc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamforne.php")==true){
@@ -118,12 +118,12 @@ $clpcorcamforne->rotulo->label("pc21_codorc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

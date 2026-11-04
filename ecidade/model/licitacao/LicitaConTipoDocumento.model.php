@@ -55,7 +55,7 @@ class LicitaConTipoDocumento {
     8  => "Ata julgamento de recursos credenciamento/lances",
     9  => "Atas do pregão (propostas/lances/habilitação)",
     10 => "Ata(s) do procedimento de pré-qualificação",
-    11 => "Atas do RDC (propostas/lances/habilitação)",
+    11 => "Atas (propostas/lances/habilitação)",
     12 => "Atas (habilitação/propostas)",
     13 => "Atas (habilitação/propostas/projetos)",
     14 => "Autorização do órgão gerenciador",

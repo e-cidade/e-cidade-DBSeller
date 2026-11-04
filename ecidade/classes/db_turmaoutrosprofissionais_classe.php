@@ -30,7 +30,7 @@ class cl_turmaoutrosprofissionais
                  ";
 
     //funcao construtor da classe
-    function cl_turmaoutrosprofissionais()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("turmaoutrosprofissionais");
@@ -38,7 +38,7 @@ class cl_turmaoutrosprofissionais
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -49,7 +49,7 @@ class cl_turmaoutrosprofissionais
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ed347_sequencial = ($this->ed347_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed347_sequencial"] : $this->ed347_sequencial);
@@ -62,7 +62,7 @@ class cl_turmaoutrosprofissionais
     }
 
     // funcao para inclusao
-    function incluir($ed347_sequencial)
+    public function incluir($ed347_sequencial)
     {
         $this->atualizacampos();
         if ($this->ed347_turma == null) {
@@ -181,7 +181,7 @@ class cl_turmaoutrosprofissionais
     }
 
     // funcao para alteracao
-    function alterar($ed347_sequencial = null)
+    public function alterar($ed347_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update turmaoutrosprofissionais set ";
@@ -300,7 +300,7 @@ class cl_turmaoutrosprofissionais
     }
 
     // funcao para exclusao
-    function excluir($ed347_sequencial = null, $dbwhere = null)
+    public function excluir($ed347_sequencial = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -375,7 +375,7 @@ class cl_turmaoutrosprofissionais
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -400,11 +400,11 @@ class cl_turmaoutrosprofissionais
     }
 
     // funcao do sql
-    function sql_query($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -443,7 +443,7 @@ class cl_turmaoutrosprofissionais
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -454,11 +454,11 @@ class cl_turmaoutrosprofissionais
     }
 
     // funcao do sql
-    function sql_query_file($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_turmaoutrosprofissionais
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -491,14 +491,14 @@ class cl_turmaoutrosprofissionais
         return $sql;
     }
 
-    function sql_query_profissional_atividade($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_profissional_atividade($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
 
         if ($campos != "*") {
 
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -535,7 +535,7 @@ class cl_turmaoutrosprofissionais
         if ($ordem != null) {
 
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -548,13 +548,13 @@ class cl_turmaoutrosprofissionais
         return $sql;
     }
 
-    function sql_query_cgm($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_cgm($ed347_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
         if ($campos != "*") {
 
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -611,7 +611,7 @@ class cl_turmaoutrosprofissionais
         if ($ordem != null) {
 
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -632,8 +632,8 @@ class cl_turmaoutrosprofissionais
                ed347_funcaoatividade as funcao
         from turmaoutrosprofissionais
              join turma on turma.ed57_i_codigo = turmaoutrosprofissionais.ed347_turma
-             join rechumano on rechumano.ed20_i_codigo = turmaoutrosprofissionais.ed347_rechumano  
-             join rechumanoescola on rechumanoescola.ed75_i_rechumano = rechumano.ed20_i_codigo 
+             join rechumano on rechumano.ed20_i_codigo = turmaoutrosprofissionais.ed347_rechumano
+             join rechumanoescola on rechumanoescola.ed75_i_rechumano = rechumano.ed20_i_codigo
         ";
         if ($where) {
             $sql .= " where " . implode(' and ', $where);

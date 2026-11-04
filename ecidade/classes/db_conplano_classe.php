@@ -70,13 +70,13 @@ class cl_conplano {
 	c60_saldocontinuo = bool = Saldo Contínuo
 	";
 	//funcao construtor da classe
-	function cl_conplano() {
+	public function __construct() {
 		//classes dos rotulos dos campos
 		$this->rotulo = new rotulo("conplano");
 		$this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
 	}
 	//funcao erro
-	function erro($mostra,$retorna) {
+	public function erro($mostra,$retorna) {
 		if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
 			echo "<script>alert(\"".$this->erro_msg."\");</script>";
 			if($retorna==true){
@@ -85,7 +85,7 @@ class cl_conplano {
 		}
 	}
 	// funcao para atualizar campos
-	function atualizacampos($exclusao=false) {
+	public function atualizacampos($exclusao=false) {
 		if($exclusao==false){
 			$this->c60_codcon = ($this->c60_codcon == ""?@$GLOBALS["HTTP_POST_VARS"]["c60_codcon"]:$this->c60_codcon);
 			$this->c60_anousu = ($this->c60_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c60_anousu"]:$this->c60_anousu);
@@ -105,7 +105,7 @@ class cl_conplano {
 		}
 	}
 	// funcao para inclusao
-	function incluir ($c60_codcon,$c60_anousu){
+	public function incluir ($c60_codcon,$c60_anousu){
 		$this->atualizacampos();
 		if($this->c60_estrut == null ){
 			$this->erro_sql = " Campo Estrutural nao Informado.";
@@ -272,7 +272,7 @@ class cl_conplano {
 		return true;
 	}
 	// funcao para alteracao
-	function alterar ($c60_codcon=null,$c60_anousu=null, $sWhere = null) {
+	public function alterar ($c60_codcon=null,$c60_anousu=null, $sWhere = null) {
 		$this->atualizacampos();
 		$sql = " update conplano set ";
 		$virgula = "";
@@ -464,7 +464,7 @@ class cl_conplano {
 		}
 	}
 	// funcao para exclusao
-	function excluir ($c60_codcon=null,$c60_anousu=null,$dbwhere=null) {
+	public function excluir ($c60_codcon=null,$c60_anousu=null,$dbwhere=null) {
 		if($dbwhere==null || $dbwhere==""){
 			$resaco = $this->sql_record($this->sql_query_file($c60_codcon,$c60_anousu));
 		}else{
@@ -522,7 +522,7 @@ class cl_conplano {
 		}
 	}
 	// funcao do recordset
-	function sql_record($sql) {
+	public function sql_record($sql) {
 		$result = db_query($sql);
 		if($result==false){
 			$this->numrows    = 0;
@@ -545,7 +545,7 @@ class cl_conplano {
 		return $result;
 	}
 	// funcao do sql
-	function sql_query ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -591,7 +591,7 @@ class cl_conplano {
 		return $sql;
 	}
 	// funcao do sql
-	function sql_query_file ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query_file ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -633,7 +633,7 @@ class cl_conplano {
 		return $sql;
 	}
 
-	function db_verifica_conplano($conplano,$anousu){
+	public function db_verifica_conplano($conplano,$anousu){
 
 		$nivel = db_le_mae_conplano($conplano,true);
 		if($nivel == 1){
@@ -654,7 +654,7 @@ class cl_conplano {
 	}
 
 
-	function sql_query_geral ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query_geral ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -700,7 +700,7 @@ class cl_conplano {
 		}
 		return $sql;
 	}
-	function sql_vs_planocontas ( $c60_codcon=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_vs_planocontas ( $c60_codcon=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -734,7 +734,7 @@ class cl_conplano {
 		}
 		return $sql;
 	}
-	function db_verifica_conplano_exclusao($conplano,$anousu){
+	public function db_verifica_conplano_exclusao($conplano,$anousu){
 		$nivel = db_le_mae_conplano($conplano,true);
 		$cod_mae = db_le_mae_conplano($conplano,false);
 
@@ -784,7 +784,7 @@ class cl_conplano {
 		$this->erro_status=1;
 		return true;
 	}
-	function sql_query_ele( $c60_codcon=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query_ele( $c60_codcon=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -827,7 +827,7 @@ class cl_conplano {
 		}
 		return $sql;
 	}
-	function sql_query_reduz ( $c60_codcon=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query_reduz ( $c60_codcon=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -869,7 +869,7 @@ class cl_conplano {
 		}
 		return $sql;
 	}
-	function sql_query2 ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query2 ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -921,7 +921,7 @@ class cl_conplano {
 	 * @param String $dbwhere
 	 * @return string
 	 */
-	function sql_query_planocontas ( $c60_anousu=null, $campos="*",$ordem=null,$dbwhere="") {
+	public function sql_query_planocontas ( $c60_anousu=null, $campos="*",$ordem=null,$dbwhere="") {
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -969,7 +969,7 @@ class cl_conplano {
 	 * Busca o Plano PCASP
 	 * @return string
 	 */
-	function sql_query_dados_plano ( $c60_anousu=null, $campos="*",$ordem=null,$dbwhere="") {
+	public function sql_query_dados_plano ( $c60_anousu=null, $campos="*",$ordem=null,$dbwhere="") {
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -1010,7 +1010,7 @@ class cl_conplano {
 		return $sql;
 	}
 
-	function sql_query_pcasp_orcamento_analitico ( $c60_anousu=null, $campos="*",$ordem=null,$dbwhere="") {
+	public function sql_query_pcasp_orcamento_analitico ( $c60_anousu=null, $campos="*",$ordem=null,$dbwhere="") {
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);
@@ -1057,7 +1057,7 @@ class cl_conplano {
 	}
 
 
-	function sql_query_dados_banco ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query_dados_banco ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
 			$campos_sql = explode("#",$campos);

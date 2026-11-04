@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,12 +64,12 @@ $db_opcao = 1;
                 <table>
                   <tr>
                    <td nowrap title="<?=@$Trh01_regist?>">
-                   <?
+                   <?php
                     db_ancora(@$Lrh01_regist,"js_pesquisarh01_regist(true);",$db_opcao);
                    ?>
                    </td>
                    <td nowrap> 
-                   <?
+                   <?php
                     db_input('rh01_regist',10,$Irh01_regist,true,'text',$db_opcao," onchange='js_pesquisarh01_regist(false);'"); 
                     db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
                    ?>
@@ -80,7 +80,7 @@ $db_opcao = 1;
                       <b>Período:</b>
                     </td>
                     <td nowrap>
-                    <?
+                    <?php
                       db_inputdata('h64_dataini',null,null,null,true,'text',$db_opcao,"");
                       echo " <b>A</b> ";
                       db_inputdata('h64_datafim',null,null,null,true,'text',$db_opcao,"");
@@ -97,7 +97,7 @@ $db_opcao = 1;
    </center> 
 </body>
 </html>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

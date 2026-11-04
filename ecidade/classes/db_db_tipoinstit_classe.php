@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_db_tipoinstit {
                  db21_codigosiconfi = varchar(6) = Código do SICONFI 
                  ";
    //funcao construtor da classe 
-   function cl_db_tipoinstit() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_tipoinstit"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_tipoinstit {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db21_codtipo = ($this->db21_codtipo == ""?@$GLOBALS["HTTP_POST_VARS"]["db21_codtipo"]:$this->db21_codtipo);
        $this->db21_nome = ($this->db21_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["db21_nome"]:$this->db21_nome);
@@ -80,7 +80,7 @@ class cl_db_tipoinstit {
      }
    }
    // funcao para Inclusão
-   function incluir ($db21_codtipo){ 
+   public function incluir ($db21_codtipo){ 
       $this->atualizacampos();
      if($this->db21_nome == null ){ 
        $this->erro_sql = " Campo Nome do Tipo não informado.";

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Vacinas
@@ -56,12 +56,12 @@ $oRotulo->label('vc16_c_hora');
   <table border="0">
     <tr>
       <td nowrap title="<?=@$Tvc16_i_cgs?>">
-        <?
+        <?php
         db_ancora(@$Lvc16_i_cgs,"js_pesquisavc16_i_cgs(true);",$db_opcao);
         ?>
       </td>
-      <td nowrap> 
-        <?
+      <td nowrap>
+        <?php
         db_input('vc16_i_cgs',10,$Ivc16_i_cgs,true,'text',$db_opcao," onchange='js_pesquisavc16_i_cgs(false);'");
         db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
         ?>
@@ -72,7 +72,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lz01_d_nasc?>
       </td>
       <td>
-        <?
+        <?php
         db_input('z01_d_nasc',10,$Iz01_d_nasc,true,'text',3,"");
         echo"<b>Idade:</b>";
         db_input('iIdade',23,"",true,'text',3,"");
@@ -86,7 +86,7 @@ $oRotulo->label('vc16_c_hora');
         <strong><b>Nome da Mãe:</b></strong>
       </td>
       <td>
-        <?
+        <?php
         db_input('z01_v_mae', 50, $Iz01_v_mae, true, 'text' ,3, '');
         ?>
       </td>
@@ -100,12 +100,12 @@ $oRotulo->label('vc16_c_hora');
   <table border="0">
     <tr>
       <td nowrap title="<?=$Tvc18_i_aplica?>">
-        <?
+        <?php
         db_ancora($Lvc18_i_aplica, 'js_pesquisavc18_i_aplica(true);', $db_opcao);
         ?>
       </td>
-      <td nowrap> 
-        <?
+      <td nowrap>
+        <?php
         db_input('vc18_i_aplica', 10, $Ivc18_i_aplica, true, 'text', $db_opcao,
                  " onchange='js_pesquisavc18_i_aplica(false);'");
         db_input('vc07_c_nome', 50, $Iz01_v_nome, true, 'text', 3, '');
@@ -117,7 +117,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc16_d_dataaplicada?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('vc16_d_dataaplicada', 10, $Ivc16_d_dataaplicada, true, 'text', 3, '');
         ?>
       </td>
@@ -127,7 +127,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc16_n_quant?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('vc16_n_quant', 10, $Ivc16_n_quant, true, 'text', 3, '');
         echo '<b>Unidade de Saída:</b> ';
         db_input('m61_descr', 10, $Im61_descr, true, 'text', 3, '');
@@ -139,7 +139,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc15_i_lote?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('vc15_i_lote', 10, $Ivc15_i_lote, true, 'text', 3, '');
         echo $Lm77_dtvalidade;
         db_input('m77_dtvalidade', 10, $Im77_dtvalidade, true, 'text', 3, '');
@@ -151,7 +151,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc17_i_sala?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('vc01_c_nome', 50, $Ivc01_c_nome, true, 'text', 3, '');
         ?>
       </td>
@@ -161,7 +161,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc16_i_usuario?>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('login', 10, $Ilogin, true, 'text', 3, '');
         db_input('nome', 50, $Inome, true, 'text', 3, '');
         ?>
@@ -172,20 +172,20 @@ $oRotulo->label('vc16_c_hora');
         <b>Data Lançamento:</b>
       </td>
       <td nowrap>
-        <?
+        <?php
         db_input('vc16_d_data', 10, $Ivc16_d_data, true, 'text', 3, '');
         db_input('vc16_c_hora', 10, $Ivc16_c_hora, true, 'text', 3, '');
         ?>
       </td>
     </tr>
-  
+
   </table>
 </fieldset>
 </center>
 <table>
   <tr>
     <td><?=$Lvc18_t_obs?></td>
-    <td><?db_textarea('vc18_t_obs',2,40,$Ivc18_t_obs,true,'text',$db_opcao,"")?></td>
+    <td><?php db_textarea('vc18_t_obs',2,40,$Ivc18_t_obs,true,'text',$db_opcao,"")?></td>
   </tr>
 </table>
 <input name="anular" type="submit" id="anular" value="Anular Aplicação" onClick="return js_validaEnvio();">
@@ -198,14 +198,14 @@ sUrl = 'vac4_vacinas.RPC.php';
 function js_ajax(oParam, jsRetorno) {
 
 	var objAjax = new Ajax.Request(
-                         sUrl, 
+                         sUrl,
                          {
                           method: 'post',
                           asynchronous: false,
                           parameters: 'json='+Object.toJSON(oParam),
-                          onComplete: 
+                          onComplete:
                                      function(objAjax) {
-                          				   
+
                                        var evlJS = jsRetorno+'(objAjax);';
                                        return eval(evlJS);
 
@@ -253,7 +253,7 @@ function js_pesquisavc16_i_cgs(mostra) {
 
     } else {
 
-      document.form1.z01_v_nome.value = ''; 
+      document.form1.z01_v_nome.value = '';
       document.form1.iIdade.value     = '';
       document.form1.z01_d_nasc.value = '';
       document.form1.z01_v_sexo.value = '';
@@ -296,7 +296,7 @@ function js_mostra_cgs(chave1, chave2, sexo, nasc, mae) {
   document.form1.z01_d_nasc.value = js_formataData(nasc);
   document.form1.z01_v_sexo.value = sexo;
   document.form1.z01_v_mae.value  = mae;
-  
+
   db_iframe_cgs_und.hide();
 
   if (chave1 != '') {
@@ -314,7 +314,7 @@ function js_mostra_cgs(chave1, chave2, sexo, nasc, mae) {
 function js_retornoIdade(oRetorno) {
 
   oRetorno = JSON.parse(oRetorno.responseText);
- 
+
   if (oRetorno.iStatus == 1) {
     $('iIdade').value = oRetorno.iAnos+' anos, '+oRetorno.iMeses+' meses e '+oRetorno.iDias+' dias.';
   } else {
@@ -332,7 +332,7 @@ function js_retornoIdade(oRetorno) {
 }
 
 function js_pesquisavc18_i_aplica(mostra) {
-  
+
   if ($F('vc16_i_cgs') == '') {
 
     alert('Informe um CGS.');
@@ -365,7 +365,7 @@ function js_pesquisavc18_i_aplica(mostra) {
                          );
 
     } else {
-     
+
       $('vc18_i_aplica').value       = '';
       $('vc07_c_nome').value         = '';
       $('vc16_d_dataaplicada').value = '';
@@ -385,7 +385,7 @@ function js_pesquisavc18_i_aplica(mostra) {
 
 }
 
-function js_mostra_aplica(iCod, sNome, dAplic, iQuant, sUnid, sLote, dValidade, sSala, sLogin, 
+function js_mostra_aplica(iCod, sNome, dAplic, iQuant, sUnid, sLote, dValidade, sSala, sLogin,
                           sNomeUsu, dDataSys, sHoraSys) {
 
   if (iCod == '') {
@@ -410,7 +410,7 @@ function js_mostra_aplica(iCod, sNome, dAplic, iQuant, sUnid, sLote, dValidade, 
 }
 
 function js_formataData(dData) {
-  
+
   if(dData == undefined || dData.length != 10) {
     return dData;
   }

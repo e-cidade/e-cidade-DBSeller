@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -49,29 +49,29 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
     <table class="form-container" id="alunomatricula" style="display: none;">
       <tr>
         <td nowrap title="<?=@$Ted56_i_escola?>" width="15%">
-          <?db_ancora(@$Led56_i_escola, "", 3);?>
+          <?php db_ancora(@$Led56_i_escola, "", 3);?>
         </td>
         <td>
-          <?db_input('ed56_i_escola', 15, $Ied56_i_escola, true, 'text', 3, "")?>
-          <?db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '')?>
+          <?php db_input('ed56_i_escola', 15, $Ied56_i_escola, true, 'text', 3, "")?>
+          <?php db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '')?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ted56_i_aluno?>">
-          <?db_ancora(@$Led56_i_aluno, "", 3);?>
+          <?php db_ancora(@$Led56_i_aluno, "", 3);?>
         </td>
         <td>
-          <?db_input('ed56_i_aluno', 15, $Ied56_i_aluno, true, 'text', 3, "")?>
-          <?db_input('ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3, '')?>
+          <?php db_input('ed56_i_aluno', 15, $Ied56_i_aluno, true, 'text', 3, "")?>
+          <?php db_input('ed47_v_nome', 50, @$Ied47_v_nome, true, 'text', 3, '')?>
         </td>
       </tr>
       <tr id ='linhaTurma'>
         <td nowrap title="<?=@$Ted60_i_turma?>">
-          <?db_ancora(@$Led60_i_turma, "js_pesquisaed60_i_turma();", $db_opcao);?>
+          <?php db_ancora(@$Led60_i_turma, "js_pesquisaed60_i_turma();", $db_opcao);?>
         </td>
         <td>
-          <?db_input('ed60_i_turma', 15, $Ied60_i_turma, true, 'text', 3, '')?>
-          <?db_input('ed57_c_descr', 20, @$Ied57_c_descr, true, 'text', 3, '')?>
+          <?php db_input('ed60_i_turma', 15, $Ied60_i_turma, true, 'text', 3, '')?>
+          <?php db_input('ed57_c_descr', 20, @$Ied57_c_descr, true, 'text', 3, '')?>
         </td>
       </tr>
       <tr>
@@ -79,8 +79,8 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           <?=@$Led31_i_curso?>
         </td>
         <td>
-          <?db_input('ed31_i_curso', 15, @$Ied31_i_curso, true, 'text', 3, '')?>
-          <?db_input('ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3, '')?>
+          <?php db_input('ed31_i_curso', 15, @$Ied31_i_curso, true, 'text', 3, '')?>
+          <?php db_input('ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3, '')?>
         </td>
       </tr>
       <tr>
@@ -88,8 +88,8 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           <?=@$Led57_i_base?>
         </td>
         <td>
-          <?db_input('ed57_i_base', 15, @$Ied57_i_base, true, 'text', 3, '')?>
-          <?db_input('ed31_c_descr', 40, @$Ied31_c_descr, true, 'text', 3, '')?>
+          <?php db_input('ed57_i_base', 15, @$Ied57_i_base, true, 'text', 3, '')?>
+          <?php db_input('ed31_c_descr', 40, @$Ied31_c_descr, true, 'text', 3, '')?>
         </td>
       </tr>
       <tr>
@@ -97,11 +97,11 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           <?=@$Led57_i_calendario?>
         </td>
         <td>
-          <?db_input('ed57_i_calendario', 15, @$Ied57_i_calendario, true, 'text', 3, '')?>
-          <?db_input('ed52_c_descr', 40, @$Ied52_c_descr, true, 'text', 3, '')?>
-          <?db_input('ed52_i_ano', 5, @$Ied52_i_ano, true, 'text', 3, '')?>
-          <?db_input('ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'hidden', 3, '')?>
-          <?db_input('ed52_d_fim', 10, @$Ied52_d_fim, true, 'hidden', 3, '')?>
+          <?php db_input('ed57_i_calendario', 15, @$Ied57_i_calendario, true, 'text', 3, '')?>
+          <?php db_input('ed52_c_descr', 40, @$Ied52_c_descr, true, 'text', 3, '')?>
+          <?php db_input('ed52_i_ano', 5, @$Ied52_i_ano, true, 'text', 3, '')?>
+          <?php db_input('ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'hidden', 3, '')?>
+          <?php db_input('ed52_d_fim', 10, @$Ied52_d_fim, true, 'hidden', 3, '')?>
         </td>
       </tr>
       <tr>
@@ -109,7 +109,7 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           <?=@$Led223_i_serie?>
         </td>
         <td>
-          <?
+          <?php
             if (isset($ed60_i_turma)) {
 
               $sSqlPossib    = $oDaoAlunoPossib->sql_query("", "ed79_i_serie as seriepossib", "", " ed56_i_aluno = $ed56_i_aluno");
@@ -164,20 +164,20 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
 
                     ?>
                     <option value="<?=$oDadosEtapa->ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$oDadosEtapa->descretapa?></option>
-                    <?
+                    <?php
 
                   }
                   ?>
                 </select>
-                <?db_input('ed11_c_descr', 40, @$Ied11_c_descr, true, 'text', 3, '')?>
-                <?db_input('ed11_i_sequencia', 10, @$Ied11_i_sequencia, true, 'hidden', 3, '')?>
-              <?
+                <?php db_input('ed11_c_descr', 40, @$Ied11_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed11_i_sequencia', 10, @$Ied11_i_sequencia, true, 'hidden', 3, '')?>
+              <?php
               } else {
               ?>
-                <?db_input('codetapaturma', 15, @$Icodetapaturma, true, 'text', 3, '')?>
-                <?db_input('ed11_c_descr', 40, @$Ied11_c_descr, true, 'text', 3, '')?>
-                <?db_input('ed11_i_sequencia', 10, @$Ied11_i_sequencia, true, 'hidden', 3, '')?>
-              <?
+                <?php db_input('codetapaturma', 15, @$Icodetapaturma, true, 'text', 3, '')?>
+                <?php db_input('ed11_c_descr', 40, @$Ied11_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed11_i_sequencia', 10, @$Ied11_i_sequencia, true, 'hidden', 3, '')?>
+              <?php
               }
 
             } else {
@@ -205,8 +205,8 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           <?=@$Led57_i_turno?>
         </td>
         <td>
-          <?db_input('ed57_i_turno', 15, @$Ied57_i_turno, true, 'text', 3, '')?>
-          <?db_input('ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3, '')?>
+          <?php db_input('ed57_i_turno', 15, @$Ied57_i_turno, true, 'text', 3, '')?>
+          <?php db_input('ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3, '')?>
         </td>
       </tr>
       <tr id='linhaDataMatricula'>
@@ -214,12 +214,12 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           <?=@$Led60_d_datamatricula?>
         </td>
         <td>
-          <?db_inputdata('ed60_d_datamatricula', @$ed60_d_datamatricula_dia, @$ed60_d_datamatricula_mes,
+          <?php db_inputdata('ed60_d_datamatricula', @$ed60_d_datamatricula_dia, @$ed60_d_datamatricula_mes,
                          @$ed60_d_datamatricula_ano, true, 'text', $db_opcao," onchange=\"js_data();\"",
                          "", "", "parent.js_data();", "js_data();")?>
         </td>
       </tr>
-        <?
+        <?php
           if (isset($ed60_i_turma)) {
 
             $sCampos  = "ed18_c_nome as ed18_c_nomeorigem, matricula.ed60_i_codigo as matricula, ";
@@ -235,6 +235,12 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
                         WHERE matricula.ed60_c_situacao = 'TRANSFERIDO FORA'
                           AND ed104_i_aluno = $ed56_i_aluno
                           AND ed52_i_ano = $ed52_i_ano
+                          AND matricula.ed60_matricula = (
+                                select ed60_matricula
+                                    from matricula
+                                where
+                                    ed60_i_aluno = {$ed56_i_aluno}
+                                order by ed60_i_codigo desc limit 1)
                         ORDER BY ed104_d_data DESC
                         LIMIT 1";
             $result_imp = db_query($sql_imp);
@@ -259,7 +265,7 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           </select>
         </td>
       </tr>
-        <?
+        <?php
           for ($iCont = 0; $iCont < $linhas_imp; $iCont++) {
 
             db_fieldsmemory($result_imp, $iCont);
@@ -268,18 +274,18 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
       <tr>
         <td style="text-decoration:underline;" onmouseover="document.getElementById('aprov<?=$turmaorigem?>').style.visibility = 'visible'"
             onmouseout="document.getElementById('aprov<?=$turmaorigem?>').style.visibility = 'hidden'">
-          <?db_input('turmaorigem', 15, @$Iturmaorigem, true, 'radio', 3, $checked)?>
+          <?php db_input('turmaorigem', 15, @$Iturmaorigem, true, 'radio', 3, $checked)?>
           Turma Anterior:
         </td>
         <td>
-          <?db_input('ed57_c_descrorigem', 10, @$Ied57_c_descrorigem, true, 'text', 3, '')?>
-          <?db_input('ed11_c_descrorigem', 20, @$Ied11_c_descrorigem, true, 'text', 3, '')?>
-          <?db_input('ed18_c_nomeorigem', 50, @$Ied18_c_nomeorigem, true, 'text', 3, '')?>
+          <?php db_input('ed57_c_descrorigem', 10, @$Ied57_c_descrorigem, true, 'text', 3, '')?>
+          <?php db_input('ed11_c_descrorigem', 20, @$Ied11_c_descrorigem, true, 'text', 3, '')?>
+          <?php db_input('ed18_c_nomeorigem', 50, @$Ied18_c_nomeorigem, true, 'text', 3, '')?>
           Matrícula:
-          <?db_input('matricula', 10, @$Imatricula, true, 'text', 3, '')?><br>
+          <?php db_input('matricula', 10, @$Imatricula, true, 'text', 3, '')?><br>
           <table border="1" cellspacing="0" cellpadding="0" id="aprov<?=$turmaorigem?>"
                  style="position:absolute;visibility:hidden;">
-            <?
+            <?php
               $veraprovnulo  = "";
               $primeira      = "";
               $sCampos       = " ed59_i_codigo as regenciaorigem,ed232_c_descr,ed232_c_abrev,ed09_c_abrev, ";
@@ -332,7 +338,7 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
           </table>
         </td>
       </tr>
-      <?
+      <?php
      }
    }
  }

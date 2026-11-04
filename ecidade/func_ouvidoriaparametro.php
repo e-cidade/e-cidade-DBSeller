@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clouvidoriaparametro->rotulo->label("ov06_tiponumprocesso");
               <?=$Lov06_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov06_instit",10,$Iov06_instit,true,"text",4,"","chave_ov06_instit");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clouvidoriaparametro->rotulo->label("ov06_tiponumprocesso");
               <?=$Lov06_tiponumprocesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov06_tiponumprocesso",10,$Iov06_tiponumprocesso,true,"text",4,"","chave_ov06_tiponumprocesso");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clouvidoriaparametro->rotulo->label("ov06_tiponumprocesso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ouvidoriaparametro.php")==true){
@@ -123,12 +123,12 @@ $clouvidoriaparametro->rotulo->label("ov06_tiponumprocesso");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -28,7 +28,7 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
               <?=$Led346_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed346_sequencial",10,$Ied346_sequencial,true,"text",4,"","chave_ed346_sequencial");
 		       ?>
             </td>
@@ -38,7 +38,7 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
               <?=$Led346_turmaac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed346_turmaac",10,$Ied346_turmaac,true,"text",4,"","chave_ed346_turmaac");
 		       ?>
             </td>
@@ -56,7 +56,7 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_turmaachorarioprofissional.php")==true){
@@ -96,12 +96,12 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

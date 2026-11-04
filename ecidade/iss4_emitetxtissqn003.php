@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,10 +57,10 @@ $ordena = "";
 
 if ($selunica != "") {
 
-    $vt = split("U", $selunica);
+    $vt =explode("U", $selunica);
     foreach ($vt as $i => $v) {
 
-        $check = split("=", $v);
+        $check =explode("=", $v);
         if (isset($check) && $check != "") {
             array_push($unicas, $check[0] . "-" . $check[1] . "-" . $check[2]) . "#";
         }
@@ -616,7 +616,7 @@ if ($result == false || pg_num_rows($result) == 0) {
                             }
 
                             $quantunica_linha10 = 0;
-                            
+
                             if (isset($unicas) && sizeof($unicas) > 0 && $unicas[0] != "--") {
                                 for ($unica = 0; $unica < sizeof($unicas); $unica++) {
                                     $vencunica = substr($unicas[$unica], 0, 10);
@@ -811,7 +811,7 @@ $sqlFindUnica .= " ) as unica                                                   
                         if (!empty($numpre_sanitario)) {
                             $aNumpres["S"] = $numpre_sanitario;  //indice S para sanitario
                         }
-                        
+
                         foreach ($aNumpres as $sChave => $numpre_vistoria) {
                             for ($unica = 0; $unica < sizeof($unicas); $unica++) {
                                 $vencunica = substr($unicas[$unica], 0, 10);
@@ -1686,12 +1686,12 @@ function geraArrecad(
   $anousu,
   $q03_descr,
   $aliquota,
-  $q07_ativ,
-  $oRegraEmissaoConvenio,
-  &$buscarReceitaTaxaExpediente,
-  &$valorTaxaExpediente,
-  &$receitaTaxaExpediente,
-  &$parcelasTaxaExpediente
+  $q07_ativ=null,
+  $oRegraEmissaoConvenio=null,
+  &$buscarReceitaTaxaExpediente=null,
+  &$valorTaxaExpediente=null,
+  &$receitaTaxaExpediente=null,
+  &$parcelasTaxaExpediente=null
 ) {
     global $segmento;
     global $formvencfebraban;

@@ -49,7 +49,7 @@ abstract class DBTributario
     {
         
         
-        $oDaoArretipo = db_utils::getDao("arretipo");
+        $oDaoArretipo = new cl_arretipo();
         
         if (empty($iInstituicao)) {
             $iInstituicao = db_getsession('DB_instit');
@@ -236,7 +236,7 @@ function db_getNomeSecretaria()
     $sqlparag .= "   and db03_instit = " . db_getsession("DB_instit") . " ";
     $sqlparag .= " order by db04_ordem ";
     $resparag = db_query($sqlparag);
-    if (pg_numrows($resparag) > 0) {
+    if (pg_num_rows($resparag) > 0) {
         $nomeSecretaria = pg_result($resparag, 0, 'db02_texto');
     }
     return $nomeSecretaria;
@@ -257,8 +257,8 @@ function adicionaTestada($pdf, $idbql) {
 
   $result = db_query($sql);
   
-  if (pg_numrows($result) != 0) {
-      for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+  if (pg_num_rows($result) != 0) {
+      for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
           $field3 = db_utils::fieldsMemory($result, $contador);
           $pdf->setX(5);
           $pdf->SetFont('Arial', '', 9);
@@ -270,6 +270,10 @@ function adicionaTestada($pdf, $idbql) {
           if (@$field3->j36_testad != "") {
               $testad = "$field3->j36_testad m";
           }
+          $pdf->setX(110);
+          $pdf->SetFont('Arial', '', 9);
+          $pdf->Cell(5, 4, "Ml: ", "", 0, "L", 0);
+          $pdf->SetFont('Arial', 'B', 9);
           $pdf->Cell(15, 4, "$testad", "", 0, "L", 0);
           $pdf->SetFont('Arial', '', 9);
           $pdf->Cell(10, 4, "Face: ", "", 0, "L", 0);
@@ -278,8 +282,9 @@ function adicionaTestada($pdf, $idbql) {
           $pdf->SetFont('Arial', '', 9);
           $pdf->Cell(16, 4, $GLOBALS['Sj37_segmento'] . ":", "", 0, "L", 0);
           $pdf->SetFont('Arial', 'B', 9);
-          $pdf->Cell(12, 4, "$field3->j37_segmento", "", 0, "L", 0);
+          $pdf->Cell(12, 4, "$field3->j37_segmento", "", 1, "L", 0);
           $pdf->SetFont('Arial', '', 9);
+          $pdf->setX(5);
           $pdf->Cell(16, 4, $GLOBALS['Sj37_sequencia'] . ":", "", 0, "L", 0);
           $pdf->SetFont('Arial', 'B', 9);
           $pdf->Cell(10, 4, "$field3->j37_sequencia", "", 0, "L", 0);
@@ -326,9 +331,8 @@ function db_getcadbancobranca($arretipo, $ip, $datahj, $instit, $tipomod)
     $sqlexe .= "     and k48_instit     =    $instit ";
     $sqlexe .= "     and k48_cadtipomod =    $tipomod ";
     
-    //*   die ($sqlexe);
     $rsModexe = db_query($sqlexe) or die($sqlexe);
-    $intnumexe = pg_numrows($rsModexe);
+    $intnumexe = pg_num_rows($rsModexe);
     if (isset($intnumexe) && $intnumexe > 0) {
         db_fieldsmemory($rsModexe, 0);
         return true;
@@ -343,7 +347,7 @@ function db_getcadbancobranca($arretipo, $ip, $datahj, $instit, $tipomod)
 function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
 {
     
-    include(modification("classes/db_cgm_classe.php"));
+    require_once(modification("classes/db_cgm_classe.php"));
     require_once(modification("libs/db_utils.php"));
     require_once(modification("classes/db_iptuconstrhabite_classe.php"));
     
@@ -367,10 +371,9 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
         
         $lTemCalculo = true;
         if ($parametro[$totalRegistos] != "") {
-            
             $iMatriculaAtual = (gettype($parametro) == "array" ? $parametro[$totalRegistos] : $parametro);
             // $parametro recebe cod_matricula
-            $sql             = " select iptubaixa.*,                                                                                             ";
+            $sql             = " select iptubaixa.*,                                                                                  ";
             $sql .= "        iptubaixaproc.*,                                                                                         ";
             $sql .= "        proprietario.* ,                                                                                         ";
             $sql .= "        c.z01_nome as promitente,                                                                                ";
@@ -386,12 +389,21 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
             $sql .= "        setorloc.*,                                                                                              ";
             $sql .= "        loteloteam.j34_loteam,                                                                                   ";
             $sql .= "        loteam.j34_descr,                                                                                        ";
+            $sql .= "        case                                                                                                     ";
+            $sql .= "          when iptuconstr.j39_matric is null then (select r.j29_cep from cadastro.ruascep r where r.j29_codigo = proprietario.j14_codigo limit 1)";
+            $sql .= "          when iptuconstr.j39_matric is not null then (select r.j29_cep from cadastro.ruascep r where r.j29_codigo = iptuconstr.j39_codigo";
+            $sql .= "          and r.j29_inicio <= iptuconstr.j39_numero";
+            $sql .= "          and r.j29_final >= iptuconstr.j39_numero 
+                               limit 1)";
+            $sql .= "        end as j29_cep,                                                                                           ";
             $sql .= "        bairro.j13_descr as bairro,                                                                              ";
             $sql .= "        round(((                                                                                                 ";
             $sql .= "              round(( select rnfracao                                                                            ";
             $sql .= "                       from fc_iptu_fracionalote({$iMatriculaAtual}," . db_getsession("DB_datausu") . ",true,false) ";
             $sql .= "                   ),10)                                                                                         ";
-            $sql .= "            * lote.j34_area)/100),2) as areafracionada                                                           ";
+            $sql .= "            * lote.j34_area)/100),2) as areafracionada,                                                          ";
+            $sql .= "        (select (p58_numero || '/' || p58_ano) as processo from                                                  ";
+            $sql .= "           protprocesso where p58_codproc = j03_codproc) as numerodoprocesso                                     ";
             $sql .= "   from proprietario                                                                                     ";
             $sql .= "        left join iptubaixa     on j02_matric                 = j01_matric                               ";
             $sql .= "        left join iptubaixaproc on j02_matric                 = j03_matric                               ";
@@ -404,15 +416,16 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
             $sql .= "        left join  loteloteam         on loteloteam.j34_idbql           = lote.j34_idbql                 ";
             $sql .= "        left join  loteam             on loteam.j34_loteam              = loteloteam.j34_loteam          ";
             $sql .= "        left join  bairro             on bairro.j13_codi                = lote.j34_bairro                ";
-            
+            //Adicionado para pegar CEP -> redmine 28742
+            $sql .= "        left join  iptuconstr         on iptuconstr.j39_matric          = proprietario.j01_matric        ";
+            $sql .= "        and j39_idprinc = true                                                                            ";
+            //FIM
             $sql .= "   where j01_matric = {$iMatriculaAtual} limit 1   ";
             
             $sqlVerificaCalculoAtual = " select * ";
             $sqlVerificaCalculoAtual .= "   from iptucalc ";
             $sqlVerificaCalculoAtual .= "  where j23_matric = " . (gettype($parametro) == "array" ? $parametro[$totalRegistos] : $parametro) . "";
             $sqlVerificaCalculoAtual .= "    and j23_anousu = " . db_getsession('DB_anousu');
-            $rsVerificaCalculoAtual = db_query($sqlVerificaCalculoAtual);
-            
             if (pg_num_rows($rsVerificaCalculoAtual) == 0) {
                 
                 $sqlUltimoExerc = " select max(j23_anousu) as exerciciocalculo ";
@@ -430,9 +443,8 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 $lTemCalculo      = false;
                 $exerciciocalculo = $_SESSION['DB_anousu'];
             }
-            
-            $matriculaSelecionada = db_query($sql) or die($sql);
-            $numMatriculaSelecionada = pg_numrows($matriculaSelecionada);
+            $matriculaSelecionada = db_query($sql);
+            $numMatriculaSelecionada = pg_num_rows($matriculaSelecionada);
             if ($numMatriculaSelecionada == 0) {
                 $pdf->AddPage();
                 $pdf->SetFont('Arial', 'B', 9);
@@ -440,6 +452,18 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 $pdf->Cell(200, 4, "Matrícula " . (gettype($parametro) == "array" ? $parametro[$totalRegistos] : $parametro) . " Inexistente", "LRBT", 1, "C", 0);
             } else {
                 $fieldmatriculaSelecionada = db_utils::fieldsMemory($matriculaSelecionada, 0);
+
+                $rsOutrosProprietarios = db_query("select z01_numcgm,
+                                               z01_nome,
+                                               z01_ender,
+                                              propri.j42_tipoproprietario || ' - ' || tipoproprietario.j163_descricao as tipoproprietario
+                                               from propri,cgm,tipoproprietario
+                                               where j42_matric = ".(gettype($parametro)=="array"?$parametro[$totalRegistos]:$parametro)." 
+                                               and j42_numcgm = z01_numcgm and j42_tipoproprietario = j163_tipoproprietario");
+
+                $existeOutroProprietario = pg_num_rows($rsOutrosProprietarios) == 1;
+                $existemOutrosProprietarios = pg_num_rows($rsOutrosProprietarios) > 1;
+                $sulfixoOutroProprietario = $existeOutroProprietario ? ' E OUTRO' : ($existemOutrosProprietarios ? ' E OUTROS' : '');
                 
                 $resultcgm = $clcgm->sql_record($clcgm->sql_query($fieldmatriculaSelecionada->z01_numcgm, "z01_ender as ender_propri, z01_numero as numero_propri, z01_compl as compl_propri, z01_bairro as bairro_propri, z01_munic as munic_propri, z01_uf as uf_propri, z01_telef as telef_propri, z01_cep as cep_propri"));
                 $fieldcgm  = db_utils::fieldsMemory($resultcgm, 0);
@@ -530,6 +554,17 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     //db_fieldsmemory($resulted,0);
                 }
                 
+                $cliptubase = new cl_iptubase();
+                $camposIptubase = "j34_area,ROUND(j01_fracaoproprietario, 4) as j01_fracaoproprietario, tipoproprietario.j163_descricao";
+                $sqlGetProprietarioPrincipal   =$cliptubase->sql_query($fieldmatriculaSelecionada->j01_matric, $camposIptubase, "");
+
+                $resultGetProprietarioPrincipal = db_query($sqlGetProprietarioPrincipal);
+
+                $areaProprietarioPrincipal = ((float)$fieldProprietarioPrincipal->j01_fracaoproprietario / 100) * (float)$fieldProprietarioPrincipal->j34_area;
+
+                if(pg_num_rows($resultGetProprietarioPrincipal) == 1) {
+                  $fieldProprietarioPrincipal     = db_utils::fieldsMemory($resultGetProprietarioPrincipal,0);
+                }
                 global $head3;
                 global $head4;
                 global $head5;
@@ -562,16 +597,14 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 $pdf->Cell(32, 4, $GLOBALS['Sj40_registrocartografico'] . ":", "", 0, "L", 0);
                 $pdf->SetFont('Arial', 'B', 9);
                 $pdf->Cell(60, 4, "$fieldmatriculaSelecionada->j40_registrocartografico", "", 1, "L", 0);
-                
-                //    $pdf->setX(5);
-                //    $pdf->Cell(200,0,"","B",1,"L",0);
-                
+
                 // parte 1
+                $pdf->ln(1);
                 $pdf->setX(5);
                 $pdf->SetFont('Arial', '', 9);
                 $pdf->Cell(20, 4, "Proprietário :", "", 0, "L", 1);
                 $pdf->SetFont('Arial', 'B', 9);
-                $pdf->Cell(100, 4, $fieldmatriculaSelecionada->z01_numcgm . " - " . $fieldmatriculaSelecionada->proprietario, "", 0, "L", 1);
+                $pdf->Cell(100, 4, $fieldmatriculaSelecionada->z01_numcgm . " - " . $fieldmatriculaSelecionada->z01_nomecomplepri . $sulfixoOutroProprietario , "", 0, "L", 1);
                 
                 $pdf->SetFont('Arial', '', 9);
                 $pdf->Cell(20, 4, "CPF/CNPJ:", "", 0, "L", 1);
@@ -583,6 +616,18 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 }
                 $pdf->Cell(60, 4, isset($sigiloso) ? $sigiloso : ($fieldmatriculaSelecionada->z01_cgccpfpropri), "", 0, "L", 1);
                 
+                $pdf->ln();
+                $pdf->setX(5);
+                $pdf->SetFont('Arial','',9);
+                $pdf->Cell(33,4,"Tipo de Proprietário :","",0,"L",1);
+                $pdf->SetFont('Arial','B',9);
+                $pdf->Cell(87,4,mb_strtoupper($fieldProprietarioPrincipal->j163_descricao),"",0,"L",1);
+
+                $pdf->SetFont('Arial','',9);
+                $pdf->Cell(20,4,"Fração:","",0,"L",1);
+                $pdf->SetFont('Arial','B',9);
+                $pdf->Cell(60,4,mb_strtoupper($fieldProprietarioPrincipal->j01_fracaoproprietario) . '% - ' . $areaProprietarioPrincipal . 'm²',"",0,"L",1);
+
                 $pdf->ln();
                 $pdf->setX(5);
                 $pdf->SetFont('Arial', '', 9);
@@ -610,9 +655,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 $pdf->Cell(20, 4, "Telefone:", "", 0, "L", 1);
                 $pdf->SetFont('Arial', 'B', 9);
                 $pdf->Cell(60, 4, isset($sigiloso) ? $sigiloso : ($fieldcgm->telef_propri), "", 1, "L", 1);
-                
-                //    $pdf->setX(5);
-                //    $pdf->Cell(200,0,"","B",1,"L",0);
+
                 $sqlpromitente = "  select  j41_tipopro,
                                     z01_numcgm,
                                     z01_nome   as promitente,
@@ -622,11 +665,15 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                     z01_compl  as compl_promitente,
                                     z01_uf     as uf_promitente,
                                     z01_cgccpf,
-                                    z01_telef  as telef_promitente
+                                    z01_telef  as telef_promitente,
+                                    tipopromitente.j164_descricao as tipo_promitente
                                     from promitente
                                     inner join cgm on j41_numcgm = z01_numcgm
+                                    inner join tipopromitente ON  promitente.j41_promitipo = tipopromitente.j164_promitipo
+                                        or tipopromitente.j164_tipopromitente = promitente.j41_tipopromitente
                                     where j41_matric = $fieldmatriculaSelecionada->j01_matric
-                                    order by  j41_tipopro desc";
+                                    and j41_tipopro = true
+                                    order by j41_tipopro desc";
                 
                 $resultpromitente = db_query($sqlpromitente);
                 $linhaspromitente = pg_num_rows($resultpromitente);
@@ -634,6 +681,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 if ($linhaspromitente > 0) {
                     for ($pro = 0; $pro < $linhaspromitente; $pro++) {
                         $fieldpromitente = db_utils::fieldsMemory($resultpromitente, $pro);
+                        $pdf->ln(1);
                         $pdf->setX(5);
                         $pdf->SetFont('Arial', '', 9);
                         $pdf->Cell(20, 4, "Promitente :", "", 0, "L", 0);
@@ -653,9 +701,15 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                         }
                         $ender1 = trim($fieldpromitente->ender_promitente) . " $num $comple ";
                         $ender  = substr($ender1, 0, 30);
-                        //$ender = substr($fieldmatriculaSelecionada->ender_promitente . ($fieldmatriculaSelecionada->numero_promitente != ""?", ".$fieldmatriculaSelecionada->numero_promitente:"") . ($fieldmatriculaSelecionada->compl_promitente != ""?" / $fieldmatriculaSelecionada->compl_promitente":""),0,30);
                         $pdf->Cell(60, 4, "$ender ", "", 1, "L", 0);
+
+                        $pdf->setX(5);
+                        $pdf->SetFont('Arial','',9);
+                        $pdf->Cell(33,4,"Tipo de Promitente :","",0,"L",0);
+                        $pdf->SetFont('Arial','B',9);
+                        $pdf->Cell(167,4,mb_strtoupper($fieldpromitente->tipo_promitente),"",0,"L",0);
                         
+                        $pdf->ln();
                         $pdf->setX(5);
                         $pdf->SetFont('Arial', '', 9);
                         $pdf->Cell(20, 4, "Municipio:", "", 0, "L", 0);
@@ -721,13 +775,6 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $pdf->setX(5);
                 }
                 
-                /**
-                 * loteloteam.j34_loteam,                                                                           ";
-                 $sql .= "        loteam.j34_descr,                                                                                ";
-                 $sql .= "        bairro.j13_descr as bairro
-                 */
-                
-                
                 // Busca a descrição do tipo da RUA
                 $sSqlEndeTipo = " select j88_sigla, j88_descricao from ruas ";
                 $sSqlEndeTipo .= " join ruastipo on ruastipo.j88_codigo = ruas.j14_tipo ";
@@ -741,6 +788,12 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 $pdf->Cell(20, 4, "Logradouro:", "", 0, "L", 0);
                 $pdf->SetFont('Arial', 'B', 9);
                 $pdf->Cell(180, 4, " $fieldmatriculaSelecionada->codpri - $oEndeTipo->j88_sigla $fieldmatriculaSelecionada->nomepri, $fieldmatriculaSelecionada->j39_numero / $fieldmatriculaSelecionada->j39_compl", "", 1, "L", 0);
+                $pdf->setX(5);
+                $pdf->SetFont('Arial', '', 9);
+                $pdf->Cell(25, 4, "CEP Logradouro:", "", 0, "L", 0);
+                $pdf->SetFont('Arial', 'B', 9);
+                $pdf->Cell(80, 4, " $fieldmatriculaSelecionada->j29_cep", "", 1, "L", 0);
+
                 
                 //Localização do Loteamento
                 if (isset($fieldmatriculaSelecionada->j05_codigoproprio) and trim($fieldmatriculaSelecionada->j05_codigoproprio) != "") {
@@ -759,6 +812,31 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $pdf->Cell(15, 4, "$fieldmatriculaSelecionada->j06_lote", "", 1, "L", 0);
                 }
                 
+                $zonaDesenv = db_query("select case 
+                                        	   		when l.j34_areaprivativa is null then 0
+                                        	   		else l.j34_areaprivativa
+                                        	   end as j34_areaprivativa, 
+                                        	   case
+                                                when l.j34_areausocomum is null then 0
+                                                else l.j34_areausocomum
+                                        	   end as j34_areausocomum, 
+                                        	   l.j34_zonadesurb,
+                                        	   case 
+                                        	   		when l.j34_zonadesurb is not null then 
+                                                        l.j34_zonadesurb::varchar || ' - ' || 
+                                                        z.j225_sigla || ' - ' || 
+                                                        m.j224_localizacao 
+                                        	   end as zona_desenvolvimento
+                                        from cadastro.lote l 
+                                        inner join cadastro.iptubase i 
+                                        on i.j01_idbql = l.j34_idbql 
+                                        left join cadastro.zonasdesenvolvimento z 
+                                        on z.j225_sequencial = l.j34_zonadesurb 
+                                        left join cadastro.macrozonas m 
+                                        on m.j224_sequencial = z.j224_sequencial 
+                                        where i.j01_matric = " . (gettype($parametro) == "array" ? $parametro[$totalRegistos] : $parametro) . "");
+                $zonaDesenv = db_utils::fieldsMemory($zonaDesenv, 0);
+
                 $pdf->setX(5);
                 $pdf->Cell(200, 4, "", "", 1, "C", 0);
                 
@@ -768,6 +846,27 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 $pdf->SetFont('Arial', 'B', 9);
                 
                 $pdf->Cell(50, 4, "{$fieldmatriculaSelecionada->areafracionada} m2", 0, 1, "L", 0);
+
+                $pdf->setX(5);
+                $pdf->SetFont('Arial', '', 9);
+                $pdf->Cell(35, 4, "Área Privativa do Lote:", "", 0, "L", 0);
+                $pdf->SetFont('Arial', 'B', 9);
+                
+                $pdf->Cell(50, 4, "{$zonaDesenv->j34_areaprivativa} m2", 0, 1, "L", 0);
+
+                $pdf->setX(5);
+                $pdf->SetFont('Arial', '', 9);
+                $pdf->Cell(30, 4, "Área Uso Comum :", "", 0, "L", 0);
+                $pdf->SetFont('Arial', 'B', 9);
+                
+                $pdf->Cell(50, 4, "{$zonaDesenv->j34_areausocomum} m2", 0, 1, "L", 0);
+
+                $pdf->setX(5);
+                $pdf->SetFont('Arial', '', 9);
+                $pdf->Cell(47, 4, "Zona Desenvolvimento Urbano :", "", 0, "L", 0);
+                $pdf->SetFont('Arial', 'B', 9);
+                
+                $pdf->Cell(50, 4, "{$zonaDesenv->zona_desenvolvimento} m2", 0, 1, "L", 0);
                 
                 // dados da baixa
                 if (isset($fieldmatriculaSelecionada->j01_baixa) && $fieldmatriculaSelecionada->j01_baixa != "") {
@@ -782,7 +881,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $pdf->SetFont('Arial', 'B', 9);
                     $pdf->Cell(35, 4, "Processo da baixa :", 0, 0, "L", 0);
                     $pdf->SetFont('Arial', '', 9);
-                    $pdf->Cell(50, 4, ($fieldmatriculaSelecionada->j03_codproc != "" ? $fieldmatriculaSelecionada->j03_codproc : ""), 0, 1, "L", 0);
+                    $pdf->Cell(50, 4, ($fieldmatriculaSelecionada->numerodoprocesso != "" ? $fieldmatriculaSelecionada->numerodoprocesso : ""), 0, 1, "L", 0);
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', 'B', 9);
                     $pdf->setX(5);
@@ -796,7 +895,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 
                 $pdf->setX(5);
                 $pdf->SetFont('Arial', '', 9);
-                $pdf->Cell(35, 4, $GLOBALS['RLj01_areaprivativa'] . " :", "", 0, "L", 0);
+                $pdf->Cell(42, 4, $GLOBALS['RLj01_areaprivativa'] . " :", "", 0, "L", 0);
                 $pdf->SetFont('Arial', 'B', 9);
                 $pdf->Cell(40, 4, $fieldAreaPrivativa->areaprivativa . " m2", "", 1, "L", 0);
                 
@@ -874,11 +973,11 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                         where j35_idbql = {$fieldmatriculaSelecionada->j01_idbql}
                                         and j35_caract = j31_codigo order by j31_grupo ");
                     
-                    if (pg_numrows($result) != 0) {
+                    if (pg_num_rows($result) != 0) {
                         $pdf->SetFont('Arial', '', 8);
                         $lado = 0;
                         $pdf->setX(5);
-                        for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+                        for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
                             $field1 = db_utils::fieldsMemory($result, $contador);
                             $pdf->Cell(15, 3, "$field1->j35_caract", "", 0, "R", 1);
                             $descr = substr($field1->j31_descr, 0, 20) . ' (' . substr($field1->j32_descr, 0, 20) . ')';
@@ -913,20 +1012,20 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $result = db_query($sSqlIsencao);
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', 'B', 9);
-                    $pdf->Cell(200, 4, "ISENÇÕES", "B", (pg_numrows($result) == 0 ? 0 : 1), "L", 0);
+                    $pdf->Cell(200, 4, "ISENÇÕES", "B", (pg_num_rows($result) == 0 ? 0 : 1), "L", 0);
                     $pdf->setX(5);
                     //    $pdf->Cell(200,4,"","",1,"C",0);
                     
-                    if (pg_numrows($result) == 0) {
+                    if (pg_num_rows($result) == 0) {
                         $pdf->setX(5);
                         $pdf->SetFont('Arial', '', 8);
                         $pdf->Cell(200, 3, "Sem isenções.", "", 1, "C", 0);
                     } else {
-                        for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+                        for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
                             $field2     = db_utils::fieldsMemory($result, $contador);
                             //db_fieldsmemory($result,$contador);
                             $result_lim = db_query("select j47_anousu from isenexe where j47_codigo = " . $field2->j46_codigo . " order by j47_anousu ");
-                            $numrows    = pg_numrows($result_lim);
+                            $numrows    = pg_num_rows($result_lim);
                             $field_lim  = db_utils::fieldsMemory($result_lim, 0);
                             //db_fieldsmemory($result_lim,0);
                             $anoini     = $field_lim->j47_anousu;
@@ -974,8 +1073,8 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
 
                     $result = db_query($sql);
 
-                    if (pg_numrows($result) != 0) {
-                        for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+                    if (pg_num_rows($result) != 0) {
+                        for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
                             $field3 = db_utils::fieldsMemory($result, $contador);
                             $pdf->setX(5);
                             $pdf->SetFont('Arial', '', 9);
@@ -987,6 +1086,10 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             if (@$field3->j36_testad != "") {
                                 $testad = "$field3->j36_testad m";
                             }
+                            $pdf->setX(110);
+                            $pdf->SetFont('Arial', '', 9);
+                            $pdf->Cell(5, 4, "Ml: ", "", 0, "L", 0);
+                            $pdf->SetFont('Arial', 'B', 9);
                             $pdf->Cell(15, 4, "$testad", "", 0, "L", 0);
                             $pdf->SetFont('Arial', '', 9);
                             $pdf->Cell(10, 4, "Face: ", "", 0, "L", 0);
@@ -995,8 +1098,9 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             $pdf->SetFont('Arial', '', 9);
                             $pdf->Cell(16, 4, $GLOBALS['Sj37_segmento'] . ":", "", 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 9);
-                            $pdf->Cell(12, 4, "$field3->j37_segmento", "", 0, "L", 0);
+                            $pdf->Cell(12, 4, "$field3->j37_segmento", "", 1, "L", 0);
                             $pdf->SetFont('Arial', '', 9);
+                            $pdf->setX(5);
                             $pdf->Cell(16, 4, $GLOBALS['Sj37_sequencia'] . ":", "", 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 9);
                             $pdf->Cell(10, 4, "$field3->j37_sequencia", "", 0, "L", 0);
@@ -1012,7 +1116,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                         where j38_face = {$field3->j37_face}
                                         order by j31_grupo ");
                             
-                            if (pg_numrows($result3) != 0) {
+                            if (pg_num_rows($result3) != 0) {
                                 
                                 $pdf->Cell(200, 4, "", 0, 1, "C", 0);
                                 $pdf->setX(5);
@@ -1024,7 +1128,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                 $pdf->SetFont('Arial', '', 8);
                                 $lado = 0;
                                 $pdf->setX(5);
-                                for ($contador3 = 0; $contador3 < pg_numrows($result3); $contador3++) {
+                                for ($contador3 = 0; $contador3 < pg_num_rows($result3); $contador3++) {
                                     $field4 = db_utils::fieldsMemory($result3, $contador3);
                                     $pdf->Cell(15, 3, "$field4->j38_caract", "", 0, "R", 1);
                                     $descr = substr($field4->j31_descr, 0, 20) . ' (' . substr($field4->j32_descr, 0, 20) . ')';
@@ -1039,7 +1143,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                     }
                                 }
                                 
-                                if ($contador < pg_numrows($result) - 1) {
+                                if ($contador < pg_num_rows($result) - 1) {
                                     $pdf->ln(5);
                                 }
                                 
@@ -1072,7 +1176,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $sql .= " where j39_idbql = {$fieldmatriculaSelecionada->j01_idbql} ";
                     
                     $result = db_query($sql);
-                    if (pg_numrows($result) != 0) {
+                    if (pg_num_rows($result) != 0) {
                         
                         $pdf->setX(5);
                         $pdf->Cell(200, 4, "", "", 1, "C", 0);
@@ -1083,7 +1187,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                         $pdf->Cell(200, 4, "", "", 1, "C", 0);
                         
                         
-                        for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+                        for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
                             
                             $oTestadasInternas = db_utils::fieldsMemory($result, $contador);
                             $pdf->setX(5);
@@ -1124,14 +1228,14 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 
                 $pdf->setX(5);
                 $pdf->SetFont('Arial', 'B', 9);
-                $pdf->Cell(50, 4, "Endereço de entrega", "B", (pg_numrows($result) == 0 ? 0 : 1), "L", 0);
-                if (pg_numrows($result) != 0) {
+                $pdf->Cell(50, 4, "Endereço de entrega", "B", (pg_num_rows($result) == 0 ? 0 : 1), "L", 0);
+                if (pg_num_rows($result) != 0) {
                     $field4 = db_utils::fieldsMemory($result, 0);
                     //db_fieldsmemory($result,0);
                     $pdf->setX(5);
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', '', 9);
-                    $pdf->Cell(20, 4, "Endereço:", "", 0, "L", 0);
+                    $pdf->Cell(25, 4, "Endereço:", "", 0, "L", 0);
                     $pdf->SetFont('Arial', 'B', 9);
                     
                     $sEndereco = $field4->j43_ender;
@@ -1139,19 +1243,28 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                         $sEndereco .= ", {$field4->j43_numimo}";
                     }
                     $pdf->Cell(100, 4, $sEndereco, "", 1, "L", 0);
+                    //Adicionado para pegar Complemento -> redmine 28742
+                    if (!empty($field4->j43_comple)) {
+                        $pdf->setX(5);
+                        $pdf->SetFont('Arial', '', 9);
+                        $pdf->Cell(25, 4, "Complemento:", "", 0, "L", 0);
+                        $pdf->SetFont('Arial', 'B', 9);
+                        $pdf->Cell(100, 4, "$field4->j43_comple", "", 1, "L", 0);
+                    }
+                    //fim
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', '', 9);
-                    $pdf->Cell(20, 4, "Município:", "", 0, "L", 0);
+                    $pdf->Cell(25, 4, "Município:", "", 0, "L", 0);
                     $pdf->SetFont('Arial', 'B', 9);
                     $pdf->Cell(100, 4, "$field4->j43_munic", "", 1, "L", 0);
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', '', 9);
-                    $pdf->Cell(20, 4, "CEP:", "", 0, "L", 0);
+                    $pdf->Cell(25, 4, "CEP:", "", 0, "L", 0);
                     $pdf->SetFont('Arial', 'B', 9);
                     $pdf->Cell(100, 4, "$field4->j43_cep", "", 1, "L", 0);
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', '', 9);
-                    $pdf->Cell(20, 4, "UF:", "", 0, "L", 0);
+                    $pdf->Cell(25, 4, "UF:", "", 0, "L", 0);
                     $pdf->SetFont('Arial', 'B', 9);
                     $pdf->Cell(100, 4, "$field4->j43_uf", "", 1, "L", 0);
                 } else {
@@ -1165,14 +1278,14 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             where j26_matric = " . (gettype($parametro) == "array" ? $parametro[$totalRegistos] : $parametro) . " ";
                                         $result = db_query($sql);
                 
-                if (pg_numrows($result) != 0) {
+                if (pg_num_rows($result) != 0) {
                     $field4 = db_utils::fieldsMemory($result, 0);
                     
                     $pdf->Ln(5);
                     
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', 'B', 9);
-                    $pdf->Cell(200, 4, "Outros dados", "B", (pg_numrows($result) == 0 ? 0 : 1), "L", 0);
+                    $pdf->Cell(200, 4, "Outros dados", "B", (pg_num_rows($result) == 0 ? 0 : 1), "L", 0);
                     
                     $pdf->setX(5);
                     $pdf->SetFont('Arial', 'B', 9);
@@ -1180,7 +1293,41 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $pdf->Multicell(0, 4, $field4->j26_obs, 0, "J", 0);
                     
                 }
-                
+                //Adicionado para pegar Ocorrencias manuais -> redmine 28742
+                if(!isset($dadosBic['venais'])){
+                    $iInstituicaoSessao = db_getsession('DB_instit');
+                    $sql = "select hm.ar25_sequencial,
+                            TO_CHAR(h.ar23_data, 'DD/MM/YYYY') || ' ' || h.ar23_hora AS data_hora,
+                            case
+  		                        when SUBSTR(h.ar23_ocorrencia, LENGTH(h.ar23_ocorrencia) - 1, 1) = '-'
+  		                        then SUBSTR(h.ar23_ocorrencia, -1, LENGTH(h.ar23_ocorrencia) - 1)||';'
+  		                        else h.ar23_ocorrencia ||';'
+  	                        end as ar23_ocorrencia
+                            from arrecadacao.histocorrenciamatric hm
+                            inner join arrecadacao.histocorrencia h 
+                            on h.ar23_sequencial = hm.ar25_histocorrencia 
+                            where hm.ar25_matric = " . (gettype($parametro) == "array" ? $parametro[$totalRegistos] : $parametro) . "
+                            and h.ar23_tipo = 2
+                            and h.ar23_instit = {$iInstituicaoSessao}
+                            order by data_hora desc";
+                    $result = db_query($sql);
+                    if (pg_num_rows($result) != 0) {
+                        $ocorrencia = pg_fetch_all($result);
+                        $pdf->Ln(5);
+                        $pdf->setX(5);
+                        $pdf->SetFont('Arial', 'B', 9);
+                        $pdf->Cell(200, 4, "Ocorrências", "B", (pg_num_rows($result) == 0 ? 0 : 1), "L", 0);
+                        foreach ($ocorrencia as $ocorr) {
+                            $pdf->setX(5);
+                            $pdf->SetFont('Arial', 'B', 8);
+                            $pdf->Cell(25, 4, $ocorr['data_hora'] .' -', 0, 0, "L", 0);
+                            $pdf->SetFont('Arial', '', 8);
+                            $pdf->MultiCell(160, 4, $ocorr['ar23_ocorrencia'], 0, "L", 0);
+                        }
+
+                    }
+                }
+                //fim
                 $pdf->setX(5);
                 $pdf->Cell(200, 4, "", "", 1, "C", 0);
                 
@@ -1205,9 +1352,9 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 $result = db_query($sSql);
                 
                 $numero = 0;
-                if (pg_numrows($result) != 0) {
+                if (pg_num_rows($result) != 0) {
                     $ladoimp = 90;
-                    for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+                    for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
                         $field5 = db_utils::fieldsMemory($result, $contador);
                         //db_fieldsmemory($result,$contador);
                         if ($numero != $field5->j39_idcons) {
@@ -1249,7 +1396,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                     j131_dthabite";
                             $rsHabite = $cliptuconstrhabite->sql_record($cliptuconstrhabite->sql_query_dados(null, $sCampos, null, "j131_matric = {$field5->j39_matric} and j131_idcons = {$field5->j39_idcons}"));
                             if ($cliptuconstrhabite->numrows > 0) {
-                                for ($iIndiceHabite = 0; $iIndiceHabite < pg_numrows($rsHabite); $iIndiceHabite++) {
+                                for ($iIndiceHabite = 0; $iIndiceHabite < pg_num_rows($rsHabite); $iIndiceHabite++) {
                                     $field_habite = db_utils::fieldsMemory($rsHabite, $iIndiceHabite);
                                     $pdf->setX(5);
                                     $pdf->SetFont('Arial', '', 9);
@@ -1273,7 +1420,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             } else {
                                 
                                 $result_demoparc  = db_query("select * from iptuconstrdemo where j60_matric = $field5->j39_matric and j60_idcons=$field5->j39_idcons");
-                                $numrows_demoparc = pg_numrows($result_demoparc);
+                                $numrows_demoparc = pg_num_rows($result_demoparc);
                                 for ($w = 0; $w < $numrows_demoparc; $w++) {
                                     $field_demoparc = db_utils::fieldsMemory($result_demoparc, $w);
                                     // db_fieldsmemory($result_demoparc,$w);
@@ -1324,7 +1471,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                               order by j52_idcons ";
                 $result    = db_query($sql);
                 $id_numero = 0;
-                if (pg_numrows($result) != 0) {
+                if (pg_num_rows($result) != 0) {
                     
                     $pdf->setX(5);
                     $pdf->Cell(200, 4, "", "", 1, "C", 0);
@@ -1335,7 +1482,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $pdf->setX(5);
                     $pdf->Cell(200, 4, "", "", 1, "C", 0);
                     $ladoimp = 90;
-                    for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+                    for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
                         db_fieldsmemory($result, $contador);
                         if ($id_numero != $idcons) {
                             $confere   = 0;
@@ -1370,9 +1517,8 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                         $pdf->Cell(100, 4, "$j31_descr", "", ($ladoimp == 90 ? 1 : 0), "L", 0);
                     }
                 }
-                
-                if ($tipo == 2) {
-                    
+
+                if ($tipo == 1 || $tipo == 2) {
                     $pdf->setX(5);
                     $pdf->Cell(200, 4, "", "", 1, "C", 0);
                     $pdf->Ln(2);
@@ -1380,19 +1526,13 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                     $pdf->SetFont('Arial', 'B', 9);
                     $pdf->Cell(200, 4, "OUTROS PROPRIETÁRIOS", "B", 1, "L", 0);
                     $pdf->setX(5);
-                    $pdf->Cell(200, 4, "", "", 1, "C", 0);
                     
-                    $result = db_query("select z01_numcgm,
-                                        z01_nome,
-                                        z01_ender
-                                        from propri,cgm
-                                        where j42_matric = " . (gettype($parametro) == "array" ? $parametro[$totalRegistos] : $parametro) . "
-                                        and j42_numcgm = z01_numcgm ");
+                    $result = $rsOutrosProprietarios;
                     
-                    if (pg_numrows($result) != 0) {
-                        for ($contador = 0; $contador < pg_numrows($result); $contador++) {
+                    if (pg_num_rows($result) != 0) {
+                        for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
                             $field6 = db_utils::fieldsMemory($result, $contador);
-                            //db_fieldsmemory($result,$contador);
+                            $pdf->ln();
                             $pdf->setX(5);
                             $pdf->SetFont('Arial', '', 9);
                             $pdf->Cell(20, 4, "Nome : ", "", 0, "L", 0);
@@ -1403,6 +1543,92 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             $pdf->Cell(20, 4, "Endereço : ", "", 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 9);
                             $pdf->Cell(150, 4, "$field6->z01_ender", "", 1, "L", 0);
+                            $pdf->SetFont('Arial','',9);
+                            $pdf->setX(5);
+                            $pdf->Cell(31 ,4,"Tipo de Proprietário : ","",0,"L",0);
+                            $pdf->SetFont('Arial','B',9);
+
+                            $tipoProprietario = str_replace('á', 'a', $field6->tipoproprietario);
+                            $tipoProprietario = str_replace('ã', 'a', $tipoProprietario);
+
+                            $pdf->Cell(150 ,4,strtoupper($tipoProprietario),"",1,"L",0);
+
+                            ////
+
+                            $clpropri = new cl_propri();
+                            $sWhereFracaoProprietario = "j42_matric = ".(gettype($parametro)=="array"?$parametro[$totalRegistos]:$parametro)." AND j42_numcgm = $field6->z01_numcgm";
+                            $SCamposFracaoProprietario = "ROUND(COALESCE(sum(j42_fracaoproprietario), 0), 4) as fracao, COALESCE(sum(j42_arealoteproprietario), 0) as area";
+                            $sSqlFracaoProprietario = $clpropri->sql_query_file($j42_matric, null, $SCamposFracaoProprietario, null, $sWhereFracaoProprietario);
+                            $rsFracaoProprietario = db_query($sSqlFracaoProprietario);
+
+                            $fracaoProprietario = db_utils::getCollectionByRecord($rsFracaoProprietario)[0];
+
+                            $percentualFracao = $fracaoProprietario->fracao;
+                            $areaLote = $fracaoProprietario->area;
+
+                            $pdf->SetFont('Arial','',9);
+                            $pdf->setX(5);
+                            $pdf->Cell(31 ,4,"Fração: ","",0,"L",0);
+                            $pdf->SetFont('Arial','B',9);
+                            $pdf->Cell(150 ,4, $percentualFracao ."% - ". $areaLote ."m²","",1,"L",0);
+                            
+                        }
+                        
+                    } else {
+                        $pdf->setX(5);
+                        $pdf->SetFont('Arial', '', 8);
+                        $pdf->Cell(200, 3, "Sem registros.", "", 1, "C", 0);
+                    }
+
+                    $result = db_query("select z01_numcgm,
+                                            z01_nome,
+                                            z01_ender,
+                                            propri.j42_tipoproprietario || ' - ' || tipoproprietario.j163_descricao as tipoproprietario
+                                            from propri,cgm,tipoproprietario
+                                            where j42_matric = ".(gettype($parametro)=="array"?$parametro[$totalRegistos]:$parametro)." 
+                                            and j42_numcgm = z01_numcgm and j42_tipoproprietario = j163_tipoproprietario");
+
+                    $result = db_query("select z01_numcgm,
+                                               z01_nome,
+                                               z01_ender,
+                                               tipopromitente. j164_tipopromitente || ' - ' || tipopromitente.j164_descricao as tipopromitente
+                                from promitente                                                                                       
+                                     inner join cgm on cgm.z01_numcgm = promitente.j41_numcgm                                        
+                                     inner join tipopromitente ON promitente.j41_promitipo = tipopromitente.j164_promitipo 
+                                        or tipopromitente.j164_tipopromitente = promitente.j41_tipopromitente
+                               where j41_matric = ".(gettype($parametro)=="array"?$parametro[$totalRegistos]:$parametro)."                                                              
+                                 and promitente.j41_tipopro is false");
+
+                    $pdf->setX(5);
+                    $pdf->Cell(200, 4, "", "", 1, "C", 0);
+                    $pdf->Ln(2);
+                    $pdf->setX(5);
+                    $pdf->SetFont('Arial', 'B', 9);
+                    $pdf->Cell(200, 4, "OUTROS PROMITENTES", "B", 1, "L", 0);
+                    $pdf->setX(5);
+
+                    if (count(db_utils::getCollectionByRecord($result)) != 0) {
+
+                        for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
+                            $field = db_utils::fieldsMemory($result, $contador);
+                            $pdf->ln();
+                            $pdf->setX(5);
+                            $pdf->SetFont('Arial', '', 9);
+                            $pdf->Cell(20, 4, "Nome : ", "", 0, "L", 0);
+                            $pdf->SetFont('Arial', 'B', 9);
+                            $pdf->Cell(50, 4, "$field->z01_numcgm - $field->z01_nome", "", 1, "L", 0);
+                            $pdf->SetFont('Arial', '', 9);
+                            $pdf->setX(5);
+                            $pdf->Cell(20, 4, "Endereço : ", "", 0, "L", 0);
+                            $pdf->SetFont('Arial', 'B', 9);
+                            $pdf->Cell(150, 4, "$field->z01_ender", "", 1, "L", 0);
+                            $pdf->SetFont('Arial','',9);
+                            $pdf->setX(5);
+                            $pdf->Cell(31 ,4,"Tipo de Promitente : ","",0,"L",0);
+                            $pdf->SetFont('Arial','B',9);
+                            $tipoPromitente = str_replace('á', 'a', $field->tipopromitente);
+                            $tipoPromitente = str_replace('ã', 'a', $tipoPromitente);
+                            $pdf->Cell(150 ,4,strtoupper($tipoPromitente),"",1,"L",0);
                         }
                         $pdf->ln();
                         
@@ -1411,6 +1637,9 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                         $pdf->SetFont('Arial', '', 8);
                         $pdf->Cell(200, 3, "Sem registros.", "", 1, "C", 0);
                     }
+                }
+
+                if ($tipo == 2) {
                     
                     if ($lTemCalculo && (isset($dadosBic['geraCalculo']) && $dadosBic['geraCalculo'] == 'true')) {
                         
@@ -1428,8 +1657,8 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                         
                         $resultSqlIptucale = db_query($sqlIptucale);
                         $vlrpred           = 0;
-                        if (pg_numrows($resultSqlIptucale) != 0) {
-                            for ($i = 0; $i < pg_numrows($resultSqlIptucale); $i++) {
+                        if (pg_num_rows($resultSqlIptucale) != 0) {
+                            for ($i = 0; $i < pg_num_rows($resultSqlIptucale); $i++) {
                                 $fieldSqlIptucale = db_utils::fieldsMemory($resultSqlIptucale, $i);
                                 $vlrpred += $fieldSqlIptucale->j22_valor;
                             }
@@ -1450,7 +1679,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                       and j23_anousu = " . $exerciciocalculo . " ";
                         
                         $result = db_query($sql);
-                        if (pg_numrows($result) > 0) {
+                        if (pg_num_rows($result) > 0) {
                             $field7 = db_utils::fieldsMemory($result, 0);
                             //db_fieldsmemory($result,0);
                             $pdf->setX(5);
@@ -1477,7 +1706,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             $j23_anousu = $exerciciocalculo;
                         }
                         
-                        if (pg_numrows($resultSqlIptucale) != 0) {
+                        if (pg_num_rows($resultSqlIptucale) != 0) {
                             $pdf->setX(5);
                             $pdf->Ln(3);
                             $pdf->SetFont('Arial', 'B', 9);
@@ -1491,7 +1720,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             $pdf->Cell(40, 4, "Valor M2", "", 0, "R", 0);
                             $pdf->Cell(20, 4, "Pontos", "", 0, "C", 0);
                             $pdf->Cell(40, 4, "Valor Venal", "", 1, "R", 0);
-                            for ($i = 0; $i < pg_numrows($resultSqlIptucale); $i++) {
+                            for ($i = 0; $i < pg_num_rows($resultSqlIptucale); $i++) {
                                 $fieldSqlIptucale = db_utils::fieldsMemory($resultSqlIptucale, $i);
                                 //db_fieldsmemory($resultSqlIptucale,$i);
                                 $pdf->setX(5);
@@ -1504,7 +1733,6 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                 $pdf->Cell(40, 4, db_formatar($fieldSqlIptucale->j22_valor, 'f'), "", 1, "R", 0);
                             }
                         }
-                        
                         
                         $sql2 = " select k02_codigo,";
                         $sql2 .= "        k02_descr,";
@@ -1611,7 +1839,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                       order by k02_codigo";
                         
                         $result2 = db_query($sql2);
-                        if (pg_numrows($result2) > 0) {
+                        if (pg_num_rows($result2) > 0) {
                             $pdf->setX(5);
                             $pdf->Ln(3);
                             $pdf->SetFont('Arial', 'B', 9);
@@ -1631,7 +1859,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             $somacalc = 0;
                             $somaisen = 0;
                             
-                            for ($contador = 0; $contador < pg_numrows($result2); $contador++) {
+                            for ($contador = 0; $contador < pg_num_rows($result2); $contador++) {
                                 $field8   = db_utils::fieldsMemory($result2, $contador);
                                 //db_fieldsmemory($result2,$contador);
                                 $soma     = $soma + ($field8->j21_valor - abs($field8->j21_valorisen));
@@ -1680,7 +1908,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                       and j23_matric = $xmatric ";
                         
                         $result2 = db_query($sql2);
-                        if (pg_numrows($result2) > 0) {
+                        if (pg_num_rows($result2) > 0) {
                             $field9 = db_utils::fieldsMemory($result2, 0);
                             //db_fieldsmemory($result2,0);
                             $pdf->SetFont('Arial', 'B', 10);

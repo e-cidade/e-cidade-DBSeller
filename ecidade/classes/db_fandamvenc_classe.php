@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,13 +53,13 @@ class cl_fandamvenc {
                  y44_dtvenc = date = Data de Vencimento 
                  ";
    //funcao construtor da classe 
-   function cl_fandamvenc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fandamvenc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_fandamvenc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y44_codandam = ($this->y44_codandam == ""?@$GLOBALS["HTTP_POST_VARS"]["y44_codandam"]:$this->y44_codandam);
        if($this->y44_dtvenc == ""){
@@ -84,7 +84,7 @@ class cl_fandamvenc {
      }
    }
    // funcao para inclusao
-   function incluir ($y44_codandam){ 
+   public function incluir ($y44_codandam){ 
       $this->atualizacampos();
      if($this->y44_dtvenc == null ){ 
        $this->erro_sql = " Campo Data de Vencimento nao Informado.";
@@ -148,7 +148,7 @@ class cl_fandamvenc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y44_codandam=null) { 
+   public function alterar ($y44_codandam=null) { 
       $this->atualizacampos();
      $sql = " update fandamvenc set ";
      $virgula = "";
@@ -242,7 +242,7 @@ class cl_fandamvenc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y44_codandam=null,$dbwhere=null) { 
+   public function excluir ($y44_codandam=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y44_codandam));
      }else{ 
@@ -304,7 +304,7 @@ class cl_fandamvenc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

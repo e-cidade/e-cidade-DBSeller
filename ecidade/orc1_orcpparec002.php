@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clorcpparec     = new cl_orcpparec;
       <table> 
 	<tr>
 	  <td valign="top"  align="center">  
-	  <?
+	  <?php
 		if(isset($db_opcaoal)){
 		   $db_opcao=33;
 		    $db_botao=false;

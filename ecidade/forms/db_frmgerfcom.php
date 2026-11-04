@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,11 +41,11 @@ $clrotulo->label("nomeinst");
       <b>Ano / Mês:</b>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r48_anousu',4,$Ir48_anousu,true,'text',3)
       ?>
       &nbsp;<b>/</b>&nbsp;
-      <?
+      <?php
       db_input('r48_mesusu',2,$Ir48_mesusu,true,'text',3)
       ?>
     </td>
@@ -55,7 +55,7 @@ $clrotulo->label("nomeinst");
       <b>Complementar Atual:</b>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r48_semest',1,$Ir48_semest,true,'text',3,"","semestatual")
       ?>
     </td>
@@ -65,7 +65,7 @@ $clrotulo->label("nomeinst");
       <b>Próxima Complementar:</b>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r48_semest',1,$Ir48_semest,true,'text',3,"")
       ?>
     </td>

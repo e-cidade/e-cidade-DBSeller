@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,39 +29,41 @@
 //CLASSE DA ENTIDADE cfautent
 class cl_cfautent {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $k11_id = 0;
-   var $k11_ident1 = null;
-   var $k11_ident2 = null;
-   var $k11_ident3 = null;
-   var $k11_ipterm = null;
-   var $k11_local = null;
-   var $k11_aut1 = null;
-   var $k11_aut2 = null;
-   var $k11_tipautent = 0;
-   var $k11_tesoureiro = null;
-   var $k11_instit = 0;
-   var $k11_tipoimp = 0;
-   var $k11_tipoimpcheque = 0;
-   var $k11_ipimpcheque = null;
-   var $k11_portaimpcheque = 0;
-   var $k11_impassche = 0;
-   var $k11_zeratrocoarrec = 0;
-   var $k11_tef = 'f';
+   public $k11_id = 0;
+   public $k11_ident1 = null;
+   public $k11_ident2 = null;
+   public $k11_ident3 = null;
+   public $k11_ipterm = null;
+   public $k11_local = null;
+   public $k11_aut1 = null;
+   public $k11_aut2 = null;
+   public $k11_tipautent = 0;
+   public $k11_tesoureiro = null;
+   public $k11_instit = 0;
+   public $k11_tipoimp = 0;
+   public $k11_tipoimpcheque = 0;
+   public $k11_ipimpcheque = null;
+   public $k11_portaimpcheque = 0;
+   public $k11_impassche = 0;
+   public $k11_zeratrocoarrec = 0;
+   public $k11_tef = 'f';
+
+   public $k11_infisc = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  k11_id = int4 = Código do Terminal
                  k11_ident1 = char(1) = Identificação 1
                  k11_ident2 = char(1) = Identificação 2
@@ -80,15 +82,16 @@ class cl_cfautent {
                  k11_impassche = int4 = Imprime assinatura no cheque
                  k11_zeratrocoarrec = int4 = Zera troco arrecadação de receita
                  k11_tef = char(1) = TEF
+                 k11_infisc = char(1) = INFISC
                  ";
    //funcao construtor da classe
-   function cl_cfautent() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfautent");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -97,7 +100,7 @@ class cl_cfautent {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k11_id = ($this->k11_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k11_id"]:$this->k11_id);
        $this->k11_ident1 = ($this->k11_ident1 == ""?@$GLOBALS["HTTP_POST_VARS"]["k11_ident1"]:$this->k11_ident1);
@@ -117,12 +120,13 @@ class cl_cfautent {
        $this->k11_impassche = ($this->k11_impassche == ""?@$GLOBALS["HTTP_POST_VARS"]["k11_impassche"]:$this->k11_impassche);
        $this->k11_zeratrocoarrec = ($this->k11_zeratrocoarrec == ""?@$GLOBALS["HTTP_POST_VARS"]["k11_zeratrocoarrec"]:$this->k11_zeratrocoarrec);
        $this->k11_tef = ($this->k11_tef == "f"?@$GLOBALS["HTTP_POST_VARS"]["k11_tef"]:$this->k11_tef);
+       $this->k11_infisc = (empty($this->k11_infisc)?@$GLOBALS["HTTP_POST_VARS"]["k11_infisc"]:$this->k11_infisc);
      }else{
        $this->k11_id = ($this->k11_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k11_id"]:$this->k11_id);
      }
    }
    // funcao para inclusao
-   function incluir ($k11_id){
+   public function incluir ($k11_id){
       $this->atualizacampos();
      if($this->k11_tipautent == null ){
        $this->erro_sql = " Campo Tipo de Autenticação nao Informado.";
@@ -240,6 +244,11 @@ class cl_cfautent {
        if(empty($this->k11_tef) ){
            $this->k11_tef = "f";
        }
+
+       if(empty($this->k11_infisc) ){
+           $this->k11_infisc = "f";
+       }
+
      $sql = "insert into cfautent(
                                        k11_id
                                       ,k11_ident1
@@ -259,6 +268,7 @@ class cl_cfautent {
                                       ,k11_impassche
                                       ,k11_zeratrocoarrec
                                       ,k11_tef
+                                      ,k11_infisc
 
                        )
                 values (
@@ -280,6 +290,7 @@ class cl_cfautent {
                                ,$this->k11_impassche
                                ,$this->k11_zeratrocoarrec
                                ,'$this->k11_tef'
+                               ,'$this->k11_infisc'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -329,11 +340,12 @@ class cl_cfautent {
        $resac = db_query("insert into db_acount values($acount,199,10841,'','".AddSlashes(pg_result($resaco,0,'k11_impassche'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,199,12604,'','".AddSlashes(pg_result($resaco,0,'k11_zeratrocoarrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,199,1013169,'','".AddSlashes(pg_result($resaco,0,'k11_tef'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,199,1015514,'','".AddSlashes(pg_result($resaco,0,'k11_infisc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
    // funcao para alteracao
-   function alterar ($k11_id=null) {
+   public function alterar ($k11_id=null) {
       $this->atualizacampos();
      $sql = " update cfautent set ";
      $virgula = "";
@@ -500,6 +512,11 @@ class cl_cfautent {
            $sql  .= $virgula." k11_tef = '$this->k11_tef' ";
            $virgula = ",";
        }
+
+       if(trim($this->k11_infisc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["k11_infisc"])){
+           $sql  .= $virgula." k11_infisc = '$this->k11_infisc' ";
+           $virgula = ",";
+       }
      $sql .= " where ";
      if($k11_id!=null){
        $sql .= " k11_id = $this->k11_id";
@@ -547,6 +564,8 @@ class cl_cfautent {
            $resac = db_query("insert into db_acount values($acount,199,12604,'".AddSlashes(pg_result($resaco,$conresaco,'k11_zeratrocoarrec'))."','$this->k11_zeratrocoarrec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k11_tef"]))
            $resac = db_query("insert into db_acount values($acount,199,1013169,'".AddSlashes(pg_result($resaco,$conresaco,'k11_tef'))."','$this->k11_tef',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["k11_infisc"]))
+           $resac = db_query("insert into db_acount values($acount,199,1015514,'".AddSlashes(pg_result($resaco,$conresaco,'k11_infisc'))."','$this->k11_infisc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -582,7 +601,7 @@ class cl_cfautent {
      }
    }
    // funcao para exclusao
-   function excluir ($k11_id=null,$dbwhere=null) {
+   public function excluir ($k11_id=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k11_id));
      }else{
@@ -612,6 +631,7 @@ class cl_cfautent {
          $resac = db_query("insert into db_acount values($acount,199,10841,'','".AddSlashes(pg_result($resaco,$iresaco,'k11_impassche'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,199,12604,'','".AddSlashes(pg_result($resaco,$iresaco,'k11_zeratrocoarrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,199,1013169,'','".AddSlashes(pg_result($resaco,$iresaco,'k11_tef'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,199,1015514,'','".AddSlashes(pg_result($resaco,$iresaco,'k11_infisc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cfautent
@@ -660,7 +680,7 @@ class cl_cfautent {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -683,7 +703,7 @@ class cl_cfautent {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -721,7 +741,7 @@ class cl_cfautent {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -755,7 +775,7 @@ class cl_cfautent {
      return $sql;
   }
 
-  function sql_query_impressora( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_impressora( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -793,7 +813,7 @@ class cl_cfautent {
      return $sql;
   }
 
-  function sql_query_impressora_modelo_impressao( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_impressora_modelo_impressao( $k11_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -84,7 +84,7 @@ $clprotprocesso->rotulo->label("p58_codproc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
        $sWhere = '';
        
@@ -161,7 +161,7 @@ $clprotprocesso->rotulo->label("p58_codproc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -179,7 +179,7 @@ document.form2.chave_p58_codproc.select();
 	  }
   }
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

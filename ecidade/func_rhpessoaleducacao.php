@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -55,7 +55,7 @@ for (iln = 0; iln < len; iln++)
     break;
 netscape = (ver.charAt(iln+1).toUpperCase() != "C");
 function keyDown(DnEvents) {
-    
+
  k = (netscape) ? DnEvents.which : window.event.keyCode;
  if (k == 13) { // pressiona tecla enter
    if (nextfield == 'done') {
@@ -82,7 +82,7 @@ if(netscape)
       <?=$Lrh01_regist?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("rh01_regist",10,$Irh01_regist,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_regist");?>
+      <?php db_input("rh01_regist",10,$Irh01_regist,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_regist");?>
      </td>
     </tr>
     <tr>
@@ -90,7 +90,7 @@ if(netscape)
       <?=$Lrh01_numcgm?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("rh01_numcgm",10,$Irh01_numcgm,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_numcgm");?>
+      <?php db_input("rh01_numcgm",10,$Irh01_numcgm,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_numcgm");?>
      </td>
     </tr>
     <tr>
@@ -98,7 +98,7 @@ if(netscape)
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap colspan='3'>
-      <?db_input("z01_nome",80,$Iz01_nome,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_z01_nome");?>
+      <?php db_input("z01_nome",80,$Iz01_nome,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_z01_nome");?>
      </td>
     </tr>
     <tr>
@@ -114,7 +114,7 @@ if(netscape)
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $instit = db_getsession("DB_instit");
    $ano = db_anofolha();
    $mes = db_mesfolha();
@@ -128,7 +128,7 @@ if(netscape)
                                            and rh02_regist  = rh01_regist
                                            and rh02_instit  = $instit
                  inner join cgm             on z01_numcgm   = rhpessoal.rh01_numcgm
-                 inner join rhfuncao        on rh37_funcao  = rhpessoal.rh01_funcao
+                 inner join rhfuncao        on rh37_funcao  = rhpessoalmov.rh02_funcao
                                            and rh37_instit  = rh02_instit
                  left  join rhpesrescisao   on rh05_seqpes  = rh02_seqpes
                  inner join rhregime        on rh30_codreg  = rh02_codreg

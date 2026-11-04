@@ -1,0 +1,97 @@
+<?php 
+/*
+ *     E-cidade Software Publico para Gestao Municipal                
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica             
+ *                            www.dbseller.com.br                     
+ *                         e-cidade@dbseller.com.br                   
+ *                                                                    
+ *  Este programa e software livre; voce pode redistribui-lo e/ou     
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
+ *  publicada pela Free Software Foundation; tanto a versao 2 da      
+ *  Licenca como (a seu criterio) qualquer versao mais nova.          
+ *                                                                    
+ *  Este programa e distribuido na expectativa de ser util, mas SEM   
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
+ *  detalhes.                                                         
+ *                                                                    
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
+ *  junto com este programa; se nao, escreva para a Free Software     
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
+ *  02111-1307, USA.                                                  
+ *  
+ *  Copia da licenca no diretorio licenca/licenca_en.txt 
+ *                                licenca/licenca_pt.txt 
+ */
+
+require modification("libs/db_stdlib.php");
+require modification("libs/db_conecta.php");
+include modification("libs/db_sessoes.php");
+include modification("libs/db_usuariosonline.php");
+include modification("classes/db_fis_fiscarquivos_classe.php");
+include modification("dbforms/db_funcoes.php");
+db_postmemory($HTTP_POST_VARS);
+// Ticket 108335
+$getIntimacao = ((isset($intimacao) && $intimacao == 1) ? '&intimacao=1' : '');
+$getLabel     = ((isset($intimacao) && $intimacao == 1) ? 'Intimação' : 'Notificação');
+// -------------
+$clfiscarquivos = new cl_fis_fiscarquivos;
+$db_opcao = 1;
+$db_botao = true;
+global $y26_codnoti;
+global $y39_codandam;
+if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+  db_inicio_transacao();
+  $clfiscarquivos->incluir($y26_codnoti,$y26_idparag);
+  db_fim_transacao();
+}
+?>
+<html>
+<head>
+<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Expires" CONTENT="0">
+<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<link href="estilos.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
+<table width="790" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+    <center>
+	<?php 
+	include modification("forms/db_frm_fis_fiscarquivos.php");
+	?>
+    </center>
+	</td>
+  </tr>
+</table>
+</body>
+</html>
+<script>
+js_setatabulacao();
+</script>
+<?php 
+if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+  if($clfiscarquivos->erro_status=="0"){
+    $clfiscarquivos->erro(true,false);
+    $db_botao=true;
+    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+    echo "<script>parent.iframe_artigos.location.href='fis1_fis_fiscarquivos001.php?y26_codnoti=$y26_codnoti&abas=1&y39_codandam=$y39_codandam".$getIntimacao."'</script>";
+    if($clfiscarquivos->erro_campo!=""){
+      echo "<script> document.form1.".$clfiscarquivos->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+      echo "<script> document.form1.".$clfiscarquivos->erro_campo.".focus();</script>";
+    };
+  }else{
+    $clfiscarquivos->erro(true,false);
+    echo "<script>parent.iframe_artigos.location.href='fis1_fis_fiscarquivos001.php?y26_codnoti=$y26_codnoti&abas=1&y39_codandam=$y39_codandam".$getIntimacao."'</script>";
+  };
+};
+if(isset($y26_codnoti) && $y26_codnoti != "" && $y39_codandam == ""){
+  $clfiscarquivos->sql_record($clfiscarquivos->sql_query($y26_codnoti)); 
+  if($clfiscarquivos->numrows == 0){
+    echo "<script>parent.document.formaba.artigos.disabled=true;</script>";
+  }
+}
+?>

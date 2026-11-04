@@ -316,10 +316,6 @@ class Custas extends Contract
         $total = 0;
 
         foreach ($certidoes as $certidao) {
-            if (($this->pdf->getAvailHeight() - 15) < static::ALTURA_LINHA) {
-                $this->pdf->AddPage();
-            }
-
             $exercicio = null;
             $valorHist = 0;
             $valorCorrigido = 0;
@@ -327,14 +323,26 @@ class Custas extends Contract
             $multa = 0;
             $valorTotal = 0;
 
-            $numpres = array();
-            foreach ($certidao->getCertidaoDividas() as $certidaoDivida) {
-                $numpres[$certidaoDivida->getDivida()->getNumpre()][] = $certidaoDivida->getDivida()->getNumpar();
-                $exercicio = $certidaoDivida->getDivida()->getExercicio();
+            if (($this->pdf->getAvailHeight() - 15) < static::ALTURA_LINHA) {
+                $this->pdf->AddPage();
             }
 
+            $numpres = (Object)[];
+            $listaExercicios = (Object)[];
+            foreach ($certidao->getCertidaoDividas() as $certidaoDivida) {
+                $numpres->{$certidaoDivida->getDivida()->getNumpre()}
+                ->{'listaNumpar'}[] = $certidaoDivida->getDivida()->getNumpar();
+
+                $numpres->{$certidaoDivida->getDivida()->getNumpre()}
+                ->{'exercicio'} = $certidaoDivida->getDivida()->getExercicio();
+
+                $listaExercicios->{$certidaoDivida->getDivida()->getExercicio()} = (Object)[];
+            }
+
+
             foreach ($numpres as $numpre => $numpares) {
-                $sWhere  = " and y.k00_numpre = {$numpre} and y.k00_numpar in (" . implode(', ', $numpares) . ") ";
+                $sWhere  = " and y.k00_numpre = {$numpre} ";
+                $sWhere .= " and y.k00_numpar in (" . implode(', ', $numpares->listaNumpar) . ") ";
 
                 $rsDebitosNumpre = \debitos_numpre(
                     $numpre,
@@ -349,29 +357,33 @@ class Custas extends Contract
                 );
 
                 foreach (pg_fetch_all($rsDebitosNumpre) as $debitoNumpre) {
-                    $valorHist += $debitoNumpre['vlrhis'];
-                    $valorCorrigido += $debitoNumpre['vlrcor'];
-                    $juros += $debitoNumpre['vlrjuros'];
-                    $multa += $debitoNumpre['vlrmulta'];
-                    $valorTotal += $debitoNumpre['total'];
-
-                    $totalValorHist += $debitoNumpre['vlrhis'];
-                    $totalValorCorrigido += $debitoNumpre['vlrcor'];
-                    $totalJuros += $debitoNumpre['vlrjuros'];
-                    $totalMulta += $debitoNumpre['vlrmulta'];
-                    $total += $debitoNumpre['total'];
+                    $listaExercicios->{$numpares->exercicio}->valorHist += $debitoNumpre['vlrhis'];
+                    $listaExercicios->{$numpares->exercicio}->valorCorrigido += $debitoNumpre['vlrcor'];
+                    $listaExercicios->{$numpares->exercicio}->juros += $debitoNumpre['vlrjuros'];
+                    $listaExercicios->{$numpares->exercicio}->multa += $debitoNumpre['vlrmulta'];
+                    $listaExercicios->{$numpares->exercicio}->valorTotal += $debitoNumpre['total'];
+                    $listaExercicios->{$numpares->exercicio}->exercicio = $numpares->exercicio;
                 }
             }
 
-            $this->montarLinha(27, $certidao->getCodigo());
-            $this->montarLinha(27, $exercicio);
-            $this->montarLinha(27, $valorHist, true);
-            $this->montarLinha(27, $valorCorrigido, true);
-            $this->montarLinha(27, $juros, true);
-            $this->montarLinha(27, $multa, true);
-            $this->montarLinha(27, $valorTotal, true);
 
-            $this->pdf->Ln();
+            foreach ($listaExercicios as $exercicio) {
+                $this->montarLinha(27, $certidao->getCodigo());
+                $this->montarLinha(27, $exercicio->exercicio);
+                $this->montarLinha(27, $exercicio->valorHist, true);
+                $this->montarLinha(27, $exercicio->valorCorrigido, true);
+                $this->montarLinha(27, $exercicio->juros, true);
+                $this->montarLinha(27, $exercicio->multa, true);
+                $this->montarLinha(27, $exercicio->valorTotal, true);
+
+                $totalValorHist += $exercicio->valorHist;
+                $totalValorCorrigido += $exercicio->valorCorrigido;
+                $totalJuros += $exercicio->juros;
+                $totalMulta += $exercicio->multa;
+                $total += $exercicio->valorTotal;
+
+                $this->pdf->Ln();
+            }
         }
 
         $this->montarLinha(27 * 2, 'Subtotal', false, true, true);

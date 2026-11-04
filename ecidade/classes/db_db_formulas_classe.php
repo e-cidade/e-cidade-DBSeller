@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_formulas
 class cl_db_formulas { 
@@ -30,13 +30,13 @@ class cl_db_formulas {
                  db148_ambiente = bool = Variável de Ambiente 
                  ";
    //funcao construtor da classe 
-   function cl_db_formulas() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_formulas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_db_formulas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db148_sequencial = ($this->db148_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db148_sequencial"]:$this->db148_sequencial);
        $this->db148_nome = ($this->db148_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["db148_nome"]:$this->db148_nome);
@@ -57,7 +57,7 @@ class cl_db_formulas {
      }
    }
    // funcao para Inclusão
-   function incluir ($db148_sequencial){ 
+   public function incluir ($db148_sequencial){ 
       $this->atualizacampos();
      if($this->db148_nome == null ){ 
        $this->erro_sql = " Campo Nome não informado.";

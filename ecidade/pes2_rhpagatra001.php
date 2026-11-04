@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ db_postmemory($HTTP_POST_VARS);
 <table width="60%" border="0" cellspacing="4" cellpadding="0">
   <tr><td colspan="2">&nbsp;</td></tr>
   <form name="form1" method="post" action="">
-  <?
+  <?php
   include(modification("dbforms/db_classesgenericas.php"));
   $geraform = new cl_formulario_rel_pes;
 
@@ -75,7 +75,7 @@ db_postmemory($HTTP_POST_VARS);
       <b>Filtro saldo:</b>
     </td>
     <td align='left'>
-      <?
+      <?php
       $arr_comsaldo = array("t"=>"Todos","f"=>"Somente com saldo");
       db_select("comsaldo", $arr_comsaldo, true, 1);
       ?>
@@ -86,7 +86,7 @@ db_postmemory($HTTP_POST_VARS);
       <b>Filtro conta:</b>
     </td>
     <td align='left'>
-      <?
+      <?php
       $arr_conta = array(0=>"Todos",1=>"Com conta bancária",2=>"Sem conta bancária");
       db_select("conta", $arr_conta, true, 1);
       ?>
@@ -97,7 +97,7 @@ db_postmemory($HTTP_POST_VARS);
       <b>Quebra por Funcionário:</b>
     </td>
     <td align='left'>
-      <?
+      <?php
       $arr_quebra = array(0=>"Sim",1=>"Não");
       db_select("quebra", $arr_quebra, true, 1);
       ?>
@@ -116,7 +116,7 @@ db_postmemory($HTTP_POST_VARS);
   </form>
 </table>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

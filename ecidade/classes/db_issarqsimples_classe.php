@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE issarqsimples
 class cl_issarqsimples {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status= null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status= null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $q17_sequencial = 0;
-  var $q17_instit = 0;
-  var $q17_data_dia = null;
-  var $q17_data_mes = null;
-  var $q17_data_ano = null;
-  var $q17_data = null;
-  var $q17_nroremessa = 0;
-  var $q17_versao = 0;
-  var $q17_qtdreg = 0;
-  var $q17_vlrtot = 0;
-  var $q17_codbco = null;
-  var $q17_oidarq = 0;
-  var $q17_nomearq = null;
+  public $q17_sequencial = 0;
+  public $q17_instit = 0;
+  public $q17_data_dia = null;
+  public $q17_data_mes = null;
+  public $q17_data_ano = null;
+  public $q17_data = null;
+  public $q17_nroremessa = 0;
+  public $q17_versao = 0;
+  public $q17_qtdreg = 0;
+  public $q17_vlrtot = 0;
+  public $q17_codbco = null;
+  public $q17_oidarq = 0;
+  public $q17_nomearq = null;
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
   q17_sequencial = int4 = Sequencial
   q17_instit = int4 = Cod. Instituição
   q17_data = date = Data
@@ -69,13 +69,13 @@ class cl_issarqsimples {
   q17_nomearq = varchar(100) = Nome Arquivo
   ";
   //funcao construtor da classe
-  function cl_issarqsimples() {
+  public function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("issarqsimples");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra,$retorna) {
+  public function erro($mostra,$retorna) {
     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
       echo "<script>alert(\"".$this->erro_msg."\");</script>";
       if($retorna==true){
@@ -84,7 +84,7 @@ class cl_issarqsimples {
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao=false) {
+  public function atualizacampos($exclusao=false) {
     if($exclusao==false){
       $this->q17_sequencial = ($this->q17_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q17_sequencial"]:$this->q17_sequencial);
       $this->q17_instit = ($this->q17_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["q17_instit"]:$this->q17_instit);
@@ -108,7 +108,7 @@ class cl_issarqsimples {
     }
   }
   // funcao para inclusao
-  function incluir ($q17_sequencial){
+  public function incluir ($q17_sequencial){
     $this->atualizacampos();
     if($this->q17_instit == null ){
       $this->erro_sql = " Campo Cod. Instituição nao Informado.";
@@ -243,7 +243,7 @@ class cl_issarqsimples {
     return true;
   }
   // funcao para alteracao
-  function alterar ($q17_sequencial=null) {
+  public function alterar ($q17_sequencial=null) {
     $this->atualizacampos();
     $sql = " update issarqsimples set ";
     $virgula = "";
@@ -397,7 +397,7 @@ class cl_issarqsimples {
     }
   }
   // funcao para exclusao
-  function excluir ($q17_sequencial=null,$dbwhere=null) {
+  public function excluir ($q17_sequencial=null,$dbwhere=null) {
     if($dbwhere==null || $dbwhere==""){
       $resaco = $this->sql_record($this->sql_query_file($q17_sequencial));
     }else{
@@ -467,7 +467,7 @@ class cl_issarqsimples {
     }
   }
   // funcao do recordset
-  function sql_record($sql) {
+  public function sql_record($sql) {
     $result = db_query($sql);
     if($result==false){
       $this->numrows    = 0;
@@ -489,10 +489,10 @@ class cl_issarqsimples {
     }
     return $result;
   }
-  function sql_query ( $q17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query ( $q17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_issarqsimples {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -524,10 +524,10 @@ class cl_issarqsimples {
     }
     return $sql;
   }
-  function sql_query_file ( $q17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $q17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_issarqsimples {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -557,10 +557,10 @@ class cl_issarqsimples {
     }
     return $sql;
   }
-  function sql_query_processados( $q17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_processados( $q17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -584,7 +584,7 @@ class cl_issarqsimples {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -600,7 +600,7 @@ class cl_issarqsimples {
    * @param  integer $iCodigoArquivo
    * @return array   $aRetorno       array com inconsistencias
    */
-  function validaArquivo($iCodigoArquivo) {
+  public function validaArquivo($iCodigoArquivo) {
 
     $aErros                    = array();
     $oDaoIssArqSimplesReg      = new cl_issarqsimplesreg();
@@ -770,6 +770,65 @@ class cl_issarqsimples {
             $aErros[$oRegSimples->q23_sequencial] = $oErros;
           }
 
+          //
+          // Testando se a competência do registro é igual competencial do pagamento,
+          // se não for MEI e não tiver baixa (ou baixa posterior ao pagamento)
+          // lançar como complementar
+          //
+
+          $lMEI = false;
+          $oDaoIsscadsimples = new cl_isscadsimples();
+          $sWhere   = " cgm.z01_cgccpf = '{$oRegSimples->q23_cnpj}' ";
+          $sSqlMEI  = $oDaoIsscadsimples->sql_query(null, 'q02_inscr, q38_sequencial, q38_categoria', null, $sWhere);
+          $rsMEI    = db_query($sSqlMEI);
+
+          if (!$rsMEI) {
+            throw new Exception ("Erro verificar Inscrição MEI. ".pg_last_error());
+          }
+
+          if (pg_num_rows($rsMEI) > 0) {
+
+            $sCategoria      = db_utils::fieldsMemory($rsMEI, 0)->q38_categoria;
+            $iIsscadsimples  = (int)db_utils::fieldsMemory($rsMEI, 0)->q38_sequencial;
+
+            $oDaoIsscadsimplesbaixa = new cl_isscadsimplesbaixa();
+            $sWhere       = " q39_isscadsimples = {$iIsscadsimples} ";
+            $sSqlBaixaMEI = $oDaoIsscadsimplesbaixa->sql_query(null, 'q39_sequencial, q39_dtbaixa', null, $sWhere);
+            $rsBaixaMEI   = db_query($sSqlBaixaMEI);
+
+            if (!$rsBaixaMEI) {
+                throw new Exception ("Erro verificar baixa Inscrição MEI. ".pg_last_error());
+            }
+
+            $dDtBaixaMEI  = "";
+            $dDtPagamento = date('Ymd', strtotime($oRegSimples->q23_dtarrec));
+
+            if (pg_num_rows($rsBaixaMEI) > 0) {
+               $dDtBaixaMEI = date('Ymd', strtotime(db_utils::fieldsMemory($rsBaixaMEI, 0)->q39_dtbaixa));
+            }
+
+            if ($sCategoria == '3' && ($dDtBaixaMEI == "" || $dDtBaixaMEI > $dDtPagamento)) {
+                $lMEI = true;
+             }
+
+          }
+
+          $anoPag = substr($oRegSimples->q23_dtarrec, 0, 4);
+          $mesPag = substr($oRegSimples->q23_dtarrec, 5, 2);
+
+          if ( $oRegSimples->q23_anousu == $anoPag && $oRegSimples->q23_mesusu == $mesPag && (!$lMEI) ) {
+
+            $oErros            = new stdClass();
+            $oErros->iRegistro = $oRegSimples->q23_sequencial;
+            $oErros->sTipo     = "AVISO";
+            $oErros->sCnpj     = $oRegSimples->q23_cnpj;
+            $oErros->sDetalhe  = urlencode("CNPJ - {$oRegSimples->q23_cnpj}, CGM - {$oRegSimples->cgm_valido}, Alvará - {$oIssBase->inscricoes}: ");
+            $oErros->sDetalhe .= urlencode(" Competência atual. Será lançado ISS Complementar para  {$oRegSimples->q23_mesusu}/{$oRegSimples->q23_anousu}");
+            $oErros->sErro     = "avisoComplementar";
+            $aErros[$oRegSimples->q23_sequencial] = $oErros;
+
+          }
+
           //testando se existe issvar para o mes/competencia
           $sSqlIssvar = $oDaoIssvar->sql_issvar_isscalc_inscr_comp($oIssBase->inscricoes,
                                                                    $oRegSimples->q23_anousu,
@@ -910,7 +969,7 @@ class cl_issarqsimples {
    * @param date $q23_dtvenc
    * @return string <unknown, string>
    */
-  function getDatavenc($iAnoUsu, $iMesUsu, $lManterCompetencia = false) {
+  public function getDatavenc($iAnoUsu, $iMesUsu, $lManterCompetencia = false) {
 
     $dVencimento = null;
     $sSqlParametroVencimento  = "select distinct                                                                              \n";
@@ -946,7 +1005,7 @@ class cl_issarqsimples {
     return $dVencimento;
   }
 
-  function processaArquivo($iRegistro, $sArquivo, $iBanco, $iAgencia, $iConta) {
+  public function processaArquivo($iRegistro, $sArquivo, $iBanco, $iAgencia, $iConta) {
 
     $oDaoParISSQN     = db_utils::getDao('parissqn');
     $oParametrosISSQN = $oDaoParISSQN->getParametrosIssqn();
@@ -1139,6 +1198,103 @@ class cl_issarqsimples {
 
           $rsIssCalc = db_query($oDaoIssCalc->sql_query($oRegSimples->q23_anousu, $oInscr->q02_inscr, 3));
 
+          //
+          // Testando se a competência do registro é igual competencial do pagamento,
+          // se não for MEI e não tiver baixa (ou baixa posterior ao pagamento)
+          // lançar como complementar
+          //
+
+          $lMEI = false;
+          $oDaoIsscadsimples = new cl_isscadsimples();
+          $sWhere   = " cgm.z01_cgccpf = '{$oRegSimples->q23_cnpj}' ";
+          $sSqlMEI  = $oDaoIsscadsimples->sql_query(null, 'q02_inscr, q38_sequencial, q38_categoria', null, $sWhere);
+          $rsMEI    = db_query($sSqlMEI);
+
+          if (!$rsMEI) {
+            throw new Exception ("Erro verificar Inscrição MEI. ".pg_last_error());
+          }
+
+          if (pg_num_rows($rsMEI) > 0) {
+
+            $sCategoria      = db_utils::fieldsMemory($rsMEI, 0)->q38_categoria;
+            $iIsscadsimples  = (int)db_utils::fieldsMemory($rsMEI, 0)->q38_sequencial;
+
+            $oDaoIsscadsimplesbaixa = new cl_isscadsimplesbaixa();
+            $sWhere       = " q39_isscadsimples = {$iIsscadsimples} ";
+            $sSqlBaixaMEI = $oDaoIsscadsimplesbaixa->sql_query(null, 'q39_sequencial, q39_dtbaixa', null, $sWhere);
+            $rsBaixaMEI   = db_query($sSqlBaixaMEI);
+
+            if (!$rsBaixaMEI) {
+                throw new Exception ("Erro verificar baixa Inscrição MEI. ".pg_last_error());
+            }
+
+            $dDtBaixaMEI  = "";
+            $dDtPagamento = date('Ymd', strtotime($oRegSimples->q23_dtarrec));
+
+            if (pg_num_rows($rsBaixaMEI) > 0) {
+               $dDtBaixaMEI = date('Ymd', strtotime(db_utils::fieldsMemory($rsBaixaMEI, 0)->q39_dtbaixa));
+            }
+            if ($sCategoria == '3' && ($dDtBaixaMEI == "" || $dDtBaixaMEI > $dDtPagamento)) {
+                $lMEI = true;
+             }
+          }
+
+          $anoPag = substr($oRegSimples->q23_dtarrec, 0, 4);
+          $mesPag = substr($oRegSimples->q23_dtarrec, 5, 2);
+          $lcomplementar = false;
+          if ( $oRegSimples->q23_anousu == $anoPag && $oRegSimples->q23_mesusu == $mesPag && (!$lMEI) ) {
+              $lcomplementar = true;
+              $rsNumpre               = db_query("select nextval('numpref_k03_numpre_seq') as k03_numpre");
+              $iNumpre                = db_utils::fieldsmemory($rsNumpre, 0)->k03_numpre;
+              $iNumpar                = $oRegSimples->q23_mesusu;
+
+              $oDaoIssVar             = db_utils::getDao("issvar");
+              $oDaoIssVar->q05_numpre = $iNumpre;
+              $oDaoIssVar->q05_numpar = $iNumpar;
+              $oDaoIssVar->q05_ano    = $oRegSimples->q23_anousu;
+              $oDaoIssVar->q05_mes    = $oRegSimples->q23_mesusu;
+              $oDaoIssVar->q05_histor = "Referente a Baixa Simples nacional competencia ".$oRegSimples->q23_mesusu."/".$oRegSimples->q23_anousu;
+              $oDaoIssVar->q05_aliq   = $oParametrosISSQN->q60_aliq;
+              $oDaoIssVar->q05_valor  = "0";
+              $oDaoIssVar->q05_bruto  = "0";
+              $oDaoIssVar->q05_vlrinf = $dVlrReg;
+              $oDaoIssVar->incluir(null);
+
+              if ($oDaoIssVar->erro_status == 0) {
+                throw new Exception("Iss Complementar : ".$oDaoIssVar->erro_msg);
+              }
+
+              $q05_codigo              = $oDaoIssVar->q05_codigo;
+              $oDaoArrecad             = db_utils::getDao("arrecad");
+              $oDaoArrecad->k00_numpre = $iNumpre;
+              $oDaoArrecad->k00_numpar = $iNumpar;
+              $oDaoArrecad->k00_numcgm = $oRegSimples->cgm_valido;
+              $oDaoArrecad->k00_dtoper = $oRegSimples->q23_dtvenc;
+              $oDaoArrecad->k00_receit = $oParametrosISSQN->q60_receit;
+              $oDaoArrecad->k00_hist   = $oParametrosISSQN->q60_histsemmov;
+              $oDaoArrecad->k00_valor  = $dVlrReg;
+              $oDaoArrecad->k00_dtvenc = $this->getDatavenc($oRegSimples->q23_anousu, $oRegSimples->q23_mesusu );//$oRegSimples->q23_dtvenc;
+              $oDaoArrecad->k00_numtot = 1;
+              $oDaoArrecad->k00_numdig = "0";
+              $oDaoArrecad->k00_tipo   = $oParametrosISSQN->q60_tipo;
+              $oDaoArrecad->k00_tipojm = "0";
+              $oDaoArrecad->incluir(null);
+
+              if ($oDaoArrecad->erro_status == 0){
+                throw new Exception("ARRECAD : ". $oDaoArrecad->erro_msg);
+              }
+
+              $oDaoArreinscr             = db_utils::getDao("arreinscr");
+              $oDaoArreinscr->k00_inscr  = $oInscr->q02_inscr;
+              $oDaoArreinscr->k00_numpre = $iNumpre;
+              $oDaoArreinscr->k00_perc   = 100;
+              $oDaoArreinscr->incluir($iNumpre,$oInscr->q02_inscr);
+
+              if ($oDaoArreinscr->erro_status == 0){
+                throw new Exception("Arreinscr : ". $oDaoArreinscr->erro_msg);
+              }
+          }
+
           $rsVar = db_query($oDaoIssvar->sql_issvar_isscalc_inscr_comp($oInscr->q02_inscr,
                                                                        $oRegSimples->q23_anousu,
                                                                        $oRegSimples->q23_mesusu));
@@ -1166,7 +1322,7 @@ class cl_issarqsimples {
               throw new Exception ("Erro ao buscar dados do Arrecad:".pg_last_error());
             }
 
-            if(pg_num_rows($rsArrecad) != 1){
+            if(pg_num_rows($rsArrecad) != 1 && !$lcomplementar){
 
               $rsNumpre               = db_query("select nextval('numpref_k03_numpre_seq') as k03_numpre");
               $iNumpre                = db_utils::fieldsmemory($rsNumpre, 0)->k03_numpre;
@@ -1285,12 +1441,13 @@ class cl_issarqsimples {
 
       }else{
 
-        $oDaoIssvar = db_utils::getDao('issvar');
-        $sSqlIssvar = $oDaoIssvar->sql_update_vlrinf_if_null($q05_codigo, $dVlrReg);
-        $rsIssvar = db_query($sSqlIssvar);
-
-        if(!$rsIssvar){
-          throw new Exception ("Erro ao atualizar Issvar:".pg_last_error());
+        if(!$lcomplementar){
+          $oDaoIssvar = db_utils::getDao('issvar');
+          $sSqlIssvar = $oDaoIssvar->sql_update_vlrinf_if_null($q05_codigo, $dVlrReg);
+          $rsIssvar = db_query($sSqlIssvar);
+          if(!$rsIssvar){
+            throw new Exception ("Erro ao atualizar Issvar:".pg_last_error());
+          }
         }
 
         $oDaoArrecad             = db_utils::getDao('arrecad');
@@ -1317,7 +1474,5 @@ class cl_issarqsimples {
         }
       }
     }
-
   }
-
 }

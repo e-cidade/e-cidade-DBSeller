@@ -20,6 +20,7 @@ require_once modification("dbforms/db_funcoes.php");
           rel="stylesheet"/>
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
 </head>
 <body class="body-default">
 <div class="container">
@@ -39,7 +40,7 @@ require_once modification("dbforms/db_funcoes.php");
         <i class="fas fa-percent"></i>
         Fator de Correção
     </button>
-    <button type="button" id="calcular" disabled style="display: none">
+    <button type="button" id="calcular" disabled>
         <i class="fas fa-calculator"></i>
         Calcular
     </button>
@@ -49,22 +50,55 @@ require_once modification("dbforms/db_funcoes.php");
     <fieldset>
         <legend>Detalhamento</legend>
         <form id="formInfo">
-            <table class="form-container">
+            <table style="width: 100%;">
                 <tr>
-                    <td>Estrutural:</td>
+                    <td class="bold field-size5">Estrutural:</td>
                     <td><input type="text" id="infoEstrutural" class="readonly field-size-max" readonly/></td>
                 </tr>
                 <tr>
-                    <td>Instituição:</td>
+                    <td class="bold field-size5">Instituição:</td>
                     <td><input type="text" id="infoInstistuicao" class="readonly field-size-max" readonly/></td>
                 </tr>
+
                 <tr>
-                    <td>Programa:</td>
+                    <td class="bold field-size5">Órgão:</td>
+                    <td><input type="text" id="infoOrgao" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Unidade:</td>
+                    <td><input type="text" id="infoUnidade" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Função:</td>
+                    <td><input type="text" id="infoFuncao" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Subfunção:</td>
+                    <td><input type="text" id="infoSubfuncao" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Programa:</td>
                     <td><input type="text" id="infoPrograma" class="readonly field-size-max" readonly/></td>
                 </tr>
                 <tr>
-                    <td>Iniciativa:</td>
+                    <td class="bold field-size5">Iniciativa/Ação:</td>
                     <td><input type="text" id="infoIniciativa" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Elemento</td>
+                    <td><input type="text" id="infoElemento" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Recurso: Siconfi - Subrecurso - Complemento:</td>
+                    <td><input type="text" id="infoRecurso" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Elemento</td>
+                    <td><input type="text" id="infoElemento" class="readonly field-size-max" readonly/></td>
+                </tr>
+                <tr>
+                    <td class="bold field-size5">Recurso: Siconfi - Subrecurso - Complemento:</td>
+                    <td><input type="text" id="infoRecurso" class="readonly field-size-max" readonly/></td>
                 </tr>
             </table>
         </form>
@@ -73,12 +107,17 @@ require_once modification("dbforms/db_funcoes.php");
 
 <div id="modalCalculo" style="display: none">
     <div class="alert alert-primary text-left" role="alert">
-        Clicar em <kbd>Re-calcular</kbd> apagará os valores alterados manualmente.<br>
-        Após realizar a manutenção dos valores, clique em <kbd>Salvar</kbd>.
+        <b>Atenção:</b> Clicar em <kbd>Recalcular</kbd> apagará os valores alterados manualmente e irá reprojetar os
+        valores conforme os fatores de correção.<br>
+        O Sistema salvará o valor editado após sair do campo.<br>
+        Clique em <kbd>Incluir Detalhamento com Base na Execução</kbd> para incluir detalhamentos novos, baseados na
+        criação de dotações durante o exercício.<br>
+        Após realizar a manutenção, clique em <kbd>Processar Valores Sintéticos</kbd> para atualizar os Programas e
+        Iniciativas/Ações.
     </div>
     <div class="container" style="width: 1400px;">
         <fieldset>
-            <legend>Calculo das projeções</legend>
+            <legend>Calculo das projeções - Base de cáculo: <label id="labelBaseCalculo"></label></legend>
 
             <form id="formCalculoProjecao" style="width: 1380px;">
 
@@ -90,13 +129,26 @@ require_once modification("dbforms/db_funcoes.php");
                 </table>
             </form>
         </fieldset>
-        <button type="button" id="salvarProjecao">
-            <i class="far fa-save"></i>
-            Salvar
-        </button>
-        <button type="button" id="recalcular" disabled>
+        <select id="formaRecalculo" style="margin-right: 2px">
+            <option value="1">Previsão Atualizada</option>
+            <option value="2">Empenhado</option>
+            <option value="3">Liquidado</option>
+            <option value="4">Pago</option>
+        </select>
+
+        <button type="button" id="recalcular">
             <i class="fas fa-calculator"></i>
             Recalcular
+        </button>
+
+        <button type="button" id="criarDetalhamento" style="margin-left: 2px">
+            <i class="fas fa-save"></i>
+            Incluir Detalhamento com Base na Execução
+        </button>
+
+        <button type="button" id="processarValoresSinteticos" style="margin-left: 2px">
+            <i class="fas fa-cog"></i>
+            Processar Valores Sintéticos
         </button>
     </div>
 </div>
@@ -165,9 +217,14 @@ require_once modification("dbforms/db_funcoes.php");
     const routs = {
         planos: 'financeiro/planejamento/consulta/planos-em-desenvolvimento',
         fatorCorrecao: 'financeiro/planejamento/fator-correcao/despesa',
-        projecao: 'financeiro/planejamento/projecao-despesa/projecao',
-        calcular: 'financeiro/planejamento/projecao-despesa/recalcular',
-        salvar: 'financeiro/planejamento/projecao-despesa/salvar-projecao'
+        projecao: {
+            buscar: 'financeiro/planejamento/projecao/despesa/buscar',
+            alterar: 'financeiro/planejamento/projecao/despesa/atualizar/valor-exercicio',
+            valorBase: 'financeiro/planejamento/projecao/despesa/atualizar/valor-base',
+            recalcular: 'financeiro/planejamento/projecao/despesa/recalcular',
+            criarDetalhamento: 'financeiro/planejamento/projecao/despesa/criar-detalhamento-novas-dotacoes',
+            valoresSinteticos: 'financeiro/planejamento/recalcular-valores-sinteticos',
+        }
     }
 
     const cboPlanejamento = document.getElementById('planejamento');
@@ -190,8 +247,11 @@ require_once modification("dbforms/db_funcoes.php");
     const modalCalculo = {
         container: document.getElementById('modalCalculo'),
         form: document.getElementById('formCalculoProjecao'),
-        salvar: document.getElementById('salvarProjecao'),
-        recalcular: document.getElementById('recalcular')
+        formaRecalculo: document.getElementById('formaRecalculo'),
+        recalcular: document.getElementById('recalcular'),
+        criarDetalhamento: document.getElementById('criarDetalhamento'),
+        valoresSinteticos: document.getElementById('processarValoresSinteticos'),
+        labelBaseCalculo: document.getElementById('labelBaseCalculo'),
     }
 
     const modalInfo = {
@@ -199,14 +259,20 @@ require_once modification("dbforms/db_funcoes.php");
         form: document.getElementById('formInfo'),
         instistuicao: document.getElementById('infoInstistuicao'),
         estrutural: document.getElementById('infoEstrutural'),
+        orgao: document.getElementById('infoOrgao'),
+        unidade: document.getElementById('infoUnidade'),
+        funcao: document.getElementById('infoFuncao'),
+        subfuncao: document.getElementById('infoSubfuncao'),
         programa: document.getElementById('infoPrograma'),
         iniciativa: document.getElementById('infoIniciativa'),
+        elemento: document.getElementById('infoElemento'),
+        recurso: document.getElementById('infoRecurso'),
     }
 
     planejamento.load();
 
     /**
-     * @var planos é um array com todos dados dos planos disponiveis
+     * @var planos é um array com todos os dados dos planos disponiveis
      */
     const planos = [];
     var table = $('#data-table');
@@ -236,7 +302,7 @@ require_once modification("dbforms/db_funcoes.php");
         fechaModal(windowCalculo, modalCalculo)
     });
 
-    var windowInfo = new windowAux('windowInfo', 'Informações', 600, 400);
+    var windowInfo = new windowAux('windowInfo', 'Informações', 700, 400);
     windowInfo.setContent(modalInfo.container);
 
     windowInfo.setShutDownFunction(() => {
@@ -248,17 +314,16 @@ require_once modification("dbforms/db_funcoes.php");
 
     windowCalculo.add(windowInfo);
 
-
     $.noConflict();
     jQuery(document).ready(function ($) {
 
         cboPlanejamento.addEventListener('change', () => {
-            btnFatorCorrecao.removeAttribute('disabled');
-            btnCalcular.removeAttribute('disabled');
+            btnFatorCorrecao.setAttribute('disabled', 'disabled');
+            btnCalcular.setAttribute('disabled', 'disabled');
 
-            if (cboPlanejamento.value === '') {
-                btnFatorCorrecao.setAttribute('disabled', 'disabled');
-                btnCalcular.setAttribute('disabled', 'disabled');
+            if (cboPlanejamento.value !== '') {
+                btnFatorCorrecao.removeAttribute('disabled');
+                btnCalcular.removeAttribute('disabled');
             }
         });
 
@@ -312,10 +377,10 @@ require_once modification("dbforms/db_funcoes.php");
 
             const parametros = {
                 body: formData,
+                reportProgress: true,
                 reportMessage: `Aguarde, esse procedimento pode demorar um pouco.`
             }
             HttpClient.post(`${PHPSession.requestApi}/${routs.fatorCorrecao}`, parametros).then(response => {
-
                 alert(response.message);
                 if (response.error) {
                     return;
@@ -340,49 +405,117 @@ require_once modification("dbforms/db_funcoes.php");
             modalCalculo.container.style.display = '';
 
             montaTabela();
+            buscarDetalhamento();
+        });
 
+        function buscarDetalhamento() {
+            table.bootstrapTable('load', []);
             const formData = new FormData();
             formData.append('planejamento', cboPlanejamento.value);
             PHPSession.appendFormData(formData);
 
             const parametros = {
                 body: formData,
+                reportProgress: true,
                 reportMessage: `Aguarde, esse procedimento pode demorar um pouco.`
             }
-            HttpClient.post(`${PHPSession.requestApi}/${routs.projecao}`, parametros).then(response => {
-
+            HttpClient.post(`${PHPSession.requestApi}/${routs.projecao.buscar}`, parametros).then(response => {
                 if (response.error) {
                     alert(response.message);
                     return;
                 }
 
-                let dados = response.data.map((projecao) => {
+                modalCalculo.labelBaseCalculo.innerHTML = response.data.baseCalculo.descricao;
+                modalCalculo.formaRecalculo.value = response.data.baseCalculo.codigo;
+
+                let dados = response.data.projecao.map((projecao) => {
                     projecao.valores.map((valor) => {
                         projecao[`valor_ano_${valor.ano}`] = valor.valor;
                     });
                     return projecao;
                 });
 
-
                 table.bootstrapTable('load', dados);
                 aplicaDBInputValor();
             });
-        });
+        }
 
         window.operateEvents = {
             'click .informacaoProjecao': function (e, value, row, index) {
-                modalInfo.instistuicao.value = row.instituicao;
+                modalInfo.instistuicao.value = `${row.pl20_instituicao} - ${row.instituicao.nomeinst}`;
                 modalInfo.estrutural.value = row.estrutural;
-                modalInfo.programa.value = `${row.id_programa} - ${row.descricao_programa}`;
-                modalInfo.iniciativa.value = `${row.id_iniciativa} - ${row.descricao_iniciativa}`;
-                windowInfo.show(20, 880);
+
+                modalInfo.orgao.value = `${row.pl20_orcorgao} - ${row.descricao_orgao}`;
+                modalInfo.unidade.value = `${row.pl20_orcunidade} - ${row.descricao_unidade}`;
+                modalInfo.funcao.value = `${row.pl20_orcfuncao} - ${row.descricao_funcao}`;
+                modalInfo.subfuncao.value = `${row.pl20_orcsubfuncao} - ${row.descricao_subfuncao}`;
+                modalInfo.programa.value = `${row.pl9_orcprograma} - ${row.descricao_programa}`;
+                modalInfo.iniciativa.value = `${row.pl12_orcprojativ} - ${row.descricao_iniciativa}`;
+                modalInfo.elemento.value = `${row.elemento} - ${row.descricao_elemento}`;
+                modalInfo.recurso.value = `${row.siconfi} - ${row.subrecurso} - ${row.complemento}`;
+                windowInfo.show(20, 50);
                 modalInfo.container.style.display = '';
             },
             'change .valor-editavel': function (e, value, row, index) {
-                let newValue = e.target.value.replace(',', '.');
-                row[e.target.dataset.field] = Number(newValue);
+                e.target.value = Number(e.target.value).toFixed(2);
+
+                if (e.target.dataset.field === 'valorBase') {
+                    calculaInflatores(e.target, row);
+                    row.valorBase = e.target.value;
+                    atualizaValorBase(row);
+                }
+
+                if (e.target.dataset.field !== 'valorBase') {
+                    row.valores.each((valor) => {
+                        let coluna = `valor_ano_${valor.ano}`
+                        if (e.target.dataset.field === coluna) {
+                            salvaAtualizacaoValorEstimativa(row.codigo, valor.ano, e.target.value);
+                        }
+                    })
+                }
             }
         }
+
+        /**
+         * essa função vai ser usada quando não houver fator de correção para o elemento
+         */
+        const replicaValorBase = (elemento, linha) => {
+            linha.valores.each(valor => {
+                let field = `valor_ano_${valor.ano}`;
+                let input = getInput(field, linha.codigo);
+                input.value = elemento.value;
+                salvaAtualizacaoValorEstimativa(linha.codigo, valor.ano, elemento.value);
+            });
+        };
+
+        const calculaInflatores = (elemento, linha) => {
+
+            let inflatores = linha.inflatores;
+
+            if (inflatores === null) {
+                replicaValorBase(elemento, linha)
+                return;
+            }
+
+            let valor = elemento.value;
+            inflatores.each(inflator => {
+                let field = `valor_ano_${inflator.ano}`;
+                let input = getInput(field, linha.codigo);
+
+                if (inflator.deflator) {
+                    inflator.percentual *= -1;
+                }
+
+                valor = Number(valor * (1 + (inflator.percentual / 100))).toFixed(2);
+                input.value = valor;
+
+                salvaAtualizacaoValorEstimativa(linha.codigo, inflator.ano, valor);
+            });
+        };
+
+        const getInput = (field, codigo) => {
+            return document.querySelector(`input[data-field="${field}"][data-id="${codigo}"]`);
+        };
 
         const adicionaAcao = (value, row, index) => {
             return [
@@ -402,10 +535,11 @@ require_once modification("dbforms/db_funcoes.php");
         };
 
         const formataValorInput = (value, row, index, field) => {
-            return `<input type="text" class="valor-editavel field-size-max text-right" data-field="${field}" value="${value}">`;
+            return `<input type="text" class="valor-editavel field-size-max text-right" data-field="${field}" data-id="${row.codigo}" value="${value}">`;
         };
 
         const montaTabela = () => {
+            table.bootstrapTable('destroy');
 
             let colunas = montaColunas();
 
@@ -420,38 +554,30 @@ require_once modification("dbforms/db_funcoes.php");
                 pageList: [10, 25, 50, 100, 200, 'All'],
                 search: true,
                 class: "table table-sm"
-                // , onClickCell: function (field, value, row, $element) {
-                //     // $rowIndex = $element.closest('tr').attr('data-index');
-                //     // $field = field;
-                //
-                //     console.log(value, row, $element)
-                //     if (field === 'valorbase') {
-                //         $element[0] = `<input type="text" value="${value}"/>`;
-                //     }
-                // }
             });
         }
 
         const montaColunas = () => {
             const colunas = [
                 {
-                    title: 'Estrutural',
+                    title: 'Natureza',
                     field: 'estrutural',
                     align: 'center',
                     valign: 'middle',
                     sortable: true
                 }, {
                     title: 'Instituição',
-                    field: 'instituicao',
+                    field: 'instituicao.nomeinst',
                     align: 'left',
                     valign: 'center',
                     sortable: true
                 }, {
                     title: 'Vlr Base',
-                    field: 'valorbase',
+                    field: 'valorBase',
                     align: 'right',
                     valign: 'middle',
-                    formatter: formataValor
+                    formatter: formataValorInput,
+                    events: window.operateEvents
                 }
             ];
 
@@ -487,34 +613,123 @@ require_once modification("dbforms/db_funcoes.php");
             });
         }
 
-
-        modalCalculo.salvar.addEventListener('click', () => {
-
-            const projecao = table.bootstrapTable('getData');
+        const atualizaValorBase = (linha) => {
             const formData = new FormData();
-            formData.append('planejamento', cboPlanejamento.value);
-            formData.append('projecao', JSON.stringify(projecao));
+            formData.append('id', linha.codigo);
+            formData.append('valor', linha.valorBase);
+            PHPSession.appendFormData(formData);
+
+            const parametros = {
+                body: formData,
+                reportProgress: false
+            }
+            HttpClient.post(`${PHPSession.requestApi}/${routs.projecao.valorBase}`, parametros).then(response => {
+                if (response.error) {
+                    alert(response.message);
+                    return;
+                }
+            });
+        };
+
+        const salvaAtualizacaoValorEstimativa = (id, ano, valor) => {
+
+            const formData = new FormData();
+            formData.append('id', id);
+            formData.append('exercicio', Number(ano));
+            formData.append('valor', valor);
 
             PHPSession.appendFormData(formData);
 
             const parametros = {
                 body: formData,
-                reportMessage: `Aguarde, esse procedimento pode demorar um pouco.`
+                reportProgress: false
+            }
+            HttpClient.post(`${PHPSession.requestApi}/${routs.projecao.alterar}`, parametros).then(response => {
+                if (response.error) {
+                    alert(response.message);
+                    return;
+                }
+            });
+        };
+
+
+        modalCalculo.recalcular.addEventListener('click', () => {
+
+            let forma = modalCalculo.formaRecalculo.options[modalCalculo.formaRecalculo.selectedIndex].innerHTML;
+
+            let msg = `Tem certeza que deseja recalcular a projeção usando como base de cálculo "${forma}"?
+            Todos valores manuais serão perdidos.`;
+
+            alertify.confirm(msg, (e) => {
+                if (e) {
+                    table.bootstrapTable('load', []);
+                    let rota = `${PHPSession.requestApi}/${routs.projecao.recalcular}`
+                    let msg = 'Aguarde, recalculando projeção, esse procedimento pode demorar um pouco.';
+                    executarRotaManutencaoPlanejamento(rota, msg);
+                }
+            });
+        });
+
+        const executarRotaManutencaoPlanejamento = (rota, msg) => {
+            const formData = new FormData();
+            formData.append('planejamento', planejamento.getValue());
+            formData.append('formaRecalculo', modalCalculo.formaRecalculo.value);
+            PHPSession.appendFormData(formData);
+
+            const parametros = {
+                body: formData,
+                reportProgress: false
             }
 
-            HttpClient.post(`${PHPSession.requestApi}/${routs.salvar}`, parametros).then(response => {
+            js_divCarregando(msg, 'minha_mensagem');
+            HttpClient.post(`${rota}`, parametros).then(response => {
 
+                js_removeObj('minha_mensagem');
+                if (response.error) {
+                    alert(response.message);
+                    return;
+                }
+            }).then(response => {
+                buscarDetalhamento();
+            });
+        };
+
+        modalCalculo.valoresSinteticos.addEventListener('click', () => {
+            const formData = new FormData();
+            formData.append('planejamento_id', planejamento.getValue());
+
+            PHPSession.appendFormData(formData);
+
+            const parametros = {
+                body: formData,
+                reportProgress: true,
+                reportMessage: `Aguarde, esse procedimento pode demorar um pouco.`
+            }
+            let rota = routs.projecao.valoresSinteticos;
+            HttpClient.post(`${PHPSession.requestApi}/${rota}`, parametros).then(response => {
                 alert(response.message);
                 if (response.error) {
                     return;
                 }
-
-                /**
-                 *
-                 * @todo ver o q faz
-                 *
-                 */
             });
+        });
+
+        modalCalculo.criarDetalhamento.addEventListener('click', () => {
+
+            let forma = modalCalculo.formaRecalculo.options[modalCalculo.formaRecalculo.selectedIndex].innerHTML;
+
+            let msg = `Tem certeza que deseja incluir as dotações orçamentárias criadas durante o exercício
+              usando como base de cálculo "${forma}"?`;
+
+            alertify.confirm(msg, (e) => {
+                if (e) {
+                    table.bootstrapTable('load', []);
+                    let rota = `${PHPSession.requestApi}/${routs.projecao.criarDetalhamento}`
+                    let msg = 'Aguarde, buscando dotações, esse procedimento pode demorar um pouco.';
+                    executarRotaManutencaoPlanejamento(rota, msg);
+                }
+            });
+
         });
     });
 </script>

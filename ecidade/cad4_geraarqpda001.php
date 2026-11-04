@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -91,10 +91,10 @@ $clisscalc = new cl_isscalc;
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
-<?
+<?php
 if (isset ($gerar)) {
 	$descricao_erro = ""; 
 	$erro = false;
@@ -254,14 +254,14 @@ function db_contador($apelido, $expressao, $contador, $valor) {
          <?=str_replace(":","",$Lj34_setor)."/".str_replace(":","",$Lj34_quadra)."/".$Lj34_lote?>
    </td>
    <td nowrap>
-   <?
+   <?php
    db_input('j34_setor',5,$Ij34_setor,true,'text',1)
    ?>/
-   <?
+   <?php
    unset($j34_quadra);
    db_input('j34_quadra',5,$Ij34_quadra,true,'text',1)
    ?>/
-   <?
+   <?php
    unset($j34_lote);
    db_input('j34_lote',5,$Ij34_lote,true,'text',1)
    ?>
@@ -274,7 +274,7 @@ function db_contador($apelido, $expressao, $contador, $valor) {
     </td>      
   </tr>
 
-<?
+<?php
 if(isset($gerar)){
   echo "<tr>   
     <td colspan=3 align=\"center\"><br><br>

@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Cadastro
 //CLASSE DA ENTIDADE carfator
-class cl_carfator { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j74_anousu = 0; 
-   var $j74_caract = 0; 
-   var $j74_fator = 0; 
-   var $j74_corrig = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_carfator {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j74_anousu = 0;
+   var $j74_caract = 0;
+   var $j74_fator = 0;
+   var $j74_corrig = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j74_anousu = int4 = Ano 
-                 j74_caract = int8 = Caracteristica 
-                 j74_fator = float8 = Fator 
-                 j74_corrig = bool = Corrigir 
+                 j74_anousu = int4 = Ano
+                 j74_caract = int8 = Caracteristica
+                 j74_fator = float8 = Fator
+                 j74_corrig = bool = Corrigir
                  ";
-   //funcao construtor da classe 
-   function cl_carfator() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("carfator"); 
+     $this->rotulo = new rotulo("carfator");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_carfator {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j74_anousu = ($this->j74_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["j74_anousu"]:$this->j74_anousu);
        $this->j74_caract = ($this->j74_caract == ""?@$GLOBALS["HTTP_POST_VARS"]["j74_caract"]:$this->j74_caract);
@@ -81,9 +81,9 @@ class cl_carfator {
      }
    }
    // funcao para inclusao
-   function incluir ($j74_anousu,$j74_caract){ 
+   public function incluir ($j74_anousu,$j74_caract){
       $this->atualizacampos();
-     if($this->j74_fator == null ){ 
+     if($this->j74_fator == null ){
        $this->erro_sql = " Campo Fator nao Informado.";
        $this->erro_campo = "j74_fator";
        $this->erro_banco = "";
@@ -92,7 +92,7 @@ class cl_carfator {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j74_corrig == null ){ 
+     if($this->j74_corrig == null ){
        $this->erro_sql = " Campo Corrigir nao Informado.";
        $this->erro_campo = "j74_corrig";
        $this->erro_banco = "";
@@ -101,9 +101,9 @@ class cl_carfator {
        $this->erro_status = "0";
        return false;
      }
-       $this->j74_anousu = $j74_anousu; 
-       $this->j74_caract = $j74_caract; 
-     if(($this->j74_anousu == null) || ($this->j74_anousu == "") ){ 
+       $this->j74_anousu = $j74_anousu;
+       $this->j74_caract = $j74_caract;
+     if(($this->j74_anousu == null) || ($this->j74_anousu == "") ){
        $this->erro_sql = " Campo j74_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_carfator {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->j74_caract == null) || ($this->j74_caract == "") ){ 
+     if(($this->j74_caract == null) || ($this->j74_caract == "") ){
        $this->erro_sql = " Campo j74_caract nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_carfator {
        return false;
      }
      $sql = "insert into carfator(
-                                       j74_anousu 
-                                      ,j74_caract 
-                                      ,j74_fator 
-                                      ,j74_corrig 
+                                       j74_anousu
+                                      ,j74_caract
+                                      ,j74_fator
+                                      ,j74_corrig
                        )
                 values (
-                                $this->j74_anousu 
-                               ,$this->j74_caract 
-                               ,$this->j74_fator 
-                               ,'$this->j74_corrig' 
+                                $this->j74_anousu
+                               ,$this->j74_caract
+                               ,$this->j74_fator
+                               ,'$this->j74_corrig'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Fator por caracteristica ($this->j74_anousu."-".$this->j74_caract) nao Incluído. Inclusao Abortada.";
@@ -168,16 +168,16 @@ class cl_carfator {
        $resac = db_query("insert into db_acount values($acount,1274,7680,'','".AddSlashes(pg_result($resaco,0,'j74_corrig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j74_anousu=null,$j74_caract=null) { 
+   public function alterar ($j74_anousu=null,$j74_caract=null) {
       $this->atualizacampos();
      $sql = " update carfator set ";
      $virgula = "";
-     if(trim($this->j74_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_anousu"])){ 
+     if(trim($this->j74_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_anousu"])){
        $sql  .= $virgula." j74_anousu = $this->j74_anousu ";
        $virgula = ",";
-       if(trim($this->j74_anousu) == null ){ 
+       if(trim($this->j74_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "j74_anousu";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_carfator {
          return false;
        }
      }
-     if(trim($this->j74_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_caract"])){ 
+     if(trim($this->j74_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_caract"])){
        $sql  .= $virgula." j74_caract = $this->j74_caract ";
        $virgula = ",";
-       if(trim($this->j74_caract) == null ){ 
+       if(trim($this->j74_caract) == null ){
          $this->erro_sql = " Campo Caracteristica nao Informado.";
          $this->erro_campo = "j74_caract";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_carfator {
          return false;
        }
      }
-     if(trim($this->j74_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_fator"])){ 
+     if(trim($this->j74_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_fator"])){
        $sql  .= $virgula." j74_fator = $this->j74_fator ";
        $virgula = ",";
-       if(trim($this->j74_fator) == null ){ 
+       if(trim($this->j74_fator) == null ){
          $this->erro_sql = " Campo Fator nao Informado.";
          $this->erro_campo = "j74_fator";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_carfator {
          return false;
        }
      }
-     if(trim($this->j74_corrig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_corrig"])){ 
+     if(trim($this->j74_corrig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j74_corrig"])){
        $sql  .= $virgula." j74_corrig = '$this->j74_corrig' ";
        $virgula = ",";
-       if(trim($this->j74_corrig) == null ){ 
+       if(trim($this->j74_corrig) == null ){
          $this->erro_sql = " Campo Corrigir nao Informado.";
          $this->erro_campo = "j74_corrig";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_carfator {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fator por caracteristica nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j74_anousu."-".$this->j74_caract;
@@ -280,14 +280,14 @@ class cl_carfator {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j74_anousu=null,$j74_caract=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j74_anousu=null,$j74_caract=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j74_anousu,$j74_caract));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_carfator {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fator por caracteristica nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j74_anousu."-".$j74_caract;
@@ -351,11 +351,11 @@ class cl_carfator {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,11 +377,11 @@ class cl_carfator {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $j74_anousu=null,$j74_caract=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $j74_anousu=null,$j74_caract=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,23 +396,23 @@ class cl_carfator {
      $sql2 = "";
      if($dbwhere==""){
        if($j74_anousu!=null ){
-         $sql2 .= " where carfator.j74_anousu = $j74_anousu "; 
-       } 
+         $sql2 .= " where carfator.j74_anousu = $j74_anousu ";
+       }
        if($j74_caract!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " carfator.j74_caract = $j74_caract "; 
-       } 
+         }
+         $sql2 .= " carfator.j74_caract = $j74_caract ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,11 +421,11 @@ class cl_carfator {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $j74_anousu=null,$j74_caract=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $j74_anousu=null,$j74_caract=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,23 +438,23 @@ class cl_carfator {
      $sql2 = "";
      if($dbwhere==""){
        if($j74_anousu!=null ){
-         $sql2 .= " where carfator.j74_anousu = $j74_anousu "; 
-       } 
+         $sql2 .= " where carfator.j74_anousu = $j74_anousu ";
+       }
        if($j74_caract!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " carfator.j74_caract = $j74_caract "; 
-       } 
+         }
+         $sql2 .= " carfator.j74_caract = $j74_caract ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

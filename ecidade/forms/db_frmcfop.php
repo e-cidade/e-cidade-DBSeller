@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcfop->rotulo->label();
        <?=@$Le10_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('e10_sequencial',10,$Ie10_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('e10_sequencial',10,$Ie10_sequencial,true,'text',$db_opcao,"")
        <?=@$Le10_cfop?>
     </td>
     <td> 
-<?
+<?php
 db_input('e10_cfop',10,$Ie10_cfop,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('e10_cfop',10,$Ie10_cfop,true,'text',$db_opcao,"")
        <?=@$Le10_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('e10_descricao',50,$Ie10_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('e10_descricao',50,$Ie10_descricao,true,'text',$db_opcao,"")
        <?=@$Le10_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Saída','2'=>'Entrada');
 db_select('e10_tipo',$x,true,$db_opcao,"");
 ?>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cfop.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

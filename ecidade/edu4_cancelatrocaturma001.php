@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -63,7 +63,7 @@ $clrotulo->label("ed15_c_nome");
   <body bgcolor="#CCCCCC" style='margin-top: 25px'>
     <center>
       <form name='form1' method='post' id='frmCancelaTrocaTurma'>
-        <?php 
+        <?php
           if (db_getsession("DB_modulo") == 1100747) {
             MsgAviso(db_getsession("DB_coddepto"),"escola");
           }
@@ -210,7 +210,7 @@ $clrotulo->label("ed15_c_nome");
       <input type='submit' id='btnLimparDados' name='btnLimparDados' value='Limpar Dados' onClick='js_limparDados();'>
     </center>
   </Body>
-  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </html>
 <script>
 var sUrl = 'edu4_turmas.RPC.php';
@@ -298,7 +298,7 @@ function retornaPesquisaDadosAluno(oResponse) {
   $('situacaoAtual').value        = oRetorno.sSituacaoAtual;
   $('etapaAtual').value           = oRetorno.sEtapaAtual.urlDecode();
   $('turnoAtual').value           = oRetorno.sTurnoAtual.urlDecode();
-  
+
   $('turmaOrigem').innerHTML       = oRetorno.sTurmaOrigem.urlDecode();
   $('codigoMatriculaOrigem').value = oRetorno.iCodigoOrigem;
   $('matriculaOrigem').value       = oRetorno.iMatriculaOrigem;
@@ -311,13 +311,13 @@ function js_limparDados() {
 
   $('ed47_i_codigo').value = '';
   $('ed47_v_nome').value   = '';
-  
+
   $('turmaAtual').innerHTML = '';
   $('matriculaAtual').value = '';
   $('situacaoAtual').value  = '';
   $('etapaAtual').value     = '';
   $('turnoAtual').value     = '';
-  
+
   $('turmaOrigem').innerHTML = '';
   $('matriculaOrigem').value = '';
   $('situacaoOrigem').value  = '';
@@ -338,14 +338,14 @@ $('btnConfirmar').observe('click', function(event) {
 
   var sMsg  = "Confirma o cancelamento da troca de turma do aluno "+$('ed47_i_codigo').value+" - ";
   sMsg     += $('ed47_v_nome').value.trim()+"?";
-  
+
   if (confirm(sMsg)){
-    
+
     var oParametro              = new Object();
     oParametro.exec             = 'cancelarTrocaDeTurma';
     oParametro.iCodigoMatricula = $('codigoMatriculaAtual').value;
     oParametro.iTurma           = $('codigoTurma').value;
-  
+
     js_divCarregando("Aguarde, o procedimento de cancelamento da troca de turma está sendo executado.", "msgBox");
     var oAjax = new Ajax.Request(
                                  sUrl,
@@ -353,18 +353,18 @@ $('btnConfirmar').observe('click', function(event) {
                                    method:     'post',
                                    parameters: 'json='+Object.toJSON(oParametro),
                                    onComplete: function (oResponse) {
-  
+
                                      js_removeObj("msgBox");
                                      var oRetorno = JSON.parse(oResponse.responseText);
-  
+
                                      if (oRetorno.status == '2') {
-  
+
                                        alert(oRetorno.message.urlDecode());
                                        return false;
                                      } else {
                                        alert('Cancelamento de troca de turma realizado com sucesso.');
                                      }
-                                     
+
                                      js_limparDados();
                                      return true;
                                    }

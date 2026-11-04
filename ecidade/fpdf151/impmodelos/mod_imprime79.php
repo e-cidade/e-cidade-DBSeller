@@ -1,4 +1,4 @@
-<?
+<?php
 
 global $db61_texto, $db02_texto;
 $nTotalRetencaoRecolhido = 0;

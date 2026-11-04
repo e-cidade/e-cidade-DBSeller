@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -94,18 +94,59 @@ if (isset($oGet->e69_codnota)) {
         $e53_vlrpag = $oNotas->e53_vlrpag;
         $e50_codord = $oNotas->e50_codord;
 
-        if (isParaiba()){
-            if(!empty($oNotas->e69_outrosdados)) {
+        if (isParaiba()) {
+            if (!empty($oNotas->e69_outrosdados)) {
                 $outrosDados = json_decode($oNotas->e69_outrosdados);
                 $tipo = (new TiposNotasParaiba())->getTipoByID($outrosDados->tipo_nota);
                 $tipoNota = sprintf('%s - %s', $tipo['id'], $tipo['label']);
                 $numeroSerie = $outrosDados->serie_nota;
                 $chave = $outrosDados->chave_nota;
             }
-            if(!empty($oNotas->e172_dados)) {
+            if (!empty($oNotas->e172_dados)) {
                 $outrosDadosPagOrdem = json_decode($oNotas->e172_dados);
                 $codigoAgrupamento = $outrosDadosPagOrdem->codigo_agrupamento;
             }
+        }
+    }
+
+    // Diarias
+    $sqlDiarias = "
+    select 
+    e446_datainicio, e446_quantidade, e446_datafim, e446_tipodiaria, 
+    e446_estadodestino, e446_destino, e446_paisdestino, e446_motivo, 
+    e446_regist, cgm_pessoal.z01_nome
+    from emppresta
+    inner join empempenho  on  empempenho.e60_numemp = emppresta.e45_numemp
+    inner join empprestatip  on  empprestatip.e44_tipo = emppresta.e45_tipo
+    inner join cgm  on  cgm.z01_numcgm = empempenho.e60_numcgm
+    inner join empprestaitem ON empprestaitem.e46_emppresta = emppresta.e45_sequencial
+    inner join empprestaitemdiaria on empprestaitemdiaria.e446_empprestaitem = empprestaitem.e46_codigo
+    inner join empnota on empnota.e69_numemp = empempenho.e60_numemp
+    inner join rhpessoal on rhpessoal.rh01_regist = empprestaitemdiaria.e446_regist
+    inner join cgm cgm_pessoal on cgm_pessoal.z01_numcgm = rhpessoal.rh01_numcgm
+    where empnota.e69_codnota = {$oGet->e69_codnota}
+    ";
+
+    $estiloExibicaoInfoDiarias = "display: none";
+    $rsDiarias = db_query($sqlDiarias);
+    $linhasResult = pg_num_rows($rsDiarias);
+    if ($linhasResult > 0) {
+        $oDiaria = db_utils::FieldsMemory($rsDiarias, 0);
+    }
+
+    if ($linhasResult > 0 && isRioDeJaneiro() && db_getsession("DB_anousu") >= 2024) {
+        $estiloExibicaoInfoDiarias = "";
+    }
+
+    if (isRioDeJaneiro()) {
+        $oDaoEmpnotaatestador = new cl_empnotaatestador;
+        $sCamposAtestador = "z01_nome, z01_numcgm";
+        $sWhereAtestador = "e169_empnota = {$e69_codnota}";
+        $sSqlAtestador = $oDaoEmpnotaatestador->sql_query(null, $sCamposAtestador, 'z01_nome', $sWhereAtestador);
+        $rsAtestador = db_query($sSqlAtestador);
+
+        if ($rsAtestador && pg_num_rows($rsAtestador) > 0) {
+            $oAtestadores = db_utils::getCollectionByRecord($rsAtestador);
         }
     }
 }
@@ -118,6 +159,7 @@ if (isset($oGet->e69_codnota)) {
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="scripts/classes/http/http.js"></script>
 </head>
 <body bgcolor="#CCCCCC">
 <fieldset>
@@ -157,7 +199,7 @@ if (isset($oGet->e69_codnota)) {
                 ?>
             </td>
         </tr>
-        <?php if (isParaiba()): ?>
+        <?php if (isParaiba()) : ?>
         <tr>
             <td>
                 <b>Tipo:</b>
@@ -178,7 +220,7 @@ if (isset($oGet->e69_codnota)) {
                 <input type="text" class="readonly field-size-max" readonly value="<?=$numeroSerie?>">
             </td>
         </tr>
-        <?php if(isset($codigoAgrupamento)) : ?>
+            <?php if (isset($codigoAgrupamento)) : ?>
         <tr>
             <td>
                 <b>Codigo Agrupamento:</b>
@@ -187,7 +229,7 @@ if (isset($oGet->e69_codnota)) {
                 <input type="text" class="readonly field-size-max" readonly value="<?=$codigoAgrupamento?>">
             </td>
         </tr>
-        <?php endif ?>
+            <?php endif ?>
         <?php endif ?>
         <tr>
             <td>
@@ -233,9 +275,129 @@ if (isset($oGet->e69_codnota)) {
                 ?>
             </td>
         </tr>
-        </tr>
     </table>
 </fieldset>
+<fieldset style="<?=$estiloExibicaoInfoDiarias?>">
+    <legend>
+        <b>Diárias</b>
+    </legend>
+    <table>
+        <tr>
+            <td>
+                <b>Matrícula:</b>
+            </td>
+            <td>
+                <input type="text" name="diariaMatricula" class="readonly field-size-max" 
+                readonly value="<?=$oDiaria->e446_regist?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+            <td>
+                <b>Nome:</b>
+            </td>
+            <td colspan="3">
+                <input type="text" name="diariaNome" class="readonly field-size-max" 
+                readonly value="<?=$oDiaria->z01_nome?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Data de Saída:</b>
+            </td>
+            <td>
+                <input type="text" name="diariaDataInicio" class="readonly field-size-max" 
+                readonly value="<?=db_formatar($oDiaria->e446_datainicio, "d")?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+            <td>
+                <b>Qtde:</b>
+            </td>
+            <td>
+                <input type="text" name="diariaQtde" class="readonly field-size-max" 
+                readonly value="<?=$oDiaria->e446_quantidade?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+            <td>
+                <b>Data de Retorno:</b>
+            </td>
+            <td>
+                <input type="text" name="diariaDataFim" class="readonly field-size-max" 
+                readonly value="<?=db_formatar($oDiaria->e446_datafim, "d")?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Destino:</b>
+            </td>
+            <td>
+                <input type="text" name="diariaDestino" class="readonly field-size-max" 
+                readonly value="<?=$oDiaria->e446_tipodiaria?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+            <td>
+                <b>Estado de Destino:</b>
+            </td>
+            <td colspan="3">
+                <input type="text" name="diariaEstado" class="readonly field-size-max" 
+                readonly value="<?=$oDiaria->e446_estadodestino?>"
+                style="background-color:#DEB887;" size="13">
+            </td>            
+        </tr>
+        <tr>
+            <td>
+                <b>Cidade de Destino:</b>
+            </td>
+            <td colspan="3">
+                <input type="text" name="diariaCidade" class="readonly field-size-max" 
+                readonly value="<?=$oDiaria->e446_destino?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+            <td>
+                <b>País de Destino:</b>
+            </td>
+            <td>
+                <input type="text" name="diariaPais" class="readonly field-size-max" 
+                readonly value="<?=$oDiaria->e446_paisdestino?>"
+                style="background-color:#DEB887;" size="13">
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;"><b>Objeto da Diária:</b></td>
+            <td colspan="7">
+                <textarea 
+                    rows="8" 
+                    cols="30" 
+                    style="background-color:#DEB887;width:100%" 
+                    name="diariaObjeto"
+                    readonly><?=$oDiaria->e446_motivo?></textarea>
+            </td>
+        </tr>                                                                                                                                                                                                                                                                                                                       
+    </table>
+</fieldset>
+
+<?php if (isset($oAtestadores)) : ?>
+    <fieldset>
+        <legend>Responsáveis pelo Atesto</legend>
+        <table>
+            <tr style="font-weight: bold;">
+                <td>Número cgm</td>
+                <td>Nome</td>
+            </tr>
+            <?php foreach ($oAtestadores as $atestador) : ?>
+                <tr>
+                    <td>
+                        <input type="text" value=" <?= $atestador->z01_numcgm ?>" disabled size="13"/>
+                    </td>
+                    <td>
+                        <input type="text" value=" <?= $atestador->z01_nome ?>" disabled size="50"/>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        </table>
+    </fieldset>
+<?php endif ?>
+
 <fieldset>
     <legend>
         <b>Itens da Nota</b>
@@ -244,7 +406,6 @@ if (isset($oGet->e69_codnota)) {
         <form1 method='post' name='itens'>
             <?php
             if ($oDaoEmpNota->numrows > 0) {
-
                 $sWhere = "e72_codnota = {$oNotas->e69_codnota}";
                 $sCampos = "e62_sequen, pc01_descrmater, e72_valor, e72_qtd,e72_vlrliq,e72_vlranu";
                 $sSqltensNota = $oDaoEmpNotaItem->sql_query(null, $sCampos, "e62_sequen", $sWhere);
@@ -269,6 +430,7 @@ if ($oNotas->e50_codord != null) {
       e23_deducao,
       e23_valorretencao,
       e23_aliquota,
+      e23_sequencial,
       case when e23_recolhido is true then 'Sim'  else 'Não' end as e23_recolhido,
       (select max(k105_data)
          from retencaocorgrupocorrente
@@ -276,7 +438,7 @@ if ($oNotas->e50_codord != null) {
         where e47_retencaoreceita = e23_sequencial
           and e23_recolhido is true
       ) as k105_data,
-      (select k12_numpre
+      (select array_to_string(array_accum(k12_numpre), ' / ')
          from retencaocorgrupocorrente
               join corgrupocorrente on e47_corgrupocorrente = k105_sequencial
                    and k105_corgrupotipo  = 3
@@ -285,7 +447,12 @@ if ($oNotas->e50_codord != null) {
                    and k105_data = k12_data
             where e47_retencaoreceita = e23_sequencial and e23_recolhido is true
       ) as k12_numpre,
-      e81_cancelado
+      e81_cancelado,
+      (select k108_slip
+         from empagemovslips
+         join slipempagemovslips on k108_empagemovslips = k107_sequencial
+        where k107_empagemov = e81_codmov limit 1
+      ) as slips
     ";
     $dbwhere = "
         e20_pagordem = {$oNotas->e50_codord} and e27_principal is true and (e23_ativo is true or e23_recolhido is true)
@@ -312,6 +479,8 @@ if ($oNotas->e50_codord != null) {
         echo "    <th class='table_header'>Data Autent.</th>";
         echo "    <th class='table_header'>Cod. Arrec</th>";
         echo "    <th class='table_header'>Situação</th>";
+        echo "    <th class='table_header'>Slip</th>";
+        echo "    <th class='table_header'>Ações</th>";
         echo "    <th class='table_header' width='17px'>&nbsp;</th>";
         echo "  </tr>";
         echo "<tbody style='height:150px;width:100%;overflow:scroll;overflow-x:hidden;background-color:white'>";
@@ -340,6 +509,8 @@ if ($oNotas->e50_codord != null) {
             echo "  <td class='linhagrid' style='text-align:center'>{$oRetencao->k105_data}&nbsp;</td>\n";
             echo "  <td class='linhagrid' style='text-align:center'>{$oRetencao->k12_numpre}&nbsp;</td>\n";
             echo "  <td class='linhagrid' style='text-align:center'>{$situacao}&nbsp;</td>\n";
+            echo "  <td class='linhagrid' style='text-align:center'>{$oRetencao->slips}&nbsp;</td>\n";
+            echo "  <td class='linhagrid' style='text-align:center'><input type='button' value='Detalhamento' onclick='js_detalhamento({$oRetencao->e23_sequencial})'>&nbsp;</td>\n";
             echo "  <td >&nbsp;</td>\n";
             echo "</tr>";
         }
@@ -351,5 +522,32 @@ if ($oNotas->e50_codord != null) {
 }
 ?>
 </form>
+<script type="text/javascript" src="scripts/session.js"></script>
+<script>
+var urlApi;
+window.addEventListener('load', () => {
+    PHPSession.loadData().then(() => {
+        urlApi = PHPSession.requestApi;
+    });
+});
+function js_visualizarNota(codigosEstorage) {
+    js_OpenJanelaIframe(
+        'CurrentWindow.corpo',
+        'db_visualizador_imagens',
+        `db_visualizador_documentos.php?ids=${codigosEstorage}`,
+        'Visualizador de documentos',
+        true
+    );
+}
+
+function js_detalhamento(seq){
+
+    let sQuery = "";
+    sQuery += "e21_sequencial="+seq;
+    js_OpenJanelaIframe('','db_iframe_detalhamento',
+        'emp2_detalhamento.php?'+sQuery,
+        'Detalhamento',true);
+}
+</script>
 </body>
 </html>

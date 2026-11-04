@@ -52,13 +52,13 @@ class cl_avalfreqres {
                  ed67_i_procresultado = int8 = Resultado
                  ";
    //funcao construtor da classe
-   function cl_avalfreqres() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avalfreqres");
           $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]."?ed67_i_procresultado=".@$GLOBALS["HTTP_POST_VARS"]["ed67_i_procresultado"]."&ed42_c_descr=".@$GLOBALS["HTTP_POST_VARS"]["ed42_c_descr"]."&procedimento=".@$GLOBALS["HTTP_POST_VARS"]["procedimento"]."&forma=".@$GLOBALS["HTTP_POST_VARS"]["forma"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_avalfreqres {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed67_i_codigo = ($this->ed67_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed67_i_codigo"]:$this->ed67_i_codigo);
        $this->ed67_i_procavaliacao = ($this->ed67_i_procavaliacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed67_i_procavaliacao"]:$this->ed67_i_procavaliacao);
@@ -77,7 +77,7 @@ class cl_avalfreqres {
      }
    }
    // funcao para inclusao
-   function incluir ($ed67_i_codigo){
+   public function incluir ($ed67_i_codigo){
       $this->atualizacampos();
      if($this->ed67_i_procavaliacao == null ){
        $this->erro_sql = " Campo Período de Avaliação nao Informado.";
@@ -176,7 +176,7 @@ class cl_avalfreqres {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed67_i_codigo=null) {
+   public function alterar ($ed67_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update avalfreqres set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_avalfreqres {
      }
    }
    // funcao para exclusao
-   function excluir ($ed67_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed67_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed67_i_codigo));
      }else{
@@ -334,7 +334,7 @@ class cl_avalfreqres {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,7 +356,7 @@ class cl_avalfreqres {
       }
      return $result;
    }
-   function sql_query ( $ed67_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed67_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -395,7 +395,7 @@ class cl_avalfreqres {
      }
      return $sql;
   }
-   function sql_query_file ( $ed67_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed67_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("p71_datalanc");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tp74_codcontr?>">
-       <?
+       <?php
        db_ancora(@$Lp74_codcontr,"js_pesquisap74_codcontr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p74_codcontr',10,$Ip74_codcontr,true,'text',$db_opcao," onchange='js_pesquisap74_codcontr(false);'")
 ?>
-       <?
+       <?php
 db_input('p71_datalanc',10,$Ip71_datalanc,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('p71_datalanc',10,$Ip71_datalanc,true,'text',3,'')
        <?=@$Lp74_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('p74_valor',20,$Ip74_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('p74_valor',20,$Ip74_valor,true,'text',$db_opcao,"")
        <?=@$Lp74_perc?>
     </td>
     <td> 
-<?
+<?php
 db_input('p74_perc',20,$Ip74_perc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pccontrdep.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

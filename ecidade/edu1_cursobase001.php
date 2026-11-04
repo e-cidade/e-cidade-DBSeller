@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -99,14 +99,14 @@ a:active {
    <tr>
     <td align="center" valign="top">
      <font face="tahoma">
-     <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+     <table border='1px' width="100%" bgcolor="#cccccc" cellspacing="0px">
       <tr class='cabec'>
        <td><b>Cursos</b></td>
       </tr>
       <tr>
        <td>
         <table border='0' width="100%" bgcolor="#cccccc" cellspacing="0px">
-              <?
+              <?php
               $escola = db_getsession("DB_coddepto");
               $result = $clcurso->sql_record($clcurso->sql_query_cursoescola("","*","ed29_c_descr"," ed71_i_escola = $escola"));
               if($clcurso->numrows>0){
@@ -132,12 +132,12 @@ a:active {
                }
               }else{
                ?>
-               <table border='0px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+               <table border='0px' width="100%" bgcolor="#cccccc" cellspacing="0px">
                 <tr class='base'>
                  <td>Nenhum curso cadastrado.</td>
                 </tr>
                </table>
-               <?
+               <?php
               }
               ?>
         </table>

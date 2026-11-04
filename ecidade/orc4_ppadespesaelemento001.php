@@ -48,7 +48,7 @@ $clcriaabas->scrolling="yes";
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("estilos.css");
 ?>
@@ -62,7 +62,7 @@ db_app::load("estilos.css");
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
 
   $clcriaabas->identifica = array("g1"=>"Principal","filtro"=>"Filtro");
   $clcriaabas->title      = array("g1"=>"Principal","filtro"=>"Filtro");

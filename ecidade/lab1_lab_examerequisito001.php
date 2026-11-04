@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ $db_botao = true;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <fieldset style='width: 95%;'> <legend><b>Exame Requisito</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_examerequisito.php"));
 	?>
 	</fieldset>
@@ -66,7 +66,7 @@ $db_botao = true;
 <script>
 js_tabulacaoforms("form1","la20_i_requisito",true,1,"la20_i_requisito",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  db_inicio_transacao();
  $cllab_examerequisito->incluir($la20_i_codigo);

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE classificacaocredoresrecurso
 class cl_classificacaocredoresrecurso { 
@@ -26,13 +26,13 @@ class cl_classificacaocredoresrecurso {
                  cc33_orctiporec = int4 = Recurso 
                  ";
    //funcao construtor da classe 
-   function cl_classificacaocredoresrecurso() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaocredoresrecurso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_classificacaocredoresrecurso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cc33_sequencial = ($this->cc33_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cc33_sequencial"]:$this->cc33_sequencial);
        $this->cc33_classificacaocredores = ($this->cc33_classificacaocredores == ""?@$GLOBALS["HTTP_POST_VARS"]["cc33_classificacaocredores"]:$this->cc33_classificacaocredores);
@@ -51,7 +51,7 @@ class cl_classificacaocredoresrecurso {
      }
    }
    // funcao para Inclusão
-   function incluir ($cc33_sequencial){ 
+   public function incluir ($cc33_sequencial){ 
       $this->atualizacampos();
      if($this->cc33_classificacaocredores == null ){ 
        $this->erro_sql = " Campo Classificação de Credores não informado.";

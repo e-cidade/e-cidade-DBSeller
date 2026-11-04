@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,12 +85,12 @@ if(isset($incluir)){
 				 	<!-- Prestadora -->
 					<tr>
 						<td nowrap title="<?=@$Ts118_i_prestador?>">
-								<?
+								<?php
 								db_ancora ( @$Ls118_i_prestador, "js_pesquisas118_i_prestador(true);", 1 );
 								?>
 							</td>
 						<td>
-								<?
+								<?php
 								db_input ( 's118_i_prestador', 10, @$Is118_i_prestador, true, 'text', 1, "onChange='js_pesquisas118_i_prestador(false);'" );
 								db_input ( 'z01_nome', 48, @$Iz01_nome, true, 'text', 3 );
 								?>
@@ -102,7 +102,7 @@ if(isset($incluir)){
 							<?=@$Ls118_v_protocolo?>
 						</td>
 						<td>
-							<?
+							<?php
 							db_input('s118_v_protocolo',10,@$Is118_v_protocolo,true,'text',$db_opcao,"")
 							?>
 						</td>
@@ -112,11 +112,11 @@ if(isset($incluir)){
 							<?=@$Ls118_d_data?>
 						</td>
 						<td>
-							<?
+							<?php
 							db_inputdata('s118_d_data',@$s118_d_data_dia,@$s118_d_data_mes,@$s118_d_data_ano,true,'text',$db_opcao,"")
 							?>
 							<?=@$Ls118_c_horamarcada?>
-							<?
+							<?php
 							db_input('s118_c_horamarcada',5,@@$Is118_c_horamarcada,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'s118_c_horamarcada', event)\"  ");
 							?>
 						</td>

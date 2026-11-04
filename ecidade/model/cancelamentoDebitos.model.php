@@ -176,7 +176,7 @@ class cancelamentoDebitos {
       $oDaoCancDebitosReg->k21_codigo = $iCodCancDebitos;
       $oDaoCancDebitosReg->k21_hora   = db_hora();
       $oDaoCancDebitosReg->k21_data   = date("Y-m-d", db_getsession("DB_datausu"));
-      $oDaoCancDebitosReg->k21_obs    = "Cancelamento gerado automaticamente pelo Cancelamento da Inscrição em Dívida.";
+      $oDaoCancDebitosReg->k21_obs    = 'Cancelamento gerado automaticamente pelo Cancelamento da Inscrição em Dívida - '. $this->getHistoricoProcessamento();
       $oDaoCancDebitosReg->k21_numpre = $aDadosDebitos['Numpre' ];
       $oDaoCancDebitosReg->k21_numpar = $aDadosDebitos['Numpar' ];
       $oDaoCancDebitosReg->k21_receit = $aDadosDebitos['Receita'];

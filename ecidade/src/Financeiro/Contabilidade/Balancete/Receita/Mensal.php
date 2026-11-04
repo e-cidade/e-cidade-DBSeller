@@ -54,7 +54,7 @@ class Mensal
                   o70_instit,
                   O57_FONTE,O57_DESCR,
                   o70_codigo,
-                  coalesce(o201_complemento, '0')::integer as complemento,
+                  coalesce(complemento, '0')::integer as complemento,
                   coalesce((
                       select s.o70_valor
                        from orcreceita s
@@ -93,7 +93,10 @@ class Mensal
                    o57_fonte,
                    o57_descr,
                    o70_codigo,
-                   coalesce(o201_complemento, '0')::integer as o201_complemento,
+                   case
+                     when complemento_lancamento is null then complemento_recurso
+                     else complemento_lancamento
+                   end as complemento,
                    case when o70_anousu = {$this->anousu} then sum(ADICIONAL) else 0 end as adicional,
                    sum(coalesce(case when O71_MES=1 then  0.0 end,0.0)) as  prev_jan,
                    sum(coalesce(case when O71_MES=2 then  0.0 end,0.0)) as  prev_fev,
@@ -126,11 +129,19 @@ class Mensal
                       o57_descr,
                       coalesce(o70_codigo, 0) as o70_codigo,
                       case
-                        when o201_complemento is not null and o200_tribunal is true
+                        when o201_complemento is not null and complemento_lancamento.o200_tribunal is true
                           then o201_complemento
-                        when o201_complemento is null or o200_tribunal is false
+                        when o201_sequencial is null
+                          then null
+                        when complemento_lancamento.o200_tribunal is false
                           then 0
-                      end as o201_complemento,
+                      end as complemento_lancamento,
+
+                      case
+                        when complemento_recurso.o200_tribunal is true
+                          then complemento_recurso.o200_sequencial
+                        else 0
+                      end as complemento_recurso,
                       TO_CHAR(C70_DATA,'MM')::integer AS O71_MES,
                       round(SUM(CASE C53_TIPO WHEN 110 THEN
                       case
@@ -151,6 +162,12 @@ class Mensal
                       ELSE 0::FLOAT8 END ),2) AS ARRECADADO
                  FROM orcamento.ORCRECEITA
                  JOIN orcamento.ORCFONTES ON O70_CODFON = O57_CODFON AND O57_ANOUSU = O70_ANOUSU
+                 inner join orcamento.orctiporec recurso on o70_codigo = recurso.o15_codigo
+                 inner join orcamento.fonterecurso on orctiporec_id = recurso.o15_codigo
+                            and fonterecurso.exercicio = orcreceita.o70_anousu
+                 inner join orcamento.complementofonterecurso as complemento_recurso
+                       on complemento_recurso.o200_sequencial = recurso.o15_complemento
+
                  left JOIN contabilidade.CONLANCAMREC ON C74_ANOUSU = O70_ANOUSU
                                                      AND C74_CODREC = O70_CODREC
                                                      AND c74_data between '{$this->dataInicial}'
@@ -159,8 +176,8 @@ class Mensal
                  left JOIN contabilidade.CONLANCAMDOC ON C71_CODLAN = C70_CODLAN
                  left JOIN contabilidade.CONHISTDOC ON C53_CODDOC = C71_CODDOC
                  left join contabilidade.conlancamcomplementorecurso on o201_codlan = c70_codlan
-                 left join orcamento.complementofonterecurso
-                     on complementofonterecurso.o200_sequencial = o201_complemento
+                 left join orcamento.complementofonterecurso as complemento_lancamento
+                     on complemento_lancamento.o200_sequencial = o201_complemento
                 WHERE o70_instit in {$instituicoes}
                   and o70_anousu in (" . implode(", ", $anos) . ")
                   and ( c70_valor <> 0 or o70_valor <> 0)
@@ -177,12 +194,12 @@ class Mensal
                  O57_FONTE,
                  O57_DESCR,
                  o70_codigo,
-                 o201_complemento,
-                 o200_tribunal
+                 complemento_lancamento,
+                 complemento_recurso
     ) AS X
 
     group by
-    O70_ANOUSU, O70_CODREC, o70_codigo, o201_complemento,o70_instit, O71_MES,o57_fonte, o57_descr
+    O70_ANOUSU, O70_CODREC, o70_codigo, complemento,o70_instit, O71_MES,o57_fonte, o57_descr
 
     ";
 
@@ -193,7 +210,7 @@ class Mensal
     O57_FONTE,
     O57_DESCR,
     o70_codigo,
-    o201_complemento,
+    complemento,
     prev_jan,
     prev_fev,
     prev_mar,
@@ -246,7 +263,7 @@ class Mensal
         $previsaoDezembro = 0;
         $totalReceita = 0;
 
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             $dadosReceita = \db_utils::fieldsmemory($result, $i);
             $estrutural = $dadosReceita->o57_fonte;
 
@@ -359,14 +376,14 @@ class Mensal
                 $sqlEstrutural .= "where o57_fonte = '$estrutural' ";
                 $sqlEstrutural .= "  and o70_anousu = {$dadosReceita->o70_anousu}";
                 $result_estrut = db_query($sqlEstrutural);
-                if (pg_numrows($result_estrut) == 0) {
+                if (pg_num_rows($result_estrut) == 0) {
                     $sqlReceitaFonte = "select o57_descr ";
                     $sqlReceitaFonte .= " from orcamento.orcfontes ";
                     $sqlReceitaFonte .= "where o57_anousu = {$dadosReceita->o70_anousu} ";
                     $sqlReceitaFonte .= "  and o57_fonte = '$estrutural'";
                     $result_estrut = db_query($sqlReceitaFonte);
 
-                    if (pg_numrows($result_estrut) == 0) {
+                    if (pg_num_rows($result_estrut) == 0) {
                         echo "Conta não encontrada nas fontes de Receita Comando: "
                             . "select o57_descr from orcamento.orcfontes
                                 where o57_anousu = " . $dadosReceita->o70_anousu
@@ -383,7 +400,7 @@ class Mensal
                       '$estrutural',
                       '$dadosReceita->o57_descr',
                       $dadosReceita->o70_codigo,
-                      $dadosReceita->complemento,
+                      0,
                        $dadosReceita->o70_valor,
                        $dadosReceita->adicional,
                        $dadosReceita->janeiro,
@@ -501,7 +518,7 @@ class Mensal
             //db_criatabela($this->result);
         }
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }

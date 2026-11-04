@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -117,7 +117,7 @@ $oRotuloCampo->label("cc16_motivo");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
      db_app::load("scripts.js, prototype.js, strings.js, widgets/windowAux.widget.js, datagrid.widget.js");
      db_app::load("estilos.css, grid.style.css");
     ?>
@@ -146,7 +146,7 @@ $oRotuloCampo->label("cc16_motivo");
                     <b>Mês:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input("cc15_mesusu", 10, $Icc15_mesusu, true,"text", 3);
                     ?>
                   </td>
@@ -156,7 +156,7 @@ $oRotuloCampo->label("cc16_motivo");
                     <b>Ano:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input("cc15_anousu", 10, $Icc15_anousu, true,"text", 3);
                     ?>
                   </td>
@@ -166,7 +166,7 @@ $oRotuloCampo->label("cc16_motivo");
                     <b>Motivo:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_textarea("cc16_motivo",5, 70, $Icc16_motivo, true,"text", 1);
                     ?>
                   </td>
@@ -186,7 +186,7 @@ $oRotuloCampo->label("cc16_motivo");
   </center>
  </body>
 </html>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
  
  if ($lSqlErro) {

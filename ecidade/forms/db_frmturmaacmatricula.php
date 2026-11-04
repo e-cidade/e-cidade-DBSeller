@@ -107,20 +107,22 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
   }
 }
 
-$no_vagas    = false;
-$sSqlTurmaAc = $clturmaac->sql_query_file( "", "ed268_i_numvagas, ed268_i_nummatr", "", "ed268_i_codigo = {$ed269_i_turmaac}" );
-$result4     = $clturmaac->sql_record( $sSqlTurmaAc );
+$no_vagas = false;
+$sSqlTurmaAc = $clturmaac->sql_query_file("", "ed268_i_numvagas, ed268_i_nummatr", "", "ed268_i_codigo = {$ed269_i_turmaac}");
+$result4 = $clturmaac->sql_record($sSqlTurmaAc);
 
 if ($clturmaac->numrows > 0) {
+    if(!isset($opcao)) {
+        db_fieldsmemory($result4, 0);
 
-  db_fieldsmemory($result4,0);
+        if ($ed268_i_nummatr >= $ed268_i_numvagas && $db_opcao == 1) {
 
-  if ($ed268_i_nummatr >= $ed268_i_numvagas && $db_opcao == 1) {
-
-   $db_botao = false;
-   $no_vagas = true;
-  }
+            $db_botao = false;
+            $no_vagas = true;
+        }
+    }
 }
+
 ?>
 <form id="form1" name="form1" method="post" action="" class="container">
   <fieldset>
@@ -205,22 +207,21 @@ if ($clturmaac->numrows > 0) {
   <table style="width:100%">
     <tr>
       <td valign="top">
-        <?
+        <?php
         $campos1  = "distinct turmaacmatricula.ed269_aluno, turmaacmatricula.ed269_i_codigo";
         $campos1 .= ", turmaacmatricula.ed269_i_turmaac, turmaacmatricula.ed269_d_data, turmaac.ed268_c_descr";
         $campos1 .= ", aluno.ed47_v_nome";
 
-        $chavepri = array(
-                          "ed269_aluno"     => $ed269_aluno,
-                          "ed269_i_codigo"  => $ed269_i_codigo,
-                          "ed269_i_turmaac" => $ed269_i_turmaac,
-                          "ed269_d_data"    => $ed269_d_data,
-                          "ed268_c_descr"   => $ed268_c_descr,
-                          "ed47_v_nome"     => $ed47_v_nome
-                        );
+        $chavepri = array();
+
+        $chavepri["ed269_aluno"] = isset($ed269_aluno) ? $ed269_aluno : '';
+        $chavepri["ed269_i_codigo"] = isset($ed269_i_codigo) ? $ed269_i_codigo : '';
+        $chavepri["ed269_i_turmaac"] = isset($ed269_i_turmaac) ? $ed269_i_turmaac : '';
+        $chavepri["ed269_d_data"] = isset($ed269_d_data) ? $ed269_d_data : '';
+        $chavepri["ed268_c_descr"] =isset($ed268_c_descr) ? $ed268_c_descr : '';
+        $chavepri["ed47_v_nome"] = isset($ed47_v_nome) ? $ed47_v_nome : '';
 
         $sWhereTurma = "ed269_i_turmaac = {$ed269_i_turmaac}";
-
         $cliframe_alterar_excluir->chavepri = $chavepri;
         $cliframe_alterar_excluir->sql      = $clturmaacmatricula->sql_query( "", $campos1, "ed47_v_nome", $sWhereTurma );
 

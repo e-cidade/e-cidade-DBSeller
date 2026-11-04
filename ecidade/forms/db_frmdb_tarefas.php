@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,11 +69,11 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Ldb79_id_usuario?>
     </td>
     <td> 
-<?
+<?php
 @db_input('db79_codigo',9,$db79_codigo,true,"hidden",$db_opcao);
 db_input('db79_id_usuario',9,$Idb79_id_usuario,true,'text',3," onchange='js_pesquisadb79_id_usuario(false);'");
 ?>
-       <?
+       <?php
 db_input('nome',50,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -83,7 +83,7 @@ db_input('nome',50,$Inome,true,'text',3,'')
        <?=@$Ldb79_tarefasit?>
     </td>
     <td> 
-<?
+<?php
 $result=$cldb_tarefasit->sql_record($cldb_tarefasit->sql_query_file(null,"db80_codigo,db80_descr"));
 db_selectrecord("db79_tarefasit",$result,true,$db_opcao);
 ?>
@@ -94,7 +94,7 @@ db_selectrecord("db79_tarefasit",$result,true,$db_opcao);
        <?=@$Ldb79_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db79_descr',2,55,$Idb79_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_textarea('db79_descr',2,55,$Idb79_descr,true,'text',$db_opcao,"")
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
 <br><br><br>
-     <?
+     <?php
         if(isset($db79_id_usuario)){
          $sql_item = $cldb_tarefas->sql_query($db79_id_usuario,"*","db79_data,db79_hora asc","db79_id_usuario = $db79_id_usuario"); 
 	 $chavepri= array("db79_id_usuario"=>$db79_id_usuario,"db79_codigo"=>@$db79_codigo);
@@ -125,7 +125,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_tarefas.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }

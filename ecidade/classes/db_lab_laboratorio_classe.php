@@ -66,13 +66,13 @@ class cl_lab_laboratorio {
                  la02_interfaceado = boolean = Possui interfaceamento
                  ";
    //funcao construtor da classe
-   function cl_lab_laboratorio() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_laboratorio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_lab_laboratorio {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la02_i_codigo = ($this->la02_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la02_i_codigo"]:$this->la02_i_codigo);
        $this->la02_i_tipo = ($this->la02_i_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["la02_i_tipo"]:$this->la02_i_tipo);
@@ -98,7 +98,7 @@ class cl_lab_laboratorio {
      }
    }
    // funcao para inclusao
-   function incluir ($la02_i_codigo){
+   public function incluir ($la02_i_codigo){
       $this->atualizacampos();
      if($this->la02_i_tipo == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
@@ -210,7 +210,7 @@ class cl_lab_laboratorio {
        $this->erro_status = "0";
        return false;
      }
-    
+
 
      $sql = "insert into lab_laboratorio(
                                        la02_i_codigo
@@ -280,7 +280,7 @@ class cl_lab_laboratorio {
      return true;
    }
    // funcao para alteracao
-   function alterar ($la02_i_codigo=null) {
+   public function alterar ($la02_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update lab_laboratorio set ";
      $virgula = "";
@@ -467,7 +467,7 @@ class cl_lab_laboratorio {
      }
    }
    // funcao para exclusao
-   function excluir ($la02_i_codigo=null,$dbwhere=null) {
+   public function excluir ($la02_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($la02_i_codigo));
      }else{
@@ -537,7 +537,7 @@ class cl_lab_laboratorio {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -560,10 +560,10 @@ class cl_lab_laboratorio {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $la02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $la02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -585,7 +585,7 @@ class cl_lab_laboratorio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -595,10 +595,10 @@ class cl_lab_laboratorio {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $la02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $la02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,7 +619,7 @@ class cl_lab_laboratorio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -634,12 +634,12 @@ class cl_lab_laboratorio {
    *
    * @author Adriano Quilião de Oliveira <adriano.oliveira@dbsellser.com.br>
   */
-  function sql_query_labexames ($la02_i_codigo = null, $sCampos = "*", $sOrdem = null, $sWhere="") {
+  public function sql_query_labexames ($la02_i_codigo = null, $sCampos = "*", $sOrdem = null, $sWhere="") {
 
   	$sSql = "select ";
     if ($sCampos != "*" ) {
 
-      $aCampossql = split("#", $sCampos);
+      $aCampossql = explode("#", $sCampos);
       $sVirgula   = "";
       for ($i = 0; $i < sizeof($aCampossql); $i++) {
 
@@ -669,7 +669,7 @@ class cl_lab_laboratorio {
     if ($sOrdem != null) {
 
       $sSql      .= " order by ";
-      $aCampossql = split("#", $sOrdem);
+      $aCampossql = explode("#", $sOrdem);
       $sVirgula    = "";
       for ($i = 0; $i < sizeof($aCampossql); $i++) {
 

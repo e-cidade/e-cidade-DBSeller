@@ -55,17 +55,26 @@ $db_opcao   = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?
-	 $clcriaabas->identifica = array("modcarnepadrao"     => "Modelo padrão da instituição",
+     <?php
+	 $clcriaabas->identifica = array(
+                                   "modcarnepadrao"     => "Modelo padrão da instituição",
 	 								                 "modcarnepadraotipo" => "Modelo padrão da instituição por tipo de débito",
-	 								                 "modcarneexcessao"   => "Exceções para impressão de carnes");
+	 								                 "modcarneexcessao"   => "Exceções para impressão de carnes",
+                                   "pix"                => "PIX"
+                                  );
 
-	 $clcriaabas->src 		 = array("modcarnepadrao"     => "cai1_modcarnepadrao004.php",
-	 								               "modcarnepadraotipo" => "cai1_modcarnepadraotipo001.php",
-	 								               "modcarneexcessao"   => "cai1_modcarneexcessao001.php");
+	 $clcriaabas->src 		   = array(
+                                   "modcarnepadrao"     => "cai1_modcarnepadrao004.php",
+                                   "modcarnepadraotipo" => "cai1_modcarnepadraotipo001.php",
+                                   "modcarneexcessao"   => "cai1_modcarneexcessao001.php",
+                                   "pix"                => "cai1_pix002.php"
+                                  );
 
-	 $clcriaabas->disabled   = array("modcarnepadraotipo"=>"true",
-	 								 "modcarneexcessao"  =>"true");
+	 $clcriaabas->disabled   = array(
+                                   "modcarnepadraotipo"=> "true",
+	 								                 "modcarneexcessao"  => "true",
+                                   "pix"               => "true"
+                                  );
 
 	 $clcriaabas->cria_abas();
 
@@ -75,7 +84,7 @@ $db_opcao   = 1;
   </table>
   <form name="form1">
   </form>
-      <?
+      <?php
        	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>
@@ -83,5 +92,6 @@ $db_opcao   = 1;
   document.formaba.modcarnepadrao.size     = 50;
   document.formaba.modcarnepadraotipo.size = 50;
   document.formaba.modcarneexcessao.size   = 50;
+  document.formaba.pix.size                = 50;
 </script>
   </html>

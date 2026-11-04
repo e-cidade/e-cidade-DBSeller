@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -297,14 +297,14 @@ if (isset ($confirmar) || isset ($confirmarn)) {
 	//array que irá armazenar os valores de cada elemento para fazer os lancamentos contabeis
 	$arr_codeleval = array ();
 
-	$arr_dados = split("#", $dados);
+	$arr_dados =explode("#", $dados);
 	$tam = count($arr_dados);
 	if ($sqlerro == false) {
 		for ($i = 0; $i < $tam; $i ++) {
 			if ($sqlerro == true) {
 				break;
 			}
-			$arr_ele = split("-", $arr_dados[$i]);
+			$arr_ele =explode("-", $arr_dados[$i]);
 			$elemento = $arr_ele[0];
 			$vdigitado = $arr_ele[1];
 
@@ -710,7 +710,7 @@ if (isset ($e60_numemp)) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 
 
 include(modification("forms/db_frmempanulacao.php"));
@@ -719,14 +719,14 @@ include(modification("forms/db_frmempanulacao.php"));
 	</td>
   </tr>
 </table>
-<?
+<?php
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 
 if ($db_opcao == 22) {

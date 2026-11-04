@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_iptutaxamatricexe {
                  j10_anousu = int4 = Anousu 
                  ";
    //funcao construtor da classe 
-   function cl_iptutaxamatricexe() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutaxamatricexe"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_iptutaxamatricexe {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j10_iptutaxamatricexe = ($this->j10_iptutaxamatricexe == ""?@$GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatricexe"]:$this->j10_iptutaxamatricexe);
        $this->j10_iptutaxamatric = ($this->j10_iptutaxamatric == ""?@$GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatric"]:$this->j10_iptutaxamatric);
@@ -78,7 +78,7 @@ class cl_iptutaxamatricexe {
      }
    }
    // funcao para inclusao
-   function incluir ($j10_iptutaxamatricexe){ 
+   public function incluir ($j10_iptutaxamatricexe){ 
       $this->atualizacampos();
      if($this->j10_anousu == null ){ 
        $this->erro_sql = " Campo Anousu nao Informado.";
@@ -168,7 +168,7 @@ class cl_iptutaxamatricexe {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j10_iptutaxamatricexe=null) { 
+   public function alterar ($j10_iptutaxamatricexe=null) { 
       $this->atualizacampos();
      $sql = " update iptutaxamatricexe set ";
      $virgula = "";
@@ -263,7 +263,7 @@ class cl_iptutaxamatricexe {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j10_iptutaxamatricexe=null,$dbwhere=null) { 
+   public function excluir ($j10_iptutaxamatricexe=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j10_iptutaxamatricexe));
      }else{ 
@@ -326,7 +326,7 @@ class cl_iptutaxamatricexe {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

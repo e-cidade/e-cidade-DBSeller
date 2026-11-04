@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,68 +48,67 @@ $oDaoCensoUf = new cl_censouf();
 $oDaoCensoOrgEmissRg = new cl_censoorgemissrg();
 $ed47_i_nacion = null;
 
-
-if(isset($incluir)){
- $result = $claluno->sql_record($claluno->sql_query("","*",""," ed47_i_codigo = $ed47_i_codigo"));
- if($claluno->numrows>0){
-  $result1 = $clalunocurso->sql_record($clalunocurso->sql_query("","*",""," ed56_i_aluno = $ed47_i_codigo"));
-  if($clalunocurso->numrows>0){
-   db_fieldsmemory($result1,0);
-   db_msgbox("Aluno já cadastrado na escola $ed18_c_nome com situação $ed56_c_situacao!");
-  }else{
-   db_msgbox("Aluno já cadastrado no sistema!");
-  }
-  db_redireciona("edu1_aluno001.php");
- }else{
-  db_inicio_transacao();
-  $claluno->incluir($ed47_i_codigo);
-  db_fim_transacao();
-  $db_botao = false;
- }
-}
+if (isset($incluir)) {
+    $result = $claluno->sql_record($claluno->sql_query("","*",""," ed47_i_codigo = $ed47_i_codigo"));
+        if ($claluno->numrows>0) {
+            $result1 = $clalunocurso->sql_record($clalunocurso->sql_query("","*",""," ed56_i_aluno = $ed47_i_codigo"));
+            if ($clalunocurso->numrows>0) {
+                db_fieldsmemory($result1,0);
+                db_msgbox("Aluno já cadastrado na escola $ed18_c_nome com situação $ed56_c_situacao!");
+            } else {
+                db_msgbox("Aluno já cadastrado no sistema!");
+            }
+            db_redireciona("edu1_aluno001.php");
+        } else {
+            db_inicio_transacao();
+            $claluno->incluir($ed47_i_codigo);
+            db_fim_transacao();
+            $db_botao = false;
+        }
+    }
 ?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
- <tr>
-  <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <br>
-   <center>
-   <fieldset style="width:95%"><legend><b>Inclusão de Aluno</b></legend>
-    <?include(modification("forms/db_frmaluno.php"));?>
-   </fieldset>
-   </center>
-  </td>
- </tr>
+    <tr>
+        <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
+            <br>
+            <center>
+                <fieldset style="width:95%"><legend><b>Inclusão de Aluno</b></legend>
+                    <?php include(modification("forms/db_frmaluno.php"));?>
+                </fieldset>
+            </center>
+        </td>
+    </tr>
 </table>
 </body>
 </html>
-<?
-if(isset($incluir)){
- if($claluno->erro_status=="0"){
-  $claluno->erro(true,false);
-  $db_botao=true;
-  echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-  if($claluno->erro_campo!=""){
-   echo "<script> document.form1.".$claluno->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-   echo "<script> document.form1.".$claluno->erro_campo.".focus();</script>";
-  };
- }else{
-  $claluno->erro(true,false);
-  ?>
-  <script>
-   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href='edu1_aluno002.php?chavepesquisa=<?=$ed47_i_codigo?>';
-  </script>
-  <?
+<?php
+if (isset($incluir)) {
+    if($claluno->erro_status=="0") {
+        $claluno->erro(true,false);
+        $db_botao=true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+        if ($claluno->erro_campo!="") {
+            echo "<script> document.form1.".$claluno->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$claluno->erro_campo.".focus();</script>";
+        };
+    } else {
+        $claluno->erro(true,false);
+?>
+<script>
+    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href='edu1_aluno002.php?chavepesquisa=<?=$ed47_i_codigo?>';
+</script>
+<?php
  };
 };
 ?>

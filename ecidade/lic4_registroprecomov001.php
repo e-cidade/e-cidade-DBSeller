@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ if (count($aParametrosEmpenho) > 0) {
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js,widgets/messageboard.widget.js");
 db_app::load("widgets/dbautocomplete.widget.js, widgets/windowAux.widget.js,widgets/dbtextField.widget.js");
 db_app::load("estilos.css, grid.style.css");
@@ -94,7 +94,7 @@ db_app::load("estilos.css, grid.style.css");
             id='ajudaItem'>
 
 </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -427,7 +427,7 @@ function js_verifica(object,event,iBold) {
 function js_createComboMovimentos(sName) {
   
   var sCombo  = "<select id='"+sName+"' style='width:100%'>";
-  <?
+  <?php
 
     $oDaTipoMov   = db_utils::getDao("tipomovimentacaoregistropreco");
     $rsMovimentos = $oDaTipoMov->sql_record($oDaTipoMov->sql_query(null,"*","l33_sequencial"));

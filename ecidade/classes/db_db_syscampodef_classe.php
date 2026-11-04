@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
@@ -52,13 +52,13 @@ class cl_db_syscampodef {
                  defdescr = varchar(200) = Descrição Valor
                  ";
    //funcao construtor da classe
-   function cl_db_syscampodef() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_syscampodef");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_db_syscampodef {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codcam = ($this->codcam == ""?@$GLOBALS["HTTP_POST_VARS"]["codcam"]:$this->codcam);
        $this->defcampo = ($this->defcampo == ""?@$GLOBALS["HTTP_POST_VARS"]["defcampo"]:$this->defcampo);
@@ -78,7 +78,7 @@ class cl_db_syscampodef {
      }
    }
    // funcao para inclusao
-   function incluir ($codcam,$defcampo){
+   public function incluir ($codcam,$defcampo){
       $this->atualizacampos();
      if($this->defdescr == null ){
        $this->erro_sql = " Campo Descrição Valor nao Informado.";
@@ -155,7 +155,7 @@ class cl_db_syscampodef {
      return true;
    }
    // funcao para alteracao
-   function alterar ($codcam=null,$defcampo=null) {
+   public function alterar ($codcam=null,$defcampo=null) {
       $this->atualizacampos();
      $sql = " update db_syscampodef set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_db_syscampodef {
      }
    }
    // funcao para exclusao
-   function excluir ($codcam=null,$defcampo=null,$dbwhere=null) {
+   public function excluir ($codcam=null,$defcampo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codcam,$defcampo));
      }else{
@@ -324,7 +324,7 @@ class cl_db_syscampodef {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -347,10 +347,10 @@ class cl_db_syscampodef {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $codcam=null,$defcampo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $codcam=null,$defcampo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_db_syscampodef {
    $sql .= $sql2;
    if($ordem != null ){
    $sql .= " order by ";
-   $campos_sql = split("#",$ordem);
+   $campos_sql = explode("#",$ordem);
      $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,10 +390,10 @@ class cl_db_syscampodef {
    return $sql;
    }
    // funcao do sql
-   function sql_query_file ( $codcam=null,$defcampo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $codcam=null,$defcampo=null,$campos="*",$ordem=null,$dbwhere=""){
    $sql = "select ";
    if($campos != "*" ){
-   $campos_sql = split("#",$campos);
+   $campos_sql = explode("#",$campos);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];
@@ -422,7 +422,7 @@ class cl_db_syscampodef {
    $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
        $sql .= $virgula.$campos_sql[$i];

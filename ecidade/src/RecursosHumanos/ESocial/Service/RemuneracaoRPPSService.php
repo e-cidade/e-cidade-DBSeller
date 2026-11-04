@@ -40,6 +40,9 @@ use CalculoFolha;
 use EventoFinanceiroFolha;
 use DBCompetencia;
 use DBPessoal;
+use FolhaPagamento;
+use ECidade\RecursosHumanos\ESocial\Service\RemuneracaoRGPSService;
+use ECidade\RecursosHumanos\ESocial\Entity\Remuneracao;
 
 /**
  * Class remuneracaoRPPSService
@@ -50,6 +53,8 @@ class RemuneracaoRPPSService
     private $remuneracaoRPPS;
 
     private $remuneracoesRPPS = [];
+
+    private $remuneracao;
 
     const SALARIO = "SALARIO";
     const COMPLEMENTAR = "COMPLEMENTAR";
@@ -106,7 +111,11 @@ class RemuneracaoRPPSService
         );
         $quantidadeServidores = 0;
         foreach ($servidores as $servidor) {
+            if (!$servidor->isRpps($this->anoCompetencia, $this->mesCompetencia)) {
+                continue;
+            }
             $matricula = $servidor->getMatricula();
+
             $this->remuneracaoRPPS = new remuneracaoRPPS();
             $this->remuneracaoRPPS->setServidor($servidor);
             $this->buscarOutrosVinculos($matricula);
@@ -200,105 +209,336 @@ class RemuneracaoRPPSService
          * 2 - CalculoFolha::CALCULO_13
          * 3 - CalculoFolha::CALCULO_RESCISAO
          */
-        $pagamentos = array();
 
-        foreach ($calculoFinanceiroSalario->getEventosFinanceiros() as $eventoFinanceiro) {
-            $rubrica = new stdClass();
-            $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
-            $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
-            $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
-            $rubrica->valor = $eventoFinanceiro->getValor();
-            $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
-            $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() == EventoFinanceiroFolha::PROVENTO
-                ? "Provento" : "Desconto";
-            $rubrica->decimoTerceiro = false;
-            $rubrica->nomePagamento = self::SALARIO;
-            $pagamentos[self::TIPOSALARIO][] = $rubrica;
+        if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
+            $calculoComplementar = $calculoFinanceiroComplementar->getEventosFinanceirosHistorico(
+                FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR
+            );
+        } else {
+            $calculoComplementar = $calculoFinanceiroComplementar->getEventosFinanceiros();
+        }
+ 
+        $pagamentos = [];
+
+        //Otimizando o processamento
+        $processa = false;
+        $calculoSalario = $calculoFinanceiroSalario->getEventosFinanceiros();
+        if (sizeof($calculoSalario) > 0) {
+            $processa = true;
+        }
+        if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
+            $calculoComplementar = $calculoFinanceiroComplementar->getEventosFinanceirosHistorico(
+                FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR
+            );
+        } else {
+            $calculoComplementar = $calculoFinanceiroComplementar->getEventosFinanceiros();
+        }
+        if (sizeof($calculoComplementar) > 0) {
+            $processa = true;
+        }
+        $calculoDecimoTerceiro = $calculoFinanceiroDecimoTerceiro->getEventosFinanceiros();
+        if (sizeof($calculoDecimoTerceiro) > 0) {
+            $processa = true;
+        }
+        $calculoRescisao = $calculoFinanceiroRescisao->getEventosFinanceiros();
+        if (sizeof($calculoRescisao) > 0) {
+            $processa = true;
         }
 
-        foreach ($calculoFinanceiroComplementar->getEventosFinanceiros() as $eventoFinanceiro) {
-            $rubrica = new stdClass();
-            $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
-            $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
-            $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
-            $rubrica->valor = $eventoFinanceiro->getValor();
-            $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
-            $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() == EventoFinanceiroFolha::PROVENTO
-                ? "Provento" : "Desconto";
-            $rubrica->decimoTerceiro = false;
-            $rubrica->nomePagamento = self::COMPLEMENTAR;
-
-            $pagamentos[self::TIPOCOMPLEMENTAR][] = $rubrica;
-        }
-
-        foreach ($calculoFinanceiroDecimoTerceiro->getEventosFinanceiros() as $eventoFinanceiro) {
-            $rubrica = new stdClass();
-            $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
-            $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
-            $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
-            $rubrica->valor = $eventoFinanceiro->getValor();
-            $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
-            $rubrica->decimoTerceiro = true;
-            $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() == EventoFinanceiroFolha::PROVENTO
-                ? "Provento" : "Desconto";
-            $rubrica->nomePagamento = self::DECIMO;
-            $pagamentos[self::TIPODECIMO][] = $rubrica;
-        }
-
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(3);
-        // Se nao tiver configurada a data de obrigatoriedade, desconsideramos os dados
-        if (empty($dataObrigatoriedade)) {
-            throw new \BusinessException("Data da fase 3 não configurada.");
-        }
-        $dataFase3 = new \DBDate("2022-08-22");
-        // Verificamos de a data da fase 3 do grupo 4 é inferior a data de obrigatoriedade, se for inferior
-        //  a instituicao pertence ao grupo 2
-        // Caso seja grupo 2, não devemos enviar as verbas rescisorias nesse evento, caso contrario, sera enviada
-        $validacao = false;
-        if ($dataObrigatoriedade >= $dataFase3) {
-            $validacao = true;
-        }
-        if ($validacao || (!$validacao && $servidor->validaCategoriaRescisaoSemVinculo())) {
-            foreach ($calculoFinanceiroRescisao->getEventosFinanceiros() as $eventoFinanceiro) {
-                $rubrica = new stdClass();
-                $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
-                $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
-                $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
-                $rubrica->valor = $eventoFinanceiro->getValor();
-                $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
-                $rubrica->decimoTerceiro = false;
-                $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() == EventoFinanceiroFolha::PROVENTO
-                    ? "Provento" : "Desconto";
-                $rubrica->nomePagamento = self::RESCISAO;
-
-                if ($servidor->isRescindido()) {
-                    $competenciasRescisao = $servidor->getCompetenciasPagamentosRescisao();
-                    if (sizeof($competenciasRescisao) >= 1) {
-                        foreach ($competenciasRescisao as $key => $value) {
-                            if ($key > 0) {
-                                if ($servidor->getAnoCompetencia() == (int) $value->anousu
-                                    && $servidor->getMesCompetencia() == (int) $value->mesusu) {
-                                        $rubrica->nomePagamento = self::RESCISAOPOSTERIOR;
+        if ($processa) {
+            //Definindo as lotações tributárias
+            $remunercaoRGPSService = new RemuneracaoRGPSService();
+            $calculoPorLotacao = $remunercaoRGPSService->buscarLotacaoTributaria($servidor);
+            $totalLotacao = count($calculoPorLotacao);
+            if ($totalLotacao == 0) {
+                foreach ($calculoFinanceiroSalario->getEventosFinanceiros() as $eventoFinanceiro) {
+                    $rubrica = new stdClass();
+                    $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                    $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                    $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                    $rubrica->valor = $eventoFinanceiro->getValor();
+                    $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                    $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                        EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                    $rubrica->decimoTerceiro = false;
+                    $rubrica->nomePagamento = self::SALARIO;
+                    $pagamentos[self::TIPOSALARIO][] = $rubrica;
+                }
+        
+                foreach ($calculoComplementar as $eventoFinanceiro) {
+                    $rubrica = new stdClass();
+                    $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                    $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                    $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                    $rubrica->valor = $eventoFinanceiro->getValor();
+                    $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                    $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                        EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                    $rubrica->decimoTerceiro = false;
+                    $rubrica->nomePagamento = self::COMPLEMENTAR;
+        
+                    $pagamentos[self::TIPOCOMPLEMENTAR][] = $rubrica;
+                }
+        
+                foreach ($calculoFinanceiroDecimoTerceiro->getEventosFinanceiros() as $eventoFinanceiro) {
+                    $rubrica = new stdClass();
+                    $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                    $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                    $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                    $rubrica->valor = $eventoFinanceiro->getValor();
+                    $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                    $rubrica->decimoTerceiro = true;
+                    $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                        EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                    $rubrica->nomePagamento = self::DECIMO;
+                    $pagamentos[self::TIPODECIMO][] = $rubrica;
+                }
+        
+                $validacao = false;
+                if ($servidor->temVinculoEmpregaticio()) {
+                    $validacao = $servidor->validacaoEnvioRescisaoEsocialComVinculo();
+                } else {
+                    $validacao = $servidor->validacaoEnvioRescisaoEsocialSemVinculo();
+                }
+                if ($validacao) {
+                    foreach ($calculoFinanceiroRescisao->getEventosFinanceiros() as $eventoFinanceiro) {
+                        $rubrica = new stdClass();
+                        $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                        $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                        $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                        $rubrica->valor = $eventoFinanceiro->getValor();
+                        $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                        $rubrica->decimoTerceiro = false;
+                        $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                            EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                        $rubrica->nomePagamento = self::RESCISAO;
+                        $enviar = '';
+        
+                        $competenciasRescisao = $servidor->getCompetenciasPagamentosRescisao();
+                        if (sizeof($competenciasRescisao) > 0) {
+                            foreach ($competenciasRescisao as $key => $value) {
+                                if ($key > 0) {
+                                    if ($servidor->getAnoCompetencia() == (int) $value->anousu
+                                        && $servidor->getMesCompetencia() == (int) $value->mesusu) {
+                                        $dadosRescisao = $servidor->getDadosRescisao();
+                                        if (!empty($dadosRescisao)) {
+                                            $anoRescisao = substr($dadosRescisao->rh05_datapagamento, 0, 4);
+                                            $mesRescisao = substr($dadosRescisao->rh05_datapagamento, 5, 2);
+        
+                                            if ($servidor->getAnoCompetencia() == (int) $anoRescisao
+                                                && $servidor->getMesCompetencia() == (int) $mesRescisao) {
+                                                    $rubrica->nomePagamento = self::RESCISAOENVIADA;
+                                                    $enviar = self::TIPORESCISAOENVIADA;
+                                            } else {
+                                                $rubrica->nomePagamento = self::RESCISAOPOSTERIOR;
+                                                $enviar = self::TIPORESCISAOPOSTERIOR;
+                                            }
+                                        } else {
+                                            $rubrica->nomePagamento = self::RESCISAOPOSTERIOR;
+                                            $enviar = self::TIPORESCISAOPOSTERIOR;
+                                        }
                                         break;
+                                    }
+                                } else {
+                                    // Caso a rescisao deva ser enviada no S1200 ao inves do S2299/S2399
+                                    if (!$servidor->temVinculoEmpregaticio()) {
+                                        if ($servidor->validacaoEnvioRescisaoEsocialComVinculo()) {
+                                            $rubrica->nomePagamento = self::RESCISAOENVIADA;
+                                            $enviar = self::TIPORESCISAOENVIADA;
+                                        }
+                                    } else {
+                                        // Caso a rescisao deva ser enviada no S1202 ao inves do S2299/S2399
+                                        if ($servidor->validacaoEnvioRescisaoEsocialSemVinculo()) {
+                                            $rubrica->nomePagamento = self::RESCISAOENVIADA;
+                                            $enviar = self::TIPORESCISAOENVIADA;
+                                        }
+                                    }
                                 }
+                            }
+                        }
+        
+                        if (!empty($enviar)) {
+                            $pagamentos[$enviar][] = $rubrica;
+                        }
+                    }
+                }
+            }
+            if ($totalLotacao > 0) {
+                $pagamentos = [];
+                $valorParcialFinanceiroSalario = [];
+                $valorFinanceiroSalario = 0.0;
+                $valorFinanceiroComplementar =0.0;
+                $valorParcialFinanceiroComplementar = [];
+                $valorFinanceiroDecimoTerceiro = 0.0;
+                $valorParcialFinanceiroDecimoTerceiro = [];
+                $valorFinanceiroRescisao = 0.0;
+                $valorParcialFinanceiroRescisao = [];
+                //Utiliza o mapa de trabalho
+                foreach ($calculoPorLotacao as $keyLotacao => $lotacao) {
+                    foreach ($calculoSalario as $eventoFinanceiro) {
+                        $rubrica = new stdClass();
+                        $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                        $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                        $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                        $valorFinanceiroSalario = $eventoFinanceiro->getValor();
+                        $rubrica->valor = $valorFinanceiroSalario;
+                        if ($lotacao->dias > 0) {
+                            $rubrica->valor = round((float) $valorFinanceiroSalario*($lotacao->dias/30), 2);
+                            if ($keyLotacao == $totalLotacao) {
+                                $rubrica->valor = (float) $valorFinanceiroSalario
+                                    -$valorParcialFinanceiroSalario[$rubrica->codigo][$keyLotacao-1];
                             } else {
-                                // Caso a rescisao deva ser enviada no S1200 ao inves do S2299/S2399
-                                if ($servidor->validaCategoriaRescisao()) {
-                                    $rubrica->nomePagamento = self::RESCISAOENVIADA;
+                                if (empty($valorParcialFinanceiroSalario[$rubrica->codigo])) {
+                                    $valorParcialFinanceiroSalario[$rubrica->codigo] = [];
+                                    $valorParcialFinanceiroSalario[$rubrica->codigo][] = 0.0;
                                 }
+                                $x = sizeof($valorParcialFinanceiroSalario[$rubrica->codigo])-1;
+                                $y = $valorParcialFinanceiroSalario[$rubrica->codigo][$x];
+                                $valorParcialFinanceiroSalario[$rubrica->codigo][] = $y + $rubrica->valor;
+                            }
+                        }
+                        $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                        $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                            EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                        $rubrica->decimoTerceiro = false;
+                        $rubrica->nomePagamento = self::SALARIO;
+                        $rubrica->lotacao = $lotacao->lotacaoTributaria;
+                        $pagamentos[self::TIPOSALARIO][] = $rubrica;
+                    }
+
+                    foreach ($calculoComplementar as $eventoFinanceiro) {
+                        $rubrica = new stdClass();
+                        $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                        $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                        $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                        $valorFinanceiroComplementar = $eventoFinanceiro->getValor();
+                        $rubrica->valor = $valorFinanceiroComplementar;
+                        if ($lotacao->dias > 0) {
+                            $rubrica->valor = round((float) $valorFinanceiroComplementar*($lotacao->dias/30), 2);
+                            if ($keyLotacao == $totalLotacao) {
+                                $rubrica->valor = (float) $valorFinanceiroComplementar
+                                    -$valorParcialFinanceiroComplementar[$rubrica->codigo][$keyLotacao-1];
+                            } else {
+                                if (empty($valorParcialFinanceiroComplementar[$rubrica->codigo])) {
+                                    $valorParcialFinanceiroComplementar[$rubrica->codigo] = [];
+                                    $valorParcialFinanceiroComplementar[$rubrica->codigo][] = 0.0;
+                                }
+                                $x = sizeof($valorParcialFinanceiroComplementar[$rubrica->codigo])-1;
+                                $y = $valorParcialFinanceiroComplementar[$rubrica->codigo][$x];
+                                $valorParcialFinanceiroComplementar[$rubrica->codigo][] = $y + $rubrica->valor;
+                            }
+                        }
+                        $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                        $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                            EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                        $rubrica->decimoTerceiro = false;
+                        $rubrica->nomePagamento = self::COMPLEMENTAR;
+                        $rubrica->lotacao = $lotacao->lotacaoTributaria;
+                        $pagamentos[self::TIPOCOMPLEMENTAR][] = $rubrica;
+                    }
+
+                    foreach ($calculoDecimoTerceiro as $eventoFinanceiro) {
+                        $rubrica = new stdClass();
+                        $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                        $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                        $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                        $valorFinanceiroDecimoTerceiro = $eventoFinanceiro->getValor();
+                        $rubrica->valor = $valorFinanceiroDecimoTerceiro;
+                        if ($lotacao->dias > 0) {
+                            $rubrica->valor = round((float) $valorFinanceiroDecimoTerceiro*($lotacao->dias/30), 2);
+                            if ($keyLotacao == $totalLotacao) {
+                                $rubrica->valor = (float) $valorFinanceiroDecimoTerceiro
+                                    -$valorParcialFinanceiroDecimoTerceiro[$rubrica->codigo][$keyLotacao-1];
+                            } else {
+                                if (empty($valorParcialFinanceiroDecimoTerceiro[$rubrica->codigo])) {
+                                    $valorParcialFinanceiroDecimoTerceiro[$rubrica->codigo] = [];
+                                    $valorParcialFinanceiroDecimoTerceiro[$rubrica->codigo][] = 0.0;
+                                }
+                                $x = sizeof($valorParcialFinanceiroDecimoTerceiro[$rubrica->codigo])-1;
+                                $y = $valorParcialFinanceiroDecimoTerceiro[$rubrica->codigo][$x];
+                                $valorParcialFinanceiroDecimoTerceiro[$rubrica->codigo][] = $y + $rubrica->valor;
+                            }
+                        }
+                        $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                        $rubrica->decimoTerceiro = true;
+                        $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                            EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                        $rubrica->nomePagamento = self::DECIMO;
+                        $rubrica->lotacao = $lotacao->lotacaoTributaria;
+                        $pagamentos[self::TIPODECIMO][] = $rubrica;
+                    }
+
+                    $validacao = false;
+                    if ($servidor->temVinculoEmpregaticio()) {
+                        $validacao = $servidor->validacaoEnvioRescisaoEsocialComVinculo();
+                    } else {
+                        $validacao = $servidor->validacaoEnvioRescisaoEsocialSemVinculo();
+                    }
+                    if ($validacao) {
+                        foreach ($calculoRescisao as $eventoFinanceiro) {
+                            $rubrica = new stdClass();
+                            $rubrica->codigo = $eventoFinanceiro->getRubrica()->getCodigo();
+                            $rubrica->descricao = $eventoFinanceiro->getRubrica()->getDescricao();
+                            $rubrica->quantidade = $eventoFinanceiro->getQuantidade();
+                            $valorFinanceiroRescisao = $eventoFinanceiro->getValor();
+                            $rubrica->valor = $valorFinanceiroRescisao;
+                            if ($lotacao->dias > 0) {
+                                $rubrica->valor = round((float) $valorFinanceiroRescisao*($lotacao->dias/30), 2);
+                                if (empty($valorParcialFinanceiroRescisao[$rubrica->codigo])) {
+                                    $valorParcialFinanceiroRescisao[$rubrica->codigo] = [];
+                                    $valorParcialFinanceiroRescisao[$rubrica->codigo][] = 0.0;
+                                }
+    
+                                if ($keyLotacao == $totalLotacao) {
+                                    $rubrica->valor = (float) $valorFinanceiroRescisao
+                                        -$valorParcialFinanceiroRescisao[$rubrica->codigo][$keyLotacao-1];
+                                } else {
+                                    $x = sizeof($valorParcialFinanceiroRescisao[$rubrica->codigo])-1;
+                                    $y = $valorParcialFinanceiroRescisao[$rubrica->codigo][$x];
+                                    $valorParcialFinanceiroRescisao[$rubrica->codigo][] = $y + $rubrica->valor;
+                                }
+                            }
+                            $rubrica->tipo = $eventoFinanceiro->getRubrica()->getTipo();
+                            $rubrica->decimoTerceiro = false;
+                            $rubrica->descricaoTipo = $eventoFinanceiro->getRubrica()->getTipo() ==
+                                EventoFinanceiroFolha::PROVENTO ? "Provento" : "Desconto";
+                            $rubrica->nomePagamento = self::RESCISAO;
+                            $enviar = '';
+            
+                            $compRescisao = $servidor->getCompetenciaPagamentoRecisao($servidor->getMatricula());
+    
+                            //Havendo cálculo rescisão e sua competencia
+                            //for diferente da primeira será RESCISAOPOSTERIOR
+                            if (!empty($compRescisao) &&
+                                (int) $compRescisao->anocompetencia != (int) $servidor->getAnoCompetencia() ||
+                                (int) $compRescisao->mescompetencia != (int) $servidor->getMesCompetencia()
+                                ) {
+                                $rubrica->nomePagamento = self::RESCISAOPOSTERIOR;
+                                $enviar = self::TIPORESCISAO;
+                            } else {
+                                // Verificamos se devemos enviar as rubricas de rescisao no 1200 ou 2299
+                                $validacao = false;
+                                if ($servidor->temVinculoEmpregaticio()) {
+                                    $validacao = $servidor->validacaoEnvioRescisaoEsocialComVinculo();
+                                } else {
+                                    $validacao = $servidor->validacaoEnvioRescisaoEsocialSemVinculo();
+                                }
+                                if ($validacao) {
+                                    $rubrica->nomePagamento = self::RESCISAOENVIADA;
+                                    $enviar = self::TIPORESCISAOENVIADA;
+                                }
+                            }
+            
+                            if (!empty($enviar)) {
+                                $pagamentos[$enviar][] = $rubrica;
                             }
                         }
                     }
                 }
-
-                if ($servidor->validaCategoriaRescisao()) {
-                    $pagamentos[self::TIPORESCISAOENVIADA][] = $rubrica;
-                } else {
-                    $pagamentos[self::TIPORESCISAO][] = $rubrica;
-                }
+                $remuneracao = new Remuneracao();
+                $pagamentos = $remuneracao->ajustaPagamentos($pagamentos);
             }
         }
-
         $this->remuneracaoRPPS->setPagamentos($pagamentos);
     }
 

@@ -8,7 +8,9 @@
 *                                                                           *
 * You may use and modify this software as you wish.                         *
 ****************************************************************************/
-define('FPDF_VERSION','1.51');
+if(!defined('FPDF_VERSION')){
+  define('FPDF_VERSION','1.51');
+}
 
 class FPDF
 //|00|//FPDF
@@ -603,6 +605,9 @@ function GetStringWidth($s)
   //Get width of a string in the current font
   $s=(string)$s;
   $cw=&$this->CurrentFont['cw'];
+  if (is_null($cw)) {
+      return 0;
+  }
   $w=0;
   $l=strlen($s);
   for($i=0;$i<$l;$i++)
@@ -1372,7 +1377,6 @@ function Image($file,$x,$y,$w,$h=0,$type='',$link='')
       $type=substr($file,$pos+1);
     }
     $type=strtolower($type);
-    $mqr=get_magic_quotes_runtime();
     if($type=='jpg' or $type=='jpeg')
       $info=$this->_parsejpg($file);
     elseif($type=='png')
@@ -2959,6 +2963,16 @@ function WriteText($text)
       $this->x+=$w;
   }
 
+
+  public function getH()
+  {
+      return $this->h;
+  }
+
+  public function getW()
+  {
+      return $this->w;
+  }
 //Handle silly IE contype request
 }//END CLASS
 

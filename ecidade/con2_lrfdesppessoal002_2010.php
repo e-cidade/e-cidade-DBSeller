@@ -1,33 +1,33 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 if (!isset($arqinclude)){
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -39,22 +39,22 @@ if (!isset($arqinclude)){
   include(modification("classes/db_conrelinfo_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_db_config_classe.php"));
-  include(modification("classes/db_orcparamelemento_classe.php"));  
+  include(modification("classes/db_orcparamelemento_classe.php"));
   require_once(modification("model/linhaRelatorioContabil.model.php"));
   require_once(modification("model/relatorioContabil.model.php"));
-  
+
   $classinatura       = new cl_assinatura;
   $clempresto         = new cl_empresto;
   $orcparamrel        = new cl_orcparamrel;
   $clconrelinfo       = new cl_conrelinfo;
   $cldb_config        = new cl_db_config;
   $clorcparamelemento = new cl_orcparamelemento();
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
-  
+
   $anousu  = db_getsession("DB_anousu");
-  
+
 }
 
 $tipo_emissao='periodo';
@@ -63,16 +63,16 @@ $iCodigoRelatorio = 89;
 $oDaoPeriodo      = db_utils::getDao("periodo");
 $iCodigoPeriodo   = $periodo;
 $sSqlPeriodo      = $oDaoPeriodo->sql_query($periodo);
-$oPeriodo         = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0); 
+$oPeriodo         = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0);
 $sSiglaPeriodo    = $oPeriodo->o114_sigla;
-$dt_ini= $anousu.'-01-01'; // data inicial do período 
+$dt_ini= $anousu.'-01-01'; // data inicial do período
 if ($periodo < 17) {
-  
+
   $dt               = data_periodo($anousu, $sSiglaPeriodo);
   $dt_fin= $dt[1]; // data final do período
   $textodt = $dt['texto'];
 } else {
-  
+
   $iUltimoDiaMes = cal_days_in_month(CAL_GREGORIAN, $oPeriodo->o114_mesfinal, $anousu);
   $dt_fin = "{$anousu}-{$oPeriodo->o114_mesfinal}-$iUltimoDiaMes";
 }
@@ -80,7 +80,7 @@ if ($periodo < 17) {
 // calcula periodo do exercicio anterior para fechar os 12 meses
 $anousu_ant  = db_getsession("DB_anousu")-1;
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+$dt =explode('-',$dt_fin);  // mktime -- (mes,dia,ano)
 //$dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-365,$dt[0]));
 
 $dt_ini_ant = $anousu_ant."-01-01";
@@ -88,7 +88,7 @@ $dt_fin_ant = $anousu_ant."-12-31";
 
 ////////////////////////////////////////////////////////////////////
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select munic,nomeinst,nomeinstabrev,db21_tipoinstit from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -138,27 +138,27 @@ if ($temprefa == true && $temcamara == false && ($temadmind == false || $temadmi
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false) {
-  
+
   $head3 = $descr_inst;
   $head4 = "RELATÓRIO DE GESTÃO FISCAL";
   $head5 = "DEMONSTRATIVO DA DESPESA COM PESSOAL";
   $head6 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
-  
+
 } else {
-  
+
   $head3 = "RELATÓRIO DE GESTÃO FISCAL";
   $head4 = "DEMONSTRATIVO DA DESPESA COM PESSOAL";
   $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
-  
+
 }
 
-$dt3 = split("-",$dt_fin);
+$dt3 =explode("-",$dt_fin);
 if ($dt3[1] == "12") {
   $dt3[1] = 11;
 }
 $dtInicialAnterior = $anousu_ant."-".($dt3[1]+1)."-01";
-$dt1 = split('-',$dtInicialAnterior);
-$dt2 = split('-',$dt_fin); 
+$dt1 =explode('-',$dtInicialAnterior);
+$dt2 =explode('-',$dt_fin);
 if ($tipo_emissao == 'periodo') {
 
   if ($sSiglaPeriodo == "3Q" || $sSiglaPeriodo == "2S"  || $sSiglaPeriodo == "DEZ") {
@@ -219,7 +219,7 @@ $m_despesa[7]["exercicio"]     = 0;
 //print_r($m_despesa); exit;
 $aLinhasRelatorio = array();
 for ($iLinha = 1; $iLinha <= 7; $iLinha++) {
-   
+
   $aLinhasRelatorio[$iLinha] = new linhaRelatorioContabil($iCodigoRelatorio, $iLinha);
   $aLinhasRelatorio[$iLinha]->setPeriodo($iCodigoPeriodo);
   $aLinhasRelatorio[$iLinha]->parametro = $aLinhasRelatorio[$iLinha]->getParametros($anousu);
@@ -236,7 +236,7 @@ $sele_work = 'o58_instit in ('.$instituicao.')';
 
 $rsDespesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-$dt3 = split("-",$dt_fin);
+$dt3 =explode("-",$dt_fin);
 if ($dt3[1] == "12"){
   $dt3[1] = 11;
 }
@@ -259,10 +259,10 @@ for ($x = 0; $x < pg_numrows($rsDespesa); $x++) {
 
       $oVerificacao    = $aLinhasRelatorio[$iLinha]->match($oConta, $oParametro->orcamento, $oDespesa, 2);
       if ($oVerificacao->match) {
-        
+
         $oDespesaValores = clone $oDespesa;
         if ($oVerificacao->exclusao) {
-           
+
           $oDespesaValores->liquidado_acumulado *= -1;
           $oDespesaValores->empenhado_acumulado *= -1;
           $oDespesaValores->anulado_acumulado   *= -1;
@@ -301,7 +301,7 @@ if ($sSiglaPeriodo != "3Q" && $sSiglaPeriodo != "2S" && $sSiglaPeriodo != "DEZ")
 
   $dt_ini_ant = $anousu_ant."-".($dt3[1]+1)."-01";
   $rsDespesaAnterior = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu_ant,$dt_ini_ant,$dt_fin_ant);
-  
+
   for ($x = 0; $x < pg_num_rows($rsDespesaAnterior); $x++) {
 
     $oDespesaAnterior = db_utils::fieldsmemory($rsDespesaAnterior, $x);
@@ -313,9 +313,9 @@ if ($sSiglaPeriodo != "3Q" && $sSiglaPeriodo != "2S" && $sSiglaPeriodo != "DEZ")
         }
       }
       $oParametro  = $aLinhasRelatorio[$iLinha]->parametro;
-       
+
       foreach ($oParametro->contas as $oConta) {
-        
+
         $oVerificacao    = $aLinhasRelatorio[$iLinha]->match($oConta, $oParametro->orcamento, $oDespesaAnterior, 2);
         $oDespesaValoresAnterior = clone $oDespesaAnterior;
         if ($oVerificacao->match) {
@@ -580,9 +580,9 @@ if (!isset($arqinclude)) {
 
     $pdf->ln();
   }
- 
-  $oRelatorio = new relatorioContabil($iCodigoRelatorio, false); 
-  $oRelatorio->getNotaExplicativa(&$pdf, $periodo, 195);
+
+  $oRelatorio = new relatorioContabil($iCodigoRelatorio, false);
+  $oRelatorio->getNotaExplicativa($pdf, $periodo, 195);
 
   $pdf->Ln(5);
 
@@ -590,7 +590,7 @@ if (!isset($arqinclude)) {
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
 
-  assinaturas(&$pdf,&$classinatura,'GF');
+  assinaturas($pdf,$classinatura,'GF');
 
   $pdf->Output();
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ db_postmemory($HTTP_POST_VARS,2);
 <center>
 <table border = 2>
 <form name="form1" method="post">
-<?
+<?php
 include(modification("dbforms/db_classesgenericas.php"));
 $clform = new cl_formulario_rel_pes;
 $clform->manomes = true; // Mostrar ano e mês no formulário.
@@ -93,7 +93,7 @@ $clform->gera_form(db_anofolha(),db_mesfolha());
 </form>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

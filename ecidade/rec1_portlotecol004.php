@@ -69,12 +69,12 @@ $clselecao->rotulo->label();
 		  <table align="center">
 		    <tr>
 		      <td>
-		      	<?
+		      	<?php
 				  db_ancora($Lr44_selec,"js_pesquisaSelec(true);",$db_opcao);
 		      	?>
 		      </td>
 		      <td>
-		        <?
+		        <?php
 		          db_input("r44_selec",10,$Ir44_descr,true,"text",$db_opcao,"onChange='js_pesquisaSelec(false);'");
 				  db_input("r44_descr",40,"",true,"text",3,"");
 		        ?>
@@ -83,13 +83,13 @@ $clselecao->rotulo->label();
 		    <tr>
 		      <td>
 		      	<b>
-		      	<?
+		      	<?php
 				  db_ancora("Funcionário","js_pesquisaFunc(true);",$db_opcao);
 		      	?>
 		      	</b>
 		      </td>
 		      <td>
-		        <?
+		        <?php
 				  db_input("rh01_regist",10,$Irh01_numcgm,true,"text",$db_opcao,"onChange='js_pesquisaFunc(false);'");
 				  db_input("z01_nome",40,"",true,"text",3,"");
 		        ?>

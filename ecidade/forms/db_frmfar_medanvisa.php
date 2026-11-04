@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("fa14_i_laboratorio");
        <?=@$Lfa14_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa14_i_codigo',10,$Ifa14_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -52,7 +52,7 @@ db_input('fa14_i_codigo',10,$Ifa14_i_codigo,true,'text',3,"")
        <?=@$Lfa14_c_medanvisa?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa14_c_medanvisa',52,$Ifa14_c_medanvisa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -68,7 +68,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_medanvisa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

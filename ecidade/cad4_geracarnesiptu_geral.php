@@ -41,7 +41,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 $oGet = db_utils::postMemory($_GET);
 
 if ($oGet->quantidadeparcelas === '') { //em Branco emitir todas parcelas
-  $oGet->quantidadeparcelas = 999;
+    $oGet->quantidadeparcelas = 999;
 }
 
 $sDebito = "IPTU";
@@ -64,22 +64,22 @@ if ($linhasTaxa > 0) {
     $iTaxa = $j08_iptucadtaxaexe;
 
     if (!in_array($iTaxa, $aDebitos)) {
-       unset($iTaxa);
+        unset($iTaxa);
     }
 }
 
-if ( isset($iTaxa) && in_array($iTaxa, $aDebitos )) { // TAXA
+if (isset($iTaxa) && in_array($iTaxa, $aDebitos)) { // TAXA
     $sDebito = $iTaxa;
-    if (count($aDebitos) > 1){ // IPTU + TAXA Marcados, neste caso necessita o UNION pois numpres são diferentes
+    if (count($aDebitos) > 1) { // IPTU + TAXA Marcados, neste caso necessita o UNION pois numpres são diferentes
         $sCampoNumpre = " j20_numpre, ";
         $sCampoNumpreTaxa = " j151_numpre as  j20_numpre, ";
-        $sJoinTipoDebitoTaxa = " 
+        $sJoinTipoDebitoTaxa = "
         inner join iptutaxanump    on iptubase.j01_matric = j151_matric
         inner join iptucadtaxaexe  on j151_iptucadtaxaexe = j08_iptucadtaxaexe
                            and j08_anousu = $oGet->anousu";
     } else { // Somente TAXA
-        $sCampoNumpre = " j151_numpre as  j20_numpre, ";   
-        $sJoinTipoDebito = " 
+        $sCampoNumpre = " j151_numpre as  j20_numpre, ";
+        $sJoinTipoDebito = "
         inner join iptutaxanump    on iptubase.j01_matric = j151_matric
         inner join iptucadtaxaexe  on j151_iptucadtaxaexe = j08_iptucadtaxaexe
                            and j08_anousu = $oGet->anousu";
@@ -142,12 +142,12 @@ $capa = $oGet->imprimecapa;
     </script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
   </head>
-  <?
-  db_criatermometro('termometro', 'Concluido...', 'blue', 1);
-  db_atutermometro(1, 100, 'termometro');
-  ?>
+  <?php
+    db_criatermometro('termometro', 'Concluido...', 'blue', 1);
+    db_atutermometro(1, 100, 'termometro');
+    ?>
   </html>
-<?
+<?php
 if ($debugar == true) {
     echo "Parametros recebido : <br>
     qtd ..............= $quantidade <br>
@@ -240,7 +240,7 @@ switch ($ordem) {
         $sOrder = "j23_bairro, j23_ender, j23_numero, j23_compl";
         break;
     case "alfabetica":
-        $sOrder = "z01_nome";
+        $sOrder = "nome_contri";
         break;
     case "zonaentrega":
         $sOrder = "j86_iptucadzonaentrega";
@@ -254,8 +254,8 @@ switch ($ordem) {
     case "bairroalfa":
         $sOrder = "j23_bairro, z01_nome";
         break;
-    default :
-        $sOrder = "z01_nome";
+    default:
+        $sOrder = "nome_contri";
         break;
 }
 
@@ -366,7 +366,6 @@ if (count($aDebitos) > 1) {
     $sqlprinc .= "        where iptucalc.j23_anousu = $anousu  $sWhereVlrTer     $quantidade                                              ";
     $sqlprinc .= "        $whereimobil {$whereloteam} {$sWhereMatriculas} {$sWhereSetor} ) as x                                           ";
     $sqlprinc .= " $wherecidbranco";
-
 }
 
 $sqlprinc .= " order by {$sOrder}";
@@ -377,7 +376,6 @@ $sqlIptunump = $sqlprinc;
 
 //echo "<pre>";
 //echo "sql :::::  $sqlprinc";
-//
 //die;
 
 $rsIptunump = db_query($sqlIptunump) or die($sql);
@@ -389,8 +387,13 @@ if ($debugar == true) {
 $linhasIptunump = pg_num_rows($rsIptunump);
 
 try {
-    $oRegraEmissao = new regraEmissao($tipo_debito, 4, db_getsession('DB_instit'),
-      date("Y-m-d", db_getsession("DB_datausu")), db_getsession('DB_ip'));
+    $oRegraEmissao = new regraEmissao(
+        $tipo_debito,
+        4,
+        db_getsession('DB_instit'),
+        date("Y-m-d", db_getsession("DB_datausu")),
+        db_getsession('DB_ip')
+    );
 } catch (Exception $eExeption) {
     db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
     exit;
@@ -403,11 +406,10 @@ if ($capa == "s") {
 }
 
 if ($linhasIptunump > 0) {
-
-    $sqlTipo = "select arretipo.k00_tipo,arretipo.k00_descr,arretipo.k03_tipo 
-                   from iptunump 
-             inner join arrecad on k00_numpre = j20_numpre 
-             inner join arretipo on arrecad.k00_tipo = arretipo.k00_tipo 
+    $sqlTipo = "select arretipo.k00_tipo,arretipo.k00_descr,arretipo.k03_tipo
+                   from iptunump
+             inner join arrecad on k00_numpre = j20_numpre
+             inner join arretipo on arrecad.k00_tipo = arretipo.k00_tipo
              where j20_anousu = $anousu limit 1";
 
     $rsTipo = db_query($sqlTipo);
@@ -469,8 +471,11 @@ if ($linhasIptunump > 0) {
                 echo "<br> quebrou o bloco <br>";
             }
             $iFimPag += $intixxx;
-            $arquivo = "tmp/" . $nomeTipoMod . "_" . str_replace(" ", "",
-                $k00_descr) . "_de_" . $iIniPag . "_ate_" . $iFimPag . "_" . date('His') . ".pdf";
+            $arquivo = "tmp/" . $nomeTipoMod . "_" . str_replace(
+                " ",
+                "",
+                $k00_descr
+            ) . "_de_" . $iIniPag . "_ate_" . $iFimPag . "_" . date('His') . ".pdf";
             $nomearquivos .= $arquivo . "#Dowload dos " . $nomeTipoMod . " de " . $iIniPag . " ate " . $iFimPag . "|";
 
             $pdf1->objpdf->Output($arquivo, false, true);
@@ -481,8 +486,13 @@ if ($linhasIptunump > 0) {
             unset($oRegraEmissao);
 
             try {
-                $oRegraEmissao = new regraEmissao($tipo_debito, 4, db_getsession('DB_instit'),
-                  date("Y-m-d", db_getsession("DB_datausu")), db_getsession('DB_ip'));
+                $oRegraEmissao = new regraEmissao(
+                    $tipo_debito,
+                    4,
+                    db_getsession('DB_instit'),
+                    date("Y-m-d", db_getsession("DB_datausu")),
+                    db_getsession('DB_ip')
+                );
                 $pdf1 = $oRegraEmissao->getObjPdf();
             } catch (Exception $eExeption) {
                 db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
@@ -580,7 +590,7 @@ if ($linhasIptunump > 0) {
         }
 
         $resultmat = $cliptubase->proprietario_record($cliptubase->proprietario_query($j23_matric));
-        if (pg_numrows($resultmat) == 0) {
+        if (pg_num_rows($resultmat) == 0) {
             continue;
         }
         db_fieldsmemory($resultmat, 0);
@@ -593,7 +603,6 @@ if ($linhasIptunump > 0) {
         $passar = true;
 
         if (isset($parcobrig) and $parcobrig != "") {
-
             $sqlparcobrig = "select *
         from arrematric m
         inner join arrecad a on m.k00_numpre = a.k00_numpre
@@ -602,7 +611,7 @@ if ($linhasIptunump > 0) {
         limit 1";
             $resultfinparcobrig = db_query($sqlparcobrig) or die($sqlparcobrig);
 
-            if (pg_numrows($resultfinparcobrig) == 0) {
+            if (pg_num_rows($resultfinparcobrig) == 0) {
                 $passar = false;
             }
         }
@@ -615,7 +624,7 @@ if ($linhasIptunump > 0) {
         a.k00_dtvenc < '" . date("Y-m-d", db_getsession("DB_datausu")) . "'";
             $resultfinpripaga = db_query($sqlfinpripaga) or die($sqlfinpripaga);
 
-            if (pg_numrows($resultfinpripaga) > 0) {
+            if (pg_num_rows($resultfinpripaga) > 0) {
                 $passar = false;
             }
         } elseif ($filtroprinc == "sempgto") {
@@ -627,7 +636,7 @@ if ($linhasIptunump > 0) {
         limit 1";
             $resultfinpripaga = db_query($sqlfinpripaga) or die($sqlfinpripaga);
 
-            if (pg_numrows($resultfinpripaga) == 1) {
+            if (pg_num_rows($resultfinpripaga) == 1) {
                 $passar = false;
             }
         }
@@ -695,7 +704,7 @@ if ($linhasIptunump > 0) {
         $pdf1->prefeitura = $nomeinst;
 
         // coloquei esse sql la em cima fora do for
-        if (pg_numrows($resparag) == 0) {
+        if (pg_num_rows($resparag) == 0) {
             $pdf1->secretaria = 'SECRETARIA DE FINANÇAS';
         } else {
             db_fieldsmemory($resparag, 0);
@@ -748,12 +757,12 @@ if ($linhasIptunump > 0) {
 
         for ($i = 0; $i < $tam; $i++) {
             if (db_indexOf(key($vt), "CHECK") > 0) {
-                $registros = split("N", $vt[key($vt)]);
+                $registros =explode("N", $vt[key($vt)]);
                 for ($reg = 0; $reg < sizeof($registros); $reg++) {
                     if ($registros[$reg] == "") {
                         continue;
                     }
-                    $registro = split("R", $registros[$reg]);
+                    $registro =explode("R", $registros[$reg]);
                     if (gettype(strpos($numpres, "N" . $registro[0])) == "boolean") {
                         $numpres .= "N" . $registro[0];
                     }
@@ -764,7 +773,7 @@ if ($linhasIptunump > 0) {
 
         $sounica = $numpres;
 
-        $numpres = split("N", $numpres);
+        $numpres =explode("N", $numpres);
         if ($debugar == true) {
             echo "<br>NUMPRES<br>
         <pre>";
@@ -772,7 +781,7 @@ if ($linhasIptunump > 0) {
             echo "</pre> <br>";
         }
 
-        if (isset ($geracarne) && $geracarne == 'banco') {
+        if (isset($geracarne) && $geracarne == 'banco') {
             $pagabanco = 't';
         } else {
             $pagabanco = 't';
@@ -795,7 +804,7 @@ if ($linhasIptunump > 0) {
                     continue;
                 }
 
-                $aNumpre = split('P', $numpres[$volta]);
+                $aNumpre =explode('P', $numpres[$volta]);
 
                 $k00_numpre = $aNumpre[0];
                 $k00_numpar = $aNumpre[1];
@@ -805,8 +814,15 @@ if ($linhasIptunump > 0) {
                     echo "<br> debitos_numpre_carne($k00_numpre, $k00_numpar, $H_DATAUSU, $H_ANOUSU,db_getsession('DB_instit'),$DB_DATACALC,$forcarvencimento)";
                 }
 
-                $rsDadosPagamento = debitos_numpre_carne($k00_numpre, $k00_numpar, $H_DATAUSU, $H_ANOUSU,
-                  db_getsession('DB_instit'), $DB_DATACALC, $forcarvencimento);
+                $rsDadosPagamento = debitos_numpre_carne(
+                    $k00_numpre,
+                    $k00_numpar,
+                    $H_DATAUSU,
+                    $H_ANOUSU,
+                    db_getsession('DB_instit'),
+                    $DB_DATACALC,
+                    $forcarvencimento
+                );
 
                 db_fieldsmemory($rsDadosPagamento, 0);
 
@@ -866,20 +882,19 @@ if ($linhasIptunump > 0) {
                 echo "<br>SQL6 - ORIGEM <br>$sqlorigem <br>";
             }
 
-            if (pg_numrows($rsOrigem) > 0) {
+            if (pg_num_rows($rsOrigem) > 0) {
                 db_fieldsmemory($rsOrigem, 0);
             } else {
                 db_msgbox("Nao encontrou registros do numpre: $k00_numpre!");
             }
 
-            if (!empty ($descr) && $descr == 'Matrícula') {
+            if (!empty($descr) && $descr == 'Matrícula') {
                 if ($debugar == true) {
                     echo "<br> IF MATRICULA <br>";
                 }
                 $Identificacao = db_query("select * from proprietario where j01_matric = $origem limit 1");
 
-                if (pg_numrows($Identificacao) == 0) {
-
+                if (pg_num_rows($Identificacao) == 0) {
                     db_msgbox("Problemas no Cadastro da Matricula  $origem");
                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
                     exit;
@@ -898,7 +913,7 @@ if ($linhasIptunump > 0) {
                     $xender = $nomepri . ', ' . $j39_numero . '  ' . $j39_compl;
                 }
                 $bql = '  SQL:' . $j34_setor . '-' . $j34_quadra . '-' . $j34_lote;
-                if (isset ($impmodelo) && $impmodelo == 30) {
+                if (isset($impmodelo) && $impmodelo == 30) {
                     if ($k00_tipo != 6) {
                         $numero = $j01_matric;
                     } else {
@@ -913,7 +928,6 @@ if ($linhasIptunump > 0) {
                     if ($k00_tipo != 6) {
                         $numero = $j01_matric; //.'  SQL:'.$j34_setor.'-'.$j34_quadra.'-'.$j34_lote;
                     } else {
-
                         $numero = "";
                         $numero = $j01_matric; //.'  SQL:'.$j34_setor.'-'.$j34_quadra.'-'.$j34_lote;
                     }
@@ -925,8 +939,7 @@ if ($linhasIptunump > 0) {
             from cgm
             where z01_numcgm = $origem");
 
-                if (pg_numrows($Identificacao) == 0) {
-
+                if (pg_num_rows($Identificacao) == 0) {
                     db_msgbox("Problemas no Cadastro do CGM $origem");
                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
                     exit;
@@ -1037,8 +1050,10 @@ if ($linhasIptunump > 0) {
                 if ($datasUnicas != "") {
                     $sql .= "           and r.k00_dtvenc in ( $datasUnicas ) ";
                 }
-                $sql .= "             and r.k00_dtvenc >= '" . date('Y-m-d',
-                    db_getsession("DB_datausu")) . "'::date ) as unica ";
+                $sql .= "             and r.k00_dtvenc >= '" . date(
+                    'Y-m-d',
+                    db_getsession("DB_datausu")
+                ) . "'::date ) as unica ";
                 $sql .= "          order by dtvencunic ";
 
                 if ($debugar == true) {
@@ -1049,15 +1064,18 @@ if ($linhasIptunump > 0) {
                 $resultfin = db_query($sql) or die($sql);
 
                 if ($resultfin != false) {
-                    for ($unicont = 0; $unicont < pg_numrows($resultfin); $unicont++) {
+                    for ($unicont = 0; $unicont < pg_num_rows($resultfin); $unicont++) {
                         db_fieldsmemory($resultfin, $unicont);
 
                         $vlrhis = db_formatar($uvlrhis, 'f');
                         $vlrdesconto = db_formatar($uvlrdesconto, 'f');
                         $utotal += $taxabancaria;
                         $vlrtotal = db_formatar($utotal, 'f');
-                        $vlrbar = db_formatar(str_replace('.', '',
-                          str_pad(number_format($utotal, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
+                        $vlrbar = db_formatar(str_replace(
+                            '.',
+                            '',
+                            str_pad(number_format($utotal, 2, "", "."), 11, "0", STR_PAD_LEFT)
+                        ), 's', '0', 11, 'e');
 
                         if ($barrasunica == "seis") {
                             $terceiro = "6";
@@ -1070,9 +1088,17 @@ if ($linhasIptunump > 0) {
 
                         if ($k00_impval == 't') {
                             $k00_valor = $utotal;
-                            $vlrbar = db_formatar(str_replace('.', '',
-                              str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11,
-                              'e');
+                            $vlrbar = db_formatar(
+                                str_replace(
+                                    '.',
+                                    '',
+                                    str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)
+                                ),
+                                's',
+                                '0',
+                                11,
+                                'e'
+                            );
                             $ninfla = '';
 
                             if ($utotal == 0) {
@@ -1081,20 +1107,22 @@ if ($linhasIptunump > 0) {
                         } else {
                             $k00_valor = $qinfla;
                             $vlrbar = "00000000000";
-
                         }
 
                         $datavencimento = $dtvencunic;
 
-                        if (isset ($emiscarneiframe) && $emiscarneiframe == 'n') {
+                        if (isset($emiscarneiframe) && $emiscarneiframe == 'n') {
                             if (substr($datavencimento, 0, 4) > db_getsession('DB_anousu')) {
                                 continue;
                             }
                         }
 
                         if ($oRegraEmissao->isCobranca()) {
-                            if (substr($datavencimento, 0,
-                                4) > db_getsession('DB_anousu') && $k00_valor > 0 && ($ninfla_ant != "" && $ninfla_ant != "REAL")) {
+                            if (substr(
+                                $datavencimento,
+                                0,
+                                4
+                            ) > db_getsession('DB_anousu') && $k00_valor > 0 && ($ninfla_ant != "" && $ninfla_ant != "REAL")) {
                                 $k00_valor = 0;
                                 $especie = $ninfla;
                                 $histinf = "\n Atenção : entre em contato com o municipio para saber o valor da $ninfla.";
@@ -1112,8 +1140,15 @@ if ($linhasIptunump > 0) {
                         }
 
                         try {
-                            $oConvenio = new convenio($oRegraEmissao->getConvenio(), $k00_numpre, 0, $k00_valor,
-                              $vlrbar, $datavencimento, $terceiro);
+                            $oConvenio = new convenio(
+                                $oRegraEmissao->getConvenio(),
+                                $k00_numpre,
+                                0,
+                                $k00_valor,
+                                $vlrbar,
+                                $datavencimento,
+                                $terceiro
+                            );
                         } catch (Exception $eExeption) {
                             db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
                             exit;
@@ -1150,8 +1185,15 @@ if ($linhasIptunump > 0) {
 
                         try {
                             $valorConvenio = !empty($valorTaxaExpediente) ? $k00_valor + $valorTaxaExpediente : $k00_valor;
-                            $oConvenio = new convenio($oRegraEmissao->getConvenio(), $k00_numpre, 0, $valorConvenio,
-                              $vlrbar, $datavencimento, $terceiro);
+                            $oConvenio = new convenio(
+                                $oRegraEmissao->getConvenio(),
+                                $k00_numpre,
+                                0,
+                                $valorConvenio,
+                                $vlrbar,
+                                $datavencimento,
+                                $terceiro
+                            );
                         } catch (Exception $eExeption) {
                             db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
                             exit;
@@ -1162,8 +1204,12 @@ if ($linhasIptunump > 0) {
                             $pdf1->carteira = $oConvenio->getCarteira();
 
                             if (strlen(trim($oConvenio->getConvenioCobranca())) == 7) {
-                                $pdf1->nosso_numero = trim($oConvenio->getConvenioCobranca()) . str_pad($k00_numpre, 8,
-                                    "0", STR_PAD_LEFT) . "00";
+                                $pdf1->nosso_numero = trim($oConvenio->getConvenioCobranca()) . str_pad(
+                                    $k00_numpre,
+                                    8,
+                                    "0",
+                                    STR_PAD_LEFT
+                                ) . "00";
                             } else {
                                 $pdf1->nosso_numero = $oConvenio->getNossoNumero();
                             }
@@ -1176,7 +1222,7 @@ if ($linhasIptunump > 0) {
                         $pdf1->descr1 = $j23_matric;//$numero;
                         $pdf1->descr2 = db_numpre($novo_numpre, 0) . '000'; //.db_formatar($k00_numpar,'s',"0",3,"e");
 
-                        if (isset ($obs)) {
+                        if (isset($obs)) {
                             $pdf1->titulo13 = 'Observação';
                             $pdf1->descr13 = $obs;
                         }
@@ -1305,17 +1351,17 @@ if ($linhasIptunump > 0) {
 
                         ///////// PEGA A MSG DE PAGAMENTO E AS INSTRUÇÕES DA TABELA NUMPREF
                         $rsmsgcarne = db_query("select k03_msgcarne, k03_msgbanco from numpref where k03_anousu = " . db_getsession("DB_anousu"));
-                        if (pg_numrows($rsmsgcarne) > 0) {
+                        if (pg_num_rows($rsmsgcarne) > 0) {
                             db_fieldsmemory($rsmsgcarne, 0);
                         }
                         /* busca as mensagens da arretipo */
                         $sqlMsgCarne = " select k00_msguni2 from arretipo where k00_tipo = $k00_tipo ";
                         $rsMsgCarneUnica = db_query($sqlMsgCarne);
-                        $intNumrowsMsgCarne = pg_numrows($rsMsgCarneUnica);
+                        $intNumrowsMsgCarne = pg_num_rows($rsMsgCarneUnica);
                         if ($intNumrowsMsgCarne > 0) {
                             db_fieldsmemory($rsMsgCarneUnica, 0);
                         }
-                        if (isset ($k00_msguni2) && $k00_msguni2 != "") {
+                        if (isset($k00_msguni2) && $k00_msguni2 != "") {
                             $pdf1->predescr12_1 = $k00_msguni2; //msg unica, via contribuinte
                         }
 
@@ -1327,7 +1373,7 @@ if ($linhasIptunump > 0) {
                             if ($k03_tipo == 3) {
                                 $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                                 $rsIssvarano = db_query($sqlaliq);
-                                $intNumrows = pg_numrows($rsIssvarano);
+                                $intNumrows = pg_num_rows($rsIssvarano);
                                 if ($intNumrows == 0) {
                                     db_msgbox("Ano não encontrado na tabela issvar. Contate o suporte");
                                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -1356,13 +1402,19 @@ if ($linhasIptunump > 0) {
                                 $pdf1->taxaExpediente = TaxaEspecificaModel::DESCRICAO_TAXA_EXPEDIENTE . " = " . trim(db_formatar($valorTaxaExpediente, 'f'));
                             }
 
-                            $pdf1->descr15 = db_formatar($k00_valor,
-                              'f'); //($ninfla==''?'R$'.db_formatar($k00_valor,'f'):$ninfla.''.$k00_valor);
+                            $pdf1->descr15 = db_formatar(
+                                $k00_valor,
+                                'f'
+                            ); //($ninfla==''?'R$'.db_formatar($k00_valor,'f'):$ninfla.''.$k00_valor);
                             $pdf1->valtotal = db_formatar($k00_valor, 'f');
-                            $pdf1->descr7 = db_formatar($k00_valor,
-                              'f'); //($ninfla==''?'R$'.db_formatar($k00_valor,'f'):$ninfla.''.$k00_valor);
-                            $pdf1->predescr7 = db_formatar($k00_valor,
-                              'f'); //($ninfla==''?'R$'.db_formatar($k00_valor,'f'):$ninfla.''.$k00_valor);
+                            $pdf1->descr7 = db_formatar(
+                                $k00_valor,
+                                'f'
+                            ); //($ninfla==''?'R$'.db_formatar($k00_valor,'f'):$ninfla.''.$k00_valor);
+                            $pdf1->predescr7 = db_formatar(
+                                $k00_valor,
+                                'f'
+                            ); //($ninfla==''?'R$'.db_formatar($k00_valor,'f'):$ninfla.''.$k00_valor);
                         }
 
                         $pdf1->totaldescunica = db_formatar($uvlrdesconto, 'f');
@@ -1451,9 +1503,9 @@ if ($linhasIptunump > 0) {
                     exit;
                 }
 
-                $valores = split("P", $numpres[$volta]);
+                $valores =explode("P", $numpres[$volta]);
                 $k00_numpre = $valores[0];
-                $k00_numpar = split("R", $valores[1]);
+                $k00_numpar =explode("R", $valores[1]);
                 $k00_numpar = $k00_numpar[0];
                 $k03_anousu = $H_ANOUSU;
 
@@ -1462,13 +1514,22 @@ if ($linhasIptunump > 0) {
                 }
 
                 $novo_numpre = 0;
-                $DadosPagamento = debitos_numpre_carne($k00_numpre, $k00_numpar, $H_DATAUSU, $H_ANOUSU,
-                  db_getsession('DB_instit'), $DB_DATACALC, $forcarvencimento);
+                $DadosPagamento = debitos_numpre_carne(
+                    $k00_numpre,
+                    $k00_numpar,
+                    $H_DATAUSU,
+                    $H_ANOUSU,
+                    db_getsession('DB_instit'),
+                    $DB_DATACALC,
+                    $forcarvencimento
+                );
                 db_fieldsmemory($DadosPagamento, 0);
 
                 if ($total < 0) {
-                    db_msgbox("Valor negativo na{$sS} parcela{$sS} " . implode(",",
-                        $aParcelasSemInflatores) . " verifique.");
+                    db_msgbox("Valor negativo na{$sS} parcela{$sS} " . implode(
+                        ",",
+                        $aParcelasSemInflatores
+                    ) . " verifique.");
                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
                     exit;
                 }
@@ -1522,12 +1583,18 @@ if ($linhasIptunump > 0) {
                     $ninfla_ant = $ninfla;
                     if ($total > 0) {
                         $k00_valor = $total;
-                        $vlrbar = db_formatar(str_replace('.', '',
-                          str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
+                        $vlrbar = db_formatar(str_replace(
+                            '.',
+                            '',
+                            str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)
+                        ), 's', '0', 11, 'e');
                         $ninfla = '';
                     } else {
-                        $vlrbar = db_formatar(str_replace('.', '',
-                          str_pad(number_format(0, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
+                        $vlrbar = db_formatar(str_replace(
+                            '.',
+                            '',
+                            str_pad(number_format(0, 2, "", "."), 11, "0", STR_PAD_LEFT)
+                        ), 's', '0', 11, 'e');
                         $k00_valor = $qinfla;
                     }
 
@@ -1535,9 +1602,17 @@ if ($linhasIptunump > 0) {
 
                     if (($total == 0) || (substr($k00_dtvenc, 6, 4) > date("Y", $H_DATAUSU) + 1)) {
                         if ($ninfla_ant == "REAL") {
-                            $vlrbar = db_formatar(str_replace('.', '',
-                              str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11,
-                              'e');
+                            $vlrbar = db_formatar(
+                                str_replace(
+                                    '.',
+                                    '',
+                                    str_pad(number_format($k00_valor, 2, "", "."), 11, "0", STR_PAD_LEFT)
+                                ),
+                                's',
+                                '0',
+                                11,
+                                'e'
+                            );
                         } else {
                             $vlrbar = "00000000000";
 
@@ -1559,7 +1634,7 @@ if ($linhasIptunump > 0) {
                     $datavencimento = $tmpdt;
                 }
 
-                if (isset ($emiscarneiframe) && $emiscarneiframe == 'n') {
+                if (isset($emiscarneiframe) && $emiscarneiframe == 'n') {
                     if (substr($datavencimento, 0, 4) > db_getsession('DB_anousu')) {
                         continue;
                     }
@@ -1568,8 +1643,11 @@ if ($linhasIptunump > 0) {
                 $ninfla_ant = $ninfla;
 
                 if ($oRegraEmissao->isCobranca()) {
-                    if (substr($datavencimento, 0,
-                        4) > db_getsession('DB_anousu') && $k00_valor > 0 && ($ninfla_ant != "" && $ninfla_ant != "REAL")) {
+                    if (substr(
+                        $datavencimento,
+                        0,
+                        4
+                    ) > db_getsession('DB_anousu') && $k00_valor > 0 && ($ninfla_ant != "" && $ninfla_ant != "REAL")) {
                         $k00_valor = 0;
                         $especie = $ninfla;
                         $histinf = "\n Atenção : entre em contato com o municipio para saber o valor da $ninfla.";
@@ -1629,8 +1707,15 @@ if ($linhasIptunump > 0) {
 
                 try {
                     $valorConvenio = !empty($valorTaxaExpediente) ? $k00_valor + $valorTaxaExpediente : $k00_valor;
-                    $oConvenio = new convenio($oRegraEmissao->getConvenio(), $iNumpre, $iNumpar, $valorConvenio, $vlrbar,
-                      $datavencimento, $terceiro);
+                    $oConvenio = new convenio(
+                        $oRegraEmissao->getConvenio(),
+                        $iNumpre,
+                        $iNumpar,
+                        $valorConvenio,
+                        $vlrbar,
+                        $datavencimento,
+                        $terceiro
+                    );
                 } catch (Exception $eExeption) {
                     db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
                     exit;
@@ -1644,8 +1729,12 @@ if ($linhasIptunump > 0) {
 
                 if ($oRegraEmissao->isCobranca()) {
                     if (strlen(trim($oConvenio->getConvenioCobranca())) == 7) {
-                        $pdf1->nosso_numero = trim($oConvenio->getConvenioCobranca()) . str_pad($k00_numpre, 8, "0",
-                            STR_PAD_LEFT) . str_pad($k00_numpar, 2, "0", STR_PAD_LEFT);
+                        $pdf1->nosso_numero = trim($oConvenio->getConvenioCobranca()) . str_pad(
+                            $k00_numpre,
+                            8,
+                            "0",
+                            STR_PAD_LEFT
+                        ) . str_pad($k00_numpar, 2, "0", STR_PAD_LEFT);
                     } else {
                         $pdf1->nosso_numero = $oConvenio->getNossoNumero();
                     }
@@ -1683,7 +1772,7 @@ if ($linhasIptunump > 0) {
                     $sqlReceitas = " select k00_tipo as codtipo
             from arrecad where k00_numpre = $k00_numpre";
                     $rsReceitas = db_query($sqlReceitas);
-                    if (pg_numrows($rsReceitas) == 0) {
+                    if (pg_num_rows($rsReceitas) == 0) {
                         db_msgbox("Não encontrado arrecad ($k00_numpre).");
                         exit;
                     }
@@ -1761,7 +1850,6 @@ if ($linhasIptunump > 0) {
             $j23_uf --
             $j23_cep --
             $j23_cxpostal";
-
                 }
                 $pdf1->descr11_1 = $z01_numcgm . " - " . $nome_contri;
                 $pdf1->descr11_2 = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);//. " - " . $j23_bairro;
@@ -1795,22 +1883,22 @@ if ($linhasIptunump > 0) {
                     $pdf1->historicoparcela = $k00_numpar . 'a PARCELA';
                     $pdf1->prehistoricoparcela = $k00_numpar . 'a PARCELA';
                 } else {
-                    if (isset ($k00_hist1) && $k00_hist1 != "" && $k00_hist1 != ".") {
+                    if (isset($k00_hist1) && $k00_hist1 != "" && $k00_hist1 != ".") {
                         $pdf1->descr4_1 = $k00_hist1;
                     }
-                    if (isset ($k00_hist2) && $k00_hist2 != "" && $k00_hist2 != ".") {
+                    if (isset($k00_hist2) && $k00_hist2 != "" && $k00_hist2 != ".") {
                         $pdf1->descr4_2 = $k00_hist2;
                         $pdf1->predescr4_2 = $k00_hist2;
                     }
                 }
 
-                if (isset ($obs)) {
+                if (isset($obs)) {
                     $pdf1->titulo13 = 'Observação';
                     $pdf1->descr13 = $obs;
                 }
                 $pdf1->descr5 = $k00_numpar . ' / ' . $k00_numtot;
 
-                $tmpdta = split("/", $k00_dtvenc);
+                $tmpdta =explode("/", $k00_dtvenc);
                 $tmpdtvenc = $tmpdta[2] . "-" . $tmpdta[1] . "-" . $tmpdta[0];
                 if ($db_datausu > $tmpdtvenc) {
                     $pdf1->dtparapag = db_formatar($db_datausu, 'd');
@@ -1850,7 +1938,7 @@ if ($linhasIptunump > 0) {
                     if ($k03_tipo == 3) {
                         $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                         $rsIssvarano = db_query($sqlaliq);
-                        $intNumrows = pg_numrows($rsIssvarano);
+                        $intNumrows = pg_num_rows($rsIssvarano);
                         if ($intNumrows == 0) {
                             db_msgbox("Ano não encontrado na tabela issvar. Contate o suporte");
                             echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -1873,13 +1961,19 @@ if ($linhasIptunump > 0) {
                         $pdf1->taxaExpediente = TaxaEspecificaModel::DESCRICAO_TAXA_EXPEDIENTE . " = " . trim(db_formatar($valorTaxaExpediente, 'f'));
                     }
 
-                    $pdf1->descr15 = ($ninfla == '' ? 'R$  ' . db_formatar($k00_valor,
-                        'f') : $ninfla . '  ' . $k00_valor);
+                    $pdf1->descr15 = ($ninfla == '' ? 'R$  ' . db_formatar(
+                        $k00_valor,
+                        'f'
+                    ) : $ninfla . '  ' . $k00_valor);
                     $pdf1->valtotal = db_formatar($k00_valor, 'f'); //$k00_valor;
-                    $pdf1->descr7 = ($ninfla == '' ? 'R$  ' . db_formatar($k00_valor,
-                        'f') : $ninfla . '  ' . $k00_valor);
-                    $pdf1->predescr7 = ($ninfla == '' ? 'R$  ' . db_formatar($k00_valor,
-                        'f') : $ninfla . '  ' . $k00_valor);
+                    $pdf1->descr7 = ($ninfla == '' ? 'R$  ' . db_formatar(
+                        $k00_valor,
+                        'f'
+                    ) : $ninfla . '  ' . $k00_valor);
+                    $pdf1->predescr7 = ($ninfla == '' ? 'R$  ' . db_formatar(
+                        $k00_valor,
+                        'f'
+                    ) : $ninfla . '  ' . $k00_valor);
                 }
 
                 if ($oRegraEmissao->isCobranca()) {
@@ -1898,33 +1992,37 @@ if ($linhasIptunump > 0) {
                 }
 
                 $rsmsgcarne = db_query("select k03_msgcarne, k03_msgbanco from numpref where k03_anousu = " . db_getsession("DB_anousu"));
-                if (pg_numrows($rsmsgcarne) > 0) {
+                if (pg_num_rows($rsmsgcarne) > 0) {
                     db_fieldsmemory($rsmsgcarne, 0);
                 }
 
                 if ($pagabanco == 't') {
-                    if (isset ($datavencimento) && (str_replace('-', '', $datavencimento) < date("Ymd",
-                          db_getsession("DB_datausu")))) {
-                        if (isset ($k00_msgparcvenc2) && $k00_msgparcvenc2 != "") {
+                    if (isset($datavencimento) && (str_replace('-', '', $datavencimento) < date(
+                        "Ymd",
+                        db_getsession("DB_datausu")
+                    ))) {
+                        if (isset($k00_msgparcvenc2) && $k00_msgparcvenc2 != "") {
                             $pdf1->descr12_1 .= $k00_msgparcvenc2 . " " . $histinf . " " . $msgvencida;
                             $pdf1->predescr12_1 .= $k00_msgparcvenc2 . " " . $histinf . " " . $msgvencida;
                         }
                     } else {
-                        if (isset ($k00_msgparc2) && $k00_msgparc2 != "") {
+                        if (isset($k00_msgparc2) && $k00_msgparc2 != "") {
                             $pdf1->descr12_1 .= $k00_msgparc2 . " " . $histinf . " " . $msgvencida;
                             (isset($pdf1->predescr12_1) ? $pdf1->predescr12_1 .= $k00_msgparc2 . " " . $histinf . " " . $msgvencida : "");
-                        } elseif (isset ($k03_msgbanco) && $k03_msgbanco != "") {
+                        } elseif (isset($k03_msgbanco) && $k03_msgbanco != "") {
                             $pdf1->descr12_1 .= $k03_msgbanco . " Não aceitar após vencimento.";
                             $pdf1->predescr12_1 .= $k03_msgbanco . " Não aceitar após vencimento.";
                         }
                     }
                 } else {
-                    if (isset ($datavencimento) && (str_replace('-', '', $datavencimento) < date("Ymd",
-                          db_getsession("DB_datausu")))) {
+                    if (isset($datavencimento) && (str_replace('-', '', $datavencimento) < date(
+                        "Ymd",
+                        db_getsession("DB_datausu")
+                    ))) {
                         $pdf1->descr12_1 .= $k00_msgparcvenc2 . " " . $histinf . " " . $msgvencida;
-                    } elseif (isset ($k00_msgparc2) && $k00_msgparc2 != "") {
+                    } elseif (isset($k00_msgparc2) && $k00_msgparc2 != "") {
                         $pdf1->descr12_1 .= $k00_msgparc2 . " " . $histinf . " " . $msgvencida;
-                    } elseif (isset ($k03_msgbanco) && $k03_msgbanco != "") {
+                    } elseif (isset($k03_msgbanco) && $k03_msgbanco != "") {
                         $pdf1->descr12_1 .= $k03_msgbanco . " Após o vencimento cobrar juros de 1%a.m e multa de 2% ";
                     } else {
                         $pdf1->descr12_1 .= '- O PAGAMENTO DEVERÁ SER EFETUADO SOMENTE NA PREFEITURA.' . " " . $histinf . " " . $msgvencida;
@@ -1940,21 +2038,32 @@ if ($linhasIptunump > 0) {
           and db03_instit = " . db_getsession("DB_instit");
                 $resparag = db_query($sqlparag);
 
-                if (isset ($datavencimento) && (str_replace('-', '', $datavencimento) < date("Ymd",
-                      db_getsession("DB_datausu")))) {
-                    if (isset ($k00_msgparcvenc) && $k00_msgparcvenc != "") {
+                if (isset($datavencimento) && (str_replace('-', '', $datavencimento) < date(
+                    "Ymd",
+                    db_getsession("DB_datausu")
+                ))) {
+                    if (isset($k00_msgparcvenc) && $k00_msgparcvenc != "") {
                         if (strlen($k00_msgparcvenc) > 50) {
-                            $part1 = substr(substr($k00_msgparcvenc, 0, 50), 0,
-                              strrpos(substr($k00_msgparcvenc, 0, 50), ' '));
+                            $part1 = substr(
+                                substr($k00_msgparcvenc, 0, 50),
+                                0,
+                                strrpos(substr($k00_msgparcvenc, 0, 50), ' ')
+                            );
                         } else {
                             $part1 = substr(substr($k00_msgparcvenc, 0, 50), 0, strlen($k00_msgparcvenc));
                         }
                         if (strlen($k00_msgparcvencvenc) > 100) {
-                            $part2 = substr(substr($k00_msgparcvenc, strlen($part1), 50), 0,
-                              strrpos(substr($k00_msgparcvenc, strlen($part1), strlen($k00_msgparcvenc)), ' '));
+                            $part2 = substr(
+                                substr($k00_msgparcvenc, strlen($part1), 50),
+                                0,
+                                strrpos(substr($k00_msgparcvenc, strlen($part1), strlen($k00_msgparcvenc)), ' ')
+                            );
                         } else {
-                            $part2 = substr(substr($k00_msgparcvenc, strlen($part1) + 1, 50), 0,
-                              strlen($k00_msgparcvenc));
+                            $part2 = substr(
+                                substr($k00_msgparcvenc, strlen($part1) + 1, 50),
+                                0,
+                                strlen($k00_msgparcvenc)
+                            );
                         }
                         if (strlen($k00_msgparcvenc) > 105) {
                             $part3 = substr(substr($k00_msgparcvenc, strlen($part2), 50), 0, strlen($k00_msgparcvenc));
@@ -1966,7 +2075,7 @@ if ($linhasIptunump > 0) {
                         $pdf1->predescr16_2 = $part2;
                         $pdf1->predescr16_3 = $part3;
                     }
-                } elseif (isset ($k00_msgparc) && $k00_msgparc != "") {
+                } elseif (isset($k00_msgparc) && $k00_msgparc != "") {
                     $pdf1->descr16_1 = substr($k00_msgparc, 0, 50);
                     $pdf1->descr16_2 = substr($k00_msgparc, 50, 50);
                     $pdf1->descr16_3 = substr($k00_msgparc, 100, 50);
@@ -1974,7 +2083,7 @@ if ($linhasIptunump > 0) {
                     $pdf1->predescr16_2 = substr($k00_msgparc, 50, 50);
                     $pdf1->predescr16_3 = substr($k00_msgparc, 100, 50);
                 } else {
-                    if (isset ($k03_msgcarne) && $k03_msgcarne != "") {
+                    if (isset($k03_msgcarne) && $k03_msgcarne != "") {
                         $pdf1->descr16_1 = substr($k03_msgcarne, 0, 50);
                         $pdf1->descr16_2 = substr($k03_msgcarne, 50, 50);
                         $pdf1->descr16_3 = substr($k03_msgcarne, 100, 50);
@@ -1982,7 +2091,7 @@ if ($linhasIptunump > 0) {
                         $pdf1->predescr16_2 = substr($k03_msgcarne, 50, 50);
                         $pdf1->predescr16_3 = substr($k03_msgcarne, 100, 50);
                     } else {
-                        if (pg_numrows($resparag) == 0) {
+                        if (pg_num_rows($resparag) == 0) {
                             $db02_texto = "";
                         } else {
                             db_fieldsmemory($resparag, 0);
@@ -1996,13 +2105,17 @@ if ($linhasIptunump > 0) {
                         $pdf1->predescr16_3 = substr($db02_texto, 110, 55);
                     }
                 }
-                $pdf1->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
+                $sql = 'select nome from db_usuarios where login = \''.db_getsession('DB_login').'\'';
+                $rSql = db_query($sql);
+
+                $pdf1->texto = substr(pg_fetch_all($rSql)[0]['nome'], 0, 30) . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
                 $imprimircodbar = true;
-                $sqltermo = "select k40_forma from termo
-          inner join cadtipoparc on k40_codigo = v07_desconto
-          where v07_numpre = $k00_numpre";
+                $sqltermo = "select k40_forma
+                             from termo
+                                  join cadtipoparc on k40_codigo = v07_desconto
+                             where v07_numpre = $k00_numpre";
                 $resulttermo = db_query($sqltermo) or die($sqltermo);
-                if (pg_numrows($resulttermo) > 0) {
+                if (pg_num_rows($resulttermo) > 0) {
                     db_fieldsmemory($resulttermo, 0);
                     if ($k40_forma == 2 and $k00_numpar == $k00_numtot) {
                         $imprimircodbar = false;
@@ -2038,8 +2151,7 @@ if ($linhasIptunump > 0) {
                     //calcula o desconto.
                     $datahoje = date("Y-m-d");
                     if ($k00_dtvenc > $datahoje) {
-                        $sqlDesconto = "select  fc_recibodesconto($k00_numpre,$k00_numpar,$v07_totpar,$k00_receit,$k00_tipo,'$k00_dtvenc','$k00_dtvenc') as percento";
-                        //echo "<br>$sqlDesconto<br>";
+                        $sqlDesconto = "select npercretprinc as percento from fc_recibodesconto($k00_numpre,$k00_numpar,$v07_totpar,$k00_receit,$k00_tipo,'$k00_dtvenc','$k00_dtvenc')";
                         $resultDesconto = db_query($sqlDesconto);
                         $linhasDesconto = pg_num_rows($resultDesconto);
                         $pdf1->descr4_2 = "";
@@ -2050,8 +2162,10 @@ if ($linhasIptunump > 0) {
                                 $desc = 100 - $percento;
                                 $valortotal = round(($total * 100) / $desc, 2);
                                 $valorDesconto = round($valortotal - $total, 2);
-                                $pdf1->descr4_2 = "Valor da parcela                    R$" . db_formatar($valortotal,
-                                    "f") . " \nDesconto até o vencimento R$" . db_formatar($valorDesconto, "f") . "";
+                                $pdf1->descr4_2 = "Valor da parcela                    R$" . db_formatar(
+                                    $valortotal,
+                                    "f"
+                                ) . " \nDesconto até o vencimento R$" . db_formatar($valorDesconto, "f") . "";
                             } else {
                                 $pdf1->descr4_2 = "";
                             }
@@ -2114,10 +2228,16 @@ if ($passar == false) {
 // 1 ou 2 normal
 
 $iFimPag += $intixxx;
-$arquivo = "tmp/" . $nomeTipoMod . "_" . str_replace(" ", "",
-    $k00_descr) . "_de_" . $iIniPag . "_ate_" . $iFimPag . "_" . date('His') . ".pdf";
-$nomearquivos .= "tmp/" . $nomeTipoMod . "_" . str_replace(" ", "",
-    $k00_descr) . "_de_" . $iIniPag . "_ate_" . $iFimPag . "_" . date('His') . ".pdf#Download dos " . $nomeTipoMod . " de " . $iIniPag . " ate " . $iFimPag . "|";
+$arquivo = "tmp/" . $nomeTipoMod . "_" . str_replace(
+    " ",
+    "",
+    $k00_descr
+) . "_de_" . $iIniPag . "_ate_" . $iFimPag . "_" . date('His') . ".pdf";
+$nomearquivos .= "tmp/" . $nomeTipoMod . "_" . str_replace(
+    " ",
+    "",
+    $k00_descr
+) . "_de_" . $iIniPag . "_ate_" . $iFimPag . "_" . date('His') . ".pdf#Download dos " . $nomeTipoMod . " de " . $iIniPag . " ate " . $iFimPag . "|";
 
 $pdf1->objpdf->Output($arquivo);
 

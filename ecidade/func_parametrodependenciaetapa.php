@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clparametrodependenciaetapa->rotulo->label("ed296_sequencial");
               <?=$Led296_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed296_sequencial",10,$Ied296_sequencial,true,"text",4,"","chave_ed296_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clparametrodependenciaetapa->rotulo->label("ed296_sequencial");
               <?=$Led296_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed296_sequencial",10,$Ied296_sequencial,true,"text",4,"","chave_ed296_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clparametrodependenciaetapa->rotulo->label("ed296_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parametrodependenciaetapa.php")==true){
@@ -122,12 +122,12 @@ $clparametrodependenciaetapa->rotulo->label("ed296_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

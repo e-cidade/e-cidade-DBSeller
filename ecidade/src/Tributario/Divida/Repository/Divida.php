@@ -258,11 +258,22 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
     public function make($item)
     {
         $procedencia = new ProcedenciaEntity;
-        $procedencia
-            ->setCodigo($item->v03_codigo)
-            ->setDescricao($item->v03_descr)
-            ->setTipo($item->v03_procedtipo)
-            ->setDescricaoCompleta($item->v03_dcomp);
+
+        if (property_exists($item, 'v03_codigo')) {
+            $procedencia->setCodigo($item->v03_codigo);
+        }
+
+        if (property_exists($item, 'v03_descr')) {
+            $procedencia->setDescricao($item->v03_descr);
+        }
+
+        if (property_exists($item, 'v03_procedtipo')) {
+            $procedencia->setTipo($item->v03_procedtipo);
+        }
+
+        if (property_exists($item, 'v03_dcomp')) {
+            $procedencia->setDescricaoCompleta($item->v03_dcomp);
+        }
 
         $entity = new Entity;
         $entity

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -152,24 +152,24 @@ function js_marca(obj){
       <table>
         <tr>
           <td valign="top" rowspan="6">
-            <?
+            <?php
             
             db_foto($rh01_numcgm,1,"js_JanelaAutomatica('cgm','$rh01_numcgm')")
             ?>
           </td>
           <td align="right" nowrap title="<?=$Trh01_regist?>">
-            <?
+            <?php
             db_ancora("<b>".$RLrh01_regist.":</b>","js_JanelaAutomatica('cgm','$rh01_numcgm')",1);
             ?>
           </td>
           <td align="left" nowrap colspan="5">
-            <?
+            <?php
             db_input('rh01_regist',6,$Irh01_regist,true,'text',3)
             ?>
-            <?
+            <?php
             db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',3,'')
             ?>
-            <?
+            <?php
             db_input('z01_nome',66,$Iz01_nome,true,'text',3,'')
             ?>
           </td>
@@ -179,17 +179,17 @@ function js_marca(obj){
             <?=@$Lrh01_nasc?>
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
             db_inputdata('rh01_nasc',$rh01_nasc_dia,$rh01_nasc_mes,$rh01_nasc_ano,true,'text',3)
             ?>
           </td>
           <td align="right" nowrap title="<?=@$Trh01_instru?>">
-            <?
+            <?php
             db_ancora(@$Lrh01_instru,"js_pesquisarh01_instru(true);",3);
             ?>
           </td>
           <td align="left" nowrap colspan="3">
-            <?
+            <?php
             $result_instru = $clrhinstrucao->sql_record($clrhinstrucao->sql_query_file());
             db_selectrecord("rh01_instru",$result_instru,"",3);
             ?>
@@ -200,18 +200,18 @@ function js_marca(obj){
             <?=@$Lrh01_sexo?>
           </td>
           <td align="left" nowrap> 
-            <?
+            <?php
             $arr_sexo = array('M' => 'Masculino','F'=>'Feminino');
             db_select("rh01_sexo",$arr_sexo,true,3,"");
             ?>
           </td>
           <td align="right" nowrap title="<?=@$Trh01_estciv?>">
-            <?
+            <?php
             db_ancora(@$Lrh01_estciv,"js_pesquisarh01_estciv(true);",3);
             ?>
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
             $result_estciv = $clrhestcivil->sql_record($clrhestcivil->sql_query_file());
             db_selectrecord("rh01_estciv",$result_estciv,"",3);
             ?>
@@ -222,7 +222,7 @@ function js_marca(obj){
             <?=@$Lz01_ender?>
           </td>
           <td align="left" nowrap colspan="5">
-            <?
+            <?php
             $z01_ender.= ', '.$z01_numero.' '.$z01_compl;
             db_input('z01_ender',84,$Iz01_ender,true,'text',3)
             ?>
@@ -232,7 +232,7 @@ function js_marca(obj){
             <?=@$Lz01_munic?>
           </td>
           <td align="left" nowrap colspan="5">
-            <?
+            <?php
             $z01_munic.= ' / '.$z01_uf;
             db_input('z01_munic',84,$Iz01_munic,true,'text',3)
             ?>
@@ -242,7 +242,7 @@ function js_marca(obj){
       </fieldset>
     </td>
   </tr>
-  <?
+  <?php
    if (isset($oResultado)){
 
        echo "<tr>";
@@ -270,7 +270,7 @@ function js_marca(obj){
     <table cellspacing='0'>
      <tr>
      <td valign="top" nowrap style='border:1px inset white;background-color:white'>
-     <?
+     <?php
       $sSQLRel  = "select h64_sequencial,";
       $sSQLRel .= "       h64_data, ";
       $sSQLRel .= "       h56_sequencial, ";

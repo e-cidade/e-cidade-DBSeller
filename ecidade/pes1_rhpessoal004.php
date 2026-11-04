@@ -7,7 +7,7 @@
  *
  *  Este programa e software livre; voce pode redistribui-lo e/ou
  *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
- *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  publicada pela Free Software Foundation; tanto a versao 2
  *  Licenca como (a seu criterio) qualquer versao mais nova.
  *
  *  Este programa e distribuido na expectativa de ser util, mas SEM
@@ -49,6 +49,7 @@ require_once(modification("classes/db_rhcfpessmatr_classe.php"));
 require_once(modification("classes/db_rhcontratoemergencial_classe.php"));
 require_once(modification("classes/db_rhcontratoemergencialrenovacao_classe.php"));
 require_once(modification("libs/db_libpessoal.php"));
+require_once modification('classes/db_rhdependeplug_classe.php');
 
 $clrhpessoal                      = new cl_rhpessoal;
 $clrhpesfgts                      = new cl_rhpesfgts;
@@ -66,6 +67,7 @@ $clcgm                            = new cl_cgm;
 $clrhcfpessmatr                   = new cl_rhcfpessmatr;
 $clrhcontratoemergencial          = new cl_rhcontratoemergencial;
 $clrhcontratoemergencialrenovacao = new cl_rhcontratoemergencialrenovacao;
+$clrhdependeplug                  = new cl_rhdependeplug;
 
 db_postmemory($HTTP_POST_VARS);
 
@@ -245,9 +247,11 @@ if (isset($incluir)) {
 
         $rsdep = $clrhdepend->sql_record($clrhdepend->sql_query(null, 'rhdepend.*', '', "rh31_regist =$rhimp"));
         $numrows = $clrhdepend->numrows;
+    
         if ($clrhdepend->numrows > 0) {
             for($i = 0; $i < $numrows; $i ++) {
                 db_fieldsmemory($rsdep, $i);
+                $codigo = $rh31_codigo;
                 $clrhdepend->rh31_regist = $rh01_regist;
                 $clrhdepend->rh31_nome = $rh31_nome;
                 $clrhdepend->rh31_dtnasc = $rh31_dtnasc;
@@ -256,13 +260,33 @@ if (isset($incluir)) {
                 $clrhdepend->rh31_irf = $rh31_irf;
                 $clrhdepend->rh31_especi = $rh31_especi;
                 $clrhdepend->rh31_fins_previdenciarios = $rh31_fins_previdenciarios;
+                
                 $clrhdepend->incluir(null);
+
+               $sql = "select * from pessoal.rhdependeplug where dp01_rhdepend = {$codigo}";
+               $rs = db_query($sql);
+
+               if (!$rs) {
+                  throw new Exception('Não foi localizado dependente.');
+               }
+
+                if (pg_num_rows($rs) > 0) {
+                   $dependentesHistorico = db_utils::getCollectionByRecord($rs);
+                   foreach ($dependentesHistorico as $dependentes) {
+                      $clrhdependeplug->dp01_rhdepend = $clrhdepend->rh31_codigo;
+                      $clrhdependeplug->dp01_regist = $rh01_regist;
+                      $clrhdependeplug->dp01_instit =  db_getsession("DB_instit");
+                      $clrhdependeplug->dp01_cpf =   $dependentes->dp01_cpf;
+                      $clrhdependeplug->dp01_sexo = $dependentes->dp01_sexo;
+                      $clrhdependeplug->incluir(null);
+                  }
+                }
+                 
                 if ($clrhdepend->erro_status == 0) {
 
                     $sqlerro = true;
                     $erro_msg = $clrhdepend->erro_msg . "\\nImportaçao cancelada.\\nDependente com erro.";
                 }
-
             }
         }
         /**
@@ -502,7 +526,6 @@ if (isset($incluir)) {
     $daoRegistraPontoEletronicoHistorico->rh215_data                    = $dataRegistraPontoEletronico;
     $daoRegistraPontoEletronicoHistorico->rh215_sequencial              = null;
     $daoRegistraPontoEletronicoHistorico->incluir(null);
-
     if($daoRegistraPontoEletronicoHistorico->erro_status == '0') {
         $sqlerro  = true;
         $erro_msg = $daoRegistraPontoEletronicoHistorico->erro_msg;

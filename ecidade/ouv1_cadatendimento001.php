@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -102,7 +102,7 @@ if  ( $db_opcao == 1 ) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 
-<?
+<?php
 	db_app::load("scripts.js");
 	db_app::load("prototype.js");
 	db_app::load("datagrid.widget.js");
@@ -128,7 +128,7 @@ if  ( $db_opcao == 1 ) {
 	            <b>Usuário:</b>
 	          </td>
 	          <td colspan="5">
-              <?
+              <?php
                 db_input('ov01_sequencial',10,'',true,'hidden',3,'');
                 db_input('db_opcao'       ,10,'',true,'hidden',3,'');
                 db_input('ov01_usuario'   ,10,'',true,'text',3,'');
@@ -141,7 +141,7 @@ if  ( $db_opcao == 1 ) {
               <b>Departamento:</b>
             </td>
             <td colspan="5">
-              <?
+              <?php
                 db_input('ov01_depart',10,'',true,'text',3,'');
                 db_input('descrdepto',55,'',true,'text',3,'');
               ?>
@@ -152,7 +152,7 @@ if  ( $db_opcao == 1 ) {
               <b>Nº Atendimento:</b>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ov01_numero',10,'',true,'text',3,'');
               ?>
             </td>
@@ -160,7 +160,7 @@ if  ( $db_opcao == 1 ) {
               <b>Data Atendimento:</b>
             </td>
             <td align="right">
-              <?
+              <?php
                 db_inputdata('ov01_dataatend',@$ov01_dataatend_dia,@$ov01_dataatend_mes,@$ov01_dataatend_ano,true,'text',3,'');
                 echo "<b>Hora Atendimento:</b>";
                 db_input('ov01_horaatend',10,'',true,'text',3,'');
@@ -178,7 +178,7 @@ if  ( $db_opcao == 1 ) {
         <legend>
           <b>Solicitação</b>
         </legend>
-        <?
+        <?php
           db_textarea('ov01_solicitacao',8,40,$Iov01_solicitacao,true,'text',$db_opcao,'');
         ?>
       </fieldset>
@@ -188,7 +188,7 @@ if  ( $db_opcao == 1 ) {
         <legend>
           <b>Executado</b>
         </legend>
-        <?
+        <?php
           db_textarea('ov01_executado',8,40,$Iov01_executado,true,'text',$db_opcao,'');
         ?>              
       </fieldset>
@@ -200,7 +200,7 @@ if  ( $db_opcao == 1 ) {
         <table>
           <tr>
             <td class="telaInclusao"  nowrap>
-              <?
+              <?php
                 db_ancora($Lov01_tipoprocesso,'js_pesquisaTipoProcesso(true);',$db_opcao,'');
               ?>
             </td>
@@ -208,7 +208,7 @@ if  ( $db_opcao == 1 ) {
               <?=$Lov01_tipoprocesso?>
             </td>            
             <td>
-              <?
+              <?php
                 db_input('ov01_tipoprocesso',10,'',true,'text',$db_opcao,"onChange='js_pesquisaTipoProcesso(false);'");
                 db_input('p51_descr'        ,50,'',true,'text',3,'');
               ?>
@@ -219,7 +219,7 @@ if  ( $db_opcao == 1 ) {
               <b>Data Estimada:</b>
             </td>            
             <td>
-              <?
+              <?php
                 db_input('dataprevista',10,'',true,'text',3,"");
               ?>
             </td>
@@ -242,7 +242,7 @@ if  ( $db_opcao == 1 ) {
             <td class="telaInclusao"  id="listaFormaReclamacao" >
             </td>            
             <td class="telaAlteracao" style="display:none" >
-              <?
+              <?php
                 db_input('ov01_formareclamacao',10,'',true,'text'  ,3,'');
                 db_input('p42_descricao'       ,50,'',true,'text'  ,3,'');
               ?>
@@ -259,7 +259,7 @@ if  ( $db_opcao == 1 ) {
               <label><b>Anônimo</b></label>
             </td>
             <td  class="telaAlteracao" style="display:none" >
-              <?
+              <?php
                 db_input('ov01_tipoidentificacao',10,'',true,'text'  ,3,'');
                 db_input('ov05_descricao'       ,50,'',true,'text'   ,3,'');
               ?>
@@ -268,7 +268,7 @@ if  ( $db_opcao == 1 ) {
           
           <tr class="dadosRequerente">
             <td class="telaInclusao">
-              <?
+              <?php
                 db_ancora('<b>Titular do Atendimento:</b>','js_pesquisaTitularAtendimento();',$db_opcao,'');
               ?>
             </td>
@@ -276,7 +276,7 @@ if  ( $db_opcao == 1 ) {
               <b>Titular do Atendimento</b>
             </td>            
             <td>
-              <?
+              <?php
                 db_input('titular'       ,10,'',true,'text'  ,3,'');
                 db_input('nometitular'   ,50,'',true,'text'  ,3,'');
                 db_input('tipotitular'   ,10,'',true,'hidden',3,'');
@@ -292,7 +292,7 @@ if  ( $db_opcao == 1 ) {
               <b>Requerente:</b>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ov01_requerente',64,$Iov01_requerente,true,'text',$db_opcao,'');
               ?>
             </td>
@@ -310,7 +310,7 @@ if  ( $db_opcao == 1 ) {
           </tr>
           <tr id='linhaLocal'>
             <td class="telaInclusao" nowrap>
-              <?
+              <?php
                 db_ancora('<b>Local:</b>','js_pesquisaLocal(true);',$db_opcao,'');
               ?>
             </td>
@@ -318,7 +318,7 @@ if  ( $db_opcao == 1 ) {
               <b>Local:</b>
             </td>          
             <td>
-              <?
+              <?php
                 db_input('ov24_ouvidoriacadlocal',10,$Iov24_ouvidoriacadlocal,true,'text',1,"onChange='js_pesquisaLocal(false);'");
                 db_input('ov25_descricao'        ,50,$Iov25_descricao,true,'text',1,'');
               ?>
@@ -365,11 +365,11 @@ if  ( $db_opcao == 1 ) {
                <tr>
                  <input type="checkbox" style="display:none"  id="enderRetornoAnonimo" class="enderRetorno" value="" checked>
                  <td nowrap title="<?=@$Tov12_endereco?>">
-                   <?
+                   <?php
                      db_ancora(@$Lov12_endereco,"js_pesquisaov12_endereco(true);",$db_opcao);
                    ?>
                  <td>
-                   <?
+                   <?php
                      db_input('ov12_endereco',50,$Iov12_endereco,true,'text',$db_opcao,"");
                    ?>
                  </td>
@@ -377,19 +377,19 @@ if  ( $db_opcao == 1 ) {
                    <?=@$Lov12_numero?>
                  </td>
                  <td>
-                   <?
+                   <?php
                      db_input('ov12_numero',10,$Iov12_numero,true,'text',$db_opcao,"");
                    ?>
                  </td>
                </tr>
                <tr>
                  <td nowrap title="<?=@$Tov12_bairro?>">
-                   <? 
+                   <?php 
                      db_ancora(@$Lov12_bairro,"js_pesquisaov12_bairro(true);",$db_opcao);
                    ?>
                  </td>
                  <td> 
-                   <?
+                   <?php
                      db_input('ov12_bairro',50,$Iov12_bairro,true,'text',$db_opcao,"");
                    ?>
                  </td>
@@ -397,7 +397,7 @@ if  ( $db_opcao == 1 ) {
                    <?=@$Lov12_compl?>
                  </td>
                  <td>
-                   <?
+                   <?php
                      db_input('ov12_compl',10,$Iov12_compl,true,'text',$db_opcao,"");
                    ?>
                  </td>           
@@ -405,17 +405,17 @@ if  ( $db_opcao == 1 ) {
                <tr>
                  <td nowrap title="<?=@$Tov12_munic?>"><?=@$Lov12_munic?></td>
                  <td> 
-                   <?
+                   <?php
                      db_input('ov12_munic',30,$Iov12_munic,true,'text',$db_opcao,"");
                    ?>
                    <?=@$Lov12_uf?>
-                   <?
+                   <?php
                      db_input('ov12_uf',2,$Iov12_uf,true,'text',$db_opcao,"");
                    ?>
                  </td>
                  <td nowrap title="<?=@$Tov12_cep?>" align="right"><?=@$Lov12_cep?></td>
                  <td> 
-                   <?
+                   <?php
                      db_input('ov12_cep',10,$Iov12_cep,true,'text',$db_opcao,"")
                    ?>
                  </td>
@@ -440,7 +440,7 @@ if  ( $db_opcao == 1 ) {
                  </td>
                  <td>
                    <input type="hidden" id="alteraEmail" value="" name="alteraEmail"> 
-                   <?
+                   <?php
                      db_input('ov13_email',60,$Iov13_email,true,'text',$db_opcao,"");
                    ?>
                    <span id="btnEmail">
@@ -477,7 +477,7 @@ if  ( $db_opcao == 1 ) {
                  <tr>
                    <td nowrap title="<?=@$Tov14_tipotelefone?>"><?=@$Lov14_tipotelefone?></td>
                    <td> 
-                     <?
+                     <?php
                        $rsTipoTelefone = $clTelefoneTipo->sql_record($clTelefoneTipo->sql_query_file());
                        db_selectrecord('ov14_tipotelefone',$rsTipoTelefone,true,$db_opcao,'','','','','',1);
                      ?>
@@ -486,20 +486,20 @@ if  ( $db_opcao == 1 ) {
                  <tr>
                    <td nowrap title="<?=@$Tov14_ddd?>"><?=@$Lov14_ddd?></td>
                    <td> 
-                     <?
+                     <?php
                        db_input('ov14_ddd',10,$Iov14_ddd,true,'text',$db_opcao,"");
                      ?>
                    </td>
                    <td nowrap title="<?=@$Tov14_numero?>" align="right"><?=@$Lov14_numero?></td>
                    <td align="right"> ouv1_cadatendimento001.php
-                     <?
+                     <?php
                        db_input('ov14_numero',10,$Iov14_numero,true,'text',$db_opcao,"");
                        db_input('alteraTelefone',10,'',true,'hidden',1,'');
                      ?>
                    </td>
                    <td nowrap title="<?=@$Tov14_ramal?>" align="right"><?=@$Lov14_ramal?></td>
                    <td align="right"> 
-                     <?
+                     <?php
                        db_input('ov14_ramal',10,$Iov14_ramal,true,'text',$db_opcao,"");
                      ?>
                    </td>
@@ -507,7 +507,7 @@ if  ( $db_opcao == 1 ) {
                  <tr>
                    <td nowrap title="<?=@$Tov14_obs?>"><?=@$Lov14_obs?></td>
                    <td colspan="5"> 
-                     <?
+                     <?php
                        db_textarea('ov14_obs',3,68,$Iov14_obs,true,'text',$db_opcao,"");
                      ?>
                    </td>
@@ -547,7 +547,7 @@ if  ( $db_opcao == 1 ) {
         <table>
           <tr>
             <td id="idAnexaProcessoAncora">
-              <?
+              <?php
                 db_ancora('<b>Código do Processo:</b>','js_pesquisaProcesso(true);',$db_opcao,'');
               ?>
             </td>
@@ -555,7 +555,7 @@ if  ( $db_opcao == 1 ) {
               <b>Código do Processo:</b>
             </td>            
             <td>
-              <?
+              <?php
                 db_input('ov09_protprocesso',10,$Iov09_protprocesso,true,'text',$db_opcao,"onChange='js_pesquisaProcesso(false);'"); 
                 db_input('requerprocesso',40,'',true,'text',3,'');
               ?>
@@ -589,7 +589,7 @@ if  ( $db_opcao == 1 ) {
   </tr>
 </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -1340,7 +1340,7 @@ if  ( $db_opcao == 1 ) {
   }  
   
   function js_novoAtendimento(sTipo){
-	  <?
+	  <?php
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao='+sTipo;";
 	  ?>
   }
@@ -2539,7 +2539,7 @@ if  ( $db_opcao == 1 ) {
 	        }
 	      );  
   }
-  <?
+  <?php
     if ( $db_opcao == 2 || (isset($lAlteracao) && $lAlteracao)) {
     	echo "js_pesquisaAtendimento();";
     }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $clrotulo->label("ov02_cnpjcpf");
               <b>Código CGM:</b>
             </td>
             <td> 
-              <?
+              <?php
     		       db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",4,"");
 		         ?>
             </td>
@@ -73,7 +73,7 @@ $clrotulo->label("ov02_cnpjcpf");
               <b>Código Cidadão:</b>
             </td>
             <td> 
-              <?
+              <?php
                db_input("ov02_sequencial",10,$Iov02_sequencial,true,"text",4,"");
              ?>
             </td>            
@@ -83,7 +83,7 @@ $clrotulo->label("ov02_cnpjcpf");
               <b>CPF/CNPJ:</b>
             </td>
             <td> 
-              <?
+              <?php
                db_input("ov02_cnpjcpf",10,$Iov02_cnpjcpf,true,"text",4,"");
              ?>
             </td>            
@@ -93,7 +93,7 @@ $clrotulo->label("ov02_cnpjcpf");
               <b>Nome:</b>
             </td>
             <td> 
-              <?
+              <?php
 		            db_input("ov02_nome",50,$Iov02_nome,true,"text",4,"");
 		          ?>
             </td>
@@ -113,7 +113,7 @@ $clrotulo->label("ov02_cnpjcpf");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
        $sWhereCGM      = " 1=1 ";
        $sWhereCidadao  = "     ov02_ativo is true  ";

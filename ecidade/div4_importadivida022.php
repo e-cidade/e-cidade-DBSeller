@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -286,7 +286,7 @@ function js_submit_form(){
   		<input name="pesquisa" type="button"  disabled  value="Pesquisa" onclick="js_submit_form();" style="margin-top: 20px;">
 	  </form>
 </div>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -363,10 +363,10 @@ if ( isset($tipor) && isset($tipdes) &&
   $numpar  = "";
   $receita = "";
   $or      = "and ( ";
-  $info    = split('#',$chaves);
+  $info    =explode('#',$chaves);
   for($w=0;$w<count($info);$w++){
 
-    $dados   = split('-',$info[$w]);
+    $dados   =explode('-',$info[$w]);
     $numpre  = $dados[0];
     $numpar  = $dados[1];
     $receita = $dados[2];

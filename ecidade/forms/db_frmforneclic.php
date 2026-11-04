@@ -293,7 +293,7 @@ if(isset($db_opcaoal)){
   }
   function js_preenchepesquisa(chave){
     db_iframe_liclicita.hide();
-    <?
+    <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
     ?>
   }

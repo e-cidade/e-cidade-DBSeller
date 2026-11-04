@@ -27,16 +27,16 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Agendamento\Processamento;
 
-use ECidade\Configuracao\Instituicao\Model\Instituicao;
+use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
-use DBPessoal;
-use stdClass;
-use ServidorRepository;
 use ParameterException;
+use ServidorRepository;
 use DBCompetencia;
-use ParametrosPessoalRepository;
+use DBPessoal;
+use Exception;
+use stdClass;
 
 /**
  * Class PagamentosRendimentosTrabalho
@@ -47,7 +47,6 @@ class ExposicaoRisco extends ProcessamentoAbstract implements ProcessamentoInter
     private $cgm;
     private $mes;
     private $ano;
-
 
     /**
      * @param integer $mes
@@ -79,28 +78,50 @@ class ExposicaoRisco extends ProcessamentoAbstract implements ProcessamentoInter
     public function processar()
     {
         ini_set("memory_limit", "1024M");
-        $alteracao = false;
+        $alteracao = true;
+        $dados = new stdClass();
+
+        if (!empty($this->selecao)) {
+            $this->ano = CompetenciaHelper::get()->getAno();
+            $this->mes = CompetenciaHelper::get()->getMes();
+
+            try {
+                $this->servidores = ServidorRepository::getServidoresBySelecao(
+                    $this->ano,
+                    $this->mes,
+                    $this->selecao
+                );
+            } catch (Exception $e) {
+                throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
+            }
+        }
+
+        if (!empty($this->servidores) && sizeof($this->servidores) > 0) {
+            $this->ano = CompetenciaHelper::get()->getAno();
+            $this->mes = CompetenciaHelper::get()->getMes();
+        }
 
         if (empty($this->ano) || empty($this->mes)) {
             throw new ParameterException("Ano ou mês não informados.");
         }
 
-        $dados = new stdClass();
         $competencia = DBCompetencia::folha();
 
-        $instituicao = Instituicao::fromState(["numcgm" => $this->cgm]);
         if (sizeof($this->servidores) == 0) {
             $dados->servidores =
                 ServidorRepository::getServidoresPorCompetencia($competencia->getAno(), $competencia->getMes());
         } else {
             $dados->servidores = $this->servidores;
         }
-        // Buscamos os servidores da competencia atual
-        // caso nao seja passado por parametro nenhum servidor
+
+        /**
+         * Buscamos os servidores da competencia atual
+         * caso nao seja passado por parametro nenhum servidor
+         */
+
         $dados->inscricao_empregador = \CgmRepository::buscarCNPJEmpregador($this->cgm);
         $dados->ano = $this->ano;
         $dados->mes = $this->mes;
-
 
         $formatter = FormatterFactory::get(Tipo::S2240);
         $dadosPreenchimentoEmpregador = $formatter->formatar($dados);

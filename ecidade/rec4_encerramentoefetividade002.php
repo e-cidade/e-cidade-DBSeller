@@ -137,11 +137,9 @@ function buscarServidoresProcessar($oPeriodo, Instituicao $instituicao, $aMatric
         $sWhereServidoresProcessar .= " AND rh197_matricula IN (". implode(',', $aMatriculas) .")";
     }
 
-    // Comentar 3 linhas para retirar filtro para JEAN
-    // $sWhereServidoresProcessar.= " and rh197_matricula in ( select rh02_regist from rhpessoalmov ";
-    // $sWhereServidoresProcessar.= "       inner join rhpeslocaltrab on rh56_seqpes = rh02_seqpes where rh02_instit = ".db_getsession('DB_instit');
-    // $sWhereServidoresProcessar.= " and rh02_anousu = ".db_anofolha()." and rh02_mesusu = ".db_mesfolha()." and rh56_localtrab = 181158 ) ";
-    // Fim Linhas JEAN
+    $sWhereServidoresProcessar.= " and rh197_matricula in ( select rh02_regist from rhpessoalmov ";
+    $sWhereServidoresProcessar.= "       inner join rhpeslocaltrab on rh56_seqpes = rh02_seqpes where rh02_instit = ".db_getsession('DB_instit');
+    $sWhereServidoresProcessar.= " and rh02_anousu = ".DBPessoal::getAnoFolha()." and rh02_mesusu = ".DBPessoal::getMesFolha()." ) ";
 
     $sSqlServidoresProcessar   = $oDaoServidoresProcessar->sql_query_file(null, "distinct rh197_matricula as matricula", null, $sWhereServidoresProcessar);
     $rsServidoresProcessar     = db_query($sSqlServidoresProcessar);

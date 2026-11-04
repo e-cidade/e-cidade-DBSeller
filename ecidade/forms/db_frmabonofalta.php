@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed06_i_codigo");
        <?=@$Led80_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed80_i_codigo',10,$Ied80_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted80_i_diarioavaliacao?>">
-       <?
+       <?php
        db_ancora(@$Led80_i_diarioavaliacao,"js_pesquisaed80_i_diarioavaliacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed80_i_diarioavaliacao',10,$Ied80_i_diarioavaliacao,true,'text',$db_opcao," onchange='js_pesquisaed80_i_diarioavaliacao(false);'")
 ?>
-       <?
+       <?php
 db_input('ed72_i_codigo',10,$Ied72_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted80_i_justificativa?>">
-       <?
+       <?php
        db_ancora(@$Led80_i_justificativa,"js_pesquisaed80_i_justificativa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed80_i_justificativa',10,$Ied80_i_justificativa,true,'text',$db_opcao," onchange='js_pesquisaed80_i_justificativa(false);'")
 ?>
-       <?
+       <?php
 db_input('ed06_i_codigo',10,$Ied06_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed06_i_codigo',10,$Ied06_i_codigo,true,'text',3,'')
        <?=@$Led80_i_numfaltas?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed80_i_numfaltas',10,$Ied80_i_numfaltas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_abonofalta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

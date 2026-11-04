@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -68,28 +68,28 @@ if (isset($opcao) && $opcao=="alterar") {
    <?=@$Led267_i_codigo?>
   </td>
   <td>
-   <?db_input('ed267_i_codigo',10,$Ied267_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed267_i_codigo',10,$Ied267_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted267_i_turmaac?>">
-   <?db_ancora(@$Led267_i_turmaac,"",3);?>
+   <?php db_ancora(@$Led267_i_turmaac,"",3);?>
   </td>
   <td>
-   <?db_input('ed267_i_turmaac',10,$Ied267_i_turmaac,true,'text',3,"")?>
-   <?db_input('ed268_c_descr',50,@$Ied268_c_descr,true,'text',3,'')?>
+   <?php db_input('ed267_i_turmaac',10,$Ied267_i_turmaac,true,'text',3,"")?>
+   <?php db_input('ed268_c_descr',50,@$Ied268_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted267_i_censoativcompl?>">
-   <?db_ancora(@$Led267_i_censoativcompl,"js_pesquisaed267_i_censoativcompl(true);",$db_opcao);?>
+   <?php db_ancora(@$Led267_i_censoativcompl,"js_pesquisaed267_i_censoativcompl(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed267_i_censoativcompl',10,$Ied267_i_censoativcompl,true,'text',$db_opcao," onchange='js_pesquisaed267_i_censoativcompl(false);'")?>
-   <?db_input('ed133_c_descr',80,@$Ied133_c_descr,true,'text',3,'')?>
+   <?php db_input('ed267_i_censoativcompl',10,$Ied267_i_censoativcompl,true,'text',$db_opcao," onchange='js_pesquisaed267_i_censoativcompl(false);'")?>
+   <?php db_input('ed133_c_descr',80,@$Ied133_c_descr,true,'text',3,'')?>
   </td>
  </tr>
- <?
+ <?php
  if(isset($ed274_i_codigo) && $ed274_i_codigo!=""){
   $visible = "visible";
  }else{
@@ -103,8 +103,8 @@ if (isset($opcao) && $opcao=="alterar") {
    <?=@$Led274_c_nome?>
   </td>
   <td>
-   <?db_input('ed274_i_codigo',10,@$Ied274_i_codigo,true,'hidden',$db_opcao,"")?>
-   <?db_input('ed274_c_nome',70,@$Ied274_c_nome,true,'text',$db_opcao,"")?>
+   <?php db_input('ed274_i_codigo',10,@$Ied274_i_codigo,true,'hidden',$db_opcao,"")?>
+   <?php db_input('ed274_c_nome',70,@$Ied274_c_nome,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -114,7 +114,7 @@ if (isset($opcao) && $opcao=="alterar") {
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
+  <?php
    $campos = "ed267_i_codigo,
               ed267_i_turmaac,
               ed268_c_descr,

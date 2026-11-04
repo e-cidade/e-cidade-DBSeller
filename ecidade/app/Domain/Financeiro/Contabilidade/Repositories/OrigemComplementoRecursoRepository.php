@@ -3,6 +3,7 @@
 
 namespace App\Domain\Financeiro\Contabilidade\Repositories;
 
+use App\Domain\Financeiro\Orcamento\Models\FonteRecurso;
 use App\Domain\Financeiro\Orcamento\Models\Recurso;
 use Carbon\Carbon;
 use Exception;
@@ -32,18 +33,18 @@ class OrigemComplementoRecursoRepository
     }
 
     /**
-     * @param Recurso[]|\Illuminate\Database\Eloquent\Collection $recursos
+     * @param FonteRecurso[]|\Illuminate\Database\Eloquent\Collection $recursos
      * @return OrigemComplementoRecursoRepository
      */
     public function scopeRecursosDespesa($recursos)
     {
-        $idsRecurso = $recursos->map(function (Recurso $recurso) {
-            return $recurso->getCodigo();
+        $idsRecurso = $recursos->map(function (FonteRecurso $recurso) {
+            return $recurso->o15_codigo;
         })->toArray();
 
-        $recursos = implode(', ', $idsRecurso);
+        $codigos = implode(', ', $idsRecurso);
 
-        $this->scopes['recursos'] = "(o206_recurso in ({$recursos}) or o58_codigo in ({$recursos}))";
+        $this->scopes['recursos'] = "(o206_recurso in ({$codigos}) or o58_codigo in ({$codigos}))";
         return $this;
     }
 
@@ -137,14 +138,16 @@ class OrigemComplementoRecursoRepository
                 join conlancam on conlancam.c70_codlan = conlancamrec.c74_codlan
                 join conlancaminstit on conlancaminstit.c02_codlan = conlancam.c70_codlan
                 join orcreceita on orcreceita.o70_anousu = conlancamrec.c74_anousu
-                		       and orcreceita.o70_codrec = conlancamrec.c74_codrec
+                	 and orcreceita.o70_codrec = conlancamrec.c74_codrec
                 join orctiporec on orctiporec.o15_codigo = orcreceita.o70_codigo
                 join orcfontes on orcfontes.o57_codfon = orcreceita.o70_codfon
-                      		  and orcfontes.o57_anousu = orcreceita.o70_anousu
+                     and orcfontes.o57_anousu = orcreceita.o70_anousu
                 join conlancamcomplementorecurso on o201_codlan = c70_codlan
-
+                left join condataconf on condataconf.c99_instit = c02_instit
+                          and condataconf.c99_anousu = c70_anousu
           where {$where}
         ";
+
 
         $rs = db_query($sql);
         if (pg_num_rows($rs) === 0) {
@@ -166,8 +169,8 @@ class OrigemComplementoRecursoRepository
 
     public function scopeRecursosReceita($recursos)
     {
-        $idsRecurso = $recursos->map(function (Recurso $recurso) {
-            return $recurso->getCodigo();
+        $idsRecurso = $recursos->map(function (FonteRecurso $recurso) {
+            return $recurso->o15_codigo;
         })->toArray();
 
         $recursos = implode(', ', $idsRecurso);
@@ -202,7 +205,7 @@ class OrigemComplementoRecursoRepository
     public function scopeValidaEncerramentoContabil()
     {
         $this->scopes['encerramento'] = "
-            conlancam.c70_data > (select max(c99_data) from condataconf where c99_instit = c02_instit)
+           (case when c99_data is not null then conlancam.c70_data > c99_data else true end)
         ";
         return $this;
     }

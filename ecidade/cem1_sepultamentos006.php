@@ -33,9 +33,9 @@ require_once(modification("classes/db_sepultamentos_classe.php"));
 require_once(modification("classes/db_renovacoes_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clsepultamentos = new cl_sepultamentos;
 $clrenovacoes 	 = new cl_renovacoes;
@@ -160,7 +160,7 @@ if (isset($alterar) && !$lErro) {
   </div>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) && !$lErro) {
 
   if($clsepultamentos->erro_status == "0") {
@@ -182,11 +182,23 @@ if(isset($alterar) && !$lErro) {
 
     db_msgbox($clsepultamentos->erro_msg);
     echo "<script>";
-    echo " parent.document.formaba.a2.disabled=true;";
+    echo " parent.document.formaba.a2.disabled=false;";
     echo " parent.document.formaba.a3.disabled=false;";
     echo " (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='cem1_sepultamentos003.php?db_opcao=2&sepultamento={$cm01_i_codigo}';";
+
+    if(isset($db_opcao) && $db_opcao != 2){
     echo " parent.mo_camada('a3'); ";
+    }
+
     echo "</script>";
   }
 }
+
+
+echo "<script>";
+echo " parent.document.formaba.a2.disabled=false;";
+echo " parent.document.formaba.a3.disabled=false;";
+echo " (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='cem1_sepultamentos003.php?db_opcao=2&sepultamento={$cm01_i_codigo}';";
+echo "</script>";
+
 ?>

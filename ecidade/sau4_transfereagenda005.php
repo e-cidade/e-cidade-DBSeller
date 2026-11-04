@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ a:active {
   font-size: 11;
   color: darkblue;
   background-color:#aacccc ;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
   font-weight: bold;
 }
 .corpo {
@@ -71,7 +71,7 @@ a:active {
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 
-<?
+<?php
 db_postmemory($HTTP_POST_VARS);
 
 
@@ -111,7 +111,7 @@ $clagendamentos  = new cl_agendamentos_ext;
 		<td class='cabec' align="center">Código</td>
 		<td class='cabec' align="center">Para Paciente</td>
 	</tr>
-<?
+<?php
 
 $res_totalficha = $clagendamentos->sql_record("select fc_totalagendado('$ano/$mes/$dia',$sd30_i_codigo2);");
 $obj_totalficha = db_utils::fieldsMemory($res_totalficha, 0 );
@@ -156,7 +156,7 @@ if( $arr_totalficha[6] > 0 ){
 					<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$x[$xx][5]?></td>
 					<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$x[$xx][6]?></td>
 				</tr>
-				<?				
+				<?php 			
 			}
 			echo "<script>
 				 for (i=0;i<parent.document.form1.elements.length;i++)

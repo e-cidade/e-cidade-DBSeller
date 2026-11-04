@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("z01_nome");
           <?=@$Lt30_codigo?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t30_codigo',8,$It30_codigo,true,'text',3,"")
           ?>
         </td>
@@ -50,22 +50,22 @@ $clrotulo->label("z01_nome");
           <?=@$Lt30_descr?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t30_descr',40,$It30_descr,true,'text',$db_opcao,"")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt30_depto?>">
-          <?
+          <?php
             db_ancora(@$Lt30_depto,"js_pesquisat30_depto(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t30_depto',5,$It30_depto,true,'text',$db_opcao," onchange='js_pesquisat30_depto(false);'")
           ?>
-          <?
+          <?php
             db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
           ?>
         </td>
@@ -75,7 +75,7 @@ $clrotulo->label("z01_nome");
           <?=@$Lt30_ativo?>
         </td>
         <td> 
-          <?
+          <?php
             $x = array('t'=>'Sim','f'=>'Não');
             db_select('t30_ativo',$x,true,$db_opcao,"");
           ?>
@@ -83,15 +83,15 @@ $clrotulo->label("z01_nome");
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt30_numcgm?>">
-          <?
+          <?php
             db_ancora(@$Lt30_numcgm,"js_pesquisat30_numcgm(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t30_numcgm',10,$It30_numcgm,true,'text',$db_opcao," onchange='js_pesquisat30_numcgm(false);'")
           ?>
-          <?
+          <?php
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
           ?>
         </td>
@@ -153,7 +153,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_departdiv.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

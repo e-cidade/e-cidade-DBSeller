@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -80,7 +80,7 @@ $clserieequiv = new cl_serieequiv;
   </td>
  </tr>
 </table>
-<?
+<?php
 if(!isset($incluir)){
 ?>
 <html>
@@ -103,7 +103,7 @@ if(!isset($incluir)){
    <br><br>
   </td>
  </tr>
- <?
+ <?php
  $result_cod = $clmatricula->sql_record($clmatricula->sql_query("","ed60_i_aluno,ed221_i_serie as etapaorigem",""," ed60_i_codigo = $matricula"));
  db_fieldsmemory($result_cod,0);
  $result_equivorig = $clserieequiv->sql_record($clserieequiv->sql_query("","ed234_i_serieequiv as equivorig",""," ed234_i_serie = $etapaorigem"));
@@ -131,7 +131,7 @@ if(!isset($incluir)){
    <b>TURMA ATUAL: ( <?=pg_result($result1,0,'ed57_c_descrdest')?>&nbsp;&nbsp;&nbsp;<?=pg_result($result1,0,'ed11_c_descrdest')?> - Escola: <?=pg_result($result1,0,'ed57_i_escoladest')?> )</b>
   </td>
  </tr>
- <?
+ <?php
  $regmarcadas = "";
  $veraprovnulo = "";
  for($t=0;$t<$linhas;$t++){
@@ -145,7 +145,7 @@ if(!isset($incluir)){
    <td width="33%">
    <table border="1" cellspacing="0" cellpadding="0">
     <tr>
-     <?
+     <?php
      $result_diario = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed09_c_abrev,ed72_i_valornota,ed72_c_valorconceito,ed72_t_parecer,ed37_c_tipo","ed41_i_sequencia ASC"," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed09_c_somach = 'S'"));
      if($cldiarioavaliacao->numrows==0){
       echo "<td width='160px' style='background:#f3f3f3;'>Nenhum registro.</td>";
@@ -174,7 +174,7 @@ if(!isset($incluir)){
    </td>
    <td align="center">--></td>
    <td width="15%">
-    <?
+    <?php
     $temreg = false;
     for($w=0;$w<$linhas1;$w++){
      db_fieldsmemory($result1,$w);
@@ -189,7 +189,7 @@ if(!isset($incluir)){
      ?>
       <input name="regenciadestino" type="hidden" value="<?=$regenciadestino?>" size="10" readonly style="width:75px">
       <input name="regdestinodescr" type="text" value="<?=$regdestinodescr?>" size="30" readonly style="width:140px">
-     <?
+     <?php
     }else{
      $sql2 = "select ed59_i_codigo as regsobra,trim(ed232_c_descr) as descrsobra
               from regencia
@@ -208,7 +208,7 @@ if(!isset($incluir)){
      ?>
      <select name="regenciadestino" style="visibility:hidden;position:absolute;padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminareg(this.value,<?=$t?>)">
      <option value=""></option>
-     <?
+     <?php
      if($linhas==1){
       echo "<option value='0'>TODAS</option>";
      }
@@ -220,7 +220,7 @@ if(!isset($incluir)){
      </select>
      <select name="regdestinodescr" style="padding:0px;width:140px;height:16px;font-size:12px;" onchange="js_eliminareg(this.value,<?=$t?>)">
      <option value=""></option>
-     <?
+     <?php
      if($linhas==1){
       echo "<option value='0'>TODAS</option>";
      }
@@ -232,14 +232,14 @@ if(!isset($incluir)){
      </select>
      <input type="hidden" name="combo" value="<?=$t?>">
      <input type="hidden" name="comboselect<?=$t?>" value="">
-     <?
+     <?php
     }
     ?>
   </td>
   <td width="33%">
    <table border="1" cellspacing="0" cellpadding="0">
     <tr>
-     <?
+     <?php
      $result_diario = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed09_c_abrev,ed72_i_valornota,ed72_c_valorconceito,ed72_t_parecer,ed37_c_tipo","ed41_i_sequencia ASC"," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = ".(!isset($regenciadestino)?0:$regenciadestino)." AND ed09_c_somach = 'S'"));
      if($cldiarioavaliacao->numrows==0){
       echo "<td width='160px' style='background:#f3f3f3;'>Nenhum registro.</td>";
@@ -266,7 +266,7 @@ if(!isset($incluir)){
    </table>
   </td>
   </tr>
-  <?
+  <?php
  }
  ?>
  </table>
@@ -281,7 +281,7 @@ if(!isset($incluir)){
   </td>
   <td></td>
  </tr>
- <?
+ <?php
  $result = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_codigo,ed09_i_codigo,ed09_c_descr,ed37_c_tipo,ed37_i_menorvalor,ed37_i_maiorvalor","ed41_i_sequencia"," ed41_i_procedimento = $procorigem"));
  $linhas = $clprocavaliacao->numrows;
  $result1 = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_codigo as codaval,ed09_i_codigo as codperaval,ed09_c_descr as descraval,ed37_c_tipo as tipodest,ed37_i_menorvalor as menordest,ed37_i_maiorvalor as maiordest","ed41_i_sequencia"," ed41_i_procedimento = $procdestino"));
@@ -297,7 +297,7 @@ if(!isset($incluir)){
    </td>
    <td align="center">--></td>
    <td>
-    <?
+    <?php
     $temper = false;
     for($w=0;$w<$linhas1;$w++){
      db_fieldsmemory($result1,$w);
@@ -312,7 +312,7 @@ if(!isset($incluir)){
      ?>
       <input name="periododestino" type="text" value="<?=$periododestino?>" size="10" readonly style="width:75px">
       <input name="perdestinodescr" type="text" value="<?=$perdestinodescr?>" size="30" readonly style="width:180px">
-     <?
+     <?php
     }else{
      $sql2 = "select ed41_i_codigo as persobra,ed09_c_descr as descrsobra,ed37_c_tipo as tipodest,ed37_i_menorvalor as menordest,ed37_i_maiorvalor as maiordest
               from procavaliacao
@@ -338,7 +338,7 @@ if(!isset($incluir)){
      ?>
      <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminaper(this.value,<?=$t?>)">
      <option value=""></option>
-     <?
+     <?php
      for($w=0;$w<$linhas2;$w++){
       db_fieldsmemory($result2,$w);
        echo "<option value='$persobra'>$persobra</option>";
@@ -347,7 +347,7 @@ if(!isset($incluir)){
      </select>
      <select name="perdestinodescr" style="padding:0px;width:180px;height:16px;font-size:12px;" onchange="js_eliminaper(this.value,<?=$t?>)">
      <option value=""></option>
-     <?
+     <?php
      for($w=0;$w<$linhas2;$w++){
       db_fieldsmemory($result2,$w);
        $tipoavaliacao2 = $tipodest.($tipodest=='NOTA'?' ('.$menordest.' a '.$maiordest.')':'');
@@ -357,13 +357,13 @@ if(!isset($incluir)){
      </select>
      <input type="hidden" name="pcombo" value="<?=$t?>">
      <input type="hidden" name="pcomboselect<?=$t?>" value="">
-     <?
+     <?php
     }
     ?>
   </td>
   <td></td>
   </tr>
-  <?
+  <?php
  }
  ?>
  <tr>
@@ -379,14 +379,14 @@ if(!isset($incluir)){
 <form>
 </body>
 </html>
-<?
+<?php
 if($veraprovnulo==""){
  ?>
  <script>
   document.form1.incluir.disabled = true;
   alert("Aluno não contém nenhum aproveitamento na turma de origem.\nImportação não permitida.");
  </script>
- <?
+ <?php
 }
 ?>
 <script>
@@ -618,7 +618,7 @@ function js_processar(){
  }
 }
 </script>
-<?
+<?php
 }
 if(isset($incluir)){
 
@@ -811,13 +811,13 @@ if(isset($incluir)){
    }
   }
   db_fim_transacao();
-  ?><script>document.getElementById("tab_aguarde").style.visibility = "hidden";</script><?
+  ?><script>document.getElementById("tab_aguarde").style.visibility = "hidden";</script><?php
   if($msg_conversao!=""){
    $mensagem = "ATENÇÃO!\\n\\n Caso o aluno tenha algum aproveitamento nos períodos abaixo relacionados, os mesmos deverão ser convertidos no Diário de Classe, devido a forma de avaliação da turma de origem ser diferente da turma de destino:\\n\\n$msg_conversao";
    db_msgbox($mensagem);
   }
   db_msgbox("Importação realizada com sucesso!");
-  ?><script>parent.location.href = "edu4_aprovtransfescolafora001.php";</script><?
+  ?><script>parent.location.href = "edu4_aprovtransfescolafora001.php";</script><?php
 }
 ?>
 <script>document.getElementById("tab_aguarde").style.visibility = "hidden";</script>

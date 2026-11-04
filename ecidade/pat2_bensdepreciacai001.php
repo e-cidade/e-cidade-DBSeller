@@ -66,7 +66,7 @@ $clclabens->rotulo->label();
 	<fieldset style="width: 250px;">
 		<legend><b>Relatório de Depreciações</b></legend>
     
-    <?
+    <?php
             $oAuxDpto->cabecalho      = "<strong>Departamento</strong>";
             $oAuxDpto->codigo         = "coddepto"; //chave de retorno da func
             $oAuxDpto->descr          = "descrdepto";   //chave de retorno
@@ -95,12 +95,12 @@ $clclabens->rotulo->label();
             <table>
               <tr rowrap="nowrap" title="<?=@$Tt64_class?>" style="text-align:left;">
                 <td >
-                  <?
+                  <?php
                     db_ancora("<b>De:</b> ","js_pesquisaClasseInicial(true);",1);
                   ?>
                 </td>
                 <td nowrap="nowrap">
-                  <?
+                  <?php
                     db_input('t64_classInicio',10,$It64_class,true,'text',3,'');
                     db_input('t64_descrInicio',30,$It64_descr,true,'text',3,'');
                   ?>
@@ -108,12 +108,12 @@ $clclabens->rotulo->label();
               </tr>
               <tr>
                 <td style="text-align:right;">
-                  <?
+                  <?php
                     db_ancora("<b>até</b>","js_pesquisaClasseFinal(true);",1);
                   ?>
                 </td>
                 <td nowrap="nowrap">
-                  <?
+                  <?php
                     db_input('t64_classFinal',10,$It64_class,true,'text',3,'');
                     db_input('t64_descrFinal',30,$It64_descr,true,'text',3,'');
                   ?>
@@ -129,7 +129,7 @@ $clclabens->rotulo->label();
           <strong>Período:</strong>
         </td>
         <td align="left" nowrap>
-          <? 
+          <?php 
             db_inputdata('periodoInicial',null, null, null, true,'text',1,"");
           ?>
         </td>
@@ -137,7 +137,7 @@ $clclabens->rotulo->label();
           <strong>até:</strong>
         </td>
         <td>
-          <?
+          <?php
             db_inputdata('periodoFinal',null, null, null, true,'text',1,"");
           ?>
         </td>  
@@ -147,7 +147,7 @@ $clclabens->rotulo->label();
           <strong>Tipo de Impressão:</strong>
         </td>
         <td colspan="4">
-          <?
+          <?php
             $aTipoImpressao = array("S"=>"Sintético","A"=>"Análitico"); 
             db_select("impressao", $aTipoImpressao, true, 1);
           ?>

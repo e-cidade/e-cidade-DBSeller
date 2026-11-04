@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clvistinscr->rotulo->label("y71_inscr");
               <?=$Ly71_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y71_codvist",10,$Iy71_codvist,true,"text",4,"","chave_y71_codvist");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clvistinscr->rotulo->label("y71_inscr");
               <?=$Ly71_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y71_inscr",10,$Iy71_inscr,true,"text",4,"","chave_y71_inscr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clvistinscr->rotulo->label("y71_inscr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistinscr.php")==true){
@@ -118,12 +118,12 @@ $clvistinscr->rotulo->label("y71_inscr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clleis->rotulo->label();
        <?=@$Lh08_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('h08_numero',6,$Ih08_numero,true,'text',$db_opcao,"");
 db_input('h08_codlei',6,$Ih08_codlei,true,'hidden',3,"");
 db_input('anos_perc_inf',6,0,true,'hidden',3,"");
@@ -48,7 +48,7 @@ db_input('anos_perc_inf',6,0,true,'hidden',3,"");
        <?=@$Lh08_tipo?>
     </td>
     <td>
-<?
+<?php
 $x = Array("A"=>"Avanço", "G"=>"Gratificação", "C"=>"Cargos", "O"=>"Outros");
 db_select('h08_tipo',$x,true,$db_opcao,"");
 ?>
@@ -59,7 +59,7 @@ db_select('h08_tipo',$x,true,$db_opcao,"");
        <?=@$Lh08_dtlanc?>
     </td>
     <td nowrap> 
-<?
+<?php
 if((!isset($h08_dtlanc) || (isset($h08_dtlanc) && trim($h08_dtlanc) == "")) && (!isset($h08_dtlanc_dia) || (isset($h08_dtlanc_dia) && trim($h08_dtlanc_dia) == ""))){
   $h08_dtlanc_dia = date("d",db_getsession("DB_datausu"));
   $h08_dtlanc_mes = date("m",db_getsession("DB_datausu"));
@@ -74,7 +74,7 @@ db_inputdata('h08_dtlanc',@$h08_dtlanc_dia,@$h08_dtlanc_mes,@$h08_dtlanc_ano,tru
        <?=@$Lh08_dtini?>
     </td>
     <td nowrap> 
-<?
+<?php
 db_inputdata('h08_dtini',@$h08_dtini_dia,@$h08_dtini_mes,@$h08_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_inputdata('h08_dtini',@$h08_dtini_dia,@$h08_dtini_mes,@$h08_dtini_ano,true,'t
        <?=@$Lh08_dtfim?>
     </td>
     <td nowrap> 
-<?
+<?php
 db_inputdata('h08_dtfim',@$h08_dtfim_dia,@$h08_dtfim_mes,@$h08_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -212,7 +212,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_leis.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

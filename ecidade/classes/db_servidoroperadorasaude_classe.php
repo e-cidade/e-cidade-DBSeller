@@ -72,14 +72,7 @@ class cl_servidoroperadorasaude
     {
         $this->atualizacampos();
         if ($this->rh222_valor == null) {
-            $this->erro_sql = " Campo Valor não informado.";
-            $this->erro_campo = "rh222_valor";
-            $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "",
-                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
-            $this->erro_status = "0";
-            return false;
+            $this->rh222_valor = 0;
         }
         if ($this->rh222_rubrica == null) {
             $this->erro_sql = " Campo Rubrica não informado.";
@@ -272,14 +265,7 @@ class cl_servidoroperadorasaude
             $sql .= $virgula . " rh222_sequencial = $this->rh222_sequencial ";
             $virgula = ",";
             if (trim($this->rh222_sequencial) == null) {
-                $this->erro_sql = " Campo Sequencial não informado.";
-                $this->erro_campo = "rh222_sequencial";
-                $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "",
-                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
-                $this->erro_status = "0";
-                return false;
+                $this->rh222_sequencial = 0;
             }
         }
         if (trim($this->rh222_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh222_valor"])) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
 <table width="790" height="100%" border="0" cellpadding="0" cellspacing="0" align="center">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-<?  
+<?php  
       // Cria a janela para visualizacao de todas as matriculas cadastradas
       $VisualizacaoTodasMatCad = new janela("VisualizacaoTodasMatCad","");
 	  $VisualizacaoTodasMatCad->posX=1;
@@ -161,17 +161,17 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
 	  $VisualizacaoNomeBairro->mostrar();
   
 ?>
-<? include(modification("forms/db_frmconsultacadastro.php")); ?>
+<?php include(modification("forms/db_frmconsultacadastro.php")); ?>
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 
-<?
+<?php
 //$func_nome = new janela('func_nome','');
 //$func_nome ->posX=1;
 //$func_nome ->posY=20;

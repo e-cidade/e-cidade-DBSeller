@@ -1,7 +1,5 @@
-<?
+<?php
 if(!defined('DB_BIBLIOT')){
-
-  session_cache_limiter('none');
   session_start();
   require(modification("fpdf151/libs/db_stdlib.php"));
   require(modification("fpdf151/libs/db_conecta.php"));
@@ -45,15 +43,15 @@ class PDF extends FPDF {
 	if(strlen($nome) > 42)
 	  $TamFonteNome = 8;
 	else
-	  $TamFonteNome = 9;	
+	  $TamFonteNome = 9;
     $this->SetFont('Arial','BI',$TamFonteNome);
     $this->Text(33,9,$nome);
     $this->SetFont('Arial','I',8);
     $this->Text(33,14,trim(pg_result($dados,0,"ender")));
-    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));	
+    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));
     $this->Text(33,22,trim(pg_result($dados,0,"telef")));
     $this->Text(33,26,trim(pg_result($dados,0,"email")));
-    $this->Text(33,30,$url);	
+    $this->Text(33,30,$url);
 	//parametros
 //	$this->SetXY(108,3);
 //	$this->SetFillColor(235);
@@ -69,17 +67,17 @@ class PDF extends FPDF {
 //    $this->Text(179,15,"Hora:");
 //    $this->Text(179,24,"Login:");
         $Espaco = $this->w - 70 ;
-        $this->SetFont('Arial','',8);	
+        $this->SetFont('Arial','',8);
 //	$this->Text(140,6,@$GLOBALS["head1"]);
 	$this->Text($Espaco,6,@$GLOBALS["head1"]);
-	$this->Text($Espaco,9,@$GLOBALS["head2"]);	
-	$this->Text($Espaco,12,@$GLOBALS["head3"]);	
-	$this->Text($Espaco,15,@$GLOBALS["head4"]);	
-	$this->Text($Espaco,18,@$GLOBALS["head5"]);	
-	$this->Text($Espaco,21,@$GLOBALS["head6"]);	
-	$this->Text($Espaco,24,@$GLOBALS["head7"]);	
-	$this->Text($Espaco,27,@$GLOBALS["head8"]);	
-	$this->Text($Espaco,30,@$GLOBALS["head9"]);	
+	$this->Text($Espaco,9,@$GLOBALS["head2"]);
+	$this->Text($Espaco,12,@$GLOBALS["head3"]);
+	$this->Text($Espaco,15,@$GLOBALS["head4"]);
+	$this->Text($Espaco,18,@$GLOBALS["head5"]);
+	$this->Text($Espaco,21,@$GLOBALS["head6"]);
+	$this->Text($Espaco,24,@$GLOBALS["head7"]);
+	$this->Text($Espaco,27,@$GLOBALS["head8"]);
+	$this->Text($Espaco,30,@$GLOBALS["head9"]);
 	//$this->Ln(25);
 	$this->SetY(35);
   }
@@ -90,7 +88,7 @@ class PDF extends FPDF {
     //Position at 1.5 cm from bottom
     $this->SetFont('Arial','I',8);
     $this->SetY(-10);
-//    $this->Text(14,293,$url);	
+//    $this->Text(14,293,$url);
     $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
     $nome = substr($nome,strrpos($nome,"/")+1);
     $this->Cell(0,10,$nome.'     Emissor: '.@$GLOBALS["DB_login"].'     Exercício: '.db_getsession("DB_anousu").'    Data: '.date("d-m-Y - H:i:s"),"T",0,'C');

@@ -47,8 +47,8 @@ class cl_orcparamrelgrupo
     public $o112_descricao = null;
     // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 o112_sequencial = int4 = Código do grupo de relatório 
-                 o112_descricao = varchar(50) = Descrição 
+                 o112_sequencial = int4 = Código do grupo de relatório
+                 o112_descricao = varchar(50) = Descrição
                  ";
 
     /**
@@ -144,12 +144,12 @@ class cl_orcparamrelgrupo
             return false;
         }
         $sql = "insert into orcparamrelgrupo(
-                                       o112_sequencial 
-                                      ,o112_descricao 
+                                       o112_sequencial
+                                      ,o112_descricao
                        )
                 values (
-                                $this->o112_sequencial 
-                               ,'$this->o112_descricao' 
+                                $this->o112_sequencial
+                               ,'$this->o112_descricao'
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -441,7 +441,7 @@ class cl_orcparamrelgrupo
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_orcparamrelgrupo
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_orcparamrelgrupo
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_orcparamrelgrupo
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

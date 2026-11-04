@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ function js_rel(opcao){
   
     <td width='40%' align='right'><b>Entre:</b></td> 
     <td>
-<?
+<?php
   $result =  db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
   $numrows = pg_numrows($result);
   $arr = array();
@@ -103,7 +103,7 @@ function js_rel(opcao){
 	<option value="me">Menor</option>
       </select>
  <b> que </b>
-       <?
+       <?php
 db_input('valor',7,'4',true,'text',1);
        ?>
     </td>
@@ -153,7 +153,7 @@ db_input('valor',7,'4',true,'text',1);
   </table>
 </form>
 </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

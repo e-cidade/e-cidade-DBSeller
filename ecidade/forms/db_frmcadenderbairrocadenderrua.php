@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,35 +63,35 @@ if(isset($db_opcaoal)){
 <legend><b>Vincular Bairro</b></legend>
 
 <table border="0">
-<?
+<?php
 db_input('db87_sequencial',10,$Idb87_sequencial,true,'hidden',3,"")
 ?>
   <tr>
     <td nowrap title="<?=@$Tdb87_cadenderrua?>">
-       <?
+       <?php
        db_ancora(@$Ldb87_cadenderrua,"js_pesquisadb87_cadenderrua(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db87_cadenderrua',10,$Idb87_cadenderrua,true,'text', 3," onchange='js_pesquisadb87_cadenderrua(false);'")
 ?>
-       <?
+       <?php
 db_input('db74_descricao',40,$Idb74_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb87_cadenderbairro?>">
-       <?
+       <?php
        db_ancora(@$Ldb87_cadenderbairro,"js_pesquisadb87_cadenderbairro(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db87_cadenderbairro',10,$Idb87_cadenderbairro,true,'text',$db_opcao," onchange='js_pesquisadb87_cadenderbairro(false);'")
 ?>
-       <?
+       <?php
 db_input('db73_descricao',40,$Idb73_descricao,true,'text',3,'')
        ?>
     </td>
@@ -115,7 +115,7 @@ db_input('db73_descricao',40,$Idb73_descricao,true,'text',3,'')
  <table align=center>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("db87_sequencial"=>@$db87_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcadenderbairrocadenderrua->sql_query(null,"*","","db87_cadenderrua={$db87_cadenderrua}");

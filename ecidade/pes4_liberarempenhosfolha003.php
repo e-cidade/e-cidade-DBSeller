@@ -414,7 +414,7 @@ foreach ($aSiglas as $sSigla) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 
   db_app::load("scripts.js");
   db_app::load("prototype.js");
@@ -565,7 +565,7 @@ foreach ($aSiglas as $sSigla) {
                 <?=db_formatar($nTotalSlipLiquido - $nTotalDescontosSlip, 'f');?>
                </td>
                <td class='valores'>
-               <?
+               <?php
                echo db_formatar(abs(($nToTalFolhaBruto - $nToTalFolhaDesconto - $nTotalDescontoEmpenhado) -
                                 (($nTotalLiquidoEmpenhos - $nTotalDescontosEmpenhos) + 
                                 ($nTotalSlipLiquido - $nTotalDescontosSlip))),
@@ -579,7 +579,7 @@ foreach ($aSiglas as $sSigla) {
      </tr>
      <tr>
        <td colspan="4" align="center">
-         <?
+         <?php
            if (isset($oGet->lBotao)) {
              echo "<input  type='submit' value='{$sLabelBotao}'  name='{$sNameBotao}' onclick='return js_liberar()' {$sDisabled} />";
            }

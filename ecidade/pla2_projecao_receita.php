@@ -94,6 +94,16 @@ require_once modification("dbforms/db_funcoes.php");
                        </select>
                     </td>
                 </tr>
+                <tr id="linhaFiltroTipoPlano">
+                    <td><label for="ementario">Selecione o plano que deseja agrupar os dados:</label></td>
+                    <td>
+                        <select name="ementario" id="ementario">
+                            <option value="ecidade" checked>Plano e-Cidade</option>
+                            <option value="uniao">Plano União/Federação</option>
+                            <option value="estadual">Plano Estadual/Regional</option>
+                        </select>
+                    </td>
+                </tr>
                 <tr >
                     <td id="ctnInstituicao" colspan="2" style="font-weight: normal">
                         <input type="hidden" name="db_selinstit" id="db_selinstit" value="">
@@ -107,9 +117,14 @@ require_once modification("dbforms/db_funcoes.php");
         Emitir
     </button>
 
-    <button id="emitirConferenciaPorRecurso" type="button">
+    <button id="emitirConferenciaPorRecurso" type="button" style="margin-left: 2px">
         <i class="fas fa-print"></i>
         Emitir Compatibilidade de Recursos
+    </button>
+
+    <button id="emitirComDesdobramento" type="button" style="margin-left: 2px">
+        <i class="fas fa-print"></i>
+        Emitir com desdobramento de receita
     </button>
 </body>
 <?php db_menu() ?>
@@ -125,8 +140,11 @@ require_once modification("dbforms/db_funcoes.php");
     const inputAnoFinal = document.getElementById('ano_final');
     const natureza = document.getElementById('naturezaReceita');
     const agruparPorRecurso = document.getElementById('agruparPorRecurso');
+    const inputEmentario = document.getElementById('ementario')
+    const linhaFiltroTipoPlano = document.getElementById('linhaFiltroTipoPlano')
     const btnEmitir = document.getElementById('emitir');
     const btnEmitirConferenciaPorRecurso = document.getElementById('emitirConferenciaPorRecurso');
+    const btnEmitirComDesdobramento = document.getElementById('emitirComDesdobramento');
 
     var viewInstituicao = new DBViewInstituicao('viewInstituicao', $('ctnInstituicao'));
     viewInstituicao.show();
@@ -146,6 +164,14 @@ require_once modification("dbforms/db_funcoes.php");
         inputAnoFinal.value = planejamento.getPlano().pl2_ano_final;
     });
 
+    agruparPorRecurso.addEventListener('change', () => {
+        linhaFiltroTipoPlano.style.display = '';
+        inputEmentario.value = 'ecidade';
+
+        if (agruparPorRecurso.value == 1) {
+            linhaFiltroTipoPlano.style.display = 'none';
+        }
+    });
 
     const valida = () => {
         try {
@@ -173,7 +199,14 @@ require_once modification("dbforms/db_funcoes.php");
     };
 
     btnEmitir.addEventListener('click', () => {
+        emitir(0)
+    });
 
+    btnEmitirComDesdobramento.addEventListener('click', () => {
+        emitir(1)
+    });
+
+    function emitir(forcarDesdobramento) {
         if (!valida()) {
             return
         }
@@ -182,6 +215,8 @@ require_once modification("dbforms/db_funcoes.php");
         formData.append('planejamento_id', planejamento.getValue());
         formData.append('natureza', natureza.value);
         formData.append('agruparPorRecurso', agruparPorRecurso.value);
+        formData.append('ementario', inputEmentario.value);
+        formData.append('forcarDesdobramento', forcarDesdobramento);
         for (let codigo of viewInstituicao.getInstituicoesSelecionadas(true)) {
             formData.append('instituicoes[]', codigo);
         }
@@ -200,7 +235,7 @@ require_once modification("dbforms/db_funcoes.php");
             download.addFile(response.data.csv, "Projeção da receita - CSV");
             download.show();
         });
-    });
+    }
 
     btnEmitirConferenciaPorRecurso.addEventListener('click', () => {
 

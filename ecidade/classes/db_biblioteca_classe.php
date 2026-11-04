@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_biblioteca {
                  bi17_coddepto = int8 = Departamento
                  ";
    //funcao construtor da classe
-   function cl_biblioteca() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("biblioteca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_biblioteca {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi17_codigo = ($this->bi17_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["bi17_codigo"]:$this->bi17_codigo);
        $this->bi17_nome = ($this->bi17_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["bi17_nome"]:$this->bi17_nome);
@@ -77,7 +77,7 @@ class cl_biblioteca {
      }
    }
    // funcao para inclusao
-   function incluir ($bi17_codigo){
+   public function incluir ($bi17_codigo){
       $this->atualizacampos();
      if($this->bi17_nome == null ){
        $this->erro_sql = " Campo Nome nao Informado.";
@@ -176,7 +176,7 @@ class cl_biblioteca {
      return true;
    }
    // funcao para alteracao
-   function alterar ($bi17_codigo=null) {
+   public function alterar ($bi17_codigo=null) {
       $this->atualizacampos();
      $sql = " update biblioteca set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_biblioteca {
      }
    }
    // funcao para exclusao
-   function excluir ($bi17_codigo=null,$dbwhere=null) {
+   public function excluir ($bi17_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($bi17_codigo));
      }else{
@@ -334,7 +334,7 @@ class cl_biblioteca {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_biblioteca {
       }
      return $result;
    }
-   function sql_query ( $bi17_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $bi17_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_biblioteca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,10 +390,10 @@ class cl_biblioteca {
      }
      return $sql;
   }
-   function sql_query_file ( $bi17_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $bi17_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_biblioteca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_biblioteca {
   }
 
 
-  function buscaParametros( $bi17_codigo = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
+  public function buscaParametros( $bi17_codigo = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
 
     $sql  = "select {$campos} ";
     $sql .= "   from biblioteca ";

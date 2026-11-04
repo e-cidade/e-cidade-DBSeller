@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -147,6 +147,8 @@ $clrotulo->label("z01_numcgm");
 </table>
 </form>
 
+<script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
 
 <script type="text/javascript">
 
@@ -196,23 +198,50 @@ function js_GerarArquivo(){
   }  
   
     
-  var oObj           = new Object();  
-  oObj.aTabelas      = aTabelas;
-  oObj.aCodigoLinhas = aCodigos;
-  oObj.sDataini      = sDataini;
-  oObj.sDatafim      = sDatafim;
-  oObj.iCgm          = iCgm;
-  oObj.iFinalidade   = iFinalidade;
-  oObj.sNomeArquivo  = sNomeArquivo;
-  oObj.sMunic        = sMunic;
+  // var oObj           = new Object();  
+  // oObj.aTabelas      = aTabelas;
+  // oObj.aCodigoLinhas = aCodigos;
+  // oObj.sDataini      = sDataini;
+  // oObj.sDatafim      = sDatafim;
+  // oObj.iCgm          = iCgm;
+  // oObj.iFinalidade   = iFinalidade;
+  // oObj.sNomeArquivo  = sNomeArquivo;
+  // oObj.sMunic        = sMunic;
   
-  strJson = Object.toJSON(oObj);
+  // strJson = Object.toJSON(oObj);
     
-  js_OpenJanelaIframe('',
-                      'db_iframe_gerararquivos',
-                      'pes4_geraarquivosmanad.php?sStrJson='+strJson,
-                      'Processando arquivos',
-                      true);
+  // js_OpenJanelaIframe('',
+  //                     'db_iframe_gerararquivos',
+  //                     'pes4_geraarquivosmanad.php?sStrJson='+strJson,
+  //                     'Processando arquivos',
+  //                     true);
+
+  const formData = new FormData();
+        formData.append('aTabelas' , JSON.stringify(aTabelas))
+        formData.append('aCodigoLinhas' , JSON.stringify(aCodigos))
+        formData.append('sDataini' , sDataini)
+        formData.append('sDatafim' , sDatafim)
+        formData.append('iCgm' , iCgm)
+        formData.append('iFinalidade' , iFinalidade)
+        formData.append('sNomeArquivo' , sNomeArquivo)
+        formData.append('sMunic' , sMunic)
+        HttpClient.post('pes4_geraarquivosmanadnovo.php', {
+            body: formData,
+            reportMessage: 'Este procedimento pode ser lento. Aguarde! Processando dados ...'
+          })
+          .then(function(response) {
+
+            if (response.erro) {
+
+              alert(response.mensagem);
+              return false;
+            }
+            
+            var oDownload = new DBDownload();
+            oDownload.addFile(response.pathArquivo, response.descricao);
+            oDownload.show();
+            alert(response.mensagem);
+          });
 
 }
 

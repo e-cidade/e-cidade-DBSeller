@@ -1,7 +1,8 @@
-<?
+<?php
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -167,7 +168,7 @@ if(isset($alterar)){
  <tr>
   <td valign="top" bgcolor="#CCCCCC">
    <center>
-    <?include(modification("forms/db_frmdiarioavaliacaoobs.php"));?>
+    <?php include(modification("forms/db_frmdiarioavaliacaoobs.php")); ?>
    </center>
   </td>
  </tr>
@@ -177,14 +178,14 @@ if(isset($alterar)){
 <script>
  js_tabulacaoforms("form1","ed72_t_obs",true,1,"ed72_t_obs",true);
 </script>
-<?
+<?php
 if(isset($alterar)){
  ?>
  <script>
   parent.location.href = "edu1_diarioavaliacao001.php?regencia=<?=$codregatual?>&ed41_i_codigo=<?=$codperiodo?>"
   parent.db_iframe_obs.hide();
-  alert("Alteração efetuada com Sucesso");
+  alert("Alteraï¿½ï¿½o efetuada com Sucesso");
  </script>
- <?
+ <?php
 }
 ?>

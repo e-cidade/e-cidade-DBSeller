@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -83,7 +83,7 @@ if(isset($e60_numemp) && trim($e60_numemp) != ""){
 	$nh = 4;
 }else{
 	if(isset($e60_codemp) && $e60_codemp != "" ) {
-	  $arr = split("/",$e60_codemp);
+	  $arr =explode("/",$e60_codemp);
 	  if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 	  	$dbwhereEMP .= " e60_codemp =  ".$arr[0]." and e60_anousu = ".$arr[1];
 	  	$HEAD = "head".$nh;
@@ -104,7 +104,7 @@ $data2=0;
 
 if(strlen($data1) < 3){
   unset($data1);
-}  
+}
 if(strlen($data2) < 3){
   unset($data2);
 }
@@ -151,7 +151,7 @@ if(isset($e53_codord) && $e53_codord !=""){
 /*
 $sql = $clempempenho->sql_query_impconsulta(null, $campos, "pc01_codmater,e60_numemp", $dbwhereEMP." ".$and." e60_instit = ".db_getsession("DB_instit"));
 if((isset($dt1) && $dt1 != "") && (isset($dt2) && $dt2 != "")){
-	$sql = $clempempenho->sql_query_impconsulta(null, $campos, "pc01_codmater,e60_numemp", $dbwhereEMP." ".$and." e60_emiss between '".$dt1."' and '".$dt2."' and e60_instit = ".db_getsession("DB_instit"));	
+	$sql = $clempempenho->sql_query_impconsulta(null, $campos, "pc01_codmater,e60_numemp", $dbwhereEMP." ".$and." e60_emiss between '".$dt1."' and '".$dt2."' and e60_instit = ".db_getsession("DB_instit"));
 }
 */
 //if(isset($pc01_codmater) && $pc01_codmater !=""){
@@ -161,7 +161,7 @@ if((isset($dt1) && $dt1 != "") && (isset($dt2) && $dt2 != "")){
     $HEAD = "head".$nh;
 		$$HEAD = "Período - ".db_formatar($dt1,"d")." a ".db_formatar($dt2,"d");
 		$nh++;
-  }  
+  }
 // }
 if(isset($e53_codord) && $e53_codord !=""){
   $sql = $clpagordem->sql_query_impconsulta(null,$campos,"pc01_codmater,z01_numcgm,e60_numemp"," e50_codord = ".$e53_codord." and e60_instit = ".db_getsession("DB_instit"));
@@ -176,9 +176,9 @@ if($numrows_itens == 0){
 $result_numdec = $clempparametro->sql_record($clempparametro->sql_query_file(db_getsession("DB_anousu"),"e30_numdec as numdec"));
 db_fieldsmemory($result_numdec,0);
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
@@ -228,21 +228,21 @@ for($i=0; $i<$numrows_itens; $i++){
   }
 
   if($matant != "" && $matant != $pc01_codmater){
-  	
+
 	  if($cgmant == $z01_numcgm){
 	  	$pdf->setfont('arial','',7);
 	    $pdf->cell(80,$alt,"TOTAL REGISTROS","LTB",0,"R",0);
 	    $pdf->cell(20,$alt,$totregCGM,"TBR",1,"R",0);
-	
+
 	    $pdf->cell(40,$alt,"TOTAIS","TBL",0,"R",0);
 	    $pdf->cell(20,$alt,db_formatar($totqtdCGM,"f"),"TB",0,"R",0);
 	    $pdf->cell(20,$alt,"","TB",0,"R",0);
 	    $pdf->cell(20,$alt,db_formatar($totvlrCGM,"f"),"TBR",0,"R",0);
-	
+
 	    $pdf->cell(40,$alt,"VALOR UNITÁRIO MÉDIO","LTB",0,"R",0);
 	    $pdf->cell(20,$alt,db_formatar(($totvlrCGM/$totqtdCGM),"f"),"RTB",1,"R",0);
 	    $pdf->ln(2);
-	
+
 	    if($matant == $pc01_codmater){
 	    	$pdf->setfont('arial','b',8);
 	      $pdf->cell(20,$alt,$z01_numcgm,"TBL",0,"R",0);

@@ -27,38 +27,38 @@
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE procdoc
-class cl_procdoc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $p56_coddoc = 0; 
-   var $p56_descr = null; 
+class cl_procdoc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $p56_coddoc = 0;
+   var $p56_descr = null;
    var $p56_ouvidoriatipodado = null;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 p56_coddoc = int4 = Código 
-                 p56_descr = varchar(100) = Descrição 
-                 p56_ouvidoriatipodado = int4 = Tipo de Dado 
+                 p56_coddoc = int4 = Código
+                 p56_descr = varchar(100) = Descrição
+                 p56_ouvidoriatipodado = int4 = Tipo de Dado
                  ";
    //funcao construtor da classe
-   function cl_procdoc() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdoc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_procdoc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p56_coddoc = ($this->p56_coddoc == ""?@$GLOBALS["HTTP_POST_VARS"]["p56_coddoc"]:$this->p56_coddoc);
        $this->p56_descr = ($this->p56_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["p56_descr"]:$this->p56_descr);
@@ -77,7 +77,7 @@ class cl_procdoc {
      }
    }
    // funcao para inclusao
-   function incluir ($p56_coddoc){
+   public function incluir ($p56_coddoc){
       $this->atualizacampos();
      if($this->p56_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -126,14 +126,14 @@ class cl_procdoc {
      }
 
      $sql = "insert into procdoc(
-                                       p56_coddoc 
-                                      ,p56_descr 
-                                      ,p56_ouvidoriatipodado 
+                                       p56_coddoc
+                                      ,p56_descr
+                                      ,p56_ouvidoriatipodado
                        )
                 values (
-                                $this->p56_coddoc 
-                               ,'$this->p56_descr' 
-                               ,$this->p56_ouvidoriatipodado 
+                                $this->p56_coddoc
+                               ,'$this->p56_descr'
+                               ,$this->p56_ouvidoriatipodado
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -172,7 +172,7 @@ class cl_procdoc {
      return true;
    }
    // funcao para alteracao
-   function alterar ($p56_coddoc=null) {
+   public function alterar ($p56_coddoc=null) {
       $this->atualizacampos();
      $sql = " update procdoc set ";
      $virgula = "";
@@ -227,7 +227,7 @@ class cl_procdoc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Documentos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->p56_coddoc;
@@ -255,14 +255,14 @@ class cl_procdoc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($p56_coddoc=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($p56_coddoc=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($p56_coddoc));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -290,7 +290,7 @@ class cl_procdoc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Documentos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$p56_coddoc;
@@ -318,11 +318,11 @@ class cl_procdoc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -344,10 +344,10 @@ class cl_procdoc {
       }
      return $result;
    }
-   function sql_query ( $p56_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $p56_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -360,15 +360,15 @@ class cl_procdoc {
      $sql2 = "";
      if($dbwhere==""){
        if($p56_coddoc!=null ){
-         $sql2 .= " where procdoc.p56_coddoc = $p56_coddoc "; 
-       } 
+         $sql2 .= " where procdoc.p56_coddoc = $p56_coddoc ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,10 +377,10 @@ class cl_procdoc {
      }
      return $sql;
   }
-   function sql_query_file ( $p56_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $p56_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,15 +393,15 @@ class cl_procdoc {
      $sql2 = "";
      if($dbwhere==""){
        if($p56_coddoc!=null ){
-         $sql2 .= " where procdoc.p56_coddoc = $p56_coddoc "; 
-       } 
+         $sql2 .= " where procdoc.p56_coddoc = $p56_coddoc ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

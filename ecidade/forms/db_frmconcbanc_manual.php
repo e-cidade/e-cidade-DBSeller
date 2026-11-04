@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -239,10 +239,10 @@ if (count($aReduzidos) > 0) {
 <!-- div de mensagem -->
 <div id='loading' > </div>
 
-<table width='100%' border=<?=$borda?>>
+<table width='100%' border=<?php echo $borda?>>
   <tr>
     <td colspan=3 bgcolor='#000099'>
-       <center><b><font color='#FFFFFF'> Conciliação Bancária em <?=db_formatar($data,'d')?></font></b></center>
+       <center><b><font color='#FFFFFF'> Conciliação Bancária em <?php echo db_formatar($data,'d')?></font></b></center>
     </td>
   </tr>
   <tr>
@@ -250,12 +250,12 @@ if (count($aReduzidos) > 0) {
       <!-- dados do extrato bancario -->
       <fieldset>
       <Legend align="left"><b> Dados do Banco : </b></Legend>
-        <table border=<?=$borda?> width='100%'>
+        <table border=<?php echo $borda?> width='100%'>
           </tr>
           <tr>
           <tr>
-            <td nowrap> <b>Banco: </b> <?=@$banco?> <b> Agencia : </b> <?=@$agencia?> </td>
-	    <td nowrap <b> Conta : </b>   <?=@$contabancaria?>     </b> </td>
+            <td nowrap> <b>Banco: </b> <?php echo @$banco?> <b> Agencia : </b> <?php echo @$agencia?> </td>
+	    <td nowrap <b> Conta : </b>   <?php echo @$contabancaria?>     </b> </td>
           </tr>
           <tr >
             <td nowrap colspan=2 align=right>
@@ -281,20 +281,20 @@ if (count($aReduzidos) > 0) {
 	   <tr>
          <td nowrap width='25%' > <b>Extrato: </b> </td>
 	     <td nowrap width='25%' align='right'>
-           <input name="vlr_saldoextrato" size='15'  id='id_saldo_extrato' style='border: 0; text-align: right' onchange="js_calcula();" type="text" align="right"   value="<?=db_formatar(@$saldo_extrato,'f')?>" ></td>
+           <input name="vlr_saldoextrato" size='15'  id='id_saldo_extrato' style='border: 0; text-align: right' onchange="js_calcula();" type="text" align="right"   value="<?php echo db_formatar(@$saldo_extrato,'f')?>" ></td>
          <td nowrap width='25%' > <b>Tesouraria: </b> </td>
 	     <td nowrap width='25%' align='right'>
-	       <input name="vlr_saldo_tesouraria"  size='15' id='id_saldo_tesouraria'  style='border: 0; text-align: right'  align="right"  type="text" value="<?=db_formatar(@$saldo_tesouraria,'f')?>" >
+	       <input name="vlr_saldo_tesouraria"  size='15' id='id_saldo_tesouraria'  style='border: 0; text-align: right'  align="right"  type="text" value="<?php echo db_formatar(@$saldo_tesouraria,'f')?>" >
         </td>
        </tr>
 	   <tr>
          <td  nowrap  align='right'> <b>Conciliação: </b> </td>
 	     <td  nowrap align='right'  >
-           <input name="vlr_conciliacao" id='id_saldo_conciliacao'  size='15'  style='border: 0; text-align: right'  align="right"  type="text" readonly  value="<?=db_formatar(@$saldo_conciliacao,'f')?>" > </td>
+           <input name="vlr_conciliacao" id='id_saldo_conciliacao'  size='15'  style='border: 0; text-align: right'  align="right"  type="text" readonly  value="<?php echo db_formatar(@$saldo_conciliacao,'f')?>" > </td>
          <td  nowrap  align='right'> <b>Diferença: </b> </td>
 	     <td  nowrap align='right'  >
-            <input name="vlr_diferenca" id='id_saldo_diferenca'  size='15' style='border: 0; text-align: right'  align="right"  type="text" readonly  value="<?=db_formatar(@$saldo_tesouraria - @$saldo_conciliacao,'f')?>" >
-            <input name="saldo_diferenca" id='saldo_diferenca'  type="hidden" value="<?=round(@$saldo_tesouraria - @$saldo_conciliacao,2)?>" >
+            <input name="vlr_diferenca" id='id_saldo_diferenca'  size='15' style='border: 0; text-align: right'  align="right"  type="text" readonly  value="<?php echo db_formatar(@$saldo_tesouraria - @$saldo_conciliacao,'f')?>" >
+            <input name="saldo_diferenca" id='saldo_diferenca'  type="hidden" value="<?php echo round(@$saldo_tesouraria - @$saldo_conciliacao,2)?>" >
          </td>
        </tr>
      </table>
@@ -306,23 +306,23 @@ if (count($aReduzidos) > 0) {
       <fieldset>
       <Legend align="left"><b> Dados da Tesouraria : </b></Legend>
 
-        <table border=<?=$borda?> width='100%' >
+        <table border=<?php echo $borda?> width='100%' >
           <tr>
-	        <td nowrap width='25%' title="<?=@$descricao?>"> <b><?=substr(@$descricao,0,40)?></b> </td>
-            <td nowrap width='25%' title='Reduzidos: <?=$quais_reduzidos?>'><b>Seq. Conta:</b> <?=@$reduzido?> </td>
+	        <td nowrap width='25%' title="<?php echo @$descricao?>"> <b><?php echo substr(@$descricao,0,40)?></b> </td>
+            <td nowrap width='25%' title='Reduzidos: <?php echo $quais_reduzidos?>'><b>Seq. Conta:</b> <?php echo @$reduzido?> </td>
           </tr>
         </table>
 
-        <table border=<?=$borda?> width='100%' >
+        <table border=<?php echo $borda?> width='100%' >
           <tr>
-	        <td nowrap style="vertical-align: top;" width='3%' title='Reduzidos: <?=$quais_reduzidos?>' > <b>Reduzidos:</b> </td>
-            <td width='45%' title='Reduzidos: <?=$quais_reduzidos?>'><?=$sReduzidos?> </td>
+	        <td nowrap style="vertical-align: top;" width='3%' title='Reduzidos: <?php echo $quais_reduzidos?>' > <b>Reduzidos:</b> </td>
+            <td width='45%' title='Reduzidos: <?php echo $quais_reduzidos?>'><?php echo $sReduzidos?> </td>
           </tr>
         </table>
 
-        <table border=<?=$borda?> width='100%' >
+        <table border=<?php echo $borda?> width='100%' >
           <tr>
-             <td nowrap width='25%' title="<?=@$descricao?>"> <b><?=substr(@$descricao,40,40)?></b> </td>
+             <td nowrap width='25%' title="<?php echo @$descricao?>"> <b><?php echo substr(@$descricao,40,40)?></b> </td>
             <td nowrap align='right' width='25%'>
 	          <input name="novaconta" type="button" id="novaconta" value="Sair da Conta"        onClick="location.href = 'cai4_alteraconciliacao_manual.php'">
               <input name="esconderaut" type="button" id="esconderaut" value="Esconder"          onClick="js_hideFrame(document.getElementById('mostraraut'),this,'autenticacoes',true);">
@@ -336,11 +336,11 @@ if (count($aReduzidos) > 0) {
 </table>
 
 <!-- tabela com os iframes extrato e autenticacao -->
-<table width='100%' border=<?=$borda?>>
+<table width='100%' border=<?php echo $borda?>>
   <tr width='100%'>
     <td>
     <div id='extrato'>
-      <table width='100%' border=<?=$borda?>>
+      <table width='100%' border=<?php echo $borda?>>
         <tr>
           <td bgcolor='#000099'>
              <center><b><font color='#FFFFFF'> Dados do extrato bancário</font></b></center>
@@ -348,7 +348,7 @@ if (count($aReduzidos) > 0) {
         </tr>
         <tr>
           <td>
-             <iframe name="iframeExtrato" id="iframeExtrato" src="cai4_listaextrato_manual.php?data=<?=$data?>&conta=<?=$conta?>" width='100%' height='300'></iframe>
+             <iframe name="iframeExtrato" id="iframeExtrato" src="cai4_listaextrato_manual.php?data=<?php echo $data?>&conta=<?php echo $conta?>" width='100%' height='300'></iframe>
           </td>
         </tr>
       </table>
@@ -357,7 +357,7 @@ if (count($aReduzidos) > 0) {
 
     <td>
     <div id='autenticacoes'>
-      <table width='100%' border=<?=$borda?>>
+      <table width='100%' border=<?php echo $borda?>>
         <tr>
           <td bgcolor='#000099'>
             <center><b><font color='#FFFFFF'>Dados da autenticação no sistema</font></b></center>
@@ -365,7 +365,7 @@ if (count($aReduzidos) > 0) {
         </tr>
         <tr>
           <td>
-            <iframe name="iframeAutent" id="iframeAutent" src="cai4_listaautenticacoes_manual.php?data=<?=$data?>&conta=<?=$conta?>" width='100%' height='300' > </iframe>
+            <iframe name="iframeAutent" id="iframeAutent" src="cai4_listaautenticacoes_manual.php?data=<?php echo $data?>&conta=<?php echo $conta?>" width='100%' height='300' > </iframe>
           </td>
         </tr>
       </table>
@@ -374,7 +374,7 @@ if (count($aReduzidos) > 0) {
   </tr>
 </table>
 <! -- totalizadores -->
-<table width=90% border=<?=$borda?>>
+<table width=90% border=<?php echo $borda?>>
   <tr>
     <td align='right' width='50%'>
       <b>Valor total selecionado do extrato: </b>
@@ -388,17 +388,17 @@ if (count($aReduzidos) > 0) {
 
   <tr>
     <td colspan=2>
-      <table width=100% border=<?=$borda?>>
+      <table width=100% border=<?php echo $borda?>>
         <tr>
           <td align='right' width='100%'>
             <fieldset>
               <Legend align="left"><b> Opções de visualização : </b></Legend>
-              <table border=<?=$borda?> width='90%' >
+              <table border=<?php echo $borda?> width='90%' >
                 <tr>
                   <td align='center'> <b>Datas:</b>
                   <script>
                   function js_troca_data(data,codigo){
-                    document.location.href = 'cai4_concbanc001_manual.php?conta=<?=$reduzido?>&data='+data.substr(6,4)+'-'+data.substr(3,2)+'-'+data.substr(0,2)+'&concilia='+codigo;
+                    document.location.href = 'cai4_concbanc001_manual.php?conta=<?php echo $reduzido?>&data='+data.substr(6,4)+'-'+data.substr(3,2)+'-'+data.substr(0,2)+'&concilia='+codigo;
                   }
                   </script>
                     <select name='data_conciliar' onChange="js_troca_data(this.options[this.selectedIndex].text,this.value)">
@@ -469,12 +469,12 @@ if (count($aReduzidos) > 0) {
 </table>
 
 <!-- botoes de acao -->
- <table width=90% border=<?=$borda?>>
+ <table width=90% border=<?php echo $borda?>>
   <tr>
     <td align='right' width='100%'>
       <fieldset>
         <Legend align="left"><b> Ações : </b></Legend>
-        <table border=<?=$borda?> width='90%' >
+        <table border=<?php echo $borda?> width='90%' >
           <tr>
             <td align='center'>
               <input name="processarconciliacao"
@@ -499,7 +499,7 @@ if (count($aReduzidos) > 0) {
                      type="button"
                      id="desproc"
                      value="Ativar modo desprocessar Itens"
-                     <?=($lLiberado==true)?"":"disabled"?>
+                     <?php echo ($lLiberado==true)?"":"disabled"?>
                      onClick='js_ativarModo();'
                      style='width:150px' >
             </td>
@@ -544,10 +544,10 @@ if (count($aReduzidos) > 0) {
 </table>
 
 <!-- codigo da conciliacao -->
-<input name="concilia"          type="hidden" id="concilia" value="<?=@$concilia?>" >
-<input name="conta"             type="hidden" id="conta"    value="<?=@$conta?>" >
-<input name="data"              type="hidden" id="data"     value="<?=@$data?>" >
-<input name="data_ant"          type="hidden" id="data_ant" value="<?=@$data?>" >
+<input name="concilia"          type="hidden" id="concilia" value="<?php echo @$concilia?>" >
+<input name="conta"             type="hidden" id="conta"    value="<?php echo @$conta?>" >
+<input name="data"              type="hidden" id="data"     value="<?php echo @$data?>" >
+<input name="data_ant"          type="hidden" id="data_ant" value="<?php echo @$data?>" >
 <input name="modooperacao"      type="hidden" id="modo"     value="desativado" >
 
 <input name="load_extrato"      type="hidden" id="load_extrato"      value="false" >
@@ -833,8 +833,8 @@ function js_escondeLinha(obj,classe){
 
 function js_atualizar(){
 
-  iframeExtrato.js_processaRequest("<?=$data?>","<?=$conta?>");
-  iframeAutent.js_processaRequest("<?=$data?>","<?=$conta?>");
+  iframeExtrato.js_processaRequest("<?php echo $data?>","<?php echo $conta?>");
+  iframeAutent.js_processaRequest("<?php echo $data?>","<?php echo $conta?>");
 
   $('chkconciliado').checked = true;
   $('chkpendente').checked = true;
@@ -1233,7 +1233,7 @@ function js_passaProxima(resposta){
 
   if (retorno[0] == '1') {
 
-	  document.location.href = 'cai4_concbanc001_manual.php?conta=<?=$aReduzidos[0]?>&data='+data+'&concilia='+retorno[2];
+	  document.location.href = 'cai4_concbanc001_manual.php?conta=<?php echo $aReduzidos[0]?>&data='+data+'&concilia='+retorno[2];
   }else{
      alert(retorno[1]);
      $('salvar').disabled  = false;

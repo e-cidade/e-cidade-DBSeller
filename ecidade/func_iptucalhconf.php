@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ $cliptucalhconf->rotulo->label("j89_codhis");
               <label for="j89_sequencial"> <?=$Lj89_sequencial?> </label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("j89_sequencial",10,$Ij89_sequencial,true,"text",4,"","chave_j89_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cliptucalhconf->rotulo->label("j89_codhis");
               <label for="j89_codhis"> <b>Código Filho:</b> </label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("j89_codhis",10,$Ij89_codhis,true,"text",4,"","chave_j89_codhis");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cliptucalhconf->rotulo->label("j89_codhis");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptucalhconf.php")==true){
@@ -123,12 +123,12 @@ $cliptucalhconf->rotulo->label("j89_codhis");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

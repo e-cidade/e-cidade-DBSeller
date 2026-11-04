@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ if (isset($incluir)) {
   </table> 
  </body>
 </html>
-<?
+<?php
 if (isset($incluir)) {
 	
   if ($clcurso->erro_status == "0") {
@@ -95,7 +95,7 @@ if (isset($incluir)) {
     <script>
      parent.iframe_a1.location.href='edu1_curso002.php?chavepesquisa=<?=$clcurso->ed29_i_codigo?>';
     </script>
-  <?
+  <?php
   }
   
 }

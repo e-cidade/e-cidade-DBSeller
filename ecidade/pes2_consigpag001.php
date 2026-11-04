@@ -40,7 +40,7 @@ require_once modification("classes/db_gerfcom_classe.php");
 require_once modification("classes/db_gerffx_classe.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clfolha = new cl_folha;
 $clselecao = new cl_selecao;
@@ -64,10 +64,10 @@ $db_botao = true;
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLancador.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBToogle.widget.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLancador.widget.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBToogle.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
@@ -155,7 +155,7 @@ $db_botao = true;
                                             <tr>
                                                 <td colspan="3">
                                                     <div id="lancadorRecurso">
-
+                                                        <?php  require_once modification('forms/db_frmfiltrorecursos.php')  ?>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -256,18 +256,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 
     }
 
-    var oLancadorRecurso = new DBLancador('LancadorRecurso');
-    oLancadorRecurso.setNomeInstancia('oLancadorRecurso');
-    oLancadorRecurso.setLabelAncora('Recurso: ');
-    oLancadorRecurso.setLabelValidacao('Recurso');
-    oLancadorRecurso.setGridHeight(100);
-    oLancadorRecurso.setTextoFieldset('RECURSOS Selecionados');
-    oLancadorRecurso.setParametrosPesquisa("func_fonterecurso.php", ['o15_recurso', 'o15_descr']);
-    oLancadorRecurso.show($('lancadorRecurso'));
-
-    $('flsdLancadorRecurso').style.width = '550px';
-    oDBToogleRecursos = new DBToogle('flsdLancadorRecurso', false);
-
+    oDBToogleRecursos = new DBToogle('fieldsetRecursos', false);
 
     function js_enviardados() {
 
@@ -315,17 +304,12 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
                 }
             }
 
-            var sListaRecurso = '';
-            oRecursoSelecionado = oLancadorRecurso.getRegistros().each(function (oDado) {
-
-                if (!empty(sListaRecurso)) {
-                    sListaRecurso += ",";
-                }
-                sListaRecurso += oDado.sCodigo;
+            let recursos = [];
+            oRecursoSelecionado = collectionRecurso.build().map(recurso => {
+                recursos.push(recurso.codigo)
             });
 
-            stringretorno += "&recrs=" + sListaRecurso;
-
+            stringretorno += "&recrs=" + recursos.join(',');
 
             if (document.form1.objeto2.length == 0) {
                 alert('Selecione o(s) tipo(s) de ponto(s).');

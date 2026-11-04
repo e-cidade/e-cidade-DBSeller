@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -69,7 +69,7 @@ if ($iTipo == "pad") {
               <tr>
                 <td colspan="1">
                   <b>Arquivos do:</b>
-                    <?
+                    <?php
                     global $periodopad;
                     $periodopad = date("m",db_getsession("DB_datausu"))-1;
                     if (db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))) {
@@ -158,7 +158,7 @@ if ($iTipo == "pad") {
                   </table>
                 </td>
                 <td valign='top' rowspan="2" style='border-right:2px groove white'>
-                  <table border="0" style=''>
+                  <table border="0">
                     <tr>
                       <td colspan='2' style='border-bottom: 2px groove white;text-align: center'>
                         <b>ARQUIVOS AUXILIARES</b>
@@ -207,7 +207,7 @@ if ($iTipo == "pad") {
                   </table>
                 </td>
                 <td valign=top height=50%  >
-                  <table border="0" style=''>
+                  <table border="0">
                     <tr>
                       <td colspan='2' style='border-bottom: 2px groove white;text-align: center'>
                         <b>DO EXERCÍCIO</b>
@@ -269,17 +269,17 @@ if ($iTipo == "pad") {
         <td style="text-align: center">
           <input name="todos" type="button" value="Todos" onclick="js_marcatodos();" >
           <input name="limpa" type="button" value="Limpa" onclick="js_limpatodos();" >
-          <input name="processar" type="button" value="Processar" onclick="js_seleciona('<?=$iTipo;?>');">
+          <input name="processar" id="processar" type="button" value="Processar" onclick="js_seleciona('<?=$iTipo;?>');">
         </td>
       </tr>
     </table>
 
 
-<table width="800"> 
+<table width="800">
 
     <tr>
       <td colspan="2" style='border-top: 2px groove white; width:600px;'>
-         <iframe name="iframe_processapad" src="con4_processapad.php" scrolling="auto" height="400" width="800"></iframe>
+         <iframe id = "iframe_processapad" name="iframe_processapad" src="con4_processapad.php" scrolling="auto" height="400" width="800"></iframe>
       </td>
     </tr>
 </table>

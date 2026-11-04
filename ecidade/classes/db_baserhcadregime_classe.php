@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE baserhcadregime
 class cl_baserhcadregime { 
@@ -34,13 +34,13 @@ class cl_baserhcadregime {
                  rh158_basesubstituido = varchar(4) = Substituído 
                  ";
    //funcao construtor da classe 
-   function cl_baserhcadregime() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("baserhcadregime"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -49,7 +49,7 @@ class cl_baserhcadregime {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh158_sequencial = ($this->rh158_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh158_sequencial"]:$this->rh158_sequencial);
        $this->rh158_regime = ($this->rh158_regime == ""?@$GLOBALS["HTTP_POST_VARS"]["rh158_regime"]:$this->rh158_regime);
@@ -63,7 +63,7 @@ class cl_baserhcadregime {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh158_sequencial){ 
+   public function incluir ($rh158_sequencial){ 
       $this->atualizacampos();
      if($this->rh158_regime == null ){ 
        $this->erro_sql = " Campo Regime da Base não informado.";

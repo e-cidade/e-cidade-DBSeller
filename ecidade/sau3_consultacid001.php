@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if (isset($z01_i_cgsund)) {
      <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
      <meta http-equiv="Expires" CONTENT="0">
-     <?
+     <?php
       $sLib  = "scripts.js,prototype.js,datagrid.widget.js,strings.js,grid.style.css,";
       $sLib .= "estilos.css,/widgets/dbautocomplete.widget.js,webseller.js";
       db_app::load($sLib);
@@ -75,7 +75,7 @@ if (isset($z01_i_cgsund)) {
   <form name="form1" method="post" action="">   
    
    <center>
-   <?
+   <?php
    if (!isset($lPopup)) { 
    ?>
      <br><br><br><br>
@@ -83,42 +83,42 @@ if (isset($z01_i_cgsund)) {
        <table>
          <tr>
            <td nowrap title="$Tjs_pesquisaz01_i_cgsund">
-             <?
+             <?php
              db_ancora("$Lz01_i_cgsund", "js_pesquisaz01_i_cgsund(true);", $db_opcao);
              ?>
            </td>
            <td>
-             <?
+             <?php
              db_input('z01_i_cgsund', 10, $Iz01_i_cgsund, true, 'text', $db_opcao, 
                       "onchange='js_pesquisaz01_i_cgsund(false);'");
              ?> 
            </td>
            <td>
-             <?
+             <?php
              db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,$db_opcao,"");
              ?>
            </td>
          </tr>
        </table>
-       <?
+       <?php
        if (!isset($lPopup)) {
        ?>
          <input type="submit" name="pesquisar" value="Pesquisar">
-       <?
+       <?php
        } else {
        ?>
          <input type="button" name="fechar" value="Fechar" onclick="js_fechar()">
-       <?
+       <?php
        }
        ?>
      </fieldset>
-     <? 
+     <?php 
      } 
      ?>
      <br>
    
    <fieldset style="width:600px;" ><legend><b>CID's</b></legend>
-     <?      
+     <?php      
      if ($sSql != "") {
      	
      	 global $cor1;
@@ -138,7 +138,7 @@ if (isset($z01_i_cgsund)) {
    
    </center>
   </form>
-  <?
+  <?php
     if (!isset($lPopup)) {
       
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
               <?=$Lar22_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ar22_sequencial",10,$Iar22_sequencial,true,"text",4,"","chave_ar22_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
               <?=$Lar22_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ar22_numpre",10,$Iar22_numpre,true,"text",4,"","chave_ar22_numpre");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
               <?=$Lar22_numpar?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
            db_input("ar22_numpar",10,$Iar22_numpar,true,"text",4,"","chave_ar22_numpar");
            ?>
             </td>
@@ -93,7 +93,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_numprebloqpag.php")==true){
@@ -149,12 +149,12 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

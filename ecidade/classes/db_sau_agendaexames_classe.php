@@ -79,13 +79,13 @@ class cl_sau_agendaexames {
                  s113_c_encaminhamento = varchar(10) = Encaminhamento
                  ";
    //funcao construtor da classe
-   function cl_sau_agendaexames() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_agendaexames");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -94,7 +94,7 @@ class cl_sau_agendaexames {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s113_i_codigo = ($this->s113_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s113_i_codigo"]:$this->s113_i_codigo);
        $this->s113_i_prestadorhorarios = ($this->s113_i_prestadorhorarios == ""?@$GLOBALS["HTTP_POST_VARS"]["s113_i_prestadorhorarios"]:$this->s113_i_prestadorhorarios);
@@ -134,7 +134,7 @@ class cl_sau_agendaexames {
      }
    }
    // funcao para Inclusão
-   function incluir ($s113_i_codigo){
+   public function incluir ($s113_i_codigo){
       $this->atualizacampos();
      if($this->s113_i_prestadorhorarios == null ){
        $this->erro_sql = " Campo Prestador Horários não informado.";
@@ -682,7 +682,6 @@ class cl_sau_agendaexames {
      $sql .= "      inner join cgs_und  on  cgs_und.z01_i_cgsund = sau_agendaexames.s113_i_numcgs";
      $sql .= "      inner join sau_tipoficha  on  sau_tipoficha.sd101_i_codigo = sau_prestadorhorarios.s112_i_tipoficha";
      $sql .= "      inner join sau_prestadorvinculos  on  sau_prestadorvinculos.s111_i_codigo = sau_prestadorhorarios.s112_i_prestadorvinc";
-     $sql .= "      inner join diasemana  on  diasemana.ed32_i_codigo = sau_prestadorhorarios.s112_i_diasemana";
      $sql .= "      left  join familiamicroarea  on  familiamicroarea.sd35_i_codigo = cgs_und.z01_i_familiamicroarea";
      $sql .= "      inner join cgs  as a on   a.z01_i_numcgs = cgs_und.z01_i_cgsund";
      $sql2 = "";
@@ -768,7 +767,6 @@ class cl_sau_agendaexames {
     $sql .= "      inner join sau_tipoficha  on  sau_tipoficha.sd101_i_codigo = sau_prestadorhorarios.s112_i_tipoficha";
     $sql .= "      inner join sau_prestadorvinculos  on  sau_prestadorvinculos.s111_i_codigo = sau_prestadorhorarios.s112_i_prestadorvinc";
     $sql .= "      inner join grupoexameprestador    on age03_prestadorvinculos = s111_i_codigo";
-    $sql .= "      inner join diasemana  on  diasemana.ed32_i_codigo = sau_prestadorhorarios.s112_i_diasemana";
     $sql .= "      left  join familiamicroarea  on  familiamicroarea.sd35_i_codigo = cgs_und.z01_i_familiamicroarea";
     $sql .= "      inner join cgs  as a on   a.z01_i_numcgs = cgs_und.z01_i_cgsund";
 

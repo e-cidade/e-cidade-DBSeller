@@ -134,6 +134,11 @@ class Exame
     private $materiaisColeta;
 
     /**
+     * @var bool
+     */
+    private $exibeHistoricoResultados;
+
+    /**
      * Instancia o novo Exame
      *
      * @param $iCodigoExame
@@ -156,6 +161,7 @@ class Exame
         $this->sNome = $oDadosExame->la08_c_descr;
         $this->sObservacao = $oDadosExame->la08_observacao;
         $this->sigla = $oDadosExame->la08_c_sigla;
+        $this->exibeHistoricoResultados = !($oDadosExame->la08_exibehistoricoresultados === 'f');
     }
 
     /**
@@ -387,32 +393,20 @@ class Exame
      */
     public function getAtributos()
     {
+        if (count($this->aAtributos) > 0) {
+            return $this->aAtributos;
+        }
+
         $aAtributosDispensadosNoExame = $this->getAtributosDispensados();
-        if (count($this->aAtributos) == 0) {
-            $oDaoAtributosExame = new cl_lab_exameatributo();
-            $sSqlAtributos = $oDaoAtributosExame->sql_query(null, "la42_i_atributo",
-              "la25_c_estrutural",
-              "la42_i_exame = {$this->iCodigo}"
-            );
+        $aAtributos = AtributoExameRepository::getByCodigoExame($this->iCodigo);
 
-            $rsAtributos = $oDaoAtributosExame->sql_record($sSqlAtributos);
-            $aListaAtributos = array();
-            if ($rsAtributos && $oDaoAtributosExame->numrows > 0) {
-                for ($iAtributo = 0; $iAtributo < $oDaoAtributosExame->numrows; $iAtributo++) {
-                    $iCodigoAtributo = db_utils::fieldsMemory($rsAtributos, $iAtributo)->la42_i_atributo;
-                    $aListaAtributos[] = $iCodigoAtributo;
-                    $aListaAtributos = $this->montarArvoresAtributo($iCodigoAtributo, $aListaAtributos);
-                }
-
-                foreach ($aListaAtributos as $iCodigoAtributo) {
-                    if (in_array($iCodigoAtributo, $aAtributosDispensadosNoExame)) {
-                        continue;
-                    }
-
-                    $this->aAtributos[] = AtributoExameRepository::getbyCodigo($iCodigoAtributo);
-                }
+        foreach ($aAtributos as $key => $atributo) {
+            if (in_array($atributo->getCodigo(), $aAtributosDispensadosNoExame)) {
+                unset($aAtributos[$key]);
             }
         }
+
+        $this->aAtributos = $aAtributos;
 
         return $this->aAtributos;
     }
@@ -439,27 +433,6 @@ class Exame
         return $this->aAtributosDispensados;
     }
 
-    protected function montarArvoresAtributo($iAtributo, &$aListaAtributos)
-    {
-        $oDaoAtributoLigacao = new cl_lab_exameatributoligacao();
-        $sSqlAtributos = $oDaoAtributoLigacao->sql_query_filho(null,
-          "la26_i_exameatributofilho",
-          "la25_c_estrutural",
-          "la26_i_exameatributopai={$iAtributo}"
-        );
-
-        $rsAtributos = $oDaoAtributoLigacao->sql_record($sSqlAtributos);
-        $iTotalLinhas = $oDaoAtributoLigacao->numrows;
-
-        for ($iAtributo = 0; $iAtributo < $iTotalLinhas; $iAtributo++) {
-            $iCodigoAtributo = db_utils::fieldsMemory($rsAtributos, $iAtributo)->la26_i_exameatributofilho;
-            $aListaAtributos[] = $iCodigoAtributo;
-            $this->montarArvoresAtributo($iCodigoAtributo, $aListaAtributos);
-        }
-
-        return $aListaAtributos;
-    }
-
     /**
      * Retorna a instância do procedimento vinculado ao exame
      * @return ProcedimentoSaude
@@ -479,8 +452,12 @@ class Exame
         }
 
         if (pg_num_rows($rsExameProced)) {
-            $this->oProcedimento = new ProcedimentoSaude(db_utils::fieldsMemory($rsExameProced,
-              0)->la53_i_procedimento);
+            $this->oProcedimento = new ProcedimentoSaude(
+                db_utils::fieldsMemory(
+                    $rsExameProced,
+                    0
+                )->la53_i_procedimento
+            );
         }
 
         return $this->oProcedimento;
@@ -562,7 +539,7 @@ class Exame
     public function toArray()
     {
         $materiaisColeta = array();
-        foreach ((array) $this->getMateriaisColeta() as $materialColeta) {
+        foreach ((array)$this->getMateriaisColeta() as $materialColeta) {
             $materiaisColeta[] = $materialColeta->toArray();
         }
 
@@ -584,13 +561,15 @@ class Exame
     {
         $exame = new self;
         if (array_key_exists('la08_i_codigo', $state)) {
-            $exame->setCodigo((int) $state['la08_i_codigo']);
+            $exame->setCodigo((int)$state['la08_i_codigo']);
 
             $repositoryMaterialColeta = new MaterialColetaRepository(new \cl_lab_materialcoleta);
-            $exame->setMateriaisColeta($repositoryMaterialColeta->getMateriaisExame(
-                $exame->getCodigo(),
-                new cl_lab_examematerial()
-            ));
+            $exame->setMateriaisColeta(
+                $repositoryMaterialColeta->getMateriaisExame(
+                    $exame->getCodigo(),
+                    new cl_lab_examematerial()
+                )
+            );
         }
 
         if (array_key_exists('la08_c_sigla', $state)) {
@@ -602,15 +581,15 @@ class Exame
         }
 
         if (array_key_exists('la08_i_idademax', $state)) {
-            $exame->setIdadeMaxima((int) $state['la08_i_idademax']);
+            $exame->setIdadeMaxima((int)$state['la08_i_idademax']);
         }
 
         if (array_key_exists('la08_i_idademin', $state)) {
-            $exame->setIdadeMinima((int) $state['la08_i_idademin']);
+            $exame->setIdadeMinima((int)$state['la08_i_idademin']);
         }
 
         if (array_key_exists('la08_i_sexo', $state)) {
-            $exame->setSexo((int) $state['la08_i_sexo']);
+            $exame->setSexo((int)$state['la08_i_sexo']);
         }
 
         if (array_key_exists('la08_d_inicio', $state)) {
@@ -622,7 +601,7 @@ class Exame
         }
 
         if (array_key_exists('la08_i_dias', $state)) {
-            $exame->setDias((int) $state['la08_i_dias']);
+            $exame->setDias((int)$state['la08_i_dias']);
         }
 
         if (array_key_exists('la08_t_interferencia', $state)) {
@@ -630,19 +609,19 @@ class Exame
         }
 
         if (array_key_exists('la08_i_gerar', $state)) {
-            $exame->setGerar((int) $state['la08_i_gerar']);
+            $exame->setGerar((int)$state['la08_i_gerar']);
         }
 
         if (array_key_exists('la08_i_undidadeini', $state)) {
-            $exame->setUnidadeInicial((int) $state['la08_i_undidadeini']);
+            $exame->setUnidadeInicial((int)$state['la08_i_undidadeini']);
         }
 
         if (array_key_exists('la08_i_undidadefim', $state)) {
-            $exame->setUnidadeFinal((int) $state['la08_i_undidadefim']);
+            $exame->setUnidadeFinal((int)$state['la08_i_undidadefim']);
         }
 
         if (array_key_exists('la08_i_ativo', $state)) {
-            $exame->setAtivo((int) $state['la08_i_ativo']);
+            $exame->setAtivo((int)$state['la08_i_ativo']);
         }
 
         if (array_key_exists('la08_observacao', $state)) {
@@ -650,5 +629,10 @@ class Exame
         }
 
         return $exame;
+    }
+
+    public function getExibeHistoricoResultados()
+    {
+        return $this->exibeHistoricoResultados;
     }
 }

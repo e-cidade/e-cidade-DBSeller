@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ $clrotulo->label("q05_ano");
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Atividades</strong>";
                  $aux->codigo = "q03_ativ"; //chave de retorno da func
@@ -95,7 +95,7 @@ $clrotulo->label("q05_ano");
       <tr>
       <td>
       <b>De: </b> 
-      <?
+      <?php
       $meses = array();
       for($w=1;$w<=12;$w++){
       	$mes=db_mes($w);      	
@@ -104,16 +104,16 @@ $clrotulo->label("q05_ano");
       db_select("mes_ini",$meses,true,"text",1);
       ?> 
       <b>de</b> 
-      <?
+      <?php
       db_input("ano_ini",6,@$Iq05_ano,true,"text",1) ?>
       
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Até: </b> 
-      <?      
+      <?php      
       db_select("mes_fim",$meses,true,"text",1);
       echo "<script>document.form1.mes_fim.value=12;</script>";
       ?> 
       <b>de</b> 
-      <?
+      <?php
       db_input("ano_fim",6,@$Iq05_ano,true,"text",1) ?>
       
       </td>
@@ -122,7 +122,7 @@ $clrotulo->label("q05_ano");
       <tr>
         <td colspan="2" align = "center">
         <b>Mostrar:</b>
-        <?
+        <?php
         $arr_mostra = array("t"=>"Todos","z"=>"Somente com valor zerado","l"=>"Somente com valor lançado");
         db_select("mostra",$arr_mostra,true,"text",1);
         ?>

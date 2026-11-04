@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ function js_voltar(){
   parent.document.location.href="con4_parametrosrelatorioslegais001.php?c83_codrel=<?=$o69_codparamrel?>";
 }
 </script>
-<?
+<?php
 if (isset ($atualizar) && $atualizar == "atualizar") {
 	db_inicio_transacao();
 	$erro = false;
@@ -278,7 +278,7 @@ function js_desmarcarTodos(){
 <table border="0" align="center">
  <tr>
    <td colspan="2" align="center">
-     <?
+     <?php
      
      $s = "select o69_descr 
               from orcparamseq 
@@ -302,20 +302,20 @@ function js_desmarcarTodos(){
       <input type="button" value="Voltar" onclick="js_voltar();">
    </td>
  </tr>
- <?
+ <?php
     if ($flag_permissao == true){
  ?>
  <tr>
    <td nowrap><b>Intervalo - Inicial:</b><input name="ini_estrut" type="text" size="15" maxlength="15">
     &nbsp;&nbsp;<b>Final:</b><input name="fim_estrut" type="text" size="15" maxlength="15"></td>
     <td nowrap>
-    <?
+    <?php
       $matriz = array("T"=>"TODAS AS CONTAS","A"=>"SOMENTE CONTAS ANALITICAS","S"=>"SOMENTE CONTAS SINTETICAS");
       db_select("filtrar_contas",$matriz,true,4,"onChange='js_filtrarContas();'");
     ?>
     </td>
  </tr>
- <?
+ <?php
    }
  ?>
  <tr>
@@ -324,7 +324,7 @@ function js_desmarcarTodos(){
  <tr> 
    <td colspan="2" valign="middle" align="left" nowrap>
 
-   <? 
+   <?php 
       if (isset($grupo) && $grupo !='' && $grupo !='0') {   
            $grupo1 = $grupo;
            if ($grupo1 == 5){
@@ -355,7 +355,7 @@ function js_desmarcarTodos(){
       <input id="rec"     type="button" value="RECEITA" onClick="js_recarregar(4,9);">
       <input id="desp"    type="button" value="DESPESA" onClick="js_recarregar(3,0);">
       <input id="outros"  type="button" value="OUTROS"  onClick="js_recarregar(5,6);">
-   <? 
+   <?php 
     } 
 
     db_input("grupo1",1,"",true,"hidden",3);
@@ -372,7 +372,7 @@ function js_desmarcarTodos(){
 </tr>
 </table>
 <!--   -->
-<?
+<?php
   if (!isset($o69_codparamrel) || $o69_codparamrel ==""){
          $o69_codparamrel=0;
          $o69_codseq=0;  	 
@@ -494,7 +494,7 @@ function js_desmarcarTodos(){
   <table border="0" align="center"> 
     <tr>
       <td colspan="2">
-      <?
+      <?php
          $campos = "c60_codcon,c60_estrut,c61_reduz,c60_descr";
          $cliframe_seleciona_plano->campos        = $campos;
          $cliframe_seleciona_plano->legenda       = "";

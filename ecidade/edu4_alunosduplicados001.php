@@ -64,7 +64,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 		        <tr>
 		          <td><b>Nome do Aluno: </b></td>
 		          <td>
-		            <?
+		            <?php
 		              db_input('nomeAluno', 50, 'nomeAluno', true, 'text', 1);
 		            ?>
 		          </td>
@@ -72,7 +72,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 		        <tr>
 		          <td><b>Nome da Mãe: </b></td>
 		          <td>
-		            <?
+		            <?php
 		              db_input('nomeMae', 50, 'nomeMae', true, 'text', 1);
 		            ?>
 		          </td>
@@ -80,7 +80,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 		        <tr>
 		          <td><b>Data de Nascimento: </b></td>
 		          <td>
-		            <?
+		            <?php
 		              db_inputdata('dataNascimento', '', '', '', true, 'text', 1);
 		            ?>
 		          </td>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ $oRotulo->label("e60_codemp");
               <?=$Le81_codmov?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("e81_codmov",6,$Ie81_codmov,true,"text",4,"","chave_e81_codmov");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $oRotulo->label("e60_codemp");
               <?=$Le60_numemp?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("e81_numemp",10, $Ie60_numemp,true,"text",4,"","chave_e81_numemp");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $oRotulo->label("e60_codemp");
              <?=$Le60_codemp?>
            </td>
            <td width="96%" align="left" nowrap>
-             <?
+             <?php
              db_input("e60_codemp",10, $Ie60_codemp,true,"text",4,"","chave_e60_codemp");
              ?>
            </td>
@@ -136,14 +136,34 @@ $oRotulo->label("e60_codemp");
                $campos = "empagemov.*";
              }
           }
+          $campos = "e53_codord, {$campos}, sum(coalesce(e46_valor,0)) as e46_valor" ;
+
+          $aWheres[] = "((e53_valor - e53_vlranu) > 0)";
+
+          $aWheres[] = "((e46_valor + e53_vlranu ) < e53_valor) ";
+
+
+          // soma os itens prestados e compara com o pagamento para ver se tem saldo a devolver
+          //$aWheres[] = " (select sum(e46_valor) from empprestaitem where e46_emppresta = e45_sequencial ) < e53_vlrpag";
+          
           $sWhere = implode(" and ", $aWheres);
-  	      $sql = $clempagemov->sql_query_empenho_conferido( null,
+
+          $sWhere .= " group by e53_codord,
+         e81_codmov,
+         e60_numemp,
+         e60_codemp,
+         z01_nome,
+         empagemov.e81_valor ";
+
+
+  	      $sql = $clempagemov->sql_query_empenho_conferidoPagamento( null,
                                              $campos,
                                              "e81_codmov",
                                              $sWhere
             );
 
-//  	      echo "$sql<br><br>";
+          // echo $sql;
+
           db_lovrot($sql, 15, "()", "", $funcao_js);
         } else {
           if ($pesquisa_chave!=null && $pesquisa_chave!="") {
@@ -167,12 +187,12 @@ $oRotulo->label("e60_codemp");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

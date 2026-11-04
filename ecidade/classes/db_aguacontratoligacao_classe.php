@@ -50,13 +50,13 @@ class cl_aguacontratoligacao {
                  x55_aguacontrato = int4 = Contrato
                  ";
    //funcao construtor da classe
-   function cl_aguacontratoligacao() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacontratoligacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -66,7 +66,7 @@ class cl_aguacontratoligacao {
    }
 
    // funcao para Inclusão
-   function incluir ($x55_sequencial){
+   public function incluir ($x55_sequencial){
 
      if($this->x55_aguahidromatric == null ){
        $this->erro_sql = " Campo Hidrômetro não informado.";

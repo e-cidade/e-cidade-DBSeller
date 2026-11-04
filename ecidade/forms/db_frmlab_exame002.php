@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,7 +47,7 @@ $clrotulo->label ( "la19_i_exame" );
         </tr>
         <tr>
           <td nowrap title="<?=$Tla19_i_exame?>">
-           <?
+           <?php
            db_ancora ( $Lla19_i_exame, "", 3 );
            ?>
           </td>

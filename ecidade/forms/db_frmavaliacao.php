@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,7 +46,7 @@ if ($db_opcao == 1) {
       <b>Código do Formulário:</b>
     </td>
     <td>
-			<?
+			<?php
 			  db_input('db101_sequencial', 10, $Idb101_sequencial, true, 'text', 3, "");
 			?>
     </td>
@@ -56,7 +56,7 @@ if ($db_opcao == 1) {
       <label for="db101_avaliacaotipo">Formulário tipo:</label>
     </td>
     <td>
-		  <?
+		  <?php
         $sSqlAvaliacaoTipo  = $clavaliacaotipo->sql_query(null, "*", "db100_sequencial", "");
         $rsSqlAvaliacaoTipo = $clavaliacaotipo->sql_record($sSqlAvaliacaoTipo);
 
@@ -77,7 +77,7 @@ if ($db_opcao == 1) {
        <?=@$Ldb101_descricao?>
     </td>
     <td>
-			<?
+			<?php
 			  db_input('db101_descricao', 50, $Idb101_descricao, true, 'text', $db_opcao, "");
 			?>
     </td>
@@ -87,7 +87,7 @@ if ($db_opcao == 1) {
        <?=@$Ldb101_identificador?>
     </td>
     <td>
-			<?
+			<?php
 			  db_input('db101_identificador', 58, $Idb101_identificador, true, 'text', $db_opcao, "");
 			?>
     </td>
@@ -97,7 +97,7 @@ if ($db_opcao == 1) {
        <?=@$Ldb101_ativo?>
     </td>
     <td>
-      <?
+      <?php
         $lAtivo = array("t"=>"SIM","f"=>"NÃO");
         db_select('db101_ativo',$lAtivo,true,$db_opcao,"");
       ?>
@@ -108,7 +108,7 @@ if ($db_opcao == 1) {
        <?=@$Ldb101_permiteedicao?>
     </td>
     <td>
-      <?
+      <?php
         $lAtivo = array("t"=>"SIM","f"=>"NÃO");
         db_select('db101_permiteedicao',$lAtivo,true,$db_opcao,"");
       ?>
@@ -187,7 +187,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_avaliacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     if(isset($iTipoAvaliacao) && ($iTipoAvaliacao == 5 || $iTipoAvaliacao == 6)){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])

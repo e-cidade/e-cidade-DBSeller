@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_rhnivellota {
                  r71_descr = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_rhnivellota() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhnivellota"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_rhnivellota {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r71_codigo = ($this->r71_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["r71_codigo"]:$this->r71_codigo);
        $this->r71_descr = ($this->r71_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["r71_descr"]:$this->r71_descr);
@@ -74,7 +74,7 @@ class cl_rhnivellota {
      }
    }
    // funcao para inclusao
-   function incluir ($r71_codigo){ 
+   public function incluir ($r71_codigo){ 
       $this->atualizacampos();
      if($this->r71_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -138,7 +138,7 @@ class cl_rhnivellota {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r71_codigo=null) { 
+   public function alterar ($r71_codigo=null) { 
       $this->atualizacampos();
      $sql = " update rhnivellota set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_rhnivellota {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r71_codigo=null,$dbwhere=null) { 
+   public function excluir ($r71_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r71_codigo));
      }else{ 
@@ -280,7 +280,7 @@ class cl_rhnivellota {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

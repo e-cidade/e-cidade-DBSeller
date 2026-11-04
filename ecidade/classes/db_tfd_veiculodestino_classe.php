@@ -68,13 +68,13 @@ class cl_tfd_veiculodestino {
                  tf18_c_horaretorno = char(5) = Hora de Retorno
                  ";
    //funcao construtor da classe
-   function cl_tfd_veiculodestino() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_veiculodestino");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_tfd_veiculodestino {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tf18_i_codigo = ($this->tf18_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["tf18_i_codigo"]:$this->tf18_i_codigo);
        $this->tf18_i_veiculo = ($this->tf18_i_veiculo == ""?@$GLOBALS["HTTP_POST_VARS"]["tf18_i_veiculo"]:$this->tf18_i_veiculo);
@@ -112,7 +112,7 @@ class cl_tfd_veiculodestino {
      }
    }
    // funcao para inclusao
-   function incluir ($tf18_i_codigo){
+   public function incluir ($tf18_i_codigo){
       $this->atualizacampos();
      if($this->tf18_i_veiculo == null ){
        $this->erro_sql = " Campo Veículo não informado.";
@@ -626,10 +626,10 @@ class cl_tfd_veiculodestino {
      return $sql;
   }
 
-   function sql_query_lista_daer ( $tf18_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_lista_daer ( $tf18_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -668,7 +668,7 @@ class cl_tfd_veiculodestino {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -678,10 +678,10 @@ class cl_tfd_veiculodestino {
      return $sql;
   }
    // funcao do sql
-   function sql_query2 ( $tf18_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query2 ( $tf18_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -696,6 +696,7 @@ class cl_tfd_veiculodestino {
      $sql .= "      inner join tfd_destino  on  tfd_destino.tf03_i_codigo = tfd_veiculodestino.tf18_i_destino";
      $sql .= "      left  join cgm  on  cgm.z01_numcgm = veicmotoristas.ve05_numcgm";
      $sql .= "      inner join tfd_tipodistancia  on  tfd_tipodistancia.tf24_i_codigo = tfd_destino.tf03_i_tipodistancia";
+     $sql .= "      left  join cancelamentoviagem  on  cancelamentoviagem.tf41_veiculodestino = tfd_veiculodestino.tf18_i_codigo";
      $sql2 = "";
      if($dbwhere==""){
        if($tf18_i_codigo!=null ){
@@ -707,7 +708,7 @@ class cl_tfd_veiculodestino {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

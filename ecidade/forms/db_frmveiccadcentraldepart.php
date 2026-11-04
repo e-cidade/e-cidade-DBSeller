@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,14 +36,14 @@ $clrotulo->label("descdepto");
   <tr>
     <td nowrap align="right" title="<?=@$Tve37_veiccadcentral?>"><?=@$Lve37_veiccadcentral?></td>
     <td nowrap width="20">
-    <?
+    <?php
       db_input("cod_depto",          10,0,true,"hidden",3);
       db_input("ve36_coddepto",      10,0,true,"hidden",3);
       db_input("ve37_veiccadcentral",10,0,true,"text",  3);
     ?>
     </td>
     <td nowrap>
-    <?
+    <?php
        db_input('descrdepto',40,0,true,'text',3);
     ?>
     </td>
@@ -55,7 +55,7 @@ $clrotulo->label("descdepto");
   </tr>
   <tr>
     <td nowrap colspan="3">
-    <?
+    <?php
       $campos         = "ve37_sequencial,coddepto,descrdepto";
       $mostrar_campos = "coddepto,descrdepto";
       $sql            = $clveiccadcentraldepart->sql_query_depto(null,$campos,null,"ve36_coddepto is null and instit = ".db_getsession("DB_instit"));

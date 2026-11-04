@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -104,7 +104,7 @@ $js_funcao="parent.js_mostraParcelamento|v07_parcel";
 
 <tr>
   <td>
-    <? db_lovrot($sSqlParcelamentos,20,"()","","$js_funcao"); ?>
+    <?php db_lovrot($sSqlParcelamentos,20,"()","","$js_funcao"); ?>
   </td>
 </tr>
 

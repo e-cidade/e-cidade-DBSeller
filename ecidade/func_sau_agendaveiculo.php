@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsau_agendaveiculo->rotulo->label("s121_i_codigo");
               <?=$Ls121_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s121_i_codigo",10,$Is121_i_codigo,true,"text",4,"","chave_s121_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_agendaveiculo->rotulo->label("s121_i_codigo");
               <?=$Ls121_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s121_i_codigo",10,$Is121_i_codigo,true,"text",4,"","chave_s121_i_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_agendaveiculo->rotulo->label("s121_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_agendaveiculo.php")==true){
@@ -122,12 +122,12 @@ $clsau_agendaveiculo->rotulo->label("s121_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

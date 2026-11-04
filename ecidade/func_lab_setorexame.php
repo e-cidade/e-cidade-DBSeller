@@ -92,15 +92,16 @@ foreach($parametros as $parametro){
           <?php
 
           $aWhere = array();
-          if( isset( $la02_i_codigo ) ) {
+          $aWhere[] = " la09_i_ativo = 1 ";
+          if( isset( $la02_i_codigo ) && !empty($la02_i_codigo)) {
             $aWhere[] = " la02_i_codigo = {$la02_i_codigo} ";
           }
 
-          if( isset( $la24_i_codigo ) ) {
+          if( isset( $la24_i_codigo )  && !empty($la24_i_codigo)) {
             $aWhere[] = " la09_i_labsetor = {$la24_i_codigo} " ;
           }
 
-          if( isset( $la23_i_codigo ) ) {
+          if( isset( $la23_i_codigo ) && !empty($la23_i_codigo) ) {
             $aWhere[] = " la23_i_codigo = {$la23_i_codigo} " ;
           }
 
@@ -130,7 +131,7 @@ foreach($parametros as $parametro){
             if( $pesquisa_chave != null && $pesquisa_chave != "" ) {
 
 
-              $aWhere[] = " la08_i_codigo = {$pesquisa_chave} ";
+              $aWhere[] = " la08_i_codigo = {$pesquisa_chave} ";              
               $sWhere   = implode(" and ", $aWhere);
               $sSql     = $cllab_setorexame->sql_query( null, '*', null, $sWhere );
               $result   = $cllab_setorexame->sql_record( $sSql );

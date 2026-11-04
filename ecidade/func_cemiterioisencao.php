@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clcemiterioisencao->rotulo->label("cm34_descricao");
               <?=$Lcm34_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cm34_sequencial",10,$Icm34_sequencial,true,"text",4,"","chave_cm34_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcemiterioisencao->rotulo->label("cm34_descricao");
               <?=$Lcm34_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cm34_descricao",40,$Icm34_descricao,true,"text",4,"","chave_cm34_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcemiterioisencao->rotulo->label("cm34_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cemiterioisencao.php")==true){
@@ -122,12 +122,12 @@ $clcemiterioisencao->rotulo->label("cm34_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

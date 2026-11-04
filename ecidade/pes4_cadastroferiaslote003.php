@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,10 +66,10 @@ $db_botao   = true;
         <table>
           <tr>
             <td title="<?=@$Tr44_selec?>">
-              <? db_ancora(@$Lr44_selec, "js_pesquisar_selecao(true);", $db_opcao); ?>
+              <?php db_ancora(@$Lr44_selec, "js_pesquisar_selecao(true);", $db_opcao); ?>
             </td>
             <td>
-              <? 
+              <?php 
                  db_input('selecao', 8, "", true, 'text', $db_opcao, " onchange='js_pesquisar_selecao(false);'");
                  db_input('r44_descr', 50, $Ir44_descr, true, 'text', 3);
               ?>
@@ -86,7 +86,7 @@ $db_botao   = true;
  </tr>
 </table>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

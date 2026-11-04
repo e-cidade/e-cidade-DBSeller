@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,7 +31,7 @@
 <title>Documento sem t&iacute;tulo</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
-<?
+<?php
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 ?>
 <frameset rows="*,100" frameborder="no" border="0" onLoad="window.focus();" onUnload="window.open('con3_usuonline003.php?id_usuario=<?=$id_usuario?>&usuario=<?=$usuario?>&hora=<?=$hora?>&sairfora=1','','width=1,height=1')" framespacing="0">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,7 +53,7 @@ $cltarefasituacao    = new cl_tarefasituacao;
        <?=@$Lat43_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at43_sequencial',10,"",true,'text',3,"");
 ?>
     </td>
@@ -63,12 +63,12 @@ db_input('at43_sequencial',10,"",true,'text',3,"");
        <?=@$Lat43_tarefa?>
     </td>
     <td> 
-<?
+<?php
 db_input('at40_sequencial',10,"",true,'hidden',$db_opcao,"");
 //db_input('at43_sequencial',10,"",true,'hidden',$db_opcao,"");
 db_input('at43_tarefa',10,$Iat43_tarefa,true,'text',3,"");
 ?>
-       <?
+       <?php
 db_textarea('at40_descr',1,50,"",true,'text',3,'')
        ?>
     </td>
@@ -76,10 +76,10 @@ db_textarea('at40_descr',1,50,"",true,'text',3,'')
   <tr>
     <td nowrap title="<?=@$Tat43_usuario?>"><b>Usuário:</b></td>
     <td> 
-<?
+<?php
 db_input('at43_usuario',10,$Iat43_usuario,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'');
        ?>
     </td>
@@ -89,7 +89,7 @@ db_input('nome',40,$Inome,true,'text',3,'');
        <?=@$Lat43_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at43_descr',5,50,$Iat43_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_textarea('at43_descr',5,50,$Iat43_descr,true,'text',$db_opcao,"")
        <?=@$Lat43_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at43_obs',5,50,"",true,'text',$db_opcao,'')
        ?>
     </td>
@@ -109,7 +109,7 @@ db_textarea('at43_obs',5,50,"",true,'text',$db_opcao,'')
        <?=@$Lat43_diaini?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1||$db_opcao==11) {
 	$at43_diaini_dia = date("d", db_getsession("DB_datausu"));
 	$at43_diaini_mes = date("m", db_getsession("DB_datausu"));
@@ -128,7 +128,7 @@ db_inputdata('at43_diaini',@$at43_diaini_dia,@$at43_diaini_mes,@$at43_diaini_ano
        <?=@$Lat43_diafim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at43_diafim',@$at43_diafim_dia,@$at43_diafim_mes,@$at43_diafim_ano,true,'text',$db_opcao)
 ?>
     </td>
@@ -138,7 +138,7 @@ db_inputdata('at43_diafim',@$at43_diafim_dia,@$at43_diafim_mes,@$at43_diafim_ano
        <?=@$Lat43_problema?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('at43_problema',$x,true,$db_opcao,"");
 ?>
@@ -149,7 +149,7 @@ db_select('at43_problema',$x,true,$db_opcao,"");
        <?=@$Lat43_avisar?>
     </td>
     <td> 
-<?
+<?php
 $x = array('0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos');
 if($db_opcao==1||$db_opcao==11) {
 	$at43_avisar = 3;
@@ -167,7 +167,7 @@ if($db_opcao==2||$db_opcao==22) {
        <?=@$Lat43_horainidia?>
     </td>
     <td> 
-<?
+<?php
 db_input('at43_horainidia',5,$Iat43_horainidia,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name);'")
 ?>
     </td>
@@ -177,7 +177,7 @@ db_input('at43_horainidia',5,$Iat43_horainidia,true,'text',$db_opcao,"onchange='
        <?=@$Lat43_horafim?>
     </td>
     <td> 
-<?
+<?php
 db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name)';")
 ?>
     </td>
@@ -187,7 +187,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
        <?=@$Lat43_progresso?>
     </td>
     <td> 
-<?
+<?php
   $matriz = array("0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
@@ -206,7 +206,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
   <tr>
     <td height=50 nowrap title="<?=@$Tat48_situacao?>"><b>Situação:</b></td>
     <td> 
-<?
+<?php
 if($db_opcao==1||$db_opcao==11) {
     $result = $cltarefasituacao->sql_record($cltarefasituacao->sql_query(null,"at47_situacao","at47_tarefa","at47_tarefa=$at43_tarefa"));
     if($cltarefasituacao->numrows > 0) {
@@ -362,7 +362,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tarefalog.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -377,7 +377,7 @@ function js_mostratarefa(chave){
   document.form1.submit();	
 }
 function js_datafim(){
-<?
+<?php
 	if($db_opcao==1||$db_opcao==11) {
 ?>
  if(document.form1.at43_diaini_dia.value.length > 0 &&
@@ -407,7 +407,7 @@ function js_datafim(){
   if(document.form1.at43_diaini_ano.value.length > 0) {
       document.form1.at43_diafim_ano.value = document.form1.at43_diaini_ano.value;
   }
-<?
+<?php
 	}
 ?>
 }

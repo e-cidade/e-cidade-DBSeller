@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("nomefuncao");
        <?=@$Ldb41_sysfuncoescliente?>
     </td>
     <td> 
-<?
+<?php
 db_input('db41_sysfuncoescliente',10,$Idb41_sysfuncoescliente,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb41_cliente?>">
-       <?
+       <?php
        db_ancora(@$Ldb41_cliente,"js_pesquisadb41_cliente(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db41_cliente',4,$Idb41_cliente,true,'text',$db_opcao," onchange='js_pesquisadb41_cliente(false);'")
 ?>
-       <?
+       <?php
 db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb41_funcao?>">
-       <?
+       <?php
        db_ancora(@$Ldb41_funcao,"js_pesquisadb41_funcao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db41_funcao',5,$Idb41_funcao,true,'text',$db_opcao," onchange='js_pesquisadb41_funcao(false);'")
 ?>
-       <?
+       <?php
 db_input('nomefuncao',100,$Inomefuncao,true,'text',3,'')
        ?>
     </td>
@@ -136,7 +136,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_sysfuncoescliente.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

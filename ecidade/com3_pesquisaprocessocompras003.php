@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -127,7 +127,7 @@ switch ($oProcessoCompras->getSituacao()) {
     <legend>
       <b>Outros Dados</b>
     </legend>
-    <?
+    <?php
     $oTabDetalhes = new verticalTab("detalhesProcessoCompras",300);
     
     $oTabDetalhes->add("processoItens", "Itens", 

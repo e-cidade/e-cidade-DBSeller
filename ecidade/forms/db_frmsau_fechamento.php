@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,7 +31,7 @@ $oDaoSauFechamento->rotulo->label();
 <form class="container" name="form1" method="post" action="">
   <center>
   <fieldset style="width:95%"><legend><b>Fechamento de Competência:</b></legend>
-    <?
+    <?php
       db_input('sd97_i_codigo',5,$Isd97_i_codigo,true,'hidden',$db_opcao,"");
       db_input('sd97_i_login',5,$Isd97_i_login,true,'hidden',$db_opcao,"");
     ?>
@@ -41,9 +41,9 @@ $oDaoSauFechamento->rotulo->label();
           <b>Competência Mês/Ano:</b>
         </td> 
         <td> 
-          <? db_input('sd97_i_compmes',2,$Isd97_i_compmes,true,'text',$db_opcao,'onchange="js_descr()"');?>
+          <?php db_input('sd97_i_compmes',2,$Isd97_i_compmes,true,'text',$db_opcao,'onchange="js_descr()"');?>
         /
-          <? db_input('sd97_i_compano',4,$Isd97_i_compano,true,'text',$db_opcao,'onchange="js_descr()"');?>
+          <?php db_input('sd97_i_compano',4,$Isd97_i_compano,true,'text',$db_opcao,'onchange="js_descr()"');?>
         </td>
       </tr>
       <tr>
@@ -51,12 +51,12 @@ $oDaoSauFechamento->rotulo->label();
           <b>Período de Fechamento :</b>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('sd97_d_dataini', @$sd97_d_dataini_dia, @$sd97_d_dataini_mes, @$sd97_d_dataini_ano, true, 
                          'text', $db_opcao, "");
           ?>
         À
-          <? 
+          <?php 
             db_inputdata('sd97_d_datafim', @$sd97_d_datafim_dia, @$sd97_d_datafim_mes, @$sd97_d_datafim_ano, true, 
                          'text', $db_opcao, "onchange=\"js_troca();\"","","","parent.js_troca();");
           ?>
@@ -65,7 +65,7 @@ $oDaoSauFechamento->rotulo->label();
       <tr>
         <td><b>Tipo Financiamento:</b></td>
         <td colspan="3">
-          <?
+          <?php
             $x = array();
             $sWhere = "sd65_i_anocomp=(select max(sd65_i_anocomp) from sau_financiamento) and sd65_i_mescomp=( 
                        select max(sd65_i_mescomp) from sau_financiamento where sd65_i_anocomp=(
@@ -93,7 +93,7 @@ $oDaoSauFechamento->rotulo->label();
           <?=@$Lsd97_d_data?>
         </td>
         <td colspan="3"> 
-          <?
+          <?php
             db_inputdata('sd97_d_data',@$sd97_d_data_dia,@$sd97_d_data_mes,@$sd97_d_data_ano,true,'text',3,"");
           ?>
         </td>
@@ -103,7 +103,7 @@ $oDaoSauFechamento->rotulo->label();
           <?=@$Lsd97_c_descricao?>
         </td>
         <td colspan="3"> 
-          <?
+          <?php
             db_input('sd97_c_descricao',58,$Isd97_c_descricao,true,'text',$db_opcao,"");
           ?>
         </td>
@@ -126,7 +126,7 @@ $oDaoSauFechamento->rotulo->label();
   <table>
     <tr>
       <td valign="top">
-        <?
+        <?php
           $chavepri                     = array("sd97_i_codigo"=>@$sd97_i_codigo);
           $oIframeAltExc->chavepri      = $chavepri;
           $sCampos                      = "sd97_i_compmes||'/'||sd97_i_compano as sd97_i_compmes,";
@@ -160,11 +160,11 @@ $oDaoSauFechamento->rotulo->label();
   </center>
 </form>
 <script>
-  <?
+  <?php
     if (!isset($la54_c_descr)) {
   ?>
       js_descr();
-  <?
+  <?php
     }
   ?>
 
@@ -238,7 +238,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_sau_fechamento.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

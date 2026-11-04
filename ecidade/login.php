@@ -31,8 +31,6 @@ require_once(modification("libs/smtp.class.php"));
 $oSkin = new SkinService();
 $oSkin->setCookie();
 
-
-
 /**
  * Busca preferencias para verificar qual class
  * de imagem de fundo será utilizada
@@ -165,15 +163,15 @@ if (isset($lVeriricaIpPrivado) && $lVeriricaIpPrivado && $lCaptcha){
 
    if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
        $lIpPrivado = verifica_ip_privado($_SERVER["HTTP_X_FORWARDED_FOR"]);
-   
+
    } else {
        $lIpPrivado = verifica_ip_privado($HTTP_SERVER_VARS["REMOTE_ADDR"]);
-   
+
    }
 
    if ($lIpPrivado == true){
       $lCaptcha = false;
-      
+
    }
 }
 
@@ -241,7 +239,7 @@ if ( $lValidaLogin ) {
 
     // Esta funcao testa se os cookies sao aceitos
     // Tenta escrever um cookie.
-    document.cookie = 'aceita_cookie=sim;path=/;';
+    document.cookie = 'aceita_cookie=sim;path=/;SameSite=Lax;';
     // Checa se conseguiu
     if(document.cookie == '') {
 
@@ -250,7 +248,7 @@ if ( $lValidaLogin ) {
     } else {
 
       // Apaga o cookie.
-      document.cookie = 'aceita_cookie=sim; expires=Fri, 13-Apr-1970 00:00:00 GMT';
+      document.cookie = 'aceita_cookie=sim;SameSite=Lax; expires=Fri, 13-Apr-1970 00:00:00 GMT';
       return (true);
     }
   }

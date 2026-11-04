@@ -51,8 +51,8 @@ $oRotulos->label('c53_descr');
   		<table>
   			<tr>
   				<td><?php db_ancora('<strong>Documento: </strong>', 'js_pesquisaDocumento(true);', 1)?></td>
-  				<td><? db_input('c53_coddoc', 10, $Ic53_coddoc, true, 'text', 1, " onchange='js_pesquisaDocumento(false);'") ?></td>
-  				<td><? db_input('c53_descr', 40, $Ic53_descr, true, 'text', 3) ?></td>
+  				<td><?php db_input('c53_coddoc', 10, $Ic53_coddoc, true, 'text', 1, " onchange='js_pesquisaDocumento(false);'") ?></td>
+  				<td><?php db_input('c53_descr', 40, $Ic53_descr, true, 'text', 3) ?></td>
   			</tr>
   		</table>
   	</fieldset>
@@ -60,7 +60,7 @@ $oRotulos->label('c53_descr');
 	</center>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

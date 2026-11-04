@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -108,7 +108,7 @@ function js_voltar(){
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('d02_contri',8,$Id02_contri,true,'text',3);
   ?>
       </td>
@@ -118,7 +118,7 @@ function js_voltar(){
         <?=$Lj01_matric?>
         </td>
         <td>
-<?
+<?php
   db_input('j01_matric',6,0,true,'text',3);
   db_input('z01_nome',40,0,true,'text',3,"","z01_nome");
 ?>
@@ -139,7 +139,7 @@ function js_voltar(){
 	  <tr>
 	   <td valign="top"  align="center" >
             <select name="contribs" size="4" onclick="js_trocacontri(this)" >
-            <?
+            <?php
             for($i=0; $i<$numrows02; $i++){
 	     db_fieldsmemory($result02,$i);
 	     if($i%2==0){
@@ -163,7 +163,7 @@ function js_voltar(){
       </tr>
       <tr>
         <td colspan="2"   height="25" align="center">
-  <?
+  <?php
   $consultar="Consultar";
   db_input("consultar",6,0,true,'button',$db_opcao,"onClick='js_consultar();'");
   $voltar="Voltar";
@@ -173,7 +173,7 @@ function js_voltar(){
       </tr>
       <tr>
         <td>
-            <?
+            <?php
             for($i=0; $i<$numrows02; $i++){
 	     db_fieldsmemory($result02,$i);
 	     $x="edital_".$d05_contri;
@@ -189,7 +189,7 @@ function js_voltar(){
     </td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       if($numrows02==1){
 	echo "<script>document.form1.d02_contri.value=$d02_contri;</script>";

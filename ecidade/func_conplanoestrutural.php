@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clconplano     = new cl_conplano;
   <tr> 
   <td width="50%" align="left" valign="top"> 
   <!-- inicio estrutural  --->
-  <? //monta conplano, recebe conplano.reduz
+  <?php //monta conplano, recebe conplano.reduz
       //--
        $res_credito=$clconplano->sql_record($clconplano->sql_query_file("","","c60_estrut,c60_descr","","c60_anousu=".db_getsession("DB_anousu")." and c60_codcon in (select c61_codcon from conplanoreduz where  c61_anousu=".db_getsession("DB_anousu")." and c61_reduz=$conta )"));
        db_fieldsmemory($res_credito,0);

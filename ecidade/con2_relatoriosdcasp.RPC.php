@@ -39,187 +39,201 @@ require_once modification("libs/db_libcontabilidade.php");
 require_once modification("fpdf151/PDFDocument.php");
 require_once modification("fpdf151/PDFTable.php");
 
-$oParametro         = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno           = new stdClass();
-$oRetorno->erro     = false;
+$oParametro = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
+$oRetorno = new stdClass();
+$oRetorno->erro = false;
 $oRetorno->mensagem = "";
 $iAnoSessao = db_getsession('DB_anousu');
 try {
 
-  db_inicio_transacao();
+    db_inicio_transacao();
 
-  switch ($oParametro->exec) {
+    switch ($oParametro->exec) {
 
-    case "getRecursosNaoConfigurados":
+        case "getRecursosNaoConfigurados":
 
-      db_query("drop table if exists work_dotacao");
-      db_query("drop table if exists work_receita");
+            db_query("drop table if exists work_dotacao");
+            db_query("drop table if exists work_receita");
+
+            $lValidarExercicioAnterior = $oParametro->imprimirValorExercicioAnterior == "t";
+
+            $oRelatorio = RelatorioDCASPFactory::getInstancia(
+                $oParametro->iCodigoRelatorio,
+                $iAnoSessao,
+                $oParametro->iCodigoPeriodo
+            );
+            $oRelatorio->setInstituicoes(implode(',', $oParametro->aCodigosInstituicao));
+            $aRecursosValidar = $oRelatorio->getLinhasObrigaRecurso();
+
+            $aRecursosPendentes = RelatoriosLegaisBase::getRecursosPendentesConfiguracao(
+                $oRelatorio,
+                $aRecursosValidar,
+                $lValidarExercicioAnterior
+            );
+
+            $oRetorno->lEmiteLista = false;
+            $oRetorno->sArquivo = '';
+            if (count($aRecursosPendentes) > 0) {
+
+                $oRetorno->lEmiteLista = true;
+                $oPdf = new PDFTable();
+                $oPdf->setPercentWidth(false);
+
+                $oPdf->setHeaders(
+                    array(
+                        "Código",
+                        "Subrecurso",
+                        "Gestão",
+                        "Siconfi",
+                        "Compl.",
+                        "Descrição"
+                    )
+                );
+
+                $oPdf->setColumnsAlign(
+                    array(
+                        PDFDocument::ALIGN_CENTER,
+                        PDFDocument::ALIGN_CENTER,
+                        PDFDocument::ALIGN_CENTER,
+                        PDFDocument::ALIGN_CENTER,
+                        PDFDocument::ALIGN_CENTER,
+                        PDFDocument::ALIGN_LEFT
+                    )
+                );
+
+                $oPdf->setColumnsWidth(
+                    array(
+                        "15",
+                        "15",
+                        "15",
+                        "15",
+                        "15",
+                        "118"
+                    )
+                );
+
+                $oPdf->setMulticellColumns(array(1));
+
+                foreach ($aRecursosPendentes as $fonteRecurso) {
+                    $oPdf->addLineInformation(
+                        [
+                            $fonteRecurso->orctiporec_id,
+                            $fonteRecurso->recurso->o15_recurso,
+                            $fonteRecurso->gestao,
+                            $fonteRecurso->codigo_siconfi,
+                            str_pad($fonteRecurso->recurso->o15_complemento, 4, '0', STR_PAD_LEFT),
+                            substr($fonteRecurso->descricao, 0, 95)
+                        ]
+                    );
+                }
+
+                $oPdfDocument = new PDFDocument();
+                $oPdfDocument->addHeaderDescription($oRelatorio->getRelatorioContabil()->getDescricao());
+                $oPdfDocument->addHeaderDescription("");
+                $oPdfDocument->addHeaderDescription("Recursos que possuem movimentações no exercício atual ou no exercício anterior e não estão configurados no relatório.");
+                $oPdfDocument->SetFillColor(235);
+                $oPdfDocument->setFontSize(7);
+                $oPdfDocument->open();
+
+                $oPdf->printOut($oPdfDocument, false);
+                $oRetorno->sArquivo = urlencode($oPdfDocument->savePDF('RecursosNaoConfigurados'));
+            }
+            break;
 
 
-      $lValidarExercicioAnterior = $oParametro->imprimirValorExercicioAnterior == "t";
+        case 'verificarRecursos':
 
-      $oRelatorio = RelatorioDCASPFactory::getInstancia($oParametro->iCodigoRelatorio, $iAnoSessao, $oParametro->iCodigoPeriodo);
-      $oRelatorio->setInstituicoes(implode(',', $oParametro->aCodigosInstituicao));
-      $aRecursosValidar = $oRelatorio->getLinhasObrigaRecurso();
+            if ($iAnoSessao >= 2018) {
+                $oRelatorio = new AnexoV2018($iAnoSessao, $oParametro->iCodigoPeriodo);
+            } else {
+                if ($iAnoSessao >= 2017) {
+                    $oRelatorio = new AnexoV2017($iAnoSessao, $oParametro->iCodigoPeriodo);
+                } else {
+                    $oRelatorio = new AnexoVDisponibilidadeCaixaRestosAPagar($iAnoSessao, $oParametro->iCodigoRelatorio, $oParametro->iCodigoPeriodo);
+                }
+            }
 
-      $aRecursosPendentes = RelatoriosLegaisBase::getRecursosPendentesConfiguracao(
-        $oRelatorio,
-        $aRecursosValidar,
-        $lValidarExercicioAnterior
-      );
+            $oRelatorio->setInstituicoes(implode(',', $oParametro->aCodigosInstituicao));
+            $aLinhasProcessar = $oRelatorio->getLinhasAnaliticas();
 
-      $oRetorno->lEmiteLista = false;
-      $oRetorno->sArquivo    = '';
-      if ( count($aRecursosPendentes) > 0 ) {
+            $aRecursosPendentes = RelatoriosLegaisBase::getRecursosPendentesConfiguracao(
+                $oRelatorio,
+                $aLinhasProcessar,
+                false
+            );
 
-        $oRetorno->lEmiteLista = true;
-        $oPdf = new PDFTable();
-        $oPdf->setPercentWidth(true);
+            $oRetorno->lEmiteLista = false;
+            $oRetorno->sArquivo = '';
+            if (count($aRecursosPendentes) > 0) {
 
-        $oPdf->setHeaders(
-          array(
-            "Código do Recurso",
-            "Fonte de Recurso",
-            "Descrição"
-          )
-        );
+                $oRetorno->lEmiteLista = true;
+                $oPdf = new PDFTable();
+                $oPdf->setPercentWidth(true);
+                $oPdf->setHeaders(array(
+                    "Código do Recurso",
+                    "Descrição"
+                ));
 
-        $oPdf->setColumnsAlign(
-          array(
-            PDFDocument::ALIGN_CENTER,
-            PDFDocument::ALIGN_CENTER,
-            PDFDocument::ALIGN_LEFT
-          )
-        );
+                $oPdf->setColumnsAlign(array(
+                    PDFDocument::ALIGN_CENTER,
+                    PDFDocument::ALIGN_LEFT
+                ));
 
-        $oPdf->setColumnsWidth(
-          array(
-            "20",
-            "20",
-            "60"
-          )
-        );
+                $oPdf->setColumnsWidth(array(
+                    "20",
+                    "80"
+                ));
 
-        $oPdf->setMulticellColumns(array(1));
+                $oPdf->setMulticellColumns(array(1));
 
-        foreach ($aRecursosPendentes as $oRecurso) {
+                foreach ($aRecursosPendentes as $oRecurso) {
 
-          $oPdf->addLineInformation(
-            array(
-              $oRecurso->getCodigo(),
-              $oRecurso->getFonteDeRecurso(),
-              $oRecurso->getDescricao()
-            )
-          );
-        }
+                    $oPdf->addLineInformation(array(
+                        $oRecurso->getCodigo(),
+                        $oRecurso->getDescricao()
+                    ));
+                }
 
-        $oPdfDocument = new PDFDocument();
-        $oPdfDocument->addHeaderDescription($oRelatorio->getRelatorioContabil()->getDescricao());
-        $oPdfDocument->addHeaderDescription("");
-        $oPdfDocument->addHeaderDescription("Recursos que possuem movimentações no exercício atual ou no exercício anterior e não estão configurados no relatório.");
-        $oPdfDocument->SetFillColor(235);
-          $oPdfDocument->setFontSize(7);
-        $oPdfDocument->open();
+                $oPdfDocument = new PDFDocument();
+                $oPdfDocument->addHeaderDescription($oRelatorio->getRelatorioContabil()->getDescricao());
+                $oPdfDocument->addHeaderDescription("");
+                $oPdfDocument->addHeaderDescription("Recursos que possuem movimentações no exercício atual ou no exercício anterior e não estão configurados no relatório.");
+                $oPdfDocument->SetFillColor(235);
+                $oPdfDocument->open();
 
-        $oPdf->printOut($oPdfDocument, false);
-        $oRetorno->sArquivo = urlencode($oPdfDocument->savePDF('RecursosNaoConfigurados'));
-      }
-      break;
-
-
-      case 'verificarRecursos':
-
-          if ($iAnoSessao >= 2018) {
-              $oRelatorio = new AnexoV2018($iAnoSessao, $oParametro->iCodigoPeriodo);
-          } else {
-              if ($iAnoSessao >= 2017) {
-                  $oRelatorio = new AnexoV2017($iAnoSessao, $oParametro->iCodigoPeriodo);
-              } else {
-                  $oRelatorio =  new AnexoVDisponibilidadeCaixaRestosAPagar($iAnoSessao, $oParametro->iCodigoRelatorio, $oParametro->iCodigoPeriodo);
-              }
-          }
-
-          $oRelatorio->setInstituicoes(implode(',', $oParametro->aCodigosInstituicao));
-          $aLinhasProcessar = $oRelatorio->getLinhasAnaliticas();
-
-          $aRecursosPendentes = RelatoriosLegaisBase::getRecursosPendentesConfiguracao(
-              $oRelatorio,
-              $aLinhasProcessar,
-              false
-          );
-
-          $oRetorno->lEmiteLista = false;
-          $oRetorno->sArquivo    = '';
-          if ( count($aRecursosPendentes) > 0 ) {
-
-              $oRetorno->lEmiteLista = true;
-              $oPdf = new PDFTable();
-              $oPdf->setPercentWidth(true);
-              $oPdf->setHeaders(array(
-                      "Código do Recurso",
-                      "Descrição"
-                  ));
-
-              $oPdf->setColumnsAlign(array(
-                      PDFDocument::ALIGN_CENTER,
-                      PDFDocument::ALIGN_LEFT
-                  ));
-
-              $oPdf->setColumnsWidth(array(
-                      "20",
-                      "80"
-                  ));
-
-              $oPdf->setMulticellColumns(array(1));
-
-              foreach ($aRecursosPendentes as $oRecurso) {
-
-                  $oPdf->addLineInformation(array(
-                          $oRecurso->getCodigo(),
-                          $oRecurso->getDescricao()
-                      ));
-              }
-
-              $oPdfDocument = new PDFDocument();
-              $oPdfDocument->addHeaderDescription($oRelatorio->getRelatorioContabil()->getDescricao());
-              $oPdfDocument->addHeaderDescription("");
-              $oPdfDocument->addHeaderDescription("Recursos que possuem movimentações no exercício atual ou no exercício anterior e não estão configurados no relatório.");
-              $oPdfDocument->SetFillColor(235);
-              $oPdfDocument->open();
-
-              $oPdf->printOut($oPdfDocument, false);
-              $oRetorno->sArquivo = $oPdfDocument->savePDF('RecursosNaoConfigurados'.time());
-          }
-          break;
+                $oPdf->printOut($oPdfDocument, false);
+                $oRetorno->sArquivo = $oPdfDocument->savePDF('RecursosNaoConfigurados' . time());
+            }
+            break;
 
         case 'getSituacaoMatrizSaldoContabil':
-          $periodo = new Periodo($oParametro->periodo);
-          $mes = $periodo->getMesInicial();
-          $ano = $iAnoSessao;
+            $periodo = new Periodo($oParametro->periodo);
+            $mes = $periodo->getMesInicial();
+            $ano = $iAnoSessao;
 
-          if (!MatrizSaldoContabil::foiProcessada($ano, $mes)) {
-              $oRetorno->mensagem = "Matriz de saldo contábil não processada para a competência {$mes}/{$ano}. Não serão demonstrados todos os valores para o quadro \"Quadro do Superávit / Déficit Financeiro\".";
-          }
-
-          if ($oParametro->exercicioAnterior) {
-
-            $anoAnterior = $iAnoSessao - 1;
-
-            if (!MatrizSaldoContabil::foiProcessada($anoAnterior)) {
-                $oRetorno->mensagem = "Matriz de saldo contábil não processada para o exercício anterior. Não serão demonstrados todos os valores para o quadro \"Quadro do Superávit / Déficit Financeiro\".";
+            if (!MatrizSaldoContabil::foiProcessada($ano, $mes)) {
+                $oRetorno->mensagem = "Matriz de saldo contábil não processada para a competência {$mes}/{$ano}. Não serão demonstrados todos os valores para o quadro \"Quadro do Superávit / Déficit Financeiro\".";
             }
-          }
 
-          break;
-  }
+            if ($oParametro->exercicioAnterior) {
 
-  db_fim_transacao(false);
+                $anoAnterior = $iAnoSessao - 1;
+
+                if (!MatrizSaldoContabil::foiProcessada($anoAnterior)) {
+                    $oRetorno->mensagem = "Matriz de saldo contábil não processada para o exercício anterior. Não serão demonstrados todos os valores para o quadro \"Quadro do Superávit / Déficit Financeiro\".";
+                }
+            }
+
+            break;
+    }
+
+    db_fim_transacao(false);
 
 } catch (Exception $eErro) {
 
-  db_fim_transacao(true);
-  $oRetorno->erro     = true;
-  $oRetorno->mensagem = $eErro->getMessage();
+    db_fim_transacao(true);
+    $oRetorno->erro = true;
+    $oRetorno->mensagem = $eErro->getMessage();
 }
 
 $oRetorno->mensagem = urlencode($oRetorno->mensagem);

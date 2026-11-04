@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cllotenumero_proc->rotulo->label("j11_processo");
               <?=$Lj11_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j11_codigo",10,$Ij11_codigo,true,"text",4,"","chave_j11_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cllotenumero_proc->rotulo->label("j11_processo");
               <?=$Lj11_processo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j11_processo",10,$Ij11_processo,true,"text",4,"","chave_j11_processo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cllotenumero_proc->rotulo->label("j11_processo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lotenumero_proc.php")==true){
@@ -118,12 +118,12 @@ $cllotenumero_proc->rotulo->label("j11_processo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

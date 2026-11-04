@@ -50,11 +50,11 @@ $cltipoassunto->rotulo->label("bi30_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lbi30_sequencial?></label></td>
-          <td><? db_input("bi30_sequencial",10,$Ibi30_sequencial,true,"text",4,"","chave_bi30_sequencial"); ?></td>
+          <td><?php db_input("bi30_sequencial",10,$Ibi30_sequencial,true,"text",4,"","chave_bi30_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lbi30_descricao?></label></td>
-          <td><? db_input("bi30_descricao",10,$Ibi30_descricao,true,"text",4,"","chave_bi30_descricao");?></td>
+          <td><?php db_input("bi30_descricao",10,$Ibi30_descricao,true,"text",4,"","chave_bi30_descricao");?></td>
         </tr>
       </table>
     </fieldset>

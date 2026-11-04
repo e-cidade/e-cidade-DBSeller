@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ $clrotulo->label("ac16_sequencial");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                DBViewProgramacaoFinanceira.classe.js,dbmessageBoard.widget.js,dbautocomplete.widget.js,
                dbcomboBox.widget.js,datagrid.widget.js,widgets/dbtextFieldData.widget.js");
@@ -78,13 +78,13 @@ fieldset table td:first-child {
               <?php db_ancora($Lac16_sequencial, "js_pesquisaac16_sequencial(true);",1); ?>
             </td>
             <td align="left">
-              <?
+              <?php
                 db_input('ac16_sequencial', 10, $Iac16_sequencial, true, 
                          'text', 1, " onchange='js_pesquisaac16_sequencial(false);'");
               ?>
             </td>
             <td align="left">
-              <?
+              <?php
                 db_input('ac16_resumoobjeto', 40, $Iac16_resumoobjeto, true, 'text', 3);
               ?>
             </td>
@@ -94,7 +94,7 @@ fieldset table td:first-child {
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

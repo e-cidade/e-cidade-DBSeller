@@ -1696,7 +1696,7 @@
    string preg_quote (string str [, string delimiter])
    array preg_grep (string pattern, array input)
    int ereg (string pattern, string string [, array regs])
-   string ereg_replace (string pattern, string replacement, string
+   string preg_replace (string pattern, string replacement, string
    int eregi (string pattern, string string [, array regs])
    string eregi_replace (string pattern, string replacement, string
    array split (string pattern, string string [, int limit])

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -60,7 +60,7 @@ if(isset($incluir) or isset($alterar)){
 		    $msgerro = $cltabrecdepto->erro_msg;
 	}
 
-	$depto = split("#",$chaves);
+	$depto =explode("#",$chaves);
   for($w=0;$w<count($depto);$w++){
     if($erro==false){
 
@@ -112,17 +112,17 @@ if(isset($incluir) or isset($alterar)){
        <?=@$Lcodsubrec?>
     </td>
     <td>
-			<?
+			<?php
 			db_input('k98_receit',10,$Icodsubrec,true,'text',3,"")
 			?>
-			<?
+			<?php
       db_input('k02_descr',50,$Ik07_descr,true,'text',3,"")
       ?>
     </td>
   </tr>
 	<tr>
 		<td colspan="2" align="center">
-		   <?
+		   <?php
 			$sql = "select coddepto,descrdepto from db_depart where instit = ".db_getsession("DB_instit")." order by descrdepto";
 			$sqlmarca = "select coddepto,descrdepto
 			             from db_depart
@@ -149,7 +149,7 @@ if(isset($incluir) or isset($alterar)){
 	<?php if (!empty($k98_receit)) : ?>
 	<tr>
 		<td colspan="2" align="center">
-		<? if($db_opcao==3){ $db_botao = false; }?>
+		<?php if($db_opcao==3){ $db_botao = false; }?>
  			<input name="<?=($db_opcao==1?"incluir":($db_opcao==2?"alterar":"excluir"))?>" type="submit" value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick='js_gera_chaves();' >
 		</td>
 	</tr>
@@ -159,7 +159,7 @@ if(isset($incluir) or isset($alterar)){
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) or isset($alterar) or isset($excluir)){
   if($erro==true){
 	  db_msgbox($msgerro);

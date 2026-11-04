@@ -64,13 +64,13 @@ class cl_rhlotavinc {
                  rh25_funcao = int4 = Função
                  ";
    //funcao construtor da classe
-   function cl_rhlotavinc() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotavinc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_rhlotavinc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh25_codlotavinc = ($this->rh25_codlotavinc == ""?@$GLOBALS["HTTP_POST_VARS"]["rh25_codlotavinc"]:$this->rh25_codlotavinc);
        $this->rh25_codigo = ($this->rh25_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh25_codigo"]:$this->rh25_codigo);
@@ -95,7 +95,7 @@ class cl_rhlotavinc {
      }
    }
    // funcao para inclusao
-   function incluir ($rh25_codlotavinc){
+   public function incluir ($rh25_codlotavinc){
       $this->atualizacampos();
      if($this->rh25_codigo == null ){
        $this->erro_sql = " Campo Código da Lotação nao Informado.";
@@ -248,7 +248,7 @@ class cl_rhlotavinc {
      return true;
    }
    // funcao para alteracao
-   function alterar ($rh25_codlotavinc=null) {
+   public function alterar ($rh25_codlotavinc=null) {
       $this->atualizacampos();
      $sql = " update rhlotavinc set ";
      $virgula = "";
@@ -415,7 +415,7 @@ class cl_rhlotavinc {
      }
    }
    // funcao para exclusao
-   function excluir ($rh25_codlotavinc=null,$dbwhere=null) {
+   public function excluir ($rh25_codlotavinc=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh25_codlotavinc));
      }else{
@@ -484,7 +484,7 @@ class cl_rhlotavinc {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -507,7 +507,7 @@ class cl_rhlotavinc {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $rh25_codlotavinc=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $rh25_codlotavinc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -553,7 +553,7 @@ class cl_rhlotavinc {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $rh25_codlotavinc=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $rh25_codlotavinc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -587,7 +587,7 @@ class cl_rhlotavinc {
      return $sql;
   }
 
-  function sql_query_servidores($iAnoFolha, $iMesFolha, $iCodigoRecurso, $sCampos, $iInstituicao = null) {
+  public function sql_query_servidores($iAnoFolha, $iMesFolha, $iCodigoRecurso, $sCampos, $iInstituicao = null) {
 
   	if ( empty($sCampos) ) {
   		$sCampos = "*";
@@ -613,12 +613,14 @@ class cl_rhlotavinc {
 
   }
 
-    function sql_query2($rh25_codlotavinc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query2($rh25_codlotavinc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "
         select {$campos}
           from rhlotavinc
               join orctiporec on orctiporec.o15_codigo = rhlotavinc.rh25_recurso
+              join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                   and fonterecurso.exercicio = rhlotavinc.rh25_anousu
               join complementofonterecurso on complementofonterecurso.o200_sequencial = orctiporec.o15_complemento
               join orcprojativ on orcprojativ.o55_anousu = rhlotavinc.rh25_anousu and  orcprojativ.o55_projativ = rhlotavinc.rh25_projativ
               join rhlota on rhlota.r70_codigo = rhlotavinc.rh25_codigo

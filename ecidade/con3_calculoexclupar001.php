@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -167,12 +167,12 @@ function js_confirmar(){
   <table border="0">
       <tr>
         <td nowrap title="<?=@$Td02_contri?>">
-        <?
+        <?php
           db_ancora(@$Ld02_contri,"js_contri(true);",$db_opcao);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('d02_contri',6,$Id02_contri,true,'text',$db_opcao," onchange='js_contri(false);'");
       db_input('j14_nome',40,$Ij14_nome,true,'text',3,'','j14_nome_contri');
          ?>
@@ -180,12 +180,12 @@ function js_confirmar(){
       </tr>
         <tr> 
           <td>     
-<?
+<?php
   db_ancora($Lj01_matric,' js_matri(true); ',1);
 ?>
           </td>
 	  <td>
-<?
+<?php
   db_input('j01_matric',6,0,true,'text',1,"onchange='js_matri(false)'");
   db_input('z01_nome',40,0,true,'text',3,"","z01_nome_matric");
 ?>
@@ -193,12 +193,12 @@ function js_confirmar(){
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj39_codigo?>">
-<?
+<?php
   db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao);
 ?>
           </td>
           <td> 
-<?
+<?php
   db_input('j39_codigo',6,$Ij39_codigo,true,'text',$db_opcao," onchange='js_pesquisaj39_codigo(false);'");
   db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 ?>
@@ -217,7 +217,7 @@ function js_confirmar(){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -296,7 +296,7 @@ function js_mostraruas(chave,erro){
   }
 }
 </script>
-<?
+<?php
  if($testan==true){
    db_msgbox($erros);  
  }

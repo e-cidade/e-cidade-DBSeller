@@ -40,6 +40,7 @@ $rotulo->label("r44_descr");
 
 $ano = DBPessoal::getAnoFolha();
 $mes = DBPessoal::getMesFolha();
+
 ?>
 <html>
 <head>
@@ -50,6 +51,7 @@ $mes = DBPessoal::getMesFolha();
     <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/classes/DBViewTipoFiltrosFolha.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/classes/DBViewFormularioFolha/CompetenciaFolha.js"></script>
     <link rel="stylesheet" href="estilos.css">
     <link rel="stylesheet" href="estilos/grid.style.css">
     <style type="text/css">
@@ -63,6 +65,12 @@ $mes = DBPessoal::getMesFolha();
     <fieldset>
         <legend>Aviso de Férias</legend>
         <table class="form-container">
+            <tr>
+                <td>
+                    <label>Competência:</label>
+                </td>
+                <td id="formularioCompetencia" width="500"></td>
+            </tr>
             <tr>
                 <td align="left" nowrap title="Digite o Ano / Mes de competência" >
                     <label for="periodovencido"><strong> Data de Pagamento:</strong></label>
@@ -80,8 +88,8 @@ $mes = DBPessoal::getMesFolha();
                 </td>
             </tr>
             <tr>
-                <td> <? db_ancora("<b>Responsável:</b>", "js_pesquisarh01_regist(true);",0); ?></td>
-                <td> <? db_input('rh01_regist',7,0,true,'text',0, "onchange='js_pesquisarh01_regist(false);'");?> <? db_input('nome',25,0,true,'text',3);?></td>
+                <td> <?php db_ancora("<b>Responsável:</b>", "js_pesquisarh01_regist(true);",0); ?></td>
+                <td> <?php db_input('rh01_regist',7,0,true,'text',0, "onchange='js_pesquisarh01_regist(false);'");?> <?php db_input('nome',25,0,true,'text',3);?></td>
             </tr>
             <tr>
                 <td>
@@ -90,7 +98,7 @@ $mes = DBPessoal::getMesFolha();
                     </label>
                 </td>
                 <td align="left">
-                    <?
+                    <?php
                     $tipo_ordem = array("numerica"=>"Numérica",
                         "alfabetica"=>"Alfabética");
                     db_select('ordem',$tipo_ordem ,true,1);
@@ -145,6 +153,8 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         query.dtDocumento = document.form1.dtDocumento.value;
         query.dtPagamento = document.form1.dtPagamento.value;
         query.responsavel = document.form1.rh01_regist.value;
+        query.ano = document.form1.ano.value;
+        query.mes = document.form1.mes.value;
 
         /**
          * Verifica se o tipo escolhido foi intervalo
@@ -154,16 +164,15 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
             query.iIntervaloFinal = $F('InputIntervaloFinal');
         }
 
-
         /**
-         * Verifica se o tipo escolhido foi selecao
+         * Verifica se o tipo escolhido foi seleção
          */
         if (tipoFiltro == 2) {
             var selecionados = [];
             var tipoFiltros = filtrosFolha.getLancadorAtivo().getRegistros();
 
             /**
-             * Percorre os itens selecionados no lancador
+             * Percorre os itens selecionados no lançador
              */
             tipoFiltros.each(function (oFiltro, iIndice) {
                 selecionados[iIndice] = oFiltro.sCodigo;
@@ -172,12 +181,10 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
             query.iRegistros = selecionados;
         }
 
-
         if (tipoRelatorio != 0 && tipoFiltro == 2) {
 
             var lancadorSelecionado = filtrosFolha.getLancadorAtivo().getRegistros();
             if (lancadorSelecionado.length === 0) {
-
                 alert('Por Favor, realize pelo menos o lançamento de 1 registro.');
                 return false
             }
@@ -186,21 +193,23 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         if (tipoRelatorio != 0 && tipoFiltro == 1) {
 
             if ($F('InputIntervaloInicial') == '' || $F('InputIntervaloFinal') == '') {
-
                 alert('Por favor, informe o intervalo para geração do relatório.');
                 return false;
             }
         }
-
 
         if (query.dtPagamento == "") {
             alert('Informe a data de pagamento.');
             return false;
         }
 
+        if (query.ano == "") {
+            alert('Informe o ano da Competência.');
+            return false;
+        }
 
-        if (query.dtDocumento == "") {
-            alert('Informe a data do documento.');
+        if (query.mes == "") {
+            alert('Informe o mês da Competência.');
             return false;
         }
 
@@ -222,5 +231,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         db_iframe_rhpessoal.hide();
     }
 
+    var oCompetenciaFolha = new DBViewFormularioFolha.CompetenciaFolha(false);
+    oCompetenciaFolha.renderizaFormulario($('formularioCompetencia'));
 
 </script>

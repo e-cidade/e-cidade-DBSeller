@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_obsfichaindaluno {
                  ed286_t_obs = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_obsfichaindaluno() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obsfichaindaluno");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_obsfichaindaluno {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed286_i_codigo = ($this->ed286_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed286_i_codigo"]:$this->ed286_i_codigo);
        $this->ed286_i_escola = ($this->ed286_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed286_i_escola"]:$this->ed286_i_escola);
@@ -77,7 +77,7 @@ class cl_obsfichaindaluno {
      }
    }
    // funcao para inclusao
-   function incluir ($ed286_i_codigo){
+   public function incluir ($ed286_i_codigo){
       $this->atualizacampos();
      if($this->ed286_i_escola == null ){
        $this->erro_sql = " Campo Escola nao Informado.";
@@ -167,7 +167,7 @@ class cl_obsfichaindaluno {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed286_i_codigo=null) {
+   public function alterar ($ed286_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update obsfichaindaluno set ";
      $virgula = "";
@@ -258,7 +258,7 @@ class cl_obsfichaindaluno {
      }
    }
    // funcao para exclusao
-   function excluir ($ed286_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed286_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed286_i_codigo));
      }else{
@@ -321,7 +321,7 @@ class cl_obsfichaindaluno {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -344,10 +344,10 @@ class cl_obsfichaindaluno {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed286_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed286_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,7 +377,7 @@ class cl_obsfichaindaluno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,10 +387,10 @@ class cl_obsfichaindaluno {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed286_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed286_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,7 +411,7 @@ class cl_obsfichaindaluno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

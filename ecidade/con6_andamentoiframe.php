@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="400" align="left" valign="top" bgcolor="#CCCCCC">
-<?
+<?php
   // SQL que localiza andamentos a serem exibidos
   $result = db_query("select o.codordem,  o.dataprev,to_char(o.dataordem,'DD/MM/YYYY') as dataordem, o.descricao, o.id_usuario, o.usureceb, o.coddepto,
 		  			 p.descrdepto, u.nome, no.nome as nomeusureceb , to_char(o.dtrecebe,'DD/MM/YYYY') as dtrecebe

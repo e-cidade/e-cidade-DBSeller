@@ -72,14 +72,14 @@ if(isset($incluir) || isset($juntar)){
 	      $sqlerro=true;
      	}
     }
-    $arr_valores = split(",",$valores);
+    $arr_valores =explode(",",$valores);
     if(isset($juntar)){
       $pc80_codproc = $juntar;
     }
     $arr_numero = Array();
     $arr_solici = Array();
     for($i=0;$i<sizeof($arr_valores);$i++){
-      $arr_item  = split("_",$arr_valores[$i]);
+      $arr_item  =explode("_",$arr_valores[$i]);
       if(in_array($arr_item[1],$arr_numero)==false){
 	   array_push($arr_numero,$arr_item[1]);
       }
@@ -142,7 +142,7 @@ if ($pc30_contrandsol=='t'){
 	break;
       }
     }
-    $arr_importar = split(",",$importa);
+    $arr_importar =explode(",",$importa);
     $arr_orcam = Array();
     $rowssizeof = sizeof($arr_importar);
     $arr_orcamfornexist  = Array();
@@ -150,7 +150,7 @@ if ($pc30_contrandsol=='t'){
 
     for($i=0;$i<$rowssizeof;$i++){
       if(trim($arr_importar[$i])!=""){
-	$arr_importaritem = split("_",$arr_importar[$i]);
+	$arr_importaritem =explode("_",$arr_importar[$i]);
 	$orcamento = $arr_importaritem[1];
 	$item      = $arr_importaritem[2];
 	$orcamitem = $arr_importaritem[3];

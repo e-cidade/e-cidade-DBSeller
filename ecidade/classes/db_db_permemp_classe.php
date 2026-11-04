@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -68,13 +68,13 @@ class cl_db_permemp {
                  db20_tipoperm = char(1) = Tipo de Permissão
                  ";
    //funcao construtor da classe
-   function cl_db_permemp() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_permemp");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_db_permemp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db20_codperm = ($this->db20_codperm == ""?@$GLOBALS["HTTP_POST_VARS"]["db20_codperm"]:$this->db20_codperm);
        $this->db20_anousu = ($this->db20_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["db20_anousu"]:$this->db20_anousu);
@@ -101,7 +101,7 @@ class cl_db_permemp {
      }
    }
    // funcao para inclusao
-   function incluir ($db20_codperm){
+   public function incluir ($db20_codperm){
       $this->atualizacampos();
      if($this->db20_anousu == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
@@ -296,7 +296,7 @@ class cl_db_permemp {
      return true;
    }
    // funcao para alteracao
-   function alterar ($db20_codperm=null) {
+   public function alterar ($db20_codperm=null) {
       $this->atualizacampos();
      $sql = " update db_permemp set ";
      $virgula = "";
@@ -511,7 +511,7 @@ class cl_db_permemp {
      }
    }
    // funcao para exclusao
-   function excluir ($db20_codperm=null,$dbwhere=null) {
+   public function excluir ($db20_codperm=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db20_codperm));
      }else{
@@ -582,7 +582,7 @@ class cl_db_permemp {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -604,7 +604,7 @@ class cl_db_permemp {
       }
      return $result;
    }
-   function sql_query ( $db20_codperm=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $db20_codperm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -637,7 +637,7 @@ class cl_db_permemp {
      }
      return $sql;
   }
-   function sql_query_file ( $db20_codperm=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $db20_codperm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -670,7 +670,7 @@ class cl_db_permemp {
      }
      return $sql;
   }
-   function sql_query_origem ( $db20_codperm=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_origem ( $db20_codperm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clconhistdoc->rotulo->label();
        <?=@$Lc53_coddoc?>
     </td>
     <td> 
-     <? db_input('c53_coddoc',4,$Ic53_coddoc,true,'text',$db_opcao,"") ?>
+     <?php db_input('c53_coddoc',4,$Ic53_coddoc,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
@@ -47,7 +47,7 @@ $clconhistdoc->rotulo->label();
        <?=@$Lc53_descr?>
     </td>
     <td> 
-     <? db_input('c53_descr',50,$Ic53_descr,true,'text',$db_opcao,"") ?>
+     <?php db_input('c53_descr',50,$Ic53_descr,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
 <!--   
@@ -56,7 +56,7 @@ $clconhistdoc->rotulo->label();
        <?=@$Lc53_tipo?>
     </td>
     <td> 
-<?
+<?php
 
 $x = array ('10' => 'Empenho', '11' => 'Anulação de Empenho', '20' => 'Liquidação', '21' => 'Anulação de Liquidação', '30' => 'Pagamento Empenho', '31' => 'Estorno Pagamento ', '40' => 'Suplementação', '41' => 'Estorno Suplementação', '50' => 'Transposição', '51' => 'Estorno Transporsição', '60' => 'Redução', '61' => 'Estorno Redução', '70' => 'Redução Transposição', '71' => 'Estorno Redução Transp.', '100' => 'Arrecadação Receita', '101' => 'Estorno Receita', '110' => 'Previsao Adicional receita', '111' => 'Estorno previsao Adicional', '1000' => 'Encerramento de Exercício','2000' => 'Abertura de Exercício');
 db_select('c53_tipo', $x, true, $db_opcao, "");
@@ -67,15 +67,15 @@ db_select('c53_tipo', $x, true, $db_opcao, "");
   
   <tr> 
     <td nowrap title="<?=@$Trh01_regist?>"><b>
-      <?
+      <?php
       db_ancora("Tipo de Documento","js_pesquisarh01_regist(true);",$db_opcao);
       ?></b>
     </td>
     <td nowrap>
-      <?
+      <?php
       db_input('c53_tipo',6,"",true,'text',$db_opcao,"onchange='js_pesquisarh01_regist(false);'")
       ?>
-      <?
+      <?php
       db_input('c57_descricao',40,"",true,'text',3,'')
       ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conhistdoc.hide();
-  <?
+  <?php
 
 
 if ($db_opcao != 1) {

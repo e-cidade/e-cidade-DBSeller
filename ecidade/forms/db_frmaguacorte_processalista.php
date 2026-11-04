@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,12 +49,12 @@
         <tr>
           <td nowrap title="<?=@$Tx40_codcorte?>">
             <input name="acao" type= "hidden" value ="<?=$acao ?>" >
-            <?
+            <?php
               db_ancora(@$Lx40_codcorte, "js_pesquisax40_codcorte(true);", $db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('x40_codcorte', 10, $Ix40_codcorte, true, 'text', $db_opcao,
                 " onchange='js_pesquisax40_codcorte(false);'");
               
@@ -62,7 +62,7 @@
             ?>
           </td>
         </tr>
-        <?
+        <?php
           if (@$acao == 'gerar') {
         ?>
           <tr>
@@ -70,7 +70,7 @@
               <?=@$Lx41_dtprazo?>
             </td>
             <td> 
-              <?
+              <?php
 							  $x41_dtprazo = db_getsession("DB_datausu");
   							$x41_dtprazo_dia = date("d", $x41_dtprazo);
 	  						$x41_dtprazo_mes = date("m", $x41_dtprazo);
@@ -81,18 +81,18 @@
               ?>
             </td>
           </tr>
-        <?
+        <?php
           } else {
         ?>
           <tr>
             <td nowrap title="<?=@$Tx43_codsituacao?>">
-              <?
+              <?php
                 db_ancora(@$acao=='reprocessar'?"<strong>Situa&ccedil;&atilde;o Regulariza&ccedil;&atilde;o:</strong>"
                 :@$Lx43_codsituacao, "js_pesquisax43_codsituacao(true);", $db_opcao);
               ?>
             </td>
             <td> 
-              <?
+              <?php
                 db_input('x43_codsituacao', 5, $Ix43_codsituacao, true, 'text', $db_opcao,
                   " onchange='js_pesquisax43_codsituacao(false);' ");
 
@@ -100,18 +100,18 @@
               ?>
             </td>
           </tr>
-          <?
+          <?php
             if (@$acao == 'reprocessar') {
           ?>
             <tr>
               <td nowrap title="Situacao Nao Regularizacao">
-                <?
+                <?php
                   db_ancora("<strong>Situa&ccedil;&atilde;o N&atilde;o Regulariza&ccedil;&atilde;o:</strong>",
                   "js_pesquisax43_codsituacao2(true);", $db_opcao);
                 ?>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('x43_codsituacao2', 5, $Ix43_codsituacao, true, 'text', $db_opcao,
                     " onchange='js_pesquisax43_codsituacao2(false);' ");
 
@@ -121,13 +121,13 @@
             </tr>
             <tr>
               <td nowrap title="Situacao Recibo Emitido">
-                <?
+                <?php
                   db_ancora("<strong>Situa&ccedil;&atilde;o Recibo Emitido:</strong>",
                     "js_pesquisax43_codsituacao3(true);",$db_opcao);
                 ?>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('x43_codsituacao3', 5, $Ix43_codsituacao, true, 'text', $db_opcao,
                     " onchange='js_pesquisax43_codsituacao3(false);' ");
 
@@ -135,7 +135,7 @@
                 ?>
               </td>
             </tr>
-           <?
+           <?php
             }
          }
 
@@ -143,12 +143,12 @@
         ?>
           <tr>
             <td nowrap title="<?=@$Tx01_codrua?>">
-              <?
+              <?php
                 db_ancora(@$Lx01_codrua,"js_pesquisax01_codrua(true);",$db_opcao);
               ?>
             </td>
             <td> 
-              <?
+              <?php
                 db_input('x01_codrua', 7, $Ix01_codrua, true, 'text', $db_opcao,
                   " onchange='js_pesquisax01_codrua(false);'");
                 db_input('j14_nome', 40, $Ij14_nome, true, 'text', 3, '');
@@ -157,12 +157,12 @@
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx01_zona?>">
-              <?
+              <?php
                 db_ancora(@$Lx01_zona, "js_pesquisax01_zona(true);", $db_opcao);
               ?>
             </td>
             <td> 
-              <?
+              <?php
                 db_input('x01_zona', 7, $Ix01_zona, true, 'text', $db_opcao, " onchange='js_pesquisax01_zona(false);'");
                 db_input('j50_descr', 40, $Ij50_descr, true, 'text', 3, '');
               ?>
@@ -170,12 +170,12 @@
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx01_entrega?>">
-              <?
+              <?php
                 db_ancora(@$Lx01_entrega, "js_pesquisax01_entrega(true);", $db_opcao);
               ?>
             </td>
             <td> 
-              <?
+              <?php
                 db_input('x01_entrega', 7, $Ix01_entrega, true, 'text',
                   $db_opcao, " onchange='js_pesquisax01_entrega(false);'");
                 db_input('j85_descr', 40, $Ij85_descr, true, 'text', 3, '');
@@ -187,7 +187,7 @@
               <strong>Data inicial</strong>
             </td>
             <td> 
-              <?
+              <?php
                 db_inputdata('dti', @$dti_dia, @$dti_mes, @$dti_ano, true, 'text', $db_opcao, "")
               ?>
             </td>
@@ -197,7 +197,7 @@
               <strong>Data final</strong>
             </td>
             <td> 
-              <?
+              <?php
                 db_inputdata('dtf', @$dtf_dia, @$dtf_mes, @$dtf_ano, true, 'text', $db_opcao, "")
               ?>
             </td>
@@ -207,7 +207,7 @@
               <strong>Histórico:&nbsp;</strong>
             </td>
             <td>
-              <? 
+              <?php 
                 $xy = array ("n" => "Não", "s" => "Sim");
                 db_select('historico', $xy, true, 1);
               ?>      
@@ -218,7 +218,7 @@
               <strong>Somente último histórico:&nbsp;</strong>
             </td>
   	        <td>
-              <?	
+              <?php 
                 $xy = array ("s" => "Sim", "n" => "Não");
                 db_select('ultimohistorico', $xy, true, 1);
               ?>      
@@ -229,7 +229,7 @@
               <strong>Última leitura:&nbsp;</strong>
             </td>
             <td>
-              <? 
+              <?php 
                 $xy = array ("n" => "Não", "s" => "Sim");
                 db_select('ultimaleitura', $xy, true, 1);
               ?>      
@@ -240,7 +240,7 @@
               <strong>Hidrômetros:&nbsp;</strong>
             </td>
   	        <td>
-              <?	
+              <?php 
                 $xy = array ("t" => "Todos", "c" => "Com", "s" => "Sem");
                 db_select('hidrometros', $xy, true, 1);
               ?>      
@@ -251,7 +251,7 @@
               <strong>Quebrar página por logradouro:&nbsp;</strong>
             </td>
   	        <td>
-              <?	
+              <?php 
                 $xy = array ("n" => "Não", "s" => "Sim");
                 db_select('quebrarlograd', $xy, true, 1);
               ?>      
@@ -262,13 +262,13 @@
               <strong>Quebrar página por zona de entrega:&nbsp;</strong>
             </td>
   	        <td>
-              <?	
+              <?php 
                 $xy = array ("n" => "Não", "s" => "Sim");
                 db_select('quebrarentrega', $xy, true, 1);
               ?>      
             </td>
           </tr>
-        <?
+        <?php
           }
         ?>
         <tr> 

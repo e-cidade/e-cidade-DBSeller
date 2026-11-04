@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $oGet    = db_utils::postmemory($_GET);
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-    <?    
+    <?php    
 
         $sqlTermoOrigem  = "   select 'divida' as DB_tipo_origem, parcel,'Divida' as tipo, coddiv as dl_codigo,valor,vlrcor,juros,multa,vlrdescjur,vlrdescmul,desconto,total  ";
         $sqlTermoOrigem .= "     from termodiv ";

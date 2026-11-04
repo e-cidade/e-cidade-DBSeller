@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("la22_i_codigo");
        <?=@$Lla38_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la38_i_codigo',10,$Ila38_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla38_i_medico?>">
-       <?
+       <?php
        db_ancora(@$Lla38_i_medico,"js_pesquisala38_i_medico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la38_i_medico',10,$Ila38_i_medico,true,'text',$db_opcao," onchange='js_pesquisala38_i_medico(false);'")
 ?>
-       <?
+       <?php
 db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla38_i_requisicao?>">
-       <?
+       <?php
        db_ancora(@$Lla38_i_requisicao,"js_pesquisala38_i_requisicao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la38_i_requisicao',10,$Ila38_i_requisicao,true,'text',$db_opcao," onchange='js_pesquisala38_i_requisicao(false);'")
 ?>
-       <?
+       <?php
 db_input('la22_i_codigo',10,$Ila22_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_medico.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

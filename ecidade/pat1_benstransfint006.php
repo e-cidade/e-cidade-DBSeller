@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ $db_botao = false;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmbenstransf.php"));
 	?>
     </center>
@@ -106,7 +106,7 @@ $db_botao = false;
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   db_msgbox($erro_msg);
   if($sqlerro==true){

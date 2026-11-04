@@ -163,7 +163,7 @@ $clrhregime->rotulo->label();
                                     $clcodigocategoria = new cl_rhcodigocategoria();
                                     $camposCodigoCategoria = 'rh255_codigo';
                                     $camposCodigoCategoria .=',rh255_descricao';
-                                    $sqlCategoria = $clcodigocategoria->sql_query(null,$camposCodigoCategoria,null,"");
+                                    $sqlCategoria = $clcodigocategoria->sql_query(null,$camposCodigoCategoria,"rh255_codigo","");
                                     $resultadoCategoria = $clcodigocategoria->sql_record($sqlCategoria);
                                     $registrosCategoria = pg_num_rows($resultadoCategoria);
                                     $listaCategoria = [];

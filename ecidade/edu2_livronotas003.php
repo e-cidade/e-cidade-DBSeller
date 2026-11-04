@@ -387,12 +387,17 @@ function imprimeCabecalho( scpdf $oPdf, $oControle, $oTurma, $aPeriodo, $oRegenc
   	foreach ($aRegente as $oRegente) {
 
 	  	$sProfessor  = $oRegente->getNome();
+      $sProfessorSocial = $oRegente->getNomeSocial();
 	  	break;
   	}
   }
 
   $sDados  = "Escola: {$sNomeEscola}\n";
-  $sDados .= "Profº: {$sProfessor}\n";
+  if(!empty($sProfessorSocial) && $sProfessorSocial != ""){
+    $sDados .= "Profº: {$sProfessor}" . "\nNome Social: " . $sProfessorSocial . PHP_EOL;
+  } else {
+    $sDados .= "Profº: {$sProfessor}\n";
+  }
   $sDados .= "Série: {$oTurma->getBaseCurricular()->getDescricao()}\n";
   $sDados .= "Turma: {$oTurma->getDescricao()}\n";
   $sDados .= "Turno: {$oTurma->getTurno()->getDescricao()}\n";

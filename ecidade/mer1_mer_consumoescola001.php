@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ if (isset($incluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <br> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmmer_consumoescola.php"));
 	?>
     </center>
@@ -69,7 +69,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "me38_i_cardapioescola", true, 1, "me38_i_cardapioescola", true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($clmer_consumoescola->erro_status == "0") {

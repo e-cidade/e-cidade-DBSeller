@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -117,12 +117,12 @@ if(isset($incluir) || isset($verificado)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
-	<?
+	<?php
 	include(modification("forms/db_frmapolitem.php"));
 	?>
 </body>
 </html>
-<?
+<?php
 if(isset($cods) && $alerta == true){
 echo "
       <script>

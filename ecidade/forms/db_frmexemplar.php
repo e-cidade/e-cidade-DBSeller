@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -39,22 +39,18 @@ $bi23_dataaquisicao_dia = '';
 $bi23_dataaquisicao_mes = '';
 $bi23_dataaquisicao_ano = '';
 if (!empty($bi23_dataaquisicao)) {
-
     $bi23_dataaquisicao_dia = substr($bi23_dataaquisicao, 0, 2);
     $bi23_dataaquisicao_mes = substr($bi23_dataaquisicao, 3, 2);
     $bi23_dataaquisicao_ano = substr($bi23_dataaquisicao, 6, 4);
 }
 
 if (isset($opcao) && $opcao == "alterar") {
-
     $db_botao1 = true;
     $db_opcao = 2;
 } elseif (isset($opcao) && $opcao == "excluir" || isset($db_opcao) && $db_opcao == 3) {
-
     $db_botao1 = true;
     $db_opcao = 3;
 } else {
-
     if (isset($alterar)) {
         $db_opcao = 2;
         $db_botao1 = true;
@@ -127,8 +123,8 @@ if ($db_opcao != 1) {
                     </label>
                 </td>
                 <td>
-                    <? db_input('bi23_aquisicao', 10, $Ibi23_aquisicao, true, 'text', $db_opcao, " onchange='js_pesquisabi23_aquisicao(false);' onKeyPress='tab(event,9)'") ?>
-                    <? db_input('bi04_forma', 40, $Ibi04_forma, true, 'text', 3, "onKeyPress='tab(event,10)'") ?>
+                    <?php db_input('bi23_aquisicao', 10, $Ibi23_aquisicao, true, 'text', $db_opcao, " onchange='js_pesquisabi23_aquisicao(false);' onKeyPress='tab(event,9)'") ?>
+                    <?php db_input('bi04_forma', 40, $Ibi04_forma, true, 'text', 3, "onKeyPress='tab(event,10)'") ?>
                 </td>
             </tr>
             <tr>
@@ -155,6 +151,38 @@ if ($db_opcao != 1) {
                     <?php db_input('bi23_edicao', 10, $Ibi23_edicao, true, 'text', $db_opcao) ?>
                 </td>
             </tr>
+            <tr>
+                <td nowrap title="<?= $Tbi23_isbn ?>">
+                    <label for="bi23_isbn">ISBN:</label>
+                </td>
+                <td>
+                    <?php db_input('bi23_isbn', 30, $Ibi23_isbn, true, 'text', $db_opcao) ?>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap title="<?= $Tbi23_paginacao ?>">
+                    <label for="bi23_paginacao">Paginação:</label>
+                </td>
+                <td>
+                    <?php db_input('bi23_paginacao', 10, $Ibi23_paginacao, true, 'text', $db_opcao) ?>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap title="<?= $Tbi23_volume ?>">
+                    <label for="bi23_volume">Volume:</label>
+                </td>
+                <td>
+                    <?php db_input('bi23_volume', 10, $Ibi23_volume, true, 'text', $db_opcao) ?>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap title="<?= $Tbi23_tomo ?>">
+                    <label for="bi23_tomo">Tomo:</label>
+                </td>
+                <td>
+                    <?php db_input('bi23_tomo', 10, $Ibi23_tomo, true, 'text', $db_opcao) ?>
+                </td>
+            </tr>
         </table>
     </fieldset>
     <input name="<?= ($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?>"
@@ -175,6 +203,10 @@ if ($db_opcao != 1) {
         $sCampos .= " bi23_aquisicao, ";
         $sCampos .= " bi23_anoedicao, ";
         $sCampos .= " bi23_edicao, ";
+        $sCampos .= " bi23_isbn, ";
+        $sCampos .= " bi23_paginacao, ";
+        $sCampos .= " bi23_volume, ";
+        $sCampos .= " bi23_tomo, ";
         $sCampos .= " case when bi23_situacao = 'S' ";
         $sCampos .= "  then 'ATIVO' ";
         $sCampos .= "  else 'INATIVO' ";
@@ -191,10 +223,14 @@ if ($db_opcao != 1) {
             "bi23_aquisicao" => empty($bi23_aquisicao) ? '' : $bi23_aquisicao,
             "bi23_anoedicao" => empty($bi23_anoedicao) ? '' :  $bi23_anoedicao,
             "bi23_edicao" => empty($bi23_edicao) ? '' :  $bi23_edicao,
+            "bi23_isbn" => empty($bi23_isbn) ? '' :  $bi23_isbn,
+            "bi23_paginacao" => empty($bi23_paginacao) ? '' :  $bi23_paginacao,
+            "bi23_volume" => empty($bi23_volume) ? '' :  $bi23_volume,
+            "bi23_tomo" => empty($bi23_tomo) ? '' :  $bi23_tomo
         );
         $cliframe_alterar_excluir->chavepri = $chavepri;
         $cliframe_alterar_excluir->sql = $oDaoExemplar->sql_query("", $sCampos, "bi23_situacao, bi23_exemplar", " bi23_acervo = $bi23_acervo");
-        $cliframe_alterar_excluir->campos = "bi23_codigo, bi23_exemplar, bi23_codbarras, bi04_forma, bi23_dataaquisicao, bi23_anoedicao, bi23_edicao, bi23_situacao";
+        $cliframe_alterar_excluir->campos = "bi23_codigo, bi23_exemplar, bi23_codbarras, bi04_forma, bi23_dataaquisicao, bi23_anoedicao, bi23_edicao, bi23_situacao, bi23_isbn, bi23_paginacao, bi23_volume, bi23_tomo";
         $cliframe_alterar_excluir->legenda = "Registros";
         $cliframe_alterar_excluir->msg_vazio = "Não foi encontrado nenhum registro.";
         $cliframe_alterar_excluir->textocabec = "#DEB887";

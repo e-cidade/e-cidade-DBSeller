@@ -1,63 +1,63 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009 DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE certidaoexistencia
-class cl_certidaoexistencia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j133_sequencial = 0; 
-   var $j133_db_usuarios = 0; 
-   var $j133_matric = 0; 
-   var $j133_iptuconstr = 0; 
-   var $j133_data_dia = null; 
-   var $j133_data_mes = null; 
-   var $j133_data_ano = null; 
-   var $j133_data = null; 
-   var $j133_hora = null; 
-   var $j133_arquivo = 0; 
-   var $j133_observacao = null; 
-   var $j133_processo = null; 
-   var $j133_titulaprocesso = null; 
-   var $j133_dtprocesso_dia = null; 
-   var $j133_dtprocesso_mes = null; 
-   var $j133_dtprocesso_ano = null; 
+class cl_certidaoexistencia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j133_sequencial = 0;
+   var $j133_db_usuarios = 0;
+   var $j133_matric = 0;
+   var $j133_iptuconstr = 0;
+   var $j133_data_dia = null;
+   var $j133_data_mes = null;
+   var $j133_data_ano = null;
+   var $j133_data = null;
+   var $j133_hora = null;
+   var $j133_arquivo = 0;
+   var $j133_observacao = null;
+   var $j133_processo = null;
+   var $j133_titulaprocesso = null;
+   var $j133_dtprocesso_dia = null;
+   var $j133_dtprocesso_mes = null;
+   var $j133_dtprocesso_ano = null;
    var $j133_dtprocesso = null;
    var $j133_arealote = null;
    var $j133_areareallote = null;
@@ -65,19 +65,19 @@ class cl_certidaoexistencia {
    var $j133_arearealconstruida = null;
    var $j133_numhabite = null;
    var $j133_dathabite = null;
-   // cria propriedade com as variaveis do arquivo 
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j133_sequencial = int4 = Sequencial 
-                 j133_db_usuarios = int4 = Usuário 
-                 j133_matric = int4 = Matrícula 
-                 j133_iptuconstr = int4 = Construção 
-                 j133_data = date = Data 
-                 j133_hora = varchar(5) = Hora 
-                 j133_arquivo = oid = Arquivo 
-                 j133_observacao = varchar(255) = Observação 
-                 j133_processo = varchar(100) = Número do processo 
-                 j133_titulaprocesso = varchar(150) = Titular do Processo 
-                 j133_dtprocesso = date = Data do Processo 
+                 j133_sequencial = int4 = Sequencial
+                 j133_db_usuarios = int4 = Usuário
+                 j133_matric = int4 = Matrícula
+                 j133_iptuconstr = int4 = Construção
+                 j133_data = date = Data
+                 j133_hora = varchar(5) = Hora
+                 j133_arquivo = oid = Arquivo
+                 j133_observacao = varchar(255) = Observação
+                 j133_processo = varchar(100) = Número do processo
+                 j133_titulaprocesso = varchar(150) = Titular do Processo
+                 j133_dtprocesso = date = Data do Processo
                  j133_arealote = float = Tamanho da Área do Lote
                  j133_areareallote = float = Tamanho da Área Real do Lote
                  j133_areaconstruida = float = Tamanho da Área Construída do Lote
@@ -85,14 +85,14 @@ class cl_certidaoexistencia {
                  j133_numhabite = varchar(20) = Número de Cadastro do Habite-se do Lote
                  j133_dathabite = date = Data da Emissão do Habite-se
                  ";
-   //funcao construtor da classe 
-   function cl_certidaoexistencia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("certidaoexistencia"); 
+     $this->rotulo = new rotulo("certidaoexistencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -101,7 +101,7 @@ class cl_certidaoexistencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j133_sequencial = ($this->j133_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j133_sequencial"]:$this->j133_sequencial);
        $this->j133_db_usuarios = ($this->j133_db_usuarios == ""?@$GLOBALS["HTTP_POST_VARS"]["j133_db_usuarios"]:$this->j133_db_usuarios);
@@ -138,9 +138,9 @@ class cl_certidaoexistencia {
      }
    }
    // funcao para inclusao
-   function incluir ($j133_sequencial){ 
+   public function incluir ($j133_sequencial){
       $this->atualizacampos();
-     if($this->j133_db_usuarios == null ){ 
+     if($this->j133_db_usuarios == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "j133_db_usuarios";
        $this->erro_banco = "";
@@ -149,7 +149,7 @@ class cl_certidaoexistencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j133_matric == null ){ 
+     if($this->j133_matric == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
        $this->erro_campo = "j133_matric";
        $this->erro_banco = "";
@@ -158,7 +158,7 @@ class cl_certidaoexistencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j133_iptuconstr == null ){ 
+     if($this->j133_iptuconstr == null ){
        $this->erro_sql = " Campo Construção nao Informado.";
        $this->erro_campo = "j133_iptuconstr";
        $this->erro_banco = "";
@@ -167,7 +167,7 @@ class cl_certidaoexistencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j133_data == null ){ 
+     if($this->j133_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "j133_data_dia";
        $this->erro_banco = "";
@@ -176,7 +176,7 @@ class cl_certidaoexistencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j133_hora == null ){ 
+     if($this->j133_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "j133_hora";
        $this->erro_banco = "";
@@ -185,38 +185,38 @@ class cl_certidaoexistencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j133_dtprocesso == null ){ 
+     if($this->j133_dtprocesso == null ){
        $this->j133_dtprocesso = "null";
      }
-     if($this->j133_arealote == null ){ 
+     if($this->j133_arealote == null ){
        $this->j133_arealote = "null";
      }
-     if($this->j133_areareallote == null ){ 
+     if($this->j133_areareallote == null ){
        $this->j133_areareallote = "null";
      }
-     if($this->j133_areaconstruida == null ){ 
+     if($this->j133_areaconstruida == null ){
        $this->j133_areaconstruida = "null";
      }
-     if($this->j133_arearealconstruida == null ){ 
+     if($this->j133_arearealconstruida == null ){
        $this->j133_arearealconstruida = "null";
      }
-     if($this->j133_numhabite == null ){ 
+     if($this->j133_numhabite == null ){
        $this->j133_numhabite = "";
      }
-     if($this->j133_dathabite == null || $this->j133_dathabite == "--"){ 
+     if($this->j133_dathabite == null || $this->j133_dathabite == "--"){
        $this->j133_dathabite = "null";
      }
      if($j133_sequencial == "" || $j133_sequencial == null ){
-       $result = db_query("select nextval('certidaoexistencia_j133_sequencial_seq')"); 
+       $result = db_query("select nextval('certidaoexistencia_j133_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: certidaoexistencia_j133_sequencial_seq do campo: j133_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: certidaoexistencia_j133_sequencial_seq do campo: j133_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j133_sequencial = pg_result($result,0,0); 
+       $this->j133_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from certidaoexistencia_j133_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $j133_sequencial)){
@@ -227,10 +227,10 @@ class cl_certidaoexistencia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j133_sequencial = $j133_sequencial; 
+         $this->j133_sequencial = $j133_sequencial;
        }
      }
-     if(($this->j133_sequencial == null) || ($this->j133_sequencial == "") ){ 
+     if(($this->j133_sequencial == null) || ($this->j133_sequencial == "") ){
        $this->erro_sql = " Campo j133_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -239,46 +239,46 @@ class cl_certidaoexistencia {
        return false;
      }
      $sql = "insert into certidaoexistencia(
-                                       j133_sequencial 
-                                      ,j133_db_usuarios 
-                                      ,j133_matric 
-                                      ,j133_iptuconstr 
-                                      ,j133_data 
-                                      ,j133_hora 
-                                      ,j133_arquivo 
-                                      ,j133_observacao 
-                                      ,j133_processo 
-                                      ,j133_titulaprocesso 
+                                       j133_sequencial
+                                      ,j133_db_usuarios
+                                      ,j133_matric
+                                      ,j133_iptuconstr
+                                      ,j133_data
+                                      ,j133_hora
+                                      ,j133_arquivo
+                                      ,j133_observacao
+                                      ,j133_processo
+                                      ,j133_titulaprocesso
                                       ,j133_dtprocesso
                                       ,j133_arealote
                                       ,j133_areareallote
                                       ,j133_areaconstruida
-                                      ,j133_arearealconstruida 
+                                      ,j133_arearealconstruida
                                       ,j133_numhabite
-                                      ,j133_dathabite 
+                                      ,j133_dathabite
                        )
                 values (
-                                $this->j133_sequencial 
-                               ,$this->j133_db_usuarios 
-                               ,$this->j133_matric 
-                               ,$this->j133_iptuconstr 
-                               ,".($this->j133_data == "null" || $this->j133_data == ""?"null":"'".$this->j133_data."'")." 
-                               ,'$this->j133_hora' 
-                               ,$this->j133_arquivo 
-                               ,'$this->j133_observacao' 
-                               ,'$this->j133_processo' 
-                               ,'$this->j133_titulaprocesso' 
+                                $this->j133_sequencial
+                               ,$this->j133_db_usuarios
+                               ,$this->j133_matric
+                               ,$this->j133_iptuconstr
+                               ,".($this->j133_data == "null" || $this->j133_data == ""?"null":"'".$this->j133_data."'")."
+                               ,'$this->j133_hora'
+                               ,$this->j133_arquivo
+                               ,'$this->j133_observacao'
+                               ,'$this->j133_processo'
+                               ,'$this->j133_titulaprocesso'
                                ,".($this->j133_dtprocesso == "null" || $this->j133_dtprocesso == ""?"null":"'".$this->j133_dtprocesso."'")."
                                ,$this->j133_arealote
                                ,$this->j133_areareallote
                                ,$this->j133_areaconstruida
-                               ,$this->j133_arearealconstruida 
+                               ,$this->j133_arearealconstruida
                                ,'$this->j133_numhabite'
                                ,".($this->j133_dathabite == "null" || $this->j133_dathabite == "" ?"null":"'".$this->j133_dathabite."'")."
                         )";
      //echo $sql;
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "certidão de existência ($this->j133_sequencial) nao Incluído. Inclusao Abortada.";
@@ -320,16 +320,16 @@ class cl_certidaoexistencia {
        $resac = db_query("insert into db_acount values($acount,3341,18855,'','".AddSlashes(pg_result($resaco,0,'j133_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j133_sequencial=null) { 
+   public function alterar ($j133_sequencial=null) {
       $this->atualizacampos();
      $sql = " update certidaoexistencia set ";
      $virgula = "";
-     if(trim($this->j133_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_sequencial"])){ 
+     if(trim($this->j133_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_sequencial"])){
        $sql  .= $virgula." j133_sequencial = $this->j133_sequencial ";
        $virgula = ",";
-       if(trim($this->j133_sequencial) == null ){ 
+       if(trim($this->j133_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j133_sequencial";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_db_usuarios"])){ 
+     if(trim($this->j133_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_db_usuarios"])){
        $sql  .= $virgula." j133_db_usuarios = $this->j133_db_usuarios ";
        $virgula = ",";
-       if(trim($this->j133_db_usuarios) == null ){ 
+       if(trim($this->j133_db_usuarios) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "j133_db_usuarios";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_matric"])){ 
+     if(trim($this->j133_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_matric"])){
        $sql  .= $virgula." j133_matric = $this->j133_matric ";
        $virgula = ",";
-       if(trim($this->j133_matric) == null ){ 
+       if(trim($this->j133_matric) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "j133_matric";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_iptuconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_iptuconstr"])){ 
+     if(trim($this->j133_iptuconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_iptuconstr"])){
        $sql  .= $virgula." j133_iptuconstr = $this->j133_iptuconstr ";
        $virgula = ",";
-       if(trim($this->j133_iptuconstr) == null ){ 
+       if(trim($this->j133_iptuconstr) == null ){
          $this->erro_sql = " Campo Construção nao Informado.";
          $this->erro_campo = "j133_iptuconstr";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"] !="") ){ 
+     if(trim($this->j133_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"] !="") ){
        $sql  .= $virgula." j133_data = '$this->j133_data' ";
        $virgula = ",";
-       if(trim($this->j133_data) == null ){ 
+       if(trim($this->j133_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "j133_data_dia";
          $this->erro_banco = "";
@@ -390,11 +390,11 @@ class cl_certidaoexistencia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"])){
          $sql  .= $virgula." j133_data = null ";
          $virgula = ",";
-         if(trim($this->j133_data) == null ){ 
+         if(trim($this->j133_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "j133_data_dia";
            $this->erro_banco = "";
@@ -405,10 +405,10 @@ class cl_certidaoexistencia {
          }
        }
      }
-     if(trim($this->j133_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_hora"])){ 
+     if(trim($this->j133_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_hora"])){
        $sql  .= $virgula." j133_hora = '$this->j133_hora' ";
        $virgula = ",";
-       if(trim($this->j133_hora) == null ){ 
+       if(trim($this->j133_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "j133_hora";
          $this->erro_banco = "";
@@ -418,27 +418,27 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_arquivo"])){ 
+     if(trim($this->j133_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_arquivo"])){
        $sql  .= $virgula." j133_arquivo = $this->j133_arquivo ";
        $virgula = ",";
      }
-     if(trim($this->j133_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_observacao"])){ 
+     if(trim($this->j133_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_observacao"])){
        $sql  .= $virgula." j133_observacao = '$this->j133_observacao' ";
        $virgula = ",";
      }
-     if(trim($this->j133_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_processo"])){ 
+     if(trim($this->j133_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_processo"])){
        $sql  .= $virgula." j133_processo = '$this->j133_processo' ";
        $virgula = ",";
      }
-     if(trim($this->j133_titulaprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_titulaprocesso"])){ 
+     if(trim($this->j133_titulaprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_titulaprocesso"])){
        $sql  .= $virgula." j133_titulaprocesso = '$this->j133_titulaprocesso' ";
        $virgula = ",";
      }
-     if(trim($this->j133_dtprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"] !="") ){ 
+     if(trim($this->j133_dtprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"] !="") ){
        $sql  .= $virgula." j133_dtprocesso = '$this->j133_dtprocesso' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"])){
          $sql  .= $virgula." j133_dtprocesso = null ";
          $virgula = ",";
        }
@@ -480,7 +480,7 @@ class cl_certidaoexistencia {
      }
      //echo $sql;
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "certidão de existência nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j133_sequencial;
@@ -508,14 +508,14 @@ class cl_certidaoexistencia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j133_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j133_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j133_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -551,7 +551,7 @@ class cl_certidaoexistencia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "certidão de existência nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j133_sequencial;
@@ -579,11 +579,11 @@ class cl_certidaoexistencia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -605,11 +605,11 @@ class cl_certidaoexistencia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $j133_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $j133_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -626,15 +626,15 @@ class cl_certidaoexistencia {
      $sql2 = "";
      if($dbwhere==""){
        if($j133_sequencial!=null ){
-         $sql2 .= " where certidaoexistencia.j133_sequencial = $j133_sequencial "; 
-       } 
+         $sql2 .= " where certidaoexistencia.j133_sequencial = $j133_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -643,11 +643,11 @@ class cl_certidaoexistencia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $j133_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $j133_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -660,15 +660,15 @@ class cl_certidaoexistencia {
      $sql2 = "";
      if($dbwhere==""){
        if($j133_sequencial!=null ){
-         $sql2 .= " where certidaoexistencia.j133_sequencial = $j133_sequencial "; 
-       } 
+         $sql2 .= " where certidaoexistencia.j133_sequencial = $j133_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -684,26 +684,26 @@ class cl_certidaoexistencia {
     * @param string $sCampos
     * @param string $sWhere
     */
-   function sql_queryDadosCertidao( $iCodigoCertidao, $sCampos = "*", $sWhere = "" ) {
-  
-   
+   public function sql_queryDadosCertidao( $iCodigoCertidao, $sCampos = "*", $sWhere = "" ) {
+
+
      $sql  = " SELECT $sCampos  FROM certidaoexistencia ";
      $sql .= " LEFT JOIN certidaoexistenciaprotprocesso ON certidaoexistencia.j133_sequencial = certidaoexistenciaprotprocesso.j134_certidaoexistencia ";
      $sql2 = "";
-     
+
      if ($sWhere == "") {
-      
+
        if ($iCodigoCertidao != null ) {
-         $sql2 .= " WHERE certidaoexistencia.j133_sequencial = $iCodigoCertidao "; 
-       } 
-       
+         $sql2 .= " WHERE certidaoexistencia.j133_sequencial = $iCodigoCertidao ";
+       }
+
      } else if ($sWhere != "") {
        $sql2 = " WHERE $sWhere";
      }
      $sql .= $sql2;
 
      return $sql;
-     
+
    }
 
 }

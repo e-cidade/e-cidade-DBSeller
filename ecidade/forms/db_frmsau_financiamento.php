@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clsau_financiamento->rotulo->label();
        <?=@$Lsd65_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd65_i_codigo',5,$Isd65_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('sd65_i_codigo',5,$Isd65_i_codigo,true,'text',3,"")
        <?=@$Lsd65_c_financiamento?>
     </td>
     <td>
-<?
+<?php
 db_input('sd65_c_financiamento',2,$Isd65_c_financiamento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('sd65_c_financiamento',2,$Isd65_c_financiamento,true,'text',$db_opcao,"
        <?=@$Lsd65_c_nome?>
     </td>
     <td>
-<?
+<?php
 db_input('sd65_c_nome',50,$Isd65_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('sd65_c_nome',50,$Isd65_c_nome,true,'text',$db_opcao,"")
        <?=@$Lsd65_i_anocomp?>/<?=@$Lsd65_i_mescomp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd65_i_anocomp',4,$Isd65_i_anocomp,true,'text',$db_opcao,""); echo '/';
 db_input('sd65_i_mescomp',2,$Isd65_i_mescomp,true,'text',$db_opcao,"");
 ?>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_financiamento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

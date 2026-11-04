@@ -127,7 +127,7 @@ if ( isset($excluir) ) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
 
   if($sqlerro==true){

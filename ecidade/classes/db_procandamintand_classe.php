@@ -52,7 +52,7 @@ class cl_procandamintand
                  ";
 
     //funcao construtor da classe
-    function cl_procandamintand()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("procandamintand");
@@ -60,7 +60,7 @@ class cl_procandamintand
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -71,7 +71,7 @@ class cl_procandamintand
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->p86_codtrans = ($this->p86_codtrans == "" ? @$GLOBALS["HTTP_POST_VARS"]["p86_codtrans"] : $this->p86_codtrans);
@@ -81,7 +81,7 @@ class cl_procandamintand
     }
 
     // funcao para inclusao
-    function incluir()
+    public function incluir()
     {
         $this->atualizacampos();
         if ($this->p86_codtrans == null) {
@@ -146,7 +146,7 @@ class cl_procandamintand
     }
 
     // funcao para alteracao
-    function alterar($oid = null)
+    public function alterar($oid = null)
     {
         $this->atualizacampos();
         $sql = " update procandamintand set ";
@@ -220,7 +220,7 @@ class cl_procandamintand
     }
 
     // funcao para exclusao
-    function excluir($oid = null, $dbwhere = null)
+    public function excluir($oid = null, $dbwhere = null)
     {
         $sql = " delete from procandamintand
                     where ";
@@ -267,7 +267,7 @@ class cl_procandamintand
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -296,7 +296,7 @@ class cl_procandamintand
         return $result;
     }
 
-    function sql_query($oid = null, $campos = "procandamintand.oid,*", $ordem = null, $dbwhere = "")
+    public function sql_query($oid = null, $campos = "procandamintand.oid,*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -340,7 +340,7 @@ class cl_procandamintand
         return $sql;
     }
 
-    function sql_query_file($oid = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($oid = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -375,7 +375,7 @@ class cl_procandamintand
         return $sql;
     }
 
-    function sql_query_procint($oid = null, $campos = "procandamintand.oid,*", $ordem = null, $dbwhere = "")
+    public function sql_query_procint($oid = null, $campos = "procandamintand.oid,*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

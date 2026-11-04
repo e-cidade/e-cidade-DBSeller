@@ -55,7 +55,7 @@ $clorcdotacao->rotulo->label("o58_orgao");
 
   <tr> 
     <td align="center" valign="top"> 
-<?
+<?php
 if(!isset($pesquisa_chave)){
   
   if(isset($campos)==false){
@@ -119,12 +119,12 @@ if(!isset($pesquisa_chave)){
 </form>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
 <script>
 </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,82 +42,82 @@ $clrotulo->label("ed12_i_codigo");
        <?=@$Led95_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed95_i_codigo',10,$Ied95_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted95_i_escola?>">
-       <?
+       <?php
        db_ancora(@$Led95_i_escola,"js_pesquisaed95_i_escola(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed95_i_escola',10,$Ied95_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed95_i_escola(false);'")
 ?>
-       <?
+       <?php
 db_input('ed18_i_codigo',10,$Ied18_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted95_i_calendario?>">
-       <?
+       <?php
        db_ancora(@$Led95_i_calendario,"js_pesquisaed95_i_calendario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed95_i_calendario',10,$Ied95_i_calendario,true,'text',$db_opcao," onchange='js_pesquisaed95_i_calendario(false);'")
 ?>
-       <?
+       <?php
 db_input('ed52_i_codigo',10,$Ied52_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted95_i_aluno?>">
-       <?
+       <?php
        db_ancora(@$Led95_i_aluno,"js_pesquisaed95_i_aluno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed95_i_aluno',10,$Ied95_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed95_i_aluno(false);'")
 ?>
-       <?
+       <?php
 db_input('ed47_i_codigo',10,$Ied47_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted95_i_serie?>">
-       <?
+       <?php
        db_ancora(@$Led95_i_serie,"js_pesquisaed95_i_serie(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed95_i_serie',10,$Ied95_i_serie,true,'text',$db_opcao," onchange='js_pesquisaed95_i_serie(false);'")
 ?>
-       <?
+       <?php
 db_input('ed11_i_codigo',10,$Ied11_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted95_i_disciplina?>">
-       <?
+       <?php
        db_ancora(@$Led95_i_disciplina,"js_pesquisaed95_i_disciplina(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed95_i_disciplina',10,$Ied95_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed95_i_disciplina(false);'")
 ?>
-       <?
+       <?php
 db_input('ed12_i_codigo',10,$Ied12_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -248,7 +248,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_diario.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

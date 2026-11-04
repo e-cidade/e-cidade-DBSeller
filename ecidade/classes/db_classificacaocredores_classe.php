@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE classificacaocredores
 class cl_classificacaocredores { 
@@ -36,13 +36,13 @@ class cl_classificacaocredores {
                  cc30_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_classificacaocredores() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaocredores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -51,7 +51,7 @@ class cl_classificacaocredores {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cc30_codigo = ($this->cc30_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["cc30_codigo"]:$this->cc30_codigo);
        $this->cc30_descricao = ($this->cc30_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["cc30_descricao"]:$this->cc30_descricao);
@@ -66,7 +66,7 @@ class cl_classificacaocredores {
      }
    }
    // funcao para Inclusão
-   function incluir ($cc30_codigo){ 
+   public function incluir ($cc30_codigo){ 
       // $this->atualizacampos();
      if($this->cc30_descricao == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ if(isset($excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmprocgrupoatend.php"));
         ?>
     </center>
@@ -76,7 +76,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","sd17_i_grupoatend",true,1,"sd17_i_grupoatend",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clprocgrupoatend->erro_status=="0"){
     $clprocgrupoatend->erro(true,false);

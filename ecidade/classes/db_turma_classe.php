@@ -28,39 +28,40 @@
 //CLASSE DA ENTIDADE turma
 class cl_turma {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
-   // cria variaveis do arquivo
-   var $ed57_i_codigo = 0;
-   var $ed57_i_escola = 0;
-   var $ed57_i_calendario = 0;
-   var $ed57_c_descr = null;
-   var $ed57_i_base = 0;
-   var $ed57_i_turno = 0;
-   var $ed57_i_sala = 0;
-   var $ed57_c_medfreq = null;
-   var $ed57_t_obs = null;
-   var $ed57_i_codigoinep = 0;
-   var $ed57_i_tipoatend = 0;
-   var $ed57_i_ativqtd = 0;
-   var $ed57_i_censocursoprofiss = 0;
-   var $ed57_i_censoetapa = 0;
-   var $ed57_i_tipoturma = 0;
-   var $ed57_censoprogramamaiseducacao = null;
-   var $Matriculados = 0;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
+   // cria publiciaveis do arquivo
+   public $ed57_i_codigo = 0;
+   public $ed57_i_escola = 0;
+   public $ed57_i_calendario = 0;
+   public $ed57_c_descr = null;
+   public $ed57_i_base = 0;
+   public $ed57_i_turno = 0;
+   public $ed57_i_sala = 0;
+   public $ed57_c_medfreq = null;
+   public $ed57_t_obs = null;
+   public $ed57_i_codigoinep = 0;
+   public $ed57_i_tipoatend = 0;
+   public $ed57_i_ativqtd = 0;
+   public $ed57_i_censocursoprofiss = 0;
+   public $ed57_i_censoetapa = 0;
+   public $ed57_i_tipoturma = 0;
+   public $ed57_is_bilingue = null;
+   public $ed57_censoprogramamaiseducacao = null;
+   public $Matriculados = 0;
 
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed57_i_codigo = int8 = Código
                  ed57_i_escola = int8 = Escola
                  ed57_i_calendario = int8 = Calendário
@@ -80,13 +81,13 @@ class cl_turma {
                  Matriculados = int8 = Matriculados
                  ";
    //funcao construtor da classe
-   function cl_turma() {
+    public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turma");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+    public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -95,7 +96,7 @@ class cl_turma {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+    public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed57_i_codigo = ($this->ed57_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed57_i_codigo"]:$this->ed57_i_codigo);
        $this->ed57_i_escola = ($this->ed57_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed57_i_escola"]:$this->ed57_i_escola);
@@ -117,8 +118,8 @@ class cl_turma {
        $this->ed57_i_codigo = ($this->ed57_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed57_i_codigo"]:$this->ed57_i_codigo);
      }
    }
-   // funcao para Inclusão
-   function incluir ($ed57_i_codigo){
+   // funcao para Inclusï¿½o
+    public function incluir ($ed57_i_codigo){
       $this->atualizacampos();
      if($this->ed57_i_escola == null ){
        $this->erro_sql = " Campo Escola não informado.";
@@ -219,6 +220,10 @@ class cl_turma {
      if($this->ed57_censoprogramamaiseducacao == null ){
        $this->ed57_censoprogramamaiseducacao = 'null';
      }
+   if($this->ed57_is_bilingue == null ){
+       $this->ed57_is_bilingue = 'f';
+   }
+
      if($ed57_i_codigo == "" || $ed57_i_codigo == null ){
        $result = db_query("select nextval('turma_ed57_i_codigo_seq')");
        if($result==false){
@@ -268,6 +273,7 @@ class cl_turma {
                                       ,ed57_i_censoetapa
                                       ,ed57_i_tipoturma
                                       ,ed57_censoprogramamaiseducacao
+                                      ,ed57_is_bilingue
                        )
                 values (
                                 $this->ed57_i_codigo
@@ -286,17 +292,18 @@ class cl_turma {
                                ,$this->ed57_i_censoetapa
                                ,$this->ed57_i_tipoturma
                                ,$this->ed57_censoprogramamaiseducacao
+                               ,'$this->ed57_is_bilingue'
                       )";
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = "Cadastro de Turmas ($this->ed57_i_codigo) não Incluído. Inclusão Abortada.";
+         $this->erro_sql   = "Cadastro de turmas ($this->ed57_i_codigo) não incluída. Inclusão abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = "Cadastro de Turmas já Cadastrado";
+         $this->erro_banco = "Cadastro de turmas já cadastrada";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }else{
-         $this->erro_sql   = "Cadastro de Turmas ($this->ed57_i_codigo) não Incluído. Inclusão Abortada.";
+         $this->erro_sql   = "Cadastro de turmas ($this->ed57_i_codigo) não incluída. Inclusão abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }
@@ -305,8 +312,8 @@ class cl_turma {
        return false;
      }
      $this->erro_banco = "";
-     $this->erro_sql = "Inclusão efetuada com Sucesso\\n";
-         $this->erro_sql .= "Valores : ".$this->ed57_i_codigo;
+     $this->erro_sql = "Inclusão efetuada com sucesso!\\n";
+         $this->erro_sql .= "Valores: ".$this->ed57_i_codigo;
      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
@@ -513,6 +520,10 @@ class cl_turma {
      	$sql  .= $virgula." ed57_censoprogramamaiseducacao = null ";
        $virgula = ",";
      }
+
+     if (trim($this->ed57_is_bilingue) != null) {
+         $sql .= ", ed57_is_bilingue = '{$this->ed57_is_bilingue}' ";
+     }
      $sql .= " where ";
      if($ed57_i_codigo!=null){
        $sql .= " ed57_i_codigo = $this->ed57_i_codigo";
@@ -568,8 +579,8 @@ class cl_turma {
      $result = db_query($sql);
      if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Cadastro de Turmas não Alterado. Alteração Abortada.\\n";
-         $this->erro_sql .= "Valores : ".$this->ed57_i_codigo;
+       $this->erro_sql   = "Cadastro de turmas não alterado. Alteração abortada.\\n";
+         $this->erro_sql .= "Valores: ".$this->ed57_i_codigo;
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
@@ -578,8 +589,8 @@ class cl_turma {
      } else {
        if (pg_affected_rows($result) == 0) {
          $this->erro_banco = "";
-         $this->erro_sql = "Cadastro de Turmas não foi Alterado. Alteração Executada.\\n";
-         $this->erro_sql .= "Valores : ".$this->ed57_i_codigo;
+         $this->erro_sql = "Cadastro de turmas não foi alterado. Alteração executada.\\n";
+         $this->erro_sql .= "Valores: ".$this->ed57_i_codigo;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
@@ -587,7 +598,7 @@ class cl_turma {
          return true;
        } else {
          $this->erro_banco = "";
-         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
+         $this->erro_sql = "Alteração efetuada com sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->ed57_i_codigo;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -653,8 +664,8 @@ class cl_turma {
      $result = db_query($sql.$sql2);
      if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Cadastro de Turmas não Excluído. Exclusão Abortada.\\n";
-       $this->erro_sql .= "Valores : ".$ed57_i_codigo;
+       $this->erro_sql   = "Cadastro de turmas não excluído. Exclusão abortada.\\n";
+       $this->erro_sql .= "Valores: ".$ed57_i_codigo;
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
@@ -663,8 +674,8 @@ class cl_turma {
      } else {
        if (pg_affected_rows($result) == 0) {
          $this->erro_banco = "";
-         $this->erro_sql = "Cadastro de Turmas não Encontrado. Exclusão não Efetuada.\\n";
-         $this->erro_sql .= "Valores : ".$ed57_i_codigo;
+         $this->erro_sql = "Cadastro de turmas não encontrado. Exclusão não efetuada.\\n";
+         $this->erro_sql .= "Valores: ".$ed57_i_codigo;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
@@ -672,8 +683,8 @@ class cl_turma {
          return true;
        } else {
          $this->erro_banco = "";
-         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
-         $this->erro_sql .= "Valores : ".$ed57_i_codigo;
+         $this->erro_sql = "Exclusão efetuada com sucesso\\n";
+         $this->erro_sql .= "Valores: ".$ed57_i_codigo;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
@@ -760,7 +771,7 @@ class cl_turma {
      return $sql;
   }
 
-   function sql_query_turmaserie_regencia($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_turmaserie_regencia($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -826,7 +837,7 @@ class cl_turma {
     }
     return $sSql;
 }
-   function sql_query_turma($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_turma($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -884,7 +895,7 @@ class cl_turma {
   }
 
 
-    function sql_query_turmaMatriculasAtivas($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+     public function sql_query_turmaMatriculasAtivas($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
         $sSql = 'select ';
         if ($sCampos != '*') {
             $sCamposSql = explode('#', $sCampos);
@@ -937,7 +948,7 @@ class cl_turma {
         return $sSql;
     }
 
-   function sql_query_censo($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_censo($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -990,7 +1001,7 @@ class cl_turma {
     return $sSql;
 
   }
-   function sql_query_turmaserie($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_turmaserie($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1059,7 +1070,7 @@ class cl_turma {
 
   }
 
-    function sql_query_turmaetapadisciplinaescola($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '')
+     public function sql_query_turmaetapadisciplinaescola($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '')
     {
 
         $sSql = 'select ';
@@ -1127,7 +1138,7 @@ class cl_turma {
         die($sSql);
         return $sSql;
     }
-   function sql_query_relatorioanual($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_relatorioanual($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1181,7 +1192,7 @@ class cl_turma {
     return $sSql;
 
   }
-   function sql_query_boletimestat($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_boletimestat($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1235,7 +1246,7 @@ class cl_turma {
     return $sSql;
 
   }
-   function sql_query_ensino($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_ensino($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1287,7 +1298,7 @@ class cl_turma {
     return $sSql;
 
   }
-   function sql_query_periodoavaliacao($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_periodoavaliacao($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1339,7 +1350,8 @@ class cl_turma {
     return $sSql;
 
   }
-   function sql_query_relatorio($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+
+   public function sql_query_relatorio($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1362,6 +1374,7 @@ class cl_turma {
     $sSql .= ' inner join turmaserieregimemat on ed220_i_turma = ed57_i_codigo ';
     $sSql .= ' inner join serieregimemat on ed223_i_codigo = ed220_i_serieregimemat ';
     $sSql .= ' inner join serie on ed11_i_codigo = ed223_i_serie ';
+    $sSql .= " inner join ensino on ensino.ed10_i_codigo = serie.ed11_i_ensino";
     $sSql .= ' inner join calendario on ed57_i_calendario = ed52_i_codigo';
     $sSql .= ' inner join matriculaserie on ed221_i_matricula = ed60_i_codigo ';
     $sSql .= '                              and ed221_i_serie = ed223_i_serie ';
@@ -1394,7 +1407,7 @@ class cl_turma {
     return $sSql;
 
   }
-   function sql_query_diarioclasse($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_diarioclasse($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1446,7 +1459,7 @@ class cl_turma {
     return $sSql;
 
   }
-   function sql_query_turma_progressao_parcial($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+    public function sql_query_turma_progressao_parcial($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1494,7 +1507,7 @@ class cl_turma {
     }
     return $sSql;
   }
-  function sql_query_atafinal($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+   public function sql_query_atafinal($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1550,7 +1563,7 @@ class cl_turma {
     return $sSql;
   }
 
-  function sql_query_turno( $iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '' ) {
+   public function sql_query_turno( $iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '' ) {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1601,7 +1614,7 @@ class cl_turma {
     return $sSql;
   }
 
-  function sql_query_rechumano_hora_disponivel( $iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '' ) {
+   public function sql_query_rechumano_hora_disponivel( $iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '' ) {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
@@ -1671,9 +1684,9 @@ class cl_turma {
      $sql .= "      inner join tiposala  on  tiposala.ed14_i_codigo = sala.ed16_i_tiposala";
      $sql .= "      inner join duracaocal  on  duracaocal.ed55_i_codigo = calendario.ed52_i_duracaocal";
      $sql .= "      inner join cursoedu  on  cursoedu.ed29_i_codigo = base.ed31_i_curso";
+   $sql .= "      left join  censocursoprofiss on cursoedu.ed29_censocursoprofiss = censocursoprofiss.ed247_i_codigo";
      $sql .= "      inner join ensino  on  ensino.ed10_i_codigo = cursoedu.ed29_i_ensino";
      $sql .= "      inner join tipoensino  on  tipoensino.ed36_i_codigo = ensino.ed10_i_tipoensino";
-     $sql .= "      left join censocursoprofiss  on  censocursoprofiss.ed247_i_codigo = turma.ed57_i_censocursoprofiss";
      $sql .= "      inner join turmacensoetapa  on  turmacensoetapa.ed132_turma = turma.ed57_i_codigo";
      $sql .= "      inner join censoetapa on (censoetapa.ed266_i_codigo = ed132_censoetapa and censoetapa.ed266_ano = ed132_ano)";
      $sql2 = "";
@@ -1746,5 +1759,5 @@ class cl_turma {
   }
 
 
-  /*PLUGIN DIARIO PROGRESSAO ALUNO - NÃO APAGAR*/
+/*PLUGIN DIARIO PROGRESSAO ALUNO - NÃO APAGAR*/
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clempautoriza->rotulo->label();
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("widgets/windowAux.widget.js");
@@ -75,20 +75,20 @@ $clempautoriza->rotulo->label();
     
       <tr> 
         <td  align="left" nowrap title=""> <b>
-          <? db_ancora("Autorizações de : ","js_autorizacao(1,true);",1);?>  
+          <?php db_ancora("Autorizações de : ","js_autorizacao(1,true);",1);?>  
         </td>
         <td align="left" nowrap>
-          <?
+          <?php
              db_input("autorizacao1",10,"",true,"text",4,"onchange='js_autorizacao(1,false);'"); 
           ?>
           </b>
         </td>
         
         <td  align="left" nowrap title=""> <b>
-          <? db_ancora("Até : ","js_autorizacao(2,true);",1);?>  
+          <?php db_ancora("Até : ","js_autorizacao(2,true);",1);?>  
         </td>
         <td align="left" nowrap>
-          <?
+          <?php
              db_input("autorizacao2",10,"",true,"text",4,"onchange='js_autorizacao(2,false);'"); 
           ?>
           </b>
@@ -100,7 +100,7 @@ $clempautoriza->rotulo->label();
            <b>Data de Emissão de : </b>
         </td>
         <td align="left"> 
-          <?
+          <?php
             db_inputdata('datainicial',null ,null, null,true,'text',1);
           ?>
         </td>
@@ -108,7 +108,7 @@ $clempautoriza->rotulo->label();
            <b>Até : </b>
         </td>
         <td align="left"> 
-          <?
+          <?php
             db_inputdata('datafinal',null ,null, null,true,'text',1);
           ?>
         </td>       
@@ -117,14 +117,14 @@ $clempautoriza->rotulo->label();
       <tr>
         <td colspan="1" align="left" nowrap title="Emissão de:">
            <b> 
-                <? 
+                <?php 
                  db_ancora("Dotação : ","js_pesquisarh72_coddot(true);", 1);
                ?>           
            
            </b>
         </td>
         <td colspan="3" align="left"> 
-          <?
+          <?php
             db_input("dotacao",10,"",true,"text",1, "onchange='js_pesquisarh72_coddot(false);'");
           ?>
         </td>
@@ -140,7 +140,7 @@ $clempautoriza->rotulo->label();
 
 
 </center>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

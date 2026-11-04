@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -103,8 +103,12 @@ class Gestor
     private function carregarDepartamentos()
     {
         $oGestaoProcessoVencido = new GestaoProcessoVencido();
-        $sqlGestao = $oGestaoProcessoVencido->sql_query_file(null, "p102_db_usuarios", null,
-            "p102_db_usuarios = {$this->oUsuario->getCodigo()}");
+        $sqlGestao = $oGestaoProcessoVencido->sql_query_file(
+            null,
+            "p102_db_usuarios",
+            null,
+            "p102_db_usuarios = {$this->oUsuario->getCodigo()}"
+        );
         $rs = db_query($sqlGestao);
 
         if (pg_num_rows($rs) > 0) {
@@ -112,8 +116,12 @@ class Gestor
             $this->aDepartamentosGeridos = $this->getTodosDepartamentos();
         } else {
             $oGestaoDepartamentoProcesso = new GestaoDepartamentoProcesso();
-            $sqlGestao = $oGestaoDepartamentoProcesso->sql_query(null, "db_depart.coddepto", null,
-                "p103_db_usuarios = {$this->oUsuario->getCodigo()}");
+            $sqlGestao = $oGestaoDepartamentoProcesso->sql_query(
+                null,
+                "db_depart.coddepto",
+                null,
+                "p103_db_usuarios = {$this->oUsuario->getCodigo()}"
+            );
             $rs = db_query($sqlGestao);
 
             if (pg_num_rows($rs) > 0) {

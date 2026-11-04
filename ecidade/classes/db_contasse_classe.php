@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_contasse {
                  h14_assent = varchar(5) = Assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_contasse() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contasse"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_contasse {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h14_regime = ($this->h14_regime == ""?@$GLOBALS["HTTP_POST_VARS"]["h14_regime"]:$this->h14_regime);
        $this->h14_tpcont = ($this->h14_tpcont == ""?@$GLOBALS["HTTP_POST_VARS"]["h14_tpcont"]:$this->h14_tpcont);
@@ -79,7 +79,7 @@ class cl_contasse {
      }
    }
    // funcao para inclusao
-   function incluir ($h14_regime,$h14_tpcont,$h14_assent){ 
+   public function incluir ($h14_regime,$h14_tpcont,$h14_assent){ 
       $this->atualizacampos();
        $this->h14_regime = $h14_regime; 
        $this->h14_tpcont = $h14_tpcont; 
@@ -157,7 +157,7 @@ class cl_contasse {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($h14_regime=null,$h14_tpcont=null,$h14_assent=null) { 
+   public function alterar ($h14_regime=null,$h14_tpcont=null,$h14_assent=null) { 
       $this->atualizacampos();
      $sql = " update contasse set ";
      $virgula = "";
@@ -260,7 +260,7 @@ class cl_contasse {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($h14_regime=null,$h14_tpcont=null,$h14_assent=null,$dbwhere=null) { 
+   public function excluir ($h14_regime=null,$h14_tpcont=null,$h14_assent=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h14_regime,$h14_tpcont,$h14_assent));
      }else{ 
@@ -337,7 +337,7 @@ class cl_contasse {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

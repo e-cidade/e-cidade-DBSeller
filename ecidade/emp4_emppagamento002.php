@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -40,7 +40,7 @@
   $clverficaboletim =  new cl_verificaboletim(new cl_boletim);
 //------------------------------------------------------
 
-  
+
 
   include(modification("libs/db_liborcamento.php"));
   include(modification("classes/db_orcdotacao_classe.php"));
@@ -104,8 +104,8 @@ db_postmemory($HTTP_POST_VARS);
 $cltranslan       = new cl_translan;
 
 $db_opcao = 22;
-$db_botao = false;	 
-    
+$db_botao = false;
+
 if(isset($confirmar)){
       $db_opcao = 2;
       $db_botao = true;
@@ -114,11 +114,11 @@ if(isset($confirmar)){
       db_inicio_transacao();
 
       // arquivo de pagamento de empenho
-      include(modification("emp1_emppagamentoarq.php"));  
+      include(modification("emp1_emppagamentoarq.php"));
 
       db_fim_transacao($sqlerro);
 }
-  
+
 
 
 // escreve na autenticadora
@@ -130,7 +130,7 @@ if( ( isset($confirmar) && $sqlerro==false && $k11_tipautent == 1)  || isset($re
     $fd = fsockopen(db_getsession('DB_ip'),4444);
     fputs($fd,chr(15)."$retorno".chr(18).chr(10).chr(13));
     fclose($fd);
-}  
+}
 
 
 function php_erro($msg){
@@ -148,7 +148,7 @@ if(isset($pag_emp) && empty($confirmar)){
   $db_botao = true;
    //rotina que traz os dados de empempenho
    if(isset($e60_codemp) && $e60_codemp !=''){
-      $arr = split("/",$e60_codemp);
+      $arr =explode("/",$e60_codemp);
       if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 	$dbwhere_ano = " and e60_anousu = ".$arr[1];
       }else{
@@ -157,8 +157,8 @@ if(isset($pag_emp) && empty($confirmar)){
       $sql = $clempempenho->sql_query("","*","e60_numemp"," e60_codemp =  '".$arr[0]."' $dbwhere_ano and e60_instit = ".db_getsession("DB_instit"));
    }else{
       $sql = $clempempenho->sql_query($e60_numemp);
-   }   
-   $result = $clempempenho->sql_record($sql); 
+   }
+   $result = $clempempenho->sql_record($sql);
    if($clempempenho->numrows>0){
      db_fieldsmemory($result,0,true);
    }else{
@@ -166,29 +166,29 @@ if(isset($pag_emp) && empty($confirmar)){
      exit;
    }
 
-   $result01 = $clpagordemele->sql_record($clpagordemele->sql_query(null,null,'(sum(e53_valor)-sum(e53_vlranu)) as saldo  ',"","e50_numemp = $e60_numemp ")); 
+   $result01 = $clpagordemele->sql_record($clpagordemele->sql_query(null,null,'(sum(e53_valor)-sum(e53_vlranu)) as saldo  ',"","e50_numemp = $e60_numemp "));
    $numrows01 = $clpagordemele->numrows;
    if($numrows01>0){
      db_fieldsmemory($result01,0);
      if($saldo!=0){
         php_erro("Empenho possui ordens de pagamento!");
        exit;
-     } 
+     }
    }
 }else if(isset($pag_ord) && empty($confirmar)){
 
   $db_opcao = 2;
   $db_botao = true;
    //rotina que traz os dados de pagordem
-   $result = $clpagordem->sql_record($clpagordem->sql_query(null,"*",null,"e50_codord= $e50_codord and e60_instit=".db_getsession("DB_instit"))); 
+   $result = $clpagordem->sql_record($clpagordem->sql_query(null,"*",null,"e50_codord= $e50_codord and e60_instit=".db_getsession("DB_instit")));
    if($clpagordem->numrows>0){
      db_fieldsmemory($result,0);
-     $result01 = $clpagordem->sql_record($clpagordem->sql_query(null,'e50_codord as codord',"","e50_numemp = $e50_numemp")); 
+     $result01 = $clpagordem->sql_record($clpagordem->sql_query(null,'e50_codord as codord',"","e50_numemp = $e50_numemp"));
      db_fieldsmemory($result01,0);
    }else{
      php_erro("Ordem de pagamento inválida ! ");
-   }  
-}  
+   }
+}
 ?>
 <html>
 <head>
@@ -200,7 +200,7 @@ if(isset($pag_emp) && empty($confirmar)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
   <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-    <tr> 
+    <tr>
       <td width="360" height="18">&nbsp;</td>
       <td width="263">&nbsp;</td>
       <td width="25">&nbsp;</td>
@@ -208,23 +208,23 @@ if(isset($pag_emp) && empty($confirmar)){
     </tr>
   </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmemppagamento.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 
-<?
+<?php
 
 if( (isset($retorno) && $k11_tipautent == 1) ||  (isset($retorno_imp))  ){
 echo "
@@ -237,7 +237,7 @@ echo "
 	     obj.setAttribute('value','$retorno');
 	     document.form1.appendChild(obj);
 	     document.form1.submit();
-	     
+
 	   }
        </script>
 
@@ -252,8 +252,8 @@ if(isset($confirmar)){
     db_msgbox($erro_msg);
   }else{
     //db_msgbox($ok_msg);
-  }  
-} 
+  }
+}
 if($clempagemov->numrows > 0){
 	echo "<script>js_cheque(true)();</script>";
 }

@@ -98,7 +98,7 @@ abstract class Servidor
     protected function parentescoParaEcidade($parentescoEsocial, $sexo)
     {
 
-        $parentescoVaue = "O";
+        $parentescoVaue = "F";
         switch ((int)$parentescoEsocial) {
             /**
              * Cônjuge
@@ -225,7 +225,7 @@ abstract class Servidor
     protected function estadoCivilParaEcidadeServidor($codigo)
     {
 
-        $estadoCivil = 8;
+        $estadoCivil = 6;
         switch ((int)$codigo) {
             case 1: //Solteiro
                 $estadoCivil = 1;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014 DBSeller Servicos de Informatica
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -118,7 +118,7 @@ db_fieldsmemory($result,0);
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php
     include(modification("forms/db_frmcadtipoparcrec.php"));
     ?>
     </center>
@@ -127,7 +127,7 @@ db_fieldsmemory($result,0);
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($_self) && $_self!=""){
     db_msgbox($erro_msg);
     if($clcadtipoparcrec->erro_campo!=""){

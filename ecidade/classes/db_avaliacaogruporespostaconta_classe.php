@@ -30,7 +30,7 @@ class cl_avaliacaogruporespostaconta
                  ";
 
     //funcao construtor da classe
-    function cl_avaliacaogruporespostaconta()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("avaliacaogruporespostaconta");
@@ -38,7 +38,7 @@ class cl_avaliacaogruporespostaconta
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -49,7 +49,7 @@ class cl_avaliacaogruporespostaconta
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->c06_sequencial = ($this->c06_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["c06_sequencial"] : $this->c06_sequencial);
@@ -62,7 +62,7 @@ class cl_avaliacaogruporespostaconta
     }
 
     // funcao para Inclusão
-    function incluir($c06_sequencial)
+    public function incluir($c06_sequencial)
     {
         $this->atualizacampos();
         if ($this->c06_conta == null) {

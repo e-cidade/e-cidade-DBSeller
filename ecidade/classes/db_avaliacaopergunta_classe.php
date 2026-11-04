@@ -75,13 +75,13 @@ class cl_avaliacaopergunta {
                  db103_somenteleitura = bool = Identificador do campo para somente leitura
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaopergunta() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaopergunta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -90,7 +90,7 @@ class cl_avaliacaopergunta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db103_sequencial = ($this->db103_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db103_sequencial"]:$this->db103_sequencial);
        $this->db103_avaliacaotiporesposta = ($this->db103_avaliacaotiporesposta == ""?@$GLOBALS["HTTP_POST_VARS"]["db103_avaliacaotiporesposta"]:$this->db103_avaliacaotiporesposta);
@@ -112,7 +112,7 @@ class cl_avaliacaopergunta {
      }
    }
    // funcao para Inclusão
-   function incluir ($db103_sequencial){ 
+   public function incluir ($db103_sequencial){ 
       $this->atualizacampos();
      if($this->db103_avaliacaotiporesposta == null ){ 
        $this->erro_sql = " Campo Avaliação Tipo Resposta não informado.";

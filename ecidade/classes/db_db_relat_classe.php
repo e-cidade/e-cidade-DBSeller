@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_relat
-class cl_db_relat { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db91_codrel = 0; 
-   var $db91_descr = null; 
-   var $db91_quebra = 'f'; 
-   var $db91_todos = 'f'; 
-   var $db91_nomearq = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_relat {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db91_codrel = 0;
+   var $db91_descr = null;
+   var $db91_quebra = 'f';
+   var $db91_todos = 'f';
+   var $db91_nomearq = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db91_codrel = int8 = Código do relatório 
-                 db91_descr = varchar(40) = Descrição 
-                 db91_quebra = bool = Quebrar página 
-                 db91_todos = bool = Quebrar página por todos 
-                 db91_nomearq = varchar(40) = Nome do arquivo PDF gerado 
+                 db91_codrel = int8 = Código do relatório
+                 db91_descr = varchar(40) = Descrição
+                 db91_quebra = bool = Quebrar página
+                 db91_todos = bool = Quebrar página por todos
+                 db91_nomearq = varchar(40) = Nome do arquivo PDF gerado
                  ";
-   //funcao construtor da classe 
-   function cl_db_relat() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_relat"); 
+     $this->rotulo = new rotulo("db_relat");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_db_relat {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db91_codrel = ($this->db91_codrel == ""?@$GLOBALS["HTTP_POST_VARS"]["db91_codrel"]:$this->db91_codrel);
        $this->db91_descr = ($this->db91_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["db91_descr"]:$this->db91_descr);
@@ -83,9 +83,9 @@ class cl_db_relat {
      }
    }
    // funcao para inclusao
-   function incluir ($db91_codrel){ 
+   public function incluir ($db91_codrel){
       $this->atualizacampos();
-     if($this->db91_descr == null ){ 
+     if($this->db91_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "db91_descr";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_db_relat {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db91_quebra == null ){ 
+     if($this->db91_quebra == null ){
        $this->erro_sql = " Campo Quebrar página nao Informado.";
        $this->erro_campo = "db91_quebra";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_db_relat {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db91_todos == null ){ 
+     if($this->db91_todos == null ){
        $this->erro_sql = " Campo Quebrar página por todos nao Informado.";
        $this->erro_campo = "db91_todos";
        $this->erro_banco = "";
@@ -113,16 +113,16 @@ class cl_db_relat {
        return false;
      }
      if($db91_codrel == "" || $db91_codrel == null ){
-       $result = db_query("select nextval('db_relat_db91_codrel_seq')"); 
+       $result = db_query("select nextval('db_relat_db91_codrel_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_relat_db91_codrel_seq do campo: db91_codrel"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_relat_db91_codrel_seq do campo: db91_codrel";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db91_codrel = pg_result($result,0,0); 
+       $this->db91_codrel = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_relat_db91_codrel_seq");
        if(($result != false) && (pg_result($result,0,0) < $db91_codrel)){
@@ -133,10 +133,10 @@ class cl_db_relat {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db91_codrel = $db91_codrel; 
+         $this->db91_codrel = $db91_codrel;
        }
      }
-     if(($this->db91_codrel == null) || ($this->db91_codrel == "") ){ 
+     if(($this->db91_codrel == null) || ($this->db91_codrel == "") ){
        $this->erro_sql = " Campo db91_codrel nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -145,21 +145,21 @@ class cl_db_relat {
        return false;
      }
      $sql = "insert into db_relat(
-                                       db91_codrel 
-                                      ,db91_descr 
-                                      ,db91_quebra 
-                                      ,db91_todos 
-                                      ,db91_nomearq 
+                                       db91_codrel
+                                      ,db91_descr
+                                      ,db91_quebra
+                                      ,db91_todos
+                                      ,db91_nomearq
                        )
                 values (
-                                $this->db91_codrel 
-                               ,'$this->db91_descr' 
-                               ,'$this->db91_quebra' 
-                               ,'$this->db91_todos' 
-                               ,'$this->db91_nomearq' 
+                                $this->db91_codrel
+                               ,'$this->db91_descr'
+                               ,'$this->db91_quebra'
+                               ,'$this->db91_todos'
+                               ,'$this->db91_nomearq'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de relatórios configuráveis ($this->db91_codrel) nao Incluído. Inclusao Abortada.";
@@ -195,16 +195,16 @@ class cl_db_relat {
        $resac = db_query("insert into db_acount values($acount,1395,8280,'','".AddSlashes(pg_result($resaco,0,'db91_nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db91_codrel=null) { 
+   public function alterar ($db91_codrel=null) {
       $this->atualizacampos();
      $sql = " update db_relat set ";
      $virgula = "";
-     if(trim($this->db91_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_codrel"])){ 
+     if(trim($this->db91_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_codrel"])){
        $sql  .= $virgula." db91_codrel = $this->db91_codrel ";
        $virgula = ",";
-       if(trim($this->db91_codrel) == null ){ 
+       if(trim($this->db91_codrel) == null ){
          $this->erro_sql = " Campo Código do relatório nao Informado.";
          $this->erro_campo = "db91_codrel";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_db_relat {
          return false;
        }
      }
-     if(trim($this->db91_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_descr"])){ 
+     if(trim($this->db91_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_descr"])){
        $sql  .= $virgula." db91_descr = '$this->db91_descr' ";
        $virgula = ",";
-       if(trim($this->db91_descr) == null ){ 
+       if(trim($this->db91_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "db91_descr";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_db_relat {
          return false;
        }
      }
-     if(trim($this->db91_quebra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_quebra"])){ 
+     if(trim($this->db91_quebra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_quebra"])){
        $sql  .= $virgula." db91_quebra = '$this->db91_quebra' ";
        $virgula = ",";
-       if(trim($this->db91_quebra) == null ){ 
+       if(trim($this->db91_quebra) == null ){
          $this->erro_sql = " Campo Quebrar página nao Informado.";
          $this->erro_campo = "db91_quebra";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_db_relat {
          return false;
        }
      }
-     if(trim($this->db91_todos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_todos"])){ 
+     if(trim($this->db91_todos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_todos"])){
        $sql  .= $virgula." db91_todos = '$this->db91_todos' ";
        $virgula = ",";
-       if(trim($this->db91_todos) == null ){ 
+       if(trim($this->db91_todos) == null ){
          $this->erro_sql = " Campo Quebrar página por todos nao Informado.";
          $this->erro_campo = "db91_todos";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_db_relat {
          return false;
        }
      }
-     if(trim($this->db91_nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_nomearq"])){ 
+     if(trim($this->db91_nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db91_nomearq"])){
        $sql  .= $virgula." db91_nomearq = '$this->db91_nomearq' ";
        $virgula = ",";
      }
@@ -281,7 +281,7 @@ class cl_db_relat {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de relatórios configuráveis nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db91_codrel;
@@ -309,14 +309,14 @@ class cl_db_relat {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db91_codrel=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db91_codrel=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db91_codrel));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -346,7 +346,7 @@ class cl_db_relat {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de relatórios configuráveis nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db91_codrel;
@@ -374,11 +374,11 @@ class cl_db_relat {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -400,10 +400,10 @@ class cl_db_relat {
       }
      return $result;
    }
-   function sql_query ( $db91_codrel=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db91_codrel=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,15 +416,15 @@ class cl_db_relat {
      $sql2 = "";
      if($dbwhere==""){
        if($db91_codrel!=null ){
-         $sql2 .= " where db_relat.db91_codrel = $db91_codrel "; 
-       } 
+         $sql2 .= " where db_relat.db91_codrel = $db91_codrel ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,10 +433,10 @@ class cl_db_relat {
      }
      return $sql;
   }
-   function sql_query_file ( $db91_codrel=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db91_codrel=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,15 +449,15 @@ class cl_db_relat {
      $sql2 = "";
      if($dbwhere==""){
        if($db91_codrel!=null ){
-         $sql2 .= " where db_relat.db91_codrel = $db91_codrel "; 
-       } 
+         $sql2 .= " where db_relat.db91_codrel = $db91_codrel ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

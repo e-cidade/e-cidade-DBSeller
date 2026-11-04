@@ -42,7 +42,7 @@ class cl_rhfolhapagamento
                  ";
 
     //funcao construtor da classe
-    function cl_rhfolhapagamento()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("rhfolhapagamento");
@@ -50,7 +50,7 @@ class cl_rhfolhapagamento
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -61,7 +61,7 @@ class cl_rhfolhapagamento
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
 
@@ -81,7 +81,7 @@ class cl_rhfolhapagamento
     }
 
     // funcao para inclusao
-    function incluir($rh141_sequencial)
+    public function incluir($rh141_sequencial)
     {
 
         $this->atualizacampos();
@@ -323,7 +323,7 @@ class cl_rhfolhapagamento
     }
 
     // funcao para alteracao
-    function alterar($rh141_sequencial = null)
+    public function alterar($rh141_sequencial = null)
     {
 
         $this->atualizacampos();
@@ -592,7 +592,7 @@ class cl_rhfolhapagamento
     }
 
     // funcao para exclusao
-    function excluir($rh141_sequencial = null, $dbwhere = null)
+    public function excluir($rh141_sequencial = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -699,7 +699,7 @@ class cl_rhfolhapagamento
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -729,7 +729,7 @@ class cl_rhfolhapagamento
     }
 
     // funcao do sql
-    function sql_query($rh141_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($rh141_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -769,7 +769,7 @@ class cl_rhfolhapagamento
     }
 
     // funcao do sql
-    function sql_query_file($rh141_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($rh141_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

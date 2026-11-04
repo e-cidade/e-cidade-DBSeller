@@ -120,7 +120,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 <script type="text/javascript">
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
   if($clautotipo->erro_status=="0"){
     $clautotipo->erro(true,false);

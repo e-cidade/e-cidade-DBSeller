@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -67,7 +67,7 @@ if(isset($db_datausu)){
      echo "Data deverá se superior a : ".date('Y-m-d',db_getsession("DB_datausu"));
 	 exit;
   }
-  if(mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4)) < 
+  if(mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4)) <
      mktime(0,0,0,date('m',db_getsession("DB_datausu")),date('d',db_getsession("DB_datausu")),date('Y',db_getsession("DB_datausu"))) ){
      echo "Data não permitida para cálculo. <br><br>";
      echo "Data deverá se superior a : ".date('Y-m-d',db_getsession("DB_datausu"));
@@ -78,10 +78,10 @@ if(isset($db_datausu)){
   $DB_DATACALC = db_getsession("DB_datausu");
 }
 if(isset($notificacao)){
-  
+
   db_inicio_transacao();
   $sql_erro = false;
-  $clnotificacao->k50_instit = db_getsession('DB_instit'); 
+  $clnotificacao->k50_instit = db_getsession('DB_instit');
   $clnotificacao->incluir('');
   if($clnotificacao->erro_status == "0"){
     $sql_erro == true;
@@ -138,7 +138,7 @@ if(isset($notificacao)){
       }
       if($k54_codigo!=0){
 
-	 
+
 	$clnoticonf->k54_notifica = $clnotificacao->k50_notifica;
 	$clnoticonf->k54_assinante= $k54_assinante;
 	$clnoticonf->k54_data     = date("Y-m-d",db_getsession("DB_datausu"));
@@ -155,28 +155,28 @@ if(isset($notificacao)){
       if($sql_erro != true ){
 
 	    $numpres = "select distinct a.k00_numpre,a.k00_numpar
-			from arrecad a 
-			inner join arreinstit on arreinstit.k00_numpre = a.k00_numpre 
+			from arrecad a
+			inner join arreinstit on arreinstit.k00_numpre = a.k00_numpre
                       		 and arreinstit.k00_instit = ".db_getsession('DB_instit')." ";
 	    if($chave1=="matric"){
-	       $numpres .= " inner join arrematric m on m.k00_numpre = a.k00_numpre "; 
+	       $numpres .= " inner join arrematric m on m.k00_numpre = a.k00_numpre ";
 	    }else if($chave1 == "inscr"){
-	       $numpres .= " inner join arreinscr m on m.k00_numpre = a.k00_numpre "; 
+	       $numpres .= " inner join arreinscr m on m.k00_numpre = a.k00_numpre ";
 	    }else if($chave1 == "numcgm"){
-	       $numpres .= " inner join arrenumcgm m on m.k00_numpre = a.k00_numpre "; 
+	       $numpres .= " inner join arrenumcgm m on m.k00_numpre = a.k00_numpre ";
 	    }
 	    $numpres .= " where ";
 	    if($chave1=="matric"){
-	       $numpres .= " m.k00_matric = $matric and "; 
+	       $numpres .= " m.k00_matric = $matric and ";
 	    }else if($chave1 == "inscr"){
-	       $numpres .= " m.k00_inscr = $inscr and "; 
+	       $numpres .= " m.k00_inscr = $inscr and ";
 	    }else if($chave1 == "numcgm"){
-	       $numpres .= " m.k00_numcgm = $numcgm and "; 
+	       $numpres .= " m.k00_numcgm = $numcgm and ";
 	    }else{
-	       $numpres .= " a.k00_numpre = $numpre and "; 
+	       $numpres .= " a.k00_numpre = $numpre and ";
 	    }
 	    $numpres .= " k00_tipo in (";
-	    $num = split(",",$tipo);
+	    $num =explode(",",$tipo);
 	    $numm = "";
 	    for($i=0;$i<sizeof($num);$i++){
 	      $numpres .= $numm.$num[$i];
@@ -219,7 +219,7 @@ if(isset($notificacao)){
 </style>
 </head>
 <body bgcolor=#CCCCCC onload="parent.document.getElementById('processando').style.visibility = 'hidden'"  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 $erro = false;
 if(isset($matric)){
   $chave1 = "matric";
@@ -265,12 +265,12 @@ if(isset($notificacao_tipo)){
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td nowrap title="<?=@$Tk52_notifica?>" width="15%">
-       <?
+       <?php
        echo $Lk50_notifica;
        ?>
     </td>
-    <td width="15%"> 
-       <?
+    <td width="15%">
+       <?php
        db_input('k50_notifica',8,$Ik50_notifica,true,'text',3,"");
        db_input('tipo',100,$Ik50_notifica,true,'hidden',3);
        db_input('numpres',100,$Ik50_notifica,true,'hidden',3);
@@ -287,23 +287,23 @@ if(isset($notificacao_tipo)){
 	   <table width="100%" cellspacing="0" cellpadding="0">
 	   <tr>
 	   <td>
-	   <?
+	   <?php
 	   echo $Lk58_data;
            ?>
 	   </td>
 	   <td>
-	   <?
+	   <?php
 	   db_inputdata('k58_data','','','',true,'text',2,'');
 	   ?>
 	   <td>
 	   <tr>
 	   <td>
-	   <?
+	   <?php
 	   echo $Lk58_hora;
 	   ?>
 	   </td>
 	   <td>
-	   <?
+	   <?php
            db_input('k58_hora',6,$Ik58_hora,true,'text',2);
            ?>
 	   </td>
@@ -319,12 +319,12 @@ if(isset($notificacao_tipo)){
 	   <table cellspacing="0" cellpadding="0">
 	   <tr>
 	   <td>
-	   <?
+	   <?php
 	   echo $Lk54_codigo;
            ?>
 	   </td>
            <td nowrap>
-	   <?
+	   <?php
 	   $record = $clnotisitu->sql_record($clnotisitu->sql_query());
            db_selectrecord("k54_codigo",$record,true,2,'','','',"0-Aguarda Retorno");
            ?>
@@ -332,24 +332,24 @@ if(isset($notificacao_tipo)){
 	   </tr>
 	   <tr>
 	   <td>
-	   <?
+	   <?php
 	   echo $Lk54_assinante;
            ?>
 	   </td>
            <td>
-	   <?
+	   <?php
            db_input('k54_assinante',30,$Ik54_assinante,true,'text',2);
            ?>
 	   </td>
 	   </tr>
 	   <tr>
 	   <td>
-	   <?
+	   <?php
 	   echo $Lk54_obs;
            ?>
 	   </td>
 	   <td>
-	   <?
+	   <?php
            db_textarea("k54_obs",3,30,$Ik54_obs,true,'text',2);
            ?>
 	   </td>
@@ -362,12 +362,12 @@ if(isset($notificacao_tipo)){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk52_id_usuario?>">
-       <?
+       <?php
        echo $Lk50_procede;
        ?>
     </td>
-    <td> 
-       <?
+    <td>
+       <?php
        $result = $clnotitipo->sql_record($clnotitipo->sql_query_file('','k51_procede,k51_descr'));
        db_selectrecord('k50_procede',$result,true,$db_opcao);
        ?>
@@ -377,8 +377,8 @@ if(isset($notificacao_tipo)){
     <td nowrap title="<?=@$Tk50_dtemite?>">
        <?=$Lk50_dtemite?>
     </td>
-    <td> 
-      <?
+    <td>
+      <?php
       db_inputdata('k50_dtemite',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',3)
       ?>
     </td>
@@ -387,8 +387,8 @@ if(isset($notificacao_tipo)){
     <td nowrap title="<?=@$Tk50_obs?>">
        <?=@$Lk50_obs?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_textarea("k50_obs",3,40,$Ik50_obs,true,'text',$db_opcao);
 ?>
     </td>
@@ -409,7 +409,7 @@ db_textarea("k50_obs",3,40,$Ik50_obs,true,'text',$db_opcao);
 
 </body>
 </html>
-<?
+<?php
 if(isset($sql_erro) && $sql_erro==false){
   echo "<script>
         alert('Notificação Incluida.');

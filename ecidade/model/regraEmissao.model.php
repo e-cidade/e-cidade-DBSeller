@@ -47,7 +47,18 @@ class regraEmissao {
   private $lOpenUnico            = false;
   public  $oPdfUnico             = null;
 
-  public function __construct($iArretipo=null,$iTipoMod,$iInstit,$dDatahj,$sIp=null, $lNovoPdf = true, $oPdfUnico = null, $iParcelaInicial = null, $iParcelaFinal = null) {
+  public function __construct(
+	$iArretipo = null,
+	$iTipoMod,
+	$iInstit,
+	$dDatahj,
+	$sIp = null,
+	$lNovoPdf = true,
+	$oPdfUnico = null,
+	$iParcelaInicial = null,
+	$iParcelaFinal = null,
+	$pdf = true
+) {
 
     $this->lNovoPdf  = $lNovoPdf;
     $this->oPdfUnico = $oPdfUnico;
@@ -189,7 +200,7 @@ class regraEmissao {
 		  $this->iCadTipoConvenio = $oModCarne->ar12_sequencial;
 
 		  if ( !empty($oModCarne->m01_sequencial) ) {
-		    $this->setObjPdf($oModCarne->k47_altura,$oModCarne->k47_largura,$oModCarne->k47_orientacao,$oModCarne->k47_sequencial);
+			$this->setObjPdf($oModCarne->k47_altura,$oModCarne->k47_largura,$oModCarne->k47_orientacao,$oModCarne->k47_sequencial);
 		  } else if (!empty($oModCarne->m02_sequencial)) {
 			  $this->setObjLayout();
 		  }

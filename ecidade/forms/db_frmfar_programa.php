@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clfar_programa->rotulo->label();
        <?=@$Lfa12_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa12_i_codigo',5,$Ifa12_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -52,7 +52,7 @@ db_input('fa12_i_codigo',5,$Ifa12_i_codigo,true,'text',3,"")
        <?=@$Lfa12_c_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa12_c_descricao',40,$Ifa12_c_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ db_input('fa12_c_descricao',40,$Ifa12_c_descricao,true,'text',$db_opcao,"")
        <?=@$Lfa12_c_depadmin?>
     </td>
     <td> 
-     <?
+     <?php
       $y = array("0"=>"","1"=>"Federal","2"=>"Estadual","3"=>"Municipal","4"=>"Particular","5"=>"Outros");
       db_select('fa12_c_depadmin',$y,true,$db_opcao,"");
       ?>
@@ -73,7 +73,7 @@ db_input('fa12_c_descricao',40,$Ifa12_c_descricao,true,'text',$db_opcao,"")
        <?=@$Lfa12_i_tipoacao?>
     </td>
     <td>
-     <?
+     <?php
       $sql="select s148_i_codigo,s148_c_sigla,s148_c_descr from sau_tipoacaoprog";
       $result=db_query($sql);
       $linhas=pg_num_rows($result);
@@ -84,6 +84,18 @@ db_input('fa12_c_descricao',40,$Ifa12_c_descricao,true,'text',$db_opcao,"")
       }
       db_select('fa12_i_tipoacao',$vet,true,$db_opcao,"");
       ?>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label><b>Ativo:</b></label>
+    </td>
+    <td nowrap>
+    <input id = "fa12_ativo" 
+           <?php echo ($db_opcao == 1 || $fa12_ativo == 't') ? "checked" :  "" ?>   
+           <?php echo ($db_opcao == 3) ? "disabled" : "" ?>          
+           name = "fa12_ativo" 
+           type = "checkbox"/>
     </td>
   </tr>
   </table>
@@ -104,7 +116,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_programa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

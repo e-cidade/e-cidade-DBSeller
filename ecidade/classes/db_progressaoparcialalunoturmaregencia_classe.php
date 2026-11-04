@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
@@ -57,13 +57,13 @@ class cl_progressaoparcialalunoturmaregencia {
                  ed115_datavinculo = date = Data do Vínculo
                  ";
    //funcao construtor da classe
-   function cl_progressaoparcialalunoturmaregencia() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("progressaoparcialalunoturmaregencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_progressaoparcialalunoturmaregencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed115_sequencial = ($this->ed115_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed115_sequencial"]:$this->ed115_sequencial);
        $this->ed115_progressaoparcialalunomatricula = ($this->ed115_progressaoparcialalunomatricula == ""?@$GLOBALS["HTTP_POST_VARS"]["ed115_progressaoparcialalunomatricula"]:$this->ed115_progressaoparcialalunomatricula);
@@ -90,7 +90,7 @@ class cl_progressaoparcialalunoturmaregencia {
      }
    }
    // funcao para inclusao
-   function incluir ($ed115_sequencial){
+   public function incluir ($ed115_sequencial){
       $this->atualizacampos();
      if($this->ed115_progressaoparcialalunomatricula == null ){
        $this->erro_sql = " Campo Matricula Progressão Parcial nao Informado.";
@@ -201,7 +201,7 @@ class cl_progressaoparcialalunoturmaregencia {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed115_sequencial=null) {
+   public function alterar ($ed115_sequencial=null) {
       $this->atualizacampos();
      $sql = " update progressaoparcialalunoturmaregencia set ";
      $virgula = "";
@@ -325,7 +325,7 @@ class cl_progressaoparcialalunoturmaregencia {
      }
    }
    // funcao para exclusao
-   function excluir ($ed115_sequencial=null,$dbwhere=null) {
+   public function excluir ($ed115_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed115_sequencial));
      }else{
@@ -389,7 +389,7 @@ class cl_progressaoparcialalunoturmaregencia {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -412,10 +412,10 @@ class cl_progressaoparcialalunoturmaregencia {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_progressaoparcialalunoturmaregencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,10 +452,10 @@ class cl_progressaoparcialalunoturmaregencia {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_progressaoparcialalunoturmaregencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,10 +486,10 @@ class cl_progressaoparcialalunoturmaregencia {
      return $sql;
   }
 
-  function sql_query_matricula ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_matricula ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_progressaoparcialalunoturmaregencia {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];
@@ -521,10 +521,10 @@ class cl_progressaoparcialalunoturmaregencia {
           return $sql;
   }
 
-  function sql_query_aluno ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_aluno ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -554,7 +554,7 @@ class cl_progressaoparcialalunoturmaregencia {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

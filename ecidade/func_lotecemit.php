@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
               <?=$Lcm23_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("cm23_i_lotecemit",10,$Icm23_i_lotecemit,true,"text",4,"","chave_cm23_i_lotecemit");
                  ?>
             </td>
@@ -69,7 +69,7 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
               <?=$Lcm22_c_quadra?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("cm22_c_quadra",10,$Icm22_c_quadra,true,"text",4,"","chave_cm22_c_quadra");
                  ?>
             </td>
@@ -79,7 +79,7 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
               <?=$Lcm22_i_cemiterio?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("cm22_i_cemiterio",10,$Icm22_i_cemiterio,true,"text",4,"","chave_cm22_i_cemiterio");
                  ?>
             </td>
@@ -97,7 +97,7 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lotecemit.php")==true){
@@ -141,12 +141,12 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

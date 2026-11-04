@@ -141,7 +141,6 @@ class ServidorMovimentacaoRepository
     public function first($columns = array('*'))
     {
         $registros = $this->get($columns);
-
         return count($registros) > 0
             ? array_shift($registros)
             : null;

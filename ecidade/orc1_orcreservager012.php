@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,7 +50,7 @@ if (isset ($atualiza)) {
 	for ($i = 0; $i < count($HTTP_POST_VARS); $i ++) {
 		if (substr(key($HTTP_POST_VARS), 0, 13) == 'dotacao_dimi_') {
 			if ($HTTP_POST_VARS[key($HTTP_POST_VARS)] > 0) {
-				$mt = split("\_", key($HTTP_POST_VARS));
+				$mt =explode("_", key($HTTP_POST_VARS));
 
 				$sql = " select o80_valor,o80_coddot
 			               from orcreserva where o80_codres = ".$mt[2];
@@ -77,7 +77,7 @@ if (isset ($atualiza)) {
 		}
 
 		if (substr(key($HTTP_POST_VARS), 0, 13) == 'dotacao_soma_') {
-			$mt = split("\_", key($HTTP_POST_VARS));
+			$mt =explode("_", key($HTTP_POST_VARS));
 			if ($HTTP_POST_VARS[key($HTTP_POST_VARS)] > 0) {
 				$sql = " select  substr(fc_dotacaosaldo,133,12)::float8 as atual_menos_reservado,o80_coddot
 			                 from (
@@ -210,7 +210,7 @@ function js_verifica_valor_soma(objeto,objreduz){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <form name='form1' method='post' >
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
-  <?
+  <?php
 
 
 if ($erro == false || isset ($atualiza)) {
@@ -265,7 +265,7 @@ if ($erro == false || isset ($atualiza)) {
 </form>
 </body>
 </html>
-<?
+<?php
 
 
 if ($erro == true)

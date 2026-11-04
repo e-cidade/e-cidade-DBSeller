@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -170,7 +170,7 @@ if(!isset($mostra)){
               <?php db_ancora($Lj01_matric, "js_mostramatricula(true);", 2); ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input("j01_matric",10,$Ij01_matric,true,"text",4, "onchange=js_mostramatricula(false)");
               ?>
             </td>
@@ -180,7 +180,7 @@ if(!isset($mostra)){
                   <?php db_ancora($Lq02_inscr, 'js_mostrainscricao(true);', 4); ?>
               </td>
               <td>
-                  <?
+                  <?php
                     db_input("q02_inscr",10,$Iq02_inscr,true,"text",4,"onchange=js_mostrainscricao(false)");
                   ?>
               </td>
@@ -190,7 +190,7 @@ if(!isset($mostra)){
               <?=$Lar18_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 db_input("ar18_sequencial",10,$Iar18_sequencial,true,"text",4,"","chave_ar18_sequencial");
               ?>
             </td>
@@ -200,7 +200,7 @@ if(!isset($mostra)){
               <?=$Lar18_procjur?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 db_input("ar18_procjur",10,$Iar18_procjur,true,"text",4,"","chave_ar18_procjur");
               ?>
             </td>
@@ -218,7 +218,7 @@ if(!isset($mostra)){
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
           if (file_exists("funcoes/db_func_suspensao.php")==true) {
@@ -298,12 +298,12 @@ if(!isset($mostra)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

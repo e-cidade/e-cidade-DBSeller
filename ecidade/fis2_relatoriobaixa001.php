@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,11 +65,11 @@ $db_opcao=1;
        <?=@$Ly83_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('',@$dia,@$mes,@$ano,true,'text',$db_opcao,"")
 ?>
 &nbsp;&nbsp;&nbsp;À&nbsp;&nbsp;&nbsp;
-<?
+<?php
 db_inputdata('a',@$diaa,@$mesa,@$anoa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -78,7 +78,7 @@ db_inputdata('a',@$diaa,@$mesa,@$anoa,true,'text',$db_opcao,"")
 <input name="consultar" type="button" value="Relatório" onClick="js_consultasani();js_limpacampos();" >
   </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

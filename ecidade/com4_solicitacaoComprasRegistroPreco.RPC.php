@@ -117,12 +117,13 @@ switch ($oParam->exec) {
 
             $oStdItemAbertura                  = new stdClass();
             $oStdItemAbertura->sDescricao      = urldecode($oItemEstimativa->getDescricaoMaterial());
+            $oStdItemAbertura->sResumo         = urldecode($oItemEstimativa->getResumo());
             $oStdItemAbertura->aDepartamentos  = array();
             $oStdItemAbertura->iTotal          = 0;
             $oAbertura->aItens[$sIndice] =  $oStdItemAbertura;
           }
 
-					$oAbertura->aItens[$sIndice]->aDepartamentos[$iDepartamento] = $oItemEstimativa->getQuantidade();
+          $oAbertura->aItens[$sIndice]->aDepartamentos[$iDepartamento] = $oItemEstimativa->getQuantidade();
           $oAbertura->aItens[$sIndice]->iTotal                        += $oItemEstimativa->getQuantidade();
 				}
 			}
@@ -132,8 +133,13 @@ switch ($oParam->exec) {
 			 */
 			$fArquivo 				   = fopen($sArquivo, "w");
  			$aDepartamentos      = $oAbertura->aDepartamentosEstimativas;
-			$aDepartamentos['0'] = "";
-		  $aDepartamentos[]	   = "TOTAL";
+            $aDepartamentos['0'] = "DESCRIÇÃO";
+
+            if (!empty($oParam->exibeResumoItens)) {
+                $aDepartamentos['1'] = "RESUMO";
+            }
+
+		    $aDepartamentos[] = "TOTAL";
 			ksort($aDepartamentos);
 			fputcsv($fArquivo,$aHeaderArquivo, ";");
 			fputcsv($fArquivo, $aDepartamentos, ";");
@@ -141,9 +147,15 @@ switch ($oParam->exec) {
       foreach ($oAbertura->aItens as $oItem) {
 
         $sDescricao            = $oItem->sDescricao;
+        $sResumo               = $oItem->sResumo;
         $aQuantidades          = $oItem->aDepartamentos + $aCodigoDepartamentos;
         $aLinha                = array();
         $aLinha[]              = $sDescricao;
+
+        if (!empty($oParam->exibeResumoItens)) {
+            $aLinha[] = $sResumo;
+        }
+
         ksort($aQuantidades);
         $aLinha               += $aQuantidades;
         $aLinha[]              = $oItem->iTotal;
@@ -239,10 +251,10 @@ switch ($oParam->exec) {
         $oItemRetono->qtdemin        = $oItem->getQuantidadeMinima();
         $oItemRetono->qtdemax        = $oItem->getQuantidadeMaxima();
         $oItemRetono->automatico     = $oItem->isAutomatico();
-        $oItemRetono->resumo         = $oItem->getResumo();
-        $oItemRetono->justificativa  = $oItem->getJustificativa();
-        $oItemRetono->prazo          = $oItem->getPrazos();
-        $oItemRetono->pagamento      = $oItem->getPagamento();
+        $oItemRetono->resumo         = urlencode($oItem->getResumo());
+        $oItemRetono->justificativa  = urlencode($oItem->getJustificativa());
+        $oItemRetono->prazo          = urlencode($oItem->getPrazos());
+        $oItemRetono->pagamento      = urlencode($oItem->getPagamento());
         $oItemRetono->unidade        = $oItem->getUnidade();
         $oItemRetono->unidade_descr  = $oItem::getDescricaoUnidade($oItem->getUnidade());
         $oItemRetono->indice         = $iIndice;
@@ -300,7 +312,7 @@ switch ($oParam->exec) {
 
         $oItemRetono = new stdClass;
         $oItemRetono->codigoitem     = $oItem->getCodigoMaterial();
-        $oItemRetono->descricaoitem  = $oItem->getDescricaoMaterial();
+        $oItemRetono->descricaoitem  = urlencode(urldecode($oItem->getDescricaoMaterial()));
         $oItemRetono->quantidade     = $oItem->getQuantidade();
         $oItemRetono->quantidadeunid = $oItem->getQuantidadeUnidade();
         $oItemRetono->qtdemin        = $oItem->getQuantidadeMinima();
@@ -448,7 +460,7 @@ switch ($oParam->exec) {
 
   		db_inicio_transacao();
 
-  	  $sMotivo   = db_stdClass::db_stripTagsJson($oParam->sMotivo);
+  	  $sMotivo   = db_stdClass::normalizeStringJsonEscapeString($oParam->sMotivo);
 
   		$oSolicita = new aberturaRegistroPreco($oParam->iCodigoSolicitacao);
   		$oSolicita->anular($sMotivo);
@@ -470,7 +482,7 @@ switch ($oParam->exec) {
 
       db_inicio_transacao();
 
-      $sMotivo   = db_stdClass::db_stripTagsJson($oParam->sMotivo);
+      $sMotivo   = db_stdClass::normalizeStringJsonEscapeString($oParam->sMotivo);
 
       $oSolicita = new estimativaRegistroPreco($oParam->iCodigoSolicitacao);
       $oSolicita->anular($sMotivo);
@@ -492,7 +504,7 @@ switch ($oParam->exec) {
 
       db_inicio_transacao();
 
-      $sMotivo   = db_stdClass::db_stripTagsJson($oParam->sMotivo);
+      $sMotivo   = db_stdClass::normalizeStringJsonEscapeString($oParam->sMotivo);
 
       $oSolicita = new compilacaoRegistroPreco($oParam->iCodigoSolicitacao);
       $oSolicita->anular($sMotivo);
@@ -536,7 +548,6 @@ switch ($oParam->exec) {
   			$adados[]            = $oEst;
   		}
 
-  		//print_r($aDados);
   	} else if ($oParam->detalhe == 'compilacao') {
 
       $oConsulta = new aberturaRegistroPreco($oParam->pc10_numero);
@@ -572,11 +583,12 @@ switch ($oParam->exec) {
         $oItem = new stdClass();
 
         $oItem->codigo         = $oItemAbertura->getCodigoMaterial();
-        $oItem->material       = $oItemAbertura->getDescricaoMaterial();
+        $oItem->material       = urlencode($oItemAbertura->getDescricaoMaterial());
         $oItem->resumo         = $oItemAbertura->getResumo();
         $oItem->ordem          = $oItemAbertura->getOrdem();
         $oItem->valor_unitario = $oItemAbertura->getValorUnitario();
         $oItem->unidade        = urlencode($oItemAbertura->getDadosUnidade()->m61_descr);//getUnidade();
+        $oItem->quantidadeUnidade = $oItemAbertura->getQuantidadeUnidade();
         $adados[]             = $oItem;
       }
 
@@ -589,9 +601,10 @@ switch ($oParam->exec) {
         $oItem = new stdClass();
         $oItem->iCodItemSol    = $oIt->getCodigoItemSolicitacao();
         $oItem->codigo         = $oIt->getCodigoMaterial();
-        $oItem->material       = $oIt->getDescricaoMaterial();
+        $oItem->material       = urlencode($oIt->getDescricaoMaterial());
         $oItem->resumo         = $oIt->getResumo();
-        $oItem->unidade        = urlencode($oIt->getDadosUnidade()->m61_descr);//$oIt->getUnidade();
+        $oItem->unidade        = urlencode($oIt->getDadosUnidade()->m61_descr);
+        $oItem->quantidadeUnidade = $oIt->getQuantidadeUnidade();
         $oItem->quantidade     = $oIt->getQuantidade();
         $oQtdDisponiveis       = $oIt->getMovimentacao();
         $oItem->iQtdSaldo      = $oQtdDisponiveis->saldo;
@@ -613,9 +626,10 @@ switch ($oParam->exec) {
 
         $oItem = new stdClass();
         $oItem->codigo        = $oIt->getCodigoMaterial();
-        $oItem->material      = $oIt->getDescricaoMaterial();
+        $oItem->material      = urlencode($oIt->getDescricaoMaterial());
         $oItem->resumo        = $oIt->getResumo();
         $oItem->unidade       = urlencode($oIt->getDadosUnidade()->m61_descr);
+        $oItem->quantidadeUnidade = $oIt->getQuantidadeUnidade();
         $oItem->quantmax      = $oIt->getQuantidadeMaxima();
         $oItem->quantmin      = $oIt->getQuantidadeMinima();
         $oItem->valortotal    = $oIt->getValorTotal();
@@ -700,6 +714,50 @@ switch ($oParam->exec) {
         }
 
         break;
+    case "buscarSolicitacoesVinculadas":
+        if (!empty($oParam->estimativa)) {
+            $sqlSolicitacoesVinculadas  = "
+                SELECT solicitacao.*,
+                       solicitacaoanulada.pc67_solicita AS solicitacaoanulada,
+                       db_usuarios.nome AS pc10_usuario, usuario_solicitante.nome AS pc10_usuariosolicitante
+                FROM solicita AS estimativa
+                JOIN solicitavinculo AS vinculoaberturaestimativa
+                    ON vinculoaberturaestimativa.pc53_solicitafilho = estimativa.pc10_numero
+                JOIN solicitavinculo AS vinculooaberturacompilacao
+                    ON vinculooaberturacompilacao.pc53_solicitapai = vinculoaberturaestimativa.pc53_solicitapai
+                JOIN solicitavinculo  AS vinculocompilacaosolicitacao
+                    ON vinculocompilacaosolicitacao.pc53_solicitapai = vinculooaberturacompilacao.pc53_solicitafilho
+                JOIN solicita AS solicitacao
+                    ON solicitacao.pc10_numero = vinculocompilacaosolicitacao.pc53_solicitafilho
+                        AND solicitacao.pc10_depto = estimativa.pc10_depto
+                JOIN db_usuarios ON estimativa.pc10_login = id_usuario
+                LEFT JOIN solicitaanulada estimativaanulada ON estimativa.pc10_numero = estimativaanulada.pc67_solicita
+                LEFT JOIN solicitaanulada solicitacaoanulada ON solicitacao.pc10_numero = solicitacaoanulada.pc67_solicita
+                JOIN db_usuarios AS usuario_solicitante ON solicitacao.pc10_login = usuario_solicitante.id_usuario
+              WHERE estimativa.pc10_numero = {$oParam->estimativa}
+                AND estimativaanulada.pc67_sequencial IS NULL
+            ";
 
+            $solicitacoesVinculadas = db_query($sqlSolicitacoesVinculadas);
+            if (empty(pg_num_rows($solicitacoesVinculadas))) {
+                break;
+            }
+
+            $solicitacoesVinculadas = pg_fetch_all($solicitacoesVinculadas);
+            $solicitacoes = [];
+            foreach ($solicitacoesVinculadas as $solicitacaoVinculada) {
+                $solicitacao = [];
+                $solicitacao['pc10_numero'] = $solicitacaoVinculada['pc10_numero'];
+                $solicitacao['pc10_data'] = $solicitacaoVinculada['pc10_data'];
+                $solicitacao['pc10_resumo'] = urlencode($solicitacaoVinculada['pc10_resumo']);
+                $solicitacao['pc10_usuariosolicitante'] = urlencode($solicitacaoVinculada['pc10_usuariosolicitante']);
+                $solicitacao['anulada'] = (bool) $solicitacaoVinculada['solicitacaoanulada'];
+
+                $solicitacoes[] = $solicitacao;
+            }
+
+            $oRetorno->dados = $solicitacoes;
+        }
+        break;
 }
 echo $oJson->encode($oRetorno);

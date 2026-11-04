@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE tabcurri
-class cl_tabcurri { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $h01_codigo = 0; 
-   var $h01_cgmentid = 0; 
-   var $h01_descr = null; 
-   var $h01_detalh = null; 
-   var $h01_codtipo = 0; 
-   var $h01_cargahor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tabcurri {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $h01_codigo = 0;
+   var $h01_cgmentid = 0;
+   var $h01_descr = null;
+   var $h01_detalh = null;
+   var $h01_codtipo = 0;
+   var $h01_cargahor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 h01_codigo = int4 = Codigo do Historico 
-                 h01_cgmentid = int4 = Entidade 
-                 h01_descr = varchar(30) = Descrição do Histórico 
-                 h01_detalh = text = Detalhamento 
-                 h01_codtipo = int4 = Tipo do Curso 
-                 h01_cargahor = float8 = Carga Horária 
+                 h01_codigo = int4 = Codigo do Historico
+                 h01_cgmentid = int4 = Entidade
+                 h01_descr = varchar(30) = Descrição do Histórico
+                 h01_detalh = text = Detalhamento
+                 h01_codtipo = int4 = Tipo do Curso
+                 h01_cargahor = float8 = Carga Horária
                  ";
-   //funcao construtor da classe 
-   function cl_tabcurri() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tabcurri"); 
+     $this->rotulo = new rotulo("tabcurri");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_tabcurri {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h01_codigo = ($this->h01_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["h01_codigo"]:$this->h01_codigo);
        $this->h01_cgmentid = ($this->h01_cgmentid == ""?@$GLOBALS["HTTP_POST_VARS"]["h01_cgmentid"]:$this->h01_cgmentid);
@@ -86,9 +86,9 @@ class cl_tabcurri {
      }
    }
    // funcao para inclusao
-   function incluir ($h01_codigo){ 
+   public function incluir ($h01_codigo){
       $this->atualizacampos();
-     if($this->h01_cgmentid == null ){ 
+     if($this->h01_cgmentid == null ){
        $this->erro_sql = " Campo Entidade nao Informado.";
        $this->erro_campo = "h01_cgmentid";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_tabcurri {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h01_descr == null ){ 
+     if($this->h01_descr == null ){
        $this->erro_sql = " Campo Descrição do Histórico nao Informado.";
        $this->erro_campo = "h01_descr";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_tabcurri {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h01_codtipo == null ){ 
+     if($this->h01_codtipo == null ){
        $this->erro_sql = " Campo Tipo do Curso nao Informado.";
        $this->erro_campo = "h01_codtipo";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_tabcurri {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h01_cargahor == null ){ 
+     if($this->h01_cargahor == null ){
        $this->erro_sql = " Campo Carga Horária nao Informado.";
        $this->erro_campo = "h01_cargahor";
        $this->erro_banco = "";
@@ -125,16 +125,16 @@ class cl_tabcurri {
        return false;
      }
      if($h01_codigo == "" || $h01_codigo == null ){
-       $result = db_query("select nextval('tabcurri_h01_codigo_seq')"); 
+       $result = db_query("select nextval('tabcurri_h01_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tabcurri_h01_codigo_seq do campo: h01_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tabcurri_h01_codigo_seq do campo: h01_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->h01_codigo = pg_result($result,0,0); 
+       $this->h01_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tabcurri_h01_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $h01_codigo)){
@@ -145,10 +145,10 @@ class cl_tabcurri {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->h01_codigo = $h01_codigo; 
+         $this->h01_codigo = $h01_codigo;
        }
      }
-     if(($this->h01_codigo == null) || ($this->h01_codigo == "") ){ 
+     if(($this->h01_codigo == null) || ($this->h01_codigo == "") ){
        $this->erro_sql = " Campo h01_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -157,23 +157,23 @@ class cl_tabcurri {
        return false;
      }
      $sql = "insert into tabcurri(
-                                       h01_codigo 
-                                      ,h01_cgmentid 
-                                      ,h01_descr 
-                                      ,h01_detalh 
-                                      ,h01_codtipo 
-                                      ,h01_cargahor 
+                                       h01_codigo
+                                      ,h01_cgmentid
+                                      ,h01_descr
+                                      ,h01_detalh
+                                      ,h01_codtipo
+                                      ,h01_cargahor
                        )
                 values (
-                                $this->h01_codigo 
-                               ,$this->h01_cgmentid 
-                               ,'$this->h01_descr' 
-                               ,'$this->h01_detalh' 
-                               ,$this->h01_codtipo 
-                               ,$this->h01_cargahor 
+                                $this->h01_codigo
+                               ,$this->h01_cgmentid
+                               ,'$this->h01_descr'
+                               ,'$this->h01_detalh'
+                               ,$this->h01_codtipo
+                               ,$this->h01_cargahor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Contem a tabela de historicos de ocorrencias no cu ($this->h01_codigo) nao Incluído. Inclusao Abortada.";
@@ -210,16 +210,16 @@ class cl_tabcurri {
        $resac = db_query("insert into db_acount values($acount,593,9672,'','".AddSlashes(pg_result($resaco,0,'h01_cargahor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($h01_codigo=null) { 
+   public function alterar ($h01_codigo=null) {
       $this->atualizacampos();
      $sql = " update tabcurri set ";
      $virgula = "";
-     if(trim($this->h01_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_codigo"])){ 
+     if(trim($this->h01_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_codigo"])){
        $sql  .= $virgula." h01_codigo = $this->h01_codigo ";
        $virgula = ",";
-       if(trim($this->h01_codigo) == null ){ 
+       if(trim($this->h01_codigo) == null ){
          $this->erro_sql = " Campo Codigo do Historico nao Informado.";
          $this->erro_campo = "h01_codigo";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_tabcurri {
          return false;
        }
      }
-     if(trim($this->h01_cgmentid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_cgmentid"])){ 
+     if(trim($this->h01_cgmentid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_cgmentid"])){
        $sql  .= $virgula." h01_cgmentid = $this->h01_cgmentid ";
        $virgula = ",";
-       if(trim($this->h01_cgmentid) == null ){ 
+       if(trim($this->h01_cgmentid) == null ){
          $this->erro_sql = " Campo Entidade nao Informado.";
          $this->erro_campo = "h01_cgmentid";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_tabcurri {
          return false;
        }
      }
-     if(trim($this->h01_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_descr"])){ 
+     if(trim($this->h01_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_descr"])){
        $sql  .= $virgula." h01_descr = '$this->h01_descr' ";
        $virgula = ",";
-       if(trim($this->h01_descr) == null ){ 
+       if(trim($this->h01_descr) == null ){
          $this->erro_sql = " Campo Descrição do Histórico nao Informado.";
          $this->erro_campo = "h01_descr";
          $this->erro_banco = "";
@@ -255,14 +255,14 @@ class cl_tabcurri {
          return false;
        }
      }
-     if(trim($this->h01_detalh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_detalh"])){ 
+     if(trim($this->h01_detalh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_detalh"])){
        $sql  .= $virgula." h01_detalh = '$this->h01_detalh' ";
        $virgula = ",";
      }
-     if(trim($this->h01_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_codtipo"])){ 
+     if(trim($this->h01_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_codtipo"])){
        $sql  .= $virgula." h01_codtipo = $this->h01_codtipo ";
        $virgula = ",";
-       if(trim($this->h01_codtipo) == null ){ 
+       if(trim($this->h01_codtipo) == null ){
          $this->erro_sql = " Campo Tipo do Curso nao Informado.";
          $this->erro_campo = "h01_codtipo";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_tabcurri {
          return false;
        }
      }
-     if(trim($this->h01_cargahor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_cargahor"])){ 
+     if(trim($this->h01_cargahor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h01_cargahor"])){
        $sql  .= $virgula." h01_cargahor = $this->h01_cargahor ";
        $virgula = ",";
-       if(trim($this->h01_cargahor) == null ){ 
+       if(trim($this->h01_cargahor) == null ){
          $this->erro_sql = " Campo Carga Horária nao Informado.";
          $this->erro_campo = "h01_cargahor";
          $this->erro_banco = "";
@@ -311,7 +311,7 @@ class cl_tabcurri {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contem a tabela de historicos de ocorrencias no cu nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->h01_codigo;
@@ -339,14 +339,14 @@ class cl_tabcurri {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($h01_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($h01_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h01_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -377,7 +377,7 @@ class cl_tabcurri {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contem a tabela de historicos de ocorrencias no cu nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$h01_codigo;
@@ -405,11 +405,11 @@ class cl_tabcurri {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -431,10 +431,10 @@ class cl_tabcurri {
       }
      return $result;
    }
-   function sql_query ( $h01_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $h01_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,15 +449,15 @@ class cl_tabcurri {
      $sql2 = "";
      if($dbwhere==""){
        if($h01_codigo!=null ){
-         $sql2 .= " where tabcurri.h01_codigo = $h01_codigo "; 
-       } 
+         $sql2 .= " where tabcurri.h01_codigo = $h01_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -466,10 +466,10 @@ class cl_tabcurri {
      }
      return $sql;
   }
-   function sql_query_file ( $h01_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $h01_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,15 +482,15 @@ class cl_tabcurri {
      $sql2 = "";
      if($dbwhere==""){
        if($h01_codigo!=null ){
-         $sql2 .= " where tabcurri.h01_codigo = $h01_codigo "; 
-       } 
+         $sql2 .= " where tabcurri.h01_codigo = $h01_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

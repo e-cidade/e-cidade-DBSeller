@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE avaliacaoperguntaopcaolayoutcampo
-class cl_avaliacaoperguntaopcaolayoutcampo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed313_sequencial = 0; 
-   var $ed313_ano = 0; 
-   var $ed313_db_layoutcampo = 0; 
-   var $ed313_avaliacaoperguntaopcao = 0; 
-   var $ed313_layoutvalorcampo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_avaliacaoperguntaopcaolayoutcampo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed313_sequencial = 0;
+   var $ed313_ano = 0;
+   var $ed313_db_layoutcampo = 0;
+   var $ed313_avaliacaoperguntaopcao = 0;
+   var $ed313_layoutvalorcampo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed313_sequencial = int4 = Código 
-                 ed313_ano = int4 = Ano 
-                 ed313_db_layoutcampo = int4 = Código do campo 
-                 ed313_avaliacaoperguntaopcao = int4 = Código da opção 
-                 ed313_layoutvalorcampo = varchar(255) = Valor padrao 
+                 ed313_sequencial = int4 = Código
+                 ed313_ano = int4 = Ano
+                 ed313_db_layoutcampo = int4 = Código do campo
+                 ed313_avaliacaoperguntaopcao = int4 = Código da opção
+                 ed313_layoutvalorcampo = varchar(255) = Valor padrao
                  ";
-   //funcao construtor da classe 
-   function cl_avaliacaoperguntaopcaolayoutcampo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("avaliacaoperguntaopcaolayoutcampo"); 
+     $this->rotulo = new rotulo("avaliacaoperguntaopcaolayoutcampo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed313_sequencial = ($this->ed313_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed313_sequencial"]:$this->ed313_sequencial);
        $this->ed313_ano = ($this->ed313_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["ed313_ano"]:$this->ed313_ano);
@@ -83,9 +83,9 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
      }
    }
    // funcao para inclusao
-   function incluir ($ed313_sequencial){ 
+   public function incluir ($ed313_sequencial){
       $this->atualizacampos();
-     if($this->ed313_ano == null ){ 
+     if($this->ed313_ano == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "ed313_ano";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed313_db_layoutcampo == null ){ 
+     if($this->ed313_db_layoutcampo == null ){
        $this->erro_sql = " Campo Código do campo nao Informado.";
        $this->erro_campo = "ed313_db_layoutcampo";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed313_avaliacaoperguntaopcao == null ){ 
+     if($this->ed313_avaliacaoperguntaopcao == null ){
        $this->erro_sql = " Campo Código da opção nao Informado.";
        $this->erro_campo = "ed313_avaliacaoperguntaopcao";
        $this->erro_banco = "";
@@ -113,16 +113,16 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
        return false;
      }
      if($ed313_sequencial == "" || $ed313_sequencial == null ){
-       $result = db_query("select nextval('avaliacaoperguntaopcaolayoutcampo_ed313_sequencial_seq')"); 
+       $result = db_query("select nextval('avaliacaoperguntaopcaolayoutcampo_ed313_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: avaliacaoperguntaopcaolayoutcampo_ed313_sequencial_seq do campo: ed313_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: avaliacaoperguntaopcaolayoutcampo_ed313_sequencial_seq do campo: ed313_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed313_sequencial = pg_result($result,0,0); 
+       $this->ed313_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from avaliacaoperguntaopcaolayoutcampo_ed313_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed313_sequencial)){
@@ -133,10 +133,10 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed313_sequencial = $ed313_sequencial; 
+         $this->ed313_sequencial = $ed313_sequencial;
        }
      }
-     if(($this->ed313_sequencial == null) || ($this->ed313_sequencial == "") ){ 
+     if(($this->ed313_sequencial == null) || ($this->ed313_sequencial == "") ){
        $this->erro_sql = " Campo ed313_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -145,21 +145,21 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
        return false;
      }
      $sql = "insert into avaliacaoperguntaopcaolayoutcampo(
-                                       ed313_sequencial 
-                                      ,ed313_ano 
-                                      ,ed313_db_layoutcampo 
-                                      ,ed313_avaliacaoperguntaopcao 
-                                      ,ed313_layoutvalorcampo 
+                                       ed313_sequencial
+                                      ,ed313_ano
+                                      ,ed313_db_layoutcampo
+                                      ,ed313_avaliacaoperguntaopcao
+                                      ,ed313_layoutvalorcampo
                        )
                 values (
-                                $this->ed313_sequencial 
-                               ,$this->ed313_ano 
-                               ,$this->ed313_db_layoutcampo 
-                               ,$this->ed313_avaliacaoperguntaopcao 
-                               ,'$this->ed313_layoutvalorcampo' 
+                                $this->ed313_sequencial
+                               ,$this->ed313_ano
+                               ,$this->ed313_db_layoutcampo
+                               ,$this->ed313_avaliacaoperguntaopcao
+                               ,'$this->ed313_layoutvalorcampo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Campo do layout ($this->ed313_sequencial) nao Incluído. Inclusao Abortada.";
@@ -195,16 +195,16 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
        $resac = db_query("insert into db_acount values($acount,3364,19111,'','".AddSlashes(pg_result($resaco,0,'ed313_layoutvalorcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed313_sequencial=null) { 
+   public function alterar ($ed313_sequencial=null) {
       $this->atualizacampos();
      $sql = " update avaliacaoperguntaopcaolayoutcampo set ";
      $virgula = "";
-     if(trim($this->ed313_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_sequencial"])){ 
+     if(trim($this->ed313_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_sequencial"])){
        $sql  .= $virgula." ed313_sequencial = $this->ed313_sequencial ";
        $virgula = ",";
-       if(trim($this->ed313_sequencial) == null ){ 
+       if(trim($this->ed313_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed313_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
          return false;
        }
      }
-     if(trim($this->ed313_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_ano"])){ 
+     if(trim($this->ed313_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_ano"])){
        $sql  .= $virgula." ed313_ano = $this->ed313_ano ";
        $virgula = ",";
-       if(trim($this->ed313_ano) == null ){ 
+       if(trim($this->ed313_ano) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "ed313_ano";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
          return false;
        }
      }
-     if(trim($this->ed313_db_layoutcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_db_layoutcampo"])){ 
+     if(trim($this->ed313_db_layoutcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_db_layoutcampo"])){
        $sql  .= $virgula." ed313_db_layoutcampo = $this->ed313_db_layoutcampo ";
        $virgula = ",";
-       if(trim($this->ed313_db_layoutcampo) == null ){ 
+       if(trim($this->ed313_db_layoutcampo) == null ){
          $this->erro_sql = " Campo Código do campo nao Informado.";
          $this->erro_campo = "ed313_db_layoutcampo";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
          return false;
        }
      }
-     if(trim($this->ed313_avaliacaoperguntaopcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_avaliacaoperguntaopcao"])){ 
+     if(trim($this->ed313_avaliacaoperguntaopcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_avaliacaoperguntaopcao"])){
        $sql  .= $virgula." ed313_avaliacaoperguntaopcao = $this->ed313_avaliacaoperguntaopcao ";
        $virgula = ",";
-       if(trim($this->ed313_avaliacaoperguntaopcao) == null ){ 
+       if(trim($this->ed313_avaliacaoperguntaopcao) == null ){
          $this->erro_sql = " Campo Código da opção nao Informado.";
          $this->erro_campo = "ed313_avaliacaoperguntaopcao";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
          return false;
        }
      }
-     if(trim($this->ed313_layoutvalorcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_layoutvalorcampo"])){ 
+     if(trim($this->ed313_layoutvalorcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed313_layoutvalorcampo"])){
        $sql  .= $virgula." ed313_layoutvalorcampo = '$this->ed313_layoutvalorcampo' ";
        $virgula = ",";
      }
@@ -281,7 +281,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Campo do layout nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed313_sequencial;
@@ -309,14 +309,14 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed313_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed313_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed313_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -346,7 +346,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Campo do layout nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed313_sequencial;
@@ -374,11 +374,11 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -400,11 +400,11 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,15 +422,15 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
      $sql2 = "";
      if($dbwhere==""){
        if($ed313_sequencial!=null ){
-         $sql2 .= " where avaliacaoperguntaopcaolayoutcampo.ed313_sequencial = $ed313_sequencial "; 
-       } 
+         $sql2 .= " where avaliacaoperguntaopcaolayoutcampo.ed313_sequencial = $ed313_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,11 +439,11 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,15 +456,15 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
      $sql2 = "";
      if($dbwhere==""){
        if($ed313_sequencial!=null ){
-         $sql2 .= " where avaliacaoperguntaopcaolayoutcampo.ed313_sequencial = $ed313_sequencial "; 
-       } 
+         $sql2 .= " where avaliacaoperguntaopcaolayoutcampo.ed313_sequencial = $ed313_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,10 +473,10 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
      }
      return $sql;
   }
-   function sql_query_campo ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_campo ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -501,7 +501,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -510,11 +510,11 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
     }
     return $sql;
 }
-   function sql_query_avaliacao ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_avaliacao ( $ed313_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_avaliacaoperguntaopcaolayoutcampo {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -79,12 +79,15 @@ class GrupoExameRepository
     {
         $sql = $this->dao->sql_query(
             null,
-            "la68_codigo as codigo, 
-            la08_i_codigo as codigoexame, 
-            la08_c_descr as descricao, 
-            la02_i_codigo as codigolaboratorio, 
-            la02_c_descr as descricaolaboratorio, 
-            la08_i_dias as entrega",
+            "la68_codigo as codigo,
+            la08_i_codigo as codigoexame,
+            la08_c_descr as descricao,
+            la02_i_codigo as codigolaboratorio,
+            la02_c_descr as descricaolaboratorio,
+            la08_i_dias as entrega,
+            la08_obriga_peso as obriga_peso,
+            la08_obriga_altura as obriga_altura,
+            la08_obriga_volumeamostra as obriga_volume_amostra",
             null,
             $where
         );

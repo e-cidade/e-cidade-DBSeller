@@ -23,7 +23,6 @@ class cl_ensino
     public $ed10_c_abrev = null;
     public $ed10_mediacaodidaticopedagogica = 0;
     public $ed10_ordem = 0;
-    public $ed10_censocursoprofiss = 0;
     public $ed10_tipo = 0;
    // cria propriedade com as variaveis do arquivo
     public $campos = "
@@ -34,7 +33,6 @@ class cl_ensino
                  ed10_c_abrev = char(5) = Abreviatura
                  ed10_mediacaodidaticopedagogica = int4 = Mediação didático-pedagógica
                  ed10_ordem = int4 = Ordem
-                 ed10_censocursoprofiss = int4 = Curso Profissionalizante
                  ed10_tipo = int4 = Tipo de Ensino
                  ";
 
@@ -64,7 +62,6 @@ class cl_ensino
        $this->ed10_c_abrev = ($this->ed10_c_abrev == ""?@$GLOBALS["HTTP_POST_VARS"]["ed10_c_abrev"]:$this->ed10_c_abrev);
        $this->ed10_mediacaodidaticopedagogica = ($this->ed10_mediacaodidaticopedagogica == ""?@$GLOBALS["HTTP_POST_VARS"]["ed10_mediacaodidaticopedagogica"]:$this->ed10_mediacaodidaticopedagogica);
        $this->ed10_ordem = ($this->ed10_ordem == ""?@$GLOBALS["HTTP_POST_VARS"]["ed10_ordem"]:$this->ed10_ordem);
-       $this->ed10_censocursoprofiss = ($this->ed10_censocursoprofiss == ""?@$GLOBALS["HTTP_POST_VARS"]["ed10_censocursoprofiss"]:$this->ed10_censocursoprofiss);
        $this->ed10_tipo = ($this->ed10_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed10_tipo"]:$this->ed10_tipo);
      }else{
        $this->ed10_i_codigo = ($this->ed10_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed10_i_codigo"]:$this->ed10_i_codigo);
@@ -122,9 +119,6 @@ class cl_ensino
      if($this->ed10_ordem == null ){
        $this->ed10_ordem = "0";
      }
-     if($this->ed10_censocursoprofiss == null ){
-       $this->ed10_censocursoprofiss = "null";
-     }
      if($this->ed10_tipo == null ){
        $this->ed10_tipo = "0";
      }
@@ -168,7 +162,6 @@ class cl_ensino
                                       ,ed10_c_abrev
                                       ,ed10_mediacaodidaticopedagogica
                                       ,ed10_ordem
-                                      ,ed10_censocursoprofiss
                                       ,ed10_tipo
                        )
                 values (
@@ -179,7 +172,6 @@ class cl_ensino
                                ,'$this->ed10_c_abrev'
                                ,$this->ed10_mediacaodidaticopedagogica
                                ,$this->ed10_ordem
-                               ,$this->ed10_censocursoprofiss
                                ,$this->ed10_tipo
                       )";
      $result = db_query($sql);
@@ -224,7 +216,6 @@ class cl_ensino
          $resac = db_query("insert into db_acount values($acount,1010045,1008265,'','".AddSlashes(pg_result($resaco,0,'ed10_c_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1010045,21056,'','".AddSlashes(pg_result($resaco,0,'ed10_mediacaodidaticopedagogica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1010045,21191,'','".AddSlashes(pg_result($resaco,0,'ed10_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010045,21844,'','".AddSlashes(pg_result($resaco,0,'ed10_censocursoprofiss'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1010045,1010908,'','".AddSlashes(pg_result($resaco,0,'ed10_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
@@ -321,13 +312,6 @@ class cl_ensino
        $sql  .= $virgula." ed10_ordem = $this->ed10_ordem ";
        $virgula = ",";
      }
-     if(trim($this->ed10_censocursoprofiss)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed10_censocursoprofiss"])){
-        if(trim($this->ed10_censocursoprofiss)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed10_censocursoprofiss"])){
-           $this->ed10_censocursoprofiss = "0" ;
-        }
-       $sql  .= $virgula." ed10_censocursoprofiss = $this->ed10_censocursoprofiss ";
-       $virgula = ",";
-     }
      if(trim($this->ed10_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed10_tipo"])){
         if(trim($this->ed10_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed10_tipo"])){
            $this->ed10_tipo = "0" ;
@@ -366,8 +350,6 @@ class cl_ensino
              $resac = db_query("insert into db_acount values($acount,1010045,21056,'".AddSlashes(pg_result($resaco,$conresaco,'ed10_mediacaodidaticopedagogica'))."','$this->ed10_mediacaodidaticopedagogica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed10_ordem"]) || $this->ed10_ordem != "")
              $resac = db_query("insert into db_acount values($acount,1010045,21191,'".AddSlashes(pg_result($resaco,$conresaco,'ed10_ordem'))."','$this->ed10_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["ed10_censocursoprofiss"]) || $this->ed10_censocursoprofiss != "")
-             $resac = db_query("insert into db_acount values($acount,1010045,21844,'".AddSlashes(pg_result($resaco,$conresaco,'ed10_censocursoprofiss'))."','$this->ed10_censocursoprofiss',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed10_tipo"]) || $this->ed10_tipo != "")
              $resac = db_query("insert into db_acount values($acount,1010045,1010908,'".AddSlashes(pg_result($resaco,$conresaco,'ed10_tipo'))."','$this->ed10_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
@@ -433,7 +415,6 @@ class cl_ensino
            $resac  = db_query("insert into db_acount values($acount,1010045,1008265,'','".AddSlashes(pg_result($resaco,$iresaco,'ed10_c_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1010045,21056,'','".AddSlashes(pg_result($resaco,$iresaco,'ed10_mediacaodidaticopedagogica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1010045,21191,'','".AddSlashes(pg_result($resaco,$iresaco,'ed10_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010045,21844,'','".AddSlashes(pg_result($resaco,$iresaco,'ed10_censocursoprofiss'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1010045,1010908,'','".AddSlashes(pg_result($resaco,$iresaco,'ed10_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
@@ -551,7 +532,7 @@ class cl_ensino
    function sql_query_curso ( $ed10_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -575,7 +556,7 @@ class cl_ensino
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -597,7 +578,6 @@ class cl_ensino
 
      $sql  = "select {$campos}";
      $sql .= "  from ensino ";
-     $sql .= "      left join censocursoprofiss  on  censocursoprofiss.ed247_i_codigo = ensino.ed10_censocursoprofiss";
      $sql .= "      inner join mediacaodidaticopedagogica  on  mediacaodidaticopedagogica.ed130_codigo = ensino.ed10_mediacaodidaticopedagogica";
      $sql .= "      inner join tipoensino  on  tipoensino.ed36_i_codigo = ensino.ed10_i_tipoensino";
      $sql2 = "";

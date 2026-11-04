@@ -58,19 +58,19 @@ class cl_db_syscampo
     public $rotulorel = null;
     // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 codcam = int4 = Código 
-                 nomecam = char(40) = Nome 
-                 conteudo = char(40) = Tipo Campo 
-                 descricao = text = Descrição 
-                 valorinicial = varchar(100) = Valor Inicial 
-                 rotulo = varchar(50) = Rótulo 
-                 tamanho = int4 = Tamanho 
-                 nulo = bool = Aceita Nulo 
-                 maiusculo = bool = Maiúsculo 
-                 autocompl = bool = Auto-completar 
-                 aceitatipo = int4 = Valida 
-                 tipoobj = varchar(20) = Obj. Formulário 
-                 rotulorel = varchar(40) = Rótulo relatório 
+                 codcam = int4 = Código
+                 nomecam = char(40) = Nome
+                 conteudo = char(40) = Tipo Campo
+                 descricao = text = Descrição
+                 valorinicial = varchar(100) = Valor Inicial
+                 rotulo = varchar(50) = Rótulo
+                 tamanho = int4 = Tamanho
+                 nulo = bool = Aceita Nulo
+                 maiusculo = bool = Maiúsculo
+                 autocompl = bool = Auto-completar
+                 aceitatipo = int4 = Valida
+                 tipoobj = varchar(20) = Obj. Formulário
+                 rotulorel = varchar(40) = Rótulo relatório
                  ";
 
     //funcao construtor da classe
@@ -296,34 +296,34 @@ class cl_db_syscampo
             return false;
         }
         $sql = "insert into db_syscampo(
-                                       codcam 
-                                      ,nomecam 
-                                      ,conteudo 
-                                      ,descricao 
-                                      ,valorinicial 
-                                      ,rotulo 
-                                      ,tamanho 
-                                      ,nulo 
-                                      ,maiusculo 
-                                      ,autocompl 
-                                      ,aceitatipo 
-                                      ,tipoobj 
-                                      ,rotulorel 
+                                       codcam
+                                      ,nomecam
+                                      ,conteudo
+                                      ,descricao
+                                      ,valorinicial
+                                      ,rotulo
+                                      ,tamanho
+                                      ,nulo
+                                      ,maiusculo
+                                      ,autocompl
+                                      ,aceitatipo
+                                      ,tipoobj
+                                      ,rotulorel
                        )
                 values (
-                                $this->codcam 
-                               ,'$this->nomecam' 
-                               ,'$this->conteudo' 
-                               ,'$this->descricao' 
-                               ,'$this->valorinicial' 
-                               ,'$this->rotulo' 
-                               ,$this->tamanho 
-                               ,'$this->nulo' 
-                               ,'$this->maiusculo' 
-                               ,'$this->autocompl' 
-                               ,$this->aceitatipo 
-                               ,'$this->tipoobj' 
-                               ,'$this->rotulorel' 
+                                $this->codcam
+                               ,'$this->nomecam'
+                               ,'$this->conteudo'
+                               ,'$this->descricao'
+                               ,'$this->valorinicial'
+                               ,'$this->rotulo'
+                               ,$this->tamanho
+                               ,'$this->nulo'
+                               ,'$this->maiusculo'
+                               ,'$this->autocompl'
+                               ,$this->aceitatipo
+                               ,'$this->tipoobj'
+                               ,'$this->rotulorel'
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -965,7 +965,7 @@ class cl_db_syscampo
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -986,7 +986,7 @@ class cl_db_syscampo
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1039,7 +1039,7 @@ class cl_db_syscampo
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1060,7 +1060,7 @@ class cl_db_syscampo
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

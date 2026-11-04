@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,20 +25,41 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_isencaotipo_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once modification("libs/JSON.php");
+
+db_postmemory($_POST);
+
 $clisencaotipo = new cl_isencaotipo;
 $db_opcao = 1;
 $db_botao = true;
+$sqlErro  = false;
+
 if(isset($incluir)){
   db_inicio_transacao();
-  $clisencaotipo->incluir($v11_sequencial);
-  db_fim_transacao();
+
+  try {
+
+    /**
+     * Inclui tipo de isencao
+     */
+    $sequencialTipoIsencao = db_utils::fieldsMemory(db_query("select nextval('isencaotipo_v11_sequencial_seq')"), 0);
+    $sequencialTipoIsencao = $sequencialTipoIsencao->nextval;
+    $clisencaotipo->incluir($sequencialTipoIsencao);
+
+    if($clisencaotipo->erro_status == 0) {
+      $sqlErro=true;
+    } 
+
+  } catch(Exception $error) {
+    db_fim_transacao(true);  
+  }
+
+  db_fim_transacao($sqlErro);
 }
 ?>
 <html>
@@ -47,6 +68,9 @@ if(isset($incluir)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
@@ -62,14 +86,14 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmisencaotipo.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -77,7 +101,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","v11_descr",true,1,"v11_descr",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clisencaotipo->erro_status=="0"){
     $clisencaotipo->erro(true,false);

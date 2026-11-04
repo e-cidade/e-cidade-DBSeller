@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
@@ -46,17 +46,17 @@ class cl_pcorcamitemproc {
     var $pc31_pcprocitem = 0;
     // cria propriedade com as variaveis do arquivo
     var $campos = "
-                 pc31_orcamitem = int4 = Código sequencial do item no orçamento 
-                 pc31_pcprocitem = int8 = Código sequencial do item no processo 
+                 pc31_orcamitem = int4 = Código sequencial do item no orçamento
+                 pc31_pcprocitem = int8 = Código sequencial do item no processo
                  ";
     //funcao construtor da classe
-    function cl_pcorcamitemproc() {
+    public function __construct() {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("pcorcamitemproc");
         $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
     //funcao erro
-    function erro($mostra,$retorna) {
+    public function erro($mostra,$retorna) {
         if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
             echo "<script>alert(\"".$this->erro_msg."\");</script>";
             if($retorna==true){
@@ -65,7 +65,7 @@ class cl_pcorcamitemproc {
         }
     }
     // funcao para atualizar campos
-    function atualizacampos($exclusao=false) {
+    public function atualizacampos($exclusao=false) {
         if($exclusao==false){
             $this->pc31_orcamitem = ($this->pc31_orcamitem == ""?@$GLOBALS["HTTP_POST_VARS"]["pc31_orcamitem"]:$this->pc31_orcamitem);
             $this->pc31_pcprocitem = ($this->pc31_pcprocitem == ""?@$GLOBALS["HTTP_POST_VARS"]["pc31_pcprocitem"]:$this->pc31_pcprocitem);
@@ -75,7 +75,7 @@ class cl_pcorcamitemproc {
         }
     }
     // funcao para inclusao
-    function incluir ($pc31_orcamitem,$pc31_pcprocitem){
+    public function incluir ($pc31_orcamitem,$pc31_pcprocitem){
         $this->atualizacampos();
         $this->pc31_orcamitem = $pc31_orcamitem;
         $this->pc31_pcprocitem = $pc31_pcprocitem;
@@ -96,12 +96,12 @@ class cl_pcorcamitemproc {
             return false;
         }
         $sql = "insert into pcorcamitemproc(
-                                       pc31_orcamitem 
-                                      ,pc31_pcprocitem 
+                                       pc31_orcamitem
+                                      ,pc31_pcprocitem
                        )
                 values (
-                                $this->pc31_orcamitem 
-                               ,$this->pc31_pcprocitem 
+                                $this->pc31_orcamitem
+                               ,$this->pc31_pcprocitem
                       )";
         $result = db_query($sql);
         if($result==false){
@@ -140,7 +140,7 @@ class cl_pcorcamitemproc {
         return true;
     }
     // funcao para alteracao
-    function alterar ($pc31_orcamitem=null,$pc31_pcprocitem=null) {
+    public function alterar ($pc31_orcamitem=null,$pc31_pcprocitem=null) {
         $this->atualizacampos();
         $sql = " update pcorcamitemproc set ";
         $virgula = "";
@@ -224,7 +224,7 @@ class cl_pcorcamitemproc {
         }
     }
     // funcao para exclusao
-    function excluir ($pc31_orcamitem=null,$pc31_pcprocitem=null,$dbwhere=null) {
+    public function excluir ($pc31_orcamitem=null,$pc31_pcprocitem=null,$dbwhere=null) {
         if($dbwhere==null || $dbwhere==""){
             $resaco = $this->sql_record($this->sql_query_file($pc31_orcamitem,$pc31_pcprocitem));
         }else{
@@ -293,7 +293,7 @@ class cl_pcorcamitemproc {
         }
     }
     // funcao do recordset
-    function sql_record($sql) {
+    public function sql_record($sql) {
         $result = db_query($sql);
         if($result==false){
             $this->numrows    = 0;
@@ -315,10 +315,10 @@ class cl_pcorcamitemproc {
         }
         return $result;
     }
-    function sql_query ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -352,7 +352,7 @@ class cl_pcorcamitemproc {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -361,10 +361,10 @@ class cl_pcorcamitemproc {
         }
         return $sql;
     }
-    function sql_query_file ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_file ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_pcorcamitemproc {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -402,10 +402,10 @@ class cl_pcorcamitemproc {
         }
         return $sql;
     }
-    function sql_query_orcam ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_orcam ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -436,7 +436,7 @@ class cl_pcorcamitemproc {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -445,10 +445,10 @@ class cl_pcorcamitemproc {
         }
         return $sql;
     }
-    function sql_query_solicitem ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_solicitem ( $pc31_orcamitem=null,$pc31_pcprocitem=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -491,7 +491,7 @@ class cl_pcorcamitemproc {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];

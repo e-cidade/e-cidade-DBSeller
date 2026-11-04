@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -49,7 +49,6 @@ $clsliprecurso   = new cl_sliprecurso;
 $clempparamentro = new cl_empparametro;
 $oPost           = db_utils::postMemory($_POST);
 db_postmemory($HTTP_POST_VARS);
-// parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
 $db_erro = "";
 $inclusao = false;
@@ -157,7 +156,7 @@ if (isset($oPost->confirmar)) {
 
   		$lErro    = true;
       $sMsgErro = $oDaoSlipMov->erro_msg;
-      break;
+      return false;
 
   	}
   }
@@ -232,19 +231,19 @@ $read_only = true;
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td valign="top" bgcolor="#CCCCCC">
-    <?
+    <?php
   	  include(modification("forms/db_frmslipanula.php"));
     ?>
     </td>
   </tr>
 </table>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($clslip->erro_status == 0 && isset($oPost->confirmar)){
     echo "<script>alert('".$clslip->erro_msg."')</script>";
 } else if (isset($oPost->confirmar) && !$lSqlErro) {
@@ -262,14 +261,14 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_slip.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	?>
 }
 
 
 </script>
-<?
+<?php
 if (isset($chavepesquisa) && $chavepesquisa!=""){
   echo "
        <script>

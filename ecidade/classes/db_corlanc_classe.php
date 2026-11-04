@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -59,13 +59,13 @@ class cl_corlanc {
                  k12_codigo = int4 = Código do Slip
                  ";
    //funcao construtor da classe
-   function cl_corlanc() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("corlanc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_corlanc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k12_id = ($this->k12_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_id"]:$this->k12_id);
        if($this->k12_data == ""){
@@ -95,7 +95,7 @@ class cl_corlanc {
      }
    }
    // funcao para inclusao
-   function incluir ($k12_id,$k12_data,$k12_autent){
+   public function incluir ($k12_id,$k12_data,$k12_autent){
       $this->atualizacampos();
      if($this->k12_conta == null ){
        $this->erro_sql = " Campo Código da Conta nao Informado.";
@@ -197,7 +197,7 @@ class cl_corlanc {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k12_id=null,$k12_data=null,$k12_autent=null) {
+   public function alterar ($k12_id=null,$k12_data=null,$k12_autent=null) {
       $this->atualizacampos();
      $sql = " update corlanc set ";
      $virgula = "";
@@ -344,7 +344,7 @@ class cl_corlanc {
      }
    }
    // funcao para exclusao
-   function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$dbwhere=null) {
+   public function excluir ($k12_id=null,$k12_data=null,$k12_autent=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k12_id,$k12_data,$k12_autent));
      }else{
@@ -423,10 +423,10 @@ class cl_corlanc {
      }
    }
    // funcao do recordset
-   function sql_query_file ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,7 +463,7 @@ class cl_corlanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_corlanc {
      return $sql;
   }
 
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -496,10 +496,10 @@ class cl_corlanc {
      return $result;
    }
 
-   function sql_query_slip ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_slip ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -553,7 +553,7 @@ class cl_corlanc {
    $sql .= $sql2;
    if($ordem != null ){
      $sql .= " order by ";
-     $campos_sql = split("#",$ordem);
+     $campos_sql = explode("#",$ordem);
      $virgula = "";
      for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];
@@ -563,7 +563,7 @@ class cl_corlanc {
      return $sql;
      }
 
-  function sql_query_corrente_slip ($campos="*", $ordem = null, $dbwhere=null){
+  public function sql_query_corrente_slip ($campos="*", $ordem = null, $dbwhere=null){
 
     $sql  = "select {$campos} ";
     $sql .= " from corlanc ";
@@ -582,12 +582,12 @@ class cl_corlanc {
     return $sql;
   }
 
-  function sql_query_corrente ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_corrente ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
 
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,7 +633,7 @@ class cl_corlanc {
    if($ordem != null ){
 
      $sql .= " order by ";
-     $campos_sql = split("#",$ordem);
+     $campos_sql = explode("#",$ordem);
      $virgula = "";
      for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];

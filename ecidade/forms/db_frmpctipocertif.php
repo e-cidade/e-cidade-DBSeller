@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,19 +53,19 @@ if ($db_opcao==1) {
 				      <?=@$Lpc70_codigo?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('pc70_codigo', 10, $Ipc70_codigo, true, 'text', 3, "");
 							?>
 				    </td>
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$Tdb08_codigo?>">
-				       <?
+				       <?php
 				         db_ancora(@$Ldb08_codigo, "js_pesquisadb08_codigo(true);", $db_opcao);
 				       ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('db08_codigo', 10, $Idb08_codigo, true, 'text', $db_opcao, " onchange='js_pesquisadb08_codigo(false);'");
 				        db_input('db08_descr', 40, $Idb08_descr, true, 'text', 3, '');
 				      ?>
@@ -76,7 +76,7 @@ if ($db_opcao==1) {
 				      <?=@$Lpc70_descr?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('pc70_descr', 40, $Ipc70_descr, true, 'text', $db_opcao, "");
 							?>
 				    </td>
@@ -86,7 +86,7 @@ if ($db_opcao==1) {
 				      <?=@$Lpc70_subgrupo?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 								$x = array('f'=>'Não','t'=>'Sim');
 								db_select('pc70_subgrupo', $x, true, $db_opcao, "");
 							?>
@@ -96,14 +96,14 @@ if ($db_opcao==1) {
 				  <br>
 				  <fieldset>
 				  <legend><?=@$Lpc70_obs?></legend> 
-						<?
+						<?php
 						  db_textarea('pc70_obs', 5, 53, $Ipc70_obs, true, 'text', $db_opcao, "");
 						?>
 				  </fieldset>
 				  <br>
 				  <fieldset>
 				  <legend><?=@$Lpc70_parag2?></legend>
-						<?
+						<?php
 						  db_textarea('pc70_parag2', 5, 53, $Ipc70_parag2, true, 'text', $db_opcao, "");
 						?>
 			  </fieldset>
@@ -163,7 +163,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_pctipocertif.hide();
-  <?
+  <?php
 	  if ($db_opcao != 1) {
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }

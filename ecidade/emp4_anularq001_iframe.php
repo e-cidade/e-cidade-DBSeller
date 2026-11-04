@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -108,7 +108,7 @@ function js_marca(obj){
       <form name="form1" method="post" action="">
       <center>
       <table border='2'>
-      <?
+      <?php
       db_input("codgera",10,'',true,'hidden',3);  
       if(isset($codgera) && trim($codgera)!=""){
 	$dbwhere = " e80_instit = " . db_getsession("DB_instit") . " and e90_correto='t' and e87_codgera = ".$codgera;

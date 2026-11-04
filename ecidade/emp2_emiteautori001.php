@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -90,9 +90,9 @@ function js_abre(){
   	      <strong>Autorizações de</strong>
   	      </td>
   	    <td>
-  	      <? db_input('e54_autori',8,$Ie54_autori,true,'text',$db_opcao,"onchange='jscopiacampo();'","e54_autori_ini")  ?>
+  	      <?php db_input('e54_autori',8,$Ie54_autori,true,'text',$db_opcao,"onchange='jscopiacampo();'","e54_autori_ini")  ?>
   	      <strong> à </strong>
-  	      <? db_input('e54_autori',8,$Ie54_autori,true,'text',$db_opcao,"","e54_autori_fim")  ?>
+  	      <?php db_input('e54_autori',8,$Ie54_autori,true,'text',$db_opcao,"","e54_autori_fim")  ?>
   	    </td>
       </tr>
        <tr>
@@ -100,7 +100,7 @@ function js_abre(){
          <b> Período:</b>
        </td>
        <td>
-        <?  db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");
+        <?php  db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");
             echo " a ";
             db_inputdata('dtfim',@$dia,@$mes,@$ano,true,'text',1,"");
          ?>
@@ -109,7 +109,7 @@ function js_abre(){
        <tr>
          <td align-"right"><b>Informações adicionais:</b></td>
          <td>
-  <?
+  <?php
     $matriz = array("PC"=>"Mostrar autorização de processo de compras",
                     "AU"=>"Mostrar somente autorização");
     db_select("informa_adic", $matriz,true,$db_opcao);
@@ -123,7 +123,7 @@ function js_abre(){
   </p>
 </form>
 </center>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

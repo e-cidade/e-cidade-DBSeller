@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ $cldiversos->rotulo->label("dv05_numcgm");
               <?=$Ldv05_coddiver?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("dv05_coddiver",10,$Idv05_coddiver,true,"text",4,"","chave_dv05_coddiver");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $cldiversos->rotulo->label("dv05_numcgm");
               <?=$Ldv05_numcgm?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("dv05_numcgm",6,$Idv05_numcgm,true,"text",4,"","chave_dv05_numcgm");
 		       ?>
             </td>
@@ -81,7 +81,7 @@ $cldiversos->rotulo->label("dv05_numcgm");
               <?=$Lk00_inscr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("k00_inscr",6,$Ik00_inscr,true,"text",4,"","chave_k00_inscr");
 		       ?>
             </td>
@@ -89,10 +89,10 @@ $cldiversos->rotulo->label("dv05_numcgm");
 
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tk00_matric?>">
-              <?db_ancora($Lk00_matric,' js_matriculas(true); ',1); ?>
+              <?php db_ancora($Lk00_matric,' js_matriculas(true); ',1); ?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("k00_matric",6,$Ik00_matric,true,"text",4,"","chave_k00_matric");
 		       ?>
             </td>
@@ -111,7 +111,7 @@ $cldiversos->rotulo->label("dv05_numcgm");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_diversos.php")==true){
@@ -164,12 +164,12 @@ $cldiversos->rotulo->label("dv05_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

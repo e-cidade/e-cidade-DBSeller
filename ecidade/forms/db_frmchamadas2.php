@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -40,7 +40,7 @@ $clrotulo = new rotulocampo;
     <b>Disciplina:</b> <?=$nomedisciplina?>
    </td>
   </tr>
-  <?
+  <?php
   $sql = "select * from turmas
            inner join escolas    on ed02_i_codigo = ed05_i_escola
            inner join matriculas on ed09_i_escola = ed02_i_codigo
@@ -58,7 +58,7 @@ $clrotulo = new rotulocampo;
     parent.document.formaba.a2.disabled=true;
     parent.mo_camada('a1');
    </script>
-   <?
+   <?php
    exit;
   }
    $sql = "select * from matriculas
@@ -73,22 +73,22 @@ $clrotulo = new rotulocampo;
   <tr bgcolor="#F9F900">
    <td align="center"><b>Matrícula</b></td>
    <td align="center" width="50%"><b>Aluno</b></td>
-   <?for($x=1;$x<=15;$x++){?>
+   <?php for($x=1;$x<=15;$x++){?>
    <td width="5%" align="center"><?=$x?></td>
-   <?}?>
+   <?php }?>
   </tr>
-  <?
+  <?php
   for($x=0;$x < $clmatriculas->numrows; $x++){
   db_fieldsmemory($result,$x);
   ?>
   <tr>
-   <td align="center"><?=str_pad($ed09_i_codigo,7,0,str_pad_left)?></td>
+   <td align="center"><?=str_pad($ed09_i_codigo,7,0,STR_PAD_LEFT)?></td>
    <td>&nbsp;<?=$z01_nome?></td>
-   <?for($x=1;$x<=15;$x++){?>
+   <?php for($x=1;$x<=15;$x++){?>
    <td width="5%" align="center"><input type="checkbox" name="presente" value="<?=$ed09_i_codigo?>"></td>
-   <?}?>
+   <?php }?>
   </tr>
-  <?
+  <?php
   }
   ?>
   </table><br>
@@ -112,7 +112,7 @@ $clrotulo = new rotulocampo;
    document.form1.marca.value="Desmarcar Todos";
   }
  }
- 
+
  function valida(tudo,documento){
    obj = document.form1;
    count = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,13 +58,13 @@ class cl_cad_afast {
                  r68_salario = bool = Salário 
                  ";
    //funcao construtor da classe 
-   function cl_cad_afast() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cad_afast"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_cad_afast {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r68_anousu = ($this->r68_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r68_anousu"]:$this->r68_anousu);
        $this->r68_mesusu = ($this->r68_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r68_mesusu"]:$this->r68_mesusu);
@@ -88,7 +88,7 @@ class cl_cad_afast {
      }
    }
    // funcao para inclusao
-   function incluir ($r68_anousu,$r68_mesusu,$r68_codigo){ 
+   public function incluir ($r68_anousu,$r68_mesusu,$r68_codigo){ 
       $this->atualizacampos();
      if($this->r68_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -202,7 +202,7 @@ class cl_cad_afast {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r68_anousu=null,$r68_mesusu=null,$r68_codigo=null) { 
+   public function alterar ($r68_anousu=null,$r68_mesusu=null,$r68_codigo=null) { 
       $this->atualizacampos();
      $sql = " update cad_afast set ";
      $virgula = "";
@@ -350,7 +350,7 @@ class cl_cad_afast {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r68_anousu=null,$r68_mesusu=null,$r68_codigo=null,$dbwhere=null) { 
+   public function excluir ($r68_anousu=null,$r68_mesusu=null,$r68_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r68_anousu,$r68_mesusu,$r68_codigo));
      }else{ 
@@ -430,7 +430,7 @@ class cl_cad_afast {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

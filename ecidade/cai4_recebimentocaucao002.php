@@ -66,20 +66,21 @@ if($conparametro->c90_confirmadata == 't'){
     <div id="ctnSlipPagamento">
     </div>
   </div>
-  <?
-    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+  <?php
+    db_menu();
   ?>
 </body>
 </html>
 <script>
     let c90_confirmadata = '<?php echo $conparametro->c90_confirmadata ?>'
     if (c90_confirmadata == 't') {
-        const msg = "Antes de realizar a operação confirme a data em que deseja incluir o movimento";
+        const msg = "Antes de realizar a operaÃ§Ã£o confirme a data em que deseja incluir o movimento";
         alert(msg)
     }
 
     var oDBViewSlipPagamento = new DBViewSlipPagamento("oDBViewSlipPagamento", 8, 2, $('ctnSlipPagamento'));
     oDBViewSlipPagamento.setRecursoUniao('<?php echo (FONTE_RECURSO_UNIAO ? 'true' : 'false');?>');
+    oDBViewSlipPagamento.filtarContasExtras(true);
     oDBViewSlipPagamento.show();
     oDBViewSlipPagamento.setPCASPAtivo('<?php echo db_getsession('DB_use_pcasp');?>');
     oDBViewSlipPagamento.start();

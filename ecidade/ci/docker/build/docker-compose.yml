@@ -1,0 +1,13 @@
+version: "3.1"
+services:
+  webserver:
+    restart: always
+    container_name: e-cidade-php
+    working_dir: /var/www
+    build:
+      context: /home/dbseller/ci
+      dockerfile: ./docker/build/php56-apache/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ~/.ssh:/root/.ssh

@@ -118,13 +118,13 @@ if(isset($chavepesquisa) || isset($alterar)){
 </head>
 <body bgcolor=#CCCCCC>
 
-	<?
+	<?php
 	include(modification("forms/db_frmbenstransf.php"));
 	?>
     
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
     db_msgbox($erro_msg);
   if($sqlerro==true){

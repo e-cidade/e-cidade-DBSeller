@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -74,9 +74,16 @@ $iFonte       = 6;
 
 
 $sWhereConta = "";
+$sWhereDataLimite = "";
+$sWhereDataLimite2 = "";
 if ($iBanco != "") {
     $sWhereConta = " and db90_codban = '{$iBanco}'";
 }
+if (isset($oGet->iLimite)){
+    $sWhereDataLimite = "AND c56_reduz IN (SELECT k13_reduz  from saltes where k13_reduz = c56_reduz AND k13_limite is null )";
+    $sWhereDataLimite2 = "AND c56_reduz NOT IN (SELECT k13_reduz  from saltes where k13_reduz = c56_reduz AND k13_limite is not null )";
+}
+
 
 $sSql = "
 
@@ -109,6 +116,7 @@ FROM
                  AND c61_codcon = c56_codcon
                  INNER JOIN configuracoes.db_config ON c61_instit = codigo
                  WHERE db83_sequencial = c56_contabancaria
+                 {$sWhereDataLimite2}
                    AND c56_anousu =  {$iAnoUsu} ),', ') AS reduzido_contabil,
 
             (SELECT max(k68_data)
@@ -348,7 +356,9 @@ FROM
                                                      and c61_instit = ({$iInstituicao})
                INNER JOIN configuracoes.db_config ON c61_instit = codigo
                     WHERE db83_sequencial = c56_contabancaria
-                      AND c56_anousu =  {$iAnoUsu} ) in ({$iInstituicao})
+                      AND c56_anousu =  {$iAnoUsu} 
+                      {$sWhereDataLimite}
+                      ) in ({$iInstituicao})
         {$sWhereConta}
         ) AS x
    ORDER BY reduzido_contabil
@@ -357,8 +367,6 @@ FROM
 ";
 
 //$sSql = "select * from ($sSql ) as dd where reduzido_contabil ilike '%25865%'";
-//echo $sSql; die();
-
 $rs = db_query($sSql);
 
 if (!$rs) {

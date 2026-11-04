@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clturnos->rotulo->label();
        <?=@$Led10_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed10_i_codigo',5,$Ied10_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('ed10_i_codigo',5,$Ied10_i_codigo,true,'text',3,"")
        <?=@$Led10_c_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed10_c_nome',20,$Ied10_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('ed10_c_nome',20,$Ied10_c_nome,true,'text',$db_opcao,"")
        <?=@$Led10_c_abrevia?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed10_c_abrevia',3,$Ied10_c_abrevia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_turnos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -55,6 +55,10 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
      * @var AssinaturaService
      */
     private $assinatura;
+    /**
+     * @var string
+     */
+    private $apresentarRecurso;
 
     public function setFiltrosRequest(array $filtros)
     {
@@ -73,11 +77,11 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
         $this->filtroDataFinal = Carbon::createFromFormat('d/m/Y', $filtros['dataFinal']);
         $this->ano = $this->filtroDataFinal->year;
 
+        $this->apresentarRecurso = $filtros['apresentarRecurso'];
         $this->modelo = $filtros['modelo'];
         if (!empty($filtros['nivel'])) {
             $this->agruparPorClassificacao = $filtros['nivel'];
         }
-
 
         /**
          * A assinatura é da instituição logada.
@@ -95,7 +99,7 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
 
         $relatorio = $this->getInstanceBalancete();
         $relatorio->setDados($dados);
-
+        $relatorio->setApresentarRecurso($this->apresentarRecurso);
         $relatorio->setTotalizador($this->totalizador);
 
         $links = $relatorio->emitir();
@@ -399,9 +403,9 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
     {
         $recurso = $this->createIfNotExists(
             $recursos,
-            $dadosDespesa->fonte_recurso,
+            $dadosDespesa->gestao,
             $dadosDespesa->descricao_recurso,
-            $dadosDespesa->fonte_recurso,
+            $dadosDespesa->gestao,
             'recurso',
             null
         );
@@ -424,7 +428,9 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
     private function criaObjetoRecurso($dadosDespesa)
     {
         return (object)[
-            'recurso' => $dadosDespesa->fonte_recurso,
+            'recurso' => $dadosDespesa->gestao,
+            'siconfi' => $dadosDespesa->siconfi,
+            'subrecurso' => $dadosDespesa->fonte_recurso,
             'descricao_recurso' => $dadosDespesa->descricao_recurso,
             'complemento' => $dadosDespesa->complemento,
             'descricao_complemento' => $dadosDespesa->descricao_complemento,

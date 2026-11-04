@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -59,12 +59,12 @@ if ( isset($i03_descr) && $i03_descr != "" ) {
 
   $clinfcor->excluir($clinfcab->i03_codigo);
 //  $clinfcor->erro(true,false);
-     
+
   for($i=1;$i<=$i04_linhas;$i++){
 
      $i04_dados = "i04_dados$i";
 
-     $matriz = split("#",$$i04_dados);
+     $matriz =explode("#",$$i04_dados);
 
      $clinfcor->i04_codigo   = $clinfcab->i03_codigo;
      $clinfcor->i04_seq	     = $i;
@@ -84,7 +84,7 @@ if ( isset($i03_descr) && $i03_descr != "" ) {
 
   db_fim_transacao();
   $clinfcab->erro(true,false);
-  
+
 }
 
 ?>
@@ -110,23 +110,23 @@ function js_alteralinha(linha) {
     if(linha == tab.rows[i].id){
       // atualiza dados
       parent.document.form1.i04_obs.value = tab.rows[i].cells[0].innerHTML;
-      
+
       parent.document.form1.i04_dtoper_dia.value = tab.rows[i].cells[1].innerHTML.substring(0,2);
       parent.document.form1.i04_dtoper_mes.value = tab.rows[i].cells[1].innerHTML.substring(3,5);
       parent.document.form1.i04_dtoper_ano.value = tab.rows[i].cells[1].innerHTML.substring(6,10);
       parent.document.form1.i04_dtoper.value = tab.rows[i].cells[1].innerHTML.substring(0,2)+'/'+tab.rows[i].cells[1].innerHTML.substring(3,5)+'/'+tab.rows[i].cells[1].innerHTML.substring(6,10);
-      
+
       parent.document.form1.i04_dtvenc_dia.value = tab.rows[i].cells[2].innerHTML.substring(0,2);
       parent.document.form1.i04_dtvenc_mes.value = tab.rows[i].cells[2].innerHTML.substring(3,5);
       parent.document.form1.i04_dtvenc_ano.value = tab.rows[i].cells[2].innerHTML.substring(6,10);
       parent.document.form1.i04_dtvenc.value = tab.rows[i].cells[2].innerHTML.substring(0,2)+'/'+tab.rows[i].cells[2].innerHTML.substring(3,5)+'/'+tab.rows[i].cells[2].innerHTML.substring(6,10);
 
       parent.document.form1.i04_valor.value = tab.rows[i].cells[3].innerHTML;
-      
+
       parent.document.form1.i04_obs.value = tab.rows[i].cells[0].innerHTML;
-      
+
       parent.document.form1.i04_receit.value = tab.rows[i].cells[4].innerHTML;
-      
+
       tab.deleteRow(i);
       break;
     }
@@ -155,7 +155,7 @@ function js_alteralinha(linha) {
   <input name="i03_numcgm" value="" type="hidden">
   <input name="i03_dtbase" value="" type="hidden">
   <table width="100%" border="1" cellpadding="3" cellspacing="0" id="tab">
-    <tr bgcolor="#BDC6BD"> 
+    <tr bgcolor="#BDC6BD">
       <th width="20" align="left"   nowrap style="font-size:8px">Observa&ccedil;&atilde;o</th>
       <th width="20" align="left"   nowrap style="font-size:8px">Operacao</th>
       <th width="20" align="left"   nowrap style="font-size:8px">Vencimento</th>
@@ -169,11 +169,11 @@ function js_alteralinha(linha) {
       <th width="20" align="center" nowrap style="font-size:8px">Alterar</th>
     </tr>
 
-    <?
+    <?php
     if ( isset($i03_codigo) ) {
 
        $sql="select * from infcor where i04_codigo = $i03_codigo";
-       
+
        $result=db_query($sql);
 
        for($s=0;$s<pg_numrows($result);$s++){
@@ -195,11 +195,11 @@ function js_alteralinha(linha) {
 
        }
     }
-    
+
     ?>
-    
+
   </table>
   </form>
-</center>			
+</center>
 </body>
 </html>

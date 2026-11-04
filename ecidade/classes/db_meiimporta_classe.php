@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE meiimporta
 class cl_meiimporta { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q104_sequencial = 0; 
-   var $q104_id_usuario = 0; 
-   var $q104_anousu = 0; 
-   var $q104_mesusu = 0; 
-   var $q104_nomearq = null; 
-   var $q104_arquivo = null; 
-   var $q104_xml = null; 
-   var $q104_tipoimporta = 0; 
-   var $q104_cancelado = 'f'; 
+   public $q104_sequencial = 0; 
+   public $q104_id_usuario = 0; 
+   public $q104_anousu = 0; 
+   public $q104_mesusu = 0; 
+   public $q104_nomearq = null; 
+   public $q104_arquivo = null; 
+   public $q104_xml = null; 
+   public $q104_tipoimporta = 0; 
+   public $q104_cancelado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q104_sequencial = int4 = Sequencial 
                  q104_id_usuario = int4 = Usuário 
                  q104_anousu = int4 = Ano 
@@ -64,13 +64,13 @@ class cl_meiimporta {
                  q104_cancelado = bool = Cancelado 
                  ";
    //funcao construtor da classe 
-   function cl_meiimporta() { 
+   public function cl_meiimporta() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimporta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_meiimporta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q104_sequencial = ($this->q104_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q104_sequencial"]:$this->q104_sequencial);
        $this->q104_id_usuario = ($this->q104_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["q104_id_usuario"]:$this->q104_id_usuario);
@@ -95,7 +95,7 @@ class cl_meiimporta {
      }
    }
    // funcao para inclusao
-   function incluir ($q104_sequencial){ 
+   public function incluir ($q104_sequencial){ 
       $this->atualizacampos();
      if($this->q104_id_usuario == null ){ 
        $this->erro_sql = " Campo Usuário nao Informado.";
@@ -239,7 +239,7 @@ class cl_meiimporta {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($q104_sequencial=null) { 
+   public function alterar ($q104_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update meiimporta set ";
      $virgula = "";
@@ -397,7 +397,7 @@ class cl_meiimporta {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($q104_sequencial=null,$dbwhere=null) { 
+   public function excluir ($q104_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q104_sequencial));
      }else{ 
@@ -467,7 +467,7 @@ class cl_meiimporta {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -490,10 +490,10 @@ class cl_meiimporta {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_meiimporta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,10 +525,10 @@ class cl_meiimporta {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -549,7 +549,7 @@ class cl_meiimporta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,10 +559,10 @@ class cl_meiimporta {
      return $sql;
   }
  
-  function sql_query_reg( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+  public function sql_query_reg( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -591,7 +591,7 @@ class cl_meiimporta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -601,10 +601,10 @@ class cl_meiimporta {
      return $sql;
   }  
   
-   function sql_query_dados( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_dados( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -636,7 +636,7 @@ class cl_meiimporta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,10 +647,10 @@ class cl_meiimporta {
   }
   
   // retorna cancelamento de competência sem movimento
-  function sql_query_semmov ( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+  public function sql_query_semmov ( $q104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -673,7 +673,7 @@ class cl_meiimporta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -682,6 +682,77 @@ class cl_meiimporta {
      }
      return $sql;
   }
+
+  public function sql_query_listaEventos($iCnpj, $sWhereExtra = "") {
+
+    $sSql  = " select                                                                      ";
+    $sSql .= "     distinct q105_cnpj,                                                     ";
+    $sSql .= "     q104_anousu,                                                            ";
+    $sSql .= "     q104_mesusu,                                                            ";
+    $sSql .= "     q101_codigo,                                                            ";
+    $sSql .= "     q101_descricao,                                                         ";
+    $sSql .= "     q115_numcgm,                                                            ";
+    $sSql .= "     q116_descricao,                                                         ";
+    $sSql .= "     q02_inscr,                                                              ";
+    $sSql .= "     q02_dtbaix,                                                             ";
+    $sSql .= "     q113_data as data,                                                      ";
+    $sSql .= "     q101_codigo as codigoEvento                                             ";
+    $sSql .= " from                                                                        ";
+    $sSql .= "     meiimporta                                                              ";
+    $sSql .= "     inner join meiimportamei on q105_meiimporta = q104_sequencial           ";
+    $sSql .= "     left join meiimportameireg on q111_meiimportamei = q105_sequencial      ";
+    $sSql .= "     left join meievento on q111_meievento = q101_sequencial                 ";
+    $sSql .= "     left join meiprocessareg on q112_meiimportameireg = q111_sequencial     ";
+    $sSql .= "     left join meiprocessa on q112_meiprocessa = q113_sequencial             ";
+    $sSql .= "     left join meiprocessaregmeicgm on q118_meiprocessareg = q112_sequencial ";
+    $sSql .= "     left join meicgm on q118_meicgm = q115_sequencial                       ";
+    $sSql .= "     left join meisituacao on q115_meisitucao = q116_sequencial              ";
+    $sSql .= "     left join issbase on q115_numcgm = q02_numcgm                           ";
+    $sSql .= " where                                                                       ";
+    $sSql .= "     q105_cnpj = '{$iCnpj}'                                                  ";
+    $sSql .= "     {$sWhereExtra}                                                          ";
+    
+    return $sSql;
+  }
   
+  public function sql_query_listaEventosPorCompetencia($iAno, $iMes, $sWhereExtra) {
+    $sSql = "select
+                 *
+             from
+                 meiimporta
+                 inner join db_usuarios on db_usuarios.id_usuario = meiimporta.q104_id_usuario
+                 inner join meiimportamei on meiimportamei.q105_meiimporta = meiimporta.q104_sequencial
+                 inner join meiimportameireg on meiimportameireg.q111_meiimportamei = meiimportamei.q105_sequencial
+                 inner join meievento on meievento.q101_sequencial = meiimportameireg.q111_meievento
+                 left join meiprocessareg on meiprocessareg.q112_meiimportameireg = meiimportameireg.q111_sequencial
+             where
+                 q104_anousu = {$iAno}
+                 and q104_mesusu = {$iMes}
+                 and meiprocessareg.q112_sequencial is null
+                 {$sWhereExtra}
+             order by
+                 q111_data";
+
+    return $sSql;
+  }
+
+  public function sql_verificaSeCompetenciaPossuiRegistros($ano, $mes) {
+    $sql  = " select                                                                                                  ";
+    $sql .= "     count(*) > 0 as possuiregistros                                                                     ";
+    $sql .= " from                                                                                                    ";
+    $sql .= "     meiimporta                                                                                          ";
+    $sql .= "     inner join db_usuarios on db_usuarios.id_usuario = meiimporta.q104_id_usuario                       ";
+    $sql .= "     inner join meiimportamei on meiimportamei.q105_meiimporta = meiimporta.q104_sequencial              ";
+    $sql .= "     inner join meiimportameireg on meiimportameireg.q111_meiimportamei = meiimportamei.q105_sequencial  ";
+    $sql .= "     inner join meievento on meievento.q101_sequencial = meiimportameireg.q111_meievento                 ";
+    $sql .= "     left join meiprocessareg on meiprocessareg.q112_meiimportameireg = meiimportameireg.q111_sequencial ";
+    $sql .= " where                                                                                                   ";
+    $sql .= "     meiprocessareg.q112_sequencial is null                                                              ";
+    $sql .= "     and q104_anousu :: INTEGER = $ano                                                                   ";
+    $sql .= "     and q104_mesusu :: INTEGER = $mes                                                                   ";
+
+    return $sql;
+  }
 }
+
 ?>

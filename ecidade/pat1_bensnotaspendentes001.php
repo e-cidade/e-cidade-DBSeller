@@ -724,6 +724,10 @@ $clrotulo->label("descrdepto");
           return alert( _M(MENSAGENS + "validacao_numero_notas_bens") );
         }
 
+        let nameImage = '';
+        if (oCampos.foto.getValue()) {
+            nameImage = oCampos.foto.inputFileElement.files[0].name;
+        }
         var oBem = {
           iQuantidade        : oCampos.quantidade.value.getNumber(),
           sPlaca             : (iParametroPlaca == 2 ? oCampos.classificacao.label.value : ''),
@@ -742,7 +746,8 @@ $clrotulo->label("descrdepto");
           nValorResidual     : oCampos.valor_residual.value.getNumber(),
           iCodigoDepreciacao : oCampos.depreciacao.codigo.value,
           sObservacao        : tagString(oCampos.observacao.value.trim()),
-          foto               : oCampos.foto.getValue()
+          foto               : oCampos.foto.getValue(),
+          nameImage          : nameImage
         };
 
         if (isNaN(oBem.iQuantidade) || oBem.iQuantidade == 0) {

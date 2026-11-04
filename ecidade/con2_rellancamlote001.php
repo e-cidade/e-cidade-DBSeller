@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,7 +92,7 @@ function js_preenchepesquisa(chave){
       <table border="0" width="48%">
       <tr>
         <td align="center" colspan="3">
-	<?
+	<?php
 	db_selinstit('',300,100);
 	?>
 	</td>
@@ -100,13 +100,13 @@ function js_preenchepesquisa(chave){
       <tr><td colspan="2">&nbsp;</td></tr>
       <tr>
          <tr>
-           <td nowrap align="left"><? db_ancora("$Lc78_chave",'js_pesquisa();',1); ?> </td>
-           <td><?  db_input("c78_chave",15,"",true,'text',1); ?></td>
+           <td nowrap align="left"><?php db_ancora("$Lc78_chave",'js_pesquisa();',1); ?> </td>
+           <td><?php  db_input("c78_chave",15,"",true,'text',1); ?></td>
         </tr>
         <tr>
           <td nowrap align=right><b>Período</b> </td>
 	  <td nowrap align=left>
-               <? 
+               <?php 
 	          $dia=  date("d",db_getsession("DB_datausu"));
 		  $mes=  date("m",db_getsession("DB_datausu"));
 		  $ano=  date("Y",db_getsession("DB_datausu"));
@@ -132,7 +132,7 @@ function js_preenchepesquisa(chave){
     </td>
   </tr>
 </table>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
   </body>
 </html>

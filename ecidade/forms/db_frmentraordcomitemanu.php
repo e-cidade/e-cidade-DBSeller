@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -101,7 +101,7 @@ $clrotulo->label("e62_descr");
 <form name='form1'>
 <center>
 <table border='0'>   
-<?
+<?php
 if (isset($m51_codordem) && $m51_codordem!= "") {
   $result=$clmatestoqueitemnota->sql_record($clmatestoqueitemnota->sql_query_itensunid(null,null,"pc01_descrmater,m60_descr,e62_descr, m73_codmatestoqueitem,e60_codemp,m52_numemp,e62_item,m70_codmatmater,m71_valor,m71_quant,m52_codlanc,m71_codlanc,m52_quant,m71_quantatend,m52_valor,m75_quant,m75_quantmult,m75_codmatunid,m61_usaquant",""," m74_codempnota=$m72_codnota"));
   $numrows = $clmatestoqueitemnota->numrows;

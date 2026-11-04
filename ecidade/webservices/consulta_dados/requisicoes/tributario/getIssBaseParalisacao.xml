@@ -1,0 +1,18 @@
+<?xml version='1.0' ?>
+<consulta distinct="true">
+    <campos>
+        <campo campo="q140_datainicio" label="data_inicio"/>
+        <campo campo="q140_datafim" label="data_fim"/>
+        <campo campo="q141_descricao" label="motivo"/>
+        <campo campo="q140_observacao" label="observacao"/>
+    </campos>
+    <from tabela="issbaseparalisacao"/>
+    <juncoes>
+        <join tipo="inner" tabela="issmotivoparalisacao" condicao="q140_issmotivoparalisacao = q141_sequencial"/>
+    </juncoes>
+    <filtros>
+        <filtro label="inscricao" condicao="q140_issbase = '$inscricao'" obrigatorio="true"/>
+    </filtros>
+    <agrupamento campos=""/>
+    <ordenacao campos="q140_datainicio desc"/>
+</consulta>

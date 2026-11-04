@@ -86,7 +86,7 @@ for (iln = 0; iln < len; iln++)
                <?=$Led20_i_codigo?>
               </td>
               <td width="96%" align="left" nowrap>
-               <?db_input("ed20_i_codigo",10,$Ied20_i_codigo,true,"text",4,
+               <?php db_input("ed20_i_codigo",10,$Ied20_i_codigo,true,"text",4,
                           "onFocus=\"nextfield='pesquisar2'\"","chave_ed20_i_codigo");?>
               </td>
             </tr>
@@ -95,7 +95,7 @@ for (iln = 0; iln < len; iln++)
                <?=$Lz01_nome?>
               </td>
               <td width="96%" align="left" nowrap>
-               <?db_input("z01_nome",50,$Iz01_nome,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_z01_nome");?>
+               <?php db_input("z01_nome",50,$Iz01_nome,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_z01_nome");?>
               </td>
             </tr>
             <tr>

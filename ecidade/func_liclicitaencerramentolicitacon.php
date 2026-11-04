@@ -20,7 +20,7 @@ $clliclicitaencerramentolicitacon->rotulo->label("l18_sequencial");
 <body>
 <form name="form2" method="post" action="" class="container">
 </form>
-<?
+<?php
 $whereliclicitaencerramentolicitacon = '';
 
 if(!empty($manutencaolicitacoesenviadas)) {
@@ -67,12 +67,12 @@ if(!isset($pesquisa_chave)){
 ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

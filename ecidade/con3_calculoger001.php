@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -154,12 +154,12 @@ function js_confirmar(){
   <table border="0">
       <tr>
         <td nowrap title="<?=@$Td02_contri?>">
-        <?
+        <?php
           db_ancora(@$Ld02_contri,"js_contri(true);",1);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('d02_contri',4,$Id02_contri,true,'text',1," onchange='js_contri(false);'");
       db_input('j14_nome',40,$Ij14_nome,true,'text',3);
          ?>
@@ -170,7 +170,7 @@ function js_confirmar(){
       <b>Parcelas</b>
       </td>
       <td> 
-<?
+<?php
   if(!isset($confirmar) && isset($d02_contri)){ 
     $result01=$cleditalrua->sql_record($cleditalrua->sql_query_file($d02_contri,"d02_codedi,d02_autori","d02_codedi limit 1"));
     db_fieldsmemory($result01,0);
@@ -199,7 +199,7 @@ function js_confirmar(){
        <b>1° Vencimento</b>
       </td>  
       <td nowrap title="Data do primeiro vencimento">
-    <?
+    <?php
      db_inputdata('privenc',@$privenc_dia,@$privenc_mes,@$privenc_ano,true,'text',$db_opcao,"");
    ?>  
       </td>
@@ -209,7 +209,7 @@ function js_confirmar(){
         <b>Dia vencimento</b>
       </td>  
       <td nowrap title="Dia dos próximos vencimentos">
-    <?
+    <?php
      db_input('provenc',4,0,'true','text',$db_opcao,"")
    ?>  
       </td>
@@ -227,7 +227,7 @@ function js_confirmar(){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -257,7 +257,7 @@ function js_mostracontri1(chave1,chave2){
   db_iframe.hide();
 }
 </script>
-<?
+<?php
 if(isset($confirmar)){
    if(isset($erros) && $erros!=""){
        db_msgbox($erros);

@@ -156,7 +156,7 @@ function js_controlarodape(mostra){
   <tr>
     <td><strong>Data da Geração:</strong></td>
     <td colspan="3">
-    <?
+    <?php
       if((!isset($datagera_dia) || (isset($datagera_dia) && trim($datagera_dia) == "")) &&
          (!isset($datagera_mes) || (isset($datagera_mes) && trim($datagera_mes) == "")) &&
          (!isset($datagera_ano) || (isset($datagera_ano) && trim($datagera_ano) == ""))){
@@ -173,7 +173,7 @@ function js_controlarodape(mostra){
   <tr>
     <td><strong>Data do Depósito:</strong></td>
     <td colspan="3">
-      <?
+      <?php
         if((!isset($datadeposit_dia) || (isset($datadeposit_dia) &&
            trim($datadeposit_dia) == ""))                        &&
            (!isset($datadeposit_mes) || (isset($datadeposit_mes) &&
@@ -192,10 +192,10 @@ function js_controlarodape(mostra){
   </tr>
   <tr>
     <td align="left" nowrap title="<?=@$Trh34_codarq?>">
-      <?db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
+      <?php db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
     </td>
     <td align="left" nowrap colspan="3">
-      <?
+      <?php
         db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");
         db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);
         db_input("rodape",40,0,true,"hidden",3);
@@ -204,12 +204,12 @@ function js_controlarodape(mostra){
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_codban?>">
-      <?
+      <?php
         db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",1);
       ?>
     </td>
     <td colspan="3">
-      <?
+      <?php
         db_input('rh34_codban',6,$Irh34_codban,true,'text',1," onchange='js_pesquisarh34_codban(false);'");
         db_input('db90_descr',40,$Idb90_descr,true,'text',3,'');
       ?>
@@ -217,15 +217,15 @@ function js_controlarodape(mostra){
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh41_codigo?>">
-      <?
+      <?php
       db_ancora(@$Lrh41_codigo,"js_pesquisarh41_codigo(true);",1);
       ?>
     </td>
     <td colspan="3">
-      <?
+      <?php
       db_input('rh41_codigo',6,$Irh41_codigo,true,'text',1," onchange='js_pesquisarh41_codigo(false);'")
       ?>
-      <?
+      <?php
       db_input('o15_descr',40,$Io15_descr,true,'text',3,'')
       ?>
     </td>
@@ -235,7 +235,7 @@ function js_controlarodape(mostra){
       <?=@$Lrh34_agencia?>
     </td>
     <td>
-      <?
+      <?php
         if(isset($rh41_codigo) && $rh41_codigo+0 > 0){
 
           $sql_rec = $clrhcontasrec->sql_query_contas("","","","","*","rh41_codigo"," rh41_codigo = $rh41_codigo and rh41_instit = ".db_getsession('DB_instit'));
@@ -257,7 +257,7 @@ function js_controlarodape(mostra){
       <?=@$Lrh34_dvagencia?>
     </td>
     <td>
-      <?
+      <?php
         db_input('rh34_dvagencia',2,$Irh34_dvagencia,true,'text',1,"")
       ?>
     </td>
@@ -267,7 +267,7 @@ function js_controlarodape(mostra){
       <?=@$Lrh34_conta?>
     </td>
     <td>
-      <?
+      <?php
         db_input('rh34_conta',15,$Irh34_conta,true,'text',1,"")
       ?>
     </td>
@@ -275,7 +275,7 @@ function js_controlarodape(mostra){
       <?=@$Lrh34_dvconta?>
     </td>
     <td>
-      <?
+      <?php
         db_input('rh34_dvconta',2,$Irh34_dvconta,true,'text',1,"")
       ?>
     </td>
@@ -285,16 +285,16 @@ function js_controlarodape(mostra){
       <?=@$Lrh34_convenio?>
     </td>
     <td >
-      <?
+      <?php
         db_input('rh34_convenio',15,$Irh34_convenio,true,'text',1,"")
       ?>
     </td>
-    <?if(isset($rh34_codban) && $rh34_codban == "104"){?>
+    <?php if(isset($rh34_codban) && $rh34_codban == "104"){?>
     <td align="right">
       <strong>Layout:</strong>
     </td>
     <td>
-      <?
+      <?php
         $arr_layout = array(
                              "18"=>"SIACC",
                              "3"=>"SICOV"
@@ -302,14 +302,14 @@ function js_controlarodape(mostra){
         db_select("layout", $arr_layout, true, 1, "");
       ?>
     </td>
-    <?}?>
+    <?php }?>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_sequencial?>">
       <?=@$Lrh34_sequencial?>
     </td>
     <td colspan="3">
-      <?
+      <?php
         db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',1,"")
       ?>
     </td>
@@ -324,7 +324,7 @@ function js_controlarodape(mostra){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -431,7 +431,7 @@ function js_mostradb_bancos1(chave1,chave2){
   db_iframe_db_bancos.hide();
 }
 </script>
-<?
+<?php
 if(isset($emite2)){
 
   if($clrharqbanco->erro_status=="0"){

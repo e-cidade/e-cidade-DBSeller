@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ $clserieequiv = new cl_serieequiv;
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="1"  align="center" cellspacing="0" cellpading="2" bgcolor="#CCCCCC">
- <?
+ <?php
  $result = $clserie->sql_record($clserie->sql_query_equiv("","*","ed10_c_abrev,ed11_i_sequencia",""));
  $primeiro = "";
  for($x=0;$x<$clserie->numrows;$x++){
@@ -85,14 +85,14 @@ $clserieequiv = new cl_serieequiv;
     <td width="25%"><b>Etapa</b></td>
     <td><b>Etapas Equivalentes</b></td>
    </tr>
-   <?
+   <?php
    $primeiro = $ed11_i_ensino;
   }
   ?>
   <tr bgcolor="#f3f3f3">
    <td class="aluno" width="25%">&nbsp;&nbsp;<a href="javascript:parent.db_iframe_geral.hide();parent.location.href='edu1_serieequiv001.php?ensino=<?=$ed11_i_ensino?>&serie=<?=$ed11_i_codigo?>'"><?=$ed11_c_descr?></a></td>
    <td>
-    <?
+    <?php
     $result1 = $clserieequiv->sql_record($clserieequiv->sql_query("","serie1.ed11_c_descr as seriedescr,ensino1.ed10_c_descr as ensinodescr","ensino1.ed10_c_abrev,serie1.ed11_i_sequencia"," ed234_i_serie = $ed11_i_codigo"));
     if($clserieequiv->numrows==0){
      echo "Nenhum registro.";
@@ -106,13 +106,13 @@ $clserieequiv = new cl_serieequiv;
         <td class="aluno1"><?=$ensinodescr?></td>
        </tr>
       </table>
-      <?
+      <?php
      }
     }
     ?>
    </td>
   </tr>
-  <?
+  <?php
  }
  ?>
 </table>

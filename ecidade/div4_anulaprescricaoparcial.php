@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -56,7 +56,7 @@ $instit = db_getsession("DB_instit");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -64,7 +64,7 @@ $instit = db_getsession("DB_instit");
   db_app::load("grid.style.css");
   db_app::load("estilos.css");
 ?>
-<script>  
+<script>
 function js_emite(){
 
   var val1 = new Number(document.form1.k60_codigo.value);
@@ -86,9 +86,9 @@ function js_prescreve() {
   if (document.form1.k60_codigo.value == '') {
      alert('Selecione a lista de debitos!');
   } else if ($F('k31_obs') == ""){
-     alert('Preencha o campo Observações');    
+     alert('Preencha o campo Observações');
   } else if (confirm('Deseja realmente anular as prescrições informadas?')){
-   
+
   var oParam             = new Object();
   oParam.exec            = 'Anulacao';
   oParam.linhas          = oGridPrescricoes.getNumRows();
@@ -96,19 +96,19 @@ function js_prescreve() {
   var aLinhas            = oGridPrescricoes.getSelection();
 
   for (var i = 0; i < aLinhas.length; i++) {
-    
+
     var oDebito = new Object();
     oDebito.numpre = aLinhas[i][2];
     oDebito.numpar = aLinhas[i][3];
     oParam.debitos.push(oDebito);
-    
+
   }
 
   var oAjax              = new Ajax.Request('div4_anulaprescricao.RPC.php',
                                              {method: "post",
                                               parameters:'json='+Object.toJSON(oParam),
                                               onComplete: js_retorno
-                                             });   
+                                             });
   }
 }
 
@@ -121,10 +121,10 @@ function js_retorno(oAjax){
     alert(""+oRetorno.message+"");
   }
 
-} 
+}
 
 
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="js_gridPrescricoes()" bgcolor="#cccccc" >
@@ -134,28 +134,28 @@ function js_retorno(oAjax){
           <legend><strong>Anular Prescrição por Lista</strong></legend>
        <table>
 				  <tr id="numcgm">
-				    <td><?db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
-				    <td> 
-				        <? db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
-				        <? db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
-				    </td>    
+				    <td><?php db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
+				    <td>
+				        <?php db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
+				        <?php db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
+				    </td>
 				  </tr>
 				  <tr id="matricula">
-				     <td><?db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
-				     <td> 
-				        <? db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
-				     </td>    
+				     <td><?php db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
+				     <td>
+				        <?php db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
+				     </td>
 				   </tr>
 				   <tr id="inscr">
-				    <td><?db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
-				    <td> 
-				        <? db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
-				    </td>    
+				    <td><?php db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
+				    <td>
+				        <?php db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
+				    </td>
 				  </tr>
-       
+
             <tr>
-              <td align="right" colspan="2" ><fieldset><legend><b> <?=@$Lk31_obs?></b></legend> 
-              <? db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></fieldset></td>
+              <td align="right" colspan="2" ><fieldset><legend><b> <?=@$Lk31_obs?></b></legend>
+              <?php db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></fieldset></td>
             </tr>
 
         </table>
@@ -173,8 +173,8 @@ function js_retorno(oAjax){
     <fieldset style="display:inline;">
       <legend><b>Lista Prescrições</b></legend>
       <div id="gridPrescricoes">
-      
-      </div>  
+
+      </div>
     </fieldset>
 
 </center>
@@ -193,8 +193,8 @@ function js_gridPrescricoes() {
   oGridPrescricoes.hasTotalizador = true;
   oGridPrescricoes.show($('gridPrescricoes'));
   oGridPrescricoes.clearAll(true);
-  
-        
+
+
   js_completaPesquisa();
 }
 
@@ -210,7 +210,7 @@ function js_completaPesquisa() {
                                               parameters:'json='+Object.toJSON(oParam),
                                               onComplete: js_retornoCompletaPesquisa
                                              });
-  
+
 
 
 }
@@ -218,14 +218,14 @@ function js_completaPesquisa() {
 function js_retornoCompletaPesquisa(oAjax) {
 
   var oRetorno = JSON.parse(oAjax.responseText);
-  
+
     if (oRetorno.status == 1) {
-      
+
       oGridPrescricoes.clearAll(true);
-      oRetorno.dados.each( 
-                    function (oDado, iInd) {       
-  
-                            aRow = new Array();                                                              
+      oRetorno.dados.each(
+                    function (oDado, iInd) {
+
+                            aRow = new Array();
                             aRow[0] = oDado.v01_exerc;
                             aRow[1] = oDado.v01_numpre;
                             aRow[2] = oDado.v01_numpar;
@@ -239,10 +239,10 @@ function js_retornoCompletaPesquisa(oAjax) {
                             aRow[10] = oDado.total;
                             oGridPrescricoes.addRow(aRow);
                             oGridPrescricoes.renderRows();
-                            
-                       })          
-    } 
-        
+
+                       })
+    }
+
   js_removeObj('msgBox');
 
 }
@@ -256,8 +256,8 @@ function js_pesquisa(){
 }
 
 function js_pesquisalista(mostra){
-     if(mostra==true){       
-       var sUrl = 'func_lista.php?funcao_js=parent.js_mostralista1|k60_codigo|k60_descr'; 
+     if(mostra==true){
+       var sUrl = 'func_lista.php?funcao_js=parent.js_mostralista1|k60_codigo|k60_descr';
      }else{
        var sUrl = 'func_lista.php?pesquisa_chave='+document.form1.k60_codigo.value+'&funcao_js=parent.js_mostralista';
      }
@@ -300,7 +300,7 @@ function js_pesquisa_numcgm(mostra){
 
 function js_mostracgm(chave1,chave2){
  document.form1.k31_matric.value = '';
- document.form1.k31_inscr.value = ''; 
+ document.form1.k31_inscr.value = '';
  document.form1.k31_numcgm.value = chave1;
  document.form1.k31_nome.value = chave2;
  func_nome.hide();
@@ -366,8 +366,8 @@ function js_mostrainscricao(mostra){
   }
 }
 function js_preencheinscricao(chave,chave1,chave2){
-   document.form1.k31_numcgm.value = '';  
-   document.form1.k31_matric.value = '';  
+   document.form1.k31_numcgm.value = '';
+   document.form1.k31_matric.value = '';
    document.form1.k31_inscr.value = chave;
    document.form1.k31_nome.value = chave2;
    func_nome.hide();
@@ -380,9 +380,9 @@ function js_preencheinscricao1(chave,erro){
    }
 }
 
-</script>  
+</script>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

@@ -6,6 +6,8 @@ use App\Domain\Configuracao\Instituicao\Model\DBConfig;
 use App\Domain\Financeiro\Contabilidade\Factories\TemplateFactory;
 use App\Domain\Financeiro\Contabilidade\Relatorios\LRF\RREO\XlsAnexoUm;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\AnexosService;
+use PhpOffice\PhpWord\Settings;
+use NcJoes\OfficeConverter\OfficeConverter;
 use DBDate;
 use stdClass;
 
@@ -102,6 +104,13 @@ class AnexoUmService extends AnexosService
         103 => [101, 102], // TOTAL (XIV) = (XII + XIII)
     ];
 
+    protected $ordemLinhaTotalReceitas = 74;
+    protected $ordemLinhaDefict = 75;
+    protected $ordemLinhaSaldosExercíciosAnteriores = 79;
+    protected $ordemLinhaTotalDespesas = 101;
+    protected $ordemLinhaSuperavit = 102;
+    protected $ordemLinhaTotalSuperavit = 103;
+
     protected $linhasReceita = [[1, 79], [105, 168]];
     protected $linhasDespesa = [[80, 104], [169, 178]];
 
@@ -124,6 +133,7 @@ class AnexoUmService extends AnexosService
     public function emitir()
     {
         $this->processar();
+
         foreach ($this->linhasOrganizadas as $section => $linhas) {
             $this->parser->addCollection($section, $linhas);
         }
@@ -142,11 +152,23 @@ class AnexoUmService extends AnexosService
         $this->parser->setNomePrefeito($this->assinatura->assinaturaPrefeito());
         $this->parser->setNomeContador($this->assinatura->assinaturaContador());
         $this->parser->setNomeOrdenador($this->assinatura->assinaturaSecretarioFazenda());
+
         $filename = $this->parser->gerar();
+
+        Settings::setTempDir('tmp/');
+        $filePdf = basename($filename, ".xlsx") . ".pdf";
+        $converter = new OfficeConverter($filename);
+        $converter->convertTo($filePdf);
 
         return [
             'xls' => $filename,
-            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename
+            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename,
+            'outros' => [
+                [
+                    'documento' => Settings::getTempDir() . $filePdf,
+                    'nome' => "Anexo I - Balanço Orçamentário (PDF)"
+                ]
+            ]
         ];
     }
 
@@ -154,7 +176,7 @@ class AnexoUmService extends AnexosService
     {
         $this->processaLinhas($this->linhas);
         $this->criaProriedadesValor();
-        $this->linhas[79]->previsao_atualizada = $this->linhas[79]->arrecadado_acumulado;
+        $this->linha79();
 
         $this->calcularSoma();
         $this->outrosCalculosReceita();
@@ -225,30 +247,33 @@ class AnexoUmService extends AnexosService
     public function getSimplificado()
     {
         $this->processar();
-
         // se for do 1º ao 5º bi coluna despesas liquidadas, até o bimestre (h)
         // se for o 6º bimestre, despesas empenhadas, até o bimestre (f)
-        $vlrSuperavit = $this->linhas[102]->liquidado_acumulado;
+        $vlrSuperavit = $this->linhas[$this->ordemLinhaSuperavit]->liquidado_acumulado;
         if ($this->periodo->getCodigo() == 11) {
-            $vlrSuperavit = $this->linhas[102]->empenhado_liquido_acumulado;
+            $vlrSuperavit = $this->linhas[$this->ordemLinhaSuperavit]->empenhado_liquido_acumulado;
         }
+
+        $totalReceitas = $this->linhas[$this->ordemLinhaTotalReceitas];
+        $defict = $this->linhas[$this->ordemLinhaDefict];
+        $totalDespesas = $this->linhas[$this->ordemLinhaTotalDespesas];
 
         $simplificado = [
             $this->montaLinhaSimplificado('RECEITAS'),
-            $this->montaLinhaSimplificado('Previsão Inicial', $this->linhas[74]->valor_inicial),
-            $this->montaLinhaSimplificado('Previsão Atualizada', $this->linhas[74]->previsao_atualizada),
-            $this->montaLinhaSimplificado('Receitas Realizadas', $this->linhas[74]->arrecadado_acumulado),
-            $this->montaLinhaSimplificado('Déficit Orçamentário', $this->linhas[75]->arrecadado_acumulado),
+            $this->montaLinhaSimplificado('Previsão Inicial', $totalReceitas->valor_inicial),
+            $this->montaLinhaSimplificado('Previsão Atualizada', $totalReceitas->previsao_atualizada),
+            $this->montaLinhaSimplificado('Receitas Realizadas', $totalReceitas->arrecadado_acumulado),
+            $this->montaLinhaSimplificado('Déficit Orçamentário', $defict->arrecadado_acumulado),
             $this->montaLinhaSimplificado(
                 'Saldos de Exercícios Anteriores(Utilizados para Créditos Adicionais)',
-                $this->linhas[79]->arrecadado_acumulado
+                $this->linhas[$this->ordemLinhaSaldosExercíciosAnteriores]->arrecadado_acumulado
             ),
             $this->montaLinhaSimplificado('DESPESAS'),
-            $this->montaLinhaSimplificado('Dotação Inicial', $this->linhas[101]->saldo_inicial),
-            $this->montaLinhaSimplificado('Dotação Atualizada', $this->linhas[101]->total_creditos),
-            $this->montaLinhaSimplificado('Despesas Empenhadas', $this->linhas[101]->empenhado_liquido_acumulado),
-            $this->montaLinhaSimplificado('Despesas Liquidadas', $this->linhas[101]->liquidado_acumulado),
-            $this->montaLinhaSimplificado('Despesas Pagas', $this->linhas[101]->pago_acumulado),
+            $this->montaLinhaSimplificado('Dotação Inicial', $totalDespesas->saldo_inicial),
+            $this->montaLinhaSimplificado('Dotação Atualizada', $totalDespesas->total_creditos),
+            $this->montaLinhaSimplificado('Despesas Empenhadas', $totalDespesas->empenhado_liquido_acumulado),
+            $this->montaLinhaSimplificado('Despesas Liquidadas', $totalDespesas->liquidado_acumulado),
+            $this->montaLinhaSimplificado('Despesas Pagas', $totalDespesas->pago_acumulado),
             $this->montaLinhaSimplificado('Superávit Orçamentário', $vlrSuperavit),
         ];
 
@@ -260,19 +285,26 @@ class AnexoUmService extends AnexosService
         return (object)['descricao' => $label, 'valor' => $valor];
     }
 
-    protected function calcularRestosPagar()
+    /**
+     * @return void
+     */
+    protected function linha79()
     {
-        $linhas = [82, 83, 85, 86, 88, 89, 90, 91, 96, 97, 99, 100, 104, 171, 172, 173, 175, 176, 177, 178];
-        foreach ($linhas as $ordem) {
-            $linha = $this->linhas[$ordem];
-            $this->processaRestoPagar($this->getDadosRestosPagar(), $linha);
-        }
+        $this->linhas[79]->previsao_atualizada = $this->linhas[79]->arrecadado_acumulado;
     }
 
-    private function calcularDefictSuperavit()
+    protected function calcularDefictSuperavit()
     {
-        $defict = $this->linhas[75];
-        $superavit = $this->linhas[102];
+        $c = $this->linhas[$this->ordemLinhaTotalReceitas]->arrecadado_acumulado;
+        $f = $this->linhas[$this->ordemLinhaTotalDespesas]->empenhado_liquido_acumulado;
+        $h = $this->linhas[$this->ordemLinhaTotalDespesas]->liquidado_acumulado;
+        $j = $this->linhas[$this->ordemLinhaTotalDespesas]->pago_acumulado;
+
+
+        $linhaTotalSuperavt = $this->linhas[$this->ordemLinhaTotalSuperavit];
+
+        $defict = $this->linhas[$this->ordemLinhaDefict];
+        $superavit = $this->linhas[$this->ordemLinhaSuperavit];
 
         $defict->valor_inicial = ' - ';
         $defict->previsao_atualizada = ' - ';
@@ -293,37 +325,36 @@ class AnexoUmService extends AnexosService
         $superavit->pago_acumulado = ' - ';
         $superavit->a_liquidar = ' - ';
 
-        $a = $this->linhas[74]->arrecadado_acumulado;
-        $c = $this->linhas[101]->empenhado_liquido_acumulado;
-        $e = $this->linhas[101]->liquidado_acumulado;
-        $g = $this->linhas[101]->pago_acumulado;
-
         if ($this->periodo->getCodigo() < 11) {
             // Défict
-            if ($a < $e) {
-                $defict->arrecadado_acumulado = $e - $a;
+            if ($c < $h) {
+                $defict->arrecadado_acumulado = $h - $c;
             }
         }
         // 6º bimestre
         if ($this->periodo->getCodigo() == 11) {
             // Défict
-            if ($a < $c) {
-                $defict->arrecadado_acumulado = $c - $a;
+            if ($c < $f) {
+                $defict->arrecadado_acumulado = $f - $c;
             }
         }
         // superávit
-        if ($a > $c) {
-            $superavit->empenhado_liquido_acumulado = $a - $c;
+        if ($c > $f) {
+            $superavit->empenhado_liquido_acumulado = $c - $f;
+            $linhaTotalSuperavt->empenhado_liquido_acumulado += $superavit->empenhado_liquido_acumulado;
         }
-        if ($a > $e) {
-            $superavit->liquidado_acumulado = $a - $e;
+        if ($c > $h) {
+            $superavit->liquidado_acumulado = $c - $h;
+            $linhaTotalSuperavt->liquidado_acumulado += $superavit->liquidado_acumulado;
         }
-        if ($a > $g) {
-            $superavit->pago_acumulado = $a - $g;
+
+        if ($c > $j) {
+            $superavit->pago_acumulado = $c - $j;
+            $linhaTotalSuperavt->pago_acumulado += $superavit->pago_acumulado;
         }
     }
 
-    private function limparColunas()
+    protected function limparColunas()
     {
         $this->linhas[76]->saldo = ' - ';
 

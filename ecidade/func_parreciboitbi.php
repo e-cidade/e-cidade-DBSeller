@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,14 +25,14 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_parreciboitbi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_parreciboitbi_classe.php"));
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"]);
 $clparreciboitbi = new cl_parreciboitbi;
 ?>
 <html>
@@ -60,13 +60,13 @@ $clparreciboitbi = new cl_parreciboitbi;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parreciboitbi.php")==true){
              include(modification("funcoes/db_func_parreciboitbi.php"));
            }else{
-           $campos = "parreciboitbi.oid,parreciboitbi.*";
+           $campos = "parreciboitbi.*";
            }
         }
 	         $sql = $clparreciboitbi->sql_query();
@@ -90,12 +90,12 @@ $clparreciboitbi = new cl_parreciboitbi;
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

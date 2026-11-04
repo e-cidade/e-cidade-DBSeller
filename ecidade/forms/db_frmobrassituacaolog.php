@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,19 +47,19 @@ $ob29_data_ano = date('Y', db_getsession('DB_datausu'));
          <?=$Lob29_sequencial?>
       </td>
       <td> 
-      <?
+      <?php
         db_input('ob29_sequencial',10,$Iob29_sequencial,true,'text',$db_opcao,"")
       ?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=$Tob29_obras?>">
-        <?
+        <?php
           db_ancora($Lob29_obras,"js_pesquisaob29_obras(true);",$db_opcao);
         ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('ob29_obras',10,$Iob29_obras,true,'text',$db_opcao," onchange='js_pesquisaob29_obras(false);'");
           db_input('ob01_nomeobra',73,$Iob01_nomeobra,true,'text',3,'');
         ?>
@@ -67,12 +67,12 @@ $ob29_data_ano = date('Y', db_getsession('DB_datausu'));
     </tr>
     <tr>
       <td nowrap title="<?=$Tob29_obrassituacao?>">
-         <?
+         <?php
           db_ancora($Lob29_obrassituacao,"js_pesquisaob29_obrassituacao(true);",$db_opcao);
          ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('ob29_obrassituacao',10,$Iob29_obrassituacao,true,'text',$db_opcao," onchange='js_pesquisaob29_obrassituacao(false);'");
           db_input('ob28_descricao',73,$Iob28_descricao,true,'text',3,'');
         ?>
@@ -83,7 +83,7 @@ $ob29_data_ano = date('Y', db_getsession('DB_datausu'));
          <?=$Lob29_data?>
       </td>
       <td> 
-        <?
+        <?php
           db_inputdata('ob29_data',$ob29_data_dia,$ob29_data_mes,$ob29_data_ano,true,'text',$db_opcao,"");
         ?>
       </td>
@@ -199,7 +199,7 @@ function js_pesquisa(){
 function js_preenchepesquisa( chave ) {
 
   db_iframe_obrassituacaolog.hide();
-  <?
+  <?php
   if($db_opcao != 1 ) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

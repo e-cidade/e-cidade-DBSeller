@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ if(isset($excluir)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 75%;'> <legend><b>Tratamento</b></legend>
-	      <?
+	      <?php
 	      require_once(modification("forms/db_frmtfd_tipotratamento.php"));
 	      ?>
       </fieldset>
@@ -75,7 +75,7 @@ if(isset($excluir)){
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($cltfd_tipotratamento->erro_status=="0"){
     //$cltfd_tipotratamento->erro(false,false);

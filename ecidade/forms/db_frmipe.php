@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,18 +37,18 @@ $clipe->rotulo->label();
       <b>Ano / Mês:</b>
     </td>
     <td> 
-      <?
+      <?php
       $r36_anousu = db_anofolha('DB_anousu');
       db_input('r36_anousu',4,$Ir36_anousu,true,'text',1)
       ?>
       <b>/</b>
-      <?
+      <?php
       $r36_mesusu = db_mesfolha('DB_mesusu');
       db_input('r36_mesusu',2,$Ir36_mesusu,true,'text',1)
       ?>
     </td>
   </tr>
-  <?
+  <?php
   $result_cfpes = $clcfpess->sql_record($clcfpess->sql_query_file($r36_anousu,$r36_mesusu,db_getsession("DB_instit"),"r11_mes13"));
   if($clcfpess->numrows > 0){
     db_fieldsmemory($result_cfpes, 0);
@@ -60,13 +60,13 @@ $clipe->rotulo->label();
         <b>Gerar IPE sobre:</b>
       </td>
       <td> 
-        <?
+        <?php
         $arr_opcoes = array("1"=>"Salário","2"=>"13o Salário");
         db_select("xtipo",$arr_opcoes,true,1);
         ?>
       </td>
     </tr>
-  <?
+  <?php
   }else{
     db_input('xtipo',4,0,true,'hidden',3);
   }

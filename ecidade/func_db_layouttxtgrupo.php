@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_layouttxtgrupo->rotulo->label("db56_descr");
               <?=$Ldb56_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db56_sequencial",4,$Idb56_sequencial,true,"text",4,"","chave_db56_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_layouttxtgrupo->rotulo->label("db56_descr");
               <?=$Ldb56_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db56_descr",40,$Idb56_descr,true,"text",4,"","chave_db56_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_layouttxtgrupo->rotulo->label("db56_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_layouttxtgrupo.php")==true){
@@ -122,12 +122,12 @@ $cldb_layouttxtgrupo->rotulo->label("db56_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

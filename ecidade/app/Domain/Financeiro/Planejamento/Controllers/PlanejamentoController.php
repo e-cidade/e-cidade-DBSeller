@@ -14,6 +14,7 @@ use App\Domain\Financeiro\Planejamento\Services\LdoService;
 use App\Domain\Financeiro\Planejamento\Services\LoaService;
 use App\Domain\Financeiro\Planejamento\Services\PlanejamentoService;
 use App\Domain\Financeiro\Planejamento\Services\PpaService;
+use App\Domain\Financeiro\Planejamento\Services\Relatorios\ProjecoesPorRecursoService;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
@@ -139,6 +140,23 @@ class PlanejamentoController extends Controller
     }
 
     /**
+     * @param $tipo
+     * @return DBJsonResponse
+     */
+    public function planejamentoAtivo($tipo = null)
+    {
+        $filtro = [['pl2_ativo', 't']];
+        if (!empty($tipo)) {
+            $filtro[] = ['pl2_tipo', "$tipo"];
+        }
+        $planos = Planejamento::with('status')->where($filtro)
+            ->orderBy('pl2_created_at')->get()
+            ->toArray();
+
+        return new DBJsonResponse($planos, 'Planejamento encontrado');
+    }
+
+    /**
      * Retorna as situações que pode ser atualizado o plano.
      * @param $id
      * @return DBJsonResponse
@@ -218,5 +236,34 @@ class PlanejamentoController extends Controller
 
         $plano = $this->service->criarVinculo($request->get('tipo'), $request->get('tipoVincular'));
         return new DBJsonResponse($plano->toArray(), "Vínculado com sucesso sucesso.");
+    }
+
+    /**
+     * Essa rota cria um PPA com base em um outro Plano de governo.
+     * @param Request $request
+     * @return void
+     */
+    public function criarPPA(Request $request)
+    {
+        if (!$request->has('codigo') || $request->get('codigo') === '') {
+            throw new Exception("Você deve o código do plano base.", 406);
+        }
+
+        if (!$request->has('anoInicial') || $request->get('anoInicial') === '') {
+            throw new Exception("Você deve o exercício inicial do PPA.", 406);
+        }
+
+        $codigo = $this->service->criarPpaComBaseNoPlanoInformado(
+            $request->get('codigo'),
+            $request->get('anoInicial')
+        );
+
+        return new DBJsonResponse($codigo, "Plano criado");
+    }
+
+    public function porRecurso(Request $request)
+    {
+        $service = new ProjecoesPorRecursoService($request->all());
+        return new DBJsonResponse($service->emitir(), "Projeções por recurso");
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clalunopassagemqtd->rotulo->label("ed227_i_qtde");
               <?=$Led227_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed227_i_codigo",10,$Ied227_i_codigo,true,"text",4,"","chave_ed227_i_codigo");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $clalunopassagemqtd->rotulo->label("ed227_i_qtde");
               <?=$Led227_i_qtde?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed227_i_qtde",20,$Ied227_i_qtde,true,"text",4,"","chave_ed227_i_qtde");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $clalunopassagemqtd->rotulo->label("ed227_i_qtde");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_alunopassagemqtd.php")==true){
@@ -122,12 +122,12 @@ $clalunopassagemqtd->rotulo->label("ed227_i_qtde");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

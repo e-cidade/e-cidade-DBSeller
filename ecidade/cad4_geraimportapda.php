@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,7 +44,7 @@ $clmoblevantamentoedi = new cl_moblevantamentoedi;
 
 db_postmemory($HTTP_POST_VARS);
 
- 
+
 if( isset($importa) ) {
 
 
@@ -57,7 +57,7 @@ if( isset($importa) ) {
   //print_r($edificacoes);
   db_inicio_transacao();
 
-  
+
   $clmobimportacao->j95_data = date("Y-m-d",db_getsession("DB_datausu"));
   $clmobimportacao->j95_idusuario = db_getsession("DB_id_usuario");
   $clmobimportacao->incluir(0);
@@ -66,7 +66,7 @@ if( isset($importa) ) {
     $erro = true;
     $msg = $clmobimportacao->erro_msg;
   }
-  
+
   /*
   $sql = "insert into mobimporta values (nextval('mobimporta_codimp_seq'),
                                       ".db_getsession("DB_id_usuario").",
@@ -85,10 +85,10 @@ if( isset($importa) ) {
     $arq_matriculas = file($matriculas["tmp_name"]);
     ///
     for($i=0;$i<count($arq_matriculas);$i++){
-      $conteudo = split(";" ,$arq_matriculas[$i]);
- 
- 
- 
+      $conteudo =explode(";" ,$arq_matriculas[$i]);
+
+
+
       /*
       $sql = "insert into mobavaliacao values (
            ".$conteudo[0].",
@@ -109,8 +109,8 @@ if( isset($importa) ) {
 
      //$this->j97_sequen =
      $clmoblevantamento->j97_codimporta = $clmobimportacao->j95_codimporta;
-     $clmoblevantamento->j97_matric     = $conteudo[0]; 
-     $clmoblevantamento->j97_endcor     = "$conteudo[1]"; 
+     $clmoblevantamento->j97_matric     = $conteudo[0];
+     $clmoblevantamento->j97_endcor     = "$conteudo[1]";
      $clmoblevantamento->j97_cidade     = "$conteudo[2]";
      $clmoblevantamento->j97_profun     = $conteudo[3];
      $clmoblevantamento->j97_sitterreno = $conteudo[4];
@@ -130,15 +130,15 @@ if( isset($importa) ) {
 
 
 
-   
+
     }
   }
-  
+
   if($erro == false){
       $arq_testadas   = file($testadas["tmp_name"]);
       ///
       for($i=0;$i<count($arq_testadas);$i++){
-        $conteudo = split(";",$arq_testadas[$i]);
+        $conteudo =explode(";",$arq_testadas[$i]);
         /*
         $sql = "insert into mobavalogradouro values (
             ".$conteudo[0].",
@@ -170,7 +170,7 @@ if( isset($importa) ) {
        $clmoblevantamentolog->j98_iluminacao = $conteudo[8];
        $clmoblevantamentolog->j98_telefonia  = $conteudo[9];
        $clmoblevantamentolog->j98_lixo       = trim($conteudo[10]);
- 
+
        $clmoblevantamentolog->incluir(0);
 
        if($clmoblevantamentolog->erro_status == 0 ){
@@ -186,13 +186,13 @@ if( isset($importa) ) {
   if($erro == false){
 
     $arq_edificacoes= file($edificacoes["tmp_name"]);
-    
+
 
 
     for($i=0;$i<count($arq_edificacoes);$i++){
-      $conteudo = split(";",$arq_edificacoes[$i]);
-     
-     
+      $conteudo =explode(";",$arq_edificacoes[$i]);
+
+
       /*$sql = "insert into mobavaedificacao values (
             ".$conteudo[0].",
 	    '".$conteudo[1]."',
@@ -213,7 +213,7 @@ if( isset($importa) ) {
 	    '".trim($conteudo[16])."',
 	    ".(trim($conteudo[17])+0).",
 	    $codimp)";
-	    
+
 
       $res = db_query($sql);
       */
@@ -247,9 +247,9 @@ if( isset($importa) ) {
         break;
       }
 
-      
+
     }
-    
+
   }
 
   db_fim_transacao($erro);
@@ -277,7 +277,7 @@ $clmobimportacao->rotulo->label();
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC" >
 <table width="790" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -291,14 +291,14 @@ $clmobimportacao->rotulo->label();
     <td nowrap title="<?=@$Tj95_pda?>">
        <?=@$Lj95_pda?>
     </td>
-    <td> 
-    <?
+    <td>
+    <?php
     $x = array('1'=>'Pda 1','2'=>'Pda 2','3'=>'Pda 3','4'=>'Pda 4','5'=>'Pda 5','6'=>'Pda 6','7'=>'Pda 7','8'=>'Pda 8','9'=>'Pda 9','10'=>'pda 10','11'=>'Pda 11','12'=>'Pda 12','13'=>'Pda 13','14'=>'Pda 14','15'=>'Pda 15');
     db_select('j95_pda',$x,true,$db_opcao,"");
     ?>
     </td>
   </tr>
- 
+
 <tr>
 <td><strong>Matriculas(Avaliacao.txt):</strong></td>
 <td><input name='matriculas' value='Importar' type='file'></td>
@@ -314,7 +314,7 @@ $clmobimportacao->rotulo->label();
 <tr>
 <td colspan=2 align=center><input name='importa' value='Importar' type='submit'></td>
 </tr>
-<?
+<?php
 if(isset($importa)){
   if(isset($codimp)){
     echo "</tr>
@@ -333,12 +333,12 @@ if(isset($importa)){
 </table>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($erro)){
   db_msgbox($msg);
 }

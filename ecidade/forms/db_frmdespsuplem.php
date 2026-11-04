@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,11 +40,11 @@ $cliframe_seleciona = new cl_iframe_seleciona;
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To49_codsup?>">
-       <? db_ancora(@$Lo39_codproj,"js_pesquisao39_codproj(true);",$db_opcao);   ?>
+       <?php db_ancora(@$Lo39_codproj,"js_pesquisao39_codproj(true);",$db_opcao);   ?>
     </td>
     <td> 
-       <? db_input('o39_codproj',4,'',true,'text',3,'') ?>
-       <? db_input('o39_descr',60,'',true,'text',3,'')      ?>
+       <?php db_input('o39_codproj',4,'',true,'text',3,'') ?>
+       <?php db_input('o39_descr',60,'',true,'text',3,'')      ?>
     </td>
   </tr>
 
@@ -55,7 +55,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
   <!--  -->
   <tr>
    <td colspan=2 align=center>
-    <?
+    <?php
       if (isset($o39_codproj) && $o39_codproj !=""){
 
        $sql = " select o46_codsup,
@@ -113,9 +113,9 @@ $cliframe_seleciona = new cl_iframe_seleciona;
    </table>
   </center>
 
-  <? if (isset($o39_codproj) && $o39_codproj !=""){  ?>
+  <?php if (isset($o39_codproj) && $o39_codproj !=""){  ?>
    <input name=Desprocessar type=submit value=Desprocessar onclick="js_gera_chaves();">
- <?  }  ?>
+ <?php  }  ?>
 
  </form>
 <script>
@@ -125,7 +125,7 @@ function js_pesquisao39_codproj(mostra){
   }
 }
 function js_mostraprojeto(chave,erro){
-   <?
+   <?php
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave; ";
    ?>
    db_iframe_orcprojeto.hide();

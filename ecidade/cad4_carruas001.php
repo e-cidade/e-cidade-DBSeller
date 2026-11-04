@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -97,12 +97,12 @@ function js_fechar(){
 <table border="0">
   <tr>   
     <td title="<?=$Tj14_nome?>" >
-    <?
+    <?php
      db_ancora($Lj14_nome,' js_ruas(true); ',1);
     ?>
     </td>    
     <td title="<?=$Tj14_nome?>" colspan="4">
-    <?
+    <?php
      db_input('j14_codigo',5,$Ij14_codigo,true,'text',1,"onchange='js_ruas(false)'");
      db_input('j14_nome',50,$Ij14_nome,true,'text',3);
     ?>
@@ -113,7 +113,7 @@ function js_fechar(){
       <?=$Lj32_grupo?>
     </td>  
     <td title="<?=$Tj32_grupo?>">
-    <?
+    <?php
      $result05=$clcargrup->sql_record($clcargrup->sql_query_file("","j32_grupo,j32_descr","","j32_tipo='F'"));
      db_selectrecord("j32_grupo",$result05,true,$db_opcao,"","","","","js_trocar(this);");
     ?> 
@@ -164,7 +164,7 @@ function js_mostrarua1(chave,erro){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

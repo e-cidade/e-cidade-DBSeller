@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -65,13 +65,13 @@ class cl_acertid {
                  v15_observacao = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_acertid() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acertid");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_acertid {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v15_codigo = ($this->v15_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["v15_codigo"]:$this->v15_codigo);
        $this->v15_certid = ($this->v15_certid == ""?@$GLOBALS["HTTP_POST_VARS"]["v15_certid"]:$this->v15_certid);
@@ -102,7 +102,7 @@ class cl_acertid {
      }
    }
    // funcao para inclusao
-   function incluir ($v15_codigo){
+   public function incluir ($v15_codigo){
       $this->atualizacampos();
      if($this->v15_certid == null ){
        $this->erro_sql = " Campo Código da Certidão nao Informado.";
@@ -252,7 +252,7 @@ class cl_acertid {
      return true;
    }
    // funcao para alteracao
-   function alterar ($v15_codigo=null) {
+   public function alterar ($v15_codigo=null) {
       $this->atualizacampos();
      $sql = " update acertid set ";
      $virgula = "";
@@ -427,7 +427,7 @@ class cl_acertid {
      }
    }
    // funcao para exclusao
-   function excluir ($v15_codigo=null,$dbwhere=null) {
+   public function excluir ($v15_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v15_codigo));
      }else{
@@ -495,7 +495,7 @@ class cl_acertid {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -518,10 +518,10 @@ class cl_acertid {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_acertid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -555,10 +555,10 @@ class cl_acertid {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,7 +579,7 @@ class cl_acertid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -588,11 +588,11 @@ class cl_acertid {
      }
      return $sql;
   }
-   function sql_query_info ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere="",$considerarInstit=false){
+   public function sql_query_info ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere="",$considerarInstit=false){
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -624,7 +624,7 @@ class cl_acertid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -642,7 +642,7 @@ class cl_acertid {
    *
    * @return string               query montada
    */
-  function sql_query_movimentacao( $iSequencial = null, $sCampos = "*" ) {
+  public function sql_query_movimentacao( $iSequencial = null, $sCampos = "*" ) {
 
     $sSql  = " select {$sCampos} ";
     $sSql .= "   from acertid ";

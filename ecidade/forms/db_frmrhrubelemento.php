@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,12 +59,12 @@ if(isset($db_opcaoal)){
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Trh23_rubric?>">
-            <?
+            <?php
             echo @$Lrh23_rubric;
             ?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('rh23_rubric',4,$Irh23_rubric,true,'text',3," onchange='js_pesquisarh23_rubric(false);'");
             $result_descricao = $clrhrubricas->sql_record($clrhrubricas->sql_query_file($rh23_rubric,"rh27_descr"));
             if($clrhrubricas->numrows > 0){
@@ -76,15 +76,15 @@ if(isset($db_opcaoal)){
         </tr>
         <tr>
           <td nowrap title="<?=@$Trh23_codele?>">
-            <?
+            <?php
             db_ancora(@$Lrh23_codele,"js_pesquisarh23_codele(true);",$db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('rh23_codele',6,$Irh23_codele,true,'text',$db_opcao," onchange='js_pesquisarh23_codele(false);'")
             ?>
-            <?
+            <?php
             db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
             ?>
           </td>
@@ -92,7 +92,7 @@ if(isset($db_opcaoal)){
         <tr>
           <td><b>Principal</b></td>
           <td>
-            <?
+            <?php
             $x   = array("0"=>"NAO","1"=>"SIM");
             $dbwhere = "rh23_rubric='$rh23_rubric'"; 
             if(isset($rh23_codele) && trim($rh23_codele)!=""){
@@ -119,7 +119,7 @@ if(isset($db_opcaoal)){
   </tr>
   <tr>
     <td valign="top" height="80%" width="100%">
-      <?
+      <?php
       // $s = $clrhrubelemento->sql_record($clrhrubelemento->sql_query(@$rh23_rubric));
       $chavepri= array("rh23_rubric"=>@$rh23_rubric,"rh23_codele"=>@$rh23_codele);
       $cliframe_alterar_excluir->chavepri      = $chavepri;

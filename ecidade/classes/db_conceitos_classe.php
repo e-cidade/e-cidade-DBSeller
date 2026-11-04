@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,7 +56,7 @@ class cl_conceitos
                  ";
 
     //funcao construtor da classe
-    function cl_conceitos()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conceitos");
@@ -64,7 +64,7 @@ class cl_conceitos
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -75,7 +75,7 @@ class cl_conceitos
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ed30_i_codigo = ($this->ed30_i_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed30_i_codigo"] : $this->ed30_i_codigo);
@@ -88,7 +88,7 @@ class cl_conceitos
     }
 
     // funcao para inclusao
-    function incluir($ed30_i_codigo)
+    public function incluir($ed30_i_codigo)
     {
         $this->atualizacampos();
         if ($this->ed30_c_letra == null) {
@@ -200,7 +200,7 @@ class cl_conceitos
     }
 
     // funcao para alteracao
-    function alterar($ed30_i_codigo = null)
+    public function alterar($ed30_i_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update conceitos set ";
@@ -311,7 +311,7 @@ class cl_conceitos
     }
 
     // funcao para exclusao
-    function excluir($ed30_i_codigo = null, $dbwhere = null)
+    public function excluir($ed30_i_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($ed30_i_codigo));
@@ -376,7 +376,7 @@ class cl_conceitos
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = @db_query($sql);
         if ($result == false) {
@@ -401,7 +401,7 @@ class cl_conceitos
     }
 
     // funcao do sql
-    function sql_query($ed30_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ed30_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -437,7 +437,7 @@ class cl_conceitos
     }
 
     // funcao do sql
-    function sql_query_file($ed30_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ed30_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

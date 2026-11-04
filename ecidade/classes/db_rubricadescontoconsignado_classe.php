@@ -1,40 +1,40 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rubricadescontoconsignado
-class cl_rubricadescontoconsignado { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh140_sequencial = 0; 
-   var $rh140_rubric = null; 
-   var $rh140_instit = 0; 
-   var $rh140_ordem = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rubricadescontoconsignado {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh140_sequencial = 0;
+   var $rh140_rubric = null;
+   var $rh140_instit = 0;
+   var $rh140_ordem = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh140_sequencial = int8 = Sequencial 
-                 rh140_rubric = char(4) = Rubrica 
-                 rh140_instit = int4 = Instituição 
-                 rh140_ordem = int4 = Ordem 
+                 rh140_sequencial = int8 = Sequencial
+                 rh140_rubric = char(4) = Rubrica
+                 rh140_instit = int4 = Instituição
+                 rh140_ordem = int4 = Ordem
                  ";
-   //funcao construtor da classe 
-   function cl_rubricadescontoconsignado() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rubricadescontoconsignado"); 
+     $this->rotulo = new rotulo("rubricadescontoconsignado");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_rubricadescontoconsignado {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh140_sequencial = ($this->rh140_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh140_sequencial"]:$this->rh140_sequencial);
        $this->rh140_rubric = ($this->rh140_rubric == ""?@$GLOBALS["HTTP_POST_VARS"]["rh140_rubric"]:$this->rh140_rubric);
@@ -54,9 +54,9 @@ class cl_rubricadescontoconsignado {
      }
    }
    // funcao para inclusao
-   function incluir ($rh140_sequencial){ 
+   public function incluir ($rh140_sequencial){
       $this->atualizacampos();
-     if($this->rh140_rubric == null ){ 
+     if($this->rh140_rubric == null ){
        $this->erro_sql = " Campo Rubrica não informado.";
        $this->erro_campo = "rh140_rubric";
        $this->erro_banco = "";
@@ -65,7 +65,7 @@ class cl_rubricadescontoconsignado {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh140_instit == null ){ 
+     if($this->rh140_instit == null ){
        $this->erro_sql = " Campo Instituição não informado.";
        $this->erro_campo = "rh140_instit";
        $this->erro_banco = "";
@@ -74,7 +74,7 @@ class cl_rubricadescontoconsignado {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh140_ordem == null ){ 
+     if($this->rh140_ordem == null ){
        $this->erro_sql = " Campo Ordem não informado.";
        $this->erro_campo = "rh140_ordem";
        $this->erro_banco = "";
@@ -84,16 +84,16 @@ class cl_rubricadescontoconsignado {
        return false;
      }
      if($rh140_sequencial == "" || $rh140_sequencial == null ){
-       $result = db_query("select nextval('rubricadescontoconsignado_rh140_sequencial_seq')"); 
+       $result = db_query("select nextval('rubricadescontoconsignado_rh140_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rubricadescontoconsignado_rh140_sequencial_seq do campo: rh140_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rubricadescontoconsignado_rh140_sequencial_seq do campo: rh140_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh140_sequencial = pg_result($result,0,0); 
+       $this->rh140_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rubricadescontoconsignado_rh140_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh140_sequencial)){
@@ -104,10 +104,10 @@ class cl_rubricadescontoconsignado {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh140_sequencial = $rh140_sequencial; 
+         $this->rh140_sequencial = $rh140_sequencial;
        }
      }
-     if(($this->rh140_sequencial == null) || ($this->rh140_sequencial == "") ){ 
+     if(($this->rh140_sequencial == null) || ($this->rh140_sequencial == "") ){
        $this->erro_sql = " Campo rh140_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,19 +116,19 @@ class cl_rubricadescontoconsignado {
        return false;
      }
      $sql = "insert into rubricadescontoconsignado(
-                                       rh140_sequencial 
-                                      ,rh140_rubric 
-                                      ,rh140_instit 
-                                      ,rh140_ordem 
+                                       rh140_sequencial
+                                      ,rh140_rubric
+                                      ,rh140_instit
+                                      ,rh140_ordem
                        )
                 values (
-                                $this->rh140_sequencial 
-                               ,'$this->rh140_rubric' 
-                               ,$this->rh140_instit 
-                               ,$this->rh140_ordem 
+                                $this->rh140_sequencial
+                               ,'$this->rh140_rubric'
+                               ,$this->rh140_instit
+                               ,$this->rh140_ordem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Rubrica Desconto Consignado ($this->rh140_sequencial) nao Incluído. Inclusao Abortada.";
@@ -169,16 +169,16 @@ class cl_rubricadescontoconsignado {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh140_sequencial=null) { 
+   public function alterar ($rh140_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rubricadescontoconsignado set ";
      $virgula = "";
-     if(trim($this->rh140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_sequencial"])){ 
+     if(trim($this->rh140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_sequencial"])){
        $sql  .= $virgula." rh140_sequencial = $this->rh140_sequencial ";
        $virgula = ",";
-       if(trim($this->rh140_sequencial) == null ){ 
+       if(trim($this->rh140_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "rh140_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_rubricadescontoconsignado {
          return false;
        }
      }
-     if(trim($this->rh140_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_rubric"])){ 
+     if(trim($this->rh140_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_rubric"])){
        $sql  .= $virgula." rh140_rubric = '$this->rh140_rubric' ";
        $virgula = ",";
-       if(trim($this->rh140_rubric) == null ){ 
+       if(trim($this->rh140_rubric) == null ){
          $this->erro_sql = " Campo Rubrica não informado.";
          $this->erro_campo = "rh140_rubric";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_rubricadescontoconsignado {
          return false;
        }
      }
-     if(trim($this->rh140_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_instit"])){ 
+     if(trim($this->rh140_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_instit"])){
        $sql  .= $virgula." rh140_instit = $this->rh140_instit ";
        $virgula = ",";
-       if(trim($this->rh140_instit) == null ){ 
+       if(trim($this->rh140_instit) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "rh140_instit";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_rubricadescontoconsignado {
          return false;
        }
      }
-     if(trim($this->rh140_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_ordem"])){ 
+     if(trim($this->rh140_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_ordem"])){
        $sql  .= $virgula." rh140_ordem = $this->rh140_ordem ";
        $virgula = ",";
-       if(trim($this->rh140_ordem) == null ){ 
+       if(trim($this->rh140_ordem) == null ){
          $this->erro_sql = " Campo Ordem não informado.";
          $this->erro_campo = "rh140_ordem";
          $this->erro_banco = "";
@@ -256,7 +256,7 @@ class cl_rubricadescontoconsignado {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Rubrica Desconto Consignado nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh140_sequencial;
@@ -284,11 +284,11 @@ class cl_rubricadescontoconsignado {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh140_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh140_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -297,7 +297,7 @@ class cl_rubricadescontoconsignado {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($rh140_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -329,7 +329,7 @@ class cl_rubricadescontoconsignado {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Rubrica Desconto Consignado nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh140_sequencial;
@@ -357,11 +357,11 @@ class cl_rubricadescontoconsignado {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -383,11 +383,11 @@ class cl_rubricadescontoconsignado {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $rh140_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $rh140_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,15 +404,15 @@ class cl_rubricadescontoconsignado {
      $sql2 = "";
      if($dbwhere==""){
        if($rh140_sequencial!=null ){
-         $sql2 .= " where rubricadescontoconsignado.rh140_sequencial = $rh140_sequencial "; 
-       } 
+         $sql2 .= " where rubricadescontoconsignado.rh140_sequencial = $rh140_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,11 +421,11 @@ class cl_rubricadescontoconsignado {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $rh140_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $rh140_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,15 +438,15 @@ class cl_rubricadescontoconsignado {
      $sql2 = "";
      if($dbwhere==""){
        if($rh140_sequencial!=null ){
-         $sql2 .= " where rubricadescontoconsignado.rh140_sequencial = $rh140_sequencial "; 
-       } 
+         $sql2 .= " where rubricadescontoconsignado.rh140_sequencial = $rh140_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

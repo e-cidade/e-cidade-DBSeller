@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,6 +43,9 @@ $cllote->rotulo->label();
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <link href="estilos.css" rel="stylesheet" type="text/css">
+    <script>
+        window.ECIDADE_REQUEST_PATH = '<?= ECIDADE_REQUEST_PATH ?>'
+    </script>
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body class="body-default">
@@ -130,12 +133,13 @@ if (!isset($pesquisa_chave)) {
             // Filtra a query por tipo de imóvel Urbano
             $chave .= " and j01_tipoimovel = 1 ";
 
-            $sCampos = "distinct on (iptubase.j01_matric) iptubase.j01_matric, iptuant.j40_refant, ";
+            $sCampos  = "distinct on (iptubase.j01_matric) iptubase.j01_matric, iptuant.j40_refant, ";
+            $sCampos .= "iptubase.j01_baixa, ";
             $sCampos .= "(select rvnome as z01_nome ";
             $sCampos .= "   from fc_busca_envolvidos(false, (select fc_regrasconfig ";
             $sCampos .= "                                      from fc_regrasconfig(1)), 'M', iptubase.j01_matric) ";
             $sCampos .= "                                     limit 1)#";
-            $sCampos .= "j34_idbql#lote.j34_setor#lote.j34_quadra#lote.j34_lote#j01_baixa#loteloc.j06_setorloc#";
+            $sCampos .= "j34_idbql#lote.j34_setor#lote.j34_quadra#lote.j34_lote#loteloc.j06_setorloc#";
             $sCampos .= "loteloc.j06_quadraloc#loteloc.j06_lote#lote.j34_area#lote.j34_bairro#lote.j34_areal#";
             $sCampos .= "lote.j34_totcon#lote.j34_zona#lote.j34_quamat#lote.j34_areapreservada#j14_codigo,j14_tipo,";
             $sCampos .= "j14_nome,$sNumero,j39_compl";
@@ -146,7 +150,8 @@ if (!isset($pesquisa_chave)) {
 
         if (isset($chave_j34_idbql) && (trim($chave_j34_idbql) != "")) {
 
-            $sCampos = "distinct on (iptubase.j01_matric) iptubase.j01_matric, iptuant.j40_refant,";
+            $sCampos  = "distinct on (iptubase.j01_matric) iptubase.j01_matric, iptuant.j40_refant, ";
+            $sCampos .= "iptubase.j01_baixa, ";
             $sCampos .= "(select rvnome as z01_nome";
             $sCampos .= "   from fc_busca_envolvidos(false, (select fc_regrasconfig ";
             $sCampos .= "                                      from fc_regrasconfig(1)), 'M', iptubase.j01_matric)";
@@ -179,7 +184,8 @@ if (!isset($pesquisa_chave)) {
                 $wx = " and ";
             }
 
-            $sCampos = "distinct on (iptubase.j01_matric), iptubase.j01_matric, iptuant.j40_refant,";
+            $sCampos  = "distinct on (iptubase.j01_matric) iptubase.j01_matric, iptuant.j40_refant, ";
+            $sCampos .= "iptubase.j01_baixa, ";
             $sCampos .= "(select rvnome as z01_nome";
             $sCampos .= "   from fc_busca_envolvidos(false, (select fc_regrasconfig ";
             $sCampos .= "                                      from fc_regrasconfig(1)), 'M', iptubase.j01_matric) ";
@@ -204,7 +210,7 @@ if (!isset($pesquisa_chave)) {
         echo '<div class="container">';
         echo '<fieldset>';
         echo '<legend> Resultados </legend>';
-        db_lovrot($sql, 50, "()", "", $funcao_js);
+        db_lovrot($sql, 50, "()", "", $funcao_js, "", "NoMe", [], true, [], null, null, true);
         echo '</fieldset>';
         echo '</div>';
     }

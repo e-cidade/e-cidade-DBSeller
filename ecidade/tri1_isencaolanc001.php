@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,20 +25,24 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_isencaolanc_classe.php"));
-include(modification("classes/db_isencao_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_isencaolanc_classe.php"));
+require_once(modification("classes/db_isencao_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+
 $clisencaolanc = new cl_isencaolanc;
 $clisencao = new cl_isencao;
+
 $db_opcao = 22;
 $db_botao = false;
+
 if(isset($alterar) || isset($excluir) || isset($incluir)){
   $sqlerro = false;
 }
@@ -129,18 +133,12 @@ if(isset($incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <center>
-	<? include(modification("forms/db_frmisencaolanc.php")); ?>
-    </center>
-	</td>
-  </tr>
-</table>
+  <div class="container">
+    <?php include(modification("forms/db_frmisencaolanc.php")); ?>
+  </div>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
     if($clpagordemrec->erro_campo!=""){

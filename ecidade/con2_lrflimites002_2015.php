@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -85,7 +85,7 @@ $temcamara  = false;
 $temadmind  = false;
 $flag_abrev = false;
 
-$xinstit         = split("-",$db_selinstit);
+$xinstit         =explode("-",$db_selinstit);
 $aListaSelInstit = $xinstit;
 
 $sWhere         = "where codigo in (".str_replace('-',', ',$db_selinstit).")";
@@ -111,8 +111,8 @@ $sSqlPeriodo    = $oDaoPeriodo->sql_query($periodo);
 $sSiglaPeriodo  = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0)->o114_sigla;
 $dt             = data_periodo($anousu,$sSiglaPeriodo);
 
-$dt_ini = split("-",$dt[0]);
-$dt_fin = split("-",$dt[1]);
+$dt_ini =explode("-",$dt[0]);
+$dt_fin =explode("-",$dt[1]);
 
 $descr_periodo = "PERIODO: ".$dt["texto"];
 $arqinclude = true;
@@ -180,8 +180,8 @@ function validaarquivo($sArquivo,$ano){
 /////////////////////////////////////////////////////////////////////////
 
 // data apresentada na tela
-$dtd1    = split('-',$dt_ini);
-$dtd2    = split('-',$dt_fin);
+$dtd1    =explode('-',$dt_ini);
+$dtd2    =explode('-',$dt_fin);
 
 $textodt = strtoupper(db_mes($dtd1[1]))." A ".strtoupper(db_mes($dtd2[1]))." DE ";
 

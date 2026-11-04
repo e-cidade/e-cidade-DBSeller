@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrhpesfgts->rotulo->label();
        <?=@$Lrh15_regist?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh15_regist',6,$Irh15_regist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh15_regist',6,$Irh15_regist,true,'text',$db_opcao,"")
        <?=@$Lrh15_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('rh15_data',@$rh15_data_dia,@$rh15_data_mes,@$rh15_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_inputdata('rh15_data',@$rh15_data_dia,@$rh15_data_mes,@$rh15_data_ano,true,'t
        <?=@$Lrh15_banco?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh15_banco',3,$Irh15_banco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('rh15_banco',3,$Irh15_banco,true,'text',$db_opcao,"")
        <?=@$Lrh15_agencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh15_agencia',5,$Irh15_agencia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('rh15_agencia',5,$Irh15_agencia,true,'text',$db_opcao,"")
        <?=@$Lrh15_agencia_d?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh15_agencia_d',1,$Irh15_agencia_d,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('rh15_agencia_d',1,$Irh15_agencia_d,true,'text',$db_opcao,"")
        <?=@$Lrh15_contac?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh15_contac',11,$Irh15_contac,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('rh15_contac',11,$Irh15_contac,true,'text',$db_opcao,"")
        <?=@$Lrh15_contac_d?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh15_contac_d',1,$Irh15_contac_d,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpesfgts.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

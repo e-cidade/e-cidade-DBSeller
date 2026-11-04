@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -228,9 +228,9 @@ if(isset($alterar)){
   parent.document.formaba.a2.style.color = "black";
   parent.iframe_a2.location.href='bib1_aluno002.php?chavepesquisa=<?=$ed47_i_codigo?>';
  </script>
- <?
+ <?php
  $sql_vinculo = "SELECT DISTINCT ed18_i_codigo as codvinculo,ed18_c_nome as nomevinculo
-                 FROM aluno 
+                 FROM aluno
   		  left join alunocurso       on ed47_i_codigo = ed56_i_aluno
 		  left join historico        on ed47_i_codigo = ed61_i_aluno
 		  left join matricula        on ed47_i_codigo = ed60_i_aluno
@@ -241,7 +241,7 @@ if(isset($alterar)){
                                              or ed18_i_codigo = ed95_i_escola
                                              or ed18_i_codigo = ed56_i_escola
                  WHERE (ed56_i_aluno is not null
-                 OR ed61_i_aluno is not null 
+                 OR ed61_i_aluno is not null
 	         OR ed60_i_aluno is not null
 	         OR ed95_i_aluno is not null)
                  AND ed47_i_codigo = $chavepesquisa
@@ -265,7 +265,7 @@ if(isset($excluirfoto)){
    parent.parent.db_iframe_alteradados.hide();
    parent.parent.dadosleitor.location.href = "bib1_leitor004.php?chavepesquisa=<?=$ed47_i_codigo?>&tipo=ALUNO";
   </script>
-  <?
+  <?php
 }
 ?>
 <html>
@@ -290,7 +290,7 @@ if(isset($excluirfoto)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);
@@ -314,7 +314,7 @@ if(isset($alterar)){
     parent.parent.db_iframe_alteradados.hide();
    }
   </script>
-  <?
+  <?php
  }
 }
 if($linhas_vinculo>0){
@@ -359,7 +359,7 @@ function js_removeMsg(idObj){
  obj = document.getElementById("MsgBox");
  document.body.removeChild(obj);
 }
-<?if($linhas_vinculo>0){?>
+<?php if($linhas_vinculo>0){?>
  js_msg_nao_altera("<?=$esc_vinculo?>","MsgBox");
-<?}?>
+<?php }?>
 </script>

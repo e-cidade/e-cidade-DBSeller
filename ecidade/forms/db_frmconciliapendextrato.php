@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("k68_data");
        <?=@$Lk88_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k88_sequencial',10,$Ik88_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk88_extratolinha?>">
-       <?
+       <?php
        db_ancora(@$Lk88_extratolinha,"js_pesquisak88_extratolinha(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k88_extratolinha',10,$Ik88_extratolinha,true,'text',$db_opcao," onchange='js_pesquisak88_extratolinha(false);'")
 ?>
-       <?
+       <?php
 db_input('k86_extrato',10,$Ik86_extrato,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk88_concilia?>">
-       <?
+       <?php
        db_ancora(@$Lk88_concilia,"js_pesquisak88_concilia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k88_concilia',10,$Ik88_concilia,true,'text',$db_opcao," onchange='js_pesquisak88_concilia(false);'")
 ?>
-       <?
+       <?php
 db_input('k68_data',10,$Ik68_data,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conciliapendextrato.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

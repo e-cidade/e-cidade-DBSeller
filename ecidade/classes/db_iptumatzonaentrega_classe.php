@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_iptumatzonaentrega {
                  j86_iptucadzonaentrega = int4 = Codigo da zona de entrega 
                  ";
    //funcao construtor da classe 
-   function cl_iptumatzonaentrega() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptumatzonaentrega"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_iptumatzonaentrega {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j86_sequencial = ($this->j86_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j86_sequencial"]:$this->j86_sequencial);
        $this->j86_matric = ($this->j86_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j86_matric"]:$this->j86_matric);
@@ -77,7 +77,7 @@ class cl_iptumatzonaentrega {
      }
    }
    // funcao para inclusao
-   function incluir ($j86_sequencial){ 
+   public function incluir ($j86_sequencial){ 
       $this->atualizacampos();
      if($this->j86_matric == null ){ 
        $this->erro_sql = " Campo Matrícula do Imóvel nao Informado.";
@@ -176,7 +176,7 @@ class cl_iptumatzonaentrega {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j86_sequencial=null) { 
+   public function alterar ($j86_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update iptumatzonaentrega set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_iptumatzonaentrega {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j86_sequencial=null,$dbwhere=null) { 
+   public function excluir ($j86_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j86_sequencial));
      }else{ 
@@ -334,7 +334,7 @@ class cl_iptumatzonaentrega {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

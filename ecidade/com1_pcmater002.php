@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -48,6 +48,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   $sqlerro=false;
   $db_opcao = 2;
   $clpcmater->pc01_descrmater = trim(preg_replace('/\s+/', ' ',@$pc01_descrmater));
+  $clpcmater->pc01_familia = $m105_sequencial;
   if ($pc01_ativo == 't') {
     $daoSolicitaRegistroPreco = new cl_solicitaregistropreco();
     $sqlSolicita = $daoSolicitaRegistroPreco->sql_query_registro_compilacao(null, '1', null, "pc16_codmater = {$pc01_codmater} and pc52_sequencial = 6 and pc67_solicita is null and current_date between pc54_datainicio and pc54_datatermino");
@@ -63,36 +64,36 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
       $sqlerro = true;
     }else{
       $codmater =  $clpcmater->pc01_codmater;
-    } 
+    }
   }
 
   //rotina que exclui todos os registros do pcmaterele
   if($sqlerro == false){
        $clpcmaterele->pc07_codmater = $codmater;
-       $clpcmaterele->excluir($codmater); 
+       $clpcmaterele->excluir($codmater);
        if($clpcmaterele->erro_status==0){
 	 db_msgbox($clpcmaterele->erro_msg);
          $sqlerro = true;
-       }	 
+       }
   }
 
-  if($sqlerro==false){  	
-    $arr =  split("XX",$codeles);
+  if($sqlerro==false){
+    $arr = explode("XX",$codeles);
     for($i=0; $i<count($arr); $i++ ){
-       $elemento = $arr[$i];  
+       $elemento = $arr[$i];
        if(trim($elemento)!=""){
 	 $result_matele = $clpcmaterele->sql_record($clpcmaterele->sql_query_file($codmater,$elemento));
 	 if($clpcmaterele->numrows==0){
 	   $clpcmaterele->pc07_codmater = $codmater;
 	   $clpcmaterele->pc07_codele = $elemento;
-	   $clpcmaterele->incluir($codmater,$elemento); 
+	   $clpcmaterele->incluir($codmater,$elemento);
 	   if($clpcmaterele->erro_status==0){
 	     db_msgbox($clpcmaterele->erro_msg);
 	     $sqlerro = true;
 	   }
 	 }
-       }      
-    }	 
+       }
+    }
 
   }
   db_fim_transacao($sqlerro);
@@ -100,10 +101,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
    $db_opcao = 2;
    $db_botao = true;
 
-   $result = $clpcmater->sql_record($clpcmater->sql_query_file($chavepesquisa)); 
+   $result = $clpcmater->sql_record($clpcmater->sql_query($chavepesquisa, 'pcmater.*, matfamilias.*'));
    db_fieldsmemory($result,0);
-   
-   $result = $clpcmaterele->sql_record($clpcmaterele->sql_query_file($chavepesquisa)); 
+
+   $result = $clpcmaterele->sql_record($clpcmaterele->sql_query_file($chavepesquisa));
    $numrows = $clpcmaterele->numrows;
    $coluna =  '';
    $sep = '';
@@ -125,7 +126,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -134,24 +135,24 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </table>
 <center>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td>&nbsp;</td>
-  </tr> 
-  <tr> 
-    <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
-      <?
+  </tr>
+  <tr>
+    <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
+      <?php
         include(modification("forms/db_frmpcmater.php"));
       ?>
     </td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
   if($clpcmater->erro_status=="0"){
     $clpcmater->erro(true,false);

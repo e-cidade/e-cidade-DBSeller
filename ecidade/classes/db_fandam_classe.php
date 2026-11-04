@@ -61,13 +61,13 @@ class cl_fandam {
                  y39_hora = varchar(5) = Hora
                  ";
    //funcao construtor da classe
-   function cl_fandam() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fandam");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_fandam {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y39_codandam = ($this->y39_codandam == ""?@$GLOBALS["HTTP_POST_VARS"]["y39_codandam"]:$this->y39_codandam);
        if($this->y39_data == ""){
@@ -96,7 +96,7 @@ class cl_fandam {
      }
    }
    // funcao para inclusao
-   function incluir ($y39_codandam){
+   public function incluir ($y39_codandam=null){
       $this->atualizacampos();
      if($this->y39_data == null ){
        $this->erro_sql = " Campo Data do Andamento nao Informado.";
@@ -231,7 +231,7 @@ class cl_fandam {
      return true;
    }
    // funcao para alteracao
-   function alterar ($y39_codandam=null) {
+   public function alterar ($y39_codandam=null) {
       $this->atualizacampos();
      $sql = " update fandam set ";
      $virgula = "";
@@ -385,7 +385,7 @@ class cl_fandam {
      }
    }
    // funcao para exclusao
-   function excluir ($y39_codandam=null,$dbwhere=null) {
+   public function excluir ($y39_codandam=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y39_codandam));
      }else{
@@ -451,7 +451,7 @@ class cl_fandam {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -473,10 +473,10 @@ class cl_fandam {
       }
      return $result;
    }
-   function sql_query ( $y39_codandam=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $y39_codandam=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_fandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -508,10 +508,10 @@ class cl_fandam {
      }
      return $sql;
   }
-   function sql_query_file ( $y39_codandam=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $y39_codandam=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_fandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

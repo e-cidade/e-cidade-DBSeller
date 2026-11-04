@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ if(file_exists(base64_decode($arquivo))){
 a:hover {
           color:blue;
         }
-a:visited {text-decoration:;
+a:visited {text-decoration:none;
            color: black;
            font-weight: bold; 
           }
@@ -81,7 +81,7 @@ function js_marca(obj){
        OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
      }
    }
-<?   
+<?php   
     if(isset($js_marcador)){
        echo str_replace(";","",$js_marcador).";";
     }
@@ -103,7 +103,7 @@ function js_marca(obj){
   <tr>
     <td  valign="top">
       <table border='1' width="100%" bgcolor="#cccccc" id="tabela_seleciona">
-<?
+<?php
 if(isset($sql) && $sql!=""){ 
   $sql=base64_decode($sql);
   $campos=base64_decode($campos);
@@ -135,7 +135,7 @@ if(isset($sql) && $sql!=""){
           $db_opcao=3;
        }
        if($numrows>0){ 
-	  $matriz_campos=split(",",$campos); 
+	  $matriz_campos=explode(",",$campos); 
           $numcolunas=sizeof($matriz_campos);
           echo "   <tr class='cabec'>";
            /*funcao a ser executada apos clicar no marcador*/  
@@ -168,16 +168,15 @@ if(isset($sql) && $sql!=""){
 
        //rotina para marcar os campos
        if(isset($cabec) && $cabec==true){
-         $matriz02=split(",",$chaves);       
+         $matriz02=explode(",",$chaves);       
          for($i=0; $i<$numrows; $i++){
            db_fieldsmemory($result,$i,true);
            $checa="";
            if(isset($sql_marca) && $sql_marca!=""){ 
              for($s=0;$s<$numrows02;$s++){
                for($w=0; $w<sizeof($matriz02); $w++){
-                 $campo=pg_result($result02,$s,$matriz02[$w]);   
-	//	 echo "<br>".$matriz02[$w]."--".$campo."--".$$matriz02[$w].">>>>>>>>>>>>>>";
-                 if($campo==$$matriz02[$w]){
+                 $campo=pg_result($result02,$s,$matriz02[$w]);
+                 if($campo==${$matriz02[$w]}){
                    $checa=" checked ";  
                    $s=$numrows02;
 		   break;
@@ -201,7 +200,7 @@ if(isset($sql) && $sql!=""){
              for($s=0;$s<$numrows03;$s++){
                for($w=0; $w<sizeof($matriz02); $w++){
                  $campo=pg_result($result03,$s,$matriz02[$w]);   
-                 if($campo==$$matriz02[$w]){
+                 if($campo==${$matriz02[$w]}){
                    $pode = " disabled   ";  
 	           $cr= " style=\"background-color:#DEB887\"";
                    $s=$numrows03;
@@ -222,7 +221,7 @@ if(isset($sql) && $sql!=""){
            $li=$i+1; 
            echo "   <tr id='linha_$li' >";
            if($db_opcao!=3){  
-	     $matris=split(",",$chaves);
+	     $matris=explode(",",$chaves);
 	     $valor='';
 	     $esp='';
 	     for($t=0; $t<count($matris); $t++){
@@ -280,7 +279,7 @@ if(isset($sql) && $sql!=""){
   </form>
 </body>  
 </html>
-<?
+<?php
  $retorno = @unlink(base64_decode($arquivo));
  if($retorno==false){
    echo "<blink>Carregando...</blink>";

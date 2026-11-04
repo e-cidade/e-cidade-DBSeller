@@ -70,7 +70,8 @@ class S2405
                     'rh31_gparen',
                     'rh31_depend',
                     'rh31_especi',
-                    'rh31_fins_previdenciarios'
+                    'rh31_fins_previdenciarios',
+                    'rh31_descricaoparentesco'
                 ];
                 return; // remover depois
                 break;

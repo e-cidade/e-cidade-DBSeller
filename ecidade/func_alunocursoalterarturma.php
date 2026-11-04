@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -68,12 +68,12 @@ if ($oDaoParametros->numrows > 0) {
 }
 $iAnoUsu = db_getsession("DB_anousu");
 if (isset($iCalendario) && trim($iCalendario) != "") {
-  
+
   $sSqlAnoCalendario = $clcalendario->sql_query_file($iCalendario, "ed52_i_ano");
   $rsAnoCalendario   = $clcalendario->sql_record($sSqlAnoCalendario);
-  if ($clcalendario->numrows  > 0) { 
+  if ($clcalendario->numrows  > 0) {
     $iAnoUsu  = db_utils::fieldsMemory($rsAnoCalendario, 0)->ed52_i_ano;
-  }    
+  }
 }
 
 ?>
@@ -92,15 +92,15 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
     <tr>
      <td width="4%" nowrap title="<?=$Ted57_i_codigo?>">
       <?=$Led57_i_codigo?>
-      <?db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
+      <?php db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
      </td>
      <td width="4%" nowrap title="<?=$Ted57_c_descr?>">
       <?=$Led57_c_descr?>
-      <?db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
+      <?php db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
      </td>
      <td width="4%" nowrap title="<?=$Ted31_i_curso?>">
       <?=$Led31_i_curso?>
-      <?
+      <?php
       $result_cur = $clcurso->sql_record($clcurso->sql_query_file("","ed29_i_codigo,ed29_c_descr","ed29_c_descr"));
       db_selectrecord("ed31_i_curso",$result_cur,"","","","chave_ed31_i_curso","","  ","",1);
       ?>
@@ -108,7 +108,7 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
      <td width="4%" nowrap title="<?=$Ted57_i_sala?>">
       <!--
       <?=$Led57_i_sala?>
-      <?
+      <?php
       $result_sala = $clsala->sql_record($clsala->sql_query_file("","ed16_i_codigo,ed16_c_descr","ed16_c_descr"," ed16_i_escola = $escola"));
       if ($clsala->numrows==0) {
        $x = array(''=>'NENHUM REGISTRO');
@@ -123,7 +123,7 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
     <tr>
      <td width="4%" nowrap title="<?=$Ted57_i_turno?>">
       <?=$Led57_i_turno?>
-      <?
+      <?php
       $sql_tur = "SELECT ed15_i_codigo,ed15_c_nome,ed15_i_sequencia
                   FROM turno
                    inner join periodoescola on periodoescola.ed17_i_turno = turno.ed15_i_codigo
@@ -143,17 +143,17 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
      </td>
      <td width="4%" nowrap title="<?=$Ted57_i_calendario?>">
       <?=$Led57_i_calendario?>
-      <?
+      <?php
       $sSqlCalendario = $clcalendario->sql_query_calescola("",
                                                            "ed52_i_codigo,ed52_c_descr",
                                                            "ed52_i_ano desc",
                                                            "  ed52_c_passivo  = 'N'
                                                            and ed52_c_passivo  = 'N'
-                                                           and ed52_i_ano      = {$iAnoUsu}      
+                                                           and ed52_i_ano      = {$iAnoUsu}
                                                            AND ed38_i_escola = {$escola} ");
       $result_cal = $clcalendario->sql_record($sSqlCalendario);
-                                                                                  
-                                                                                        
+
+
       if ($clcalendario->numrows==0) {
        $x = array(''=>'NENHUM REGISTRO');
        db_select('ed57_i_calendario',$x,true,1,"");
@@ -164,7 +164,7 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
      </td>
      <td width="4%" nowrap title="<?=$Ted220_i_procedimento?>">
       <?=$Led220_i_procedimento?>
-      <?
+      <?php
       $result_proc = $clprocedimento->sql_record($clprocedimento->sql_query_procturma("","ed40_i_codigo,ed40_c_descr","ed40_c_descr"," ed86_i_escola = $escola GROUP BY ed40_i_codigo,ed40_c_descr"));
       if ($clprocedimento->numrows==0) {
        $x = array(''=>'NENHUM REGISTRO');
@@ -188,7 +188,7 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $campos = "DISTINCT turma.ed57_i_codigo,
               turma.ed57_c_descr,
               fc_nomeetapaturma(ed57_i_codigo) as ed11_c_descr,
@@ -206,7 +206,7 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
               calendario.ed52_d_inicio,
               calendario.ed52_d_fim
              ";
-   
+
    $sWhere = '';
    $sSep   = '';
 
@@ -235,7 +235,7 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
      $sCampos      .= "  else (select s.ed11_i_sequencia $sSubAux) ";// Reprovou, mas na série anterior aprovou(óbvio)
      $sCampos      .= 'end as ed11_i_sequencia ';
      $sOrderBy      = 'ano desc, ed11_i_sequencia desc, resfinal asc limit 1';
-    $sSqlTmp       = $oDaoHistorico->sql_query_union(null, $sCampos, $sOrderBy, 
+    $sSqlTmp       = $oDaoHistorico->sql_query_union(null, $sCampos, $sOrderBy,
                                                       " ed61_i_aluno = $aluno ".
                                                       " and (resfinal = 'A' ".
                                                       "      or exists(select s.ed11_i_codigo $sSubAux))"
@@ -269,13 +269,13 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
 
      if ($oDaoMatricula->numrows > 0) {
 
-       $oDadosUltimaEtapaTmp = db_utils::fieldsmemory($rsMat, 0);       
+       $oDadosUltimaEtapaTmp = db_utils::fieldsmemory($rsMat, 0);
        /* A etapa com a maior sequência é considerada a última cursada e concluída pelo aluno */
        if (isset($oDadosUltimaEtapa) // Encontrou registros no histórico e a etapa tem a seq menor que da matricula
            && $oDadosUltimaEtapa->ed11_i_sequencia < $oDadosUltimaEtapaTmp->ed11_i_sequencia) {
          $oDadosUltimaEtapa = $oDadosUltimaEtapaTmp;
        } else { // Senao, $oDadosUltimaEtapaTmp somente é uitilizado se não existe dados no histórico
-         
+
          if (!isset($oDadosUltimaEtapa)) {
            $oDadosUltimaEtapa = $oDadosUltimaEtapaTmp;
            //echo  $oDadosUltimaEtapa;
@@ -289,10 +289,10 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
 
        $aEnsino[]     = $oDadosUltimaEtapa->ed11_i_ensino;
        $aOrdemSerie[] = $oDadosUltimaEtapa->ed11_i_sequencia;
-       
+
        /* Obtenho as séries equivalentes à última série que o aluno cursou e foi aprovado */
        $oDaoSerieEquiv = db_utils::getdao('serieequiv');
-       $sSqlTmp        = $oDaoSerieEquiv->sql_query_serieequiv(null, 'ed11_i_ensino, ed11_i_sequencia', '', 
+       $sSqlTmp        = $oDaoSerieEquiv->sql_query_serieequiv(null, 'ed11_i_ensino, ed11_i_sequencia', '',
                                                                'ed234_i_serie = '.$oDadosUltimaEtapa->ed11_i_codigo
                                                               );
        $rs             = $oDaoSerieEquiv->sql_record($sSqlTmp);
@@ -303,12 +303,12 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
          $aOrdemSerie[] = $oDados->ed11_i_sequencia;
 
        }
-       
+
        $sWhereEns = '';
        $sOrEns    = '';
        $sAndEns   = '';
        for ($iCont = 0; $iCont < count($aEnsino); $iCont++) {
-       	
+
          $sWhereEns .= $sOrEns.'(ed11_i_ensino = '.$aEnsino[$iCont].
                        ' and ed11_i_sequencia >= '.$aOrdemSerie[$iCont].') ';
          $sOrEns     = ' or ';
@@ -401,14 +401,14 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
 
      }
      if ($esc) {
-       
-       $oDaoAlunopossib = db_utils::getdao('alunopossib');      
+
+       $oDaoAlunopossib = db_utils::getdao('alunopossib');
        $sSqlPossib = $oDaoAlunopossib->sql_query(null, "ed79_i_serie", ""," ed56_i_aluno = $aluno ");
        $rsPossib   = $oDaoAlunopossib->sql_record($sSqlPossib);
        if($oDaoAlunopossib->numrows > 0){
-       	
+
        $oDadosPossib = db_utils::fieldsmemory($rsPossib, 0);
-       $sSqlReg  = " AND not exists";    	
+       $sSqlReg  = " AND not exists";
        $sSqlReg .= " (SELECT * ";
        $sSqlReg .= " FROM histmpsdisc";
        $sSqlReg .= "  inner join historicomps on ed62_i_codigo = ed65_i_historicomps";
@@ -416,18 +416,18 @@ if (isset($iCalendario) && trim($iCalendario) != "") {
        $sSqlReg .= " WHERE ed61_i_aluno  = $aluno";
        $sSqlReg .= " AND ed61_i_curso = ed29_i_codigo";
        $sSqlReg .= " AND ed62_i_serie = ".$oDadosPossib->ed79_i_serie;
-       $sSqlReg .= " AND ed62_c_resultadofinal = 'P'";             
+       $sSqlReg .= " AND ed62_c_resultadofinal = 'P'";
        $sSqlReg .= " AND exists(select * from regencia";
        $sSqlReg .= "            where ed59_i_turma = ed57_i_codigo";
        $sSqlReg .= "            and ed59_i_serie = ".$oDadosPossib->ed79_i_serie;
        $sSqlReg .= "            and ed59_i_disciplina = ed65_i_disciplina))";
-       
+
        }else{
        	 $sSqlReg = '';
        }
-       
-       
-       $sql = $clturma->sql_query_turmaserie('', $campos, 'ed57_c_descr', 
+
+
+       $sql = $clturma->sql_query_turmaserie('', $campos, 'ed57_c_descr',
                                              " ed52_c_passivo = 'N' AND ed57_i_escola = $escola ".
                                              $sSep.$sWhere.$sSqlReg
                                             );

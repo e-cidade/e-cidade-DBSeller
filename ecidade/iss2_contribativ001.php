@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ td {
 </tr>
 <tr>
   <td title="" align="center">
-    <?
+    <?php
      db_ancora('<b>Inscrição </b>',' js_inscr(true); ',1);
      db_input('q02_inscr',5,0,true,'text',1,"onchange='js_inscr(false)'");
      db_input('z01_nome',50,0,true,'text',3);
@@ -78,7 +78,7 @@ td {
 
  <tr>
     <td nowrap title="" align="center">
-       <?
+       <?php
         db_ancora('<b>Rua </b>',"js_pesquisaj14_codigo(true);",$db_opcao);
         echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
         db_input('j14_codigo',5,0,true,'text',$db_opcao," onchange='js_pesquisaj14_codigo(false);'");
@@ -90,7 +90,7 @@ td {
  <tr>
     <td nowrap title="" align="center">
 		<strong>Tipo:&nbsp;&nbsp;</strong>
-		<?
+		<?php
 	  $tipo = array("a"=>"Ativas","t"=>"Todas","b"=>"Baixadas");
 	  db_select("tipo",$tipo,true,2);
 		?>
@@ -100,7 +100,7 @@ td {
  <tr>
     <td nowrap title="" align="center">
 		<strong>Debitos:&nbsp;&nbsp;</strong>
-		<?
+		<?php
 	  $debitos = array("d"=>"Em débito","t"=>"Todas","s"=>"Sem débito");
 	  db_select("debitos",$debitos,true,2);
 		?>
@@ -110,7 +110,7 @@ td {
 <tr>
   <td title="" align="center">
 
-<?   
+<?php   
       $sql = "select q03_ativ,q03_descr from ativid order by q03_ativ"; 
       $cliframe_seleciona->sql           = $sql;
       $cliframe_seleciona->campos        = "q03_ativ,q03_descr";
@@ -140,7 +140,7 @@ td {
 
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

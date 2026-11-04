@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE diarioregracalculo
 class cl_diarioregracalculo { 
@@ -28,13 +28,13 @@ class cl_diarioregracalculo {
                  ed125_regracalculo = int4 = Regra de Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_diarioregracalculo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diarioregracalculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_diarioregracalculo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed125_codigo = ($this->ed125_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed125_codigo"]:$this->ed125_codigo);
        $this->ed125_ordemperiodo = ($this->ed125_ordemperiodo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed125_ordemperiodo"]:$this->ed125_ordemperiodo);
@@ -54,7 +54,7 @@ class cl_diarioregracalculo {
      }
    }
    // funcao para inclusao
-   function incluir ($ed125_codigo){ 
+   public function incluir ($ed125_codigo){ 
       $this->atualizacampos();
      if($this->ed125_ordemperiodo == null ){ 
        $this->erro_sql = " Campo Ordem do Período não informado.";

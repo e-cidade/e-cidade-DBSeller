@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -63,52 +63,52 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led216_i_codigo?>
   </td>
   <td>
-   <?db_input('ed216_i_codigo',10,$Ied216_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed216_i_codigo',10,$Ied216_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted216_i_aluno?>">
-   <?db_ancora(@$Led216_i_aluno,"js_pesquisaed216_i_aluno(true);",3);?>
+   <?php db_ancora(@$Led216_i_aluno,"js_pesquisaed216_i_aluno(true);",3);?>
   </td>
   <td>
-   <?db_input('ed216_i_aluno',10,$Ied216_i_aluno,true,'text',3," onchange='js_pesquisaed216_i_aluno(false);'")?>
-   <?db_input('ed47_v_nome',60,@$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_input('ed216_i_aluno',10,$Ied216_i_aluno,true,'text',3," onchange='js_pesquisaed216_i_aluno(false);'")?>
+   <?php db_input('ed47_v_nome',60,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted216_i_cursoedu?>">
-   <?db_ancora(@$Led216_i_cursoedu,"js_pesquisaed216_i_cursoedu(true);",$db_opcao);?>
+   <?php db_ancora(@$Led216_i_cursoedu,"js_pesquisaed216_i_cursoedu(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed216_i_cursoedu',10,$Ied216_i_cursoedu,true,'text',$db_opcao," onchange='js_pesquisaed216_i_cursoedu(false);'")?>
-   <?db_input('ed29_c_descr',60,@$Ied29_c_descr,true,'text',3,'')?>
+   <?php db_input('ed216_i_cursoedu',10,$Ied216_i_cursoedu,true,'text',$db_opcao," onchange='js_pesquisaed216_i_cursoedu(false);'")?>
+   <?php db_input('ed29_c_descr',60,@$Ied29_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted216_i_serie?>">
-   <?db_ancora(@$Led216_i_serie,"js_pesquisaed216_i_serie(true);",$db_opcao);?>
+   <?php db_ancora(@$Led216_i_serie,"js_pesquisaed216_i_serie(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed216_i_serie',10,$Ied216_i_serie,true,'text',$db_opcao," onchange='js_pesquisaed216_i_serie(false);'")?>
-   <?db_input('ed11_c_descr',60,@$Ied11_c_descr,true,'text',3,'')?>
+   <?php db_input('ed216_i_serie',10,$Ied216_i_serie,true,'text',$db_opcao," onchange='js_pesquisaed216_i_serie(false);'")?>
+   <?php db_input('ed11_c_descr',60,@$Ied11_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted216_i_turno?>">
-   <?db_ancora(@$Led216_i_turno,"js_pesquisaed216_i_turno(true);",$db_opcao);?>
+   <?php db_ancora(@$Led216_i_turno,"js_pesquisaed216_i_turno(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed216_i_turno',10,$Ied216_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed216_i_turno(false);'")?>
-   <?db_input('ed15_c_nome',60,@$Ied15_c_nome,true,'text',3,'')?>
+   <?php db_input('ed216_i_turno',10,$Ied216_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed216_i_turno(false);'")?>
+   <?php db_input('ed15_c_nome',60,@$Ied15_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted216_i_escolaproc?>">
-   <?db_ancora(@$Led216_i_escolaproc,"js_pesquisaed216_i_escolaproc(true);",$db_opcao);?>
+   <?php db_ancora(@$Led216_i_escolaproc,"js_pesquisaed216_i_escolaproc(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed216_i_escolaproc',10,$Ied216_i_escolaproc,true,'text',$db_opcao," onchange='js_pesquisaed216_i_escolaproc(false);'")?>
-   <?db_input('ed82_c_nome',60,@$Ied82_c_nome,true,'text',3,'')?>
+   <?php db_input('ed216_i_escolaproc',10,$Ied216_i_escolaproc,true,'text',$db_opcao," onchange='js_pesquisaed216_i_escolaproc(false);'")?>
+   <?php db_input('ed82_c_nome',60,@$Ied82_c_nome,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -117,7 +117,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed216_i_codigo"=>@$ed216_i_codigo,"ed216_d_datacad"=>@$ed216_d_datacad,"ed216_i_aluno"=>@$ed216_i_aluno,"ed47_v_nome"=>@$ed47_v_nome,"ed216_i_turno"=>@$ed216_i_turno,"ed15_c_nome"=>@$ed15_c_nome,"ed216_i_cursoedu"=>@$ed216_i_cursoedu,"ed29_c_descr"=>@$ed29_c_descr,"ed216_i_serie"=>@$ed216_i_serie,"ed11_c_descr"=>@$ed11_c_descr,"ed216_i_escolaproc"=>@$ed216_i_escolaproc,"ed82_c_nome"=>@$ed82_c_nome);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clalunofora->sql_query("","*",""," ed216_i_aluno=$ed216_i_aluno");

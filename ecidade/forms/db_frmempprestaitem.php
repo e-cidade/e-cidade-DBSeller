@@ -37,13 +37,13 @@ $clrotulo->label("e45_codmov");
 if (isset($tranca)) {
     $db_opcao = 33;
     $db_botao=false;
-} else if (isset($db_opcaoal)) {
+} elseif (isset($db_opcaoal)) {
     $db_opcao=33;
     $db_botao=false;
-} else if (isset($opcao) && $opcao=="alterar") {
+} elseif (isset($opcao) && $opcao=="alterar") {
     $db_botao=true;
     $db_opcao = 2;
-} else if(isset($opcao) && $opcao=="excluir") {
+} elseif (isset($opcao) && $opcao=="excluir") {
     $db_opcao = 3;
     $db_botao=true;
 } else {
@@ -64,17 +64,16 @@ if (isset($tranca)) {
 $lDiaria = false;
 $itemdiaria = null;
 if (!empty($e45_tipo)) {
-
     $oEmpPrestaTipo = new \cl_empprestatip();
     $sql = $oEmpPrestaTipo->sql_query($e45_tipo, "e44_diaria as diaria");
     $rs = db_query($sql);
     if (!$rs) {
         throw new DBException("Erro ao buscar informações do tipo de evento.");
-    } 
+    }
     if (pg_num_rows($rs) == 0) {
         throw new BusinessException("Nenhuma informação do tipo de evento.");
     }
-    $evento = \db_utils::fieldsMemory($rs,0);
+    $evento = \db_utils::fieldsMemory($rs, 0);
     if ($evento->diaria == "t") {
         $lDiaria = true;
     }
@@ -88,7 +87,7 @@ if (!empty($e45_tipo)) {
     if (pg_num_rows($rs) == 0) {
         throw new BusinessException("Nenhuma informação da prestação de contas.");
     }
-    $prestacao = \db_utils::fieldsMemory($rs,0);
+    $prestacao = \db_utils::fieldsMemory($rs, 0);
     // Verifica se já existe preenchimento
     if (isset($e46_codigo) && !empty($e46_codigo)) {
         $sql = "select * from empprestaitemdiaria where e446_empprestaitem = {$e46_codigo}";
@@ -98,7 +97,7 @@ if (!empty($e45_tipo)) {
             throw new DBException("Erro ao buscar informações das diárias.");
         }
         if (pg_num_rows($rs) != 0) {
-            $itemdiaria =  \db_utils::fieldsMemory($rs,0);
+            $itemdiaria =  \db_utils::fieldsMemory($rs, 0);
         }
     }
 }
@@ -114,9 +113,9 @@ if (!empty($e45_tipo)) {
                     </td>
                     <td>
                         <?php
-                        db_input('e60_codemp',10,$Ie60_codemp,true,'text',3);
-                        db_input('e46_numemp',10,$Ie46_numemp,true,'hidden',1);
-                        db_input('e46_codigo',10,$Ie46_codigo,true,'hidden',1);
+                        db_input('e60_codemp', 10, $Ie60_codemp, true, 'text', 3);
+                        db_input('e46_numemp', 10, $Ie46_numemp, true, 'hidden', 1);
+                        db_input('e46_codigo', 10, $Ie46_codigo, true, 'hidden', 1);
                         ?>
                     </td>
                 </tr>
@@ -130,7 +129,7 @@ if (!empty($e45_tipo)) {
                 </tr>
                 <tr>
                     <?php
-                    if($lDiaria) {
+                    if ($lDiaria) {
                         $clrotulo->label("e446_sequencial");
                         $clrotulo->label("e446_empprestaitem");
                         $clrotulo->label("e446_regist");
@@ -150,18 +149,18 @@ if (!empty($e45_tipo)) {
                             $e446_sequencial = $itemdiaria->e446_sequencial;
                             $e446_empprestaitem = $itemdiaria->e446_empprestaitem;
                             $e446_quantidade = $itemdiaria->e446_quantidade;
-                            $e446_movimento = $itemdiaria->e446_movimento;   
-                            $e446_motivo = $itemdiaria->e446_motivo;   
-                            $e446_datainicio = $itemdiaria->e446_datainicio;   
-                            $e446_datafim = $itemdiaria->e446_datafim;   
-                            $e446_regist = $itemdiaria->e446_regist;   
-                            $e446_destino = $itemdiaria->e446_destino;   
-                            $e446_tipodiaria = $itemdiaria->e446_tipodiaria;   
+                            $e446_movimento = $itemdiaria->e446_movimento;
+                            $e446_motivo = $itemdiaria->e446_motivo;
+                            $e446_datainicio = $itemdiaria->e446_datainicio;
+                            $e446_datafim = $itemdiaria->e446_datafim;
+                            $e446_regist = $itemdiaria->e446_regist;
+                            $e446_destino = $itemdiaria->e446_destino;
+                            $e446_tipodiaria = $itemdiaria->e446_tipodiaria;
                         }
-                        db_input('e446_sequencial', 10, $Ie446_sequencial, true, 'hidden',1);
-                        db_input('e446_empprestaitem', 10, $Ie446_empprestaitem, true, 'hidden',1);
-                        db_input('e446_quantidade', 10, $Ie446_quantidade, true, 'hidden',1);
-                        db_input('e446_movimento', 10, $Ie446_movimento, true, 'hidden',1);
+                        db_input('e446_sequencial', 10, $Ie446_sequencial, true, 'hidden', 1);
+                        db_input('e446_empprestaitem', 10, $Ie446_empprestaitem, true, 'hidden', 1);
+                        db_input('e446_quantidade', 10, $Ie446_quantidade, true, 'hidden', 1);
+                        db_input('e446_movimento', 10, $Ie446_movimento, true, 'hidden', 1);
 
                         $e446_datainicio_dia = substr($e446_datainicio, 8);
                         $e446_datainicio_mes = substr($e446_datainicio, 5, 2);
@@ -189,7 +188,7 @@ if (!empty($e45_tipo)) {
                             <?=@$Le46_nome?>
                         </td>
                         <td>
-                            <?php db_input('e46_nome',40,$Ie46_nome,true,'text',$db_opcao,"");?>
+                            <?php db_input('e46_nome', 40, $Ie46_nome, true, 'text', $db_opcao, "");?>
                         </td>
                         <?php
                     }?>
@@ -199,7 +198,7 @@ if (!empty($e45_tipo)) {
                         <?=@$Le46_nota?>
                     </td>
                     <td>
-                        <?php db_input('e46_nota',20,$Ie46_nota,true,'text',$db_opcao,"");?>
+                        <?php db_input('e46_nota', 20, $Ie46_nota, true, 'text', $db_opcao, "");?>
                     </td>
                 </tr>
                 <tr>
@@ -207,7 +206,7 @@ if (!empty($e45_tipo)) {
                         <?=@$Le46_valor?>
                     </td>
                     <td>
-                        <?php db_input('e46_valor',10,$Ie46_valor,true,'text',$db_opcao,"");?>
+                        <?php db_input('e46_valor', 10, $Ie46_valor, true, 'text', $db_opcao, "");?>
                     </td>
                 </tr>
                 <tr>
@@ -215,7 +214,7 @@ if (!empty($e45_tipo)) {
                         <?=@$Le46_cnpj?>
                     </td>
                     <td>
-                        <?php db_input('e46_cnpj',14,$Ie46_cnpj,true,'text',$db_opcao,"");?>
+                        <?php db_input('e46_cnpj', 14, $Ie46_cnpj, true, 'text', $db_opcao, "");?>
                     </td>
                 </tr>
                 <tr>
@@ -223,14 +222,14 @@ if (!empty($e45_tipo)) {
                         <?=@$Le46_cpf?>
                     </td>
                     <td>
-                        <?php db_input('e46_cpf',11,$Ie46_cpf,true,'text',$db_opcao,"");?>
+                        <?php db_input('e46_cpf', 11, $Ie46_cpf, true, 'text', $db_opcao, "");?>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap title="<?=@$Te46_descr?>" colspan="2">
                         <fieldset>
                             <legend><b><?=@$Le46_descr?></b></legend>
-                            <?php db_textarea('e46_descr',5,60,$Ie46_descr,true,'text',$db_opcao,"");?>
+                            <?php db_textarea('e46_descr', 5, 60, $Ie46_descr, true, 'text', $db_opcao, "");?>
                         </fieldset>
                     </td>
                 </tr>
@@ -269,7 +268,7 @@ if (!empty($e45_tipo)) {
                     <tr>
                         <td nowrap title="<?=@$Te446_tipodiaria?>"><?=@$Le446_tipodiaria?></td>
                         <td>
-                            <?php 
+                            <?php
                             $arr = array("dentroestado"=>"Dentro do Estado", "foraestado"=>"Fora do Estado","forapais"=>"Fora do País");
                             db_select("e446_tipodiaria", $arr, true, $db_opcao);
                             ?>                        
@@ -293,14 +292,14 @@ if (!empty($e45_tipo)) {
             <tr>
                 <td valign="top"  align="center">
                     <?php
-                    $clemppresta->sql_record($clemppresta->sql_query_emp(null,'e45_acerta','',"e45_acerta is null and e45_numemp=$e46_numemp"));
+                    $clemppresta->sql_record($clemppresta->sql_query_emp(null, 'e45_acerta', '', "e45_acerta is null and e45_numemp=$e46_numemp"));
 
                     if ($clemppresta->numrows==0) {
                         $db_opcao=33;
                     }
                     $chavepri = array("e46_numemp"=>$e46_numemp,"e46_codigo"=>@$e46_codigo);
                     $cliframe_alterar_excluir->chavepri=$chavepri;
-                    $cliframe_alterar_excluir->sql     = $clempprestaitem->sql_query_file(null,"*","","e46_emppresta=$oGet->e45_sequencial");
+                    $cliframe_alterar_excluir->sql     = $clempprestaitem->sql_query_file(null, "*", "", "e46_emppresta=$oGet->e45_sequencial");
                     $cliframe_alterar_excluir->campos  ="e46_codigo,e46_nota,e46_valor,e46_descr,e46_cnpj,e46_cpf,e46_nome";
                     $cliframe_alterar_excluir->legenda="ITENS LANÇADOS";
                     $cliframe_alterar_excluir->iframe_height ="160";

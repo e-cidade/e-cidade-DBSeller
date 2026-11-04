@@ -98,13 +98,13 @@ if ($iNumeroLinhas != false){
 db_query("begin");
 db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
 
-$sCampos = split("-",$sOrgao);
+$sCampos =explode("-",$sOrgao);
 
 for($i = 0;$i < sizeof($sCampos);$i++){
 
   $sConcatenaWhere = '';
   $sVirgula        = '';
-  $sCamposSplit    = split("_",$sCampos[$i]);
+  $sCamposSplit    =explode("_",$sCampos[$i]);
 
   for($j = 0;$j < sizeof($sCamposSplit);$j++){
 
@@ -180,8 +180,8 @@ $sData         = $sSiglaPeriodo;
 $sDadosPeriodo = data_periodo($dtAnousu,$sData);
 
 $sPeriodoImpressao        = strtoupper($sDadosPeriodo["periodo"]);
-$sPeriodoInicioImpressao  = split("-",$sDadosPeriodo[0]);
-$sPeriodoFimImpressao     = split("-",$sDadosPeriodo[1]);
+$sPeriodoInicioImpressao  =explode("-",$sDadosPeriodo[0]);
+$sPeriodoFimImpressao     =explode("-",$sDadosPeriodo[1]);
 
 $sMesInicial = strtoupper(db_mes($sPeriodoInicioImpressao[1]));
 $sMesFim     = strtoupper(db_mes($sPeriodoFimImpressao[1]));

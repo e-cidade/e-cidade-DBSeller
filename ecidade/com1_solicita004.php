@@ -58,9 +58,8 @@ require_once(modification("classes/db_pactovalormovsolicitem_classe.php"));
 require_once(modification("classes/db_orctiporecconveniosolicita_classe.php"));
 require_once(modification("classes/db_solicitaprotprocesso_classe.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
-
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clsolicita = new cl_solicita;
 $clsolicitem = new cl_solicitem;
 $clsolicitemele = new cl_solicitemele;
@@ -290,8 +289,6 @@ if (isset ($incluir) || (isset ($importar) && $confirma == true)) {
     }
 
     if (isset ($importar) && trim($importar) != "" && $sqlerro == false) {
-
-
         if (isset($lRegistroPreco)) {
             $sItensNaoImportados = db_getsession("sCodigoItensSemSaldo");
         }
@@ -310,7 +307,8 @@ if (isset ($incluir) || (isset ($importar) && $confirma == true)) {
 		                                             pc11_pgto,
 		                                             pc11_resum,
 		                                             pc11_just,
-		                                             pc11_liberado",
+		                                             pc11_liberado,
+		                                             pc11_servicoquantidade",
             "pc11_seq",
             " pc11_numero=" . $importar . " {$sWhereItens}");
         //die($sSqlItem);
@@ -355,7 +353,10 @@ if (isset ($incluir) || (isset ($importar) && $confirma == true)) {
                 $clsolicitem->pc11_pgto = addslashes(stripslashes(chop($pc11_pgto)));
                 $clsolicitem->pc11_resum = addslashes(stripslashes(chop($pc11_resum)));
                 $clsolicitem->pc11_just = addslashes(stripslashes(chop($pc11_just)));
-
+                $clsolicitem->pc11_servicoquantidade = $pc11_servicoquantidade;
+                if ($pc11_quant <= 1) {
+                    $clsolicitem->pc11_servicoquantidade = 'f';
+                }
                 if (isset($param) && trim($param) != "") {
                     $liberado = "true";
                 } else {

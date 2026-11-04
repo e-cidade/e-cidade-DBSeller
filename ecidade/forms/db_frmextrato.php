@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clextrato->rotulo->label();
        <?=@$Lk85_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k85_sequencial',10,$Ik85_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('k85_sequencial',10,$Ik85_sequencial,true,'text',3,"")
        <?=@$Lk85_codbco?>
     </td>
     <td> 
-<?
+<?php
 db_input('k85_codbco',3,$Ik85_codbco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('k85_codbco',3,$Ik85_codbco,true,'text',$db_opcao,"")
        <?=@$Lk85_dtproc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k85_dtproc',@$k85_dtproc_dia,@$k85_dtproc_mes,@$k85_dtproc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('k85_dtproc',@$k85_dtproc_dia,@$k85_dtproc_mes,@$k85_dtproc_ano,tru
        <?=@$Lk85_dtarq?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k85_dtarq',@$k85_dtarq_dia,@$k85_dtarq_mes,@$k85_dtarq_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('k85_dtarq',@$k85_dtarq_dia,@$k85_dtarq_mes,@$k85_dtarq_ano,true,'t
        <?=@$Lk85_convenio?>
     </td>
     <td> 
-<?
+<?php
 db_input('k85_convenio',20,$Ik85_convenio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('k85_convenio',20,$Ik85_convenio,true,'text',$db_opcao,"")
        <?=@$Lk85_seqarq?>
     </td>
     <td> 
-<?
+<?php
 db_input('k85_seqarq',10,$Ik85_seqarq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('k85_seqarq',10,$Ik85_seqarq,true,'text',$db_opcao,"")
        <?=@$Lk85_nomearq?>
     </td>
     <td> 
-<?
+<?php
 db_input('k85_nomearq',255,$Ik85_nomearq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('k85_nomearq',255,$Ik85_nomearq,true,'text',$db_opcao,"")
        <?=@$Lk85_tipoinclusao?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Automatica','2'=>'Manual');
 db_select('k85_tipoinclusao',$x,true,$db_opcao,"");
 ?>
@@ -124,7 +124,7 @@ db_select('k85_tipoinclusao',$x,true,$db_opcao,"");
        <?=@$Lk85_conteudo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k85_conteudo',0,0,$Ik85_conteudo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -140,7 +140,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_extrato.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

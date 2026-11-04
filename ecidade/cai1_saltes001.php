@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,97 +42,118 @@ $clsaltes = new cl_saltes;
 $db_opcao = 1;
 $db_botao = true;
 
-if ( isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir" ) {
+if ( isset($submit) && $submit == "Incluir" ) {
 
-  $erro=false;
-  db_inicio_transacao();
+  try {
 
-  $dtImplantacao = explode("/",$k13_dtimplantacao,3);
-  $dtDia         = $dtImplantacao[0];
-  $dtMes         = $dtImplantacao[1];
-  $dtAno         = $dtImplantacao[2];
-  $dtImplantacao = date('Y-m-d', mktime(0,0,0, $dtMes, $dtDia-1, $dtAno));
+    db_inicio_transacao();
 
-  $clsaltes->k13_dtimplantacao = $dtImplantacao;
-  $clsaltes->incluir($k13_reduz);
+    $dtImplantacao = explode("/",$k13_dtimplantacao,3);
+    $dtDia         = $dtImplantacao[0];
+    $dtMes         = $dtImplantacao[1];
+    $dtAno         = $dtImplantacao[2];
+    $dtImplantacao = date('Y-m-d', mktime(0,0,0, $dtMes, $dtDia-1, $dtAno));
 
-  if ( $clsaltes->erro_status == 0 ) {
-    $erro = true;
-  }
-
-  if ( !$erro && $k103_contrapartida != '' ) {
-
-    $oDaosaltesContra                     = new cl_saltescontrapartida;
-    $oDaosaltesContra->k103_contrapartida = $k103_contrapartida;
-    $oDaosaltesContra->k103_saltes        = $k13_reduz;
-    $oDaosaltesContra->incluir(null);
-
-    if ( $oDaosaltesContra->erro_status == 0 ){
-
-      $clsaltes->erro_status = 0;
-      $clsaltes->erro_msg    = $oDaosaltesContra->erro_msg;
-      $erro                  = true;
-
+    $clsaltes->k13_dtimplantacao = $dtImplantacao;
+    $clsaltes->incluir($k13_reduz);
+    if ( $clsaltes->erro_status == 0 ) {
+      throw new Exception($clsaltes->erro_msg);
     }
-  }
-  if ( !$erro && $k109_saltesextra != '' ) {
 
-    $oDaosaltesExtra                  = new cl_saltesextra;
-    $oDaosaltesExtra->k109_contaextra = $k109_saltesextra;
-    $oDaosaltesExtra->k109_saltes     = $k13_reduz;
-    $oDaosaltesExtra->incluir(null);
+    if (!empty($k103_contrapartida)) {
 
-    if ($oDaosaltesExtra->erro_status == 0){
-
-      $clsaltes->erro_status = 0;
-      $clsaltes->erro_msg    = $oDaosaltesExtra->erro_msg;
-      $erro                  = true;
-
+      $oDaosaltesContra                     = new cl_saltescontrapartida;
+      $oDaosaltesContra->k103_contrapartida = $k103_contrapartida;
+      $oDaosaltesContra->k103_saltes        = $k13_reduz;
+      $oDaosaltesContra->incluir(null);
+      if ( $oDaosaltesContra->erro_status == 0 ){
+        throw new Exception($oDaosaltesContra->erro_msg);
+      }
     }
-  }
-  /** [ExtensaoFiltroDespesa] Modificacao 1 */
+    if (!empty($k109_saltesextra)) {
 
-  db_fim_transacao($erro);
+      $oDaosaltesExtra                  = new cl_saltesextra;
+      $oDaosaltesExtra->k109_contaextra = $k109_saltesextra;
+      $oDaosaltesExtra->k109_saltes     = $k13_reduz;
+      $oDaosaltesExtra->incluir(null);
+      if ($oDaosaltesExtra->erro_status == 0){
+        throw new Exception($oDaosaltesExtra->erro_msg);
+      }
+    }
+
+    if (!empty($departamentos)) {
+
+        $aDepartamentos = json_decode(stripslashes($departamentos));
+        foreach ($aDepartamentos as $iInd => $oDepartamento) {
+
+            $clSaltesDepartamento = new cl_saltesdepartamento();
+            $clSaltesDepartamento->k212_departamento = $oDepartamento->codigo;
+            $clSaltesDepartamento->k212_saltes = $k13_reduz;
+            $clSaltesDepartamento->k212_principal = ($oDepartamento->principal == "t")?"true":"false";
+            $clSaltesDepartamento->incluir(null);
+            if ($clSaltesDepartamento->erro_status == "0") {
+                throw new Exception($clSaltesDepartamento->erro_msg);
+            }
+        }
+    }
+
+    db_fim_transacao();
+
+  } catch (Exception $eErro) {
+
+    db_fim_transacao(true);
+
+    $clsaltes->erro_status = 0;
+    $clsaltes->erro_msg    = $eErro->getMessage();
+    $erro                  = true;
+
+  }
 }
 ?>
-  <html>
-  <head>
-    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <link href="estilos.css" rel="stylesheet" type="text/css">
-  </head>
-  <body style="background-color: #CCCCCC; margin-top: 30px;" >
+<html>
+
+<head>
+  <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Expires" CONTENT="0">
+  <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+  <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+  <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+  <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
+  <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
+  <link href="estilos.css" rel="stylesheet" type="text/css">
+  <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
   <div class="container">
     <?php
-    require_once(modification(Modification::getFile("forms/db_frmsaltes.php")));
+    require_once(modification("forms/db_frmsaltes.php"));
     ?>
   </div>
-  <?
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+  <?php
+  db_menu();
   ?>
-  </body>
-  </html>
-<?
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Incluir"){
+</body>
 
-  if ( $clsaltes->erro_status == "0" ) {
+</html>
+<?php
+if (isset($submit) && $submit == "Incluir") {
 
-    $clsaltes->erro(true,false);
-    $db_botao=true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+  if ($clsaltes->erro_status == "0") {
 
-    if($clsaltes->erro_campo!=""){
+    $clsaltes->erro(true, false);
+    $db_botao = true;
+    echo "<script> document.form1.submit.disabled=false;</script>  ";
 
-      echo "<script> document.form1.".$clsaltes->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clsaltes->erro_campo.".focus();</script>";
-    };
+    if ($clsaltes->erro_campo != "") {
+
+      echo "<script> document.form1." . $clsaltes->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
+      echo "<script> document.form1." . $clsaltes->erro_campo . ".focus();</script>";
+    }
   } else {
 
-    $clsaltes->erro(true,true);
-  };
-};
+    $clsaltes->erro(true, true);
+  }
+}
 ?>

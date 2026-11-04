@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("k02_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj57_zona?>">
-       <?
+       <?php
        db_ancora(@$Lj57_zona,"js_pesquisaj57_zona(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j57_zona',10,$Ij57_zona,true,'text',$db_opcao," onchange='js_pesquisaj57_zona(false);'")
 ?>
-       <?
+       <?php
 db_input('j50_descr',40,$Ij50_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj57_receit?>">
-       <?
+       <?php
        db_ancora(@$Lj57_receit,"js_pesquisaj57_receit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j57_receit',4,$Ij57_receit,true,'text',$db_opcao," onchange='js_pesquisaj57_receit(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        <?=@$Lj57_anousu?>
     </td>
     <td> 
-<?
+<?php
 $j57_anousu = db_getsession('DB_anousu');
 db_input('j57_anousu',4,$Ij57_anousu,true,'text',$db_opcao,"")
 ?>
@@ -80,7 +80,7 @@ db_input('j57_anousu',4,$Ij57_anousu,true,'text',$db_opcao,"")
        <?=@$Lj57_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('j57_valor',15,$Ij57_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -142,7 +142,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_zonastaxa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

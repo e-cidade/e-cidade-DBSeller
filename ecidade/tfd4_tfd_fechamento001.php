@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -33,7 +33,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
- 
+
 define("URL_MENSAGEM_TFD4_TDF_FECHAMENTO", "saude.tfd.tfd4_tfd_fechamento.");
 $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
 
@@ -43,7 +43,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+    <?php
     db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
     db_app::load("estilos.css, grid.style.css");
   ?>
@@ -54,12 +54,12 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
     <form name="form1" action="">
       <fieldset >
         <legend>Fechamento de Competência</legend>
-        
+
         <table class='form-container'>
           <tr style="display: none;">
             <td><input type="text" value='' id='codigoFechamento' /></td>
           </tr>
-          
+
           <tr title="<?php echo _M(URL_MENSAGEM_TFD4_TDF_FECHAMENTO . "title_competencia"); ?>" >
             <td class="bold" nowrap="nowrap"> Competência Mês/Ano:</td>
             <td nowrap="nowrap">
@@ -74,21 +74,21 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
           <tr title="<?php echo _M(URL_MENSAGEM_TFD4_TDF_FECHAMENTO . "title_periodo"); ?>">
             <td class="bold" nowrap="nowrap">Período de Fechamento:</td>
             <td nowrap="nowrap">
-              <?php 
+              <?php
               db_inputdata('dataInicio', '','', '', true, 'text', 1, "onchange='validaIntervaloDatas();'","","","parent.validaIntervaloDatas();");
               echo " <b>à<b> ";
               db_inputdata('dataFim', '','', '', true, 'text', 1, "onchange='validaIntervaloDatas();'","","","parent.validaIntervaloDatas();");
               ?>
             </td>
           </tr>
-          
+
           <tr title="<?php echo _M(URL_MENSAGEM_TFD4_TDF_FECHAMENTO . "title_data_sistema"); ?>">
             <td class="bold" nowrap="nowrap">Data Sistema:</td>
             <td nowrap="nowrap">
               <?php db_input("dataSistema", 10, "", true, "text", 3); ?>
             </td>
           </tr>
-          
+
           <tr title='<?php echo _M(URL_MENSAGEM_TFD4_TDF_FECHAMENTO . "title_financiamento"); ?>'>
             <td class="bold" nowrap="nowrap">Tipo Financiamnto:</td>
             <td nowrap="nowrap">
@@ -97,7 +97,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
               </select>
             </td>
           </tr>
-          
+
           <tr title=" <?php echo _M(URL_MENSAGEM_TFD4_TDF_FECHAMENTO . "title_descricao_fechamento"); ?>">
             <td class="bold" nowrap="nowrap">Descrição:</td>
             <td nowrap="nowrap">
@@ -105,11 +105,11 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
             </td>
           </tr>
         </table>
-        
+
       </fieldset>
       <input type="button" name="salvar" id="salvar" value="Salvar" onclick="js_salvar();"/>
       <input type="button" name="cancelar" id="cancelar" disabled="disabled" value="Cancelar" onclick="js_limpar();"/>
-    </form>  
+    </form>
   </div>
   <div class="subcontainer">
       <fieldset style="width: 980px;">
@@ -118,7 +118,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
         </div>
       </fieldset>
   </div>
-<?
+  <?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -136,7 +136,7 @@ oGridFechamento.nameInstance = "oGridFechamento";
 
 var aWidth = new Array('8%', '13%', '8%', '8%', '20%', '8%', '8%', '21%', '6%');
 var aAlign = new Array('center', 'left', 'center', 'center', 'left', 'center', 'center', 'left', 'center');
-var aHeader = new Array("Competência", "Financiamento", "Dt. Inicio", "Dt. Fim", "Descrição", "Dt. Sistema", 
+var aHeader = new Array("Competência", "Financiamento", "Dt. Inicio", "Dt. Fim", "Descrição", "Dt. Sistema",
                         "Hora Sistema", "Usuário", "Ação");
 
 oGridFechamento.setCellWidth(aWidth);
@@ -150,13 +150,13 @@ function validaIntervaloDatas() {
   if ($F('dataFim') != '' && $F('dataInicio') != '') {
 
     if (js_comparadata($F('dataInicio'), $F('dataFim'), " > ")) {
-      
+
       alert(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO + "periodo_inicial_maior_final"));
       $('dataFim').value = '';
       return false;
     }
   }
-  
+
   return true;
 }
 
@@ -178,30 +178,30 @@ function js_validaDados() {
   }
 
   if ($F('dataInicio') == '' && $F('dataFim') == '') {
-    
+
     alert(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"periodo_fechamento_vazio"));
     return false;
    }
-  
+
   if ($F('dataInicio') == '' && $F('dataFim') != '') {
-    
+
    alert(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"periodo_inicial_vazio"));
    return false;
   }
-  
+
   if ($F('dataFim') == '' && $F('dataInicio') != '') {
-   
+
    alert(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"periodo_final_vazio"));
    return false;
   }
 
   if ($F('descricao') == '') {
-    
+
     alert(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"descricao_fechamento_vazio"));
-    return false; 
+    return false;
   }
 
-  return true;  
+  return true;
 }
 
 function js_validaMes() {
@@ -212,7 +212,7 @@ function js_validaMes() {
     alert(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"mes_competencia_invalido"));
     return false;
   }
-  
+
   $('mesCompetencia').value = js_strLeftPad($F('mesCompetencia'), 2, '0');
   return true;
 }
@@ -233,10 +233,10 @@ function js_sugereDescricao() {
   if ($F('mesCompetencia') == '' || $F('anoCompetencia') == '') {
     return false;
   }
-  
+
   var sMes = aMes[ parseInt($F('mesCompetencia'), 10) -1 ];
 
-  $('descricao').value = "COMP " + sMes + "/" + $F('anoCompetencia');  
+  $('descricao').value = "COMP " + sMes + "/" + $F('anoCompetencia');
 }
 
 /**
@@ -249,9 +249,9 @@ function js_buscaDadosFinanciamentos() {
   oParametros.exec = "getFinanciamentosAtualizados";
 
   var oRequest = {};
-  oRequest.method     = 'post';                            
-  oRequest.parameters = 'json='+Object.toJSON(oParametros); 
-  oRequest.onComplete = js_retornoBuscaDadosFinanciamentos; 
+  oRequest.method     = 'post';
+  oRequest.parameters = 'json='+Object.toJSON(oParametros);
+  oRequest.onComplete = js_retornoBuscaDadosFinanciamentos;
 
   js_divCarregando(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"aguarde_busca_finaciamentos"), "db_msgBox");
   new Ajax.Request(RPC, oRequest);
@@ -284,9 +284,9 @@ function js_buscaCompetenciasEncerradas() {
   oParametros.exec = "getDadosCompetenciaEncerrada";
 
   var oRequest = {};
-  oRequest.method     = 'post';                            
-  oRequest.parameters = 'json='+Object.toJSON(oParametros); 
-  oRequest.onComplete = js_retornoBuscaUltimaCompetenciaEncerrada; 
+  oRequest.method     = 'post';
+  oRequest.parameters = 'json='+Object.toJSON(oParametros);
+  oRequest.onComplete = js_retornoBuscaUltimaCompetenciaEncerrada;
 
   js_divCarregando(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"aguarde_competencias_encerradas"), "db_msgBoxB");
   new Ajax.Request(RPC, oRequest);
@@ -311,7 +311,7 @@ function js_retornoBuscaUltimaCompetenciaEncerrada(oAjax) {
         sFinanciamento = $('financiamento').options[i].innerHTML;
       }
     }
-    
+
     var btnAlterar = new Element('input', {'type':'button', 'value':'A', 'name':idAlterar, 'id':idAlterar, 'codigo': oDados.iCodigoFechamento});
     var btnExcluir = new Element('input', {'type':'button', 'value':'E', 'name':idExcluir, 'id':idExcluir, 'codigo': oDados.iCodigoFechamento});
     var aLinha     = new Array();
@@ -325,9 +325,9 @@ function js_retornoBuscaUltimaCompetenciaEncerrada(oAjax) {
     aLinha.push(oDados.sUsuario.urlDecode());
     aLinha.push(btnAlterar.outerHTML + btnExcluir.outerHTML);
     oGridFechamento.addRow(aLinha);
-    
+
   });
-  
+
   oGridFechamento.renderRows();
 
   oRetorno.aDados.each(function (oDados) {
@@ -343,7 +343,7 @@ function js_retornoBuscaUltimaCompetenciaEncerrada(oAjax) {
                           js_excluirFechamento(oDados);
                         };
   });
-  
+
 };
 
 /**
@@ -360,7 +360,7 @@ function js_retornoBuscaUltimaCompetenciaEncerrada(oAjax) {
  * Seta os dados do fechamento no formulário disponibilizando alteração
  */
 function js_alterarFechamento(oDadosFechamento) {
-  
+
   $('codigoFechamento').value = oDadosFechamento.iCodigoFechamento;
   $('mesCompetencia').value   = js_strLeftPad(oDadosFechamento.iMesCompetencia, 2, '0');
   $('anoCompetencia').value   = oDadosFechamento.iAnoCompetencia;
@@ -385,15 +385,15 @@ function js_excluirFechamento(oDadosFechamento) {
                                                    {'descricaoFechamento': oDadosFechamento.sDescricao.urlDecode()}))) {
       return false;
     }
-    
+
     var oParametros     = {};
     oParametros.exec    = "remover";
     oParametros.iCodigo = oDadosFechamento.iCodigoFechamento
 
     var oRequest        = {};
-    oRequest.method     = 'post';                            
-    oRequest.parameters = 'json='+Object.toJSON(oParametros); 
-    oRequest.onComplete = js_retornoExcluiFechamento; 
+    oRequest.method     = 'post';
+    oRequest.parameters = 'json='+Object.toJSON(oParametros);
+    oRequest.onComplete = js_retornoExcluiFechamento;
 
     js_divCarregando(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"aguarde_excluindo"), "db_msgBoxC");
     new Ajax.Request(RPC, oRequest);
@@ -406,7 +406,7 @@ function js_retornoExcluiFechamento(oAjax) {
   var oRetorno = JSON.parse(oAjax.responseText);
 
   if (oRetorno.status == 1) {
-    
+
     js_buscaCompetenciasEncerradas()
     alert(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"exclusao_competencia_com_sucesso"));
   } else {
@@ -441,25 +441,25 @@ function js_salvar() {
 
   var oParametros             = {};
   oParametros.exec            = "processar";
-  oParametros.iCodigo         = $F('codigoFechamento'); 
-  oParametros.iMesCompetencia = $F('mesCompetencia');   
-  oParametros.iAnoCompetencia = $F('anoCompetencia');   
-  oParametros.dtInicio        = $F('dataInicio');       
-  oParametros.dtFim           = $F('dataFim');          
-  oParametros.dtSistema       = $F('dataSistema');      
-  oParametros.iFinanciamento  = $F('financiamento');    
-  oParametros.sDescricao      = encodeURIComponent(tagString($F('descricao')));        
+  oParametros.iCodigo         = $F('codigoFechamento');
+  oParametros.iMesCompetencia = $F('mesCompetencia');
+  oParametros.iAnoCompetencia = $F('anoCompetencia');
+  oParametros.dtInicio        = $F('dataInicio');
+  oParametros.dtFim           = $F('dataFim');
+  oParametros.dtSistema       = $F('dataSistema');
+  oParametros.iFinanciamento  = $F('financiamento');
+  oParametros.sDescricao      = encodeURIComponent(tagString($F('descricao')));
 
   var oRequest        = {};
-  oRequest.method     = 'post';                            
-  oRequest.parameters = 'json='+Object.toJSON(oParametros); 
-  oRequest.onComplete = js_retornoSalvar; 
+  oRequest.method     = 'post';
+  oRequest.parameters = 'json='+Object.toJSON(oParametros);
+  oRequest.onComplete = js_retornoSalvar;
 
   js_divCarregando(_M(URL_MENSAGEM_TFD4_TFD_FECHAMENTO+"aguarde_salvando"), "db_msgBoxD");
   new Ajax.Request(RPC, oRequest);
 }
 
- 
+
 function js_retornoSalvar(oAjax) {
 
   js_removeObj('db_msgBoxD');
@@ -471,8 +471,8 @@ function js_retornoSalvar(oAjax) {
     js_limpar();
     js_buscaCompetenciasEncerradas();
   } else {
-    alert(oRetorno.message.urlDecode());  
+    alert(oRetorno.message.urlDecode());
   }
-  
+
 };
 </script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("j50_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj51_zona?>">
-       <?
+       <?php
        db_ancora(@$Lj51_zona,"js_pesquisaj51_zona(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j51_zona',10,$Ij51_zona,true,'text',$db_opcao," onchange='js_pesquisaj51_zona(false);'")
 ?>
-       <?
+       <?php
 db_input('j50_descr',40,$Ij50_descr,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('j50_descr',40,$Ij50_descr,true,'text',3,'')
        <?=@$Lj51_anousu?>
     </td>
     <td> 
-<?
+<?php
 $j51_anousu = db_getsession('DB_anousu');
 db_input('j51_anousu',4,$Ij51_anousu,true,'text',$db_opcao,"")
 ?>
@@ -64,7 +64,7 @@ db_input('j51_anousu',4,$Ij51_anousu,true,'text',$db_opcao,"")
        <?=@$Lj51_valorm2t?>
     </td>
     <td> 
-<?
+<?php
 db_input('j51_valorm2t',15,$Ij51_valorm2t,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('j51_valorm2t',15,$Ij51_valorm2t,true,'text',$db_opcao,"")
        <?=@$Lj51_valorm2c?>
     </td>
     <td> 
-<?
+<?php
 db_input('j51_valorm2c',10,$Ij51_valorm2c,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_zonasvalor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

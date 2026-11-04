@@ -511,7 +511,7 @@ function js_geraresultado(valor, elementos) {
     document.form1.ed43_c_reprovafreq.disabled = true;
   }
 }
-<?
+<?php
 if ($db_opcao == 2) {?>
 
   if (document.form1.ed43_c_obtencao.value == "AT") {
@@ -542,24 +542,24 @@ if ($db_opcao == 2) {?>
 
   if (document.form1.ed43_c_geraresultado.value == "S") {
 
- <? if (ElementosFreq($ed43_i_codigo) > 0) {?>
+ <?php if (ElementosFreq($ed43_i_codigo) > 0) {?>
 
       parent.document.formaba.c3.disabled        = false;
       parent.document.formaba.c3.style.color     = "#black";
       document.form1.ed43_c_reprovafreq.disabled = false;
- <? } else {?>
+ <?php } else {?>
 
       parent.document.formaba.c3.disabled        = false;
       parent.document.formaba.c3.style.color     = "#black";
       document.form1.ed43_c_reprovafreq.disabled = true;
-  <?}?>
+  <?php }?>
   } else {
 
     parent.document.formaba.c3.disabled        = true;
     parent.document.formaba.c3.style.color     = "#9b9b9b";
     document.form1.ed43_c_reprovafreq.disabled = true;
   }
-<?
+<?php
 }
 ?>
 </script>

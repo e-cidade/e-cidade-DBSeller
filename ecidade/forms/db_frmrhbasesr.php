@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("rh27_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh33_base?>">
-       <?
+       <?php
        db_ancora(@$Lrh33_base,"js_pesquisarh33_base(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh33_base',4,$Irh33_base,true,'text',3," onchange='js_pesquisarh33_base(false);'")
 ?>
-       <?
+       <?php
 db_input('rh32_descr',30,$Irh32_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh33_rubric?>">
-       <?
+       <?php
        db_ancora(@$Lrh33_rubric,"js_pesquisarh33_rubric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh33_rubric',4,$Irh33_rubric,true,'text',3," onchange='js_pesquisarh33_rubric(false);'")
 ?>
-       <?
+       <?php
 db_input('rh27_descr',30,$Irh27_descr,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_rhbasesr.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,11 +50,11 @@ $clresponsaveltecnico->rotulo->label("am07_cgm");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam07_sequencial?></label></td>
-          <td><? db_input("am07_sequencial",10,$Iam07_sequencial,true,"text",4,"","chave_am07_sequencial"); ?></td>
+          <td><?php db_input("am07_sequencial",10,$Iam07_sequencial,true,"text",4,"","chave_am07_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam07_cgm?></label></td>
-          <td><? db_input("am07_cgm",10,$Iam07_cgm,true,"text",4,"","chave_am07_cgm");?></td>
+          <td><?php db_input("am07_cgm",10,$Iam07_cgm,true,"text",4,"","chave_am07_cgm");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +62,7 @@ $clresponsaveltecnico->rotulo->label("am07_cgm");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_responsaveltecnico.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_responsaveltecnico.php")==true){
@@ -104,12 +104,12 @@ $clresponsaveltecnico->rotulo->label("am07_cgm");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

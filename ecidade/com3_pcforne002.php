@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,10 +80,10 @@ if (isset($pc60_numcgm)&&$pc60_numcgm!=""){
       </tr>
       <tr>
         <td title="<?=@$Tpc60_dtlanc;?>"><?=@$Lpc60_dtlanc?></td><!-- Data -->
-        <td style="background-color: #FFF; color: #000;"><? echo @$pc60_dtlanc_dia."/".@$pc60_dtlanc_mes."/".@$pc60_dtlanc_ano; ?></td>
+        <td style="background-color: #FFF; color: #000;"><?php echo @$pc60_dtlanc_dia."/".@$pc60_dtlanc_mes."/".@$pc60_dtlanc_ano; ?></td>
         <td title="<?=@$Tpc60_bloqueado?>"><?=@$Lpc60_bloqueado?></td>
         <td style="background-color: #FFF; color: #000;">
-          <?
+          <?php
             /**
              * Verifica se o valor é TRUE ou FALSE para printar na
              * tela SIM ou NÃO
@@ -103,7 +103,7 @@ if (isset($pc60_numcgm)&&$pc60_numcgm!=""){
       <tr>
         <td title="<?=@$Tpc60_obs?>"><?=@$Lpc60_obs?></td><!-- Observações -->
         <td colspan="3" style="background-color: #FFF; color: #000;">
-          <? echo nl2br($pc60_obs); ?>
+          <?php echo nl2br($pc60_obs); ?>
         </td>
       </tr>
     </table>
@@ -112,7 +112,7 @@ if (isset($pc60_numcgm)&&$pc60_numcgm!=""){
   <br />
   <fieldset>
   <legend style="font-weight: bold; font-size: 11px;">&nbsp;Detalhamento&nbsp;</legend>
-  <?
+  <?php
     /**
      * Cria a tabela para navegação vertical
      */

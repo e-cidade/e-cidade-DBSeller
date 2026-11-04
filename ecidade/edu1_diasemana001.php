@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed32_c_descr",true,1,"ed32_c_descr",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  if($cldiasemana->erro_status=="0"){
   $cldiasemana->erro(true,false);

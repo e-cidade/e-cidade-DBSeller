@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE sliprecurso
-class cl_sliprecurso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k29_sequencial = 0; 
-   var $k29_slip = 0; 
-   var $k29_recurso = 0; 
-   var $k29_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_sliprecurso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k29_sequencial = 0;
+   var $k29_slip = 0;
+   var $k29_recurso = 0;
+   var $k29_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k29_sequencial = int4 = Sequencial 
-                 k29_slip = int4 = Código Slip 
-                 k29_recurso = int4 = Recurso 
-                 k29_valor = float8 = Valor 
+                 k29_sequencial = int4 = Sequencial
+                 k29_slip = int4 = Código Slip
+                 k29_recurso = int4 = Recurso
+                 k29_valor = float8 = Valor
                  ";
-   //funcao construtor da classe 
-   function cl_sliprecurso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("sliprecurso"); 
+     $this->rotulo = new rotulo("sliprecurso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_sliprecurso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k29_sequencial = ($this->k29_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k29_sequencial"]:$this->k29_sequencial);
        $this->k29_slip = ($this->k29_slip == ""?@$GLOBALS["HTTP_POST_VARS"]["k29_slip"]:$this->k29_slip);
@@ -80,9 +80,9 @@ class cl_sliprecurso {
      }
    }
    // funcao para inclusao
-   function incluir ($k29_sequencial){ 
+   public function incluir ($k29_sequencial){
       $this->atualizacampos();
-     if($this->k29_slip == null ){ 
+     if($this->k29_slip == null ){
        $this->erro_sql = " Campo Código Slip nao Informado.";
        $this->erro_campo = "k29_slip";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_sliprecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k29_recurso == null ){ 
+     if($this->k29_recurso == null ){
        $this->erro_sql = " Campo Recurso nao Informado.";
        $this->erro_campo = "k29_recurso";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_sliprecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k29_valor == null ){ 
+     if($this->k29_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "k29_valor";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_sliprecurso {
        return false;
      }
      if($k29_sequencial == "" || $k29_sequencial == null ){
-       $result = db_query("select nextval('sliprecurso_k29_sequencial_seq')"); 
+       $result = db_query("select nextval('sliprecurso_k29_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: sliprecurso_k29_sequencial_seq do campo: k29_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: sliprecurso_k29_sequencial_seq do campo: k29_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k29_sequencial = pg_result($result,0,0); 
+       $this->k29_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from sliprecurso_k29_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k29_sequencial)){
@@ -130,10 +130,10 @@ class cl_sliprecurso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k29_sequencial = $k29_sequencial; 
+         $this->k29_sequencial = $k29_sequencial;
        }
      }
-     if(($this->k29_sequencial == null) || ($this->k29_sequencial == "") ){ 
+     if(($this->k29_sequencial == null) || ($this->k29_sequencial == "") ){
        $this->erro_sql = " Campo k29_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_sliprecurso {
        return false;
      }
      $sql = "insert into sliprecurso(
-                                       k29_sequencial 
-                                      ,k29_slip 
-                                      ,k29_recurso 
-                                      ,k29_valor 
+                                       k29_sequencial
+                                      ,k29_slip
+                                      ,k29_recurso
+                                      ,k29_valor
                        )
                 values (
-                                $this->k29_sequencial 
-                               ,$this->k29_slip 
-                               ,$this->k29_recurso 
-                               ,$this->k29_valor 
+                                $this->k29_sequencial
+                               ,$this->k29_slip
+                               ,$this->k29_recurso
+                               ,$this->k29_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ligação do SLIP com seus recurso ($this->k29_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_sliprecurso {
        $resac = db_query("insert into db_acount values($acount,1673,9750,'','".AddSlashes(pg_result($resaco,0,'k29_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k29_sequencial=null) { 
+   public function alterar ($k29_sequencial=null) {
       $this->atualizacampos();
      $sql = " update sliprecurso set ";
      $virgula = "";
-     if(trim($this->k29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_sequencial"])){ 
+     if(trim($this->k29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_sequencial"])){
        $sql  .= $virgula." k29_sequencial = $this->k29_sequencial ";
        $virgula = ",";
-       if(trim($this->k29_sequencial) == null ){ 
+       if(trim($this->k29_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k29_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_sliprecurso {
          return false;
        }
      }
-     if(trim($this->k29_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_slip"])){ 
+     if(trim($this->k29_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_slip"])){
        $sql  .= $virgula." k29_slip = $this->k29_slip ";
        $virgula = ",";
-       if(trim($this->k29_slip) == null ){ 
+       if(trim($this->k29_slip) == null ){
          $this->erro_sql = " Campo Código Slip nao Informado.";
          $this->erro_campo = "k29_slip";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_sliprecurso {
          return false;
        }
      }
-     if(trim($this->k29_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_recurso"])){ 
+     if(trim($this->k29_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_recurso"])){
        $sql  .= $virgula." k29_recurso = $this->k29_recurso ";
        $virgula = ",";
-       if(trim($this->k29_recurso) == null ){ 
+       if(trim($this->k29_recurso) == null ){
          $this->erro_sql = " Campo Recurso nao Informado.";
          $this->erro_campo = "k29_recurso";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_sliprecurso {
          return false;
        }
      }
-     if(trim($this->k29_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_valor"])){ 
+     if(trim($this->k29_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k29_valor"])){
        $sql  .= $virgula." k29_valor = $this->k29_valor ";
        $virgula = ",";
-       if(trim($this->k29_valor) == null ){ 
+       if(trim($this->k29_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "k29_valor";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_sliprecurso {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação do SLIP com seus recurso nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k29_sequencial;
@@ -297,14 +297,14 @@ class cl_sliprecurso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k29_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k29_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k29_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_sliprecurso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação do SLIP com seus recurso nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k29_sequencial;
@@ -361,11 +361,11 @@ class cl_sliprecurso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,10 +387,10 @@ class cl_sliprecurso {
       }
      return $result;
    }
-   function sql_query ( $k29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_sliprecurso {
      $sql2 = "";
      if($dbwhere==""){
        if($k29_sequencial!=null ){
-         $sql2 .= " where sliprecurso.k29_sequencial = $k29_sequencial "; 
-       } 
+         $sql2 .= " where sliprecurso.k29_sequencial = $k29_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,10 +422,10 @@ class cl_sliprecurso {
      }
      return $sql;
   }
-   function sql_query_file ( $k29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,15 +438,15 @@ class cl_sliprecurso {
      $sql2 = "";
      if($dbwhere==""){
        if($k29_sequencial!=null ){
-         $sql2 .= " where sliprecurso.k29_sequencial = $k29_sequencial "; 
-       } 
+         $sql2 .= " where sliprecurso.k29_sequencial = $k29_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -126,8 +126,8 @@ class cl_orcparamseq
             $this->o69_descr = substr($this->o69_labelrel, 0, 60);
 
             if ($this->o69_origem == 0) {
-                $this->o69_totalizador = 't';
-                $this->o69_grupoexclusao = 1;
+                //$this->o69_totalizador = 't';
+                //$this->o69_grupoexclusao = 1;
             }
 
             if ($this->o69_totalizador == "t") {

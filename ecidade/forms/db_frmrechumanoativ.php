@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -121,12 +121,96 @@ $sTipoServidor = $oGet->ed20_i_tiposervidor == 1 ? 'Matrícula:' : 'CGM:';
 </div>
 
 <div class="subcontainer">
-
   <fieldset style = 'width : 900px;'>
     <legend>Atividades do profissional </legend>
     <div id='gridAtividadesProfissional' ></div>
   </fieldset>
 </div>
+
+<div class="subcontainer"style="margin-top:1rem">
+  <fieldset style='width:900px;'>
+    <legend for="observacoes-af">Observações:</legend>
+
+    <a href="javascript:salvarObservacoes()"><button class="register btn btn-primary float-right" style="position:relative;top:-1.5rem">
+        <i class="fa fa-save"></i>
+        Salvar
+    </button></a>
+
+    <textarea rows="4" cols="80" style="width:100%!important;resize:none;top:-1rem;margin-bottom:-1rem;position:relative" maxlength="300" id='observacoes-af'></textarea>
+
+    <label id='strLimite' class="prevent-select float-right" style="position:relative;margin-top:.35rem">Caracteres restantes: <span class="bold" id='limiteCaracteres-af'>300</span></label>
+  </fieldset>
+</div>
+
+<script type="text/javascript" src="assets/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="scripts/session.js"></script>
+<script type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script>
+
+
+$.noConflict();
+jQuery(document).ready(function ($) {
+    let urlApi = '';
+    PHPSession.loadData().then(() => {
+        urlApi = PHPSession.requestApi;
+        getObservacoes()
+    });
+
+    var observacoesAf = document.getElementById('observacoes-af');
+    observacoesAf.oninput = event => {
+        let count = document.getElementById('limiteCaracteres-af');
+        count.innerHTML = 300 - observacoesAf.value.length;
+    };
+
+    function objectToFormData(obj) {
+        const formData = new FormData();
+        Object.entries(obj)
+            .forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+
+        return formData;
+    }
+
+    function salvarObservacoes(event){
+        if (!observacoesAf) return;
+
+        const form = {obs: observacoesAf.value, rechumanoescola: $F('ed75_i_codigo')};
+
+        HttpClient.post(
+            urlApi +'/educacao/escola/atestado-frequencia/salvar-obs-rh',
+            {body: objectToFormData(form)}
+        ).then((response) => {
+            if (response.error) {
+                alert(response.message);
+                return
+            }
+
+            alert('Observação salva com sucesso!')
+        });
+    }
+
+    function getObservacoes() {
+        let rechumanoescola = $F('ed75_i_codigo')
+        if (!rechumanoescola || !observacoesAf) return;
+
+        HttpClient.get(
+            urlApi +'/educacao/escola/atestado-frequencia/salvar-obs-rh/'+rechumanoescola
+        ).then((response) => {
+            if (response.error) {
+                alert(response.message);
+                return
+            }
+
+            if (response.data) {
+                observacoesAf.value = response.data
+            }
+        });
+    }
+
+    window['salvarObservacoes'] = salvarObservacoes;
+});
+</script>
 
 <script language="JavaScript" type="text/javascript" src="scripts/widgets/Input/DBInput.widget.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/widgets/Input/DBInputDate.widget.js"></script>

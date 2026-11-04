@@ -80,12 +80,12 @@ function js_troca(rel){
         <table >
         <tr>
           <td nowrap title="<?=@$Td40_codigo?>">
-            <?
+            <?php
                db_ancora(@$Ld40_codigo,"js_contri(true);",$db_opcao);
             ?>
           </td>
           <td colspan="2">
-            <?
+            <?php
               db_input('d40_codigo',7,$Id40_codigo,true,'text',$db_opcao," onchange='js_contri(false);'");
               db_input('j14_nome',40,$Ij14_nome,true,'text',3);
             ?>
@@ -96,7 +96,7 @@ function js_troca(rel){
       	     <strong>Relatório:</strong>
       	   </td>
            <td height="25" nowrap  align="left" >
-              <?
+              <?php
               $result=array("1"=>"Pavimentação","2"=>"Pavimentação Solidária","3"=>"Financeiro");
               db_select("relatorio",$result,true,$db_opcao,"onchange='js_troca(this.value);'");
               ?>
@@ -113,7 +113,7 @@ function js_troca(rel){
   	 <input name="gerar" type="button" id="boletim" onClick="js_relatorio()" value="Gerar relatório"/>
     </form>
   </div>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

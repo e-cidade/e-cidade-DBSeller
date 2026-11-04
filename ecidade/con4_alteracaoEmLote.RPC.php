@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ try {
 
             $novoTemplate = array();
             $totalTamanhoColunas = 100;
-            foreach ($template as &$coluna) {
+            foreach ($template as $coluna) {
                 if (empty($coluna->dinamico)) {
                     $coluna->width = ((int)$coluna->width)."%";
 

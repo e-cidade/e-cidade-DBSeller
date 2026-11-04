@@ -52,13 +52,13 @@ class cl_rhlotavincele {
                  rh28_codelenov = int4 = Elemento novo
                  ";
    //funcao construtor da classe
-   function cl_rhlotavincele() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotavincele");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_rhlotavincele {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh28_codlotavinc = ($this->rh28_codlotavinc == ""?@$GLOBALS["HTTP_POST_VARS"]["rh28_codlotavinc"]:$this->rh28_codlotavinc);
        $this->rh28_codeledef = ($this->rh28_codeledef == ""?@$GLOBALS["HTTP_POST_VARS"]["rh28_codeledef"]:$this->rh28_codeledef);
@@ -78,7 +78,7 @@ class cl_rhlotavincele {
      }
    }
    // funcao para inclusao
-   function incluir ($rh28_codlotavinc,$rh28_codeledef){
+   public function incluir ($rh28_codlotavinc,$rh28_codeledef){
       $this->atualizacampos();
      if($this->rh28_codelenov == null ){
        $this->erro_sql = " Campo Elemento novo nao Informado.";
@@ -155,7 +155,7 @@ class cl_rhlotavincele {
      return true;
    }
    // funcao para alteracao
-   function alterar ($rh28_codlotavinc=null,$rh28_codeledef=null) {
+   public function alterar ($rh28_codlotavinc=null,$rh28_codeledef=null) {
       $this->atualizacampos();
      $sql = " update rhlotavincele set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_rhlotavincele {
      }
    }
    // funcao para exclusao
-   function excluir ($rh28_codlotavinc=null,$rh28_codeledef=null,$dbwhere=null) {
+   public function excluir ($rh28_codlotavinc=null,$rh28_codeledef=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh28_codlotavinc,$rh28_codeledef));
      }else{
@@ -324,7 +324,7 @@ class cl_rhlotavincele {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -347,7 +347,7 @@ class cl_rhlotavincele {
      return $result;
    }
 
-   function sql_query_ele ( $rh28_codlotavinc=null,$rh28_codeledef=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_ele ( $rh28_codlotavinc=null,$rh28_codeledef=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -369,6 +369,8 @@ class cl_rhlotavincele {
      $sql .= "       left join rhlotavincrec  on rhlotavincrec.rh43_codlotavinc = rhlotavincele.rh28_codlotavinc " ;
      $sql .= "                                and rhlotavincrec.rh43_codelenov = rhlotavincele.rh28_codelenov ";
      $sql .= "       left join orctiporec     on orctiporec.o15_codigo = rhlotavincrec.rh43_recurso " ;
+     $sql .= "       left join complementofonterecurso on o200_sequencial = o15_complemento " ;
+     $sql .= "       left join fonterecurso  on orctiporec_id = o15_codigo and exercicio = orcelemento.o56_anousu " ;
 
      $sql .= "      left  join orcfuncao      on  orcfuncao.o52_funcao       = rhlotavincativ.rh39_funcao      ";
      $sql .= "      left  join orcsubfuncao   on  orcsubfuncao.o53_subfuncao = rhlotavincativ.rh39_subfuncao   ";
@@ -409,7 +411,7 @@ class cl_rhlotavincele {
      }
      return $sql;
   }
-   function sql_query ( $rh28_codlotavinc=null,$rh28_codeledef=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $rh28_codlotavinc=null,$rh28_codeledef=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -452,7 +454,7 @@ class cl_rhlotavincele {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $rh28_codlotavinc=null,$rh28_codeledef=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $rh28_codlotavinc=null,$rh28_codeledef=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

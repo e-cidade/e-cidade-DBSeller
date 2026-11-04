@@ -83,6 +83,10 @@ $sCampos .= " prontuarios.sd24_d_cadastro, ";
 $sCampos .= " prontuarios.sd24_c_cadastro, ";
 $sCampos .= " prontuarios.sd24_i_numcgs, ";
 $sCampos .= " cgs_und.z01_v_nome, ";
+$sCampos .= " CASE
+    WHEN cgs_und.z01_nome_social <> '' THEN cast('<div style=\'background-color: #97CAE6 ' || ';width: 100%;height: 16px;display:inline-block;text-align:center;\'>' || cgs_und.z01_nome_social || '</div>' as varchar)
+    WHEN cgs_und.z01_nome_social IS NULL THEN ''
+END as z01_nome_social, ";
 $sCampos .= " cgs_und.z01_d_nasc, ";
 $sCampos .= " cast('<div style=\'background-color: ' || classificacaorisco.sd78_cor || ';width: 150px;height: 16px;display:inline-block;text-align:center;\'>' || classificacaorisco.sd78_descricao || '</div>' as varchar) as dl_Prioridade ";
 

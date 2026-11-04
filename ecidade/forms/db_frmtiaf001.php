@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,24 +33,24 @@
   <tr>
      <tr>
          <td nowrap title="<?=@$Ty90_codtiaf?>"> 
-	    <?
+	    <?php
 	      db_ancora(@$Ly90_codtiaf,"js_pesquisay90_codtiaf(true);",$tipoanctiaf);
 	    ?>
 	 </td>
 	 <td>
-	    <?
+	    <?php
 	     db_input('y90_codtiaf',10,$Iy90_codtiaf,true,'text',3," onchange='js_pesquisay90_codtiaf(false);'");
 	    ?>
 	 </td>
 	 </tr>
    <tr>   
       <td>
-      <?
+      <?php
        	db_ancora($Lz01_numcgm,' js_cgm(true); ',$tipoancgeral);
       ?>
        </td>
        <td> 
-      <?
+      <?php
 	       db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',$db_opcao,"onchange='js_cgm(false)'");
 	       db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -58,12 +58,12 @@
      </tr>
       <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',$tipoancgeral);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',$db_opcao,"onchange='js_inscr(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -75,7 +75,7 @@
        <?=@$Ly90_data?>
     </td>
     <td> 
-	<?
+	<?php
 		db_inputdata('y90_data',@$y90_data_dia,@$y90_data_mes,@$y90_data_ano,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -85,7 +85,7 @@
        <?=@$Ly96_prazo?>
     </td>
     <td> 
-	<?
+	<?php
 		db_inputdata('y96_prazo',@$y96_prazo_dia,@$y96_prazo_mes,@$y96_prazo_ano,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -120,7 +120,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_tiaf.hide();
-  <?
+  <?php
 	  if($db_opcao!=1){
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }

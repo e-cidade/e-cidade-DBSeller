@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,5 +25,5 @@
  *                                licenca/licenca_pt.txt 
  */
 
-$campos = "far_programa.fa12_i_codigo,far_programa.fa12_c_descricao,far_programa.fa12_i_tipoacao,far_programa.fa12_c_depadmin";
+$campos = "far_programa.fa12_i_codigo,far_programa.fa12_c_descricao,far_programa.fa12_i_tipoacao,far_programa.fa12_c_depadmin,case when far_programa.fa12_ativo = 't' then 'SIM' else 'NÃO' end as fa12_ativo";
 ?>

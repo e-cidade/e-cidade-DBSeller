@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,7 +54,7 @@ $clrotulo->label("t31_divisao");
     document.form1.t95_situacdescr.value = situacao;
   }
 </script>
-<?
+<?php
 if(isset($db_opcaoal)){
   $db_opcao=33;
   $db_botao=false;
@@ -95,7 +95,7 @@ if(isset($db_param) && $db_param=='int'){
             <label class="bold" id="lbl_t95_codtran" for="t95_codtran"><?=(@$Lt95_codtran)?></label>
           </td>
           <td>
-            <?
+            <?php
             db_input('depto',40,"",true,'hidden',3,'');
             db_input('t95_codtran',8,$It95_codtran,true,'text',3,"");
             ?>
@@ -103,27 +103,27 @@ if(isset($db_param) && $db_param=='int'){
         </tr>
         <tr>
           <td nowrap title="<?=@$Tt95_codbem?>">
-            <label class="bold" id="lbl_t95_codbem" for="t95_codbem"><?
+            <label class="bold" id="lbl_t95_codbem" for="t95_codbem"><?php
               db_ancora("Bem:", "js_pesquisat95_codbem(true);",($db_opcao==2?3:$db_opcao));
               ?></label>
           </td>
           <td>
-            <?
+            <?php
             db_input('t95_codbem',8,$It95_codbem,true,'text',($db_opcao==2?3:$db_opcao)," onchange='js_pesquisat95_codbem(false);'")
             ?>
-            <?
+            <?php
             db_input('t52_descr',40,$It52_descr,true,'text',3,'')
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tt95_codbem?>">
-            <label class="bold" id="lbl_t52_ident" for="t52_ident"><?
+            <label class="bold" id="lbl_t52_ident" for="t52_ident"><?php
               db_ancora(@$Lt52_ident,"js_pesquisat52_placa(true);",($db_opcao==2?3:$db_opcao));
               ?></label>
           </td>
           <td>
-            <?
+            <?php
             $Nt52_ident = null;
             db_input('t52_ident',8,$It52_ident,true,'text',($db_opcao == 2 ? 3 : $db_opcao)," onchange='js_pesquisat52_placa(false);'")
             ?>
@@ -134,7 +134,7 @@ if(isset($db_param) && $db_param=='int'){
             <label class="bold" id="lbl_t95_situac" for="t95_situac">Situação:</label>
           </td>
           <td>
-            <?
+            <?php
             $result_sit=$clsituabens->sql_record($clsituabens->sql_query_file());
             db_selectrecord('t95_situac',$result_sit,true,'text',$db_opcao);
             if (isset($t95_codbem)&&trim($t95_codbem)!=""&&($db_opcao==1||$db_opcao==11)){
@@ -155,11 +155,11 @@ if(isset($db_param) && $db_param=='int'){
             <label class="bold" id="lbl_t31_divisao" for="t31_divisao">Divisão de Destino:</label>
           </td>
           <td>
-            <?
+            <?php
             if (isset($db_opcao)&&$db_opcao!=3) { ?>
               <select name='t31_divisao' id='t31_divisao'>
                 <option value=''>Nenhuma</option>
-                <?
+                <?php
                 $result = $cldepartdiv->sql_record($cldepartdiv->sql_query_file(null,
                                                                                 "t30_codigo, t30_descr",
                                                                                 null,
@@ -168,9 +168,9 @@ if(isset($db_param) && $db_param=='int'){
                   db_fieldsmemory($result,$y);
                   ?>
                   <option value=<?=@$t30_codigo?> <?=(isset($t31_divisao) && $t31_divisao == $t30_codigo ? "selected" : "") ?> > <?=@$t30_descr?></option>
-                <? } ?>
+                <?php } ?>
               </select>
-            <?
+            <?php
             } else {
               db_input('t31_divisao',8,$It31_divisao,true,'text',3,'');
               db_input('t30_descr',40,$It30_descr,true,'text',3,'');
@@ -200,7 +200,7 @@ if(isset($db_param) && $db_param=='int'){
     <table style="margin-top: 10px;">
       <tr>
         <td valign="top"  align="center">
-          <?
+          <?php
           $chavepri= array("t95_codtran"=>@$t95_codtran,"t95_codbem"=>@$t95_codbem,"t31_codigo"=>@$t31_codigo);
           $cliframe_alterar_excluir->chavepri=$chavepri;
           $cliframe_alterar_excluir->sql     = $clbenstransfcodigo->sql_query_div($t95_codtran,null,"distinct t95_codtran, t95_codbem, t52_ident, t52_descr, t95_situac,t95_histor,t31_codigo,t30_descr");

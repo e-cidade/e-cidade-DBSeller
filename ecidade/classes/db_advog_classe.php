@@ -1,38 +1,38 @@
-<?
+<?php
 //MODULO: juridico
 //CLASSE DA ENTIDADE advog
-class cl_advog { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $v57_numcgm = 0; 
-   var $v57_oab = null; 
-   var $v57_matriculaadvogado = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_advog {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $v57_numcgm = 0;
+   var $v57_oab = null;
+   var $v57_matriculaadvogado = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v57_numcgm = int4 = Código 
-                 v57_oab = varchar(20) = OAB 
-                 v57_matriculaadvogado = varchar(20) = Matrícula do Advogado 
+                 v57_numcgm = int4 = Código
+                 v57_oab = varchar(20) = OAB
+                 v57_matriculaadvogado = varchar(20) = Matrícula do Advogado
                  ";
-   //funcao construtor da classe 
-   function cl_advog() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("advog"); 
+     $this->rotulo = new rotulo("advog");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_advog {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v57_numcgm = ($this->v57_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["v57_numcgm"]:$this->v57_numcgm);
        $this->v57_oab = ($this->v57_oab == ""?@$GLOBALS["HTTP_POST_VARS"]["v57_oab"]:$this->v57_oab);
@@ -51,9 +51,9 @@ class cl_advog {
      }
    }
    // funcao para inclusao
-   function incluir ($v57_numcgm){ 
+   public function incluir ($v57_numcgm){
       $this->atualizacampos();
-     if($this->v57_oab == null ){ 
+     if($this->v57_oab == null ){
        $this->erro_sql = " Campo OAB não informado.";
        $this->erro_campo = "v57_oab";
        $this->erro_banco = "";
@@ -62,8 +62,8 @@ class cl_advog {
        $this->erro_status = "0";
        return false;
      }
-       $this->v57_numcgm = $v57_numcgm; 
-     if(($this->v57_numcgm == null) || ($this->v57_numcgm == "") ){ 
+       $this->v57_numcgm = $v57_numcgm;
+     if(($this->v57_numcgm == null) || ($this->v57_numcgm == "") ){
        $this->erro_sql = " Campo v57_numcgm nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -72,17 +72,17 @@ class cl_advog {
        return false;
      }
      $sql = "insert into advog(
-                                       v57_numcgm 
-                                      ,v57_oab 
-                                      ,v57_matriculaadvogado 
+                                       v57_numcgm
+                                      ,v57_oab
+                                      ,v57_matriculaadvogado
                        )
                 values (
-                                $this->v57_numcgm 
-                               ,'$this->v57_oab' 
-                               ,'$this->v57_matriculaadvogado' 
+                                $this->v57_numcgm
+                               ,'$this->v57_oab'
+                               ,'$this->v57_matriculaadvogado'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Advogados ($this->v57_numcgm) nao Incluído. Inclusao Abortada.";
@@ -122,16 +122,16 @@ class cl_advog {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($v57_numcgm=null) { 
+   public function alterar ($v57_numcgm=null) {
       $this->atualizacampos();
      $sql = " update advog set ";
      $virgula = "";
-     if(trim($this->v57_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v57_numcgm"])){ 
+     if(trim($this->v57_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v57_numcgm"])){
        $sql  .= $virgula." v57_numcgm = $this->v57_numcgm ";
        $virgula = ",";
-       if(trim($this->v57_numcgm) == null ){ 
+       if(trim($this->v57_numcgm) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "v57_numcgm";
          $this->erro_banco = "";
@@ -141,10 +141,10 @@ class cl_advog {
          return false;
        }
      }
-     if(trim($this->v57_oab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v57_oab"])){ 
+     if(trim($this->v57_oab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v57_oab"])){
        $sql  .= $virgula." v57_oab = '$this->v57_oab' ";
        $virgula = ",";
-       if(trim($this->v57_oab) == null ){ 
+       if(trim($this->v57_oab) == null ){
          $this->erro_sql = " Campo OAB não informado.";
          $this->erro_campo = "v57_oab";
          $this->erro_banco = "";
@@ -154,7 +154,7 @@ class cl_advog {
          return false;
        }
      }
-     if(trim($this->v57_matriculaadvogado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v57_matriculaadvogado"])){ 
+     if(trim($this->v57_matriculaadvogado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v57_matriculaadvogado"])){
        $sql  .= $virgula." v57_matriculaadvogado = '$this->v57_matriculaadvogado' ";
        $virgula = ",";
      }
@@ -185,7 +185,7 @@ class cl_advog {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Advogados nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->v57_numcgm;
@@ -213,11 +213,11 @@ class cl_advog {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($v57_numcgm=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($v57_numcgm=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -226,7 +226,7 @@ class cl_advog {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($v57_numcgm));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -257,7 +257,7 @@ class cl_advog {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Advogados nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$v57_numcgm;
@@ -285,11 +285,11 @@ class cl_advog {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -311,11 +311,11 @@ class cl_advog {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $v57_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $v57_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -329,15 +329,15 @@ class cl_advog {
      $sql2 = "";
      if($dbwhere==""){
        if($v57_numcgm!=null ){
-         $sql2 .= " where advog.v57_numcgm = $v57_numcgm "; 
-       } 
+         $sql2 .= " where advog.v57_numcgm = $v57_numcgm ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -346,11 +346,11 @@ class cl_advog {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $v57_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $v57_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -363,15 +363,15 @@ class cl_advog {
      $sql2 = "";
      if($dbwhere==""){
        if($v57_numcgm!=null ){
-         $sql2 .= " where advog.v57_numcgm = $v57_numcgm "; 
-       } 
+         $sql2 .= " where advog.v57_numcgm = $v57_numcgm ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,10 +380,10 @@ class cl_advog {
      }
      return $sql;
   }
-    function sql_query_advog_inicial ( $v57_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_advog_inicial ( $v57_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -406,7 +406,7 @@ class cl_advog {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];

@@ -1,87 +1,87 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE lab_fechamento
-class cl_lab_fechamento { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $la54_i_codigo = 0; 
-   var $la54_d_data_dia = null; 
-   var $la54_d_data_mes = null; 
-   var $la54_d_data_ano = null; 
-   var $la54_d_data = null; 
-   var $la54_c_hora = null; 
-   var $la54_i_compano = 0; 
-   var $la54_i_compmes = 0; 
-   var $la54_i_login = 0; 
-   var $la54_c_descr = null; 
-   var $la54_d_ini_dia = null; 
-   var $la54_d_ini_mes = null; 
-   var $la54_d_ini_ano = null; 
-   var $la54_d_ini = null; 
-   var $la54_d_fim_dia = null; 
-   var $la54_d_fim_mes = null; 
-   var $la54_d_fim_ano = null; 
-   var $la54_d_fim = null; 
-   var $la54_i_financiamento = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_lab_fechamento {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $la54_i_codigo = 0;
+   var $la54_d_data_dia = null;
+   var $la54_d_data_mes = null;
+   var $la54_d_data_ano = null;
+   var $la54_d_data = null;
+   var $la54_c_hora = null;
+   var $la54_i_compano = 0;
+   var $la54_i_compmes = 0;
+   var $la54_i_login = 0;
+   var $la54_c_descr = null;
+   var $la54_d_ini_dia = null;
+   var $la54_d_ini_mes = null;
+   var $la54_d_ini_ano = null;
+   var $la54_d_ini = null;
+   var $la54_d_fim_dia = null;
+   var $la54_d_fim_mes = null;
+   var $la54_d_fim_ano = null;
+   var $la54_d_fim = null;
+   var $la54_i_financiamento = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 la54_i_codigo = int4 = Código 
-                 la54_d_data = date = Data 
-                 la54_c_hora = char(5) = hora 
-                 la54_i_compano = int4 = Ano competencia 
-                 la54_i_compmes = int4 = Comptência mês 
-                 la54_i_login = int4 = Usuário 
-                 la54_c_descr = char(50) = Descrição 
-                 la54_d_ini = date = inicio 
-                 la54_d_fim = date = Fim 
-                 la54_i_financiamento = int4 = Tipo de Financiamento 
+                 la54_i_codigo = int4 = Código
+                 la54_d_data = date = Data
+                 la54_c_hora = char(5) = hora
+                 la54_i_compano = int4 = Ano competencia
+                 la54_i_compmes = int4 = Comptência mês
+                 la54_i_login = int4 = Usuário
+                 la54_c_descr = char(50) = Descrição
+                 la54_d_ini = date = inicio
+                 la54_d_fim = date = Fim
+                 la54_i_financiamento = int4 = Tipo de Financiamento
                  ";
-   //funcao construtor da classe 
-   function cl_lab_fechamento() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lab_fechamento"); 
+     $this->rotulo = new rotulo("lab_fechamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -90,7 +90,7 @@ class cl_lab_fechamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la54_i_codigo = ($this->la54_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la54_i_codigo"]:$this->la54_i_codigo);
        if($this->la54_d_data == ""){
@@ -128,9 +128,9 @@ class cl_lab_fechamento {
      }
    }
    // funcao para inclusao
-   function incluir ($la54_i_codigo){ 
+   public function incluir ($la54_i_codigo){
       $this->atualizacampos();
-     if($this->la54_d_data == null ){ 
+     if($this->la54_d_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "la54_d_data_dia";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_c_hora == null ){ 
+     if($this->la54_c_hora == null ){
        $this->erro_sql = " Campo hora nao Informado.";
        $this->erro_campo = "la54_c_hora";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_i_compano == null ){ 
+     if($this->la54_i_compano == null ){
        $this->erro_sql = " Campo Ano competencia nao Informado.";
        $this->erro_campo = "la54_i_compano";
        $this->erro_banco = "";
@@ -157,7 +157,7 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_i_compmes == null ){ 
+     if($this->la54_i_compmes == null ){
        $this->erro_sql = " Campo Comptência mês nao Informado.";
        $this->erro_campo = "la54_i_compmes";
        $this->erro_banco = "";
@@ -166,7 +166,7 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_i_login == null ){ 
+     if($this->la54_i_login == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "la54_i_login";
        $this->erro_banco = "";
@@ -175,7 +175,7 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_c_descr == null ){ 
+     if($this->la54_c_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "la54_c_descr";
        $this->erro_banco = "";
@@ -184,7 +184,7 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_d_ini == null ){ 
+     if($this->la54_d_ini == null ){
        $this->erro_sql = " Campo inicio nao Informado.";
        $this->erro_campo = "la54_d_ini_dia";
        $this->erro_banco = "";
@@ -193,7 +193,7 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_d_fim == null ){ 
+     if($this->la54_d_fim == null ){
        $this->erro_sql = " Campo Fim nao Informado.";
        $this->erro_campo = "la54_d_fim_dia";
        $this->erro_banco = "";
@@ -202,20 +202,20 @@ class cl_lab_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la54_i_financiamento == null ){ 
+     if($this->la54_i_financiamento == null ){
        $this->la54_i_financiamento = "0";
      }
      if($la54_i_codigo == "" || $la54_i_codigo == null ){
-       $result = db_query("select nextval('lab_fechamento_la54_i_codigo_seq')"); 
+       $result = db_query("select nextval('lab_fechamento_la54_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_fechamento_la54_i_codigo_seq do campo: la54_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_fechamento_la54_i_codigo_seq do campo: la54_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->la54_i_codigo = pg_result($result,0,0); 
+       $this->la54_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_fechamento_la54_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $la54_i_codigo)){
@@ -226,10 +226,10 @@ class cl_lab_fechamento {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->la54_i_codigo = $la54_i_codigo; 
+         $this->la54_i_codigo = $la54_i_codigo;
        }
      }
-     if(($this->la54_i_codigo == null) || ($this->la54_i_codigo == "") ){ 
+     if(($this->la54_i_codigo == null) || ($this->la54_i_codigo == "") ){
        $this->erro_sql = " Campo la54_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -238,31 +238,31 @@ class cl_lab_fechamento {
        return false;
      }
      $sql = "insert into lab_fechamento(
-                                       la54_i_codigo 
-                                      ,la54_d_data 
-                                      ,la54_c_hora 
-                                      ,la54_i_compano 
-                                      ,la54_i_compmes 
-                                      ,la54_i_login 
-                                      ,la54_c_descr 
-                                      ,la54_d_ini 
-                                      ,la54_d_fim 
-                                      ,la54_i_financiamento 
+                                       la54_i_codigo
+                                      ,la54_d_data
+                                      ,la54_c_hora
+                                      ,la54_i_compano
+                                      ,la54_i_compmes
+                                      ,la54_i_login
+                                      ,la54_c_descr
+                                      ,la54_d_ini
+                                      ,la54_d_fim
+                                      ,la54_i_financiamento
                        )
                 values (
-                                $this->la54_i_codigo 
-                               ,".($this->la54_d_data == "null" || $this->la54_d_data == ""?"null":"'".$this->la54_d_data."'")." 
-                               ,'$this->la54_c_hora' 
-                               ,$this->la54_i_compano 
-                               ,$this->la54_i_compmes 
-                               ,$this->la54_i_login 
-                               ,'$this->la54_c_descr' 
-                               ,".($this->la54_d_ini == "null" || $this->la54_d_ini == ""?"null":"'".$this->la54_d_ini."'")." 
-                               ,".($this->la54_d_fim == "null" || $this->la54_d_fim == ""?"null":"'".$this->la54_d_fim."'")." 
-                               ,$this->la54_i_financiamento 
+                                $this->la54_i_codigo
+                               ,".($this->la54_d_data == "null" || $this->la54_d_data == ""?"null":"'".$this->la54_d_data."'")."
+                               ,'$this->la54_c_hora'
+                               ,$this->la54_i_compano
+                               ,$this->la54_i_compmes
+                               ,$this->la54_i_login
+                               ,'$this->la54_c_descr'
+                               ,".($this->la54_d_ini == "null" || $this->la54_d_ini == ""?"null":"'".$this->la54_d_ini."'")."
+                               ,".($this->la54_d_fim == "null" || $this->la54_d_fim == ""?"null":"'".$this->la54_d_fim."'")."
+                               ,$this->la54_i_financiamento
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Fechamento do arquivo BPA ($this->la54_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -303,16 +303,16 @@ class cl_lab_fechamento {
        $resac = db_query("insert into db_acount values($acount,2948,17783,'','".AddSlashes(pg_result($resaco,0,'la54_i_financiamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($la54_i_codigo=null) { 
+   public function alterar ($la54_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update lab_fechamento set ";
      $virgula = "";
-     if(trim($this->la54_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_codigo"])){ 
+     if(trim($this->la54_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_codigo"])){
        $sql  .= $virgula." la54_i_codigo = $this->la54_i_codigo ";
        $virgula = ",";
-       if(trim($this->la54_i_codigo) == null ){ 
+       if(trim($this->la54_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la54_i_codigo";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_lab_fechamento {
          return false;
        }
      }
-     if(trim($this->la54_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la54_d_data_dia"] !="") ){ 
+     if(trim($this->la54_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la54_d_data_dia"] !="") ){
        $sql  .= $virgula." la54_d_data = '$this->la54_d_data' ";
        $virgula = ",";
-       if(trim($this->la54_d_data) == null ){ 
+       if(trim($this->la54_d_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "la54_d_data_dia";
          $this->erro_banco = "";
@@ -334,11 +334,11 @@ class cl_lab_fechamento {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["la54_d_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["la54_d_data_dia"])){
          $sql  .= $virgula." la54_d_data = null ";
          $virgula = ",";
-         if(trim($this->la54_d_data) == null ){ 
+         if(trim($this->la54_d_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "la54_d_data_dia";
            $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_lab_fechamento {
          }
        }
      }
-     if(trim($this->la54_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_c_hora"])){ 
+     if(trim($this->la54_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_c_hora"])){
        $sql  .= $virgula." la54_c_hora = '$this->la54_c_hora' ";
        $virgula = ",";
-       if(trim($this->la54_c_hora) == null ){ 
+       if(trim($this->la54_c_hora) == null ){
          $this->erro_sql = " Campo hora nao Informado.";
          $this->erro_campo = "la54_c_hora";
          $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_lab_fechamento {
          return false;
        }
      }
-     if(trim($this->la54_i_compano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_compano"])){ 
+     if(trim($this->la54_i_compano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_compano"])){
        $sql  .= $virgula." la54_i_compano = $this->la54_i_compano ";
        $virgula = ",";
-       if(trim($this->la54_i_compano) == null ){ 
+       if(trim($this->la54_i_compano) == null ){
          $this->erro_sql = " Campo Ano competencia nao Informado.";
          $this->erro_campo = "la54_i_compano";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_lab_fechamento {
          return false;
        }
      }
-     if(trim($this->la54_i_compmes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_compmes"])){ 
+     if(trim($this->la54_i_compmes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_compmes"])){
        $sql  .= $virgula." la54_i_compmes = $this->la54_i_compmes ";
        $virgula = ",";
-       if(trim($this->la54_i_compmes) == null ){ 
+       if(trim($this->la54_i_compmes) == null ){
          $this->erro_sql = " Campo Comptência mês nao Informado.";
          $this->erro_campo = "la54_i_compmes";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_lab_fechamento {
          return false;
        }
      }
-     if(trim($this->la54_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_login"])){ 
+     if(trim($this->la54_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_login"])){
        $sql  .= $virgula." la54_i_login = $this->la54_i_login ";
        $virgula = ",";
-       if(trim($this->la54_i_login) == null ){ 
+       if(trim($this->la54_i_login) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "la54_i_login";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_lab_fechamento {
          return false;
        }
      }
-     if(trim($this->la54_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_c_descr"])){ 
+     if(trim($this->la54_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_c_descr"])){
        $sql  .= $virgula." la54_c_descr = '$this->la54_c_descr' ";
        $virgula = ",";
-       if(trim($this->la54_c_descr) == null ){ 
+       if(trim($this->la54_c_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "la54_c_descr";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_lab_fechamento {
          return false;
        }
      }
-     if(trim($this->la54_d_ini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_d_ini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la54_d_ini_dia"] !="") ){ 
+     if(trim($this->la54_d_ini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_d_ini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la54_d_ini_dia"] !="") ){
        $sql  .= $virgula." la54_d_ini = '$this->la54_d_ini' ";
        $virgula = ",";
-       if(trim($this->la54_d_ini) == null ){ 
+       if(trim($this->la54_d_ini) == null ){
          $this->erro_sql = " Campo inicio nao Informado.";
          $this->erro_campo = "la54_d_ini_dia";
          $this->erro_banco = "";
@@ -426,11 +426,11 @@ class cl_lab_fechamento {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["la54_d_ini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["la54_d_ini_dia"])){
          $sql  .= $virgula." la54_d_ini = null ";
          $virgula = ",";
-         if(trim($this->la54_d_ini) == null ){ 
+         if(trim($this->la54_d_ini) == null ){
            $this->erro_sql = " Campo inicio nao Informado.";
            $this->erro_campo = "la54_d_ini_dia";
            $this->erro_banco = "";
@@ -441,10 +441,10 @@ class cl_lab_fechamento {
          }
        }
      }
-     if(trim($this->la54_d_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_d_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la54_d_fim_dia"] !="") ){ 
+     if(trim($this->la54_d_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_d_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la54_d_fim_dia"] !="") ){
        $sql  .= $virgula." la54_d_fim = '$this->la54_d_fim' ";
        $virgula = ",";
-       if(trim($this->la54_d_fim) == null ){ 
+       if(trim($this->la54_d_fim) == null ){
          $this->erro_sql = " Campo Fim nao Informado.";
          $this->erro_campo = "la54_d_fim_dia";
          $this->erro_banco = "";
@@ -453,11 +453,11 @@ class cl_lab_fechamento {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["la54_d_fim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["la54_d_fim_dia"])){
          $sql  .= $virgula." la54_d_fim = null ";
          $virgula = ",";
-         if(trim($this->la54_d_fim) == null ){ 
+         if(trim($this->la54_d_fim) == null ){
            $this->erro_sql = " Campo Fim nao Informado.";
            $this->erro_campo = "la54_d_fim_dia";
            $this->erro_banco = "";
@@ -468,10 +468,10 @@ class cl_lab_fechamento {
          }
        }
      }
-     if(trim($this->la54_i_financiamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_financiamento"])){ 
-        if(trim($this->la54_i_financiamento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la54_i_financiamento"])){ 
-           $this->la54_i_financiamento = "0" ; 
-        } 
+     if(trim($this->la54_i_financiamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la54_i_financiamento"])){
+        if(trim($this->la54_i_financiamento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la54_i_financiamento"])){
+           $this->la54_i_financiamento = "0" ;
+        }
        $sql  .= $virgula." la54_i_financiamento = $this->la54_i_financiamento ";
        $virgula = ",";
      }
@@ -509,7 +509,7 @@ class cl_lab_fechamento {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fechamento do arquivo BPA nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->la54_i_codigo;
@@ -537,14 +537,14 @@ class cl_lab_fechamento {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($la54_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($la54_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($la54_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -579,7 +579,7 @@ class cl_lab_fechamento {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fechamento do arquivo BPA nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$la54_i_codigo;
@@ -607,11 +607,11 @@ class cl_lab_fechamento {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -633,11 +633,11 @@ class cl_lab_fechamento {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $la54_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $la54_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -652,15 +652,15 @@ class cl_lab_fechamento {
      $sql2 = "";
      if($dbwhere==""){
        if($la54_i_codigo!=null ){
-         $sql2 .= " where lab_fechamento.la54_i_codigo = $la54_i_codigo "; 
-       } 
+         $sql2 .= " where lab_fechamento.la54_i_codigo = $la54_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -669,11 +669,11 @@ class cl_lab_fechamento {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $la54_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $la54_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -686,15 +686,15 @@ class cl_lab_fechamento {
      $sql2 = "";
      if($dbwhere==""){
        if($la54_i_codigo!=null ){
-         $sql2 .= " where lab_fechamento.la54_i_codigo = $la54_i_codigo "; 
-       } 
+         $sql2 .= " where lab_fechamento.la54_i_codigo = $la54_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -710,7 +710,7 @@ class cl_lab_fechamento {
    * @param string $sWhere
    * @return string
    */
-  function sql_query_programas ($sWhere = null) {
+  public function sql_query_programas ($sWhere = null) {
 
     $sSql  = "select";
     $sSql .= "      distinct";

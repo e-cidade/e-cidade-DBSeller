@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("k03_tipo");
        <?=@$Lk00_codbco?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_codbco',4,$Ik00_codbco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('k00_codbco',4,$Ik00_codbco,true,'text',$db_opcao,"")
        <?=@$Lk00_codage?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_codage',5,$Ik00_codage,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -58,7 +58,7 @@ db_input('k00_codage',5,$Ik00_codage,true,'text',$db_opcao,"")
        <?=@$Lk00_tipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_tipo',4,$Ik00_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -68,7 +68,7 @@ db_input('k00_tipo',4,$Ik00_tipo,true,'text',$db_opcao,"")
        <?=@$Lk00_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_descr',40,$Ik00_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -78,7 +78,7 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',$db_opcao,"")
        <?=@$Lk00_emrec?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k00_emrec',$x,true,$db_opcao,"");
 ?>
@@ -89,7 +89,7 @@ db_select('k00_emrec',$x,true,$db_opcao,"");
        <?=@$Lk00_agnum?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k00_agnum',$x,true,$db_opcao,"");
 ?>
@@ -100,7 +100,7 @@ db_select('k00_agnum',$x,true,$db_opcao,"");
        <?=@$Lk00_agpar?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k00_agpar',$x,true,$db_opcao,"");
 ?>
@@ -111,7 +111,7 @@ db_select('k00_agpar',$x,true,$db_opcao,"");
        <?=@$Lk00_msguni?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_msguni',0,0,$Ik00_msguni,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -121,7 +121,7 @@ db_textarea('k00_msguni',0,0,$Ik00_msguni,true,'text',$db_opcao,"")
        <?=@$Lk00_msguni2?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_msguni2',0,0,$Ik00_msguni2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -131,7 +131,7 @@ db_textarea('k00_msguni2',0,0,$Ik00_msguni2,true,'text',$db_opcao,"")
        <?=@$Lk00_msgparc?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_msgparc',0,0,$Ik00_msgparc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ db_textarea('k00_msgparc',0,0,$Ik00_msgparc,true,'text',$db_opcao,"")
        <?=@$Lk00_msgparc2?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_msgparc2',0,0,$Ik00_msgparc2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ db_textarea('k00_msgparc2',0,0,$Ik00_msgparc2,true,'text',$db_opcao,"")
        <?=@$Lk00_msgparcvenc?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_msgparcvenc',0,0,$Ik00_msgparcvenc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ db_textarea('k00_msgparcvenc',0,0,$Ik00_msgparcvenc,true,'text',$db_opcao,"")
        <?=@$Lk00_msgparcvenc2?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_msgparcvenc2',0,0,$Ik00_msgparcvenc2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -171,7 +171,7 @@ db_textarea('k00_msgparcvenc2',0,0,$Ik00_msgparcvenc2,true,'text',$db_opcao,"")
        <?=@$Lk00_msgrecibo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k00_msgrecibo',0,0,$Ik00_msgrecibo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -181,7 +181,7 @@ db_textarea('k00_msgrecibo',0,0,$Ik00_msgrecibo,true,'text',$db_opcao,"")
        <?=@$Lk00_tercdigcarneunica?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_tercdigcarneunica',10,$Ik00_tercdigcarneunica,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -191,7 +191,7 @@ db_input('k00_tercdigcarneunica',10,$Ik00_tercdigcarneunica,true,'text',$db_opca
        <?=@$Lk00_tercdigcarnenormal?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_tercdigcarnenormal',10,$Ik00_tercdigcarnenormal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -201,7 +201,7 @@ db_input('k00_tercdigcarnenormal',10,$Ik00_tercdigcarnenormal,true,'text',$db_op
        <?=@$Lk00_tercdigrecunica?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_tercdigrecunica',10,$Ik00_tercdigrecunica,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -211,7 +211,7 @@ db_input('k00_tercdigrecunica',10,$Ik00_tercdigrecunica,true,'text',$db_opcao,""
        <?=@$Lk00_tercdigrecnormal?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_tercdigrecnormal',10,$Ik00_tercdigrecnormal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -221,7 +221,7 @@ db_input('k00_tercdigrecnormal',10,$Ik00_tercdigrecnormal,true,'text',$db_opcao,
        <?=@$Lk00_txban?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_txban',15,$Ik00_txban,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -231,7 +231,7 @@ db_input('k00_txban',15,$Ik00_txban,true,'text',$db_opcao,"")
        <?=@$Lk00_rectx?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_rectx',4,$Ik00_rectx,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -241,7 +241,7 @@ db_input('k00_rectx',4,$Ik00_rectx,true,'text',$db_opcao,"")
        <?=@$Lcodmodelo?>
     </td>
     <td> 
-<?
+<?php
 db_input('codmodelo',6,$Icodmodelo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -251,7 +251,7 @@ db_input('codmodelo',6,$Icodmodelo,true,'text',$db_opcao,"")
        <?=@$Lk00_impval?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k00_impval',$x,true,$db_opcao,"");
 ?>
@@ -262,22 +262,22 @@ db_select('k00_impval',$x,true,$db_opcao,"");
        <?=@$Lk00_vlrmin?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_vlrmin',15,$Ik00_vlrmin,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk03_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lk03_tipo,"js_pesquisak03_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k03_tipo',3,$Ik03_tipo,true,'text',$db_opcao," onchange='js_pesquisak03_tipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k03_tipo',3,$Ik03_tipo,true,'text',3,'')
        ?>
     </td>
@@ -287,7 +287,7 @@ db_input('k03_tipo',3,$Ik03_tipo,true,'text',3,'')
        <?=@$Lk00_marcado?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'Marcado','f'=>'Desmarcado');
 db_select('k00_marcado',$x,true,$db_opcao,"");
 ?>
@@ -298,7 +298,7 @@ db_select('k00_marcado',$x,true,$db_opcao,"");
        <?=@$Lk00_hist1?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist1',80,$Ik00_hist1,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -308,7 +308,7 @@ db_input('k00_hist1',80,$Ik00_hist1,true,'text',$db_opcao,"")
        <?=@$Lk00_hist2?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist2',80,$Ik00_hist2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -318,7 +318,7 @@ db_input('k00_hist2',80,$Ik00_hist2,true,'text',$db_opcao,"")
        <?=@$Lk00_hist3?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist3',80,$Ik00_hist3,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -328,7 +328,7 @@ db_input('k00_hist3',80,$Ik00_hist3,true,'text',$db_opcao,"")
        <?=@$Lk00_hist4?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist4',80,$Ik00_hist4,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -338,7 +338,7 @@ db_input('k00_hist4',80,$Ik00_hist4,true,'text',$db_opcao,"")
        <?=@$Lk00_hist5?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist5',80,$Ik00_hist5,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -348,22 +348,22 @@ db_input('k00_hist5',80,$Ik00_hist5,true,'text',$db_opcao,"")
        <?=@$Lk00_hist6?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist6',80,$Ik00_hist6,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk00_hist7?>">
-       <?
+       <?php
        db_ancora(@$Lk00_hist7,"js_pesquisak00_hist7(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist7',80,$Ik00_hist7,true,'text',$db_opcao," onchange='js_pesquisak00_hist7(false);'")
 ?>
-       <?
+       <?php
        ?>
     </td>
   </tr>
@@ -372,7 +372,7 @@ db_input('k00_hist7',80,$Ik00_hist7,true,'text',$db_opcao," onchange='js_pesquis
        <?=@$Lk00_hist8?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_hist8',80,$Ik00_hist8,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -382,7 +382,7 @@ db_input('k00_hist8',80,$Ik00_hist8,true,'text',$db_opcao,"")
        <?=@$Lk00_tipoagrup?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Nenhum','2'=>'Parcial','3'=>'Total');
 db_select('k00_tipoagrup',$x,true,$db_opcao,"");
 ?>
@@ -422,7 +422,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_arretipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

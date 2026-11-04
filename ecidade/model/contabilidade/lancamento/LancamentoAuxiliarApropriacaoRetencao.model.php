@@ -160,7 +160,6 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
         }
 
         $this->salvarVinculoRetencao();
-        $this->salvarVinculoRecurso();
         return true;
     }
 
@@ -179,7 +178,8 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
 
 
     /**
-     * cria o vinculo com conlancamrecurso pegando o recurso que criou na origemcomplementorecurso
+     * @deprecated a partir da tarefa M27557, centralizamos a persistência do Recurso na classe LancamentoContabil
+     *             namespce ECidade\Financeiro\Contabilidade\LancamentoContabil
      */
     protected function salvarVinculoRecurso()
     {

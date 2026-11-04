@@ -41,7 +41,7 @@ class Registro20
     private $minutoInicio;
     private $horaFim;
     private $minutoFim;
-    private $projetoVidaUnidade = 0;
+    private $projetoVidaUnidade;
 
     //Dias da Semana
     private $domingo;
@@ -107,15 +107,179 @@ class Registro20
     private $gruposNaoSeriados = null;
     private $modulos = null;
     private $alternanciaRegular = null;
-    private $eletivas = null;
-    private $librasUnidadeCurricular = null;
-    private $lingaIndigena = null;
-    private $linguaEspanhol = null;
-    private $linguaFrances = null;
-    private $linguaOutra = null;
-    private $projetoVida = null;
+
+    private $outrasUnidades;
+
+    /**
+     * @return mixed
+     */
+    public function getOutrasUnidades()
+    {
+        return $this->outrasUnidades;
+    }
+
+    /**
+     * @param mixed $outrasUnidades
+     * @return Registro20
+     */
+    public function setOutrasUnidades($outrasUnidades)
+    {
+        $this->outrasUnidades = $outrasUnidades;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEletivas()
+    {
+        return $this->eletivas;
+    }
+
+    /**
+     * @param mixed $eletivas
+     * @return Registro20
+     */
+    public function setEletivas($eletivas)
+    {
+        $this->eletivas = $eletivas;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLibrasUnidadeCurricular()
+    {
+        return $this->librasUnidadeCurricular;
+    }
+
+    /**
+     * @param mixed $librasUnidadeCurricular
+     * @return Registro20
+     */
+    public function setLibrasUnidadeCurricular($librasUnidadeCurricular)
+    {
+        $this->librasUnidadeCurricular = $librasUnidadeCurricular;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinguaEspanhol()
+    {
+        return $this->linguaEspanhol;
+    }
+
+    /**
+     * @param mixed $linguaEspanhol
+     * @return Registro20
+     */
+    public function setLinguaEspanhol($linguaEspanhol)
+    {
+        $this->linguaEspanhol = $linguaEspanhol;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinguaFrances()
+    {
+        return $this->linguaFrances;
+    }
+
+    /**
+     * @param mixed $linguaFrances
+     * @return Registro20
+     */
+    public function setLinguaFrances($linguaFrances)
+    {
+        $this->linguaFrances = $linguaFrances;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinguaOutra()
+    {
+        return $this->linguaOutra;
+    }
+
+    /**
+     * @param mixed $linguaOutra
+     * @return Registro20
+     */
+    public function setLinguaOutra($linguaOutra)
+    {
+        $this->linguaOutra = $linguaOutra;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getTrilhaAprofundamento()
+    {
+        return $this->trilhaAprofundamento;
+    }
+
+    /**
+     * @param null $trilhaAprofundamento
+     * @return Registro20
+     */
+    public function setTrilhaAprofundamento($trilhaAprofundamento)
+    {
+        $this->trilhaAprofundamento = $trilhaAprofundamento;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormaOrganizaTurma()
+    {
+        return $this->formaOrganizaTurma;
+    }
+
+    /**
+     * @param array $formaOrganizaTurma
+     * @return Registro20
+     */
+    public function setFormaOrganizaTurma($formaOrganizaTurma)
+    {
+        $this->formaOrganizaTurma = $formaOrganizaTurma;
+        return $this;
+    }
+    private $eletivas;
+    private $librasUnidadeCurricular;
+    private $linguaIndigenaUnidade;
+    private $linguaEspanhol;
+    private $linguaFrances;
+    private $linguaOutra;
+    private $projetoVida = 0;
     private $trilhaAprofundamento = null;
     private $formaOrganizaTurma = [];
+
+    /**
+     * @return mixed
+     */
+    public function getLinguaIndigenaUnidade()
+    {
+        return $this->linguaIndigenaUnidade;
+    }
+
+    /**
+     * @param mixed $linguaIndigenaUnidade
+     * @return Registro20
+     */
+    public function setLinguaIndigenaUnidade($linguaIndigenaUnidade)
+    {
+        $this->linguaIndigenaUnidade = $linguaIndigenaUnidade;
+        return $this;
+    }
 
 
     /**
@@ -126,7 +290,7 @@ class Registro20
         return $this->serieAno;
     }
 
-    
+
     public function setSerieAno($serieAno)
     {
         $this->serieAno = $serieAno;
@@ -141,7 +305,7 @@ class Registro20
         return $this->formaOrganizaTurma;
     }
 
-    
+
     public function setFromaOrganizaTurma($formaOrganizaTurma)
     {
         $this->formaOrganizaTurma[] = $formaOrganizaTurma;
@@ -156,7 +320,7 @@ class Registro20
         return $this->periodosSemestrais;
     }
 
-    
+
     public function setPeriodosSemestrais($periodosSemestrais)
     {
         $this->periodosSemestrais = $periodosSemestrais;
@@ -171,7 +335,7 @@ class Registro20
         return $this->ciclos;
     }
 
-    
+
     public function setCiclos($ciclos)
     {
         $this->ciclos = $ciclos;
@@ -186,7 +350,7 @@ class Registro20
         return $this->gruposNaoSeriados;
     }
 
-    
+
     public function setGruposNaoSeriados($gruposNaoSeriados)
     {
         $this->gruposNaoSeriados = $gruposNaoSeriados;
@@ -201,7 +365,7 @@ class Registro20
         return $this->modulos;
     }
 
-    
+
     public function setModulos($modulos)
     {
         $this->modulos = $modulos;
@@ -216,7 +380,7 @@ class Registro20
         return $this->alternanciaRegular;
     }
 
-    
+
     public function setAlternanciaRegular($alternanciaRegular)
     {
         $this->alternanciaRegular = $alternanciaRegular;
@@ -1337,12 +1501,19 @@ class Registro20
         $this->projetoVidaUnidade = null;
     }
 
+    public function setProjetoVida($projetoVida)
+    {
+        $this->projetoVida = $projetoVida;
+    }
     public function getProjetoVida()
     {
         return $this->projetoVida;
     }
 
-
+    public function setProjetoVidaUnidade($projetoVida)
+    {
+        $this->projetoVidaUnidade = $projetoVida;
+    }
     public function getProjetoVidaUnidade()
     {
         return $this->projetoVidaUnidade;
@@ -1398,6 +1569,7 @@ class Registro20
             "linguaOutra" => null,
             "projetoVida" => $this->getProjetoVida(),
             "trilhaAprofundamento" => null,
+            "outrasUnidades" => $this->getOutrasUnidades(),
             "quimica" => $this->getQuimica(),
             "fisica" => $this->getFisica(),
             "matematica" => $this->getMatematica(),
@@ -1418,6 +1590,7 @@ class Registro20
             "disciplinasPedagogicas" => $this->getDisciplinasPedagogicas(),
             "ensinoReligioso" => $this->getEnsinoReligioso(),
             "linguaIndigena" => $this->getLinguaIndigena(),
+            "linguaIndigenaUnidade" => $this->getLinguaIndigenaUnidade(),
             "estudosSociais" => $this->getEstudosSociais(),
             "sociologia" => $this->getSociologia(),
             "literaturaEstrangeiraFrances" => $this->getLiteraturaEstrangeiraFrances(),
@@ -1425,6 +1598,7 @@ class Registro20
             "estagioSupervisionado" => $this->getEstagioSupervisionado(),
             "projetoVidaUnidade" => $this->getProjetoVidaUnidade(),
             "outrasDisciplinas" => $this->getOutrasDisciplinas(),
+            "librasPrimeiraLingua" => 0
         );
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $anousu = db_getsession("DB_anousu");
        <table width="95%" border="0" align="center" cellspacing="0">
        <form name="form2" method="post" action="" >
           
-          <?
+          <?php
           if (isset($perini) && isset($perfin)){
                   $sql01 = db_planocontassaldo(db_getsession("DB_anousu"),$perini,$perfin,true,"c61_reduz=$codrec ");
 		  
@@ -78,14 +78,14 @@ $anousu = db_getsession("DB_anousu");
          <tr>
              <td><?=@$Lc61_reduz?></td>
 	     <td colspan='4'>
-	     <? 
+	     <?php 
 	     db_input('c61_reduz',10,"","true",'text',3); 
 	     db_input('c60_descr',60,"","true",'text',3); ?></td> 
          </tr>
          <tr>
              <td nowrap><strong> Saldo Anterior:</strong></td>
 	     <td>
-	     <?
+	     <?php
 	     db_input('saldo_anterior',10,"","false",'text',3);
 	     echo $sinal_anterior;
 	     ?>
@@ -96,10 +96,10 @@ $anousu = db_getsession("DB_anousu");
 
          <tr>
              <td nowrap><strong>Débito:<strong></td>
-	     <td><? db_input('saldo_a_debito',10,"","false",'text',3); ?></td>
+	     <td><?php db_input('saldo_a_debito',10,"","false",'text',3); ?></td>
 	     <td>&nbsp; </td> 
 	     <td colspan="2" ><strong>Período:</strong> 
-	     <?
+	     <?php
 	     $perini = db_formatar($perini,'d');
 	     db_input('perini',10,"",true,'text',3);
 	     echo " a "; 
@@ -110,13 +110,13 @@ $anousu = db_getsession("DB_anousu");
          </tr>
 	 <tr>
              <td nowrap><strong>Crédito:</strong></td>
-	     <td><? db_input('saldo_a_credito',10,"","false",'text',3); ?></td>
+	     <td><?php db_input('saldo_a_credito',10,"","false",'text',3); ?></td>
              <td> &nbsp; </td>  
 	     <td><input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_conlancamval.hide();"></td>
          </tr>
 	 <tr>
              <td> <strong>Saldo Atual:</strong></td>
-	     <td><?
+	     <td><?php
 	     db_input('saldo',10,"","false",'text',3); 
              echo $sinal_final;
 	     ?></td>
@@ -130,7 +130,7 @@ $anousu = db_getsession("DB_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancamval.php")==true){
              include(modification("funcoes/db_func_conlancamval.php"));
@@ -176,12 +176,12 @@ $anousu = db_getsession("DB_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

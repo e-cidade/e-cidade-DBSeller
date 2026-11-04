@@ -1,4 +1,4 @@
-<?
+<?php
 $campos = "
   taxadiversos.y119_sequencial,
   taxadiversos.y119_natureza,

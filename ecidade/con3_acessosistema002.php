@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr> 
          
-<?
+<?php
 $sql = "select ip,nome_modulo,case when l.id_item != 0 then fc_montamenu(l.id_item) end as dl_menu
         from db_logsacessa l
              left join db_itensmenu t on t.id_item = l.id_item
@@ -74,7 +74,7 @@ echo " <td >Menu: $dl_menu</td>";
     <td bgcolor="#FFCC00">Conte&uacute;do Anterior</td>
     <td bgcolor="#FFCC00">Conte&uacute;do Atual</td>
   </tr>
-<?
+<?php
 
 $sql = "select distinct d.*,c.nomecam, u.nome
         from db_acountacesso a

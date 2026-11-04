@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -93,7 +93,7 @@ if(isset($excluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 75%;'> <legend><b>Tipo de Receita Padrão</b></legend>
-	      <?
+	      <?php
         require_once(modification("forms/db_frmfar_tiporeceitapadrao.php"));
         ?>
       </fieldset>
@@ -102,7 +102,7 @@ if(isset($excluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -110,7 +110,7 @@ if(isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","fa42_i_tiporeceita",true,1,"fa42_i_tiporeceita",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)) {
 
   if($oDaofar_tiporeceitapadrao->erro_status == '0') {

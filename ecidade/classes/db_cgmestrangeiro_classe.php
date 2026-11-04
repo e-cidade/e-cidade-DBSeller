@@ -1,42 +1,42 @@
-<?
+<?php
 //MODULO: protocolo
 //CLASSE DA ENTIDADE cgmestrangeiro
-class cl_cgmestrangeiro { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $z09_sequencial = 0; 
-   var $z09_numcgm = 0; 
-   var $z09_documento = null; 
-   var $z09_pais = null; 
-   var $z09_cidade = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cgmestrangeiro {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $z09_sequencial = 0;
+   var $z09_numcgm = 0;
+   var $z09_documento = null;
+   var $z09_pais = null;
+   var $z09_cidade = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 z09_sequencial = int4 = Código 
-                 z09_numcgm = int4 = Código do CGM 
-                 z09_documento = varchar(30) = Documento 
-                 z09_pais = varchar(100) = País 
-                 z09_cidade = varchar(50) = Cidade 
+                 z09_sequencial = int4 = Código
+                 z09_numcgm = int4 = Código do CGM
+                 z09_documento = varchar(30) = Documento
+                 z09_pais = varchar(100) = País
+                 z09_cidade = varchar(50) = Cidade
                  ";
-   //funcao construtor da classe 
-   function cl_cgmestrangeiro() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cgmestrangeiro"); 
+     $this->rotulo = new rotulo("cgmestrangeiro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_cgmestrangeiro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->z09_sequencial = ($this->z09_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["z09_sequencial"]:$this->z09_sequencial);
        $this->z09_numcgm = ($this->z09_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["z09_numcgm"]:$this->z09_numcgm);
@@ -57,9 +57,9 @@ class cl_cgmestrangeiro {
      }
    }
    // funcao para Inclusão
-   function incluir ($z09_sequencial){ 
+   public function incluir ($z09_sequencial){
       $this->atualizacampos();
-     if($this->z09_numcgm == null ){ 
+     if($this->z09_numcgm == null ){
        $this->erro_sql = " Campo Código do CGM não informado.";
        $this->erro_campo = "z09_numcgm";
        $this->erro_banco = "";
@@ -68,7 +68,7 @@ class cl_cgmestrangeiro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->z09_documento == null ){ 
+     if($this->z09_documento == null ){
        $this->erro_sql = " Campo Documento não informado.";
        $this->erro_campo = "z09_documento";
        $this->erro_banco = "";
@@ -77,7 +77,7 @@ class cl_cgmestrangeiro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->z09_pais == null ){ 
+     if($this->z09_pais == null ){
        $this->erro_sql = " Campo País não informado.";
        $this->erro_campo = "z09_pais";
        $this->erro_banco = "";
@@ -86,7 +86,7 @@ class cl_cgmestrangeiro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->z09_cidade == null ){ 
+     if($this->z09_cidade == null ){
        $this->erro_sql = " Campo Cidade não informado.";
        $this->erro_campo = "z09_cidade";
        $this->erro_banco = "";
@@ -96,16 +96,16 @@ class cl_cgmestrangeiro {
        return false;
      }
      if($z09_sequencial == "" || $z09_sequencial == null ){
-       $result = db_query("select nextval('cgmestrangeiro_z09_sequencial_seq')"); 
+       $result = db_query("select nextval('cgmestrangeiro_z09_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cgmestrangeiro_z09_sequencial_seq do campo: z09_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cgmestrangeiro_z09_sequencial_seq do campo: z09_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->z09_sequencial = pg_result($result,0,0); 
+       $this->z09_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cgmestrangeiro_z09_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $z09_sequencial)){
@@ -116,10 +116,10 @@ class cl_cgmestrangeiro {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->z09_sequencial = $z09_sequencial; 
+         $this->z09_sequencial = $z09_sequencial;
        }
      }
-     if(($this->z09_sequencial == null) || ($this->z09_sequencial == "") ){ 
+     if(($this->z09_sequencial == null) || ($this->z09_sequencial == "") ){
        $this->erro_sql = " Campo z09_sequencial não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,21 +128,21 @@ class cl_cgmestrangeiro {
        return false;
      }
      $sql = "insert into cgmestrangeiro(
-                                       z09_sequencial 
-                                      ,z09_numcgm 
-                                      ,z09_documento 
-                                      ,z09_pais 
-                                      ,z09_cidade 
+                                       z09_sequencial
+                                      ,z09_numcgm
+                                      ,z09_documento
+                                      ,z09_pais
+                                      ,z09_cidade
                        )
                 values (
-                                $this->z09_sequencial 
-                               ,$this->z09_numcgm 
-                               ,'$this->z09_documento' 
-                               ,'$this->z09_pais' 
-                               ,'$this->z09_cidade' 
+                                $this->z09_sequencial
+                               ,$this->z09_numcgm
+                               ,'$this->z09_documento'
+                               ,'$this->z09_pais'
+                               ,'$this->z09_cidade'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "CGM Estrangeiro ($this->z09_sequencial) não Incluído. Inclusão Abortada.";
@@ -184,16 +184,16 @@ class cl_cgmestrangeiro {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($z09_sequencial=null) { 
+   public function alterar ($z09_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cgmestrangeiro set ";
      $virgula = "";
-     if(trim($this->z09_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_sequencial"])){ 
+     if(trim($this->z09_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_sequencial"])){
        $sql  .= $virgula." z09_sequencial = $this->z09_sequencial ";
        $virgula = ",";
-       if(trim($this->z09_sequencial) == null ){ 
+       if(trim($this->z09_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "z09_sequencial";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_cgmestrangeiro {
          return false;
        }
      }
-     if(trim($this->z09_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_numcgm"])){ 
+     if(trim($this->z09_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_numcgm"])){
        $sql  .= $virgula." z09_numcgm = $this->z09_numcgm ";
        $virgula = ",";
-       if(trim($this->z09_numcgm) == null ){ 
+       if(trim($this->z09_numcgm) == null ){
          $this->erro_sql = " Campo Código do CGM não informado.";
          $this->erro_campo = "z09_numcgm";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_cgmestrangeiro {
          return false;
        }
      }
-     if(trim($this->z09_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_documento"])){ 
+     if(trim($this->z09_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_documento"])){
        $sql  .= $virgula." z09_documento = '$this->z09_documento' ";
        $virgula = ",";
-       if(trim($this->z09_documento) == null ){ 
+       if(trim($this->z09_documento) == null ){
          $this->erro_sql = " Campo Documento não informado.";
          $this->erro_campo = "z09_documento";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_cgmestrangeiro {
          return false;
        }
      }
-     if(trim($this->z09_pais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_pais"])){ 
+     if(trim($this->z09_pais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_pais"])){
        $sql  .= $virgula." z09_pais = '$this->z09_pais' ";
        $virgula = ",";
-       if(trim($this->z09_pais) == null ){ 
+       if(trim($this->z09_pais) == null ){
          $this->erro_sql = " Campo País não informado.";
          $this->erro_campo = "z09_pais";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_cgmestrangeiro {
          return false;
        }
      }
-     if(trim($this->z09_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_cidade"])){ 
+     if(trim($this->z09_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z09_cidade"])){
        $sql  .= $virgula." z09_cidade = '$this->z09_cidade' ";
        $virgula = ",";
-       if(trim($this->z09_cidade) == null ){ 
+       if(trim($this->z09_cidade) == null ){
          $this->erro_sql = " Campo Cidade não informado.";
          $this->erro_campo = "z09_cidade";
          $this->erro_banco = "";
@@ -286,7 +286,7 @@ class cl_cgmestrangeiro {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "CGM Estrangeiro não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->z09_sequencial;
@@ -314,11 +314,11 @@ class cl_cgmestrangeiro {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($z09_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($z09_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -327,7 +327,7 @@ class cl_cgmestrangeiro {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($z09_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -360,7 +360,7 @@ class cl_cgmestrangeiro {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "CGM Estrangeiro não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$z09_sequencial;
@@ -388,11 +388,11 @@ class cl_cgmestrangeiro {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -414,8 +414,8 @@ class cl_cgmestrangeiro {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($z09_sequencial = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($z09_sequencial = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from cgmestrangeiro ";
@@ -423,8 +423,8 @@ class cl_cgmestrangeiro {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($z09_sequencial)) {
-         $sql2 .= " where cgmestrangeiro.z09_sequencial = $z09_sequencial "; 
-       } 
+         $sql2 .= " where cgmestrangeiro.z09_sequencial = $z09_sequencial ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -434,7 +434,7 @@ class cl_cgmestrangeiro {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($z09_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -442,8 +442,8 @@ class cl_cgmestrangeiro {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($z09_sequencial)){
-         $sql2 .= " where cgmestrangeiro.z09_sequencial = $z09_sequencial "; 
-       } 
+         $sql2 .= " where cgmestrangeiro.z09_sequencial = $z09_sequencial ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }

@@ -52,11 +52,11 @@ $clcertidcartoriorecibopaga->rotulo->label("v33_numnov");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lv33_sequencial?></label></td>
-          <td><? db_input("v33_sequencial",10,$Iv33_sequencial,true,"text",4,"","chave_v33_sequencial"); ?></td>
+          <td><?php db_input("v33_sequencial",10,$Iv33_sequencial,true,"text",4,"","chave_v33_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lv33_numnov?></label></td>
-          <td><? db_input("v33_numnov",10,$Iv33_numnov,true,"text",4,"","chave_v33_numnov");?></td>
+          <td><?php db_input("v33_numnov",10,$Iv33_numnov,true,"text",4,"","chave_v33_numnov");?></td>
         </tr>
       </table>
     </fieldset>
@@ -64,7 +64,7 @@ $clcertidcartoriorecibopaga->rotulo->label("v33_numnov");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_certidcartoriorecibopaga.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_certidcartoriorecibopaga.php")==true){
@@ -106,12 +106,12 @@ $clcertidcartoriorecibopaga->rotulo->label("v33_numnov");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE motivoalta
 class cl_motivoalta { 
@@ -28,13 +28,13 @@ class cl_motivoalta {
                  sd01_finalizaatendimento = bool = Finaliza Atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_motivoalta() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("motivoalta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_motivoalta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd01_codigo = ($this->sd01_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd01_codigo"]:$this->sd01_codigo);
        $this->sd01_codigosus = ($this->sd01_codigosus == ""?@$GLOBALS["HTTP_POST_VARS"]["sd01_codigosus"]:$this->sd01_codigosus);
@@ -54,7 +54,7 @@ class cl_motivoalta {
      }
    }
    // funcao para inclusao
-   function incluir ($sd01_codigo){ 
+   public function incluir ($sd01_codigo){ 
       $this->atualizacampos();
      if($this->sd01_codigosus == null ){ 
        $this->erro_sql = " Campo Código SUS não informado.";

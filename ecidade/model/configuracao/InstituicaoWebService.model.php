@@ -62,7 +62,7 @@ class InstituicaoWebservice {
    * Instancia o webservice
    * @param integer $iCodigoInstituicao Código da Instituição
    */
-  public function __construct($iCodigoInstituicao) { 
+  public function __construct($iCodigoInstituicao = null) { 
 
     $this->oInstituicao = new Instituicao($iCodigoInstituicao);
   }

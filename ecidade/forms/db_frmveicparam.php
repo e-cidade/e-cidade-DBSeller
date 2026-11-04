@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,53 +40,53 @@ $clrotulo->label("ve30_descr");
        <?//=@$Lve50_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve50_codigo',10,$Ive50_codigo,true,'hidden',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?//=@$Tve50_instit?>">
-       <?
+       <?php
        //db_ancora(@$Lve50_instit,"js_pesquisave50_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $ve50_instit=db_getsession("DB_instit");
 db_input('ve50_instit',2,$Ive50_instit,true,'hidden',$db_opcao," onchange='js_pesquisave50_instit(false);'")
 ?>
-       <?
+       <?php
 //db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve50_veiccadtipo?>">
-       <?
+       <?php
        db_ancora(@$Lve50_veiccadtipo,"js_pesquisave50_veiccadtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve50_veiccadtipo',10,$Ive50_veiccadtipo,true,'text',$db_opcao," onchange='js_pesquisave50_veiccadtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('ve20_descr',40,$Ive20_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve50_veiccadcategcnh?>">
-       <?
+       <?php
        db_ancora(@$Lve50_veiccadcategcnh,"js_pesquisave50_veiccadcategcnh(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve50_veiccadcategcnh',10,$Ive50_veiccadcategcnh,true,'text',$db_opcao," onchange='js_pesquisave50_veiccadcategcnh(false);'")
 ?>
-       <?
+       <?php
 db_input('ve30_descr',40,$Ive30_descr,true,'text',3,'')
        ?>
     </td>
@@ -96,7 +96,7 @@ db_input('ve30_descr',40,$Ive30_descr,true,'text',3,'')
        <?=@$Lve50_integrapatri?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Sim','0'=>'Não');
 db_select('ve50_integrapatri',$x,true,$db_opcao,"");
 ?>
@@ -107,7 +107,7 @@ db_select('ve50_integrapatri',$x,true,$db_opcao,"");
        <?=@$Lve50_postoproprio?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Sim','0'=>'Não','3'=>'Ambos');
 db_select('ve50_postoproprio',$x,true,$db_opcao,"");
 ?>
@@ -116,7 +116,7 @@ db_select('ve50_postoproprio',$x,true,$db_opcao,"");
   <tr>
     <td nowrap title="<?=@$Tve50_integrapessoal?>"><?=@$Lve50_integrapessoal?></td>
     <td>
-<?
+<?php
 $x = array("1"=>"integracao com funcionarios ativos","2"=>"integracao com CGM");
 db_select("ve50_integrapessoal",$x,true,$db_opcao,"");
 ?>
@@ -202,7 +202,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veicparam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

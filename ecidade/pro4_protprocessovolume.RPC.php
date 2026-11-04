@@ -20,7 +20,7 @@ try {
     db_inicio_transacao();
 
     switch ($oParam->exec) {
-       
+
         case 'salvar':
             if (empty($oParam->p58_processopai)) {
                 throw new Exception('Necessário informar o Processo Principal.');
@@ -31,7 +31,7 @@ try {
 
             $sqlProcessoPai = $clprotprocesso->sql_query_file($oParam->p58_processopai, 'p58_numero, p58_orgao');
             $postgresObject = db_query($sqlProcessoPai);
-            
+
             if (pg_num_rows($postgresObject) == 0) {
                 throw new Exception('Processo Principal informado não existe');
             }
@@ -42,7 +42,7 @@ try {
             $orgaoProcessopai = $processoPai['p58_orgao'];
 
             // Inclusão
-            if (!$oParam->p58_codproc) {   
+            if (!$oParam->p58_codproc) {
                 $clprotprocesso->p58_hora = db_hora();
                 $clprotprocesso->p58_ano = db_getsession("DB_anousu");
                 $clprotprocesso->p58_id_usuario = db_getsession("DB_id_usuario");
@@ -71,7 +71,7 @@ try {
                     $clprotprocesso->p58_volume
                 );
                 $clprotprocesso->p58_numero = $numeracao;
-        
+
                 $clprotprocesso->incluir(null);
             } else {
                 $clprotprocesso->p58_codproc = $oParam->p58_codproc;
@@ -92,7 +92,7 @@ try {
             if (isset($oParam->docs) && $oParam->docs != "") {
                 $clprocprocessodoc = new cl_procprocessodoc();
                 if ($lSqlErro == false) {
-                    $chaves = split("#",$oParam->docs);
+                    $chaves =explode("#",$oParam->docs);
                     $chave  = count($chaves);
                     for($x = 0; $x < $chave-1; $x++){
                         $clprocprocessodoc->p81_codproc = $clprotprocesso->p58_codproc;
@@ -110,7 +110,7 @@ try {
             if (isset($oParam->ndocs) && $oParam->ndocs != "") {
                 $clprocprocessodoc = new cl_procprocessodoc();
 
-                $chaves = split("#",$oParam->ndocs);
+                $chaves =explode("#",$oParam->ndocs);
                 $chave  = count($chaves);
 
                 for( $i = 0; $i < $chave - 1; $i++){
@@ -119,7 +119,7 @@ try {
                     $clprocprocessodoc->p81_coddoc = $chaves[$i];
                     $clprocprocessodoc->p81_doc = 'f';
                     $clprocprocessodoc->incluir($clprotprocesso->p58_codproc, $chaves[$i]);
-                    
+
                     if ($clprocprocessodoc->erro_status == '0') {
                         throw new Exception($clprocprocessodoc->erro_msg);
                     }
@@ -155,12 +155,12 @@ try {
             if ($clprocprocessodoc->erro_status == '0') {
                 throw new Exception ($clprocprocessodoc->erro_msg);
             }
-            
+
             /**
              * Verifica parâmetro de emissão de recibo
              */
             $result_param = $clprotparam->sql_record($clprotparam->sql_query_file(null, 'p90_emiterecib'));
-            
+
             $p90_emiterecib = 'f';
             if (pg_num_rows($result_param) > 0) {
                 db_fieldsmemory($result_param, 0);
@@ -208,16 +208,16 @@ try {
             $oRetorno->p91_sequencial = $rs['p91_sequencial'];
             $oRetorno->p91_descricao = $rs['p91_descricao'];
             $oRetorno->p58_orgao = $rs['p58_orgao'];
-            
+
         break;
-        
+
         case 'buscaDocumentosProcesso':
             // Documentos tipo de processo
             $clprocdoctipo = new cl_procdoctipo;
             $postgresObject = db_query(
                 $clprocdoctipo->sql_query($oParam->p58_codigo, '', 'p56_coddoc, p56_descr')
             );
-            
+
             if (pg_num_rows($postgresObject) > 0) {
                 $ndocs = '';
                 $html = '<fieldset>';
@@ -225,7 +225,7 @@ try {
 
                 if (empty($oParam->p58_codproc)) {
                     $i = 0;
-    
+
                     while ($row = pg_fetch_assoc($postgresObject)) {
                         $html .= "
                             <input type='checkbox' name='doc{$i}' onClick='js_valor()' value='{$row['p56_coddoc']}'>
@@ -238,27 +238,27 @@ try {
                 } else {
                     $cldoc   = new cl_procprocessodoc;
                     $sqldoc  = "
-                        SELECT 
-                            coalesce(p81_doc, false) as p81_doc,                     
-                            p56_coddoc,                                              
-                            p56_descr                                                 
-                        FROM procdoctipo                                             
-                        INNER JOIN procdoc 
-                            ON p56_coddoc = p57_coddoc  
+                        SELECT
+                            coalesce(p81_doc, false) as p81_doc,
+                            p56_coddoc,
+                            p56_descr
+                        FROM procdoctipo
+                        INNER JOIN procdoc
+                            ON p56_coddoc = p57_coddoc
                         LEFT  JOIN procprocessodoc
-                            ON p81_coddoc = p57_coddoc  
+                            ON p81_coddoc = p57_coddoc
                                 and p81_codproc = $oParam->p58_codproc
-                        WHERE 
+                        WHERE
                             p57_codigo = {$oParam->p58_codigo}
                     ";
-    
+
                     $postgresObject = db_query($sqldoc);
 
                     if (pg_num_rows($postgresObject) > 0) {
                         $docs = "";
                         $ndocs = "";
                         $i = 0;
-                        
+
                         while ($row = pg_fetch_assoc($postgresObject)) {
                             $html .= "
                                 <input type='checkbox' name='doc{$i}' " . ($row['p81_doc'] == 't' ? 'checked' : '' ) . "
@@ -294,13 +294,13 @@ try {
             $join = '';
             if (!empty($oParam->arquivamento)) {
                 $join = '
-                    INNER JOIN tipoproc 
+                    INNER JOIN tipoproc
                         ON p58_codigo   = p51_codigo
-                    INNER JOIN procandam 
+                    INNER JOIN procandam
                         ON p58_codandam = p61_codandam
-                    INNER JOIN proctransand 
+                    INNER JOIN proctransand
                         ON p64_codandam = p58_codandam
-                    INNER JOIN proctransfer 
+                    INNER JOIN proctransfer
                         ON p62_codtran  = p64_codtran
                     LEFT JOIN arqproc
                         ON p68_codproc = p58_codproc
@@ -319,15 +319,15 @@ try {
                 $join = '
                     INNER JOIN procarquiv
                         ON procarquiv.p67_codproc = protprocesso.p58_codproc
-                    INNER JOIN cgm 
+                    INNER JOIN cgm
                         ON protprocesso.p58_numcgm = cgm.z01_numcgm
-                    INNER JOIN arqproc 
+                    INNER JOIN arqproc
                         ON procarquiv.p67_codproc = arqproc.p68_codproc
-                    LEFT JOIN arqandam 
+                    LEFT JOIN arqandam
                         ON arqandam.p69_codarquiv = p67_codarquiv AND p69_arquivado is false
                 ';
-                
-                $where  .= " 
+
+                $where  .= "
                     AND p67_coddepto = ".db_getsession("DB_coddepto") ."
                     AND p69_codarquiv is null
                 ";
@@ -346,7 +346,7 @@ try {
                 ORDER BY
                     p58_volume ASC
             ";
-            
+
             $postgresObject = db_query($sql);
             $volumes = array();
 
@@ -364,17 +364,17 @@ try {
             $codigosProcessos = implode(',', $oParam->codigosProcessos);
 
             $sql = "
-                SELECT DISTINCT 
+                SELECT DISTINCT
                     p67_codarquiv,
                     p68_codproc,
                     p67_coddepto
-                FROM 
+                FROM
                     arqproc
                 INNER JOIN procarquiv ON
                     p68_codarquiv = p67_codarquiv
-                WHERE 
+                WHERE
                     p68_codproc IN ({$codigosProcessos})
-                ORDER BY 
+                ORDER BY
                     p68_codproc
             ";
 
@@ -416,11 +416,11 @@ try {
                 $daoTransferenciaProcesso->p63_codproc = $row['p68_codproc'];
 
                 $daoTransferenciaProcesso->incluir($codigoTransferencia, $row['p68_codproc']);
-                
+
                 if($daoTransferenciaProcesso->erro_status == 0) {
                     throw new Exception($daoTransferenciaProcesso->erro_msg);
                 }
-               
+
                 /**
                  * Insere Andamento Processo
                  */

@@ -72,7 +72,7 @@ $periodos = $relatorio->getPeriodos();
                     <td colspan="3">
                         <select id="o116_periodo" name="o116_periodo">
                             <option selected value="">Selecione</option>
-                            <?php foreach ($periodos as $periodo): ?>
+                            <?php foreach ($periodos as $periodo) : ?>
                                 <option
                                     value="<?= $periodo->o114_sequencial ?>"><?= $periodo->o114_descricao ?></option>
                             <?php endforeach; ?>
@@ -132,7 +132,7 @@ $periodos = $relatorio->getPeriodos();
             const download = new DBDownload();
             download.addFile(response.data.xls, response.message);
             if (response.data.pdf) {
-                download.addFile(response.data.pdf, 'PDF');
+                download.addFile(response.data.pdf, response.message+' (PDF)');
             }
             download.show();
         });

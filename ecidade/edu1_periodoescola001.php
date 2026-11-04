@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,11 +69,11 @@ $db_botao = true;
 <script>
 js_tabulacaoforms("form1","ed17_i_turno",true,1,"ed17_i_turno",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  $result_tur_per = $clperiodoescola->sql_record($clperiodoescola->sql_query("","*","","ed17_i_escola = $ed17_i_escola and ed17_i_turno = $ed17_i_turno and ed17_i_periodoaula = $ed17_i_periodoaula"));
  if($clperiodoescola->numrows>0){
-  ?><script>alert("Período de Aula informado já esta cadastrado para este turno");</script><?
+  ?><script>alert("Período de Aula informado já esta cadastrado para este turno");</script><?php
   $erro_horario = true;
   $campo = "ed17_i_periodoaula";
  }else{
@@ -88,7 +88,7 @@ if(isset($incluir)){
    $result_seq = $clperiodoaula->sql_record($clperiodoaula->sql_query("","ed08_i_sequencia as seq_atual","","ed08_i_codigo = $ed17_i_periodoaula"));
    db_fieldsmemory($result_seq,0);
    if($ed17_h_inicio_dig>$ed17_h_fim_dig){
-    ?><script>alert("Hora inicial deve ser menor que a final!");</script><?
+    ?><script>alert("Hora inicial deve ser menor que a final!");</script><?php
     $erro_horario = true;
     $db_opcao = 1;
     $db_botao = true;
@@ -99,7 +99,7 @@ if(isset($incluir)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_pos,$x);
       if($ed17_h_inicio_dig < $ed17_h_fim){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 1;
        $db_botao = true;
@@ -157,7 +157,7 @@ if(isset($alterar)){
   $result_seq = $clperiodoaula->sql_record($clperiodoaula->sql_query("","ed08_i_sequencia as seq_atual","","ed08_i_codigo = $ed17_i_periodoaula"));
   db_fieldsmemory($result_seq,0);
   if($ed17_h_inicio_dig>$ed17_h_fim_dig){
-   ?><script>alert("Hora inicial deve ser menor que a final!");</script><?
+   ?><script>alert("Hora inicial deve ser menor que a final!");</script><?php
    $erro_horario = true;
    $db_opcao = 2;
    $db_botao = true;
@@ -169,7 +169,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_pos,$x);
       if($ed17_h_fim_dig > $ed17_h_inicio){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -184,7 +184,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_ant,$x);
       if($ed17_h_inicio_dig < $ed17_h_fim){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -199,7 +199,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_ant,$x);
       if($ed17_h_inicio_dig < $ed17_h_fim){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -213,7 +213,7 @@ if(isset($alterar)){
      for($x=0;$x<$clperiodoescola->numrows;$x++){
       db_fieldsmemory($result_pos,$x);
       if($ed17_h_fim_dig > $ed17_h_inicio){
-       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?
+       ?><script>alert("Horário informado colide com o <?=$ed08_c_descr?> período!");</script><?php
        $erro_horario = true;
        $db_opcao = 2;
        $db_botao = true;
@@ -266,7 +266,7 @@ if(@$erro_horario==true){
   document.form1.<?=@$campo?>.style.backgroundColor='#99A9AE';
   document.form1.<?=@$campo?>.focus();
  </script>
- <?
+ <?php
 }
 if(isset($cancelar)){
  echo "<script>location.href='".$clperiodoescola->pagina_retorno."'</script>";

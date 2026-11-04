@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -98,7 +98,7 @@ $aTipo = array(
       </label>
 		</td>
 		<td colspan="3"> 
-			<?
+			<?php
 			  db_input('db103_sequencial',10,$Idb103_sequencial,true,'hidden',3,"");
 			  db_input('db103_avaliacaogrupopergunta',10,$Idb103_avaliacaogrupopergunta,true,'text',3,"");
 			  db_input('db102_descricao',40,@$Idb102_descricao,true,'text',3,'');
@@ -112,7 +112,7 @@ $aTipo = array(
       </label>
     </td>
 		<td colspan="4"> 
-			<?
+			<?php
         db_textarea('db103_descricao', 5, 70, $Idb103_descricao, true, 'text', $db_opcao, "");
 			?>
     </td>
@@ -124,7 +124,7 @@ $aTipo = array(
       </label>
     </td>
 		<td colspan="4"> 
-			<?
+			<?php
 			  db_input('db103_identificador',62,$Idb103_identificador,true,'text',$db_opcao,"");
 			?>
     </td>
@@ -136,7 +136,7 @@ $aTipo = array(
       </label>
     </td>
     <td width="30%"> 
-      <?
+      <?php
         db_input('iTipoRespostaAnt',10,$iTipoRespostaAnt,true,'hidden',3,"");
         $sSqlAvaliacaoTipoResposta  = $clavaliacaotiporesposta->sql_query(null, "*", "db105_sequencial", "");
         $rsSqlAvaliacaoTipoResposta = $clavaliacaotiporesposta->sql_record($sSqlAvaliacaoTipoResposta);
@@ -158,7 +158,7 @@ $aTipo = array(
       </label>
     </td>
     <td> 
-      <?
+      <?php
         db_input('db103_ordem',10,$Idb103_ordem,true,'text',$db_opcao,"");
       ?>
     </td>
@@ -170,7 +170,7 @@ $aTipo = array(
       </label>
     </td>
 		<td width="30%"> 
-			<?
+			<?php
 			  $x = array("f"=>"NÃO","t"=>"SIM");
 			  db_select('db103_obrigatoria',$x,true,$db_opcao,"");
 			?>
@@ -181,7 +181,7 @@ $aTipo = array(
       </label>
     </td>
 		<td> 
-      <?
+      <?php
         $x = array("t"=>"SIM","f"=>"NÃO");
         db_select('db103_ativo',$x,true,$db_opcao,"");
       ?>
@@ -295,7 +295,7 @@ $aTipo = array(
              value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
              <?=($db_botao==false?"disabled":"")?>>
 
-      <? if ($db_opcao != 1) { ?>
+      <?php if ($db_opcao != 1) { ?>
 	      <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();"
 	             <?=($db_opcao==1||isset($oPost->db_opcaoal)?"style='visibility:hidden;'":"")?>>
 	
@@ -306,7 +306,7 @@ $aTipo = array(
 
         <input name="limparRespostas" type="button" id="limparRespostas" value="Limpar Respostas"
                onclick="js_limparRespostas();">
-      <? } ?>
+      <?php } ?>
 
     </td>
   </tr>
@@ -317,7 +317,7 @@ $aTipo = array(
 <table>
 	<tr>
 		<td valign="top" align="center">  
-	    <?
+	    <?php
 	      $sWhere    = "db103_avaliacaogrupopergunta = {$db103_avaliacaogrupopergunta}";
 	      $sCampos   = "db103_sequencial, db103_avaliacaotiporesposta, db103_avaliacaogrupopergunta, db103_descricao";
 	      $sCampos  .= ", db103_identificador, db103_obrigatoria, db103_ativo, db103_ordem";

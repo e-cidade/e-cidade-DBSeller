@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clrotulo->label("z01_nome");
                <?=@$Lc16_sequencial?>
             </td>
             <td> 
-            <?
+            <?php
             db_input('c16_sequencial',10,$Ic16_sequencial,true,'text', 3,"");
             ?>
             </td>
@@ -54,7 +54,7 @@ $clrotulo->label("z01_nome");
                <?=@$Lc16_mes?><b>/</b><?=@$Lc16_ano ?>
             </td>
             <td> 
-            <?
+            <?php
             db_input('c16_mes',2,$Ic16_mes,true,'text',$db_opcao,"");
             echo "/";
             db_input('c16_ano',4,$Ic16_ano,true,'text',$db_opcao,"");
@@ -63,12 +63,12 @@ $clrotulo->label("z01_nome");
           </tr>
           <tr>
             <td nowrap title="<?=@$Tc16_numcgm?>">
-               <?
+               <?php
                db_ancora(@$Lc16_numcgm,"js_pesquisac16_numcgm(true);",$db_opcao);
                ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('c16_numcgm',10,$Ic16_numcgm,true,'text',$db_opcao," onchange='js_pesquisac16_numcgm(false);'");
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
               ?>
@@ -79,7 +79,7 @@ $clrotulo->label("z01_nome");
                <?=@$Lc16_subsidiomensal?>
             </td>
             <td> 
-            <?
+            <?php
             db_input('c16_subsidiomensal', 10, $Ic16_subsidiomensal,true,'text',$db_opcao,"");
             ?>
             </td>
@@ -89,7 +89,7 @@ $clrotulo->label("z01_nome");
                <?=@$Lc16_subsidioextraordinario?>
             </td>
             <td> 
-            <?
+            <?php
             db_input('c16_subsidioextraordinario', 10, $Ic16_subsidioextraordinario,true,'text',$db_opcao,"");
             ?>
             </td>
@@ -152,7 +152,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_padsigapsubsidiosvereadores.hide();
-  <?
+  <?php
   if ($db_opcao !=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

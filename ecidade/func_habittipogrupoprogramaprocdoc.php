@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clhabittipogrupoprogramaprocdoc->rotulo->label("ht09_procdoc");
               <?=$Lht09_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ht09_sequencial",10,$Iht09_sequencial,true,"text",4,"","chave_ht09_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clhabittipogrupoprogramaprocdoc->rotulo->label("ht09_procdoc");
               <?=$Lht09_procdoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ht09_procdoc",10,$Iht09_procdoc,true,"text",4,"","chave_ht09_procdoc");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clhabittipogrupoprogramaprocdoc->rotulo->label("ht09_procdoc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habittipogrupoprogramaprocdoc.php")==true){
@@ -122,12 +122,12 @@ $clhabittipogrupoprogramaprocdoc->rotulo->label("ht09_procdoc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

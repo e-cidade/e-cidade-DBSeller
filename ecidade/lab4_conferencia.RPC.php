@@ -38,278 +38,370 @@ use ECidade\Saude\Laboratorio\Exame\Model\ConferenciaResultado as ConferenciaRes
 use ECidade\Saude\Laboratorio\Exame\Repository\ConferenciaResultado as ConferenciaResultadoRepository;
 use ECidade\Saude\Laboratorio\Exame\Validator\ConferenciaResultado as ConferenciaResultadoValidator;
 use ECidade\Saude\Laboratorio\Exame\Repository\RequisicaoExame as RequisicaoExameRepository;
+use ECidade\Saude\Laboratorio\Repository\RequisicaoLaboratorialRepository;
+use ECidade\Saude\Laboratorio\Service\RequisicaoLaboratorialService;
 
 define("MSG_LAB_CONFERENCIARPC", "saude.laboratorio.lab_conferenciarpc.");
 
-$oJson               = new services_json();
-$oParam              = $oJson->decode( str_replace( "\\", "", $_POST["json"] ) );
-$oRetorno            = new stdClass();
-$oRetorno->iStatus   = 1;
+$oJson = new services_json();
+$oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
+$oRetorno = new stdClass();
+$oRetorno->iStatus = 1;
 $oRetorno->sMensagem = '';
 
 try {
+    db_inicio_transacao();
 
-  db_inicio_transacao();
+    switch ($oParam->exec) {
+        /**
+         * ************************************************************
+         * Busca os dados dos exames vinculados a Requisição Laboratorial
+         * Retorna a seguinte estrutura:
+         * stdClass Object
+         * (
+         *     [iExame] =>
+         *     [sExame] =>
+         *     [iCidConferido] =>
+         *     [sNomeCidConferido] =>
+         *     [sEstruturalCidConferido] =>
+         *     [sProcedimentoEstrutural] =>
+         *     [sProcedimento] =>
+         *     [aCID] => Array
+         *         (
+         *             [0] => stdClass Object
+         *                 (
+         *                     [iCodigo] =>
+         *                     [sNome] =>
+         *                     [lPrincipal] =>
+         *                 )
+         *         )
+         *
+         * )
+         * @param  integer  $oParam  ->iCodigo
+         * ************************************************************
+         */
+        case 'getExamesRequisicao':
 
-  switch ( $oParam->exec ) {
+            $oRetorno->aExames = array();
+            $oRequisicaoLaboratorial = new RequisicaoLaboratorial($oParam->iCodigo);
+            $aRequisicoesExames = $oRequisicaoLaboratorial->getRequisicoesDeExames();
+            $usuarioSessao = db_getsession('DB_id_usuario');
+            $oDaoLabResp = new cl_lab_labresp();
 
-    /**
-     * ************************************************************
-     * Busca os dados dos exames vinculados a Requisição Laboratorial
-     * Retorna a seguinte estrutura:
-     * stdClass Object
-     * (
-     *     [iExame] =>
-     *     [sExame] =>
-     *     [iCidConferido] =>
-     *     [sNomeCidConferido] =>
-     *     [sEstruturalCidConferido] =>
-     *     [sProcedimentoEstrutural] =>
-     *     [sProcedimento] =>
-     *     [aCID] => Array
-     *         (
-     *             [0] => stdClass Object
-     *                 (
-     *                     [iCodigo] =>
-     *                     [sNome] =>
-     *                     [lPrincipal] =>
-     *                 )
-     *         )
-     *
-     * )
-     * @param integer  $oParam->iCodigo
-     * ************************************************************
-     */
-    case 'getExamesRequisicao':
+            if (is_array($aRequisicoesExames)) {
+                $oRetorno->laboratorios = "";
+                foreach ($aRequisicoesExames as $oRequisicaoExame) {
+                    if ($oRequisicaoExame->getSituacao() != RequisicaoExame::LANCADO
+                        && $oRequisicaoExame->getSituacao() != RequisicaoExame::CONFERIDO
+                    ) {
+                        continue;
+                    }
+                    $whereData = " (la06_d_fim >= '".date('Y-m-d')."' or (la06_d_fim is null))";
+                    $whereUsuarioSessao = " and db_usuacgm.id_usuario = ".$usuarioSessao;
+                    $whereLaboratorio = " and la06_i_laboratorio= ".$oRequisicaoExame->getLaboratorio();
+                    $where = $whereData.$whereUsuarioSessao.$whereLaboratorio;
+                    $sql = $oDaoLabResp->sql_query_setor(null, "la06_i_laboratorio", null, $where);
 
-      $oRetorno->aExames = array();
-      $oRequisicaoLaboratorial = new RequisicaoLaboratorial($oParam->iCodigo);
-      $aRequisicoesExames      = $oRequisicaoLaboratorial->getRequisicoesDeExames();
-      $usuarioSessao = db_getsession('DB_id_usuario');
-      $oDaoLabResp = new cl_lab_labresp();
+                    $rsPermissaoLaboratorio = db_query($sql);
 
-      if ( is_array($aRequisicoesExames) ) {
+                    $iLinhasPermissaoLaboratorio = pg_num_rows($rsPermissaoLaboratorio);
 
-        $oRetorno->laboratorios = "";
-        foreach ($aRequisicoesExames as $oRequisicaoExame) {
+                    if ($iLinhasPermissaoLaboratorio == 0) {
+                        $oDaoLaboratorio = new cl_lab_laboratorio();
+                        $oDaoLaboratorio->la08_i_codigo = $oRequisicaoExame->getLaboratorio();
+                        $sql = $oDaoLaboratorio->sql_query_file($oRequisicaoExame->getLaboratorio());
+                        $rsLaboratorio = db_query($sql);
+                        $oDadosLaboratorio = db_utils::fieldsMemory($rsLaboratorio, 0);
 
-          if (    $oRequisicaoExame->getSituacao() != RequisicaoExame::LANCADO
-               && $oRequisicaoExame->getSituacao() != RequisicaoExame::CONFERIDO
-             ) {
-            continue;
-          }
-          $whereData = " (la06_d_fim >= '".date('Y-m-d')."' or (la06_d_fim is null))";
-          $whereUsuarioSessao = " and db_usuacgm.id_usuario = ".$usuarioSessao;
-          $whereLaboratorio = " and la06_i_laboratorio= ".$oRequisicaoExame->getLaboratorio();
-          $where = $whereData . $whereUsuarioSessao . $whereLaboratorio;
-          $sql = $oDaoLabResp->sql_query_setor(null, "la06_i_laboratorio", null, $where);
+                        if ($oRetorno->laboratorios == "") {
+                            $oRetorno->laboratorios = urlencode(
+                                "* ".$oRequisicaoExame->getExame()->getCodigo()." - "
+                                .$oRequisicaoExame->getExame()->getNome(
+                                )." - ".$oDadosLaboratorio->la02_i_codigo." - ".$oDadosLaboratorio->la02_c_descr
+                            );
+                        } else {
+                            $oRetorno->laboratorios .= urlencode(
+                                "\n* ".$oRequisicaoExame->getExame()->getCodigo()." - "
+                                .$oRequisicaoExame->getExame()->getNome(
+                                )." - ".$oDadosLaboratorio->la02_i_codigo." - ".$oDadosLaboratorio->la02_c_descr
+                            );
+                        }
+                        continue;
+                    }
 
-          $rsPermissaoLaboratorio       = db_query($sql);
 
-          $iLinhasPermissaoLaboratorio = pg_num_rows($rsPermissaoLaboratorio);
+                    $oDadosExame = new stdClass();
+                    $oExame = $oRequisicaoExame->getExame();
+                    $oDadosExame->iExame = $oRequisicaoExame->getCodigo();
+                    $oDadosExame->sExame = urlencode($oExame->getNome());
+                    $oDadosExame->aCID = array();
 
-          if($iLinhasPermissaoLaboratorio == 0){
-            $oDaoLaboratorio = new cl_lab_laboratorio();
-            $oDaoLaboratorio->la08_i_codigo = $oRequisicaoExame->getLaboratorio();
-            $sql = $oDaoLaboratorio->sql_query_file($oRequisicaoExame->getLaboratorio());
-            $rsLaboratorio = db_query($sql);
-            $oDadosLaboratorio = db_utils::fieldsMemory($rsLaboratorio, 0);
+                    $oDadosExame->iProcedimento = '';
+                    $oDadosExame->sProcedimentoEstrutural = '';
+                    $oDadosExame->sProcedimento = '';
+                    $oDadosExame->sSituacao = $oRequisicaoExame->getSituacao();
+                    $oDadosExame->lConferido = $oRequisicaoExame->getSituacao() == RequisicaoExame::CONFERIDO;
+                    $oDadosExame->liberadoPor = urlencode("");
 
-            if($oRetorno->laboratorios == ""){
-              $oRetorno->laboratorios = urlencode("* ".$oRequisicaoExame->getExame()->getCodigo()." - "
-              .$oRequisicaoExame->getExame()->getNome()." - ".$oDadosLaboratorio->la02_i_codigo . " - " . $oDadosLaboratorio->la02_c_descr);          
-            }else{
-              $oRetorno->laboratorios .= urlencode("\n* ".$oRequisicaoExame->getExame()->getCodigo()." - "
-              .$oRequisicaoExame->getExame()->getNome()." - ". $oDadosLaboratorio->la02_i_codigo . " - " . $oDadosLaboratorio->la02_c_descr);          
+                    if ($oRequisicaoExame->getConferenciaResultado() !== null) {
+                        $oDadosExame->liberadoPor = urlencode(
+                            $oRequisicaoExame->getConferenciaResultado()->getUsuarioSistema()->getNome()
+                        );
+                    }
+
+                    $oDadosExame->iCidConferido = null;
+                    $oDadosExame->sNomeCidConferido = '';
+                    $oDadosExame->sEstruturalCidConferido = '';
+
+                    $oCID = $oRequisicaoExame->getCID();
+
+                    if (!empty($oCID)) {
+                        $oDadosExame->iCidConferido = $oCID->getCodigo();
+                        $oDadosExame->sNomeCidConferido = urlencode($oCID->getNome());
+                        $oDadosExame->sEstruturalCidConferido = urlencode($oCID->getCID());
+                    }
+
+                    $oProcedimento = $oExame->getProcedimento();
+
+                    if (!empty($oProcedimento)) {
+                        $oDadosExame->iProcedimento = $oProcedimento->getCodigo();
+                        $oDadosExame->sProcedimentoEstrutural = $oProcedimento->getEstrutural();
+                        $oDadosExame->sProcedimento = urlencode($oProcedimento->getDescricao());
+
+                        $aCIDProcedimento = $oProcedimento->getCID();
+
+                        foreach ($aCIDProcedimento as $oCIDProcedimento) {
+                            $oCID = new stdClass();
+                            $oCID->iCodigo = $oCIDProcedimento->getCID()->getCodigo();
+                            $oCID->sCID = $oCIDProcedimento->getCID()->getCID();
+                            $oCID->sNome = urlencode($oCIDProcedimento->getCID()->getNome());
+                            $oCID->lPrincipal = $oCIDProcedimento->cidPrincipal();
+                            $oDadosExame->aCID[] = $oCID;
+                        }
+                    }
+                    $oRetorno->aExames[] = $oDadosExame;
+                }
             }
-            continue;
-          }
 
-          
-          $oDadosExame         = new stdClass();
-          $oExame              = $oRequisicaoExame->getExame();
-          $oDadosExame->iExame = $oRequisicaoExame->getCodigo();
-          $oDadosExame->sExame = urlencode( $oExame->getNome() );
-          $oDadosExame->aCID   = array();
+            break;
 
-          $oDadosExame->iProcedimento           = '';
-          $oDadosExame->sProcedimentoEstrutural = '';
-          $oDadosExame->sProcedimento           = '';
-          $oDadosExame->sSituacao               = $oRequisicaoExame->getSituacao();
-          $oDadosExame->lConferido              = $oRequisicaoExame->getSituacao() == RequisicaoExame::CONFERIDO;
-          $oDadosExame->liberadoPor             = urlencode("");
+        case 'salvarConferencia':
 
-          if($oRequisicaoExame->getConferenciaResultado() !== null) {
-              $oDadosExame->liberadoPor = urlencode( $oRequisicaoExame->getConferenciaResultado()->getUsuarioSistema()->getNome() );
-          }
+            /**
+             * OBSERVAÇÂO
+             * A variável consideração deve pode ser salva em : lab_conferencia ou lab_resultado
+             * O local é definido pelo parâmetro : $oParam->lConferido
+             * ... false: devemos salvar em lab_conferencia
+             * ... true: devemos salvar em lab_resultado
+             */
 
-          $oDadosExame->iCidConferido           = null;
-          $oDadosExame->sNomeCidConferido       = '';
-          $oDadosExame->sEstruturalCidConferido = '';
+            $oDaoConferencia = new cl_lab_conferencia();
 
-          $oCID = $oRequisicaoExame->getCID();
+            db_inicio_transacao();
 
-          if ( !empty($oCID) ) {
+            $oDaoConferencia->la47_d_data = date('Y-m-d', db_getsession("DB_datausu"));
+            $oDaoConferencia->la47_c_hora = db_hora();
+            $oDaoConferencia->la47_i_login = db_getsession("DB_id_usuario");
 
-            $oDadosExame->iCidConferido           = $oCID->getCodigo();
-            $oDadosExame->sNomeCidConferido       = urlencode($oCID->getNome());
-            $oDadosExame->sEstruturalCidConferido = urlencode($oCID->getCID());
-          }
+            foreach ($oParam->aExames as $oExame) {
+                $sSituacao = RequisicaoExame::CONFERIDO;
+                $oDaoConferencia->la47_i_requiitem = $oExame->iCodigoRequisicaoExame;
+                $oDaoConferencia->la47_i_cid = $oExame->iCodigoCID;
+                $oDaoConferencia->la47_i_resultado = 1;
+                $oDaoConferencia->la47_i_procedimento = $oExame->iProcedimento;
 
-          $oProcedimento = $oExame->getProcedimento();
+                if (!$oParam->lConferido) {
+                    $sSituacao = RequisicaoExame::COLETADO;
+                    $oDaoConferencia->la47_i_resultado = 2;
+                }
 
-          if ( !empty($oProcedimento) ) {
+                $oDaoConferencia->incluir(null);
 
-            $oDadosExame->iProcedimento           = $oProcedimento->getCodigo();
-            $oDadosExame->sProcedimentoEstrutural = $oProcedimento->getEstrutural();
-            $oDadosExame->sProcedimento           = urlencode( $oProcedimento->getDescricao() );
+                if ($oDaoConferencia->erro_status == "0") {
+                    throw new DBException(
+                        _M(MSG_LAB_CONFERENCIARPC."erro_salvar_conferencia")."\n {$oDaoConferencia->erro_msg}"
+                    );
+                }
 
-            $aCIDProcedimento = $oProcedimento->getCID();
-
-            foreach ($aCIDProcedimento as $oCIDProcedimento) {
-
-              $oCID                = new stdClass();
-              $oCID->iCodigo       = $oCIDProcedimento->getCID()->getCodigo();
-              $oCID->sCID          = $oCIDProcedimento->getCID()->getCID();
-              $oCID->sNome         = urlencode( $oCIDProcedimento->getCID()->getNome() );
-              $oCID->lPrincipal    = $oCIDProcedimento->cidPrincipal();
-              $oDadosExame->aCID[] = $oCID;
+                $oItemRequisicao = new RequisicaoExame($oExame->iCodigoRequisicaoExame);
+                $oItemRequisicao->setSituacao($sSituacao);
+                $oItemRequisicao->salvar();
+                $oRetorno->sMensagem = urlencode(_M(MSG_LAB_CONFERENCIARPC."sucesso_conferencia"));
             }
-          }
-          $oRetorno->aExames[] = $oDadosExame;
-        }
-      }
 
-    break;
+            db_fim_transacao();
 
-    case 'salvarConferencia':
+            break;
 
-      /**
-       * OBSERVAÇÂO
-       * A variável consideração deve pode ser salva em : lab_conferencia ou lab_resultado
-       * O local é definido pelo parâmetro : $oParam->lConferido
-       * ... false: devemos salvar em lab_conferencia
-       * ... true: devemos salvar em lab_resultado
-       */
+        case 'salvarConferenciaLote':
+            db_inicio_transacao();
 
-      $oDaoConferencia = new cl_lab_conferencia();
+            $requisicoesExame = getItensRequisicaosFiltrados($oParam);
 
-      db_inicio_transacao();
+            $conferenciaModel = new ConferenciaResultadoModel();
+            $conferenciaModel->setData(DBDate::create(date('Y-m-d')));
+            $conferenciaModel->setHora(date('H:i'));
+            $conferenciaModel->setResultado(1);
+            $conferenciaModel->setUsuarioSistema(UsuarioSistemaRepository::getUsuarioSessao());
 
-      $oDaoConferencia->la47_d_data  = date('Y-m-d',db_getsession("DB_datausu"));
-      $oDaoConferencia->la47_c_hora  = db_hora();
-      $oDaoConferencia->la47_i_login = db_getsession("DB_id_usuario");
+            $conferenciaRepository = ConferenciaResultadoRepository::getInstance();
+            $conferenciaValidator = ConferenciaResultadoValidator::getInstance();
 
-      foreach ($oParam->aExames as $oExame) {
+            foreach ($requisicoesExame as $requisicaoExame) {
+                $conferenciaModel->setRequisicaoExame($requisicaoExame);
 
-        $sSituacao = RequisicaoExame::CONFERIDO;
-        $oDaoConferencia->la47_i_requiitem    = $oExame->iCodigoRequisicaoExame;
-        $oDaoConferencia->la47_i_cid          = $oExame->iCodigoCID;
-        $oDaoConferencia->la47_i_resultado    = 1;
-        $oDaoConferencia->la47_i_procedimento = $oExame->iProcedimento;
+                if ($requisicaoExame->getExame()->getProcedimento() !== null) {
+                    $conferenciaModel->setProcedimento($requisicaoExame->getExame()->getProcedimento());
+                }
 
-        if ( !$oParam->lConferido ) {
+                $validou = $conferenciaValidator->validar($conferenciaModel);
 
-          $sSituacao = RequisicaoExame::COLETADO;
-          $oDaoConferencia->la47_i_resultado  = 2;
-        }
+                if ($validou === false) {
+                    continue;
+                };
 
-        $oDaoConferencia->incluir(null);
+                $conferenciaRepository->salvar($conferenciaModel);
 
-        if ( $oDaoConferencia->erro_status == "0" ) {
-          throw new DBException( _M(MSG_LAB_CONFERENCIARPC . "erro_salvar_conferencia") ."\n {$oDaoConferencia->erro_msg}" );
-        }
+                $requisicaoExame->setSituacao(RequisicaoExame::CONFERIDO);
+                $requisicaoExame->salvar();
+            }
 
-        $oItemRequisicao = new RequisicaoExame($oExame->iCodigoRequisicaoExame);
-        $oItemRequisicao->setSituacao( $sSituacao ) ;
-        $oItemRequisicao->salvar();
-        $oRetorno->sMensagem = urlencode( _M(MSG_LAB_CONFERENCIARPC . "sucesso_conferencia") );
-      }
+            db_fim_transacao();
 
-      db_fim_transacao();
+            $mensagem = 'Conferência(s) concluída(s) com sucesso.';
 
-      break;
+            if ($conferenciaValidator->temInconsistencias()) {
+                $mensagem .= ' Porém, os seguintes exames não tiveram a conferência salva, em suas respectivas requisições';
+                $mensagem .= ', por não possuírem procedimento configurado:';
 
-      case 'salvarConferenciaLote':
-          if (empty($oParam->dataInicio) || empty($oParam->dataFim)) {
-              throw new Exception('Período não informado.');
-          }
+                foreach ($conferenciaValidator->getInconstencias() as $tipoInconsistencia) {
+                    foreach ($tipoInconsistencia as $exame) {
+                        $mensagem .= "\n - [{$exame->getSigla()}] {$exame->getNome()}";
+                    }
+                }
 
-          db_inicio_transacao();
+                $mensagem .= "\n\nPara configuração do procedimento, acesse:";
+                $mensagem .= "\n - DB:SAÚDE > Laboratório > Cadastros > Exame > Alteração > aba Procedimentos";
+            }
 
-          $requisicaoRepository = RequisicaoExameRepository::getInstance();
-          $requisicaoRepository->setSituacao(RequisicaoExame::LANCADO);
-          $requisicaoRepository->setPeriodo(DBDate::create($oParam->dataInicio), DBDate::create($oParam->dataFim));
+            $oRetorno->sMensagem = urlencode($mensagem);
 
-          if (!empty($oParam->codigoLaboratorio)) {
-              $requisicaoRepository->setLaboratorio($oParam->codigoLaboratorio);
-          }
+            break;
 
-          if (!empty($oParam->codigoSetor)) {
-              $requisicaoRepository->setSetor($oParam->codigoSetor);
-          }
+        case 'getRequisicoesExames':
+            $itensRequisicoes = getItensRequisicaosFiltrados($oParam, true);
+            $idsItensRequisicao = [];
 
-          if (!empty($oParam->codigoExame)) {
-              $requisicaoRepository->setExame($oParam->codigoExame);
-          }
+            foreach ($itensRequisicoes as $itemRequisicao) {
+                if (!in_array($itemRequisicao->la21_i_codigo, $idsItensRequisicao)) {
+                    $idsItensRequisicao[] = $itemRequisicao->la21_i_codigo;
+                }
+            }
+            $itensRequisicoes = null;
 
-          $requisicoesExame = $requisicaoRepository->getRequisicoesExameComResultado();
+            $resultados = (new RequisicaoLaboratorialService(
+                new RequisicaoLaboratorialRepository(new cl_lab_requisicao())
+            ))
+                ->getRelacaoRequisicaoExames($idsItensRequisicao, $oParam->limit, $oParam->offset);
 
-          $conferenciaModel = new ConferenciaResultadoModel();
-          $conferenciaModel->setData(DBDate::create(date('Y-m-d')));
-          $conferenciaModel->setHora(date('H:i'));
-          $conferenciaModel->setResultado(1);
-          $conferenciaModel->setUsuarioSistema(UsuarioSistemaRepository::getUsuarioSessao());
+            $registros = [];
+            $requiAtual = null;
+            $examesPorRequisicao = examesDaRequisicao($resultados);
 
-          $conferenciaRepository = ConferenciaResultadoRepository::getInstance();
-          $conferenciaValidator = ConferenciaResultadoValidator::getInstance();
+            foreach ($resultados as $resultado) {
+                if ($requiAtual !== $resultado->requisicao) {
+                    $registros[] = (object)[
+                        'requisicao' => $resultado->requisicao,
+                        'nomePaciente' => urlencode($resultado->nome_paciente),
+                        'nomeLaboratorio' => urlencode($resultado->lab_descr),
+                        'dataRequisicao' => DateTime::createFromFormat('Y-m-d', $resultado->data_requisicao)
+                            ->format('d/m/Y'),
+                        'listaExames' => urlencode($examesPorRequisicao[$resultado->requisicao])
+                    ];
+                }
+                $requiAtual = $resultado->requisicao;
+            }
 
-          foreach ($requisicoesExame as $requisicaoExame) {
-              $conferenciaModel->setRequisicaoExame($requisicaoExame);
+            $oRetorno->total = count($idsItensRequisicao);
+            $oRetorno->rows = $registros;
 
-              if ($requisicaoExame->getExame()->getProcedimento() !== null) {
-                  $conferenciaModel->setProcedimento($requisicaoExame->getExame()->getProcedimento());
-              }
+            break;
+    }
+} catch (Exception $oErro) {
+    db_fim_transacao(true);
 
-              $validou = $conferenciaValidator->validar($conferenciaModel);
-
-              if ($validou === false) {
-                  continue;
-              };
-
-              $conferenciaRepository->salvar($conferenciaModel);
-
-              $requisicaoExame->setSituacao(RequisicaoExame::CONFERIDO);
-              $requisicaoExame->salvar();
-          }
-
-          db_fim_transacao();
-
-          $mensagem = 'Conferência(s) concluída(s) com sucesso.';
-
-          if ($conferenciaValidator->temInconsistencias()) {
-              $mensagem .= ' Porém, os seguintes exames não tiveram a conferência salva, em suas respectivas requisições';
-              $mensagem .= ', por não possuírem procedimento configurado:';
-
-              foreach ($conferenciaValidator->getInconstencias() as $tipoInconsistencia) {
-                  foreach ($tipoInconsistencia as $exame) {
-                      $mensagem .= "\n - [{$exame->getSigla()}] {$exame->getNome()}";
-                  }
-              }
-
-              $mensagem .= "\n\nPara configuração do procedimento, acesse:";
-              $mensagem .= "\n - DB:SAÚDE > Laboratório > Cadastros > Exame > Alteração > aba Procedimentos";
-          }
-
-          $oRetorno->sMensagem = urlencode($mensagem);
-
-          break;
-  }
-} catch ( Exception $oErro ) {
-  db_fim_transacao( true );
-
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode( str_replace( "\\n", "\n", $oErro->getMessage() ) );
+    $oRetorno->iStatus = 2;
+    $oRetorno->sMensagem = urlencode(str_replace("\\n", "\n", $oErro->getMessage()));
 }
 
-echo $oJson->encode( $oRetorno );
+echo $oJson->encode($oRetorno);
+
+/**
+ * @param $oParam
+ * @return RequisicaoExame[]|\stdClass[]
+ * @throws Exception
+ */
+function getItensRequisicaosFiltrados($oParam, $apenasIds = false)
+{
+    if (empty($oParam->dataInicio) || empty($oParam->dataFim)) {
+        throw new Exception('Período não informado.');
+    }
+
+    $requisicaoRepository = RequisicaoExameRepository::getInstance();
+    $requisicaoRepository->setSituacao(RequisicaoExame::LANCADO);
+    $requisicaoRepository->setPeriodo(DBDate::create($oParam->dataInicio), DBDate::create($oParam->dataFim));
+
+    if (!empty($oParam->codigoLaboratorio)) {
+        $requisicaoRepository->setLaboratorio($oParam->codigoLaboratorio);
+    }
+
+    if (!empty($oParam->codigoSetor)) {
+        $requisicaoRepository->setSetor($oParam->codigoSetor);
+    }
+
+    if (!empty($oParam->codigoExame)) {
+        $requisicaoRepository->setExame($oParam->codigoExame);
+    }
+
+    if (!empty($oParam->grupoLiberacao)) {
+        $requisicaoRepository->setExamesByGrupoLiberacao($oParam->grupoLiberacao);
+    }
+
+    return $requisicaoRepository->getRequisicoesExameComResultado($apenasIds);
+}
+
+/**
+ * Organiza os exames vinculados a respectiva requisição.
+ * @param  array  $dadosRequisicao
+ * @return array
+ */
+function examesDaRequisicao($dadosRequisicao)
+{
+    $requisicoesPresentes = [];
+    $listaExames = [];
+
+    foreach ($dadosRequisicao as $resultado) {
+        if (!in_array($resultado->requisicao, $requisicoesPresentes)) {
+            $requisicoesPresentes[] = $resultado->requisicao;
+        }
+    }
+
+    foreach ($requisicoesPresentes as $idRequisicao) {
+        $primeiroExameJafoi = false;
+        $exames = '';
+
+        foreach ($dadosRequisicao as $resultado) {
+            if ($resultado->requisicao == $idRequisicao) {
+                if ($primeiroExameJafoi) {
+                    $exames .= " - ";
+                }
+
+                $exames .= "{$resultado->exame}";
+                $primeiroExameJafoi = true;
+            }
+        }
+
+        $listaExames[$idRequisicao] = $exames;
+    }
+    return $listaExames;
+}

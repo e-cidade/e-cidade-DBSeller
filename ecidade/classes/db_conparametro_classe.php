@@ -274,8 +274,9 @@ class cl_conparametro {
          return false;
        }
      }
-     $sql .= " where ";
-$sql .= "oid = '$oid'";     $result = db_query($sql);
+     //$sql .= " where ";
+     //$sql .= "oid = '$oid'";     
+     $result = db_query($sql);
      if (!$result) { 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Parametro Contabilidade não Alterado. Alteração Abortada.\\n";
@@ -369,7 +370,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      return $result;
    }
 
-    public function sql_query($oid = null, $campos = "conparametro.oid,*", $ordem = null, $dbwhere = "") { 
+    public function sql_query($oid = null, $campos = "*", $ordem = null, $dbwhere = "") { 
 
      $sql  = "select {$campos}";
      $sql .= "  from conparametro ";

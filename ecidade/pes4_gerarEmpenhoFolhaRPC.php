@@ -36,7 +36,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-include(modification("libs/JSON.php"));
+require_once(modification("libs/JSON.php"));
 db_app::import("exceptions.*");
 db_app::import("configuracao.*");
 db_app::import("contabilidade.*");
@@ -105,7 +105,7 @@ try {
 				$sSqlEmpenhos  .= "                        o56_elemento,                                                                             ";
 				$sSqlEmpenhos  .= "                        o56_descr,                                                                                ";
 				$sSqlEmpenhos  .= "                        lpad(coalesce(o15_complemento::varchar, '0'), 4, '0') as   o15_complemento, ";
-				$sSqlEmpenhos  .= "                        o15_loaespecificacao,                                                                       ";
+				$sSqlEmpenhos  .= "                        gestao,                                                                       ";
 				$sSqlEmpenhos  .= "                        o120_orcreserva,                                                                          ";
 				$sSqlEmpenhos  .= "                        round(sum(case when rh73_pd = 2 then rh73_valor *-1 else rh73_valor end), 2) as rh73_valor";
 				$sSqlEmpenhos  .= "                   from rhempenhofolha 																																				   ";
@@ -123,6 +123,8 @@ try {
 				$sSqlEmpenhos  .= "                        left join rhempenhofolhaempenho        on rh72_sequencial     = rh76_rhempenhofolha       ";
 				$sSqlEmpenhos  .= "                        left join orcreservarhempenhofolha     on rh72_sequencial     = o120_rhempenhofolha       ";
 				$sSqlEmpenhos  .= "                        left join orctiporec on rh72_recurso = o15_codigo      ";
+				$sSqlEmpenhos  .= "                        left join fonterecurso on fonterecurso.orctiporec_id = o15_codigo      ";
+				$sSqlEmpenhos  .= "                                  and fonterecurso.exercicio = rh72_anousu     ";
 				$sSqlEmpenhos  .= "                  where rh76_rhempenhofolha is null				                                                       ";
 				$sSqlEmpenhos  .= "                    and rh72_tipoempenho = {$oParam->iTipo}                                                       ";
 				$sSqlEmpenhos  .= "                    and rh73_instit      = ".db_getsession("DB_instit"). "                                        ";
@@ -164,10 +166,10 @@ try {
 				$sSqlEmpenhos  .= "                           o56_elemento,       ";
 				$sSqlEmpenhos  .= "                           o56_descr,          ";
 				$sSqlEmpenhos  .= "                           o120_orcreserva,     ";
-				$sSqlEmpenhos  .= "                           o15_loaespecificacao,     ";
+				$sSqlEmpenhos  .= "                           gestao,     ";
 				$sSqlEmpenhos  .= "                           o15_complemento     ";
 				$sSqlEmpenhos  .= "                order by   rh72_recurso,o15_complemento, rh72_orgao,rh72_unidade,rh72_projativ,rh72_coddot,rh72_codele ) as x ";
-				$sSqlEmpenhos  .= "        WHERE rh73_valor <> 0                                                                    ";
+				// $sSqlEmpenhos  .= "        WHERE rh73_valor <> 0                                                                    ";
 				$sSqlEmpenhos  .= "        order by rh72_recurso,rh72_orgao,rh72_unidade,rh72_projativ,rh72_coddot,rh72_codele";
 
 				$rsDadosEmpenho = db_query($sSqlEmpenhos);
@@ -524,8 +526,6 @@ try {
                         && isset($configEstorage->url) && !empty($configEstorage->url)
                     ) {
 						$uuid = Ramsey\Uuid\Uuid::uuid4();
-						$dotenv = new \Dotenv\Dotenv('./');
-						$dotenv->load();
 						$empenho = new EmpenhoFinanceiro($numeroEmpenho);
 						$gerar_arquivo = "tmp/empenho_{$empenho->getCodigo()}_" . time() . ".pdf";
 						require("emp2_emitenotaemp002.php");
@@ -613,29 +613,29 @@ try {
 			*/
 			$sSqlEmpenhos   = "SELECT * from ( SELECT  z01_numcgm,    ";
 			$sSqlEmpenhos  .= "                        z01_nome,      ";
-			$sSqlEmpenhos  .= "                        rh01_regist,    ";
-			$sSqlEmpenhos  .= "                        rh02_seqpes,    ";
+			$sSqlEmpenhos  .= "                        rh01_regist,   ";
+			$sSqlEmpenhos  .= "                        rh02_seqpes,   ";
 			$sSqlEmpenhos  .= "                        rh05_recis,    ";
 			$sSqlEmpenhos  .= "                        round(sum(case when rh73_pd = 2 then rh73_valor *-1 else rh73_valor end), 2) as rh73_valor,";
 			$sSqlEmpenhos  .= "                        (select count(distinct rh72_sequencial) ";
 			$sSqlEmpenhos  .= "                          from rhempenhofolha a";
 			$sSqlEmpenhos  .= "                               inner join rhempenhofolharhemprubrica b on b.rh81_rhempenhofolha = a.rh72_sequencial ";
 			$sSqlEmpenhos  .= "                               inner join rhempenhofolharubrica  c     on c.rh73_sequencial     = b.rh81_rhempenhofolharubrica ";
-			$sSqlEmpenhos  .= "                          where c.rh73_seqpes = rh02_seqpes ";
-			$sSqlEmpenhos  .= "                           and a.rh72_siglaarq = 'r20' ";
-			$sSqlEmpenhos  .= "                           and a.rh72_mesusu   = {$oParam->iMesFolha} ";
+			$sSqlEmpenhos  .= "                          where c.rh73_seqpes      = rh02_seqpes ";
+			$sSqlEmpenhos  .= "                           and a.rh72_siglaarq     = 'r20' ";
+			$sSqlEmpenhos  .= "                           and a.rh72_mesusu       = {$oParam->iMesFolha} ";
 			$sSqlEmpenhos  .= "                           and a.rh72_tipoempenho  = {$oParam->iTipo} ";
-			$sSqlEmpenhos  .= "                           and a.rh72_anousu   = {$oParam->iAnoFolha} ";
+			$sSqlEmpenhos  .= "                           and a.rh72_anousu       = {$oParam->iAnoFolha} ";
 			$sSqlEmpenhos  .= "                          ) as totalEmpenhos,";
 			$sSqlEmpenhos  .= "                         (select count(distinct rh72_sequencial) ";
 			$sSqlEmpenhos  .= "                          from rhempenhofolha a";
 			$sSqlEmpenhos  .= "                               inner join rhempenhofolharhemprubrica b on b.rh81_rhempenhofolha = a.rh72_sequencial ";
 			$sSqlEmpenhos  .= "                               inner join rhempenhofolharubrica  c     on c.rh73_sequencial     = b.rh81_rhempenhofolharubrica ";
 			$sSqlEmpenhos  .= "                               inner join orcreservarhempenhofolha d    on a.rh72_sequencial     = d.o120_rhempenhofolha  ";
-			$sSqlEmpenhos  .= "                          where c.rh73_seqpes = rh02_seqpes ";
-			$sSqlEmpenhos  .= "                           and a.rh72_siglaarq = 'r20' ";
-			$sSqlEmpenhos  .= "                           and a.rh72_mesusu   = {$oParam->iMesFolha} ";
-			$sSqlEmpenhos  .= "                           and a.rh72_anousu   = {$oParam->iAnoFolha} ";
+			$sSqlEmpenhos  .= "                          where c.rh73_seqpes      = rh02_seqpes ";
+			$sSqlEmpenhos  .= "                           and a.rh72_siglaarq     = 'r20' ";
+			$sSqlEmpenhos  .= "                           and a.rh72_mesusu       = {$oParam->iMesFolha} ";
+			$sSqlEmpenhos  .= "                           and a.rh72_anousu   	  = {$oParam->iAnoFolha} ";
 			$sSqlEmpenhos  .= "                           and a.rh72_tipoempenho  = {$oParam->iTipo} ";
 			$sSqlEmpenhos  .= "                          ) as totalEmpenhosReserva";
 			$sSqlEmpenhos  .= "                   from rhempenhofolha ";
@@ -656,13 +656,12 @@ try {
 			$sSqlEmpenhos  .= "                    and rh72_mesusu      = {$oParam->iMesFolha}";
 			$sSqlEmpenhos  .= "                    and rh72_siglaarq    = '{$oParam->sSigla}'";
 			$sSqlEmpenhos  .= "                    and rh73_seqpes      in ({$sListaRescisoes})";
-			$sSqlEmpenhos  .= "                  group by z01_numcgm,    ";
-			$sSqlEmpenhos  .= "                           z01_nome,      ";
-			$sSqlEmpenhos  .= "                           rh01_regist,    ";
-			$sSqlEmpenhos  .= "                           rh02_seqpes,    ";
-			$sSqlEmpenhos  .= "                           rh05_recis    ";
+			$sSqlEmpenhos  .= "                  group by z01_numcgm,      ";
+			$sSqlEmpenhos  .= "                           z01_nome,        ";
+			$sSqlEmpenhos  .= "                           rh01_regist,     ";
+			$sSqlEmpenhos  .= "                           rh02_seqpes,     ";
+			$sSqlEmpenhos  .= "                           rh05_recis       ";
 			$sSqlEmpenhos  .= "                order by  rh01_regist) as x ";
-			//$sSqlEmpenhos  .= "        WHERE rh73_valor <> 0 ";
 			$rsDadosEmpenho = db_query($sSqlEmpenhos);
 			$iTotalEmpenhos = pg_num_rows($rsDadosEmpenho);
 			$aEmpenhos = array();

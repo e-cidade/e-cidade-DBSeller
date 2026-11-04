@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,6 +42,7 @@ $clitbinome = new cl_itbinome();
 
 $rsConsultaITBI = $clitbi->sql_record($clitbi->sql_query_dados($oGet->it01_guia));
 
+
 if ($clitbi->numrows > 0) {
     $oDadosITBI = db_utils::fieldsMemory($rsConsultaITBI, 0);
 } else {
@@ -55,9 +56,9 @@ if (isset($oDadosITBI->it05_guia) && trim($oDadosITBI->it05_guia) != "") {
     $sTipo = "Urbano";
 }
 
-$sOrigem = "DBPref";
+$sOrigem = "ITBI Online"; //Removido DBPref redmine #28546
 if ($oDadosITBI->it01_origem == 1) {
-    $sOrigem = "DBPortal";
+    $sOrigem = "E-cidade"; //Removido DBPortal redmine #28546
 }
 
 $rsConsultaPag = $clitbiavalia->sql_record($clitbiavalia->sql_query_pag($oGet->it01_guia, "it24_valor,it14_valorpaga"));
@@ -98,6 +99,26 @@ for ($iInd = 0; $iInd < $iNumRowsNome; $iInd++) {
             $sNomeAdquirente = $oDadosNome->it03_nome;
         }
     }
+}
+
+
+$verificaProcesso = db_query("select it01_guia, it01_processo from itbi 
+	                            where it01_guia = {$oGet->it01_guia}
+	                            and it01_processo is not null");
+if(pg_num_rows($verificaProcesso) > 0){
+  $processoSplit = explode("/", pg_fetch_result($verificaProcesso, 0, "it01_processo"));
+  $processo = pg_fetch_result($verificaProcesso, 0, "it01_processo");
+  $verificaNome = db_query("select 
+                          	z01_nome as p58_requer
+                          from
+                          	protprocesso
+                          inner join cgm on
+                          	cgm.z01_numcgm = protprocesso.p58_numcgm
+                          where
+                          	p58_instit = 1
+                          	and p58_ano = {$processoSplit[1]}
+                          	and p58_numero = '{$processoSplit[0]}'");
+  $titularProcesso = pg_fetch_result($verificaNome, 0, "p58_requer");
 }
 
 $rsConsultaCancela = $clitbicancela->sql_record($clitbicancela->sql_query_file($oGet->it01_guia));
@@ -237,6 +258,12 @@ if ($clitbicancela->numrows > 0) {
             <td colspan="3" class='texto'><?= $oDadosITBI->it01_obs ?>    </td>
           </tr>
           <tr>
+            <td><strong>Titular Processo:</strong></td>
+            <td class='texto'><?= $titularProcesso ?> </td>
+            <td><strong>Processo:</strong></td>
+            <td class='texto'><?= $processo ?> </td>
+          </tr>
+          <tr>
             <td><strong>Data de Inclusão :</strong></td>
             <td class='texto'><?= db_formatar($oDadosITBI->it01_data, "d") ?> </td>
             <td><strong>Hora de Inclusão :</strong></td>
@@ -312,6 +339,12 @@ if ($clitbicancela->numrows > 0) {
               <a class='dados' onclick='js_marca(this);this.blur()'
                  href='itb4_consultacancelamento001.php?guia=<?= $oGet->it01_guia; ?>' target='dados'><strong>
                   Cancelamento </strong></a>
+                  <a class='dados' onclick='js_marca(this);this.blur()'
+                 href='itb4_consultaanexos001.php?guia=<?= $oGet->it01_guia; ?>' target='dados'><strong>
+                  Anexos </strong></a>
+                  <a class='dados' onclick='js_marca(this);this.blur()'
+                 href='itb4_consultadocumentos001.php?guia=<?= $oGet->it01_guia; ?>' target='dados'><strong>
+                  Documentos </strong></a>
             </td>
             <td valign='top' height='100%' style='border:1px inset white'>
                 <?php if ($sTipo == "Urbano") { ?>

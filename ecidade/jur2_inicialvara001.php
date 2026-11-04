@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Opções
         </td>
         <td>
-					<?
+					<?php
 						$aCondicao = array("com"=>"Com os Varas selecionados","sem"=>"Sem os Varas selecionadas");
 						db_select("ver",$aCondicao,true,1,"");
 					?>
@@ -68,7 +68,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Ordem:
         </td>
         <td>
-	     	  <?
+	     	  <?php
 	     	 	  $aOrdem = array("i"=>"Inicial","f"=>"Foro","a"=>"Advogado","s"=>"Situação");
 	     	 	  db_select("selOrdem",$aOrdem,true,1,"");
 	     	  ?>
@@ -79,7 +79,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Período:
         </td>
         <td>
-          <? 
+          <?php 
             $dia="01";
             $mes="01";
             $ano= db_getsession("DB_anousu");
@@ -94,7 +94,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
       </tr>
   	  <tr>
         <td colspan="2">
-          <?
+          <?php
             $aux->cabecalho = "<strong>Varas</strong>";
             $aux->codigo = "v53_codvara"; //chave de retorno da func
             $aux->descr  = "v53_descr";   //chave de retorno
@@ -120,7 +120,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
   <input type="button" value="relatorio" onClick="js_seleciona()"/>
 </form>
 <!---  menu --->
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <!--- --->
 <script>
 variavel = 1;

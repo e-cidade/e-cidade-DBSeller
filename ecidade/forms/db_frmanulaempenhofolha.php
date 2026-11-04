@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,12 +50,12 @@ $clrotulo->label('DBtxt25');
 					<strong>Ano / Mês :</strong>
 				</td>
 				<td>
-					<?
+					<?php
 						$anofolha = db_anofolha();
 						db_input('anofolha',4,$IDBtxt23,true,'text',2,"onChange='js_validaTipoPonto(false)'");
 					?>
 					&nbsp;/&nbsp;
-					<?
+					<?php
 						$mesfolha = db_mesfolha();
 						db_input('mesfolha',2,$IDBtxt25,true,'text',2,"onChange='js_validaTipoPonto(false)'");
 					?>
@@ -67,7 +67,7 @@ $clrotulo->label('DBtxt25');
 					<strong>Tipo:</strong>
 				</td>
 				<td>
-					<?
+					<?php
 						$aTipos = array("1" => "Salário        ",
                             "2" => "Previdência    ",
                             "3" => "FGTS           ");
@@ -81,7 +81,7 @@ $clrotulo->label('DBtxt25');
 					<strong>Ponto:</strong>
 				</td>
 				<td>
-					<?
+					<?php
 						$aSigla = array();
 						db_select('ponto',$aSigla,true,4,"onChange='js_validaTipoPonto(false)'; style='width:103px;'");
 					?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -78,7 +78,7 @@ function js_submit(){
 <form class="container" name="form1" method="post" action="">
 <fieldset>
   <legend>Procedimentos - Inicial/Inclusão (intervalo)</legend>
-      <?
+      <?php
       if(isset($processar)){
 	 	db_criatermometro('termometro','Concluido...','blue',1);
       }else{
@@ -86,18 +86,18 @@ function js_submit(){
   <table class="form-container">
       <tr>
          <td>
-         <?
+         <?php
        	 db_ancora('<b>Certidao Inicial: </b>',' js_certidini(true); ',1);
       	 ?>
       	 </td>
          <td>
-      	 <?
+      	 <?php
          db_input('v13_certidini',5,$Iv13_certid,true,'text',1,"onchange='js_certidini(false)'");
          ?>
-         <?
+         <?php
          db_ancora('<b>Certidao Final: </b>',' js_certidfim(true); ',1);
       	 ?>
-      	 <?
+      	 <?php
        	 db_input('v13_certidfim',5,$Iv13_certid,true,'text',1,"onchange='js_certidfim(false)'");
       	 ?>
          </td>
@@ -105,7 +105,7 @@ function js_submit(){
       <tr>
       	<td><b>Agrupar por:</b></td>
       	<td>
-      	<?
+      	<?php
       	$tipo_arr = array("mi"=>"Matricula e Inscrição","c"=>"CGM","n"=>"Não Agrupar");
       	db_select("agrupa",$tipo_arr,true,"text",1);
       	?>
@@ -113,12 +113,12 @@ function js_submit(){
       </tr>
       <tr>
        	<td  title="<?=@$Tv50_advog?>">
-      	<?
+      	<?php
        	db_ancora("<strong>Advogado</strong>",' js_advog(true); ',1);
       	?>
        	</td>
        	<td>
-      	<?
+      	<?php
        	db_input('v50_advog',6,$Iv50_advog,true,'text',1,"onchange='js_advog(false)'");
        	db_input('z01_nome',40,$Iz01_nome,true,'text',3);
       	?>
@@ -126,15 +126,15 @@ function js_submit(){
      </tr>
   	 <tr>
     	<td nowrap title="<?=@$Tv50_codlocal?>">
-       	<?
+       	<?php
        	db_ancora("<strong>Local Foro</strong>","js_codlocal(true);",1);
        	?>
     	</td>
     	<td>
-		<?
+		<?php
 		db_input('v50_codlocal',6,$Iv50_codlocal,true,'text',1," onchange='js_codlocal(false);'")
 		?>
-       	<?
+       	<?php
 		db_input('v54_descr',40,$Iv54_descr,true,'text',3)
        	?>
     	</td>
@@ -142,11 +142,11 @@ function js_submit(){
     </table>
     </fieldset>
           <input  name="processar" id="processar" type="submit" value="Processar" onclick="return js_submit();" >
-      <?
+      <?php
       }
       ?>
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -254,7 +254,7 @@ function js_mostraadvog1(chave1,chave2){
   db_iframe_advog.hide();
 }
 </script>
-<?
+<?php
 if (isset($processar)) {
 
 	db_inicio_transacao();

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ted07_i_codigo?>">
-       <?
+       <?php
        db_ancora(@$Led07_i_codigo,"js_pesquisaed07_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_i_codigo',5,$Ied07_i_codigo,true,'text',$db_opcao," onchange='js_pesquisaed07_i_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -54,7 +54,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Led07_c_senha?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_c_senha',10,$Ied07_c_senha,true,'password',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_input('ed07_c_senha',10,$Ied07_c_senha,true,'password',$db_opcao,"")
        <?=@$Led07_c_necessidades?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_c_necessidades',50,$Ied07_c_necessidades,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,22 +74,22 @@ db_input('ed07_c_necessidades',50,$Ied07_c_necessidades,true,'text',$db_opcao,""
        <?=@$Led07_t_descr?>
     </td>
     <td>
-<?
+<?php
 db_textarea('ed07_t_descr',3,40,$Ied07_t_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted07_i_responsavel?>">
-       <?
+       <?php
        db_ancora(@$Led07_i_responsavel,"js_pesquisaed07_i_responsavel(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_i_responsavel',5,$Ied07_i_responsavel,true,'text',$db_opcao," onchange='js_pesquisaed07_i_responsavel(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome2',40,$Iz01_nome2,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('z01_nome2',40,$Iz01_nome2,true,'text',3,'')
        <?=@$Led07_c_certidao?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_c_certidao',10,$Ied07_c_certidao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('ed07_c_certidao',10,$Ied07_c_certidao,true,'text',$db_opcao,"")
        <?=@$Led07_c_cartorio?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_c_cartorio',50,$Ied07_c_cartorio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_input('ed07_c_cartorio',50,$Ied07_c_cartorio,true,'text',$db_opcao,"")
        <?=@$Led07_c_livro?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_c_livro',5,$Ied07_c_livro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('ed07_c_livro',5,$Ied07_c_livro,true,'text',$db_opcao,"")
        <?=@$Led07_c_folha?>
     </td>
     <td>
-<?
+<?php
 db_input('ed07_c_folha',5,$Ied07_c_folha,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -139,7 +139,7 @@ db_input('ed07_c_folha',5,$Ied07_c_folha,true,'text',$db_opcao,"")
        <?=@$Led07_d_datacert?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('ed07_d_datacert',@$ed07_d_datacert_dia,@$ed07_d_datacert_mes,@$ed07_d_datacert_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -149,7 +149,7 @@ db_inputdata('ed07_d_datacert',@$ed07_d_datacert_dia,@$ed07_d_datacert_mes,@$ed0
        <?=@$Led07_t_pendentes?>
     </td>
     <td>
-<?
+<?php
 db_textarea('ed07_t_pendentes',3,40,$Ied07_t_pendentes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -211,7 +211,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_alunos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

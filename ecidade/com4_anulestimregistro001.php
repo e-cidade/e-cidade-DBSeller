@@ -45,7 +45,7 @@ $lControlaValor = (!empty($formacontrole) && $formacontrole == aberturaRegistroP
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -75,7 +75,7 @@ db_app::load("widgets/windowAux.widget.js");
                 </label>
               </td>
               <td>
-                <?
+                <?php
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -84,9 +84,9 @@ db_app::load("widgets/windowAux.widget.js");
               <td colspan="2">
               <fieldset>
                 <legend><b>Motivo</b></legend>
-                <?
+                <?php
                 $pc67_motivo = "";
-                db_textarea("pc67_motivo",10,50,"",true,"text",1,"","","","");
+                db_textarea("pc67_motivo",10,50,"",true,"text",1,"","","#fff","");
                 ?>
               </fieldset>
               </td>
@@ -104,7 +104,7 @@ db_app::load("widgets/windowAux.widget.js");
   </div>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -118,7 +118,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
                          'db_iframe_solicita',
                          'func_solicitaestimativa.php?funcao_js=parent.js_mostraPesquisa|pc10_numero&departamento=true'+
                          '&comcompilacao=1&anuladas=1&formacontrole=' + (!empty(oGet.formacontrole) ? oGet.formacontrole : '1'),
-                         'Pesquisa de Estimativa de Registro de Preço',
+                         'Estimativa de Registro de Preço',
                          true );
   }
 

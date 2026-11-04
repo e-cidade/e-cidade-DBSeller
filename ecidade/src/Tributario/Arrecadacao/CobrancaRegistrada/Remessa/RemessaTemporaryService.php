@@ -29,6 +29,7 @@ namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Remessa;
 
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Arquivo\Factory;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Arquivo\BaseAbstract;
+use \cl_recibo as ReciboDAO;
 use \db_stdClass;
 use \Exception;
 use \db_utils;
@@ -98,15 +99,18 @@ class RemessaTemporaryService
         return $this->iQuantidadeRegistros;
     }
 
-    public function getTiposDebito(){
+    public function getTiposDebito()
+    {
         return $this->sTiposDebito;
     }
 
-    public function getParcelas(){
+    public function getParcelas()
+    {
         return $this->aParcelas;
     }
 
-    public function getDataEmissao(){
+    public function getDataEmissao()
+    {
         return $this->sDataEmissao;
     }
 
@@ -135,15 +139,18 @@ class RemessaTemporaryService
         $this->iQuantidadeRegistros = $iQuantidadeRegistros;
     }
 
-    public function setTiposDebito($sTiposDebito){
+    public function setTiposDebito($sTiposDebito)
+    {
         $this->sTiposDebito = $sTiposDebito;
     }
 
-    public function setParcelas($aParcelas){
+    public function setParcelas($aParcelas)
+    {
         $this->aParcelas = $aParcelas;
     }
 
-    public function setDataEmissao($sDataEmissao){
+    public function setDataEmissao($sDataEmissao)
+    {
         $this->sDataEmissao = $sDataEmissao;
     }
 
@@ -152,18 +159,21 @@ class RemessaTemporaryService
         $lReturn = false;
 
         if (!empty($this->iConvenio)) {
-
-            $lReturn = $this->oRemessaRepository->createTempRemessaConvenio($this->sTempTable, $this->iConvenio, $this->aParcelas, $this->sTiposDebito, $this->sDataEmissao, $sFiltrarDebitos);
-
-        } else if (!empty($this->iRemessa)) {
-
+            $lReturn = $this->oRemessaRepository->createTempRemessaConvenio(
+                $this->sTempTable,
+                $this->iConvenio,
+                $this->aParcelas,
+                $this->sTiposDebito,
+                $this->sDataEmissao,
+                $sFiltrarDebitos
+            );
+        } elseif (!empty($this->iRemessa)) {
                 $this->iConvenio = $this->oRemessaRepository->getCodigoConvenio($this->iRemessa);
 
                 $lReturn = $this->oRemessaRepository->createTempRemessaGerada($this->sTempTable, $this->iRemessa);
-
-            } else {
-                throw new Exception("Código do convênio ou remessa não informados.");
-            }
+        } else {
+            throw new Exception("Código do convênio ou remessa não informados.");
+        }
 
 
         return $lReturn;
@@ -171,6 +181,19 @@ class RemessaTemporaryService
 
     public function atualizaRegistros()
     {
+        $oReciboDAO = new ReciboDAO;
+
+        $sqlNumpreAdquirente = "select k00_numnov from $this->sTempTable";
+        $rsNumpre = db_query($sqlNumpreAdquirente);
+        $oNumpre = db_utils::fieldsMemory($rsNumpre, 0);
+        
+        $sWhere  = " k00_numpre = $oNumpre->k00_numnov";
+        $rsReciboDAO = $oReciboDAO->sql_record($oReciboDAO->sql_query_file(null, 'k00_tipo', null, $sWhere));
+        $oTipo   = db_utils::fieldsMemory($rsReciboDAO, 0);
+        
+        if ($oTipo->k00_tipo == 29) {
+            $this->iRegraCgmIptu = 0;
+        }
 
         $sSql = "update $this->sTempTable ";
         $sSql .= "set regra = (";
@@ -199,34 +222,34 @@ class RemessaTemporaryService
             $sPrincipal = "false";
         }
 
-        $sSql = " update $this->sTempTable                                                                                                         ";
-        $sSql .= "    set sacado = (select ARRAY[riTipoEnvol,                                                                                      ";
-        $sSql .= "                               riMatric,                                                                                         ";
-        $sSql .= "                               riInscr,                                                                                          ";
-        $sSql .= "                               riNumcgm]                                                                                         ";
-        $sSql .= "                    from fc_busca_envolvidos($sPrincipal,                                                                        ";
-        $sSql .= "                                             (case                                                                               ";
-        $sSql .= "                                                when regra = 'I' then $this->iRegraCgmIss                                        ";
-        $sSql .= "                                                when regra = 'M' and {$this->iRegraCgmIptu} = 0 and (array_length(cgm, 1) < 2) = true then 1 ";
-        $sSql .= "                                                when regra = 'M' and {$this->iRegraCgmIptu} = 0 and (array_length(cgm, 1) > 1) = true then 2 ";
-        $sSql .= "                                                when regra = 'M' and {$this->iRegraCgmIptu} <> 0 then {$this->iRegraCgmIptu}                 ";
-        $sSql .= "                                                else null                                                                ";
-        $sSql .= "                                              end),                                                                      ";
-        $sSql .= "                                             regra,                                                                      ";
-        $sSql .= "                                             (case                                                                       ";
-        $sSql .= "                                                when regra = 'M' then matricula[1]                                       ";
-        $sSql .= "                                                when regra = 'I' then inscricao[1]                                       ";
-        $sSql .= "                                                else cgm[1]                                                              ";
-        $sSql .= "                                              end)                                                                       ";
-        $sSql .= "                                            )                                                                            ";
+        $sSql = " update $this->sTempTable                                                                            ";
+        $sSql .= "    set sacado = (select ARRAY[riTipoEnvol,                                                         ";
+        $sSql .= "                               riMatric,                                                            ";
+        $sSql .= "                               riInscr,                                                             ";
+        $sSql .= "                               riNumcgm]                                                            ";
+        $sSql .= "    from fc_busca_envolvidos($sPrincipal,                                                           ";
+        $sSql .= "      (case                                                                                         ";
+        $sSql .= "       when regra = 'I' then $this->iRegraCgmIss                                                    ";
+        $sSql .= "       when regra = 'M' and {$this->iRegraCgmIptu} = 0 and (array_length(cgm, 1) < 2) = true then 1 ";
+        $sSql .= "       when regra = 'M' and {$this->iRegraCgmIptu} = 0 and (array_length(cgm, 1) > 1) = true then 2 ";
+        $sSql .= "       when regra = 'M' and {$this->iRegraCgmIptu} <> 0 then {$this->iRegraCgmIptu}                 ";
+        $sSql .= "                                                else null                                           ";
+        $sSql .= "                                              end),                                                 ";
+        $sSql .= "                                             regra,                                                 ";
+        $sSql .= "                                             (case                                                  ";
+        $sSql .= "                                                when regra = 'M' then matricula[1]                  ";
+        $sSql .= "                                                when regra = 'I' then inscricao[1]                  ";
+        $sSql .= "                                                else cgm[1]                                         ";
+        $sSql .= "                                              end)                                                  ";
+        $sSql .= "                                            )                                                       ";
 
-        if($this->iRegraCgmIptu == 2){
-            $sSql .= "                     LEFT JOIN promitente ON promitente.j41_numcgm = rinumcgm  AND  promitente.j41_matric = riMatric ";
-            $sSql .= "                           AND j41_tipopro = 't'                                                                     ";
-            $sSql .= "                      ORDER BY  j41_tipopro                                                                          ";
+        if ($this->iRegraCgmIptu == 2) {
+            $sSql .= "LEFT JOIN promitente ON promitente.j41_numcgm = rinumcgm  AND  promitente.j41_matric = riMatric ";
+            $sSql .= "                           AND j41_tipopro = 't'                                                ";
+            $sSql .= "                      ORDER BY  j41_tipopro                                                     ";
         }
 
-        $sSql .= "                     limit 1)                                                                                            ";
+        $sSql .= "                     limit 1)                                                                       ";
 
         $rsAtualizaRegistros = $this->oRemessaRepository->getDaoRemessaCobrancaRegistrada()->sql_record($sSql);
 
@@ -242,34 +265,59 @@ class RemessaTemporaryService
         $oInstit = \db_stdClass::getDadosInstit();
 
         if ($oInstit->db21_regracgmiptu == 2) {
-            $sqlNomeProprietario = "case when $this->sTempTable.sacado[4] is not null then cgm.z01_nome when $this->sTempTable.sacado[2] is not null then cgm_matricula.z01_nome when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_nome else cgm.z01_nome end as nome";
-            $sqlCpfProprietario = "case when $this->sTempTable.sacado[4] is not null then cgm.z01_cgccpf when $this->sTempTable.sacado[2] is not null then cgm_matricula.z01_cgccpf when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_cgccpf else cgm.z01_cgccpf end as cpf_cnpj";
+            $sqlNomeProprietario = "case when $this->sTempTable.sacado[4] is not null then cgm.z01_nome 
+                                         when $this->sTempTable.sacado[2] is not null then cgm_matricula.z01_nome 
+                                         when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_nome 
+                                         else cgm.z01_nome end as nome";
+            $sqlCpfProprietario = "case when $this->sTempTable.sacado[4] is not null then cgm.z01_cgccpf 
+                                        when $this->sTempTable.sacado[2] is not null then cgm_matricula.z01_cgccpf 
+                                        when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_cgccpf 
+                                        else cgm.z01_cgccpf end as cpf_cnpj";
         } else {
-            $sqlNomeProprietario = "case when $this->sTempTable.sacado[2] is not null and {$this->iRegraCgmIptu} = 0 and (array_length(cgm, 1) < 2) = true then cgm_matricula.z01_nome when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_nome else cgm.z01_nome end as nome";
-            $sqlCpfProprietario = "case when $this->sTempTable.sacado[2] is not null and {$this->iRegraCgmIptu} = 0 and (array_length(cgm, 1) < 2) = true then cgm_matricula.z01_cgccpf when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_cgccpf else cgm.z01_cgccpf end as cpf_cnpj";
+            $sqlNomeProprietario = "case when $this->sTempTable.sacado[2] is not null and {$this->iRegraCgmIptu} = 0 
+                                         and (array_length(cgm, 1) < 2) = true then cgm_matricula.z01_nome 
+                                         when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_nome 
+                                         else cgm.z01_nome end as nome";
+            $sqlCpfProprietario = "case when $this->sTempTable.sacado[2] is not null and {$this->iRegraCgmIptu} = 0 
+                                         and (array_length(cgm, 1) < 2) = true then cgm_matricula.z01_cgccpf 
+                                         when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_cgccpf 
+                                         else cgm.z01_cgccpf end as cpf_cnpj";
         }
 
         $aCamposEndereco = array(
           "$this->sTempTable.*",
           $sqlCpfProprietario,
           $sqlNomeProprietario,
-          "case when $this->sTempTable.sacado[3] is not null then (case when ruas.j14_nome is not null then ruas.j14_nome else cgm_inscricao.z01_ender end) else cgm.z01_ender end as endereco",
-          "case when $this->sTempTable.sacado[3] is not null then (case when issruas.q02_numero is not null then issruas.q02_numero else cgm_inscricao.z01_numero end) else cgm.z01_numero end as numero",
-          "case when $this->sTempTable.sacado[3] is not null then (case when issruas.q02_compl is not null then issruas.q02_compl else cgm_inscricao.z01_compl end) else cgm.z01_compl end as complemento",
-          "case when $this->sTempTable.sacado[3] is not null then (case when bairro.j13_descr is not null then bairro.j13_descr else cgm_inscricao.z01_bairro end) else cgm.z01_bairro end as bairro",
-          "case when $this->sTempTable.sacado[3] is not null then (case when issruas.z01_cep is not null then issruas.z01_cep else cgm_inscricao.z01_cep end) else cgm.z01_cep end as cep",
-          "case when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_munic else cgm.z01_munic end as municipio",
+          "case when $this->sTempTable.sacado[3] is not null 
+           then (case when ruas.j14_nome is not null then ruas.j14_nome else cgm_inscricao.z01_ender end) 
+           else cgm.z01_ender end as endereco",
+          "case when $this->sTempTable.sacado[3] is not null 
+           then (case when issruas.q02_numero is not null then issruas.q02_numero else cgm_inscricao.z01_numero end) 
+           else cgm.z01_numero end as numero",
+          "case when $this->sTempTable.sacado[3] is not null 
+           then (case when issruas.q02_compl is not null then issruas.q02_compl else cgm_inscricao.z01_compl end) 
+           else cgm.z01_compl end as complemento",
+          "case when $this->sTempTable.sacado[3] is not null 
+           then (case when bairro.j13_descr is not null then bairro.j13_descr else cgm_inscricao.z01_bairro end) 
+           else cgm.z01_bairro end as bairro",
+          "case when $this->sTempTable.sacado[3] is not null 
+           then (case when issruas.z01_cep is not null then issruas.z01_cep else cgm_inscricao.z01_cep end) 
+           else cgm.z01_cep end as cep",
+          "case when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_munic 
+           else cgm.z01_munic end as municipio",
           "case when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_uf else cgm.z01_uf end as uf",
         );
 
         $sSql = " select " . implode(", ", $aCamposEndereco) . " from $this->sTempTable";
-        $sSql .= "        left join issbase on issbase.q02_inscr = $this->sTempTable.sacado[3] and $this->sTempTable.sacado[3] is not null";
+        $sSql .= "        left join issbase on issbase.q02_inscr = $this->sTempTable.sacado[3]";
+        $sSql .= "        and $this->sTempTable.sacado[3] is not null";
         $sSql .= "        left join issbairro on issbairro.q13_inscr = issbase.q02_inscr";
         $sSql .= "        left join bairro on bairro.j13_codi = issbairro.q13_bairro";
         $sSql .= "        left join issruas on issruas.q02_inscr = issbase.q02_inscr";
         $sSql .= "        left join ruas on ruas.j14_codigo = issruas.j14_codigo";
         $sSql .= "        left join cgm as cgm_inscricao on issbase.q02_numcgm = cgm_inscricao.z01_numcgm";
-        $sSql .= "        left join iptubase on iptubase.j01_matric = $this->sTempTable.sacado[2] and $this->sTempTable.sacado[2] is not null";
+        $sSql .= "        left join iptubase on iptubase.j01_matric = $this->sTempTable.sacado[2]";
+        $sSql .= "        and $this->sTempTable.sacado[2] is not null";
         $sSql .= "        left join cgm as cgm_matricula on iptubase.j01_numcgm = cgm_matricula.z01_numcgm";
         $sSql .= "        left join cgm on cgm.z01_numcgm = $this->sTempTable.sacado[4]";
 

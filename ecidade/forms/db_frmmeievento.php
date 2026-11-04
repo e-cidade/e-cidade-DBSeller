@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("q100_descricao");
        <?=@$Lq101_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q101_sequencial',10,$Iq101_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -55,22 +55,22 @@ db_input('q101_sequencial',10,$Iq101_sequencial,true,'text',3,"")
        <?=@$Lq101_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('q101_codigo',10,$Iq101_codigo,true,'text',1,"")
 ?>
     </td>
   </tr>  
   <tr>
     <td nowrap title="<?=@$Tq101_meigrupoevento?>">
-       <?
+       <?php
        db_ancora(@$Lq101_meigrupoevento,"js_pesquisaq101_meigrupoevento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q101_meigrupoevento',10,$Iq101_meigrupoevento,true,'text',$db_opcao," onchange='js_pesquisaq101_meigrupoevento(false);'")
 ?>
-       <?
+       <?php
 db_input('q100_descricao',40,$Iq100_descricao,true,'text',3,'')
        ?>
     </td>
@@ -80,7 +80,7 @@ db_input('q100_descricao',40,$Iq100_descricao,true,'text',3,'')
        <?=@$Lq101_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('q101_descricao',54,$Iq101_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,7 +90,7 @@ db_input('q101_descricao',54,$Iq101_descricao,true,'text',$db_opcao,"")
        <?=@$Lq101_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('q101_obs',5,52,$Iq101_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -100,7 +100,7 @@ db_textarea('q101_obs',5,52,$Iq101_obs,true,'text',$db_opcao,"")
        <?=@$Lq101_versao?>
     </td>
     <td> 
-<?
+<?php
 db_input('q101_versao',20,$Iq101_versao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ db_input('q101_versao',20,$Iq101_versao,true,'text',$db_opcao,"")
        <?=@$Lq101_dataini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q101_dataini',@$q101_dataini_dia,@$q101_dataini_mes,@$q101_dataini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -120,7 +120,7 @@ db_inputdata('q101_dataini',@$q101_dataini_dia,@$q101_dataini_mes,@$q101_dataini
        <?=@$Lq101_datafin?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q101_datafin',@$q101_datafin_dia,@$q101_datafin_mes,@$q101_datafin_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -136,9 +136,9 @@ db_inputdata('q101_datafin',@$q101_datafin_dia,@$q101_datafin_mes,@$q101_datafin
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
-<? if($db_opcao > 1) { ?>
+<?php if($db_opcao > 1) { ?>
   	<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<? } ?>
+<?php } ?>
 
 
 </form>
@@ -171,7 +171,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_meievento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

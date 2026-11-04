@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clconciliatipo->rotulo->label("k65_descricao");
               <?=$Lk65_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k65_sequencial",10,$Ik65_sequencial,true,"text",4,"","chave_k65_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconciliatipo->rotulo->label("k65_descricao");
               <?=$Lk65_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k65_descricao",50,$Ik65_descricao,true,"text",4,"","chave_k65_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconciliatipo->rotulo->label("k65_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conciliatipo.php")==true){
@@ -122,12 +122,12 @@ $clconciliatipo->rotulo->label("k65_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 $this->objpdf->AliasNbPages();
 $this->objpdf->Setfont("Times", "B", 14);
 $this->objpdf->AddPage();

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,28 +74,28 @@ function emite(){
   
     <tr>
       <td nowrap title="<?=@$To46_codsup?>"> <?=@$Lo46_codsup?> </td>
-      <td> <? db_input('o46_codsup',4,$Io46_codsup,true,'text',$db_opcao) ?> </td> 
+      <td> <?php db_input('o46_codsup',4,$Io46_codsup,true,'text',$db_opcao) ?> </td> 
    </tr>
   
    <tr>
-      <td nowrap title="<?=@$To46_codlei?>"><? db_ancora(@$Lo46_codlei,"",$db_opcao);  ?> </td>
-      <td> <? db_input('o46_codlei',4,$Io46_codlei,true,'text',$db_opcao,"") ?>  </td>
+      <td nowrap title="<?=@$To46_codlei?>"><?php db_ancora(@$Lo46_codlei,"",$db_opcao);  ?> </td>
+      <td> <?php db_input('o46_codlei',4,$Io46_codlei,true,'text',$db_opcao,"") ?>  </td>
   </tr>
 
   <tr>
     <td nowrap title="<?=@$To46_tiposup?>">Tipo Suplementação :  </td>
-    <td> <? db_input('o46_tiposup',8,$Io46_tiposup,true,'text',$db_opcao,""); ?> 
+    <td> <?php db_input('o46_tiposup',8,$Io46_tiposup,true,'text',$db_opcao,""); ?> 
          
     </td>
   </tr>
 
   <tr>
      <td nowrap title="<?=@$To46_data?>">Data inicial </td>
-     <td> <? db_inputdata('o46_data',@$o46_data_dia,@$o46_data_mes,@$o46_data_ano,true,'text',$db_opcao,"")?> </td>
+     <td> <?php db_inputdata('o46_data',@$o46_data_dia,@$o46_data_mes,@$o46_data_ano,true,'text',$db_opcao,"")?> </td>
   </tr>
   <tr>
      <td nowrap title="<?=@$To46_data?>"> Data_final :  </td>
-     <td> <? db_inputdata('o46_data1',@$o46_data_dia,@$o46_data_mes,@$o46_data_ano,true,'text',$db_opcao,"")?> </td>
+     <td> <?php db_inputdata('o46_data1',@$o46_data_dia,@$o46_data_mes,@$o46_data_ano,true,'text',$db_opcao,"")?> </td>
   </tr>
  
  <table>
@@ -104,7 +104,7 @@ function emite(){
    </center>
  </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

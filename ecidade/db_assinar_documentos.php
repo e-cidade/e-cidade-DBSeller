@@ -5,10 +5,6 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-
-$dotenv = new \Dotenv\Dotenv('./');
-$dotenv->load();
-
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -141,6 +137,7 @@ $dotenv->load();
     let totalProgresso = 0;
     const table = jQuery("#data-table");
     const socket = io('http://localhost:9000');
+
     socket.on('connect', () => {
         socket.emit('getCertificates', {});
         btnHabilitarAssinador.innerHTML = 'Assinador A3 conectado <i class="fa fa-circle" style="color: green"></i>';
@@ -173,11 +170,11 @@ $dotenv->load();
         btnAssinar.disabled = false;
         let fileB64 = event.fileB64;
         let arquivoAssinado = arquivosAssinando.filter(file => {
-            return event.fileID === file.id_estorage
+            return parseInt(event.fileID) === parseInt(file.id_estorage);
         }).shift();
         console.log(`Recebido arquivo '${arquivoAssinado.fileID}' assinado`)
         arquivosAssinando = arquivosAssinando.filter(file => {
-            return event.fileID !== file.id_estorage
+            return parseInt(event.fileID) !== parseInt(file.id_estorage);
         });
         arquivoAssinado.base64 = fileB64;
         arquivosAssinados.push(arquivoAssinado);
@@ -361,6 +358,7 @@ $dotenv->load();
     function pesquisarDocumentos() {
         js_divCarregando('Carregando documentos', 'loading_message');
         const data = new FormData();
+        data.append('codigoProcesso', codigoProcesso);
         data.append('procandamint', procandamint);
         HttpClient.post(`${urlApi}/patrimonial/protocolo/processo/processodocumento/documentosPorProcAndamInt`, {body: data}).then(response => {
                 if (response.error === true) {

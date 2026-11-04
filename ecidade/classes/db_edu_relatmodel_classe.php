@@ -1,4 +1,29 @@
 <?php
+/*
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
+ */
 
 class cl_edu_relatmodel
 {
@@ -37,6 +62,14 @@ class cl_edu_relatmodel
     public $ed217_exibir_etapa_obs = 'f'; 
     public $ed217_exibircertidao = 'f'; 
     public $ed217_exibiridentidade = 'f'; 
+    public $ed217_exibir_assinatura_secretario = 'f'; 
+    public $ed217_exibir_assinatura_adicional = 'f'; 
+    public $ed217_exibir_grade_alunos = 'f'; 
+    public $ed217_exibir_coluna_disciplinas = 'f'; 
+    public $ed217_exibir_coluna_resultado_final = 'f'; 
+    public $ed217_exibir_brasao = 'f'; 
+    public $ed217_disposicao_brasao = 'LADO'; 
+    public $ed217_disposicao_cabecalho = 'ESQUERDA'; 
    // cria propriedade com as variaveis do arquivo 
     public $campos = "
                  ed217_i_codigo = int4 = Código 
@@ -51,7 +84,7 @@ class cl_edu_relatmodel
                  ed217_observacao = int4 = Observações 
                  ed217_i_tipomodelo = int4 = Tipo do Modelo 
                  ed217_exibeturma = bool = Exibe Turma 
-                 ed217_exibecargahoraria = bool = Exibe Carga Horária 
+                 ed217_exibecargahoraria = bool = Exibir Porcentagem da Frequência 
                  ed217_brasao = int4 = Brasão 
                  ed217_exibe_obs_diario = bool = Exibe Observação do Diário 
                  ed217_exibirmantenedora = bool = Exibir Mantenedora 
@@ -60,6 +93,14 @@ class cl_edu_relatmodel
                  ed217_exibir_etapa_obs = bool = Exibir Etapa na Observação 
                  ed217_exibircertidao = bool = Exibir informações da certidao de nasc. 
                  ed217_exibiridentidade = bool = Exibir informações do RG 
+                 ed217_exibir_assinatura_secretario = bool = Exibir Assinatura Secretário 
+                 ed217_exibir_assinatura_adicional = bool = Exibir Assinatura Adicional 
+                 ed217_exibir_grade_alunos = bool = Exibir Grade Alunos 
+                 ed217_exibir_coluna_disciplinas = bool = Exibir Coluna Disciplinas 
+                 ed217_exibir_coluna_resultado_final = bool = Exibir Coluna Resultado Final 
+                 ed217_exibir_brasao = bool = Exibir Brasão 
+                 ed217_disposicao_brasao = char(20) = Disposição Brasão 
+                 ed217_disposicao_cabecalho = char(20) = Disposição Cabeçalho 
                  ";
 
     public function __construct()
@@ -102,6 +143,14 @@ class cl_edu_relatmodel
        $this->ed217_exibir_etapa_obs = ($this->ed217_exibir_etapa_obs == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibir_etapa_obs"]:$this->ed217_exibir_etapa_obs);
        $this->ed217_exibircertidao = ($this->ed217_exibircertidao == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibircertidao"]:$this->ed217_exibircertidao);
        $this->ed217_exibiridentidade = ($this->ed217_exibiridentidade == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibiridentidade"]:$this->ed217_exibiridentidade);
+       $this->ed217_exibir_assinatura_secretario = ($this->ed217_exibir_assinatura_secretario == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibir_assinatura_secretario"]:$this->ed217_exibir_assinatura_secretario);
+       $this->ed217_exibir_assinatura_adicional = ($this->ed217_exibir_assinatura_adicional == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibir_assinatura_adicional"]:$this->ed217_exibir_assinatura_adicional);
+       $this->ed217_exibir_grade_alunos = ($this->ed217_exibir_grade_alunos == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibir_grade_alunos"]:$this->ed217_exibir_grade_alunos);
+       $this->ed217_exibir_coluna_disciplinas = ($this->ed217_exibir_coluna_disciplinas == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibir_coluna_disciplinas"]:$this->ed217_exibir_coluna_disciplinas);
+       $this->ed217_exibir_coluna_resultado_final = ($this->ed217_exibir_coluna_resultado_final == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibir_coluna_resultado_final"]:$this->ed217_exibir_coluna_resultado_final);
+       $this->ed217_exibir_brasao = ($this->ed217_exibir_brasao == "f"?@$GLOBALS["HTTP_POST_VARS"]["ed217_exibir_brasao"]:$this->ed217_exibir_brasao);
+       $this->ed217_disposicao_brasao = ($this->ed217_disposicao_brasao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed217_disposicao_brasao"]:$this->ed217_disposicao_brasao);
+       $this->ed217_disposicao_cabecalho = ($this->ed217_disposicao_cabecalho == ""?@$GLOBALS["HTTP_POST_VARS"]["ed217_disposicao_cabecalho"]:$this->ed217_disposicao_cabecalho);
      }else{
        $this->ed217_i_codigo = ($this->ed217_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed217_i_codigo"]:$this->ed217_i_codigo);
      }
@@ -153,7 +202,7 @@ class cl_edu_relatmodel
        return false;
      }
      if($this->ed217_exibecargahoraria == null ){ 
-       $this->erro_sql = " Campo Exibe Carga Horária não informado.";
+       $this->erro_sql = " Campo Exibir Porcentagem da Frequência não informado.";
        $this->erro_campo = "ed217_exibecargahoraria";
        $this->erro_banco = "";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -233,6 +282,78 @@ class cl_edu_relatmodel
        $this->erro_status = "0";
        return false;
      }
+     if($this->ed217_exibir_assinatura_secretario == null ){ 
+       $this->erro_sql = " Campo Exibir Assinatura Secretário não informado.";
+       $this->erro_campo = "ed217_exibir_assinatura_secretario";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->ed217_exibir_assinatura_adicional == null ){ 
+       $this->erro_sql = " Campo Exibir Assinatura Adicional não informado.";
+       $this->erro_campo = "ed217_exibir_assinatura_adicional";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->ed217_exibir_grade_alunos == null ){ 
+       $this->erro_sql = " Campo Exibir Grade Alunos não informado.";
+       $this->erro_campo = "ed217_exibir_grade_alunos";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->ed217_exibir_coluna_disciplinas == null ){ 
+       $this->erro_sql = " Campo Exibir Coluna Disciplinas não informado.";
+       $this->erro_campo = "ed217_exibir_coluna_disciplinas";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->ed217_exibir_coluna_resultado_final == null ){ 
+       $this->erro_sql = " Campo Exibir Coluna Resultado Final não informado.";
+       $this->erro_campo = "ed217_exibir_coluna_resultado_final";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->ed217_exibir_brasao == null ){ 
+       $this->erro_sql = " Campo Exibir Brasão não informado.";
+       $this->erro_campo = "ed217_exibir_brasao";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->ed217_disposicao_brasao == null ){ 
+       $this->erro_sql = " Campo Disposição Brasão não informado.";
+       $this->erro_campo = "ed217_disposicao_brasao";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->ed217_disposicao_cabecalho == null ){ 
+       $this->erro_sql = " Campo Disposição Cabeçalho não informado.";
+       $this->erro_campo = "ed217_disposicao_cabecalho";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
      if($ed217_i_codigo == "" || $ed217_i_codigo == null ){
        $result = db_query("select nextval('edu_relatmodel_ed217_codigo_seq')"); 
        if($result==false){
@@ -287,6 +408,14 @@ class cl_edu_relatmodel
                                       ,ed217_exibir_etapa_obs 
                                       ,ed217_exibircertidao 
                                       ,ed217_exibiridentidade 
+                                      ,ed217_exibir_assinatura_secretario 
+                                      ,ed217_exibir_assinatura_adicional 
+                                      ,ed217_exibir_grade_alunos 
+                                      ,ed217_exibir_coluna_disciplinas 
+                                      ,ed217_exibir_coluna_resultado_final 
+                                      ,ed217_exibir_brasao 
+                                      ,ed217_disposicao_brasao 
+                                      ,ed217_disposicao_cabecalho 
                        )
                 values (
                                 $this->ed217_i_codigo 
@@ -310,6 +439,14 @@ class cl_edu_relatmodel
                                ,'$this->ed217_exibir_etapa_obs' 
                                ,'$this->ed217_exibircertidao' 
                                ,'$this->ed217_exibiridentidade' 
+                               ,'$this->ed217_exibir_assinatura_secretario' 
+                               ,'$this->ed217_exibir_assinatura_adicional' 
+                               ,'$this->ed217_exibir_grade_alunos' 
+                               ,'$this->ed217_exibir_coluna_disciplinas' 
+                               ,'$this->ed217_exibir_coluna_resultado_final' 
+                               ,'$this->ed217_exibir_brasao' 
+                               ,'$this->ed217_disposicao_brasao' 
+                               ,'$this->ed217_disposicao_cabecalho' 
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -367,6 +504,14 @@ class cl_edu_relatmodel
          $resac = db_query("insert into db_acount values($acount,2571,1014576,'','".AddSlashes(pg_result($resaco,0,'ed217_exibir_etapa_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2571,1014613,'','".AddSlashes(pg_result($resaco,0,'ed217_exibircertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2571,1014614,'','".AddSlashes(pg_result($resaco,0,'ed217_exibiridentidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015686,'','".AddSlashes(pg_result($resaco,0,'ed217_exibir_assinatura_secretario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015687,'','".AddSlashes(pg_result($resaco,0,'ed217_exibir_assinatura_adicional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015688,'','".AddSlashes(pg_result($resaco,0,'ed217_exibir_grade_alunos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015689,'','".AddSlashes(pg_result($resaco,0,'ed217_exibir_coluna_disciplinas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015690,'','".AddSlashes(pg_result($resaco,0,'ed217_exibir_coluna_resultado_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015691,'','".AddSlashes(pg_result($resaco,0,'ed217_exibir_brasao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015692,'','".AddSlashes(pg_result($resaco,0,'ed217_disposicao_brasao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2571,1015693,'','".AddSlashes(pg_result($resaco,0,'ed217_disposicao_cabecalho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -480,7 +625,7 @@ class cl_edu_relatmodel
        $sql  .= $virgula." ed217_exibecargahoraria = '$this->ed217_exibecargahoraria' ";
        $virgula = ",";
        if(trim($this->ed217_exibecargahoraria) == null ){ 
-         $this->erro_sql = " Campo Exibe Carga Horária não informado.";
+         $this->erro_sql = " Campo Exibir Porcentagem da Frequência não informado.";
          $this->erro_campo = "ed217_exibecargahoraria";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -593,6 +738,110 @@ class cl_edu_relatmodel
          return false;
        }
      }
+     if(trim($this->ed217_exibir_assinatura_secretario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_assinatura_secretario"])){ 
+       $sql  .= $virgula." ed217_exibir_assinatura_secretario = '$this->ed217_exibir_assinatura_secretario' ";
+       $virgula = ",";
+       if(trim($this->ed217_exibir_assinatura_secretario) == null ){ 
+         $this->erro_sql = " Campo Exibir Assinatura Secretário não informado.";
+         $this->erro_campo = "ed217_exibir_assinatura_secretario";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->ed217_exibir_assinatura_adicional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_assinatura_adicional"])){ 
+       $sql  .= $virgula." ed217_exibir_assinatura_adicional = '$this->ed217_exibir_assinatura_adicional' ";
+       $virgula = ",";
+       if(trim($this->ed217_exibir_assinatura_adicional) == null ){ 
+         $this->erro_sql = " Campo Exibir Assinatura Adicional não informado.";
+         $this->erro_campo = "ed217_exibir_assinatura_adicional";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->ed217_exibir_grade_alunos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_grade_alunos"])){ 
+       $sql  .= $virgula." ed217_exibir_grade_alunos = '$this->ed217_exibir_grade_alunos' ";
+       $virgula = ",";
+       if(trim($this->ed217_exibir_grade_alunos) == null ){ 
+         $this->erro_sql = " Campo Exibir Grade Alunos não informado.";
+         $this->erro_campo = "ed217_exibir_grade_alunos";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->ed217_exibir_coluna_disciplinas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_coluna_disciplinas"])){ 
+       $sql  .= $virgula." ed217_exibir_coluna_disciplinas = '$this->ed217_exibir_coluna_disciplinas' ";
+       $virgula = ",";
+       if(trim($this->ed217_exibir_coluna_disciplinas) == null ){ 
+         $this->erro_sql = " Campo Exibir Coluna Disciplinas não informado.";
+         $this->erro_campo = "ed217_exibir_coluna_disciplinas";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->ed217_exibir_coluna_resultado_final)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_coluna_resultado_final"])){ 
+       $sql  .= $virgula." ed217_exibir_coluna_resultado_final = '$this->ed217_exibir_coluna_resultado_final' ";
+       $virgula = ",";
+       if(trim($this->ed217_exibir_coluna_resultado_final) == null ){ 
+         $this->erro_sql = " Campo Exibir Coluna Resultado Final não informado.";
+         $this->erro_campo = "ed217_exibir_coluna_resultado_final";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->ed217_exibir_brasao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_brasao"])){ 
+       $sql  .= $virgula." ed217_exibir_brasao = '$this->ed217_exibir_brasao' ";
+       $virgula = ",";
+       if(trim($this->ed217_exibir_brasao) == null ){ 
+         $this->erro_sql = " Campo Exibir Brasão não informado.";
+         $this->erro_campo = "ed217_exibir_brasao";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->ed217_disposicao_brasao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_disposicao_brasao"])){ 
+       $sql  .= $virgula." ed217_disposicao_brasao = '$this->ed217_disposicao_brasao' ";
+       $virgula = ",";
+       if(trim($this->ed217_disposicao_brasao) == null ){ 
+         $this->erro_sql = " Campo Disposição Brasão não informado.";
+         $this->erro_campo = "ed217_disposicao_brasao";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->ed217_disposicao_cabecalho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed217_disposicao_cabecalho"])){ 
+       $sql  .= $virgula." ed217_disposicao_cabecalho = '$this->ed217_disposicao_cabecalho' ";
+       $virgula = ",";
+       if(trim($this->ed217_disposicao_cabecalho) == null ){ 
+         $this->erro_sql = " Campo Disposição Cabeçalho não informado.";
+         $this->erro_campo = "ed217_disposicao_cabecalho";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
      $sql .= " where ";
      if($ed217_i_codigo!=null){
        $sql .= " ed217_i_codigo = $this->ed217_i_codigo";
@@ -652,6 +901,22 @@ class cl_edu_relatmodel
              $resac = db_query("insert into db_acount values($acount,2571,1014613,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibircertidao'))."','$this->ed217_exibircertidao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibiridentidade"]) || $this->ed217_exibiridentidade != "")
              $resac = db_query("insert into db_acount values($acount,2571,1014614,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibiridentidade'))."','$this->ed217_exibiridentidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_assinatura_secretario"]) || $this->ed217_exibir_assinatura_secretario != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015686,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibir_assinatura_secretario'))."','$this->ed217_exibir_assinatura_secretario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_assinatura_adicional"]) || $this->ed217_exibir_assinatura_adicional != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015687,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibir_assinatura_adicional'))."','$this->ed217_exibir_assinatura_adicional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_grade_alunos"]) || $this->ed217_exibir_grade_alunos != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015688,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibir_grade_alunos'))."','$this->ed217_exibir_grade_alunos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_coluna_disciplinas"]) || $this->ed217_exibir_coluna_disciplinas != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015689,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibir_coluna_disciplinas'))."','$this->ed217_exibir_coluna_disciplinas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_coluna_resultado_final"]) || $this->ed217_exibir_coluna_resultado_final != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015690,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibir_coluna_resultado_final'))."','$this->ed217_exibir_coluna_resultado_final',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_exibir_brasao"]) || $this->ed217_exibir_brasao != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015691,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_exibir_brasao'))."','$this->ed217_exibir_brasao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_disposicao_brasao"]) || $this->ed217_disposicao_brasao != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015692,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_disposicao_brasao'))."','$this->ed217_disposicao_brasao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed217_disposicao_cabecalho"]) || $this->ed217_disposicao_cabecalho != "")
+             $resac = db_query("insert into db_acount values($acount,2571,1015693,'".AddSlashes(pg_result($resaco,$conresaco,'ed217_disposicao_cabecalho'))."','$this->ed217_disposicao_cabecalho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -729,6 +994,14 @@ class cl_edu_relatmodel
            $resac  = db_query("insert into db_acount values($acount,2571,1014576,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibir_etapa_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2571,1014613,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibircertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2571,1014614,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibiridentidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015686,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibir_assinatura_secretario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015687,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibir_assinatura_adicional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015688,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibir_grade_alunos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015689,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibir_coluna_disciplinas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015690,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibir_coluna_resultado_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015691,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_exibir_brasao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015692,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_disposicao_brasao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2571,1015693,'','".AddSlashes(pg_result($resaco,$iresaco,'ed217_disposicao_cabecalho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -841,3 +1114,4 @@ class cl_edu_relatmodel
   }
 
 }
+?>

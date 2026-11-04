@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("z01_nome");
   <tr>
     <td nowrap title="<?=@$Tbi13_leitor?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lbi13_leitor,"js_pesquisabi13_leitor(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi13_leitor',10,$Ibi13_leitor,true,'text',$db_opcao," onchange='js_pesquisabi13_leitor(false);'")
 ?>
-       <?
+       <?php
 db_input('bi10_codigo',10,$Ibi10_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbi13_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lbi13_numcgm,"js_pesquisabi13_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi13_numcgm',10,$Ibi13_numcgm,true,'text',$db_opcao," onchange='js_pesquisabi13_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_leitorpublico.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clrotulo = new rotulocampo;
@@ -66,7 +66,7 @@ $clrotulo->label("eso39_descricao");
     </tr>
     <tr>
       <td align='right'><b>% reajuste:</b></td>
-      <td align='left'>
+      <td align='left'> 
         <?php
         db_input('rh02_salari',10, 4, true, 'text', 1, "");
         ?>
@@ -90,14 +90,17 @@ $clrotulo->label("eso39_descricao");
           <td align="left" nowrap>
             <?php
 		  	       $matriz = array("T"=>"TODOS","f"=>"NAO","t"=>"SIM");
-               $matriz = ["A" => "A - Acordo Coletivo de Trabalho",
+               $matriz = [""  => "Selecione...",
+                          "A" => "A - Acordo Coletivo de Trabalho",
                           "B" => "B - Legislação federal, estadual, municipal ou distrital",
                           "C" => "C - Convenção Coletiva de Trabalho",
                           "D" => "D - Sentença normativa - Dissídio",
                           "E" => "E - Conversão de licença saúde em acidente de trabalho",
                           "F" => "F - Outras verbas de natureza salarial ou não salarial devidas após o desligamento",
                           "G" => "G - Antecipação de diferenças de acordo, convenção ou dissídio coletivo",
-                          "H" => "H - Recolhimento mensal de FGTS anterior ao início de obrigatoriedade dos eventos periódicos<"
+                          "H" => "H - Recolhimento mensal de FGTS anterior ao início de obrigatoriedade dos eventos periódicos<",
+                          "I" => "I - Sentença judicial (exceto reclamatória trabalhista)",
+                          "J" => "J - Parcelas complementares conhecidas após o fechamento da folha"
                 ];
 				       db_select("eso39_tipo",$matriz,true,1,"style='width : 250px;'");
 				    ?>
@@ -106,8 +109,8 @@ $clrotulo->label("eso39_descricao");
           <tr colspan="2">
             <td colspan="5">
               <fieldset>
-                <legend><b>Descricao da alteração ou do instrumento que a gerou:</b></legend>
-                <? db_textarea('eso39_descricao', 3, 93, $Ieso39_descricao, true, 'text',1) ?>
+                <legend><b>Descrição da alteração ou do instrumento que a gerou:</b></legend>
+                <?php db_textarea('eso39_descricao', 3, 93, $Ieso39_descricao, true, 'text',1,"","","","255") ?>
               </fieldset>
           </td>
         </tr>
@@ -142,11 +145,19 @@ function js_enviar(){
   }else if(document.form1.sellotac){
     js_seleciona_combo(document.form1.sellotac);
   }
-  if(document.form1.idDataEfeito.value == ""){
-      alert("Defina a data efeitos remuneratórios do reajuste padrão.");
-      document.form1.idDataEfeito.focus();
-      return false;
+  
+  const instrumentoPermitido = ['A', 'B', 'C', 'D', 'E'];
+
+  if (!$F('eso39_tipo') || !$F('idDataEfeito')) {
+    alert(!$F('eso39_tipo') ? 'Tipo de Instrumento é obrigatório.' : 'Data efeitos remuneratórios do reajuste é obrigatória.');
+    return false;
   }
+
+  if (!$F('eso39_descricao') && (instrumentoPermitido.includes($F('eso39_tipo')))) {
+    alert('Descrição da alteração é obrigatorio.');
+    return false;
+  }
+
   js_validaReajustePadrao();
 
   return false;
@@ -219,7 +230,7 @@ function js_validaReajustePadrao() {
 
   /**
    * Reescreve a função para centralizar o código dentro do autocast
-   */ 
+   */
   js_validaReajustePadrao = function() {
 
     //js_divCarregando('Gerando Reajuste...', 'carregando_reajuste', true);
@@ -236,13 +247,13 @@ function js_validaReajustePadrao() {
       onComplete   : function(oAjax) {
 
         var oRetorno = JSON.parse(oAjax.responseText);
-        
+
         if (oRetorno.iStatus == "2") {
           alert(oRetorno.sMessage.urlDecode());
 
           /**
            * Remove DBDownload caso ja exista.
-           */ 
+           */
           if( $('window01') ){
             $('window01').outerHTML = '';
           }

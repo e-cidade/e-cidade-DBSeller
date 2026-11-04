@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -131,7 +131,7 @@ function js_padrao(val){
        <td class=tit align='left'>Valor  </td>
        <td class=tit align='left'>Conta de Retenção </td>
      </tr>    
-     <?
+     <?php
       // exibir todas os repasses
       $result =  $clcaitransfseq->sql_record(
                  $clcaitransfseq->sql_query_efetuadas(
@@ -152,7 +152,7 @@ function js_padrao(val){
        <td class=centro align='right'><small > <?=$k94_valor ?></small></td>
 
        <td class=centro align='right' nowrap><small> 
-       <?
+       <?php
         // seleciona as contas do saltes
 	$k13_conta=0;
         db_select('k13_conta',$matriz_retencao,'false',1);       
@@ -162,7 +162,7 @@ function js_padrao(val){
 
        
       </tr>
-      <?  } ?> 
+      <?php  } ?> 
 
 
 
@@ -183,7 +183,7 @@ function js_padrao(val){
        <td class=tit align='left'>Usuário  </td>
        <td class=tit align='left'>Valor  </td>
      </tr>    
-     <?
+     <?php
       // exibir todas os repasses
       $result =  $clcaitransfseq->sql_record(
                  $clcaitransfseq->sql_query_efetuadas(
@@ -203,7 +203,7 @@ function js_padrao(val){
        <td class=centro align='left'><small > <?=$nome ?></small></td>
        <td class=centro align='right'><small > <?=$k94_valor ?></small></td>
       </tr>
-      <?  } ?>  
+      <?php  } ?>  
  
 
 

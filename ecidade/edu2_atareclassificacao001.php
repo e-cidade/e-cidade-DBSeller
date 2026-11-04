@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -100,11 +100,11 @@ define("ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001", "educacao.escola.edu2_atareclas
     </form>
   </div>
 </body>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script type="text/javascript">
 
 const ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001 = "educacao.escola.edu2_atareclassificacao001."
-  
+
 var oEscola       = new DBViewFormularioEducacao.ListaEscola();
 var oCalendario   = new DBViewFormularioEducacao.ListaCalendario();
 var oToggleAlunos = new DBToggleList([{sId: 'sAluno', sLabel: 'Aluno'}]);
@@ -118,7 +118,7 @@ var fFuncaoLoadEscola = function() {
   }
 
   var oEscolaSelecionada = oEscola.getSelecionados();
-  
+
   if (oEscolaSelecionada.codigo_escola != '') {
 
     oCalendario.setEscola(oEscolaSelecionada.codigo_escola);
@@ -146,7 +146,7 @@ var fFuncaoChangeEscola = function () {
 
 
 var fFunctionLoadCalendario = function(oCalendario) {
-  
+
   $('imprimir').setAttribute("disabled", "disabled");
 };
 
@@ -162,21 +162,21 @@ var fFunctionChangeCalendario = function() {
 };
 
 /**
- * Busca os alunos da escola e cursando o calendário selecionado. 
+ * Busca os alunos da escola e cursando o calendário selecionado.
  */
 function js_buscaAlunos() {
 
   var oEscolaSelecionada     = oEscola.getSelecionados();
   var oCalendarioSelecionado = oCalendario.getSelecionados();
-  
+
   var oParametros = {exec        : "getAlunosReclassificados",
-                     iEscola     : oEscolaSelecionada.codigo_escola, 
+                     iEscola     : oEscolaSelecionada.codigo_escola,
                      iCalendario : oCalendarioSelecionado.iCalendario};
 
   var oRequest        = {};
-  oRequest.method     = 'post';                                        
-  oRequest.parameters = 'json='+Object.toJSON(oParametros);        
-  oRequest.onComplete = function (oAjax) {                         
+  oRequest.method     = 'post';
+  oRequest.parameters = 'json='+Object.toJSON(oParametros);
+  oRequest.onComplete = function (oAjax) {
                           js_retornoAlunos(oAjax);
                         };
 
@@ -195,11 +195,11 @@ function js_retornoAlunos(oAjax) {
     alert(oRetorno.message.urlDecode());
     return false;
   }
-  
+
   oToggleAlunos.clearAll();
   oRetorno.dados.each( function (oAluno) {
     oToggleAlunos.addSelect({iAluno:oAluno.iCodigo, sAluno:oAluno.sNome.urlDecode()});
-  }); 
+  });
   oToggleAlunos.renderRows();
 
   $('imprimir').removeAttribute("disabled");
@@ -213,33 +213,33 @@ function js_validaImpressao() {
   if ( $F('listaModeloAta') == '' ) {
 
     alert( _M(ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001 + "erro_nenhum_modelo_selecionado") );
-    return false; 
+    return false;
   }
 
   if ( oEscolaSelecionada.codigo_escola == '' ) {
 
     alert( _M(ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001 + "erro_nenhuma_escola_selecionada") );
-    return false;    
-  } 
-  
+    return false;
+  }
+
   if ( oCalendarioSelecionado.iCalendario == '' ) {
-    
+
     alert( _M(ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001 + "erro_nenhum_calendario_selecionado") );
-    return false;    
-  } 
+    return false;
+  }
 
  //if ( $F('emissor') == '' ) {
- //  
+ //
  //  alert( _M(ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001 + "erro_nenhum_emissor_selecionado") );
- //  return false;    
- //} 
+ //  return false;
+ //}
 
   if (oToggleAlunos.getSelected().length == 0) {
 
     alert( _M(ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001 + "erro_nenhum_aluno_selecionado") );
     return false;
   }
-  return true; 
+  return true;
 }
 
 /**
@@ -249,7 +249,7 @@ $('imprimir').observe("click", function () {
 
   var oEscolaSelecionada     = oEscola.getSelecionados();
   var oCalendarioSelecionado = oCalendario.getSelecionados();
-  
+
   if ( !js_validaImpressao() ) {
     return false;
   }
@@ -260,10 +260,10 @@ $('imprimir').observe("click", function () {
       sUrl += "&iCalendario="+ oCalendarioSelecionado.iCalendario;
       sUrl += "&sEmissor="+ $F('emissor');
       sUrl += "&aAlunos="+Object.toJSON(oToggleAlunos.getSelected());
-   
+
   jan = window.open(sUrl,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
   jan.moveTo(0,0);
-  
+
 });
 
 /**
@@ -274,15 +274,15 @@ $('imprimir').observe("click", function () {
   var oParametros = {exec : "buscaModelosAta"};
 
   var oRequest        = {};
-  oRequest.method     = 'post';                                        
-  oRequest.parameters = 'json='+Object.toJSON(oParametros);        
-  oRequest.onComplete = function (oAjax) {                         
+  oRequest.method     = 'post';
+  oRequest.parameters = 'json='+Object.toJSON(oParametros);
+  oRequest.onComplete = function (oAjax) {
              js_retornoModelosAta(oAjax);
            };
-  
+
   js_divCarregando("Aguarde... buscado modelos de ata.", "msgBoxB");
   new Ajax.Request("edu4_classificacao.RPC.php", oRequest);
-  
+
 })();
 
 function js_retornoModelosAta(oAjax) {
@@ -315,7 +315,7 @@ function js_buscaEmissor() {
 
   $('emissor').options.length = 0;
   $('emissor').add(new Option("Selecione Emissor", ""));
-  
+
   js_divCarregando(_M("educacao.escola.edu2_atestadofrequencia.pesquisando_emissor"), "msgBox");
 
   var oObjeto        = {};
@@ -335,7 +335,7 @@ function js_retornoEmissor(oAjax) {
   if (oRetorno.status == 2) {
     alert(oRetorno.message.urlDecode());
   }
-  
+
   oRetorno.dados.each( function (oEmissor) {
 
     var sValue  = oEmissor.funcao.urlDecode()+'|'+oEmissor.nome.urlDecode()+'|'+oEmissor.descricao.urlDecode();
@@ -350,8 +350,8 @@ function js_retornoEmissor(oAjax) {
 
 
 
-oEscola.setCallBackLoad(fFuncaoLoadEscola);       
-oEscola.setCallbackOnChange(fFuncaoChangeEscola); 
+oEscola.setCallBackLoad(fFuncaoLoadEscola);
+oEscola.setCallbackOnChange(fFuncaoChangeEscola);
 oEscola.show($('listaEscola'));
 
 oCalendario.setCallBackLoad(fFunctionLoadCalendario);
@@ -359,5 +359,5 @@ oCalendario.setOnChangeCallBack(fFunctionChangeCalendario);
 oCalendario.agruparPorAno(false);
 oCalendario.show($('listaCalendario'));
 
-</script>  
+</script>
 </html>

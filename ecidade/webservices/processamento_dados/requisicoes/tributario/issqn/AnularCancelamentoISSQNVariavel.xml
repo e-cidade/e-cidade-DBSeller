@@ -1,0 +1,19 @@
+<?xml version='1.0' ?>
+<processamento>
+
+  <versao>1.2</versao>
+  <transacao>true</transacao>
+
+  <parametros>
+    <parametro nome="aDebitos"    obrigatorio="true" tipo="array"  />
+  </parametros>
+
+  <configuracoes>
+    <classe   referencia="anularCanc" nome="AnularCancelamentoISSQNVariavelWebService" parametros=""
+              caminho="model/issqn/webservice/AnularCancelamentoISSQNVariavelWebService.model.php" />
+    <exec>
+      <metodo referencia="anularCanc" nome="excluirCancelamento"   parametros="$aDebitos"  />
+    </exec>
+  </configuracoes>
+
+</processamento>

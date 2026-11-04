@@ -37,7 +37,7 @@ class RequisicaoExameRepository
         $columns = '
            la21_i_codigo, la21_i_requisicao, la21_d_entrega, la21_d_data, la21_c_hora,
            la21_i_setorexame, la21_i_emergencia, la21_c_situacao, la21_i_quantidade,
-           la21_observacao, la08_i_codigo
+           la21_observacao, la08_i_codigo, la22_i_cgs
         ';
         $sql = $this->dao->sql_query_materiais_exame_requisicao(
             $requisicao->getCodigo(),
@@ -59,5 +59,23 @@ class RequisicaoExameRepository
         }
 
         return $requisicaoExames;
+    }
+
+    /**
+     * @return RequisicaoExame
+     * @throws \DBException
+     */
+    public function getRequisicaoExame($txtSql)
+    {
+        $resultadoSql = db_query($txtSql);
+
+        $numeroRegistros = pg_num_rows($resultadoSql);
+
+        if (!$resultadoSql || $numeroRegistros === 0) {
+            return false;
+        }
+
+        $linha = pg_fetch_array($resultadoSql, 0);
+        return RequisicaoExame::fromState($linha);
     }
 }

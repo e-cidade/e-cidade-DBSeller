@@ -38,17 +38,23 @@ require_once modification("libs/db_stdlibwebseller.php");
 require_once modification("libs/db_libdocumento.php");
 require_once modification("dbforms/db_funcoes.php");
 
-$guiaTransferenciaService = new GuiaTransferenciaService($tipo, $alunos, $obs, $bolsafamilia);
+$isDeclaracao = isset($_GET['isDeclaracao']);
+$alunos = $_GET['alunos'];
+$tipo = $_GET['tipo'];
+$diretor = $_GET['diretor'];
+$bolsafamilia = $_GET['bolsafamilia'];
+$obs = $_GET['obs'];
+$modelo = $_GET['modelo'];
+$notificar = $_GET['notificar'];
+$formato = $_GET['formato'];
+
+$guiaTransferenciaService = new GuiaTransferenciaService($tipo, $alunos, $obs, $bolsafamilia, $isDeclaracao);
 $dados = $guiaTransferenciaService->buscaDadosImpressao();
 $dados = $guiaTransferenciaService->montaDadosImpressao($dados);
 
-
 $modelo = isset($modelo) ? $modelo : null;
-
 $escola = db_getsession("DB_coddepto");
-
 $notificar = isset($notificar) && $notificar == "sim" ? true : false;
-
 $formato = isset($formato) ? $formato : "P";
 
 $relatorio = new GuiaTransferencia($formato, $tipo, $modelo, $notificar, $escola);

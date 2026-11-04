@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -331,14 +331,14 @@ if($clcfpatric->numrows > 0) {
                     <td nowrap title="Filtro de bens"><b>Filtro de Bens:</b></td>
                     <td nowrap title="">
                     <div class="field-size3">
-                      <?
+                      <?php
                       $matriz = array("G"=>"Geral","I"=>"Intervalo","S"=>"Selecionados");
                   	  db_select("filtro_bens",$matriz,true,1,"onChange='js_filtro_bens();'");
                       ?>
                     </div>
                     </td>
                   </tr>
-                  <?
+                  <?php
                   if (isset($filtro_bens) && $filtro_bens == "I" || $t06_pesqorgao == 't'){
 
                   	$display = '';
@@ -352,12 +352,12 @@ if($clcfpatric->numrows > 0) {
                       <b>Intervalo de Bens: </b>
                     </td>
                     <td nowrap title="<?=$Tt52_bem?>">
-                    <? db_ancora("Inicial","js_pesquisa_bem_ini(true);",1);?>
-                    <?
+                    <?php db_ancora("Inicial","js_pesquisa_bem_ini(true);",1);?>
+                    <?php
                       db_input("t52_bem_ini",8,"",true,"text",1,"onchange='js_pesquisa_bem_ini(false);'");
                     ?>
-                	  <b>&nbsp;&nbsp;a&nbsp;&nbsp;<? db_ancora("Final","js_pesquisa_bem_fim(true);",1);?></b>
-                    <?
+                	  <b>&nbsp;&nbsp;a&nbsp;&nbsp;<?php db_ancora("Final","js_pesquisa_bem_fim(true);",1);?></b>
+                    <?php
                       db_input("t52_bem_fim",8,"",true,"text",1,"onchange='js_pesquisa_bem_fim(false);'");
                     ?>
                     </td>
@@ -509,7 +509,7 @@ if($clcfpatric->numrows > 0) {
                       </fieldset>
                     </td>
                   </tr>
-                <? } ?>
+                <?php } ?>
               </table>
             </fieldset>
           </fieldset>
@@ -792,7 +792,7 @@ if($clcfpatric->numrows > 0) {
     query += "&cboValor="+$F('cboValor');
     // plugin - TermoResponsabilidade: adiciona variável para requisição GET
 
-    <? if ($t06_pesqorgao == 't') { ?>
+    <?php if ($t06_pesqorgao == 't') { ?>
       if ($('atamodelo').length == 0 && iTipoRelatorio == 2) {
 
         alert(_M("patrimonial.patrimonio.pat2_bensdepto001.nenhum_documento_emissao_ata"));
@@ -802,7 +802,7 @@ if($clcfpatric->numrows > 0) {
       } else {
         query += "&atamodelo="+$F('atamodelo');
       }
-    <? } ?>
+    <?php } ?>
 
     if ($('assinatura')) {
       query += "&ass="+encodeURIComponent(tagString($F('assinatura')));

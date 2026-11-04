@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,12 +75,12 @@ input {
     <table class="form-container">
       <tr>   
        <td>
-         <?
+         <?php
            db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
          ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
           ?>
@@ -88,12 +88,12 @@ input {
       </tr>
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lj01_matric,' js_matri(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
           ?>
@@ -101,12 +101,12 @@ input {
       </tr>      
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lq02_inscr,' js_inscr(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
           ?>
@@ -117,7 +117,7 @@ input {
   <input type="submit" name="processar" value="Processar" > 
 </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

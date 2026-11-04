@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -87,12 +87,12 @@ $db_opcao=1;
 
  <tr> 
      <td height="25" title="<?=$Tq02_inscr?>">
-         <?
+         <?php
            db_ancora($Lq02_inscr,'js_pesquisaq02_inscr(true);',4)
          ?>
        </td>
      <td> 
-       <?
+       <?php
          db_input('q02_inscr',8,$Iy08_inscr,true,'text',$db_opcao,"");
        ?>
     </td>
@@ -103,11 +103,11 @@ $db_opcao=1;
        <?=@$Ly08_dtlanc?>
     </td>
    <td> 
-   <?
+   <?php
        db_inputdata('',@$dia,@$mes,@$ano,true,'text',$db_opcao,"")
    ?>
    &nbsp;&nbsp;&nbsp;À&nbsp;&nbsp;&nbsp;
-    <?
+    <?php
        db_inputdata('a',@$diaa,@$mesa,@$anoa,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -118,7 +118,7 @@ $db_opcao=1;
 <input name="consultar" type="button" value="Relatório" onClick="js_consultaNotasLiberadas();js_limpacampos();" >
   </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

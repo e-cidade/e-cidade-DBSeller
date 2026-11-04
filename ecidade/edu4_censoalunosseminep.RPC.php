@@ -50,40 +50,31 @@ $oRetorno->message = "";
 $oJson = new services_json();
 $oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 switch ($oParam->exec) {
-
     case 'gerarArquivosCensoSemInep':
-
         $sNomeArquivoAluno = "tmp/arquivoaluno.txt";
         $sNomeArquivoDocentes = "tmp/arquivodocentes.txt";
         $aArquivosGerados = array();
 
         try {
-
             if ($oParam->iTipoGeracao == 1 || $oParam->iTipoGeracao == 3) {
-
                 if (gerarDadosAlunoSemInep($oParam, $sNomeArquivoAluno)) {
                     $aArquivosGerados[] = $sNomeArquivoAluno;
                 }
             }
             if ($oParam->iTipoGeracao == 1 || $oParam->iTipoGeracao == 2) {
-
                 if (gerarDadosDocentesSemInep($oParam, $sNomeArquivoDocentes)) {
                     $aArquivosGerados[] = $sNomeArquivoDocentes;
                 }
             }
             $oRetorno->arquivos = $aArquivosGerados;
-
         } catch (ParameterException $oErro) {
-
             $oRetorno->status = 2;
             $oRetorno->message = urlencode($oErro->getMessage());
         }
         break;
 
     case 'processarArquivo':
-
         try {
-
             if (!isset($oParam->arquivo)) {
                 throw new Exception('Arquivo não informado.');
             }
@@ -100,9 +91,7 @@ switch ($oParam->exec) {
 
             db_inicio_transacao();
             switch ($oParam->tiporetorno) {
-
                 case 1:
-
                     if ($iTamanhoLinha != 351) {
                         throw new Exception('o Arquivo informado não é um arquivo de alunos válido.');
                     }
@@ -111,7 +100,6 @@ switch ($oParam->exec) {
                     $aLinhas = $oLayoutReader->getLines();
                     $iTotalLinhasAtualizadas = 0;
                     foreach ($aLinhas as $iLinhas => $oLinha) {
-
                         if ((int)$oLinha->codigoalunoinep == 0) {
                             continue;
                         }
@@ -122,7 +110,6 @@ switch ($oParam->exec) {
                         $oDaoAluno->ed47_c_codigoinep = $oLinha->idalunoinep;
                         $oDaoAluno->alterar($oLinha->codigoalunoinep);
                         if ($oDaoAluno->erro_status == 0) {
-
                             $sErroMsg = "Erro ao cadastrar o codigo do inep do aluno {$oLinha->nomealuno}.\n";
                             $sErroMsg .= "Erro Técnico:\n{$oDaoAluno->erro_msg}";
                             throw new Exception($sErroMsg);
@@ -133,7 +120,6 @@ switch ($oParam->exec) {
                     break;
 
                 case 2:
-
                     if ($iTamanhoLinha != 262) {
                         throw new Exception('o Arquivo informado não é um arquivo de docentes válido.');
                     }
@@ -142,8 +128,6 @@ switch ($oParam->exec) {
                     $aLinhas = $oLayoutReader->getLines();
                     $iTotalLinhasAtualizadas = 0;
                     foreach ($aLinhas as $iLinhas => $oLinha) {
-
-
                         if ((int)$oLinha->idinep == 0) {
                             continue;
                         }
@@ -155,24 +139,20 @@ switch ($oParam->exec) {
                         $aDocentes = db_utils::getCollectionByRecord($rsCodigoDocente);
 
                         foreach ($aDocentes as $oDocente) {
-
                             $oDaoRecHumano->ed20_i_codigo = $oDocente->ed20_i_codigo;
                             $oDaoRecHumano->ed20_i_codigoinep = (int)$oLinha->idinep;
                             $oDaoRecHumano->alterar($oDocente->ed20_i_codigo);
                             if ($oDaoRecHumano->erro_status == 0) {
-
                                 $sErroMsg = "Erro ao cadastrar o codigo do inep do aluno {$oLinha->nomedocente}.\n";
                                 $sErroMsg .= "Erro Técnico:\n{$oDaoRecHumano->erro_msg}";
                                 throw new Exception($sErroMsg);
                             }
                         }
-
                     }
                     break;
             }
             db_fim_transacao(false);
         } catch (Exception $eErro) {
-
             db_fim_transacao(true);
             $oRetorno->status = 2;
             $oRetorno->message = urlencode($eErro->getMessage());
@@ -180,9 +160,7 @@ switch ($oParam->exec) {
         break;
 
     case 'getEscolas':
-
         try {
-
             $sFiltraModulo = false;
             if (isset($oParam->filtraModulo)) {
                 $sFiltraModulo = $oParam->filtraModulo;
@@ -192,16 +170,20 @@ switch ($oParam->exec) {
                 $sWhereEscola = ' ed18_i_codigo = ' . db_getsession("DB_coddepto");
             }
 
+            $order = null;
+            if ($oParam->ordemAlfabetica) {
+                $order = "ed18_c_nome";
+            }
+
             $oDaoEscola = db_utils::getDao('escola');
             $sCampoEscola = ' ed18_i_codigo as codigo_escola, ed18_c_nome as nome_escola';
-            $sSqlEscola = $oDaoEscola->sql_query(null, $sCampoEscola, null, $sWhereEscola);
+            $sSqlEscola = $oDaoEscola->sql_query(null, $sCampoEscola, $order, $sWhereEscola);
 
             $rsEscola = $oDaoEscola->sql_record($sSqlEscola);
             $oRetorno->iTotalLinhas = $oDaoEscola->numrows;
             $oRetorno->aDados = db_utils::getCollectionByRecord($rsEscola, false, false, true);
             $oRetorno->status = 1;
         } catch (BusinessException $eErro) {
-
             $oRetorno->status = 2;
             $oRetorno->message = urlencode($eErro->getMessage());
         }
@@ -242,7 +224,6 @@ function gerarDadosAlunoSemInep($oParam, $sNomeArquivo)
     $iTipoLinha = 1;
     $iLayout = 182;
     if ($oParam->iAno == 2015) {
-
         $iTipoLinha = 3;
         $iLayout = 228;
     }
@@ -263,7 +244,6 @@ function gerarDadosAlunoSemInep($oParam, $sNomeArquivo)
         }
 
         $oDBLayout->setByLineOfDBUtils($oDados, $iTipoLinha);
-
     }
     $oDBLayout->fechaArquivo();
     return true;
@@ -307,7 +287,6 @@ function gerarDadosDocentesSemInep($oParam, $sNomeArquivo)
      */
     $aDocentesSemInep = array();
     for ($iContador = 0; $iContador < $iLinhas; $iContador++) {
-
         $oDadosDocente = db_utils::fieldsmemory($rsDadosDocente, $iContador);
         if (!isset($aDocentesSemInep[$oDadosDocente->z01_numcgm])) {
             $aDocentesSemInep[$oDadosDocente->z01_numcgm] = $oDadosDocente;
@@ -326,7 +305,6 @@ function gerarDadosDocentesSemInep($oParam, $sNomeArquivo)
         $oDocente->codigodocenteescola = $oDocente->z01_numcgm;
         $oDocente->idinep = str_repeat(" ", 12);
         $oDBLayout->setByLineOfDBUtils($oDocente, 1);
-
     }
     $oDBLayout->fechaArquivo();
     return true;

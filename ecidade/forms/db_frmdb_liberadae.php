@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,12 +39,12 @@ $cldb_dae->rotulo->label();
 <table border="0">
    <tr>   
     <td>
-    <?
+    <?php
      db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
     ?>
      </td>
      <td> 
-    <?
+    <?php
      db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
      db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
     ?>
@@ -52,12 +52,12 @@ $cldb_dae->rotulo->label();
    </tr>
    <tr>   
      <td>
-    <?
+    <?php
      db_ancora($Lq02_inscr,' js_inscr(true); ',1);
     ?>
      </td>
      <td> 
-    <?
+    <?php
      db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
     db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
     ?>
@@ -68,7 +68,7 @@ $cldb_dae->rotulo->label();
        <?=@$Lw04_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('w04_data',@$w04_data_dia,@$w04_data_mes,@$w04_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -145,7 +145,7 @@ function js_mostracgm1(erro,chave){
 }
 
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

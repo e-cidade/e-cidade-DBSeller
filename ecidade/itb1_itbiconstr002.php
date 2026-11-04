@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -179,7 +179,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   <tr> 
     <td> 
     <center>
-  <?
+  <?php
   include(modification("forms/db_frmitbiconstr.php"));
   ?>
     </center>
@@ -188,7 +188,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </table>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
   if ($clitbiconstr->erro_status == "0" || $clitbiconstrespecie->erro_status == "0" || $clitbiconstrtipo->erro_status == "0"
       || $clitbiconstrpadraoconstrutivo->erro_status == "0") {

@@ -251,8 +251,7 @@ db_postmemory($HTTP_POST_VARS);
             oElemento.add(new Option('TODAS', 0));
 
             response.dados.each(({codigo_escola, nome_escola}) => {
-                let sDescricao = nome_escola.urlDecode()
-                oElemento.add(new Option(`${codigo_escola} - ${sDescricao}`, codigo_escola));
+                oElemento.add(new Option(`${codigo_escola} - ${nome_escola}`, codigo_escola));
             });
 
             pesquisaTurnos();
@@ -320,14 +319,14 @@ db_postmemory($HTTP_POST_VARS);
             formData.append('iAnoAtual', iAnoAtual);
 
             HttpClient.post(UrlRPC, {body: formData}).then((response) => {
-                let etapas = response.dados;
-
-                let oElemento = selectEtapas;
+                const oElemento = selectEtapas;
                 oElemento.options.length = 0;
-
-                etapas.each(({ed11_c_descr, ed11_i_codigo}) => {
-                    oElemento.add(new Option(ed11_c_descr, ed11_i_codigo));
-                });
+                if (!response.erro) {
+                    let etapas = response.dados;
+                    etapas.each(({ed11_c_descr, ed11_i_codigo}) => {
+                        oElemento.add(new Option(ed11_c_descr, ed11_i_codigo));
+                    });
+                }
             });
         }
 
@@ -363,16 +362,17 @@ db_postmemory($HTTP_POST_VARS);
             formData.append('iCodigoEscola', iEscola);
 
             HttpClient.post(UrlRPC, {body: formData}).then((response) => {
-                let turnos = response.dados;
-                let oElemento = selectTurnos;
-
+                const oElemento = selectTurnos;
                 oElemento.options.length = 0;
-                oElemento.add(new Option('', ''));
-                oElemento.add(new Option('TODOS', 0));
+                if (!response.erro) {
+                    let turnos = response.dados;
+                    oElemento.add(new Option('', ''));
+                    oElemento.add(new Option('TODOS', 0));
 
-                turnos.each(({descricao_turno, id}) => {
-                    oElemento.add(new Option(descricao_turno, id));
-                });
+                    turnos.each(({descricao_turno, id}) => {
+                        oElemento.add(new Option(descricao_turno, id));
+                    });
+                }
             })
         }
 
@@ -433,8 +433,7 @@ db_postmemory($HTTP_POST_VARS);
                 }
 
                 response.dados.each(function ({ed20_i_codigo, matricula, z01_nome}) {
-                    let sDescricao = z01_nome.urlDecode();
-                    oElemento.add(new Option(`${matricula} - ${sDescricao}`, ed20_i_codigo));
+                    oElemento.add(new Option(`${matricula} - ${z01_nome}`, ed20_i_codigo));
                 });
             })
         }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcarzonavalor->rotulo->label("j72_anousu");
               <?=$Lj72_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("j72_sequencial",10,$Ij72_sequencial,true,"text",4,"","chave_j72_sequencial");
 		          ?>
             </td>
@@ -66,7 +66,7 @@ $clcarzonavalor->rotulo->label("j72_anousu");
               <?=$Lj72_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                 db_input("j72_anousu",10,$Ij72_anousu,true,"text",4,"","chave_j72_anousu");
               ?>
             </td>
@@ -84,7 +84,7 @@ $clcarzonavalor->rotulo->label("j72_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -133,12 +133,12 @@ $clcarzonavalor->rotulo->label("j72_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

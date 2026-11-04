@@ -105,7 +105,7 @@ switch ($oGet->iOpcao) {
               </td>
               
               <td>
-                <?
+                <?php
                 db_input('c20_sequencial', 10, $Ic20_sequencial, true, 'text', 3);
                 ?>
               </td>
@@ -118,7 +118,7 @@ switch ($oGet->iOpcao) {
               </td>
               
               <td>
-                <?
+                <?php
                 db_input('c20_descr', 50, $Ic20_descr, true, 'text', $iOpcaoDescricao);
                 ?>
               </td>

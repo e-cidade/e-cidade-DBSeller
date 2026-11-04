@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -26,70 +26,74 @@
  */
 
 //MODULO: pessoal
+
 $clrhvisavale->rotulo->label();
 $clrhvisavalecad->rotulo->label();
+
 $clrotulo = new rotulocampo;
 $clrotulo->label("rh27_descr");
+
 ?>
 <form name="form1" method="post" action="">
-<center>
-<table border="0">
-<td>
+  <center>
+    <table border="0">
+      <td>
 
-<fieldset><legend><b>Lançar no ponto</b></legend>
-<table>
-  <tr>
-    <td nowrap title="Ano / Mês de competência" align="right">
-      <b>Ano / Mês:</b>
-    </td>
-    <td> 
-      <?
-      if(!isset($rh49_anousu)){
-        $rh49_anousu = db_anofolha();
-      }
-      if(!isset($rh49_mesusu)){
-        $rh49_mesusu = db_mesfolha();
-      }
-      db_input('rh49_anousu',4,$Irh49_anousu,true,'text',3,"")
-      ?>
-      &nbsp;/&nbsp;
-      <?
-      db_input('rh49_mesusu',2,$Irh49_mesusu,true,'text',3,"")
-      ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap title="<?=@$Trh47_rubric?>" align="right">
-      <?
-      db_ancora(@$Lrh47_rubric,"js_pesquisarh47_rubric(true);",3);
-      ?>
-    </td>
-    <td> 
-      <?
-      db_input('rh47_rubric',4,$Irh47_rubric,true,'text',3," onchange='js_pesquisarh47_rubric(false);'")
-      ?>
-      <?
-      db_input('rh27_descr',50,$Irh27_descr,true,'text',3,'')
-      ?>
-    </td>
-  </tr>
-</table>
-</fieldset>  
-</td>  
-</table>
-</center>
-<input name="incluir" type="submit" id="db_opcao" value="Lançar" <?=($db_botao==false?"disabled":"")?> onclick="return js_testacampos();">
+        <fieldset>
+          <legend><b>Lançar no ponto</b></legend>
+          <table>
+            <tr>
+              <td nowrap title="Ano / Mês de competência" align="right">
+                <b>Ano / Mês:</b>
+              </td>
+              <td>
+                <?php
+                if (!isset($rh49_anousu)) {
+                  $rh49_anousu = DBPessoal::getAnoFolha();
+                }
+                if (!isset($rh49_mesusu)) {
+                  $rh49_mesusu = DBPessoal::getMesFolha();
+                }
+                db_input('rh49_anousu', 4, $Irh49_anousu, true, 'text', 3, "")
+                ?>
+                &nbsp;/&nbsp;
+                <?php
+                db_input('rh49_mesusu', 2, $Irh49_mesusu, true, 'text', 3, "")
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td nowrap title="<?= @$Trh47_rubric ?>" align="right">
+                <?php
+                db_ancora(@$Lrh47_rubric, "js_pesquisarh47_rubric(true);", 3);
+                ?>
+              </td>
+              <td>
+                <?php
+                db_input('rh47_rubric', 4, $Irh47_rubric, true, 'text', 3, " onchange='js_pesquisarh47_rubric(false);'")
+                ?>
+                <?php
+                db_input('rh27_descr', 50, $Irh27_descr, true, 'text', 3, '')
+                ?>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+      </td>
+    </table>
+  </center>
+  <input name="incluir" type="submit" id="db_opcao" value="Lançar" <?= ($db_botao == false ? "disabled" : "") ?> onclick="return js_testacampos();">
 </form>
 <script>
-function js_testacampos(){
-  if(document.form1.rh47_rubric.value=='') {
-    alert("Rubrica não definida para Lançar Vale Alimentação no Ponto!");
+  function js_testacampos() {
+    if (document.form1.rh47_rubric.value == '') {
+      alert("Rubrica não definida para Lançar Vale Alimentação no Ponto!");
+      return false;
+    }
+
+    if (confirm("Todos os registros atuais com a rubrica " + document.form1.rh47_rubric.value + " (" + document.form1.rh27_descr.value + ") serão excluídos no ponto de salário.\n\nDeseja continuar?")) {
+      return true;
+    }
     return false;
   }
-
-  if(confirm("Todos os registros atuais com a rubrica "+document.form1.rh47_rubric.value+" ("+document.form1.rh27_descr.value+") serão excluídos no ponto de salário.\n\nDeseja continuar?")){
-    return true;
-  }
-  return false;
-}
 </script>

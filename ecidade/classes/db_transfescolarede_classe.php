@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -65,13 +65,13 @@ class cl_transfescolarede {
                  ed103_c_situacao = char(1) = Situação
                  ";
    //funcao construtor da classe
-   function cl_transfescolarede() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transfescolarede");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_transfescolarede {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed103_i_codigo = ($this->ed103_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed103_i_codigo"]:$this->ed103_i_codigo);
        $this->ed103_i_matricula = ($this->ed103_i_matricula == ""?@$GLOBALS["HTTP_POST_VARS"]["ed103_i_matricula"]:$this->ed103_i_matricula);
@@ -102,7 +102,7 @@ class cl_transfescolarede {
      }
    }
    // funcao para inclusao
-   function incluir ($ed103_i_codigo){
+   public function incluir ($ed103_i_codigo){
       $this->atualizacampos();
      if($this->ed103_i_atestvaga == null ){
        $this->erro_sql = " Campo Código Atestado nao Informado.";
@@ -252,7 +252,7 @@ class cl_transfescolarede {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed103_i_codigo=null) {
+   public function alterar ($ed103_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update transfescolarede set ";
      $virgula = "";
@@ -427,7 +427,7 @@ class cl_transfescolarede {
      }
    }
    // funcao para exclusao
-   function excluir ($ed103_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed103_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed103_i_codigo));
      }else{
@@ -462,7 +462,7 @@ class cl_transfescolarede {
      }else{
        $sql2 = $dbwhere;
      }
-     $result = db_query($sql.$sql2);     
+     $result = db_query($sql.$sql2);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Transferência de escolas da rede nao Excluído. Exclusão Abortada.\\n";
@@ -495,7 +495,7 @@ class cl_transfescolarede {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -517,7 +517,7 @@ class cl_transfescolarede {
       }
      return $result;
    }
-   function sql_query ( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -558,7 +558,7 @@ class cl_transfescolarede {
      $sql .= "      left  join censoorgemissrg  on  censoorgemissrg.ed132_i_codigo = aluno.ed47_i_censoorgemissrg";
      $sql .= "      inner join calendario  on  calendario.ed52_i_codigo = atestvaga.ed102_i_calendario";
      $sql .= "      inner join base  on  base.ed31_i_codigo = atestvaga.ed102_i_base";
-     $sql .= "      inner join cursoedu  on  cursoedu.ed29_i_codigo = base.ed31_i_curso";     
+     $sql .= "      inner join cursoedu  on  cursoedu.ed29_i_codigo = base.ed31_i_curso";
      $sql2 = "";
      if($dbwhere==""){
        if($ed103_i_codigo!=null ){
@@ -570,7 +570,7 @@ class cl_transfescolarede {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,10 +579,10 @@ class cl_transfescolarede {
      }
      return $sql;
   }
-  function sql_query_historico ( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_historico ( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -632,7 +632,7 @@ class cl_transfescolarede {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -641,10 +641,10 @@ class cl_transfescolarede {
      }
      return $sql;
   }
-  function sql_query_transferido( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_transferido( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -658,6 +658,7 @@ class cl_transfescolarede {
     $sql .= '      inner join censouf  on  censouf.ed260_i_codigo = escola.ed18_i_censouf ';
     $sql .= '      inner join censomunic  on  censomunic.ed261_i_codigo = escola.ed18_i_censomunic ';
     $sql .= '      inner join matricula  on  matricula.ed60_i_codigo = transfescolarede.ed103_i_matricula';
+    $sql .= '      inner join turma on turma.ed57_i_codigo = matricula.ed60_i_turma';
     $sql .= '      inner join atestvaga  on  atestvaga.ed102_i_codigo = transfescolarede.ed103_i_atestvaga ';
     $sql .= '      inner join escola  as escoladestino on  escoladestino.ed18_i_codigo = atestvaga.ed102_i_escola ';
     $sql .= '      inner join censouf as censoufdestino on  censoufdestino.ed260_i_codigo = ';
@@ -676,7 +677,7 @@ class cl_transfescolarede {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -685,14 +686,14 @@ class cl_transfescolarede {
     }
     return $sql;
    }
-   function sql_query_tipotransferido( $ed103_i_codigo = null, $sCampos = "*", $sOrdem = null, $sWhere = "") {
+   public function sql_query_tipotransferido( $ed103_i_codigo = null, $sCampos = "*", $sOrdem = null, $sWhere = "") {
      $sSql = "select ";
      if ($sCampos != "*" ) {
-       
-       $sCampos  = split("#",$sCampos);
+
+       $sCampos  = explode("#",$sCampos);
        $sVirgula = "";
        for ($iCont = 0; $iCont < sizeof($sCampos); $iCont++){
-          
+
           $sSql     .= $sVirgula.$sCampos[$iCont];
           $sVirgula  = ",";
 
@@ -708,37 +709,37 @@ class cl_transfescolarede {
      $sSql .= "   inner join escola on ed18_i_codigo = ed103_i_escolaorigem ";
      $sSql2 = " ";
      if ($sWhere == "") {
-       
+
        if ($ed103_i_codigo != null ) {
          $sSql2 .= " AND transfescolarede.ed103_i_codigo = $ed103_i_codigo ";
        }
-     
+
      } else if($sWhere != "") {
         $sSql2 = " where $sWhere";
      }
 
      $sSql .= $sSql2;
      if ($sOrdem != null ){
-        
+
         $sSql    .= " order by ";
-        $sCampos  = split("#",$sOrdem);
+        $sCampos  = explode("#",$sOrdem);
         $sVirgula = "";
         for ($iCont = 0; $iCont < sizeof($sCampos); $iCont++) {
-            
+
           $sSql     .= $virgula.$sCampos[$iCont];
           $sVirgula  = ",";
-          
+
         }
-        
+
      }
-     
+
      return $sSql;
-     
+
   }
-  function sql_query_file ( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $ed103_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -759,7 +760,7 @@ class cl_transfescolarede {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

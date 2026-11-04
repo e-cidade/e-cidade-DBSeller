@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clppadotacao->rotulo->label("o08_elemento");
               <?=$Lo08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o08_sequencial",10,$Io08_sequencial,true,"text",4,"","chave_o08_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clppadotacao->rotulo->label("o08_elemento");
               <?=$Lo08_elemento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o08_elemento",10,$Io08_elemento,true,"text",4,"","chave_o08_elemento");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clppadotacao->rotulo->label("o08_elemento");
               <b>Perspectiva:</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                $oDaoPPaVersao    = new cl_ppaversao;
                $sSqlPerspectivas = $oDaoPPaVersao->sql_query_integracao(null,
                                                                         "ppaversao.*,
@@ -118,7 +118,7 @@ $clppadotacao->rotulo->label("o08_elemento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = " o08_instit=".db_getsession("DB_instit");
       if (isset($lEstimativas)) {
         $sWhere .= " and o05_base is false";
@@ -185,12 +185,12 @@ $clppadotacao->rotulo->label("o08_elemento");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

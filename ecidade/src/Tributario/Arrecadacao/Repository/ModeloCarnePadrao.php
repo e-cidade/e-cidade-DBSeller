@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -30,7 +30,7 @@ namespace ECidade\Tributario\Arrecadacao\Repository;
 use \cl_modcarnepadrao;
 use \Exception;
 
-final class ModeloCarnePadrao 
+final class ModeloCarnePadrao
 {
     protected static $oInstance;
 
@@ -39,7 +39,7 @@ final class ModeloCarnePadrao
         return;
     }
 
-    protected function __clone() 
+    protected function __clone()
     {
         return;
     }
@@ -70,5 +70,4 @@ final class ModeloCarnePadrao
 
         return (pg_num_rows($rs) > 0);
     }
-
 }

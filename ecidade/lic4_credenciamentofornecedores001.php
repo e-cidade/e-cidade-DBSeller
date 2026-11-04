@@ -54,6 +54,7 @@ $oRotulo->label('z01_nome');
   <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
   <script language="JavaScript" type="text/javascript" src="scripts/widgets/Collection.widget.js"></script>
   <script language="JavaScript" type="text/javascript" src="scripts/widgets/DatagridCollection.widget.js"></script>
+  <script language="JavaScript" type="text/javascript" src="scripts/widgets/datagrid/plugins/DBHint.plugin.js"></script>
 
   <script type="text/javascript">
 
@@ -102,12 +103,18 @@ $oRotulo->label('z01_nome');
 
         oGridFornecedor.reload();
         oGridItensFornecedor.reload();
+        oRetorno.aItensLicitacao.each(function (item, indice) {
+            if (item.resumo !== '') {
+                oGridItensFornecedor.getGrid().setHint(indice, 2, item.resumo.urlDecode());
+            }
+        })
+
       }).setMessage( _M(sFonteMsg + "buscando_fornecedores") ) .execute();
     }
 
-    function atualizaFornecedoresItens(sNome, iCgm) {
+    function atualizaFornecedoresItens(sNome, iCgm, tipoEmpresa) {
 
-      var oOption = new Option(sNome, iCgm);
+      var oOption = new Option(sNome, iCgm, tipoEmpresa);
 
       if(verificaFornecedorOpcao(iCgm)) {
         $('cboFornecedores').add( oOption );

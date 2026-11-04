@@ -29,6 +29,7 @@ use App\Domain\Configuracao\Helpers\StorageHelper;
 use App\Domain\Financeiro\Empenho\Services\TipoAquisicaoProducaoRuralService;
 use App\Domain\Patrimonial\Protocolo\Services\DocumentoAndamentoService;
 use App\Domain\Patrimonial\Protocolo\Services\EmpenhoDocumentoService;
+use App\Domain\Patrimonial\Licitacoes\Services\LicitaconService;
 use ECidade\Financeiro\Empenho\Service\OutrosDadosService;
 use ECidade\Financeiro\Orcamento\Recurso\Origem;
 use ECidade\Financeiro\Orcamento\Service\RecursoService;
@@ -69,13 +70,13 @@ $clpcparam = new cl_pcparam;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-$clpagordem     = new cl_pagordem;
-$clpagordemele  = new cl_pagordemele;
+$clpagordem = new cl_pagordem;
+$clpagordemele = new cl_pagordemele;
 $clpagordemnota = new cl_pagordemnota;
 $clempnota = new cl_empnota;
 $clempnotaele = new cl_empnotaele;
 
-$lAutorizacaoAcordo    = false;
+$lAutorizacaoAcordo = false;
 
 require_once(modification("classes/db_empautpresta_classe.php"));
 require_once(modification("classes/db_empempenho_classe.php"));
@@ -141,7 +142,7 @@ $clconplanoreduz = new cl_conplanoreduz;
 $clempprestatip = new cl_empprestatip;
 $clemppresta = new cl_emppresta;
 $clempelemento = new cl_empelemento;
-$clempempaut =	new cl_empempaut;
+$clempempaut = new cl_empempaut;
 $clempempitem = new cl_empempitem;
 $clempautoriza = new cl_empautoriza;
 $clemphist = new cl_emphist;
@@ -157,11 +158,14 @@ $clconcarpeculiar = new cl_concarpeculiar;
 $oDaoEmpenhoNl = new cl_empempenhonl;
 $cldb_depusu = new cl_db_depusu;
 $clpctipocompra = new cl_pctipocompra;
+$clemptipoatojuridico = new cl_emptipoatojuridico;
+$clempjustificativaatojuridico = new cl_empjustificativaatojuridico;
+$clempjustificativainstrumentoprevio = new cl_empjustificativainstrumentoprevio;
 
 $isPB = getEstadoInstituicao() === "PB";
 
 //retorna os arrays de lancamento...
-$cltranslan       = new cl_translan;
+$cltranslan = new cl_translan;
 
 require_once(modification("classes/db_orcelemento_classe.php"));
 require_once(modification("classes/db_orcdotacao_classe.php"));
@@ -169,10 +173,10 @@ require_once(modification("classes/db_orcreservaaut_classe.php"));
 require_once(modification("classes/db_orcdotacaoval_classe.php"));
 require_once(modification("classes/db_orcreserva_classe.php"));
 
-$clorcreserva	  	= new cl_orcreserva;
-$clorcdotacao	  	= new cl_orcdotacao;
-$clorcreservaaut  = new cl_orcreservaaut;
-$clorcelemento    = new cl_orcelemento;
+$clorcreserva = new cl_orcreserva;
+$clorcdotacao = new cl_orcdotacao;
+$clorcreservaaut = new cl_orcreservaaut;
+$clorcelemento = new cl_orcelemento;
 
 require_once(modification("classes/db_conlancam_classe.php"));
 require_once(modification("classes/db_conlancamele_classe.php"));
@@ -185,16 +189,16 @@ require_once(modification("classes/db_conlancamdoc_classe.php"));
 require_once(modification("classes/db_conlancamcompl_classe.php"));
 require_once(modification("classes/db_conlancamnota_classe.php"));
 
-$clconlancam	  	= new cl_conlancam;
-$clconlancamele	  = new cl_conlancamele;
-$clconlancamlr	  = new cl_conlancamlr;
-$clconlancamcgm	  = new cl_conlancamcgm;
-$clconlancamemp	  = new cl_conlancamemp;
-$clconlancamval	  = new cl_conlancamval;
-$clconlancamdot	  = new cl_conlancamdot;
-$clconlancamdoc	  = new cl_conlancamdoc;
+$clconlancam = new cl_conlancam;
+$clconlancamele = new cl_conlancamele;
+$clconlancamlr = new cl_conlancamlr;
+$clconlancamcgm = new cl_conlancamcgm;
+$clconlancamemp = new cl_conlancamemp;
+$clconlancamval = new cl_conlancamval;
+$clconlancamdot = new cl_conlancamdot;
+$clconlancamdoc = new cl_conlancamdoc;
 $clconlancamcompl = new cl_conlancamcompl;
-$clconlancamnota  = new cl_conlancamnota;
+$clconlancamnota = new cl_conlancamnota;
 
 // Retenções
 require_once(modification("classes/db_empautret_classe.php"));
@@ -217,87 +221,141 @@ $clempautret = new cl_empautret;
 $clempempret = new cl_empempret;
 $clempretencao = new cl_empretencao;
 
+$cldb_config = new cl_db_config;
+$cllicitaparam = new cl_licitaparam;
+$clacordo = new cl_acordo;
+$clacordoparam = new cl_acordoparam;
+
 parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
 
+
 //Checa parametro e mostra alerta de confirmacao de data
-$clconparametro  = new cl_conparametro();
-$rsconparametro  = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
-$conparametro    = db_utils::fieldsMemory($rsconparametro, 0);
-if($conparametro->c90_confirmadata == 't'){
+$clconparametro = new cl_conparametro();
+$rsconparametro = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
+$conparametro = db_utils::fieldsMemory($rsconparametro, 0);
+if ($conparametro->c90_confirmadata == 't') {
     $data = date('d/m/y', db_getsession('DB_datausu'));
     echo "<db-alertaconfirmadatafinanceiro data=" . $data . "></db-alertaconfirmadatafinanceiro>";
 }
 
-if (isset($e54_concarpeculiar) && trim(@$e54_concarpeculiar) != ""){
-  $concarpeculiar       = $e54_concarpeculiar;
-  $descr_concarpeculiar = @$c58_descr;
+if (isset($e54_concarpeculiar) && trim(@$e54_concarpeculiar) != "") {
+    $concarpeculiar = $e54_concarpeculiar;
+    $descr_concarpeculiar = @$c58_descr;
 }
 
-$anousu           = db_getsession("DB_anousu");
-$iInstituicao     = db_getsession("DB_instit");
+$anousu = db_getsession("DB_anousu");
+$iInstituicao = db_getsession("DB_instit");
 $alertar_retencao = false;
-$lControlePacto   = false;
-$aParametrosOrcamento = db_stdClass::getParametro("orcparametro",array(db_getsession("DB_anousu")));
+$lControlePacto = false;
+$aParametrosOrcamento = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
 if (count($aParametrosOrcamento) > 0) {
-  if ( isset($aParametrosOrcamento[0]->o50_utilizapacto) ) {
-    $lControlePacto = $aParametrosOrcamento[0]->o50_utilizapacto=="t"?true:false;
-  }
+    if (isset($aParametrosOrcamento[0]->o50_utilizapacto)) {
+        $lControlePacto = $aParametrosOrcamento[0]->o50_utilizapacto == "t" ? true : false;
+    }
 }
-if(isset($tipocompra)){
-  $db_opcao = 1;
-  $db_botao = true;
-}else{
-  $db_opcao = 33;
-  $db_botao = false;
+if (isset($tipocompra)) {
+    $db_opcao = 1;
+    $db_botao = true;
+} else {
+    $db_opcao = 33;
+    $db_botao = false;
 }
 
-$lLiquidar               = "";
+$lLiquidar = "";
 $lLiquidaMaterialConsumo = 'false';
 $sGrupoDesdobramento = null;
 
 if (!empty($iElemento)) {
 
-  if (USE_PCASP) {
+    if (USE_PCASP) {
 
-    $oGrupoContaOrcamento = GrupoContaOrcamento::getGrupoConta($iElemento, db_getsession("DB_anousu"));
+        $oGrupoContaOrcamento = GrupoContaOrcamento::getGrupoConta($iElemento, db_getsession("DB_anousu"));
 
-    if ($oGrupoContaOrcamento instanceof GrupoContaOrcamento) {
+        if ($oGrupoContaOrcamento instanceof GrupoContaOrcamento) {
 
-      if (in_array($oGrupoContaOrcamento->getCodigo(), array(7,8,9))) {
+            if (in_array($oGrupoContaOrcamento->getCodigo(), array(7, 8, 9))) {
 
-        $sGrupoDesdobramento = $oGrupoContaOrcamento->getDescricao();
-        if ( $oGrupoContaOrcamento->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM ) {
+                $sGrupoDesdobramento = $oGrupoContaOrcamento->getDescricao();
+                if ($oGrupoContaOrcamento->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM) {
 
-          $sMensagem = "O desdobramento deste empenho está no grupo {$sGrupoDesdobramento} ";
-          $lLiquidar = "disabled='disabled'";
-          db_msgbox("$sMensagem. não será possível liquidar o empenho diretamente");
-        } else {
-          $lLiquidaMaterialConsumo = 'true';
+                    $sMensagem = "O desdobramento deste empenho está no grupo {$sGrupoDesdobramento} ";
+                    $lLiquidar = "disabled='disabled'";
+                    db_msgbox("$sMensagem. não será possível liquidar o empenho diretamente");
+                } else {
+                    $lLiquidaMaterialConsumo = 'true';
+                }
+            }
         }
-      }
     }
-  }
 }
 
 if (isset($incluir)) {
-  $sqlerro = false;
-  db_inicio_transacao();
+    $sqlerro = false;
+    db_inicio_transacao();
 
-  try {
+    try {
+        if ($ac16_sequencial) {
+            $rs_acordoparam = $clacordoparam->sql_record($clacordoparam->sql_query_file(null, "ac59_validalicitacon", null, "ac59_instituicao = {$iInstituicao}"));
+            db_fieldsmemory($rs_acordoparam, 0);
 
-    /* [Extensão] Programação Financeira */
+            if ($ac59_validalicitacon > 1) {
+                $rs_acordo = $clacordo->sql_record($clacordo->sql_query_file($ac16_sequencial, "ac16_anousu, ac16_numero, ac16_tipoinstrumento"));
+                db_fieldsmemory($rs_acordo, 0);
 
-    //////////////////////////////Controle Andamento da SOlicitação de Compras/////////////////////
-    //----------------------------REcebe processo se existe tranferencia -------------
-    $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),
-                                                                        "pc30_gerareserva,pc30_contrandsol"
-    )
-    );
-    db_fieldsmemory($result_pcparam, 0);
-    if ($pc30_contrandsol == 't') {
+                $rs_dbconfig = $cldb_config->sql_record($cldb_config->sql_query_file($iInstituicao, "cgc"));
+                db_fieldsmemory($rs_dbconfig, 0);
 
-      $sqltran     = "select distinct x.p62_codtran
+                $licitaconService = new LicitaconService();
+                $orgao = $licitaconService->verificarOrgao($cgc);
+
+                if ($orgao) {
+                    $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
+                    $aTiposInstrumentoTipos = LicitaConTipoInstrumentoAcordo::getTipos();
+
+                    $contratos = $licitaconService->verificarContratos(
+                        $orgao->CD_ORGAO,
+                        $ac16_numero,
+                        $ac16_anousu,
+                        $aTiposInstrumento[$ac16_tipoinstrumento]
+                    );
+
+                    if (empty($contratos) && $ac59_validalicitacon == 2) {
+                        db_msgbox(
+                            "Verificamos que o {$aTiposInstrumentoTipos[$ac16_tipoinstrumento]} " .
+                            "{$ac16_numero}/{$ac16_anousu} " .
+                            "não encontra-se na base de dados do LICITACON, por favor, verifique com o departmento responsável!"
+                        );
+                    }
+                    if (empty($contratos) && $ac59_validalicitacon == 3) {
+                        throw new Exception(
+                            "Verificamos que o {$aTiposInstrumentoTipos[$ac16_tipoinstrumento]} " .
+                            "{$ac16_numero}/{$ac16_anousu} " .
+                            "não encontra-se na base de dados do LICITACON, por favor, verifique com o departmento responsável!"
+                        );
+                    }
+                }
+
+                if (!$orgao && $ac59_validalicitacon == 2) {
+                    db_msgbox("Não foi possível identificar o código do órgão para a instituição.");
+                }
+                if (!$orgao && $ac59_validalicitacon == 3) {
+                    throw new Exception("Não foi possível identificar o código do órgão para a instituição.");
+                }
+            }
+        }
+        /* [Extensão] Programação Financeira */
+
+        //////////////////////////////Controle Andamento da SOlicitação de Compras/////////////////////
+        //----------------------------REcebe processo se existe tranferencia -------------
+        $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),
+            "pc30_gerareserva,pc30_contrandsol"
+        )
+        );
+        db_fieldsmemory($result_pcparam, 0);
+        if ($pc30_contrandsol == 't') {
+
+            $sqltran = "select distinct x.p62_codtran
 
 			from ( select distinct p62_codtran,
                              p62_dttran,
@@ -328,45 +386,45 @@ if (isset($incluir)) {
 				 left join proctransand 	on p64_codtran = x.p62_codtran
 				 left join arqproc 	on p68_codproc = x.p63_codproc
 			where p64_codtran is null and p68_codproc is null and x.e54_autori = {$e54_autori}";
-      $result_tran = db_query($sqltran);
-      if (pg_numrows($result_tran) != 0) {
-        for ($w = 0; $w < pg_numrows($result_tran); $w++) {
-          db_fieldsmemory($result_tran, $w);
-          $recebetransf = recprocandsol($p62_codtran);
-          if ($recebetransf == true) {
-            $sqlerro = true;
-            break;
-          }
+            $result_tran = db_query($sqltran);
+            if (pg_numrows($result_tran) != 0) {
+                for ($w = 0; $w < pg_numrows($result_tran); $w++) {
+                    db_fieldsmemory($result_tran, $w);
+                    $recebetransf = recprocandsol($p62_codtran);
+                    if ($recebetransf == true) {
+                        $sqlerro = true;
+                        break;
+                    }
+                }
+            }
         }
-      }
-    }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    $sql = "update empparametro set e39_anousu = e39_anousu where e39_anousu = " . db_getsession("DB_anousu");
-    $res = db_query($sql);
+        $sql = "update empparametro set e39_anousu = e39_anousu where e39_anousu = " . db_getsession("DB_anousu");
+        $res = db_query($sql);
 
-    $clempempaut->sql_record($clempempaut->sql_query(null, "*", "", "e61_autori = $e54_autori"));
-    if ($clempempaut->numrows > 0) {
-      $erro_msg = "Autorização empenhada!";
-      $sqlerro  = true;
-    }
+        $clempempaut->sql_record($clempempaut->sql_query(null, "*", "", "e61_autori = $e54_autori"));
+        if ($clempempaut->numrows > 0) {
+            $erro_msg = "Autorização empenhada!";
+            $sqlerro = true;
+        }
 
-    $resaut = $clempautoriza->sql_record($clempautoriza->sql_query_file($e54_autori, "e54_anousu", "", ""));
-    if ($clempautoriza->numrows > 0) {
-      db_fieldsmemory($resaut, 0);
-      if ($e54_anousu != db_getsession("DB_anousu")) {
-        $erro_msg = "Autorização de outro exercício.! ($e54_anousu)";
-        $sqlerro  = true;
-      }
-    } else {
-      $erro_msg = "Autorização não encontrada!";
-      $sqlerro  = true;
-    }
+        $resaut = $clempautoriza->sql_record($clempautoriza->sql_query_file($e54_autori, "e54_anousu", "", ""));
+        if ($clempautoriza->numrows > 0) {
+            db_fieldsmemory($resaut, 0);
+            if ($e54_anousu != db_getsession("DB_anousu")) {
+                $erro_msg = "Autorização de outro exercício.! ($e54_anousu)";
+                $sqlerro = true;
+            }
+        } else {
+            $erro_msg = "Autorização não encontrada!";
+            $sqlerro = true;
+        }
 
-    //verifica o saldo dos itens com o saldo total da autorização
-    $resdiftot = $clempempaut->sql_record("select e54_autori,
+        //verifica o saldo dos itens com o saldo total da autorização
+        $resdiftot = $clempempaut->sql_record("select e54_autori,
                                     e54_valor,
 									sum(e55_vltot) as e55_vltot
 							   from empautoriza
@@ -375,1028 +433,1125 @@ if (isset($incluir)) {
 							  group by e54_autori, e54_valor
 							  having cast(sum(round(e55_vltot,2)) as numeric) <> cast(round(e54_valor,2) as numeric)
 							  "
-    );
+        );
 
-    if ($clempempaut->numrows > 0) {
-      db_fieldsmemory($resdiftot, 0);
-      $erro_msg = "Valor total dos itens diferente do valor total da autorização. Vlr. da Autorização: $e54_valor - Vlr. Total dos Itens: $e55_vltot ";
-      $sqlerro  = true;
-    }
-
-    if ($sqlerro == false) {
-      // chama função de critica para empenhos
-      $sql = "select fc_verifica_lancamento(" . $e54_autori . ",'" . date("Y-m-d", db_getsession("DB_datausu"))
-             . "',1,00.00)";
-      $result_erro = db_query($sql) or die($sql);
-      $erro_msg = pg_result($result_erro, 0, 0);
-      if (substr($erro_msg, 0, 2) > 0) {
-        $erro_msg = substr($erro_msg, 3);
-        $sqlerro  = true;
-      }
-    }
-
-
-    /*inicio-conlancamval*/
-
-    /*rotina de incluir  na tabela empempenho*/
-    if ($sqlerro == false) {
-      //$clempempenho->e60_numemp  = $e60_numemp;
-      $e60_numemp = '';
-
-      /*
-       *  NÃO COMENTAR A LINHA ABAIXO,
-      *  ELA SERVER PARA NUMERAR OS EMPENHOS EM BAGE, ONDE EXISTE O EMPENHO 1 NA PREFEITURA,1 NO DAEBE E 1 NA CAMARA
-      *
-      */
-      $result = $clempparamnum->sql_record($clempparamnum->sql_query_file($anousu,
-                                                                          db_getsession("DB_instit"),
-                                                                          " (e29_codemp + 1) as e60_codemp"
-      )
-      );
-
-      if ($clempparamnum->numrows == 0) {
-
-          $sql = $clempparametro->sql_query_file($anousu, "(e30_codemp+1) as e60_codemp,e30_notaliquidacao");
-          $result = $clempparametro->sql_record($sql);
-        if ($clempparametro->numrows > 0) {
-          db_fieldsmemory($result, 0);
-          $clempempenho->e60_codemp = $e60_codemp;
-
-          /*rotina que atualiza a tabela empparametro*/
-          $clempparametro->e39_anousu         = $anousu;
-          $clempparametro->e30_codemp         = $e60_codemp;
-          $clempparametro->e30_notaliquidacao = $e30_notaliquidacao;
-          $clempparametro->alterar($anousu);
-          if ($clempparametro->erro_status == 0) {
+        if ($clempempaut->numrows > 0) {
+            db_fieldsmemory($resdiftot, 0);
+            $erro_msg = "Valor total dos itens diferente do valor total da autorização. Vlr. da Autorização: $e54_valor - Vlr. Total dos Itens: $e55_vltot ";
             $sqlerro = true;
-          }
-          /*final*/
-        } else {
-          $erro_msg = "Preencha os parametros da tabela empparametro para o exercicio $anousu!";
-          $sqlerro  = true;
         }
 
-      } else {
+        if ($sqlerro == false) {
+            // chama função de critica para empenhos
+            $sql = "select fc_verifica_lancamento(" . $e54_autori . ",'" . date("Y-m-d", db_getsession("DB_datausu"))
+                . "',1,00.00)";
+            $result_erro = db_query($sql) or die($sql);
+            $erro_msg = pg_result($result_erro, 0, 0);
+            if (substr($erro_msg, 0, 2) > 0) {
+                $erro_msg = substr($erro_msg, 3);
+                $sqlerro = true;
+            }
+        }
 
-        db_fieldsmemory($result, 0);
-        $clempempenho->e60_codemp = $e60_codemp;
 
-        /*rotina que atualiza a tabela empparametro*/
-        $clempparamnum->e29_anousu = $anousu;
-        $clempparamnum->e29_instit = db_getsession('DB_instit');
-        $clempparamnum->e29_codemp = $e60_codemp;
-        $clempparamnum->alterar($anousu, db_getsession('DB_instit'));
-        if ($clempparamnum->erro_status == 0) {
-          $erro_msg = "Tabela de parametros por instituicao para o exercicio $anousu nao criada!";
-          $sqlerro  = true;
+        /*inicio-conlancamval*/
+
+        /*rotina de incluir  na tabela empempenho*/
+        if ($sqlerro == false) {
+            //$clempempenho->e60_numemp  = $e60_numemp;
+            $e60_numemp = '';
+
+            /*
+             *  NÃO COMENTAR A LINHA ABAIXO,
+            *  ELA SERVER PARA NUMERAR OS EMPENHOS EM BAGE, ONDE EXISTE O EMPENHO 1 NA PREFEITURA,1 NO DAEBE E 1 NA CAMARA
+            *
+            */
+            $result = $clempparamnum->sql_record($clempparamnum->sql_query_file($anousu,
+                db_getsession("DB_instit"),
+                " (e29_codemp + 1) as e60_codemp"
+            )
+            );
+
+            if ($clempparamnum->numrows == 0) {
+
+                $sql = $clempparametro->sql_query_file($anousu, "(e30_codemp+1) as e60_codemp,e30_notaliquidacao");
+                $result = $clempparametro->sql_record($sql);
+                if ($clempparametro->numrows > 0) {
+                    db_fieldsmemory($result, 0);
+                    $clempempenho->e60_codemp = $e60_codemp;
+
+                    /*rotina que atualiza a tabela empparametro*/
+                    $clempparametro->e39_anousu = $anousu;
+                    $clempparametro->e30_codemp = $e60_codemp;
+                    $clempparametro->e30_notaliquidacao = $e30_notaliquidacao;
+                    $clempparametro->alterar($anousu);
+                    if ($clempparametro->erro_status == 0) {
+                        $sqlerro = true;
+                    }
+                    /*final*/
+                } else {
+                    $erro_msg = "Preencha os parametros da tabela empparametro para o exercicio $anousu!";
+                    $sqlerro = true;
+                }
+
+            } else {
+
+                db_fieldsmemory($result, 0);
+                $clempempenho->e60_codemp = $e60_codemp;
+
+                /*rotina que atualiza a tabela empparametro*/
+                $clempparamnum->e29_anousu = $anousu;
+                $clempparamnum->e29_instit = db_getsession('DB_instit');
+                $clempparamnum->e29_codemp = $e60_codemp;
+                $clempparamnum->alterar($anousu, db_getsession('DB_instit'));
+                if ($clempparamnum->erro_status == 0) {
+                    $erro_msg = "Tabela de parametros por instituicao para o exercicio $anousu nao criada!";
+                    $sqlerro = true;
+                }
+                /*final*/
+
+
+            }
+            /**
+             * Verificamos se existe o empenho cadastrado com o numero na base de dados:
+             */
+            if (!$sqlerro) {
+
+                $sWhereVerificacaoEmpenho = "e60_codemp = '{$e60_codemp}' ";
+                $sWhereVerificacaoEmpenho .= "and e60_anousu = {$anousu} and e60_instit = {$iInstituicao}";
+                $sSqlEmpenhoExistente = $clempempenho->sql_query_file(null, "e60_numemp", null, $sWhereVerificacaoEmpenho);
+                $rsVerificacaoEmpenho = $clempempenho->sql_record($sSqlEmpenhoExistente);
+                if ($clempempenho->numrows > 0) {
+
+                    $sqlerro = true;
+                    $erro_msg = "Já existe um empenho de número {$e60_codemp}/{$anousu} lançado na instituição!" . pg_last_error();
+                }
+            }
+
+            if ($sqlerro == false) {
+
+                $result = $clempautidot->sql_record($clempautidot->sql_query_file($e54_autori, "e56_anousu,e56_coddot"));
+                db_fieldsmemory($result, 0);
+
+                $clempempenho->e60_anousu = $e56_anousu;
+                $clempempenho->e60_coddot = $e56_coddot;
+                $clempempenho->e60_numcgm = $e54_numcgm;
+                $clempempenho->e60_emiss = date("Y-m-d", db_getsession("DB_datausu"));
+                $clempempenho->e60_vencim = date("Y-m-d", db_getsession("DB_datausu"));
+
+                $result = db_dotacaosaldo(8, 2, 2, "true", "o58_coddot=$e56_coddot", db_getsession("DB_anousu"));
+                db_fieldsmemory($result, 0);
+                $clempempenho->e60_vlrorc = $dot_ini;  //valor disponivel
+
+                $sql = $clempautitem->sql_query_file($e54_autori, null, "sum(e55_vltot) as e60_vlremp");
+                $result = $clempautitem->sql_record($sql);
+                db_fieldsmemory($result, 0);
+
+                $numeroLicitacao = "";
+                if (!empty($_POST['numeroLicitacao']) && !empty($_POST['anoLicitacao'])) {
+                    $numeroLicitacao = "{$_POST['numeroLicitacao']}/{$_POST['anoLicitacao']}";
+                }
+
+                $numeroLicitacao = $_POST['licProcessoNumero'] ?: $numeroLicitacao;
+
+                $rsLicitaparam = $cllicitaparam->sql_record($cllicitaparam->sql_query($iInstituicao, "l12_validalicitacon"));
+                db_fieldsmemory($rsLicitaparam, 0);
+
+                // Verifica Parâmetro Valida Licitacon
+                if ($l12_validalicitacon > 1) {
+                    // Busca o CGC da instituição
+                    $rsDbconfig = $cldb_config->sql_record($cldb_config->sql_query_file($iInstituicao, "cgc"));
+                    db_fieldsmemory($rsDbconfig, 0);
+
+                    // Busca a Sigla do Tipo compra para usar como parâmetro da modalidade e se deve ser obrigado a informar o numero da licitação
+                    $rsPctipocompra = $clpctipocompra->sql_record($clpctipocompra->sql_query($e54_codcom, "l44_sigla, l44_obrigalicitacao"));
+                    db_fieldsmemory($rsPctipocompra, 0);
+
+                    if ($l44_obrigalicitacao === 't') {
+                        $licitaconService = new LicitaconService();
+                        $orgao = $licitaconService->verificarOrgao($cgc);
+
+                        if ($orgao) {
+                            $licitacoes = $licitaconService->verificarLicitacoes(
+                                $orgao,
+                                $l44_sigla,
+                                $_POST['numeroLicitacao'],
+                                $anoLicitacao
+                            );
+
+                            if ($l12_validalicitacon == 3 && empty($licitacoes)) {
+                                throw new Exception("Verificamos que a licitação {$l44_sigla} {$numeroLicitacao} não encontra-se na base de dados do LICITACON TCE/RS, por favor, verifique com o departamento responsável!");
+                            }
+
+                            if ($l12_validalicitacon == 2 && empty($licitacoes)) {
+                                db_msgbox("Verificamos que a licitação {$l44_sigla} {$numeroLicitacao} não encontra-se na base de dados do LICITACON TCE/RS, por favor, verifique com o departamento responsável!");
+                            }
+                        }
+
+                        if (!$orgao) {
+                            if ($l12_validalicitacon == 2) {
+                                db_msgbox("Não foi possível identificar o código do órgão para a instituição.");
+                            }
+
+                            if ($l12_validalicitacon == 3) {
+                                throw new Exception("Não foi possível identificar o código do órgão para a instituição.");
+                            }
+                        }
+                    }
+                }
+
+                $e60_vlremp = number_format($e60_vlremp, "2", '.', "");
+                $clempempenho->e60_vlremp = $e60_vlremp;      //valor dos itens
+                $clempempenho->e60_salant = "$atual";
+                $clempempenho->e60_vlrliq = '0';
+                $clempempenho->e60_vlrpag = '0';
+                $clempempenho->e60_vlranu = '0';
+                $clempempenho->e60_codcom = $e54_codcom;
+                $clempempenho->e60_tipol = $e54_tipol;
+                $clempempenho->e60_numerol = $numeroLicitacao;
+                $clempempenho->e60_destin = $e54_destin;
+                $clempempenho->e60_codtipo = $e54_codtipo;
+                $clempempenho->e60_resumo = $e54_resumo;
+                $clempempenho->e60_instit = db_getsession("DB_instit");
+                $clempempenho->e60_concarpeculiar = $isPB == true ? '0' : $e54_concarpeculiar;
+
+                $clempempenho->incluir($e60_numemp);
+                if ($clempempenho->erro_status == 0) {
+                    $sqlerro = true;
+                }
+
+                if (!$sqlerro) {
+                    $service = new OutrosDadosService();
+                    $service->setCodigoEmpenho($clempempenho->e60_numemp);
+
+                    if (!empty($_POST['geo_obra'])) {
+                        $service->adicionarDados("geo_obra", $geo_obra);
+                    }
+
+                    $licitacaoCompartilhada = 'X';
+                    if (isset($_POST['licitacao_compartilhada'])) {
+                        $licitacaoCompartilhada = $_POST['licitacao_compartilhada'];
+                    }
+                    $cnpj = '';
+                    if (!empty($_POST['cnpj_gerenciador']) && $licitacaoCompartilhada === 'S') {
+                        $cnpj = trim(str_replace(['.', '/', '-'], '', $_POST['cnpj_gerenciador']));
+                    }
+
+                    $service->adicionarDados('cnpj_gerenciador', $cnpj);
+                    $service->adicionarDados('licitacao_compartilhada', $licitacaoCompartilhada);
+                    $service->salvar();
+                }
+
+                if ($complemento != '') {
+                    $sequencialEmpenho = $clempempenho->e60_numemp;
+                    $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($e56_coddot, $anousu);
+
+                    $lancar = new \ECidade\Financeiro\Orcamento\Service\LancarComlementoService();
+                    $lancar->complementoEmpenho($dotacao, $sequencialEmpenho, $complemento);
+
+                    $daoEmpenho = new cl_conlancamemp();
+                    $sqlBuscaLancamentos = $daoEmpenho->sql_query_file(
+                        null,
+                        "*",
+                        'c75_codlan',
+                        "c75_numemp = {$sequencialEmpenho}"
+                    );
+                    $resBuscaLancamento = db_query($sqlBuscaLancamentos);
+                    $totalRegistros = pg_num_rows($resBuscaLancamento);
+                    for ($row = 0; $row < $totalRegistros; $row++) {
+                        $lancamento = db_utils::fieldsMemory($resBuscaLancamento, $row)->c75_codlan;
+                        $daoEmpenho->alterar($lancamento);
+                        if ($daoEmpenho->erro_status === '0') {
+                            throw new Exception('Ocorreu um erro ao alterar os lançamentos de empenho para o novo complemento.');
+                        }
+                    }
+                }
+
+                $erro_msg = $clempempenho->erro_msg;
+                $ok_msg = $clempempenho->erro_msg;
+                $e60_numemp = $clempempenho->e60_numemp;
+
+                // <!-- ContratosPADRS: despesa funcionario inserir -->
+            }
+        }
+
+        /**
+         * Verificamos se foi vinculado algum contrato com o empenho
+         */
+        $lEmpenhoVinculadoContrato = false;
+        if (!empty($ac16_sequencial) && !$sqlerro) {
+
+            $oDaoEmpempenhoContrato = db_utils::getDao("empempenhocontrato");
+            $oDaoEmpempenhoContrato->e100_acordo = $ac16_sequencial;
+            $oDaoEmpempenhoContrato->e100_numemp = $e60_numemp;
+            $oDaoEmpempenhoContrato->incluir(null);
+            if ($oDaoEmpempenhoContrato->erro_status == 0) {
+
+                $erro_msg = $oDaoEmpempenhoContrato->erro_msg;
+                $sqlerro = true;
+            }
+            $lEmpenhoVinculadoContrato = true;
+        }
+        /*fim rotina empempenho*/
+        /*rotina que inclui no emppresta*/
+        /**
+         * Variavel para verificar se o empenho eh uma prestacao de contas.
+         * Caso seja uma prestacao de contas devemos seta-la para true
+         *
+         * @var $isPrestacaoContas
+         */
+        $isPrestacaoContas = false;
+        if (isset($e44_tipo) && $e44_tipo != '' and $sqlerro == false) {
+
+            $result = $clempprestatip->sql_record($clempprestatip->sql_query_file($e44_tipo, "e44_obriga"));
+            db_fieldsmemory($result, 0);
+
+            if ($e44_obriga != 0) {
+
+                $clemppresta->e45_numemp = $e60_numemp;
+                $clemppresta->e45_data = date("Y-m-d", db_getsession("DB_datausu"));;
+                $clemppresta->e45_tipo = $e44_tipo;
+                $clemppresta->incluir(null);
+                if ($clemppresta->erro_status == 0) {
+                    $sqlerro = true;
+                }
+                $isPrestacaoContas = true;
+                $erro_msg = $clemppresta->erro_msg;
+            }
         }
         /*final*/
 
-
-      }
-      /**
-       * Verificamos se existe o empenho cadastrado com o numero na base de dados:
-       */
-      if (!$sqlerro) {
-
-        $sWhereVerificacaoEmpenho = "e60_codemp = '{$e60_codemp}' ";
-        $sWhereVerificacaoEmpenho .= "and e60_anousu = {$anousu} and e60_instit = {$iInstituicao}";
-        $sSqlEmpenhoExistente = $clempempenho->sql_query_file(null, "e60_numemp", null, $sWhereVerificacaoEmpenho);
-        $rsVerificacaoEmpenho = $clempempenho->sql_record($sSqlEmpenhoExistente);
-        if ($clempempenho->numrows > 0) {
-
-          $sqlerro  = true;
-          $erro_msg = "Já existe um empenho de número {$e60_codemp}/{$anousu} lançado na instituição!" . pg_last_error(
-            );
-        }
-      }
-
-      if ($sqlerro == false) {
-
-        $result = $clempautidot->sql_record($clempautidot->sql_query_file($e54_autori, "e56_anousu,e56_coddot"));
-        db_fieldsmemory($result, 0);
-
-        $clempempenho->e60_anousu = $e56_anousu;
-        $clempempenho->e60_coddot = $e56_coddot;
-        $clempempenho->e60_numcgm = $e54_numcgm;
-        $clempempenho->e60_emiss  = date("Y-m-d", db_getsession("DB_datausu"));
-        $clempempenho->e60_vencim = date("Y-m-d", db_getsession("DB_datausu"));
-
-        $result = db_dotacaosaldo(8, 2, 2, "true", "o58_coddot=$e56_coddot", db_getsession("DB_anousu"));
-        db_fieldsmemory($result, 0);
-        $clempempenho->e60_vlrorc = $dot_ini;  //valor disponivel
-
-          $sql = $clempautitem->sql_query_file($e54_autori, null, "sum(e55_vltot) as e60_vlremp");
-          $result = $clempautitem->sql_record($sql);
-          db_fieldsmemory($result, 0);
-
-        $numeroLicitacao = "";
-        if (!empty($_POST['numeroLicitacao']) && !empty($_POST['anoLicitacao'])) {
-            $numeroLicitacao = "{$_POST['numeroLicitacao']}/{$_POST['anoLicitacao']}";
-        }
-
-        $e60_vlremp                       = number_format($e60_vlremp, "2", '.', "");
-        $clempempenho->e60_vlremp         = $e60_vlremp;      //valor dos itens
-        $clempempenho->e60_salant         = "$atual";
-        $clempempenho->e60_vlrliq         = '0';
-        $clempempenho->e60_vlrpag         = '0';
-        $clempempenho->e60_vlranu         = '0';
-        $clempempenho->e60_codcom         = $e54_codcom;
-        $clempempenho->e60_tipol          = $e54_tipol;
-        $clempempenho->e60_numerol        = $numeroLicitacao;
-        $clempempenho->e60_destin         = $e54_destin;
-        $clempempenho->e60_codtipo        = $e54_codtipo;
-        $clempempenho->e60_resumo         = $e54_resumo;
-        $clempempenho->e60_instit         = db_getsession("DB_instit");
-        $clempempenho->e60_concarpeculiar = $isPB == true ? '0' : $e54_concarpeculiar;
-
-        $clempempenho->incluir($e60_numemp);
-        if ($clempempenho->erro_status == 0) {
-          $sqlerro = true;
-        }
-
-          if (!$sqlerro) {
-              $service = new OutrosDadosService();
-              $service->setCodigoEmpenho($clempempenho->e60_numemp);
-
-              if (!empty($_POST['geo_obra'])) {
-                  $service->adicionarDados("geo_obra", $geo_obra);
-              }
-
-              $licitacaoCompartilhada = 'X';
-              if (isset($_POST['licitacao_compartilhada'])) {
-                  $licitacaoCompartilhada = $_POST['licitacao_compartilhada'];
-              }
-              $cnpj = '';
-              if (!empty($_POST['cnpj_gerenciador']) && $licitacaoCompartilhada === 'S') {
-                  $cnpj = trim(str_replace(['.', '/', '-'], '', $_POST['cnpj_gerenciador']));
-              }
-
-              $service->adicionarDados('cnpj_gerenciador', $cnpj);
-              $service->adicionarDados('licitacao_compartilhada', $licitacaoCompartilhada);
-              $service->salvar();
-          }
-
-        if ($complemento != '') {
-          $sequencialEmpenho = $clempempenho->e60_numemp;
-          $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($e56_coddot, $anousu);
-
-            $lancar = new \ECidade\Financeiro\Orcamento\Service\LancarComlementoService();
-            $lancar->complementoEmpenho($dotacao, $sequencialEmpenho, $complemento);
-
-          $daoEmpenho = new cl_conlancamemp();
-          $sqlBuscaLancamentos = $daoEmpenho->sql_query_file(
-              null,
-              "*",
-              'c75_codlan',
-              "c75_numemp = {$sequencialEmpenho}"
-          );
-          $resBuscaLancamento = db_query($sqlBuscaLancamentos);
-          $totalRegistros = pg_num_rows($resBuscaLancamento);
-          for ($row = 0; $row < $totalRegistros; $row++) {
-              $lancamento = db_utils::fieldsMemory($resBuscaLancamento, $row)->c75_codlan;
-              $daoEmpenho->alterar($lancamento);
-              if ($daoEmpenho->erro_status === '0') {
-                  throw new Exception('Ocorreu um erro ao alterar os lançamentos de empenho para o novo complemento.');
-              }
-          }
-        }
-
-        $erro_msg   = $clempempenho->erro_msg;
-        $ok_msg     = $clempempenho->erro_msg;
-        $e60_numemp = $clempempenho->e60_numemp;
-
-          // <!-- ContratosPADRS: despesa funcionario inserir -->
-      }
-    }
-
-    /**
-     * Verificamos se foi vinculado algum contrato com o empenho
-     */
-    $lEmpenhoVinculadoContrato = false;
-    if (!empty($ac16_sequencial) && !$sqlerro) {
-
-      $oDaoEmpempenhoContrato              = db_utils::getDao("empempenhocontrato");
-      $oDaoEmpempenhoContrato->e100_acordo = $ac16_sequencial;
-      $oDaoEmpempenhoContrato->e100_numemp = $e60_numemp;
-      $oDaoEmpempenhoContrato->incluir(null);
-      if ($oDaoEmpempenhoContrato->erro_status == 0) {
-
-        $erro_msg = $oDaoEmpempenhoContrato->erro_msg;
-        $sqlerro  = true;
-      }
-      $lEmpenhoVinculadoContrato = true;
-    }
-    /*fim rotina empempenho*/
-    /*rotina que inclui no emppresta*/
-    /**
-     * Variavel para verificar se o empenho eh uma prestacao de contas.
-     * Caso seja uma prestacao de contas devemos seta-la para true
-     *
-     * @var $isPrestacaoContas
-     */
-    $isPrestacaoContas = false;
-    if (isset($e44_tipo) && $e44_tipo != '' and $sqlerro == false) {
-
-      $result = $clempprestatip->sql_record($clempprestatip->sql_query_file($e44_tipo, "e44_obriga"));
-      db_fieldsmemory($result, 0);
-
-      if ($e44_obriga != 0) {
-
-        $clemppresta->e45_numemp = $e60_numemp;
-        $clemppresta->e45_data   = date("Y-m-d", db_getsession("DB_datausu"));;
-        $clemppresta->e45_tipo = $e44_tipo;
-        $clemppresta->incluir(null);
-        if ($clemppresta->erro_status == 0) {
-          $sqlerro = true;
-        }
-        $isPrestacaoContas = true;
-        $erro_msg          = $clemppresta->erro_msg;
-      }
-    }
-    /*final*/
-
-    //rotina para pegar o elemento da dotação
-    if ($sqlerro == false) {
-
-      $result09  = $clorcdotacao->sql_record($clorcdotacao->sql_query_ele(db_getsession("DB_anousu"),
-                                                                          $e56_coddot,
-                                                                          "o56_elemento as elemento_emp"
-      )
-      );
-      $numrows09 = $clorcdotacao->numrows;
-      if ($numrows09 > 0) {
-        db_fieldsmemory($result09, 0);
-      } else {
-
-        $sqlerro  = true;
-        $erro_msg = "Não existe elemento para dotação $e56_coddot";
-      }
-    }
-    //final
-
-    /*rotina que inclui na tabela empempitem*/
-    if ($sqlerro == false) {
-
-      $result  = $clempautitem->sql_record($clempautitem->sql_query_file($e54_autori));
-      $numrows = $clempautitem->numrows;
-      for ($i = 0; $i < $numrows; $i++) {
-
-        db_fieldsmemory($result, $i);
         //rotina para pegar o elemento da dotação
-        $result09  = $clorcelemento->sql_record($clorcelemento->sql_query_file($e55_codele,
-                                                                               db_getsession("DB_anousu"),
-                                                                               "o56_elemento as elemento_item"
-        )
-        );
-        $numrows09 = $clorcelemento->numrows;
-        if ($numrows09 > 0) {
-          db_fieldsmemory($result09, 0);
-        } else {
+        if ($sqlerro == false) {
 
-          $sqlerro  = true;
-          $erro_msg = "Não existe elemento para o iten $e55_item";
+            $result09 = $clorcdotacao->sql_record($clorcdotacao->sql_query_ele(db_getsession("DB_anousu"),
+                $e56_coddot,
+                "o56_elemento as elemento_emp"
+            )
+            );
+            $numrows09 = $clorcdotacao->numrows;
+            if ($numrows09 > 0) {
+                db_fieldsmemory($result09, 0);
+            } else {
+
+                $sqlerro = true;
+                $erro_msg = "Não existe elemento para dotação $e56_coddot";
+            }
         }
         //final
 
-        //rotina que compara os elementos da dotação do empenho com a dotação dos itens
-        if (substr($elemento_emp, 0, 6) != substr($elemento_item, 0, 6)) {
-          $erro_msg = "Subelemento do item diferente da dotação. Verifique!";
-          $sqlerro  = true;
-        }
+        /*rotina que inclui na tabela empempitem*/
         if ($sqlerro == false) {
 
-          $clempempitem->e62_numemp            = $e60_numemp;
-          $clempempitem->e62_item              = $e55_item;
-          $clempempitem->e62_sequen            = $e55_sequen;
-          $clempempitem->e62_quant             = $e55_quant;
-          $clempempitem->e62_vltot             = $e55_vltot;
-          $clempempitem->e62_vlrun             = $e55_vlrun;
-          $clempempitem->e62_servicoquantidade = $e55_servicoquantidade == "f" ? "false" : "true";
-          $e55_descr                           = AddSlashes($e55_descr);
-          $clempempitem->e62_descr             = $e55_descr;
-          $clempempitem->e62_codele            = $e56_codele;
-          $clempempitem->incluir($e60_numemp, $e55_sequen);
-          $erro_msg = $clempempitem->erro_msg;
+            $result = $clempautitem->sql_record($clempautitem->sql_query_file($e54_autori));
+            $numrows = $clempautitem->numrows;
+            for ($i = 0; $i < $numrows; $i++) {
 
-          if ($clempempitem->erro_status == 0) {
-            $sqlerro = true;
-            break;
-          }
+                db_fieldsmemory($result, $i);
+                //rotina para pegar o elemento da dotação
+                $result09 = $clorcelemento->sql_record($clorcelemento->sql_query_file($e55_codele,
+                    db_getsession("DB_anousu"),
+                    "o56_elemento as elemento_item"
+                )
+                );
+                $numrows09 = $clorcelemento->numrows;
+                if ($numrows09 > 0) {
+                    db_fieldsmemory($result09, 0);
+                } else {
 
-          /*
-           * Verificamos se o item está vinculado a uma autorização de um pacto sem solicitação
-          * Se a autorização foi gerada sem solicitaçao, controla o saldo do pacto, do contrário esse controle foi realizado
-          * no momento da inclusão da solicitação
-          *
-          */
-          $sSqlEmpAutorizaSol = "select *
+                    $sqlerro = true;
+                    $erro_msg = "Não existe elemento para o iten $e55_item";
+                }
+                //final
+
+                //rotina que compara os elementos da dotação do empenho com a dotação dos itens
+                if (substr($elemento_emp, 0, 6) != substr($elemento_item, 0, 6)) {
+                    $erro_msg = "Subelemento do item diferente da dotação. Verifique!";
+                    $sqlerro = true;
+                }
+                if ($sqlerro == false) {
+
+                    $clempempitem->e62_numemp = $e60_numemp;
+                    $clempempitem->e62_item = $e55_item;
+                    $clempempitem->e62_sequen = $e55_sequen;
+                    $clempempitem->e62_quant = $e55_quant;
+                    $clempempitem->e62_vltot = $e55_vltot;
+                    $clempempitem->e62_vlrun = $e55_vlrun;
+                    $clempempitem->e62_servicoquantidade = $e55_servicoquantidade == "f" ? "false" : "true";
+                    $e55_descr = AddSlashes($e55_descr);
+                    $clempempitem->e62_descr = $e55_descr;
+                    $clempempitem->e62_codele = $e56_codele;
+                    $clempempitem->incluir($e60_numemp, $e55_sequen);
+                    $erro_msg = $clempempitem->erro_msg;
+
+                    if ($clempempitem->erro_status == 0) {
+                        $sqlerro = true;
+                        break;
+                    }
+
+                    /*
+                     * Verificamos se o item está vinculado a uma autorização de um pacto sem solicitação
+                    * Se a autorização foi gerada sem solicitaçao, controla o saldo do pacto, do contrário esse controle foi realizado
+                    * no momento da inclusão da solicitação
+                    *
+                    */
+                    $sSqlEmpAutorizaSol = "select *
           from empautoriza
           inner join empautitem on empautitem.e55_autori       = empautoriza.e54_autori
           left join pcprocitem on pcprocitem.pc81_codprocitem = empautitem.e55_sequen
           left join solicitem  on solicitem.pc11_codigo       = pcprocitem.pc81_solicitem
           where solicitem.pc11_numero is null
           and e54_autori = $e54_autori ";
-          $rsEmpAutorizaSol   = db_query($sSqlEmpAutorizaSol);
+                    $rsEmpAutorizaSol = db_query($sSqlEmpAutorizaSol);
 
-          if (!$sqlerro && $lControlePacto && pg_numrows($rsEmpAutorizaSol) > 0) {
+                    if (!$sqlerro && $lControlePacto && pg_numrows($rsEmpAutorizaSol) > 0) {
 
-            $sSqlItemPacto = $clempautitem->sql_query_item_pacto($e54_autori, $e55_sequen);
-            $rsItemPacto   = $clempautitem->sql_record($sSqlItemPacto);
-            if ($clempautitem->numrows > 0) {
+                        $sSqlItemPacto = $clempautitem->sql_query_item_pacto($e54_autori, $e55_sequen);
+                        $rsItemPacto = $clempautitem->sql_record($sSqlItemPacto);
+                        if ($clempautitem->numrows > 0) {
 
-              $oItemPactoSol = db_utils::fieldsMemory($rsItemPacto, 0);
-              $oEmpenho      = new empenho();
-              try {
-                $oEmpenho->baixarSaldoPacto($clempempitem->e62_sequencial,
-                                            $oItemPactoSol->o88_pactovalor,
-                                            $e55_quant,
-                                            $e55_vltot
-                );
+                            $oItemPactoSol = db_utils::fieldsMemory($rsItemPacto, 0);
+                            $oEmpenho = new empenho();
+                            try {
+                                $oEmpenho->baixarSaldoPacto($clempempitem->e62_sequencial,
+                                    $oItemPactoSol->o88_pactovalor,
+                                    $e55_quant,
+                                    $e55_vltot
+                                );
 
-              } catch (Exception $eEmpenho) {
+                            } catch (Exception $eEmpenho) {
 
-                $sqlerro  = true;
-                $erro_msg = $eEmpenho->getMessage();
-              }
-            }
-          }
-        }
-      }
-    }
-    /*final rotina */
-
-    /*rotina de incluir  na tabela empelemento*/
-    if ($sqlerro == false) {
-      $result                    = $clempautitem->sql_record($clempautitem->sql_query_elemento($e54_autori));
-      $numrows                   = $clempautitem->numrows;
-      $clempelemento->e64_numemp = $e60_numemp;
-      for ($i = 0; $i < $numrows; $i++) {
-        db_fieldsmemory($result, $i);
-        $clempelemento->e64_codele = $e56_codele;
-        $clempelemento->e64_vlremp = number_format($e55_vltot, "2", '.', "");      //valor dos itens
-        $clempelemento->e64_vlrliq = '0';
-        $clempelemento->e64_vlrpag = '0';
-        $clempelemento->e64_vlranu = '0';
-        $clempelemento->incluir($e60_numemp, $e56_codele);
-        $erro_msg = $clempelemento->erro_msg;
-        if ($clempelemento->erro_status == 0) {
-          $sqlerro = true;
-        }
-        $clempelemento->e64_codele = null;
-        $clempelemento->e64_vlremp = null;      //valor dos itens
-        $clempelemento->e64_vlrliq = null;
-        $clempelemento->e64_vlrpag = null;
-        $clempelemento->e64_vlranu = null;
-      }
-    }
-
-
-    /*rotina que inclui na tabela empemphist*/
-    if ($sqlerro == false && $e57_codhist != "Nenhum") {
-      $clempemphist->e63_numemp  = $e60_numemp;
-      $clempemphist->e63_codhist = $e57_codhist;
-      $clempemphist->incluir($e60_numemp);
-      $erro_msg = $clempemphist->erro_msg;
-      if ($clempemphist->erro_status == 0) {
-        $sqlerro = true;
-      }
-    }
-    /*final rotina que inclui em empemphist*/
-
-    /*rotina que inclui na tabela empempaut*/
-    if ($sqlerro == false) {
-      $clempempaut->e61_numemp = $e60_numemp;
-      $clempempaut->e61_autori = $e54_autori;
-      $clempempaut->incluir($e60_numemp);
-      $erro_msg = $clempempaut->erro_msg;
-      if ($clempempaut->erro_status == 0) {
-        $sqlerro = true;
-      }
-    }
-    /*final da rotina*/
-
-    /**
-     * Insere na tabela empempenhofinalidadepagamentofundeb
-     */
-    if (!$sqlerro) {
-
-      try {
-
-        $oEmpenhoFinanceiro = new EmpenhoFinanceiro($e60_numemp);
-        $iRecursoDotacao    = $oEmpenhoFinanceiro->getDotacao()->getRecurso();
-
-        if (isset($e151_codigo)) {
-            if ($e151_codigo == "00") {
-                $oDaoEmpenhoFinalidadePagamentoExcluir = db_utils::getDao('empempenhofinalidadepagamentofundeb');
-                $oDaoEmpenhoFinalidadePagamentoExcluir->excluir(null, "e152_numemp = $e60_numemp");
-                if ($oDaoEmpenhoFinalidadePagamentoExcluir->erro_status == "0") {
-                    throw new Exception("Não foi possível desvincular finalidade.");
+                                $sqlerro = true;
+                                $erro_msg = $eEmpenho->getMessage();
+                            }
+                        }
+                    }
                 }
-            } else {
-                $oEmpenhoFinanceiro->setFinalidadePagamentoFundeb(FinalidadePagamentoFundeb::getInstanciaPorCodigo($e151_codigo));
-                $oEmpenhoFinanceiro->salvarFinalidadePagamentoFundeb();
+            }
+        }
+        /*final rotina */
+
+        /*rotina de incluir  na tabela empelemento*/
+        if ($sqlerro == false) {
+            $result = $clempautitem->sql_record($clempautitem->sql_query_elemento($e54_autori));
+            $numrows = $clempautitem->numrows;
+            $clempelemento->e64_numemp = $e60_numemp;
+            for ($i = 0; $i < $numrows; $i++) {
+                db_fieldsmemory($result, $i);
+                $clempelemento->e64_codele = $e56_codele;
+                $clempelemento->e64_vlremp = number_format($e55_vltot, "2", '.', "");      //valor dos itens
+                $clempelemento->e64_vlrliq = '0';
+                $clempelemento->e64_vlrpag = '0';
+                $clempelemento->e64_vlranu = '0';
+                $clempelemento->incluir($e60_numemp, $e56_codele);
+                $erro_msg = $clempelemento->erro_msg;
+                if ($clempelemento->erro_status == 0) {
+                    $sqlerro = true;
+                }
+                $clempelemento->e64_codele = null;
+                $clempelemento->e64_vlremp = null;      //valor dos itens
+                $clempelemento->e64_vlrliq = null;
+                $clempelemento->e64_vlrpag = null;
+                $clempelemento->e64_vlranu = null;
             }
         }
 
 
-      } catch (Exception $eErro) {
-
-        $sqlerro  = true;
-        $erro_msg = $eErro->getMessage();
-      }
-    }
-
-    /*rotina que exclui orcreserva e  aut e sol*/
-
-
-    if ($sqlerro == false) {
-      $result = $clorcreservaaut->sql_record($clorcreservaaut->sql_query(null,
-                                                                         "o83_codres",
-                                                                         "",
-                                                                         "o83_autori=$e54_autori"
-      )
-      );
-      if (pg_num_rows($result) > 0) {
-        db_fieldsmemory($result, 0);
-
-        $clorcreservaaut->o83_codres = $o83_codres;
-        $clorcreservaaut->excluir($o83_codres);
-        $erro_msg = $clorcreservaaut->erro_msg;
-        if ($clorcreservaaut->erro_status == 0) {
-          $sqlerro = true;
+        /*rotina que inclui na tabela empemphist*/
+        if ($sqlerro == false && $e57_codhist != "Nenhum") {
+            $clempemphist->e63_numemp = $e60_numemp;
+            $clempemphist->e63_codhist = $e57_codhist;
+            $clempemphist->incluir($e60_numemp);
+            $erro_msg = $clempemphist->erro_msg;
+            if ($clempemphist->erro_status == 0) {
+                $sqlerro = true;
+            }
         }
+        /*final rotina que inclui em empemphist*/
+
+        /*rotina que inclui na tabela empempaut*/
+        if ($sqlerro == false) {
+            $clempempaut->e61_numemp = $e60_numemp;
+            $clempempaut->e61_autori = $e54_autori;
+            $clempempaut->incluir($e60_numemp);
+            $erro_msg = $clempempaut->erro_msg;
+            if ($clempempaut->erro_status == 0) {
+                $sqlerro = true;
+            }
+        }
+        /*final da rotina*/
+
+        if (isRioDeJaneiro()) {
+
+            if(!$sqlerro &&  $tipoatojuridico !== null){
+                $clemptipoatojuridico->e166_empempenho = $e60_numemp;
+                $clemptipoatojuridico->e166_tipoatojuridico = $tipoatojuridico;
+                $clemptipoatojuridico->incluir(null);
+                $erro_msg = $clemptipoatojuridico->erro_msg;
+                if ($clemptipoatojuridico->erro_status == 0) {
+                    $sqlerro = true;
+                }
+            }
+
+            if(!$sqlerro && !empty($justificativaatojuridico)){
+                $clempjustificativaatojuridico->e175_empempenho = $e60_numemp;
+                $clempjustificativaatojuridico->e175_justificativaatojuridico = $justificativaatojuridico;
+                $clempjustificativaatojuridico->incluir(null);
+                $erro_msg = $clempjustificativaatojuridico->erro_msg;
+                if ($clempjustificativaatojuridico->erro_status == 0) {
+                    $sqlerro = true;
+                }
+            }
+
+            if(!$sqlerro && !empty($justificativainstrumentoprevio)){
+                $clempjustificativainstrumentoprevio->e176_empempenho = $e60_numemp;
+                $clempjustificativainstrumentoprevio->e176_justificativainstrumentoprevio = $justificativainstrumentoprevio;
+                $clempjustificativainstrumentoprevio->incluir(null);
+                $erro_msg = $clempjustificativainstrumentoprevio->erro_msg;
+                if ($clempjustificativainstrumentoprevio->erro_status == 0) {
+                    $sqlerro = true;
+                }
+            }
+        }
+
+        /**
+         * Insere na tabela empempenhofinalidadepagamentofundeb
+         */
+        if (!$sqlerro) {
+
+            try {
+
+                $oEmpenhoFinanceiro = new EmpenhoFinanceiro($e60_numemp);
+                $iRecursoDotacao = $oEmpenhoFinanceiro->getDotacao()->getRecurso();
+
+                if (isset($e151_codigo)) {
+                    if ($e151_codigo == "00") {
+                        $oDaoEmpenhoFinalidadePagamentoExcluir = db_utils::getDao('empempenhofinalidadepagamentofundeb');
+                        $oDaoEmpenhoFinalidadePagamentoExcluir->excluir(null, "e152_numemp = $e60_numemp");
+                        if ($oDaoEmpenhoFinalidadePagamentoExcluir->erro_status == "0") {
+                            throw new Exception("Não foi possível desvincular finalidade.");
+                        }
+                    } else {
+                        $oEmpenhoFinanceiro->setFinalidadePagamentoFundeb(FinalidadePagamentoFundeb::getInstanciaPorCodigo($e151_codigo));
+                        $oEmpenhoFinanceiro->salvarFinalidadePagamentoFundeb();
+                    }
+                }
+
+
+            } catch (Exception $eErro) {
+
+                $sqlerro = true;
+                $erro_msg = $eErro->getMessage();
+            }
+        }
+
+        /*rotina que exclui orcreserva e  aut e sol*/
+
 
         if ($sqlerro == false) {
-          $clorcreserva->o80_codres = $o83_codres;
-          $clorcreserva->excluir($o83_codres);
-          $erro_msg = $clorcreserva->erro_msg;
-          if ($clorcreserva->erro_status == 0) {
-            $sqlerro = true;
-          }
-        }
-      }
-    }
-    /*final rotina que exclui do orcreserva e aut*/
+            $result = $clorcreservaaut->sql_record($clorcreservaaut->sql_query(null,
+                "o83_codres",
+                "",
+                "o83_autori=$e54_autori"
+            )
+            );
+            if (pg_num_rows($result) > 0) {
+                db_fieldsmemory($result, 0);
 
-    if (!$sqlerro) {
+                $clorcreservaaut->o83_codres = $o83_codres;
+                $clorcreservaaut->excluir($o83_codres);
+                $erro_msg = $clorcreservaaut->erro_msg;
+                if ($clorcreservaaut->erro_status == 0) {
+                    $sqlerro = true;
+                }
 
-      $oDaoEmpenhoNl->e68_numemp = $e60_numemp;
-      $oDaoEmpenhoNl->e68_data   = date("Y-m-d", db_getsession("DB_datausu"));
-      $oDaoEmpenhoNl->incluir(null);
-      if ($oDaoEmpenhoNl->erro_status == 0) {
-
-        $erro_msg = "Erro ao incluir empenho como nota de liquidação;";
-        $sqlerro  = true;
-
-      }
-    }
-
-    /** [Extensao ProgramacaoFinanceira] - Bloqueio de Empenho por SALDO */
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////LANÇAMENTO CONTÁBIL//////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if ($sqlerro == false) {
-      $result09  = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp,
-                                                                        null,
-                                                                        "e64_codele,o56_elemento,e64_vlremp"
-      )
-      );
-      $numrows09 = $clempelemento->numrows;
-    }
-
-    $anousu     = db_getsession("DB_anousu");
-    $datausu    = date("Y-m-d", db_getsession("DB_datausu"));
-    $c71_coddoc = '1';
-
-    $oEmpenhoFinanceiro = null;
-    try {
-      $oEmpenhoFinanceiro = new EmpenhoFinanceiro($e60_numemp);
-    } catch (Exception $eErro) {
-
-      $erro_msg = $eErro->getMessage();
-      $sqlerro  = false;
-    }
-
-    if ($sqlerro == false && !empty($oEmpenhoFinanceiro)) {
-
-      if (USE_PCASP) {
-
-        if ($isPrestacaoContas) {
-          $c71_coddoc = 410;
-        }
-
-        $isProvisaoFerias         = $oEmpenhoFinanceiro->isProvisaoFerias();
-        $isProvisaoDecimoTerceiro = $oEmpenhoFinanceiro->isProvisaoDecimoTerceiro();
-        $isAmortizacaoDivida      = $oEmpenhoFinanceiro->isAmortizacaoDivida();
-        $isPrecatoria             = $oEmpenhoFinanceiro->isPrecatoria();
-
-        if ($isProvisaoFerias) {
-          $c71_coddoc = 304;
-        }
-
-        if ($isProvisaoDecimoTerceiro) {
-          $c71_coddoc = 308;
-        }
-
-        if ($isAmortizacaoDivida) {
-          $c71_coddoc = 504; // EMPENHO AMORT. DA DÍVIDA
-        }
-
-        if ($isPrecatoria) {
-          $c71_coddoc = 500; // EMPENHO DE PRECATÓRIOS
-        }
-      }
-
-
-      for ($i = 0; $i < $numrows09; $i++) {
-
-        db_fieldsmemory($result09, $i);
-
-        $iCodigoDotacao = $e56_coddot;
-        $sComplemento   = "Lançamento do Empenho " . $oEmpenhoFinanceiro->getNumero() . "/" . $oEmpenhoFinanceiro->getAno();
-
-        if (isset($e54_resumo) && !empty($e54_resumo)) {
-          $sComplemento .= "  {$e54_resumo}";
-        }
-
-        try {
-
-          $oDotacao              = new Dotacao($iCodigoDotacao, $oEmpenhoFinanceiro->getAno());
-          $oContaCorrenteDetalhe = new ContaCorrenteDetalhe();
-          $oContaCorrenteDetalhe->setDotacao($oDotacao);
-          $oContaCorrenteDetalhe->setEmpenho($oEmpenhoFinanceiro);
-          $oContaCorrenteDetalhe->setRecurso($oDotacao->getDadosRecurso());
-
-          /**
-           * Valida parametro de integracao da contabilidade com contratos
-           */
-          $oEventoContabil     = new EventoContabil($c71_coddoc, $anousu);
-          $oLancamentoAuxiliar = new LancamentoAuxiliarEmpenho();
-          $oLancamentoAuxiliar->setCaracteristicaPeculiar($clempempenho->e60_concarpeculiar);
-          $oLancamentoAuxiliar->setCodigoElemento($e56_codele);
-          $oLancamentoAuxiliar->setFavorecido($oEmpenhoFinanceiro->getCgm()->getCodigo());
-          $oLancamentoAuxiliar->setNumeroEmpenho($e60_numemp);
-          $oLancamentoAuxiliar->setValorTotal($oEmpenhoFinanceiro->getValorEmpenho());
-          $oLancamentoAuxiliar->setObservacaoHistorico($sComplemento);
-          $oLancamentoAuxiliar->setEmpenhoFinanceiro($oEmpenhoFinanceiro);
-          $oLancamentoAuxiliar->setCodigoDotacao($iCodigoDotacao);
-          $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalhe);
-          $oEventoContabil->executaLancamento($oLancamentoAuxiliar);
-
-          /**
-           * Pesquisa contrato do empenho
-           * - caso exista gera lancamento
-           */
-          $oDataImplantacao = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
-          $oInstituicao     = InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'));
-          if (ParametroIntegracaoPatrimonial::possuiIntegracaoContrato($oDataImplantacao, $oInstituicao)) {
-
-            $oDaoEmpenhoContrato = db_utils::getDao("empempenhocontrato");
-            $sSqlContrato        = $oDaoEmpenhoContrato->sql_query_file(null,
-                                                                        "e100_acordo",
-                                                                        null,
-                                                                        "e100_numemp = {$e60_numemp}");
-
-            $rsContrato = $oDaoEmpenhoContrato->sql_record($sSqlContrato);
-
-            if ($oDaoEmpenhoContrato->numrows > 0) {
-
-              $iCodigoAcordo         = db_utils::fieldsMemory($rsContrato, 0)->e100_acordo;
-              $oAcordo               = new Acordo($iCodigoAcordo);
-              $oEventoContabilAcordo = new EventoContabil(900, $anousu);
-
-              $oLancamentoAuxiliarAcordo = new LancamentoAuxiliarAcordo();
-              $oLancamentoAuxiliarAcordo->setEmpenho($oEmpenhoFinanceiro);
-              $oLancamentoAuxiliarAcordo->setAcordo($oAcordo);
-              $oLancamentoAuxiliarAcordo->setValorTotal($oEmpenhoFinanceiro->getValorEmpenho());
-
-              $oContaCorrente = new ContaCorrenteDetalhe();
-              $oContaCorrente->setAcordo($oAcordo);
-              $oLancamentoAuxiliarAcordo->setContaCorrenteDetalhe($oContaCorrente);
-              $oEventoContabilAcordo->executaLancamento($oLancamentoAuxiliarAcordo);
+                if ($sqlerro == false) {
+                    $clorcreserva->o80_codres = $o83_codres;
+                    $clorcreserva->excluir($o83_codres);
+                    $erro_msg = $clorcreserva->erro_msg;
+                    if ($clorcreserva->erro_status == 0) {
+                        $sqlerro = true;
+                    }
+                }
             }
-          }
+        }
+        /*final rotina que exclui do orcreserva e aut*/
 
+        if (!$sqlerro) {
+
+            $oDaoEmpenhoNl->e68_numemp = $e60_numemp;
+            $oDaoEmpenhoNl->e68_data = date("Y-m-d", db_getsession("DB_datausu"));
+            $oDaoEmpenhoNl->incluir(null);
+            if ($oDaoEmpenhoNl->erro_status == 0) {
+
+                $erro_msg = "Erro ao incluir empenho como nota de liquidação;";
+                $sqlerro = true;
+
+            }
+        }
+
+        /** [Extensao ProgramacaoFinanceira] - Bloqueio de Empenho por SALDO */
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////LANÇAMENTO CONTÁBIL//////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if ($sqlerro == false) {
+            $result09 = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp,
+                null,
+                "e64_codele,o56_elemento,e64_vlremp"
+            )
+            );
+            $numrows09 = $clempelemento->numrows;
+        }
+
+        $anousu = db_getsession("DB_anousu");
+        $datausu = date("Y-m-d", db_getsession("DB_datausu"));
+        $c71_coddoc = '1';
+
+        $oEmpenhoFinanceiro = null;
+        try {
+            $oEmpenhoFinanceiro = new EmpenhoFinanceiro($e60_numemp);
         } catch (Exception $eErro) {
 
-          $erro_msg = $eErro->getMessage();
-          $sqlerro  = true;
-          db_msgbox($eErro->getMessage());
-          db_redireciona("emp4_empempenho004.php");
-          break;
+            $erro_msg = $eErro->getMessage();
+            $sqlerro = false;
         }
 
-      }
+        if ($sqlerro == false && !empty($oEmpenhoFinanceiro)) {
 
-    }
+            if (USE_PCASP) {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //FINAL LANÇAMENTO CONTÁBEIS////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                if ($isPrestacaoContas) {
+                    $c71_coddoc = 410;
+                }
+
+                $isProvisaoFerias = $oEmpenhoFinanceiro->isProvisaoFerias();
+                $isProvisaoDecimoTerceiro = $oEmpenhoFinanceiro->isProvisaoDecimoTerceiro();
+                $isAmortizacaoDivida = $oEmpenhoFinanceiro->isAmortizacaoDivida();
+                $isPrecatoria = $oEmpenhoFinanceiro->isPrecatoria();
+
+                if ($isProvisaoFerias) {
+                    $c71_coddoc = 304;
+                }
+
+                if ($isProvisaoDecimoTerceiro) {
+                    $c71_coddoc = 308;
+                }
+
+                if ($isAmortizacaoDivida) {
+                    $c71_coddoc = 504; // EMPENHO AMORT. DA DÍVIDA
+                }
+
+                if ($isPrecatoria) {
+                    $c71_coddoc = 500; // EMPENHO DE PRECATÓRIOS
+                }
+            }
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // LIQUIDAÇÃO////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            for ($i = 0; $i < $numrows09; $i++) {
 
+                db_fieldsmemory($result09, $i);
 
-    //rotina que pega os valores dos elementos e coloca na variavel $dados
-    if ($sqlerro == false) {
-      $result03  = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp, null, "e64_vlremp,e64_codele"));
-      $numrows03 = $clempelemento->numrows;
-      $dados     = '';
-      $sep       = '';
-      for ($e = 0; $e < $numrows03; $e++) {
-        db_fieldsmemory($result03, $e);
-        $dados .= $sep . $e64_codele . "-" . $e64_vlremp;
-        $sep = '#';
-      }
-    }
-    //**********************************************************/
+                $iCodigoDotacao = $e56_coddot;
+                $sComplemento = "Lançamento do Empenho " . $oEmpenhoFinanceiro->getNumero() . "/" . $oEmpenhoFinanceiro->getAno();
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //ARQUVO DE LIQUIDAÇÃO////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if ($sqlerro == false) {
-      if ($opc == 1) {
-        //$dados tem todos os elementos e seus valores
-        //variáveis necessárias//
-        //$dados =  $elemento-$valorliquidar#$elemento-$valorliquidar#elemen...
-        //$e60_numemp =  $e60_numemp;
-        //$vlrliq     =  $vlrliq;
-        $vlrliq = $e60_vlremp;
-        require_once(modification("emp1_empliquidaarq.php"));
-      }
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //FINAL DE LIQUIDAÇÃO////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                if (isset($e54_resumo) && !empty($e54_resumo)) {
+                    $sComplemento .= "  {$e54_resumo}";
+                }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //ARQUVO DE ORDEM DE PAGAMENTO////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if ($opc == 5 && $sqlerro == false) {
-      //variaveis
-      //$e50_numemp = $e50_numemp;
-      //$e50_obs    = $e50_obs;
-      //$dados = $elemento-$valor#elemento-valor#elem..
-      //$chaves, é setado quando tiver notas
+                try {
 
-      $e50_numemp = $e60_numemp;
-      $e50_obs    = "Ordem de pagamento";
-      require_once(modification("emp1_pagordemarq.php"));
-    }
-    //FINAL ORDEM DE PAGAMENTO//
+                    $oDotacao = new Dotacao($iCodigoDotacao, $oEmpenhoFinanceiro->getAno());
+                    $oContaCorrenteDetalhe = new ContaCorrenteDetalhe();
+                    $oContaCorrenteDetalhe->setDotacao($oDotacao);
+                    $oContaCorrenteDetalhe->setEmpenho($oEmpenhoFinanceiro);
+                    $oContaCorrenteDetalhe->setRecurso($oDotacao->getDadosRecurso());
 
-    if ($sqlerro == false) {
+                    /**
+                     * Valida parametro de integracao da contabilidade com contratos
+                     */
+                    $oEventoContabil = new EventoContabil($c71_coddoc, $anousu);
+                    $oLancamentoAuxiliar = new LancamentoAuxiliarEmpenho();
+                    $oLancamentoAuxiliar->setCaracteristicaPeculiar($clempempenho->e60_concarpeculiar);
+                    $oLancamentoAuxiliar->setCodigoElemento($e56_codele);
+                    $oLancamentoAuxiliar->setFavorecido($oEmpenhoFinanceiro->getCgm()->getCodigo());
+                    $oLancamentoAuxiliar->setNumeroEmpenho($e60_numemp);
+                    $oLancamentoAuxiliar->setValorTotal($oEmpenhoFinanceiro->getValorEmpenho());
+                    $oLancamentoAuxiliar->setObservacaoHistorico($sComplemento);
+                    $oLancamentoAuxiliar->setEmpenhoFinanceiro($oEmpenhoFinanceiro);
+                    $oLancamentoAuxiliar->setCodigoDotacao($iCodigoDotacao);
+                    $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalhe);
+                    $oEventoContabil->executaLancamento($oLancamentoAuxiliar);
 
-      /**
-       * Classificação de Credores
-       * Cria vínculo entre empenho e lista de classificação
-       */
-      try {
+                    /**
+                     * Pesquisa contrato do empenho
+                     * - caso exista gera lancamento
+                     */
+                    $oDataImplantacao = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
+                    $oInstituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'));
+                    if (ParametroIntegracaoPatrimonial::possuiIntegracaoContrato($oDataImplantacao, $oInstituicao)) {
 
-        if (!isset($classificacao_credor_combo)) {
-          $classificacao_credor_combo = 0;
+                        $oDaoEmpenhoContrato = db_utils::getDao("empempenhocontrato");
+                        $sSqlContrato = $oDaoEmpenhoContrato->sql_query_file(null,
+                            "e100_acordo",
+                            null,
+                            "e100_numemp = {$e60_numemp}");
+
+                        $rsContrato = $oDaoEmpenhoContrato->sql_record($sSqlContrato);
+
+                        if ($oDaoEmpenhoContrato->numrows > 0) {
+
+                            $iCodigoAcordo = db_utils::fieldsMemory($rsContrato, 0)->e100_acordo;
+                            $oAcordo = new Acordo($iCodigoAcordo);
+                            $oEventoContabilAcordo = new EventoContabil(900, $anousu);
+
+                            $oLancamentoAuxiliarAcordo = new LancamentoAuxiliarAcordo();
+                            $oLancamentoAuxiliarAcordo->setEmpenho($oEmpenhoFinanceiro);
+                            $oLancamentoAuxiliarAcordo->setAcordo($oAcordo);
+                            $oLancamentoAuxiliarAcordo->setValorTotal($oEmpenhoFinanceiro->getValorEmpenho());
+
+                            $oContaCorrente = new ContaCorrenteDetalhe();
+                            $oContaCorrente->setAcordo($oAcordo);
+                            $oLancamentoAuxiliarAcordo->setContaCorrenteDetalhe($oContaCorrente);
+                            $oEventoContabilAcordo->executaLancamento($oLancamentoAuxiliarAcordo);
+                        }
+                    }
+
+                } catch (Exception $eErro) {
+
+                    $erro_msg = $eErro->getMessage();
+                    $sqlerro = true;
+                    db_msgbox($eErro->getMessage());
+                    db_redireciona("emp4_empempenho004.php");
+                    break;
+                }
+
+            }
+
         }
 
-        $oEmpenho             = new EmpenhoFinanceiro($e60_numemp);
-        $lDispensaManual      = $classificacao_credor_combo == 1;
-        $oClassificacaoCredor = ListaClassificacaoCredorRepository::getPorCodigo(ListaClassificacaoCredor::DISPENSA_MANUAL);
-        if (!$lDispensaManual) {
-          $oClassificacaoCredor = ListaClassificacaoCredorRepository::getPorEmpenho($oEmpenho);
-        }
-        if (!empty($oClassificacaoCredor)) {
-          $oClassificacaoCredor->vincularEmpenhoEmClassificacao($oEmpenho, $lDispensaManual, $cc31_justificativa);
-        }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //FINAL LANÇAMENTO CONTÁBEIS////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      } catch (Exception $oErro) {
 
-        $sqlerro  = true;
-        $erro_msg = $oErro->getMessage();
-      }
-    }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // LIQUIDAÇÃO////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // INICIO LIQUIDAÇÃO + NOTA DE LIQUIDAÇÃO
-    if ($opc == 2 && $sqlerro == false) {
 
-      /**
-       * esta opção deve :
-       * - lançar ordem de compra ( modulo compras )
-       * - dar entrada dos ítens na ordem de compra com nota ( modulo almoxarifado )
-       * - liquidar o empenho com nota , obrigatorio usar nota (modulo contabilidade)
-       *
-       * // ordem de compra
-       *
-       * - matordem :  lança 1 registro, ordem de compra
-       * - matordemitem : ítens da ordem de compra
-       *
-       * // nota do fornecedor
-       *
-       * - empnota : nota
-       * - empnotaord : ligação da nota com a ordem de compra
-       * - empnotaele : elementos de empenho ligados a nota
-       *
-       * // entrada no estoque
-       *
-       * - matestoqueini : estoque
-       * - matmater : materiais/itens, cadastro de materiais ( 1:pcmatar ------ N:matmater )
-       * - matestoque : uma tabela que sintetiza valores para relatorios do modulo  almox/estoque
-       * - matestoqueitem : representa os ítens que estao no almox
-       * - matestoqueitemunid : representa como as quantidades são representadas dos ítens
-       * - matestoqueitemoc : itens ligados a ordem de com pra
-       * - matestoqueitemnota : itens ligados a nota ( empnota )
-       *
-       */
-      try {
-
-        /** [Extensao ContratosPADRS] valida serie nota */
-
-        $oDataNota        = new DBDate($e69_dtnota);
-        $oDataRecebimento = new DBDate($e69_dtrecebe);
-        $oDataVencimento  = empty($e69_dtvencimento) ? null : new DBDate($e69_dtvencimento);
-        $e69_dtnota       = $oDataNota->getDate();
-        $e69_dtrecebe     = $oDataRecebimento->getDate();
-        $e69_dtvencimento = $oDataVencimento ? $oDataVencimento->getDate() : null;
-
-        $oListaClassificacaoCredor = $oEmpenho->getListaClassificacaoCredor();
-        if (!empty($oListaClassificacaoCredor)) {
-
-          $oEmpenho->getListaClassificacaoCredor()->validarParametros($e69_dtnota,
-            $e69_dtrecebe,
-            $e69_dtvencimento,
-            $e69_localrecebimento);
-
-          $oEmpenho->getListaClassificacaoCredor()->validarDatas($oDataNota, $oDataRecebimento, $oDataVencimento);
-        }
-
-        require_once(modification("mat1_matestoque_arqnota.php"));
-
-        if ($clempnota->erro_status == 0) {
-          throw new DBException('Não foi possível salvar a Nota de Liquidação.');
-        }
-
-        /** [Extensao ContratosPADRS] nota liquidacao */
-
-        // liquidação contábil
-        $clempenho = new empenho();
-        $clempenho->setCompetenciaLiquidacao($_POST["competencia_regime"]);
-        $clempenho->liquidar($e60_numemp, $e64_codele, $clempnota->e69_codnota, $e60_vlremp, $e54_resumo);
-        $e50_codord = $clempenho->iPagOrdem;
-        if ($clempenho->erro_status == '0') {
-          $sqlerro  = true;
-          $erro_msg = $clempenho->erro_msg;
-          db_msgbox($erro_msg);
-        }
-      } catch (Exception $oErro) {
-
-        $sqlerro  = true;
-        $erro_msg = $oErro->getMessage();
-      }
-    }
-
-    //ARQUVO DE RETENÇÕES///
-    if ($sqlerro == false) {
-      /**
-       * seleciona as retenções lançadas na autorização e
-       * lança para o empenho (duplica-as)
-       */
-      $result_retencao  = $clempautret->sql_record($clempautret->sql_query($e54_autori, null, "empretencao.*"));
-      $numrows_retencao = $clempautret->numrows;
-      for ($i = 0; $i < $numrows_retencao; $i++) {
-        db_fieldsmemory($result_retencao, $i);
-        $clempretencao->e65_seq      = null;
-        $clempretencao->e65_receita  = $e65_receita;
-        $clempretencao->e65_aliquota = $e65_aliquota;
-        $clempretencao->e65_valor    = $e65_valor;
-        $clempretencao->incluir($clempretencao->e65_seq);
-        if ($clempretencao->erro_status == 0) {
-          $erro_msg = $clempretencao->erro_msg;
-          $sqlerro  = true;
-          break;
-        }
+        //rotina que pega os valores dos elementos e coloca na variavel $dados
         if ($sqlerro == false) {
-          $clempempret->e67_numemp      = $e60_numemp;
-          $clempempret->e67_seqretencao = $clempretencao->e65_seq;
-          $clempempret->incluir($e60_numemp, $clempretencao->e65_seq);
-          if ($clempempret->erro_status == 0) {
-            $erro_msg = $clempempret->erro_msg;
-            $sqlerro  = true;
-            break;
-          }
+            $result03 = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp, null, "e64_vlremp,e64_codele"));
+            $numrows03 = $clempelemento->numrows;
+            $dados = '';
+            $sep = '';
+            for ($e = 0; $e < $numrows03; $e++) {
+                db_fieldsmemory($result03, $e);
+                $dados .= $sep . $e64_codele . "-" . $e64_vlremp;
+                $sep = '#';
+            }
         }
-      }// end loop
-    }
-    //FINAL DE RETENÇÕES//
+        //**********************************************************/
 
-    //     $sqlerro = true;
-    // db_msgbox("Registro não incluido , transação comentada no script emp1_empempenho004");
-    /**[Extensao Ordenador Despesa] inclusao_ordenador*/
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //ARQUVO DE LIQUIDAÇÃO////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if ($sqlerro == false) {
+            if ($opc == 1) {
+                //$dados tem todos os elementos e seus valores
+                //variáveis necessárias//
+                //$dados =  $elemento-$valorliquidar#$elemento-$valorliquidar#elemen...
+                //$e60_numemp =  $e60_numemp;
+                //$vlrliq     =  $vlrliq;
+                $vlrliq = $e60_vlremp;
+                require_once(modification("emp1_empliquidaarq.php"));
+            }
+        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //FINAL DE LIQUIDAÇÃO////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-          try {
-              $configEstorage = StorageHelper::getStorageConfig();
-          } catch (Exception $exception) {
-              $configEstorage = null;
-          }
-          $tipoProcesso = DocumentoAndamentoService::getTipoProcesso(6, $e60_numemp);
-          if (!empty($tipoProcesso) && !is_null($configEstorage)) {
-              $uuid = Ramsey\Uuid\Uuid::uuid4();
-              $dotenv = new \Dotenv\Dotenv('./');
-              $dotenv->load();
-              $empenho = new EmpenhoFinanceiro($e60_numemp);
-              $gerar_arquivo = "tmp/empenho_{$empenho->getCodigo()}_" . time() . ".pdf";
-              require_once("emp2_emitenotaemp002.php");
-              if (!file_exists($gerar_arquivo)) {
-                  throw new Exception("Erro ao salvar PDF");
-              }
-              $metadata = new \stdClass();
-              $metadata->qrcode = $uuid;
-              $arquivo = StorageHelper::uploadArquivo($gerar_arquivo, [], false, $metadata);
-              $empenhoDocumentoService = new EmpenhoDocumentoService($empenho);
-              $processoEmpenho = $empenhoDocumentoService->gerar($arquivo, $uuid);
-              $processoCriado = "\n\nProcesso criado: $processoEmpenho->p58_numero/$processoEmpenho->p58_ano";
-          }
-  } catch (Exception $e) {
-      $sqlerro  = true;
-      $erro_msg = $e->getMessage();
-  }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //ARQUVO DE ORDEM DE PAGAMENTO////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if ($opc == 5 && $sqlerro == false) {
+            //variaveis
+            //$e50_numemp = $e50_numemp;
+            //$e50_obs    = $e50_obs;
+            //$dados = $elemento-$valor#elemento-valor#elem..
+            //$chaves, é setado quando tiver notas
 
-  // Incluir indicativo de aquisicao de producao rural
-  if ($sqlerro == false && isset($e60_numemp) && isset($indAqProd) && !empty($indAqProd)) {
-    try {
-        $tipoAquisicaoProducaoRural = new TipoAquisicaoProducaoRuralService;
-        $tipoAquisicaoProducaoRural->setNumemp($e60_numemp);
-        $tipoAquisicaoProducaoRural->setTipo($indAqProd);
-        $tipoAquisicaoProducaoRural->save();
+            $e50_numemp = $e60_numemp;
+            $e50_obs = "Ordem de pagamento";
+            require_once(modification("emp1_pagordemarq.php"));
+        }
+        //FINAL ORDEM DE PAGAMENTO//
+
+        if ($sqlerro == false) {
+
+            /**
+             * Classificação de Credores
+             * Cria vínculo entre empenho e lista de classificação
+             */
+            try {
+
+                if (!isset($classificacao_credor_combo)) {
+                    $classificacao_credor_combo = 0;
+                }
+
+                $oEmpenho = new EmpenhoFinanceiro($e60_numemp);
+                $lDispensaManual = $classificacao_credor_combo == 1;
+                $oClassificacaoCredor = ListaClassificacaoCredorRepository::getPorCodigo(ListaClassificacaoCredor::DISPENSA_MANUAL);
+                if (!$lDispensaManual) {
+                    $oClassificacaoCredor = ListaClassificacaoCredorRepository::getPorEmpenho($oEmpenho);
+                }
+                if (!empty($oClassificacaoCredor)) {
+                    $oClassificacaoCredor->vincularEmpenhoEmClassificacao($oEmpenho, $lDispensaManual, $cc31_justificativa);
+                }
+
+            } catch (Exception $oErro) {
+
+                $sqlerro = true;
+                $erro_msg = $oErro->getMessage();
+            }
+        }
+
+        // INICIO LIQUIDAÇÃO + NOTA DE LIQUIDAÇÃO
+        if ($opc == 2 && $sqlerro == false) {
+
+            /**
+             * esta opção deve :
+             * - lançar ordem de compra ( modulo compras )
+             * - dar entrada dos ítens na ordem de compra com nota ( modulo almoxarifado )
+             * - liquidar o empenho com nota , obrigatorio usar nota (modulo contabilidade)
+             *
+             * // ordem de compra
+             *
+             * - matordem :  lança 1 registro, ordem de compra
+             * - matordemitem : ítens da ordem de compra
+             *
+             * // nota do fornecedor
+             *
+             * - empnota : nota
+             * - empnotaord : ligação da nota com a ordem de compra
+             * - empnotaele : elementos de empenho ligados a nota
+             *
+             * // entrada no estoque
+             *
+             * - matestoqueini : estoque
+             * - matmater : materiais/itens, cadastro de materiais ( 1:pcmatar ------ N:matmater )
+             * - matestoque : uma tabela que sintetiza valores para relatorios do modulo  almox/estoque
+             * - matestoqueitem : representa os ítens que estao no almox
+             * - matestoqueitemunid : representa como as quantidades são representadas dos ítens
+             * - matestoqueitemoc : itens ligados a ordem de com pra
+             * - matestoqueitemnota : itens ligados a nota ( empnota )
+             *
+             */
+            try {
+
+                /** [Extensao ContratosPADRS] valida serie nota */
+
+                $oDataNota = new DBDate($e69_dtnota);
+                $oDataRecebimento = new DBDate($e69_dtrecebe);
+                $oDataVencimento = empty($e69_dtvencimento) ? null : new DBDate($e69_dtvencimento);
+                $e69_dtnota = $oDataNota->getDate();
+                $e69_dtrecebe = $oDataRecebimento->getDate();
+                $e69_dtvencimento = $oDataVencimento ? $oDataVencimento->getDate() : null;
+
+                $oListaClassificacaoCredor = $oEmpenho->getListaClassificacaoCredor();
+                if (!empty($oListaClassificacaoCredor)) {
+
+                    $oEmpenho->getListaClassificacaoCredor()->validarParametros($e69_dtnota,
+                        $e69_dtrecebe,
+                        $e69_dtvencimento,
+                        $e69_localrecebimento);
+
+                    $oEmpenho->getListaClassificacaoCredor()->validarDatas($oDataNota, $oDataRecebimento, $oDataVencimento);
+                }
+
+                require_once(modification("mat1_matestoque_arqnota.php"));
+
+                if ($clempnota->erro_status == 0) {
+                    throw new DBException('Não foi possível salvar a Nota de Liquidação.');
+                }
+
+                /** [Extensao ContratosPADRS] nota liquidacao */
+
+                // liquidação contábil
+                $clempenho = new empenho();
+                $clempenho->setCompetenciaLiquidacao($_POST["competencia_regime"]);
+                $clempenho->liquidar($e60_numemp, $e64_codele, $clempnota->e69_codnota, $e60_vlremp, $e54_resumo);
+                $e50_codord = $clempenho->iPagOrdem;
+                if ($clempenho->erro_status == '0') {
+                    $sqlerro = true;
+                    $erro_msg = $clempenho->erro_msg;
+                    db_msgbox($erro_msg);
+                }
+            } catch (Exception $oErro) {
+
+                $sqlerro = true;
+                $erro_msg = $oErro->getMessage();
+            }
+        }
+
+        //ARQUVO DE RETENÇÕES///
+        if ($sqlerro == false) {
+            /**
+             * seleciona as retenções lançadas na autorização e
+             * lança para o empenho (duplica-as)
+             */
+            $result_retencao = $clempautret->sql_record($clempautret->sql_query($e54_autori, null, "empretencao.*"));
+            $numrows_retencao = $clempautret->numrows;
+            for ($i = 0; $i < $numrows_retencao; $i++) {
+                db_fieldsmemory($result_retencao, $i);
+                $clempretencao->e65_seq = null;
+                $clempretencao->e65_receita = $e65_receita;
+                $clempretencao->e65_aliquota = $e65_aliquota;
+                $clempretencao->e65_valor = $e65_valor;
+                $clempretencao->incluir($clempretencao->e65_seq);
+                if ($clempretencao->erro_status == 0) {
+                    $erro_msg = $clempretencao->erro_msg;
+                    $sqlerro = true;
+                    break;
+                }
+                if ($sqlerro == false) {
+                    $clempempret->e67_numemp = $e60_numemp;
+                    $clempempret->e67_seqretencao = $clempretencao->e65_seq;
+                    $clempempret->incluir($e60_numemp, $clempretencao->e65_seq);
+                    if ($clempempret->erro_status == 0) {
+                        $erro_msg = $clempempret->erro_msg;
+                        $sqlerro = true;
+                        break;
+                    }
+                }
+            }// end loop
+        }
+        //FINAL DE RETENÇÕES//
+
+        //     $sqlerro = true;
+        // db_msgbox("Registro não incluido , transação comentada no script emp1_empempenho004");
+        /**[Extensao Ordenador Despesa] inclusao_ordenador*/
+
+        try {
+            $configEstorage = StorageHelper::getStorageConfig();
+        } catch (Exception $exception) {
+            $configEstorage = null;
+        }
+        $tipoProcesso = DocumentoAndamentoService::getTipoProcesso(6, $e60_numemp);
+        if (!empty($tipoProcesso) && !is_null($configEstorage)) {
+            $uuid = Ramsey\Uuid\Uuid::uuid4();
+            $dotenv = \Dotenv\Dotenv::createImmutable(ECIDADE_PATH);
+            $dotenv->load();
+            $empenho = new EmpenhoFinanceiro($e60_numemp);
+            $gerar_arquivo = "tmp/empenho_{$empenho->getCodigo()}_" . time() . ".pdf";
+            require_once("emp2_emitenotaemp002.php");
+            if (!file_exists($gerar_arquivo)) {
+                throw new Exception("Erro ao salvar PDF");
+            }
+            $metadata = new \stdClass();
+            $metadata->qrcode = $uuid;
+            $arquivo = StorageHelper::uploadArquivo($gerar_arquivo, [], false, $metadata);
+            $empenhoDocumentoService = new EmpenhoDocumentoService($empenho);
+            $processoEmpenho = $empenhoDocumentoService->gerar($arquivo, $uuid);
+            $processoCriado = "\n\nProcesso criado: $processoEmpenho->p58_numero/$processoEmpenho->p58_ano";
+        }
     } catch (Exception $e) {
-        $sqlerro  = true;
+        $sqlerro = true;
         $erro_msg = $e->getMessage();
     }
-  }
 
-  db_fim_transacao($sqlerro);
+    // Incluir indicativo de aquisicao de producao rural
+    if ($sqlerro == false && isset($e60_numemp) && isset($indAqProd) && !empty($indAqProd)) {
+        try {
+            $tipoAquisicaoProducaoRural = new TipoAquisicaoProducaoRuralService;
+            $tipoAquisicaoProducaoRural->setNumemp($e60_numemp);
+            $tipoAquisicaoProducaoRural->setTipo($indAqProd);
+            $tipoAquisicaoProducaoRural->save();
+        } catch (Exception $e) {
+            $sqlerro = true;
+            $erro_msg = $e->getMessage();
+        }
+    }
 
-  $db_opcao = 1;
-  $db_botao = true;
+    db_fim_transacao($sqlerro);
+
+    $db_opcao = 1;
+    $db_botao = true;
 
 } else if (isset($chavepesquisa)) {
-  $db_opcao = 1;
+    $db_opcao = 1;
 
-  $result = $clempautoriza->sql_record($clempautoriza->sql_query($chavepesquisa));
-  db_fieldsmemory($result,0);
+    $result = $clempautoriza->sql_record($clempautoriza->sql_query($chavepesquisa));
+    db_fieldsmemory($result, 0);
 
     $dao = new cl_orcelemento();
     $rs = db_query($dao->sql_query_file($o58_codele, db_getsession('DB_anousu')));
     $elemento = db_utils::fieldsMemory($rs, 0)->o56_elemento;
 
     $desdobramento = substr($elemento, 0, 7);
-  if(mktime(0,0,0,substr($e54_emiss,5,2),substr($e54_emiss,8,2),substr($e54_emiss,0,4)) > db_getsession("DB_datausu")){
-    db_msgbox("Data da autorização (".db_formatar($e54_emiss,"d").") maior que data do empenho.");
-  }
+    if (mktime(0, 0, 0, substr($e54_emiss, 5, 2), substr($e54_emiss, 8, 2), substr($e54_emiss, 0, 4)) > db_getsession("DB_datausu")) {
+        db_msgbox("Data da autorização (" . db_formatar($e54_emiss, "d") . ") maior que data do empenho.");
+    }
 
-  $result=$clempauthist->sql_record($clempauthist->sql_query_file($e54_autori));
+    $result = $clempauthist->sql_record($clempauthist->sql_query_file($e54_autori));
 
-  if($clempauthist->numrows>0){
-    db_fieldsmemory($result,0);
-  }
+    if ($clempauthist->numrows > 0) {
+        db_fieldsmemory($result, 0);
+    }
 
-  $result = $clempautpresta->sql_record($clempautpresta->sql_query_file(null,"*","e58_autori","e58_autori=$e54_autori"));
-  if($clempautpresta->numrows>0) {
-    db_fieldsmemory($result,0);
-    $e44_tipo = $e58_tipo;
-  }
-  $db_botao = true;
+    $result = $clempautpresta->sql_record($clempautpresta->sql_query_file(null, "*", "e58_autori", "e58_autori=$e54_autori"));
+    if ($clempautpresta->numrows > 0) {
+        db_fieldsmemory($result, 0);
+        $e44_tipo = $e58_tipo;
+    }
+    $db_botao = true;
 
-  $result_empretencao = $clempautret->sql_record($clempautret->sql_query_file($e54_autori,null,"*"));
-  if($clempautret->numrows){
-    $alertar_retencao = true;
-  }
+    $result_empretencao = $clempautret->sql_record($clempautret->sql_query_file($e54_autori, null, "*"));
+    if ($clempautret->numrows) {
+        $alertar_retencao = true;
+    }
 
-  $oDaoAcordoEmpautoriza = db_utils::getDao("acordoempautoriza");
-  $sSqlAcordoAutorizacao = $oDaoAcordoEmpautoriza->sql_queryAutorizacaoAcordo(null, "ac16_resumoobjeto,ac45_acordo", null, "ac45_empautoriza = {$chavepesquisa}");
-  $rsAcordoAutorizacao   = $oDaoAcordoEmpautoriza->sql_record($sSqlAcordoAutorizacao);
-  $lMostrarCompetencia   = false;
-  $ac16_sequencial       = '';
-  if ($oDaoAcordoEmpautoriza->numrows > 0) {
-    $oDadosAcordo       = db_utils::fieldsMemory($rsAcordoAutorizacao, 0);
-    $ac16_sequencial    = $oDadosAcordo->ac45_acordo;
-    $ac16_resumoobjeto  = $oDadosAcordo->ac16_resumoobjeto;
-    $lAutorizacaoAcordo = true;
-  }
+    $oDaoAcordoEmpautoriza = db_utils::getDao("acordoempautoriza");
+    $sSqlAcordoAutorizacao = $oDaoAcordoEmpautoriza->sql_queryAutorizacaoAcordo(null, "ac16_resumoobjeto,ac45_acordo", null, "ac45_empautoriza = {$chavepesquisa}");
+    $rsAcordoAutorizacao = $oDaoAcordoEmpautoriza->sql_record($sSqlAcordoAutorizacao);
+    $lMostrarCompetencia = false;
+    $ac16_sequencial = '';
+    if ($oDaoAcordoEmpautoriza->numrows > 0) {
+        $oDadosAcordo = db_utils::fieldsMemory($rsAcordoAutorizacao, 0);
+        $ac16_sequencial = $oDadosAcordo->ac45_acordo;
+        $ac16_resumoobjeto = $oDadosAcordo->ac16_resumoobjeto;
+        $lAutorizacaoAcordo = true;
+    }
 }
-$lMostrarCompetencia   = false;
+$lMostrarCompetencia = false;
 if (!empty($ac16_sequencial)) {
 
-  $oContrato = AcordoRepository::getByCodigo($ac16_sequencial);
-  $oRegimeCompetenciaRepository = new RegimeCompetencia();
-  $oRegime                      = $oRegimeCompetenciaRepository->getByAcordo($oContrato);
-  $lMostrarCompetencia          = (!empty($oRegime) && !$oRegime->isDespesaAntecipada());
+    $oContrato = AcordoRepository::getByCodigo($ac16_sequencial);
+    $oRegimeCompetenciaRepository = new RegimeCompetencia();
+    $oRegime = $oRegimeCompetenciaRepository->getByAcordo($oContrato);
+    $lMostrarCompetencia = (!empty($oRegime) && !$oRegime->isDespesaAntecipada());
 }
 ?>
 <html>
 <head>
-  <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <script type="text/javascript" src="scripts/scripts.js"></script>
-  <script type="text/javascript" src="scripts/strings.js"></script>
-  <script type="text/javascript" src="scripts/prototype.js"></script>
-  <script type="text/javascript" src="scripts/classes/empenho/ViewCotasMensais.js"></script>
-  <script type="text/javascript" src="scripts/widgets/dbtextField.widget.js"></script>
-  <script type="text/javascript" src="scripts/datagrid.widget.js"></script>
-  <script type="text/javascript" src="scripts/AjaxRequest.js"></script>
-    <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
-    <script type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
-  <script type="text/javascript" src="scripts/widgets/dbmessageBoard.widget.js"></script>
-  <script type="text/javascript" src="scripts/widgets/dbtextField.widget.js"></script>
-  <script type="text/javascript" src="ext/javascript/prototype.maskedinput.js"></script>
-  <link href="estilos.css" rel="stylesheet" type="text/css">
-    <link type="text/css" href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.core.css"
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=iso-8859-1">
+    <script type="text/javascript"
+            src="scripts/scripts.js"></script>
+    <script type="text/javascript"
+            src="scripts/strings.js"></script>
+    <script type="text/javascript"
+            src="scripts/prototype.js"></script>
+    <script type="text/javascript"
+            src="scripts/classes/empenho/ViewCotasMensais.js"></script>
+    <script type="text/javascript"
+            src="scripts/widgets/dbtextField.widget.js"></script>
+    <script type="text/javascript"
+            src="scripts/datagrid.widget.js"></script>
+    <script type="text/javascript"
+            src="scripts/AjaxRequest.js"></script>
+    <script type="text/javascript"
+            src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
+    <script type="text/javascript"
+            src="scripts/widgets/windowAux.widget.js"></script>
+    <script type="text/javascript"
+            src="scripts/widgets/dbmessageBoard.widget.js"></script>
+    <script type="text/javascript"
+            src="scripts/widgets/dbtextField.widget.js"></script>
+    <script type="text/javascript"
+            src="ext/javascript/prototype.maskedinput.js"></script>
+    <link href="estilos.css"
+          rel="stylesheet"
+          type="text/css">
+    <link type="text/css"
+          href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.core.css"
           rel="stylesheet"/>
-    <link type="text/css" href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.bootstrap.css"
+    <link type="text/css"
+          href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.bootstrap.css"
           rel="stylesheet"/>
 </head>
-<body style="background-color:#CCCCCC; margin-top:30px;" >
+<body style="background-color:#CCCCCC; margin-top:30px;">
 <div class="container">
-  <?php
-  require_once(modification(Modification::getFile("forms/db_frmempempenhonota.php")));
-  ?>
+    <?php
+    require_once(modification(Modification::getFile("forms/db_frmempempenhonota.php")));
+    ?>
 </div>
 </body>
 </html>
 
 <script>
-  function js_emiteEmpenho(iNumEmp, arquivo) {
-      document.form1.incluir.disabled = true;
-      document.form1.op.disabled = true;
-      if (empty(arquivo)) {
-          jan = window.open('emp2_emitenotaemp002.php?e60_numemp=' + iNumEmp, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0');
-          jan.moveTo(0, 0);
-          return;
-      }
-      jan = window.open('<?=ECIDADE_REQUEST_PATH?>' + arquivo, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0');
-      jan.moveTo(0, 0);
-  }
+    function js_emiteEmpenho(iNumEmp, arquivo) {
+        document.form1.incluir.disabled = true;
+        document.form1.op.disabled = true;
+        if (empty(arquivo)) {
+            jan = window.open('emp2_emitenotaemp002.php?e60_numemp=' + iNumEmp, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0');
+            jan.moveTo(0, 0);
+            return;
+        }
+        jan = window.open('<?=ECIDADE_REQUEST_PATH?>' + arquivo, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0');
+        jan.moveTo(0, 0);
+    }
 
-  function js_naoImprimir() {
+    function js_naoImprimir() {
 
-    document.form1.incluir.disabled = true;
-    document.form1.op.disabled = true;
-  }
+        document.form1.incluir.disabled = true;
+        document.form1.op.disabled = true;
+    }
 </script>
 
 <?php
-if($alertar_retencao == true){
-  db_msgbox("Autorização $e54_autori com retenções!");
+if ($alertar_retencao == true) {
+    db_msgbox("Autorização $e54_autori com retenções!");
 }
 //rotina que alerta se o usuario não tem permissão
-if(isset($erro_perm)){
-  db_msgbox($erro_perm);
-  db_redireciona("emp4_empempenho004.php");
+if (isset($erro_perm)) {
+    db_msgbox($erro_perm);
+    db_redireciona("emp4_empempenho004.php");
 }
-if(isset($incluir)){
-  if($sqlerro == true){
-    db_msgbox($erro_msg);
+if (isset($incluir)) {
+    if ($sqlerro == true) {
+        db_msgbox($erro_msg);
 
-    if ($clempempenho->erro_campo!="") {
-      echo "<script> document.form1.".$clempempenho->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clempempenho->erro_campo.".focus();</script>";
-    }
-  } else {
-    $ord ='';
-    if(isset($e50_codord) && $e50_codord != ''){
-      $ord = "Nota de Liquidação: $e50_codord";
-    }
+        if ($clempempenho->erro_campo != "") {
+            echo "<script> document.form1." . $clempempenho->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1." . $clempempenho->erro_campo . ".focus();</script>";
+        }
+    } else {
+        $ord = '';
+        if (isset($e50_codord) && $e50_codord != '') {
+            $ord = "Nota de Liquidação: $e50_codord";
+        }
 
-    $ok_msg = "Inclusão efetuada com sucesso! \\n Empenho: $e60_codemp\/".db_getsession("DB_anousu")." \\n $ord";
-    if (isset($processoCriado)) {
-        $ok_msg .= $processoCriado;
-    }
-    db_msgbox($ok_msg);
+        $ok_msg = "Inclusão efetuada com sucesso! \\n Empenho: $e60_codemp\/" . db_getsession("DB_anousu") . " \\n $ord";
+        if (isset($processoCriado)) {
+            $ok_msg .= $processoCriado;
+        }
+        db_msgbox($ok_msg);
 
-    if (empty($naoimprimir)) {
-      if (isset($processoCriado)) {
-        echo "<script>
+        if (empty($naoimprimir)) {
+            if (isset($processoCriado)) {
+                echo "<script>
                   js_emiteEmpenho({$e60_numemp}, '{$gerar_arquivo}');
                 </script>";
-      } else {
-        echo "<script>
+            } else {
+                echo "<script>
                   js_emiteEmpenho({$e60_numemp});
                 </script>";
-      }
-    } else {
-      if (isset($lanc_emp)&&$lanc_emp==true){
-        exit;
-      } else {
-        echo "<script>js_naoImprimir()</script>";
-      }
+            }
+        } else {
+            if (isset($lanc_emp) && $lanc_emp == true) {
+                exit;
+            } else {
+                echo "<script>js_naoImprimir()</script>";
+            }
+        }
     }
-  }
 }
 
 if (isset($e54_autori)) {
-  echo "
+    echo "
        <script>
           parent.document.formaba.empempitem.disabled = false;\n
           parent.document.formaba.empempdot.disabled  = false;\n
@@ -1409,7 +1564,7 @@ if (isset($e54_autori)) {
    ";
 }
 
-if($db_opcao==33){
-  echo "<script>document.form1.pesquisar.click();</script>";
+if ($db_opcao == 33) {
+    echo "<script>document.form1.pesquisar.click();</script>";
 }
 ?>

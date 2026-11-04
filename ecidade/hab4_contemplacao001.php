@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $nomedepto      = $oDepto->descrdepto;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -112,7 +112,7 @@ $nomedepto      = $oDepto->descrdepto;
                   <strong>Usuário :</strong>
                 </td>
 	              <td>
-	                <?
+	                <?php
                     db_input("codusuario",10,'',true,'',3);
                     db_input("nomeusuario",50,'',true,'',3);
 	                ?>
@@ -121,7 +121,7 @@ $nomedepto      = $oDepto->descrdepto;
 	            <tr>
 	              <td><strong>Departamento :</strong></td>
 	              <td>
-                  <?
+                  <?php
                     db_input("coddepto",10,'',true,'',3);
                     db_input("nomedepto",50,'',true,'',3);
                   ?>
@@ -132,7 +132,7 @@ $nomedepto      = $oDepto->descrdepto;
                   <strong>Período de Envio :</strong>
                 </td>
 	              <td>
-  			          <?
+  			          <?php
   			            db_inputdata('datai', '', '', '', true, 'text', 1, "");
   		              echo "&nbsp;&nbsp;à&nbsp;&nbsp;"; 
   			            db_inputdata('dataf', '', '', '', true, 'text', 1, "");
@@ -165,7 +165,7 @@ $nomedepto      = $oDepto->descrdepto;
     </table>
   </form>   
 </center>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

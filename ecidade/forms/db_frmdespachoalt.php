@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: protocolo
@@ -41,7 +41,7 @@ $clrotulo->label("nome");
 
 $result_proc=$clprotprocesso->sql_record($clprotprocesso->sql_query($p58_codproc,"*"));
 if ($clprotprocesso->numrows!=0) {
-  
+
   db_fieldsmemory($result_proc,0);
   $p58_numero .= "/{$p58_ano}";
 }
@@ -82,22 +82,22 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_codproc;?>
        </td>
        <td>
-          <?db_input("p58_codproc",15,$Ip58_codproc,true,"text",3);?>
+          <?php db_input("p58_codproc",15,$Ip58_codproc,true,"text",3);?>
        </td>
-     </tr>  
+     </tr>
      <tr>
        <td nowrap title="<?=$Tp58_numero?>" align='left' >
            <?=$Lp58_numero;?>
        </td>
        <td>
-          <?db_input("p58_numero",15,$Ip58_numero,true,"text",3);?>
-       </td>  
+          <?php db_input("p58_numero",15,$Ip58_numero,true,"text",3);?>
+       </td>
        <td title="<?=$Tp58_codigo?>" align='left'>
            <?=$Lp58_codigo;?>
 	   </td>
 	 <td nowrap >
-          <?db_input("p58_codigo",8,$Ip58_codigo,true,"text",3)?>
-	   <?  db_input("p51_descr",32,$Ip51_descr,true,"text",3)?>
+          <?php db_input("p58_codigo",8,$Ip58_codigo,true,"text",3)?>
+	   <?php  db_input("p51_descr",32,$Ip51_descr,true,"text",3)?>
        </td>
     </tr>
     <tr>
@@ -105,14 +105,14 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_dtproc;?>
 	   </td>
 	   <td>
-          <?db_input("dtproc",10,$Ip58_dtproc,true,"text",3);?>
+          <?php db_input("dtproc",10,$Ip58_dtproc,true,"text",3);?>
        </td>
        <td title="<?=$Tp58_hora?>">
             <b>    Hora:</b>
        </td>
        <td>
-          <?db_input("p58_hora",10,$Ip58_hora,true,"text",3);?>
-       
+          <?php db_input("p58_hora",10,$Ip58_hora,true,"text",3);?>
+
        </td>
     </tr>
     <tr>
@@ -120,8 +120,8 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Llogin;?>
        </td>
        <td>
-          <?db_input("login",40,$Ilogin,true,"text",3);?>
-       
+          <?php db_input("login",40,$Ilogin,true,"text",3);?>
+
        </td>
        <td></td>
        <td></td>
@@ -131,30 +131,30 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_numcgm?>
        </td>
        <td nowrap title="<?=$Tz01_nome?>">
-          <?db_input("p58_numcgm",6,$Ip58_numcgm,true,"text",3);?>
-          <?db_input("z01_nome",32,$Iz01_nome,true,"text",3);?>
+          <?php db_input("p58_numcgm",6,$Ip58_numcgm,true,"text",3);?>
+          <?php db_input("z01_nome",32,$Iz01_nome,true,"text",3);?>
        </td>
        <td title="<?=$p58_requer?>"align='left'>
            <?=$Lp58_requer?>
        </td>
        <td>
-          <?db_input("p58_requer",40,$Ip58_requer,true,"text",3);?>
-       
+          <?php db_input("p58_requer",40,$Ip58_requer,true,"text",3);?>
+
        </td>
-    </tr> 
+    </tr>
     <tr>
        <td title="<?=$Tp58_coddepto?>"align='left'>
            <?=$Lp58_coddepto?>
        </td>
        <td nowrap title="<?=$Tdescrdepto?>">
-          <?db_input("p58_coddepto",6,$Ip58_coddepto,true,"text",3);?>
-          <?db_input("descrdepto",32,$descrdepto,true,"text",3);?>
+          <?php db_input("p58_coddepto",6,$Ip58_coddepto,true,"text",3);?>
+          <?php db_input("descrdepto",32,$descrdepto,true,"text",3);?>
        </td>
        <td title="<?=$Tp58_codandam?>" align='left' >
            <?=$Lp58_codandam?>
        </td>
        <td>
-               <?db_input("p58_codandam",15,'',true,"text",3);?>
+               <?php db_input("p58_codandam",15,'',true,"text",3);?>
        </td>
     </tr>
     <tr>
@@ -162,29 +162,29 @@ if ($oDaoTipoDespacho->numrows > 1) {
              <?=$Lp58_obs?>
        </td>
        <td colspan=3 >
-               <?db_textarea("p58_obs",1,90,$Ip58_obs,true,"text",3);?>
+               <?php db_textarea("p58_obs",1,90,$Ip58_obs,true,"text",3);?>
        </td>
-	     
+
     </tr>
-  <?
+  <?php
        $result_despacho=$clprocandamint->sql_record($clprocandamint->sql_query_sim(null,"*","p78_sequencial desc limit 1","p78_codandam=$p58_codandam"));
        $numrows=$clprocandamint->numrows;
-       if($numrows>0){ 
+       if($numrows>0){
  	 db_fieldsmemory($result_despacho,0);
-         if ($p78_usuario==db_getsession("DB_id_usuario")){	 
+         if ($p78_usuario==db_getsession("DB_id_usuario")){
 	   db_input("p78_sequencial",10,'',true,'hidden',"3");
-       
-  
-  ?> 
+
+
+  ?>
   <tr>
     <td nowrap title="<?=@$Tp78_publico?>" >
        <?=@$Lp78_publico?>
     </td>
     <td>
-         <?
+         <?php
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('p78_publico',$x,true,1,"");
-         
+
                ?>
     </td>
   </tr>
@@ -203,7 +203,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
       <fieldset>
         <legend>
          <?=@$Lp78_despacho?>
-        </legend> 
+        </legend>
         <?php
          db_textarea('p78_despacho',12,100,$Ip78_despacho,true,'text',$db_opcao,"");
          $despachoob = false;
@@ -214,27 +214,27 @@ if ($oDaoTipoDespacho->numrows > 1) {
          $result_protparam = $clprotparam->sql_record($sSqlParametrosProtocolo);
 
          if ( $clprotparam->numrows > 0 ) {
-  	        
+
            db_fieldsmemory($result_protparam, 0);
-           
+
   	       if ( isset($p90_despachoob) && $p90_despachoob == "t") {
              $despachoob = true;
            }
 
-           if (isset($p90_minchardesp) && $p90_minchardesp != "") {			
+           if (isset($p90_minchardesp) && $p90_minchardesp != "") {
              echo "<br><b>*Mínimo de {$p90_minchardesp} caracteres para o despacho.</b>";
-           } 
+           }
          }
          db_input("despachoob",40,"",true,"hidden",3);
          db_input("p90_minchardesp",40,"",true,"hidden",3);
-       ?> 
+       ?>
      </fieldset>
-    </td>    
+    </td>
   </tr>
   </table>
  </fieldset>
  </td>
- </tr> 
+ </tr>
   <tr>
   <td colspan=4 align='center' >
      <input name="alterar" type="submit" id="db_opcao" value="Alterar" onclick='return js_submit();' />
@@ -242,10 +242,10 @@ if ($oDaoTipoDespacho->numrows > 1) {
      <input name="imprimir" type="button" id="imprimir" value="Imprimir Despacho" onclick='js_imprime();' >
   </td>
   </tr>
-  <?
+  <?php
 	 }else{
 	   ?>
-	   
+
 <tr>
 <td colspan=4 align="center">
 <b>
@@ -254,11 +254,11 @@ if ($oDaoTipoDespacho->numrows > 1) {
 </b>
 </td>
 </tr>
-	   
-	   
-	   <?
+
+
+	   <?php
 	 }
-       }else{  
+       }else{
 	 ?>
 <tr>
 <td colspan=4 align="center">
@@ -271,8 +271,8 @@ if ($oDaoTipoDespacho->numrows > 1) {
 
 
 
-	 
-	 <?
+
+	 <?php
        }
   ?>
   </table>
@@ -307,12 +307,12 @@ function js_submit() {
   var iDespachoCaracteres = document.form1.p78_despacho.value.trim().length;
 
   /**
-   * Parametro com minimo de caracteres permitidos para o despacho 
+   * Parametro com minimo de caracteres permitidos para o despacho
    */
   var iDespachoMinimoCaracteres = document.form1.p90_minchardesp.value;
 
   /**
-   * Parametro obrigando ou nao inclusao do despacho 
+   * Parametro obrigando ou nao inclusao do despacho
    */
   var lDespachoObrigatorio = document.form1.despachoob.value;
 
@@ -321,21 +321,21 @@ function js_submit() {
    * - Despacho não é obrigatorio
    * - Tamanho do campo despacho vazio
    */
-  if ( lDespachoObrigatorio == false && iDespachoCaracteres == 0 ) {		
+  if ( lDespachoObrigatorio == false && iDespachoCaracteres == 0 ) {
     return true;
 	}
 
   /**
    * Bloqueia inclusao
-   * - Informou despacho, mas é menor que o minimo de caracteres 
+   * - Informou despacho, mas é menor que o minimo de caracteres
    */
-  if ( iDespachoMinimoCaracteres > 0 && iDespachoCaracteres < iDespachoMinimoCaracteres ) {	
+  if ( iDespachoMinimoCaracteres > 0 && iDespachoCaracteres < iDespachoMinimoCaracteres ) {
 
     alert("É necessário digitar no mínimo " + iDespachoMinimoCaracteres + " caracteres para o despacho!!");
     document.form1.p78_despacho.focus();
-    return false;				
+    return false;
   }
-	
+
   return true;
 }
 </script>

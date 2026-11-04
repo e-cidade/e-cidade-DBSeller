@@ -66,9 +66,18 @@ class AdmissaoPreliminar extends ProcessamentoAbstract implements ProcessamentoI
     {
         $bAlteracao = false;
         $oDadosESocial = new DadosESocial();
+        
+        if (isset($this->dataPreenchidaInicio)) {
+            $oDadosESocial->setDataPreenchidaInicial($this->dataPreenchidaInicio);
+        }
 
-        if (sizeof($this->servidores) == 0) {
-            throw new BusinessException("Nenhuma matrícula informada.");
+        if (isset($this->dataPreenchidaFim)) {
+            $oDadosESocial->setDataPreenchidaFinal($this->dataPreenchidaFim);
+        }
+        
+        if (sizeof($this->servidores) == 0 &&
+            (!isset($this->dataPreenchidaInicio) || !isset($this->dataPreenchidaFim))) {
+            throw new BusinessException("Nenhuma matrícula ou data de prenchimento não informada.");
         }
 
         $oDadosESocial->setInstituicao(new Instituicao(db_getsession('DB_instit')));

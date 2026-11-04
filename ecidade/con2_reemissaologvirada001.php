@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,12 +53,12 @@ include(modification("dbforms/db_funcoes.php"));
 					<table>
 					  <tr>
 					    <td>
-	 			        <?
+	 			        <?php
 					        db_ancora("<b>Código da Virada:</b>","js_pesquisaCodVirada()",1);
 				        ?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 								  db_input('codvirada',10,'',true,'text',1,"")
 								?>
 					    </td>
@@ -74,7 +74,7 @@ include(modification("dbforms/db_funcoes.php"));
 	  </tr>
 	</table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

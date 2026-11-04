@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcidadaoemail->rotulo->label("ov08_sequencial");
               <?=$Lov08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov08_sequencial",10,$Iov08_sequencial,true,"text",4,"","chave_ov08_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcidadaoemail->rotulo->label("ov08_sequencial");
               <?=$Lov08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov08_sequencial",10,$Iov08_sequencial,true,"text",4,"","chave_ov08_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcidadaoemail->rotulo->label("ov08_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cidadaoemail.php")==true){
@@ -122,12 +122,12 @@ $clcidadaoemail->rotulo->label("ov08_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

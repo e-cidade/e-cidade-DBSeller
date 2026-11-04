@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,20 +60,20 @@
       <table width="790" border="0" cellspacing="0" cellpadding="0">
         <tr> 
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-	          <?
+	          <?php
 	            include(modification("forms/db_frmaguacorte_processalista.php"));
 	          ?>
           </td>
         </tr>
       </table>
     </center>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
     ?>
   </body>
 </html>
 
-<?
+<?php
   if  (isset($processa) && $acao == 'gerar') {
 ?>
   <script>
@@ -82,7 +82,7 @@
     	'&x41_dtprazo_mes=' + document.form1.x41_dtprazo_mes.value + '&x41_dtprazo_dia=' +
     	document.form1.x41_dtprazo_dia.value, 'Processa Lista', true, 20);
   </script>
-<?
+<?php
   } elseif(isset($processa) && $acao == 'reprocessar') {
 ?>
   <script>
@@ -91,6 +91,6 @@
     	'&x43_codsituacao2=' + document.form1.x43_codsituacao2.value + '&x43_codsituacao3=' +
     	document.form1.x43_codsituacao3.value, 'Reprocessa Lista', true, 20);
   </script>
-<?
+<?php
   }
 ?>

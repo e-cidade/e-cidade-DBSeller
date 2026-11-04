@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: issqn
 //CLASSE DA ENTIDADE issnotaavulsatomadorinscr
-class cl_issnotaavulsatomadorinscr { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q54_sequencial = 0; 
-   var $q54_issnotaavulsatomador = 0; 
-   var $q54_inscr = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_issnotaavulsatomadorinscr {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q54_sequencial = 0;
+   var $q54_issnotaavulsatomador = 0;
+   var $q54_inscr = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q54_sequencial = int4 = Código Sequencial 
-                 q54_issnotaavulsatomador = int4 = Código do Tomador 
-                 q54_inscr = int4 = Inscricao Municipal 
+                 q54_sequencial = int4 = Código Sequencial
+                 q54_issnotaavulsatomador = int4 = Código do Tomador
+                 q54_inscr = int4 = Inscricao Municipal
                  ";
-   //funcao construtor da classe 
-   function cl_issnotaavulsatomadorinscr() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("issnotaavulsatomadorinscr"); 
+     $this->rotulo = new rotulo("issnotaavulsatomadorinscr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_issnotaavulsatomadorinscr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q54_sequencial = ($this->q54_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q54_sequencial"]:$this->q54_sequencial);
        $this->q54_issnotaavulsatomador = ($this->q54_issnotaavulsatomador == ""?@$GLOBALS["HTTP_POST_VARS"]["q54_issnotaavulsatomador"]:$this->q54_issnotaavulsatomador);
@@ -77,9 +77,9 @@ class cl_issnotaavulsatomadorinscr {
      }
    }
    // funcao para inclusao
-   function incluir ($q54_sequencial){ 
+   public function incluir ($q54_sequencial){
       $this->atualizacampos();
-     if($this->q54_issnotaavulsatomador == null ){ 
+     if($this->q54_issnotaavulsatomador == null ){
        $this->erro_sql = " Campo Código do Tomador nao Informado.";
        $this->erro_campo = "q54_issnotaavulsatomador";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_issnotaavulsatomadorinscr {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q54_inscr == null ){ 
+     if($this->q54_inscr == null ){
        $this->erro_sql = " Campo Inscricao Municipal nao Informado.";
        $this->erro_campo = "q54_inscr";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_issnotaavulsatomadorinscr {
        return false;
      }
      if($q54_sequencial == "" || $q54_sequencial == null ){
-       $result = db_query("select nextval('issnotaavulsatomadorinscr_q54_sequencial_seq')"); 
+       $result = db_query("select nextval('issnotaavulsatomadorinscr_q54_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: issnotaavulsatomadorinscr_q54_sequencial_seq do campo: q54_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: issnotaavulsatomadorinscr_q54_sequencial_seq do campo: q54_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q54_sequencial = pg_result($result,0,0); 
+       $this->q54_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from issnotaavulsatomadorinscr_q54_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q54_sequencial)){
@@ -118,10 +118,10 @@ class cl_issnotaavulsatomadorinscr {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q54_sequencial = $q54_sequencial; 
+         $this->q54_sequencial = $q54_sequencial;
        }
      }
-     if(($this->q54_sequencial == null) || ($this->q54_sequencial == "") ){ 
+     if(($this->q54_sequencial == null) || ($this->q54_sequencial == "") ){
        $this->erro_sql = " Campo q54_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_issnotaavulsatomadorinscr {
        return false;
      }
      $sql = "insert into issnotaavulsatomadorinscr(
-                                       q54_sequencial 
-                                      ,q54_issnotaavulsatomador 
-                                      ,q54_inscr 
+                                       q54_sequencial
+                                      ,q54_issnotaavulsatomador
+                                      ,q54_inscr
                        )
                 values (
-                                $this->q54_sequencial 
-                               ,$this->q54_issnotaavulsatomador 
-                               ,$this->q54_inscr 
+                                $this->q54_sequencial
+                               ,$this->q54_issnotaavulsatomador
+                               ,$this->q54_inscr
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Inscrição do  Tomador ($this->q54_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_issnotaavulsatomadorinscr {
        $resac = db_query("insert into db_acount values($acount,1830,10602,'','".AddSlashes(pg_result($resaco,0,'q54_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q54_sequencial=null) { 
+   public function alterar ($q54_sequencial=null) {
       $this->atualizacampos();
      $sql = " update issnotaavulsatomadorinscr set ";
      $virgula = "";
-     if(trim($this->q54_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q54_sequencial"])){ 
+     if(trim($this->q54_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q54_sequencial"])){
        $sql  .= $virgula." q54_sequencial = $this->q54_sequencial ";
        $virgula = ",";
-       if(trim($this->q54_sequencial) == null ){ 
+       if(trim($this->q54_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "q54_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_issnotaavulsatomadorinscr {
          return false;
        }
      }
-     if(trim($this->q54_issnotaavulsatomador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q54_issnotaavulsatomador"])){ 
+     if(trim($this->q54_issnotaavulsatomador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q54_issnotaavulsatomador"])){
        $sql  .= $virgula." q54_issnotaavulsatomador = $this->q54_issnotaavulsatomador ";
        $virgula = ",";
-       if(trim($this->q54_issnotaavulsatomador) == null ){ 
+       if(trim($this->q54_issnotaavulsatomador) == null ){
          $this->erro_sql = " Campo Código do Tomador nao Informado.";
          $this->erro_campo = "q54_issnotaavulsatomador";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_issnotaavulsatomadorinscr {
          return false;
        }
      }
-     if(trim($this->q54_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q54_inscr"])){ 
+     if(trim($this->q54_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q54_inscr"])){
        $sql  .= $virgula." q54_inscr = $this->q54_inscr ";
        $virgula = ",";
-       if(trim($this->q54_inscr) == null ){ 
+       if(trim($this->q54_inscr) == null ){
          $this->erro_sql = " Campo Inscricao Municipal nao Informado.";
          $this->erro_campo = "q54_inscr";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_issnotaavulsatomadorinscr {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inscrição do  Tomador nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q54_sequencial;
@@ -267,14 +267,14 @@ class cl_issnotaavulsatomadorinscr {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q54_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q54_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q54_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_issnotaavulsatomadorinscr {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inscrição do  Tomador nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q54_sequencial;
@@ -330,11 +330,11 @@ class cl_issnotaavulsatomadorinscr {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_issnotaavulsatomadorinscr {
       }
      return $result;
    }
-   function sql_query ( $q54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -376,15 +376,15 @@ class cl_issnotaavulsatomadorinscr {
      $sql2 = "";
      if($dbwhere==""){
        if($q54_sequencial!=null ){
-         $sql2 .= " where issnotaavulsatomadorinscr.q54_sequencial = $q54_sequencial "; 
-       } 
+         $sql2 .= " where issnotaavulsatomadorinscr.q54_sequencial = $q54_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,10 +393,10 @@ class cl_issnotaavulsatomadorinscr {
      }
      return $sql;
   }
-   function sql_query_file ( $q54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,15 +409,15 @@ class cl_issnotaavulsatomadorinscr {
      $sql2 = "";
      if($dbwhere==""){
        if($q54_sequencial!=null ){
-         $sql2 .= " where issnotaavulsatomadorinscr.q54_sequencial = $q54_sequencial "; 
-       } 
+         $sql2 .= " where issnotaavulsatomadorinscr.q54_sequencial = $q54_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

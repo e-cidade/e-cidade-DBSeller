@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("o46_codlei");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To81_codres?>">
-       <?
+       <?php
        db_ancora(@$Lo81_codres,"js_pesquisao81_codres(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o81_codres',8,$Io81_codres,true,'text',$db_opcao," onchange='js_pesquisao81_codres(false);'")
 ?>
-       <?
+       <?php
 db_input('o80_descr',1,$Io80_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To81_codsup?>">
-       <?
+       <?php
        db_ancora(@$Lo81_codsup,"js_pesquisao81_codsup(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o81_codsup',4,$Io81_codsup,true,'text',$db_opcao," onchange='js_pesquisao81_codsup(false);'")
 ?>
-       <?
+       <?php
 db_input('o46_codlei',4,$Io46_codlei,true,'text',3,'')
        ?>
     </td>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcreservasup.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

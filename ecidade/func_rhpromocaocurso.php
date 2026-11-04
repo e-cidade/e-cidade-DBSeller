@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhpromocaocurso->rotulo->label("h74_sequencial");
               <?=$Lh74_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h74_sequencial",10,$Ih74_sequencial,true,"text",4,"","chave_h74_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhpromocaocurso->rotulo->label("h74_sequencial");
               <?=$Lh74_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h74_sequencial",10,$Ih74_sequencial,true,"text",4,"","chave_h74_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhpromocaocurso->rotulo->label("h74_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpromocaocurso.php")==true){
@@ -122,12 +122,12 @@ $clrhpromocaocurso->rotulo->label("h74_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

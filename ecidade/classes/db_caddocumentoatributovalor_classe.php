@@ -56,7 +56,7 @@ class cl_caddocumentoatributovalor
                  ";
 
     //funcao construtor da classe
-    function cl_caddocumentoatributovalor()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("caddocumentoatributovalor");
@@ -64,7 +64,7 @@ class cl_caddocumentoatributovalor
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -75,7 +75,7 @@ class cl_caddocumentoatributovalor
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->db43_sequencial = ($this->db43_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["db43_sequencial"] : $this->db43_sequencial);
@@ -88,7 +88,7 @@ class cl_caddocumentoatributovalor
     }
 
     // funcao para inclusao
-    function incluir($db43_sequencial)
+    public function incluir($db43_sequencial)
     {
         $this->atualizacampos();
         if ($this->db43_documento == null) {
@@ -211,7 +211,7 @@ class cl_caddocumentoatributovalor
     }
 
     // funcao para alteracao
-    function alterar($db43_sequencial = null)
+    public function alterar($db43_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update caddocumentoatributovalor set ";
@@ -338,7 +338,7 @@ class cl_caddocumentoatributovalor
     }
 
     // funcao para exclusao
-    function excluir($db43_sequencial = null, $dbwhere = null)
+    public function excluir($db43_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($db43_sequencial));
@@ -418,7 +418,7 @@ class cl_caddocumentoatributovalor
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -448,7 +448,7 @@ class cl_caddocumentoatributovalor
     }
 
     // funcao do sql
-    function sql_query($db43_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($db43_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -491,7 +491,7 @@ class cl_caddocumentoatributovalor
     }
 
     // funcao do sql
-    function sql_query_file($db43_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($db43_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

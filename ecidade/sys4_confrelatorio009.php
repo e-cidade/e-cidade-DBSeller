@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,7 +55,7 @@ include(modification("dbforms/db_funcoes.php"));
 				  <table align="center">
 				    <tr>
 				  	  <td>
-								<?
+								<?php
                   db_textarea('sql',20,100,"",true,"text",1,"");
 								?>
 					    </td>

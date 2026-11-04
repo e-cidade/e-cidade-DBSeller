@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbo->rotulo->label("bo01_numcgm");
               <?=$Lbo01_codbo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bo01_codbo",6,$Ibo01_codbo,true,"text",4,"","chave_bo01_codbo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbo->rotulo->label("bo01_numcgm");
               <?=$Lbo01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bo01_numcgm",10,$Ibo01_numcgm,true,"text",4,"","chave_bo01_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbo->rotulo->label("bo01_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bo.php")==true){
@@ -118,12 +118,12 @@ $clbo->rotulo->label("bo01_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

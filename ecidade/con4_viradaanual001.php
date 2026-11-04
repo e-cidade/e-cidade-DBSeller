@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -115,7 +115,7 @@ if (isset ($reimporta) || isset ($zeraimporta)) {
     <center>
     <table>
     <tr>
-    <?
+    <?php
 
 
 echo "<td><br><br><strong>Importar saldos do exercício anterior: (". (db_getsession("DB_anousu") - 1).")</strong></td><tr><td>";
@@ -131,14 +131,14 @@ echo "&nbsp&nbsp&nbsp".'<input name="zeraimporta" value="Zera saldo Contábil" ty
   </tr>
 </table>
 </form>
-<?
+<?php
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 
 if (isset ($zeraimporta) || isset ($reimporta))

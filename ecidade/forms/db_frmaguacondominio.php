@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,19 +52,19 @@
             <?=@$Lx31_codcondominio?>
           </td>
           <td>
-            <?
+            <?php
               db_input('x31_codcondominio', 10, $Ix31_codcondominio, true, 'text', 3, "");
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tx31_matric?>">
-            <?
+            <?php
               db_ancora(@$Lx31_matric, "js_pesquisax31_matric(true);", $db_opcao);
             ?>
           </td>
           <td>
-            <?
+            <?php
               db_input('x31_matric', 10, $Ix31_matric, true, 'text', $db_opcao, " onchange='js_pesquisax31_matric(false);'");
               
               global $x01_numcgm;
@@ -141,7 +141,7 @@
   function js_preenchepesquisa(chave) {
     
     db_iframe_aguacondominio.hide();
-    <?
+    <?php
       if ($db_opcao != 1) {
         echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }

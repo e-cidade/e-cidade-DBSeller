@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -64,13 +64,13 @@ class cl_diarioresultado {
                  ed73_valorreal = float8 = Valor Real
                  ";
    //funcao construtor da classe
-   function cl_diarioresultado() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diarioresultado");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_diarioresultado {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed73_i_codigo = ($this->ed73_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed73_i_codigo"]:$this->ed73_i_codigo);
        $this->ed73_i_diario = ($this->ed73_i_diario == ""?@$GLOBALS["HTTP_POST_VARS"]["ed73_i_diario"]:$this->ed73_i_diario);
@@ -95,7 +95,7 @@ class cl_diarioresultado {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed73_i_codigo){
+   public function incluir ($ed73_i_codigo){
       $this->atualizacampos();
      if($this->ed73_i_diario == null ){
        $this->erro_sql = " Campo Diário de Classe não informado.";
@@ -547,7 +547,7 @@ class cl_diarioresultado {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -602,7 +602,7 @@ class cl_diarioresultado {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -622,7 +622,7 @@ class cl_diarioresultado {
     $sSql = 'select ';
     if ($campos != '*') {
 
-      $sCamposSql = split('#', $campos);
+      $sCamposSql = explode('#', $campos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -650,7 +650,7 @@ class cl_diarioresultado {
     $sSql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

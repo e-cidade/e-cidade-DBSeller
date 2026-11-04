@@ -51,8 +51,7 @@ $aFiltro = array(
     #ctnLancadorMatricula {
       display: none;
     }
-    #ctnLancadorMatricula {
-    }
+
   </style>
 </head>
 
@@ -80,8 +79,8 @@ $aFiltro = array(
             <label for="rh212_jornada"><a href="#" id="jornada"><strong>Jornada:</strong></a></label>
           </td>
           <td colspan="3">
-            <? db_input('rh212_jornada',     10, 3, true, 'text', 1, 'lang="rh188_sequencial" class="field-size2" autocomplete="off"  title="Código da Jornada:rh212_jornada"') ?>
-            <? db_input('descricao_jornada', 50, 3, true, 'text', 3, 'lang="rh188_descricao" class="field-size9"') ?>
+            <?php db_input('rh212_jornada',     10, 3, true, 'text', 1, 'lang="rh188_sequencial" class="field-size2" autocomplete="off"  title="Código da Jornada:rh212_jornada"') ?>
+            <?php db_input('descricao_jornada', 50, 3, true, 'text', 3, 'lang="rh188_descricao" class="field-size9"') ?>
           </td>
         </tr>
         <tr>
@@ -89,7 +88,7 @@ $aFiltro = array(
             <label for="tipo_jornada"><strong>Tipo da Jornada:</strong></label>
           </td>
           <td colspan="3">
-            <? db_input('tipo_jornada', 30, 3, true, 'text', 3, 'class="field-size5"') ?>
+            <?php db_input('tipo_jornada', 30, 3, true, 'text', 3, 'class="field-size5"') ?>
           </td>
         </tr>
         <tr id="linhafiltroServidores">
@@ -106,8 +105,8 @@ $aFiltro = array(
             <label for="r44_selec"><a href="#" id="selecao"><b>Seleção:<b></a></label>
           </td>
           <td colspan="3">
-            <? db_input('r44_selec', 10, 1, true, 'text', 1, 'class="field-size2"') ?>
-            <? db_input('r44_descr', 30, 3, true, 'text', 3, 'class="field-size9"') ?>
+            <?php db_input('r44_selec', 10, 1, true, 'text', 1, 'class="field-size2"') ?>
+            <?php db_input('r44_descr', 30, 3, true, 'text', 3, 'class="field-size9"') ?>
           </td>
         </tr>
 
@@ -116,8 +115,8 @@ $aFiltro = array(
             <label for="rh212_matricula" id="matricula"><b>Matrícula:<b></label>
           </td>
           <td colspan="3">
-            <? db_input('rh212_matricula', 10, 1, true, 'text', 1, 'lang="rh01_regist" class="field-size2"') ?>
-            <? db_input('z01_nome',        10, 1, true, 'text', 1, 'class="field-size9"') ?>
+            <?php db_input('rh212_matricula', 10, 1, true, 'text', 1, 'lang="rh01_regist" class="field-size2"') ?>
+            <?php db_input('z01_nome',        10, 1, true, 'text', 1, 'class="field-size9"') ?>
           </td>
         </tr>
       </table>

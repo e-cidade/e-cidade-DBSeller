@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -181,7 +181,7 @@ try {
       $oDaoExtratoSaldo = new cl_extratosaldo();
       $sSqlSaldo        = "select * From extratosaldo where k97_extrato=1813";
       $rsSaldo          = db_query($sSqlSaldo);
-      foreach ($aLinhasAgrupadasPorData as $iCodigoConta => &$aDatasConta) {
+      foreach ($aLinhasAgrupadasPorData as $iCodigoConta => $aDatasConta) {
         usort($aLinhasAgrupadasPorData[$iCodigoConta], "ordernarDatasContas");
       }
 

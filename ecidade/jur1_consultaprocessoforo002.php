@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ $lPartilha = db_utils::fieldsMemory($rsParJuridico, 0)->v19_partilha;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/windowAux.widget.js,messageboard.widget.js");
   db_app::load("estilos.css, grid.style.css,tab.style.css");
@@ -93,7 +93,7 @@ $lPartilha = db_utils::fieldsMemory($rsParJuridico, 0)->v19_partilha;
 		          <b>Movimentação Atual:</b>
 		        </td>
 		        <td style="background-color: #FFFFFF;" align="left" width="300px">
-		          <?
+		          <?php
 		          $sSqlProcessoForoMov = $clprocessoforomov->sql_record($clprocessoforomov->sql_query(null," v74_descricao "," v73_data desc limit 1 "," v73_processoforo = $v70_sequencial "));
               if ( $sSqlProcessoForoMov != false && pg_numrows($sSqlProcessoForoMov)>0){
                 db_fieldsmemory($sSqlProcessoForoMov,0);
@@ -156,7 +156,7 @@ $lPartilha = db_utils::fieldsMemory($rsParJuridico, 0)->v19_partilha;
     <legend>
       <b>Outras Informações</b>
     </legend>
-	  <?
+	  <?php
 	    $oTabDetalhes = new verticalTab("detalhesprocessoforo",550);
 	    $oTabDetalhes->add("iniciaisvinculadas","Iniciais Vinculadas",
 	                       "func_processoforoinicial.php?v71_processoforo={$v70_sequencial}&detalhamento=true&funcao_js=parent.js_consultaInicial|v71_inicial");

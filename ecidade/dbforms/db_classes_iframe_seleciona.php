@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -92,7 +92,7 @@ function js_marca(obj){
       }
      }
    }
-<?
+<?php
     if(isset($js_marcador)){
        echo str_replace(";","",$js_marcador).";";
     }
@@ -109,7 +109,7 @@ function js_marca(obj){
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
   <form name="form1" method="post">
   <center>
-<?
+<?php
 if(isset($sql) && $sql!=""){
   $sql=base64_decode($sql);
   $campos=base64_decode($campos);
@@ -125,7 +125,7 @@ if(!isset($posicao_totalizador)||trim($posicao_totalizador)==""||$posicao_totali
 }
 ?>
   <table border="0" cellspacing="0" cellpadding="0" bgcolor="#cccccc">
-<?
+<?php
 if($mostra_totalizador=="S"){
     if($posicao_totalizador=="A"){
         if(isset($sql) && $sql!=""){
@@ -138,7 +138,7 @@ if($mostra_totalizador=="S"){
            <tr>
               <td nowrap align="left" colspan="<?=$numcolunas++?>"><b>Total de registros:&nbsp;&nbsp;<?=$numrows?></b></td>
            </tr>
-<?
+<?php
             }
         }
     }
@@ -147,7 +147,7 @@ if($mostra_totalizador=="S"){
   <tr>
     <td  valign="top">
       <table border='1' width="100%" bgcolor="#cccccc" id="tabela_seleciona">
-<?
+<?php
 if(isset($sql_disabled) && $sql_disabled!=""){
   $sql_disabled=base64_decode($sql_disabled);
   $result03=db_query($sql_disabled);
@@ -315,7 +315,7 @@ if(isset($sql) && $sql!=""){
 ?>    </table>
     </td>
   </tr>
-<?
+<?php
 if($mostra_totalizador=="S"){
     if($posicao_totalizador=="B"){
         if(isset($sql) && $sql!=""){
@@ -328,7 +328,7 @@ if($mostra_totalizador=="S"){
            <tr>
               <td nowrap align="left" colspan="<?=$numcolunas++?>"><b>Total de registros:&nbsp;&nbsp;<?=$numrows?></b></td>
            </tr>
-<?
+<?php
            }
         }
     }
@@ -339,7 +339,7 @@ if($mostra_totalizador=="S"){
   </form>
 </body>
 </html>
-<?
+<?php
  $retorno = @unlink(base64_decode($arquivo));
  if($retorno==false){
    echo "<blink>Carregando...</blink>";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,15 +63,15 @@ $clrotulo->label("DBtxt31");
         <tr> 
           <td align="right">C&oacute;digo: </td>
           <td >
-		  <!--input name="numcgmDigitadoParaPesquisa" type="text" id="numcgmDigitadoParaPesquisa" value="<? if (isset($numcgmDigitadoParaPesquisa)){echo $numcgmDigitadoParaPesquisa;} ?>" size="10" maxlength="6"-->
-          <?
+		  <!--input name="numcgmDigitadoParaPesquisa" type="text" id="numcgmDigitadoParaPesquisa" value="<?php if (isset($numcgmDigitadoParaPesquisa)){echo $numcgmDigitadoParaPesquisa;} ?>" size="10" maxlength="6"-->
+          <?php
 		  db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',4,"","numcgmDigitadoParaPesquisa");
 		  ?>
 		  </td>
           <td align="right">&nbsp;<?=$DBtxt30?>: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php
 		  db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"",'cpf');
 		  ?>
           </td>
@@ -80,15 +80,15 @@ $clrotulo->label("DBtxt31");
         <tr> 
           <td align="right">&nbsp;Nome: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php
 		  db_input('z01_nome',40,$Iz01_nome,true,'text',4,"",'nomeDigitadoParaPesquisa');
 		  ?>
           </td>
           <td align="right">&nbsp;<?=$DBtxt31?>: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php
 		  db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"",'cnpj');
 		  ?>
           </td>
@@ -117,7 +117,7 @@ function js_limpa(){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 if(!isset($pesquisa_chave)){
 
    echo "<script>

@@ -65,7 +65,7 @@ $sSqlBuscaAbastecimentos = $clveicabast->sql_query_info(null, $sCampos, 've70_dt
 <body>
   <center>
     <fieldset>
-      <?db_lovrot($sSqlBuscaAbastecimentos, 15, "()", "%", $funcao_js)?>
+      <?php db_lovrot($sSqlBuscaAbastecimentos, 15, "()", "%", $funcao_js)?>
     </fieldset>
   </center>
 </body>

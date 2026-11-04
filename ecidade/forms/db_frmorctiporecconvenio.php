@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -65,11 +65,12 @@ if ($db_opcao == 2 || $db_opcao == 22) {
                     <td title="<?= @$To15_recurso ?>">
                         <a id="ancoraFonteRecurso" href="#">Fonte de Recursos:</a>
                     </td>
-                    <td colspan=3>
+                    <td colspan="3">
                         <?php
-                        db_input('o16_orctiporec', 10, $Io16_orctiporec, true, 'hidden', $db_opcao);
-                        db_input('o15_recurso', 10, $Io15_recurso, true, 'text', $db_opcao);
-                        db_input('o15_descr', 65, $Io15_descr, true, 'text', 3, '');
+                        db_input('o16_orctiporec', 10, $Io16_orctiporec, true, 'hidden', 3);
+                        db_input('gestao', 10, $Io16_orctiporec, true, 'text', 3);
+                        db_input('o15_recurso', 10, "", true, 'text', 3);
+                        db_input('descricao', 65, "", true, 'text', 3, '');
                         ?>
                     </td>
                 </tr>
@@ -284,30 +285,23 @@ if ($db_opcao == 2 || $db_opcao == 22) {
 </div>
 <script>
 
-    const lookUpRecurso = new DBLookUp($('ancoraFonteRecurso'), $('o15_recurso'), $('o15_descr'), {
-        'sArquivo': 'func_fonterecursocomplemento.php',
+    const lookUpRecurso = new DBLookUp($('ancoraFonteRecurso'), $('o15_recurso'), $('descricao'), {
+        'sArquivo': 'func_novosRecursos.php',
         'sLabel': 'Pesquisar Fonte de Recurso',
         'sObjetoLookUp': "db_iframe_orctiporec",
-        'aCamposAdicionais': ['db_codigo', 'o200_descricao']
+        'aCamposAdicionais': ['o15_codigo', 'o15_complemento', 'o200_descricao', 'o15_recurso', 'gestao']
     });
 
     lookUpRecurso.setCallBack('onClick', (retorno) => {
-        preencheForm(retorno[0], retorno[1], retorno[2], retorno[3]);
+        preencheForm(retorno[5], retorno[4], retorno[2], retorno[1], retorno[6]);
     });
 
-    lookUpRecurso.setCallBack('onChange', (erro, retorno) => {
-        if (erro) {
-            return;
-        }
-
-        preencheForm(retorno[3], retorno[0], retorno[2], retorno[4]);
-    });
-
-    const preencheForm = (recurso, descricao, id, complemento) => {
+    const preencheForm = (recurso, descricao, id, complemento, gestao) => {
         $('o16_orctiporec').value = id;
         $('o15_recurso').value = recurso;
-        $('o15_descr').value = descricao;
+        $('descricao').value = descricao;
         $('o200_descricao').value = complemento
+        $('gestao').value = gestao;
     };
 
     function js_pesquisao16_orctiporec(mostra) {
@@ -446,7 +440,7 @@ if ($db_opcao == 2 || $db_opcao == 22) {
 
     function js_preenchepesquisa(chave) {
         db_iframe_orctiporecconvenio.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

@@ -136,7 +136,7 @@ if( isset($oPost->incluir) ){
 </table>
 </body>
 </html>
-<?
+<?php
 //if ($cldb_config->numrows == 0){
 //     db_msgbox("Somente instituicao prefeitura esta autorizada para este procedimento.Verifique.");
 //}

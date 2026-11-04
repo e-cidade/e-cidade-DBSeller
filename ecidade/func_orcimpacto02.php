@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,12 +83,12 @@ if(isset($o90_acao) && $o90_acao != ''){
               <?=$Lo90_codimp?>
             </td>
 	    <td>
-              <?
+              <?php
 		       db_input("o90_codimp",5,$Io90_codimp,true,"text",4,"","chave_o90_codimp");
 		       ?>
               <?=$Lo90_anoexe?>
 
-              <?
+              <?php
 		       db_input("o90_anoexe",4,$Io90_anoexe,true,"text",4,"","chave_o90_anoexe");
 		       ?>
             </td>
@@ -102,7 +102,7 @@ if(isset($o90_acao) && $o90_acao != ''){
 	    <?=$Lo90_orgao?>
             </td>
 	    <td >
-	  <?
+	  <?php
 	  $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit")));
 	  db_selectrecord("o90_orgao",$result,true,2,"","chave_o90_orgao","","0","document.form1.submit();");
 	  ?>
@@ -115,7 +115,7 @@ if(isset($o90_acao) && $o90_acao != ''){
 	      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    <?=$Lo90_unidade?></td>
 	    <td>
-	      <?
+	      <?php
 		if(isset($chave_o90_orgao) && $chave_o90_orgao != 0){
 		  $result = $clorcunidade->sql_record($clorcunidade->sql_query(null,null,null,"o41_unidade,o41_descr||' -'||o41_anousu as o41_descr","o41_unidade","o41_anousu=".db_getsession("DB_anousu")."  and o41_orgao=$chave_o90_orgao " ));
 	          db_selectrecord("o90_unidade",$result,true,2,"","chave_o90_unidade","",($clorcunidade->numrows>1?"0":""),"document.form1.submit();");
@@ -140,7 +140,7 @@ if(isset($o90_acao) && $o90_acao != ''){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "orcimpacto.*";
@@ -180,12 +180,12 @@ if(isset($o90_acao) && $o90_acao != ''){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -134,7 +134,7 @@ if(isset($oPost->incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 
 if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 	
@@ -171,7 +171,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		    <?=$Lo28_orcprojativ?>
 		  </td>
           <td>
-            <?
+            <?php
 		      db_input('o28_orcprojativ',10,"",true,'text',3,'');
 		    ?>
           </td>
@@ -181,7 +181,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		    <?=$Lo28_anoref?>
 		  </td>
 		  <td> 
-		    <?
+		    <?php
 		      db_input('o28_sequencial',10,"",true,'hidden',3,'');
 		      db_input('o28_anousu'    ,10,"",true,'hidden',3,'');
 		      
@@ -194,7 +194,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
              <b>Valor de Referência:</b>
 		  </td>
           <td>
-            <?
+            <?php
 		      db_input('o28_valor',10,"",true,'text',$db_opcao,'');
 		    ?>
           </td>
@@ -209,7 +209,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
  	  <table>
 		<tr>
 		  <td valign="top"  align="center">  
-		    <?
+		    <?php
 			  $aChavePri = array( "o28_sequencial"  => @$o28_sequencial,
 			  					  "o28_orcprojativ" => @$o28_orcprojativ,
 			  					  "o28_anousu"    	=> @$o28_anousu );
@@ -236,7 +236,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
   </table>   
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
     db_msgbox($sErroMsg);
 

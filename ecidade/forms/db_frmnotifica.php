@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clnotifica->rotulo->label();
        <?=@$Lm06_numdiv?>
     </td>
     <td> 
-<?
+<?php
 db_input('m06_numdiv',5,$Im06_numdiv,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -47,7 +47,7 @@ db_input('m06_numdiv',5,$Im06_numdiv,true,'text',$db_opcao,"")
        <?=@$Lm06_numreq?>
     </td>
     <td> 
-<?
+<?php
 db_input('m06_numreq',5,$Im06_numreq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('m06_numreq',5,$Im06_numreq,true,'text',$db_opcao,"")
        <?=@$Lm06_numdoa?>
     </td>
     <td> 
-<?
+<?php
 db_input('m06_numdoa',5,$Im06_numdoa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

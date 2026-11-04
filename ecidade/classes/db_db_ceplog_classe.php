@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE db_ceplog
-class cl_db_ceplog { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db11_codlog = 0; 
-   var $db11_codigo = 0; 
-   var $db11_tipo = null; 
-   var $db11_logradouro = null; 
-   var $db11_logsemacento = null; 
-   var $db11_bairro = null; 
-   var $db11_cep = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_ceplog {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db11_codlog = 0;
+   var $db11_codigo = 0;
+   var $db11_tipo = null;
+   var $db11_logradouro = null;
+   var $db11_logsemacento = null;
+   var $db11_bairro = null;
+   var $db11_cep = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db11_codlog = int8 = Código do Logradouro 
-                 db11_codigo = int8 = Código do Município 
-                 db11_tipo = varchar(12) = Tipo de Logradouro 
-                 db11_logradouro = varchar(60) = Logradouro 
-                 db11_logsemacento = varchar(60) = Logradouro sem Acento 
-                 db11_bairro = varchar(40) = Bairro 
-                 db11_cep = varchar(8) = Cep 
+                 db11_codlog = int8 = Código do Logradouro
+                 db11_codigo = int8 = Código do Município
+                 db11_tipo = varchar(12) = Tipo de Logradouro
+                 db11_logradouro = varchar(60) = Logradouro
+                 db11_logsemacento = varchar(60) = Logradouro sem Acento
+                 db11_bairro = varchar(40) = Bairro
+                 db11_cep = varchar(8) = Cep
                  ";
-   //funcao construtor da classe 
-   function cl_db_ceplog() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_ceplog"); 
+     $this->rotulo = new rotulo("db_ceplog");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_db_ceplog {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db11_codlog = ($this->db11_codlog == ""?@$GLOBALS["HTTP_POST_VARS"]["db11_codlog"]:$this->db11_codlog);
        $this->db11_codigo = ($this->db11_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["db11_codigo"]:$this->db11_codigo);
@@ -89,9 +89,9 @@ class cl_db_ceplog {
      }
    }
    // funcao para inclusao
-   function incluir ($db11_codlog){ 
+   public function incluir ($db11_codlog){
       $this->atualizacampos();
-     if($this->db11_codigo == null ){ 
+     if($this->db11_codigo == null ){
        $this->erro_sql = " Campo Código do Município nao Informado.";
        $this->erro_campo = "db11_codigo";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_db_ceplog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db11_tipo == null ){ 
+     if($this->db11_tipo == null ){
        $this->erro_sql = " Campo Tipo de Logradouro nao Informado.";
        $this->erro_campo = "db11_tipo";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_db_ceplog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db11_logradouro == null ){ 
+     if($this->db11_logradouro == null ){
        $this->erro_sql = " Campo Logradouro nao Informado.";
        $this->erro_campo = "db11_logradouro";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_db_ceplog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db11_logsemacento == null ){ 
+     if($this->db11_logsemacento == null ){
        $this->erro_sql = " Campo Logradouro sem Acento nao Informado.";
        $this->erro_campo = "db11_logsemacento";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_db_ceplog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db11_bairro == null ){ 
+     if($this->db11_bairro == null ){
        $this->erro_sql = " Campo Bairro nao Informado.";
        $this->erro_campo = "db11_bairro";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_db_ceplog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db11_cep == null ){ 
+     if($this->db11_cep == null ){
        $this->erro_sql = " Campo Cep nao Informado.";
        $this->erro_campo = "db11_cep";
        $this->erro_banco = "";
@@ -146,16 +146,16 @@ class cl_db_ceplog {
        return false;
      }
      if($db11_codlog == "" || $db11_codlog == null ){
-       $result = db_query("select nextval('db_ceplog_db11_codlog_seq')"); 
+       $result = db_query("select nextval('db_ceplog_db11_codlog_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_ceplog_db11_codlog_seq do campo: db11_codlog"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_ceplog_db11_codlog_seq do campo: db11_codlog";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db11_codlog = pg_result($result,0,0); 
+       $this->db11_codlog = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_ceplog_db11_codlog_seq");
        if(($result != false) && (pg_result($result,0,0) < $db11_codlog)){
@@ -166,10 +166,10 @@ class cl_db_ceplog {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db11_codlog = $db11_codlog; 
+         $this->db11_codlog = $db11_codlog;
        }
      }
-     if(($this->db11_codlog == null) || ($this->db11_codlog == "") ){ 
+     if(($this->db11_codlog == null) || ($this->db11_codlog == "") ){
        $this->erro_sql = " Campo db11_codlog nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,25 +178,25 @@ class cl_db_ceplog {
        return false;
      }
      $sql = "insert into db_ceplog(
-                                       db11_codlog 
-                                      ,db11_codigo 
-                                      ,db11_tipo 
-                                      ,db11_logradouro 
-                                      ,db11_logsemacento 
-                                      ,db11_bairro 
-                                      ,db11_cep 
+                                       db11_codlog
+                                      ,db11_codigo
+                                      ,db11_tipo
+                                      ,db11_logradouro
+                                      ,db11_logsemacento
+                                      ,db11_bairro
+                                      ,db11_cep
                        )
                 values (
-                                $this->db11_codlog 
-                               ,$this->db11_codigo 
-                               ,'$this->db11_tipo' 
-                               ,'$this->db11_logradouro' 
-                               ,'$this->db11_logsemacento' 
-                               ,'$this->db11_bairro' 
-                               ,'$this->db11_cep' 
+                                $this->db11_codlog
+                               ,$this->db11_codigo
+                               ,'$this->db11_tipo'
+                               ,'$this->db11_logradouro'
+                               ,'$this->db11_logsemacento'
+                               ,'$this->db11_bairro'
+                               ,'$this->db11_cep'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cep por logradouro ($this->db11_codlog) nao Incluído. Inclusao Abortada.";
@@ -234,19 +234,19 @@ class cl_db_ceplog {
        $resac = db_query("insert into db_acount values($acount,649,4828,'','".AddSlashes(pg_result($resaco,0,'db11_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db11_codlog=null) { 
+   public function alterar ($db11_codlog=null) {
       $this->atualizacampos();
      $sql = " update db_ceplog set ";
      $virgula = "";
-     if(trim($this->db11_codlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_codlog"])){ 
-        if(trim($this->db11_codlog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db11_codlog"])){ 
-           $this->db11_codlog = "0" ; 
-        } 
+     if(trim($this->db11_codlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_codlog"])){
+        if(trim($this->db11_codlog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db11_codlog"])){
+           $this->db11_codlog = "0" ;
+        }
        $sql  .= $virgula." db11_codlog = $this->db11_codlog ";
        $virgula = ",";
-       if(trim($this->db11_codlog) == null ){ 
+       if(trim($this->db11_codlog) == null ){
          $this->erro_sql = " Campo Código do Logradouro nao Informado.";
          $this->erro_campo = "db11_codlog";
          $this->erro_banco = "";
@@ -256,13 +256,13 @@ class cl_db_ceplog {
          return false;
        }
      }
-     if(trim($this->db11_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_codigo"])){ 
-        if(trim($this->db11_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db11_codigo"])){ 
-           $this->db11_codigo = "0" ; 
-        } 
+     if(trim($this->db11_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_codigo"])){
+        if(trim($this->db11_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db11_codigo"])){
+           $this->db11_codigo = "0" ;
+        }
        $sql  .= $virgula." db11_codigo = $this->db11_codigo ";
        $virgula = ",";
-       if(trim($this->db11_codigo) == null ){ 
+       if(trim($this->db11_codigo) == null ){
          $this->erro_sql = " Campo Código do Município nao Informado.";
          $this->erro_campo = "db11_codigo";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_db_ceplog {
          return false;
        }
      }
-     if(trim($this->db11_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_tipo"])){ 
+     if(trim($this->db11_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_tipo"])){
        $sql  .= $virgula." db11_tipo = '$this->db11_tipo' ";
        $virgula = ",";
-       if(trim($this->db11_tipo) == null ){ 
+       if(trim($this->db11_tipo) == null ){
          $this->erro_sql = " Campo Tipo de Logradouro nao Informado.";
          $this->erro_campo = "db11_tipo";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_db_ceplog {
          return false;
        }
      }
-     if(trim($this->db11_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_logradouro"])){ 
+     if(trim($this->db11_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_logradouro"])){
        $sql  .= $virgula." db11_logradouro = '$this->db11_logradouro' ";
        $virgula = ",";
-       if(trim($this->db11_logradouro) == null ){ 
+       if(trim($this->db11_logradouro) == null ){
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "db11_logradouro";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_db_ceplog {
          return false;
        }
      }
-     if(trim($this->db11_logsemacento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_logsemacento"])){ 
+     if(trim($this->db11_logsemacento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_logsemacento"])){
        $sql  .= $virgula." db11_logsemacento = '$this->db11_logsemacento' ";
        $virgula = ",";
-       if(trim($this->db11_logsemacento) == null ){ 
+       if(trim($this->db11_logsemacento) == null ){
          $this->erro_sql = " Campo Logradouro sem Acento nao Informado.";
          $this->erro_campo = "db11_logsemacento";
          $this->erro_banco = "";
@@ -311,10 +311,10 @@ class cl_db_ceplog {
          return false;
        }
      }
-     if(trim($this->db11_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_bairro"])){ 
+     if(trim($this->db11_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_bairro"])){
        $sql  .= $virgula." db11_bairro = '$this->db11_bairro' ";
        $virgula = ",";
-       if(trim($this->db11_bairro) == null ){ 
+       if(trim($this->db11_bairro) == null ){
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "db11_bairro";
          $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_db_ceplog {
          return false;
        }
      }
-     if(trim($this->db11_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_cep"])){ 
+     if(trim($this->db11_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db11_cep"])){
        $sql  .= $virgula." db11_cep = '$this->db11_cep' ";
        $virgula = ",";
-       if(trim($this->db11_cep) == null ){ 
+       if(trim($this->db11_cep) == null ){
          $this->erro_sql = " Campo Cep nao Informado.";
          $this->erro_campo = "db11_cep";
          $this->erro_banco = "";
@@ -365,7 +365,7 @@ class cl_db_ceplog {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cep por logradouro nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db11_codlog;
@@ -393,14 +393,14 @@ class cl_db_ceplog {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db11_codlog=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db11_codlog=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db11_codlog));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -432,7 +432,7 @@ class cl_db_ceplog {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cep por logradouro nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db11_codlog;
@@ -460,11 +460,11 @@ class cl_db_ceplog {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -486,10 +486,10 @@ class cl_db_ceplog {
       }
      return $result;
    }
-   function sql_query ( $db11_codlog=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db11_codlog=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,15 +503,15 @@ class cl_db_ceplog {
      $sql2 = "";
      if($dbwhere==""){
        if($db11_codlog!=null ){
-         $sql2 .= " where db_ceplog.db11_codlog = $db11_codlog "; 
-       } 
+         $sql2 .= " where db_ceplog.db11_codlog = $db11_codlog ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -520,10 +520,10 @@ class cl_db_ceplog {
      }
      return $sql;
   }
-   function sql_query_file ( $db11_codlog=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db11_codlog=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,15 +536,15 @@ class cl_db_ceplog {
      $sql2 = "";
      if($dbwhere==""){
        if($db11_codlog!=null ){
-         $sql2 .= " where db_ceplog.db11_codlog = $db11_codlog "; 
-       } 
+         $sql2 .= " where db_ceplog.db11_codlog = $db11_codlog ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

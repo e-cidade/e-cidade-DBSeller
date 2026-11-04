@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,17 +40,17 @@ $clrotulo->label("j14_nome");
 <table border="0">
 	<tr>
 		<td nowrap title="<?=@$Tj37_face?>"><?=@$Lj37_face?></td>
-		<td><?
+		<td><?php
 		db_input('j37_face',4,$Ij37_face,true,'text',"3","")
 		?>
 		<td>
 	</tr>
 
 	<tr>
-		<td nowrap title="<?=@$Tj37_setor?>"><?
+		<td nowrap title="<?=@$Tj37_setor?>"><?php
 		db_ancora(@$Lj37_setor,"js_pesquisaj37_setor(true);",$db_opcao);
 		?></td>
-		<td><?
+		<td><?php
 		db_input('j37_setor',4,$Ij37_setor,true,'text',$db_opcao," onchange='js_pesquisaj37_setor(false);'");
 		db_input('j30_descr',40,$Ij30_descr,true,'text',3,'');
 		?>
@@ -59,7 +59,7 @@ $clrotulo->label("j14_nome");
 
 	<tr>
 		<td nowrap title="<?=@$Tj37_quadra?>"><?=@$Lj37_quadra?></td>
-		<td><?
+		<td><?php
 		$val=$Ij37_quadra;
 		$result_param = $clcfiptu->sql_record($clcfiptu->sql_query(db_getsession("DB_anousu"),"j18_formatquadra"));
 		if ($clcfiptu->numrows>0){
@@ -76,10 +76,10 @@ $clrotulo->label("j14_nome");
 	</tr>
 
 	<tr>
-		<td nowrap title="<?=@$Tj37_codigo?>"><?
+		<td nowrap title="<?=@$Tj37_codigo?>"><?php
 		db_ancora(@$Lj37_codigo,"js_pesquisaj37_codigo(true);",$db_opcao);
 		?></td>
-		<td><?
+		<td><?php
 		db_input('j37_codigo',4,$Ij37_codigo,true,'text',$db_opcao," onchange='js_pesquisaj37_codigo(false);'");
 		db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 		?>
@@ -88,7 +88,7 @@ $clrotulo->label("j14_nome");
 
 	<tr>
 		<td nowrap title="<?=@$Tj37_lado?>"><?=@$Lj37_lado?></td>
-		<td><?
+		<td><?php
 		$matriz = array('I'=>"Impar",'P'=>"Par");
 		db_select('j37_lado',$matriz,true,$db_opcao);
 		?>
@@ -113,7 +113,7 @@ $clrotulo->label("j14_nome");
 
 	<tr>
 		<td nowrap title="<?=@$Tj37_exten?>"><?=@$Lj37_exten?></td>
-		<td><?
+		<td><?php
 		db_input('j37_exten',15,$Ij37_exten,true,'text',$db_opcao,"")
 		?>
 		</td>
@@ -121,7 +121,7 @@ $clrotulo->label("j14_nome");
 
 	<tr>
 		<td nowrap title="<?=@$Tj37_profr?>"><?=@$Lj37_profr?></td>
-		<td><?
+		<td><?php
 		db_input('j37_profr',15,$Ij37_profr,true,'text',$db_opcao,"")
 		?>
 		</td>
@@ -129,14 +129,14 @@ $clrotulo->label("j14_nome");
 
 	<tr>
 		<td nowrap title="<?=@$Tj37_outros?>"><?=@$Lj37_outros?></td>
-		<td><?
+		<td><?php
 		db_input('j37_outros',40,$Ij37_outros,true,'text',$db_opcao,"")
 		?>
 		</td>
 	</tr>
 
 	<tr>
-		<td nowrap><?
+		<td nowrap><?php
 		db_ancora(@$Lcarface,"js_carface();",$db_opcao);
     echo "</td><td>";
     db_input('caracteristica',15,0,true,'hidden',$db_opcao)
@@ -162,7 +162,7 @@ $clrotulo->label("j14_nome");
 	type="submit" id="db_opcao"
 	value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
 	<?=($db_botao==false?"disabled":"")?>> <!--<input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >-->
-	<?}?>
+	<?php }?>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
 
 </form>
@@ -187,12 +187,12 @@ function testacar(){
     alert('Preencha as características da face!');
     return false
   }else{
-    <?if ($db_opcao== 2 || $db_opcao== 22){?>
+    <?php if ($db_opcao== 2 || $db_opcao== 22){?>
   	  var face = document.form1.j37_face.value;
 	  js_OpenJanelaIframe('','db_iframe_facerua','cad1_face007.php?face='+face,'Pesquisa',false);
    <?}else{?>
     return true;
-    <?}?>
+    <?php }?>
   }
   return false
 }

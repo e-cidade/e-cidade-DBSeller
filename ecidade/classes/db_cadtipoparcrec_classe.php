@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014 DBSeller Servicos de Informatica
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -51,13 +51,13 @@ class cl_cadtipoparcrec {
                  k180_estorc = varchar(15) = Estrutural da Receita
                  ";
    //funcao construtor da classe
-   function cl_cadtipoparcrec() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipoparcrec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -66,7 +66,7 @@ class cl_cadtipoparcrec {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k180_cadtipoparc = ($this->k180_cadtipoparc == ""?@$GLOBALS["HTTP_POST_VARS"]["k180_cadtipoparc"]:$this->k180_cadtipoparc);
        $this->k180_estorc = ($this->k180_estorc == ""?@$GLOBALS["HTTP_POST_VARS"]["k180_estorc"]:$this->k180_estorc);
@@ -76,7 +76,7 @@ class cl_cadtipoparcrec {
      }
    }
    // funcao para inclusao
-   function incluir ($k180_cadtipoparc,$k180_estorc){
+   public function incluir ($k180_cadtipoparc,$k180_estorc){
       $this->atualizacampos();
       $this->k180_cadtipoparc = $k180_cadtipoparc;
       $this->k180_estorc = $k180_estorc;
@@ -141,7 +141,7 @@ class cl_cadtipoparcrec {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k180_cadtipoparc=null,$k180_estorc=null) {
+   public function alterar ($k180_cadtipoparc=null,$k180_estorc=null) {
       $this->atualizacampos();
      $sql = " update cadtipoparcrec set ";
      $virgula = "";
@@ -227,7 +227,7 @@ class cl_cadtipoparcrec {
      }
    }
    // funcao para exclusao
-   function excluir ($k180_cadtipoparc=null,$k180_estorc=null,$dbwhere=null) {
+   public function excluir ($k180_cadtipoparc=null,$k180_estorc=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k180_cadtipoparc,$k180_estorc));
      }else{
@@ -296,7 +296,7 @@ class cl_cadtipoparcrec {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -318,10 +318,10 @@ class cl_cadtipoparcrec {
       }
      return $result;
    }
-   function sql_query ( $k180_cadtipoparc=null,$k180_estorc=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k180_cadtipoparc=null,$k180_estorc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -353,7 +353,7 @@ class cl_cadtipoparcrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,10 +362,10 @@ class cl_cadtipoparcrec {
      }
      return $sql;
   }
-  function sql_query_file ( $k180_cadtipoparc=null,$k180_estorc=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $k180_cadtipoparc=null,$k180_estorc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_cadtipoparcrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -117,7 +117,7 @@ $usu = db_getsession("DB_id_usuario");
        <?=@$Lat43_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at43_sequencial',10,"",true,'text',3,"");
 ?>
     </td>
@@ -127,7 +127,7 @@ db_input('at43_sequencial',10,"",true,'text',3,"");
        <?=@$Lat43_tarefa?>
     </td>
     <td> 
-<?
+<?php
 db_input('at43_tarefa',10,$Iat43_tarefa,true,'text',3,"");
 ?>
     </td>
@@ -137,7 +137,7 @@ db_input('at43_tarefa',10,$Iat43_tarefa,true,'text',3,"");
        <?=@$Lat43_usuario?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1){
 	$at43_usuario= $usu;
 	$sqlid = "select * from db_usuarios where id_usuario=$usu";
@@ -146,7 +146,7 @@ if($db_opcao==1){
 }
 db_input('at43_usuario',10,$Iat43_usuario,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'');
        ?>
     </td>
@@ -156,7 +156,7 @@ db_input('nome',40,$Inome,true,'text',3,'');
        <?=@$Lat43_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at43_descr',5,100,$Iat43_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -166,7 +166,7 @@ db_textarea('at43_descr',5,100,$Iat43_descr,true,'text',$db_opcao,"")
        <?=@$Lat43_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at43_obs',5,100,"",true,'text',$db_opcao,'')
        ?>
     </td>
@@ -176,7 +176,7 @@ db_textarea('at43_obs',5,100,"",true,'text',$db_opcao,'')
        <?=@$Lat43_diaini?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1||$db_opcao==11) {
 	$at43_diaini_dia = date("d", db_getsession("DB_datausu"));
 	$at43_diaini_mes = date("m", db_getsession("DB_datausu"));
@@ -188,7 +188,7 @@ if($db_opcao==1||$db_opcao==11) {
 }
 db_inputdata('at43_diaini',@$at43_diaini_dia,@$at43_diaini_mes,@$at43_diaini_ano,true,'text',$db_opcao,"OnChange=js_datafim();", "", "", "parent.js_datafim();");
 ?>
-<?
+<?php
 db_inputdata('at43_diafim',@$at43_diafim_dia,@$at43_diafim_mes,@$at43_diafim_ano,true,'text',3,"OnChange='js_verifica_data(document.form1.at43_diaini_ano.value+\"-\"+
 																									              				   document.form1.at43_diaini_mes.value+\"-\"+
 																													               document.form1.at43_diaini_dia.value,
@@ -207,7 +207,7 @@ if($db_opcao == 1){
        <strong>Envolvido:</strong>
     </td>
     <td> 
-<?
+<?php
 //$x = array("f"=>"NAO","t"=>"SIM");
 //db_select('at43_problema',$x,true,$db_opcao,"");
 
@@ -234,7 +234,7 @@ db_select('at45_perc',$x,true,$db_opcao,"");
 ?>
 <input name='usuario_unico' type='checkbox'>
 <strong>Único Responsável</strong>
-<?
+<?php
 
 
 ?>
@@ -245,7 +245,7 @@ db_select('at45_perc',$x,true,$db_opcao,"");
   <strong>Cliente:</strong>
 </td>
 <td>
-  <?
+  <?php
   $x = array();
   $resusu = $clclientes->sql_record($clclientes->sql_query_file(null,'at01_codcli,at01_nomecli','at01_nomecli'," at01_status = true "));
   for($i=0;$i<$clclientes->numrows; $i++){
@@ -315,7 +315,7 @@ function js_pesquisaitemcad(item,modulo){
 }
 </script>
     
-    <?
+    <?php
     $y = array("0"=>"Normal","1"=>"SQL","2"=>"Atualiza menus","3"=>"Usuário","4"=>"PHP-Programa","5"=>"Atualiza Manual","6"=>"Manual Atualizado","7"=>"Cliente Atualizado");
     db_select('at43_tipomov',$y,true,$db_opcao," onchange='js_habilitar(this.value)'");
     ?>
@@ -326,7 +326,7 @@ function js_pesquisaitemcad(item,modulo){
     <input name='itens_clientes' type='button' value=' Clientes ' id='itens_clientes' onclick='js_itens_clientes()' style='visibility: <?=(@$at43_tipomov==1||@$at43_tipomov==3||@$at43_tipomov==4||@$at43_tipomov==7?'visible':'hidden')?>'>
     <input name='itens_clientes_escolhidos' type='hidden' value='<?=@$itens_clientes_escolhidos?>' id='itens_clientes_escolhidos' >
     
-    <?
+    <?php
     echo @$Lat43_avisar;
 $x = array('0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos');
 if($db_opcao==1||$db_opcao==11) {
@@ -341,7 +341,7 @@ db_select('at43_avisar',$x,true,$db_opcao,"");
        <strong>Horário:</strong>
     </td>
     <td> 
-<?
+<?php
 db_input('at43_horainidia',5,$Iat43_horainidia,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name)';");
 echo "às";
 db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name)';");
@@ -353,7 +353,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
        <blink> <font color=red> <?=@$Lat43_progresso?></font></blink>
     </td>
     <td> 
-<?
+<?php
   $matriz = array("0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
@@ -368,7 +368,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
   db_select("at43_progresso", $matriz,true,$db_opcao); 
 ?>
 <strong>Situação:</strong>
-<?
+<?php
 if(isset($at43_progresso)&&$at43_progresso!="") {
 	if($at43_progresso==100) {
 		$at48_situacao = 3;
@@ -560,7 +560,7 @@ function js_datafim(){
 	return true;
 }
 function js_datafim2(){
-<?
+<?php
 	if($db_opcao==1||$db_opcao==11) {
 ?>
  if(document.form1.at43_diaini_dia.value.length > 0 &&
@@ -598,7 +598,7 @@ function js_datafim2(){
 
   
 	
-<?
+<?php
 	}
 ?>
 }
@@ -644,7 +644,7 @@ function js_abre_agendamento(tarefa){
   <table>
    <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 if(isset($db_opcao)&&$db_opcao==2) {
 	 	//$chavepri= array("at43_tarefa"=>@$at43_tarefa);
 		//$chavepri= array("at43_usuario"=>@$at43_usuario);

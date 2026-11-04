@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE administracaomedicamento
 class cl_administracaomedicamento {
@@ -39,13 +39,13 @@ class cl_administracaomedicamento {
                  sd105_medicamento = int4 = Medicamento
                  ";
    //funcao construtor da classe
-   function cl_administracaomedicamento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("administracaomedicamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -54,7 +54,7 @@ class cl_administracaomedicamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd105_codigo = ($this->sd105_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd105_codigo"]:$this->sd105_codigo);
        $this->sd105_usuario = ($this->sd105_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["sd105_usuario"]:$this->sd105_usuario);
@@ -76,7 +76,7 @@ class cl_administracaomedicamento {
      }
    }
    // funcao para Inclusão
-   function incluir ($sd105_codigo){
+   public function incluir ($sd105_codigo){
       $this->atualizacampos();
      if($this->sd105_usuario == null ){
        $this->erro_sql = " Campo Usuário não informado.";

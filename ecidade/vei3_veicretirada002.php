@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -115,7 +115,7 @@ if (isset($codigo)&&$codigo!=""){
        <?=@$Lve60_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_codigo',10,$Ive60_codigo,true,'text',3,"")
 ?>
     </td>
@@ -127,10 +127,10 @@ db_input('ve60_codigo',10,$Ive60_codigo,true,'text',3,"")
        <?=@$Lve60_veiculo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_veiculo',10,$Ive60_veiculo,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        ?>
     </td>
@@ -139,10 +139,10 @@ db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        <?=@$Lve60_veicmotoristas?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_veicmotoristas',10,$Ive60_veicmotoristas,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -152,7 +152,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lve60_datasaida?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve60_datasaida',@$ve60_datasaida_dia,@$ve60_datasaida_mes,@$ve60_datasaida_ano,true,'text',3,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ db_inputdata('ve60_datasaida',@$ve60_datasaida_dia,@$ve60_datasaida_mes,@$ve60_d
        <?=@$Lve60_horasaida?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_horasaida',5,$Ive60_horasaida,true,'text',3,"")
 ?>
     </td>
@@ -171,7 +171,7 @@ db_input('ve60_horasaida',5,$Ive60_horasaida,true,'text',3,"")
        <?=@$Lve60_medidasaida?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_medidasaida',15,$Ive60_medidasaida,true,'text',3,"");
 if (isset($ve07_sigla) && trim($ve07_sigla) != ""){
   db_input("ve07_sigla",3,0,true,"text",3);
@@ -183,7 +183,7 @@ if (isset($ve07_sigla) && trim($ve07_sigla) != ""){
        <?=@$Lve60_destino?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_destino',40,$Ive60_destino,true,'text',3,"")
 ?>
     </td>
@@ -194,10 +194,10 @@ db_input('ve60_destino',40,$Ive60_destino,true,'text',3,"")
        <?=@$Lve60_coddepto?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_coddepto',5,$Ive60_coddepto,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -206,10 +206,10 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        <?=@$Lve60_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_usuario',10,$Ive60_usuario,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -219,7 +219,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lve60_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve60_data',@$ve60_data_dia,@$ve60_data_mes,@$ve60_data_ano,true,'text',3,"")
 ?>
     </td>
@@ -228,7 +228,7 @@ db_inputdata('ve60_data',@$ve60_data_dia,@$ve60_data_mes,@$ve60_data_ano,true,'t
        <?=@$Lve60_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_hora',5,$Ive60_hora,true,'text',3,"")
 ?>
     </td>
@@ -239,7 +239,7 @@ db_input('ve60_hora',5,$Ive60_hora,true,'text',3,"")
   <fieldset>
       		<legend><strong>DADOS DEVOLUÇÃO</strong></legend>
   <table border="0">
-<?
+<?php
 
 $result_dev = $clveicdevolucao->sql_record($clveicdevolucao->sql_query(null,"*",null,"ve61_veicretirada=$codigo"));
 if ($clveicdevolucao->numrows>0){ 
@@ -251,7 +251,7 @@ if ($clveicdevolucao->numrows>0){
        <?=@$Lve61_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve61_codigo',10,$Ive61_codigo,true,'text',3,"")
 ?>
     </td>
@@ -264,10 +264,10 @@ db_input('ve61_codigo',10,$Ive61_codigo,true,'text',3,"")
        <?=@$Lve60_veiculo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve60_veiculo',10,$Ive60_veiculo,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        ?>
     </td>
@@ -275,10 +275,10 @@ db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
        <?=@$Lve61_veicmotoristas?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve61_veicmotoristas',10,$Ive61_veicmotoristas,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -288,7 +288,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lve61_datadevol?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve61_datadevol',@$ve61_datadevol_dia,@$ve61_datadevol_mes,@$ve61_datadevol_ano,true,'text',3,"")
 ?>
     </td>
@@ -297,7 +297,7 @@ db_inputdata('ve61_datadevol',@$ve61_datadevol_dia,@$ve61_datadevol_mes,@$ve61_d
        <?=@$Lve61_horadevol?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve61_horadevol',5,$Ive61_horadevol,true,'text',3,"")
 ?>
     </td>
@@ -307,7 +307,7 @@ db_input('ve61_horadevol',5,$Ive61_horadevol,true,'text',3,"")
        <?=@$Lve61_medidadevol?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve61_medidadevol',15,$Ive61_medidadevol,true,'text',3,"");
 if (isset($ve07_sigla) && trim($ve07_sigla) != ""){
   db_input("ve07_sigla",3,0,true,"text",3);
@@ -319,10 +319,10 @@ if (isset($ve07_sigla) && trim($ve07_sigla) != ""){
        <?=@$Lve61_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve61_usuario',10,$Ive61_usuario,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -332,7 +332,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lve61_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve61_data',@$ve61_data_dia,@$ve61_data_mes,@$ve61_data_ano,true,'text',3,"")
 ?>
     </td>
@@ -341,18 +341,18 @@ db_inputdata('ve61_data',@$ve61_data_dia,@$ve61_data_mes,@$ve61_data_ano,true,'t
        <?=@$Lve61_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve61_hora',5,$Ive61_hora,true,'text',3,"")
 ?>
     </td>
   </tr>
-   <?
+   <?php
 }else{
 	?>
 	<tr>
 	<td><b>Veiculo não foi devolvido.</b></td>
 	</tr>
-	<?
+	<?php
 }
    ?>
  </table>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clemphist->rotulo->label("e40_descr");
               <?=$Le40_codhist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e40_codhist",6,$Ie40_codhist,true,"text",4,"","chave_e40_codhist");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clemphist->rotulo->label("e40_descr");
               <?=$Le40_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e40_descr",60,$Ie40_descr,true,"text",4,"","chave_e40_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clemphist->rotulo->label("e40_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_emphist.php")==true){
@@ -118,12 +118,12 @@ $clemphist->rotulo->label("e40_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

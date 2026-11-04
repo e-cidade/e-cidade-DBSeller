@@ -71,7 +71,12 @@
                 <?php db_input('dtEmissao', 10, null, true); ?>
               </td>
             </tr>
-
+            <tr>
+              <td><label for="iCodigoOrdem"><strong>Ordem de Pagamento:</strong></label></td>
+              <td>
+                <?php db_input('iCodigoOrdem', 15, null, true, "text", 3, "", "", "", "width: 80px;", 3); ?>
+              </td>
+            </tr>
             <tr>
               <td><label for="iCodigoEmpenho"><strong>Empenho:</strong></label></td>
               <td>
@@ -181,7 +186,7 @@
       $('iCodigoEmpenho').value       = oValores ? oValores.iCodigoEmpenho+"/"+oValores.iAnoEmpenho : '';
       $('iFornecedorCgm').value       = oValores ? oValores.iCgmFornecedor : '';
       $('sNomeFornecedor').value      = oValores ? oValores.sNomeFornecedor : '';
-
+      $('iCodigoOrdem').value         = oValores ? oValores.iCodigoOrdem : '';
       validaTipoDevolucao( (oValores ? oValores.lHabilitaEstorno : true) );
     }
 

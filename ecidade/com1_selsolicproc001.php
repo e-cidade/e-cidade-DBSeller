@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -126,13 +126,13 @@ if ($op == "alterar") {
   function js_mostrapcproc1(chave1,chave2){
     document.form1.pc80_codproc.value = chave1;
     db_iframe_pcproc.hide();
-    <?
+    <?php
     if($clickaut == true){
       echo "document.form1.enviar.click();";
     }
     ?>
   }
-  <?
+  <?php
   if($clickaut == true){
     echo "js_pesquisapc80_codproc(false);";
   }else{

@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE sau_cotasagendamento
-class cl_sau_cotasagendamento { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $s163_i_codigo = 0; 
-   var $s163_i_rhcbo = 0; 
-   var $s163_i_upssolicitante = 0; 
-   var $s163_i_upsprestadora = 0; 
-   var $s163_i_quantidade = 0; 
-   var $s163_i_mescomp = 0; 
-   var $s163_i_anocomp = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_sau_cotasagendamento {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $s163_i_codigo = 0;
+   var $s163_i_rhcbo = 0;
+   var $s163_i_upssolicitante = 0;
+   var $s163_i_upsprestadora = 0;
+   var $s163_i_quantidade = 0;
+   var $s163_i_mescomp = 0;
+   var $s163_i_anocomp = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 s163_i_codigo = int4 = Código 
-                 s163_i_rhcbo = int4 = Especialidade 
-                 s163_i_upssolicitante = int4 = Solicitante 
-                 s163_i_upsprestadora = int4 = Prestadora 
-                 s163_i_quantidade = int4 = Quantidade 
-                 s163_i_mescomp = int4 = Mês 
-                 s163_i_anocomp = int4 = Ano 
+                 s163_i_codigo = int4 = Código
+                 s163_i_rhcbo = int4 = Especialidade
+                 s163_i_upssolicitante = int4 = Solicitante
+                 s163_i_upsprestadora = int4 = Prestadora
+                 s163_i_quantidade = int4 = Quantidade
+                 s163_i_mescomp = int4 = Mês
+                 s163_i_anocomp = int4 = Ano
                  ";
-   //funcao construtor da classe 
-   function cl_sau_cotasagendamento() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("sau_cotasagendamento"); 
+     $this->rotulo = new rotulo("sau_cotasagendamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_sau_cotasagendamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s163_i_codigo = ($this->s163_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s163_i_codigo"]:$this->s163_i_codigo);
        $this->s163_i_rhcbo = ($this->s163_i_rhcbo == ""?@$GLOBALS["HTTP_POST_VARS"]["s163_i_rhcbo"]:$this->s163_i_rhcbo);
@@ -89,9 +89,9 @@ class cl_sau_cotasagendamento {
      }
    }
    // funcao para inclusao
-   function incluir ($s163_i_codigo){ 
+   public function incluir ($s163_i_codigo){
       $this->atualizacampos();
-     if($this->s163_i_rhcbo == null ){ 
+     if($this->s163_i_rhcbo == null ){
        $this->erro_sql = " Campo Especialidade nao Informado.";
        $this->erro_campo = "s163_i_rhcbo";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_sau_cotasagendamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s163_i_upssolicitante == null ){ 
+     if($this->s163_i_upssolicitante == null ){
        $this->erro_sql = " Campo Solicitante nao Informado.";
        $this->erro_campo = "s163_i_upssolicitante";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_sau_cotasagendamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s163_i_upsprestadora == null ){ 
+     if($this->s163_i_upsprestadora == null ){
        $this->erro_sql = " Campo Prestadora nao Informado.";
        $this->erro_campo = "s163_i_upsprestadora";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_sau_cotasagendamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s163_i_quantidade == null ){ 
+     if($this->s163_i_quantidade == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "s163_i_quantidade";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_sau_cotasagendamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s163_i_mescomp == null ){ 
+     if($this->s163_i_mescomp == null ){
        $this->erro_sql = " Campo Mês nao Informado.";
        $this->erro_campo = "s163_i_mescomp";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_sau_cotasagendamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s163_i_anocomp == null ){ 
+     if($this->s163_i_anocomp == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "s163_i_anocomp";
        $this->erro_banco = "";
@@ -146,16 +146,16 @@ class cl_sau_cotasagendamento {
        return false;
      }
      if($s163_i_codigo == "" || $s163_i_codigo == null ){
-       $result = db_query("select nextval('sau_cotasagendamento_s163_i_codigo_seq')"); 
+       $result = db_query("select nextval('sau_cotasagendamento_s163_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: sau_cotasagendamento_s163_i_codigo_seq do campo: s163_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: sau_cotasagendamento_s163_i_codigo_seq do campo: s163_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->s163_i_codigo = pg_result($result,0,0); 
+       $this->s163_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from sau_cotasagendamento_s163_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $s163_i_codigo)){
@@ -166,10 +166,10 @@ class cl_sau_cotasagendamento {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->s163_i_codigo = $s163_i_codigo; 
+         $this->s163_i_codigo = $s163_i_codigo;
        }
      }
-     if(($this->s163_i_codigo == null) || ($this->s163_i_codigo == "") ){ 
+     if(($this->s163_i_codigo == null) || ($this->s163_i_codigo == "") ){
        $this->erro_sql = " Campo s163_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,25 +178,25 @@ class cl_sau_cotasagendamento {
        return false;
      }
      $sql = "insert into sau_cotasagendamento(
-                                       s163_i_codigo 
-                                      ,s163_i_rhcbo 
-                                      ,s163_i_upssolicitante 
-                                      ,s163_i_upsprestadora 
-                                      ,s163_i_quantidade 
-                                      ,s163_i_mescomp 
-                                      ,s163_i_anocomp 
+                                       s163_i_codigo
+                                      ,s163_i_rhcbo
+                                      ,s163_i_upssolicitante
+                                      ,s163_i_upsprestadora
+                                      ,s163_i_quantidade
+                                      ,s163_i_mescomp
+                                      ,s163_i_anocomp
                        )
                 values (
-                                $this->s163_i_codigo 
-                               ,$this->s163_i_rhcbo 
-                               ,$this->s163_i_upssolicitante 
-                               ,$this->s163_i_upsprestadora 
-                               ,$this->s163_i_quantidade 
-                               ,$this->s163_i_mescomp 
-                               ,$this->s163_i_anocomp 
+                                $this->s163_i_codigo
+                               ,$this->s163_i_rhcbo
+                               ,$this->s163_i_upssolicitante
+                               ,$this->s163_i_upsprestadora
+                               ,$this->s163_i_quantidade
+                               ,$this->s163_i_mescomp
+                               ,$this->s163_i_anocomp
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cotas de agendamento ($this->s163_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -234,16 +234,16 @@ class cl_sau_cotasagendamento {
        $resac = db_query("insert into db_acount values($acount,3184,18018,'','".AddSlashes(pg_result($resaco,0,'s163_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($s163_i_codigo=null) { 
+   public function alterar ($s163_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update sau_cotasagendamento set ";
      $virgula = "";
-     if(trim($this->s163_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_codigo"])){ 
+     if(trim($this->s163_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_codigo"])){
        $sql  .= $virgula." s163_i_codigo = $this->s163_i_codigo ";
        $virgula = ",";
-       if(trim($this->s163_i_codigo) == null ){ 
+       if(trim($this->s163_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s163_i_codigo";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_rhcbo"])){ 
+     if(trim($this->s163_i_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_rhcbo"])){
        $sql  .= $virgula." s163_i_rhcbo = $this->s163_i_rhcbo ";
        $virgula = ",";
-       if(trim($this->s163_i_rhcbo) == null ){ 
+       if(trim($this->s163_i_rhcbo) == null ){
          $this->erro_sql = " Campo Especialidade nao Informado.";
          $this->erro_campo = "s163_i_rhcbo";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_upssolicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upssolicitante"])){ 
+     if(trim($this->s163_i_upssolicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upssolicitante"])){
        $sql  .= $virgula." s163_i_upssolicitante = $this->s163_i_upssolicitante ";
        $virgula = ",";
-       if(trim($this->s163_i_upssolicitante) == null ){ 
+       if(trim($this->s163_i_upssolicitante) == null ){
          $this->erro_sql = " Campo Solicitante nao Informado.";
          $this->erro_campo = "s163_i_upssolicitante";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_upsprestadora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upsprestadora"])){ 
+     if(trim($this->s163_i_upsprestadora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upsprestadora"])){
        $sql  .= $virgula." s163_i_upsprestadora = $this->s163_i_upsprestadora ";
        $virgula = ",";
-       if(trim($this->s163_i_upsprestadora) == null ){ 
+       if(trim($this->s163_i_upsprestadora) == null ){
          $this->erro_sql = " Campo Prestadora nao Informado.";
          $this->erro_campo = "s163_i_upsprestadora";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_quantidade"])){ 
+     if(trim($this->s163_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_quantidade"])){
        $sql  .= $virgula." s163_i_quantidade = $this->s163_i_quantidade ";
        $virgula = ",";
-       if(trim($this->s163_i_quantidade) == null ){ 
+       if(trim($this->s163_i_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "s163_i_quantidade";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_mescomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_mescomp"])){ 
+     if(trim($this->s163_i_mescomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_mescomp"])){
        $sql  .= $virgula." s163_i_mescomp = $this->s163_i_mescomp ";
        $virgula = ",";
-       if(trim($this->s163_i_mescomp) == null ){ 
+       if(trim($this->s163_i_mescomp) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "s163_i_mescomp";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_anocomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_anocomp"])){ 
+     if(trim($this->s163_i_anocomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_anocomp"])){
        $sql  .= $virgula." s163_i_anocomp = $this->s163_i_anocomp ";
        $virgula = ",";
-       if(trim($this->s163_i_anocomp) == null ){ 
+       if(trim($this->s163_i_anocomp) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "s163_i_anocomp";
          $this->erro_banco = "";
@@ -359,7 +359,7 @@ class cl_sau_cotasagendamento {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cotas de agendamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->s163_i_codigo;
@@ -387,14 +387,14 @@ class cl_sau_cotasagendamento {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($s163_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($s163_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($s163_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -426,7 +426,7 @@ class cl_sau_cotasagendamento {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cotas de agendamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$s163_i_codigo;
@@ -454,11 +454,11 @@ class cl_sau_cotasagendamento {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -480,11 +480,11 @@ class cl_sau_cotasagendamento {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $s163_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $s163_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,15 +510,15 @@ class cl_sau_cotasagendamento {
      $sql2 = "";
      if($dbwhere==""){
        if($s163_i_codigo!=null ){
-         $sql2 .= " where sau_cotasagendamento.s163_i_codigo = $s163_i_codigo "; 
-       } 
+         $sql2 .= " where sau_cotasagendamento.s163_i_codigo = $s163_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,11 +527,11 @@ class cl_sau_cotasagendamento {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $s163_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $s163_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,15 +544,15 @@ class cl_sau_cotasagendamento {
      $sql2 = "";
      if($dbwhere==""){
        if($s163_i_codigo!=null ){
-         $sql2 .= " where sau_cotasagendamento.s163_i_codigo = $s163_i_codigo "; 
-       } 
+         $sql2 .= " where sau_cotasagendamento.s163_i_codigo = $s163_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,13 +561,13 @@ class cl_sau_cotasagendamento {
      }
      return $sql;
   }
-  
-  function sql_query_cotas($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') { 
+
+  function sql_query_cotas($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
 
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -605,7 +605,7 @@ class cl_sau_cotasagendamento {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ if (db_getsession("DB_anousu") >= 2014) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php
     $clcriaabas->identifica = array("relatorio"=>"Relatório",
                                     "parametro"=>"Parâmetros",
                                     "notas"    =>"Fonte/Notas Explicativas");
@@ -102,7 +102,7 @@ if (db_getsession("DB_anousu") >= 2014) {
   </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -56,7 +56,7 @@ if ($cllab_exame->numrows == 0) {
       </td>
     </tr>
   </table>
-  <?
+    <?php
   exit;
 
 }
@@ -101,7 +101,7 @@ $pdf->SetAligns(array("L","L","L", "L", "L", "R", "R", "R"));
 for($s=0; $s < $cllab_exame->numrows; $s++) {
   db_fieldsmemory($result,$s);
   if ($iCont >= 35) {
-    
+
     $pdf->ln(5);
     $pdf->addpage('L');
 	$pdf->setfont('arial','b',10);
@@ -114,7 +114,7 @@ for($s=0; $s < $cllab_exame->numrows; $s++) {
     $pdf->cell(20,4,"Valor SMS ",1,0,"L",0);
     $pdf->cell(25,4,"Valor Total ",1,1,"L",0);
 	$iCont = 0;
-	
+
   }
   $pdf->setfont('arial', '', 8);
   $iAlturaRow = $pdf->h - 30;
@@ -127,23 +127,23 @@ for($s=0; $s < $cllab_exame->numrows; $s++) {
                 number_format($la53_n_acrescimo, 2, ',', '.'),
                 number_format($valor_sus + $la53_n_acrescimo, 2, ',', '.')
                );
-  /* 
+  /*
   * ====================================================================
   *   Setando a altura do retângulo que corresponde a borda da celula.
   *   $iLines  = Quantidade de linhas ocupadas na celula do pdf.
   *   $iHeight = Valor da altura total da maior celula da linha.
   *   Função que retorna a quantidade de linhas ocupadas na célular.
-  *   $pdf->NbLines( array(), array()) 
+  *   $pdf->NbLines( array(), array())
   * ====================================================================
-  */ 
-             
+  */
+
   $iLines = 0;
   for ($i = 0; $i < count($aData) && $iCont <= 35; $i++) {
-    
+
   	if ($iLines <  $pdf->NbLines($pdf->widths[$i], $aData[$i])) {
       $iLines =   $pdf->NbLines($pdf->widths[$i], $aData[$i]);
     }
-    
+
   }
   $iHeight = $iLines * $iEspaco;
   $descricaoitemimprime = $pdf->Row_multicell($aData,
@@ -157,8 +157,8 @@ for($s=0; $s < $cllab_exame->numrows; $s++) {
                                               $iAlturaRow,
                                               $iLaguraFixa
                                              );
-   
-  $iCont += $iLines;           
+
+  $iCont += $iLines;
 }
 
 $pdf->Output();

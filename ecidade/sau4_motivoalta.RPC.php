@@ -133,6 +133,7 @@ try {
       $oUltimaMovimentacao = MovimentacaoFichaAtendimentoRepository::getUltimaMovimentacaoFAA($oParam->iProntuario);
 
       if ( !empty($oUltimaMovimentacao) ) {
+        $ultimaMovimentacao = MovimentacaoFichaAtendimentoRepository::buscaUltimoRegistro($oParam->iProntuario);
 
         $oNovaMovimentacao = new MovimentacaoFichaAtendimento();
         $oNovaMovimentacao->setFichaAtendimento($oParam->iProntuario);
@@ -141,6 +142,8 @@ try {
         $oNovaMovimentacao->setData(new DBDate(date("Y-m-d")));
         $oNovaMovimentacao->setHora(date("H:i"));
         $oNovaMovimentacao->setSituacao(MovimentacaoFichaAtendimento::SITUACAO_FINALIZADA);
+        $oNovaMovimentacao->setProfissionalAtendimento($ultimaMovimentacao->sd102_profissionalatendimento);
+        $oNovaMovimentacao->setProfissionalEncaminhado($ultimaMovimentacao->sd102_profissionalencaminhado);
         $oNovaMovimentacao->salvar();
       }
 

@@ -2,15 +2,14 @@
 
 namespace App\Domain\Patrimonial\Protocolo\Controller\Processo;
 
+use App\Domain\Financeiro\Empenho\Services\DocumentoService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domain\Configuracao\Helpers\StorageHelper;
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
-use App\Domain\Patrimonial\Protocolo\Model\Processo\ProcessoDocumento;
 use App\Domain\Patrimonial\Protocolo\Repository\Processo\ProcessoDocumentoRepository;
 use App\Domain\Patrimonial\Protocolo\Requests\Processo\ProcessoDocumento\Download as DownloadRequest;
 use App\Domain\Patrimonial\Protocolo\Requests\Processo\ProcessoDocumento\DocumentosPorProcesso as DocumentosRequest;
-use ECidade\Lib\File\FileEstorage;
 
 class ProcessoDocumentoController extends Controller
 {
@@ -46,7 +45,7 @@ class ProcessoDocumentoController extends Controller
     }
 
     /**
-     * Busca os documentos pelo cÃ³digo do processo ordenados
+     * Busca os documentos pelo código do processo ordenados
      *
      * @return DBJsonResponse
      */
@@ -56,16 +55,26 @@ class ProcessoDocumentoController extends Controller
     }
 
     /**
-     * Busca os documentos pelo cÃ³digo do andamento ordenados
+     * Busca os documentos pelo código do andamento ordenados
      * utlizando procandamint
      * @return DBJsonResponse
      */
     public function documentosPorProcAndamInt(Request $request)
     {
         $this->validate($request, [
+            'codigoProcesso' => 'required',
             'procandamint' => 'required|integer'
         ]);
 
-        return new DBJsonResponse($this->repository->findByProcandamInt($request->procandamint));
+        return new DBJsonResponse($this->repository->findByProcessoAndProcandamint(
+            $request->codigoProcesso,
+            $request->procandamint
+        ));
+    }
+
+    public function documentosPorNota(Request $request, $codigo_nota)
+    {
+        $documentoService = new DocumentoService();
+        return new DBJsonResponse($documentoService->getDocumentos($codigo_nota));
     }
 }

@@ -29,32 +29,35 @@
 //CLASSE DA ENTIDADE lote
 class cl_lote {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j34_idbql = 0;
-   var $j34_setor = null;
-   var $j34_quadra = null;
-   var $j34_lote = null;
-   var $j34_area = 0;
-   var $j34_bairro = 0;
-   var $j34_areal = 0;
-   var $j34_totcon = 0;
-   var $j34_zona = 0;
-   var $j34_quamat = 0;
-   var $j34_areapreservada = 0;
+   public $j34_idbql = 0;
+   public $j34_setor = null;
+   public $j34_quadra = null;
+   public $j34_lote = null;
+   public $j34_area = 0;
+   public $j34_bairro = 0;
+   public $j34_areal = 0;
+   public $j34_totcon = 0;
+   public $j34_zona = 0;
+   public $j34_quamat = 0;
+   public $j34_areapreservada = 0;
+   public $j34_areaprivativa = 0;
+   public $j34_areausocomum = 0;
+   public $j34_zonadesurb = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j34_idbql = int4 = Cód. Lote
                  j34_setor = char(4) = Setor
                  j34_quadra = char(4) = Quadra
@@ -66,15 +69,18 @@ class cl_lote {
                  j34_zona = int8 = Zona Fiscal
                  j34_quamat = int4 = Matrículas cadastradas
                  j34_areapreservada = float8 = Area Preservada
+                 j34_areaprivativa = float8 = Área Privativa
+                 j34_areausocomum = float8 = Área Uso Comun
+                 j34_zonadesurb = int4 = Zona Des. Urbano
                  ";
    //funcao construtor da classe
-   function cl_lote() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lote");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +89,7 @@ class cl_lote {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j34_idbql = ($this->j34_idbql == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_idbql"]:$this->j34_idbql);
        $this->j34_setor = ($this->j34_setor == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_setor"]:$this->j34_setor);
@@ -96,12 +102,15 @@ class cl_lote {
        $this->j34_zona = ($this->j34_zona == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_zona"]:$this->j34_zona);
        $this->j34_quamat = ($this->j34_quamat == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_quamat"]:$this->j34_quamat);
        $this->j34_areapreservada = ($this->j34_areapreservada == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_areapreservada"]:$this->j34_areapreservada);
+       $this->j34_areaprivativa = ($this->j34_areaprivativa == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_areaprivativa"]:$this->j34_areaprivativa);
+       $this->j34_areausocomum = ($this->j34_areausocomum == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_areausocomum"]:$this->j34_areausocomum);
+       $this->j34_zonadesurb = ($this->j34_zonadesurb == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_zonadesurb"]:$this->j34_zonadesurb);
      }else{
        $this->j34_idbql = ($this->j34_idbql == ""?@$GLOBALS["HTTP_POST_VARS"]["j34_idbql"]:$this->j34_idbql);
      }
    }
    // funcao para inclusao
-   function incluir ($j34_idbql){
+   public function incluir ($j34_idbql){
       $this->atualizacampos();
      if($this->j34_setor == null ){
        $this->erro_sql = " Campo Setor nao Informado.";
@@ -169,6 +178,25 @@ class cl_lote {
      if($this->j34_areapreservada == null ){
        $this->j34_areapreservada = "0";
      }
+
+     if($this->j34_areaprivativa == null ){
+       $this->erro_sql = " Campo Área Privativa M2 nao Informado.";
+       $this->erro_campo = "j34_areaprivativa";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+
+     if($this->j34_areausocomum == null ){
+       $this->j34_areausocomum = "0";
+     }
+
+     if($this->j34_zonadesurb == null ){
+       $this->j34_zonadesurb = "null";
+     }
+
      if($j34_idbql == "" || $j34_idbql == null ){
        $result = db_query("select nextval('lote_j34_idbql_seq')");
        if($result==false){
@@ -213,6 +241,9 @@ class cl_lote {
                                       ,j34_zona
                                       ,j34_quamat
                                       ,j34_areapreservada
+                                      ,j34_areaprivativa
+                                      ,j34_areausocomum
+                                      ,j34_zonadesurb
                        )
                 values (
                                 $this->j34_idbql
@@ -226,6 +257,9 @@ class cl_lote {
                                ,$this->j34_zona
                                ,$this->j34_quamat
                                ,$this->j34_areapreservada
+                               ,$this->j34_areaprivativa
+                               ,$this->j34_areausocomum
+                               ,$this->j34_zonadesurb
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -268,11 +302,14 @@ class cl_lote {
        $resac = db_query("insert into db_acount values($acount,19,2380,'','".AddSlashes(pg_result($resaco,0,'j34_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,19,2533,'','".AddSlashes(pg_result($resaco,0,'j34_quamat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,19,15148,'','".AddSlashes(pg_result($resaco,0,'j34_areapreservada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,19,1015681,'','".AddSlashes(pg_result($resaco,0,'j34_areaprivativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,19,1015682,'','".AddSlashes(pg_result($resaco,0,'j34_areausocomum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,19,1015683,'','".AddSlashes(pg_result($resaco,0,'j34_zonadesurb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
    // funcao para alteracao
-   function alterar ($j34_idbql=null) {
+   public function alterar ($j34_idbql=null) {
       $this->atualizacampos();
      $sql = " update lote set ";
      $virgula = "";
@@ -341,6 +378,44 @@ class cl_lote {
          return false;
        }
      }
+
+     if(trim($this->j34_areausocomum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areausocomum"])){
+       $sql  .= $virgula." j34_areausocomum = $this->j34_areausocomum ";
+       $virgula = ",";
+       if(trim($this->j34_areausocomum) == null ){
+         $this->erro_sql = " Campo Área Comum M2 nao Informado.";
+         $this->erro_campo = "j34_areausocomum";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+
+     if(trim($this->j34_areaprivativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areaprivativa"])){
+       $sql  .= $virgula." j34_areaprivativa = $this->j34_areaprivativa ";
+       $virgula = ",";
+       if(trim($this->j34_areaprivativa) == null ){
+         $this->erro_sql = " Campo Área Privativa M2 nao Informado.";
+         $this->erro_campo = "j34_areaprivativa";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+
+     if(trim($this->j34_zonadesurb) != null){
+       $sql  .= $virgula." j34_zonadesurb = '$this->j34_zonadesurb' ";
+       $virgula = ","; 
+     }else{
+       $sql  .= $virgula." j34_zonadesurb = null ";
+       $virgula = ","; 
+     }
+       
+
      if(trim($this->j34_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_bairro"])){
        $sql  .= $virgula." j34_bairro = $this->j34_bairro ";
        $virgula = ",";
@@ -428,7 +503,16 @@ class cl_lote {
            $resac = db_query("insert into db_acount values($acount,19,2533,'".AddSlashes(pg_result($resaco,$conresaco,'j34_quamat'))."','$this->j34_quamat',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j34_areapreservada"]) || $this->j34_areapreservada != "")
            $resac = db_query("insert into db_acount values($acount,19,15148,'".AddSlashes(pg_result($resaco,$conresaco,'j34_areapreservada'))."','$this->j34_areapreservada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j34_areausocomum"]) || $this->j34_areausocomum != "")
+           $resac = db_query("insert into db_acount values($acount,19,1015682,'".AddSlashes(pg_result($resaco,$conresaco,'j34_areausocomum'))."','$this->j34_areausocomum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j34_areaprivativa"]) || $this->j34_areaprivativa != "")
+           $resac = db_query("insert into db_acount values($acount,19,1015681,'".AddSlashes(pg_result($resaco,$conresaco,'j34_areaprivativa'))."','$this->j34_areaprivativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j34_zonadesurb"]) || $this->j34_zonadesurb != "")
+           $resac = db_query("insert into db_acount values($acount,19,1015683,'".AddSlashes(pg_result($resaco,$conresaco,'j34_zonadesurb'))."','$this->j34_zonadesurb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+
+          
+
+        }
      }
      $result = db_query($sql);
      if($result==false){
@@ -463,7 +547,7 @@ class cl_lote {
      }
    }
    // funcao para exclusao
-   function excluir ($j34_idbql=null,$dbwhere=null) {
+   public function excluir ($j34_idbql=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j34_idbql));
      }else{
@@ -486,6 +570,9 @@ class cl_lote {
          $resac = db_query("insert into db_acount values($acount,19,2380,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,19,2533,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_quamat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,19,15148,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_areapreservada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,19,1015681,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_areaprivativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,19,1015682,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_areausocomum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,19,1015683,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_zonadesurb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from lote
@@ -534,7 +621,7 @@ class cl_lote {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -557,10 +644,10 @@ class cl_lote {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -584,7 +671,7 @@ class cl_lote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -594,10 +681,10 @@ class cl_lote {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -618,7 +705,7 @@ class cl_lote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -627,10 +714,10 @@ class cl_lote {
      }
      return $sql;
   }
-   function sql_query_refant ( $j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_refant ( $j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -659,7 +746,7 @@ class cl_lote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
@@ -670,10 +757,10 @@ class cl_lote {
     return $sql;
   }
 
-  function sql_query_loteloc($j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_loteloc($j34_idbql=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -700,7 +787,7 @@ class cl_lote {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -710,7 +797,7 @@ class cl_lote {
 		return $sql;
   }
 
-  function sql_query_lote($iCodigoLote) {
+  public function sql_query_lote($iCodigoLote) {
 
     $sSql  = "select lote.j34_setor,                                                      ";
     $sSql .= "       setor.j30_descr,                                                     ";
@@ -724,6 +811,9 @@ class cl_lote {
     $sSql .= "       lote.j34_zona,                                                       ";
     $sSql .= "       lote.j34_quamat,                                                     ";
     $sSql .= "       lote.j34_areapreservada,                                             ";
+    $sSql .= "       lote.j34_areaprivativa,                                              ";
+    $sSql .= "       lote.j34_areausocomum,                                               ";
+    $sSql .= "       lote.j34_zonadesurb,                                                 ";
     $sSql .= "       lote.j34_idbql,                                                      ";
     $sSql .= "       ruas.j14_codigo,                                                     ";
     $sSql .= "       ruas.j14_nome,                                                       ";
@@ -767,12 +857,12 @@ class cl_lote {
   }
 
 
-  function sql_query_dados_lote ($j34_idbql = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_dados_lote ($j34_idbql = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -808,7 +898,7 @@ class cl_lote {
     if ($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -817,6 +907,45 @@ class cl_lote {
         $virgula = ",";
       }
     }
+    return $sql;
+  }
+
+  public function sql_query_construcoesLote($lote, $codigosAreaIrregular = [])
+  {
+    $sqlBuscaAreaIrregular = "true";
+
+    if (count($codigosAreaIrregular) > 0) {
+      $codigosCaracteristicas = implode(',',$codigosAreaIrregular);
+      $sqlBuscaAreaIrregular = "(
+        (
+            select
+                count(j48_caract)
+            from
+                carconstr
+                inner join caracter ON caracter.j31_codigo = carconstr.j48_caract
+            where
+                carconstr.j48_idcons = iptuconstr.j39_idcons
+                and carconstr.j48_matric = iptuconstr.j39_matric
+                and j48_caract in ($codigosCaracteristicas)
+          ) = 0
+        )";
+    }
+
+    $sql = "
+    select
+        $sqlBuscaAreaIrregular as regular,
+        iptubase.j01_matric,
+        iptuconstr.*
+    from
+        lote
+        inner join iptubase ON iptubase.j01_idbql = lote.j34_idbql
+        inner join iptuconstr ON iptuconstr.j39_matric = iptubase.j01_matric
+    where
+        iptubase.j01_baixa is null
+        and iptuconstr.j39_dtdemo is null
+        and lote.j34_idbql = $lote
+    ";
+
     return $sql;
   }
 }

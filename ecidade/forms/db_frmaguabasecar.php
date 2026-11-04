@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,15 +53,15 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tx30_matric?>">
-       <?
+       <?php
        db_ancora(@$Lx30_matric,"js_pesquisax30_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x30_matric',10,$Ix30_matric,true,'text',$db_opcao," onchange='js_pesquisax30_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('x01_numcgm',10,$Ix01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -71,7 +71,7 @@ db_input('x01_numcgm',10,$Ix01_numcgm,true,'text',3,'')
        <?=@$Lx30_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('x30_codigo',10,$Ix30_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('x30_codigo',10,$Ix30_codigo,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 //$chavepri= array("x30_codigo"=>@$x30_codigo,"x30_matric"=>@$x30_matric);
 	 $chavepri= array("x30_matric"=>@$x30_matric);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;

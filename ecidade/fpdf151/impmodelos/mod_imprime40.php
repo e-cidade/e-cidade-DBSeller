@@ -1,4 +1,4 @@
-<?
+<?php
 $this->objpdf->AliasNbPages();
 $this->objpdf->AddPage();
 
@@ -90,8 +90,8 @@ if (pg_numrows($result_impusu) > 0) {
   }
 }
 $sqlproc = "select coddepto,descrdepto,p51_descr
-	   		from andpadrao 
-				  inner join db_depart on coddepto = p53_coddepto 
+	   		from andpadrao
+				  inner join db_depart on coddepto = p53_coddepto
 				  inner join tipoproc on p51_codigo = p53_codigo where p53_codigo = ".$this->p58_codigo ."
         order by p53_ordem limit 1
         ";
@@ -136,7 +136,7 @@ if ($this->result_vars != ""){
 	   $imprime_str .= ucfirst($rotulo).": ".$conteudo.$separador;
   }
 
-  $linha = split("-",$imprime_str);
+  $linha =explode("-",$imprime_str);
   $this->objpdf->multicell(185, 5, $imprime_str,0,1,"L");
 }
 

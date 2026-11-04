@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,8 +52,16 @@ $cliframe_seleciona = new cl_iframe_seleciona;
                     <?php echo  @$Lo49_data ?>
                 </td>
                 <td>
-                    <?php db_inputdata('o49_data', @$o49_data_dia, @$o49_data_mes, @$o49_data_ano, true, 'text', $db_opcao,
-                        "") ?>
+                    <?php db_inputdata(
+                        'o49_data',
+                        @$o49_data_dia,
+                        @$o49_data_mes,
+                        @$o49_data_ano,
+                        true,
+                        'text',
+                        $db_opcao,
+                        ""
+                    ) ?>
                 </td>
             </tr>
             <tr>
@@ -78,10 +86,10 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </table>
     </fieldset>
 
-  <?php if (isset($o39_codproj) && $o39_codproj !=""){  ?>
+  <?php if (isset($o39_codproj) && $o39_codproj !="") {  ?>
    <input type="button" value="Processar" onclick="js_processarSuplementacao();">
    <input type=hidden name="Processar" value="Processar">
- <?php  }  ?>
+  <?php  }  ?>
 
  </form>
 <script>
@@ -105,7 +113,7 @@ function js_pesquisao39_codproj(mostra){
 function js_mostraprojeto(chave,erro){
    <?php
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave; ";
-   ?>
+    ?>
    db_iframe_orcprojeto.hide();
 }
 function js_initGrid() {

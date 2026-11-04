@@ -52,13 +52,13 @@ class cl_benslote {
                  t43_bem = int8 = Código do bem 
                  ";
    //funcao construtor da classe 
-   function cl_benslote() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benslote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_benslote {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t43_codigo = ($this->t43_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["t43_codigo"]:$this->t43_codigo);
        $this->t43_codlote = ($this->t43_codlote == ""?@$GLOBALS["HTTP_POST_VARS"]["t43_codlote"]:$this->t43_codlote);
@@ -77,7 +77,7 @@ class cl_benslote {
      }
    }
    // funcao para inclusao
-   function incluir ($t43_codigo){ 
+   public function incluir ($t43_codigo){ 
       $this->atualizacampos();
      if($this->t43_codlote == null ){ 
        $this->erro_sql = " Campo Código do lote nao Informado.";
@@ -176,7 +176,7 @@ class cl_benslote {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($t43_codigo=null) { 
+   public function alterar ($t43_codigo=null) { 
       $this->atualizacampos();
      $sql = " update benslote set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_benslote {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($t43_codigo=null,$dbwhere=null) { 
+   public function excluir ($t43_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t43_codigo));
      }else{ 
@@ -334,7 +334,7 @@ class cl_benslote {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,7 +356,7 @@ class cl_benslote {
       }
      return $result;
    }
-   function sql_query ( $t43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $t43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -395,7 +395,7 @@ class cl_benslote {
      }
      return $sql;
   }
-   function sql_query_file ( $t43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

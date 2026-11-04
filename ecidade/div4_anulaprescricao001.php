@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $instit = db_getsession("DB_instit");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -72,12 +72,12 @@ $instit = db_getsession("DB_instit");
 	<table class="form-container">
   	  <tr>
   	    <td nowrap title="<?=@$Tk60_codigo?>" >
-  	      <?
+  	      <?php
   	        db_ancora('<b>Lista de débitos : </b>',"js_pesquisalista(true);",4)
   	      ?>
   	    </td>
   	    <td>
-  	      <?
+  	      <?php
   	        db_input('k60_codigo',10,$Ik60_codigo,true,'text',4,"onchange='js_pesquisalista(false);'");
   	        db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
   	      ?>
@@ -87,7 +87,7 @@ $instit = db_getsession("DB_instit");
         <td colspan="2" >
           <fieldset class="separator">
             <legend><?=@$Lk31_obs?></legend> 
-              <? 
+              <?php 
                 db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") 
               ?>
           </fieldset>
@@ -173,7 +173,7 @@ function js_mostralista1(chave1,chave2){
 }
 </script>  
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

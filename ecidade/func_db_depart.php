@@ -44,6 +44,21 @@ $cldb_config->rotulo->label("codigo");
 $clorcorgao->rotulo->label("o40_descr");
 
 /**
+ * Verifica se foi inserido o parâmetro automático na URL e altera o parâmetro
+ * da função db_lovrot para permitir alteração de departamento entre instituições
+ * com apenas um departamento
+ * 
+ * Exemplo: &automatico=0
+ * 
+ * @var int|bool $automatico
+ */
+if (isset($automatico)) {
+    $automatico = (bool) $automatico;
+} else {
+    $automatico = true;
+}
+
+/**
  * Variável do post para filtrar por múltiplos órgãos
  */
 if (!empty($_POST['filtrar_ids_orgao'])) {
@@ -68,8 +83,8 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
             if (isset($todasinstit) and $todasinstit == 1) {
                 ?>
               <tr>
-                <td width="4%" align="right" nowrap title="<?= $Tcodigo ?>">
-                    <?= $Lcodigo ?>
+                <td width="4%" align="right" nowrap title="<?php echo $Tcodigo ?>">
+                    <?php echo $Lcodigo ?>
                 </td>
                 <td width="96%" align="left" nowrap>
                     <?php
@@ -82,13 +97,13 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                     ?>
                 </td>
               </tr>
-                <?
+                <?php
             }
             ?>
-          
-            <?php if (empty($_GET['ids_orgao'])) { ?>
+
+            <?php if (empty($_GET['ids_orgao'])) : ?>
                 <tr>
-                    <td width="4%" align="right" nowrap title="<?= $To40_descr ?>">
+                    <td width="4%" align="right" nowrap title="<?php echo $To40_descr ?>">
                         <b>Órgão:</b>
                     </td>
                     <td width="96%" align="left" nowrap>
@@ -108,10 +123,10 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                         ?>
                     </td>
                 </tr>
-            <?php } ?> 
+            <?php endif ?>
 
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $To40_descr ?>">
+            <td width="4%" align="right" nowrap title="<?php echo $To40_descr ?>">
                 <b>Unidade:</b>
             </td>
             <td width="96%" align="left" nowrap>
@@ -122,17 +137,20 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                     $instit = $instituicao;
                 }
 
+                $sql = "";
                 if (isset($orgao) && $orgao != 0) {
                     $idsOrgaos = !empty($_GET['ids_orgaos']) ? $_GET['ids_orgaos'] : $orgao;
 
-                    $resultunidade = $clorcunidade->sql_record($clorcunidade->sql_query(null, null, null,
-                      "distinct o41_orgao||'.'||o41_unidade , o41_descr", '',
-                      "o41_instit=$instit and o41_anousu=$anousu and o41_orgao in ($idsOrgaos) "));
+                    $sql = $clorcunidade->sql_query(null, null, null,
+                    "distinct o41_orgao||'.'||o41_unidade , o41_descr", '',
+                    "o41_instit=$instit and o41_anousu=$anousu and o41_orgao in ($idsOrgaos) ");
                 } else {
-                    $resultunidade = $clorcunidade->sql_record($clorcunidade->sql_query(null, null, null,
-                      "distinct o41_orgao||'.'||o41_unidade,o41_descr, o41_orgao, o41_unidade",
-                      'o41_orgao, o41_unidade', "o41_instit=$instit and o41_anousu=$anousu"));
+                    $sql = $clorcunidade->sql_query(null, null, null,
+                        "distinct o41_orgao||'.'||o41_unidade,o41_descr, o41_orgao, o41_unidade",
+                      'o41_orgao, o41_unidade', "o41_instit=$instit and o41_anousu=$anousu");
                 }
+
+                $resultunidade = $clorcunidade->sql_record($sql);
 
                 if ($resultunidade) {
                     db_selectrecord('unidade', $resultunidade, true, 1, "", "", "", "0-Todos", "js_unidade()");
@@ -143,8 +161,8 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
 
 
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $Tcoddepto ?>">
-                <?= $Lcoddepto ?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tcoddepto ?>">
+                <?php echo $Lcoddepto ?>
             </td>
             <td width="96%" align="left" nowrap>
                 <?php
@@ -153,8 +171,8 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
             </td>
           </tr>
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $Tdescrdepto ?>">
-                <?= $Ldescrdepto ?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tdescrdepto ?>">
+                <?php echo $Ldescrdepto ?>
             </td>
             <td width="96%" align="left" nowrap>
                 <?php
@@ -209,7 +227,6 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                                  from db_depusu
                                 where db_depusu.coddepto   = db_depart.coddepto
                                   and db_depusu.id_usuario = {$depusu} limit 1 )";
-
         }
 
         if (isset($lSomenteAtivos)) {
@@ -284,13 +301,13 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                             $sWhere = $where . "(limite is null or limite >= '" . date("Y-m-d",
                                 db_getsession("DB_datausu")) . "') ";
                             $sql = $cldb_depart->sql_query("", $campos, "coddepto", $sWhere . $whereGeral);
-                        
                         }
                     }
+                    //die($sql);
                 }
             }
-            
-            db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), true);
+
+            db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), $automatico);
         } else {
             if ($pesquisa_chave != null && $pesquisa_chave != "") {
                 if (isset($unidades) && $unidades != "") {
@@ -300,7 +317,7 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                 $sWhere = "coddepto = $pesquisa_chave $whereGeral and (limite is null or limite >= '" . date("Y-m-d",
                     db_getsession("DB_datausu")) . "')";
 
-                if ($_GET['ids_orgao']) {
+                if (isset($_GET['ids_orgao']) && !empty($_GET['ids_orgao'])) {
                     $sWhere .= "AND o40_orgao IN ({$_GET['ids_orgao']})";
                 }
                 
@@ -333,7 +350,7 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
   const idsOrgaoGet = '<?php echo $_GET['ids_orgao']; ?>';
   const idsOrgaoPost = '<?php echo $_POST['filtrar_ids_orgao']; ?>';
   const orgaosElem = document.getElementById('filtrar_ids_orgao');
-    
+
   /**
    * Seta os órgãos para serem enviados para o POST.
    * A condição !idsOrgaoPost é para evitar loop.

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clabatimentoarreckeyarrecadcompos->rotulo->label("k129_arrecadcompos");
               <?=$Lk129_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k129_sequencial",10,$Ik129_sequencial,true,"text",4,"","chave_k129_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clabatimentoarreckeyarrecadcompos->rotulo->label("k129_arrecadcompos");
               <?=$Lk129_arrecadcompos?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k129_arrecadcompos",10,$Ik129_arrecadcompos,true,"text",4,"","chave_k129_arrecadcompos");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clabatimentoarreckeyarrecadcompos->rotulo->label("k129_arrecadcompos");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_abatimentoarreckeyarrecadcompos.php")==true){
@@ -122,12 +122,12 @@ $clabatimentoarreckeyarrecadcompos->rotulo->label("k129_arrecadcompos");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

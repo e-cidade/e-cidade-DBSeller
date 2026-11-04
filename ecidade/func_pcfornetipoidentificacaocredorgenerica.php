@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpcfornetipoidentificacaocredorgenerica->rotulo->label("c26_pcforne");
               <?=$Lc26_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c26_sequencial",10,$Ic26_sequencial,true,"text",4,"","chave_c26_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpcfornetipoidentificacaocredorgenerica->rotulo->label("c26_pcforne");
               <?=$Lc26_pcforne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c26_pcforne",10,$Ic26_pcforne,true,"text",4,"","chave_c26_pcforne");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpcfornetipoidentificacaocredorgenerica->rotulo->label("c26_pcforne");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcfornetipoidentificacaocredorgenerica.php")==true){
@@ -122,12 +122,12 @@ $clpcfornetipoidentificacaocredorgenerica->rotulo->label("c26_pcforne");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -89,13 +89,13 @@ if (isset($lEncerrados) && $lEncerrados == 0) {
 
                 <input name="chave_e60_codemp" size="12" type='text'  onKeyPress="return js_mascara(event);" >
                 <?=$Le60_numemp?>
-                <? db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
+                <?php db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
               </td>
             </tr>
             <tr>
               <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
               <td width="96%" align="left" nowrap>
-                <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+                <?php db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
               </td>
             </tr>
             <tr>
@@ -111,7 +111,7 @@ if (isset($lEncerrados) && $lEncerrados == 0) {
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
+        <?php
         /* [Extensão] - Filtro da Despesa */
 
         if(!isset($pesquisa_chave)){
@@ -136,7 +136,7 @@ if (isset($lEncerrados) && $lEncerrados == 0) {
             $sql = $clemppresta->sql_query_depto(null,$campos,"e45_numemp","$dbwhere and e45_numemp = {$chave_e60_numemp} {$sWhereComplementar}");
           }else if(isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="") ){
 
-            $arr = split("/",$chave_e60_codemp);
+            $arr =explode("/",$chave_e60_codemp);
             if (count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
               $dbwhere_ano = " and e60_anousu = ".$arr[1];
             }else{
@@ -175,12 +175,12 @@ if (isset($lEncerrados) && $lEncerrados == 0) {
   </table>
   </body>
   </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?
+<?php
 }
 ?>
 <script type="text/javascript">

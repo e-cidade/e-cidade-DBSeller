@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -62,7 +62,7 @@ if ( isset($_POST['periodosvencidosate']) ) {
   $sPeriodosvencidosate = $_POST['periodosvencidosate'];
 }
 if ( isset($_POST['periodoaquisitivo']) ) {
-  $iPeriodoaquisitivo     = $_POST['periodoaquisitivo'];	
+  $iPeriodoaquisitivo     = $_POST['periodoaquisitivo'];
 }
 
 $anofolha = db_anofolha();
@@ -74,7 +74,7 @@ if(isset($semdireito)){
   if($clrhpessoal->numrows > 0){
     db_fieldsmemory($result_cgm, 0);
   }
-  
+
   //echo $semdireito;
   //die();
 
@@ -110,17 +110,17 @@ if(isset($semdireito)){
   $matriz2[11] = 0;
   $matriz2[12] = db_val( db_substr($subpes,1,4));
   $matriz2[13] = db_val( db_substr($subpes,6,2));
-  
+
 
   if ($r30_faltas != null && $r30_obs == null) {
-  	
+
   	$matriz2[14] = "Perda de direito por excesso de faltas";
-  	
+
   } else {
-  	
+
   	$matriz2[14] = $r30_obs;
   }
-  
+
   $result_insert = db_insert( "cadferia", $matriz1, $matriz2, false);
   db_fim_transacao();
   $r30_faltas = "";
@@ -128,9 +128,9 @@ if(isset($semdireito)){
 
 
 
-if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (isset($campomatriculas) && 
+if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (isset($campomatriculas) &&
                                                 trim($campomatriculas) != "") || isset($ultmatric) || isset($proximo)) {
-  
+
 
 
    $oCompetencia = DBPessoal::getCompetenciaFolha();
@@ -141,12 +141,12 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
     */
    $oDaoRubricaEspecial         = new cl_cfpess();
    $sCampos                     = "r11_feradi";
-   $sSqlRubricasEspeciaisFerias = $oDaoRubricaEspecial->sql_query_file($oCompetencia->getAno(), 
-                                                                       $oCompetencia->getMes(), 
-                                                                       $oInstituicao->getCodigo(), 
+   $sSqlRubricasEspeciaisFerias = $oDaoRubricaEspecial->sql_query_file($oCompetencia->getAno(),
+                                                                       $oCompetencia->getMes(),
+                                                                       $oInstituicao->getCodigo(),
                                                                        $sCampos);
    $rsRubricasEspeciaisFerias    = $oDaoRubricaEspecial->sql_record($sSqlRubricasEspeciaisFerias);
-   
+
    if ($rsRubricasEspeciaisFerias && $oDaoRubricaEspecial->numrows > 0) {
      $oDadosRubricasFerias = db_utils::fieldsMemory($rsRubricasEspeciaisFerias, 0);
 
@@ -155,7 +155,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
        db_redireciona('pes4_cadferia001.php');
      }
    }
- 
+
 
   if((isset($enviar_selecao) && !isset($campomatriculas)) || isset($ultmatric) || isset($proximo)) {
     $retorno = 'true';
@@ -176,15 +176,15 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
       $sMensagem = "";
       if (isset($filtraferiasprocessadas) && $filtraferiasprocessadas == 2) {
         $sMensagem = "- Não estão sendo considerados servidores que já possuem cadastro de férias em Lote.";
-        $r44_where .= " and not exists (select 1 ";  
-        $r44_where .= "                  from rhcadastroferiaslote ";    
+        $r44_where .= " and not exists (select 1 ";
+        $r44_where .= "                  from rhcadastroferiaslote ";
         $r44_where .= "                 where rh93_mesusu  = {$mesfolha}  ";
-        $r44_where .= "                   and rh93_anousu = {$anofolha} ";    
-        $r44_where .= "                   and rh93_regist   = rh01_regist ";  
-        $r44_where .= "                )";        
+        $r44_where .= "                   and rh93_anousu = {$anofolha} ";
+        $r44_where .= "                   and rh93_regist   = rh01_regist ";
+        $r44_where .= "                )";
       }
       /*
-       * nova verificação, conforme a seleção do usuário no filtro periodoaquisitivo.  
+       * nova verificação, conforme a seleção do usuário no filtro periodoaquisitivo.
        * Essa verificação so deverá ocorrer caso o campo o periodosvencidosate seja diferente de 3.
        */
       if ($iPeriodoaquisitivo != 3 || $iPeriodoaquisitivo != '3') {
@@ -197,11 +197,11 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
       		$sPeriodosvencidosate = date('Y-m-d', db_getsession('DB_datausu'));
       	}
       	/*
-      	 * Para verificar quais funcionários possuem periodos aquisitivos vencidos, utilizamos a 
-      	 * função funcionarioferiasvencidas (libs/db_libpessoal.php),onde passamos como parâmetro a data 
-      	 * que queremos verificar o período aquisitivo vencido. O retorno dessa função é uma coleção de objetos. 
-      	 * A propriedade que interessa para a validação da função, 
-      	 * é a propriedade matricula. Criamos uma string, separada por virgula, de todas as matrículas que 
+      	 * Para verificar quais funcionários possuem periodos aquisitivos vencidos, utilizamos a
+      	 * função funcionarioferiasvencidas (libs/db_libpessoal.php),onde passamos como parâmetro a data
+      	 * que queremos verificar o período aquisitivo vencido. O retorno dessa função é uma coleção de objetos.
+      	 * A propriedade que interessa para a validação da função,
+      	 * é a propriedade matricula. Criamos uma string, separada por virgula, de todas as matrículas que
       	 */
       	//$sWhereTeste = "rh01_regist in(1861, 1862, 1863) ";
       	$aFuncionarios      = funcionarioferiasvencidas($sPeriodosvencidosate);
@@ -209,43 +209,43 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
       	$sListaFuncionarios = "";
 
         foreach ($aFuncionarios as $sListaIndice => $sListaValor ) {
-        	
+
           if ( count($sListaValor->periodosvencidos) > 0 ) {
-          	
+
             $sListaFuncionarios .=  $sVirgula.$sListaValor -> matricula;
-            $sVirgula = ", ";           
+            $sVirgula = ", ";
           }
-    
+
         }
       	/*
-      	 * retornaram na chamada da função. Com essa string criamos uma cláusula where conforme o 
+      	 * retornaram na chamada da função. Com essa string criamos uma cláusula where conforme o
          * valor escolhido no campo  periodosvencidosate.
       	 */
       	switch ($iPeriodoaquisitivo) {
-      		
+
       		case 1 :
-      			
+
       			$sWereListaFuncionarios = " and rh01_regist in ({$sListaFuncionarios}) ";
 
       		break;
 
           case 2 :
-       	
+
             $sWereListaFuncionarios = " and rh01_regist not in ({$sListaFuncionarios}) ";
-            
-          break;      		
-      		
+
+          break;
+
       	}
-      	
+
       }
-      
-      
+
+
       /**
        * verificamos se as ferias já estão cadastradas no lote.
        * caso não esteja, incluimos.
        */
       if (isset($ultmatric) && trim($ultmatric) != "") {
-        
+
         $sWhere      = "rh93_mesusu = {$mesfolha} and rh93_anousu = {$anofolha} and rh93_regist = {$ultmatric}";
         $sSqlNoLote  = $oDaoFeriasLote->sql_query_file(null,"rh93_sequencial", null, $sWhere);
         $rsNoLote    = $oDaoFeriasLote->sql_record($sSqlNoLote);
@@ -255,8 +255,8 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
           $oDaoFeriasLote->rh93_mesusu     = $mesfolha;
           $oDaoFeriasLote->rh93_processado = "true";
           $oDaoFeriasLote->rh93_regist     = $ultmatric;
-          $oDaoFeriasLote->incluir(null); 
-          
+          $oDaoFeriasLote->incluir(null);
+
         }
       }
       include(modification("libs/db_sql.php"));
@@ -277,17 +277,17 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
       $clsql->usar_afa = true;
       $campomatriculas = "";
       $virgumatriculas = "";
-      
+
       $sql = $clsql->gerador_sql("", $anofolha, $mesfolha, null, null, " rh01_regist ", "rh01_regist", $r44_where.$sWereListaFuncionarios);
 
       $result = $clsql->sql_record($sql) or die("Erro no SQL: $sql");
       if ($clsql->numrows_exec > 0) {
-      	
+
         for ($i=0; $i<$clsql->numrows_exec; $i++) {
-        	
+
           db_fieldsmemory($result, $i);
           if ($i > 0) {
-          	
+
             $campomatriculas .= $virgumatriculas . $rh01_regist;
             $virgumatriculas  = ",";
           } else {
@@ -295,40 +295,40 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
           }
         }
       } else {
-      	
+
         if(!isset($ultmatric)) {
       	  db_msgbox("Aviso:\\nNão foram encontradas matriculas para cadastrar as férias em lote.\\n\\n$sMensagem");
         }
 
-      	db_redireciona("pes4_cadferialote001.php");  
+      	db_redireciona("pes4_cadferialote001.php");
       }
 
     } else {
-    	
+
       $r30_regist = "";
       $z01_nome   = "";
       $nexistsele = true;
     }
-    
+
   } else if ( isset($campomatriculas) && trim($campomatriculas) != "" ) {
-  	
+
     $retorno = 'true';
-    $arr_matriculas = split(",", $campomatriculas);
+    $arr_matriculas =explode(",", $campomatriculas);
     $r30_regist = array_shift($arr_matriculas);
     $campomatriculas = implode(",", $arr_matriculas);
   }
   if (isset($r30_regist) && $nexistsele == false) {
-  	
+
     $result_rescisao = $clrhpesrescisao->sql_record($clrhpesrescisao->sql_query_ngeraferias(null,"*","",
                                   "rh02_regist = $r30_regist and rh02_anousu = $anofolha and rh02_mesusu = $mesfolha"));
     if($clrhpesrescisao->numrows > 0){
       $rescindido = true;
     } else {
-    	
+
       $result_admissao = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgm($r30_regist,"z01_nome,z01_numcgm,rh01_admiss"));
-      
+
       if ($clrhpessoal->numrows > 0) {
-      	
+
         db_fieldsmemory($result_admissao, 0);
         $nexistfunc = false;
       }
@@ -337,10 +337,10 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
                                                  $clcadferia->sql_query_file(
                                                                              null,
                                                                              "
-                                                                              r30_regist,r30_obs, r30_perai, r30_peraf, 
+                                                                              r30_regist,r30_obs, r30_perai, r30_peraf,
                                                                               r30_faltas, r30_ndias, r30_abono,
-                                                                              r30_proc1, r30_proc2, r30_per1i, 
-                                                                              r30_per2i, r30_per1f, r30_per2f, 
+                                                                              r30_proc1, r30_proc2, r30_per1i,
+                                                                              r30_per2i, r30_per1f, r30_per2f,
                                                                               r30_dias1, r30_dias2,
                                                                               case when r30_proc1 = '".$anofolha."/".$mesfolha."'
                                                                                    then '1' else '0'
@@ -352,7 +352,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
                                                                                    then '1' else '0'
                                                                               end as proc1d,
                                                                               case when r30_proc2d = '".$anofolha."/".$mesfolha."'
-                                                                                   then '1' else '0' 
+                                                                                   then '1' else '0'
                                                                               end as proc2d,
                                                                               r30_tipoapuracaomedia,
                                                                               r30_periodolivreinicial,
@@ -360,7 +360,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
                                                                              ",
                                                                              "r30_regist,r30_perai desc",
                                                                              "
-                                                                                  r30_anousu = ".$anofolha." 
+                                                                                  r30_anousu = ".$anofolha."
                                                                               and r30_mesusu = ".$mesfolha."
                                                                               and r30_regist = ".$r30_regist
                                                                             )
@@ -380,7 +380,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
           }else{
             $r30_perai = mktime(0,0,0,$r30_peraf_mes,($r30_peraf_dia + 1),$r30_peraf_ano);
             $r30_perai_dia = date("d",$r30_perai);
-            $r30_perai_mes = date("m",$r30_perai); 
+            $r30_perai_mes = date("m",$r30_perai);
             $r30_perai_ano = date("Y",$r30_perai);
 
             $r30_peraf = mktime(0,0,0,$r30_perai_mes,($r30_perai_dia - 1),($r30_perai_ano + 1));
@@ -394,7 +394,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
         if(isset($rh01_admiss)){
           $r30_perai = $rh01_admiss;
           $r30_perai_dia = $rh01_admiss_dia;
-          $r30_perai_mes = $rh01_admiss_mes; 
+          $r30_perai_mes = $rh01_admiss_mes;
           $r30_perai_ano = $rh01_admiss_ano;
 
           $r30_peraf = mktime(0,0,0,$r30_perai_mes,($r30_perai_dia - 1),($r30_perai_ano + 1));
@@ -409,7 +409,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
     }
   }
   if(isset($r44_selec) && trim($r44_selec) != ""){
-    
+
     $r30_per2i     = $perini_ano . "-" . $perini_mes . "-" . $perini_dia;
     $r30_per2f     = $perfim_ano . "-" . $perfim_mes . "-" . $perfim_dia;
     $r30_per2i_dia = $perini_dia;
@@ -451,7 +451,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -459,22 +459,22 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-        <?
+        <?php
         include(modification("forms/db_frmcadferia001.php"));
         ?>
       </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($semdireito)){
   if( ($result_insert == true && trim($retorno) == "") || ($result_insert == true && isset($campomatriculas) )){
     db_msgbox("Inclusão efetuada com sucesso.");

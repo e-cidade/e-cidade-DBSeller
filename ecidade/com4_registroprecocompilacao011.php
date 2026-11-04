@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -95,7 +95,7 @@ $lBtnShowBtnConsulta = false;
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js");
 ?>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -103,7 +103,7 @@ db_app::load("scripts.js, strings.js, prototype.js");
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
  include(modification("forms/db_frmsolicitacompilacaoregistropreco.php"));
 ?>
 </body>

@@ -17,6 +17,11 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
   me.iCodigoSlip                  = null;
   me.lUsaPCASP                    = false;
   me.lRecursoUniao                = false;
+    /**
+     * valores válidos: todas / extras
+     * @type {string}
+     */
+  me.tipoConta                    = 'todas';
   me.lEfetuarPagamento            = false;
   me.iTipoInclusao                = 0;
   me.lImportacao                  = false;
@@ -916,7 +921,7 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     if (lEfetuarPagamento){
       oParam.exec = "efetuarPagamentoSlip";
     }
-    
+
     oParam.lEfetuarPagamento              = lEfetuarPagamento;
     oParam.k17_codigo                     = me.oTxtCodigoSlip.getValue();
     oParam.codigoSlipAux                  = me.oTxtCodigoSlipAux.getValue();
@@ -968,11 +973,9 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     if (oRetorno.status == 1) {
 
       if (confirm(oRetorno.message.urlDecode()+" Deseja emitir o documento?")) {
-
         var iSlip = oRetorno.iCodigoSlip;
-        if (oRetorno.slipAutomatico != "") {
-
-            iSlip += ", " + oRetorno.slipAutomatico;
+        if (oRetorno?.slipAutomatico !== undefined && oRetorno.slipAutomatico !== '') {
+            iSlip += "," + oRetorno.slipAutomatico;
         }
         window.open('cai1_slip003.php?&numslip=' + iSlip, '', 'location=0');
       }
@@ -1097,9 +1100,9 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     var sObjetoTxtConta = "me.oTxtConta" + sFunctionCompleta + "Codigo";
     var oTxtConta       = eval(sObjetoTxtConta);
 
-    var sUrlSaltes = "func_saltesreduz.php?ver_datalimite=1&pesquisa_chave="+oTxtConta.getValue()+"&funcao_js=parent."+me.sNomeInstancia+".preenche"+sFunctionCompleta;
+    var sUrlSaltes = "func_saltesreduz.php?ver_datalimite=1&tipoConta="+me.tipoConta+"&pesquisa_chave="+oTxtConta.getValue()+"&funcao_js=parent."+me.sNomeInstancia+".preenche"+sFunctionCompleta;
     if (lMostra) {
-      sUrlSaltes = "func_saltesreduz.php?ver_datalimite=1&funcao_js=parent."+me.sNomeInstancia+".completa"+sFunctionCompleta+"|k13_reduz|k13_descr";
+      sUrlSaltes = "func_saltesreduz.php?ver_datalimite=1&tipoConta="+me.tipoConta+"&funcao_js=parent."+me.sNomeInstancia+".completa"+sFunctionCompleta+"|k13_reduz|k13_descr";
     }
 
     js_OpenJanelaIframe("", 'db_iframe_'+sIframe, sUrlSaltes, "Pesquisa Contas", lMostra);
@@ -1448,7 +1451,7 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
 
     if(me.importacaoCG){
       sUrlSlip += "&importacaoCG=true";
-      
+
     }
     sUrlSlip += "&funcao_js=parent."+me.sNomeInstancia+".preencheSlip|k17_codigo";
 
@@ -1525,7 +1528,8 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     oParam.exec                = "getDadosTransferencia";
     oParam.k17_codigo          = me.oTxtCodigoSlip.getValue();
     oParam.iCodigoTipoOperacao = me.iTipoTransferencia;
-    
+
+    oParam.importacaoCG = false;
     if(me.importacaoCG){
       oParam.importacaoCG = true;
     }
@@ -1598,7 +1602,7 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     me.pesquisaCaracteristicaPeculiarCredito(false);
 
     if (me.iOpcao == 1 && oRetorno.hasOwnProperty("vinculo")) {
-    
+
       me.setAllFieldsReadOnly();
       me.oTxtContaCreditoCodigo.setReadOnly(false);
       me.setObservacaoReadOnly(false);
@@ -1607,7 +1611,7 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
       $("labelContaCredito").innerHTML = labelCredito;
       $("td_favorecido_"+me.sNomeInstancia).innerHTML = "<b>Favorecido:</b>";
     }
-    
+
   };
 
 
@@ -1633,12 +1637,12 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
 
     let labelCPDebito = "<b><a href='#' onclick='"+me.sNomeInstancia;
     labelCPDebito += ".pesquisaCaracteristicaPeculiarDebito(true);'>C.Peculiar / C.Aplicação:</a></b>";
-    
+
     let labelCPCredito = "<b><a href='#' onclick='"+me.sNomeInstancia;
     labelCPCredito += ".pesquisaCaracteristicaPeculiarCredito(true);'>C.Peculiar / C.Aplicação:</a></b>";
 
     let labelHistorico = "<b><a href='#' onclick='"+me.sNomeInstancia+".pesquisaHistorico(true);'>Histórico:</a></b>";
-    
+
     document.getElementById("labelContaDebito").innerHTML   =  labelContaDebito;
     $("td_cpca_contacredito_"+me.sNomeInstancia).innerHTML  = labelCPCredito;
     $("td_cpca_contadebito_"+me.sNomeInstancia).innerHTML   = labelCPDebito;
@@ -1790,6 +1794,14 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     me.lRecursoUniao = false;
   };
 
+    /**
+     * Aceita os seguintes valores: todas / extras
+     * @param tipoConta
+     */
+  me.filtarContasExtras = function (lSim) {
+      me.tipoConta = lSim ? 'extras' : 'todas';
+  }
+
   me.setEfetuarPagamento = function (lEfetuarPagamento) {
     me.lEfetuarPagamento = lEfetuarPagamento;
     if ( lEfetuarPagamento ) {
@@ -1824,8 +1836,6 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     if(me.iInscricaoPassivo != null) {
       me.ajustaTelaBaixaPagamento();
     }
-
-
   };
 
   /**
@@ -1881,8 +1891,6 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
     oParam.exec   = "verificaRecursoContaReduzida";
     oParam.iConta = me.oTxtContaCreditoCodigo.getValue();
 
-
-
     new Ajax.Request ("con4_planoContas.RPC.php",
         {method: 'post',
           parameters: 'json='+Object.toJSON(oParam),
@@ -1897,8 +1905,6 @@ DBViewSlipPagamento = function(sNomeInstancia, iTipoTransferencia, iOpcao, oDivD
 
             $('tr_finalidadepagamento_credito_'+me.sNomeInstancia).style.display = '';
             me.lFinalidadeDePagamentoFundeb = true;
-            //}
-
           }
         });
 

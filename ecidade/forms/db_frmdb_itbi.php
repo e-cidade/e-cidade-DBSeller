@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("j40_refant");
        <?=@$Lj14_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -52,15 +52,15 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',$db_opcao,"")
        <?=@$Lj34_setor?>
     </td>
     <td> 
-<?
+<?php
 db_input('j34_setor',10,$Ij34_setor,true,'text',$db_opcao,"")
 ?>
        <?=@$Lj34_quadra?>
-<?
+<?php
 db_input('j34_quadra',10,$Ij34_quadra,true,'text',$db_opcao,"")
 ?>
        <?=@$Lj34_lote?>
-<?
+<?php
 db_input('j34_lote',10,$Ij34_lote,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ db_input('j34_lote',10,$Ij34_lote,true,'text',$db_opcao,"")
        <?=@$Lj40_refant?>
     </td>
     <td> 
-<?
+<?php
 db_input('j40_refant',40,$Ij40_refant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -78,12 +78,12 @@ db_input('j40_refant',40,$Ij40_refant,true,'text',$db_opcao,"")
   <tr>
     <td nowrap title="<?=@$Tmatricula?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora($Lmatricula,"js_JanelaAutomatica('iptubase','$j01_matric')",2)
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('matricula',10,$Imatricula,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('matricula',10,$Imatricula,true,'text',$db_opcao,"")
        <?=@$Lareaterreno?>
     </td>
     <td> 
-<?
+<?php
 db_input('areaterreno',10,$Iareaterreno,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('areaterreno',10,$Iareaterreno,true,'text',$db_opcao,"")
        <?=@$Lareaedificada?>
     </td>
     <td> 
-<?
+<?php
 db_input('areaedificada',10,$Iareaedificada,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('areaedificada',10,$Iareaedificada,true,'text',$db_opcao,"")
        <?=@$Lnomecomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('nomecomprador',40,$Inomecomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ db_input('nomecomprador',40,$Inomecomprador,true,'text',$db_opcao,"")
        <?=@$Lcgccpfcomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('cgccpfcomprador',14,$Icgccpfcomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_input('cgccpfcomprador',14,$Icgccpfcomprador,true,'text',$db_opcao,"")
        <?=@$Lenderecocomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('enderecocomprador',40,$Ienderecocomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -143,7 +143,7 @@ db_input('enderecocomprador',40,$Ienderecocomprador,true,'text',$db_opcao,"")
        <?=@$Lmunicipiocomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('municipiocomprador',20,$Imunicipiocomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_input('municipiocomprador',20,$Imunicipiocomprador,true,'text',$db_opcao,"")
        <?=@$Lbairrocomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('bairrocomprador',20,$Ibairrocomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('bairrocomprador',20,$Ibairrocomprador,true,'text',$db_opcao,"")
        <?=@$Lcepcomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('cepcomprador',8,$Icepcomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ db_input('cepcomprador',8,$Icepcomprador,true,'text',$db_opcao,"")
        <?=@$Lufcomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('ufcomprador',2,$Iufcomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -183,7 +183,7 @@ db_input('ufcomprador',2,$Iufcomprador,true,'text',$db_opcao,"")
        <?=@$Ltipotransacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('tipotransacao',20,$Itipotransacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -193,7 +193,7 @@ db_input('tipotransacao',20,$Itipotransacao,true,'text',$db_opcao,"")
        <?=@$Lvalortransacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('valortransacao',10,$Ivalortransacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -203,7 +203,7 @@ db_input('valortransacao',10,$Ivalortransacao,true,'text',$db_opcao,"")
        <?=@$Lcaracteristicas?>
     </td>
     <td> 
-<?
+<?php
 db_input('caracteristicas',20,$Icaracteristicas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -213,7 +213,7 @@ db_input('caracteristicas',20,$Icaracteristicas,true,'text',$db_opcao,"")
        <?=@$Lmfrente?>
     </td>
     <td> 
-<?
+<?php
 db_input('mfrente',10,$Imfrente,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -223,7 +223,7 @@ db_input('mfrente',10,$Imfrente,true,'text',$db_opcao,"")
        <?=@$Lmladodireito?>
     </td>
     <td> 
-<?
+<?php
 db_input('mladodireito',10,$Imladodireito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -233,7 +233,7 @@ db_input('mladodireito',10,$Imladodireito,true,'text',$db_opcao,"")
        <?=@$Lmfundos?>
     </td>
     <td> 
-<?
+<?php
 db_input('mfundos',10,$Imfundos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -243,7 +243,7 @@ db_input('mfundos',10,$Imfundos,true,'text',$db_opcao,"")
        <?=@$Lmladoesquerdo?>
     </td>
     <td> 
-<?
+<?php
 db_input('mladoesquerdo',10,$Imladoesquerdo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -253,7 +253,7 @@ db_input('mladoesquerdo',10,$Imladoesquerdo,true,'text',$db_opcao,"")
        <?=@$Lemail?>
     </td>
     <td> 
-<?
+<?php
 db_input('email',50,$Iemail,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -263,7 +263,7 @@ db_input('email',50,$Iemail,true,'text',$db_opcao,"")
        <?=@$Lobs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('obs',3,50,$Iobs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -273,7 +273,7 @@ db_textarea('obs',3,50,$Iobs,true,'text',$db_opcao,"")
        <?=@$Lliberado?>
     </td>
     <td> 
-<?
+<?php
 db_input('liberado',10,$Iliberado,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -283,7 +283,7 @@ db_input('liberado',10,$Iliberado,true,'text',$db_opcao,"")
        <?=@$Ldatavencimento?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('datavencimento',@$datavencimento_dia,@$datavencimento_mes,@$datavencimento_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -293,7 +293,7 @@ db_inputdata('datavencimento',@$datavencimento_dia,@$datavencimento_mes,@$datave
        <?=@$Laliquota?>
     </td>
     <td> 
-<?
+<?php
 db_input('aliquota',10,$Ialiquota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -303,7 +303,7 @@ db_input('aliquota',10,$Ialiquota,true,'text',$db_opcao,"")
        <?=@$Lid_itbi?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_itbi',10,$Iid_itbi,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -313,7 +313,7 @@ db_input('id_itbi',10,$Iid_itbi,true,'text',$db_opcao,"")
        <?=@$Ldataliber?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dataliber',@$dataliber_dia,@$dataliber_mes,@$dataliber_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -323,7 +323,7 @@ db_inputdata('dataliber',@$dataliber_dia,@$dataliber_mes,@$dataliber_ano,true,'t
        <?=@$Lvaloravaliacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('valoravaliacao',10,$Ivaloravaliacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -333,7 +333,7 @@ db_input('valoravaliacao',10,$Ivaloravaliacao,true,'text',$db_opcao,"")
        <?=@$Lvalorpagamento?>
     </td>
     <td> 
-<?
+<?php
 db_input('valorpagamento',10,$Ivalorpagamento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -343,7 +343,7 @@ db_input('valorpagamento',10,$Ivalorpagamento,true,'text',$db_opcao,"")
        <?=@$Lobsliber?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('obsliber',3,50,$Iobsliber,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -353,7 +353,7 @@ db_textarea('obsliber',3,50,$Iobsliber,true,'text',$db_opcao,"")
        <?=@$Lloginn?>
     </td>
     <td> 
-<?
+<?php
 db_input('loginn',10,$Iloginn,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -363,7 +363,7 @@ db_input('loginn',10,$Iloginn,true,'text',$db_opcao,"")
        <?=@$Lnumpre?>
     </td>
     <td> 
-<?
+<?php
 db_input('numpre',15,$Inumpre,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -373,7 +373,7 @@ db_input('numpre',15,$Inumpre,true,'text',$db_opcao,"")
        <?=@$Ldatasolicitacao?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('datasolicitacao',@$datasolicitacao_dia,@$datasolicitacao_mes,@$datasolicitacao_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -383,7 +383,7 @@ db_inputdata('datasolicitacao',@$datasolicitacao_dia,@$datasolicitacao_mes,@$dat
        <?=@$Llibpref?>
     </td>
     <td> 
-<?
+<?php
 db_input('libpref',10,$Ilibpref,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -393,7 +393,7 @@ db_input('libpref',10,$Ilibpref,true,'text',$db_opcao,"")
        <?=@$Lvaloravterr?>
     </td>
     <td> 
-<?
+<?php
 db_input('valoravterr',15,$Ivaloravterr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -403,7 +403,7 @@ db_input('valoravterr',15,$Ivaloravterr,true,'text',$db_opcao,"")
        <?=@$Lvaloravconst?>
     </td>
     <td> 
-<?
+<?php
 db_input('valoravconst',15,$Ivaloravconst,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -413,7 +413,7 @@ db_input('valoravconst',15,$Ivaloravconst,true,'text',$db_opcao,"")
        <?=@$Lnumerocomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('numerocomprador',10,$Inumerocomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -423,7 +423,7 @@ db_input('numerocomprador',10,$Inumerocomprador,true,'text',$db_opcao,"")
        <?=@$Lcomplcomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('complcomprador',20,$Icomplcomprador,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -433,7 +433,7 @@ db_input('complcomprador',20,$Icomplcomprador,true,'text',$db_opcao,"")
        <?=@$Lcxpostcomprador?>
     </td>
     <td> 
-<?
+<?php
 db_input('cxpostcomprador',20,$Icxpostcomprador,true,'text',$db_opcao,"")
 ?>
     </td>

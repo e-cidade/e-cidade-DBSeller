@@ -1,80 +1,80 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhvisavalecad
-class cl_rhvisavalecad { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh49_codigo = 0; 
-   var $rh49_anousu = 0; 
-   var $rh49_mesusu = 0; 
-   var $rh49_numcgm = 0; 
-   var $rh49_regist = 0; 
-   var $rh49_valor = 0; 
-   var $rh49_instit = 0; 
-   var $rh49_perc = 0; 
-   var $rh49_diasafasta = 0; 
-   var $rh49_valormes = 0; 
-   var $rh49_percdep = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhvisavalecad {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh49_codigo = 0;
+   var $rh49_anousu = 0;
+   var $rh49_mesusu = 0;
+   var $rh49_numcgm = 0;
+   var $rh49_regist = 0;
+   var $rh49_valor = 0;
+   var $rh49_instit = 0;
+   var $rh49_perc = 0;
+   var $rh49_diasafasta = 0;
+   var $rh49_valormes = 0;
+   var $rh49_percdep = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh49_codigo = int8 = Código 
-                 rh49_anousu = int4 = Ano de competência 
-                 rh49_mesusu = int4 = Mês de competência 
-                 rh49_numcgm = int4 = Numcgm 
-                 rh49_regist = int4 = Matrícula do Servidor 
-                 rh49_valor = float8 = Valor 
-                 rh49_instit = int4 = codigo da instituicao 
-                 rh49_perc = float4 = Perc. Desconto 
-                 rh49_diasafasta = int4 = Dias afastados 
-                 rh49_valormes = float4 = Valor mês 
-                 rh49_percdep = int4 = Perc. Depósito 
+                 rh49_codigo = int8 = Código
+                 rh49_anousu = int4 = Ano de competência
+                 rh49_mesusu = int4 = Mês de competência
+                 rh49_numcgm = int4 = Numcgm
+                 rh49_regist = int4 = Matrícula do Servidor
+                 rh49_valor = float8 = Valor
+                 rh49_instit = int4 = codigo da instituicao
+                 rh49_perc = float4 = Perc. Desconto
+                 rh49_diasafasta = int4 = Dias afastados
+                 rh49_valormes = float4 = Valor mês
+                 rh49_percdep = int4 = Perc. Depósito
                  ";
-   //funcao construtor da classe 
-   function cl_rhvisavalecad() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhvisavalecad"); 
+     $this->rotulo = new rotulo("rhvisavalecad");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_rhvisavalecad {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh49_codigo = ($this->rh49_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh49_codigo"]:$this->rh49_codigo);
        $this->rh49_anousu = ($this->rh49_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh49_anousu"]:$this->rh49_anousu);
@@ -101,9 +101,9 @@ class cl_rhvisavalecad {
      }
    }
    // funcao para inclusao
-   function incluir ($rh49_codigo){ 
+   public function incluir ($rh49_codigo){
       $this->atualizacampos();
-     if($this->rh49_anousu == null ){ 
+     if($this->rh49_anousu == null ){
        $this->erro_sql = " Campo Ano de competência nao Informado.";
        $this->erro_campo = "rh49_anousu";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_rhvisavalecad {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh49_mesusu == null ){ 
+     if($this->rh49_mesusu == null ){
        $this->erro_sql = " Campo Mês de competência nao Informado.";
        $this->erro_campo = "rh49_mesusu";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_rhvisavalecad {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh49_numcgm == null ){ 
+     if($this->rh49_numcgm == null ){
        $this->erro_sql = " Campo Numcgm nao Informado.";
        $this->erro_campo = "rh49_numcgm";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_rhvisavalecad {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh49_regist == null ){ 
+     if($this->rh49_regist == null ){
        $this->erro_sql = " Campo Matrícula do Servidor nao Informado.";
        $this->erro_campo = "rh49_regist";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_rhvisavalecad {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh49_valor == null ){ 
+     if($this->rh49_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "rh49_valor";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_rhvisavalecad {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh49_instit == null ){ 
+     if($this->rh49_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao nao Informado.";
        $this->erro_campo = "rh49_instit";
        $this->erro_banco = "";
@@ -157,7 +157,7 @@ class cl_rhvisavalecad {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh49_perc == null ){ 
+     if($this->rh49_perc == null ){
        $this->erro_sql = " Campo Perc. Desconto nao Informado.";
        $this->erro_campo = "rh49_perc";
        $this->erro_banco = "";
@@ -166,13 +166,13 @@ class cl_rhvisavalecad {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh49_diasafasta == null ){ 
+     if($this->rh49_diasafasta == null ){
        $this->rh49_diasafasta = "0";
      }
-     if($this->rh49_valormes == null ){ 
+     if($this->rh49_valormes == null ){
        $this->rh49_valormes = "0";
      }
-     if($this->rh49_percdep == null ){ 
+     if($this->rh49_percdep == null ){
        $this->erro_sql = " Campo Perc. Depósito nao Informado.";
        $this->erro_campo = "rh49_percdep";
        $this->erro_banco = "";
@@ -182,16 +182,16 @@ class cl_rhvisavalecad {
        return false;
      }
      if($rh49_codigo == "" || $rh49_codigo == null ){
-       $result = db_query("select nextval('rhvisavalecad_rh49_codigo_seq')"); 
+       $result = db_query("select nextval('rhvisavalecad_rh49_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhvisavalecad_rh49_codigo_seq do campo: rh49_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhvisavalecad_rh49_codigo_seq do campo: rh49_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh49_codigo = pg_result($result,0,0); 
+       $this->rh49_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhvisavalecad_rh49_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh49_codigo)){
@@ -202,10 +202,10 @@ class cl_rhvisavalecad {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh49_codigo = $rh49_codigo; 
+         $this->rh49_codigo = $rh49_codigo;
        }
      }
-     if(($this->rh49_codigo == null) || ($this->rh49_codigo == "") ){ 
+     if(($this->rh49_codigo == null) || ($this->rh49_codigo == "") ){
        $this->erro_sql = " Campo rh49_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -214,33 +214,33 @@ class cl_rhvisavalecad {
        return false;
      }
      $sql = "insert into rhvisavalecad(
-                                       rh49_codigo 
-                                      ,rh49_anousu 
-                                      ,rh49_mesusu 
-                                      ,rh49_numcgm 
-                                      ,rh49_regist 
-                                      ,rh49_valor 
-                                      ,rh49_instit 
-                                      ,rh49_perc 
-                                      ,rh49_diasafasta 
-                                      ,rh49_valormes 
-                                      ,rh49_percdep 
+                                       rh49_codigo
+                                      ,rh49_anousu
+                                      ,rh49_mesusu
+                                      ,rh49_numcgm
+                                      ,rh49_regist
+                                      ,rh49_valor
+                                      ,rh49_instit
+                                      ,rh49_perc
+                                      ,rh49_diasafasta
+                                      ,rh49_valormes
+                                      ,rh49_percdep
                        )
                 values (
-                                $this->rh49_codigo 
-                               ,$this->rh49_anousu 
-                               ,$this->rh49_mesusu 
-                               ,$this->rh49_numcgm 
-                               ,$this->rh49_regist 
-                               ,$this->rh49_valor 
-                               ,$this->rh49_instit 
-                               ,$this->rh49_perc 
-                               ,$this->rh49_diasafasta 
-                               ,$this->rh49_valormes 
-                               ,$this->rh49_percdep 
+                                $this->rh49_codigo
+                               ,$this->rh49_anousu
+                               ,$this->rh49_mesusu
+                               ,$this->rh49_numcgm
+                               ,$this->rh49_regist
+                               ,$this->rh49_valor
+                               ,$this->rh49_instit
+                               ,$this->rh49_perc
+                               ,$this->rh49_diasafasta
+                               ,$this->rh49_valormes
+                               ,$this->rh49_percdep
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro dos funcionários ($this->rh49_codigo) nao Incluído. Inclusao Abortada.";
@@ -282,16 +282,16 @@ class cl_rhvisavalecad {
        $resac = db_query("insert into db_acount values($acount,1485,15190,'','".AddSlashes(pg_result($resaco,0,'rh49_percdep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh49_codigo=null) { 
+   public function alterar ($rh49_codigo=null) {
       $this->atualizacampos();
      $sql = " update rhvisavalecad set ";
      $virgula = "";
-     if(trim($this->rh49_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_codigo"])){ 
+     if(trim($this->rh49_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_codigo"])){
        $sql  .= $virgula." rh49_codigo = $this->rh49_codigo ";
        $virgula = ",";
-       if(trim($this->rh49_codigo) == null ){ 
+       if(trim($this->rh49_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "rh49_codigo";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_anousu"])){ 
+     if(trim($this->rh49_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_anousu"])){
        $sql  .= $virgula." rh49_anousu = $this->rh49_anousu ";
        $virgula = ",";
-       if(trim($this->rh49_anousu) == null ){ 
+       if(trim($this->rh49_anousu) == null ){
          $this->erro_sql = " Campo Ano de competência nao Informado.";
          $this->erro_campo = "rh49_anousu";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_mesusu"])){ 
+     if(trim($this->rh49_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_mesusu"])){
        $sql  .= $virgula." rh49_mesusu = $this->rh49_mesusu ";
        $virgula = ",";
-       if(trim($this->rh49_mesusu) == null ){ 
+       if(trim($this->rh49_mesusu) == null ){
          $this->erro_sql = " Campo Mês de competência nao Informado.";
          $this->erro_campo = "rh49_mesusu";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_numcgm"])){ 
+     if(trim($this->rh49_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_numcgm"])){
        $sql  .= $virgula." rh49_numcgm = $this->rh49_numcgm ";
        $virgula = ",";
-       if(trim($this->rh49_numcgm) == null ){ 
+       if(trim($this->rh49_numcgm) == null ){
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "rh49_numcgm";
          $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_regist"])){ 
+     if(trim($this->rh49_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_regist"])){
        $sql  .= $virgula." rh49_regist = $this->rh49_regist ";
        $virgula = ",";
-       if(trim($this->rh49_regist) == null ){ 
+       if(trim($this->rh49_regist) == null ){
          $this->erro_sql = " Campo Matrícula do Servidor nao Informado.";
          $this->erro_campo = "rh49_regist";
          $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_valor"])){ 
+     if(trim($this->rh49_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_valor"])){
        $sql  .= $virgula." rh49_valor = $this->rh49_valor ";
        $virgula = ",";
-       if(trim($this->rh49_valor) == null ){ 
+       if(trim($this->rh49_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "rh49_valor";
          $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_instit"])){ 
+     if(trim($this->rh49_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_instit"])){
        $sql  .= $virgula." rh49_instit = $this->rh49_instit ";
        $virgula = ",";
-       if(trim($this->rh49_instit) == null ){ 
+       if(trim($this->rh49_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "rh49_instit";
          $this->erro_banco = "";
@@ -379,10 +379,10 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_perc"])){ 
+     if(trim($this->rh49_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_perc"])){
        $sql  .= $virgula." rh49_perc = $this->rh49_perc ";
        $virgula = ",";
-       if(trim($this->rh49_perc) == null ){ 
+       if(trim($this->rh49_perc) == null ){
          $this->erro_sql = " Campo Perc. Desconto nao Informado.";
          $this->erro_campo = "rh49_perc";
          $this->erro_banco = "";
@@ -392,24 +392,24 @@ class cl_rhvisavalecad {
          return false;
        }
      }
-     if(trim($this->rh49_diasafasta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_diasafasta"])){ 
-        if(trim($this->rh49_diasafasta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh49_diasafasta"])){ 
-           $this->rh49_diasafasta = "0" ; 
-        } 
+     if(trim($this->rh49_diasafasta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_diasafasta"])){
+        if(trim($this->rh49_diasafasta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh49_diasafasta"])){
+           $this->rh49_diasafasta = "0" ;
+        }
        $sql  .= $virgula." rh49_diasafasta = $this->rh49_diasafasta ";
        $virgula = ",";
      }
-     if(trim($this->rh49_valormes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_valormes"])){ 
-        if(trim($this->rh49_valormes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh49_valormes"])){ 
-           $this->rh49_valormes = "0" ; 
-        } 
+     if(trim($this->rh49_valormes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_valormes"])){
+        if(trim($this->rh49_valormes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh49_valormes"])){
+           $this->rh49_valormes = "0" ;
+        }
        $sql  .= $virgula." rh49_valormes = $this->rh49_valormes ";
        $virgula = ",";
      }
-     if(trim($this->rh49_percdep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_percdep"])){ 
+     if(trim($this->rh49_percdep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh49_percdep"])){
        $sql  .= $virgula." rh49_percdep = $this->rh49_percdep ";
        $virgula = ",";
-       if(trim($this->rh49_percdep) == null ){ 
+       if(trim($this->rh49_percdep) == null ){
          $this->erro_sql = " Campo Perc. Depósito nao Informado.";
          $this->erro_campo = "rh49_percdep";
          $this->erro_banco = "";
@@ -455,7 +455,7 @@ class cl_rhvisavalecad {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro dos funcionários nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh49_codigo;
@@ -483,14 +483,14 @@ class cl_rhvisavalecad {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh49_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh49_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh49_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -526,7 +526,7 @@ class cl_rhvisavalecad {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro dos funcionários nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh49_codigo;
@@ -554,11 +554,11 @@ class cl_rhvisavalecad {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -580,11 +580,11 @@ class cl_rhvisavalecad {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   // funcao do sql
+   public function sql_query ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
    	$sql = "select ";
    	if($campos != "*" ){
-   		$campos_sql = split("#",$campos);
+   		$campos_sql = explode("#",$campos);
    		$virgula = "";
    		for($i=0;$i<sizeof($campos_sql);$i++){
    			$sql .= $virgula.$campos_sql[$i];
@@ -617,7 +617,7 @@ class cl_rhvisavalecad {
     $sql .= $sql2;
     if($ordem != null ){
     	$sql .= " order by ";
-    	$campos_sql = split("#",$ordem);
+    	$campos_sql = explode("#",$ordem);
     	$virgula = "";
     	for($i=0;$i<sizeof($campos_sql);$i++){
     		$sql .= $virgula.$campos_sql[$i];
@@ -626,11 +626,11 @@ class cl_rhvisavalecad {
     }
     return $sql;
    }
-   // funcao do sql 
-   function sql_query_file ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -643,15 +643,15 @@ class cl_rhvisavalecad {
      $sql2 = "";
      if($dbwhere==""){
        if($rh49_codigo!=null ){
-         $sql2 .= " where rhvisavalecad.rh49_codigo = $rh49_codigo "; 
-       } 
+         $sql2 .= " where rhvisavalecad.rh49_codigo = $rh49_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -660,10 +660,10 @@ class cl_rhvisavalecad {
      }
      return $sql;
   }
-   function sql_query_documentos ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_documentos ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -684,15 +684,15 @@ class cl_rhvisavalecad {
      $sql2 = "";
      if($dbwhere==""){
        if($rh49_codigo!=null ){
-         $sql2 .= " where rhvisavalecad.rh49_codigo = $rh49_codigo "; 
-       } 
+         $sql2 .= " where rhvisavalecad.rh49_codigo = $rh49_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -701,10 +701,10 @@ class cl_rhvisavalecad {
      }
      return $sql;
   }
-   function sql_query_lotaexe ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_lotaexe ( $rh49_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -733,15 +733,15 @@ class cl_rhvisavalecad {
      $sql2 = "";
      if($dbwhere==""){
        if($rh49_codigo!=null ){
-         $sql2 .= " where rhvisavalecad.rh49_codigo = $rh49_codigo "; 
-       } 
+         $sql2 .= " where rhvisavalecad.rh49_codigo = $rh49_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

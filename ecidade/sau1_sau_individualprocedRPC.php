@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -145,7 +145,7 @@ switch ($objParam->exec){
 			$objRetorno->itens  = db_utils::getCollectionByRecord($res_sau_proccbo, true, false, true);
 		}else{
 			$objRetorno->status = 2;
-			$objRetorno->message = urlencode( "Procedimento [{$objParam->sd63_c_procedimento}], não encontrado ou não vinculado com a especialidade [{$objParam->rh70_descr}] " );
+            $objRetorno->message = "Procedimento [{$objParam->sd63_c_procedimento}], nao encontrado ou nao vinculado com a especialidade [{$objParam->rh70_descr}]";
 		}
 
 		break;
@@ -227,8 +227,8 @@ switch ($objParam->exec){
 			$clprontproced->sd29_i_profissional 	= $objParam->sd29_i_profissional;
 			$clprontproced->sd29_t_diagnostico  	= "null";
 			$clprontproced->sd29_sigilosa			= 'false';
-			$clprontproced->sd29_idadegestacional	= $objParam->sd29_idadegestacional;
-			$clprontproced->sd29_dum				= $objParam->sd29_dum;
+			$clprontproced->sd29_idadegestacional	= isset($objParam->sd29_idadegestacional) ? $objParam->sd29_idadegestacional : null;
+			$clprontproced->sd29_dum				= isset($objParam->sd29_dum) ? $objParam->sd29_dum : null;
 			$clprontproced->incluir(null);
 			if( $clprontproced->numrows_incluir == 0){
 				$objRetorno->status  = 2;

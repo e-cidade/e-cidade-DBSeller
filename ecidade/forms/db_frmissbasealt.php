@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -568,17 +568,23 @@ if (@$q02_inscr!="") {
               m²
           </td>
       </tr>
-        <tr>
+      <?php
+        if($riscoAutomatico != 't'){
+      ?>
+          <tr>
             <td nowrap title="<?=@$Tq30_graurisco?>">
                 <?=@$Lq30_graurisco?>
             </td>
             <td colspan="2">
                 <?php
                     $aGrausRisco = ["" => "", "A" => "ALTO", "M" => "MÉDIO", "B" => "BAIXO"];
-	                db_select("q30_graurisco", $aGrausRisco, true, $db_opcao);
+                  db_select("q30_graurisco", $aGrausRisco, true, $db_opcao);
                 ?>
             </td>
         </tr>
+      <?php
+        }
+      ?>
 
       <!--  -->
       <tr>
@@ -637,7 +643,7 @@ if (@$q02_inscr!="") {
             ?>
         </td>
       </tr>
-      <tr style=''>
+      <tr>
         <td nowrap title="<?=@$Tq02_dtcada?>" valign="top">
             <?=$Lq02_dtcada?>
         </td>
@@ -1154,8 +1160,9 @@ function js_mostraprocesso(chave,nome,erro) {
         echo "document.form1.testasub.value='';
     \n";
     }
+
     if (!isset($excluir) && !isset($alterar) && !isset($incluir)) {
-        if ($db_opcao==1 && strtoupper($munic)!=strtoupper($z01_munic) && empty($q05_matric)) {
+        if ($db_opcao==1 && strtoupper(db_translate($munic))!=strtoupper(db_translate($z01_munic)) && empty($q05_matric)) {
             echo "alert('CGM de outra cidade.');";
         }
         if (isset($str_matric) && $str_matric==false) {

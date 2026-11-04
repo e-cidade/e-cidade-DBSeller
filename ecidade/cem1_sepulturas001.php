@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -35,7 +35,7 @@ include(modification("classes/db_lotecemit_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 db_postmemory($HTTP_POST_VARS);
 $clsepulturas  = new cl_sepulturas;
-$cllotecemit   = new cl_lotecemit; 
+$cllotecemit   = new cl_lotecemit;
 $clquadracemit = new cl_quadracemit;
 $db_opcao = 1;
 $db_botao = true;
@@ -44,7 +44,7 @@ if(isset($incluir)){
 
   $erro = false;
 
-  $clsepulturas->sql_record( $clsepulturas->sql_query("","*","","cm23_i_codigo = $cm05_i_lotecemit and cm05_c_numero = $cm05_c_numero" ) );
+  $clsepulturas->sql_record( $clsepulturas->sql_query("","*","","cm23_i_codigo = $cm05_i_lotecemit and cm05_c_numero = '$cm05_c_numero'" ) );
 
   //verifica o tipo de quadra
  $result_quadra = $clquadracemit->sql_record( $clquadracemit->sql_query("","cm22_c_tipo","","cm22_i_codigo = $cm23_i_quadracemit") );
@@ -53,21 +53,21 @@ if(isset($incluir)){
 
   if( $clsepulturas->numrows == 0 ){
 
-    if($cm22_c_tipo != "C"){
-     $erro = true;
-     db_msgbox('AVISO:\nOperação não Efetuada!\n\nLote ou Numero informado já foi selecionada para uma Sepultura.\nPara cadastrar mais de uma Sepultura na mesma Quadra e Lote, o tipo de quadra deve ser Campa');
-     unset($incluir);
+    if (!in_array($cm22_c_tipo, array("S","M"))) {
+        $erro = true;
+        db_msgbox('AVISO:\nOperação não Efetuada!\n\nLote ou Numero informado já foi selecionada para uma Sepultura.\nPara cadastrar mais de uma Sepultura na mesma Quadra e Lote, o tipo de quadra deve ser Mista');
+        unset($incluir);
     }
-  
+
    $cllotecemit->cm23_i_codigo = $cm05_i_lotecemit;
    $cllotecemit->cm23_b_selecionado = 'true';
 
   }else{
 
    $erro = true;
-   db_msgbox('AVISO:\nOperação não Efetuada\n\nNumero de Sepultura informado já foi selecionada para uma Sepultura.\nPara cadastrar mais de uma Sepultura na mesma Quadra e Lote, o tipo de quadra deve ser Campa');
+   db_msgbox('AVISO:\nOperação não Efetuada\n\nNumero de Sepultura informado já foi selecionada para uma Sepultura.\nPara cadastrar mais de uma Sepultura na mesma Quadra e Lote, o tipo de quadra deve ser Mista');
    unset($incluir);
-    
+
   }
 
   db_inicio_transacao();
@@ -93,14 +93,14 @@ if(isset($incluir)){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <br>
-     <?
+     <?php
      include(modification("forms/db_frmsepulturas.php"));
      ?>
     </center>
      </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -108,7 +108,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","cm05_i_campa",true,1,"cm05_i_campa",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clsepulturas->erro_status=="0"){
     $clsepulturas->erro(true,false);

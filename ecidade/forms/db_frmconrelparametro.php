@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clconrelparametro->rotulo->label();
        <?=@$Lc18_parametro?>
     </td>
     <td> 
-   <?
+   <?php
       $x = array("ORGAOSAUDE"=>"Orgao saude","ORGAOEDUCA"=>"Orgão Educação","RECURSOMDE"=>"Recurso MDE");
       db_select('c18_parametro',$x,true,20,'');
    ?>
@@ -50,7 +50,7 @@ $clconrelparametro->rotulo->label();
        <?=@$Lc18_valor?>
     </td>
     <td> 
-       <? db_input('c18_valor',20,$Ic18_valor,true,'text',$db_opcao,"") ?>
+       <?php db_input('c18_valor',20,$Ic18_valor,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   </table>
@@ -64,7 +64,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conrelparametro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

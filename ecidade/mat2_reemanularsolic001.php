@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,12 +77,12 @@ function js_abre(){
     <table>    
       <tr>
 	<td nowrap title="<?=@$Tm97_sequencial?>">
-	   <? db_ancora("<b>Nº Solicitação:</b>","js_pesquisam97_sequencial(true);",1); ?>
+	   <?php db_ancora("<b>Nº Solicitação:</b>","js_pesquisam97_sequencial(true);",1); ?>
 	</td>
 	<td> 
-	   <? db_input('m97_sequencial',15,@$Im97_sequencial,true,'text',$db_opcao," onchange='js_pesquisam97_sequencial(false);'")?>
-  	   <? db_input('m97_coddepto',10,@$Im97_coddepto,true,'text',3,"")  ?>
-	   <? db_input('m91_depto',10,@$Im91_depto,true,'text',3,"")  ?>	   
+	   <?php db_input('m97_sequencial',15,@$Im97_sequencial,true,'text',$db_opcao," onchange='js_pesquisam97_sequencial(false);'")?>
+  	   <?php db_input('m97_coddepto',10,@$Im97_coddepto,true,'text',3,"")  ?>
+	   <?php db_input('m91_depto',10,@$Im91_depto,true,'text',3,"")  ?>	   
 	</td>
       </tr>
 
@@ -91,7 +91,7 @@ function js_abre(){
        <b> Período da anulação:</b>
      </td>  
      <td>
-      <?  db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");   		          
+      <?php  db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");   		          
           echo " a ";
           db_inputdata('dtfim',@$dia,@$mes,@$ano,true,'text',1,"");
        ?>
@@ -109,7 +109,7 @@ function js_abre(){
  </tr>
 </table>
 </center>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

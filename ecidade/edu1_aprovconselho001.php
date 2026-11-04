@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ if($clregenteconselho->numrows>0){
 <script>
 js_tabulacaoforms("form1","ed253_i_diario",true,1,"ed253_i_diario",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  if($claprovconselho->erro_status=="0"){
   $claprovconselho->erro(true,false);
@@ -104,7 +104,7 @@ if(isset($incluir)){
    parent.parent.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>&iTrocaTurma=<?=$iTrocaTurma?>";
    parent.parent.db_iframe_alteraresultado.hide();
   </script>
-  <?
+  <?php
  }
 }
 ?>

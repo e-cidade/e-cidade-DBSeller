@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ $clcidadaofamiliacadastrounico->rotulo->label("as15_codigofamiliarcadastrounico"
               <?=$Las04_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("as04_sequencial",10,$Ias04_sequencial,true,"text",4,"","chave_as04_sequencial");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clcidadaofamiliacadastrounico->rotulo->label("as15_codigofamiliarcadastrounico"
               <?=$Las15_codigofamiliarcadastrounico?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("as15_codigofamiliarcadastrounico",10,$Ias15_codigofamiliarcadastrounico,true,"text",4,"","chave_as15_codigofamiliarcadastrounico");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clcidadaofamiliacadastrounico->rotulo->label("as15_codigofamiliarcadastrounico"
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $campos  = "cidadaofamilia.as04_sequencial, cidadaofamiliacadastrounico.as15_codigofamiliarcadastrounico,";
       $campos .= " cidadaocomposicaofamiliar.as03_cidadaofamilia, cidadao.ov02_nome,";
       $campos .= " cidadaocadastrounico.as02_sequencial, cidadaocadastrounico.as02_nis,";
@@ -179,12 +179,12 @@ $clcidadaofamiliacadastrounico->rotulo->label("as15_codigofamiliarcadastrounico"
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

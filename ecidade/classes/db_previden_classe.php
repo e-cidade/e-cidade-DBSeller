@@ -78,7 +78,7 @@ class cl_previden
                  ";
 
     //funcao construtor da classe
-    function cl_previden()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("previden");
@@ -86,7 +86,7 @@ class cl_previden
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -97,7 +97,7 @@ class cl_previden
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->r60_anousu = ($this->r60_anousu == "" ? @$GLOBALS["HTTP_POST_VARS"]["r60_anousu"] : $this->r60_anousu);
@@ -125,7 +125,7 @@ class cl_previden
     }
 
     // funcao para inclusao
-    function incluir($r60_anousu, $r60_mesusu, $r60_numcgm, $r60_tbprev, $r60_rubric)
+    public function incluir($r60_anousu, $r60_mesusu, $r60_numcgm, $r60_tbprev, $r60_rubric)
     {
         $this->atualizacampos();
         if ($this->r60_regist == null) {
@@ -402,7 +402,7 @@ class cl_previden
     }
 
     // funcao para alteracao
-    function alterar($r60_anousu = null, $r60_mesusu = null, $r60_numcgm = null, $r60_tbprev = null, $r60_rubric = null)
+    public function alterar($r60_anousu = null, $r60_mesusu = null, $r60_numcgm = null, $r60_tbprev = null, $r60_rubric = null)
     {
         $this->atualizacampos();
         $sql = " update previden set ";
@@ -925,7 +925,7 @@ class cl_previden
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {

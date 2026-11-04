@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -129,7 +129,7 @@ if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Exclu
 <table width="790" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-		<center><?
+		<center><?php
 		include(modification("forms/db_frmsaniatividade.php"));
 		?></center>
 		</td>
@@ -137,7 +137,7 @@ if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Exclu
 </table>
 </body>
 </html>
-		<?
+		<?php
 		if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Excluir"){
 		  if($clsaniatividade->erro_status=="0"&&$sqlerro==true){
 		    $clsaniatividade->erro(true,false);

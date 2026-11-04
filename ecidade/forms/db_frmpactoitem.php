@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,37 +45,37 @@ $clrotulo->label("o89_pcmater");
        <?=@$Lo109_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o109_sequencial',10,$Io109_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To109_matunid?>">
-       <?
+       <?php
        db_ancora(@$Lo109_matunid,"js_pesquisao109_matunid(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o109_matunid',10,$Io109_matunid,true,'text',$db_opcao," onchange='js_pesquisao109_matunid(false);'")
 ?>
-       <?
+       <?php
 db_input('m61_descr',50,$Im61_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$To89_pcmater?>">
-       <?
+       <?php
        db_ancora(@$Lo89_pcmater,"js_pesquisao89_pcmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o89_pcmater',10,$Io89_pcmater,true,'text',$db_opcao," onchange='js_pesquisao89_pcmater(false);'")
 ?>
-       <?
+       <?php
 db_input('pc01_descrmater',50,$Ipc01_descrmater,true,'text',3,'')
        ?>
     </td>
@@ -86,7 +86,7 @@ db_input('pc01_descrmater',50,$Ipc01_descrmater,true,'text',3,'')
        <?=@$Lo109_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o109_descricao',63,$Io109_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('o109_descricao',63,$Io109_descricao,true,'text',$db_opcao,"")
        <?=$Lo109_controlasaldo ?>
     </td>
     <td>
-       <?
+       <?php
          db_select("o109_controlasaldo",getValoresPadroesCampo("o109_controlasaldo"),true,$db_opcao);
        ?>
     </td>
@@ -137,7 +137,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pactoitem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

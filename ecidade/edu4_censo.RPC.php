@@ -100,7 +100,28 @@ try {
 
             $oRetorno->sArquivoLog = '';
             $oRetorno->lInconsistente = false;
+            $registrosErros = [];
             if (!$oExportacao->gerarArquivo()) {
+                foreach ($oExportacao->aDadosAlunoDepois as $dados) {
+                    $data = $dados->transformarStdClass();
+                    if (!empty($dados->getErros())) {
+                        $registrosErros[$data->tipo_registro] = $data->tipo_registro;
+                    }
+                }
+                foreach ($oExportacao->aDadosAlunoAntes as $dados) {
+                    $data = $dados->transformarStdClass();
+                    if (!empty($dados->getErros())) {
+                        $registrosErros[$data->tipo_registro] = $data->tipo_registro;
+                    }
+                }
+                if (!empty($oExportacao->oDadosEscola->getErros())) {
+                    $data = $oExportacao->oDadosEscola->transformarStdClass();
+                    $registrosErros[$data->tipo_registro] = $data->tipo_registro;
+                }
+                $oRetorno->somenteErroRegistro91 = false;
+                if ($registrosErros == [91 => 91]) {
+                    $oRetorno->somenteErroRegistro91 = true;
+                }
                 $oRetorno->sArquivoLog = $oExportacao->getNomeAquivoLog();
                 $oRetorno->lInconsistente = true;
             }
@@ -153,10 +174,10 @@ try {
             }
             $oRetorno->dados = $oDados;
             break;
-        
+
         case 'buscaMunicipio':
             $municipioCenso = [];
-            if(isset($oParam->nomeMunicipio) && !empty($oParam->nomeMunicipio) 
+            if(isset($oParam->nomeMunicipio) && !empty($oParam->nomeMunicipio)
                 && isset($oParam->codigoEstado) && !empty($oParam->codigoEstado)){
 
                 $nomeMunicipio = DBString::removerCaracteresEspeciaisAcentos($oParam->nomeMunicipio);
@@ -164,7 +185,7 @@ try {
             }
             $oRetorno->municipioCenso = $municipioCenso;
             break;
-        
+
         case 'buscaUF':
             $ufCenso = [];
             if(isset($oParam->siglaUF) && !empty($oParam->siglaUF)){

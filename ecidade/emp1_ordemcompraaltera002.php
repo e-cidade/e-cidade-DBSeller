@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,15 +60,15 @@ if (isset($altera)){
   db_inicio_transacao();
   $valor_total=0;
   $sqlerro = false;
-  $dados=split("quant_","$valores");
-  $valordoitem=split("valor_","$val");
+  $dados= explode("quant_","$valores");
+  $valordoitem= explode("valor_","$val");
   for ($i=1;$i<sizeof($dados);$i++){
     if ($sqlerro==false){
-      $numero=split("_",$dados[$i]);
+      $numero= explode("_",$dados[$i]);
       $numemp=$numero[0];
       $sequen=$numero[1];
       $quanti=$numero[3];
-      $vlsoitem=split("_",$valordoitem[$i]);
+      $vlsoitem= explode("_",$valordoitem[$i]);
       $vl_soma_item=$vlsoitem[1];
       if(strpos(trim($vl_soma_item),',')!=""){
 	        $vl_soma_item=str_replace('.','',$vl_soma_item);
@@ -116,11 +116,11 @@ if ($sqlerro==false){
 
 for ($i=1;$i<sizeof($dados);$i++){
   if ($sqlerro==false){
-    $numero=split("_",$dados[$i]);
+    $numero= explode("_",$dados[$i]);
     $numemp=$numero[0];
     $sequen=$numero[1];
     $quanti=$numero[3];
-    $vlsoitem=split("_",$valordoitem[$i]);
+    $vlsoitem= explode("_",$valordoitem[$i]);
     $vl_soma_item=$vlsoitem[1];
 
     $result_item=$clmatordemitem->sql_record($clmatordemitem->sql_query_file(null,"*",null,"m52_codordem = $m51_codordem and  m52_numemp = $numemp and m52_sequen = $sequen "));
@@ -187,10 +187,10 @@ for ($i=1;$i<sizeof($dados);$i++){
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
-<?
+<?php
 if (isset($altera)){
     db_msgbox($erro_msg);
     if($clmatordem->erro_campo!=""){

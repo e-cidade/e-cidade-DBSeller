@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("k02_descr");
        <?=@$Le59_sequen?>
     </td>
     <td> 
-<?
+<?php
 db_input('e59_sequen',10,$Ie59_sequen,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te59_codrec?>">
-       <?
+       <?php
        db_ancora(@$Le59_codrec,"js_pesquisae59_codrec(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e59_codrec',10,$Ie59_codrec,true,'text',$db_opcao," onchange='js_pesquisae59_codrec(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        <?=@$Le59_aliquota?>
     </td>
     <td> 
-<?
+<?php
 db_input('e59_aliquota',10,$Ie59_aliquota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('e59_aliquota',10,$Ie59_aliquota,true,'text',$db_opcao,"")
        <?=@$Le59_ipes?>
     </td>
     <td> 
-<?
+<?php
 $x = array('T'=>'Todas','F'=>'Fisica','J'=>'Juridica');
 db_select('e59_ipes',$x,true,$db_opcao,"");
 ?>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pagordemtiporec.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,37 +60,37 @@ if(isset($db_opcaoal)){
        <?=@$Ldb94_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db94_codigo',10,$Idb94_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb94_codrel?>">
-       <?
+       <?php
        db_ancora(@$Ldb94_codrel,"js_pesquisadb94_codrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db94_codrel',10,$Idb94_codrel,true,'text',$db_opcao," onchange='js_pesquisadb94_codrel(false);'")
 ?>
-       <?
+       <?php
 db_input('db91_descr',40,$Idb91_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb94_codcam?>">
-       <?
+       <?php
        db_ancora(@$Ldb94_codcam,"js_pesquisadb94_codcam(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db94_codcam',5,$Idb94_codcam,true,'text',$db_opcao," onchange='js_pesquisadb94_codcam(false);'")
 ?>
-       <?
+       <?php
 db_input('nomecam',40,$Inomecam,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('nomecam',40,$Inomecam,true,'text',3,'')
        <?=@$Ldb94_valini?>
     </td>
     <td> 
-<?
+<?php
 db_input('db94_valini',40,$Idb94_valini,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ db_input('db94_valini',40,$Idb94_valini,true,'text',$db_opcao,"")
        <?=@$Ldb94_valfim?>
     </td>
     <td> 
-<?
+<?php
 db_input('db94_valfim',40,$Idb94_valfim,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -125,7 +125,7 @@ db_input('db94_valfim',40,$Idb94_valfim,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("db94_codigo"=>@$db94_codigo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatfiltros->sql_query_file($db94_codigo);

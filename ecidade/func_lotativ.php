@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $cllotativ->rotulo->label("r41_lotac");
               <?=$Lr41_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r41_mesusu",2,$Ir41_mesusu,true,"text",4,"","chave_r41_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $cllotativ->rotulo->label("r41_lotac");
               <?=$Lr41_lotac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r41_lotac",4,$Ir41_lotac,true,"text",4,"","chave_r41_lotac");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $cllotativ->rotulo->label("r41_lotac");
               <?=$Lr41_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r41_rubric",4,$Ir41_rubric,true,"text",4,"","chave_r41_rubric");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $cllotativ->rotulo->label("r41_lotac");
               <?=$Lr41_lotac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r41_lotac",4,$Ir41_lotac,true,"text",4,"","chave_r41_lotac");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $cllotativ->rotulo->label("r41_lotac");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lotativ.php")==true){
@@ -141,12 +141,12 @@ $cllotativ->rotulo->label("r41_lotac");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

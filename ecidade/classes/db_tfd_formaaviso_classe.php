@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: TFD
 //CLASSE DA ENTIDADE tfd_formaaviso
-class cl_tfd_formaaviso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $tf20_i_codigo = 0; 
-   var $tf20_c_descr = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tfd_formaaviso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $tf20_i_codigo = 0;
+   var $tf20_c_descr = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 tf20_i_codigo = int4 = Código 
-                 tf20_c_descr = varchar(20) = Descrição 
+                 tf20_i_codigo = int4 = Código
+                 tf20_c_descr = varchar(20) = Descrição
                  ";
-   //funcao construtor da classe 
-   function cl_tfd_formaaviso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tfd_formaaviso"); 
+     $this->rotulo = new rotulo("tfd_formaaviso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_tfd_formaaviso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tf20_i_codigo = ($this->tf20_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["tf20_i_codigo"]:$this->tf20_i_codigo);
        $this->tf20_c_descr = ($this->tf20_c_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["tf20_c_descr"]:$this->tf20_c_descr);
@@ -74,9 +74,9 @@ class cl_tfd_formaaviso {
      }
    }
    // funcao para inclusao
-   function incluir ($tf20_i_codigo){ 
+   public function incluir ($tf20_i_codigo){
       $this->atualizacampos();
-     if($this->tf20_c_descr == null ){ 
+     if($this->tf20_c_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "tf20_c_descr";
        $this->erro_banco = "";
@@ -86,16 +86,16 @@ class cl_tfd_formaaviso {
        return false;
      }
      if($tf20_i_codigo == "" || $tf20_i_codigo == null ){
-       $result = db_query("select nextval('tfd_formaaviso_tf20_i_codigo_seq')"); 
+       $result = db_query("select nextval('tfd_formaaviso_tf20_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tfd_formaaviso_tf20_i_codigo_seq do campo: tf20_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tfd_formaaviso_tf20_i_codigo_seq do campo: tf20_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->tf20_i_codigo = pg_result($result,0,0); 
+       $this->tf20_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tfd_formaaviso_tf20_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $tf20_i_codigo)){
@@ -106,10 +106,10 @@ class cl_tfd_formaaviso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->tf20_i_codigo = $tf20_i_codigo; 
+         $this->tf20_i_codigo = $tf20_i_codigo;
        }
      }
-     if(($this->tf20_i_codigo == null) || ($this->tf20_i_codigo == "") ){ 
+     if(($this->tf20_i_codigo == null) || ($this->tf20_i_codigo == "") ){
        $this->erro_sql = " Campo tf20_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -118,15 +118,15 @@ class cl_tfd_formaaviso {
        return false;
      }
      $sql = "insert into tfd_formaaviso(
-                                       tf20_i_codigo 
-                                      ,tf20_c_descr 
+                                       tf20_i_codigo
+                                      ,tf20_c_descr
                        )
                 values (
-                                $this->tf20_i_codigo 
-                               ,'$this->tf20_c_descr' 
+                                $this->tf20_i_codigo
+                               ,'$this->tf20_c_descr'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "tfd_formaaviso ($this->tf20_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -159,16 +159,16 @@ class cl_tfd_formaaviso {
        $resac = db_query("insert into db_acount values($acount,2876,16424,'','".AddSlashes(pg_result($resaco,0,'tf20_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($tf20_i_codigo=null) { 
+   public function alterar ($tf20_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update tfd_formaaviso set ";
      $virgula = "";
-     if(trim($this->tf20_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf20_i_codigo"])){ 
+     if(trim($this->tf20_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf20_i_codigo"])){
        $sql  .= $virgula." tf20_i_codigo = $this->tf20_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf20_i_codigo) == null ){ 
+       if(trim($this->tf20_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tf20_i_codigo";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_tfd_formaaviso {
          return false;
        }
      }
-     if(trim($this->tf20_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf20_c_descr"])){ 
+     if(trim($this->tf20_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf20_c_descr"])){
        $sql  .= $virgula." tf20_c_descr = '$this->tf20_c_descr' ";
        $virgula = ",";
-       if(trim($this->tf20_c_descr) == null ){ 
+       if(trim($this->tf20_c_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "tf20_c_descr";
          $this->erro_banco = "";
@@ -209,7 +209,7 @@ class cl_tfd_formaaviso {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tfd_formaaviso nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->tf20_i_codigo;
@@ -237,14 +237,14 @@ class cl_tfd_formaaviso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($tf20_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($tf20_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($tf20_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -271,7 +271,7 @@ class cl_tfd_formaaviso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tfd_formaaviso nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$tf20_i_codigo;
@@ -299,11 +299,11 @@ class cl_tfd_formaaviso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -325,11 +325,11 @@ class cl_tfd_formaaviso {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $tf20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $tf20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -342,15 +342,15 @@ class cl_tfd_formaaviso {
      $sql2 = "";
      if($dbwhere==""){
        if($tf20_i_codigo!=null ){
-         $sql2 .= " where tfd_formaaviso.tf20_i_codigo = $tf20_i_codigo "; 
-       } 
+         $sql2 .= " where tfd_formaaviso.tf20_i_codigo = $tf20_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -359,11 +359,11 @@ class cl_tfd_formaaviso {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $tf20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $tf20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -376,15 +376,15 @@ class cl_tfd_formaaviso {
      $sql2 = "";
      if($dbwhere==""){
        if($tf20_i_codigo!=null ){
-         $sql2 .= " where tfd_formaaviso.tf20_i_codigo = $tf20_i_codigo "; 
-       } 
+         $sql2 .= " where tfd_formaaviso.tf20_i_codigo = $tf20_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

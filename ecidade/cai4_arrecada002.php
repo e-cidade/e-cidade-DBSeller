@@ -517,7 +517,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
               parent.alert('Código de Arrecadação Inválido.');
               location.href = 'cai4_arrecada002.php?invalido=true';
             </script>
-          <?
+          <?php
           exit();
         }
 
@@ -548,7 +548,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
                 location.href = 'cai4_arrecada002.php?codrec=<?=$HTTP_POST_VARS ["codrec"]?>&valor_variavel='+valor;
               }
             </script>
-          <?
+          <?php
           exit();
         }
 
@@ -560,7 +560,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
               parent.alert('Parcela com valor Zerado. Contate Suporte.');
               location.href = 'cai4_arrecada002.php?invalido=true';
             </script>
-          <?
+          <?php
           exit();
         }
 
@@ -571,7 +571,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
               parent.alert('Uma das parcelas da unica esta zerado. Contate Suporte.');
               location.href = 'cai4_arrecada002.php?invalido=true';
             </script>
-          <?
+          <?php
           exit();
         }
 
@@ -582,7 +582,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
               parent.alert('Valores Incosistentes.');
               location.href = 'cai4_arrecada002.php?invalido=true';
             </script>
-          <?
+          <?php
           exit();
         }
 
@@ -603,27 +603,27 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
               if (isset($historicorecibo) && $historicorecibo == 503) {
                 ?>
                   <script> var estorno_codrec = 255; </script>
-                <?
+                <?php
               } else if (isset($pgtoparcial) && trim($pgtoparcial) != '') {
                 ?>
                   <script> var estorno_codrec = 4; </script>
-                <?
+                <?php
               } else {
                 ?>
                   <script> var estorno_codrec = 1; </script>
-                <?
+                <?php
               }
 
             } else {
                 ?>
                   <script> var estorno_codrec = 2; </script>
-                <?
+                <?php
             }
 
           } else {
             ?>
                <script> var estorno_codrec = 3;</script>
-            <?
+            <?php
           }
 
         }
@@ -645,7 +645,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
           <script>
             var estorno_codrec = 0;
           </script>
-        <?
+        <?php
 
       }
 
@@ -662,7 +662,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
          parent.alert('Há Códigos a processar.');
        }
      </script>
-    <?
+    <?php
   }
 
 } else {
@@ -675,7 +675,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
         parent.document.form1.recebido.value = '';
         parent.document.form1.troco.value = '';
       </script>
-    <?
+    <?php
   }
 
 }
@@ -854,7 +854,7 @@ function js_anteriores() {
 
 <body bgcolor=#CCCCCC bgcolor="#AAB7D5" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="document.form1.codrec.focus()";>
 <form name="form1" method="post" onSubmit="return js_verificacodrec()" action="">
-<?
+<?php
 
 $sql  = "select k13_reduz  as c01_reduz,                                            ";
 $sql .= "       k13_descr  as c01_descr,                                            ";
@@ -886,7 +886,7 @@ if (pg_numrows($result_conta) == 0) {
       <td height="26" align="left" valign="middle"><b>Conta:</b></td>
       <td align="left" valign="middle">
         <select onChange="js_atualizaconta(this.name)" name="reduz" id="reduz" style="width:10%">
-        <?
+        <?php
           for($i = 0; $i < pg_numrows($result_conta); $i ++) {
             db_fieldsmemory($result_conta, $i);
             echo "<option value=\"$k13_conta\" " . (isset($HTTP_POST_VARS ["reduz"]) ? ($HTTP_POST_VARS ["reduz"] == $k13_conta ? "selected" : "") : "") . ">$k13_conta</option>";
@@ -894,7 +894,7 @@ if (pg_numrows($result_conta) == 0) {
         ?>
         </select> &nbsp;
         <select onChange="js_atualizaconta(this.name)" name="descr" id="descr"  style="width:85%">
-        <?
+        <?php
           for($i = 0; $i < pg_numrows($result_conta); $i ++) {
             db_fieldsmemory($result_conta, $i);
             echo "<option value=\"$c01_descr\" " . (isset($HTTP_POST_VARS ["descr"]) ? ($HTTP_POST_VARS ["descr"] == $c01_descr ? "selected" : "") : "") . ">$c01_descr</option>";
@@ -941,14 +941,14 @@ if (pg_numrows($result_conta) == 0) {
 </form>
 </body>
 </html>
-<?
+<?php
 
 if (isset($valor_variavel) && ! isset($calcula)) {
  ?>
   <script>
    document.form1.submit();
   </script>
- <?
+ <?php
 }
 
 if (isset($HTTP_POST_VARS ["codrec"])) {
@@ -1014,7 +1014,7 @@ if (isset($HTTP_POST_VARS ["codrec"])) {
 
       }
   </script>
-<?
+<?php
 }
 ?>
 

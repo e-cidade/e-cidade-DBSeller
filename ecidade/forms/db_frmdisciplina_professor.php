@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed01_i_codigo");
        <?=@$Led12_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed12_i_codigo',5,$Ied12_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted12_i_professores?>">
-       <?
+       <?php
        db_ancora(@$Led12_i_professores,"js_pesquisaed12_i_professores(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed12_i_professores',5,$Ied12_i_professores,true,'text',$db_opcao," onchange='js_pesquisaed12_i_professores(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$z01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted12_i_disciplina?>">
-       <?
+       <?php
        db_ancora(@$Led12_i_disciplina,"js_pesquisaed12_i_disciplina(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed12_i_disciplina',5,$Ied12_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed12_i_disciplina(false);'")
 ?>
-       <?
+       <?php
 db_input('ed27_c_nome',40,$ed27_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed27_c_nome',40,$ed27_c_nome,true,'text',3,'')
        <?=@$Led12_f_ch?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed12_f_ch',5,$Ied12_f_ch,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('ed12_f_ch',5,$Ied12_f_ch,true,'text',$db_opcao,"")
        <?=@$Led12_f_frequencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed12_f_frequencia',3,$Ied12_f_frequencia,true,'text',$db_opcao,"")
 ?> <b>%</b>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_disciplina_professor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

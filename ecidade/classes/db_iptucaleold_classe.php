@@ -49,8 +49,8 @@ class cl_iptucaleold
     public $j162_vm2 = 0; 
     public $j162_pontos = 0; 
     public $j162_valor = 0; 
-    public $j162_iptucalclog = 0; 
-
+    public $j162_iptucalclog = 0;   
+    public $j162_gerafinanc = 't';
    // cria propriedade com as variaveis do arquivo 
     public $campos = "
                  j162_sequencial = int4 = Sequencial 
@@ -92,6 +92,7 @@ class cl_iptucaleold
        $this->j162_pontos = ($this->j162_pontos == ""?@$GLOBALS["HTTP_POST_VARS"]["j162_pontos"]:$this->j162_pontos);
        $this->j162_valor = ($this->j162_valor == ""?@$GLOBALS["HTTP_POST_VARS"]["j162_valor"]:$this->j162_valor);
        $this->j162_iptucalclog = ($this->j162_iptucalclog == ""?@$GLOBALS["HTTP_POST_VARS"]["j162_iptucalclog"]:$this->j162_iptucalclog);
+       $this->j162_gerafinanc = ($this->j162_gerafinanc == ""?@$GLOBALS["HTTP_POST_VARS"]["j162_gerafinanc"]:$this->j162_gerafinanc);
      }else{
        $this->j162_sequencial = ($this->j162_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j162_sequencial"]:$this->j162_sequencial);
      }
@@ -215,6 +216,7 @@ class cl_iptucaleold
                                       ,j162_pontos 
                                       ,j162_valor 
                                       ,j162_iptucalclog 
+                                      ,j162_gerafinanc
                        )
                 values (
                                 $this->j162_sequencial 
@@ -226,6 +228,7 @@ class cl_iptucaleold
                                ,$this->j162_pontos 
                                ,$this->j162_valor 
                                ,$this->j162_iptucalclog
+                               ,'$this->j162_gerafinanc'
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -655,7 +658,8 @@ class cl_iptucaleold
                               coalesce(j22_areaed, 0) as j22_areaed,
                               coalesce(j22_vm2   , 0) as j22_vm2   ,
                               coalesce(j22_pontos, 0) as j22_pontos,
-                              coalesce(j22_valor , 0) as j22_valor 
+                              coalesce(j22_valor , 0) as j22_valor ,
+                              j22_gerafinanc
                          from iptucale where j22_anousu = {$iAnousu} and j22_matric = {$iMatric};";
       $rsIptucale = db_query($sSqlIptucale) or die($sSqlIptucale);
 
@@ -673,6 +677,7 @@ class cl_iptucaleold
           global $j22_pontos;
           global $j22_valor;
           global $j27_codigo;
+          global $j22_gerafinanc;
 
           $this->j162_anousu         = $j22_anousu;
           $this->j162_matric         = $j22_matric;
@@ -682,6 +687,7 @@ class cl_iptucaleold
           $this->j162_pontos         = $j22_pontos;
           $this->j162_valor          = $j22_valor;
           $this->j162_iptucalclog    = $j27_codigo;
+          $this->j162_gerafinanc     = $j22_gerafinanc;
           $this->incluir(null);
 
           if ($this->erro_status == 0) {

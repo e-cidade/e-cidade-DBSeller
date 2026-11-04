@@ -17,8 +17,10 @@ DBViewFiltroLancamentoAvaliacaoTurma = function (sId, nameInstance ) {
   this.oTurmaMarcada = '';
 
   this.iTurma = null;
+  this.iTipoTurma = null;
   this.iEtapa = null;
   this.sTurma = '';
+  this.iFluxoManual = null;
 
   this.lInstanciouViewEncerramento = false;
 
@@ -360,8 +362,10 @@ DBViewFiltroLancamentoAvaliacaoTurma.prototype.retornoDadosDaTurma = function(oA
   $('avalEncerradas').innerHTML = oRetorno.lTurmaEncerrada ? "Sim" : "Não";
   this.iTurma                   = oRetorno.iTurma;
   this.iEtapa                   = oRetorno.iEtapa;
+  this.iTipoTurma               = oRetorno.iTipoTurma;
   this.sTurma                   = oRetorno.sTurma.urlDecode();
   this.iMaiorPermissao          = oRetorno.iMaiorPermissao;
+  this.iFluxoManual             = oRetorno.iFluxoManual;
 
   if (oSelf.iMaiorPermissao) {
 
@@ -416,9 +420,10 @@ DBViewFiltroLancamentoAvaliacaoTurma.prototype.retornoDadosDaTurma = function(oA
       oDadosPeriodo.iPeriodo    = oPeriodo.iCodigo;
 
       aIdDadosEventosDisciplina.push(oDadosPeriodo);
-
+        let disabledAulasDadas = oRetorno.habilitaAulasDadas ? '' : ' disabled '
       var sInput = " <input type='text' id='"+sId+"' name='"+sId+"' value='"+oPeriodo.iAulas+"' ";
       sInput    += "        onkeyPress='return js_mask(event, \"0-9\");' maxlength = '4'";
+      sInput += disabledAulasDadas;
       sInput    += "        style='text-align:right;width: 100%; padding-left: 2px; " + sStyle +"' " + sReadonly + " />";
       aLinha[iPeriodo+1] = sInput;
     });
@@ -618,6 +623,8 @@ DBViewFiltroLancamentoAvaliacaoTurma.prototype.encerramentoAvaliacoes = function
       oSelf.buscaDadosDaTurma(oTurma.iTurma, oTurma.iEtapa);
     });
   });
+  oEncerramento.setTipoTurma(oSelf.iTipoTurma);
+  oEncerramento.setFluxoManual(oSelf.iFluxoManual);
 
   oJanelaEncerramento.setShutDownFunction(function() {
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("db90_descr");
             <?=@$Lrh34_codarq?>
           </td>
           <td width="65%"> 
-            <? db_input('rh34_codarq',10,$Irh34_codarq,true,'text',3,"") ?>
+            <?php db_input('rh34_codarq',10,$Irh34_codarq,true,'text',3,"") ?>
           </td>
         </tr>
         <tr>
@@ -50,7 +50,7 @@ $clrotulo->label("db90_descr");
             <?=@$Lrh34_descr?>
           </td>
           <td> 
-            <? db_input('rh34_descr',50,$Irh34_descr,true,'text',$db_opcao,"style='width:370px'") ?>
+            <?php db_input('rh34_descr',50,$Irh34_descr,true,'text',$db_opcao,"style='width:370px'") ?>
           </td>
         </tr>
         <tr>
@@ -58,15 +58,15 @@ $clrotulo->label("db90_descr");
             <?=@$Lrh34_where?>
           </td>
           <td>
-            <? db_input('rh34_where',50,$Irh34_where,true,'text',$db_opcao,"style='width:370px;background-color:#E6E4F1;'") ?>
+            <?php db_input('rh34_where',50,$Irh34_where,true,'text',$db_opcao,"style='width:370px;background-color:#E6E4F1;'") ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Trh34_codban?>">
-            <? db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",$db_opcao); ?>
+            <?php db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",$db_opcao); ?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('rh34_codban',10,$Irh34_codban,true,'text',$db_opcao," onchange='js_pesquisarh34_codban(false);'");
               db_input('db90_descr',36,$Idb90_descr,true,'text',3,'');
             ?>
@@ -77,7 +77,7 @@ $clrotulo->label("db90_descr");
             <?=@$Lrh34_sequencial?>
           </td>
           <td> 
-            <? db_input('rh34_sequencial',10,$Irh34_sequencial,true,'text',$db_opcao,"") ?>
+            <?php db_input('rh34_sequencial',10,$Irh34_sequencial,true,'text',$db_opcao,"") ?>
           </td>
         </tr>
         <tr>  
@@ -85,7 +85,7 @@ $clrotulo->label("db90_descr");
             <?=@$Lrh34_ativo?>
           </td>
           <td> 
-            <?
+            <?php
               if (!isset($rh34_ativo)) {
       	        $rh34_ativo = "t";
               }
@@ -104,13 +104,13 @@ $clrotulo->label("db90_descr");
                     <?=@$Lrh34_agencia?>
                   </td>
                   <td width="25%"> 
-                    <? db_input('rh34_agencia',8,$Irh34_agencia,true,'text',$db_opcao,"") ?>
+                    <?php db_input('rh34_agencia',8,$Irh34_agencia,true,'text',$db_opcao,"") ?>
                   </td>
                   <td nowrap title="<?=@$Trh34_dvagencia?>" align="right" width="16%">
                     <?=@$Lrh34_dvagencia?>
                   </td>
                   <td width="24%"> 
-                    <? db_input('rh34_dvagencia',4,$Irh34_dvagencia,true,'text',$db_opcao,"") ?>
+                    <?php db_input('rh34_dvagencia',4,$Irh34_dvagencia,true,'text',$db_opcao,"") ?>
                   </td>
                 </tr>
                 <tr>
@@ -118,13 +118,13 @@ $clrotulo->label("db90_descr");
                     <?=@$Lrh34_conta?>
                   </td>
                   <td> 
-                    <? db_input('rh34_conta',20,$Irh34_conta,true,'text',$db_opcao,"") ?>
+                    <?php db_input('rh34_conta',20,$Irh34_conta,true,'text',$db_opcao,"") ?>
                   </td>
                   <td nowrap title="<?=@$Trh34_dvconta?>" align="right">
                     <?=@$Lrh34_dvconta?>
                   </td>
                   <td> 
-                    <? db_input('rh34_dvconta',4,$Irh34_dvconta,true,'text',$db_opcao,"") ?>
+                    <?php db_input('rh34_dvconta',4,$Irh34_dvconta,true,'text',$db_opcao,"") ?>
                   </td>
                 </tr>
                 <tr>
@@ -132,7 +132,7 @@ $clrotulo->label("db90_descr");
                     <?=@$Lrh34_convenio?>
                   </td>
                   <td colspan=2> 
-                    <? db_input('rh34_convenio',20,$Irh34_convenio,true,'text',$db_opcao,"") ?>
+                    <?php db_input('rh34_convenio',20,$Irh34_convenio,true,'text',$db_opcao,"") ?>
                   </td>
                 </tr>
               </table>
@@ -149,7 +149,7 @@ $clrotulo->label("db90_descr");
                   <?=@$Lrh34_parametrotransmissaoheader?>
                 </td>
                 <td width="65%">
-                  <? db_input('rh34_parametrotransmissaoheader',4,$Irh34_parametrotransmissaoheader,true,'text',$db_opcao,"") ?>
+                  <?php db_input('rh34_parametrotransmissaoheader',4,$Irh34_parametrotransmissaoheader,true,'text',$db_opcao,"") ?>
                 </td>
               </tr>
               <tr>
@@ -157,7 +157,7 @@ $clrotulo->label("db90_descr");
                   <?=@$Lrh34_parametrotransmissaolote?>
                 </td>
                 <td>
-                  <? db_input('rh34_parametrotransmissaolote',4,$Irh34_parametrotransmissaolote,true,'text',$db_opcao,"") ?>
+                  <?php db_input('rh34_parametrotransmissaolote',4,$Irh34_parametrotransmissaolote,true,'text',$db_opcao,"") ?>
                 </td>
               </tr>
               <tr>
@@ -165,7 +165,7 @@ $clrotulo->label("db90_descr");
                   <?=@$Lrh34_codigocompromisso?>
                 </td>
                 <td>
-                  <? db_input('rh34_codigocompromisso',8,$Irh34_codigocompromisso,true,'text',$db_opcao,"") ?>
+                  <?php db_input('rh34_codigocompromisso',8,$Irh34_codigocompromisso,true,'text',$db_opcao,"") ?>
                 </td>
               </tr>                    
              </table>
@@ -300,7 +300,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_rharqbanco.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

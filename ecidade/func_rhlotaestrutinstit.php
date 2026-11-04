@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clrhlota->rotulo->label("r70_descr");
               <?=$Lr70_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r70_codigo",4,$Ir70_codigo,true,"text",4,"","chave_r70_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhlota->rotulo->label("r70_descr");
               <?=$Lr70_estrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r70_estrut",20,$Ir70_estrut,true,"text",4,"","chave_r70_estrut");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clrhlota->rotulo->label("r70_descr");
               <?=$Lr70_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r70_descr",40,$Ir70_descr,true,"text",4,"","chave_r70_descr");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clrhlota->rotulo->label("r70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = "and r70_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -134,12 +134,12 @@ $clrhlota->rotulo->label("r70_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -62,7 +62,7 @@ class cl_matordemitem
                  ";
 
     //funcao construtor da classe
-    function cl_matordemitem()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("matordemitem");
@@ -70,7 +70,7 @@ class cl_matordemitem
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -81,7 +81,7 @@ class cl_matordemitem
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->m52_codlanc = ($this->m52_codlanc == "" ? @$GLOBALS["HTTP_POST_VARS"]["m52_codlanc"] : $this->m52_codlanc);
@@ -97,7 +97,7 @@ class cl_matordemitem
     }
 
     // funcao para inclusao
-    function incluir($m52_codlanc)
+    public function incluir($m52_codlanc)
     {
         $this->atualizacampos();
         if ($this->m52_codordem == null) {
@@ -276,7 +276,7 @@ class cl_matordemitem
     }
 
     // funcao para alteracao
-    function alterar($m52_codlanc = null)
+    public function alterar($m52_codlanc = null)
     {
         $this->atualizacampos();
         $sql = " update matordemitem set ";
@@ -474,7 +474,7 @@ class cl_matordemitem
     }
 
     // funcao para exclusao
-    function excluir($m52_codlanc = null, $dbwhere = null)
+    public function excluir($m52_codlanc = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($m52_codlanc));
@@ -563,7 +563,7 @@ class cl_matordemitem
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -592,7 +592,7 @@ class cl_matordemitem
         return $result;
     }
 
-    function sql_query($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -641,7 +641,7 @@ class cl_matordemitem
         return $sql;
     }
 
-    function sql_query_anulado($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_anulado($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -691,7 +691,7 @@ class cl_matordemitem
         return $sql;
     }
 
-    function sql_query_file($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -729,7 +729,7 @@ class cl_matordemitem
         return $sql;
     }
 
-    function sql_query_ordcons($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_ordcons($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -792,7 +792,7 @@ class cl_matordemitem
         return $sql;
     }
 
-    function sql_query_ordem($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_ordem($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -831,7 +831,7 @@ class cl_matordemitem
         return $sql;
     }
 
-    function sql_query_servico($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_servico($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -995,7 +995,7 @@ class cl_matordemitem
      * @param string $dbwhere
      * @return string
      */
-    function sql_query_entradas($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_entradas($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
@@ -1047,7 +1047,7 @@ class cl_matordemitem
         return $sql;
     }
 
-    function sql_queryItemEmpenho($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_queryItemEmpenho($m52_codlanc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

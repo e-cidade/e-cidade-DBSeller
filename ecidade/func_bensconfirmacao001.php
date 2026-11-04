@@ -73,7 +73,7 @@ db_fieldsmemory($result,0);
                 <label class="bold" id="lbl_chave_t52_bem" for="chave_t52_bem"><?=$Lt52_bem?></label>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("t52_bem",10,$It52_bem,true,"text",4,"","chave_t52_bem");
                 ?>
               </td>
@@ -108,7 +108,7 @@ db_fieldsmemory($result,0);
                 <label class="bold" id="lbl_chave_t52_descr" for="chave_t52_descr"><?=$Lt52_descr?></label>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("t52_descr",40,$It52_descr,true,"text",4,"","chave_t52_descr");
                 ?>&nbsp;&nbsp;
               </td>
@@ -116,7 +116,7 @@ db_fieldsmemory($result,0);
                 <label class="bold" id="lbl_descrdepto" for="descrdepto"><?=$Ldescrdepto?></label>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("descrdepto",40,$Idescrdepto,true,"text",4,"");
                 ?>
               </td>
@@ -346,12 +346,12 @@ db_fieldsmemory($result,0);
       js_mascara02_t64_class();
     }
   </script>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?
+<?php
 }
 ?>
 <script type="text/javascript">

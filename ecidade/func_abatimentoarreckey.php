@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clabatimentoarreckey->rotulo->label("k128_arreckey");
               <?=$Lk128_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k128_sequencial",10,$Ik128_sequencial,true,"text",4,"","chave_k128_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clabatimentoarreckey->rotulo->label("k128_arreckey");
               <?=$Lk128_arreckey?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k128_arreckey",10,$Ik128_arreckey,true,"text",4,"","chave_k128_arreckey");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clabatimentoarreckey->rotulo->label("k128_arreckey");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_abatimentoarreckey.php")==true){
@@ -122,12 +122,12 @@ $clabatimentoarreckey->rotulo->label("k128_arreckey");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

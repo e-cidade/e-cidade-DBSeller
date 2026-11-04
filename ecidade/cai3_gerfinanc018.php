@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -46,13 +46,18 @@ if(!isset($_self)){
  db_fieldsmemory($res, 0);
 }
 
-//echo 
+//echo
 if ( $opcao == 'matricula' ){
   $clsqlamatriculas = new cl_iptubase;
   $sql = $clsqlamatriculas->sqlmatriculas_nome_numero($numcgm, $db21_regracgmiptu);
 }elseif ( $opcao == 'socios' ){
   $clsqlinscricoes = new cl_issbase;
-  $sql = $clsqlinscricoes->sqlinscricoes_socios(0,$numcgm,"*");
+  $sql = $clsqlinscricoes->sqlinscricoes_socios(
+      0,
+      $numcgm,
+      "distinct cgmsocio.z01_numcgm, cgmsocio.z01_nome, cgmsocio.z01_ender, cgmsocio.z01_numero,
+      cgmsocio.z01_compl, cgmsocio.z01_bairro, cgmsocio.z01_munic"
+  );
 }elseif ( $opcao == 'inscricao' ){
   $clsqlinscricoes = new cl_issbase;
   $sql = $clsqlinscricoes->sqlinscricoes_nome($numcgm);
@@ -91,7 +96,7 @@ function js_mostrabic_inscricao(inscricao){
 
 
 function js_relatorio(){
-  
+
   var regracgm =  document.form1.regracgm2.value;
   if (document.form1.regracgm) {
     regracgm = document.form1.regracgm.value;
@@ -100,7 +105,7 @@ function js_relatorio(){
                      document.form1.matricula.value+'&inscricao='+document.form1.inscricao.value+
                      '&numcgm='+document.form1.numcgm.value+'&regracgm='+document.form1.regracgm.value,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
-	  
+
 }
 
 function js_self(){
@@ -132,7 +137,7 @@ MM_reloadPage(true);
 <center>
 
 <form name="form1" method="post">
-<input type="hidden" name="db21_regracgmiptu" value="<?=$db21_regracgmiptu?>">	
+<input type="hidden" name="db21_regracgmiptu" value="<?=$db21_regracgmiptu?>">
 <input type="hidden" name="_self" value="">
 
 <tr>
@@ -142,7 +147,7 @@ MM_reloadPage(true);
 <table border="1" cellpadding="0" cellspacing="0">
 
 <tr bgcolor="#FFCC66">
-<?
+<?php
   if ( $opcao == 'matricula' ){
    //busca informações do loteloc se o campo j18_utilizaloc da tabela cfiptu estiver habilita
     include(modification("classes/db_loteloc_classe.php"));
@@ -155,7 +160,7 @@ MM_reloadPage(true);
     $oCfIptu = $clcfiptu->sql_record($clcfiptu->sql_query("","j18_utilizaloc, j18_permitectmcgf","","j18_anousu = ".db_getsession("DB_anousu")));
     if($clcfiptu->numrows > 0) {
       db_fieldsmemory($oCfIptu,0);
-    } else { 
+    } else {
       $j18_utilizaloc = 'f';
       $j18_permitectmcgf = 't';
     }
@@ -177,14 +182,14 @@ MM_reloadPage(true);
      <th class="borda" style="font-size:12px" nowrap>Quadra</th>
      <th class="borda" style="font-size:12px" nowrap>Lote</th>
      <th class="borda" style="font-size:12px" nowrap>Área M2</th>
-     <?if($j18_utilizaloc != 'f'){?>
+     <?php if($j18_utilizaloc != 'f'){?>
       <th class="borda" style="font-size:12px" nowrap>Setorloc</th>
       <th class="borda" style="font-size:12px" nowrap>Quadraloc</th>
       <th class="borda" style="font-size:12px" nowrap>Loteloc</th>
-     <?}?>
+     <?php }?>
      <th class="borda" style="font-size:12px" nowrap></th>
    </tr>
-<?
+<?php
   }elseif ( $opcao == 'inscricao' ) {
 ?>
      <th class="borda" style="font-size:12px" nowrap>Inscrição</th>
@@ -195,7 +200,7 @@ MM_reloadPage(true);
      <th class="borda" style="font-size:12px" nowrap> Situação da Empresa</th>
      <th class="borda" style="font-size:12px" nowrap></th>
    </tr>
-<?
+<?php
   }elseif ( $opcao == 'socios' || $opcao == 'proprietario' ||$opcao == 'promitente') {
 ?>
      <th class="borda" style="font-size:12px" nowrap>Numcgm</th>
@@ -205,7 +210,7 @@ MM_reloadPage(true);
      <th class="borda" style="font-size:12px" nowrap>Município</th>
      <th class="borda" style="font-size:12px" nowrap></th>
    </tr>
-<?
+<?php
   }
 
 $cor="#EFE029";
@@ -221,14 +226,14 @@ $cor="#EFE029";
 	     $cor = "#ff0000";
 	   }
 ?>
-<? 
+<?php
   if (!$bloqueiaLinkCTM) {
     $strLinkMatric = "'js_mostrabic_matricula($j01_matric);return false;'";
   } else {
     $strLinkMatric = "'return false;'";
-  } 
+  }
 
-?>        
+?>
            <tr title="Clique aqui para verificar os dados" style="cursor: hand" onclick=<?=$strLinkMatric?>>
            <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><?=$j01_matric?>&nbsp;</td>
            <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><?=$j01_tipoimp?>&nbsp;</td>
@@ -242,7 +247,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$j34_quadra?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$j34_lote?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$j34_area?></td>
-	    <?
+	    <?php
 	     if($j18_utilizaloc != 'f'){
 	      $resultloc = $clloteloc->sql_record($clloteloc->sql_query($j01_idbql,"j06_setorloc,j06_quadraloc,j06_lote"));
 	      if($clloteloc->numrows > 0){
@@ -252,14 +257,14 @@ $cor="#EFE029";
              <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=@$j06_setorloc?></td>
              <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=@$j06_quadraloc?></td>
              <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=@$j06_lote?></td>
-           <?}?>
+           <?php }?>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><a href=''>&nbsp;mais detalhes</a></td>
 
 	   <?php $cor == '#ff0000'?$cor="#EFE029":""; ?>
- 
+
            </tr>
-<?
-        }elseif ( $opcao == 'inscricao' ) { 
+<?php
+        }elseif ( $opcao == 'inscricao' ) {
 ?>
            <tr title="Clique aqui para verificar os dados" style="cursor: hand"  onclick='js_mostrabic_inscricao(<?=$q02_inscr?>);return false;'>
            <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><?=$q02_inscr?>&nbsp;</td>
@@ -268,7 +273,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$q02_dtinic?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$q02_dtbaix.'   '?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-           <?
+           <?php
            if ($q02_dtbaix == null) {
               $sqlparalisada = "select 
                                   q140_issbase 
@@ -291,7 +296,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><a href=''>&nbsp;mais detalhes</a></td>
            </tr>
 	   
-<?
+<?php
   }elseif ( $opcao == 'socios' || $opcao == 'proprietario' ||$opcao == 'promitente' ) {
 ?>
            <tr title="Clique aqui para verificar os dados" style="cursor: hand"  onclick='js_mostracgm(<?=$z01_numcgm?>);return false;'>
@@ -302,7 +307,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$z01_munic?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><a href=''>&nbsp;mais detalhes</a></td>
            </tr>
-<?  
+<?php
         }
    }
 ?>
@@ -312,16 +317,16 @@ $cor="#EFE029";
    <td colspan="6" >&nbsp;&nbsp;</td>
 </tr>
 
-<?
+<?php
 
 if($opcao == 'matricula') {
-?>	
+?>
 <tr>
 <td colspan="2">
 Regra para Emissao:
 </td>
 <td colspan="4">
-<?
+<?php
 
 $sql_regracgm = "
 	select db_syscampodef.defcampo, db_syscampodef.defdescr
@@ -333,7 +338,7 @@ $sql_regracgm = "
 	select db_syscampodef.defcampo, db_syscampodef.defdescr
 	from db_syscampo
 	inner join db_syscampodef on db_syscampodef.codcam = db_syscampo.codcam
-	where db_syscampo.nomecam = 'db21_regracgmiptu' 
+	where db_syscampo.nomecam = 'db21_regracgmiptu'
 	and   db_syscampodef.defcampo <> '$db21_regracgmiptu';
 	";
 //die($sql_regracgm);
@@ -344,7 +349,7 @@ db_selectrecord("regracgm", $result_regracgm, true, @$db_opcao, " ", "", "", "",
 ?>
 </td>
 </tr>
-<?
+<?php
 }
 ?>
 

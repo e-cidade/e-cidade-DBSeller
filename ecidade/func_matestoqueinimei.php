@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
               <?=$Lm82_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m82_codigo",10,$Im82_codigo,true,"text",4,"","chave_m82_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
               <?=$Lm82_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m82_codigo",10,$Im82_codigo,true,"text",4,"","chave_m82_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where_parametro = "";
       if(isset($chave_m80_codtipo)){
         $where_parametro .= " and m80_codtipo=$chave_m80_codtipo ";
@@ -128,12 +128,12 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

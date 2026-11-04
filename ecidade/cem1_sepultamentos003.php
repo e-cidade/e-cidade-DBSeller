@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -37,9 +37,9 @@
 	require_once(modification("classes/db_gavetas_classe.php"));
 	require_once(modification("dbforms/db_funcoes.php"));
 
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+	parse_str($_SERVER["QUERY_STRING"]);
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
 	$clsepultamentos = new cl_sepultamentos;
 	$cllotecemit     = new cl_lotecemit;

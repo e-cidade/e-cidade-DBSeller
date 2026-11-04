@@ -55,7 +55,7 @@ $oGet = db_utils::postMemory($_GET);
    </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = "";
       
       $repassa = array();
@@ -128,7 +128,7 @@ function js_emite(){
   var iMatricula = '<?=$codMatri?>';
   var iCodAssen  = '<?=$codAssen?>';
   var sDataIni   = '<?=$oGet->dataIni?>';
-  var sDataFim   = '<? isset($oGet->dataFim) ? $oGet->dataFim : '' ?>';
+  var sDataFim   = '<?php isset($oGet->dataFim) ? $oGet->dataFim : '' ?>';
 
   qry  = 'codMatri='+iMatricula;
   qry += '&codAssen='+iCodAssen;

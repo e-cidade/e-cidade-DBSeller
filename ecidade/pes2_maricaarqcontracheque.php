@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -267,7 +267,7 @@ if (isset($gera) || isset($gera1)){
       </tr>
       <tr >
         <td align="right" nowrap title="Digite o Ano / Mes de competência" >
-    <?
+    <?php
   $gform->selecao = true;
   $gform->desabam = false;
   $gform->manomes = true;
@@ -284,7 +284,7 @@ if (isset($gera) || isset($gera1)){
 	      <b>Linha 1:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem1 = 64;
               db_input('mensagem1',64,0,true,'text',1,"")
               ?>
@@ -295,7 +295,7 @@ if (isset($gera) || isset($gera1)){
 	      <b>Linha 2:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem2 = 64;
               db_input('mensagem2',64,0,true,'text',1,"")
               ?>
@@ -306,7 +306,7 @@ if (isset($gera) || isset($gera1)){
 	      <b>Linha 3:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem3 = 64;
               db_input('mensagem3',64,0,true,'text',1,"")
               ?>
@@ -317,7 +317,7 @@ if (isset($gera) || isset($gera1)){
 	      <b>Linha 4:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem4 = 64;
               db_input('mensagem4',64,0,true,'text',1,"")
               ?>
@@ -328,7 +328,7 @@ if (isset($gera) || isset($gera1)){
 	      <b>Linha 5:</b>
             </td>
             <td> 
-              <?
+              <?php
               $Mmensagem5 = 64;
               db_input('mensagem5',64,0,true,'text',1,"")
               ?>
@@ -352,13 +352,13 @@ if (isset($gera) || isset($gera1)){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-  <?
+  <?php
   if(isset($gera) || isset($gera1)){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }

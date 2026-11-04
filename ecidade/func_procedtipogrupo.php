@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocedtipogrupo->rotulo->label("v29_descricao");
               <?=$Lv29_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v29_sequencial",10,$Iv29_sequencial,true,"text",4,"","chave_v29_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprocedtipogrupo->rotulo->label("v29_descricao");
               <?=$Lv29_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v29_descricao",50,$Iv29_descricao,true,"text",4,"","chave_v29_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprocedtipogrupo->rotulo->label("v29_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procedtipogrupo.php")==true){
@@ -122,12 +122,12 @@ $clprocedtipogrupo->rotulo->label("v29_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -106,6 +106,12 @@ class Taxa
     private $lHonorario;
 
     /**
+     * Identifica se taxa pode ser parcelada
+     * @var boolean
+     */
+    private $lPermiteParcelamento;
+
+    /**
      * Construtor do model taxa
      * @param int|null $iCodigoTaxa
      * @throws Exception
@@ -137,6 +143,7 @@ class Taxa
             $this->setDebitosSemProcesso($oTaxa->ar36_debitossemprocesso == 't' );
             $this->aplicaJuroMulta($oTaxa->ar36_aplicajurosmulta == 't');
             $this->aplicaHonorario($oTaxa->ar36_honorario == 't');
+            $this->setPermissaoParcelamento($oTaxa->ar36_permiteparcelamento == 't');
         }
     }
 
@@ -372,5 +379,23 @@ class Taxa
     public function isPorcentagem()
     {
         return (!empty($this->nPercentual) && $this->nPercentual > 0);
+    }
+
+    /**
+     * Define se a taxa pode ser parcelada
+     * @param bool $lPermiteParcelamento
+     */
+    public function setPermissaoParcelamento($lPermiteParcelamento)
+    {
+        $this->lPermiteParcelamento = $lPermiteParcelamento;
+    }
+
+    /**
+     * Retorna se taxa pode ser parcelada
+     * @return bool
+     */
+    public function getPermissaoParcelamento()
+    {
+        return $this->lPermiteParcelamento;
     }
 }

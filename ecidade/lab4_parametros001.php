@@ -38,7 +38,10 @@ use ECidade\Saude\Laboratorio\Integracao\Luckmann\Service\Parametros as Parametr
 
 db_postmemory($_POST);
 
-$parametrosService = new ParametrosService(ParametrosEnum::JSON_CONFIGURACOES);
+$parametrosService = new ParametrosService(
+    ParametrosEnum::JSON_CONFIGURACOES,
+    ParametrosEnum::JSON_CONFIGURACOES_INFINITY
+);
 $cllab_parametros = new cl_lab_parametros;
 
 $db_opcao = 1;
@@ -50,10 +53,15 @@ if (isset($incluir)) {
     $cllab_parametros->incluir($la49_i_codigo);
 
     $parametrosModel = new ParametrosModel();
+
     $parametrosModel->setPastaPedidos($caminhoPedidos);
     $parametrosModel->setPastaResultados($caminhoResultados);
-
     $parametrosService->salvar($parametrosModel);
+
+    $parametrosModel->setPastaPedidosInfinity($caminhoPedidosInfinity);
+    $parametrosModel->setPastaResultadosInfinity($caminhoResultadosInfinity);
+    $parametrosService->salvarJsonInfinity($parametrosModel);
+
     db_fim_transacao();
 }
 
@@ -63,10 +71,15 @@ if (isset($alterar)) {
     $cllab_parametros->alterar($la49_i_codigo);
 
     $parametrosModel = new ParametrosModel();
+
     $parametrosModel->setPastaPedidos($caminhoPedidos);
     $parametrosModel->setPastaResultados($caminhoResultados);
-
     $parametrosService->salvar($parametrosModel);
+
+    $parametrosModel->setPastaPedidosInfinity($caminhoPedidosInfinity);
+    $parametrosModel->setPastaResultadosInfinity($caminhoResultadosInfinity);
+    $parametrosService->salvarJsonInfinity($parametrosModel);
+
     db_fim_transacao();
 }
 
@@ -85,27 +98,30 @@ $parametrosModel = $parametrosService->getParametros();
 $caminhoPedidos = $parametrosModel->getPastaPedidos();
 $caminhoResultados = $parametrosModel->getPastaResultados();
 
+$caminhoPedidosInfinity = $parametrosModel->getPastaPedidosInfinity();
+$caminhoResultadosInfinity = $parametrosModel->getPastaResultadosInfinity();
+
 ?>
-  <html>
-  <head>
-    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBToogle.widget.js"></script>
-    <link href="estilos.css" rel="stylesheet" type="text/css">
-  </head>   
-  <body class="body-default">
-  <?php
-  include(modification("forms/db_frmlab_parametros.php"));
-  db_menu();
-  ?>
-  </body>
-  </html>
-  <script>
-    js_tabulacaoforms("form1", "la49_c_estrutural", true, 1, "la49_c_estrutural", true);
-  </script>
+    <html>
+    <head>
+        <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <meta http-equiv="Expires" CONTENT="0">
+        <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBToogle.widget.js"></script>
+        <link href="estilos.css" rel="stylesheet" type="text/css">
+    </head>
+    <body class="body-default">
+    <?php
+    include(modification("forms/db_frmlab_parametros.php"));
+    db_menu();
+    ?>
+    </body>
+    </html>
+    <script>
+        js_tabulacaoforms("form1", "la49_c_estrutural", true, 1, "la49_c_estrutural", true);
+    </script>
 <?php
 if (isset($incluir) || isset($alterar)) {
     if ($cllab_parametros->erro_status == "0") {
@@ -114,8 +130,8 @@ if (isset($incluir) || isset($alterar)) {
         echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
 
         if ($cllab_parametros->erro_campo != "") {
-            echo "<script> document.form1." . $cllab_parametros->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
-            echo "<script> document.form1." . $cllab_parametros->erro_campo . ".focus();</script>";
+            echo "<script> document.form1.".$cllab_parametros->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$cllab_parametros->erro_campo.".focus();</script>";
         }
     } else {
         $cllab_parametros->erro(true, true);

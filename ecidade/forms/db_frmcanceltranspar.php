@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -87,7 +87,7 @@ function js_mandadados(){
   <table border="0">
     <tr align="center">
       <td nowrap>
-      <?
+      <?php
       db_input('listaproc',100,"",true,'hidden',3);
       db_input('codtransfer',10,"",true,'hidden',3);
       db_input('contador',10,"",true,'hidden',3);
@@ -126,7 +126,7 @@ function js_mandadados(){
                  <b>Cod. da Transferência:</b>
                </td>
                <td nowrap>
-                <?
+                <?php
                 $departamento=db_getsession("DB_coddepto");
                 if (isset($codtransfer)&& $codtransfer!="") {
 
@@ -146,13 +146,29 @@ function js_mandadados(){
                   }
                 }
                 $arr                    = array();
-                $sSqlTransferenciaDepto = $clproctransfer->sql_query_trans(null,
-                                                                           "p62_codtran as codtran ",
-                                                                           "p62_codtran desc",
-                                                                           "p62_coddepto={$departamento}
-                                                                            and p64_codtran is null"
-                                                                           );
-                $result = $clproctransfer->sql_record($sSqlTransferenciaDepto);
+                $queryTransferencias = "
+                    SELECT
+                        DISTINCT(p62_codtran) AS codtran
+                    FROM proctransfer
+                    LEFT JOIN proctransand ON p64_codtran = proctransfer.p62_codtran
+                    JOIN proctransferproc ON proctransferproc.p63_codtran = proctransfer.p62_codtran
+                    JOIN protprocesso ON protprocesso.p58_codproc = proctransferproc.p63_codproc
+                    WHERE
+                        proctransfer.p62_coddepto = {$departamento}
+                        AND p64_codtran IS NULL
+                    AND (
+                            (
+                                (
+                                    SELECT COUNT(p63_codproc) FROM proctransferproc movimentacoes
+                                    WHERE movimentacoes.p63_codproc = protprocesso.p58_codproc
+                                ) > 1
+                            )
+                        OR p58_tipoprocesso != 2
+                    )
+                    GROUP BY p62_codtran, p58_tipoprocesso
+                    ORDER BY codtran DESC
+                ";
+                $result = $clproctransfer->sql_record($queryTransferencias);
                 for ($y = 0; $y < $clproctransfer->numrows; $y++) {
 
                   db_fieldsmemory($result,$y);
@@ -193,7 +209,7 @@ function js_mandadados(){
                  <b>Data:</b>
                </td>
                <td>
-                <?
+                <?php
                 @$p62_dttran=db_formatar(@$p62_dttran,'d');
                 db_input('p62_dttran',10,"",true,'text',3)
                 ?>
@@ -202,7 +218,7 @@ function js_mandadados(){
                  <b>Hora:</b>
                </td>
                <td>
-                <?
+                <?php
                 db_input('p62_hora',6,"",true,'text',3)
                 ?>
                </td>
@@ -212,7 +228,7 @@ function js_mandadados(){
                   <b>Usuário Atual:</b>
                </td>
                <td>
-                <?
+                <?php
                 db_input('usu_atual',30,"",true,'text',3);
                 ?>
                </td>
@@ -220,7 +236,7 @@ function js_mandadados(){
                  <b>Departamento Atual:</b>
                </td>
                <td>
-                <?
+                <?php
                 db_input('depto_atual',30,"",true,'text',3);
                 ?>
                </td>
@@ -228,13 +244,13 @@ function js_mandadados(){
              <tr>
                <td><b>Usuário Destino:</b></td>
                <td>
-               <?
+               <?php
                db_input('usu_destino',30,"",true,'text',3);
                ?>
                </td>
                <td><b>Departamento Destino:</b></td>
                <td>
-               <?
+               <?php
                db_input('depto_destino',30,"",true,'text',3);
                ?>
                </td>
@@ -243,13 +259,13 @@ function js_mandadados(){
                 <td colspan=4  nowrap>
                 <fieldset style="border: 0px; border-top: 2px groove white">
                 <legend><b>Processos da Transferência</b></legend>
-                <?
+                <?php
                 if (isset($codtransfer)&&$codtransfer!=""){
                 ?>
                   <iframe name="iframe_proctrans" id="proctrans" marginwidth="0"
                           marginheight="0" frameborder="0"
                           src="pro4_canceltranslist.php?cod=<?=@$codtransfer?>" width="100%" height="260"></iframe>
-                <?
+                <?php
                 }
                 ?>
                 </fieldset>

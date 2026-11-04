@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,9 +37,9 @@ $clempagetipo->rotulo->label();
 <table border='0'>
 
 <tr> 
-    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <? db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",$db_opcao);?> </td>
+    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <?php db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",$db_opcao);?> </td>
     <td  align="left" nowrap>
-    <?
+    <?php
     db_input("e87_codgera",8,$Ie87_codgera,true,"text",$db_opcao,"onchange='js_pesquisa_gera(false);'"); 
     db_input("e87_descgera",40,$Ie87_descgera,true,"text",3);
     db_input("movimentos",40,0,true,"hidden",3);
@@ -47,7 +47,7 @@ $clempagetipo->rotulo->label();
     </td>
   </tr>
   
-  <?
+  <?php
   $db_opcao = 1;
   if(isset($e87_codgera)){
         $db_opcao = 3;
@@ -64,7 +64,7 @@ $clempagetipo->rotulo->label();
 
 <div style="margin-top: 10px;">
   <input name="<?=($db_opcao=='1')?'mostra':'cancela'?>" type="<?=($db_opcao=='1')?'submit':'button'?>" value="<?=($db_opcao=="1")?"Mostrar arquivo":"Cancelar selecionados"?>" onclick="<?=($db_opcao=="1")?'':'js_cancelar();'?>">
-  <?
+  <?php
   if($db_opcao == 3){
     echo "<input type='button' name='voltar' value='Voltar' onclick='location.href=\"emp4_empagecancarq001.php\"'>";
   }

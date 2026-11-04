@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,7 +55,7 @@ if(isset($atualizar)){
          ";
   $query = db_query($sql);
  }
- ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
+ ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php
 }
 ?>
 <form name="form1" method="post" action="">
@@ -64,12 +64,12 @@ if(isset($atualizar)){
  <tr>
   <td nowrap title="<?=@$Ted39_c_conceito?>">
    <label for="ed39_c_conceito"><?=@$Led39_c_conceito?></label>
-   <?db_input('ed39_c_conceito',3,$Ied39_c_conceito,true,'text',$db_opcao,"")?>
+   <?php db_input('ed39_c_conceito',3,$Ied39_c_conceito,true,'text',$db_opcao,"")?>
    <label for="ed39_c_nome"><?=@$Led39_c_nome?></label>
-   <?db_input('ed39_c_nome',30,$Ied39_c_nome,true,'text',$db_opcao,"")?>
+   <?php db_input('ed39_c_nome',30,$Ied39_c_nome,true,'text',$db_opcao,"")?>
    <br>
    <label for="ed39_c_conceitodescr"><?=@$Led39_c_conceitodescr?></label>
-   <?db_input('ed39_c_conceitodescr',100,$Ied39_c_conceitodescr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed39_c_conceitodescr',100,$Ied39_c_conceitodescr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -83,7 +83,7 @@ if(isset($atualizar)){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed39_i_codigo"=>@$ed39_i_codigo,"ed37_c_descr"=>@$ed37_c_descr,"ed39_i_formaavaliacao"=>@$ed39_i_formaavaliacao,"ed39_c_conceito"=>@$ed39_c_conceito,"ed39_c_conceitodescr"=>@$ed39_c_conceitodescr,"ed39_c_nome"=>@$ed39_c_nome);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clconceito->sql_query("","*","ed39_i_sequencia"," ed39_i_formaavaliacao = $ed39_i_formaavaliacao");
@@ -108,7 +108,7 @@ if(isset($atualizar)){
     <tr>
      <td align="center">
       <select name="campos[]" id="campos" size="4" style="width:125px" multiple>
-      <?
+      <?php
        $sql = "SELECT ed39_i_codigo,ed39_c_conceito from conceito where ed39_i_formaavaliacao = $ed39_i_formaavaliacao order by ed39_i_sequencia";
        $query = db_query($sql);
        $linhas = pg_num_rows($query);

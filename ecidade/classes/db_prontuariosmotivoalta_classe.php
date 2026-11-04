@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontuariosmotivoalta
 class cl_prontuariosmotivoalta { 
@@ -35,13 +35,13 @@ class cl_prontuariosmotivoalta {
                  sd25_db_usuarios = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_prontuariosmotivoalta() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuariosmotivoalta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -50,7 +50,7 @@ class cl_prontuariosmotivoalta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd25_codigo = ($this->sd25_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd25_codigo"]:$this->sd25_codigo);
        $this->sd25_motivoalta = ($this->sd25_motivoalta == ""?@$GLOBALS["HTTP_POST_VARS"]["sd25_motivoalta"]:$this->sd25_motivoalta);
@@ -70,7 +70,7 @@ class cl_prontuariosmotivoalta {
      }
    }
    // funcao para inclusao
-   function incluir ($sd25_codigo){ 
+   public function incluir ($sd25_codigo){ 
       $this->atualizacampos();
      if($this->sd25_motivoalta == null ){ 
        $this->erro_sql = " Campo Motivo de alta não informado.";

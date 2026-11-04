@@ -146,22 +146,36 @@ function gerarArquivo() {
  */
 function retornoGerarArquivo(oRetorno, lErro) {
 
-  if ( lErro ) {
+  if (lErro) {
 
     alert(oRetorno.sMessage);
     return
   }
 
-  if ( oRetorno.lInconsistente ) {
-
-    var oGet = 'sCaminhoArquivo=' + oRetorno.sArquivoLog + '&iAno=' + $F("ano_censo");
-    var jan  = window.open(
-                            'edu4_logexportarsituacaoaluno002.php?' + oGet,
-                            'Erros Geração de Arquivo de Situação do Aluno do Censo escolar',
-                            'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0'
-                          );
-    jan.moveTo(0,0);
-    return;
+  if (oRetorno.lInconsistente) {
+        if (oRetorno.somenteErroRegistro91) {
+            if (!confirm(`Alunos com inconsistências no registro 91 (Admitidos após data censo). Clique OK para gerar o arquivo sem estes alunos ou CANCELAR para gerar o relatório de inconsistências.`)) {
+                let ano = document.querySelector("#ano_censo").value;
+                let url = `edu4_logexportarsituacaoaluno002.php?sCaminhoArquivo=${oRetorno.sArquivoLog}&iAno=${ano}`;
+                let title = 'Erros Geração de Arquivo de Situação do Aluno do Censo escolar';
+                let config = `width=${screen.availWidth-5}, height=${screen.availHeight-40}, scrollbars=1,location=0`;
+                let jan  = window.open(url, title, config);
+                jan.moveTo(0,0);
+                return;
+            } else {
+                let oDownload = new DBDownload();
+                oDownload.addFile(oRetorno.sArquivoCenso, "Arquivo situação do censo escolar.");
+                oDownload.show();
+                return;
+            }
+        }
+        let ano = document.querySelector("#ano_censo").value;
+        let url = `edu4_logexportarsituacaoaluno002.php?sCaminhoArquivo=${oRetorno.sArquivoLog}&iAno=${ano}`;
+        let title = 'Erros Geração de Arquivo de Situação do Aluno do Censo escolar';
+        let config = `width=${screen.availWidth-5}, height=${screen.availHeight-40}, scrollbars=1,location=0`;
+        let jan  = window.open(url, title, config);
+        jan.moveTo(0,0);
+        return;
   }
 
   var oDownload = new DBDownload();

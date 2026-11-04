@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cldb_paragrafo->rotulo->label();
        <?=@$Ldb02_idparag?>
     </td>
     <td> 
-<?
+<?php
 db_input('db02_idparag',8,$Idb02_idparag,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('db02_idparag',8,$Idb02_idparag,true,'text',3,"")
        <?=@$Ldb02_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('db02_descr',40,$Idb02_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('db02_descr',40,$Idb02_descr,true,'text',$db_opcao,"")
        <?=@$Ldb02_alinha?>
     </td>
     <td> 
-<?
+<?php
 $xw = array('0'=>"0",'5'=>"5 cm",'10'=>"10 cm",'15'=>"15 cm",'20'=>"20 cm",'25'=>"25 cm",'30'=>"30 cm",'35'=>"35 cm",'40'=>"40 cm",'45'=>"45 cm",'50'=>"50 cm",'55'=>"55 cm",'60'=>"60 cm",'65'=>"65 cm",'70'=>"70 cm",'75'=>"75 cm",'80'=>"80 cm");
 db_select('db02_alinha',$xw,true,$db_opcao)
 ?>
@@ -67,7 +67,7 @@ db_select('db02_alinha',$xw,true,$db_opcao)
        <?=@$Ldb02_inicia?>
     </td>
     <td> 
-<?
+<?php
 $xy = array('0'=>"0",'5'=>"5 cm",'10'=>"10 cm",'15'=>"15 cm",'20'=>"20 cm",'25'=>"25 cm",'30'=>"30 cm",'35'=>"35 cm",'40'=>"40 cm",'45'=>"45 cm",'50'=>"50 cm",'55'=>"55 cm",'60'=>"60 cm",'65'=>"65 cm",'70'=>"70 cm",'75'=>"75 cm",'80'=>"80 cm");
 db_select('db02_inicia',$xy,true,$db_opcao)
 ?>
@@ -78,7 +78,7 @@ db_select('db02_inicia',$xy,true,$db_opcao)
        <?=@$Ldb02_espaca?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>"1 cm",'2'=>"2 cm",'3'=>"3 cm",'4'=>"4 cm");
 db_select('db02_espaca',$x,true,$db_opcao)
 ?>
@@ -89,7 +89,7 @@ db_select('db02_espaca',$x,true,$db_opcao)
        <?=@$Ldb02_texto?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db02_texto',10,50,$Idb02_texto,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

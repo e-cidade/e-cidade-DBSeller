@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,50 +25,19 @@
  *                                licenca/licenca_pt.txt 
  */
 
-//echo "aqui"; exit();
+require_once(modification("fpdf151/pdf.php"));
+require_once(modification("fpdf151/assinatura.php"));
+require_once(modification("libs/db_sql.php"));
+require_once(modification("libs/db_utils.php"));
 
-if (!isset($arqinclude)){
-  
-  include(modification("fpdf151/pdf.php"));
-  include(modification("fpdf151/assinatura.php"));
-  include(modification("libs/db_sql.php"));
-  include(modification("libs/db_utils.php"));
-  include(modification("libs/db_libcontabilidade.php"));
-  include(modification("libs/db_liborcamento.php"));
-  include(modification("classes/db_orcparamrel_classe.php"));
-  include(modification("dbforms/db_funcoes.php"));
-  include(modification("classes/db_orcparamrelopcre_classe.php"));
-  
-  $classinatura = new cl_assinatura;
-  $orcparamrel  = new cl_orcparamrel;
-  
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
-  
-}
-
-include_once(modification("classes/db_conrelinfo_classe.php"));
-include_once(modification("classes/db_conrelvalor_classe.php"));
-include_once(modification("classes/db_orcparamrelopcre_classe.php"));
-include_once(modification("classes/db_orcparamelemento_classe.php"));
-include_once(modification("libs/db_utils.php"));
 $head2          = "RELATORIO DE EXAMES CONFIRMADOS";
-$sOrder         = "";
 $sWhere         = "";
 $sCampoVerifica = "s110_i_codigo"; 
-if (isset($classificacao) && $classificacao == 1) {
-  $sOrder = "z01_nome, s130_c_descricao, s108_c_exame,z01_v_nome";
-}else if(isset($classificacao) && $classificacao == 2) {
-  $sOrder = "z01_nome, s108_c_exame,z01_v_nome";
-} else if(isset($classificacao) && $classificacao == 3) {
-  
-  $sOrder         = "s130_c_descricao, z01_nome,s108_c_exame,z01_v_nome";
-  $sCampoVerifica = "s130_i_codigo";
-  
-}
+$sOrder         = "z01_nome,sd63_c_nome,z01_v_nome";
 
 if (isset($perini) && trim($perini) != "" && isset($perfim) && trim($perfim) != ""){
   
+  $head3 = "Período: {$perini} à {$perfim}";
   if ($sWhere != "") {
     $sWhere .= " and ";
   }
@@ -98,28 +67,20 @@ if (isset($prestadora) && trim($prestadora) != "") {
   }
   $sWhere .= "s110_i_codigo = {$prestadora}";	
 }
+
 //Exame
 if(isset($exame) && trim($exame) != ""){
 	
    if ($sWhere != "") {
     $sWhere .= " and ";
   }
-  $sWhere .= "s108_i_codigo = {$exame}";
-  
-}
-if(isset($grupo) && trim($grupo) != ""){
-	
-   if ($sWhere != "") {
-    $sWhere .= " and ";
-  }
-  $sWhere .= "s108_i_grupoexame = {$grupo}";
-  
+  $sWhere .= "sd63_c_procedimento = '$exame'";
+    
 }
 
 //Verifica qual layout utilizar
 if(isset($producao) && $producao == 1){
-	
-  
+	  
   $sSql   = "select s113_i_codigo,";
   $sSql  .= "        s133_c_protocolo,";
   $sSql  .= "        z01_v_nome, ";
@@ -129,13 +90,11 @@ if(isset($producao) && $producao == 1){
   $sSql  .= "        z01_bairro, ";
   $sSql  .= "        z01_munic, ";
   $sSql  .= "        z01_i_cgsund, ";
-  $sSql  .= "        s108_i_codigo,";
-  $sSql  .= "        s108_c_exame, ";
-  $sSql  .= "        s108_i_grupoexame, ";
+  $sSql  .= "        sd63_i_codigo,";
+  $sSql  .= "        sd63_c_procedimento,";
+  $sSql  .= "        sd63_c_nome, ";
   $sSql  .= "        s113_c_encaminhamento,";
   $sSql  .= "        s113_d_exame, ";
-  $sSql  .= "        s130_i_codigo, ";
-  $sSql  .= "        s130_c_descricao, ";
   $sSql  .= "        s113_c_hora,   ";
   $sSql  .= "        z01_d_nasc,  ";
   $sSql  .= "        z01_v_cgccpf,s133_i_codigo, ";
@@ -147,10 +106,10 @@ if(isset($producao) && $producao == 1){
   $sSql  .= "        inner join sau_prestadorvinculos on s111_i_codigo = s112_i_prestadorvinc ";
   $sSql  .= "        inner join sau_prestadores on s110_i_codigo = s111_i_prestador ";
   $sSql  .= "        inner join cgm on s110_i_numcgm = z01_numcgm "; 
-  $sSql  .= "        inner join sau_exames on s111_i_exame = s108_i_codigo ";
-  $sSql  .= "        left join sau_grupoexames on s130_i_codigo = s108_i_grupoexame";
+  $sSql  .= "        inner join sau_procedimento on s111_procedimento   = sd63_i_codigo "; 
   $sSql  .= "  where {$sWhere}";
-  $sSql  .= "  order by {$sOrder}";
+  $sSql  .= "  order by {$sOrder}";  
+
   $rsRelatorio = db_query($sSql);
   $aRegistros  = db_utils::getCollectionByRecord($rsRelatorio);
   if (pg_num_rows($rsRelatorio) == 0) {
@@ -165,74 +124,59 @@ if(isset($producao) && $producao == 1){
   $alt            = 4;
   $pagina         = 1;
   $pdf->addpage();
-  $sValorVerificarAnterior = 0;  
+  $pdf->setfont('arial','',10);
+  $sValorVerificarAnterior = "";
+  $verificarProcedimentoAnterior = "";  
   foreach ($aRegistros as $oLinhaRelatório) {
-        
-    if ($classificacao  == 1) {
-        $sValorVerificar = "{$oLinhaRelatório->s110_i_codigo}{$oLinhaRelatório->s108_i_grupoexame}{$oLinhaRelatório->s108_i_codigo}";
-      } else if ($classificacao  == 2) {
-        $sValorVerificar = "{$oLinhaRelatório->s110_i_codigo}{$oLinhaRelatório->s108_i_codigo}";
-      } else if ($classificacao  == 3) {
-       $sValorVerificar = "{$oLinhaRelatório->s108_i_grupoexame}{$oLinhaRelatório->s110_i_codigo}{$oLinhaRelatório->s108_i_codigo}";
-    }
+    
+    $sValorVerificar = $oLinhaRelatório->s110_i_codigo;
+    $verificarProcedimento = $oLinhaRelatório->sd63_c_procedimento;
+
     if ($sValorVerificarAnterior != $sValorVerificar) {    
       
       if ($pdf->GetY() > $pdf->h -25) {
         $pdf->AddPage();
       }
-      
-      $pdf->setfont('arial','',10);
-      $pdf->cell(165,$alt,'Relatório por Prestadoras','',0,"L",0);
+
       $pdf->cell(25,$alt,'','',1,"R",0);
-      $pdf->cell(25,$alt,'Prestadora :',0,0,"L",0);
-      $pdf->cell(110,$alt,"{$oLinhaRelatório->s110_i_codigo} - {$oLinhaRelatório->z01_nome}",0,0,"L",0);
-      $pdf->cell(25,$alt,'Endereço   :',0,0,"L",0);
-      $pdf->cell(110,$alt,$oLinhaRelatório->z01_ender,0,1,"L",0);
-      $pdf->cell(25,$alt,'','',0,"L",0);
-      $pdf->cell(110,$alt,'','',0,"L",0);
-      $pdf->cell(25,$alt,'Cidade       :','',0,"L",0);
-      $pdf->cell(30,$alt,$oLinhaRelatório->z01_munic,'',0,"L",0);
-      $pdf->cell(25,$alt,'Bairro :','',0,"L",0);
-      $pdf->cell(30,$alt, $oLinhaRelatório->z01_bairro,'',1,"L",0);
-      $pdf->cell(25,$alt,'Exame      :','',0,"L",0);
-      $pdf->cell(110,$alt,"{$oLinhaRelatório->s108_i_codigo} - {$oLinhaRelatório->s108_c_exame}",'',0,"L",0);
-      $pdf->cell(25,$alt,'Grupo       :','',0,"L",0);
-      $pdf->cell(110,$alt,"{$oLinhaRelatório->s130_i_codigo} - {$oLinhaRelatório->s130_c_descricao}",'',1,"L",0);
-      $pdf->cell(25,$alt,'','',0,"L",0);
-      $pdf->cell(110,$alt,'','',0,"L",0);
-      $pdf->cell(25,$alt,'Período  :','',0,"L",0);
-      $pdf->cell(110,$alt,"{$perini} à {$perfim}",'',1,"L",0);
-      $pdf->cell(90,$alt,'Pacientes','RT',0,"C",1);
-      $pdf->cell(30,$alt,'Dia / Hora','RT',0,"C",1);
-      $pdf->cell(25,$alt,'Protocolo','RT',0,"C",1);
-      $pdf->cell(35,$alt,'Encaminhamento','RT',0,"C",1);
-      $pdf->cell(90,$alt,'Profissional','T',1,"C",1);
-      
+
+      $pdf->cell(25,$alt,'Prestadora:',0,0,"L",0);
+      $pdf->cell(130,$alt,"{$oLinhaRelatório->s110_i_codigo} - {$oLinhaRelatório->z01_nome}",0,1,"L",0);
+
+      $pdf->cell(25,$alt,'Endereço:',0,0,"L",0);
+      $pdf->cell(110,$alt,$oLinhaRelatório->z01_ender,0,0,"L",0);
+      $pdf->cell(10,$alt,'Bairro:','',0,"R",0);
+      $pdf->cell(30,$alt, $oLinhaRelatório->z01_bairro,'',0,"L",0);      
+      $pdf->cell(10,$alt,'Cidade:','',0,"R",0);
+      $pdf->cell(30,$alt,$oLinhaRelatório->z01_munic,'',1,"L",0);
+
+
+      $sValorVerificarAnterior = $sValorVerificar;
     }
-    
-    
+        
+    if($verificarProcedimentoAnterior != $verificarProcedimento){
+      
+      $pdf->ln();
+      $pdf->cell(25,$alt,'Exame:','',0,"L",0);
+      $pdf->cell(110,$alt,"{$oLinhaRelatório->sd63_c_procedimento} - {$oLinhaRelatório->sd63_c_nome}",'',1,"L",0);
+
+      imprimeColunasRelatorio($pdf,$alt);
+      $verificarProcedimentoAnterior = $verificarProcedimento;
+    }
+
   	$pdf->cell(90,$alt,$oLinhaRelatório->z01_v_nome,'RTB',0,"L",0);
   	$pdf->cell(30,$alt,db_formatar($oLinhaRelatório->s113_d_exame,"d")." ".$oLinhaRelatório->s113_c_hora,'RTB',0,"C",0);
   	$pdf->cell(25,$alt,$oLinhaRelatório->s133_c_protocolo,'RTB',0,"C",0);
   	$pdf->cell(35,$alt,$oLinhaRelatório->s113_c_encaminhamento,'RTB',0,"C",0);
   	$pdf->cell(90,$alt,'','TB',1,"L",0);
-    if ($classificacao  == 1) {
-      $sValorVerificarAnterior = "{$oLinhaRelatório->s110_i_codigo}{$oLinhaRelatório->s108_i_grupoexame}{$oLinhaRelatório->s108_i_codigo}";
-    } else if ($classificacao  == 2) {
-      $sValorVerificarAnterior = "{$oLinhaRelatório->s110_i_codigo}{$oLinhaRelatório->s108_i_codigo}";
-    } else if ($classificacao  == 3) {
-      $sValorVerificarAnterior = "{$oLinhaRelatório->s108_i_grupoexame}{$oLinhaRelatório->s110_i_codigo}{$oLinhaRelatório->s108_i_codigo}";
-    }
   }
 }else if (isset($producao) && $producao == 2){
-  
-  
+    
   $sSql   = "select distinct";
-  $sSql  .= "        s108_i_codigo,";
-  $sSql  .= "        s108_c_exame, ";
-  $sSql  .= "        s113_d_exame, ";
-  $sSql  .= "        s130_i_codigo, ";
-  $sSql  .= "        s130_c_descricao ";
+  $sSql  .= "        sd63_i_codigo,";
+  $sSql  .= "        sd63_c_procedimento,";
+  $sSql  .= "        sd63_c_nome, ";
+  $sSql  .= "        s113_d_exame ";
   $sSql  .= "   from sau_agendaexames";
   $sSql  .= "        inner join sau_prestadorhorarios on s112_i_codigo = s113_i_prestadorhorarios";
   $sSql  .= "        inner join cgs_und on z01_i_cgsund = s113_i_numcgs  ";
@@ -240,16 +184,15 @@ if(isset($producao) && $producao == 1){
   $sSql  .= "        inner join sau_prestadorvinculos on s111_i_codigo = s112_i_prestadorvinc ";
   $sSql  .= "        inner join sau_prestadores on s110_i_codigo = s111_i_prestador ";
   $sSql  .= "        inner join cgm on s110_i_numcgm = z01_numcgm "; 
-  $sSql  .= "        inner join sau_exames on s111_i_exame = s108_i_codigo ";
-  $sSql  .= "        left join sau_grupoexames on s130_i_codigo = s108_i_grupoexame";
+  $sSql  .= "        inner join sau_procedimento on s111_procedimento = sd63_i_codigo "; 
   $sSql  .= "  where {$sWhere}";
-  $sSql  .= "  order by s108_i_codigo";
+  $sSql  .= "  order by sd63_c_procedimento";
+  
   $rsRelatorio = db_query($sSql);
   $aRegistros  = db_utils::getCollectionByRecord($rsRelatorio);
   if (pg_num_rows($rsRelatorio) == 0) {
    db_redireciona("db_erros.php?fechar=true&db_erro=Não há dados a serem impressos");
   }
-  
   
   $pdf = new PDF("P", "mm", "A4"); 
   $pdf->Open(); 
@@ -260,17 +203,12 @@ if(isset($producao) && $producao == 1){
   $pagina         = 1;
   $pdf->addpage();
   $pdf->setfont('arial','',10);
-  $pdf->cell(165,$alt,'Relatório por Prestadoras','',0,"L",0);
-  $pdf->cell(25,$alt,'','',1,"R",0);
+  
   foreach ($aRegistros as $oLinhaRelatório) {
     
     $pdf->setfont('arial','',10);
-    $pdf->cell(15,$alt,'Exame      :','',0,"L",0);
-    $pdf->cell(110,$alt,"{$oLinhaRelatório->s108_i_codigo} - {$oLinhaRelatório->s108_c_exame}",'',0,"L",0);
-    $pdf->cell(15,$alt,'Grupo      :','',0,"L",0);
-    $pdf->cell(110,$alt,"{$oLinhaRelatório->s130_i_codigo} - {$oLinhaRelatório->s130_c_descricao}",'',1,"L",0);
-    $pdf->cell(15,$alt,'Período  :','',0,"L",0);
-    $pdf->cell(110,$alt,"{$perini} à {$perfim}",'',1,"L",0);
+    $pdf->cell(15,$alt,'Exame: ','',0,"L",0);
+    $pdf->cell(110,$alt,"{$oLinhaRelatório->sd63_c_procedimento} - {$oLinhaRelatório->sd63_c_nome}",'',0,"L",0);
     $pdf->Ln();
     $pdf->cell(160,$alt,'Prestadora','RT',0,"C" ,1);
     $pdf->cell(30,$alt,'Quantidade','T',1,"C", 1);
@@ -283,10 +221,9 @@ if(isset($producao) && $producao == 1){
     $sSql  .= "        inner join sau_prestadorvinculos on s111_i_codigo = s112_i_prestadorvinc ";
     $sSql  .= "        inner join sau_prestadores on s110_i_codigo = s111_i_prestador ";
     $sSql  .= "        inner join cgm on s110_i_numcgm = z01_numcgm "; 
-    $sSql  .= "        inner join sau_exames on s111_i_exame = s108_i_codigo ";
-    $sSql  .= "        left join sau_grupoexames on s130_i_codigo = s108_i_grupoexame";
+    $sSql  .= "        inner join sau_procedimento on s111_procedimento = sd63_i_codigo "; 
     $sSql  .= "  where {$sWhere}";
-    $sSql  .= "    AND s111_i_exame = {$oLinhaRelatório->s108_i_codigo}";
+    $sSql  .= "    AND sd63_i_codigo = {$oLinhaRelatório->sd63_i_codigo}";
     $sSql  .= "  group by  z01_nome order by z01_nome";
     $rsTotais = db_query($sSql);
     $aTotais  = db_utils::getCollectionByRecord($rsTotais); 
@@ -301,18 +238,15 @@ if(isset($producao) && $producao == 1){
   }
 }
 
-    
-  $pdf->ln();
-// ----------------------------------------------------------------
-//notasExplicativas(&$pdf, 63, $periodo,190); 
-//  $pdf->Ln(5);
-//  
-//  // assinaturas
-//  $pdf->setfont('arial','',5);
-//  $pdf->ln(20);
-//  
-//  assinaturas(&$pdf,&$classinatura,'GF');
-  
-  $pdf->Output();
+$pdf->ln();
+$pdf->Output();
 
+function imprimeColunasRelatorio($pdf,$alt){
+
+  $pdf->cell(90,$alt,'Pacientes','RT',0,"C",1);
+  $pdf->cell(30,$alt,'Dia / Hora','RT',0,"C",1);
+  $pdf->cell(25,$alt,'Protocolo','RT',0,"C",1);
+  $pdf->cell(35,$alt,'Encaminhamento','RT',0,"C",1);
+  $pdf->cell(90,$alt,'Profissional','T',1,"C",1);
+}
 ?>

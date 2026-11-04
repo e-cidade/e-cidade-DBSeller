@@ -73,3 +73,6 @@ db_menu();
 ?>
 </body>
 </html>
+<script>
+js_tabulacaoforms("form1","la56_i_laboratorio",true,1,"la56_i_laboratorio",true);
+</script>

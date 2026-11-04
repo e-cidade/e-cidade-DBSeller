@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -74,7 +74,7 @@ if(isset($retorno)){
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <table width="300" height="100" id="tab_aguarde" style="visibility:hidden;border:2px solid #444444;position:absolute;top:100px;" cellspacing="1" cellpading="2">
@@ -95,7 +95,7 @@ if(isset($retorno)){
       sMsgAviso += 'Procedimentos > Diário de Classe > Lançamentos por Turma';
 
   alert(sMsgAviso);
-  
+
   // Adicionado redirecionamento para nova rotina
   window.location = 'edu4_lancamentoavaliacoesturma001.php';
   return;

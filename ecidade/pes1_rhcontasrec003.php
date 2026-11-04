@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -29,11 +29,10 @@ require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("classes/db_rhcontasrec_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 
 $oDaoRhcontasrec = new cl_rhcontasrec;
 $db_botao    = false;
@@ -56,7 +55,7 @@ if (isset($excluir)) {
 } else if(isset($chavepesquisa)) {
   $db_opcao = 3;
   $db_botao = true;
-  $result   = $oDaoRhcontasrec->sql_record( $oDaoRhcontasrec->sql_query($chavepesquisa, $chavepesquisa1, db_getsession("DB_instit"), $chavepesquisa3) );
+  $result   = $oDaoRhcontasrec->sql_record( $oDaoRhcontasrec->sql_query2($chavepesquisa, $chavepesquisa1, db_getsession("DB_instit"), $chavepesquisa3) );
   db_fieldsmemory($result, 0);
 }
 

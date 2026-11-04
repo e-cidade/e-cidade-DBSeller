@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -98,7 +98,7 @@ $chave_rh37_descr = isset($chave_rh37_descr) ? stripslashes($chave_rh37_descr) :
                 <b>Opções:</b>
               </td>
               <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 $aOpcao = array("at"=>"Ativos","ds"=>"Desativados" ,"am"=>"Ambos");
                 db_select('sOpcao',$aOpcao,true,4,"");
               ?>

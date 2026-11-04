@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ $clmatrequi->rotulo->label("m40_codigo");
                 <?=$Lm40_codigo?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("m40_codigo",10,$Im40_codigo,true,"text",4,"","chave_m40_codigo");
                 ?>
               </td>
@@ -64,7 +64,7 @@ $clmatrequi->rotulo->label("m40_codigo");
                 <b>Exibir Requisições de Exercícios Anteriores:</b>
               </td>
               <td>
-                <?
+                <?php
                 db_select("trazoutrozexercicios", array('n'=>'Não','s'=>'Sim'), true,1);
                 ?>
               </td>
@@ -82,7 +82,7 @@ $clmatrequi->rotulo->label("m40_codigo");
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
+        <?php
 
         // filtro para trazer requisição não automáticas
         $where  = "";
@@ -173,12 +173,12 @@ $clmatrequi->rotulo->label("m40_codigo");
   </table>
   </body>
   </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

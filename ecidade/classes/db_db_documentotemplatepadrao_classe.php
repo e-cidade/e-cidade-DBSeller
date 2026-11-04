@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_db_documentotemplatepadrao {
                  db81_descricao = varchar(50) = Documento
                  ";
    //funcao construtor da classe
-   function cl_db_documentotemplatepadrao() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_documentotemplatepadrao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_documentotemplatepadrao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db81_sequencial = ($this->db81_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db81_sequencial"]:$this->db81_sequencial);
        $this->db81_templatetipo = ($this->db81_templatetipo == ""?@$GLOBALS["HTTP_POST_VARS"]["db81_templatetipo"]:$this->db81_templatetipo);
@@ -80,7 +80,7 @@ class cl_db_documentotemplatepadrao {
      }
    }
    // funcao para inclusao
-   function incluir ($db81_sequencial){
+   public function incluir ($db81_sequencial){
       $this->atualizacampos();
      if($this->db81_templatetipo == null ){
        $this->erro_sql = " Campo Template Tipo nao Informado.";
@@ -191,7 +191,7 @@ class cl_db_documentotemplatepadrao {
      return true;
    }
    // funcao para alteracao
-   function alterar ($db81_sequencial=null) {
+   public function alterar ($db81_sequencial=null) {
       $this->atualizacampos();
      $sql = " update db_documentotemplatepadrao set ";
      $virgula = "";
@@ -301,7 +301,7 @@ class cl_db_documentotemplatepadrao {
      }
    }
    // funcao para exclusao
-   function excluir ($db81_sequencial=null,$dbwhere=null) {
+   public function excluir ($db81_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db81_sequencial));
      }else{
@@ -365,7 +365,7 @@ class cl_db_documentotemplatepadrao {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -388,7 +388,7 @@ class cl_db_documentotemplatepadrao {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $db81_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $db81_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -423,7 +423,7 @@ class cl_db_documentotemplatepadrao {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $db81_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $db81_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

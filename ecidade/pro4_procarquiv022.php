@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
+use ECidade\Lib\Request\ProcessoEletronico\ProcessoEletronico;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -64,7 +66,6 @@ db_postmemory($HTTP_POST_VARS);
 
 function notificar(processoProtocolo $processo){
 
-        $eauth = new \ECidade\Lib\Request\EAuth\EAuth();
         $titular = \CgmFactory::getInstanceByCgm($processo->getCgm());
 
         if (empty($titular->getNome())) {
@@ -94,11 +95,8 @@ function notificar(processoProtocolo $processo){
         $message = "O processo {$processo->getNumeroProcesso()}/{$processo->getAnoProcesso()} ";
         $message .= "do titular {$titular->getNome()}, foi arquivado.";
 
-        $eauth->sendMessage(
-            $cidadao->getCnpjCpf(),
-            $atendimentoProcessoEletronico->getClientAtendimentoId(),
-            $message
-        );
+        $integracaoProcessoEletronico = new ProcessoEletronico();
+        $integracaoProcessoEletronico->notificar($message,$cidadao->getCnpjCpf());
 }
 if (isset($incluir)){
   db_inicio_transacao();
@@ -109,7 +107,7 @@ if (isset($incluir)){
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
     if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave);
+      $dados= explode("_",$chave);
       $p67_codproc=$dados[1];
       $clprocarquiv->p67_id_usuario = db_getsession("DB_id_usuario");
       $clprocarquiv->p67_coddepto = db_getsession("DB_coddepto");
@@ -260,7 +258,7 @@ function js_desabilita(){
                       <?=@$Lp67_historico?>
                     </td>
                     <td>
-                      <?
+                      <?php
                       db_textarea('p67_historico',6,60,$Ip67_historico,true,'text',1,"")
                       ?>
                     </td>
@@ -270,7 +268,7 @@ function js_desabilita(){
                        <?=@$Lp67_dtarq?>
                     </td>
                     <td>
-                      <?
+                      <?php
                       if(empty($y30_data_dia)){
                         $p67_dtarq_dia = date("d",db_getsession("DB_datausu"));
                         $p67_dtarq_mes = date("m",db_getsession("DB_datausu"));
@@ -287,7 +285,7 @@ function js_desabilita(){
                   </tr>
                   <tr>
                     <td colspan=2 align='center' >
-                    <?
+                    <?php
 
                        if (!isset($data1) || !isset($data)) {
 
@@ -386,8 +384,8 @@ function js_desabilita(){
   </table>
   </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
-<?
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php
 if (isset($incluir)){
     db_msgbox($erro_msg);
     if($sqlerro==true){

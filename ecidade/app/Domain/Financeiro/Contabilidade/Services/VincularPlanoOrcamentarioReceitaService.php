@@ -84,16 +84,7 @@ class VincularPlanoOrcamentarioReceitaService extends VincularPlanoOrcamentario
      */
     public function vinculoGeral(array $filtros)
     {
-        $contasGoverno = PlanoReceita::orderBy('conta')
-            ->select('*')
-            ->when(!empty($filtros['tipoPlano']), function ($query) use ($filtros) {
-                $query->where('uniao', $filtros['tipoPlano'] === PlanoContas::PLANO_UNIAO);
-            })
-            ->when(!empty($filtros['exercicio']), function ($query) use ($filtros) {
-                $query->where('exercicio', '=', $filtros['exercicio']);
-            })
-            ->where('sintetica', false)
-            ->get();
+        $contasGoverno = $this->getContasGoverno($filtros['tipoPlano'], $filtros['exercicio']);
 
         $contasGoverno->each(function (PlanoReceita $planoOrcamentario) {
             $tamanhoConta = strlen($planoOrcamentario->conta);
@@ -120,7 +111,6 @@ class VincularPlanoOrcamentarioReceitaService extends VincularPlanoOrcamentario
         });
     }
 
-
     public function vincular($planoOrcamentario, array $idsContasEcidade)
     {
         $existe = DB::table('contabilidade.planoreceitaconplanoorcamento')
@@ -138,5 +128,73 @@ class VincularPlanoOrcamentarioReceitaService extends VincularPlanoOrcamentario
 
         parent::vincular($planoOrcamentario, $idsContasEcidade);
         return true;
+    }
+
+    public function importarVinculo(array $filtros)
+    {
+        $contasGoverno = $this->getContasGoverno($filtros['tipoPlano'], $filtros['exercicio']);
+
+        $contasGoverno->each(function (PlanoReceita $planoOrcamentario) use ($filtros) {
+            $planoOrcamentario->conta;
+            $exercicioAnterior = $planoOrcamentario->exercicio - 1;
+            $tipoPlano = $planoOrcamentario->uniao ? 'uniao' : 'UF';
+
+            $pcaspAnterior = $this->getContasGoverno($tipoPlano, $exercicioAnterior, $planoOrcamentario->conta)
+                ->shift();
+
+            // quando a conta do pcasp é nova não vai ter no ano anterior
+            if (is_null($pcaspAnterior)) {
+                return;
+            }
+
+            // não tem conta mapeada no exercicio anterior
+            $contasAnoAnterior = $pcaspAnterior->contasEcidade;
+            if ($contasAnoAnterior->isEmpty()) {
+                return;
+            }
+
+            $codCons = [];
+            foreach ($contasAnoAnterior as $contaOrcamentaria) {
+                $codCons[] = $contaOrcamentaria->c60_codcon;
+            }
+
+            $contasEcidade = DB::table('contabilidade.conplanoorcamento')
+                ->select('c60_codigo')
+                ->where('c60_anousu', $planoOrcamentario->exercicio)
+                ->whereIn('c60_codcon', $codCons)
+                ->get();
+
+            if (!$contasEcidade->isEmpty()) {
+                $idContasEcidade = $contasEcidade->map(function ($conta) {
+                    return $conta->c60_codigo;
+                })->toArray();
+
+                $this->vincularContas($planoOrcamentario, $idContasEcidade);
+            }
+        });
+        return true;
+    }
+
+    /**
+     * @param string $tipoPlano
+     * @param integer $exercicio
+     * @param string $conta
+     * @return mixed
+     */
+    public function getContasGoverno($tipoPlano, $exercicio, $conta = null)
+    {
+        return PlanoReceita::orderBy('conta')
+            ->select('*')
+            ->when(!empty($conta), function ($query) use ($conta) {
+                $query->where('conta', '=', $conta);
+            })
+            ->when(!empty($tipoPlano), function ($query) use ($tipoPlano) {
+                $query->where('uniao', $tipoPlano === PlanoContas::PLANO_UNIAO);
+            })
+            ->when(!empty($exercicio), function ($query) use ($exercicio) {
+                $query->where('exercicio', '=', $exercicio);
+            })
+            ->where('sintetica', false)
+            ->get();
     }
 }

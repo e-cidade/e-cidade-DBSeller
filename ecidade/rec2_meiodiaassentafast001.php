@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,15 +82,15 @@ function js_emite() {
 
   <tr>
     <td align="right" title="<?=$Trh01_regist?>">
-      <?
+      <?php
       db_ancora(@$Lrh01_regist, "js_pesquisarh01_regist(true);", 1);
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('rh01_regist', 8, $Irh01_regist, true, 'text', 1, " onchange='js_pesquisarh01_regist(false);'")
       ?>
-      <?
+      <?php
         db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
       ?>
     </td>
@@ -100,7 +100,7 @@ function js_emite() {
         <strong>Data: </strong>
         </td>
         <td nowrap>
-        <?
+        <?php
         db_inputdata("datai", @$datai_dia, @$datai_mes, @$datai_ano, true, 'text', 1);
         ?>
         </td>
@@ -109,7 +109,7 @@ function js_emite() {
         <td align="right" nowrap title="Tipo" ><strong>Tipo: </strong>
         </td>
         <td align="left">
-          <?
+          <?php
             $xx = array("a"=>"Afastamento","s"=>"Assentamento","g"=>"Geral");
             db_select('qual_tipo',$xx,true,4,"");
     ?>
@@ -119,7 +119,7 @@ function js_emite() {
         <td align="right" nowrap title="Ordem para a emissão do relatório" ><strong>Ordem: </strong>
         </td>
         <td align="left">
-          <?
+          <?php
             $xx = array("a"=>"Assentamento","d"=>"Data");
             db_select('ordem',$xx,true,4,"");
     ?>
@@ -134,7 +134,7 @@ function js_emite() {
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,84 +1,84 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptucalc
-class cl_iptucalc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j23_anousu = 0; 
-   var $j23_matric = 0; 
-   var $j23_testad = 0; 
-   var $j23_arealo = 0; 
-   var $j23_areafr = 0; 
-   var $j23_areaed = 0; 
-   var $j23_m2terr = 0; 
-   var $j23_vlrter = 0; 
-   var $j23_aliq = 0; 
-   var $j23_vlrisen = 0; 
-   var $j23_tipoim = null; 
-   var $j23_manual = null; 
-   var $j23_tipocalculo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_iptucalc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j23_anousu = 0;
+   var $j23_matric = 0;
+   var $j23_testad = 0;
+   var $j23_arealo = 0;
+   var $j23_areafr = 0;
+   var $j23_areaed = 0;
+   var $j23_m2terr = 0;
+   var $j23_vlrter = 0;
+   var $j23_aliq = 0;
+   var $j23_vlrisen = 0;
+   var $j23_tipoim = null;
+   var $j23_manual = null;
+   var $j23_tipocalculo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j23_anousu = int4 = Exercicio 
-                 j23_matric = int4 = Matricula 
-                 j23_testad = float8 = Testada do Calculo 
-                 j23_arealo = float8 = Area Calculada 
-                 j23_areafr = float8 = Area Fracionada 
-                 j23_areaed = float8 = Area Total Edificada 
-                 j23_m2terr = float8 = Valor M2 Terreno 
-                 j23_vlrter = float8 = Valor Venal Terreno 
-                 j23_aliq = float8 = Aliquita do Iptu 
-                 j23_vlrisen = float8 = Valor da Isencao 
-                 j23_tipoim = varchar(1) = Tipo de imposto 
-                 j23_manual = text = Log do calculo 
-                 j23_tipocalculo = int8 = Tipo de calculo 
+                 j23_anousu = int4 = Exercicio
+                 j23_matric = int4 = Matricula
+                 j23_testad = float8 = Testada do Calculo
+                 j23_arealo = float8 = Area Calculada
+                 j23_areafr = float8 = Area Fracionada
+                 j23_areaed = float8 = Area Total Edificada
+                 j23_m2terr = float8 = Valor M2 Terreno
+                 j23_vlrter = float8 = Valor Venal Terreno
+                 j23_aliq = float8 = Aliquita do Iptu
+                 j23_vlrisen = float8 = Valor da Isencao
+                 j23_tipoim = varchar(1) = Tipo de imposto
+                 j23_manual = text = Log do calculo
+                 j23_tipocalculo = int8 = Tipo de calculo
                  ";
-   //funcao construtor da classe 
-   function cl_iptucalc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("iptucalc"); 
+     $this->rotulo = new rotulo("iptucalc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -87,7 +87,7 @@ class cl_iptucalc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j23_anousu = ($this->j23_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["j23_anousu"]:$this->j23_anousu);
        $this->j23_matric = ($this->j23_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j23_matric"]:$this->j23_matric);
@@ -108,9 +108,9 @@ class cl_iptucalc {
      }
    }
    // funcao para inclusao
-   function incluir ($j23_anousu,$j23_matric){ 
+   public function incluir ($j23_anousu,$j23_matric){
       $this->atualizacampos();
-     if($this->j23_testad == null ){ 
+     if($this->j23_testad == null ){
        $this->erro_sql = " Campo Testada do Calculo nao Informado.";
        $this->erro_campo = "j23_testad";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_arealo == null ){ 
+     if($this->j23_arealo == null ){
        $this->erro_sql = " Campo Area Calculada nao Informado.";
        $this->erro_campo = "j23_arealo";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_areafr == null ){ 
+     if($this->j23_areafr == null ){
        $this->erro_sql = " Campo Area Fracionada nao Informado.";
        $this->erro_campo = "j23_areafr";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_areaed == null ){ 
+     if($this->j23_areaed == null ){
        $this->erro_sql = " Campo Area Total Edificada nao Informado.";
        $this->erro_campo = "j23_areaed";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_m2terr == null ){ 
+     if($this->j23_m2terr == null ){
        $this->erro_sql = " Campo Valor M2 Terreno nao Informado.";
        $this->erro_campo = "j23_m2terr";
        $this->erro_banco = "";
@@ -155,7 +155,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_vlrter == null ){ 
+     if($this->j23_vlrter == null ){
        $this->erro_sql = " Campo Valor Venal Terreno nao Informado.";
        $this->erro_campo = "j23_vlrter";
        $this->erro_banco = "";
@@ -164,7 +164,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_aliq == null ){ 
+     if($this->j23_aliq == null ){
        $this->erro_sql = " Campo Aliquita do Iptu nao Informado.";
        $this->erro_campo = "j23_aliq";
        $this->erro_banco = "";
@@ -173,7 +173,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_vlrisen == null ){ 
+     if($this->j23_vlrisen == null ){
        $this->erro_sql = " Campo Valor da Isencao nao Informado.";
        $this->erro_campo = "j23_vlrisen";
        $this->erro_banco = "";
@@ -182,7 +182,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_tipoim == null ){ 
+     if($this->j23_tipoim == null ){
        $this->erro_sql = " Campo Tipo de imposto nao Informado.";
        $this->erro_campo = "j23_tipoim";
        $this->erro_banco = "";
@@ -191,7 +191,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_manual == null ){ 
+     if($this->j23_manual == null ){
        $this->erro_sql = " Campo Log do calculo nao Informado.";
        $this->erro_campo = "j23_manual";
        $this->erro_banco = "";
@@ -200,7 +200,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j23_tipocalculo == null ){ 
+     if($this->j23_tipocalculo == null ){
        $this->erro_sql = " Campo Tipo de calculo nao Informado.";
        $this->erro_campo = "j23_tipocalculo";
        $this->erro_banco = "";
@@ -209,9 +209,9 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-       $this->j23_anousu = $j23_anousu; 
-       $this->j23_matric = $j23_matric; 
-     if(($this->j23_anousu == null) || ($this->j23_anousu == "") ){ 
+       $this->j23_anousu = $j23_anousu;
+       $this->j23_matric = $j23_matric;
+     if(($this->j23_anousu == null) || ($this->j23_anousu == "") ){
        $this->erro_sql = " Campo j23_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -219,7 +219,7 @@ class cl_iptucalc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->j23_matric == null) || ($this->j23_matric == "") ){ 
+     if(($this->j23_matric == null) || ($this->j23_matric == "") ){
        $this->erro_sql = " Campo j23_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -228,37 +228,37 @@ class cl_iptucalc {
        return false;
      }
      $sql = "insert into iptucalc(
-                                       j23_anousu 
-                                      ,j23_matric 
-                                      ,j23_testad 
-                                      ,j23_arealo 
-                                      ,j23_areafr 
-                                      ,j23_areaed 
-                                      ,j23_m2terr 
-                                      ,j23_vlrter 
-                                      ,j23_aliq 
-                                      ,j23_vlrisen 
-                                      ,j23_tipoim 
-                                      ,j23_manual 
-                                      ,j23_tipocalculo 
+                                       j23_anousu
+                                      ,j23_matric
+                                      ,j23_testad
+                                      ,j23_arealo
+                                      ,j23_areafr
+                                      ,j23_areaed
+                                      ,j23_m2terr
+                                      ,j23_vlrter
+                                      ,j23_aliq
+                                      ,j23_vlrisen
+                                      ,j23_tipoim
+                                      ,j23_manual
+                                      ,j23_tipocalculo
                        )
                 values (
-                                $this->j23_anousu 
-                               ,$this->j23_matric 
-                               ,$this->j23_testad 
-                               ,$this->j23_arealo 
-                               ,$this->j23_areafr 
-                               ,$this->j23_areaed 
-                               ,$this->j23_m2terr 
-                               ,$this->j23_vlrter 
-                               ,$this->j23_aliq 
-                               ,$this->j23_vlrisen 
-                               ,'$this->j23_tipoim' 
-                               ,'$this->j23_manual' 
-                               ,$this->j23_tipocalculo 
+                                $this->j23_anousu
+                               ,$this->j23_matric
+                               ,$this->j23_testad
+                               ,$this->j23_arealo
+                               ,$this->j23_areafr
+                               ,$this->j23_areaed
+                               ,$this->j23_m2terr
+                               ,$this->j23_vlrter
+                               ,$this->j23_aliq
+                               ,$this->j23_vlrisen
+                               ,'$this->j23_tipoim'
+                               ,'$this->j23_manual'
+                               ,$this->j23_tipocalculo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->j23_anousu."-".$this->j23_matric) nao Incluído. Inclusao Abortada.";
@@ -303,16 +303,16 @@ class cl_iptucalc {
        $resac = db_query("insert into db_acount values($acount,115,11024,'','".AddSlashes(pg_result($resaco,0,'j23_tipocalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j23_anousu=null,$j23_matric=null) { 
+   public function alterar ($j23_anousu=null,$j23_matric=null) {
       $this->atualizacampos();
      $sql = " update iptucalc set ";
      $virgula = "";
-     if(trim($this->j23_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_anousu"])){ 
+     if(trim($this->j23_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_anousu"])){
        $sql  .= $virgula." j23_anousu = $this->j23_anousu ";
        $virgula = ",";
-       if(trim($this->j23_anousu) == null ){ 
+       if(trim($this->j23_anousu) == null ){
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "j23_anousu";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_matric"])){ 
+     if(trim($this->j23_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_matric"])){
        $sql  .= $virgula." j23_matric = $this->j23_matric ";
        $virgula = ",";
-       if(trim($this->j23_matric) == null ){ 
+       if(trim($this->j23_matric) == null ){
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "j23_matric";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_testad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_testad"])){ 
+     if(trim($this->j23_testad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_testad"])){
        $sql  .= $virgula." j23_testad = $this->j23_testad ";
        $virgula = ",";
-       if(trim($this->j23_testad) == null ){ 
+       if(trim($this->j23_testad) == null ){
          $this->erro_sql = " Campo Testada do Calculo nao Informado.";
          $this->erro_campo = "j23_testad";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_arealo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_arealo"])){ 
+     if(trim($this->j23_arealo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_arealo"])){
        $sql  .= $virgula." j23_arealo = $this->j23_arealo ";
        $virgula = ",";
-       if(trim($this->j23_arealo) == null ){ 
+       if(trim($this->j23_arealo) == null ){
          $this->erro_sql = " Campo Area Calculada nao Informado.";
          $this->erro_campo = "j23_arealo";
          $this->erro_banco = "";
@@ -361,10 +361,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_areafr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_areafr"])){ 
+     if(trim($this->j23_areafr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_areafr"])){
        $sql  .= $virgula." j23_areafr = $this->j23_areafr ";
        $virgula = ",";
-       if(trim($this->j23_areafr) == null ){ 
+       if(trim($this->j23_areafr) == null ){
          $this->erro_sql = " Campo Area Fracionada nao Informado.";
          $this->erro_campo = "j23_areafr";
          $this->erro_banco = "";
@@ -374,10 +374,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_areaed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_areaed"])){ 
+     if(trim($this->j23_areaed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_areaed"])){
        $sql  .= $virgula." j23_areaed = $this->j23_areaed ";
        $virgula = ",";
-       if(trim($this->j23_areaed) == null ){ 
+       if(trim($this->j23_areaed) == null ){
          $this->erro_sql = " Campo Area Total Edificada nao Informado.";
          $this->erro_campo = "j23_areaed";
          $this->erro_banco = "";
@@ -387,10 +387,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_m2terr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_m2terr"])){ 
+     if(trim($this->j23_m2terr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_m2terr"])){
        $sql  .= $virgula." j23_m2terr = $this->j23_m2terr ";
        $virgula = ",";
-       if(trim($this->j23_m2terr) == null ){ 
+       if(trim($this->j23_m2terr) == null ){
          $this->erro_sql = " Campo Valor M2 Terreno nao Informado.";
          $this->erro_campo = "j23_m2terr";
          $this->erro_banco = "";
@@ -400,10 +400,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_vlrter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_vlrter"])){ 
+     if(trim($this->j23_vlrter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_vlrter"])){
        $sql  .= $virgula." j23_vlrter = $this->j23_vlrter ";
        $virgula = ",";
-       if(trim($this->j23_vlrter) == null ){ 
+       if(trim($this->j23_vlrter) == null ){
          $this->erro_sql = " Campo Valor Venal Terreno nao Informado.";
          $this->erro_campo = "j23_vlrter";
          $this->erro_banco = "";
@@ -413,10 +413,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_aliq"])){ 
+     if(trim($this->j23_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_aliq"])){
        $sql  .= $virgula." j23_aliq = $this->j23_aliq ";
        $virgula = ",";
-       if(trim($this->j23_aliq) == null ){ 
+       if(trim($this->j23_aliq) == null ){
          $this->erro_sql = " Campo Aliquita do Iptu nao Informado.";
          $this->erro_campo = "j23_aliq";
          $this->erro_banco = "";
@@ -426,10 +426,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_vlrisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_vlrisen"])){ 
+     if(trim($this->j23_vlrisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_vlrisen"])){
        $sql  .= $virgula." j23_vlrisen = $this->j23_vlrisen ";
        $virgula = ",";
-       if(trim($this->j23_vlrisen) == null ){ 
+       if(trim($this->j23_vlrisen) == null ){
          $this->erro_sql = " Campo Valor da Isencao nao Informado.";
          $this->erro_campo = "j23_vlrisen";
          $this->erro_banco = "";
@@ -439,10 +439,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_tipoim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_tipoim"])){ 
+     if(trim($this->j23_tipoim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_tipoim"])){
        $sql  .= $virgula." j23_tipoim = '$this->j23_tipoim' ";
        $virgula = ",";
-       if(trim($this->j23_tipoim) == null ){ 
+       if(trim($this->j23_tipoim) == null ){
          $this->erro_sql = " Campo Tipo de imposto nao Informado.";
          $this->erro_campo = "j23_tipoim";
          $this->erro_banco = "";
@@ -452,10 +452,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_manual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_manual"])){ 
+     if(trim($this->j23_manual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_manual"])){
        $sql  .= $virgula." j23_manual = '$this->j23_manual' ";
        $virgula = ",";
-       if(trim($this->j23_manual) == null ){ 
+       if(trim($this->j23_manual) == null ){
          $this->erro_sql = " Campo Log do calculo nao Informado.";
          $this->erro_campo = "j23_manual";
          $this->erro_banco = "";
@@ -465,10 +465,10 @@ class cl_iptucalc {
          return false;
        }
      }
-     if(trim($this->j23_tipocalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_tipocalculo"])){ 
+     if(trim($this->j23_tipocalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_tipocalculo"])){
        $sql  .= $virgula." j23_tipocalculo = $this->j23_tipocalculo ";
        $virgula = ",";
-       if(trim($this->j23_tipocalculo) == null ){ 
+       if(trim($this->j23_tipocalculo) == null ){
          $this->erro_sql = " Campo Tipo de calculo nao Informado.";
          $this->erro_campo = "j23_tipocalculo";
          $this->erro_banco = "";
@@ -522,7 +522,7 @@ class cl_iptucalc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j23_anousu."-".$this->j23_matric;
@@ -550,14 +550,14 @@ class cl_iptucalc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j23_anousu=null,$j23_matric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j23_anousu=null,$j23_matric=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j23_anousu,$j23_matric));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -602,7 +602,7 @@ class cl_iptucalc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j23_anousu."-".$j23_matric;
@@ -630,11 +630,11 @@ class cl_iptucalc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -656,10 +656,10 @@ class cl_iptucalc {
       }
      return $result;
    }
-   function sql_query ( $j23_anousu=null,$j23_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j23_anousu=null,$j23_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -675,23 +675,23 @@ class cl_iptucalc {
      $sql2 = "";
      if($dbwhere==""){
        if($j23_anousu!=null ){
-         $sql2 .= " where iptucalc.j23_anousu = $j23_anousu "; 
-       } 
+         $sql2 .= " where iptucalc.j23_anousu = $j23_anousu ";
+       }
        if($j23_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " iptucalc.j23_matric = $j23_matric "; 
-       } 
+         }
+         $sql2 .= " iptucalc.j23_matric = $j23_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -700,10 +700,10 @@ class cl_iptucalc {
      }
      return $sql;
   }
-   function sql_query_file ( $j23_anousu=null,$j23_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j23_anousu=null,$j23_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -716,23 +716,23 @@ class cl_iptucalc {
      $sql2 = "";
      if($dbwhere==""){
        if($j23_anousu!=null ){
-         $sql2 .= " where iptucalc.j23_anousu = $j23_anousu "; 
-       } 
+         $sql2 .= " where iptucalc.j23_anousu = $j23_anousu ";
+       }
        if($j23_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " iptucalc.j23_matric = $j23_matric "; 
-       } 
+         }
+         $sql2 .= " iptucalc.j23_matric = $j23_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

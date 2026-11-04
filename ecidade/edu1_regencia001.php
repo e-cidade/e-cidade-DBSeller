@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -434,8 +434,8 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","ed59_i_disciplina",true,1,"ed59_i_disciplina",true);
 </script>
- <iframe name="iframe_nobase" src="" frameborder="0" width="200" height="200" style=""></iframe>
-<?
+ <iframe name="iframe_nobase" src="" frameborder="0" width="200" height="200"></iframe>
+<?php
 
 if (isset($atualizar)) {
 
@@ -611,7 +611,7 @@ if (isset($atualizar)) {
       msg += "Deseja excluir esta(s) disciplina(s) e alterar a grade de horário / vínculo da turma?";
        if (confirm(msg)) {
 
-         <?
+         <?php
            $lConfirmaExclusao = true;
          ?>
          iframe_nobase.location.href="edu1_regencia002.php?ed59_i_turma=<?=$oGet->ed59_i_turma?>"+
@@ -629,7 +629,7 @@ if (isset($atualizar)) {
                                                                         +'&ed11_c_descr='+sEtapa;
        }
       </script>
-     <?
+     <?php
 
       if ($lConfirmaExclusao) {
 
@@ -724,7 +724,7 @@ if (isset($excluir)) {
                                        "&ed59_i_serie=<?=$oGet->ed59_i_serie?>&ed57_c_descr=<?=$oGet->ed57_c_descr?>"+
                                        "&ed57_i_turno=<?=$ed57_i_turno?>&ed11_c_descr=<?=$oGet->ed11_c_descr?>";
    </script>
-   <?
+   <?php
    $clregencia->erro(true,true);
   }
 }

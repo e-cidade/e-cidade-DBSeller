@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clorcduplicacao->rotulo->label("o75_tipo");
               <?=$Lo75_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o75_sequencial",5,$Io75_sequencial,true,"text",4,"","chave_o75_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcduplicacao->rotulo->label("o75_tipo");
               <?=$Lo75_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o75_tipo",5,$Io75_tipo,true,"text",4,"","chave_o75_tipo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcduplicacao->rotulo->label("o75_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcduplicacao.php")==true){
@@ -122,12 +122,12 @@ $clorcduplicacao->rotulo->label("o75_tipo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

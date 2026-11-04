@@ -32,6 +32,10 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
+use ECidade\Educacao\Escola\Repository\PeriodoCalendarioRepository;
+
+$periodoRepository = new PeriodoCalendarioRepository();
+
 db_postmemory( $_POST );
 
 $clcalendario        = new cl_calendario;
@@ -234,10 +238,36 @@ if( isset( $alterar ) ) {
       db_inicio_transacao();
 
       $db_opcao = 2;
-      $clperiodocalendario->ed53_d_inicio = $data_inicio_dig;
-      $clperiodocalendario->ed53_d_fim    = $data_fim_dig;
-      $clperiodocalendario->alterar($ed53_i_codigo);
+      $sqlPeriodoCalendario  = $clperiodocalendario->sql_query_file($ed53_i_codigo = $ed53_i_codigo);
+      $rsPeriodoCalendario   = $clperiodocalendario->sql_record($sqlPeriodoCalendario);
 
+      if ($clperiodocalendario->numrows > 0) {
+        $inicioAnterior = db_utils::fieldsMemory($rsPeriodoCalendario,0)->ed53_d_inicio;
+        $fimAnterior    = db_utils::fieldsMemory($rsPeriodoCalendario,0)->ed53_d_fim;
+
+        $clperiodocalendario->ed53_d_inicio = $data_inicio_dig;
+        $clperiodocalendario->ed53_d_fim    = $data_fim_dig;
+        $clperiodocalendario->alterar($ed53_i_codigo);
+
+        if (db_getsession("DB_modulo") == 7159) {
+          $CodigoEscolas  = array();
+          $oDaoCalendario = new cl_calendarioescola();
+          $sWhere = " ed38_calendariobase = {$ed53_i_calendario}";
+
+          $sSqlCalendario = $oDaoCalendario->sql_query_file(null, "ed38_i_calendario", null, $sWhere);
+          $rsCalendario   = $oDaoCalendario->sql_record($sSqlCalendario);
+
+          if ($oDaoCalendario->numrows > 0) {
+            $CodigoEscolas = db_utils::getCollectionByRecord($rsCalendario, false, false, true);
+
+            foreach($CodigoEscolas as $codigo) {
+              $periodoRepository->savePeriodoEscolas( $codigo->ed38_i_calendario, $inicioAnterior, $fimAnterior,
+                                  $data_inicio_dig,$data_fim_dig
+                                );
+            }
+          }
+        }
+      }
       db_fim_transacao();
     }
   }
@@ -267,7 +297,7 @@ if( isset( $excluir ) ) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Períodos de Avaliação do Calendário <?=$ed52_c_descr?></b></legend>
-    <?include(modification("forms/db_frmperiodocalendario.php"));?>
+    <?php include(modification("forms/db_frmperiodocalendario.php"));?>
    </fieldset>
    </center>
   </td>
@@ -407,5 +437,7 @@ if( isset( $excluir ) ) {
 }
 
 if( isset( $cancelar ) ) {
+  $clperiodocalendario->pagina_retorno = "edu1_periodocalendario001.php?ed53_i_calendario=$ed53_i_calendario&ed52_c_descr=$ed52_c_descr";
   echo "<script>location.href='".$clperiodocalendario->pagina_retorno."'</script>";
 }
+

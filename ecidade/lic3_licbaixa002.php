@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -38,7 +38,7 @@ $clrotulo->label("nome");
 $clrotulo->label("l03_descr");
 $clrotulo->label("l20_numero");
 $result=$clliclicita->sql_record($clliclicita->sql_query($l20_codigo));
-if ($clliclicita->numrows==0){	
+if ($clliclicita->numrows==0){
 	db_redireciona('db_erros.php?fechar=true&db_erro=Este registro não possui licitação.');
 	exit;
 }else{
@@ -74,10 +74,10 @@ if ($clliclicita->numrows==0){
 }
 </style>
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"> 
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table  border="0" cellspacing="0" cellpadding="0" width='100%'>
-<tr> 
-<td  align="center" valign="top" > 
+<tr>
+<td  align="center" valign="top" >
   <form name="form1" method="post" action="">
   <center>
   <table border='0'>
@@ -86,37 +86,37 @@ if ($clliclicita->numrows==0){
       <table border="0">
         <tr>
           <td nowrap align="right" title="<?=@$Tl20_codigo?>"><?=@$Ll20_codigo?></td>
-          <td> 
-            <?
+          <td>
+            <?php
               db_input('l20_codigo',10,$Il20_codigo,true,'text',3)
             ?>
           </td>
-        
-         
+
+
           <td nowrap align="right" title="<?=@$Tl20_edital?>"><?=@$Ll20_edital?></td>
           <td>
-            <?
+            <?php
               db_input('l20_edital',10,$Il20_edital,true,'text',3)
             ?>
             <?=$Ll20_anousu?>
 
-              <?
+              <?php
                db_input("l20_anousu",10,$Il20_anousu,true,"text",3);
              ?>
           </td>
 
        </tr>
-       
+
        <tr>
           <td nowrap align="right" title="<?=@$Tl20_codtipocom?>">
-             <?
+             <?php
              //=@$L20_codtipocom
              ?>
              <b>
              Modalidade:
              </b>
-          <td> 
-             <?
+          <td>
+             <?php
              db_input('l20_codtipocom',10,$Il20_codtipocom,true,'text',3);
              db_input('l03_descr',35,$Il03_descr,true,'text',3);
              ?>
@@ -126,64 +126,64 @@ if ($clliclicita->numrows==0){
             <?=@$Ll20_numero?></b>
             </td>
             <td>
-             <?
+             <?php
              db_input('l20_numero',10,$Il20_numero,true,'text',3);
              ?>
           </td>
 
 	    </tr>
-      
+
       <tr>
         <td nowrap align="right" title="<?=@$Tl20_datacria?>"><b>
           <?=@$Ll20_datacria?></b>
         </td>
-        <td> 
-	         <?		
+        <td>
+	         <?php
             $ano=substr(@$l20_datacria,0,4);
 	          $mes=substr(@$l20_datacria,5,2);
 	          $dia=substr(@$l20_datacria,8,2);
 	          db_inputdata('l20_datacria',"$dia","$mes","$ano",true,'text',3);
 	         ?>
        </td>
-         
+
        <td nowrap align="right" title="<?=@$Tl20_horacria?>"><b>
           <?=@$Ll20_horacria?></b>
        </td>
-       <td> 
-	       <?		
-         db_input('l20_horacria',5,$Il20_horacria,true,'text',3);	     
+       <td>
+	       <?php
+         db_input('l20_horacria',5,$Il20_horacria,true,'text',3);
 	      ?>
-       </td>      
+       </td>
     </tr>
      <tr>
        <td nowrap align="right" title="<?=@$Tl20_dataaber?>"><b>
          <?=@$Ll20_dataaber?></b>
        </td>
-       <td> 
-	      <?		
+       <td>
+	      <?php
          $ano1=substr(@$l20_dataaber,0,4);
 	       $mes1=substr(@$l20_dataaber,5,2);
 	       $dia1=substr(@$l20_dataaber,8,2);
 	       db_inputdata('l20_dataaber',"$dia1","$mes1","$ano1",true,'text',3);
 	      ?>
       </td>
-         
+
       <td nowrap align="right" title="<?=@$Tl20_horaaber?>"><b>
           <?=@$Ll20_horaaber?></b>
       </td>
-     <td> 
-	        <?		
-             db_input('l20_horaaber',5,$Il20_horaaber,true,'text',3);	     
+     <td>
+	        <?php
+             db_input('l20_horaaber',5,$Il20_horaaber,true,'text',3);
 	       ?>
-     </td>      
-   </tr>    
-    
+     </td>
+   </tr>
+
     <tr>
        <td nowrap align="right" title="<?=@$Tl20_dtpublic?>">
         <b><?=@$Ll20_dtpublic?></b>
        </td>
-       <td> 
-	       <?
+       <td>
+	       <?php
           $ano2=substr($l20_dtpublic,0,4);
 	        $mes2=substr($l20_dtpublic,5,2);
 	        $dia2=substr($l20_dtpublic,8,2);
@@ -192,36 +192,36 @@ if ($clliclicita->numrows==0){
        </td>
        <td nowrap align="right" title="<?=@$Tl20_id_usucria?>">
            <?=@$Ll20_id_usucria?>
-       <td> 
-           <?
+       <td>
+           <?php
             db_input('l20_id_usucria',6,$Il20_id_usucria,true,'text',3);
             db_input('nome',45,$Inome,true,'text',3);
            ?>
        </td>
    </tr>
-    <tr> 
+    <tr>
 	      <td align='right' title="<?=@$Tl20_local?>"><b>
 	        <?=@$Ll20_local?></b>
 	      </td>
         <td colspan='3' align='left'>
-	        <? 
+	        <?php
 	         db_textarea("l20_local","","85",$Il20_local,true,'text',3);
-	 
+
 	         ?>
 	      </td>
-        
+
 	 </tr>
-	 <tr> 
+	 <tr>
      	<td align='right' title="<?=@$Tl20_objeto?>"><b>
 	      <?=@$Ll20_objeto?></b>
 	    </td>
       <td colspan='3' align='left'>
-	      <? 
+	      <?php
 	        db_textarea("l20_objeto","","85",$Il20_objeto,true,'text',3);
- 	 
+
       	 ?>
-	    </td>        
-	 </tr>  
+	    </td>
+	 </tr>
    <tr>
       <td colspan='4' align='center'>
 	        <input name="voltar" type="button" value="Voltar" onclick="parent.db_iframe_licbaixa.hide();" >
@@ -232,15 +232,15 @@ if ($clliclicita->numrows==0){
  </tr>
  <tr>
     <td align='center' valign='top' colspan='1' align='center'>
-       <?if(isset($l20_codigo)){?>  
+       <?php if(isset($l20_codigo)){?>
           <table>
              <tr>
                <td>
                   <iframe name="itens" id="itens" src="forms/db_frminfolic.php?l20_codigo=<?=$l20_codigo?>" width="720" height="150" marginwidth="0" marginheight="0" frameborder="0"></iframe>
               </td>
-           </tr>     
+           </tr>
         </table>
-      <?}?>  
+      <?php }?>
     </td>
  </tr>
 </table>

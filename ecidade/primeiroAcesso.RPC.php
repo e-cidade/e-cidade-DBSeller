@@ -84,6 +84,9 @@ try {
       /**
        * Valida se usuário é apto para setar senha
        */
+
+      $oParametros->id_usuario = (int)$oParametros->id_usuario;
+
       $oUsuarioSistema  = new UsuarioSistema( pg_escape_string($oParametros->id_usuario) );
 
       if ( $oUsuarioSistema->validaPrimeiroAcesso() ) {

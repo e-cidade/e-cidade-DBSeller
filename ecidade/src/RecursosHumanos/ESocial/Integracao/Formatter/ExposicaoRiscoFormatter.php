@@ -27,10 +27,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
+use DBDate;
+use DBException;
 use ECidade\RecursosHumanos\Pessoal\Model\AgenteNocivo;
 use ECidade\RecursosHumanos\Pessoal\Model\EquipamentoProtecao;
-use ECidade\RecursosHumanos\Pessoal\Model\EquipamentoProtecaoEpi;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorMovimentacao;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
 use ECidade\RecursosHumanos\Pessoal\Servidor\Model\Cargo;
@@ -67,6 +67,7 @@ class ExposicaoRiscoFormatter extends Formatter
      */
     private $mes;
 
+    private $dataAdmicao;
 
     private $agenteDescricao = [
         "01.01.001",
@@ -95,31 +96,21 @@ class ExposicaoRiscoFormatter extends Formatter
      */
     public function formatar($dados)
     {
-        $dataInicioDefault = new \DBDate("2022-01-10");
-        $this->ano = $dados->ano;
-        $this->mes = $dados->mes;
+        $dataInicioDefault = \DBPessoal::getDataFaseEsocial(4);
+        
         $this->inscricaoEmpregador = $dados->inscricao_empregador;
         $dadosFormatados = [];
         foreach ($dados->servidores as $dado) {
+            $this->dataAdmicao = $dado->getDataAdmissao()->getDate();
             $this->dadoAtual = $dado;
             $this->movimentacaoAtual = ServidorMovimentacao::fromState(
                 ['rh02_seqpes' => $this->dadoAtual->getCodigoMovimentacao()]
             );
             // Pegamos os locais de Trabalho e enviamos somente o principal
-
             foreach ($this->dadoAtual->getLocaisTrabalho() as $local) {
                 if ($local->isPrincipal()) {
                     $this->localAtual = $local;
-                    if ((empty($this->localAtual->getDataInicio()))
-                        or ($this->localAtual->getDataInicio()->getTimeStamp()) <= $dataInicioDefault->getTimeStamp()
-                    ) {
-                        $this->localAtual->setDataInicio($dataInicioDefault);
-                    }
-                    if ($local->getDataInicio()->getMes() == $dados->mes
-                        && $local->getDataInicio()->getAno() == $dados->ano
-                    ) {
-                        $dadosFormatados[] = $this->montarDados();
-                    }
+                    $dadosFormatados[] = $this->montarDados();
                 }
             }
         }
@@ -145,14 +136,42 @@ class ExposicaoRiscoFormatter extends Formatter
         } else {
             $ideVinculo->codCateg = $this->dadoAtual->getVinculo()->getCodigoCategoria();
         }
+        if ($this->dadoAtual->getMatriculaAnterior() != "") {
+            $ideVinculo->matricula = $this->dadoAtual->getMatriculaAnterior();
+        }
         return $ideVinculo;
     }
 
     private function montarInformacoesExposicaoRisco()
     {
         $infoExpRisco = new stdClass();
+        $dataInicioLocalAtual = '';
+        $dataEsocial = date('Y-m-d', strtotime(\DBPessoal::getDataFaseEsocial(4)));
+        $dataAdmicao = $this->dataAdmicao;
 
-        $infoExpRisco->dtIniCondicao = $this->localAtual->getDataInicio()->getDate();
+        if (!empty($this->localAtual->getDataInicio())) {
+            $dataInicioLocalAtual = $this->localAtual->getDataInicio()->getDate();
+            if ($dataAdmicao > $dataInicioLocalAtual) {
+                $infoExpRisco->dtIniCondicao = $dataEsocial;
+            } elseif ($dataEsocial > $dataInicioLocalAtual) {
+                $infoExpRisco->dtIniCondicao = $dataEsocial;
+            } elseif ($dataAdmicao > $dataEsocial) {
+                $infoExpRisco->dtIniCondicao = $dataAdmicao;
+            } else {
+                if ($dataInicioLocalAtual >= $dataEsocial) {
+                    $infoExpRisco->dtIniCondicao = $dataInicioLocalAtual;
+                } else {
+                    $infoExpRisco->dtIniCondicao = $dataEsocial;
+                }
+            }
+        } else {
+            if ($dataAdmicao < $dataEsocial) {
+                $infoExpRisco->dtIniCondicao = $dataEsocial;
+            } else {
+                $infoExpRisco->dtIniCondicao = $dataAdmicao;
+            }
+        }
+     
         $infoExpRisco->infoAmb = $this->montarInformacaoAmbiente();
         $infoExpRisco->infoAtiv = $this->montarInformacaoAtividade();
         $infoExpRisco->agNoc = $this->montarAgentesNocivos();
@@ -202,6 +221,9 @@ class ExposicaoRiscoFormatter extends Formatter
             $agente = new stdClass();
             $agente->codAgNoc = $ag->getTipoAvaliacao();
             $agente->tpAval = (integer) $ag->getTipoAvaliacao();
+            if (empty($agente->tpAval)) {
+                unset($agente->tpAval);
+            }
             if (!empty($ag->getIntensidadeConcentracao())) {
                 $agente->intConc = (integer) $ag->getIntensidadeConcentracao();
             }
@@ -213,6 +235,9 @@ class ExposicaoRiscoFormatter extends Formatter
             }
             if (!empty($ag->getTecnicaMedicao())) {
                 $agente->tecMedicao = $ag->getTecnicaMedicao();
+            }
+            if (!empty($ag->getProcesso())) {
+                $agente->nrProcJud = $ag->getProcesso();
             }
             $agente->epcEpi = $this->montarInformacaoEpi($ag);
             $agente->codAgNoc = $ag->getAgente();
@@ -254,9 +279,6 @@ class ExposicaoRiscoFormatter extends Formatter
             $registro = new stdClass();
             if (!empty($epi->getDocumentoAvaliacao())) {
                 $registro->docAval = $epi->getDocumentoAvaliacao();
-            }
-            if (!empty($epi->getDescricao())) {
-                $registro->dscEPI = $epi->getDescricao();
             }
             $epis[] = $registro;
         }

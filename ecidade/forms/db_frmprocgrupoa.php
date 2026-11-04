@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -34,7 +34,7 @@ $clrotulo->label("sd15_c_descr");
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?
+<?php
  if(($clprocedimentos->numrows>0) and ($sd17_i_procedimento <> ""))
   {
    $db_opcao1 = 3;
@@ -43,24 +43,24 @@ $clrotulo->label("sd15_c_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tsd17_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd17_i_procedimento,"js_pesquisasd17_i_procedimento(true);",$db_opcao1);
        ?>
     </td>
     <td>
-<?
+<?php
  db_input('sd17_i_procedimento',10,$Isd17_i_procedimento,true,'text',$db_opcao1," onchange='js_pesquisasd17_i_procedimento(false);'")
 ?>
-<?
+<?php
  db_input('sd09_c_descr',50,$Isd09_c_descr,true,'text',3,'')
 ?>
     </td>
   </tr>
-   <?
+   <?php
     if( $clprocedimentos->numrows==0 ){
    ?>
    <tr><td colspan="2"><input type="submit" value="Processar" name="processar"></td></tr>
-   <?
+   <?php
     }elseif($clprocedimentos->numrows>0){
      if(isset($salvar))
       {
@@ -132,7 +132,7 @@ $clrotulo->label("sd15_c_descr");
        }
      ?>
      <tr><td colspan="2" align="center"><input type="submit" name="salvar" value="Salvar"> <input name="cancelar" type="button" id="cancelar" value="Cancelar" onclick="js_cancelar();" ></td></tr>
-    <?
+    <?php
     }
    ?>
   </table>

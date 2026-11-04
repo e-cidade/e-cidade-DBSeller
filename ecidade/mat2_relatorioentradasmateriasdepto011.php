@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ if($clparcustos->numrows > 0){
           </td>
        </tr>
       <tr>
-        <td colspan=3 ><?
+        <td colspan=3 ><?php
                  // $aux = new cl_arquivo_auxiliar;
          $aux->cabecalho = "<strong>Departamentos</strong>";
          $aux->codigo = "coddepto"; //chave de retorno da func
@@ -138,7 +138,7 @@ if($clparcustos->numrows > 0){
           <b>Período: </b>
         </td>
         <td>      
-          <? 
+          <?php 
            db_inputdata('data1','','','',true,'text',1,"");   		          
            echo "<b> a</b> ";
            db_inputdata('data2','','','',true,'text',1,"");
@@ -150,7 +150,7 @@ if($clparcustos->numrows > 0){
           <strong>Ordem:</strong>
         </td>
         <td>
-	       <? 
+	       <?php 
 	       $tipo_ordem = array("a" => "Codigo",
 	                           "b" => "Departamento",
 	                           "c" => "Alfabética",

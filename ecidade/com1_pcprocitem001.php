@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ $clrotulo->label("pc01_descrmater");
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php
     if(isset($pc81_codproc) && trim($pc81_codproc)!=""){
       $result_itens = $clpcprocitem->sql_record($clpcprocitem->sql_query_pcmater(null,"distinct pc81_codprocitem,pc11_numero,pc11_seq,pc11_codigo,pc01_codmater,pc01_descrmater","pc81_codprocitem","pc81_codproc=$pc81_codproc and (e54_autori is null or (e54_autori is not null and e54_anulad is not null))"));
       $numrows_itens = $clpcprocitem->numrows;

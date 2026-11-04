@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -111,12 +111,12 @@ $db_opcao = 1;
     <table border="0">
       <tr>
         <td align="right" nowrap title="Nome do Contribuinte">
-	       <?
+	       <?php
         db_ancora("<b>Nome do Contribuinte:</b>", "js_pesquisanome(true);", 1);
         ?>
       </td>
         <td align="left">
-		     <?
+		     <?php
       db_input('z01_numcgm', 10, $Iz01_numcgm, true, 'text', 1, "onChange='js_pesquisanome(false);'");
       db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, "");
       ?>
@@ -124,12 +124,12 @@ $db_opcao = 1;
       </tr>
       <tr>
         <td align="right" nowrap title="Matricula">
-	       <?
+	       <?php
         db_ancora("<b>Matricula:</b>", "js_pesquisamatricula(true);", 1);
         ?>
         </td>
         <td align="left"> 
-			   <?
+			   <?php
       db_input('j01_matric', 10, $Ij01_matric, true, 'text', 1, "onChange='js_pesquisamatricula(false);'");
       db_input('z01_nomepropri', 40, $Ij14_nome, true, 'text', 3, "");
       ?>
@@ -137,24 +137,24 @@ $db_opcao = 1;
       </tr>
       <tr>
         <td align="right" nowrap title="Averbação">
-			       <?
+			       <?php
           db_ancora("<b>Averbação:</b>", "js_pesquisaaverbacao(true);", 1);
           ?>
         </td>
         <td>
-				    <?
+				    <?php
         db_input('j75_codigo', 10, $Ij75_codigo, true, 'text', 1, "onChange='js_pesquisaaverbacao(false);'");
         ?>    
 	       </td>
       </tr>
       <tr>
         <td align="right" nowrap title="Nome da Rua">
-	       <?
+	       <?php
         db_ancora("<b>Nome da Rua:</b>", "js_mostrarruas(true);", 1);
         ?>
       </td>
         <td align="left" colspan="4"> 
-	     <?
+	     <?php
       db_input('j14_codigo', 10, $Ij14_codigo, true, 'text', 1, "onChange='js_mostrarruas(false);'");
       db_input('j14_nome', 40, $Ij14_nome, true, 'text', 3, "");
       ?>
@@ -165,12 +165,12 @@ $db_opcao = 1;
       
       <tr>
         <td align="right" nowrap title="Tipo de Averbação">
-       <?
+       <?php
       db_ancora("<b>Tipo de Averbação:</b>", "js_mostrartipoaverba(true);", 1);
       ?>
     </td>
         <td align="left"> 
-     <?
+     <?php
     db_input('j93_codigo', 10, $Ij93_codigo, true, 'text', 1, "onChange='js_mostrartipoaverba(false);'");
     db_input('j93_descr', 40, $Ij93_descr, true, 'text', 3, "");
     ?>
@@ -179,7 +179,7 @@ $db_opcao = 1;
       <tr>
         <td align="right" nowrap title="Processados"><strong>Processados : </strong></td>
         <td align="left" nowrap title="Verificar o campo processados por: Processados ou Não Processados">
-     <?
+     <?php
     $sProcessados = array (       
                                   "S" => "Processados",                                   
                                   "N" => "Não Processados"
@@ -191,11 +191,11 @@ $db_opcao = 1;
       <tr>
         <td align="right" nowrap title="Data da Averbação"><b>Data da Averbação : </b></td>
         <td align="left">
-		      <?
+		      <?php
         db_inputdata("dataini", @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', 1);
         ?>
           <b> até </b>
-		      <?
+		      <?php
         db_inputdata("datafim", @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', 1);
         ?>      
         </td>
@@ -203,7 +203,7 @@ $db_opcao = 1;
       <tr>
         <td align="right" nowrap title="Ordem"><strong>Ordem : </strong></td>
         <td align="left" nowrap title="Ordenados por: Matricula, Averbação, Rua, Tipo de Averbação ou Data">
-     <?
+     <?php
     $ordem = array (
       
                                   "M" => "Matricula", 
@@ -238,7 +238,7 @@ $db_opcao = 1;
 </table>
 </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
 db_getsession("DB_modulo"), 
 db_getsession("DB_anousu"), 

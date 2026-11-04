@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clbens->rotulo->label();
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js");
   db_app::load("estilos.css");
 ?>
@@ -54,9 +54,9 @@ $clbens->rotulo->label();
     <legend>Imprimir Etiquetas</legend>
     <table class="form-container">
       <tr> 
-	      <td title="<?=$Tt52_bem?>"> <? db_ancora(@$Lt52_bem,"js_pesquisa_bem(true);",1);?>  </td>
+	      <td title="<?=$Tt52_bem?>"> <?php db_ancora(@$Lt52_bem,"js_pesquisa_bem(true);",1);?>  </td>
 	      <td>
-	        <?
+	        <?php
 	          db_input("t52_bem",8,$It52_bem,true,"text",4,"onchange='js_pesquisa_bem(false);'"); 
 	          db_input("t52_descr",40,$It52_descr,true,"text",3);  
 	        ?>
@@ -66,7 +66,7 @@ $clbens->rotulo->label();
   </fieldset>
       <input value='Imprimir' type='button' id='imprimir' onclick='js_imprimeEtiquetas();'>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

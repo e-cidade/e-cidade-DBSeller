@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ a:active {
   font-size: 10;
   color: darkblue;
   background-color:#aacccc ;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
   font-weight: bold;
 }
 .corpo {
@@ -84,7 +84,7 @@ a:active {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
 
-<?
+<?php
 
 
 db_postmemory($HTTP_POST_VARS);
@@ -121,7 +121,7 @@ if( $clundmedhorario->numrows == 0  ){
 				<td class='cabec' align="center">Saldo</td>
   			<td class='cabec' align="center">UPS</td>
 			</tr>
-<?	
+<?php 
 	$unidade = 0;
 	for( $xHora=0; $xHora < $clundmedhorario->numrows; $xHora++ ){
 		$obj_undmedhorario  = db_utils::fieldsMemory( $result_undmedhorario, $xHora );
@@ -140,7 +140,7 @@ if( $clundmedhorario->numrows == 0  ){
 				<td style="border:1px solid #AACCCC;"   class='corpo'><?=$obj_undmedhorario->sd02_i_codigo." - ".substr($obj_undmedhorario->descrdepto,0,32) ?></td>
 
 			</tr>
-		<?
+		<?php
     }
 	}//fim for
 ?>

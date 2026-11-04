@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: agua
 //CLASSE DA ENTIDADE aguacondominio
-class cl_aguacondominio { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x31_matric = 0; 
-   var $x31_codcondominio = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_aguacondominio {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x31_matric = 0;
+   var $x31_codcondominio = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x31_matric = int4 = Matrícula 
-                 x31_codcondominio = int4 = Código do Condomínio 
+                 x31_matric = int4 = Matrícula
+                 x31_codcondominio = int4 = Código do Condomínio
                  ";
-   //funcao construtor da classe 
-   function cl_aguacondominio() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguacondominio"); 
+     $this->rotulo = new rotulo("aguacondominio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_aguacondominio {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x31_matric = ($this->x31_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["x31_matric"]:$this->x31_matric);
        $this->x31_codcondominio = ($this->x31_codcondominio == ""?@$GLOBALS["HTTP_POST_VARS"]["x31_codcondominio"]:$this->x31_codcondominio);
@@ -74,9 +74,9 @@ class cl_aguacondominio {
      }
    }
    // funcao para inclusao
-   function incluir ($x31_codcondominio){ 
+   public function incluir ($x31_codcondominio){
       $this->atualizacampos();
-     if($this->x31_matric == null ){ 
+     if($this->x31_matric == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
        $this->erro_campo = "x31_matric";
        $this->erro_banco = "";
@@ -86,16 +86,16 @@ class cl_aguacondominio {
        return false;
      }
      if($x31_codcondominio == "" || $x31_codcondominio == null ){
-       $result = db_query("select nextval('aguacondominio_x32_codcondominio_seq')"); 
+       $result = db_query("select nextval('aguacondominio_x32_codcondominio_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacondominio_x32_codcondominio_seq do campo: x31_codcondominio"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacondominio_x32_codcondominio_seq do campo: x31_codcondominio";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->x31_codcondominio = pg_result($result,0,0); 
+       $this->x31_codcondominio = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from aguacondominio_x32_codcondominio_seq");
        if(($result != false) && (pg_result($result,0,0) < $x31_codcondominio)){
@@ -106,10 +106,10 @@ class cl_aguacondominio {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->x31_codcondominio = $x31_codcondominio; 
+         $this->x31_codcondominio = $x31_codcondominio;
        }
      }
-     if(($this->x31_codcondominio == null) || ($this->x31_codcondominio == "") ){ 
+     if(($this->x31_codcondominio == null) || ($this->x31_codcondominio == "") ){
        $this->erro_sql = " Campo x31_codcondominio nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -118,15 +118,15 @@ class cl_aguacondominio {
        return false;
      }
      $sql = "insert into aguacondominio(
-                                       x31_matric 
-                                      ,x31_codcondominio 
+                                       x31_matric
+                                      ,x31_codcondominio
                        )
                 values (
-                                $this->x31_matric 
-                               ,$this->x31_codcondominio 
+                                $this->x31_matric
+                               ,$this->x31_codcondominio
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "aguacondominio ($this->x31_codcondominio) nao Incluído. Inclusao Abortada.";
@@ -159,16 +159,16 @@ class cl_aguacondominio {
        $resac = db_query("insert into db_acount values($acount,1431,8440,'','".AddSlashes(pg_result($resaco,0,'x31_codcondominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x31_codcondominio=null) { 
+   public function alterar ($x31_codcondominio=null) {
       $this->atualizacampos();
      $sql = " update aguacondominio set ";
      $virgula = "";
-     if(trim($this->x31_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x31_matric"])){ 
+     if(trim($this->x31_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x31_matric"])){
        $sql  .= $virgula." x31_matric = $this->x31_matric ";
        $virgula = ",";
-       if(trim($this->x31_matric) == null ){ 
+       if(trim($this->x31_matric) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "x31_matric";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_aguacondominio {
          return false;
        }
      }
-     if(trim($this->x31_codcondominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x31_codcondominio"])){ 
+     if(trim($this->x31_codcondominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x31_codcondominio"])){
        $sql  .= $virgula." x31_codcondominio = $this->x31_codcondominio ";
        $virgula = ",";
-       if(trim($this->x31_codcondominio) == null ){ 
+       if(trim($this->x31_codcondominio) == null ){
          $this->erro_sql = " Campo Código do Condomínio nao Informado.";
          $this->erro_campo = "x31_codcondominio";
          $this->erro_banco = "";
@@ -209,7 +209,7 @@ class cl_aguacondominio {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguacondominio nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x31_codcondominio;
@@ -237,14 +237,14 @@ class cl_aguacondominio {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x31_codcondominio=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x31_codcondominio=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x31_codcondominio));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -271,7 +271,7 @@ class cl_aguacondominio {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguacondominio nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$x31_codcondominio;
@@ -299,11 +299,11 @@ class cl_aguacondominio {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -325,10 +325,10 @@ class cl_aguacondominio {
       }
      return $result;
    }
-   function sql_query ( $x31_codcondominio=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $x31_codcondominio=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -345,15 +345,15 @@ class cl_aguacondominio {
      $sql2 = "";
      if($dbwhere==""){
        if($x31_codcondominio!=null ){
-         $sql2 .= " where aguacondominio.x31_codcondominio = $x31_codcondominio "; 
-       } 
+         $sql2 .= " where aguacondominio.x31_codcondominio = $x31_codcondominio ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,10 +362,10 @@ class cl_aguacondominio {
      }
      return $sql;
   }
-   function sql_query_file ( $x31_codcondominio=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $x31_codcondominio=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,15 +378,15 @@ class cl_aguacondominio {
      $sql2 = "";
      if($dbwhere==""){
        if($x31_codcondominio!=null ){
-         $sql2 .= " where aguacondominio.x31_codcondominio = $x31_codcondominio "; 
-       } 
+         $sql2 .= " where aguacondominio.x31_codcondominio = $x31_codcondominio ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

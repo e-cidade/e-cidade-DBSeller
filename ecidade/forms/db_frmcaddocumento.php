@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ if ($db_opcao == 1) {
          <?=@$Ldb44_sequencial?>
       </td>
       <td> 
-  			<?
+  			<?php
   			db_input('db44_sequencial',10,$Idb44_sequencial,true,'text',3,"")
   			?>
       </td>
@@ -56,19 +56,19 @@ if ($db_opcao == 1) {
          <?=@$Ldb44_descricao?>
       </td>
       <td> 
-  			<?
+  			<?php
   			db_input('db44_descricao',50,$Idb44_descricao,true,'text',$db_opcao,"")
   			?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Tdb123_sequencial?>">
-         <?
+         <?php
          db_ancora("<b>Tipo Documento:</b>", "js_pesquisadb123_sequencial(true);", $db_opcao);
          ?>
       </td>
       <td colspan='3' nowrap="nowrap"> 
-        <?
+        <?php
           db_input('db123_sequencial', 10, $Idb123_sequencial, true, 'text', $db_opcao, " onchange='js_pesquisadb123_sequencial(false);'");
           db_input('db123_tipo', 36, $Idb123_tipo, true, 'text', 3);
         ?>
@@ -89,7 +89,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_documento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

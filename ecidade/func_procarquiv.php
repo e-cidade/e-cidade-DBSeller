@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocarquiv->rotulo->label("p67_historico");
               <?=$Lp67_codarquiv?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p67_codarquiv",6,$Ip67_codarquiv,true,"text",4,"","chave_p67_codarquiv");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprocarquiv->rotulo->label("p67_historico");
               <?=$Lp67_historico?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p67_historico",0,$Ip67_historico,true,"text",4,"","chave_p67_historico");
 		       ?>
             </td>
@@ -128,14 +128,14 @@ $clprocarquiv->rotulo->label("p67_historico");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)) {
   ?>
   <script>
 document.form2.chave_p67_codarquiv.focus();
 document.form2.chave_p67_codarquiv.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

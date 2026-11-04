@@ -62,20 +62,20 @@ $clsolicita->rotulo->label();
     <table  align="left"  cellpadding="2" cellspacing="2" border="0">
 		  <tr> 
 		    <td  align="left" nowrap title="<?=$Tpc10_numero?>">
-		      <? db_ancora("<b>Solicitações de:</b> ","js_solicitade(true);",1);?>  
+		      <?php db_ancora("<b>Solicitações de:</b> ","js_solicitade(true);",1);?>  
 		    </td>
 		    <td align="left" nowrap>
-		      <?
+		      <?php
              db_input("pc10_numerode",10, $Ipc10_numero ,true,"text",4,"onchange='js_solicitade(false);'"); 
 		      ?>
 		      </b>
 		    </td>
 		    
         <td  align="left" nowrap title="<?=$Tpc10_numero?>"> 
-          <? db_ancora("<b>Até:</b> ","js_solicitaate(true);",1);?>  
+          <?php db_ancora("<b>Até:</b> ","js_solicitaate(true);",1);?>  
         </td>
         <td align="left" nowrap>
-          <?
+          <?php
 		         db_input("pc10_numeroate",10, $Ipc10_numero ,true,"text",4,"onchange='js_solicitaate(false);'"); 
           ?>
         </td>		    

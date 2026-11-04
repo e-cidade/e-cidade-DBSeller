@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("v02_usuario");
   <tr>
     <td nowrap title="<?=@$Tv04_divimporta?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lv04_divimporta,"js_pesquisav04_divimporta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v04_divimporta',10,$Iv04_divimporta,true,'text',$db_opcao," onchange='js_pesquisav04_divimporta(false);'")
 ?>
-       <?
+       <?php
 db_input('v02_usuario',10,$Iv02_usuario,true,'text',3,'')
        ?>
     </td>
@@ -54,7 +54,7 @@ db_input('v02_usuario',10,$Iv02_usuario,true,'text',3,'')
        <?=@$Lv04_coddiv?>
     </td>
     <td> 
-<?
+<?php
 db_input('v04_coddiv',10,$Iv04_coddiv,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_divimportareg.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

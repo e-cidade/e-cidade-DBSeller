@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,7 +53,7 @@ $clrotulo->label("nome");
 db_postmemory($HTTP_POST_VARS);
 
 if (isset($incluir)){
-  
+
   db_inicio_transacao();
   $vt=$HTTP_POST_VARS;
   $ta=sizeof($vt);
@@ -61,7 +61,7 @@ if (isset($incluir)){
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
     if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+      $dados= explode("_",$chave);
       $result1=$clprotprocesso->sql_record($clprotprocesso->sql_query_file($dados[1],"p58_codandam"));
       db_fieldsmemory($result1,0);
       $data= date("Y-m-d",db_getsession("DB_datausu"));
@@ -74,14 +74,14 @@ if (isset($incluir)){
       $erro_msg = $clprocandamint->erro_msg;
       if ($clprocandamint->erro_status==0){
 	$sqlerro=true;
-      } 
+      }
       $codigo = $clprocandamint->p78_sequencial;
       if ($sqlerro==false){
 	$clprocandamintusu->p79_usuario = $p79_usuario;
 	$clprocandamintusu->incluir($codigo);
 	if ($clprocandamintusu->erro_status==0){
 	  $sqlerro=true;
-	} 
+	}
       }
     }
     $proximo=next($vt);
@@ -96,26 +96,26 @@ if (isset($incluir)){
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
-function js_marca(obj){ 
+function js_marca(obj){
    var OBJ = document.form1;
    for(i=0;i<OBJ.length;i++){
      if(OBJ.elements[i].type == 'checkbox'){
-       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
+       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);
      }
    }
    return false;
 }
-</script>  
+</script>
 <style>
 .cabec {
 text-align: center;
 color: darkblue;
-background-color:#aacccc;       
+background-color:#aacccc;
 border-color: darkblue;
 }
 .corpo {
 color: black;
-background-color:#ccddcc;       
+background-color:#ccddcc;
 }
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
@@ -131,17 +131,17 @@ background-color:#ccddcc;
   <tr>
     <td nowrap title="<?=@$Tp78_despacho?>"align='left' colspan=2>
        <?=@$Lp78_despacho?>
-<?
+<?php
 db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
 ?>
   </tr>
     <tr>
        <td title="<?=$Tp79_usuario?>"align='left'>
-           <?db_ancora($Lp79_usuario,"js_pesquisa_usuario(true);",1);?>
+           <?php db_ancora($Lp79_usuario,"js_pesquisa_usuario(true);",1);?>
        </td>
        <td nowrap title="<?=$Tnome?>">
-          <?db_input("p79_usuario",6,$Ip79_usuario,true,"text",1,"onchange='js_pesquisa_usuario(false);'");?>
-          <?db_input("nome_dest",40,$Inome,true,"text",3);?>
+          <?php db_input("p79_usuario",6,$Ip79_usuario,true,"text",1,"onchange='js_pesquisa_usuario(false);'");?>
+          <?php db_input("nome_dest",40,$Inome,true,"text",3);?>
        </td>
     </tr>
   </tr>
@@ -151,7 +151,7 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
   </td>
   </tr>
     <td colspan=2 align='center' >
-  <?
+  <?php
 	   $sql = "select * from (
 				   select p58_codproc,
 					  p58_requer,
@@ -164,11 +164,11 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
 					  inner join cgm on p58_numcgm = z01_numcgm
 					  inner join procandam on p58_codandam = p61_codandam
 					  left join arqproc on arqproc.p68_codproc = protprocesso.p58_codproc
-				   where ( p61_coddepto = ".db_getsession("DB_coddepto").")  ) as x																	                   
+				   where ( p61_coddepto = ".db_getsession("DB_coddepto").")  ) as x
 				   where   x.p68_codproc is null";
        $result=db_query($sql);
        $numrows=pg_numrows($result);
-       if($numrows>0){ 
+       if($numrows>0){
           echo "
 	  <br><br>
 	  <table>
@@ -180,7 +180,7 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
 	     <td class='cabec' align='center'  title='$Tp58_hora'>".str_replace(":","",$Lp58_hora)."</td>
 	     <td class='cabec' align='center'  title='$Tz01_nome'>".str_replace(":","",$Lz01_nome)."</td>
 	   </tr>
-          "; 	   
+          ";
        }else{
          echo "<br><br><b>Sem Processos!!</b>";
        }
@@ -197,8 +197,8 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
            </tr>";
        }
 	 echo"
-	   </table>";	        
-       
+	   </table>";
+
 
   ?>
   </td>
@@ -206,24 +206,24 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
   </table>
   </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_pesquisa_usuario(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_db_usuarios','func_db_usuarios.php?funcao_js=parent.js_mostradb_usuarios1|id_usuario|nome','Pesquisa',true);
   }else{
-     if(document.form1.p79_usuario.value != ''){ 
+     if(document.form1.p79_usuario.value != ''){
         js_OpenJanelaIframe('','db_iframe_db_usuarios','func_db_usuarios.php?pesquisa_chave='+document.form1.p79_usuario.value+'&funcao_js=parent.js_mostradb_usuarios','Pesquisa',false);
      }else{
-       document.form1.nome_dest.value = ''; 
+       document.form1.nome_dest.value = '';
      }
   }
 }
 function js_mostradb_usuarios(chave,erro){
-  document.form1.nome_dest.value = chave; 
-  if(erro==true){ 
-    document.form1.p79_usuario.focus(); 
-    document.form1.p79_usuario.value = ''; 
+  document.form1.nome_dest.value = chave;
+  if(erro==true){
+    document.form1.p79_usuario.focus();
+    document.form1.p79_usuario.value = '';
   }
 }
 function js_mostradb_usuarios1(chave1,chave2){
@@ -232,13 +232,13 @@ function js_mostradb_usuarios1(chave1,chave2){
   db_iframe_db_usuarios.hide();
 }
 </script>
-<?
+<?php
 if (isset($incluir)){
     db_msgbox($erro_msg);
     if($sqlerro==true){
       echo "<script> document.form1.".$clprocandamint->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clprocandamint->erro_campo.".focus();</script>";
-    }else{ 
+    }else{
       echo"<script>(window.CurrentWindow || parent.CurrentWindow).corpo.location.href='pro4_procandaminttrans001.php';</script>";
     }
 }

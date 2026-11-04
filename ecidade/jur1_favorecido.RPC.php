@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ switch ($oParam->exec) {
     /**
      * Busca na tabela favorecido pelo cgm
      */
-    $sSqlFavorecido                 = $oDaoFavorecido->sql_query_dados(null,"v86_sequencial",""," z01_numcgm = {$oParam->oDados->z01_numcgm}");
+    $sSqlFavorecido                 = $oDaoFavorecido->sql_query_dados(null,"v86_sequencial",""," z01_numcgm = {$oParam->oDados->z01_numcgm} and db83_conta = '{$oParam->oDados->inputNumeroConta}'");
     $rsSqlFavorecido                = $oDaoFavorecido->sql_record($sSqlFavorecido);
     $iNumRowsFavorecido             = $oDaoFavorecido->numrows;
     
@@ -93,6 +93,9 @@ switch ($oParam->exec) {
   case "getDadosFavorecido":
       
       $sSqlFavorecido                 = $oDaoFavorecido->sql_query_dados(null,"*",""," z01_numcgm = {$oParam->iCgm}");
+      if($oParam->conta){
+         $sSqlFavorecido              = $oDaoFavorecido->sql_query_dados(null,"*",""," z01_numcgm = {$oParam->iCgm} and db83_conta = '{$oParam->conta}'");
+      }
       $rsSqlFavorecido                = $oDaoFavorecido->sql_record($sSqlFavorecido);
       $iNumRowsFavorecido             = $oDaoFavorecido->numrows;
       $oRetorno->numrows              = $iNumRowsFavorecido;
@@ -119,6 +122,11 @@ switch ($oParam->exec) {
   case "excluir":
     
     $oFavorecido = new Favorecido();
+    if($oParam->oDados->v86_contabancaria){
+      $sql = " SELECT db83_sequencial FROM configuracoes.contabancaria WHERE db83_conta = '{$oParam->oDados->v86_contabancaria}'";
+      $rconta = db_query($sql);
+      $oFavorecido->setNumeroConta(pg_fetch_result($rconta,0));
+    }
     $oFavorecido->setNumCgm($oParam->oDados->z01_numcgm)
                 ->excluir();
     $oRetorno->message = $oFavorecido->getErrorMessageFavorecido();

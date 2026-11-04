@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ $clrotulo->label ( "s118_i_codigo" );
 								<?=@$Ls118_c_tipoagenda?>
 						</td>
 						<td>
-								<?
+								<?php
 								$x = array ('C' => 'Consulta', 'E' => 'Exame' );
 								db_select ( 's118_c_tipoagenda', $x, true, $db_opcao, "onChange='js_tipo( this.value )';" );
 								?>
@@ -61,12 +61,12 @@ $clrotulo->label ( "s118_i_codigo" );
 					<!-- Consulta -->
 					<tr id="tipo_consulta">
 						<td nowrap title="<?=@$Tsd27_i_rhcbo?>">
-								<?
+								<?php
 								db_ancora ( @$Lsd27_i_rhcbo, "js_pesquisasd27_i_rhcbo(true);", 1 );
 								?>								
 						</td>
 						<td>
-								<?
+								<?php
 								db_input ( 'sd27_i_rhcbo', 10, $Isd27_i_rhcbo, true, 'text', 1, "onChange='js_pesquisasd27_i_rhcbo(false);'" );
 								db_input ( 'rh70_estrutural',10,$Irh70_estrutural,true,'text',3,'');
 								db_input ( 'rh70_descr', 48, @$Irh70_descr, true, 'text', 3 );
@@ -76,12 +76,12 @@ $clrotulo->label ( "s118_i_codigo" );
 					<!-- Exame -->
 					<tr id="tipo_exame" style="display:none">
 						<td nowrap title="<?=@$Ts120_i_exame?>">
-								<?
+								<?php
 								db_ancora ( @$Ls120_i_exame, "js_pesquisas120_i_exame(true);", 1 );
 								?>								
 						</td>
 						<td>
-								<?
+								<?php
 								db_input ( 's120_i_exame', 10, $Is120_i_exame, true, 'text', 1, "onChange='js_pesquisas120_i_exame(false);'" );
 								db_input ( 's108_c_exame', 48, @$Is108_c_exame, true, 'text', 3 );
 								?>
@@ -94,7 +94,7 @@ $clrotulo->label ( "s118_i_codigo" );
               </td>
      
            <td> 
-             <?
+             <?php
               db_inputdata('pdia',@$pdia_dia,@$pdia_mes,@$pdia_ano,true,'text',$db_opcao," onchange='js_diasem()' onFocus=\"nextfield='done'\" ", "", "", "parent.js_diasem(); ");
              ?>
           </td>

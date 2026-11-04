@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -68,13 +68,13 @@ db_postmemory($HTTP_POST_VARS);
       <tr>   
         <td>
           <strong>
-            <?
+            <?php
               db_ancora("Matrícula:",' js_matri(true); ',1);
             ?>
           </strong>
         </td>
         <td> 
-          <?
+          <?php
            db_input('k00_matric',10,'',true,'text',1,"class='pesquisa' onchange='js_matri(false);'");
            db_input('z01_nome',60,0, true,'text',3,"class='label'","z01_nomematri");
           ?>
@@ -105,7 +105,7 @@ db_postmemory($HTTP_POST_VARS);
   </table>
 </form>   
 </center>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

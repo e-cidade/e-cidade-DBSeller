@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -61,7 +61,7 @@ $result  = $clmatricula->sql_record(
                                                           )
                                   );
 if (!isset($refeicao)) {
-  $refeicao = 0;	
+  $refeicao = 0;
 }
 ?>
 <html>
@@ -106,13 +106,13 @@ if (!isset($refeicao)) {
     <td><b>Data Matrícula</b></td>
     <td><b>Restrição</b></td>
    </tr>
-   <?   
+   <?php
    for($c=0;$c<$clmatricula->numrows;$c++){
     db_fieldsmemory($result,$c);
     $inf_ant  = explode("|",RFanterior($ed60_i_codigo));
     $turmaant = $inf_ant[0];
-    $rfant    = $inf_ant[1];  
-    $sCampos  = "mer_alimento.me35_c_nomealimento as alimento1,alimento.me35_c_nomealimento as alimento2";  
+    $rfant    = $inf_ant[1];
+    $sCampos  = "mer_alimento.me35_c_nomealimento as alimento1,alimento.me35_c_nomealimento as alimento2";
     $result1  = $clmer_restriitem->sql_record(
                  $clmer_restriitem->sql_query("",
                                               $sCampos,
@@ -121,7 +121,7 @@ if (!isset($refeicao)) {
                                              )
                                              );
     if ($clmer_restriitem->numrows>0) {
-      $cor = "#FFFF99";	
+      $cor = "#FFFF99";
     } else {
       $cor="#f3f3f3";
     }
@@ -134,34 +134,34 @@ if (!isset($refeicao)) {
      <td class="aluno" align="center"><?=db_formatar($ed60_d_datamatricula,'d')?></td>
      <td>
      <table>
-     <?if($clmer_restriitem->numrows>0){?>
-         <tr>         
+     <?php if($clmer_restriitem->numrows>0){?>
+         <tr>
          <td class="aluno" align="center"><b>Item </b></td>
-         <td class='aluno' align='center'><b>Item Substituto</b></td> 
+         <td class='aluno' align='center'><b>Item Substituto</b></td>
          </tr>
          <?}else{?>
-         <tr>         
+         <tr>
          <td class="aluno" align="center"><b>Sem Restrição</b></td>
-         <td class='aluno' align='center'><b></b></td> 
+         <td class='aluno' align='center'><b></b></td>
          </tr>
-         
-         <?}?>
-     <?for($d=0;$d<$clmer_restriitem->numrows;$d++){
-        db_fieldsmemory($result1,$d);     
+
+         <?php }?>
+     <?php for($d=0;$d<$clmer_restriitem->numrows;$d++){
+        db_fieldsmemory($result1,$d);
      	?>
-     	
-     	 <tr>         
+
+     	 <tr>
          <td class="aluno" align="left" width= "20%"><?=$alimento1?></td>
-         <td class='aluno' align='right' width= "20%"><?=$alimento2?></td> 
+         <td class='aluno' align='right' width= "20%"><?=$alimento2?></td>
          </tr>
-     
-                
+
+
         <?}
      ?>
         </table>
     </td>
     </tr>
-    <?
+    <?php
    }
    ?>
   </table>

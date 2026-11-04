@@ -60,9 +60,9 @@ $clrotulo->label("r70_descr");
 $clrotulo->label("db83_tipoconta");
 
 try {
-    
+
     db_sel_instit();
-    
+
     $result_arqbanco = $clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
     if(!$result_arqbanco || pg_num_rows($result_arqbanco) == 0){
       throw new Exception("Arquivo não encontrado");
@@ -77,13 +77,13 @@ try {
      *   9 Trailer do Arquivo                     *
      *                                            *
      **********************************************/
-    
+
     $iQuantidadeRegistrosArquivo = 0;
     if ( $clrharqbanco->numrows > 0 ) {
-        
+
        db_fieldsmemory($result_arqbanco,0);
        include(modification("dbforms/db_layouttxt.php"));
-       
+
        $posicao       = "A";
        $layoutimprime = 2;
        $idcaixa       = "P";
@@ -94,7 +94,7 @@ try {
        $contalote     = $rh34_conta;
        $conveniobanco = trim($rh34_convenio);
        $descrarquivo  = "FOLHA PAGAMENTO"; // Campo somente do layout 3
-       
+
        $dvagenciaheader         = "0";
        $dvcontaheader           = "0";
        $dvagenciacontaheader    = " ";
@@ -102,50 +102,50 @@ try {
          $dvagenciaheader = $rh34_dvagencia[0];
        }
        if (trim($rh34_dvconta)!="") {
-       
+
          $dvcontaheader  = $rh34_dvconta[0];
          $digitos        = strlen($rh34_dvconta);
          if ($digitos>1) {
            $dvagenciacontaheader = $rh34_dvconta[1];
          }
        }
-       
+
        $operacaoheader     = substr($contaheader,0,3);
        $contaheader2       = str_pad(trim(substr($contaheader,4,20)),8);
        $dvagencialote      = $dvagenciaheader;
        $dvcontalote        = $dvcontaheader;
        $dvagenciacontalote = $dvagenciacontaheader;
-       
+
        $datageracao = $datagera;
        $horageracao = date("H").':'.date("i").':'.date("s");
-       
+
        if (isset($datageracao) && $datageracao!="") {
-         $datag = split('-',$datageracao);
+         $datag = explode('-',$datageracao);
          $datag_dia = $datag[2];
          $datag_mes = $datag[1];
          $datag_ano = $datag[0];
        }
-       
+
        if (isset($datadeposit) && $datadeposit!="") {
-         $datad = split('-',$datadeposit);
+         $datad = explode('-',$datadeposit);
          $datad_dia = $datad[2];
          $datad_mes = $datad[1];
          $datad_ano = $datad[0];
        }
-       
+
        $sequencialarq  = $rh34_sequencial;
        $usoprefeitura1 = $rh34_sequencial;
-       
+
        $adatadegeracao = $datag_ano."-".$datag_mes."-".$datag_dia;
        $datadedeposito = $datad_ano."-".$datad_mes."-".$datad_dia;
-       
+
        $sequenciaarqui = $rh34_sequencial;
        $versaodoarquiv = "030";
-       
+
        $paramnome = $datag_mes.$datag_ano."_".str_replace(":", "", $horageracao);
        $nomearquivo = "folha_".$db90_codban."_".$paramnome.".txt";
        $db_layouttxt = new db_layouttxt($layoutimprime,"tmp/".$nomearquivo, $posicao);
-       
+
        $conveniobanco = trim($rh34_convenio);
        ////// DADOS SOMENTE CNAB240 CEF
        $parametrotransmiss = substr($rh34_convenio,10,2);
@@ -153,16 +153,16 @@ try {
        $indicaambcliente = "P";
        $densidadearquivo = "01600";
        //////
-           
+
        $iQuantidadeRegistrosArquivo += 1;
        db_setaPropriedadesLayoutTxt($db_layouttxt,1);
-       
+
     }
 
     $rh34_wherefolha = "";
     $rh34_wherepensa = "";
     $aWherePensao    = array();
-    
+
     if($opt_todosbcos) {
       $rh34_wherefolha .= " r38_banco  = '$rh34_codban'     ";
       if (!DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
@@ -172,24 +172,24 @@ try {
         $aWherePensao[] = "r52_codbco = '$rh34_codban'";
       }
     }
-    
+
     if (!DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
       $aWherePensao[] = "r52_anousu = " . db_anofolha();
       $aWherePensao[] = "r52_mesusu = ".db_mesfolha();
     }
-    
+
     if(trim($rh34_wherefolha) == '') {
       $rh34_wherefolha = 'r38_liq > 0 ';
     } else {
       $rh34_wherefolha .= ' and r38_liq > 0 ';
     }
-    
+
     $titrelatorio = "Todos os funcionários";
     $titarquivo   = "pagtofuncionarios";
     $lPensionista = false;
 
     if ($tiparq == 0) {
-    
+
       $sql = $clfolha->sql_query_gerarqbag(null,"folha.*,cgm.*, length(trim(r38_agenc)) as qtddigitosagencia, contabancaria.*,
                                                  r70_descr,
                                                  case when trim(translate(r38_conta,'0','')) = '' then '02'
@@ -204,16 +204,16 @@ try {
                                                  r38_liq as valorori",
                                                 "r38_banco,tipo_pagamento, r38_nome",
                                                 "$rh34_wherefolha");
-    
+
     } else {
-    
+
       $titarquivo = "pensaojudicial";
       $titrelatorio = "PENSÃO JUDICIAL ";
-    
+
       if ($qfolha == 1) {
-    
+
         $campovalor = " r52_valor+r52_valfer ";
-    
+
         /**
          * Se a variável $DB_COMPLEMENTAR estiver setada, não deve olhar a tabela pensão, pois ao calcular a
          * folha suplementar a tabela pensão é limpa /zerada / apagada
@@ -222,23 +222,23 @@ try {
           $aWherePensao[] = "(r52_valor > 0 or r52_valfer > 0 )";
         }
       } else if ($qfolha == 2) {
-    
+
         $campovalor     = " r52_valcom ";
         $aWherePensao[] = "r52_valcom > 0";
       } else if ($qfolha == 3) {
-    
+
         $campovalor     = " r52_val13 ";
         $aWherePensao[] = "r52_val13 > 0";
       } else if ($qfolha == 4) {
-    
+
         $campovalor     = " r52_valres ";
         $aWherePensao[] = "r52_valres > 0";
       } else if ($qfolha == 5) {
-    
+
         $campovalor     = " r52_valor  ";
         $aWherePensao[] = "r52_valor > 0";
       }
-    
+
       /**
        * Se a variável $DB_COMPLEMENTAR estiver setada, o valor do "r38_liq" será da tabela ("rhhistoricopensao")
        * lembrando que a folha de pagamento precisa ter registros na geração de disco ("folhapagamentogeracao").
@@ -246,23 +246,23 @@ try {
        */
       if (DBPessoal::verificarUtilizacaoEstruturaSuplementar() && $qfolha != 3 && $qfolha != 4) {
         switch ($qfolha) {
-    
+
             case 1:
               $iTipoFolha  = FolhaPagamento::TIPO_FOLHA_SALARIO;
               $sOperacao   = "+r52_valfer";
               break;
-    
+
             case 2:
               $iTipoFolha  = FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR;
               $sOperacao   = "";
               break;
-    
+
             case 5:
               $iTipoFolha  = FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR;
               $sOperacao   = "";
               break;
         }
-    
+
         $sCampo  = "(                                                                                      \n";
         $sCampo .= " SELECT SUM(rh145_valor)                                                               \n";
         $sCampo .= "   FROM rhhistoricopensao                                                              \n";
@@ -272,37 +272,41 @@ try {
         $sCampo .= "    and rh141_aberto is false                                                          \n";
         $sCampo .= "    and rh145_pensao    = r52_sequencial                                               \n";
         $sCampo .= " ){$sOperacao}                                                                         \n";
-    
+
         $campovalor       = $sCampo;
       }
-    
-    
+
+
       $rh34_wherepensa = implode(' and ', $aWherePensao);
       $sWhere = "$rh34_wherepensa and $campovalor > 0";
-    
+
       if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
           if($opt_todosbcos == 1) {
               $sWhere = $rh34_wherepensa;
               $pos = strrpos($sWhere, ' and ');
-    
+
               if ($pos !== false) {
                   $sWhere = substr_replace($sWhere, 'and (', $pos, strlen(' and '));
               }
-    
+
               $sWhere .= " or $campovalor > 0) ";
           } else {
             $sWhere = "$campovalor > 0";
           }
       }
-    
+
       $sWhere .= " and r52_anousu = ".DBPessoal::getAnoFolha();
       $sWhere .= " and r52_mesusu = ".DBPessoal::getMesFolha();
-      $sql = $clpensao->sql_query_gerarqbag(null,null,null,null,"$campovalor as r38_liq, length(trim(r52_codage)||trim(r52_dvagencia)) as qtddigitosagencia, contabancaria.*,
+      $sql = $clpensao->sql_query_gerarqbag(null,null,null,null,"$campovalor as r38_liq, length(trim(r52_codage)||trim(r52_dvagencia)) as qtddigitosagencia,
+                                                db83_sequencial, db83_descricao, db83_bancoagencia, db83_conta, db83_dvconta, db83_identificador, db83_codigooperacao, db83_tipoconta, db83_contaplano, db83_contaunica, rh01_instit,
                                                  r52_numcgm as r38_regist,
                                                  r52_codbco as r38_banco,
                                                  trim(r52_conta)||trim(coalesce(r52_dvconta,'')) as r38_conta,
                                                  trim(r52_codage)||trim(coalesce(r52_dvagencia,'')) as r38_agenc,
-                                                 cgm.*,func.z01_nome as nomefuncionario,
+                                                func.z01_nome as nomefuncionario,
+                                                 cgm.z01_nome,
+                                                 cgm.z01_cgccpf,
+                                                 cgm.z01_numcgm,
                                                  '01' as tipo_pagamento,
                                                  r70_descr,
                                                  length(trim(cgm.z01_cgccpf)) as tam,
@@ -310,7 +314,7 @@ try {
                                                 "r52_codbco,tipo_pagamento,cgm.z01_nome",
                                                  $sWhere
                                                 );
-    
+
       $lPensionista = true;
     }
 
@@ -334,26 +338,26 @@ try {
 
     $total = 0;
     $alt   = 4;
-    
+
     $finalidadedoc     = "00";
     $codigocompromisso = substr($rh34_convenio,6,4);
     $tipocompromisso   = "02";
     $agencialote       = $agenciaheader;
-    
-    
+
+
     $tiposervico = "30";
-    
+
     $sequencialnolote = 0;
-    
+
     $troca_header     = 0;
-    
+
     $quantidadefuncionarios = 0;
     $valortotal             = 0;
     $quantidaderegistarq    = 0;
-    
+
     ///// INICIA IMPRESSÃO DO RELATÓRIO
     $pdf = new PDF();
-    
+
     $pdf->addTitulo("ARQUIVO DE PAGAMENTO DA FOLHA",3);
     $pdf->addTitulo("SEQUENCIAL DO ARQUIVO:  ".$sequenciaarqui,4);
     $pdf->addTitulo("DATA DA GERAÇÃO:  ".db_formatar($datagera,"d").' ÀS '.$horageracao.' HS',5);
@@ -363,11 +367,11 @@ try {
     } else {
         $pdf->addTitulo('BANCO: TODOS',7);
     }
-    
+
     $pdf->init(false);
     $pdf->AliasNbPages();
     $pdf->setfillcolor(235);
-    
+
     /**
      * Monta cabecalho para o PDF
      */
@@ -432,25 +436,61 @@ try {
 
     if ($lPensionista) {
 
-      $sCampos = "case when trim(translate(r38_conta,'0','')) = '' then '02'                     ";
-      $sCampos .= "     when db89_db_bancos <> '001'                then '03'                     ";
-      $sCampos .= " else '01' end as tipo_pagamento,                                              ";
-      $sCampos .= "r52_codbco as r38_banco, r52_codage || r52_dvagencia as r38_agenc, r52_conta || r52_dvconta as r38_conta, $campovalor as r38_liq,cgm.*, length(trim(r38_agenc)) as qtddigitosagencia,
-      contabancaria.*,
+        $sCampos = "case when trim(translate(r38_conta,'0','')) = '' then '02'                     ";
+        $sCampos .= "     when db89_db_bancos <> '001'                then '03'                     ";
+        $sCampos .= " else '01' end as tipo_pagamento,                                              ";
+        $sCampos .= "r52_codbco as r38_banco, r52_codage || r52_dvagencia as r38_agenc, r52_conta || r52_dvconta as r38_conta, sum($campovalor) as r38_liq,cgm.z01_nome,cgm.z01_cgccpf,cgm.z01_numcgm, length(trim(r38_agenc)) as qtddigitosagencia,
+      db83_sequencial,
+    db83_descricao,
+    db83_bancoagencia,
+    db83_conta,
+    db83_dvconta,
+    db83_identificador,
+    db83_codigooperacao,
+    db83_tipoconta,
+    db83_contaplano,
+    db83_contaunica,
+    rh01_instit,
       r70_descr,
       rh01_regist as r38_regist,
       db89_codagencia,
       db89_digito, ";
-      $sCampos .= "length(trim(cgm.z01_cgccpf)) as tam,                                           ";
-      $sCampos .= "r38_liq as valorori                                                            ";
-      $sWhere   = $rh34_wherepensa;
-      if (DBPessoal::verificarUtilizacaoEstruturaSuplementar() && !$opt_todosbcos) {
-        $sWhere = preg_replace('/^where/', '',trim($rh34_wherepensa));
-      }
-      $sWhere .= " and r52_anousu = ".DBPessoal::getAnoFolha();
-      $sWhere .= " and r52_mesusu = ".DBPessoal::getMesFolha();
-      $sSql     = $clpensao->sql_query_gerarqbag(null, null, null, null, $sCampos, "r52_codbco,db83_tipoconta,tipo_pagamento,cgm.z01_nome", $sWhere);
-
+        $sCampos .= "length(trim(cgm.z01_cgccpf)) as tam,                                           ";
+        $sCampos .= "sum(r38_liq) as valorori                                                            ";
+        $sWhere   = $rh34_wherepensa;
+        if (DBPessoal::verificarUtilizacaoEstruturaSuplementar() && !$opt_todosbcos) {
+            $sWhere = preg_replace('/^where/', '',trim($rh34_wherepensa));
+        }
+        $groupby = " GROUP BY
+                        tipo_pagamento,
+                        r38_agenc,
+                        r52_codbco,
+                        r52_codage,
+                        r52_dvagencia,
+                        r52_conta,
+                        r52_dvconta,
+                        cgm.z01_nome,
+                        cgm.z01_cgccpf,
+                        cgm.z01_numcgm,
+                        db83_sequencial,
+                        db83_descricao,
+                        db83_bancoagencia,
+                        db83_conta,
+                        db83_dvconta,
+                        db83_identificador,
+                        db83_codigooperacao,
+                        db83_tipoconta,
+                        db83_contaplano,
+                        db83_contaunica,
+                        rh01_instit,
+                        r70_descr,
+                        rh01_regist,
+                        db89_codagencia,
+                        db89_digito
+                    ";
+        $order = "ORDER BY r52_codbco,db83_tipoconta,tipo_pagamento,cgm.z01_nome";
+        $sSql     = $clpensao->sql_query_gerarqbag(null, null, null, null, $sCampos, "", $sWhere);
+        $sSql .= $groupby . $order;
     } else {
 
       $sCampos = "folha.*,cgm.*, length(trim(r38_agenc)) as qtddigitosagencia, contabancaria.*, r70_descr,
@@ -475,7 +515,7 @@ try {
     $rsDados   = db_query($sSql);
 
     if (!$rsDados) {
-      db_fim_transacao(true);  
+      db_fim_transacao(true);
       db_redireciona('db_erros.php?fechar=true&db_erro='. urlencode("Não foi possivel emitir o arquivo. Erro ao processar a consulta dos dados."));
       exit;
     }
@@ -789,7 +829,7 @@ try {
     db_setaPropriedadesLayoutTxt($db_layouttxt, 5);
     ///// FINAL DO TRAILLER DE ARQUIVO
     //////////////////////////////////
-   
+
     $pdf->Output("F",$nomearquivo_impressao,true);
     $pdf->Close();
 
@@ -797,14 +837,14 @@ try {
 
 
     //// Arquivo Totalizador
-    unset($pdf); 
+    unset($pdf);
 
     $nomearquivo_total = "tmp/folha_".$db90_codban."_".$paramnome."_total.pdf";
     $total = 0;
     $alt   = 4;
-    
+
     $pdf = new PDF();
-    
+
     $pdf->addTitulo("ARQUIVO DE PAGAMENTO DA FOLHA",3);
     $pdf->addTitulo("SEQUENCIAL DO ARQUIVO:  ".$sequenciaarqui,4);
     $pdf->addTitulo("DATA DA GERAÇÃO:  ".db_formatar($datagera,"d").' ÀS '.$horageracao.' HS',5);
@@ -814,11 +854,11 @@ try {
     } else {
         $pdf->addTitulo('BANCO: TODOS',7);
     }
-    
+
     $pdf->init(false);
     $pdf->AliasNbPages();
     $pdf->setfillcolor(235);
-    
+
     $pdf->addpage();
     $pdf->setfont('arial','b',10);
     $pdf->cell(190,$alt,'RESUMO DO ARQUIVO BANCÁRIO',0,1,"C",0);
@@ -840,25 +880,25 @@ try {
 
     $iQtdTotal = 0;
     $nValorTotal = 0;
-    $sSqlTotalLotacao = "select r38_lotac, 
-                                r70_estrut, 
-                                r70_descr, 
-                                count(*) as qtd, 
-                                round(sum(r38_liq),2) as valor 
-                           from folha 
-                                inner join rhlota                     on r70_codigo  = r38_lotac::int 
+    $sSqlTotalLotacao = "select r38_lotac,
+                                r70_estrut,
+                                r70_descr,
+                                count(*) as qtd,
+                                round(sum(r38_liq),2) as valor
+                           from folha
+                                inner join rhlota                     on r70_codigo  = r38_lotac::int
                                 inner join rhpessoal                  on rh01_regist = r38_regist
                                 inner join rhpessoalmov               on rh02_regist = rh01_regist
                                                                      and rh02_anousu = " . db_anofolha() . "
                                                                      and rh02_mesusu = " . db_mesfolha() . "
                                                                      and rh02_instit = " . db_getsession("DB_instit") . "
-                                inner join rhpessoalmovcontabancaria  on rhpessoalmov.rh02_seqpes = rhpessoalmovcontabancaria.rh138_rhpessoalmov 
-                                                                     and rhpessoalmov.rh02_instit = rhpessoalmovcontabancaria.rh138_instit 
-                                inner join contabancaria              on contabancaria.db83_sequencial = rhpessoalmovcontabancaria.rh138_contabancaria 
+                                inner join rhpessoalmovcontabancaria  on rhpessoalmov.rh02_seqpes = rhpessoalmovcontabancaria.rh138_rhpessoalmov
+                                                                     and rhpessoalmov.rh02_instit = rhpessoalmovcontabancaria.rh138_instit
+                                inner join contabancaria              on contabancaria.db83_sequencial = rhpessoalmovcontabancaria.rh138_contabancaria
                                 inner join bancoagencia               on bancoagencia.db89_sequencial = contabancaria.db83_bancoagencia
-                          where r38_instit = ".db_getsession("DB_instit")." 
+                          where r38_instit = ".db_getsession("DB_instit")."
                             and {$sWhere}
-                          group by r38_lotac, r70_estrut, r70_descr 
+                          group by r38_lotac, r70_estrut, r70_descr
                           order by r70_estrut ";
 
     $rsTotalLotacao = db_query($sSqlTotalLotacao);
@@ -866,17 +906,17 @@ try {
     for ($iInd = 0; $iInd < pg_num_rows($rsTotalLotacao); $iInd++) {
 
        $oDados = db_utils::fieldsMemory($rsTotalLotacao, $iInd);
-       
+
        $pdf->cell(20,$alt,$oDados->r70_estrut,1,0,"L",0);
        $pdf->cell(80,$alt,$oDados->r70_descr,1,0,"L",0);
        $pdf->cell(20,$alt,$oDados->qtd,1,0,"L",0);
-       $pdf->cell(20,$alt,db_formatar($oDados->valor,'f'),1,1,"L",0); 
-       
+       $pdf->cell(20,$alt,db_formatar($oDados->valor,'f'),1,1,"L",0);
+
        $iQtdTotal += $oDados->qtd;
        $nValorTotal += $oDados->valor;
 
     }
-    
+
     $pdf->cell(100,$alt,'QTD. TOTAL :',1,0,"R",1);
     $pdf->cell(40,$alt,$iQtdTotal,1,1,"R",0);
 
@@ -888,8 +928,8 @@ try {
     $rsDadosGeracao = $clfolhafiltros->sql_record($clfolhafiltros->sql_query(db_getsession("DB_instit")));
     if ($clfolhafiltros->numrows > 0) {
       $aFiltros = explode(";",db_utils::fieldsMemory($rsDadosGeracao,0)->r39_filtros);
-      
-      $pdf->ln(2);  
+
+      $pdf->ln(2);
       $pdf->cell(80,$alt,"Filtros",1,1,"C",1);
       for ($iInd = 1; $iInd < count($aFiltros); $iInd++) {
         if (!empty($aFiltros[$iInd])) {
@@ -910,12 +950,12 @@ try {
   db_fim_transacao();
 
 } catch ( Exception $oErro) {
-    
+
     db_fim_transacao(true);
     echo "
     <script>
       parent.js_erro(\"{$oErro->getMessage()}\");
     </script>
     ";
-    
+
 }

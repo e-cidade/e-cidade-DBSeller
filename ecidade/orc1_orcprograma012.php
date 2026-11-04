@@ -133,7 +133,7 @@ if( isset($oPost->alterar) ){
   <tr>
     <td>
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorcprograma.php"));
 	?>
     </center>
@@ -142,7 +142,7 @@ if( isset($oPost->alterar) ){
 </table>
 </body>
 </html>
-<?
+<?php
 //if ($cldb_config->numrows == 0){
 //     db_msgbox("Somente instituicao prefeitura esta autorizada para este procedimento.Verifique.");
 //}

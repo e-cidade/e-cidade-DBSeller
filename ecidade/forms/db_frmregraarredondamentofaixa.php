@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,12 +68,12 @@
         <table border="0">
           <tr style="display: none">
             <td nowrap title="<?=@$Ted317_regraarredondamento?>">
-              <?
+              <?php
                 db_ancora(@$Led317_regraarredondamento, "js_pesquisaed317_regraarredondamento(true);", $db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ed317_sequencial', 10, $Ied317_sequencial, true, 'hidden', 3, "");
                 db_input('ed317_regraarredondamento', 10, $Ied317_regraarredondamento, true, 'text', $db_opcao, " onchange='js_pesquisaed317_regraarredondamento(false);'");
                 db_input('ed316_descricao', 40, $Ied316_descricao, true, 'text', 3, $sDisabled);
@@ -85,7 +85,7 @@
               <?=@$Led317_inicial?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ed317_inicial', 10, $Ied317_inicial, true, 'text', $db_opcao, $sDisabled);
               ?>
             </td>
@@ -95,7 +95,7 @@
               <?=@$Led317_final?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('ed317_final', 10, $Ied317_final, true, 'text', $db_opcao, $sDisabled);
               ?>
             </td>
@@ -105,7 +105,7 @@
                <?=@$Led317_arredondar?>
             </td>
             <td>
-              <?
+              <?php
                 $x = array(1=>"BAIXO", 2=>"MEIO", 3=>"CIMA");
                 db_select('ed317_arredondar', $x, true, $db_opcao, $sDisabled);
               ?>
@@ -124,7 +124,7 @@
         <table>
           <tr>
             <td valign="top"  align="center">
-              <?
+              <?php
             	  $chavepri = array("ed317_sequencial" => @$ed317_sequencial);
             	  $cliframe_alterar_excluir->chavepri = $chavepri;
             	  $sWhere                             = " ed317_regraarredondamento = {$ed317_regraarredondamento}";

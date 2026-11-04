@@ -20,6 +20,13 @@ class MaterialEstoque extends Model
     protected $table = 'material.matestoque';
     protected $primaryKey = 'm70_codigo';
     public $timestamps = false;
+    protected $fillable = [
+        'm70_codigo',
+        'm70_coddepto',
+        'm70_codmatmater',
+        'm70_valor',
+        'm70_quant'
+    ];
 
     public function material()
     {

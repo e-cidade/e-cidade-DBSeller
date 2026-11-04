@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -35,7 +35,7 @@ $clrotulo->label("y100_sequencial");
 $clrotulo->label("z01_nome");
 $get  = "";
 $data = date("d-m-Y",db_getsession("DB_datausu"));
-$data = split('-',$data);
+$data =explode('-',$data);
 $dia  = $data[0];
 $mes  = $data[1];
 $ano  = $data[2];
@@ -86,8 +86,8 @@ if($db_opcao == 1){
            <?=@$Lq02_inscr?>
         </td>
         <td nowrap >
-        <? db_input('q02_inscr',6,0,true,'text',3);?>
-        <? db_input('z01_nome',40,0,true,'text',3);?>
+        <?php db_input('q02_inscr',6,0,true,'text',3);?>
+        <?php db_input('z01_nome',40,0,true,'text',3);?>
         </td>
       </tr>
       <tr>
@@ -95,7 +95,7 @@ if($db_opcao == 1){
            <?=@$Ly60_codlev?>
         </td>
         <td>
-          <?
+          <?php
           db_input('y60_codlev',10,$Iy60_codlev,true,'text',3);
           if($db_opcao == 1){
             echo "<span style=\"float:right; font-weight:bold;\">$dados</strong>";
@@ -108,7 +108,7 @@ if($db_opcao == 1){
            <?=@$Ly60_data?>
         </td>
         <td>
-    <?
+    <?php
     if(empty($y60_data_dia)){
 
       $y60_data_dia=$dia;
@@ -134,7 +134,7 @@ if($db_opcao == 1){
            <?=@$Ly60_dtini?>
         </td>
         <td>
-    <?
+    <?php
     if(empty($y60_dtini_dia)){
 
       $y60_dtini_dia = $dia;
@@ -175,7 +175,7 @@ if($db_opcao == 1){
            <?=@$Ly60_obs?>
         </td>
         <td>
-        <?
+        <?php
         db_textarea('y60_obs',0,30,$Iy60_obs,true,'text',$db_opcao,"")
         ?>
         </td>
@@ -185,7 +185,7 @@ if($db_opcao == 1){
        <strong>Levantamento Espontâneo:</strong>
         </td>
         <td>
-        <?
+        <?php
     	  $tipo_ordem = array("f"=>"Não","t"=>"Sim");
     	  db_select("y60_espontaneo",$tipo_ordem,true,2); ?>
     	  </td>
@@ -193,12 +193,12 @@ if($db_opcao == 1){
 
     <tr>
         <td nowrap title="<?=@$Ty100_sequencial?>">
-           <?
+           <?php
            db_ancora(@$Ly100_sequencial,"js_pesquisaprocfiscal(true);",$db_opcao);
            ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('procfiscal',10,$Iy100_sequencial,true,'text',$db_opcao," onchange='js_pesquisaprocfiscal(false);'");
             db_input('nome',40,$Iz01_nome,true,'text',3,'');
           ?>
@@ -345,7 +345,7 @@ function js_preenchepesquisa(chave){
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?".$op."chavepesquisa='+chave";
   ?>
 }
-<?
+<?php
   if(empty($chavepesquisa) && (isset($alterando) || isset($excluindo)) ){
     echo "js_pesquisa();";
   }

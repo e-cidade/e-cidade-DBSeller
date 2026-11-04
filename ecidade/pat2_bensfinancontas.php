@@ -38,7 +38,7 @@ $clArquivoAuxiliar = new cl_arquivo_auxiliar();
 ?>
 <html>
 <head>
-<?
+<?php
   db_app::load("scripts.js, estilos.css, prototype.js, arrays.js");
 ?>
 </head>
@@ -75,7 +75,7 @@ $clArquivoAuxiliar = new cl_arquivo_auxiliar();
 	  <tr>
 	     <td align="center">
 	        <strong>Op&ccedil;&otilde;es</strong>
-	        <?
+	        <?php
 	          $opcoes = array('s' => 'Considerar selecionadas',
 	                          'n' => 'N&atilde;o considerar selecionadas');
 	          db_select('opcoescontas', $opcoes, true, 1);

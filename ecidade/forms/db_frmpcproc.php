@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -49,7 +49,7 @@ $val = false;
             <strong>Solicitação: </strong>
           </td>
           <td align="left">
-            <?
+            <?php
             $desabilita = false;
             $arr_numero = array();
             $arr_index  = array();
@@ -69,7 +69,7 @@ $val = false;
               db_fieldsmemory($sql_solicita,$i,true);
               $arr_numero[$pc10_numero] = $pc10_numero;
               $arr_index[$pc10_numero]  = $i;
-              $arr_data = split("/",$pc10_data);
+              $arr_data =explode("/",$pc10_data);
 
               if ($i == 0) {
                 $pc10_data_dia = $arr_data[0];
@@ -98,7 +98,7 @@ $val = false;
                   }
                 </script>";
               db_fieldsmemory($sql_solicita,$arr_index[$cod]);
-              $arr_data = split("-",$pc10_data);
+              $arr_data =explode("-",$pc10_data);
 
               $pc10_data_dia = $arr_data[2];
               $pc10_data_mes = $arr_data[1];
@@ -116,7 +116,7 @@ $val = false;
             <strong>Processo de Compra: </strong>
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
             db_input('pc80_codproc',8,$Ipc80_codproc,true,'text',3);
             ?>
           </td>
@@ -126,7 +126,7 @@ $val = false;
             <label class="bold" for="pc10_data" id="lbl_pc10_data">Data da Solicitação:</label>
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
             db_inputdata('pc10_data',@$pc10_data_dia,@$pc10_data_mes,@$pc10_data_ano,true,'text',3);
             ?>
           </td>
@@ -134,7 +134,7 @@ $val = false;
             <strong>Departamento: </strong>
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
             db_input('descrdepto',40,$Idescrdepto,true,'text',3);
             ?>
           </td>
@@ -174,7 +174,7 @@ $val = false;
           <td align="left" nowrap title="<?=@$Tpc10_resumo?>" colspan="4">
             <fieldset>
               <legend>Resumo do Processo de Compras</legend>
-              <?
+              <?php
               db_textarea('pc10_resumo', 5, 70, $Ipc10_resumo, true, 'text', 1, "", "", "", 735);
               ?>
             </fieldset>
@@ -284,7 +284,7 @@ $val = false;
   if (document.form1.pc10_numero.value!=""){
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_solicitem.location.href= 'com1_gerasolicitem.php?solicita='+document.form1.pc10_numero.value+'&pc10_numero='+document.form1.pc10_numero.value;
   }
-  <?
+  <?php
     if($desabilita==true){
     echo "
       numele = parent.document.form1.length;

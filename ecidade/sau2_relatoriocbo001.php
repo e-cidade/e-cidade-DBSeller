@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 <b>Filtrar por:</b>
               </td>
               <td>
-                <?
+                <?php
                 $aX = array('1'=>'PAB', '2'=>'NÃO PAB', '3'=>'AMBOS');
                 db_select('pab', $aX, true, 1, '');
                 ?>
@@ -66,7 +66,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 <b>Mostrar Profissionais:</b>
               </td>
               <td>
-                <?
+                <?php
                 $aX = array('1'=>'SIM', '2'=>'NÃO');
                 db_select('mostrarProfissionais', $aX, true, 1, '');
                 ?>
@@ -77,11 +77,11 @@ require_once(modification("dbforms/db_funcoes.php"));
                 <b>Período:</b>
               </td>
               <td colspan="3">
-                <?
+                <?php
                 db_inputdata('dataIni', @$dataIni[0], @$dataIni[1], @$dataIni[2], true, 'text', 1, '');
                 ?>
                 <b> Até: </b>
-                <?
+                <?php
                 db_inputdata('dataFim', @$dataFim[0], @$dataFim[1], @$dataFim[2], true, 'text', 1, '');
                 ?>
               </td>
@@ -98,7 +98,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 </table>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

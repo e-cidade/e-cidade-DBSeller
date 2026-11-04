@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
       <br><br>
         <td colspan=2 >
         
-         <?
+         <?php
            $sql_marca = "";
            if (isset($m91_depto) && trim($m91_depto)!=""){
             $sql_marca = "select m91_depto, descrdepto 

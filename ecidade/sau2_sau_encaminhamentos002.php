@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -291,7 +291,7 @@ if($iLinhas <= 0)
       </td>
     </tr>
   </table>
-<?
+<?php
   exit;
 }
 
@@ -384,7 +384,7 @@ if($oDados->z01_v_cep == '0') {
 }
 
 boxIdentificacaoPaciente($oPDF, substr($oDados->z01_v_nome,0,56), $oDados->z01_i_cgsund, formataData($oDados->z01_d_nasc, 2), 
-                         empty($oDados->z01_v_sexo) ? '' : $oDados->z01_v_sexo == 'M' ? 'Masculino' : 'Feminino',
+                         empty($oDados->z01_v_sexo) ? '' : ($oDados->z01_v_sexo == 'M' ? 'Masculino' : 'Feminino'),
                          $sCartaoSus, $oDados->z01_v_cgccpf, $oDados->z01_v_ident, 
                          substr($oDados->z01_v_ender,0,60), $oDados->z01_i_numero, substr($oDados->z01_v_bairro,0,74),
                          substr($oDados->z01_v_munic,0,62), $oDados->z01_v_cep, $oDados->z01_v_telef,

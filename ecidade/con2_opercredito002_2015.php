@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,7 +56,7 @@ if (!isset($arqinclude)){
 
 }
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,munic,nomeinst,nomeinstabrev, uf from db_config");
 $descr_inst = '';
 $xvirg = '';
@@ -97,7 +97,7 @@ $dt               = data_periodo($anousu,$periodo); // no dbforms/db_funcoes.php
 $dt_ini_plano     = $dt[0];  // data inicial do periodo
 $dt_ini           = "{$anousu}-01-01";  // data inicial do periodo PADRÃO
 $dt_fim           = $dt[1];  // data final do período
-$dt = split('-',$dt_fim);  // mktime -- (mes,caddia,ano)
+$dt =explode('-',$dt_fim);  // mktime -- (mes,caddia,ano)
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]+1,"01",$anousu_ant));
 $dt_fim_ant = $anousu_ant.'-12-31';
 $head2 = "MUNICÍPIO DE ".$munic . " - " . $uf;

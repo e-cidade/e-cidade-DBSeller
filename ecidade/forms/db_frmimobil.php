@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
@@ -50,55 +50,55 @@ if(isset($db_opcaoal)){
 	<br>
 	<br>
     <td nowrap title="<?=@$Tj44_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lj44_numcgm,"js_pesquisaj44_numcgm(true);",3);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('j44_numcgm',10,$Ij44_numcgm,true,'text',3," onchange='js_pesquisaj44_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
-  
+
   <tr>
     <td nowrap title="<?=@$Tj44_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj44_matric,"js_pesquisaj44_matric(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('j44_matric',10,$Ij44_matric,true,'text',$db_opcao," onchange='js_pesquisaj44_matric(false);'");
 db_input('j44_matric_ant',10,$Ij44_matric,true,'hidden',3,"");
 ?>
-       <?
+       <?php
 db_input('dono',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center">
-    <?
+    <?php
     if ($db_opcao!=22){
-    
+
     ?>
  <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
  <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
-<?}?>
+<?php }?>
     </td>
   </tr>
   </table>
  <table>
   <tr>
-    <td valign="top"  align="center">  
-    <?
+    <td valign="top"  align="center">
+    <?php
 	 $chavepri= array("j44_matric"=>@$j44_matric);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
-	 $cliframe_alterar_excluir->sql     = $climobil->sql_query(null,"j44_matric,a.z01_nome","j44_matric","j44_numcgm=".@$j44_numcgm);	 
+	 $cliframe_alterar_excluir->sql     = $climobil->sql_query(null,"j44_matric,a.z01_nome","j44_matric","j44_numcgm=".@$j44_numcgm);
 	 $cliframe_alterar_excluir->campos  ="j44_matric,z01_nome";
 	 $cliframe_alterar_excluir->legenda="MATRICULAS";
 	 $cliframe_alterar_excluir->iframe_height ="160";
@@ -107,7 +107,7 @@ db_input('dono',40,$Iz01_nome,true,'text',3,'')
     ?>
     </td>
    </tr>
- 
+
   </table>
   </center>
 </form>
@@ -124,18 +124,18 @@ function js_pesquisaj44_matric(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_iptubase','func_iptubase.php?funcao_js=parent.js_mostraiptubase1|j01_matric|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.j44_matric.value != ''){ 
+     if(document.form1.j44_matric.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_iptubase','func_iptubase.php?pesquisa_chave='+document.form1.j44_matric.value+'&funcao_js=parent.js_mostraiptubase','Pesquisa',false);
      }else{
-       document.form1.dono.value = ''; 
+       document.form1.dono.value = '';
      }
   }
 }
 function js_mostraiptubase(chave,erro){
-  document.form1.dono.value = chave; 
-  if(erro==true){ 
-    document.form1.j44_matric.focus(); 
-    document.form1.j44_matric.value = ''; 
+  document.form1.dono.value = chave;
+  if(erro==true){
+    document.form1.j44_matric.focus();
+    document.form1.j44_matric.value = '';
   }
 }
 function js_mostraiptubase1(chave1,chave2){
@@ -147,18 +147,18 @@ function js_pesquisaj44_numcgm(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.j44_numcgm.value != ''){ 
+     if(document.form1.j44_numcgm.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?pesquisa_chave='+document.form1.j44_numcgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
      }else{
-       document.form1.z01_nome.value = ''; 
+       document.form1.z01_nome.value = '';
      }
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.j44_numcgm.focus(); 
-    document.form1.j44_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.j44_numcgm.focus();
+    document.form1.j44_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2){
@@ -171,7 +171,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadimobil.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

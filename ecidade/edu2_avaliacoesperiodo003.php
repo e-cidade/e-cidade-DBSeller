@@ -142,15 +142,17 @@ foreach ( $aDisciplinas as $iCodigoDisciplina) {
 
 foreach ($aRegenciasSelecionadas as $oRegencia) {
 
-	$oRegencia                        = RegenciaRepository::getRegenciaByCodigo($oRegencia->getCodigo());
-	$oDadosRelatorio->sNomeDisciplina = $oRegencia->getDisciplina()->getNomeDisciplina();
-	$oDadosRelatorio->sNomeProfessor  = '';
+	$oRegencia                             = RegenciaRepository::getRegenciaByCodigo($oRegencia->getCodigo());
+	$oDadosRelatorio->sNomeDisciplina      = $oRegencia->getDisciplina()->getNomeDisciplina();
+	$oDadosRelatorio->sNomeProfessor       = '';
+	$oDadosRelatorio->sNomeProfessorSocial = '';
 
 	if (count($oRegencia->getDocentes()) > 0) {
 
 		foreach($oRegencia->getDocentes() as $oDocente) {
 
-			$oDadosRelatorio->sNomeProfessor = $oDocente->getNome();
+			$oDadosRelatorio->sNomeProfessor       = $oDocente->getNome();
+			$oDadosRelatorio->sNomeProfessorSocial = $oDocente->getNomeSocial();
 			break;
 		}
 	}
@@ -288,11 +290,17 @@ function imprimeCabecalho($oPdf, $oDadosRelatorio) {
 	$oPdf->Cell(20,  4, "Turma:", 0, 0, "L");
 	$oPdf->Cell(50,  4, $oDadosRelatorio->sTurma, 0, 0, "L");
 	$oPdf->Cell(20,  4, "Turno:", 0, 0, "L");
-	$oPdf->Cell(30,  4, $oDadosRelatorio->sTurno, 0, 1, "L");
+	$oPdf->Cell(60,  4, $oDadosRelatorio->sTurno, 0, 1, "L");
 	$oPdf->Cell(20,  4, "Disciplina:", 0, 0, "L");
-	$oPdf->Cell(165, 4, $oDadosRelatorio->sNomeDisciplina, 0, 0, "L");
+	$oPdf->Cell(110, 4, $oDadosRelatorio->sNomeDisciplina, 0, 0, "L");
 	$oPdf->Cell(20,  4, "Professor:", 0, 0, "L");
-	$oPdf->Cell(30,  4, $oDadosRelatorio->sNomeProfessor, 0, 0, "L");
+	$oPdf->Cell(130, 4, mb_strimwidth($oDadosRelatorio->sNomeProfessor, 0, 60), 0, 0, "L");
+	if(!empty($oDadosRelatorio->sNomeProfessorSocial)){
+	$oPdf->Ln();
+	$oPdf->SetX(138);
+	$oPdf->Cell(22,  4, "Nome Social:", 0, 0, "L");
+	$oPdf->Cell(125, 4, mb_strimwidth($oDadosRelatorio->sNomeProfessorSocial, 0, 55), 0, 0, "L");
+	}
 
 	$oPdf->Ln();
 	$oPdf->Ln();

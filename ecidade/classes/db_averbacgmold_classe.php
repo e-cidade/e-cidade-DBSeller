@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,40 +29,44 @@
 //CLASSE DA ENTIDADE averbacgmold
 class cl_averbacgmold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j79_codigo = 0; 
-   var $j79_averbacao = 0; 
-   var $j79_numcgm = 0; 
-   var $j79_tipo = 0; 
-   var $j79_principal = 'f'; 
+   public $j79_codigo = 0; 
+   public $j79_averbacao = 0; 
+   public $j79_numcgm = 0; 
+   public $j79_tipo = 0; 
+   public $j79_principal = 'f';
+   public $j79_tipoproprietario = null;
+   public $j79_tipopromitente = null;
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
-                 j79_codigo = int4 = Código 
-                 j79_averbacao = int4 = Código Averbação 
-                 j79_numcgm = int4 = Numcgm 
-                 j79_tipo = int4 = Tipo 
-                 j79_principal = bool = Principal 
+   public $campos = "
+                  j79_codigo = int4 = Código 
+                  j79_averbacao = int4 = Código Averbação 
+                  j79_numcgm = int4 = Numcgm 
+                  j79_tipo = int4 = Tipo 
+                  j79_principal = bool = Principal
+                  j79_tipoproprietario = int4 = Tipo de Proprietário
+                  j79_tipopromitente = int4 = Tipo de Promitente
                  ";
    //funcao construtor da classe 
-   function cl_averbacgmold() { 
+   public function cl_averbacgmold() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbacgmold"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,19 +75,21 @@ class cl_averbacgmold {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j79_codigo = ($this->j79_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j79_codigo"]:$this->j79_codigo);
        $this->j79_averbacao = ($this->j79_averbacao == ""?@$GLOBALS["HTTP_POST_VARS"]["j79_averbacao"]:$this->j79_averbacao);
        $this->j79_numcgm = ($this->j79_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["j79_numcgm"]:$this->j79_numcgm);
        $this->j79_tipo = ($this->j79_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["j79_tipo"]:$this->j79_tipo);
        $this->j79_principal = ($this->j79_principal == "f"?@$GLOBALS["HTTP_POST_VARS"]["j79_principal"]:$this->j79_principal);
+       $this->j79_tipoproprietario = ($this->j79_tipoproprietario == null?@$GLOBALS["HTTP_POST_VARS"]["j79_tipoproprietario"]:$this->j79_tipoproprietario);
+       $this->j79_tipopromitente = ($this->j79_tipopromitente == null?@$GLOBALS["HTTP_POST_VARS"]["j79_tipopromitente"]:$this->j79_tipopromitente);
      }else{
        $this->j79_codigo = ($this->j79_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j79_codigo"]:$this->j79_codigo);
      }
    }
    // funcao para inclusao
-   function incluir ($j79_codigo){ 
+   public function incluir ($j79_codigo){ 
       $this->atualizacampos();
      if($this->j79_averbacao == null ){ 
        $this->erro_sql = " Campo Código Averbação nao Informado.";
@@ -145,6 +151,12 @@ class cl_averbacgmold {
          $this->j79_codigo = $j79_codigo; 
        }
      }
+     if($this->j79_tipoproprietario == null || $this->j79_tipoproprietario == ''){
+      $this->j79_tipoproprietario = 'null';
+     }
+     if($this->j79_tipopromitente == null || $this->j79_tipopromitente == ''){
+      $this->j79_tipopromitente = 'null';
+     }
      if(($this->j79_codigo == null) || ($this->j79_codigo == "") ){ 
        $this->erro_sql = " Campo j79_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
@@ -158,14 +170,18 @@ class cl_averbacgmold {
                                       ,j79_averbacao 
                                       ,j79_numcgm 
                                       ,j79_tipo 
-                                      ,j79_principal 
+                                      ,j79_principal
+                                      ,j79_tipoproprietario
+                                      ,j79_tipopromitente
                        )
                 values (
                                 $this->j79_codigo 
                                ,$this->j79_averbacao 
                                ,$this->j79_numcgm 
                                ,$this->j79_tipo 
-                               ,'$this->j79_principal' 
+                               ,'$this->j79_principal'
+                               ,$this->j79_tipoproprietario
+                               ,$this->j79_tipopromitente
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -202,11 +218,13 @@ class cl_averbacgmold {
        $resac = db_query("insert into db_acount values($acount,1650,9597,'','".AddSlashes(pg_result($resaco,0,'j79_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,1650,9598,'','".AddSlashes(pg_result($resaco,0,'j79_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,1650,9599,'','".AddSlashes(pg_result($resaco,0,'j79_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1650,9600,'','".AddSlashes(pg_result($resaco,0,'j79_tipoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1650,9601,'','".AddSlashes(pg_result($resaco,0,'j79_tipopromitente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j79_codigo=null) { 
+   public function alterar ($j79_codigo=null) { 
       $this->atualizacampos();
      $sql = " update averbacgmold set ";
      $virgula = "";
@@ -275,6 +293,17 @@ class cl_averbacgmold {
          return false;
        }
      }
+
+     if(($this->j79_tipoproprietario != null && trim($this->j79_tipoproprietario) != "") || isset($GLOBALS["HTTP_POST_VARS"]["j79_tipoproprietario"])){ 
+      $sql  .= $virgula." j79_tipoproprietario = '$this->j79_tipoproprietario' ";
+      $virgula = ",";
+     }
+
+     if(($this->j79_tipopromitente != null && trim($this->j79_tipopromitente) != "") || isset($GLOBALS["HTTP_POST_VARS"]["j79_tipopromitente"])){ 
+      $sql  .= $virgula." j79_tipopromitente = '$this->j79_tipopromitente' ";
+      $virgula = ",";
+     }
+
      $sql .= " where ";
      if($j79_codigo!=null){
        $sql .= " j79_codigo = $this->j79_codigo";
@@ -296,6 +325,11 @@ class cl_averbacgmold {
            $resac = db_query("insert into db_acount values($acount,1650,9598,'".AddSlashes(pg_result($resaco,$conresaco,'j79_tipo'))."','$this->j79_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j79_principal"]))
            $resac = db_query("insert into db_acount values($acount,1650,9599,'".AddSlashes(pg_result($resaco,$conresaco,'j79_principal'))."','$this->j79_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        if(isset($GLOBALS["HTTP_POST_VARS"]["j79_tipoproprietario"]))
+          $resac = db_query("insert into db_acount values($acount,1650,9599,'".AddSlashes(pg_result($resaco,$conresaco,'j79_tipoproprietario'))."','$this->j79_tipoproprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        if(isset($GLOBALS["HTTP_POST_VARS"]["j79_tipopromitente"]))
+          $resac = db_query("insert into db_acount values($acount,1650,9599,'".AddSlashes(pg_result($resaco,$conresaco,'j79_tipopromitente'))."','$this->j79_tipopromitente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           
        }
      }
      $result = db_query($sql);
@@ -331,7 +365,7 @@ class cl_averbacgmold {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j79_codigo=null,$dbwhere=null) { 
+   public function excluir ($j79_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j79_codigo));
      }else{ 
@@ -348,6 +382,8 @@ class cl_averbacgmold {
          $resac = db_query("insert into db_acount values($acount,1650,9597,'','".AddSlashes(pg_result($resaco,$iresaco,'j79_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1650,9598,'','".AddSlashes(pg_result($resaco,$iresaco,'j79_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1650,9599,'','".AddSlashes(pg_result($resaco,$iresaco,'j79_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1650,9600,'','".AddSlashes(pg_result($resaco,$iresaco,'j79_tipoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1650,9601,'','".AddSlashes(pg_result($resaco,$iresaco,'j79_tipopromitente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from averbacgmold
@@ -396,7 +432,7 @@ class cl_averbacgmold {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,10 +454,10 @@ class cl_averbacgmold {
       }
      return $result;
    }
-   function sql_query ( $j79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +481,7 @@ class cl_averbacgmold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,10 +490,10 @@ class cl_averbacgmold {
      }
      return $sql;
   }
-   function sql_query_file ( $j79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +514,7 @@ class cl_averbacgmold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

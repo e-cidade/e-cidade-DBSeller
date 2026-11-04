@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clcodigoclienterefeisul->rotulo->label("rh171_codigocliente");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lrh171_sequencial?></label></td>
-          <td><? db_input("rh171_sequencial",10,$Irh171_sequencial,true,"text",4,"","chave_rh171_sequencial"); ?></td>
+          <td><?php db_input("rh171_sequencial",10,$Irh171_sequencial,true,"text",4,"","chave_rh171_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lrh171_codigocliente?></label></td>
-          <td><? db_input("rh171_codigocliente",10,$Irh171_codigocliente,true,"text",4,"","chave_rh171_codigocliente");?></td>
+          <td><?php db_input("rh171_codigocliente",10,$Irh171_codigocliente,true,"text",4,"","chave_rh171_codigocliente");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clcodigoclienterefeisul->rotulo->label("rh171_codigocliente");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_codigoclienterefeisul.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_codigoclienterefeisul.php")==true){
@@ -78,12 +78,12 @@ $clcodigoclienterefeisul->rotulo->label("rh171_codigocliente");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

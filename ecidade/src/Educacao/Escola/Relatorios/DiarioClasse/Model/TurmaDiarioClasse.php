@@ -51,6 +51,9 @@ class TurmaDiarioClasse
      */
     protected $curso;
 
+    protected $aulasDadas;
+
+
     /**
      * Etapas selecionadas para impressão
      * @var Etapa[]
@@ -126,6 +129,24 @@ class TurmaDiarioClasse
     public function setEtapas(array $etapas)
     {
         $this->etapas = $etapas;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAulasDadas()
+    {
+        return $this->aulasDadas;
+    }
+
+    /**
+     * @param mixed $aulasDadas
+     * @return TurmaDiarioClasse
+     */
+    public function setAulasDadas($aulasDadas)
+    {
+        $this->aulasDadas = $aulasDadas;
         return $this;
     }
 }

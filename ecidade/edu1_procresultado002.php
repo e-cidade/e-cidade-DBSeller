@@ -241,7 +241,7 @@ if (isset($alterar)) {
      <center>
       <fieldset style="width:95%;">
         <legend><b>Alteração do Resultado <?=$ed42_c_descr?></b></legend>
-        <?include(modification("forms/db_frmprocresultado.php"));?>
+        <?php include(modification("forms/db_frmprocresultado.php"));?>
       </fieldset>
      </center>
     </td>

@@ -67,14 +67,14 @@ $clrotulo->label("e60_codemp");
   }
  function js_preenchepesquisa(chave){
      db_iframe_conlancamemp.hide();
-    <?  
+    <?php  
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chave_codigo='+chave";
     ?>
  }
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -90,21 +90,21 @@ $clrotulo->label("e60_codemp");
     <form name="form2" method="post" action="">
     <table border="0">
     <tr>
-      <td nowrap><? db_ancora(@$Le60_codemp,'js_pesquisa();',1); ?> </td>
-      <td><?  db_input("codigo",12,"",true,'text',1,"","chave_codigo");   ?> </td>
+      <td nowrap><?php db_ancora(@$Le60_codemp,'js_pesquisa();',1); ?> </td>
+      <td><?php  db_input("codigo",12,"",true,'text',1,"","chave_codigo");   ?> </td>
     </tr>
     <tr>
     <td nowrap>  Período   </td>
-       <td><? db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
+       <td><?php db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
           à
-	  <? db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
+	  <?php db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
 
       </td>
     </tr>
     </table>
     <input name="db_opcao" type="submit" id="db_opcao" value="Consultar">
     </form>
-    <?
+    <?php
         //-- apresenta resultados
         $data1="";  $data2="";
         @$data1="$data_ini_ano-$data_ini_mes-$data_ini_dia"; 

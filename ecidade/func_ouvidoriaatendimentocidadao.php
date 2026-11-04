@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clouvidoriaatendimentocidadao->rotulo->label("ov10_ouvidoriaatendimento");
               <?=$Lov10_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov10_sequencial",10,$Iov10_sequencial,true,"text",4,"","chave_ov10_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clouvidoriaatendimentocidadao->rotulo->label("ov10_ouvidoriaatendimento");
               <?=$Lov10_ouvidoriaatendimento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov10_ouvidoriaatendimento",10,$Iov10_ouvidoriaatendimento,true,"text",4,"","chave_ov10_ouvidoriaatendimento");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clouvidoriaatendimentocidadao->rotulo->label("ov10_ouvidoriaatendimento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ouvidoriaatendimentocidadao.php")==true){
@@ -122,12 +122,12 @@ $clouvidoriaatendimentocidadao->rotulo->label("ov10_ouvidoriaatendimento");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

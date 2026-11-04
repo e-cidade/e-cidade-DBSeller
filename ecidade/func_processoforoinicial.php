@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ if (!isset($funcao_js)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-       <?
+       <?php
          if (!isset($oGet->detalhamento)) {
        ?>
   <tr> 
@@ -66,7 +66,7 @@ if (!isset($funcao_js)) {
               <?=$Lv71_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("v71_sequencial",10,$Iv71_sequencial,true,"text",4,"","chave_v71_sequencial");
 		          ?>
             </td>
@@ -82,12 +82,12 @@ if (!isset($funcao_js)) {
         </table>
       </td>
   </tr>
-        <?
+        <?php
          }
         ?>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -141,12 +141,12 @@ if (!isset($funcao_js)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

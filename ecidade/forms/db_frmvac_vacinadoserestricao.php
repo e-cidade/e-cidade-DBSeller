@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("vc07_i_vacina");
        <?=@$Lvc07_i_vacina?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('vc06_i_codigo',10,$Ivc06_i_codigo,true,'text',3,"");
         db_input('vc06_c_descr',30,$Ivc06_c_descr,true,'text',3,"")
       ?>
@@ -56,7 +56,7 @@ $clrotulo->label("vc07_i_vacina");
       <?=@$Lvc08_i_vacinadose?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('vc08_i_vacinadose',10,$Ivc08_i_vacinadose,true,'text',3,"");
         db_input('vc07_c_nome',30,$Ivc07_c_nome,true,'text',3,'');
       ?>
@@ -70,7 +70,7 @@ $clrotulo->label("vc07_i_vacina");
             <b>Restrições:</b><br>
             <select multiple id="restricoes" name="restricoes" style=" width: 100%;" size="10" 
                     onDblClick="js_moveDireita();">
-            <?
+            <?php
             $sWhere  = 'vc02_i_codigo not in (select vc08_i_restricao from vac_vacinadoserestricao ';
             $sWhere .= ' where vc08_i_vacinadose = '.$vc08_i_vacinadose.')';
             $sSql    = $oDaovac_restricao->sql_query_file(null, 'vc02_i_codigo, vc02_c_nome', 'vc02_c_nome', $sWhere);
@@ -98,7 +98,7 @@ $clrotulo->label("vc07_i_vacina");
             <b>Restrições Adicionadas:</b><br>
             <select multiple id="restricoesAdicionadas" name="restricoesAdicionadas[]" style=" width: 100%;" size="10"
                     onDblClick="js_moveEsquerda();">
-            <?
+            <?php
             $sWhere  = 'vc02_i_codigo in (select vc08_i_restricao from vac_vacinadoserestricao ';
             $sWhere .= ' where vc08_i_vacinadose = '.$vc08_i_vacinadose.')';
             $sSql    = $oDaovac_restricao->sql_query_file(null, 'vc02_i_codigo, vc02_c_nome', 'vc02_c_nome', $sWhere);

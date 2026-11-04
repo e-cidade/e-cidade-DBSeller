@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ if((isset($tavainlcu) && $tavainclu==true) || isset($chavepesquisa) || isset($al
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmcadvencdescalt.php"));
 	?>
     </center>
@@ -111,7 +111,7 @@ if((isset($tavainlcu) && $tavainclu==true) || isset($chavepesquisa) || isset($al
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($chavepesquisa)){
      echo "
            <script>

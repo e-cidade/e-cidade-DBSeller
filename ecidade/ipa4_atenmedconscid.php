@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ th {
   <th nowrap>Código do CID</th>
   <th nowrap>Descrição</th>
 </tr>
-<?
+<?php
 if(!empty($codcid))
   $str = " upper(codcid) like upper('$codcid%') ";
 else

@@ -64,14 +64,14 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	require_once(modification("forms/db_frmtesinteroutros.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu();
 ?>
 </body>
@@ -79,7 +79,7 @@ db_menu();
 <script>
 js_tabulacaoforms("form1","j84_tesinter",true,1,"j84_tesinter",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($cltesinteroutros->erro_status=="0"){
     $cltesinteroutros->erro(true,false);

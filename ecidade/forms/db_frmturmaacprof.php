@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
@@ -66,26 +66,26 @@ if(isset($opcao) && $opcao=="alterar"){
     <td nowrap title="<?=@$Ted222_i_codigo?>">
        <?=@$Led222_i_codigo?>
     </td>
-    <td> 
-     <?db_input('ed222_i_codigo',10,@$Ied222_i_codigo,true,'text',3,"")?>
+    <td>
+     <?php db_input('ed222_i_codigo',10,@$Ied222_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted222_i_turmaac?>">
-       <?db_ancora(@$Led222_i_turmaac,"js_pesquisaed222_i_turmaac(true);",3);?>
+       <?php db_ancora(@$Led222_i_turmaac,"js_pesquisaed222_i_turmaac(true);",3);?>
     </td>
-    <td> 
-      <?db_input('ed222_i_turmaac',10,@$Ied222_i_turmaac,true,'text',3,"")?>
-      <?db_input('ed268_c_descr',40,@$Ied268_c_descr,true,'text',3,'')?>
+    <td>
+      <?php db_input('ed222_i_turmaac',10,@$Ied222_i_turmaac,true,'text',3,"")?>
+      <?php db_input('ed268_c_descr',40,@$Ied268_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted222_i_rechumano?>">
-       <?db_ancora(@$Led222_i_rechumano,"js_pesquisaed222_i_rechumano(true);",$db_opcao);?>
+       <?php db_ancora(@$Led222_i_rechumano,"js_pesquisaed222_i_rechumano(true);",$db_opcao);?>
     </td>
-    <td> 
-	  <?db_input('ed222_i_rechumano',10,@$Ied222_i_rechumano,true,'text',$db_opcao," onchange='js_pesquisaed222_i_rechumano(false);'")?>
-      <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+    <td>
+	  <?php db_input('ed222_i_rechumano',10,@$Ied222_i_rechumano,true,'text',$db_opcao," onchange='js_pesquisaed222_i_rechumano(false);'")?>
+      <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -94,7 +94,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed222_i_codigo"=>@$ed222_i_codigo,"ed222_i_turmaac"=>@$ed222_i_turmaac,"ed268_c_descr"=>@$ed268_c_descr,"ed222_i_rechumano"=>@$ed222_i_rechumano,"z01_nome"=>@$z01_nome);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clturmaacprof->sql_query("","*","","ed222_i_turmaac=$ed222_i_turmaac");
@@ -121,18 +121,18 @@ function js_pesquisaed222_i_rechumano(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_rechumanoturmaac','func_rechumanoturmaac.php?funcao_js=parent.js_mostrarechumano1|ed20_i_codigo|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.ed222_i_rechumano.value != ''){ 
+     if(document.form1.ed222_i_rechumano.value != ''){
         js_OpenJanelaIframe('','db_iframe_rechumanoturmaac','func_rechumanoturmaac.php?pesquisa_chave='+document.form1.ed222_i_rechumano.value+'&funcao_js=parent.js_mostrarechumano','Pesquisa',false);
      }else{
-       document.form1.z01_nome.value = ''; 
+       document.form1.z01_nome.value = '';
      }
   }
 }
 function js_mostrarechumano(chave,erro){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.ed222_i_rechumano.focus(); 
-    document.form1.ed222_i_rechumano.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.ed222_i_rechumano.focus();
+    document.form1.ed222_i_rechumano.value = '';
   }
 }
 function js_mostrarechumano1(chave1,chave2){
@@ -145,7 +145,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_turmaacprof.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

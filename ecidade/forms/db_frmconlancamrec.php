@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,31 +39,31 @@ $clrotulo->label("o70_codfon");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tc74_codlan?>">
-       <?
+       <?php
        db_ancora(@$Lc74_codlan,"js_pesquisac74_codlan(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c74_codlan',8,$Ic74_codlan,true,'text',$db_opcao," onchange='js_pesquisac74_codlan(false);'");
 ?>
-       <?
+       <?php
 db_input('c70_anousu',4,$Ic70_anousu,true,'text',3,'');
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc74_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lc74_anousu,"js_pesquisac74_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $c74_anousu = db_getsession('DB_anousu');
 db_input('c74_anousu',4,$Ic74_anousu,true,'text',3," onchange='js_pesquisac74_anousu(false);'");
 ?>
-       <?
+       <?php
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
        ?>
@@ -71,15 +71,15 @@ db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc74_codrec?>">
-       <?
+       <?php
        db_ancora(@$Lc74_codrec,"js_pesquisac74_codrec(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c74_codrec',6,$Ic74_codrec,true,'text',$db_opcao," onchange='js_pesquisac74_codrec(false);'");
 ?>
-       <?
+       <?php
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
        ?>
@@ -191,7 +191,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conlancamrec.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

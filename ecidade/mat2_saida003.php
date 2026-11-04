@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $aux = new cl_arquivo_auxiliar;
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  $aux->cabecalho = "<strong>Usuário</strong>";
                  $aux->codigo = "id_usuario"; //chave de retorno da func
                  $aux->descr  = "nome";       //chave de retorno
@@ -87,7 +87,7 @@ $aux = new cl_arquivo_auxiliar;
       <tr align="center">
          <td title="Quebra por usuário"><b>Quebra por usuário:</b></td>
          <td align="left">
-         <?
+         <?php
            $matriz = array("N"=>"Não","S"=>"Sim");
            db_select("quebra_usu",$matriz,true,4);
          ?>

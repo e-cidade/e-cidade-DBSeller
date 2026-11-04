@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq95_cgmpri?>">
-       <?
+       <?php
        db_ancora(@$Lq95_cgmpri,"js_pesquisaq95_cgmpri(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q95_cgmpri',6,$Iq95_cgmpri,true,'text',$db_opcao," onchange='js_pesquisaq95_cgmpri(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq95_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lq95_numcgm,"js_pesquisaq95_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q95_numcgm',6,$Iq95_numcgm,true,'text',$db_opcao," onchange='js_pesquisaq95_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lq95_perc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q95_perc',15,$Iq95_perc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_socios.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

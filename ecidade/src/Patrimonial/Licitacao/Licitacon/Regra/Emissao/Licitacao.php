@@ -283,7 +283,7 @@ class Licitacao extends BaseAbstract
      */
     public function getTpDisputa($valor, $modalidade)
     {
-        $ehObrigatorio = in_array($modalidade, array('EST', 'ESE', 'RDC', 'RDE'));
+        $ehObrigatorio = in_array($modalidade, array('CCE', 'CCP', 'EST', 'ESE', 'PCE', 'PCP', 'RDC', 'RDE'));
 
         return $ehObrigatorio ? $valor : '';
     }
@@ -295,7 +295,7 @@ class Licitacao extends BaseAbstract
      */
     public function getTpPreQualificacao($valor, $modalidade)
     {
-        $ehObrigatorio = in_array($modalidade, array('EST', 'ESE', 'RDC', 'RDE'));
+        $ehObrigatorio = in_array($modalidade, array('CCE', 'CCP', 'EST', 'ESE', 'PCE', 'PCP', 'RDC', 'RDE'));
 
         return $ehObrigatorio ? $valor : '';
     }
@@ -326,8 +326,9 @@ class Licitacao extends BaseAbstract
     {
         $sModalidade = $oLicitacao->getModalidade()->getSiglaTipoCompraTribunal();
 
-
-        $modalidadesRegistroDePreco = array('CNC', 'PRE', 'PRP', 'RDC', 'RDE', 'EST', 'ESE');
+        $modalidadesRegistroDePreco = array(
+            'CCE','CCP','CNC','PCE','PCP','PRE','PRP','RDC','RDE','EST','ESE','PDE','PRD'
+        );
         $modalidadesNormal = array('CNV', 'TMP', 'LEI', 'LEE', 'CNS', 'PRD', 'PRI');
         $modalidadesOutro = array('CHP', 'CPC', 'RIN', 'MAI', 'CPP');
 

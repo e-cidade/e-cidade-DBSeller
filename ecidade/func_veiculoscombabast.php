@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $clveiculoscomb->rotulo->label("ve06_veiccadcomb");
               <?=$Lve06_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve06_sequencial",10,$Ive06_sequencial,true,"text",4,"","chave_ve06_sequencial");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clveiculoscomb->rotulo->label("ve06_veiccadcomb");
               <?=$Lve06_veiccadcomb?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve06_veiccadcomb",10,$Ive06_veiccadcomb,true,"text",4,"","chave_ve06_veiccadcomb");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $clveiculoscomb->rotulo->label("ve06_veiccadcomb");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
         $dbwhere = " ";
         if (isset($filtrar_veiculo) && trim($filtrar_veiculo) != ""){
           $dbwhere = "ve06_veiculos = $filtrar_veiculo ";
@@ -148,12 +148,12 @@ $clveiculoscomb->rotulo->label("ve06_veiccadcomb");
 </body>
 </html>
 
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

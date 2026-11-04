@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
               <?=$Lfa40_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	  	        db_input("fa40_i_codigo",10,$Ifa40_i_codigo,true,"text",4,"","chave_fa40_i_codigo");
 		          ?>
             </td>
@@ -66,7 +66,7 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
               <?=$Lfa40_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		          db_input('fa40_c_descr', 50, $Ifa40_c_descr, true, 'text', 4, '', 'chave_fa40_c_descr');
 		          ?>
             </td>
@@ -84,7 +84,7 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sSepVal = '';
       $sValidade = '';
       if(isset($chave_validade)) {
@@ -149,12 +149,12 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

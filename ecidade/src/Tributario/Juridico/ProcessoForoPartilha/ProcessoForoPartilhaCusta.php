@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -158,7 +158,7 @@ class ProcessoForoPartilhaCusta implements PartilhaCusta
     /**
      * @param int $iNumnov
      */
-    public function setNumnov($iNumnov) 
+    public function setNumnov($iNumnov)
     {
         $this->iNumnov = $iNumnov;
     }

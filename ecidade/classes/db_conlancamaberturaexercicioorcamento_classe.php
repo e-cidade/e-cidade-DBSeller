@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -47,18 +47,18 @@ class cl_conlancamaberturaexercicioorcamento {
    var $c105_aberturaexercicioorcamento = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c105_sequencial = int4 = Sequencial 
-                 c105_codlan = int4 = Código Lançamento 
-                 c105_aberturaexercicioorcamento = int4 = Sequencial 
+                 c105_sequencial = int4 = Sequencial
+                 c105_codlan = int4 = Código Lançamento
+                 c105_aberturaexercicioorcamento = int4 = Sequencial
                  ";
    //funcao construtor da classe
-   function cl_conlancamaberturaexercicioorcamento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancamaberturaexercicioorcamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_conlancamaberturaexercicioorcamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c105_sequencial = ($this->c105_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c105_sequencial"]:$this->c105_sequencial);
        $this->c105_codlan = ($this->c105_codlan == ""?@$GLOBALS["HTTP_POST_VARS"]["c105_codlan"]:$this->c105_codlan);
@@ -77,7 +77,7 @@ class cl_conlancamaberturaexercicioorcamento {
      }
    }
    // funcao para inclusao
-   function incluir ($c105_sequencial){
+   public function incluir ($c105_sequencial){
       $this->atualizacampos();
      if($this->c105_codlan == null ){
        $this->erro_sql = " Campo Código Lançamento nao Informado.";
@@ -130,14 +130,14 @@ class cl_conlancamaberturaexercicioorcamento {
        return false;
      }
      $sql = "insert into conlancamaberturaexercicioorcamento(
-                                       c105_sequencial 
-                                      ,c105_codlan 
-                                      ,c105_aberturaexercicioorcamento 
+                                       c105_sequencial
+                                      ,c105_codlan
+                                      ,c105_aberturaexercicioorcamento
                        )
                 values (
-                                $this->c105_sequencial 
-                               ,$this->c105_codlan 
-                               ,$this->c105_aberturaexercicioorcamento 
+                                $this->c105_sequencial
+                               ,$this->c105_codlan
+                               ,$this->c105_aberturaexercicioorcamento
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -176,7 +176,7 @@ class cl_conlancamaberturaexercicioorcamento {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c105_sequencial=null) {
+   public function alterar ($c105_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conlancamaberturaexercicioorcamento set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_conlancamaberturaexercicioorcamento {
      }
    }
    // funcao para exclusao
-   function excluir ($c105_sequencial=null,$dbwhere=null) {
+   public function excluir ($c105_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c105_sequencial));
      }else{
@@ -334,7 +334,7 @@ class cl_conlancamaberturaexercicioorcamento {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -357,10 +357,10 @@ class cl_conlancamaberturaexercicioorcamento {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $c105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_conlancamaberturaexercicioorcamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,10 +395,10 @@ class cl_conlancamaberturaexercicioorcamento {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $c105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_conlancamaberturaexercicioorcamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,10 +429,10 @@ class cl_conlancamaberturaexercicioorcamento {
      return $sql;
   }
     // funcao do sql
-    function sql_query_documento ( $c105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_documento ( $c105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_conlancamaberturaexercicioorcamento {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];

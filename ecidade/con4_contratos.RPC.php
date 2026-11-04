@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Patrimonial\Protocolo\Model\Cgm;
+
 require_once(modification('classes/db_acordocomissao_classe.php'));
 require_once(modification('classes/db_acordocomissaomembro_classe.php'));
 require_once(modification("classes/db_acordotipo_classe.php"));
@@ -362,7 +364,6 @@ switch ($oParam->exec) {
         break;
 
     case 'excluirPenalidade':
-
         try {
             db_inicio_transacao();
 
@@ -379,7 +380,6 @@ switch ($oParam->exec) {
         break;
 
     case 'pesquisaGarantia':
-
         try {
             $oAcordoGarantia = new AcordoGarantia($oParam->codigo);
 
@@ -388,8 +388,10 @@ switch ($oParam->exec) {
             $oRetorno->oAcordoGarantia->sDescricao = urlencode($oAcordoGarantia->getDescricao());
             $oRetorno->oAcordoGarantia->sObservacao = urlencode($oAcordoGarantia->getObservacao());
             $oRetorno->oAcordoGarantia->sTextoPadrao = urlencode($oAcordoGarantia->getTextoPadrao());
-            $oRetorno->oAcordoGarantia->sDataLimite = implode('/',
-                array_reverse(explode('-', $oAcordoGarantia->getDataLimite())));
+            $oRetorno->oAcordoGarantia->sDataLimite = implode(
+                '/',
+                array_reverse(explode('-', $oAcordoGarantia->getDataLimite()))
+            );
             $oRetorno->oAcordoGarantia->aTiposContratos = $oAcordoGarantia->getTiposContratos();
         } catch (Exception $exception) {
             $oRetorno->status = 2;
@@ -399,7 +401,6 @@ switch ($oParam->exec) {
         break;
 
     case 'salvarGarantia':
-
         try {
             db_inicio_transacao();
 
@@ -428,7 +429,6 @@ switch ($oParam->exec) {
         break;
 
     case 'excluiGarantia':
-
         try {
             db_inicio_transacao();
 
@@ -452,7 +452,15 @@ switch ($oParam->exec) {
             if ($oStdDadosLicitacao->l20_usaregistropreco == 't') {
                 continue;
             }
-            $aItensDevolver[] = $oStdDadosLicitacao;
+            foreach ($aItensDevolver as $oLicitacao) {
+                if ($oStdDadosLicitacao->licitacao == $oLicitacao->licitacao) {
+                    $oLicitacao->numero_exercicio .= " - " . $oStdDadosLicitacao->numero_exercicio;
+                    $oStdDadosLicitacao = null;
+                }
+            }
+            if ($oStdDadosLicitacao) {
+                $aItensDevolver[] = $oStdDadosLicitacao;
+            }
         }
 
         /**
@@ -505,24 +513,119 @@ switch ($oParam->exec) {
 
 
     case 'setDadosSelecao':
-
         $_SESSION['dadosSelecaoAcordo'] = $oParam->itens;
         break;
 
     case 'getNumeroContrato':
-
         try {
-            $oRetorno->numero = Acordo::getProximoNumeroContrato($oParam->iGrupo);
+            $oRetorno->numero = Acordo::getProximoNumeroContrato($oParam->iGrupo, $oParam->iAno);
         } catch (Exception $eErro) {
             $oRetorno->status = 2;
             $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
         }
         break;
 
-    case 'salvarContrato':
+    case 'buscarModalidades':
+        try {
+            $dao = new \cl_cflicita();
+            $sql = $dao->sql_query_numeracao(
+                null,
+                "l03_codigo,l03_descr",
+                null,
+                "l03_instit = " . db_getsession("DB_instit")
+            );
+            $rs = $dao->sql_record($sql);
+            $modalidades = db_utils::getCollectionByRecord($rs);
+            $oRetorno->modalidades = \DBString::utf8_encode_all($modalidades);
+        } catch (Exception $erro) {
+            $oRetorno->status = 2;
+            $oRetorno->message = urlencode(str_replace("\\n", "\n", $erro->getMessage()));
+        }
+        break;
 
+    case 'salvarContrato':
         try {
             db_inicio_transacao();
+
+            // verificar parâmetro
+            $cl_acordoparam = new cl_acordoparam;
+            $iInstituicaoSessao = db_getsession('DB_instit');
+            $sql = $cl_acordoparam->sql_query_file(null, "*", null, "ac59_instituicao = {$iInstituicaoSessao}");
+            $retorno = pg_fetch_assoc($cl_acordoparam->sql_record($sql));
+            $parametro_exibe_fiscal = $retorno['ac59_cadastrocomissoesfiscal'] === 't' ? true : false;
+
+            if ($parametro_exibe_fiscal) {
+                // inclui comissão automática
+                $AcordoComissaoModel = new AcordoComissao();
+                $oDtInicial = new DBDate($oParam->contrato->dtInicio);
+                $oDtFinal = new DBDate($oParam->contrato->dtTermino);
+
+                $AcordoComissaoModel->setDataInicial($oDtInicial->convertTo('Y-m-d'))
+                    ->setDataFinal($oDtFinal->convertTo('Y-m-d'))
+                    ->setDescricao("COMISSAO CRIADA AUTOMATICAMENTE")
+                    ->setObservacao("COMISSAO CRIADA AUTOMATICAMENTE PARA CADASTRO DE ACORDO")
+                    ->setInstituicao($iInstituicaoSessao)
+                    ->setTipo("1")
+                ;
+                $sucesso = $AcordoComissaoModel->save();
+                if (!$sucesso) {
+                    throw new Exception("Erro ao criar comissão automatica");
+                }
+
+                /* Inserir Gestor - Nao obrigatorio*/
+
+                if ($oParam->contrato->iGestor) {
+                    $AcordoComissaoMembroGestor = new AcordoComissaoMembro();
+                    $AcordoComissaoMembroGestor->setCodigoCgm($oParam->contrato->iGestor)
+                        ->setNome($oParam->contrato->sGestorNome)
+                        ->setResponsabilidade($AcordoComissaoMembroGestor::TIPO_GESTOR)
+                        ->setDataInicio(new DBDate($oParam->contrato->dtInicio))
+                        ->setDataTermino(new DBDate($oParam->contrato->dtTermino))
+                        ->setCodigoComissao($AcordoComissaoModel->getCodigo())
+                        ->setAnoAtoDesignacao(null)
+                        ->setNumeroAtoDesignacao(null)
+                        ->setNomeArquivo(null)
+                    ;
+
+                    try {
+                        $AcordoComissaoMembroGestor->save();
+                    } catch (Error $err) {
+                        throw $err;
+                    }
+
+                    $AcordoComissaoModel->addMembro($AcordoComissaoMembroGestor);
+                }
+
+                foreach ($oParam->contrato->aFiscalItem as $aFiscal) {
+                    $AcordoComissaoMembroModel = new AcordoComissaoMembro();
+
+                    $AcordoComissaoMembroModel->setCodigoCgm($aFiscal->iFiscal)
+                        ->setNome($aFiscal->sFiscalNome)
+                        ->setResponsabilidade($AcordoComissaoMembroModel::TIPO_FISCAL)
+                        ->setDataInicio(new DBDate($oParam->contrato->dtInicio))
+                        ->setDataTermino(new DBDate($oParam->contrato->dtTermino))
+                        ->setCodigoComissao($AcordoComissaoModel->getCodigo())
+                        ->setAnoAtoDesignacao(null)
+                        ->setNumeroAtoDesignacao(null)
+                        ->setNomeArquivo(null)
+                    ;
+
+                    try {
+                        $AcordoComissaoMembroModel->save();
+                    } catch (Error $err) {
+                        throw $err;
+                    }
+
+                    $AcordoComissaoModel->addMembro($AcordoComissaoMembroModel);
+                }
+
+                $sucesso = $AcordoComissaoModel->save();
+                if (!$sucesso) {
+                    throw new Exception("Erro ao incluir membro na comissão automatica");
+                }
+
+                $oParam->contrato->iComissao = $AcordoComissaoModel->getCodigo();
+            }
 
             $lAcordoValido = true;
             $sMessagemInvalido = '';
@@ -538,15 +641,17 @@ switch ($oParam->exec) {
                     $sMessagemInvalido = "Acordo sem vinculo com licitação/Processo de compras";
                 }
             }
+
             if ($lAcordoValido) {
-                $oParam->contrato->nValorContrato = str_replace(',', '.',
-                    str_replace(".", "", $oParam->contrato->nValorContrato));
+                $oParam->contrato->nValorContrato = str_replace(
+                    ',',
+                    '.',
+                    str_replace(".", "", $oParam->contrato->nValorContrato)
+                );
 
                 $oContratado = CgmFactory::getInstanceByCgm($oParam->contrato->iContratado);
                 $oContrato = new Acordo($oParam->contrato->iCodigo);
-                if (empty($oParam->contrato->iCodigo)) {
-                    $oContrato->setAno(db_getsession("DB_anousu"));
-                }
+                $oContrato->setAno($oParam->contrato->iAno);
                 $oContrato->setDataAssinatura($oParam->contrato->dtAssinatura);
                 $oContrato->setDataInicial($oParam->contrato->dtInicio);
                 $oContrato->setDataFinal($oParam->contrato->dtTermino);
@@ -581,6 +686,38 @@ switch ($oParam->exec) {
                 $oContrato->setDependeOrdemInicio($oParam->contrato->lDependeOrdemInicio);
                 $oContrato->save();
 
+                //Acordo Licitação Compartilhada
+                $dadosLicitacaoCompartilhada = (object) [
+                    'ac63_acordo' => $oContrato->getCodigoAcordo(),
+                    'ac63_licitacaocompartilhada' => $oParam->contrato->licitacaoCompartilhada,
+                    'ac63_numcgm' => $oParam->contrato->codigoCgm,
+                    'ac63_modalidade' => $oParam->contrato->modalidade,
+                    'ac63_numero' => $oParam->contrato->numeroLicitacao,
+                    'ac63_ano' => $oParam->contrato->anoLicitacao
+                ];
+
+                $service = new \App\Domain\Patrimonial\Contratos\Services\AcordoLicitacaoCompartilhadaService();
+                $service->salvar($dadosLicitacaoCompartilhada);
+                /*
+                 * inserimos contrato no acordoproc caso processo do sistema for marcado como 'sim'
+                 */
+                $oDaoAcordoProc = new cl_acordoproc;
+                $sWhereAcordoProc = "ac62_acordo = {$oContrato->getCodigoAcordo()}";
+                $rsAcordoProc = $oDaoAcordoProc->sql_record($oDaoAcordoProc->sql_query_file(null, "*", null, $sWhereAcordoProc));
+
+                if ($oDaoAcordoProc->numrows > 0) {
+                    $oDaoAcordoProc->excluir(null, $sWhereAcordoProc);
+                }
+
+                if ($oParam->contrato->lProcsis == 's') {
+                    $oDaoAcordoProc->ac62_acordo = $oContrato->getCodigoAcordo();
+                    $oDaoAcordoProc->ac62_protprocesso = $oParam->contrato->iProtProcesso;
+                    $oDaoAcordoProc->ac62_numeroprocesso = $oParam->contrato->sProcesso;
+                    $oDaoAcordoProc->incluir(null);
+                    if ($oDaoAcordoProc->erro_status == 0) {
+                        throw  new Exception("Erro ao salvar acordo proc.\nErro: {$oDaoAcordoProc->erro_msg}");
+                    }
+                }
                 /*
                  * verificamos se existe empenhos a serem vinculados na seção
                  */
@@ -614,24 +751,37 @@ switch ($oParam->exec) {
                  *  buscamos possiveis vinculos existentes entre o contrato e empenhos
                  */
                 if ($oParam->contrato->iOrigem != 6 && empty($oParam->contrato->iCodigo)) {
-                    $sSqlEmpenhosVinculados = $oDaoEmpEmpenhoContrato->sql_query_file(null, "*", null,
-                        "e100_acordo = {$iContrato}");
+                    $sSqlEmpenhosVinculados = $oDaoEmpEmpenhoContrato->sql_query_file(
+                        null,
+                        "*",
+                        null,
+                        "e100_acordo = {$iContrato}"
+                    );
                     $rsEmpenhosVinculados = $oDaoEmpEmpenhoContrato->sql_record($sSqlEmpenhosVinculados);
 
                     if ($oDaoEmpEmpenhoContrato->numrows > 0) {
                         for ($iEmpEmpenhoContrato = 0; $iEmpEmpenhoContrato < $oDaoEmpEmpenhoContrato->numrows; $iEmpEmpenhoContrato++) {
-                            $oValoresEmpEmpenhoContrato = db_utils::fieldsMemory($rsEmpenhosVinculados,
-                                $iEmpEmpenhoContrato);
+                            $oValoresEmpEmpenhoContrato = db_utils::fieldsMemory(
+                                $rsEmpenhosVinculados,
+                                $iEmpEmpenhoContrato
+                            );
 
                             //trazemos os empempitem para deletar da acordoempempitem
-                            $sSqlEmpEmpItem = $oDaoEmpEmpitem->sql_query_file(null, null, "e62_sequencial", null,
-                                "e62_numemp = {$oDaoEmpEmpenhoContrato->e100_numemp}");
+                            $sSqlEmpEmpItem = $oDaoEmpEmpitem->sql_query_file(
+                                null,
+                                null,
+                                "e62_sequencial",
+                                null,
+                                "e62_numemp = {$oDaoEmpEmpenhoContrato->e100_numemp}"
+                            );
                             $rsEmpEmpItem = $oDaoEmpEmpitem->sql_record($sSqlEmpEmpItem);
                             if ($oDaoEmpEmpitem->numrows > 0) {
                                 for ($iEmpEmpitem = 0; $iEmpEmpitem < $oDaoEmpEmpitem->numrows; $iEmpEmpitem++) {
                                     $oValorEmpEmpitem = db_utils::fieldsMemory($rsEmpEmpItem, $iEmpEmpitem);
-                                    $oDaoAcordoEmpEmpitem->excluir(null,
-                                        "ac44_empempitem = {$oValorEmpEmpitem->e62_sequencial}");
+                                    $oDaoAcordoEmpEmpitem->excluir(
+                                        null,
+                                        "ac44_empempitem = {$oValorEmpEmpitem->e62_sequencial}"
+                                    );
                                     if ($oDaoAcordoEmpEmpitem->erro_status == 0) {
                                         //throw new Exception(" [ 8 ] - ERRO - Desvinculando itens - " . $oDaoAcordoEmpEmpitem->erro_msg);
                                         $oErro->erro_msg = $oDaoAcordoEmpEmpitem->erro_msg;
@@ -644,32 +794,44 @@ switch ($oParam->exec) {
                              * trazemos os acordoposicao para deletar da acordoitem
                              * depois da acordoposicao
                              */
-                            $sSqlAcordoPosicao = $oDaoAcordoPosicao->sql_query_file(null, "ac26_sequencial", null,
-                                "ac26_acordo = {$iContrato}");
+                            $sSqlAcordoPosicao = $oDaoAcordoPosicao->sql_query_file(
+                                null,
+                                "ac26_sequencial",
+                                null,
+                                "ac26_acordo = {$iContrato}"
+                            );
                             $rsAcordoPosicao = $oDaoAcordoPosicao->sql_record($sSqlAcordoPosicao);
                             if ($oDaoAcordoPosicao->numrows > 0) {
                                 for ($iAcordoPosicao = 0; $iAcordoPosicao < $oDaoAcordoPosicao->numrows; $iAcordoPosicao++) {
                                     $oValorAcordoPosicao = db_utils::fieldsMemory($rsAcordoPosicao, $iAcordoPosicao);
-                                    $oDaoAcordoItem->excluir(null,
-                                        "ac20_acordoposicao = {$oValorAcordoPosicao->ac26_sequencial}");
+                                    $oDaoAcordoItem->excluir(
+                                        null,
+                                        "ac20_acordoposicao = {$oValorAcordoPosicao->ac26_sequencial}"
+                                    );
                                     if ($oDaoAcordoItem->erro_status == 0) {
                                         $oErro->erro_msg = $oDaoAcordoItem->erro_msg;
                                         throw new Exception(_M($sCaminhoMensagens . "acordo_item_excluir", $oErro));
                                     }
 
-                                    $oDaoAcordoVigencia->excluir(null,
-                                        "ac18_acordoposicao = {$oValorAcordoPosicao->ac26_sequencial}");
+                                    $oDaoAcordoVigencia->excluir(
+                                        null,
+                                        "ac18_acordoposicao = {$oValorAcordoPosicao->ac26_sequencial}"
+                                    );
                                     if ($oDaoAcordoVigencia->erro_status == 0) {
                                         $oErro->erro_msg = $oDaoAcordoVigencia->erro_msg;
                                         throw new Exception(_M($sCaminhoMensagens . "acordo_vigencia_excluir", $oErro));
                                     }
 
-                                    $oDaoAcordoPosicaoPeriodo->excluir(null,
-                                        "ac36_acordoposicao = {$oValorAcordoPosicao->ac26_sequencial}");
+                                    $oDaoAcordoPosicaoPeriodo->excluir(
+                                        null,
+                                        "ac36_acordoposicao = {$oValorAcordoPosicao->ac26_sequencial}"
+                                    );
                                     if ($oDaoAcordoPosicaoPeriodo->erro_status == 0) {
                                         $oErro->erro_msg = $oDaoAcordoPosicaoPeriodo->erro_msg;
-                                        throw new Exception(_M($sCaminhoMensagens . "acordo_posicao_periodo_excluir",
-                                            $oErro));
+                                        throw new Exception(_M(
+                                            $sCaminhoMensagens . "acordo_posicao_periodo_excluir",
+                                            $oErro
+                                        ));
                                     }
 
                                     $oDaoAcordoPosicao->excluir($oValorAcordoPosicao->ac26_sequencial);
@@ -706,8 +868,7 @@ switch ($oParam->exec) {
 
         break;
 
-    case "getDadosAcordo" :
-
+    case "getDadosAcordo":
         try {
             unset($_SESSION["oContrato"]);
             $oContrato = new Acordo($oParam->iContrato);
@@ -743,9 +904,23 @@ switch ($oParam->exec) {
             $oDadosContrato->nValorContrato = $oContrato->getValorContrato();
             $oDadosContrato->iTipoInstrumento = $oContrato->getTipoInstrumento();
             $oDadosContrato->lDependeOrdemInicio = $oContrato->getDependeOrdemInicio() === true ? 't' : 'f';
+            foreach ($oContrato->getComissao()->getMembros() as $numcgm => $membro) {
+                $oDadosContrato->iFiscalCGM = $membro->getCodigoCgm();
+            }
 
+            if ($oDadosContrato->iFiscalCGM !== null) {
+                $fiscalcgm = CgmFactory::getInstanceByCgm($oDadosContrato->iFiscalCGM);
+                $oDadosContrato->iFiscalNome    = $fiscalcgm->getNome();
+                $oDadosContrato->iFiscalCPF     = $fiscalcgm->getCpf();
+            }
             /* Modification PADRS - obtem dados do vinculo do acordo */
-
+            $licitacaoCompartilhada = $oContrato->getLicitacaoCompartilhada($oContrato->getCodigoAcordo());
+            $oDadosContrato->licitacaoCompartilhada = $licitacaoCompartilhada[0]->ac63_licitacaocompartilhada;
+            $oDadosContrato->codigoCgm = $licitacaoCompartilhada[0]->ac63_numcgm;
+            $oDadosContrato->descricaoCgm = $licitacaoCompartilhada[0]->z01_nome;
+            $oDadosContrato->modalidade = $licitacaoCompartilhada[0]->ac63_modalidade;
+            $oDadosContrato->numeroLicitacao = $licitacaoCompartilhada[0]->ac63_numero;
+            $oDadosContrato->anoLicitacao = $licitacaoCompartilhada[0]->ac63_ano;
             $oRetorno->contrato = $oDadosContrato;
         } catch (Exception $eErro) {
             $oRetorno->status = 2;
@@ -753,14 +928,12 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "getElementosMateriais" :
-
+    case "getElementosMateriais":
         $oMaterial = new MaterialCompras($oParam->iMaterial);
         $oRetorno->itens = $oMaterial->getElementos();
         break;
 
-    case "adicionarItem" :
-
+    case "adicionarItem":
         try {
             db_inicio_transacao();
             $oItemContrato = new AcordoItem();
@@ -793,8 +966,7 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "getItensAcordo" :
-
+    case "getItensAcordo":
         try {
             if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
                 $oContrato = $_SESSION["oContrato"];
@@ -832,8 +1004,10 @@ switch ($oParam->exec) {
                     $aPeriodosFormatados = array();
                     foreach ($aPeriodosDoItem as $oPeriodo) {
                         $oStdPeriodo = new stdClass();
-                        $oStdPeriodo->dtDataInicial = implode("/",
-                            array_reverse(explode("-", $oPeriodo->dtDataInicial)));
+                        $oStdPeriodo->dtDataInicial = implode(
+                            "/",
+                            array_reverse(explode("-", $oPeriodo->dtDataInicial))
+                        );
                         $oStdPeriodo->dtDataFinal = implode("/", array_reverse(explode("-", $oPeriodo->dtDataFinal)));
                         $aPeriodosFormatados[] = $oStdPeriodo;
                     }
@@ -864,8 +1038,7 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "alterarItem" :
-
+    case "alterarItem":
         try {
             if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
                 $oContrato = $_SESSION["oContrato"];
@@ -917,8 +1090,7 @@ switch ($oParam->exec) {
 
         break;
 
-    case "getDotacoesItens" :
-
+    case "getDotacoesItens":
         $oRetorno->iElementoDotacao = '';
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
@@ -940,8 +1112,7 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "saveDotacaoItens" :
-
+    case "saveDotacaoItens":
         $oRetorno->iElementoDotacao = '';
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
@@ -981,7 +1152,6 @@ switch ($oParam->exec) {
         break;
 
     case "excluirDotacaoItens":
-
         $oRetorno->iElementoDotacao = '';
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
@@ -1015,8 +1185,7 @@ switch ($oParam->exec) {
             $oRetorno->dotacoes = $oItem->getDotacoes();
         }
 
-    case "getItensOrigem" :
-
+    case "getItensOrigem":
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
 
@@ -1049,7 +1218,6 @@ switch ($oParam->exec) {
                 $tipoTribunalCompra = pg_fetch_result($rs, 0, 'l44_sequencial');
 
                 if ($rs && pg_num_rows($rs) > 0 && $tipoTribunalCompra != 54) {
-
                     //Verifica se ha itens vinculados ao fornecedor onde ainda não existem contrato.
 
                     $sFiltro = " l21_codigo not in (select ac24_liclicitem ";
@@ -1081,8 +1249,11 @@ switch ($oParam->exec) {
                     $oContrato->getCodigo()
                 );
             } else {
-                $aItens = ProcessoCompras::getItensPorFornecedor($_SESSION["dadosSelecaoAcordo"],
-                    $oContratado->getCodigo(), true);
+                $aItens = ProcessoCompras::getItensPorFornecedor(
+                    $_SESSION["dadosSelecaoAcordo"],
+                    $oContratado->getCodigo(),
+                    true
+                );
             }
             $oRetorno->itens = $aItens;
 
@@ -1092,7 +1263,6 @@ switch ($oParam->exec) {
 
     // Busca todas as Licitacoes e itens por fornecedor, para importacao no acordo manual
     case "getLicitacaoItensPorFornecedor":
-
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
 
@@ -1108,8 +1278,11 @@ switch ($oParam->exec) {
                 $aLicitacao = licitacao::getLicitacoesByFornecedor($oContrato->getContratado()->getCodigo());
                 if (!empty($aLicitacao)) {
                     foreach ($aLicitacao as $oLicitacao) {
-                        $aItens = licitacao::getItensPorFornecedor(array($oLicitacao->licitacao),
-                            $oContrato->getContratado()->getCodigo(), true);
+                        $aItens = licitacao::getItensPorFornecedor(
+                            array($oLicitacao->licitacao),
+                            $oContrato->getContratado()->getCodigo(),
+                            true
+                        );
                         if (!empty($aItens)) {
                             $oLicitacao->itens = $aItens;
                             $oRetorno->licitacoes[] = $oLicitacao;
@@ -1120,8 +1293,7 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "adicionarItensOrigem" :
-
+    case "adicionarItensOrigem":
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
             $oPosicao = $oContrato->getUltimaPosicao();
@@ -1150,8 +1322,10 @@ switch ($oParam->exec) {
 
                         if ($iExecucaoFinal > $iVigenciaFinal) {
                             $oErro->codigomaterial = $oItem->codigomaterial;
-                            throw new Exception(_M($sCaminhoMensagens . "periodo_execucao_final_maior_vigencia",
-                                $oErro));
+                            throw new Exception(_M(
+                                $sCaminhoMensagens . "periodo_execucao_final_maior_vigencia",
+                                $oErro
+                            ));
                         }
 
                         if ($oContrato->getOrigem() == 2) {
@@ -1174,7 +1348,7 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "adicionarLicitacaoItens" :
+    case "adicionarLicitacaoItens":
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
             $oPosicao = $oContrato->getUltimaPosicao();
@@ -1203,8 +1377,10 @@ switch ($oParam->exec) {
 
                         if ($iExecucaoFinal > $iVigenciaFinal) {
                             $oErro->codigomaterial = $oItem->codigomaterial;
-                            throw new Exception(_M($sCaminhoMensagens . "periodo_execucao_final_maior_vigencia",
-                                $oErro));
+                            throw new Exception(_M(
+                                $sCaminhoMensagens . "periodo_execucao_final_maior_vigencia",
+                                $oErro
+                            ));
                         }
 
                         $oPosicao->adicionarItemDeLicitacao($oItem->codigo, $oItem, false);
@@ -1222,7 +1398,6 @@ switch ($oParam->exec) {
         break;
 
     case "excluirFracionamento":
-
         if (isset($_SESSION["aItensOrigem"])) {
             foreach ($_SESSION["aItensOrigem"] as &$oItem) {
                 if ($oItem->codigo == $oParam->iItem) {
@@ -1242,7 +1417,6 @@ switch ($oParam->exec) {
         break;
 
     case "excluirItem":
-
         if (isset($_SESSION["oContrato"]) && $_SESSION["oContrato"] instanceof Acordo) {
             $oContrato = $_SESSION["oContrato"];
             $oPosicao = $oContrato->getUltimaPosicao();
@@ -1262,23 +1436,24 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "getSaldoDotacao" :
-
+    case "getSaldoDotacao":
         $oDotacao = new Dotacao($oParam->iDotacao, db_getsession("DB_anousu"));
         $oRetorno->saldofinal = $oDotacao->getSaldoFinal();
         break;
 
-    case "getAcordoProgramacaFinanceira" :
-
+    case "getAcordoProgramacaFinanceira":
         if (!empty($oParam->acordo)) {
             $oAcordo = new Acordo($oParam->acordo);
             $oRetorno->valortotal = $oAcordo->getValoresItens();
 
             $oAcordoProgramacaoFinanceira = new cl_acordoprogramacaofinanceira();
             $sWhere = "ac34_acordo = {$oParam->acordo}";
-            $sSqlAcordoProgramacaoFinanceira = $oAcordoProgramacaoFinanceira->sql_query(null,
+            $sSqlAcordoProgramacaoFinanceira = $oAcordoProgramacaoFinanceira->sql_query(
+                null,
                 "acordoprogramacaofinanceira.*",
-                null, $sWhere);
+                null,
+                $sWhere
+            );
             $rsAcordoProgramacaoFinanceira = $oAcordoProgramacaoFinanceira->sql_record($sSqlAcordoProgramacaoFinanceira);
             if ($oAcordoProgramacaoFinanceira->numrows > 0) {
                 $oProgramacaoFinanceira = db_utils::fieldsMemory($rsAcordoProgramacaoFinanceira, 0);
@@ -1289,16 +1464,18 @@ switch ($oParam->exec) {
         }
         break;
 
-    case "incluirAcordoProgramacaFinanceira" :
-
+    case "incluirAcordoProgramacaFinanceira":
         try {
             db_inicio_transacao();
 
             $oAcordoProgramacaoFinanceira = new cl_acordoprogramacaofinanceira();
             $sWhere = "ac34_acordo = {$oParam->acordo} and ac34_programacaofinanceira = {$oParam->codigo}";
-            $sSqlAcordoProgramacaoFinanceira = $oAcordoProgramacaoFinanceira->sql_query(null,
+            $sSqlAcordoProgramacaoFinanceira = $oAcordoProgramacaoFinanceira->sql_query(
+                null,
                 "acordoprogramacaofinanceira.*",
-                null, $sWhere);
+                null,
+                $sWhere
+            );
             $rsAcordoProgramacaoFinanceira = $oAcordoProgramacaoFinanceira->sql_record($sSqlAcordoProgramacaoFinanceira);
             if ($oAcordoProgramacaoFinanceira->numrows == 0) {
                 $oAcordoProgramacaoFinanceira->ac34_programacaofinanceira = $oParam->codigo;
@@ -1314,13 +1491,14 @@ switch ($oParam->exec) {
         }
         break;
     case "adicionarDocumento":
-
         $oAcordo = new Acordo($oParam->acordo);
 
         try {
             db_inicio_transacao();
-            $oAcordo->adicionarDocumento(addslashes(db_stdClass::normalizeStringJson($oParam->descricao)),
-                $oParam->arquivo);
+            $oAcordo->adicionarDocumento(
+                addslashes(db_stdClass::normalizeStringJson($oParam->descricao)),
+                $oParam->arquivo
+            );
             db_fim_transacao(false);
         } catch (Exception $oErro) {
             db_fim_transacao(true);
@@ -1330,8 +1508,6 @@ switch ($oParam->exec) {
         break;
 
     case "getDocumento":
-
-
         if (isset($oParam->acordo)) {
             $iCodigoAcordo = $oParam->acordo;
         } else {
@@ -1359,7 +1535,6 @@ switch ($oParam->exec) {
         $oRetorno->detalhe = "documentos";
         break;
     case "excluirDocumento":
-
         $oAcordo = new Acordo($oParam->acordo);
         try {
             $oAcordo->removeDocumento($oParam->codigoDocumento);
@@ -1370,7 +1545,6 @@ switch ($oParam->exec) {
 
         break;
     case "downloadDocumento":
-
         $oDocumento = new AcordoDocumento($oParam->iCodigoDocumento);
         db_inicio_transacao();
 
@@ -1383,7 +1557,6 @@ switch ($oParam->exec) {
         break;
 
     case "buscaPeriodosItem":
-
         $oAcordoItem = new AcordoItem($oParam->iCodigoItem);
 
         $oRetorno->iCodigoItem = $oParam->iCodigoItem;
@@ -1396,13 +1569,15 @@ switch ($oParam->exec) {
      * Exclui um acordo
      */
     case 'excluirAcordo':
-
         try {
             if (!isset($oParam->iAcordo) || empty($oParam->iAcordo)) {
                 throw new ParameterException(_M($sCaminhoMensagens . 'acordo_nao_informado'));
             }
 
             db_inicio_transacao();
+
+            $licCompartilhada = new \App\Domain\Patrimonial\Contratos\Services\AcordoLicitacaoCompartilhadaService();
+            $licCompartilhada->remover($oParam->iAcordo);
 
             $oAcordo = new Acordo($oParam->iAcordo);
             $oAcordo->remover();
@@ -1419,7 +1594,6 @@ switch ($oParam->exec) {
         break;
 
     case 'download':
-
         $membro = new AcordoComissaoMembro($get->codigo);
         $nomeArquivo = $membro->getNomeArquivo();
         $caminho = 'tmp/' . $nomeArquivo;

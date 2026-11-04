@@ -15,7 +15,6 @@ use ECidade\Financeiro\Contabilidade\ExercicioContabil\Abertura;
 
 class Encerramento extends ExercicioContabil
 {
-
     /**
      * Encerramento das restos a pagar
      */
@@ -38,7 +37,6 @@ class Encerramento extends ExercicioContabil
 
     const ENCERRAMENTO_TRANSFERENCIA_SALDO = 4;
 
-
     protected $sTipoEncerramento;
 
     /**
@@ -52,7 +50,6 @@ class Encerramento extends ExercicioContabil
      * @var array
      */
     private $documentosParaCancelar = array();
-
 
     /**
      * @return mixed
@@ -70,15 +67,11 @@ class Encerramento extends ExercicioContabil
         $this->sTipoEncerramento = $sTipoEncerramento;
     }
 
-
-
-
     /**
      * Encerramento constructor.
      */
     public function __construct($ano, \DBDate $data, \Instituicao $instituicao)
     {
-
         $dataArquivo = str_replace('/', '-', $data);
         $this->nomeLog = "encerramento_{$dataArquivo}_{$instituicao->getCodigo()}.log";
         parent::__construct($ano, $data, $instituicao);
@@ -154,11 +147,12 @@ class Encerramento extends ExercicioContabil
      */
     private function getLancamentoAuxiliar($documento, $dados)
     {
-
         $lancamentoAuxiliar = new \LancamentoAuxiliarEncerramentoExercicio();
         $mensagem = "Lançamento automático de encerramento de exercício.";
+        $lancamentoAuxiliar->setCodigoDocumento($documento);
         $lancamentoAuxiliar->setObservacaoHistorico($mensagem);
         $lancamentoAuxiliar->setValorTotal(abs($dados->valor));
+        $lancamentoAuxiliar->setCodigoRecurso($dados->codigo_recurso);
 
         switch ($documento) {
             case Documento::ENCERRAMENTO_TRANSFERENCIA_SALDOS_RPNP_EX_ANT:
@@ -239,7 +233,6 @@ class Encerramento extends ExercicioContabil
             case Documento::ENCERRAMENTO_CONTRATOS_CONVENIOS_EXECUTADOS:
                 $lancamentoAuxiliar->setContaCredito($dados->conta_credito);
                 $lancamentoAuxiliar->setContaDebito($dados->conta_debito);
-                $lancamentoAuxiliar->setCodigoRecurso($dados->codigo_recurso);
                 break;
         }
         return $lancamentoAuxiliar;
@@ -265,7 +258,6 @@ class Encerramento extends ExercicioContabil
             }
             $this->encerrarDocumento($documento, $tipoEncerramento);
         }
-        $this->implantarSaldos();
     }
 
     /**
@@ -313,6 +305,7 @@ class Encerramento extends ExercicioContabil
     {
         $sql = $this->getConsultaLancamentosDoDocumento($documento);
         $rsLancamentos = db_query($sql);
+
         if (!$rsLancamentos) {
             $mensgem = "Não foi possível executar regra para definição dos lançamentos do documento {$documento}";
             throw new \Exception($mensgem);
@@ -326,7 +319,6 @@ class Encerramento extends ExercicioContabil
             $eventoContabil,
             $tipoEncerramento
         ) {
-
             $instancia->mensagensLog = array();
             $lancamentoAuxiliar = $instancia->getLancamentoAuxiliar($documento, $dados);
             if (empty($lancamentoAuxiliar)) {
@@ -425,7 +417,6 @@ class Encerramento extends ExercicioContabil
      */
     protected function cancelarDocumento($documento)
     {
-
         /**
          * Deletemos todos os encerramentos do tipo
          */
@@ -478,56 +469,6 @@ class Encerramento extends ExercicioContabil
             $mensagem .= "$documento\n{$oDaoConEncerramento->erro_msg}";
 
             throw new \Exception($mensagem);
-        }
-    }
-
-    /**
-     * Realiza a implantação de saldos para a rotina de encerramento de exercício.
-     * @throws \DBException
-     */
-    private function implantarSaldos()
-    {
-
-        $iExercicioNovo = $this->ano + 1;
-        $sDataInicio = "{$this->ano}-01-01";
-        $sDataFim = "{$this->ano}-12-31";
-        $oDaoConplanoExe = new \cl_conplanoexe();
-        $sSqlImplantacaoSaldos = $oDaoConplanoExe->sql_query_implantacao_saldos(
-            $sDataInicio,
-            $sDataFim,
-            $this->instituicao->getCodigo(),
-            $this->ano
-        );
-
-        $rsImplatacaoSaldo = $oDaoConplanoExe->sql_record($sSqlImplantacaoSaldos);
-        $iNumrows = $oDaoConplanoExe->numrows;
-
-        if ($rsImplatacaoSaldo == false || $iNumrows == 0) {
-            throw new \DBException("Nenhuma conta encontrada para Implantaçao de Saldos.");
-        }
-
-        for ($iConta = 0; $iConta < $iNumrows; $iConta++) {
-            $oConta = \db_utils::fieldsMemory($rsImplatacaoSaldo, $iConta);
-            $oDaoConplanoExe->c62_anousu = $iExercicioNovo;
-            $oDaoConplanoExe->c62_reduz = $oConta->c61_reduz;
-            $oDaoConplanoExe->c62_codrec = $oConta->c61_codigo;
-
-            $oDaoConplanoExe->c62_vlrcre = "0";
-            $oDaoConplanoExe->c62_vlrdeb = "0";
-
-            if ($oConta->c60_saldocontinuo === 't') {
-                if ($oConta->sinal_final == 'C') {
-                    $oDaoConplanoExe->c62_vlrcre = $oConta->saldo_final;
-                }
-
-                if ($oConta->sinal_final == 'D') {
-                    $oDaoConplanoExe->c62_vlrdeb = $oConta->saldo_final;
-                }
-            }
-            $oDaoConplanoExe->alterar($iExercicioNovo, $oConta->c61_reduz);
-            if ($oDaoConplanoExe->erro_status == "0") {
-                throw new \DBException($oDaoConplanoExe->erro_msg);
-            }
         }
     }
 }

@@ -178,7 +178,22 @@ if (isset($atualiza) || isset($adata)) {
 
     $sJs .= "</script>";
 
-    echo $sJs;
+    ?>
+<script>
+parent.parent.Desktop.Session.updateGlobal({
+  DB_datausu : '<?php echo db_getsession("DB_datausu"); ?>',
+  DB_anousu : '<?php echo db_getsession("DB_anousu"); ?>',
+}, function(error, data) {
+
+  if (error) {
+    return alert(error);
+  }
+
+  CurrentWindow.bstatus.location.href = CurrentWindow.bstatus.location.href;
+
+});
+</script>
+<?php  
 }
 
 if ($erro == true) {

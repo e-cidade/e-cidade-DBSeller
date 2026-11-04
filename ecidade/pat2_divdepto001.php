@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $aux = new cl_arquivo_auxiliar;
           Listar departamentos:
         </td>
         <td>
-          <?
+          <?php
             $x = array("T"=>"TODOS","true"=>"ATIVOS","false"=>"INATIVOS");
             db_select("listar_depart",$x,true,4);
           ?>
@@ -77,7 +77,7 @@ $aux = new cl_arquivo_auxiliar;
           Listar divisoes:
         </td>
         <td>
-          <?
+          <?php
             $x = array("T"=>"TODAS","true"=>"ATIVAS","false"=>"INATIVAS");
             db_select("listar_divisao",$x,true,4);
           ?>
@@ -85,7 +85,7 @@ $aux = new cl_arquivo_auxiliar;
       </tr>
       <tr>
         <td colspan="2">
-          <?
+          <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux->cabecalho = "<strong>Departamentos</strong>";
             $aux->codigo = "coddepto"; //chave de retorno da func
@@ -111,7 +111,7 @@ $aux = new cl_arquivo_auxiliar;
   </fieldset>
   <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_mandadados();" >
 </form>
-    <?
+    <?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

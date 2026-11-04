@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ if (isset($oGet->relpermempenho) && $oGet->relpermempenho = 't') {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form1" method="post" action="" target="">
-<?
+<?php
   db_input('listafiltros','',3,'','hidden');
   db_input('listainstit','',3,'','hidden');
   db_input('listausuarios','',3,'','hidden');
@@ -92,7 +92,7 @@ if (isset($oGet->relpermempenho) && $oGet->relpermempenho = 't') {
 			                <tr>
 			                  <td>
 			                    <fieldset>
-			                      <?
+			                      <?php
 			                        db_selinstit('',300,100);
 			                      ?>      
 			                    </fieldset>                 
@@ -106,7 +106,7 @@ if (isset($oGet->relpermempenho) && $oGet->relpermempenho = 't') {
 			              <table border="0">
 			                <tr>
 			                  <td>
-			                    <?
+			                    <?php
 			                    
 			                      $clauxiliarusuario = new cl_arquivo_auxiliar;
 			                      $clauxiliarusuario->nome_botao              = "db_lanca_usuarios";
@@ -135,7 +135,7 @@ if (isset($oGet->relpermempenho) && $oGet->relpermempenho = 't') {
 			              <table border="0">
 			                <tr>
 			                  <td>
-			                    <?		                    
+			                    <?php 	                    
 			                    
 			                      $clauxiliardbpto = new cl_arquivo_auxiliar;
 			                      $clauxiliardbpto->nome_botao              = "db_lanca_dptos";
@@ -164,7 +164,7 @@ if (isset($oGet->relpermempenho) && $oGet->relpermempenho = 't') {
 			          <tr>
 			            <td nowrap>
 			              <b>Exercício:&nbsp;</b>
-			              <?
+			              <?php
 			                $sSqlAnoExercicio  = " select distinct db20_anousu     "; 
 			                $sSqlAnoExercicio .= " from db_permemp                 ";
 			                $sSqlAnoExercicio .= " order by db20_anousu desc       "; 

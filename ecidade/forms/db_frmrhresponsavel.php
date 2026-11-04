@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ if ($db_opcao == 1) {
 	       <?=@$Lrh107_sequencial;?>
 	    </td>
 	    <td colspan="3"> 
-	      <?
+	      <?php
 	        db_input('rh107_sequencial', 10, $Irh107_sequencial, true, 'text', 3);
 	      ?>
 	    </td>
@@ -58,24 +58,24 @@ if ($db_opcao == 1) {
 	       <?=@$Lrh107_nome?>
 	    </td>
 	    <td colspan="3"> 
-	      <?
+	      <?php
 	        db_input('rh107_nome', 40, $Irh107_nome, true, 'text', $db_opcao);
 	      ?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td title="<?=@$Trh107_numcgm?>">
-	       <?
+	       <?php
 	         db_ancora(@$Lrh107_numcgm, "js_pesquisarh107_numcgm(true);", $db_opcao);
 	       ?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	        db_input('rh107_numcgm', 10, $Irh107_numcgm, true, 'text', $db_opcao, "onchange='js_pesquisarh107_numcgm(false);'");
 	      ?>
 	    </td>
 	    <td colspan="2">
-	      <?
+	      <?php
 	        db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3);
 	      ?>
 	    </td>
@@ -163,7 +163,7 @@ function js_pesquisa() {
 function js_preenchePesquisa(chave) {
 
   db_iframe_rhresponsavel.hide();
-  <?
+  <?php
     if ($db_opcao != 1) {
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

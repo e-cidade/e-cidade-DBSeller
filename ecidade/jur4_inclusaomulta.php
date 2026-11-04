@@ -47,7 +47,7 @@ $db_opcao = 1;
         <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <meta http-equiv="Expires" CONTENT="0">
-        <?
+        <?php
         db_app::load("scripts.js, strings.js, numbers.js, prototype.js, AjaxRequest.js, datagrid.widget.js");
         db_app::load("widgets/Collection.widget.js, widgets/DatagridCollection.widget.js, widgets/DBLookUp.widget.js" );
         ?>

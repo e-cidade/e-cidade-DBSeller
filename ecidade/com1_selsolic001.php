@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -62,9 +62,9 @@ if($op == "alterar"){
       <td ></td>
     </tr>
     <tr>
-      <td  align="left" nowrap title="<?=$Tpc10_numero?>"> <? db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?></td>
+      <td  align="left" nowrap title="<?=$Tpc10_numero?>"> <?php db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?></td>
       <td align="left" nowrap>
-    <?
+    <?php
     db_input('pc10_numero',8,$Ipc10_numero,true,"text",3);
     $pc10_depto = db_getsession("DB_coddepto");
     db_input('pc10_depto',8,0,true,"hidden",3,"");
@@ -116,7 +116,7 @@ function js_mostrapcorcamitem1(chave1,chave2){
   db_iframe_solicita.hide();
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_orcam.location.href = 'com1_selsolic001.php?numerodesolicita='+chave1+'&op=<?=$op?>';
 }
-<?
+<?php
 if($clickaut == true){
   echo "js_pesquisapc10_numero(false);";
 }else if(!isset($numerodesolicita)){
@@ -124,7 +124,7 @@ if($clickaut == true){
 }
 ?>
 document.form1.retorno.value = document.form1.pc22_codorc.value;
-<?
+<?php
 if(isset($numerodesolicita) && trim($numerodesolicita)!=""){
   $result_orcam = $clpcsugforn->sql_record($clpcsugforn->sql_query_file($numerodesolicita));
   if($clpcsugforn->numrows>0){

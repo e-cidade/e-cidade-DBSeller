@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@
           <tr> 
             <td  align="center" > 
 			<select name="usuarios[]" id="select" size="10" multiple   onChange="document.form1.submit()">
-                <?
+                <?php
 	$sql = "
 		select id_usuario, nome
 		from db_usuarios
@@ -66,7 +66,7 @@
                 <option value="<?=@pg_result($result,$i,"id_usuario")?>" <?=$db_select?> >&nbsp; 
                 <?=@pg_result($result,$i,"nome")?>
                 &nbsp;</option>
-                <?
+                <?php
 	}
     ?>
               </select> </td>
@@ -86,7 +86,7 @@
           </tr>
           <tr> 
             <td  align="center" > <select name="depto[]" id="select" size="10" multiple onClick="document.form1.submit()">
-                <?
+                <?php
 	$sql = "
 		select coddepto, descrdepto
 		from db_depart
@@ -95,7 +95,7 @@
 	$numrows = pg_numrows($result);
 	for ($i=0;$i<$numrows;$i++) {
 ?>
-                <option value="<?=@pg_result($result,$i,"coddepto")?>" <?
+                <option value="<?=@pg_result($result,$i,"coddepto")?>" <?php
 	if (isset($depto) && sizeof($depto)!=0){
 		if (in_array(pg_result($result,$i,"coddepto"),$depto)==1){
 			echo " selected ";
@@ -108,7 +108,7 @@
 ?>>&nbsp; 
                 <?=@pg_result($result,$i,"descrdepto")?>
                 &nbsp;</option>
-                <?
+                <?php
 	}
 ?>
               </select> </td>
@@ -128,7 +128,7 @@
           </tr>
           <tr> 
             <td  align="center" > <select name="impressoras[]" id="select" size="10" multiple onClick="document.form1.submit()">
-                <?
+                <?php
 	$sql = "
 		select d50_codigo, d50_descr
 		from impres
@@ -147,7 +147,7 @@
 	for ($i=0;$i<$numrows;$i++) {
 ?>
                 <option value="<?=@pg_result($result,$i,"d50_codigo")?>"
-<?
+<?php
 	$escreveuSelected = false;
 	if (isset($usuarios) && sizeof($usuarios)==1){
 		for ($a=0;$a<$num;$a++) {
@@ -172,7 +172,7 @@
 >&nbsp; 
                 <?=@pg_result($result,$i,"d50_descr")?>
                 &nbsp;</option>
-                <?
+                <?php
 	}
 ?>
               </select> </td>

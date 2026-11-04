@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -47,7 +47,7 @@ p {
 <body>
   <table>
   <tr>
-  <?
+  <?php
   if( $divulgacao_codigo == 'instit'){
   	
     $numrows = 0; 
@@ -91,15 +91,15 @@ p {
     <tr>
     <td colspan=2 align='justify' style='font-size:12px;color:blue' >
     <hr>
-    <?
+    <?php
     echo $descricao;
     ?>
-  <?
+  <?php
   }else{
   	?>
     <td colspan=2 align='right' > 
     <input type="button" name="fechar" value="Fechar" style="border:none;" onclick="parent.JANS['divulgacao_dbseller'].hide()">
-  	<?
+  	<?php
   }
   ?>
   </td>
@@ -113,7 +113,7 @@ p {
   </tr>
   <tr>
   <td colspan=2 align='justify' style='font-size:12px;color:black'>
-  <?
+  <?php
  
  
   echo $descricao_item;

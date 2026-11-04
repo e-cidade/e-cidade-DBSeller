@@ -429,6 +429,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     }
 
     const cboAtividades = document.querySelectorAll('input[name=atividades]');
+
     const limparCheckboxs = () => {
         [...cboAtividades].map(check => check.checked = false);
     }
@@ -728,6 +729,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 return;
             }
             limparCheckboxs();
+
             response.atividades.map((atividade) => {
                 cboAtividades.forEach((checkbox) => {
                     if (checkbox.value == atividade.db69_atividadesexecucao) {

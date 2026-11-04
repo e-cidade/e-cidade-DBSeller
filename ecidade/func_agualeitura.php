@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,14 +59,14 @@ $clrotulo->label("z01_numcgm");
 	    <b><?=@$RLx21_exerc?>&nbsp;/&nbsp;<?=@$RLx21_mes?>:</b>
 	  </td>
 	  <td nowrap>
-	    <?
+	    <?php
 	    if(!isset($chave_x21_exerc) || (isset($chave_x21_exerc) && trim($chave_x21_exerc) == "")){
 	      $chave_x21_exerc = db_getsession("DB_anousu");
 	    }
 	    db_input('x21_exerc',4,$Ix21_exerc,true,'text',1,"","chave_x21_exerc");
 	    ?>
 	    <b>&nbsp;/&nbsp;</b>
-	    <?
+	    <?php
 	    if(!isset($chave_x21_mes) || (isset($chave_x21_mes) && trim($chave_x21_mes) == "")){
 	      $chave_x21_mes = date("m",db_getsession("DB_datausu"));
 	    }
@@ -79,7 +79,7 @@ $clrotulo->label("z01_numcgm");
             <?=$Lx21_codhidrometro?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php
 	    db_input("x21_codhidrometro",8,$Ix21_codhidrometro,true,"text",4,"","chave_x21_codhidrometro");
 	    ?>
           </td>
@@ -87,7 +87,7 @@ $clrotulo->label("z01_numcgm");
             <?=$Lx04_nrohidro?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php
 	    db_input("x04_nrohidro",8,$Ix04_nrohidro,true,"text",4,"","chave_x04_nrohidro");
 	    ?>
           </td>
@@ -97,7 +97,7 @@ $clrotulo->label("z01_numcgm");
             <?=$Lx01_matric?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php
 	    db_input("x01_matric",8,$Ix01_matric,true,"text",4,"","chave_x01_matric");
 	    ?>
           </td>
@@ -105,7 +105,7 @@ $clrotulo->label("z01_numcgm");
             <?=$Lz01_numcgm?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php
 	    db_input("z01_numcgm",8,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm");
 	    ?>
           </td>
@@ -115,7 +115,7 @@ $clrotulo->label("z01_numcgm");
             <?=$Lz01_nome?>
           </td>
           <td width="96%" align="left" nowrap colspan="3">
-            <?
+            <?php
 	    db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 	    ?>
           </td>
@@ -133,7 +133,7 @@ $clrotulo->label("z01_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
           if(file_exists("funcoes/db_func_agualeitura.php")==true){
@@ -180,12 +180,12 @@ $clrotulo->label("z01_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

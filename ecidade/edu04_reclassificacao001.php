@@ -38,10 +38,10 @@ $dataClassificacao_ano = $oDataSistema->getAno();
         <table class='form-container'>
           <tr>
             <td nowrap='nowrap' class='bold'>
-              <?db_ancora($Led60_i_aluno, "js_pesquisaAluno(true);", 1);?>
+              <?php db_ancora($Led60_i_aluno, "js_pesquisaAluno(true);", 1);?>
             </td>
             <td nowrap='nowrap'>
-              <?db_input('ed60_i_aluno',  10, $Ied60_i_aluno, true, 'text', 1," onchange='js_pesquisaAluno(false);'");
+              <?php db_input('ed60_i_aluno',  10, $Ied60_i_aluno, true, 'text', 1," onchange='js_pesquisaAluno(false);'");
                 db_input('ed60_i_codigo', 10, '', true, 'hidden', 3, '');
                 db_input('ed47_v_nome',   50, $Ied47_v_nome, true, 'text', 3, '');?>
             </td>
@@ -49,22 +49,22 @@ $dataClassificacao_ano = $oDataSistema->getAno();
           <tr>
             <td nowrap='nowrap' class='bold'>Turma de Origem:</td>
             <td nowrap='nowrap'>
-              <?db_input('turmaOrigem', 45, '', true, 'text', 3);
+              <?php db_input('turmaOrigem', 45, '', true, 'text', 3);
                 db_input('etapaOrigem', 15, '', true, 'text', 3);?>
             </td>
           </tr>
           <tr>
             <td nowrap='nowrap' class='bold'>Data de Matrícula:</td>
             <td nowrap='nowrap'>
-              <?db_input('dataMatricula', 10, '', true, 'text', 3)?>
+              <?php db_input('dataMatricula', 10, '', true, 'text', 3)?>
             </td>
           </tr>
           <tr id='linhaTurnoTurma'>
             <td nowrap='nowrap' class='bold'>
-            <?db_ancora('Turma de Destino:', "js_pesquisaTurmaDestino(true);", 1);?>
+            <?php db_ancora('Turma de Destino:', "js_pesquisaTurmaDestino(true);", 1);?>
             </td>
             <td nowrap='nowrap'>
-              <?db_input('sTurmaDestino', 45, '', true, 'text', 3);
+              <?php db_input('sTurmaDestino', 45, '', true, 'text', 3);
                 db_input('sEtapaDestino', 15, '', true, 'text', 3);
                 db_input('iTurmaDestino', 10, '', true, 'hidden', 3);
                 db_input('iEtapaDestino', 10, '', true, 'hidden', 3);?>
@@ -73,7 +73,7 @@ $dataClassificacao_ano = $oDataSistema->getAno();
           <tr>
             <td nowrap='nowrap' class='bold'>Data:</td>
             <td nowrap='nowrap'>
-              <?db_inputdata('dataClassificacao', $dataClassificacao_dia, $dataClassificacao_mes,
+              <?php db_inputdata('dataClassificacao', $dataClassificacao_dia, $dataClassificacao_mes,
                              $dataClassificacao_ano, true, 'text', 1, "")
               ?>
             </td>
@@ -107,7 +107,7 @@ $dataClassificacao_ano = $oDataSistema->getAno();
 
   </div>
 </body>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script type="text/javascript">
 
 // var oDiaAtual = new Date();

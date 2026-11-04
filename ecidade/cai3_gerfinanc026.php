@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,18 +26,18 @@
  */
 
 set_time_limit(0);
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-require(modification("libs/db_utils.php"));
-require(modification("dbforms/db_funcoes.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_sql.php"));
-include(modification("classes/db_iptubase_classe.php"));
-include(modification("classes/db_issbase_classe.php"));
-include(modification("classes/db_propri_classe.php"));
-include(modification("classes/db_promitente_classe.php"));
+require modification("libs/db_stdlib.php");
+require modification("libs/db_conecta.php");
+require modification("libs/db_utils.php");
+require modification("dbforms/db_funcoes.php");
+include modification("libs/db_sessoes.php");
+include modification("libs/db_sql.php");
+include modification("classes/db_iptubase_classe.php");
+include modification("classes/db_issbase_classe.php");
+include modification("classes/db_propri_classe.php");
+include modification("classes/db_promitente_classe.php");
 
-include(modification("classes/db_termoanu_classe.php"));
+include modification("classes/db_termoanu_classe.php");
 
 $cltermoanu = new cl_termoanu;
 
@@ -81,61 +81,87 @@ MM_reloadPage(true);
 
   if(isset($oGet->numcgm)) {
 
-    /**
-     * Alterado para quando arrenumcgm, buscar o cgm na virtual e naum na origem (arresusp)
-     * @var string
-     */
-   	$querystring 	 = "numcgm=$oGet->numcgm";
+ 	  $querystring 	  = "numcgm=$oGet->numcgm";
    	$sSqlInnerSusp = " inner join arrenumcgm on arrenumcgm.k00_numpre = arresusp.k00_numpre ";
-    $sSqlWhereSusp = " arrenumcgm.k00_numcgm = ".$oGet->numcgm;
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+      $sSqlInnerSusp .= " inner join arreauto on arrenumcgm.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+      $querystring .= "&y50_codauto=".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sSqlInnerSusp .= " inner join arrelanc on arrenumcgm.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+      $querystring .= "&nl01_codlanc=".$oGet->nl01_codlanc;
+    }
+    $sSqlWhereSusp = " arresusp.k00_numcgm = ".$oGet->numcgm;
+
   }else if(isset($oGet->matric)){
 
     $querystring   = "matric=$oGet->matric";
-	  $sSqlInnerSusp = " inner join arrematric on arrematric.k00_numpre = arresusp.k00_numpre";
-	  $sSqlWhereSusp = " arrematric.k00_matric = ".$oGet->matric;
+  	$sSqlInnerSusp = " inner join arrematric on arrematric.k00_numpre = arresusp.k00_numpre";
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+        $sSqlInnerSusp .= " inner join arreauto on arrematric.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+        $querystring .= "&y50_codauto=".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sSqlInnerSusp .= " inner join arrelanc on arrematric.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+      $querystring .= "&nl01_codlanc=".$oGet->nl01_codlanc;
+    }
+
+  	$sSqlWhereSusp = " k00_matric = ".$oGet->matric;
+
   }else if(isset($oGet->inscr)){
 
    	$querystring   = "inscr=$oGet->inscr";
-	  $sSqlInnerSusp = " inner join arreinscr  on arreinscr.k00_numpre  = arresusp.k00_numpre";
-	  $sSqlWhereSusp = " arreinscr.k00_inscr = ".$oGet->inscr;
+  	$sSqlInnerSusp = " inner join arreinscr  on arreinscr.k00_numpre  = arresusp.k00_numpre";
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+        $sSqlInnerSusp .= " inner join arreauto on arreinscr.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+        $querystring .= "&y50_codauto=".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sSqlInnerSusp .= " inner join arrelanc on arreinscr.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+      $querystring .= "&nl01_codlanc=".$oGet->nl01_codlanc;
+    }
+
+	 $sSqlWhereSusp = " k00_inscr = ".$oGet->inscr;
+
   } else {
 
     $querystring   = "numpre=$oGet->numpre";
     $sSqlInnerSusp = "";
     $sSqlWhereSusp = " arresusp.k00_numpre = ".$oGet->numpre;
+
   }
 
-  $sSqlSusp  = " select distinct 																			                                  ";
-  $sSqlSusp .= "	    ar18_sequencial,		    														                              ";
-  $sSqlSusp .= "	    ar18_procjur,		    															                                ";
-  $sSqlSusp .= "	    ar18_data,		    															 	                                ";
-  $sSqlSusp .= "	    ar18_hora,		    																                                ";
-  $sSqlSusp .= "	    v66_descr,		    																                                ";
-  $sSqlSusp .= "	    case 																				                                      ";
-  $sSqlSusp .= " 		  when ar18_situacao = 1 then 'Ativa' else 'Finalizada' 							              ";
-  $sSqlSusp .= "	    end as ar18_situacao,		    													                            ";
-  $sSqlSusp .= "	  	db_usuarios.login																	                                ";
-  $sSqlSusp .= "   from arresusp 																			                                  ";
-  $sSqlSusp .= "	    inner join suspensao   on suspensao.ar18_sequencial  = arresusp.k00_suspensao	    ";
-  $sSqlSusp .= "	    inner join procjur     on procjur.v62_sequencial     = suspensao.ar18_procjur	    ";
-  $sSqlSusp .= "	    inner join procjurtipo on procjurtipo.v66_sequencial = procjur.v62_procjurtipo	  ";
-  $sSqlSusp .= "	    inner join db_usuarios on db_usuarios.id_usuario     = suspensao.ar18_usuario     ";
-  $sSqlSusp .= "	    inner join arreinstit  on arreinstit.k00_numpre      = arresusp.k00_numpre		    ";
-  $sSqlSusp .= "	   					              and arreinstit.k00_instit      = ".db_getsession('DB_instit');
-  $sSqlSusp .= "		{$sSqlInnerSusp}																 	                                  ";
-  $sSqlSusp .= "  where {$sSqlWhereSusp}																 	                              ";
-  $sSqlSusp .= "  order by ar18_data desc,														 	 		                            ";
-  $sSqlSusp .= "  		   ar18_hora desc,														 	 		                              ";
-  $sSqlSusp .= "  		   ar18_sequencial desc													 	 		                            ";
+  $sSqlSusp  = " select distinct 																			 ";
+  $sSqlSusp .= "	    ar18_sequencial,		    														 ";
+  $sSqlSusp .= "	    ar18_procjur,		    															 ";
+  $sSqlSusp .= "	    ar18_data,		    															 	 ";
+  $sSqlSusp .= "	    ar18_hora,		    																 ";
+  $sSqlSusp .= "	    v66_descr,		    																 ";
+  $sSqlSusp .= "	    case 																				 ";
+  $sSqlSusp .= " 		  when ar18_situacao = 1 then 'Ativa' else 'Finalizada' 							 ";
+  $sSqlSusp .= "	    end as ar18_situacao,		    													 ";
+  $sSqlSusp .= "	  	db_usuarios.login																	 ";
+  $sSqlSusp .= "   from arresusp 																			 ";
+  $sSqlSusp .= "	    inner join suspensao   on suspensao.ar18_sequencial   = arresusp.k00_suspensao	     ";
+  $sSqlSusp .= "	    inner join procjur     on procjur.v62_sequencial      = suspensao.ar18_procjur	     ";
+  $sSqlSusp .= "	    inner join procjurtipo on procjurtipo.v66_sequencial  = procjur.v62_procjurtipo	     ";
+  $sSqlSusp .= "	    inner join db_usuarios on db_usuarios.id_usuario      = suspensao.ar18_usuario       ";
+  $sSqlSusp .= "	    inner join arreinstit  on arreinstit.k00_numpre       = arresusp.k00_numpre		     ";
+  $sSqlSusp .= "	   					      and arreinstit.k00_instit       = ".db_getsession('DB_instit');
+  $sSqlSusp .= "		{$sSqlInnerSusp}																 	 ";
+  $sSqlSusp .= "  where {$sSqlWhereSusp}																 	 ";
+  $sSqlSusp .= "  order by ar18_data desc,														 	 		 ";
+  $sSqlSusp .= "  		   ar18_hora desc,														 	 		 ";
+  $sSqlSusp .= "  		   ar18_sequencial desc													 	 		 ";
 
-  $rsDebitosSuspensos = db_query($sSqlSusp);
+  $rsDebitosSuspensos = pg_query($sSqlSusp);
   $iLinhasDebitosSusp = pg_num_rows($rsDebitosSuspensos);
 
   echo "    <tr bgcolor='#FFCC66'> ";
   echo "      <th class='borda' style='font-size:12px' nowrap> Detalhes       </th> ";
   echo "      <th class='borda' style='font-size:12px' nowrap> Cód. Suspensão </th> ";
   echo "      <th class='borda' style='font-size:12px' nowrap> Processo       </th> ";
-  echo "      <th class='borda' style='font-size:12px' nowrap> Usuário		    </th> ";
+  echo "      <th class='borda' style='font-size:12px' nowrap> Usuário		  </th> ";
   echo "      <th class='borda' style='font-size:12px' nowrap> Data           </th> ";
   echo "      <th class='borda' style='font-size:12px' nowrap> Hora           </th> ";
   echo "      <th class='borda' style='font-size:12px' nowrap> Situação       </th> ";

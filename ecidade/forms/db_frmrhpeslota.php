@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,16 +44,16 @@ $clrotulo->label("r01_numcgm");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh10_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lrh10_anousu,"js_pesquisarh10_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $rh10_anousu = db_getsession('DB_anousu');
 db_input('rh10_anousu',4,$Irh10_anousu,true,'text',$db_opcao," onchange='js_pesquisarh10_anousu(false);'")
 ?>
-       <?
+       <?php
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
@@ -62,15 +62,15 @@ db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh10_mesusu?>">
-       <?
+       <?php
        db_ancora(@$Lrh10_mesusu,"js_pesquisarh10_mesusu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh10_mesusu',2,$Irh10_mesusu,true,'text',$db_opcao," onchange='js_pesquisarh10_mesusu(false);'")
 ?>
-       <?
+       <?php
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
@@ -79,15 +79,15 @@ db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh10_regist?>">
-       <?
+       <?php
        db_ancora(@$Lrh10_regist,"js_pesquisarh10_regist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh10_regist',6,$Irh10_regist,true,'text',$db_opcao," onchange='js_pesquisarh10_regist(false);'");
 ?>
-       <?
+       <?php
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
 db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
@@ -96,15 +96,15 @@ db_input('r01_numcgm',6,$Ir01_numcgm,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh10_lotac?>">
-       <?
+       <?php
        db_ancora(@$Lrh10_lotac,"js_pesquisarh10_lotac(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh10_lotac',6,$Irh10_lotac,true,'text',$db_opcao," onchange='js_pesquisarh10_lotac(false);'");
 ?>
-       <?
+       <?php
 db_input('r70_estrut',20,$Ir70_estrut,true,'text',3,'');
        ?>
     </td>
@@ -114,7 +114,7 @@ db_input('r70_estrut',20,$Ir70_estrut,true,'text',3,'');
        <?=@$Lrh10_percrateio?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh10_percrateio',3,$Irh10_percrateio,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -360,7 +360,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2,chave3){
   db_iframe_rhpeslota.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3";
   }

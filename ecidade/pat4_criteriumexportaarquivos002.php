@@ -52,7 +52,7 @@ include(modification("dbforms/db_layouttxt.php"));
 	bgcolor="#CCCCCC" style="padding-top: 20px;">
 	<tr>
 		<td>
-			<?
+			<?php
 			db_criatermometro('termometro','Concluído','blue',1);
 			echo "<br><br>";
     	db_criatermometro('termometroitem','Concluido...','blue',1);

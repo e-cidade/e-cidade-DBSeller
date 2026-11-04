@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clgestorindicadorregistro->rotulo->label("g05_sequencial");
               <?=$Lg05_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("g05_sequencial",10,$Ig05_sequencial,true,"text",4,"","chave_g05_sequencial");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clgestorindicadorregistro->rotulo->label("g05_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_gestorindicadorregistro.php")==true){
@@ -112,12 +112,12 @@ $clgestorindicadorregistro->rotulo->label("g05_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

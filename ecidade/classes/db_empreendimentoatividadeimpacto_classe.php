@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -56,13 +56,13 @@ class cl_empreendimentoatividadeimpacto {
                  am06_atividadeimpactoporte = int4 = Porte
                  ";
    //funcao construtor da classe
-   function cl_empreendimentoatividadeimpacto() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empreendimentoatividadeimpacto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_empreendimentoatividadeimpacto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am06_sequencial = ($this->am06_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am06_sequencial"]:$this->am06_sequencial);
        $this->am06_atividadeimpacto = ($this->am06_atividadeimpacto == ""?@$GLOBALS["HTTP_POST_VARS"]["am06_atividadeimpacto"]:$this->am06_atividadeimpacto);
@@ -83,7 +83,7 @@ class cl_empreendimentoatividadeimpacto {
      }
    }
    // funcao para inclusao
-   function incluir ($am06_sequencial){
+   public function incluir ($am06_sequencial){
       $this->atualizacampos();
      if($this->am06_atividadeimpacto == null ){
        $this->erro_sql = " Campo Código da Atividade não informado.";

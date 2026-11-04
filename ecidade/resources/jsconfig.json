@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+    "baseUrl": ".",
+        "paths": {
+            "@modules/*": ["vue/modules/*"],
+            "@ultils/*": ["vue/utils/*"]
+        }
+    }
+}

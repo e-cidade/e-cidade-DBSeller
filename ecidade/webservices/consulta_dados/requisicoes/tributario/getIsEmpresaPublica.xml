@@ -1,0 +1,16 @@
+<consulta distinct="true">
+    <campos>
+        <campo campo="true" label="tipo_publica" />
+    </campos>
+    <from tabela="confissqnretidopublica" />
+    <juncoes>
+        <join tipo="inner" tabela="confissqnretidopublicatipoempresa" condicao="j170_sequencial = j171_confissqnretidopublica" />
+        <join tipo="inner" tabela="cgmtipoempresa" condicao="j171_tipoempresa = z03_tipoempresa" />
+        <join tipo="inner" tabela="cgm" condicao="z03_numcgm = z01_numcgm" />
+    </juncoes>
+    <filtros>
+        <filtro label="cgccpf" condicao="z01_cgccpf = '$cgccpf'" obrigatorio="true"/>
+    </filtros>
+    <agrupamento campos="" />
+    <ordenacao campos="" />
+</consulta>

@@ -154,10 +154,14 @@ class BemLote {
      * 'salvar' do model Bem
      */
     $oDaoBensLote          = new cl_benslote();
+    $ix = 0;
     foreach ($this->getBens() as $oBem) {
-
-    	$oBem->salvar();
-
+        $oPlaca = $oBem->getPlaca();
+        if ($oPlaca->getTipoPlaca() == 2) {
+            $oPlaca->setPlacaSeq($oPlaca->getPlacaSeq() + $ix);
+            $oBem->setPlaca($oPlaca);
+        }
+    	$oBem->salvar(); $ix++;
     	/**
     	 * verifica se o bem já está no lote.
     	 */

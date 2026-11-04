@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,22 +45,22 @@ $db_botao1 = false;
        <?=@$Lla37_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la37_i_codigo',10,$Ila37_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Tla37_i_laboratorio?>">
-       <?
+       <?php
        db_ancora(@$Lla37_i_laboratorio,"js_pesquisala37_i_laboratorio(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la37_i_laboratorio',10,$Ila37_i_laboratorio,true,'text',3," onchange='js_pesquisala37_i_laboratorio(false);'")
 ?>
-       <?
+       <?php
 db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -84,7 +84,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
                           <?= @$Ls140_i_tipo?>
                          </td>
                          <td> 
-                          <?
+                          <?php
                           $sql = $clmotivo_ausencia->sql_query(null,"s139_i_codigo, s139_c_descr","s139_i_codigo");
                           $resultado = $clmotivo_ausencia->sql_record($sql);
                           if($resultado)
@@ -109,7 +109,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
                                   <?=@$Lla37_d_ini?>
                                 </td>
                                 <td nowrap> 
-                                  <?
+                                  <?php
                                   if(isset($la37_d_ini)&&($la37_d_ini!="")){
                                        $vet=explode("/",$la37_d_ini);
                                        $la37_d_ini_dia=$vet[0];
@@ -125,7 +125,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
                                   <?=@$Lla37_d_fim?>
                                 </td>
                                 <td nowrap> 
-                                  <?
+                                  <?php
                                   if(isset($la37_d_fim)&&($la37_d_fim!="")){
                                        $vet=explode("/",$la37_d_ini);
                                        $la37_d_fim_dia=$vet[0];
@@ -157,7 +157,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
                                   <?=@$Lla37_c_horaini?>
                                 </td>
                                 <td nowrap> 
-                                  <?
+                                  <?php
                                    db_input('la37_c_horaini',5,$Ila37_c_horaini,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la37_c_horaini', event)\"");
                                   ?>
                                 </td>
@@ -167,7 +167,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
                                   <?=@$Lla37_c_horafim?>
                                 </td>
                                 <td nowrap> 
-                                  <?
+                                  <?php
                                   db_input('la37_c_horafim',5,$Ila37_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la37_c_horafim', event)\"");
                                   ?>
                                </td>
@@ -347,7 +347,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_paralizacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

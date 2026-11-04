@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -184,7 +184,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Turma</b></legend>
-    <?include(modification("forms/db_frmturma.php"));?>
+    <?php include(modification("forms/db_frmturma.php"));?>
    </fieldset>
    </center>
   </td>
@@ -192,7 +192,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
 
   if ($clturma->erro_status == "0") {
@@ -202,7 +202,7 @@ if (isset($excluir)) {
     $clturma->erro(true,false);
     ?>
     <script>parent.document.form2.teste.click();</script>
-    <?
+    <?php
 
   }
 }

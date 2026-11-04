@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -60,7 +60,7 @@ $escola              = db_getsession("DB_coddepto");
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td align="left" valign="top" bgcolor="#CCCCCC">   
+  <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <form name="form1" method="post" action="">
@@ -71,16 +71,16 @@ $escola              = db_getsession("DB_coddepto");
        <table>
         <tr>
          <td>
-           <b>Cardápio:</b>          
-           <?
+           <b>Cardápio:</b>
+           <?php
            $hoje = date("Y-m-d",db_getsession("DB_datausu"));
            $result_tipocardapio = $clmer_tipocardapio->sql_record(
                                    $clmer_tipocardapio->sql_query("",
                                                                   "me27_i_codigo,me27_c_nome,me27_f_versao,me27_i_id",
                                                                   "me27_i_id,me27_f_versao desc",
-                                                                  "((me27_d_inicio is not null 
+                                                                  "((me27_d_inicio is not null
                                                                      and me27_d_fim is null
-                                                                     and me27_d_inicio <= '$hoje') 
+                                                                     and me27_d_inicio <= '$hoje')
                                                                      or (me27_d_fim is not null and '$hoje'
                                                                      between me27_d_inicio and me27_d_fim))
                                                                    AND exists(select * from mer_cardapioescola
@@ -91,19 +91,19 @@ $escola              = db_getsession("DB_coddepto");
            <select name="cardapio" id="cardapio" onChange="js_cardapio(this.value);"
                   style="height:18px;font-size:10px;">
            <option value="0"></option>
-           <?for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
-        
+           <?php for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
+
               db_fieldsmemory($result_tipocardapio,$t);
               ?>
               <option value="<?=$me27_i_codigo?>"><?=$me27_c_nome?> - Versão: <?=$me27_f_versao?></option>
-      
-           <?}?>
+
+           <?php }?>
           </select>
          </td>
         </tr>
        </table>
       </td>
-     </tr> 
+     </tr>
      <tr>
       <td align="center">
        <table>
@@ -112,7 +112,7 @@ $escola              = db_getsession("DB_coddepto");
           <b>Escola:</b>
          </td>
          <td>
-          <select name="select_escola" id="select_escola" onchange="js_escola(this.value)" 
+          <select name="select_escola" id="select_escola" onchange="js_escola(this.value)"
                   style="width:450px;height:18px;font-size:10px;;" disabled>
           </select>
          </td>
@@ -160,7 +160,7 @@ $escola              = db_getsession("DB_coddepto");
  </tr>
 </table>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -190,10 +190,10 @@ function js_cardapio(cardapio) {
                                  onComplete: js_retornoPesquisaEscola
                                }
                               );
-    
+
 }
 function js_retornoPesquisaEscola(oAjax) {
-    
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   sHtml = '';
@@ -201,27 +201,27 @@ function js_retornoPesquisaEscola(oAjax) {
     sHtml += '<option value="">Nenhum escola vinculada ao cardápio selecionado!</option>';
     $('select_escola').innerHTML = sHtml;
   } else {
-          
+
     sHtml += '<option value=""></option>';
     for (var i = 0;i < oRetorno.length; i++) {
-            
+
       with (oRetorno[i]) {
-              
+
         sHtml += '<option value="'+me32_i_codigo+'">'+ed18_c_nome.urlDecode()+'</option>';
-             
+
       }
-      
+
     }
     $('select_escola').innerHTML = sHtml;
     document.form1.select_escola[1].selected = true;
     js_escola(document.form1.select_escola.value);
-        
-  }  
+
+  }
   $('select_escola').disabled  = false;
-  
+
 }
 function js_escola(escola) {
-    
+
   $('data').innerHTML                 = "";
   $('titulo').innerHTML               = "";
   $('select_refeicao').innerHTML      = "";
@@ -237,36 +237,36 @@ function js_escola(escola) {
                                  onComplete: js_retornoPesquisaRefeicao
                                }
                               );
-    
+
 }
 
 function js_retornoPesquisaRefeicao(oAjax) {
-    
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   sHtml = '';
   if (oRetorno.length==0) {
     sHtml += '<option value="">Nenhuma refeição consumida para o cardápio e/ou escola selecionados!</option>';
   } else {
-      
+
     sHtml += '<option value=""></option>';
     for (var i = 0;i < oRetorno.length; i++) {
-        
+
       with (oRetorno[i]) {
-          
+
         arr_data = me12_d_data.urlDecode().split("-");
         datanew = arr_data[2]+"/"+arr_data[1]+"/"+arr_data[0];
         sHtml += '<option value="'+me12_i_codigo.urlDecode()+'">'+datanew+' - '+me03_c_tipo.urlDecode()+
                                  ' - '+me01_c_nome.urlDecode()+' - Versão: '+me01_f_versao.urlDecode()+'</option>';
-         
+
       }
-      
+
     }
-    
-  }  
+
+  }
   $('select_refeicao').innerHTML = sHtml;
   $('select_refeicao').disabled  = false;
-  
+
 }
 function js_turma(){
 
@@ -274,12 +274,12 @@ function js_turma(){
   $('titulo').innerHTML               = "";
   $('div_turmas').innerHTML      = "";
   if ($('select_refeicao').value!="") {
-	      
+
     indice = $('select_refeicao').selectedIndex;
     $('data').innerHTML = $('select_refeicao')[indice].text.substr(0,10);
     $('titulo').innerHTML = $('select_refeicao')[indice].text.substr(10);
     $('pesquisar').disabled = false;
-	        
+
   } else {
     $('pesquisar').disabled = true;
     return false;
@@ -297,39 +297,39 @@ function js_turma(){
 
 }
 function js_retornoPesquisaTurma(oAjax) {
-    
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   sHtml = '<b>Turmas:</b><br>';
   if (oRetorno.length==0) {
-	      
+
     sHtml += '  Nenhuma turma foi vinculada ao cardápio e/ou escola selecionados!';
     $('pesquisar').disabled = true;
-	    
+
   } else {
     sHtml += '  <table width="500px;"><tr>';
     sHtml += '  <td>Código/Nome/Etapa</td>';
     sHtml += '  <td>Qtde. Alunos</td>';
     sHtml += '  <td>Qtde. Consumida</td>';
-    sHtml += '  <td>Qtde. Repetições</td></tr>';    
+    sHtml += '  <td>Qtde. Repetições</td></tr>';
     for (var i = 0;i < oRetorno.length; i++) {
-	        
+
       with (oRetorno[i]) {
-	          
+
           sHtml += '  <tr><td><input size="5" type="hidden" name="codigo_turma" id="select_turma" value="'+ed57_i_codigo+'">';
           sHtml += '  '+ed57_i_codigo+' / '+ed57_c_descr.urlDecode()+' / '+ed11_c_descr.urlDecode()+'</td>';
           sHtml += '  <td><input size="5" type="text" name="qtde_matricula" id="qtde_matricula" value="'+qtde+'" disabled></td>';
           sHtml += '  <td><input size="5" type="text" name="qtde_consumida" id="qtde_consumida" value="'+qtde_consumida+'" onKeyUp="js_ValidaCampos(this,1,\'Qtde. Consumida\',\'f\',\'f\',event);"></td>';
           sHtml += '  <td><input size="5" type="text" name="qtde_repeticao" id="qtde_repeticao" value="'+qtde_repeticao+'" onKeyUp="js_ValidaCampos(this,1,\'Qtde. Repetições\',\'f\',\'f\',event);"></td></tr>';
-	        
+
       }
-	      
+
     }
     sHtml += '  </table>';
-	    
+
   }
   $('div_turmas').innerHTML = sHtml;
-	 
+
 }
 function js_verificadia(oAjax) {
 
@@ -344,21 +344,21 @@ function js_verificadia(oAjax) {
       if (parseInt(document.form1.qtde_consumida.value)>parseInt(document.form1.qtde_matricula.value)) {
         msgerro += " Turma "+document.form1.codigo_turma.value+": quantidade consumida não pode ser maior que nº alunos na turma.\n";
       }
-	        
+
     }
     if (document.form1.qtde_repeticao.value!="") {
 
       if (parseInt(document.form1.qtde_repeticao.value)>parseInt(document.form1.qtde_matricula.value)) {
         msgerro += " Turma "+document.form1.codigo_turma.value+": quantidade de repetições não pode ser maior que nº alunos na turma.\n";
       }
-        
+
     }
     if (document.form1.qtde_repeticao.value!="" && document.form1.qtde_consumida.value!="") {
 
       if (parseInt(document.form1.qtde_repeticao.value)>parseInt(document.form1.qtde_consumida.value)) {
           msgerro += " Turma "+document.form1.codigo_turma.value+": quantidade de repetições não pode ser maior que quantidade consumida.\n";
       }
-          
+
     }
     if (document.form1.qtde_repeticao.value!="" && document.form1.qtde_consumida.value=="") {
       msgerro += " Turma "+document.form1.codigo_turma.value+": quantidade de repetições não pode ser maior que quantidade consumida.\n";
@@ -373,36 +373,36 @@ function js_verificadia(oAjax) {
 	    if (parseInt(document.form1.qtde_consumida[i].value)>parseInt(document.form1.qtde_matricula[i].value)) {
 	      msgerro += " Turma "+document.form1.codigo_turma[i].value+": quantidade consumida não pode ser maior que nº alunos na turma.\n";
 	    }
-	              
+
 	  }
 	  if (document.form1.qtde_repeticao[i].value!="") {
 
 	    if (parseInt(document.form1.qtde_repeticao[i].value)>parseInt(document.form1.qtde_matricula[i].value)) {
 	      msgerro += " Turma "+document.form1.codigo_turma[i].value+": quantidade de repetições não pode ser maior que nº alunos na turma.\n";
 	    }
-	          
+
 	  }
 	  if (document.form1.qtde_repeticao[i].value!="" && document.form1.qtde_consumida[i].value!="") {
 
 	    if (parseInt(document.form1.qtde_repeticao[i].value)>parseInt(document.form1.qtde_consumida[i].value)) {
 	      msgerro += " Turma "+document.form1.codigo_turma[i].value+": quantidade de repetições não pode ser maior que quantidade consumida.\n";
 	    }
-	            
+
 	  }
 	  if (document.form1.qtde_repeticao[i].value!="" && document.form1.qtde_consumida[i].value=="") {
 	    msgerro += " Turma "+document.form1.codigo_turma[i].value+": quantidade de repetições não pode ser maior que quantidade consumida.\n";
 	  }
       turmas += sep+document.form1.codigo_turma[i].value+"|"+document.form1.qtde_consumida[i].value+"|"+document.form1.qtde_repeticao[i].value;
-      sep = ";";	  
+      sep = ";";
 
 	}
-	
+
   }
   if (msgerro!="") {
-	  
+
     alert(msgerro);
     return false;
-    
+
   }
   js_divCarregando("Aguarde, salvando registro(s)","msgBox");
   var sAction = 'InclusaoCardapioTurma';
@@ -417,11 +417,11 @@ function js_verificadia(oAjax) {
 }
 
 function js_retornoInclusaoCardapiodia(oAjax) {
-    
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   alert(oRetorno.urlDecode());
   js_turma(document.form1.select_refeicao.value);
- 
+
 }
 </script>

@@ -40,7 +40,7 @@ $oRotuloCampos = new rotulocampo();
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, strings.js");
       db_app::load("estilos.css");
     ?>
@@ -67,7 +67,7 @@ $oRotuloCampos = new rotulocampo();
             </tr>
             <tr>
               <td nowrap="nowrap" style="font-weight: bold;">
-                <? db_ancora("Cidadão: ","js_pesquisaCidadao(true, false);",1);?>
+                <?php db_ancora("Cidadão: ","js_pesquisaCidadao(true, false);",1);?>
               <td nowrap="nowrap">
                 <?php
                   db_input("codigoCidadao", 10, '', true, "text", 1, "onchange='js_pesquisaCidadao(false, false);'");

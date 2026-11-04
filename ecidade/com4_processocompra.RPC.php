@@ -124,7 +124,7 @@ try {
           'solicitacao'        => $oItemProcessoCompra->getItemSolicitacao()->getCodigoSolicitacao(),
           'sequencial'         => $oItemProcessoCompra->getItemSolicitacao()->getOrdem(),
           'codigo_material'    => $oItemProcessoCompra->getItemSolicitacao()->getCodigoMaterial(),
-          'descricao_material' => $oItemProcessoCompra->getItemSolicitacao()->getDescricaoMaterial(),
+          'descricao_material' => urlencode(urldecode($oItemProcessoCompra->getItemSolicitacao()->getDescricaoMaterial())),
           'unidade'            => ($iUnidadeMedida ? itemSolicitacao::getDescricaoUnidade($iUnidadeMedida) : ''),
           'quantidade'         => $oItemProcessoCompra->getItemSolicitacao()->getQuantidade(),
           'vlr_unitario'       => $oItemProcessoCompra->getItemSolicitacao()->getValorUnitario(),

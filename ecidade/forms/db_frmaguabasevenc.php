@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ if(isset($db_opcaoal)){
        <?=@$Lx27_matric?>
     </td>
     <td> 
-<?
+<?php
 //db_input('x27_matric',10,$Ix27_matric,true,'text',$db_opcao,"")
 db_input('x27_matric',10,$Ix27_matric,true,'text',3,"")
 ?>
@@ -68,7 +68,7 @@ db_input('x27_matric',10,$Ix27_matric,true,'text',3,"")
        <?=@$Lx27_parcela?>
     </td>
     <td> 
-<?
+<?php
 db_input('x27_parcela',5,$Ix27_parcela,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -78,7 +78,7 @@ db_input('x27_parcela',5,$Ix27_parcela,true,'text',$db_opcao,"")
        <?=@$Lx27_dtvenc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x27_dtvenc',@$x27_dtvenc_dia,@$x27_dtvenc_mes,@$x27_dtvenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('x27_dtvenc',@$x27_dtvenc_dia,@$x27_dtvenc_mes,@$x27_dtvenc_ano,tru
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("x27_matric"=>@$x27_matric,"x27_parcela"=>@$x27_parcela);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguabasevenc->sql_query_file($x27_matric);

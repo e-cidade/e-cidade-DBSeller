@@ -269,7 +269,7 @@ class AcompanhamentoCronogramaReceitaRepository extends Repository
                    orcfontes.o57_fonte AS natureza,
                    orcfontes.o57_descr AS descricao,
                    o15_codigo as codigo_recurso,
-                   orctiporec.o15_descr AS descricao_recurso,
+                   fonterecurso.descricao AS descricao_recurso,
                    fonterecurso.gestao AS fonte_recurso,
                    o200_sequencial AS complemento,
                    o200_descricao AS descricao_complemento
@@ -295,5 +295,59 @@ class AcompanhamentoCronogramaReceitaRepository extends Repository
     public function scopeRecursos(array $recursos)
     {
         $this->scopes['codigo_recursos'] = sprintf("o15_codigo in (%s) ", implode(', ', $recursos));
+    }
+
+    public function getDadosRelatorioPlanoPadrao($tipoPlano)
+    {
+        $this->scopes['tipoPlano'] = $tipoPlano === 'uniao' ? 'uniao is true' : 'uniao is false';
+        $where = implode(' and ', $this->scopes);
+        $sql = "
+            select
+                   acompanhamentocronogramareceita.exercicio as exercicio,
+                   acompanhamentocronogramareceita.base_calculo as base_calculo,
+                   planoreceita.conta AS natureza,
+                   planoreceita.nome  AS descricao,
+                   o15_codigo as codigo_recurso,
+                   fonterecurso.descricao AS descricao_recurso,
+                   fonterecurso.gestao AS fonte_recurso,
+                   fonterecurso.codigo_siconfi AS siconfi,
+                   o200_sequencial AS complemento,
+                   o200_descricao AS descricao_complemento,
+                   o70_concarpeculiar as cp,
+                   o70_instit as instituicao,
+                   array_agg(acompanhamentocronogramareceita.id) as id_cronograma,
+                   array_agg(acompanhamentocronogramareceita.receita_id) as receita_id,
+                   sum(acompanhamentocronogramareceita.janeiro) as janeiro,
+                   sum(acompanhamentocronogramareceita.fevereiro) as fevereiro,
+                   sum(acompanhamentocronogramareceita.marco) as marco,
+                   sum(acompanhamentocronogramareceita.abril) as abril,
+                   sum(acompanhamentocronogramareceita.maio) as maio,
+                   sum(acompanhamentocronogramareceita.junho) as junho,
+                   sum(acompanhamentocronogramareceita.julho) as julho,
+                   sum(acompanhamentocronogramareceita.agosto) as agosto,
+                   sum(acompanhamentocronogramareceita.setembro) as setembro,
+                   sum(acompanhamentocronogramareceita.outubro) as outubro,
+                   sum(acompanhamentocronogramareceita.novembro) as novembro,
+                   sum(acompanhamentocronogramareceita.dezembro) as dezembro
+              from orcreceita
+              join acompanhamentocronogramareceita on (exercicio, receita_id) = (o70_anousu, o70_codrec)
+              join conplanoorcamento on (c60_codcon, c60_anousu) = (o70_codfon, o70_anousu)
+              join planoreceitaconplanoorcamento on conplanoorcamento_codigo = c60_codigo
+              join planoreceita on planoreceita.id = planoreceita_id
+              join orcamento.orctiporec ON orctiporec.o15_codigo = orcreceita.o70_codigo
+              join orcamento.fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                   and fonterecurso.exercicio = orcreceita.o70_anousu
+              join complementofonterecurso ON complementofonterecurso.o200_sequencial = orctiporec.o15_complemento
+        where {$where}
+        group by 1,2,3,4,5,6,7,8,9,10,11,12
+        order by 3;
+        ";
+
+        $rs = db_query($sql);
+        if (!$rs || pg_num_rows($rs) === 0) {
+            throw new Exception("Erro ao buscar dados do cronograma da receita", 400);
+        }
+
+        return \db_utils::getCollectionByRecord($rs);
     }
 }

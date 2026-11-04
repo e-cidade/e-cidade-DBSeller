@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@
   </tr>
   <tr>
     <td align="center" valign="middle"> <form name="form1" method="post" action="">
-<?
+<?php
 	if (isset($pesquisa_Matricula)||isset($pesquisa_Inscricao)){
 		if (isset($pesquisa_Matricula)){
 			echo $Lj01_matric." ";
@@ -81,18 +81,18 @@
 		}
 ?>
         <input name="pesquisar" type="submit" id="pesquisar" value="Pesquisar">
-<?
+<?php
 	}else{
 ?>
         <input name="retornar" type="button" id="retornar" value="Retornar" onclick="parent.js_fechaJanela()">
-<?
+<?php
 	}
 ?>
       </form></td>
   </tr>
   <tr>
     <td align="center" valign="middle">
-<?
+<?php
 	if(isset($pesquisar)){
 		if(isset($j01_matric)){
 

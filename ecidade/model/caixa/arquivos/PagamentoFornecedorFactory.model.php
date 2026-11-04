@@ -34,7 +34,8 @@ require_once(modification("libs/db_app.utils.php"));
 * @author Andrio Araujo da Costa
 * @version $Revision: 0.1
 */
-class PagamentoFornecedorFactory {
+class PagamentoFornecedorFactory
+{
 
 
   /**
@@ -47,33 +48,33 @@ class PagamentoFornecedorFactory {
    *
    * @return PagamentoFornecedorTXTBase
    */
-  static function getInstance($iCodigoBanco) {
+    static function getInstance($iCodigoBanco)
+    {
 
-    switch ($iCodigoBanco) {
+        switch ($iCodigoBanco) {
+            case '000':
+                return new PagamentoFornecedorBancoDoBrasilOBN();
+            break;
 
-      case '000':
-        return new PagamentoFornecedorBancoDoBrasilOBN();
-      break;
+            case '001':
+                return new PagamentoFornecedorBancoDoBrasil();
+            break;
 
-      case '001':
-        return new PagamentoFornecedorBancoDoBrasil();
-      break;
+            case '041':
+                return new PagamentoFornecedorBanrisul();
+            break;
 
-      case '041':
-        return new PagamentoFornecedorBanrisul();
-      break;
+            case '104':
+                return new PagamentoFornecedorCaixaEconomica();
+            break;
 
-      case '104':
-        return new PagamentoFornecedorCaixaEconomica();
-      break;
+            case GeradorArquivoPagFor::CODIGO_BANCO_BRADESCO:
+                return new PagamentoFornecedorBradescoPagFor();
+            break;
 
-      case GeradorArquivoPagFor::CODIGO_BANCO_BRADESCO:
-        return new PagamentoFornecedorBradescoPagFor();
-        break;
-
-      default:
-        return false;
-      break;
+            default:
+                return false;
+            break;
+        }
     }
-  }
 }

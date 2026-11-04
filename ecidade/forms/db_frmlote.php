@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -108,44 +108,44 @@ function js_checa(){
        <?=@$Lj34_idbql?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_idbql',6,$Ij34_idbql,true,'text',3,"")
 ?>
     <td>
   </tr>
-  <?
+  <?php
   if (isset ($mostrasetfiscal) && $mostrasetfiscal == 't'){
   ?>
     <tr>
     <td nowrap title="<?=@$Tj91_codigo?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lj91_codigo,"js_pesquisaj91_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-		<?
+		<?php
 		db_input('j91_codigo',5,$Ij91_codigo,true,'text',$db_opcao," onchange='js_pesquisaj91_codigo(false);'")
 		?>
-       <?
+       <?php
 		db_input('j90_descr',40,$Ij90_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
-  <?}?>
+  <?php }?>
 
 
   <tr>
     <td nowrap title="<?=@$Tj34_setor?>">
-       <?
+       <?php
        db_ancora(@$Lj34_setor,"js_pesquisaj34_setor(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_setor',5,$Ij34_setor,true,'text',$db_opcao," onchange='js_pesquisaj34_setor(false);'")
 ?>
-       <?
+       <?php
 db_input('j30_descr',40,$Ij30_descr,true,'text',3,'')
        ?>
     <td>
@@ -155,7 +155,7 @@ db_input('j30_descr',40,$Ij30_descr,true,'text',3,'')
        <?=@$Lj34_quadra?>
     </td>
     <td>
-<?
+<?php
 
 if(isset($j34_setor)&& $j34_setor!="" && $j34_setor!="0"){
   $resultface = $clface->sql_record($clface->sql_query("","distinct j37_quadra","j37_quadra","j37_setor='$j34_setor'"));
@@ -188,7 +188,7 @@ db_input('j34_quadra',5,$Ij34_quadra,true,'text',3,"onclick=\"alert('Informe o S
        <?=@$Lj34_lote?>
     </td>
     <td>
-<?
+<?php
 $val=$Ij34_lote;
 $result_param = $clcfiptu->sql_record($clcfiptu->sql_query(db_getsession("DB_anousu"),"j18_formatlote"));
 if ($clcfiptu->numrows>0){
@@ -208,37 +208,37 @@ db_input('j34_lote',4,$val,true,'text',$db_opcao,"onchange=js_limpatestada()")
        <?=@$Lj34_area?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_area',15,4,true,'text',$db_opcao,"")
 ?>
     <td>
   <tr>
   <tr>
     <td nowrap title="<?=@$Tj34_bairro?>">
-       <?
+       <?php
        db_ancora(@$Lj34_bairro,"js_pesquisaj34_bairro(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_bairro',4,$Ij34_bairro,true,'text',$db_opcao," onchange='js_pesquisaj34_bairro(false);'")
 ?>
-       <?
+       <?php
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     <td>
   <tr>
   <tr>
     <td nowrap title="<?=@$Tj34_loteam?>">
-       <?
+       <?php
        db_ancora(@$Lj34_loteam,"js_pesquisaj34_loteam(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_loteam',4,$Ij34_loteam,true,'text',$db_opcao," onchange='js_pesquisaj34_loteam(false);'")
 ?>
-       <?
+       <?php
 db_input('j34_descr',40,$Ij34_descr,true,'text',3,'')
        ?>
     <td>
@@ -248,7 +248,7 @@ db_input('j34_descr',40,$Ij34_descr,true,'text',3,'')
        <?=@$Lj34_areal?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_areal',15,4,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -258,7 +258,7 @@ db_input('j34_areal',15,4,true,'text',$db_opcao,"")
        <?=@$Lj34_totcon?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_totcon',15,$Ij34_totcon,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -268,32 +268,32 @@ db_input('j34_totcon',15,$Ij34_totcon,true,'text',$db_opcao,"")
        <?=@$Lj34_zona?>
     </td>
     <td>
-<?
+<?php
 db_input('j34_zona',5,$Ij34_zona,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td >
-       <?
+       <?php
        db_ancora(@$Lcarlote,"js_mostracaracteristica();",$db_opcao);
        ?>
    </td>
     <td>
-<?
+<?php
 db_input('caracteristica',15,0,true,'hidden',$db_opcao,"")
 ?>
     <td>
   </tr>
   <tr>
     <td>
-           <?
+           <?php
          db_ancora($Ltestada,' js_testada(); ',$db_opcao);
          //db_input('testada',2,'',true,'hidden',3);
            ?>
      </td>
     <td>
-      <?
+      <?php
         db_input('cartestada',15,0,true,'hidden',$db_opcao,"");
         db_input('cartestpri',15,0,true,'hidden',$db_opcao,"");
       ?>
@@ -301,7 +301,7 @@ db_input('caracteristica',15,0,true,'hidden',$db_opcao,"")
   </tr>
   <tr>
    <td>
-    <?
+    <?php
      db_ancora("<b>Localização:</b>",'js_loteloc(1); ',$db_opcao);
      db_input('j06_setorloc',6,0,true,'hidden',$db_opcao,"");
      db_input('j06_quadraloc',5,0,true,'hidden',$db_opcao,"");
@@ -316,15 +316,15 @@ db_input('caracteristica',15,0,true,'hidden',$db_opcao,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj54_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lj54_codigo,"js_pesquisaj54_codigo(true);",$db_opcao);
        ?>
      </td>
     <td>
-<?
+<?php
 db_input('j54_codigo',4,$Ij54_codigo,true,'text',$db_opcao," onchange='js_pesquisaj54_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     <td>
@@ -336,7 +336,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lj54_distan?>
     </td>
     <td>
-<?
+<?php
 db_input('j54_distan',5,$Ij54_distan,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -346,7 +346,7 @@ db_input('j54_distan',5,$Ij54_distan,true,'text',$db_opcao,"")
 		  <b>Ponto de Orientação</b>
     </td>
     <td>
-       <?
+       <?php
 $matriz = array('0'=>"...",'leste'=>"Leste",'oeste'=>"Oeste",'norte'=>"Norte",'sul'=>"Sul",'nordeste'=>"Nordeste",'Sudoeste'=>"Sudoeste",'noroeste'=>"Noroeste",'sudeste'=>"Sudeste");
 db_select('j54_ponto',$matriz,true,$db_opcao);
 
@@ -561,7 +561,7 @@ function js_mostrasetorfiscal1(chave1,chave2){
 }
 
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcontcearquivoresp->rotulo->label("c12_nome");
               <?=$Lc12_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c12_sequencial",10,$Ic12_sequencial,true,"text",4,"","chave_c12_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcontcearquivoresp->rotulo->label("c12_nome");
               <?=$Lc12_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c12_nome",30,$Ic12_nome,true,"text",4,"","chave_c12_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcontcearquivoresp->rotulo->label("c12_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contcearquivoresp.php")==true){
@@ -122,12 +122,12 @@ $clcontcearquivoresp->rotulo->label("c12_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

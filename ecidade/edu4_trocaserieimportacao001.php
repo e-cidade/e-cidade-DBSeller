@@ -152,7 +152,7 @@ if (!isset($incluir)) {
               <b>Aproveitamento na TURMA DE ORIGEM:</b>
             </td>
           </tr>
-          <?
+          <?php
           $sSql = $oDaoMatricula->sql_query('', 'ed60_i_aluno, ed221_i_serie as etapaorigem', '',
                                             " ed60_i_codigo = $matricula"
                                            );
@@ -189,7 +189,7 @@ if (!isset($incluir)) {
               </td>
               <td align="center" nowrap>--></td>
               <td nowrap>
-                <?
+                <?php
                 $temreg = false;
                 for ($iCont2 = 0; $iCont2 < $linhas1; $iCont2++) {
 
@@ -210,7 +210,7 @@ if (!isset($incluir)) {
                     size="10" readonly style="width:75px">
                   <input name="regdestinodescr" type="text" value="<?=$regdestinodescr?>"
                     size="30" readonly style="width:180px">
-                <?
+                <?php
                 } else {
 
                   $sql2 = "select ed59_i_codigo as regsobra,trim(ed232_c_descr) as descrsobra
@@ -230,7 +230,7 @@ if (!isset($incluir)) {
                   <select name="regenciadestino" style="padding:0px;width:75px;height:16px;font-size:12px;"
                     onchange="js_eliminareg(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php
                   for ($iCont2 = 0; $iCont2 < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -242,7 +242,7 @@ if (!isset($incluir)) {
                   <select name="regdestinodescr" style="padding:0px;width:180px;height:16px;font-size:12px;"
                     onchange="js_eliminareg(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php
                   for ($iCont2 = 0; $iCont2 < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -253,14 +253,14 @@ if (!isset($incluir)) {
                   </select>
                   <input type="hidden" name="combo" value="<?=$iCont?>">
                   <input type="hidden" name="comboselect<?=$iCont?>" value="">
-                <?
+                <?php
                 }
                 ?>
               </td>
               <td nowrap>
                 <table border="1" cellspacing="0" cellpadding="0">
                   <tr>
-                    <?
+                    <?php
                     $sSql = $oDaoDiarioAvaliacao->sql_query('', 'ed09_c_abrev, ed72_i_valornota, '.
                                                             'ed72_c_valorconceito, ed72_t_parecer, '.
                                                             'ed37_c_tipo', 'ed41_i_sequencia asc',
@@ -307,7 +307,7 @@ if (!isset($incluir)) {
                 </table>
               </td>
             </tr>
-          <?
+          <?php
           }
           ?>
           <tr>
@@ -319,7 +319,7 @@ if (!isset($incluir)) {
               <b>Períodos de Avaliação  TURMA DE DESTINO:</b>
             </td>
           </tr>
-          <?
+          <?php
           $sSql    = $oDaoProcAvaliacao->sql_query('', 'ed41_i_codigo, ed09_i_codigo, ed09_c_descr, '.
                                                    'ed37_c_tipo, ed37_i_menorvalor, ed37_i_maiorvalor',
                                                    'ed41_i_sequencia', " ed41_i_procedimento = $procorigem"
@@ -349,7 +349,7 @@ if (!isset($incluir)) {
               </td>
               <td align="center" nowrap>--></td>
               <td nowrap>
-                <?
+                <?php
                 $temper = false;
                 for ($iCont2 = 0; $iCont2 < $linhas1; $iCont2++) {
 
@@ -370,7 +370,7 @@ if (!isset($incluir)) {
                     style="width:75px">
                   <input name="perdestinodescr" type="text" value="<?=$perdestinodescr?>" size="30"
                     readonly style="width:180px">
-                <?
+                <?php
                 } else {
 
                   $sql2 = "select ed41_i_codigo as persobra,ed09_c_descr as descrsobra,ed37_c_tipo as tipodest,
@@ -400,7 +400,7 @@ if (!isset($incluir)) {
                   <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;"
                     onchange="js_eliminaper(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php
                   for ($iCont2 = 0; $iCont2 < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -412,7 +412,7 @@ if (!isset($incluir)) {
                   <select name="perdestinodescr" style="padding:0px;width:180px;height:16px;font-size:12px;"
                     onchange="js_eliminaper(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php
                   for ($iCont2 = 0; $iCont < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -424,13 +424,13 @@ if (!isset($incluir)) {
                   </select>
                   <input type="hidden" name="pcombo" value="<?=$iCont?>">
                   <input type="hidden" name="pcomboselect<?=$iCont?>" value="">
-                <?
+                <?php
                 }
                 ?>
               </td>
               <td></td>
             </tr>
-          <?
+          <?php
           }
 
           $sSql = $oDaoTurmaSerieRegimeMat->sql_query(null, 'ed223_i_serie, ed11_c_descr as descretapa',
@@ -441,7 +441,7 @@ if (!isset($incluir)) {
           ?>
             <tr>
               <td colspan="3">
-                <?
+                <?php
                 $tem = false;
                 for ($iCont = 0; $iCont < $oDaoTurmaSerieRegimeMat->numrows; $iCont++) {
 
@@ -457,12 +457,12 @@ if (!isset($incluir)) {
                 if ($tem == true) {
                 ?>
                   <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-                <?
+                <?php
                 } else {
                 ?>
                   <b>Informe a Etapa na turma de destino:</b>
                   <select name="codetapadestino">
-                    <?
+                    <?php
                     $sSql = $oDaoSerieEquiv->sql_query(null, 'ed234_i_serieequiv', '',
                                                        " ed234_i_serie = $etapaorigem"
                                                       );
@@ -490,22 +490,22 @@ if (!isset($incluir)) {
                       }
                       ?>
                       <option value="<?=$ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$descretapa?></option>
-                     <?
+                     <?php
                     }
                   ?>
                   </select>
-                <?
+                <?php
                 }
                 ?>
               </td>
             </tr>
-          <?
+          <?php
           } else {
 
             db_fieldsmemory($rs, 0);
             ?>
             <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-          <?
+          <?php
           }
           ?>
           <tr>
@@ -890,7 +890,7 @@ if (!isset($incluir)) {
         </script>
       </body>
     </html>
-<?
+<?php
   } else {
 
     $lErroTransacao = false;

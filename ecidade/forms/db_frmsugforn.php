@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,22 +57,22 @@ if(isset($db_opcaoal)){
       <?=@$Lpc40_solic?>
     </td>
     <td>
-			<?
+			<?php
 			db_input('pc40_solic',8,$Ipc40_solic,true,'text',3)
 			?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc40_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lpc40_numcgm,"js_pesquisapc40_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-			<?
+			<?php
 			db_input('pc40_numcgm',8,$Ipc40_numcgm,true,'text',$db_opcao," onchange='js_pesquisapc40_numcgm(false);'")
 			?>
-			<?
+			<?php
 			db_input('z01_nome',40,$Iz01_nome,true,'text',3);
 			?>
     </td>
@@ -90,12 +90,12 @@ if(isset($db_opcaoal)){
  <table width="90%">
   <tr>
     <td valign="top"  align="center">
-    <?
+    <?php
 		  $chavepri= array("pc40_solic" => @$pc40_solic, "pc40_numcgm" => @$pc40_numcgm);
 		  $cliframe_alterar_excluir->chavepri      = $chavepri;
 		  $cliframe_alterar_excluir->sql           = $clpcsugforn->sql_query(@$pc40_solic, null, "distinct pc40_solic,pc40_numcgm,z01_nome");
 		  $cliframe_alterar_excluir->campos        = "pc40_solic, pc40_numcgm, z01_nome";
-		  $cliframe_alterar_excluir->legenda       = "ITENS LANÇADAS";
+		  $cliframe_alterar_excluir->legenda       = "FORNECEDOR LANÇADO";
 		  $cliframe_alterar_excluir->iframe_height = "160";
 		  $cliframe_alterar_excluir->iframe_width  = "100%";
 		  $cliframe_alterar_excluir->opcoes        = "3";

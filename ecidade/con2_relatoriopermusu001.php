@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -74,7 +74,7 @@ $db_botao = true;
 	<tr>
 	  <td colspan="4">
 	    <table>
-	    <?
+	    <?php
 	    $aux = new cl_arquivo_auxiliar;
 	    $aux->cabecalho  = "<strong>USUÁRIOS SELECIONADOS-</strong>";
 	    $aux->codigo     = "id_usuario";
@@ -104,7 +104,7 @@ $db_botao = true;
 	<tr>
 	  <td colspan="4">
 	    <table>
-	    <?
+	    <?php
 	    $aux = new cl_arquivo_auxiliar;
 	    $aux->cabecalho  = "<strong>DEPARTAMENTOS SELECIONADOS</strong>";
 	    $aux->codigo     = "coddepto";
@@ -133,7 +133,7 @@ $db_botao = true;
   <tr>
     <td nowrap align="right"><b>Situação dos Usuários:</b></td>  
     <td>
-      <?
+      <?php
          if (trim(@$tipo_usuario) == ""){
               $tipo_usuario = "1";
          }
@@ -149,31 +149,31 @@ $db_botao = true;
   </tr>
 	<tr>
 	  <td nowrap title="<?=@$Tnome_modulo?>" align="right">
-	    <?
+	    <?php
 	    db_ancora($Lnome_modulo,'js_pesquisamodulo(true)',"");
 	    ?>
 	  </td>
 	  <td colspan="3"> 
-	    <?
+	    <?php
 	    db_input('id_item',5,$Iid_item,true,'text',1,"onchange='js_pesquisamodulo(false);'")
 	    ?>
-	    <?
+	    <?php
 	    db_input('nome_modulo',40,$Inome_modulo,true,'text',3,"")
 	    ?>
 	  </td>
 	</tr>
 	<tr>
 	  <td nowrap title="<?=@$Tnomeinst?>" align="right">
-	    <?
+	    <?php
 	    db_ancora($Lnomeinst,'js_pesquisainstit(true)',"");
 	    ?>
 	  </td>
 	  <td colspan="3"> 
-	    <?
+	    <?php
 	    db_sel_instit(); // Carrega dados da instituição do usuário
 	    db_input('codigo',5,$Icodigo,true,'text',1,"onchange='js_pesquisainstit(false);'")
 	    ?>
-	    <?
+	    <?php
 	    db_input('nomeinst',40,$Inomeinst,true,'text',3,"");
 	    ?>
 	  </td>
@@ -183,7 +183,7 @@ $db_botao = true;
 	     <?=@$Lanousu?>
 	  </td>
 	  <td> 
-	    <?
+	    <?php
 	    $arr_anousu = Array();
             $anousu = db_getsession("DB_anousu");
 	    for($i=($anousu + 1); $i>($anousu - 10); $i--){
@@ -198,7 +198,7 @@ $db_botao = true;
 	    <strong>Inserir quebra:</strong>
 	  </td>
 	  <td>
-	    <?
+	    <?php
 	    $insquebra = "t";
 	    $arr_insquebra = Array("t"=>"Sim","f"=>"Não");
             db_select("insquebra", $arr_insquebra, true, 1);
@@ -209,7 +209,7 @@ $db_botao = true;
   <tr>
     <td nowrap align="right"><b>Tipo:</b></td>  
     <td>
-      <?
+      <?php
          if (trim(@$tipo_principal) == ""){
               $tipo_principal = "0";
          }
@@ -226,7 +226,7 @@ $db_botao = true;
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

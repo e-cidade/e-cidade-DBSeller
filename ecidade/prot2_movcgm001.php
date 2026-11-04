@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ function js_emite(){
        </tr>
        <tr>
           <td nowrap width="50%" colspan=2>
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Credores</strong>";
                  $aux->codigo = "id_usuario"; //chave de retorno da func
@@ -133,7 +133,7 @@ function js_emite(){
 	 </td>
       <tr>
          <td colspan=2 align='center'><b>Periodo:&nbsp;</b>
-	 <?
+	 <?php
 	 db_inputdata('data',@$dia,@$mes,@$ano,true,'text',1,"");
          echo " a ";
          db_inputdata('data1',@$dia2,@$mes2,@$ano2,true,'text',1,"");
@@ -148,7 +148,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

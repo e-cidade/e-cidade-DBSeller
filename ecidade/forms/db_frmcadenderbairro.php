@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,22 +45,22 @@ $clrotulo->label("db72_descricao");
        <?=@$Ldb73_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db73_sequencial',10,$Idb73_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb73_cadendermunicipio?>">
-       <?
+       <?php
        db_ancora(@$Ldb73_cadendermunicipio,"js_pesquisadb73_cadendermunicipio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db73_cadendermunicipio',10,$Idb73_cadendermunicipio,true,'text',$db_opcao," onchange='js_pesquisadb73_cadendermunicipio(false);'")
 ?>
-       <?
+       <?php
 db_input('db72_descricao',26,$Idb72_descricao,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('db72_descricao',26,$Idb72_descricao,true,'text',3,'')
        <?=@$Ldb73_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db73_descricao',40,$Idb73_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_input('db73_descricao',40,$Idb73_descricao,true,'text',$db_opcao,"")
        <?=@$Ldb73_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('db73_sigla',2,$Idb73_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -125,7 +125,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadenderbairro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

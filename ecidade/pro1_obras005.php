@@ -57,7 +57,7 @@ $clcriaabas = new cl_criaabas;
   <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td>
-          <?
+          <?php
           $clcriaabas->identifica = array("obras" => "Obras", "constr" => "Construções", "areas" => "Áreas Complementares");
           $clcriaabas->title = array("obras" => "Obras", "constr" => "Construções", "areas" => "Áreas Complementares");
           $clcriaabas->src = array(

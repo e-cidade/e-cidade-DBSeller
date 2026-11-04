@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_portariaassentaproc {
                  h34_protprocesso = int4 = Código do processo 
                  ";
    //funcao construtor da classe 
-   function cl_portariaassentaproc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariaassentaproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_portariaassentaproc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h34_sequencial = ($this->h34_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["h34_sequencial"]:$this->h34_sequencial);
        $this->h34_portariaassenta = ($this->h34_portariaassenta == ""?@$GLOBALS["HTTP_POST_VARS"]["h34_portariaassenta"]:$this->h34_portariaassenta);
@@ -77,7 +77,7 @@ class cl_portariaassentaproc {
      }
    }
    // funcao para inclusao
-   function incluir ($h34_sequencial){ 
+   public function incluir ($h34_sequencial){ 
       $this->atualizacampos();
      if($this->h34_portariaassenta == null ){ 
        $this->erro_sql = " Campo Portaria Assentada nao Informado.";
@@ -176,7 +176,7 @@ class cl_portariaassentaproc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($h34_sequencial=null) { 
+   public function alterar ($h34_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update portariaassentaproc set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_portariaassentaproc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($h34_sequencial=null,$dbwhere=null) { 
+   public function excluir ($h34_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h34_sequencial));
      }else{ 
@@ -334,7 +334,7 @@ class cl_portariaassentaproc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

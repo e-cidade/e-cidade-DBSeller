@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ $oRotuloCampo = new rotulocampo("descrdepto");
               <?=@$Lfa57_coddepto?>             
             </td>
             <td>
-               <?
+               <?php
                  $fa57_coddepto = db_getsession("DB_coddepto");
                  $descrdepto    = db_getsession("DB_nomedepto");
                  db_input("fa57_coddepto", 10, $Ifa57_coddepto, true, 'text');
@@ -87,7 +87,7 @@ $oRotuloCampo = new rotulocampo("descrdepto");
                 <legend>
                   <b><?=@str_replace(":","",$Lfa57_mensagem)?> 
                 </legend>
-                <?
+                <?php
                  db_textarea('fa57_mensagem', 5, 10, $Lfa57_mensagem, true, "text", 1); 
                 ?>
               </fieldset>
@@ -100,7 +100,7 @@ $oRotuloCampo = new rotulocampo("descrdepto");
     </center>
   </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"), 
         db_getsession("DB_anousu"), 

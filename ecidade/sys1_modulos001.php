@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -131,7 +131,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_iniciar()" >
-<?
+<?php
 $cl_modulo = new rotulo("db_sysmodulo");
 $cl_modulo->label(); 
 ?>
@@ -149,7 +149,7 @@ $cl_modulo->label();
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td align="center" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
 	  
 	     $sql = "SELECT codmod    as db_codmod,
@@ -182,7 +182,7 @@ $cl_modulo->label();
           <tr> 
             <td nowrap title="<?=$Tdataincl?>"><?=$Ldataincl?></td>
             <td title="<?=$Tdataincl?>"> 
-              <?
+              <?php
 	            include(modification("dbforms/db_funcoes.php"));
 	            $dataincl_dia = date("d");
 	            $dataincl_mes = date("m");
@@ -196,7 +196,7 @@ $cl_modulo->label();
               <strong>Ativo:</strong>
             </td>
 	          <td>
-	          <?
+	          <?php
 	            $xx = array("t"=>"SIM","f"=>"NAO");
 	            db_select('ativo',$xx,true,1,"");
             ?>
@@ -204,20 +204,20 @@ $cl_modulo->label();
           </tr>
         </table>
         </fieldset>
-        <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-        <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-        <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+        <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+        <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+        <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>> 
         <input name="procurar"onClick="Botao = 'procurar'" accesskey="p" type="submit" id="procurar2" value="Procurar">			
-		    <input type="button"  onClick="location.href='sys3_tabelas001.php?<? echo base64_encode("codmod=$retorno&manutabela=true") ?>'" value="Ver Tabelas" <? echo !isset($retorno)?"disabled":"" ?>>
+		    <input type="button"  onClick="location.href='sys3_tabelas001.php?<?php echo base64_encode("codmod=$retorno&manutabela=true") ?>'" value="Ver Tabelas" <?php echo !isset($retorno)?"disabled":"" ?>>
 	      <input type="hidden" name="codmod" value="<?=@$codmod?>">
       </form> 
-      <?
+      <?php
 	  } // fim do else do if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
     ?>
     </td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>

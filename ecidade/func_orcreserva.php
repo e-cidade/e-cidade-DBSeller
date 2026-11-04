@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -31,8 +31,10 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcreserva_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"]);
+
 $clorcreserva = new cl_orcreserva;
 $clorcreserva->rotulo->label("o80_codres");
 $clorcreserva->rotulo->label("o80_descr");
@@ -52,15 +54,15 @@ $clorcreserva->rotulo->label("o80_coddot");
           <form name="form2" method="post" action="" >
             <tr>
               <td width="4%" align="right" nowrap title="<?=$To80_codres?>"><?=$Lo80_codres?></td>
-              <td width="96%" align="left" nowrap><? db_input("o80_codres",8,$Io80_codres,true,"text",4,"","chave_o80_codres"); ?></td>
+              <td width="96%" align="left" nowrap><?php db_input("o80_codres",8,$Io80_codres,true,"text",4,"","chave_o80_codres"); ?></td>
             </tr>
             <tr>
               <td width="4%" align="right" nowrap title="<?=$To80_descr?>"><?=$Lo80_descr?></td>
-              <td width="96%" align="left" nowrap><? db_input("o80_descr",40,$Io80_descr,true,"text",4,"","chave_o80_descr");?></td>
+              <td width="96%" align="left" nowrap><?php db_input("o80_descr",40,$Io80_descr,true,"text",4,"","chave_o80_descr");?></td>
             </tr>
             <tr>
               <td width="4%" align="right" nowrap title="<?=$To80_coddot?>"><?=$Lo80_coddot?></td>
-              <td width="96%" align="left" nowrap><? db_input("o80_coddot",8,$Io80_coddot,true,"text",4,"","chave_o80_coddot"); ?></td>
+              <td width="96%" align="left" nowrap><?php db_input("o80_coddot",8,$Io80_coddot,true,"text",4,"","chave_o80_coddot"); ?></td>
             </tr>
             <tr>
               <td colspan="2" align="center">
@@ -75,8 +77,9 @@ $clorcreserva->rotulo->label("o80_coddot");
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
-
+        <?php
+        $anousu = db_getsession('DB_anousu');
+        $instit = db_getsession('DB_instit');
         if(!isset($pesquisa_chave)){
           if(isset($campos)==false){
             if(file_exists("funcoes/db_func_orcreserva.php")==true){
@@ -93,7 +96,7 @@ $clorcreserva->rotulo->label("o80_coddot");
 						 ( select o81_codres from orcreservasup
 						   union
 						   select o83_codres from orcreservaaut
-						  ) and o80_anousu = ".db_getsession('DB_anousu'));
+						  ) and o80_anousu = $anousu and o58_instit = $instit ");
 
           }else if(isset($chave_o80_descr) && (trim($chave_o80_descr)!="") ){
             $sql = $clorcreserva->sql_query_reservas("",
@@ -104,7 +107,7 @@ $clorcreserva->rotulo->label("o80_coddot");
 						 ( select o81_codres from orcreservasup
 						   union
 						   select o83_codres from orcreservaaut
-						  ) and o80_anousu = ".db_getsession('DB_anousu'));
+						  ) and o80_anousu = $anousu and o58_instit = $instit ");
           }else if(isset($chave_o80_coddot) && (trim($chave_o80_coddot)!="") ){
             $sql = $clorcreserva->sql_query_reservas("",
               $campos,
@@ -114,7 +117,7 @@ $clorcreserva->rotulo->label("o80_coddot");
 						 ( select o81_codres from orcreservasup
 						   union
 						   select o83_codres from orcreservaaut
-              ) and o80_anousu = ".db_getsession('DB_anousu'));
+              ) and o80_anousu = $anousu and o58_instit = $instit");
           }else{
             $sql = $clorcreserva->sql_query_reservas("",
               $campos,
@@ -123,15 +126,14 @@ $clorcreserva->rotulo->label("o80_coddot");
 					   ( select o81_codres from orcreservasup
 					     union
 					     select o83_codres from orcreservaaut
- 					     ) and o80_anousu = ".db_getsession('DB_anousu'));
+ 					     ) and o80_anousu = $anousu and o58_instit = $instit ");
           }
 
           /* [Extensão] - Filtro da Despesa */
 
-          if ($_GET['flagAlterarDotacao']) {
+          if (isset($_GET['flagAlterarDotacao']) && $_GET['flagAlterarDotacao']) {
             $funcao_js = '';
           }
-
           db_lovrot($sql,15,"()","",$funcao_js);
 
         }else{
@@ -144,12 +146,10 @@ $clorcreserva->rotulo->label("o80_coddot");
 						     ( select o81_codres from orcreservasup
 					               union
 					               select o83_codres from orcreservaaut
-						      ) and o80_anousu = ".db_getsession('DB_anousu'));
+						      ) and o80_anousu = $anousu and o58_instit = $instit ");
 
 
             /* [Extensão] - Filtro da Despesa - Parte 2 */
-
-
 
             $result = $clorcreserva->sql_record($sql);
             if($clorcreserva->numrows!=0){
@@ -168,14 +168,6 @@ $clorcreserva->rotulo->label("o80_coddot");
   </table>
   </body>
   </html>
-<?
-if(!isset($pesquisa_chave)){
-  ?>
-  <script>
-  </script>
-<?
-}
-?>
 <script type="text/javascript">
 (function() {
   var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');

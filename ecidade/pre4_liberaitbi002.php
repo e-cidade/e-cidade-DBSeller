@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 <table border="0" cellpadding="10" cellspacing="0">
 <tr><td>
 <div align="left" class="observ">
-<?
+<?php
 $result = db_query("select obs from db_itbi where id_itbi = $itbi");
 echo str_replace("\n","<br>",pg_result($result,0,0));
 ?>

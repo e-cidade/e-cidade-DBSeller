@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -185,7 +185,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                 <td>
                     <fieldset>
                         <table border="0">
-                            <?
+                            <?php
 
                             db_fieldsmemory(db_query("select munic, uf from db_config where codigo = " . db_getsession("DB_instit")),
                                 0);
@@ -220,10 +220,10 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                     <table width="50%" border="0">
                         <tr>
                             <td width="39%" align="center" title="<?= $TDBtxt1 ?>" valign="middle">
-                                <? //=$LDBtxt1?>
+                                <?php //=$LDBtxt1?>
                             </td>
                             <td width="61%" align="center" valign="middle" title="<?= $TDBtxt5 ?>">
-                                <? //=$LDBtxt5?>
+                                <?php //=$LDBtxt5?>
                             </td>
                         </tr>
                         <tr align="center" valign="middle">
@@ -238,7 +238,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_ender ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z05_sequencia', 5, $Iz05_sequencia, true, 'hidden',
                                                     $db_opcao);
                                                 db_input('j14_codigo', 5, $Ij14_codigo, true, 'hidden', $db_opcao);
@@ -252,12 +252,12 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                             </td>
                                             <td width="71%" nowrap>
                                                 <a name="AN3">
-                                                    <?
+                                                    <?php
                                                     db_input('z01_numero', 8, $Iz01_numero, true, 'text', $db_opcao);
                                                     ?>
                                                     &nbsp;
                                                     <?= @$Lz01_compl ?>
-                                                    <?
+                                                    <?php
                                                     db_input('z01_compl', 10, $Iz01_compl, true, 'text', $db_opcao);
                                                     ?>
                                                 </a>
@@ -268,7 +268,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_munic ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_munic', 20, $Iz01_munic, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -278,7 +278,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_uf ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_uf', 2, $Iz01_uf, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -288,7 +288,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_bairro ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_bairro', 25, $Iz01_uf, true, 'text', $db_opcao);
                                                 db_input('j13_codi', 6, $Ij13_codi, true, 'hidden', 1);
                                                 ?>
@@ -299,7 +299,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_cep ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_cep', 9, $Iz01_cep, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -309,7 +309,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_telef ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_telef', 12, $Iz01_telef, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -319,7 +319,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_telcel ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_telcel', 12, $Iz01_telcel, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -329,7 +329,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_fax ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_fax', 12, $Iz01_fax, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -339,7 +339,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_email ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_email', 30, $Iz01_email, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -349,7 +349,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_cxpostal ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_cxpostal', 10, $Iz01_cxpostal, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -368,7 +368,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_endcon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_endcon', 40, $Iz01_endcon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -378,11 +378,11 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_numcon ?>
                                             </td>
                                             <td width="71%" nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_numcon', 8, $Iz01_numcon, true, 'text', $db_opcao);
                                                 ?>
                                                 <?= @$Lz01_comcon ?>
-                                                <?
+                                                <?php
                                                 db_input('z01_comcon', 10, $Iz01_comcon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -392,7 +392,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_muncon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_muncon', 20, $Iz01_muncon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -402,7 +402,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_ufcon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_ufcon', 2, $Iz01_ufcon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -412,7 +412,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_baicon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_baicon', 25, $Iz01_baicon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -422,7 +422,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_cepcon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_cepcon', 9, $Iz01_cepcon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -432,7 +432,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_telcon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_telcon', 12, $Iz01_telcon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -442,7 +442,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_celcon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_celcon', 12, $Iz01_celcon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -452,7 +452,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_emailc ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_emailc', 30, $Iz01_emailc, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -462,7 +462,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <?= @$Lz01_cxposcon ?>
                                             </td>
                                             <td nowrap>
-                                                <?
+                                                <?php
                                                 db_input('z01_cxposcon', 10, $Iz01_cxposcon, true, 'text', $db_opcao);
                                                 ?>
                                             </td>
@@ -483,12 +483,12 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                 <table>
                                                     <tr>
                                                         <td align='left' width="40%">
-                                                            <?
+                                                            <?php
                                                             echo $Lz01_login;
                                                             ?>
                                                         </td>
                                                         <td>
-                                                            <?
+                                                            <?php
                                                             $cldb_usuarios = new cl_db_usuarios;
                                                             $result = $cldb_usuarios->sql_record($cldb_usuarios->sql_query_file($z01_login,
                                                                 'nome'));
@@ -509,7 +509,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                             <?= @$Lz01_cadast ?>
                                                         </td>
                                                         <td width="96%" nowrap>
-                                                            <?
+                                                            <?php
                                                             db_inputdata('z01_cadast', @$z01_cadast_dia,
                                                                 @$z01_cadast_mes, @$z01_cadast_ano, true, 'text', 3);
                                                             ?>
@@ -520,7 +520,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                             <?= @$Lz01_ultalt ?>
                                                         </td>
                                                         <td width="96%" nowrap>
-                                                            <?
+                                                            <?php
                                                             db_inputdata('z01_cadast', @$z01_ultalt_dia,
                                                                 @$z01_ultalt_mes, @$z01_ultalt_ano, true, 'text', 3);
                                                             ?>
@@ -530,7 +530,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                             </td>
                                             <td align='left' width="53%">
 
-                                                <? if (isset($lcgmalt) && $lcgmalt == "true") { ?>
+                                                <?php if (isset($lcgmalt) && $lcgmalt == "true") { ?>
 
                                                     <fieldset>
                                                         <legend>
@@ -542,7 +542,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                                     <?= @$Lz05_login_alt ?>
                                                                 </td>
                                                                 <td>
-                                                                    <?
+                                                                    <?php
                                                                     $result = $cldb_usuarios->sql_record($cldb_usuarios->sql_query_file($z05_login_alt,
                                                                         'nome as nome_alt'));
                                                                     $numrowscgm = $cldb_usuarios->numrows;
@@ -559,7 +559,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                                     <?= @$Lz05_data_alt ?>
                                                                 </td>
                                                                 <td>
-                                                                    <?
+                                                                    <?php
                                                                     db_inputdata("z05_data_alt", @$z05_data_alt_dia,
                                                                         @$z05_data_alt_mes, @$z05_data_alt_ano, true,
                                                                         'text', 3);
@@ -571,7 +571,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                                     <?= @$Lz05_hora_alt ?>
                                                                 </td>
                                                                 <td>
-                                                                    <?
+                                                                    <?php
                                                                     db_input("z05_hora_alt", 10, $Iz05_hora_alt, true,
                                                                         'text', 3);
                                                                     ?>
@@ -582,7 +582,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                                     <?= @$Lz05_tipo_alt ?>
                                                                 </td>
                                                                 <td>
-                                                                    <?
+                                                                    <?php
                                                                     db_input("tipo_alt", 10, "", true, 'text', 3);
                                                                     ?>
                                                                 </td>
@@ -590,7 +590,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                                         </table>
                                                     </fieldset>
 
-                                                <? } ?>
+                                                <?php } ?>
 
                                             </td>
                                         </tr>
@@ -600,7 +600,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                         </tr>
                         <tr align="center" valign="middle">
                             <td height="30" colspan="2" nowrap>
-                                <?
+                                <?php
                                 // CODIGO ADICIONADO PARA ATUALIZAR TELA DO CADASTRO DO CGM
                                 // PASSAR NA VARIÁVEL executalocation QUAL ARQUIVO DEVERÁ ABRIR
 
@@ -617,12 +617,12 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                        onclick="js_imprimir(<?= $numcgm ?>);">
                                 <input name="documentos" type="button" id="documentos" value="Documentos"
                                        onclick="js_abreDocumentos(<?= $numcgm ?>, '<?= $z01_nomecomple ?>');">
-                                <?
+                                <?php
                                 if ($socios == true) {
                                     ?>
                                     <input name="socios" type="button" id="socios" value="Sócios"
                                            onclick="js_socios(<?= $numcgm ?>);">
-                                    <?
+                                    <?php
                                 }
 
                                 $rsVerificaAlt = $clcgmalt->sql_record($clcgmalt->sql_query_file(null, "*", null,
@@ -631,14 +631,14 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                     ?>
                                     <input name="alteracoes" type="button" id="alteracoes" value="Alterações"
                                            onclick="js_pesquisacgmalt(<?= $numcgm ?>);">
-                                    <?
+                                    <?php
                                 }
 
                                 if (isset($lcgmorig) && $lcgmorig == "true") {
                                     ?>
                                     <input name="original" type="button" id="original" value="Original"
                                            onclick="js_pesquisacgmoriginal(<?= $numcgm ?>);">
-                                    <?
+                                    <?php
                                 }
                                 ?>
                             </td>
@@ -651,7 +651,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
 </center>
 </body>
 </html>
-<?
+<?php
 
 $func_nome = new janela('func_nome', '');
 $func_nome->posX = 1;

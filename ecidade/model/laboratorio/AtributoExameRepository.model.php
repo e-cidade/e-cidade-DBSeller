@@ -62,6 +62,36 @@ class AtributoExameRepository
     }
 
     /**
+     * @param integer $codigoExame
+     * @return array
+     * @throws Exception
+     */
+    public static function getByCodigoExame($codigoExame)
+    {
+        $atributos = [];
+
+        $dao = new cl_lab_atributo();
+        $sql = $dao->sql_query_recursivo('', 'la25_i_codigo', 'la25_c_estrutural', "la42_i_exame = {$codigoExame}");
+        $rs = $dao->sql_record($sql);
+
+        if (!$rs) {
+            throw new Exception('Erro ao buscar atributos do exame.');
+        }
+
+        foreach (\db_utils::getCollectionByRecord($rs) as $atributo) {
+            if (!array_key_exists($atributo->la25_i_codigo, AtributoExameRepository::getInstance()->aItens)) {
+                AtributoExameRepository::getInstance()->aItens[$atributo->la25_i_codigo] = new AtributoExame(
+                    $atributo->la25_i_codigo
+                );
+            }
+
+            $atributos[] = AtributoExameRepository::getInstance()->aItens[$atributo->la25_i_codigo];
+        }
+
+        return $atributos;
+    }
+
+    /**
      * Retorna a instancia da classe
      * @return AtributoExameRepository
      */
@@ -131,5 +161,36 @@ class AtributoExameRepository
 
     private function __clone()
     {
+    }
+
+    /**
+     * Retorna uma instancia do AtributoExame pelo Codigo
+     * @param array $atributos
+     * @return AtributoExame[]
+     * @throws \Exception
+     */
+    public static function getVariosAtributos($atributos)
+    {
+        $arrayAtributos = [];
+        $atributos = implode(',', $atributos);
+
+        $dao = new cl_lab_atributo();
+        $where = "la25_i_codigo in ({$atributos})";
+        $order = 'la25_i_codigo';
+
+        $sql = $dao->sql_query(null, '*', $order, $where);
+        $resultadoSql = db_query($sql);
+
+        if (!$resultadoSql) {
+            throw new Exception('Erro ao buscar atributos!');
+        }
+
+        $atributos = db_utils::getCollectionByRecord($resultadoSql);
+
+        foreach ($atributos as $atributo) {
+            $arrayAtributos[$atributo->la25_i_codigo] = AtributoExame::fromState((array)$atributo);
+        }
+
+        return $arrayAtributos;
     }
 }

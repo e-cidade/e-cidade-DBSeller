@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ if( $result2  ){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
-   <?
+   <?php
    $clcriaabas->abas_top   = "50";
    $clcriaabas->identifica = array("b1"=>"Vínculo com o SUS","b2"=>"Vigilância Sanitária");
    $clcriaabas->sizecampo  = array("b1"=>"30","b2"=>"30");

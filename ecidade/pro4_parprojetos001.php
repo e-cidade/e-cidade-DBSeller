@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -149,10 +149,10 @@ $db_botao = true;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
-				<?
+				<?php
 					include(modification("forms/db_frmparprojetos.php"));
 				?>
-	<?
+	<?php
 	db_menu(db_getsession("DB_id_usuario"),
 	        db_getsession("DB_modulo"),
 	        db_getsession("DB_anousu"),
@@ -161,7 +161,7 @@ $db_botao = true;
 	?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clparprojetos->erro_status=="0"){
     $clparprojetos->erro(true,false);

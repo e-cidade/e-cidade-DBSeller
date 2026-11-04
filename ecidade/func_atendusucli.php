@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clatendusucli->rotulo->label("at80_id_usuario");
               <?=$Lat80_codatendcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at80_codatendcli",10,$Iat80_codatendcli,true,"text",4,"","chave_at80_codatendcli");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clatendusucli->rotulo->label("at80_id_usuario");
               <?=$Lat80_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at80_id_usuario",10,$Iat80_id_usuario,true,"text",4,"","chave_at80_id_usuario");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clatendusucli->rotulo->label("at80_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = "";
       if(isset($nrecebe)){
 	if((isset($chave_at80_codatendcli) && (trim($chave_at80_codatendcli)!="")) 
@@ -130,12 +130,12 @@ $clatendusucli->rotulo->label("at80_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

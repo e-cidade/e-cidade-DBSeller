@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -60,7 +60,7 @@ $clarrematric  = new cl_arrematric;
 $cllistadoc    = new cl_listadoc;
 $clcadconvenio = new cl_cadconvenio;
 $cldb_config   = new cl_db_config;
- 
+
 db_postmemory($HTTP_SERVER_VARS);
 
 $rsCadConvenio = $clcadconvenio->sql_record($clcadconvenio->sql_query_arrecadacao(null,"ar11_sequencial",null," ar11_instit = ".db_getsession('DB_instit')));
@@ -87,18 +87,18 @@ if (isset($quantidade)&&$quantidade!=""){
   $limit = "limit $quantidade";
 }
 if($ordem == "endereco"){
-   $orderby = "  j23_uf, j23_ender, j23_numero, j23_compl "; 
-}elseif($ordem == "alfabetica"){   
-   $orderby = " z01_nome "; 
-}elseif($ordem == "bairroender"){   
-   $orderby = " j23_bairro, j23_ender, j23_numero, j23_compl "; 
+   $orderby = "  j23_uf, j23_ender, j23_numero, j23_compl ";
+}elseif($ordem == "alfabetica"){
+   $orderby = " z01_nome ";
+}elseif($ordem == "bairroender"){
+   $orderby = " j23_bairro, j23_ender, j23_numero, j23_compl ";
 }else{
    $orderby = " j86_iptucadzonaentrega ";
 }
 if(isset($tipo) && $tipo == 'territorial'){
-   // $wheretipo = " and iptuconstr.j39_matric is null ";  
+   // $wheretipo = " and iptuconstr.j39_matric is null ";
 }elseif(isset($tipo) && $tipo == 'predial'){
- //   $wheretipo = " and iptuconstr.j39_matric is not null ";  
+ //   $wheretipo = " and iptuconstr.j39_matric is not null ";
 }
 
 $sql  = " select j20_matric,";
@@ -114,9 +114,9 @@ $sql .= "        j13_descr as j23_bairro, ";
 $sql .= "        substr(fc_iptuender,156,02) as j23_uf, ";
 $sql .= "        substr(fc_iptuender,159,08) as j23_cep, ";
 $sql .= "     	 j20_matric, ";
-$sql .= "     	 j34_setor, ";    
-$sql .= "     	 j34_quadra, ";    
-$sql .= "     	 j34_lote, ";    
+$sql .= "     	 j34_setor, ";
+$sql .= "     	 j34_quadra, ";
+$sql .= "     	 j34_lote, ";
 $sql .= "  	 	 j20_numpre ";
 $sql .= "   from (select j23_matric, ";
 $sql .= "                j23_vlrter, ";
@@ -125,27 +125,27 @@ $sql .= "                j86_iptucadzonaentrega, ";
 $sql .= "                z01_nome, ";
 $sql .= "                j01_idbql, ";
 $sql .= "                fc_iptuender(j23_matric), ";
-$sql .= "             	 j20_matric, ";    
-$sql .= "             	 j34_setor, ";    
-$sql .= "             	 j34_quadra, ";    
-$sql .= "             	 j34_lote, ";    
+$sql .= "             	 j20_matric, ";
+$sql .= "             	 j34_setor, ";
+$sql .= "             	 j34_quadra, ";
+$sql .= "             	 j34_lote, ";
 $sql .= "             	 j20_numpre, ";
 $sql .= "             	 ruas.*, ";
 $sql .= "             	 iptuconstr.*, ";
 $sql .= "             	 bairro.* ";
 $sql .= "           from iptucalc  ";
 $sql .= "                inner join iptunump            on iptunump.j20_matric           = iptucalc.j23_matric ";
-$sql .= "                                              and iptunump.j20_anousu           = iptucalc.j23_anousu ";   
+$sql .= "                                              and iptunump.j20_anousu           = iptucalc.j23_anousu ";
 $sql .= "                inner join iptubase            on iptubase.j01_matric           = iptucalc.j23_matric ";
 $sql .= "                inner join iptuconstr          on iptubase.j01_matric           = iptuconstr.j39_matric ";
 $sql .= "                                              and iptuconstr.j39_idprinc is true ";
-$sql .= "                inner join ruas                on iptuconstr.j39_codigo         = ruas.j14_codigo "; 
+$sql .= "                inner join ruas                on iptuconstr.j39_codigo         = ruas.j14_codigo ";
 $sql .= "                inner join lote 		            on lote.j34_idbql                = iptubase.j01_idbql ";
 $sql .= "                inner join bairro              on bairro.j13_codi               = lote.j34_bairro ";
 $sql .= "                inner join cgm                 on cgm.z01_numcgm                = iptubase.j01_numcgm ";
 $sql .= "                left  join iptumatzonaentrega 	on iptumatzonaentrega.j86_matric = iptubase.j01_matric ";
 $sql .= "         where iptucalc.j23_anousu = $anousu $wheretipo $limit ) as x ";
-$sql .= " order by $orderby "; 
+$sql .= " order by $orderby ";
 
 $rsUnica 	  = db_query($sql) or die($sql);
 $numrowsunica = pg_numrows($rsUnica);
@@ -189,25 +189,25 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   $pdf2->iptz01_cep      = $z01_cep;
   $pdf2->iptj43_cep      = $j23_cep;
   $pdf2->iptdataemis     = date("d/m/Y", db_getsession("DB_datausu"));
-  
-  $sql = "select * 
-  			from arrematric 
-	             inner join arrecad on arrecad.k00_numpre = arrematric.k00_numpre 
-		   where k00_matric = $matric 
+
+  $sql = "select *
+  			from arrematric
+	             inner join arrecad on arrecad.k00_numpre = arrematric.k00_numpre
+		   where k00_matric = $matric
 			 and k00_dtvenc < '".date("Y-m-d", db_getsession("DB_datausu"))."' limit 1";
 
   $rsResulant = db_query($sql);
   $numlin = pg_numrows($rsResulant);
-  
+
   if ($numlin > 0) {
     $pdf2->iptdebant = "Há Débitos Anteriores, favor procurar Setor de Dívida Ativa";
   } else {
     $pdf2->iptdebant = "";
   }
-  
+
 
   unset ($resultpro);
-  
+
   $vt = $HTTP_POST_VARS;
   $tam = sizeof($vt);
   reset($vt);
@@ -217,9 +217,9 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     $numpres .= "N".$vt[key($vt)];
     next($vt);
   }
-  
-  $numpres = split("N", $numpres);
-  
+
+  $numpres =explode("N", $numpres);
+
   $unica = false;
   if (sizeof($numpres) < 2) {
     $numpres = array ("0" => "0", "1" => $numpre_unica.'P000');
@@ -230,19 +230,19 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     }
   }
   for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
-    $codigos = split("P", $numpres[$volta]);
+    $codigos =explode("P", $numpres[$volta]);
   }
-  
+
   $resultunica = db_query("select j23_anousu from iptucalc inner join iptunump on j20_anousu = j23_anousu and j20_matric = j23_matric where j20_numpre = $numpre_unica");
   db_fieldsmemory($resultunica, 0);
   $pdf2->iptj23_anousu = $j23_anousu;
-  
+
   $resultunica = db_query("select * from recibounica where k00_numpre = $numpre_unica");
   if (pg_numrows($resultunica)){
     db_fieldsmemory($resultunica, 0);
     $vencunica = db_formatar($k00_dtvenc, "d");
   }
-  
+
   if ($unica == 't') {
 
     $sql = " select r.k00_numpre,r.k00_dtvenc as dtvencunic, r.k00_dtoper as dtoperunic,r.k00_percdes,
@@ -260,19 +260,19 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
       $uvlrmulta    = substr($fc_calcula,40,13);
       $uvlrdesconto = substr($fc_calcula,53,13);
       $utotal       = @$uvlrcor+@$uvlrjuro+@$uvlrmulta-@$uvlrdesconto;
-      
+
       $pdf2->iptk00_percdes = $k00_percdes;
       $uvlrcor = db_formatar($uvlrcor, 'f');
       $pdf2->iptuvlrcor = $uvlrcor;
-      
+
       $vlrhis = db_formatar($uvlrhis, 'f');
-      
+
       $vlrdesconto = db_formatar($uvlrdesconto, 'f');
       $pdf2->iptuvlrdesconto = $vlrdesconto;
-      
+
       $vlrtotal = db_formatar($utotal, 'f');
       $vlrbar = db_formatar(str_replace('.', '', str_pad(number_format($utotal, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11, 'e');
-      
+
       $pdf2->ipttotal = $vlrtotal;
 
       try {
@@ -283,9 +283,9 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
         db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
   	    exit;
 	  }
-	  
+
       $dtvencunic = db_formatar($dtvencunic, 'd');
-      
+
       $pdf2->iptcodigo_barras = $codigo_barras;
       $pdf2->iptlinha_digitavel = $linha_digitavel;
     }
@@ -293,7 +293,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   }
   $sql = "select sum(j22_valor) as vlredi
            from iptucale
-          where j22_anousu = $j23_anousu 
+          where j22_anousu = $j23_anousu
             and j22_matric = $matric";
   $sqlres = db_query($sql);
   if (pg_numrows($sqlres) > 0) {
@@ -312,7 +312,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   }
   $j23_vlrter += $vlredi;
   $pdf2->iptj23_vlrter = db_formatar($j23_vlrter, 'f');
-  
+
   $pdf2->imprime();
   if ($iunicaxxx == 500) {
     $inipag = ($iunica-$iunicaxxx)+1;
@@ -327,7 +327,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     $pdf2 = new db_impcarne($pdf, $impmodelo);
     $iunicaxxx = 0;
   }
-}	
+}
 
 $inipag        = ($iunica-$iunicaxxx)+1;
 $fimpag        = $iunica+1;
@@ -337,6 +337,6 @@ $pdf2->objpdf->Output($arq,false,true);
 echo "<script>";
 echo "  listagem = '$nomearquivos';";
 echo "  parent.js_montarlista(listagem,'form1');";
-echo "</script>";	
+echo "</script>";
 
 ?>

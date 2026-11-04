@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_logsacessa->rotulo->label("data");
               <?=$Lcodsequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codsequen",6,$Icodsequen,true,"text",4,"","chave_codsequen");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_logsacessa->rotulo->label("data");
               <?=$Ldata?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("data",8,$Idata,true,"text",4,"","chave_data");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_logsacessa->rotulo->label("data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_logsacessa.php")==true){
@@ -122,12 +122,12 @@ $cldb_logsacessa->rotulo->label("data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

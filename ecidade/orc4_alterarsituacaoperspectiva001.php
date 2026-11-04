@@ -65,7 +65,7 @@ $oRotuloPPAVersao->label();
                 <b> Atual:</b>
               </td>
               <td>
-               <?
+               <?php
                 db_input('o119_sequencial', 10, $Io119_versao, true, 'hidden', 3, "");
                 db_input('o119_versao', 10, $Io119_versao, true, 'text', 3, "");
                ?>
@@ -78,7 +78,7 @@ $oRotuloPPAVersao->label();
                 <?=@$Lo119_datainicio?>
               </td>
               <td>
-                <?
+                <?php
                 db_inputdata('o119_datainicio', null, null, null, true, 'text', 3, "");
                 ?>
               </td>
@@ -90,7 +90,7 @@ $oRotuloPPAVersao->label();
                 <?=@$Lo119_datatermino?>
               </td>
               <td>
-                <?
+                <?php
                 db_inputdata('o119_datatermino', null, null, null, true, 'text', 3, "");
                 ?>
               </td>
@@ -102,7 +102,7 @@ $oRotuloPPAVersao->label();
                 <?=@$Lo119_ativo?>
               </td>
               <td>
-              <?
+              <?php
               db_inputdata('o119_ativo', null, null, null, true, 'text', 3, "");
               ?>
               </td>
@@ -129,7 +129,7 @@ $oRotuloPPAVersao->label();
     </center>
   </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script language="javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -325,7 +325,7 @@ if (isset($incluir) || isset($alterar)) {
     } else {
 
       if ($s152_i_login      == DB_getsession("DB_id_usuario") &&
-          s152_d_datasistema == date("Y-m-d",db_getsession("DB_datausu"))
+          $s152_d_datasistema == date("Y-m-d",db_getsession("DB_datausu"))
          ) {
 
         $oDaoSauTriagemAvulsa->s152_i_codigo = $s152_i_codigo;
@@ -380,7 +380,7 @@ if (isset($incluir) || isset($alterar)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <fieldset style='width: 100%;'> <legend><b>Triagem Avulsa</b></legend>
-        <?
+        <?php
           require_once(modification("forms/db_frmsau_triagemavulsa.php"));
         ?>
       </fieldset>
@@ -389,7 +389,7 @@ if (isset($incluir) || isset($alterar)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 if (!isset($lFormTriagem) || $lFormTriagem != 'true') {
 
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
@@ -403,7 +403,7 @@ if (!isset($lFormTriagem) || $lFormTriagem != 'true') {
 <script>
   js_tabulacaoforms("form1", "s152_i_pressaosistolica", true, 1, "s152_i_pressaosistolica", true);
 </script>
-<?
+<?php
 echo "<script type=\"text/javascript\">";
 if ($lProfSaude == false) {
   echo "  alert('Usuário logado não é um profissional da saúde ou não está vinculado ao departamento.');";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
-  <?
+  <?php
  if(!isset($HTTP_POST_VARS["b_estrut"]) && !isset($HTTP_POST_VARS["b_campos"])) { ?>
     <form method="post" name="estrut">                
         <table border="0" cellpadding="0" cellspacing="0">
@@ -86,7 +86,7 @@ input {
           </tr>
         </table>
 	</form>
-<?
+<?php
 }else if(!isset($HTTP_POST_VARS["b_estrut"])){ 
 ?>
     <form method="post" name="estrut">                
@@ -107,7 +107,7 @@ input {
 	    <hr>
             </td>
           </tr>
-	  <?
+	  <?php
 	  $result = db_query("select c.*
 	                     from db_sysarqcamp a
 			          inner join db_sysarquivo n on n.codarq = a.codarq
@@ -139,7 +139,7 @@ input {
           </tr>
         </table>
 	</form>
-<?
+<?php
 } else {
   db_postmemory($HTTP_POST_VARS);
   // Tabelas
@@ -172,7 +172,7 @@ input {
 	  fputs($fd,'include(modification("libs/db_sessoes.php"));'."\n");
 	  fputs($fd,'include(modification("libs/db_usuariosonline.php"));'."\n");
 	  fputs($fd,'include(modification("dbforms/db_funcoes.php"));'."\n");
-      fputs($fd,'include(modification("classes/db_'.trim(pg_result($result,$i,'nomearq'))).'_classe.php");'."\n");
+      fputs($fd,'include(modification("classes/db_'.trim(pg_result($result,$i,'nomearq')).'_classe.php");'."\n");
       fputs($fd,'db_postmemory($HTTP_POST_VARS);'."\n");
       fputs($fd,'parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);'."\n");
       fputs($fd,'$cl'.trim(pg_result($result,$i,'nomearq')).' = new cl_'.trim(pg_result($result,$i,'nomearq')).';'."\n");
@@ -252,7 +252,7 @@ input {
       fputs($fd,'      if(!isset($pesquisa_chave)){'."\n");
       fputs($fd,'        if(isset($campos)==false){'."\n");
       fputs($fd,'           if(file_exists("funcoes/db_func_'.trim(pg_result($result,$i,'nomearq')).'.php")==true){'."\n");
-      fputs($fd,'             include(modification("funcoes/db_func_'.trim(pg_result($result,$i,'nomearq'))).'.php");'."\n");
+      fputs($fd,'             include(modification("funcoes/db_func_'.trim(pg_result($result,$i,'nomearq')).'.php");'."\n");
       fputs($fd,'           }else{'."\n");
       
       if($Npk>0){
@@ -414,7 +414,7 @@ input {
 	</td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>

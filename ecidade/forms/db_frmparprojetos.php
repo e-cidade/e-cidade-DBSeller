@@ -1,7 +1,7 @@
-<?
+<?php
     /*
      *     E-cidade Software Publico para Gestao Municipal
-     *  Copyright (C) 2009  DBselller Servicos de Informatica
+     *  Copyright (C) 2009  DBSeller Servicos de Informatica
      *                            www.dbseller.com.br
      *                         e-cidade@dbseller.com.br
      *
@@ -43,7 +43,7 @@
                     <?=@$Lob21_anousu?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob21_anousu',10,$Iob21_anousu,true,'text',3,"")
                     ?>
                 </td>
@@ -58,7 +58,7 @@
                                     <?=@$Lob21_numeracaohabite?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_select('ob21_numeracaohabite', $aTipoHabiteSe, true, $db_opcao, "onChange='js_mudaNumero(this.value);'");
                                     ?>
                                 </td>
@@ -68,7 +68,7 @@
                                     <?=@$Lob21_ultnumerohabite?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('ob21_ultnumerohabite', 10, $Iob21_ultnumerohabite, true, 'text'  , $db_opcaoNumero, "");
                                         db_input('ultnumerohabite'     , 10, ""                    , true, 'hidden', $db_opcao      , "");
                                     ?>
@@ -81,14 +81,14 @@
                         <table class="form-container">
                             <tr title="<?=$Tob21_grupotipoocupacao;?>">
                                 <td width="140px;">
-                                    <?
+                                    <?php
                                         $sFuncaoJSAncora    = "js_pesquisaGrupoCaracteristica($('ob21_grupotipoocupacao'), $('descr_tipoocupacao'), true);";
                                         $sFuncaoJSDigitacao = "js_pesquisaGrupoCaracteristica($('ob21_grupotipoocupacao'), $('descr_tipoocupacao'), false);";
                                         db_ancora ( $Lob21_grupotipoocupacao, $sFuncaoJSAncora, 1 );
                                     ?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('ob21_grupotipoocupacao'  , 10, $Iob21_grupotipoocupacao  , true,'text', $db_opcao, "onChange=\"{$sFuncaoJSDigitacao}\"");
                                         db_input('descr_tipoocupacao'      , 35, ""                        , true,'text', 3        , "");
                                     ?>
@@ -96,14 +96,14 @@
                             </tr>
                             <tr title="<?=$Tob21_grupotipoconstrucao;?>">
                                 <td>
-                                    <?
+                                    <?php
                                         $sFuncaoJSAncora    = "js_pesquisaGrupoCaracteristica($('ob21_grupotipoconstrucao'), $('descr_tipoconstrucao'), true)";
                                         $sFuncaoJSDigitacao = "js_pesquisaGrupoCaracteristica($('ob21_grupotipoconstrucao'), $('descr_tipoconstrucao'), false)";
                                         db_ancora ( $Lob21_grupotipoconstrucao, $sFuncaoJSAncora , 1 );
                                     ?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('ob21_grupotipoconstrucao', 10, $Iob21_grupotipoconstrucao, true,'text', $db_opcao, "onChange=\"{$sFuncaoJSDigitacao}\"");
                                         db_input('descr_tipoconstrucao'    , 35, ""                        , true,'text', 3        , "");
                                     ?>
@@ -111,14 +111,14 @@
                             </tr>
                             <tr title="<?=$Tob21_grupotipolancamento;?>">
                                 <td>
-                                    <?
+                                    <?php
                                         $sFuncaoJSAncora    = "js_pesquisaGrupoCaracteristica($('ob21_grupotipolancamento'), $('descr_tipolancamento'), true)";
                                         $sFuncaoJSDigitacao = "js_pesquisaGrupoCaracteristica($('ob21_grupotipolancamento'), $('descr_tipolancamento'), false)";
                                         db_ancora ( $Lob21_grupotipolancamento, $sFuncaoJSAncora, 1 )
                                     ?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('ob21_grupotipolancamento', 10, $Iob21_grupotipolancamento, true,'text', $db_opcao, "onChange=\"{$sFuncaoJSDigitacao}\"");
                                         db_input('descr_tipolancamento'    , 35, ""                        , true,'text', 3        , "");
                                     ?>
@@ -130,17 +130,17 @@
                         <legend>Modelos Padrão de Carta:</legend>
                         <table class="form-container">
                             <tr title="<?=$Tob21_tipocartaalvara;?>">
-                                <td width="140px;"><? echo $Lob21_tipocartaalvara; ?></td>
+                                <td width="140px;"><?php echo $Lob21_tipocartaalvara; ?></td>
                                 <td >
-                                    <?
+                                    <?php
                                         db_select('ob21_tipocartaalvara', $aTipoCarta, true, $db_opcao);
                                     ?>
                                 </td>
                             </tr>
                             <tr title="<?=$Tob21_tipocartahabite;?>">
-                                <td nowrap><? echo $Lob21_tipocartahabite; ?></td>
+                                <td nowrap><?php echo $Lob21_tipocartahabite; ?></td>
                                 <td nowrap>
-                                    <?
+                                    <?php
                                         db_select('ob21_tipocartahabite', $aTipoCarta, true, $db_opcao);
                                     ?>
                                 </td>
@@ -158,7 +158,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                <? 
+                                <?php 
                                     $sqlParProjetos = "SELECT * FROM parprojetos WHERE ob21_anousu = ".$ob21_anousu;
                                     $resultParProjetos = db_query($sqlParProjetos);
                                     $oParProjetos = db_utils::fieldsMemory($resultParProjetos, 0);
@@ -177,7 +177,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                <? 
+                                <?php 
                                     $certificadopfx = $oParProjetos->ob21_localcertificadoa1;
                                     $certificadopfx = basename($certificadopfx);
                                     db_input('certificadopfx', 85, $Iob21_localcertificadoa1, true,'text', 3);
@@ -187,7 +187,7 @@
                             <tr title="<?=$Tob21_senhacertificadoa1;?>">
                                 <td width="140px;"><?= $Lob21_senhacertificadoa1; ?></td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('ob21_senhacertificadoa1', 32, $Iob21_senhacertificadoa1, true,'text', $db_opcao);
                                     ?>
                                 </td>

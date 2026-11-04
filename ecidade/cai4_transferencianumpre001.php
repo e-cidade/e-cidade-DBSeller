@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ include(modification("libs/db_utils.php"));
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1; parent.lOrdem = true;" bgcolor="#cccccc">
 <center>
 <br><br>
-<?
+<?php
   if (db_getsession("DB_id_usuario") == 1) {
 ?>
 <form name="form1" method="post" action="">
@@ -74,7 +74,7 @@ include(modification("libs/db_utils.php"));
 	    	    <table 	cellspacing="0" style="border:2px inset white; width:480px;" >
 			      <tr>
 			        <th>
-			          <? 
+			          <?php 
 			             db_ancora("CGM de Origem", "js_pesquisa_cgmorigem(true)", 1);
 			             db_input("cgmorigem", 7, 1, true, "text",1,"onChange='js_pesquisa_cgmorigem(false)'");
 			             db_input("nomecgmorigem", 30, 3, true,"text",3); 
@@ -125,7 +125,7 @@ include(modification("libs/db_utils.php"));
 	    	    <table 	cellspacing="0" style="border:2px inset white; width:480px;" >
 			      <tr>
 			        <th>
-			          <? 
+			          <?php 
 			             db_ancora("CGM de Destino", "js_pesquisa_cgmdestino(true)", 1);
 			             db_input("cgmdestino", 7, 1, true, "text",1,"onChange='js_pesquisa_cgmdestino(false)'");
 			             db_input("nomecgmdestino", 30, 3, true,"text",3); 
@@ -162,12 +162,12 @@ include(modification("libs/db_utils.php"));
 
 <p align="center"><input type="button" name="btnProcessarCGM" value="Processar" onclick="js_processaFormTransferencia();" /></p>
 </form>
-<? } else {
+<?php } else {
       echo "<br><br><font size=3><b>Procedimento não liberado!</b></font>";
    } 
 ?>
 </center>
-	 <?
+	 <?php
 			db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	 ?>
 </body>

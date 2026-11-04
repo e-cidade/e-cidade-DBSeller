@@ -71,11 +71,11 @@ class ImplantacaoConciliacaoBancariaService
     {
 
         $oDaoSaltes = new \cl_saltes;
-        $iAno = db_getsession("DB_anousu");
-        $iInstit = db_getsession("DB_instit");
+        $iAno = $this->getAno();
+        $iInstit = $this->getInstituicao();
 
         $sqlConta = $oDaoSaltes->sql_query_contasImplantar($iAno, $iInstit);
-
+       
         $rsContas    = $oDaoSaltes->sql_record($sqlConta);
         $numrows     = $oDaoSaltes->numrows;
         $dados = array();

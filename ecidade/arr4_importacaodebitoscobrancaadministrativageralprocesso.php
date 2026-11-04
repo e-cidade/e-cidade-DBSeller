@@ -69,7 +69,7 @@ use \ECidade\Tributario\Divida\ImportacaoDividaAtiva;
     <body class="body-default" >
         <div class="container">
             <fieldset style="width: 700px; padding: 2">
-                <progress id="barra-progresso" value="0" style="width: 100%; height: 25px;);">Processando</progress>
+                <progress id="barra-progresso" value="0" style="width: 100%; height: 25px;">Processando</progress>
             </fieldset>
             <fieldset style="width: 700px; padding: 1 2">
                 <div id="log-processamento"></div>

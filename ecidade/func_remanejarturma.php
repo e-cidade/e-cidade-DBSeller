@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -44,7 +44,7 @@ if (isset($turma)) {
                                                        " ed287_i_turma in ($turma)"
                                                        )
                                  );
-                                 
+
 }
 ?>
 <html>
@@ -81,20 +81,20 @@ if (isset($turma)) {
    <tr bgcolor="#DBDBDB" align="center">
     <td><b>Código</b></td>
     <td><b>Turma</b></td>
-    <td colspan="2"><b>Opções</b></td>      
+    <td colspan="2"><b>Opções</b></td>
    </tr>
-   <?   
+   <?php
    for ($c = 0;$c < $clturmalog->numrows; $c++) {
-   	
-     db_fieldsmemory($result,$c); 
+
+     db_fieldsmemory($result,$c);
     ?>
     <tr>
      <td class="aluno" width="5%" align="center"><?=$ed57_i_codigo?></td>
-     <td class="aluno"><?=$ed57_c_descr?></td>   
+     <td class="aluno"><?=$ed57_c_descr?></td>
      <td class="aluno"  align="center"><a href="javascript:js_turma002(<?=$ed57_i_codigo?>)">Alterar</a></td>
      <td class="aluno"  align="center"><a href="javascript:js_turma003(<?=$ed57_i_codigo?>)">Excluir</a></td>
     </tr>
-    <?
+    <?php
    }
    ?>
    <tr>
@@ -102,7 +102,7 @@ if (isset($turma)) {
       <input type="button" name="novo" value="Nova Turma" Onclick = "js_novo();">
       <input type="button" name="fechar" value="Fechar" Onclick="js_fechar();">
       <input type="submit" name="teste" value="Teste" style = visibility:hidden;>
-    </td>   
+    </td>
    </tr>
   </table>
  </td>
@@ -113,17 +113,17 @@ if (isset($turma)) {
 <script>
 
 function js_turma002(ed57_i_codigo) {
-	
+
 	var iTop  = ( document.body.clientHeight - 600) / 2;
 	var iLeft = ( document.body.clientWidth - 900 ) / 2;
 
-  <?if (isset($ed57_i_codigo)) {?>
+  <?php if (isset($ed57_i_codigo)) {?>
       js_OpenJanelaIframe("",
                           "db_iframe_remanejarturma",
                           "edu1_remanejarturma002.php?chavepesquisa="+ed57_i_codigo+"&abre=true",
                           "Alunos Matriculados na Turma",true,iTop, iLeft, 900,400);
-	 	
-    <?}?>
+
+    <?php } ?>
 }
 
 function js_turma003(ed57_i_codigo) {
@@ -131,13 +131,13 @@ function js_turma003(ed57_i_codigo) {
 	var iTop  = ( document.body.clientHeight - 600) / 2;
 	var iLeft = ( document.body.clientWidth - 900 ) / 2;
 
-   <?if (isset($ed57_i_codigo)) {?>
+   <?php if (isset($ed57_i_codigo)) {?>
 	   js_OpenJanelaIframe("",
 	                       "db_iframe_remanejarturma",
 	                       "edu1_remanejarturma003.php?chavepesquisa="+ed57_i_codigo+"&abre=true",
 	                       "Alunos Matriculados na Turma",true, iTop, iLeft, 900, 400);
-		 	
-   <?}?>
+
+   <?php } ?>
 }
 
 function js_novo() {

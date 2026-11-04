@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,37 +40,37 @@ $clrotulo->label("fa25_i_codigo");
        <?=@$Lfa13_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_i_codigo',10,$Ifa13_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa13_i_departamento?>">
-       <?
+       <?php
        db_ancora(@$Lfa13_i_departamento,"js_pesquisafa13_i_departamento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_i_departamento',10,$Ifa13_i_departamento,true,'text',$db_opcao," onchange='js_pesquisafa13_i_departamento(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',50,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa13_i_farprof?>">
-       <?
+       <?php
        db_ancora(@$Lfa13_i_farprof,"js_pesquisafa13_i_farprof(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_i_farprof',10,$Ifa13_i_farprof,true,'text',$db_opcao," onchange='js_pesquisafa13_i_farprof(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -80,7 +80,7 @@ db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')
        <?=@$Lfa13_c_resptecnico?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_resptecnico',50,$Ifa13_c_resptecnico,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,7 +90,7 @@ db_input('fa13_c_resptecnico',50,$Ifa13_c_resptecnico,true,'text',$db_opcao,"")
        <?=@$Lfa13_c_autosanitaria?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_autosanitaria',50,$Ifa13_c_autosanitaria,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -100,7 +100,7 @@ db_input('fa13_c_autosanitaria',50,$Ifa13_c_autosanitaria,true,'text',$db_opcao,
        <?=@$Lfa13_c_inscestadual?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_inscestadual',15,$Ifa13_c_inscestadual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ db_input('fa13_c_inscestadual',15,$Ifa13_c_inscestadual,true,'text',$db_opcao,""
        <?=@$Lfa13_c_crf?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_crf',15,$Ifa13_c_crf,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -121,7 +121,7 @@ db_input('fa13_c_crf',15,$Ifa13_c_crf,true,'text',$db_opcao,"")
        <?=@$Lfa13_c_cnpj?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_cnpj',15,$Ifa13_c_cnpj,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -131,7 +131,7 @@ db_input('fa13_c_cnpj',15,$Ifa13_c_cnpj,true,'text',$db_opcao,"")
        <?=@$Lfa13_c_numlicenca?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_numlicenca',15,$Ifa13_c_numlicenca,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ db_input('fa13_c_numlicenca',15,$Ifa13_c_numlicenca,true,'text',$db_opcao,"")
        <?=@$Lfa13_c_inscmf?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_inscmf',15,@$Ifa13_c_inscmf,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ db_input('fa13_c_inscmf',15,@$Ifa13_c_inscmf,true,'text',$db_opcao,"")
        <?=@$Lfa13_c_regiao?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa13_c_regiao',15,$Ifa13_c_regiao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -215,7 +215,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_farmacia.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

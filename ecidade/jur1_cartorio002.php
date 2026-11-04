@@ -74,7 +74,7 @@ if ( isset($alterar) ) {
     ?>
   </body>
 </html>
-<?
+<?php
   if ( isset($alterar) ) {
 
     if ( $clcartorio->erro_status == "0" ) {

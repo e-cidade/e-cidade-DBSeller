@@ -71,10 +71,10 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
     <div class="col-md-6"
     >
         <form id="form1" name="form1">
-            <? db_input('tipoProcesso', 10, 0, false, 'hidden', 3, ""); ?>
-            <? db_input('processo', 10, 0, false, 'hidden', 3, ""); ?>
-            <? db_input('ano', 10, 0, false, 'hidden', 3, ""); ?>
-            <? db_input('codigoProcessoProtocolo', 10, 0, false, 'hidden', 3, ""); ?>
+            <?php db_input('tipoProcesso', 10, 0, false, 'hidden', 3, ""); ?>
+            <?php db_input('processo', 10, 0, false, 'hidden', 3, ""); ?>
+            <?php db_input('ano', 10, 0, false, 'hidden', 3, ""); ?>
+            <?php db_input('codigoProcessoProtocolo', 10, 0, false, 'hidden', 3, ""); ?>
             <fieldset id="containerAtendimento">
                 <legend>Dados do Atendimento</legend>
                 <table class="form-container">

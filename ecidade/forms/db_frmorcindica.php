@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,19 +40,19 @@ $clorcindica->rotulo->label();
 	      <?=@$Lo10_indica?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_indica',10,$Io10_indica,true,'text',3,"")
 		  ?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$To10_periodicidade?>">
-	      <?
+	      <?php
 	        db_ancora($Lo10_periodicidade,"js_consultaPeriodicidade(true)",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_periodicidade',10,$Io10_periodicidade,true,'text',$db_opcao,"onChange='js_consultaPeriodicidade(false);'");
 		    db_input('o09_descricao'	,35,"",true,'text',3,"");
 		  ?>
@@ -63,7 +63,7 @@ $clorcindica->rotulo->label();
 	       <b>Denominação:</b>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_descr',50,$Io10_descr,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -73,7 +73,7 @@ $clorcindica->rotulo->label();
 	       <?=@$Lo10_descrunidade?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_descrunidade',50,$Io10_descrunidade,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -83,7 +83,7 @@ $clorcindica->rotulo->label();
 	       <?=@$Lo10_valorunidade?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_valorunidade',10,$Io10_valorunidade,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -93,7 +93,7 @@ $clorcindica->rotulo->label();
 	      <b>Índice de Referência:</b>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_textarea('o10_obs',0,47,$Io10_obs,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -103,7 +103,7 @@ $clorcindica->rotulo->label();
 	       <b>Índice de Referência ( Valor ):</b>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_valorindiceref',10,$Io10_valorindiceref,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -113,7 +113,7 @@ $clorcindica->rotulo->label();
 	      <?=@$Lo10_descrindicefinal?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_textarea('o10_descrindicefinal',0,47,$Io10_descrindicefinal,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -123,7 +123,7 @@ $clorcindica->rotulo->label();
 	      <?=@$Lo10_valorindicefinal?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_valorindicefinal',10,$Io10_valorindicefinal,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -133,7 +133,7 @@ $clorcindica->rotulo->label();
 	      <?=@$Lo10_fonte?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('o10_fonte',50,$Io10_fonte,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -143,7 +143,7 @@ $clorcindica->rotulo->label();
 	      <?=@$Lo10_basegeografica?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_textarea('o10_basegeografica',0,47,$Io10_basegeografica,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -153,7 +153,7 @@ $clorcindica->rotulo->label();
 	      <?=@$Lo10_formulacalculo?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_textarea('o10_formulacalculo',0,47,$Io10_formulacalculo,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -193,7 +193,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcindica.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

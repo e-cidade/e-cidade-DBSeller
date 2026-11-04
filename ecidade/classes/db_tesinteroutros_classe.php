@@ -52,13 +52,13 @@ class cl_tesinteroutros {
                  j84_observacao = varchar(255) = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_tesinteroutros() { 
+   public function cl_tesinteroutros() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tesinteroutros"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_tesinteroutros {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j84_tesintertipo = ($this->j84_tesintertipo == ""?@$GLOBALS["HTTP_POST_VARS"]["j84_tesintertipo"]:$this->j84_tesintertipo);
        $this->j84_tesinter = ($this->j84_tesinter == ""?@$GLOBALS["HTTP_POST_VARS"]["j84_tesinter"]:$this->j84_tesinter);
@@ -76,7 +76,7 @@ class cl_tesinteroutros {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->j84_tesintertipo == null ){ 
        $this->erro_sql = " Campo Codigo nao Informado.";
@@ -141,7 +141,7 @@ class cl_tesinteroutros {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update tesinteroutros set ";
      $virgula = "";
@@ -216,7 +216,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ($dbwhere=null) {
+   public function excluir ($dbwhere=null) {
      $sql = " delete from tesinteroutros ";
      $sql2 = "";
      if($dbwhere !=null || $dbwhere !=""){
@@ -249,11 +249,11 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -275,7 +275,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ($campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ($campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -308,7 +308,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
    }
-   function sql_query_file ($campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ($campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

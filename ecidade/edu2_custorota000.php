@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ if($cllinha->numrows==0){?>
    </td>
   </tr>
  </table>
- <?
+ <?php
  exit;
 }
 $pdf = new PDF();

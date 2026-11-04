@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhlotaexe->rotulo->label("rh26_unidade");
               <?=$Lrh26_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh26_codigo",4,$Irh26_codigo,true,"text",4,"","chave_rh26_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhlotaexe->rotulo->label("rh26_unidade");
               <?=$Lrh26_unidade?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh26_unidade",2,$Irh26_unidade,true,"text",4,"","chave_rh26_unidade");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhlotaexe->rotulo->label("rh26_unidade");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlotaexe.php")==true){
@@ -119,12 +119,12 @@ $clrhlotaexe->rotulo->label("rh26_unidade");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

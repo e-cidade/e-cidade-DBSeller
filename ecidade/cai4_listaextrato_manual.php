@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -157,7 +157,7 @@ db_postmemory($_GET);
     	parent.$("load_extrato").value = "false";
 
       var concilia  = parent.document.form1.concilia.value;
-      var url       = 'cai4_carregadadosextrato.php';
+      var url       = 'cai4_carregadadosextrato_manual.php';
 
       var parametro = 'data='+data+'&conta='+conta+'&concilia='+concilia;
 

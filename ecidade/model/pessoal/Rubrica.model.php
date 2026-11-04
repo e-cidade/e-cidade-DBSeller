@@ -252,8 +252,7 @@ class Rubrica
                 $this->setInstituicao($iInstituicao);
             }
 
-            $oDaoRubricas = db_utils::getDao('rhrubricas');
-
+            $oDaoRubricas = new cl_rhrubricas;
             $sSqlRubricas = $oDaoRubricas->sql_query_file($this->getCodigo(), $this->getInstituicao());
             $rsRubricas = $oDaoRubricas->sql_record($sSqlRubricas);
 
@@ -292,6 +291,7 @@ class Rubrica
             $this->setQuantidadeLimite($oRubricas->rh27_quantidadelimite);
             $this->sTipoBloqueio = $oRubricas->rh27_tipobloqueio;
             $this->iCodigoPrevidenciaPrivada = $oRubricas->rh27_previdenciacomplementar;
+            unset($oRubricas);
         }
 
     }
@@ -840,11 +840,11 @@ class Rubrica
             return $this->sTipoEmpenho;
         }
 
-        $oDaoRHRubElemento = db_utils::getDao("rhrubelemento");
+        $oDaoRHRubElemento = new cl_rhrubelemento;
         $sSqlTipoEmpenho = $oDaoRHRubElemento->sql_query_file($this->getCodigo(), $this->getInstituicao(), 'rh23_codele');
-        $rsTipoEmpenho = db_query($sSqlTipoEmpenho);
+        $rsTipoEmpenho = $oDaoRHRubElemento->sql_record($sSqlTipoEmpenho);
 
-        if (!$rsTipoEmpenho) {
+        if (!$rsTipoEmpenho && $oDaoRHRubElemento->erro_sql == "Erro ao selecionar os registros.") {
             throw new DBException("Erro ao Validar dados da Rubrica");
         }
 

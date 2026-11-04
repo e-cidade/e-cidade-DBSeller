@@ -1,65 +1,65 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: teste
 //CLASSE DA ENTIDADE tnomeitem
-class cl_tnomeitem { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $yx_coditem = 0; 
-   var $yx_codigo = 0; 
-   var $yx_valor = 0; 
-   var $yx_sexo = 'f'; 
-   var $yx_tipo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tnomeitem {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $yx_coditem = 0;
+   var $yx_codigo = 0;
+   var $yx_valor = 0;
+   var $yx_sexo = 'f';
+   var $yx_tipo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 yx_coditem = int4 = Código Ítem 
-                 yx_codigo = int4 = Código 
-                 yx_valor = float8 = Valor 
-                 yx_sexo = bool = Sexo 
-                 yx_tipo = char(1) = Tipo 
+                 yx_coditem = int4 = Código Ítem
+                 yx_codigo = int4 = Código
+                 yx_valor = float8 = Valor
+                 yx_sexo = bool = Sexo
+                 yx_tipo = char(1) = Tipo
                  ";
-   //funcao construtor da classe 
-   function cl_tnomeitem() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tnomeitem"); 
+     $this->rotulo = new rotulo("tnomeitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_tnomeitem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->yx_coditem = ($this->yx_coditem == ""?@$GLOBALS["HTTP_POST_VARS"]["yx_coditem"]:$this->yx_coditem);
        $this->yx_codigo = ($this->yx_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["yx_codigo"]:$this->yx_codigo);
@@ -80,9 +80,9 @@ class cl_tnomeitem {
      }
    }
    // funcao para inclusao
-   function incluir ($yx_coditem){ 
+   public function incluir ($yx_coditem){
       $this->atualizacampos();
-     if($this->yx_codigo == null ){ 
+     if($this->yx_codigo == null ){
        $this->erro_sql = " Campo Código nao Informado.";
        $this->erro_campo = "yx_codigo";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_tnomeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->yx_valor == null ){ 
+     if($this->yx_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "yx_valor";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_tnomeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->yx_sexo == null ){ 
+     if($this->yx_sexo == null ){
        $this->erro_sql = " Campo Sexo nao Informado.";
        $this->erro_campo = "yx_sexo";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_tnomeitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->yx_tipo == null ){ 
+     if($this->yx_tipo == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
        $this->erro_campo = "yx_tipo";
        $this->erro_banco = "";
@@ -119,16 +119,16 @@ class cl_tnomeitem {
        return false;
      }
      if($yx_coditem == "" || $yx_coditem == null ){
-       $result = @db_query("select nextval('tnomeitem_yx_coditem_seq')"); 
+       $result = @db_query("select nextval('tnomeitem_yx_coditem_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tnomeitem_yx_coditem_seq do campo: yx_coditem"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tnomeitem_yx_coditem_seq do campo: yx_coditem";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->yx_coditem = pg_result($result,0,0); 
+       $this->yx_coditem = pg_result($result,0,0);
      }else{
        $result = @db_query("select last_value from tnomeitem_yx_coditem_seq");
        if(($result != false) && (pg_result($result,0,0) < $yx_coditem)){
@@ -139,10 +139,10 @@ class cl_tnomeitem {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->yx_coditem = $yx_coditem; 
+         $this->yx_coditem = $yx_coditem;
        }
      }
-     if(($this->yx_coditem == null) || ($this->yx_coditem == "") ){ 
+     if(($this->yx_coditem == null) || ($this->yx_coditem == "") ){
        $this->erro_sql = " Campo yx_coditem nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -151,21 +151,21 @@ class cl_tnomeitem {
        return false;
      }
      $sql = "insert into tnomeitem(
-                                       yx_coditem 
-                                      ,yx_codigo 
-                                      ,yx_valor 
-                                      ,yx_sexo 
-                                      ,yx_tipo 
+                                       yx_coditem
+                                      ,yx_codigo
+                                      ,yx_valor
+                                      ,yx_sexo
+                                      ,yx_tipo
                        )
                 values (
-                                $this->yx_coditem 
-                               ,$this->yx_codigo 
-                               ,$this->yx_valor 
-                               ,'$this->yx_sexo' 
-                               ,'$this->yx_tipo' 
+                                $this->yx_coditem
+                               ,$this->yx_codigo
+                               ,$this->yx_valor
+                               ,'$this->yx_sexo'
+                               ,'$this->yx_tipo'
                       )";
-     $result = @db_query($sql); 
-     if($result==false){ 
+     $result = @db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Itens dios nomes ($this->yx_coditem) nao Incluído. Inclusao Abortada.";
@@ -198,16 +198,16 @@ class cl_tnomeitem {
        $resac = db_query("insert into db_acount values($acount,758,5209,'','".AddSlashes(pg_result($resaco,0,'yx_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($yx_coditem=null) { 
+   public function alterar ($yx_coditem=null) {
       $this->atualizacampos();
      $sql = " update tnomeitem set ";
      $virgula = "";
-     if(trim($this->yx_coditem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_coditem"])){ 
+     if(trim($this->yx_coditem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_coditem"])){
        $sql  .= $virgula." yx_coditem = $this->yx_coditem ";
        $virgula = ",";
-       if(trim($this->yx_coditem) == null ){ 
+       if(trim($this->yx_coditem) == null ){
          $this->erro_sql = " Campo Código Ítem nao Informado.";
          $this->erro_campo = "yx_coditem";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_codigo"])){ 
+     if(trim($this->yx_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_codigo"])){
        $sql  .= $virgula." yx_codigo = $this->yx_codigo ";
        $virgula = ",";
-       if(trim($this->yx_codigo) == null ){ 
+       if(trim($this->yx_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "yx_codigo";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_valor"])){ 
+     if(trim($this->yx_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_valor"])){
        $sql  .= $virgula." yx_valor = $this->yx_valor ";
        $virgula = ",";
-       if(trim($this->yx_valor) == null ){ 
+       if(trim($this->yx_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "yx_valor";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_sexo"])){ 
+     if(trim($this->yx_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_sexo"])){
        $sql  .= $virgula." yx_sexo = '$this->yx_sexo' ";
        $virgula = ",";
-       if(trim($this->yx_sexo) == null ){ 
+       if(trim($this->yx_sexo) == null ){
          $this->erro_sql = " Campo Sexo nao Informado.";
          $this->erro_campo = "yx_sexo";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_tipo"])){ 
+     if(trim($this->yx_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_tipo"])){
        $sql  .= $virgula." yx_tipo = '$this->yx_tipo' ";
        $virgula = ",";
-       if(trim($this->yx_tipo) == null ){ 
+       if(trim($this->yx_tipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "yx_tipo";
          $this->erro_banco = "";
@@ -287,7 +287,7 @@ class cl_tnomeitem {
          $resac = db_query("insert into db_acount values($acount,758,5209,'".AddSlashes(pg_result($resaco,0,'yx_tipo'))."','$this->yx_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens dios nomes nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->yx_coditem;
@@ -312,11 +312,11 @@ class cl_tnomeitem {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($yx_coditem=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($yx_coditem=null) {
      $resaco = $this->sql_record($this->sql_query_file($yx_coditem));
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
@@ -340,7 +340,7 @@ class cl_tnomeitem {
       $sql2 .= " yx_coditem = $yx_coditem ";
 }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens dios nomes nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$yx_coditem;
@@ -365,11 +365,11 @@ class cl_tnomeitem {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -391,11 +391,11 @@ class cl_tnomeitem {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $yx_coditem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $yx_coditem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,15 +409,15 @@ class cl_tnomeitem {
      $sql2 = "";
      if($dbwhere==""){
        if($yx_coditem!=null ){
-         $sql2 .= " where tnomeitem.yx_coditem = $yx_coditem "; 
-       } 
+         $sql2 .= " where tnomeitem.yx_coditem = $yx_coditem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,11 +426,11 @@ class cl_tnomeitem {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $yx_coditem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $yx_coditem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,15 +443,15 @@ class cl_tnomeitem {
      $sql2 = "";
      if($dbwhere==""){
        if($yx_coditem!=null ){
-         $sql2 .= " where tnomeitem.yx_coditem = $yx_coditem "; 
-       } 
+         $sql2 .= " where tnomeitem.yx_coditem = $yx_coditem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

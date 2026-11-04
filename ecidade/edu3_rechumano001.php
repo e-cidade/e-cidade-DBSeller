@@ -162,6 +162,7 @@ isset($mostraServidoresInativos) ?: $mostraServidoresInativos = 'false';
                      case when ed20_i_tiposervidor = 1 then rechumanopessoal.ed284_i_rhpessoal else rechumanocgm.ed285_i_cgm end as identificacao,
                      case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome,
                      case when ed20_i_tiposervidor = 1 then cgmrh.z01_cgccpf else cgmcgm.z01_cgccpf end as z01_cgccpf,
+                     z04_nomesocial,
                      ed01_c_descr,
                      case when ed20_i_tiposervidor = 1
                       then regimerh.rh30_descr
@@ -182,6 +183,7 @@ isset($mostraServidoresInativos) ?: $mostraServidoresInativos = 'false';
                left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo
                left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm
                left join rhregime as regimecgm on  regimecgm.rh30_codreg = rechumano.ed20_i_rhregime
+               left join cgmfisico on cgmfisico.z04_numcgm = rhpessoal.rh01_numcgm
               WHERE ed75_i_escola = $escola
               {$where}
               ORDER BY z01_nome,ed01_c_descr
@@ -194,6 +196,7 @@ isset($mostraServidoresInativos) ?: $mostraServidoresInativos = 'false';
                                     <tr>
                                         <td class="cabec" align="center">Matrícula/CGM</td>
                                         <td class="cabec" align="center">Nome</td>
+                                        <td class="cabec" align="center">Nome Social</td>
                                         <td class="cabec" align="center">CPF</td>
                                         <td class="cabec" align="center">Atividade</td>
                                         <td class="cabec" align="center">Regime</td>
@@ -215,7 +218,8 @@ isset($mostraServidoresInativos) ?: $mostraServidoresInativos = 'false';
                                         ?>
                                         <tr bgcolor="<?php echo $cor; ?>">
                                             <td align="center"><?php echo $identificacao; ?></td>
-                                            <td><?php echo $z01_nome; ?></td>
+                                            <td><?= $z01_nome; ?></td>
+                                            <td><?= $z04_nomesocial ?></td>
                                             <td align="center"><?php echo $z01_cgccpf; ?></td>
                                             <td><?php echo $ed01_c_descr == '' ? 'Não informado' : $ed01_c_descr; ?></td>
                                             <td><?php echo $rh30_descr; ?></td>

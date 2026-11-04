@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("y70_id_usuario");
        <?=@$Ly05_vistoriaslotevist?>
     </td>
     <td> 
-<?
+<?php
 db_input('y05_vistoriaslotevist',10,$Iy05_vistoriaslotevist,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty05_vistoriaslote?>">
-       <?
+       <?php
        db_ancora(@$Ly05_vistoriaslote,"js_pesquisay05_vistoriaslote(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y05_vistoriaslote',10,$Iy05_vistoriaslote,true,'text',$db_opcao," onchange='js_pesquisay05_vistoriaslote(false);'")
 ?>
-       <?
+       <?php
 db_input('y06_usuario',10,$Iy06_usuario,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty05_codvist?>">
-       <?
+       <?php
        db_ancora(@$Ly05_codvist,"js_pesquisay05_codvist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y05_codvist',10,$Iy05_codvist,true,'text',$db_opcao," onchange='js_pesquisay05_codvist(false);'")
 ?>
-       <?
+       <?php
 db_input('y70_id_usuario',10,$Iy70_id_usuario,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('y70_id_usuario',10,$Iy70_id_usuario,true,'text',3,'')
        <?=@$Ly05_codmsg?>
     </td>
     <td> 
-<?
+<?php
 db_input('y05_codmsg',10,$Iy05_codmsg,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_vistoriaslotevist.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

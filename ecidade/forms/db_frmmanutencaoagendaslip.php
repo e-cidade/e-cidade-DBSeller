@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,6 +46,12 @@ $clrotulo->label("e21_sequencial");
 $db_opcao = 1;
 $db_instit = db_getsession("DB_instit");
 
+
+$dao = new cl_sliptipooperacao;
+$sql = $dao->sql_query_file(null, '*', '2', 'k152_sequencial in (1,2,5,13,9,500,16,17)');
+$rs = db_query($sql);
+
+$tiposPagamento = db_utils::getCollectionByRecord($rs);
 ?>
 <script>
   function js_mascara(evt) {
@@ -60,11 +66,11 @@ $db_instit = db_getsession("DB_instit");
 
 </script>
 <br><br>
-<center>
+<div >
     <form name="form1" method="post" action="">
-        <table border=0 style='width:90%'>
+        <table style='width:90%; '>
             <tr>
-                <td width="35%">
+                <td width="40%">
                     <fieldset>
                         <legend><b>Filtros</b></legend>
                         <table border="0" align="left">
@@ -114,20 +120,25 @@ $db_instit = db_getsession("DB_instit");
                                     ?>
                                 </td>
                             </tr>
+
                             <tr nowrap>
-                                <td nowrap title="<?= @$To15_codigo ?>">
-                                    <?php db_ancora('Fonte de Recurso', "js_pesquisaRecurso(true);", $db_opcao); ?>
-                                </td>
-                                <td colspan='4' nowrap>
+                                <td>
                                     <?php
-                                    db_input('o15_codigo', 10, $Io15_codigo, true, 'hidden', 1);
-                                    db_input('o15_recurso', 10, $Io15_recurso, true, 'text', $db_opcao, " onchange='js_pesquisaRecurso(false);'");
-                                    db_input('o15_descr', 40, $Io15_descr, true, 'text', 3, '');
+                                    db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", 1);
+                                    ?>
+                                </td>
+                                <td colspan="3">
+                                    <?php
+                                    db_input("o15_codigo", 8, null, false, "hidden", 3);
+                                    db_input("gestao", 10, null, true, "text", 1, "onchange='js_pesquisaRecurso(false);'");
+                                    db_input("o15_recurso", 8, null, true, "text", 3);
+                                    db_input("descricao", 40, null, true, "text", 3);
                                     ?>
                                     <input type="text" name="slipsParciais" id="slipsParciais"
                                            style = "display:none" readonly value = "[]">
                                 </td>
                             </tr>
+
                             <tr>
                                 <td><strong>Complemento:</strong></td>
                                 <td colspan='4'>
@@ -324,6 +335,15 @@ $db_instit = db_getsession("DB_instit");
                             </tr>
                         </table>
                     </fieldset>
+                    <fieldset>
+                        <legend>Tipos de Operação</legend>
+                        <?php foreach ($tiposPagamento as $tipo): ?>
+                            <input type="checkbox" id="tipoPagamento_<?=$tipo->k152_sequencial?>" name="tipoPagamento"
+                                   value="<?=$tipo->k152_sequencial?>" checked class="tiposOperacao">
+                            <label for="tipoPagamento_<?=$tipo->k152_sequencial?>"><?=$tipo->k152_descricao?></label>
+                            <br>
+                        <?php endforeach ?>
+                    </fieldset>
                 </td>
                 <td width='20%'>
                     &nbsp;
@@ -373,7 +393,7 @@ $db_instit = db_getsession("DB_instit");
             </tr>
         </table>
     </form>
-</center>
+</div>
 <div style='position:absolute;top: 200px; left:15px;
             border:1px solid black;
             width:300px;
@@ -510,6 +530,14 @@ $db_instit = db_getsession("DB_instit");
 
   function js_pesquisarOrdens() {
 
+      let checkBoxes = document.querySelectorAll('input.tiposOperacao[type="checkbox"]');
+      let tiposOperacao = [];
+
+      for (const input of checkBoxes) {
+          if (input.checked) {
+              tiposOperacao.push(input.value);
+          }
+      }
 
     js_liberaBotoes(false);
     js_reset();
@@ -524,6 +552,7 @@ $db_instit = db_getsession("DB_instit");
     oParam.iNumCgm             = $F('z01_numcgm');
     oParam.sDtAut              = $F('e42_dtpagamento');
     oParam.iRecurso            = $F('o15_codigo');
+      oParam.tiposOperacao = tiposOperacao.join(',')
     if(isPB) {
         oParam.iRetencao = $F('e21_sequencial');
     }
@@ -534,7 +563,7 @@ $db_instit = db_getsession("DB_instit");
         oParam.recurso_reduzido = document.querySelector('#recurso_reduzido').value;
     }
 
-    /** 
+    /**
      * Zera os slips parciais. Estes slips podem ser visto na depuracao
      * habilitando o display para Text em sua declaracao.
      */
@@ -589,20 +618,18 @@ $db_instit = db_getsession("DB_instit");
 
           }
           var aLinha  = new Array();
-
-
           aLinha[0]   = e81_codmov;
           aLinha[1]   = "<a onclick='js_pesquisaSlip("+k17_codigo+");return false;' href='#'>";
           aLinha[1]  += k17_codigo+"</a>";
-          aLinha[2]   = recurso;
-          aLinha[3]   = js_createComboContasPag(e81_codmov, e83_conta, false);
+          aLinha[2]   = gestao;
+          aLinha[3]   = recurso;
+          aLinha[4]   = js_createComboContasPag(e81_codmov, e83_conta, false);
           if (e85_codtipo == '') {
-            aLinha[3] = '  Nenhuma Conta Pag. Cadastrada';
+            aLinha[4] = '  Nenhuma Conta Pag. Cadastrada';
             lContaPagadoraInvalida = true;
           }
-          aLinha[4] = z01_nome.urlDecode().substring(0,20);
+          aLinha[5] = z01_nome.urlDecode().substring(0,20);
           if (tiposlip == 2) {
-
               var conteudoColunaCinco = "<span style='display:'  id='ctnBancoAgencia_" +e81_codmov + "'>" + js_createComboContasForne(aContasFornecedor, conta_configurada, e81_codmov, z01_numcgm, lDisabled, iUltimaContaUtilisada) + " </span>";
           } else {
 
@@ -619,20 +646,19 @@ $db_instit = db_getsession("DB_instit");
               conteudoColunaOito = "<input  style='width:70px;text-align:right' type = 'text'";
               conteudoColunaOito += " name = 'valorSlip_"+k17_codigo+"' value='" + js_formatar(k17_valor,"f") + "'";
               conteudoColunaOito += " id = 'valorSlip_"+k17_codigo+"'";
-              conteudoColunaOito += " data-mask='money'"; 
-              conteudoColunaOito += " data-maxValue='"+ js_formatar(k17_valor,"f") + "'";          
+              conteudoColunaOito += " data-mask='money'";
+              conteudoColunaOito += " data-maxValue='"+ js_formatar(k17_valor,"f") + "'";
               conteudoColunaOito += " onchange = 'js_alertaValorSlip("+k17_codigo+","+k17_valor+")'";
               conteudoColunaOito += "/>";
             }
-          
+
           }
           conteudoColunaCinco += "<input type='hidden' id='txtTipo_"+e81_codmov+"' value='"+tiposlip+"' > ";
 
-          aLinha[5]   = conteudoColunaCinco;
-          aLinha[6]   = js_createComboForma(e97_codforma, e81_codmov, lDisabled, permite_pagamento_remessa);
-          aLinha[7]   = js_formatar(k17_data,"d");
-          
-          aLinha[8]   = conteudoColunaOito;
+          aLinha[6]   = conteudoColunaCinco;
+          aLinha[7]   = js_createComboForma(e97_codforma, e81_codmov, lDisabled, permite_pagamento_remessa);
+          aLinha[8]   = js_formatar(k17_data,"d");
+          aLinha[9]   = conteudoColunaOito;
           gridNotas.addRow(aLinha, false, lDisabled);
           gridNotas.aRows[iRowAtiva].sEvents = "ondblclick='alterarHistoricoPagamento("+e81_codmov+")'";
 
@@ -698,11 +724,11 @@ $db_instit = db_getsession("DB_instit");
         oRow.isSelected    = true;
         $(sRow).className  += 'marcado';
         oRow.isSelected    = true;
-        if (oRow.aCells[4].getValue() != "") {
+        if (oRow.aCells[5].getValue() != "") {
           if ($('ctapag'+oRow.sValue) && lVerificaSaldo) {
             js_getSaldos($('ctapag'+oRow.sValue), oRow.aCells[0].getContent());
           } else if (lVerificaSaldo) {
-            js_getSaldosMov(oRow.aCells[4].getValue(),oRow.aCells[4].getContent(), oRow.aCells[0].getValue());
+            js_getSaldosMov(oRow.aCells[5].getValue(),oRow.aCells[5].getContent(), oRow.aCells[0].getValue());
           }
         }
 
@@ -714,16 +740,16 @@ $db_instit = db_getsession("DB_instit");
           let slipsParciais = JSON.parse($('slipsParciais').value);
           let contemSlipParcial = slipsParciais.includes(codigoSlip);
           let valorMaximo  = $('valorSlip_'+codigoSlip).dataset.maxvalue.replace('.','').replace(",",".");
-          
+
           if(!contemSlipParcial && valorSlip <valorMaximo){
             slipsParciais.push(codigoSlip);
           }
-          $('slipsParciais').value = JSON.stringify(slipsParciais);        
+          $('slipsParciais').value = JSON.stringify(slipsParciais);
           $('valorSlip_'+codigoSlip).setAttribute('disabled',true);
         }
 
         if (lVerificaSaldo) {
-          $('TotalForCol8').innerHTML = js_formatar(gridNotas.sum(9).toFixed(2),'f');
+          $('TotalForCol10').innerHTML = js_formatar(gridNotas.sum(10).toFixed(2),'f');
         }
         $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML)+1;
       } else {
@@ -737,13 +763,13 @@ $db_instit = db_getsession("DB_instit");
             $('slipsParciais').value = JSON.stringify(slipsParciais);
           }
           $('valorSlip_'+codigoSlip).removeAttribute('disabled', false);
-        } 
+        }
 
         $(sRow).className = oRow.getClassName();
         oRow.isSelected   = false;
         $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML)-1;
         if (lVerificaSaldo) {
-          $('TotalForCol8').innerHTML = js_formatar(gridNotas.sum(9).toFixed(2),'f');
+          $('TotalForCol10').innerHTML = js_formatar(gridNotas.sum(10).toFixed(2),'f');
         }
       }
     }
@@ -781,17 +807,17 @@ $db_instit = db_getsession("DB_instit");
           }
         }
       }
-      $('TotalForCol8').innerHTML = js_formatar(gridNotas.sum(9).toFixed(2),'f');
+      $('TotalForCol10').innerHTML = js_formatar(gridNotas.sum(10).toFixed(2),'f');
     }
     gridNotas.setCheckbox(0);
     gridNotas.allowSelectColumns(true);
     gridNotas.hasTotalizador = true;
-    gridNotas.setCellAlign(new Array("right", "right", "center", "left", "left", "left", "center", "center","right"));
+    gridNotas.setCellAlign(new Array("right", "right", "center", "center", "left", "left", "left", "center", "center","right"));
     var tituloColunaBancoAg = "Banco/Ag";
     if (isPB) {
         var tituloColunaBancoAg =  "Banco/Ag / Número Doc";
     }
-    gridNotas.setHeader(new Array("Mov.","Slip","Recurso", "Cta. Pag", "Nome",
+    gridNotas.setHeader(new Array("Mov.","Slip","Recurso","Subrecurso", "Cta. Pag", "Nome",
          tituloColunaBancoAg,
         "Forma Pgto",
         "Dt Slip",
@@ -799,6 +825,7 @@ $db_instit = db_getsession("DB_instit");
       )
     );
     gridNotas.setCellWidth(new Array( '30px' ,
+                                            '40px',
                                             '40px',
                                             '60px',
                                             '200px',
@@ -885,7 +912,7 @@ $db_instit = db_getsession("DB_instit");
     var sCombo  = "<select style='width:100%' class='formapag' id='forma"+iCodMov+"' "+sDisabled+"onchange='js_marcaEfetuarPagamento(this.value, "+iCodMov+")'>";
     if (sPermitePagamentoRemessa == "f") {
         sCombo     += "  <option "+(iTipoForma == 0?" selected ":" ")+" value='0'>NDA</option>";
-        sCombo     += "  <option "+(iTipoForma == 4?" selected ":" ")+" value='4'>DEB</option>";        
+        sCombo     += "  <option "+(iTipoForma == 4?" selected ":" ")+" value='4'>DEB</option>";
     } else {
       sCombo     += "  <option "+(iTipoForma == 0?" selected ":" ")+" value='0'>NDA</option>";
       sCombo     += "  <option "+(iTipoForma == 1?" selected ":" ")+" value='1'>DIN</option>";
@@ -1079,12 +1106,12 @@ $db_instit = db_getsession("DB_instit");
 
     var aFormasSelecionadas = new Array();
 
+
+
     for (var iMov = 0; iMov < aMovimentos.length; iMov++) {
-
-
-      var iForma           = aMovimentos[iMov][7];
+      var iForma           = aMovimentos[iMov][8];
       var iCodMov          = aMovimentos[iMov][0];
-      var nValor           = js_strToFloat(aMovimentos[iMov][9]).valueOf();
+      var nValor           = js_strToFloat(aMovimentos[iMov][10]).valueOf();
       var iNota            = aMovimentos[iMov][2];
 
       var tipo = $('txtTipo_' + iCodMov).value;
@@ -1093,7 +1120,7 @@ $db_instit = db_getsession("DB_instit");
       if (tipo == 2) {
           var iContaFornecedor = $("ctapagfor"+iCodMov ).value;//.split(" ");   ;//aMovimentos[iMov][6];
       }
-      var iContaPagadora = aMovimentos[iMov][4];
+      var iContaPagadora = aMovimentos[iMov][5];
 
       var sHistorico = "";
 
@@ -1162,7 +1189,7 @@ $db_instit = db_getsession("DB_instit");
       }
     }
     //console.log(oEnvio);
-    
+
     js_divCarregando("Aguarde, Configurando Movimentos.","msgBox");
     js_liberaBotoes(false);
     var sJson = js_objectToJson(oEnvio);
@@ -1187,7 +1214,7 @@ $db_instit = db_getsession("DB_instit");
       gridNotas.getSelection().each(
         function (dadosSlip) {
 
-          if (dadosSlip[7] === '3'){
+          if (dadosSlip[8] === '3'){
             movimentosSelecionados.push(dadosSlip[1]);
           }
         }
@@ -1201,19 +1228,19 @@ $db_instit = db_getsession("DB_instit");
         alert("Movimentos atualizados com sucesso!");
       }
 
-      /** 
-       * Na pesquisa, os slipsParciais sao removidos. Logo, precisam 
+      /**
+       * Na pesquisa, os slipsParciais sao removidos. Logo, precisam
        * ser evidenciados antes. A pesquisa tambem tem que vir antes
        * do PDF pois se nao ela deixa de funcionar.
        *  */
       let slipsParciais = JSON.parse($('slipsParciais').value);
       js_pesquisarOrdens();
-      
-      if (isPB && slipsParciais.length > 0){  
+
+      if (isPB && slipsParciais.length > 0){
         js_emitePDFSlip(oRetorno.novosSlipsParciais.toString());
         slipsParciais = [];
         $('slipsParciais').value = JSON.stringify(slipsParciais);
-      } 
+      }
 
       if ($('autenticar').checked) {
 
@@ -1464,35 +1491,6 @@ $db_instit = db_getsession("DB_instit");
       ViewHistoricoPagamento.abrir();
   }
 
-  function js_pesquisaRecurso(lMostraWindow) {
-
-      if (!lMostraWindow && $('o15_recurso').value == '') {
-          $("o15_codigo").value = '';
-          $("o15_descr").value = '';
-          $('complementoRecurso').value = '';
-          return
-      }
-
-      let param = 'fonteRecurso='+ $('o15_recurso').value;
-      pesquisaRecurso(param);
-  }
-
-  const pesquisaRecurso = (parametroAdicional) => {
-      var sUrl = 'func_fonterecursocomplemento.php?funcao_js=parent.js_preencheRecurso|db_codigo|o15_recurso|o15_descr|o200_descricao';
-      if (parametroAdicional) {
-          sUrl += `&${parametroAdicional}`;
-      }
-      js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
-  };
-
-  function js_preencheRecurso(id, recurso, descricao, complemento) {
-
-      $('o15_codigo').value    = id;
-      $('o15_recurso').value    = recurso;
-      $('o15_descr').value = descricao;
-      $('complementoRecurso').value = complemento;
-      db_iframe_recurso.hide();
-  }
 
     function js_pesquisaRetencoes() {
         var sUrl = 'func_retencaotiporec.php?chave_pesquisa_in=+&funcao_js=parent.js_mostra|e21_sequencial';
@@ -1516,12 +1514,12 @@ $db_instit = db_getsession("DB_instit");
         $msgUsuario += " não pode ser maior do que o valor original do Slip";
         alert ($msgUsuario);
         $('valorSlip_'+codigoSlip).value = valorMaximo.toString().replace('.',',');
-      } 
+      }
 
     }
 
     function js_inicializaMascaraSlipsParciais(){
-      
+
       let elemets = document.querySelectorAll('[data-mask]');
       for (const el of elemets) {
         switch (el.dataset.mask) {
@@ -1534,4 +1532,34 @@ $db_instit = db_getsession("DB_instit");
       }
   }
 
+
+    $('gestao').classList.add('field-size2')
+    $('descricao').classList.add('field-size6')
+    function js_pesquisaRecurso(lMostraWindow) {
+        if (!lMostraWindow && $('gestao').value == '') {
+            $("o15_codigo").value = '';
+            $("o15_recurso").value = '';
+            $('descricao').value = '';
+            return
+        }
+
+        let param = 'gestao='+ $('gestao').value;
+        pesquisaRecurso(param);
+    }
+
+    const pesquisaRecurso = (parametroAdicional) => {
+        let sUrl = 'func_fontesubrecurso.php?funcao_js=parent.js_preencheRecurso|gestao|o15_recurso|descricao|db_ids_recursos';
+        if (parametroAdicional) {
+            sUrl += `&${parametroAdicional}`;
+        }
+        js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+    };
+
+    function js_preencheRecurso(gestao, recurso, descricao, db_ids_recursos) {
+        $('gestao').value = gestao;
+        $('o15_recurso').value = recurso;
+        $('descricao').value = descricao;
+        $('o15_codigo').value = db_ids_recursos;
+        db_iframe_recurso.hide();
+    }
 </script>

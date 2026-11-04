@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -84,7 +84,7 @@
 
  <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
  
-<?
+<?php
 ///////////////////////////////////////////////////////////////////////////////////////
 //    O desvio abaixo seleciona o código que será apreesentado. Se a pagina foi chamada
 // para apresentar o resultado  da pesquisa, então o botão pesquisar foi acionado, e 
@@ -189,7 +189,7 @@
 
        </tr>
 	   
-<? 
+<?php 
   for ($i=0;$i<$num;$i++) { 
 
   $ordemAtual = pg_result($result,$i,"codordem");  // Variável utilizada para verificar se a ordem foi finalizada ou não
@@ -201,7 +201,7 @@
   if ($numItemsEncontrados == 0) {$finalizado = "Não";} else {$finalizado = "Sim";}
 
 ?>
-      <tr  onMouseOut="document.getElementById('descr_<?=$i?>').style.visibility='hidden'" onMouseOver="document.getElementById('descr_<?=$i?>').style.visibility='visible'"  onClick="location.href='con6_ordempesquisa.php?numOrdem=<? echo pg_result($result,$i,"codordem"); ?>'" <? echo $i%2==0?"bgcolor=\"#E796A4\"":"bgcolor=\"#97B5E6\"" ?> style="cursor:hand;font-size:13px"> 
+      <tr  onMouseOut="document.getElementById('descr_<?=$i?>').style.visibility='hidden'" onMouseOver="document.getElementById('descr_<?=$i?>').style.visibility='visible'"  onClick="location.href='con6_ordempesquisa.php?numOrdem=<?php echo pg_result($result,$i,"codordem"); ?>'" <?php echo $i%2==0?"bgcolor=\"#E796A4\"":"bgcolor=\"#97B5E6\"" ?> style="cursor:hand;font-size:13px"> 
 
         <td align="center"><?=pg_result($result,$i,"codordem")?>&nbsp;</td>
 
@@ -216,7 +216,7 @@
         <td align="center"><?=pg_result($result,$i,"descrdepto")?>&nbsp;</td>
 
       </tr>
-	  <?
+	  <?php
 	  echo "
 	  <tr>
 	  <td>
@@ -229,7 +229,7 @@
 	  </tr>
 	  ";
 	  ?>  
-<?
+<?php
 
  }
 
@@ -240,7 +240,7 @@
 
  </table>
  
-<?
+<?php
 ///////////////////////////////////////////////////////////////////////////////////////
 //    Esta é a parte dá pagina que mostra a ordem de serviço esolhida.
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -299,7 +299,7 @@
                 <td align="center"><input name="voltar" type="button" value="Voltar" onClick="parent.document.form1.pesquisar.click()">
 
 
-<?
+<?php
   $selecionaAndamento = db_query("select o.id_usuario, o.codandam, o.codordem, o.descricao,
 								 to_char(o.dtini,'DD/MM/YYYY') as datainicial, 
 								 to_char(o.dtfim,'DD/MM/YYYY') as datafinal, u.nome
@@ -345,7 +345,7 @@
 
 </table>
 
-<?
+<?php
 ///////////////////////////////////////////////////////////////////////////////////////
 //    Esta é a parte dá pagina que mostra o quadro do iframe vazio. para não ficar um 
 //  buraco em branco.
@@ -360,7 +360,7 @@
 
  </table>
 
-<?
+<?php
 ///////////////////////////////////////////////////////////////////////////////////////
 //    Esta é a parte dá pagina que mostra as opcões disponíveis para pesquisa. Esta
 //  parte será apresentada somente ao carregar a página. 
@@ -418,7 +418,7 @@
                   <td align="left"> <input name="opcao" type="radio" value="1" checked>
                     Todas emitidas por <strong> 
 		    <select name="usuario1" onChange="document.form1.opcao[0].checked=true">
-		<?
+		<?php
 		if(db_getsession("DB_id_usuario") == "1") {
 		  $result = db_query("select id_usuario,nome,login from db_usuarios where usuarioativo = 1 and usuext = 0 order by lower(login)");
 		} else {
@@ -445,7 +445,7 @@
                         <td width="100%" nowrap style="font-size:12px"> <input name="opcao" type="radio" value="2">
                           Todas emitidas por <strong> 
 		    <select name="usuario2" onChange="document.form1.opcao[1].checked=true">
-		<?
+		<?php
 		if(db_getsession("DB_id_usuario") == "1") {
 		  $result = db_query("select id_usuario,nome,login from db_usuarios where usuarioativo = 1 and usuext = 0 order by lower(login)");
 		} else {
@@ -472,7 +472,7 @@
                   <td align="left"><input type="radio" name="opcao" value="3">
                     Todas emitidas para o usuario
 		    <select name="usuario" onChange="document.form1.opcao[2].checked=true">
-		<?
+		<?php
 		if(db_getsession("DB_id_usuario") == "1") {
 		  $result = db_query("select id_usuario,nome,login from db_usuarios where usuarioativo = 1 and usuext = 0 order by lower(login)");
 		} else {
@@ -528,11 +528,11 @@
   </tr>
 
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
-<?
+<?php
   } // fecha pagina da selecao do tipo de pesquisa
 ?>
  </body>

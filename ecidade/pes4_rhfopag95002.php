@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ db_selectmax("cfpess"," select * from cfpess ".bb_condicaosubpes("r11_"));
 <center>
 </center>
 </body>
-<?
+<?php
 
 global $db_config;
 db_selectmax("db_config","select cgc,email,lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));

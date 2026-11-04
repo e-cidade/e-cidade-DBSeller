@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -58,7 +58,7 @@ $virg_das_rubricas = "";
 $impressao_rubricas = false;
 if(trim($rubricas_selecionadas_text) != ""){
   $impressao_rubricas = true;
-  $arr_das_rubricas = split(",",$rubricas_selecionadas_text);
+  $arr_das_rubricas =explode(",",$rubricas_selecionadas_text);
   for($i=0; $i<count($arr_das_rubricas); $i++){
     $db_where_rubricas.= $virg_das_rubricas."'".$arr_das_rubricas[$i]."'";
     $virg_das_rubricas = ",";
@@ -86,7 +86,7 @@ $db_where_matriculas = "
 $sp_where_matriculas = "";
 $virg_das_matriculas = "";
 if(trim($matriculas_selecionadas_text) != ""){
-  $arr_das_matriculas = split(",",$matriculas_selecionadas_text);
+  $arr_das_matriculas =explode(",",$matriculas_selecionadas_text);
   for($i=0; $i<count($arr_das_matriculas); $i++){
     $sp_where_matriculas.= $virg_das_matriculas.$arr_das_matriculas[$i];
     $virg_das_matriculas = ",";
@@ -140,8 +140,6 @@ $sql_create_indexes_temp = "
 $result_create_temporary_table = db_query($sql_create_temporary_table);
 $result_create_indexes_temp    = db_query($sql_create_indexes_temp);
 
-//echo "<BR> ".$clrhpessoal->sql_query_cgm(null,"distinct rh01_regist as regist, z01_numcgm as numcgm, z01_nome as nomefc, r70_codigo as lotaca, r70_descr as dlotac, rh01_funcao as funcao",$orderby,$db_where_matriculas);
-//exit;
 $result_dados_pessoal = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgm(null,"distinct rh02_seqpes,rh01_regist as regist, z01_numcgm as numcgm, z01_nome as nomefc, r70_codigo as lotaca, r70_descr as dlotac, rh01_funcao as funcao",$orderby,$db_where_matriculas));
 
 if($clrhpessoal->numrows == 0){
@@ -161,8 +159,6 @@ for($i=0; $i < $clrhpessoal->numrows; $i++){
       db_fieldsmemory($result_funcao,0);
     }
   }
-//  echo "<BR> dfunca --> $dfunca";
-////  testar esta opcao depois: (r14_anousu = 2004 and r14_mesusu >= 3) or (r14_anousu > 2004 and r14_anousu < 2006 ) or (r14_anousu = 2006 and r14_mesusu <= 2)
   $sql_dados_gerfs   = "
                         select r14_anousu as anousu,
                                r14_mesusu as mesusu,
@@ -280,8 +276,6 @@ for($i=0; $i < $clrhpessoal->numrows; $i++){
                                  r14_mesusu,
                                  r14_rubric
                        ";
-//echo "<BR> $sql_dados_gerfs";
-//exit;
   $result_dados_gerfs = db_query($sql_dados_gerfs);
   $numrows_dados_gerfs = pg_numrows($result_dados_gerfs);
   $mes_anterior = "";
@@ -364,7 +358,7 @@ for($i=0; $i < $clrhpessoal->numrows; $i++){
 
 if($testa == false){
   db_redireciona("db_erros.php?fechar=true&db_erro=Sem dados para gerar relatório.");
-  break;
+  return false;
 }
 
 $arq = 'tmp/rel_ficha_financ_'.time().'.txt';
@@ -373,11 +367,11 @@ $arquivo = fopen($arq,'w');
 $sql_rubr = "select distinct rubric as rubric1,drubri as drubri1 from work_ficha_financ order by rubric";
 $result_rubr = db_query($sql_rubr);
 $numrows_rubr = pg_numrows($result_rubr);
-//db_criatabela($result_rubr);exit;
+
 $sql_work = "select * from work_ficha_financ order by $orderby2";
 $result_work = db_query($sql_work);
 $numrows_work = pg_numrows($result_work);
-//db_criatabela($result_work);exit;
+
 $primatric = "";
 $aRubrica = array();
 for($x=0;$x<$numrows_work;$x++){

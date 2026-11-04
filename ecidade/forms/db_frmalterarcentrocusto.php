@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ $clrotulo->label("cc08_sequencial");
               <b>Material :</b>
             </td> 
             <td>
-              <?
+              <?php
                db_input('cc12_sequencial', 10, $Im70_codmatmater, true, "hidden", 3);
                db_input('m70_codmatmater', 10, $Im70_codmatmater, true, "text", 3);
                db_input('m60_descr', 40, $Im60_descr, true, "text", 3);
@@ -64,7 +64,7 @@ $clrotulo->label("cc08_sequencial");
               <b>Tipo Saída :</b>
             </td> 
             <td>
-              <?
+              <?php
                db_input('m80_codtipo', 10, $Im70_codmatmater, true, "text", 3);
                db_input('m81_descr', 40, $Im60_descr, true, "text", 3);
               ?> 
@@ -75,7 +75,7 @@ $clrotulo->label("cc08_sequencial");
               <b>Departamento :</b>
             </td> 
             <td>
-              <?
+              <?php
                db_input('m80_coddepto', 10, $Im70_codmatmater, true, "text", 3);
                db_input('descrdepto', 40, $Im60_descr, true, "text", 3);
               ?> 
@@ -83,12 +83,12 @@ $clrotulo->label("cc08_sequencial");
           </tr>
           <tr>
             <td>
-              <?
+              <?php
                 db_ancora("<b>Centro de de Custo:</b>",'js_adicionaCentroCusto()', 1,"","centrocusto");
               ?>  
             </td>
             <td>
-              <?
+              <?php
                 db_input('cc08_sequencial',10,$Icc08_sequencial,true,"text", 3);
                 db_input('cc08_descricao',40,$Im60_descr,true,"text",3);
               ?>  
@@ -99,7 +99,7 @@ $clrotulo->label("cc08_sequencial");
               <b>Quantidade:</b>  
             </td>
             <td>
-              <?
+              <?php
                 db_input('cc12_qtd',10,$Icc08_sequencial,true,"text", 3);
               ?>  
             </td>
@@ -109,7 +109,7 @@ $clrotulo->label("cc08_sequencial");
               <b>Valor:</b>  
             </td>
             <td>
-              <?
+              <?php
                 db_input('cc12_valor',10,$Icc08_sequencial,true,"text", 3);
               ?>  
             </td>
@@ -174,11 +174,11 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_custoapropria.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
-<?
+<?php
 if (isset($cc12_sequencial) && $cc12_sequencial != "") {
   
   echo "\n$('btnalterar').disabled = false;\n";

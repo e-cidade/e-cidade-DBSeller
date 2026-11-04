@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,6 +26,8 @@
  */
 
 //MODULO: Farmácia
+$clcgs_und = new cl_cgs_und;
+$clcgs_und->rotulo->label();
 $clfar_retirada->rotulo->label();
 $clfar_retiradaitens->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -48,6 +50,7 @@ $clrotulo->label("fa40_c_descr");
 $clrotulo->label("fa10_i_programa");
 $clrotulo->label("fa04_d_dtvalidade");
 $clrotulo->label("m60_descr");
+$clrotulo->label("z01_v_cgccpf");
 
 $sWhere = 'fa42_i_departamento = ' . db_getsession('DB_coddepto');
 
@@ -61,6 +64,14 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
 }
 
 ?>
+
+<style>
+
+    .cell {
+        font-size: 13px;
+    }
+
+</style>
 
 <form name="form1" method="post" action="">
     <fieldset class='subcontainer' style='width:800px;'>
@@ -96,11 +107,11 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                 </td>
             </tr>
 
-
             <tr>
                 <td class="bold" nowrap='nowrap' title="<?= @$Ts115_c_cartaosus ?>">
                     <?= @$Ls115_c_cartaosus ?>
                 </td>
+
                 <td nowrap='nowrap'>
                     <?php
                     db_input(
@@ -113,25 +124,46 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                         ' onchange="js_getCgsCns();"'
                     );
                     ?>
-                </td>
-                <td class="bold" nowrap='nowrap'>
 
+                    <label style="margin-left: 23px;"> <?= @$Lz01_v_cgccpf ?> </label>
+
+                    <?php
+                    db_input(
+                        'z01_v_cgccpf',
+                        14,
+                        $Iz01_v_cgccpf,
+                        true,
+                        'text',
+                        $db_opcao,
+                        ' onchange="js_getCgsCpf();"',
+                        '',
+                        'white',
+                        '',
+                        11
+                    );
+                    ?>
+
+                    <input type="button" id="atualizaCpfCns" title="Atualizar CPF e CNS"
+                           name="atualizaCpfCns" value="Atualizar CPF e CNS" onclick="atualizarCpfCns()">
                 </td>
+
+                <td class="bold" nowrap='nowrap'></td>
+
                 <td style="display: flex;" nowrap='nowrap'>
                     <b>Tipo de Retirada:</b>
                     <div style="width: 165px;">
-                    <?php
-                    $aOptions = array("1" => "Normal", "2" => "Não Padronizada");
-                    db_select(
-                        "fa04_tiporetirada",
-                        $aOptions,
-                        $Ifa04_tiporetirada,
-                        $db_opcao,
-                        "onchange=\"js_tiporeceita(this.value);\"  "
-                    );
-                    ?>
+                        <?php
+                        $aOptions = array("1" => "Normal", "2" => "Não Padronizada");
+                        db_select(
+                            "fa04_tiporetirada",
+                            $aOptions,
+                            $Ifa04_tiporetirada,
+                            $db_opcao,
+                            "onchange=\"js_tiporeceita(this.value);\"  "
+                        );
+                        ?>
                 </td>
-                    </div>
+                </div>
             </tr>
 
             <tr>
@@ -158,7 +190,7 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                         true,
                         'text',
                         1,
-                        "onchange=\"if(document.form1.z01_v_nome.value=='') document.form1.fa04_i_cgsund.value='';\""
+                        "onchange=validaCampoNome()"
                     );
                     ?>
                     &nbsp;
@@ -178,39 +210,60 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                 </td>
             </tr>
 
-
+            <tr>
+                <td class="bold" nowrap='nowrap'>
+                    <b>Nome Social:</b>
+                </td>
+                <td colspan="2">
+                    <?php
+                    $corNomeSocial = !empty($z01_nome_social) ? "#97CAE6" : "";
+                    db_input(
+                        'z01_nome_social',
+                        58,
+                        2,
+                        true,
+                        'text',
+                        $db_opcao,
+                        "",
+                        "",
+                        $corNomeSocial
+                    );
+                    ?>
+                </td>
+            </tr>
             <tr>
                 <td class="bold" nowrap='nowrap'>
                     <b>Tipo de Receita:</b>
                 </td>
                 <td nowrap='nowrap' title="<?= @$Tfa04_d_dtvalidade ?>">
                     <?php
-                        $campos = 'fa03_i_codigo, fa03_c_descr, fa03_c_requisitante,';
-                        $campos .= 'fa03_c_posologia,fa03_i_prescricaomedica,';
-                        $campos .= 'fa03_c_profissional,fa03_c_numeroreceita,fa03_data_prescricao,fa03_dias_prescricao,';
-                        $campos .= 'fa03_numero_notificacao';
-                        $sSql = $clfar_tiporeceita->sql_query_file('', $campos, 'fa03_c_descr', 'fa03_i_ativa = 1');
-                        $result_tprec = $clfar_tiporeceita->sql_record($sSql);
-                        ?>
-                        <select name="fa04_i_tiporeceita" id="fa04_i_tiporeceita" rel='ignore-css'
-                                onchange="js_tpreceita();">
-                            <option value=""></option>
+                    $campos = 'fa03_i_codigo, fa03_c_descr, fa03_c_requisitante,';
+                    $campos .= 'fa03_c_posologia,fa03_i_prescricaomedica,';
+                    $campos .= 'fa03_c_profissional,fa03_c_numeroreceita,fa03_data_prescricao,fa03_dias_prescricao,';
+                    $campos .= 'fa03_numero_notificacao';
+                    $sSql = $clfar_tiporeceita->sql_query_file('', $campos, 'fa03_c_descr', 'fa03_i_ativa = 1');
+                    $result_tprec = $clfar_tiporeceita->sql_record($sSql);
+                    ?>
+                    <select name="fa04_i_tiporeceita" id="fa04_i_tiporeceita" rel='ignore-css'
+                            onchange="js_tpreceita();">
+                        <option value=""></option>
+                        <?php
+                        for ($y = 0; $y < pg_num_rows($result_tprec); $y++) {
+                            db_fieldsmemory($result_tprec, $y); ?>
                             <?php
-                            for ($y = 0; $y < pg_num_rows($result_tprec); $y++) {
-                                db_fieldsmemory($result_tprec, $y); ?>
-                                <?php
-                                $sValor = "$fa03_c_requisitante/$fa03_i_codigo/$fa03_c_posologia/";
-                                $sValor .= "$fa03_i_prescricaomedica/$fa03_c_profissional/$fa03_c_numeroreceita/";
-                                $sValor .= "$fa03_data_prescricao/$fa03_dias_prescricao/$fa03_numero_notificacao";
+                            $sValor = "$fa03_c_requisitante/$fa03_i_codigo/$fa03_c_posologia/";
+                            $sValor .= "$fa03_i_prescricaomedica/$fa03_c_profissional/$fa03_c_numeroreceita/";
+                            $sValor .= "$fa03_data_prescricao/$fa03_dias_prescricao/$fa03_numero_notificacao";
 
-                                ?>
-                                <option value="<?= $sValor ?>"
-                                    <?= (@$fa04_i_tiporeceita == "$fa03_c_requisitante/$fa03_i_codigo") ? "selected" : "" ?>
-                                >
-                                    <?= $fa03_c_descr ?>
-                                </option>
-                            <?php } ?>
-                        </select>
+                            ?>
+                            <option value="<?= $sValor ?>"
+                                <?= (@$fa04_i_tiporeceita == "$fa03_c_requisitante/$fa03_i_codigo") ? "selected" : "" ?>
+                            >
+                                <?= $fa03_c_descr ?>
+                            </option>
+                            <?php
+                        } ?>
+                    </select>
                 </td>
                 <td>
                     <?php
@@ -271,7 +324,15 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                 </td>
                 <td>
                     <?php
-                    db_input('fa04_numeronotificacao', 10, $Ifa04_numeronotificacao, true, 'text', $db_opcao, " onBlur='validaNumeroNotificacao();'");
+                    db_input(
+                        'fa04_numeronotificacao',
+                        10,
+                        $Ifa04_numeronotificacao,
+                        true,
+                        'text',
+                        $db_opcao,
+                        " onBlur='validaNumeroNotificacao();'"
+                    );
                     ?>
                 </td>
             </tr>
@@ -279,7 +340,8 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
 
             <tr style=" <?= ($oConfigFarmacia->fa02_i_origemreceita == 1 ? "''" : 'display: none;') ?>">
                 <td class="bold" nowrap='nowrap' title="<?= @$Tfa41_i_origemreceita ?>">
-                    <?php db_ancora($Lfa41_i_origemreceita, 'js_pesquisafa41_i_origemreceita(true)', '') ?>
+                    <?php
+                    db_ancora($Lfa41_i_origemreceita, 'js_pesquisafa41_i_origemreceita(true)', '') ?>
                 </td>
                 <td nowrap='nowrap' colspan="3">
                     <?php
@@ -296,7 +358,7 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                     ?>
                 </td>
             </tr>
-            <tr style="height: 3px;" ></tr>
+            <tr style="height: 3px;"></tr>
             <tr>
                 <td nowrap title="<?= @$Tfa04_i_profissional ?>">
                     <?php
@@ -336,7 +398,8 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
 
             <tr <?= (!isset($fa08_i_cgsund)) ? "style=\"display:none\"" : "" ?> id="linha1">
                 <td nowrap title="<?= @$Tfa08_i_cgsund ?>">
-                    <?php db_ancora(@$Lfa08_i_cgsund, "js_pesquisafa08_i_cgsund(true);", 1); ?>
+                    <?php
+                    db_ancora(@$Lfa08_i_cgsund, "js_pesquisafa08_i_cgsund(true);", 1); ?>
                 </td>
                 <td colspan="3">
                     <?php
@@ -349,13 +412,22 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                         "",
                         " onchange='js_pesquisafa08_i_cgsund(false);'"
                     );
-                    db_input('z01_v_nomecgs', 55, @$z01_v_nomecgs, true, 'text', 1);
+                    db_input(
+                        'z01_v_nomecgs',
+                        55,
+                        @$z01_v_nomecgs,
+                        true,
+                        'text',
+                        1,
+                        "onchange='limpaDadosRequisitante();'"
+                    );
                     ?>
                 </td>
             </tr>
             <tr <?= (!isset($ender)) ? "style=\"display:none\"" : "" ?> id="linha1">
                 <td nowrap title="<?= @$Tz01_v_ender ?>">
-                    <?php db_ancora(@$Lz01_v_ender, "", 3); ?>
+                    <?php
+                    db_ancora(@$Lz01_v_ender, "", 3); ?>
                 </td>
                 <td colspan="3">
                     <?php
@@ -366,10 +438,11 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
             </tr>
             <tr <?= (!isset($ident)) ? "style=\"display:none\"" : "" ?> id="linha1">
                 <td nowrap title="<?= @$Tz01_v_ident ?>">
-                    <b>Identidade:</b>
+                    <?= @$Lz01_v_ident ?>
                 </td>
                 <td colspan="3">
-                    <?php db_input('ident', 15, @$Iz01_v_ident, true, 'text', 1); ?>
+                    <?php
+                    db_input('ident', 15, @$Iz01_v_ident, true, 'text', 1, '', '', '', '', 11); ?>
                 </td>
             </tr>
         </table>
@@ -452,7 +525,8 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                                     Frequência:
                                 </td>
                                 <td nowrap="nowrap">
-                                    <?php db_input('contiFreq', 10, "", true, 'text', 1, "onchange='js_prazo();'"); ?>
+                                    <?php
+                                    db_input('contiFreq', 10, "", true, 'text', 1, "onchange='js_prazo();'"); ?>
                                 </td>
                                 <td nowrap="nowrap" class='bold'>
                                     Margem:
@@ -508,7 +582,8 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                           style="padding-left: 9px; padding-right: 9px;">Ver Lotes</a> </b>
                     &nbsp;&nbsp;
                     <b>Saldo :</b>
-                    <?php db_input('quant_disp', 5, @$Ifa06_f_quant, true, 'text', 3, ""); ?>
+                    <?php
+                    db_input('quant_disp', 5, @$Ifa06_f_quant, true, 'text', 3, ""); ?>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="button" name="fa06_t_posologia" id="fa06_t_posologia" value="Posologia" disabled
                            onclick="js_lancar();">
@@ -539,30 +614,36 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
 
     <div class="container">
 
-    <input name="confirmar" type="button" id="confirmar" value="Confirmar" disabled  onClick='js_confirma();'>
-    <input name="comprovante" type="button" id="comprovante" value="Comprovante" disabled onclick='js_imprime();' >
-    <input name    = "retirada"
-           type    = "button"
-           id      = "retirada"
-           value   = "Nova Retirada"
-           disabled
-           onclick = 'location.href="far1_far_retirada001.php"'>
-    <input name    = "continuar"
-           type    = "button"
-           id      = "continuar"
-           value   = "Continuar Retirada"
-           disabled
-           onClick = 'location.href="far1_far_retirada001.php?fa04_i_cgsund="+$(fa04_i_cgsund).value
+        <input name="confirmar" type="button" id="confirmar" value="Confirmar" disabled onClick='js_confirma();'>
+        <input name="comprovante" type="button" id="comprovante" value="Comprovante" disabled onclick='js_imprime();'>
+        <input name="retirada"
+               type="button"
+               id="retirada"
+               value="Nova Retirada"
+               disabled
+               onclick='location.href="far1_far_retirada001.php"'>
+        <input name="continuar"
+               type="button"
+               id="continuar"
+               value="Continuar Retirada"
+               disabled
+               onClick='location.href="far1_far_retirada001.php?fa04_i_cgsund="+$(fa04_i_cgsund).value
            +"&lContinuar=true&z01_v_nome="+$(z01_v_nome).value
-           +"&s115_c_cartaosus="+$(s115_c_cartaosus).value'>
+           +"&z01_nome_social="+$(z01_nome_social).value
+           +"&s115_c_cartaosus="+$(s115_c_cartaosus).value
+           +"&continuandoRetirada="+true
+           +"&z01_v_cgccpf="+$(z01_v_cgccpf).value'>
 
-    <input nome="m40_codigo" id="m40_codigo" type="hidden" value="">
-  </div>
+        <input nome="m40_codigo" id="m40_codigo" type="hidden" value="">
+
+        <?php db_input('continuandoRetirada', 5, '', false, 'hidden'); ?>
+    </div>
 
 </form>
 
 
-<?php // PHP responsavel pela busca dos medicamentos prestes a vencer
+<?php
+// PHP responsavel pela busca dos medicamentos prestes a vencer
 $sSql = $clmatparam->sql_query_file("", "m90_prazovenc", "", "");
 $result_venc = $clmatparam->sql_record($sSql);
 if (pg_num_rows($result_venc) <= 0 || pg_num_rows($result_venc) == false) {
@@ -700,6 +781,14 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
     const divAvisoRetirada = document.getElementById('divAvisoRetirada');
     const tabelaAvisoRetirada = jQuery("#table-aviso-retirada");
 
+    let valorCgsEncontrado = '';
+    let codigoCartaoSusEncontrado = '';
+    let cpfAtual = '';
+    let cnsAtual = '';
+
+    //Variável que indica quando um buscar por cgs é feita através do campo de cgs ou do campo nome
+    let buscouPeloNomeOuCgs = false;
+
     document.getElementById('demandaReprimida').addEventListener('click', () => openDemandaReprimida(false));
     document.getElementById('demandaReprimidaMed').addEventListener('click', () => openDemandaReprimida(true));
 
@@ -755,7 +844,8 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
     const validaCgs = new ValidaCgs(inputCgs);
 
     window.onload = () => {
-        validaCgs.cadastroMicroarea(inputCgs, divAlert)
+        validaCgs.cadastroMicroarea(inputCgs, divAlert);
+        bloqueiaCamposContinuacaoRetirada()
     }
 
     // Autocomplete do profissional
@@ -777,7 +867,10 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
     oAutoComplete3.setCallBackFunction(function (id, label) {
         document.form1.fa04_i_cgsund.value = id;
         document.form1.z01_v_nome.value = label;
-        document.form1.continuados.disabled = false;
+
+        if (document.form1.continuados !== undefined) {
+            document.form1.continuados.disabled = false;
+        }
         document.form1.demandaReprimida.disabled = false;
         $('s115_c_cartaosus').value = '';
         js_init();
@@ -955,6 +1048,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     document.form1.fa04_i_cgsund.value = ''
                     document.form1.z01_v_nome.value = '';
                     document.form1.s115_c_cartaosus.value = '';
+                    document.form1.z01_v_cgccpf.value = '';
                     return resolve(false);
                 }
                 return resolve(true);
@@ -1009,45 +1103,48 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         * avet[5] - Marg.
         * avet[6] - Qtde.
         * avet[7] - Saldo do Produto
-        * avet[8] - Estoque
-        * avet[9] - Validade
-        * avet[10] - Label Lote
-        * avet[11] - Qtde. Disp.
-        * avet[12] - Observação
-        * avet[13] - Lote
-        * avet[14] - Ponto Pedido
-        * avet[15] - false
-        * avet[16] - Hiperdia ~ boolean
-        * avet[17] - Data Fim
-        * avet[18] - Localização no estoque
+        * avet[8] - Val. Continuado
+        * avet[9] - Estoque
+        * avet[10] - Validade
+        * avet[11] - Label Lote
+        * avet[12] - Qtde. Disp.
+        * avet[13] - Observação
+        * avet[14] - Lote
+        * avet[15] - Ponto Pedido
+        * avet[16] - false
+        * avet[17] - Hiperdia ~ boolean
+        * avet[18] - Data Fim
+        * avet[19] - Localização no estoque
         * */
             /*
         * Descrição Linhas da Grid Remedios
         * aLinhaGridRemedios[0] - avet[1] - Código Medicamento
         * aLinhaGridRemedios[1] - avet[2] - Descrição Medicamento
         * aLinhaGridRemedios[2] - avet[3] - Próx. Disp.
-        * aLinhaGridRemedios[3] - avet[4] - Freq.        ~~~~~~~ está recebendo avet[11] - Qtde. Disp.
+        * aLinhaGridRemedios[3] - avet[4] - Freq.        ~~~~~~~ está recebendo avet[12] - Qtde. Disp.
         * aLinhaGridRemedios[4] - avet[5] - Marg.
         * aLinhaGridRemedios[5] - avet[6] - Qtde.
         * aLinhaGridRemedios[6] - avet[7] - Saldo do Produto
-        * aLinhaGridRemedios[7] - avet[8] - Estoque
-        * aLinhaGridRemedios[8] - avet[9] - Validade
-        * aLinhaGridRemedios[9] - avet[10] - Label Lote
-        * aLinhaGridRemedios[10] - contador x do FOR
+        * aLinhaGridRemedios[7] - avet[8] - Val. Continuado
+        * aLinhaGridRemedios[8] - avet[9] - Estoque
+        * aLinhaGridRemedios[9] - avet[10] - Validade
+        * aLinhaGridRemedios[10] - avet[11] - Label Lote
+        * aLinhaGridRemedios[11] - contador x do FOR
         * */
             if (avet[0] == "N") {
                 aLinhaGridRemedios[0] = avet[1];
                 aLinhaGridRemedios[1] = avet[2];
                 aLinhaGridRemedios[2] = avet[3];
                 //aLinhaGridRemedios[3]   = avet[4];
-                aLinhaGridRemedios[3] = avet[11];
+                aLinhaGridRemedios[3] = avet[12];
                 aLinhaGridRemedios[4] = avet[5];
                 aLinhaGridRemedios[5] = avet[6];
                 aLinhaGridRemedios[6] = avet[7];
                 aLinhaGridRemedios[7] = avet[8];
                 aLinhaGridRemedios[8] = avet[9];
                 aLinhaGridRemedios[9] = avet[10];
-                aLinhaGridRemedios[10] = x;
+                aLinhaGridRemedios[10] = avet[11];
+                aLinhaGridRemedios[11] = x;
 
                 bloqueio = '';
                 // Validação de produto 'aNormal'
@@ -1059,8 +1156,8 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     }
                     <?php if ($oConfigFarmacia->fa02_i_validavencimento > 1) : ?>
                     // Valida se possuir data de validade
-                    if (avet[9] != '' && avet[9] != undefined) {
-                        aData = avet[9].split('/');
+                    if (avet[10] != '' && avet[10] != undefined) {
+                        aData = avet[10].split('/');
                         validade = new Date(aData[2], (aData[1] - 1), aData[0]);
                         // Valida se não possui Próx. Disp.
                         if (avet[3] == '') {
@@ -1084,8 +1181,8 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     <?php endif; ?>
                 }
                 // Controle da data de Vencimento do Continuado
-                if (avet[9] != '' && avet[9].split('/').length == 3) {
-                    aData = avet[9].split('/');
+                if (avet[10] != '' && avet[10].split('/').length == 3) {
+                    aData = avet[10].split('/');
                     validade = aData[2].substr(0, 4) + aData[1] + aData[0];
                     <?php $aVet = explode('-', $dHoje);
                     echo " hoje = $aVet[0]$aVet[1]$aVet[2]; ";?>
@@ -1109,24 +1206,24 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     saldo = avet[7]
                 }
                 // Controle de estoque
-                if (avet[8] == '') {
+                if (avet[9] == '') {
                     estoque = 0;
                 } else {
-                    estoque = avet[8];
+                    estoque = avet[9];
                 }
                 // Saldo do Medicamento
-                if (avet[11] > 0) {
+                if (avet[12] > 0) {
                     $('confirmar').disabled = false;
                     $('retirada').disabled = false;
                 }
 
                 if (avet[0] != 'N') {
-                    if (avet[16] == 't') {
+                    if (avet[17] == 't') {
                         sLibera = 'checked';
                     } else {
                         sLibera = '';
                     }
-                    if (avet[7] == 0 || avet[8] == 0) {
+                    if (avet[7] == 0 || avet[9] == 0) {
                         sSemsaldo = 'disabled';
                     } else {
                         sSemsaldo = '';
@@ -1134,12 +1231,12 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 }
 
                 objGridRemedios.addRow(aLinhaGridRemedios);
-                // Informação de LOTE movida para posição [11]
-                aLinhaGridRemedios[11] = avet[13];
-                aLinhaGridRemedios[12] = avet[13];
-                aLinhaGridRemedios[13] = avet[13];
+                // Informação de LOTE movida para posição [12]
+                aLinhaGridRemedios[12] = avet[14];
+                aLinhaGridRemedios[13] = avet[14];
+                aLinhaGridRemedios[14] = avet[14];
                 //Localização no estoque
-                aLinhaGridRemedios[14] = avet[18];
+                aLinhaGridRemedios[15] = avet[19];
                 aGridRemediosAtual.push(aLinhaGridRemedios);
             }
         }
@@ -1240,12 +1337,13 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             "Marg.",
             "Qtde.",
             "Saldo",
+            "Val. Continuado",
             "Estoque",
             "Validade",
             "Lote ",
             'Localização',
             "Qtde. Disp.",
-            '<label style="margin-left: 20px; margin-right: 20px;">'
+            '<label style="margin-left: 10px; margin-right: 10px;">'
             + "Dispensa"
             + '</label>'
             + oMarcar
@@ -1253,7 +1351,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         objGridRemedios = new DBGrid('objGridRemedios');
         objGridRemedios.nameInstance = 'objGridRemedios';
         objGridRemedios.setHeader(arrHeader);
-        objGridRemedios.setCellWidth(['5%', '28%', '8%', '5%', '5%', '5%', '5%', '5%', '8%', '5%', '8%', '7%', '13%']);
+        objGridRemedios.setCellWidth(['4%', '28%', '6%', '3%', '3%', '3%', '5%', '8%', '5%', '6%', '5%', '8%', '6%', '10%']);
         objGridRemedios.setHeight(140);
         objGridRemedios.show($('gridRemedios'));
         objGridRemedios.setStatus('* Estoque em vermelho significa que material está em ponto de pedido');
@@ -1313,10 +1411,11 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 echo "alert('Verifique os parametros da farmacia!');return false;";
             }
             ?>
-            if (vet_op[1] == <?php if (!isset($fa42_i_tiporeceita) || $fa42_i_tiporeceita == null)
+            if (vet_op[1] == <?php if (!isset($fa42_i_tiporeceita) || $fa42_i_tiporeceita == null) {
                 echo '0';
-            else
+            } else {
                 echo $fa42_i_tiporeceita;
+            }
                 ?>) {
                 document.form1.fa04_i_tiporeceita.options[i].selected = true;
                 js_tpreceita();
@@ -1364,6 +1463,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 sStr += '#' + objremedio.margem.urlDecode();
                 sStr += '#' + objremedio.fa10_i_quantidade;
                 sStr += '#' + objremedio.saldo;
+                sStr += '#' + objremedio.fa10_d_datafim.urlDecode();
                 sStr += '#' + objremedio.saldo_estoque;
                 sStr += '#' + objremedio.validade.urlDecode();
                 sStr += '#' + objremedio.label_lote;
@@ -1383,7 +1483,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         if (aGridRemediosAtual.length > 0) {
             for (var i = 0; i < aGridRemediosAtual.length; i++) {
                 if (inArray(aGridRemediosAtual[i][0], aCodMedicamentoGrid)) {
-                    continue;
+
                 } else {
                     sStr = 'N';                                              // tipo
                     sStr += '#' + aGridRemediosAtual[i][0];                     // codigo medicamento
@@ -1396,26 +1496,27 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     sStr += '#' + aGridRemediosAtual[i][4];                     // margem
                     sStr += '#' + aGridRemediosAtual[i][5];                     // qtde
                     sStr += '#' + aGridRemediosAtual[i][6];                     // saldo
+                    sStr += '#' + aGridRemediosAtual[i][7];                     // Val. Continuado
 
                     // ver pq ta vindo sempre red text
-                    sStr += '#' + aGridRemediosAtual[i][7];                     // estoque
+                    sStr += '#' + aGridRemediosAtual[i][8];                     // estoque
                     //sStr += '#';
 
-                    sStr += '#' + aGridRemediosAtual[i][8];                     // validade
-                    sStr += '#' + aGridRemediosAtual[i][9];                     // label_lote
+                    sStr += '#' + aGridRemediosAtual[i][9];                     // validade
+                    sStr += '#' + aGridRemediosAtual[i][10];                     // label_lote
 
                     //sStr += '#'+aGridRemediosAtual[i][10];                  // input qtde disp.
                     sStr += '#' + aGridRemediosAtual[i][3];                     // Qtde. Disp.
                     sStr += '#';                                              // Observação
 
-                    sStr += '#' + aGridRemediosAtual[i][11];
+                    sStr += '#' + aGridRemediosAtual[i][12];
 
-                    sStr += '#' + aGridRemediosAtual[i][10];                    // Ponto Pedido
+                    sStr += '#' + aGridRemediosAtual[i][11];                    // Ponto Pedido
 
                     sStr += '#' + 'false';
                     sStr += '#f';
                     sStr += '#';
-                    sStr += '#' + aGridRemediosAtual[i][14]; // Localização no estoque
+                    sStr += '#' + aGridRemediosAtual[i][15]; // Localização no estoque
 
                     $('DadosGridRemedios').add(new Option(sStr, $('DadosGridRemedios').length), null);
                 }
@@ -1439,14 +1540,14 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 $('editLibera' + iI).checked = true;
                 sText = $('DadosGridRemedios').options[iI].text;
                 avet = sText.split('#');
-                avet[16] = 't';
+                avet[17] = 't';
                 sText = avet.join('#');
                 $('DadosGridRemedios').options[iI].text = sText;
             } else {
                 $('editLibera' + iI).checked = false;
                 sText = $('DadosGridRemedios').options[iI].text;
                 avet = sText.split('#');
-                avet[16] = 'f';
+                avet[17] = 'f';
                 sText = avet.join('#');
                 $('DadosGridRemedios').options[iI].text = sText;
             }
@@ -1490,17 +1591,18 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
  * 5   Marg.          - margen do continuado
  * 6   Qtd.           - quantidade do continuado
  * 7   Saldo.         - saldo do continuado
- * 8   Estoque        - estoque do medicamento no departamento
- * 9   Validade       - data de validade do medicamento
- * 10  Lote           - Lote do medicamento
- * 11  Qtd. Disp.     - Quantidade que será dispensada
- * 12  Posologia      - Posologia
- * 13  Cod. matestoqueitem - codigo da matestoqueitem selecionado (código sequencial)
- * 14  ponto pedido   - quantidade minima do material
- * 15  hiperdia       - indica se o medicamento pertence ao hiper dia (boolean)
- * 16  Libera tudo    - indica se é para liberar todo saldo disponivel de continuado
- * 17  Ação prog.     - ação programatica do continuado.
- * 18  localizacao    - localização do material no estoque
+ * 8   Validade Continuado.         - Val. Continuado
+ * 9   Estoque        - estoque do medicamento no departamento
+ * 10   Validade       - data de validade do medicamento
+ * 11  Lote           - Lote do medicamento
+ * 12  Qtd. Disp.     - Quantidade que será dispensada
+ * 13  Posologia      - Posologia
+ * 14  Cod. matestoqueitem - codigo da matestoqueitem selecionado (código sequencial)
+ * 15  ponto pedido   - quantidade minima do material
+ * 16  hiperdia       - indica se o medicamento pertence ao hiper dia (boolean)
+ * 17  Libera tudo    - indica se é para liberar todo saldo disponivel de continuado
+ * 18  Ação prog.     - ação programatica do continuado.
+ * 19  localizacao    - localização do material no estoque
  *
  * Ex: N#3#Clonazepan#12/05/2020#30#3#10#30#5048#10/10/2015#ABDDC#10#2x ao dia#28#15#false#false#C3P5
  */
@@ -1532,7 +1634,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             alinha[4] = avet[5];
             alinha[5] = avet[6];
             alinha[6] = avet[7];
-            if (avet[14] == '' || parseInt(avet[14], 10) < parseInt(avet[8], 10)) {
+            if (avet[15] == '' || parseInt(avet[15], 10) < parseInt(avet[9], 10)) {
                 sFont1 = '';
                 sFont2 = '';
             } else {
@@ -1541,11 +1643,12 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 aAvencer[aAvencer.length] = avet[2];
             }
 
-            alinha[7] = sFont1 + avet[8] + sFont2;
-            alinha[8] = avet[9];
+            alinha[7] = avet[8];
+            alinha[8] = sFont1 + avet[9] + sFont2;
             alinha[9] = avet[10];
-            alinha[10] = avet[18];
-            alinha[11] = '<input type="text" id="editQuant' + x + '" ';
+            alinha[10] = avet[11];
+            alinha[11] = avet[19];
+            alinha[12] = '<input type="text" id="editQuant' + x + '" ';
             bloqueio = '';
             if (avet[0] != 'N') {
                 aPaint[aPaint.length] = x;
@@ -1553,8 +1656,8 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     bloqueio = 'disabled';
                 }
                 <?php if ($oConfigFarmacia->fa02_i_validavencimento > 1) : ?>
-                if (avet[9] != '' && avet[9] != undefined) {
-                    aData = avet[9].split('/');
+                if (avet[10] != '' && avet[10] != undefined) {
+                    aData = avet[10].split('/');
                     validade = new Date(aData[2], (aData[1] - 1), aData[0]);
                     if (avet[3] == '') {
                         <?php $aVet = explode('-', $dHoje);
@@ -1575,8 +1678,8 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 }
                 <?php endif; ?>
             }
-            if (avet[9] != '' && avet[9].split('/').length == 3) {
-                aData = avet[9].split('/');
+            if (avet[10] != '' && avet[10].split('/').length == 3) {
+                aData = avet[10].split('/');
                 validade = aData[2].substr(0, 4) + aData[1] + aData[0];
                 <?php $aVet = explode('-', $dHoje);
                 echo " hoje = $aVet[0]$aVet[1]$aVet[2]; ";?>
@@ -1599,40 +1702,40 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 saldo = avet[7]
             }
 
-            if (avet[8] == '') {
+            if (avet[9] == '') {
                 estoque = 0;
             } else {
-                estoque = avet[8];
+                estoque = avet[9];
             }
-            if (avet[11] > 0) {
+            if (avet[12] > 0) {
                 $('confirmar').disabled = false;
                 $('retirada').disabled = false;
             }
-            if (avet[16] == 't') {
-                alinha[11] += ' value="' + avet[6] + '" size="5" readonly style="background-color: #DEB887;"';
+            if (avet[17] == 't') {
+                alinha[12] += ' value="' + avet[7] + '" size="5" readonly style="background-color: #DEB887;"';
             } else {
-                alinha[11] += ' value="' + avet[11] + '" size="5" ';
+                alinha[12] += ' value="' + avet[12] + '" size="5" ';
             }
-            alinha[11] += ' onchange="validaQuantidade(' + x + ',' + saldo + ',' + estoque + ')" > ';
-            alinha[12] = '';
+            alinha[12] += ' onchange="validaQuantidade(' + x + ',' + saldo + ',' + estoque + ')" > ';
+            alinha[13] = '';
             if ($('fa04_tiporetirada').value == '1') {
-                alinha[12] += '<input type="button" name="rateiolote" value="Lote" onclick="js_ratioLote(' + x + ')">';
+                alinha[13] += '<input type="button" name="rateiolote" value="Lote" onclick="js_ratioLote(' + x + ')">';
             }
-            alinha[12] += '&nbsp;<input type="button" name="posologia" value="P" onclick="js_lancar(' + x + ',\'' + avet[12] + '\')">';
-            alinha[12] += '&nbsp;<input type="button" name="excluir" value="E" onclick="js_excluirlinha(' + x + ')" ' + bloqueio + '>';
+            alinha[13] += '&nbsp;<input type="button" name="posologia" value="P" onclick="js_lancar(' + x + ',\'' + avet[13] + '\')">';
+            alinha[13] += '&nbsp;<input type="button" name="excluir" value="E" onclick="js_excluirlinha(' + x + ')" ' + bloqueio + '>';
             if (avet[0] != 'N') {
-                if (avet[16] == 't') {
+                if (avet[17] == 't') {
                     sLibera = 'checked';
                 } else {
                     sLibera = '';
                 }
-                if (avet[7] == 0 || avet[8] == 0) {
+                if (avet[7] == 0 || avet[9] == 0) {
                     sSemsaldo = 'disabled';
                 } else {
                     sSemsaldo = '';
                 }
-                alinha[12] += '<input type="checkbox" id="editLibera' + x + '" ' + sSemsaldo + ' ';
-                alinha[12] += sLibera + ' onclick="js_atualizaCampo(' + x + ',js_libera(this.checked),16)">';
+                alinha[13] += '<input type="checkbox" id="editLibera' + x + '" ' + sSemsaldo + ' ';
+                alinha[13] += sLibera + ' onclick="js_atualizaCampo(' + x + ',js_libera(this.checked),17)">';
             }
             objGridRemedios.addRow(alinha);
         }
@@ -1675,7 +1778,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             alert('Quantidade ' + $('editQuant' + x).value + ' não disponivel, valor disponivel ' + menor);
             $('editQuant' + x).value = menor;
         }
-        js_atualizaCampo(x, $('editQuant' + x).value, 11);
+        js_atualizaCampo(x, $('editQuant' + x).value, 12);
     }
 
     function js_ratioLote(x) {
@@ -1707,7 +1810,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
     function js_atualizaPosologia(x, posologia) {
         sText = $('DadosGridRemedios').options[x].text;
         avet = sText.split('#');
-        avet[12] = posologia;
+        avet[13] = posologia;
         sText = avet.join('#');
         $('DadosGridRemedios').options[x].text = sText;
         js_AtualizaGrid();
@@ -1751,7 +1854,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             js_OpenJanelaIframe(
                 '',
                 'db_iframe_cgs_und',
-                'func_cgs_und.php?funcao_js=parent.js_mostracgs_und1|z01_i_cgsund|z01_v_nome|s115_c_cartaosus&nome_social=true',
+                'func_cgs_und.php?funcao_js=parent.js_mostracgs_und1|z01_i_cgsund|z01_v_nome|s115_c_cartaosus|z01_nome_social|z01_v_cgccpf|s115_i_codigo',
                 'Pesquisa',
                 true
             );
@@ -1761,7 +1864,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     '',
                     'db_iframe_cgs_und',
                     'func_cgs_und.php?pesquisa_chave=' + document.form1.fa04_i_cgsund.value +
-                    '&funcao_js=parent.js_mostracgs_und&nome_social=true',
+                    '&funcao_js=parent.js_mostracgs_und&mostrarNomeSocial=true',
                     'Pesquisa',
                     false
                 );
@@ -1772,13 +1875,37 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 document.form1.z01_v_nome.value = '';
                 document.form1.s115_c_cartaosus.value = '';
                 document.form1.demandaReprimida.disabled = true;
+                document.form1.z01_nome_social.value = '';
+                document.form1.z01_nome_social.style.backgroundColor = "";
+                document.form1.z01_v_cgccpf.value = '';
+                valorCgsEncontrado = '';
+                codigoCartaoSusEncontrado = '';
+                cpfAtual = '';
+                cnsAtual = '';
             }
         }
     }
 
-    async function js_mostracgs_und(chave, erro, sexo, telefone, cns) {
+    async function js_mostracgs_und(chave, erro, sexo, telefone, cns, dataNascimento, nomeSocial, cpf) {
         document.form1.z01_v_nome.value = chave;
-        document.form1.s115_c_cartaosus.value = cns;
+
+        if (!erro) {
+            document.form1.s115_c_cartaosus.value = cns;
+            document.form1.z01_nome_social.value = nomeSocial;
+
+            if (nomeSocial.length > 0) {
+                document.form1.z01_nome_social.style.backgroundColor = "#97CAE6";
+            } else {
+                document.form1.z01_nome_social.style.backgroundColor = "#E6E4F1";
+            }
+            document.form1.z01_v_cgccpf.value = cpf;
+            valorCgsEncontrado = $F('fa04_i_cgsund');
+            cpfAtual = cpf;
+            cnsAtual = cns;
+
+            buscouPeloNomeOuCgs = true;
+            js_getCgsCns();
+        }
 
         const continuar = await validaCgsMunicipio(document.form1.fa04_i_cgsund.value);
         if (!continuar || erro) {
@@ -1786,6 +1913,15 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             document.form1.fa04_i_cgsund.value = '';
             document.form1.s115_c_cartaosus.value = '';
             document.form1.demandaReprimida.disabled = true;
+            document.form1.z01_v_cgccpf.value = '';
+            document.form1.z01_nome_social.value = '';
+            document.form1.z01_nome_social.style.backgroundColor = "#E6E4F1";
+
+            valorCgsEncontrado = '';
+            codigoCartaoSusEncontrado = '';
+            cpfAtual = '';
+            cnsAtual = '';
+
             if (document.form1.continuados != undefined) {
                 document.form1.continuados.disabled = true;
             }
@@ -1799,10 +1935,20 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         }
     }
 
-    function js_mostracgs_und1(chave1, chave2, cns) {
+    function js_mostracgs_und1(chave1, chave2, cns, nomeSocial, cpf) {
         document.form1.fa04_i_cgsund.value = chave1;
         document.form1.z01_v_nome.value = chave2;
         document.form1.s115_c_cartaosus.value = cns;
+        document.form1.z01_nome_social.value = nomeSocial;
+        document.form1.z01_v_cgccpf.value = cpf;
+        valorCgsEncontrado = chave1;
+        cpfAtual = cpf;
+        cnsAtual = cns;
+
+        buscouPeloNomeOuCgs = true;
+
+        //Função utilizada para recuperar id de cns caso o mesmo tenha seu valor como vazio
+        js_getCgsCns();
         document.form1.fa04_i_cgsund.dispatchEvent(new Event('change'));
         db_iframe_cgs_und.hide();
     }
@@ -2106,6 +2252,16 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
 
     function js_retornoCupom(oAjax) {
         js_removeObj('msgBox');
+        /*
+         * @todo verificar se deve ser mostrada a mensagem de terminal nao cadastrado para emissao do comprovante
+         * Para mostrar a mensagem, basta descomentar o trecho de codigo abaixo
+         */
+        /*
+        var obj = JSON.parse(oAjax.responseText);
+        if (obj.status == 2) {
+            alert(obj.message.urlDecode());
+        }
+        */
     }
 
     function js_pesquisafa08_i_cgsund(mostra) {
@@ -2128,7 +2284,11 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     false
                 );
             } else {
-                document.form1.z01_i_cgsund.value = '';
+                document.form1.fa08_i_cgsund.value = '';
+                document.form1.ender.value = '';
+                document.form1.numero.value = '';
+                document.form1.ident.value = '';
+                document.form1.z01_v_nomecgs.value = '';
             }
         }
     }
@@ -2277,6 +2437,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 sStr += '#' + obj.fa10_i_margem.urlDecode();
                 sStr += '#' + obj.fa10_i_quantidade;
                 sStr += '#' + obj.saldo_atual;
+                sStr += '#' + obj.fa10_d_datafim;
                 sStr += '#' + obj.quant_disp;
                 sStr += '#' + obj.validade.urlDecode();
                 sStr += '#' + obj.loteReal;
@@ -2370,6 +2531,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         sStr += '#' + $F('contimargem');
         sStr += '#' + $F('contiQuant');
         sStr += '#' + $F('contiQuant');
+        sStr += '#';//Val. Continuado
         sStr += '#' + $F('quant_disp');
         sStr += '#' + $F('validade_edit');
         sStr += '#' + $F('lote');
@@ -2412,6 +2574,14 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         $('z01_nome').disabled = true;
         //nome CGS
         $('z01_v_nome').disabled = true;
+        //cartão sus
+        $('s115_c_cartaosus').disabled = true;
+        //CPF
+        $('z01_v_cgccpf').disabled = true;
+        //nome social
+        $('z01_nome_social').disabled = true;
+        //âncora cgs
+        $('ancora_cgs').onclick = '';
 
         //liberar confirmar
         $('confirmar').disabled = false;
@@ -2473,7 +2643,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         $('confirmar').disabled = true;
         <?php if ($oConfigFarmacia->fa02_b_novaretirada == "f") : ?>
         if (confirm('Tem certeza que deseja efetuar a retirada deste(s) medicamento(s)!')) {
-        <?php endif; ?>
+            <?php endif; ?>
             if (document.form1.fa04_i_tiporeceita.value == "") {
                 alert("Informe o tipo de receita");
                 $('confirmar').disabled = false;
@@ -2494,7 +2664,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
 
                 for (var i = 0; i < table[tr].childNodes.length; i++) {
                     if (typeof table[tr].childNodes[i].getAttribute !== "undefined") {
-                        if (table[tr].childNodes[i].getAttribute('id') == "objGridRemediosrow" + tr + "cell11") {
+                        if (table[tr].childNodes[i].getAttribute('id') == "objGridRemediosrow" + tr + "cell12") {
                             var input = table[tr].childNodes[i];
                             if (input.childNodes[0].getAttribute('value') != "") {
                                 enableConfirm = true;
@@ -2533,6 +2703,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             objParam.validade_receita = $('fa04_d_dtvalidade').value;
             objParam.profissional = $('fa04_i_profissional').value;
             objParam.cgs = document.form1.fa04_i_cgsund.value;
+            objParam.nomeSocial = document.form1.z01_nome_social.value;
             objParam.iNumeronotificacao = $('fa04_numeronotificacao').value;
             objParam.lReceitaSistema = lReceitaSistema;
             objParam.dataPrescricao = $('fa04_data_prescricao').value;
@@ -2575,23 +2746,23 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 sText = $('DadosGridRemedios').options[iX].text;
                 avet = sText.split('#');
                 if (($('editQuant' + iX).value > 0 && $('editQuant' + iX).value != '')
-                    || avet[16] == 't' || avet[16] == 'true') {
+                    || avet[17] == 't' || avet[17] == 'true') {
 
-                    if (avet[16] == 'f' || avet[16] == 'false') {
-                        avet[11] = $('editQuant' + iX).value;
+                    if (avet[17] == 'f' || avet[17] == 'false') {
+                        avet[12] = $('editQuant' + iX).value;
                     } else {
-                        if (parseInt(avet[7], 10) < parseInt(avet[8], 10)) {
-                            avet[11] = avet[7];
+                        if (parseInt(avet[7], 10) < parseInt(avet[9], 10)) {
+                            avet[12] = avet[7];
                         } else {
-                            avet[11] = avet[8];
+                            avet[12] = avet[9];
                         }
                     }
                     avet[2] = ''; // Retiro o nome do medicamento pq dá problema quando tem % no nome
-                    //É retirado qualquer caracter que possa influenciar na requisição AJAX na pososlogia posição[12]
+                    //É retirado qualquer caracter que possa influenciar na requisição AJAX na pososlogia posição[13]
                     var reg = /[^A-Za-z0-9]/g;
-                    sStr = retirarAcento(avet[12]);
+                    sStr = retirarAcento(avet[13]);
                     sStr = sStr.replace(reg, ' ');
-                    avet[12] = sStr;
+                    avet[13] = sStr;
                     aMedicamentos[aMedicamentos.length] = avet.join('_|_');
                 }
             }
@@ -2607,7 +2778,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             js_ajax(objParam, 'js_retornoConfirma');
 
             $('confirmar').disabled = true;
-        <?php if ($oConfigFarmacia->fa02_b_novaretirada == 'f') : ?>
+            <?php if ($oConfigFarmacia->fa02_b_novaretirada == 'f') : ?>
         } else {
             $('confirmar').disabled = false;
         }
@@ -2638,6 +2809,14 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             // Verifico se o acompanhamento do hiperdia deve ser aberto
             lHiperdia = js_verificaHiperdia(objRetorno.iRetirada, false);
             iCgs = $F('fa04_i_cgsund');
+            let nomeSocial = $('z01_nome_social').value;
+            nomeSocial = nomeSocial == null ? '' : nomeSocial;
+
+            if (nomeSocial.length > 0) {
+                $('z01_nome_social').style.backgroundColor = "#97CAE6";
+            } else {
+                $('z01_nome_social').style.backgroundColor = "#E6E4F1";
+            }
 
             <?php
             // Se o parâmetro para verificação dos medicamentos do hiperdia estiver setado
@@ -2722,7 +2901,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
 
                 /* Se o medicamento é um medicamento do hiperdia e está nos continuados do paciente
          ou foi marcado para cadastrar nos continuados */
-                if (aDados[15] == 'true' && (aDados[0] == 'C' || aDados[0] == 'A')) {
+                if (aDados[16] == 'true' && (aDados[0] == 'C' || aDados[0] == 'A')) {
                     if (lAbrePopUp) {
                         js_abreAcompanhamentoHiperdia($F('fa04_i_cgsund'), iRetirada);
                     }
@@ -2765,10 +2944,11 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 echo "alert('Verifique os parametros da farmacia!');return false;";
             }
             ?>
-            if (vet_op[1] == <?php if (!isset($fa42_i_tiporeceita) || $fa42_i_tiporeceita == null)
+            if (vet_op[1] == <?php if (!isset($fa42_i_tiporeceita) || $fa42_i_tiporeceita == null) {
                 echo '0';
-            else
+            } else {
                 echo $fa42_i_tiporeceita;
+            }
                 ?>) {
                 document.form1.fa04_i_tiporeceita.options[i].selected = true;
                 js_tpreceita();
@@ -2778,31 +2958,90 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
     }
 
     function js_getCgsCns() {
-        if ($F('s115_c_cartaosus') == '') {
+        // Caso passe daqui significa que existe um CGS ou CNS válido existe para que possa buscar o CNS
+        if ($F('s115_c_cartaosus') == '' && !buscouPeloNomeOuCgs) {
             return false;
         }
-        if ($F('s115_c_cartaosus').length != 15 || isNaN($F('s115_c_cartaosus'))) {
-            alert('Número de CNS inválido para busca.');
+
+        const campoCns = document.getElementById('s115_c_cartaosus');
+
+        if (campoCns.value !== '' && !campoCns.value.validaCNS()) {
+            alert('Número de CNS inválido para busca e atualização.');
             $('s115_c_cartaosus').value = '';
-            return false;
+            return;
         }
 
         var oParam = new Object();
         oParam.exec = "getCgsCns";
         oParam.iCns = $F('s115_c_cartaosus');
+        oParam.cgs = $F('fa04_i_cgsund');
 
         js_ajax(oParam, 'js_retornogetCgsCns');
     }
 
     function js_retornogetCgsCns(oRetorno) {
         oRetorno = JSON.parse(oRetorno.responseText);
+
         if (oRetorno.z01_i_cgsund == '') {
-            alert('CNS não encontrado.');
+            if (!buscouPeloNomeOuCgs && valorCgsEncontrado === '') {
+                alert('CNS não encontrado.');
+            }
+
+            if (buscouPeloNomeOuCgs) {
+                codigoCartaoSusEncontrado = '';
+                buscouPeloNomeOuCgs = false;
+            }
             return false;
         }
-        $('fa04_i_cgsund').value = oRetorno.z01_i_cgsund;
-        $('z01_v_nome').value = oRetorno.z01_v_nome.urlDecode();
+
+        const msgConfirm = `Esse CNS pertence ao CGS ${oRetorno.z01_i_cgsund} - ${oRetorno.z01_v_nome.urlDecode()}.\nDeseja contnuar?`;
+
+        //Se a busca for feita pelo campo cns irá cair na validação
+        if (cnsAtual !== $F('s115_c_cartaosus') && !buscouPeloNomeOuCgs && valorCgsEncontrado !== '' && !confirm(msgConfirm)) {
+            $('s115_c_cartaosus').value = '';
+            return;
+        }
+
+        if (oRetorno.z01_b_inativo) {
+            $('z01_v_nome').value = 'CGS Inativo';
+            $('z01_v_cgccpf').value = '';
+            $('fa04_i_cgsund').value = '';
+            $('s115_c_cartaosus').value = '';
+            document.form1.z01_nome_social.value = '';
+            document.form1.z01_nome_social.style.backgroundColor = "#E6E4F1";
+            codigoCartaoSusEncontrado = '';
+            valorCgsEncontrado = '';
+            cpfAtual = '';
+            cnsAtual = '';
+            return;
+        }
+
+        if (!buscouPeloNomeOuCgs) {
+            $('fa04_i_cgsund').value = oRetorno.z01_i_cgsund;
+            $('z01_v_nome').value = oRetorno.z01_v_nome.urlDecode();
+            $('z01_v_cgccpf').value = oRetorno.z01_v_cgccpf;
+            document.form1.z01_nome_social.value = oRetorno.z01_nome_social.urlDecode();
+
+            const nomeSocial = oRetorno.z01_nome_social.urlDecode();
+
+            if (nomeSocial.length > 0) {
+                document.form1.z01_nome_social.style.backgroundColor = "#97CAE6";
+            } else {
+                document.form1.z01_nome_social.style.backgroundColor = "#E6E4F1";
+            }
+
+            valorCgsEncontrado = oRetorno.z01_i_cgsund;
+            cpfAtual = oRetorno.z01_v_cgccpf;
+
+            validaCgsMunicipio($('fa04_i_cgsund').value);
+        }
+
+        cnsAtual = $F('s115_c_cartaosus');
+        codigoCartaoSusEncontrado = oRetorno.s115_i_codigo;
         js_init();
+
+        buscouPeloNomeOuCgs = false;
+        validaCgs.cadastroMicroarea(inputCgs, divAlert);
     }
 
     function js_pesquisafa41_i_origemreceita(mostra) {
@@ -3148,7 +3387,204 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
         if (numeroNotificacao.value.length > 19) {
             alert('Número de Notificação informado inválido!');
             document.form1.fa04_numeronotificacao.value = '';
+
+        }
+    }
+
+    function limpaDadosRequisitante() {
+        if (document.form1.z01_v_nomecgs.value === '') {
+            document.form1.fa08_i_cgsund.value = '';
+            document.form1.ender.value = '';
+            document.form1.numero.value = '';
+            document.form1.ident.value = '';
+        }
+    }
+
+    function validaCampoNome() {
+        if (document.form1.z01_v_nome.value === '') {
+            document.form1.fa04_i_cgsund.value = '';
+            document.form1.s115_c_cartaosus.value = '';
+            document.form1.z01_v_cgccpf.value = '';
+            document.form1.z01_nome_social.value = '';
+            document.form1.z01_nome_social.style.backgroundColor = "";
+            document.form1.demandaReprimida.disabled = true;
+
+            valorCgsEncontrado = '';
+            codigoCartaoSusEncontrado = '';
+            cpfAtual = '';
+            cnsAtual = '';
+
+            if (document.form1.continuados != undefined) {
+                document.form1.continuados.disabled = true;
+            }
+            js_init();
+        }
+    }
+
+    function validaRg() {
+        let campoRg = document.getElementById('ident');
+
+        campoRg.addEventListener('keyup', function () {
+            if (isNaN(campoRg.value)) {
+                campoRg.value = '';
+                alert('O RG deve ser preenchido apenas com números!');
+            }
+        })
+    }
+
+    validaRg();
+
+    function js_getCgsCpf() {
+        const campoCpf = document.getElementById('z01_v_cgccpf');
+
+        if ($F('z01_v_cgccpf') === '') {
+            return false;
+        }
+
+        if (campoCpf.value !== '' && !validaCPF(campoCpf)) {
+            alert('Número de CPF Inválido para busca e atualização.');
+            campoCpf.value = '';
             return;
+        }
+
+        let oParam = new Object();
+        oParam.exec = "getCgsCpf";
+        oParam.cpf = $F('z01_v_cgccpf');
+
+        js_ajax(oParam, 'js_retornogetCgsCpf');
+    }
+
+    function js_retornogetCgsCpf(oRetorno) {
+        oRetorno = JSON.parse(oRetorno.responseText);
+
+        if (oRetorno.z01_i_cgsund == '') {
+            if (valorCgsEncontrado === '') {
+                alert('CPF não encontrado.');
+            }
+            return false;
+        }
+
+        const msgConfirm = `Esse CPF pertence ao CGS ${oRetorno.z01_i_cgsund} - ${oRetorno.z01_v_nome.urlDecode()}.\nDeseja contnuar?`;
+
+        if (cpfAtual !== $('z01_v_cgccpf').value && valorCgsEncontrado !== '' && !confirm(msgConfirm)) {
+            $('z01_v_cgccpf').value = '';
+            return;
+        }
+
+        if (oRetorno.z01_b_inativo) {
+            $('z01_v_nome').value = 'CGS Inativo';
+            $('z01_v_cgccpf').value = '';
+            $('fa04_i_cgsund').value = '';
+            $('s115_c_cartaosus').value = '';
+            document.form1.z01_nome_social.value = '';
+            document.form1.z01_nome_social.style.backgroundColor = "#E6E4F1";
+            codigoCartaoSusEncontrado = '';
+            valorCgsEncontrado = '';
+            cpfAtual = '';
+            cnsAtual = '';
+            return;
+        }
+
+        $('fa04_i_cgsund').value = oRetorno.z01_i_cgsund;
+        $('z01_v_nome').value = oRetorno.z01_v_nome.urlDecode();
+        $('s115_c_cartaosus').value = oRetorno.s115_c_cartaosus;
+        document.form1.z01_nome_social.value = oRetorno.z01_nome_social.urlDecode();
+
+        const nomeSocial = oRetorno.z01_nome_social.urlDecode();
+
+        if (nomeSocial.length > 0) {
+            document.form1.z01_nome_social.style.backgroundColor = "#97CAE6";
+        } else {
+            document.form1.z01_nome_social.style.backgroundColor = "#E6E4F1";
+        }
+
+        codigoCartaoSusEncontrado = oRetorno.s115_i_codigo;
+        valorCgsEncontrado = oRetorno.z01_i_cgsund;
+        cpfAtual = $('z01_v_cgccpf').value;
+        cnsAtual = oRetorno.s115_c_cartaosus;
+        js_init();
+
+        validaCgsMunicipio($('fa04_i_cgsund').value);
+        validaCgs.cadastroMicroarea(inputCgs, divAlert);
+    }
+
+    async function atualizarCpfCns() {
+        if (valorCgsEncontrado === '') {
+            alert('Busque um CGS antes de atualizar.');
+            return;
+        }
+
+        const campoCpf = document.getElementById('z01_v_cgccpf');
+        const campoCns = document.getElementById('s115_c_cartaosus');
+
+        if (!isCpfValido(campoCpf)) {
+            return;
+        }
+
+        if (!isCnsValido(campoCns)) {
+            return;
+        }
+
+        if (campoCpf.value === '' && campoCns.value === '') {
+            alert('CPF ou CNS deve ser preenchido para atualizar.');
+            return;
+        }
+
+        if (!confirm('Tem certeza que deseja atualizar?')) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('cgsPaciente', valorCgsEncontrado);
+        formData.append('idCartaoSus', codigoCartaoSusEncontrado);
+        formData.append('cpf', campoCpf.value);
+        formData.append('cns', campoCns.value);
+        PHPSession.appendFormData(formData);
+
+        let response = await HttpClient.post(
+            `${PHPSession.requestApi}/saude/farmacia/procedimento/atualizar/paciente/cgs-cpf`,
+            {body: formData, reportProgress: true, reportMessage: 'Atualizando CNS e CPF.'}
+        );
+
+        //Mensagem de erro genérica para erro não previsto
+        if (response.file) {
+            alert('Houve um erro na atualização dos dados.');
+            return
+        }
+
+        alert(response.message);
+
+    }
+
+    function isCpfValido(cpf) {
+        const valorCpf = cpf.value;
+
+        if (cpf.value !== '' && !validaCPF(cpf)) {
+            alert('CPF Inválido.')
+            cpf.value = valorCpf;
+            return false;
+        }
+        return true;
+    }
+
+    function isCnsValido(cns) {
+        if (cns.value !== '' && !cns.value.validaCNS()) {
+            alert('CNS Inválido.');
+            return false;
+        }
+        return true;
+    }
+
+    function bloqueiaCamposContinuacaoRetirada() {
+        const continuandoRetirada = $F('continuandoRetirada');
+
+        if (continuandoRetirada === 'true') {
+            $('s115_c_cartaosus').disabled = true;
+            $('z01_v_cgccpf').disabled = true;
+            $('z01_v_nome').disabled = true;
+            $('z01_nome_social').disabled = true;
+            $('fa04_i_cgsund').disabled = true;
+            $('ancora_cgs').onclick = '';
         }
     }
 </script>

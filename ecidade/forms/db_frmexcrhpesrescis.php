@@ -49,29 +49,29 @@ $clrotulo->label("rh02_codreg");
         <table width="100%">
           <tr>
             <td nowrap title="<?=@$Trh01_regist?>" align="right">
-	      <?
+	      <?php
               db_ancora(@$Lrh01_regist,"js_pesquisarh01_regist(true);",$db_opcao);
 	      ?>
             </td>
             <td>
-              <?
+              <?php
               db_input('rh01_regist',6,$Irh01_regist,true,'text',$db_opcao,"onchange='js_pesquisarh01_regist(false);'");
               db_input('rh02_seqpes',6,$Irh02_seqpes,true,'hidden',3,"");
               db_input('rh02_codreg',6,$Irh02_codreg,true,'hidden',3,"");
               db_input('r59_aviso',6,$Ir59_aviso,true,'hidden',3,"");
               db_input('pagar_13_salario_na_rescisao',6,0,true,'hidden',3,"");
               ?>
-              <?
+              <?php
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
               ?>
             </td>
             <td nowrap title="<?=@$Trh01_admiss?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lrh01_admiss,"",3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               db_inputdata('rh01_admiss',@$rh01_admiss_dia,@$rh01_admiss_mes,@$rh01_admiss_ano,true,'text',3,"")
               ?>
             </td>
@@ -90,20 +90,20 @@ $clrotulo->label("rh02_codreg");
               <?=@$Lrh05_recis?>
             </td>
             <td>
-              <?
+              <?php
               db_inputdata('rh05_recis',@$rh05_recis_dia,@$rh05_recis_mes,@$rh05_recis_ano,true,'text',3)
               ?>
             </td>
             <td nowrap title="<?=@$Trh05_causa?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lrh05_causa,"",3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               db_input('rh05_causa',6,$Irh05_causa,true,'text',3,"")
               ?>
-              <?
+              <?php
               db_input('r59_descr',40,$Ir59_descr,true,'text',3,"")
               ?>
             </td>
@@ -112,27 +112,27 @@ $clrotulo->label("rh02_codreg");
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td nowrap title="<?=@$Trh05_caub?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lrh05_caub,"",3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               db_input('rh05_caub',6,$Irh05_caub,true,'text',3,"")
               ?>
-              <?
+              <?php
               db_input('r59_descr1',40,$Ir59_descr1,true,'text',3,"")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Trh05_taviso?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lrh05_taviso,"",3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               db_input('taviso',20,0,true,'text',3,"")
               ?>
             </td>
@@ -140,19 +140,19 @@ $clrotulo->label("rh02_codreg");
               <?=@$Lrh05_aviso?>
             </td>
             <td>
-              <?
+              <?php
               db_inputdata('rh05_aviso',@$rh05_aviso_dia,@$rh05_aviso_mes,@$rh05_aviso_ano,true,'text',3)
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Trh05_mremun?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lrh05_mremun,"",3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               db_input('rh05_mremun',6,$Irh05_mremun,true,'text',3,"")
               ?>
             </td>
@@ -189,7 +189,7 @@ $clrotulo->label("rh02_codreg");
   </tr>
   <tr>
     <td align="center">
-      <input name="excluir" type="submit" id="db_opcao" value="Excluir" <?=($db_botao==false?"disabled":"")?>  <?if($db_opcao!=3)echo "onclick='return js_verificadados();'";?>>
+      <input name="excluir" type="submit" id="db_opcao" value="Excluir" <?=($db_botao==false?"disabled":"")?>  <?php if($db_opcao!=3)echo "onclick='return js_verificadados();'";?>>
     </td>
   </tr>
 </table> 

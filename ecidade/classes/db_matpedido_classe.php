@@ -1,77 +1,77 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: material
 //CLASSE DA ENTIDADE matpedido
-class cl_matpedido { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $m97_sequencial = 0; 
-   var $m97_db_almox = 0; 
-   var $m97_coddepto = 0; 
-   var $m97_data_dia = null; 
-   var $m97_data_mes = null; 
-   var $m97_data_ano = null; 
-   var $m97_data = null; 
-   var $m97_login = 0; 
-   var $m97_hora = null; 
-   var $m97_origem = 0; 
-   var $m97_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_matpedido {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $m97_sequencial = 0;
+   var $m97_db_almox = 0;
+   var $m97_coddepto = 0;
+   var $m97_data_dia = null;
+   var $m97_data_mes = null;
+   var $m97_data_ano = null;
+   var $m97_data = null;
+   var $m97_login = 0;
+   var $m97_hora = null;
+   var $m97_origem = 0;
+   var $m97_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 m97_sequencial = int8 = Sequencial 
-                 m97_db_almox = int8 = Almoxarifado 
-                 m97_coddepto = int8 = Departamento 
-                 m97_data = date = Data 
-                 m97_login = int8 = Login 
-                 m97_hora = char(10) = Hora 
-                 m97_origem = int8 = Origem 
-                 m97_obs = text = Observação 
+                 m97_sequencial = int8 = Sequencial
+                 m97_db_almox = int8 = Almoxarifado
+                 m97_coddepto = int8 = Departamento
+                 m97_data = date = Data
+                 m97_login = int8 = Login
+                 m97_hora = char(10) = Hora
+                 m97_origem = int8 = Origem
+                 m97_obs = text = Observação
                  ";
-   //funcao construtor da classe 
-   function cl_matpedido() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("matpedido"); 
+     $this->rotulo = new rotulo("matpedido");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_matpedido {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m97_sequencial = ($this->m97_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["m97_sequencial"]:$this->m97_sequencial);
        $this->m97_db_almox = ($this->m97_db_almox == ""?@$GLOBALS["HTTP_POST_VARS"]["m97_db_almox"]:$this->m97_db_almox);
@@ -102,9 +102,9 @@ class cl_matpedido {
      }
    }
    // funcao para inclusao
-   function incluir ($m97_sequencial){ 
+   public function incluir ($m97_sequencial){
       $this->atualizacampos();
-     if($this->m97_db_almox == null ){ 
+     if($this->m97_db_almox == null ){
        $this->erro_sql = " Campo Almoxarifado nao Informado.";
        $this->erro_campo = "m97_db_almox";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_matpedido {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m97_coddepto == null ){ 
+     if($this->m97_coddepto == null ){
        $this->erro_sql = " Campo Departamento nao Informado.";
        $this->erro_campo = "m97_coddepto";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_matpedido {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m97_data == null ){ 
+     if($this->m97_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "m97_data_dia";
        $this->erro_banco = "";
@@ -131,7 +131,7 @@ class cl_matpedido {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m97_login == null ){ 
+     if($this->m97_login == null ){
        $this->erro_sql = " Campo Login nao Informado.";
        $this->erro_campo = "m97_login";
        $this->erro_banco = "";
@@ -140,7 +140,7 @@ class cl_matpedido {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m97_hora == null ){ 
+     if($this->m97_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "m97_hora";
        $this->erro_banco = "";
@@ -149,7 +149,7 @@ class cl_matpedido {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m97_origem == null ){ 
+     if($this->m97_origem == null ){
        $this->erro_sql = " Campo Origem nao Informado.";
        $this->erro_campo = "m97_origem";
        $this->erro_banco = "";
@@ -158,20 +158,20 @@ class cl_matpedido {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m97_obs == null ){ 
+     if($this->m97_obs == null ){
        $this->m97_obs = "0";
      }
      if($m97_sequencial == "" || $m97_sequencial == null ){
-       $result = db_query("select nextval('matpedido_m97_sequencial_seq')"); 
+       $result = db_query("select nextval('matpedido_m97_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: matpedido_m97_sequencial_seq do campo: m97_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: matpedido_m97_sequencial_seq do campo: m97_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->m97_sequencial = pg_result($result,0,0); 
+       $this->m97_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from matpedido_m97_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $m97_sequencial)){
@@ -182,10 +182,10 @@ class cl_matpedido {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->m97_sequencial = $m97_sequencial; 
+         $this->m97_sequencial = $m97_sequencial;
        }
      }
-     if(($this->m97_sequencial == null) || ($this->m97_sequencial == "") ){ 
+     if(($this->m97_sequencial == null) || ($this->m97_sequencial == "") ){
        $this->erro_sql = " Campo m97_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,27 +194,27 @@ class cl_matpedido {
        return false;
      }
      $sql = "insert into matpedido(
-                                       m97_sequencial 
-                                      ,m97_db_almox 
-                                      ,m97_coddepto 
-                                      ,m97_data 
-                                      ,m97_login 
-                                      ,m97_hora 
-                                      ,m97_origem 
-                                      ,m97_obs 
+                                       m97_sequencial
+                                      ,m97_db_almox
+                                      ,m97_coddepto
+                                      ,m97_data
+                                      ,m97_login
+                                      ,m97_hora
+                                      ,m97_origem
+                                      ,m97_obs
                        )
                 values (
-                                $this->m97_sequencial 
-                               ,$this->m97_db_almox 
-                               ,$this->m97_coddepto 
-                               ,".($this->m97_data == "null" || $this->m97_data == ""?"null":"'".$this->m97_data."'")." 
-                               ,$this->m97_login 
-                               ,'$this->m97_hora' 
-                               ,$this->m97_origem 
-                               ,'$this->m97_obs' 
+                                $this->m97_sequencial
+                               ,$this->m97_db_almox
+                               ,$this->m97_coddepto
+                               ,".($this->m97_data == "null" || $this->m97_data == ""?"null":"'".$this->m97_data."'")."
+                               ,$this->m97_login
+                               ,'$this->m97_hora'
+                               ,$this->m97_origem
+                               ,'$this->m97_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "matpedido ($this->m97_sequencial) nao Incluído. Inclusao Abortada.";
@@ -253,16 +253,16 @@ class cl_matpedido {
        $resac = db_query("insert into db_acount values($acount,2684,15239,'','".AddSlashes(pg_result($resaco,0,'m97_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($m97_sequencial=null) { 
+   public function alterar ($m97_sequencial=null) {
       $this->atualizacampos();
      $sql = " update matpedido set ";
      $virgula = "";
-     if(trim($this->m97_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_sequencial"])){ 
+     if(trim($this->m97_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_sequencial"])){
        $sql  .= $virgula." m97_sequencial = $this->m97_sequencial ";
        $virgula = ",";
-       if(trim($this->m97_sequencial) == null ){ 
+       if(trim($this->m97_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "m97_sequencial";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_matpedido {
          return false;
        }
      }
-     if(trim($this->m97_db_almox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_db_almox"])){ 
+     if(trim($this->m97_db_almox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_db_almox"])){
        $sql  .= $virgula." m97_db_almox = $this->m97_db_almox ";
        $virgula = ",";
-       if(trim($this->m97_db_almox) == null ){ 
+       if(trim($this->m97_db_almox) == null ){
          $this->erro_sql = " Campo Almoxarifado nao Informado.";
          $this->erro_campo = "m97_db_almox";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_matpedido {
          return false;
        }
      }
-     if(trim($this->m97_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_coddepto"])){ 
+     if(trim($this->m97_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_coddepto"])){
        $sql  .= $virgula." m97_coddepto = $this->m97_coddepto ";
        $virgula = ",";
-       if(trim($this->m97_coddepto) == null ){ 
+       if(trim($this->m97_coddepto) == null ){
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "m97_coddepto";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_matpedido {
          return false;
        }
      }
-     if(trim($this->m97_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m97_data_dia"] !="") ){ 
+     if(trim($this->m97_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m97_data_dia"] !="") ){
        $sql  .= $virgula." m97_data = '$this->m97_data' ";
        $virgula = ",";
-       if(trim($this->m97_data) == null ){ 
+       if(trim($this->m97_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "m97_data_dia";
          $this->erro_banco = "";
@@ -310,11 +310,11 @@ class cl_matpedido {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["m97_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["m97_data_dia"])){
          $sql  .= $virgula." m97_data = null ";
          $virgula = ",";
-         if(trim($this->m97_data) == null ){ 
+         if(trim($this->m97_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "m97_data_dia";
            $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_matpedido {
          }
        }
      }
-     if(trim($this->m97_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_login"])){ 
+     if(trim($this->m97_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_login"])){
        $sql  .= $virgula." m97_login = $this->m97_login ";
        $virgula = ",";
-       if(trim($this->m97_login) == null ){ 
+       if(trim($this->m97_login) == null ){
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "m97_login";
          $this->erro_banco = "";
@@ -338,10 +338,10 @@ class cl_matpedido {
          return false;
        }
      }
-     if(trim($this->m97_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_hora"])){ 
+     if(trim($this->m97_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_hora"])){
        $sql  .= $virgula." m97_hora = '$this->m97_hora' ";
        $virgula = ",";
-       if(trim($this->m97_hora) == null ){ 
+       if(trim($this->m97_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "m97_hora";
          $this->erro_banco = "";
@@ -351,10 +351,10 @@ class cl_matpedido {
          return false;
        }
      }
-     if(trim($this->m97_origem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_origem"])){ 
+     if(trim($this->m97_origem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_origem"])){
        $sql  .= $virgula." m97_origem = $this->m97_origem ";
        $virgula = ",";
-       if(trim($this->m97_origem) == null ){ 
+       if(trim($this->m97_origem) == null ){
          $this->erro_sql = " Campo Origem nao Informado.";
          $this->erro_campo = "m97_origem";
          $this->erro_banco = "";
@@ -364,7 +364,7 @@ class cl_matpedido {
          return false;
        }
      }
-     if(trim($this->m97_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_obs"])){ 
+     if(trim($this->m97_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m97_obs"])){
        $sql  .= $virgula." m97_obs = '$this->m97_obs' ";
        $virgula = ",";
      }
@@ -398,7 +398,7 @@ class cl_matpedido {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "matpedido nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->m97_sequencial;
@@ -426,14 +426,14 @@ class cl_matpedido {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($m97_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($m97_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m97_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -466,7 +466,7 @@ class cl_matpedido {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "matpedido nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$m97_sequencial;
@@ -494,11 +494,11 @@ class cl_matpedido {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -520,11 +520,11 @@ class cl_matpedido {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $m97_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $m97_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -538,19 +538,19 @@ class cl_matpedido {
      $sql .= "      inner join db_depart  on  db_depart.coddepto = matpedido.m97_coddepto";
      $sql .= "      inner join db_almox  on  db_almox.m91_codigo = matpedido.m97_db_almox";
      $sql .= "      inner join db_config  on  db_config.codigo = db_depart.instit";
-     $sql .= "      left  join db_depart  as a on   a.coddepto = db_almox.m91_depto";    
+     $sql .= "      left  join db_depart  as a on   a.coddepto = db_almox.m91_depto";
      $sql2 = "";
      if($dbwhere==""){
        if($m97_sequencial!=null ){
-         $sql2 .= " where matpedido.m97_sequencial = $m97_sequencial "; 
-       } 
+         $sql2 .= " where matpedido.m97_sequencial = $m97_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,10 +559,10 @@ class cl_matpedido {
      }
      return $sql;
   }
-   function sql_query_matpedido($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+   public function sql_query_matpedido($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_matpedido {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -598,11 +598,11 @@ class cl_matpedido {
     }
     return $sql;
   }
-  
-   function sql_query_matpedidorequi($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+
+   public function sql_query_matpedidorequi($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -618,7 +618,7 @@ class cl_matpedido {
     $sql .= "      left join matmaterunisai on matmaterunisai.m62_codmater = matmater.m60_codmater";
      $sql .= "      left join matunid b  on  b.m61_codmatunid = matmaterunisai.m62_codmatunid";
     $sql .= "      left join matestoqueinimeimatpedidoitem on matestoqueinimeimatpedidoitem.m99_matpedidoitem = matpedidoitem.m98_sequencial";
-    $sql .= "      left join matestoqueinimei on matestoqueinimei.m82_codigo = matestoqueinimeimatpedidoitem.m99_matestoqueinimei";    
+    $sql .= "      left join matestoqueinimei on matestoqueinimei.m82_codigo = matestoqueinimeimatpedidoitem.m99_matestoqueinimei";
     $sql2 = "";
     if ($dbwhere=="") {
       if ($m97_sequencial!=null ) {
@@ -630,7 +630,7 @@ class cl_matpedido {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -639,11 +639,11 @@ class cl_matpedido {
     }
     return $sql;
   }
-  
-   function sql_query_matpedidoanul($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+
+   public function sql_query_matpedidoanul($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -658,8 +658,8 @@ class cl_matpedido {
     $sql .= "      inner join matunid a  on  a.m61_codmatunid = matmater.m60_codmatunid";
     $sql .= "      left join matmaterunisai on matmaterunisai.m62_codmater = matmater.m60_codmater";
     $sql .= "      left join matunid b  on  b.m61_codmatunid = matmaterunisai.m62_codmatunid";
-    $sql .= "      left join matanulitempedido on matanulitempedido.m101_matpedidoitem = matpedidoitem.m98_sequencial";    
-    $sql .= "      left join matanulitem on matanulitem.m103_codigo = matanulitempedido.m101_matanulitem";    
+    $sql .= "      left join matanulitempedido on matanulitempedido.m101_matpedidoitem = matpedidoitem.m98_sequencial";
+    $sql .= "      left join matanulitem on matanulitem.m103_codigo = matanulitempedido.m101_matanulitem";
 
     $sql2 = "";
     if ($dbwhere=="") {
@@ -672,7 +672,7 @@ class cl_matpedido {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -681,12 +681,12 @@ class cl_matpedido {
     }
     return $sql;
   }
-  
-  
-  function sql_query_almoxleft($m97_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+
+
+  public function sql_query_almoxleft($m97_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select  distinct ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -702,7 +702,7 @@ class cl_matpedido {
     $sql .= "   inner join db_depart almox on almox.coddepto          = db_almox.m91_depto                 ";
     $sql .= "  	inner join matpedidoitem     on matpedidoitem.m98_matpedido = matpedido.m97_sequencial           ";
 
-		
+
     $sql2 = "";
     if ($dbwhere=="") {
       if ($m97_codigo!=null ) {
@@ -714,7 +714,7 @@ class cl_matpedido {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -723,11 +723,11 @@ class cl_matpedido {
     }
     return $sql;
   }
-  
-  function sql_query_almox($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+
+  public function sql_query_almox($m97_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -741,8 +741,8 @@ class cl_matpedido {
     $sql .= "      inner join db_depart       on  db_depart.coddepto     = matpedido.m97_coddepto";
     $sql .= "      inner join db_almox        on  db_almox.m91_codigo    = matpedido.m97_db_almox";
     $sql .= "      inner join db_depart as almox on  almox.coddepto         = db_almox.m91_depto";
-    //$sql .= "      inner join matpedidoitem     on matpedidoitem.m98_matpedido = matpedido.m97_sequencial";    
-    //$sql .= "      inner join matpedidotransf on matpedidotransf.m100_matpedidoitem=matpedidoitem.m98_sequencial";      
+    //$sql .= "      inner join matpedidoitem     on matpedidoitem.m98_matpedido = matpedido.m97_sequencial";
+    //$sql .= "      inner join matpedidotransf on matpedidotransf.m100_matpedidoitem=matpedidoitem.m98_sequencial";
     $sql2 = "";
     if ($dbwhere=="") {
       if ($m97_sequencial!=null ) {
@@ -754,7 +754,7 @@ class cl_matpedido {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -763,11 +763,11 @@ class cl_matpedido {
     }
     return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $m97_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $m97_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -780,15 +780,15 @@ class cl_matpedido {
      $sql2 = "";
      if($dbwhere==""){
        if($m97_sequencial!=null ){
-         $sql2 .= " where matpedido.m97_sequencial = $m97_sequencial "; 
-       } 
+         $sql2 .= " where matpedido.m97_sequencial = $m97_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

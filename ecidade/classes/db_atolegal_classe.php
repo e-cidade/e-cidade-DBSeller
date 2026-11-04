@@ -1,91 +1,91 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE atolegal
-class cl_atolegal { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed05_i_codigo = 0; 
-   var $ed05_c_numero = 0; 
-   var $ed05_c_finalidade = null; 
-   var $ed05_i_tipoato = 0; 
-   var $ed05_c_competencia = null; 
-   var $ed05_i_ano = 0; 
-   var $ed05_c_orgao = null; 
-   var $ed05_d_vigora_dia = null; 
-   var $ed05_d_vigora_mes = null; 
-   var $ed05_d_vigora_ano = null; 
-   var $ed05_d_vigora = null; 
-   var $ed05_d_aprovado_dia = null; 
-   var $ed05_d_aprovado_mes = null; 
-   var $ed05_d_aprovado_ano = null; 
-   var $ed05_d_aprovado = null; 
-   var $ed05_d_publicado_dia = null; 
-   var $ed05_d_publicado_mes = null; 
-   var $ed05_d_publicado_ano = null; 
-   var $ed05_d_publicado = null; 
-   var $ed05_t_texto = null; 
-   var $ed05_i_aparecehistorico = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_atolegal {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed05_i_codigo = 0;
+   var $ed05_c_numero = 0;
+   var $ed05_c_finalidade = null;
+   var $ed05_i_tipoato = 0;
+   var $ed05_c_competencia = null;
+   var $ed05_i_ano = 0;
+   var $ed05_c_orgao = null;
+   var $ed05_d_vigora_dia = null;
+   var $ed05_d_vigora_mes = null;
+   var $ed05_d_vigora_ano = null;
+   var $ed05_d_vigora = null;
+   var $ed05_d_aprovado_dia = null;
+   var $ed05_d_aprovado_mes = null;
+   var $ed05_d_aprovado_ano = null;
+   var $ed05_d_aprovado = null;
+   var $ed05_d_publicado_dia = null;
+   var $ed05_d_publicado_mes = null;
+   var $ed05_d_publicado_ano = null;
+   var $ed05_d_publicado = null;
+   var $ed05_t_texto = null;
+   var $ed05_i_aparecehistorico = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed05_i_codigo = int8 = Código do Ato 
-                 ed05_c_numero = int4 = Número 
-                 ed05_c_finalidade = char(50) = Finalidade 
-                 ed05_i_tipoato = int8 = Tipo 
-                 ed05_c_competencia = char(1) = Competência 
-                 ed05_i_ano = int4 = Ano 
-                 ed05_c_orgao = char(50) = Órgão Emitente 
-                 ed05_d_vigora = date = Vigência 
-                 ed05_d_aprovado = date = Aprovação 
-                 ed05_d_publicado = date = Publicação 
-                 ed05_t_texto = text = Texto do Ato 
-                 ed05_i_aparecehistorico = int4 = Aparece no Histórico 
+                 ed05_i_codigo = int8 = Código do Ato
+                 ed05_c_numero = int4 = Número
+                 ed05_c_finalidade = char(50) = Finalidade
+                 ed05_i_tipoato = int8 = Tipo
+                 ed05_c_competencia = char(1) = Competência
+                 ed05_i_ano = int4 = Ano
+                 ed05_c_orgao = char(50) = Órgão Emitente
+                 ed05_d_vigora = date = Vigência
+                 ed05_d_aprovado = date = Aprovação
+                 ed05_d_publicado = date = Publicação
+                 ed05_t_texto = text = Texto do Ato
+                 ed05_i_aparecehistorico = int4 = Aparece no Histórico
                  ";
-   //funcao construtor da classe 
-   function cl_atolegal() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("atolegal"); 
+     $this->rotulo = new rotulo("atolegal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -94,7 +94,7 @@ class cl_atolegal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed05_i_codigo = ($this->ed05_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed05_i_codigo"]:$this->ed05_i_codigo);
        $this->ed05_c_numero = ($this->ed05_c_numero == ""?@$GLOBALS["HTTP_POST_VARS"]["ed05_c_numero"]:$this->ed05_c_numero);
@@ -134,9 +134,9 @@ class cl_atolegal {
      }
    }
    // funcao para inclusao
-   function incluir ($ed05_i_codigo){ 
+   public function incluir ($ed05_i_codigo){
       $this->atualizacampos();
-     if($this->ed05_c_numero == null ){ 
+     if($this->ed05_c_numero == null ){
        $this->erro_sql = " Campo Número nao Informado.";
        $this->erro_campo = "ed05_c_numero";
        $this->erro_banco = "";
@@ -145,7 +145,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_c_finalidade == null ){ 
+     if($this->ed05_c_finalidade == null ){
        $this->erro_sql = " Campo Finalidade nao Informado.";
        $this->erro_campo = "ed05_c_finalidade";
        $this->erro_banco = "";
@@ -154,7 +154,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_i_tipoato == null ){ 
+     if($this->ed05_i_tipoato == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
        $this->erro_campo = "ed05_i_tipoato";
        $this->erro_banco = "";
@@ -163,7 +163,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_c_competencia == null ){ 
+     if($this->ed05_c_competencia == null ){
        $this->erro_sql = " Campo Competência nao Informado.";
        $this->erro_campo = "ed05_c_competencia";
        $this->erro_banco = "";
@@ -172,7 +172,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_i_ano == null ){ 
+     if($this->ed05_i_ano == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "ed05_i_ano";
        $this->erro_banco = "";
@@ -181,7 +181,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_c_orgao == null ){ 
+     if($this->ed05_c_orgao == null ){
        $this->erro_sql = " Campo Órgão Emitente nao Informado.";
        $this->erro_campo = "ed05_c_orgao";
        $this->erro_banco = "";
@@ -190,7 +190,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_d_vigora == null ){ 
+     if($this->ed05_d_vigora == null ){
        $this->erro_sql = " Campo Vigência nao Informado.";
        $this->erro_campo = "ed05_d_vigora_dia";
        $this->erro_banco = "";
@@ -199,7 +199,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_d_aprovado == null ){ 
+     if($this->ed05_d_aprovado == null ){
        $this->erro_sql = " Campo Aprovação nao Informado.";
        $this->erro_campo = "ed05_d_aprovado_dia";
        $this->erro_banco = "";
@@ -208,7 +208,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_d_publicado == null ){ 
+     if($this->ed05_d_publicado == null ){
        $this->erro_sql = " Campo Publicação nao Informado.";
        $this->erro_campo = "ed05_d_publicado_dia";
        $this->erro_banco = "";
@@ -217,7 +217,7 @@ class cl_atolegal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_i_aparecehistorico == null ){ 
+     if($this->ed05_i_aparecehistorico == null ){
        $this->erro_sql = " Campo Aparece no Histórico nao Informado.";
        $this->erro_campo = "ed05_i_aparecehistorico";
        $this->erro_banco = "";
@@ -227,16 +227,16 @@ class cl_atolegal {
        return false;
      }
      if($ed05_i_codigo == "" || $ed05_i_codigo == null ){
-       $result = db_query("select nextval('atolegal_ed05_i_codigo_seq')"); 
+       $result = db_query("select nextval('atolegal_ed05_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: atolegal_ed05_i_codigo_seq do campo: ed05_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: atolegal_ed05_i_codigo_seq do campo: ed05_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed05_i_codigo = pg_result($result,0,0); 
+       $this->ed05_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from atolegal_ed05_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed05_i_codigo)){
@@ -247,10 +247,10 @@ class cl_atolegal {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed05_i_codigo = $ed05_i_codigo; 
+         $this->ed05_i_codigo = $ed05_i_codigo;
        }
      }
-     if(($this->ed05_i_codigo == null) || ($this->ed05_i_codigo == "") ){ 
+     if(($this->ed05_i_codigo == null) || ($this->ed05_i_codigo == "") ){
        $this->erro_sql = " Campo ed05_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -259,35 +259,35 @@ class cl_atolegal {
        return false;
      }
      $sql = "insert into atolegal(
-                                       ed05_i_codigo 
-                                      ,ed05_c_numero 
-                                      ,ed05_c_finalidade 
-                                      ,ed05_i_tipoato 
-                                      ,ed05_c_competencia 
-                                      ,ed05_i_ano 
-                                      ,ed05_c_orgao 
-                                      ,ed05_d_vigora 
-                                      ,ed05_d_aprovado 
-                                      ,ed05_d_publicado 
-                                      ,ed05_t_texto 
-                                      ,ed05_i_aparecehistorico 
+                                       ed05_i_codigo
+                                      ,ed05_c_numero
+                                      ,ed05_c_finalidade
+                                      ,ed05_i_tipoato
+                                      ,ed05_c_competencia
+                                      ,ed05_i_ano
+                                      ,ed05_c_orgao
+                                      ,ed05_d_vigora
+                                      ,ed05_d_aprovado
+                                      ,ed05_d_publicado
+                                      ,ed05_t_texto
+                                      ,ed05_i_aparecehistorico
                        )
                 values (
-                                $this->ed05_i_codigo 
-                               ,$this->ed05_c_numero 
-                               ,'$this->ed05_c_finalidade' 
-                               ,$this->ed05_i_tipoato 
-                               ,'$this->ed05_c_competencia' 
-                               ,$this->ed05_i_ano 
-                               ,'$this->ed05_c_orgao' 
-                               ,".($this->ed05_d_vigora == "null" || $this->ed05_d_vigora == ""?"null":"'".$this->ed05_d_vigora."'")." 
-                               ,".($this->ed05_d_aprovado == "null" || $this->ed05_d_aprovado == ""?"null":"'".$this->ed05_d_aprovado."'")." 
-                               ,".($this->ed05_d_publicado == "null" || $this->ed05_d_publicado == ""?"null":"'".$this->ed05_d_publicado."'")." 
-                               ,'$this->ed05_t_texto' 
-                               ,$this->ed05_i_aparecehistorico 
+                                $this->ed05_i_codigo
+                               ,$this->ed05_c_numero
+                               ,'$this->ed05_c_finalidade'
+                               ,$this->ed05_i_tipoato
+                               ,'$this->ed05_c_competencia'
+                               ,$this->ed05_i_ano
+                               ,'$this->ed05_c_orgao'
+                               ,".($this->ed05_d_vigora == "null" || $this->ed05_d_vigora == ""?"null":"'".$this->ed05_d_vigora."'")."
+                               ,".($this->ed05_d_aprovado == "null" || $this->ed05_d_aprovado == ""?"null":"'".$this->ed05_d_aprovado."'")."
+                               ,".($this->ed05_d_publicado == "null" || $this->ed05_d_publicado == ""?"null":"'".$this->ed05_d_publicado."'")."
+                               ,'$this->ed05_t_texto'
+                               ,$this->ed05_i_aparecehistorico
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ato Legal ($this->ed05_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -330,16 +330,16 @@ class cl_atolegal {
        $resac = db_query("insert into db_acount values($acount,1010033,17819,'','".AddSlashes(pg_result($resaco,0,'ed05_i_aparecehistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed05_i_codigo=null) { 
+   public function alterar ($ed05_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update atolegal set ";
      $virgula = "";
-     if(trim($this->ed05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_codigo"])){ 
+     if(trim($this->ed05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_codigo"])){
        $sql  .= $virgula." ed05_i_codigo = $this->ed05_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed05_i_codigo) == null ){ 
+       if(trim($this->ed05_i_codigo) == null ){
          $this->erro_sql = " Campo Código do Ato nao Informado.";
          $this->erro_campo = "ed05_i_codigo";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_atolegal {
          return false;
        }
      }
-     if(trim($this->ed05_c_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_numero"])){ 
+     if(trim($this->ed05_c_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_numero"])){
        $sql  .= $virgula." ed05_c_numero = $this->ed05_c_numero ";
        $virgula = ",";
-       if(trim($this->ed05_c_numero) == null ){ 
+       if(trim($this->ed05_c_numero) == null ){
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "ed05_c_numero";
          $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_atolegal {
          return false;
        }
      }
-     if(trim($this->ed05_c_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_finalidade"])){ 
+     if(trim($this->ed05_c_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_finalidade"])){
        $sql  .= $virgula." ed05_c_finalidade = '$this->ed05_c_finalidade' ";
        $virgula = ",";
-       if(trim($this->ed05_c_finalidade) == null ){ 
+       if(trim($this->ed05_c_finalidade) == null ){
          $this->erro_sql = " Campo Finalidade nao Informado.";
          $this->erro_campo = "ed05_c_finalidade";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_atolegal {
          return false;
        }
      }
-     if(trim($this->ed05_i_tipoato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_tipoato"])){ 
+     if(trim($this->ed05_i_tipoato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_tipoato"])){
        $sql  .= $virgula." ed05_i_tipoato = $this->ed05_i_tipoato ";
        $virgula = ",";
-       if(trim($this->ed05_i_tipoato) == null ){ 
+       if(trim($this->ed05_i_tipoato) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "ed05_i_tipoato";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_atolegal {
          return false;
        }
      }
-     if(trim($this->ed05_c_competencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_competencia"])){ 
+     if(trim($this->ed05_c_competencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_competencia"])){
        $sql  .= $virgula." ed05_c_competencia = '$this->ed05_c_competencia' ";
        $virgula = ",";
-       if(trim($this->ed05_c_competencia) == null ){ 
+       if(trim($this->ed05_c_competencia) == null ){
          $this->erro_sql = " Campo Competência nao Informado.";
          $this->erro_campo = "ed05_c_competencia";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_atolegal {
          return false;
        }
      }
-     if(trim($this->ed05_i_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_ano"])){ 
+     if(trim($this->ed05_i_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_ano"])){
        $sql  .= $virgula." ed05_i_ano = $this->ed05_i_ano ";
        $virgula = ",";
-       if(trim($this->ed05_i_ano) == null ){ 
+       if(trim($this->ed05_i_ano) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "ed05_i_ano";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_atolegal {
          return false;
        }
      }
-     if(trim($this->ed05_c_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_orgao"])){ 
+     if(trim($this->ed05_c_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_orgao"])){
        $sql  .= $virgula." ed05_c_orgao = '$this->ed05_c_orgao' ";
        $virgula = ",";
-       if(trim($this->ed05_c_orgao) == null ){ 
+       if(trim($this->ed05_c_orgao) == null ){
          $this->erro_sql = " Campo Órgão Emitente nao Informado.";
          $this->erro_campo = "ed05_c_orgao";
          $this->erro_banco = "";
@@ -427,10 +427,10 @@ class cl_atolegal {
          return false;
        }
      }
-     if(trim($this->ed05_d_vigora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_vigora_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed05_d_vigora_dia"] !="") ){ 
+     if(trim($this->ed05_d_vigora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_vigora_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed05_d_vigora_dia"] !="") ){
        $sql  .= $virgula." ed05_d_vigora = '$this->ed05_d_vigora' ";
        $virgula = ",";
-       if(trim($this->ed05_d_vigora) == null ){ 
+       if(trim($this->ed05_d_vigora) == null ){
          $this->erro_sql = " Campo Vigência nao Informado.";
          $this->erro_campo = "ed05_d_vigora_dia";
          $this->erro_banco = "";
@@ -439,11 +439,11 @@ class cl_atolegal {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_vigora_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_vigora_dia"])){
          $sql  .= $virgula." ed05_d_vigora = null ";
          $virgula = ",";
-         if(trim($this->ed05_d_vigora) == null ){ 
+         if(trim($this->ed05_d_vigora) == null ){
            $this->erro_sql = " Campo Vigência nao Informado.";
            $this->erro_campo = "ed05_d_vigora_dia";
            $this->erro_banco = "";
@@ -454,10 +454,10 @@ class cl_atolegal {
          }
        }
      }
-     if(trim($this->ed05_d_aprovado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_aprovado_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed05_d_aprovado_dia"] !="") ){ 
+     if(trim($this->ed05_d_aprovado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_aprovado_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed05_d_aprovado_dia"] !="") ){
        $sql  .= $virgula." ed05_d_aprovado = '$this->ed05_d_aprovado' ";
        $virgula = ",";
-       if(trim($this->ed05_d_aprovado) == null ){ 
+       if(trim($this->ed05_d_aprovado) == null ){
          $this->erro_sql = " Campo Aprovação nao Informado.";
          $this->erro_campo = "ed05_d_aprovado_dia";
          $this->erro_banco = "";
@@ -466,11 +466,11 @@ class cl_atolegal {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_aprovado_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_aprovado_dia"])){
          $sql  .= $virgula." ed05_d_aprovado = null ";
          $virgula = ",";
-         if(trim($this->ed05_d_aprovado) == null ){ 
+         if(trim($this->ed05_d_aprovado) == null ){
            $this->erro_sql = " Campo Aprovação nao Informado.";
            $this->erro_campo = "ed05_d_aprovado_dia";
            $this->erro_banco = "";
@@ -481,10 +481,10 @@ class cl_atolegal {
          }
        }
      }
-     if(trim($this->ed05_d_publicado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_publicado_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed05_d_publicado_dia"] !="") ){ 
+     if(trim($this->ed05_d_publicado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_publicado_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed05_d_publicado_dia"] !="") ){
        $sql  .= $virgula." ed05_d_publicado = '$this->ed05_d_publicado' ";
        $virgula = ",";
-       if(trim($this->ed05_d_publicado) == null ){ 
+       if(trim($this->ed05_d_publicado) == null ){
          $this->erro_sql = " Campo Publicação nao Informado.";
          $this->erro_campo = "ed05_d_publicado_dia";
          $this->erro_banco = "";
@@ -493,11 +493,11 @@ class cl_atolegal {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_publicado_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ed05_d_publicado_dia"])){
          $sql  .= $virgula." ed05_d_publicado = null ";
          $virgula = ",";
-         if(trim($this->ed05_d_publicado) == null ){ 
+         if(trim($this->ed05_d_publicado) == null ){
            $this->erro_sql = " Campo Publicação nao Informado.";
            $this->erro_campo = "ed05_d_publicado_dia";
            $this->erro_banco = "";
@@ -508,14 +508,14 @@ class cl_atolegal {
          }
        }
      }
-     if(trim($this->ed05_t_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_t_texto"])){ 
+     if(trim($this->ed05_t_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_t_texto"])){
        $sql  .= $virgula." ed05_t_texto = '$this->ed05_t_texto' ";
        $virgula = ",";
      }
-     if(trim($this->ed05_i_aparecehistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_aparecehistorico"])){ 
+     if(trim($this->ed05_i_aparecehistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_aparecehistorico"])){
        $sql  .= $virgula." ed05_i_aparecehistorico = $this->ed05_i_aparecehistorico ";
        $virgula = ",";
-       if(trim($this->ed05_i_aparecehistorico) == null ){ 
+       if(trim($this->ed05_i_aparecehistorico) == null ){
          $this->erro_sql = " Campo Aparece no Histórico nao Informado.";
          $this->erro_campo = "ed05_i_aparecehistorico";
          $this->erro_banco = "";
@@ -563,7 +563,7 @@ class cl_atolegal {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ato Legal nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed05_i_codigo;
@@ -591,14 +591,14 @@ class cl_atolegal {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed05_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed05_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed05_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -635,7 +635,7 @@ class cl_atolegal {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ato Legal nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed05_i_codigo;
@@ -663,11 +663,11 @@ class cl_atolegal {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -689,11 +689,11 @@ class cl_atolegal {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -708,15 +708,15 @@ class cl_atolegal {
      $sql2 = "";
      if($dbwhere==""){
        if($ed05_i_codigo!=null ){
-         $sql2 .= " where atolegal.ed05_i_codigo = $ed05_i_codigo "; 
-       } 
+         $sql2 .= " where atolegal.ed05_i_codigo = $ed05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -725,11 +725,11 @@ class cl_atolegal {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -742,15 +742,15 @@ class cl_atolegal {
      $sql2 = "";
      if($dbwhere==""){
        if($ed05_i_codigo!=null ){
-         $sql2 .= " where atolegal.ed05_i_codigo = $ed05_i_codigo "; 
-       } 
+         $sql2 .= " where atolegal.ed05_i_codigo = $ed05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -759,13 +759,13 @@ class cl_atolegal {
      }
      return $sql;
   }
-   function sql_query_cursos($ed05_i_codigo = null, $sCampos = "*", $sOrdem = null, $sDBWhere = "") {
+   public function sql_query_cursos($ed05_i_codigo = null, $sCampos = "*", $sOrdem = null, $sDBWhere = "") {
 
      $sSql = "select ";
-     
+
      if ($sCampos != "*" ) {
 
-       $sCamposSQL  = split("#", $sCampos);
+       $sCamposSQL  = explode("#", $sCampos);
        $sVirgula    = "";
 
        for ($i = 0; $i < sizeof($sCamposSQL); $i++) {
@@ -790,23 +790,23 @@ class cl_atolegal {
      $sSql .= "                             and escolabase.ed77_i_codigo     = baseato.ed278_i_escolabase";
      $sSql .= "      inner join escola       on escola.ed18_i_codigo         = escolabase.ed77_i_escola";
      $sSql2 = "";
-     
+
      if ($sDBWhere == "") {
 
        if ($ed05_i_codigo != null) {
-         $sql2 .= " where atolegal.ed05_i_codigo = $ed05_i_codigo "; 
-       } 
+         $sql2 .= " where atolegal.ed05_i_codigo = $ed05_i_codigo ";
+       }
 
      } elseif ($sDBWhere != "") {
        $sSql2 = " where $sDBWhere";
      }
 
      $sSql .= $sSql2;
-     
+
      if ($sOrdem != null) {
 
        $sSql       .= " order by ";
-       $sCamposSQL  = split("#", $sOrdem);
+       $sCamposSQL  = explode("#", $sOrdem);
        $sVirgula    = "";
 
        for ($i = 0; $i < sizeof($sCamposSQL); $i++) {
@@ -819,7 +819,7 @@ class cl_atolegal {
      }
 
      return $sSql;
-  
+
    }
 }
 ?>

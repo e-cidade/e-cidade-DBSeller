@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,7 +75,7 @@ $clrotulo->label("z01_nome");
         </tr>
         <tr>
           <td nowrap width="50%">
-            <?
+            <?php
               // $aux = new cl_arquivo_auxiliar;
               $aux->cabecalho      = "<strong>CGM</strong>";
               $aux->codigo         = "z01_numcgm"; //chave de retorno da func
@@ -103,7 +103,7 @@ $clrotulo->label("z01_nome");
         <tr>
           <td nowrap colspan=3>
             <b> Período </b>
-              <? 
+              <?php 
 	              $dia="01";
 		            $mes="01";
 		            $ano= db_getsession("DB_anousu");
@@ -136,7 +136,7 @@ $clrotulo->label("z01_nome");
   </tr>
 </table>
 <!---  menu --->
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <!--- --->
 <script>
 variavel = 1;

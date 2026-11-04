@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed12_i_codigo");
        <?=@$Led298_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed298_sequencial',10,$Ied298_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted298_matriculadependencia?>">
-       <?
+       <?php
        db_ancora(@$Led298_matriculadependencia,"js_pesquisaed298_matriculadependencia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed298_matriculadependencia',10,$Ied298_matriculadependencia,true,'text',$db_opcao," onchange='js_pesquisaed298_matriculadependencia(false);'")
 ?>
-       <?
+       <?php
 db_input('ed297_sequencial',10,$Ied297_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted298_disciplina?>">
-       <?
+       <?php
        db_ancora(@$Led298_disciplina,"js_pesquisaed298_disciplina(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed298_disciplina',10,$Ied298_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed298_disciplina(false);'")
 ?>
-       <?
+       <?php
 db_input('ed12_i_codigo',20,$Ied12_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matriculadisciplina.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

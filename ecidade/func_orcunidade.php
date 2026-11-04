@@ -192,7 +192,7 @@ $clorcunidade->rotulo->label("o41_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -209,7 +209,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

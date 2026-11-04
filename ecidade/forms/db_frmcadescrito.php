@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,10 +51,10 @@ $clrotulo->label("q86_datalimite");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq86_numcgm?>">
-       <? db_ancora(@$Lq86_numcgm,"js_pesquisaq86_numcgm(true);",($db_opcao==2)?3:$db_opcao); ?>
+       <?php db_ancora(@$Lq86_numcgm,"js_pesquisaq86_numcgm(true);",($db_opcao==2)?3:$db_opcao); ?>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('q86_numcgm',10,$Iq86_numcgm,true,'text',($db_opcao==2)?3:$db_opcao," onchange='js_pesquisaq86_numcgm(false);'");
 			 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
       ?>
@@ -65,7 +65,7 @@ $clrotulo->label("q86_datalimite");
       <?=$Lq86_datalimite?>
     </td>
     <td>
-      <? db_inputdata('q86_datalimite', @$q86_datalimite_dia, @$q86_datalimite_mes, @$q86_datalimite_ano, true, 'text',$db_opcao); ?>
+      <?php db_inputdata('q86_datalimite', @$q86_datalimite_dia, @$q86_datalimite_mes, @$q86_datalimite_ano, true, 'text',$db_opcao); ?>
     </td>
   </tr>
 </table>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadescrito.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

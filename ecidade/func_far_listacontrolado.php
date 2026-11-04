@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clfar_listacontrolado->rotulo->label("fa15_c_listacontrolado");
               <?=$Lfa15_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa15_i_codigo",10,$Ifa15_i_codigo,true,"text",4,"","chave_fa15_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfar_listacontrolado->rotulo->label("fa15_c_listacontrolado");
               <?=$Lfa15_c_listacontrolado?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa15_c_listacontrolado",20,$Ifa15_c_listacontrolado,true,"text",4,"","chave_fa15_c_listacontrolado");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfar_listacontrolado->rotulo->label("fa15_c_listacontrolado");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_listacontrolado.php")==true){
@@ -122,12 +122,12 @@ $clfar_listacontrolado->rotulo->label("fa15_c_listacontrolado");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

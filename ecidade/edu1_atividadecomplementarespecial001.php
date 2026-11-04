@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -138,6 +138,7 @@ $iEscola = db_getsession("DB_coddepto");
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 <script rel="script" type="text/javascript" src="scripts/session.js"></script>
+<script type="text/javascript" src="scripts/classes/http/http.js"></script>
 </body>
 </html>
 
@@ -163,29 +164,18 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
     /**
      * Buscamos os calendario da escola
      */
-    (() => {
-        js_divCarregando('Aguarde, pesquisando calendarios', 'msgBox');
-        var oParametros = new Object();
-        oParametros.exec = "pesquisaCalendario";
+    (async () => {
+        await PHPSession.loadData();
 
-        new Ajax.Request(sUrlRpc,
-            {
-                method: 'post',
-                parameters: 'json=' + Object.toJSON(oParametros),
-                onComplete: (response) => {
-                    js_removeObj('msgBox');
-
-                    var oRetorno = JSON.parse(response.responseText);
-                    oRetorno.dados.each(function (oCalendario) {
-                        cboCalendario.add(new Option(oCalendario.ed52_c_descr.urlDecode(), oCalendario.ed52_i_codigo));
-                    });
-
-                    if (oRetorno.dados.length == 1) {
-                        cboCalendario.setValue(oRetorno.aResult[0].ed52_i_codigo);
-                        cboCalendario.dispatchEvent(new Event('change'));
-                    }
+        HttpClient.get(`${PHPSession.requestApi}/educacao/escola/${codigoEscola.value}/calendario`).then(response => {
+            response.data.each(function (oCalendario) {
+                cboCalendario.add(new Option(oCalendario.nome.urlDecode(), oCalendario.codigo));
+                if (response.data.length == 1) {
+                    cboCalendario.setValue(oCalendario.codigo);
+                    cboCalendario.dispatchEvent(new Event('change'));
                 }
             });
+        });
     })();
 
     /**

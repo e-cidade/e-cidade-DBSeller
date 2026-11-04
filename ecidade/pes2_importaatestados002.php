@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ require_once(modification("libs/db_utils.php"));
 <table>
 <tr height=25><td>&nbsp;</td></tr>
 </table>
-<?
+<?php
 
 if ($_POST) {
 	
@@ -253,7 +253,7 @@ function js_relatorio(iMes, iAno, sMatriculas) {
   window.open(url+qstring, "Relatório de Importação", "height = 600, width = 800");
 }
 </script>
-<?
+<?php
 if($_POST){
   
   if(isset($oPost->acao) && $oPost->acao == "processar") {

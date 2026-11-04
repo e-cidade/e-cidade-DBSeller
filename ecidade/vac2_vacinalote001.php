@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@ $datafim_ano        = $dataini_ano;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
 db_app::load("scripts.js, grid.style.css");
 ?>
@@ -71,16 +71,16 @@ db_app::load("scripts.js, grid.style.css");
     <tr>
       <td><b>Período</b></td>
       <td nowrap >
-      <? db_inputdata('dataini', @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', $db_opcao);?>
+      <?php db_inputdata('dataini', @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', $db_opcao);?>
       Á
-      <? db_inputdata('datafim', @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', $db_opcao);?></td>
+      <?php db_inputdata('datafim', @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', $db_opcao);?></td>
     </tr>
     <tr>
       <td nowrap>
         <b>Lote</b>
       </td>
       <td>
-        <?
+        <?php
           $x       = array();
           $sSql    = $oDaoVacVacinaMaterial->sql_query_vacina(null, 
                                                            "m77_sequencial,m77_lote||' - '||m60_descr as m77_lote",
@@ -113,7 +113,7 @@ db_app::load("scripts.js, grid.style.css");
 </table>
 </center>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

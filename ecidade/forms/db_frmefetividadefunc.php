@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -84,10 +84,10 @@ $linhas = pg_num_rows($result);
 <table border="1" width="97%" cellspacing="0" cellpading="1">
   <tr>
     <td class="cabec" align="center">
-      <?if($linhas>1){?>
+      <?php if($linhas>1){?>
       <input type="checkbox" name="geral" onclick="MarcaTudo(<?=$linhas?>);">
       <input type="hidden" name="status" value="D">
-      <?}?>
+      <?php }?>
     </td>
     <td class="cabec" align="center">
       <b>Matr./CGM</b>
@@ -114,7 +114,7 @@ $linhas = pg_num_rows($result);
       <b>Observações</b>
     </td>
   </tr>
- <?
+ <?php
  $cor1 = "#f3f3f3";
  $cor2 = "#dbdbdb";
  $cor = "";

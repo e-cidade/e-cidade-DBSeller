@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -162,7 +162,7 @@ db_app::load("estilos.css, grid.style.css");
                       <?php echo $Lac20_matunid ?>
                   </td>
                   <td>
-                      <?
+                      <?php
                       $oDaoMatUnid = db_utils::getDao("matunid");
                       $sSqlUnidades = $oDaoMatUnid->sql_query_file(null,
                         "m61_codmatunid,substr(m61_descr,1,20) as m61_descr",
@@ -219,10 +219,15 @@ db_app::load("estilos.css, grid.style.css");
                           <td>
                               <?php
 
-                              //Define valores para a data inicial, deixando vazio caso não existam valores.
-                              $sDiaDataInicial = isset($ac41_datainicial_dia) ? $ac41_datainicial_dia : '';
-                              $sMesDataInicial = isset($ac41_datainicial_mes) ? $ac41_datainicial_mes : '';
-                              $sAnoDataInicial = isset($ac41_datainicial_ano) ? $ac41_datainicial_ano : '';
+                              //Define valores para a data inicial, preechendo com o periodo de vigencia inserido na aba acordo caso não existam valores.
+                              $dataInicio = explode('-', $oAcordo->ac16_datainicio);
+                              $anoInicio = $dataInicio[0];
+                              $mesInicio = $dataInicio[1];
+                              $diaInicio = $dataInicio[2];
+
+                              $sDiaDataInicial = isset($ac41_datainicial_dia) ? $ac41_datainicial_dia : $diaInicio;
+                              $sMesDataInicial = isset($ac41_datainicial_mes) ? $ac41_datainicial_mes : $mesInicio;
+                              $sAnoDataInicial = isset($ac41_datainicial_ano) ? $ac41_datainicial_ano : $anoInicio;
 
                               db_inputdata('ac41_datainicial',
                                 $sDiaDataInicial,
@@ -239,10 +244,15 @@ db_app::load("estilos.css, grid.style.css");
                           <td>
                               <?php
 
-                              //Define valores para a data final, deixando vazio caso não existam valores.
-                              $sDiaDataFinal = isset($ac41_datafinal_dia) ? $ac41_datafinal_dia : '';
-                              $sMesDataFinal = isset($ac41_datafinal_mes) ? $ac41_datafinal_mes : '';
-                              $sAnoDataFinal = isset($ac41_datafinal_ano) ? $ac41_datafinal_ano : '';
+                              //Define valores para a data final, preechendo com o periodo de vigencia inserido na aba acordo caso não existam valores.
+                              $dataFim = explode('-', $oAcordo->ac16_datafim);
+                              $anoFim = $dataFim[0];
+                              $mesFim = $dataFim[1];
+                              $diaFim = $dataFim[2];
+
+                              $sDiaDataFinal = isset($ac41_datafinal_dia) ? $ac41_datafinal_dia : $diaFim;
+                              $sMesDataFinal = isset($ac41_datafinal_mes) ? $ac41_datafinal_mes : $mesFim;
+                              $sAnoDataFinal = isset($ac41_datafinal_ano) ? $ac41_datafinal_ano : $anoFim;
 
                               db_inputdata('ac41_datafinal',
                                 $sDiaDataFinal,
@@ -704,6 +714,8 @@ db_app::load("estilos.css, grid.style.css");
       }
 
       oGridPeriodos.clearAll(true);
+      $("ac41_datainicial").value = localStorage.getItem('ac41_datainicial');
+      $("ac41_datafinal").value = localStorage.getItem('ac41_datafinal');
     }
 
     function js_excluir(iCodigo) {
@@ -2146,6 +2158,8 @@ db_app::load("estilos.css, grid.style.css");
       var oPeriodo = new Object();
       var oDtInicial = $("ac41_datainicial");
       var oDtFinal = $("ac41_datafinal");
+      localStorage.setItem('ac41_datainicial', oDtInicial.value);
+      localStorage.setItem('ac41_datafinal', oDtFinal.value);
 
       if(oDtInicial.value == "" || oDtFinal.value == "") {
 
@@ -2415,8 +2429,8 @@ db_app::load("estilos.css, grid.style.css");
           aLinha[2] = oItem.iCodigoMaterial;
           aLinha[3] = oItem.sDescricao.urlDecode();
 
-          var oDBTextFieldDataInicial = new DBTextFieldData("oDBTextFieldDataInicial" + iLinha, "oDBTextFieldData", "", 10);
-          var oDBTextFieldDataFinal = new DBTextFieldData("oDBTextFieldDataFinal" + iLinha, "oDBTextFieldData", "", 10);
+          var oDBTextFieldDataInicial = new DBTextFieldData("oDBTextFieldDataInicial" + iLinha, "oDBTextFieldData", $("ac41_datainicial").value, 10);
+          var oDBTextFieldDataFinal = new DBTextFieldData("oDBTextFieldDataFinal" + iLinha, "oDBTextFieldData", $("ac41_datafinal").value, 10);
 
           aLinha[4] = oDBTextFieldDataInicial.toInnerHtml();
           aLinha[5] = oDBTextFieldDataFinal.toInnerHtml();

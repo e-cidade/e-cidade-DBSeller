@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomotivo
 class cl_rhconsignadomotivo { 
@@ -24,13 +24,13 @@ class cl_rhconsignadomotivo {
                  rh154_motivo = varchar(100) = Motivo da Rejeição 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomotivo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomotivo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -39,7 +39,7 @@ class cl_rhconsignadomotivo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh154_sequencial = ($this->rh154_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh154_sequencial"]:$this->rh154_sequencial);
        $this->rh154_motivo = ($this->rh154_motivo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh154_motivo"]:$this->rh154_motivo);
@@ -48,7 +48,7 @@ class cl_rhconsignadomotivo {
      }
    }
    // funcao para inclusao
-   function incluir ($rh154_sequencial){ 
+   public function incluir ($rh154_sequencial){ 
       $this->atualizacampos();
      if($this->rh154_motivo == null ){ 
        $this->erro_sql = " Campo Motivo da Rejeição não informado.";

@@ -31,29 +31,29 @@ class cda
   /**
    *
    */
-    protected $iCodigo     = null;
+    protected $iCodigo                  = null;
 
-    protected $aEnvolvidos = array();
+    protected $aEnvolvidos              = array();
 
-    protected $aDebitos    = array();
+    protected $aDebitos                 = array();
 
-    protected $dataEmissao = null;
+    protected $dataEmissao              = null;
 
-    protected $iFolha      = 0;
+    protected $iFolha                   = 0;
 
-    protected $iLivro      = 0;
+    protected $iLivro                   = 0;
 
-    protected $iTipo       = 0;
+    protected $iTipo                    = 0;
 
-    protected $dataLivro   = null;
+    protected $dataLivro                = null;
 
-    protected $massafalida = 0;
+    protected $massafalida              = 0;
 
-    protected $oDaoCertid  = null;
+    protected $oDaoCertid               = null;
 
-    protected $iAno        = null;
+    protected $iAno                     = null;
 
-    protected $lComposicao = false;
+    protected $lComposicao              = false;
 
     protected $oDataRecalculoJurosMulta = null;
 
@@ -223,7 +223,6 @@ class cda
 
     public function getOrigensDebito()
     {
-
         $aOrigem = array();
         if ($this->getTipo() == 2) {
             $aOrigem = $this->getOrigemDebitoDivida();
@@ -241,21 +240,21 @@ class cda
     protected function getOrigemDebitoDivida()
     {
 
-        $sqlOrigemMatric  = "  select v01_numpre as numpre,                                                ";
-        $sqlOrigemMatric .= "         v01_numpar as numpar,                                                ";
-        $sqlOrigemMatric .= "         coalesce(arrematric.k00_matric,0) as matric,                         ";
-        $sqlOrigemMatric .= "         coalesce(iptubaseregimovel.j04_matricregimo,'') as matric_ri,         ";
-        $sqlOrigemMatric .= "         coalesce(arreinscr.k00_inscr,0) as inscr,                            ";
-        $sqlOrigemMatric .= "               k00_numcgm as numcgm                                           ";
-        $sqlOrigemMatric .= "    from certdiv                                                              ";
-        $sqlOrigemMatric .= "         inner join divida on v14_coddiv = v01_coddiv                         ";
-        $sqlOrigemMatric .= "                          and v01_instit = ".db_getsession('DB_instit')."     ";
-        $sqlOrigemMatric .= "         left join arrematric  on arrematric.k00_numpre = divida.v01_numpre   ";
+        $sqlOrigemMatric  = "  select v01_numpre as numpre,                                                               ";
+        $sqlOrigemMatric .= "         v01_numpar as numpar,                                                               ";
+        $sqlOrigemMatric .= "         coalesce(arrematric.k00_matric,0) as matric,                                        ";
+        $sqlOrigemMatric .= "         coalesce(iptubaseregimovel.j04_matricregimo,'') as matric_ri,                       ";
+        $sqlOrigemMatric .= "         coalesce(arreinscr.k00_inscr,0) as inscr,                                           ";
+        $sqlOrigemMatric .= "               k00_numcgm as numcgm                                                          ";
+        $sqlOrigemMatric .= "    from certdiv                                                                             ";
+        $sqlOrigemMatric .= "         inner join divida on v14_coddiv = v01_coddiv                                        ";
+        $sqlOrigemMatric .= "                          and v01_instit = ".db_getsession('DB_instit')."                    ";
+        $sqlOrigemMatric .= "         left join arrematric  on arrematric.k00_numpre = divida.v01_numpre                  ";
         $sqlOrigemMatric .= "         left join iptubaseregimovel on arrematric.k00_matric = iptubaseregimovel.j04_matric ";
-        $sqlOrigemMatric .= "         left join arreinscr   on arreinscr.k00_numpre  =  divida.v01_numpre  ";
-        $sqlOrigemMatric .= "         left join arrenumcgm  on arrenumcgm.k00_numpre  =  divida.v01_numpre ";
-        $sqlOrigemMatric .= "   where v14_certid = {$this->iCodigo}                                        ";
-        $sqlOrigemMatric .= "   order by v01_numpre,v01_numpar                                             ";
+        $sqlOrigemMatric .= "         left join arreinscr   on arreinscr.k00_numpre  =  divida.v01_numpre                 ";
+        $sqlOrigemMatric .= "         left join arrenumcgm  on arrenumcgm.k00_numpre  =  divida.v01_numpre                ";
+        $sqlOrigemMatric .= "   where v14_certid = {$this->iCodigo}                                                       ";
+        $sqlOrigemMatric .= "   order by v01_numpre,v01_numpar                                                            ";
 
         $rsOrigemDebitos  = db_query($sqlOrigemMatric);
         $aOrigem          = array();
@@ -267,38 +266,41 @@ class cda
     protected function getOrigemDebitoParcelamento()
     {
 
-        $sqlOrigemMatric  = "  select v07_numpre as numpre, ";
-        $sqlOrigemMatric .= "         -1 as numpar, ";
-        $sqlOrigemMatric .= "         coalesce(arrematric.k00_matric,0) as matric, ";
-        $sqlOrigemMatric .= "         coalesce(iptubaseregimovel.j04_matricregimo,'') as matric_ri,         ";
-        $sqlOrigemMatric .= "         coalesce(arreinscr.k00_inscr,0) as inscr, ";
-        $sqlOrigemMatric .= "         v07_numcgm as numcgm ";
-        $sqlOrigemMatric .= "    from certter  ";
-        $sqlOrigemMatric .= "         inner join termo      on v14_parcel = v07_parcel ";
-        $sqlOrigemMatric .= "                              and v07_instit = ".db_getsession('DB_instit')." ";
-        $sqlOrigemMatric .= "         left join arrematric  on arrematric.k00_numpre = termo.v07_numpre ";
+        $sqlOrigemMatric  = "  select v07_numpre as numpre,                                                               ";
+        $sqlOrigemMatric .= "         -1 as numpar,                                                                       ";
+        $sqlOrigemMatric .= "         coalesce(arrematric.k00_matric,0) as matric,                                        ";
+        $sqlOrigemMatric .= "         coalesce(iptubaseregimovel.j04_matricregimo,'') as matric_ri,                       ";
+        $sqlOrigemMatric .= "         coalesce(arreinscr.k00_inscr,0) as inscr,                                           ";
+        $sqlOrigemMatric .= "         arrenumcgm.k00_numcgm as numcgm                                                     ";
+        $sqlOrigemMatric .= "    from certter                                                                             ";
+        $sqlOrigemMatric .= "         inner join termo      on v14_parcel = v07_parcel                                    ";
+        $sqlOrigemMatric .= "                              and v07_instit = ".db_getsession('DB_instit')."                ";
+        $sqlOrigemMatric .= "         left join arrematric  on arrematric.k00_numpre = termo.v07_numpre                   ";
         $sqlOrigemMatric .= "         left join iptubaseregimovel on arrematric.k00_matric = iptubaseregimovel.j04_matric ";
-        $sqlOrigemMatric .= "         left join arreinscr   on arreinscr.k00_numpre  = termo.v07_numpre ";
-        $sqlOrigemMatric .= "   where v14_certid = {$this->iCodigo} ";
-        $sqlOrigemMatric .= "   order by v07_numpre  ";
+        $sqlOrigemMatric .= "         left join arreinscr   on arreinscr.k00_numpre  = termo.v07_numpre                   "; 
+        $sqlOrigemMatric .= "         inner join arrenumcgm on arrenumcgm.k00_numpre = termo.v07_numpre                   ";
+        $sqlOrigemMatric .= "   where v14_certid = {$this->iCodigo}                                                       ";
+        $sqlOrigemMatric .= "   order by v07_numpre                                                                       ";
+
         $rsOrigemDebitos  = db_query($sqlOrigemMatric);
         $aOrigem          = array();
         $aOrigem          = db_utils::getCollectionByRecord($rsOrigemDebitos);
+
         return  $aOrigem;
     }
 
 
-    function getProcessoParcelamento()
+    public function getProcessoParcelamento()
     {
 
 
-        $sSqlProcParc   = "select distinct ";
-        $sSqlProcParc  .= " protprocesso.p58_codproc||'/'||extract(year from protprocesso.p58_dtproc) as processo ";
-        $sSqlProcParc  .= "from certter ";
-        $sSqlProcParc  .= " inner join termoprotprocesso on termoprotprocesso.v27_termo = certter.v14_parcel ";
+        $sSqlProcParc   = "select distinct                                                                           ";
+        $sSqlProcParc  .= " protprocesso.p58_codproc||'/'||extract(year from protprocesso.p58_dtproc) as processo    ";
+        $sSqlProcParc  .= "from certter                                                                              ";
+        $sSqlProcParc  .= " inner join termoprotprocesso on termoprotprocesso.v27_termo = certter.v14_parcel         ";
         $sSqlProcParc  .= " inner join protprocesso on protprocesso.p58_codproc = termoprotprocesso.v27_protprocesso ";
         $sSqlProcParc  .= "   and protprocesso.p58_instit = ".db_getsession('DB_instit');
-        $sSqlProcParc  .= " where v14_certid = {$this->iCodigo} ";
+        $sSqlProcParc  .= " where v14_certid = {$this->iCodigo}                                                      ";
 
         $rsProcParc      = db_query($sSqlProcParc);
         $aDadosProcParc  = db_utils::getCollectionByRecord($rsProcParc);
@@ -353,7 +355,7 @@ class cda
         return  $sRetorno;
     }
 
-    function getObsNumpreParcelamento()
+    public function getObsNumpreParcelamento()
     {
 
         $sSqlObsNumpre   = "  select distinct                                                                     ";
@@ -382,7 +384,7 @@ class cda
     }
 
 
-    function getDevedoresEnvolvidos($sTipoEndereco = 'o')
+    public function getDevedoresEnvolvidos($sTipoEndereco = 'o')
     {
 
         $aParams  = db_stdClass::getParametro("pardiv", array(db_getsession("DB_instit")));
@@ -410,7 +412,8 @@ class cda
         $aImoveisEnvolvidos   = array();
         $aEmpresasEnvolvidos  = array();
         $aDevedoresEnvolvidos = array();
-        $aOrigens = $this->getOrigensDebito();
+        $oDaoIptubase         = new cl_iptubase();
+        $aOrigens             = $this->getOrigensDebito();
 
         foreach ($aOrigens as $oOrigens) {
             if ($oOrigens->matric > 0 && in_array($oOrigens->matric, $aMatric)) {
@@ -455,28 +458,23 @@ class cda
                         $oDevedor = new stdClass();
                         $oEnvol   = db_utils::fieldsMemory($rsEnvol, $i);
 
-                        $sSqlDadosEnvol  = " select z01_numcgm,                     ";
-                        $sSqlDadosEnvol .= "        z01_nome,                       ";
-                        $sSqlDadosEnvol .= "        z01_cgccpf,                     ";
-                        $sSqlDadosEnvol .= "        z01_telef,                      ";
-                        $sSqlDadosEnvol .= "        z01_telcel,                     ";
-                        $sSqlDadosEnvol .= "        z01_ender,                      ";
-                        $sSqlDadosEnvol .= "        z01_numero,                     ";
-                        $sSqlDadosEnvol .= "        z01_compl,                      ";
-                        $sSqlDadosEnvol .= "        z01_bairro,                     ";
-                        $sSqlDadosEnvol .= "        z01_munic,                      ";
-                        $sSqlDadosEnvol .= "        z01_cep,                        ";
-                        $sSqlDadosEnvol .= "        z01_uf,                         ";
-                        $sSqlDadosEnvol .= "        z01_dtfalecimento               ";
-                        $sSqlDadosEnvol .= "   from cgm                             ";
-                        $sSqlDadosEnvol .= "  where z01_numcgm = {$oEnvol->rinumcgm}";
+                        $sSqlDadosEnvol =  " select                                                                                              ";
+                        $sSqlDadosEnvol .= "     distinct cgm.*                                                                                  ";
+                        $sSqlDadosEnvol .= " from                                                                                                ";
+                        $sSqlDadosEnvol .= "     cgm                                                                                             ";
+                        $sSqlDadosEnvol .= "     left join promitente on promitente.j41_numcgm = cgm.z01_numcgm                                  ";
+                        $sSqlDadosEnvol .= "     left join tipopromitente ON tipopromitente.j164_tipopromitente = promitente.j41_tipopromitente  ";
+                        $sSqlDadosEnvol .= "     left join proprietario on proprietario.z01_numcgm = cgm.z01_numcgm                              ";
+                        $sSqlDadosEnvol .= "     left join tipoproprietario on tipoproprietario.j163_abreviatura = proprietario.j163_abreviatura ";
+                        $sSqlDadosEnvol .= " where cgm.z01_numcgm = {$oEnvol->rinumcgm}                                                          ";
+                       
                         $rsDadosEnvol      = db_query($sSqlDadosEnvol) or die($sSqlDadosEnvol);
                         $iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
                             if (trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11
                             && $oDadosEnvol != '00000000000') {
-                                  $oDevedor->nome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
+                                  $oDevedor->nome = $oDadosEnvol->z01_nome;
                             } else {
                                 $oDevedor->nome = $oDadosEnvol->z01_nome;
                             }
@@ -501,15 +499,17 @@ class cda
                                 $oDevedor->endereco .= "- CEP {$oDadosEnvol->z01_cep}";
                             }
 
+                            $sqlTipoEnvolvido = $oDaoIptubase->sql_query_envolvidos_matricula($oOrigens->matric, $oEnvol->rinumcgm);
+                            $rsTipoEnvolvido  = db_query($sqlTipoEnvolvido);
+                            $tipoEnvolvido = db_utils::getCollectionByRecord($rsTipoEnvolvido);
+
+                            if (count($tipoEnvolvido) > 0) {
+                                $oDevedor->tipo = $tipoEnvolvido[0]->tipo;
+                            }
+
                         /**
                          * Verifica o tipo do Devedor
                          */
-                            if ($oEnvol->ritipoenvol == "1" || $oEnvol->ritipoenvol == "2") {
-                                $oDevedor->tipo = "PROPRIETÁRIO";
-                            } else {
-                                $oDevedor->tipo = $possuidor;
-                            }
-
                             if (strlen($oDadosEnvol->z01_cgccpf) == 14) {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cnpj");
                             } else {
@@ -590,29 +590,35 @@ class cda
                         if (empty($oEnvol->rinumcgm)) {
                             continue;
                         }
-                        $sSqlDadosEnvol  = " select z01_numcgm,                     ";
-                        $sSqlDadosEnvol .= "        z01_nome,                       ";
-                        $sSqlDadosEnvol .= "        z01_cgccpf,                     ";
-                        $sSqlDadosEnvol .= "        z01_telef,                      ";
-                        $sSqlDadosEnvol .= "        z01_telcel,                     ";
-                        $sSqlDadosEnvol .= "        z01_numero,                     ";
-                        $sSqlDadosEnvol .= "        z01_ender  as ender,            ";
-                        $sSqlDadosEnvol .= "        z01_numero as numero,           ";
-                        $sSqlDadosEnvol .= "        z01_compl  as compl,            ";
-                        $sSqlDadosEnvol .= "        z01_bairro as bairro,           ";
-                        $sSqlDadosEnvol .= "        z01_munic  as munic,            ";
-                        $sSqlDadosEnvol .= "        z01_cep    as cep,              ";
-                        $sSqlDadosEnvol .= "        z01_uf     as uf,               ";
-                        $sSqlDadosEnvol .= "        z01_dtfalecimento               ";
-                        $sSqlDadosEnvol .= "   from cgm                             ";
-                        $sSqlDadosEnvol .= "  where z01_numcgm = {$oEnvol->rinumcgm}";
-                        $rsDadosEnvol      = db_query($sSqlDadosEnvol);
+                        $sSqlDadosEnvol  = " select cgm.z01_numcgm,                                                                          ";
+                        $sSqlDadosEnvol .= "        cgm.z01_nome,                                                                            ";
+                        $sSqlDadosEnvol .= "        cgm.z01_cgccpf,                                                                          ";
+                        $sSqlDadosEnvol .= "        cgm.z01_telef,                                                                           ";
+                        $sSqlDadosEnvol .= "        cgm.z01_telcel,                                                                          ";
+                        $sSqlDadosEnvol .= "        cgm.z01_numero,                                                                          ";
+                        $sSqlDadosEnvol .= "        cgm.z01_ender  as ender,                                                                 ";
+                        $sSqlDadosEnvol .= "        cgm.z01_numero as numero,                                                                ";
+                        $sSqlDadosEnvol .= "        cgm.z01_compl  as compl,                                                                 ";
+                        $sSqlDadosEnvol .= "        cgm.z01_bairro as bairro,                                                                ";
+                        $sSqlDadosEnvol .= "        cgm.z01_munic  as munic,                                                                 ";
+                        $sSqlDadosEnvol .= "        cgm.z01_cep    as cep,                                                                   ";
+                        $sSqlDadosEnvol .= "        cgm.z01_uf     as uf,                                                                    ";
+                        $sSqlDadosEnvol .= "        cgm.z01_dtfalecimento,                                                                   ";
+                        $sSqlDadosEnvol .= "        coalesce(tipoproprietario.j163_descricao, tipopromitente.j164_descricao) as tipo         ";
+                        $sSqlDadosEnvol .= "   from cgm                                                                                      ";
+                        $sSqlDadosEnvol .= " left join proprietario on proprietario.z01_numcgm = cgm.z01_numcgm                              ";
+                        $sSqlDadosEnvol .= " left join tipoproprietario on tipoproprietario.j163_abreviatura = proprietario.j163_abreviatura ";
+                        $sSqlDadosEnvol .= " left join promitente on promitente.j41_numcgm = cgm.z01_numcgm                                  ";
+                        $sSqlDadosEnvol .= " left join tipopromitente ON tipopromitente.j164_tipopromitente = promitente.j41_tipopromitente  ";
+                        $sSqlDadosEnvol .= "  where cgm.z01_numcgm = {$oEnvol->rinumcgm}                                                     ";
+
+                        $rsDadosEnvol      = db_query($sSqlDadosEnvol) or die($sSqlDadosEnvol);
                         $iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
 
                             if (trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11) {
-                                $oDevedor->nome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
+                                $oDevedor->nome = $oDadosEnvol->z01_nome;
                             } else {
                                 $oDevedor->nome = $oDadosEnvol->z01_nome;
                             }
@@ -637,16 +643,19 @@ class cda
                             if (trim($oDadosEnvol->cep)    !="0" and trim($oDadosEnvol->cep)   !="") {
                                 $oDevedor->endereco .= "- CEP {$oDadosEnvol->cep} .";
                             }
-
-                            if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
-                                if ($oEnvol->ritipoenvol == "4") {
-                                    $oDevedor->tipo = "EMPRESA";
-                                } elseif ($oEnvol->ritipoenvol == "5") {
-                                    $oDevedor->tipo = "SÓCIO";
-                                }
-                            } else {
-                                $oDevedor->tipo = "CONTRIBUINTE";
+                            if (trim($oDadosEnvol->tipo) != "" and trim($oDadosEnvol->tipo) != "") {
+                                $oDevedor->tipo = $oDadosEnvol->tipo;
                             }
+
+                            // if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+                            //     if ($oEnvol->ritipoenvol == "4") {
+                            //         $oDevedor->tipo = "EMPRESA";
+                            //     } elseif ($oEnvol->ritipoenvol == "5") {
+                            //         $oDevedor->tipo = "SÓCIO";
+                            //     }
+                            // } else {
+                            //     $oDevedor->tipo = "CONTRIBUINTE";
+                            // }
 
                             if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cnpj");
@@ -756,7 +765,7 @@ class cda
         return $oRetorno;
     }
 
-    function getDebitos($lRemissao = false)
+    public function getDebitos($lRemissao = false)
     {
 
         $aDebitos = array();
@@ -854,10 +863,51 @@ class cda
         return $aDebitosAgrupadores;
     }
 
+    /**
+     * Recupera as ocorrências de eventos CRA para um determinado código CDA.
+     *
+     * @return array Um array contendo os dados e a descrição das ocorrências.
+     */
+    public function getOcorrenciasCRA()
+    {
+        $sqlcorrencias = "
+        select
+            to_char(cdacartorio.dataprotocolo,'DD/MM/YYYY') as \"data_ocorrencia\" ,
+            'Adicionada à fila para envio' as \"descricao\"
+        from
+            plugins.cdacartorio
+        inner join certid on
+            certid.v13_certid = cdacartorio.codigocda
+        where
+            cdacartorio.codigocda = {$this->getCodigo()}
+            and cdacartorio.dataprotocolo is not null
+        union (
+            select
+                to_char(cct.data_ocorrencia,'DD/MM/YYYY') as \"data_ocorrencia\" ,
+                co.descricao as \"descricao\" 
+            from
+                plugins.cdacartoriotransmissao cct
+            inner join plugins.cdaocorrencia co on
+                co.codigo = cct.codigo_ocorrencia
+            inner join plugins.cdacartorio cc on
+                cc.sequencial = cct.cdacartorio
+            left join plugins.cdacartoriotransmissaoremessacra cctr on
+                cctr.cdacartoriotransmissao = cct.sequencial
+            left join plugins.remessacra rc on
+                cctr.remessacra = rc.sequencial
+            where
+                cc.codigocda = {$this->getCodigo()}
+                and cct.data_ocorrencia is not null
+            order by  1, cct.sequencial)
+        order by 1 ";
+        $rscorrencias   = db_query($sqlcorrencias);
+        return pg_fetch_all($rscorrencias);
+    }
+
 
     protected function getDebitosDivida($lRemissao = false)
     {
-        $sqlDadosDivida  = "select v01_numpre, ";
+        $sqlDadosDivida  = "select distinct v01_numpre, ";
         $sqlDadosDivida .= "       v01_numpar, ";
         $sqlDadosDivida .= "       v01_exerc,  ";
         $sqlDadosDivida .= "       v01_livro,  ";

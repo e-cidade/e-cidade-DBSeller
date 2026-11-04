@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,8 +41,8 @@
 
 </head>
 
-<body bgcolor=#CCCCCC <? if (isset($descrCodAndam)) {echo "onLoad=\"imprime();\"";} ?>>
-<?
+<body bgcolor=#CCCCCC <?php if (isset($descrCodAndam)) {echo "onLoad=\"imprime();\"";} ?>>
+<?php
 //Verifica se a origem desta janela foi solicitada para lista de andamentos ou para a impressao de uma descricao de um andamento
 if (isset($ordem)) {
   // Esta rotina seleciona os andamentos que pertencem a ordem recebida como parametro por esta janla na variavel $ordem

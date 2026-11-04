@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcdotacao_classe.php"));
 include(modification("libs/db_liborcamento.php"));      // funções do orçamento
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcreserva = new cl_orcreserva;
 $clorcdotacao = new cl_orcdotacao;  //instancia dotação
@@ -45,7 +45,7 @@ $db_botao = true;
     $dtlan="";  $dtini=""; $dtfim="";
     if (@checkdate($o80_dtlanc_mes,$o80_dtlanc_dia,$o80_dtlanc_ano)) {
         $dtlan="$o80_dtlanc_ano-$o80_dtlanc_mes-$o80_dtlanc_dia";
-    } 
+    }
     if (@checkdate($o80_dtini_mes,$o80_dtini_dia,$o80_dtini_ano)) {
         $dtini="$o80_dtini_ano-$o80_dtini_mes-$o80_dtini_dia";
     }
@@ -53,12 +53,12 @@ $db_botao = true;
         $dtfim="$o80_dtfim_ano-$o80_dtfim_mes-$o80_dtfim_dia";
     }
      $dtatual= date("Y-m-d",db_getsession("DB_datausu"));
-							
+
 //    $dtatual= date("Y-m-d"); //data atual
     if (($dtlan !="") and ($dtini !="") and ($dtfim!=""))  {
       if (($dtlan >= $dtatual) and ($dtini >= $dtatual)  and ($dtfim >=$dtatual)) {
           $dtok = 1 ;  // somente cria variavel, conteudo nao importa
-      }	
+      }
 
     }
 
@@ -66,13 +66,13 @@ $db_botao = true;
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
   /*
     -- as datas devem ser maiores ou iguais a data atual
-    -- o valor da reserva não pode ultrapassaro saldo da dotação  
+    -- o valor da reserva não pode ultrapassaro saldo da dotação
     -- validação por script e tambem na inclusão
 
    */
-  // valida saldo  
+  // valida saldo
   if (($o80_valor - $original) > $atual_menos_reservado ){
-       echo "<script> alert('Dotação sem saldo para este valor'); </script> "; 
+       echo "<script> alert('Dotação sem saldo para este valor'); </script> ";
   } else if (!isset($dtok)){
        // datas não conferem
        echo "<script> alert('Datas inconsistentes ! '); </script>";
@@ -82,8 +82,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
          $clorcreserva->o80_planoorcamentariolinhapacto = $_POST["o80_planoorcamentariolinhapacto"];
      }
      $clorcreserva->incluir($o80_codres);
-     db_fim_transacao();      
-  } 
+     db_fim_transacao();
+  }
 }
 ?>
 <html>
@@ -120,24 +120,24 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
       } else if  ( datafim.getDate() < objData.getDate())  {
           alert('Data final Inválida : menor que a data atual');
       } else if  ( datafim.getDate() < dataini.getDate())  {
-          alert('Data final não pode ser menor que a data inicial '); 
+          alert('Data final não pode ser menor que a data inicial ');
       } else {
 	   // cria imput com dados do botão 'inclui,altera,exclui
            var opcao= document.createElement("input");
 	       opcao.setAttribute("type","hidden");
 	       opcao.setAttribute("name","db_opcao");
 	       opcao.setAttribute("value",document.form1.db_opcao.value);
- 	       document.form1.appendChild(opcao);  
-           document.form1.submit();  
+ 	       document.form1.appendChild(opcao);
+           document.form1.submit();
       }
-  }  
+  }
 
 </script>
 
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="document.form1.o80_coddot.focus()" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -145,23 +145,23 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+        <?php
    	  include(modification("forms/db_frmorcreserva.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 </body>
 </html>
-<?
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+<?php
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clorcreserva->erro_status=="0"){
     $clorcreserva->erro(true,false);
     $db_botao=true;
@@ -171,7 +171,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
       echo "<script> document.form1.".$clorcreserva->erro_campo.".focus();</script>";
     };
   }else{
-    echo "<script> 
+    echo "<script>
             var confirma = confirm('Deseja imprimir relatório?');
             if(confirma == true){
               jan = window.open('orc2_reservamanual002.php?res=".$clorcreserva->o80_codres."','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
@@ -192,4 +192,3 @@ function js_imprime(res){
   jan.moveTo(0,0);
 }
 </script>
-

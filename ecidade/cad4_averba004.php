@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -105,7 +105,7 @@ if(isset($excluir)){
            <?=$Lj01_matric?>
           </td>
           <td> 
-<?
+<?php
   db_input('j01_matric',5,0,true,'text',3,"");
 ?>
           </td>
@@ -115,7 +115,7 @@ if(isset($excluir)){
            <?=$Lz01_nome?>
           </td>
          <td> 
-<?
+<?php
   db_input('z01_nome',45,$Iz01_nome,true,'text',3,"");
 ?>
           </td>
@@ -125,7 +125,7 @@ if(isset($excluir)){
            <?=$Lj14_nome?>
           </td>
           <td> 
-<?
+<?php
   db_input('j14_nome',45,$Ij14_nome,true,'text',3,"");
 ?>
           </td>
@@ -135,7 +135,7 @@ if(isset($excluir)){
            <?=$Lj34_setor?>
           </td>
           <td> 
-<?
+<?php
   db_input('j34_setor',5,$Ij34_setor,true,'text',3,"");
   echo $Lj34_quadra;
   db_input('j34_quadra',5,$Ij34_quadra,true,'text',3,"");
@@ -149,17 +149,17 @@ if(isset($excluir)){
              AVERBAÇÃO ATUAL
           </td>
         </tr>
-<?
+<?php
   db_input('j55_codave',5,$Ij55_codave,true,'hidden',3,"");
 ?> 
         <tr> 
           <td>     
-<?
+<?php
   db_ancora($Lz01_numcgm,' js_cgm(true); ',3);
 ?>
           </td>
           <td> 
-<?
+<?php
   db_input('j55_numcgm',5,$Ij55_numcgm,true,'text',3,"onchange='js_cgm(false)'");
   db_input('z01_nome',45,$Iz01_nome,true,'text',3,"","z01_nome2");
 ?>
@@ -170,7 +170,7 @@ if(isset($excluir)){
            <?=$Lj55_data?>
           </td>
           <td> 
-<?
+<?php
   db_inputdata('j55_data',@$j55_data_dia,@$j55_data_mes,@$j55_data_ano,true,'text',3,"");
 ?>
           </td>
@@ -180,7 +180,7 @@ if(isset($excluir)){
            <?=$Lj55_cidade?>
           </td>
           <td> 
-<?
+<?php
   db_input('j55_cidade',25,$Ij55_cidade,true,'text',3,"");
 ?>
           </td>
@@ -190,7 +190,7 @@ if(isset($excluir)){
            <?=$Lj55_regimo?>
           </td>
           <td> 
-<?
+<?php
   db_input('j55_regimo',25,$Ij55_regimo,true,'text',3,"");
 ?>
           </td>
@@ -203,7 +203,7 @@ if(isset($excluir)){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -244,7 +244,7 @@ function js_mostra(erro,chave){
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

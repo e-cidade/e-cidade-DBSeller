@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,13 +57,13 @@ class cl_avaliacaogruporesposta {
                  db107_hora = char(5) = Hora
                  ";
    //funcao construtor da classe
-   function cl_avaliacaogruporesposta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaogruporesposta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_avaliacaogruporesposta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db107_sequencial = ($this->db107_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db107_sequencial"]:$this->db107_sequencial);
        $this->db107_usuario = ($this->db107_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["db107_usuario"]:$this->db107_usuario);
@@ -90,7 +90,7 @@ class cl_avaliacaogruporesposta {
      }
    }
    // funcao para inclusao
-   function incluir ($db107_sequencial){
+   public function incluir ($db107_sequencial){
       $this->atualizacampos();
      if($this->db107_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
@@ -204,7 +204,7 @@ class cl_avaliacaogruporesposta {
      return true;
    }
    // funcao para alteracao
-   function alterar ($db107_sequencial=null) {
+   public function alterar ($db107_sequencial=null) {
       $this->atualizacampos();
      $sql = " update avaliacaogruporesposta set ";
      $virgula = "";
@@ -331,7 +331,7 @@ class cl_avaliacaogruporesposta {
      }
    }
    // funcao para exclusao
-   function excluir ($db107_sequencial=null,$dbwhere=null) {
+   public function excluir ($db107_sequencial=null,$dbwhere=null) {
 
      if (!isset($_SESSION["DB_usaAccount"])) {
 
@@ -399,7 +399,7 @@ class cl_avaliacaogruporesposta {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -422,10 +422,10 @@ class cl_avaliacaogruporesposta {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $db107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $db107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_avaliacaogruporesposta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,10 +456,10 @@ class cl_avaliacaogruporesposta {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $db107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $db107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_avaliacaogruporesposta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

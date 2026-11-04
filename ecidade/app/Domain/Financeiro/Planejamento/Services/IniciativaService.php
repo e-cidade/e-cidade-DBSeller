@@ -28,12 +28,14 @@
 namespace App\Domain\Financeiro\Planejamento\Services;
 
 use App\Domain\Financeiro\Orcamento\Models\Subtitulo;
+use App\Domain\Financeiro\Orcamento\Models\ProjetoAtividadeUnidadeMedida;
 use App\Domain\Financeiro\Planejamento\Models\Abrangencia;
 use App\Domain\Financeiro\Planejamento\Models\Iniciativa;
 use App\Domain\Financeiro\Planejamento\Models\MetasIniciativa;
 use App\Domain\Financeiro\Planejamento\Models\Origem;
 use App\Domain\Financeiro\Planejamento\Models\Periodo;
 use App\Domain\Financeiro\Planejamento\Models\ProgramaEstrategico;
+
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use phpDocumentor\Reflection\Types\Integer;
@@ -87,7 +89,15 @@ class IniciativaService
             ->where('pl12_codigo', '=', $id)
             ->first();
 
+                
+        $unidadeMedidaSigfis =  ProjetoAtividadeUnidadeMedida::where(
+            'o221_orcprojativ',
+            $iniciativa->pl12_orcprojativ
+        )->get();
+        
         $iniciativa->programaEstrategico->planejamento;
+        $iniciativa->vinculoSigfisUnidadeMedida = $unidadeMedidaSigfis;
+            
         return $iniciativa;
     }
 

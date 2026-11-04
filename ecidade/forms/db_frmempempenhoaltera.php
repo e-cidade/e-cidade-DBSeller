@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+use \ECidade\Financeiro\Orcamento\Repository\RecursoRepository;
 
 //MODULO: empenho
 $clempempenho->rotulo->label();
@@ -41,6 +42,30 @@ $clrotulo->label("e60_tipol");
 $outrosDados = null;
 if (!empty($outros_dados)) {
     $outrosDados = json_decode($outros_dados);
+}
+
+$tiposCompraJustificaveis = ['7','8', '9', '13', '14'];
+$dispensaElementosAtoJuridico = [];
+$e56_codele = "";
+if(isRioDeJaneiro()){
+
+    $daoOrcElemento = new cl_orcelemento;
+    $anoUsu = db_getsession("DB_anousu");
+    $where = "
+      o56_anousu = $anoUsu and (
+        substr(o56_elemento,3,1) in ('1','2','5','6') OR
+        substr(o56_elemento,6,2) in (
+          '01','04','03','06','07','08','10','11','12','13','14','15','16','17','18',
+          '19','20','21','22','23','24','25','26','27','28','29','41','42','43','45','46','47','48','49','53','54',
+          '55','56','57','58','59','65','70','71','72','73','74','75','76','77','81','91','93','94','95','96','97','98'
+        )
+      )
+    ";
+    $sqlElementosDispensados = $daoOrcElemento->sql_query_file(null,null,'o56_codele',null,$where);
+    $rsElementosDispensados = db_query($sqlElementosDispensados);
+    for($i = 0;$i < pg_num_rows($rsElementosDispensados); $i++){
+      $dispensaElementosAtoJuridico[] = db_utils::fieldsMemory($rsElementosDispensados,$i)->o56_codele;
+    }
 }
 ?>
 <form name="form1" method="post" action="">
@@ -301,9 +326,9 @@ if (!empty($outros_dados)) {
                                 if ($clempelemento->numrows > 0) {
                                     $oResult = db_utils::fieldsMemory($result, 0);
                                 }
-                                if (!isset($e56_codele)) {
-                                    $e56_codele = $oResult->e64_codele;
-                                }
+
+                                $e56_codele = $oResult->e64_codele;
+
                                 $e64_codele = $e56_codele;
                                 db_input('e64_codele', 10, 0, true, 'hidden', 3);
                                 db_select("e56_codele", $aEle, true, 1);
@@ -345,11 +370,18 @@ if (!empty($outros_dados)) {
             <td>
                 <?php
                 $complementosDisponiveis = [];
+                $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
                 if (!empty($e60_numemp)) {
                     $empenho = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($e60_numemp);
                     $recurso = $empenho->getDotacao()->getDadosRecurso();
+                    $fonte = $recurso->getFonteRecurso($empenho->getAno());
 
-                    $complementosEncontrados = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getComplementos($recurso->getRecurso());
+                    $complementosEncontrados = RecursoRepository::getComplementosByGestao(
+                        $fonte->gestao,
+                        $recurso->getRecurso(),
+                        $fonte->exercicio,
+                        $dataLimite
+                    );
                     $complementosDisponiveis = [];
                     foreach ($complementosEncontrados as $complemento) {
                         $complementosDisponiveis[$complemento->codigo] = $complemento->descricao;
@@ -363,6 +395,80 @@ if (!empty($outros_dados)) {
                 ?>
             </td>
         </tr>
+
+        <?php if(isRioDeJaneiro() && !empty($o56_codele) && !in_array($o56_codele,$dispensaElementosAtoJuridico)) { ?>
+            <tr>
+              <td class = 'bold'>Ato jurídico:</td>
+              <td>
+                <?php
+                  $daoEmpTipoAtoJuridoco = new cl_tipoatojuridico;
+                  $sqlAtoJuridico = $daoEmpTipoAtoJuridoco->sql_query_file(null, "*",  "e165_sequencial", "e165_ativo = true");
+                  $rsAtoJuridico = db_query($sqlAtoJuridico);
+//                  $tiposAtoJuridico = [];
+//                  $tiposAtoJuridico = ['0 - Ausência de Ato Jurdico'];
+
+                  for($i=0;$i<pg_num_rows($rsAtoJuridico);$i++){
+                    $tipoAtoJuridico =  db_utils::fieldsMemory($rsAtoJuridico,$i);
+                    if($tipoAtoJuridico->e165_ativo){
+                      $codigoAtoJuridico = $tipoAtoJuridico->e165_sequencial;
+                      $descricaoAtoJuridico = $tipoAtoJuridico->e165_sequencial.' - ';
+                      $descricaoAtoJuridico .= $tipoAtoJuridico->e165_descricao;
+                      $tiposAtoJuridico[$codigoAtoJuridico] = $descricaoAtoJuridico;
+                    }
+                  }
+
+                  db_select('tipoatojuridico', $tiposAtoJuridico, true, 1,"onchange='js_abreFechaBlocoJustificativa()'");
+                ?>
+              </td>
+            </tr>
+
+            <tr id="justificativaatojuridico_bloco" style = "display:none">
+              <td class = 'bold'>Justificativa Ausência de Ato Jurídico: </td>
+              <td>
+                <?php
+                  $daoJustificativaAtoJuridico = new \cl_justificativaatojuridico;
+                  $sqlJustificativaAtoJuridico = $daoJustificativaAtoJuridico->sql_query_file(null, "*", 'e173_sequencial');
+                  $rsJustificativaAtoJuridico =  db_query($sqlJustificativaAtoJuridico);
+                  $justificativasAtoJuridico = [];
+                  for($i=0;$i<pg_num_rows($rsJustificativaAtoJuridico);$i++){
+                    $justificativaAtoJuridico =  db_utils::fieldsMemory($rsJustificativaAtoJuridico,$i);
+                    if($justificativaAtoJuridico->e173_ativo){
+                      $codigoJustificativa = $justificativaAtoJuridico->e173_sequencial;
+                      $descricaoJustificativa = $justificativaAtoJuridico->e173_sequencial.' - ';
+                      $descricaoJustificativa .= $justificativaAtoJuridico->e173_descricao;
+                      $justificativasAtoJuridico[$codigoJustificativa] = $descricaoJustificativa;
+                    }
+                  }
+
+                  db_select('justificativaatojuridico', $justificativasAtoJuridico, true, 1);
+
+                ?>
+              </td>
+            </tr>
+
+            <tr id="justificativainstrumentoprevio_bloco" style = "display:none">
+              <td class = 'bold'>Justificativa Ausência de Instrumento Prévio: </td>
+              <td>
+                <?php
+                  $daoJustificativaInstrumentoPrevio = new \cl_justificativainstrumentoprevio;
+                  $sqlJustificativaInstrumentoPrevio = $daoJustificativaInstrumentoPrevio->sql_query_file(null, "*", 'e174_sequencial');
+                  $rsJustificativaInstrumentoPrevio =  db_query($sqlJustificativaInstrumentoPrevio);
+                  $justificativasInstrumentoPrevio = [];
+                  for($i=0;$i<pg_num_rows($rsJustificativaInstrumentoPrevio);$i++){
+                    $justificativaInstrumentoPrevio =  db_utils::fieldsMemory($rsJustificativaInstrumentoPrevio,$i);
+                    if($justificativaInstrumentoPrevio->e174_ativo){
+                      $codigoJustificativa = $justificativaInstrumentoPrevio->e174_sequencial;
+                      $descricaoJustificativa = $justificativaInstrumentoPrevio->e174_sequencial.' - ';
+                      $descricaoJustificativa .= $justificativaInstrumentoPrevio->e174_descricao;
+                      $justificativasInstrumentoPrevio[$codigoJustificativa] = $descricaoJustificativa;
+                    }
+                  }
+                  db_select('justificativainstrumentoprevio', $justificativasInstrumentoPrevio, true, 1);
+                ?>
+              </td>
+            </tr>
+
+          <?php }?>
 
         <!-- indicativo de aquisição de produção rural -->
         <tr id="trAqProd" style="display: none;">
@@ -451,6 +557,8 @@ if (!empty($outros_dados)) {
 <script>
     const UF = '<?=getEstadoInstituicao();?>'
     var isPB = UF === 'PB';
+    var isRJ = UF === 'RJ';
+    var isJustificavel = '<?php echo !in_array($o56_codele,$dispensaElementosAtoJuridico) ? 'true': 'false';?>';
 
     let linhaCNPJ = document.getElementById('linhaCNPJ');
     let inputLicitacaoCompartilhada = document.getElementById('licitacao_compartilhada');
@@ -706,6 +814,14 @@ if (!empty($outros_dados)) {
 
     function pesquisarTipoLicitacao() {
 
+        if(isRJ && isJustificavel == 'true') {
+            $('justificativainstrumentoprevio_bloco').style.display = 'none';
+            let tiposCompraJustificaveis = <?php echo json_encode($tiposCompraJustificaveis) ?>;
+            if(tiposCompraJustificaveis.includes($F('e60_codcom'))){
+              $('justificativainstrumentoprevio_bloco').style.display = 'table-row';
+            }
+        }
+
         $('numeroLicitacao').className = ''
         $('anoLicitacao').className = '';
         $('numeroLicitacao').removeAttribute('readonly');
@@ -742,4 +858,29 @@ if (!empty($outros_dados)) {
         ).setMessage('Aguarde, carregando tipo de licitação...').execute();
     }
     pesquisarTipoLicitacao();
+
+    function js_abreFechaBlocoJustificativa(){
+
+        $('justificativaatojuridico_bloco').style.display = 'none';
+        if($F('tipoatojuridico') == "0") {
+          $('justificativaatojuridico_bloco').style.display = 'table-row';
+        }
+    }
+
+    iniciarJustificativasSigfis();
+    function iniciarJustificativasSigfis(){
+        if(isRJ && isJustificavel == 'true'){
+
+            let tipoAtoJuridico = '<?=!empty($tipoatojuridico) ? $tipoatojuridico : ''?>';
+            let tipoCompra = '<?=!empty($e60_codcom) ? $e60_codcom : ''?>';
+            let tiposCompraJustificaveis = <?php echo json_encode($tiposCompraJustificaveis) ?>;
+
+            if(tipoAtoJuridico == '99'){
+                $('justificativaatojuridico_bloco').style.display = 'table-row';
+            }
+            if(tiposCompraJustificaveis.includes(tipoCompra)){
+                $('justificativainstrumentoprevio_bloco').style.display = 'table-row';
+            }
+        }
+    }
 </script>

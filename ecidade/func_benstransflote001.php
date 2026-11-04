@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,7 +58,7 @@ $clbenstransf->rotulo->label("t93_data");
               <?=$Lt93_codtran?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("t93_codtran",10,$It93_codtran,true,"text",4,"","chave_t93_codtran");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clbenstransf->rotulo->label("t93_data");
               <?=$Lt93_data?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
              	      db_inputdata('t93_data',@$t93_data_dia,@$t93_data_mes,@$t93_data_ano,true,'text',1,"");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $clbenstransf->rotulo->label("t93_data");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
       $where_instit = " and t93_instit = ".db_getsession("DB_instit");
 
@@ -141,12 +141,12 @@ $clbenstransf->rotulo->label("t93_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 

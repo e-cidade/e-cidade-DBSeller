@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE cursoedu
 class cl_curso {
@@ -32,13 +32,13 @@ class cl_curso {
                  ed29_ativo = bool = Situação
                  ";
    //funcao construtor da classe
-   function cl_curso() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cursoedu");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -47,7 +47,7 @@ class cl_curso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed29_i_codigo = ($this->ed29_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed29_i_codigo"]:$this->ed29_i_codigo);
        $this->ed29_i_ensino = ($this->ed29_i_ensino == ""?@$GLOBALS["HTTP_POST_VARS"]["ed29_i_ensino"]:$this->ed29_i_ensino);
@@ -60,7 +60,7 @@ class cl_curso {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed29_i_codigo){
+   public function incluir ($ed29_i_codigo){
       $this->atualizacampos();
      if($this->ed29_i_ensino == null ){
        $this->erro_sql = " Campo Nível de Ensino não informado.";
@@ -486,10 +486,10 @@ class cl_curso {
      return $sql;
   }
 
-   function sql_query_cursoescola ( $ed29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_cursoescola ( $ed29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,7 +513,7 @@ class cl_curso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_curso {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_curso {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -575,12 +575,12 @@ class cl_curso {
    * @param string $dbwhere
    * @return string
    */
-  function sql_query_curso_serie ($ed29_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_curso_serie ($ed29_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
 
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -605,7 +605,7 @@ class cl_curso {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -71,6 +71,7 @@ $clrotulo->label("ac16_resumoobjeto");
         <?php
         db_app::load("scripts.js, strings.js, datagrid.widget.js, windowAux.widget.js,dbautocomplete.widget.js");
         db_app::load("dbmessageBoard.widget.js, prototype.js, dbtextField.widget.js, dbcomboBox.widget.js");
+        db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
         db_app::load("estilos.css, grid.style.css, AjaxRequest.js");
         ?>
     </head>
@@ -419,7 +420,7 @@ $clrotulo->label("ac16_resumoobjeto");
 
             if (lMostra == true) {
                 js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_concarpeculiar', 'func_concarpeculiar.php?funcao_js=parent.js_preencheCaracteristicaPeculiar|c58_sequencial|c58_descr&filtro=receita', 'Pesquisa Característica Peculiar', true);
-                $('Jandb_iframe_concarpeculiar').style.zIndex = 100;
+                $('Jandb_iframe_concarpeculiar').style.zIndex = 600;
             } else {
                 if ($("iSequenciaCaracteristica").value != '') {
                     js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_concarpeculiar', 'func_concarpeculiar.php?pesquisa_chave=' + $("iSequenciaCaracteristica").value + '&funcao_js=parent.js_mostraCaracteristicaPeculiar&filtro=receita', 'Pesquisa Característica Peculiar', false);
@@ -679,6 +680,26 @@ $clrotulo->label("ac16_resumoobjeto");
 
             });
             oGridItens.renderRows();
+            aItensPosicao.each(function (oItem, iLinha) {
+                let message = `<b>Dotações:</b> `;
+
+                const dotacoes = oItem.dotacoes.reduce((obj, {orgao, dotacao}) => {
+                    if (!obj[orgao]) {
+                        obj[orgao] = [];
+                    }
+                    obj[orgao].push(dotacao);
+                    return obj;
+                }, {});
+
+                for (const orgao in dotacoes) {
+                    const dotacao = dotacoes[orgao].join(', ');
+                    message += `${orgao}: ${dotacao}<br>`;
+                }
+                message += oItem.resumo ? `<b>Resumo:</b> ${oItem.resumo.urlDecode()}` : `<b>Resumo:</b> Sem Observação`;
+                oParametros = {iWidth:'auto'};
+                oGridItens.setHint(iLinha, 2, message, oParametros);
+            });
+
             aItensPosicao.each(function (oItem, iLinha) {
                 js_salvarInfoDotacoes(iLinha);
             });

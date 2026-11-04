@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,10 +98,10 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
-<?
+<?php
 if (isset ($gerar)) {
 	$descricao_erro = ""; 
 	$erro = false;
@@ -129,7 +129,7 @@ if (isset ($gerar)) {
 		}
 		if ($info == "cgm") {
 			$sSql    = $clcgm->sql_query_ender(null, "cgm.*,db_cgmruas.j14_codigo as j14_codigo_cgm,db_cgmbairro.j13_codi as j13_codi_cgm", "z01_numcgm");
-			$result  = $clcgm->sql_record();
+			$result  = $clcgm->sql_record($sSql);
 			$numrows = $clcgm->numrows;
 			if ($result == false || $clcgm->numrows == 0) {
 				$erro = true;

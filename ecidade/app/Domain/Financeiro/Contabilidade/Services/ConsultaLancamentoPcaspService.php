@@ -118,12 +118,11 @@ class ConsultaLancamentoPcaspService
     public function getValoresPorDocumento()
     {
         $this->processaDocumentosContas();
-        $documentosContas = $this->documentosContas;
-        foreach ($documentosContas as &$documento) {
+        foreach ($this->documentosContas as $documento) {
             $documento['contas'] = array_values($documento['contas']);
         }
-        $documentosContas = array_values($documentosContas);
-        return $documentosContas;
+        $this->documentosContas = array_values($this->documentosContas);
+        return $this->documentosContas;
     }
 
     /**

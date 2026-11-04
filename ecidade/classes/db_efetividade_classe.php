@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -68,13 +68,13 @@ class cl_efetividade {
                  ed97_t_obs = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_efetividade() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("efetividade");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_efetividade {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed97_i_codigo = ($this->ed97_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed97_i_codigo"]:$this->ed97_i_codigo);
        $this->ed97_i_efetividaderh = ($this->ed97_i_efetividaderh == ""?@$GLOBALS["HTTP_POST_VARS"]["ed97_i_efetividaderh"]:$this->ed97_i_efetividaderh);
@@ -101,7 +101,7 @@ class cl_efetividade {
      }
    }
    // funcao para inclusao
-   function incluir ($ed97_i_codigo){
+   public function incluir ($ed97_i_codigo){
       $this->atualizacampos();
      if($this->ed97_i_efetividaderh == null ){
        $this->erro_sql = " Campo Efetividade nao Informado.";
@@ -239,7 +239,7 @@ class cl_efetividade {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed97_i_codigo=null) {
+   public function alterar ($ed97_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update efetividade set ";
      $virgula = "";
@@ -325,10 +325,10 @@ class cl_efetividade {
        $sql  .= $virgula." ed97_i_horacem = $this->ed97_i_horacem ";
        $virgula = ",";
      }
-    
+
      $sql  .= $virgula." ed97_t_obs = '$this->ed97_t_obs' ";
      $virgula = ",";
-     
+
      $sql .= " where ";
      if($ed97_i_codigo!=null){
        $sql .= " ed97_i_codigo = $this->ed97_i_codigo";
@@ -397,7 +397,7 @@ class cl_efetividade {
      }
    }
    // funcao para exclusao
-   function excluir ($ed97_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed97_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed97_i_codigo));
      }else{
@@ -468,7 +468,7 @@ class cl_efetividade {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -490,10 +490,10 @@ class cl_efetividade {
       }
      return $result;
    }
-   function sql_query ( $ed97_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed97_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_efetividade {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,10 +531,10 @@ class cl_efetividade {
      }
      return $sql;
   }
-   function sql_query_file ( $ed97_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed97_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -547,15 +547,15 @@ class cl_efetividade {
      $sql2 = "";
      if($dbwhere==""){
        if($ed97_i_codigo!=null ){
-         $sql2 .= " where efetividade.ed97_i_codigo = $ed97_i_codigo "; 
-       } 
+         $sql2 .= " where efetividade.ed97_i_codigo = $ed97_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -565,11 +565,11 @@ class cl_efetividade {
      return $sql;
   }
 
-  function sql_query_rechumanoescola( $ed97_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_rechumanoescola( $ed97_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -592,7 +592,7 @@ class cl_efetividade {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -78,12 +78,12 @@ function js_emite() {
     <table  align="center">
       <tr >
         <td align="left" nowrap title="<?=@$Tk02_codigo?>" >
-          <?
+          <?php
              db_ancora(@$Lk02_codigo,"js_pesquisatabrec(true);",4)
           ?>
         </td>
         <td nowrap="nowrap">
-          <?
+          <?php
             db_input('k02_codigo', 10, $Ik02_codigo, true, 'text', 4, "onchange='js_pesquisatabrec(false);'");
             db_input('k02_drecei', 35, $Ik02_drecei, true, 'text', 3, '');
           ?>
@@ -98,7 +98,7 @@ function js_emite() {
       <tr>
         <td align="left" ><strong>Data Final :</strong></td>
         <td>
-          <?
+          <?php
            $datausu = date("Y/m/d",db_getsession("DB_datausu"));
            $dataf_ano = substr($datausu,0,4);
            $dataf_mes = substr($datausu,5,2);
@@ -119,7 +119,7 @@ function js_emite() {
       <tr>
          <td height="25" nowrap title="<?=$To08_reduz?>"><?=$Lo08_reduz?></td>
          <td >
-           <?
+           <?php
             db_input('o08_reduz',10,$Io08_reduz,true,'text',2,'')
            ?>
          </td>
@@ -127,7 +127,7 @@ function js_emite() {
       <tr >
         <td><strong>Tipo</strong></td>
         <td>
-          <?
+          <?php
             $xx = array("g"=>"Geral","o"=>"Orçamentária","e"=>"Extra-Orçamentária");
             db_select('tipo',$xx,true,4,"");
           ?>
@@ -139,7 +139,7 @@ function js_emite() {
   </form>
 </div>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -180,7 +180,7 @@ function js_mostratabrec1(chave1,chave2) {
   db_iframe_tabrec.hide();
 }
 </script>
-<?
+<?php
 if(isset($ordem)) {
   echo "<script>
        js_emite();

@@ -1,4 +1,4 @@
-<?
+<?php
 $pdf->cell(12,$alt,$registro. " - " .db_CalculaDV($registro),0,0,"C",0);
 $pdf->cell(80,$alt,$nomeregi,0,0,"L",0);
 $pdf->cell(8,$alt,"HM: ",0,0,"L",0);

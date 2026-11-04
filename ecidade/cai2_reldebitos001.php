@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr height="50" valign="bottom"> 
      <td bgcolor="#CCCCCC">
-     <?
+     <?php
        $clcriaabas->identifica = array("dados"=>"Dados","receitas"=>"Tipos de receitas","historico"=>"Histórico de cálculos","debitos"=>"Tipos de débitos");//nome do iframe e o label    
        $clcriaabas->sizecampo = array("dados"=>"20","receitas"=>"20","historico"=>"20","debitos"=>"20");//nome do iframe e o label    
        $clcriaabas->title      = array("dados"=>"Dados para gerar o relatório","receitas"=>"TIPO DE RECEITAS","historico"=>"HISTÒRICO DE CÁLCULOS","debitos"=>"TIPOS DE DÉBITOS");//nome do iframe e o label    
@@ -67,7 +67,7 @@ $db_opcao = 1;
 </table>
 <form name="form1">
 </form>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

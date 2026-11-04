@@ -174,6 +174,23 @@ class Regencia
      * @var int
      */
     private $tipoDeBase;
+    private $unidadeCurricular;
+
+    /**
+     * @return mixed
+     */
+    public function getUnidadeCurricular()
+    {
+        return $this->unidadeCurricular;
+    }
+
+    /**
+     * @param mixed $unidadeCurricular
+     */
+    public function setUnidadeCurricular($unidadeCurricular)
+    {
+        $this->unidadeCurricular = $unidadeCurricular;
+    }
     /**
      * Instancia uma Regencia
      * Caso informamos o parametro $iCodigo, a classe ira prencher os dados da regencia atraves do codigo
@@ -206,6 +223,7 @@ class Regencia
                 $this->oDataAtualizacao = null;
                 $this->iCodigoProcedimentoAvaliacao = $oDadosRegencia->ed59_procedimento;
                 $this->tipoDeBase = $oDadosRegencia->ed59_tipobase;
+                $this->setUnidadeCurricular($oDadosRegencia->ed59_tipobase);
 
                 if (!empty($oDadosRegencia->ed59_areaconhecimento)) {
                     $this->areaConhecimento = AreaConhecimentoRegistry::get($oDadosRegencia->ed59_areaconhecimento);
@@ -307,14 +325,17 @@ class Regencia
         return $this->aDocentes;
     }
 
-    public function getDocentesByDataAtual($data)
+     /**
+     * Retorna os docentes que lecionam a Disciplina na turma e estão ativos na data informada.
+     * @return Docente[] Colecao de Docentes
+     */
+    public function getDocentesByData($data)
     {
-
         if (count($this->aDocentes) == 0 && $this->iCodigo != "") {
             $sWhere = "ed58_i_regencia = {$this->getCodigo()} ";
             $sWhere .= " and ed58_ativo is true";
-            $sWhere .= " and ed58_ativo is true";
-            $sWhere .= " and ed58_datafim >= '$data'";
+            //$sWhere .= " and ed58_ativo is true";
+            $sWhere .= " and (ed58_datafim >= '$data' OR ed58_datafim is null)";
 
             $oDaoRegenciaHorario = new cl_regenciahorario();
             $sSqlDocentes = $oDaoRegenciaHorario->sql_query_file(null,
@@ -322,7 +343,6 @@ class Regencia
                 "ed58_i_rechumano",
                 $sWhere
             );
-
             $rsRegentes = $oDaoRegenciaHorario->sql_record($sSqlDocentes);
             $aDocentes = db_utils::getCollectionByRecord($rsRegentes);
             foreach ($aDocentes as $oDocente) {
@@ -332,6 +352,15 @@ class Regencia
         }
 
         return $this->aDocentes;
+    }
+
+     /**
+     * Retorna os docentes que lecionam a Disciplina na turma e estão ativos na data atual do sistema.
+     * @return Docente[] Colecao de Docentes
+     */
+    public function getDocentesByDataAtual()
+    {
+        return $this->getDocentesByData(date('Y-m-d', db_getsession("DB_datausu")));
     }
 
     /**
@@ -987,7 +1016,7 @@ class Regencia
             $oMsgErro->sMsgErro = pg_last_error();
             throw new DBException (_M(MSG_REGENCIA . "erro_excluir_regenciahorario", $oMsgErro));
         }
-        
+
         //Exclui regencia
         $oDaoDiarioClasseBncc->excluir(null, "ed155_regencia = {$this->iCodigo}");
         $oDaoRecencia->excluir(null, "ed59_i_codigo = {$this->iCodigo}");
@@ -1049,7 +1078,7 @@ class Regencia
         if (!is_null($this->areaConhecimento)) {
             $oDaoRegencia->ed59_areaconhecimento = $this->areaConhecimento->getCodigo();
         }
-
+        $oDaoRegencia->ed59_unidade_curricular = $this->getUnidadeCurricular();
         /**
          * Na inclusão e alteração este é o valor default para as propriedades abaixo, caso haja necessidade deve se criar
          * a propriedade na classe
